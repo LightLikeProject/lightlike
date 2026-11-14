@@ -1,0 +1,82 @@
+# API documentation with doc-gen4 (see docbuild/lakefile.toml), published to GitHub Pages.
+# It runs on every version tag (v*) and on demand (Actions → API docs → Run workflow); a full
+# build takes about two hours. While the repository is private only the on-demand run builds,
+# and publishing is skipped. Publishing needs Settings → Pages → Source: "GitHub Actions".
+name: API docs
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+# Least privilege: only the deploy job may write to GitHub Pages.
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    if: ${{ github.event_name == 'workflow_dispatch' || !github.event.repository.private }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    defaults:
+      run:
+        shell: bash
+    steps:
+      # The build and the documentation need more disk than the runner has free (see ci.yml).
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL /usr/local/share/boost
+          df -h /
+
+      - uses: actions/checkout@v7
+
+      - name: Install elan (toolchain from lean-toolchain)
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh \
+            | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+
+      - name: Restore dependency cache (Mathlib, Physlib, doc-gen4 builds)
+        uses: actions/cache@v6
+        with:
+          path: .lake/packages
+          key: lake-docs-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'docbuild/lake-manifest.json') }}
+
+      - name: Fetch Mathlib build cache
+        run: lake exe cache get
+
+      - name: Build the library
+        run: lake build
+
+      - name: Build the documentation
+        working-directory: docbuild
+        run: lake build Lightlike:docs
+
+      # Pages sites must stay under 1 GB; Mathlib's pages alone are ~1 GB. Drop the dependency
+      # pages and link to the official Mathlib docs instead (~75 MB remain).
+      - name: Prune dependency pages
+        run: python3 scripts/prune_docs.py docbuild/.lake/build/doc
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: docbuild/.lake/build/doc
+
+  # GitHub Pages is not available while the repository is private, so the deploy is skipped then;
+  # the built site stays downloadable as the run's `github-pages` artifact.
+  deploy:
+    needs: build
+    if: ${{ !github.event.repository.private }}
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

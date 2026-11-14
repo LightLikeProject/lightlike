@@ -1,0 +1,1804 @@
+# Literature sources for the milestones in docs/tasks/milestones.md.
+#
+# references: each source once, with an arXiv ID, DOI or ISBN so that it can be fetched.
+# canonical:  per area, the 1-3 references that fix its foundations and conventions.
+# milestones: per milestone ID, `class: sourced` with refs, or `class: exploratory` with a reason.
+#   A ref has a `location`: "Theorem 5.9", "eq. (4.27)", "Section 9", or, for a book chapter
+#   with its own DOI, "Chapter: <chapter title>|<chapter DOI>". `check` is a word that must
+#   appear near the label in the arXiv full text.
+#
+# `python3 scripts/sources.py verify` fetches every reference and location and writes
+# sources-verified.json; `python3 scripts/sources.py check` checks this file offline.
+# Never add a reference or a location that has not been looked up.
+
+references:
+  anguige-tod-1999:
+    cite: "K. Anguige and K. P. Tod, Isotropic cosmological singularities I: polytropic perfect fluid spacetimes, Ann. Physics (1999)"
+    title: "Isotropic cosmological singularities 1: Polytropic perfect fluid spacetimes"
+    arxiv: gr-qc/9903008
+  baumann-2009:
+    cite: "D. Baumann, TASI Lectures on Inflation (2009)"
+    title: "TASI Lectures on Inflation"
+    arxiv: "0907.5424"
+  bernardeau-2002:
+    cite: "F. Bernardeau, S. Colombi, E. Gaztanaga and R. Scoccimarro, Large-scale structure of the Universe and cosmological perturbation theory, Phys. Rep. (2002)"
+    title: "Large-Scale Structure of the Universe and Cosmological Perturbation Theory"
+    arxiv: astro-ph/0112551
+  frs-2023:
+    cite: "G. Fournodavlos, I. Rodnianski and J. Speck, Stable Big Bang formation for Einstein's equations: the complete sub-critical regime, J. Amer. Math. Soc. (2023)"
+    title: "Stable Big Bang formation for Einstein's equations: The complete sub-critical regime"
+    arxiv: "2012.05888"
+  heinzle-uggla-2009a:
+    cite: "J. M. Heinzle and C. Uggla, Mixmaster: fact and belief, Class. Quantum Grav. 26 (2009) 075016"
+    title: "Mixmaster: Fact and Belief"
+    arxiv: "0901.0776"
+  heinzle-uggla-2009b:
+    cite: "J. M. Heinzle and C. Uggla, A new proof of the Bianchi type IX attractor theorem, Class. Quantum Grav. 26 (2009) 075015"
+    title: "A new proof of the Bianchi type IX attractor theorem"
+    arxiv: "0901.0806"
+  junker-schrohe-2002:
+    cite: "W. Junker and E. Schrohe, Adiabatic vacuum states on general spacetime manifolds: definition, construction, and physical properties, Ann. Henri Poincare (2002)"
+    title: "Adiabatic vacuum states on general spacetime manifolds: Definition, construction, and physical properties"
+    arxiv: math-ph/0109010
+  kolb-turner-1990:
+    cite: "E. W. Kolb and M. S. Turner, The Early Universe, Addison-Wesley (1990); CRC Press reprint (2018)"
+    title: "The Early Universe"
+    doi: 10.1201/9780429492860
+  rendall-2005:
+    cite: "A. D. Rendall, Intermediate inflation and the slow-roll approximation, Class. Quantum Grav. 22 (2005)"
+    title: "Intermediate inflation and the slow-roll approximation"
+    arxiv: gr-qc/0501072
+  ringstrom-2001:
+    cite: "H. Ringstrom, The Bianchi IX attractor, Ann. Henri Poincare (2001)"
+    title: "The Bianchi IX attractor"
+    arxiv: gr-qc/0006035
+  barrett-westbury-1996:
+    cite: "J. W. Barrett and B. W. Westbury, Invariants of piecewise-linear 3-manifolds, Trans. Amer. Math. Soc. 348 (1996) 3997-4022"
+    title: "Invariants of Piecewise-Linear 3-Manifolds"
+    arxiv: hep-th/9311155
+  bgv-1992:
+    cite: "N. Berline, E. Getzler and M. Vergne, Heat Kernels and Dirac Operators, Grundlehren 298, Springer (1992)"
+    title: "Heat Kernels and Dirac Operators"
+    doi: 10.1007/978-3-642-58088-8
+  carroll-1997:
+    cite: "S. M. Carroll, Lecture Notes on General Relativity (1997)"
+    title: "Lecture Notes on General Relativity"
+    arxiv: gr-qc/9712019
+  cky-1997:
+    cite: "L. Crane, L. H. Kauffman and D. N. Yetter, State-sum invariants of 4-manifolds, J. Knot Theory Ramifications 6 (1997) 177-234"
+    title: "State-Sum Invariants of 4-Manifolds I"
+    arxiv: hep-th/9409167
+  ggv-1966:
+    cite: "I. M. Gelfand, M. I. Graev and N. Ya. Vilenkin, Generalized Functions, Vol. 5: Integral Geometry and Representation Theory, Academic Press (1966); AMS Chelsea (2016)"
+    title: "Generalized Functions, Volume 5"
+    doi: 10.1090/chel/381
+  gurau-2008:
+    cite: "R. Gurau, The Ponzano-Regge asymptotic of the 6j symbol: an elementary proof, Ann. Henri Poincare 9 (2008) 1413-1424"
+    title: "The Ponzano-Regge asymptotic of the 6j symbol: an elementary proof"
+    arxiv: "0808.3533"
+  hawking-ellis-1973:
+    cite: "S. W. Hawking and G. F. R. Ellis, The Large Scale Structure of Space-Time, Cambridge University Press (1973)"
+    title: "The Large Scale Structure of Space-Time"
+    doi: 10.1017/CBO9780511524646
+  hormander-1990:
+    cite: "L. Hormander, The Analysis of Linear Partial Differential Operators I, 2nd ed., Grundlehren 256, Springer (1990)"
+    title: "The Analysis of Linear Partial Differential Operators I"
+    doi: 10.1007/978-3-642-61497-2
+  kitaev-2017:
+    cite: "A. Kitaev, Notes on SL~(2,R) representations (2017)"
+    title: "Notes on SL(2,R) representations"
+    arxiv: "1711.08169"
+  lickorish-1999:
+    cite: "W. B. R. Lickorish, Simplicial moves on complexes and manifolds, Geom. Topol. Monogr. 2 (1999) 299-320"
+    title: "Simplicial moves on complexes and manifolds"
+    arxiv: math/9911256
+  moise-1977:
+    cite: "E. E. Moise, Geometric Topology in Dimensions 2 and 3, Graduate Texts in Mathematics 47, Springer (1977)"
+    title: "Geometric Topology in Dimensions 2 and 3"
+    doi: 10.1007/978-1-4612-9906-6
+  senovilla-garfinkle-2015:
+    cite: "J. M. M. Senovilla and D. Garfinkle, The 1965 Penrose singularity theorem, Class. Quantum Grav. 32 (2015) 124008"
+    title: "The 1965 Penrose singularity theorem"
+    arxiv: "1410.5226"
+  turaev-1994:
+    cite: "V. G. Turaev, Quantum Invariants of Knots and 3-Manifolds, de Gruyter Studies in Mathematics 18 (1994)"
+    title: "Quantum Invariants of Knots and 3-Manifolds"
+    doi: 10.1515/9783110883275
+  vassilevich-2003:
+    cite: "D. V. Vassilevich, Heat kernel expansion: user's manual, Phys. Rep. 388 (2003) 279-360"
+    title: "Heat kernel expansion: user's manual"
+    arxiv: hep-th/0306138
+  visser-2007:
+    cite: "M. Visser, The Kerr spacetime: a brief introduction (2007), in The Kerr Spacetime, Cambridge University Press (2009)"
+    title: "The Kerr spacetime: A brief introduction"
+    arxiv: "0706.0622"
+
+  perez-2013:
+    cite: "A. Perez, The spin-foam approach to quantum gravity, Living Rev. Relativ. 16 (2013) 3"
+    title: "The Spin Foam Approach to Quantum Gravity"
+    arxiv: "1205.2019"
+  baez-2000:
+    cite: "J. C. Baez, An introduction to spin foam models of BF theory and quantum gravity, Lect. Notes Phys. 543 (2000) 25-93"
+    title: "An Introduction to Spin Foam Models of Quantum Gravity and BF Theory"
+    arxiv: gr-qc/9905087
+  ooguri-1992:
+    cite: "H. Ooguri, Topological lattice models in four dimensions, Mod. Phys. Lett. A 7 (1992) 2799-2810"
+    title: "Topological Lattice Models in Four Dimensions"
+    arxiv: hep-th/9205090
+  freidel-louapre-2003:
+    cite: "L. Freidel and D. Louapre, Diffeomorphisms and spin foam models, Nucl. Phys. B 662 (2003) 279-298"
+    title: "Diffeomorphisms and spin foam models"
+    arxiv: gr-qc/0212001
+  eprl-2008:
+    cite: "J. Engle, R. Pereira, C. Rovelli and E. Livine, LQG vertex with finite Immirzi parameter, Nucl. Phys. B 799 (2008) 136-149"
+    title: "LQG vertex with finite Immirzi parameter"
+    arxiv: "0711.0146"
+  bianchi-regoli-rovelli-2010:
+    cite: "E. Bianchi, D. Regoli and C. Rovelli, Face amplitude of spinfoam quantum gravity, Class. Quantum Grav. 27 (2010) 185009"
+    title: "Face amplitude of spinfoam quantum gravity"
+    arxiv: "1005.0764"
+  engle-pereira-2009:
+    cite: "J. Engle and R. Pereira, Regularization and finiteness of the Lorentzian LQG vertices, Phys. Rev. D 79 (2009) 084034"
+    title: "Regularization and finiteness of the Lorentzian LQG vertices"
+    arxiv: "0805.4696"
+  roberts-1999:
+    cite: "J. Roberts, Classical 6j-symbols and the tetrahedron, Geom. Topol. 3 (1999) 21-66"
+    title: "Classical 6j-symbols and the tetrahedron"
+    arxiv: math-ph/9812013
+  bdfgh-2009:
+    cite: "J. W. Barrett, R. J. Dowdall, W. J. Fairbairn, H. Gomes and F. Hellmann, Asymptotic analysis of the EPRL four-simplex amplitude, J. Math. Phys. 50 (2009) 112504"
+    title: "Asymptotic analysis of the EPRL four-simplex amplitude"
+    arxiv: "0902.1170"
+  bdfhp-2010:
+    cite: "J. W. Barrett, R. J. Dowdall, W. J. Fairbairn, F. Hellmann and R. Pereira, Lorentzian spin foam amplitudes: graphical calculus and asymptotics, Class. Quantum Grav. 27 (2010) 165009"
+    title: "Lorentzian spin foam amplitudes: graphical calculus and asymptotics"
+    arxiv: "0907.2440"
+  barrett-crane-1998:
+    cite: "J. W. Barrett and L. Crane, Relativistic spin networks and quantum gravity, J. Math. Phys. 39 (1998) 3296-3302"
+    title: "Relativistic spin networks and quantum gravity"
+    arxiv: gr-qc/9709028
+  reisenberger-1999:
+    cite: "M. P. Reisenberger, On relativistic spin network vertices, J. Math. Phys. 40 (1999) 2046-2054"
+    title: "On relativistic spin network vertices"
+    arxiv: gr-qc/9809067
+  barrett-naish-guzman-2009:
+    cite: "J. W. Barrett and I. Naish-Guzman, The Ponzano-Regge model, Class. Quantum Grav. 26 (2009) 155014"
+    title: "The Ponzano-Regge model"
+    arxiv: "0803.3319"
+  regge-1961:
+    cite: "T. Regge, General relativity without coordinates, Nuovo Cimento 19 (1961) 558-571"
+    title: "General relativity without coordinates"
+    doi: 10.1007/BF02733251
+  cms-1984:
+    cite: "J. Cheeger, W. Muller and R. Schrader, On the curvature of piecewise flat spaces, Commun. Math. Phys. 92 (1984) 405-454"
+    title: "On the curvature of piecewise flat spaces"
+    doi: 10.1007/BF01210729
+  sorkin-2019:
+    cite: "R. D. Sorkin, Lorentzian angles and trigonometry including lightlike vectors (2019)"
+    title: "Lorentzian angles and trigonometry including lightlike vectors"
+    arxiv: "1908.10022"
+  brw-1999:
+    cite: "J. W. Barrett, M. Rocek and R. M. Williams, A note on area variables in Regge calculus, Class. Quantum Grav. 16 (1999) 1373-1376"
+    title: "A note on area variables in Regge calculus"
+    arxiv: gr-qc/9710056
+  christiansen-2011:
+    cite: "S. H. Christiansen, On the linearization of Regge calculus, Numer. Math. 119 (2011) 613-640"
+    title: "On the linearization of Regge calculus"
+    arxiv: "1106.4266"
+  carlip-1998:
+    cite: "S. Carlip, Quantum Gravity in 2+1 Dimensions, Cambridge University Press (1998)"
+    title: "Quantum Gravity in 2+1 Dimensions"
+    doi: 10.1017/CBO9780511564192
+  turaev-virelizier-2010:
+    cite: "V. Turaev and A. Virelizier, On two approaches to 3-dimensional TQFTs (2010)"
+    title: "On two approaches to 3-dimensional TQFTs"
+    arxiv: "1006.3501"
+  freidel-louapre-2004:
+    cite: "L. Freidel and D. Louapre, Ponzano-Regge model revisited I: gauge fixing, observables and interacting spinning particles, Class. Quantum Grav. 21 (2004) 5685-5726"
+    title: "Ponzano-Regge model revisited I: Gauge fixing, observables and interacting spinning particles"
+    arxiv: hep-th/0401076
+  noui-perez-2005:
+    cite: "K. Noui and A. Perez, Three dimensional loop quantum gravity: coupling to point particles, Class. Quantum Grav. 22 (2005) 4489-4514"
+    title: "Three dimensional loop quantum gravity: coupling to point particles"
+    arxiv: gr-qc/0402111
+  stanford-witten-2017:
+    cite: "D. Stanford and E. Witten, Fermionic localization of the Schwarzian theory, JHEP 10 (2017) 008"
+    title: "Fermionic Localization of the Schwarzian Theory"
+    arxiv: "1703.04612"
+  eynard-orantin-2007:
+    cite: "B. Eynard and N. Orantin, Weil-Petersson volume of moduli spaces, Mirzakhani's recursion and matrix models (2007)"
+    title: "Weil-Petersson volume of moduli spaces, Mirzakhani's recursion and matrix models"
+    arxiv: "0705.3600"
+  sss-2019:
+    cite: "P. Saad, S. H. Shenker and D. Stanford, JT gravity as a matrix integral (2019)"
+    title: "JT gravity as a matrix integral"
+    arxiv: "1903.11115"
+  kazarian-lando-2007:
+    cite: "M. E. Kazarian and S. K. Lando, An algebro-geometric proof of Witten's conjecture, J. Amer. Math. Soc. 20 (2007) 1079-1089"
+    title: "An algebro-geometric proof of Witten's conjecture"
+    arxiv: math/0601760
+  dkrv-2016:
+    cite: "F. David, A. Kupiainen, R. Rhodes and V. Vargas, Liouville quantum gravity on the Riemann sphere, Commun. Math. Phys. 342 (2016) 869-907"
+    title: "Liouville Quantum Gravity on the Riemann sphere"
+    arxiv: "1410.7318"
+  duplantier-sheffield-2011:
+    cite: "B. Duplantier and S. Sheffield, Liouville quantum gravity and KPZ, Invent. Math. 185 (2011) 333-393"
+    title: "Liouville Quantum Gravity and KPZ"
+    arxiv: "0808.1560"
+  krv-2020:
+    cite: "A. Kupiainen, R. Rhodes and V. Vargas, Integrability of Liouville theory: proof of the DOZZ formula, Ann. of Math. 191 (2020) 81-166"
+    title: "Integrability of Liouville theory: proof of the DOZZ Formula"
+    arxiv: "1707.08785"
+
+  hamilton-2017:
+    cite: "M. J. D. Hamilton, Mathematical Gauge Theory, Springer Universitext (2017)"
+    title: "Mathematical Gauge Theory"
+    doi: 10.1007/978-3-319-68439-0
+  ashtekar-lewandowski-2004:
+    cite: "A. Ashtekar and J. Lewandowski, Background independent quantum gravity: a status report, Class. Quantum Grav. 21 (2004) R53"
+    title: "Background Independent Quantum Gravity: A Status Report"
+    arxiv: gr-qc/0404018
+  baez-1996:
+    cite: "J. C. Baez, Spin network states in gauge theory, Adv. Math. 117 (1996) 253-272"
+    title: "Spin Network States in Gauge Theory"
+    arxiv: gr-qc/9411007
+  thiemann-2007:
+    cite: "T. Thiemann, Modern Canonical Quantum General Relativity, Cambridge University Press (2007)"
+    title: "Modern Canonical Quantum General Relativity"
+    doi: 10.1017/CBO9780511755682
+  dunne-1999:
+    cite: "G. V. Dunne, Aspects of Chern-Simons theory, Les Houches lectures (1998)"
+    title: "Aspects of Chern-Simons Theory"
+    arxiv: hep-th/9902115
+  henneaux-teitelboim-1992:
+    cite: "M. Henneaux and C. Teitelboim, Quantization of Gauge Systems, Princeton University Press (1992)"
+    title: "Quantization of Gauge Systems"
+    doi: 10.1515/9780691213866
+  cannas-da-silva-2001:
+    cite: "A. Cannas da Silva, Lectures on Symplectic Geometry, Lecture Notes in Math. 1764, Springer (2001)"
+    title: "Lectures on Symplectic Geometry"
+    doi: 10.1007/978-3-540-45330-7
+  holst-1996:
+    cite: "S. Holst, Barbero's Hamiltonian derived from a generalized Hilbert-Palatini action, Phys. Rev. D 53 (1996) 5966"
+    title: "Barbero's Hamiltonian derived from a generalized Hilbert-Palatini action"
+    arxiv: gr-qc/9511026
+  barbero-1995:
+    cite: "J. F. Barbero, Real Ashtekar variables for Lorentzian signature space-times, Phys. Rev. D 51 (1995) 5507"
+    title: "Real Ashtekar Variables for Lorentzian Signature Space-times"
+    arxiv: gr-qc/9410014
+  adm-1962:
+    cite: "R. Arnowitt, S. Deser and C. W. Misner, The dynamics of general relativity (1962), reprinted Gen. Rel. Grav. 40 (2008) 1997"
+    title: "The Dynamics of General Relativity"
+    arxiv: gr-qc/0405109
+  ashtekar-lewandowski-1995:
+    cite: "A. Ashtekar and J. Lewandowski, Projective techniques and functional integration for gauge theories, J. Math. Phys. 36 (1995) 2170"
+    title: "Projective Techniques and Functional Integration"
+    arxiv: gr-qc/9411046
+  rovelli-smolin-1995:
+    cite: "C. Rovelli and L. Smolin, Discreteness of area and volume in quantum gravity, Nucl. Phys. B 442 (1995) 593"
+    title: "Discreteness of area and volume in quantum gravity"
+    arxiv: gr-qc/9411005
+  ashtekar-lewandowski-1997:
+    cite: "A. Ashtekar and J. Lewandowski, Quantum theory of geometry I: area operators, Class. Quantum Grav. 14 (1997) A55"
+    title: "Quantum Theory of Gravity I: Area Operators"
+    arxiv: gr-qc/9602046
+  ashtekar-lewandowski-1998:
+    cite: "A. Ashtekar and J. Lewandowski, Quantum theory of geometry II: volume operators, Adv. Theor. Math. Phys. 1 (1998) 388"
+    title: "Quantum Theory of Geometry II: Volume operators"
+    arxiv: gr-qc/9711031
+  brunnemann-thiemann-2006:
+    cite: "J. Brunnemann and T. Thiemann, Simplification of the spectral analysis of the volume operator in loop quantum gravity, Class. Quantum Grav. 23 (2006) 1289"
+    title: "Simplification of the Spectral Analysis of the Volume Operator in Loop Quantum Gravity"
+    arxiv: gr-qc/0405060
+  lost-2006:
+    cite: "J. Lewandowski, A. Okolow, H. Sahlmann and T. Thiemann, Uniqueness of diffeomorphism invariant states on holonomy-flux algebras, Commun. Math. Phys. 267 (2006) 703"
+    title: "Uniqueness of diffeomorphism invariant states on holonomy-flux algebras"
+    arxiv: gr-qc/0504147
+  fleischhack-2009:
+    cite: "C. Fleischhack, Representations of the Weyl algebra in quantum geometry, Commun. Math. Phys. 285 (2009) 67"
+    title: "Representations of the Weyl Algebra in Quantum Geometry"
+    arxiv: math-ph/0407006
+  domagala-lewandowski-2004:
+    cite: "M. Domagala and J. Lewandowski, Black-hole entropy from quantum geometry, Class. Quantum Grav. 21 (2004) 5233"
+    title: "Black hole entropy from Quantum Geometry"
+    arxiv: gr-qc/0407051
+  meissner-2004:
+    cite: "K. A. Meissner, Black-hole entropy in loop quantum gravity, Class. Quantum Grav. 21 (2004) 5245"
+    title: "Black hole entropy in Loop Quantum Gravity"
+    arxiv: gr-qc/0407052
+  aps-2006:
+    cite: "A. Ashtekar, T. Pawlowski and P. Singh, Quantum nature of the big bang: improved dynamics, Phys. Rev. D 74 (2006) 084003"
+    title: "Quantum Nature of the Big Bang: Improved dynamics"
+    arxiv: gr-qc/0607039
+  kaminski-lewandowski-2008:
+    cite: "W. Kaminski and J. Lewandowski, The flat FRW model in LQC: the self-adjointness, Class. Quantum Grav. 25 (2008) 035001"
+    title: "The flat FRW model in LQC: the self-adjointness"
+    arxiv: "0709.3120"
+  halliwell-1990:
+    cite: "J. J. Halliwell, Introductory lectures on quantum cosmology (1990), arXiv:0909.2566"
+    title: "Introductory Lectures on Quantum Cosmology"
+    arxiv: "0909.2566"
+  thiemann-1998:
+    cite: "T. Thiemann, Quantum spin dynamics (QSD), Class. Quantum Grav. 15 (1998) 839"
+    title: "Quantum Spin Dynamics (QSD)"
+    arxiv: gr-qc/9606089
+  crispino-higuchi-matsas-2008:
+    cite: "L. C. B. Crispino, A. Higuchi and G. E. A. Matsas, The Unruh effect and its applications, Rev. Mod. Phys. 80 (2008) 787"
+    title: "The Unruh effect and its applications"
+    arxiv: "0710.5373"
+  bisognano-wichmann-1975:
+    cite: "J. J. Bisognano and E. H. Wichmann, On the duality condition for a Hermitian scalar field, J. Math. Phys. 16 (1975) 985"
+    title: "On the duality condition for a Hermitian scalar field"
+    doi: 10.1063/1.522605
+  brunetti-guido-longo-2002:
+    cite: "R. Brunetti, D. Guido and R. Longo, Modular localization and Wigner particles, Rev. Math. Phys. 14 (2002) 759"
+    title: "Modular localization and Wigner particles"
+    arxiv: math-ph/0203021
+  carlip-2014:
+    cite: "S. Carlip, Black hole thermodynamics, Int. J. Mod. Phys. D 23 (2014) 1430023"
+    title: "Black Hole Thermodynamics"
+    arxiv: "1410.1486"
+  hollands-wald-2015:
+    cite: "S. Hollands and R. M. Wald, Quantum fields in curved spacetime, Phys. Rep. 574 (2015) 1"
+    title: "Quantum fields in curved spacetime"
+    arxiv: "1401.2026"
+  bgp-2007:
+    cite: "C. Bär, N. Ginoux and F. Pfäffle, Wave Equations on Lorentzian Manifolds and Quantization, EMS (2007)"
+    title: "Wave Equations on Lorentzian Manifolds and Quantization"
+    arxiv: "0806.1036"
+  birrell-davies-1982:
+    cite: "N. D. Birrell and P. C. W. Davies, Quantum Fields in Curved Space, Cambridge University Press (1982)"
+    title: "Quantum Fields in Curved Space"
+    doi: 10.1017/CBO9780511622632
+  page-1993:
+    cite: "D. N. Page, Average entropy of a subsystem, Phys. Rev. Lett. 71 (1993) 1291"
+    title: "Average Entropy of a Subsystem"
+    arxiv: gr-qc/9305007
+  sen-1996:
+    cite: "S. Sen, Average entropy of a quantum subsystem, Phys. Rev. Lett. 77 (1996) 1"
+    title: "Average Entropy of a Subsystem"
+    arxiv: hep-th/9601132
+  pinamonti-2011:
+    cite: "N. Pinamonti, On the initial conditions and solutions of the semiclassical Einstein equations in a cosmological scenario, Commun. Math. Phys. 305 (2011) 563"
+    title: "On the initial conditions and solutions of the semiclassical Einstein equations in a cosmological scenario"
+    arxiv: "1001.0864"
+  meda-pinamonti-siemssen-2021:
+    cite: "P. Meda, N. Pinamonti and D. Siemssen, Existence and uniqueness of solutions of the semiclassical Einstein equation in cosmological models, Ann. Henri Poincaré 22 (2021) 3965"
+    title: "Existence and uniqueness of solutions of the semiclassical Einstein equation in cosmological models"
+    arxiv: "2007.14665"
+  surya-2019:
+    cite: "S. Surya, The causal set approach to quantum gravity, Living Rev. Relativ. 22 (2019) 5"
+    title: "The causal set approach to quantum gravity"
+    arxiv: "1903.11544"
+  romik-2015:
+    cite: "D. Romik, The Surprising Mathematics of Longest Increasing Subsequences, Cambridge University Press (2015)"
+    title: "The Surprising Mathematics of Longest Increasing Subsequences"
+    doi: 10.1017/CBO9781139872003
+  bhs-2009:
+    cite: "L. Bombelli, J. Henson and R. D. Sorkin, Discreteness without symmetry breaking: a theorem, Mod. Phys. Lett. A 24 (2009) 2579"
+    title: "Discreteness without symmetry breaking: a theorem"
+    arxiv: gr-qc/0605006
+  benincasa-dowker-2010:
+    cite: "D. M. T. Benincasa and F. Dowker, The scalar curvature of a causal set, Phys. Rev. Lett. 104 (2010) 181301"
+    title: "The Scalar Curvature of a Causal Set"
+    arxiv: "1001.2725"
+  rideout-sorkin-2000:
+    cite: "D. P. Rideout and R. D. Sorkin, A classical sequential growth dynamics for causal sets, Phys. Rev. D 61 (2000) 024002"
+    title: "A Classical Sequential Growth Dynamics for Causal Sets"
+    arxiv: gr-qc/9904062
+  johnston-2009:
+    cite: "S. Johnston, Feynman propagator for a free scalar field on a causal set, Phys. Rev. Lett. 103 (2009) 180401"
+    title: "Feynman Propagator for a Free Scalar Field on a Causal Set"
+    arxiv: "0909.0944"
+  aas-2012:
+    cite: "N. Afshordi, S. Aslanbeigi and R. D. Sorkin, A distinguished vacuum state for a quantum field in a curved spacetime, JHEP 08 (2012) 137"
+    title: "A Distinguished Vacuum State for a Quantum Field in a Curved Spacetime: Formalism, Features, and Cosmology"
+    arxiv: "1205.1296"
+  loomis-carlip-2018:
+    cite: "S. P. Loomis and S. Carlip, Suppression of non-manifold-like sets in the causal set path integral, Class. Quantum Grav. 35 (2018) 024002"
+    title: "Suppression of non-manifold-like sets in the causal set path integral"
+    arxiv: "1709.00064"
+    doi: 10.1088/1361-6382/aa980b
+
+  tong-2009:
+    cite: "David Tong, Lectures on String Theory, arXiv:0908.0333 (2009)"
+    title: "Lectures on String Theory"
+    arxiv: "0908.0333"
+  giveon-porrati-rabinovici-1994:
+    cite: "A. Giveon, M. Porrati and E. Rabinovici, Target Space Duality in String Theory, Phys.Rept.244:77-202,1994"
+    title: "Target Space Duality in String Theory"
+    arxiv: "hep-th/9401139"
+  givental-1996:
+    cite: "Alexander B. Givental, Equivariant Gromov - Witten Invariants, arXiv:alg-geom/9603021 (1996)"
+    title: "Equivariant Gromov - Witten Invariants"
+    arxiv: "alg-geom/9603021"
+  lian-liu-yau-1997:
+    cite: "B. Lian, K. Liu and S. T. Yau, Mirror Principle I, arXiv:alg-geom/9712011 (1997)"
+    title: "Mirror Principle I"
+    arxiv: "alg-geom/9712011"
+  polishchuk-zaslow-1998:
+    cite: "Alexander Polishchuk and Eric Zaslow, Categorical Mirror Symmetry: The Elliptic Curve, Adv.Theor.Math.Phys.2:443-470,1998"
+    title: "Categorical Mirror Symmetry: The Elliptic Curve"
+    arxiv: "math/9801119"
+  strominger-vafa-1996:
+    cite: "A. Strominger and C. Vafa, Microscopic Origin of the Bekenstein-Hawking Entropy, Phys.Lett.B379:99-104,1996"
+    title: "Microscopic Origin of the Bekenstein-Hawking Entropy"
+    arxiv: "hep-th/9601029"
+  zwiebach-1993:
+    cite: "Barton Zwiebach, Closed String Field Theory: Quantum Action and the BV Master Equation, Nucl.Phys.B390:33-152,1993"
+    title: "Closed String Field Theory: Quantum Action and the BV Master Equation"
+    arxiv: "hep-th/9206084"
+  bouchard-2007:
+    cite: "Vincent Bouchard, Lectures on complex geometry, Calabi-Yau manifolds and toric geometry, arXiv:hep-th/0702063 (2007)"
+    title: "Lectures on complex geometry, Calabi-Yau manifolds and toric geometry"
+    arxiv: "hep-th/0702063"
+  magoo-2000:
+    cite: "O. Aharony et al., Large N Field Theories, String Theory and Gravity, Phys.Rept.323:183-386,2000"
+    title: "Large N Field Theories, String Theory and Gravity"
+    arxiv: "hep-th/9905111"
+  btz-1992:
+    cite: "Máximo Bañados, Claudio Teitelboim and Jorge Zanelli, The Black Hole in Three Dimensional Space Time, Phys.Rev.Lett. 69 (1992) 1849-1851"
+    title: "The Black Hole in Three Dimensional Space Time"
+    arxiv: "hep-th/9204099"
+  strominger-1998:
+    cite: "Andrew Strominger, Black Hole Entropy from Near-Horizon Microstates, JHEP 9802:009,1998"
+    title: "Black Hole Entropy from Near-Horizon Microstates"
+    arxiv: "hep-th/9712251"
+  ryu-takayanagi-2006:
+    cite: "Shinsei Ryu and Tadashi Takayanagi, Holographic Derivation of Entanglement Entropy from AdS/CFT, Phys.Rev.Lett.96:181602,2006"
+    title: "Holographic Derivation of Entanglement Entropy from AdS/CFT"
+    arxiv: "hep-th/0603001"
+  calabrese-cardy-2004:
+    cite: "Pasquale Calabrese and John Cardy, Entanglement Entropy and Quantum Field Theory, J.Stat.Mech.0406:P06002,2004"
+    title: "Entanglement Entropy and Quantum Field Theory"
+    arxiv: "hep-th/0405152"
+  headrick-takayanagi-2007:
+    cite: "Matthew Headrick and Tadashi Takayanagi, A holographic proof of the strong subadditivity of entanglement entropy, Phys.Rev.D76:106013,2007"
+    title: "A holographic proof of the strong subadditivity of entanglement entropy"
+    arxiv: "0704.3719"
+  hayden-headrick-maloney-2013:
+    cite: "Patrick Hayden, Matthew Headrick and Alexander Maloney, Holographic Mutual Information is Monogamous, Phys. Rev. D 87, 046003 (2013)"
+    title: "Holographic Mutual Information is Monogamous"
+    arxiv: "1107.2940"
+  bao-2015:
+    cite: "Ning Bao et al., The Holographic Entropy Cone, JHEP 09 (2015) 130"
+    title: "The Holographic Entropy Cone"
+    arxiv: "1505.07839"
+  happy-2015:
+    cite: "Fernando Pastawski, Beni Yoshida, Daniel Harlow and John Preskill, Holographic quantum error-correcting codes: Toy models for the bulk/boundary correspondence, JHEP 06 (2015) 149"
+    title: "Holographic quantum error-correcting codes: Toy models for the bulk/boundary correspondence"
+    arxiv: "1503.06237"
+  almheiri-dong-harlow-2015:
+    cite: "Ahmed Almheiri, Xi Dong and Daniel Harlow, Bulk Locality and Quantum Error Correction in AdS/CFT, JHEP 1504:163,2015"
+    title: "Bulk Locality and Quantum Error Correction in AdS/CFT"
+    arxiv: "1411.7041"
+  henningson-skenderis-1998:
+    cite: "Mans Henningson and Kostas Skenderis, The Holographic Weyl anomaly, JHEP 9807 (1998) 023"
+    title: "The Holographic Weyl anomaly"
+    arxiv: "hep-th/9806087"
+  lewkowycz-maldacena-2013:
+    cite: "Aitor Lewkowycz and Juan Maldacena, Generalized gravitational entropy, arXiv:1304.4926 (2013)"
+    title: "Generalized gravitational entropy"
+    arxiv: "1304.4926"
+  rangamani-takayanagi-2016:
+    cite: "Mukund Rangamani and Tadashi Takayanagi, Holographic Entanglement Entropy, arXiv:1609.01287 (2016)"
+    title: "Holographic Entanglement Entropy"
+    arxiv: "1609.01287"
+  gurau-2010:
+    cite: "Razvan Gurau, Lost in Translation: Topological Singularities in Group Field Theory, Class.Quant.Grav.27:235023,2010"
+    title: "Lost in Translation: Topological Singularities in Group Field Theory"
+    arxiv: "1006.0714"
+  gurau-2011:
+    cite: "Razvan Gurau, The 1/N expansion of colored tensor models, Annales Henri Poincare 12:829-847,2011"
+    title: "The 1/N expansion of colored tensor models"
+    arxiv: "1011.2726"
+  boulatov-1992:
+    cite: "D. Boulatov, A Model of Three-Dimensional Lattice Gravity, Mod.Phys.Lett.A7:1629-1646,1992"
+    title: "A Model of Three-Dimensional Lattice Gravity"
+    arxiv: "hep-th/9202074"
+  bonzom-gurau-riello-rivasseau-2011:
+    cite: "Valentin Bonzom, Razvan Gurau, Aldo Riello and Vincent Rivasseau, Critical behavior of colored tensor models in the large N limit, Nucl. Phys. B853 (2011) 174-195"
+    title: "Critical behavior of colored tensor models in the large N limit"
+    arxiv: "1105.3122"
+  gurau-ryan-2013:
+    cite: "Razvan Gurau and James P. Ryan, Melons are branched polymers, arXiv:1302.4386 (2013)"
+    title: "Melons are branched polymers"
+    arxiv: "1302.4386"
+  ben-geloun-rivasseau-2011:
+    cite: "Joseph Ben Geloun and Vincent Rivasseau, A Renormalizable 4-Dimensional Tensor Field Theory, arXiv:1111.4997 (2011)"
+    title: "A Renormalizable 4-Dimensional Tensor Field Theory"
+    arxiv: "1111.4997"
+  carrozza-oriti-rivasseau-2014:
+    cite: "Sylvain Carrozza, Daniele Oriti and Vincent Rivasseau, Renormalization of an SU(2) Tensorial Group Field Theory in Three Dimensions, Commun. Math. Phys. 330, 581-637 (2014)"
+    title: "Renormalization of an SU(2) Tensorial Group Field Theory in Three Dimensions"
+    arxiv: "1303.6772"
+  delepouve-gurau-rivasseau-2016:
+    cite: "Thibault Delepouve, Razvan Gurau and Vincent Rivasseau, Universality and Borel Summability of Arbitrary Quartic Tensor Models, Annales de l'Institut Henri Poincaré - Probabilités et Statistiques 2016, Vol. 52, No. 2, 821-848"
+    title: "Universality and Borel Summability of Arbitrary Quartic Tensor Models"
+    arxiv: "1403.0170"
+  freidel-louapre-2002:
+    cite: "Laurent Freidel and David Louapre, Non-perturbative summation over 3D discrete topologies, Phys.Rev. D68 (2003) 104004"
+    title: "Non-perturbative summation over 3D discrete topologies"
+    arxiv: "hep-th/0211026"
+  gurau-ryan-2012:
+    cite: "Razvan Gurau and James P. Ryan, Colored Tensor Models - a Review, SIGMA 8 (2012), 020, 78 pages"
+    title: "Colored Tensor Models - a Review"
+    arxiv: "1109.4812"
+  hinterbichler-2012:
+    cite: "Kurt Hinterbichler, Theoretical Aspects of Massive Gravity, Rev. Mod. Phys. 84, 671-710 (2012)"
+    title: "Theoretical Aspects of Massive Gravity"
+    arxiv: "1105.3735"
+  donoghue-1994:
+    cite: "John F. Donoghue, General relativity as an effective field theory: The leading quantum corrections, Phys.Rev.D50:3874-3888,1994"
+    title: "General relativity as an effective field theory: The leading quantum corrections"
+    arxiv: "gr-qc/9405057"
+  bjerrum-bohr-donoghue-holstein-2003:
+    cite: "N. E. J Bjerrum-Bohr, John F. Donoghue and Barry R. Holstein, Quantum Gravitational Corrections to the Nonrelativistic Scattering Potential of Two Masses, Phys.Rev.D67:084033,2003; Erratum-ibid.D71:069903,2005"
+    title: "Quantum Gravitational Corrections to the Nonrelativistic Scattering Potential of Two Masses"
+    arxiv: "hep-th/0211072"
+  bcj-2008:
+    cite: "Z. Bern, J. J. M. Carrasco and H. Johansson, New Relations for Gauge-Theory Amplitudes, Phys.Rev.D78:085011,2008"
+    title: "New Relations for Gauge-Theory Amplitudes"
+    arxiv: "0805.3993"
+  donoghue-ivanov-shkerin-2017:
+    cite: "John F. Donoghue, Mikhail M. Ivanov and Andrey Shkerin, EPFL Lectures on General Relativity as a Quantum Field Theory, arXiv:1702.00319 (2017)"
+    title: "EPFL Lectures on General Relativity as a Quantum Field Theory"
+    arxiv: "1702.00319"
+  bekaert-boulanger-sundell-2010:
+    cite: "Xavier Bekaert, Nicolas Boulanger and Per Sundell, How higher-spin gravity surpasses the spin two barrier: no-go theorems versus yes-go examples, arXiv:1007.0435 (2010)"
+    title: "How higher-spin gravity surpasses the spin two barrier: no-go theorems versus yes-go examples"
+    arxiv: "1007.0435"
+  bern-2015:
+    cite: "Zvi Bern et al., Evanescent Effects Can Alter Ultraviolet Divergences in Quantum Gravity without Physical Consequences, Phys. Rev. Lett. 115, 211301 (2015)"
+    title: "Evanescent Effects Can Alter Ultraviolet Divergences in Quantum Gravity without Physical Consequences"
+    arxiv: "1507.06118"
+  elvang-huang-2013:
+    cite: "Henriette Elvang and Yu-tin Huang, Scattering Amplitudes, arXiv:1308.1697 (2013)"
+    title: "Scattering Amplitudes"
+    arxiv: "1308.1697"
+  adamo-2018:
+    cite: "Tim Adamo, Lectures on twistor theory, PoS Modave2017 003, 2018"
+    title: "Lectures on twistor theory"
+    arxiv: "1712.02196"
+  bcfw-2005:
+    cite: "Ruth Britto, Freddy Cachazo, Bo Feng and Edward Witten, Direct Proof Of Tree-Level Recursion Relation In Yang-Mills Theory, Phys.Rev.Lett.94:181602,2005"
+    title: "Direct Proof Of Tree-Level Recursion Relation In Yang-Mills Theory"
+    arxiv: "hep-th/0501052"
+  hodges-2012:
+    cite: "Andrew Hodges, A simple formula for gravitational MHV amplitudes, arXiv:1204.1930 (2012)"
+    title: "A simple formula for gravitational MHV amplitudes"
+    arxiv: "1204.1930"
+  arkani-hamed-trnka-2014:
+    cite: "Nima Arkani-Hamed and Jaroslav Trnka, The Amplituhedron, arXiv:1312.2007 (2013)"
+    title: "The Amplituhedron"
+    arxiv: "1312.2007"
+  even-zohar-lakrec-tessler-2025:
+    cite: "Chaim Even-Zohar, Tsviqa Lakrec and Ran J. Tessler, The Amplituhedron BCFW Triangulation, Invent. math. 239, 1009-1138 (2025)"
+    title: "The Amplituhedron BCFW Triangulation"
+    arxiv: "2112.02703"
+  krajewski-1998:
+    cite: "Thomas Krajewski, Classification of Finite Spectral Triples, J.Geom.Phys. 28 (1998) 1-30"
+    title: "Classification of Finite Spectral Triples"
+    arxiv: "hep-th/9701081"
+  paschke-sitarz-1998:
+    cite: "Mario Paschke and Andrzej Sitarz, Discrete spectral triples and their symmetries, arXiv:q-alg/9612029 (1996)"
+    title: "Discrete spectral triples and their symmetries"
+    arxiv: "q-alg/9612029"
+  chamseddine-connes-marcolli-2007:
+    cite: "Ali H. Chamseddine, Alain Connes and Matilde Marcolli, Gravity and the standard model with neutrino mixing, Adv.Theor.Math.Phys.11:991-1089,2007"
+    title: "Gravity and the standard model with neutrino mixing"
+    arxiv: "hep-th/0610241"
+  barrett-2007:
+    cite: "John W. Barrett, A Lorentzian version of the non-commutative geometry of the standard model of particle physics, J.Math.Phys.48:012303,2007"
+    title: "A Lorentzian version of the non-commutative geometry of the standard model of particle physics"
+    arxiv: "hep-th/0608221"
+  chamseddine-connes-1997:
+    cite: "Ali H. Chamseddine and Alain Connes, The Spectral Action Principle, Commun.Math.Phys.186:731-750,1997"
+    title: "The Spectral Action Principle"
+    arxiv: "hep-th/9606001"
+  connes-2008:
+    cite: "Alain Connes, On the spectral characterization of manifolds, arXiv:0810.2088 (2008)"
+    title: "On the spectral characterization of manifolds"
+    arxiv: "0810.2088"
+  iochum-krajewski-martinetti-2001:
+    cite: "B. Iochum, T. Krajewski and P. Martinetti, Distances in Finite Spaces from Noncommutative Geometry, J.Geom.Phys. 37 (2001) 100-125"
+    title: "Distances in Finite Spaces from Noncommutative Geometry"
+    arxiv: "hep-th/9912217"
+  balachandran-kurkcuoglu-vaidya-2005:
+    cite: "A. P. Balachandran, S. Kurkcuoglu and S. Vaidya, Lectures on Fuzzy and Fuzzy SUSY Physics, arXiv:hep-th/0511114 (2005)"
+    title: "Lectures on Fuzzy and Fuzzy SUSY Physics"
+    arxiv: "hep-th/0511114"
+  le-gall-miermont-2011:
+    cite: "Jean-François Le Gall and Grégory Miermont, Scaling limits of random trees and planar maps, arXiv:1101.4856 (2011)"
+    title: "Scaling limits of random trees and planar maps"
+    arxiv: "1101.4856"
+  janson-2011:
+    cite: "Svante Janson, Simply generated trees, conditioned Galton--Watson trees, random allocations and condensation, arXiv:1112.0510 (2011)"
+    title: "Simply generated trees, conditioned Galton--Watson trees, random allocations and condensation"
+    arxiv: "1112.0510"
+  berestycki-2017:
+    cite: "Nathanaël Berestycki, An elementary approach to Gaussian multiplicative chaos, Electr. Comm. Probab., vol. 22 (2017), no.27, 1-12"
+    title: "An elementary approach to Gaussian multiplicative chaos"
+    arxiv: "1506.09113"
+  rhodes-vargas-2013:
+    cite: "Rémi Rhodes and Vincent Vargas, Gaussian multiplicative chaos and applications: a review, arXiv:1305.6221 (2013)"
+    title: "Gaussian multiplicative chaos and applications: a review"
+    arxiv: "1305.6221"
+  witten-2018:
+    cite: "Edward Witten, Notes on Some Entanglement Properties of Quantum Field Theory, Rev. Mod. Phys. 90, 45003 (2018)"
+    title: "Notes on Some Entanglement Properties of Quantum Field Theory"
+    arxiv: "1803.04993"
+  borinsky-2018:
+    cite: "Michael Borinsky, Graphs in perturbation theory: Algebraic structure and asymptotics, Humboldt-Universität zu Berlin, Mathematisch-Naturwissenschaftliche Fakultät, 2018"
+    title: "Graphs in perturbation theory: Algebraic structure and asymptotics"
+    arxiv: "1807.02046"
+  connes-kreimer-2000:
+    cite: "Alain Connes and Dirk Kreimer, Renormalization in quantum field theory and the Riemann-Hilbert problem I: the Hopf algebra structure of graphs and the main theorem, Commun.Math.Phys. 210 (2000) 249-273"
+    title: "Renormalization in quantum field theory and the Riemann-Hilbert problem I: the Hopf algebra structure of graphs and the main theorem"
+    arxiv: "hep-th/9912092"
+  kreimer-1998:
+    cite: "Dirk Kreimer, On the Hopf algebra structure of perturbative quantum field theories, Adv.Theor.Math.Phys.2:303-334,1998"
+    title: "On the Hopf algebra structure of perturbative quantum field theories"
+    arxiv: "q-alg/9707029"
+  weinzierl-2006:
+    cite: "Stefan Weinzierl, The Art of Computing Loop Integrals, arXiv:hep-ph/0604068 (2006)"
+    title: "The Art of Computing Loop Integrals"
+    arxiv: "hep-ph/0604068"
+  delamotte-2007:
+    cite: "Bertrand Delamotte, An Introduction to the Nonperturbative Renormalization Group, arXiv:cond-mat/0702365 (2007)"
+    title: "An Introduction to the Nonperturbative Renormalization Group"
+    arxiv: "cond-mat/0702365"
+  ginsparg-1988:
+    cite: "Paul Ginsparg, Applied Conformal Field Theory, Fields, Strings and Critical Phenomena, (Les Houches, Session XLIX, 1988) ed. by E. Brézin and J. Zinn Justin, 1989"
+    title: "Applied Conformal Field Theory"
+    arxiv: "hep-th/9108028"
+  mukhametzhanov-zhiboedov-2019:
+    cite: "Baur Mukhametzhanov and Alexander Zhiboedov, Modular Invariance, Tauberian Theorems, and Microcanonical Entropy, arXiv:1904.06359 (2019)"
+    title: "Modular Invariance, Tauberian Theorems, and Microcanonical Entropy"
+    arxiv: "1904.06359"
+  loll-2019:
+    cite: "R. Loll, Quantum Gravity from Causal Dynamical Triangulations: A Review, arXiv:1905.08669 (2019)"
+    title: "Quantum Gravity from Causal Dynamical Triangulations: A Review"
+    arxiv: "1905.08669"
+  di-francesco-ginsparg-zinn-justin-1995:
+    cite: "P. Di Francesco, P. Ginsparg and J. Zinn-Justin, 2D Gravity and Random Matrices, Phys.Rept.254:1-133,1995"
+    title: "2D Gravity and Random Matrices"
+    arxiv: "hep-th/9306153"
+  le-gall-2013:
+    cite: "Jean-François Le Gall, Uniqueness and universality of the Brownian map, Annals of Probability 2013, Vol. 41, No. 4, 2880-2960"
+    title: "Uniqueness and universality of the Brownian map"
+    arxiv: "1105.4842"
+  miermont-2011:
+    cite: "Grégory Miermont, The Brownian map is the scaling limit of uniform random plane quadrangulations, arXiv:1104.1606 (2011)"
+    title: "The Brownian map is the scaling limit of uniform random plane quadrangulations"
+    arxiv: "1104.1606"
+  ambjorn-loll-1998:
+    cite: "J. Ambjorn and R. Loll, Non-perturbative Lorentzian Quantum Gravity, Causality and Topology Change, Nucl.Phys. B536 (1998) 407-434"
+    title: "Non-perturbative Lorentzian Quantum Gravity, Causality and Topology Change"
+    arxiv: "hep-th/9805108"
+  durhuus-jonsson-wheater-2009:
+    cite: "Bergfinnur Durhuus, Thordur Jonsson and John F. Wheater, On the spectral dimension of causal triangulations, arXiv:0908.3643 (2009)"
+    title: "On the spectral dimension of causal triangulations"
+    arxiv: "0908.3643"
+  ambjorn-jurkiewicz-loll-2001:
+    cite: "J. Ambjorn, J. Jurkiewicz and R. Loll, Dynamically Triangulating Lorentzian Quantum Gravity, Nucl.Phys. B610 (2001) 347-382"
+    title: "Dynamically Triangulating Lorentzian Quantum Gravity"
+    arxiv: "hep-th/0105267"
+  durhuus-jonsson-1995:
+    cite: "Bergfinnur Durhuus and Thordur Jonsson, Remarks on the entropy of 3-manifolds, Nucl.Phys. B445 (1995) 182-192"
+    title: "Remarks on the entropy of 3-manifolds"
+    arxiv: "hep-th/9410110"
+  benedetti-ziegler-2011:
+    cite: "Bruno Benedetti and Günter M. Ziegler, On locally constructible spheres and balls, Acta Mat.206:205-243,2011"
+    title: "On locally constructible spheres and balls"
+    arxiv: "0902.0436"
+  wetterich-1993:
+    cite: "Christof Wetterich, Exact evolution equation for the effective potential, Phys. Lett. B 301 (1993) 90 (arXiv:1710.05815, 2017)"
+    title: "Exact evolution equation for the effective potential"
+    arxiv: "1710.05815"
+  reuter-1998:
+    cite: "M. Reuter, Nonperturbative Evolution Equation for Quantum Gravity, Phys.Rev. D57 (1998) 971-985"
+    title: "Nonperturbative Evolution Equation for Quantum Gravity"
+    arxiv: "hep-th/9605030"
+  litim-2004:
+    cite: "Daniel F. Litim, Fixed points of quantum gravity, Phys.Rev.Lett.92:201301,2004"
+    title: "Fixed points of quantum gravity"
+    arxiv: "hep-th/0312114"
+  reuter-saueressig-2012:
+    cite: "Martin Reuter and Frank Saueressig, Quantum Einstein Gravity, arXiv:1202.2274 (2012)"
+    title: "Quantum Einstein Gravity"
+    arxiv: "1202.2274"
+  grosse-wulkenhaar-2005:
+    cite: "Harald Grosse and Raimar Wulkenhaar, Renormalisation of φ^4-theory on noncommutative R^4 in the matrix base, Commun.Math.Phys.256:305-374,2005"
+    title: "Renormalisation of φ^4-theory on noncommutative R^4 in the matrix base"
+    arxiv: "hep-th/0401128"
+  disertori-gurau-magnen-rivasseau-2007:
+    cite: "M. Disertori, R. Gurau, J. Magnen and V. Rivasseau, Vanishing of Beta Function of Non Commutative $Φ^4_4$ Theory to all orders, Phys.Lett.B649:95-102,2007"
+    title: "Vanishing of Beta Function of Non Commutative $Φ^4_4$ Theory to all orders"
+    arxiv: "hep-th/0612251"
+  eichhorn-2018:
+    cite: "Astrid Eichhorn, An asymptotically safe guide to quantum gravity and matter, arXiv:1810.07615 (2018)"
+    title: "An asymptotically safe guide to quantum gravity and matter"
+    arxiv: "1810.07615"
+  pittel-2015:
+    cite: "Boris Pittel, Another proof of Harer-Zagier formula, arXiv:1503.05598 (2015)"
+    title: "Another proof of Harer-Zagier formula"
+    arxiv: "1503.05598"
+  bfss-1997:
+    cite: "T. Banks, W. Fischler, S. H. Shenker and L. Susskind, M Theory As A Matrix Model: A Conjecture, Phys.Rev.D55:5112-5128,1997"
+    title: "M Theory As A Matrix Model: A Conjecture"
+    arxiv: "hep-th/9610043"
+  taylor-2001:
+    cite: "Washington Taylor, M(atrix) Theory: Matrix Quantum Mechanics as a Fundamental Theory, Rev.Mod.Phys.73:419-462,2001"
+    title: "M(atrix) Theory: Matrix Quantum Mechanics as a Fundamental Theory"
+    arxiv: "hep-th/0101126"
+  ikkt-1997:
+    cite: "N. Ishibashi, H. Kawai, Y. Kitazawa and A. Tsuchiya, A Large-N Reduced Model as Superstring, Nucl.Phys. B498 (1997) 467-491"
+    title: "A Large-N Reduced Model as Superstring"
+    arxiv: "hep-th/9612115"
+  krauth-nicolai-staudacher-1998:
+    cite: "Werner Krauth, Hermann Nicolai and Matthias Staudacher, Monte Carlo Approach to M-Theory, Phys.Lett.B431:31-41,1998"
+    title: "Monte Carlo Approach to M-Theory"
+    arxiv: "hep-th/9803117"
+  austing-wheater-2001:
+    cite: "Peter Austing and John F. Wheater, The Convergence of Yang-Mills Integrals, JHEP 0102:028,2001"
+    title: "The Convergence of Yang-Mills Integrals"
+    arxiv: "hep-th/0101071"
+  horava-2009:
+    cite: "Petr Horava, Quantum Gravity at a Lifshitz Point, Phys.Rev.D79:084008,2009"
+    title: "Quantum Gravity at a Lifshitz Point"
+    arxiv: "0901.3775"
+  barvinsky-blas-herrero-valea-2016:
+    cite: "Andrei O. Barvinsky et al., Renormalization of Horava Gravity, Phys. Rev. D 93, 064022 (2016)"
+    title: "Renormalization of Horava Gravity"
+    arxiv: "1512.02250"
+  visser-1998:
+    cite: "Matt Visser, Acoustic black holes: horizons, ergospheres, and Hawking radiation, Class.Quant.Grav. 15 (1998) 1767-1791"
+    title: "Acoustic black holes: horizons, ergospheres, and Hawking radiation"
+    arxiv: "gr-qc/9712010"
+  barcelo-liberati-visser-2005:
+    cite: "Carlos Barcelo, Stefano Liberati and Matt Visser, Analogue Gravity, Living Rev.Rel.8:12,2005"
+    title: "Analogue Gravity"
+    arxiv: "gr-qc/0505065"
+  visser-2002:
+    cite: "Matt Visser, Sakharov's induced gravity: a modern perspective, Mod.Phys.Lett. A17 (2002) 977-992"
+    title: "Sakharov's induced gravity: a modern perspective"
+    arxiv: "gr-qc/0204062"
+  finster-2010:
+    cite: "Felix Finster, Causal Variational Principles on Measure Spaces, J. reine angew. Math. 646 (2010) 141-194"
+    title: "Causal Variational Principles on Measure Spaces"
+    arxiv: "0811.2666"
+  finster-2016:
+    cite: "Felix Finster, Causal Fermion Systems -- An Overview, Quantum Mathematical Physics, Birkhäuser (2016) 313-380"
+    title: "Causal Fermion Systems -- An Overview"
+    arxiv: "1505.05075"
+  polchinski-1998a:
+    cite: "J. Polchinski, String Theory, Vol. 1: An Introduction to the Bosonic String, Cambridge University Press (1998)"
+    title: "String Theory"
+    doi: 10.1017/CBO9780511816079
+  polchinski-1998b:
+    cite: "J. Polchinski, String Theory, Vol. 2: Superstring Theory and Beyond, Cambridge University Press (1998)"
+    title: "String Theory"
+    doi: 10.1017/CBO9780511618123
+  huggett-tod-1994:
+    cite: "S. A. Huggett and K. P. Tod, An Introduction to Twistor Theory, 2nd ed., Cambridge University Press (1994)"
+    title: "An Introduction to Twistor Theory"
+    doi: 10.1017/CBO9780511624018
+  van-suijlekom-2015:
+    cite: "W. D. van Suijlekom, Noncommutative Geometry and Particle Physics, Mathematical Physics Studies, Springer (2015)"
+    title: "Noncommutative Geometry and Particle Physics"
+    doi: 10.1007/978-94-017-9162-5
+  last-penrose-2017:
+    cite: "G. Last and M. Penrose, Lectures on the Poisson Process, Cambridge University Press (2017)"
+    title: "Lectures on the Poisson Process"
+    doi: 10.1017/9781316104477
+  agz-2009:
+    cite: "G. W. Anderson, A. Guionnet and O. Zeitouni, An Introduction to Random Matrices, Cambridge University Press (2009)"
+    title: "An Introduction to Random Matrices"
+    doi: 10.1017/CBO9780511801334
+  bratteli-robinson-1987:
+    cite: "O. Bratteli and D. W. Robinson, Operator Algebras and Quantum Statistical Mechanics 1, 2nd ed., Springer (1987)"
+    title: "Operator Algebras and Quantum Statistical Mechanics 1"
+    doi: 10.1007/978-3-662-02520-8
+  bratteli-robinson-1997:
+    cite: "O. Bratteli and D. W. Robinson, Operator Algebras and Quantum Statistical Mechanics 2, 2nd ed., Springer (1997)"
+    title: "Operator Algebras and Quantum Statistical Mechanics"
+    doi: 10.1007/978-3-662-03444-6
+  hall-2013:
+    cite: "B. C. Hall, Quantum Theory for Mathematicians, Graduate Texts in Mathematics 267, Springer (2013)"
+    title: "Quantum Theory for Mathematicians"
+    doi: 10.1007/978-1-4614-7116-5
+  nielsen-petz-2005:
+    cite: "M. A. Nielsen and D. Petz, A simple proof of the strong subadditivity inequality, Quantum Inf. Comput. 5 (2005) 507-513"
+    title: "A simple proof of the strong subadditivity inequality"
+    arxiv: quant-ph/0408130
+  dms-1997:
+    cite: "P. Di Francesco, P. Mathieu and D. Sénéchal, Conformal Field Theory, Graduate Texts in Contemporary Physics, Springer (1997)"
+    title: "Conformal Field Theory"
+    doi: 10.1007/978-1-4612-2256-9
+  schottenloher-2008:
+    cite: "M. Schottenloher, A Mathematical Introduction to Conformal Field Theory, 2nd ed., Lecture Notes in Physics 759, Springer (2008)"
+    title: "A Mathematical Introduction to Conformal Field Theory"
+    doi: 10.1007/978-3-540-68628-6
+  lepowsky-li-2004:
+    cite: "J. Lepowsky and H. Li, Introduction to Vertex Operator Algebras and Their Representations, Birkhäuser (2004)"
+    title: "Introduction to Vertex Operator Algebras and Their Representations"
+    doi: 10.1007/978-0-8176-8186-9
+  frenkel-ben-zvi-2004:
+    cite: "E. Frenkel and D. Ben-Zvi, Vertex Algebras and Algebraic Curves, 2nd ed., Mathematical Surveys and Monographs 88, AMS (2004)"
+    title: "Vertex Algebras and Algebraic Curves"
+    doi: 10.1090/surv/088
+  adj-1997:
+    cite: "J. Ambjørn, B. Durhuus and T. Jonsson, Quantum Geometry: A Statistical Field Theory Approach, Cambridge University Press (1997)"
+    title: "Quantum Geometry"
+    doi: 10.1017/CBO9780511524417
+  reuter-saueressig-2018:
+    cite: "M. Reuter and F. Saueressig, Quantum Gravity and the Functional Renormalization Group, Cambridge University Press (2018)"
+    title: "Quantum Gravity and the Functional Renormalization Group"
+    doi: 10.1017/9781316227596
+
+  martin-dussaud-2019:
+    cite: "Pierre Martin-Dussaud, A Primer of Group Theory for Loop Quantum Gravity and Spin-foams, arXiv:1902.08439 (2019)"
+    title: "A Primer of Group Theory for Loop Quantum Gravity and Spin-foams"
+    arxiv: "1902.08439"
+  dona-sarno-2018:
+    cite: "Pietro Dona and Giorgio Sarno, Numerical methods for EPRL spin foam transition amplitudes and Lorentzian recoupling theory, arXiv:1807.03066 (2018)"
+    title: "Numerical methods for EPRL spin foam transition amplitudes and Lorentzian recoupling theory"
+    arxiv: "1807.03066"
+  kaminski-kisielowski-lewandowski-2011:
+    cite: "Wojciech Kaminski, Marcin Kisielowski and Jerzy Lewandowski, The kernel and the injectivity of the EPRL map, arXiv:1109.5023 (2011)"
+    title: "The kernel and the injectivity of the EPRL map"
+    arxiv: "1109.5023"
+  livine-speziale-2007:
+    cite: "Etera R. Livine and Simone Speziale, A new spinfoam vertex for quantum gravity, arXiv:0705.0674 (2007)"
+    title: "A new spinfoam vertex for quantum gravity"
+    arxiv: "0705.0674"
+  conrady-freidel-2009:
+    cite: "Florian Conrady and Laurent Freidel, Quantum geometry from phase space reduction, arXiv:0902.0351 (2009)"
+    title: "Quantum geometry from phase space reduction"
+    arxiv: "0902.0351"
+  dittrich-freidel-speziale-2007:
+    cite: "Bianca Dittrich, Laurent Freidel and Simone Speziale, Linearized dynamics from the 4-simplex Regge action, arXiv:0707.4513 (2007)"
+    title: "Linearized dynamics from the 4-simplex Regge action"
+    arxiv: "0707.4513"
+  brewin-2009:
+    cite: "Leo Brewin, Riemann Normal Coordinate expansions using Cadabra, arXiv:0903.2087 (2009)"
+    title: "Riemann Normal Coordinate expansions using Cadabra"
+    arxiv: "0903.2087"
+  hall-2015:
+    cite: "B. C. Hall, Lie Groups, Lie Algebras, and Representations: An Elementary Introduction, 2nd ed., Graduate Texts in Mathematics 222, Springer (2015)"
+    title: "Lie Groups, Lie Algebras, and Representations"
+    doi: 10.1007/978-3-319-13467-3
+  brocker-tom-dieck-1985:
+    cite: "T. Bröcker and T. tom Dieck, Representations of Compact Lie Groups, Graduate Texts in Mathematics 98, Springer (1985)"
+    title: "Representations of Compact Lie Groups"
+    doi: 10.1007/978-3-662-12918-0
+  edmonds-1957:
+    cite: "A. R. Edmonds, Angular Momentum in Quantum Mechanics, Princeton University Press (1957)"
+    title: "Angular Momentum in Quantum Mechanics"
+    doi: 10.1515/9781400884186
+  knapp-1986:
+    cite: "A. W. Knapp, Representation Theory of Semisimple Groups: An Overview Based on Examples, Princeton University Press (1986)"
+    title: "Representation Theory of Semisimple Groups"
+    doi: 10.1515/9781400883974
+  lawson-michelsohn-1989:
+    cite: "H. B. Lawson and M.-L. Michelsohn, Spin Geometry, Princeton University Press (1989)"
+    title: "Spin Geometry"
+    doi: 10.1515/9781400883912
+  varshalovich-1988:
+    cite: "D. A. Varshalovich, A. N. Moskalev and V. K. Khersonskii, Quantum Theory of Angular Momentum, World Scientific (1988)"
+    title: "Quantum Theory of Angular Momentum"
+    doi: 10.1142/0270
+  perelomov-1986:
+    cite: "A. Perelomov, Generalized Coherent States and Their Applications, Springer (1986)"
+    title: "Generalized Coherent States and Their Applications"
+    doi: 10.1007/978-3-642-61629-7
+
+canonical:
+  pl-topology: [lickorish-1999, moise-1977]
+  asymptotics: [hormander-1990]
+  harmonic-analysis: [ggv-1966]
+  quantum-groups: [turaev-1994]
+  geometry: [hawking-ellis-1973, carroll-1997]
+  spin-foams: [perez-2013, baez-2000]
+  regge: [regge-1961, cms-1984]
+  low-dim-gravity: [carlip-1998]
+  gauge-constrained: [hamilton-2017, henneaux-teitelboim-1992]
+  canonical-qg: [thiemann-2007, ashtekar-lewandowski-2004]
+  semiclassical: [birrell-davies-1982, hollands-wald-2015]
+  cosmology: [kolb-turner-1990, baumann-2009]
+  causal-sets: [surya-2019]
+  string-theory: [polchinski-1998a, polchinski-1998b, tong-2009]
+  holography: [magoo-2000, rangamani-takayanagi-2016]
+  gft-tensor: [gurau-ryan-2012]
+  perturbative-qg: [donoghue-ivanov-shkerin-2017, elvang-huang-2013]
+  twistors: [huggett-tod-1994, adamo-2018]
+  ncg: [van-suijlekom-2015]
+  random-geometry: [last-penrose-2017, agz-2009, le-gall-miermont-2011]
+  operator-algebras: [bratteli-robinson-1987, bratteli-robinson-1997]
+  qft-rg: [delamotte-2007, connes-kreimer-2000, henneaux-teitelboim-1992]
+  cft: [dms-1997, ginsparg-1988]
+  dynamical-triangulations: [adj-1997, loll-2019]
+  asymptotic-safety: [reuter-saueressig-2018, eichhorn-2018]
+  matrix-models: [di-francesco-ginsparg-zinn-justin-1995, agz-2009]
+  other: [barcelo-liberati-visser-2005]
+
+milestones:
+  PL3:
+    class: sourced
+    refs:
+      - {ref: lickorish-1999, location: "Theorem 5.9", check: "bistellar"}
+      - {ref: moise-1977, location: "Chapter: The classification of compact connected 2-manifolds|10.1007/978-1-4612-9906-6_23"}
+  PL4:
+    class: sourced
+    refs:
+      - {ref: lickorish-1999, location: "Theorem 4.5", check: "stellar"}
+  PL5:
+    class: sourced
+    refs:
+      - {ref: moise-1977, location: "Chapter: The Jordan curve theorem|10.1007/978-1-4612-9906-6_5"}
+      - {ref: moise-1977, location: "Chapter: The Schönflies theorem|10.1007/978-1-4612-9906-6_10"}
+  PL6:
+    class: sourced
+    refs:
+      - {ref: moise-1977, location: "Chapter: The Triangulation theorem|10.1007/978-1-4612-9906-6_36"}
+      - {ref: moise-1977, location: "Chapter: The Hauptvermutung; Tame imbedding|10.1007/978-1-4612-9906-6_37"}
+  PL7:
+    class: sourced
+    refs:
+      - {ref: turaev-1994, location: "Chapter: Chapter VII. Simplicial state sums on 3-manifolds|10.1515/9783110883275-008"}
+      - {ref: lickorish-1999, location: "Theorem 5.9", check: "bistellar"}
+  SP1:
+    class: sourced
+    refs:
+      - {ref: hormander-1990, location: "Chapter: The Fourier Transformation|10.1007/978-3-642-61497-2_8"}
+  SP2:
+    class: sourced
+    refs:
+      - {ref: gurau-2008, location: "Theorem 1", check: "saddle"}
+  HA2:
+    class: sourced
+    refs:
+      - {ref: ggv-1966, location: "Chapter: Harmonic analysis on the group of complex unimodular matrices in two dimensions|10.1090/chel/381/04"}
+  HA3:
+    class: sourced
+    refs:
+      - {ref: kitaev-2017, location: "Section 4", check: "Plancherel"}
+      - {ref: ggv-1966, location: "Chapter: Representations of the group of real unimodular matrices in two dimensions|10.1090/chel/381/07"}
+  QU1:
+    class: sourced
+    refs:
+      - {ref: turaev-1994, location: "Chapter: Chapter VI. 6j-symbols|10.1515/9783110883275-007"}
+  QU2:
+    class: sourced
+    refs:
+      - {ref: cky-1997, location: "Theorem 3.2", check: "invariant"}
+  QU3:
+    class: sourced
+    refs:
+      - {ref: turaev-1994, location: "Chapter: Chapter II. Invariants of closed 3-manifolds|10.1515/9783110883275-003"}
+      - {ref: turaev-1994, location: "Chapter: Chapter XI. An algebraic construction of modular categories|10.1515/9783110883275-012"}
+  GE1:
+    class: sourced
+    refs:
+      - {ref: carroll-1997, location: "Chapter 3", check: "Curvature"}
+  GE2:
+    class: sourced
+    refs:
+      - {ref: hawking-ellis-1973, location: "Chapter: Causal structure|10.1017/CBO9780511524646.007"}
+  GE3:
+    class: sourced
+    refs:
+      - {ref: hawking-ellis-1973, location: "Chapter: The physical significance of curvature|10.1017/CBO9780511524646.005"}
+  GE4:
+    class: sourced
+    refs:
+      - {ref: senovilla-garfinkle-2015, location: "Theorem 2", check: "Cauchy"}
+      - {ref: hawking-ellis-1973, location: "Chapter: Space-time singularities|10.1017/CBO9780511524646.009"}
+  GE5:
+    class: sourced
+    refs:
+      - {ref: bgv-1992, location: "Chapter: Clifford Modules and Dirac Operators|10.1007/978-3-642-58088-8_4"}
+  GE6:
+    class: sourced
+    refs:
+      - {ref: visser-2007, location: "Section 9", check: "Horizons"}
+  GE7:
+    class: sourced
+    refs:
+      - {ref: hawking-ellis-1973, location: "Chapter: Exact solutions|10.1017/CBO9780511524646.006"}
+  GE8:
+    class: sourced
+    refs:
+      - {ref: vassilevich-2003, location: "eq. (4.27)", check: "6E"}
+      - {ref: bgv-1992, location: "Chapter: Asymptotic Expansion of the Heat Kernel|10.1007/978-3-642-58088-8_3"}
+  SF4b:
+    class: sourced
+    refs:
+      - {ref: ooguri-1992, location: "Abstract", check: "Alexander moves"}
+      - {ref: perez-2013, location: "§6.1.3", check: "BF theory"}
+  SF5b:
+    class: sourced
+    refs:
+      - {ref: ooguri-1992, location: "Abstract", check: "Alexander moves"}
+      - {ref: perez-2013, location: "§6.1.3", check: "BF theory"}
+  SF5d:
+    class: sourced
+    refs:
+      - {ref: freidel-louapre-2003, location: "Section III", check: "GAUGE SYMMETRIES"}
+  SF6b:
+    class: sourced
+    refs:
+      - {ref: eprl-2008, location: "Section III", check: "EUCLIDEAN"}
+      - {ref: bianchi-regoli-rovelli-2010, location: "Section IV", check: "FACE AMPLITUDE"}
+      - {ref: perez-2013, location: "§2.3.8", check: "EPRL"}
+  SF7:
+    class: sourced
+    refs:
+      - {ref: eprl-2008, location: "Abstract", check: "Lorentzian"}
+      - {ref: engle-pereira-2009, location: "Section 4", check: "finiteness"}
+  SF8:
+    class: sourced
+    refs:
+      - {ref: roberts-1999, location: "Theorem 1", check: "Asymptotic formula"}
+  SF9:
+    class: sourced
+    refs:
+      - {ref: bdfgh-2009, location: "Section 4", check: "Asymptotic formula"}
+  SF10:
+    class: sourced
+    refs:
+      - {ref: bdfhp-2010, location: "§6.4", check: "Asymptotic formula"}
+  SF1:
+    class: sourced
+    refs:
+      - {ref: barrett-crane-1998, location: "Section IV", check: "New Model"}
+      - {ref: reisenberger-1999, location: "Abstract", check: "uniquely determined"}
+  SF2:
+    class: sourced
+    refs:
+      - {ref: barrett-naish-guzman-2009, location: "§4.4", check: "Existence criterion"}
+  RC6:
+    class: sourced
+    refs:
+      - {ref: christiansen-2011, location: "Section 1", check: "converges in the sense of measures"}
+  RC1:
+    class: sourced
+    refs:
+      - {ref: sorkin-2019, location: "Section 2", check: "spacelike wedge"}
+  RC2:
+    class: sourced
+    refs:
+      - {ref: brw-1999, location: "eq. (6)", check: "Jacobian"}
+  RC3:
+    class: sourced
+    refs:
+      - {ref: christiansen-2011, location: "Abstract", check: "converge to their continuous counterparts"}
+  LD1:
+    class: sourced
+    refs:
+      - {ref: carlip-1998, location: "Chapter: Geometric structures and Chern–Simons theory|10.1017/CBO9780511564192.005"}
+  LD2:
+    class: sourced
+    refs:
+      - {ref: turaev-virelizier-2010, location: "Theorem 11.1", check: "spherical fusion"}
+  LD3:
+    class: sourced
+    refs:
+      - {ref: barrett-naish-guzman-2009, location: "§5.2", check: "Reidemeister"}
+      - {ref: freidel-louapre-2004, location: "Section VI", check: "particles"}
+      - {ref: noui-perez-2005, location: "§2.2", check: "Coupling"}
+  LD4:
+    class: sourced
+    refs:
+      - {ref: stanford-witten-2017, location: "Section 2", check: "Schwarzian"}
+  LD5:
+    class: sourced
+    refs:
+      - {ref: eynard-orantin-2007, location: "Theorem 2.1", check: "recursion"}
+      - {ref: sss-2019, location: "Abstract", check: "Mirzakhani"}
+  LD6:
+    class: sourced
+    refs:
+      - {ref: kazarian-lando-2007, location: "Section 2", check: "KdV"}
+  LD7:
+    class: sourced
+    refs:
+      - {ref: dkrv-2016, location: "Section 3", check: "Liouville"}
+      - {ref: duplantier-sheffield-2011, location: "§1.4", check: "KPZ"}
+      - {ref: krv-2020, location: "§2.4", check: "main result"}
+  GC1:
+    class: sourced
+    refs:
+      - {ref: hamilton-2017, location: "Chapter: Chapter 5 Connections and Curvature|10.1007/978-3-319-68439-0_5"}
+  GC2:
+    class: sourced
+    refs:
+      - {ref: baez-1996, location: "Lemma 3", check: "spin network states"}
+      - {ref: ashtekar-lewandowski-2004, location: "Section IV", check: "spin network decomposition"}
+  GC3:
+    class: sourced
+    refs:
+      - {ref: dunne-1999, location: "eq. (60)", check: "large gauge transformation"}
+      - {ref: baez-2000, location: "Section 2", check: "F = 0"}
+  GC4:
+    class: sourced
+    refs:
+      - {ref: henneaux-teitelboim-1992, location: "Chapter: CHAPTER ONE. CONSTRAINED HAMILTONIAN SYSTEMS|10.1515/9780691213866-004"}
+      - {ref: cannas-da-silva-2001, location: "Chapter: The Marsden-Weinstein-Meyer Theorem|10.1007/978-3-540-45330-7_23"}
+  GC5:
+    class: sourced
+    refs:
+      - {ref: holst-1996, location: "Abstract", check: "Barbero"}
+      - {ref: barbero-1995, location: "Abstract", check: "real"}
+  CA1:
+    class: sourced
+    refs:
+      - {ref: adm-1962, location: "Section 4", check: "constraint"}
+      - {ref: thiemann-2007, location: "Chapter: Classical Hamiltonian formulation of General Relativity|10.1017/CBO9780511755682.005"}
+  CA2:
+    class: sourced
+    refs:
+      - {ref: ashtekar-lewandowski-1995, location: "§3.3", check: "Haar measure"}
+      - {ref: baez-1996, location: "Lemma 3", check: "spin network states"}
+  CA3:
+    class: sourced
+    refs:
+      - {ref: rovelli-smolin-1995, location: "Section 4", check: "area"}
+      - {ref: ashtekar-lewandowski-1997, location: "Section IV", check: "eigenvalues"}
+  CA4:
+    class: sourced
+    refs:
+      - {ref: ashtekar-lewandowski-1998, location: "Abstract", check: "regularization"}
+      - {ref: brunnemann-thiemann-2006, location: "Section 4", check: "4-Vertex"}
+  CA5:
+    class: sourced
+    refs:
+      - {ref: lost-2006, location: "Theorem 4.2", check: "exactly one"}
+      - {ref: fleischhack-2009, location: "Theorem 7.14", check: "representation"}
+  CA6:
+    class: sourced
+    refs:
+      - {ref: domagala-lewandowski-2004, location: "Abstract", check: "entropy"}
+      - {ref: meissner-2004, location: "eq. (8)", check: "0.2375"}
+  CA7:
+    class: sourced
+    refs:
+      - {ref: aps-2006, location: "Abstract", check: "bounce"}
+      - {ref: kaminski-lewandowski-2008, location: "Abstract", check: "self-adjointness"}
+  CA8:
+    class: sourced
+    refs:
+      - {ref: halliwell-1990, location: "Section 5", check: "minisuperspace"}
+      - {ref: halliwell-1990, location: "Section 8", check: "Vilenkin"}
+  CA9:
+    class: sourced
+    refs:
+      - {ref: thiemann-1998, location: "§3.2", check: "Euclidean"}
+      - {ref: thiemann-1998, location: "§3.4", check: "covariance"}
+  SC1:
+    class: sourced
+    refs:
+      - {ref: crispino-higuchi-matsas-2008, location: "Section II", check: "Rindler"}
+  SC2:
+    class: sourced
+    refs:
+      - {ref: bisognano-wichmann-1975, location: "Abstract", check: "TCP transformation"}
+      - {ref: brunetti-guido-longo-2002, location: "eq. (1.1)", check: "Bisognano"}
+  SC3:
+    class: sourced
+    refs:
+      - {ref: carlip-2014, location: "eq. (5.9)", check: "Euclidean"}
+  SC4:
+    class: sourced
+    refs:
+      - {ref: hollands-wald-2015, location: "§2.2", check: "Hawking effect"}
+      - {ref: carlip-2014, location: "§3.2", check: "Hawking"}
+  SC5:
+    class: sourced
+    refs:
+      - {ref: carlip-2014, location: "Section 2", check: "first law"}
+  SC6:
+    class: sourced
+    refs:
+      - {ref: bgp-2007, location: "§3.4", check: "Green"}
+      - {ref: hollands-wald-2015, location: "eq. (18)", check: "Hadamard"}
+  SC7:
+    class: sourced
+    refs:
+      - {ref: birrell-davies-1982, location: "Chapter: Stress-tensor renormalization|10.1017/CBO9780511622632.008"}
+  SC8:
+    class: sourced
+    refs:
+      - {ref: page-1993, location: "eq. (11)", check: "conjecture"}
+      - {ref: sen-1996, location: "Abstract", check: "Page"}
+  SC9:
+    class: sourced
+    refs:
+      - {ref: pinamonti-2011, location: "Theorem 4.1", check: "unique solution"}
+      - {ref: meda-pinamonti-siemssen-2021, location: "Theorem 5.9", check: "Banach"}
+  CS1:
+    class: sourced
+    refs:
+      - {ref: surya-2019, location: "Section 3", check: "Locally finite"}
+  CS2:
+    class: sourced
+    refs:
+      - {ref: surya-2019, location: "§4.1", check: "Myrheim–Meyer"}
+  CS3:
+    class: sourced
+    refs:
+      - {ref: romik-2015, location: "Chapter: Longest increasing subsequences in random permutations|10.1017/CBO9781139872003.003"}
+  CS4:
+    class: sourced
+    refs:
+      - {ref: bhs-2009, location: "Theorem 1", check: "equivariant"}
+      - {ref: surya-2019, location: "§3.2", check: "Lorentz"}
+  CS5:
+    class: sourced
+    refs:
+      - {ref: benincasa-dowker-2010, location: "Abstract", check: "Alembertian"}
+      - {ref: surya-2019, location: "§4.4", check: "Alembertian"}
+  CS6:
+    class: sourced
+    refs:
+      - {ref: rideout-sorkin-2000, location: "Abstract", check: "sequential growth"}
+      - {ref: surya-2019, location: "§6.1", check: "sequential growth"}
+  CS7:
+    class: sourced
+    refs:
+      - {ref: johnston-2009, location: "eq. (10)", check: "Pauli-Jordan"}
+      - {ref: aas-2012, location: "Section 3", check: "S-J"}
+  CS8:
+    class: sourced
+    refs:
+      - {ref: loomis-carlip-2018, location: "Section 2", check: "Kleitman"}
+  ST1:
+    class: sourced
+    refs:
+      - {ref: tong-2009, location: "eq. (1.22)", check: "Polyakov action"}
+  ST2:
+    class: sourced
+    refs:
+      - {ref: polchinski-1998a, location: "Chapter: The string spectrum|10.1017/CBO9780511816079.007"}
+      - {ref: polchinski-1998a, location: "Chapter: The Polyakov path integral|10.1017/CBO9780511816079.006"}
+  ST3:
+    class: sourced
+    refs:
+      - {ref: tong-2009, location: "§2.2", check: "Lightlike"}
+  ST4:
+    class: sourced
+    refs:
+      - {ref: polchinski-1998a, location: "Chapter: The string spectrum|10.1017/CBO9780511816079.007"}
+  ST5:
+    class: sourced
+    refs:
+      - {ref: tong-2009, location: "§6.2.2", check: "Virasoro-Shapiro"}
+      - {ref: tong-2009, location: "§6.3.1", check: "Veneziano"}
+  ST6:
+    class: sourced
+    refs:
+      - {ref: polchinski-1998b, location: "Chapter: Type I and type II superstrings|10.1017/CBO9780511618123.004"}
+  ST7:
+    class: sourced
+    refs:
+      - {ref: giveon-porrati-rabinovici-1994, location: "eq. (2.4.16)", check: "self-dual"}
+  ST8:
+    class: sourced
+    refs:
+      - {ref: bouchard-2007, location: "eq. (3.17)", check: "101"}
+      - {ref: polchinski-1998b, location: "Chapter: Calabi–Yau compactification|10.1017/CBO9780511618123.011"}
+  ST9:
+    class: sourced
+    refs:
+      - {ref: givental-1996, location: "Abstract", check: "mirror conjecture"}
+      - {ref: lian-liu-yau-1997, location: "Abstract", check: "mirror principle"}
+      - {ref: polishchuk-zaslow-1998, location: "Abstract", check: "elliptic curve"}
+  ST10:
+    class: sourced
+    refs:
+      - {ref: strominger-vafa-1996, location: "Abstract", check: "degeneracy of BPS"}
+  ST11:
+    class: sourced
+    refs:
+      - {ref: zwiebach-1993, location: "Abstract", check: "master equation"}
+  HO1:
+    class: sourced
+    refs:
+      - {ref: magoo-2000, location: "eq. (2.20)", check: "hyperboloid"}
+  HO2:
+    class: sourced
+    refs:
+      - {ref: strominger-1998, location: "Section 2", check: "Brown"}
+  HO3:
+    class: sourced
+    refs:
+      - {ref: btz-1992, location: "Abstract", check: "black hole"}
+      - {ref: strominger-1998, location: "Abstract", check: "asymptotic growth of states"}
+  HO4:
+    class: sourced
+    refs:
+      - {ref: ryu-takayanagi-2006, location: "eq. (1.3)", check: "log"}
+      - {ref: calabrese-cardy-2004, location: "Abstract", check: "log"}
+  HO5:
+    class: sourced
+    refs:
+      - {ref: headrick-takayanagi-2007, location: "Abstract", check: "strong subadditivity"}
+      - {ref: hayden-headrick-maloney-2013, location: "Abstract", check: "mutual informations"}
+      - {ref: bao-2015, location: "Abstract", check: "monogamy of mutual information"}
+  HO6:
+    class: sourced
+    refs:
+      - {ref: happy-2015, location: "Abstract", check: "quantum error-correcting codes"}
+      - {ref: almheiri-dong-harlow-2015, location: "Abstract", check: "quantum error correction"}
+  HO7:
+    class: sourced
+    refs:
+      - {ref: henningson-skenderis-1998, location: "Abstract", check: "Weyl anomaly"}
+  HO8:
+    class: sourced
+    refs:
+      - {ref: lewkowycz-maldacena-2013, location: "Abstract", check: "entropy"}
+  GF1:
+    class: sourced
+    refs:
+      - {ref: gurau-2010, location: "Abstract", check: "pseudo manifolds"}
+  GF2:
+    class: sourced
+    refs:
+      - {ref: boulatov-1992, location: "Abstract", check: "Turaev-Viro"}
+      - {ref: ooguri-1992, location: "Abstract", check: "15j"}
+  GF3:
+    class: sourced
+    refs:
+      - {ref: gurau-2011, location: "Abstract", check: "1/N expansion"}
+  GF4:
+    class: sourced
+    refs:
+      - {ref: bonzom-gurau-riello-rivasseau-2011, location: "Abstract", check: "critical"}
+  GF5:
+    class: sourced
+    refs:
+      - {ref: gurau-ryan-2013, location: "Abstract", check: "branched polymers"}
+  GF6:
+    class: sourced
+    refs:
+      - {ref: ben-geloun-rivasseau-2011, location: "Abstract", check: "renormalizable"}
+      - {ref: carrozza-oriti-rivasseau-2014, location: "Abstract", check: "renormalizable"}
+  GF7:
+    class: sourced
+    refs:
+      - {ref: freidel-louapre-2002, location: "Abstract", check: "Borel summable"}
+      - {ref: delepouve-gurau-rivasseau-2016, location: "Abstract", check: "Borel summability"}
+  PG1:
+    class: sourced
+    refs:
+      - {ref: carroll-1997, location: "eq. (6.54)", check: "transverse"}
+  PG2:
+    class: sourced
+    refs:
+      - {ref: hinterbichler-2012, location: "eq. (2.1)", check: "Fierz-Pauli"}
+      - {ref: hinterbichler-2012, location: "Abstract", check: "vDVZ"}
+  PG3:
+    class: sourced
+    refs:
+      - {ref: bekaert-boulanger-sundell-2010, location: "§2.4", check: "Weinberg-Witten"}
+  PG4:
+    class: sourced
+    refs:
+      - {ref: donoghue-ivanov-shkerin-2017, location: "§6.3", check: "Gauss-Bonnet"}
+      - {ref: donoghue-ivanov-shkerin-2017, location: "eq. (239)", check: "pure gravity"}
+  PG5:
+    class: sourced
+    refs:
+      - {ref: bern-2015, location: "eq. (7)", check: "209"}
+  PG6:
+    class: sourced
+    refs:
+      - {ref: bjerrum-bohr-donoghue-holstein-2003, location: "eq. (44)", check: "41"}
+      - {ref: donoghue-1994, location: "Abstract", check: "effective field theory"}
+  PG7:
+    class: sourced
+    refs:
+      - {ref: elvang-huang-2013, location: "eq. (3.30)", check: "KLT"}
+      - {ref: bcj-2008, location: "Abstract", check: "Jacobi identity"}
+  TW1:
+    class: sourced
+    refs:
+      - {ref: adamo-2018, location: "eq. (1.23)", check: "incidence relations"}
+  TW2:
+    class: sourced
+    refs:
+      - {ref: huggett-tod-1994, location: "Chapter: Solving the Zero Rest Mass Equations I|10.1017/CBO9780511624018.010"}
+  TW3:
+    class: sourced
+    refs:
+      - {ref: huggett-tod-1994, location: "Chapter: The Twisted Photon and Yang–Mills Constructions|10.1017/CBO9780511624018.013"}
+      - {ref: huggett-tod-1994, location: "Chapter: The Non-Linear Graviton|10.1017/CBO9780511624018.014"}
+  TW4:
+    class: sourced
+    refs:
+      - {ref: bcfw-2005, location: "Abstract", check: "recursion relation"}
+  TW5:
+    class: sourced
+    refs:
+      - {ref: hodges-2012, location: "Abstract", check: "MHV"}
+  TW6:
+    class: sourced
+    refs:
+      - {ref: arkani-hamed-trnka-2014, location: "Abstract", check: "scattering amplitudes"}
+      - {ref: even-zohar-lakrec-tessler-2025, location: "Abstract", check: "BCFW"}
+  NC1:
+    class: sourced
+    refs:
+      - {ref: krajewski-1998, location: "Abstract", check: "diagrams"}
+      - {ref: paschke-sitarz-1998, location: "Abstract", check: "spectral triples"}
+  NC2:
+    class: sourced
+    refs:
+      - {ref: iochum-krajewski-martinetti-2001, location: "eq. (6)", check: "distance"}
+      - {ref: van-suijlekom-2015, location: "Chapter: Finite Noncommutative Spaces|10.1007/978-94-017-9162-5_2"}
+  NC3:
+    class: sourced
+    refs:
+      - {ref: chamseddine-connes-marcolli-2007, location: "Definition 2.7", check: "KO-dimension"}
+      - {ref: barrett-2007, location: "Abstract", check: "signature"}
+  NC4:
+    class: sourced
+    refs:
+      - {ref: balachandran-kurkcuoglu-vaidya-2005, location: "§2.3", check: "fuzzy sphere"}
+  NC5:
+    class: sourced
+    refs:
+      - {ref: chamseddine-connes-1997, location: "eq. (2.13)", check: "heat kernel"}
+      - {ref: chamseddine-connes-1997, location: "Abstract", check: "spectral action"}
+  NC6:
+    class: sourced
+    refs:
+      - {ref: connes-2008, location: "Theorem 1.1", check: "commutative"}
+  RN1:
+    class: sourced
+    refs:
+      - {ref: last-penrose-2017, location: "Chapter: Poisson Processes|10.1017/9781316104477.004"}
+  RN2:
+    class: sourced
+    refs:
+      - {ref: le-gall-miermont-2011, location: "§5.4", check: "Cori-Vauquelin-Schaeffer"}
+  RN3:
+    class: sourced
+    refs:
+      - {ref: janson-2011, location: "Abstract", check: "Galton-Watson"}
+  RN4:
+    class: sourced
+    refs:
+      - {ref: agz-2009, location: "Chapter: Real and complex Wigner matrices|10.1017/CBO9780511801334.003"}
+  RN5:
+    class: sourced
+    refs:
+      - {ref: berestycki-2017, location: "Abstract", check: "multiplicative chaos"}
+      - {ref: rhodes-vargas-2013, location: "Abstract", check: "Kahane"}
+  OP1:
+    class: sourced
+    refs:
+      - {ref: hall-2013, location: "Chapter: Unbounded Self-Adjoint Operators|10.1007/978-1-4614-7116-5_9"}
+      - {ref: hall-2013, location: "Chapter: The Spectral Theorem for Unbounded Self-Adjoint Operators|10.1007/978-1-4614-7116-5_10"}
+  OP2:
+    class: sourced
+    refs:
+      - {ref: bratteli-robinson-1997, location: "Chapter: Continuous Quantum Systems. I|10.1007/978-3-662-03444-6_2"}
+  OP3:
+    class: sourced
+    refs:
+      - {ref: bratteli-robinson-1987, location: "Chapter: C*-Algebras and von Neumann Algebras|10.1007/978-3-662-02520-8_2"}
+      - {ref: bratteli-robinson-1997, location: "Chapter: KMS-States|10.1007/978-3-662-03444-6_3"}
+      - {ref: witten-2018, location: "§3", check: "Tomita"}
+  OP4:
+    class: sourced
+    refs:
+      - {ref: nielsen-petz-2005, location: "Abstract", check: "strong subadditivity"}
+  FT1:
+    class: sourced
+    refs:
+      - {ref: borinsky-2018, location: "Abstract", check: "zero-dimensional"}
+  FT2:
+    class: sourced
+    refs:
+      - {ref: connes-kreimer-2000, location: "Abstract", check: "Riemann-Hilbert"}
+      - {ref: kreimer-1998, location: "Abstract", check: "Hopf algebra"}
+  FT3:
+    class: sourced
+    refs:
+      - {ref: weinzierl-2006, location: "§2.2", check: "dimensional regularisation"}
+  FT4:
+    class: sourced
+    refs:
+      - {ref: delamotte-2007, location: "§2.5.3", check: "critical exponents"}
+  FT5:
+    class: sourced
+    refs:
+      - {ref: henneaux-teitelboim-1992, location: "Chapter: CHAPTER FOURTEEN. BRST OPERATOR METHOD— QUANTUM BRST COHOMOLOGY|10.1515/9780691213866-017"}
+      - {ref: henneaux-teitelboim-1992, location: "Chapter: CHAPTER SEVENTEEN. ANTIFIELD FORMALISM: CLASSICAL THEORY|10.1515/9780691213866-020"}
+  CF1:
+    class: sourced
+    refs:
+      - {ref: schottenloher-2008, location: "Chapter: The Virasoro Algebra|10.1007/978-3-540-68628-6_5"}
+      - {ref: ginsparg-1988, location: "§4.2", check: "Kac determinant"}
+  CF2:
+    class: sourced
+    refs:
+      - {ref: dms-1997, location: "Chapter: The Operator Formalism|10.1007/978-1-4612-2256-9_6"}
+  CF3:
+    class: sourced
+    refs:
+      - {ref: lepowsky-li-2004, location: "Chapter: Construction of Families of Vertex Operator Algebras and Modules|10.1007/978-0-8176-8186-9_6"}
+      - {ref: frenkel-ben-zvi-2004, location: "Chapter: Vertex algebras associated to Lie algebras|10.1090/surv/088/02"}
+  CF4:
+    class: sourced
+    refs:
+      - {ref: dms-1997, location: "Chapter: Modular Invariance|10.1007/978-1-4612-2256-9_10"}
+  CF5:
+    class: sourced
+    refs:
+      - {ref: mukhametzhanov-zhiboedov-2019, location: "Abstract", check: "Cardy"}
+  DT1:
+    class: sourced
+    refs:
+      - {ref: adj-1997, location: "Chapter: Two-dimensional gravity|10.1017/CBO9780511524417.006"}
+      - {ref: di-francesco-ginsparg-zinn-justin-1995, location: "eq. (4.17)", check: "string susceptibility"}
+  DT2:
+    class: sourced
+    refs:
+      - {ref: le-gall-2013, location: "Abstract", check: "q-angulations"}
+      - {ref: miermont-2011, location: "Abstract", check: "Gromov-Hausdorff"}
+  DT3:
+    class: sourced
+    refs:
+      - {ref: ambjorn-loll-1998, location: "Abstract", check: "solved exactly"}
+      - {ref: durhuus-jonsson-wheater-2009, location: "Abstract", check: "spectral dimension"}
+  DT4:
+    class: sourced
+    refs:
+      - {ref: ambjorn-jurkiewicz-loll-2001, location: "Abstract", check: "simplicial"}
+      - {ref: adj-1997, location: "Chapter: Gravity in higher dimensions|10.1017/CBO9780511524417.008"}
+      - {ref: loll-2019, location: "Abstract", check: "causal dynamical triangulations"}
+  DT5:
+    class: sourced
+    refs:
+      - {ref: durhuus-jonsson-1995, location: "Abstract", check: "exponential"}
+      - {ref: benedetti-ziegler-2011, location: "Abstract", check: "locally constructible"}
+  AS1:
+    class: sourced
+    refs:
+      - {ref: wetterich-1993, location: "Abstract", check: "exact evolution equation"}
+  AS2:
+    class: sourced
+    refs:
+      - {ref: reuter-1998, location: "Abstract", check: "truncation"}
+      - {ref: litim-2004, location: "Abstract", check: "Einstein-Hilbert"}
+  AS3:
+    class: sourced
+    refs:
+      - {ref: reuter-1998, location: "Abstract", check: "2+epsilon dimensions"}
+  AS4:
+    class: sourced
+    refs:
+      - {ref: grosse-wulkenhaar-2005, location: "Abstract", check: "renormalisable"}
+      - {ref: disertori-gurau-magnen-rivasseau-2007, location: "Abstract", check: "all orders"}
+  MM1:
+    class: sourced
+    refs:
+      - {ref: pittel-2015, location: "Abstract", check: "Harer-Zagier"}
+  MM2:
+    class: sourced
+    refs:
+      - {ref: di-francesco-ginsparg-zinn-justin-1995, location: "eq. (2.25)", check: "quartic potential"}
+  MM3:
+    class: sourced
+    refs:
+      - {ref: di-francesco-ginsparg-zinn-justin-1995, location: "§1.4", check: "double scaling"}
+      - {ref: di-francesco-ginsparg-zinn-justin-1995, location: "Abstract", check: "Painlev"}
+  MM4:
+    class: sourced
+    refs:
+      - {ref: bfss-1997, location: "Abstract", check: "matrix quantum mechanics"}
+      - {ref: taylor-2001, location: "Abstract", check: "matrix model"}
+  MM5:
+    class: sourced
+    refs:
+      - {ref: ikkt-1997, location: "Abstract", check: "reduced model"}
+      - {ref: krauth-nicolai-staudacher-1998, location: "Abstract", check: "partition functions"}
+      - {ref: austing-wheater-2001, location: "Abstract", check: "convergent"}
+  OA1:
+    class: sourced
+    refs:
+      - {ref: horava-2009, location: "Abstract", check: "z = 3"}
+      - {ref: barvinsky-blas-herrero-valea-2016, location: "Abstract", check: "renormalizability"}
+  OA2:
+    class: sourced
+    refs:
+      - {ref: visser-1998, location: "Abstract", check: "barotropic"}
+      - {ref: barcelo-liberati-visser-2005, location: "Abstract", check: "analogue gravity"}
+  OA3:
+    class: sourced
+    refs:
+      - {ref: visser-2002, location: "Abstract", check: "induced gravity"}
+  OA4:
+    class: sourced
+    refs:
+      - {ref: finster-2010, location: "Abstract", check: "existence"}
+      - {ref: finster-2016, location: "Abstract", check: "causal fermion systems"}
+  CO1:
+    class: sourced
+    refs:
+      - {ref: carroll-1997, location: "eq. (8.36)", check: "Friedmann"}
+  CO2:
+    class: sourced
+    refs:
+      - {ref: carroll-1997, location: "Section 8", check: "Big Bang"}
+  CO3:
+    class: sourced
+    refs:
+      - {ref: frs-2023, location: "Section 1.2", check: "Hawking"}
+  CO4:
+    class: sourced
+    refs:
+      - {ref: baumann-2009, location: "Section 9.2.3", check: "gauge-invariant"}
+      - {ref: baumann-2009, location: "eq. (142)", check: "Bardeen"}
+  CO5:
+    class: sourced
+    refs:
+      - {ref: bernardeau-2002, location: "Section 2.3", check: "linear"}
+  CO6:
+    class: sourced
+    refs:
+      - {ref: kolb-turner-1990, location: "Chapter: Thermodynamics in The Expanding Universe|10.1201/9780429492860-5", check: "Thermodynamics"}
+  CO7:
+    class: sourced
+    refs:
+      - {ref: kolb-turner-1990, location: "Chapter: Thermodynamics in The Expanding Universe|10.1201/9780429492860-5", check: "Thermodynamics"}
+  CO8:
+    class: sourced
+    refs:
+      - {ref: anguige-tod-1999, location: "Section 1", check: "isotropic singularit"}
+  CO9:
+    class: sourced
+    refs:
+      - {ref: rendall-2005, location: "Section 1", check: "slow-roll"}
+      - {ref: baumann-2009, location: "Section 6.2", check: "slow-roll"}
+  CO10:
+    class: sourced
+    refs:
+      - {ref: baumann-2009, location: "eq. (196)", check: "Bunch-Davies"}
+      - {ref: baumann-2009, location: "Section 12.3.3", check: "tensor"}
+  CO11:
+    class: sourced
+    refs:
+      - {ref: junker-schrohe-2002, location: "Section 6", check: "Robertson-Walker"}
+  CO12:
+    class: sourced
+    refs:
+      - {ref: baumann-2009, location: "Section 17.1.2", check: "Sachs-Wolfe"}
+  CO13:
+    class: sourced
+    refs:
+      - {ref: heinzle-uggla-2009a, location: "Section 3", check: "Bianchi"}
+      - {ref: heinzle-uggla-2009a, location: "Section 5", check: "Kasner map"}
+  CO14:
+    class: sourced
+    refs:
+      - {ref: ringstrom-2001, location: "Section 15", check: "attractor"}
+      - {ref: heinzle-uggla-2009b, location: "Section 1", check: "attractor"}
+  CO15:
+    class: sourced
+    refs:
+      - {ref: rendall-2005, location: "Section 4", check: "anisotropic"}
+  CO16:
+    class: sourced
+    refs:
+      - {ref: frs-2023, location: "Section 1.6", check: "main theorem"}
+  # Milestones whose results are in the library: the sources of those results (docs/results.yaml).
+  GE9:
+    class: sourced
+    refs:
+      - {ref: carroll-1997, location: "eq. (3.79)", check: "interchange"}
+      - {ref: carroll-1997, location: "eq. (3.80)", check: "cyclic"}
+      - {ref: carroll-1997, location: "eq. (2.19)", check: "tensor transformation law"}
+      - {ref: carroll-1997, location: "eq. (2.34)", check: "signature"}
+  GE10:
+    class: sourced
+    refs:
+      - {ref: carroll-1997, location: "eq. (4.53)", check: "vacuum"}
+      - {ref: carroll-1997, location: "eq. (7.29)", check: "Schwarzschild metric"}
+      - {ref: hawking-ellis-1973, location: "Chapter: Exact solutions|10.1017/CBO9780511524646.006"}
+  HA1:
+    class: sourced
+    refs:
+      - {ref: knapp-1986, location: "Chapter: Chapter II. Representations of SU(2), SL(2, ℝ) and SL(2, ℂ)|10.1515/9781400883974-005"}
+      - {ref: martin-dussaud-2019, location: "§2.7", check: "Haar"}
+      - {ref: martin-dussaud-2019, location: "§7.3", check: "unitary"}
+      - {ref: martin-dussaud-2019, location: "§7.3.6", check: "Casimir"}
+      - {ref: martin-dussaud-2019, location: "§7.3.4", check: "SU(2)"}
+  HA4:
+    class: sourced
+    refs:
+      - {ref: hall-2015, location: "Chapter: Basic Representation Theory|10.1007/978-3-319-13467-3_4"}
+      - {ref: martin-dussaud-2019, location: "§4.1", check: "representations"}
+      - {ref: brocker-tom-dieck-1985, location: "Chapter: Elementary Representation Theory|10.1007/978-3-662-12918-0_2"}
+      - {ref: hall-2015, location: "Chapter: Lie Algebras|10.1007/978-3-319-13467-3_3"}
+  OP5:
+    class: sourced
+    refs:
+      - {ref: hall-2013, location: "Chapter: A First Approach to Quantum Mechanics|10.1007/978-1-4614-7116-5_3"}
+      - {ref: hall-2013, location: "Chapter: The Spectral Theorem for Unbounded Self-Adjoint Operators|10.1007/978-1-4614-7116-5_10"}
+  PL1:
+    class: sourced
+    refs:
+      - {ref: lickorish-1999, location: "Theorem 4.5", check: "stellar"}
+      - {ref: lickorish-1999, location: "Theorem 5.9", check: "bistellar"}
+      - {ref: lickorish-1999, location: "Definition 2.2", check: "manifold"}
+  PL2:
+    class: sourced
+    refs:
+      - {ref: lickorish-1999, location: "Theorem 4.5", check: "stellar"}
+      - {ref: lickorish-1999, location: "Theorem 5.9", check: "bistellar"}
+  QU4:
+    class: sourced
+    refs:
+      - {ref: edmonds-1957, location: "Chapter: Chapter 6. The Construction of Invariants from the Vector-Coupling Coefficients|10.1515/9781400884186-007"}
+      - {ref: varshalovich-1988, location: "Chapter: 6j Symbols and the Racah Coefficients|10.1142/9789814415491_0010"}
+      - {ref: barrett-naish-guzman-2009, location: "§2.2.1", check: "Pachner moves"}
+      - {ref: turaev-1994, location: "Chapter: Chapter VII. Simplicial state sums on 3-manifolds|10.1515/9783110883275-008"}
+  QU5:
+    class: sourced
+    refs:
+      - {ref: barrett-naish-guzman-2009, location: "§2.2.1", check: "Pachner moves"}
+      - {ref: freidel-louapre-2004, location: "Section III", check: "gauge"}
+  RC4:
+    class: sourced
+    refs:
+      - {ref: dittrich-freidel-speziale-2007, location: "eq. (6)", check: "dihedral angles"}
+      - {ref: dittrich-freidel-speziale-2007, location: "eq. (8)", check: "Schläfli identity"}
+      - {ref: dittrich-freidel-speziale-2007, location: "eq. (1)", check: "deficit angles"}
+      - {ref: dittrich-freidel-speziale-2007, location: "eq. (7)", check: "dihedral angles"}
+  RC5:
+    class: sourced
+    refs:
+      - {ref: dittrich-freidel-speziale-2007, location: "eq. (1)", check: "deficit angles"}
+      - {ref: dittrich-freidel-speziale-2007, location: "eq. (7)", check: "dihedral angles"}
+      - {ref: brw-1999, location: "eq. (6)", check: "Jacobian"}
+  SF3:
+    class: sourced
+    refs:
+      - {ref: lickorish-1999, location: "Theorem 5.9", check: "bistellar"}
+  SF4:
+    class: sourced
+    refs:
+      - {ref: martin-dussaud-2019, location: "§5.3", check: "orthonormal basis"}
+      - {ref: edmonds-1957, location: "Chapter: Chapter 3. The Coupling of Angular Momentum Vectors|10.1515/9781400884186-004"}
+      - {ref: martin-dussaud-2019, location: "§5.4", check: "direct sum"}
+      - {ref: martin-dussaud-2019, location: "§5.5", check: "6j"}
+      - {ref: martin-dussaud-2019, location: "§5.6", check: "Yutsis"}
+      - {ref: dona-sarno-2018, location: "Section 2", check: "15j"}
+  SF5a:
+    class: sourced
+    refs:
+      - {ref: lawson-michelsohn-1989, location: "Chapter: I. Clifford Algebras, Spin Groups and Their Representations|10.1515/9781400883912-004"}
+      - {ref: brocker-tom-dieck-1985, location: "Chapter: Elementary Representation Theory|10.1007/978-3-662-12918-0_2"}
+      - {ref: edmonds-1957, location: "Chapter: Chapter 3. The Coupling of Angular Momentum Vectors|10.1515/9781400884186-004"}
+      - {ref: varshalovich-1988, location: "Chapter: Clebsch-Gordan Coefficients and 3jm Symbols|10.1142/9789814415491_0009"}
+  SF5c:
+    class: sourced
+    refs:
+      - {ref: eprl-2008, location: "Section III", check: "EUCLIDEAN"}
+      - {ref: kaminski-kisielowski-lewandowski-2011, location: "Abstract", check: "injectivity"}
+  SF5e:
+    class: sourced
+    refs:
+      - {ref: livine-speziale-2007, location: "Abstract", check: "coherent states"}
+      - {ref: perelomov-1986, location: "Chapter: Coherent States for the Rotation Group of Three-Dimensional Space|10.1007/978-3-642-61629-7_5"}
+      - {ref: livine-speziale-2007, location: "§3.4", check: "exponentially"}
+      - {ref: conrady-freidel-2009, location: "Abstract", check: "closure constraint"}
+  SF6:
+    class: sourced
+    refs:
+      - {ref: eprl-2008, location: "Section III", check: "EUCLIDEAN"}

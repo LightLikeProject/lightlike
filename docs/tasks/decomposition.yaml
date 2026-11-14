@@ -1,0 +1,447 @@
+# Hand-written input to scripts/tasks.py. The script combines it with the milestone tables of
+# docs/tasks/milestones.md into docs/tasks/tasks.yaml (the full task list and dependency graph) and
+# docs/tasks/README.md (the task board in Markdown). After editing this file or milestones.md, run
+#   python3 scripts/tasks.py generate
+# Every milestone is one task; the proof tasks and upstream tasks below are added. This file is the
+# plan only: who works on a task, and whether it is done, is on the task's GitHub issue.
+
+# Area heading of milestones.md -> area label (used for the label `area: <label>`).
+areas:
+  PL topology: pl-topology
+  Oscillatory and saddle-point asymptotics: asymptotics
+  Harmonic analysis on Lie groups: harmonic-analysis
+  Quantum groups and state-sum TQFTs: quantum-groups
+  Lorentzian and Riemannian geometry: geometry
+  Operator algebras and quantum information: operator-algebras
+  Perturbative QFT and the renormalization group: qft-rg
+  Conformal field theory: cft
+  Random geometry: random-geometry
+  Gauge theory and constrained systems: gauge-constrained
+  Spin foams: spin-foams
+  Canonical quantum gravity: canonical-qg
+  Group field theory and tensor models: gft-tensor
+  Dynamical triangulations: dynamical-triangulations
+  Regge calculus: regge
+  Causal sets: causal-sets
+  Asymptotic safety: asymptotic-safety
+  Perturbative quantum gravity: perturbative-qg
+  String theory: string-theory
+  Holography: holography
+  Low-dimensional gravity: low-dim-gravity
+  Semiclassical gravity: semiclassical
+  Cosmology: cosmology
+  Noncommutative geometry: ncg
+  Twistor theory: twistors
+  Matrix models: matrix-models
+  Other approaches: other
+
+# Milestone IDs in milestones.md that are not plain codes, and the codes used in task IDs.
+aliases:
+  RC6a: RC6   # part of RC6
+
+# Dependencies for milestone tables without a "Needs" column.
+needs:
+  PL4: [PL2]
+  PL5: []
+  PL6: [PL5]
+  PL7: [PL2, PL4, PL6]
+
+# Milestones whose statements are all among the proof tasks below. Once those are locked, the
+# milestones that need one of them can start, before its proofs are done.
+stated: [QU1]   # the definitions exist; the statements are T-QU1-P1 to PL7
+
+# Hand-written tasks: statements written as skeletons in Tasks/, one file per task. Their
+# statements are drafts until they are reviewed and locked (`tasks.py lock`).
+tasks:
+  - id: T-DT4-P1
+    milestone: DT4
+    kind: proof
+    title: In a closed combinatorial n-manifold, a face with n vertices lies in exactly two top faces
+    file: Tasks/DT/T_DT4_P1.lean
+    decl: Lightlike.PL.SComplex.IsClosedCombManifold.card_cofaces
+    size: S
+    difficulty: intermediate
+    routes:
+      - The link of the face is a PL 0-sphere (`IsClosedCombManifold.isPLSphere_link`), which has two vertices (`IsPLSphere.card_verts_zero`); the cofaces correspond to the link's vertices.
+  - id: T-DT4-P2
+    milestone: DT4
+    kind: proof
+    title: Double counting of faces and their cofaces
+    file: Tasks/DT/T_DT4_P2.lean
+    decl: Lightlike.PL.SComplex.card_mul_eq_sum_cofaces
+    size: S
+    difficulty: good first issue
+    routes:
+      - Count the pairs (σ, s) with σ ⊆ s both ways (`Finset.sum_comm`, `Finset.card_eq_sum_ones`); a face with k + 2 vertices has k + 2 subsets with k + 1 vertices, all faces (`down_mem`).
+  - id: T-DT4-P3
+    milestone: DT4
+    kind: proof
+    title: In a closed combinatorial n-manifold, 2 N_{n-1} = (n + 1) N_n (for n = 4, 2N₃ = 5N₄)
+    file: Tasks/DT/T_DT4_P3.lean
+    decl: Lightlike.PL.SComplex.IsClosedCombManifold.two_mul_card_eq
+    deps: [T-DT4-P1, T-DT4-P2]
+    size: XS
+    difficulty: good first issue
+    routes:
+      - Apply T-DT4-P2 with k = n − 1 and rewrite every summand by T-DT4-P1.
+  - id: T-DT4-P4
+    milestone: DT4
+    kind: proof
+    title: Summed over the vertices, the face counts of the vertex links
+    file: Tasks/DT/T_DT4_P4.lean
+    decl: Lightlike.PL.SComplex.sum_card_link
+    size: S
+    difficulty: intermediate
+    routes:
+      - A face u of `link {v}` with k + 1 vertices corresponds to the face `insert v u` with k + 2 vertices containing v (`mem_link'`); exchange the sums and use that a face s has #s vertices.
+  - id: T-DT4-P5
+    milestone: DT4
+    kind: proof
+    title: The Euler characteristic of a vertex link in a closed combinatorial manifold
+    file: Tasks/DT/T_DT4_P5.lean
+    decl: Lightlike.PL.SComplex.IsClosedCombManifold.euler_link
+    size: XS
+    difficulty: good first issue
+    routes:
+      - "`isClosedCombManifold_succ_iff` gives that the link is a PL n-sphere; then `IsPLSphere.euler`."
+  - id: T-DT4-P6
+    milestone: DT4
+    kind: proof
+    title: The Euler characteristic as an alternating sum of face counts
+    file: Tasks/DT/T_DT4_P6.lean
+    decl: Lightlike.PL.SComplex.euler_eq_sum_card
+    size: S
+    difficulty: intermediate
+    routes:
+      - Split the sum defining `euler` by the number of vertices (`Finset.sum_fiberwise_of_maps_to`); every nonempty face has between 1 and `maxCard` vertices (`card_le_maxCard`).
+  - id: T-DT4-P7
+    milestone: DT4
+    kind: proof
+    title: In a closed combinatorial 4-manifold, 2N₁ − 3N₂ + 4N₃ − 5N₄ = 0
+    file: Tasks/DT/T_DT4_P7.lean
+    decl: Lightlike.PL.SComplex.IsClosedCombManifold.dehnSommerville_link
+    deps: [T-DT4-P4, T-DT4-P5, T-DT4-P6]
+    size: S
+    difficulty: intermediate
+    routes:
+      - Sum T-DT4-P5 (n = 3, each link has Euler characteristic 0) over the vertices, expand each link's Euler characteristic by T-DT4-P6 (links have `maxCard` 4 by `IsPLSphere.maxCard`) and regroup by T-DT4-P4.
+  - id: T-DT4-P8
+    milestone: DT4
+    kind: proof
+    title: The Dehn–Sommerville relation 2N₁ − 3N₂ + 6N₃ − 10N₄ = 0 for closed combinatorial 4-manifolds
+    file: Tasks/DT/T_DT4_P8.lean
+    decl: Lightlike.PL.SComplex.IsClosedCombManifold.dehnSommerville
+    deps: [T-DT4-P3, T-DT4-P7]
+    size: XS
+    difficulty: good first issue
+    routes:
+      - Add `2N₃ − 5N₄ = 0` (T-DT4-P3 with n = 4, cast to ℤ) to T-DT4-P7; `linarith` or `omega` after `push_cast`.
+  - id: T-DT4-P9
+    milestone: DT4
+    kind: proof
+    role: non-vacuity
+    title: "Non-vacuity: the boundary of the 5-simplex has N = (6, 15, 20, 15, 6)"
+    file: Tasks/DT/T_DT4_P9.lean
+    decl: Lightlike.PL.Tasks.boundary_fin6_dehnSommerville
+    size: XS
+    difficulty: good first issue
+    routes:
+      - The manifold part is `isClosedCombManifold_boundary`; the counts are a finite computation (`decide`).
+  - id: T-DT4-P10
+    milestone: DT4
+    kind: proof
+    role: trust-check
+    title: "Trust check: two 4-simplices glued along a 3-face violate 2N₃ = 5N₄"
+    file: Tasks/DT/T_DT4_P10.lean
+    decl: Lightlike.PL.Tasks.twoSimplices_not_dehnSommerville
+    size: XS
+    difficulty: good first issue
+    routes:
+      - A finite computation; `decide` hits the recursion limit, `decide +kernel` works.
+  - id: T-QU1-P1
+    milestone: QU1
+    kind: proof
+    title: q-orthogonality of the quantum 6j symbols at r = 4
+    file: Tasks/QU/T_QU1_P1.lean
+    decl: Lightlike.TV.qOrthogonality_four
+    size: M
+    difficulty: intermediate
+    routes:
+      - As `qOrthogonality_three` (`Lightlike/TuraevViro/LevelOne.lean`) with colours `Fin 3`; the q-numbers involve √2, so evaluate exactly in ℚ(√2) instead of `decide` on reals.
+  - id: T-QU1-P2
+    milestone: QU1
+    kind: proof
+    title: q-Biedenharn–Elliott identity at r = 4
+    file: Tasks/QU/T_QU1_P2.lean
+    decl: Lightlike.TV.qBiedenharnElliott_four
+    size: M
+    difficulty: intermediate
+    routes:
+      - As `qBiedenharnElliott_three` with colours `Fin 3`, exact arithmetic in ℚ(√2).
+  - id: T-QU1-P3
+    milestone: QU1
+    kind: proof
+    title: q-orthogonality of the quantum 6j symbols at r = 5
+    file: Tasks/QU/T_QU1_P3.lean
+    decl: Lightlike.TV.qOrthogonality_five
+    size: M
+    difficulty: intermediate
+    routes:
+      - As T-QU1-P1 with colours `Fin 4`; sin(π/5) involves the golden ratio, so work in ℚ(√5).
+  - id: T-QU1-P4
+    milestone: QU1
+    kind: proof
+    title: q-Biedenharn–Elliott identity at r = 5
+    file: Tasks/QU/T_QU1_P4.lean
+    decl: Lightlike.TV.qBiedenharnElliott_five
+    size: M
+    difficulty: intermediate
+    routes:
+      - As T-QU1-P2 with colours `Fin 4`, exact arithmetic in ℚ(√5).
+  - id: T-QU1-P5
+    milestone: QU1
+    kind: proof
+    title: q-orthogonality of the quantum 6j symbols for every r ≥ 2
+    file: Tasks/QU/T_QU1_P5.lean
+    decl: Lightlike.TV.qOrthogonality_all
+    size: L
+    difficulty: research-level
+    routes:
+      - The q-Racah formula and q-hypergeometric summation (Kirillov–Reshetikhin 1989).
+      - Representation theory of U_q(sl₂) at roots of unity (Turaev, Quantum invariants of knots and 3-manifolds, 1994).
+      - Kauffman–Lins recoupling theory (Temperley–Lieb recoupling theory and invariants of 3-manifolds, 1994).
+  - id: T-QU1-P6
+    milestone: QU1
+    kind: proof
+    title: q-Biedenharn–Elliott identity for every r ≥ 2
+    file: Tasks/QU/T_QU1_P6.lean
+    decl: Lightlike.TV.qBiedenharnElliott_all
+    size: L
+    difficulty: research-level
+    routes:
+      - The q-Racah formula and q-hypergeometric identities (Kirillov–Reshetikhin 1989).
+      - Representation theory of U_q(sl₂) at roots of unity (Turaev 1994).
+      - Kauffman–Lins recoupling theory (1994).
+
+# Upstream tasks: finished results that belong in Mathlib (general mathematics) or Physlib
+# (general physics), with the rework each needs. Exclusive, like definition
+# tasks; `target` gives the label `upstream: <library>`.
+upstream:
+  - id: T-UP-1
+    target: Mathlib
+    area: harmonic-analysis
+    size: M
+    results: [LL-0007]
+    title: "The spin representations of SU(2) are irreducible"
+    rework: "`SU2` is already Mathlib's `Matrix.specialUnitaryGroup (Fin 2) ℂ`. Generalize the continuity hypotheses, follow Mathlib naming and style, and place it under `Mathlib/RepresentationTheory`."
+
+  - id: T-UP-2
+    target: Mathlib
+    area: harmonic-analysis
+    size: L
+    results: [LL-0008]
+    deps: [T-UP-1]
+    title: "Every continuous irreducible finite-dimensional representation of SU(2) is a spin representation"
+    rework: "Remove the dependence on the project's `Su2Exp` exponential map, or upstream it first; Mathlib naming and style review."
+
+  - id: T-UP-3
+    target: Physlib
+    area: harmonic-analysis
+    size: S
+    results: [LL-0018]
+    title: "Orthogonality of the 3j symbols in the general parametrisation"
+    rework: "Already stated for Physlib's `threeJ` in doubled spins. Rename to Physlib conventions, drop the `Lightlike` namespace, and place it next to `sum_wigner3j_mul_wigner3j` (PhyslibAlpha/QuantumMechanics/AngularMomentum/Wigner3j.lean)."
+
+  - id: T-UP-4
+    target: Physlib
+    area: harmonic-analysis
+    size: M
+    results: [LL-0019]
+    deps: [T-UP-3]
+    title: "Orthonormal 4-valent intertwiners and orthogonality of the 6j symbols for all spins"
+    rework: "Physlib's `sum_sixJ_mul_sixJ` assumes positive spins; ours covers every spin and is stated for `sixJSym`. Contribute the zero-spin cases and the `sixJSym` form, with the long case analyses split into lemmas."
+
+  - id: T-UP-5
+    target: Physlib
+    area: harmonic-analysis
+    size: M
+    results: [LL-0022]
+    deps: [T-UP-4]
+    title: "The Biedenharn–Elliott identity for all spins"
+    rework: "Already stated for Physlib's `sixJSym` in doubled units, so no definitions change. Split the zero-spin case analysis into lemmas and follow Physlib naming."
+
+  - id: T-UP-6
+    target: Physlib
+    area: harmonic-analysis
+    size: S
+    results: [LL-0009]
+    deps: [T-UP-1]
+    title: "The derivative of the spin-n/2 representation is Physlib's sl₂-module"
+    rework: "Needs the spin representations in Mathlib first (T-UP-1)."
+
+  - id: T-UP-7
+    target: Mathlib
+    area: harmonic-analysis
+    size: S
+    results: [LL-0010]
+    title: "The unit quaternions are SU(2): `unitary ℍ ≃* SU(2)`"
+    rework: "Mathlib has no such equivalence at the pinned version. Move `quatMat` and `quatEquiv` with their lemmas, in the style of `Mathlib/Algebra/Quaternion.lean`."
+
+  - id: T-UP-8
+    target: Mathlib
+    area: harmonic-analysis
+    size: M
+    results: [LL-0010]
+    deps: [T-UP-7]
+    title: "Spin(4) = SU(2) × SU(2) is a double cover of SO(4)"
+    rework: "Generalize from ℝ⁴ where it is cheap; Mathlib naming and style review."
+
+  - id: T-UP-9
+    target: Mathlib
+    area: harmonic-analysis
+    size: M
+    results: [LL-0011]
+    deps: [T-UP-8]
+    title: "Mathlib's Clifford-algebra spin group of ℝ⁴ is Spin(4)"
+    rework: "Reuse the quaternion equivalences of `Mathlib/LinearAlgebra/CliffordAlgebra/Equivs.lean` inside `cliffordToMat`, and place the result next to `Mathlib/LinearAlgebra/CliffordAlgebra/SpinGroup.lean`."
+
+  - id: T-UP-10
+    target: Mathlib
+    area: harmonic-analysis
+    size: M
+    results: [LL-0012, LL-0013]
+    deps: [T-UP-2, T-UP-8]
+    title: "The irreducible representations of Spin(4) and their Clebsch–Gordan decomposition"
+    rework: "Needs the SU(2) classification and the double cover in Mathlib first."
+
+  - id: T-UP-11
+    target: Mathlib
+    area: harmonic-analysis
+    size: S
+    results: [LL-0014]
+    title: "SL(2,ℂ) is unimodular"
+    rework: "Small. Also state it with Mathlib's `modularCharacter` (Mathlib/MeasureTheory/Group/ModularCharacter.lean), as `modularCharacter = 1`."
+
+  - id: T-UP-12
+    target: Physlib
+    area: geometry
+    size: M
+    results: [LL-0001]
+    title: "Christoffel symbols, Riemann, Ricci and scalar curvature in coordinates; first Bianchi identity and pair symmetry"
+    rework: "Physlib has no Christoffel symbols or Riemann tensor at the pinned version. Align the indices with Physlib's (`Fin 1 ⊕ Fin d`) and mind the signature: Physlib's `minkowskiMatrix` is diag(1, −1, …, −1), this project's `eta` is diag(−1, 1, …, 1)."
+
+  - id: T-UP-13
+    target: Physlib
+    area: geometry
+    size: M
+    results: [LL-0002]
+    deps: [T-UP-12]
+    title: "Riemann, Ricci and scalar curvature transform as tensors under changes of coordinates"
+    rework: "Follows T-UP-12; state the chart change with Physlib's tensor conventions."
+
+  - id: T-UP-14
+    target: Physlib
+    area: geometry
+    size: S
+    results: [LL-0003]
+    deps: [T-UP-12]
+    title: "The components of a Lorentzian metric in every atlas chart have Lorentzian signature"
+    rework: "`LorentzianMetric` is this project's own structure; Mathlib has Riemannian metrics but no pseudo-Riemannian ones. Decide whether the structure belongs in Physlib or next to Mathlib's `Geometry.Manifold.Riemannian`."
+
+  - id: T-UP-15
+    target: Physlib
+    area: geometry
+    size: S
+    results: [LL-0004]
+    deps: [T-UP-12]
+    title: "For Λ = 0 and n ≠ 2 the vacuum Einstein equations are Ricci-flatness"
+    rework: "Follows T-UP-12; small."
+
+  - id: T-UP-16
+    target: Physlib
+    area: geometry
+    size: S
+    results: [LL-0005]
+    deps: [T-UP-15]
+    title: "Exterior Schwarzschild is a Lorentzian vacuum solution"
+    rework: "Physlib has the exterior components `gttOut`, `grrOut` of its incompressible-sphere model (PhyslibAlpha/Relativity/General/Schwarzschild/IncompressibleSphere.lean). State the result for those, in Physlib's signature."
+
+  - id: T-UP-17
+    target: Mathlib
+    area: pl-topology
+    size: M
+    results: [LL-0023]
+    title: "Abstract simplicial complexes and stellar moves (the definitions behind Pachner's theorem)"
+    rework: "Mathlib's `Geometry.SimplicialComplex` is geometric (simplices in a vector space), not abstract. The definitions `PL.SComplex` and the stellar moves need a design review for Mathlib before any proof moves."
+
+  - id: T-UP-18
+    target: Mathlib
+    area: pl-topology
+    size: L
+    results: [LL-0023]
+    deps: [T-UP-17]
+    title: "Pachner's theorem, stellar version, in all dimensions"
+    rework: "The largest upstream task: the proof is long and follows the definitions of T-UP-17."
+
+  - id: T-UP-19
+    target: Mathlib
+    area: pl-topology
+    size: M
+    results: [LL-0024, LL-0029]
+    deps: [T-UP-18]
+    title: "Closed combinatorial 3-manifolds: vertex links are 2-spheres, and Pachner moves preserve them"
+    rework: "Follows T-UP-18."
+
+  - id: T-UP-23
+    target: Mathlib
+    area: pl-topology
+    size: M
+    results: [LL-0035, LL-0036]
+    deps: [T-UP-17]
+    title: "4D Pachner moves: involution, Euler characteristic and orientability"
+    rework: "Restate for the abstract complexes of T-UP-17; follow Mathlib naming."
+
+  - id: T-UP-20
+    target: Mathlib
+    area: geometry
+    size: M
+    results: [LL-0041]
+    title: "The dihedral angles of a tetrahedron computed from its edge lengths"
+    rework: "Mathlib has no dihedral angles of simplices (only of root systems). Restate for `Affine.Simplex ℝ P 3` under `Mathlib/Geometry/Euclidean`."
+
+  - id: T-UP-21
+    target: Mathlib
+    area: geometry
+    size: M
+    results: [LL-0042]
+    deps: [T-UP-20]
+    title: "Schläfli's identity for a tetrahedron"
+    rework: "Follows T-UP-20."
+
+  - id: T-UP-22
+    target: Mathlib
+    area: geometry
+    size: L
+    results: [LL-0045]
+    title: "Expansion of the squared geodesic distance to fifth order"
+    rework: "This project's `IsRiemMetric` is coordinate-based. Restate for Mathlib's Riemannian manifolds (`Mathlib/Geometry/Manifold/Riemannian/Basic.lean`): a large rewrite."
+# Statement hashes recorded by `python3 scripts/tasks.py lock <ID>` after review. A locked
+# statement is fixed: the proof-task check rejects pull requests that change it. Keep this section
+# last; `lock` rewrites it.
+locked:
+  T-DT4-P1: "74e3c01c37312039"
+  T-DT4-P2: "01e17077c5f150ea"
+  T-DT4-P3: "4b8b91c0b5847ce2"
+  T-DT4-P4: "e91327df802af8c1"
+  T-DT4-P5: "4abdbca45870e28c"
+  T-DT4-P6: "e8f8fd45933e930a"
+  T-DT4-P7: "f3b5706a8ece66e0"
+  T-DT4-P8: "a1ec6613bb2e0ace"
+  T-DT4-P9: "3330e2db0223a80a"
+  T-DT4-P10: "fb8f9a896f43c82b"
+  T-QU1-P1: "e1f8fee660e6bb70"
+  T-QU1-P2: "48d6183e645a58f7"
+  T-QU1-P3: "f6a02ca2e41a673e"
+  T-QU1-P4: "ec6a1aad4ffde404"
+  T-QU1-P5: "783f0bc350942e8f"
+  T-QU1-P6: "a6cde44e2153e022"

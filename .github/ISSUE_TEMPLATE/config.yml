@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Questions and proposals
+    url: https://github.com/LightlikeProject/lightlike/discussions
+    about: Ask a question or discuss a proposal in GitHub Discussions.
+  - name: Discord
+    url: https://discord.gg/Eyx3zTx9JW
+    about: Discussion and coordination with other contributors.

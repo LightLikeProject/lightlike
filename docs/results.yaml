@@ -1,0 +1,617 @@
+# Registry of headline results with stable IDs.
+#
+# Rules (checked by `scripts/api_map.py check`):
+# - IDs are `LL-` and four digits, assigned in increasing order, never reused or renumbered.
+# - A result that is withdrawn keeps its entry, with `status: retired` and a `note` saying why.
+# - `decls` are full Lean names; each must exist in `file` (checked by `scripts/NameCheck.lean`).
+# - `status` is `proven` (no hypotheses beyond the statement's own), `conditional` (the listed
+#   `hypotheses`, Lean propositions, are assumed), `stated` (the statement is defined, not proven)
+#   or `retired`.
+# - `area` is a folder of `Lightlike/` with an `API-map.md`.
+# - `tier` is `established`, `frontier` or `exploratory` (defined in docs/RESULTS.md); an exploratory
+#   result lives in an `Exploratory/` folder.
+# - `source` is `{refs: [{ref, location, check}]}` with keys of docs/tasks/sources.yaml and a
+#   location verified by `scripts/sources.py verify`, or the label `structural` or `exploratory`
+#   (checked by `scripts/sources.py check`).
+# - `review` is `kernel-checked` or `human-reviewed` (with `review_ref`: the issue where an
+#   expert left the review).
+# docs/RESULTS.md is generated from this file: `python3 scripts/api_map.py generate`.
+
+- id: LL-0001
+  title: First Bianchi identity and pair symmetry of the Riemann tensor in coordinates
+  area: Spacetime
+  file: Lightlike/Spacetime/RiemannSymmetry.lean
+  decls: [Lightlike.IsCoordMetric.bianchi_first, Lightlike.IsCoordMetric.riemannLower_pair_symm]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (3.79)", check: "interchange"}
+      - {ref: carroll-1997, location: "eq. (3.80)", check: "cyclic"}
+  review: kernel-checked
+  since: 0.1.0
+- id: LL-0002
+  title: Riemann, Ricci and scalar curvature transform as tensors under changes of coordinates
+  area: Spacetime
+  file: Lightlike/Spacetime/ChartChange.lean
+  decls: [Lightlike.riemann_pullback, Lightlike.ricci_pullback, Lightlike.scalarCurvature_pullback]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (2.19)", check: "tensor transformation law"}
+  review: kernel-checked
+  since: 0.1.0
+- id: LL-0003
+  title: The components of a Lorentzian metric in every atlas chart have Lorentzian signature
+  area: Spacetime
+  file: Lightlike/Spacetime/Coordinates.lean
+  decls: [Lightlike.LorentzianMetric.isLorentzianCoordMetric_coordMetric]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (2.34)", check: "signature"}
+  review: kernel-checked
+  since: 0.1.0
+- id: LL-0004
+  title: For Λ = 0 and n ≠ 2 the vacuum Einstein equations are Ricci-flatness
+  area: GR
+  file: Lightlike/GR/Einstein.lean
+  decls: [Lightlike.vacuum_iff_ricci_eq_zero]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (4.53)", check: "vacuum"}
+  review: kernel-checked
+  since: 0.1.0
+- id: LL-0005
+  title: Exterior Schwarzschild is a Lorentzian vacuum solution
+  area: GR
+  file: Lightlike/GR/Schwarzschild.lean
+  decls: [Lightlike.sch_isVacuumSolution, Lightlike.sch_isLorentzian]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (7.29)", check: "Schwarzschild metric"}
+      - {ref: hawking-ellis-1973, location: "Chapter: Exact solutions|10.1017/CBO9780511524646.006"}
+  review: kernel-checked
+  since: 0.1.0
+- id: LL-0006
+  title: Unitary evolution solves the Schrödinger equation
+  area: QM
+  file: Lightlike/QM/Basic.lean
+  decls: [Lightlike.QM.norm_evolve, Lightlike.QM.schrodinger]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: hall-2013, location: "Chapter: A First Approach to Quantum Mechanics|10.1007/978-1-4614-7116-5_3"}
+      - {ref: hall-2013, location: "Chapter: The Spectral Theorem for Unbounded Self-Adjoint Operators|10.1007/978-1-4614-7116-5_10"}
+  review: kernel-checked
+  since: 0.1.0
+- id: LL-0007
+  title: The spin representations of SU(2) are irreducible
+  area: SU2
+  file: Lightlike/SU2/SpinRep.lean
+  decls: [Lightlike.SU2.spinRepresentation_isIrreducible]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: hall-2015, location: "Chapter: Basic Representation Theory|10.1007/978-3-319-13467-3_4"}
+      - {ref: martin-dussaud-2019, location: "§4.1", check: "representations"}
+  review: kernel-checked
+  since: 0.1.0
+- id: LL-0008
+  title: Every continuous irreducible finite-dimensional representation of SU(2) is a spin representation
+  area: SU2
+  file: Lightlike/SU2/Completeness.lean
+  decls: [Lightlike.SU2.spinRep_complete]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: hall-2015, location: "Chapter: Basic Representation Theory|10.1007/978-3-319-13467-3_4"}
+      - {ref: brocker-tom-dieck-1985, location: "Chapter: Elementary Representation Theory|10.1007/978-3-662-12918-0_2"}
+      - {ref: martin-dussaud-2019, location: "§4.1", check: "representations"}
+  review: kernel-checked
+  since: 0.1.0
+- id: LL-0009
+  title: The derivative of the spin-n/2 representation is Physlib's sl₂-module V(n)
+  area: SU2
+  file: Lightlike/SU2/LieBridge.lean
+  decls: [Lightlike.SU2.dSpin_E, Lightlike.SU2.dSpin_F, Lightlike.SU2.dSpin_H]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: hall-2015, location: "Chapter: Basic Representation Theory|10.1007/978-3-319-13467-3_4"}
+      - {ref: hall-2015, location: "Chapter: Lie Algebras|10.1007/978-3-319-13467-3_3"}
+  review: kernel-checked
+  since: 0.1.0
+- id: LL-0010
+  title: Spin(4) is a double cover of SO(4)
+  area: Spin4
+  file: Lightlike/Spin4/SO4.lean
+  decls: [Lightlike.Spin4.toSO4_surjective, Lightlike.Spin4.toSO4_eq_one_iff, Lightlike.Spin4.isCoveringMap_toSO4Mat]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: lawson-michelsohn-1989, location: "Chapter: I. Clifford Algebras, Spin Groups and Their Representations|10.1515/9781400883912-004"}
+  review: kernel-checked
+  since: 0.2.0
+- id: LL-0011
+  title: Mathlib's Clifford-algebra spin group of ℝ⁴ is Spin(4)
+  area: Spin4
+  file: Lightlike/Spin4/Clifford.lean
+  decls: [Lightlike.Spin4.spinEquiv]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: lawson-michelsohn-1989, location: "Chapter: I. Clifford Algebras, Spin Groups and Their Representations|10.1515/9781400883912-004"}
+  review: kernel-checked
+  since: 0.2.0
+- id: LL-0012
+  title: The representations (j₊, j₋) are all the irreducible representations of Spin(4)
+  area: Spin4
+  file: Lightlike/Spin4/Completeness.lean
+  decls: [Lightlike.Spin4.spin4Rep_complete]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: brocker-tom-dieck-1985, location: "Chapter: Elementary Representation Theory|10.1007/978-3-662-12918-0_2"}
+      - {ref: lawson-michelsohn-1989, location: "Chapter: I. Clifford Algebras, Spin Groups and Their Representations|10.1515/9781400883912-004"}
+  review: kernel-checked
+  since: 0.2.0
+- id: LL-0013
+  title: Clebsch–Gordan decomposition of (j₊, j₋) on the diagonal SU(2)
+  area: Spin4
+  file: Lightlike/Spin4/ClebschGordan.lean
+  decls: [Lightlike.Spin4.spin4_diag_clebschGordan]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: edmonds-1957, location: "Chapter: Chapter 3. The Coupling of Angular Momentum Vectors|10.1515/9781400884186-004"}
+      - {ref: varshalovich-1988, location: "Chapter: Clebsch-Gordan Coefficients and 3jm Symbols|10.1142/9789814415491_0009"}
+  review: kernel-checked
+  since: 0.2.0
+- id: LL-0014
+  title: SL(2,ℂ) is unimodular
+  area: Lorentz
+  file: Lightlike/Lorentz/SL2C.lean
+  decls: [Lightlike.Lorentz.SL2C.haar_isMulRightInvariant]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: knapp-1986, location: "Chapter: Chapter II. Representations of SU(2), SL(2, ℝ) and SL(2, ℂ)|10.1515/9781400883974-005"}
+      - {ref: martin-dussaud-2019, location: "§2.7", check: "Haar"}
+  review: kernel-checked
+  since: 0.2.0
+- id: LL-0015
+  title: The principal series of SL(2,ℂ) is a unitary representation
+  area: Lorentz
+  file: Lightlike/Lorentz/PrincipalSeries.lean
+  decls: [Lightlike.Lorentz.principalSeries_mem_unitary, Lightlike.Lorentz.principalSeries_mul]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: knapp-1986, location: "Chapter: Chapter II. Representations of SU(2), SL(2, ℝ) and SL(2, ℂ)|10.1515/9781400883974-005"}
+      - {ref: martin-dussaud-2019, location: "§7.3", check: "unitary"}
+  review: kernel-checked
+  since: 0.2.0
+- id: LL-0016
+  title: The Casimirs of the principal series (k, ρ) are k² − ρ² − 1 and kρ
+  area: Lorentz
+  file: Lightlike/Lorentz/Homogeneous.lean
+  decls: [Lightlike.Lorentz.casimir1_eq, Lightlike.Lorentz.casimir2_eq]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: martin-dussaud-2019, location: "§7.3.6", check: "Casimir"}
+  review: kernel-checked
+  since: 0.2.0
+- id: LL-0017
+  title: The principal series (k, ρ) restricted to SU(2) is the direct sum of the spins |k| + ℓ, each once
+  area: Lorentz
+  file: Lightlike/Lorentz/SU2Decomposition.lean
+  decls: [Lightlike.Lorentz.principalSeries_isHilbertSum, Lightlike.Lorentz.intertwiner_eq_smul]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: knapp-1986, location: "Chapter: Chapter II. Representations of SU(2), SL(2, ℝ) and SL(2, ℂ)|10.1515/9781400883974-005"}
+      - {ref: martin-dussaud-2019, location: "§7.3.4", check: "SU(2)"}
+  review: kernel-checked
+  since: 0.2.0
+- id: LL-0018
+  title: Orthogonality of the 3j symbols
+  area: Recoupling
+  file: Lightlike/Recoupling/ThreeJ.lean
+  decls: [Lightlike.Recoupling.sum_threeJ_mul_threeJ]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: martin-dussaud-2019, location: "§5.3", check: "orthonormal basis"}
+      - {ref: edmonds-1957, location: "Chapter: Chapter 3. The Coupling of Angular Momentum Vectors|10.1515/9781400884186-004"}
+  review: kernel-checked
+  since: 0.2.0
+- id: LL-0019
+  title: Orthonormal 4-valent intertwiners and orthogonality of the 6j recoupling matrix
+  area: Recoupling
+  file: Lightlike/Recoupling/Intertwiner.lean
+  decls: [Lightlike.Recoupling.sum_fourJ_mul_fourJ, Lightlike.Recoupling.sixJSym_orth_all]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: martin-dussaud-2019, location: "§5.4", check: "direct sum"}
+      - {ref: martin-dussaud-2019, location: "§5.5", check: "6j"}
+  review: kernel-checked
+  since: 0.2.0
+- id: LL-0020
+  title: The contraction of ten 3j symbols over the 4-simplex is the 15j symbol
+  area: Recoupling
+  file: Lightlike/Recoupling/Simplex.lean
+  decls: [Lightlike.Recoupling.fifteenJSimplex_eq]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: martin-dussaud-2019, location: "§5.6", check: "Yutsis"}
+      - {ref: dona-sarno-2018, location: "Section 2", check: "15j"}
+  review: kernel-checked
+  since: 0.2.0
+- id: LL-0021
+  title: Orthogonality of the 15j symbol of the 4-simplex
+  area: Recoupling
+  file: Lightlike/Recoupling/Orthogonality.lean
+  decls: [Lightlike.Recoupling.sum_fifteenJ_mul_fifteenJ]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: martin-dussaud-2019, location: "§5.6", check: "Yutsis"}
+      - {ref: martin-dussaud-2019, location: "§5.5", check: "6j"}
+  review: kernel-checked
+  since: 0.2.0
+- id: LL-0022
+  title: The Biedenharn–Elliott identity for all spins
+  area: PonzanoRegge
+  file: Lightlike/PonzanoRegge/BEZero.lean
+  decls: [Lightlike.Pentagon.biedenharnElliott]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: edmonds-1957, location: "Chapter: Chapter 6. The Construction of Invariants from the Vector-Coupling Coefficients|10.1515/9781400884186-007"}
+      - {ref: varshalovich-1988, location: "Chapter: 6j Symbols and the Racah Coefficients|10.1142/9789814415491_0010"}
+  review: kernel-checked
+  since: 0.1.0
+- id: LL-0023
+  title: Pachner's theorem, stellar version, in all dimensions
+  area: PL
+  file: Lightlike/PL/PachnerMain.lean
+  decls: [Lightlike.PL.SComplex.pachner]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: lickorish-1999, location: "Theorem 4.5", check: "stellar"}
+      - {ref: lickorish-1999, location: "Theorem 5.9", check: "bistellar"}
+  review: kernel-checked
+  since: 0.2.0
+- id: LL-0024
+  title: The vertex links of a closed combinatorial 3-manifold are exactly the triangulated 2-spheres
+  area: PonzanoRegge
+  file: Lightlike/PonzanoRegge/SphereRecognition.lean
+  decls: [Lightlike.PR.isSphere2_iff_isSurfaceSphere]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: moise-1977, location: "Chapter: The classification of compact connected 2-manifolds|10.1007/978-1-4612-9906-6_23"}
+  review: kernel-checked
+  since: 0.2.0
+- id: LL-0025
+  title: The Ponzano–Regge weight and the cutoff amplitude are invariant under the 2-3 move, with the new edge summed over all its spins
+  area: PonzanoRegge
+  file: Lightlike/PonzanoRegge/Unconditional.lean
+  decls: [Lightlike.PR.weight_move23_unconditional, Lightlike.PR.amplitude_move23_unconditional]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: barrett-naish-guzman-2009, location: "§2.2.1", check: "Pachner moves"}
+      - {ref: turaev-1994, location: "Chapter: Chapter VII. Simplicial state sums on 3-manifolds|10.1515/9783110883275-008"}
+  review: kernel-checked
+  since: 0.1.0
+- id: LL-0026
+  title: Under the 1-4 move the Ponzano–Regge weight gains the factor (2j+1)²
+  area: PonzanoRegge
+  file: Lightlike/PonzanoRegge/Move14.lean
+  decls: [Lightlike.PR.weight_move14, Lightlike.PR.amplitude_move14]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: barrett-naish-guzman-2009, location: "§2.2.1", check: "Pachner moves"}
+  review: kernel-checked
+  since: 0.1.0
+- id: LL-0027
+  title: The cutoff gauge-fixed Ponzano–Regge amplitude (spin 0 on the gauge set, finite cutoffs on the other edges) is unchanged along chains of 2-3, 1-4 and recut steps
+  area: PonzanoRegge
+  file: Lightlike/PonzanoRegge/GaugeFixed.lean
+  decls: [Lightlike.PR.amplitudeGF_eqvGen, Lightlike.PR.amplitudeGF_eqvGen_tree]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: freidel-louapre-2004, location: "Section III", check: "gauge"}
+      - {ref: barrett-naish-guzman-2009, location: "§2.2.1", check: "Pachner moves"}
+  review: kernel-checked
+  note: An identity at finite cutoff. Independence of the gauge tree in general and removal of the cutoff are not proven. The gauge set is modelled on Freidel–Louapre's gauge fixing (Section III), with spin 0 on a tree; there is no dual tree. Barrett–Naish-Guzman is cited for the cutoff and the Pachner moves only; they do not read the cutoff as a gauge fixing.
+  since: 0.1.0
+- id: LL-0028
+  title: The gauge-fixed amplitude does not depend on the maximal tree under triangle exchanges
+  area: PonzanoRegge
+  file: Lightlike/PonzanoRegge/GaugeChange.lean
+  decls: [Lightlike.PR.amplitudeGF_exchange, Lightlike.PR.amplitudeGF_eqvGen_exchange]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: freidel-louapre-2004, location: "Section III", check: "gauge"}
+  review: kernel-checked
+  since: 0.2.0
+- id: LL-0029
+  title: The 3D Pachner moves preserve closed combinatorial 3-manifolds
+  area: PonzanoRegge
+  file: Lightlike/PonzanoRegge/Manifold.lean
+  decls: [Lightlike.PR.isCombManifold_move23_iff, Lightlike.PR.isCombManifold_move14_iff, Lightlike.PR.isCombManifold_iff_of_eqvGen]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: lickorish-1999, location: "Definition 2.2", check: "manifold"}
+  review: kernel-checked
+  note: Combinatorial 3-manifold in the sense of Lickorish's Definition 2.2 (every vertex link a combinatorial 2-sphere, for closed complexes). Pachner's theorem (Lickorish's Theorem 5.9) motivates the moves; it is not what is proved here.
+  since: 0.2.0
+- id: LL-0030
+  title: The Ponzano–Regge asymptotic formula for the 6j symbol
+  area: PonzanoRegge
+  file: Lightlike/Asymptotics/SaddleAssembly.lean
+  decls: [Lightlike.Asymptotics.ponzanoReggeFormula, Lightlike.PR.PonzanoReggeFormula]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: roberts-1999, location: "Theorem 1", check: "Asymptotic formula"}
+      - {ref: roberts-1999, location: "Section 6.1", check: "Ponzano"}
+  review: kernel-checked
+  note: The statement `PR.PonzanoReggeFormula` (PonzanoRegge/Asymptotics.lean) is proved without hypotheses by `ponzanoReggeFormula`, through the large-spin asymptotics of the Racah sum (`racahSumAsymptotics`), and checked numerically. It is the Ponzano–Regge form, with edge lengths j + 1/2 in the volume and the angles. That form is equivalent to Roberts' Theorem 1, which uses the unshifted tetrahedron, via his Section 6.1 (Schläfli identity).
+  since: 0.1.0
+- id: LL-0031
+  title: Turaev–Viro invariance under the 2-3 and 1-4 moves at level r
+  area: TuraevViro
+  file: Lightlike/TuraevViro/TuraevViro.lean
+  decls: [Lightlike.TV.turaevViro_move23, Lightlike.TV.turaevViro_move14]
+  status: conditional
+  tier: established
+  source:
+    refs:
+      - {ref: turaev-1994, location: "Chapter: Chapter VII. Simplicial state sums on 3-manifolds|10.1515/9783110883275-008"}
+      - {ref: turaev-1994, location: "Chapter: Chapter VI. 6j-symbols|10.1515/9783110883275-007"}
+  review: kernel-checked
+  hypotheses: [Lightlike.TV.qBiedenharnElliott, Lightlike.TV.qOrthogonality]
+  since: 0.1.0
+- id: LL-0032
+  title: Turaev–Viro invariance under the 2-3 and 1-4 moves at r = 3
+  area: TuraevViro
+  file: Lightlike/TuraevViro/LevelOne.lean
+  decls: [Lightlike.TV.turaevViro3_move23, Lightlike.TV.turaevViro3_move14]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: turaev-1994, location: "Chapter: Chapter VII. Simplicial state sums on 3-manifolds|10.1515/9783110883275-008"}
+  review: kernel-checked
+  since: 0.1.0
+- id: LL-0033
+  title: The saddle points of Racah's sum are complex exactly when the tetrahedron's squared volume is positive
+  area: Asymptotics
+  file: Lightlike/Asymptotics/Saddle.lean
+  decls: [Lightlike.Asymptotics.disc_eq]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: gurau-2008, location: "Theorem 1", check: "saddle"}
+  review: kernel-checked
+  since: 0.2.0
+- id: LL-0034
+  title: At the saddle, the phase of Racah's sum has the Regge action as its imaginary part
+  area: Asymptotics
+  file: Lightlike/Asymptotics/Saddle.lean
+  decls: [Lightlike.Asymptotics.IsEuclid.im_phase_saddle, Lightlike.Asymptotics.IsEuclid.re_phase_saddle, Lightlike.Asymptotics.IsEuclid.d2phase_saddle]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: gurau-2008, location: "Theorem 1", check: "saddle"}
+  review: kernel-checked
+  since: 0.2.0
+- id: LL-0035
+  title: The 4D Pachner move is an involution that preserves the Euler characteristic
+  area: FourD
+  file: Lightlike/FourD/Pachner.lean
+  decls: [Lightlike.FourD.Complex4.move_move, Lightlike.FourD.Complex4.euler4_move]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: lickorish-1999, location: "Theorem 5.9", check: "bistellar"}
+  review: kernel-checked
+  since: 0.2.0
+- id: LL-0036
+  title: 4D Pachner moves preserve orientability
+  area: FourD
+  file: Lightlike/FourD/Orientation.lean
+  decls: [Lightlike.FourD.Complex4.isOrientable_move_iff]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: lickorish-1999, location: "Theorem 5.9", check: "bistellar"}
+  review: kernel-checked
+  since: 0.2.0
+- id: LL-0037
+  title: The EPRL map is equivariant and isometric and satisfies weak simplicity, which only EPRL labels do
+  area: Spin4
+  file: Lightlike/Spin4/EPRL.lean
+  decls: [Lightlike.Spin4.eprlMap_equivariant, Lightlike.Spin4.eprlMap_isometry, Lightlike.Spin4.eprl_weak_simplicity, Lightlike.Spin4.weak_simplicity_iff]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: eprl-2008, location: "Section III", check: "EUCLIDEAN"}
+  review: kernel-checked
+  since: 0.2.0
+- id: LL-0038
+  title: Injectivity of the EPRL map on intertwiners
+  area: Spin4
+  file: Lightlike/Spin4/Fusion.lean
+  decls: [Lightlike.Spin4.eprlIntertwiner_injective_iff]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: kaminski-kisielowski-lewandowski-2011, location: "Abstract", check: "injectivity"}
+  review: kernel-checked
+  since: 0.2.0
+- id: LL-0039
+  title: The EPRL map sends SU(2) coherent states to Spin(4) coherent states
+  area: Spin4
+  file: Lightlike/Spin4/Coherent.lean
+  decls: [Lightlike.Spin4.eprlMap_cohState, Lightlike.Spin4.resolution_cohState, Lightlike.Spin4.resolution_cohState4]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: livine-speziale-2007, location: "Abstract", check: "coherent states"}
+      - {ref: perelomov-1986, location: "Chapter: Coherent States for the Rotation Group of Three-Dimensional Space|10.1007/978-3-642-61629-7_5"}
+  review: kernel-checked
+  since: 0.2.0
+- id: LL-0040
+  title: Coherent intertwiners with non-closing normals are exponentially suppressed
+  area: Spin4
+  file: Lightlike/Spin4/CoherentSuppression.lean
+  decls: [Lightlike.Spin4.normSq_cohInt_le_exp, Lightlike.Spin4.cohInt_suppressed]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: livine-speziale-2007, location: "§3.4", check: "exponentially"}
+      - {ref: conrady-freidel-2009, location: "Abstract", check: "closure constraint"}
+  review: kernel-checked
+  since: 0.2.0
+- id: LL-0041
+  title: The dihedral angles of a tetrahedron computed from its edge lengths are the Euclidean ones
+  area: Regge
+  file: Lightlike/Regge/Dihedral.lean
+  decls: [Lightlike.Regge.dihedral_dist]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: dittrich-freidel-speziale-2007, location: "eq. (6)", check: "dihedral angles"}
+  review: kernel-checked
+  since: 0.2.0
+- id: LL-0042
+  title: Schläfli's identity for a tetrahedron
+  area: Regge
+  file: Lightlike/Regge/Schlaefli.lean
+  decls: [Lightlike.Regge.schlaefli]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: dittrich-freidel-speziale-2007, location: "eq. (8)", check: "Schläfli identity"}
+  review: kernel-checked
+  since: 0.2.0
+- id: LL-0043
+  title: The Regge equations are the vanishing of the interior deficit angles, in 3D
+  area: Regge
+  file: Lightlike/Regge/ReggeEquations.lean
+  decls: [Lightlike.Regge.reggeAction_stationary_iff]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: dittrich-freidel-speziale-2007, location: "eq. (1)", check: "deficit angles"}
+      - {ref: dittrich-freidel-speziale-2007, location: "eq. (7)", check: "dihedral angles"}
+  review: kernel-checked
+  since: 0.2.0
+- id: LL-0044
+  title: The Regge equations are the vanishing of the interior deficit angles, in 4D
+  area: Regge
+  file: Lightlike/Regge/D4/ReggeEquations.lean
+  decls: [Lightlike.Regge4.reggeAction4_stationary_iff]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: dittrich-freidel-speziale-2007, location: "eq. (1)", check: "deficit angles"}
+      - {ref: dittrich-freidel-speziale-2007, location: "eq. (7)", check: "dihedral angles"}
+      - {ref: brw-1999, location: "eq. (6)", check: "Jacobian"}
+  review: kernel-checked
+  since: 0.2.0
+- id: LL-0045
+  title: Expansion of the squared geodesic distance to fifth order, uniformly on compact sets
+  area: Regge
+  file: Lightlike/Regge/Geodesic/DistExpansion.lean
+  decls: [Lightlike.Geodesic.IsRiemMetric.dist_sq_expansion, Lightlike.Geodesic.IsRiemMetric.dist_sq_expansion_midpoint]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: brewin-2009, location: "Section 9", check: "geodesic"}
+  review: kernel-checked
+  since: 0.2.0
+- id: LL-0046
+  title: The Lorentzian EPRL vertex amplitude is finite for every Immirzi parameter, all spins and every coefficient array
+  area: Lorentz
+  file: Lightlike/Lorentz/EPRL.lean
+  decls: [Lightlike.Lorentz.integrable_eprlIntegrand, Lightlike.Lorentz.lintegral_enorm_eprlIntegrand_lt_top, Lightlike.Lorentz.eprlVertex_eq_integral, Lightlike.Lorentz.integrable_linkProd_inner]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: eprl-2008, location: "Abstract", check: "Lorentzian"}
+      - {ref: engle-pereira-2009, location: "Section 4", check: "finiteness"}
+  review: kernel-checked
+  note: Labels k = j and ρ = γ(j + 1), in Ding and Rovelli's form; Engle–Pereira's ρ = γj in this normalisation (ρ = 2γj in theirs). One of the five integrations is dropped (V₄ = 1), as in Engle–Pereira. The coefficients are arbitrary arrays, contracted without the ε twist on the bra legs, so invariant intertwiners are covered as special arrays, but equality with Engle–Pereira's amplitude on invariant intertwiners is not proven. The proof uses only the decay of the vectors, so finiteness holds for every choice of labels. Non-vacuity is shown at spin 0 for γ in some neighbourhood of 0. The amplitude is defined up to the normalisation of the Haar measure.
+  since: unreleased
+- id: LL-0047
+  title: The large-spin asymptotic formula of the Euclidean EPRL vertex amplitude in coherent boundary states
+  area: Asymptotics
+  file: Lightlike/Asymptotics/EPRL/Formula.lean
+  decls: [Lightlike.Asymptotics.EPRL.Coh15jAsymptoticFormula, Lightlike.Asymptotics.EPRL.EPRLAsymptoticFormula]
+  status: stated
+  tier: frontier
+  source:
+    refs:
+      - {ref: bdfgh-2009, location: "Section 4", check: "Asymptotic formula"}
+  review: kernel-checked
+  note: The proof target, stated as two propositions; their proofs are open. For a nondegenerate 4-simplex, spins proportional to its triangle areas with an even spin sum at every node, and a nonsingular Hessian at both critical points, the coherent 15j integral over SU(2)^5 in the Regge boundary state is (2π/λ)^6 2^4 (4π)^-8 (e^(iλS) A₊ + e^(-iλS) A₋) + O(λ^-7), with S the Regge action Σ (n_e/2) Θ_e (Coh15jAsymptoticFormula). The EPRL form, for 0 < γ < 1, has four terms with phases ±S and ±γS and remainder O(λ^-13) (EPRLAsymptoticFormula); it follows from two instances of the 15j form by Fubini, as in Barrett–Fairbairn–Hellmann. Equality of the coherent integral with eprlVertex on Livine–Speziale intertwiners is not proven, and the nonsingular Hessian is a hypothesis, as in Barrett et al. The hypotheses hold at the regular 4-simplex (regular_coh15j_hyps, regular_eprl_hyps). Checked numerically against the exact integral at the regular 4-simplex.
+  since: unreleased

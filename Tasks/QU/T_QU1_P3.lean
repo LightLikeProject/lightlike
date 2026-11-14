@@ -1,0 +1,47 @@
+import Lightlike.TuraevViro.TuraevViro
+
+/-!
+# Task T-QU1-P3
+
+q-orthogonality of the quantum 6j symbols at r = 5.
+
+The statement is `Lightlike.TV.qOrthogonality_five`, at the end of this file. Replace its `sorry` by
+a proof and change nothing else in the file: the proof-task check rejects any other change
+(CONTRIBUTING.md).
+
+Hint. As T-QU1-P1 with colours `Fin 4`; sin(π/5) involves the golden ratio, so work in ℚ(√5).
+
+## What the statement uses
+
+Definitions the statement names (without the `Lightlike.` prefix), by file:
+
+* `Lightlike/TuraevViro/TuraevViro.lean`: `TV.qOrthogonality`
+
+Lemmas about them, which a proof may use:
+
+* `TV.turaevViro_move14` (`Lightlike/TuraevViro/TuraevViro.lean`)
+* `TV.qOrthogonality_three` (`Lightlike/TuraevViro/LevelOne.lean`)
+
+Everything they depend on in one block:
+
+    scripts/context-pack Lightlike.TV.qOrthogonality_five
+
+## References
+
+Milestone QU1 (q-deformed Biedenharn–Elliott identity and orthogonality for `r ≥ 4`), ROADMAP
+section "Quantum groups and state-sum TQFTs".
+Source: V. G. Turaev, Quantum Invariants of Knots and 3-Manifolds, de Gruyter Studies in Mathematics
+18 (1994), Chapter VI. 6j-symbols (`turaev-1994` in docs/tasks/sources.yaml).
+Lock and dependencies: `docs/tasks/tasks.yaml`. This header is written by `scripts/tasks.py deps`
+from the plan, the sources and the library.
+-/
+
+open Finset Lightlike.Pentagon Lightlike.PR
+
+namespace Lightlike.TV
+
+/-- **q-orthogonality at `r = 5`.** -/
+theorem qOrthogonality_five : qOrthogonality (r := 5) (by norm_num) := by
+  sorry
+
+end Lightlike.TV

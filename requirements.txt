@@ -1,0 +1,11 @@
+# Package versions for the scripts in scripts/, for Python 3.9 to 3.12 (numpy and scipy at these
+# versions have no wheels for 3.13 or later). Install with
+#   python3 -m venv .venv && . .venv/bin/activate && pip install -r requirements.txt
+# and, in that environment, run the cross-checks with  python3 scripts/run_python_checks.py --all
+# The checks pass with these versions on Python 3.9 (as in CI) and 3.12 (as in Codespaces);
+# every package has wheels for Linux and macOS on both.
+numpy==2.0.2
+mpmath==1.3.0
+sympy==1.14.0
+scipy==1.13.1
+pyyaml==6.0.3

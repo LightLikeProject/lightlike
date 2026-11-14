@@ -1,0 +1,143 @@
+#!/usr/bin/env python3
+"""Print everything needed to work on one declaration as a single paste-able text block.
+
+    scripts/context-pack Lightlike.PL.SComplex.pachner
+    scripts/context-pack Lightlike.PL.SComplex.IsClosedCombManifold.dehnSommerville --use Lightlike.PL.SComplex.IsClosedCombManifold.two_mul_card_eq
+    scripts/context-pack NAME --max-chars 20000 --out pack.txt
+    scripts/context-pack --batch packs.in --out-dir DIR     (one Lean run for many packs)
+
+The block holds: the pinned Lean, Mathlib and Physlib versions; the declaration's source; the
+source of every project-local definition it depends on, transitively and nearest first (lemmas it
+depends on appear with their statements only); and the statements of project lemmas about the same
+definitions. Above `--max-chars` (default 40000) the furthest definitions and the lowest-ranked
+lemmas are dropped, and a closing note lists each omitted name with its file and line.
+
+Needs the built library and task library (`lake build` and `lake build Tasks`): the data
+comes from `scripts/ContextPack.lean`, run with `lake env lean`, which takes a few minutes because
+it loads the whole library. Set LQG_BUILD_WRAPPER to a command to prefix it with (for example a
+build lock). `--from-json FILE` renders packs already extracted, without running Lean."""
+import argparse, json, os, pathlib, shlex, subprocess, sys, tempfile
+
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "scripts"))
+import leansrc  # noqa: E402
+
+DEFAULT_MAX = 40000
+
+
+def versions() -> str:
+    lean = (ROOT / "lean-toolchain").read_text().strip().split(":")[-1]
+    pk = {p["name"]: p for p in json.loads((ROOT / "lake-manifest.json").read_text())["packages"]}
+    ml = pk["mathlib"].get("inputRev") or pk["mathlib"]["rev"][:7]
+    return f"Lean {lean}, Mathlib {ml}, Physlib {pk['Physlib']['rev'][:7]}"
+
+
+def extract(requests: list[tuple[str, list[str]]]) -> list[dict]:
+    """Run ContextPack.lean once for all requests."""
+    with tempfile.TemporaryDirectory() as d:
+        inp, out = pathlib.Path(d) / "in.txt", pathlib.Path(d) / "out.json"
+        inp.write_text("".join(" ".join([n, *u]) + "\n" for n, u in requests))
+        env = dict(os.environ, CONTEXT_PACK_IN=str(inp), CONTEXT_PACK_OUT=str(out))
+        cmd = shlex.split(os.environ.get("LQG_BUILD_WRAPPER", "")) + [
+            "lake", "env", "lean", "scripts/ContextPack.lean"]
+        r = subprocess.run(cmd, cwd=ROOT, env=env, capture_output=True, text=True)
+        if r.returncode != 0 or not out.exists():
+            sys.exit(f"context-pack: Lean failed\n{r.stdout[-3000:]}{r.stderr[-3000:]}")
+        return json.loads(out.read_text())
+
+
+def dedupe(deps: list[dict]) -> list[dict]:
+    """Drop entries whose source lies inside an earlier entry (structure fields, constructors)."""
+    kept, spans = [], []
+    for d in deps:
+        lo = d["line"]
+        hi = lo + d["source"].count("\n")
+        if any(f == d["file"] and a <= lo and hi <= b for f, a, b in spans):
+            continue
+        spans.append((d["file"], lo, hi))
+        kept.append(d)
+    return kept
+
+
+def entry(d: dict) -> str:
+    src = d["source"] if d["kind"] != "theorem" else leansrc.statement_only(d["source"])
+    return f"-- {d['name']} ({d['file']}:{d['line']})\n{src.rstrip()}\n"
+
+
+def lemma_entry(l: dict) -> str:
+    return f"-- {l['file']}:{l['line']}\ntheorem {l['signature']}\n"
+
+
+def render(p: dict, max_chars: int = DEFAULT_MAX, imports: str = "import Lightlike") -> str:
+    head = (f"Context pack for {p['decl']} ({p['file']}:{p['line']})\n"
+            f"Versions: {versions()}. The file starts with: {imports}\n\n"
+            f"## The declaration\n\n```lean\n{p['source'].rstrip()}\n```\n")
+    blocks = [("Project definitions it depends on, nearest first", entry(d), d)
+              for d in dedupe(p["deps"])]
+    blocks += [("Project lemmas that may help (statements only)", lemma_entry(l), l)
+               for l in p["lemmas"]]
+    reserve = 1500
+    out, used, omitted, section = [head], len(head), [], None
+    for title, text, d in blocks:
+        opener = "" if title == section else ("```\n" if section else "") + f"\n## {title}\n\n```lean\n"
+        if used + len(opener) + len(text) + 1 + 4 + reserve > max_chars:
+            omitted.append(d)
+            continue
+        out.append(opener + text + "\n")
+        used += len(opener) + len(text) + 1
+        section = title
+    if section is not None:
+        out.append("```\n")
+        used += 4
+    if omitted:
+        names = [f"{d['name']} ({d['file']}:{d['line']})" for d in omitted]
+        k = len(names)
+        while True:
+            shown = ", ".join(names[:k]) + (f", and {len(names) - k} more" if k < len(names) else "")
+            note = (f"\n## Truncated\n\n{len(omitted)} entries were left out to keep this pack under "
+                    f"{max_chars} characters: {shown}. Their sources are at the locations given.\n")
+            if used + len(note) <= max_chars or k == 0:
+                break
+            k -= 1
+        out.append(note)
+    return "".join(out)
+
+
+def main(argv=None) -> int:
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("decl", nargs="?")
+    ap.add_argument("--use", action="append", default=[], help="a statement the work may rely on")
+    ap.add_argument("--max-chars", type=int, default=DEFAULT_MAX)
+    ap.add_argument("--json", action="store_true", help="print the extracted data instead")
+    ap.add_argument("--out", help="write to this file instead of standard output")
+    ap.add_argument("--batch", help="file with one line per pack: <decl> [<use> ...]")
+    ap.add_argument("--out-dir", help="with --batch: write <decl>.txt per pack here")
+    ap.add_argument("--from-json", help="render packs from this JSON file instead of running Lean")
+    a = ap.parse_args(argv)
+    if a.batch:
+        reqs = [(l.split()[0], l.split()[1:]) for l in pathlib.Path(a.batch).read_text().splitlines() if l.split()]
+    elif a.decl:
+        reqs = [(a.decl, a.use)]
+    elif not a.from_json:
+        ap.error("give a declaration, --batch or --from-json")
+    packs = json.loads(pathlib.Path(a.from_json).read_text()) if a.from_json else extract(reqs)
+    if a.json:
+        text = json.dumps(packs, indent=1, ensure_ascii=False)
+    elif a.out_dir:
+        d = pathlib.Path(a.out_dir)
+        d.mkdir(parents=True, exist_ok=True)
+        for p in packs:
+            (d / f"{p['decl']}.txt").write_text(render(p, a.max_chars))
+        print(f"context-pack: wrote {len(packs)} packs to {d}")
+        return 0
+    else:
+        text = "\n\n".join(render(p, a.max_chars) for p in packs)
+    if a.out:
+        pathlib.Path(a.out).write_text(text)
+    else:
+        print(text)
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

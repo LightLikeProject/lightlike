@@ -1,0 +1,40 @@
+name: Proof task
+
+# Checks that a proof-task pull request changes only the proof of its task's declaration
+# (scripts/proof_task_check.py). It applies to pull requests labeled `proof-task`, or whose body
+# has a line `Task: T-...-P<n>`.
+#
+# When it runs: never while the repository is private (the job condition below), so it uses no
+# Actions minutes now. Once the repository is public it runs on every such pull request. It runs
+# no Lean, so it takes seconds; the build itself is the CI workflow.
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled, edited]
+
+permissions:
+  contents: read
+
+jobs:
+  statement-unchanged:
+    if: >-
+      github.event.repository.private == false &&
+      (contains(github.event.pull_request.labels.*.name, 'proof-task') ||
+       contains(github.event.pull_request.body, 'Task: T-'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: python3 -m pip install pyyaml
+      - name: Only the proof body of the task's declaration changed
+        env:
+          BODY: ${{ github.event.pull_request.body }}
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          printf '%s' "$BODY" > "$RUNNER_TEMP/body.txt"
+          python3 scripts/proof_task_check.py --base "$BASE" --head "$HEAD" --body-file "$RUNNER_TEMP/body.txt"

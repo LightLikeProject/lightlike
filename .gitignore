@@ -1,0 +1,11 @@
+/.lake
+*.olean
+.DS_Store
+/.venv
+__pycache__/
+/docbuild/.lake
+# Written by `scripts/tasks.py drafts`
+/task-drafts
+# Written by the local checks (the build log for scripts/ci_check.py; the record of scripts/gate.py)
+/build.log
+/.gate

@@ -1,0 +1,174 @@
+# SL(2,ℂ) and its unitary principal series
+
+## Abstract (Alpha)
+
+This API develops the harmonic analysis of SL(2,ℂ), the double cover of the restricted Lorentz
+group, that Lorentzian spin foam models need: its Haar measure, the unitary principal series
+representations labelled by a half-integer `k` and a real `ρ`, their Casimir operators, and the
+decomposition of each principal series representation into irreducible representations of the
+subgroup SU(2), the Plancherel formula of SL(2,ℂ) in its radial and full forms, and the
+Lorentzian EPRL vertex amplitude with a proof that it is finite. For SL(2,ℝ) it gives the Haar
+measure in the Iwasawa chart, the principal series on `L²(ℝ)` and the holomorphic discrete
+series on the weighted Bergman spaces as strongly continuous unitary representations, and the
+Casimir value of each.
+
+## Content (Alpha)
+
+SL(2,ℂ) is perfect, so its modular character is trivial and its left Haar measure is also right
+invariant [1]. The principal series representation `(k, ρ)` acts on `L²(ℂ)` through Möbius
+transformations and a multiplier, in the convention of Rühl {1} and of Barrett and collaborators
+{2}. Each operator is unitary, the assignment is a group homomorphism [2], and the action is
+jointly continuous [3].
+
+On homogeneous functions on `ℂ²` of the matching degree, the two Casimir operators act as the
+scalars `k² − ρ² − 1` and `kρ` [4].
+
+Restricted to SU(2), the representation `(k, ρ)` is the Hilbert direct sum of the spins `|k| + ℓ`
+for `ℓ ∈ ℕ`, each occurring exactly once [5].
+
+An explicit Haar measure is the image of `|d|⁻² d⁶(b, c, d)` under the Bruhat chart
+`(b, c, d) ↦ [[(1 + bc)/d, b], [c, d]]` [6]. Every element is `u diag(eʳ⁄², e⁻ʳ⁄²) v` with
+`u, v ∈ SU(2)` [7]. Here `‖g‖² / 2 = cosh r`, with `r` the hyperbolic distance from the origin
+to `g · o`, and the integral of a function of `t = cosh r` is `4π³ ∫_{t > 1} √(t² − 1) (·) dt`
+[8]. The SU(2)-invariant vector of the representation `(0, ρ)` gives the spherical function
+`sin(ρr) / (ρ sinh r)` [9], and for radial functions
+`∫ |f|² dg = (2π⁴)⁻¹ ∫_{ρ > 0} ρ² |f̂(ρ)|² dρ` [10].
+
+The full Plancherel formula {3} {4} is proved, but its normalization constant has not yet been
+compared with the literature, so it is not listed in `docs/RESULTS.md`. It is stated with the
+principal series `π_{n,ρ}` labelled by `n ∈ ℤ` and `ρ ∈ ℝ` (`n = 2k`), for functions that are
+restrictions of smooth compactly supported functions on 2 × 2 complex arrays. Its ingredients are a
+second chart adapted to the action on a fixed point `z` [11], derivatives of parametric integrals
+[12], the integral kernel of `π_{n,ρ}(f)` on `L²(ℂ)` and the diagonal of the kernel of `f* ∗ f`
+[13], and the SU(2) conjugation average `F♮` [14]. Let `Φ(μ)` be the integral of `F` over the upper
+triangular matrices with diagonal `(μ, μ⁻¹)`. Harish-Chandra's limit formula {5} gives `∂ₜ² Φ(eᵗ) +
+∂ₜ² Φ(eⁱᵗ) = −8π F(1)` at `t = 0` for SU(2)-invariant `F` [15], and the trace of `π_{n,ρ}(F)` is `π`
+times a Mellin transform `M(n, ρ)` of `Φ` for `F♮` [16]. Fourier inversion against the density gives
+`Σ_n ∫ (n² + 4ρ²) M(n, ρ) dρ = 16π³ F(1)` [17], hence the trace form `Σ_n ∫ (n² + 4ρ²) tr π_{n,ρ}(F)
+dρ = 16π⁴ F(1)` and the Hilbert–Schmidt form `Σ_n ∫ (n² + 4ρ²) ‖π_{n,ρ}(f)‖²_HS dρ = 16π⁴ ∫ |f|² dg`
+[18]. Without the density the sum of the traces is `2π³ Φ(1)` for `F♮`, and wrong densities or
+constants give false statements [19]. In the labels `σ = 2ρ` of Perez and Rovelli {10} and with
+their measure, which is `haarC`, the constant of the trace form is `1/(32π⁴)`, and with Rühl's
+measure `(2π)⁻⁴ haarC` it is `1/2` {1} {11} [18]; the constant `1/(8π⁴)` of {10} gives four times
+`F(1)` [19]. The operator `π_{n,ρ}(f) = ∫ f(g) π_{n,ρ}(g) dg`, a Bochner integral in `L²(ℂ)`, acts
+by the kernel `K_f`, so the Hilbert–Schmidt form is a statement about these operators, with
+`‖π_{n,ρ}(f)‖²_HS` taken as `∫∫ |K_f|²`; that this double integral is the Hilbert–Schmidt norm is
+not formalised [25]. An odd test function, which is not bi-SU(2)-invariant, has kernels of parity
+`(−1)^{n+1}`, so its even terms vanish and some odd `n` contributes [19].
+
+Every matrix coefficient between vectors with a pointwise bound `C (1 + |z|²)⁻¹` is bounded by
+`C² I(g)`, where `I(g) = π r / sinh r` is the spherical kernel at `ρ = 0`; the SU(2)-adapted
+vectors have such bounds. `I` lies in `L^{5/2}` of the Haar measure but not in `L²` [20]. The
+EPRL vertex amplitude {6} {7} on the 4-simplex is an integral over `V₀, …, V₃ ∈ SL(2,ℂ)` with
+`V₄ = 1` of a product over the ten links `ab` of matrix coefficients of
+`π_{k,ρ}(V_a⁻¹ V_b)`; Hölder's inequality on the five stars bounds the integral of the product of
+the ten kernels by `(∫ I^{5/2})⁴` [21]. The amplitude uses the labels `k = j`, `ρ = γ(j + 1)`
+{8} and the vectors of the lowest SU(2) spin `j`, contracted with arbitrary intertwiner
+coefficients as they stand, without the `ε` twist of the bra legs that the EPRL contraction of
+invariant intertwiners uses, so it is not claimed to equal their amplitude; it is finite for every
+`γ`, every spin assignment and all coefficients [22], the form of the finiteness theorem of Engle
+and Pereira {7}, whose label `(n, ρ) = (2j, 2γj)` is `ρ = γj` here. For spins zero it is the
+integral of ten
+spherical functions, the Lorentzian Barrett–Crane kernel {9}; it is nonzero for `γ` near `0`;
+without the gauge fixing `V₄ = 1` the dominating integral is infinite; and the second Casimir on
+the EPRL vectors is `γ j(j + 1)`, which holds exactly for `ρ = γ(j + 1)` and so not for the label
+`ρ = γj` [23]. Physlib's covering
+map, reindexed to `Fin 4` with the signature `(−,+,+,+)`, preserves the project's `η`, and the
+link variable `cosh r_ab` of the amplitude is `−η(N_a, N_b)` for the normals `N_a = Λ(V_a) e₀`,
+unit future timelike vectors [24].
+
+For SL(2,ℝ) {11}: the group is perfect, so its modular character is trivial, and the measure of
+the Iwasawa chart is a multiple of Mathlib's Haar measure [26]. Weighted composition operators
+`f ↦ c · (f ∘ T)` on `L²` come with criteria for unitarity and strong continuity [27]. The
+principal series acts unitarily on `L²(ℝ)`, jointly continuously in `(g, f)` [28]. The holomorphic
+discrete series acts unitarily on the weighted Bergman space `A²_n` of the upper half-plane, a
+closed subspace that the action preserves and that is nonzero for `n ≥ 2` [29] [30]. The Casimir
+operator is `-(1 + ν²)/4` on the principal series and `(n/2)(n/2 - 1)` on holomorphic functions,
+attained by the nonzero vector `lowestVec n` of `A²_n` [31].
+
+The irreducibility of the principal series is not yet formalized. [TODO]
+
+## Lean References
+
+1. Lightlike/Lorentz/SL2C.lean - `Lorentz.SL2C.isPerfect`,
+   `Lorentz.SL2C.modularCharacter_eq_one`, `Lorentz.SL2C.haar_isMulRightInvariant`
+2. Lightlike/Lorentz/PrincipalSeries.lean - `Lorentz.principalSeries`,
+   `Lorentz.principalSeries_mem_unitary`, `Lorentz.principalSeries_mul`
+3. Lightlike/Lorentz/Continuity.lean - `Lorentz.continuous_principalSeries_action`
+4. Lightlike/Lorentz/Homogeneous.lean - `Lorentz.casimir1_eq`, `Lorentz.casimir2_eq`
+5. Lightlike/Lorentz/SU2Decomposition.lean - `Lorentz.principalSeries_suV`,
+   `Lorentz.principalSeries_isHilbertSum`, `Lorentz.intertwiner_eq_smul`,
+   `Lorentz.intertwiner_eq_zero`
+6. Lightlike/Lorentz/HaarChart.lean - `Lorentz.haarC`, `Lorentz.isHaarMeasure_haarC`
+7. Lightlike/Lorentz/Cartan.lean - `Lorentz.exists_cartan`
+8. Lightlike/Lorentz/Radial.lean - `Lorentz.coshDist`, `Lorentz.lintegral_coshDist`
+9. Lightlike/Lorentz/Spherical.lean - `Lorentz.sphVec`, `Lorentz.inner_sphVec_eq_sphericalFn`
+10. Lightlike/Lorentz/SphericalPlancherel.lean - `Lorentz.spherical_plancherel`
+11. Lightlike/Lorentz/FixedChart.lean - `Lorentz.fixChart`, `Lorentz.haarC_eq_map_fixChart`
+12. Lightlike/Lorentz/ParamIntegral.lean - `Lorentz.contDiff_parametric_integral_infty`
+13. Lightlike/Lorentz/PlancherelKernel.lean - `Lorentz.psKernel`,
+    `Lorentz.psKernel_selfConv_diag`
+14. Lightlike/Lorentz/SU2Average.lean - `Lorentz.su2Avg`, `Lorentz.su2Avg_eq_self`
+15. Lightlike/Lorentz/LimitFormula.lean - `Lorentz.orbInt`, `Lorentz.limit_formula`
+16. Lightlike/Lorentz/PlancherelTrace.lean - `Lorentz.integral_psKernel_diag`
+17. Lightlike/Lorentz/PlancherelFourier.lean - `Lorentz.hasSum_density_orbInt`
+18. Lightlike/Lorentz/Plancherel.lean - `Lorentz.plancherel_trace`, `Lorentz.plancherel`
+    `Lorentz.plancherel_trace_perezRovelli`, `Lorentz.plancherel_trace_ruhl`,
+    `Lorentz.mult_eq_prMult`, `Lorentz.integral_haarC_eq_bruhat`
+19. Lightlike/Lorentz/PlancherelTests.lean - `Lorentz.hasSum_trace_flat`,
+    `Lorentz.testLF_wrong_density`, `Lorentz.testLF_wrong_constant`,
+    `Lorentz.testLF_perezRovelli_constant`, `Lorentz.psKernel_odd`, `Lorentz.testOdd_plancherel`
+20. Lightlike/Lorentz/KernelBound.lean - `Lorentz.norm_inner_principalSeries_le`,
+    `Lorentz.exists_decaysWith_suV`, `Lorentz.lintegral_kernelE_rpow_lt_top`,
+    `Lorentz.lintegral_kernelE_sq_eq_top`
+21. Lightlike/Lorentz/StarBound.lean - `Lorentz.gauge`, `Lorentz.lintegral_star`,
+    `Lorentz.lintegral_linkProd_le`, `Lorentz.lintegral_linkProd_kernelE_lt_top`
+22. Lightlike/Lorentz/EPRL.lean - `Lorentz.eprlVec`, `Lorentz.eprlVertex`,
+    `Lorentz.integrable_linkProd_inner`, `Lorentz.integrable_eprlIntegrand`,
+    `Lorentz.eprlVertex_eq_integral`
+23. Lightlike/Lorentz/EPRLTests.lean - `Lorentz.eprlVertex_spinZero`,
+    `Lorentz.exists_pos_eprlVertex_spinZero_ne_zero`, `Lorentz.lintegral_linkProd_ungauged_eq_top`,
+    `Lorentz.casimir2_eprlVec_fun`, `Lorentz.casimir2_hvec_eq_iff`,
+    `Lorentz.casimir2_wrong_label_ne`
+24. Lightlike/Lorentz/Signature.lean - `Lorentz.lorentzMat`,
+    `Lorentz.lorentzMat_transpose_mul_eta_mul_self`, `Lorentz.coshDist_inv_mul`
+25. Lightlike/Lorentz/PlancherelOperator.lean - `Lorentz.piOp`, `Lorentz.inner_piOp`,
+    `Lorentz.coeFn_piOp`, `Lorentz.plancherel_piOp`
+26. Lightlike/Lorentz/SL2R.lean - `Lorentz.SL2R.isPerfect`,
+    `Lorentz.SL2R.modularCharacter_eq_one`, `Lorentz.SL2R.exists_iwasawa`,
+    `Lorentz.SL2R.haarR_eq_smul`, `Lorentz.SL2R.integral_haarR`
+27. Lightlike/Lorentz/WeightedComp.lean - `Lorentz.weightedCompL2`,
+    `Lorentz.mem_unitary_of_inner`, `Lorentz.continuous_of_dense_coeff`,
+    `Lorentz.continuous_action_of_norm`
+28. Lightlike/Lorentz/SL2RPrincipal.lean - `Lorentz.SL2R.principalSeries`,
+    `Lorentz.SL2R.principalSeries_mem_unitary`, `Lorentz.SL2R.continuous_principalSeries_action`
+29. Lightlike/Lorentz/SL2RDiscrete.lean - `Lorentz.SL2R.discreteAction`,
+    `Lorentz.SL2R.discreteAction_mem_unitary`, `Lorentz.SL2R.discreteAction_mem_holoSubmodule`
+30. Lightlike/Lorentz/SL2RBergman.lean - `Lorentz.SL2R.isClosed_holoSubmodule`,
+    `Lorentz.SL2R.discreteSeries`, `Lorentz.SL2R.discreteSeries_mem_unitary`,
+    `Lorentz.SL2R.holoSubmodule_ne_bot`
+31. Lightlike/Lorentz/SL2RCasimir.lean - `Lorentz.SL2R.casimir_principal`,
+    `Lorentz.SL2R.commutator_principal`, `Lorentz.SL2R.casimir_discrete`,
+    `Lorentz.SL2R.casimir_lowestVec`
+
+## References
+
+1. W. Rühl, *The Lorentz Group and Harmonic Analysis*, W. A. Benjamin, 1970.
+2. J. W. Barrett, R. J. Dowdall, W. J. Fairbairn, F. Hellmann, R. Pereira, Lorentzian spin foam
+   amplitudes: graphical calculus and asymptotics, *Class. Quantum Grav.* 27 (2010) 165009.
+3. I. M. Gel'fand, M. A. Naimark, Unitary representations of the Lorentz group, *Izv. Akad. Nauk
+   SSSR Ser. Mat.* 11 (1947) 411–504.
+4. M. A. Naimark, *Linear Representations of the Lorentz Group*, Pergamon, 1964.
+5. A. W. Knapp, *Representation Theory of Semisimple Groups*, Princeton University Press, 1986.
+6. J. Engle, E. Livine, R. Pereira, C. Rovelli, LQG vertex with finite Immirzi parameter,
+   *Nucl. Phys. B* 799 (2008) 136–149, arXiv:0711.0146.
+7. J. Engle, R. Pereira, Regularization and finiteness of the Lorentzian loop quantum gravity
+   vertices, *Phys. Rev. D* 79 (2009) 084034, arXiv:0805.4696.
+8. Y. Ding, C. Rovelli, Physical boundary Hilbert space and volume operator in the Lorentzian
+   new spin-foam theory, arXiv:1006.1294 (2010).
+9. J. W. Barrett, L. Crane, A Lorentzian signature model for quantum general relativity,
+   *Class. Quantum Grav.* 17 (2000) 3101, arXiv:gr-qc/9904025.
+10. A. Perez, C. Rovelli, 3+1 spinfoam model of quantum gravity with spacelike and timelike
+    components, arXiv:gr-qc/0011037 (2000), App. A.
+11. J. D. Simão, Investigations on Lorentzian spin-foams and semiclassical space-times, PhD
+    thesis, Friedrich-Schiller-Universität Jena, 2024, arXiv:2405.01360, App. B.

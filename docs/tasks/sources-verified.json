@@ -1,0 +1,3660 @@
+{
+ "aas-2012": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "A Distinguished Vacuum State for a Quantum Field in a Curved Spacetime: Formalism, Features, and Cosmology",
+  "locations": {
+   "Section 3": {
+    "verified": true,
+    "snippet": "3 The S-J Vacuum 5 4 Consistency with Known Vacua: Static Spacetimes 10 5 Application to Non-stationa",
+    "why": null
+   }
+  },
+  "citations": 73,
+  "citations_via": "Semantic Scholar"
+ },
+ "adamo-2018": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Lectures on twistor theory",
+  "locations": {
+   "eq. (1.23)": {
+    "verified": true,
+    "snippet": "(1.23) These equations are known as the incidence relations – they are the root of everything that is interesting about twistor theory. In more formal treatments of twistor theory, this relationship is often presented in",
+    "why": null
+   }
+  },
+  "citations": 89,
+  "citations_via": "Semantic Scholar"
+ },
+ "adj-1997": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "Quantum Geometry A Statistical Field Theory Approach",
+  "locations": {
+   "Chapter: Gravity in higher dimensions|10.1017/CBO9780511524417.008": {
+    "verified": true,
+    "snippet": "Gravity in higher dimensions ",
+    "why": null
+   },
+   "Chapter: Two-dimensional gravity|10.1017/CBO9780511524417.006": {
+    "verified": true,
+    "snippet": "Two-dimensional gravity ",
+    "why": null
+   }
+  },
+  "citations": 247,
+  "citations_via": "OpenAlex"
+ },
+ "adm-1962": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "The Dynamics of General Relativity",
+  "locations": {
+   "Section 4": {
+    "verified": true,
+    "snippet": "4 Gµ 0 ,0 = 4Gµ i ;i − 4Gµ ν 4Γν 0 0 + 4Gν 0 4Γµ ν 0 . (3.16) Thus, by virtue of the dynamic equations 4Gij = 0 (and consequently of their spatial derivativ",
+    "why": null
+   }
+  },
+  "citations": 1809,
+  "citations_via": "Semantic Scholar"
+ },
+ "agz-2009": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "An Introduction to Random Matrices ",
+  "locations": {
+   "Chapter: Real and complex Wigner matrices|10.1017/CBO9780511801334.003": {
+    "verified": true,
+    "snippet": "Real and complex Wigner matrices ",
+    "why": null
+   }
+  },
+  "citations": 1414,
+  "citations_via": "OpenAlex"
+ },
+ "almheiri-dong-harlow-2015": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Bulk Locality and Quantum Error Correction in AdS/CFT",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "we point out a connection between the emergence of bulk locality in ads cft and the theory of quantum error correction bulk notions such as bogoliubov transformations location in the radial direction ",
+    "why": null
+   }
+  },
+  "citations": 919,
+  "citations_via": "OpenAlex"
+ },
+ "ambjorn-jurkiewicz-loll-2001": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Dynamically Triangulating Lorentzian Quantum Gravity",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "fruitful ideas on how to quantize gravity are few and far between in this paper we give a complete description of a recently introduced non perturbative gravitational path integral whose continuum lim",
+    "why": null
+   }
+  },
+  "citations": 343,
+  "citations_via": "Semantic Scholar"
+ },
+ "ambjorn-loll-1998": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Non-perturbative Lorentzian Quantum Gravity, Causality and Topology Change",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "we formulate a non perturbative lattice model of two dimensional lorentzian quantum gravity by performing the path integral over geometries with a causal structure the model can be solved exactly at t",
+    "why": null
+   }
+  },
+  "citations": 415,
+  "citations_via": "Semantic Scholar"
+ },
+ "anguige-tod-1999": {
+  "checked": "2026-11-11",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Isotropic cosmological singularities 1: Polytropic perfect fluid spacetimes",
+  "locations": {
+   "Section 1": {
+    "verified": true,
+    "snippet": "1 Introduction Isotropic singularities are a class of cosmological singularities which are both physically int",
+    "why": null
+   }
+  },
+  "citations": 91,
+  "citations_via": "Semantic Scholar"
+ },
+ "aps-2006": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Quantum Nature of the Big Bang: Improved dynamics",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "an improved hamiltonian constraint operator is introduced in loop quantum cosmology quantum dynamics of the spatially flat isotropic model with a massless scalar field is then studied in detail using ",
+    "why": null
+   }
+  },
+  "citations": 1103,
+  "citations_via": "Semantic Scholar"
+ },
+ "arkani-hamed-trnka-2014": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "The Amplituhedron",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "perturbative scattering amplitudes in gauge theories have remarkable simplicity and hidden infinite dimensional symmetries that are completely obscured in the conventional formulation of field theory ",
+    "why": null
+   }
+  },
+  "citations": 177,
+  "citations_via": "Semantic Scholar"
+ },
+ "ashtekar-lewandowski-1995": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Projective Techniques and Functional Integration",
+  "locations": {
+   "§3.3": {
+    "verified": true,
+    "snippet": "3.3 Measures on A/G We are now ready to introduce measures on A/G. The basic idea is to apply results of section 2.3 to the HG-projective family constructed above (using techniques from [5, 4]). Our aim in this subsec",
+    "why": null
+   }
+  },
+  "citations": 419,
+  "citations_via": "OpenAlex"
+ },
+ "ashtekar-lewandowski-1997": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Quantum Theory of Gravity I: Area Operators",
+  "locations": {
+   "Section IV": {
+    "verified": true,
+    "snippet": "IV. EIGENVALUES AND EIGENVECTORS This section is divided into three parts. In the first, we derive the complete spectrum of the area operators, in the second, we extend the notion of spin ne",
+    "why": null
+   }
+  },
+  "citations": 910,
+  "citations_via": "OpenAlex"
+ },
+ "ashtekar-lewandowski-1998": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Quantum Theory of Geometry II: Volume operators",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "a functional calculus on the space of generalized connections was recently introduced without any reference to a background metric it is used to continue the exploration of the quantum riemannian geom",
+    "why": null
+   }
+  },
+  "citations": 550,
+  "citations_via": "Semantic Scholar"
+ },
+ "ashtekar-lewandowski-2004": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Background Independent Quantum Gravity: A Status Report",
+  "locations": {
+   "Section IV": {
+    "verified": true,
+    "snippet": "IV Quantum theories of connections: background independent kinematics 24 A Quantum mechanics on a compact Lie group G . . . . . . . . . . . . . . . 25 1 Phase space . . . . . . . . . . . . . . . . . .",
+    "why": null
+   }
+  },
+  "citations": 1661,
+  "citations_via": "Semantic Scholar"
+ },
+ "austing-wheater-2001": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "The Convergence of Yang-Mills Integrals",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "we prove that su n bosonic yang mills matrix integrals are convergent for dimension number of matrices d ge d c it is already known that d c 5 for n 2 we prove that d c 4 for n 3 and that d c 3 for n ",
+    "why": null
+   }
+  },
+  "citations": 69,
+  "citations_via": "OpenAlex"
+ },
+ "baez-1996": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Spin Network States in Gauge Theory",
+  "locations": {
+   "Lemma 3": {
+    "verified": true,
+    "snippet": "Lemma 3. In a manner independent of the choice of trivialization of P , L2 (A/G) is isomorphic as a Hilbert space to M O Inv(v, ρ). ρ∈ΛE v∈V As a consequence, L2 (A/G) is spanned by spin network states O Ψρ,ι = ιv , v∈V",
+    "why": null
+   }
+  },
+  "citations": 258,
+  "citations_via": "Semantic Scholar"
+ },
+ "baez-2000": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "An Introduction to Spin Foam Models of Quantum Gravity and BF Theory",
+  "locations": {
+   "Section 2": {
+    "verified": true,
+    "snippet": "2. If X, Y ∈ κ then X ∩ Y ≤ X, Y . In this paper we restrict our attention to complexes with finitely many cells. A complex is ‘k-dimensional’ if it has cells of dimension k but no higher. A complex is ‘ori- ented’",
+    "why": null
+   }
+  },
+  "citations": 470,
+  "citations_via": "Semantic Scholar"
+ },
+ "balachandran-kurkcuoglu-vaidya-2005": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Lectures on Fuzzy and Fuzzy SUSY Physics",
+  "locations": {
+   "§2.3": {
+    "verified": true,
+    "snippet": "2.3 The Fuzzy Sphere SF2 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 6 2.4 Observables of SF2 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7 2.5 Diagonalizing Li .",
+    "why": null
+   }
+  },
+  "citations": 212,
+  "citations_via": "Semantic Scholar"
+ },
+ "bao-2015": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "The Holographic Entropy Cone",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "we initiate a systematic enumeration and classification of entropy inequalities satisfied by the ryu takayanagi formula for conformal field theory states with smooth holographic dual geometries for 2 ",
+    "why": null
+   }
+  },
+  "citations": 242,
+  "citations_via": "OpenAlex"
+ },
+ "barbero-1995": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Real Ashtekar Variables for Lorentzian Signature Space-times",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "i suggest in this letter a new strategy to attack the problem of the reality conditions in the ashtekar approach to classical and quantum general relativity by writing a modified hamiltonian constrain",
+    "why": null
+   }
+  },
+  "citations": 749,
+  "citations_via": "Semantic Scholar"
+ },
+ "barcelo-liberati-visser-2005": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Analogue Gravity",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "analogue gravity is a research programme that explores analogues of general relativistic gravitational fields within other physical systems particularly but not exclusively in condensed matter systems",
+    "why": null
+   }
+  },
+  "citations": 1436,
+  "citations_via": "Semantic Scholar"
+ },
+ "barrett-2007": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "A Lorentzian version of the non-commutative geometry of the standard model of particle physics",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "a formulation of the non commutative geometry for the standard model of particle physics with a lorentzian signature metric is presented the elimination of the fermion doubling in the lorentzian case ",
+    "why": null
+   }
+  },
+  "citations": 127,
+  "citations_via": "Semantic Scholar"
+ },
+ "barrett-crane-1998": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Relativistic spin networks and quantum gravity",
+  "locations": {
+   "Section IV": {
+    "verified": true,
+    "snippet": "IV. The New Model It is easy to see how to transform the state sum of [4] to create a quantum version of summation over all assignments of bivector data to the 2-simplexes of a triangul",
+    "why": null
+   }
+  },
+  "citations": 609,
+  "citations_via": "Semantic Scholar"
+ },
+ "barrett-naish-guzman-2009": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "The Ponzano-Regge model",
+  "locations": {
+   "§2.2.1": {
+    "verified": true,
+    "snippet": "2.2.1 Pachner moves Any two triangulations of a 3-manifold can be related by a sequences of local moves on the triangulation known as Pachner moves. Therefore a strategy for proving triangulation independence is to sh",
+    "why": null
+   },
+   "§4.4": {
+    "verified": true,
+    "snippet": "4.4 Existence criterion Now it is possible to state the main existence result. This says, roughly, that the partition function exists whenever H 2 (L, ρ) = 0. There are two factors which make this complicated. The fi",
+    "why": null
+   },
+   "§5.2": {
+    "verified": true,
+    "snippet": "5.2 The partition function in terms of Reidemeister torsion The delta functions appearing in the formula for the partition function (16) can be understood in the following general way. If ω is a volume form on",
+    "why": null
+   }
+  },
+  "citations": 170,
+  "citations_via": "Semantic Scholar"
+ },
+ "barrett-westbury-1996": {
+  "checked": "2026-11-07",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Invariants of Piecewise-Linear 3-Manifolds",
+  "locations": {},
+  "citations": 250,
+  "citations_via": "Semantic Scholar"
+ },
+ "barvinsky-blas-herrero-valea-2016": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Renormalization of Horava Gravity",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "we prove perturbative renormalizability of projectable horava gravity the key element of the argument is the choice of a gauge which ensures the correct anisotropic scaling of the propagators and thei",
+    "why": null
+   }
+  },
+  "citations": 131,
+  "citations_via": "Semantic Scholar"
+ },
+ "baumann-2009": {
+  "checked": "2026-11-11",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "TASI Lectures on Inflation",
+  "locations": {
+   "Section 12.3.3": {
+    "verified": true,
+    "snippet": "12.3.3 Power Spectrum The dimensionless power spectrum of tensor fluctuations therefore is 2 H?2 ∆2t = 2∆2h (k) =",
+    "why": null
+   },
+   "Section 17.1.2": {
+    "verified": true,
+    "snippet": "17.1.2 Large Scales On large scales, modes were still outside of the horizon at recombination. The large-scale CMB spectrum has therefore not been affected by subhorizon evolution and is simply the geometric pro- jec",
+    "why": null
+   },
+   "Section 6.2": {
+    "verified": true,
+    "snippet": "6.2 Slow-Roll Inflation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 32 6.3 Case Study: m2 φ2 Inflation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 34 6.4 Rehe",
+    "why": null
+   },
+   "Section 9.2.3": {
+    "verified": true,
+    "snippet": "9.2.3 Gauge-Invariant Variables . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 48 9.2.4 Superhorizon (Non-)Evolution . . . . . . . . . . . . . . . . . . . . . . . . . . 49 9.",
+    "why": null
+   },
+   "eq. (142)": {
+    "verified": true,
+    "snippet": "(142) is one of the Bardeen potentials [20]. ζ and R are therefore equal on superhorizon scales, k aH. ζ and R are also equal during slow-roll inflation, cf. Eqs. (138) and (140). The correlation functions of ζ and R are",
+    "why": null
+   },
+   "eq. (196)": {
+    "verified": true,
+    "snippet": "(196) 2k kτ 12.2.5 Power Spectrum in Quasi-de Sitter We then compute the power spectrum of the field ψ̂k ≡ a−1 v̂k , |vk (τ )|2 hψ̂k (τ )ψ̂k0 (τ )i = (2π)3 δ(k + k0 ) (197) a2 H 2 = (2π)3 δ(k + k0 ) 3 (1 + k 2 τ 2 ) . (1",
+    "why": null
+   }
+  },
+  "citations": 1224,
+  "citations_via": "OpenAlex"
+ },
+ "bcfw-2005": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Direct Proof Of Tree-Level Recursion Relation In Yang-Mills Theory",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "recently by using the known structure of one loop scattering amplitudes for gluons in yang mills theory a recursion relation for tree level scattering amplitudes has been deduced here we give a short ",
+    "why": null
+   }
+  },
+  "citations": 1008,
+  "citations_via": "Semantic Scholar"
+ },
+ "bcj-2008": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "New Relations for Gauge-Theory Amplitudes",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "we present an identity satisfied by the kinematic factors of diagrams describing the tree amplitudes of massless gauge theories this identity is a kinematic analog of the jacobi identity for color fac",
+    "why": null
+   }
+  },
+  "citations": 1285,
+  "citations_via": "Semantic Scholar"
+ },
+ "bdfgh-2009": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Asymptotic analysis of the EPRL four-simplex amplitude",
+  "locations": {
+   "Section 4": {
+    "verified": true,
+    "snippet": "4 Asymptotic formula To study the semi-classical approximation of the theory we consider the large spin limit, and study the asymptotics. We start by scaling all ten spins by a constant parameter kab → λkab . Then t",
+    "why": null
+   }
+  },
+  "citations": 209,
+  "citations_via": "Semantic Scholar"
+ },
+ "bdfhp-2010": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Lorentzian spin foam amplitudes: graphical calculus and asymptotics",
+  "locations": {
+   "§6.4": {
+    "verified": true,
+    "snippet": "6.4 Asymptotic formula We can now state the asymptotic formula for the 4-simplex amplitude. A formula is called asymptotic if the error term is bounded by a constant times one more power of λ−1 than that stated in the",
+    "why": null
+   }
+  },
+  "citations": 277,
+  "citations_via": "OpenAlex"
+ },
+ "bekaert-boulanger-sundell-2010": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "How higher-spin gravity surpasses the spin two barrier: no-go theorems versus yes-go examples",
+  "locations": {
+   "§2.4": {
+    "verified": true,
+    "snippet": "2.4 Generalized Weinberg–Witten theorem . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10 2.5 Velo–Zwanziger difficulties . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .",
+    "why": null
+   }
+  },
+  "citations": 325,
+  "citations_via": "Semantic Scholar"
+ },
+ "ben-geloun-rivasseau-2011": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "A Renormalizable 4-Dimensional Tensor Field Theory",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "we prove that an integrated version of the gurau colored tensor model supplemented with the usual bosonic propagator on u 1 4 is renormalizable to all orders in perturbation theory the model is of the",
+    "why": null
+   }
+  },
+  "citations": 212,
+  "citations_via": "Semantic Scholar"
+ },
+ "benedetti-ziegler-2011": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "On locally constructible spheres and balls",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "durhuus and jonsson 1995 introduced the class of locally constructible lc 3 spheres and showed that there are only exponentially many combinatorial types of simplicial lc 3 spheres such upper bounds a",
+    "why": null
+   }
+  },
+  "citations": 60,
+  "citations_via": "Semantic Scholar"
+ },
+ "benincasa-dowker-2010": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "The Scalar Curvature of a Causal Set",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "a one parameter family of retarded linear operators on scalar fields on causal sets is introduced when the causal set is well approximated by 4 dimensional minkowski spacetime the operators are lorent",
+    "why": null
+   }
+  },
+  "citations": 137,
+  "citations_via": "Semantic Scholar"
+ },
+ "berestycki-2017": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "An elementary approach to Gaussian multiplicative chaos",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "a completely elementary and self contained proof of convergence of gaussian multiplicative chaos is given the argument shows further that the limiting random measure is nontrivial in the entire subcri",
+    "why": null
+   }
+  },
+  "citations": 262,
+  "citations_via": "Semantic Scholar"
+ },
+ "bern-2015": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Evanescent Effects Can Alter Ultraviolet Divergences in Quantum Gravity without Physical Consequences",
+  "locations": {
+   "eq. (7)": {
+    "verified": true,
+    "snippet": "(7) where we account for the fact that Refs. [7, 8] define TABLE I: Coefficients of the 1/ǫ UV pole and of ln µ2 in the ǫ = 4 − D instead of our ǫ = (4 − D)/2. The divergence identical-helicity four-graviton two-loop amp",
+    "why": null
+   }
+  },
+  "citations": 87,
+  "citations_via": "Semantic Scholar"
+ },
+ "bernardeau-2002": {
+  "checked": "2026-11-11",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Large-Scale Structure of the Universe and Cosmological Perturbation Theory",
+  "locations": {
+   "Section 2.3": {
+    "verified": true,
+    "snippet": "2.3 Eulerian Linear Perturbation Theory 16 2.4 Eulerian Non-Linear Perturbation Theory 18 2.4.1 The Equations of Motion in the Fourier Representation 1",
+    "why": null
+   }
+  },
+  "citations": 1477,
+  "citations_via": "Semantic Scholar"
+ },
+ "bfss-1997": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "M Theory As A Matrix Model: A Conjecture",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "we suggest and motivate a precise equivalence between uncompactified eleven dimensional m theory and the n infinity limit of the supersymmetric matrix quantum mechanics describing d0 branes the eviden",
+    "why": null
+   }
+  },
+  "citations": 2927,
+  "citations_via": "Semantic Scholar"
+ },
+ "bgp-2007": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Wave Equations on Lorentzian Manifolds and Quantization",
+  "locations": {
+   "§3.4": {
+    "verified": true,
+    "snippet": "3.4 Green’s operators . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 88 3.5 Non-globally hyperbolic manifolds . . . . . . . . . . . . . . . . . . . . . 92 4 Quantization",
+    "why": null
+   }
+  },
+  "citations": 492,
+  "citations_via": "Semantic Scholar"
+ },
+ "bgv-1992": {
+  "checked": "2026-11-07",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "Heat Kernels and Dirac Operators ",
+  "locations": {
+   "Chapter: Asymptotic Expansion of the Heat Kernel|10.1007/978-3-642-58088-8_3": {
+    "verified": true,
+    "snippet": "Asymptotic Expansion of the Heat Kernel ",
+    "why": null
+   },
+   "Chapter: Clifford Modules and Dirac Operators|10.1007/978-3-642-58088-8_4": {
+    "verified": true,
+    "snippet": "Clifford Modules and Dirac Operators ",
+    "why": null
+   }
+  },
+  "citations": 1796,
+  "citations_via": "OpenAlex"
+ },
+ "bhs-2009": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Discreteness without symmetry breaking: a theorem",
+  "locations": {
+   "Theorem 1": {
+    "verified": true,
+    "snippet": "Theorem 1 In dimensions n > 1 there exists no measurable equivariant map D : Ω → H, i.e., there exists no measurable D such that D◦Λ=Λ◦D , ∀ Λ ∈ L0 . (3) Proof: Suppose that such a map D exists. Its inverse D−1 yields a",
+    "why": null
+   }
+  },
+  "citations": 124,
+  "citations_via": "Semantic Scholar"
+ },
+ "bianchi-regoli-rovelli-2010": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Face amplitude of spinfoam quantum gravity",
+  "locations": {
+   "Section IV": {
+    "verified": true,
+    "snippet": "IV. FACE AMPLITUDE Av (Ufv ) = hUfv | Av i (20) X Y",
+    "why": null
+   }
+  },
+  "citations": 78,
+  "citations_via": "OpenAlex"
+ },
+ "birrell-davies-1982": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "Quantum Fields in Curved Space ",
+  "locations": {
+   "Chapter: Stress-tensor renormalization|10.1017/CBO9780511622632.008": {
+    "verified": true,
+    "snippet": "Stress-tensor renormalization ",
+    "why": null
+   }
+  },
+  "citations": 9035,
+  "citations_via": "OpenAlex"
+ },
+ "bisognano-wichmann-1975": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "On the duality condition for a Hermitian scalar field ",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "a general hermitian scalar field assumed to be an operator valued tempered distribution is considered a theorem which relates certain complex lorentz transformations to the tcp transformation is state",
+    "why": null
+   }
+  },
+  "citations": 670,
+  "citations_via": "OpenAlex"
+ },
+ "bjerrum-bohr-donoghue-holstein-2003": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Quantum Gravitational Corrections to the Nonrelativistic Scattering Potential of Two Masses",
+  "locations": {
+   "eq. (44)": {
+    "verified": true,
+    "snippet": "(44) r r 10π r 2 The classical term in this potential agrees with Eq. 2.5 of Iwasaki[17]. However, we note that the quantum component of the potential is not equivalent to any previous published result [9, 10, 11, 12, 13",
+    "why": null
+   }
+  },
+  "citations": 365,
+  "citations_via": "Semantic Scholar"
+ },
+ "bonzom-gurau-riello-rivasseau-2011": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Critical behavior of colored tensor models in the large N limit",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "colored tensor models have been recently shown to admit a large n expansion whose leading order encodes a sum over a class of colored triangulations of the d sphere the present paper investigates in d",
+    "why": null
+   }
+  },
+  "citations": 367,
+  "citations_via": "Semantic Scholar"
+ },
+ "borinsky-2018": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Graphs in perturbation theory: Algebraic structure and asymptotics",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "this thesis provides an extension of the work of dirk kreimer and alain connes on the hopf algebra structure of feynman graphs and renormalization to general graphs additionally an algebraic structure",
+    "why": null
+   }
+  },
+  "citations": 1,
+  "citations_via": "Semantic Scholar"
+ },
+ "bouchard-2007": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Lectures on complex geometry, Calabi-Yau manifolds and toric geometry",
+  "locations": {
+   "eq. (3.17)": {
+    "verified": true,
+    "snippet": "(3.17) 0 1 0 0 0 1 Now we know that Q is a Calabi–Yau manifold, and we studied it using Chern classes. We will now construct a holomorphic volume form Ω on Q. Alternatively, we could have started our study of the quintic",
+    "why": null
+   }
+  },
+  "citations": 106,
+  "citations_via": "Semantic Scholar"
+ },
+ "boulatov-1992": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "A Model of Three-Dimensional Lattice Gravity",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "a model is proposed which generates all oriented 3d simplicial complexes weighted with an invariant associated with a topological lattice gauge theory when the gauge group is su q 2 q n 1 it is the tu",
+    "why": null
+   }
+  },
+  "citations": 259,
+  "citations_via": "Semantic Scholar"
+ },
+ "bratteli-robinson-1987": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "Operator Algebras and Quantum Statistical Mechanics 1 ",
+  "locations": {
+   "Chapter: C*-Algebras and von Neumann Algebras|10.1007/978-3-662-02520-8_2": {
+    "verified": true,
+    "snippet": "C*-Algebras and von Neumann Algebras ",
+    "why": null
+   }
+  },
+  "citations": 869,
+  "citations_via": "OpenAlex"
+ },
+ "bratteli-robinson-1997": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "Operator Algebras and Quantum Statistical Mechanics ",
+  "locations": {
+   "Chapter: Continuous Quantum Systems. I|10.1007/978-3-662-03444-6_2": {
+    "verified": true,
+    "snippet": "Continuous Quantum Systems. I ",
+    "why": null
+   },
+   "Chapter: KMS-States|10.1007/978-3-662-03444-6_3": {
+    "verified": true,
+    "snippet": "KMS-States ",
+    "why": null
+   }
+  },
+  "citations": 3246,
+  "citations_via": "OpenAlex"
+ },
+ "brewin-2009": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Riemann Normal Coordinate expansions using Cadabra",
+  "locations": {
+   "Section 9": {
+    "verified": true,
+    "snippet": "9 These equations can be used to construct the series expansion for g ab (x), which to 3rd-order is 1 1",
+    "why": null
+   }
+  },
+  "citations": 75,
+  "citations_via": "Semantic Scholar"
+ },
+ "brocker-tom-dieck-1985": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "Representations of Compact Lie Groups ",
+  "locations": {
+   "Chapter: Elementary Representation Theory|10.1007/978-3-662-12918-0_2": {
+    "verified": true,
+    "snippet": "Elementary Representation Theory ",
+    "why": null
+   }
+  },
+  "citations": 1235,
+  "citations_via": "OpenAlex"
+ },
+ "brunetti-guido-longo-2002": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Modular localization and Wigner particles",
+  "locations": {
+   "eq. (1.1)": {
+    "verified": true,
+    "snippet": "(1.1) SW = JW ∆W is made up by the boosts unitaries ∆it W and the PCT anti-unitary that are canon- ically associated with the given (anti)-unitary irreducible representation of the proper Poincaré group. We may then rev",
+    "why": null
+   }
+  },
+  "citations": 213,
+  "citations_via": "Semantic Scholar"
+ },
+ "brunnemann-thiemann-2006": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Simplification of the Spectral Analysis of the Volume Operator in Loop Quantum Gravity",
+  "locations": {
+   "Section 4": {
+    "verified": true,
+    "snippet": "4 Gauge Invariant 4-Vertex 29 4.1 Analytical Investigations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .",
+    "why": null
+   }
+  },
+  "citations": 118,
+  "citations_via": "Semantic Scholar"
+ },
+ "brw-1999": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "A note on area variables in Regge calculus",
+  "locations": {
+   "eq. (6)": {
+    "verified": true,
+    "snippet": "(6) t ∂si and then, since the Jacobian ∂si /∂Au is non-singular, the variational equation reduces to ǫu = 0 for all u. In Regge calculus, this condition would mean the space is locally flat. However in our theory the def",
+    "why": null
+   }
+  },
+  "citations": 103,
+  "citations_via": "Semantic Scholar"
+ },
+ "btz-1992": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "The Black Hole in Three Dimensional Space Time",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "the standard einstein maxwell equations in 2 1 spacetime dimensions with a negative cosmological constant admit a black hole solution the 2 1 black hole characterized by mass angular momentum and char",
+    "why": null
+   }
+  },
+  "citations": 2309,
+  "citations_via": "Semantic Scholar"
+ },
+ "calabrese-cardy-2004": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Entanglement Entropy and Quantum Field Theory",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "we carry out a systematic study of entanglement entropy in relativistic quantum field theory this is defined as the von neumann entropy s a tr rho a log rho a corresponding to the reduced density matr",
+    "why": null
+   }
+  },
+  "citations": 3187,
+  "citations_via": "Semantic Scholar"
+ },
+ "cannas-da-silva-2001": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "Lectures on Symplectic Geometry ",
+  "locations": {
+   "Chapter: The Marsden-Weinstein-Meyer Theorem|10.1007/978-3-540-45330-7_23": {
+    "verified": true,
+    "snippet": "The Marsden-Weinstein-Meyer Theorem ",
+    "why": null
+   }
+  },
+  "citations": 364,
+  "citations_via": "OpenAlex"
+ },
+ "carlip-1998": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "Quantum Gravity in 2+1 Dimensions ",
+  "locations": {
+   "Chapter: Geometric structures and Chern–Simons theory|10.1017/CBO9780511564192.005": {
+    "verified": true,
+    "snippet": "Geometric structures and Chern–Simons theory ",
+    "why": null
+   }
+  },
+  "citations": 594,
+  "citations_via": "OpenAlex"
+ },
+ "carlip-2014": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Black Hole Thermodynamics",
+  "locations": {
+   "Section 2": {
+    "verified": true,
+    "snippet": "2. The area of the event horizon of a black hole never decreases, δAhor ≥ 0. (2.2) 3. It is impossible",
+    "why": null
+   },
+   "eq. (5.9)": {
+    "verified": true,
+    "snippet": "(5.9) We can immediately recognize the first two terms of (5.9) as the metric of a flat plane in polar coordinates. The horizon r = r+ has collapsed to a point ρ = 0: the “Euclidean section” includes only the black hole",
+    "why": null
+   },
+   "§3.2": {
+    "verified": true,
+    "snippet": "3.2 Hawking’s calculation In his seminal work on black hole radiation and evaporation [3, 4], Hawking computed the Bogoliubov coefficients between an initial vacuum outside a collapsing star and a final vacuum after t",
+    "why": null
+   }
+  },
+  "citations": 32,
+  "citations_via": "Semantic Scholar"
+ },
+ "carroll-1997": {
+  "checked": "2026-11-11",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Lecture Notes on General Relativity",
+  "locations": {
+   "Chapter 3": {
+    "verified": true,
+    "snippet": "3. Curvature covariant derivatives and connections — connection coefficients — transformation properties — the Christoffel connection — structures on manifolds — parallel trans- port — the parallel propagator",
+    "why": null
+   },
+   "Section 8": {
+    "verified": true,
+    "snippet": "8 COSMOLOGY 225 a(t) Big Bang",
+    "why": null
+   },
+   "eq. (2.19)": {
+    "verified": true,
+    "snippet": "(2.19) ∂xµ1 ∂xµk ∂xν1 ∂xνl This tensor transformation law is straightforward to remember, since there really isn’t any- thing else it could be, given the placement of indices. However, it is often easier to transform a t",
+    "why": null
+   },
+   "eq. (2.34)": {
+    "verified": true,
+    "snippet": "(2.34) where “diag” means a diagonal matrix with the given elements. If n is the dimension of the manifold, s is the number of +1’s in the canonical form, and t is the number of −1’s, then s − t is the signature of the m",
+    "why": null
+   },
+   "eq. (3.79)": {
+    "verified": true,
+    "snippet": "(3.79) With a little more work, which we leave to your imagination, we can see that the sum of cyclic permutations of the last three indices vanishes: Rρσµν + Rρµνσ + Rρνσµ = 0 . (3.80) This last property is equivalent t",
+    "why": null
+   },
+   "eq. (3.80)": {
+    "verified": true,
+    "snippet": "(3.80) This last property is equivalent to the vanishing of the antisymmetric part of the last three indices: Rρ[σµν] = 0 . (3.81) All of these properties have been derived in a special coordinate system, but they are al",
+    "why": null
+   },
+   "eq. (4.53)": {
+    "verified": true,
+    "snippet": "(4.53) can be very difficult to solve. The most popular sort of simplifying assumption is that the metric has a significant degree of symmetry, and we will talk later on about how symmetries of the metric make life easie",
+    "why": null
+   },
+   "eq. (6.54)": {
+    "verified": true,
+    "snippet": "(6.54) Therefore we can drop the bars over hµν , as long as we are in this gauge. 6 WEAK FIELDS AND GRAVITATIONAL RADIATION 152 One nice feature of the transverse traceless gauge is that if you are given the components o",
+    "why": null
+   },
+   "eq. (7.29)": {
+    "verified": true,
+    "snippet": "(7.29) r r This is true for any spherically symmetric vacuum solution to Einstein’s equations; M func- tions as a parameter, which we happen to know can be interpreted as the conventional 7 THE SCHWARZSCHILD SOLUTION AND",
+    "why": null
+   },
+   "eq. (8.36)": {
+    "verified": true,
+    "snippet": "(8.36) a 3 a Together these are known as the Friedmann equations, and metrics of the form (8.7) which obey these equations define Friedmann-Robertson-Walker (FRW) universes. There is a bunch of terminology which is assoc",
+    "why": null
+   }
+  },
+  "citations": 428,
+  "citations_via": "Semantic Scholar"
+ },
+ "carrozza-oriti-rivasseau-2014": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Renormalization of an SU(2) Tensorial Group Field Theory in Three Dimensions",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "we address in this paper the issue of renormalizability for su 2 tensorial group field theories tgft with geometric boulatov type conditions in three dimensions we prove that tensorial interactions up",
+    "why": null
+   }
+  },
+  "citations": 166,
+  "citations_via": "Semantic Scholar"
+ },
+ "chamseddine-connes-1997": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "The Spectral Action Principle",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "we propose a new action principle to be associated with a noncommutative space ac hc d the universal formula for the spectral action is d trace d lb where is a spinor on the hilbert space lb is a scal",
+    "why": null
+   },
+   "eq. (2.13)": {
+    "verified": true,
+    "snippet": "(2.13) n≥0 M where m is the dimension of the manifold in C ∞ (M ), d is the order of P (in our √ case m = 4, d = 2) and dv(x) = g dm x where g µν is the metric on M appearing in equation (2.7). If s = 0, −1, . . . is a n",
+    "why": null
+   }
+  },
+  "citations": 797,
+  "citations_via": "Semantic Scholar"
+ },
+ "chamseddine-connes-marcolli-2007": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Gravity and the standard model with neutrino mixing",
+  "locations": {
+   "Definition 2.7": {
+    "verified": true,
+    "snippet": "Definition 2.7. A real structure of KO-dimension n ∈ Z/8 on a spectral triple (A, H, D) is an antilinear isometry J : H → H, with the property that (2.8) J 2 = ε, JD = ε′ DJ, and Jγ = ε′′ γJ (even case). The numbers ε, ε",
+    "why": null
+   }
+  },
+  "citations": 504,
+  "citations_via": "Semantic Scholar"
+ },
+ "christiansen-2011": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "On the linearization of Regge calculus",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "we study the linearization of three dimensional regge calculus around euclidean metric we provide an explicit formula for the corresponding quadratic form and relate it to the curltcurl operator which",
+    "why": null
+   },
+   "Section 1": {
+    "verified": true,
+    "snippet": "1 We hope that this paper can contribute to developing RC into a good al- ternative, or facilitate the integration of some of its",
+    "why": null
+   }
+  },
+  "citations": 49,
+  "citations_via": "OpenAlex"
+ },
+ "cky-1997": {
+  "checked": "2026-11-07",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "State-Sum Invariants of 4-Manifolds I",
+  "locations": {
+   "Theorem 3.2": {
+    "verified": true,
+    "snippet": "Theorem 3.2 The state-sum X CYC (M ) = ≪λ≫ λ∈ΛCSB (T) is independent of the choice of ordered triangulation T, of representative simple objects S and of bases B. Thus for any semisimple tortile category C, CYC (−) is an",
+    "why": null
+   }
+  },
+  "citations": 172,
+  "citations_via": "Semantic Scholar"
+ },
+ "cms-1984": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "On the curvature of piecewise flat spaces ",
+  "locations": {
+   "Abstract": {
+    "verified": false,
+    "snippet": null,
+    "why": "no abstract"
+   }
+  },
+  "citations": 339,
+  "citations_via": "OpenAlex"
+ },
+ "connes-2008": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "On the spectral characterization of manifolds",
+  "locations": {
+   "Theorem 1.1": {
+    "verified": true,
+    "snippet": "Theorem 1.1. Let (A, H, D) be a spectral triple, with A commutative, fulfilling the first five conditions of [11] (cf. §2) in a slightly stronger form i.e. we assume that: • The regularity holds for all A-endomorphisms o",
+    "why": null
+   }
+  },
+  "citations": 288,
+  "citations_via": "OpenAlex"
+ },
+ "connes-kreimer-2000": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Renormalization in quantum field theory and the Riemann-Hilbert problem I: the Hopf algebra structure of graphs and the main theorem",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "this paper gives a complete selfcontained proof of our result announced in hep th 9909126 showing that renormalization in quantum field theory is a special instance of a general mathematical procedure",
+    "why": null
+   }
+  },
+  "citations": 949,
+  "citations_via": "Semantic Scholar"
+ },
+ "conrady-freidel-2009": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Quantum geometry from phase space reduction",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "in this work we give an explicit isomorphism between the usual spin network basis and the direct quantization of the reduced phase space of tetrahedra the main outcome is a formula that describes the ",
+    "why": null
+   }
+  },
+  "citations": 110,
+  "citations_via": "Semantic Scholar"
+ },
+ "crispino-higuchi-matsas-2008": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "The Unruh effect and its applications",
+  "locations": {
+   "Section II": {
+    "verified": true,
+    "snippet": "II. The Unruh effect 3 2. Rindler observer perspective 34 A.",
+    "why": null
+   }
+  },
+  "citations": 844,
+  "citations_via": "Semantic Scholar"
+ },
+ "delamotte-2007": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "An Introduction to the Nonperturbative Renormalization Group",
+  "locations": {
+   "§2.5.3": {
+    "verified": true,
+    "snippet": "2.5.3 The critical exponents . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 36 2.6 Perturbative renormalizability, RG flows, continuum limit, asymptotic freedom and all that. . .",
+    "why": null
+   }
+  },
+  "citations": 374,
+  "citations_via": "Semantic Scholar"
+ },
+ "delepouve-gurau-rivasseau-2016": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Universality and Borel Summability of Arbitrary Quartic Tensor Models",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "we extend the study of emph melonic quartic tensor models to models with arbitrary quartic interactions this extension requires a new version of the loop vertex expansion using several species of inte",
+    "why": null
+   }
+  },
+  "citations": 38,
+  "citations_via": "Semantic Scholar"
+ },
+ "di-francesco-ginsparg-zinn-justin-1995": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "2D Gravity and Random Matrices",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "we review recent progress in 2d gravity coupled to d 1 conformal matter based on a representation of discrete gravity in terms of random matrices we discuss the saddle point approximation for these mo",
+    "why": null
+   },
+   "eq. (2.25)": {
+    "verified": true,
+    "snippet": "(2.25) 2 4 for example, we find10 1\u0010 \u0001p \u0011 ω(z) = −z − z 3 + z 2 + 1 + 21 a2 z 2 − a2 , (2.26) 2g with 2\u0010 p \u0011 a2 = −1 + 1 + 12g . 3 From (2.11), we find that 1 \u0001p ρ(λ) = λ2 + 1 + 12 a2 a2 − λ2 . (2.27) 2πg It is important",
+    "why": null
+   },
+   "eq. (4.17)": {
+    "verified": true,
+    "snippet": "(4.17) (p + q − 1) The operator Q can always be written Q = dq + vq−2 (x)dq−2 + · · · + v0 (x) . (4.18) (By a change of basis of the form Q → f −1 (x)Qf (x), the coefficient of dq−1 may always be set to zero.) The contin",
+    "why": null
+   },
+   "§1.4": {
+    "verified": true,
+    "snippet": "1.4. The double scaling limit . . . . . . . . . . . . . . . . . . . . . . . . . . . 13 2. The one–matrix model . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14 2.1. T",
+    "why": null
+   }
+  },
+  "citations": 1102,
+  "citations_via": "Semantic Scholar"
+ },
+ "disertori-gurau-magnen-rivasseau-2007": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Vanishing of Beta Function of Non Commutative $Φ^4_4$ Theory to all orders",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "the simplest non commutative renormalizable field theory the 4 model on four dimensional moyal space with harmonic potential is asymptotically safe up to three loops as shown by h grosse and r wulkenh",
+    "why": null
+   }
+  },
+  "citations": 196,
+  "citations_via": "Semantic Scholar"
+ },
+ "dittrich-freidel-speziale-2007": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Linearized dynamics from the 4-simplex Regge action",
+  "locations": {
+   "eq. (1)": {
+    "verified": true,
+    "snippet": "(1) h∈∆ where Vh is the (n − 2)-volumeP of the hinge h and the deficit angles ǫh represent the curvature. They are defined as ǫh = 2π − σ θhσ , where θhσ is the dihedral angle of the n-simplex σ sharing the hinge h. This",
+    "why": null
+   },
+   "eq. (6)": {
+    "verified": true,
+    "snippet": "(6) n − 1 Vi (le ) Vj (le ) and le (Vij ) is well defined being det Jijkl 6= 0. The first derivatives of (5) give simply the dihedral angles, ∂Sσ ≡ π − θij . (7) ∂Vij This crucial property can be easily proved from the n",
+    "why": null
+   },
+   "eq. (7)": {
+    "verified": true,
+    "snippet": "(7) ∂Vij This crucial property can be easily proved from the n-dimensional Schläfli identity, X Vij dθij = 0. (8) ij A direct consequence of (7) is that the hessian is equal to the (n(n + 1)/2×n(n + 1)/2) jacobian matri",
+    "why": null
+   },
+   "eq. (8)": {
+    "verified": true,
+    "snippet": "(8) ij A direct consequence of (7) is that the hessian is equal to the (n(n + 1)/2×n(n + 1)/2) jacobian matrix for changing variables from n − 2-volumes to dihedral angles, ∂ 2 Sσ ∂θij Qijkl ≡ ≡− . (9) ∂Vij ∂Vkl ∂Vkl Thi",
+    "why": null
+   }
+  },
+  "citations": 73,
+  "citations_via": "Semantic Scholar"
+ },
+ "dkrv-2016": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Liouville Quantum Gravity on the Riemann sphere",
+  "locations": {
+   "Section 3": {
+    "verified": true,
+    "snippet": "3 Liouville Quantum Gravity on the sphere In the previous Section we have given a meaning to the Gaussian part (2.5) of the functional integral (1.3) as well as for the µ term. Since the Gaussian measure we have co",
+    "why": null
+   }
+  },
+  "citations": 265,
+  "citations_via": "Semantic Scholar"
+ },
+ "dms-1997": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "Conformal Field Theory ",
+  "locations": {
+   "Chapter: Modular Invariance|10.1007/978-1-4612-2256-9_10": {
+    "verified": true,
+    "snippet": "Modular Invariance ",
+    "why": null
+   },
+   "Chapter: The Operator Formalism|10.1007/978-1-4612-2256-9_6": {
+    "verified": true,
+    "snippet": "The Operator Formalism ",
+    "why": null
+   }
+  },
+  "citations": 3546,
+  "citations_via": "OpenAlex"
+ },
+ "domagala-lewandowski-2004": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Black hole entropy from Quantum Geometry",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "quantum geometry the modern loop quantum gravity using graphs and spin networks instead of the loops provides microscopic degrees of freedom that account for the black hole entropy however the procedu",
+    "why": null
+   }
+  },
+  "citations": 430,
+  "citations_via": "Semantic Scholar"
+ },
+ "dona-sarno-2018": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Numerical methods for EPRL spin foam transition amplitudes and Lorentzian recoupling theory",
+  "locations": {
+   "Section 2": {
+    "verified": true,
+    "snippet": "2 The EPRL spin foam transition amplitude The spin foam formalism introduces a partition function of a given closed 2-complex C as a state sum over SU (2) spins jf on the faces and intertwiners ie on the edges: Y XY Y",
+    "why": null
+   }
+  },
+  "citations": 53,
+  "citations_via": "Semantic Scholar"
+ },
+ "donoghue-1994": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "General relativity as an effective field theory: The leading quantum corrections",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "i describe the treatment of gravity as a quantum effective field theory this allows a natural separation of the known low energy quantum effects from the unknown high energy contributions within this ",
+    "why": null
+   }
+  },
+  "citations": 1182,
+  "citations_via": "Semantic Scholar"
+ },
+ "donoghue-ivanov-shkerin-2017": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "EPFL Lectures on General Relativity as a Quantum Field Theory",
+  "locations": {
+   "eq. (239)": {
+    "verified": true,
+    "snippet": "(239) 120 20 where in the second line we have used the Gauss–Bonnet identity (237). From Eq. (239) an interesting feature of pure gravity in four dimensions follows. Recall that in the absence of matter the Einstein equa",
+    "why": null
+   },
+   "§6.3": {
+    "verified": true,
+    "snippet": "6.3 Gauss–Bonnet Term . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 30 6.4 The Limit of Pure Gravity . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 31 7 Principles of Effecti",
+    "why": null
+   }
+  },
+  "citations": 93,
+  "citations_via": "Semantic Scholar"
+ },
+ "dunne-1999": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Aspects of Chern-Simons Theory",
+  "locations": {
+   "eq. (60)": {
+    "verified": true,
+    "snippet": "(60) This has important implications for the development of a quantum nonabelian Chern-Simons theory. To ensure that the quantum amplitude exp(i S) remains gauge invariant, the Chern-Simons coupling parameter κ must assu",
+    "why": null
+   }
+  },
+  "citations": 341,
+  "citations_via": "Semantic Scholar"
+ },
+ "duplantier-sheffield-2011": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Liouville Quantum Gravity and KPZ",
+  "locations": {
+   "§1.4": {
+    "verified": true,
+    "snippet": "1.4 Statement of box formulation of KPZ Define a diadic square to be a closed square (including its interior) of one of the grids 2−k Z2 for some integer k. Let µ be any measure on C. For δ > 0, we define a (µ, δ) bo",
+    "why": null
+   }
+  },
+  "citations": 543,
+  "citations_via": "Semantic Scholar"
+ },
+ "durhuus-jonsson-1995": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Remarks on the entropy of 3-manifolds",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "we give a simple combinatoric proof of an exponential upper bound on the number of distinct 3 manifolds that can be constructed by successively identifying nearest neighbour pairs of triangles in the ",
+    "why": null
+   }
+  },
+  "citations": 48,
+  "citations_via": "Semantic Scholar"
+ },
+ "durhuus-jonsson-wheater-2009": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "On the spectral dimension of causal triangulations",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "we introduce an ensemble of infinite causal triangulations called the uniform infinite causal triangulation and show that it is equivalent to an ensemble of infinite trees the uniform infinite planar ",
+    "why": null
+   }
+  },
+  "citations": 67,
+  "citations_via": "Semantic Scholar"
+ },
+ "edmonds-1957": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "Angular Momentum in Quantum Mechanics ",
+  "locations": {
+   "Chapter: Chapter 3. The Coupling of Angular Momentum Vectors|10.1515/9781400884186-004": {
+    "verified": true,
+    "snippet": "Chapter 3. The Coupling of Angular Momentum Vector ",
+    "why": null
+   },
+   "Chapter: Chapter 6. The Construction of Invariants from the Vector-Coupling Coefficients|10.1515/9781400884186-007": {
+    "verified": true,
+    "snippet": "Chapter 6. The Construction of Invariants from the Vector- Coupling Coefficients ",
+    "why": null
+   }
+  },
+  "citations": 3988,
+  "citations_via": "OpenAlex"
+ },
+ "eichhorn-2018": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "An asymptotically safe guide to quantum gravity and matter",
+  "locations": {},
+  "citations": 287,
+  "citations_via": "Semantic Scholar"
+ },
+ "elvang-huang-2013": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Scattering Amplitudes",
+  "locations": {
+   "eq. (3.30)": {
+    "verified": true,
+    "snippet": "(3.30) where A4 is your friend the Parke-Taylor amplitude and the Mandelstam variable is s12 = −(p1 + p2 )2 . When you are done, look up ref. [20] to see how difficult it is to do this calculation with Feynman diagrams.",
+    "why": null
+   }
+  },
+  "citations": 450,
+  "citations_via": "Semantic Scholar"
+ },
+ "engle-pereira-2009": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Regularization and finiteness of the Lorentzian LQG vertices",
+  "locations": {
+   "Section 4": {
+    "verified": true,
+    "snippet": "4 Proof of finiteness For each set of labels {ρf , Nf ; ktf , it } determining a projected spin-network on the 4-simplex boundary graph, let F̃ρf ,Nf ;ktf ,it : SL(2, C)5 → C denote the integrand in the definition",
+    "why": null
+   }
+  },
+  "citations": 31,
+  "citations_via": "Semantic Scholar"
+ },
+ "eprl-2008": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "LQG vertex with finite Immirzi parameter",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "we extend the definition of the flipped loop quantum gravity vertex to the case of a finite immirzi parameter we cover the euclidean as well as the lorentzian case we show that the resulting dynamics ",
+    "why": null
+   },
+   "Section III": {
+    "verified": true,
+    "snippet": "III. EUCLIDEAN THEORY already noted earlier, this sector does not correspond to a topological sector of gravity bu",
+    "why": null
+   }
+  },
+  "citations": 625,
+  "citations_via": "Semantic Scholar"
+ },
+ "even-zohar-lakrec-tessler-2025": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "The Amplituhedron BCFW Triangulation",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "the amplituhedron ank4 is a geometric object introduced by arkani hamed and trnka 2013 in the study of scattering amplitudes in quantum field theories they conjecture that ank4 admits a decomposition ",
+    "why": null
+   }
+  },
+  "citations": 32,
+  "citations_via": "OpenAlex"
+ },
+ "eynard-orantin-2007": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Weil-Petersson volume of moduli spaces, Mirzakhani's recursion and matrix models",
+  "locations": {
+   "Theorem 2.1": {
+    "verified": true,
+    "snippet": "Theorem 2.1 For any 2g − 2 + n + 1 > 0, the Wn+1 satisfy the recursion relation hP P g g g−h Wn+1 (z, K) = Res u→0 uπdE u (z) sin 2πu h=0 h J⊂K W1+|J| (u, J)W1+n−|J| (−u, K/J) g−1 \u0003 +Wn+2 (u, −u, K) (2-6) 2 where the RHS",
+    "why": null
+   }
+  },
+  "citations": 182,
+  "citations_via": "OpenAlex"
+ },
+ "finster-2010": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Causal Variational Principles on Measure Spaces",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "we introduce a class of variational principles on measure spaces which are causal in the sense that they generate a relation on pairs of points giving rise to a distinction between spacelike and timel",
+    "why": null
+   }
+  },
+  "citations": 54,
+  "citations_via": "Semantic Scholar"
+ },
+ "finster-2016": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Causal Fermion Systems -- An Overview",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "the theory of causal fermion systems is an approach to describe fundamental physics we here introduce the mathematical framework and give an overview of the objectives and current results",
+    "why": null
+   }
+  },
+  "citations": 13,
+  "citations_via": "Semantic Scholar"
+ },
+ "fleischhack-2009": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Representations of the Weyl Algebra in Quantum Geometry",
+  "locations": {
+   "Theorem 7.14": {
+    "verified": true,
+    "snippet": "Theorem 7.14 Let π ′′ be a representation of AAuto on H, such that π := π ′′ |A is regular and π ′ := π ′′ |ADiff is D-natural. Moreover, let there exist some D-E-invariant vector in H being cyclic for π. Finally, let op",
+    "why": null
+   }
+  },
+  "citations": 215,
+  "citations_via": "OpenAlex"
+ },
+ "freidel-louapre-2002": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Non-perturbative summation over 3D discrete topologies",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "we construct a group field theory which realizes the sum of gravity amplitudes over all three dimensional topologies trough a perturbative expansion we prove this theory to be uniquely borel summable ",
+    "why": null
+   }
+  },
+  "citations": 65,
+  "citations_via": "Semantic Scholar"
+ },
+ "freidel-louapre-2003": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Diffeomorphisms and spin foam models",
+  "locations": {
+   "Section III": {
+    "verified": true,
+    "snippet": "III. GAUGE SYMMETRIES IN DISCRETE QUANTUM GRAVITY In this section we recall briefly the discretization procedure leading to the Ponzano- Regge model for 3d euclidian quantum gravity. We emphasize the implementati",
+    "why": null
+   }
+  },
+  "citations": 163,
+  "citations_via": "Semantic Scholar"
+ },
+ "freidel-louapre-2004": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Ponzano-Regge model revisited I: Gauge fixing, observables and interacting spinning particles",
+  "locations": {
+   "Section III": {
+    "verified": true,
+    "snippet": "III. The Ponzano-Regge model and gauge fixing 12 A. The gauge symmetries of the Ponzano-Regge model 13 1. Discrete symmetries of the Ponzano-Regge model 14",
+    "why": null
+   },
+   "Section VI": {
+    "verified": true,
+    "snippet": "VI. Massive spinless particles 27 A. Definition of the amplitude 27 B. Link with the discretized action 28",
+    "why": null
+   }
+  },
+  "citations": 244,
+  "citations_via": "Semantic Scholar"
+ },
+ "frenkel-ben-zvi-2004": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "Vertex Algebras and Algebraic Curves ",
+  "locations": {
+   "Chapter: Vertex algebras associated to Lie algebras|10.1090/surv/088/02": {
+    "verified": true,
+    "snippet": "Vertex algebras associated to Lie algebras ",
+    "why": null
+   }
+  },
+  "citations": 798,
+  "citations_via": "OpenAlex"
+ },
+ "frs-2023": {
+  "checked": "2026-11-11",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Stable Big Bang formation for Einstein's equations: The complete sub-critical regime",
+  "locations": {
+   "Section 1.2": {
+    "verified": true,
+    "snippet": "1.2 Connections with Hawking’s singularity theorem . . . . . . . . . . . . . . . . . . . . . . . . . 5 1.3 Remarks on Strong Cosmic Censorship . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .",
+    "why": null
+   },
+   "Section 1.6": {
+    "verified": true,
+    "snippet": "1.6 Rough version of the main theorem . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 11 1.7 Background on “Kasner-like behavior:” Heuristics . . . . . . . . . . . . . . . . . . . . . . . . 12 1.8",
+    "why": null
+   }
+  },
+  "citations": 52,
+  "citations_via": "OpenAlex"
+ },
+ "ggv-1966": {
+  "checked": "2026-11-07",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "Generalized Functions, Volume 5 ",
+  "locations": {
+   "Chapter: Harmonic analysis on the group of complex unimodular matrices in two dimensions|10.1090/chel/381/04": {
+    "verified": true,
+    "snippet": "Harmonic analysis on the group of complex unimodular matrices in two dimensions ",
+    "why": null
+   },
+   "Chapter: Representations of the group of real unimodular matrices in two dimensions|10.1090/chel/381/07": {
+    "verified": true,
+    "snippet": "Representations of the group of real unimodular matrices in two dimensions ",
+    "why": null
+   }
+  },
+  "citations": 7,
+  "citations_via": "OpenAlex"
+ },
+ "ginsparg-1988": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Applied Conformal Field Theory",
+  "locations": {
+   "§4.2": {
+    "verified": true,
+    "snippet": "4.2. Kac determinant . . . . . . . . . . . . . . . . . . . . . 50 4.3. Sketch of non-unitarity proof . . . . . . . . . . . . . . . . 52 string theory. They were given to a mi",
+    "why": null
+   }
+  },
+  "citations": 873,
+  "citations_via": "Semantic Scholar"
+ },
+ "givental-1996": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Equivariant Gromov - Witten Invariants",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "we develop general theory of equivariant quantum cohomology for ample kahler manifolds and prove the mirror conjecture for projective complete intersections",
+    "why": null
+   }
+  },
+  "citations": 707,
+  "citations_via": "Semantic Scholar"
+ },
+ "giveon-porrati-rabinovici-1994": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Target Space Duality in String Theory",
+  "locations": {
+   "eq. (2.4.16)": {
+    "verified": true,
+    "snippet": "(2.4.16) and the Lorentzian lattice is self-dual. It is known [258] that all even self-dual (d, d) Lorentzian lattices are related by O(d, d, R) rotations. Obviously, any O(d, d, R) rotation of Γ(d,d) gives back an even",
+    "why": null
+   }
+  },
+  "citations": 805,
+  "citations_via": "Semantic Scholar"
+ },
+ "grosse-wulkenhaar-2005": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Renormalisation of φ^4-theory on noncommutative R^4 in the matrix base",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "we prove that the real four dimensional euclidean noncommutative 4 model is renormalisable to all orders in perturbation theory compared with the commutative case the bare action of relevant and margi",
+    "why": null
+   }
+  },
+  "citations": 491,
+  "citations_via": "OpenAlex"
+ },
+ "gurau-2008": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "The Ponzano-Regge asymptotic of the 6j symbol: an elementary proof",
+  "locations": {
+   "Theorem 1": {
+    "verified": true,
+    "snippet": "Theorem 1 Under a rescaling of all its arguments by a large k the 6j symbol behaves like \u001a \u001b kj1 kj2 kj3 kJ1 kJ2 kJ3 3 h 1 nπ X 1\u0001 1 \u0001 io =√ cos + kji + θji + kJi + θJi . (4) 12πk 3 V 4 i=1 2 2 In all sum and products in",
+    "why": null
+   }
+  },
+  "citations": 39,
+  "citations_via": "Semantic Scholar"
+ },
+ "gurau-2010": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Lost in Translation: Topological Singularities in Group Field Theory",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "random matrix models generalize to group field theories gft whose feynman graphs are dual to gluings of higher dimensional simplices it is generally assumed that gft graphs are always dual to pseudo m",
+    "why": null
+   }
+  },
+  "citations": 160,
+  "citations_via": "Semantic Scholar"
+ },
+ "gurau-2011": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "The 1/N expansion of colored tensor models",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "in this paper we perform the 1 n expansion of the colored three dimensional boulatov tensor model as in matrix models we obtain a systematic topological expansion with more and more complicated topolo",
+    "why": null
+   }
+  },
+  "citations": 302,
+  "citations_via": "Semantic Scholar"
+ },
+ "gurau-ryan-2012": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Colored Tensor Models - a Review",
+  "locations": {},
+  "citations": 141,
+  "citations_via": "Semantic Scholar"
+ },
+ "gurau-ryan-2013": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Melons are branched polymers",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "melonic graphs constitute the family of graphs arising at leading order in the 1 n expansion of tensor models they were shown to lead to a continuum phase reminiscent of branched polymers we show here",
+    "why": null
+   }
+  },
+  "citations": 133,
+  "citations_via": "Semantic Scholar"
+ },
+ "hall-2013": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "Quantum Theory for Mathematicians ",
+  "locations": {
+   "Chapter: A First Approach to Quantum Mechanics|10.1007/978-1-4614-7116-5_3": {
+    "verified": true,
+    "snippet": "A First Approach to Quantum Mechanics ",
+    "why": null
+   },
+   "Chapter: The Spectral Theorem for Unbounded Self-Adjoint Operators|10.1007/978-1-4614-7116-5_10": {
+    "verified": true,
+    "snippet": "The Spectral Theorem for Unbounded Self-Adjoint Operators ",
+    "why": null
+   },
+   "Chapter: Unbounded Self-Adjoint Operators|10.1007/978-1-4614-7116-5_9": {
+    "verified": true,
+    "snippet": "Unbounded Self-Adjoint Operators ",
+    "why": null
+   }
+  },
+  "citations": 759,
+  "citations_via": "OpenAlex"
+ },
+ "hall-2015": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "Lie Groups, Lie Algebras, and Representations An Elementary Introduction",
+  "locations": {
+   "Chapter: Basic Representation Theory|10.1007/978-3-319-13467-3_4": {
+    "verified": true,
+    "snippet": "Basic Representation Theory ",
+    "why": null
+   },
+   "Chapter: Lie Algebras|10.1007/978-3-319-13467-3_3": {
+    "verified": true,
+    "snippet": "Lie Algebras ",
+    "why": null
+   }
+  },
+  "citations": 850,
+  "citations_via": "OpenAlex"
+ },
+ "halliwell-1990": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Introductory Lectures on Quantum Cosmology (1990)",
+  "locations": {
+   "Section 5": {
+    "verified": true,
+    "snippet": "5. MINISUPERSPACE – GENERAL THEORY Since superspace, the configuration space one deals with in quantum cosmology, is infinite dimensional, the full formalism of quantum cosmology is very difficult",
+    "why": null
+   },
+   "Section 8": {
+    "verified": true,
+    "snippet": "8. BOUNDARY CONDITION PROPOSALS Throughout the course of these lectures I have tried to emphasize the importance of boundary or initial conditions in quantum cosmology, although nothing we h",
+    "why": null
+   }
+  },
+  "citations": 0,
+  "citations_via": "Semantic Scholar"
+ },
+ "hamilton-2017": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "Mathematical Gauge Theory ",
+  "locations": {
+   "Chapter: Chapter 5 Connections and Curvature|10.1007/978-3-319-68439-0_5": {
+    "verified": true,
+    "snippet": "Chapter 5 Connections and Curvature ",
+    "why": null
+   }
+  },
+  "citations": 96,
+  "citations_via": "OpenAlex"
+ },
+ "happy-2015": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Holographic quantum error-correcting codes: Toy models for the bulk/boundary correspondence",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "we propose a family of exactly solvable toy models for the ads cft correspondence based on a novel construction of quantum error correcting codes with a tensor network structure our building block is ",
+    "why": null
+   }
+  },
+  "citations": 1044,
+  "citations_via": "Semantic Scholar"
+ },
+ "hawking-ellis-1973": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "The Large Scale Structure of Space-Time ",
+  "locations": {
+   "Chapter: Causal structure|10.1017/CBO9780511524646.007": {
+    "verified": true,
+    "snippet": "Causal structure ",
+    "why": null
+   },
+   "Chapter: Exact solutions|10.1017/CBO9780511524646.006": {
+    "verified": true,
+    "snippet": "Exact solutions ",
+    "why": null
+   },
+   "Chapter: Space-time singularities|10.1017/CBO9780511524646.009": {
+    "verified": true,
+    "snippet": "Space–time singularities ",
+    "why": null
+   },
+   "Chapter: The physical significance of curvature|10.1017/CBO9780511524646.005": {
+    "verified": true,
+    "snippet": "The physical significance of curvature ",
+    "why": null
+   }
+  },
+  "citations": 10602,
+  "citations_via": "OpenAlex"
+ },
+ "hayden-headrick-maloney-2013": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Holographic Mutual Information is Monogamous",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "we identify a special information theoretic property of quantum field theories with holographic duals the mutual informations among arbitrary disjoint spatial regions a b c obey the inequality i a bc ",
+    "why": null
+   }
+  },
+  "citations": 381,
+  "citations_via": "Semantic Scholar"
+ },
+ "headrick-takayanagi-2007": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "A holographic proof of the strong subadditivity of entanglement entropy",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "when a quantum system is divided into subsystems their entanglement entropies are subject to an inequality known as strong subadditivity for a field theory this inequality can be stated as follows giv",
+    "why": null
+   }
+  },
+  "citations": 356,
+  "citations_via": "OpenAlex"
+ },
+ "heinzle-uggla-2009a": {
+  "checked": "2026-11-11",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Mixmaster: Fact and Belief",
+  "locations": {
+   "Section 3": {
+    "verified": true,
+    "snippet": "3 THE BIANCHI TYPE IX LIE CONTRACTION HIERARCHY 6 Bianchi type Symbol Range of (Nα , Nβ , Nγ ) State space D I",
+    "why": null
+   },
+   "Section 5": {
+    "verified": true,
+    "snippet": "5 FACTS ABOUT THE MIXMASTER AND KASNER MAP 12 the nomenclature of [26] we thus refer to these solutions as non-generic solutions of Bianchi type IX. Alternative",
+    "why": null
+   }
+  },
+  "citations": 59,
+  "citations_via": "OpenAlex"
+ },
+ "heinzle-uggla-2009b": {
+  "checked": "2026-11-11",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "A new proof of the Bianchi type IX attractor theorem",
+  "locations": {
+   "Section 1": {
+    "verified": true,
+    "snippet": "1 Introduction Based on work reviewed and developed in [1] and by Rendall [2], Ringström succeeded, some eight, nine years ago, to produce the first major theorem about asymptotic dynamics of type IX vacuum and or",
+    "why": null
+   }
+  },
+  "citations": 46,
+  "citations_via": "OpenAlex"
+ },
+ "henneaux-teitelboim-1992": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "Quantization of Gauge Systems ",
+  "locations": {
+   "Chapter: CHAPTER FOURTEEN. BRST OPERATOR METHOD— QUANTUM BRST COHOMOLOGY|10.1515/9780691213866-017": {
+    "verified": true,
+    "snippet": "CHAPTER FOURTEEN. BRST OPERATOR METHOD— QUANTUM BRST COHOMOLOGY ",
+    "why": null
+   },
+   "Chapter: CHAPTER ONE. CONSTRAINED HAMILTONIAN SYSTEMS|10.1515/9780691213866-004": {
+    "verified": true,
+    "snippet": "CHAPTER ONE. CONSTRAINED HAMILTONIAN SYSTEMS ",
+    "why": null
+   },
+   "Chapter: CHAPTER SEVENTEEN. ANTIFIELD FORMALISM: CLASSICAL THEORY|10.1515/9780691213866-020": {
+    "verified": true,
+    "snippet": "CHAPTER SEVENTEEN. ANTIFIELD FORMALISM: CLASSICAL THEORY ",
+    "why": null
+   }
+  },
+  "citations": 2311,
+  "citations_via": "OpenAlex"
+ },
+ "henningson-skenderis-1998": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "The Holographic Weyl anomaly",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "we calculate the weyl anomaly for conformal field theories that can be described via the ads cft correspondence this entails regularizing the gravitational part of the corresponding supergravity actio",
+    "why": null
+   }
+  },
+  "citations": 2033,
+  "citations_via": "Semantic Scholar"
+ },
+ "hinterbichler-2012": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Theoretical Aspects of Massive Gravity",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "massive gravity has seen a resurgence of interest due to recent progress which has overcome its traditional problems yielding an avenue for addressing important open questions such as the cosmological",
+    "why": null
+   },
+   "eq. (2.1)": {
+    "verified": true,
+    "snippet": "(2.1) 2 2 2 This is known as the Fierz-Pauli action [28]. Our point of view will be to take this action as given and then show that it describes a massive spin 2. There are, however, some (less than thorough) ways of mot",
+    "why": null
+   }
+  },
+  "citations": 1202,
+  "citations_via": "OpenAlex"
+ },
+ "hodges-2012": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "A simple formula for gravitational MHV amplitudes",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "a simple formula is given for the n field tree level mhv gravitational amplitude based on soft limit factors it expresses the full s n symmetry naturally as a determinant of elements of a symmetric n ",
+    "why": null
+   }
+  },
+  "citations": 122,
+  "citations_via": "Semantic Scholar"
+ },
+ "hollands-wald-2015": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Quantum fields in curved spacetime",
+  "locations": {
+   "eq. (18)": {
+    "verified": true,
+    "snippet": "(18) ≡ HN + RN,ω . Here, the spacetime arguments are understood as (x, y) ∈ U ×U, and we mean that the above formula should hold for every N, with (different) remainders RN,ω ∈ CN (U × U). σ is the signed squared geodesi",
+    "why": null
+   },
+   "§2.2": {
+    "verified": true,
+    "snippet": "2.2 Applications: Unruh effect, deSitter space, Hawking effect, inflationary perturbations We now discuss some concrete examples in order to illustrate the abstract ideas just given and to present some of th",
+    "why": null
+   }
+  },
+  "citations": 20,
+  "citations_via": "Semantic Scholar"
+ },
+ "holst-1996": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Barbero's Hamiltonian derived from a generalized Hilbert-Palatini action",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "barbero recently suggested a modification of ashtekar s choice of canonical variables for general relativity although leading to a more complicated hamiltonian constraint this modified version in whic",
+    "why": null
+   }
+  },
+  "citations": 585,
+  "citations_via": "Semantic Scholar"
+ },
+ "horava-2009": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Quantum Gravity at a Lifshitz Point",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "we present a candidate quantum field theory of gravity with dynamical critical exponent equal to z 3 in the uv as in condensed matter systems z measures the degree of anisotropy between space and time",
+    "why": null
+   }
+  },
+  "citations": 2457,
+  "citations_via": "Semantic Scholar"
+ },
+ "hormander-1990": {
+  "checked": "2026-11-07",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "The Analysis of Linear Partial Differential Operators I Distribution Theory and Fourier Analysis",
+  "locations": {
+   "Chapter: The Fourier Transformation|10.1007/978-3-642-61497-2_8": {
+    "verified": true,
+    "snippet": "The Fourier Transformation ",
+    "why": null
+   }
+  },
+  "citations": 2945,
+  "citations_via": "OpenAlex"
+ },
+ "huggett-tod-1994": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "An Introduction to Twistor Theory ",
+  "locations": {
+   "Chapter: Solving the Zero Rest Mass Equations I|10.1017/CBO9780511624018.010": {
+    "verified": true,
+    "snippet": "Solving the Zero Rest Mass Equations I ",
+    "why": null
+   },
+   "Chapter: The Non-Linear Graviton|10.1017/CBO9780511624018.014": {
+    "verified": true,
+    "snippet": "The Non-Linear Graviton ",
+    "why": null
+   },
+   "Chapter: The Twisted Photon and Yang–Mills Constructions|10.1017/CBO9780511624018.013": {
+    "verified": true,
+    "snippet": "The Twisted Photon and Yang–Mills Constructions ",
+    "why": null
+   }
+  },
+  "citations": 235,
+  "citations_via": "OpenAlex"
+ },
+ "ikkt-1997": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "A Large-N Reduced Model as Superstring",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "a matrix model which has the manifest ten dimensional n 2 super poincare invariance is proposed interactions between bps saturated states are analyzed to show that massless spectrum is the same as tha",
+    "why": null
+   }
+  },
+  "citations": 1056,
+  "citations_via": "Semantic Scholar"
+ },
+ "iochum-krajewski-martinetti-2001": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Distances in Finite Spaces from Noncommutative Geometry",
+  "locations": {
+   "eq. (6)": {
+    "verified": true,
+    "snippet": "(6) a∈A+ In finite spaces, D may be interpreted as the adjacency matrix of a lattice6 : two points i and j are connected if and only if Dij 6= 0. For instance, in the four point space, the restriction to D13 = D24 = 0 co",
+    "why": null
+   }
+  },
+  "citations": 82,
+  "citations_via": "Semantic Scholar"
+ },
+ "janson-2011": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Simply generated trees, conditioned Galton--Watson trees, random allocations and condensation",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "we give a unified treatment of the limit as the size tends to infinity of simply generated random trees including both the well known result in the standard case of critical galton watson trees and si",
+    "why": null
+   }
+  },
+  "citations": 275,
+  "citations_via": "Semantic Scholar"
+ },
+ "johnston-2009": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Feynman Propagator for a Free Scalar Field on a Causal Set",
+  "locations": {
+   "eq. (10)": {
+    "verified": true,
+    "snippet": "(10) ∆ := KR − KA , (18) We drop the dimension-superscripts whenever we refer to arbitrary dimension. is the causal set analogue of the Pauli-Jordan function. The matrix i∆ is skew-symmetric and Hermitian. These two prop",
+    "why": null
+   }
+  },
+  "citations": 88,
+  "citations_via": "Semantic Scholar"
+ },
+ "junker-schrohe-2002": {
+  "checked": "2026-11-11",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Adiabatic vacuum states on general spacetime manifolds: Definition, construction, and physical properties",
+  "locations": {
+   "Section 6": {
+    "verified": true,
+    "snippet": "6 Adiabatic vacua on Robertson-Walker spaces 45 7 Physical interpretation 52 A Sobolev spaces",
+    "why": null
+   }
+  },
+  "citations": 142,
+  "citations_via": "Semantic Scholar"
+ },
+ "kaminski-kisielowski-lewandowski-2011": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "The kernel and the injectivity of the EPRL map",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "in this paper we prove injectivity of the eprl map for 1 filling the gap of our previous paper",
+    "why": null
+   }
+  },
+  "citations": 15,
+  "citations_via": "Semantic Scholar"
+ },
+ "kaminski-lewandowski-2008": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "The flat FRW model in LQC: the self-adjointness",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "the flat frw model coupled to the massless scalar field according to the improved background scale independent version of ashtekar pawlowski and singh is considered the core of the theory is addressed",
+    "why": null
+   }
+  },
+  "citations": 77,
+  "citations_via": "Semantic Scholar"
+ },
+ "kazarian-lando-2007": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "An algebro-geometric proof of Witten's conjecture",
+  "locations": {
+   "Section 2": {
+    "verified": true,
+    "snippet": "2 P = β− 3 di ··· b1 =1 bn =1",
+    "why": null
+   }
+  },
+  "citations": 175,
+  "citations_via": "Semantic Scholar"
+ },
+ "kitaev-2017": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Notes on $\\widetilde{\\mathrm{SL}}(2,\\mathbb{R})$ representations",
+  "locations": {
+   "Section 4": {
+    "verified": true,
+    "snippet": "4 Fourier transform on G e and the Plancherel measure 8 4.1 Fourier transform on a",
+    "why": null
+   }
+  },
+  "citations": 46,
+  "citations_via": "Semantic Scholar"
+ },
+ "knapp-1986": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "Representation Theory of Semisimple Groups An Overview Based on Examples (PMS-36)",
+  "locations": {
+   "Chapter: Chapter II. Representations of SU(2), SL(2, ℝ) and SL(2, ℂ)|10.1515/9781400883974-005": {
+    "verified": true,
+    "snippet": "Chapter II. Representations of SU(2), SL(2, ℝ) and SL(2, ℂ) ",
+    "why": null
+   }
+  },
+  "citations": 800,
+  "citations_via": "OpenAlex"
+ },
+ "kolb-turner-1990": {
+  "checked": "2026-11-11",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "The Early Universe ",
+  "locations": {
+   "Chapter: Thermodynamics in The Expanding Universe|10.1201/9780429492860-5": {
+    "verified": true,
+    "snippet": "Thermodynamics in The Expanding Universe ",
+    "why": null
+   }
+  },
+  "citations": 522,
+  "citations_via": "OpenAlex"
+ },
+ "krajewski-1998": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Classification of Finite Spectral Triples",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "it is known that the spin structure on a riemannian manifold can be extended to noncommutative geometry using the notion of a spectral triple for finite geometries the corresponding finite spectral tr",
+    "why": null
+   }
+  },
+  "citations": 168,
+  "citations_via": "Semantic Scholar"
+ },
+ "krauth-nicolai-staudacher-1998": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Monte Carlo Approach to M-Theory",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "we discuss supersymmetric yang mills theory dimensionally reduced to zero dimensions and evaluate the su 2 and su 3 partition functions by monte carlo methods the exactly known su 2 results are reprod",
+    "why": null
+   }
+  },
+  "citations": 160,
+  "citations_via": "Semantic Scholar"
+ },
+ "kreimer-1998": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "On the Hopf algebra structure of perturbative quantum field theories",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "we show that the process of renormalization encapsules a hopf algebra structure in a natural manner this sheds light on the recently proposed connection between knots and renormalization theory",
+    "why": null
+   }
+  },
+  "citations": 473,
+  "citations_via": "Semantic Scholar"
+ },
+ "krv-2020": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Integrability of Liouville theory: proof of the DOZZ Formula",
+  "locations": {
+   "§2.4": {
+    "verified": true,
+    "snippet": "2.4. Statement of the main result 9 2.5.",
+    "why": null
+   }
+  },
+  "citations": 40,
+  "citations_via": "OpenAlex"
+ },
+ "last-penrose-2017": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "Lectures on the Poisson Process ",
+  "locations": {
+   "Chapter: Poisson Processes|10.1017/9781316104477.004": {
+    "verified": true,
+    "snippet": "Poisson Processes ",
+    "why": null
+   }
+  },
+  "citations": 576,
+  "citations_via": "OpenAlex"
+ },
+ "lawson-michelsohn-1989": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "Spin Geometry (PMS-38) ",
+  "locations": {
+   "Chapter: I. Clifford Algebras, Spin Groups and Their Representations|10.1515/9781400883912-004": {
+    "verified": true,
+    "snippet": "I. Clifford Algebras, Spin Groups and Their Representations ",
+    "why": null
+   }
+  },
+  "citations": 51,
+  "citations_via": "OpenAlex"
+ },
+ "le-gall-2013": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Uniqueness and universality of the Brownian map",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "we consider a random planar map m n which is uniformly distributed over the class of all rooted q angulations with n faces we let mathbf m n be the vertex set of m n which is equipped with the graph d",
+    "why": null
+   }
+  },
+  "citations": 442,
+  "citations_via": "Semantic Scholar"
+ },
+ "le-gall-miermont-2011": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Scaling limits of random trees and planar maps",
+  "locations": {
+   "§5.4": {
+    "verified": true,
+    "snippet": "5.4. The Cori-Vauquelin-Schaeffer bijection. Via the identification of maps up to isomorphisms the set of all maps becomes a countable set. For in- stance, the set Mn of all rooted maps with n edges is a finite set:",
+    "why": null
+   }
+  },
+  "citations": 138,
+  "citations_via": "Semantic Scholar"
+ },
+ "lepowsky-li-2004": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "Introduction to Vertex Operator Algebras and Their Representations ",
+  "locations": {
+   "Chapter: Construction of Families of Vertex Operator Algebras and Modules|10.1007/978-0-8176-8186-9_6": {
+    "verified": true,
+    "snippet": "Construction of Families of Vertex Operator Algebras and Modules ",
+    "why": null
+   }
+  },
+  "citations": 742,
+  "citations_via": "OpenAlex"
+ },
+ "lewkowycz-maldacena-2013": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Generalized gravitational entropy",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "we consider classical euclidean gravity solutions with a boundary the boundary contains a non contractible circle these solutions can be interpreted as computing the trace of a density matrix in the f",
+    "why": null
+   }
+  },
+  "citations": 1408,
+  "citations_via": "Semantic Scholar"
+ },
+ "lian-liu-yau-1997": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Mirror Principle I",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "we propose and study the following mirror principle certain sequences of multiplicative equivariant characteristic classes on kontsevich s stable map moduli spaces can be computed in terms of certain ",
+    "why": null
+   }
+  },
+  "citations": 344,
+  "citations_via": "Semantic Scholar"
+ },
+ "lickorish-1999": {
+  "checked": "2026-11-10",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Simplicial moves on complexes and manifolds",
+  "locations": {
+   "Definition 2.2": {
+    "verified": true,
+    "snippet": "Definition 2.2 A combinatorial n–ball is a simplicial complex B n piece- wise linearly homeomorphic to ∆n . A combinatorial n–sphere is a simplicial complex S n piecewise linearly homeomorphic to ∂∆n+1 . A combinatorial",
+    "why": null
+   },
+   "Theorem 4.5": {
+    "verified": true,
+    "snippet": "Theorem 4.5 is to prove the fact that any simplicial subdivision of a simplicial complex K is stellar equivalent to K . The next lemma is a weak form of this. Lemma 4.4 Let K be an n dimensional simplicial complex and le",
+    "why": null
+   },
+   "Theorem 5.9": {
+    "verified": true,
+    "snippet": "Theorem 5.9 ([9], [12]) Closed combinatorial n–manifolds are piecewise lin- early homeomorphic if and only if they are bistellar equivalent. There is also a version of this result for manifolds with boundary that will be",
+    "why": null
+   }
+  },
+  "citations": 177,
+  "citations_via": "Semantic Scholar"
+ },
+ "litim-2004": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Fixed points of quantum gravity",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "euclidean quantum gravity is studied with renormalisation group methods analytical results for a non trivial ultraviolet fixed point are found for arbitrary dimensions and gauge fixing parameter in th",
+    "why": null
+   }
+  },
+  "citations": 467,
+  "citations_via": "Semantic Scholar"
+ },
+ "livine-speziale-2007": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "A new spinfoam vertex for quantum gravity",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "we introduce a new spinfoam vertex to be used in models of 4d quantum gravity based on su 2 and so 4 bf theory plus constraints it can be seen as the conventional vertex of su 2 bf theory the 15j symb",
+    "why": null
+   },
+   "§3.4": {
+    "verified": true,
+    "snippet": "3.4 Non-closed configurations For configurations such that N~ 6= 0, numerical simulations show that there are no saddle points, but the integrand in (22) is still maximized at p~ = 0. For notational consistency,",
+    "why": null
+   }
+  },
+  "citations": 392,
+  "citations_via": "Semantic Scholar"
+ },
+ "loll-2019": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Quantum Gravity from Causal Dynamical Triangulations: A Review",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "this topical review gives a comprehensive overview and assessment of recent results in causal dynamical triangulations cdt a modern formulation of lattice gravity whose aim is to obtain a theory of qu",
+    "why": null
+   }
+  },
+  "citations": 364,
+  "citations_via": "Semantic Scholar"
+ },
+ "loomis-carlip-2018": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Suppression of non-manifold-like sets in the causal set path integral",
+  "locations": {
+   "Section 2": {
+    "verified": true,
+    "snippet": "2. Non-manifold-like causal sets The procedure for constructing a manifold-like causal set is well understood [2]. One starts with a finite-volume region of a manifold with a Lorentzian metric, “sprinkles” points",
+    "why": null
+   }
+  },
+  "citations": 33,
+  "citations_via": "OpenAlex"
+ },
+ "lost-2006": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Uniqueness of diffeomorphism invariant states on holonomy-flux algebras",
+  "locations": {
+   "Theorem 4.2": {
+    "verified": true,
+    "snippet": "Theorem 4.2. There exists exactly one Yang-Mills gauge invariant and diffeomorphism invariant state on the quantum holonomy-flux ∗-algebra A. Proof. The existence is known, see the example, therefore it suﬃces to prove t",
+    "why": null
+   }
+  },
+  "citations": 352,
+  "citations_via": "OpenAlex"
+ },
+ "magoo-2000": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Large N Field Theories, String Theory and Gravity",
+  "locations": {
+   "eq. (2.20)": {
+    "verified": true,
+    "snippet": "(2.20) i=1 in the flat (p + 3)-dimensional space with metric p+1 X ds2 = −dX02 − dXp+2 2 + dXi2 . (2.21) i=1 By construction, the space has the isometry SO(2, p + 1), and it is homogeneous and isotropic. 40 Equation (2.2",
+    "why": null
+   }
+  },
+  "citations": 5795,
+  "citations_via": "Semantic Scholar"
+ },
+ "martin-dussaud-2019": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "A Primer of Group Theory for Loop Quantum Gravity and Spin-foams",
+  "locations": {
+   "§2.7": {
+    "verified": true,
+    "snippet": "2.7 Measure and integration Haar measure. A Borel set in SU(2) is any subset of SU(2) obtained from open sets through countable union, countable intersection, or taking the complement. Al",
+    "why": null
+   },
+   "§4.1": {
+    "verified": true,
+    "snippet": "4.1 Irreps of SU(2) To start with, it is important to notice the following one-to-one corres- pondence between sets of finite-dimensional representations: 1. Holomorphic representations2 of SL2 (C), 1 T",
+    "why": null
+   },
+   "§5.3": {
+    "verified": true,
+    "snippet": "5.3 Wigner’s 3jm-symbol We can decompose Qj1 ⊗ Qj2 ⊗ Qj3 into a direct sum by applying equation (7) twice, and first on the left tensor product:  ",
+    "why": null
+   },
+   "§5.4": {
+    "verified": true,
+    "snippet": "5.4 Wigner’s 4jm-symbol Similarly to the previous section, we can decompose Qj1 ⊗ Qj2 ⊗ Qj3 ⊗ Qj4 into a direct sum by applying equation (7) successively. We get",
+    "why": null
+   },
+   "§5.5": {
+    "verified": true,
+    "snippet": "5.5 Wigner’s 6j-symbol . . . . . . . . . . . . . . . . . . . . . 45 5.6 Yutsis diagrams . . . . . . . . . . . . . . . . . . . . . . . 47 5.7 Penrose binor calculus . . . . . . . . . . . . . . . . . . .",
+    "why": null
+   },
+   "§5.6": {
+    "verified": true,
+    "snippet": "5.6 Yutsis diagrams . . . . . . . . . . . . . . . . . . . . . . . 47 5.7 Penrose binor calculus . . . . . . . . . . . . . . . . . . . 52 6 harmonic analysis over su(2)",
+    "why": null
+   },
+   "§7.3": {
+    "verified": true,
+    "snippet": "7.3 Principal unitary series In this section, we review several ways to build the principal series and we expand on its properties. 7.3.1 Induced representation The construction of t",
+    "why": null
+   },
+   "§7.3.4": {
+    "verified": true,
+    "snippet": "7.3.4 SU(2)-realisation . . . . . . . . . . . . . . . . . . 65 7.3.5 Canonical basis . . . . . . . . . . . . . . . . . . . 66 7.3.6 Action of the generators . . . . . . . . . . . . . .",
+    "why": null
+   },
+   "§7.3.6": {
+    "verified": true,
+    "snippet": "7.3.6 Action of the generators Similarly to equation (18), the action of the SL2 (C)-generators can be computed from the action of the group. The generators of the rotations ‘stay inside’ the same SU(2)-irreps: J3 |p,",
+    "why": null
+   }
+  },
+  "citations": 36,
+  "citations_via": "Semantic Scholar"
+ },
+ "meda-pinamonti-siemssen-2021": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Existence and uniqueness of solutions of the semiclassical Einstein equation in cosmological models",
+  "locations": {
+   "Theorem 5.9": {
+    "verified": true,
+    "snippet": "Theorem 5.9, existence and uniqueness is then obtained by applying the Banach fixed point theorem. The structure of the paper is the following: in the next section we give a brief description of the classical cosmologica",
+    "why": null
+   }
+  },
+  "citations": 27,
+  "citations_via": "Semantic Scholar"
+ },
+ "meissner-2004": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Black hole entropy in Loop Quantum Gravity",
+  "locations": {
+   "eq. (8)": {
+    "verified": true,
+    "snippet": "(8) We see that the coeﬃcient of growth γM is between the lower and upper bounds given in [14] i.e. lnπ2 < γM < lnπ3 . It seems that γM deﬁned by (7) cannot be calculated analytically or given as a solution of any “simpl",
+    "why": null
+   }
+  },
+  "citations": 845,
+  "citations_via": "Semantic Scholar"
+ },
+ "miermont-2011": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "The Brownian map is the scaling limit of uniform random plane quadrangulations",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "we prove that uniform random quadrangulations of the sphere with n faces endowed with the usual graph distance and renormalized by n 1 4 converge as n to infty in distribution for the gromov hausdorff",
+    "why": null
+   }
+  },
+  "citations": 424,
+  "citations_via": "Semantic Scholar"
+ },
+ "moise-1977": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "Geometric Topology in Dimensions 2 and 3 ",
+  "locations": {
+   "Chapter: The Hauptvermutung; Tame imbedding|10.1007/978-1-4612-9906-6_37": {
+    "verified": true,
+    "snippet": "The Hauptvermutung; Tame imbedding ",
+    "why": null
+   },
+   "Chapter: The Jordan curve theorem|10.1007/978-1-4612-9906-6_5": {
+    "verified": true,
+    "snippet": "The Jordan curve theorem ",
+    "why": null
+   },
+   "Chapter: The Schönflies theorem|10.1007/978-1-4612-9906-6_10": {
+    "verified": true,
+    "snippet": "The Schönflies theorem ",
+    "why": null
+   },
+   "Chapter: The Triangulation theorem|10.1007/978-1-4612-9906-6_36": {
+    "verified": true,
+    "snippet": "The Triangulation theorem ",
+    "why": null
+   },
+   "Chapter: The classification of compact connected 2-manifolds|10.1007/978-1-4612-9906-6_23": {
+    "verified": true,
+    "snippet": "The classification of compact connected 2-manifolds ",
+    "why": null
+   }
+  },
+  "citations": 439,
+  "citations_via": "OpenAlex"
+ },
+ "mukhametzhanov-zhiboedov-2019": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Modular Invariance, Tauberian Theorems, and Microcanonical Entropy",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "we analyze modular invariance drawing inspiration from tauberian theorems given a modular invariant partition function with a positive spectral density we derive lower and upper bounds on the number o",
+    "why": null
+   }
+  },
+  "citations": 77,
+  "citations_via": "Semantic Scholar"
+ },
+ "nielsen-petz-2005": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "A simple proof of the strong subadditivity inequality",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "arguably the deepest fact known about the von neumann entropy the strong subadditivity inequality is a potent hammer in the quantum information theorist s toolkit this short tutorial describes a simpl",
+    "why": null
+   }
+  },
+  "citations": 96,
+  "citations_via": "Semantic Scholar"
+ },
+ "noui-perez-2005": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Three dimensional loop quantum gravity: coupling to point particles",
+  "locations": {
+   "§2.2": {
+    "verified": true,
+    "snippet": "2.2. Coupling to the gravitational field The fact that there is no gravitational interaction between point particles in the three dimensional case allows one to study the coupling to each particle with the gravitational",
+    "why": null
+   }
+  },
+  "citations": 82,
+  "citations_via": "Semantic Scholar"
+ },
+ "ooguri-1992": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Topological Lattice Models in Four Dimensions",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "we define a lattice statistical model on a triangulated manifold in four dimensions associated to a group g when g su 2 the statistical weight is constructed from the 15j symbol as well as the 6j symb",
+    "why": null
+   }
+  },
+  "citations": 327,
+  "citations_via": "Semantic Scholar"
+ },
+ "page-1993": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Average Entropy of a Subsystem",
+  "locations": {
+   "eq. (11)": {
+    "verified": true,
+    "snippet": "(11) k=n+1 k 2n which rather remarkably agrees with what I later calculated exactly for m = 4 and m = 5, so I now think it would be surprising if it were not always correct, though I have not yet found a proof for this c",
+    "why": null
+   }
+  },
+  "citations": 1553,
+  "citations_via": "Semantic Scholar"
+ },
+ "paschke-sitarz-1998": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Discrete spectral triples and their symmetries",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "we classify 0 dimensional spectral triples over complex and real algebras and provide some general statements about their differential structure we investigate also whether such spectral triples admit",
+    "why": null
+   }
+  },
+  "citations": 112,
+  "citations_via": "Semantic Scholar"
+ },
+ "perelomov-1986": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "Generalized Coherent States and Their Applications ",
+  "locations": {
+   "Chapter: Coherent States for the Rotation Group of Three-Dimensional Space|10.1007/978-3-642-61629-7_5": {
+    "verified": true,
+    "snippet": "Coherent States for the Rotation Group of Three-Dimensional Space ",
+    "why": null
+   }
+  },
+  "citations": 3566,
+  "citations_via": "OpenAlex"
+ },
+ "perez-2013": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "The Spin Foam Approach to Quantum Gravity",
+  "locations": {
+   "§2.3.8": {
+    "verified": true,
+    "snippet": "2.3.8 The Engle–Pereira–Rovelli–Livine (EPRL) A modiﬁcation of the Barrett–Crane model was recently introduced in [162, 163] and extended for arbitrary Immirzi parameter in [158]. The basic idea was to relax the impo",
+    "why": null
+   },
+   "§6.1.3": {
+    "verified": true,
+    "snippet": "6.1.3 SU (2) BF theory: The Oouguri model In four dimensions the structure is essentially the same. Now edges are shared by four repre- sentations. In the case of G = SU (2) the vector space Inv[j1 ⊗ j2 ⊗ j3 ⊗ j4 ] h",
+    "why": null
+   }
+  },
+  "citations": 755,
+  "citations_via": "OpenAlex"
+ },
+ "pinamonti-2011": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "On the initial conditions and solutions of the semiclassical Einstein equations in a cosmological scenario",
+  "locations": {
+   "Theorem 4.1": {
+    "verified": true,
+    "snippet": "Theorem 4.1. Fix ℓ and let a0 = ℓt0 . If t0 is chosen sufficiently small, it exists a unique solution X = H −1 of (16) in Bc which can be constructed recursively starting from the massless solution X0 := H0−1 implicitly",
+    "why": null
+   }
+  },
+  "citations": 60,
+  "citations_via": "Semantic Scholar"
+ },
+ "pittel-2015": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Another proof of Harer-Zagier formula",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "for a regular 2n gon there are 2n 1 ways to match and glue the 2n sides the harer zagier bivariate generating function enumerates the gluings by n and the genus g of the attendant surface and leads to",
+    "why": null
+   }
+  },
+  "citations": 8,
+  "citations_via": "OpenAlex"
+ },
+ "polchinski-1998a": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "String Theory ",
+  "locations": {
+   "Chapter: The Polyakov path integral|10.1017/CBO9780511816079.006": {
+    "verified": true,
+    "snippet": "The Polyakov path integral ",
+    "why": null
+   },
+   "Chapter: The string spectrum|10.1017/CBO9780511816079.007": {
+    "verified": true,
+    "snippet": "The string spectrum ",
+    "why": null
+   }
+  },
+  "citations": 1367,
+  "citations_via": "OpenAlex"
+ },
+ "polchinski-1998b": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "String Theory ",
+  "locations": {
+   "Chapter: Calabi–Yau compactification|10.1017/CBO9780511618123.011": {
+    "verified": true,
+    "snippet": "Calabi–Yau compactification ",
+    "why": null
+   },
+   "Chapter: Type I and type II superstrings|10.1017/CBO9780511618123.004": {
+    "verified": true,
+    "snippet": "Type I and type II superstrings ",
+    "why": null
+   }
+  },
+  "citations": 1854,
+  "citations_via": "OpenAlex"
+ },
+ "polishchuk-zaslow-1998": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Categorical Mirror Symmetry: The Elliptic Curve",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "we describe an isomorphism of categories conjectured by kontsevich if m and widetilde m are mirror pairs then the conjectural equivalence is between the derived category of coherent sheaves on m and a",
+    "why": null
+   }
+  },
+  "citations": 286,
+  "citations_via": "Semantic Scholar"
+ },
+ "rangamani-takayanagi-2016": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Holographic Entanglement Entropy",
+  "locations": {},
+  "citations": 539,
+  "citations_via": "Semantic Scholar"
+ },
+ "regge-1961": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "General relativity without coordinates ",
+  "locations": {},
+  "citations": 1496,
+  "citations_via": "OpenAlex"
+ },
+ "reisenberger-1999": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "On relativistic spin network vertices",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "barrett and crane have proposed a model of simplicial euclidean quantum gravity in which a central role is played by a class of spin 4 spin networks called relativistic spin networks which satisfy a s",
+    "why": null
+   }
+  },
+  "citations": 76,
+  "citations_via": "Semantic Scholar"
+ },
+ "rendall-2005": {
+  "checked": "2026-11-11",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Intermediate inflation and the slow-roll approximation",
+  "locations": {
+   "Section 1": {
+    "verified": true,
+    "snippet": "1 Introduction In recent years astronomical observations have shown the necessity of incorporating accelerated expansion into the description of the evolution of our universe. Unfortunately there is no clear understan",
+    "why": null
+   },
+   "Section 4": {
+    "verified": true,
+    "snippet": "4 The anisotropic case with matter Here we generalize the results of the last section to anisotropic solutions with matter. Theorem 4 Consider a solution of the Einstein equations of Bianchi type I- VIII coupled to",
+    "why": null
+   }
+  },
+  "citations": 143,
+  "citations_via": "OpenAlex"
+ },
+ "reuter-1998": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Nonperturbative Evolution Equation for Quantum Gravity",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "a scale dependent effective action for gravity is introduced and an exact nonperturbative evolution equation is derived which governs its renormalization group flow it is invariant under general coord",
+    "why": null
+   }
+  },
+  "citations": 70,
+  "citations_via": "Semantic Scholar"
+ },
+ "reuter-saueressig-2012": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Quantum Einstein Gravity",
+  "locations": {},
+  "citations": 414,
+  "citations_via": "Semantic Scholar"
+ },
+ "reuter-saueressig-2018": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "Quantum Gravity and the Functional Renormalization Group The Road towards Asymptotic Safety",
+  "locations": {},
+  "citations": 239,
+  "citations_via": "OpenAlex"
+ },
+ "rhodes-vargas-2013": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Gaussian multiplicative chaos and applications: a review",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "in this article we review the theory of gaussian multiplicative chaos initially introduced by kahane s seminal work in 1985 though this beautiful paper faded from memory until recently it already cont",
+    "why": null
+   }
+  },
+  "citations": 506,
+  "citations_via": "Semantic Scholar"
+ },
+ "rideout-sorkin-2000": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "A Classical Sequential Growth Dynamics for Causal Sets",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "starting from certain causality conditions and a discrete form of general covariance we derive a very general family of classically stochastic sequential growth dynamics for causal sets the resulting ",
+    "why": null
+   }
+  },
+  "citations": 334,
+  "citations_via": "Semantic Scholar"
+ },
+ "ringstrom-2001": {
+  "checked": "2026-11-11",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "The Bianchi IX attractor",
+  "locations": {
+   "Section 15": {
+    "verified": true,
+    "snippet": "15. Generic attractor for Bianchi IX solutions In this section, we prove that for a generic Bianchi IX solution, the closure of the set of type II vacuum points is an attractor, assuming 2/3 < γ < 2. Wha",
+    "why": null
+   }
+  },
+  "citations": 171,
+  "citations_via": "Semantic Scholar"
+ },
+ "roberts-1999": {
+  "checked": "2026-11-10",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Classical 6j-symbols and the tetrahedron",
+  "locations": {
+   "Section 6.1": {
+    "verified": true,
+    "snippet": "6.1 Comparison with the Ponzano–Regge formula It is important to note that the formula (2) is not the same as the original Ponzano–Regge formula. There are two main differences, apart from the trivial fact that they",
+    "why": null
+   },
+   "Theorem 1": {
+    "verified": true,
+    "snippet": "Theorem 1 (Asymptotic formula) Suppose a tetrahedron is admissibly la- belled by the numbers a, b, c, d, e, f . Let k be a natural number. As k → ∞, there is an asymptotic formula r \u001aX \u001b \u001a \u001b  2 θa π ka kb kc cos (ka +",
+    "why": null
+   }
+  },
+  "citations": 157,
+  "citations_via": "Semantic Scholar"
+ },
+ "romik-2015": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "The Surprising Mathematics of Longest Increasing Subsequences ",
+  "locations": {
+   "Chapter: Longest increasing subsequences in random permutations|10.1017/CBO9781139872003.003": {
+    "verified": true,
+    "snippet": "Longest increasing subsequences in random permutations ",
+    "why": null
+   }
+  },
+  "citations": 173,
+  "citations_via": "OpenAlex"
+ },
+ "rovelli-smolin-1995": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Discreteness of area and volume in quantum gravity",
+  "locations": {
+   "Section 4": {
+    "verified": true,
+    "snippet": "4 Figure 1: A spin network Let pi , qi , ri be the colors of the links adjacent to the i-th node of the spin network, and let ai , bi , ci be defined by pi =",
+    "why": null
+   }
+  },
+  "citations": 1285,
+  "citations_via": "Semantic Scholar"
+ },
+ "ryu-takayanagi-2006": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Holographic Derivation of Entanglement Entropy from AdS/CFT",
+  "locations": {
+   "eq. (1.3)": {
+    "verified": true,
+    "snippet": "(1.3) 4GN 3 πa L for BPS black holes [1]. This idea relates the gravi- where l and L are the length of the subsystem A and tational entropy with the degeneracy of quantum field the total system A ∪ B (both ends of A ∪ B",
+    "why": null
+   }
+  },
+  "citations": 3710,
+  "citations_via": "Semantic Scholar"
+ },
+ "schottenloher-2008": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "A Mathematical Introduction to Conformal Field Theory ",
+  "locations": {
+   "Chapter: The Virasoro Algebra|10.1007/978-3-540-68628-6_5": {
+    "verified": true,
+    "snippet": "The Virasoro Algebra ",
+    "why": null
+   }
+  },
+  "citations": 192,
+  "citations_via": "OpenAlex"
+ },
+ "sen-1996": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Average Entropy of a Subsystem",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "it was recently conjectured by d page that if a quantum system of hilbert space dimension nm is in a random pure state then the average entropy of a subsystem of dimension m where m leq n is s mn sum ",
+    "why": null
+   }
+  },
+  "citations": 182,
+  "citations_via": "Semantic Scholar"
+ },
+ "senovilla-garfinkle-2015": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "The 1965 Penrose singularity theorem",
+  "locations": {
+   "Theorem 2": {
+    "verified": true,
+    "snippet": "Theorem 2 (Penrose singularity theorem). If the space-time contains a non-compact Cauchy hypersurface Σ and a closed future-trapped surface, and if the convergence condition (6) holds for null uµ , then there are future",
+    "why": null
+   }
+  },
+  "citations": 231,
+  "citations_via": "Semantic Scholar"
+ },
+ "sorkin-2019": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Lorentzian angles and trigonometry including lightlike vectors",
+  "locations": {
+   "Section 2": {
+    "verified": true,
+    "snippet": "2. Opening-angle of a spacelike wedge in the first quadrant The two null lines through the origin in M2 divide the plane into four “quadrants” as shown in figure 3. Consider, to begin with, the case where a and b lie",
+    "why": null
+   }
+  },
+  "citations": 22,
+  "citations_via": "Semantic Scholar"
+ },
+ "sss-2019": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "JT gravity as a matrix integral",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "we present exact results for partition functions of jackiw teitelboim jt gravity on two dimensional surfaces of arbitrary genus with an arbitrary number of boundaries the boundaries are of the type re",
+    "why": null
+   }
+  },
+  "citations": 770,
+  "citations_via": "Semantic Scholar"
+ },
+ "stanford-witten-2017": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Fermionic Localization of the Schwarzian Theory",
+  "locations": {
+   "Section 2": {
+    "verified": true,
+    "snippet": "2 The Schwarzian Theory 3 2.1 The Symplectic Form and the Hamiltonians . . . . . . . . . . . . . . . . . 3 2.2 Evaluation of the Measure . .",
+    "why": null
+   }
+  },
+  "citations": 485,
+  "citations_via": "Semantic Scholar"
+ },
+ "strominger-1998": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Black Hole Entropy from Near-Horizon Microstates",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "black holes whose near horizon geometries are locally but not necessarily globally ads 3 three dimensional anti de sitter space are considered using the fact that quantum gravity on ads 3 is a conform",
+    "why": null
+   },
+   "Section 2": {
+    "verified": true,
+    "snippet": "2 Maldacena has recently shown, from a totally different perspective, that certain string com- pactifications to AdS3 are conformal field theories [13]. 1 for t",
+    "why": null
+   }
+  },
+  "citations": 1245,
+  "citations_via": "Semantic Scholar"
+ },
+ "strominger-vafa-1996": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Microscopic Origin of the Bekenstein-Hawking Entropy",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "the bekenstein hawking area entropy relation s bh a 4 is derived for a class of five dimensional extremal black holes in string theory by counting the degeneracy of bps soliton bound states",
+    "why": null
+   }
+  },
+  "citations": 3683,
+  "citations_via": "Semantic Scholar"
+ },
+ "surya-2019": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "The causal set approach to quantum gravity",
+  "locations": {
+   "Section 3": {
+    "verified": true,
+    "snippet": "3 The causal set hypothesis We begin with the definition of a causal set: Definition: A set C with an order relation ≺ is a causal set if it is 12",
+    "why": null
+   },
+   "§3.2": {
+    "verified": true,
+    "snippet": "3.2 Discreteness without Lorentz breaking . . . . . . . . . . . . . . . . . . . . . . 21 3.3 Forks in the road: What makes CST so “different”? . . . . . . . . . . . . . . . 23 4 Kinematics or geomet",
+    "why": null
+   },
+   "§4.1": {
+    "verified": true,
+    "snippet": "4.1 Spacetime dimension estimators The earliest result in CST is a dimension estimator for Minkowski spacetime due to Myrheim (1978)15 and predates BLMS (Bombelli et al 1987). A closely related dimension estimator was",
+    "why": null
+   },
+   "§4.4": {
+    "verified": true,
+    "snippet": "4.4 The d’Alembertian for a scalar field . . . . . . . . . . . . . . . . . . . . . . . 34 4.5 The Ricci scalar and the Benincasa–Dowker action . . . . . . . . . . . . . . . 36 4.6 Boundary terms f",
+    "why": null
+   },
+   "§6.1": {
+    "verified": true,
+    "snippet": "6.1 Classical sequential growth models . . . . . . . . . . . . . . . . . . . . . . . . 53 6.2 Observables as beables . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 58 6.3 A route to quant",
+    "why": null
+   }
+  },
+  "citations": 283,
+  "citations_via": "Semantic Scholar"
+ },
+ "taylor-2001": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "M(atrix) Theory: Matrix Quantum Mechanics as a Fundamental Theory",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "a self contained review is given of the matrix model of m theory the introductory part of the review is intended to be accessible to the general reader m theory is an eleven dimensional quantum theory",
+    "why": null
+   }
+  },
+  "citations": 352,
+  "citations_via": "Semantic Scholar"
+ },
+ "thiemann-1998": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Quantum Spin Dynamics (QSD)",
+  "locations": {
+   "§3.2": {
+    "verified": true,
+    "snippet": "3.2 Final Regularization of the Euclidean constraint Let us now write the integral over Σ (3.1) for the classical theory as follows Z Z X Z Z X",
+    "why": null
+   },
+   "§3.4": {
+    "verified": true,
+    "snippet": "3.4 Diffeomorphism covariance According to the programme of algebraic quantization proposed in [13] the solutions to the Euclidean Hamiltonian constraint are diffeomorphism invariant distributions ψ on Φ := Cyl∞ (A/",
+    "why": null
+   }
+  },
+  "citations": 731,
+  "citations_via": "Semantic Scholar"
+ },
+ "thiemann-2007": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "Modern Canonical Quantum General Relativity ",
+  "locations": {
+   "Chapter: Classical Hamiltonian formulation of General Relativity|10.1017/CBO9780511755682.005": {
+    "verified": true,
+    "snippet": "Classical Hamiltonian formulation of General Relativity ",
+    "why": null
+   }
+  },
+  "citations": 2128,
+  "citations_via": "OpenAlex"
+ },
+ "tong-2009": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Lectures on String Theory",
+  "locations": {
+   "eq. (1.22)": {
+    "verified": true,
+    "snippet": "(1.22) 4πα where g ≡ det g. This is the Polyakov action. (Polyakov didn’t discover the action, but he understood how to work with it in the path integral, and for this reason it carries his name. The path integral treatm",
+    "why": null
+   },
+   "§2.2": {
+    "verified": true,
+    "snippet": "2.2 Lightlike Quantization 32 2.2.1 Lightlike Gauge 33 2.2.2 Quantization 36 2.3 The String Spectrum",
+    "why": null
+   },
+   "§6.2.2": {
+    "verified": true,
+    "snippet": "6.2.2 The Virasoro-Shapiro Amplitude 132 6.2.3 Lessons to Learn 135 6.3 Open String Scattering 139 6.3.1 The Veneziano",
+    "why": null
+   },
+   "§6.3.1": {
+    "verified": true,
+    "snippet": "6.3.1 The Veneziano Amplitude 141 6.3.2 The Tension of D-Branes 142 6.4 One-Loop Amplitudes 143 6.4.1 The Moduli Spa",
+    "why": null
+   }
+  },
+  "citations": 31,
+  "citations_via": "Semantic Scholar"
+ },
+ "turaev-1994": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "Quantum Invariants of Knots and 3-Manifolds ",
+  "locations": {
+   "Chapter: Chapter II. Invariants of closed 3-manifolds|10.1515/9783110883275-003": {
+    "verified": true,
+    "snippet": "Chapter II. Invariants of closed 3-manifolds ",
+    "why": null
+   },
+   "Chapter: Chapter VI. 6j-symbols|10.1515/9783110883275-007": {
+    "verified": true,
+    "snippet": "Chapter VI. 6j-symbols ",
+    "why": null
+   },
+   "Chapter: Chapter VII. Simplicial state sums on 3-manifolds|10.1515/9783110883275-008": {
+    "verified": true,
+    "snippet": "Chapter VII. Simplicial state sums on 3-manifolds ",
+    "why": null
+   },
+   "Chapter: Chapter XI. An algebraic construction of modular categories|10.1515/9783110883275-012": {
+    "verified": true,
+    "snippet": "Chapter XI. An algebraic construction of modular categories ",
+    "why": null
+   }
+  },
+  "citations": 874,
+  "citations_via": "OpenAlex"
+ },
+ "turaev-virelizier-2010": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "On two approaches to 3-dimensional TQFTs",
+  "locations": {
+   "Theorem 11.1": {
+    "verified": true,
+    "snippet": "Theorem 11.1. Let C be a spherical fusion category over an algebraically closed field such that dim C 6= 0. Then |M |C = τZ(C) (M ) for any closed oriented 3- manifold M . This equality extends to an isomorphism of TQFTs",
+    "why": null
+   }
+  },
+  "citations": 80,
+  "citations_via": "Semantic Scholar"
+ },
+ "van-suijlekom-2015": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "Noncommutative Geometry and Particle Physics ",
+  "locations": {
+   "Chapter: Finite Noncommutative Spaces|10.1007/978-94-017-9162-5_2": {
+    "verified": true,
+    "snippet": "Finite Noncommutative Spaces ",
+    "why": null
+   }
+  },
+  "citations": 132,
+  "citations_via": "OpenAlex"
+ },
+ "varshalovich-1988": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "Quantum Theory of Angular Momentum ",
+  "locations": {
+   "Chapter: 6j Symbols and the Racah Coefficients|10.1142/9789814415491_0010": {
+    "verified": true,
+    "snippet": "6j SYMBOLS AND THE RACAH COEFFICIENTS ",
+    "why": null
+   },
+   "Chapter: Clebsch-Gordan Coefficients and 3jm Symbols|10.1142/9789814415491_0009": {
+    "verified": true,
+    "snippet": "CLEBSCH-GORDAN COEFFICIENTS AND 3jm SYMBOLS ",
+    "why": null
+   }
+  },
+  "citations": 3979,
+  "citations_via": "OpenAlex"
+ },
+ "vassilevich-2003": {
+  "checked": "2026-11-07",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Heat kernel expansion: user's manual",
+  "locations": {
+   "eq. (4.27)": {
+    "verified": true,
+    "snippet": "(4.27) MZ √ a4 (f, D) = (4π)−n/2 360−1 dn x gtrV {f (60E;kk + 60RE + 180E 2 M 2 +12R;kk + 5R − 2Rij Rij + 2Rijkl Rijkl + 30Ωij Ωij )}. (4.28) √ f Z n a6 (f, D) = (4π)−n/2 dn x gtrV (18R;iijj + 17R;k R;k − 2Rij;k Rij;k M",
+    "why": null
+   }
+  },
+  "citations": 1254,
+  "citations_via": "Semantic Scholar"
+ },
+ "visser-1998": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Acoustic black holes: horizons, ergospheres, and Hawking radiation",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "it is a deceptively simple question to ask how acoustic disturbances propagate in a non homogeneous flowing fluid this question can be answered by invoking the language of lorentzian differential geom",
+    "why": null
+   }
+  },
+  "citations": 211,
+  "citations_via": "Semantic Scholar"
+ },
+ "visser-2002": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Sakharov's induced gravity: a modern perspective",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "sakharov s 1967 notion of induced gravity is currently enjoying a significant resurgence the basic idea originally presented in a very brief 3 page paper with a total of 4 formulas is that gravity is ",
+    "why": null
+   }
+  },
+  "citations": 351,
+  "citations_via": "OpenAlex"
+ },
+ "visser-2007": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "The Kerr spacetime: A brief introduction",
+  "locations": {
+   "Section 9": {
+    "verified": true,
+    "snippet": "9 Horizons To briefly survey the key properties of the horizons and ergospheres occurring in the Kerr spacetime, let us concentrate on using the Boyer–Lindquist co- ordinates. First, consider the components of the",
+    "why": null
+   }
+  },
+  "citations": 242,
+  "citations_via": "Semantic Scholar"
+ },
+ "weinzierl-2006": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "The Art of Computing Loop Integrals",
+  "locations": {
+   "§2.2": {
+    "verified": true,
+    "snippet": "2.2 Regularisation. Before we start with the actual calculation of loop inte- grals, I should mention one complication: Loop integrals are often divergent ! Let us first look at the simple example of a scalar two-p",
+    "why": null
+   }
+  },
+  "citations": 36,
+  "citations_via": "Semantic Scholar"
+ },
+ "wetterich-1993": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Exact evolution equation for the effective potential",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "we derive a new exact evolution equation for the scale dependence of an effective action the corresponding equation for the effective potential permits a useful truncation this allows one to deal with",
+    "why": null
+   }
+  },
+  "citations": 1741,
+  "citations_via": "Semantic Scholar"
+ },
+ "witten-2018": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Notes on Some Entanglement Properties of Quantum Field Theory",
+  "locations": {
+   "§3": {
+    "verified": true,
+    "snippet": "3 The Modular Operator And Relative Entropy In Quantum Field Theory 3.1 Definition and First Properties In some quantum field theory in Minkowski spacetime with Hilbert space H, let AU be the alge",
+    "why": null
+   }
+  },
+  "citations": 138,
+  "citations_via": "Semantic Scholar"
+ },
+ "zwiebach-1993": {
+  "checked": "2026-11-08",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Closed String Field Theory: Quantum Action and the BV Master Equation",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "the complete quantum theory of covariant closed strings is constructed in detail the action is defined by elementary vertices satisfying recursion relations that give rise to jacobi like identities fo",
+    "why": null
+   }
+  },
+  "citations": 520,
+  "citations_via": "Semantic Scholar"
+ }
+}

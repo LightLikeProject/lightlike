@@ -1,0 +1,60 @@
+# Keeps the task issues current: `python3 scripts/tasks.py sync --apply` reads every issue, its
+# comments (`claiming`, `attempting`, `stopping`) and the pull requests that name a task
+# (`Task: T-...`), then sets the labels ready, blocked, claimed, attempting and in review, assigns
+# claimants, lets claims lapse after 14 days without activity, closes the issue of a proof task
+# once its proof is on main, and opens the issue of each task that becomes ready.
+#
+# When it runs: on issue, comment and pull request events, on pushes to main that change the plan
+# or the task files, daily, and on demand. Only when the repository variable TASK_SYNC is `on`
+# (Settings -> Secrets and variables -> Actions -> Variables), so it is off until the maintainers
+# switch it on. Its own comments and edits use GITHUB_TOKEN, which starts no further runs.
+#
+# pull_request_target runs this workflow as it is on main, with the checkout of main: the code of
+# a pull request is never run here.
+name: Task issues
+
+on:
+  issue_comment:
+    types: [created]
+  issues:
+    types: [opened, edited, closed, reopened]
+  pull_request_target:
+    types: [opened, edited, closed, reopened]
+  push:
+    branches: [main]
+    paths: ['docs/tasks/**', 'Tasks/**']
+  schedule:
+    - cron: '17 4 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: read
+
+# One sync at a time; a run that waits is replaced by a newer one, which reads everything again.
+concurrency:
+  group: tasks-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    if: ${{ vars.TASK_SYNC == 'on' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install the pinned PyYAML
+        run: python3 -m pip install --quiet "$(grep -i '^pyyaml' requirements.txt)"
+
+      - name: Sync the task issues
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/tasks.py sync --apply

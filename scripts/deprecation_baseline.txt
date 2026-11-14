@@ -1,0 +1,6 @@
+# Known deprecation warnings per file. ci_check.py fails when a file has MORE than its
+# entry here (or any, if absent). Lower or delete an entry when its warnings are fixed.
+Lightlike/Lorentz/Density.lean 3
+Lightlike/Lorentz/Homogeneous.lean 5
+Lightlike/Lorentz/Levels.lean 1
+Lightlike/Lorentz/SpinVectors.lean 3

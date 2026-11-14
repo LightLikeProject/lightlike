@@ -1,0 +1,127 @@
+# Build the library and enforce its hard rules (CONTRIBUTING.md):
+#   - lake build succeeds, and every file under Lightlike/ is imported by Lightlike.lean;
+#   - no sorry, admit, native_decide, axiom, implemented_by or extern in Lightlike/;
+#   - every declaration of the library depends only on propext, Classical.choice and Quot.sound
+#     (scripts/AxiomAudit.lean checks all of them; there is no list to keep);
+#   - nothing outside an Exploratory/ folder imports a module inside one;
+#   - every definition, and every declaration named in an API map or in docs/results.yaml, has a
+#     docstring;
+#   - the literature sources of the catalog check out (scripts/sources.py check).
+# Steps marked [advisory] report and never block. `python3 scripts/gate.py` runs the same steps
+# locally.
+name: CI
+
+# When it runs: on every pull request, on every push to main, and on demand (Actions -> CI ->
+# Run workflow). While the repository is private only the on-demand run builds (the job
+# condition below), because Actions minutes are limited.
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# A newer build of the same branch cancels the build still in progress for the older commit.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+# The workflow only reads the repository.
+permissions:
+  contents: read
+
+jobs:
+  build:
+    if: ${{ github.event_name == 'workflow_dispatch' || !github.event.repository.private }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    defaults:
+      run:
+        shell: bash  # -eo pipefail, so `cmd | tee log` fails when cmd fails
+    steps:
+      # A clean build needs about 17 GB (Mathlib's unpacked build cache and its download, Physlib,
+      # Lightlike), more than the runner has free; this removes SDKs the build does not use.
+      - name: Free disk space [ci-only]
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL /usr/local/share/boost
+          df -h /
+
+      - uses: actions/checkout@v7
+
+      # The Python checks pass with 3.9 and the versions pinned in requirements.txt.
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.9"
+
+      - name: Install elan (toolchain from lean-toolchain) [ci-only]
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh \
+            | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+
+      - name: Restore dependency cache (Mathlib, Physlib builds)
+        uses: actions/cache@v6
+        with:
+          path: .lake/packages
+          key: lake-packages-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}
+
+      - name: Fetch Mathlib build cache
+        run: lake exe cache get
+
+      # Steps marked [hard rule] block a merge; steps marked [advisory] (continue-on-error) only report.
+      - name: Build [hard rule]
+        run: lake build 2>&1 | tee build.log
+
+      - name: Axioms of every declaration (standard axioms only) [hard rule]
+        run: lake env lean scripts/AxiomAudit.lean
+
+      - name: Check (no sorry, every file imported by Lightlike.lean, nothing imports Exploratory/) [hard rule]
+        run: python3 scripts/ci_check.py --build-log build.log
+
+      # The gate (scripts/gate.py) runs every step below except `uses:` steps and `[ci-only]`
+      # steps; locally the pinned packages of requirements.txt must be installed already.
+      - name: Install the pinned Python packages [ci-only]
+        run: python3 -m pip install --quiet -r requirements.txt
+
+      - name: Check the API maps, the results registry and the names they cite [advisory]
+        continue-on-error: true
+        run: |
+          python3 scripts/api_map.py --selftest
+          python3 scripts/api_map.py check
+          python3 scripts/api_map.py names
+          lake env lean scripts/NameCheck.lean
+
+      # Reads .lake/api_names.tsv, written by `api_map.py names` in the step above.
+      - name: Check docstrings (definitions and the declarations the catalog names) [hard rule]
+        run: |
+          test -f .lake/api_names.tsv || python3 scripts/api_map.py names
+          lake env lean scripts/DocCheck.lean
+
+      # The task library (Tasks/, not a default target) holds open proof tasks: `sorry` is allowed
+      # there, but only in the proof of each file's task declaration. `deps --check`: the header of
+      # each task file matches the plan, the sources and the library.
+      - name: Build the task library and check the task list [advisory]
+        continue-on-error: true
+        run: |
+          lake build Tasks
+          python3 scripts/tasks.py check
+          python3 scripts/tasks.py deps --check
+
+      # Every milestone and every result in docs/results.yaml cites a reference with a location that
+      # `scripts/sources.py verify` looked up (or is labelled structural or exploratory), and every
+      # substantive task belongs to such a milestone. Offline; reads only the catalog.
+      - name: Check the literature sources of tasks and results [hard rule]
+        run: python3 scripts/sources.py check
+
+      # Every file path in a Lean comment or docstring exists, and no comment calls a proven theorem
+      # open or unproven (scripts/doc_refs_check.py).
+      - name: Check the file paths and status claims in comments [advisory]
+        continue-on-error: true
+        run: python3 scripts/doc_refs_check.py
+
+      - name: Self-test of the checks (each fails on a planted bad case) [advisory]
+        continue-on-error: true
+        run: python3 -I scripts/tooling_selftest.py
+
+      - name: Python cross-checks (pinned versions, wrong-input controls) [advisory]
+        continue-on-error: true
+        run: python3 -I scripts/run_python_checks.py --all

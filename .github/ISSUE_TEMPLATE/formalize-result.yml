@@ -1,0 +1,89 @@
+name: Formalize this result
+description: Propose a specific result from a specific paper, book or review for Lightlike to formalize.
+title: "[formalize] "
+labels: ["formalize-request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Every task in Lightlike is anchored in the published literature (see `docs/tasks/sources.yaml`).
+        Name one result and where exactly it is stated, so that a reviewer can compare a Lean statement
+        with it. Results without a published source are welcome too; they go to the EXPLORATORY tier.
+  - type: input
+    id: source
+    attributes:
+      label: Source
+      description: Authors, title, year, and an arXiv ID, DOI or ISBN.
+      placeholder: "S. M. Carroll, Lecture Notes on General Relativity (1997), arXiv:gr-qc/9712019"
+    validations:
+      required: true
+  - type: input
+    id: location
+    attributes:
+      label: Location in the source
+      description: Theorem, lemma, proposition, equation, section or chapter number.
+      placeholder: "eq. (3.79)"
+    validations:
+      required: true
+  - type: textarea
+    id: statement
+    attributes:
+      label: The result
+      description: The statement in words or LaTeX, with its hypotheses and conventions (signature, units, normalizations).
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      description: The closest area; the areas are described in ROADMAP.md.
+      options:
+        - asymptotic-safety
+        - asymptotics
+        - canonical-qg
+        - causal-sets
+        - cft
+        - dynamical-triangulations
+        - gauge-constrained
+        - geometry
+        - gft-tensor
+        - harmonic-analysis
+        - holography
+        - low-dim-gravity
+        - matrix-models
+        - ncg
+        - operator-algebras
+        - perturbative-qg
+        - pl-topology
+        - qft-rg
+        - quantum-groups
+        - random-geometry
+        - regge
+        - semiclassical
+        - spin-foams
+        - string-theory
+        - twistors
+        - other
+    validations:
+      required: true
+  - type: dropdown
+    id: tier
+    attributes:
+      label: Tier
+      options:
+        - "ESTABLISHED: standard mathematics or physics"
+        - "FRONTIER: a proposal published in the peer-reviewed literature"
+        - "EXPLORATORY: new or unpublished"
+        - "Not sure"
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why it matters
+      description: What it would unlock, which tasks or results it connects to, and any prerequisites you know are missing.
+  - type: textarea
+    id: lean
+    attributes:
+      label: Existing Lean work (optional)
+      description: Related definitions in Lightlike, Mathlib, Physlib or elsewhere, if you know of any.

@@ -1,0 +1,26 @@
+name = "lightlike"
+version = "0.1.0"
+defaultTargets = ["Lightlike"]
+
+[leanOptions]
+pp.unicode.fun = true
+autoImplicit = false
+
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+rev = "v4.35.0"
+
+[[lean_lib]]
+name = "Lightlike"
+
+# Physlib (formerly PhysLean), pinned to one commit. We use PhyslibAlpha's 6j symbols, which are
+# in the lightly reviewed "Alpha" tier (no maintenance promise) - see docs/CONVENTIONS.md.
+[[require]]
+name = "Physlib"
+git = "https://github.com/leanprover-community/physlib"
+rev = "cdfa6094901b8956a378151f64088bcf5a5f8bcb"
+
+# Open tasks, one file per task (docs/tasks/README.md). Not a default target: `lake build Tasks`.
+[[lean_lib]]
+name = "Tasks"
