@@ -1057,10 +1057,20 @@ milestones:
     class: sourced
     refs:
       - {ref: bdfgh-2009, location: "Section 4", check: "Asymptotic formula"}
+      - {ref: bfh-2010, location: "eq. (16)", check: "Hessian"}
+      - {ref: bfh-2010, location: "eq. (26)", check: "without complex conjugation"}
+      - {ref: bfh-2010, location: "eq. (1)", check: "Hermitian"}
   SF10:
     class: sourced
     refs:
       - {ref: bdfhp-2010, location: "§6.4", check: "Asymptotic formula"}
+      - {ref: bdfhp-2010, location: "§4.2.2", check: "critical"}
+      - {ref: bdfhp-2010, location: "§5.4.2", check: "Parity"}
+      - {ref: bdfhp-2010, location: "§5.4.3", check: "Classification"}
+      - {ref: bdfhp-2010, location: "§6.2", check: "boosts"}
+      - {ref: bdfhp-2010, location: "eq. (53)", check: "asymptotic"}
+      - {ref: bdfhp-2010, location: "eq. (56)", check: "suppressed"}
+      - {ref: bdfhp-2010, location: "eq. (57)", check: "Hessian"}
   SF1:
     class: sourced
     refs:

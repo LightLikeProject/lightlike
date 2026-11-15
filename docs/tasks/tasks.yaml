@@ -2914,7 +2914,7 @@ tasks:
     area: "spin-foams"
     tier: "frontier"
     source_class: "sourced"
-    source: "bdfgh-2009, Section 4"
+    source: "bdfgh-2009, Section 4; bfh-2010, eq. (16); bfh-2010, eq. (26); bfh-2010, eq. (1)"
     priority: 15
     priority_basis: "other"
     size: "R"
@@ -2930,7 +2930,7 @@ tasks:
     area: "spin-foams"
     tier: "frontier"
     source_class: "sourced"
-    source: "bdfhp-2010, §6.4"
+    source: "bdfhp-2010, §6.4; bdfhp-2010, §4.2.2; bdfhp-2010, §5.4.2; bdfhp-2010, §5.4.3; bdfhp-2010, §6.2; bdfhp-2010, eq. (53); bdfhp-2010, eq. (56); bdfhp-2010, eq. (57)"
     priority: 14
     priority_basis: "other"
     size: "R"
