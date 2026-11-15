@@ -264,6 +264,39 @@ expect("proof-task control: the task ID is read from the body, not from template
 expect("proof-task planted: two different task IDs in one body are refused",
        ptc.task_from_body("Task: T-DT4-P1\nTask: T-DT4-P2\n") is None)
 
+
+def _ptc_main(body, *flags):
+    import contextlib, io
+    f = pathlib.Path(tempfile.mkdtemp()) / "body.txt"
+    f.write_text(body)
+    out = io.StringIO()
+    with contextlib.redirect_stdout(out):
+        rc = ptc.main(["--base", "base", "--head", "HEAD", "--body-file", str(f), *flags])
+    return rc, out.getvalue()
+
+
+# which pull requests are proof tasks: the label, or a Task line with a -P<n> ID (only these are checked)
+for _tid in ("T-RC6", "T-UP-1", "T-PL5", "T-SF4b"):
+    _r = _ptc_main(f"## Task\n\nTask: {_tid}\n")
+    expect(f"proof-task control: a milestone or upstream Task line {_tid} without the label passes, nothing to check",
+           _r == (0, f"not a proof task: {_tid}, nothing to check\n"))
+for _b in ("Task: T-RC6\n", "Task: none\n", "<!-- Task: T-DT4-P1 -->\nTask: T-RC6\n"):
+    expect(f"proof-task planted: the proof-task label without a proof-task ID fails ({_b.strip()!r})",
+           _ptc_main(_b, "--proof-label")[0] == 2)
+for _tid in ("T-DT4-P", "T-DT4-Px", "T-DT4-P1-b", "T-DT4-p1"):
+    expect(f"proof-task planted: a malformed proof-task ID {_tid} fails, with or without the label",
+           _ptc_main(f"Task: {_tid}\n")[0] == 2 and _ptc_main(f"Task: {_tid}\n", "--proof-label")[0] == 2)
+expect("proof-task planted: two different proof-task IDs without the label fail",
+       _ptc_main("Task: T-DT4-P1\nTask: T-DT4-P2\n")[0] == 2)
+_check, ptc.check = ptc.check, lambda *a, **k: []
+try:
+    expect("proof-task control: a proof-task ID without the label is checked",
+           _ptc_main("Task: T-DT4-P1\n")[1].startswith("proof-task check OK for T-DT4-P1"))
+    expect("proof-task control: the label with a proof-task ID is checked",
+           _ptc_main("Task: T-DT4-P1\n", "--proof-label")[1].startswith("proof-task check OK for T-DT4-P1"))
+finally:
+    ptc.check = _check
+
 # --- scripts/tasks.py: milestone parsing, the generic split, readiness, sync and the file check.
 import tasks as tk  # noqa: E402
 
