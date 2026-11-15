@@ -425,7 +425,7 @@ Done-when texts and trust checks: [milestones.md](milestones.md#spin-foams).
 | [`T-SF5d`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-SF5d%22) | Gauge fixing and regularization of the Ooguri model (the 4D analogue of Freidel–Louapre) | freidel-louapre-2003 | L | advanced | SF5b |
 | [`T-SF2`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-SF2%22) | A criterion for when the spin cut-off of the Ponzano–Regge amplitude can be removed | barrett-naish-guzman-2009 | R | research-level | SF5d, HA2 |
 | [`T-SF10`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-SF10%22) | Lorentzian EPRL vertex asymptotics (Barrett et al. 2010) | bdfhp-2010 | R | research-level | SF7, SP1 |
-| [`T-SF9`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-SF9%22) | EPRL vertex asymptotics: the Regge action of the 4-simplex (Barrett et al.) | bdfgh-2009 | R | research-level | SF5e, SF6, RC5, SP1 |
+| [`T-SF9`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-SF9%22) | EPRL vertex asymptotics: the Regge action of the 4-simplex (Barrett et al.) | bdfgh-2009, bfh-2010 | R | research-level | SF5e, SF6, RC5, SP1 |
 | [`T-SF8`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-SF8%22) | The Ponzano–Regge asymptotic formula for the 6j symbol (equivalent to Roberts' Theorem 1 via his §6.1) | roberts-1999 | R | research-level | SP2 |
 
 ### String theory
