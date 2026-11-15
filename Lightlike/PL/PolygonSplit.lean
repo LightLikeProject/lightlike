@@ -739,6 +739,51 @@ theorem exists_split (hs : p.IsSimple) (hn : 4 ≤ n) :
   exact ⟨q, hqs, inside_rot a, carrier_rot a, b, hb2, hb3, isSimple_left hqs hb2 hb3 hopen,
     isSimple_right hqs hb2 hb3 hopen, hdis, hspl⟩
 
+/-- **The two parts meet only along the diagonal.** The common points of the carriers of the left
+and right parts lie on the closed diagonal. -/
+lemma carrier_left_inter_right (hs : p.IsSimple) {b : ℕ} (hb : 2 ≤ b) (hbn : b + 2 ≤ n)
+    {x : ℝ × ℝ} (hxL : x ∈ (p.left b).carrier) (hxR : x ∈ (p.right b).carrier) :
+    x ∈ segment ℝ (p.cyc 0) (p.cyc b) := by
+  have hn : 2 ≤ n := by omega
+  obtain ⟨hs1, hs2, hs3⟩ := (isSimple_iff_nat hn).1 hs
+  rw [mem_carrier_left_iff (by omega)] at hxL
+  rw [mem_carrier_right_iff (by omega)] at hxR
+  rcases hxL with ⟨k, hk, hx1⟩ | hx1
+  · rcases hxR with ⟨k', hk1, hk2, hx2⟩ | hx2
+    · by_cases hadj : k' = k + 1
+      · have h := hs3 k (by omega)
+        have e : (k + 1) % n = k' := by rw [hadj]; exact Nat.mod_eq_of_lt (by omega)
+        rw [e] at h
+        have hx : x ∈ segment ℝ (p.cyc k) (p.cyc (k + 1)) ∩
+            segment ℝ (p.cyc k') (p.cyc (k' + 1)) := ⟨hx1, hx2⟩
+        rw [h] at hx
+        have : k + 1 = b := by omega
+        rw [Set.mem_singleton_iff.1 hx, this]
+        exact right_mem_segment ℝ _ _
+      · by_cases hadj' : k' + 1 = n ∧ k = 0
+        · have h := hs3 k' hk2
+          have e : (k' + 1) % n = k := by rw [hadj'.1, Nat.mod_self]; exact hadj'.2.symm
+          rw [e] at h
+          have hx : x ∈ segment ℝ (p.cyc k') (p.cyc (k' + 1)) ∩
+              segment ℝ (p.cyc k) (p.cyc (k + 1)) := ⟨hx2, hx1⟩
+          rw [h] at hx
+          have e0 : p.cyc n = p.cyc 0 := by simpa using p.cyc_self_add 0
+          rw [Set.mem_singleton_iff.1 hx, hadj'.1, e0]
+          exact left_mem_segment ℝ _ _
+        · exfalso
+          have hd := hs2 k k' (by omega) hk2 (by omega)
+            (by rw [Nat.mod_eq_of_lt (by omega : k + 1 < n)]; omega)
+            (by
+              intro h
+              rcases Nat.lt_or_ge (k' + 1) n with h3 | h3
+              · rw [Nat.mod_eq_of_lt h3] at h; omega
+              · have : k' + 1 = n := by omega
+                rw [this, Nat.mod_self] at h
+                exact hadj' ⟨this, h.symm⟩)
+          exact Set.disjoint_left.1 hd hx1 hx2
+    · exact hx2
+  · rw [segment_symm]; exact hx1
+
 end Polygon
 
 end Lightlike.PL
