@@ -110,13 +110,13 @@ pseudo-Riemannian geometry and Minkowski spacetime).
 
 Install Lean's version manager [elan](https://github.com/leanprover/elan) (see the [official
 instructions](https://lean-lang.org/install/)). The versions are pinned: Lean and Mathlib `v4.35.0`,
-Physlib at commit `cdfa609`. On Linux and macOS:
+Physlib at commit `cdfa609`. On Windows, install elan by those instructions, or run the commands
+below in WSL, or use [Codespaces](CONTRIBUTING.md#your-first-proof-task). On Linux and macOS:
 
 ```sh
 curl https://elan.lean-lang.org/elan-init.sh -sSf | sh
 source "$HOME/.elan/env"
-git clone https://github.com/LightlikeProject/lightlike
-cd lightlike
+git clone https://github.com/LightlikeProject/lightlike && cd lightlike
 lake exe cache get
 lake build
 lake build Tasks
@@ -128,7 +128,8 @@ Lightlike, which took 28 min 34 s on GitHub's 4-core Linux runner and takes more
 modules up to about 6 GB of RAM per Lean process (16 GB is recommended; 8 GB machines may build very
 slowly). `lake build Tasks` builds the proof-task files in `Tasks/`, which are not part of the
 library. The checks in `scripts/` need Python 3.9 to 3.12 and the packages in `requirements.txt`:
-`python3 -m venv .venv && . .venv/bin/activate && pip install -r requirements.txt`.
+`python3 -m venv .venv && . .venv/bin/activate && pip install -r requirements.txt` (on Windows the
+venv is activated with `.venv\Scripts\activate`; `scripts/gate.py` runs the CI steps with bash).
 
 To use Lightlike in a project with the same Lean version, add to its `lakefile.toml`:
 
@@ -146,5 +147,4 @@ infrastructure, domain review, and leading an area: open an issue labelled
 [**help wanted**](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22).
 Discussion and coordination on [Discord](https://discord.gg/Eyx3zTx9JW); questions and proposals in
 [GitHub Discussions](https://github.com/LightlikeProject/lightlike/discussions). Apache License 2.0,
-copyright The Lightlike contributors; see [LICENSE](LICENSE). To cite Lightlike, use
-[CITATION.cff](CITATION.cff).
+copyright The Lightlike contributors ([LICENSE](LICENSE)); cite it via [CITATION.cff](CITATION.cff).
