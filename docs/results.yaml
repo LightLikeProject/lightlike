@@ -868,3 +868,36 @@
   review: kernel-checked
   note: "For edge spins s (doubled units; edges 01, 02, 03, 12, 13, 23) the integral over SU(2)^4 of Π_e χ_{s e}(g_i g_j⁻¹) equals {s₀₁ s₀₂ s₀₃; s₂₃ s₁₃ s₁₂}² (tetraInt_eq_sixJ_sq). The proof expands each character in the matrix coefficients of the spin representations, integrates them with the Haar measure into products of 3j vectors, and identifies the resulting sum with a 6j symbol up to a sign (ZR_eq). This is Freidel–Louapre's Ponzano–Regge observable of the 1-skeleton of the two-tetrahedron triangulation of S³, eq. (94), read on the dual graph: their group variables sit on the four triangles and the holonomy around an edge is g_i g_j⁻¹ for the two triangles i, j containing it, so the Lean edge ij carries the spin of the edge shared by triangles i and j, and the triads at the Lean vertices are the triangles of the triangulation. Checks: all spins 0 give 1 (tetraInt_zero), all spins 1 (doubled spin 2) give (1/6)² = 1/36 (tetraInt_two), and an inadmissible triad at a vertex gives 0 (tetraInt_eq_zero_of_not_tri, tetraInt_ones_vertex)."
   since: 0.2.0
+- id: LL-XXXX-a
+  title: "For a positive definite Gram matrix the squared lengths of the 36 incidences of the Kuhn triangulation are admissible, and the dihedral angles of each of the seven edge classes add up to 2π"
+  area: Regge
+  file: Lightlike/Regge/Conv3/StarAngle.lean
+  decls: [Lightlike.Regge.Conv3.valid_incQ, Lightlike.Regge.Conv3.jet_angle_sum]
+  status: proven
+  tier: frontier
+  source: structural
+  review: kernel-checked
+  note: "G is any positive definite 3x3 matrix; the incidences are the 36 pairs (tetrahedron, hinge) of the Kuhn triangulation of the unit cube (six tetrahedra, seven edge directions). Each class of incidences is a fan of four or six tetrahedra around the hinge axis; the proof uses the complex coordinate in the plane quotient, so it holds for every G and does not use G = identity. Limits: only the cube star of one lattice point is treated; nothing is said about a triangulation of a manifold, and the lattice is the standard one (no other triangulations)."
+  since: 0.3.0
+- id: LL-XXXX-b
+  title: The Christoffel symbols, Riemann tensor and scalar curvature of a smooth metric at a point are explicit expressions in the metric, its inverse and its first and second partial derivatives
+  area: Regge
+  file: Lightlike/Regge/Conv3/JetCurvature.lean
+  decls: [Lightlike.Regge.Conv3.pd_inv, Lightlike.Regge.Conv3.pd_christoffel, Lightlike.Regge.Conv3.riemann_jet, Lightlike.Regge.Conv3.scalarCurvature_jet]
+  status: proven
+  tier: established
+  source: structural
+  review: kernel-checked
+  note: "For a coordinate metric g on an open set U (smooth, symmetric, invertible) and a point m of U: the derivative of the inverse metric is minus g⁻¹ (∂g) g⁻¹ (pd_inv), and the derivative of the Christoffel symbols, the Riemann tensor and the scalar curvature at m are written with (g m)⁻¹, ∂g(m) and ∂∂g(m) only. Limits: this unfolds the coordinate definitions of the library (Lightlike.christoffel, riemann, scalarCurvature); it is the textbook computation, not a statement about tensors or charts."
+  since: 0.3.0
+- id: LL-XXXX-c
+  title: The jet-level star identity of the 3D Regge calculus holds at a point where the first derivatives of a Riemannian metric vanish
+  area: Regge
+  file: Lightlike/Regge/Conv3/FlatStarJet.lean
+  decls: [Lightlike.Regge.Conv3.jetStarCore_of_flat, Lightlike.Regge.Conv3.flat_star_identity, Lightlike.Regge.Conv3.scalar_flat]
+  status: proven
+  tier: frontier
+  source: structural
+  review: kernel-checked
+  note: "Part of the 3D convergence of the Regge action (T-RC6), which stays open. Scope: at a point m where all first partial derivatives of a Riemannian metric g on an open set of R^3 vanish (for example the centre of normal coordinates); not the general chart. The convergence theorem needs the same statement at every hinge, where the first derivatives do not vanish, and that case is open. For any positive definite g(m) and any second derivatives, the star of one edge of the Kuhn triangulation (flat star: the dihedral angles of each of the seven edge classes add up to 2π; first-order coefficient 0; weights: the squared hinge length weights are the Gram lengths g(m)(w, w) of the seven directions w) satisfies: the sum over the seven classes of the hinge length times the second-order coefficient of the class angle sum equals minus half the scalar curvature times the square root of det g(m) (JetStarCore). The core is an exact polynomial identity in the six entries of g(m) and the 36 independent second derivatives (flat_star_identity), generated and checked in exact arithmetic by scripts/regge/gen_flat_star.py. Limits: second derivatives are those of g at the single point m; the Kuhn triangulation is the standard cubical one; the Gram lengths g(m) are the metric at m, not integrated along edges. Trust checks: the Euclidean metric satisfies the hypotheses, and for sphere-like second derivatives the sum over the 36 incidences is 3, not 0 and not 6 (FlatStarTests.lean)."
+  since: 0.3.0

@@ -30,6 +30,7 @@ theorem dihSq'_comb {a b c d e f a₁ b₁ c₁ d₁ e₁ f₁ : ℝ} (hP1 : 0 <
   field_simp
   rw [hss]
 
+/-- The numerator `Nn` of the dihedral-angle cosine of the tetrahedron `(0, W, X, Y)` is the Schur form `bf W X Y`. -/
 theorem Nn_bf {G : Matrix (Fin 3) (Fin 3) ℝ} (hG : Gᵀ = G) (W X Y : Fin 3 → ℝ)
     (ha : W ⬝ᵥ (G *ᵥ W) ≠ 0) :
     Nn (W ⬝ᵥ (G *ᵥ W)) (X ⬝ᵥ (G *ᵥ X)) ((X - W) ⬝ᵥ (G *ᵥ (X - W)))
@@ -42,6 +43,7 @@ theorem Nn_bf {G : Matrix (Fin 3) (Fin 3) ℝ} (hG : Gᵀ = G) (W X Y : Fin 3 �
   field_simp
   ring
 
+/-- The face quantity `Pp` of the face `(0, W, X)` is the Schur form `bf W X X`. -/
 theorem Pp_bf {G : Matrix (Fin 3) (Fin 3) ℝ} (hG : Gᵀ = G) (W X : Fin 3 → ℝ)
     (ha : W ⬝ᵥ (G *ᵥ W) ≠ 0) :
     Pp (W ⬝ᵥ (G *ᵥ W)) (X ⬝ᵥ (G *ᵥ X)) ((X - W) ⬝ᵥ (G *ᵥ (X - W))) = bf G W X X := by
@@ -53,6 +55,7 @@ theorem Pp_bf {G : Matrix (Fin 3) (Fin 3) ℝ} (hG : Gᵀ = G) (W X : Fin 3 → 
   field_simp
   ring
 
+/-- The triple product of the three edge vectors of every incidence is `±1`: the tetrahedra of the Kuhn triangulation have volume `1/6`. -/
 theorem trip_sq (σ h : Fin 6) : trip (wv σ h) (xv σ h) (yv σ h) ^ 2 = 1 := by
   fin_cases σ <;> fin_cases h <;>
     simp [trip, wv, xv, yv, kpos, kv, perms, hP, hQ, hR, hS] <;> norm_num
