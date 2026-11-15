@@ -99,12 +99,12 @@ that fits Mathlib or Physlib is offered upstream ([the candidates](docs/tasks/RE
 
 Lean projects that overlap directly: [pachner](https://github.com/not-gary/pachner) (Cunningham,
 Zach and Friedl, ITP 2026: simplicial complexes and stellar subdivisions, toward Pachner's theorem);
-[OSforGFF](https://github.com/mrdouglasny/OSforGFF) (the Gaussian free field in four dimensions and
-the Osterwalder–Schrader axioms); [OSreconstruction](https://github.com/xiyin137/OSreconstruction)
-(the Osterwalder–Schrader reconstruction theorem); [grlab](https://github.com/BrandonMYates/grlab)
-(curvature in coordinates and exact solutions of Einstein's equations); and
-[aqft-lean](https://github.com/Deicyde/aqft-lean) (algebraic quantum field theory, from
-pseudo-Riemannian geometry and Minkowski spacetime).
+[OSforGFF](https://github.com/mrdouglasny/OSforGFF) ([Douglas et
+al.](https://arxiv.org/abs/2603.15770): the 4D Gaussian free field and the Osterwalder–Schrader
+axioms); [OSreconstruction](https://github.com/xiyin137/OSreconstruction) (the Osterwalder–Schrader
+reconstruction theorem); [grlab](https://github.com/BrandonMYates/grlab) (curvature in coordinates
+and exact solutions of Einstein's equations); and [aqft-lean](https://github.com/Deicyde/aqft-lean)
+(algebraic quantum field theory, from pseudo-Riemannian geometry and Minkowski spacetime).
 
 ## Building and using Lightlike
 
