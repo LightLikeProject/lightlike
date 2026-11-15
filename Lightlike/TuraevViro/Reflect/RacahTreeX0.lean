@@ -8,7 +8,7 @@ import Lightlike.TuraevViro.Reflect.RacahCert12
 
 import Lightlike.TuraevViro.Reflect.RacahBase
 
-set_option maxHeartbeats 0
+set_option maxHeartbeats 6400000
 set_option maxRecDepth 100000
 
 namespace Lightlike.TV.Refl

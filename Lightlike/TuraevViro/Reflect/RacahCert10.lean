@@ -9,7 +9,7 @@ checked against its normal form `Y_i`, then the sum of the `Y_i` is checked to b
 `scripts/qracah/gen_cert.py`.
 -/
 
-set_option maxHeartbeats 0
+set_option maxHeartbeats 6400000
 set_option maxRecDepth 100000
 
 namespace Lightlike.TV.Refl
