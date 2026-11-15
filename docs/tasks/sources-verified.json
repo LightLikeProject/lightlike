@@ -2461,6 +2461,31 @@
   "citations": 800,
   "citations_via": "OpenAlex"
  },
+ "koekoek-swarttouw-1996": {
+  "checked": "2026-11-15",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "The Askey-scheme of hypergeometric orthogonal polynomials and its q-analogue",
+  "locations": {
+   "eq. (0.5.11)": {
+    "verified": true,
+    "snippet": "(0.5.11) q ; q = 3 2 (c; a 1b 1 c; q)n c; abc 1q1 n Finally, we have a summation formula for the 1 1 series : \u0010a c \u0011 = (a 1 c; q)1 : q ; (0.5.12) 1 1 c a (c; q)1 As an example of the use of this latter formula we remark",
+    "why": null
+   },
+   "eq. (3.2.1)": {
+    "verified": true,
+    "snippet": "(3.2.1) and the Askey-Wilson polynomials given by (3.1.1) are related in the following way. If we substitute a2 = \u000eq, b2 = 2 1 \u000e 1 q, c2 = 2 1 \u000eq, d2 = \u000e 1 q and e2i\u0012 = \u000eq2x+1 in the de nition (3.1.1) of the Askey-Wilson",
+    "why": null
+   },
+   "eq. (3.2.2)": {
+    "verified": true,
+    "snippet": "(3.2.2) x=0 (q; 1 \u000eq; 1 q; \u000eq ; q ) ( x where Rn(\u0016(x)) := Rn(\u0016(x); ; ; ; \u000e jq) and hn = ( ( 1\u000eq\u000eq;; 2 1 1 ; 1 \u000e; 1 ; q)1 (1 q)( \u000eq)n (q; q; \u000e 1q; 1 q; q)n 1 q; \u000eq; 1 1 q 1; q) 1 (1 q2n+1 ) ( q; q; \u000eq; q; q)n : This impli",
+    "why": null
+   }
+  },
+  "citations": 1479,
+  "citations_via": "Semantic Scholar"
+ },
  "kolb-turner-1990": {
   "checked": "2026-11-11",
   "exists": true,

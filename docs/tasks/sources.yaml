@@ -104,6 +104,10 @@ references:
     cite: "V. G. Turaev, Quantum Invariants of Knots and 3-Manifolds, de Gruyter Studies in Mathematics 18 (1994)"
     title: "Quantum Invariants of Knots and 3-Manifolds"
     doi: 10.1515/9783110883275
+  koekoek-swarttouw-1996:
+    cite: "R. Koekoek and R. F. Swarttouw, The Askey-scheme of hypergeometric orthogonal polynomials and its q-analogue, Delft University of Technology report 98-17 (arXiv:math/9602214)"
+    title: "The Askey-scheme of hypergeometric orthogonal polynomials and its q-analogue"
+    arxiv: "math/9602214"
   vassilevich-2003:
     cite: "D. V. Vassilevich, Heat kernel expansion: user's manual, Phys. Rep. 388 (2003) 279-360"
     title: "Heat kernel expansion: user's manual"
@@ -981,6 +985,9 @@ milestones:
     class: sourced
     refs:
       - {ref: turaev-1994, location: "Chapter: Chapter VI. 6j-symbols|10.1515/9783110883275-007"}
+      - {ref: koekoek-swarttouw-1996, location: "eq. (3.2.1)", check: "q-Racah"}
+      - {ref: koekoek-swarttouw-1996, location: "eq. (3.2.2)", check: "orthogonality"}
+      - {ref: koekoek-swarttouw-1996, location: "eq. (0.5.11)", check: "q-analogue of this summation"}
   QU2:
     class: sourced
     refs:
