@@ -272,6 +272,42 @@ theorem isTriangulation_union (hs : q.IsSimple) {b : ℕ} (hb : 2 ≤ b) (hbn : 
       obtain ⟨t, ht, hst⟩ := h
       exact ⟨t, Finset.mem_union_right _ ht, hst⟩
 
+lemma range_rot (β : Fin n) : Set.range (q.rot β) = Set.range q := by
+  ext x
+  constructor
+  · rintro ⟨i, rfl⟩; exact ⟨i + β, rfl⟩
+  · rintro ⟨j, rfl⟩; exact ⟨j - β, by simp [rot]⟩
+
+/-- A triangulation of a cyclic shift of a polygon is a triangulation of the polygon. -/
+lemma isTriangulation_of_rot (a : Fin n) {T : Finset (Finset (ℝ × ℝ))}
+    (h : IsTriangulation (q.rot a) T) : IsTriangulation q T := by
+  obtain ⟨h1, h2, h3, h4⟩ := h
+  refine ⟨fun t ht => ⟨(h1 t ht).1, by rw [← range_rot a]; exact (h1 t ht).2⟩, h2, ?_, fun i => ?_⟩
+  · rw [h3, inside_rot, carrier_rot]
+  · have := h4 (i - a)
+    have e1 : (q.rot a) (i - a) = q i := by simp [rot]
+    have e2 : (q.rot a) (finRotate n (i - a)) = q (finRotate n i) := by
+      simp only [rot]
+      congr 1
+      rw [← finRotate_add]; simp
+    rwa [e1, e2] at this
+
+/-- **Every simple polygon has a triangulation.** -/
+theorem exists_triangulation : ∀ (n : ℕ) (p : Polygon n), 3 ≤ n → p.IsSimple →
+    ∃ T, IsTriangulation p T := by
+  intro n
+  induction n using Nat.strong_induction_on with
+  | _ n ih =>
+    intro p hn hs
+    have : NeZero n := ⟨by omega⟩
+    rcases (by omega : n = 3 ∨ 4 ≤ n) with rfl | h4
+    · exact isTriangulation_triangle hs
+    · obtain ⟨a, b, hb2, hb3, hL, hR, hdis, hspl⟩ := exists_split hs h4
+      obtain ⟨T₁, h₁⟩ := ih (b + 1) (by omega) ((p.rot a).left b) (by omega) hL
+      obtain ⟨T₂, h₂⟩ := ih (n - b + 1) (by omega) ((p.rot a).right b) (by omega) hR
+      exact ⟨T₁ ∪ T₂, isTriangulation_of_rot a
+        (isTriangulation_union (isSimple_rot hs a) hb2 hb3 hdis hspl h₁ h₂)⟩
+
 end Polygon
 
 end Lightlike.PL

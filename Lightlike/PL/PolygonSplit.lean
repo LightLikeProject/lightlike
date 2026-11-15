@@ -679,10 +679,11 @@ cyclic shift of the vertices, the diagonal runs from the vertex `0` to a vertex 
 `2 ≤ b ≤ n - 2`, the two parts are simple, and the inside is the union of their insides and the
 open diagonal. -/
 theorem exists_split (hs : p.IsSimple) (hn : 4 ≤ n) :
-    ∃ q : Polygon n, q.IsSimple ∧ q.inside = p.inside ∧ q.carrier = p.carrier ∧
-      ∃ b : ℕ, 2 ≤ b ∧ b + 2 ≤ n ∧ (q.left b).IsSimple ∧ (q.right b).IsSimple ∧
-        Disjoint (q.left b).inside (q.right b).inside ∧
-        q.inside = (q.left b).inside ∪ (q.right b).inside ∪ openSegment ℝ (q.cyc 0) (q.cyc b) := by
+    ∃ a : Fin n, ∃ b : ℕ, 2 ≤ b ∧ b + 2 ≤ n ∧ ((p.rot a).left b).IsSimple ∧
+      ((p.rot a).right b).IsSimple ∧
+      Disjoint ((p.rot a).left b).inside ((p.rot a).right b).inside ∧
+      (p.rot a).inside = ((p.rot a).left b).inside ∪ ((p.rot a).right b).inside ∪
+        openSegment ℝ ((p.rot a).cyc 0) ((p.rot a).cyc b) := by
   obtain ⟨a, c, hac, h1, h2, hD⟩ := exists_diagonal hs hn
   -- shift so that `a` becomes the vertex `0`
   set q := p.rot a with hq
@@ -736,7 +737,7 @@ theorem exists_split (hs : p.IsSimple) (hn : 4 ≤ n) :
   have hD' : openSegment ℝ (q.cyc 0) (q.cyc b) ⊆ q.inside := by
     rw [hcyc0, hcycb, hq, inside_rot]; exact hD
   obtain ⟨hdis, hspl⟩ := inside_split hqs hb2 hb3 hD'
-  exact ⟨q, hqs, inside_rot a, carrier_rot a, b, hb2, hb3, isSimple_left hqs hb2 hb3 hopen,
+  exact ⟨a, b, hb2, hb3, isSimple_left hqs hb2 hb3 hopen,
     isSimple_right hqs hb2 hb3 hopen, hdis, hspl⟩
 
 /-- **The two parts meet only along the diagonal.** The common points of the carriers of the left
