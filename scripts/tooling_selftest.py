@@ -519,5 +519,20 @@ with tempfile.TemporaryDirectory() as d:
     expect("doc refs planted: a claim that the proven theorem `foo` is not proven is reported",
            len(drc.check_claims(tmp, _f)) == 1)
 
+# Leak check: local paths, other e-mail addresses, token-like strings and secrets files fail;
+# noreply and project addresses, version pins and the dev container's user pass. The planted
+# strings are built at run time, so this file itself stays clean.
+import leak_check as lk  # noqa: E402
+
+_ok = [("a.md", "Co-Authored-By: x <noreply@github.com>, 1+x@users.noreply.github.com"),
+       ("b.json", '"remoteEnv": "/home/vscode/.elan/bin", "pkg@1.2.3"')]
+expect("leak check control: noreply addresses, a version pin and the container user pass",
+       lk.check(_ok) == [])
+_bad = [("a.md", "see " + "/Us" + "ers/alice/notes"), ("b.md", "mail " + "bob" + "@corp.io"),
+        ("c.py", "t = '" + "gh" + "p_" + "a" * 36 + "'"), ("d.txt", "~" + "/Desktop/x"),
+        ("config/id_rsa", None)]
+expect("leak check planted: a local path, an e-mail, a token, ~/Desktop and a key file fail",
+       len(lk.check(_bad)) == 5)
+
 print("selftest:", "OK" if not fails else f"FAILED ({len(fails)})")
 sys.exit(1 if fails else 0)

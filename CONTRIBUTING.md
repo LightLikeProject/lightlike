@@ -50,10 +50,10 @@ the modules it changes and the modules that import them.
 5. Every definition, and every declaration named in an API map or in `docs/results.yaml`, has a
    docstring (`scripts/DocCheck.lean`).
 6. The literature sources of the catalog check out (`scripts/sources.py check`).
+7. No local path, private e-mail address, token or key in a tracked file (`scripts/leak_check.py`).
 
-A pull request for a proof task must also change only the proof of its declaration, because the
-statement has been reviewed and locked; the `Proof task` workflow checks this. The other CI steps
-are marked `[advisory]` and only report.
+A proof-task pull request must also change only the proof of its declaration: the statement was
+reviewed and locked (the `Proof task` workflow checks this). Other CI steps are `[advisory]`.
 
 ## Finding a task
 
