@@ -317,5 +317,61 @@ theorem carrier_near_vertex (hs : p.IsSimple) {j : Fin n}
   rw [hset]
 
 
+
+/-- The ray from the vertex `p j` towards the previous vertex runs along an edge. -/
+lemma rayEdge_prev (hs : p.IsSimple) (j : Fin n) :
+    RayEdge p (p j) (p ((finRotate n).symm j) - p j) := by
+  set k := (finRotate n).symm j with hk
+  have hkj : finRotate n k = j := by rw [hk]; exact Equiv.apply_symm_apply _ _
+  have huv : p k ≠ p j := by have := hs.1 k; rwa [hkj] at this
+  refine ⟨sub_ne_zero.2 huv, k, -1, by norm_num, ?_, fun t ht0 ht1 => ?_⟩
+  · rw [hkj]; ext <;> simp
+  · have hm : p j + t • (p k - p j) ∈ p.edge k := by
+      have e1 : p.edge k = segment ℝ (p k) (p j) := by simp only [edge, hkj]
+      rw [e1, segment_symm]
+      exact mem_segment_of_sub_eq ht0.le ht1.le (by rw [add_sub_cancel_left])
+    refine ⟨hm, ?_, ?_⟩
+    · intro h
+      have : t • (p k - p j) = (1 : ℝ) • (p k - p j) := by
+        have := congrArg (fun x => x - p j) h
+        simp only [add_sub_cancel_left] at this
+        rw [this, one_smul]
+      have h1 : (t - 1) • (p k - p j) = 0 := by rw [sub_smul, this]; simp
+      rcases smul_eq_zero.1 h1 with h2 | h2
+      · linarith
+      · exact huv (sub_eq_zero.1 h2)
+    · rw [hkj]
+      intro h
+      have : t • (p k - p j) = 0 := by
+        have := congrArg (fun x => x - p j) h
+        simpa using this
+      rcases smul_eq_zero.1 this with h2 | h2
+      · linarith
+      · exact huv (sub_eq_zero.1 h2)
+
+/-- The ray from the vertex `p j` towards the next vertex runs along an edge. -/
+lemma rayEdge_next (hs : p.IsSimple) (j : Fin n) :
+    RayEdge p (p j) (p (finRotate n j) - p j) := by
+  have hvw : p j ≠ p (finRotate n j) := hs.1 j
+  refine ⟨sub_ne_zero.2 hvw.symm, j, 1, by norm_num, by simp, fun t ht0 ht1 => ?_⟩
+  have hm : p j + t • (p (finRotate n j) - p j) ∈ p.edge j :=
+    mem_segment_of_sub_eq ht0.le ht1.le (by rw [add_sub_cancel_left])
+  refine ⟨hm, ?_, ?_⟩
+  · intro h
+    have : t • (p (finRotate n j) - p j) = 0 := by
+      have := congrArg (fun x => x - p j) h
+      simpa using this
+    rcases smul_eq_zero.1 this with h2 | h2
+    · linarith
+    · exact hvw (sub_eq_zero.1 h2).symm
+  · intro h
+    have : (t - 1) • (p (finRotate n j) - p j) = 0 := by
+      have := congrArg (fun x => x - p j) h
+      simp only [add_sub_cancel_left] at this
+      rw [sub_smul, this]; simp
+    rcases smul_eq_zero.1 this with h2 | h2
+    · linarith
+    · exact hvw (sub_eq_zero.1 h2).symm
+
 end Polygon
 end Lightlike.PL
