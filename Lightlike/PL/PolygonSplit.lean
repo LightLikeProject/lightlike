@@ -662,6 +662,83 @@ theorem inside_split (hs : p.IsSimple) {b : ℕ} (hb : 2 ≤ b) (hbn : b + 2 ≤
       rw [← hadd, hx.2, hl0]; decide
     · exact hD hx
 
+lemma parity_rot (β : Fin n) (x : ℝ × ℝ) : (p.rot β).parity x = p.parity x := by
+  unfold parity
+  rw [← Equiv.sum_comp (Equiv.addRight β) (fun i => ind (CrossesRay (p i) (p (finRotate n i)) x))]
+  refine Finset.sum_congr rfl fun i _ => ?_
+  simp only [rot, Equiv.coe_addRight, finRotate_add]
+
+lemma inside_rot (β : Fin n) : (p.rot β).inside = p.inside := by
+  ext x; simp only [inside, carrier_rot, parity_rot]
+
+lemma outside_rot (β : Fin n) : (p.rot β).outside = p.outside := by
+  ext x; simp only [outside, carrier_rot, parity_rot]
+
+/-- **A simple polygon with at least four vertices splits along an interior diagonal.** After a
+cyclic shift of the vertices, the diagonal runs from the vertex `0` to a vertex `b` with
+`2 ≤ b ≤ n - 2`, the two parts are simple, and the inside is the union of their insides and the
+open diagonal. -/
+theorem exists_split (hs : p.IsSimple) (hn : 4 ≤ n) :
+    ∃ q : Polygon n, q.IsSimple ∧ q.inside = p.inside ∧ q.carrier = p.carrier ∧
+      ∃ b : ℕ, 2 ≤ b ∧ b + 2 ≤ n ∧ (q.left b).IsSimple ∧ (q.right b).IsSimple ∧
+        Disjoint (q.left b).inside (q.right b).inside ∧
+        q.inside = (q.left b).inside ∪ (q.right b).inside ∪ openSegment ℝ (q.cyc 0) (q.cyc b) := by
+  obtain ⟨a, c, hac, h1, h2, hD⟩ := exists_diagonal hs hn
+  -- shift so that `a` becomes the vertex `0`
+  set q := p.rot a with hq
+  have hqs : q.IsSimple := isSimple_rot hs a
+  set b := ((c - a : Fin n) : ℕ) with hb
+  have hcyc0 : q.cyc 0 = p a := by
+    rw [hq, rot_cyc, Nat.zero_add, p.cyc_of_lt a.2]
+  have hcycb : q.cyc b = p c := by
+    rw [hq, rot_cyc, ← p.cyc_mod]
+    have : (c - a + a : Fin n) = c := sub_add_cancel c a
+    have h := congrArg Fin.val this
+    rw [Fin.val_add] at h
+    rw [show (b + (a : ℕ)) % n = c from h]
+    exact p.cyc_of_lt c.2
+  -- the position of `c` relative to `a`
+  have ha := a.2
+  have hc := c.2
+  have hbv : ((a : ℕ) ≤ c ∧ b = (c : ℕ) - a) ∨ ((c : ℕ) < a ∧ b = c + n - a) := by
+    have h : ((c - a : Fin n) : ℕ) = ((n - (a : ℕ)) + c) % n := Fin.val_sub c a
+    rcases Nat.lt_or_ge (c : ℕ) a with hlt | hge
+    · right
+      refine ⟨hlt, ?_⟩
+      rw [hb, h]
+      rw [Nat.mod_eq_of_lt (by omega)]; omega
+    · left
+      refine ⟨hge, ?_⟩
+      rw [hb, h]
+      have : n - (a : ℕ) + c = n + (c - a) := by omega
+      rw [this, Nat.add_mod_left, Nat.mod_eq_of_lt (by omega)]
+  have hfa : ((finRotate n a : Fin n) : ℕ) = ((a : ℕ) + 1) % n := finRotate_val (by omega) a
+  have hfc : ((finRotate n c : Fin n) : ℕ) = ((c : ℕ) + 1) % n := finRotate_val (by omega) c
+  have hbne : (a : ℕ) ≠ c := fun h => hac (Fin.ext h)
+  have hne1 : ((a : ℕ) + 1) % n ≠ c := fun h => h1 (Fin.ext (by rw [hfa]; exact h))
+  have hne2 : ((c : ℕ) + 1) % n ≠ a := fun h => h2 (Fin.ext (by rw [hfc]; exact h))
+  have key : ∀ m : ℕ, m < n → (m + 1) % n = if m + 1 < n then m + 1 else 0 := by
+    intro m hm
+    split_ifs with h
+    · exact Nat.mod_eq_of_lt h
+    · have : m + 1 = n := by omega
+      rw [this, Nat.mod_self]
+  rw [key _ ha] at hne1
+  rw [key _ hc] at hne2
+  have hb2 : 2 ≤ b ∧ b + 2 ≤ n := by
+    split_ifs at hne1 hne2 <;> omega
+  obtain ⟨hb2, hb3⟩ := hb2
+  have hopen : ∀ x ∈ openSegment ℝ (q.cyc 0) (q.cyc b), x ∉ q.carrier := by
+    intro x hx hxc
+    rw [hcyc0, hcycb] at hx
+    rw [hq, carrier_rot] at hxc
+    exact (hD hx).1 hxc
+  have hD' : openSegment ℝ (q.cyc 0) (q.cyc b) ⊆ q.inside := by
+    rw [hcyc0, hcycb, hq, inside_rot]; exact hD
+  obtain ⟨hdis, hspl⟩ := inside_split hqs hb2 hb3 hD'
+  exact ⟨q, hqs, inside_rot a, carrier_rot a, b, hb2, hb3, isSimple_left hqs hb2 hb3 hopen,
+    isSimple_right hqs hb2 hb3 hopen, hdis, hspl⟩
+
 end Polygon
 
 end Lightlike.PL
