@@ -34,6 +34,7 @@ import Lightlike.Asymptotics.EPRL.FiniteMax
 import Lightlike.Asymptotics.EPRL.MaxSetFinite
 import Lightlike.Asymptotics.EPRL.EPRLFormula
 import Lightlike.Asymptotics.EPRL.EdgeBridge
+import Lightlike.Asymptotics.EPRL.HaarNode
 import Lightlike.Asymptotics.Lorentzian.Action
 import Lightlike.Asymptotics.Lorentzian.Stationary
 import Lightlike.Asymptotics.Lorentzian.Critical
