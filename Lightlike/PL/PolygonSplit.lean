@@ -401,6 +401,42 @@ theorem isSimple_left (hs : p.IsSimple) {b : ℕ} (hb : 2 ≤ b) (hbn : b + 2 �
           · have h0 : p.cyc i ∈ segment ℝ (p.cyc 0) (p.cyc (0 + 1)) := by simpa using hx2
             rcases hvb 0 (by omega) h0 with h | h <;> omega
 
+lemma rot_cyc (β : Fin n) (k : ℕ) : (p.rot β).cyc k = p.cyc (k + β) := by
+  simp only [cyc, rot]
+  congr 1
+  ext
+  simp [Fin.val_add, Nat.add_mod]
+
+lemma carrier_rot (β : Fin n) : (p.rot β).carrier = p.carrier := by
+  ext x
+  simp only [carrier, Set.mem_iUnion, edge_rot]
+  constructor
+  · rintro ⟨i, hi⟩; exact ⟨i + β, hi⟩
+  · rintro ⟨i, hi⟩; exact ⟨i - β, by simpa using hi⟩
+
+/-- The right part is the left part of the shifted polygon. -/
+lemma right_eq_left_rot {b : ℕ} (hbn : b < n) :
+    p.right b = (p.rot ⟨b, hbn⟩).left (n - b) := by
+  funext j
+  show p.cyc (b + j) = (p.rot ⟨b, hbn⟩).cyc j
+  rw [rot_cyc, Nat.add_comm]
+
+/-- **The right part of a split simple polygon is simple.** -/
+theorem isSimple_right (hs : p.IsSimple) {b : ℕ} (hb : 2 ≤ b) (hbn : b + 2 ≤ n)
+    (hopen : ∀ q ∈ openSegment ℝ (p.cyc 0) (p.cyc b), q ∉ p.carrier) : (p.right b).IsSimple := by
+  have hb' : b < n := by omega
+  rw [right_eq_left_rot hb']
+  refine isSimple_left (isSimple_rot hs ⟨b, hb'⟩) (by omega) (by omega) ?_
+  intro q hq
+  rw [carrier_rot]
+  have e1 : (p.rot ⟨b, hb'⟩).cyc 0 = p.cyc b := by rw [rot_cyc]; simp
+  have e2 : (p.rot ⟨b, hb'⟩).cyc (n - b) = p.cyc 0 := by
+    rw [rot_cyc]
+    simp only [Nat.sub_add_cancel hb'.le]
+    simpa using p.cyc_self_add 0
+  rw [e1, e2, openSegment_symm] at hq
+  exact hopen q hq
+
 end Polygon
 
 end Lightlike.PL
