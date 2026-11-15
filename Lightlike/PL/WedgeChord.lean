@@ -62,4 +62,35 @@ theorem exists_boundary_point {ι : Type*} [Fintype ι] {f : ι → ℝ × ℝ �
     field_simp
     ring
 
+/-- **A segment from a boundary point towards a point strictly inside a face's half-space enters
+the open region.** If all the affine functions are nonnegative at `q`, and each one that vanishes
+at `q` is positive at `x`, then points of the segment close to `q` (other than `q`) have all
+functions positive. -/
+theorem exists_interior_point {ι : Type*} [Fintype ι] {f : ι → ℝ × ℝ → ℝ}
+    (hf : ∀ i (x y : ℝ × ℝ) (s t : ℝ), s + t = 1 → f i (s • x + t • y) = s * f i x + t * f i y)
+    {x q : ℝ × ℝ} (hq : ∀ i, 0 ≤ f i q) (hx : ∀ i, f i q = 0 → 0 < f i x) :
+    ∃ q' ∈ segment ℝ q x, ∀ i, 0 < f i q' := by
+  have hφ : ∀ i (ε : ℝ), f i ((1 - ε) • q + ε • x) = f i q + ε * (f i x - f i q) := by
+    intro i ε
+    rw [hf i q x (1 - ε) ε (by ring)]; ring
+  have hev : ∀ᶠ ε in nhdsWithin (0 : ℝ) (Set.Ioi 0), ε < 1 ∧ ∀ i, 0 < f i q + ε * (f i x - f i q) := by
+    have h1 : ∀ᶠ ε in nhdsWithin (0 : ℝ) (Set.Ioi 0), ε < 1 :=
+      nhdsWithin_le_nhds (eventually_lt_nhds one_pos)
+    have h2 : ∀ᶠ ε in nhdsWithin (0 : ℝ) (Set.Ioi 0), ∀ i, 0 < f i q + ε * (f i x - f i q) := by
+      rw [Filter.eventually_all]
+      intro i
+      rcases (hq i).lt_or_eq with h | h
+      · have hc : Continuous fun ε : ℝ => f i q + ε * (f i x - f i q) := by fun_prop
+        have := hc.continuousAt (x := 0) |>.eventually (lt_mem_nhds (by simpa using h))
+        exact nhdsWithin_le_nhds this
+      · have hxi := hx i h.symm
+        filter_upwards [self_mem_nhdsWithin] with ε hε
+        have : 0 < ε := hε
+        rw [← h]; nlinarith
+    exact h1.and h2
+  obtain ⟨ε, ⟨hε1, hε2⟩, hε0⟩ := (hev.and self_mem_nhdsWithin).exists
+  have hε0' : 0 < ε := hε0
+  exact ⟨(1 - ε) • q + ε • x, ⟨1 - ε, ε, by linarith, hε0'.le, by ring, rfl⟩, fun i => by
+    rw [hφ]; exact hε2 i⟩
+
 end Lightlike.PL

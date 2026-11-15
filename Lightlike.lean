@@ -167,6 +167,7 @@ import Lightlike.PL.PolygonJordan
 import Lightlike.PL.PolygonDiagonal
 import Lightlike.PL.WedgeChord
 import Lightlike.PL.PolygonWedge
+import Lightlike.PL.PolygonDiagonal2
 import Lightlike.PL.Realisation
 import Lightlike.PL.Starring
 import Lightlike.PL.Boundary
