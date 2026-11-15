@@ -97,9 +97,13 @@ is a different statement and is not treated. Exact values for doubled cut-offs `
    `SpinFoam.Move15.amplitudeGF_move15_gauge`, `SpinFoam.Move15.amplitudeGF_move51_gauge`
 6. Lightlike/SpinFoam/Tests.lean - `SpinFoam.amplitudeGF_move33_example`,
    `SpinFoam.amplitudeGF_move24_example`, `SpinFoam.amplitudeGF_move15_example`,
+   `SpinFoam.amplitudeGF_move24_gauge_example`, `SpinFoam.amplitudeGF_move15_gauge_example`,
    `SpinFoam.ampBad_breaks_move33`
 7. Lightlike/SpinFoam/GaugeIndependence.lean - `SpinFoam.amplitudeGF_eq_of_forces`,
    `SpinFoam.amplitudeGF_eq_of_isGauge_forces`
+   and Lightlike/SpinFoam/GaugeChain.lean - `SpinFoam.GFStep4`, `SpinFoam.GFStep4.isGauge`,
+   `SpinFoam.amplitudeGF_eqvGen4`, `SpinFoam.amplitudeGF_congr_cut`,
+   `SpinFoam.amplitudeGF_tendsto_one_of_forces`
 8. Lightlike/SpinFoam/BarrettCrane.lean - `SpinFoam.BC.bcVertex`, `SpinFoam.BC.bcVertex_eq_sum`,
    `SpinFoam.BC.bcVertex_nonneg`, `SpinFoam.BC.simple_iff`, `SpinFoam.BC.bcVertexBC`,
    `SpinFoam.BC.abs_bcVertexBC`, `SpinFoam.BC.bcVertexBC_of_even`,
