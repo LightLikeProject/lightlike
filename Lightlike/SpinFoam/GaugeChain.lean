@@ -7,7 +7,7 @@ The gauge-fixed state sum at finite cutoff is invariant under each of the five 4
 (`amplitudeGF_move33_gauge`, `amplitudeGF_move24_gauge`, `amplitudeGF_move42_gauge`,
 `Move15.amplitudeGF_move15_gauge`, `Move15.amplitudeGF_move51_gauge`). Each of those theorems has
 cutoff conditions that make the cutoffs on the faces inside the move non-binding, and carries the
-gauge set along. This file puts them into one relation, as the 3D file `PonzanoRegge/GaugeFixed.lean`
+gauge set along. This file puts them into one relation, as the 3D file `Lightlike/PonzanoRegge/GaugeFixed.lean`
 does for the 2-3 and 1-4 moves.
 
 * `GFStep4`: one step between triples `(complex, gauge set, cutoffs)`: a 3-3, 2-4 or 1-5 move with
