@@ -130,7 +130,9 @@ The toolchain is pinned in `lean-toolchain` and the dependencies in `lake-manife
 a single file, `lake env lean -DautoImplicit=false path/File.lean`. Before opening a pull request,
 commit and run `python3 scripts/gate.py`: it executes the steps of `.github/workflows/ci.yml` in
 order. It needs Python 3.9 to 3.12 and the packages pinned in `requirements.txt`:
-`python3 -m venv .venv && . .venv/bin/activate && pip install -r requirements.txt`.
+`python3 -m venv .venv && . .venv/bin/activate && pip install -r requirements.txt` (on Windows the
+venv is activated with `.venv\Scripts\activate`). No script in `scripts/` is bash-only, but `gate.py`
+runs each CI step with bash and the POSIX tools the steps call, so on Windows run it in WSL.
 
 Each folder's `Lightlike/<Folder>/API-map.md` lists what it contains and marks what is missing
 with `[TODO]`. To collect everything one declaration depends on into a single block, run
@@ -183,7 +185,8 @@ Work on a branch and keep each pull request to one topic. Commit messages use
   issues; the workflow `.github/workflows/tasks.yml` runs it with `--apply` once the repository
   variable `TASK_SYNC` is `on`. A change of scope is a pull request to the plan, after an issue.
 - **Sources.** `python3 scripts/sources.py verify` looks up every reference at its publisher and
-  writes `docs/tasks/sources-verified.json`, which the offline CI check reads.
+  writes `docs/tasks/sources-verified.json`, which the offline CI check reads; `verify` needs
+  Poppler's `pdftotext`.
 - **Upgrading Mathlib or Physlib.** On its own branch: bump the pins, run the gate, and fix what
   breaks. The risk is concentrated in the files that import `PhyslibAlpha` directly
   (`grep -rl 'import PhyslibAlpha' Lightlike`) and in names deprecated at the new version.
