@@ -53,111 +53,6 @@ stated: [QU1]   # the definitions exist; the statements are T-QU1-P1 to PL7
 # Hand-written tasks: statements written as skeletons in Tasks/, one file per task. Their
 # statements are drafts until they are reviewed and locked (`tasks.py lock`).
 tasks:
-  - id: T-DT4-P1
-    milestone: DT4
-    kind: proof
-    title: In a closed combinatorial n-manifold, a face with n vertices lies in exactly two top faces
-    file: Tasks/DT/T_DT4_P1.lean
-    decl: Lightlike.PL.SComplex.IsClosedCombManifold.card_cofaces
-    size: S
-    difficulty: intermediate
-    routes:
-      - The link of the face is a PL 0-sphere (`IsClosedCombManifold.isPLSphere_link`), which has two vertices (`IsPLSphere.card_verts_zero`); the cofaces correspond to the link's vertices.
-  - id: T-DT4-P2
-    milestone: DT4
-    kind: proof
-    title: Double counting of faces and their cofaces
-    file: Tasks/DT/T_DT4_P2.lean
-    decl: Lightlike.PL.SComplex.card_mul_eq_sum_cofaces
-    size: S
-    difficulty: good first issue
-    routes:
-      - Count the pairs (σ, s) with σ ⊆ s both ways (`Finset.sum_comm`, `Finset.card_eq_sum_ones`); a face with k + 2 vertices has k + 2 subsets with k + 1 vertices, all faces (`down_mem`).
-  - id: T-DT4-P3
-    milestone: DT4
-    kind: proof
-    title: In a closed combinatorial n-manifold, 2 N_{n-1} = (n + 1) N_n (for n = 4, 2N₃ = 5N₄)
-    file: Tasks/DT/T_DT4_P3.lean
-    decl: Lightlike.PL.SComplex.IsClosedCombManifold.two_mul_card_eq
-    deps: [T-DT4-P1, T-DT4-P2]
-    size: XS
-    difficulty: good first issue
-    routes:
-      - Apply T-DT4-P2 with k = n − 1 and rewrite every summand by T-DT4-P1.
-  - id: T-DT4-P4
-    milestone: DT4
-    kind: proof
-    title: Summed over the vertices, the face counts of the vertex links
-    file: Tasks/DT/T_DT4_P4.lean
-    decl: Lightlike.PL.SComplex.sum_card_link
-    size: S
-    difficulty: intermediate
-    routes:
-      - A face u of `link {v}` with k + 1 vertices corresponds to the face `insert v u` with k + 2 vertices containing v (`mem_link'`); exchange the sums and use that a face s has #s vertices.
-  - id: T-DT4-P5
-    milestone: DT4
-    kind: proof
-    title: The Euler characteristic of a vertex link in a closed combinatorial manifold
-    file: Tasks/DT/T_DT4_P5.lean
-    decl: Lightlike.PL.SComplex.IsClosedCombManifold.euler_link
-    size: XS
-    difficulty: good first issue
-    routes:
-      - "`isClosedCombManifold_succ_iff` gives that the link is a PL n-sphere; then `IsPLSphere.euler`."
-  - id: T-DT4-P6
-    milestone: DT4
-    kind: proof
-    title: The Euler characteristic as an alternating sum of face counts
-    file: Tasks/DT/T_DT4_P6.lean
-    decl: Lightlike.PL.SComplex.euler_eq_sum_card
-    size: S
-    difficulty: intermediate
-    routes:
-      - Split the sum defining `euler` by the number of vertices (`Finset.sum_fiberwise_of_maps_to`); every nonempty face has between 1 and `maxCard` vertices (`card_le_maxCard`).
-  - id: T-DT4-P7
-    milestone: DT4
-    kind: proof
-    title: In a closed combinatorial 4-manifold, 2N₁ − 3N₂ + 4N₃ − 5N₄ = 0
-    file: Tasks/DT/T_DT4_P7.lean
-    decl: Lightlike.PL.SComplex.IsClosedCombManifold.dehnSommerville_link
-    deps: [T-DT4-P4, T-DT4-P5, T-DT4-P6]
-    size: S
-    difficulty: intermediate
-    routes:
-      - Sum T-DT4-P5 (n = 3, each link has Euler characteristic 0) over the vertices, expand each link's Euler characteristic by T-DT4-P6 (links have `maxCard` 4 by `IsPLSphere.maxCard`) and regroup by T-DT4-P4.
-  - id: T-DT4-P8
-    milestone: DT4
-    kind: proof
-    title: The Dehn–Sommerville relation 2N₁ − 3N₂ + 6N₃ − 10N₄ = 0 for closed combinatorial 4-manifolds
-    file: Tasks/DT/T_DT4_P8.lean
-    decl: Lightlike.PL.SComplex.IsClosedCombManifold.dehnSommerville
-    deps: [T-DT4-P3, T-DT4-P7]
-    size: XS
-    difficulty: good first issue
-    routes:
-      - Add `2N₃ − 5N₄ = 0` (T-DT4-P3 with n = 4, cast to ℤ) to T-DT4-P7; `linarith` or `omega` after `push_cast`.
-  - id: T-DT4-P9
-    milestone: DT4
-    kind: proof
-    role: non-vacuity
-    title: "Non-vacuity: the boundary of the 5-simplex has N = (6, 15, 20, 15, 6)"
-    file: Tasks/DT/T_DT4_P9.lean
-    decl: Lightlike.PL.Tasks.boundary_fin6_dehnSommerville
-    size: XS
-    difficulty: good first issue
-    routes:
-      - The manifold part is `isClosedCombManifold_boundary`; the counts are a finite computation (`decide`).
-  - id: T-DT4-P10
-    milestone: DT4
-    kind: proof
-    role: trust-check
-    title: "Trust check: two 4-simplices glued along a 3-face violate 2N₃ = 5N₄"
-    file: Tasks/DT/T_DT4_P10.lean
-    decl: Lightlike.PL.Tasks.twoSimplices_not_dehnSommerville
-    size: XS
-    difficulty: good first issue
-    routes:
-      - A finite computation; `decide` hits the recursion limit, `decide +kernel` works.
   - id: T-QU1-P1
     milestone: QU1
     kind: proof
@@ -429,16 +324,6 @@ upstream:
 # statement is fixed: the proof-task check rejects pull requests that change it. Keep this section
 # last; `lock` rewrites it.
 locked:
-  T-DT4-P1: "74e3c01c37312039"
-  T-DT4-P2: "01e17077c5f150ea"
-  T-DT4-P3: "4b8b91c0b5847ce2"
-  T-DT4-P4: "e91327df802af8c1"
-  T-DT4-P5: "4abdbca45870e28c"
-  T-DT4-P6: "e8f8fd45933e930a"
-  T-DT4-P7: "f3b5706a8ece66e0"
-  T-DT4-P8: "a1ec6613bb2e0ace"
-  T-DT4-P9: "3330e2db0223a80a"
-  T-DT4-P10: "fb8f9a896f43c82b"
   T-QU1-P1: "e1f8fee660e6bb70"
   T-QU1-P2: "48d6183e645a58f7"
   T-QU1-P3: "f6a02ca2e41a673e"

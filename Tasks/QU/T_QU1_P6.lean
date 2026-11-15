@@ -29,7 +29,7 @@ Lemmas about them, which a proof may use:
 * `TV.turaevViro_move23` (`Lightlike/TuraevViro/TuraevViro.lean`)
 * `TV.qBiedenharnElliott_three` (`Lightlike/TuraevViro/LevelOne.lean`)
 
-Everything they depend on in one block:
+Everything they depend on, and the further lemmas about them, in one block:
 
     scripts/context-pack Lightlike.TV.qBiedenharnElliott_all
 

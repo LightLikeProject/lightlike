@@ -49,16 +49,6 @@ approaches.
 | [`T-QU1-P4`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-QU1-P4%22) | q-Biedenharn–Elliott identity at r = 5 | [T_QU1_P4.lean](../../Tasks/QU/T_QU1_P4.lean) | QU1 | M | intermediate |
 | [`T-QU1-P5`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-QU1-P5%22) | q-orthogonality of the quantum 6j symbols for every r ≥ 2 | [T_QU1_P5.lean](../../Tasks/QU/T_QU1_P5.lean) | QU1 | L | research-level |
 | [`T-QU1-P6`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-QU1-P6%22) | q-Biedenharn–Elliott identity for every r ≥ 2 | [T_QU1_P6.lean](../../Tasks/QU/T_QU1_P6.lean) | QU1 | L | research-level |
-| [`T-DT4-P1`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-DT4-P1%22) | In a closed combinatorial n-manifold, a face with n vertices lies in exactly two top faces | [T_DT4_P1.lean](../../Tasks/DT/T_DT4_P1.lean) | DT4 | S | intermediate |
-| [`T-DT4-P2`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-DT4-P2%22) | Double counting of faces and their cofaces | [T_DT4_P2.lean](../../Tasks/DT/T_DT4_P2.lean) | DT4 | S | good first issue |
-| [`T-DT4-P3`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-DT4-P3%22) | In a closed combinatorial n-manifold, 2 N_{n-1} = (n + 1) N_n (for n = 4, 2N₃ = 5N₄) | [T_DT4_P3.lean](../../Tasks/DT/T_DT4_P3.lean) | DT4 | XS | good first issue |
-| [`T-DT4-P4`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-DT4-P4%22) | Summed over the vertices, the face counts of the vertex links | [T_DT4_P4.lean](../../Tasks/DT/T_DT4_P4.lean) | DT4 | S | intermediate |
-| [`T-DT4-P5`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-DT4-P5%22) | The Euler characteristic of a vertex link in a closed combinatorial manifold | [T_DT4_P5.lean](../../Tasks/DT/T_DT4_P5.lean) | DT4 | XS | good first issue |
-| [`T-DT4-P6`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-DT4-P6%22) | The Euler characteristic as an alternating sum of face counts | [T_DT4_P6.lean](../../Tasks/DT/T_DT4_P6.lean) | DT4 | S | intermediate |
-| [`T-DT4-P7`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-DT4-P7%22) | In a closed combinatorial 4-manifold, 2N₁ − 3N₂ + 4N₃ − 5N₄ = 0 | [T_DT4_P7.lean](../../Tasks/DT/T_DT4_P7.lean) | DT4 | S | intermediate |
-| [`T-DT4-P8`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-DT4-P8%22) | The Dehn–Sommerville relation 2N₁ − 3N₂ + 6N₃ − 10N₄ = 0 for closed combinatorial 4-manifolds | [T_DT4_P8.lean](../../Tasks/DT/T_DT4_P8.lean) | DT4 | XS | good first issue |
-| [`T-DT4-P9`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-DT4-P9%22) | Non-vacuity: the boundary of the 5-simplex has N = (6, 15, 20, 15, 6) | [T_DT4_P9.lean](../../Tasks/DT/T_DT4_P9.lean) | DT4 | XS | good first issue |
-| [`T-DT4-P10`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-DT4-P10%22) | Trust check: two 4-simplices glued along a 3-face violate 2N₃ = 5N₄ | [T_DT4_P10.lean](../../Tasks/DT/T_DT4_P10.lean) | DT4 | XS | good first issue |
 
 ## Upstream
 
