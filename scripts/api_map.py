@@ -78,7 +78,7 @@ def review_cell(review, ref, prefix: str = "") -> str:
     return f"[{review}]({ref if str(ref).startswith('http') else prefix + str(ref)})"
 
 
-# LL-XXXX and LL-XXXX-<letter> are draft IDs in a pull request; merging assigns the numbers
+# LL-0067 and LL-0067-<letter> are draft IDs in a pull request; merging assigns the numbers
 ID_RE = re.compile(r"^LL-(?:\d{4}|XXXX(?:-[a-z])?)$")
 ENTRY_RE = re.compile(r"^(\d+)\. (\S+\.lean) [-\u2014] (.+)$")
 REF_RE = re.compile(r"^(\d+)\. \S")
@@ -197,7 +197,7 @@ def lint_registry(root: Path, reg: list[dict]) -> list[str]:
             if k not in e:
                 errs.append(f"{i}: missing '{k}'")
         if not ID_RE.match(str(i)):
-            errs.append(f"{i}: ID must be LL-dddd, or a draft LL-XXXX or LL-XXXX-<letter>")
+            errs.append(f"{i}: ID must be LL-dddd, or a draft LL-0067 or LL-0067-<letter>")
         elif i <= prev:
             errs.append(f"{i}: IDs must increase (after {prev}); drafts come last, each once")
         prev = max(prev, str(i))
@@ -417,8 +417,8 @@ def selftest() -> int:
         ("planted: shared brackets", "The lemma [1]", "The lemma [1, 1]", True),
         ("planted: uncited literature reference", " follows {1}.", " follows.", True),
         ("planted: bad ID", "REG:LL-0001", "LL-001", True),
-        ("draft ID accepted", "REG:LL-0001", "LL-XXXX-a", False),
-        ("planted: bad draft ID", "REG:LL-0001", "LL-XXXX-1", True),
+        ("draft ID accepted", "REG:LL-0001", "LL-0068", False),
+        ("planted: bad draft ID", "REG:LL-0001", "LL-0067-1", True),
         ("planted: unknown tier", "REG:tier: established", "tier: central", True),
         ("planted: RESULTS.md out of date", "RES", "", True),
     ]
