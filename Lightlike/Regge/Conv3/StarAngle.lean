@@ -324,7 +324,7 @@ theorem iota_lin_w {G : Matrix (Fin 3) (Fin 3) ℝ} (hG : G.PosDef) {w : Fin 3 �
   rw [e1, e2]
 
 /-- The complex coordinate is odd. -/
-theorem iota_neg {G : Matrix (Fin 3) (Fin 3) ℝ} (t v : Fin 3 → ℝ) :
+theorem iota_neg {G : Matrix (Fin 3) (Fin 3) ℝ} {w : Fin 3 → ℝ} (t v : Fin 3 → ℝ) :
     iota G w t (-v) = - iota G w t v := by
   have e1 : bf G w t (-v) = - bf G w t v := by
     unfold bf; simp [dotProduct_neg, Matrix.mulVec_neg, neg_dotProduct]; ring
