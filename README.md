@@ -31,8 +31,7 @@ which add definitions and statements from the literature and need knowledge of t
 **upstream** tasks, which rework a result of Lightlike for Mathlib or Physlib.
 
 Lightlike was developed privately over several weeks, largely by AI coding agents working under
-human direction, and is released as a clean snapshot of that work. Every proof is checked by Lean's
-kernel; the review status of each entry is recorded in [docs/RESULTS.md](docs/RESULTS.md).
+human direction, and is released as a clean snapshot of that work.
 
 ## Quick start
 
@@ -57,18 +56,16 @@ kernel; the review status of each entry is recorded in [docs/RESULTS.md](docs/RE
 
 ## Review
 
-Lean's kernel checks the proofs, so a proof needs no review. What the kernel cannot check is whether
-a definition or a statement means what its source means. A statement is compared with its cited
-source for conventions (signature, units, normalisations), quantifier ranges and hypotheses, junk
-values of partial operations (such as `ℕ` subtraction and `x / 0 = 0`) and non-vacuity (an example
-satisfies the hypotheses of each main theorem).
+The kernel cannot check that a definition or a statement means what its source means, so each
+statement is compared with its cited source for conventions (signature, units, normalisations),
+quantifier ranges and hypotheses, junk values of partial operations (such as `ℕ` subtraction and
+`x / 0 = 0`) and non-vacuity (an example satisfies the hypotheses of each main theorem).
 
 A statement that passes is locked, and its proof becomes a proof task. Every entry of
-[docs/RESULTS.md](docs/RESULTS.md) is **kernel-checked**. An entry that a domain expert has
-compared with its source is marked **human-reviewed**, with a link to the issue that holds the
-review. To review an entry, or to report a mismatch, open an
-[issue](https://github.com/LightlikeProject/lightlike/issues/new) with the entry's ID, the place in
-its source, and what differs.
+[docs/RESULTS.md](docs/RESULTS.md) is **kernel-checked**; one that a domain expert has compared
+with its source is marked **human-reviewed**, with a link to the issue that holds the review. To
+review an entry, or to report a mismatch, open an [issue](https://github.com/LightlikeProject/lightlike/issues/new)
+with the entry's ID, the place in its source, and what differs.
 
 ## How work is tracked
 
@@ -94,12 +91,11 @@ its source, and what differs.
 
 ## Relationship to other projects
 
-Lightlike formalizes published results and states published open problems, each with its source; it
-proposes no new theories, except in the exploratory tier, which the rest of the library may not
-import. It builds on Mathlib and Physlib: Physlib covers mainstream physics, Lightlike
-research-level topics, quantum gravity first. General mathematics belongs in Mathlib or [Tau
-Ceti](https://github.com/TauCetiProject/TauCeti); material that fits Mathlib or Physlib is offered
-upstream ([the candidates](docs/tasks/README.md#upstream)).
+Lightlike formalizes published results and states published open problems, each with its source;
+outside the exploratory tier it proposes no new theories. It builds on Mathlib and Physlib: Physlib
+covers mainstream physics, Lightlike research-level topics, quantum gravity first. General
+mathematics belongs in Mathlib or [Tau Ceti](https://github.com/TauCetiProject/TauCeti); material
+that fits Mathlib or Physlib is offered upstream ([the candidates](docs/tasks/README.md#upstream)).
 
 Lean projects that overlap directly: [pachner](https://github.com/not-gary/pachner) (Cunningham,
 Zach and Friedl, ITP 2026: simplicial complexes and stellar subdivisions, toward Pachner's theorem);
@@ -128,11 +124,10 @@ lake build Tasks
 
 `lake exe cache get` downloads Mathlib's prebuilt files; the first `lake build` compiles Physlib and
 Lightlike, which took 28 min 34 s on GitHub's 4-core Linux runner and takes more than 90 minutes on a
-2-core machine; later builds compile only what changed. A build needs about 11 GB of disk. Some
-modules need up to about 6 GB per Lean process; 16 GB of RAM is recommended, and 8 GB machines may
-build very slowly. `lake build Tasks` builds the proof-task files in `Tasks/`, which are not part of
-the library. The checks in `scripts/` need Python 3.9 to 3.12 and the packages pinned in
-`requirements.txt`:
+2-core machine; later builds compile only what changed. A build needs about 11 GB of disk, and some
+modules up to about 6 GB of RAM per Lean process (16 GB is recommended; 8 GB machines may build very
+slowly). `lake build Tasks` builds the proof-task files in `Tasks/`, which are not part of the
+library. The checks in `scripts/` need Python 3.9 to 3.12 and the packages in `requirements.txt`:
 `python3 -m venv .venv && . .venv/bin/activate && pip install -r requirements.txt`.
 
 To use Lightlike in a project with the same Lean version, add to its `lakefile.toml`:
@@ -144,15 +139,11 @@ git = "https://github.com/LightlikeProject/lightlike"
 rev = "v0.1.0"
 ```
 
-## Help wanted
+## Help wanted, community, license and citation
 
-Lightlike has one maintainer. Help is especially welcome with repository and CI maintenance,
-Lean infrastructure, domain review, and leading an area: open an issue labelled
-[**help wanted**](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22)
-or join the [Discord](https://discord.gg/Eyx3zTx9JW).
-
-## Community, license and citation
-
+Lightlike has one maintainer. Help is especially welcome with repository and CI maintenance, Lean
+infrastructure, domain review, and leading an area: open an issue labelled
+[**help wanted**](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22).
 Discussion and coordination on [Discord](https://discord.gg/Eyx3zTx9JW); questions and proposals in
 [GitHub Discussions](https://github.com/LightlikeProject/lightlike/discussions). Apache License 2.0,
 copyright The Lightlike contributors; see [LICENSE](LICENSE). To cite Lightlike, use
