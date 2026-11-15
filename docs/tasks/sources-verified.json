@@ -415,6 +415,11 @@
   "via": "arXiv API",
   "fetched_title": "The Ponzano-Regge model",
   "locations": {
+   "§2.2": {
+    "verified": true,
+    "snippet": "2.2 The partition function The partition function, or state sum, is obtained by summing over all values of the variables, subject to fixed values on the boundary. X",
+    "why": null
+   },
    "§2.2.1": {
     "verified": true,
     "snippet": "2.2.1 Pachner moves Any two triangulations of a 3-manifold can be related by a sequences of local moves on the triangulation known as Pachner moves. Therefore a strategy for proving triangulation independence is to sh",
@@ -436,8 +441,8 @@
     "why": null
    }
   },
-  "citations": 154,
-  "citations_via": "OpenAlex"
+  "citations": 169,
+  "citations_via": "Semantic Scholar"
  },
  "barrett-westbury-1996": {
   "checked": "2026-11-07",

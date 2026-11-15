@@ -91,6 +91,24 @@ without the rescaling `M_Λ^{-v}` of Barrett and Naish-Guzman (§2.2). Existence
 is a different statement and is not treated. Exact values for doubled cut-offs `0` to `3` (`1`, `29`,
 `2393/4`, `488337/100`) are numerical evidence only.
 
+Three different statements about the cut-off must be kept apart. (A) Existence as a distribution
+in the boundary data: Barrett and Naish-Guzman (§4.4) show that it holds exactly when the second
+twisted cohomology `H²` at the flat connections is trivial. Only the finite-dimensional step is
+proved here: `d1` is the differential of the holonomy map, so `H² = 0` exactly when every
+variation of the face holonomies is realised [11]. The measure-theoretic step is not. (B) The
+simple cut-off sum. For Bing's house, summing the room spins first gives `1`, while the simple
+cut-off with all spins `≤ 1` gives `37/12` [13] (§2.4 of the same paper: no interior vertex, so no
+rescaling, and the simple cut-off is not triangulation independent). The cut-off sum of the
+tetrahedron is at least `(N+1)^2` [22]; §2.2 of the paper notes that such sums can diverge and
+regularises with a rescaling per interior vertex. (C) What follows, for these two complexes: the
+value of the sum depends on the summation order or the regularisation, and the unrescaled cut-off
+sum of the tetrahedron has no limit. What does not follow, and is not claimed: that `H² ≠ 0` causes
+this; that `H² = 0` makes the cut-off removable (this is the hypothesis `H2AbsSummable`, proved
+only for the disc and a two-edge, two-face complex); that the rescaled limit of the tetrahedron
+sum diverges (the rescaling factor is not defined here); and that the simple cut-off sum of
+Bing's house is unbounded (the paper shows this numerically; here only the two values above are
+proved).
+
 ## Lean References
 
 1. Lightlike/SpinFoam/Vertex.lean - `SpinFoam.vertexAmp`, `SpinFoam.vertexContr_eq`,
