@@ -4,7 +4,7 @@ Contributions are welcome in every area: proofs, definitions, statements, tests 
 literature, corrections to conventions, and reviews of whether a statement says what its source
 says. Every task on the [task board](docs/tasks/README.md) is open to everyone. Contributions are
 welcome however you work, by hand or with AI tools; the pull request template has an optional
-field for AI assistance.
+field for AI assistance, and [AGENTS.md](AGENTS.md) holds the instructions for coding agents.
 
 ## Your first proof task
 
@@ -49,8 +49,7 @@ the modules it changes and the modules that import them.
 4. Nothing outside an `Exploratory/` folder imports a module inside one.
 5. Every definition, and every declaration named in an API map or in `docs/results.yaml`, has a
    docstring (`scripts/DocCheck.lean`).
-6. The literature sources of the catalog check out (`scripts/sources.py check`). This concerns
-   the files under `docs/`, which the maintainers keep.
+6. The literature sources of the catalog check out (`scripts/sources.py check`).
 
 A pull request for a proof task must also change only the proof of its declaration, because the
 statement has been reviewed and locked; the `Proof task` workflow checks this. The other CI steps
@@ -158,13 +157,14 @@ Each of these makes a result easier to trust or to reuse. None blocks a merge.
   maintainers, who add a new result to it after merging; say in the pull request what it should
   record. To rename a declaration the catalog names, keep a `@[deprecated]` alias under the old
   name, as Mathlib does.
-- **Outside readers.** Write code comments, docstrings and pull requests for someone who has not
-  seen how they were produced.
 
 ## Pull requests
 
-Work on a branch and keep each pull request to one topic. Commit messages use
-`type(scope): summary`, followed by a body that says why. A maintainer merges.
+One route for everyone, agents and maintainers included. Work on a branch, in a fork or, with write
+access, here; keep each pull request to one task or topic, with its `Task:` line, and commit
+messages to `type(scope): summary` with a body that says why. To update a pushed branch, merge
+`main` into it; never force-push. A maintainer squash-merges once every CI check is green; the
+commit on `main` takes the pull request's title, number and description: write them for outsiders.
 
 ## For maintainers
 
@@ -174,11 +174,11 @@ Work on a branch and keep each pull request to one topic. Commit messages use
 - **Tasks.** `docs/tasks/milestones.md` and `docs/tasks/decomposition.yaml` are the plan, and the
   sources of the board. `python3 scripts/tasks.py generate` writes the board,
   `docs/tasks/tasks.yaml`, `Tasks.lean` and the milestone counts in `ROADMAP.md`; `tasks.py deps`
-  writes the header of each proof-task file: the statement, a hint, what the statement uses and
-  the references; `tasks.py lock
-  <ID>` locks a reviewed statement. `tasks.py sync` prints what it would change on the task
-  issues; the workflow `.github/workflows/tasks.yml` runs it with `--apply` once the repository
-  variable `TASK_SYNC` is `on`. A change of scope is a pull request to the plan, after an issue.
+  writes the header of each proof-task file: the statement, a hint, what the statement uses and the
+  references; `tasks.py lock <ID>` locks a reviewed statement. `tasks.py sync` prints what it would
+  change on the task issues; the workflow `.github/workflows/tasks.yml` runs it with `--apply` once
+  the repository variable `TASK_SYNC` is `on`. A change of scope is a pull request to the plan,
+  after an issue.
 - **Sources.** `python3 scripts/sources.py verify` looks up every reference at its publisher and
   writes `docs/tasks/sources-verified.json`, which the offline CI check reads; `verify` needs
   Poppler's `pdftotext`.
