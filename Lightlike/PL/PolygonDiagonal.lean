@@ -70,6 +70,81 @@ theorem exists_extreme [NeZero n] (p : Polygon n) : ∃ j, ∀ i, LexLE (p j) (p
   obtain ⟨j, -, hj⟩ := key Finset.univ ⟨⟨0, NeZero.pos n⟩, Finset.mem_univ _⟩
   exact ⟨j, fun i => hj i (Finset.mem_univ i)⟩
 
+
+/-- A point lexicographically above `v` and different from it is lexicographically positive
+relative to `v`. -/
+lemma lexPos_sub {v z : ℝ × ℝ} (hz : LexLE v z) (hne : z ≠ v) : LexPos (z - v) := by
+  unfold LexLE at hz
+  unfold LexPos
+  rcases hz with h | ⟨h1, h2⟩
+  · left; simp only [Prod.fst_sub]; linarith
+  · right
+    refine ⟨by simp only [Prod.fst_sub]; linarith, ?_⟩
+    simp only [Prod.snd_sub]
+    rcases h2.lt_or_eq with h2 | h2
+    · linarith
+    · exact absurd (Prod.ext h1.symm h2.symm) hne
+
+lemma LexPos.fst_nonneg {a : ℝ × ℝ} (h : LexPos a) : 0 ≤ a.1 := by
+  rcases h with h | ⟨h, -⟩ <;> linarith
+
+/-- **Everything strictly to the left of the extreme vertex is outside.** The open half-plane to
+the left of a vertex that is lexicographically smallest misses the polygon, is connected and is
+unbounded, so it lies in the outside. -/
+theorem left_subset_outside [NeZero n] {j : Fin n}
+    (hext : ∀ i, LexLE (p j) (p i)) : {x : ℝ × ℝ | x.1 < (p j).1} ⊆ p.outside := by
+  set L : Set (ℝ × ℝ) := {x | x.1 < (p j).1} with hL
+  have hcar : ∀ x ∈ p.carrier, (p j).1 ≤ x.1 := by
+    intro x hx
+    obtain ⟨i, hi⟩ := Set.mem_iUnion.1 hx
+    have hge : ∀ i, (p j).1 ≤ (p i).1 := fun i => by
+      rcases hext i with h | ⟨h, -⟩
+      · exact h.le
+      · exact h.le
+    have hconv : Convex ℝ {y : ℝ × ℝ | (p j).1 ≤ y.1} := by
+      intro x hx y hy a b ha hb hab
+      have hx' : (p j).1 ≤ x.1 := hx
+      have hy' : (p j).1 ≤ y.1 := hy
+      show (p j).1 ≤ (a • x + b • y).1
+      simp only [Prod.fst_add, Prod.smul_fst, smul_eq_mul]
+      obtain rfl : b = 1 - a := by linarith
+      nlinarith [mul_nonneg ha (sub_nonneg.2 hx'), mul_nonneg hb (sub_nonneg.2 hy')]
+    exact (hconv.segment_subset (hge i) (hge _)) hi
+  have hLc : L ⊆ p.carrierᶜ := fun x hx hxc => by
+    have := hcar x hxc; have hx' : x.1 < (p j).1 := hx; linarith
+  have hLconv : Convex ℝ L := by
+    intro x hx y hy a b ha hb hab
+    have hx' : x.1 < (p j).1 := hx
+    have hy' : y.1 < (p j).1 := hy
+    show (a • x + b • y).1 < (p j).1
+    simp only [Prod.fst_add, Prod.smul_fst, smul_eq_mul]
+    obtain rfl : b = 1 - a := by linarith
+    rcases ha.eq_or_lt with rfl | ha'
+    · simpa using hy'
+    · nlinarith [mul_pos ha' (sub_pos.2 hx'), mul_nonneg hb (sub_nonneg.2 hy'.le)]
+  have hLpre : IsPreconnected L := hLconv.isPreconnected
+  have hLub : ¬ Bornology.IsBounded L := by
+    intro hb
+    obtain ⟨R, hR⟩ := hb.subset_closedBall (0 : ℝ × ℝ)
+    have hmem : ((p j).1 - |R| - |(p j).1| - 1, (0 : ℝ)) ∈ L := by
+      show (p j).1 - |R| - |(p j).1| - 1 < (p j).1
+      linarith [abs_nonneg R, abs_nonneg (p j).1]
+    have := hR hmem
+    rw [Metric.mem_closedBall, dist_zero_right, Prod.norm_def] at this
+    have h2 : |(p j).1 - |R| - |(p j).1| - 1| ≤ R := by
+      have := (le_max_left _ _).trans this
+      simpa using this
+    have h3 : (p j).1 ≤ |(p j).1| := le_abs_self _
+    have h4 : R ≤ |R| := le_abs_self _
+    have h5 := neg_abs_le ((p j).1 - |R| - |(p j).1| - 1)
+    linarith [abs_nonneg R, abs_nonneg (p j).1, abs_nonneg ((p j).1 - |R| - |(p j).1| - 1)]
+  have hcov : L ⊆ p.outside ∪ p.inside := by rw [← compl_carrier_eq]; exact hLc
+  rcases hLpre.subset_or_subset (isOpen_outside p) (isOpen_inside p) (disjoint_outside_inside p)
+      hcov with h | h
+  · exact h
+  · exact absurd ((isBounded_inside p).subset h) hLub
+
+
 /-- Two nonzero lexicographically positive vectors with vanishing cross product are positive
 multiples of each other. -/
 lemma exists_pos_smul {a b : ℝ × ℝ} (ha : LexPos a) (hb : LexPos b)
@@ -150,6 +225,97 @@ theorem corner_cross_ne (hs : p.IsSimple) {j : Fin n} (hext : ∀ i, LexLE (p j)
     have : u ∈ segment ℝ u v ∩ segment ℝ v w := ⟨left_mem_segment ℝ u v, hum⟩
     rw [hinter] at this
     exact huv (Set.mem_singleton_iff.1 this)
+
+/-- A ray is unchanged by positive rescaling of its direction. -/
+lemma ray0_smul {s : ℝ} (hs : 0 < s) (a : ℝ × ℝ) : ray0 (s • a) = ray0 a := by
+  ext x
+  constructor
+  · rintro ⟨t, ht, rfl⟩
+    exact ⟨t * s, mul_nonneg ht hs.le, by rw [smul_smul]⟩
+  · rintro ⟨t, ht, rfl⟩
+    exact ⟨t / s, div_nonneg ht hs.le, by rw [smul_smul, div_mul_cancel₀ _ hs.ne']⟩
+
+/-- The directions of two rays that start along edges at a vertex and lie in the carrier up to
+a small ball are among the two rays of the local description. -/
+lemma dir_mem_rays {v d a b : ℝ × ℝ} {ρ : ℝ} (hρ : 0 < ρ) (hd : d ≠ 0)
+    (hcar : ∀ z ∈ Metric.ball v ρ, z ∈ p.carrier ↔ z - v ∈ ray0 a ∪ ray0 b)
+    (hin : ∀ t : ℝ, 0 < t → t ≤ 1 → v + t • d ∈ p.carrier) : d ∈ ray0 a ∪ ray0 b := by
+  set N := ‖d‖ with hN
+  have hN0 : 0 ≤ N := norm_nonneg _
+  set t := min 1 (ρ / (2 * (N + 1))) with ht
+  have hden : 0 < 2 * (N + 1) := by positivity
+  have ht0 : 0 < t := lt_min one_pos (div_pos hρ hden)
+  have ht1 : t ≤ 1 := min_le_left _ _
+  have ht2 : t ≤ ρ / (2 * (N + 1)) := min_le_right _ _
+  have hball : v + t • d ∈ Metric.ball v ρ := by
+    rw [Metric.mem_ball, dist_eq_norm, add_sub_cancel_left, norm_smul, Real.norm_of_nonneg ht0.le]
+    have h1 : t * (2 * (N + 1)) ≤ ρ := by
+      have := mul_le_mul_of_nonneg_right ht2 hden.le
+      rwa [div_mul_cancel₀ _ hden.ne'] at this
+    nlinarith
+  have hm := (hcar _ hball).1 (hin t ht0 ht1)
+  rw [add_sub_cancel_left] at hm
+  have key : ∀ c : ℝ × ℝ, t • d ∈ ray0 c → d ∈ ray0 c := by
+    rintro c ⟨r, hr, hrc⟩
+    refine ⟨r / t, div_nonneg hr ht0.le, ?_⟩
+    have : d = t⁻¹ • (t • d) := by rw [smul_smul, inv_mul_cancel₀ ht0.ne', one_smul]
+    rw [this, hrc, smul_smul, div_eq_inv_mul]
+  rcases hm with hm | hm
+  · exact Or.inl (key _ hm)
+  · exact Or.inr (key _ hm)
+
+/-- **The carrier near a vertex is the union of its two edge rays.** At a vertex of a simple
+polygon whose edge directions `u - v` and `w - v` are not parallel, the carrier agrees, in a
+small ball around the vertex, with the union of the two rays from the vertex along the edges. -/
+theorem carrier_near_vertex (hs : p.IsSimple) {j : Fin n}
+    (hc : cross (p ((finRotate n).symm j) - p j) (p (finRotate n j) - p j) ≠ 0) :
+    ∃ ρ > 0, ∀ z ∈ Metric.ball (p j) ρ, z ∈ p.carrier ↔
+      z - p j ∈ ray0 (p ((finRotate n).symm j) - p j) ∪ ray0 (p (finRotate n j) - p j) := by
+  set k := (finRotate n).symm j with hk
+  have hkj : finRotate n k = j := by rw [hk]; exact Equiv.apply_symm_apply _ _
+  set v := p j with hv
+  set u := p k with hu
+  set w := p (finRotate n j) with hw
+  have huv : u ≠ v := by have := hs.1 k; rwa [hkj] at this
+  have hvw : v ≠ w := hs.1 j
+  obtain ⟨a, b, ha, hb, hnp, ρ, hρ, hcar⟩ := local_data_vertex hs (j := k) (w := v) (by rw [hkj])
+  have hd1 : u - v ∈ ray0 a ∪ ray0 b := by
+    refine dir_mem_rays hρ (sub_ne_zero.2 huv) hcar fun t ht0 ht1 => ?_
+    have : v + t • (u - v) ∈ p.edge k := by
+      have e1 : p.edge k = segment ℝ u v := by simp only [edge, hkj, hu, hv]
+      rw [e1, segment_symm]
+      have := mem_segment_of_sub_eq (v := v) (u := u) (z := v + t • (u - v)) ht0.le ht1
+        (by rw [add_sub_cancel_left])
+      exact this
+    exact Set.mem_iUnion.2 ⟨k, this⟩
+  have hd2 : w - v ∈ ray0 a ∪ ray0 b := by
+    refine dir_mem_rays hρ (sub_ne_zero.2 hvw.symm) hcar fun t ht0 ht1 => ?_
+    have : v + t • (w - v) ∈ p.edge j :=
+      mem_segment_of_sub_eq (v := v) (u := w) (z := v + t • (w - v)) ht0.le ht1
+        (by rw [add_sub_cancel_left])
+    exact Set.mem_iUnion.2 ⟨j, this⟩
+  have hcr : ∀ (s r : ℝ) (c : ℝ × ℝ), u - v = s • c → w - v = r • c → False := by
+    intro s r c h1 h2
+    apply hc
+    rw [h1, h2]; simp [cross]; ring
+  refine ⟨ρ, hρ, fun z hz => ?_⟩
+  rw [hcar z hz]
+  have hset : ray0 (u - v) ∪ ray0 (w - v) = ray0 a ∪ ray0 b := by
+    obtain ⟨s1, hs1, h1⟩ | ⟨s1, hs1, h1⟩ := hd1 <;> obtain ⟨s2, hs2, h2⟩ | ⟨s2, hs2, h2⟩ := hd2
+    · exact (hcr s1 s2 a h1 h2).elim
+    · have p1 : 0 < s1 := hs1.lt_of_ne (fun h => huv (by
+        rw [← h, zero_smul] at h1; exact (sub_eq_zero.1 h1)))
+      have p2 : 0 < s2 := hs2.lt_of_ne (fun h => hvw (by
+        rw [← h, zero_smul] at h2; exact (sub_eq_zero.1 h2).symm))
+      rw [h1, h2, ray0_smul p1, ray0_smul p2]
+    · have p1 : 0 < s1 := hs1.lt_of_ne (fun h => huv (by
+        rw [← h, zero_smul] at h1; exact (sub_eq_zero.1 h1)))
+      have p2 : 0 < s2 := hs2.lt_of_ne (fun h => hvw (by
+        rw [← h, zero_smul] at h2; exact (sub_eq_zero.1 h2).symm))
+      rw [h1, h2, ray0_smul p1, ray0_smul p2, Set.union_comm]
+    · exact (hcr s1 s2 b h1 h2).elim
+  rw [hset]
+
 
 end Polygon
 end Lightlike.PL
