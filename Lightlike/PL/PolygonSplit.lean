@@ -523,6 +523,145 @@ lemma mem_carrier_left_or_right (hn : 2 ≤ n) {b : ℕ} (hb : 1 ≤ b) (hbn : b
       · exact Or.inr (Or.inl ⟨k, h, hk, hx⟩)
     · exact Or.inl (Or.inr hx)
 
+lemma cyc_mem_carrier (hn : 2 ≤ n) {k : ℕ} (hk : k < n) : p.cyc k ∈ p.carrier :=
+  (mem_carrier_iff hn).2 ⟨k, hk, left_mem_segment ℝ _ _⟩
+
+/-- **Splitting the inside along an interior diagonal.** If the open diagonal from the vertex `0`
+to the vertex `b` of a simple polygon lies in the inside, the inside of the polygon is the union
+of the insides of the two parts and the open diagonal, and the two insides are disjoint. -/
+theorem inside_split (hs : p.IsSimple) {b : ℕ} (hb : 2 ≤ b) (hbn : b + 2 ≤ n)
+    (hD : openSegment ℝ (p.cyc 0) (p.cyc b) ⊆ p.inside) :
+    Disjoint (p.left b).inside (p.right b).inside ∧
+      p.inside = (p.left b).inside ∪ (p.right b).inside ∪ openSegment ℝ (p.cyc 0) (p.cyc b) := by
+  have hn : 2 ≤ n := by omega
+  have hopen : ∀ q ∈ openSegment ℝ (p.cyc 0) (p.cyc b), q ∉ p.carrier := fun q hq hqc =>
+    hqc |> fun h => (hD hq).1 h
+  have hsL := isSimple_left hs hb hbn hopen
+  have hsR := isSimple_right hs hb hbn hopen
+  set L := p.left b with hL
+  set R := p.right b with hR
+  have hadd : ∀ x, L.parity x + R.parity x = p.parity x := fun x =>
+    parity_left_add_right p (by omega) (by omega) x
+  have hcar := fun x => mem_carrier_left_or_right (p := p) hn (b := b) (by omega) (by omega) (x := x)
+  have h0 : p.cyc 0 ∈ p.carrier := cyc_mem_carrier hn (by omega)
+  have hb' : p.cyc b ∈ p.carrier := cyc_mem_carrier hn (by omega)
+  -- a point off the carrier and off the open diagonal is off both parts
+  have hoff : ∀ x, x ∉ p.carrier → x ∉ openSegment ℝ (p.cyc 0) (p.cyc b) →
+      x ∉ L.carrier ∧ x ∉ R.carrier := by
+    intro x hx1 hx2
+    have : x ∉ L.carrier ∧ x ∉ R.carrier := by
+      by_contra hcon
+      have h : x ∈ L.carrier ∨ x ∈ R.carrier := by
+        by_cases h1 : x ∈ L.carrier
+        · exact Or.inl h1
+        · exact Or.inr (by by_contra h2; exact hcon ⟨h1, h2⟩)
+      rcases (hcar x).1 h with h | h
+      · exact hx1 h
+      · rw [← insert_endpoints_openSegment] at h
+        rcases h with rfl | rfl | h
+        · exact hx1 h0
+        · exact hx1 hb'
+        · exact hx2 h
+    exact this
+  have hz : ∀ a : ZMod 2, a = 0 ∨ a = 1 := by decide
+  -- the points inside both parts are off the polygon and outside it
+  have hbothin : ∀ x, x ∈ L.inside → x ∈ R.inside → x ∈ p.outside := by
+    intro x h1 h2
+    have hxc : x ∉ p.carrier := fun hc => by
+      rcases (hcar x).2 (Or.inl hc) with h | h
+      · exact h1.1 h
+      · exact h2.1 h
+    refine ⟨hxc, ?_⟩
+    rw [← hadd, h1.2, h2.2]; decide
+  have hbothout : ∀ x, x ∈ L.outside → x ∈ R.outside → x ∈ p.outside := by
+    intro x h1 h2
+    have hxc : x ∉ p.carrier := fun hc => by
+      rcases (hcar x).2 (Or.inl hc) with h | h
+      · exact h1.1 h
+      · exact h2.1 h
+    refine ⟨hxc, ?_⟩
+    rw [← hadd, h1.2, h2.2]; decide
+  have hout : ∀ x, x ∈ p.outside → (x ∈ L.outside ∧ x ∈ R.outside) ∨
+      (x ∈ L.inside ∧ x ∈ R.inside) := by
+    intro x hx
+    have hxD : x ∉ openSegment ℝ (p.cyc 0) (p.cyc b) := fun h =>
+      (Set.disjoint_left.1 (disjoint_outside_inside p)) hx (hD h)
+    obtain ⟨hxL, hxR⟩ := hoff x hx.1 hxD
+    have hadd' := hadd x
+    rw [hx.2] at hadd'
+    rcases hz (L.parity x) with h1 | h1 <;> rcases hz (R.parity x) with h2 | h2
+    · exact Or.inl ⟨⟨hxL, h1⟩, ⟨hxR, h2⟩⟩
+    · rw [h1, h2] at hadd'; exact absurd hadd' (by decide)
+    · rw [h1, h2] at hadd'; exact absurd hadd' (by decide)
+    · exact Or.inr ⟨⟨hxL, h1⟩, ⟨hxR, h2⟩⟩
+  -- no point is inside both parts
+  have hdisj : Disjoint L.inside R.inside := by
+    rw [Set.disjoint_left]
+    intro x hxL hxR
+    have hpre : IsPreconnected p.outside := isPreconnected_outside hs
+    have hO : IsOpen (L.outside ∩ R.outside) := (isOpen_outside L).inter (isOpen_outside R)
+    have hW : IsOpen (L.inside ∩ R.inside) := (isOpen_inside L).inter (isOpen_inside R)
+    have hdj : Disjoint (L.outside ∩ R.outside) (L.inside ∩ R.inside) := by
+      rw [Set.disjoint_left]
+      rintro y ⟨hy1, -⟩ ⟨hy2, -⟩
+      exact (Set.disjoint_left.1 (disjoint_outside_inside L)) hy1 hy2
+    have hcov : p.outside ⊆ (L.outside ∩ R.outside) ∪ (L.inside ∩ R.inside) := fun y hy => by
+      rcases hout y hy with h | h
+      · exact Or.inl h
+      · exact Or.inr h
+    rcases hpre.subset_or_subset hO hW hdj hcov with h | h
+    · exact (Set.disjoint_left.1 (disjoint_outside_inside L)) (hbothin x hxL hxR |> fun hp => (h hp).1) hxL
+    · exact not_isBounded_outside p ((isBounded_inside L).subset (fun y hy => (h hy).1))
+  -- a point inside a part is off the other part
+  have hcross1 : ∀ y, y ∈ L.inside → y ∉ R.carrier := by
+    intro y hy hyc
+    have hcl := carrier_subset_closure_class hsR 1 hyc
+    obtain ⟨z, hz1, hz2⟩ := mem_closure_iff.1 hcl _ (isOpen_inside L) hy
+    exact Set.disjoint_left.1 hdisj hz1 hz2
+  have hcross2 : ∀ y, y ∈ R.inside → y ∉ L.carrier := by
+    intro y hy hyc
+    have hcl := carrier_subset_closure_class hsL 1 hyc
+    obtain ⟨z, hz1, hz2⟩ := mem_closure_iff.1 hcl _ (isOpen_inside R) hy
+    exact Set.disjoint_left.1 hdisj hz2 hz1
+  refine ⟨hdisj, ?_⟩
+  ext x
+  constructor
+  · intro hx
+    by_cases hxD : x ∈ openSegment ℝ (p.cyc 0) (p.cyc b)
+    · exact Or.inr hxD
+    · obtain ⟨hxL, hxR⟩ := hoff x hx.1 hxD
+      have hadd' := hadd x
+      rw [hx.2] at hadd'
+      rcases hz (L.parity x) with h1 | h1 <;> rcases hz (R.parity x) with h2 | h2
+      · rw [h1, h2] at hadd'; exact absurd hadd' (by decide)
+      · exact Or.inl (Or.inr ⟨hxR, h2⟩)
+      · exact Or.inl (Or.inl ⟨hxL, h1⟩)
+      · rw [h1, h2] at hadd'; exact absurd hadd' (by decide)
+  · rintro ((hx | hx) | hx)
+    · have hxR : x ∉ R.carrier := hcross1 x hx
+      have hxp : x ∉ p.carrier := fun hc => by
+        rcases (hcar x).2 (Or.inl hc) with h | h
+        · exact hx.1 h
+        · exact hxR h
+      refine ⟨hxp, ?_⟩
+      have hr0 : R.parity x = 0 := by
+        rcases hz (R.parity x) with h | h
+        · exact h
+        · exact absurd ⟨hxR, h⟩ (fun hh => Set.disjoint_left.1 hdisj hx hh)
+      rw [← hadd, hx.2, hr0]; decide
+    · have hxL : x ∉ L.carrier := hcross2 x hx
+      have hxp : x ∉ p.carrier := fun hc => by
+        rcases (hcar x).2 (Or.inl hc) with h | h
+        · exact hxL h
+        · exact hx.1 h
+      refine ⟨hxp, ?_⟩
+      have hl0 : L.parity x = 0 := by
+        rcases hz (L.parity x) with h | h
+        · exact h
+        · exact absurd ⟨hxL, h⟩ (fun hh => Set.disjoint_left.1 hdisj hh hx)
+      rw [← hadd, hx.2, hl0]; decide
+    · exact hD hx
+
 end Polygon
 
 end Lightlike.PL
