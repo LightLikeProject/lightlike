@@ -2626,7 +2626,7 @@ tasks:
     area: "spin-foams"
     tier: "frontier"
     source_class: "sourced"
-    source: "freidel-louapre-2003, Section III"
+    source: "freidel-louapre-2003, Section IV"
     priority: 12
     priority_basis: "other"
     size: "L"
