@@ -19,11 +19,11 @@ namespace Lightlike.PL
 
 /-- **A segment from a point of an open polyhedral region to a point outside it exits through
 the boundary.** For affine functions `f i`, if all are positive at `q` and one is nonpositive at
-`x`, then some point `r` of the segment from `x` to `q` has all `f i r ≥ 0` and some `f i r = 0`. -/
+`x`, then some point `r` of the segment from `x` to `q` has all `f i r ≥ 0` and some `f i r = 0`, at an index where `f i x ≤ 0`. -/
 theorem exists_boundary_point {ι : Type*} [Fintype ι] {f : ι → ℝ × ℝ → ℝ}
     (hf : ∀ i (x y : ℝ × ℝ) (s t : ℝ), s + t = 1 → f i (s • x + t • y) = s * f i x + t * f i y)
     {x q : ℝ × ℝ} (hq : ∀ i, 0 < f i q) (hx : ∃ i, f i x ≤ 0) :
-    ∃ r ∈ segment ℝ x q, (∀ i, 0 ≤ f i r) ∧ ∃ i, f i r = 0 := by
+    ∃ r ∈ segment ℝ x q, (∀ i, 0 ≤ f i r) ∧ ∃ i, f i x ≤ 0 ∧ f i r = 0 := by
   classical
   set I : Finset ι := univ.filter fun i => f i x ≤ 0 with hI
   obtain ⟨i₁, hi₁⟩ := hx
@@ -48,7 +48,7 @@ theorem exists_boundary_point {ι : Type*} [Fintype ι] {f : ι → ℝ × ℝ �
     intro i
     rw [hf i q x (1 - t) t (by ring)]; ring
   refine ⟨(1 - t) • q + t • x, ⟨t, 1 - t, ht0.le, by linarith, by ring, by
-    rw [add_comm]⟩, fun i => ?_, i₀, ?_⟩
+    rw [add_comm]⟩, fun i => ?_, i₀, by simpa [hI] using hi₀I, ?_⟩
   · rw [hg]
     by_cases hi : i ∈ I
     · have h1 : t ≤ τ i := hmin i hi
