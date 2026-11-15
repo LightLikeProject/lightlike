@@ -103,10 +103,11 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      # The Python checks pass with 3.9 and the versions pinned in requirements.txt.
+      # The Python checks run on 3.12 with the versions pinned in requirements.txt (ubuntu-latest
+      # is Ubuntu 26.04, which has no Python 3.9).
       - uses: actions/setup-python@v6
         with:
-          python-version: "3.9"
+          python-version: "3.12"
 
       # No local home-directory paths, e-mail addresses other than noreply ones, tokens or keys in
       # any tracked file. Needs no packages.
@@ -161,7 +162,7 @@ jobs:
 
       - uses: actions/setup-python@v6
         with:
-          python-version: "3.9"
+          python-version: "3.12"
 
       - name: Install elan (toolchain from lean-toolchain) [ci-only]
         run: |
@@ -256,7 +257,7 @@ jobs:
 
       - uses: actions/setup-python@v6
         with:
-          python-version: "3.9"
+          python-version: "3.12"
 
       - name: Install the pinned Python packages [ci-only]
         run: python3 -m pip install --quiet -r requirements.txt

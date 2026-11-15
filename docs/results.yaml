@@ -868,6 +868,17 @@
   review: kernel-checked
   note: "For edge spins s (doubled units; edges 01, 02, 03, 12, 13, 23) the integral over SU(2)^4 of Π_e χ_{s e}(g_i g_j⁻¹) equals {s₀₁ s₀₂ s₀₃; s₂₃ s₁₃ s₁₂}² (tetraInt_eq_sixJ_sq). The proof expands each character in the matrix coefficients of the spin representations, integrates them with the Haar measure into products of 3j vectors, and identifies the resulting sum with a 6j symbol up to a sign (ZR_eq). This is Freidel–Louapre's Ponzano–Regge observable of the 1-skeleton of the two-tetrahedron triangulation of S³, eq. (94), read on the dual graph: their group variables sit on the four triangles and the holonomy around an edge is g_i g_j⁻¹ for the two triangles i, j containing it, so the Lean edge ij carries the spin of the edge shared by triangles i and j, and the triads at the Lean vertices are the triangles of the triangulation. Checks: all spins 0 give 1 (tetraInt_zero), all spins 1 (doubled spin 2) give (1/6)² = 1/36 (tetraInt_two), and an inadmissible triad at a vertex gives 0 (tetraInt_eq_zero_of_not_tri, tetraInt_ones_vertex)."
   since: 0.2.0
+- id: LL-0067
+  title: "The cut-off sum of the tetrahedron, Σ Π(s+1)·(6j)² over doubled edge spins ≤ N, is at least (N+1)², so it has no limit without rescaling"
+  area: SpinFoam
+  file: Lightlike/SpinFoam/TetrahedronCutoff.lean
+  decls: [Lightlike.SpinFoam.tetraTerm_zeroSpin, Lightlike.SpinFoam.tetraPartition_ge, Lightlike.SpinFoam.tetraPartition_unbounded, Lightlike.SpinFoam.not_tetraRemovable]
+  status: proven
+  tier: established
+  source: structural
+  review: kernel-checked
+  note: "The tetrahedron sum over the six doubled edge spins up to a cut-off N has the nonnegative terms Π(s_e+1)·{s₀ s₁ s₂; s₅ s₄ s₃}² (tetraTerm_nonneg). At the doubled spins (0, n, n, n, n, 0) the dimension factor is (n+1)⁴ and the 6j symbol is ±1/(n+1) by the zero-spin formula (sixJSym_zero_left; DLMF eq. 34.5.1 after the 34.5(ii) column symmetry), so the term is (n+1)² (tetraTerm_zeroSpin). Hence the sum is at least (N+1)² (tetraPartition_ge), it is unbounded (tetraPartition_unbounded), and by the monotone-limit criterion it has no limit (not_tetraRemovable). This is the sum without the rescaling M_Λ^{-v} of the simple cut-off of Barrett and Naish-Guzman (§2.2), who do not define M_Λ here; whether the rescaled limit exists is not decided. The tests: the cut-off values 1, 29, 2393/4 at doubled cut-offs 0, 1, 2 are numerical (scripts/spinfoam/tetra_partition_check.py) and lie above (N+1)². Not covered: existence of the sum as a distribution and H² = 0 (Barrett and Naish-Guzman, §4.4), and the link from H² = 0 to the removal of the cut-off."
+  since: unreleased
 - id: LL-XXXX
   title: The Jordan curve theorem for simple closed polygons in the plane, with the inside of a triangle
   area: PL
