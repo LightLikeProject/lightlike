@@ -117,6 +117,22 @@ def inverse_moves(K, T):
                         yield "51", (K - set(st)) | {link}, T - fl
 
 
+def direct_forcing_gauge(K, rng, tries=20):
+    """A forcing gauge set found directly: a random minimal forcing set of the right size
+    E - V + 1 that is collapsible (None if none is found)."""
+    tris = sorted(faces(K, 3), key=sorted)
+    target = len(faces(K, 2)) - len(faces(K, 1)) + 1
+    for _ in range(tries):
+        rng.shuffle(tris)
+        T = set(tris)
+        for f in tris:
+            if forces(K, T - {f}):
+                T.discard(f)
+        if len(T) == target and collapsible(K, T):
+            return T
+    return None
+
+
 def start():
     K = {fs(c) for c in itertools.combinations(range(6), 5)}
     return K, {fs(t) for t in itertools.combinations(range(6), 3) if 5 in t}
@@ -126,6 +142,7 @@ def main():
     K0, T0 = start()
     assert forces(K0, T0)
     fail = Counter()
+    direct, seen = Counter(), set()
     ok = Counter()
     # control 1: removing one triangle of T stops it forcing, for every choice
     assert all(not forces(K0, T0 - {f}) for f in T0), "control: a triangle removed must break forcing"
@@ -144,7 +161,11 @@ def main():
                 K, T = o
             (ok if forces(K, T) else fail)[r] += 1
             for name, K2, T2 in inverse_moves(K, T):
-                (ok if forces(K2, T2) else fail)[name] += 1
+                good = forces(K2, T2)
+                (ok if good else fail)[name] += 1
+                if not good and sum(direct.values()) < 15 and fs(K2) not in seen:
+                    seen.add(fs(K2))
+                    direct[direct_forcing_gauge(K2, rng) is not None] += 1
     # control 2: the 2-4 move without the added triangle must lose forcing sometimes
     wrong = Counter()
     for sd in range(60):
@@ -157,6 +178,7 @@ def main():
         if o:
             wrong[forces(*o)] += 1
     print("inverse moves (4-2, 5-1) that lose forcing are a finding, not a failure")
+    print("complexes where the transported set fails, a forcing gauge set found directly:", dict(direct))
     print("forcing kept:", dict(ok), "forcing lost:", dict(fail), "wrong rule (no added triangle):", dict(wrong))
     needed = ["15", "24", "33", "42", "51"]
     if any(ok[x] == 0 for x in needed):
