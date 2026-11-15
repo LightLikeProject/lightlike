@@ -872,7 +872,7 @@
   title: The Jordan curve theorem for simple closed polygons in the plane, with the inside of a triangle
   area: PL
   file: Lightlike/PL/PolygonJordan.lean
-  decls: [Lightlike.PL.Polygon.polygon_jordan, Lightlike.PL.Polygon.frontier_class, Lightlike.PL.Polygon.eq_inside_of_isBounded, Lightlike.PL.Polygon.inside_eq_interior_hull]
+  decls: [Lightlike.PL.Polygon.polygon_jordan, Lightlike.PL.Polygon.frontier_class]
   status: proven
   tier: established
   source:
