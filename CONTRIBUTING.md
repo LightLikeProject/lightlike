@@ -8,25 +8,43 @@ field for AI assistance, and [AGENTS.md](AGENTS.md) holds the instructions for c
 
 ## Your first proof task
 
-A proof task is one lemma whose statement is fixed: it needs Lean but no physics. This route runs
-in the browser, with nothing to install, in [GitHub Codespaces](https://docs.github.com/en/codespaces)
-(usage counts toward your GitHub account's Codespaces allowance).
+A proof task is one lemma whose statement is fixed: it needs Lean but no physics. Two routes lead
+to the same file and the same checks: in the browser with nothing to install
+([GitHub Codespaces](https://docs.github.com/en/codespaces); usage counts toward your account's
+Codespaces allowance), or on your own machine.
 
-1. On the repository page, open **Code**, then **Codespaces**, and choose **Create codespace on
-   main**. The setup in `.devcontainer/` installs Lean and downloads the compiled Mathlib; the
-   terminal shows its progress.
-2. Pick a [proof task labelled **ready**](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aopen+label%3Aready+label%3Aproof-task), for example
-   `T-DT4-P1`, comment `attempting` on its issue, and open its file, `Tasks/DT/T_DT4_P1.lean`. Its header lists the definitions the
-   statement uses, with their files, and lemmas about them;
-   `scripts/context-pack <declaration>` prints all of them in one block.
-3. Run `lake build Tasks.DT.T_DT4_P1`. The first build compiles the parts of Physlib and Lightlike
-   the task imports; later builds only what changed. The Lean panel (the ∀ icon at the top right
-   of the editor) shows the goal at the cursor.
-4. Replace the `sorry` with a proof, changing nothing else in the file, and run the same command
+**Route A: Codespaces.** On the repository page open **Code**, then **Codespaces**, and choose
+**Create codespace on main**. The setup in `.devcontainer/` installs Lean and downloads the compiled
+Mathlib; the terminal shows its progress.
+
+**Route B: your machine** (macOS, Linux or WSL; the same steps are in [AGENTS.md](AGENTS.md#set-up)):
+
+```bash
+curl -sSfL https://elan.lean-lang.org/elan-init.sh | sh -s -- -y --default-toolchain none
+. ~/.elan/env
+git clone https://github.com/LightlikeProject/lightlike && cd lightlike
+lake exe cache get
+python3 -m venv .venv && . .venv/bin/activate && pip install -r requirements.txt
+```
+
+Then, on either route:
+
+1. Pick a [proof task labelled **ready**](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aopen+label%3Aready+label%3Aproof-task),
+   comment `attempting` on its issue, and open its file, for example `Tasks/QU/T_QU1_P5.lean` for
+   `T-QU1-P5`. Its header lists the definitions the statement uses, with their files, and lemmas
+   about them; `scripts/context-pack <declaration>` prints all of them in one block.
+2. Run `lake build Tasks.QU.T_QU1_P5`. The first build compiles the parts of Physlib and Lightlike
+   the task imports; later builds only what changed. In Codespaces the Lean panel (the ∀ icon at
+   the top right of the editor) shows the goal at the cursor.
+3. Replace the `sorry` with a proof, changing nothing else in the file, and run the same command
    until it reports no error.
-5. Commit on a branch and push: `git checkout -b proof/T-DT4-P1`, `git commit -am "proof(dt): T-DT4-P1"`,
-   `git push -u origin HEAD`. GitHub offers to create a fork.
-6. Open the pull request from the link that `git push` prints, with the line `Task: T-DT4-P1`.
+4. Commit on a branch and check it: `git checkout -b proof/T-QU1-P5`,
+   `git commit -am "proof(tv): T-QU1-P5"`, then `python3 -I scripts/gate.py --task T-QU1-P5`. This
+   fast mode builds only the task file and checks that no `sorry` is left, that only the proof
+   changed and the statement still matches its lock, and that the proof uses only the standard
+   axioms. It does not build the rest of the library; CI does.
+5. Push: `git push -u origin HEAD`. GitHub offers to create a fork.
+6. Open the pull request from the link that `git push` prints, with the line `Task: T-QU1-P5`.
    Once it is merged, the task's issue is closed.
 
 ## Hard rules
@@ -161,8 +179,15 @@ Each of these makes a result easier to trust or to reuse. None blocks a merge.
 ## Pull requests
 
 One route for everyone, agents and maintainers included. Work on a branch, in a fork or, with write
-access, here; keep each pull request to one task or topic, with its `Task:` line, and commit
-messages to `type(scope): summary` with a body that says why. To update a pushed branch, merge
+access, here; keep each pull request to one task or topic, with its `Task:` line.
+
+Commit messages (the same format as in [AGENTS.md](AGENTS.md#commits)): `type(scope): summary`, a
+blank line, then a body that says why. `type` is one of `feat`, `fix`, `proof`, `docs`, `test`,
+`refactor`, `ci`, `chore`; `scope` is the area folder in lower case (`regge`, `pl`, `sixj`). A
+proof-task commit is `proof(<area>): T-<ID>`, for example `proof(tv): T-QU1-P5`. Examples:
+`feat(regge): define deficit angles`, `fix(curvature): sign of the Ricci term`.
+
+ To update a pushed branch, merge
 `main` into it; never force-push. A maintainer squash-merges once every CI check is green; the
 commit on `main` takes the pull request's title, number and description: write them for outsiders.
 

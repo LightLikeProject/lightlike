@@ -1,6 +1,6 @@
 ## Task
 
-<!-- The task ID from the task board, for example T-DT4-P2, or "none". -->
+<!-- The task ID from the task board, for example T-QU1-P5, or "none". -->
 Task:
 
 ## Summary
@@ -18,5 +18,5 @@ Task:
 
 - [ ] New definitions reproduce a known value and differ on a wrong input; main theorems have a non-vacuity example.
 - [ ] Only Lean files changed; a renamed declaration keeps a `@[deprecated]` alias.
-- [ ] One topic; commit messages read `type(scope): summary`, with a body that says why.
+- [ ] One topic; commit messages follow the format in CONTRIBUTING.md (`type(scope): summary`, a body that says why).
 - [ ] I have read the whole diff and vouch for it.

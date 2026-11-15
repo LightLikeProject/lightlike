@@ -1,13 +1,3 @@
-import Tasks.DT.T_DT4_P1
-import Tasks.DT.T_DT4_P2
-import Tasks.DT.T_DT4_P3
-import Tasks.DT.T_DT4_P4
-import Tasks.DT.T_DT4_P5
-import Tasks.DT.T_DT4_P6
-import Tasks.DT.T_DT4_P7
-import Tasks.DT.T_DT4_P8
-import Tasks.DT.T_DT4_P9
-import Tasks.DT.T_DT4_P10
 import Tasks.QU.T_QU1_P1
 import Tasks.QU.T_QU1_P2
 import Tasks.QU.T_QU1_P3
