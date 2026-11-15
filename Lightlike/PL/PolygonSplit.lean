@@ -437,6 +437,92 @@ theorem isSimple_right (hs : p.IsSimple) {b : ℕ} (hb : 2 ≤ b) (hbn : b + 2 �
   rw [e1, e2, openSegment_symm] at hq
   exact hopen q hq
 
+lemma mem_carrier_iff (hn : 2 ≤ n) {x : ℝ × ℝ} :
+    x ∈ p.carrier ↔ ∃ k, k < n ∧ x ∈ segment ℝ (p.cyc k) (p.cyc (k + 1)) := by
+  constructor
+  · intro hx
+    obtain ⟨i, hi⟩ := Set.mem_iUnion.1 hx
+    exact ⟨i, i.2, by rwa [edge_eq_cyc hn] at hi⟩
+  · rintro ⟨k, hk, hx⟩
+    exact Set.mem_iUnion.2 ⟨⟨k, hk⟩, by rw [edge_eq_cyc hn]; exact hx⟩
+
+/-- The carrier of the left part: the first `b` edges and the diagonal. -/
+lemma mem_carrier_left_iff {b : ℕ} (hb : 1 ≤ b) {x : ℝ × ℝ} :
+    x ∈ (p.left b).carrier ↔
+      (∃ k, k < b ∧ x ∈ segment ℝ (p.cyc k) (p.cyc (k + 1))) ∨ x ∈ segment ℝ (p.cyc b) (p.cyc 0) := by
+  have hl : ∀ k, (p.left b).cyc k = p.cyc (k % (b + 1)) := fun k => rfl
+  rw [mem_carrier_iff (by omega : 2 ≤ b + 1)]
+  constructor
+  · rintro ⟨k, hk, hx⟩
+    rw [hl, hl] at hx
+    rcases Nat.lt_or_ge k b with h | h
+    · left
+      refine ⟨k, h, ?_⟩
+      rwa [Nat.mod_eq_of_lt (by omega : k < b + 1),
+        Nat.mod_eq_of_lt (by omega : k + 1 < b + 1)] at hx
+    · right
+      have : k = b := by omega
+      subst this
+      rwa [Nat.mod_eq_of_lt (by omega : k < k + 1), Nat.mod_self] at hx
+  · rintro (⟨k, hk, hx⟩ | hx)
+    · refine ⟨k, by omega, ?_⟩
+      rw [hl, hl, Nat.mod_eq_of_lt (by omega : k < b + 1),
+        Nat.mod_eq_of_lt (by omega : k + 1 < b + 1)]
+      exact hx
+    · refine ⟨b, by omega, ?_⟩
+      rw [hl, hl, Nat.mod_eq_of_lt (by omega : b < b + 1), Nat.mod_self]
+      exact hx
+
+/-- The carrier of the right part: the edges from `b` on, and the diagonal. -/
+lemma mem_carrier_right_iff {b : ℕ} (hbn : b < n) {x : ℝ × ℝ} :
+    x ∈ (p.right b).carrier ↔
+      (∃ k, b ≤ k ∧ k < n ∧ x ∈ segment ℝ (p.cyc k) (p.cyc (k + 1))) ∨
+        x ∈ segment ℝ (p.cyc 0) (p.cyc b) := by
+  have hr : ∀ k, (p.right b).cyc k = p.cyc (b + k % (n - b + 1)) := fun k => rfl
+  rw [mem_carrier_iff (by omega : 2 ≤ n - b + 1)]
+  constructor
+  · rintro ⟨k, hk, hx⟩
+    rw [hr, hr] at hx
+    rcases Nat.lt_or_ge k (n - b) with h | h
+    · left
+      refine ⟨b + k, by omega, by omega, ?_⟩
+      rwa [Nat.mod_eq_of_lt (by omega : k < n - b + 1),
+        Nat.mod_eq_of_lt (by omega : k + 1 < n - b + 1), ← Nat.add_assoc] at hx
+    · right
+      have : k = n - b := by omega
+      subst this
+      rw [Nat.mod_eq_of_lt (by omega : n - b < n - b + 1), Nat.mod_self] at hx
+      have e : b + (n - b) = n + 0 := by omega
+      rwa [e, p.cyc_self_add 0, Nat.add_zero] at hx
+  · rintro (⟨k, hk1, hk2, hx⟩ | hx)
+    · refine ⟨k - b, by omega, ?_⟩
+      rw [hr, hr, Nat.mod_eq_of_lt (by omega : k - b < n - b + 1),
+        Nat.mod_eq_of_lt (by omega : k - b + 1 < n - b + 1), ← Nat.add_assoc,
+        Nat.add_sub_cancel' hk1]
+      exact hx
+    · refine ⟨n - b, by omega, ?_⟩
+      rw [hr, hr, Nat.mod_eq_of_lt (by omega : n - b < n - b + 1), Nat.mod_self]
+      have e : b + (n - b) = n + 0 := by omega
+      rw [e, p.cyc_self_add 0, Nat.add_zero]
+      exact hx
+
+/-- The two parts together cover the polygon and the diagonal, and nothing else. -/
+lemma mem_carrier_left_or_right (hn : 2 ≤ n) {b : ℕ} (hb : 1 ≤ b) (hbn : b < n) {x : ℝ × ℝ} :
+    x ∈ (p.left b).carrier ∨ x ∈ (p.right b).carrier ↔
+      x ∈ p.carrier ∨ x ∈ segment ℝ (p.cyc 0) (p.cyc b) := by
+  rw [mem_carrier_left_iff hb, mem_carrier_right_iff hbn, mem_carrier_iff hn, segment_symm ℝ (p.cyc b) (p.cyc 0)]
+  constructor
+  · rintro ((⟨k, hk, hx⟩ | hx) | (⟨k, hk1, hk2, hx⟩ | hx))
+    · exact Or.inl ⟨k, by omega, hx⟩
+    · exact Or.inr hx
+    · exact Or.inl ⟨k, hk2, hx⟩
+    · exact Or.inr hx
+  · rintro (⟨k, hk, hx⟩ | hx)
+    · rcases Nat.lt_or_ge k b with h | h
+      · exact Or.inl (Or.inl ⟨k, h, hx⟩)
+      · exact Or.inr (Or.inl ⟨k, h, hk, hx⟩)
+    · exact Or.inl (Or.inr hx)
+
 end Polygon
 
 end Lightlike.PL
