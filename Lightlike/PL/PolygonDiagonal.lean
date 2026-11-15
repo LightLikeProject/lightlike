@@ -373,5 +373,110 @@ lemma rayEdge_next (hs : p.IsSimple) (j : Fin n) :
     · linarith
     · exact hvw (sub_eq_zero.1 h2).symm
 
+
+/-- A preconnected subset of the complement of the carrier lies in the outside or in the
+inside. -/
+lemma subset_outside_or_inside {S : Set (ℝ × ℝ)} (hS : IsPreconnected S) (hc : S ⊆ p.carrierᶜ) :
+    S ⊆ p.outside ∨ S ⊆ p.inside := by
+  have hcov : S ⊆ p.outside ∪ p.inside := by rw [← compl_carrier_eq]; exact hc
+  exact hS.subset_or_subset (isOpen_outside p) (isOpen_inside p) (disjoint_outside_inside p) hcov
+
+/-- **Near the extreme vertex, the inside of the corner is inside the polygon.** At the
+lexicographically smallest vertex `v` of a simple polygon, with neighbours `u` and `w`, points
+close to `v` and strictly inside the convex cone spanned by `u - v` and `w - v` lie in the inside
+of the polygon. -/
+theorem inside_near_corner [NeZero n] (hs : p.IsSimple) {j : Fin n}
+    (hext : ∀ i, LexLE (p j) (p i)) :
+    ∃ ρ > 0, ∀ z ∈ Metric.ball (p j) ρ, (∃ α β : ℝ, 0 < α ∧ 0 < β ∧
+      z - p j = α • (p ((finRotate n).symm j) - p j) + β • (p (finRotate n j) - p j)) →
+      z ∈ p.inside := by
+  set k := (finRotate n).symm j with hk
+  have hkj : finRotate n k = j := by rw [hk]; exact Equiv.apply_symm_apply _ _
+  set v := p j with hv
+  set u := p k with hu
+  set w := p (finRotate n j) with hw
+  have huv : u ≠ v := by have := hs.1 k; rwa [hkj] at this
+  have hvw : v ≠ w := hs.1 j
+  have hcr : cross (u - v) (w - v) ≠ 0 := corner_cross_ne hs hext
+  have hLa : LexPos (u - v) := lexPos_sub (hext k) huv
+  have hLb : LexPos (w - v) := lexPos_sub (hext _) hvw.symm
+  obtain ⟨ρ, hρ, hcar⟩ := carrier_near_vertex hs (j := j) hcr
+  -- orient the two rays so that the cross product is positive
+  obtain ⟨a', b', hD, hLa', hLb', hre, hU, hcone⟩ : ∃ a' b' : ℝ × ℝ, 0 < cross a' b' ∧
+      LexPos a' ∧ LexPos b' ∧ RayEdge p v a' ∧ ray0 a' ∪ ray0 b' = ray0 (u - v) ∪ ray0 (w - v) ∧
+      ∀ α β : ℝ, 0 < α → 0 < β → ∃ α' β' : ℝ, 0 < α' ∧ 0 < β' ∧
+        α • (u - v) + β • (w - v) = α' • a' + β' • b' := by
+    rcases lt_or_gt_of_ne hcr with h | h
+    · refine ⟨w - v, u - v, ?_, hLb, hLa, rayEdge_next hs j, Set.union_comm _ _, ?_⟩
+      · have : cross (w - v) (u - v) = -cross (u - v) (w - v) := by simp [cross]; ring
+        rw [this]; linarith
+      · intro α β hα hβ
+        exact ⟨β, α, hβ, hα, add_comm _ _⟩
+    · exact ⟨u - v, w - v, h, hLa, hLb, rayEdge_prev hs j, rfl, fun α β hα hβ => ⟨α, β, hα, hβ, rfl⟩⟩
+  have hcl := classify_pos hD
+  have hvex : ∃ x : ℝ × ℝ, 0 < cross x b' ∧ 0 < cross a' x := by
+    refine ⟨a' + b', ?_, ?_⟩
+    · have : cross (a' + b') b' = cross a' b' := by simp [cross]; ring
+      rw [this]; exact hD
+    · have : cross a' (a' + b') = cross a' b' := by simp [cross]; ring
+      rw [this]; exact hD
+  obtain ⟨hc1, hc2, h3, -, -⟩ := sectors (w := v) hρ hcl hvex
+  obtain ⟨y₁, hy₁, y₂, hy₂, hne⟩ := parity_ne_sectors hs hre (Or.inl hD) hρ
+  have hS : ∀ z ∈ sec1 v a' b' ρ ∪ sec2 v a' b' ρ, z ∉ p.carrier := by
+    intro z hz hzc
+    rw [← h3] at hz
+    obtain ⟨hzb, hzr⟩ := hz
+    apply hzr
+    have := (hcar z hzb).1 hzc
+    rw [hU]
+    exact this
+  have hS1 : sec1 v a' b' ρ ⊆ p.carrierᶜ := fun z hz => hS z (Or.inl hz)
+  have hS2 : sec2 v a' b' ρ ⊆ p.carrierᶜ := fun z hz => hS z (Or.inr hz)
+  -- a point to the left of `v` lies in the second sector
+  set x : ℝ × ℝ := (v.1 - ρ / 2, v.2) with hx
+  have hxball : x ∈ Metric.ball v ρ := by
+    rw [Metric.mem_ball, dist_eq_norm, Prod.norm_def]
+    simp only [hx, Prod.fst_sub, Prod.snd_sub, sub_self, norm_zero]
+    rw [show v.1 - ρ / 2 - v.1 = -(ρ / 2) by ring, norm_neg, Real.norm_of_nonneg (by linarith)]
+    simp only [max_lt_iff]; exact ⟨by linarith, hρ⟩
+  have hxL : x.1 < v.1 := by simp only [hx]; linarith
+  have hxout : x ∈ p.outside := left_subset_outside hext hxL
+  have hxnr : x - v ∉ ray0 a' ∪ ray0 b' := by
+    rintro (⟨r, hr, hrx⟩ | ⟨r, hr, hrx⟩)
+    · have := congrArg Prod.fst hrx
+      simp only [Prod.fst_sub, Prod.smul_fst, smul_eq_mul, hx] at this
+      nlinarith [hLa'.fst_nonneg, mul_nonneg hr hLa'.fst_nonneg]
+    · have := congrArg Prod.fst hrx
+      simp only [Prod.fst_sub, Prod.smul_fst, smul_eq_mul, hx] at this
+      nlinarith [hLb'.fst_nonneg, mul_nonneg hr hLb'.fst_nonneg]
+  have hx12 : x ∈ sec1 v a' b' ρ ∪ sec2 v a' b' ρ := by
+    rw [← h3]; exact ⟨hxball, hxnr⟩
+  have hxS1 : x ∉ sec1 v a' b' ρ := by
+    rintro ⟨-, h1, h2⟩
+    have key : (x - v).1 * cross a' b' = cross (x - v) b' * a'.1 + cross a' (x - v) * b'.1 := by
+      unfold cross; ring
+    have hxs : (x - v).1 < 0 := by simp only [hx, Prod.fst_sub]; linarith
+    nlinarith [mul_nonneg h1.le hLa'.fst_nonneg, mul_nonneg h2.le hLb'.fst_nonneg,
+      mul_neg_of_neg_of_pos hxs hD]
+  have hxS2 : x ∈ sec2 v a' b' ρ := hx12.resolve_left hxS1
+  have hS2out : sec2 v a' b' ρ ⊆ p.outside := by
+    rcases subset_outside_or_inside hc2 hS2 with h | h
+    · exact h
+    · exact absurd (h hxS2) (fun hin => (Set.disjoint_left.1 (disjoint_outside_inside p)) hxout hin)
+  have hS1in : sec1 v a' b' ρ ⊆ p.inside := by
+    rcases subset_outside_or_inside hc1 hS1 with h | h
+    · exfalso
+      exact hne ((h hy₁).2.trans (hS2out hy₂).2.symm)
+    · exact h
+  refine ⟨ρ, hρ, ?_⟩
+  rintro z hz ⟨α, β, hα, hβ, hzc⟩
+  obtain ⟨α', β', hα', hβ', hz'⟩ := hcone α β hα hβ
+  rw [hz'] at hzc
+  refine hS1in ⟨hz, ?_, ?_⟩
+  · have : cross (z - v) b' = α' * cross a' b' := by rw [hzc]; simp [cross]; ring
+    rw [this]; exact mul_pos hα' hD
+  · have : cross a' (z - v) = β' * cross a' b' := by rw [hzc]; simp [cross]; ring
+    rw [this]; exact mul_pos hβ' hD
+
 end Polygon
 end Lightlike.PL
