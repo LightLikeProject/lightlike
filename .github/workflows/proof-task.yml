@@ -1,8 +1,9 @@
 name: Proof task
 
 # Checks that a proof-task pull request changes only the proof of its task's declaration
-# (scripts/proof_task_check.py). It applies to pull requests labeled `proof-task`, or whose body
-# has a line `Task: T-...-P<n>`.
+# (scripts/proof_task_check.py). It runs on pull requests labeled `proof-task` or whose body has a
+# `Task: T-` line; the script then checks only a proof task (the label, or a `Task: T-...-P<n>`
+# line). A milestone or upstream task ID without the label passes with nothing to check.
 #
 # When it runs: never while the repository is private (the job condition below), so it uses no
 # Actions minutes now. Once the repository is public it runs on every such pull request. It runs
@@ -33,8 +34,11 @@ jobs:
       - name: Only the proof body of the task's declaration changed
         env:
           BODY: ${{ github.event.pull_request.body }}
+          PROOF_LABEL: ${{ contains(github.event.pull_request.labels.*.name, 'proof-task') }}
           BASE: ${{ github.event.pull_request.base.sha }}
           HEAD: ${{ github.event.pull_request.head.sha }}
         run: |
           printf '%s' "$BODY" > "$RUNNER_TEMP/body.txt"
-          python3 scripts/proof_task_check.py --base "$BASE" --head "$HEAD" --body-file "$RUNNER_TEMP/body.txt"
+          label=()
+          if [ "$PROOF_LABEL" = true ]; then label=(--proof-label); fi
+          python3 scripts/proof_task_check.py --base "$BASE" --head "$HEAD" --body-file "$RUNNER_TEMP/body.txt" "${label[@]}"
