@@ -180,6 +180,7 @@ import Lightlike.PL.PolygonWedge
 import Lightlike.PL.PolygonDiagonal2
 import Lightlike.PL.PolygonDiagonal3
 import Lightlike.PL.PolygonSplit
+import Lightlike.PL.PolygonTriangulation
 import Lightlike.PL.Realisation
 import Lightlike.PL.Starring
 import Lightlike.PL.Boundary
