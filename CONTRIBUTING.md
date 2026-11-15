@@ -193,6 +193,13 @@ Work on a branch and keep each pull request to one topic. Commit messages use
 - **Scripts.** [scripts/README.md](scripts/README.md) lists the tools and the numerical
   cross-checks that Lean docstrings cite.
 
+## Conduct and contact
+
+Everyone who takes part follows the [code of conduct](CODE_OF_CONDUCT.md). Questions about a task
+go on its issue, other questions and proposals in
+[GitHub Discussions](https://github.com/LightlikeProject/lightlike/discussions). For anything else,
+including a conduct report, write to the project address, lightlike.project@gmail.com.
+
 ## License
 
 By contributing you agree that your contributions are licensed under the Apache License 2.0

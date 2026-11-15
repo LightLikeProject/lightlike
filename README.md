@@ -73,8 +73,7 @@ with the entry's ID, the place in its source, and what differs.
   task becomes ready, and a workflow keeps its labels current from comments and pull requests:
   **ready**, **claimed**, **attempting**, **in review**. Nobody edits a status by hand.
 - **Milestone and upstream tasks are taken by one person at a time.** Comment `claiming` to take
-  one (you are assigned) and `stopping` to release it. A claim lapses after 14 days without a
-  comment or pull request.
+  one (you are assigned) and `stopping` to release it. Claims lapse after 14 days without activity.
 - **Proof tasks are open to everyone at once.** Comment `attempting` to show that an attempt is in
   flight. The first proof that passes CI is merged.
 - **Done means merged.** A pull request that finishes a task says `Closes #<issue>`; a proof task's
@@ -144,7 +143,8 @@ rev = "v0.1.0"
 
 Lightlike has one maintainer. Help is especially welcome with repository and CI maintenance, Lean
 infrastructure, domain review, and leading an area: open an issue labelled
-[**help wanted**](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22).
-Discussion and coordination on [Discord](https://discord.gg/Eyx3zTx9JW); questions and proposals in
-[GitHub Discussions](https://github.com/LightlikeProject/lightlike/discussions). Apache License 2.0,
+[**help wanted**](https://github.com/LightlikeProject/lightlike/labels/help%20wanted). Discussion
+and coordination on [Discord](https://discord.gg/Eyx3zTx9JW); questions and proposals in
+[GitHub Discussions](https://github.com/LightlikeProject/lightlike/discussions). Everyone follows
+the [code of conduct](CODE_OF_CONDUCT.md); contact: lightlike.project@gmail.com. Apache License 2.0,
 copyright The Lightlike contributors ([LICENSE](LICENSE)); cite it via [CITATION.cff](CITATION.cff).
