@@ -24,7 +24,7 @@ cannot check that a statement matches its source. No entry has had expert human 
 review of any entry is welcome ([how to report a mismatch](#review)).
 <!-- /results:summary -->
 
-The plan has 226 tasks, on the [task board](docs/tasks/README.md): 16 **proof tasks**, which need
+The plan has 216 tasks, on the [task board](docs/tasks/README.md): 6 **proof tasks**, which need
 Lean but no physics, because the statement is fixed and only its proof is open; 187 **milestones**,
 which add definitions and statements from the literature and need knowledge of their area; and 23
 **upstream** tasks, which rework a result of Lightlike for Mathlib or Physlib.

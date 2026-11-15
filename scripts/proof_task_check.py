@@ -2,13 +2,13 @@
 """Checks that a proof-task pull request changes only the proof of its task's declaration.
 
     python3 scripts/proof_task_check.py --base <ref> --head <ref> --body-file pr_body.txt [--proof-label]
-    python3 scripts/proof_task_check.py --base <ref> --head <ref> --task T-DT4-P1
+    python3 scripts/proof_task_check.py --base <ref> --head <ref> --task T-QU1-P5
     python3 scripts/proof_task_check.py --base <ref> --head <ref> --file F.lean --decl name
 
 A pull request is a proof task if it has the `proof-task` label (`--proof-label`) or its `Task:`
 line is a proof-task ID `T-<task>-P<n>`; only then is it checked. A `Task:` line with a milestone or
 upstream ID (T-RC6, T-UP-1) and no label is not a proof task: nothing to check, exit 0. The label
-without one proof-task ID, a malformed proof-task ID (T-DT4-P, T-DT4-P1-b) or two different ones
+without one proof-task ID, a malformed proof-task ID (T-DT4-P, T-QU1-P5-b) or two different ones
 fail with exit 2.
 
 The task (from `--task`, or the body's `Task: T-...-P<n>` line) is looked up in
@@ -148,7 +148,7 @@ def main(argv=None) -> int:
             bad = [i for i in ids if P_SEGMENT.match(i) and not PROOF_ID.fullmatch(i)]
             if bad:
                 print(f"proof-task check: malformed proof-task ID {bad[0]} (the form is T-<task>-P<n>, "
-                      "such as T-DT4-P1)")
+                      "such as T-QU1-P5)")
                 return 2
             if not a.proof_label and not any(PROOF_ID.fullmatch(i) for i in ids):
                 print(f"not a proof task: {ids[0]}, nothing to check" if ids else

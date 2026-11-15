@@ -260,9 +260,9 @@ expect("proof-task control: sorry inside a comment of the proof is allowed",
 expect("proof-task planted: a statement that does not match its lock fails",
        any("locked hash" in p for p in _ptc(_task.replace("  sorry", "  rfl"), lock="0" * 16)))
 expect("proof-task control: the task ID is read from the body, not from template comments",
-       ptc.task_from_body("<!-- for example Task: T-DT4-P2 -->\nAI assistance (optional): none\nTask: T-DT4-P1\n") == "T-DT4-P1")
+       ptc.task_from_body("<!-- for example Task: T-QU1-P6 -->\nAI assistance (optional): none\nTask: T-QU1-P5\n") == "T-QU1-P5")
 expect("proof-task planted: two different task IDs in one body are refused",
-       ptc.task_from_body("Task: T-DT4-P1\nTask: T-DT4-P2\n") is None)
+       ptc.task_from_body("Task: T-QU1-P5\nTask: T-QU1-P6\n") is None)
 
 
 def _ptc_main(body, *flags):
@@ -280,20 +280,20 @@ for _tid in ("T-RC6", "T-UP-1", "T-PL5", "T-SF4b"):
     _r = _ptc_main(f"## Task\n\nTask: {_tid}\n")
     expect(f"proof-task control: a milestone or upstream Task line {_tid} without the label passes, nothing to check",
            _r == (0, f"not a proof task: {_tid}, nothing to check\n"))
-for _b in ("Task: T-RC6\n", "Task: none\n", "<!-- Task: T-DT4-P1 -->\nTask: T-RC6\n"):
+for _b in ("Task: T-RC6\n", "Task: none\n", "<!-- Task: T-QU1-P5 -->\nTask: T-RC6\n"):
     expect(f"proof-task planted: the proof-task label without a proof-task ID fails ({_b.strip()!r})",
            _ptc_main(_b, "--proof-label")[0] == 2)
-for _tid in ("T-DT4-P", "T-DT4-Px", "T-DT4-P1-b", "T-DT4-p1"):
+for _tid in ("T-DT4-P", "T-DT4-Px", "T-QU1-P5-b", "T-DT4-p1"):
     expect(f"proof-task planted: a malformed proof-task ID {_tid} fails, with or without the label",
            _ptc_main(f"Task: {_tid}\n")[0] == 2 and _ptc_main(f"Task: {_tid}\n", "--proof-label")[0] == 2)
 expect("proof-task planted: two different proof-task IDs without the label fail",
-       _ptc_main("Task: T-DT4-P1\nTask: T-DT4-P2\n")[0] == 2)
+       _ptc_main("Task: T-QU1-P5\nTask: T-QU1-P6\n")[0] == 2)
 _check, ptc.check = ptc.check, lambda *a, **k: []
 try:
     expect("proof-task control: a proof-task ID without the label is checked",
-           _ptc_main("Task: T-DT4-P1\n")[1].startswith("proof-task check OK for T-DT4-P1"))
+           _ptc_main("Task: T-QU1-P5\n")[1].startswith("proof-task check OK for T-QU1-P5"))
     expect("proof-task control: the label with a proof-task ID is checked",
-           _ptc_main("Task: T-DT4-P1\n", "--proof-label")[1].startswith("proof-task check OK for T-DT4-P1"))
+           _ptc_main("Task: T-QU1-P5\n", "--proof-label")[1].startswith("proof-task check OK for T-QU1-P5"))
 finally:
     ptc.check = _check
 
@@ -451,8 +451,8 @@ for _u in ({"target": "Coq"}, {"area": "nowhere"}, {"rework": ""}):
         _bad.append(True)
 expect("tasks planted: an upstream task with an unknown target or area, or no rework, is refused",
        len(_bad) == 3)
-expect("tasks sync: a pull request's `Task:` line is read whole (T-UP-1, T-DT4-P1, T-SF5a)",
-       tk.TASK_LINE_ANY.findall("Task: T-UP-1\nTask: T-DT4-P1\n Task: T-SF5a\n") == ["T-UP-1", "T-DT4-P1", "T-SF5a"])
+expect("tasks sync: a pull request's `Task:` line is read whole (T-UP-1, T-QU1-P5, T-SF5a)",
+       tk.TASK_LINE_ANY.findall("Task: T-UP-1\nTask: T-QU1-P5\n Task: T-SF5a\n") == ["T-UP-1", "T-QU1-P5", "T-SF5a"])
 
 # The sync: issues, comments and pull requests in, label, assignment and comment changes out.
 for _t in _ts2 + _ts6:

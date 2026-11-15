@@ -26,6 +26,14 @@ hash it records.
   python3 -I scripts/gate.py              # run everything
   python3 -I scripts/gate.py --list       # show the steps and what the gate does with each
   python3 -I scripts/gate.py --from N     # resume at step N (the record is marked partial)
+  python3 -I scripts/gate.py --task T-QU1-P5   # fast mode for a proof-task pull request
+
+Fast mode (`--task T-...-P<n>`) is for a contributor who proves one task. It runs, on the committed
+tree: (1) no `sorry` in the task's declaration, (2) `proof_task_check.py` against `--base` (default
+`origin/main`, else `main`): only the proof changed, the statement matches its lock, (3)
+`lake build` of the task's module only, (4) `#print axioms` of the declaration: only the standard
+three. It builds no other part of the library; CI does the full build, so a fast-mode record says
+`mode: task <ID>` and is not a substitute for the full gate on a change to `Lightlike/`.
 Exit 0 = every step passed on a clean tree."""
 import argparse, json, os, pathlib, platform, subprocess, sys, time
 
@@ -102,15 +110,126 @@ def env() -> dict:
     return e
 
 
+STANDARD_AXIOMS = {"propext", "Classical.choice", "Quot.sound"}
+EXPECTED_NOTE = ("   note: the self-test plants bad cases on purpose, so FAIL lines are expected in the\n"
+                 "   output below; only its last line and the step result count")
+
+
+def task_steps(root, tid, base):
+    """The steps of fast mode for proof task `tid`: [(name, function returning a return code)]."""
+    sys.path.insert(0, str(HERE))
+    import proof_task_check as ptc
+    import leansrc
+    t = ptc.lookup(tid, root)
+    if t is None or t.get("kind") != "proof":
+        sys.exit(f"gate: {tid} is not a proof task in docs/tasks/tasks.yaml")
+    file, decl = t["file"], t["decl"]
+    module = file[:-len(".lean")].replace("/", ".")
+
+    def no_sorry():
+        text = (root / file).read_text()
+        parts = ptc.split_block(text, decl.split(".")[-1])
+        if parts is None:
+            print(f"declaration {decl} not found exactly once in {file}")
+            return 1
+        body = "".join(ch if c else " " for ch, c in zip(parts[2], leansrc.code_mask(parts[2])))
+        bad = sorted(set(ptc.FORBIDDEN.findall(body)))
+        if bad:
+            print(f"the proof of {decl} contains: {', '.join(bad)}")
+            return 1
+        print(f"no sorry or other forbidden word in the proof of {decl}")
+        return 0
+
+    def run(cmd):
+        return subprocess.run(cmd, cwd=root, env=env()).returncode
+
+    def check():
+        return run([sys.executable, "-I", "scripts/proof_task_check.py", "--base", base, "--head", "HEAD",
+                    "--task", tid])
+
+    def build():
+        return run(["lake", "build", module])
+
+    def axioms():
+        d = root / ".gate"
+        d.mkdir(exist_ok=True)
+        f = d / "axioms_task.lean"
+        f.write_text(f"import {module}\n#print axioms {decl}\n")
+        r = subprocess.run(["lake", "env", "lean", str(f)], cwd=root, env=env(), capture_output=True, text=True)
+        out = r.stdout + r.stderr
+        print(out.strip())
+        if r.returncode != 0:
+            return 1
+        found = set()
+        for l in out.splitlines():
+            if "depends on axioms:" in l:
+                found = {x.strip() for x in l.split("[", 1)[1].rstrip("]").split(",") if x.strip()}
+        if found - STANDARD_AXIOMS or "sorryAx" in out:
+            print("axioms beyond propext, Classical.choice, Quot.sound: " + ", ".join(sorted(found - STANDARD_AXIOMS)))
+            return 1
+        return 0
+
+    return [("no sorry in the task's declaration", no_sorry),
+            (f"only the proof changed, statement locked (proof_task_check, base {base})", check),
+            (f"lake build {module}", build),
+            (f"axioms of {decl}", axioms)]
+
+
+def default_base(root):
+    for ref in ("origin/main", "main"):
+        if subprocess.run(["git", "-C", str(root), "rev-parse", "--verify", "-q", ref],
+                          capture_output=True).returncode == 0:
+            return ref
+    sys.exit("gate: neither origin/main nor main exists; give --base")
+
+
+def fast_mode(root, tid, base) -> int:
+    if dirty(root):
+        print("FAIL the working tree is not clean; commit first (the record names the commit)")
+        return 3
+    commit = git(root, "rev-parse", "HEAD")
+    steps = task_steps(root, tid, base)
+    rec = {"commit": commit, "branch": git(root, "rev-parse", "--abbrev-ref", "HEAD"),
+           "started": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "steps": [],
+           "mode": f"task {tid}", "partial": False, "versions": versions(root)}
+    ok = True
+    for i, (name, fn) in enumerate(steps, 1):
+        print(f"== [{i}/{len(steps)}] {name}", flush=True)
+        t = time.time()
+        rc = fn()
+        rec["steps"].append({"n": i, "name": name, "rc": rc, "seconds": round(time.time() - t),
+                             "result": "ok" if rc == 0 else "FAIL"})
+        if rc != 0:
+            ok = False
+            break
+    if git(root, "rev-parse", "HEAD") != commit or dirty(root, untracked=False):
+        ok = False
+        rec["note"] = "the tree changed while the gate ran"
+    rec["ok"] = ok
+    rec["finished"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    d = root / ".gate"
+    d.mkdir(exist_ok=True)
+    with open(d / "log.jsonl", "a", encoding="utf-8") as f:
+        f.write(json.dumps(rec) + "\n")
+    print(f"GATE {'OK' if ok else 'FAILED'} mode={rec['mode']} commit={commit[:7]} branch={rec['branch']} "
+          f"steps_ok={sum(1 for s in rec['steps'] if s['result'] == 'ok')}/{len(steps)} "
+          f"lean={rec['versions']['lean']} (fast mode: CI runs the full build)")
+    return 0 if ok else 1
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--workflow", type=pathlib.Path)
     ap.add_argument("--root", type=pathlib.Path, default=HERE.parent)
     ap.add_argument("--list", action="store_true")
     ap.add_argument("--from", dest="start", type=int, default=1)
+    ap.add_argument("--task", help="fast mode: check one proof task, e.g. T-QU1-P5")
+    ap.add_argument("--base", help="fast mode: the ref the pull request is based on (default origin/main)")
     a = ap.parse_args()
     root = a.root.resolve()
     wf = a.workflow or root / ".github" / "workflows" / "ci.yml"
+    if a.task:
+        return fast_mode(root, a.task, a.base or default_base(root))
     steps, errors = load_steps(wf)
     if a.list:
         for i, s in enumerate(steps, 1):
@@ -138,6 +257,8 @@ def main() -> int:
             rec["steps"].append({"n": i, "name": s["name"], "rc": None, "result": "not run"})
             continue
         print(f"== [{i}/{len(steps)}] {s['name']}", flush=True)
+        if "planted" in s["name"]:
+            print(EXPECTED_NOTE, flush=True)
         t = time.time()
         rc = subprocess.run(["bash", "-eo", "pipefail", "-c", s["run"]], cwd=root, env=env()).returncode
         rec["steps"].append({"n": i, "name": s["name"], "rc": rc, "seconds": round(time.time() - t),

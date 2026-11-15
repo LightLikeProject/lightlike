@@ -5,7 +5,7 @@
                                                 and the task counts in ROADMAP.md and README.md
     python3 scripts/tasks.py check              fail if a task file breaks the rules or a generated file is stale
     python3 scripts/tasks.py status             counts by area, kind, size and difficulty
-    python3 scripts/tasks.py lock T-DT4-P1 ...  record locked statement hashes (after review)
+    python3 scripts/tasks.py lock T-QU1-P5 ...  record locked statement hashes (after review)
     python3 scripts/tasks.py deps [--check]     write the header of each proof task's file
     python3 scripts/tasks.py drafts             the issue body of every task, in task-drafts/
     python3 scripts/tasks.py sync [--apply]     bring the task issues up to date (.github/workflows/tasks.yml)
@@ -71,7 +71,7 @@ TRUST = re.compile(r"[Tt]rust checks?(?: \([^)]*\))?:\s*(?P<t>.*)$", re.S)
 RANGE = re.compile(r"([A-Za-z]+)(\d+)\s*[–-]\s*\1?(\d+)")
 MILESTONE_ID = re.compile(r"[A-Za-z][A-Za-z0-9]*")
 LOOKS_LIKE_ID = re.compile(r"[A-Z]{1,4}\d+[a-z]?")
-TASK_ID = r"T-[A-Za-z0-9]+(?:-[A-Za-z0-9]+)?"  # T-GE1, T-SF5a, T-DT4-P1, T-UP-1
+TASK_ID = r"T-[A-Za-z0-9]+(?:-[A-Za-z0-9]+)?"  # T-GE1, T-SF5a, T-QU1-P5, T-UP-1
 TASK_LINE_ANY = re.compile(rf"^\s*Task:\s*({TASK_ID})\b", re.M)
 ATTEMPT = re.compile(r"^\s*attempting\b", re.I | re.M)
 CLAIM = re.compile(r"^\s*claiming\b", re.I | re.M)
@@ -270,6 +270,48 @@ def proven(text, decl):
         return False
     code = "".join(ch if c else " " for ch, c in zip(parts[2], leansrc.code_mask(parts[2])))
     return re.search(r"\bsorry\b", code) is None
+
+
+def statement_key(header):
+    """A theorem's statement with its keyword, name, docstring and whitespace removed: two
+    theorems with the same key state the same thing (same binders, same type, same text)."""
+    mask = leansrc.code_mask(header)
+    code = "".join(ch if c else " " for ch, c in zip(header, mask))
+    m = re.search(r"\b(?:theorem|lemma)\s+[\w.'«»]+", code)
+    return re.sub(r"\s+", "", header[m.end():]) if m else None
+
+
+def library_duplicates(tasks, root=ROOT):
+    """{task ID: [(file, line, name)]}: proof tasks whose statement is already a theorem of the
+    library (Lightlike/), proven there. A task for it would duplicate work that exists."""
+    keys = {}
+    for f in sorted((root / "Lightlike").rglob("*.lean")):
+        lines = f.read_text().split("\n")
+        for i, l in enumerate(lines):
+            m = re.match(r"^(?:@\[[^\]]*\]\s*)?(?:(?:private|protected|nonrec)\s+)*(?:theorem|lemma)\s+([\w.'«»]+)", l)
+            if not m:
+                continue
+            j = i + 1
+            while j < len(lines) and not leansrc.COMMAND.match(lines[j]):
+                j += 1
+            parts = leansrc.split_header("\n".join(lines[i:j]))
+            key = statement_key(parts[0]) if parts else None
+            if key and parts and not re.search(r"\bsorry\b", parts[1]):
+                keys.setdefault(key, []).append((str(f.relative_to(root)), i + 1, m.group(1)))
+    found = {}
+    for t in tasks:
+        if t.get("kind") != "proof" or not (root / t["file"]).exists():
+            continue
+        parts = ptc.split_block((root / t["file"]).read_text(), t["decl"].split(".")[-1])
+        hits = keys.get(statement_key(parts[1])) if parts else None
+        if hits:
+            found[t["id"]] = hits
+    return found
+
+
+def duplicate_problems(tasks, root=ROOT):
+    return [f"{tid}: its statement is already proven in {h[0][0]}:{h[0][1]} ({h[0][2]}); close the task as "
+            f"proven instead of opening it" for tid, h in sorted(library_duplicates(tasks, root).items())]
 
 
 def compute(tasks, ms, cfg, read):
@@ -758,6 +800,7 @@ def cmd_check(root=ROOT):
     for f in lib:
         if f.exists() and re.search(r"^import Tasks\b", f.read_text(), re.M):
             problems.append(f"{f.relative_to(root)} imports the task library (only Tasks/ may)")
+    problems += duplicate_problems(tasks, root)
     nosrc = [t["id"] for t in tasks if not t.get("source_class")]
     if nosrc:
         problems.append(f"{len(nosrc)} tasks have no source: give their milestone a `class: sourced` entry with "
@@ -1020,9 +1063,10 @@ def deps_section(t, p):
     if lem:
         out += ["", "Lemmas about them, which a proof may use:", ""]
         out += [f"* `{short_name(l['name'])}` (`{l['file']}`)" for l in lem]
-    more = len(p["lemmas"]) - len(lem)
-    out += ["", "Everything they depend on" + (f", with {more} more lemmas," if more else "")
-            + " in one block:", "", f"    scripts/context-pack {t['decl']}"]
+    # No count of the further lemmas: it changed with every lemma added to the library, so the
+    # header went stale without any task changing. The command prints the current list.
+    out += ["", "Everything they depend on, and the further lemmas about them, in one block:", "",
+            f"    scripts/context-pack {t['decl']}"]
     return "\n".join(out)
 
 
@@ -1375,6 +1419,9 @@ def cmd_sync(fixture, apply, seed_file=None, with_packs=False, root=ROOT):
             memo.update(cards(tasks, ms, extract_packs(tasks) if with_packs else {}, root))
         return memo[tid]
 
+    dup = duplicate_problems(tasks, root)
+    if dup:
+        sys.exit("tasks sync: no issue is opened for a statement the library already proves:\n  - " + "\n  - ".join(dup))
     states, acts = sync_plan(tasks, cfg, data, card, seed, data.get("now"))
     for a in acts:
         print(describe(a))
