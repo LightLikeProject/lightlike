@@ -4,6 +4,8 @@ public import Lightlike.Lorentz.KernelBound
 public import Lightlike.Spacetime.Minkowski
 public import Physlib.Relativity.SL2C.Basic
 
+-- CI timing test for a leaf module; this pull request is closed unmerged.
+
 /-!
 # The signature bridge: Physlib's Lorentz matrices in the project's convention
 
