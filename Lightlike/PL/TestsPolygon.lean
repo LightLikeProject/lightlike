@@ -1,4 +1,5 @@
 import Lightlike.PL.PolygonJordan
+import Lightlike.PL.PolygonTriangulation
 
 /-!
 # Checks of the polygonal Jordan theorem
@@ -112,6 +113,11 @@ theorem not_isSimple_bowtie : ¬ bowtie.IsSimple := by
     ⟨1 / 2, 1 / 2, by norm_num, by norm_num, by norm_num, by
       simp [bowtie, show finRotate 4 2 = 3 from by decide]⟩
   exact Set.disjoint_left.1 hd h0 h2
+
+/-- **Non-vacuity of the triangulation theorem.** The theorem applies to the triangle
+`(0,0)`, `(1,0)`, `(0,1)`. -/
+theorem triangle_triangulation : ∃ T, IsTriangulation triangle T :=
+  exists_triangulation 3 triangle le_rfl triangle_isSimple
 
 end Polygon
 end Lightlike.PL
