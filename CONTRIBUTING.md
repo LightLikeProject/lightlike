@@ -168,9 +168,9 @@ commit on `main` takes the pull request's title, number and description: write t
 
 ## For maintainers
 
-- **Results.** After merging a result, add it to `docs/results.yaml` and to the API map of its
-  folder, then run `python3 scripts/api_map.py generate` (writes `docs/RESULTS.md` and the
-  counts in `README.md`) and `python3 scripts/api_map.py check`.
+- **Results.** Add a result to the API map of its folder and to the end of `docs/results.yaml` with
+  the draft ID `LL-XXXX` (`LL-XXXX-a`, `-b`, ... for several; the merge assigns the numbers), then
+  run `python3 scripts/api_map.py generate` (`docs/RESULTS.md`, the `README.md` counts) and `check`.
 - **Tasks.** `docs/tasks/milestones.md` and `docs/tasks/decomposition.yaml` are the plan, and the
   sources of the board. `python3 scripts/tasks.py generate` writes the board,
   `docs/tasks/tasks.yaml`, `Tasks.lean` and the milestone counts in `ROADMAP.md`; `tasks.py deps`

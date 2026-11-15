@@ -1,11 +1,17 @@
 #!/usr/bin/env python3
 """Checks that a proof-task pull request changes only the proof of its task's declaration.
 
-    python3 scripts/proof_task_check.py --base <ref> --head <ref> --body-file pr_body.txt
+    python3 scripts/proof_task_check.py --base <ref> --head <ref> --body-file pr_body.txt [--proof-label]
     python3 scripts/proof_task_check.py --base <ref> --head <ref> --task T-DT4-P1
     python3 scripts/proof_task_check.py --base <ref> --head <ref> --file F.lean --decl name
 
-The task (from `--task`, or the line `Task: T-...-P<n>` in the pull request body) is looked up in
+A pull request is a proof task if it has the `proof-task` label (`--proof-label`) or its `Task:`
+line is a proof-task ID `T-<task>-P<n>`; only then is it checked. A `Task:` line with a milestone or
+upstream ID (T-RC6, T-UP-1) and no label is not a proof task: nothing to check, exit 0. The label
+without one proof-task ID, a malformed proof-task ID (T-DT4-P, T-DT4-P1-b) or two different ones
+fail with exit 2.
+
+The task (from `--task`, or the body's `Task: T-...-P<n>` line) is looked up in
 docs/tasks/tasks.yaml for its file and declaration. The check fails unless:
 - the task file is the only file changed;
 - in that file, everything outside the declaration's proof is unchanged: the text before the
@@ -15,7 +21,7 @@ docs/tasks/tasks.yaml for its file and declaration. The check fails unless:
 - the statement matches the locked hash in tasks.yaml, when the task has one;
 - the new proof contains no sorry, admit, native_decide, axiom, implemented_by or extern.
 Helper lemmas belong inside the proof (`have`), or in a separate pull request without the
-proof-task label. Exit 0 = pass, 1 = fail, 2 = usage error."""
+proof-task label. Exit 0 = pass or not a proof task, 1 = fail, 2 = usage error or a bad task ID."""
 import argparse, hashlib, pathlib, re, subprocess, sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -27,7 +33,10 @@ FORBIDDEN = re.compile(r"\b(sorry|admit|native_decide|axiom|implemented_by|exter
 NEW_DECL = re.compile(r"^[ \t]*(@\[|(?:private |protected |noncomputable )*(?:theorem|lemma|def|abbrev|"
                       r"instance|example|axiom|opaque|structure|inductive|class|macro|syntax|"
                       r"elab|notation|irreducible_def)\b)", re.M)
-TASK_LINE = re.compile(r"^\s*Task:\s*(T-[A-Za-z0-9]+-P\d+)\b", re.M)
+TASK_LINE = re.compile(r"^\s*Task:\s*(T-[A-Za-z0-9-]+)", re.M)
+PROOF_ID = re.compile(r"T-[A-Za-z0-9]+-P\d+")
+# a third segment that starts with P: meant as a proof-task ID (T-PL5, a milestone, has none)
+P_SEGMENT = re.compile(r"T-[A-Za-z0-9]+-[Pp]")
 
 
 def statement_hash(header: str) -> str:
@@ -45,10 +54,15 @@ def show(ref: str, path: str, root=ROOT):
     return r.stdout if r.returncode == 0 else None
 
 
+def task_ids(body: str) -> list:
+    """The IDs on the body's `Task:` lines, outside HTML comments (the template's examples)."""
+    return TASK_LINE.findall(re.sub(r"<!--.*?-->", "", body, flags=re.S))
+
+
 def task_from_body(body: str):
-    body = re.sub(r"<!--.*?-->", "", body, flags=re.S)
-    ids = TASK_LINE.findall(body)
-    return ids[0] if len(set(ids)) == 1 else None
+    """The body's one proof-task ID, or None (none, or two different ones)."""
+    ids = {i for i in task_ids(body) if PROOF_ID.fullmatch(i)}
+    return ids.pop() if len(ids) == 1 else None
 
 
 def lookup(task_id: str, root=ROOT):
@@ -118,15 +132,34 @@ def main(argv=None) -> int:
     ap.add_argument("--body-file")
     ap.add_argument("--file")
     ap.add_argument("--decl")
+    ap.add_argument("--proof-label", action="store_true", help="the pull request has the proof-task label")
     a = ap.parse_args(argv)
     lock = None
     if a.file and a.decl:
         file, decl, tid = a.file, a.decl, a.task or "(no task ID)"
     else:
-        tid = a.task or (task_from_body(pathlib.Path(a.body_file).read_text()) if a.body_file else None)
+        tid = a.task
         if not tid:
-            print("proof-task check: no task ID (give --task, or one line `Task: T-...-P<n>` in the body)")
-            return 2
+            if not a.body_file:
+                print("proof-task check: give --task, --body-file, or --file and --decl")
+                return 2
+            body = pathlib.Path(a.body_file).read_text()
+            ids = task_ids(body)
+            bad = [i for i in ids if P_SEGMENT.match(i) and not PROOF_ID.fullmatch(i)]
+            if bad:
+                print(f"proof-task check: malformed proof-task ID {bad[0]} (the form is T-<task>-P<n>, "
+                      "such as T-DT4-P1)")
+                return 2
+            if not a.proof_label and not any(PROOF_ID.fullmatch(i) for i in ids):
+                print(f"not a proof task: {ids[0]}, nothing to check" if ids else
+                      "not a proof task: no Task line and no proof-task label, nothing to check")
+                return 0
+            tid = task_from_body(body)
+            if not tid:
+                print("proof-task check: no task ID (the proof-task label or a proof-task ID needs one "
+                      "line `Task: T-...-P<n>` in the body"
+                      + (f"; found {', '.join(dict.fromkeys(ids))})" if ids else ")"))
+                return 2
         t = lookup(tid)
         if t is None or t.get("kind") != "proof" or not t.get("file"):
             print(f"proof-task check: {tid} is not a proof task with a task file in {TASKS}")
