@@ -158,6 +158,7 @@ where the normals close. Two opposite triangles close, and one triangle does not
     `Asymptotics.Lorentzian.closing_violates_hnoclose`, `Asymptotics.Lorentzian.single_satisfies_hnoclose`
 14. Lightlike/Asymptotics/Lorentzian/Amplitude.lean - `Asymptotics.Lorentzian.lorIntegrand`,
     `Asymptotics.Lorentzian.lorVertex`, `Asymptotics.Lorentzian.measurable_lorIntegrand`,
+    `Asymptotics.Lorentzian.norm_lorIntegrand_le`, `Asymptotics.Lorentzian.integrable_lorEdgeDensity`,
     `Asymptotics.Lorentzian.lorEdgeDensity_one`
 
 ## References

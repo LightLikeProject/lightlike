@@ -130,6 +130,166 @@ theorem measurable_lorIntegrand (j p : Fin 10 → ℝ) (g : BdryData) :
     · exact ((continuous_nodeSpinor (edgeSrc e) e).norm.pow 2).measurable
     · exact ((continuous_nodeSpinor (edgeTgt e) e).norm.pow 2).measurable
 
+/-- The spinor `(1, w)` is nonzero. -/
+theorem lorSpinor_ne_zero (w : ℂ) : lorSpinor w ≠ 0 := by
+  intro h
+  have := congrArg (fun v : Spinor => v 0) h
+  simp [lorSpinor] at this
+
+/-- The adjoint of an element of `SL(2, ℂ)` acts injectively on spinors: it has determinant `1`. -/
+theorem spinAct_conjTranspose_ne_zero (X : SL2C) {v : Spinor} (hv : v ≠ 0) :
+    spinAct (X : Matrix (Fin 2) (Fin 2) ℂ)ᴴ v ≠ 0 := by
+  intro h
+  apply hv
+  have hdet : ((X : Matrix (Fin 2) (Fin 2) ℂ)ᴴ).det = 1 := by
+    rw [Matrix.det_conjTranspose, X.2, star_one]
+  have h1 : (X : Matrix (Fin 2) (Fin 2) ℂ)ᴴ.adjugate * (X : Matrix (Fin 2) (Fin 2) ℂ)ᴴ = 1 := by
+    rw [Matrix.adjugate_mul, hdet, one_smul]
+  have h2 := congrArg (spinAct ((X : Matrix (Fin 2) (Fin 2) ℂ)ᴴ.adjugate)) h
+  rw [← spinAct_mul, h1, spinAct_one] at h2
+  rw [h2]
+  ext i; fin_cases i <;> simp [spinAct]
+
+/-- **The integrand is bounded by the density of `Ω`** where no overlap vanishes:
+`‖e^S Π_e ρ_e‖ ≤ Π_e ρ_e`, because `Re S ≤ 0` (`re_lorAction_le_zero`). The spinors `X† (1, w)`
+never vanish, and the overlaps vanish on a null set only, so the hypotheses `h1`, `h2` are the
+only ones left. -/
+theorem norm_lorIntegrand_le {j p : Fin 10 → ℝ} (hj : ∀ e, 0 ≤ j e) {g : BdryData}
+    (hξ : ∀ e, ‖firstCol (g e 0)‖ = 1) (hξ' : ∀ e, ‖firstCol (g e 1)‖ = 1)
+    {X : Fin 5 → SL2C} {w : Fin 10 → ℂ}
+    (h1 : ∀ e, inner ℂ (spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (lorSpinor (w e)))
+      (firstCol (g e 0)) ≠ 0)
+    (h2 : ∀ e, inner ℂ (jMap (firstCol (g e 1)))
+      (spinAct (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (lorSpinor (w e))) ≠ 0) :
+    ‖lorIntegrand j p g X w‖ ≤ ∏ e, lorEdgeDensity X (fun e => lorSpinor (w e)) e := by
+  unfold lorIntegrand
+  rw [norm_mul, Complex.norm_exp]
+  have hS := re_lorAction_le_zero hj (p := p) (X := X) (z := fun e => lorSpinor (w e))
+    (fun e => spinAct_conjTranspose_ne_zero _ (lorSpinor_ne_zero _))
+    (fun e => spinAct_conjTranspose_ne_zero _ (lorSpinor_ne_zero _)) hξ hξ' h1 h2
+  have hexp : Real.exp (lorAction j p g X fun e => lorSpinor (w e)).re ≤ 1 :=
+    Real.exp_le_one_iff.mpr hS
+  have hprod : ‖∏ e, ((lorEdgeDensity X (fun e => lorSpinor (w e)) e : ℝ) : ℂ)‖ =
+      ∏ e, lorEdgeDensity X (fun e => lorSpinor (w e)) e := by
+    rw [norm_prod]
+    refine Finset.prod_congr rfl fun e _ => ?_
+    rw [Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg]
+    unfold lorEdgeDensity
+    positivity
+  rw [hprod]
+  calc _ ≤ 1 * ∏ e, lorEdgeDensity X (fun e => lorSpinor (w e)) e :=
+        mul_le_mul_of_nonneg_right hexp (Finset.prod_nonneg fun e _ => by
+          unfold lorEdgeDensity; positivity)
+    _ = _ := one_mul _
+
+/-- `‖M v‖² ≤ (Σ_{ij} |M_{ij}|²) ‖v‖²` for the action of a `2 × 2` matrix on a spinor. -/
+theorem norm_spinAct_sq_le (M : Matrix (Fin 2) (Fin 2) ℂ) (v : Spinor) :
+    ‖spinAct M v‖ ^ 2 ≤ (‖M 0 0‖ ^ 2 + ‖M 0 1‖ ^ 2 + ‖M 1 0‖ ^ 2 + ‖M 1 1‖ ^ 2) * ‖v‖ ^ 2 := by
+  have e : ∀ u : Spinor, ‖u‖ ^ 2 = ‖u 0‖ ^ 2 + ‖u 1‖ ^ 2 := fun u => by
+    rw [EuclideanSpace.norm_sq_eq]; simp [Fin.sum_univ_two]
+  rw [e, e]
+  simp only [spinAct_zero_apply, spinAct_one_apply]
+  have h0 : ‖M 0 0 * v 0 + M 0 1 * v 1‖ ≤ ‖M 0 0‖ * ‖v 0‖ + ‖M 0 1‖ * ‖v 1‖ :=
+    (norm_add_le _ _).trans (by rw [norm_mul, norm_mul])
+  have h1 : ‖M 1 0 * v 0 + M 1 1 * v 1‖ ≤ ‖M 1 0‖ * ‖v 0‖ + ‖M 1 1‖ * ‖v 1‖ :=
+    (norm_add_le _ _).trans (by rw [norm_mul, norm_mul])
+  have a0 := norm_nonneg (M 0 0); have a1 := norm_nonneg (M 0 1)
+  have a2 := norm_nonneg (M 1 0); have a3 := norm_nonneg (M 1 1)
+  have b0 := norm_nonneg (v 0); have b1 := norm_nonneg (v 1)
+  have c0 := norm_nonneg (M 0 0 * v 0 + M 0 1 * v 1)
+  have c1 := norm_nonneg (M 1 0 * v 0 + M 1 1 * v 1)
+  have s0 : ‖M 0 0 * v 0 + M 0 1 * v 1‖ ^ 2 ≤ (‖M 0 0‖ * ‖v 0‖ + ‖M 0 1‖ * ‖v 1‖) ^ 2 :=
+    pow_le_pow_left₀ c0 h0 2
+  have s1 : ‖M 1 0 * v 0 + M 1 1 * v 1‖ ^ 2 ≤ (‖M 1 0‖ * ‖v 0‖ + ‖M 1 1‖ * ‖v 1‖) ^ 2 :=
+    pow_le_pow_left₀ c1 h1 2
+  nlinarith [sq_nonneg (‖M 0 0‖ * ‖v 1‖ - ‖M 0 1‖ * ‖v 0‖),
+    sq_nonneg (‖M 1 0‖ * ‖v 1‖ - ‖M 1 1‖ * ‖v 0‖)]
+
+
+/-- **`X†` is bounded below on spinors**: `‖v‖² ≤ C ‖X† v‖²` with `C` the sum of the squared
+moduli of the entries of the adjugate of `X†` (its inverse). -/
+theorem norm_sq_le_spinAct_conjTranspose (X : SL2C) (v : Spinor) :
+    ‖v‖ ^ 2 ≤ (‖((X : Matrix (Fin 2) (Fin 2) ℂ)ᴴ.adjugate) 0 0‖ ^ 2 +
+      ‖((X : Matrix (Fin 2) (Fin 2) ℂ)ᴴ.adjugate) 0 1‖ ^ 2 +
+      ‖((X : Matrix (Fin 2) (Fin 2) ℂ)ᴴ.adjugate) 1 0‖ ^ 2 +
+      ‖((X : Matrix (Fin 2) (Fin 2) ℂ)ᴴ.adjugate) 1 1‖ ^ 2) *
+      ‖spinAct (X : Matrix (Fin 2) (Fin 2) ℂ)ᴴ v‖ ^ 2 := by
+  have hdet : ((X : Matrix (Fin 2) (Fin 2) ℂ)ᴴ).det = 1 := by
+    rw [Matrix.det_conjTranspose, X.2, star_one]
+  have h1 : (X : Matrix (Fin 2) (Fin 2) ℂ)ᴴ.adjugate * (X : Matrix (Fin 2) (Fin 2) ℂ)ᴴ = 1 := by
+    rw [Matrix.adjugate_mul, hdet, one_smul]
+  have := norm_spinAct_sq_le ((X : Matrix (Fin 2) (Fin 2) ℂ)ᴴ.adjugate)
+    (spinAct (X : Matrix (Fin 2) (Fin 2) ℂ)ᴴ v)
+  rwa [← spinAct_mul, h1, spinAct_one] at this
+
+/-- The density of `Ω_e` is continuous in `w`, since the spinors `X† (1, w)` never vanish. -/
+theorem continuous_lorEdgeDensity_aux (A B : SL2C) :
+    Continuous fun w : ℂ => (‖spinAct (A : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (lorSpinor w)‖ ^ 2 *
+      ‖spinAct (B : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (lorSpinor w)‖ ^ 2)⁻¹ := by
+  refine Continuous.inv₀ ?_ fun w => ?_
+  · exact ((continuous_spinAct.comp (continuous_const.prodMk continuous_lorSpinor)).norm.pow 2).mul
+      ((continuous_spinAct.comp (continuous_const.prodMk continuous_lorSpinor)).norm.pow 2)
+  · exact mul_ne_zero
+      (pow_ne_zero 2 (norm_ne_zero_iff.mpr
+        (spinAct_conjTranspose_ne_zero A (lorSpinor_ne_zero w))))
+      (pow_ne_zero 2 (norm_ne_zero_iff.mpr
+        (spinAct_conjTranspose_ne_zero B (lorSpinor_ne_zero w))))
+
+
+/-- `‖(1, w)‖² = 1 + ‖w‖²`. -/
+theorem norm_lorSpinor_sq (w : ℂ) : ‖lorSpinor w‖ ^ 2 = 1 + ‖w‖ ^ 2 := by
+  rw [EuclideanSpace.norm_sq_eq]
+  simp [lorSpinor, Fin.sum_univ_two]
+
+/-- **The density of `Ω_e` is integrable on the chart `ℂ`** (BDFHP §4): it is continuous and
+`O(|w|⁻⁴)`, because `X†` is bounded below on spinors. At `A = B = 1` it is the Fubini–Study density
+`lorEdgeDensity_one`. -/
+theorem integrable_lorEdgeDensity (A B : SL2C) :
+    Integrable fun w : ℂ => (‖spinAct (A : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (lorSpinor w)‖ ^ 2 *
+      ‖spinAct (B : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (lorSpinor w)‖ ^ 2)⁻¹ := by
+  set CA := ‖((A : Matrix (Fin 2) (Fin 2) ℂ)ᴴ.adjugate) 0 0‖ ^ 2 +
+      ‖((A : Matrix (Fin 2) (Fin 2) ℂ)ᴴ.adjugate) 0 1‖ ^ 2 +
+      ‖((A : Matrix (Fin 2) (Fin 2) ℂ)ᴴ.adjugate) 1 0‖ ^ 2 +
+      ‖((A : Matrix (Fin 2) (Fin 2) ℂ)ᴴ.adjugate) 1 1‖ ^ 2 with hCA
+  set CB := ‖((B : Matrix (Fin 2) (Fin 2) ℂ)ᴴ.adjugate) 0 0‖ ^ 2 +
+      ‖((B : Matrix (Fin 2) (Fin 2) ℂ)ᴴ.adjugate) 0 1‖ ^ 2 +
+      ‖((B : Matrix (Fin 2) (Fin 2) ℂ)ᴴ.adjugate) 1 0‖ ^ 2 +
+      ‖((B : Matrix (Fin 2) (Fin 2) ℂ)ᴴ.adjugate) 1 1‖ ^ 2 with hCB
+  have hg : Integrable fun w : ℂ => (CA * CB * 4) * (1 + ‖w‖) ^ (-(4 : ℝ)) :=
+    (integrable_one_add_norm (E := ℂ) (μ := volume) (r := 4) (by
+      simp only [Complex.finrank_real_complex]; norm_num)).const_mul _
+  refine hg.mono' (continuous_lorEdgeDensity_aux A B).aestronglyMeasurable
+    (Filter.Eventually.of_forall fun w => ?_)
+  have hn : 0 < ‖lorSpinor w‖ ^ 2 := by
+    have := norm_pos_iff.mpr (lorSpinor_ne_zero w); positivity
+  have hA := norm_sq_le_spinAct_conjTranspose A (lorSpinor w)
+  have hB := norm_sq_le_spinAct_conjTranspose B (lorSpinor w)
+  set a := ‖spinAct (A : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (lorSpinor w)‖ ^ 2
+  set b := ‖spinAct (B : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (lorSpinor w)‖ ^ 2
+  set n := ‖lorSpinor w‖ ^ 2 with hn_def
+  have ha : 0 < a := by
+    have := (spinAct_conjTranspose_ne_zero A (lorSpinor_ne_zero w)); positivity
+  have hb : 0 < b := by
+    have := (spinAct_conjTranspose_ne_zero B (lorSpinor_ne_zero w)); positivity
+  have hprod : n * n ≤ (CA * CB) * (a * b) := by
+    calc n * n ≤ (CA * a) * (CB * b) := mul_le_mul hA hB hn.le (by
+            have : 0 ≤ CA := by positivity
+            positivity)
+      _ = _ := by ring
+  have h1w : 0 < 1 + ‖w‖ := by positivity
+  have hq : (1 + ‖w‖) ^ 2 ≤ 2 * n := by
+    rw [hn_def, norm_lorSpinor_sq]; nlinarith [sq_nonneg (1 - ‖w‖), norm_nonneg w]
+  have hq4 : (1 + ‖w‖) ^ 4 ≤ 4 * (n * n) := by
+    have : ((1 + ‖w‖) ^ 2) ^ 2 ≤ (2 * n) ^ 2 := pow_le_pow_left₀ (by positivity) hq 2
+    nlinarith
+  rw [norm_inv, Real.norm_eq_abs, abs_of_pos (mul_pos ha hb), Real.rpow_neg h1w.le,
+    show (4 : ℝ) = ((4 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]
+  have hrhs : CA * CB * ((4 : ℕ) : ℝ) * ((1 + ‖w‖) ^ 4)⁻¹ = (CA * CB * 4) / (1 + ‖w‖) ^ 4 := by
+    push_cast; ring
+  rw [hrhs, inv_eq_one_div, div_le_div_iff₀ (mul_pos ha hb) (by positivity)]
+  have hCpos : 0 ≤ CA * CB := by positivity
+  nlinarith [mul_le_mul_of_nonneg_left hq4 hCpos, hprod]
+
 /-! ### Trust check -/
 
 /-- **Known value**: at `X = 1` the density of `Ω_e` on the chart `z = (1, w)` is the
