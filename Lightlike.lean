@@ -324,6 +324,8 @@ import Lightlike.Regge.Conv3.DihedralTaylor2
 import Lightlike.Regge.Conv3.DihedralScale
 import Lightlike.Regge.Conv3.EdgePoly
 import Lightlike.Regge.Conv3.JetCore
+import Lightlike.Regge.Conv3.JetSlice
+import Lightlike.Regge.Conv3.HypProductCore
 import Lightlike.Regge.Conv3.LatticeSum
 import Lightlike.Regge.Conv3.EdgePolyTests
 import Lightlike.Regge.CMS.RefiningGrid
