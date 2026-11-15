@@ -64,6 +64,12 @@ connected, and the parity vanishes outside a ball containing the vertices. This 
 Jordan curve theorem: the complement of a simple closed polygon is the disjoint union of two
 nonempty, open, connected sets, one bounded and one unbounded, and the polygon is the frontier of each [24] {4} {5}.
 
+The inside of a polygon is the set of points off it with odd crossing parity, and the outside is the
+set with even parity. Both are open, the inside is bounded and the outside is not, and if the
+complement is the union of two connected sets, one of them unbounded, the other is the inside [25].
+For a simple triangle the vertices are affinely independent, the carrier is the frontier of the
+convex hull, and the inside is the interior of the convex hull [26].
+
 ## Lean References
 
 1. Lightlike/PL/Complex.lean - `PL.SComplex`, `PL.SComplex.link`, `PL.SComplex.star_eq_join`
