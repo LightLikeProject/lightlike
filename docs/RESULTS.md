@@ -100,7 +100,7 @@ API map: [Lightlike/PonzanoRegge/API-map.md](../Lightlike/PonzanoRegge/API-map.m
 | LL-0027 | The cutoff gauge-fixed Ponzano–Regge amplitude (spin 0 on the gauge set, finite cutoffs on the other edges) is unchanged along chains of 2-3, 1-4 and recut steps (see note) | proven | frontier | `Lightlike.PR.amplitudeGF_eqvGen`, `Lightlike.PR.amplitudeGF_eqvGen_tree` in [GaugeFixed.lean](../Lightlike/PonzanoRegge/GaugeFixed.lean) |
 | LL-0028 | The gauge-fixed amplitude does not depend on the maximal tree under triangle exchanges | proven | frontier | `Lightlike.PR.amplitudeGF_exchange`, `Lightlike.PR.amplitudeGF_eqvGen_exchange` in [GaugeChange.lean](../Lightlike/PonzanoRegge/GaugeChange.lean) |
 | LL-0029 | The 3D Pachner moves preserve closed combinatorial 3-manifolds (see note) | proven | established | `Lightlike.PR.isCombManifold_move23_iff`, `Lightlike.PR.isCombManifold_move14_iff`, `Lightlike.PR.isCombManifold_iff_of_eqvGen` in [Manifold.lean](../Lightlike/PonzanoRegge/Manifold.lean) |
-| LL-0030 | The Ponzano–Regge asymptotic formula for the 6j symbol (see note) | proven | established | `Lightlike.Asymptotics.ponzanoReggeFormula`, `Lightlike.PR.PonzanoReggeFormula` in [SaddleAssembly.lean](../Lightlike/Asymptotics/SaddleAssembly.lean) |
+| LL-0030 | The Ponzano–Regge asymptotic formula for the 6j symbol (see note) | proven | established | `Lightlike.Asymptotics.ponzanoReggeFormula` in [SaddleAssembly.lean](../Lightlike/Asymptotics/SaddleAssembly.lean) |
 
 Notes:
 

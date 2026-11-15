@@ -391,7 +391,7 @@
   title: The Ponzano–Regge asymptotic formula for the 6j symbol
   area: PonzanoRegge
   file: Lightlike/Asymptotics/SaddleAssembly.lean
-  decls: [Lightlike.Asymptotics.ponzanoReggeFormula, Lightlike.PR.PonzanoReggeFormula]
+  decls: [Lightlike.Asymptotics.ponzanoReggeFormula]
   status: proven
   tier: established
   source:
