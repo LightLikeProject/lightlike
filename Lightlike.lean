@@ -34,6 +34,7 @@ import Lightlike.Asymptotics.EPRL.FiniteMax
 import Lightlike.Asymptotics.EPRL.MaxSetFinite
 import Lightlike.Asymptotics.EPRL.EPRLFormula
 import Lightlike.Asymptotics.EPRL.EdgeBridge
+import Lightlike.Asymptotics.EPRL.HaarNode
 import Lightlike.Asymptotics.Lorentzian.Action
 import Lightlike.Asymptotics.Lorentzian.Stationary
 import Lightlike.Asymptotics.Lorentzian.Critical
@@ -499,6 +500,7 @@ import Lightlike.SpinFoam.Move15Global
 import Lightlike.SpinFoam.BarrettCrane
 import Lightlike.SpinFoam.BarrettCraneTests
 import Lightlike.SpinFoam.GaugeIndependence
+import Lightlike.SpinFoam.ForcingMoves
 import Lightlike.SpinFoam.GaugeChain
 import Lightlike.SpinFoam.TwistedCohomology
 import Lightlike.SpinFoam.TwistedCohomologySU2

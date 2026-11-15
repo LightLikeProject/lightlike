@@ -2,6 +2,7 @@ import Lightlike.SpinFoam.Move33
 import Lightlike.SpinFoam.Move24Global
 import Lightlike.SpinFoam.Move15Global
 import Lightlike.SpinFoam.GaugeChain
+import Lightlike.SpinFoam.ForcingMoves
 import Lightlike.Recoupling.Tests
 import Lightlike.FourD.Tests
 import Lightlike.Spin4.EPRLTests
@@ -456,6 +457,32 @@ theorem amplitudeGF_move15_gauge_example :
     (v := 6) rfl starK0 isGauge_starK0 cut15 (by rw [e]; exact hcut)
   rw [e, hg] at h
   exact h
+
+open Lightlike.FourD.Tests in
+/-- **Non-vacuity of the forcing lemma for the 1-5 move.** On `K0 = ∂Δ⁵` the ten triangles
+`starK0` force every triangle (each of the ten tetrahedra through the vertex `5` forces one triangle,
+checked by the kernel). After the 1-5 move `{0,1,2,3,4} → {6}`, the set `starK0` plus the four
+triangles `{6,0,j}` forces every triangle of the moved complex. This is the gauge set of
+`amplitudeGF_move15_gauge_example`. -/
+theorem forces_move15_example :
+    Forces (K0.move isMove15) (K0.move isMove15).tris
+      ({{6, 0, 1}, {6, 0, 2}, {6, 0, 3}, {6, 0, 4}} ∪ starK0) := by
+  have hσ : #({0, 1, 2, 3, 4} : Finset (Fin 8)) = 5 := by decide
+  have hF : Forces K0 K0.tris starK0 := forces_of_forcesBy
+    (l := [({0, 1, 2, 5}, {0, 1, 2}), ({0, 1, 3, 5}, {0, 1, 3}), ({0, 1, 4, 5}, {0, 1, 4}),
+      ({0, 2, 3, 5}, {0, 2, 3}), ({0, 2, 4, 5}, {0, 2, 4}), ({0, 3, 4, 5}, {0, 3, 4}),
+      ({1, 2, 3, 5}, {1, 2, 3}), ({1, 2, 4, 5}, {1, 2, 4}), ({1, 3, 4, 5}, {1, 3, 4}),
+      ({2, 3, 4, 5}, {2, 3, 4})])
+    (by decide +kernel)
+  have hg : Move15.gaugeTri (fun k : Fin 5 => Fin.castLE (by omega) k) (6 : Fin 8) =
+      {{6, 0, 1}, {6, 0, 2}, {6, 0, 3}, {6, 0, 4}} := by
+    unfold Move15.gaugeTri
+    decide +kernel
+  have hsurj : ∀ x : Fin 8, x ∈ ({0, 1, 2, 3, 4} : Finset (Fin 8)) ↔
+      ∃ j : Fin 5, (fun k : Fin 5 => (Fin.castLE (by omega) k : Fin 8)) j = x := by decide
+  have h := Move15.forces_move15 isMove15 (σ := {0, 1, 2, 3, 4}) (τ := {6}) (v := 6) rfl hσ
+    (a := fun k : Fin 5 => Fin.castLE (by omega) k) hsurj hF
+  rwa [hg] at h
 
 open Lightlike.FourD.Tests in
 /-- The cutoffs of the chain example: `3` on the triangles `{6,1,2}`, `{6,1,3}` and `{6,2,3}` (the

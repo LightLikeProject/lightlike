@@ -110,6 +110,11 @@ first step towards writing the coherent 15j as a contraction of coherent intertw
 28. Lightlike/Asymptotics/EPRL/EdgeBridge.lean - `Asymptotics.EPRL.projVec`,
     `Asymptotics.EPRL.edgePair_eq_sum`, `Asymptotics.EPRL.edgePair_eq`,
     `Asymptotics.EPRL.edgePair_antisymm_one`
+29. Lightlike/Asymptotics/EPRL/HaarNode.lean - `Asymptotics.EPRL.cohInt_apply_eq_integral`,
+    `Asymptotics.EPRL.cohState_pair`, `Asymptotics.EPRL.prop_eq_pair`,
+    `Asymptotics.EPRL.k5Contract_prod`, `Asymptotics.EPRL.k5Contract_integral`,
+    `Asymptotics.EPRL.projNode_cohInt`, `Asymptotics.EPRL.k5Contract_cohInt`,
+    `Asymptotics.EPRL.coh15j_zero`
 
 ## References
 
