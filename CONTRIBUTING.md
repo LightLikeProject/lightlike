@@ -33,7 +33,10 @@ in the browser, with nothing to install, in [GitHub Codespaces](https://docs.git
 ## Hard rules
 
 A pull request is merged when the steps of `.github/workflows/ci.yml` marked `[hard rule]` pass.
-Only these are required; everything else on this page is recommended practice.
+Only these are required; everything else on this page is recommended practice. A pull request
+that changes no Lean or build file (nor a file the Lean checks read, such as `docs/results.yaml`)
+skips the Lean build and gets only the text checks, in a few minutes; one that does rebuilds only
+the modules it changes and the modules that import them.
 
 1. `lake build` succeeds, and every Lean file under `Lightlike/` is imported by `Lightlike.lean`,
    so that it is built and checked. After adding a file, `lake exe mk_all --lib Lightlike`

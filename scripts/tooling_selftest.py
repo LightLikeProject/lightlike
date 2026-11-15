@@ -167,6 +167,15 @@ r, g = toy("      - name: cond\n        if: github.ref == 'x'\n        run: echo
 res = gate(r)
 expect("gate planted: a step with a key the gate does not implement is an error",
        res.returncode == 1 and "unsupported" in res.stdout and "PyYAML" not in res.stdout + res.stderr)
+r, g = toy("      - name: env [ci-only]\n        if: github.ref == 'x'\n        env:\n          A: b\n"
+           "        run: echo a > ci.txt\n      - name: one\n        id: s\n        run: echo b > one.txt\n"
+           "  c:\n    needs: b\n    if: github.ref == 'x'\n    outputs:\n      o: x\n"
+           "    permissions:\n      actions: write\n    runs-on: x\n    steps:\n"
+           "      - name: two\n        run: test -f one.txt\n")
+res = gate(r)
+expect("gate control: `if`/`env` on a CI-only step, `id`, and the job keys that steer CI are "
+       "accepted; every job runs, in order",
+       res.returncode == 0 and not (r / "ci.txt").exists() and (r / "one.txt").exists())
 r, g = toy("      - name: ok\n        run: echo a\n")
 (r / "dirty.txt").write_text("x")
 res = gate(r)
