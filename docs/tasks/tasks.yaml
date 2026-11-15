@@ -1104,7 +1104,7 @@ tasks:
     area: "quantum-groups"
     tier: "established"
     source_class: "sourced"
-    source: "turaev-1994, Chapter VI. 6j-symbols"
+    source: "turaev-1994, Chapter VI. 6j-symbols; koekoek-swarttouw-1996, eq. (3.2.1); koekoek-swarttouw-1996, eq. (3.2.2); koekoek-swarttouw-1996, eq. (0.5.11)"
     priority: 1
     priority_basis: "canonical"
     size: "L"
@@ -1120,7 +1120,7 @@ tasks:
     area: "quantum-groups"
     tier: "established"
     source_class: "sourced"
-    source: "turaev-1994, Chapter VI. 6j-symbols"
+    source: "turaev-1994, Chapter VI. 6j-symbols; koekoek-swarttouw-1996, eq. (3.2.1); koekoek-swarttouw-1996, eq. (3.2.2); koekoek-swarttouw-1996, eq. (0.5.11)"
     priority: 1
     priority_basis: "canonical"
     size: "M"
@@ -1139,7 +1139,7 @@ tasks:
     area: "quantum-groups"
     tier: "established"
     source_class: "sourced"
-    source: "turaev-1994, Chapter VI. 6j-symbols"
+    source: "turaev-1994, Chapter VI. 6j-symbols; koekoek-swarttouw-1996, eq. (3.2.1); koekoek-swarttouw-1996, eq. (3.2.2); koekoek-swarttouw-1996, eq. (0.5.11)"
     priority: 1
     priority_basis: "canonical"
     size: "M"
@@ -1158,7 +1158,7 @@ tasks:
     area: "quantum-groups"
     tier: "established"
     source_class: "sourced"
-    source: "turaev-1994, Chapter VI. 6j-symbols"
+    source: "turaev-1994, Chapter VI. 6j-symbols; koekoek-swarttouw-1996, eq. (3.2.1); koekoek-swarttouw-1996, eq. (3.2.2); koekoek-swarttouw-1996, eq. (0.5.11)"
     priority: 1
     priority_basis: "canonical"
     size: "M"
@@ -1177,7 +1177,7 @@ tasks:
     area: "quantum-groups"
     tier: "established"
     source_class: "sourced"
-    source: "turaev-1994, Chapter VI. 6j-symbols"
+    source: "turaev-1994, Chapter VI. 6j-symbols; koekoek-swarttouw-1996, eq. (3.2.1); koekoek-swarttouw-1996, eq. (3.2.2); koekoek-swarttouw-1996, eq. (0.5.11)"
     priority: 1
     priority_basis: "canonical"
     size: "M"
@@ -1196,7 +1196,7 @@ tasks:
     area: "quantum-groups"
     tier: "established"
     source_class: "sourced"
-    source: "turaev-1994, Chapter VI. 6j-symbols"
+    source: "turaev-1994, Chapter VI. 6j-symbols; koekoek-swarttouw-1996, eq. (3.2.1); koekoek-swarttouw-1996, eq. (3.2.2); koekoek-swarttouw-1996, eq. (0.5.11)"
     priority: 1
     priority_basis: "canonical"
     size: "L"
@@ -1215,7 +1215,7 @@ tasks:
     area: "quantum-groups"
     tier: "established"
     source_class: "sourced"
-    source: "turaev-1994, Chapter VI. 6j-symbols"
+    source: "turaev-1994, Chapter VI. 6j-symbols; koekoek-swarttouw-1996, eq. (3.2.1); koekoek-swarttouw-1996, eq. (3.2.2); koekoek-swarttouw-1996, eq. (0.5.11)"
     priority: 1
     priority_basis: "canonical"
     size: "L"

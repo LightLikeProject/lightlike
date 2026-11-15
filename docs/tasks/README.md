@@ -228,7 +228,7 @@ Done-when texts and trust checks: [milestones.md](milestones.md#quantum-groups-a
 
 | Task | Title | Source | Size | Difficulty | Needs |
 |---|---|---|---|---|---|
-| [`T-QU1`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-QU1%22) | q-deformed Biedenharn–Elliott identity and orthogonality for `r ≥ 4` | turaev-1994 | L | advanced |  |
+| [`T-QU1`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-QU1%22) | q-deformed Biedenharn–Elliott identity and orthogonality for `r ≥ 4` | turaev-1994, koekoek-swarttouw-1996 | L | advanced |  |
 | [`T-QU3`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-QU3%22) | Modular tensor categories from `U_q(sl₂)` at roots of unity, and the Reshetikhin–Turaev invariant from surgery | turaev-1994 | R | research-level | QU1 |
 | [`T-QU4`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-QU4%22) | Biedenharn–Elliott identity for all spins; Ponzano–Regge amplitude; invariance under the 2-3 move at the … | edmonds-1957, varshalovich-1988, barrett-naish-guzman-2009, … | M | intermediate |  |
 | [`T-QU5`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-QU5%22) | Triangulation independence of the regularised Ponzano–Regge amplitude as far as it goes without Pachner's … | barrett-naish-guzman-2009, freidel-louapre-2004 | M | intermediate |  |
