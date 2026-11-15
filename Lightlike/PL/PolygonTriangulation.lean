@@ -128,6 +128,150 @@ theorem isTriangulation_triangle {q : Polygon 3} (hs : q.IsSimple) :
     simp only [Finset.mem_insert, Finset.mem_singleton] at hx
     rcases hx with rfl | rfl <;> simp [hS]
 
+variable {q : Polygon n} [NeZero n]
+
+lemma cyc_mem_range (k : ℕ) : q.cyc k ∈ Set.range q := ⟨⟨k % n, Nat.mod_lt _ (NeZero.pos n)⟩, rfl⟩
+
+lemma left_range_subset (b : ℕ) : Set.range (q.left b) ⊆ Set.range q := by
+  rintro _ ⟨i, rfl⟩; exact cyc_mem_range _
+
+lemma right_range_subset (b : ℕ) : Set.range (q.right b) ⊆ Set.range q := by
+  rintro _ ⟨i, rfl⟩; exact cyc_mem_range _
+
+lemma fin_eq_cyc (i : Fin n) : q i = q.cyc i := (q.cyc_of_lt i.2).symm
+
+lemma finRotate_eq_cyc (hn : 2 ≤ n) (i : Fin n) : q (finRotate n i) = q.cyc (i + 1) := by
+  simp only [cyc]; congr 1; ext; exact finRotate_val hn i
+
+/-- **Two triangulated parts of a split polygon give a triangulation of the polygon.** -/
+theorem isTriangulation_union (hs : q.IsSimple) {b : ℕ} (hb : 2 ≤ b) (hbn : b + 2 ≤ n)
+    (hdis : Disjoint (q.left b).inside (q.right b).inside)
+    (hspl : q.inside = (q.left b).inside ∪ (q.right b).inside ∪
+      openSegment ℝ (q.cyc 0) (q.cyc b))
+    {T₁ T₂ : Finset (Finset (ℝ × ℝ))} (h₁ : IsTriangulation (q.left b) T₁)
+    (h₂ : IsTriangulation (q.right b) T₂) : IsTriangulation q (T₁ ∪ T₂) := by
+  have hn : 2 ≤ n := by omega
+  have hopen : ∀ x ∈ openSegment ℝ (q.cyc 0) (q.cyc b), x ∉ q.carrier := fun x hx hxc =>
+    (show x ∈ q.inside by rw [hspl]; exact Or.inr hx).1 hxc
+  have hsL := isSimple_left hs hb hbn hopen
+  have hsR := isSimple_right hs hb hbn hopen
+  obtain ⟨hA₁, hG₁, hS₁, hE₁⟩ := h₁
+  obtain ⟨hA₂, hG₂, hS₂, hE₂⟩ := h₂
+  -- the closed diagonal
+  set F : Finset (ℝ × ℝ) := {q.cyc 0, q.cyc b} with hF
+  have hFseg : convexHull ℝ (F : Set (ℝ × ℝ)) = segment ℝ (q.cyc 0) (q.cyc b) := by
+    rw [hF]; simp [convexHull_pair]
+  have hF₁ : F ∈ SComplex.closure T₁ := by
+    have := hE₁ ⟨b, by omega⟩
+    have e1 : (q.left b) ⟨b, by omega⟩ = q.cyc b := rfl
+    have e2 : (q.left b) (finRotate (b + 1) ⟨b, by omega⟩) = q.cyc 0 := by
+      show q.cyc ((finRotate (b + 1) ⟨b, by omega⟩ : Fin (b + 1)) : ℕ) = _
+      rw [finRotate_val (by omega)]
+      simp
+    rw [e1, e2] at this
+    rwa [Finset.pair_comm] at this
+  have hF₂ : F ∈ SComplex.closure T₂ := by
+    have := hE₂ ⟨n - b, by omega⟩
+    have e1 : (q.right b) ⟨n - b, by omega⟩ = q.cyc 0 := by
+      show q.cyc (b + (n - b)) = _
+      have : b + (n - b) = n + 0 := by omega
+      rw [this, q.cyc_self_add 0]
+    have e2 : (q.right b) (finRotate (n - b + 1) ⟨n - b, by omega⟩) = q.cyc b := by
+      show q.cyc (b + ((finRotate (n - b + 1) ⟨n - b, by omega⟩ : Fin (n - b + 1)) : ℕ)) = _
+      rw [finRotate_val (by omega)]
+      simp
+    rw [e1, e2] at this
+    exact this
+  -- the underlying sets meet only along the diagonal
+  have hsp : (SComplex.closure T₁).space ∩ (SComplex.closure T₂).space ⊆
+      convexHull ℝ (F : Set (ℝ × ℝ)) := by
+    rintro x ⟨hx1, hx2⟩
+    rw [hS₁] at hx1
+    rw [hS₂] at hx2
+    rw [hFseg]
+    rcases hx1 with h1 | h1 <;> rcases hx2 with h2 | h2
+    · exact absurd h2 (Set.disjoint_left.1 hdis h1 |> fun h => h)
+    · exact absurd h2 (not_mem_carrier_of_disjoint_inside hsR hdis h1)
+    · exact absurd h1 (not_mem_carrier_of_disjoint_inside hsL hdis.symm h2)
+    · exact carrier_left_inter_right hs hb hbn h1 h2
+  have hcarLR : ∀ x, x ∈ (q.left b).carrier ∨ x ∈ (q.right b).carrier ↔
+      x ∈ q.carrier ∨ x ∈ segment ℝ (q.cyc 0) (q.cyc b) := fun x =>
+    mem_carrier_left_or_right (p := q) hn (b := b) (by omega) (by omega)
+  have hseg_L : ∀ x ∈ segment ℝ (q.cyc 0) (q.cyc b), x ∈ (q.left b).carrier := fun x hx =>
+    (mem_carrier_left_iff (p := q) (by omega)).2 (Or.inr (by rwa [segment_symm]))
+  have hspace : (SComplex.closure (T₁ ∪ T₂)).space = q.inside ∪ q.carrier := by
+    have hu : (SComplex.closure (T₁ ∪ T₂)).space =
+        (SComplex.closure T₁).space ∪ (SComplex.closure T₂).space := by
+      simp only [SComplex.space_closure]
+      ext x
+      simp only [Finset.mem_union, Set.mem_iUnion, Set.mem_union, exists_prop]
+      constructor
+      · rintro ⟨t, ht | ht, hx⟩
+        · exact Or.inl ⟨t, ht, hx⟩
+        · exact Or.inr ⟨t, ht, hx⟩
+      · rintro (⟨t, ht, hx⟩ | ⟨t, ht, hx⟩)
+        · exact ⟨t, Or.inl ht, hx⟩
+        · exact ⟨t, Or.inr ht, hx⟩
+    rw [hu, hS₁, hS₂]
+    ext x
+    constructor
+    · rintro ((h | h) | (h | h))
+      · exact Or.inl (by rw [hspl]; exact Or.inl (Or.inl h))
+      · rcases (hcarLR x).1 (Or.inl h) with h' | h'
+        · exact Or.inr h'
+        · rw [← insert_endpoints_openSegment] at h'
+          rcases h' with rfl | rfl | h'
+          · exact Or.inr (cyc_mem_carrier hn (by omega))
+          · exact Or.inr (cyc_mem_carrier hn (by omega))
+          · exact Or.inl (by rw [hspl]; exact Or.inr h')
+      · exact Or.inl (by rw [hspl]; exact Or.inl (Or.inr h))
+      · rcases (hcarLR x).1 (Or.inr h) with h' | h'
+        · exact Or.inr h'
+        · rw [← insert_endpoints_openSegment] at h'
+          rcases h' with rfl | rfl | h'
+          · exact Or.inr (cyc_mem_carrier hn (by omega))
+          · exact Or.inr (cyc_mem_carrier hn (by omega))
+          · exact Or.inl (by rw [hspl]; exact Or.inr h')
+    · rintro (h | h)
+      · rw [hspl] at h
+        rcases h with (h | h) | h
+        · exact Or.inl (Or.inl h)
+        · exact Or.inr (Or.inl h)
+        · exact Or.inl (Or.inr (hseg_L x (openSegment_subset_segment ℝ _ _ h)))
+      · rcases (hcarLR x).2 (Or.inl h) with h' | h'
+        · exact Or.inl (Or.inr h')
+        · exact Or.inr (Or.inr h')
+  refine ⟨fun t ht => ?_, ?_, hspace, fun i => ?_⟩
+  · rcases Finset.mem_union.1 ht with ht | ht
+    · exact ⟨(hA₁ t ht).1, (hA₁ t ht).2.trans (left_range_subset b)⟩
+    · exact ⟨(hA₂ t ht).1, (hA₂ t ht).2.trans (right_range_subset b)⟩
+  · exact SComplex.isGeom_closure_union hG₁ hG₂ hF₁ hF₂ hsp
+  · rw [fin_eq_cyc (q := q) i, finRotate_eq_cyc (q := q) hn i, SComplex.mem_closure]
+    rcases Nat.lt_or_ge (i : ℕ) b with hib | hib
+    · have h := hE₁ ⟨i, by omega⟩
+      have e1 : (q.left b) ⟨i, by omega⟩ = q.cyc i := rfl
+      have e2 : (q.left b) (finRotate (b + 1) ⟨i, by omega⟩) = q.cyc (i + 1) := by
+        show q.cyc ((finRotate (b + 1) ⟨i, by omega⟩ : Fin (b + 1)) : ℕ) = _
+        rw [finRotate_val (by omega)]
+        simp only
+        rw [Nat.mod_eq_of_lt (by omega : (i : ℕ) + 1 < b + 1)]
+      rw [e1, e2, SComplex.mem_closure] at h
+      obtain ⟨t, ht, hst⟩ := h
+      exact ⟨t, Finset.mem_union_left _ ht, hst⟩
+    · have h := hE₂ ⟨i - b, by omega⟩
+      have e1 : (q.right b) ⟨i - b, by omega⟩ = q.cyc i := by
+        show q.cyc (b + (i - b)) = _
+        rw [Nat.add_sub_cancel' hib]
+      have e2 : (q.right b) (finRotate (n - b + 1) ⟨i - b, by omega⟩) = q.cyc (i + 1) := by
+        show q.cyc (b + ((finRotate (n - b + 1) ⟨i - b, by omega⟩ : Fin (n - b + 1)) : ℕ)) = _
+        rw [finRotate_val (by omega)]
+        simp only
+        rw [Nat.mod_eq_of_lt (by omega : (i : ℕ) - b + 1 < n - b + 1)]
+        congr 1; omega
+      rw [e1, e2, SComplex.mem_closure] at h
+      obtain ⟨t, ht, hst⟩ := h
+      exact ⟨t, Finset.mem_union_right _ ht, hst⟩
+
 end Polygon
 
 end Lightlike.PL

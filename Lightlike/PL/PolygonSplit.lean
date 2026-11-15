@@ -784,6 +784,16 @@ lemma carrier_left_inter_right (hs : p.IsSimple) {b : ℕ} (hb : 2 ≤ b) (hbn :
     · exact hx2
   · rw [segment_symm]; exact hx1
 
+/-- A point inside a polygon is off the carrier of any simple polygon whose inside is disjoint
+from it. -/
+lemma not_mem_carrier_of_disjoint_inside {m k : ℕ} [NeZero m] [NeZero k] {A : Polygon m}
+    {B : Polygon k} (hsB : B.IsSimple) (hdis : Disjoint A.inside B.inside) {y : ℝ × ℝ}
+    (hy : y ∈ A.inside) : y ∉ B.carrier := by
+  intro hyc
+  have hcl := carrier_subset_closure_class hsB 1 hyc
+  obtain ⟨z, hz1, hz2⟩ := mem_closure_iff.1 hcl _ (isOpen_inside A) hy
+  exact Set.disjoint_left.1 hdis hz1 hz2
+
 end Polygon
 
 end Lightlike.PL
