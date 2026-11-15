@@ -868,3 +868,16 @@
   review: kernel-checked
   note: "For edge spins s (doubled units; edges 01, 02, 03, 12, 13, 23) the integral over SU(2)^4 of Π_e χ_{s e}(g_i g_j⁻¹) equals {s₀₁ s₀₂ s₀₃; s₂₃ s₁₃ s₁₂}² (tetraInt_eq_sixJ_sq). The proof expands each character in the matrix coefficients of the spin representations, integrates them with the Haar measure into products of 3j vectors, and identifies the resulting sum with a 6j symbol up to a sign (ZR_eq). This is Freidel–Louapre's Ponzano–Regge observable of the 1-skeleton of the two-tetrahedron triangulation of S³, eq. (94), read on the dual graph: their group variables sit on the four triangles and the holonomy around an edge is g_i g_j⁻¹ for the two triangles i, j containing it, so the Lean edge ij carries the spin of the edge shared by triangles i and j, and the triads at the Lean vertices are the triangles of the triangulation. Checks: all spins 0 give 1 (tetraInt_zero), all spins 1 (doubled spin 2) give (1/6)² = 1/36 (tetraInt_two), and an inadmissible triad at a vertex gives 0 (tetraInt_eq_zero_of_not_tri, tetraInt_ones_vertex)."
   since: 0.2.0
+- id: LL-XXXX
+  title: The Jordan curve theorem for simple closed polygons in the plane, with the inside of a triangle
+  area: PL
+  file: Lightlike/PL/PolygonJordan.lean
+  decls: [Lightlike.PL.Polygon.polygon_jordan, Lightlike.PL.Polygon.frontier_class, Lightlike.PL.Polygon.eq_inside_of_isBounded, Lightlike.PL.Polygon.inside_eq_interior_hull]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: moise-1977, location: "Chapter: Separation properties of polygons in R 2|10.1007/978-1-4612-9906-6_3"}
+  review: kernel-checked
+  note: "The complement of a simple closed polygon in the plane is the disjoint union of two nonempty, open, connected sets, one bounded (the inside) and one unbounded (the outside), and the polygon is the frontier of each (polygon_jordan, frontier_class). The proof uses the parity of the number of edges met by the horizontal ray to the right of a point, with a half-open rule at the endpoints. A bounded or unbounded connected piece of any such decomposition is identified with the inside or outside (eq_inside_of_isBounded), and the inside of a simple triangle is the interior of its convex hull (inside_eq_interior_hull). Simplicity (nondegenerate edges, non-consecutive edges disjoint, consecutive edges meeting only at the shared vertex) is needed: the bow tie has crossing edges (not_isSimple_bowtie). Checks: the triangle (0,0),(1,0),(0,1) is simple (triangle_isSimple), a polygon with a repeated vertex is not (not_isSimple_degenerate)."
+  since: 0.2.0
