@@ -148,6 +148,34 @@ lemma edge_meet_cases (hs : p.IsSimple) {i j : Fin n} (hij : i ≠ j) {x : ℝ �
       exact hx
     · exact (Set.disjoint_left.1 (hs.2.1 i j hij h1 h2) hi hj).elim
 
+/-- One step of the cyclic rotation moves every point of `Fin n`, `n ≥ 2`. -/
+lemma finRotate_one_ne (hn : 2 ≤ n) (j : Fin n) : finRotate n j ≠ j := by
+  obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
+  intro h
+  simp only [finRotate_apply] at h
+  have h5 : j + 1 = j + 0 := by simpa using h
+  have h6 := add_left_cancel h5
+  have h7 := congrArg Fin.val h6
+  have h1 : ((1 : Fin (m + 1)) : ℕ) = 1 := by
+    simp [Nat.mod_eq_of_lt (show 1 < m + 1 by omega)]
+  rw [h1] at h7
+  simp at h7
+
+/-- Two steps of the cyclic rotation move every point of `Fin n`, `n ≥ 3`. -/
+lemma finRotate_two_ne (hn : 3 ≤ n) (j : Fin n) : finRotate n (finRotate n j) ≠ j := by
+  obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
+  intro h
+  simp only [finRotate_apply] at h
+  have h5 : j + (1 + 1) = j + 0 := by rw [← add_assoc]; simpa using h
+  have h6 := add_left_cancel h5
+  have h7 := congrArg Fin.val h6
+  have h1 : ((1 : Fin (m + 1)) : ℕ) = 1 := by
+    simp [Nat.mod_eq_of_lt (show 1 < m + 1 by omega)]
+  have h0 : ((0 : Fin (m + 1)) : ℕ) = 0 := rfl
+  rw [Fin.val_add, h1, h0] at h7
+  rw [Nat.mod_eq_of_lt (show 1 + 1 < m + 1 by omega)] at h7
+  omega
+
 /-- Three steps of the cyclic rotation on `n ≥ 4` points move every point. -/
 lemma finRotate_three_ne (hn : 4 ≤ n) (j : Fin n) :
     finRotate n (finRotate n (finRotate n j)) ≠ j := by
