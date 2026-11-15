@@ -6,8 +6,11 @@ The steps are read from ci.yml, so the gate and CI cannot drift apart:
   * a step with `uses:` (checkout, setup-python, cache) is CI-only and listed as such;
   * a `run:` step is executed with `bash -eo pipefail`, from the repository root;
   * a `run:` step whose name contains `[ci-only]` is not executed (for example installing elan);
-  * a step with any key the gate does not implement (`if`, `env`, `working-directory`, ...) is an
-    error, so a step can never be skipped by accident;
+  * every job runs, in the order of the file: the job keys that only steer CI (`needs`, `if`,
+    `outputs`, `permissions`) are ignored;
+  * `if:` and `env:` are allowed only on CI-only steps, which the gate does not run; on any other
+    step they, and any other key the gate does not implement (`working-directory`, ...), are an
+    error, so a step can never be skipped or misrun by accident;
   * a step with `continue-on-error: true` is advisory: a failure is recorded as WARN and the gate
     goes on (only the hard rules of CONTRIBUTING.md fail the gate).
 The steps run with the interpreter that runs the gate first on PATH, so `python3` in a step is
@@ -27,7 +30,10 @@ Exit 0 = every step passed on a clean tree."""
 import argparse, json, os, pathlib, platform, subprocess, sys, time
 
 HERE = pathlib.Path(__file__).resolve().parent
-SUPPORTED = {"name", "run", "uses", "with", "shell", "continue-on-error"}
+SUPPORTED = {"name", "id", "run", "uses", "with", "shell", "continue-on-error"}
+CI_ONLY_KEYS = {"if", "env"}  # allowed on CI-only steps, which the gate does not run
+JOB_KEYS = {"runs-on", "timeout-minutes", "defaults", "steps", "needs", "if", "outputs",
+            "permissions"}
 
 
 def load_steps(workflow: pathlib.Path) -> tuple[list[dict], list[str]]:
@@ -40,18 +46,19 @@ def load_steps(workflow: pathlib.Path) -> tuple[list[dict], list[str]]:
     steps, errors = [], []
     for jn, job in jobs.items():
         for k in job:
-            if k not in ("runs-on", "timeout-minutes", "defaults", "steps"):
+            if k not in JOB_KEYS:
                 errors.append(f"job {jn}: unsupported key `{k}`")
         for i, st in enumerate(job.get("steps", []), 1):
             label = st.get("name") or st.get("uses") or f"step {i}"
-            extra = set(st) - SUPPORTED
+            ci_only = "uses" in st or "[ci-only]" in label
+            extra = set(st) - SUPPORTED - (CI_ONLY_KEYS if ci_only else set())
             if extra:
                 errors.append(f"{label}: unsupported key(s) {sorted(extra)}; the gate would skip "
                               f"or misrun this step")
             if "run" not in st and "uses" not in st:
                 errors.append(f"{label}: neither `run` nor `uses`")
             steps.append({"name": label, "run": st.get("run"), "uses": st.get("uses"),
-                          "ci_only": "uses" in st or "[ci-only]" in label,
+                          "ci_only": ci_only,
                           "advisory": st.get("continue-on-error") is True})
     return steps, errors
 

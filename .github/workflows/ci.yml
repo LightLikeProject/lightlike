@@ -7,31 +7,138 @@
 #   - every definition, and every declaration named in an API map or in docs/results.yaml, has a
 #     docstring;
 #   - the literature sources of the catalog check out (scripts/sources.py check).
-# Steps marked [advisory] report and never block. `python3 scripts/gate.py` runs the same steps
-# locally.
+# Steps marked [advisory] report and never block. `python3 scripts/gate.py` runs the steps of every
+# job locally, in the order of this file.
+#
+# Jobs:
+#   changes        lists the files a pull request changes and decides which jobs it needs;
+#   checks         the text checks, which need no Lean; always runs (about a minute);
+#   build          the Lean build and the checks that need it. On a pull request it runs only when
+#                  the pull request changes a Lean or build file or a file those checks read;
+#                  otherwise it is skipped, and a skipped job passes the required `build` check;
+#   python-checks  the numerical cross-checks; on a pull request only when it changes scripts/ or
+#                  the pinned packages;
+#   prune-caches   after a push to main, deletes the library build caches the new one replaces.
+# Pushes to main and on-demand runs run every job.
 name: CI
 
 # When it runs: on every pull request, on every push to main, and on demand (Actions -> CI ->
 # Run workflow). While the repository is private only the on-demand run builds (the job
-# condition below), because Actions minutes are limited.
+# conditions below), because Actions minutes are limited.
 on:
   pull_request:
   push:
     branches: [main]
   workflow_dispatch:
 
-# A newer build of the same branch cancels the build still in progress for the older commit.
+# One run at a time per pull request: a new commit cancels the run still going for the older one.
+# Runs on main are queued, never cancelled, so each finishes and saves its build cache.
 concurrency:
-  group: ci-${{ github.ref }}
-  cancel-in-progress: true
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
-# The workflow only reads the repository.
+# The workflow only reads the repository (prune-caches may also delete Actions caches).
 permissions:
   contents: read
 
 jobs:
-  build:
+  changes:
     if: ${{ github.event_name == 'workflow_dispatch' || !github.event.repository.private }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        shell: bash
+    outputs:
+      lean: ${{ steps.diff.outputs.lean }}
+      python: ${{ steps.diff.outputs.python }}
+    steps:
+      # The merge commit of a pull request and its two parents; HEAD^1 is the tip of the base.
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
+
+      # lean=true when a pull request changes a Lean or build file (*.lean, lakefile,
+      # lake-manifest.json, lean-toolchain), or a file the build job's checks read besides Lean
+      # files: docs/results.yaml and the API maps (DocCheck), ci_check.py, api_map.py, the deprecation
+      # baseline, the task plan (the headers of the proof-task files), and this workflow.
+      # python=true when it changes scripts/, requirements.txt or this workflow.
+      - name: Decide which jobs the change needs [ci-only]
+        id: diff
+        run: |
+          if [ "$GITHUB_EVENT_NAME" != pull_request ]; then
+            echo "Not a pull request: every job runs."
+            echo "lean=true" >> "$GITHUB_OUTPUT"
+            echo "python=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          changed="$RUNNER_TEMP/changed.txt"
+          git diff --name-only HEAD^1 HEAD > "$changed"
+          lean_re='\.lean$|^lakefile\.(lean|toml)$|^lake-manifest\.json$|^lean-toolchain$'
+          lean_re+='|^docs/results\.yaml$|(^|/)API-map\.md$'
+          lean_re+='|^scripts/(ci_check\.py|api_map\.py|deprecation_baseline\.txt)$'
+          lean_re+='|^docs/tasks/(decomposition\.yaml|milestones\.md|sources\.yaml|sources-verified\.json)$'
+          lean_re+='|^\.github/workflows/ci\.yml$'
+          py_re='^scripts/|^requirements\.txt$|^\.github/workflows/ci\.yml$'
+          lean=false
+          python=false
+          if grep -Eq "$lean_re" "$changed"; then lean=true; fi
+          if grep -Eq "$py_re" "$changed"; then python=true; fi
+          {
+            echo "### $(wc -l < "$changed") changed file(s): build $lean, python-checks $python"
+            echo
+            echo "Files that need the build:"
+            grep -E "$lean_re" "$changed" | sed 's/^/- /' || echo "- none"
+          } | tee -a "$GITHUB_STEP_SUMMARY"
+          echo "lean=$lean" >> "$GITHUB_OUTPUT"
+          echo "python=$python" >> "$GITHUB_OUTPUT"
+
+  checks:
+    if: ${{ github.event_name == 'workflow_dispatch' || !github.event.repository.private }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v7
+
+      # The Python checks pass with 3.9 and the versions pinned in requirements.txt.
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.9"
+
+      # Locally the gate needs the pinned packages of requirements.txt installed already.
+      - name: Install the pinned Python packages [ci-only]
+        run: python3 -m pip install --quiet -r requirements.txt
+
+      - name: Check the API maps and the results registry [advisory]
+        continue-on-error: true
+        run: |
+          python3 scripts/api_map.py --selftest
+          python3 scripts/api_map.py check
+
+      # Every milestone and every result in docs/results.yaml cites a reference with a location that
+      # `scripts/sources.py verify` looked up (or is labelled structural or exploratory), and every
+      # substantive task belongs to such a milestone. Offline; reads only the catalog.
+      - name: Check the literature sources of tasks and results [hard rule]
+        run: python3 scripts/sources.py check
+
+      - name: Check the task list [advisory]
+        continue-on-error: true
+        run: python3 scripts/tasks.py check
+
+      - name: Self-test of the checks (each fails on a planted bad case) [advisory]
+        continue-on-error: true
+        run: python3 -I scripts/tooling_selftest.py
+
+  build:
+    needs: changes
+    # Runs when `changes` asks for it, and also when `changes` failed (an error never skips it).
+    if: >-
+      ${{ !cancelled()
+          && (github.event_name == 'workflow_dispatch' || !github.event.repository.private)
+          && (needs.changes.result != 'success' || needs.changes.outputs.lean == 'true') }}
     runs-on: ubuntu-latest
     timeout-minutes: 240
     defaults:
@@ -47,7 +154,6 @@ jobs:
 
       - uses: actions/checkout@v7
 
-      # The Python checks pass with 3.9 and the versions pinned in requirements.txt.
       - uses: actions/setup-python@v6
         with:
           python-version: "3.9"
@@ -64,6 +170,16 @@ jobs:
           path: .lake/packages
           key: lake-packages-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}
 
+      # Lightlike's own build output (.lake/build, Tasks/ included) from the latest push to main with
+      # the same toolchain and dependencies. Lake compares hashes, so a pull request rebuilds only the
+      # modules it changes and the modules that import them.
+      - name: Restore the library build of main
+        uses: actions/cache/restore@v6
+        with:
+          path: .lake/build
+          key: lightlike-build-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-${{ github.sha }}
+          restore-keys: lightlike-build-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-
+
       - name: Fetch Mathlib build cache
         run: lake exe cache get
 
@@ -71,22 +187,33 @@ jobs:
       - name: Build [hard rule]
         run: lake build 2>&1 | tee build.log
 
+      # The task library (Tasks/, not a default target) holds open proof tasks: `sorry` is allowed
+      # there, but only in the proof of each file's task declaration. It is built before the cache is
+      # saved, so the cache holds it too.
+      - name: Build the task library [advisory]
+        continue-on-error: true
+        run: lake build Tasks
+
+      # Only pushes to main save; pull requests restore the cache of main.
+      - name: Save the library build for pull requests
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        uses: actions/cache/save@v6
+        with:
+          path: .lake/build
+          key: lightlike-build-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-${{ github.sha }}
+
       - name: Axioms of every declaration (standard axioms only) [hard rule]
         run: lake env lean scripts/AxiomAudit.lean
 
       - name: Check (no sorry, every file imported by Lightlike.lean, nothing imports Exploratory/) [hard rule]
         run: python3 scripts/ci_check.py --build-log build.log
 
-      # The gate (scripts/gate.py) runs every step below except `uses:` steps and `[ci-only]`
-      # steps; locally the pinned packages of requirements.txt must be installed already.
       - name: Install the pinned Python packages [ci-only]
         run: python3 -m pip install --quiet -r requirements.txt
 
-      - name: Check the API maps, the results registry and the names they cite [advisory]
+      - name: Check the names the API maps and the results registry cite [advisory]
         continue-on-error: true
         run: |
-          python3 scripts/api_map.py --selftest
-          python3 scripts/api_map.py check
           python3 scripts/api_map.py names
           lake env lean scripts/NameCheck.lean
 
@@ -96,32 +223,62 @@ jobs:
           test -f .lake/api_names.tsv || python3 scripts/api_map.py names
           lake env lean scripts/DocCheck.lean
 
-      # The task library (Tasks/, not a default target) holds open proof tasks: `sorry` is allowed
-      # there, but only in the proof of each file's task declaration. `deps --check`: the header of
-      # each task file matches the plan, the sources and the library.
-      - name: Build the task library and check the task list [advisory]
+      # The header of each proof-task file matches the plan, the sources and the library (it runs
+      # Lean, through scripts/context-pack).
+      - name: Check the headers of the proof-task files [advisory]
         continue-on-error: true
-        run: |
-          lake build Tasks
-          python3 scripts/tasks.py check
-          python3 scripts/tasks.py deps --check
-
-      # Every milestone and every result in docs/results.yaml cites a reference with a location that
-      # `scripts/sources.py verify` looked up (or is labelled structural or exploratory), and every
-      # substantive task belongs to such a milestone. Offline; reads only the catalog.
-      - name: Check the literature sources of tasks and results [hard rule]
-        run: python3 scripts/sources.py check
+        run: python3 scripts/tasks.py deps --check
 
       # Every file path in a Lean comment or docstring exists, and no comment calls a proven theorem
-      # open or unproven (scripts/doc_refs_check.py).
+      # open or unproven (scripts/doc_refs_check.py). In this job because it reads .lake/packages.
       - name: Check the file paths and status claims in comments [advisory]
         continue-on-error: true
         run: python3 scripts/doc_refs_check.py
 
-      - name: Self-test of the checks (each fails on a planted bad case) [advisory]
-        continue-on-error: true
-        run: python3 -I scripts/tooling_selftest.py
+  python-checks:
+    needs: changes
+    if: >-
+      ${{ !cancelled()
+          && (github.event_name == 'workflow_dispatch' || !github.event.repository.private)
+          && (needs.changes.result != 'success' || needs.changes.outputs.python == 'true') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.9"
+
+      - name: Install the pinned Python packages [ci-only]
+        run: python3 -m pip install --quiet -r requirements.txt
 
       - name: Python cross-checks (pinned versions, wrong-input controls) [advisory]
         continue-on-error: true
         run: python3 -I scripts/run_python_checks.py --all
+
+  # The repository has 10 GB of Actions cache. After a push to main has saved its library build, the
+  # older library builds of main are deleted (the newest one is kept, the one pull requests restore).
+  prune-caches:
+    needs: build
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      actions: write
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Delete the older library build caches of main [ci-only]
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh cache list -R "$GITHUB_REPOSITORY" --ref refs/heads/main --key lightlike-build- \
+            --limit 100 --json id,createdAt --jq 'sort_by(.createdAt) | reverse | .[1:] | .[].id' \
+            > "$RUNNER_TEMP/old.txt"
+          echo "deleting $(wc -l < "$RUNNER_TEMP/old.txt") older library build cache(s)"
+          while read -r id; do gh cache delete "$id" -R "$GITHUB_REPOSITORY"; done < "$RUNNER_TEMP/old.txt"
