@@ -70,6 +70,10 @@ complement is the union of two connected sets, one of them unbounded, the other 
 For a simple triangle the vertices are affinely independent, the carrier is the frontier of the
 convex hull, and the inside is the interior of the convex hull [26].
 
+A simple polygon with at least four vertices has an interior diagonal, a pair of non-neighbouring vertices whose open segment lies in the inside. Let `v` be the lexicographically smallest vertex (leftmost, ties broken by lowest). Its two edge vectors are not parallel, the left half-plane lies in the outside, and, since the parity differs between the two sectors at `v`, the points close to `v` inside the angle of the two edges lie in the inside [27]. A segment that leaves the open region where finitely many affine functions are positive meets its boundary, and a segment from a boundary point towards a point where a vanishing function is positive enters the region [28]. In the frame of the two neighbours `u`, `w` of `v`, no edge meets an open wedge at `v` that contains no vertex [29]. If a vertex other than `u`, `v`, `w` lies in the closed triangle `u v w`, the diagonal runs from `v` to the one nearest to `v`; otherwise it runs from `u` to `w` [30].
+
+Cutting along such a diagonal gives two polygons, made of the edges from the vertex `0` to the vertex `b` and from `b` back to `0`, each closed by the diagonal. The ray crossing test does not depend on the direction of an edge, so the diagonal is counted twice and the parities of the two parts add up to that of the polygon [31]. Both parts are simple, the inside of the polygon is the union of their insides and the open diagonal, and the two insides are disjoint [31]. The proof uses that the outside of the polygon is connected, and needs no analysis of the sectors along the diagonal. By induction on the number of vertices, every simple polygon has a triangulation by triangles whose vertices are vertices of the polygon: the faces form a geometric complex whose underlying set is the closed region bounded by the polygon, and every edge of the polygon is a face {4} [32]. It is not shown here that this complex is a PL ball with the polygon as its boundary.
+
 ## Lean References
 
 1. Lightlike/PL/Complex.lean - `PL.SComplex`, `PL.SComplex.link`, `PL.SComplex.star_eq_join`
@@ -117,6 +121,19 @@ convex hull, and the inside is the interior of the convex hull [26].
     `PL.Polygon.eq_inside_of_isBounded`
 26. Lightlike/PL/PolygonTriangle.lean - `PL.Polygon.affineIndependent_of_isSimple`,
     `PL.Polygon.carrier_eq_frontier_hull`, `PL.Polygon.inside_eq_interior_hull`
+27. Lightlike/PL/PolygonDiagonal.lean - `PL.Polygon.exists_extreme`, `PL.Polygon.corner_cross_ne`,
+    `PL.Polygon.carrier_near_vertex`, `PL.Polygon.left_subset_outside`,
+    `PL.Polygon.inside_near_corner`
+28. Lightlike/PL/WedgeChord.lean - `PL.exists_boundary_point`, `PL.exists_interior_point`
+29. Lightlike/PL/PolygonWedge.lean - `PL.wl`, `PL.wm`, `PL.wf`, `PL.Polygon.edge_meet_cases`,
+    `PL.Polygon.wedge_disjoint_carrier`
+30. Lightlike/PL/PolygonDiagonal3.lean - `PL.Polygon.exists_uw_diagonal`,
+    `PL.Polygon.exists_diagonal`
+31. Lightlike/PL/PolygonSplit.lean - `PL.crossesRay_symm`, `PL.Polygon.left`, `PL.Polygon.right`,
+    `PL.Polygon.parity_left_add_right`, `PL.Polygon.isSimple_left`, `PL.Polygon.isSimple_right`,
+    `PL.Polygon.inside_split`, `PL.Polygon.exists_split`
+32. Lightlike/PL/PolygonTriangulation.lean - `PL.Polygon.IsTriangulation`,
+    `PL.Polygon.exists_triangulation`, `PL.SComplex.isGeom_closure_union`
 
 ## References
 
