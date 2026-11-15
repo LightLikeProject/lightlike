@@ -133,6 +133,28 @@ def direct_forcing_gauge(K, rng, tries=20):
     return None
 
 
+# A pinned counterexample (found by random search over forcing sets of random complexes reachable
+# from the boundary of the 5-simplex): a collapsible forcing gauge set T of size E - V + 1 on a closed
+# 4-manifold triangulation with 48 simplices, and a 3-3 move (sigma = {1,4,5}, tau = {0,6,9}) after which
+# the same T no longer forces: forcing is not preserved by 3-3 for every forcing gauge set.
+CEX_K = [[0, 1, 2, 4, 7], [0, 1, 2, 4, 9], [0, 1, 2, 5, 8], [0, 1, 2, 5, 9], [0, 1, 2, 7, 8], [0, 1, 3, 5, 6], [0, 1, 3, 5, 8], [0, 1, 3, 6, 7], [0, 1, 3, 7, 10], [0, 1, 3, 8, 10], [0, 1, 4, 5, 6], [0, 1, 4, 5, 9], [0, 1, 4, 6, 7], [0, 1, 7, 8, 11], [0, 1, 7, 10, 11], [0, 1, 8, 10, 11], [0, 2, 3, 4, 5], [0, 2, 3, 4, 7], [0, 2, 3, 5, 7], [0, 2, 4, 5, 9], [0, 2, 5, 7, 8], [0, 3, 4, 5, 6], [0, 3, 4, 6, 7], [0, 3, 5, 7, 10], [0, 3, 5, 8, 10], [0, 5, 7, 8, 10], [0, 7, 8, 10, 11], [1, 2, 3, 6, 7], [1, 2, 3, 6, 8], [1, 2, 3, 7, 8], [1, 2, 4, 6, 7], [1, 2, 4, 6, 9], [1, 2, 5, 6, 8], [1, 2, 5, 6, 9], [1, 3, 5, 6, 8], [1, 3, 7, 8, 10], [1, 4, 5, 6, 9], [1, 7, 8, 10, 11], [2, 3, 4, 5, 6], [2, 3, 4, 6, 12], [2, 3, 4, 7, 12], [2, 3, 5, 6, 8], [2, 3, 5, 7, 8], [2, 3, 6, 7, 12], [2, 4, 5, 6, 9], [2, 4, 6, 7, 12], [3, 4, 6, 7, 12], [3, 5, 7, 8, 10]]
+CEX_T = [[0, 1, 4], [0, 1, 5], [0, 1, 7], [0, 1, 8], [0, 2, 3], [0, 2, 5], [0, 2, 9], [0, 3, 6], [0, 3, 7], [0, 4, 6], [0, 6, 7], [0, 7, 11], [0, 10, 11], [1, 2, 6], [1, 2, 9], [1, 3, 5], [1, 3, 6], [1, 3, 10], [1, 4, 9], [1, 5, 9], [1, 6, 9], [1, 8, 11], [1, 10, 11], [2, 3, 4], [2, 3, 6], [2, 3, 8], [2, 4, 12], [2, 5, 6], [2, 5, 7], [2, 6, 8], [2, 7, 8], [3, 4, 5], [3, 4, 6], [3, 4, 7], [3, 5, 10], [3, 7, 8], [3, 7, 10], [3, 7, 12], [3, 8, 10], [4, 5, 9], [4, 6, 12], [5, 6, 8], [6, 7, 12], [7, 10, 11], [8, 10, 11]]
+CEX_SIGMA, CEX_TAU = fs({1, 4, 5}), fs({0, 6, 9})
+
+
+def counterexample_33():
+    """True if the pinned counterexample is valid: T forces on K, sigma not in T, the move is a 3-3 move
+    of K, and T does not force after it."""
+    K = {fs(s) for s in CEX_K}
+    T = {fs(t) for t in CEX_T}
+    st = [s for s in K if CEX_SIGMA <= s]
+    new = [fs((CEX_SIGMA | CEX_TAU) - {a}) for a in CEX_SIGMA]
+    legal = (len(st) == 3 and fs().union(*[s - CEX_SIGMA for s in st]) == CEX_TAU
+             and CEX_TAU not in faces(K, 3) and not any(n in K for n in new) and CEX_SIGMA not in T)
+    K2 = (K - set(st)) | set(new)
+    return legal and forces(K, T) and collapsible(K, T) and not forces(K2, T)
+
+
 def start():
     K = {fs(c) for c in itertools.combinations(range(6), 5)}
     return K, {fs(t) for t in itertools.combinations(range(6), 3) if 5 in t}
@@ -166,6 +188,11 @@ def main():
                 if not good and sum(direct.values()) < 15 and fs(K2) not in seen:
                     seen.add(fs(K2))
                     direct[direct_forcing_gauge(K2, rng) is not None] += 1
+    # a pinned counterexample: 3-3 does not preserve forcing for every forcing gauge set
+    if not counterexample_33():
+        print("the pinned 3-3 counterexample no longer holds")
+        return 1
+    print("pinned counterexample: a collapsible forcing set on a 48-simplex 4-sphere loses forcing under 3-3")
     # control 2: the 2-4 move without the added triangle must lose forcing sometimes
     wrong = Counter()
     for sd in range(60):
