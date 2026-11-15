@@ -143,7 +143,7 @@
     refs:
       - {ref: lawson-michelsohn-1989, location: "Chapter: I. Clifford Algebras, Spin Groups and Their Representations|10.1515/9781400883912-004"}
   review: kernel-checked
-  since: 0.2.0
+  since: 0.1.0
 - id: LL-0011
   title: Mathlib's Clifford-algebra spin group of ℝ⁴ is Spin(4)
   area: Spin4
@@ -155,7 +155,7 @@
     refs:
       - {ref: lawson-michelsohn-1989, location: "Chapter: I. Clifford Algebras, Spin Groups and Their Representations|10.1515/9781400883912-004"}
   review: kernel-checked
-  since: 0.2.0
+  since: 0.1.0
 - id: LL-0012
   title: The representations (j₊, j₋) are all the irreducible representations of Spin(4)
   area: Spin4
@@ -168,7 +168,7 @@
       - {ref: brocker-tom-dieck-1985, location: "Chapter: Elementary Representation Theory|10.1007/978-3-662-12918-0_2"}
       - {ref: lawson-michelsohn-1989, location: "Chapter: I. Clifford Algebras, Spin Groups and Their Representations|10.1515/9781400883912-004"}
   review: kernel-checked
-  since: 0.2.0
+  since: 0.1.0
 - id: LL-0013
   title: Clebsch–Gordan decomposition of (j₊, j₋) on the diagonal SU(2)
   area: Spin4
@@ -181,7 +181,7 @@
       - {ref: edmonds-1957, location: "Chapter: Chapter 3. The Coupling of Angular Momentum Vectors|10.1515/9781400884186-004"}
       - {ref: varshalovich-1988, location: "Chapter: Clebsch-Gordan Coefficients and 3jm Symbols|10.1142/9789814415491_0009"}
   review: kernel-checked
-  since: 0.2.0
+  since: 0.1.0
 - id: LL-0014
   title: SL(2,ℂ) is unimodular
   area: Lorentz
@@ -194,7 +194,7 @@
       - {ref: knapp-1986, location: "Chapter: Chapter II. Representations of SU(2), SL(2, ℝ) and SL(2, ℂ)|10.1515/9781400883974-005"}
       - {ref: martin-dussaud-2019, location: "§2.7", check: "Haar"}
   review: kernel-checked
-  since: 0.2.0
+  since: 0.1.0
 - id: LL-0015
   title: The principal series of SL(2,ℂ) is a unitary representation
   area: Lorentz
@@ -207,7 +207,7 @@
       - {ref: knapp-1986, location: "Chapter: Chapter II. Representations of SU(2), SL(2, ℝ) and SL(2, ℂ)|10.1515/9781400883974-005"}
       - {ref: martin-dussaud-2019, location: "§7.3", check: "unitary"}
   review: kernel-checked
-  since: 0.2.0
+  since: 0.1.0
 - id: LL-0016
   title: The Casimirs of the principal series (k, ρ) are k² − ρ² − 1 and kρ
   area: Lorentz
@@ -219,7 +219,7 @@
     refs:
       - {ref: martin-dussaud-2019, location: "§7.3.6", check: "Casimir"}
   review: kernel-checked
-  since: 0.2.0
+  since: 0.1.0
 - id: LL-0017
   title: The principal series (k, ρ) restricted to SU(2) is the direct sum of the spins |k| + ℓ, each once
   area: Lorentz
@@ -232,7 +232,7 @@
       - {ref: knapp-1986, location: "Chapter: Chapter II. Representations of SU(2), SL(2, ℝ) and SL(2, ℂ)|10.1515/9781400883974-005"}
       - {ref: martin-dussaud-2019, location: "§7.3.4", check: "SU(2)"}
   review: kernel-checked
-  since: 0.2.0
+  since: 0.1.0
 - id: LL-0018
   title: Orthogonality of the 3j symbols
   area: Recoupling
@@ -245,7 +245,7 @@
       - {ref: martin-dussaud-2019, location: "§5.3", check: "orthonormal basis"}
       - {ref: edmonds-1957, location: "Chapter: Chapter 3. The Coupling of Angular Momentum Vectors|10.1515/9781400884186-004"}
   review: kernel-checked
-  since: 0.2.0
+  since: 0.1.0
 - id: LL-0019
   title: Orthonormal 4-valent intertwiners and orthogonality of the 6j recoupling matrix
   area: Recoupling
@@ -258,7 +258,7 @@
       - {ref: martin-dussaud-2019, location: "§5.4", check: "direct sum"}
       - {ref: martin-dussaud-2019, location: "§5.5", check: "6j"}
   review: kernel-checked
-  since: 0.2.0
+  since: 0.1.0
 - id: LL-0020
   title: The contraction of ten 3j symbols over the 4-simplex is the 15j symbol
   area: Recoupling
@@ -271,7 +271,7 @@
       - {ref: martin-dussaud-2019, location: "§5.6", check: "Yutsis"}
       - {ref: dona-sarno-2018, location: "Section 2", check: "15j"}
   review: kernel-checked
-  since: 0.2.0
+  since: 0.1.0
 - id: LL-0021
   title: Orthogonality of the 15j symbol of the 4-simplex
   area: Recoupling
@@ -284,7 +284,7 @@
       - {ref: martin-dussaud-2019, location: "§5.6", check: "Yutsis"}
       - {ref: martin-dussaud-2019, location: "§5.5", check: "6j"}
   review: kernel-checked
-  since: 0.2.0
+  since: 0.1.0
 - id: LL-0022
   title: The Biedenharn–Elliott identity for all spins
   area: PonzanoRegge
@@ -310,7 +310,7 @@
       - {ref: lickorish-1999, location: "Theorem 4.5", check: "stellar"}
       - {ref: lickorish-1999, location: "Theorem 5.9", check: "bistellar"}
   review: kernel-checked
-  since: 0.2.0
+  since: 0.1.0
 - id: LL-0024
   title: The vertex links of a closed combinatorial 3-manifold are exactly the triangulated 2-spheres
   area: PonzanoRegge
@@ -322,7 +322,7 @@
     refs:
       - {ref: moise-1977, location: "Chapter: The classification of compact connected 2-manifolds|10.1007/978-1-4612-9906-6_23"}
   review: kernel-checked
-  since: 0.2.0
+  since: 0.1.0
 - id: LL-0025
   title: The Ponzano–Regge weight and the cutoff amplitude are invariant under the 2-3 move, with the new edge summed over all its spins
   area: PonzanoRegge
@@ -373,7 +373,7 @@
     refs:
       - {ref: freidel-louapre-2004, location: "Section III", check: "gauge"}
   review: kernel-checked
-  since: 0.2.0
+  since: 0.1.0
 - id: LL-0029
   title: The 3D Pachner moves preserve closed combinatorial 3-manifolds
   area: PonzanoRegge
@@ -386,7 +386,7 @@
       - {ref: lickorish-1999, location: "Definition 2.2", check: "manifold"}
   review: kernel-checked
   note: Combinatorial 3-manifold in the sense of Lickorish's Definition 2.2 (every vertex link a combinatorial 2-sphere, for closed complexes). Pachner's theorem (Lickorish's Theorem 5.9) motivates the moves; it is not what is proved here.
-  since: 0.2.0
+  since: 0.1.0
 - id: LL-0030
   title: The Ponzano–Regge asymptotic formula for the 6j symbol
   area: PonzanoRegge
@@ -438,7 +438,7 @@
     refs:
       - {ref: gurau-2008, location: "Theorem 1", check: "saddle"}
   review: kernel-checked
-  since: 0.2.0
+  since: 0.1.0
 - id: LL-0034
   title: At the saddle, the phase of Racah's sum has the Regge action as its imaginary part
   area: Asymptotics
@@ -450,7 +450,7 @@
     refs:
       - {ref: gurau-2008, location: "Theorem 1", check: "saddle"}
   review: kernel-checked
-  since: 0.2.0
+  since: 0.1.0
 - id: LL-0035
   title: The 4D Pachner move is an involution that preserves the Euler characteristic
   area: FourD
@@ -462,7 +462,7 @@
     refs:
       - {ref: lickorish-1999, location: "Theorem 5.9", check: "bistellar"}
   review: kernel-checked
-  since: 0.2.0
+  since: 0.1.0
 - id: LL-0036
   title: 4D Pachner moves preserve orientability
   area: FourD
@@ -474,7 +474,7 @@
     refs:
       - {ref: lickorish-1999, location: "Theorem 5.9", check: "bistellar"}
   review: kernel-checked
-  since: 0.2.0
+  since: 0.1.0
 - id: LL-0037
   title: The EPRL map is equivariant and isometric and satisfies weak simplicity, which only EPRL labels do
   area: Spin4
@@ -486,7 +486,7 @@
     refs:
       - {ref: eprl-2008, location: "Section III", check: "EUCLIDEAN"}
   review: kernel-checked
-  since: 0.2.0
+  since: 0.1.0
 - id: LL-0038
   title: Injectivity of the EPRL map on intertwiners
   area: Spin4
@@ -498,7 +498,7 @@
     refs:
       - {ref: kaminski-kisielowski-lewandowski-2011, location: "Abstract", check: "injectivity"}
   review: kernel-checked
-  since: 0.2.0
+  since: 0.1.0
 - id: LL-0039
   title: The EPRL map sends SU(2) coherent states to Spin(4) coherent states
   area: Spin4
@@ -511,7 +511,7 @@
       - {ref: livine-speziale-2007, location: "Abstract", check: "coherent states"}
       - {ref: perelomov-1986, location: "Chapter: Coherent States for the Rotation Group of Three-Dimensional Space|10.1007/978-3-642-61629-7_5"}
   review: kernel-checked
-  since: 0.2.0
+  since: 0.1.0
 - id: LL-0040
   title: Coherent intertwiners with non-closing normals are exponentially suppressed
   area: Spin4
@@ -524,7 +524,7 @@
       - {ref: livine-speziale-2007, location: "§3.4", check: "exponentially"}
       - {ref: conrady-freidel-2009, location: "Abstract", check: "closure constraint"}
   review: kernel-checked
-  since: 0.2.0
+  since: 0.1.0
 - id: LL-0041
   title: The dihedral angles of a tetrahedron computed from its edge lengths are the Euclidean ones
   area: Regge
@@ -536,7 +536,7 @@
     refs:
       - {ref: dittrich-freidel-speziale-2007, location: "eq. (6)", check: "dihedral angles"}
   review: kernel-checked
-  since: 0.2.0
+  since: 0.1.0
 - id: LL-0042
   title: Schläfli's identity for a tetrahedron
   area: Regge
@@ -548,7 +548,7 @@
     refs:
       - {ref: dittrich-freidel-speziale-2007, location: "eq. (8)", check: "Schläfli identity"}
   review: kernel-checked
-  since: 0.2.0
+  since: 0.1.0
 - id: LL-0043
   title: The Regge equations are the vanishing of the interior deficit angles, in 3D
   area: Regge
@@ -561,7 +561,7 @@
       - {ref: dittrich-freidel-speziale-2007, location: "eq. (1)", check: "deficit angles"}
       - {ref: dittrich-freidel-speziale-2007, location: "eq. (7)", check: "dihedral angles"}
   review: kernel-checked
-  since: 0.2.0
+  since: 0.1.0
 - id: LL-0044
   title: The Regge equations are the vanishing of the interior deficit angles, in 4D
   area: Regge
@@ -575,7 +575,7 @@
       - {ref: dittrich-freidel-speziale-2007, location: "eq. (7)", check: "dihedral angles"}
       - {ref: brw-1999, location: "eq. (6)", check: "Jacobian"}
   review: kernel-checked
-  since: 0.2.0
+  since: 0.1.0
 - id: LL-0045
   title: Expansion of the squared geodesic distance to fifth order, uniformly on compact sets
   area: Regge
@@ -587,7 +587,7 @@
     refs:
       - {ref: brewin-2009, location: "Section 9", check: "geodesic"}
   review: kernel-checked
-  since: 0.2.0
+  since: 0.1.0
 - id: LL-0046
   title: The Lorentzian EPRL vertex amplitude is finite for every Immirzi parameter, all spins and every coefficient array
   area: Lorentz
@@ -601,17 +601,270 @@
       - {ref: engle-pereira-2009, location: "Section 4", check: "finiteness"}
   review: kernel-checked
   note: Labels k = j and ρ = γ(j + 1), in Ding and Rovelli's form; Engle–Pereira's ρ = γj in this normalisation (ρ = 2γj in theirs). One of the five integrations is dropped (V₄ = 1), as in Engle–Pereira. The coefficients are arbitrary arrays, contracted without the ε twist on the bra legs, so invariant intertwiners are covered as special arrays, but equality with Engle–Pereira's amplitude on invariant intertwiners is not proven. The proof uses only the decay of the vectors, so finiteness holds for every choice of labels. Non-vacuity is shown at spin 0 for γ in some neighbourhood of 0. The amplitude is defined up to the normalisation of the Haar measure.
-  since: unreleased
+  since: 0.1.0
 - id: LL-0047
   title: The large-spin asymptotic formula of the Euclidean EPRL vertex amplitude in coherent boundary states
   area: Asymptotics
-  file: Lightlike/Asymptotics/EPRL/Formula.lean
-  decls: [Lightlike.Asymptotics.EPRL.Coh15jAsymptoticFormula, Lightlike.Asymptotics.EPRL.EPRLAsymptoticFormula]
-  status: stated
+  file: Lightlike/Asymptotics/EPRL/EPRLFormula.lean
+  decls: [Lightlike.Asymptotics.EPRL.eprlAsymptoticFormula]
+  status: proven
   tier: frontier
   source:
     refs:
       - {ref: bdfgh-2009, location: "Section 4", check: "Asymptotic formula"}
+      - {ref: bfh-2010, location: "eq. (16)", check: "Hessian"}
+      - {ref: bfh-2010, location: "eq. (26)", check: "without complex conjugation"}
   review: kernel-checked
-  note: The proof target, stated as two propositions; their proofs are open. For a nondegenerate 4-simplex, spins proportional to its triangle areas with an even spin sum at every node, and a nonsingular Hessian at both critical points, the coherent 15j integral over SU(2)^5 in the Regge boundary state is (2π/λ)^6 2^4 (4π)^-8 (e^(iλS) A₊ + e^(-iλS) A₋) + O(λ^-7), with S the Regge action Σ (n_e/2) Θ_e (Coh15jAsymptoticFormula). The EPRL form, for 0 < γ < 1, has four terms with phases ±S and ±γS and remainder O(λ^-13) (EPRLAsymptoticFormula); it follows from two instances of the 15j form by Fubini, as in Barrett–Fairbairn–Hellmann. Equality of the coherent integral with eprlVertex on Livine–Speziale intertwiners is not proven, and the nonsingular Hessian is a hypothesis, as in Barrett et al. The hypotheses hold at the regular 4-simplex (regular_coh15j_hyps, regular_eprl_hyps). Checked numerically against the exact integral at the regular 4-simplex.
-  since: unreleased
+  note: Both propositions are proved (coh15jAsymptoticFormula in MaxSetFinite.lean, eprlAsymptoticFormula in EPRLFormula.lean). For a nondegenerate 4-simplex, spins proportional to its triangle areas with an even spin sum at every node, and a nonsingular Hessian at both critical points, the coherent 15j integral over SU(2)^5 in the Regge boundary state is (2π/λ)^6 2^4 (4π)^-8 (e^(iλS) A₊ + e^(-iλS) A₋) + O(λ^-7), with S the Regge action Σ (n_e/2) Θ_e (Coh15jAsymptoticFormula). The EPRL form, for 0 < γ < 1, has four terms with phases ±S and ±γS and remainder O(λ^-13) (EPRLAsymptoticFormula); it follows from two instances of the 15j form by Fubini, as in Barrett–Fairbairn–Hellmann. BFH's sign factor (−1)^χ is not part of the statement. Equality of the coherent integral with eprlVertex on Livine–Speziale intertwiners is not proven, and the nonsingular Hessian is a hypothesis, as in Barrett et al. At the regular 4-simplex every hypothesis except the Hessian conditions is checked in the kernel (regular_coh15j_hyps, regular_eprl_hyps); the Hessian conditions are checked numerically (Re(−H) positive definite, det(−H₊) ≈ 1185 − 898i for doubled spins 3). Spins not proportional to the areas, or with an odd node sum, violate them (regular_wrong_spins); boundary data that do not glue are exponentially suppressed (coh15j_exp_decay, coh15j_oneData_decay). Checked numerically against the exact integral at the regular 4-simplex (scripts/asymptotics/eprl_asymptotics_check.py).
+  since: 0.1.0
+- id: LL-0048
+  title: "Lorentzian Regge calculus with Sorkin's complex angles: flat Minkowski regions have zero deficit angles and solve the Regge equations"
+  area: Regge
+  file: Lightlike/Regge/Lorentzian/FlatSolution.lean
+  decls: [Lightlike.ReggeLor.IsGeometric4.lorReggeAction_stationary]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: sorkin-2019, location: "Section 9", check: "defect"}
+  review: kernel-checked
+  note: "Sorkin's complex Lorentzian angles, with the complex action weighted by Z = -i on spacelike and 1 on timelike triangles. For a 4D triangulation embedded in Minkowski space, every deficit angle vanishes (IsGeometric4.lorDeficit_eq_zero), the action is differentiable in the squared edge lengths with the Lorentzian Schläfli identity (lorSchlaefli4_finset, hasFDerivAt_lorReggeAction), and the flat configuration is stationary (lorReggeAction_stationary). Euclidean angles on the same Lorentzian data give deficit π, so the Lorentzian angles are needed (wrong_eucAngle_T). Null triangles and tetrahedra are excluded (IsNonNull4); the null cases are not covered. Checked numerically (scripts/regge)."
+  since: 0.2.0
+- id: LL-0049
+  title: The gauge-fixed Ooguri state sum at finite cutoff is invariant under the 4D Pachner 3-3 move, and the gauge rule survives the move
+  area: SpinFoam
+  file: Lightlike/SpinFoam/Move33.lean
+  decls: [Lightlike.SpinFoam.amplitudeGF_move33, Lightlike.SpinFoam.amplitudeGF_move33_gauge]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: ooguri-1992, location: "Abstract", check: "Alexander moves"}
+      - {ref: perez-2013, location: "§6.1.3", check: "BF theory"}
+  review: kernel-checked
+  note: "An identity at finite cutoff: the cutoff conditions make the cutoffs on the faces inside the move non-binding. The gauge rule (IsGauge: the vertices, the edges and the gauge triangles form a collapsible 2-complex) is this library's proposal for the 4D analogue of the maximal tree, not a construction from the literature. Non-vacuity: amplitudeGF_move33_example and amplitudeGF_move33_star1 check every hypothesis in the kernel on closed 4-spheres. A perturbed vertex amplitude breaks the identity (ampBad_breaks_move33). Removal of the cutoff and independence of the gauge set are not proven."
+  since: 0.2.0
+- id: LL-0050
+  title: The gauge-fixed Ooguri state sum at finite cutoff is invariant under the 4D Pachner 2-4 and 4-2 moves, and the gauge rule survives the 2-4 move
+  area: SpinFoam
+  file: Lightlike/SpinFoam/Move24Global.lean
+  decls: [Lightlike.SpinFoam.amplitudeGF_move24, Lightlike.SpinFoam.IsGauge.move24, Lightlike.SpinFoam.amplitudeGF_move24_gauge, Lightlike.SpinFoam.amplitudeGF_move42_gauge]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: ooguri-1992, location: "Abstract", check: "Alexander moves"}
+      - {ref: perez-2013, location: "§6.1.3", check: "BF theory"}
+  review: kernel-checked
+  note: "An identity at finite cutoff: the cutoff conditions make the cutoffs on the faces inside the move non-binding. The 2-4 move adds one triangle to the gauge set (IsGauge.move24); the 4-2 move is the 2-4 move read backwards (the gauge set is given on the complex after the 4-2 move). Non-vacuity: amplitudeGF_move24_example checks every hypothesis of amplitudeGF_move24 in the kernel on the 1-5 subdivision of the boundary of the 5-simplex, with no gauge triangles; the gauge-fixed forms are not instantiated in the kernel. There is no wrong-model check for this move; the perturbed amplitude ampBad is checked against the 3-3 move only (LL-0049). Removal of the cutoff and independence of the gauge set are not proven."
+  since: 0.2.0
+- id: LL-0051
+  title: The gauge-fixed Ooguri state sum at finite cutoff is invariant under the 4D Pachner 1-5 and 5-1 moves, and the gauge rule survives the 1-5 move
+  area: SpinFoam
+  file: Lightlike/SpinFoam/Move15Global.lean
+  decls: [Lightlike.SpinFoam.Move15.amplitudeGF_move15, Lightlike.SpinFoam.Move15.isGauge_move15, Lightlike.SpinFoam.Move15.amplitudeGF_move15_gauge, Lightlike.SpinFoam.Move15.amplitudeGF_move51_gauge]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: ooguri-1992, location: "Abstract", check: "Alexander moves"}
+      - {ref: perez-2013, location: "§6.1.3", check: "BF theory"}
+  review: kernel-checked
+  note: "An identity at finite cutoff (the cutoff conditions Cut15 make the cutoffs on the faces inside the move non-binding). The 1-5 move adds the four triangles {v, a_0, a_j} to the gauge set (isGauge_move15); the 5-1 move is the 1-5 move read backwards (the gauge set is given on the complex after the 5-1 move). Non-vacuity: amplitudeGF_move15_example checks every hypothesis of amplitudeGF_move15 in the kernel on the boundary of the 5-simplex, with no gauge triangles; the gauge-fixed forms are not instantiated in the kernel. There is no wrong-model check for this move; the perturbed amplitude ampBad is checked against the 3-3 move only (LL-0049). Removal of the cutoff and independence of the gauge set are not proven."
+  since: 0.2.0
+- id: LL-0052
+  title: The Barrett–Crane vertex amplitude is a sum of squared 15j symbols, so it is real and non-negative
+  area: SpinFoam
+  file: Lightlike/SpinFoam/BarrettCrane.lean
+  decls: [Lightlike.SpinFoam.BC.bcVertex_eq_sum, Lightlike.SpinFoam.BC.bcVertex_im, Lightlike.SpinFoam.BC.bcVertex_nonneg, Lightlike.SpinFoam.BC.abs_bcVertexBC, Lightlike.SpinFoam.BC.bcVertexBC_nonneg_of_even, Lightlike.SpinFoam.BC.bcVertexBC_nonpos_of_odd]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: barrett-crane-1998, location: "Section IV", check: "New Model"}
+      - {ref: baez-christensen-2002, location: "Abstract", check: "positive or negative"}
+  review: kernel-checked
+  note: The vertex is the contraction along the edges of K₅ of five Barrett–Crane intertwiners Σ_i ι_i ⊗ ι_i, in the orthonormal intertwiner basis, with no dimension factor per tetrahedron and edge amplitude 1 (a normalisation convention). Baez and Christensen's Riemannian 10j symbol, when nonzero, is negative exactly when the ten spins sum to a half-integer; the vertex here is non-negative for all spins, so the two conventions differ by a sign. bcVertexBC, the vertex times (−1) to the sum of the doubled spins, follows their sign rule; its absolute value is the vertex, and it is ≥ 0 for even and ≤ 0 for odd sums (abs_bcVertexBC, bcVertexBC_nonneg_of_even, bcVertexBC_nonpos_of_odd). The sign rule is taken from Baez and Christensen; that bcVertexBC equals their 10j as they define it is not proven. On the triangle of spin j/2 the 15j symbol is 1/√(j + 1) and the vertex 1/(j + 1), so at spin 1/2 the two conventions give −1/2 and +1/2. Non-vacuity is shown by the value 1 at spin 0 and 1/(j + 1)² on the closed loop of spin j/2. No published table of 10j values was found to compare against.
+  since: 0.2.0
+- id: LL-0053
+  title: In dimension 2, Lipschitz-weighted Regge deficit angles of fat vertex stars converge to the integral of the Gauss curvature at rate O(h), given the vertex cells
+  area: Regge
+  file: Lightlike/Regge/CMS/Final.lean
+  decls: [Lightlike.Geodesic.IsRiemMetric.cms_convergence]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: christiansen-2011, location: "Section 1", check: "convergence"}
+  review: kernel-checked
+  note: For a Riemannian metric on a region of the plane, ρ-fat vertex stars of bounded valence with geodesic edge lengths and mesh h, and a Lipschitz weight f, |Σ_v f(v) δ_v − ∫ f K dA| ≤ C h. The angle bound of the stars is derived from fatness (Lightlike.CMS.angle_le_of_fat). The vertex cells, of area ½Σ det2 and covering the region three times outside a boundary layer of area at most b h, are hypotheses; building them from an explicit triangulation is not proven, so this is not yet the theorem of Cheeger, Müller and Schrader (Commun. Math. Phys. 92 (1984) 405), which is in every dimension. As checks, the flat metric gives density 0, the round sphere gives 4π, and the curvature density without the area weight gives 2π², not 4π. Non-vacuity is shown on a single flat star with four neighbours, which meets every hypothesis with an empty region Ω (the cell is its own boundary layer); a non-empty region is LL-0054's grid.
+  since: 0.2.0
+- id: LL-0054
+  title: In dimension 2, Lipschitz-weighted Regge deficit angles of an explicit planar triangulation converge to the integral of the Gauss curvature at rate O(h)
+  area: Regge
+  file: Lightlike/Regge/CMS/Triangulation.lean
+  decls: [Lightlike.Geodesic.IsRiemMetric.cms_convergence_triangulation]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: christiansen-2011, location: "Section 1", check: "convergence"}
+  review: kernel-checked
+  note: "The vertex cells of LL-0053 are built from a triangulation given by vertex positions and corner maps, not assumed. The star cell of an interior vertex is the union of its triangles, its area is ½Σ det2, and the triangles cover the interior region three times outside the triangles with a corner off V. The corners of a star triangle agree with (v, nb v j, nb v (j+1)) up to a permutation of Fin 3; the first version of the statement fixed their order, which left no triangle with all corners in V, and was corrected. The remaining hypotheses are that distinct triangles overlap in null sets, that the star of every interior vertex winds once (its angles sum to 2π), that the number of boundary triangles times h is bounded, that every triangle lies in K, and that edges at the first corner of each triangle have length at most h; the integral runs over the triangles with all three corners in V. Non-vacuity is shown on a 4×4 vertex grid with the 4 central vertices interior, valence 6 and the flat metric (Lightlike.CMS.grid_triangulation_bound), with 2 interior and 16 boundary triangles and an interior region of positive area (Lightlike.CMS.grid_interior_positive); the flat metric makes the integral 0. For a non-flat metric the n×n grids of the unit square, h = 1/n, satisfy the hypotheses with constants independent of n, so the deficit sum is within C/n of the interior integral for every large n (Lightlike.CMS.refining_grid_bound); for the metric dx² + e^{2x}dy² of scalar curvature −2 (Lightlike.CMS.scalar_hyp) that integral is at most −1/4 for every n ≥ 4 (Lightlike.CMS.hyp_refining_grid). The deficit angles there are those of the chart geodesic distances, which are not computed explicitly. As wrong-model checks, a clockwise star fails the fatness hypothesis for every ρ > 0 (Lightlike.CMS.reversed_star_not_fat), and Lightlike.CMS.volume_real_tri_example computes a triangle area of 3, not the 6 of the unhalved determinant. This is the planar case only, not the theorem of Cheeger, Müller and Schrader in every dimension."
+  since: 0.2.0
+- id: LL-0055
+  title: The Dehn–Sommerville relations 2N₃ = 5N₄ and 2N₁ − 3N₂ + 6N₃ − 10N₄ = 0 for closed combinatorial 4-manifolds
+  area: DynamicalTriangulations
+  file: Lightlike/DynamicalTriangulations/DehnSommerville.lean
+  decls: [Lightlike.PL.SComplex.IsClosedCombManifold.two_mul_card_eq, Lightlike.PL.SComplex.IsClosedCombManifold.dehnSommerville]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: ambjorn-jurkiewicz-loll-2001, location: "Section 3.2, eq. (26)", check: "Dehn-Sommerville"}
+  review: kernel-checked
+  note: "N_k is the number of faces with k + 1 vertices of a complex in Lightlike.PL. In every dimension n, a face with n vertices of a closed combinatorial n-manifold lies in exactly two top faces and 2N_{n-1} = (n + 1)N_n; in dimension 4 the second relation follows from the Euler characteristic 0 of the vertex links, which are PL 3-spheres. As checks, the boundary of the 5-simplex is a closed combinatorial 4-manifold with N = (6, 15, 20, 15, 6), computed by the kernel, and two 4-simplices glued along a tetrahedron are not a manifold and violate 2N₃ = 5N₄. These are the combinatorial input of four-dimensional dynamical triangulations; the Einstein–Regge action, causal triangulations and ergodicity of the moves are not formalized here."
+  since: 0.2.0
+- id: LL-0056
+  title: Expansion of the squared geodesic distance about the midpoint to sixth order, uniformly on compact sets, with the order sharp
+  area: Regge
+  file: Lightlike/Regge/Geodesic/Sixth.lean
+  decls: [Lightlike.Geodesic.IsRiemMetric.dist_sq_expansion_midpoint6]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: brewin-2009, location: "Section 9", check: "geodesic"}
+  review: kernel-checked
+  note: "For a Riemannian coordinate metric g on U and a compact K ⊆ U, |d(m − Δ/2, m + Δ/2)² − g_m(Δ,Δ) − Q_m(Δ)| ≤ C‖Δ‖⁶ for m in K and small Δ, with the quartic form Q_m(Δ) = (1/24)∂_Δ∂_Δ g(Δ,Δ) − (1/12)g(Γ(Δ,Δ),Γ(Δ,Δ)); about the midpoint the terms of order three and five vanish. The order is sharp: on the cubic shear the remainder is t⁶/576 along Δ = (t, 0), so it is not O(‖Δ‖⁷) (Lightlike.Geodesic.dist_sq_expansion_midpoint6_sharp), and the expansion is checked exactly there (Lightlike.Geodesic.cubicShear_dist_sq_expansion_midpoint6). Brewin (2009), Section 9, gives the expansion in Riemann normal coordinates and the midpoint form d² = g(m)(Δ, Δ) + O(‖Δ‖⁴); the quartic form Q_m and the sixth-order bound are derived here."
+  since: 0.2.0
+- id: LL-0057
+  title: The chart distance of a Riemannian coordinate metric is Mathlib's Riemannian distance
+  area: Regge
+  file: Lightlike/Regge/Geodesic/Riemannian.lean
+  decls: [Lightlike.Geodesic.IsRiemMetric.riemannianEDist_eq, Lightlike.Geodesic.IsRiemMetric.riemannianEDist_eq_iInf, Lightlike.Geodesic.IsRiemMetric.riemannianEDist_eq_of_isPreconnected]
+  status: proven
+  tier: established
+  source: structural
+  review: kernel-checked
+  note: "For the Riemannian bundle of g on U, Mathlib's riemannianEDist is the infimum of the lengths of admissible curves, with no hypothesis on the points (the empty infimum is ⊤). If an admissible curve joins x and y it equals ENNReal.ofReal (dist g U x y), and on a preconnected U this holds for all x, y. Without an admissible curve riemannianEDist is ⊤ while the chart distance takes the junk value 0. This connects the geodesic results of this library (LL-0045, LL-0056) to Mathlib's Riemannian distance."
+  since: 0.2.0
+- id: LL-0058
+  title: Near the regular 4-simplex the ten triangle areas determine the ten edge lengths
+  area: Regge
+  file: Lightlike/Regge/AreaRegge/Deriv.lean
+  decls: [Lightlike.AreaRegge.area_local_inj, Lightlike.AreaRegge.areaSqMap_local_inj]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: brw-1999, location: "eq. (2)", check: "neighbourhood of the regular four-simplex"}
+  review: kernel-checked
+  note: "The map from the ten squared edge lengths of a 4-simplex to its ten squared triangle areas (Heron's formula in squared lengths) has invertible Jacobian at the regular simplex (all squared lengths 1; jac_regular_isUnit, through an explicit integer inverse of the edge-triangle incidence matrix), so by the inverse function theorem it is injective on a neighbourhood of the regular simplex with open image, and so are the areas themselves. The result is local: at the corner configuration (squared lengths 1 on the edges at one vertex, 2 on the others) the Jacobian is singular (jac_corner_det, with an explicit kernel vector), and corner_pair gives two different length assignments, the corner configuration moved by plus and minus half that kernel vector, both satisfying the Gram-minor criterion IsSimplex, with the same ten areas. IsSimplex is the positivity of the leading principal minors of the Gram matrix; Realization.lean gives both assignments as the squared distances of affinely independent five-point sets in ℝ⁴, so they are Euclidean 4-simplices of non-zero volume (Lightlike.AreaRegge.corner_pair_realized). scripts/regge/area_jacobian_check.py recomputes det Jac = −48/8¹⁰ at the regular simplex, the corner kernel and the corner pair in SymPy."
+  since: 0.2.0
+- id: LL-0059
+  title: The Einstein–Regge action of dynamical triangulations in terms of N₀, N₄ and χ, and its change under the Pachner moves
+  area: DynamicalTriangulations
+  file: Lightlike/DynamicalTriangulations/Action.lean
+  decls: [Lightlike.DynamicalTriangulations.dtAction_eq, Lightlike.DynamicalTriangulations.dtAction_move, Lightlike.DynamicalTriangulations.dtAction_move_one_five]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: ambjorn-jurkiewicz-loll-2001, location: "eq. (42)", check: "standard form of the action"}
+      - {ref: ambjorn-jurkiewicz-loll-2001, location: "Section 3.2, eq. (26)", check: "Dehn-Sommerville"}
+  review: kernel-checked
+  note: "For a closed combinatorial 4-manifold the action −κ₂N₂ + κ₄N₄ equals −2κ₂N₀ + (κ₄ − 2κ₂)N₄ + 2κ₂χ, through N₂ = 2N₀ + 2N₄ − 2χ from the Dehn–Sommerville relations (LL-0055). A move with 2 ≤ #σ and 2 ≤ #τ keeps N₀ and χ and changes the action by (#σ − #τ)(κ₄ − 2κ₂), so the 3-3 move leaves it unchanged; the 1-5 move adds one vertex and changes it by −2κ₂ + 4(κ₄ − 2κ₂) (dtAction_move_one_five). Kernel checks: the boundary of the 5-simplex has action −20κ₂ + 6κ₄ (dtAction_sphere), and the formula without the χ term gives −24κ₂ + 6κ₄ there, the wrong value. Not covered: the Lorentzian action of causal dynamical triangulations, which weighs (4,1) and (3,2) simplices differently. As a non-vacuity check, the 1-5 move of the boundary of the 5-simplex with a new vertex changes the action by −2κ₂ + 4(κ₄ − 2κ₂) (sphere7_dtAction_move), and a 2-4 move on the result by 2(κ₄ − 2κ₂), the formula with #σ = 4 and #τ = 2 (sphere7_dtAction_move24)."
+  since: 0.2.0
+- id: LL-0060
+  title: At a flat SU(2) connection on a 2-complex the twisted coboundary d1 is the differential of the holonomy map, so H² = 0 iff every face-holonomy variation is realised
+  area: SpinFoam
+  file: Lightlike/SpinFoam/TwistedCohomologySU2.lean
+  decls: [Lightlike.SpinFoam.holonomy_hasDerivAt, Lightlike.SpinFoam.face_variation_iff, Lightlike.SpinFoam.h2_trivial_iff_face_variation]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: barrett-naish-guzman-2009, location: "§4.4", check: "Existence criterion"}
+  review: kernel-checked
+  note: "The twisted cochain complex of a finite 2-complex with an edge connection g and a real representation has d1 ∘ d0 = 0 exactly when g is flat and the face boundaries are closed walks (d1_comp_d0, TwistedCohomology.lean); H² = C²/im d1 is trivial iff d1 is onto (d1_surjective_iff). For SU(2) acting on su(2) = ℝ³ by the adjoint action, varying each edge holonomy along exp(tΦ_e)g_e changes the face holonomies at a flat connection with derivative d1 Φ (holonomy_hasDerivAt), so a first-order change X of the face holonomies is realised exactly when X = d1 Φ (face_variation_iff). The tests: d1 is onto for the disc and not onto for the 2-sphere with one edge, and a non-flat connection breaks d1 ∘ d0 = 0 (TwistedCohomologyTests.lean, real multiplicative coefficients). For SU(2) with the adjoint action, the 2-sphere with one edge and two faces at the trivial connection has d1 not onto and H² ≠ 0 (sphere_su2_H2_nontrivial, TwistedCohomologyTests.lean); on the disc at the trivial connection d1 is onto and every face-holonomy variation is realised (disc_su2_d1_surjective, disc_su2_face_variation), so both sides of the criterion are instantiated for SU(2). Barrett and Naish-Guzman's theorem (§4.4) is existence of the partition function as a distribution; only the finite-dimensional step, d1 = the differential of the holonomy map, is proved here, not the measure-theoretic step. Not covered: the link from H² = 0 to the removal of the Ponzano–Regge cut-off."
+  since: 0.2.0
+- id: LL-0061
+  title: "The Racah sum rule, and the Ponzano–Regge sum of Bing's house: summed over the room spins first it is 1, while the simple cut-off at spin 1 truncates a room sum and gives 37/12"
+  area: SpinFoam
+  file: Lightlike/SpinFoam/BingsHouse.lean
+  decls: [Lightlike.SpinFoam.racah_sum, Lightlike.SpinFoam.bingIterated_eq_one, Lightlike.SpinFoam.bingCutoff_two, Lightlike.SpinFoam.bingCutoff_two_ne_iterated]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: barrett-naish-guzman-2009, location: "§2.4", check: "Bing"}
+  review: kernel-checked
+  note: "The sum rule Σ_{a ≤ 2c} (−1)^a (2a+1) {a c c; c c c} = δ_{c0} follows from the orthogonality of the 6j symbols (racah_sum, from sixJSym_orth_all). For Bing's house with two rooms, BNG §2.4 write the Ponzano–Regge sum as Z = Σ_c Σ_{b ≤ 2c} Σ_{a ≤ 2c} (−1)^(a+b) (2a+1)(2b+1)(2c+1) {a c c; c c c}{b c c; c c c}. Its summand stays of order 1 at large spins, so the sum is not absolutely convergent and its value depends on how it is summed; the model takes its value from a regularisation. Two summations are proved here (Lean uses doubled spins). Room spins first: for each central spin c the sums over a and b run to their full range 2c, where each is δ_{c0}, and any cut-off N on c then gives 1 (bingIterated_eq_one). Simple cut-off Λ on all spins (BNG §2.2): at Λ = 1 the room sums for c = 1 stop at a = 1 instead of 2, which drops the term 5/6 (from {2 1 1; 1 1 1} = 1/6), so Z_1 = 1 + 3 (5/6)² = 37/12 (bingCutoff_two, bingCutoff_two_ne_iterated). 37/12 is one partial sum, not a limit: Z_Λ has no limit (BNG fig. 6, numerical; scripts/spinfoam/bing_house_check.py computes Z_Λ exactly up to Λ = 14, with values between 1 and 8.15 that do not settle). The two values therefore show no inconsistency of the Ponzano–Regge model: the simple cut-off truncates the room sums before 2c, which BNG give as the cause of its divergence, and BNG state (not proved here) that the Turaev–Viro regularisation gives 1 for every q. The sum formula is taken from BNG §2.4; it is not derived in Lean from a state sum on a 2-complex. Not covered: that H² = 0 makes the cut-off removable (BNG §4.4)."
+  since: 0.2.0
+- id: LL-0062
+  title: The Einstein–Regge action of 3D dynamical triangulations in terms of N₀ and N₃, and its change under the 3D Pachner moves
+  area: DynamicalTriangulations
+  file: Lightlike/DynamicalTriangulations/Action3.lean
+  decls: [Lightlike.DynamicalTriangulations.dtAction3_eq, Lightlike.DynamicalTriangulations.dtAction3_move23, Lightlike.DynamicalTriangulations.dtAction3_move14]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: ambjorn-jurkiewicz-loll-2001b, location: "eq. (24)", check: "Euclidean Einstein action"}
+      - {ref: ambjorn-jurkiewicz-loll-2001b, location: "eq. (26)", check: "any triangle is shared by two tetrahedra"}
+  review: kernel-checked
+  note: "For a closed combinatorial 3-manifold the Dehn–Sommerville relations give N₂ = 2N₃ and N₁ = N₀ + N₃, so χ = 0 (dehnSommerville3, card_tris, card_edges, euler_eq_zero in DehnSommerville3.lean), and the action −κ₁N₁ + κ₃N₃ equals −κ₁N₀ + (κ₃ − κ₁)N₃. The 2-3 move changes it by κ₃ − κ₁ and the 1-4 move by 3κ₃ − 4κ₁. Checks: after a 1-4 move on the boundary of the 4-simplex a 2-3 move applies and changes the action by κ₃ − κ₁ (dtAction3_S3_14_23); the boundary of the 4-simplex has counts (5, 10, 10, 5) and action −10κ₁ + 5κ₃; two tetrahedra glued along a triangle violate N₂ = 2N₃ and are not a combinatorial manifold (Tests3.lean)."
+  since: 0.2.0
+- id: LL-0063
+  title: In dimension 2, the linearized deficit angles of the diagonal grid converge to the linearized Gauss curvature at rate O(1/n)
+  area: Regge
+  file: Lightlike/Regge/Linear/Converge.lean
+  decls: [Lightlike.Regge.Linear.linearized_regge_converges]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: christiansen-2011, location: "Proposition 3.1", check: "The derivative of the deficit angle"}
+  review: kernel-checked
+  note: "For a symmetric, C³, compactly supported perturbation h of the flat metric of the plane and a C¹ compactly supported weight f, the weighted sum of the linearized vertex deficit angles of the diagonal grid of mesh 1/n differs from ∫ f · linCurv h by at most C/n, where linCurv h = ∂₀∂₁h₀₁ − ½(∂₁²h₀₀ + ∂₀²h₁₁) is the linearized Gauss curvature (linearized_regge_converges). The squared edge lengths are ∫₀¹ (δ + εh)(e, e) dt along the edge vector e, that is ℓ_e²(1 + ε ⨍_e h(t_e, t_e)), Christiansen's degrees of freedom of the Regge interpolant (eq. (5)); this is the first variation of the squared length, not the distance of the perturbed metric; tying them to that distance is open. For a quadratic perturbation the deficit is exactly s² linCurv (linDef_model), and the flat star has deficit 0. Christiansen works in dimension 3; this is the 2D analogue on one grid family, and the Regge action itself is not treated. A perturbation with a positive limit shows non-vacuity, and dropping the ∂₀∂₁h₀₁ term gives the limit 0, which the deficits do not approach. The nonlinear 2D statement, for geodesic edge lengths, is LL-0053 (after Cheeger, Müller and Schrader)."
+  since: 0.2.0
+- id: LL-0064
+  title: Newman's theorem, PL homeomorphic simplicial complexes are stellar equivalent
+  area: PL
+  file: Lightlike/PL/Newman.lean
+  decls: [Lightlike.PL.SComplex.StellarEquiv.of_plHomeomorphic]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: lickorish-1999, location: "Theorem 4.5"}
+  review: kernel-checked
+  note: "Two simplicial complexes whose geometric realisations are PL homeomorphic (a map piecewise linear on one realisation and bijective onto the other) are related by finitely many stellar moves (StellarEquiv.of_plHomeomorphic). The proof shows that every geometric subdivision is stellar equivalent to the complex it subdivides (subdivStellar, Lightlike/PL/SubdivCells.lean), by induction on the dimension: a subdivision is cut out by finitely many affine functionals, the slicings of the two complexes are isomorphic (stellarEquiv_of_cutting), and each complex is stellar equivalent to its slicing. Both complexes must have or both lack the empty face: the complex with no faces is a geometric subdivision of {∅}, both with empty underlying set, but the two are not stellar equivalent (not_stellarEquiv_void_null)."
+  since: 0.2.0
+- id: LL-0065
+  title: Pachner's theorem, PL form, closed combinatorial manifolds are PL homeomorphic iff related by bistellar moves
+  area: PL
+  file: Lightlike/PL/PachnerPL.lean
+  decls: [Lightlike.PL.SComplex.pachner_plHomeomorphic, Lightlike.PL.SComplex.isClosedCombManifold_iff_plHomeomorphic]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: lickorish-1999, location: "Theorem 5.9"}
+  review: kernel-checked
+  note: "For a closed combinatorial n-manifold K and a complex L, both containing the empty face, K and L are PL homeomorphic exactly when they are related by finitely many bistellar moves (pachner_plHomeomorphic). It combines Newman's theorem (LL-0064), which turns a PL homeomorphism into stellar equivalence, with the stellar version of Pachner's theorem (LL-0023), which turns stellar equivalence of a closed combinatorial manifold into bistellar equivalence; conversely, bistellar equivalence gives stellar equivalence (LL-0023), and stellar equivalent complexes are PL homeomorphic (PLHomeomorphic.of_stellarEquiv). The hypothesis is Lickorish's combinatorial manifold: isClosedCombManifold_iff_plHomeomorphic shows that the vertex links being stellar equivalent to boundaries of simplices (the definition used here) is the same as their being PL homeomorphic to them (Lickorish, Definition 2.2), by Newman's theorem (LL-0064) and PLHomeomorphic.of_stellarEquivIn. Check: the boundary of a triangle and its subdivision at a new vertex on an edge are related by bistellar moves, derived through the PL homeomorphism of a stellar subdivision (PLHomeomorphic.starAt)."
+  since: 0.2.0
+- id: LL-0066
+  title: "The tetrahedron integral: the Haar integral over SU(2)^4 of the product of the six edge characters is the square of the 6j symbol of the six edge spins"
+  area: SpinFoam
+  file: Lightlike/SpinFoam/TetrahedronSixJ.lean
+  decls: [Lightlike.SpinFoam.tetraInt_eq_sixJ_sq]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: freidel-louapre-2004, location: "eq. (94)", check: "square of the"}
+  review: kernel-checked
+  note: "For edge spins s (doubled units; edges 01, 02, 03, 12, 13, 23) the integral over SU(2)^4 of Π_e χ_{s e}(g_i g_j⁻¹) equals {s₀₁ s₀₂ s₀₃; s₂₃ s₁₃ s₁₂}² (tetraInt_eq_sixJ_sq). The proof expands each character in the matrix coefficients of the spin representations, integrates them with the Haar measure into products of 3j vectors, and identifies the resulting sum with a 6j symbol up to a sign (ZR_eq). This is Freidel–Louapre's Ponzano–Regge observable of the 1-skeleton of the two-tetrahedron triangulation of S³, eq. (94), read on the dual graph: their group variables sit on the four triangles and the holonomy around an edge is g_i g_j⁻¹ for the two triangles i, j containing it, so the Lean edge ij carries the spin of the edge shared by triangles i and j, and the triads at the Lean vertices are the triangles of the triangulation. Checks: all spins 0 give 1 (tetraInt_zero), all spins 1 (doubled spin 2) give (1/6)² = 1/36 (tetraInt_two), and an inadmissible triad at a vertex gives 0 (tetraInt_eq_zero_of_not_tri, tetraInt_ones_vertex)."
+  since: 0.2.0

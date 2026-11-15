@@ -25,8 +25,8 @@ by `κ(X ∪ u, v)` (the same identity with `C = {u}`, `D = {v}`).
   composite of bistellar moves.
 * `pachner`: **Pachner's theorem, stellar version** - closed combinatorial manifolds are stellar
   equivalent if and only if they are related by bistellar moves. The version with PL
-  homeomorphisms (Lickorish 1999, Theorem 5.9) needs Newman's theorem (milestone PL4); see
-  `Lightlike/PL/Pachner.lean`.
+  homeomorphisms (Lickorish 1999, Theorem 5.9) is `SComplex.pachner_plHomeomorphic` in
+  `Lightlike/PL/PachnerPL.lean`, from this theorem and Newman's theorem.
 * `IsClosedCombManifold.bistellarEquiv_map`, `IsClosedCombManifold.bistellarEquiv_of_iso`:
   renamings and isomorphisms of closed combinatorial manifolds are composites of bistellar
   moves.
@@ -836,8 +836,7 @@ theorem StellarEquivIn.bistellarEquivIn [Infinite V] {n : ℕ} {K L : SComplex V
 iff related by bistellar moves** (no renamings of the vertices are needed). The closed
 combinatorial manifolds are the stellar ones of `Lightlike/PL/Manifold.lean` (Lickorish 1999,
 Definition 3.1). Lickorish's Theorem 5.9 (Newman, Pachner) has "PL homeomorphic" in place of
-"stellar equivalent"; that version needs Newman's theorem (milestone PL4), which is not yet
-formalized. -/
+"stellar equivalent"; that form is `pachner_plHomeomorphic`, from this theorem and Newman's theorem. -/
 theorem pachner {n : ℕ} {K L : SComplex V} (hK : IsClosedCombManifold n K) :
     StellarEquiv K L ↔ BistellarEquiv K L :=
   ⟨fun h => StellarEquivIn.bistellarEquivIn h (isMfdIn_false_iff.2 hK),

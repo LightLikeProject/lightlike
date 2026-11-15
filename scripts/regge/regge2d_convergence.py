@@ -10,6 +10,7 @@ int f K dA for h = 0.08, 0.04, 0.02, 0.01, with f = (1/4 - |x|^2)_+^3. Control: 
 """
 import math
 import random
+import sys
 def lam(x, y): return 2 / (1 + x*x + y*y)
 def P(x, y):
     r2 = x*x + y*y
@@ -75,11 +76,26 @@ def regge_jitter(h, length, jit, seed=1):
         tot += f(*p) * (2*math.pi - ang)
     return tot
 def euclid(p, q): return math.hypot(q[0]-p[0], q[1]-p[1])
+HS = (0.08, 0.04, 0.02, 0.01)
+ok = True
+def report(name, L, E, converging):
+    """Print regge/E on the regular and the jittered mesh at each h and update `ok`: a
+    converging rule must be within 1e-3 of 1 at the finest h and closer to 1 there than at the
+    coarsest h; the Euclidean control must give 0 at every h."""
+    global ok
+    for kind, rule in [("regular", lambda h: regge(h, L)),
+                       ("jitter ", lambda h: regge_jitter(h, L, 0.2))]:
+        r = [rule(h) / E for h in HS]
+        print(f"{name:17s} {kind}", [round(x, 5) for x in r])
+        if converging:
+            ok &= abs(r[-1] - 1) < 1e-3 and abs(r[-1] - 1) < abs(r[0] - 1)
+        else:
+            ok &= max(abs(x) for x in r) < 1e-9
 E = exact()
 print("int f K dA =", E)
-for name, L in [("geodesic", geo), ("segment", seg), ("midpoint", mid), ("euclid (control)", euclid)]:
-    print(f"{name:17s} regular", [round(regge(h, L) / E, 5) for h in (0.08, 0.04, 0.02, 0.01)])
-    print(f"{name:17s} jitter ", [round(regge_jitter(h, L, 0.2) / E, 5) for h in (0.08, 0.04, 0.02, 0.01)])
+for name, L in [("geodesic", geo), ("segment", seg), ("midpoint", mid)]:
+    report(name, L, E, True)
+report("euclid (control)", euclid, E, False)
 
 # Non-constant curvature: g = exp(2 phi) delta, phi = 0.3 x y + 0.2 x^2, K = -0.4 exp(-2 phi)
 # (no closed-form geodesic distance, so only the segment and midpoint rules).
@@ -91,5 +107,6 @@ E2 = sum(f((i+0.5)*hh, (j+0.5)*hh) * Kc((i+0.5)*hh, (j+0.5)*hh) * lam((i+0.5)*hh
          * hh * hh for i in range(-n, n) for j in range(-n, n))
 print("varying K: int f K dA =", E2)
 for name, L in [("segment", seg), ("midpoint", mid)]:
-    print(f"{name:17s} regular", [round(regge(h, L) / E2, 5) for h in (0.08, 0.04, 0.02, 0.01)])
-    print(f"{name:17s} jitter ", [round(regge_jitter(h, L, 0.2) / E2, 5) for h in (0.08, 0.04, 0.02, 0.01)])
+    report(name, L, E2, True)
+print("ALL CHECKS PASS" if ok else "CHECK FAILED")
+sys.exit(0 if ok else 1)

@@ -25,9 +25,9 @@ Lemmas about them, which a proof may use:
 * `PL.SComplex.ext_iff` (`Lightlike/PL/Complex.lean`)
 * `PL.SComplex.mem_faces` (`Lightlike/PL/Complex.lean`)
 * `PL.SComplex.exch_faces` (`Lightlike/PL/Exchange.lean`)
-* `PL.SComplex.StellarEquiv.of_iso` (`Lightlike/PL/Stellar.lean`)
-* `PL.SComplex.sum_filter_superset` (`Lightlike/PL/Euler.lean`)
-* `PL.SComplex.exists_perm_eq_of_iso` (`Lightlike/PL/Stellar.lean`)
+* `PL.SComplex.sum_card_link` (`Lightlike/DynamicalTriangulations/DehnSommerville.lean`)
+* `PL.SComplex.cells_isEmpty` (`Lightlike/PL/Cells.lean`)
+* `PL.SComplex.chain_sup_mem` (`Lightlike/PL/OrderComplex.lean`)
 
 Everything they depend on, with 17 more lemmas, in one block:
 

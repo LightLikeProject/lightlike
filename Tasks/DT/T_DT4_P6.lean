@@ -22,6 +22,7 @@ Definitions the statement names (without the `Lightlike.` prefix), by file:
 
 Lemmas about them, which a proof may use:
 
+* `PL.SComplex.euler_eq_sum_range` (`Lightlike/DynamicalTriangulations/DehnSommerville.lean`)
 * `PL.SComplex.euler_eq_card_verts` (`Lightlike/PL/Euler.lean`)
 * `PL.SComplex.ext` (`Lightlike/PL/Complex.lean`)
 * `PL.SComplex.down` (`Lightlike/PL/Complex.lean`)
@@ -29,7 +30,6 @@ Lemmas about them, which a proof may use:
 * `PL.SComplex.mem_faces` (`Lightlike/PL/Complex.lean`)
 * `PL.SComplex.maxCard_le` (`Lightlike/PL/Invariants.lean`)
 * `PL.SComplex.exch_faces` (`Lightlike/PL/Exchange.lean`)
-* `PL.SComplex.maxCard_map` (`Lightlike/PL/Invariants.lean`)
 
 Everything they depend on, with 17 more lemmas, in one block:
 

@@ -14,9 +14,10 @@ sphere.
 
 These are not Lickorish's *combinatorial* spheres, balls and manifolds (Definition 2.2), which ask
 for a piecewise-linear homeomorphism to the boundary of a simplex or to a simplex instead of a
-stellar equivalence. The two readings agree by Newman's theorem (Lickorish §4), which is milestone
-P3 and not yet formalized. Until then, "PL sphere", "PL ball" and "combinatorial manifold" in this
-library always mean the stellar notions.
+stellar equivalence. The two readings agree by Newman's theorem (Lickorish §4), `StellarEquiv.of_plHomeomorphic` in
+`Lightlike/PL/Newman.lean`. For closed manifolds the agreement is
+`isClosedCombManifold_iff_plHomeomorphic` in `Lightlike/PL/PachnerPL.lean`. In this file, "PL
+sphere", "PL ball" and "combinatorial manifold" mean the stellar notions.
 
 The void complex (no faces, not even `∅`) has no vertices, so it satisfies
 `IsClosedCombManifold n` and `IsCombManifold n` for every `n`. Results that need a nonempty complex

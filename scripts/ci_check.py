@@ -14,8 +14,12 @@
 6. Exploratory imports: no Lean module outside an `Exploratory/` folder imports, directly or
    through other modules, a module inside one. Exempt are the build roots that only collect
    modules (`Lightlike.lean` and `Exploratory.lean` files).
+7. Finite heartbeats: no `maxHeartbeats 0` (unlimited elaboration time and memory) in any Lean
+   source under Lightlike/. Files listed in `scripts/heartbeats_baseline.txt` may keep exactly
+   the listed number of uses until they are bounded; the list may only shrink, so a listed count
+   that no longer matches the file also fails. The list is empty before v0.2.0.
 
-Checks 1-3 and 6 are hard rules (CONTRIBUTING.md); 4 and 5 only print warnings. The axioms of
+Checks 1-3, 6 and 7 are hard rules (CONTRIBUTING.md); 4 and 5 only print warnings. The axioms of
 every declaration are checked by `scripts/AxiomAudit.lean`.
 
 Usage (local):
@@ -83,6 +87,35 @@ def scan_sources() -> list[str]:
                 line = code.count("\n", 0, m.start()) + 1
                 errors.append(f"{f.relative_to(ROOT)}:{line}: forbidden `{name}`")
     print(f"[source] scanned {len(files)} files: {len(errors)} forbidden tokens")
+    return errors
+
+
+UNLIMITED = re.compile(r"\bmaxHeartbeats\s+0\b")
+HEARTBEATS_BASELINE = ROOT / "scripts" / "heartbeats_baseline.txt"
+
+
+def check_heartbeats(root: pathlib.Path = ROOT, baseline_path: pathlib.Path = HEARTBEATS_BASELINE
+                     ) -> list[str]:
+    """Check 7: count `maxHeartbeats 0` per file (comments ignored) against the baseline."""
+    found = {}
+    for f in sorted((root / "Lightlike").rglob("*.lean")) + [root / "Lightlike.lean"]:
+        if not f.exists():
+            continue
+        n = len(UNLIMITED.findall(strip_comments(f.read_text(encoding="utf-8"))))
+        if n:
+            found[str(f.relative_to(root))] = n
+    baseline = read_baseline(baseline_path)
+    errors = []
+    for rel in sorted(set(found) | set(baseline)):
+        have, allowed = found.get(rel, 0), baseline.get(rel, 0)
+        if have > allowed:
+            errors.append(f"{rel}: {have} uses of `maxHeartbeats 0` (allowed {allowed}); "
+                          "set a finite limit, e.g. `set_option maxHeartbeats 400000 in`")
+        elif have < allowed:
+            errors.append(f"{rel}: {have} uses of `maxHeartbeats 0`, baseline says {allowed}; "
+                          f"lower its line in {baseline_path.relative_to(root)}")
+    print(f"[heartbeats] {sum(found.values())} uses of `maxHeartbeats 0` in {len(found)} files "
+          f"(baseline {sum(baseline.values())})")
     return errors
 
 
@@ -218,6 +251,7 @@ def main() -> int:
     errors = scan_sources()
     errors += check_reachability()
     errors += check_exploratory_imports()
+    errors += check_heartbeats()
     for w in check_test_coverage()[:None if args.list_untested else 0]:
         print("WARN not mentioned by any test file:", w)
     if args.build_log:

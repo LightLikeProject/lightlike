@@ -149,6 +149,10 @@ references:
     cite: "J. W. Barrett, R. J. Dowdall, W. J. Fairbairn, H. Gomes and F. Hellmann, Asymptotic analysis of the EPRL four-simplex amplitude, J. Math. Phys. 50 (2009) 112504"
     title: "Asymptotic analysis of the EPRL four-simplex amplitude"
     arxiv: "0902.1170"
+  bfh-2010:
+    cite: "J. W. Barrett, W. J. Fairbairn and F. Hellmann, Quantum gravity asymptotics from the SU(2) 15j symbol, Int. J. Mod. Phys. A 25 (2010) 2897"
+    title: "Quantum gravity asymptotics from the SU(2) 15j symbol"
+    arxiv: "0912.4907"
   bdfhp-2010:
     cite: "J. W. Barrett, R. J. Dowdall, W. J. Fairbairn, F. Hellmann and R. Pereira, Lorentzian spin foam amplitudes: graphical calculus and asymptotics, Class. Quantum Grav. 27 (2010) 165009"
     title: "Lorentzian spin foam amplitudes: graphical calculus and asymptotics"
@@ -161,6 +165,10 @@ references:
     cite: "M. P. Reisenberger, On relativistic spin network vertices, J. Math. Phys. 40 (1999) 2046-2054"
     title: "On relativistic spin network vertices"
     arxiv: gr-qc/9809067
+  baez-christensen-2002:
+    cite: "J. C. Baez and J. D. Christensen, Positivity of spin foam amplitudes, Class. Quantum Grav. 19 (2002) 2291-2306"
+    title: "Positivity of spin foam amplitudes"
+    arxiv: gr-qc/0110044
   barrett-naish-guzman-2009:
     cite: "J. W. Barrett and I. Naish-Guzman, The Ponzano-Regge model, Class. Quantum Grav. 26 (2009) 155014"
     title: "The Ponzano-Regge model"
@@ -684,6 +692,10 @@ references:
     cite: "J. Ambjorn, J. Jurkiewicz and R. Loll, Dynamically Triangulating Lorentzian Quantum Gravity, Nucl.Phys. B610 (2001) 347-382"
     title: "Dynamically Triangulating Lorentzian Quantum Gravity"
     arxiv: "hep-th/0105267"
+  ambjorn-jurkiewicz-loll-2001b:
+    cite: "J. Ambjorn, J. Jurkiewicz and R. Loll, Non-perturbative 3d Lorentzian Quantum Gravity, Phys.Rev. D64 (2001) 044011"
+    title: "Non-perturbative 3d Lorentzian Quantum Gravity"
+    arxiv: "hep-th/0011276"
   durhuus-jonsson-1995:
     cite: "Bergfinnur Durhuus and Thordur Jonsson, Remarks on the entropy of 3-manifolds, Nucl.Phys. B445 (1995) 182-192"
     title: "Remarks on the entropy of 3-manifolds"

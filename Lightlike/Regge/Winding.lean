@@ -17,6 +17,9 @@ and `β` consists of the directions `τ` with `(cos τ, sin τ)` a positive comb
   direction as `α 0`, no two consecutive ones parallel, and the open wedges between consecutive
   directions pairwise disjoint. Then the angles between consecutive directions,
   `arccos (cos (α (i+1) - α i))`, add up to `2π`.
+* `exists_lift_of_pos`: under the same hypotheses, with the first wedge turning positively, the
+  directions lift to angles `A 0 < A 1 < ⋯ < A n = A 0 + 2π` with steps less than `π`. The
+  Lorentzian full turn (`Lightlike/Regge/Lorentzian/Angle.lean`) counts light rays along this lift.
 
 The proof: no overlap forces all wedges to turn the same way (two neighbours turning opposite ways
 overlap next to their common direction). The angles then add up to `2π m` with `m ≥ 1`, because
@@ -138,15 +141,17 @@ theorem winding_core {n : ℕ} (hn : 0 < n) (A : ℕ → ℝ)
   push_cast
   ring
 
-/-- The first step turns positively: the case of `sum_arccos_cos_eq_two_pi` with
-`sin (α 1 - α 0) > 0`. -/
-theorem sum_arccos_cos_eq_two_pi_of_pos {n : ℕ} (hn : 0 < n) (α : ℕ → ℝ)
+/-- **Lifting the directions once around.** Under the hypotheses of `sum_arccos_cos_eq_two_pi`,
+with the first step turning positively (`sin (α 1 - α 0) > 0`), there are angles `A k` pointing in
+the directions `α k` that increase by less than `π` at each step and by exactly `2π` in total. -/
+theorem exists_lift_of_pos {n : ℕ} (hn : 0 < n) (α : ℕ → ℝ)
     (hnd : ∀ i < n, sin (α (i + 1) - α i) ≠ 0)
     (hclose : cos (α n) = cos (α 0) ∧ sin (α n) = sin (α 0))
     (hdisj : ∀ i < n, ∀ j < n, i ≠ j → ∀ τ, InWedge (α i) (α (i + 1)) τ →
       ¬ InWedge (α j) (α (j + 1)) τ)
     (h0 : 0 < sin (α 1 - α 0)) :
-    ∑ i ∈ range n, arccos (cos (α (i + 1) - α i)) = 2 * π := by
+    ∃ A : ℕ → ℝ, (∀ k, cos (A k) = cos (α k) ∧ sin (A k) = sin (α k)) ∧
+      (∀ i < n, A i < A (i + 1) ∧ A (i + 1) < A i + π) ∧ A n - A 0 = 2 * π := by
   have h2π : (0 : ℝ) < 2 * π := by positivity
   -- the turning angle of step `i`, reduced to `(-π, π]`
   set φ : ℕ → ℝ := fun i => toIocMod h2π (-π) (α (i + 1) - α i) with hφ_def
@@ -249,20 +254,34 @@ theorem sum_arccos_cos_eq_two_pi_of_pos {n : ℕ} (hn : 0 < n) (α : ℕ → ℝ
     | succ k ih =>
       rw [hAstep, ← (hrot k).1, ← (hrot k).2]
       simp only [cos_add, sin_add, ih.1, ih.2, and_self]
-  have hw := winding_core hn A
-    (fun i hi => ⟨by rw [hAstep]; linarith [hφpos i hi],
-      by rw [hAstep]; linarith [lt_of_le_of_ne (hφmem i).2 (hφne i hi).2]⟩)
+  have hAst : ∀ i < n, A i < A (i + 1) ∧ A (i + 1) < A i + π := fun i hi =>
+    ⟨by rw [hAstep]; linarith [hφpos i hi],
+      by rw [hAstep]; linarith [lt_of_le_of_ne (hφmem i).2 (hφne i hi).2]⟩
+  have hw := winding_core hn A hAst
     (by
       rw [cos_sub, (hAdir n).1, (hAdir n).2, (hAdir 0).1, (hAdir 0).2, hclose.1, hclose.2]
       simpa only [sq] using cos_sq_add_sin_sq (α 0))
     (fun i hi j hj hij τ h1 h2 => hdisj i hi j hj hij τ
       (h1.congr (hAdir i) (hAdir (i + 1)) ⟨rfl, rfl⟩) (h2.congr (hAdir j) (hAdir (j + 1)) ⟨rfl, rfl⟩))
-  have harc : ∀ i < n, arccos (cos (α (i + 1) - α i)) = φ i := by
+  exact ⟨A, hAdir, hAst, hw⟩
+
+/-- The first step turns positively: the case of `sum_arccos_cos_eq_two_pi` with
+`sin (α 1 - α 0) > 0`. -/
+theorem sum_arccos_cos_eq_two_pi_of_pos {n : ℕ} (hn : 0 < n) (α : ℕ → ℝ)
+    (hnd : ∀ i < n, sin (α (i + 1) - α i) ≠ 0)
+    (hclose : cos (α n) = cos (α 0) ∧ sin (α n) = sin (α 0))
+    (hdisj : ∀ i < n, ∀ j < n, i ≠ j → ∀ τ, InWedge (α i) (α (i + 1)) τ →
+      ¬ InWedge (α j) (α (j + 1)) τ)
+    (h0 : 0 < sin (α 1 - α 0)) :
+    ∑ i ∈ range n, arccos (cos (α (i + 1) - α i)) = 2 * π := by
+  obtain ⟨A, hAdir, hAst, hw⟩ := exists_lift_of_pos hn α hnd hclose hdisj h0
+  have harc : ∀ i < n, arccos (cos (α (i + 1) - α i)) = A (i + 1) - A i := by
     intro i hi
-    rw [← (hcs i).1, arccos_cos (hφpos i hi).le (hφmem i).2]
-  rw [sum_congr rfl fun i hi => harc i (mem_range.mp hi)]
-  have : A n - A 0 = ∑ i ∈ range n, φ i := by simp [hA_def]
-  rw [← this, hw]
+    rw [show cos (α (i + 1) - α i) = cos (A (i + 1) - A i) by
+        rw [cos_sub, cos_sub, (hAdir i).1, (hAdir i).2, (hAdir (i + 1)).1, (hAdir (i + 1)).2],
+      arccos_cos (by linarith [(hAst i hi).1]) (by linarith [(hAst i hi).2])]
+  rw [sum_congr rfl fun i hi => harc i (mem_range.mp hi), sum_range_sub (fun k => A k)]
+  exact hw
 
 /-- **Non-overlapping wedges around a point add up to a full turn.** Let `α 0, …, α n` (`n ≥ 1`)
 be directions in the plane with `α n` the same direction as `α 0`, no two consecutive ones

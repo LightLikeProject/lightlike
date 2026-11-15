@@ -24,14 +24,14 @@ Definitions the statement names (without the `Lightlike.` prefix), by file:
 
 Lemmas about them, which a proof may use:
 
-* `PL.SComplex.IsClosedCombManifold.two_mul_card_eq` (`Tasks/DT/T_DT4_P3.lean`)
-* `PL.SComplex.IsClosedCombManifold.dehnSommerville_link` (`Tasks/DT/T_DT4_P7.lean`)
+* `PL.SComplex.IsClosedCombManifold.two_mul_card_eq` (`Lightlike/DynamicalTriangulations/DehnSommerville.lean`)
+* `PL.SComplex.IsClosedCombManifold.dehnSommerville_link` (`Lightlike/DynamicalTriangulations/DehnSommerville.lean`)
+* `PL.SComplex.IsClosedCombManifold.card_cofaces` (`Lightlike/DynamicalTriangulations/DehnSommerville.lean`)
+* `PL.SComplex.IsClosedCombManifold.dehnSommerville3` (`Lightlike/DynamicalTriangulations/DehnSommerville3.lean`)
+* `PL.SComplex.IsClosedCombManifold.dehnSommerville3_link` (`Lightlike/DynamicalTriangulations/DehnSommerville3.lean`)
 * `PL.SComplex.IsClosedCombManifold.bistellarEquiv_of_iso` (`Lightlike/PL/PachnerMain.lean`)
 * `PL.SComplex.ext` (`Lightlike/PL/Complex.lean`)
 * `PL.SComplex.down` (`Lightlike/PL/Complex.lean`)
-* `PL.SComplex.ext_iff` (`Lightlike/PL/Complex.lean`)
-* `PL.SComplex.pachner` (`Lightlike/PL/PachnerMain.lean`)
-* `PL.SComplex.mem_faces` (`Lightlike/PL/Complex.lean`)
 
 Everything they depend on, with 19 more lemmas, in one block:
 

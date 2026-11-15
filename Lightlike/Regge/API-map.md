@@ -25,13 +25,80 @@ embedded in `ℝ³` solve these equations [7].
 In four dimensions the dihedral angles of a 4-simplex are computed from its ten edge lengths and
 agree with Euclidean geometry [8], deficit angles are defined at triangles [9], Schläfli's identity
 holds [10], the Regge equations are the vanishing of the interior deficits [11], and flat
-triangulations solve them [12]. The convergence of the Regge action to the Einstein–Hilbert action
-under refinement is not yet formalized. [TODO]
+triangulations solve them [12].
+
+In dimension 2, for a Riemannian metric on a region of the plane, the deficit angles of fat vertex
+stars of bounded valence, with geodesic edge lengths and weighted by a Lipschitz function, differ
+from the integral of the function against the Gauss curvature by at most a constant times the mesh
+size [17]; Cheeger, Müller and Schrader prove convergence of the curvature in every dimension {2}.
+The angle bound of the stars follows from fatness. For an explicit triangulation, given by vertex
+positions and corner maps, the vertex cells are built from the triangles, and the same bound holds
+against the integral over the triangles with all corners interior [18]. A 4×4 grid with four
+interior vertices meets every hypothesis with an interior region of positive area, and a clockwise
+star fails the fatness hypothesis [19]. The bound is stated for every Riemannian metric on the
+plane [19]. For the flat metric its integral term is 0. The hyperbolic plane `dx² + e^{2x} dy²`
+is a Riemannian metric with scalar curvature `-2`, computed from the library's curvature
+definitions [25]; on the same grid the integral over the interior triangles is strictly
+negative, and the bound holds [26]. The `n × n` grids of the unit square, with mesh `1/n`, form
+a refining family: the hypotheses hold for every `n` with constants independent of `n`, so one
+constant serves all `n`, and on the hyperbolic plane the integral term is at most `-1/4` for
+`n ≥ 4` [27]. The round unit 2-sphere in the chart `(θ, φ)`, `dθ² + sin² θ dφ²` on the strip
+`0 < θ < π`, is a Riemannian metric with scalar curvature `2`, and the curvature integral over the
+chart cell `(0, π) × (0, 2π)` is `4π` [37]. The convergence of the Regge action in higher
+dimensions is not yet formalized.
+
+In the linearized theory of dimension 2, the edge data of a perturbation `h` of the flat metric
+are the first variation `∫_e h(τ,τ)` of the squared lengths, as in the finite-element Regge
+calculus {4}{5}. The first variation of the angle of a triangle is explicit [28]. The linearized
+vertex deficit of the diagonal grid star is the derivative of `2π` minus the sum of the angles,
+and vanishes for the flat star [29]. For a quadratic perturbation it equals the mesh squared
+times `∂₀∂₁ h₀₁ - ½(∂₁² h₀₀ + ∂₀² h₁₁)` exactly, which is half of `∂ᵢ∂ⱼ hᵢⱼ - Δ tr h` [30]. If
+the entries of `h` are within `K s³` of their quadratic Taylor polynomials on the cube of radius
+`s`, the error is at most `336 K s³` [31]; smooth compactly supported functions satisfy this
+with one `K` for all base points [32]. The Riemann sums of a Lipschitz compactly supported
+function over the lattice of mesh `1/n` differ from its integral by at most a constant over `n`
+[33]. Together, for smooth compactly supported symmetric `h` and a `C¹` weight `f`, the weighted
+sum of the linearized vertex deficits differs from the integral of `f` times the linearized
+curvature by at most a constant over `n` [34]. A concrete `h` and weight give a positive limit,
+and without the `∂₀∂₁ h₀₁` term the limit would be `0` and is not approached [35]. The distance
+of the hyperbolic metric along an `x`-line is the coordinate difference [36].
 
 For a Riemannian metric in a chart, geodesics exist locally and are unique, and the exponential
 map satisfies `‖exp_x v − x − v‖ ≤ C‖v‖²` [13]. The squared geodesic distance has an explicit
 expansion to fifth order in the displacement, uniformly on compact sets [14], and an expansion to
-sixth order, in which the terms of odd order vanish about the midpoint of the two points [15].
+sixth order, in which the terms of odd order vanish about the midpoint of the two points [15];
+the order six is sharp [20]. The chart distance is Mathlib's Riemannian distance `riemannianEDist`
+for the Riemannian bundle of the metric whenever an admissible curve joins the two points [21].
+
+In area Regge calculus {3} the ten triangle areas of a 4-simplex replace its ten edge lengths. The
+squared area of a triangle is Heron's formula in the squared edge lengths, and its first-order
+change is given by an explicit Jacobian, with the second-order term exact since the formula is
+quadratic [22]. The Jacobian is the Fréchet derivative of the squared-area map [23]. At the regular
+4-simplex it is invertible, with an explicit inverse [22]; hence the squared areas, and the areas,
+determine the squared lengths in a neighbourhood of the regular simplex [23]. The areas do not
+always determine the lengths: at the simplex with `s₀ᵢ = 1`, `sᵢⱼ = 2` the Jacobian is singular
+[22], and two different Euclidean 4-simplices (Gram matrices positive definite by the leading
+minors) have the same ten areas [22]; both are realised by explicit affinely independent points
+of `ℝ⁴`, so they are actual simplices of non-zero volume [24]. Numerical cross-check:
+`scripts/regge/area_jacobian_check.py`.
+
+In dimension 3, on the Kuhn triangulation of the cube grid (six congruent tetrahedra per cube, the
+orthoscheme `0, e₁, e₁+e₂, e₁+e₂+e₃` and its coordinate permutations; seven edge classes and 36
+incidences of a tetrahedron with one of its edges), the dihedral angle as a function of the six
+squared lengths is differentiable along affine lines with an explicit derivative [38]. The six
+dihedral angles of the orthoscheme are `π/4, π/2, π/3, π/2, π/2, π/4`, and the angles at the
+hinges of each of the seven edge classes add up to `2π` [39]. Under the first-order squared-length
+variation `-(1/3) Rm(y, z, y, z)` of an algebraic curvature tensor of dimension 3, the sum over the
+36 incidences of the edge length times the variation of the dihedral angle is `-R/2`; weighting by
+the squared length, or by `1`, gives a different value [39]. Numerical cross-check:
+`scripts/regge/regge3d_core.py`. In a diagonal chart `diag(a², b², c²)` the identity holds exactly
+for any symmetric Ricci tensor: the Gram identity and the geometry of one incidence [40] make the
+edge length times the variation of the dihedral angle a rational function of the squared lengths,
+with a closed form for each of the 36 incidences [41], [42], [43], [44], [45], [46], and the closed
+forms sum to `-R·abc/2` [47]. An example chart checks the value and that it differs from the
+orthonormal one [47]. The squared dihedral angle of a tetrahedron is smooth on the nondegenerate edge lengths and has a uniform second-order Taylor bound on compact sets of them [48], and it is unchanged when all squared lengths are multiplied by the same positive number [49]. The angle is also `C³` there, and a `C³` function on an open subset of a proper normed space has a Taylor remainder of third order after the Hessian term, uniformly on compact sets, which gives a uniform third-order expansion of the dihedral angle [53] (the one-dimensional bound it rests on needs derivatives only on the unit interval [52]). Along a curve `L + ε c + ε² ρ` of admissible squared lengths the angle has an expansion to order `ε²` with a uniform cubic remainder, also after the common rescaling `ε²` of the lengths [54]. For a star of simplices around an edge class, given as a named hypothesis `JetStarCore` that the angles of the flat star sum to `2π`, that the first-order coefficients sum to zero and that the second-order coefficients, weighted by the edge length, sum to `-(R/2)√det g`, the class sum of the angles at scale `ε` is `2π + ε² c₂` up to `M ε³` [54]. A function with a uniform `C/N` error against a Lipschitz limit has a lattice sum within `(C + Lf)/N` of the integral of the limit over the unit cube [55]. In any dimension the squared geodesic distance between two points near a vertex equals, up to a uniform error of fifth order in the mesh size, a polynomial in the metric and its first two derivatives at the vertex [50]. For the Euclidean metric the polynomial reproduces the squared distance exactly, and a polynomial without its leading term does not [51]. For a general linear chart the identity is checked numerically
+(`scripts/regge/regge3d_affine.py`), not proven, and the convergence of the Regge action itself in
+dimension 3 is not yet formalized.
 
 A 2-complex with boundary is a disc in the combinatorial sense exactly when it is an intrinsic
 triangulated disc [16].
@@ -57,7 +124,90 @@ triangulated disc [16].
 15. Lightlike/Regge/Geodesic/Sixth.lean - `Geodesic.IsRiemMetric.dist_sq_expansion6`,
     `Geodesic.IsRiemMetric.dist_sq_expansion_midpoint6`
 16. Lightlike/Regge/Disc.lean - `Regge.isDisc2_iff_isSurfaceDisc`
+17. Lightlike/Regge/CMS/Final.lean - `Geodesic.IsRiemMetric.cms_convergence`
+18. Lightlike/Regge/CMS/Triangulation.lean - `Geodesic.IsRiemMetric.cms_convergence_triangulation`
+19. Lightlike/Regge/CMS/GridExample.lean - `CMS.grid_bound_general`,
+    `CMS.grid_triangulation_bound`, `CMS.grid_interior_positive`, `CMS.reversed_star_not_fat`
+20. Lightlike/Regge/Geodesic/Tests.lean - `Geodesic.dist_sq_expansion_midpoint6_sharp`,
+    `Geodesic.cubicShear_dist_sq_expansion_midpoint6`
+21. Lightlike/Regge/Geodesic/Riemannian.lean - `Geodesic.IsRiemMetric.riemannianEDist_eq`,
+    `Geodesic.IsRiemMetric.riemannianEDist_eq_iInf`,
+    `Geodesic.IsRiemMetric.riemannianEDist_eq_of_isPreconnected`
+22. Lightlike/Regge/AreaRegge/Basic.lean - `AreaRegge.areaSq_add`, `AreaRegge.triAreaSq_right`,
+    `AreaRegge.triAreaSq_wrong`, `AreaRegge.jac_regular_isUnit`, `AreaRegge.jac_corner_kernel`,
+    `AreaRegge.jac_corner_det`, `AreaRegge.corner_pair`
+23. Lightlike/Regge/AreaRegge/Deriv.lean - `AreaRegge.hasFDerivAt_areaSqMap`,
+    `AreaRegge.hasStrictFDerivAt_areaSqMap`, `AreaRegge.areaSqMap_local_inj`,
+    `AreaRegge.area_local_inj`
+24. Lightlike/Regge/AreaRegge/Realization.lean - `AreaRegge.corner_pair_realized`,
+    `AreaRegge.realizes_plus`, `AreaRegge.realizes_minus`
+25. Lightlike/Regge/CMS/Hyperbolic.lean - `CMS.scalar_hyp`, `CMS.isRiemMetric_hyp`
+26. Lightlike/Regge/CMS/HyperbolicGrid.lean - `CMS.hyp_integral_neg`, `CMS.hyp_grid_bound`
+27. Lightlike/Regge/CMS/RefiningGrid.lean - `CMS.refining_grid_bound`,
+    `CMS.hyp_refining_grid`
+28. Lightlike/Regge/Linear/AngleDeriv.lean - `Regge.Linear.hasDerivAt_triAngle`
+29. Lightlike/Regge/Linear/Deficit.lean - `Regge.Linear.hasDerivAt_vertexDeficit`,
+    `Regge.Linear.flat_vertexDeficit`
+30. Lightlike/Regge/Linear/Model.lean - `Regge.Linear.linDef_model`
+31. Lightlike/Regge/Linear/Local.lean - `Regge.Linear.linDef_taylor`
+32. Lightlike/Regge/Linear/Taylor.lean - `Regge.Linear.taylor_bound`
+33. Lightlike/Regge/Linear/Riemann.lean - `Regge.Linear.riemann_sum`
+34. Lightlike/Regge/Linear/Converge.lean - `Regge.Linear.linearized_regge_converges`
+35. Lightlike/Regge/Linear/Tests.lean - `Regge.Linear.nonvacuity`, `Regge.Linear.wrong_model_fails`
+36. Lightlike/Regge/CMS/HyperbolicDist.lean - `CMS.dist_hyp_xline`
+37. Lightlike/Regge/CMS/Sphere.lean - `CMS.isRiemMetric_sph`, `CMS.scalar_sph`,
+    `CMS.sph_integral`
+38. Lightlike/Regge/Conv3/DihedralDeriv.lean - `Regge.Conv3.hasDerivAt_dihSq`
+39. Lightlike/Regge/Conv3/KuhnCore.lean - `Regge.Conv3.h01_angle`, `Regge.Conv3.star_angle_sum`,
+    `Regge.Conv3.kuhn_regge_core`, `Regge.Conv3.wrong_weight_sq`,
+    `Regge.Conv3.wrong_weight_one`, `Regge.Conv3.kuhn_regge_core_identity`
+40. Lightlike/Regge/Conv3/ChartBase.lean - `Regge.Conv3.gram_identity`, `Regge.Conv3.inc_geom`
+41. Lightlike/Regge/Conv3/ChartCases0.lean - `Regge.Conv3.ldth_cf00`, `Regge.Conv3.ldth_cf01`,
+    `Regge.Conv3.ldth_cf02`, `Regge.Conv3.ldth_cf03`, `Regge.Conv3.ldth_cf04`,
+    `Regge.Conv3.ldth_cf05`
+42. Lightlike/Regge/Conv3/ChartCases1.lean - `Regge.Conv3.ldth_cf10`, `Regge.Conv3.ldth_cf11`,
+    `Regge.Conv3.ldth_cf12`, `Regge.Conv3.ldth_cf13`, `Regge.Conv3.ldth_cf14`,
+    `Regge.Conv3.ldth_cf15`
+43. Lightlike/Regge/Conv3/ChartCases2.lean - `Regge.Conv3.ldth_cf20`, `Regge.Conv3.ldth_cf21`,
+    `Regge.Conv3.ldth_cf22`, `Regge.Conv3.ldth_cf23`, `Regge.Conv3.ldth_cf24`,
+    `Regge.Conv3.ldth_cf25`
+44. Lightlike/Regge/Conv3/ChartCases3.lean - `Regge.Conv3.ldth_cf30`, `Regge.Conv3.ldth_cf31`,
+    `Regge.Conv3.ldth_cf32`, `Regge.Conv3.ldth_cf33`, `Regge.Conv3.ldth_cf34`,
+    `Regge.Conv3.ldth_cf35`
+45. Lightlike/Regge/Conv3/ChartCases4.lean - `Regge.Conv3.ldth_cf40`, `Regge.Conv3.ldth_cf41`,
+    `Regge.Conv3.ldth_cf42`, `Regge.Conv3.ldth_cf43`, `Regge.Conv3.ldth_cf44`,
+    `Regge.Conv3.ldth_cf45`
+46. Lightlike/Regge/Conv3/ChartCases5.lean - `Regge.Conv3.ldth_cf50`, `Regge.Conv3.ldth_cf51`,
+    `Regge.Conv3.ldth_cf52`, `Regge.Conv3.ldth_cf53`, `Regge.Conv3.ldth_cf54`,
+    `Regge.Conv3.ldth_cf55`
+47. Lightlike/Regge/Conv3/ChartCore.lean - `Regge.Conv3.ldth_eq_cf`, `Regge.Conv3.cf_sum`,
+    `Regge.Conv3.diag_core`, `Regge.Conv3.diag_core_example`,
+    `Regge.Conv3.diag_core_ne_orthonormal`
+48. Lightlike/Regge/Conv3/DihedralTaylor.lean - `Regge.Conv3.contDiffAt_Dh`,
+    `Regge.Conv3.isOpen_valid`, `Regge.Conv3.Dh_smul`, `Regge.Conv3.hasDerivAt_Dsq`,
+    `Regge.Conv3.dihSq_taylor`
+49. Lightlike/Regge/Conv3/DihedralScale.lean - `Regge.Conv3.cosSq_smul`,
+    `Regge.Conv3.dihSq_smul`
+50. Lightlike/Regge/Conv3/EdgePoly.lean - `Geodesic.edgePoly`,
+    `Geodesic.IsRiemMetric.edge_sq_poly`
+51. Lightlike/Regge/Conv3/EdgePolyTests.lean - `Geodesic.edgePoly_euclid`,
+    `Geodesic.edgePoly_euclid_exact`, `Geodesic.edgePoly_euclid_wrong`
+52. Lightlike/Regge/Linear/Taylor1DOn.lean - `Regge.Linear.abs_le_of_deriv_le_on`,
+    `Regge.Linear.taylor2_line_on`
+53. Lightlike/Regge/Conv3/DihedralTaylor2.lean - `Regge.Conv3.taylor3_uniform`,
+    `Regge.Conv3.contDiffAt_Dsq`, `Regge.Conv3.fderiv_Dsq`, `Regge.Conv3.dihSq_taylor3`
+54. Lightlike/Regge/Conv3/JetCore.lean - `Regge.Conv3.dihSq_curve_expansion`,
+    `Regge.Conv3.dihSq_scaled_expansion`, `Regge.Conv3.class_sum_expansion`,
+    `Regge.Conv3.JetStarCore`, `Regge.Conv3.JetStarCore.class_expansion`
+55. Lightlike/Regge/Conv3/LatticeSum.lean - `Regge.Conv3.riemann_sum_lipschitz`,
+    `Regge.Conv3.lattice_sum_converges`
 
 ## References
 
 1. T. Regge, General relativity without coordinates, *Nuovo Cimento* 19 (1961) 558.
+2. J. Cheeger, W. Müller, R. Schrader, On the curvature of piecewise flat spaces, *Commun. Math.
+   Phys.* 92 (1984) 405.
+3. J. W. Barrett, M. Roček, R. M. Williams, A note on area variables in Regge calculus,
+   *Class. Quantum Grav.* 16 (1999) 1373.
+4. M. Roček, R. M. Williams, The quantization of Regge calculus, *Z. Phys. C* 21 (1981) 371.
+5. S. H. Christiansen, On the linearization of Regge calculus, *Numer. Math.* 119 (2011) 613.

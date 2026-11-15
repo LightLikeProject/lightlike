@@ -13,6 +13,7 @@ x_pq, ..., x_rs it checks:
      edge, i.e. dropping one term) is NOT zero.
 """
 import itertools
+import sys
 import sympy as sp
 
 V = ['p', 'q', 'r', 's']
@@ -66,3 +67,4 @@ ctrl = schlaefli_sum(x('p', 'q'), drop=('r', 's'))
 print(f"control (one edge dropped), d/dx_pq: sum is zero? {ctrl == 0}")
 ok &= (ctrl != 0)
 print("ALL CHECKS PASS" if ok else "CHECK FAILED")
+sys.exit(0 if ok else 1)

@@ -21,14 +21,14 @@ Definitions the statement names (without the `Lightlike.` prefix), by file:
 
 Lemmas about them, which a proof may use:
 
+* `PL.SComplex.link_join` (`Lightlike/PL/Boundary.lean`)
 * `PL.SComplex.link_exch` (`Lightlike/PL/Exchange.lean`)
 * `PL.octahedron_link_of` (`Lightlike/PL/Tests.lean`)
 * `PL.SComplex.starAt_weld` (`Lightlike/PL/Stellar.lean`)
 * `PL.SComplex.link_union_eq` (`Lightlike/PL/PachnerMain.lean`)
 * `PL.SComplex.isExch_starAt` (`Lightlike/PL/Exchange.lean`)
-* `PL.SComplex.exch_eq_starAt` (`Lightlike/PL/Exchange.lean`)
 * `PL.SComplex.link_cone_apex` (`Lightlike/PL/Complex.lean`)
-* `PL.SComplex.link_join_right` (`Lightlike/PL/Exchange.lean`)
+* `PL.SComplex.exch_eq_starAt` (`Lightlike/PL/Exchange.lean`)
 
 Everything they depend on, with 17 more lemmas, in one block:
 

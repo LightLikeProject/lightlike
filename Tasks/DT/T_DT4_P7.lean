@@ -26,14 +26,14 @@ Definitions the statement names (without the `Lightlike.` prefix), by file:
 
 Lemmas about them, which a proof may use:
 
-* `PL.SComplex.sum_card_link` (`Tasks/DT/T_DT4_P4.lean`)
-* `PL.SComplex.IsClosedCombManifold.euler_link` (`Tasks/DT/T_DT4_P5.lean`)
-* `PL.SComplex.euler_eq_sum_card` (`Tasks/DT/T_DT4_P6.lean`)
+* `PL.SComplex.sum_card_link` (`Lightlike/DynamicalTriangulations/DehnSommerville.lean`)
+* `PL.SComplex.IsClosedCombManifold.euler_link` (`Lightlike/DynamicalTriangulations/DehnSommerville.lean`)
+* `PL.SComplex.euler_eq_sum_card` (`Lightlike/DynamicalTriangulations/DehnSommerville.lean`)
+* `PL.SComplex.euler_eq_sum_range` (`Lightlike/DynamicalTriangulations/DehnSommerville.lean`)
 * `PL.SComplex.euler_eq_card_verts` (`Lightlike/PL/Euler.lean`)
 * `PL.SComplex.isClosedCombManifold_iff` (`Lightlike/PL/Manifold.lean`)
 * `PL.SComplex.isClosedCombManifold_succ_iff` (`Lightlike/PL/Manifold.lean`)
-* `PL.SComplex.IsClosedCombManifold.bistellarEquiv_of_iso` (`Lightlike/PL/PachnerMain.lean`)
-* `PL.octahedron_link_of` (`Lightlike/PL/Tests.lean`)
+* `PL.SComplex.IsClosedCombManifold.dehnSommerville3` (`Lightlike/DynamicalTriangulations/DehnSommerville3.lean`)
 
 Everything they depend on, with 20 more lemmas, in one block:
 

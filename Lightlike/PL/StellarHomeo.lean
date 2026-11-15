@@ -326,6 +326,51 @@ theorem PLHomeomorphic.of_stellarEquiv {K L : SComplex V} (h : StellarEquiv K L)
 
 /-! ## Reduction of the hard direction to subdivisions -/
 
+/-- A complex with the empty face added. -/
+def withEmpty {W : Type*} [DecidableEq W] (K : SComplex W) : SComplex W where
+  faces := insert ∅ K.faces
+  down s hs t ht := by
+    rcases Finset.mem_insert.1 hs with rfl | hs
+    · rw [Finset.subset_empty.1 ht]; exact Finset.mem_insert_self _ _
+    · exact Finset.mem_insert_of_mem (K.down s hs t ht)
+
+lemma mem_withEmpty {W : Type*} [DecidableEq W] {K : SComplex W} {s : Finset W} :
+    s ∈ K.withEmpty ↔ s = ∅ ∨ s ∈ K := by
+  show s ∈ insert ∅ K.faces ↔ _
+  simp [Finset.mem_insert]
+
+variable {E : Type*} [AddCommGroup E] [Module ℝ E] [DecidableEq E]
+
+/-- Adding the empty face to a subdivision of a complex that has it gives a subdivision. -/
+lemma IsSubdivision.withEmpty {K' K : SComplex E} (h : IsSubdivision K' K) (h0 : ∅ ∈ K) :
+    IsSubdivision K'.withEmpty K where
+  geom' := by
+    refine ⟨fun s hs => ?_, fun s hs t ht => ?_⟩
+    · rcases mem_withEmpty.1 hs with rfl | hs
+      · exact affineIndependent_of_subsingleton ℝ _
+      · exact h.geom'.indep s hs
+    · rcases mem_withEmpty.1 hs with rfl | hs
+      · simp
+      rcases mem_withEmpty.1 ht with rfl | ht
+      · simp
+      · exact h.geom'.inter s hs t ht
+  geom := h.geom
+  space_eq := by
+    rw [← h.space_eq]
+    ext x
+    rw [mem_space, mem_space]
+    constructor
+    · rintro ⟨s, hs, hx⟩
+      rcases mem_withEmpty.1 hs with rfl | hs
+      · simp at hx
+      · exact ⟨s, hs, hx⟩
+    · rintro ⟨s, hs, hx⟩
+      exact ⟨s, mem_withEmpty.2 (.inr hs), hx⟩
+  le s hs := by
+    rcases mem_withEmpty.1 hs with rfl | hs
+    · exact ⟨∅, h0, le_rfl⟩
+    · exact h.le s hs
+
 /-- **The hard direction of Newman's theorem reduces to subdivisions.** If every subdivision of a
 geometric complex in `V →₀ ℝ` is stellar equivalent to it, then PL homeomorphic complexes are
 stellar equivalent.
@@ -335,15 +380,32 @@ common subdivision `N` of `f(K')` and `real L` and pull it back along `f` to a s
 `K'`. Then `real K ~ P ≅ N ~ real L`, where `f` is the isomorphism `P ≅ N`, and an embedding
 reflects stellar equivalence (`StellarEquiv.map_iff`). -/
 theorem StellarEquiv.of_plHomeomorphic_of_subdivision
-    (key : ∀ M N : SComplex (V →₀ ℝ), IsSubdivision M N → StellarEquiv M N)
-    {K L : SComplex V} (h : PLHomeomorphic K L) : StellarEquiv K L := by
+    (key : ∀ M N : SComplex (V →₀ ℝ), IsSubdivision M N → ∅ ∈ M → ∅ ∈ N → StellarEquiv M N)
+    {K L : SComplex V} (h0 : ∅ ∈ K ↔ ∅ ∈ L) (h : PLHomeomorphic K L) : StellarEquiv K L := by
+  by_cases h0K : ∅ ∈ K
+  swap
+  · have h0L : ∅ ∉ L := fun h => h0K (h0.2 h)
+    have : K = L := ext_mem fun s => ⟨fun hs => absurd (K.down s hs ∅ (empty_subset _)) h0K,
+      fun hs => absurd (L.down s hs ∅ (empty_subset _)) h0L⟩
+    rw [this]
+  have h0L := h0.1 h0K
+  have h0Kr : ∅ ∈ K.real := mem_real.2 ⟨∅, h0K, by simp⟩
+  have h0Lr : ∅ ∈ L.real := mem_real.2 ⟨∅, h0L, by simp⟩
   obtain ⟨f, hf⟩ := h
-  obtain ⟨K', hK', hfK'⟩ := isPLMap_iff.1 hf.pl
+  obtain ⟨K₀, hK₀, hfK₀⟩ := isPLMap_iff.1 hf.pl
+  have hK' := hK₀.withEmpty h0Kr
+  have hfK' : IsAffineOn K₀.withEmpty f := fun s hs => by
+    rcases mem_withEmpty.1 hs with rfl | hs
+    · exact ⟨0, by simp⟩
+    · exact hfK₀ s hs
+  have h0K' : ∅ ∈ K₀.withEmpty := mem_withEmpty.2 (.inl rfl)
+  generalize K₀.withEmpty = K' at hK' hfK' h0K'
   have hinj : Set.InjOn f K'.space := hK'.space_eq ▸ hf.bij.injOn
   have hsp : (K'.image f).space = L.real.space := by
     rw [hfK'.space_image, hK'.space_eq, hf.bij.image_eq]
-  obtain ⟨N, hN₁, hN₂⟩ :=
-    (isGeom_image hK'.geom' hfK' hinj).exists_common_subdivision hf.geom hsp
+  have h0I : ∅ ∈ K'.image f := Finset.mem_image.2 ⟨∅, h0K', by simp⟩
+  obtain ⟨N, hN₁, hN₂, h0N⟩ :=
+    (isGeom_image hK'.geom' hfK' hinj).exists_common_subdivision_empty hf.geom hsp h0I h0Lr
   have hP := isSubdivision_image_invFunOn hK'.geom' hfK' hinj hN₁
   have hright := (Set.surjOn_image f K'.space).rightInvOn_invFunOn
   have hNsp : N.space = f '' K'.space := hN₁.space_eq.trans hfK'.space_image
@@ -366,8 +428,9 @@ theorem StellarEquiv.of_plHomeomorphic_of_subdivision
       rw [Finset.image_image]
       exact Finset.image_id.symm.trans
         (Finset.image_congr fun s hs => (hfg s (Finset.mem_coe.1 hs)).symm)
-  have h₁ := key _ _ (hP.trans hK')
-  have h₂ := key _ _ hN₂
+  have h0P : ∅ ∈ N.image (Function.invFunOn f K'.space) := Finset.mem_image.2 ⟨∅, h0N, by simp⟩
+  have h₁ := key _ _ (hP.trans hK') h0P h0Kr
+  have h₂ := key _ _ hN₂ h0N h0Lr
   exact (StellarEquiv.map_iff (vertexEmb V)).1 ((h₁.symm.trans hiso).trans h₂)
 
 end SComplex

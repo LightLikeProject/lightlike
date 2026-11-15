@@ -1,8 +1,12 @@
 import Lightlike.SpinFoam.Move33
+import Lightlike.SpinFoam.Move24Global
+import Lightlike.SpinFoam.Move15Global
 import Lightlike.Recoupling.Tests
 import Lightlike.FourD.Tests
 import Lightlike.Spin4.EPRLTests
 import Lightlike.Spin4.Tests
+import Lightlike.SpinFoam.EPRLTests
+import Lightlike.SpinFoam.BarrettCraneTests
 
 /-!
 # Trust checks for the Ooguri vertex amplitude, the 3-3 move and the gauge rule
@@ -63,6 +67,20 @@ triangle), where `ampP` vanishes. Before the 3-3 move the colouring `colStar` wi
 `2 · 1³` to the state sum. After the move only the zero colouring survives. The invariance
 `amplitudeGF_move33` therefore depends on the vertex amplitude, not only on the combinatorics of
 the state sum.
+
+## The 2-4 move (`Move24.lean`, `Move24Global.lean`)
+
+Non-vacuity: `amplitudeGF_move24_example` applies `amplitudeGF_move24` to the 2-4 move
+`{0,1,2,3} → {5,6}` on `K1`, the 1-5 subdivision of `∂Δ⁵`, with the cutoffs `cut24`; every
+cutoff hypothesis is checked by the kernel, and the vertices of the tetrahedron are read in sorted
+order through `orderEmbOfFin_unique`.
+
+## The 1-5 move (`Move15.lean`, `Move15Global.lean`)
+
+Non-vacuity: `amplitudeGF_move15_example` applies `amplitudeGF_move15` to the 1-5 move
+`{0,1,2,3,4} → {6}` on `K0 = ∂Δ⁵`, with the cutoffs `cut15`; the sixteen cutoff conditions
+`Cut15` are checked by the kernel, and the vertices of the 4-simplex are read in sorted order
+through `orderEmbOfFin_unique`.
 
 ## The gauge rule (`Ooguri.lean`)
 
@@ -275,6 +293,72 @@ theorem amplitudeGF_move33_example :
     amplitudeGF (K2.move isMove33) ∅ cut33 = amplitudeGF K2 ∅ cut33 :=
   amplitudeGF_move33 K2 isMove33 (by decide) ∅ (by simp) cut33
     (by decide +kernel) (by decide +kernel) (by decide +kernel) (by decide +kernel)
+
+open Lightlike.FourD.Tests in
+/-- The cutoffs of the non-vacuity check of the 2-4 move: `12` on `{3,5,6}`, `24` on `{1,5,6}` and
+`{2,5,6}`, `100` on the tetrahedra, `1` on the other faces. -/
+def cut24 (f : Finset (Fin 8)) : ℕ :=
+  if f = {3, 5, 6} then 12 else if f = {1, 5, 6} ∨ f = {2, 5, 6} then 24
+  else if #f = 4 then 100 else 1
+
+open Lightlike.FourD.Tests in
+/-- **Non-vacuity of the 2-4 invariance.** On `K1` (the 1-5 subdivision of `∂Δ⁵`), the 2-4 move
+`{0,1,2,3} → {5,6}` leaves the state sum with the cutoffs `cut24` unchanged, the new triangle
+`{0,5,6}` being fixed; every hypothesis of `amplitudeGF_move24` is checked by the kernel. -/
+theorem amplitudeGF_move24_example :
+    amplitudeGF (K1.move isMove24) {{0, 5, 6}} cut24 = amplitudeGF K1 ∅ cut24 := by
+  have hσ : #({0, 1, 2, 3} : Finset (Fin 8)) = 4 := by decide
+  have eo : ∀ k : Fin 4, ({0, 1, 2, 3} : Finset (Fin 8)).orderEmbOfFin hσ k = Fin.castLE (by omega) k := fun k => by
+    have := Finset.orderEmbOfFin_unique (s := ({0, 1, 2, 3} : Finset (Fin 8))) hσ
+      (f := fun k : Fin 4 => Fin.castLE (by omega) k)
+      (fun k => by revert k; decide) (fun a b hab => hab)
+    exact (congrFun this k).symm
+  have e0 : ({0, 1, 2, 3} : Finset (Fin 8)).orderEmbOfFin hσ 0 = 0 := by rw [eo]; rfl
+  have e1 : ({0, 1, 2, 3} : Finset (Fin 8)).orderEmbOfFin hσ 1 = 1 := by rw [eo]; rfl
+  have e2 : ({0, 1, 2, 3} : Finset (Fin 8)).orderEmbOfFin hσ 2 = 2 := by rw [eo]; rfl
+  have e3 : ({0, 1, 2, 3} : Finset (Fin 8)).orderEmbOfFin hσ 3 = 3 := by rw [eo]; rfl
+  have h := amplitudeGF_move24 K1 isMove24 (σ := {0, 1, 2, 3}) (τ := {5, 6}) hσ ∅
+    (by simp) cut24 (by decide +kernel) (by rw [e3]; decide +kernel)
+    (by rw [e3, e2]; decide +kernel) (by rw [e3, e1]; decide +kernel)
+    (by rw [e3, e2, e1]; decide +kernel)
+  rw [e0] at h
+  simpa using h
+
+open Lightlike.FourD.Tests in
+/-- The cutoffs of the non-vacuity check of the 1-5 move: `3` on the triangles `{6,1,2}`, `{6,1,3}`
+and `{6,2,3}`, `10` on the tetrahedra, `1` on the other faces. -/
+def cut15 (f : Finset (Fin 8)) : ℕ :=
+  if f = {6, 1, 2} ∨ f = {6, 1, 3} ∨ f = {6, 2, 3} then 3 else if #f = 4 then 10 else 1
+
+open Lightlike.FourD.Tests in
+/-- **Non-vacuity of the 1-5 invariance.** On `K0 = ∂Δ⁵`, the 1-5 move `{0,1,2,3,4} → {6}` leaves
+the state sum with the cutoffs `cut15` unchanged, the four new triangles `{6,0,j}` being fixed;
+every hypothesis of `amplitudeGF_move15` is checked by the kernel. -/
+theorem amplitudeGF_move15_example :
+    amplitudeGF (K0.move isMove15) {{6, 0, 1}, {6, 0, 2}, {6, 0, 3}, {6, 0, 4}} cut15 =
+      amplitudeGF K0 ∅ cut15 := by
+  have hσ : #({0, 1, 2, 3, 4} : Finset (Fin 8)) = 5 := by decide
+  have eo : ∀ k : Fin 5, ({0, 1, 2, 3, 4} : Finset (Fin 8)).orderEmbOfFin hσ k =
+      Fin.castLE (by omega) k := fun k => by
+    have := Finset.orderEmbOfFin_unique (s := ({0, 1, 2, 3, 4} : Finset (Fin 8))) hσ
+      (f := fun k : Fin 5 => Fin.castLE (by omega) k)
+      (fun k => by revert k; decide) (fun a b hab => hab)
+    exact (congrFun this k).symm
+  have e : ⇑(({0, 1, 2, 3, 4} : Finset (Fin 8)).orderEmbOfFin hσ) =
+      fun k : Fin 5 => Fin.castLE (by omega) k := funext eo
+  have hcut : Move15.Cut15 cut15 (Move15.triV (fun k : Fin 5 => Fin.castLE (by omega) k) (6 : Fin 8))
+      (Move15.teV (fun k : Fin 5 => Fin.castLE (by omega) k) (6 : Fin 8))
+      (Move15.otV (fun k : Fin 5 => Fin.castLE (by omega) k)) := by
+    unfold Move15.Cut15 Move15.triV Move15.teV Move15.otV
+    decide +kernel
+  have hg : Move15.gaugeTri (fun k : Fin 5 => Fin.castLE (by omega) k) (6 : Fin 8) ∪ ∅ =
+      {{6, 0, 1}, {6, 0, 2}, {6, 0, 3}, {6, 0, 4}} := by
+    unfold Move15.gaugeTri
+    decide +kernel
+  have h := Move15.amplitudeGF_move15 K0 isMove15 (σ := {0, 1, 2, 3, 4}) (τ := {6}) hσ (v := 6) rfl ∅
+    (by simp) cut15 (by rw [e]; exact hcut)
+  rw [e, hg] at h
+  exact h
 
 /-! ## Trust checks of the gauge-fixed state sum
 
@@ -884,7 +968,7 @@ lemma weightWith_colStar {a : (Fin 5 → Fin 5 → ℕ) → (Fin 5 → ℕ) → 
     weightWith a K2 colStar = 2 * a e34 (fun _ => 0) ^ 3 := by
   unfold weightWith
   have htri : ∏ f ∈ K2.tris, ((colStar f : ℝ) + 1) = 2 := by
-    have h : ∏ f ∈ K2.tris, (colStar f + 1) = 2 := by decide +kernel
+    have h : ∏ f ∈ K2.tris, (colStar f + 1) = 2 := by decide +kernel +revert
     exact_mod_cast h
   rw [htri, prod_simpWith_filter (col := colStar) h1 K2 {0, 2, 3}
     fun f hf => ite_eq_right fun he => hf (by subst he; exact Subset.refl _)]
@@ -1136,7 +1220,7 @@ theorem pachner_move_move_direct :
 5-simplex `K0` has Euler characteristic `2` (computed); the theorem then gives `2` for `K1`, `K2`
 and `K3`. -/
 theorem pachner_euler4_predicts : K1.euler4 = 2 ∧ K2.euler4 = 2 ∧ K3.euler4 = 2 := by
-  have h0 : K0.euler4 = 2 := by decide +kernel
+  have h0 : K0.euler4 = 2 := by decide +kernel +revert
   have h1 : K1.euler4 = 2 := (Complex4.euler4_move isMove15).trans h0
   have h2 : K2.euler4 = 2 := (Complex4.euler4_move isMove24).trans h1
   exact ⟨h1, h2, (Complex4.euler4_move isMove33).trans h2⟩
