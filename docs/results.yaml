@@ -868,7 +868,7 @@
   review: kernel-checked
   note: "For edge spins s (doubled units; edges 01, 02, 03, 12, 13, 23) the integral over SU(2)^4 of Π_e χ_{s e}(g_i g_j⁻¹) equals {s₀₁ s₀₂ s₀₃; s₂₃ s₁₃ s₁₂}² (tetraInt_eq_sixJ_sq). The proof expands each character in the matrix coefficients of the spin representations, integrates them with the Haar measure into products of 3j vectors, and identifies the resulting sum with a 6j symbol up to a sign (ZR_eq). This is Freidel–Louapre's Ponzano–Regge observable of the 1-skeleton of the two-tetrahedron triangulation of S³, eq. (94), read on the dual graph: their group variables sit on the four triangles and the holonomy around an edge is g_i g_j⁻¹ for the two triangles i, j containing it, so the Lean edge ij carries the spin of the edge shared by triangles i and j, and the triads at the Lean vertices are the triangles of the triangulation. Checks: all spins 0 give 1 (tetraInt_zero), all spins 1 (doubled spin 2) give (1/6)² = 1/36 (tetraInt_two), and an inadmissible triad at a vertex gives 0 (tetraInt_eq_zero_of_not_tri, tetraInt_ones_vertex)."
   since: 0.2.0
-- id: LL-XXXX-a
+- id: LL-0067
   title: "The cut-off sum of the tetrahedron, Σ Π(s+1)·(6j)² over doubled edge spins ≤ N, is at least (N+1)², so it has no limit without rescaling"
   area: SpinFoam
   file: Lightlike/SpinFoam/TetrahedronCutoff.lean
