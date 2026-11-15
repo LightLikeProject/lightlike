@@ -21,6 +21,8 @@ Only the CI steps marked `[hard rule]` are required ([CONTRIBUTING.md](CONTRIBUT
   only, with `N` measured (about twice the need), never `maxHeartbeats 0`.
 - Nothing outside an `Exploratory/` folder imports a module inside one.
 - Every definition, and every declaration the catalog names, has a docstring.
+- The catalog's literature sources check out (`scripts/sources.py check`).
+- No local path, private e-mail address, token or key in a tracked file (`scripts/leak_check.py`).
 
 A proof-task pull request changes only the proof of its declaration: the statement is locked.
 Everything below is recommended practice, with the reason for it.
