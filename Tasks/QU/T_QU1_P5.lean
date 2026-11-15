@@ -29,8 +29,9 @@ Lemmas about them, which a proof may use:
 
 * `TV.turaevViro_move14` (`Lightlike/TuraevViro/TuraevViro.lean`)
 * `TV.qOrthogonality_three` (`Lightlike/TuraevViro/LevelOne.lean`)
+* `TV.Refl.qOrthogonality_of` (`Lightlike/TuraevViro/Reflect/OrthConditional.lean`)
 
-Everything they depend on in one block:
+Everything they depend on, and the further lemmas about them, in one block:
 
     scripts/context-pack Lightlike.TV.qOrthogonality_all
 

@@ -44,8 +44,11 @@ Everything below is recommended practice, with the reason for it.
 
 ## Commits
 
-- Messages read `type(scope): summary`, for example `feat(regge): define deficit angles`,
-  `fix(curvature): …`, `docs(readme): …`, `test(sixj): …` or `ci: …`, with a body that says why.
+- **Format (the same in [CONTRIBUTING.md](CONTRIBUTING.md#pull-requests)).** `type(scope): summary`,
+  a blank line, then a body that says why. `type` is one of `feat`, `fix`, `proof`, `docs`, `test`,
+  `refactor`, `ci`, `chore`; `scope` is the area folder in lower case (`regge`, `pl`, `sixj`). A
+  proof-task commit is `proof(<area>): T-<ID>`, for example `proof(tv): T-QU1-P5`. Examples:
+  `feat(regge): define deficit angles`, `fix(curvature): sign of the Ricci term`.
 - The author is the person, or the account, directing the agent. The trailer
   `Co-Authored-By: <agent and model name>` names the agent, without an e-mail address.
 
@@ -87,18 +90,37 @@ Everything below is recommended practice, with the reason for it.
 - A change of scope or of the tier definitions is proposed in an issue first.
 - A surprising result in an `Exploratory/` folder is flagged on an issue; work continues meanwhile.
 
+## Set up
+
+From nothing to a first build (macOS, Linux or WSL; measured on a fresh clone: 1 min for the cache download, 3.6 min until the first task file is built, on a fast connection):
+
+```bash
+curl -sSfL https://elan.lean-lang.org/elan-init.sh | sh -s -- -y --default-toolchain none
+. ~/.elan/env                       # puts lake and lean on PATH; add it to your shell profile
+git clone https://github.com/LightlikeProject/lightlike && cd lightlike
+lake exe cache get                  # the compiled Mathlib; elan installs the toolchain of lean-toolchain
+python3 -m venv .venv && . .venv/bin/activate && pip install -r requirements.txt   # for scripts/
+```
+
+Then `lake build Tasks.<Area>.<File>` builds one proof task (the first build also compiles the parts
+of Physlib and Lightlike the task imports). To prove a task, follow
+[Your first proof task](CONTRIBUTING.md#your-first-proof-task) and check it with
+`python3 -I scripts/gate.py --task T-<ID>`, which builds only that task file and runs the proof-task
+checks; CI does the full build. A change to `Lightlike/` needs the full `python3 scripts/gate.py`.
+
 ## Build and verify
 
 ```bash
 lake exe cache get
 lake build
-lake build Tasks.DT.T_DT4_P1
+lake build Tasks.QU.T_QU1_P5
+python3 -I scripts/gate.py --task T-QU1-P5
 lake env lean -DautoImplicit=false Lightlike/Tests/SixJ.lean
 python3 scripts/gate.py
 ```
 
 - `lake exe cache get` downloads the compiled Mathlib; `lake build Tasks.<Area>.<File>` builds a
-  single proof task. `lake env lean` checks a single file but does not read the options in
+  single proof task; `gate.py --task T-<ID>` also checks it (no full library build). `lake env lean` checks a single file but does not read the options in
   `lakefile.toml`, hence `-DautoImplicit=false`.
 - `scripts/gate.py` runs the steps of `.github/workflows/ci.yml` in order. It needs Python 3.9 to
   3.12 and the packages pinned in `requirements.txt`. Commit before running it.
