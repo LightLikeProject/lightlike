@@ -168,6 +168,240 @@ lemma vertex_injective (hs : p.IsSimple) : Function.Injective p := by
   · exact hne h
   · exact hs.1 j (by rw [← h, hij])
 
+/-- The polygon with its vertices shifted cyclically by `β`. -/
+def rot (p : Polygon n) (β : Fin n) : Polygon n := fun i => p (i + β)
+
+omit [NeZero n] in
+lemma finRotate_add (i β : Fin n) : finRotate n (i + β) = finRotate n i + β := by
+  rw [finRotate_apply, finRotate_apply, add_right_comm]
+
+omit [NeZero n] in
+lemma edge_rot (p : Polygon n) (β i : Fin n) : (p.rot β).edge i = p.edge (i + β) := by
+  simp only [edge, rot, finRotate_add]
+
+omit [NeZero n] in
+/-- A cyclic shift of the vertices of a simple polygon is simple. -/
+lemma isSimple_rot (hs : p.IsSimple) (β : Fin n) : (p.rot β).IsSimple := by
+  refine ⟨fun i => ?_, fun i j hij h1 h2 => ?_, fun i => ?_⟩
+  · have := hs.1 (i + β)
+    rw [finRotate_add] at this
+    exact this
+  · rw [edge_rot, edge_rot]
+    refine hs.2.1 (i + β) (j + β) (fun h => hij (add_right_cancel h)) ?_ ?_
+    · rw [finRotate_add]; exact fun h => h1 (add_right_cancel h)
+    · rw [finRotate_add]; exact fun h => h2 (add_right_cancel h)
+  · have := hs.2.2 (i + β)
+    rw [finRotate_add] at this
+    rw [edge_rot, edge_rot]
+    exact this
+
+/-- The edge `i`, in terms of the cyclic reading of the vertices. -/
+lemma edge_eq_cyc (hn : 2 ≤ n) (i : Fin n) : p.edge i = segment ℝ (p.cyc i) (p.cyc (i + 1)) := by
+  have h1 : p i = p.cyc i := by rw [p.cyc_of_lt i.2]
+  have h2 : p (finRotate n i) = p.cyc (i + 1) := by
+    simp only [cyc]; congr 1; ext; exact finRotate_val hn i
+  simp only [edge, h1, h2]
+
+/-- **Simplicity in terms of natural-number indices.** -/
+lemma isSimple_iff_nat (hn : 2 ≤ n) : p.IsSimple ↔
+    (∀ i < n, p.cyc i ≠ p.cyc (i + 1)) ∧
+    (∀ i j, i < n → j < n → i ≠ j → (i + 1) % n ≠ j → (j + 1) % n ≠ i →
+      Disjoint (segment ℝ (p.cyc i) (p.cyc (i + 1))) (segment ℝ (p.cyc j) (p.cyc (j + 1)))) ∧
+    (∀ i < n, segment ℝ (p.cyc i) (p.cyc (i + 1)) ∩
+      segment ℝ (p.cyc ((i + 1) % n)) (p.cyc ((i + 1) % n + 1)) = {p.cyc (i + 1)}) := by
+  have hv' : ∀ i (hi : i < n), ((finRotate n ⟨i, hi⟩ : Fin n) : ℕ) = (i + 1) % n :=
+    fun i hi => finRotate_val hn ⟨i, hi⟩
+  have hfr : ∀ i (hi : i < n), finRotate n ⟨i, hi⟩ = ⟨(i + 1) % n, Nat.mod_lt _ (NeZero.pos n)⟩ :=
+    fun i hi => Fin.ext (hv' i hi)
+  have hc' : ∀ i (hi : i < n), p (finRotate n ⟨i, hi⟩) = p.cyc (i + 1) := fun i hi => by
+    rw [hfr i hi]; rfl
+  have e' : ∀ i (hi : i < n), p.edge ⟨i, hi⟩ = segment ℝ (p.cyc i) (p.cyc (i + 1)) := by
+    intro i hi
+    show segment ℝ (p ⟨i, hi⟩) (p (finRotate n ⟨i, hi⟩)) = _
+    rw [hc' i hi, ← p.cyc_of_lt hi]
+  have e'' : ∀ i (hi : i < n), p.edge (finRotate n ⟨i, hi⟩) =
+      segment ℝ (p.cyc ((i + 1) % n)) (p.cyc ((i + 1) % n + 1)) := by
+    intro i hi
+    rw [hfr i hi]; exact e' _ (Nat.mod_lt _ (NeZero.pos n))
+  constructor
+  · intro hs
+    refine ⟨fun i hi => ?_, fun i j hi hj hij h1 h2 => ?_, fun i hi => ?_⟩
+    · have := hs.1 ⟨i, hi⟩
+      rwa [hc' i hi, show p ⟨i, hi⟩ = p.cyc i from (p.cyc_of_lt hi).symm] at this
+    · have := hs.2.1 ⟨i, hi⟩ ⟨j, hj⟩ (fun h => hij (Fin.mk.inj h))
+        (fun h => h1 (by have := congrArg Fin.val h; rw [hv' i hi] at this; exact this))
+        (fun h => h2 (by have := congrArg Fin.val h; rw [hv' j hj] at this; exact this))
+      rwa [e' i hi, e' j hj] at this
+    · have := hs.2.2 ⟨i, hi⟩
+      rwa [e' i hi, e'' i hi, hc' i hi] at this
+  · rintro ⟨h1, h2, h3⟩
+    refine ⟨fun i => ?_, fun i j hij hi hj => ?_, fun i => ?_⟩
+    · obtain ⟨i, hi⟩ := i
+      rw [hc' i hi, show p ⟨i, hi⟩ = p.cyc i from (p.cyc_of_lt hi).symm]
+      exact h1 i hi
+    · obtain ⟨i, hi'⟩ := i
+      obtain ⟨j, hj'⟩ := j
+      rw [e' i hi', e' j hj']
+      refine h2 i j hi' hj' (fun h => hij (Fin.ext h)) ?_ ?_
+      · intro h; apply hi; exact Fin.ext (by rw [hv' i hi']; exact h)
+      · intro h; apply hj; exact Fin.ext (by rw [hv' j hj']; exact h)
+    · obtain ⟨i, hi'⟩ := i
+      rw [e' i hi', e'' i hi', hc' i hi']
+      exact h3 i hi'
+
+lemma segment_cyc_subset_carrier (hn : 2 ≤ n) {k : ℕ} (hk : k < n) :
+    segment ℝ (p.cyc k) (p.cyc (k + 1)) ⊆ p.carrier := by
+  intro x hx
+  refine Set.mem_iUnion.2 ⟨⟨k, hk⟩, ?_⟩
+  rw [edge_eq_cyc hn]; exact hx
+
+/-- A vertex on the edge `[cyc k, cyc (k+1)]` is one of its ends. -/
+lemma vertex_mem_seg (hs : p.IsSimple) (hn : 2 ≤ n) {j k : ℕ} (hj : j < n) (hk : k < n)
+    (h : p.cyc j ∈ segment ℝ (p.cyc k) (p.cyc (k + 1))) : j = k ∨ j = (k + 1) % n := by
+  have h' : p ⟨j, hj⟩ ∈ p.edge ⟨k, hk⟩ := by
+    rw [edge_eq_cyc hn, ← p.cyc_of_lt hj]; exact h
+  rcases eq_or_eq_of_vertex_mem_edge hs h' with h1 | h1
+  · left; exact Fin.mk.inj h1
+  · right
+    have := congrArg Fin.val h1
+    rw [finRotate_val hn] at this
+    exact this
+
+/-- **The closed diagonal meets an edge only at its ends.** If the open diagonal from the vertex
+`0` to the vertex `b` misses the carrier, then an edge `k` meeting the closed diagonal does so at
+`cyc 0` or `cyc b`, and `cyc 0` is on it only when `k = 0` or `k + 1 = n`, `cyc b` only when
+`k = b` or `k + 1 = b`. -/
+lemma diag_inter (hn : 2 ≤ n) {b : ℕ}
+    (hopen : ∀ q ∈ openSegment ℝ (p.cyc 0) (p.cyc b), q ∉ p.carrier) {k : ℕ} (hk : k < n) :
+    segment ℝ (p.cyc k) (p.cyc (k + 1)) ∩ segment ℝ (p.cyc b) (p.cyc 0) ⊆ {p.cyc 0, p.cyc b} := by
+  rintro x ⟨hx1, hx2⟩
+  rw [segment_symm, ← insert_endpoints_openSegment] at hx2
+  rcases hx2 with rfl | rfl | hx2
+  · exact Or.inl rfl
+  · exact Or.inr rfl
+  · exact absurd (segment_cyc_subset_carrier hn hk hx1) (hopen x hx2)
+
+/-- **The left part of a split simple polygon is simple.** The diagonal from the vertex `0` to the
+vertex `b` has its open segment off the carrier. -/
+theorem isSimple_left (hs : p.IsSimple) {b : ℕ} (hb : 2 ≤ b) (hbn : b + 2 ≤ n)
+    (hopen : ∀ q ∈ openSegment ℝ (p.cyc 0) (p.cyc b), q ∉ p.carrier) : (p.left b).IsSimple := by
+  have hn : 2 ≤ n := by omega
+  have hs' := (isSimple_iff_nat hn).1 hs
+  obtain ⟨hs1, hs2, hs3⟩ := hs'
+  have hl : ∀ k, (p.left b).cyc k = p.cyc (k % (b + 1)) := fun k => rfl
+  have hd : ∀ k, k < n → segment ℝ (p.cyc k) (p.cyc (k + 1)) ∩ segment ℝ (p.cyc b) (p.cyc 0) ⊆
+      {p.cyc 0, p.cyc b} := fun k hk => diag_inter (p := p) hn (b := b) hopen hk
+  have hv0 : ∀ k (hk : k < n), p.cyc 0 ∈ segment ℝ (p.cyc k) (p.cyc (k + 1)) → k = 0 ∨ k + 1 = n := by
+    intro k hk h
+    rcases vertex_mem_seg hs hn (by omega : 0 < n) hk h with h1 | h1
+    · left; omega
+    · right
+      have : (k + 1) % n = 0 := h1.symm
+      rcases Nat.lt_or_ge (k + 1) n with h2 | h2
+      · rw [Nat.mod_eq_of_lt h2] at this; omega
+      · omega
+  have hvb : ∀ k (hk : k < n), p.cyc b ∈ segment ℝ (p.cyc k) (p.cyc (k + 1)) → k = b ∨ k + 1 = b := by
+    intro k hk h
+    rcases vertex_mem_seg hs hn (by omega : b < n) hk h with h1 | h1
+    · left; omega
+    · right
+      rcases Nat.lt_or_ge (k + 1) n with h2 | h2
+      · rw [Nat.mod_eq_of_lt h2] at h1; omega
+      · have : k + 1 = n := by omega
+        rw [this, Nat.mod_self] at h1; omega
+  rw [isSimple_iff_nat (by omega : 2 ≤ b + 1)]
+  refine ⟨fun i hi => ?_, fun i j hi hj hij h1 h2 => ?_, fun i hi => ?_⟩
+  · simp only [hl]
+    rcases Nat.lt_or_ge i b with h | h
+    · rw [Nat.mod_eq_of_lt (by omega : i < b + 1), Nat.mod_eq_of_lt (by omega : i + 1 < b + 1)]
+      exact hs1 i (by omega)
+    · have : i = b := by omega
+      subst this
+      rw [Nat.mod_eq_of_lt (by omega : i < i + 1), Nat.mod_self]
+      rw [p.cyc_of_lt (by omega : i < n), p.cyc_of_lt (by omega : 0 < n)]
+      intro h'
+      have := vertex_injective hs h'
+      have := Fin.mk.inj this
+      omega
+  · -- disjointness of non-neighbouring edges
+    simp only [hl]
+    have hdis : ∀ k, 1 ≤ k → k + 2 ≤ b → Disjoint (segment ℝ (p.cyc k) (p.cyc (k + 1)))
+        (segment ℝ (p.cyc b) (p.cyc 0)) := by
+      intro k hk1 hk2
+      rw [Set.disjoint_left]
+      intro x hx1 hx2
+      rcases hd k (by omega) ⟨hx1, hx2⟩ with rfl | rfl
+      · rcases hv0 k (by omega) hx1 with h | h <;> omega
+      · rcases hvb k (by omega) hx1 with h | h <;> omega
+    rcases Nat.lt_or_ge i b with hi' | hi'
+    · rcases Nat.lt_or_ge j b with hj' | hj'
+      · rw [Nat.mod_eq_of_lt (by omega : i < b + 1), Nat.mod_eq_of_lt (by omega : i + 1 < b + 1),
+          Nat.mod_eq_of_lt (by omega : j < b + 1), Nat.mod_eq_of_lt (by omega : j + 1 < b + 1)]
+        rw [Nat.mod_eq_of_lt (by omega : i + 1 < b + 1)] at h1
+        rw [Nat.mod_eq_of_lt (by omega : j + 1 < b + 1)] at h2
+        exact hs2 i j (by omega) (by omega) hij
+          (by rw [Nat.mod_eq_of_lt (by omega : i + 1 < n)]; exact h1)
+          (by rw [Nat.mod_eq_of_lt (by omega : j + 1 < n)]; exact h2)
+      · have : j = b := by omega
+        subst this
+        rw [Nat.mod_eq_of_lt (by omega : i < j + 1), Nat.mod_eq_of_lt (by omega : i + 1 < j + 1),
+          Nat.mod_eq_of_lt (by omega : j < j + 1), Nat.mod_self]
+        rw [Nat.mod_eq_of_lt (by omega : i + 1 < j + 1)] at h1
+        rw [Nat.mod_self] at h2
+        exact hdis i (by omega) (by omega)
+    · have hib : i = b := by omega
+      subst hib
+      rcases Nat.lt_or_ge j i with hj' | hj'
+      · rw [Nat.mod_eq_of_lt (by omega : j < i + 1), Nat.mod_eq_of_lt (by omega : j + 1 < i + 1),
+          Nat.mod_eq_of_lt (by omega : i < i + 1), Nat.mod_self]
+        rw [Nat.mod_self] at h1
+        rw [Nat.mod_eq_of_lt (by omega : j + 1 < i + 1)] at h2
+        exact (hdis j (by omega) (by omega)).symm
+      · omega
+  · -- consecutive edges
+    simp only [hl]
+    rcases Nat.lt_or_ge (i + 1) b with hi' | hi'
+    · have hA : (i + 1) % (b + 1) = i + 1 := Nat.mod_eq_of_lt (by omega)
+      have hB : (i + 1 + 1) % (b + 1) = i + 1 + 1 := Nat.mod_eq_of_lt (by omega)
+      have hC : i % (b + 1) = i := Nat.mod_eq_of_lt (by omega)
+      simp only [hA, hB, hC]
+      have := hs3 i (by omega)
+      rwa [Nat.mod_eq_of_lt (by omega : i + 1 < n)] at this
+    · rcases Nat.lt_or_ge (i + 1) (b + 1) with hi'' | hi''
+      · -- the edge before the diagonal
+        have hib : i + 1 = b := by omega
+        have hA : (i + 1) % (b + 1) = b := by rw [hib]; exact Nat.mod_eq_of_lt (by omega)
+        have hB : (b + 1) % (b + 1) = 0 := Nat.mod_self _
+        have hC : i % (b + 1) = i := Nat.mod_eq_of_lt (by omega)
+        have hD : b % (b + 1) = b := Nat.mod_eq_of_lt (by omega)
+        have hB' : (b + 1) % (b + 1) = 0 := hB
+        simp only [hA, hB, hC, hD]
+        refine Set.eq_singleton_iff_unique_mem.2 ⟨⟨?_, left_mem_segment ℝ _ _⟩, ?_⟩
+        · have : p.cyc b ∈ segment ℝ (p.cyc i) (p.cyc (i + 1)) := by
+            rw [hib]; exact right_mem_segment ℝ _ _
+          rw [hib] at this; exact this
+        · rintro x ⟨hx1, hx2⟩
+          have hx1' : x ∈ segment ℝ (p.cyc i) (p.cyc (i + 1)) := by rw [hib]; exact hx1
+          rcases hd i (by omega) ⟨hx1', hx2⟩ with rfl | rfl
+          · rcases hv0 i (by omega) hx1' with h | h <;> omega
+          · rfl
+      · -- the diagonal
+        have hib : i = b := by omega
+        subst hib
+        have hA : (i + 1) % (i + 1) = 0 := Nat.mod_self _
+        have hB : 0 % (i + 1) = 0 := Nat.zero_mod _
+        have hC : i % (i + 1) = i := Nat.mod_eq_of_lt (by omega)
+        have hD : (0 + 1) % (i + 1) = 1 := by rw [Nat.zero_add]; exact Nat.mod_eq_of_lt (by omega)
+        simp only [hA, hB, hC, hD, Nat.zero_add]
+        refine Set.eq_singleton_iff_unique_mem.2 ⟨⟨right_mem_segment ℝ _ _, left_mem_segment ℝ _ _⟩, ?_⟩
+        · rintro x ⟨hx1, hx2⟩
+          have := hd 0 (by omega) ⟨by simpa using hx2, hx1⟩
+          rcases this with rfl | rfl
+          · rfl
+          · have h0 : p.cyc i ∈ segment ℝ (p.cyc 0) (p.cyc (0 + 1)) := by simpa using hx2
+            rcases hvb 0 (by omega) h0 with h | h <;> omega
+
 end Polygon
 
 end Lightlike.PL
+
