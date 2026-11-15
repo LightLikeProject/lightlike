@@ -160,6 +160,10 @@ import Lightlike.PL.Pachner
 import Lightlike.PL.PachnerMain
 import Lightlike.PL.PachnerMoves
 import Lightlike.PL.PachnerPL
+import Lightlike.PL.Polygon
+import Lightlike.PL.PolygonInside
+import Lightlike.PL.PolygonTriangle
+import Lightlike.PL.PolygonJordan
 import Lightlike.PL.Realisation
 import Lightlike.PL.Starring
 import Lightlike.PL.Boundary
@@ -209,6 +213,7 @@ import Lightlike.PL.Tests
 import Lightlike.PL.Tests4
 import Lightlike.PL.TestsPachner
 import Lightlike.PL.TestsNewman
+import Lightlike.PL.TestsPolygon
 import Lightlike.PonzanoRegge.Amplitude
 import Lightlike.PonzanoRegge.Asymptotics
 import Lightlike.PonzanoRegge.BEPositive

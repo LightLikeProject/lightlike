@@ -96,6 +96,10 @@ references:
     cite: "E. E. Moise, Geometric Topology in Dimensions 2 and 3, Graduate Texts in Mathematics 47, Springer (1977)"
     title: "Geometric Topology in Dimensions 2 and 3"
     doi: 10.1007/978-1-4612-9906-6
+  thomassen-1992:
+    cite: "C. Thomassen, The Jordan-Schönflies theorem and the classification of surfaces, Amer. Math. Monthly 99 (1992) 116-130"
+    title: "The Jordan-Schönflies Theorem and the Classification of Surfaces"
+    doi: 10.1080/00029890.1992.11995820
   senovilla-garfinkle-2015:
     cite: "J. M. M. Senovilla and D. Garfinkle, The 1965 Penrose singularity theorem, Class. Quantum Grav. 32 (2015) 124008"
     title: "The 1965 Penrose singularity theorem"
@@ -948,6 +952,8 @@ milestones:
   PL5:
     class: sourced
     refs:
+      - {ref: moise-1977, location: "Chapter: Separation properties of polygons in R 2|10.1007/978-1-4612-9906-6_3"}
+      - {ref: moise-1977, location: "Chapter: The Schönflies theorem for polygons in R 2|10.1007/978-1-4612-9906-6_4"}
       - {ref: moise-1977, location: "Chapter: The Jordan curve theorem|10.1007/978-1-4612-9906-6_5"}
       - {ref: moise-1977, location: "Chapter: The Schönflies theorem|10.1007/978-1-4612-9906-6_10"}
   PL6:

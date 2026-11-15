@@ -53,6 +53,17 @@ combinatorial 3-manifolds are closed combinatorial 3-manifolds in this sense [6]
 construction applies to the 4-complexes of the four-dimensional API, with closed combinatorial
 4-manifolds defined by their vertex links [7].
 
+A closed polygon in the plane is a cyclic list of vertices, its edges are the segments between
+consecutive vertices, and it is simple when edges are nondegenerate, non-consecutive edges are
+disjoint, and consecutive edges meet only at their shared vertex [23]. The crossing parity of a
+point off the polygon counts the edges met by the horizontal ray to its right, with a half-open
+rule at the endpoints, and it is locally constant off the polygon [23]. The carrier of a polygon is
+closed, nonempty and connected, and near each of its points it is one or two rays, which cut a
+small disc into two sectors on which the parity differs [24]. Each parity class is therefore
+connected, and the parity vanishes outside a ball containing the vertices. This gives the polygonal
+Jordan curve theorem: the complement of a simple closed polygon is the disjoint union of two
+nonempty, open, connected sets, one bounded and one unbounded, and the polygon is the frontier of each [24] {4} {5}.
+
 ## Lean References
 
 1. Lightlike/PL/Complex.lean - `PL.SComplex`, `PL.SComplex.link`, `PL.SComplex.star_eq_join`
@@ -88,6 +99,18 @@ construction applies to the 4-complexes of the four-dimensional API, with closed
     `PL.SComplex.isSB_of_polytope_boundary_of_infinite`
 22. Lightlike/PL/PachnerPL.lean - `PL.SComplex.pachner_plHomeomorphic`,
     `PL.SComplex.isClosedCombManifold_iff_plHomeomorphic`
+23. Lightlike/PL/Polygon.lean - `PL.Polygon`, `PL.Polygon.edge`, `PL.Polygon.carrier`,
+    `PL.Polygon.IsSimple`, `PL.Polygon.three_le_of_isSimple`, `PL.Polygon.parity`, `PL.Polygon.eventually_parity_eq`
+24. Lightlike/PL/PolygonJordan.lean - `PL.Polygon.isClosed_carrier`,
+    `PL.Polygon.isPreconnected_carrier`, `PL.Polygon.local_data`, `PL.Polygon.exists_sectors`,
+    `PL.Polygon.isPreconnected_parity_class`, `PL.Polygon.parity_eq_zero_far`,
+    `PL.Polygon.polygon_jordan`, `PL.Polygon.carrier_subset_closure_class`,
+    `PL.Polygon.frontier_class`
+25. Lightlike/PL/PolygonInside.lean - `PL.Polygon.inside`, `PL.Polygon.outside`,
+    `PL.Polygon.isBounded_inside`, `PL.Polygon.not_isBounded_outside`,
+    `PL.Polygon.eq_inside_of_isBounded`
+26. Lightlike/PL/PolygonTriangle.lean - `PL.Polygon.affineIndependent_of_isSimple`,
+    `PL.Polygon.carrier_eq_frontier_hull`, `PL.Polygon.inside_eq_interior_hull`
 
 ## References
 
@@ -97,3 +120,7 @@ construction applies to the 4-complexes of the four-dimensional API, with closed
    *European J. Combin.* 12 (1991) 129.
 3. S. Friedl and J. Hannes, Pachner's theorem, in *MATRIX Annals 2021–22*, MATRIX Book Series,
    Springer (2024).
+4. E. E. Moise, *Geometric Topology in Dimensions 2 and 3*, Graduate Texts in Mathematics 47,
+   Springer (1977).
+5. C. Thomassen, The Jordan–Schönflies theorem and the classification of surfaces,
+   *Amer. Math. Monthly* 99 (1992) 116.
