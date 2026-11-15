@@ -104,6 +104,12 @@ named hypotheses, that the chart's tangent space contains the group variations a
 remainder bound holds for every order, and it excludes the single vector geometry of eq. (55),
 where the normals close. Two opposite triangles close, and one triangle does not [13].
 
+The vertex amplitude itself is written with the fifth `SL(2, ℂ)` element fixed to `1` and the chart
+`z = (1, w)` of each `ℂP¹`; its integrand is measurable, bounded by the product of the densities of
+`Ω` wherever no overlap vanishes, and each density is integrable on `ℂ`. The finiteness of the
+whole integral is not proved here, and the action as written agrees with the EPRL integrand only
+for even doubled spins [14].
+
 ## Lean References
 
 1. Lightlike/Asymptotics/Lorentzian/Action.lean - `Asymptotics.Lorentzian.triWeight_le_one`,
