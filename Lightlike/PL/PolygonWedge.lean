@@ -166,6 +166,137 @@ lemma finRotate_three_ne (hn : 4 ≤ n) (j : Fin n) :
   rw [Nat.mod_eq_of_lt (show 1 + 1 + 1 < m + 1 by omega)] at h7
   omega
 
+
+/-- **No edge of a simple polygon meets an empty wedge at the extreme corner.** Let `v = p j` with
+neighbours `u` and `w`, and `u - v`, `w - v` not parallel. If no vertex lies in the open wedge
+`{λ > 0, μ > 0, λ + μ < c}` with `0 < c ≤ 1`, then the carrier misses the wedge. Here `n ≥ 4`:
+for a triangle the edge from `w` to `u` crosses the wedge `c = 1`. -/
+theorem wedge_disjoint_carrier (hs : p.IsSimple) (hn : 4 ≤ n) {j : Fin n}
+    (hcr : cross (p ((finRotate n).symm j) - p j) (p (finRotate n j) - p j) ≠ 0)
+    {c : ℝ} (hc1 : c ≤ 1)
+    (hvert : ∀ i, ¬ (0 < wl (p j) (p ((finRotate n).symm j)) (p (finRotate n j)) (p i) ∧
+      0 < wm (p j) (p ((finRotate n).symm j)) (p (finRotate n j)) (p i) ∧
+      wl (p j) (p ((finRotate n).symm j)) (p (finRotate n j)) (p i) +
+        wm (p j) (p ((finRotate n).symm j)) (p (finRotate n j)) (p i) < c))
+    {q : ℝ × ℝ} (hq1 : 0 < wl (p j) (p ((finRotate n).symm j)) (p (finRotate n j)) q)
+    (hq2 : 0 < wm (p j) (p ((finRotate n).symm j)) (p (finRotate n j)) q)
+    (hq3 : wl (p j) (p ((finRotate n).symm j)) (p (finRotate n j)) q +
+      wm (p j) (p ((finRotate n).symm j)) (p (finRotate n j)) q < c) :
+    q ∉ p.carrier := by
+  intro hqc
+  obtain ⟨e, he⟩ := Set.mem_iUnion.1 hqc
+  set k := (finRotate n).symm j with hk
+  have hkj : finRotate n k = j := by rw [hk]; exact Equiv.apply_symm_apply _ _
+  set v := p j with hv
+  set u := p k with hu
+  set w := p (finRotate n j) with hw
+  set x := p e with hx
+  set y := p (finRotate n e) with hy
+  set f := wf v u w c with hf
+  have hfa := wf_affine v u w c
+  have hqf : ∀ i, 0 < f i q := by
+    intro i
+    rcases (by decide : ∀ i : Fin 3, i = 0 ∨ i = 1 ∨ i = 2) i with rfl | rfl | rfl
+    · exact hq1
+    · exact hq2
+    · rw [hf, wf_two]; linarith
+  have hnot : ∀ z : ℝ × ℝ, ¬ (0 < wl v u w z ∧ 0 < wm v u w z ∧ wl v u w z + wm v u w z < c) →
+      ∃ i, f i z ≤ 0 := by
+    intro z hz
+    by_contra hcon
+    apply hz
+    have h0 : 0 < f 0 z := lt_of_not_ge fun h => hcon ⟨0, h⟩
+    have h1 : 0 < f 1 z := lt_of_not_ge fun h => hcon ⟨1, h⟩
+    have h2 : 0 < f 2 z := lt_of_not_ge fun h => hcon ⟨2, h⟩
+    rw [hf, wf_zero] at h0
+    rw [hf, wf_one] at h1
+    rw [hf, wf_two] at h2
+    exact ⟨h0, h1, by linarith⟩
+  have hqe := he
+  obtain ⟨hxi⟩ : Nonempty (∃ i, f i x ≤ 0) := ⟨hnot x (hvert e)⟩
+  obtain ⟨hyi⟩ : Nonempty (∃ i, f i y ≤ 0) := ⟨hnot y (hvert _)⟩
+  have heq : p.edge e = segment ℝ x y := rfl
+  rw [heq] at he
+  obtain ⟨r, hr, hr0, a, hax, har⟩ := exists_boundary_point hfa hqf hxi
+  have hyq : q ∈ segment ℝ y x := by rw [segment_symm]; exact he
+  obtain ⟨r', hr', hr'0, b, hby, hbr⟩ := exists_boundary_point hfa hqf hyi
+  have hrE : r ∈ segment ℝ x y :=
+    (convex_segment x y).segment_subset (left_mem_segment ℝ x y) he hr
+  have hr'E : r' ∈ segment ℝ x y := by
+    rw [segment_symm]
+    exact (convex_segment y x).segment_subset (left_mem_segment ℝ y x) hyq hr'
+  obtain ⟨s, t, hs0, ht0, hst, hqst⟩ := he
+  have hqa : ∀ i, f i q = s * f i x + t * f i y := by
+    intro i; rw [← hqst]; exact hfa i x y s t hst
+  have key : ∀ i, f i x ≤ 0 → f i y ≤ 0 → False := by
+    intro i h1 h2
+    have := hqa i
+    have := hqf i
+    nlinarith [mul_nonneg hs0 (neg_nonneg.2 h1), mul_nonneg ht0 (neg_nonneg.2 h2)]
+  -- the edge is neither of the two edges at `v`
+  have hej : e ≠ j := by
+    intro h
+    rw [h] at hqe
+    have : q ∈ segment ℝ v w := hqe
+    have := wl_of_mem_segment (u := u) this
+    linarith
+  have hek : e ≠ k := by
+    intro h
+    rw [h] at hqe
+    have h1 : q ∈ segment ℝ u v := by simpa [edge, hkj] using hqe
+    rw [segment_symm] at h1
+    have := wm_of_mem_segment (w := w) h1
+    linarith
+  have hedgek : p.edge k = segment ℝ v u := by
+    simp only [edge, hkj, hu, hv]; exact segment_symm ℝ _ _
+  have hE : ∀ r ∈ p.edge e, (∀ i, 0 ≤ f i r) →
+      (f 0 r = 0 → finRotate n j = e ∧ r = x) ∧ (f 1 r = 0 → finRotate n e = k ∧ r = u) := by
+    intro r hrE hr0
+    have h0 := hr0 0
+    have h1 := hr0 1
+    have h2 := hr0 2
+    rw [hf, wf_zero] at h0
+    rw [hf, wf_one] at h1
+    rw [hf, wf_two] at h2
+    constructor
+    · intro hz
+      have hz' : wl v u w r = 0 := hz
+      have hrj : r ∈ p.edge j := mem_segment_vw hcr hz' h1 (by linarith)
+      rcases edge_meet_cases hs hej hrE hrj with ⟨h3, -⟩ | ⟨h3, h4⟩
+      · exact absurd ((finRotate n).injective (h3.trans hkj.symm)) hek
+      · exact ⟨h3, h4⟩
+    · intro hz
+      have hz' : wm v u w r = 0 := hz
+      have hrk : r ∈ p.edge k := by
+        rw [hedgek]; exact mem_segment_vu hcr hz' h0 (by linarith)
+      rcases edge_meet_cases hs hek hrE hrk with ⟨h3, h4⟩ | ⟨h3, -⟩
+      · exact ⟨h3, h4⟩
+      · exact absurd (hkj.symm.trans (h3.trans rfl) |>.symm) hej
+  have P0 : finRotate n j = e → x = w := fun h => by rw [hx, ← h]
+  have P1 : finRotate n e = k → y = u := fun h => by rw [hy, h]
+  have fw0 : x = w → f 0 x ≤ 0 := fun h => by rw [h, hf, wf_zero, wl_w]
+  have fw2 : x = w → f 2 x ≤ 0 := fun h => by
+    rw [h, hf, wf_two, wl_w, wm_w hcr]; linarith
+  have fu1 : y = u → f 1 y ≤ 0 := fun h => by rw [h, hf, wf_one, wm_u]
+  have fu2 : y = u → f 2 y ≤ 0 := fun h => by
+    rw [h, hf, wf_two, wl_u hcr, wm_u]; linarith
+  have hX := hE r hrE hr0
+  have hY := hE r' hr'E hr'0
+  have h3 : ∀ i : Fin 3, i = 0 ∨ i = 1 ∨ i = 2 := by decide
+  rcases h3 a with rfl | rfl | rfl <;> rcases h3 b with rfl | rfl | rfl
+  · exact key 0 hax hby
+  · obtain ⟨h1, -⟩ := hX.1 har
+    obtain ⟨h2, -⟩ := hY.2 hbr
+    have : finRotate n (finRotate n (finRotate n j)) = j := by rw [h1, h2, hkj]
+    exact finRotate_three_ne hn j this
+  · exact key 2 (fw2 (P0 (hX.1 har).1)) hby
+  · exact key 0 (fw0 (P0 (hY.1 hbr).1)) hby
+  · exact key 1 hax hby
+  · exact key 1 hax (fu1 (P1 (hX.2 har).1))
+  · exact key 0 (fw0 (P0 (hY.1 hbr).1)) hby
+  · exact key 2 hax (fu2 (P1 (hY.2 hbr).1))
+  · exact key 2 hax hby
+
 end Polygon
 
 end Lightlike.PL
