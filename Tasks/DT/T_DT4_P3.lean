@@ -23,14 +23,14 @@ Definitions the statement names (without the `Lightlike.` prefix), by file:
 
 Lemmas about them, which a proof may use:
 
-* `PL.SComplex.IsClosedCombManifold.card_cofaces` (`Tasks/DT/T_DT4_P1.lean`)
-* `PL.SComplex.card_mul_eq_sum_cofaces` (`Tasks/DT/T_DT4_P2.lean`)
+* `PL.SComplex.IsClosedCombManifold.card_cofaces` (`Lightlike/DynamicalTriangulations/DehnSommerville.lean`)
+* `PL.SComplex.card_mul_eq_sum_cofaces` (`Lightlike/DynamicalTriangulations/DehnSommerville.lean`)
 * `PL.SComplex.mem_faces` (`Lightlike/PL/Complex.lean`)
+* `PL.SComplex.chain_sup_mem` (`Lightlike/PL/OrderComplex.lean`)
+* `PL.SComplex.pachner_plHomeomorphic` (`Lightlike/PL/PachnerPL.lean`)
 * `PL.SComplex.IsClosedCombManifold.card_le` (`Lightlike/PL/Links.lean`)
 * `PL.SComplex.IsClosedCombManifold.link_face` (`Lightlike/PL/Links.lean`)
 * `PL.SComplex.IsClosedCombManifold.isPLSphere_link` (`Lightlike/PL/Links.lean`)
-* `PL.SComplex.IsClosedCombManifold.bistellarEquiv_of_iso` (`Lightlike/PL/PachnerMain.lean`)
-* `PL.SComplex.ext` (`Lightlike/PL/Complex.lean`)
 
 Everything they depend on, with 19 more lemmas, in one block:
 

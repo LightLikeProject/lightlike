@@ -6,7 +6,7 @@ finite difference of the Regge action S = sum_e l_e (2 pi - sum_t theta_t(e)) is
 deficit angle at e. Control: the individual terms l_f d(theta_f)/d(l_e) of Schläfli's sum are not
 small, so the agreement is a genuine cancellation, not a numerical accident.
 """
-import itertools, math, random
+import itertools, math, random, sys
 
 def dihedral(pq, pr, qr, ps, qs, rs):
     # same formula as Lightlike.PR.cosDihedral / Lightlike.PR.dihedral
@@ -54,3 +54,4 @@ print(f"Schläfli terms l_f dtheta_f/dl_e: max |term| = {max(abs(x) for x in ter
       f"sum = {sum(terms):.2e}")
 ok = worst < 1e-6 and max(abs(x) for x in terms) > 0.05 and abs(sum(terms)) < 1e-6
 print("ALL CHECKS PASS" if ok else "CHECK FAILED")
+sys.exit(0 if ok else 1)

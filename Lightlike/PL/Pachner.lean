@@ -9,8 +9,8 @@ and only if they are related by bistellar moves. "Combinatorial manifold" is the
 Lickorish 1999, Definition 3.1). Lickorish's Theorem 5.9 (Newman, Pachner 1991) is the same
 statement with "PL homeomorphic" in place of "stellar equivalent" and with the piecewise-linear
 notion of combinatorial manifold (Definition 2.2). The two readings agree by Newman's theorem
-(Lickorish §4), milestone PL4, which is not yet formalized; the version with PL homeomorphisms needs
-it.
+(Lickorish §4, `StellarEquiv.of_plHomeomorphic`); the version with PL homeomorphisms is
+`SComplex.pachner_plHomeomorphic` in `Lightlike/PL/PachnerPL.lean`.
 
 No renamings of the vertices (simplicial isomorphisms) are needed besides the moves: they are not
 generators of stellar or bistellar equivalence here. A renaming of a closed combinatorial manifold

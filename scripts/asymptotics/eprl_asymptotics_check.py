@@ -1,8 +1,8 @@
 """Numerical check (not a proof) of the statement of the large-spin asymptotics of the coherent 15j
 integral and of the Euclidean EPRL vertex in Lightlike/Asymptotics/EPRL/Amplitude.lean,
-ReggeState.lean and Formula.lean, and of the gluing, stationarity and suppression results proved
-there
-(Gluing.lean, Decay.lean), built independently of the Lean files with numpy.
+ReggeState.lean and Formula.lean, and of the gluing, stationarity, suppression and critical-point
+results proved there (Gluing.lean, Decay.lean, GluingSolutions.lean, Normals.lean, Lightlike/Asymptotics/EPRL/Critical.lean),
+built independently of the Lean files with numpy.
 
 Sources: Barrett, Dowdall, Fairbairn, Gomes, Hellmann, J. Math. Phys. 50 (2009) 112504,
 arXiv:0902.1170, Theorem 1 (BDFGH); Barrett, Fairbairn, Hellmann, arXiv:0912.4907, eq. (16) (BFH).
@@ -82,7 +82,14 @@ Checks, which must pass:
     twistData_one_not_stationary); for g = 1 and spins 1 on the triangle 014
     (Lean: oneData) the maximum of |F| is 3 sqrt(3)/8 < 1: it is attained when the Bloch vectors of
     X_0, X_1, X_4 lie at 120 degrees in a plane, and no point of a random sample of 20000 exceeds
-    it, so the integral decays like (3 sqrt(3)/8)^lam (Lean: coh15j_oneData_decay).
+    it, so the integral decays like (3 sqrt(3)/8)^lam (Lean: coh15j_oneData_decay);
+ 9. the critical set of the Regge state (Lightlike/Asymptotics/EPRL/Critical.lean), a sampled search, not a proof: on the
+    regular simplex and six random simplices any three normals are independent (Lean:
+    linearIndependent_outNormal_three) and U+, U- lie in different classes (Lean:
+    critical_classes_disjoint); Levenberg-Marquardt on the 30 gluing equations in the chart with
+    X_4 = 1, from 120 (regular) or 40 (random) random starts, converges only to points with
+    X_a = +-U+_a for every a or X_a = +-U-_a for every a, finds both classes, and |F| = 1 there with
+    the areas as spins (Lean: reggeState_critical_iff, glued_iff_two_classes).
 Controls, which must FAIL:
  (a) the formula without the sign-flip count 2^4, against the exact integral (check 5);
  (b) the formula with the graph-chart density (2 pi^2)^-4 and the theta-chart Hessian (check 5);
@@ -96,7 +103,11 @@ Controls, which must FAIL:
      in place of nu(g_ab), nu(g_ba) (check 8);
  (h) the derivative formula at points that are not glued (check 8);
  (i) the sum over the five nodes of the rotated closure vectors at points that are not glued
-     (check 8).
+     (check 8);
+ (j) the mixed point X_0 = U-_0, X_a = U+_a otherwise, as a gluing point with |F| = 1 (check 9);
+ (k) the wrong-order point X_a = (U+_a)^H as a gluing point with |F| = 1 (check 9);
+ (l) a degenerate simplex (vertex 4 in the hyperplane of 0123): independence of any three normals
+     (check 9).
 The script exits with code 0 only if every check passes and every control fails.
 
 Usage: python3 -I scripts/asymptotics/eprl_asymptotics_check.py
@@ -678,6 +689,101 @@ F_samp = max(abs(amp(g_one, [rand_su2(rng8) for _ in range(5)], n_014)) for _ in
 check("g = 1, spins 1 on 014: |F| = 3 sqrt(3)/8 at 120 degrees, no sampled point above it",
       abs(F120 - q_max) < 1e-12 and F_samp <= q_max + 1e-12,
       f"|F| at 120 degrees {F120:.6f}, sampled max {F_samp:.6f}, 3 sqrt(3)/8 = {q_max:.6f}")
+
+
+# ---------------------------------------------------------------- 9. the critical set of a Regge state
+print("9. the critical set of the Regge state: two gauge classes")
+
+
+def glue_res(g, X):
+    """The gluing defects nu(X_a g_ab eps) - nu(X_b g_ba) of the ten edges (Lean: frameSrc, frameTgt)."""
+    return np.concatenate([bloch(X[a] @ g[e][0] @ EPS) - bloch(X[b] @ g[e][1])
+                           for e, (a, b) in enumerate(EDGES)])
+
+
+def solve_glue(g, Y, iters=80, h=1e-7):
+    """Levenberg-Marquardt on the 30 gluing equations in the chart Y_a exp((i/2) theta_a . sigma),
+    a = 0..3, with X_4 = 1."""
+    one = np.eye(2, dtype=complex)
+    Y = list(Y)
+    r = glue_res(g, Y + [one])
+    lam = 1e-3
+    for _ in range(iters):
+        if np.linalg.norm(r) < 1e-14:
+            break
+        J = np.zeros((30, 12))
+        for k in range(12):
+            t = np.zeros(12)
+            t[k] = h
+            J[:, k] = (glue_res(g, chart(Y + [one], t)) - glue_res(g, chart(Y + [one], -t))) / (2 * h)
+        # einsum, not matmul: the BLAS matmul of some numpy builds raises spurious warnings here
+        step = -np.linalg.solve(np.einsum('ik,il->kl', J, J) + lam * np.eye(12), np.einsum('ik,i->k', J, r))
+        Y2 = chart(Y + [one], step)[:4]
+        r2 = glue_res(g, Y2 + [one])
+        if np.linalg.norm(r2) < np.linalg.norm(r):
+            Y, r, lam = Y2, r2, lam / 3
+        else:
+            lam *= 5
+    return Y, np.linalg.norm(r)
+
+
+def class_dist(X, U):
+    """max_a min(|X_a - U_a|, |X_a + U_a|): distance from the class X_a = +-U_a (X_4 = 1)."""
+    return max(min(np.abs(X[a] - U[a]).max(), np.abs(X[a] + U[a]).max()) for a in range(5))
+
+
+def indep3(N):
+    """The smallest singular value of [N_a, N_b, N_c] over all triples of distinct nodes."""
+    return min(np.linalg.svd(np.array([N[a], N[b], N[c]]), compute_uv=False)[-1]
+               for a in range(5) for b in range(a + 1, 5) for c in range(b + 1, 5))
+
+
+rng9 = np.random.default_rng(9)
+P_MORE = [[rng9.normal(size=4) for _ in range(5)] for _ in range(4)]
+for label, P, starts in ([("regular", P_REG, 120)] +
+                         [(f"random {k}", p, 40) for k, p in enumerate(P_RAND + P_MORE)]):
+    N, Qs, g, Th = regge_state(P)
+    A = [area(P, *e) for e in EDGES]
+    Up, Um = crit_points(Qs)
+    s3 = indep3(N)
+    sep = class_dist(Up, Um)
+    check(f"[{label}] any three normals independent, U+ and U- in different classes",
+          s3 > 1e-3 and sep > 1e-3, f"smallest singular value {s3:.3g}, class distance {sep:.3g}")
+    found = {"+": 0, "-": 0}
+    other, worst = 0, 0.0
+    for _ in range(starts):
+        X, res = solve_glue(g, [rand_su2(rng9) for _ in range(4)])
+        if res > 1e-10:
+            continue
+        X = X + [np.eye(2, dtype=complex)]
+        dp, dm = class_dist(X, Up), class_dist(X, Um)
+        if min(dp, dm) > 1e-6:
+            other += 1
+            continue
+        found["+" if dp < dm else "-"] += 1
+        worst = max(worst, abs(abs(amp(g, X, A)) - 1), min(dp, dm))
+    check(f"[{label}] {starts} solver runs: every gluing point is +-U+ or +-U- node by node, "
+          "both classes are found, |F| = 1 there",
+          other == 0 and found["+"] > 0 and found["-"] > 0 and worst < 1e-6,
+          f"class + {found['+']}, class - {found['-']}, other {other}, max error {worst:.1e}")
+
+N, Qs, g_reg, Th = regge_state(P_REG)
+Up, Um = crit_points(Qs)
+A = [area(P_REG, *e) for e in EDGES]
+X_mix = [Um[0]] + Up[1:]
+X_cnj = [herm(u) for u in Up]
+res_mix, res_cnj = np.linalg.norm(glue_res(g_reg, X_mix)), np.linalg.norm(glue_res(g_reg, X_cnj))
+control("(j) the mixed point X_0 = U-_0, X_a = U+_a otherwise, is a gluing point with |F| = 1",
+        res_mix < 1e-8 or abs(abs(amp(g_reg, X_mix, A)) - 1) < 1e-8,
+        f"defect {res_mix:.3g}, |F| = {abs(amp(g_reg, X_mix, A)):.4f}")
+control("(k) the wrong-order point X_a = (U+_a)^H is a gluing point with |F| = 1",
+        res_cnj < 1e-8 or abs(abs(amp(g_reg, X_cnj, A)) - 1) < 1e-8,
+        f"defect {res_cnj:.3g}, |F| = {abs(amp(g_reg, X_cnj, A)):.4f}")
+P_flat = P_REG[:4] + [np.array([0.25, 0.25, 0.25, 0.25])]
+N_flat = normals(P_flat)
+control("(l) a degenerate simplex (vertex 4 in the hyperplane of 0123): any three normals "
+        "independent", indep3(N_flat) > 1e-3, f"smallest singular value {indep3(N_flat):.1e}, "
+        f"rank of the five normals {np.linalg.matrix_rank(np.array(N_flat), tol=1e-9)}")
 
 print()
 if failures or controls_passed:

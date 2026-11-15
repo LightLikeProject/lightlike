@@ -24,6 +24,10 @@ Lemma 3.4.
 * `Starrable.map_perm`: starrability is invariant under permutations of the vertices.
 * `Starrable.starAt`: Lickorish's Lemma 3.4 for one move: if `X` is starrable relative to `E`,
   then a subdivision of `X` is starrable relative to the induced subdivision of `E`.
+* `TChain.glue`: a tame chain can be run with a further complex `R`, on protected vertices only,
+  glued on.
+* `Starrable.toCone`: Lickorish's Lemma 3.5: a starrable complex is moved to a cone over `E` with
+  any new apex by tame moves.
 -/
 
 open Finset

@@ -13,6 +13,7 @@ while the individual terms are of order one. Controls: the gradient without the 
 import itertools
 import math
 import random
+import sys
 
 V = range(6)
 SIMPS = [frozenset(s) for s in itertools.combinations(V, 5)]
@@ -107,3 +108,4 @@ drop = (angle_sum(h, ts[0]) - angle_sum(-h, ts[0])) / (2 * h)
 print(f"control (one triangle dropped): sum = {drop:.3f}")
 ok = err < 1e-6 and err_ctrl > 1e-2 and abs(sum(terms)) < 1e-6 and abs(drop) > 1e-2
 print("ALL CHECKS PASS" if ok else "CHECK FAILED")
+sys.exit(0 if ok else 1)

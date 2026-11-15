@@ -23,12 +23,12 @@ Lemmas about them, which a proof may use:
 
 * `PL.SComplex.isClosedCombManifold_iff` (`Lightlike/PL/Manifold.lean`)
 * `PL.SComplex.isClosedCombManifold_succ_iff` (`Lightlike/PL/Manifold.lean`)
-* `PL.octahedron_link_of` (`Lightlike/PL/Tests.lean`)
+* `PL.SComplex.isClosedCombManifold_iff_plHomeomorphic` (`Lightlike/PL/PachnerPL.lean`)
+* `PL.SComplex.link_join` (`Lightlike/PL/Boundary.lean`)
 * `PL.SComplex.link_exch` (`Lightlike/PL/Exchange.lean`)
+* `PL.octahedron_link_of` (`Lightlike/PL/Tests.lean`)
 * `PL.SComplex.starAt_weld` (`Lightlike/PL/Stellar.lean`)
 * `PL.SComplex.isExch_starAt` (`Lightlike/PL/Exchange.lean`)
-* `PL.SComplex.link_union_eq` (`Lightlike/PL/PachnerMain.lean`)
-* `PL.SComplex.exch_eq_starAt` (`Lightlike/PL/Exchange.lean`)
 
 Everything they depend on, with 17 more lemmas, in one block:
 

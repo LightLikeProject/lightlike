@@ -19,14 +19,14 @@ Definitions the statement names (without the `Lightlike.` prefix), by file:
 
 Lemmas about them, which a proof may use:
 
-* `PL.closure_bdry` (`Lightlike/PL/Complex3.lean`)
+* `DynamicalTriangulations.twoSimplices_not_dehnSommerville` (`Lightlike/DynamicalTriangulations/Tests.lean`)
 * `PL.SComplex.ext` (`Lightlike/PL/Complex.lean`)
-* `PL.verts_closure` (`Lightlike/PL/Surface.lean`)
-* `PL.SComplex.down` (`Lightlike/PL/Complex.lean`)
+* `PL.closure_bdry` (`Lightlike/PL/Complex3.lean`)
 * `PL.isSphere2_iff` (`Lightlike/PL/Surface.lean`)
+* `PL.SComplex.down` (`Lightlike/PL/Complex.lean`)
+* `PL.verts_closure` (`Lightlike/PL/Surface.lean`)
 * `PL.euler_closure` (`Lightlike/PL/Surface.lean`)
 * `PL.link_ofComplex3` (`Lightlike/PL/Complex3.lean`)
-* `PL.SComplex.ext_iff` (`Lightlike/PL/Complex.lean`)
 
 Everything they depend on, with 17 more lemmas, in one block:
 

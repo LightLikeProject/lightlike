@@ -178,6 +178,94 @@ theorem fifteenJSimplex_cycle_spin (j : ℕ) :
   · intro h
     exact (h (mem_Icc.mpr ⟨by omega, by omega⟩)).elim
 
+/-- The intertwiner `ι^{(j)}` of spins `(j, 0, 0, j)`: `√(j+1) (-1)^{(j+a)/2} (0 j j; 0 -a a)²` at `(a, -a)`, and `0`
+at other projections. -/
+lemma fourJ_j00j (j : ℕ) (a b : ℤ) :
+    fourJ j 0 0 j j a 0 0 b = if b = -a then
+      Real.sqrt ((j : ℝ) + 1) * (edgeSign j (-a) * (threeJ 0 j j 0 (-a) a * threeJ 0 j j 0 (-a) a)) else 0 := by
+  have c1 : ∀ μ : ℤ, threeJ j 0 j a 0 μ = threeJ 0 j j 0 μ a := fun μ =>
+    (threeJ_cycle j 0 j a 0 μ).symm ▸ rfl
+  have c2 : ∀ μ : ℤ, threeJ j 0 j (-μ) 0 b = threeJ 0 j j 0 b (-μ) := fun μ =>
+    (threeJ_cycle j 0 j (-μ) 0 b).symm ▸ rfl
+  unfold fourJ
+  simp only [c1, c2]
+  rw [sum_eq_single (-a)]
+  · split_ifs with h
+    · subst h
+      simp only [neg_neg, edgeSign]
+      ring
+    · rw [neg_neg, threeJ_0jj_eq_zero (show a ≠ -b by omega)]
+      ring
+  · intro μ _ hμ
+    rw [threeJ_0jj_eq_zero (show a ≠ -μ by omega)]
+    ring
+  · intro h
+    have hz : threeJ 0 j j 0 (-a) a = 0 := by
+      rw [threeJ_zero_left, ite_eq_right]
+      rintro ⟨-, -, -, h1, h2, h3⟩
+      exact h (mem_Icc.mpr ⟨by omega, by omega⟩)
+    rw [hz]
+    ring
+
+/-- **Value check (the triangle).** Spin `j/2` on the three edges `01, 02, 12` of `K₅`, spin `0`
+elsewhere, intertwiners `i₁ = j/2` and `0` at the other four nodes: the 15j contraction is
+`1/√(j+1)`. The spins sum to `3j/2`, a half-integer for odd `j`. -/
+theorem fifteenJSimplex_triangle (j : ℕ) :
+    fifteenJSimplex j j 0 0 j 0 0 0 0 0 0 j 0 0 0 = 1 / Real.sqrt ((j : ℝ) + 1) := by
+  have e0 : edgeSign 0 0 = 1 := by simp [edgeSign]
+  unfold fifteenJSimplex
+  simp only [Nat.cast_zero, neg_zero, Icc_self, sum_singleton, fourJ_00jj, fourJ_jj00,
+    e0, mul_one, fourJ_j00j]
+  have hs : (0 : ℝ) < Real.sqrt ((j : ℝ) + 1) := Real.sqrt_pos.mpr (by positivity)
+  have hcount : ∑ a ∈ Icc (-(j : ℤ)) j,
+      (if ((j : ℤ) - a) % 2 = 0 then 1 / ((j : ℝ) + 1) ^ 2 else 0) = 1 / ((j : ℝ) + 1) := by
+    rw [← sum_filter, sum_const, nsmul_eq_mul, card_proj]
+    push_cast
+    field_simp
+  have key : ∀ a ∈ Icc (-(j : ℤ)) j, ∑ x_1 ∈ Icc (-(j : ℤ)) j, ∑ x_2 ∈ Icc (-(j : ℤ)) j,
+      edgeSign j a * edgeSign j x_1 * edgeSign j x_2 *
+        ((threeJ 0 j j 0 a x_1 *
+          (if -a = -x_2 then Real.sqrt ((j : ℝ) + 1) * (edgeSign j (-x_2) *
+            (threeJ 0 j j 0 (-x_2) x_2 * threeJ 0 j j 0 (-x_2) x_2)) else 0)) *
+          threeJ 0 j j 0 (-x_1) (-x_2) * threeJ 0 0 0 0 0 0 * threeJ 0 0 0 0 0 0) =
+      (if ((j : ℤ) - a) % 2 = 0 then 1 / ((j : ℝ) + 1) ^ 2 else 0) * Real.sqrt ((j : ℝ) + 1) := by
+    intro a ha
+    rw [mem_Icc] at ha
+    rw [sum_eq_single (-a)]
+    · rw [sum_eq_single a]
+      · simp only [neg_neg, ite_true]
+        by_cases hp : ((j : ℤ) - a) % 2 = 0
+        · have h1 := threeJ_0jj_sq j a
+          have h2 := threeJ_0jj_sq j (-a)
+          rw [ite_eq_left ⟨ha.1, ha.2, hp⟩] at h1
+          rw [neg_neg, ite_eq_left ⟨by omega, by omega, by omega⟩] at h2
+          have hε := edgeSign_sq j a
+          have hε' := edgeSign_sq j (-a)
+          have hj : (j : ℝ) + 1 ≠ 0 := by positivity
+          rw [ite_eq_left hp, threeJ_zero_zero]
+          calc _ = (edgeSign j a ^ 2) * edgeSign j (-a) ^ 2 * (threeJ 0 j j 0 a (-a) ^ 2) *
+                (threeJ 0 j j 0 (-a) a ^ 2) * Real.sqrt ((j : ℝ) + 1) := by ring
+            _ = _ := by rw [hε, hε', h1, h2]; field_simp
+        · have h1 := threeJ_0jj_sq j a
+          rw [ite_eq_right (fun h => hp h.2.2)] at h1
+          have h0 : threeJ 0 j j 0 a (-a) = 0 := pow_eq_zero_iff (two_ne_zero) |>.mp h1
+          rw [ite_eq_right hp, h0]
+          ring
+      · intro b _ hb
+        rw [ite_eq_right (show ¬(-a = -b) by omega)]
+        ring
+      · intro h
+        exact (h (mem_Icc.mpr ⟨by omega, by omega⟩)).elim
+    · intro b _ hb
+      rw [threeJ_0jj_eq_zero (show b ≠ -a by omega)]
+      simp
+    · intro h
+      exact (h (mem_Icc.mpr ⟨by omega, by omega⟩)).elim
+  rw [sum_congr rfl key, ← sum_mul, hcount]
+  have hq := Real.sq_sqrt (show (0 : ℝ) ≤ (j : ℝ) + 1 by positivity)
+  field_simp
+  nlinarith [hq]
+
 /-- **Cross-check with `fifteenJSimplex_cycle`.** At spin `½` the general closed loop gives `1/2`, the value of
 `Lightlike.Recoupling.fifteenJSimplex_cycle`, which was evaluated from a table of spin-½ 3j symbols. -/
 theorem fifteenJSimplex_cycle_half :

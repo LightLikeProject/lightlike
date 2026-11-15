@@ -60,24 +60,32 @@ CHECKS = [
     ("scripts/pl/surf_chains.py", False),
     ("scripts/recoupling/ooguri_moves_check.py", True),
     ("scripts/regge/midpoint_sixth_check.py", True),
+    ("scripts/regge/area_jacobian_check.py", False), ("scripts/regge/lorentzian_check.py", False),
+    ("scripts/regge/regge3d_affine.py", False), ("scripts/regge/regge3d_core.py", False),
+    ("scripts/regge/regge3d_jet.py", False), ("scripts/vertex_identity_check.py", False),
     ("scripts/spinfoam/vertex_check.py", False),
+    ("scripts/spinfoam/bc_sign_check.py", False),
+    ("scripts/spinfoam/bing_house_check.py", False),
+    ("scripts/spinfoam/gauge_manifold_check.py", False),
+    ("scripts/spinfoam/gauge_independence_check.py", True),
 ]
 # Scripts that are not cross-checks (tools, the gate itself)
 NOT_CHECKS = {"scripts/ci_check.py", "scripts/prune_docs.py", "scripts/gate.py", "scripts/sixj_support.py", "scripts/tooling_selftest.py",
               "scripts/run_python_checks.py", "scripts/api_map.py",
               "scripts/leansrc.py", "scripts/proof_task_check.py", "scripts/tasks.py",
               "scripts/sources.py", "scripts/doc_refs_check.py",
+              "scripts/regge/regge3d_convergence.py",  # a library of the regge3d_* checks (dihedral); its demo has no verdict
               "scripts/pl/check_chain.py",  # a library of surf_chains.py
-              "scripts/pl/surf_search.py"}  # a search tool; its results are checked by surf_chains.py
+              "scripts/pl/surf_search.py",  # a search tool; its results are checked by surf_chains.py
+              "scripts/spinfoam/all15.py", "scripts/spinfoam/all24.py",  # print the reduction data of the 1-5 and 2-4 moves; Lean checks them
+              "scripts/spinfoam/gen15.py", "scripts/spinfoam/gen24.py",  # generators of the Lean tables of Move15 and Move24
+              "scripts/spinfoam/gauge_match.py", "scripts/spinfoam/net_model.py",  # libraries of the move searches
+              "scripts/spinfoam/search15.py", "scripts/spinfoam/search24.py"}  # search tools; Lean checks what they find
 
 
 # Listed scripts with no way to exit nonzero: they print their verdict only. Shrink-only: remove a
 # script when it gains an exit path (the runner warns); a script not listed here must have one.
-NO_EXIT_BASELINE = {
-    "scripts/regge/regge2d_convergence.py", "scripts/regge/regge4_check.py",
-    "scripts/regge/regge4_numerics.py", "scripts/regge/regge_equations_check.py",
-    "scripts/regge/schlaefli_check.py",
-}
+NO_EXIT_BASELINE: set[str] = set()
 FAIL_VERDICT = re.compile(r"\bFAIL(?:ED)?\b")
 
 

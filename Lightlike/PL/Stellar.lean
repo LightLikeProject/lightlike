@@ -14,8 +14,10 @@ Newman; Lickorish 1999, §1) replaces the closed star `A * lk(A, K)` by the cone
 The faces removed are exactly the faces containing `A`. A **weld** is the inverse operation: if
 the link of a vertex `a` of `K` is `∂A * L` with `A` not a face of `K`, the weld replaces
 `a * ∂A * L` by `A * L`. Two complexes are **stellar equivalent** when a finite sequence of stellar
-subdivisions, welds and renamings of the vertices leads from one to the other; by the theorem of
-Newman and Alexander (milestone PL4) this is exactly PL homeomorphism of the realisations.
+subdivisions, welds and renamings of the vertices leads from one to the other; by Newman's theorem
+(Lickorish §4, `StellarEquiv.of_plHomeomorphic` in `Lightlike/PL/Newman.lean`), two complexes that
+both have the empty face, or both lack it, are stellar equivalent exactly when their realisations
+are PL homeomorphic.
 
 ## Definitions
 

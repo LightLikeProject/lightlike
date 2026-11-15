@@ -24,9 +24,8 @@ in the browser, with nothing to install, in [GitHub Codespaces](https://docs.git
    of the editor) shows the goal at the cursor.
 4. Replace the `sorry` with a proof, changing nothing else in the file, and run the same command
    until it reports no error.
-5. Commit on a branch and push: `git checkout -b proof/T-DT4-P1`,
-   `git commit -am "proof(dt): T-DT4-P1"`, `git push -u origin HEAD`. GitHub offers to create a
-   fork.
+5. Commit on a branch and push: `git checkout -b proof/T-DT4-P1`, `git commit -am "proof(dt): T-DT4-P1"`,
+   `git push -u origin HEAD`. GitHub offers to create a fork.
 6. Open the pull request from the link that `git push` prints, with the line `Task: T-DT4-P1`.
    Once it is merged, the task's issue is closed.
 
@@ -41,7 +40,9 @@ the modules it changes and the modules that import them.
 1. `lake build` succeeds, and every Lean file under `Lightlike/` is imported by `Lightlike.lean`,
    so that it is built and checked. After adding a file, `lake exe mk_all --lib Lightlike`
    updates `Lightlike.lean`.
-2. No `sorry`, `admit`, `native_decide`, `axiom`, `implemented_by` or `extern` in `Lightlike/`.
+2. No `sorry`, `admit`, `native_decide`, `axiom`, `implemented_by` or `extern` in `Lightlike/`,
+   and no new `maxHeartbeats 0`: a heavy proof gets a finite limit for that declaration only,
+   `set_option maxHeartbeats 400000 in` (`scripts/ci_check.py`, `scripts/heartbeats_baseline.txt`).
 3. Every declaration of the library depends only on Lean's standard axioms `propext`,
    `Classical.choice` and `Quot.sound`. `scripts/AxiomAudit.lean` checks all of them, so there is
    no list of theorems to keep.
@@ -62,8 +63,7 @@ are marked `[advisory]` and only report.
 - **[Milestones by area](docs/tasks/README.md#milestones-by-area):** every milestone of an area,
   with what it needs; its issue is labelled **ready** once those are done.
 - **[Upstream](docs/tasks/README.md#upstream):** results to rework for Mathlib or Physlib.
-- **Good first issues:** small and self-contained; they need no knowledge of the rest of the
-  library.
+- **Good first issues:** small and self-contained, needing no knowledge of the rest of the library.
 - **Propose a result:** the [formalize this result](.github/ISSUE_TEMPLATE/formalize-result.yml)
   issue form takes a specific result from a specific paper, with its location in the paper.
 
@@ -87,8 +87,7 @@ area's [milestone table](docs/tasks/milestones.md) and its sources; the
 
 ## Working on the same problem
 
-The work is split into small tasks so that many people can work at once, several of them on the
-same problem.
+The work is split into small tasks so that many people can work at once, several on one problem.
 
 - **Claims.** Definition, statement and upstream tasks work best with one person at a time:
   comment `claiming` on the issue, and `stopping` to release it. A claim lapses after 14 days
@@ -104,10 +103,8 @@ same problem.
 - **First valid proof wins.** The first pull request that passes CI is merged. A later proof of
   the same statement is merged as an alternative only if it is clearly shorter, faster to check
   or more general.
-- **Partial progress counts.** Helper lemmas that others can build on can go in their own pull
-  request.
-- **Routes.** Hard tasks list several routes on their card; attempts by different routes are
-  welcome.
+- **Partial progress counts.** Helper lemmas others can build on can go in their own pull request.
+- **Routes.** Hard tasks list several routes on their card; attempts by different ones are welcome.
 
 ## Review
 
@@ -145,14 +142,12 @@ Each of these makes a result easier to trust or to reuse. None blocks a merge.
 - **Reuse first.** Before adding a definition, check whether Mathlib or Physlib has it, and use
   it. [docs/CONVENTIONS.md](docs/CONVENTIONS.md) lists the definitions taken from Physlib.
 - **Trust checks.** A new definition reproduces a published value or known identity, and a
-  deliberately wrong model or input is shown to give a different result. A definition can
-  type-check and still mean something other than the literature's notion; this is the cheapest
-  way to catch it.
+  deliberately wrong model or input is shown to give a different result. A definition can type-check
+  and still mean something other than the literature's notion; this is the cheapest way to catch it.
 - **Non-vacuity examples.** A concrete case satisfies the hypotheses of each main theorem. With
   unsatisfiable hypotheses, any conclusion is provable.
-- **Junk values.** Lean's `a / 0 = 0` and similar conventions
-  ([docs/CONVENTIONS.md](docs/CONVENTIONS.md#leans-junk-values)) can make a statement true for a
-  degenerate reason; state the domain and assume it.
+- **Junk values.** Lean's `a / 0 = 0` and similar [conventions](docs/CONVENTIONS.md#leans-junk-values)
+  can make a statement true for a degenerate reason; state the domain and assume it.
 - **Conventions.** Follow [docs/CONVENTIONS.md](docs/CONVENTIONS.md), or say in the docstring where
   and why a definition departs from them, so that results compose.
 - **Style.** Follow the [Mathlib style guide](https://leanprover-community.github.io/contribute/style.html).
@@ -202,5 +197,4 @@ including a conduct report, write to the project address, lightlike.project@gmai
 
 ## License
 
-By contributing you agree that your contributions are licensed under the Apache License 2.0
-(see [LICENSE](LICENSE)).
+By contributing you agree to license your contributions under the [Apache License 2.0](LICENSE).

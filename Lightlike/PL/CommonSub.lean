@@ -521,6 +521,17 @@ theorem IsGeom.exists_common_subdivision (hK : IsGeom K) (hL : IsGeom L)
   exact ⟨commonSub K L, isSubdivision_commonSub_left hK hL h (empty_mem (not_not.1 hs)),
     isSubdivision_commonSub_right hK hL h (empty_mem (not_not.1 ht))⟩
 
+omit [DecidableEq E] in
+/-- **Common subdivisions with the empty face.** Two geometric complexes with the same underlying
+set that both have the empty face have a common subdivision that has it too. -/
+theorem IsGeom.exists_common_subdivision_empty (hK : IsGeom K) (hL : IsGeom L)
+    (h : K.space = L.space) (h₀K : ∅ ∈ K) (h₀L : ∅ ∈ L) :
+    ∃ M, IsSubdivision M K ∧ IsSubdivision M L ∧ ∅ ∈ M := by
+  classical
+  refine ⟨commonSub K L, isSubdivision_commonSub_left hK hL h h₀K,
+    isSubdivision_commonSub_right hK hL h h₀L, ?_⟩
+  exact mem_commonSub.2 ⟨∅, ⟨by simp, by simp⟩, by simp⟩
+
 end SComplex
 
 end Lightlike.PL

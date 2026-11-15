@@ -95,7 +95,7 @@
   "citations_via": "OpenAlex"
  },
  "ambjorn-jurkiewicz-loll-2001": {
-  "checked": "2026-11-08",
+  "checked": "2026-11-15",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "Dynamically Triangulating Lorentzian Quantum Gravity",
@@ -104,9 +104,39 @@
     "verified": true,
     "snippet": "fruitful ideas on how to quantize gravity are few and far between in this paper we give a complete description of a recently introduced non perturbative gravitational path integral whose continuum lim",
     "why": null
+   },
+   "Section 3.2, eq. (26)": {
+    "verified": true,
+    "snippet": "3.2 Identities in 3+1 dimensions Here we are interested in four-manifolds which are of the form of a product of a compact three-manifold (3) Σ with either an open interval or a circle, that is I × (3) Σ or S 1 × (3)",
+    "why": null
+   },
+   "eq. (42)": {
+    "verified": true,
+    "snippet": "(42) 2 2 4 96 where the expression in the last line is recognized as the standard form of the action for Euclidean dynamical triangulations in four dimensions. 14 5 The transfer matrix We have now all the necessary prere",
+    "why": null
    }
   },
   "citations": 343,
+  "citations_via": "Semantic Scholar"
+ },
+ "ambjorn-jurkiewicz-loll-2001b": {
+  "checked": "2026-11-15",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Non-perturbative 3d Lorentzian Quantum Gravity",
+  "locations": {
+   "eq. (24)": {
+    "verified": true,
+    "snippet": "(24) 4G 48 2πG where in a slight abuse of language we continue to use G and Λ to denote the bare gravitational and cosmological couplings. We can substitute N1 by the number N0 of vertices, using the identity N1 = N3 + N",
+    "why": null
+   },
+   "eq. (26)": {
+    "verified": true,
+    "snippet": "(26) with the coupling constants given by a a3 Λ a k0 = , k3 = √ + (3κ − 1). (27) 4G 48 2πG 4G In the numerical investigation of Sec. 3 we discussed the dependence of the action on the total number N22 of (2,2)-tetrahedr",
+    "why": null
+   }
+  },
+  "citations": 171,
   "citations_via": "Semantic Scholar"
  },
  "ambjorn-loll-1998": {
@@ -274,6 +304,21 @@
   "citations": 470,
   "citations_via": "Semantic Scholar"
  },
+ "baez-christensen-2002": {
+  "checked": "2026-11-15",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Positivity of Spin Foam Amplitudes",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "the amplitude for a spin foam in the barrett crane model of riemannian quantum gravity is given as a product over its vertices edges and faces with one factor of the riemannian 10j symbols appearing f",
+    "why": null
+   }
+  },
+  "citations": 35,
+  "citations_via": "Semantic Scholar"
+ },
  "balachandran-kurkcuoglu-vaidya-2005": {
   "checked": "2026-11-08",
   "exists": true,
@@ -365,7 +410,7 @@
   "citations_via": "Semantic Scholar"
  },
  "barrett-naish-guzman-2009": {
-  "checked": "2026-11-08",
+  "checked": "2026-11-15",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "The Ponzano-Regge model",
@@ -373,6 +418,11 @@
    "§2.2.1": {
     "verified": true,
     "snippet": "2.2.1 Pachner moves Any two triangulations of a 3-manifold can be related by a sequences of local moves on the triangulation known as Pachner moves. Therefore a strategy for proving triangulation independence is to sh",
+    "why": null
+   },
+   "§2.4": {
+    "verified": true,
+    "snippet": "2.4 Bing’s house Bing’s house is an interesting example of a spin foam which exhibits some surprising and perhaps pathological features of the Ponzano-Regge model. Not all triangulations of the 3-ball with no in",
     "why": null
    },
    "§4.4": {
@@ -386,8 +436,8 @@
     "why": null
    }
   },
-  "citations": 170,
-  "citations_via": "Semantic Scholar"
+  "citations": 154,
+  "citations_via": "OpenAlex"
  },
  "barrett-westbury-1996": {
   "checked": "2026-11-07",
@@ -617,6 +667,26 @@
   },
   "citations": 1477,
   "citations_via": "Semantic Scholar"
+ },
+ "bfh-2010": {
+  "checked": "2026-11-15",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Quantum gravity asymptotics from the SU(2) 15j symbol",
+  "locations": {
+   "eq. (16)": {
+    "verified": true,
+    "snippet": "(16) (4π)8 p λ det H+ det H− with H± the Hessian of the action evaluated at b± respectively. Note that as we have two terms now an arbitrary phase change in the coherent states could at most set one of these phases to ze",
+    "why": null
+   },
+   "eq. (26)": {
+    "verified": true,
+    "snippet": "(26) λ (4π)16 ′ c 6 det Hǫ det Hǫ′ ǫ,ǫ =±1 γ for the models without complex conjugation and by \u001312 ′ 28 eiλ(ǫ−ǫ cγ )SR (σ) \u0012 cc χ 2π X Z (λj, n) ∼ (−1) , (27) (4π)16 ′ p λ 6 det H det H ′ ǫ,ǫ =±1 cγ ǫ ǫ for those with. A",
+    "why": null
+   }
+  },
+  "citations": 65,
+  "citations_via": "OpenAlex"
  },
  "bfss-1997": {
   "checked": "2026-11-08",
@@ -899,11 +969,16 @@
   "citations_via": "Semantic Scholar"
  },
  "brw-1999": {
-  "checked": "2026-11-08",
+  "checked": "2026-11-15",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "A note on area variables in Regge calculus",
   "locations": {
+   "eq. (2)": {
+    "verified": true,
+    "snippet": "(2) As Philip Tuckey pointed out, there are pairs of four-simplexes, with squared edge-lengths (1, 1, 1, 1, 1, 1, 1, 1, 1, a) which have the same triangle areas, but with different values of a either side of 2 [13]. This",
+    "why": null
+   },
    "eq. (6)": {
     "verified": true,
     "snippet": "(6) t ∂si and then, since the Jacobian ∂si /∂Au is non-singular, the variational equation reduces to ǫu = 0 for all u. In Regge calculus, this condition would mean the space is locally flat. However in our theory the def",
@@ -1109,7 +1184,7 @@
   "citations_via": "Semantic Scholar"
  },
  "christiansen-2011": {
-  "checked": "2026-11-08",
+  "checked": "2026-11-15",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "On the linearization of Regge calculus",
@@ -1117,6 +1192,11 @@
    "Abstract": {
     "verified": true,
     "snippet": "we study the linearization of three dimensional regge calculus around euclidean metric we provide an explicit formula for the corresponding quadratic form and relate it to the curltcurl operator which",
+    "why": null
+   },
+   "Proposition 3.1": {
+    "verified": true,
+    "snippet": "Proposition 3.1. The derivative of the deficit angle θ at ǫ = 0 is given as a sum of jumps: X θ′ = 1/2 mtf (u′f +1/2 − u′f −1/2 )nf . (57) f Proof. Let m̃f be the oriented unit normal to t in face f , with respect to uf",
     "why": null
    },
    "Section 1": {
@@ -1668,7 +1748,7 @@
   "citations_via": "Semantic Scholar"
  },
  "freidel-louapre-2004": {
-  "checked": "2026-11-08",
+  "checked": "2026-11-15",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "Ponzano-Regge model revisited I: Gauge fixing, observables and interacting spinning particles",
@@ -1681,6 +1761,11 @@
    "Section VI": {
     "verified": true,
     "snippet": "VI. Massive spinless particles 27 A. Definition of the amplitude 27 B. Link with the discretized action 28",
+    "why": null
+   },
+   "eq. (94)": {
+    "verified": true,
+    "snippet": "(94) je4 je5 je6 while the particle PR-observable is related to the Gram determinant 1 < ÕΓ,ϕe >∆ = p . (95) det(cos ϕe ) This is the measure for G4 /(G × AdG), the duality between these observables was first presented",
     "why": null
    }
   },
@@ -3263,7 +3348,7 @@
   "citations_via": "Semantic Scholar"
  },
  "sorkin-2019": {
-  "checked": "2026-11-08",
+  "checked": "2026-11-15",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "Lorentzian angles and trigonometry including lightlike vectors",
@@ -3271,6 +3356,11 @@
    "Section 2": {
     "verified": true,
     "snippet": "2. Opening-angle of a spacelike wedge in the first quadrant The two null lines through the origin in M2 divide the plane into four “quadrants” as shown in figure 3. Consider, to begin with, the case where a and b lie",
+    "why": null
+   },
+   "Section 9": {
+    "verified": true,
+    "snippet": "9. Applications and Implications Regge Action (dihedral angle, boundary term, additivity, continuum limit) The most direct application of our formulas, one to which we’ve referred repeatedly, con- cerns the calculatio",
     "why": null
    }
   },

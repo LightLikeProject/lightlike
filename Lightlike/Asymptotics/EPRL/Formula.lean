@@ -4,7 +4,7 @@ import Lightlike.Spin4.Vertex
 /-!
 # The asymptotic formulas for the 15j symbol and the Euclidean EPRL vertex
 
-Two statements, as propositions, about the coherent integrals of `Amplitude.lean` with the Regge
+Two statements, as propositions (proved as `coh15jAsymptoticFormula` and `eprlAsymptoticFormula`), about the coherent integrals of `Amplitude.lean` with the Regge
 state of `ReggeState.lean`.
 
 * `Coh15jAsymptoticFormula` (Barrett, Fairbairn, Hellmann, arXiv:0912.4907, eq. (16)): for a

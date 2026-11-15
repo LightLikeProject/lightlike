@@ -25,6 +25,7 @@ Checks:
      of squared lengths), i.e. gram_k = (k!)^2 vol_k^2.
 """
 import itertools
+import sys
 import sympy as sp
 
 P = ['p', 'q', 'r', 's', 'u']
@@ -117,4 +118,6 @@ ok &= c2 == 0 and c3 == 0 and c4 == 0
 reg = {k: 1 for k in X.values()}
 cosreg = sp.nsimplify(M(T,'s','u').subs(reg) / sp.sqrt(g3(('p','q','r','s')).subs(reg) * g3(('p','q','r','u')).subs(reg)))
 print("regular 4-simplex: cos theta =", cosreg)
-print("ALL CHECKS PASS" if ok and cosreg == sp.Rational(1, 4) else "CHECK FAILED")
+ok &= cosreg == sp.Rational(1, 4)
+print("ALL CHECKS PASS" if ok else "CHECK FAILED")
+sys.exit(0 if ok else 1)
