@@ -143,6 +143,31 @@ theorem parity_left_add_right {b : ℕ} (hb : 1 ≤ b) (hbn : b < n) (x : ℝ ×
   have h2 := CharTwo.add_self_eq_zero (ind (CrossesRay (p.cyc 0) (p.cyc b) x))
   linear_combination h2
 
+variable {p}
+
+omit [NeZero n] in
+/-- **A vertex lies on an edge only if it is an end of the edge.** -/
+lemma eq_or_eq_of_vertex_mem_edge (hs : p.IsSimple) {i e : Fin n} (h : p i ∈ p.edge e) :
+    i = e ∨ i = finRotate n e := by
+  by_cases hie : i = e
+  · exact Or.inl hie
+  · right
+    have hi : p i ∈ p.edge i := left_mem_segment ℝ _ _
+    rcases edge_meet_cases hs hie hi h with ⟨h1, h2⟩ | ⟨h1, -⟩
+    · exact absurd (by rw [h1]; exact h2 : p i = p (finRotate n i)) (hs.1 i)
+    · exact h1.symm
+
+omit [NeZero n] in
+/-- **The vertices of a simple polygon are distinct.** -/
+lemma vertex_injective (hs : p.IsSimple) : Function.Injective p := by
+  intro i j hij
+  by_contra hne
+  have hj : p j ∈ p.edge j := left_mem_segment ℝ _ _
+  have hi : p i ∈ p.edge i := left_mem_segment ℝ _ _
+  rcases eq_or_eq_of_vertex_mem_edge hs (hij ▸ hj : p i ∈ p.edge j) with h | h
+  · exact hne h
+  · exact hs.1 j (by rw [← h, hij])
+
 end Polygon
 
 end Lightlike.PL
