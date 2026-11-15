@@ -1,6 +1,5 @@
 import Lightlike.SpinFoam.TetrahedronSixJ
 import Lightlike.SpinFoam.TetrahedronTests
-import Lightlike.PonzanoRegge.BEZero
 
 /-!
 # The cut-off sum of the tetrahedron
@@ -18,16 +17,14 @@ The Ponzano–Regge-type sum of the tetrahedron integral over the six edge spins
 * `tetraPartition_zero`: at cut-off `0` the sum is `1`.
 * `tetraRemovable_iff_bddAbove`: the cut-off can be removed (the sum has a limit) exactly when the
   sum is bounded.
-* `tetraTerm_zeroSpin`, `tetraPartition_ge`, `tetraPartition_unbounded`: the term with the doubled
-  spins `(0, n, n, n, n, 0)` is `(n+1)^2`, so the sum is at least `(N+1)^2` and is unbounded.
-* `not_tetraRemovable`: the cut-off sum has no limit. This is the sum without the rescaling
-  `M_Λ^{-v}` of Barrett and Naish-Guzman (§2.2); existence as a distribution is a different
-  statement and is not treated here.
+* `TetraUnbounded`: the **hypothesis** that the sum is unbounded, as for the 2-sphere
+  (`not_removable_sphere`; the boundary of a tetrahedron is a 2-sphere). **It is not proved here**:
+  it needs a growth lower bound for `Σ Π (s+1) (6j)²`.
+* `not_tetraRemovable_of_unbounded`: unboundedness excludes a limit.
 
 Numerical evidence only (`scripts/spinfoam/tetra_partition_check.py`, exact SymPy values): the sums
-for doubled cut-offs `0, 1, 2, 3` are `1`, `29`, `2393/4`, `488337/100`, and the zero-spin term is
-`(n+1)^2` for `n = 0..6`. The proof of unboundedness is `tetraPartition_ge`; these values only
-check it.
+for doubled cut-offs `0, 1, 2, 3` are `1`, `29`, `2393/4`, `488337/100`. They grow fast, but this is
+not a proof of unboundedness.
 -/
 
 open Finset Filter Topology PhyslibAlpha.Sl2
@@ -98,50 +95,13 @@ theorem tetraRemovable_iff_bddAbove : TetraRemovable ↔ BddAbove (Set.range tet
   · intro hb
     exact ⟨_, tendsto_atTop_ciSup tetraPartition_mono hb⟩
 
-/-- **A term with a zero spin.** For the doubled edge spins `(0, n, n, n, n, 0)` the weight is `(n+1)^4`
-and the `6j` symbol is `±1/(n+1)` (`sixJSym_zero_left`), so the term is `(n+1)^2`. The formula
-used for the zero spin is the special case of the `6j` symbol with a zero argument, NIST Digital
-Library of Mathematical Functions, eq. 34.5.1, after the column symmetry of 34.5(ii). -/
-lemma tetraTerm_zeroSpin (n : ℕ) : tetraTerm ![0, n, n, n, n, 0] = ((n : ℝ) + 1) ^ 2 := by
-  have hT : Lightlike.Pentagon.Tri n n 0 := by
-    unfold Lightlike.Pentagon.Tri; omega
-  have h6 : sixJSym 0 n n 0 n n =
-      (-1) ^ ((n + n + 0) / 2) / (Real.sqrt ((n : ℝ) + 1) * Real.sqrt ((n : ℝ) + 1)) := by
-    rw [Lightlike.Pentagon.sixJSym_zero_left, ite_eq_left ⟨rfl, rfl, hT⟩]
-  have hn : (0 : ℝ) < (n : ℝ) + 1 := by positivity
-  have hev : (n + n + 0) / 2 = n := by omega
-  have hsq : ((-1 : ℝ) ^ n) ^ 2 = 1 := by
-    rw [← pow_mul, mul_comm, pow_mul]; simp
-  have e : tetraTerm ![0, n, n, n, n, 0] =
-      (((0 : ℝ) + 1) * ((n : ℝ) + 1) * ((n : ℝ) + 1) * ((n : ℝ) + 1) * ((n : ℝ) + 1) * ((0 : ℝ) + 1)) *
-        (sixJSym 0 n n 0 n n) ^ 2 := by
-    simp [tetraTerm, Fin.prod_univ_six]
-  rw [e, h6, hev, div_pow, hsq, mul_pow, Real.sq_sqrt hn.le]
-  field_simp
-  ring
+/-- **Hypothesis, not proved here:** the cut-off sum of the tetrahedron is unbounded, as for the
+2-sphere. Proving it needs a growth lower bound for `Σ Π (s+1) (6j)²`. -/
+def TetraUnbounded : Prop := ¬ BddAbove (Set.range tetraPartition)
 
-/-- The cut-off sum of the tetrahedron satisfies `(N+1)^2 ≤ tetraPartition N`: it is bounded below by
-the single term `(0, N, N, N, N, 0)`, all terms being nonnegative. -/
-theorem tetraPartition_ge (N : ℕ) : ((N : ℝ) + 1) ^ 2 ≤ tetraPartition N := by
-  rw [← tetraTerm_zeroSpin N]
-  refine Finset.single_le_sum (f := tetraTerm) (fun s _ => tetraTerm_nonneg s) ?_
-  simp only [Fintype.mem_piFinset, mem_range]
-  intro i; fin_cases i <;> simp
-
-/-- **The cut-off sum of the tetrahedron is unbounded.** Only the simple cut-off on the doubled edge
-spins is concerned, without the rescaling `M_Λ^{-v}` of Barrett and Naish-Guzman (§2.2); existence as
-a distribution is a different statement and is not treated here. -/
-theorem tetraPartition_unbounded : ¬ BddAbove (Set.range tetraPartition) := by
-  rintro ⟨B, hB⟩
-  obtain ⟨N, hN⟩ := exists_nat_gt B
-  have h1 := hB ⟨N, rfl⟩
-  have h2 := tetraPartition_ge N
-  nlinarith [(Nat.cast_nonneg N : (0 : ℝ) ≤ N)]
-
-/-- **The cut-off sum of the tetrahedron has no limit**, so its simple cut-off cannot be removed
-without a rescaling (`tetraRemovable_iff_bddAbove`, `tetraPartition_unbounded`). -/
-theorem not_tetraRemovable : ¬ TetraRemovable :=
-  fun h => tetraPartition_unbounded (tetraRemovable_iff_bddAbove.1 h)
+/-- If the sum is unbounded, the cut-off cannot be removed. -/
+theorem not_tetraRemovable_of_unbounded (h : TetraUnbounded) : ¬ TetraRemovable :=
+  fun hr => h (tetraRemovable_iff_bddAbove.1 hr)
 
 /-- The all-spin-`1` colouring (doubled spin `2`) contributes `3⁶ · (1/6)² = 81/4`. -/
 lemma tetraTerm_two : tetraTerm (fun _ => 2) = 81 / 4 := by

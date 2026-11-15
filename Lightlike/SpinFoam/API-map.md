@@ -76,12 +76,9 @@ is the 3j symbol up to a phase, and `Z` is the 6j symbol up to sign, so the tetr
 the square of the 6j symbol of the six edge spins [20]; it is 1 for spin 0, 1/36 for spin 1 on
 every edge, and 0 when a vertex is not a triad [21]. The cut-off sum over the six edge spins, with the
 weights `Π (s + 1)`, has nonnegative terms, so it is monotone and has a limit exactly when it is
-bounded; at doubled cut-off `0` it is `1`, and at `2` it is at least `1 + 81/4` [22]. It is
-unbounded, as for the 2-sphere: the single term with the doubled spins `(0, N, N, N, N, 0)` equals
-`(N+1)^2`, because the `6j` symbol with a zero spin is `±1/(N+1)` [22], so the sum has no limit
-without the rescaling `M_Λ^{-v}` of Barrett and Naish-Guzman (§2.2). Existence as a distribution
-is a different statement and is not treated. Exact values for doubled cut-offs `0` to `3` (`1`, `29`,
-`2393/4`, `488337/100`) are numerical evidence only.
+bounded; at doubled cut-off `0` it is `1`, and at `2` it is at least `1 + 81/4` [22]. That it is
+unbounded, as for the 2-sphere, is a hypothesis (`TetraUnbounded`) and is not proved; exact values
+for doubled cut-offs `0` to `3` (`1`, `29`, `2393/4`, `488337/100`) are numerical evidence only.
 
 ## Lean References
 
@@ -157,9 +154,8 @@ is a different statement and is not treated. Exact values for doubled cut-offs `
     `SpinFoam.Tests.tetraInt_eq_zero_of_not_tri`, `SpinFoam.Tests.tetraInt_ones_vertex`
 22. Lightlike/SpinFoam/TetrahedronCutoff.lean - `SpinFoam.tetraTerm`, `SpinFoam.tetraPartition`,
     `SpinFoam.tetraTerm_eq`, `SpinFoam.tetraPartition_mono`, `SpinFoam.tetraPartition_zero`,
-    `SpinFoam.tetraRemovable_iff_bddAbove`, `SpinFoam.tetraTerm_zeroSpin`,
-    `SpinFoam.tetraPartition_ge`, `SpinFoam.tetraPartition_unbounded`,
-    `SpinFoam.not_tetraRemovable`, `SpinFoam.tetraPartition_two_ge`
+    `SpinFoam.tetraRemovable_iff_bddAbove`, `SpinFoam.TetraUnbounded`,
+    `SpinFoam.not_tetraRemovable_of_unbounded`, `SpinFoam.tetraPartition_two_ge`
 
 ## References
 
