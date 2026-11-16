@@ -1,8 +1,8 @@
-"""Generate Lightlike/Regge/Linear3/SaintVenantSigma0..5.lean: for each of the 36 incidences (sigma, h) of the Kuhn star, the weighted
+"""Generate the files SaintVenantSigma0 to SaintVenantSigma5 of Lightlike/Regge/Linear3: for each of the 36 incidences (sigma, h) of the Kuhn star, the weighted
 hinge-length derivative `-(qf H (hvec)) / (2 |w|^2) * dth h (lenR dd sigma h)` as an explicit polynomial in the entries of `H`
 and of the second derivatives `dd` (bilinear, exact rational coefficients). One identity for all 36 incidences needed 7.8 GB of
 memory, and six identities of six incidences 7.4 GB; one identity per incidence is small.
-Usage: python3 scripts/regge/gen_sv_sigma.py Lightlike/Regge/Linear3   (writes SaintVenantHvec.lean and SaintVenantSigma0..5.lean)
+Usage: python3 scripts/regge/gen_sv_sigma.py Lightlike/Regge/Linear3   (writes SaintVenantHvec and SaintVenantSigma0 to SaintVenantSigma5)
 """
 import itertools
 import sys
@@ -134,7 +134,7 @@ end Lightlike.Regge.Linear3
 outdir = sys.argv[1] if len(sys.argv) > 1 else None
 files = {'SaintVenantHvec.lean': HVEC}
 for s_ in range(6):
-    files['SaintVenantSigma%d.lean' % s_] = ('import Lightlike.Regge.Linear3.SaintVenantHvec\n\n' + HDR % {'s': s_}
+    files['SaintVenantSigma' + str(s_) + '.ext'.replace('.ext', '.lean')] = ('import Lightlike.Regge.Linear3.SaintVenantHvec\n\n' + HDR % {'s': s_}
                                               + body(s_) + '\nend Lightlike.Regge.Linear3\n')
 if outdir:
     import os

@@ -138,7 +138,7 @@ theorem lengthsNondeg_lenMesh (hn : 3 ≤ n) : LengthsNondeg (torusComplex n (by
 
 /-- **The coefficient `Q_n (h)`** of the second-order expansion of the Regge action of the periodic Kuhn
 complex of mesh `1/n` for the interpolated lengths of the perturbation `h`: `Σ_e (a_e / (2 ℓ_e)) δ_e'(0)`,
-with `a_e = μ_e (h)` (`Linear3/SecondOrder.lean`). -/
+with `a_e = μ_e (h)` (`Lightlike/Regge/Linear3/SecondOrder.lean`). -/
 noncomputable def Qn (hn : 2 ≤ n) (hf : (Fin 3 → ℝ) → Matrix (Fin 3) (Fin 3) ℝ) : ℝ :=
   ∑ e ∈ (torusComplex n hn).edges,
     lenD n (muE hf) e / (2 * lenMesh n e) *
