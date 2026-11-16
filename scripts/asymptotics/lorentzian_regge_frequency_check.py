@@ -15,6 +15,13 @@ the tetrahedra. The Regge sum is sum_{a<b} k_ab Theta_ab with the sign + on the 
 (the hinges of area 5) and - on the six others, the type 4-1 signs of Table 5 of the source. We check
 that Omega / gamma = sum k Theta = 0.09629 matches the four published frequencies to the digits
 published, and that the wrong sign pattern (all +) does not.
+What this checks, and what it does not: only the FREQUENCY of the oscillation (the coefficient of
+lambda in the phase). The amplitude |N| and the global phase are not compared. The source states that
+it did not reproduce the global phase from the analytic formula (its footnote 17, p. 25), and |N|
+needs the normalisation constants c_ab, Omega_ab of the vertex and det H; neither is attempted.
+This is numerical evidence for the statement of eq. (53), not a proof.
+Sources (keys of docs/tasks/sources.yaml): bdfhp-2010 (eq. (53)), dona-fanizza-sarno-speziale-2019
+(Table 6, p. 26; Table 1, p. 8, for the spins).
 Usage: python3 -I scripts/asymptotics/lorentzian_regge_frequency_check.py
 """
 import sys
