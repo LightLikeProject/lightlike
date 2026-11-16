@@ -6,6 +6,8 @@ see [CONTRIBUTING.md](../CONTRIBUTING.md).
 - **Results.** Add a result to the API map of its folder and to the end of `docs/results.yaml` with
   the draft ID `LL-XXXX` (`LL-XXXX-a`, `-b`, ... for several; the merge assigns the numbers), then
   run `python3 scripts/api_map.py generate` (`docs/RESULTS.md`, the `README.md` counts) and `check`.
+  A proven result that is the main theorem of a cited paper or book, or a named theorem, gets
+  `main: true`; it is then listed again under Main results at the top of `docs/RESULTS.md`.
 - **Tasks.** `docs/tasks/milestones.md` and `docs/tasks/decomposition.yaml` are the plan, and the
   sources of the board. `python3 scripts/tasks.py generate` writes the board,
   `docs/tasks/tasks.yaml`, `Tasks.lean` and the milestone counts in `ROADMAP.md`; `tasks.py deps`
