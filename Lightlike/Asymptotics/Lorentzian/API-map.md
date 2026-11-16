@@ -246,7 +246,7 @@ the curves are given by their entrywise derivative `X₀ · genMat c`, and the F
     `Asymptotics.Lorentzian.hasDerivAt_triAction_curve`
 27. Lightlike/Asymptotics/Lorentzian/CriticalGradient.lean - `Asymptotics.Lorentzian.genMat`,
     `Asymptotics.Lorentzian.hasDerivAt_spinAct`,
-    `Asymptotics.Lorentzian.hasDerivAt_lorAction_critical`
+    `Asymptotics.Lorentzian.hasDerivAt_lorAction_critical`, `Asymptotics.Lorentzian.hcl_of_closure`
 
 ## References
 

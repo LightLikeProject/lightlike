@@ -15,7 +15,8 @@ Not here: a chart of `SL(2,ℂ)^5 × (ℂ²)^10` (the construction of the curves
 `det exp = exp tr` in Mathlib), and the identification of this line derivative with the Fréchet
 derivative of the pulled-back action `lorChartAction`. Support lemmas: the coordinates of a spinor
 curve (`hasDerivAt_spinor_iff`), the product rule `hasDerivAt_spinAct`, and the matrix
-`genMat c` of `gen c`.
+`genMat c` of `gen c`. `hcl_of_closure` turns the vector closure at a node, with `p = γ n / 2`,
+into the hypothesis `hcl` of the main theorem.
 -/
 
 open Complex
@@ -169,5 +170,46 @@ theorem hasDerivAt_lorAction_critical {j p : Fin 10 → ℝ} {n : Fin 10 → ℕ
     (fun e => firstCol (g e 0)) (fun e => firstCol (g e 1)) ca hcl
   rw [h0] at hs
   exact hs
+
+/-- **Closure at a node gives the group stationarity `hcl`.** With `p e = γ n e / 2`, the
+vector closure `Σ n_e n̂_e = 0` over the spinors of the edge ends at the node `a` (source ends use
+`ξ`, target ends use `ξ'`) makes the sum of the `logDeriv` over those ends vanish for every `c`. -/
+theorem hcl_of_closure {E V : Type*} [Fintype E] (src tgt : E → V) [DecidableEq V]
+    (n : E → ℕ) (p : E → ℝ) (γ : ℝ) (hp : ∀ e, p e = γ * ((n e : ℝ) / 2))
+    (ξ ξ' : E → Spinor) (a : V)
+    (hclos : ∀ i, ∑ e, ((if src e = a then (n e : ℝ) * spinVec (ξ e) i else 0) +
+        (if tgt e = a then (n e : ℝ) * spinVec (ξ' e) i else 0)) = 0) (c : Fin 3 → ℂ) :
+    ∑ e, ((if src e = a then logDeriv (n e) (p e) c (ξ e) else 0) +
+        (if tgt e = a then logDeriv (n e) (p e) c (ξ' e) else 0)) = 0 := by
+  have hterm : ∀ (e : E) (η : Spinor) (b : Prop) [Decidable b],
+      (if b then logDeriv (n e) (p e) c η else 0) =
+        Complex.I * (((∑ i, (((c i).im / 2 - γ * (c i).re / 2) *
+          (if b then (n e : ℝ) * spinVec η i else 0) : ℝ)) : ℝ) : ℂ) := by
+    intro e η b _
+    by_cases hb : b
+    · simp only [hb, ite_true]
+      rw [logDeriv_eq]
+      congr 1
+      have hR : ((n e : ℝ) / 2 * ∑ i, (c i).im * spinVec η i -
+          p e * ∑ i, (c i).re * spinVec η i) =
+          ∑ i, (((c i).im / 2 - γ * (c i).re / 2) * ((n e : ℝ) * spinVec η i)) := by
+        rw [hp e, Finset.mul_sum, Finset.mul_sum, ← Finset.sum_sub_distrib]
+        refine Finset.sum_congr rfl fun i _ => ?_
+        ring
+      have := congrArg Complex.ofReal hR
+      push_cast at this ⊢
+      exact this
+    · simp [hb]
+  have hsum : ∑ e, ((if src e = a then logDeriv (n e) (p e) c (ξ e) else 0) +
+        (if tgt e = a then logDeriv (n e) (p e) c (ξ' e) else 0)) =
+      Complex.I * ((∑ i, (((c i).im / 2 - γ * (c i).re / 2) *
+        ∑ e, ((if src e = a then (n e : ℝ) * spinVec (ξ e) i else 0) +
+          (if tgt e = a then (n e : ℝ) * spinVec (ξ' e) i else 0)) : ℝ) : ℝ) : ℂ) := by
+    simp only [hterm]
+    push_cast
+    simp only [← mul_add, Finset.mul_sum, ← Finset.sum_add_distrib]
+    exact Finset.sum_comm
+  rw [hsum]
+  simp [hclos]
 
 end Lightlike.Asymptotics.Lorentzian
