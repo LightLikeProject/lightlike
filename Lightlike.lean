@@ -177,6 +177,17 @@ import Lightlike.PL.Polygon
 import Lightlike.PL.PolygonInside
 import Lightlike.PL.PolygonTriangle
 import Lightlike.PL.PolygonJordan
+import Lightlike.PL.PolygonDiagonal
+import Lightlike.PL.WedgeChord
+import Lightlike.PL.PolygonWedge
+import Lightlike.PL.PolygonDiagonal2
+import Lightlike.PL.PolygonDiagonal3
+import Lightlike.PL.PolygonSplit
+import Lightlike.PL.PolygonTriangulation
+import Lightlike.PL.Attach
+import Lightlike.PL.PolygonEars
+import Lightlike.PL.PolygonBall
+import Lightlike.PL.PolygonBoundary
 import Lightlike.PL.Realisation
 import Lightlike.PL.Starring
 import Lightlike.PL.Boundary
@@ -452,6 +463,7 @@ import Lightlike.Tests.CutoffDivergence
 import Lightlike.Tests.Forcing
 import Lightlike.Tests.GaugeChange
 import Lightlike.Tests.InverseMoves
+import Lightlike.Tests.Jackson
 import Lightlike.Tests.Manifold
 import Lightlike.Tests.PonzanoRegge
 import Lightlike.Tests.QDougall
@@ -500,6 +512,7 @@ import Lightlike.TuraevViro.Reflect.SixJDual
 import Lightlike.TuraevViro.Reflect.SixJEnd
 import Lightlike.TuraevViro.Reflect.GramConst
 import Lightlike.TuraevViro.Reflect.SixJNorm
+import Lightlike.TuraevViro.Reflect.JacksonWZ
 import Lightlike.TuraevViro.Reflect.SixJNormOne
 import Lightlike.TuraevViro.Reflect.SixJSingle
 import Lightlike.TuraevViro.Reflect.AdmRange
@@ -530,6 +543,7 @@ import Lightlike.SpinFoam.BarrettCraneTests
 import Lightlike.SpinFoam.GaugeIndependence
 import Lightlike.SpinFoam.ForcingMoves
 import Lightlike.SpinFoam.ForcingMove33
+import Lightlike.SpinFoam.ForcingMove24
 import Lightlike.SpinFoam.GaugeChain
 import Lightlike.SpinFoam.TwistedCohomology
 import Lightlike.SpinFoam.TwistedCohomologySU2

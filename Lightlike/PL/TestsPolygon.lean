@@ -1,4 +1,7 @@
 import Lightlike.PL.PolygonJordan
+import Lightlike.PL.PolygonTriangulation
+import Lightlike.PL.PolygonBall
+import Lightlike.PL.PolygonBoundary
 
 /-!
 # Checks of the polygonal Jordan theorem
@@ -112,6 +115,22 @@ theorem not_isSimple_bowtie : ¬ bowtie.IsSimple := by
     ⟨1 / 2, 1 / 2, by norm_num, by norm_num, by norm_num, by
       simp [bowtie, show finRotate 4 2 = 3 from by decide]⟩
   exact Set.disjoint_left.1 hd h0 h2
+
+/-- **Non-vacuity of the triangulation theorem.** The theorem applies to the triangle
+`(0,0)`, `(1,0)`, `(0,1)`. -/
+theorem triangle_triangulation : ∃ T, IsTriangulation triangle T :=
+  exists_triangulation 3 triangle le_rfl triangle_isSimple
+
+/-- **Non-vacuity of the ball theorem.** The theorem applies to the triangle. -/
+theorem triangle_ball : ∃ T, IsTriangulation triangle T ∧ SComplex.IsBallIn (SComplex.closure T) := by
+  obtain ⟨T, hT, -, -, hB⟩ := exists_ball_triangulation 3 triangle le_rfl triangle_isSimple
+  exact ⟨T, hT, hB⟩
+
+/-- **Non-vacuity of the polygonal Schoenflies theorem.** The theorem applies to the triangle. -/
+theorem triangle_schoenflies : ∃ K : SComplex (ℝ × ℝ), SComplex.IsGeom K ∧
+    K.space = triangle.inside ∪ triangle.carrier ∧ SComplex.IsBallIn K ∧
+      K.bd.space = triangle.carrier :=
+  polygon_schoenflies triangle le_rfl triangle_isSimple
 
 end Polygon
 end Lightlike.PL

@@ -2,7 +2,7 @@
 with displaced vertices are closed fans, so their dihedral angles add up to `2π` for small `ε`.
 
 Uses the combinatorial data (members, chains of lattice vectors) computed in `gen_star_angle.py`.
-Usage: python3 scripts/regge/gen_chart_change.py OUT.lean
+Usage: python3 scripts/regge/gen_chart_change.py Lightlike/Regge/Conv3/ChartChangeClasses.lean
 """
 import sys, pathlib
 from fractions import Fraction
