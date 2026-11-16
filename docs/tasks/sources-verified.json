@@ -1263,10 +1263,15 @@
     "verified": true,
     "snippet": "1 We hope that this paper can contribute to developing RC into a good al- ternative, or facilitate the integration of some of its",
     "why": null
+   },
+   "eq. (5)": {
+    "verified": true,
+    "snippet": "(5) 0 One checks that on a tetrahedron these degrees of freedom are uni-solvent on the constant metrics. For two edges e, e′ ∈ Th1 we have: 0 if e 6= e′ , \u001a µe (ρe′ ) = (6) 1 if e = e′ . The degrees of freedom (5) make s",
+    "why": null
    }
   },
-  "citations": 60,
-  "citations_via": "Semantic Scholar"
+  "citations": 49,
+  "citations_via": "OpenAlex"
  },
  "cky-1997": {
   "checked": "2026-11-07",
