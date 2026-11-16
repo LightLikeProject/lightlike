@@ -6,6 +6,8 @@ import Mathlib
 Pieces of the identity of `KuhnBasis` (the polynomial part, the six fractions and the trace
 term) are linear in the symmetric matrix `B`; each is proved by `ring1`. -/
 
+namespace Lightlike.Regge.Conv3
+
 set_option maxHeartbeats 1600000 in
 set_option maxRecDepth 100000 in
 /-- The fraction with face polynomial `P4` is linear in `B`. -/
@@ -34,3 +36,4 @@ theorem kuhn_lin_rho (g00 g01 g02 g11 g12 g22 b00 b01 b02 b11 b12 b22 : ℝ) :
     ((1 : ℝ)*g00*g11*b22 + (-2 : ℝ)*g00*g12*b12 + (1 : ℝ)*g00*g22*b11 + (-1 : ℝ)*g01^(2:ℕ)*b22 + (2 : ℝ)*g01*g02*b12 + (2 : ℝ)*g01*g12*b02 + (-2 : ℝ)*g01*g22*b01 + (-1 : ℝ)*g02^(2:ℕ)*b11 + (-2 : ℝ)*g02*g11*b02 + (2 : ℝ)*g02*g12*b01 + (1 : ℝ)*g11*g22*b00 + (-1 : ℝ)*g12^(2:ℕ)*b00) = b00 * (((1 : ℝ)*g11*g22 + (-1 : ℝ)*g12^(2:ℕ))) + b01 * (((-2 : ℝ)*g01*g22 + (2 : ℝ)*g02*g12)) + b02 * (((2 : ℝ)*g01*g12 + (-2 : ℝ)*g02*g11)) + b11 * (((1 : ℝ)*g00*g22 + (-1 : ℝ)*g02^(2:ℕ))) + b12 * (((-2 : ℝ)*g00*g12 + (2 : ℝ)*g01*g02)) + b22 * (((1 : ℝ)*g00*g11 + (-1 : ℝ)*g01^(2:ℕ))) := by
   ring1
 
+end Lightlike.Regge.Conv3

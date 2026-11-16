@@ -114,13 +114,16 @@ def lin_file(name, blocks):
 blk = [LEMS[i:i + 7] for i in range(0, len(LEMS), 7)]
 assert len(blk) == 8
 flat = lambda bs: [l for b in bs for l in b]
+def wrap(t):
+    i = t.index('-/\n') + 3
+    return t[:i] + '\nnamespace Lightlike.Regge.Conv3\n' + t[i:].rstrip('\n') + '\n\nend Lightlike.Regge.Conv3\n'
 if len(sys.argv) > 4:   # basis, two linearity modules, star
-    open(sys.argv[1], 'w').write('\n'.join(head) + '\n')
-    open(sys.argv[2], 'w').write(lin_file('part one', flat(blk[:4])))
-    open(sys.argv[3], 'w').write(lin_file('part two', flat(blk[4:])))
-    open(sys.argv[4], 'w').write('\n'.join(['import Mathlib', 'import Lightlike.Regge.Conv3.KuhnBasis', 'import Lightlike.Regge.Conv3.KuhnLinear', 'import Lightlike.Regge.Conv3.KuhnLinear2', '', '/-!',
+    open(sys.argv[1], 'w').write(wrap('\n'.join(head) + '\n'))
+    open(sys.argv[2], 'w').write(wrap(lin_file('part one', flat(blk[:4]))))
+    open(sys.argv[3], 'w').write(wrap(lin_file('part two', flat(blk[4:]))))
+    open(sys.argv[4], 'w').write(wrap('\n'.join(['import Mathlib', 'import Lightlike.Regge.Conv3.KuhnBasis', 'import Lightlike.Regge.Conv3.KuhnLinear', 'import Lightlike.Regge.Conv3.KuhnLinear2', '', '/-!',
         '# Kuhn star identity for a general jet', '',
-        'The identity of `KuhnBasis` for a general symmetric `B`, from the six basis identities by linearity. -/', ''] + star) + '\n')
+        'The identity of `KuhnBasis` for a general symmetric `B`, from the six basis identities by linearity. -/', ''] + star) + '\n'))
 else:
     open(sys.argv[1], 'w').write('\n'.join(head + LEMS + star) + '\n')
 print('written', sum(map(len, out)))

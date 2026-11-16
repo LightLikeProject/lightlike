@@ -17,6 +17,8 @@ The statements are elementary algebra, generated from an exact computer-algebra 
 * `kuhn_star_identity`: the identity for a general symmetric `B`.
 -/
 
+namespace Lightlike.Regge.Conv3
+
 set_option maxHeartbeats 1600000 in
 /-- The Kuhn star identity for the basis matrix `E_00`: the sum over the incidences equals
 `det g0 * tr (adj g0 * E_00) / 2`, by exact division of each numerator by its face polynomial. -/
@@ -193,3 +195,4 @@ theorem kuhn_assemble (D b0 b1 b2 b3 b4 b5 r0 r1 r2 r3 r4 r5 y0 y1 y2 y3 y4 y5 :
     D * (b0 * r0 + b1 * r1 + b2 * r2 + b3 * r3 + b4 * r4 + b5 * r5) / 2 := by
   linear_combination b0 * h0 + b1 * h1 + b2 * h2 + b3 * h3 + b4 * h4 + b5 * h5
 
+end Lightlike.Regge.Conv3

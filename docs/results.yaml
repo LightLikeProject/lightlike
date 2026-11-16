@@ -894,7 +894,7 @@
   title: The jet-level star identity of the 3D Regge calculus holds at a point where the first derivatives of a Riemannian metric vanish
   area: Regge
   file: Lightlike/Regge/Conv3/FlatStarJet.lean
-  decls: [Lightlike.Regge.Conv3.jetStarCore_of_flat, Lightlike.Regge.Conv3.flat_star_identity, Lightlike.Regge.Conv3.scalar_flat]
+  decls: [Lightlike.Regge.Conv3.jetStarCore_of_flat, Lightlike.Regge.Conv3.scalar_flat]
   status: proven
   tier: frontier
   source: structural
