@@ -10,11 +10,12 @@ Usage, from the repository root:
     python3 scripts/api_map.py generate            write docs/RESULTS.md from docs/results.yaml
     python3 scripts/api_map.py --selftest          planted bad cases must be caught
 
-The API-map format follows Physlib's: `# Title`, then exactly the sections `## Abstract (Alpha)`
-(no citations), `## Content (Alpha)` (Lean citations `[n]`, one number per bracket, `[TODO]` for
-unformalized parts, literature citations `{n}`), `## Lean References` (`n. path.lean - `decl`, …`,
-numbered from 1 without gaps, one file per entry, each cited) and `## References` (`n. …`, each
-cited). Raw markdown links are not allowed. Declarations are written relative to the `Lightlike` namespace.
+The API-map format follows Physlib's: `# Title` (in words, not the module path), then exactly the
+sections `## Abstract (Alpha)` (no citations), `## Content (Alpha)` (Lean citations `[n]`, one
+number per bracket, `[TODO]` for unformalized parts, literature citations `{n}`),
+`## Lean References` (`n. path.lean - `decl`, …`, numbered from 1 without gaps, one file per entry,
+each cited) and `## References` (`n. …`, each cited). Raw markdown links are not allowed.
+Declarations are written relative to the `Lightlike` namespace.
 
 The text checks here are complemented by `scripts/NameCheck.lean`, which resolves every name in Lean.
 """
@@ -91,6 +92,9 @@ def sections(text: str) -> tuple[str, dict[str, str], list[str]]:
     title = lines[0] if lines else ""
     if not re.match(r"^# \S", title):
         errs.append("first line must be '# Title'")
+    elif re.fullmatch(r"# [\w.-]+(/[\w.-]+)+", title.strip()):
+        errs.append("the title names the area in words (it heads the area's section of "
+                    "docs/RESULTS.md), not its path")
     heads = [(i, l) for i, l in enumerate(lines) if l.startswith("#")][1:]
     if [l for _, l in heads] != SECTIONS:
         errs.append(f"headings must be exactly {SECTIONS}, found {[l for _, l in heads]}")
@@ -412,6 +416,7 @@ def selftest() -> int:
         ("planted: Lean reference never cited", "The lemma [1] follows", "The lemma follows", True),
         ("planted: declaration missing from the file", "`Toy.lemma1`", "`Toy.lemma9`", True),
         ("planted: wrong heading", "## Content (Alpha)", "## Contents", True),
+        ("planted: path as title", "# Toy\n", "# Lightlike/Toy\n", True),
         ("planted: citation in the abstract", "A toy area.", "A toy area [1].", True),
         ("planted: raw markdown link", "A toy area.", "A [toy](x.md) area.", True),
         ("planted: shared brackets", "The lemma [1]", "The lemma [1, 1]", True),

@@ -1,4 +1,4 @@
-# Lightlike/Asymptotics/Lorentzian
+# Stationary phase for the Lorentzian EPRL vertex
 
 ## Abstract (Alpha)
 
