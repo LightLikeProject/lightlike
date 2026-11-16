@@ -1,6 +1,7 @@
 import Lightlike.Lorentz.EPRL
 import Lightlike.Lorentz.SU2Decomposition
 import Lightlike.Asymptotics.Lorentzian.Amplitude
+import Lightlike.SpinFoam.Tetrahedron
 
 /-!
 # The coherent Lorentzian vertex and the principal-series vertex
@@ -27,7 +28,7 @@ the normalisation constants of `suV` stay abstract (`nrmA`).
 
 open Matrix Complex
 open scoped ComplexConjugate
-open Lightlike.Spin4 Lightlike.SU2 Lightlike.Lorentz
+open Lightlike.Spin4 Lightlike.SU2 Lightlike.Lorentz Lightlike.SpinFoam
 
 namespace Lightlike.Asymptotics.Lorentzian
 
@@ -252,5 +253,17 @@ theorem link_pointwise (n : ℕ) (ρ : ℝ) (g1 g2 : Matrix (Fin 2) (Fin 2) ℂ)
   rw [hrp, Complex.ofReal_mul, mul_pow]
   linear_combination (conj (g1 0 0 * ζa 0 + g1 1 0 * ζa 1) ^ n * (g2 0 0 * ζb 0 + g2 1 0 * ζb 1) ^ n *
     ((nsq ζa ^ (-(n : ℝ) / 2) : ℝ) : ℂ) * ((nsq ζb ^ (-(n : ℝ) / 2) : ℝ) : ℂ)) * hw
+
+/-- The overlap `⟨Z, ξ⟩` with the source spinor `ξ = first column of ḡ` is the conjugate of the
+pairing `P = g₀₀ Z₀ + g₁₀ Z₁`. -/
+theorem inner_firstCol_map_star (Z : Spinor) (g : Matrix (Fin 2) (Fin 2) ℂ) :
+    inner ℂ Z (firstCol (g.map star)) = conj (g 0 0 * Z 0 + g 1 0 * Z 1) := by
+  simp [firstCol, PiLp.inner_apply, Fin.sum_univ_two, mul_comm]
+
+/-- The overlap `⟨J ξ', Z'⟩` with the target spinor `ξ' = first column of w g` is the pairing
+`P' = g₀₀ Z'₀ + g₁₀ Z'₁`. -/
+theorem inner_jMap_firstCol_wM (Z : Spinor) (g : Matrix (Fin 2) (Fin 2) ℂ) :
+    inner ℂ (jMap (firstCol (wM * g))) Z = g 0 0 * Z 0 + g 1 0 * Z 1 := by
+  simp [firstCol, jMap, wM, PiLp.inner_apply, Fin.sum_univ_two, mul_comm, Matrix.mul_apply]
 
 end Lightlike.Asymptotics.Lorentzian
