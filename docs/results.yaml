@@ -1204,3 +1204,27 @@
   review: kernel-checked
   note: "Six distinct points u i, v j (i, j ∈ Fin 3) joined across the two classes by nine simple polygonal arcs (finite chains of segments, IsSimpleChain) that meet only in common endpoints do not exist (no_PL_K33; PLDrawing is the notion of drawing, for a set E of edges). This is the second claim of the proof of the weak Jordan theorem by Thomassen in the exposition of Klazar, Section 2, Claim 2 (Klazar's numbering), restricted to polygonal arcs. The proof differs from the orientation (left/right) argument there: the 6-cycle u0 v0 u1 v1 u2 v2 is a simple polygon (two arcs glued by isSimpleChain_append), and each of the three remaining arcs is a chord joining opposite corners. Each chord, without its ends, lies in the inside or in the outside of the polygon (it is connected and misses the carrier). Two of the three chords lie on the same side, and two chords on the same side cannot join interlaced pairs of the polygon's points (no_interlaced_chord): the proof uses only that the crossing parity of a ray, which is a count modulo 2, is additive when a closed chain is cut along a chord and glued from the two halves (chainParity_append, chainParity_reverse, parity_theta), and that the parity jumps across an arc near its interior points (near_two). A rotation of the labels does not change the inside and outside of the hexagon (inside_swap), so the same lemma covers every pair of chords (Hex.false). Limits: the arcs are polygonal arcs only; the statement for arbitrary continuous arcs is Klazar, Claim 3, a later step, and is not claimed here. Check: the drawing of K₃,₃ without the edge (2, 2), with straight segments, exists (TestsK33.drawing, so the hypotheses are satisfiable); two crossing diagonals of a square violate the disjointness field."
   since: unreleased
+- id: LL-0092
+  title: In each of the seven edge classes of the Kuhn star with vertices displaced by ε Γ(k, k)/2, the dihedral angles add up to 2π for small ε
+  area: Regge
+  file: Lightlike/Regge/Conv3/ChartChangeClasses.lean
+  decls: [Lightlike.Regge.Conv3.cls0_disp, Lightlike.Regge.Conv3.cls1_disp, Lightlike.Regge.Conv3.cls2_disp, Lightlike.Regge.Conv3.cls3_disp, Lightlike.Regge.Conv3.cls4_disp, Lightlike.Regge.Conv3.cls5_disp, Lightlike.Regge.Conv3.cls6_disp]
+  status: proven
+  tier: frontier
+  source: structural
+  review: kernel-checked
+  note: "Part of the 3D convergence of the Regge action (T-RC6), which stays open. For a Riemannian metric g on U and m in U, displace every point k of the star around an edge to k + (ε/2) Γ(k, k) (Γ the Christoffel symbols at m). In each edge class the displaced tetrahedra form a closed fan around the displaced hinge axis that is positively oriented at ε = 0, so the sum of their dihedral angles (computed with the quadratic form g(m)) is 2π for all ε in a neighbourhood of 0 (a neighbourhood, no explicit radius). Uses closed fans of complex numbers, continuity in ε and the lattice result of LL-0078. Limits: one edge star of the standard cubical Kuhn triangulation, one point m; nothing about a triangulation of a manifold or about convergence."
+  since: unreleased
+- id: LL-0093
+  title: The jet-level star identity of the 3D Regge calculus holds at every point of a Riemannian metric, with no condition on the first derivatives
+  area: Regge
+  file: Lightlike/Regge/Conv3/ChartChangeGeneral.lean
+  decls: [Lightlike.Regge.Conv3.scalar_eq_flat, Lightlike.Regge.Conv3.jetStarCore_of_chart]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (2.19)", check: "tensor transformation law"}
+  review: kernel-checked
+  note: "Part of the 3D convergence of the Regge action (T-RC6), which stays open: this is the jet-level statement at one point, not the convergence. For a Riemannian metric g on an open set U of R^3 and any point m of U (no condition on the first derivatives of g), the star of one edge of the standard Kuhn triangulation satisfies JetStarCore: admissible Gram lengths, angle sums 2π in the seven classes, vanishing first-order coefficient, and the sum over the classes of the hinge length (√(g(m)(w, w))) times the second-order coefficient equals minus half the scalar curvature times √det g(m). Proof: the edge polynomial of the jet of g equals that of a flat jet with second derivatives Sdd = ∂∂g - g ΓΓ after displacing the vertices by εΓ(k, k)/2 (edgeC_eq_chr, edgeR_eq_displaced), the displaced flat star has angle sums 2π (LL-0092) so its first- and second-order coefficients vanish (disp_coeffs), the flat identity of LL-0080 applies to Sdd, and the scalar curvature at m is that of the flat jet with Sdd (scalar_eq_flat; the transformation of the curvature under the change of chart is the tensor transformation law cited). Limits: second derivatives at the single point m; standard cubical Kuhn triangulation; no convergence statement, no manifold triangulation; Riemannian (positive definite) signature only. Trust checks: the Euclidean metric and diag(exp x0, 1, 1), whose first derivative at 0 is nonzero so that LL-0080 does not apply to it (ChartChangeTests.lean)."
+  since: unreleased
