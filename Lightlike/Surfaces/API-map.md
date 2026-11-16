@@ -48,9 +48,20 @@ the projective plane, the 9-vertex torus and Möbius' independent 7-vertex torus
 models (the Klein bottle and the sphere for a torus) and wrong inputs (a single triangle, two
 disjoint spheres) are rejected [20].
 
-The classification up to PL homeomorphism of the underlying spaces, rather than up to moves,
-needs the identification of moves with PL homeomorphism in dimension two, which is not formalized
-here. [TODO]
+The triangles of a closed surface generate a closed combinatorial 2-manifold of the PL area: the link
+of a vertex is a connected graph with two edges at every vertex, and such a graph is reached from
+the boundary of a triangle by subdividing edges, so it is a PL 1-sphere [21]. Conversely, a bistellar
+move on a closed combinatorial 2-manifold given by triangles is a 2D move or the inverse of one, so a
+bistellar equivalence of two closed surfaces is a chain of 2D moves of their triangles placed in a
+type with new vertices [22]; placing the triangles by an injective map keeps the Euler characteristic
+and orientability [23]. Composing this with Pachner's theorem in PL form, which says that closed
+combinatorial manifolds are PL homeomorphic exactly when they are related by bistellar moves {6}
+[24], and with the classification above, two closed surfaces on an infinite vertex type are PL
+homeomorphic exactly when they have the same orientability and Euler characteristic, and each is PL
+homeomorphic to exactly one standard model {7} [24]. The infinite vertex type provides the new
+vertices that the moves need. The two certificate tori, which no move was given between, are PL
+homeomorphic, and the projective plane, the sphere and the Klein bottle are rejected as PL
+homeomorphic to a torus [25].
 
 ## Lean References
 
@@ -90,6 +101,14 @@ here. [TODO]
 20. Lightlike/Surfaces/Tests.lean - `Surfaces.isSurface_of_cert`, `Surfaces.T7`,
     `Surfaces.T7_model`, `Surfaces.T7_not_klein`, `Surfaces.torus_not_klein`,
     `Surfaces.two_spheres_no_model`
+21. Lightlike/Surfaces/PLBridge.lean - `Surfaces.IsSurface.isClosedCombManifold`
+22. Lightlike/Surfaces/PLMoves.lean - `Surfaces.exists_move2`,
+    `Surfaces.eqvGen_move2_of_stellarEquiv`
+23. Lightlike/Surfaces/Relabel.lean - `Surfaces.euler2_mapTri`, `Surfaces.isOrientable_mapTri_iff`
+24. Lightlike/Surfaces/PLClassify.lean - `Surfaces.plHomeomorphic_iff`,
+    `Surfaces.existsUnique_plHomeomorphic_stdModel`
+25. Lightlike/Surfaces/TestsPL.lean - `Surfaces.T9_plHomeomorphic_T7`,
+    `Surfaces.T7_not_plHomeomorphic_P6`, `Surfaces.torus_not_plHomeomorphic_klein`
 
 ## References
 
@@ -100,3 +119,7 @@ here. [TODO]
 4. W. Dyck, Beiträge zur Analysis situs, *Math. Ann.* 32 (1888) 457.
 5. F. H. Lutz, Triangulated manifolds with few vertices: Combinatorial manifolds,
    arXiv:math/0506372 (2005).
+6. W. B. R. Lickorish, Simplicial moves on complexes and manifolds, *Geom. Topol. Monogr.* 2 (1999)
+   299.
+7. E. E. Moise, *Geometric Topology in Dimensions 2 and 3*, Graduate Texts in Mathematics 47,
+   Springer (1977).

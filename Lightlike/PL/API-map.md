@@ -49,7 +49,10 @@ Newman's theorem [21]. With it, the sphere results above no longer assume stella
 subdivisions of lower dimension [21].
 
 The 3-complexes of the Ponzano–Regge API generate simplicial complexes, and its closed
-combinatorial 3-manifolds are closed combinatorial 3-manifolds in this sense [6]. The same
+combinatorial 3-manifolds are closed combinatorial 3-manifolds in this sense [6]. In dimension two, a connected graph with two
+edges at every vertex is reached from the boundary of a triangle by subdividing edges, and so
+generates a PL 1-sphere [37]; this identifies the vertex links of the closed surfaces of
+the surface API as PL 1-spheres. The same
 construction applies to the 4-complexes of the four-dimensional API, with closed combinatorial
 4-manifolds defined by their vertex links [7].
 
@@ -142,6 +145,8 @@ Cutting along such a diagonal gives two polygons, made of the edges from the ver
 36. Lightlike/PL/PolygonBoundary.lean - `PL.Polygon.link_mem_iff`, `PL.Polygon.signedCount_link`,
     `PL.Polygon.unique_triangle_of_ball`, `PL.Polygon.mem_bd_closure_iff`,
     `PL.Polygon.bd_space_eq_carrier`, `PL.Polygon.polygon_schoenflies`
+37. Lightlike/PL/Cycle.lean - `PL.CycleGraph`, `PL.CycleGraph.isSphere1`,
+    `PL.CycleGraph.isPLSphere`, `PL.isPLSphere_closure_of_isSphere1`
 
 ## References
 
