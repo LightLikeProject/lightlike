@@ -47,15 +47,15 @@ functionals, for which the two slicings have the same cells as sets and hence is
 subdivision of a complex with the empty face is stellar equivalent to it [20], and from that
 Newman's theorem [21]. With it, the sphere results above no longer assume stellar equivalence of
 subdivisions of lower dimension [21]. Conversely a stellar subdivision is a PL homeomorphism of the
-realisations, and so is any chain of subdivisions and welds {1} [38]. The Euler characteristic is
+realisations, and so is any chain of subdivisions and welds {1} [47]. The Euler characteristic is
 invariant under stellar equivalence, so complexes with different Euler characteristics are not stellar
 equivalent, and, when both or neither contain the empty face, their realisations are not PL
-homeomorphic [39] [21].
+homeomorphic [48] [21].
 
 The 3-complexes of the Ponzano–Regge API generate simplicial complexes, and its closed
 combinatorial 3-manifolds are closed combinatorial 3-manifolds in this sense [6]. In dimension two, a connected graph with two
 edges at every vertex is reached from the boundary of a triangle by subdividing edges, and so
-generates a PL 1-sphere [37]; this identifies the vertex links of the closed surfaces of
+generates a PL 1-sphere [46]; this identifies the vertex links of the closed surfaces of
 the surface API as PL 1-spheres. The same
 construction applies to the 4-complexes of the four-dimensional API, with closed combinatorial
 4-manifolds defined by their vertex links [7].
@@ -80,6 +80,10 @@ convex hull, and the inside is the interior of the convex hull [26].
 A simple polygon with at least four vertices has an interior diagonal, a pair of non-neighbouring vertices whose open segment lies in the inside. Let `v` be the lexicographically smallest vertex (leftmost, ties broken by lowest). Its two edge vectors are not parallel, the left half-plane lies in the outside, and, since the parity differs between the two sectors at `v`, the points close to `v` inside the angle of the two edges lie in the inside [27]. A segment that leaves the open region where finitely many affine functions are positive meets its boundary, and a segment from a boundary point towards a point where a vanishing function is positive enters the region [28]. In the frame of the two neighbours `u`, `w` of `v`, no edge meets an open wedge at `v` that contains no vertex [29]. If a vertex other than `u`, `v`, `w` lies in the closed triangle `u v w`, the diagonal runs from `v` to the one nearest to `v`; otherwise it runs from `u` to `w` [30].
 
 Cutting along such a diagonal gives two polygons, made of the edges from the vertex `0` to the vertex `b` and from `b` back to `0`, each closed by the diagonal. The ray crossing test does not depend on the direction of an edge, so the diagonal is counted twice and the parities of the two parts add up to that of the polygon [31]. Both parts are simple, the inside of the polygon is the union of their insides and the open diagonal, and the two insides are disjoint [31]. The proof uses that the outside of the polygon is connected, and needs no analysis of the sectors along the diagonal. By induction on the number of vertices, every simple polygon has a triangulation by triangles whose vertices are vertices of the polygon: the faces form a geometric complex whose underlying set is the closed region bounded by the polygon, and every edge of the polygon is a face {4} [32]. Such a polygon also has two ears, interior diagonals between the vertices `k` and `k + 2` with non-neighbouring `k`, by induction from the splitting: a triangle part has its ear at the diagonal, and a part with at least four vertices has two ears, of which at most one touches the diagonal [33]. Attaching a triangle on a new vertex along a boundary edge that lies in exactly one triangle of a complex gives a stellar equivalent complex: subdivide the edge at the new vertex and flip the edge from the new vertex to the opposite vertex [34]. Clipping an ear, the triangulation can be chosen so that every edge of the polygon lies in exactly one triangle, and then the complex is a PL ball {4} [35]. The induction also carries that every edge of the complex that is not an edge of the polygon lies in two triangles. A face whose link is a PL ball then lies in a single triangle, by the signed count of the link, and so the boundary of the complex, the faces inside a face with a ball for a link, is exactly the set of faces inside an edge of the polygon; its underlying set is the polygon [36]. This is the polygonal Schoenflies theorem: the closed region bounded by a simple closed polygon is the underlying set of a geometric complex that is a PL ball whose boundary is the polygon {4} [36].
+
+A geometric complex is PL homeomorphic to its abstract realisation, by the linear map that sends the weights `x` to `∑ x v • v`: the faces are affinely independent and meet in common faces, which gives injectivity {1} [37]. A PL ball of dimension `n` is PL homeomorphic to the simplex on any `n + 1` vertices, since a permutation of the vertex type carries one vertex set to the other [38]. Composing with the stellar equivalence of the triangulated region of a polygon to a simplex, the closed region bounded by a simple closed polygon is PL homeomorphic to a triangle {4} [39]. The homeomorphism is not shown to map the polygon onto the boundary of the triangle.
+
+A simple chain is a list of points in the plane whose consecutive segments meet only at shared vertices; simple chains glue and reverse, and the set of a chain is its union of segments [40]. The ray crossing parity of a chain is additive under gluing and, modulo 2, invariant under reversal, which links the parity of a polygon built from a list to that of its chains [41]. The carrier of a polygon made of two arcs is the union of the two arcs, the parity of a ray crossing jumps across an arc near its interior points, and the interior of a simple chain without its ends is preconnected [42]. If a simple closed polygon is made of two arcs, a chord joining an interior point of the first arc to an interior point of the second, with its ends removed and meeting the arcs only at those points, cannot lie on the same side of the polygon as a second chord joining the two ends: the proof compares the parities of the three theta pieces and needs no orientation [43] {5}. Take the six-cycle of a drawing of `K₃,₃` as a hexagon with three chords; each chord lies inside or outside the hexagon, so two of them lie on the same side, and after a rotation of the labels they are neighbouring chords, which is impossible [44]. Hence six points joined across two classes of three by nine simple polygonal arcs that meet only in their common endpoints do not exist; the arcs are polygonal only, and the statement for continuous arcs is a later step [45].
 
 ## Lean References
 
@@ -150,11 +154,24 @@ Cutting along such a diagonal gives two polygons, made of the edges from the ver
 36. Lightlike/PL/PolygonBoundary.lean - `PL.Polygon.link_mem_iff`, `PL.Polygon.signedCount_link`,
     `PL.Polygon.unique_triangle_of_ball`, `PL.Polygon.mem_bd_closure_iff`,
     `PL.Polygon.bd_space_eq_carrier`, `PL.Polygon.polygon_schoenflies`
-37. Lightlike/PL/Cycle.lean - `PL.CycleGraph`, `PL.CycleGraph.isSphere1`,
+37. Lightlike/PL/RealGeom.lean - `PL.SComplex.linearSum`, `PL.SComplex.bary_unique`,
+    `PL.SComplex.isPLHomeo_real_geom`
+38. Lightlike/PL/Relabel.lean - `PL.SComplex.PLHomeomorphic.simplex_relabel`,
+    `PL.SComplex.PLHomeomorphic.of_isPLBallIn`
+39. Lightlike/PL/PolygonPLHomeo.lean - `PL.Polygon.polygon_plHomeo_triangle`
+40. Lightlike/PL/SimpleChain.lean - `PL.chainSet`, `PL.IsSimpleChain`, `PL.isSimpleChain_append`,
+    `PL.isSimpleChain_reverse`
+41. Lightlike/PL/Chain.lean - `PL.chainParity_append`, `PL.chainParity_reverse`,
+    `PL.Polygon.ofList`, `PL.Polygon.parity_ofList`
+42. Lightlike/PL/Theta.lean - `PL.carrier_two_arcs`, `PL.Polygon.near_two`
+43. Lightlike/PL/Interlaced.lean - `PL.no_interlaced_chord`
+44. Lightlike/PL/HexFalse.lean - `PL.Hex.false`
+45. Lightlike/PL/K33.lean - `PL.PLDrawing`, `PL.no_PL_K33`
+46. Lightlike/PL/Cycle.lean - `PL.CycleGraph`, `PL.CycleGraph.isSphere1`,
     `PL.CycleGraph.isPLSphere`, `PL.isPLSphere_closure_of_isSphere1`
-38. Lightlike/PL/StellarHomeo.lean - `PL.SComplex.PLHomeomorphic.starAt`,
+47. Lightlike/PL/StellarHomeo.lean - `PL.SComplex.PLHomeomorphic.starAt`,
     `PL.SComplex.PLHomeomorphic.of_stellarEquiv`
-39. Lightlike/PL/Euler.lean - `PL.SComplex.StellarEquiv.euler_eq`,
+48. Lightlike/PL/Euler.lean - `PL.SComplex.StellarEquiv.euler_eq`,
     `PL.SComplex.not_stellarEquiv_of_euler_ne`
 
 ## References
