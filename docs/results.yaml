@@ -402,10 +402,10 @@
   note: The statement `PR.PonzanoReggeFormula` (PonzanoRegge/Asymptotics.lean) is proved without hypotheses by `ponzanoReggeFormula`, through the large-spin asymptotics of the Racah sum (`racahSumAsymptotics`), and checked numerically. It is the Ponzano–Regge form, with edge lengths j + 1/2 in the volume and the angles. That form is equivalent to Roberts' Theorem 1, which uses the unshifted tetrahedron, via his Section 6.1 (Schläfli identity).
   since: 0.1.0
 - id: LL-0031
-  title: Turaev–Viro invariance under the 2-3 and 1-4 moves at level r, given q-Biedenharn–Elliott
+  title: Turaev–Viro invariance under the 2-3 and 1-4 moves at level r
   area: TuraevViro
-  file: Lightlike/TuraevViro/TuraevViroMoves.lean
-  decls: [Lightlike.TV.turaevViro_move23_of_BE, Lightlike.TV.turaevViro_move14_of_BE]
+  file: Lightlike/TuraevViro/TuraevViro.lean
+  decls: [Lightlike.TV.turaevViro_move23, Lightlike.TV.turaevViro_move14]
   status: conditional
   tier: established
   source:
@@ -413,8 +413,8 @@
       - {ref: turaev-1994, location: "Chapter: Chapter VII. Simplicial state sums on 3-manifolds|10.1515/9783110883275-008"}
       - {ref: turaev-1994, location: "Chapter: Chapter VI. 6j-symbols|10.1515/9783110883275-007"}
   review: kernel-checked
-  hypotheses: [Lightlike.TV.qBiedenharnElliott]
-  note: "Both moves leave the state sum unchanged, given the q-Biedenharn–Elliott identity at level r (qBiedenharnElliott: a sum of three 6j symbols over the middle colour equals a product of two). It is proved at r = 3 (LL-0032) and checked numerically at r = 4 to 7. The earlier two-hypothesis form turaevViro_move14, with q-orthogonality as a second hypothesis, remains in Lightlike/TuraevViro/TuraevViro.lean; q-orthogonality is now proved at every level (LL-0075), so only qBiedenharnElliott is left for r ≥ 4."
+  hypotheses: [Lightlike.TV.qBiedenharnElliott, Lightlike.TV.qOrthogonality]
+  note: "Both moves leave the state sum unchanged, given the q-Biedenharn–Elliott identity and q-orthogonality at level r. q-orthogonality is now proved at every level (LL-0075): turaevViro_move14_of_BE and turaevViro_move23_of_BE in Lightlike/TuraevViro/TuraevViroMoves.lean state both moves with q-Biedenharn–Elliott as their only hypothesis. That identity is proved at r = 3 (LL-0032) and checked numerically at r = 4 to 10, so the result stays conditional for r ≥ 4."
   since: 0.1.0
 - id: LL-0032
   title: Turaev–Viro invariance under the 2-3 and 1-4 moves at r = 3
