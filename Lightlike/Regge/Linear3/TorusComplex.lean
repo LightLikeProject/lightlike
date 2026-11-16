@@ -184,7 +184,7 @@ theorem len0_pair {x y : TV n} (hxy : x ≠ y) : len0 n {x, y} = √(hdist n x y
   have hpos : 1 ≤ hdist n x y := by
     unfold hdist
     rw [Nat.one_le_iff_ne_zero, Ne, card_eq_zero, filter_eq_empty_iff]
-    push_neg
+    push Not
     obtain ⟨i, hi⟩ := Function.ne_iff.1 hxy
     exact ⟨i, mem_univ _, hi⟩
   have hs : hdist n y x = hdist n x y := by
@@ -351,20 +351,20 @@ theorem angleSum_eq (hn : 3 ≤ n) (e : Finset (TV n)) (he : e.card = 2) :
   refine sum_congr rfl fun p _ => ?_
   by_cases hs : e ⊆ tetV n p.1 p.2
   · obtain ⟨h0, rfl⟩ := (subset_tetV_iff n (by omega) p.1 p.2 he).1 hs
-    rw [if_pos hs, show hing n p.1 p.2 h0 = {p.1 + off n p.2 (hP h0), p.1 + off n p.2 (hQ h0)} from rfl,
+    rw [ite_eq_left hs, show hing n p.1 p.2 h0 = {p.1 + off n p.2 (hP h0), p.1 + off n p.2 (hQ h0)} from rfl,
       dihedralAt_hinge n (by omega)]
     change hang h0 = _
     rw [← show hing n p.1 p.2 h0 = {p.1 + off n p.2 (hP h0), p.1 + off n p.2 (hQ h0)} from rfl]
     rw [sum_eq_single h0]
     · simp
     · intro h _ hh
-      rw [if_neg]
+      rw [ite_eq_right]
       exact fun e' => hh (hing_inj n (by omega) p.1 p.2 e').symm
     · simp
-  · rw [if_neg hs]
+  · rw [ite_eq_right hs]
     symm
     refine sum_eq_zero fun h _ => ?_
-    rw [if_neg]
+    rw [ite_eq_right]
     intro e'
     exact hs ((subset_tetV_iff n (by omega) p.1 p.2 he).2 ⟨h, e'⟩)
 

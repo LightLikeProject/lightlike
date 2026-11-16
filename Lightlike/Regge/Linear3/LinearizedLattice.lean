@@ -204,7 +204,7 @@ theorem Qn_lattice (hn : 3 ≤ n) (hf : (Fin 3 → ℝ) → Matrix (Fin 3) (Fin 
     refine sum_congr rfl fun h _ => ?_
     by_cases hc : Cond (dirsN k) σ h
     · have hc' : InClass (dirs k) σ h := (cond_iff_inClass k σ h).1 hc
-      simp only [hc, hc', if_true]
+      simp only [hc, hc', ite_true]
       rw [hbase_wn k σ h hc]
       congr 2
       have hv : hingeMid n k z' = fun i => ((((E z' i).val : ℕ) : ℤ) + dirs k i / 2) / n := by

@@ -83,16 +83,16 @@ theorem angleSum_gen (hn : 3 ≤ n) (ℓ : Finset (TV n) → ℝ) (e : Finset (T
   refine sum_congr rfl fun p _ => ?_
   by_cases hs : e ⊆ tetV n p.1 p.2
   · obtain ⟨h0, rfl⟩ := (subset_tetV_iff n (by omega) p.1 p.2 he).1 hs
-    rw [if_pos hs, sum_eq_single h0]
+    rw [ite_eq_left hs, sum_eq_single h0]
     · simp
     · intro h _ hh
-      rw [if_neg]
+      rw [ite_eq_right]
       exact fun e' => hh (hing_inj n (by omega) p.1 p.2 e').symm
     · simp
-  · rw [if_neg hs]
+  · rw [ite_eq_right hs]
     symm
     refine sum_eq_zero fun h _ => ?_
-    rw [if_neg]
+    rw [ite_eq_right]
     intro e'
     exact hs ((subset_tetV_iff n (by omega) p.1 p.2 he).2 ⟨h, e'⟩)
 
@@ -115,7 +115,7 @@ theorem angleSum_edgeOf (hn : 3 ≤ n) (ℓ : Finset (TV n) → ℝ) (z : TV n) 
   rw [sum_comm]
   refine sum_congr rfl fun h _ => ?_
   by_cases hc : Cond (dirsN k) σ h
-  · simp only [hc, true_and, if_true]
+  · simp only [hc, true_and, ite_true]
     rw [sum_eq_single (z - off n σ (hP h))]
     · simp
     · intro c _ hne; simp [hne]

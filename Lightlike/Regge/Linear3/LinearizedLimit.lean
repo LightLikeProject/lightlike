@@ -97,7 +97,7 @@ theorem sum_clsDens {hf : (Fin 3 → ℝ) → Matrix (Fin 3) (Fin 3) ℝ}
   refine sum_congr rfl fun h _ => ?_
   obtain ⟨k0, hk0, huniq⟩ := inClass_unique σ h
   rw [Finset.sum_eq_single k0]
-  · simp only [hk0, if_true]
+  · simp only [hk0, ite_true]
     have hc : Cond (dirsN k0) σ h := (cond_iff_inClass k0 σ h).2 hk0
     have hw : wn k0 = √(hbase h 0) := (hbase_wn k0 σ h hc).symm
     have hsq : wn k0 ^ 2 = hbase h 0 := by rw [hw]; exact Real.sq_sqrt (hbase_pos h).le
@@ -251,7 +251,7 @@ theorem continuous_c2fun {hf : (Fin 3 → ℝ) → Matrix (Fin 3) (Fin 3) ℝ}
     (hsm : ∀ i j, ContDiff ℝ 3 (fun y => hf y i j)) (k : Fin 7) : Continuous (c2fun hf k) := by
   have hc := continuous_dd2 hsm
   unfold c2fun clsSum
-  refine continuous_finset_sum _ fun σ _ => continuous_finset_sum _ fun h _ => ?_
+  refine continuous_finsetSum _ fun σ _ => continuous_finsetSum _ fun h _ => ?_
   split_ifs
   · have hrf : ∀ s Δ : Fin 3 → ℝ, Continuous fun v => rf (dd2 hf v) s Δ := fun s Δ => by
       unfold rf ddq
@@ -331,11 +331,11 @@ theorem Qn_converges {hf : (Fin 3 → ℝ) → Matrix (Fin 3) (Fin 3) ℝ}
   -- the Riemann sum limit
   have hlim : Tendsto (fun N : ℕ => ∑ k : Fin 7, (∑ z : Fin 3 → Fin N, clsDens hf k (hingeMid N k z)) *
       (1 / (N : ℝ)) ^ 3) atTop (𝓝 (∑ k : Fin 7, ∫ y in unitCube, clsDens hf k y)) := by
-    refine tendsto_finset_sum _ fun k _ => ?_
+    refine tendsto_finsetSum _ fun k _ => ?_
     exact riemann_sum_tendsto (continuous_clsDens hsm k).continuousOn (fun N z => hingeMid N k z)
       (fun N z => hingeMid_mem_cell (Fin.pos (z 0)) k z)
   have hint : ∑ k : Fin 7, ∫ y in unitCube, clsDens hf k y = ∫ y in unitCube, -(1 / 4) * svPair (Hm hf y) (dd2 hf y) := by
-    rw [← MeasureTheory.integral_finset_sum _ (fun k _ => (continuous_clsDens hsm k).continuousOn.integrableOn_compact hKc)]
+    rw [← MeasureTheory.integral_finsetSum _ (fun k _ => (continuous_clsDens hsm k).continuousOn.integrableOn_compact hKc)]
     refine MeasureTheory.setIntegral_congr_fun hKc.measurableSet fun y _ => ?_
     exact sum_clsDens hsm hsymm y
   rw [hint] at hlim

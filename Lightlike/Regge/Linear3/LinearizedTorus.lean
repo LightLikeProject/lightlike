@@ -163,7 +163,7 @@ theorem Qn_eq (hn : 3 ≤ n) (hf : (Fin 3 → ℝ) → Matrix (Fin 3) (Fin 3) �
   congr 1
   refine sum_congr rfl fun σ _ => sum_congr rfl fun h _ => ?_
   by_cases hc : Cond (dirsN k) σ h
-  · simp only [hc, if_true]
+  · simp only [hc, ite_true]
     have hcc : ∀ i, (((((z i).val : ℕ) : ℤ) - koff (hP h) (perms σ i) : ℤ) : ZMod n) =
         (z - off n σ (hP h)) i := fun i => by
       simp [off]
