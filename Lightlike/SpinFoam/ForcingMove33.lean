@@ -28,14 +28,15 @@ def ok4 (a b c d : Bool) : Bool := decide (a.toNat + b.toNat + c.toNat + d.toNat
 `τ`) forces the third as soon as `σ` (or `τ`) is in the set. -/
 def ne2 (a b c : Bool) : Bool := decide (a.toNat + b.toNat + c.toNat ≠ 2)
 
-set_option synthInstance.maxSize 100000 in
-set_option synthInstance.maxHeartbeats 2000000 in
+set_option synthInstance.maxSize 256 in
 set_option maxRecDepth 100000 in
 /-- **The finite local lemma of the 3-3 move.** If the eighteen mixed triangles form a set that is
 closed under the nine common tetrahedra (`ok4` for each), contains a full row of `m` and a full row
 of `n`, then no row of `m` and no row of `n` has exactly two triangles in the set (`ne2`). The
 variables are Booleans, with the constraint of each tetrahedron placed as early as possible; the
-kernel checks it by `decide`. -/
+kernel checks it by `decide`. The instance `Decidable` of the nested `∀ … → …` has size between 128
+(the default limit, which fails) and 256 (measured by doubling), and needs under 5000 heartbeats of
+instance synthesis (the default is 20000), so only `synthInstance.maxSize` is raised. -/
 theorem local33_prop :
     ∀ m00 : Bool, ∀ m10 : Bool, ∀ m20 : Bool, ∀ m01 : Bool, ∀ m11 : Bool, ∀ m21 : Bool, ∀ m02 : Bool, ∀ m12 : Bool, ∀ m22 : Bool, ∀ n00 : Bool, ∀ n10 : Bool, ok4 m12 m22 n00 n10 = true → ∀ n20 : Bool, ok4 m10 m20 n10 n20 = true → ok4 m11 m21 n00 n20 = true → ∀ n01 : Bool, ∀ n11 : Bool, ok4 m02 m22 n01 n11 = true → ∀ n21 : Bool, ok4 m00 m20 n11 n21 = true → ok4 m01 m21 n01 n21 = true → ∀ n02 : Bool, ∀ n12 : Bool, ok4 m02 m12 n02 n12 = true → ∀ n22 : Bool, ok4 m00 m10 n12 n22 = true → ok4 m01 m11 n02 n22 = true → ((m00 && m01 && m02) || (m10 && m11 && m12) || (m20 && m21 && m22)) = true → ((n00 && n01 && n02) || (n10 && n11 && n12) || (n20 && n21 && n22)) = true → (ne2 m00 m01 m02 && ne2 m10 m11 m12 && ne2 m20 m21 m22 && ne2 n00 n01 n02 && ne2 n10 n11 n12 && ne2 n20 n21 n22) = true := by decide +kernel
 
