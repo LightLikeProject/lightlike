@@ -2,6 +2,7 @@ import Lightlike.TuraevViro.Reflect.JacksonWZ
 import Lightlike.TuraevViro.Reflect.RacahDc
 import Lightlike.TuraevViro.Reflect.SixJNormOne
 import Lightlike.TuraevViro.Reflect.JacksonDegenerate
+import Lightlike.TuraevViro.Reflect.OrthInterior
 import Lightlike.TuraevViro.Reflect.SixJSingle
 
 /-!
@@ -41,6 +42,8 @@ ingredients of that matching.
   hypotheses of Jackson's sum fail, from the partial sums of the series with fewer parameters.
 * `qDougall_orbit`: **`QDougall` holds** for the lowest sixth colour `j1 - j5` and the third colours
   from `j1 - j2`, in both cases.
+* `qDougallAt_dual`: the boundary evaluation for the dual data `B, F, E, A` gives the one for
+  `B, A, E, F` (the weighted norms of the rows and of the columns of one matrix are equal).
 * `qd_jhyp`: they hold at the parameters of the boundary evaluation in the case `x0 = j1 - j2`,
   `q0 = j1 - j5`, `j4 + j5 < j1 + j2`, for admissible spins.
 
@@ -1126,5 +1129,62 @@ theorem qDougall_orbit {r j1 j2 j4 j5 n : ℕ} (hr : 2 ≤ r) (h21 : j2 ≤ j1) 
     obtain rfl : j2 = n := by omega
     simp only [Nat.add_sub_cancel_left] at hadmX ⊢
     exact qDougall_deg_param hr (by omega) (by omega) hadmX hadmQ
+
+
+/-- **The dual step.** The boundary evaluation for the dual data `B, F, E, A` (rows and columns
+exchanged) gives the one for `B, A, E, F`: the weighted norms of the rows and of the columns of one
+matrix are the same constant (`sixj_norm_one`), and `Sj_dual` exchanges the two colours. -/
+theorem qDougallAt_dual {r : ℕ} (hr : 2 ≤ r) (B A E F x : ℕ) (hx1 : qAdm r B A x)
+    (hx2 : qAdm r E F x) (hD : QDougallAt r B F E A) : QDougallAt r B A E F := by
+  have hqf := hx1; have hqe := hx2
+  unfold qAdm Lightlike.Pentagon.Tri at hx1 hx2
+  have hparX : (B + F + E + A) % 2 = 0 := by omega
+  have hparQ : (B + A + E + F) % 2 = 0 := by omega
+  have iffX := adm_pair_iff hr hparX
+  have iffQ := adm_pair_iff hr hparQ
+  obtain ⟨xLpar, xHpar, heqX, hloX0, hhiX0⟩ :=
+    pair_facts (r := r) (a := B) (b := F) (c := E) (d := A) hparX (by omega) (by omega)
+  obtain ⟨qLpar, qHpar, heqQ, hloQ0, hhiQ0⟩ :=
+    pair_facts (r := r) (a := B) (b := A) (c := E) (d := F) hparQ (by omega) (by omega)
+  have hxle : aLo B F E A ≤ aHi r B F E A := by
+    have h1 := (aLo_spec B F E A).2.2.2.2
+    have h2 := (aHi_spec r B F E A).2.2.2.2
+    omega
+  have hqle : aLo B A E F ≤ aHi r B A E F := by
+    have h1 := (aLo_spec B A E F).2.2.2.2
+    have h2 := (aHi_spec r B A E F).2.2.2.2
+    omega
+  obtain ⟨sL1, sL2, sL3, sL4, -⟩ := aLo_spec B F E A
+  obtain ⟨tL1, tL2, tL3, tL4, -⟩ := aLo_spec B A E F
+  obtain ⟨sH1, sH2, sH3, sH4, -⟩ := aHi_spec r B F E A
+  obtain ⟨tH1, tH2, tH3, tH4, -⟩ := aHi_spec r B A E F
+  unfold QDougallAt at hD ⊢
+  generalize aLo B F E A = xL at *
+  generalize aHi r B F E A = xH at *
+  generalize aLo B A E F = qL at *
+  generalize aHi r B A E F = qH at *
+  revert heqX heqQ hhiX0 hhiQ0 hloX0 hloQ0
+  have hadmX : ∀ k ≤ (xH - xL) / 2, qAdm r B F (xL + 2 * k) ∧ qAdm r E A (xL + 2 * k) := by
+    intro k hk
+    rw [iffX]
+    omega
+  have hadmQ : ∀ l ≤ (qH - qL) / 2, qAdm r B A (qL + 2 * l) ∧ qAdm r E F (qL + 2 * l) := by
+    intro l hl
+    rw [iffQ]
+    omega
+  have hxn : xL + 2 * ((xH - xL) / 2) = xH := by omega
+  have hqn : qL + 2 * ((qH - qL) / 2) = qH := by omega
+  intro d1 d2 d3 d4 d5 d6
+  have key := sixj_norm_one hr B F E A xL ((xH - xL) / 2) qL ((qH - qL) / 2) hadmX
+    (by assumption) (by rw [hxn]; push_cast; assumption) hadmQ (by assumption)
+    (by rw [hqn]; push_cast; assumption) (by assumption) (by assumption) hD
+  have h0 := key.2 0 (by omega)
+  simp only [mul_zero, add_zero] at h0
+  rw [show (∑ l ∈ range ((qH - qL) / 2 + 1), jOmega r B A E F (qL + 2 * l) *
+        Sj r B F E A (qL + 2 * l) ((xL : ℕ) : ℤ) ^ 2) =
+      ∑ l ∈ range ((qH - qL) / 2 + 1), jOmega r B A E F (qL + 2 * l) *
+        Sj r B A E F xL ((qL + 2 * l : ℕ) : ℤ) ^ 2 from
+    sum_congr rfl fun l _ => by rw [Sj_dual r B A E F xL (qL + 2 * l)]] at h0
+  exact h0
 
 end Lightlike.TV.Refl
