@@ -110,8 +110,8 @@ theorem taylor3_uniform {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [
   rw [abs_le]
   constructor <;> linarith [h7.1, h7.2]
 
-/-- The dihedral angle `Dsq` is `C³` (indeed smooth) at every admissible tuple. -/
-theorem contDiffAt_Dsq {L : Fin 6 → ℝ} (hL : Valid L) : ContDiffAt ℝ 3 Dsq L := by
+/-- **The dihedral angle `Dsq` is smooth** (of every order `n`) at every admissible tuple. -/
+theorem contDiffAt_Dsq_all (n : ℕ∞) {L : Fin 6 → ℝ} (hL : Valid L) : ContDiffAt ℝ n Dsq L := by
   obtain ⟨ha, h1, h2, h3⟩ := hL
   have hc1 : cosSq (L 0) (L 1) (L 2) (L 3) (L 4) (L 5) ≠ 1 := fun h => by
     rw [h] at h3; norm_num at h3
@@ -120,11 +120,15 @@ theorem contDiffAt_Dsq {L : Fin 6 → ℝ} (hL : Valid L) : ContDiffAt ℝ 3 Dsq
   have ha' := ha.ne'
   have hpp : 0 < Pp (L 0) (L 1) (L 2) * Pp (L 0) (L 3) (L 4) := mul_pos h1 h2
   have hs : √(Pp (L 0) (L 1) (L 2) * Pp (L 0) (L 3) (L 4)) ≠ 0 := (sqrt_pos.mpr hpp).ne'
-  have hc : ContDiffAt ℝ 3 (fun L : Fin 6 → ℝ => cosSq (L 0) (L 1) (L 2) (L 3) (L 4) (L 5)) L := by
+  have hc : ContDiffAt ℝ n (fun L : Fin 6 → ℝ => cosSq (L 0) (L 1) (L 2) (L 3) (L 4) (L 5)) L := by
     unfold cosSq Nn
     unfold Pp at hs hpp h1 h2 ⊢
     fun_prop (disch := first | assumption | positivity | skip)
   exact (Real.contDiffAt_arccos hc2 hc1).comp L hc
+
+/-- The dihedral angle `Dsq` is `C³` at every admissible tuple. -/
+theorem contDiffAt_Dsq {L : Fin 6 → ℝ} (hL : Valid L) : ContDiffAt ℝ 3 Dsq L :=
+  contDiffAt_Dsq_all 3 hL
 
 /-- The derivative of `Dsq` is the first variation `Dh`. -/
 theorem fderiv_Dsq {L : Fin 6 → ℝ} (δ : Fin 6 → ℝ) (hL : Valid L) :
