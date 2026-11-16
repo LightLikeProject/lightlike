@@ -1325,6 +1325,7 @@
   decls: [Lightlike.PL.weak_jordan]
   status: proven
   tier: established
+  main: true
   source:
     refs:
       - {ref: klazar-2026, location: "Section 2", check: "Thomassen"}
@@ -1644,6 +1645,7 @@
   decls: [Lightlike.PL.jordan_at_most_two, Lightlike.PL.jordan_at_most_two_prod, Lightlike.PL.jordan_curve_theorem]
   status: proven
   tier: established
+  main: true
   source:
     refs:
       - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
