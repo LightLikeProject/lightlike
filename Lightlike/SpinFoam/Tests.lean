@@ -3,6 +3,7 @@ import Lightlike.SpinFoam.Move24Global
 import Lightlike.SpinFoam.Move15Global
 import Lightlike.SpinFoam.GaugeChain
 import Lightlike.SpinFoam.ForcingMoves
+import Lightlike.SpinFoam.ForcingMove33
 import Lightlike.Recoupling.Tests
 import Lightlike.FourD.Tests
 import Lightlike.Spin4.EPRLTests
@@ -483,6 +484,27 @@ theorem forces_move15_example :
   have h := Move15.forces_move15 isMove15 (σ := {0, 1, 2, 3, 4}) (τ := {6}) (v := 6) rfl hσ
     (a := fun k : Fin 5 => Fin.castLE (by omega) k) hsurj hF
   rwa [hg] at h
+
+open Lightlike.FourD.Tests in
+/-- **Non-vacuity of the forcing characterization for the 3-3 move.** On `K2` (the boundary of the
+5-simplex after a 1-5 and a 2-4 move) the fifteen triangles `T33` force every triangle, and so does
+their closure under the tetrahedra that do not contain `{0,2,3}`: no forcing step needs the moved
+triangle. After the 3-3 move `{0,2,3} → {4,5,6}` the same set forces every triangle of the new
+complex. Every hypothesis of `Forcing33.forces_move33_iff` is checked by the kernel. -/
+theorem forces_move33_example :
+    Forces (K2.move isMove33) (K2.move isMove33).tris
+      ({{0, 1, 5}, {0, 1, 6}, {0, 2, 5}, {0, 2, 6}, {0, 3, 5}, {0, 3, 6}, {0, 4, 5}, {0, 4, 6}, {0, 5, 6}, {1, 2, 5}, {1, 3, 5}, {1, 4, 5}, {2, 3, 5}, {2, 4, 5}, {3, 4, 5}} : Finset (Finset (Fin 8))) := by
+  have hσ : #({0, 2, 3} : Finset (Fin 8)) = 3 := by decide
+  have hT : ({{0, 1, 5}, {0, 1, 6}, {0, 2, 5}, {0, 2, 6}, {0, 3, 5}, {0, 3, 6}, {0, 4, 5}, {0, 4, 6}, {0, 5, 6}, {1, 2, 5}, {1, 3, 5}, {1, 4, 5}, {2, 3, 5}, {2, 4, 5}, {3, 4, 5}} : Finset (Finset (Fin 8))) ⊆ K2.tris := by decide +kernel
+  have hσT : ({0, 2, 3} : Finset (Fin 8)) ∉ ({{0, 1, 5}, {0, 1, 6}, {0, 2, 5}, {0, 2, 6}, {0, 3, 5}, {0, 3, 6}, {0, 4, 5}, {0, 4, 6}, {0, 5, 6}, {1, 2, 5}, {1, 3, 5}, {1, 4, 5}, {2, 3, 5}, {2, 4, 5}, {3, 4, 5}} : Finset (Finset (Fin 8))) := by decide
+  have hF : Forces K2 K2.tris ({{0, 1, 5}, {0, 1, 6}, {0, 2, 5}, {0, 2, 6}, {0, 3, 5}, {0, 3, 6}, {0, 4, 5}, {0, 4, 6}, {0, 5, 6}, {1, 2, 5}, {1, 3, 5}, {1, 4, 5}, {2, 3, 5}, {2, 4, 5}, {3, 4, 5}} : Finset (Finset (Fin 8))) := forces_of_forcesBy
+    (l := [({0, 1, 2, 5}, {0, 1, 2}), ({0, 1, 2, 6}, {1, 2, 6}), ({0, 1, 3, 5}, {0, 1, 3}), ({0, 1, 3, 6}, {1, 3, 6}), ({0, 1, 4, 5}, {0, 1, 4}), ({0, 1, 4, 6}, {1, 4, 6}), ({0, 1, 5, 6}, {1, 5, 6}), ({0, 2, 3, 5}, {0, 2, 3}), ({0, 2, 3, 6}, {2, 3, 6}), ({0, 2, 4, 5}, {0, 2, 4}), ({0, 2, 4, 6}, {2, 4, 6}), ({0, 2, 5, 6}, {2, 5, 6}), ({0, 3, 4, 5}, {0, 3, 4}), ({0, 3, 4, 6}, {3, 4, 6}), ({0, 3, 5, 6}, {3, 5, 6}), ({1, 2, 3, 5}, {1, 2, 3}), ({1, 2, 4, 5}, {1, 2, 4}), ({1, 3, 4, 5}, {1, 3, 4}), ({2, 3, 4, 5}, {2, 3, 4})])
+    (by decide +kernel)
+  have hS : ForcesIn (K2.tets.filter fun t => ¬ ({0, 2, 3} : Finset (Fin 8)) ⊆ t)
+      (K2.tris.erase {0, 2, 3}) ({{0, 1, 5}, {0, 1, 6}, {0, 2, 5}, {0, 2, 6}, {0, 3, 5}, {0, 3, 6}, {0, 4, 5}, {0, 4, 6}, {0, 5, 6}, {1, 2, 5}, {1, 3, 5}, {1, 4, 5}, {2, 3, 5}, {2, 4, 5}, {3, 4, 5}} : Finset (Finset (Fin 8))) := forcesIn_of_forcesInBy
+    (l := [({0, 1, 2, 5}, {0, 1, 2}), ({0, 1, 2, 6}, {1, 2, 6}), ({0, 1, 3, 5}, {0, 1, 3}), ({0, 1, 3, 6}, {1, 3, 6}), ({0, 1, 4, 5}, {0, 1, 4}), ({0, 1, 4, 6}, {1, 4, 6}), ({0, 1, 5, 6}, {1, 5, 6}), ({0, 2, 4, 5}, {0, 2, 4}), ({0, 2, 4, 6}, {2, 4, 6}), ({0, 2, 5, 6}, {2, 5, 6}), ({0, 3, 4, 5}, {0, 3, 4}), ({0, 3, 4, 6}, {3, 4, 6}), ({0, 3, 5, 6}, {3, 5, 6}), ({1, 2, 3, 5}, {1, 2, 3}), ({1, 2, 3, 6}, {2, 3, 6}), ({1, 2, 4, 5}, {1, 2, 4}), ({1, 3, 4, 5}, {1, 3, 4}), ({2, 3, 4, 5}, {2, 3, 4})])
+    (by decide +kernel)
+  exact (Forcing33.forces_move33_iff isMove33 hσ hT hσT hF).mpr hS
 
 open Lightlike.FourD.Tests in
 /-- The cutoffs of the chain example: `3` on the triangles `{6,1,2}`, `{6,1,3}` and `{6,2,3}` (the

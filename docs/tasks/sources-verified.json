@@ -1493,6 +1493,15 @@
   "citations": 430,
   "citations_via": "Semantic Scholar"
  },
+ "dona-fanizza-sarno-speziale-2019": {
+  "checked": "2026-11-16",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Numerical study of the Lorentzian Engle-Pereira-Rovelli-Livine spin foam amplitude",
+  "locations": {},
+  "citations": 77,
+  "citations_via": "OpenAlex"
+ },
  "dona-sarno-2018": {
   "checked": "2026-11-08",
   "exists": true,
@@ -2484,6 +2493,15 @@
    }
   },
   "citations": 46,
+  "citations_via": "Semantic Scholar"
+ },
+ "klazar-2026": {
+  "checked": "2026-11-16",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Thomassen's proof and Filippov's proof of the Weak Jordan Theorem",
+  "locations": {},
+  "citations": 0,
   "citations_via": "Semantic Scholar"
  },
  "knapp-1986": {
