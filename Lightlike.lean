@@ -295,6 +295,7 @@ import Lightlike.Regge.Geodesic.Expansion
 import Lightlike.Regge.Geodesic.Jet
 import Lightlike.Regge.Geodesic.Jet3
 import Lightlike.Regge.Geodesic.Metric
+import Lightlike.Regge.Geodesic.DistSymm
 import Lightlike.Regge.Geodesic.Quintic
 import Lightlike.Regge.Geodesic.Riemannian
 import Lightlike.Regge.Geodesic.Sixth
@@ -382,6 +383,7 @@ import Lightlike.Regge.Linear3.AngleSmooth
 import Lightlike.Regge.Linear3.SecondOrder
 import Lightlike.Regge.Linear3.TorusComplex
 import Lightlike.Regge.Linear3.TorusBridge
+import Lightlike.Regge.Linear3.TorusBridgeLengths
 import Lightlike.Regge.Linear3.WrongModel
 import Lightlike.Regge.Linear3.Taylor
 import Lightlike.Regge.Conv3.TrueLength
