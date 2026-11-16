@@ -78,7 +78,10 @@ the vertex asymptotics hold in it with the smoothness hypothesis replaced by tha
 overlap condition; the Haar density and the identification of the vertex integral with the chart
 integral stay named hypotheses (`aLoc`, `aFar`) [27]. Along `t ↦ t v` the chart has the tangent map
 `X_a ↦ X₀_a · chartGen (φ_a + iθ_a)`, `z_e ↦ (u_e + i v_e, 0)` [27]. The two-point formula with the
-constants of eq. (57) holds for an action smooth only on an open set [28].
+constants of eq. (57) holds for an action smooth only on an open set [28]. The Haar measure of
+`SL(2,ℂ)` is Lebesgue measure in the chart `g_z` of `FixedChart.lean` (density `1`), so, if the
+integrand is jointly integrable, the vertex is `(∏ c_e) s⁻⁴` times the Lebesgue integral of the
+integrand over `(ℂ³)⁴ × ℂ¹⁰` [29].
 
 The vertex action `lorAction` is the sum of the triangle actions over the ten edges at the spinors
 `X†z` [9]. Its real part is at most zero where the spinors and overlaps are nonzero [9]. In a chart
@@ -249,6 +252,8 @@ frame (`scripts/asymptotics/lorentzian_hessian_check.py`).
 28. Lightlike/Asymptotics/Lorentzian/AsymptoticFormulaLocal.lean - `Asymptotics.Lorentzian.weighted_two_points_local`,
     `Asymptotics.Lorentzian.weighted_two_points_eq57_local`,
     `Asymptotics.Lorentzian.lorVertex_asymptotic_formula_local`
+29. Lightlike/Asymptotics/Lorentzian/VertexHaarChart.lean - `Asymptotics.Lorentzian.integral_haar4_fixChart`,
+    `Asymptotics.Lorentzian.integral_pi_haar_eq`, `Asymptotics.Lorentzian.lorVertex_eq_fixChart_integral`
 
 ## References
 
