@@ -133,7 +133,7 @@ API map: [Lightlike/PL/API-map.md](../Lightlike/PL/API-map.md)
 | LL-XXXX-h | Two compact sets meeting in one point do not separate two points that neither separates (see note) | proven | established | `Lightlike.PL.joinedIn_union_compl` in [UnionLemma.lean](../Lightlike/PL/UnionLemma.lean) |
 | LL-XXXX-i | An arc does not separate the plane (see note) | proven | established | `Lightlike.PL.arc_not_separating` in [ArcNotSeparating.lean](../Lightlike/PL/ArcNotSeparating.lean) |
 | LL-XXXX-j | Every component of the complement of a Jordan curve has the whole curve as its frontier (see note) | proven | established | `Lightlike.PL.jordan_frontier` in [JordanFrontier.lean](../Lightlike/PL/JordanFrontier.lean) |
-| LL-XXXX-k | The index of a loop about a point, and the Theta Lemma (see note) | proven | established | `Lightlike.PL.exists_isLog`, `Lightlike.PL.logInc`, `Lightlike.PL.logInc_trans`, `Lightlike.PL.ind`, `Lightlike.PL.theta_lemma` in [Index.lean](../Lightlike/PL/Index.lean) |
+| LL-XXXX-k | The index of a loop about a point, and the Theta Lemma (see note) | proven | established | `Lightlike.PL.exists_isLog`, `Lightlike.PL.logInc`, `Lightlike.PL.logInc_trans`, `Lightlike.PL.loopIndex`, `Lightlike.PL.theta_lemma` in [Index.lean](../Lightlike/PL/Index.lean) |
 
 Notes:
 

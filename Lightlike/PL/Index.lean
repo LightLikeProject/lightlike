@@ -9,7 +9,7 @@ of `α - Ω` (`exp (ℓ t) = α t - Ω`). Such a logarithm exists by path liftin
 `exp : ℂ → ℂ ∖ {0}`, and two of them differ by a constant multiple of `2πi`, so the increment does not depend on
 the choice (`logInc_eq`). The increment is additive under concatenation of paths (`logInc_trans`) and changes
 sign under reversal (`logInc_symm`); for a loop it is `2πi` times an integer (`exists_int_logInc`), and the
-**Theta Lemma** (`theta_lemma`) follows: `ind(α * γ) = ind(α * β) + ind(β⁻¹ * γ)`.
+**Theta Lemma** (`theta_lemma`) follows: `loopIndex(α * γ) = loopIndex(α * β) + loopIndex(β⁻¹ * γ)`.
 
 This is the index of a point not on a Jordan curve and the Theta Lemma of chapter 9 of J. McCleary,
 *A First Course in Topology: Continuity and Dimension* (AMS, 2006); the numbering is that of the lecture-notes
@@ -23,7 +23,7 @@ is minus that of `β`, so the contributions of `β` and `β⁻¹` cancel. The st
 
 * `exists_isLog`, `isLog_unique`: a path avoiding `Ω` has a continuous logarithm, unique up to `2πi k`.
 * `logInc`, `logInc_eq`, `logInc_trans`, `logInc_symm`: the increment of a logarithm and its properties.
-* `ind`, `ind_spec`: the index of a loop about a point.
+* `loopIndex`, `loopIndex_spec`: the index of a loop about a point.
 * `theta_lemma`: the Theta Lemma of the notes.
 
 ## References
@@ -165,37 +165,37 @@ theorem exists_int_logInc {a : ℂ} (α : Path a a) {Ω : ℂ} (hα : ∀ t, α 
 
 /-- The **index of a loop about a point**: the integer `n` with `logInc α Ω = n * 2πi`
 (`0` if the loop meets `Ω`). -/
-noncomputable def ind {a : ℂ} (α : Path a a) (Ω : ℂ) : ℤ := by
+noncomputable def loopIndex {a : ℂ} (α : Path a a) (Ω : ℂ) : ℤ := by
   classical
   exact if h : ∀ t, α t ≠ Ω then Classical.choose (exists_int_logInc α h) else 0
 
 /-- The index is read off the increment. -/
-theorem ind_spec {a : ℂ} (α : Path a a) {Ω : ℂ} (h : ∀ t, α t ≠ Ω) :
-    logInc α Ω = (ind α Ω : ℂ) * (2 * π * Complex.I) := by
+theorem loopIndex_spec {a : ℂ} (α : Path a a) {Ω : ℂ} (h : ∀ t, α t ≠ Ω) :
+    logInc α Ω = (loopIndex α Ω : ℂ) * (2 * π * Complex.I) := by
   classical
-  unfold ind
+  unfold loopIndex
   split_ifs
   exact Classical.choose_spec (exists_int_logInc α h)
 
 /-- **The Theta Lemma of the notes** (chapter 9, the lemma named for the shape of the letter θ): for a curve parametrized
 in two parts `α` from `a` to `b` and `γ` from `b` to `a`, and an arc `β` from `b` to `a`, the loops `ω₀ = α * γ`,
-`ω₁ = α * β` and `ω₂ = β⁻¹ * γ` satisfy `ind ω₀ = ind ω₁ + ind ω₂` about every point `Ω` off the three paths.
+`ω₁ = α * β` and `ω₂ = β⁻¹ * γ` satisfy `loopIndex ω₀ = loopIndex ω₁ + loopIndex ω₂` about every point `Ω` off the three paths.
 It is stated for loops of the notes' form and proved through path increments rather than through the homotopy
 `β * β⁻¹ ≃ const`: the increment of `β⁻¹` is minus that of `β` (`logInc_symm`), so the contributions of `β` and
 `β⁻¹` cancel. -/
 theorem theta_lemma {a b : ℂ} (α : Path a b) (β γ : Path b a) {Ω : ℂ}
     (hα : ∀ t, α t ≠ Ω) (hβ : ∀ t, β t ≠ Ω) (hγ : ∀ t, γ t ≠ Ω) :
-    ind (α.trans γ) Ω = ind (α.trans β) Ω + ind (β.symm.trans γ) Ω := by
-  have h0 := ind_spec (α.trans γ) (avoid_trans hα hγ)
-  have h1 := ind_spec (α.trans β) (avoid_trans hα hβ)
-  have h2 := ind_spec (β.symm.trans γ) (avoid_trans (avoid_symm hβ) hγ)
+    loopIndex (α.trans γ) Ω = loopIndex (α.trans β) Ω + loopIndex (β.symm.trans γ) Ω := by
+  have h0 := loopIndex_spec (α.trans γ) (avoid_trans hα hγ)
+  have h1 := loopIndex_spec (α.trans β) (avoid_trans hα hβ)
+  have h2 := loopIndex_spec (β.symm.trans γ) (avoid_trans (avoid_symm hβ) hγ)
   rw [logInc_trans α γ hα hγ] at h0
   rw [logInc_trans α β hα hβ] at h1
   rw [logInc_trans β.symm γ (avoid_symm hβ) hγ, logInc_symm β hβ] at h2
   have hne : (2 * π * Complex.I : ℂ) ≠ 0 := by
     simp [Real.pi_ne_zero, Complex.I_ne_zero]
-  have : ((ind (α.trans γ) Ω : ℤ) : ℂ) =
-      ((ind (α.trans β) Ω + ind (β.symm.trans γ) Ω : ℤ) : ℂ) := by
+  have : ((loopIndex (α.trans γ) Ω : ℤ) : ℂ) =
+      ((loopIndex (α.trans β) Ω + loopIndex (β.symm.trans γ) Ω : ℤ) : ℂ) := by
     apply mul_right_cancel₀ hne
     push_cast
     linear_combination -h0 + h1 + h2
