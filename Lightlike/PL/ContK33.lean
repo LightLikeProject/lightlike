@@ -264,4 +264,23 @@ lemma exists_polys (s t : Fin 3 × Fin 3 → ℝ) (hst : ∀ e, 0 ≤ s e ∧ s 
 
 end ContDrawing
 
+lemma two_le_length {l : List (ℝ × ℝ)} {a b : ℝ × ℝ} (h1 : l.head? = some a)
+    (h2 : l.getLast? = some b) (hab : a ≠ b) : 2 ≤ l.length := by
+  rcases l with _ | ⟨x, _ | ⟨y, t⟩⟩
+  · simp at h1
+  · simp only [List.head?_cons, Option.some.injEq, List.getLast?_singleton] at h1 h2
+    exact absurd (h1.symm.trans h2) hab
+  · simp
+
+/-- **There is no drawing of `K₃,₃` in the plane by continuous arcs** (Klazar, Section 2, Claim 3,
+Klazar's numbering, after Thomassen): the arcs are replaced by polygonal arcs inside thin
+neighbourhoods, and `no_PL_K33` gives the contradiction. -/
+theorem no_K33 (D : ContDrawing) : False := by
+  obtain ⟨r, hr, h2, h3⟩ := D.exists_radius
+  obtain ⟨s, t, hs⟩ := D.exists_trims hr h2 h3
+  obtain ⟨ε, hε, hsep⟩ := D.exists_eps hr s t
+    (fun e => ⟨(hs e).1, (hs e).2.1, (hs e).2.2.1, (hs e).2.2.2.2.2⟩)
+  obtain ⟨h, hh⟩ := D.exists_polys s t (fun e => ⟨(hs e).1, (hs e).2.1, (hs e).2.2.1⟩) hε
+  sorry
+
 end Lightlike.PL
