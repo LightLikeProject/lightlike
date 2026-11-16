@@ -8,7 +8,7 @@ For a 4-simplex with triangle areas `A_t` and dihedral angles `θ_t`, **Schläfl
 `Σ_t A_t dθ_t = 0` for every variation of the ten edge lengths. It is the lemma behind Regge's
 equations in 4D (`Lightlike/Regge/D4/ReggeEquations.lean`).
 
-## Method
+## Implementation notes
 
 As in 3D (`Lightlike/Regge/Schlaefli.lean`) everything reduces to polynomials in the squared
 lengths. At the triangle `pqr` with opposite vertices `s, u`, write `M = mixed`,

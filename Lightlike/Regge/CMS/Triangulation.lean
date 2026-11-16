@@ -17,7 +17,7 @@ of the triangles around `v`, its area is `½ ∑ⱼ det2` (`volume_tri`), the co
 (`star_cover`) holds outside the triangles with a corner outside `V`, and the area of that layer
 is bounded through the number of such triangles.
 
-## Main result
+## Main results
 
 `cms_convergence_triangulation`.
 -/
