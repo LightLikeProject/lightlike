@@ -141,6 +141,11 @@ of a periodic smooth symmetric field have the same integral over the unit cube [
 periodic field, and the identity of the densities is pointwise and polynomial. This is the integration by parts on the torus only;
 that the Fierz–Pauli density is the second variation of the Einstein–Hilbert action is not proved, only checked numerically.
 
+The scalar curvature of a coordinate metric at a point is an explicit function of the inverse metric and its first and second
+derivatives [79]. For the metric `1 + η h` of a smooth symmetric field `h` this function, times `√det / 2`, is a smooth function
+`Feta` of the jet `(η, h, ∂h, ∂∂h)` where the determinant is positive [79]; it vanishes at `η = 0` [79]. Dimension 3, smooth `h`;
+no expansion in `η` and no integral yet.
+
 A 2-complex with boundary is a disc in the combinatorial sense exactly when it is an intrinsic
 triangulated disc [16].
 
@@ -289,6 +294,9 @@ triangulated disc [16].
 77. Lightlike/Regge/Conv3/DivergencePeriodic.lean - `Regge.Conv3.integral_div_periodic`
 78. Lightlike/Regge/Linear3/FierzPauli.lean - `Regge.Linear3.fpDens`, `Regge.Linear3.fp_identity`,
     `Regge.Linear3.div_Tfield`, `Regge.Linear3.saintVenant_eq_fierzPauli`
+
+79. Lightlike/Regge/Conv3/CurvatureEta.lean - `Regge.Conv3.curvJ`, `Regge.Conv3.scalar_curvJ`,
+    `Regge.Conv3.scalar_gEta`, `Regge.Conv3.Feta_eq`, `Regge.Conv3.contDiffOn_Feta`, `Regge.Conv3.Feta_flat`
 
 ## References
 
