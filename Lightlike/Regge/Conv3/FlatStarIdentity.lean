@@ -448,6 +448,7 @@ theorem lenR_5_5 (dd : Fin 3 → Fin 3 → Fin 3 → Fin 3 → ℝ) : lenR dd 5 
     fin_cases j <;> simp <;> norm_num
 
 
+-- needs about 3.9M heartbeats (measured with `#count_heartbeats`); the cap is about twice that
 set_option maxHeartbeats 8000000 in
 set_option maxRecDepth 100000 in
 /-- **The star identity at a point with vanishing metric gradient.** For a positive definite `G`
