@@ -545,6 +545,7 @@ import Lightlike.SpinFoam.ForcingMoves
 import Lightlike.SpinFoam.ForcingMove33
 import Lightlike.SpinFoam.ForcingMove24
 import Lightlike.SpinFoam.ForcingRobust
+import Lightlike.SpinFoam.ForcingRobustCounterexample
 import Lightlike.SpinFoam.GaugeChain
 import Lightlike.SpinFoam.TwistedCohomology
 import Lightlike.SpinFoam.TwistedCohomologySU2
