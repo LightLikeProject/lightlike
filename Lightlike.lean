@@ -38,6 +38,7 @@ import Lightlike.Asymptotics.EPRL.HaarNode
 import Lightlike.Asymptotics.Lorentzian.Action
 import Lightlike.Asymptotics.Lorentzian.ActionTests
 import Lightlike.Asymptotics.Lorentzian.Amplitude
+import Lightlike.Asymptotics.Lorentzian.Bridge
 import Lightlike.Asymptotics.Lorentzian.Stationary
 import Lightlike.Asymptotics.Lorentzian.Critical
 import Lightlike.Asymptotics.Lorentzian.Classification
@@ -469,6 +470,7 @@ import Lightlike.Tests.CutoffDivergence
 import Lightlike.Tests.Forcing
 import Lightlike.Tests.GaugeChange
 import Lightlike.Tests.InverseMoves
+import Lightlike.Tests.Jackson
 import Lightlike.Tests.Manifold
 import Lightlike.Tests.PonzanoRegge
 import Lightlike.Tests.QDougall
@@ -517,6 +519,7 @@ import Lightlike.TuraevViro.Reflect.SixJDual
 import Lightlike.TuraevViro.Reflect.SixJEnd
 import Lightlike.TuraevViro.Reflect.GramConst
 import Lightlike.TuraevViro.Reflect.SixJNorm
+import Lightlike.TuraevViro.Reflect.JacksonWZ
 import Lightlike.TuraevViro.Reflect.SixJNormOne
 import Lightlike.TuraevViro.Reflect.SixJSingle
 import Lightlike.TuraevViro.Reflect.AdmRange
@@ -547,6 +550,7 @@ import Lightlike.SpinFoam.BarrettCraneTests
 import Lightlike.SpinFoam.GaugeIndependence
 import Lightlike.SpinFoam.ForcingMoves
 import Lightlike.SpinFoam.ForcingMove33
+import Lightlike.SpinFoam.ForcingMove24
 import Lightlike.SpinFoam.GaugeChain
 import Lightlike.SpinFoam.TwistedCohomology
 import Lightlike.SpinFoam.TwistedCohomologySU2
