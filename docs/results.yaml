@@ -1330,3 +1330,16 @@
   review: kernel-checked
   note: "For a continuous injective map f of the circle into the plane, every connected component of the complement of the image has the image as its frontier. This is the clause 'each sharing C as boundary' of the statement of the Jordan Curve Theorem in the introduction of chapter 9 of McCleary's book; the statement carries no number in the lecture-notes version of the chapter. The proof is Lean's own, not the notes': if a point x of the curve were not in the frontier of a component U, the compact frontier of U would lie in an arc B of the curve missing x; the complement of B is connected (the arc theorem, LL-XXXX-i) and U is clopen in it, so U is the whole complement of B and contains x, a contradiction. Limits: continuous injective images of the circle in the plane. Check: TestsJordanFrontier.lean (the unit circle satisfies the hypotheses; a constant map does not)."
   since: unreleased
+- id: LL-XXXX-k
+  title: The index of a loop about a point, and the Theta Lemma
+  area: PL
+  file: Lightlike/PL/Index.lean
+  decls: [Lightlike.PL.exists_isLog, Lightlike.PL.logInc, Lightlike.PL.logInc_trans, Lightlike.PL.ind, Lightlike.PL.theta_lemma]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
+  review: kernel-checked
+  note: "A path in the plane that avoids a point has a continuous logarithm about it (path lifting through the covering map exp from the complex numbers to the nonzero complex numbers), unique up to an integer multiple of 2 pi i. The increment of the logarithm along the path does not depend on the choice, is additive under concatenation of paths and changes sign under reversal, and along a loop it is 2 pi i times an integer, the index of the loop about the point. The Theta Lemma follows: for a curve in two parts alpha, gamma and an arc beta joining their ends, the index of alpha * gamma is the sum of those of alpha * beta and beta^-1 * gamma. This is the index of a point not on a Jordan curve and the Theta Lemma of the lecture-notes version of chapter 9 of McCleary's book (numbering not checked against the printed book); the notes read the index off the fundamental group of the punctured plane, here it is read off a lift, and the Theta Lemma is proved through path increments instead of the homotopy of beta * beta^-1 with a constant. The statements and proofs are Lean's own. Proves: the index and the Theta Lemma. Does not prove: Lemmas 9.12 to 9.14 of the notes, that the index is constant on components of the complement of a curve, or the Jordan curve theorem. Limits: loops in the plane identified with the complex numbers. Check: TestsIndex.lean (the unit circle has index 1 about the origin and 0 about the point -3)."
+  since: unreleased
