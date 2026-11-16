@@ -1,6 +1,7 @@
 import Lightlike.TuraevViro.Reflect.OrthConditional
 import Lightlike.TuraevViro.Reflect.SixJSingle
 import Lightlike.TuraevViro.Reflect.QDougallMap
+import Lightlike.TuraevViro.Reflect.SixJNormOneAll
 
 /-!
 # Non-vacuity of the boundary evaluation `QDougall`
@@ -125,5 +126,17 @@ theorem qDougall_seven_degenerate : QDougall 7 2 2 2 2 0 2 0 := by
     (by norm_num) (by norm_num) (by norm_num)
     (by intro k hk; interval_cases k <;> decide) (by decide)
   simpa using this
+
+/-- Non-vacuity of `sixj_norm_one_proved`: at level `2`, all spins `0`, the only colour `0`. -/
+theorem sixj_norm_one_proved_two : (∀ l ≤ 0, jOmega 2 0 0 0 0 (0 + 2 * l) *
+        (∑ k ∈ range (0 + 1), jOmega 2 0 0 0 0 (0 + 2 * k) *
+          Sj 2 0 0 0 0 (0 + 2 * l) ((0 + 2 * k : ℕ) : ℤ) ^ 2) = 1) ∧
+      (∀ k ≤ 0, jOmega 2 0 0 0 0 (0 + 2 * k) *
+        (∑ l ∈ range (0 + 1), jOmega 2 0 0 0 0 (0 + 2 * l) *
+          Sj 2 0 0 0 0 (0 + 2 * l) ((0 + 2 * k : ℕ) : ℤ) ^ 2) = 1) :=
+  sixj_norm_one_proved (by norm_num) 0 0 0 0 0 0 0 0
+    (by intro k hk; interval_cases k; decide) (by norm_num) (by norm_num)
+    (by intro k hk; interval_cases k; decide) (by norm_num) (by norm_num)
+    (Or.inl (by norm_num)) (Or.inl (by norm_num))
 
 end Lightlike.TV.Refl

@@ -965,19 +965,18 @@
   note: "The weighted norms of all rows and all columns of the matrix of q-6j sums are one common constant (Gram-matrix argument, gram_const for the columns and sixj_norm_const for the rows). Its value is not proved by these results; see the two conditional results that follow."
   since: 0.3.0
 - id: LL-0074
-  title: Norm one of the q-6j matrix, under the q-Dougall summation
+  title: Norm one of the q-6j matrix at every level r ≥ 2
   area: TuraevViro
-  file: Lightlike/TuraevViro/Reflect/SixJNormOne.lean
-  decls: [Lightlike.TV.Refl.sixj_norm_one]
-  status: conditional
-  hypotheses: [Lightlike.TV.Refl.QDougall]
+  file: Lightlike/TuraevViro/Reflect/SixJNormOneAll.lean
+  decls: [Lightlike.TV.Refl.sixj_norm_one_proved]
+  status: proven
   tier: established
   source:
     refs:
       - {ref: koekoek-swarttouw-1996, location: "eq. (3.2.1)", check: "q-Racah"}
       - {ref: koekoek-swarttouw-1996, location: "eq. (3.2.2)", check: "orthogonality"}
   review: kernel-checked
-  note: "Under the boundary evaluation QDougall (the terminating very-well-poised 6φ5 summation at the lowest sixth colour, the q-Dougall summation), every weighted norm equals 1. QDougall is an explicit hypothesis of this theorem. It is proved for every boundary datum at every level r ≥ 2 as QDougallAt (qDougallAll_proved, LL-XXXX-b), so each instance of this theorem is discharged; it is also checked directly at level r = 2 (qDougall_two) and r = 3 (qDougall_three)."
+  note: "Every weighted norm of the q-6j matrix, of each row and of each column, equals 1 at every level r ≥ 2, without hypothesis: sixj_norm_one with its hypothesis QDougall discharged. The range hypotheses of sixj_norm_one force the lowest third colour, the highest third colour and the lowest sixth colour to be the extremes of the admissible ranges (range_eq), so the boundary evaluation is QDougallAt, which qDougallAll_proved proves at every level (LL-XXXX-b). The earlier conditional form sixj_norm_one remains in Lightlike/TuraevViro/Reflect/SixJNormOne.lean."
   since: 0.3.0
 - id: LL-0075
   title: q-orthogonality of the 6j symbol at every level r ≥ 2
@@ -1223,5 +1222,5 @@
   tier: established
   source: structural
   review: kernel-checked
-  note: "For every level r ≥ 2 and all spins B, A, E, F with an admissible colour q on both sides, the norm of the lowest column of the q-6j matrix is 1 (QDougallAll r, the hypothesis of LL-0075 and, in each instance, of LL-0074). The lowest third colour and the lowest sixth colour are each one of four differences; the 16 pairs lie in the first or the third orbit of the permutations of the four spins (a case in the second or fourth orbit matches one of them as well); within an orbit the third colours run up to the triangle top or stop at the level cut-off 2(r-2), and each of those forms is one of the summation theorems of LL-XXXX-a (Jackson's sum, or the partial sums of the series with fewer parameters when two factors vanish together). The case split is a finite one, by linear arithmetic (qDougallAll_proved, coverPair00 to coverPair33), without induction on the level; scripts/qracah/qd_coverage_check.py counts all 13662 cases at levels 2 to 12 as covered, as an independent check. Consequence: qOrthogonality_proved, the diagonal orthogonality of the model at every level r ≥ 2, without hypothesis. Not shown: the quantum Biedenharn–Elliott identity for r ≥ 4 (LL-0075), so the Turaev–Viro invariance of LL-0031 at level r is still conditional on it."
+  note: "For every level r ≥ 2 and all spins B, A, E, F with an admissible colour q on both sides, the norm of the lowest column of the q-6j matrix is 1 (QDougallAll r, the hypothesis of LL-0075 and, in each instance, the one that LL-0074 discharges). The lowest third colour and the lowest sixth colour are each one of four differences; the 16 pairs lie in the first or the third orbit of the permutations of the four spins (a case in the second or fourth orbit matches one of them as well); within an orbit the third colours run up to the triangle top or stop at the level cut-off 2(r-2), and each of those forms is one of the summation theorems of LL-XXXX-a (Jackson's sum, or the partial sums of the series with fewer parameters when two factors vanish together). The case split is a finite one, by linear arithmetic (qDougallAll_proved, coverPair00 to coverPair33), without induction on the level; scripts/qracah/qd_coverage_check.py counts all 13662 cases at levels 2 to 12 as covered, as an independent check. Consequence: qOrthogonality_proved, the diagonal orthogonality of the model at every level r ≥ 2, without hypothesis. Not shown: the quantum Biedenharn–Elliott identity for r ≥ 4 (LL-0075), so the Turaev–Viro invariance of LL-0031 at level r is still conditional on it."
   since: unreleased
