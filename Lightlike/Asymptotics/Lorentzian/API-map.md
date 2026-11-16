@@ -105,7 +105,7 @@ remainder bound holds for every order, and it excludes the single vector geometr
 where the normals close. Two opposite triangles close, and one triangle does not [13].
 
 The vertex amplitude itself is written with the fifth `SL(2, ℂ)` element fixed to `1` and the chart
-`z = (1, w)` of each `ℂP¹`; its integrand is measurable, bounded by the product of the densities of
+`z = (w, 1)` of each `ℂP¹`; its integrand is measurable, bounded by the product of the densities of
 `Ω` wherever no overlap vanishes, and each density is integrable on `ℂ` [14]. The finiteness of the
 whole integral is not proved here; the action is in the power form, so its exponential is the
 EPRL integrand for every doubled spin; at an odd doubled spin and a point where the logarithm of
