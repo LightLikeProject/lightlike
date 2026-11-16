@@ -40,6 +40,7 @@ import Lightlike.Asymptotics.EPRL.EprlCoherentNodeIdentity
 import Lightlike.Asymptotics.EPRL.EprlCoherentPullback
 import Lightlike.Asymptotics.EPRL.EprlCoherentVertex
 import Lightlike.Asymptotics.EPRL.EprlHighMap
+import Lightlike.Asymptotics.EPRL.EprlHighProj
 import Lightlike.Asymptotics.EPRL.HaarNode
 import Lightlike.Asymptotics.EPRL.HomForm
 import Lightlike.Asymptotics.EPRL.HomFormExpansion
