@@ -50,6 +50,9 @@ ingredients of that matching.
 * `qDougall_k1`, `qDougall_k2`, `qDougall_k3`, `qDougallAt_k1`, `qDougallAt_k2`, `qDougallAt_k3`: the
   boundary evaluation is invariant under the permutations `(j1 j4)(j2 j5)`, `(j1 j2)(j4 j5)` and
   `(j1 j5)(j2 j4)` of the four spins.
+* `qDougallAt_O1`, `qDougallAt_O1_k1`, `qDougallAt_O1_k2`, `qDougallAt_O1_k3`: `QDougallAt` for the
+  first orbit of the forms of the lowest colours, when the range of third colours runs up to the
+  triangle top (no level cut-off), in the four forms the permutations give.
 * `qd_jhyp`: they hold at the parameters of the boundary evaluation in the case `x0 = j1 - j2`,
   `q0 = j1 - j5`, `j4 + j5 < j1 + j2`, for admissible spins.
 
@@ -1298,5 +1301,58 @@ theorem qDougallAt_k3 (r B A E F : ℕ) : QDougallAt r F E A B ↔ QDougallAt r 
   have h2 : aHi r F E A B = aHi r B A E F := by unfold aHi; omega
   have h3 : aLo F B A E = aLo B F E A := by unfold aLo; omega
   rw [h1, h2, h3]; exact qDougall_k3 r B A E F _ _ _
+
+
+/-- **`QDougallAt` for the first orbit, untruncated range**: the lowest third colour is `B - A`, the
+lowest sixth colour is `B - F`, and the third colours run up to `E + F` (no level cut-off before
+it). -/
+theorem qDougallAt_O1 {r : ℕ} (hr : 2 ≤ r) (B A E F q : ℕ) (hq1 : qAdm r B F q)
+    (hq2 : qAdm r E A q) (hA : A ≤ B) (hF : F ≤ B) (hx : aLo B A E F = B - A)
+    (hq : aLo B F E A = B - F) (htop : aHi r B A E F = E + F) : QDougallAt r B A E F := by
+  have hqf := hq1; have hqe := hq2
+  unfold qAdm Lightlike.Pentagon.Tri at hq1 hq2
+  have hparX : (B + A + E + F) % 2 = 0 := by omega
+  have hparQ : (B + F + E + A) % 2 = 0 := by omega
+  have iffX := adm_pair_iff hr hparX
+  have iffQ := adm_pair_iff hr hparQ
+  obtain ⟨xLpar, xHpar, -, -, -⟩ :=
+    pair_facts (r := r) (a := B) (b := A) (c := E) (d := F) hparX (by omega) (by omega)
+  obtain ⟨qLpar, qHpar, -, -, -⟩ :=
+    pair_facts (r := r) (a := B) (b := F) (c := E) (d := A) hparQ (by omega) (by omega)
+  have hqmem := (iffQ q).1 ⟨hqf, hqe⟩
+  have hqL := (iffQ (aLo B F E A)).2 ⟨le_rfl, by omega, qLpar, hqmem.2.2.2⟩
+  unfold QDougallAt
+  rw [hx, htop, hq]
+  have hxle : B - A ≤ E + F := by
+    have := (aLo_spec B A E F).2.2.2.2
+    have h2 := (aHi_spec r B A E F).2.2.2.2
+    omega
+  have hadmX : ∀ k ≤ (E + F - (B - A)) / 2, qAdm r B A (B - A + 2 * k) ∧ qAdm r E F (B - A + 2 * k) := by
+    intro k hk
+    rw [iffX]
+    rw [hx, htop]
+    refine ⟨by omega, by omega, by omega, by omega, by omega⟩
+  rw [hq] at hqL
+  exact qDougall_orbit hr hA hF (by omega) hadmX hqL
+
+/-- The first orbit, untruncated, for the image under `(B E)(A F)`. -/
+theorem qDougallAt_O1_k1 {r : ℕ} (hr : 2 ≤ r) (B A E F q : ℕ) (hq1 : qAdm r B F q)
+    (hq2 : qAdm r E A q) (hA : F ≤ E) (hF : A ≤ E) (hx : aLo E F B A = E - F)
+    (hq : aLo E A B F = E - A) (htop : aHi r E F B A = B + A) : QDougallAt r B A E F :=
+  (qDougallAt_k1 r B A E F).1 (qDougallAt_O1 hr E F B A q hq2 hq1 hA hF hx hq htop)
+
+/-- The first orbit, untruncated, for the image under `(B A)(E F)`. -/
+theorem qDougallAt_O1_k2 {r : ℕ} (hr : 2 ≤ r) (B A E F q : ℕ) (hq1 : qAdm r B F q)
+    (hq2 : qAdm r E A q) (hA : B ≤ A) (hF : E ≤ A) (hx : aLo A B F E = A - B)
+    (hq : aLo A E F B = A - E) (htop : aHi r A B F E = F + E) : QDougallAt r B A E F :=
+  (qDougallAt_k2 r B A E F).1 (qDougallAt_O1 hr A B F E q (qAdm_swap12 hq2) (qAdm_swap12 hq1)
+    hA hF hx hq htop)
+
+/-- The first orbit, untruncated, for the image under `(B F)(A E)`. -/
+theorem qDougallAt_O1_k3 {r : ℕ} (hr : 2 ≤ r) (B A E F q : ℕ) (hq1 : qAdm r B F q)
+    (hq2 : qAdm r E A q) (hA : E ≤ F) (hF : B ≤ F) (hx : aLo F E A B = F - E)
+    (hq : aLo F B A E = F - B) (htop : aHi r F E A B = A + B) : QDougallAt r B A E F :=
+  (qDougallAt_k3 r B A E F).1 (qDougallAt_O1 hr F E A B q (qAdm_swap12 hq1) (qAdm_swap12 hq2)
+    hA hF hx hq htop)
 
 end Lightlike.TV.Refl
