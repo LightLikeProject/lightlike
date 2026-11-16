@@ -34,6 +34,8 @@ ingredients of that matching.
   the boundary evaluation is a ratio of quantum factorials.
 * `prod_identity`: the weight of the lowest column, the first weighted term and Jackson's right side
   multiply to `1`; every quantum factorial cancels.
+* `qDougall_nondeg`: **`QDougall` holds** in the case `x0 = j1 - j2`, `q0 = j1 - j5`,
+  `j4 + j5 < j1 + j2`, for admissible spins, from Jackson's sum (`jackson_sumT`).
 * `qd_jhyp`: they hold at the parameters of the boundary evaluation in the case `x0 = j1 - j2`,
   `q0 = j1 - j5`, `j4 + j5 < j1 + j2`, for admissible spins.
 
@@ -749,5 +751,109 @@ theorem prod_identity {r : ℕ} (hr : 2 ≤ r) {d j2 n j5 : ℕ} (hnj : n ≤ j5
   have q1 : 0 < qnum r (j2 + d - j5 + 1) := qnum_pos hr (by omega) (by omega)
   have q2 : 0 < qnum r (d + 1) := qnum_pos hr (by omega) (by omega)
   field_simp
+
+
+/-- `qDelta²` with the arguments of the quantum factorials given as explicit numbers. -/
+lemma qDelta_sq_of {r : ℕ} (hr : 2 ≤ r) {a b c : ℕ} (h : qAdm r a b c) {s x y z w : ℕ}
+    (hs : 2 * s = a + b + c) (hx : x = s - a) (hy : y = s - b) (hz : z = s - c) (hw : w = s + 1) :
+    qDelta r a b c ^ 2 = qfact r x * qfact r y * qfact r z / qfact r w := by
+  rw [qDelta_sq hr h, show (a + b + c) / 2 = s by omega, hx, hy, hz, hw]
+
+/-- **The boundary evaluation `QDougall`, non-degenerate case**, in the parameters
+`j1 = j2 + d`, `j4 = d + 2n - j5`, third colour from `d`, lowest sixth colour `j2 + d - j5`. -/
+theorem qDougall_nondeg_param {r d j2 n j5 : ℕ} (hr : 2 ≤ r) (hnj : n ≤ j5) (hj5 : j5 ≤ d + n)
+    (hj2 : n < j2)
+    (hadmX : ∀ k ≤ n, qAdm r (j2 + d) j2 (d + 2 * k) ∧ qAdm r (d + 2 * n - j5) j5 (d + 2 * k))
+    (hadmQ : qAdm r (j2 + d) j5 (j2 + d - j5) ∧ qAdm r (d + 2 * n - j5) j2 (j2 + d - j5)) :
+    QDougall r (j2 + d) j2 (d + 2 * n - j5) j5 d n (j2 + d - j5) := by
+  have hX' : ∀ k ≤ n, qAdm r (j2 + d) j2 (j2 + d - j2 + 2 * k) ∧
+      qAdm r (d + 2 * n - j5) j5 (j2 + d - j2 + 2 * k) := by
+    simpa only [Nat.add_sub_cancel_left] using hadmX
+  have hmap := wTerm_eq_Tj hr (j1 := j2 + d) (j2 := j2) (j4 := d + 2 * n - j5) (j5 := j5) (n := n)
+    (by omega) (by omega) (by omega) (by omega) hX' hadmQ
+  have jh := qd_jhyp hr (j1 := j2 + d) (j2 := j2) (j4 := d + 2 * n - j5) (j5 := j5) (n := n)
+    (by omega) (by omega) (by omega) (by omega) hX' hadmQ
+  have e1 : j2 + d - j2 + 1 = d + 1 := by omega
+  have e2 : (j2 + d - j2 + (d + 2 * n - j5) - j5) / 2 + 1 = d + n + 1 - j5 := by omega
+  have e3 : (j2 + d + j2 + (j2 + d - j2)) / 2 + 2 = j2 + d + 2 := by omega
+  rw [e1, e2, e3] at jh
+  have e2' : (d + (d + 2 * n - j5) - j5) / 2 + 1 = d + n + 1 - j5 := by omega
+  simp only [Nat.add_sub_cancel_left, e1, e2, e2'] at hmap
+  have jsum := jackson_sumT jh n le_rfl
+  obtain ⟨_, bQ1⟩ := hadmQ.1
+  obtain ⟨_, bQ2⟩ := hadmQ.2
+  obtain ⟨_, bX⟩ := (hadmX n le_rfl).2
+  have hb1 : d + n + 1 < r := by omega
+  have hb2 : j2 + (d + n + 1 - j5) < r := by omega
+  have hRhs := jacksonRhs_val hr (d := d) (j2 := j2) (n := n) (j5 := j5) (ec := d + n + 1 - j5)
+    (by omega) hnj hj5 hj2 hb1 hb2
+  have sumC : (∑ k ∈ range (n + 1), (wTerm r (j2 + d) j2 (d + 2 * n - j5) j5 k : ℂ)) =
+      (wTerm r (j2 + d) j2 (d + 2 * n - j5) j5 0 : ℂ) *
+        ((((qfact r (d + n + 1) / qfact r (d + 1)) *
+          (qfact r (j2 + (d + n + 1 - j5)) / qfact r (j2 + (d + n + 1 - j5) - n)) /
+          ((qfact r j2 / qfact r (j2 - n)) * (qfact r j5 / qfact r (j5 - n))) : ℝ)) : ℂ) := by
+    rw [sum_congr rfl (fun k hk => hmap k (by simp only [mem_range] at hk; omega)), ← mul_sum,
+      jsum, hRhs]
+  have sumR : ∑ k ∈ range (n + 1), wTerm r (j2 + d) j2 (d + 2 * n - j5) j5 k =
+      wTerm r (j2 + d) j2 (d + 2 * n - j5) j5 0 *
+        ((qfact r (d + n + 1) / qfact r (d + 1)) *
+          (qfact r (j2 + (d + n + 1 - j5)) / qfact r (j2 + (d + n + 1 - j5) - n)) /
+          ((qfact r j2 / qfact r (j2 - n)) * (qfact r j5 / qfact r (j5 - n)))) := by
+    exact_mod_cast sumC
+  have hS : (∑ k ∈ range (n + 1), (jOmega r (j2 + d) j2 (d + 2 * n - j5) j5 (d + 2 * k) *
+      Sj r (j2 + d) j2 (d + 2 * n - j5) j5 (j2 + d - j5) ((d + 2 * k : ℕ) : ℤ) ^ 2)) =
+      ∑ k ∈ range (n + 1), wTerm r (j2 + d) j2 (d + 2 * n - j5) j5 k := by
+    simp only [wTerm, Nat.add_sub_cancel_left]
+  unfold QDougall
+  rw [hS, sumR]
+  unfold wTerm jOmega
+  simp only [Nat.add_sub_cancel_left, mul_zero, add_zero]
+  have hA : (d + 2 * n - j5) + j2 ≤ j5 + (j2 + d) := by omega
+  have hSj := Sj_val r (j1 := j2 + d) (j2 := j2) (j4 := d + 2 * n - j5) (j5 := j5) (k := 0)
+    (A3 := d + n + j2 - j5) (S := d + n) (B := j2 + d + n) (δ := j2 - n) (γ := d + n - j5) (n := n)
+    (by omega) (by omega) (by omega) (by omega) (by omega) (by omega) (by omega) (by omega)
+    (by omega) hA
+  rw [show ((j2 + d - j2 + 2 * 0 : ℕ) : ℤ) = (d : ℤ) by omega] at hSj
+  rw [show j2 + d + 0 - (d + n + j2 - j5) = j5 - n by omega, show n - 0 = n by omega,
+    show j2 + d + 0 + 1 = j2 + d + 1 by omega] at hSj
+  have sq1 : ∀ m : ℕ, ((-1 : ℝ) ^ m) ^ 2 = 1 := fun m => by
+    rw [← pow_mul, mul_comm, pow_mul]; simp
+  have T1 := qDelta_sq_of hr hadmQ.1 (s := j2 + d) (x := 0) (y := j2 + d - j5) (z := j5)
+    (w := j2 + d + 1) (by omega) (by omega) (by omega) (by omega) (by omega)
+  have T2 := qDelta_sq_of hr hadmQ.2 (s := d + n + j2 - j5) (x := j2 - n) (y := d + n - j5)
+    (z := n) (w := j2 + d + n + 1 - j5) (by omega) (by omega) (by omega) (by omega) (by omega)
+  have X0 := hadmX 0 (by omega)
+  simp only [mul_zero, add_zero] at X0
+  have T3 := qDelta_sq_of hr X0.1 (s := j2 + d) (x := 0) (y := d) (z := j2)
+    (w := j2 + d + 1) (by omega) (by omega) (by omega) (by omega) (by omega)
+  have T4 := qDelta_sq_of hr X0.2 (s := d + n) (x := j5 - n) (y := d + n - j5)
+    (z := n) (w := d + n + 1) (by omega) (by omega) (by omega) (by omega) (by omega)
+  rw [T1, T2, T3, T4]
+  have hsqSj : Sj r (j2 + d) j2 (d + 2 * n - j5) j5 (j2 + d - j5) (d : ℤ) ^ 2 =
+      (qfact r (j2 + d + 1) / (qfact r (j5 - n) * qfact r (j2 - n) * qfact r n *
+        qfact r (d + n - j5))) ^ 2 := by
+    rw [hSj, mul_pow, mul_pow, mul_pow, mul_pow, mul_pow, mul_pow, sq1]
+    have q0 : qfact r 0 = 1 := by simp [qfact]
+    rw [q0]; field_simp
+  rw [hsqSj]
+  have q0 : qfact r 0 = 1 := by simp [qfact]
+  rw [q0]
+  have key := prod_identity hr hnj hj5 hj2 hb1 (by omega) (by omega)
+  linear_combination key
+
+/-- **The boundary evaluation `QDougall`, non-degenerate case, for admissible spins.** In the case
+`x0 = j1 - j2`, `q0 = j1 - j5` and `j4 + j5 < j1 + j2`. -/
+theorem qDougall_nondeg {r j1 j2 j4 j5 n : ℕ} (hr : 2 ≤ r) (h21 : j2 ≤ j1) (h51 : j5 ≤ j1)
+    (hnd : j4 + j5 < j1 + j2) (hn : 2 * n = j4 + j5 - (j1 - j2))
+    (hadmX : ∀ k ≤ n, qAdm r j1 j2 (j1 - j2 + 2 * k) ∧ qAdm r j4 j5 (j1 - j2 + 2 * k))
+    (hadmQ : qAdm r j1 j5 (j1 - j5) ∧ qAdm r j4 j2 (j1 - j5)) :
+    QDougall r j1 j2 j4 j5 (j1 - j2) n (j1 - j5) := by
+  have A0 := hadmX 0 (by omega)
+  obtain ⟨⟨hp0, h01, h02, h03⟩, hr0⟩ := A0.1
+  obtain ⟨⟨hq0, h11, h12, h13⟩, hs0⟩ := A0.2
+  obtain ⟨d, rfl⟩ : ∃ d, j1 = j2 + d := ⟨j1 - j2, by omega⟩
+  obtain rfl : j4 = d + 2 * n - j5 := by omega
+  simp only [Nat.add_sub_cancel_left] at hadmX ⊢
+  exact qDougall_nondeg_param hr (by omega) (by omega) (by omega) hadmX hadmQ
 
 end Lightlike.TV.Refl

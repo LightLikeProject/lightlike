@@ -1187,3 +1187,14 @@
   review: kernel-checked
   note: "Over the complex numbers, for q, a, b, c with the nonvanishing conditions JHypT q a b c N (the factors 1 - q·q^i, 1 - aq/b·q^i and 1 - aq/c·q^i for i ≤ N, 1 - aq·q^n·q^i and 1 - aq·q^n/b, 1 - aq·q^n/c for n < N, and b, c, 1 - a ≠ 0), the terminating very-well-poised 6φ5 sum holds for every n ≤ N: Σ_{k ≤ n} (1 - a q^{2k})/(1 - a) · (a, b, c, q^{-n}; q)_k / (q, aq/b, aq/c, aq^{n+1}; q)_k · (aq^{n+1}/(bc))^k = (aq, aq/(bc); q)_n / (aq/b, aq/c; q)_n (jackson_sumT; jackson_sum is the same under the stronger JHyp, which asks for nonvanishing up to index N + 2). This is DLMF §17.7(iii), equation (17.7.16), with d = q^{-n}; the location was read in the DLMF page, and no sources.yaml key is used. The proof is a telescoping certificate found by computer algebra and checked in Lean (wz_zero, wz_succ, wz_sum), then induction on n; it does not follow a published derivation. Not shown: the case where a numerator and a denominator of a term vanish together at index N (a removable singularity, for instance aq/b = q^{-N}); and this sum is not yet connected to the q-6j symbol (the boundary evaluation QDougall of LL-0074 and LL-0075 remains a hypothesis)."
   since: unreleased
+- id: LL-XXXX-a
+  title: The boundary evaluation QDougall holds for the non-degenerate lowest colour j1 - j5 with third colours from j1 - j2, by Jackson's sum
+  area: TuraevViro
+  file: Lightlike/TuraevViro/Reflect/QDougallMap.lean
+  decls: [Lightlike.TV.Refl.qDougall_nondeg]
+  status: proven
+  tier: established
+  source: structural
+  review: kernel-checked
+  note: "In the case x0 = j1 - j2, q0 = j1 - j5 and j4 + j5 < j1 + j2, for spins admissible at level r (hypotheses hadmX at every third colour j1 - j2 + 2k, k ≤ n, with 2n = j4 + j5 - (j1 - j2), and hadmQ at q0), the boundary evaluation QDougall of LL-0074 holds: jOmega(q0) · Σ_k jOmega(x0+2k) · Sj(q0, x0+2k)² = 1 (qDougall_nondeg). The proof matches the weighted terms with the summand of Jackson's terminating very-well-poised 6φ5 sum at Q = u², u = e^{iπ/r}, with a = Q^(x0+1), b = Q^(j1+2), c = Q^((x0+j4-j5)/2+1), x = Q^n (wTerm_eq_Tj, from the one-term form of Sj at the lowest sixth colour and the one-step ratio of the Δ² factors), applies jackson_sumT with its nonvanishing hypotheses checked from the admissibility (qd_jhyp), writes Jackson's right side as a ratio of quantum factorials (jacksonRhs_val), and finishes with an exact cancellation of the quantum factorials (prod_identity). The sum is DLMF §17.7(iii), equation (17.7.16); the location was read in the DLMF page, and no sources.yaml key is used. Instances: QDougall at level r = 5, spins (2, 2, 1, 1) (qDougall_five). Not shown: the other sub-cases of QDougall (the degenerate case j1 + j2 = j4 + j5, where the hypotheses of Jackson's sum fail, and the other orbits of the spin symmetries), so LL-0074 and LL-0075 stay conditional on QDougall and QDougallAll."
+  since: unreleased
