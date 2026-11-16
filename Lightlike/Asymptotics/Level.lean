@@ -12,7 +12,9 @@ the saddle level for the steepest-descent proof of `RacahSumAsymptotics`.
 
 **Main theorem (`IsEuclid.pi_faceSum_lt_level`).** `π Aᵢ < κ < π Bₖ` for all `i`, `k`.
 
-## Proof: the η-shift
+## Implementation notes
+
+The proof is the η-shift.
 
 For every `|η| ≤ η₀ = ‖b‖ r²/2`, the valley step (`exists_valley`) gives a valley-ray end point at
 the level `κ + η` in each of the two valleys, and the descent paths from them land at two different

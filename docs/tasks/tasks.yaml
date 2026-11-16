@@ -2770,7 +2770,7 @@ tasks:
     area: "spin-foams"
     tier: "frontier"
     source_class: "sourced"
-    source: "barrett-naish-guzman-2009, §4.4"
+    source: "barrett-naish-guzman-2009, §4.4; barrett-naish-guzman-2009, §2.2; barrett-naish-guzman-2009, §2.4"
     priority: 13
     priority_basis: "other"
     size: "R"

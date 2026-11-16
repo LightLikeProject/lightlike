@@ -9,6 +9,14 @@ For fixed `j₁, j₂, j₄, j₅` the vectors `x ↦ Sj … q x` (the q-Racah s
 eigenvectors of the Jacobi matrix of `SixJRow` with eigenvalue `2 cos((q+1)π/r)`, symmetric for the
 weight `jOmega`. Different `q` therefore give weighted-orthogonal vectors, provided the rows at the
 two ends of the `x`-range are the ones of the recurrence with the outer terms zero.
+
+## Main results
+
+* `sixj_offdiag`: the weighted orthogonality of the q-6j sums for different sixth colours.
+
+## References
+
+* `koekoek-swarttouw-1996`, the q-Racah polynomials; `turaev-1994`, Chapter VI (6j symbols).
 -/
 
 set_option maxRecDepth 100000

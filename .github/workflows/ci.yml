@@ -163,6 +163,20 @@ jobs:
           sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL /usr/local/share/boost
           df -h /
 
+      # Some library files need 10 GB or more each to compile (PL.TestsPachner about 11 GB on a
+      # laptop), and lake compiles them side by side on a 16 GB runner. Builds that had to redo
+      # several of them at once were killed (exit 143). The swap file gives them room, and vmstat
+      # samples memory every 10 s for the memory step at the end of this job.
+      - name: Add swap space [ci-only]
+        run: |
+          free -m
+          sudo fallocate -l 24G /swapfile-build
+          sudo chmod 600 /swapfile-build
+          sudo mkswap /swapfile-build
+          sudo swapon /swapfile-build
+          swapon --show
+          nohup vmstat -n -S M -t 10 > "$RUNNER_TEMP/vmstat.log" 2>&1 &
+
       - uses: actions/checkout@v7
 
       - uses: actions/setup-python@v6
@@ -254,6 +268,16 @@ jobs:
         run: |
           df -h /
           du -sh .lake/packages .lake/build ~/.cache/mathlib || true
+
+      # The peak swap use and the lowest free memory vmstat saw (sampled from the swap step on).
+      - name: Memory use during the build [ci-only]
+        if: always()
+        continue-on-error: true
+        run: |
+          free -m
+          awk '$3 ~ /^[0-9]+$/ { if ($3 > s) s = $3; if (m == "" || $4 < m) m = $4; n++ }
+               END { print "samples:", n, " peak swap used:", s, "MB  lowest free memory:", m, "MB" }' \
+            "$RUNNER_TEMP/vmstat.log" || true
 
   python-checks:
     needs: changes

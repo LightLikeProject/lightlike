@@ -1,4 +1,22 @@
 import Lightlike.Regge.Conv3.KuhnCore
+/-!
+# The diagonal chart: Gram identity, incidence geometry and the closed forms
+
+For a tetrahedron with edge vectors `x, y, z` from one vertex, the product of the two face quantities
+`Pp` minus the square of `Nn`, times the hinge length, is the squared determinant (`gram_identity`,
+`gram_pts`). In the diagonal chart `diag(α, β, γ)` of `ℝ³` the squared lengths of the 36 incidences
+(tetrahedron, hinge) of the Kuhn triangulation are `dsq`, the first-order variations
+`-(1/3) Rm(y, z, y, z)` are `dkds`, and the hinge length times the first variation of the dihedral
+angle is `ldth`. `inc_geom` evaluates the geometry of every incidence, and `cf00, …, cf55` are the
+closed forms proved in `ChartCases0` … `ChartCases5`.
+
+## Main results
+
+* `gram_identity`, `gram_pts`: the Gram identity.
+* `inc_geom`: the squared lengths and the volume of each of the 36 incidences in the diagonal chart.
+* `ldth_eq_of`: `ldth` from the derivative combination of the polynomial quantities.
+-/
+
 open Real
 namespace Lightlike.Regge.Conv3
 

@@ -10,6 +10,7 @@ admissible intertwiners: `1` or `0` by the triangle rule for three spins, and th
 admissible virtual (coupled) spins for four.
 
 ## Main results
+
 * `spinChar_real`: the characters of `SU(2)` are real, `conj χ_n = χ_n`.
 * `spinChar_mul_eq_sum`: `χ_n χ_m = Σ_{z ∈ triSet n m} χ_z` (Clebsch–Gordan series).
 * `integral_spinChar_mul`: `∫ χ_n χ_m = δ_{nm}`.

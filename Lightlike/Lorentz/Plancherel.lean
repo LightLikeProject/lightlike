@@ -70,7 +70,7 @@ sectors `n ≠ 0`, from the definition of the kernel alone.
 - `selfConvExt`, `contDiff_selfConvExt`, `hasCompactSupport_selfConvExt`: `f* ∗ f` extends to a
   smooth compactly supported function on arrays.
 
-## Proof
+## Implementation notes
 
 `integral_psKernel_diag` (`PlancherelTrace.lean`) turns the trace into `π ∫ m_{n,ρ}(λ) Φ(λ⁻¹)`
 with `Φ` the orbital integral of the `SU(2)`-average `F♮`; `hasSum_density_orbInt`

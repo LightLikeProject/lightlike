@@ -16,7 +16,7 @@ links and the exchange `κ(X, Y)` on `M₁` has the shorter chain. If `D ∈ K`,
 so that `D` becomes new (`D` a vertex), or a vertex `u` of `D` is first moved to a new vertex `v`
 by `κ(X ∪ u, v)` (the same identity with `C = {u}`, `D = {v}`).
 
-## Main results (this file)
+## Main results
 
 * `StepChain`: chains of a given length of stellar moves avoiding a finite set.
 * `exch_comm`: the commutation identity.

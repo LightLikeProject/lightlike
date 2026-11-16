@@ -16,14 +16,12 @@ The two definitions differ in two details, both handled here. Mathlib's paths ar
 of `ℝ` that stays in `U` on `[0, 1]`. And `dist` is a real infimum, so it is the junk value `0`
 when no admissible curve joins the two points, where `riemannianEDist` is `⊤`.
 
-## Definitions
+## Main results
 
 * `bilin A`: the bilinear form `(v, w) ↦ v ⬝ A w` of a matrix, as a continuous bilinear map.
 * `IsRiemMetric.riemannianMetric`, `IsRiemMetric.riemannianBundle`: the Riemannian structure of
   the tangent bundle of `U` given by `g`. It depends on `g`, so it is not a global instance; the
   statements install it with `letI`.
-
-## Main results
 
 * `IsRiemMetric.enorm_tangent`: the norm of a tangent vector is `√(g_x(v, v))`.
 * `mfderiv_eq_deriv`: the manifold derivative of a curve in `U` is its ordinary derivative.

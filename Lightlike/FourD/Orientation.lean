@@ -8,7 +8,7 @@ Orientations are handled as in ordered simplicial homology: the vertex type carr
 order, and a simplex `s` (a vertex set) stands for the oriented simplex with its vertices in
 increasing order. An orientation of a 4-complex is then a sign `±1` for each 4-simplex.
 
-## Chains and the boundary operator (every dimension)
+**Chains and the boundary operator (every dimension).**
 
 * `pos s v`: the number of vertices of `s` below `v`; `inc s v = (-1)^(pos s v)`, the sign of
   the face `s \ {v}` in the boundary of `s`.
@@ -17,7 +17,7 @@ increasing order. An orientation of a 4-complex is then a sign `±1` for each 4-
 * `cone a`: the cone with apex `a`; `osimp l`: the oriented simplex `[v₀, …, vₖ]` for a list of
   vertices `l = [v₀, …, vₖ]` in any order, defined as an iterated cone.
 
-## Orientations of 4-complexes
+**Orientations of 4-complexes.**
 
 * `relSign s t`: the incidence number `[s : t]` of a simplex and a face with one vertex less.
 * `fundChain F o = Σ_{s ∈ F} o s • [s]`.

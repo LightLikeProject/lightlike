@@ -117,6 +117,25 @@ exponential of the action is the product of the overlap power, the real power of
 the imaginary power of their ratio, and one link of the principal-series vertex, with the boundary
 spinors `ξ = first column of ḡ₁` and `ξ' = first column of w g₂`, is `e^S` times the density of `Ω` [16].
 The sum over the links and the Fubini step, hence the identity of the two amplitudes, are not proved yet.
+One link as an integral over the chart is proved: the contraction of the EPRL matrix coefficients
+`D_{m m'}(a⁻¹ b)` with coherent coefficients equals `(‖A e₀‖²)⁻¹ ∫_ℂ e^S / (‖Z‖² ‖Z'‖²) dw` [17], with
+`‖A e₀‖² = π/(n+1)` for the lowest level, from the Beta integral `∫₀^∞ u^n (1+u)^{-n-2} du = 1/(n+1)`
+[18] and the polar integral over `ℂ` [19]; a numerical check of the identity and of the constant
+is `scripts/asymptotics/link_integral_check.py`.
+Assembling the ten links, the coherent principal-series vertex equals the Lorentzian vertex up to the
+explicit factor `(haarScalarFactor haarC SL2C.haar)^4`, which comes from the chart measure of the
+finite vertex; the outer integral of the Lorentzian vertex is therefore finite, and the value of one
+link at spin zero is `π` [20].
+The inner integral over `ℂ^10` also converges at every point of `SL(2, ℂ)^5`, as a product over the ten
+edges of functions bounded by the density of `Ω`, so the Lorentzian vertex of the coherent data is a
+genuine integral [21].
+The asymptotic formula with two critical points is proved as a reduction: the amplitude of the scaled
+data minus `λ^{m - n/2} (A₁ e^{iλθ} + A₂ e^{-iλθ})` is `O(λ^{m - n/2 - 1})` under named hypotheses (a
+chart representation of the amplitude, the two critical points, the Hessians, the far-field decay and
+the constants of eq. (57)), none of which is proved here [22]; these hypotheses are consistent, as a
+model phase with two nondegenerate critical points shows [23]. The Hessian at the SU(2) critical
+point of the regular simplex is numerically nondegenerate, with margin about 0.15 in the Fubini–Study
+frame (`scripts/asymptotics/lorentzian_hessian_check.py`).
 
 ## Lean References
 
@@ -182,6 +201,24 @@ The sum over the links and the Fubini step, hence the identity of the two amplit
     `Asymptotics.Lorentzian.inner_principalSeries_eq_integral`,
     `Asymptotics.Lorentzian.exp_triAction_nat`, `Asymptotics.Lorentzian.weight_pair`,
     `Asymptotics.Lorentzian.link_pointwise`, `Asymptotics.Lorentzian.link_eq_lor`
+17. Lightlike/Asymptotics/Lorentzian/LinkIntegral.lean - `Asymptotics.Lorentzian.inner_pi_inv_mul`,
+    `Asymptotics.Lorentzian.eprlVec_sum`, `Asymptotics.Lorentzian.eprlCoeff_pair`,
+    `Asymptotics.Lorentzian.suV_cohVec_eq`, `Asymptotics.Lorentzian.ae_pairing_ne_zero`,
+    `Asymptotics.Lorentzian.link_integral`
+18. Lightlike/Asymptotics/Lorentzian/RadialBeta.lean - `Asymptotics.Lorentzian.radial_integral`
+19. Lightlike/Asymptotics/Lorentzian/NormLowest.lean - `Asymptotics.Lorentzian.norm_sq_wgt`,
+    `Asymptotics.Lorentzian.nrmA_sq_lowest`, `Asymptotics.Lorentzian.link_integral_explicit`
+20. Lightlike/Asymptotics/Lorentzian/CoherentVertex.lean - `Asymptotics.Lorentzian.map_conjSL_haar`,
+    `Asymptotics.Lorentzian.sum_magBox_linkProd`, `Asymptotics.Lorentzian.eprlIntegrand_iotaProd`,
+    `Asymptotics.Lorentzian.eprlIntegrand_coh`, `Asymptotics.Lorentzian.eprlVertex_eq_lorVertex`,
+    `Asymptotics.Lorentzian.integrable_lorOuter`, `Asymptotics.Lorentzian.link_value_spin_zero`
+21. Lightlike/Asymptotics/Lorentzian/InnerIntegrable.lean - `Asymptotics.Lorentzian.ae_overlap_src`,
+    `Asymptotics.Lorentzian.ae_overlap_tgt`, `Asymptotics.Lorentzian.integrable_edge`,
+    `Asymptotics.Lorentzian.integrable_lorInner`, `Asymptotics.Lorentzian.integrable_lorInner_coh`
+22. Lightlike/Asymptotics/Lorentzian/AsymptoticFormula.lean - `Asymptotics.Lorentzian.triAction_smul`,
+    `Asymptotics.Lorentzian.lorAction_smul`, `Asymptotics.Lorentzian.lorVertex_asymptotic_formula`
+23. Lightlike/Asymptotics/Lorentzian/ExpPhaseTwoPoints.lean - `Asymptotics.Lorentzian.toyAction`,
+    `Asymptotics.Lorentzian.toy_two_points`
 
 ## References
 

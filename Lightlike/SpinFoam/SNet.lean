@@ -40,11 +40,9 @@ of its legs' faces (`nodeT`, the leg order of `canonTet`).
 
 ## References
 
-- A. P. Yutsis, I. B. Levinson, V. V. Vanagas, *Mathematical Apparatus of the Theory of Angular
-  Momentum* (Israel Program for Scientific Translations, 1962): the graphical calculus of
-  angular-momentum recoupling.
-- P. Martin-Dussaud, *A primer of group theory for loop quantum gravity and spin-foams*,
-  Gen. Relativ. Gravit. 51, 110 (2019), arXiv:1902.08439, §5.6: Yutsis diagrams.
+* `martin-dussaud-2019`, §5.6: Yutsis diagrams, the graphical calculus of angular-momentum
+  recoupling (Yutsis, Levinson, Vanagas, *Mathematical Apparatus of the Theory of Angular Momentum*,
+  1962).
 -/
 
 open Finset Lightlike.Recoupling PhyslibAlpha.Sl2

@@ -16,15 +16,13 @@ In terms of the edge lengths this is Regge's equation (Regge 1961): for every in
 the other two edges `f, g` of `t`. Unlike in 3D, stationarity does not force the deficit angles to
 vanish; flat space is one solution (`Lightlike/Regge/D4/FlatSolution.lean`).
 
-## Definitions
+## Main results
 
 * `bdryEdges4 K`, `intEdges4 K`: edges of boundary triangles, and the other edges.
 * `LengthsNondeg4 K ℓ`: positive areas, volumes and 4-volumes, in every labelling.
 * `areaDeriv ℓ v t`: the derivative of the area of `t` along `ℓ + τ v`; `areaPartial ℓ t e`:
   the partial derivative `∂A_t/∂ℓ_e`.
 * `reggePartial4 K ℓ e = Σ_{t ∋ e} ∂A_t/∂ℓ_e · (δ_t or ψ_t)`.
-
-## Main results
 
 * `reggeAction4_eq_sum_simps`: the action regrouped 4-simplex by 4-simplex.
 * `hasDerivAt_simpSum4`: one 4-simplex's contribution varies only through its areas (Schläfli).
