@@ -139,7 +139,7 @@ The integral over the unit cube of the divergence of a periodic `C¹` field of `
 on the box with the opposite faces cancelling. With it the Saint-Venant form of the linearized Regge limit and the Fierz–Pauli density
 of a periodic smooth symmetric field have the same integral over the unit cube [78]: their difference is the divergence of an explicit
 periodic field, and the identity of the densities is pointwise and polynomial. This is the integration by parts on the torus only;
-that the Fierz–Pauli density is the second variation of the Einstein–Hilbert action is not proved, only checked numerically.
+that the Fierz–Pauli density is the `η²` coefficient of the integrated curvature density of `1 + η h` is proved separately [86].
 
 The scalar curvature of a coordinate metric at a point is an explicit function of the inverse metric and its first and second
 derivatives [79]. For the metric `1 + η h` of a smooth symmetric field `h` this function, times `√det / 2`, is a smooth function
@@ -156,6 +156,11 @@ coefficients `F1`, `F2` of the uniform expansion [80] are `R1 / 2` and `R2 + R1 
 linearized scalar curvature and `F2` is the Fierz–Pauli density of `∂h` plus the divergence of an explicit field [84]. The identities
 are polynomial; they are also checked with exact arithmetic in `scripts/regge/eh_jet_poly_check.py`, with a control that fails.
 Nothing here is an integral statement.
+
+The cube integral of the scalar-curvature density `(R/2) √det` of `1 + η h`, for a smooth symmetric periodic field `h`, equals
+`(η²/2)` times the cube integral of the Fierz–Pauli density of `∂h`, up to `C |η|³` [86]; the first coefficient integrates to zero
+and the second differs from the Fierz–Pauli density by an explicit periodic divergence [85]. This is a statement about the integrated
+density of `1 + η h`: nothing about the Regge action, about geodesic or interpolated edge lengths, or about triangulations.
 
 A 2-complex with boundary is a disc in the combinatorial sense exactly when it is an intrinsic
 triangulated disc [16].
@@ -320,6 +325,11 @@ triangulated disc [16].
     `Regge.Conv3.curv_exp`, `Regge.Conv3.feta_exp`, `Regge.Conv3.F_eq`
 84. Lightlike/Regge/Conv3/CurvaturePoly.lean - `Regge.Conv3.divTp`, `Regge.Conv3.F2_poly`,
     `Regge.Conv3.F1_eq`, `Regge.Conv3.F2_eq`
+
+85. Lightlike/Regge/Linear3/PeriodicDivergences.lean - `Regge.Linear3.div_S1field`, `Regge.Linear3.div_Tprime`,
+    `Regge.Linear3.integral_F1_zero`, `Regge.Linear3.integral_F2_eq`
+86. Lightlike/Regge/Linear3/EtaCoefficient.lean - `Regge.Linear3.eh_eta_sq_coeff`,
+    `Regge.Linear3.eh_eta_sq_coeff_zero`
 
 ## References
 

@@ -32,7 +32,7 @@ with `curl^t curl` as defined in his section 2 (the curl of the rows, transposed
 **Limits.** An identity at one point for symmetric `H` and symmetric second derivatives; no analysis.
 The relation of the sign to Christiansen's convention for the deficit angle is not stated here: the numerical
 check `scripts/regge/regge3d_linearized_check.py` fixes it (`Q_n → -¼ ⟨curl^t curl h, h⟩` for the deficit
-`2π - Σ θ`, which has the sign of the Einstein–Hilbert second variation).
+`2π - Σ θ`, which has the sign of the `η²` coefficient of the integrated Einstein–Hilbert density).
 -/
 
 open Real
