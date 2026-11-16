@@ -138,3 +138,42 @@ Supporting statements the proof would need, in order: (1) `watson_q_whipple` abo
 truncation device (`Q^r = 1`, `qfact_mul_qfact_reflect`); (3) the q-Racah sum `qRacahSum` as a terminating `₄φ₃` (a rewriting lemma of the
 same kind as `Sj_val`, with free third and sixth colours); (4) the sum rule for two q-6j symbols summed over a common colour, obtained from
 (1) to (3); (5) the pentagon from the sum rule. Nothing from (3) on is stated precisely yet.
+
+## Steps 3 to 5, stated precisely (conventions, hypotheses, sources, and what is measured)
+
+Conventions. `u = e^{iπ/r}`, `Q = u²`, `[m] = (u^m - u^{-m})/(u - u^{-1})`, `[m]! = ∏_{i=1}^m [i]`, `(x; Q)_k = ∏_{i<k} (1 - x Q^i)`,
+doubled spins as in the library, `f = qSixJ r`. For `qSixJ r j1 j2 j3 j4 j5 j6` put the triad sums
+`A = ((j1+j2+j3)/2, (j1+j5+j6)/2, (j4+j2+j6)/2, (j4+j5+j3)/2)` and the quadrilateral sums
+`B = ((j1+j2+j4+j5)/2, (j2+j3+j5+j6)/2, (j3+j1+j6+j4)/2)` (these are `qRacahSum`'s arguments, `QSixJ.lean:64-70`),
+`z0 = max A`, `n = min B - z0`, and let `a'` be the other three entries of `A` after removing one copy of `z0`.
+
+**Step 3 (MEASURED, 4phi3 form of the Racah sum).** The term `t(z) = (-1)^z [z+1]! / (∏_{a ∈ A} [z-a]! ∏_{b ∈ B} [b-z]!)` of `qRacahSum`
+satisfies, when `n ≥ 1` and `Q^{z0+2} ≠ 1`,
+
+    qRacahSum r j1 … j6 = t(z0) · ₄φ₃( Q^{z0+2}, Q^{-(b_1 - z0)}, Q^{-(b_2 - z0)}, Q^{-(b_3 - z0)} ;  Q^{1+z0-a'_1}, Q^{1+z0-a'_2}, Q^{1+z0-a'_3} ; Q, Q ),
+
+the argument being exactly `Q` (balanced: the lower parameters multiplied by `Q^{-1}` ... the product of the lower parameters equals `Q` times the
+product of the upper ones). Numerical check: every case with `n ≥ 1` at `r = 7` (8 cases), `r = 9` (120) and `r = 11` (400 sampled): the fitted
+argument is `Q` in every case (a single distinct value) and the relative error of the formula is at most `2.2e-15`. When `Q^{z0+2} = 1` (that is
+`z0 = r - 2`) the second term vanishes and the sum is `t(z0)`, which the formula also gives (an upper parameter equal to `1`). Source: this
+is the standard q-Racah ₄φ₃ in Askey–Wilson form (argument `q`); the library's `Sj_val` is the case `n = 0`. Lean statement: a rewriting lemma
+`qRacahSum_eq_phi43` for the data above, proved by `Finset.sum` reindexing `z = z0 + k` and the ratio `t(z0+k+1)/t(z0+k)` expressed with `one_sub_Q_qZ`
+(the same device as `rhoT_eq`); hypotheses `2 ≤ r`, the four triads admissible, `n ≥ 1`, `z0 + 2 < r`.
+
+**Step 4 (the Racah sum rule): classical form read, quantum form NOT yet pinned.** The classical sum rule is DLMF §34.5(vi), eq. (34.5.15)
+(read on the page, through a summariser): `Σ_j (-1)^{j+j'+j''} (2j+1) {j1 j2 j; j3 j4 j'} {j1 j2 j; j4 j3 j''} = {j1 j4 j'; j2 j3 j''}`; the
+Biedenharn–Elliott identity there is (34.5.16), the orthogonality relation (34.5.14). A direct transcription to the library's `qSixJ` (weight
+`qnum (x+1)`, sign `(-1)^((x+p+q)/2)`, second symbol `f a b x d c q`, right side `f a d p b c q`) FAILS numerically: on 120 admissible tuples at `r = 7`
+the magnitudes agree in only 50, and no exponent `(αa+βb+γc+δd+πp+κq+ξx)/2` with coefficients in `{0,1}` repairs it (MEASURED). So either the
+page rendering of the arrangement is wrong or the quantum sum rule needs another arrangement; the precise quantum statement must be found by a
+search over the 720 arrangements of the second symbol before any Lean statement is written (script outline: for each arrangement and sign vector,
+compare the sum with each of the 720 arrangements of the right side, over tuples with the right side nonzero). This step is OPEN. It is not needed
+if the proof goes through the pentagon directly (route A below), and its absence is the reason this note does not claim a complete chain.
+
+**Step 5 (pentagon).** The pentagon is Taylor–Woodward eq. (5) (read), equivalently DLMF (34.5.16) classically; its dictionary to `Model.BE` is in
+the section above. Lean statement (the target): `qBiedenharnElliott_all {r : ℕ} (hr : 2 ≤ r) : qBiedenharnElliott hr`. The derivation from step 4 and
+orthogonality (the classical argument of Biedenharn and of Edmonds; location UNVERIFIED) is not written down here: it needs the quantum step 4 first.
+
+Status of the chain: step 1 (Watson, stated, checked at 40 digits), step 3 (stated, checked), steps 2, 4 and 5 not yet stated precisely. The chain
+cannot be compiled in one go yet. The order of work once a build slot is open: (1) `watson_q_whipple`; (2) `qRacahSum_eq_phi43`; (3) find and check the quantum Racah
+sum rule numerically (no build); (4) the derivation of the pentagon; stop if the pentagon derivation needs a second new identity.
