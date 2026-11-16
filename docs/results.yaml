@@ -1320,3 +1320,39 @@
   review: kernel-checked
   note: "Trust checks for the eta^2 coefficient of the integrated curvature density of 1 + eta h (T-RC3 in dimension 3, which stays open). For the test field h(y) = cos(2 pi y_0) E_12, with E_12 the symmetric matrix with 1 at (1,2) and (2,1) (smooth, symmetric, Z^3-periodic), the cube integral of the Fierz-Pauli density is -pi^2, so the coefficient of the preceding entry is non-zero for it (integral_fpDens_hTest). The hinge density of the linearized Regge coefficient with the weights 1/|w|^2 of the hinge vectors replaced by 1 (wrongDens: the density without volume weights, the analogue of the missing area weight of the 2D control) equals -14/3 pi^2 cos^2(2 pi y_0) for this field and integrates to -7 pi^2/3 (integral_wrongDens_hTest), which differs from -pi^2 (wrong_weights_ne); with the weights the same field gives -pi^2 (rightDens_integral_hTest, by the Saint-Venant identity of the 36 incidences). Limits: one test field and one wrong model (the weights dropped); the integrals are those of the densities, not of the Regge action of a triangulation; nothing about the relation between geodesic and interpolated edge lengths (the envelope step, still open). Trust checks: scripts/regge/eh_wrong_model_check.py recomputes both densities and integrals in exact arithmetic with sympy and asserts them (numerical-algebraic evidence, not proof)."
   since: unreleased
+- id: LL-XXXX-k
+  title: The periodic Kuhn complex of the 3-torus (Z/n)^3 is closed, non-degenerate and flat
+  area: Regge
+  file: Lightlike/Regge/Linear3/TorusComplex.lean
+  decls: [Lightlike.Regge.Linear3.torusComplex, Lightlike.Regge.Linear3.lengthsNondeg_len0, Lightlike.Regge.Linear3.deficit_len0, Lightlike.Regge.Linear3.torus_second_order]
+  status: proven
+  tier: frontier
+  source: structural
+  review: kernel-checked
+  note: "The six Kuhn tetrahedra of every cube of the grid (Z/n)^3, n >= 3, form a closed simplicial 3-complex (every triangle lies in two tetrahedra; the neighbouring tetrahedron is found by a finite table checked by decide), with non-degenerate flat edge lengths for which every deficit angle is zero; the second-order expansion of its Regge action under squared lengths varying along a line holds (torus_second_order, from regge_second_order). Limits: the standard cubical Kuhn triangulation of the torus with n >= 3; nothing about convergence in n. Non-vacuity: this is the instance the second-order theorem needed. Wrong-model control: the four-simplex boundary with all lengths 1 has positive deficits (WrongModel)."
+  since: unreleased
+- id: LL-XXXX-l
+  title: The Regge action of the periodic Kuhn complex of the 3-torus with geodesic lengths of a periodic Riemannian metric tends to the Einstein-Hilbert action
+  area: Regge
+  file: Lightlike/Regge/Linear3/TorusConvergence.lean
+  decls: [Lightlike.Regge.Linear3.torus_regge_converges]
+  status: proven
+  tier: frontier
+  source: structural
+  review: kernel-checked
+  note: "For a Z^3-periodic Riemannian metric g on R^3, the Regge action of the periodic Kuhn complex of the 3-torus with mesh 1/N and the geodesic edge lengths of g equals the lattice hinge sum of the convergence theorem on the cube (reggeAction_torus_eq; edges are in bijection with (cell, class) pairs, the dihedral angles are the angles of the squared corner distances, no boundary layer), so it converges to the integral over the unit cube of (R/2) sqrt(det g) (torus_regge_converges). Limits: convergence only, no rate; the standard cubical Kuhn triangulation of the torus; one periodic Riemannian metric; not the theorem of Cheeger, Mueller and Schrader for arbitrary fine triangulations of a manifold."
+  since: unreleased
+- id: LL-XXXX-m
+  title: The coefficient of the linearized Regge action of the periodic Kuhn complex converges to the Saint-Venant form
+  area: Regge
+  file: Lightlike/Regge/Linear3/LinearizedLimit.lean
+  decls: [Lightlike.Regge.Linear3.Qn_converges]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: christiansen-2011, location: "eq. (5)", check: "The degrees of freedom (5) make sense"}
+      - {ref: christiansen-2011, location: "Proposition 3.2", check: "constant Euclidean metric"}
+  review: kernel-checked
+  note: "For a C^3 symmetric Z^3-periodic matrix field h on R^3, Q_n(h) = sum over edges of (mu_e / (2 l_e)) delta_e'(0) for the periodic Kuhn complex of mesh 1/n with the squared lengths l_e^2 + eps mu_e(h), mu_e the degrees of freedom of the Regge interpolant (Christiansen 2011, eq. (5)), tends as n goes to infinity to the integral over the unit cube of -1/4 sum h_ij eps_ikl eps_jmn d_k d_m h_ln, the Saint-Venant form (Qn_converges). Proof: the lattice form of Q_n, the second-order expansion of the degrees of freedom, the vanishing of the zeroth and first order class sums, the pointwise identity of the 36 incidences, Riemann sums with cell sample points. Limits: convergence only, no rate; the interpolated lengths, not the geodesic lengths; one smooth periodic field on the standard cubical Kuhn complex; the sign of the deficit angle relative to 2 pi minus the angle sum is fixed by the numerical check, not by the paper. Trust checks: non-zero field, the numerical check scripts/regge/regge3d_linearized_check.py (sign and factor controls fail)."
+  since: unreleased
