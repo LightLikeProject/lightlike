@@ -146,7 +146,8 @@ For a configuration satisfying the z-eliminated critical equations (20), (21), t
 attains its maximum `0` there [24]. On such an edge the derivative of the triangle factor along a
 variation `δz` (which moves both spinors at once) vanishes by (21) alone, and the group variations
 sum to zero by closure at each node [25]; the passage from these line derivatives to the gradient of
-the chart action is not made.
+the chart action is not made. The derivative of `triAction` itself along a curve is the same
+expression where the product of the overlaps is off the cut of the logarithm [26].
 
 ## Lean References
 
@@ -237,6 +238,9 @@ the chart action is not made.
     `Asymptotics.Lorentzian.hasDerivAt_triFactor_curve`, `Asymptotics.Lorentzian.zedge_cancel`,
     `Asymptotics.Lorentzian.edge_variation`,
     `Asymptotics.Lorentzian.sum_logDeriv_nodes`
+26. Lightlike/Asymptotics/Lorentzian/TriActionDeriv.lean - `Asymptotics.Lorentzian.exp_triAction_eq_triFactor`,
+    `Asymptotics.Lorentzian.differentiableAt_triAction`,
+    `Asymptotics.Lorentzian.hasDerivAt_triAction_curve`
 
 ## References
 
