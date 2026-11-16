@@ -9,7 +9,7 @@ colours is cut by the level (`aHi r B A E F < min (B + A) (E + F)`), and by the 
 of `qDougallAt_O1`, `qDougallAt_O1_trunc`, `qDougallAt_O3`, `qDougallAt_O3_trunc` and their images `_k1`, `_k2`, `_k3`
 (`Lightlike/TuraevViro/Reflect/QDougallMap.lean`), whose hypotheses are tested literally.
 
-The recorded counts are checked; a control with a wrong form (the lowest third colour `B - A + 1`) covers
+The recorded counts are checked, and a sweep over r = 2..12 must cover every case (a count, not a proof for all r); a control with a wrong form (the lowest third colour `B - A + 1`) covers
 no case. Exit code 1 on failure. Counting, not a proof.
 """
 import itertools
@@ -109,9 +109,9 @@ def covered(r, B, A, E, F, shift=0):
     return None
 
 
-def run(shift=0):
+def run(shift=0, levels=range(5, 9)):
     table = {}
-    for r in range(5, 9):
+    for r in levels:
         for B, A, E, F in itertools.product(range(2 * (r - 2) + 1), repeat=4):
             if (B + A + E + F) % 2:
                 continue
@@ -148,11 +148,15 @@ def main():
         print(f"{key[0]:5} {key[1]:12} {v['cases']:6d} {v['covered']:8d}  "
               f"{', '.join(sorted(v['theorems'])) or 'none'}")
     print(f"total {total}, covered {cov}")
+    sweep = run(levels=range(2, 13))
+    sw_total = sum(v["cases"] for v in sweep.values())
+    sw_cov = sum(v["covered"] for v in sweep.values())
+    print(f"sweep r = 2..12: total {sw_total}, covered {sw_cov}")
     control = sum(v["covered"] for v in run(shift=1).values())
     print("control (wrong form): covered", control)
     counts = {f"{k[0]}/{k[1]}": (v["cases"], v["covered"]) for k, v in table.items()}
     print("counts", counts)
-    ok = control == 0 and total > 0 and (EXPECTED is None or counts == EXPECTED)
+    ok = control == 0 and sw_cov == sw_total and total > 0 and (EXPECTED is None or counts == EXPECTED)
     print("OK" if ok else "FAIL")
     sys.exit(0 if ok else 1)
 
