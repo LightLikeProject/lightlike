@@ -23,6 +23,15 @@ sources and review status in [docs/RESULTS.md](docs/RESULTS.md). Versions follow
 - Turaev–Viro: Jackson's summation of the terminating very-well-poised 6φ5 series, proved by a
   telescoping certificate. It has no catalog entry, because no edition, page and equation
   of the formula in a book has been verified; it is the main step towards the q-Dougall summation.
+- Results without a catalog entry: in Lorentzian asymptotics, the pieces of the vertex
+  asymptotics and the K5 edge pairing, the coherent 15j integral as the K5 contraction of coherent
+  intertwiners, and the gauge-fixed Lorentzian vertex amplitude with a bound on its integrand and
+  the integrability of the Ω density; in spin foams, the cut-off tetrahedron sum is monotone in the
+  cutoff, and the cutoff can be removed exactly when the sums are bounded; in Turaev–Viro, the
+  q-Racah sum at the lowest sixth colour has one term; in Regge calculus, the normal-coordinate
+  slice of the jet-level star identity.
+- Spin foams, in the documentation: a forcing gauge set that stops forcing after a 3-3 move, and
+  when a 3-3 move keeps forcing.
 
 ### Notable results
 
@@ -73,8 +82,23 @@ sources and review status in [docs/RESULTS.md](docs/RESULTS.md). Versions follow
 - CI counts a use of a result declaration under a namespace suffix as a test use.
 - The Python scripts run on 3.9 to 3.14; CI tests 3.12.
 - Every commit on main gets its own CI run; before, close merges cancelled the runs in between.
-- CONTRIBUTING gives one template for module docstrings: a title, a summary, then
-  `## Main results` and `## References` when the file has them.
+- The proof-task workflow checks only proof-task pull requests, and installs the pinned PyYAML.
+- Fixes from a test with a fresh agent: duplicate tasks, the fast gate, the setup and the commit
+  format.
+
+### Documentation
+
+- AGENTS.md: one pull-request route for everyone. CONTRIBUTING has a paste-in prompt for
+  contributors' agents and one template for module docstrings (a title, a summary, then
+  `## Main results` and `## References` when the file has them); the maintainer section moved to
+  docs/MAINTAINERS.md.
+- The documentation site has a plain landing page at its root; the API documentation is under
+  `docs/`.
+- The README says how the spin-foam and Regge parts relate to the physics literature; the ROADMAP
+  links each area's done milestones; the EPRL and Lorentzian API maps have titles in words.
+- New sources with exact locations: Koekoek and Swarttouw for the quantum 6j task, equation-level
+  sources for the EPRL asymptotics tasks T-SF9 and T-SF10, Klazar's weak Jordan paper and the
+  Lorentzian EPRL numerics.
 
 ## [0.2.0]
 
