@@ -1,5 +1,6 @@
 import Lightlike.SpinFoam.ForcingMoves
 import Lightlike.SpinFoam.ForcingMove33
+import Lightlike.SpinFoam.ForcingMove24
 
 /-!
 # Robust forcing sets and the 1-5 move
@@ -19,6 +20,9 @@ covered.
 * `Robust`: the definition; `robustBy`, `robust_of_robustBy`: a kernel checker from explicit forcing
   steps.
 * `Move15.robust_move15`: robust sets stay robust under the 1-5 move.
+* `forces_move24_of_robust`: a robust set keeps forcing under every 2-4 move, with the triangle
+  `{a, p, q}` added. No conjecture is involved: the closure condition of `forces_move24_iff` is the
+  robustness condition at the removed tetrahedron.
 
 ## References
 
@@ -138,5 +142,35 @@ theorem robust_move15 (hσ : #σ = 5) {a : Fin 5 → V} (hsurj : ∀ x, x ∈ σ
   exact h1.of_union h2
 
 end Move15
+
+
+/-- **A robust set keeps forcing under every 2-4 move.** If `T` is robust for `K` and `σ` is the
+tetrahedron removed by a 2-4 move to the edge `τ = {p, q}`, then `T` together with the triangle
+`{a, p, q}`, `a ∈ σ`, forces every triangle of the complex after the move. The condition of
+`Forcing24.forces_move24_iff` (the closure of `T` under the tetrahedra other than `σ` is complete) is
+the robustness condition at `σ`, because the only tetrahedron of `K` that contains `σ` is `σ`. -/
+theorem forces_move24_of_robust {K : Complex4 V} {σ τ : Finset V} (h : K.IsMove σ τ) (hσ : #σ = 4)
+    {a : V} (ha : a ∈ σ) {T : Finset (Finset V)} (hT : T ⊆ K.tris) (hR : Robust K T) :
+    Forces (K.move h) (K.move h).tris (insert (insert a τ) T) := by
+  have hτ : #τ = 2 := by have := h.card; omega
+  obtain ⟨v, hv⟩ : τ.Nonempty := card_pos.mp (by omega)
+  have hσtet : σ ∈ K.tets := by
+    refine Complex4.mem_faces.mpr ⟨(σ ∪ τ).erase v, h.mem v hv, ?_, hσ⟩
+    intro x hx
+    exact mem_erase.mpr ⟨fun hxv => disjoint_left.mp h.disj hx (hxv ▸ hv), mem_union_left _ hx⟩
+  have hRσ := hR σ hσtet
+  have heq : K.tets.erase σ = K.tets.filter fun t => ¬ σ ⊆ t := by
+    ext t
+    simp only [mem_erase, mem_filter]
+    constructor
+    · rintro ⟨hne, ht⟩
+      refine ⟨ht, fun hs => hne ?_⟩
+      obtain ⟨S, -, -, hc⟩ := Complex4.mem_faces.mp ht
+      exact (eq_of_subset_of_card_le hs (by rw [hc, hσ])).symm
+    · rintro ⟨ht, hs⟩
+      exact ⟨fun e => hs (e ▸ subset_rfl), ht⟩
+  have hF : Forces K K.tris T :=
+    (Forcing33.forces_iff_forcesIn K _ _).mpr (hRσ.mono (erase_subset _ _) subset_rfl)
+  exact (Forcing24.forces_move24_iff h hσ ha hT hF).mpr (heq ▸ hRσ)
 
 end Lightlike.SpinFoam
