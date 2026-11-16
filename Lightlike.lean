@@ -229,6 +229,7 @@ import Lightlike.PL.ArcNotSeparating
 import Lightlike.PL.JordanFrontier
 import Lightlike.PL.Index
 import Lightlike.PL.IndexConstancy
+import Lightlike.PL.IndexTheta
 import Lightlike.PL.TestsGratingPath
 import Lightlike.PL.TestsAlexander
 import Lightlike.PL.TestsUnion
@@ -236,6 +237,7 @@ import Lightlike.PL.TestsArcNotSeparating
 import Lightlike.PL.TestsJordanFrontier
 import Lightlike.PL.TestsIndex
 import Lightlike.PL.TestsIndexConstancy
+import Lightlike.PL.TestsIndexTheta
 import Lightlike.PL.TestsGrating
 import Lightlike.PL.HexFalse
 import Lightlike.PL.K33

@@ -1356,3 +1356,16 @@
   review: kernel-checked
   note: "If two points of the plane are joined by a path that avoids the range of a loop, the loop has the same index about both (the index of LL-XXXX-k). If the loop lies in an open half plane seen from the point, its index about the point is zero. These are Lemmas 9.13 and 9.12 of the lecture-notes version of chapter 9 of McCleary's book (numbering not checked against the printed book). The notes prove the first with a homeomorphism of the punctured planes fixing the curve; here the logarithms about the points of the path are lifted together through the covering map exp, and their increments are compared with the integer at the first point. The second is proved with a continuous logarithm on the convex, hence simply connected, half plane; the notes deform the loop into a small circle. The statements and proofs are Lean's own. Proves: the two lemmas for loops in the plane identified with the complex numbers. Does not prove: Lemma 9.14, that the complement of a Jordan curve has exactly two components, or the Jordan curve theorem. Limits: loops in the complex plane. Check: TestsIndexConstancy.lean (the unit circle has index 1 about 1/2 as about 0; a constant loop has index 0; the unit circle lies in no half plane seen from the origin)."
   since: unreleased
+- id: LL-XXXX-m
+  title: Lemma 9.14 of the theta configuration of a Jordan curve
+  area: PL
+  file: Lightlike/PL/IndexTheta.lean
+  decls: [Lightlike.PL.Theta, Lightlike.PL.Theta.lemma_9_14, Lightlike.PL.theta_arc, Lightlike.PL.joinedIn_compl_range]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
+  review: kernel-checked
+  note: "A Jordan curve is split at two of its points P and Q into arcs gamma1 from P to Q and gamma2 from Q to P, and Omega is a point off the curve such that the segments P Omega and Q Omega meet the curve only at P and Q (the theta configuration). With omega1 = gamma1 * (Q Omega * Omega P) and omega2 = (Q Omega * Omega P)^-1 * gamma2, a point R off the curve and the two segments whose index about omega1 differs from that of a point of gamma2, or whose index about omega2 differs from that of a point of gamma1, is joined to Omega by a path in the complement of the curve. The proof: an arc does not separate the plane (LL-XXXX-i), so a path from R to Omega misses the arc; follow it to its first hit with the segments; before it the index is constant (LL-XXXX-l), so it cannot meet the other arc, whose points all have the index of the given point because the open arc is connected and avoids the loop. This is Lemma 9.14 of the lecture-notes version of chapter 9 of McCleary's book (numbering not checked against the printed book); the notes prove the case of omega1 and both cases are proved here. The statements and proofs are Lean's own. Proves: Lemma 9.14. Does not prove: that the complement of a Jordan curve has exactly two components, or the Jordan curve theorem; those need the final argument of the notes' chapter. Limits: curves in the plane identified with the complex numbers. Check: TestsIndexTheta.lean (the unit circle split into its halves, with the centre as the point, is a theta configuration; a point Omega that makes a segment cross the curve fails the hypotheses)."
+  since: unreleased
