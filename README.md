@@ -29,7 +29,7 @@ Lean but no physics, because the statement is fixed and only its proof is open; 
 which add definitions and statements from the literature and need knowledge of their area; and 23
 **upstream** tasks, which rework a result of Lightlike for Mathlib or Physlib.
 
-Lightlike was developed privately over several weeks, largely by AI coding agents working under
+Lightlike was developed privately over nine days, largely by AI coding agents working under
 human direction, and is released as a clean snapshot of that work.
 
 ## Quick start
