@@ -2840,7 +2840,7 @@ theorem qDougall_orbit3_trunc_param {r d m n j5 K : ℕ} (hr : 2 ≤ r) (hK : K 
   exact qDougall3_of_sumR_N hr hmn hnj hj5' hq0 hX0 hadmQ sumR
 
 
--- 400000 heartbeats: the default 200000 times out (whnf).
+-- 800000 heartbeats: 400000 times out (isDefEq), 800000 passes.
 set_option maxHeartbeats 800000 in
 /-- **`QDougallAt` for the third orbit, level-truncated range with `B + A < E + F`**: the lowest third colour is `B - A`, the lowest sixth colour `E - A`, and the third colours stop at the level cut-off `2(r-2) - (E + F)`, before the triangle top `B + A`. -/
 theorem qDougallAt_O3_trunc {r : ℕ} (hr : 2 ≤ r) (B A E F q : ℕ) (hq1 : qAdm r B F q)
