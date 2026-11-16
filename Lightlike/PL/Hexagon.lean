@@ -283,7 +283,36 @@ theorem pair_false
   rw [hA3, hA4, hA5] at f345; rw [hA0, hA1, hA2, hA3, hA4, hA5] at fin
   rw [hA0, hA1, hA2, hD0] at g1; rw [hA3, hA4, hA5, hD0] at g2
   rw [hD1, hA0, hA1, hA2] at k1; rw [hD1, hA3, hA4, hA5] at k2; rw [hD1, hD0] at k3
-  sorry
+  rw [hD0, hD1] at hside
+  set m₁ : List (ℝ × ℝ) := H.h 0 ++ H.p 1 :: H.h 1 ++ H.p 2 :: H.h 2 with hm₁
+  set m₂ : List (ℝ × ℝ) := H.h 3 ++ H.p 4 :: H.h 4 ++ H.p 5 :: H.h 5 with hm₂
+  have e1 : H.p 0 :: m₁ ++ [H.p 3] = H.p 0 :: H.h 0 ++ H.p 1 :: H.h 1 ++ H.p 2 :: H.h 2 ++ [H.p 3] := by
+    simp [hm₁]
+  have e2 : H.p 3 :: m₂ ++ [H.p 0] = H.p 3 :: H.h 3 ++ H.p 4 :: H.h 4 ++ H.p 5 :: H.h 5 ++ [H.p 0] := by
+    simp [hm₂]
+  have eL : H.p 0 :: m₁ ++ H.p 3 :: m₂ = H.list := by simp [hm₁, hm₂, Hex.list]
+  have c1 : chainSet (H.p 0 :: m₁ ++ [H.p 3]) = chainSet (H.p 0 :: H.h 0 ++ [H.p 1]) ∪
+      chainSet (H.p 1 :: H.h 1 ++ [H.p 2]) ∪ chainSet (H.p 2 :: H.h 2 ++ [H.p 3]) := by
+    rw [e1, chainSet_glue3]
+  have c2 : chainSet (H.p 3 :: m₂ ++ [H.p 0]) = chainSet (H.p 3 :: H.h 3 ++ [H.p 4]) ∪
+      chainSet (H.p 4 :: H.h 4 ++ [H.p 5]) ∪ chainSet (H.p 5 :: H.h 5 ++ [H.p 0]) := by
+    rw [e2, chainSet_glue3]
+  have hne : ∀ i j : Fin 6, i ≠ j → H.p i ≠ H.p j := fun i j h h' => h (H.inj h')
+  refine no_interlaced_chord (a := H.p 0) (b := H.p 3) (x := H.p 1) (y := H.p 4)
+    (m₁ := m₁) (m₂ := m₂) (mₑ := H.d 0) (m_f := H.d 1) (hne 0 3 (by decide)) ?_ ?_ hd0 hd1 ?_ ?_ ?_
+    ?_ (hne 1 0 (by decide)) (hne 1 3 (by decide)) ?_ (hne 4 0 (by decide)) (hne 4 3 (by decide))
+    ?_ ?_ ?_ ?_
+  · rw [e1]; exact isSimpleChain_glue3 hs0 hs1 hs2 f01 f012
+  · rw [e2]; exact isSimpleChain_glue3 hs3 hs4 hs5 f34 f345
+  · rw [c1, c2, Set.pair_comm]; exact fin
+  · rw [c1]; exact g1
+  · rw [c2]; exact g2
+  · rw [c1]; exact Or.inl (Or.inr (mem_chainSet_head _ _))
+  · rw [c2]; exact Or.inl (Or.inr (mem_chainSet_head _ _))
+  · rw [c1]; exact k1
+  · rw [c2]; exact k2
+  · exact k3
+  · rw [← eL] at hside; exact hside
 
 end Hex
 
