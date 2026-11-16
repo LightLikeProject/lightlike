@@ -374,6 +374,7 @@ import Lightlike.Regge.Conv3.DsqLipschitz
 import Lightlike.Regge.Conv3.AngleClose
 import Lightlike.Regge.Conv3.HingeExpansion
 import Lightlike.Regge.Conv3.HingeLength
+import Lightlike.Regge.Conv3.HingeTerm
 import Lightlike.Regge.Conv3.TrueLength
 import Lightlike.Regge.Conv3.JetContinuity
 import Lightlike.Regge.Conv3.ChartChangeClasses
