@@ -134,8 +134,25 @@ def eh_second_variation(m=24, eta=1e-3):
     return (f(eta) + f(-eta) - 2 * f(0.0)) / eta ** 2
 
 
+def fierz_pauli(m=24):
+    """The explicit Fierz-Pauli form of the second variation, integral over the torus of
+    -1/4 d_l h_mn d_l h_mn + 1/2 d_m h_mn d_l h_ln - 1/2 d_m h_mn d_n tr h + 1/4 d_l tr h d_l tr h"""
+    x1 = (np.arange(m) + 0.5) / m
+    X = np.stack(np.meshgrid(x1, x1, x1, indexing='ij'), axis=-1)
+    h, dh, ddh = hderiv(X)          # dh[..., l, m, n] = d_l h_mn
+    tr = np.einsum('...lmm->...l', dh)           # d_l tr h
+    div = np.einsum('...mmn->...n', dh)          # d_m h_mn
+    L = (-0.25 * np.einsum('...lmn,...lmn->...', dh, dh) + 0.5 * np.einsum('...n,...n->...', div, div)
+         - 0.5 * np.einsum('...n,...n->...', div, tr) + 0.25 * np.einsum('...l,...l->...', tr, tr))
+    return float(L.mean())
+
+
 if __name__ == '__main__':
     E = eh_second_variation()
+    FP = fierz_pauli()
+    print('Fierz-Pauli form of the second variation = %.6f (matches E: %s)' % (FP, abs(FP - E) < 1e-3 * abs(E)))
+    if abs(FP - E) >= 1e-3 * abs(E):
+        print('FAILED'); sys.exit(1)
     print('EH second variation  d^2/deta^2 of the integral of (R/2) sqrt(det g) = %.6f' % E)
     eps = 0.02
     diffs = []
