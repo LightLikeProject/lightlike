@@ -231,4 +231,26 @@ theorem weight_pair {Na Nb : ℝ} (ha : 0 < Na) (hb : 0 < Nb) (ρ : ℝ) :
   push_cast
   ring
 
+/-- **The integrand of one link, pointwise**: for the transported chart vectors
+`ζ_a = A (w, 1)`, `ζ_b = B (w, 1)` with `N_a = ‖ζ_a‖² > 0`, `N_b = ‖ζ_b‖² > 0`,
+`conj F_{g₁}(ζ_a) · F_{g₂}(ζ_b) = (conj P_a · P_b)^n (N_a N_b)^{-n/2} (N_b/N_a)^{iρ} (N_a N_b)⁻¹`,
+with `F_g = hvec n 0 ρ (|n/2, g⟩)` and `P_a = g₁₀₀ ζ_{a0} + g₁₁₀ ζ_{a1}`, and likewise for `P_b`. -/
+theorem link_pointwise (n : ℕ) (ρ : ℝ) (g1 g2 : Matrix (Fin 2) (Fin 2) ℂ) (ζa ζb : C2)
+    (ha : 0 < nsq ζa) (hb : 0 < nsq ζb) :
+    conj (hvec n 0 ρ (cohState n g1) ζa) * hvec n 0 ρ (cohState n g2) ζb =
+      (conj (g1 0 0 * ζa 0 + g1 1 0 * ζa 1) * (g2 0 0 * ζb 0 + g2 1 0 * ζb 1)) ^ n *
+        ((((nsq ζa * nsq ζb) ^ (-(n : ℝ) / 2) : ℝ)) : ℂ) *
+        (((((nsq ζb / nsq ζa : ℝ)) : ℂ) ^ (I * ρ)) * (((nsq ζa * nsq ζb)⁻¹ : ℝ) : ℂ)) := by
+  rw [hvec_cohState, hvec_cohState, map_mul, map_mul, map_pow]
+  have hr1 : (conj ((((Real.sqrt (nsq ζa))⁻¹ ^ n : ℝ)) : ℂ)) = (((Real.sqrt (nsq ζa))⁻¹ ^ n : ℝ) : ℂ) :=
+    Complex.conj_ofReal _
+  rw [hr1, sqrt_inv_pow_eq_rpow ha, sqrt_inv_pow_eq_rpow hb]
+  have hw := weight_pair ha hb ρ
+  have hrp : (nsq ζa * nsq ζb) ^ (-(n : ℝ) / 2) =
+      nsq ζa ^ (-(n : ℝ) / 2) * nsq ζb ^ (-(n : ℝ) / 2) :=
+    Real.mul_rpow ha.le hb.le
+  rw [hrp, Complex.ofReal_mul, mul_pow]
+  linear_combination (conj (g1 0 0 * ζa 0 + g1 1 0 * ζa 1) ^ n * (g2 0 0 * ζb 0 + g2 1 0 * ζb 1) ^ n *
+    ((nsq ζa ^ (-(n : ℝ) / 2) : ℝ) : ℂ) * ((nsq ζb ^ (-(n : ℝ) / 2) : ℝ) : ℂ)) * hw
+
 end Lightlike.Asymptotics.Lorentzian
