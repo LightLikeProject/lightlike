@@ -47,6 +47,12 @@ with tempfile.TemporaryDirectory() as d:
     w = ci_check.check_test_coverage(tmp)
     expect("untested results planted: untested declaration `bar` warned, tested `foo` not",
            len(w) == 1 and "Lightlike.bar" in w[0])
+    (tmp / "Lightlike" / "Tests" / "T.lean").write_text("example := foo\nexample := Lightlike.bar\n")
+    expect("untested results control: a use qualified by the namespace, `Lightlike.bar`, counts",
+           ci_check.check_test_coverage(tmp) == [])
+    (tmp / "Lightlike" / "Tests" / "T.lean").write_text("example := foo\nexample := h.bar\n")
+    expect("untested results planted: dot notation `h.bar` is not counted as a use of `bar`",
+           len(ci_check.check_test_coverage(tmp)) == 1)
     e = tmp / "Lightlike" / "Exploratory"
     e.mkdir()
     (e / "M.lean").write_text("import Lightlike.A\ntheorem m : True := trivial\n")
@@ -374,6 +380,12 @@ expect("tasks: generate brings the CHANGELOG counts of the newest version up to 
        f"- {len(_ts)} tasks on the [task board](B)\n\n## [0.1.0]" in _cl
        and f"- {len({m['area'] for m in _ms.values()})} areas in [ROADMAP]" in _cl
        and _cl.endswith("- 9 tasks on the [task board](B)\n") and len(_ts) != 9)
+_rc = tk.roadmap_counts("## G\n\n### Alpha\n\n- **Milestones:** 0 · [milestones](m#alpha) · [tasks](t#alpha)\n",
+                        _ms, "o/r")
+expect("tasks: generate keeps the ROADMAP milestone counts current and links each area's done milestones",
+       "- **Milestones:** 4 · [milestones](m#alpha) · [tasks](t#alpha) · [done](https://github.com/o/r/" in _rc
+       and "reason%3Acompleted" in _rc and "label%3A%22area%3A+alpha%22" in _rc
+       and _rc.count(tk.DONE_LINK) == 1 and tk.roadmap_counts(_rc, _ms, "o/r") == _rc)
 with tempfile.TemporaryDirectory() as d:
     (pathlib.Path(d) / "docs/tasks").mkdir(parents=True)
     (pathlib.Path(d) / tk.SOURCES).write_text(

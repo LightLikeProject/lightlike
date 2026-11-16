@@ -1493,6 +1493,15 @@
   "citations": 430,
   "citations_via": "Semantic Scholar"
  },
+ "dona-fanizza-sarno-speziale-2019": {
+  "checked": "2026-11-16",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Numerical study of the Lorentzian Engle-Pereira-Rovelli-Livine spin foam amplitude",
+  "locations": {},
+  "citations": 77,
+  "citations_via": "OpenAlex"
+ },
  "dona-sarno-2018": {
   "checked": "2026-11-08",
   "exists": true,
@@ -2486,6 +2495,15 @@
   "citations": 46,
   "citations_via": "Semantic Scholar"
  },
+ "klazar-2026": {
+  "checked": "2026-11-16",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Thomassen's proof and Filippov's proof of the Weak Jordan Theorem",
+  "locations": {},
+  "citations": 0,
+  "citations_via": "Semantic Scholar"
+ },
  "knapp-1986": {
   "checked": "2026-11-08",
   "exists": true,
@@ -2927,11 +2945,16 @@
   "citations_via": "Semantic Scholar"
  },
  "moise-1977": {
-  "checked": "2026-11-08",
+  "checked": "2026-11-15",
   "exists": true,
   "via": "Crossref",
   "fetched_title": "Geometric Topology in Dimensions 2 and 3 ",
   "locations": {
+   "Chapter: Separation properties of polygons in R 2|10.1007/978-1-4612-9906-6_3": {
+    "verified": true,
+    "snippet": "Separation properties of polygons in R 2 ",
+    "why": null
+   },
    "Chapter: The Hauptvermutung; Tame imbedding|10.1007/978-1-4612-9906-6_37": {
     "verified": true,
     "snippet": "The Hauptvermutung; Tame imbedding ",
@@ -2940,6 +2963,11 @@
    "Chapter: The Jordan curve theorem|10.1007/978-1-4612-9906-6_5": {
     "verified": true,
     "snippet": "The Jordan curve theorem ",
+    "why": null
+   },
+   "Chapter: The Schönflies theorem for polygons in R 2|10.1007/978-1-4612-9906-6_4": {
+    "verified": true,
+    "snippet": "The Schönflies theorem for polygons in R 2 ",
     "why": null
    },
    "Chapter: The Schönflies theorem|10.1007/978-1-4612-9906-6_10": {
@@ -2958,7 +2986,7 @@
     "why": null
    }
   },
-  "citations": 439,
+  "citations": 443,
   "citations_via": "OpenAlex"
  },
  "mukhametzhanov-zhiboedov-2019": {
@@ -3580,6 +3608,15 @@
    }
   },
   "citations": 2128,
+  "citations_via": "OpenAlex"
+ },
+ "thomassen-1992": {
+  "checked": "2026-11-15",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "The Jordan-Schönflies Theorem and the Classification of Surfaces ",
+  "locations": {},
+  "citations": 100,
   "citations_via": "OpenAlex"
  },
  "tong-2009": {

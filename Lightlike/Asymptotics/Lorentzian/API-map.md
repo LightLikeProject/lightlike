@@ -1,4 +1,4 @@
-# Lightlike/Asymptotics/Lorentzian
+# Stationary phase for the Lorentzian EPRL vertex
 
 ## Abstract (Alpha)
 
@@ -104,6 +104,14 @@ named hypotheses, that the chart's tangent space contains the group variations a
 remainder bound holds for every order, and it excludes the single vector geometry of eq. (55),
 where the normals close. Two opposite triangles close, and one triangle does not [13].
 
+The vertex amplitude itself is written with the fifth `SL(2, ℂ)` element fixed to `1` and the chart
+`z = (1, w)` of each `ℂP¹`; its integrand is measurable, bounded by the product of the densities of
+`Ω` wherever no overlap vanishes, and each density is integrable on `ℂ` [14]. The finiteness of the
+whole integral is not proved here; the action is in the power form, so its exponential is the
+EPRL integrand for every doubled spin; at an odd doubled spin and a point where the logarithm of
+the earlier form changes branch, the two forms differ by `-1`, and the bound `|e^S| ≤ 1` fails
+for a negative spin [15].
+
 ## Lean References
 
 1. Lightlike/Asymptotics/Lorentzian/Action.lean - `Asymptotics.Lorentzian.triWeight_le_one`,
@@ -156,6 +164,13 @@ where the normals close. Two opposite triangles close, and one triangle does not
     `Asymptotics.Lorentzian.eq57Constant_neg_sgn`
 13. Lightlike/Asymptotics/Lorentzian/NonClosing.lean - `Asymptotics.Lorentzian.lorVertex_suppressed`,
     `Asymptotics.Lorentzian.closing_violates_hnoclose`, `Asymptotics.Lorentzian.single_satisfies_hnoclose`
+14. Lightlike/Asymptotics/Lorentzian/Amplitude.lean - `Asymptotics.Lorentzian.lorIntegrand`,
+    `Asymptotics.Lorentzian.lorVertex`, `Asymptotics.Lorentzian.measurable_lorIntegrand`,
+    `Asymptotics.Lorentzian.norm_lorIntegrand_le`, `Asymptotics.Lorentzian.integrable_lorEdgeDensity`,
+    `Asymptotics.Lorentzian.lorEdgeDensity_one`
+15. Lightlike/Asymptotics/Lorentzian/ActionTests.lean - `Asymptotics.Lorentzian.exp_triAction_odd_sign`,
+    `Asymptotics.Lorentzian.exp_triAction_even_agree`,
+    `Asymptotics.Lorentzian.triWeight_neg_spin_gt_one`
 
 ## References
 
