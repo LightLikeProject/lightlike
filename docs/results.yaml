@@ -1217,3 +1217,16 @@
   review: kernel-checked
   note: "The block structure of the Hessian of BDFHP Appendix A, eqs. (58), (59), with the node block of eq. (61): z_e appears only in the term of the edge e (hessZZ_cross, no hypothesis), and the end terms at two different nodes do not couple (hessXX_cross; hypothesis: the product of the two overlaps of every edge is off the cut of the logarithm at X_a to X_a Ya(s) for s near 0, with Yb 0 = 1 and Yb' = Yb L). The chart order of hessBlockMatrix is (theta1, theta2, theta3, phi1, phi2, phi3) for each of the nodes X_1 to X_4 (X_5 is gauge fixed), then (u, v) with w = u + i v for each of the ten edges. hessBlockMatrix collects hessXX_block (through the polarisation nodeBilin of the quadratic form nodeQuad), hessZZ_block and hessXZ_block. For this Lorentzian integral with spinor variables, Re(-H) is positive semidefinite with a kernel of dimension at least 4 (44 variables, 40 linearised alignment conditions): measured at the regular simplex, exactly 4 for gamma = 0.5, 1 and 4, with Re S falling off as the fourth power along the kernel (scripts/asymptotics/lorentzian_hessian_kernel_check.py). So the nondegeneracy of -H is not implied by positivity of the real part; it is checked numerically at the regular simplex (Im(-H) is injective on the kernel, smallest singular value 2.0 at gamma = 0.5), not proved. NOT PROVED: that hessBlockMatrix is the matrix of second derivatives of the action in a chart at a critical point (needs the chart and the vanishing of the first derivative), and the nondegeneracy of the matrix (BDFHP eq. (57) assumes it without proof, Sec. 6.4, p. 30)."
   since: unreleased
+- id: LL-XXXX-d
+  title: The second derivative of the Lorentzian vertex action at a critical configuration along a curve through a node depends only on the velocity of the curve, not on its acceleration
+  area: Asymptotics
+  file: Lightlike/Asymptotics/Lorentzian/HessianNode.lean
+  decls: [Lightlike.Asymptotics.Lorentzian.hessXX_curve, Lightlike.Asymptotics.Lorentzian.srcCoeff_adj_gen, Lightlike.Asymptotics.Lorentzian.tgtCoeff_adj_gen]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: bdfhp-2010, location: "eq. (61)", check: "node block"}
+  review: kernel-checked
+  note: "At a critical configuration (IsLorCritical, critical spinors), with p = gamma k, unit boundary spinors, closure at the node, and the overlap products off the cut of the logarithm, the second derivative of lorAction along X_a Y(t) for a curve Y with Y(0) = 1 and Y' = Y genMat(cv(t)), cv differentiable at 0, equals the sum of the end formulas of hessXX_block at the velocity cv(0): the derivative cv'(0) contributes the first variation in the direction genMat(cv'(0)), which is zero by closure (srcCoeff_adj_gen, tgtCoeff_adj_gen identify it with the logarithmic derivative). hessXX_block is the case of a constant velocity. This is the independence of the Hessian of the curve at a critical point for the node variables. NOT PROVED: the same for the spinor variables and the mixed block (hessZZ_block and hessXZ_block do not need criticality and are stated for straight lines in z), and the identification of the matrix of second derivatives in a chart with hessBlockMatrix (needs the chart and the congruence by its differential)."
+  since: unreleased

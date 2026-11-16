@@ -62,14 +62,6 @@ theorem hessZZ_cross (j p : Fin 10 → ℝ) (g : BdryData) (X : Fin 5 → SL2C) 
   rw [hfun]
   exact deriv_const _ _
 
-/-- `srcCoeff` vanishes for the zero direction. -/
-theorem srcCoeff_zero_dir (n : ℕ) (p : ℝ) (ξ Z : Spinor) : srcCoeff n p ξ Z 0 = 0 := by
-  simp [srcCoeff]
-
-/-- `tgtCoeff` vanishes for the zero direction. -/
-theorem tgtCoeff_zero_dir (n : ℕ) (p : ℝ) (ξ' Z' : Spinor) : tgtCoeff n p ξ' Z' 0 = 0 := by
-  simp [tgtCoeff]
-
 /-- **The node blocks are decoupled** (BDFHP (59): "derivatives with respect to two different variables will be
 zero"): for two different nodes `a ≠ b` the mixed second derivative of the vertex action along
 `X_a ↦ X_a Ya(s)` and `X_b ↦ X_b Yb(t)` (`Yb 0 = 1`, `Yb' = Yb L`) is `0`. The first variation in `t` at a

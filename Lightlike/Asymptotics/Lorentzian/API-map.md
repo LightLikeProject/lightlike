@@ -268,7 +268,8 @@ matrix of second derivatives in a chart is not proved.
     `Asymptotics.Lorentzian.deriv_deriv_triAction_line`, `Asymptotics.Lorentzian.zzWirtinger`,
     `Asymptotics.Lorentzian.hessZZ_block`, `Asymptotics.Lorentzian.hessXZ_block`,
     `Asymptotics.Lorentzian.xzSource`, `Asymptotics.Lorentzian.xzTarget`,
-    `Asymptotics.Lorentzian.hasDerivAt_srcCoeff_gen`
+    `Asymptotics.Lorentzian.hasDerivAt_srcCoeff_gen`, `Asymptotics.Lorentzian.hessXX_curve`,
+    `Asymptotics.Lorentzian.srcCoeff_adj_gen`, `Asymptotics.Lorentzian.tgtCoeff_adj_gen`
 30. Lightlike/Asymptotics/Lorentzian/HessianAssembly.lean - `Asymptotics.Lorentzian.hessZZ_cross`,
     `Asymptotics.Lorentzian.hessXX_cross`, `Asymptotics.Lorentzian.nodeQuad`,
     `Asymptotics.Lorentzian.nodeBilin`, `Asymptotics.Lorentzian.hessBlockMatrix`,

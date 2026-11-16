@@ -16,7 +16,8 @@ fixed, is the sum over the ends at the node `a` of `endForm`: the closed form of
 * `hasDerivAt_srcCoeff`, `hasDerivAt_tgtCoeff`: the derivative of the first-variation coefficients
   of one triangle along a one-parameter orbit.
 * `hasDerivAt_srcCoeff_eval`, `hasDerivAt_tgtCoeff_eval`: their values in `α, β, m`.
-* `hessXX_block`: the block, `Σ_{e ∋ a} endForm`.
+* `hessXX_block`: the block, `Σ_{e ∋ a} endForm`; `hessXX_curve`: the same along any curve `Y' = Y · genMat (cv t)`
+  (the acceleration of the velocity does not contribute: closure at the node).
 * `hessZZ_line`: the second derivative of the vertex action along a straight line in one spinor `z_e`
   (the quadratic form of the block `H^{zz}`), from `hasDerivAt_srcCoeff_line`, `hasDerivAt_tgtCoeff_line`
   and `deriv_deriv_triAction_line`.
@@ -99,24 +100,23 @@ noncomputable def srcCoeff (n : ℕ) (p : ℝ) (ξ Z W : Spinor) : ℂ :=
 /-- **Derivative of the source coefficient along a one-parameter orbit** `Z' = M Z`, at `Z(0) = ξ`
 with `‖ξ‖ = 1`. -/
 theorem hasDerivAt_srcCoeff (n : ℕ) (p : ℝ) (M : Matrix (Fin 2) (Fin 2) ℂ) {ξ : Spinor}
-    (hξ : ‖ξ‖ = 1) {Z : ℝ → Spinor} (hZ : ∀ t, HasDerivAt Z (spinAct M (Z t)) t) (hZ0 : Z 0 = ξ) :
+    (hξ : ‖ξ‖ = 1) {Z : ℝ → Spinor} (hZ : HasDerivAt Z (spinAct M (Z 0)) 0) (hZ0 : Z 0 = ξ) :
     HasDerivAt (fun t => srcCoeff n p ξ (Z t) (spinAct M (Z t)))
       ((n : ℂ) * (inner ℂ (spinAct M (spinAct M ξ)) ξ - inner ℂ (spinAct M ξ) ξ ^ 2) -
         ((n : ℂ) + 2 * Complex.I * p) *
           ((‖spinAct M ξ‖ ^ 2 + (inner ℂ ξ (spinAct M (spinAct M ξ))).re -
             2 * (inner ℂ ξ (spinAct M ξ)).re ^ 2 : ℝ) : ℂ)) 0 := by
-  have hW : ∀ t, HasDerivAt (fun s => spinAct M (Z s)) (spinAct M (spinAct M (Z t))) t := by
-    intro t
-    have := hasDerivAt_spinAct_at (M := fun _ : ℝ => M) (M' := 0) (t := t)
-      (fun i j => by simpa using hasDerivAt_const t (M i j)) (hZ t)
-    have h0 : spinAct (0 : Matrix (Fin 2) (Fin 2) ℂ) (Z t) = 0 := by
+  have hW0 : HasDerivAt (fun s => spinAct M (Z s)) (spinAct M (spinAct M (Z 0))) 0 := by
+    have := hasDerivAt_spinAct_at (M := fun _ : ℝ => M) (M' := 0) (t := 0)
+      (fun i j => by simpa using hasDerivAt_const (0 : ℝ) (M i j)) hZ
+    have h0 : spinAct (0 : Matrix (Fin 2) (Fin 2) ℂ) (Z 0) = 0 := by
       ext i; fin_cases i <;> simp
     simpa [h0] using this
   have hc0 : (0 : Spinor) = 0 := rfl
-  have hN := hasDerivAt_inner_spinor (hW 0) (hasDerivAt_const (0 : ℝ) ξ)
-  have hD := hasDerivAt_inner_spinor (hZ 0) (hasDerivAt_const (0 : ℝ) ξ)
-  have hR := hasDerivAt_inner_spinor (hZ 0) (hW 0)
-  have hQ := hasDerivAt_inner_spinor (hZ 0) (hZ 0)
+  have hN := hasDerivAt_inner_spinor hW0 (hasDerivAt_const (0 : ℝ) ξ)
+  have hD := hasDerivAt_inner_spinor hZ (hasDerivAt_const (0 : ℝ) ξ)
+  have hR := hasDerivAt_inner_spinor hZ hW0
+  have hQ := hasDerivAt_inner_spinor hZ hZ
   rw [hZ0] at hN hD hR hQ
   have hRre : HasDerivAt (fun t => (inner ℂ (Z t) (spinAct M (Z t))).re)
       (inner ℂ (spinAct M ξ) (spinAct M ξ) + inner ℂ ξ (spinAct M (spinAct M ξ))).re 0 := by
@@ -215,7 +215,7 @@ theorem srcCoeff_smul (n : ℕ) (p : ℝ) (ξ Z W : Spinor) {μ : ℂ} (hμ : μ
 `J`-conjugate matrix `genMat (-conj d)` and `-p`. -/
 theorem hasDerivAt_tgtCoeff (n : ℕ) (p : ℝ) (d : Fin 3 → ℂ) {ξ' : Spinor} (hξ' : ‖ξ'‖ = 1)
     {lam : ℂ} (hlam : lam ≠ 0) {Z : ℝ → Spinor}
-    (hZ : ∀ t, HasDerivAt Z (spinAct (genMat d) (Z t)) t) (hZ0 : Z 0 = lam • jMap ξ') :
+    (hZ : HasDerivAt Z (spinAct (genMat d) (Z 0)) 0) (hZ0 : Z 0 = lam • jMap ξ') :
     HasDerivAt (fun t => tgtCoeff n p ξ' (Z t) (spinAct (genMat d) (Z t)))
       ((n : ℂ) * (inner ℂ (spinAct (genMat fun i => -conj (d i)) (spinAct (genMat fun i => -conj (d i)) ξ')) ξ' -
           inner ℂ (spinAct (genMat fun i => -conj (d i)) ξ') ξ' ^ 2) -
@@ -227,9 +227,8 @@ theorem hasDerivAt_tgtCoeff (n : ℕ) (p : ℝ) (d : Fin 3 → ℂ) {ξ' : Spino
   have hlc : (-(conj lam)) ≠ 0 := by simpa using hlam
   set μ : ℂ := (-(conj lam))⁻¹ with hμ
   have hμ0 : μ ≠ 0 := inv_ne_zero hlc
-  have hY : ∀ t, HasDerivAt (fun s => μ • jMap (Z s)) (spinAct (genMat d') (μ • jMap (Z t))) t := by
-    intro t
-    have := (hasDerivAt_jMap (hZ t)).const_smul μ
+  have hY : HasDerivAt (fun s => μ • jMap (Z s)) (spinAct (genMat d') (μ • jMap (Z 0))) 0 := by
+    have := (hasDerivAt_jMap hZ).const_smul μ
     refine this.congr_deriv ?_
     rw [jMap_spinAct_genMat, spinAct_smul]
   have hY0 : μ • jMap (Z 0) = ξ' := by
@@ -307,7 +306,7 @@ noncomputable def endForm (k p σ : ℝ) (m α β : Fin 3 → ℝ) : ℂ :=
 coefficient has derivative `endForm (n/2) p 1 + i p m·(α×β)`. -/
 theorem hasDerivAt_srcCoeff_eval (n : ℕ) (p : ℝ) (α β : Fin 3 → ℝ) {ξ : Spinor} (hξ : ‖ξ‖ = 1)
     {Z : ℝ → Spinor}
-    (hZ : ∀ t, HasDerivAt Z (spinAct (genMat fun i => (β i : ℂ) - Complex.I * α i) (Z t)) t)
+    (hZ : HasDerivAt Z (spinAct (genMat fun i => (β i : ℂ) - Complex.I * α i) (Z 0)) 0)
     (hZ0 : Z 0 = ξ) :
     HasDerivAt (fun t => srcCoeff n p ξ (Z t)
         (spinAct (genMat fun i => (β i : ℂ) - Complex.I * α i) (Z t)))
@@ -326,7 +325,7 @@ theorem hasDerivAt_srcCoeff_eval (n : ℕ) (p : ℝ) (α β : Fin 3 → ℝ) {ξ
 target coefficient has derivative `endForm (n/2) p (-1) + i p m·(α×β)`. -/
 theorem hasDerivAt_tgtCoeff_eval (n : ℕ) (p : ℝ) (α β : Fin 3 → ℝ) {ξ' : Spinor} (hξ' : ‖ξ'‖ = 1)
     {lam : ℂ} (hlam : lam ≠ 0) {Z : ℝ → Spinor}
-    (hZ : ∀ t, HasDerivAt Z (spinAct (genMat fun i => (β i : ℂ) - Complex.I * α i) (Z t)) t)
+    (hZ : HasDerivAt Z (spinAct (genMat fun i => (β i : ℂ) - Complex.I * α i) (Z 0)) 0)
     (hZ0 : Z 0 = lam • jMap ξ') :
     HasDerivAt (fun t => tgtCoeff n p ξ' (Z t)
         (spinAct (genMat fun i => (β i : ℂ) - Complex.I * α i) (Z t)))
@@ -344,17 +343,18 @@ theorem hasDerivAt_tgtCoeff_eval (n : ℕ) (p : ℝ) (α β : Fin 3 → ℝ) {ξ
   push_cast
   ring
 
-/-- **The orbit of a spinor under the conjugate transpose of a one-parameter subgroup**:
-if `Y' = Y · L` (entrywise) then `s ↦ (Y s)† v` has derivative `L† ((Y t)† v)`. -/
-theorem hasDerivAt_orbit (L : Matrix (Fin 2) (Fin 2) ℂ) (Y : ℝ → SL2C)
-    (hY : ∀ t i k, HasDerivAt (fun s => (Y s : Matrix (Fin 2) (Fin 2) ℂ) i k)
-      (((Y t : Matrix (Fin 2) (Fin 2) ℂ) * L) i k) t) (v : Spinor) (t : ℝ) :
+/-- **The orbit of a spinor under the conjugate transpose of a curve in `SL(2, ℂ)`, pointwise**: if at the
+point `t` the curve has the entrywise derivative `Y t · L`, then `s ↦ (Y s)† v` has derivative `L† ((Y t)† v)`
+at `t`. -/
+theorem hasDerivAt_orbit_pt (L : Matrix (Fin 2) (Fin 2) ℂ) (Y : ℝ → SL2C) (t : ℝ)
+    (hY : ∀ i k, HasDerivAt (fun s => (Y s : Matrix (Fin 2) (Fin 2) ℂ) i k)
+      (((Y t : Matrix (Fin 2) (Fin 2) ℂ) * L) i k) t) (v : Spinor) :
     HasDerivAt (fun s => spinAct (Y s : Matrix (Fin 2) (Fin 2) ℂ)ᴴ v)
       (spinAct Lᴴ (spinAct (Y t : Matrix (Fin 2) (Fin 2) ℂ)ᴴ v)) t := by
   have hc : ∀ i k, HasDerivAt (fun s => ((Y s : Matrix (Fin 2) (Fin 2) ℂ)ᴴ) i k)
       ((((Y t : Matrix (Fin 2) (Fin 2) ℂ) * L)ᴴ) i k) t := by
     intro i k
-    have := (hY t k i).star
+    have := (hY k i).star
     simpa [Matrix.conjTranspose_apply] using this
   have := hasDerivAt_spinAct_at (M := fun s => (Y s : Matrix (Fin 2) (Fin 2) ℂ)ᴴ)
     (M' := ((Y t : Matrix (Fin 2) (Fin 2) ℂ) * L)ᴴ) (v := fun _ => v) (v' := 0) (t := t) hc
@@ -364,6 +364,15 @@ theorem hasDerivAt_orbit (L : Matrix (Fin 2) (Fin 2) ℂ) (Y : ℝ → SL2C)
     ext i; fin_cases i <;> simp
   rw [h0, add_zero, Matrix.conjTranspose_mul, spinAct_mul]
 
+/-- **The orbit of a spinor under the conjugate transpose of a one-parameter subgroup**:
+if `Y' = Y · L` (entrywise) then `s ↦ (Y s)† v` has derivative `L† ((Y t)† v)`. -/
+theorem hasDerivAt_orbit (L : Matrix (Fin 2) (Fin 2) ℂ) (Y : ℝ → SL2C)
+    (hY : ∀ t i k, HasDerivAt (fun s => (Y s : Matrix (Fin 2) (Fin 2) ℂ) i k)
+      (((Y t : Matrix (Fin 2) (Fin 2) ℂ) * L) i k) t) (v : Spinor) (t : ℝ) :
+    HasDerivAt (fun s => spinAct (Y s : Matrix (Fin 2) (Fin 2) ℂ)ᴴ v)
+      (spinAct Lᴴ (spinAct (Y t : Matrix (Fin 2) (Fin 2) ℂ)ᴴ v)) t :=
+  hasDerivAt_orbit_pt L Y t (hY t) v
+
 /-- The spin vector of the end at node `a` (the vector of the closure). -/
 noncomputable def endVec (g : BdryData) (e : Fin 10) (a : Fin 5) : Fin 3 → ℝ :=
   if edgeSrc e = a then spinVec (firstCol (g e 0)) else spinVec (firstCol (g e 1))
@@ -371,22 +380,151 @@ noncomputable def endVec (g : BdryData) (e : Fin 10) (a : Fin 5) : Fin 3 → ℝ
 /-- `+1` if `a` is the source of `e`, `-1` otherwise. -/
 def endSign (e : Fin 10) (a : Fin 5) : ℝ := if edgeSrc e = a then 1 else -1
 
-/-- **The Hessian block `H^{X_a X_a}` of the vertex action at a critical configuration** (BDFHP
-Appendix A, eq. (61), in the normalisation of the generators `J = iσ/2`, `K = σ/2`).
+/-- The derivative of `srcCoeff n p ξ (Z s) (W s)` at a point where `Z`, `W` have values `Z`, `W` and
+derivatives `Z'`, `W'`. -/
+noncomputable def srcGenDeriv (n : ℕ) (p : ℝ) (ξ Z W Z' W' : Spinor) : ℂ :=
+  (n : ℂ) * (inner ℂ W' ξ / inner ℂ Z ξ - inner ℂ W ξ * inner ℂ Z' ξ / inner ℂ Z ξ ^ 2) -
+    ((n : ℂ) + 2 * Complex.I * p) *
+      ((((inner ℂ Z' W).re + (inner ℂ Z W').re) / ‖Z‖ ^ 2 -
+        2 * (inner ℂ Z W).re * (inner ℂ Z Z').re / ‖Z‖ ^ 4 : ℝ) : ℂ)
 
-Hypotheses: `X₀` satisfies the z-eliminated critical equations (`IsLorCritical`) and the spinors are
-the critical ones (`critZ`); the boundary spinors `ξ_ab = firstCol (g e 0)` and `ξ_ba = firstCol
-(g e 1)` have norm one; `j e = n e / 2` and `p e = γ j e` (BDFHP eq. (24)); on every edge the product
-of the overlaps `⟨Z,ξ⟩⟨Jξ',Z'⟩ = r c` at the critical point is off the cut of the logarithm
-(`∈ slitPlane`); the vector closure `Σ_e j e m_e = 0` holds at the node `a`, with `m_e` the spin vector
-of the spinor at the `a`-end of `e` (BDFHP eq. (25)); `Y : ℝ → SL(2,ℂ)` has `Y 0 = 1` and entrywise
-`Y' = Y · genMat (β + iα)`.
+/-- **Derivative of the source coefficient along two general curves**: if `Z`, `W` have derivatives
+`Z'`, `W'` at `t` and `⟨Z t, ξ⟩ ≠ 0`, `Z t ≠ 0`, the derivative of `s ↦ srcCoeff n p ξ (Z s) (W s)` is
+`srcGenDeriv n p ξ (Z t) (W t) Z' W'`. It generalises `hasDerivAt_srcCoeff_line` (`Z' = W`, `W' = 0`)
+and `hasDerivAt_srcCoeff` (`Z' = M Z`, `W = M Z`). -/
+theorem hasDerivAt_srcCoeff_gen (n : ℕ) (p : ℝ) {ξ : Spinor} {Z W : ℝ → Spinor} {Z' W' : Spinor} {t : ℝ}
+    (hZ : HasDerivAt Z Z' t) (hW : HasDerivAt W W' t) (h1 : inner ℂ (Z t) ξ ≠ 0) (h0 : Z t ≠ 0) :
+    HasDerivAt (fun s => srcCoeff n p ξ (Z s) (W s)) (srcGenDeriv n p ξ (Z t) (W t) Z' W') t := by
+  unfold srcGenDeriv
+  have hz : ‖Z t‖ ≠ 0 := norm_ne_zero_iff.mpr h0
+  have hD := hasDerivAt_inner_spinor hZ (hasDerivAt_const t ξ)
+  have hN := hasDerivAt_inner_spinor hW (hasDerivAt_const t ξ)
+  have hR := hasDerivAt_inner_spinor hZ hW
+  have hQ := hasDerivAt_inner_spinor hZ hZ
+  have hRre : HasDerivAt (fun s : ℝ => (inner ℂ (Z s) (W s)).re)
+      (inner ℂ Z' (W t) + inner ℂ (Z t) W').re t :=
+    Complex.reCLM.hasFDerivAt.comp_hasDerivAt t hR
+  have hQre : HasDerivAt (fun s : ℝ => ‖Z s‖ ^ 2)
+      (2 * (inner ℂ (Z t) Z').re) t := by
+    have := Complex.reCLM.hasFDerivAt.comp_hasDerivAt t hQ
+    have e : (fun s : ℝ => (inner ℂ (Z s) (Z s)).re) = fun s : ℝ => ‖Z s‖ ^ 2 := by
+      funext s; rw [inner_self_eq_norm_sq_to_K]; norm_cast
+    rw [← e]
+    refine this.congr_deriv ?_
+    have : (inner ℂ Z' (Z t)).re = (inner ℂ (Z t) Z').re := by
+      rw [← inner_conj_symm (Z t) Z', Complex.conj_re]
+    simp only [Complex.reCLM_apply, Complex.add_re, this]; ring
+  have hQ0 : ‖Z t‖ ^ 2 ≠ 0 := pow_ne_zero 2 hz
+  have hq := hRre.div hQre hQ0
+  have hqC := Complex.ofRealCLM.hasFDerivAt.comp_hasDerivAt t hq
+  have hnd := hD.inv h1
+  have hfin := ((hN.mul hnd).const_mul (n : ℂ)).sub (hqC.const_mul ((n : ℂ) + 2 * Complex.I * p))
+  refine hfin.congr_deriv ?_
+  simp only [Complex.ofRealCLM_apply, inner_zero_right, add_zero, Pi.inv_apply, Complex.add_re,
+    Complex.ofReal_add]
+  push_cast
+  have hZ2 : (‖Z t‖ : ℂ) ^ 2 ≠ 0 := by exact_mod_cast hQ0
+  have h1' : (inner ℂ (Z t) ξ) ^ 2 ≠ 0 := pow_ne_zero 2 h1
+  field_simp
+  ring
 
-Conclusion: the second derivative at `0` of `t ↦ lorAction j p g (X₀ with X₀ a replaced by X₀ a * Y t)
-(critZ g X₀)` equals `Σ_{e ∋ a} endForm (j e) (p e) σ_e m_e α β`, with `σ_e = 1` at a source end and
-`-1` at a target end. The first derivative is not assumed to vanish: it vanishes by closure
-(`hasDerivAt_lorAction_critical`), which is not needed here. -/
-theorem hessXX_block {j p : Fin 10 → ℝ} {n : Fin 10 → ℕ} {γ : ℝ}
+/-- **Derivative of the target coefficient along two general curves**, from `hasDerivAt_srcCoeff_gen`
+with `p ↦ -p` and the curves `J Z`, `J W` (`tgtCoeff_eq`, `hasDerivAt_jMap`). -/
+theorem hasDerivAt_tgtCoeff_gen (n : ℕ) (p : ℝ) {ξ' : Spinor} {Z W : ℝ → Spinor} {Z' W' : Spinor}
+    {t : ℝ} (hZ : HasDerivAt Z Z' t) (hW : HasDerivAt W W' t) (h1 : inner ℂ (jMap (Z t)) ξ' ≠ 0)
+    (h0 : Z t ≠ 0) :
+    HasDerivAt (fun s => tgtCoeff n p ξ' (Z s) (W s))
+      (srcGenDeriv n (-p) ξ' (jMap (Z t)) (jMap (W t)) (jMap Z') (jMap W')) t := by
+  have hfun : (fun s => tgtCoeff n p ξ' (Z s) (W s)) =
+      fun s => srcCoeff n (-p) ξ' (jMap (Z s)) (jMap (W s)) := funext fun s => tgtCoeff_eq n p ξ' _ _
+  rw [hfun]
+  exact hasDerivAt_srcCoeff_gen n (-p) (hasDerivAt_jMap hZ) (hasDerivAt_jMap hW) h1
+    (jMap_ne_zero h0)
+
+/-- `⟨J Y, ξ'⟩ = -⟨J ξ', Y⟩`. -/
+theorem inner_jmap_swap (ξ' Y : Spinor) : inner ℂ (jMap Y) ξ' = -inner ℂ (jMap ξ') Y := by
+  have : Y = -jMap (jMap Y) := by rw [jMap_jMap]; simp
+  conv_rhs => rw [this]
+  rw [inner_neg_right, inner_jMap_jMap, inner_conj_symm, neg_neg]
+
+/-- `srcCoeff` vanishes for the zero direction. -/
+theorem srcCoeff_zero_dir (n : ℕ) (p : ℝ) (ξ Z : Spinor) : srcCoeff n p ξ Z 0 = 0 := by
+  simp [srcCoeff]
+
+/-- `tgtCoeff` vanishes for the zero direction. -/
+theorem tgtCoeff_zero_dir (n : ℕ) (p : ℝ) (ξ' Z' : Spinor) : tgtCoeff n p ξ' Z' 0 = 0 := by
+  simp [tgtCoeff]
+
+/-- `srcCoeff` is additive in the direction. -/
+theorem srcCoeff_add_dir (n : ℕ) (p : ℝ) (ξ Z W₁ W₂ : Spinor) :
+    srcCoeff n p ξ Z (W₁ + W₂) = srcCoeff n p ξ Z W₁ + srcCoeff n p ξ Z W₂ := by
+  simp only [srcCoeff, inner_add_left, inner_add_right, Complex.add_re, add_div, Complex.ofReal_add]
+  push_cast
+  ring
+
+/-- `tgtCoeff` is additive in the direction. -/
+theorem tgtCoeff_add_dir (n : ℕ) (p : ℝ) (ξ' Z W₁ W₂ : Spinor) :
+    tgtCoeff n p ξ' Z (W₁ + W₂) = tgtCoeff n p ξ' Z W₁ + tgtCoeff n p ξ' Z W₂ := by
+  rw [tgtCoeff_eq, tgtCoeff_eq, tgtCoeff_eq, jMap_add]
+  exact srcCoeff_add_dir _ _ _ _ _ _
+
+/-- **The first variation of the source coefficient along `(genMat c)†`**: for a unit spinor `ξ`,
+`srcCoeff n p ξ ξ ((genMat c)† ξ) = logDeriv n p c ξ`. -/
+theorem srcCoeff_adj_gen (n : ℕ) (p : ℝ) (c : Fin 3 → ℂ) {ξ : Spinor} (hξ : ‖ξ‖ = 1) :
+    srcCoeff n p ξ ξ (spinAct (genMat c)ᴴ ξ) = logDeriv n p c ξ := by
+  have hin : inner ℂ ξ ξ = 1 := by rw [inner_self_eq_norm_sq_to_K, hξ]; simp
+  have h1 : inner ℂ (spinAct (genMat c)ᴴ ξ) ξ = (1 / 2 : ℂ) * ∑ i, c i * (spinVec ξ i : ℂ) := by
+    rw [genMat_conjTranspose, ← inner_conj_symm, inner_genMat]
+    simp [map_sum, Complex.conj_ofReal, map_ofNat]
+  have h2 : (inner ℂ ξ (spinAct (genMat c)ᴴ ξ)).re = (1 / 2) * ∑ i, (c i).re * spinVec ξ i := by
+    rw [genMat_conjTranspose, inner_genMat]
+    simp [Complex.re_sum, Complex.conj_re]
+  unfold srcCoeff logDeriv
+  rw [h1, hin, hξ, h2]
+  push_cast
+  simp
+  ring
+
+/-- **The target version**: for `Z' = λ J ξ'`, `λ ≠ 0`, `‖ξ'‖ = 1`,
+`tgtCoeff n p ξ' Z' ((genMat c)† Z') = logDeriv n p c ξ'`. -/
+theorem tgtCoeff_adj_gen (n : ℕ) (p : ℝ) (c : Fin 3 → ℂ) {ξ' : Spinor} (hξ' : ‖ξ'‖ = 1) {lam : ℂ}
+    (hlam : lam ≠ 0) :
+    tgtCoeff n p ξ' (lam • jMap ξ') (spinAct (genMat c)ᴴ (lam • jMap ξ')) = logDeriv n p c ξ' := by
+  have hlc : (-(conj lam)) ≠ 0 := by simpa using hlam
+  have hJ : jMap (lam • jMap ξ') = (-(conj lam)) • ξ' := by
+    ext i; fin_cases i <;> simp [jMap_zero_apply, jMap_one_apply]
+  rw [tgtCoeff_eq, genMat_conjTranspose, jMap_spinAct_genMat, hJ, spinAct_smul,
+    srcCoeff_smul n (-p) ξ' _ _ hlc]
+  have : (fun i => -conj ((fun i => conj (c i)) i)) = fun i => -(c i) := by
+    funext i; simp
+  rw [this]
+  have h := srcCoeff_adj_gen n (-p) (fun i => -conj (c i)) hξ'
+  rw [genMat_conjTranspose] at h
+  have e2 : (fun i => conj ((fun i => -conj (c i)) i)) = fun i => -(c i) := by
+    funext i; simp
+  rw [e2] at h
+  rw [h, logDeriv_neg_conj]
+
+/-- The entries of `genMat (c t)` are differentiable when `c` is. -/
+theorem hasDerivAt_genMat_entry {c : ℝ → Fin 3 → ℂ} {c' : Fin 3 → ℂ} (hc : HasDerivAt c c' 0) (i j : Fin 2) :
+    HasDerivAt (fun t => genMat (c t) i j) (genMat c' i j) 0 := by
+  have h := hasDerivAt_pi.mp hc
+  fin_cases i <;> fin_cases j
+  · simpa [genMat] using (h 2).div_const 2
+  · simpa [genMat] using ((h 0).sub ((h 1).const_mul Complex.I)).div_const 2
+  · simpa [genMat] using ((h 0).add ((h 1).const_mul Complex.I)).div_const 2
+  · simpa [genMat] using ((h 2).neg).div_const 2
+
+
+/-- **The second variation of the vertex action at one node along a curve with varying velocity** (the
+Hessian of a function at a critical point is independent of the curve). Under the hypotheses of `hessXX_block`
+(critical configuration `IsLorCritical`, critical spinors `critZ`, `p = γ k`, unit boundary spinors, the overlap
+products off the cut of the logarithm, closure at the node `a`), let `Y` be a curve in `SL(2, ℂ)` with `Y 0 = 1`
+and `Y' t = Y t · genMat (cv t)` for all `t`, with `cv` differentiable at `0`. Then the second derivative at `0` of
+`t ↦ lorAction` along `X_a Y t` (the other group elements and the spinors fixed) is the sum over the ends at `a` of
+`endForm` at the velocity `cv 0 = β + iα`: the derivative `cv'(0)` of the velocity does not contribute, because it
+gives the first variation in the direction `genMat (cv' 0)`, which is zero by the closure at the node. -/
+theorem hessXX_curve {j p : Fin 10 → ℝ} {n : Fin 10 → ℕ} {γ : ℝ}
     (hj : ∀ e, j e = (n e : ℝ) / 2) (hp : ∀ e, p e = γ * j e) {g : BdryData} {X₀ : Fin 5 → SL2C}
     (hcrit : IsLorCritical g X₀) (hξ : ∀ e, ‖firstCol (g e 0)‖ = 1)
     (hξ' : ∀ e, ‖firstCol (g e 1)‖ = 1)
@@ -397,32 +535,40 @@ theorem hessXX_block {j p : Fin 10 → ℝ} {n : Fin 10 → ℕ} {γ : ℝ}
         Complex.slitPlane)
     (a : Fin 5) (hk : ∀ i, ∑ e, ((if edgeSrc e = a then j e * spinVec (firstCol (g e 0)) i else 0) +
         (if edgeTgt e = a then j e * spinVec (firstCol (g e 1)) i else 0)) = 0)
-    (α β : Fin 3 → ℝ) (Y : ℝ → SL2C) (hY0 : Y 0 = 1)
+    (cv : ℝ → Fin 3 → ℂ) (cv' : Fin 3 → ℂ) (hcv : HasDerivAt cv cv' 0)
+    (Y : ℝ → SL2C) (hY0 : Y 0 = 1)
     (hY : ∀ t i k, HasDerivAt (fun s => (Y s : Matrix (Fin 2) (Fin 2) ℂ) i k)
-      (((Y t : Matrix (Fin 2) (Fin 2) ℂ) *
-        genMat (fun m => (β m : ℂ) + Complex.I * α m)) i k) t) :
+      (((Y t : Matrix (Fin 2) (Fin 2) ℂ) * genMat (cv t)) i k) t) :
     deriv (fun s => deriv (fun t => lorAction j p g (Function.update X₀ a (X₀ a * Y t))
         (critZ g X₀)) s) 0 =
       ∑ e, if edgeSrc e = a ∨ edgeTgt e = a then
-        endForm (j e) (p e) (endSign e a) (endVec g e a) α β else 0 := by
+        endForm (j e) (p e) (endSign e a) (endVec g e a) (fun i => (cv 0 i).im)
+          (fun i => (cv 0 i).re) else 0 := by
+  set α : Fin 3 → ℝ := fun i => (cv 0 i).im with hα
+  set β : Fin 3 → ℝ := fun i => (cv 0 i).re with hβ
+  set Mt : ℝ → Matrix (Fin 2) (Fin 2) ℂ := fun t => (genMat (cv t))ᴴ with hMt
   set M : Matrix (Fin 2) (Fin 2) ℂ := genMat (fun i => (β i : ℂ) - Complex.I * α i) with hM
-  have hMd : (genMat (fun m => (β m : ℂ) + Complex.I * α m))ᴴ = M := by
-    rw [genMat_conjTranspose, hM]; congr 1; funext i; simp [Complex.conj_ofReal, Complex.conj_I]; ring
-  -- the end curves
+  have hM0 : Mt 0 = M := by
+    simp only [hMt, hM, genMat_conjTranspose]
+    congr 1; funext i
+    have hcj : ∀ z : ℂ, conj z = (z.re : ℂ) - Complex.I * z.im := fun z => by
+      apply Complex.ext <;> simp
+    simp [hα, hβ, hcj]
+  have hMent : ∀ i k, HasDerivAt (fun t => Mt t i k) ((genMat cv')ᴴ i k) 0 :=
+    fun i k => hasDerivAt_conjTranspose_entry (fun i j => hasDerivAt_genMat_entry hcv i j) i k
   set Xt : ℝ → Fin 5 → SL2C := fun t => Function.update X₀ a (X₀ a * Y t) with hXt
   set Zs : Fin 10 → ℝ → Spinor := fun e t =>
     spinAct (Xt t (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (critZ g X₀ e) with hZs
   set Zt : Fin 10 → ℝ → Spinor := fun e t =>
     spinAct (Xt t (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (critZ g X₀ e) with hZt
   choose r hr c hc h20 h21 using hcrit
-  have hL : ∀ t i k, HasDerivAt (fun s => (Y s : Matrix (Fin 2) (Fin 2) ℂ) i k)
-      (((Y t : Matrix (Fin 2) (Fin 2) ℂ) * genMat (fun m => (β m : ℂ) + Complex.I * α m)) i k) t := hY
-  have horb := hasDerivAt_orbit (genMat (fun m => (β m : ℂ) + Complex.I * α m)) Y hY
-  rw [hMd] at horb
+  have horb : ∀ t v, HasDerivAt (fun s => spinAct (Y s : Matrix (Fin 2) (Fin 2) ℂ)ᴴ v)
+      (spinAct (Mt t) (spinAct (Y t : Matrix (Fin 2) (Fin 2) ℂ)ᴴ v)) t :=
+    fun t v => hasDerivAt_orbit_pt (genMat (cv t)) Y t (hY t) v
   have hne : ∀ e : Fin 10, edgeSrc e ≠ edgeTgt e := fun e => edgeSrc_ne_edgeTgt e
   -- the source end of an edge
   have hZs : ∀ e t, HasDerivAt (Zs e)
-      (if edgeSrc e = a then spinAct M (Zs e t) else 0) t := by
+      (if edgeSrc e = a then spinAct (Mt t) (Zs e t) else 0) t := by
     intro e t
     by_cases h : edgeSrc e = a
     · have hfun : Zs e = fun s => spinAct (Y s : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (firstCol (g e 0)) := by
@@ -434,7 +580,7 @@ theorem hessXX_block {j p : Fin 10 → ℝ} {n : Fin 10 → ℕ} {γ : ℝ}
         rw [this]
       rw [hfun]
       simp only [h, ↓reduceIte]
-      exact horb (firstCol (g e 0)) t
+      exact horb t (firstCol (g e 0))
     · have hfun : Zs e = fun _ => spinAct (X₀ (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (critZ g X₀ e) := by
         funext s
         simp only [hZs, hXt, Function.update_of_ne h]
@@ -442,7 +588,7 @@ theorem hessXX_block {j p : Fin 10 → ℝ} {n : Fin 10 → ℕ} {γ : ℝ}
       simp only [h, ↓reduceIte]
       exact hasDerivAt_const t _
   have hZt : ∀ e t, HasDerivAt (Zt e)
-      (if edgeTgt e = a then spinAct M (Zt e t) else 0) t := by
+      (if edgeTgt e = a then spinAct (Mt t) (Zt e t) else 0) t := by
     intro e t
     by_cases h : edgeTgt e = a
     · have hfun : Zt e = fun s => spinAct (Y s : Matrix (Fin 2) (Fin 2) ℂ)ᴴ
@@ -452,7 +598,7 @@ theorem hessXX_block {j p : Fin 10 → ℝ} {n : Fin 10 → ℕ} {γ : ℝ}
           Matrix.conjTranspose_mul, spinAct_mul]
       rw [hfun]
       simp only [h, ↓reduceIte]
-      exact horb _ t
+      exact horb t _
     · have hfun : Zt e = fun _ => spinAct (X₀ (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (critZ g X₀ e) := by
         funext s
         simp only [hZt, hXt, Function.update_of_ne h]
@@ -460,8 +606,8 @@ theorem hessXX_block {j p : Fin 10 → ℝ} {n : Fin 10 → ℕ} {γ : ℝ}
       simp only [h, ↓reduceIte]
       exact hasDerivAt_const t _
   -- the first derivative of the action, edge by edge
-  set Ws : Fin 10 → ℝ → Spinor := fun e t => if edgeSrc e = a then spinAct M (Zs e t) else 0 with hWs
-  set Wt : Fin 10 → ℝ → Spinor := fun e t => if edgeTgt e = a then spinAct M (Zt e t) else 0 with hWt
+  set Ws : Fin 10 → ℝ → Spinor := fun e t => if edgeSrc e = a then spinAct (Mt t) (Zs e t) else 0 with hWs
+  set Wt : Fin 10 → ℝ → Spinor := fun e t => if edgeTgt e = a then spinAct (Mt t) (Zt e t) else 0 with hWt
   set D : Fin 10 → ℝ → ℂ := fun e t =>
     srcCoeff (n e) (p e) (firstCol (g e 0)) (Zs e t) (Ws e t) +
       tgtCoeff (n e) (p e) (firstCol (g e 1)) (Zt e t) (Wt e t) with hD
@@ -504,42 +650,142 @@ theorem hessXX_block {j p : Fin 10 → ℝ} {n : Fin 10 → ℕ} {γ : ℝ}
     else if edgeTgt e = a then endForm (j e) (p e) (-1) (spinVec (firstCol (g e 1))) α β +
       Complex.I * p e * (tripleForm (spinVec (firstCol (g e 1))) α β : ℝ)
     else 0 with hV
-  have hDV : ∀ e, HasDerivAt (D e) (V e) 0 := by
+  -- the correction from the acceleration of the velocity
+  set C : Fin 10 → ℂ := fun e =>
+    (if edgeSrc e = a then srcCoeff (n e) (p e) (firstCol (g e 0)) (Zs e 0)
+      (spinAct (genMat cv')ᴴ (Zs e 0)) else 0) +
+    (if edgeTgt e = a then tgtCoeff (n e) (p e) (firstCol (g e 1)) (Zt e 0)
+      (spinAct (genMat cv')ᴴ (Zt e 0)) else 0) with hC
+  have hj0 : jMap (0 : Spinor) = 0 := by ext i; fin_cases i <;> simp
+  have hzero_mat : ∀ v : Spinor, spinAct (0 : Matrix (Fin 2) (Fin 2) ℂ) v = 0 := fun v => by
+    ext i; fin_cases i <;> simp
+  have hWdeq : ∀ (Zc : ℝ → Spinor) (t : ℝ),
+      spinAct (Mt t) (Zc t) = spinAct M (Zc t) + (spinAct (Mt t) (Zc t) - spinAct M (Zc t)) :=
+    fun Zc t => by abel
+  have hdWd : ∀ (Zc : ℝ → Spinor), HasDerivAt Zc (spinAct M (Zc 0)) 0 →
+      HasDerivAt (fun t => spinAct (Mt t) (Zc t) - spinAct M (Zc t))
+        (spinAct (genMat cv')ᴴ (Zc 0)) 0 := by
+    intro Zc hZc
+    have h1 := hasDerivAt_spinAct (M := Mt) (M' := (genMat cv')ᴴ) hMent hZc
+    have h2 := hasDerivAt_spinAct (M := fun _ : ℝ => M) (M' := 0)
+      (fun i j => by simpa using hasDerivAt_const (0 : ℝ) (M i j)) hZc
+    refine (h1.sub h2).congr_deriv ?_
+    rw [hM0, hzero_mat, zero_add]
+    abel
+  have hDV : ∀ e, HasDerivAt (D e) (V e + C e) 0 := by
     intro e
     by_cases hs : edgeSrc e = a
     · have hnt : edgeTgt e ≠ a := fun h => hne e (hs.trans h.symm)
-      have hfun : D e = fun t => srcCoeff (n e) (p e) (firstCol (g e 0)) (Zs e t)
-          (spinAct M (Zs e t)) := by
+      have hZ00 : Zs e 0 = firstCol (g e 0) := by rw [hZ0s]; exact critZ_src g X₀ e
+      have hdZ : HasDerivAt (Zs e) (spinAct M (Zs e 0)) 0 := by
+        have := hZs e 0
+        simpa [hs, hM0] using this
+      have hin : inner ℂ (Zs e 0) (firstCol (g e 0)) ≠ 0 := by
+        rw [hZ00, inner_self_eq_norm_sq_to_K, hξ e]; simp
+      have hne0 : Zs e 0 ≠ 0 := fun h => hin (by rw [h]; simp)
+      have hfun : D e = fun t => srcCoeff (n e) (p e) (firstCol (g e 0)) (Zs e t) (spinAct M (Zs e t)) +
+          srcCoeff (n e) (p e) (firstCol (g e 0)) (Zs e t)
+            (spinAct (Mt t) (Zs e t) - spinAct M (Zs e t)) := by
         funext t
-        simp [hD, hWs, hWt, hs, hnt, tgtCoeff]
+        simp only [hD, hWs, hWt, hs, hnt, ↓reduceIte, tgtCoeff_zero_dir, add_zero]
+        rw [← srcCoeff_add_dir, ← hWdeq (Zs e) t]
       rw [hfun]
-      have h0 : Zs e 0 = firstCol (g e 0) := by rw [hZ0s]; exact critZ_src g X₀ e
-      have := hasDerivAt_srcCoeff_eval (n e) (p e) α β (hξ e)
-        (Z := Zs e) (fun t => by simpa [hs] using hZs e t) h0
-      simp only [hV, hs, ↓reduceIte, ← hj e] at this ⊢
-      exact this
+      have hA := hasDerivAt_srcCoeff_eval (n e) (p e) α β (hξ e) hdZ hZ00
+      have hB := hasDerivAt_srcCoeff_gen (n e) (p e) (ξ := firstCol (g e 0)) hdZ (hdWd (Zs e) hdZ) hin hne0
+      have hW00 : spinAct (Mt 0) (Zs e 0) - spinAct M (Zs e 0) = 0 := by rw [hM0, sub_self]
+      simp only [hW00] at hB
+      have hBv : srcGenDeriv (n e) (p e) (firstCol (g e 0)) (Zs e 0) 0 (spinAct M (Zs e 0))
+          (spinAct (genMat cv')ᴴ (Zs e 0)) =
+          srcCoeff (n e) (p e) (firstCol (g e 0)) (Zs e 0) (spinAct (genMat cv')ᴴ (Zs e 0)) := by
+        simp [srcGenDeriv, srcCoeff]
+      rw [hBv] at hB
+      refine (hA.add hB).congr_deriv ?_
+      simp only [hV, hC, hs, hnt, ↓reduceIte, add_zero]
+      rw [hj e]
     · by_cases ht : edgeTgt e = a
-      · have hfun : D e = fun t => tgtCoeff (n e) (p e) (firstCol (g e 1)) (Zt e t)
-            (spinAct M (Zt e t)) := by
-          funext t
-          simp [hD, hWs, hWt, hs, ht, srcCoeff]
-        rw [hfun]
-        have hr0 : ((r e : ℂ) * c e) ≠ 0 := by
+      · have hr0 : ((r e : ℂ) * c e) ≠ 0 := by
           have : (r e : ℂ) ≠ 0 := by exact_mod_cast (hr e).ne'
           have : c e ≠ 0 := by intro h; have := hc e; rw [h] at this; simp at this
           exact mul_ne_zero ‹(r e : ℂ) ≠ 0› this
-        have h0 : Zt e 0 = ((r e : ℂ) * c e) • jMap (firstCol (g e 1)) := by
+        have hZ00 : Zt e 0 = ((r e : ℂ) * c e) • jMap (firstCol (g e 1)) := by
           rw [hZ0t]; exact critZ_tgt g X₀ e (r e) (c e) (h20 e)
-        have := hasDerivAt_tgtCoeff_eval (n e) (p e) α β (hξ' e) hr0
-          (Z := Zt e) (fun t => by simpa [ht] using hZt e t) h0
-        simp only [hV, hs, ht, ↓reduceIte, ← hj e] at this ⊢
-        exact this
+        have hdZ : HasDerivAt (Zt e) (spinAct M (Zt e 0)) 0 := by
+          have := hZt e 0
+          simpa [ht, hM0] using this
+        have hin' : inner ℂ (jMap (firstCol (g e 1))) (Zt e 0) ≠ 0 := by
+          have hP := hslit e
+          rw [critZ_src g X₀ e, critZ_tgt g X₀ e (r e) (c e) (h20 e)] at hP
+          have h0 : (0 : ℂ) ∉ Complex.slitPlane := by simp [Complex.slitPlane]
+          have hne0 := fun h : _ = (0 : ℂ) => h0 (h ▸ hP)
+          rw [hZ00]
+          exact right_ne_zero_of_mul hne0
+        have hin : inner ℂ (jMap (Zt e 0)) (firstCol (g e 1)) ≠ 0 := by
+          rw [inner_jmap_swap]; exact neg_ne_zero.mpr hin'
+        have hne0 : Zt e 0 ≠ 0 := fun h => hin' (by rw [h]; simp)
+        have hfun : D e = fun t => tgtCoeff (n e) (p e) (firstCol (g e 1)) (Zt e t) (spinAct M (Zt e t)) +
+            tgtCoeff (n e) (p e) (firstCol (g e 1)) (Zt e t)
+              (spinAct (Mt t) (Zt e t) - spinAct M (Zt e t)) := by
+          funext t
+          simp only [hD, hWs, hWt, hs, ht, ↓reduceIte, srcCoeff_zero_dir, zero_add]
+          rw [← tgtCoeff_add_dir, ← hWdeq (Zt e) t]
+        rw [hfun]
+        have hA := hasDerivAt_tgtCoeff_eval (n e) (p e) α β (hξ' e) hr0 hdZ hZ00
+        have hB := hasDerivAt_tgtCoeff_gen (n e) (p e) (ξ' := firstCol (g e 1)) hdZ (hdWd (Zt e) hdZ)
+          hin hne0
+        have hW00 : spinAct (Mt 0) (Zt e 0) - spinAct M (Zt e 0) = 0 := by rw [hM0, sub_self]
+        simp only [hW00, hj0] at hB
+        have hBv : srcGenDeriv (n e) (-p e) (firstCol (g e 1)) (jMap (Zt e 0)) 0
+            (jMap (spinAct M (Zt e 0))) (jMap (spinAct (genMat cv')ᴴ (Zt e 0))) =
+            tgtCoeff (n e) (p e) (firstCol (g e 1)) (Zt e 0) (spinAct (genMat cv')ᴴ (Zt e 0)) := by
+          rw [tgtCoeff_eq]; simp [srcGenDeriv, srcCoeff]
+        rw [hBv] at hB
+        refine (hA.add hB).congr_deriv ?_
+        simp only [hV, hC, hs, ht, ↓reduceIte, zero_add]
+        rw [hj e]
       · have hfun : D e = fun _ => (0 : ℂ) := by
           funext t
-          simp [hD, hWs, hWt, hs, ht, srcCoeff, tgtCoeff]
+          simp [hD, hWs, hWt, hs, ht, srcCoeff_zero_dir, tgtCoeff_zero_dir]
         rw [hfun]
-        simp only [hV, hs, ht, ↓reduceIte]
+        have : V e + C e = 0 := by simp [hV, hC, hs, ht]
+        rw [this]
         exact hasDerivAt_const _ _
+  have hCsum : ∑ e, C e = 0 := by
+    have hC' : ∀ e, C e = (if edgeSrc e = a then logDeriv (n e) (p e) cv' (firstCol (g e 0)) else 0) +
+        (if edgeTgt e = a then logDeriv (n e) (p e) cv' (firstCol (g e 1)) else 0) := by
+      intro e
+      simp only [hC]
+      congr 1
+      · by_cases hs : edgeSrc e = a
+        · simp only [hs, ↓reduceIte]
+          have hZ00 : Zs e 0 = firstCol (g e 0) := by rw [hZ0s]; exact critZ_src g X₀ e
+          rw [hZ00]
+          exact srcCoeff_adj_gen (n e) (p e) cv' (hξ e)
+        · simp [hs]
+      · by_cases ht : edgeTgt e = a
+        · simp only [ht, ↓reduceIte]
+          have hr0 : ((r e : ℂ) * c e) ≠ 0 := by
+            have : (r e : ℂ) ≠ 0 := by exact_mod_cast (hr e).ne'
+            have : c e ≠ 0 := by intro h; have := hc e; rw [h] at this; simp at this
+            exact mul_ne_zero ‹(r e : ℂ) ≠ 0› this
+          have hZ00 : Zt e 0 = ((r e : ℂ) * c e) • jMap (firstCol (g e 1)) := by
+            rw [hZ0t]; exact critZ_tgt g X₀ e (r e) (c e) (h20 e)
+          rw [hZ00]
+          exact tgtCoeff_adj_gen (n e) (p e) cv' (hξ' e) hr0
+        · simp [ht]
+    simp only [hC']
+    have hp' : ∀ e, p e = γ * (((n e : ℕ) : ℝ) / 2) := fun e => by rw [hp e, hj e]
+    refine hcl_of_closure edgeSrc edgeTgt n p γ hp' (fun e => firstCol (g e 0)) (fun e => firstCol (g e 1))
+      a ?_ cv'
+    intro i
+    have h2 : ∑ e, ((if edgeSrc e = a then (n e : ℝ) * spinVec (firstCol (g e 0)) i else 0) +
+        (if edgeTgt e = a then (n e : ℝ) * spinVec (firstCol (g e 1)) i else 0)) =
+        2 * ∑ e, ((if edgeSrc e = a then j e * spinVec (firstCol (g e 0)) i else 0) +
+        (if edgeTgt e = a then j e * spinVec (firstCol (g e 1)) i else 0)) := by
+      rw [Finset.mul_sum]
+      refine Finset.sum_congr rfl fun e _ => ?_
+      rw [hj e]
+      split_ifs <;> ring
+    rw [h2, hk i, mul_zero]
   -- the derivative of the derivative
   have hall : ∀ᶠ t : ℝ in nhds 0, ∀ e, HasDerivAt
       (fun s => triAction (j e) (p e) (Zs e s) (firstCol (g e 0)) (Zt e s) (firstCol (g e 1)))
@@ -548,10 +794,10 @@ theorem hessXX_block {j p : Fin 10 → ℝ} {n : Fin 10 → ℕ} {γ : ℝ}
       (critZ g X₀)) s) =ᶠ[nhds 0] fun t => ∑ e, D e t := by
     filter_upwards [hall] with t ht
     exact (HasDerivAt.fun_sum (u := Finset.univ) (fun e _ => ht e)).deriv
-  have hDsum : HasDerivAt (fun t => ∑ e, D e t) (∑ e, V e) 0 :=
+  have hDsum : HasDerivAt (fun t => ∑ e, D e t) (∑ e, (V e + C e)) 0 :=
     HasDerivAt.fun_sum (fun e _ => hDV e)
   have hd2 := (hDsum.congr_of_eventuallyEq hEq).deriv
-  rw [hd2]
+  rw [hd2, Finset.sum_add_distrib, hCsum, add_zero]
   set Xend : Fin 10 → ℝ := fun e =>
     if edgeSrc e = a then tripleForm (spinVec (firstCol (g e 0))) α β
     else if edgeTgt e = a then tripleForm (spinVec (firstCol (g e 1))) α β else 0 with hXend
@@ -593,6 +839,44 @@ theorem hessXX_block {j p : Fin 10 → ℝ} {n : Fin 10 → ℕ} {γ : ℝ}
         simp only [Complex.ofReal_sum, Complex.ofReal_mul, Complex.ofReal_zero] at this
         simp only [mul_assoc, ← Finset.mul_sum, this, mul_zero]
       rw [this, add_zero]
+
+/-- **The Hessian block `H^{X_a X_a}` of the vertex action at a critical configuration** (BDFHP
+Appendix A, eq. (61), in the normalisation of the generators `J = iσ/2`, `K = σ/2`).
+
+Hypotheses: `X₀` satisfies the z-eliminated critical equations (`IsLorCritical`) and the spinors are
+the critical ones (`critZ`); the boundary spinors `ξ_ab = firstCol (g e 0)` and `ξ_ba = firstCol
+(g e 1)` have norm one; `j e = n e / 2` and `p e = γ j e` (BDFHP eq. (24)); on every edge the product
+of the overlaps `⟨Z,ξ⟩⟨Jξ',Z'⟩ = r c` at the critical point is off the cut of the logarithm
+(`∈ slitPlane`); the vector closure `Σ_e j e m_e = 0` holds at the node `a`, with `m_e` the spin vector
+of the spinor at the `a`-end of `e` (BDFHP eq. (25)); `Y : ℝ → SL(2,ℂ)` has `Y 0 = 1` and entrywise
+`Y' = Y · genMat (β + iα)`.
+
+Conclusion: the second derivative at `0` of `t ↦ lorAction j p g (X₀ with X₀ a replaced by X₀ a * Y t)
+(critZ g X₀)` equals `Σ_{e ∋ a} endForm (j e) (p e) σ_e m_e α β`, with `σ_e = 1` at a source end and
+`-1` at a target end. The first derivative is not assumed to vanish: it vanishes by closure
+(`hasDerivAt_lorAction_critical`), which is not needed here. -/
+theorem hessXX_block {j p : Fin 10 → ℝ} {n : Fin 10 → ℕ} {γ : ℝ}
+    (hj : ∀ e, j e = (n e : ℝ) / 2) (hp : ∀ e, p e = γ * j e) {g : BdryData} {X₀ : Fin 5 → SL2C}
+    (hcrit : IsLorCritical g X₀) (hξ : ∀ e, ‖firstCol (g e 0)‖ = 1)
+    (hξ' : ∀ e, ‖firstCol (g e 1)‖ = 1)
+    (hslit : ∀ e, inner ℂ (spinAct (X₀ (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (critZ g X₀ e))
+        (firstCol (g e 0)) *
+      inner ℂ (jMap (firstCol (g e 1)))
+        (spinAct (X₀ (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (critZ g X₀ e)) ∈
+        Complex.slitPlane)
+    (a : Fin 5) (hk : ∀ i, ∑ e, ((if edgeSrc e = a then j e * spinVec (firstCol (g e 0)) i else 0) +
+        (if edgeTgt e = a then j e * spinVec (firstCol (g e 1)) i else 0)) = 0)
+    (α β : Fin 3 → ℝ) (Y : ℝ → SL2C) (hY0 : Y 0 = 1)
+    (hY : ∀ t i k, HasDerivAt (fun s => (Y s : Matrix (Fin 2) (Fin 2) ℂ) i k)
+      (((Y t : Matrix (Fin 2) (Fin 2) ℂ) *
+        genMat (fun m => (β m : ℂ) + Complex.I * α m)) i k) t) :
+    deriv (fun s => deriv (fun t => lorAction j p g (Function.update X₀ a (X₀ a * Y t))
+        (critZ g X₀)) s) 0 =
+      ∑ e, if edgeSrc e = a ∨ edgeTgt e = a then
+        endForm (j e) (p e) (endSign e a) (endVec g e a) α β else 0 := by
+  have := hessXX_curve hj hp hcrit hξ hξ' hslit a hk (fun _ i => (β i : ℂ) + Complex.I * α i) 0
+    (hasDerivAt_const 0 _) Y hY0 hY
+  simpa using this
 
 /-- The minors `α_i m_j - α_j m_i` of the pair `(α, m)`: they all vanish exactly when `α` and `m` are
 parallel. -/
@@ -961,12 +1245,6 @@ theorem inner_jmap_adj_z (B : Matrix (Fin 2) (Fin 2) ℂ) (ξ' : Spinor) (w : �
   simp
   ring
 
-/-- `⟨J Y, ξ'⟩ = -⟨J ξ', Y⟩`. -/
-theorem inner_jmap_swap (ξ' Y : Spinor) : inner ℂ (jMap Y) ξ' = -inner ℂ (jMap ξ') Y := by
-  have : Y = -jMap (jMap Y) := by rw [jMap_jMap]; simp
-  conv_rhs => rw [this]
-  rw [inner_neg_right, inner_jMap_jMap, inner_conj_symm, neg_neg]
-
 /-- **The block `H^{zz}` of the Hessian** (BDFHP Appendix A p. 33; closed form found here): for `z_e = (w, 1)`
 and the direction `δ = (τ, 0)`, `d²/dt² lorAction` along `z_e + t δ` is `f_ww τ² + 2 f_ww̄ |τ|² + f_w̄w̄ conj(τ)²`
 (`zzWirtinger`). -/
@@ -1039,67 +1317,6 @@ theorem hessZZ_block {j p : Fin 10 → ℝ} {n : Fin 10 → ℕ} (hj : ∀ e, j 
   push_cast
   field_simp
   ring
-
-/-- The derivative of `srcCoeff n p ξ (Z s) (W s)` at a point where `Z`, `W` have values `Z`, `W` and
-derivatives `Z'`, `W'`. -/
-noncomputable def srcGenDeriv (n : ℕ) (p : ℝ) (ξ Z W Z' W' : Spinor) : ℂ :=
-  (n : ℂ) * (inner ℂ W' ξ / inner ℂ Z ξ - inner ℂ W ξ * inner ℂ Z' ξ / inner ℂ Z ξ ^ 2) -
-    ((n : ℂ) + 2 * Complex.I * p) *
-      ((((inner ℂ Z' W).re + (inner ℂ Z W').re) / ‖Z‖ ^ 2 -
-        2 * (inner ℂ Z W).re * (inner ℂ Z Z').re / ‖Z‖ ^ 4 : ℝ) : ℂ)
-
-/-- **Derivative of the source coefficient along two general curves**: if `Z`, `W` have derivatives
-`Z'`, `W'` at `t` and `⟨Z t, ξ⟩ ≠ 0`, `Z t ≠ 0`, the derivative of `s ↦ srcCoeff n p ξ (Z s) (W s)` is
-`srcGenDeriv n p ξ (Z t) (W t) Z' W'`. It generalises `hasDerivAt_srcCoeff_line` (`Z' = W`, `W' = 0`)
-and `hasDerivAt_srcCoeff` (`Z' = M Z`, `W = M Z`). -/
-theorem hasDerivAt_srcCoeff_gen (n : ℕ) (p : ℝ) {ξ : Spinor} {Z W : ℝ → Spinor} {Z' W' : Spinor} {t : ℝ}
-    (hZ : HasDerivAt Z Z' t) (hW : HasDerivAt W W' t) (h1 : inner ℂ (Z t) ξ ≠ 0) (h0 : Z t ≠ 0) :
-    HasDerivAt (fun s => srcCoeff n p ξ (Z s) (W s)) (srcGenDeriv n p ξ (Z t) (W t) Z' W') t := by
-  unfold srcGenDeriv
-  have hz : ‖Z t‖ ≠ 0 := norm_ne_zero_iff.mpr h0
-  have hD := hasDerivAt_inner_spinor hZ (hasDerivAt_const t ξ)
-  have hN := hasDerivAt_inner_spinor hW (hasDerivAt_const t ξ)
-  have hR := hasDerivAt_inner_spinor hZ hW
-  have hQ := hasDerivAt_inner_spinor hZ hZ
-  have hRre : HasDerivAt (fun s : ℝ => (inner ℂ (Z s) (W s)).re)
-      (inner ℂ Z' (W t) + inner ℂ (Z t) W').re t :=
-    Complex.reCLM.hasFDerivAt.comp_hasDerivAt t hR
-  have hQre : HasDerivAt (fun s : ℝ => ‖Z s‖ ^ 2)
-      (2 * (inner ℂ (Z t) Z').re) t := by
-    have := Complex.reCLM.hasFDerivAt.comp_hasDerivAt t hQ
-    have e : (fun s : ℝ => (inner ℂ (Z s) (Z s)).re) = fun s : ℝ => ‖Z s‖ ^ 2 := by
-      funext s; rw [inner_self_eq_norm_sq_to_K]; norm_cast
-    rw [← e]
-    refine this.congr_deriv ?_
-    have : (inner ℂ Z' (Z t)).re = (inner ℂ (Z t) Z').re := by
-      rw [← inner_conj_symm (Z t) Z', Complex.conj_re]
-    simp only [Complex.reCLM_apply, Complex.add_re, this]; ring
-  have hQ0 : ‖Z t‖ ^ 2 ≠ 0 := pow_ne_zero 2 hz
-  have hq := hRre.div hQre hQ0
-  have hqC := Complex.ofRealCLM.hasFDerivAt.comp_hasDerivAt t hq
-  have hnd := hD.inv h1
-  have hfin := ((hN.mul hnd).const_mul (n : ℂ)).sub (hqC.const_mul ((n : ℂ) + 2 * Complex.I * p))
-  refine hfin.congr_deriv ?_
-  simp only [Complex.ofRealCLM_apply, inner_zero_right, add_zero, Pi.inv_apply, Complex.add_re,
-    Complex.ofReal_add]
-  push_cast
-  have hZ2 : (‖Z t‖ : ℂ) ^ 2 ≠ 0 := by exact_mod_cast hQ0
-  have h1' : (inner ℂ (Z t) ξ) ^ 2 ≠ 0 := pow_ne_zero 2 h1
-  field_simp
-  ring
-
-/-- **Derivative of the target coefficient along two general curves**, from `hasDerivAt_srcCoeff_gen`
-with `p ↦ -p` and the curves `J Z`, `J W` (`tgtCoeff_eq`, `hasDerivAt_jMap`). -/
-theorem hasDerivAt_tgtCoeff_gen (n : ℕ) (p : ℝ) {ξ' : Spinor} {Z W : ℝ → Spinor} {Z' W' : Spinor}
-    {t : ℝ} (hZ : HasDerivAt Z Z' t) (hW : HasDerivAt W W' t) (h1 : inner ℂ (jMap (Z t)) ξ' ≠ 0)
-    (h0 : Z t ≠ 0) :
-    HasDerivAt (fun s => tgtCoeff n p ξ' (Z s) (W s))
-      (srcGenDeriv n (-p) ξ' (jMap (Z t)) (jMap (W t)) (jMap Z') (jMap W')) t := by
-  have hfun : (fun s => tgtCoeff n p ξ' (Z s) (W s)) =
-      fun s => srcCoeff n (-p) ξ' (jMap (Z s)) (jMap (W s)) := funext fun s => tgtCoeff_eq n p ξ' _ _
-  rw [hfun]
-  exact hasDerivAt_srcCoeff_gen n (-p) (hasDerivAt_jMap hZ) (hasDerivAt_jMap hW) h1
-    (jMap_ne_zero h0)
 
 /-- **The mixed second derivative at a source end, along an orbit and a line** (the orbit step of the block
 `H^{Xz}`): `a` is the source of the edge `e`, `Y' = Y L`, `Y 0 = 1`. The `t`-derivative at each `s` is the
