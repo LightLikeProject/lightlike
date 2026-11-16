@@ -107,6 +107,61 @@ lemma chord_three : chainSet (hexChord H.p H.d 3) \ {H.p 3, H.p (3 + 3)} =
   have e' : ((0 : Fin 6) + 3) = 3 := by decide
   rw [e, e', Set.pair_comm]
 
+/-- The chord `D k` without its ends. -/
+def chordSet (k : Fin 6) : Set (ℝ × ℝ) := chainSet (hexChord H.p H.d k) \ {H.p k, H.p (k + 3)}
+
+/-- The first two chords lie on the same side of the hexagon. -/
+def SameSide : Prop :=
+  (H.chordSet 0 ⊆ (Polygon.ofList H.list).inside ∧ H.chordSet 1 ⊆ (Polygon.ofList H.list).inside) ∨
+    (H.chordSet 0 ⊆ (Polygon.ofList H.list).outside ∧
+      H.chordSet 1 ⊆ (Polygon.ofList H.list).outside)
+
+lemma false_of_sameSide (h : H.SameSide) : False := by
+  apply H.pair_false
+  simpa [SameSide, chordSet] using h
+
+lemma sameSide_rot_iff : H.rot.SameSide ↔
+    (H.chordSet 1 ⊆ (Polygon.ofList H.list).inside ∧ H.chordSet 2 ⊆ (Polygon.ofList H.list).inside) ∨
+      (H.chordSet 1 ⊆ (Polygon.ofList H.list).outside ∧
+        H.chordSet 2 ⊆ (Polygon.ofList H.list).outside) := by
+  have e0 : H.rot.chordSet 0 = H.chordSet 1 := H.rot_chord 0
+  have e1 : H.rot.chordSet 1 = H.chordSet 2 := H.rot_chord 1
+  unfold SameSide
+  rw [e0, e1, H.rot_inside.1, H.rot_inside.2]
+
+lemma sameSide_rot_rot_iff : H.rot.rot.SameSide ↔
+    (H.chordSet 2 ⊆ (Polygon.ofList H.list).inside ∧ H.chordSet 0 ⊆ (Polygon.ofList H.list).inside) ∨
+      (H.chordSet 2 ⊆ (Polygon.ofList H.list).outside ∧
+        H.chordSet 0 ⊆ (Polygon.ofList H.list).outside) := by
+  have e0 : H.rot.rot.chordSet 0 = H.chordSet 2 := (H.rot.rot_chord 0).trans (H.rot_chord 1)
+  have e1 : H.rot.rot.chordSet 1 = H.chordSet 0 :=
+    ((H.rot.rot_chord 1).trans (H.rot_chord 2)).trans H.chord_three
+  unfold SameSide
+  rw [e0, e1, H.rot.rot_inside.1, H.rot.rot_inside.2, H.rot_inside.1, H.rot_inside.2]
+
 end Hex
+
+/-- **A polygonal hexagon cannot have three chords.** -/
+theorem Hex.false (H : Hex) : False := by
+  have s0 := H.chord_side 0
+  have s1 := H.chord_side 1
+  have s2 := H.chord_side 2
+  have hA := H.false_of_sameSide
+  have hB := H.rot.false_of_sameSide
+  have hC := H.rot.rot.false_of_sameSide
+  rw [H.sameSide_rot_iff] at hB
+  rw [H.sameSide_rot_rot_iff] at hC
+  change (H.chordSet 0 ⊆ _) ∨ (H.chordSet 0 ⊆ _) at s0
+  change (H.chordSet 1 ⊆ _) ∨ (H.chordSet 1 ⊆ _) at s1
+  change (H.chordSet 2 ⊆ _) ∨ (H.chordSet 2 ⊆ _) at s2
+  rcases s0 with a | a <;> rcases s1 with b | b <;> rcases s2 with c | c
+  · exact hA (Or.inl ⟨a, b⟩)
+  · exact hA (Or.inl ⟨a, b⟩)
+  · exact hC (Or.inl ⟨c, a⟩)
+  · exact hB (Or.inr ⟨b, c⟩)
+  · exact hB (Or.inl ⟨b, c⟩)
+  · exact hC (Or.inr ⟨c, a⟩)
+  · exact hA (Or.inr ⟨a, b⟩)
+  · exact hA (Or.inr ⟨a, b⟩)
 
 end Lightlike.PL
