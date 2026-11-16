@@ -1252,7 +1252,7 @@
   review: kernel-checked
   note: "For a continuous injective map f of the circle into the plane, the complement of the image has exactly one unbounded connected component (the one that contains the plane outside a square around the curve, which is connected, isPreconnected_squareOutside), and, since the complement is not connected (weak_jordan, LL-XXXX-b), a bounded component whose frontier lies in the curve (jordan_components). Limits: this is the part of the Jordan curve theorem that holds without the Arc Theorem. That there is exactly one bounded component, and that the curve is the frontier of each component, are open here: they need the Arc Theorem (the complement of an arc is connected), for which no proof is available in this library, and are not claimed. Check: the unit circle satisfies the hypotheses (TestsJordan.unitCircle)."
   since: unreleased
-- id: LL-XXXX-a
+- id: LL-XXXX-e
   title: A chain on a grating with boundary two vertices joins them
   area: PL
   file: Lightlike/PL/Grating.lean
@@ -1263,9 +1263,9 @@
     refs:
       - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
   review: kernel-checked
-  note: "A grating is a rectangular grid with strictly increasing coordinates, a 1-chain a finite set of its edges added by symmetric difference (mod 2), and the boundary of a chain the set of vertices at which an odd number of its edges end. The boundary is additive (bdy_symmDiff), and a chain with boundary {x, y} joins x to y inside its locus (joinedIn_of_bdy), because a component of the chain has an even number of vertices of odd degree (reach_of_bdy). This is the chain-to-path direction of Proposition 9.8 of chapter 9 of McCleary's book, numbering as in the lecture-notes version of the chapter; the statements and proofs are Lean's own. Proves: the combinatorial fact that a chain with two odd vertices joins them. Does not prove: anything about arcs or curves of the plane, the arc theorem or the Jordan curve theorem; it is the first step of the proof that an arc does not separate the plane (LL-XXXX-b to LL-XXXX-e). Limits: rectangular gratings in the plane, chains mod 2 only. Check: on a 2 x 2 grating the boundary of an edge, of a path of two edges and of a closed square (TestsGrating.lean); joinedIn_of_bdy applies to the path of two edges; two disjoint edges have a four-vertex boundary and do not link their ends."
+  note: "A grating is a rectangular grid with strictly increasing coordinates, a 1-chain a finite set of its edges added by symmetric difference (mod 2), and the boundary of a chain the set of vertices at which an odd number of its edges end. The boundary is additive (bdy_symmDiff), and a chain with boundary {x, y} joins x to y inside its locus (joinedIn_of_bdy), because a component of the chain has an even number of vertices of odd degree (reach_of_bdy). This is the chain-to-path direction of Proposition 9.8 of chapter 9 of McCleary's book, numbering as in the lecture-notes version of the chapter; the statements and proofs are Lean's own. Proves: the combinatorial fact that a chain with two odd vertices joins them. Does not prove: anything about arcs or curves of the plane, the arc theorem or the Jordan curve theorem; it is the first step of the proof that an arc does not separate the plane (LL-XXXX-f to LL-XXXX-i). Limits: rectangular gratings in the plane, chains mod 2 only. Check: on a 2 x 2 grating the boundary of an edge, of a path of two edges and of a closed square (TestsGrating.lean); joinedIn_of_bdy applies to the path of two edges; two disjoint edges have a four-vertex boundary and do not link their ends."
   since: unreleased
-- id: LL-XXXX-b
+- id: LL-XXXX-f
   title: A path in the complement of a compact set gives a chain of a grating that avoids it
   area: PL
   file: Lightlike/PL/GratingPath.lean
@@ -1276,9 +1276,9 @@
     refs:
       - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
   review: kernel-checked
-  note: "If A is a compact subset of the plane and P, Q are joined by a path in the complement of A, there is a distance rho > 0 and two finite sets of coordinates such that every grating whose coordinates contain them has P and Q as vertices and a chain, with boundary {P, Q}, all of whose points are at distance at least rho from A. The coordinates of sample points of the path are put on the grid and consecutive samples are joined by a stepwise chain in the box they span (exists_chain_box). This is the path-to-chain direction of Proposition 9.8 of chapter 9 of McCleary's book, numbering as in the lecture-notes version of the chapter; the statements and proofs are Lean's own. Proves: a path in the complement of a compact set gives a chain of a grating, avoiding the set, with the same end points, on every grating that contains the coordinates of the samples. Does not prove: that an arc does not separate the plane, or any statement about curves; it only converts paths into chains (the converse is LL-XXXX-a). Limits: A compact in the plane; chains modulo 2 on rectangular gratings. Check: TestsGratingPath.lean."
+  note: "If A is a compact subset of the plane and P, Q are joined by a path in the complement of A, there is a distance rho > 0 and two finite sets of coordinates such that every grating whose coordinates contain them has P and Q as vertices and a chain, with boundary {P, Q}, all of whose points are at distance at least rho from A. The coordinates of sample points of the path are put on the grid and consecutive samples are joined by a stepwise chain in the box they span (exists_chain_box). This is the path-to-chain direction of Proposition 9.8 of chapter 9 of McCleary's book, numbering as in the lecture-notes version of the chapter; the statements and proofs are Lean's own. Proves: a path in the complement of a compact set gives a chain of a grating, avoiding the set, with the same end points, on every grating that contains the coordinates of the samples. Does not prove: that an arc does not separate the plane, or any statement about curves; it only converts paths into chains (the converse is LL-XXXX-e). Limits: A compact in the plane; chains modulo 2 on rectangular gratings. Check: TestsGratingPath.lean."
   since: unreleased
-- id: LL-XXXX-c
+- id: LL-XXXX-g
   title: A cycle on a grating bounds a 2-chain, and Alexander's theorem
   area: PL
   file: Lightlike/PL/Alexander.lean
@@ -1291,7 +1291,7 @@
   review: kernel-checked
   note: "A 2-chain is a finite set of cells of a grating; its boundary is the set of edges that are a side of an odd number of its cells, and the boundary of a boundary is empty. A chain without boundary is the boundary of a 2-chain. Alexander's theorem: if x and y are the boundary of a chain l1 avoiding K and of a chain l2 avoiding L, l1 + l2 is the boundary of a 2-chain w up to a set E of edges avoiding K union L (the outer edges of the grating: the notes' Theorem 9.10 gives a 2-chain and its complement, the complement using an outer cell), and no cell of w meets both K and L, then x is joined to y off K union L. This is the Alexander Theorem of chapter 9 of McCleary's book (numbering as in the lecture-notes version), for a grating that is already fine, with the outer-edge set E added; the statements and proofs are Lean's own. Limits: chains modulo 2, rectangular gratings. Check: TestsAlexander.lean."
   since: unreleased
-- id: LL-XXXX-d
+- id: LL-XXXX-h
   title: Two compact sets meeting in one point do not separate two points that neither separates
   area: PL
   file: Lightlike/PL/UnionLemma.lean
