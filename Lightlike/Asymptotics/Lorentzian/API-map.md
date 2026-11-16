@@ -72,7 +72,11 @@ localised amplitude, by a smooth cutoff of the action [24]. The action of a smoo
 on each edge, the product of the overlaps is off the cut of the logarithm [25]. A chart of `SL(2,ℂ)` near the identity with the tangent map
 `X ↦ X exp(M)` of BDFHP Appendix A is the Cayley transform `((1 + s) 1 + M)/(1 - s)`, `s = c·c/16`, of
 `M = ½ Σ c_i σ_i`: determinant one, value `1` and derivative `M` at `0`, smooth entries where `s ≠ 1`
-[26]; Mathlib has no `det exp = exp tr`.
+[26]; Mathlib has no `det exp = exp tr`. The 44-variable chart (`X_a = X₀_a · cayley (φ_a + iθ_a)` for
+`a < 4`, `z_e = (w₀_e + u_e + i v_e, 1)`) is smooth where the four Cayley denominators are nonzero, and
+the vertex asymptotics hold in it with the smoothness hypothesis replaced by that open set and the
+overlap condition; the Haar density and the identification of the vertex integral with the chart
+integral stay named hypotheses (`aLoc`, `aFar`) [27].
 
 The vertex action `lorAction` is the sum of the triangle actions over the ten edges at the spinors
 `X†z` [9]. Its real part is at most zero where the spinors and overlaps are nonzero [9]. In a chart
@@ -235,6 +239,10 @@ frame (`scripts/asymptotics/lorentzian_hessian_check.py`).
     `Asymptotics.Lorentzian.cayleyMat`, `Asymptotics.Lorentzian.cayley`,
     `Asymptotics.Lorentzian.cayley_zero`, `Asymptotics.Lorentzian.contDiffOn_cayleyMat`,
     `Asymptotics.Lorentzian.hasDerivAt_cayleyMat_zero`
+27. Lightlike/Asymptotics/Lorentzian/VertexChart.lean - `Asymptotics.Lorentzian.vertexChart`,
+    `Asymptotics.Lorentzian.vertexChart_zero`, `Asymptotics.Lorentzian.cayleyDomain`,
+    `Asymptotics.Lorentzian.lorChartAction_vertexChart_contDiffOn`,
+    `Asymptotics.Lorentzian.lorVertex_asymptotics_vertexChart`
 
 ## References
 
