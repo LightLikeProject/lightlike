@@ -277,4 +277,69 @@ theorem exists_move2 {L : Finset (Finset V)} (hT : IsTri2 L) {σ τ : Finset V}
       obtain ⟨x, rfl⟩ := card_eq_one.1 (by omega : #τ = 1)
       exact eqvGen_bnew_sub hD hbc hbd hcd
 
+/-! ## From bistellar equivalence to chains of 2D moves -/
+
+/-- The triangles of a complex: its faces with three vertices. -/
+def toTri2 (M : SComplex V) : Finset (Finset V) := M.faces.filter (#· = 3)
+
+lemma isTri2_toTri2 (M : SComplex V) : IsTri2 (toTri2 M) := fun _ ht => (mem_filter.1 ht).2
+
+lemma toTri2_closure {L : Finset (Finset V)} (hT : IsTri2 L) : toTri2 (closure L) = L := by
+  ext t
+  rw [toTri2, mem_filter, mem_faces, mem_closure]
+  constructor
+  · rintro ⟨⟨t', ht', hsub⟩, hc⟩
+    rwa [eq_of_subset_of_card_le hsub (by rw [hT t' ht', hc])]
+  · intro ht
+    exact ⟨⟨t, ht, subset_rfl⟩, hT t ht⟩
+
+lemma maxCard_closure {L : Finset (Finset V)} (hT : IsTri2 L) (hne : L.Nonempty) :
+    (closure L).maxCard = 3 := by
+  apply le_antisymm
+  · refine maxCard_le fun s hs => ?_
+    obtain ⟨t, ht, hst⟩ := mem_closure.1 hs
+    exact (card_le_card hst).trans (hT t ht).le
+  · obtain ⟨s, hs⟩ := hne
+    rw [← hT s hs]
+    exact card_le_maxCard (mem_closure.2 ⟨s, hs, subset_rfl⟩)
+
+lemma closure_toTri2 [Infinite V] {M : SComplex V} (hM : IsMfdIn false 2 M) (hmax : M.maxCard = 3) :
+    closure (toTri2 M) = M := by
+  refine ext_mem fun s => ?_
+  rw [mem_closure]
+  constructor
+  · rintro ⟨t, ht, hst⟩
+    exact down_mem (mem_filter.1 ht).1 hst
+  · intro hs
+    obtain ⟨τ, hτ, hsτ, hc⟩ := hM.exists_facet hmax hs
+    exact ⟨τ, mem_filter.2 ⟨hτ, hc⟩, hsτ⟩
+
+/-- **A bistellar equivalence between closed combinatorial 2-manifolds is a chain of 2D moves of
+their triangles.** -/
+lemma move2_of_bistellarEquivIn [Infinite V] {M N : SComplex V} (h : BistellarEquivIn M N)
+    (hM : IsMfdIn false 2 M) (hmax : M.maxCard = 3) :
+    Relation.EqvGen Move2 (toTri2 M) (toTri2 N) := by
+  induction h with
+  | rel M N h =>
+    cases h with
+    | @bistellar A B hb =>
+      have hc := hM.card_add_card_of_isBistellar hb
+      have hpure := closure_toTri2 hM hmax
+      have hb' : (closure (toTri2 M)).IsBistellar A B := by rw [hpure]; exact hb
+      obtain ⟨hT', hE, hcl⟩ := exists_move2 (isTri2_toTri2 M) hb' (by omega)
+      have heq : M.bistellar A B hb = closure (bnew (toTri2 M) A B) := by
+        rw [hcl]
+        exact bistellar_congr hpure.symm hb _
+      rw [heq, toTri2_closure hT']
+      exact hE
+  | refl => exact .refl _
+  | symm M N hMN ih =>
+    have hM' := (SComplex.BistellarEquivIn.isMfdIn_iff hMN).2 hM
+    have hmaxM : M.maxCard = 3 :=
+      (SComplex.BistellarEquivIn.stellarEquivIn hMN).maxCard_eq.trans hmax
+    exact (ih hM' hmaxM).symm
+  | trans M N P hMN _ ih₁ ih₂ =>
+    exact (ih₁ hM hmax).trans _ _ _ (ih₂ ((SComplex.BistellarEquivIn.isMfdIn_iff hMN).1 hM)
+      (hmax ▸ (SComplex.BistellarEquivIn.stellarEquivIn hMN).maxCard_eq.symm))
+
 end Lightlike.Surfaces
