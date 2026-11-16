@@ -173,6 +173,59 @@ def counterexample_33():
             and not sigma_not_needed(K, T, CEX_SIGMA))
 
 
+def local_lemma_33():
+    """Exhaustive check of the local lemma behind the characterization of 3-3 (computer-assisted proof).
+
+    The six vertices of a 3-3 move are s0,s1,s2 (sigma) and c0,c1,c2 (tau). Of the 20 triangles,
+    sigma and tau are the two that change; the other 18 are 'mixed' (m: two s and one c; n: two c and
+    one s). The 9 tetrahedra with two s and two c lie in the complex before and after the move; before
+    the move there are also the three tetrahedra sigma + c, after it the three tau + s.
+
+    Lemma. Let W be a set of mixed triangles that is closed under the 9 common tetrahedra and contains
+    all three m-triangles of some c (a 'full m-row') and all three n-triangles of some s (a 'full
+    n-row'). Then the closure of W under the tetrahedra before the move, and under those after it,
+    adds no mixed triangle: it adds only sigma, respectively tau.
+    Returns the number of such W checked, and the number where the lemma fails (must be 0).
+    """
+    S, C = (0, 1, 2), (3, 4, 5)
+    tri = lambda *x: fs(x)
+    mixed = [t for t in map(fs, itertools.combinations(range(6), 3)) if t not in (fs(S), fs(C))]
+    idx = {t: i for i, t in enumerate(mixed)}
+    sg, tau = fs(S), fs(C)
+    all_tets = [fs(c) for c in itertools.combinations(range(6), 4)]
+    common = [t for t in all_tets if len(t & fs(S)) == 2]
+    pre = [t for t in all_tets if len(t & fs(S)) == 3]
+    post = [t for t in all_tets if len(t & fs(S)) == 1]
+
+    def rule(t):
+        return [fs(x) for x in itertools.combinations(sorted(t), 3)]
+
+    def close(Z, tets):
+        Z, ch = set(Z), True
+        while ch:
+            ch = False
+            for t in tets:
+                miss = [f for f in rule(t) if f not in Z]
+                if len(miss) == 1:
+                    Z.add(miss[0])
+                    ch = True
+        return Z
+
+    rows_m = [[tri(S[i], S[j], c) for i, j in ((0, 1), (0, 2), (1, 2))] for c in C]
+    rows_n = [[tri(C[i], C[j], x) for i, j in ((0, 1), (0, 2), (1, 2))] for x in S]
+    checked = bad = 0
+    for mask in range(1 << 18):
+        W = {mixed[i] for i in range(18) if mask >> i & 1}
+        if not (any(all(f in W for f in r) for r in rows_m) and any(all(f in W for f in r) for r in rows_n)):
+            continue
+        if close(W, common) != W:
+            continue
+        checked += 1
+        if close(W, common + pre) - {sg} != W or close(W, common + post) - {tau} != W:
+            bad += 1
+    return checked, bad
+
+
 def moves33(K):
     """All 3-3 moves of K: (sigma, tau, K after the move)."""
     tris = faces(K, 3)
@@ -259,6 +312,10 @@ def main():
         print("the pinned 3-3 counterexample no longer holds")
         return 1
     print("pinned counterexample: a collapsible forcing set on a 48-simplex 4-sphere loses forcing under 3-3")
+    checked, badl = local_lemma_33()
+    print("local lemma for 3-3: patterns checked", checked, "failures", badl)
+    if badl or not checked:
+        return 1
     eq = sampled_equivalence()
     print("3-3 with T unchanged, (sigma not needed, T forces after the move):", dict(eq))
     if eq[(True, False)] or eq[(False, True)] or not eq[(True, True)]:

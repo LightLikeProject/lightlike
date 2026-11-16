@@ -5,87 +5,55 @@ import Lightlike.GR.Schwarzschild
 /-!
 # Trust checks for the distance and the expansion of its square
 
-Checks of `distJet`, `midJet` and the fifth-order expansions `IsRiemMetric.dist_sq_expansion` and
-`IsRiemMetric.dist_sq_expansion_midpoint` (`Lightlike/Regge/Geodesic/DistExpansion.lean`), and of
-`distJet5` and the sixth-order expansions `IsRiemMetric.dist_sq_expansion6` and
-`IsRiemMetric.dist_sq_expansion_midpoint6` (`Lightlike/Regge/Geodesic/Quintic.lean`,
-`Lightlike/Regge/Geodesic/Sixth.lean`), against exactly known distances, and wrong models shown to
-fail; and checks of the link with Mathlib's Riemannian distance
-(`Lightlike/Regge/Geodesic/Riemannian.lean`).
+Checks of the jets `distJet`, `midJet`, `distJet5` and the expansions of the squared distance,
+`IsRiemMetric.dist_sq_expansion` and `IsRiemMetric.dist_sq_expansion_midpoint` (fifth order) and
+`IsRiemMetric.dist_sq_expansion6` and `IsRiemMetric.dist_sq_expansion_midpoint6` (sixth order),
+against exactly known distances, wrong models shown to fail, and the link with Mathlib's Riemannian
+distance (`Lightlike/Regge/Geodesic/Riemannian.lean`).
 
-## Sheared planes
-
-`shearBy q` is the metric `[[1 + q(y₀)², q(y₀)], [q(y₀), 1]]` on `ℝ²`, the pullback of the
-Euclidean metric by the shear map `φ(y) = (y₀, y₁ + p(y₀))` with `p' = q` (`shearMapBy`). It is
-flat, but in these coordinates it has an off-diagonal entry, non-zero first and second derivatives
-and the Christoffel symbol `Γ¹₀₀ = q'(y₀)` (`christoffel_shearBy`). Its distance is
-`|φ(y) - φ(x)|` (`dist_shearBy`): the preimage of the straight segment is admissible with that
-length, and every admissible curve maps to a curve at least that long. Both jets and the
-quintic term `quint` are computed in closed form for any `q` (`jetWith_shearBy`,
-`midJetWith_shearBy`, `quint_shearBy`).
+The test metrics are sheared planes `shearBy q`, the pullback of the Euclidean metric by
+`φ(y) = (y₀, y₁ + p(y₀))` with `p' = q` (`shearMapBy`). They are flat, but in these coordinates
+have an off-diagonal entry, non-zero derivatives and `Γ¹₀₀ = q'(y₀)` (`christoffel_shearBy`), and
+their distance is `|φ(y) - φ(x)|` (`dist_shearBy`). The jets and the quintic term are computed in
+closed form for any `q` (`jetWith_shearBy`, `midJetWith_shearBy`, `quint_shearBy`).
 
 ## Known values
 
-* The **quadratic shear** `shear` (`p(s) = s²/2`). The squared distance is a polynomial of degree
-  four in `w`, and it equals the jet exactly at every point (`dist_sq_shear`:
-  `d(x, x + w)² = distJet x w`; `dist_sq_shear_midpoint`: `d(m - Δ/2, m + Δ/2)² = midJet m Δ`).
-* The **cubic shear** `cubicShear` (`p(s) = s³/6`). At the origin `Γ = 0` but the second
-  derivatives of the metric do not vanish, and the remainders are exactly
-  `d(0, w)² - distJet 0 w = w₀⁶/36` (`dist_sq_cubicShear_zero`) and
-  `d(-Δ/2, Δ/2)² - midJet 0 Δ = Δ₀⁶/576` (`dist_sq_cubicShear_midpoint_zero`).
-* **Sixth order.** On the cubic shear the remainders are exactly
-  `d(x, x + w)² - distJet5 x w = w₀⁶/36` (`dist_sq_cubicShear_sixth`) and
-  `d(m - Δ/2, m + Δ/2)² - midJet m Δ = Δ₀⁶/576` (`dist_sq_cubicShear_midpoint`) at *every*
-  point, where `Γ`, `∂g` and `quint = x₀ w₀⁵/6` do not vanish. On the **quartic shear**
-  `quarticShear` (`p(s) = s⁴/24`) at the origin only the third derivative of the metric is
-  non-zero, and `d(0, w)² - distJet5 0 w = w₀⁸/576` (`dist_sq_quarticShear_zero`), which checks
-  the coefficient `1/24` of the third derivative in `quint`. Both sixth-order bounds are sharp:
-  the remainders are not `O(‖w‖⁷)` (`dist_sq_expansion6_sharp`,
-  `dist_sq_expansion_midpoint6_sharp`).
-* The **Euclidean metric**: both jets are `|w|²` (`distJet_euclid`, `midJet_euclid`), and
-  `d(x, x + w)² = distJet x w` (`dist_sq_euclid`).
+* **Quadratic shear** (`p(s) = s²/2`): both jets are exact (`dist_sq_shear`,
+  `dist_sq_shear_midpoint`).
+* **Cubic shear** (`p(s) = s³/6`): the remainders are `w₀⁶/36` and `Δ₀⁶/576`, at the origin for
+  the fifth-order jets (`dist_sq_cubicShear_zero`, `dist_sq_cubicShear_midpoint_zero`) and at every
+  point for the sixth-order ones (`dist_sq_cubicShear_sixth`, `dist_sq_cubicShear_midpoint`).
+* **Quartic shear** (`p(s) = s⁴/24`): the remainder `w₀⁸/576` at the origin checks the coefficient
+  `1/24` in `quint` (`dist_sq_quarticShear_zero`). Both sixth-order bounds are sharp
+  (`dist_sq_expansion6_sharp`, `dist_sq_expansion_midpoint6_sharp`).
+* **Euclidean metric:** both jets are `|w|²` (`distJet_euclid`, `midJet_euclid`, `dist_sq_euclid`).
 
-## The coefficients are forced
+## The coefficients are forced, and wrong models fail
 
-`jetWith a b` and `midJetWith a b` are the jets with free coefficients `a` of the second
-derivative of the metric and `b` of the Christoffel term (`distJet = jetWith (1/6) (1/12)`,
-`midJet = midJetWith (1/24) (1/12)`). The quadratic shear alone fixes only `2a - b`; together
-with the cubic shear the fifth-order bound forces `a = 1/6, b = 1/12`
-(`jetWith_coeffs_forced`) and `a = 1/24, b = 1/12` (`midJetWith_coeffs_forced`).
-
-## Wrong models
-
-* Dropping the Christoffel term (`b = 0`) leaves an error `t⁴/12` along `w = (t, 0)` on the
-  quadratic shear, so the fifth-order bound fails at every point (`jetWith_noChr_shear_fails`,
-  `midJetWith_noChr_shear_fails`). This matches the numerical control in
-  `scripts/regge/distance_expansion_check.py`, where the remainder of the model without the
-  Christoffel term has order 4 instead of 5.
-* Dropping the quintic term (`distJet` in place of `distJet5`) leaves the error
-  `x₀ t⁵/6 + t⁶/36` on the cubic shear, so the sixth-order bound fails at every point with
-  `x₀ ≠ 0` (`distJet_cubicShear_not_sixth`).
+* With free coefficients (`jetWith a b`, `midJetWith a b`) the quadratic shear fixes only `2a - b`;
+  with the cubic shear the bound forces `a = 1/6, b = 1/12` (`jetWith_coeffs_forced`) and
+  `a = 1/24, b = 1/12` (`midJetWith_coeffs_forced`).
+* Without the Christoffel term the error is `t⁴/12` on the quadratic shear
+  (`jetWith_noChr_shear_fails`, `midJetWith_noChr_shear_fails`), as in the numerical control
+  `scripts/regge/distance_expansion_check.py`; without the quintic term it is `x₀ t⁵/6 + t⁶/36` on
+  the cubic shear (`distJet_cubicShear_not_sixth`).
 
 ## Non-vacuity
 
-* The hypotheses of both expansion theorems hold for the quadratic shear on the closed unit ball
-  (`shear_dist_sq_expansion`, `shear_dist_sq_expansion_midpoint`).
-* The hypotheses of `IsRiemMetric.exists_localJet3` and of both sixth-order expansion theorems
-  hold for the cubic shear on the closed unit ball, where the remainders are not zero
-  (`cubicShear_exists_localJet3`, `cubicShear_dist_sq_expansion6`,
-  `cubicShear_dist_sq_expansion_midpoint6`).
+The hypotheses of the expansion theorems hold on the closed unit ball for the quadratic shear
+(`shear_dist_sq_expansion`, `shear_dist_sq_expansion_midpoint`), and those of
+`IsRiemMetric.exists_localJet3` and of the sixth-order theorems for the cubic shear, where the
+remainders are not zero (`cubicShear_exists_localJet3`, `cubicShear_dist_sq_expansion6`,
+`cubicShear_dist_sq_expansion_midpoint6`).
 
 ## Mathlib's Riemannian distance
 
-* **Known value (Mathlib).** For the Euclidean metric on `ℝⁿ` the Riemannian distance of our
-  bundle is Mathlib's Riemannian distance of the inner product space `EuclideanSpace ℝ (Fin n)`
-  between the same points (`riemannianEDist_euclid`), which Mathlib proves to be the Euclidean
-  distance.
-* **Known value.** For the quadratic shear the Riemannian distance from `0` to `(1, 0)` is
-  `√5/2` (`riemannianEDist_shear`). **Wrong input:** the Euclidean metric gives `1` between the
-  same points (`riemannianEDist_shear_ne_euclid`).
-* **The connecting curve is needed.** On the punctured line `{x₀ ≠ 0}` no admissible curve joins
-  `-1` and `1` (intermediate value theorem), so the Riemannian distance is `⊤` while `dist` is
-  the junk value `0` (`riemannianEDist_puncturedLine`). The hypothesis of
-  `IsRiemMetric.riemannianEDist_eq` cannot be dropped.
+* For the Euclidean metric it is Mathlib's distance on `EuclideanSpace ℝ (Fin n)`
+  (`riemannianEDist_euclid`); for the quadratic shear it is `√5/2` from `0` to `(1, 0)`
+  (`riemannianEDist_shear`), not the Euclidean `1` (`riemannianEDist_shear_ne_euclid`).
+* On the punctured line `{x₀ ≠ 0}` it is `⊤` between `-1` and `1` while `dist` is the junk value `0`
+  (`riemannianEDist_puncturedLine`): the hypothesis of `IsRiemMetric.riemannianEDist_eq` is needed.
 -/
 
 open Set Filter Topology MeasureTheory

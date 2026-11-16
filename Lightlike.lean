@@ -36,6 +36,7 @@ import Lightlike.Asymptotics.EPRL.EPRLFormula
 import Lightlike.Asymptotics.EPRL.EdgeBridge
 import Lightlike.Asymptotics.EPRL.HaarNode
 import Lightlike.Asymptotics.Lorentzian.Action
+import Lightlike.Asymptotics.Lorentzian.ActionTests
 import Lightlike.Asymptotics.Lorentzian.Amplitude
 import Lightlike.Asymptotics.Lorentzian.Stationary
 import Lightlike.Asymptotics.Lorentzian.Critical
@@ -188,6 +189,16 @@ import Lightlike.PL.PolygonEars
 import Lightlike.PL.PolygonBall
 import Lightlike.PL.PolygonBoundary
 import Lightlike.PL.PolygonPLHomeo
+import Lightlike.PL.SimpleChain
+import Lightlike.PL.Chain
+import Lightlike.PL.TwoArcs
+import Lightlike.PL.ChainConn
+import Lightlike.PL.ChainCarrier
+import Lightlike.PL.Theta
+import Lightlike.PL.Interlaced
+import Lightlike.PL.Hexagon
+import Lightlike.PL.HexFalse
+import Lightlike.PL.K33
 import Lightlike.PL.Relabel
 import Lightlike.PL.RealGeom
 import Lightlike.PL.Realisation
@@ -240,6 +251,7 @@ import Lightlike.PL.Tests4
 import Lightlike.PL.TestsPachner
 import Lightlike.PL.TestsNewman
 import Lightlike.PL.TestsPolygon
+import Lightlike.PL.TestsK33
 import Lightlike.PonzanoRegge.Amplitude
 import Lightlike.PonzanoRegge.Asymptotics
 import Lightlike.PonzanoRegge.BEPositive
@@ -448,6 +460,7 @@ import Lightlike.Tests.GaugeChange
 import Lightlike.Tests.InverseMoves
 import Lightlike.Tests.Manifold
 import Lightlike.Tests.PonzanoRegge
+import Lightlike.Tests.QDougall
 import Lightlike.Tests.QM
 import Lightlike.Tests.SU2
 import Lightlike.Tests.SixJ
@@ -494,6 +507,7 @@ import Lightlike.TuraevViro.Reflect.SixJEnd
 import Lightlike.TuraevViro.Reflect.GramConst
 import Lightlike.TuraevViro.Reflect.SixJNorm
 import Lightlike.TuraevViro.Reflect.SixJNormOne
+import Lightlike.TuraevViro.Reflect.SixJSingle
 import Lightlike.TuraevViro.Reflect.AdmRange
 import Lightlike.TuraevViro.Reflect.OrthInterior
 import Lightlike.TuraevViro.Reflect.OrthConditional
@@ -521,6 +535,7 @@ import Lightlike.SpinFoam.BarrettCrane
 import Lightlike.SpinFoam.BarrettCraneTests
 import Lightlike.SpinFoam.GaugeIndependence
 import Lightlike.SpinFoam.ForcingMoves
+import Lightlike.SpinFoam.ForcingMove33
 import Lightlike.SpinFoam.GaugeChain
 import Lightlike.SpinFoam.TwistedCohomology
 import Lightlike.SpinFoam.TwistedCohomologySU2
