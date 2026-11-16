@@ -1294,3 +1294,17 @@
   review: kernel-checked
   note: "At a critical configuration (IsLorCritical, critical spinors), with p = gamma k, unit boundary spinors, closure at the node, and the overlap products off the cut of the logarithm, the second derivative of lorAction along X_a Y(t) for a curve Y with Y(0) = 1 and Y' = Y genMat(cv(t)), cv differentiable at 0, equals the sum of the end formulas of hessXX_block at the velocity cv(0): the derivative cv'(0) contributes the first variation in the direction genMat(cv'(0)), which is zero by closure (srcCoeff_adj_gen, tgtCoeff_adj_gen identify it with the logarithmic derivative). hessXX_block is the case of a constant velocity. This is the independence of the Hessian of the curve at a critical point for the node variables. NOT PROVED: the same for the spinor variables and the mixed block (hessZZ_block and hessXZ_block do not need criticality and are stated for straight lines in z), and the identification of the matrix of second derivatives in a chart with hessBlockMatrix (needs the chart and the congruence by its differential)."
   since: unreleased
+- id: LL-XXXX
+  title: A configuration of the Lorentzian vertex action with maximal real part that is stationary along the group curves has closure of the normals at every node, so boundary data without closure have no critical configuration
+  area: Asymptotics
+  file: Lightlike/Asymptotics/Lorentzian/ClosureFromCritical.lean
+  decls: [Lightlike.Asymptotics.Lorentzian.critical_configuration_closure, Lightlike.Asymptotics.Lorentzian.no_critical_without_closure, Lightlike.Asymptotics.Lorentzian.aligned_of_re_lorAction_eq_zero, Lightlike.Asymptotics.Lorentzian.hasDerivAt_lorAction_aligned, Lightlike.Asymptotics.Lorentzian.exists_sl2_curve]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: bdfhp-2010, location: "Section 4.2.1, eqs. (18)-(20)", check: "real part"}
+      - {ref: bdfhp-2010, location: "eq. (25)", check: "stationary point"}
+  review: kernel-checked
+  note: "For positive spin parameters, unit boundary spinors, nonvanishing overlaps with products off the cut of the logarithm, Re S = 0 makes every edge aligned (Z_ab = lambda xi_ab, Z_ba = mu J xi_ba; triWeight_eq_one_iff), the derivative of the vertex action along X_a Y(t) with Y(0) = 1 and Y'(0) = genMat c is then the sum of the logarithmic derivatives of the ends at a for any scalings lambda, mu, and stationarity along every such curve (a Cayley curve exists for every c) gives sum_e n_e n_e-hat = 0 at every node. Hence no configuration with Re S = 0 that is stationary along the curves exists for boundary data whose normals do not close at some node. NOT PROVED: the suppression of the integral for such data (BDFHP eq. (56), sub-case without closure), which needs this statement in a chart for an action smooth only on an open set and the non-stationary phase bound; the converse (closure gives a critical configuration) and the case of data with closure that are not the boundary of a 4-simplex (the classification, a named hypothesis of the vertex formula)."
+  since: unreleased
