@@ -43,4 +43,39 @@ structure Hex where
   interDD : ∀ i j, i ≠ j → i ≠ j + 3 →
     chainSet (hexChord p d i) ∩ chainSet (hexChord p d j) ⊆ {p i, p (i + 3)} ∩ {p j, p (j + 3)}
 
+namespace Hex
+
+variable (H : Hex)
+
+/-- Shifting the labels by one step. -/
+def rot : Hex where
+  p k := H.p (k + 1)
+  h k := H.h (k + 1)
+  d k := H.d (k + 1)
+  inj := H.inj.comp (add_left_injective 1)
+  hrev k := by
+    have := H.hrev (k + 1)
+    rw [show k + 1 + 3 = k + 3 + 1 by abel] at this
+    exact this
+  simpleH k := by
+    have := H.simpleH (k + 1)
+    simpa [hexArc] using this
+  simpleD k := by
+    have := H.simpleD (k + 1)
+    simpa [hexChord, add_right_comm] using this
+  interHH i j hij := by
+    have := H.interHH (i + 1) (j + 1) (fun h => hij (add_right_cancel h))
+    simpa [hexArc] using this
+  interHD i j := by
+    have := H.interHD (i + 1) (j + 1)
+    simpa [hexArc, hexChord, add_right_comm] using this
+  interDD i j hij hij3 := by
+    have := H.interDD (i + 1) (j + 1) (fun h => hij (add_right_cancel h))
+      (fun h => hij3 (by
+        have : i + 1 = j + 3 + 1 := by rw [h]; abel
+        exact add_right_cancel this))
+    simpa [hexChord, add_right_comm] using this
+
+end Hex
+
 end Lightlike.PL
