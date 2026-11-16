@@ -123,12 +123,42 @@ local macro "ends_close" : tactic =>
     | exact absurd (H.inj (h1.symm.trans h2)) (by decide)
     | exact absurd (H.inj (h1.symm.trans h2)) (by decide)))
 
+lemma ends_HH {y : ℝ × ℝ} {i j : Fin 6} (hij : i ≠ j) (h1 : y ∈ chainSet (hexArc H.p H.h i))
+    (h2 : y ∈ chainSet (hexArc H.p H.h j)) :
+    (y = H.p i ∨ y = H.p (i + 1)) ∧ (y = H.p j ∨ y = H.p (j + 1)) := by
+  have := H.interHH i j hij ⟨h1, h2⟩
+  simpa using this
+
+lemma ends_HD {y : ℝ × ℝ} {i j : Fin 6} (h1 : y ∈ chainSet (hexArc H.p H.h i))
+    (h2 : y ∈ chainSet (hexChord H.p H.d j)) :
+    (y = H.p i ∨ y = H.p (i + 1)) ∧ (y = H.p j ∨ y = H.p (j + 3)) := by
+  have := H.interHD i j ⟨h1, h2⟩
+  simpa using this
+
+lemma ends_DD {y : ℝ × ℝ} {i j : Fin 6} (hij : i ≠ j) (hij3 : i ≠ j + 3)
+    (h1 : y ∈ chainSet (hexChord H.p H.d i)) (h2 : y ∈ chainSet (hexChord H.p H.d j)) :
+    (y = H.p i ∨ y = H.p (i + 3)) ∧ (y = H.p j ∨ y = H.p (j + 3)) := by
+  have := H.interDD i j hij hij3 ⟨h1, h2⟩
+  simpa using this
+
 lemma S01 : chainSet (hexArc H.p H.h 0) ∩ chainSet (hexArc H.p H.h 1) = {H.p 1} := by
   apply Set.eq_singleton_iff_unique_mem.2
   refine ⟨⟨H.mem_S_last 0, H.mem_S_head 1⟩, fun y hy => ?_⟩
-  have := H.interHH 0 1 (by decide) hy
+  have := H.ends_HH (by decide) hy.1 hy.2
   simp at this
   ends_close
+
+lemma S012 : (chainSet (hexArc H.p H.h 0) ∪ chainSet (hexArc H.p H.h 1)) ∩
+    chainSet (hexArc H.p H.h 2) = {H.p 2} := by
+  apply Set.eq_singleton_iff_unique_mem.2
+  refine ⟨⟨Or.inr (H.mem_S_last 1), H.mem_S_head 2⟩, fun y ⟨hy1, hy2⟩ => ?_⟩
+  rcases hy1 with h | h
+  · have := H.ends_HH (by decide) h hy2
+    simp at this
+    ends_close
+  · have := H.ends_HH (by decide) h hy2
+    simp at this
+    ends_close
 
 end Hex
 
