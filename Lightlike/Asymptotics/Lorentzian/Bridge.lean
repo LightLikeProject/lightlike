@@ -71,4 +71,23 @@ theorem lam_emb_cohState (n : ℕ) (g : Matrix (Fin 2) (Fin 2) ℂ) (ζ : Fin 2 
   rw [h3, h4]
   simp [Fin.sum_univ_two]
 
+/-- **`suV` as a function on the chart**: the isometry of the SU(2) decomposition is, almost
+everywhere on the chart `z ↦ (z, 1)`, the constant `(‖A e₀‖)⁻¹` times the weight and the contraction
+`Λ`, where `A = tlin` is the explicit intertwiner of `Lightlike.Lorentz.SpinVectors`. -/
+theorem suV_ae (n : ℤ) (ρ : ℝ) (ℓ : ℕ) (x : Espace (dsp n ℓ)) :
+    (suV n ρ ℓ x : ℂ → ℂ) =ᵐ[MeasureTheory.volume] fun z =>
+      ((nrmA (tlin (ℓ + p0 n) (ℓ + q0 n) ρ))⁻¹ : ℂ) *
+        (wgt (ℓ + p0 n) (ℓ + q0 n) ρ z *
+          lam (ℓ + p0 n) (ℓ + q0 n) (emb ((ℓ + p0 n) + (ℓ + q0 n)) *ᵥ x.ofLp) ![z, 1]) := by
+  unfold suV
+  rw [normalize_apply]
+  have h1 : (tlin (ℓ + p0 n) (ℓ + q0 n) ρ x.ofLp : ℂ → ℂ) =ᵐ[MeasureTheory.volume]
+      tfun (ℓ + p0 n) (ℓ + q0 n) ρ x.ofLp :=
+    MeasureTheory.MemLp.coeFn_toLp (memLp_tfun (ℓ + p0 n) (ℓ + q0 n) ρ x.ofLp)
+  filter_upwards [MeasureTheory.Lp.coeFn_smul (((nrmA (tlin (ℓ + p0 n) (ℓ + q0 n) ρ))⁻¹ : ℂ))
+    (tlin (ℓ + p0 n) (ℓ + q0 n) ρ x.ofLp), h1] with z hz1 hz2
+  rw [hz1, Pi.smul_apply, hz2, smul_eq_mul]
+  unfold tfun
+  rw [chart_hvec]
+
 end Lightlike.Asymptotics.Lorentzian
