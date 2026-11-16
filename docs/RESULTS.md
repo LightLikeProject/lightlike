@@ -14,15 +14,19 @@ The main theorem of a cited paper or book, or a named theorem (`main: true` in `
 
 | ID | Result | Area | Tier | Lean |
 |---|---|---|---|---|
+| LL-0022 | The Biedenharn–Elliott identity for all spins | The Ponzano–Regge model | established | `Lightlike.Pentagon.biedenharnElliott` in [BEZero.lean](../Lightlike/PonzanoRegge/BEZero.lean) |
 | LL-0023 | Pachner's theorem, stellar version, in all dimensions | PL topology of simplicial complexes | established | `Lightlike.PL.SComplex.pachner` in [PachnerMain.lean](../Lightlike/PL/PachnerMain.lean) |
 | LL-0030 | The Ponzano–Regge asymptotic formula for the 6j symbol | The Ponzano–Regge model | established | `Lightlike.Asymptotics.ponzanoReggeFormula` in [SaddleAssembly.lean](../Lightlike/Asymptotics/SaddleAssembly.lean) |
+| LL-0042 | Schläfli's identity for a tetrahedron | Regge calculus | established | `Lightlike.Regge.schlaefli` in [Schlaefli.lean](../Lightlike/Regge/Schlaefli.lean) |
 | LL-0046 | The Lorentzian EPRL vertex amplitude is finite for every Immirzi parameter, all spins and every coefficient array | SL(2,ℂ) and its unitary principal series | frontier | `Lightlike.Lorentz.integrable_eprlIntegrand`, `Lightlike.Lorentz.lintegral_enorm_eprlIntegrand_lt_top`, `Lightlike.Lorentz.eprlVertex_eq_integral`, `Lightlike.Lorentz.integrable_linkProd_inner` in [EPRL.lean](../Lightlike/Lorentz/EPRL.lean) |
 | LL-0047 | The large-spin asymptotic formula of the Euclidean EPRL vertex amplitude in coherent boundary states | Saddle points of the 6j symbol | frontier | `Lightlike.Asymptotics.EPRL.eprlAsymptoticFormula` in [EPRLFormula.lean](../Lightlike/Asymptotics/EPRL/EPRLFormula.lean) |
+| LL-0055 | The Dehn–Sommerville relations 2N₃ = 5N₄ and 2N₁ − 3N₂ + 6N₃ − 10N₄ = 0 for closed combinatorial 4-manifolds | Dynamical triangulations: Dehn–Sommerville relations | established | `Lightlike.PL.SComplex.IsClosedCombManifold.two_mul_card_eq`, `Lightlike.PL.SComplex.IsClosedCombManifold.dehnSommerville` in [DehnSommerville.lean](../Lightlike/DynamicalTriangulations/DehnSommerville.lean) |
+| LL-0064 | Newman's theorem, PL homeomorphic simplicial complexes are stellar equivalent | PL topology of simplicial complexes | established | `Lightlike.PL.SComplex.StellarEquiv.of_plHomeomorphic` in [Newman.lean](../Lightlike/PL/Newman.lean) |
 | LL-0065 | Pachner's theorem, PL form, closed combinatorial manifolds are PL homeomorphic iff related by bistellar moves | PL topology of simplicial complexes | established | `Lightlike.PL.SComplex.pachner_plHomeomorphic`, `Lightlike.PL.SComplex.isClosedCombManifold_iff_plHomeomorphic` in [PachnerPL.lean](../Lightlike/PL/PachnerPL.lean) |
 | LL-0068 | The gauge-fixed Ooguri state sum at finite cutoff is constant along every chain of 4D Pachner moves, and a gauge set that forces every triangle gives 1 at every cutoff | Spin foam models: Ooguri and Barrett–Crane | frontier | `Lightlike.SpinFoam.amplitudeGF_congr_cut`, `Lightlike.SpinFoam.GFStep4.isGauge`, `Lightlike.SpinFoam.amplitudeGF_eqvGen4`, `Lightlike.SpinFoam.amplitudeGF_tendsto_one_of_forces` in [GaugeChain.lean](../Lightlike/SpinFoam/GaugeChain.lean) |
 | LL-0076 | The Jordan curve theorem for simple closed polygons in the plane, with the inside of a triangle | PL topology of simplicial complexes | established | `Lightlike.PL.Polygon.polygon_jordan`, `Lightlike.PL.Polygon.frontier_class` in [PolygonJordan.lean](../Lightlike/PL/PolygonJordan.lean) |
 | LL-0084 | The polygonal Schoenflies theorem: the closed region bounded by a simple closed polygon in the plane is a PL ball whose boundary is the polygon | PL topology of simplicial complexes | established | `Lightlike.PL.Polygon.polygon_schoenflies`, `Lightlike.PL.Polygon.mem_bd_closure_iff`, `Lightlike.PL.Polygon.bd_space_eq_carrier`, `Lightlike.PL.Polygon.unique_triangle_of_ball` in [PolygonBoundary.lean](../Lightlike/PL/PolygonBoundary.lean) |
-| LL-XXXX-e | Stationary phase: the leading term of an oscillatory integral with a complex phase at finitely many nondegenerate critical points | Stationary phase for integrals with a complex phase | established | `Lightlike.Oscillatory.stationary_phase`, `Lightlike.Oscillatory.stationary_phase_of_isOpen` in [StationaryPhase.lean](../Lightlike/Oscillatory/StationaryPhase.lean) |
+| LL-XXXX-e | Stationary phase with complex phase, leading term (Hörmander, Theorem 7.7.5) | Stationary phase for integrals with a complex phase | established | `Lightlike.Oscillatory.stationary_phase`, `Lightlike.Oscillatory.stationary_phase_of_isOpen` in [StationaryPhase.lean](../Lightlike/Oscillatory/StationaryPhase.lean) |
 
 ## Spacetime geometry in coordinates
 
@@ -321,7 +325,7 @@ API map: [Lightlike/Oscillatory/API-map.md](../Lightlike/Oscillatory/API-map.md)
 
 | ID | Result | Status | Tier | Lean |
 |---|---|---|---|---|
-| LL-XXXX-e | Stationary phase: the leading term of an oscillatory integral with a complex phase at finitely many nondegenerate critical points (see note) | proven | established | `Lightlike.Oscillatory.stationary_phase`, `Lightlike.Oscillatory.stationary_phase_of_isOpen` in [StationaryPhase.lean](../Lightlike/Oscillatory/StationaryPhase.lean) |
+| LL-XXXX-e | Stationary phase with complex phase, leading term (Hörmander, Theorem 7.7.5) (see note) | proven | established | `Lightlike.Oscillatory.stationary_phase`, `Lightlike.Oscillatory.stationary_phase_of_isOpen` in [StationaryPhase.lean](../Lightlike/Oscillatory/StationaryPhase.lean) |
 
 Notes:
 

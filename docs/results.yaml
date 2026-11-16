@@ -292,6 +292,7 @@
   decls: [Lightlike.Pentagon.biedenharnElliott]
   status: proven
   tier: established
+  main: true
   source:
     refs:
       - {ref: edmonds-1957, location: "Chapter: Chapter 6. The Construction of Invariants from the Vector-Coupling Coefficients|10.1515/9781400884186-007"}
@@ -546,6 +547,7 @@
   decls: [Lightlike.Regge.schlaefli]
   status: proven
   tier: established
+  main: true
   source:
     refs:
       - {ref: dittrich-freidel-speziale-2007, location: "eq. (8)", check: "Schläfli identity"}
@@ -723,6 +725,7 @@
   decls: [Lightlike.PL.SComplex.IsClosedCombManifold.two_mul_card_eq, Lightlike.PL.SComplex.IsClosedCombManifold.dehnSommerville]
   status: proven
   tier: established
+  main: true
   source:
     refs:
       - {ref: ambjorn-jurkiewicz-loll-2001, location: "Section 3.2, eq. (26)", check: "Dehn-Sommerville"}
@@ -840,6 +843,7 @@
   decls: [Lightlike.PL.SComplex.StellarEquiv.of_plHomeomorphic]
   status: proven
   tier: established
+  main: true
   source:
     refs:
       - {ref: lickorish-1999, location: "Theorem 4.5"}
@@ -1351,7 +1355,7 @@
   note: "For a continuous injective map f of the circle into the plane, the complement of the image has exactly one unbounded connected component (the one that contains the plane outside a square around the curve, which is connected, isPreconnected_squareOutside), and, since the complement is not connected (weak_jordan, LL-XXXX-b), a bounded component whose frontier lies in the curve (jordan_components). Limits: this is the part of the Jordan curve theorem that holds without the Arc Theorem. That there is exactly one bounded component, and that the curve is the frontier of each component, are open here: they need the Arc Theorem (the complement of an arc is connected), for which no proof is available in this library, and are not claimed. Check: the unit circle satisfies the hypotheses (TestsJordan.unitCircle)."
   since: unreleased
 - id: LL-XXXX-e
-  title: "Stationary phase: the leading term of an oscillatory integral with a complex phase at finitely many nondegenerate critical points"
+  title: "Stationary phase with complex phase, leading term (Hörmander, Theorem 7.7.5)"
   area: Oscillatory
   file: Lightlike/Oscillatory/StationaryPhase.lean
   decls: [Lightlike.Oscillatory.stationary_phase, Lightlike.Oscillatory.stationary_phase_of_isOpen]
