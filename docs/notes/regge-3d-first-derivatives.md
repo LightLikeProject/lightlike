@@ -36,9 +36,16 @@ sum of `|Γ(s, Δ)|²_G` and a term `ρ` that is linear in the second derivative
 with `dd' = ∂∂g` minus an explicit quadratic expression in `(G, ∂g)` (the second derivatives in the
 chart `x ↦ x + Γ(x, x)/2`, in which the first derivatives vanish).
 
-1. **Edge level (A1).** The identity `c = 2 Δ·GΓ(s,Δ)` and `r = |Γ(s,Δ)|² + r_flat(dd')` is one
-   polynomial identity in `(G, ∂g, ∂∂g, s, Δ)` of degree at most 4, with `G⁻¹ = adj/det` once. Estimated size:
-   a few 10⁴ terms, one `ring1` for generic `s, Δ` (minutes).
+1. **Edge level (A1), the step to settle first.** The identity `c = 2 Δ·GΓ(s,Δ)` is exact. The
+   `ε⁴` coefficient is not simply `|Γ(s,Δ)|² + r_flat(dd')`: the edge polynomial contains the chord
+   correction `-(1/12)|Γ(Δ,Δ)|²_G`, whereas the quartic form `|Γ(s,Δ)|²` evaluated at `s = Δ` has
+   coefficient `1`, so no symmetric `dd'` absorbs the difference. The displaced positions therefore
+   need a cubic term `ε³ C(k,k,k)` as well (it changes the lengths at order `ε⁴` by
+   `2 Δ·G (C(k_b) - C(k_a))`), and one has to check that the remainder has the form of a difference of a
+   function of the two vertices. This is a polynomial identity in `(G, ∂g, ∂∂g, s, Δ)` of degree at
+   most 4 with `G⁻¹ = adj/det` once; if it holds, estimated size a few 10⁴ terms, one `ring1` for generic
+   `s, Δ` (minutes). If it does not hold, the route fails at this step and the obstruction is
+   exactly this mismatch.
 2. **Displaced flat star (A2).** For any positions of the vertices of the star in a flat metric, the
    dihedral angles of each class add up to `2π` as long as the orientation stays positive. The proof of
    `StarAngle.lean` (a fan around the hinge axis, complex coordinate in the plane quotient) gives
