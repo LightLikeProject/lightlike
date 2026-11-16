@@ -471,4 +471,244 @@ theorem forces24_of_common (P0 C T : Finset (Finset V)) (a : Fin 4)
 
 end Abstract
 
+lemma sig4_union_tau2 : sig4 ∪ tau2 = univ := by decide
+
+lemma nnX_eq : ∀ a : Fin 4, nnX a = insert (Fin.castLE (by omega) a) tau2 := by decide
+
+lemma castLE_mem_sig4 : ∀ a : Fin 4, (Fin.castLE (by omega : 4 ≤ 6) a) ∈ sig4 := by decide
+
+lemma exists_castLE : ∀ x ∈ sig4, ∃ a : Fin 4, x = Fin.castLE (by omega : 4 ≤ 6) a := by decide
+
+lemma mem_tau2_cases : ∀ x ∈ tau2, x = 4 ∨ x = 5 := by decide
+
+lemma tpX_sub : ∀ i : Fin 4, tpX i ⊆ univ.erase (5 : Fin 6) := by decide
+
+lemma tqX_sub : ∀ i : Fin 4, tqX i ⊆ univ.erase (4 : Fin 6) := by decide
+
+lemma not_sig_tpX : ∀ i : Fin 4, ¬ sig4 ⊆ tpX i := by decide
+
+lemma not_sig_tqX : ∀ i : Fin 4, ¬ sig4 ⊆ tqX i := by decide
+
+lemma card_tpX : ∀ i : Fin 4, #(tpX i) = 4 := by decide
+
+lemma card_tqX : ∀ i : Fin 4, #(tqX i) = 4 := by decide
+
+lemma card_ntX : ∀ r : Fin 6, #(ntX r) = 4 := by decide
+
+lemma ntX_of : ∀ i : Fin 4, ∀ u : Finset (Fin 6), u ⊆ univ.erase (Fin.castLE (by omega : 4 ≤ 6) i) →
+    tau2 ⊆ u → #u = 4 → ∃ r, u = ntX r := by decide
+
+lemma ntX_sub : ∀ r : Fin 6, ∃ i : Fin 4, ntX r ⊆ univ.erase (Fin.castLE (by omega : 4 ≤ 6) i) := by
+  decide
+
+lemma nnX_of : ∀ i : Fin 4, ∀ u : Finset (Fin 6), u ⊆ univ.erase (Fin.castLE (by omega : 4 ≤ 6) i) →
+    tau2 ⊆ u → #u = 3 → ∃ j, u = nnX j := by decide
+
+lemma nnX_sub : ∀ j i : Fin 4, i ≠ j → nnX j ⊆ univ.erase (Fin.castLE (by omega : 4 ≤ 6) i) := by
+  decide
+
+lemma card_nnX : ∀ j : Fin 4, #(nnX j) = 3 := by decide
+
+lemma card_sgX : ∀ j : Fin 4, #(sgX j) = 3 := by decide
+
+lemma card_mpX : ∀ r : Fin 6, #(mpX r) = 3 := by decide
+
+lemma card_mqX : ∀ r : Fin 6, #(mqX r) = 3 := by decide
+
+lemma mpX_sub : ∀ r : Fin 6, mpX r ⊆ univ.erase (5 : Fin 6) := by decide
+
+lemma mqX_sub : ∀ r : Fin 6, mqX r ⊆ univ.erase (4 : Fin 6) := by decide
+
+lemma sgX_sub : ∀ i : Fin 4, sgX i ⊆ univ.erase (5 : Fin 6) := by decide
+
+lemma tau2_sub_nnX : ∀ i : Fin 4, tau2 ⊆ nnX i := by decide
+
+lemma five_mem_tau2 : (5 : Fin 6) ∈ tau2 := by decide
+
+lemma four_mem_tau2 : (4 : Fin 6) ∈ tau2 := by decide
+
+/-! ## The complexes before and after the move -/
+
+section Complex
+
+open Lightlike.FourD Complex4
+
+variable {V : Type*} [LinearOrder V] {K : Complex4 V} {σ τ : Finset V}
+
+/-- A 2-4 move: the second set has two vertices. -/
+lemma card_tau2 (h : K.IsMove σ τ) (hσ : #σ = 4) : #τ = 2 := by have := h.card; omega
+
+/-- **Six positions for the six vertices.** The tetrahedron `σ` and the edge `τ` of a 2-4 move are the
+images of `{0,1,2,3}` and `{4,5}` under an embedding `Fin 6 ↪ V`. -/
+lemma exists_embedding24 (h : K.IsMove σ τ) (hσ : #σ = 4) :
+    ∃ e : Fin 6 ↪ V, tx e sig4 = σ ∧ tx e tau2 = τ := by
+  have hτ := card_tau2 h hσ
+  let s := σ.orderEmbOfFin hσ
+  let c := τ.orderEmbOfFin hτ
+  let f : Fin 6 → V := fun i => if hi : i.val < 4 then s ⟨i, hi⟩ else c ⟨i - 4, by omega⟩
+  have hs : ∀ i, s i ∈ σ := fun i => σ.orderEmbOfFin_mem hσ i
+  have hc : ∀ i, c i ∈ τ := fun i => τ.orderEmbOfFin_mem hτ i
+  have hdisj : ∀ x ∈ σ, ∀ y ∈ τ, x ≠ y := fun x hx y hy hxy =>
+    disjoint_left.mp h.disj hx (hxy ▸ hy)
+  have hinj : Function.Injective f := by
+    intro i j hij
+    simp only [f] at hij
+    by_cases hi : i.val < 4 <;> by_cases hj : j.val < 4 <;> simp only [hi, hj, dite_true, dite_false] at hij
+    · have := s.injective hij; exact Fin.ext (by simpa using congrArg Fin.val this)
+    · exact absurd hij (hdisj _ (hs _) _ (hc _))
+    · exact absurd hij.symm (hdisj _ (hs _) _ (hc _))
+    · have := c.injective hij
+      have := congrArg Fin.val this
+      exact Fin.ext (by simp at this; omega)
+  refine ⟨⟨f, hinj⟩, ?_, ?_⟩
+  · refine eq_of_subset_of_card_le ?_ (by rw [hσ]; simp only [tx, card_map]; decide)
+    intro x hx
+    simp only [tx, mem_map, Function.Embedding.coeFn_mk, sig4] at hx
+    obtain ⟨i, hi, rfl⟩ := hx
+    have : i.val < 4 := by fin_cases i <;> simp_all
+    simp only [f, this, dite_true]
+    exact hs _
+  · refine eq_of_subset_of_card_le ?_ (by rw [hτ]; simp only [tx, card_map]; decide)
+    intro x hx
+    simp only [tx, mem_map, Function.Embedding.coeFn_mk, tau2] at hx
+    obtain ⟨i, hi, rfl⟩ := hx
+    have : ¬ i.val < 4 := by fin_cases i <;> simp_all
+    simp only [f, this, dite_false]
+    exact hc _
+
+lemma tx_erase24 (e : Fin 6 ↪ V) (i : Fin 6) :
+    (tx e sig4 ∪ tx e tau2).erase (e i) = tx e (univ.erase i) := by
+  unfold tx
+  rw [← map_union, sig4_union_tau2, map_erase]
+
+/-- **Forcing after a 2-4 move.** Let `K → K'` be a 2-4 move that removes the tetrahedron `σ` and adds
+the edge `τ = {p, q}`, `a ∈ σ`, and `T` a set of triangles of `K`. If `T` forces every triangle of
+`K`, then `T` together with the triangle `{a, p, q}` forces every triangle of `K'` if and only if the
+closure of `T` under the tetrahedra of `K` other than `σ` already reaches every triangle of `K`. -/
+theorem forces_move24_iff (h : K.IsMove σ τ) (hσ : #σ = 4) {a : V} (ha : a ∈ σ)
+    {T : Finset (Finset V)} (hT : T ⊆ K.tris) (hF : Forces K K.tris T) :
+    Forces (K.move h) (K.move h).tris (insert (insert a τ) T) ↔
+      ForcesIn (K.tets.filter fun t => ¬ σ ⊆ t) K.tris T := by
+  obtain ⟨e, hσe, hτe⟩ := exists_embedding24 h hσ
+  subst hσe hτe
+  obtain ⟨a', rfl⟩ : ∃ a' : Fin 4, a = e (Fin.castLE (by omega) a') := by
+    obtain ⟨x, hx, rfl⟩ := mem_map.mp ha
+    obtain ⟨a', rfl⟩ := exists_castLE x hx
+    exact ⟨a', rfl⟩
+  have hnn : insert (e (Fin.castLE (by omega) a')) (tx e tau2) = tx e (nnX a') := by
+    rw [nnX_eq]; simp [tx]
+  rw [hnn]
+  have hSp : ∀ j : Fin 6, j ∈ tau2 → tx e (univ.erase j) ∈ K.simps := fun j hj => by
+    rw [← tx_erase24]; exact h.mem _ (mem_map_of_mem _ hj)
+  have hRi : ∀ i : Fin 4, tx e (univ.erase (Fin.castLE (by omega) i)) ∈ (K.move h).simps :=
+    fun i => by
+      rw [← tx_erase24]
+      exact mem_move.mpr (Or.inr ⟨e (Fin.castLE (by omega) i),
+        mem_map_of_mem _ (castLE_mem_sig4 i), rfl⟩)
+  have hcσ : #(tx e sig4) = 4 := hσ
+  set P0 := K.tets.filter fun t => ¬ tx e sig4 ⊆ t with hP0
+  have hσtet : tx e sig4 ∈ K.tets :=
+    mem_faces.mpr ⟨_, hSp 5 five_mem_tau2, map_subset_map.mpr (by decide), hcσ⟩
+  have hKt : K.tets = insert (tx e sig4) P0 := by
+    ext t
+    constructor
+    · intro ht
+      by_cases hσt : tx e sig4 ⊆ t
+      · obtain ⟨S, -, -, hc⟩ := mem_faces.mp ht
+        exact mem_insert.mpr (Or.inl (eq_of_subset_of_card_le hσt (by rw [hc, hcσ])).symm)
+      · exact mem_insert_of_mem (mem_filter.mpr ⟨ht, hσt⟩)
+    · intro ht
+      rcases mem_insert.mp ht with rfl | ht
+      · exact hσtet
+      · exact (mem_filter.mp ht).1
+  have hK't : (K.move h).tets = P0 ∪ univ.image fun r => tx e (ntX r) := by
+    ext t
+    simp only [mem_union, mem_image, mem_univ, true_and]
+    constructor
+    · intro ht
+      by_cases hτt : tx e tau2 ⊆ t
+      · right
+        obtain ⟨S, hS, htS, hc⟩ := mem_faces.mp ht
+        rcases mem_move.mp hS with ⟨hSK, -⟩ | ⟨u, hu, rfl⟩
+        · exact absurd (hτt.trans htS) (h.fresh S hSK)
+        · obtain ⟨x, hx, rfl⟩ := mem_map.mp hu
+          obtain ⟨i, rfl⟩ := exists_castLE x hx
+          rw [tx_erase24] at htS
+          obtain ⟨u', hu', rfl⟩ := subset_map_iff.mp htS
+          have hsu : tau2 ⊆ u' := (map_subset_map).mp hτt
+          have hc' : #u' = 4 := by simpa [card_map] using hc
+          obtain ⟨r, rfl⟩ := ntX_of i u' hu' hsu hc'
+          exact ⟨r, rfl⟩
+      · left
+        obtain ⟨h1, h2⟩ := sub_face_back h ht hτt
+        exact mem_filter.mpr ⟨h1, h2⟩
+    · rintro (ht | ⟨r, rfl⟩)
+      · obtain ⟨htK, hσt⟩ := mem_filter.mp ht
+        exact (sub_face h htK hσt).1
+      · obtain ⟨i, hi⟩ := ntX_sub r
+        exact mem_faces.mpr ⟨_, hRi i, map_subset_map.mpr hi, by simp [tx, card_map, card_ntX]⟩
+  have hCt : ∀ t ∈ P0, ∀ g ∈ t.powersetCard 3, g ∈ K.tris := by
+    intro t ht g hg
+    obtain ⟨htK, -⟩ := mem_filter.mp ht
+    obtain ⟨hgt, hgc⟩ := mem_powersetCard.mp hg
+    obtain ⟨S, hS, htS, -⟩ := mem_faces.mp htK
+    exact mem_faces.mpr ⟨S, hS, hgt.trans htS, hgc⟩
+  have hK'tris : (K.move h).tris = K.tris ∪ univ.image fun i => tx e (nnX i) := by
+    ext f
+    simp only [mem_union, mem_image, mem_univ, true_and]
+    constructor
+    · intro hf
+      by_cases hτf : tx e tau2 ⊆ f
+      · right
+        obtain ⟨S, hS, hfS, hc⟩ := mem_faces.mp hf
+        rcases mem_move.mp hS with ⟨hSK, -⟩ | ⟨u, hu, rfl⟩
+        · exact absurd (hτf.trans hfS) (h.fresh S hSK)
+        · obtain ⟨x, hx, rfl⟩ := mem_map.mp hu
+          obtain ⟨i, rfl⟩ := exists_castLE x hx
+          rw [tx_erase24] at hfS
+          obtain ⟨u', hu', rfl⟩ := subset_map_iff.mp hfS
+          have hsu : tau2 ⊆ u' := (map_subset_map).mp hτf
+          have hc' : #u' = 3 := by simpa [card_map] using hc
+          obtain ⟨j, rfl⟩ := nnX_of i u' hu' hsu hc'
+          exact ⟨j, rfl⟩
+      · left
+        exact (sub_face_back h hf hτf).1
+    · rintro (hf | ⟨j, rfl⟩)
+      · obtain ⟨S, hS, hfS, hc⟩ := mem_faces.mp hf
+        have hσf : ¬ tx e sig4 ⊆ f := fun hs => by
+          have := card_le_card hs; omega
+        exact (sub_face h hf hσf).1
+      · obtain ⟨i, hi⟩ : ∃ i : Fin 4, i ≠ j := by revert j; decide
+        exact mem_faces.mpr ⟨_, hRi i, map_subset_map.mpr (nnX_sub j i hi),
+          by simp [tx, card_map, card_nnX]⟩
+  have hcom : ∀ i : Fin 4, tx e (tpX i) ∈ P0 ∧ tx e (tqX i) ∈ P0 := fun i =>
+    ⟨mem_filter.mpr ⟨mem_faces.mpr ⟨_, hSp 5 five_mem_tau2, map_subset_map.mpr (tpX_sub i),
+        by simp [tx, card_map, card_tpX]⟩, fun hs => not_sig_tpX i (map_subset_map.mp hs)⟩,
+     mem_filter.mpr ⟨mem_faces.mpr ⟨_, hSp 4 four_mem_tau2, map_subset_map.mpr (tqX_sub i),
+        by simp [tx, card_map, card_tqX]⟩, fun hs => not_sig_tqX i (map_subset_map.mp hs)⟩⟩
+  have hNC : ∀ i, tx e (nnX i) ∉ K.tris := fun i hh => by
+    obtain ⟨S, hS, hfS, -⟩ := mem_faces.mp hh
+    exact h.fresh S hS ((map_subset_map.mpr (tau2_sub_nnX i)).trans hfS)
+  have hmix : ∀ r, tx e (mpX r) ∈ K.tris ∧ tx e (mqX r) ∈ K.tris := fun r =>
+    ⟨mem_faces.mpr ⟨_, hSp 5 five_mem_tau2, map_subset_map.mpr (mpX_sub r),
+        by simp [tx, card_map, card_mpX]⟩,
+     mem_faces.mpr ⟨_, hSp 4 four_mem_tau2, map_subset_map.mpr (mqX_sub r),
+        by simp [tx, card_map, card_mqX]⟩⟩
+  have hF1 : ForcesIn (insert (tx e sig4) P0) K.tris T := by
+    rw [← hKt]; exact (forces_iff_forcesIn K _ _).mp hF
+  have e2 : Forces (K.move h) (K.move h).tris (insert (tx e (nnX a')) T) ↔
+      ForcesIn (P0 ∪ univ.image fun r => tx e (ntX r))
+        (K.tris ∪ univ.image fun i => tx e (nnX i)) (insert (tx e (nnX a')) T) := by
+    rw [forces_iff_forcesIn, hK't, hK'tris]
+  rw [e2]
+  constructor
+  · intro hF2
+    by_contra hnot
+    rcases forcing_dichotomy24 e P0 K.tris T a' hCt hcom hNC hT hnot with hh | hh
+    · exact hh hF1
+    · exact hh hF2
+  · exact fun hS => (forces24_of_common e P0 K.tris T a' hmix hS).2
+
+end Complex
+
 end Lightlike.SpinFoam.Forcing24
