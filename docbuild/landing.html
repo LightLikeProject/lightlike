@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lightlike</title>
+<!-- The site root (see .github/workflows/docs.yml); the API documentation is under docs/. -->
+<style>
+  :root { color-scheme: light dark; --ink: #1a1a1a; --muted: #555; --bg: #fff; --link: #0b57a4; }
+  @media (prefers-color-scheme: dark) {
+    :root { --ink: #e6e6e6; --muted: #a8a8a8; --bg: #161616; --link: #7db3f0; }
+  }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 17px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 40rem; margin: 0 auto; padding: 3rem 1rem; }
+  h1 { font-size: 1.6rem; margin: 0 0 1rem; }
+  a { color: var(--link); }
+  ul { padding-left: 1.2rem; }
+  li { margin: 0.3rem 0; }
+</style>
+</head>
+<body>
+<main>
+<h1>Lightlike</h1>
+<p>Lightlike is a Lean 4 library of the mathematics of fundamental physics, built on Mathlib and
+Physlib: definitions, proofs checked by Lean's kernel, and open problems stated exactly. So far it
+covers mostly spin-foam and state-sum quantum gravity, and the general relativity, representation
+theory, PL topology and Regge calculus they rest on. Each entry of the catalog cites the source of
+its statement and says what it does not cover.</p>
+<ul>
+  <li><a href="docs/">API documentation</a></li>
+  <li><a href="https://github.com/LightlikeProject/lightlike/blob/main/docs/RESULTS.md">Catalog of results</a> (RESULTS.md)</li>
+  <li><a href="https://github.com/LightlikeProject/lightlike/blob/main/docs/tasks/README.md">Task board</a></li>
+  <li><a href="https://github.com/LightlikeProject/lightlike">GitHub repository</a></li>
+  <li><a href="https://discord.gg/Eyx3zTx9JW">Discord</a></li>
+</ul>
+</main>
+</body>
+</html>
