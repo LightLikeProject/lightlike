@@ -30,6 +30,10 @@ ingredients of that matching.
   integers by which `wTerm` steps.
 * `wTerm_eq_Tj` (the map): in the case `x0 = j1 - j2`, `q0 = j1 - j5`, `j4 + j5 < j1 + j2`, the
   weighted terms are the first term times the summand `Tj` of Jackson's series.
+* `pk_Q_zpow`, `prod_qnum`, `prod_qZ_neg`, `jacksonRhs_val`: Jackson's right side at the parameters of
+  the boundary evaluation is a ratio of quantum factorials.
+* `prod_identity`: the weight of the lowest column, the first weighted term and Jackson's right side
+  multiply to `1`; every quantum factorial cancels.
 * `qd_jhyp`: they hold at the parameters of the boundary evaluation in the case `x0 = j1 - j2`,
   `q0 = j1 - j5`, `j4 + j5 < j1 + j2`, for admissible spins.
 
@@ -576,5 +580,174 @@ theorem wTerm_eq_Tj {r j1 j2 j4 j5 n : ℕ} (hr : 2 ≤ r) (h21 : j2 ≤ j1) (h5
           ((uC r ^ 2) ^ ec) ((uC r ^ 2) ^ n) k := by
       rw [rt, hRatio]; push_cast; ring
     rw [hc, ihk, T']; ring
+
+
+/-- A `q`-Pochhammer symbol of a power of `Q = u²` is a product of quantum integers, up to a power
+of `-(u - u⁻¹)` and a power of `u`. -/
+lemma pk_Q_zpow {r : ℕ} (hr : 2 ≤ r) (e : ℤ) (n : ℕ) :
+    pk ((uC r ^ 2) ^ e) (uC r ^ 2) n =
+      (-(uC r - (uC r)⁻¹)) ^ n * uC r ^ (∑ i ∈ range n, (e + i)) *
+        ∏ i ∈ range n, ((qZ r (e + i) : ℝ) : ℂ) := by
+  have hu : uC r ≠ 0 := uC_ne_zero r
+  induction n with
+  | zero => simp [pk]
+  | succ n ih =>
+    have h1 : (uC r ^ 2) ^ e * (uC r ^ 2) ^ n = 1 - (1 - (uC r ^ 2) ^ (e + n)) := by
+      rw [zpow_add₀ (pow_ne_zero 2 hu), zpow_natCast]; ring
+    rw [pk, ih, h1, sub_sub_cancel, one_sub_Q_qZ hr, sum_range_succ, prod_range_succ,
+      zpow_add₀ hu (∑ i ∈ range n, (e + (i : ℤ))), pow_succ]
+    ring
+
+/-- `∏_{i<n} [e+1+i] = [e+n]! / [e]!`. -/
+lemma prod_qnum {r : ℕ} (e n : ℕ) (h : e + n < r) (hr : 2 ≤ r) :
+    (∏ i ∈ range n, qnum r (e + 1 + i)) * qfact r e = qfact r (e + n) := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+    rw [prod_range_succ, mul_right_comm, ih (by omega), show e + (n + 1) = (e + n) + 1 by ring,
+      qfact_succ', show e + 1 + n = e + n + 1 by ring]
+
+/-- `∏_{i<n} [-m+i] · [m-n]! = (-1)^n [m]!` for `n ≤ m`. -/
+lemma prod_qZ_neg {r : ℕ} (m n : ℕ) (h : n ≤ m) (hm : m < r) :
+    (∏ i ∈ range n, qZ r (-(m : ℤ) + i)) * qfact r (m - n) = (-1) ^ n * qfact r m := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+    have e : qZ r (-(m : ℤ) + n) = - qnum r (m - n) := by
+      rw [show -(m : ℤ) + n = -((m - n : ℕ) : ℤ) by push_cast; omega, qZ_neg, qZ_natCast]
+    have f : qfact r (m - n) = qfact r (m - (n + 1)) * qnum r (m - n) := by
+      rw [show m - n = (m - (n + 1)) + 1 by omega]; exact qfact_succ' r _
+    have ih' := ih (by omega)
+    rw [prod_range_succ, e, pow_succ]
+    rw [f] at ih'
+    linear_combination (-1 : ℝ) * ih'
+
+/-- **Jackson's right side at the parameters of the boundary evaluation** is a ratio of quantum
+factorials. -/
+theorem jacksonRhs_val {r : ℕ} (hr : 2 ≤ r) {d j2 n j5 ec : ℕ} (hec : ec + j5 = d + n + 1)
+    (hnj : n ≤ j5) (hj5 : j5 ≤ d + n) (hj2 : n < j2) (hb1 : d + n + 1 < r) (hb2 : j2 + ec < r) :
+    jacksonRhs (uC r ^ 2) ((uC r ^ 2) ^ (d + 1)) ((uC r ^ 2) ^ (j2 + d + 2)) ((uC r ^ 2) ^ ec) n =
+      (((qfact r (d + n + 1) / qfact r (d + 1)) * (qfact r (j2 + ec) / qfact r (j2 + ec - n)) /
+        ((qfact r j2 / qfact r (j2 - n)) * (qfact r j5 / qfact r (j5 - n))) : ℝ) : ℂ) := by
+  have hu : uC r ≠ 0 := uC_ne_zero r
+  have hQ : uC r ^ 2 ≠ 0 := pow_ne_zero 2 hu
+  have A : (uC r ^ 2) ^ (d + 1) * (uC r ^ 2) = (uC r ^ 2) ^ ((d : ℤ) + 2) := by
+    rw [zpow_add₀ hQ]; rw [zpow_natCast]; simp; ring
+  have B : (uC r ^ 2) ^ (d + 1) * (uC r ^ 2) / ((uC r ^ 2) ^ (j2 + d + 2) * (uC r ^ 2) ^ ec) =
+      (uC r ^ 2) ^ (-(j2 : ℤ) - ec) := by
+    rw [show -(j2 : ℤ) - ec = -((j2 + ec : ℕ) : ℤ) by push_cast; ring, zpow_neg, zpow_natCast]
+    field_simp; ring
+  have C : (uC r ^ 2) ^ (d + 1) * (uC r ^ 2) / (uC r ^ 2) ^ (j2 + d + 2) =
+      (uC r ^ 2) ^ (-(j2 : ℤ)) := by
+    rw [zpow_neg, zpow_natCast]
+    field_simp; ring
+  have D : (uC r ^ 2) ^ (d + 1) * (uC r ^ 2) / (uC r ^ 2) ^ ec =
+      (uC r ^ 2) ^ (((j5 - n + 1 : ℕ)) : ℤ) := by
+    rw [zpow_natCast, div_eq_iff (pow_ne_zero _ hQ), ← pow_succ, ← pow_add]
+    congr 1; omega
+  unfold jacksonRhs
+  rw [B, C, D, A, pk_Q_zpow hr, pk_Q_zpow hr, pk_Q_zpow hr, pk_Q_zpow hr]
+  have pf : ∀ m : ℕ, m < r → 0 < qfact r m := fun m h => qfact_pos hr h
+  have g1 : ∏ i ∈ range n, qZ r (((d : ℤ) + 2) + i) = qfact r (d + n + 1) / qfact r (d + 1) := by
+    rw [eq_div_iff (pf _ (by omega)).ne']
+    have := prod_qnum (r := r) (d + 1) n (by omega) hr
+    rw [show d + 1 + n = d + n + 1 by ring] at this
+    rw [← this]
+    congr 1
+  have g4 : ∏ i ∈ range n, qZ r ((((j5 - n + 1 : ℕ)) : ℤ) + i) = qfact r j5 / qfact r (j5 - n) := by
+    rw [eq_div_iff (pf _ (by omega)).ne']
+    have := prod_qnum (r := r) (j5 - n) n (by omega) hr
+    rw [show j5 - n + n = j5 by omega] at this
+    rw [← this]
+    congr 1
+  have g3 : ∏ i ∈ range n, qZ r (-(j2 : ℤ) + i) = (-1) ^ n * (qfact r j2 / qfact r (j2 - n)) := by
+    rw [mul_div_assoc', eq_div_iff (pf _ (by omega)).ne']
+    exact prod_qZ_neg j2 n (by omega) (by omega)
+  have g2 : ∏ i ∈ range n, qZ r (-(j2 : ℤ) - ec + i) =
+      (-1) ^ n * (qfact r (j2 + ec) / qfact r (j2 + ec - n)) := by
+    rw [mul_div_assoc', eq_div_iff (pf _ (by omega)).ne']
+    have := prod_qZ_neg (r := r) (j2 + ec) n (by omega) hb2
+    rw [← this]
+    congr 1
+    refine prod_congr rfl fun i _ => ?_
+    rw [show -(j2 : ℤ) - ec + i = -((j2 + ec : ℕ) : ℤ) + i by push_cast; ring]
+  have hsum : ∀ e : ℤ, ∑ i ∈ range n, (e + (i : ℤ)) = n * e + ∑ i ∈ range n, (i : ℤ) := by
+    intro e; simp [sum_add_distrib]
+  have hbal : uC r ^ (∑ i ∈ range n, (((d : ℤ) + 2) + (i : ℤ))) *
+      uC r ^ (∑ i ∈ range n, ((-(j2 : ℤ) - ec) + (i : ℤ))) =
+      uC r ^ (∑ i ∈ range n, ((-(j2 : ℤ)) + (i : ℤ))) *
+        uC r ^ (∑ i ∈ range n, ((((j5 - n + 1 : ℕ)) : ℤ) + (i : ℤ))) := by
+    rw [← zpow_add₀ hu, ← zpow_add₀ hu]
+    congr 1
+    rw [hsum, hsum, hsum, hsum]
+    have h1 : (ec : ℤ) = d + n + 1 - j5 := by omega
+    have h2 : (((j5 - n + 1 : ℕ)) : ℤ) = j5 - n + 1 := by omega
+    rw [h1, h2]; ring
+  have ht := uC_sub_inv_ne hr
+  have hX : (-(uC r - (uC r)⁻¹)) ^ n ≠ 0 := pow_ne_zero n (neg_ne_zero.2 ht)
+  have hzp : ∀ z : ℤ, uC r ^ z ≠ 0 := fun z => zpow_ne_zero z hu
+  have pos : ∀ m : ℕ, m < r → (0 : ℝ) < qfact r m := fun m h => qfact_pos hr h
+  have c1 := (pos (d + n + 1) (by omega)).ne'
+  have c2 := (pos (d + 1) (by omega)).ne'
+  have c3 := (pos (j2 + ec) hb2).ne'
+  have c4 := (pos (j2 + ec - n) (by omega)).ne'
+  have c5 := (pos j2 (by omega)).ne'
+  have c6 := (pos (j2 - n) (by omega)).ne'
+  have c7 := (pos j5 (by omega)).ne'
+  have c8 := (pos (j5 - n) (by omega)).ne'
+  simp only [← Complex.ofReal_prod]
+  rw [g1, g2, g3, g4]
+  have z1 := hzp (∑ i ∈ range n, (((d : ℤ) + 2) + (i : ℤ)))
+  have z2 := hzp (∑ i ∈ range n, ((-(j2 : ℤ) - ec) + (i : ℤ)))
+  have z3 := hzp (∑ i ∈ range n, ((-(j2 : ℤ)) + (i : ℤ)))
+  have z4 := hzp (∑ i ∈ range n, ((((j5 - n + 1 : ℕ)) : ℤ) + (i : ℤ)))
+  have hs : ((-1 : ℂ)) ^ n ≠ 0 := pow_ne_zero n (by norm_num)
+  generalize uC r ^ (∑ i ∈ range n, (((d : ℤ) + 2) + (i : ℤ))) = Z1 at *
+  generalize uC r ^ (∑ i ∈ range n, ((-(j2 : ℤ) - ec) + (i : ℤ))) = Z2 at *
+  generalize uC r ^ (∑ i ∈ range n, ((-(j2 : ℤ)) + (i : ℤ))) = Z3 at *
+  generalize uC r ^ (∑ i ∈ range n, ((((j5 - n + 1 : ℕ)) : ℤ) + (i : ℤ))) = Z4 at *
+  generalize (-(uC r - (uC r)⁻¹)) ^ n = X at *
+  have hZ4 : Z4 = Z1 * Z2 / Z3 := by
+    rw [eq_div_iff z3]; linear_combination (-1 : ℂ) * hbal
+  rw [hZ4]
+  push_cast
+  field_simp
+
+/-- **The product identity**, in clean parameters `j1 = j2 + d`, `j4 = d + 2n - j5`,
+`q0 = j2 + d - j5`, `ec = d + n + 1 - j5`: the weight of the lowest column, the first weighted term
+and Jackson's right side multiply to `1`. Every quantum factorial cancels. -/
+theorem prod_identity {r : ℕ} (hr : 2 ≤ r) {d j2 n j5 : ℕ} (hnj : n ≤ j5) (hj5 : j5 ≤ d + n)
+    (hj2 : n < j2) (hb1 : d + n + 1 < r) (hb2 : j2 + d + n + 1 - j5 < r) (hb3 : j2 + d + 1 < r) :
+    qnum r (j2 + d - j5 + 1) *
+        (qfact r (j2 + d - j5) * qfact r j5 / qfact r (j2 + d + 1)) *
+        (qfact r (j2 - n) * qfact r (d + n - j5) * qfact r n / qfact r (j2 + d + n + 1 - j5)) *
+      (qnum r (d + 1) * (qfact r d * qfact r j2 / qfact r (j2 + d + 1)) *
+        (qfact r (j5 - n) * qfact r (d + n - j5) * qfact r n / qfact r (d + n + 1)) *
+        (qfact r (j2 + d + 1) /
+          (qfact r (j5 - n) * qfact r (j2 - n) * qfact r n * qfact r (d + n - j5))) ^ 2) *
+      ((qfact r (d + n + 1) / qfact r (d + 1)) *
+        (qfact r (j2 + (d + n + 1 - j5)) / qfact r (j2 + (d + n + 1 - j5) - n)) /
+        ((qfact r j2 / qfact r (j2 - n)) * (qfact r j5 / qfact r (j5 - n)))) = 1 := by
+  have pos : ∀ m : ℕ, m < r → 0 < qfact r m := fun m h => qfact_pos hr h
+  have f1 : qfact r (j2 + d - j5 + 1) = qfact r (j2 + d - j5) * qnum r (j2 + d - j5 + 1) :=
+    qfact_succ' r _
+  have f2 : qfact r (d + 1) = qfact r d * qnum r (d + 1) := qfact_succ' r _
+  have e1 : j2 + (d + n + 1 - j5) = j2 + d + n + 1 - j5 := by omega
+  have e2 : j2 + d + n + 1 - j5 - n = j2 + d - j5 + 1 := by omega
+  rw [e1, e2, f1, f2]
+  have p1 := (pos (j2 + d - j5) (by omega)).ne'
+  have p2 := (pos j5 (by omega)).ne'
+  have p3 := (pos (j2 + d + 1) hb3).ne'
+  have p4 := (pos (j2 - n) (by omega)).ne'
+  have p5 := (pos (d + n - j5) (by omega)).ne'
+  have p6 := (pos n (by omega)).ne'
+  have p7 := (pos (j2 + d + n + 1 - j5) hb2).ne'
+  have p8 := (pos d (by omega)).ne'
+  have p9 := (pos j2 (by omega)).ne'
+  have p10 := (pos (j5 - n) (by omega)).ne'
+  have p11 := (pos (d + n + 1) hb1).ne'
+  have q1 : 0 < qnum r (j2 + d - j5 + 1) := qnum_pos hr (by omega) (by omega)
+  have q2 : 0 < qnum r (d + 1) := qnum_pos hr (by omega) (by omega)
+  field_simp
 
 end Lightlike.TV.Refl
