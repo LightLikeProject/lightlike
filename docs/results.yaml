@@ -1317,3 +1317,16 @@
   review: kernel-checked
   note: "For an arc A, the image of an injective continuous map of [0, 1] into the plane, the complement of A is connected (preconnected). The proof bisects the parameter interval: if the image of an interval separates two points P, Q off it, one of the two halves does (the union lemma); the nested intervals shrink to a parameter t, and a small neighbourhood of gamma(t) does not separate the two points, a contradiction. This is the Separation Theorem for Jordan arcs of the lecture-notes version of chapter 9 of McCleary's book; the statement and proof are Lean's own. Proves: the complement of an arc is connected. Does not prove: that the complement of a Jordan curve has exactly two components, or that the curve is the frontier of each; those need further steps. Limits: arcs in the plane (IsArc). Check: TestsArcNotSeparating.lean."
   since: unreleased
+- id: LL-XXXX-j
+  title: Every component of the complement of a Jordan curve has the whole curve as its frontier
+  area: PL
+  file: Lightlike/PL/JordanFrontier.lean
+  decls: [Lightlike.PL.jordan_frontier]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
+  review: kernel-checked
+  note: "For a continuous injective map f of the circle into the plane, every connected component of the complement of the image has the image as its frontier. This is the clause 'each sharing C as boundary' of the statement of the Jordan Curve Theorem in the introduction of chapter 9 of McCleary's book; the statement carries no number in the lecture-notes version of the chapter. The proof is Lean's own, not the notes': if a point x of the curve were not in the frontier of a component U, the compact frontier of U would lie in an arc B of the curve missing x; the complement of B is connected (the arc theorem, LL-XXXX-i) and U is clopen in it, so U is the whole complement of B and contains x, a contradiction. Limits: continuous injective images of the circle in the plane. Check: TestsJordanFrontier.lean (the unit circle satisfies the hypotheses; a constant map does not)."
+  since: unreleased
