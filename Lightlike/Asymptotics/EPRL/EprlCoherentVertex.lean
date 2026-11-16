@@ -1,12 +1,12 @@
 import Lightlike.Asymptotics.EPRL.EprlCoherentNodeIdentity
-import Lightlike.Asymptotics.EPRL.Decay
+import Lightlike.Asymptotics.EPRL.EPRLFormula
 
 /-!
 # The coherent EPRL vertex amplitude equals the coherent EPRL integral
 
 For `γ < 1` and coherent boundary data with the same `SU(2)` elements on both chiral halves, the
 `K₅` contraction of the coherent EPRL node tensors is the coherent EPRL integral `eprlCoh`, and
-`eprlCoh` is the product of the two coherent `15j` integrals (`eprlCoh_eq_mul`). Expanding every node
+`eprlCoh` is the product of the two coherent `15j` integrals (`eprlCoh_eq_mul` of `EPRLFormula.lean`). Expanding every node
 in the intertwiner basis `ι_z`, this is the statement that the Euclidean EPRL vertex amplitude
 `eprlVertex`, contracted with the coefficients of the coherent boundary intertwiners, is `eprlCoh`
 (`eprlVertex_coherent`). The statement is exact at every spin: it is an identification of the coherent
@@ -15,7 +15,6 @@ integral form with the vertex, not an asymptotic formula, and it holds for doubl
 
 ## Main results
 
-* `eprlCoh_eq_mul`: `eprlCoh n m g = coh15j n g · coh15j m g`.
 * `k5Contract4_eprlCohNode`: the `K₅` contraction of the coherent EPRL node tensors is `eprlCoh`.
 * `eprlVertex_coherent`: `Σ_{z⃗} Π_a c_a(z_a) eprlVertex n m z⃗ = eprlCoh n m g`, with `c_a(z)` the
   coefficients of the coherent boundary intertwiner of node `a` in the basis `ι_z`.
@@ -28,32 +27,12 @@ integral form with the vertex, not an asymptotic formula, and it holds for doubl
   equation is not compared with this library's conventions.
 -/
 
-open MeasureTheory Matrix Finset
+open Matrix Finset
 open scoped Matrix Kronecker
 
 namespace Lightlike.Asymptotics.EPRL
 
 open Lightlike.Spin4 Lightlike.SU2 Lightlike.SpinFoam Lightlike.Recoupling
-
-/-- **The coherent EPRL integral factorizes**: for `γ < 1` the integral over `Spin(4)^5 = SU(2)^5 ×
-SU(2)^5` of the product of the self-dual and anti-self-dual integrands is the product of the two
-coherent `15j` integrals. -/
-theorem eprlCoh_eq_mul (n m : Fin 10 → ℕ) (g : BdryData) :
-    eprlCoh n m g = coh15j n g * coh15j m g := by
-  unfold eprlCoh coh15j
-  have hmp := MeasureTheory.measurePreserving_arrowProdEquivProdArrow SU2 SU2 (Fin 5)
-    (fun _ => haarSU2) (fun _ => haarSU2)
-  have h := hmp.integral_comp' (g := fun y : (Fin 5 → SU2) × (Fin 5 → SU2) =>
-    cohAmp n g (fun a => (y.1 a : Matrix (Fin 2) (Fin 2) ℂ)) *
-      cohAmp m g (fun a => (y.2 a : Matrix (Fin 2) (Fin 2) ℂ)))
-  have hP : (Measure.pi fun _ : Fin 5 => haarSpin4) =
-      Measure.pi fun _ : Fin 5 => haarSU2.prod haarSU2 := rfl
-  rw [hP]
-  refine h.trans ?_
-  unfold haarN
-  exact integral_prod_mul
-    (fun X : Fin 5 → SU2 => cohAmp n g (fun a => (X a : Matrix (Fin 2) (Fin 2) ℂ)))
-    (fun X : Fin 5 → SU2 => cohAmp m g (fun a => (X a : Matrix (Fin 2) (Fin 2) ℂ)))
 
 /-- **The `K₅` contraction of the coherent EPRL node tensors is the coherent EPRL integral.** -/
 theorem k5Contract4_eprlCohNode (n m : Fin 10 → ℕ) (g : Fin 10 → Fin 2 → SU2) :
