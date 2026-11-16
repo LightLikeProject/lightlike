@@ -1,6 +1,7 @@
 import Lightlike.TuraevViro.Reflect.JacksonWZ
 import Lightlike.TuraevViro.Reflect.RacahDc
 import Lightlike.TuraevViro.Reflect.SixJNormOne
+import Lightlike.TuraevViro.Reflect.JacksonDegenerate
 import Lightlike.TuraevViro.Reflect.SixJSingle
 
 /-!
@@ -36,6 +37,10 @@ ingredients of that matching.
   multiply to `1`; every quantum factorial cancels.
 * `qDougall_nondeg`: **`QDougall` holds** in the case `x0 = j1 - j2`, `q0 = j1 - j5`,
   `j4 + j5 < j1 + j2`, for admissible spins, from Jackson's sum (`jackson_sumT`).
+* `Tj_eq_tDeg`, `sDeg_val`, `qDougall_deg_param`: the degenerate case `j1 + j2 = j4 + j5`, where the
+  hypotheses of Jackson's sum fail, from the partial sums of the series with fewer parameters.
+* `qDougall_orbit`: **`QDougall` holds** for the lowest sixth colour `j1 - j5` and the third colours
+  from `j1 - j2`, in both cases.
 * `qd_jhyp`: they hold at the parameters of the boundary evaluation in the case `x0 = j1 - j2`,
   `q0 = j1 - j5`, `j4 + j5 < j1 + j2`, for admissible spins.
 
@@ -855,5 +860,271 @@ theorem qDougall_nondeg {r j1 j2 j4 j5 n : ℕ} (hr : 2 ≤ r) (h21 : j2 ≤ j1)
   obtain rfl : j4 = d + 2 * n - j5 := by omega
   simp only [Nat.add_sub_cancel_left] at hadmX ⊢
   exact qDougall_nondeg_param hr (by omega) (by omega) (by omega) hadmX hadmQ
+
+
+/-- At `b = a q x` Jackson's summand is the term `tDeg` of the series with fewer parameters, when
+the Pochhammer symbols that cancel do not vanish. -/
+lemma Tj_eq_tDeg {q a c x : ℂ} (k : ℕ) (hq : q ≠ 0) (ha : a ≠ 0) (hx : x ≠ 0) (hc : c ≠ 0)
+    (hP1 : pk (a * q * x) q k ≠ 0) (hP2 : pk x⁻¹ q k ≠ 0) :
+    Tj q a (a * q * x) c x k = tDeg q a c k := by
+  have h1 : a * q / (a * q * x) = x⁻¹ := by field_simp
+  have h2 : a * q * x / (a * q * x * c) = c⁻¹ := by field_simp
+  unfold Tj tDeg
+  rw [h1, h2]
+  generalize pk a q k = A
+  generalize pk c q k = C
+  generalize pk (a * q * x) q k = P1 at hP1 ⊢
+  generalize pk x⁻¹ q k = P2 at hP2 ⊢
+  generalize pk q q k = P3
+  generalize pk (a * q / c) q k = P4
+  field_simp
+
+/-- The closed form of the degenerate partial sums at the parameters of the boundary evaluation is a
+ratio of quantum factorials. -/
+theorem sDeg_val {r : ℕ} (hr : 2 ≤ r) {d n j5 ec : ℕ} (hec : ec + j5 = d + n + 1) (hnj : n ≤ j5)
+    (hj5 : j5 ≤ d + n) (hb1 : d + n + 1 < r) (hb2 : ec + n < r) :
+    sDeg (uC r ^ 2) ((uC r ^ 2) ^ (d + 1)) ((uC r ^ 2) ^ ec) n =
+      (((qfact r (d + n + 1) / qfact r (d + 1)) * (qfact r (ec + n) / qfact r ec) /
+        (qfact r n * (qfact r j5 / qfact r (j5 - n))) : ℝ) : ℂ) := by
+  have hu : uC r ≠ 0 := uC_ne_zero r
+  have hQ : uC r ^ 2 ≠ 0 := pow_ne_zero 2 hu
+  have A : (uC r ^ 2) ^ (d + 1) * (uC r ^ 2) = (uC r ^ 2) ^ ((d : ℤ) + 2) := by
+    rw [zpow_add₀ hQ, zpow_natCast]; simp; ring
+  have Cq : (uC r ^ 2) ^ ec * (uC r ^ 2) = (uC r ^ 2) ^ ((ec : ℤ) + 1) := by
+    rw [zpow_add₀ hQ, zpow_natCast]; simp
+  have D : (uC r ^ 2) ^ (d + 1) * (uC r ^ 2) / (uC r ^ 2) ^ ec =
+      (uC r ^ 2) ^ (((j5 - n + 1 : ℕ)) : ℤ) := by
+    rw [zpow_natCast, div_eq_iff (pow_ne_zero _ hQ), ← pow_succ, ← pow_add]
+    congr 1; omega
+  have E : pk (uC r ^ 2) (uC r ^ 2) n = pk ((uC r ^ 2) ^ (1 : ℤ)) (uC r ^ 2) n := by rw [zpow_one]
+  have F : ((uC r ^ 2) ^ ec) ^ n = uC r ^ (((2 * ec * n : ℕ)) : ℤ) := by
+    rw [zpow_natCast, ← pow_mul, ← pow_mul]; congr 1; ring
+  unfold sDeg
+  rw [D, A, Cq, E, F, pk_Q_zpow hr, pk_Q_zpow hr, pk_Q_zpow hr, pk_Q_zpow hr]
+  have pf : ∀ m : ℕ, m < r → 0 < qfact r m := fun m h => qfact_pos hr h
+  have g1 : ∏ i ∈ range n, qZ r (((d : ℤ) + 2) + i) = qfact r (d + n + 1) / qfact r (d + 1) := by
+    rw [eq_div_iff (pf _ (by omega)).ne']
+    have := prod_qnum (r := r) (d + 1) n (by omega) hr
+    rw [show d + 1 + n = d + n + 1 by ring] at this
+    rw [← this]
+    congr 1
+  have g5 : ∏ i ∈ range n, qZ r (((ec : ℤ) + 1) + i) = qfact r (ec + n) / qfact r ec := by
+    rw [eq_div_iff (pf _ (by omega)).ne']
+    have := prod_qnum (r := r) ec n (by omega) hr
+    rw [← this]
+    congr 1
+  have g6 : ∏ i ∈ range n, qZ r ((1 : ℤ) + i) = qfact r n := by
+    have := prod_qnum (r := r) 0 n (by omega) hr
+    have q0 : qfact r 0 = 1 := by simp [qfact]
+    simp only [zero_add, q0, mul_one] at this
+    rw [← this]
+    exact prod_congr rfl fun i _ => by
+      rw [show (1 : ℤ) + i = ((1 + i : ℕ) : ℤ) by push_cast; ring, qZ_natCast]
+  have g4 : ∏ i ∈ range n, qZ r ((((j5 - n + 1 : ℕ)) : ℤ) + i) = qfact r j5 / qfact r (j5 - n) := by
+    rw [eq_div_iff (pf _ (by omega)).ne']
+    have := prod_qnum (r := r) (j5 - n) n (by omega) hr
+    rw [show j5 - n + n = j5 by omega] at this
+    rw [← this]
+    congr 1
+  have hsum : ∀ e : ℤ, ∑ i ∈ range n, (e + (i : ℤ)) = n * e + ∑ i ∈ range n, (i : ℤ) := by
+    intro e; simp [sum_add_distrib]
+  have hbal : uC r ^ (∑ i ∈ range n, (((d : ℤ) + 2) + (i : ℤ))) *
+      uC r ^ (∑ i ∈ range n, (((ec : ℤ) + 1) + (i : ℤ))) =
+      uC r ^ (∑ i ∈ range n, ((1 : ℤ) + (i : ℤ))) *
+        uC r ^ (∑ i ∈ range n, ((((j5 - n + 1 : ℕ)) : ℤ) + (i : ℤ))) *
+        uC r ^ (((2 * ec * n : ℕ)) : ℤ) := by
+    rw [← zpow_add₀ hu, ← zpow_add₀ hu, ← zpow_add₀ hu]
+    congr 1
+    rw [hsum, hsum, hsum, hsum]
+    have h1 : (ec : ℤ) = d + n + 1 - j5 := by omega
+    have h2' : ((j5 - n : ℕ) : ℤ) = j5 - n := by omega
+    push_cast
+    rw [h1, h2']; ring
+  have ht := uC_sub_inv_ne hr
+  have hX : (-(uC r - (uC r)⁻¹)) ^ n ≠ 0 := pow_ne_zero n (neg_ne_zero.2 ht)
+  have hzp : ∀ z : ℤ, uC r ^ z ≠ 0 := fun z => zpow_ne_zero z hu
+  have pos : ∀ m : ℕ, m < r → (0 : ℝ) < qfact r m := fun m h => qfact_pos hr h
+  have c1 := (pos (d + n + 1) (by omega)).ne'
+  have c2 := (pos (d + 1) (by omega)).ne'
+  have c3 := (pos (ec + n) hb2).ne'
+  have c4 := (pos ec (by omega)).ne'
+  have c5 := (pos n (by omega)).ne'
+  have c7 := (pos j5 (by omega)).ne'
+  have c8 := (pos (j5 - n) (by omega)).ne'
+  simp only [← Complex.ofReal_prod]
+  rw [g1, g5, g6, g4]
+  have z1 := hzp (∑ i ∈ range n, (((d : ℤ) + 2) + (i : ℤ)))
+  have z2 := hzp (∑ i ∈ range n, (((ec : ℤ) + 1) + (i : ℤ)))
+  have z3 := hzp (∑ i ∈ range n, ((1 : ℤ) + (i : ℤ)))
+  have z4 := hzp (∑ i ∈ range n, ((((j5 - n + 1 : ℕ)) : ℤ) + (i : ℤ)))
+  have zc := hzp (((2 * ec * n : ℕ)) : ℤ)
+  generalize uC r ^ (∑ i ∈ range n, (((d : ℤ) + 2) + (i : ℤ))) = Z1 at *
+  generalize uC r ^ (∑ i ∈ range n, (((ec : ℤ) + 1) + (i : ℤ))) = Z2 at *
+  generalize uC r ^ (∑ i ∈ range n, ((1 : ℤ) + (i : ℤ))) = Z3 at *
+  generalize uC r ^ (∑ i ∈ range n, ((((j5 - n + 1 : ℕ)) : ℤ) + (i : ℤ))) = Z4 at *
+  generalize uC r ^ (((2 * ec * n : ℕ)) : ℤ) = Zc at *
+  generalize (-(uC r - (uC r)⁻¹)) ^ n = X at *
+  have hZc : Zc = Z1 * Z2 / (Z3 * Z4) := by
+    rw [eq_div_iff (mul_ne_zero z3 z4)]; linear_combination (-1 : ℂ) * hbal
+  rw [hZc]
+  push_cast
+  field_simp
+
+/-- In the degenerate case `b = Q^(n+d+2) = a Q Q^n`, for `k ≤ n`, the summand of Jackson's series at
+the parameters of the boundary evaluation is `tDeg`. -/
+theorem Tj_eq_tDeg_Q {r : ℕ} (hr : 2 ≤ r) {d n j5 ec k : ℕ} (hec : ec + j5 = d + n + 1)
+    (hnj : n ≤ j5) (hj5 : j5 ≤ d + n) (hk : k ≤ n) (hb1 : d + 2 * n + 1 < r) :
+    Tj (uC r ^ 2) ((uC r ^ 2) ^ (d + 1)) ((uC r ^ 2) ^ (n + d + 2)) ((uC r ^ 2) ^ ec)
+        ((uC r ^ 2) ^ n) k = tDeg (uC r ^ 2) ((uC r ^ 2) ^ (d + 1)) ((uC r ^ 2) ^ ec) k := by
+  have hQ : uC r ^ 2 ≠ 0 := pow_ne_zero 2 (uC_ne_zero r)
+  have hb : (uC r ^ 2) ^ (n + d + 2) = (uC r ^ 2) ^ (d + 1) * (uC r ^ 2) * (uC r ^ 2) ^ n := by ring
+  rw [hb]
+  refine Tj_eq_tDeg k hQ (pow_ne_zero _ hQ) (pow_ne_zero _ hQ) (pow_ne_zero _ hQ) ?_ ?_
+  · refine pk_ne_zero _ _ _ fun i hi => ?_
+    rw [show (uC r ^ 2) ^ (d + 1) * (uC r ^ 2) * (uC r ^ 2) ^ n * (uC r ^ 2) ^ i =
+      (uC r ^ 2) ^ ((d + n + 2 + i : ℕ) : ℤ) by rw [zpow_natCast]; ring]
+    exact Qne_pos hr (by push_cast; omega) (by push_cast; omega)
+  · refine pk_ne_zero _ _ _ fun i hi => ?_
+    rw [show ((uC r ^ 2) ^ n)⁻¹ * (uC r ^ 2) ^ i = (uC r ^ 2) ^ ((i : ℤ) - n) by
+      rw [zpow_sub₀ hQ, zpow_natCast, zpow_natCast]; field_simp]
+    exact Qne_neg hr (by omega) (by omega)
+
+/-- The last step of the evaluation: given the sum of the weighted terms as the first term times
+Jackson's right side, the product identity gives `QDougall`. -/
+theorem qDougall_of_sumR {r d j2 n j5 : ℕ} (hr : 2 ≤ r) (hnj : n ≤ j5) (hj5 : j5 ≤ d + n)
+    (hj2 : n ≤ j2)
+    (hadmX : ∀ k ≤ n, qAdm r (j2 + d) j2 (d + 2 * k) ∧ qAdm r (d + 2 * n - j5) j5 (d + 2 * k))
+    (hadmQ : qAdm r (j2 + d) j5 (j2 + d - j5) ∧ qAdm r (d + 2 * n - j5) j2 (j2 + d - j5))
+    (sumR : ∑ k ∈ range (n + 1), wTerm r (j2 + d) j2 (d + 2 * n - j5) j5 k =
+      wTerm r (j2 + d) j2 (d + 2 * n - j5) j5 0 *
+        ((qfact r (d + n + 1) / qfact r (d + 1)) *
+          (qfact r (j2 + (d + n + 1 - j5)) / qfact r (j2 + (d + n + 1 - j5) - n)) /
+          ((qfact r j2 / qfact r (j2 - n)) * (qfact r j5 / qfact r (j5 - n))))) :
+    QDougall r (j2 + d) j2 (d + 2 * n - j5) j5 d n (j2 + d - j5) := by
+  obtain ⟨_, bQ1⟩ := hadmQ.1
+  obtain ⟨_, bQ2⟩ := hadmQ.2
+  obtain ⟨_, bX⟩ := (hadmX n le_rfl).2
+  have hb1 : d + n + 1 < r := by omega
+  have hS : (∑ k ∈ range (n + 1), (jOmega r (j2 + d) j2 (d + 2 * n - j5) j5 (d + 2 * k) *
+      Sj r (j2 + d) j2 (d + 2 * n - j5) j5 (j2 + d - j5) ((d + 2 * k : ℕ) : ℤ) ^ 2)) =
+      ∑ k ∈ range (n + 1), wTerm r (j2 + d) j2 (d + 2 * n - j5) j5 k := by
+    simp only [wTerm, Nat.add_sub_cancel_left]
+  unfold QDougall
+  rw [hS, sumR]
+  unfold wTerm jOmega
+  simp only [Nat.add_sub_cancel_left, mul_zero, add_zero]
+  have hA : (d + 2 * n - j5) + j2 ≤ j5 + (j2 + d) := by omega
+  have hSj := Sj_val r (j1 := j2 + d) (j2 := j2) (j4 := d + 2 * n - j5) (j5 := j5) (k := 0)
+    (A3 := d + n + j2 - j5) (S := d + n) (B := j2 + d + n) (δ := j2 - n) (γ := d + n - j5) (n := n)
+    (by omega) (by omega) (by omega) (by omega) (by omega) (by omega) (by omega) (by omega)
+    (by omega) hA
+  rw [show ((j2 + d - j2 + 2 * 0 : ℕ) : ℤ) = (d : ℤ) by omega] at hSj
+  rw [show j2 + d + 0 - (d + n + j2 - j5) = j5 - n by omega, show n - 0 = n by omega,
+    show j2 + d + 0 + 1 = j2 + d + 1 by omega] at hSj
+  have sq1 : ∀ m : ℕ, ((-1 : ℝ) ^ m) ^ 2 = 1 := fun m => by
+    rw [← pow_mul, mul_comm, pow_mul]; simp
+  have T1 := qDelta_sq_of hr hadmQ.1 (s := j2 + d) (x := 0) (y := j2 + d - j5) (z := j5)
+    (w := j2 + d + 1) (by omega) (by omega) (by omega) (by omega) (by omega)
+  have T2 := qDelta_sq_of hr hadmQ.2 (s := d + n + j2 - j5) (x := j2 - n) (y := d + n - j5)
+    (z := n) (w := j2 + d + n + 1 - j5) (by omega) (by omega) (by omega) (by omega) (by omega)
+  have X0 := hadmX 0 (by omega)
+  simp only [mul_zero, add_zero] at X0
+  have T3 := qDelta_sq_of hr X0.1 (s := j2 + d) (x := 0) (y := d) (z := j2)
+    (w := j2 + d + 1) (by omega) (by omega) (by omega) (by omega) (by omega)
+  have T4 := qDelta_sq_of hr X0.2 (s := d + n) (x := j5 - n) (y := d + n - j5)
+    (z := n) (w := d + n + 1) (by omega) (by omega) (by omega) (by omega) (by omega)
+  rw [T1, T2, T3, T4]
+  have hsqSj : Sj r (j2 + d) j2 (d + 2 * n - j5) j5 (j2 + d - j5) (d : ℤ) ^ 2 =
+      (qfact r (j2 + d + 1) / (qfact r (j5 - n) * qfact r (j2 - n) * qfact r n *
+        qfact r (d + n - j5))) ^ 2 := by
+    rw [hSj, mul_pow, mul_pow, mul_pow, mul_pow, mul_pow, mul_pow, sq1]
+    have q0 : qfact r 0 = 1 := by simp [qfact]
+    rw [q0]; field_simp
+  rw [hsqSj]
+  have q0 : qfact r 0 = 1 := by simp [qfact]
+  rw [q0]
+  have key := prod_identity hr hnj hj5 hj2 hb1 (by omega) (by omega)
+  linear_combination key
+
+/-- **The boundary evaluation `QDougall`, degenerate case** `j1 + j2 = j4 + j5` (`j2 = n`), in the
+parameters `j1 = n + d`, `j4 = d + 2n - j5`. There the hypotheses of Jackson's sum fail, and the
+partial sums of the series with fewer parameters (`tDeg_sum`) replace it. -/
+theorem qDougall_deg_param {r d n j5 : ℕ} (hr : 2 ≤ r) (hnj : n ≤ j5) (hj5 : j5 ≤ d + n)
+    (hadmX : ∀ k ≤ n, qAdm r (n + d) n (d + 2 * k) ∧ qAdm r (d + 2 * n - j5) j5 (d + 2 * k))
+    (hadmQ : qAdm r (n + d) j5 (n + d - j5) ∧ qAdm r (d + 2 * n - j5) n (n + d - j5)) :
+    QDougall r (n + d) n (d + 2 * n - j5) j5 d n (n + d - j5) := by
+  have hX' : ∀ k ≤ n, qAdm r (n + d) n (n + d - n + 2 * k) ∧
+      qAdm r (d + 2 * n - j5) j5 (n + d - n + 2 * k) := by
+    simpa only [Nat.add_sub_cancel_left] using hadmX
+  have hmap := wTerm_eq_Tj hr (j1 := n + d) (j2 := n) (j4 := d + 2 * n - j5) (j5 := j5) (n := n)
+    (by omega) (by omega) (by omega) (by omega) hX' hadmQ
+  have e1 : n + d - n + 1 = d + 1 := by omega
+  have e2 : (n + d - n + (d + 2 * n - j5) - j5) / 2 + 1 = d + n + 1 - j5 := by omega
+  have e2' : (d + (d + 2 * n - j5) - j5) / 2 + 1 = d + n + 1 - j5 := by omega
+  simp only [Nat.add_sub_cancel_left, e1, e2, e2'] at hmap
+  obtain ⟨_, bQ1⟩ := hadmQ.1
+  obtain ⟨_, bQ2⟩ := hadmQ.2
+  obtain ⟨_, bX⟩ := (hadmX n le_rfl).2
+  have hb1 : d + n + 1 < r := by omega
+  have hb1' : d + 2 * n + 1 < r := by omega
+  have hb2 : d + n + 1 - j5 + n < r := by omega
+  have hQ : uC r ^ 2 ≠ 0 := pow_ne_zero 2 (uC_ne_zero r)
+  have hTj : ∀ k ≤ n, Tj (uC r ^ 2) ((uC r ^ 2) ^ (d + 1)) ((uC r ^ 2) ^ (n + d + 2))
+      ((uC r ^ 2) ^ (d + n + 1 - j5)) ((uC r ^ 2) ^ n) k =
+      tDeg (uC r ^ 2) ((uC r ^ 2) ^ (d + 1)) ((uC r ^ 2) ^ (d + n + 1 - j5)) k :=
+    fun k hk => Tj_eq_tDeg_Q hr (ec := d + n + 1 - j5) (by omega) hnj hj5 hk hb1'
+  have hsumT := tDeg_sum (q := uC r ^ 2) (a := (uC r ^ 2) ^ (d + 1)) (c := (uC r ^ 2) ^ (d + n + 1 - j5))
+    (N := n) hQ (pow_ne_zero _ hQ) (by
+      rw [← zpow_natCast]; exact Qne_pos hr (by push_cast; omega) (by push_cast; omega))
+    (fun i hi => ⟨by
+      rw [show (uC r ^ 2) * (uC r ^ 2) ^ i = (uC r ^ 2) ^ ((1 + i : ℕ) : ℤ) by rw [zpow_natCast]; ring]
+      exact Qne_pos hr (by push_cast; omega) (by push_cast; omega), by
+      rw [Qpow_ratio _ hQ]
+      exact Qne_pos hr (by push_cast; omega) (by push_cast; omega)⟩) n le_rfl
+  have hv := sDeg_val hr (d := d) (n := n) (j5 := j5) (ec := d + n + 1 - j5) (by omega) hnj hj5 hb1 hb2
+  have sumC : (∑ k ∈ range (n + 1), (wTerm r (n + d) n (d + 2 * n - j5) j5 k : ℂ)) =
+      (wTerm r (n + d) n (d + 2 * n - j5) j5 0 : ℂ) *
+        ((((qfact r (d + n + 1) / qfact r (d + 1)) *
+          (qfact r (d + n + 1 - j5 + n) / qfact r (d + n + 1 - j5)) /
+          (qfact r n * (qfact r j5 / qfact r (j5 - n)))) : ℝ) : ℂ) := by
+    rw [sum_congr rfl (fun k hk => (hmap k (by simp only [mem_range] at hk; omega)).trans
+      (by rw [hTj k (by simp only [mem_range] at hk; omega)])), ← mul_sum, hsumT, hv]
+  have hR : (qfact r (d + n + 1) / qfact r (d + 1)) *
+        (qfact r (d + n + 1 - j5 + n) / qfact r (d + n + 1 - j5)) /
+        (qfact r n * (qfact r j5 / qfact r (j5 - n))) =
+      (qfact r (d + n + 1) / qfact r (d + 1)) *
+        (qfact r (n + (d + n + 1 - j5)) / qfact r (n + (d + n + 1 - j5) - n)) /
+        ((qfact r n / qfact r (n - n)) * (qfact r j5 / qfact r (j5 - n))) := by
+    have q0 : qfact r 0 = 1 := by simp [qfact]
+    rw [show n + (d + n + 1 - j5) - n = d + n + 1 - j5 by omega, show n - n = 0 by omega, q0,
+      add_comm n (d + n + 1 - j5), div_one]
+  have sumR : ∑ k ∈ range (n + 1), wTerm r (n + d) n (d + 2 * n - j5) j5 k =
+      wTerm r (n + d) n (d + 2 * n - j5) j5 0 *
+        ((qfact r (d + n + 1) / qfact r (d + 1)) *
+          (qfact r (n + (d + n + 1 - j5)) / qfact r (n + (d + n + 1 - j5) - n)) /
+          ((qfact r n / qfact r (n - n)) * (qfact r j5 / qfact r (j5 - n)))) := by
+    rw [← hR]; exact_mod_cast sumC
+  exact qDougall_of_sumR hr hnj hj5 le_rfl hadmX hadmQ sumR
+
+/-- **The boundary evaluation `QDougall` for the lowest sixth colour `j1 - j5` and the third colours
+from `j1 - j2`**, for admissible spins: the non-degenerate case by Jackson's sum and the degenerate
+case `j1 + j2 = j4 + j5` by the partial sums of the series with fewer parameters. -/
+theorem qDougall_orbit {r j1 j2 j4 j5 n : ℕ} (hr : 2 ≤ r) (h21 : j2 ≤ j1) (h51 : j5 ≤ j1)
+    (hn : 2 * n = j4 + j5 - (j1 - j2))
+    (hadmX : ∀ k ≤ n, qAdm r j1 j2 (j1 - j2 + 2 * k) ∧ qAdm r j4 j5 (j1 - j2 + 2 * k))
+    (hadmQ : qAdm r j1 j5 (j1 - j5) ∧ qAdm r j4 j2 (j1 - j5)) :
+    QDougall r j1 j2 j4 j5 (j1 - j2) n (j1 - j5) := by
+  have A0 := hadmX 0 (by omega)
+  have An := hadmX n le_rfl
+  obtain ⟨⟨hp0, h01, h02, h03⟩, hr0⟩ := A0.1
+  obtain ⟨⟨hq0, h11, h12, h13⟩, hs0⟩ := A0.2
+  obtain ⟨⟨hpn, hn1, hn2, hn3⟩, hrn⟩ := An.1
+  rcases lt_or_eq_of_le (show j4 + j5 ≤ j1 + j2 by omega) with hlt | heq
+  · exact qDougall_nondeg hr h21 h51 hlt hn hadmX hadmQ
+  · obtain ⟨d, rfl⟩ : ∃ d, j1 = j2 + d := ⟨j1 - j2, by omega⟩
+    obtain rfl : j4 = d + 2 * n - j5 := by omega
+    obtain rfl : j2 = n := by omega
+    simp only [Nat.add_sub_cancel_left] at hadmX ⊢
+    exact qDougall_deg_param hr (by omega) (by omega) hadmX hadmQ
 
 end Lightlike.TV.Refl
