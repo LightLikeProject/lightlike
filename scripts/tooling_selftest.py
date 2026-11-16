@@ -374,6 +374,12 @@ expect("tasks: generate brings the CHANGELOG counts of the newest version up to 
        f"- {len(_ts)} tasks on the [task board](B)\n\n## [0.1.0]" in _cl
        and f"- {len({m['area'] for m in _ms.values()})} areas in [ROADMAP]" in _cl
        and _cl.endswith("- 9 tasks on the [task board](B)\n") and len(_ts) != 9)
+_rc = tk.roadmap_counts("## G\n\n### Alpha\n\n- **Milestones:** 0 · [milestones](m#alpha) · [tasks](t#alpha)\n",
+                        _ms, "o/r")
+expect("tasks: generate keeps the ROADMAP milestone counts current and links each area's done milestones",
+       "- **Milestones:** 4 · [milestones](m#alpha) · [tasks](t#alpha) · [done](https://github.com/o/r/" in _rc
+       and "reason%3Acompleted" in _rc and "label%3A%22area%3A+alpha%22" in _rc
+       and _rc.count(tk.DONE_LINK) == 1 and tk.roadmap_counts(_rc, _ms, "o/r") == _rc)
 with tempfile.TemporaryDirectory() as d:
     (pathlib.Path(d) / "docs/tasks").mkdir(parents=True)
     (pathlib.Path(d) / tk.SOURCES).write_text(
