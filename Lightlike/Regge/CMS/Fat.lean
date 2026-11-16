@@ -13,15 +13,13 @@ The triangulation lives in a chart, as straight triangles of the plane, and a tr
 its Euclidean angles stay away from `0` and `π`. Fatness is measured in the chart, which is
 equivalent to fatness in any metric that is uniformly equivalent to the Euclidean one.
 
-## Definitions
+## Main results
 
 * `IsFat κ x y z`: the three Euclidean angles of the triangle `x y z` lie in `[κ, π - κ]`.
 * `IsStar v w`: the neighbours `w` surround `v` in the plane: the Euclidean angles at `v` of the
   triangles `(v, w i, w (i + 1))` add up to `2π`.
 * `starAngleSum d v w`: the sum of the angles at `v` computed from the squared lengths `d`.
 * `vertexDeficit d v w`: `2π - starAngleSum d v w`.
-
-## Main results
 
 * `IsStar.vertexDeficit_euclid`: with the Euclidean squared lengths the deficit of a star is `0`.
   This is the flat trust check.

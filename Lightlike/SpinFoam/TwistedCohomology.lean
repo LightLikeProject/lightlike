@@ -15,11 +15,12 @@ A 2-complex is given by its oriented edges (with source and target vertex) and, 
 boundary word: a list of edges, each traversed forwards or backwards. The cochain `Φ : E → V`
 stands for the variation `dg g⁻¹` of the edge holonomy `g`, read at the source of the edge.
 
-## Main definitions and results
+## Main results
+
 * `Cell2`, `Cell2.WellFormed`: boundary words are closed walks.
 * `hol g w`: holonomy of a word; `Flat g`: every face has holonomy `1`.
 * `d0`, `d1`: the twisted coboundaries; `d1` is the differential of the face-holonomy map
-  (the formula of Barrett–Naish-Guzman, eq. (19)).
+  (eq. (19) of `barrett-naish-guzman-2009`).
 * `d1_comp_d0`: `d1 ∘ d0 = 0` for a flat connection on a well-formed complex.
 * `H2`, `d1_surjective_iff`: the second cohomology group `C² / im d1` is trivial iff `d1` is onto.
 -/

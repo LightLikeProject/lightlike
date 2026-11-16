@@ -23,7 +23,7 @@ Hörmander bounds the error by Sobolev norms of `u`. Here the error is
 (`quadratic_phase_uniform`, and `quadratic_phase_base_uniform` for the base bound). The
 reduction of a general phase to its quadratic part needs this uniformity in the amplitude.
 
-## Method
+## Implementation notes
 
 * Damping (`integral_eq_integral_dampMat`): `u e^{iτ⟨A x, x⟩/2} = v e^{-⟨B_τ x, x⟩/2}` with
   `v = u e^{|x|²/2}` (`gaussWeighted`), still smooth with compact support, and

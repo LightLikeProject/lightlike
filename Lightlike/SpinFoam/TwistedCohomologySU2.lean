@@ -11,7 +11,8 @@ of the edges, `holonomy_hasDerivAt` shows that `d1` is the differential of the h
 map: along curves `γₑ` through `gₑ` with `γₑ'(0) γₑ(0)⁻¹ = Φ(e)`, the holonomy `h` of a word
 varies by `h'(0) h(0)⁻¹ = dword Φ`.
 
-## Main definitions and results
+## Main results
+
 * `su2`, `adRep`: `su(2)` as a real subspace and the adjoint representation of `SU(2)` on it.
 * `holonomy_hasDerivAt`: the derivative of the holonomy of a word along edge curves is `d1`.
 * `expCurve`: the curves `exp(tΦ) g` through the connection with velocity `Φ`.

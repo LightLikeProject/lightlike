@@ -18,7 +18,7 @@ pairs `f` with the spherical function `sin(ρr)/(ρ sinh r)` of the principal se
 (`Spherical.lean`). This is the part of the Plancherel formula of `SL(2,ℂ)` (Gel'fand–Naimark)
 supported on the representations with an `SU(2)`-fixed vector, with Plancherel density `ρ²`.
 
-## Route
+## Implementation notes
 
 1. *Radial formula.* `map_coshDist_haarC`: the hyperbolic distance has law `4π³ sinh² r dr` under
    Haar measure; `integral_coshDist` is the Bochner form, with no integrability hypothesis.

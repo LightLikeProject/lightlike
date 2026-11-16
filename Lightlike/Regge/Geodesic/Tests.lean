@@ -17,7 +17,7 @@ have an off-diagonal entry, non-zero derivatives and `Γ¹₀₀ = q'(y₀)` (`c
 their distance is `|φ(y) - φ(x)|` (`dist_shearBy`). The jets and the quintic term are computed in
 closed form for any `q` (`jetWith_shearBy`, `midJetWith_shearBy`, `quint_shearBy`).
 
-## Known values
+**Known values.**
 
 * **Quadratic shear** (`p(s) = s²/2`): both jets are exact (`dist_sq_shear`,
   `dist_sq_shear_midpoint`).
@@ -29,7 +29,7 @@ closed form for any `q` (`jetWith_shearBy`, `midJetWith_shearBy`, `quint_shearBy
   (`dist_sq_expansion6_sharp`, `dist_sq_expansion_midpoint6_sharp`).
 * **Euclidean metric:** both jets are `|w|²` (`distJet_euclid`, `midJet_euclid`, `dist_sq_euclid`).
 
-## The coefficients are forced, and wrong models fail
+**The coefficients are forced, and wrong models fail.**
 
 * With free coefficients (`jetWith a b`, `midJetWith a b`) the quadratic shear fixes only `2a - b`;
   with the cubic shear the bound forces `a = 1/6, b = 1/12` (`jetWith_coeffs_forced`) and
@@ -39,7 +39,7 @@ closed form for any `q` (`jetWith_shearBy`, `midJetWith_shearBy`, `quint_shearBy
   `scripts/regge/distance_expansion_check.py`; without the quintic term it is `x₀ t⁵/6 + t⁶/36` on
   the cubic shear (`distJet_cubicShear_not_sixth`).
 
-## Non-vacuity
+**Non-vacuity.**
 
 The hypotheses of the expansion theorems hold on the closed unit ball for the quadratic shear
 (`shear_dist_sq_expansion`, `shear_dist_sq_expansion_midpoint`), and those of
@@ -47,7 +47,7 @@ The hypotheses of the expansion theorems hold on the closed unit ball for the qu
 remainders are not zero (`cubicShear_exists_localJet3`, `cubicShear_dist_sq_expansion6`,
 `cubicShear_dist_sq_expansion_midpoint6`).
 
-## Mathlib's Riemannian distance
+**Mathlib's Riemannian distance.**
 
 * For the Euclidean metric it is Mathlib's distance on `EuclideanSpace ℝ (Fin n)`
   (`riemannianEDist_euclid`); for the quadratic shear it is `√5/2` from `0` to `(1, 0)`

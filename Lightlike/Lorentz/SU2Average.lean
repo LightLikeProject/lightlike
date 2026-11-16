@@ -15,7 +15,7 @@ is invariant under conjugation by `SU(2)`, so the limit formula (`limit_formula`
 In the Plancherel formula it is applied to `F = f* ∗ f`, where `F(1) = ‖f‖²` and where the
 `SU(2)` average does not change the integrals of the kernels over the diagonal.
 
-## Construction
+## Implementation notes
 
 Instead of the Haar measure of `SU(2)` the average is taken over `ℂ²` with a radial weight. For
 `v = (a, b) ∈ ℂ²` let `K_v = [[a, -b̄], [b, ā]]` (`kv`). Then `K_v* K_v = K_v K_v* = |v|²`, so

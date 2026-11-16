@@ -6,7 +6,17 @@ import Lightlike.TuraevViro.LevelOne
 Checks of `TuraevViro/` against values computed by hand and by an independent script, each with a
 deliberately wrong model that gives a different answer.
 
-## Level `r = 4`
+## Main results
+
+* `tv4_orth_instance`, `tv4_be_instance`: orthogonality and Biedenharn–Elliott at `r = 4`, on
+  explicit spins.
+* `tv4_classical_dims_fail`: the same checks with the classical dimensions `x + 1` fail.
+* `turaevViro3_sphere`: the `r = 3` state sum of `∂Δ⁴` is `1/2`.
+* `classical3_sphere_fails`: with the integer dimensions `J + 1` the value is wrong.
+
+## Implementation notes
+
+### Level `r = 4`
 
 `tvModel r` uses the quantum 6j symbols `qSixJ r` and the quantum dimensions `[J + 1]` at
 `q = e^{iπ/r}` (doubled spins). The move invariance of `turaevViro` assumes `qOrthogonality` and
@@ -28,7 +38,7 @@ a proof of either identity at `r = 4`. `scripts/recoupling/intertwiner_check.py`
 repeats the values exactly and evaluates all `3⁵` orthogonality and `3⁹` Biedenharn–Elliott
 instances at `r = 4` to 30 digits (numerical evidence, not proof).
 
-## `S³` at `r = 3`
+### `S³` at `r = 3`
 
 The library normalises the state sum as `Z(K) = W^{−#vertices} Σ_col weight(K, col)` with
 `W = Σ_{J < r − 1} [J + 1]²`, the edge factors `[J + 1](−1)^J`, the triangle signs `triW` and one

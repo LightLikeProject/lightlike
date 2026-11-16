@@ -9,7 +9,7 @@ The recoupling-pentagon route to `BiedenharnElliott` described in `BiedenharnEll
 identity is now proven for all spins (`Lightlike.Pentagon.biedenharnElliott`, `BEZero.lean`; nonzero
 spins via `BEPositive.lean`). Everything here is proven; nothing is assumed.
 
-## Stage 1: expansion of one coupling scheme in the other
+## Implementation notes
 
 `stateB_eq_sum_stateA`: in `V(a) ⊗ V(b) ⊗ V(c)`,
 `|j₁, (j₂ j₃) j₂₃; J M⟩ = Σ_{j₁₂} ⟨(j₁ j₂) j₁₂, j₃; J M | j₁, (j₂ j₃) j₂₃; J M⟩ |(j₁ j₂) j₁₂, j₃; J M⟩`.

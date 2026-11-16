@@ -27,7 +27,7 @@ amplitude depend on further parameters.
 * `laplace_ray_uniform`: the bound above, with
   `C = K / (2 c) + G M / (2 c'²) + G / (α r)` and `c' = min c (α / 2)`.
 
-## Proof
+## Implementation notes
 
 Split `∫₀^∞ e^{-b t²}` (`b = N a / 2`) at `r`. The difference with the integral on `[0, r]` is
 `∫₀ʳ (g t - g 0) e^{Nφ} + g 0 ∫₀ʳ (e^{Nφ} - e^{-b t²}) - g 0 ∫ᵣ^∞ e^{-b t²}`, and the three
