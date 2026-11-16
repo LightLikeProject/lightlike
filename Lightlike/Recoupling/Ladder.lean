@@ -8,7 +8,7 @@ A 3nj symbol of the first kind is the value of a *Möbius ladder*: two rails of 
 `(a_t a_{t+1} c_t)` and `(b_t b_{t+1} c_t)`, closed with a twist (`a_n = b₀`, `b_n = a₀`). This
 file evaluates such ladders with a transfer-operator method.
 
-## The rung operator
+**The rung operator.**
 
 A function `f : ℤ × ℤ → ℝ` of the projections `(m_a, m_b)` of two rail spins `a, b` is carried
 across one rung by `rung a a' b b' c`:

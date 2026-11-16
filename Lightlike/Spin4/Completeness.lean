@@ -12,7 +12,7 @@ that is irreducible (no invariant subspace other than `0` and `ℂ^d`) is equiva
 finite-dimensional space `V` with continuous matrix coefficients: it is equivalent (Mathlib's
 `Representation.Equiv`) to `spin4Representation n m`.
 
-## Proof
+## Implementation notes
 
 It reduces to the group-level completeness of SU(2) (`SU2.spinRep_complete`), applied twice.
 

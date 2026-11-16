@@ -12,7 +12,7 @@ it satisfies an orthogonality relation (`sum_fifteenJ_mul_fifteenJ`, doubled uni
 
 for `a₀, b₀, c` fixed and `b`, `b'` with admissible vertices `(b_t c_t b_{t+1})`, `b₅ = a₀`.
 
-## Method
+## Implementation notes
 
 The closed Möbius ladder (`Ladder.lean`) of five rungs is the 15j symbol up to the sign `(-1)^{b₀}`
 (`fifteenJ_eq_mobius`). Started from a point `(α, β)`, a ladder factorises into its two rails,
