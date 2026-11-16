@@ -46,6 +46,13 @@ import Lightlike.Asymptotics.Lorentzian.CoherentVertex
 import Lightlike.Asymptotics.Lorentzian.InnerIntegrable
 import Lightlike.Asymptotics.Lorentzian.AsymptoticFormula
 import Lightlike.Asymptotics.Lorentzian.ExpPhaseTwoPoints
+import Lightlike.Asymptotics.Lorentzian.CriticalSpinors
+import Lightlike.Asymptotics.Lorentzian.ZStationary
+import Lightlike.Asymptotics.Lorentzian.TriActionDeriv
+import Lightlike.Asymptotics.Lorentzian.CriticalGradient
+import Lightlike.Asymptotics.Lorentzian.SpinorPauli
+import Lightlike.Asymptotics.Lorentzian.HessianNode
+import Lightlike.Asymptotics.Lorentzian.HessianAssembly
 import Lightlike.Asymptotics.Lorentzian.Stationary
 import Lightlike.Asymptotics.Lorentzian.Critical
 import Lightlike.Asymptotics.Lorentzian.Classification
@@ -226,6 +233,7 @@ import Lightlike.PL.K33
 import Lightlike.PL.Relabel
 import Lightlike.PL.RealGeom
 import Lightlike.PL.Realisation
+import Lightlike.PL.StarClosure
 import Lightlike.PL.Starring
 import Lightlike.PL.Boundary
 import Lightlike.PL.Ball
@@ -403,6 +411,15 @@ import Lightlike.Regge.Conv3.FlatStar
 import Lightlike.Regge.Conv3.FlatStarIdentity
 import Lightlike.Regge.Conv3.FlatStarJet
 import Lightlike.Regge.Conv3.FlatStarTests
+import Lightlike.Regge.Conv3.ChartChange
+import Lightlike.Regge.Conv3.ClosedFan
+import Lightlike.Regge.Conv3.ChartChangeFan
+import Lightlike.Regge.Conv3.ClassPin
+import Lightlike.Regge.Conv3.ChartChangeClasses
+import Lightlike.Regge.Conv3.ChartChangeCoeffs
+import Lightlike.Regge.Conv3.ChartChangeDChr
+import Lightlike.Regge.Conv3.ChartChangeGeneral
+import Lightlike.Regge.Conv3.ChartChangeTests
 import Lightlike.Regge.Conv3.HypProductCore
 import Lightlike.Regge.Conv3.LatticeSum
 import Lightlike.Regge.Conv3.EdgePolyTests

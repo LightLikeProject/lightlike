@@ -43,6 +43,12 @@ CHECKS = [
     ("scripts/asymptotics/landing_check.py", False),
     ("scripts/asymptotics/link_integral_check.py", False),
     ("scripts/asymptotics/lorentzian_hessian_check.py", True),
+    ("scripts/asymptotics/lorentzian_hessian_closed_form_check.py", True),
+    ("scripts/asymptotics/lorentzian_hessian_node_check.py", True),
+    ("scripts/asymptotics/lorentzian_hessian_paper61_check.py", False),
+    ("scripts/asymptotics/lorentzian_hessian_noncritical_check.py", False),
+    ("scripts/asymptotics/lorentzian_hessian_kernel_check.py", False),
+    ("scripts/asymptotics/lorentzian_regge_frequency_check.py", False),
     ("scripts/asymptotics/level_check.py", False),
     ("scripts/asymptotics/racah_sum_asymptotics.py", False),
     ("scripts/asymptotics/stirling_check.py", False),
@@ -85,6 +91,7 @@ NOT_CHECKS = {"scripts/ci_check.py", "scripts/prune_docs.py", "scripts/gate.py",
               "scripts/leansrc.py", "scripts/proof_task_check.py", "scripts/tasks.py",
               "scripts/sources.py", "scripts/doc_refs_check.py", "scripts/leak_check.py",
               "scripts/regge/regge3d_convergence.py",  # a library of the regge3d_* checks (dihedral); its demo has no verdict
+              "scripts/regge/gen_chart_change.py",  # generator of Lightlike/Regge/Conv3/ChartChangeClasses.lean
               "scripts/regge/gen_star_angle.py",  # generator of the edge-class fans in Lightlike/Regge/Conv3/StarAngle.lean
               "scripts/regge/gen_kuhn_basis.py",  # generator of Lightlike/Regge/Conv3/KuhnBasis.lean from regge3d_g0_certificate.py
               "scripts/regge/gen_flat_star.py",  # generator of Lightlike/Regge/Conv3/FlatStar.lean (prints, no exit code)
