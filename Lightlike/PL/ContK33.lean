@@ -147,6 +147,33 @@ lemma exists_radius : ∃ r : ℝ, 0 < r ∧ (∀ x x', x ≠ x' → 2 * r < dis
     have := hm0 p0
     linarith
 
+/-- The trimmed subarcs: a subarc of each arc that starts and ends on the spheres of radius `r` around
+its ends and keeps distance at least `r` from all six points. -/
+lemma exists_trims {r : ℝ} (hr : 0 < r) (h2 : ∀ x x', x ≠ x' → 2 * r < dist (D.w x) (D.w x'))
+    (h3 : ∀ e x, (∀ k, x ≠ ep e k) → ∀ t ∈ Icc (0 : ℝ) 1, r < dist (D.γ e.1 e.2 t) (D.w x)) :
+    ∃ s t : Fin 3 × Fin 3 → ℝ, ∀ e, 0 ≤ s e ∧ s e < t e ∧ t e ≤ 1 ∧
+      dist (D.γ e.1 e.2 (s e)) (D.w (ep e false)) = r ∧
+      dist (D.γ e.1 e.2 (t e)) (D.w (ep e true)) = r ∧
+      ∀ τ ∈ Icc (s e) (t e), ∀ x, r ≤ dist (D.γ e.1 e.2 τ) (D.w x) := by
+  have : ∀ e : Fin 3 × Fin 3, ∃ s t : ℝ, 0 ≤ s ∧ s < t ∧ t ≤ 1 ∧
+      dist (D.γ e.1 e.2 s) (D.w (ep e false)) = r ∧
+      dist (D.γ e.1 e.2 t) (D.w (ep e true)) = r ∧
+      ∀ τ ∈ Icc s t, ∀ x, r ≤ dist (D.γ e.1 e.2 τ) (D.w x) := fun e => by
+    obtain ⟨s, t, hs0, hst, ht1, hs, ht, hu⟩ := exists_trim (D.cont e.1 e.2)
+      (pa := D.w (ep e false)) (pb := D.w (ep e true)) (r := r)
+      (by simpa [ep, w] using D.start e.1 e.2) (by simpa [ep, w] using D.stop e.1 e.2) hr
+      (h2 _ _ (by simp [ep]))
+    refine ⟨s, t, hs0, hst, ht1, hs, ht, fun τ hτ x => ?_⟩
+    by_cases hx : ∀ k, x ≠ ep e k
+    · exact (h3 e x hx τ ⟨le_trans hs0 hτ.1, le_trans hτ.2 ht1⟩).le
+    · push Not at hx
+      obtain ⟨k, rfl⟩ := hx
+      cases k
+      · exact (hu τ hτ).1
+      · exact (hu τ hτ).2
+  choose s t hs using this
+  exact ⟨s, t, hs⟩
+
 end ContDrawing
 
 end Lightlike.PL
