@@ -25,12 +25,12 @@ Lemmas about them, which a proof may use:
 
 * `Causal.line_mem_chronFuture` (`Lightlike/Spacetime/Causal/MinkowskiCausal.lean`)
 * `Causal.isFutureTimelikeCurve_line` (`Lightlike/Spacetime/Causal/MinkowskiCausal.lean`)
+* `Causal.form_e1` (`Lightlike/Spacetime/Causal/TestsMinkowski.lean`)
 * `minkowski_flat` (`Lightlike/Spacetime/Curvature.lean`)
+* `Causal.form_e0` (`Lightlike/Spacetime/Causal/TestsMinkowski.lean`)
 * `minkowskiForm_eq` (`Lightlike/Spacetime/Minkowski.lean`)
 * `minkowskiForm_apply` (`Lightlike/Spacetime/Minkowski.lean`)
 * `minkowskiForm_single` (`Lightlike/Spacetime/Minkowski.lean`)
-* `reverse_cauchySchwarz` (`Lightlike/Spacetime/Minkowski.lean`)
-* `minkowski_coordMetric` (`Lightlike/Spacetime/Curvature.lean`)
 
 Everything they depend on, and the further lemmas about them, in one block:
 

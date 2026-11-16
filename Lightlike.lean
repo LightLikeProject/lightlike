@@ -486,6 +486,7 @@ import Lightlike.SU2.OneParameter
 import Lightlike.SU2.SpinRep
 import Lightlike.SU2.Su2Exp
 import Lightlike.Spacetime.Causal.CausalCurve
+import Lightlike.Spacetime.Causal.DomainOfDependence
 import Lightlike.Spacetime.Causal.Ladder
 import Lightlike.Spacetime.Causal.MinkowskiCausal
 import Lightlike.Spacetime.Causal.Relations

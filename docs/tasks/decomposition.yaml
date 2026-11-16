@@ -289,6 +289,17 @@ tasks:
     routes:
       - "Smooth partition of unity subordinate to charts where a constant timelike field is future-directed; convex combinations of future-directed timelike vectors stay in the cone."
 
+  - id: T-GE2-P18
+    milestone: GE2
+    kind: proof
+    title: An achronal set is a Cauchy surface iff its domain of dependence is the whole manifold
+    file: Tasks/GE2/T_GE2_P18.lean
+    decl: Lightlike.Causal.isCauchySurface_iff_domainDep_eq_univ
+    size: L
+    difficulty: research-level
+    routes:
+      - "Both directions go through extension of a timelike curve to an inextendible one; achronality gives the uniqueness of the meeting point."
+
 # Upstream tasks: finished results that belong in Mathlib (general mathematics) or Physlib
 # (general physics), with the rework each needs. Exclusive, like definition
 # tasks; `target` gives the label `upstream: <library>`.

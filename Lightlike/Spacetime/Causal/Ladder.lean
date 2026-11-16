@@ -10,10 +10,11 @@ statements in `Tasks/Causal/`.
 
 Conventions. *Causal*: `J⁺` is antisymmetric (no closed causal curve through two distinct
 points). *Strongly causal*: every point has arbitrarily small causally convex neighbourhoods.
-*Stably causal* is defined through its characterisation by a time function (Hawking 1969: the
-causality survives a small widening of the light cones iff a time function exists). *Causally
-simple*: causal with closed `J⁺(x)` and `J⁻(x)`. *Globally hyperbolic*: strongly causal with
-compact causal diamonds `J⁺(x) ∩ J⁻(y)`. A *Cauchy surface* is a set met exactly once by every
+*Stably causal* is defined through its characterisation by a time function. The original
+definition is that causality survives every small widening of the light cones; Hawking (1969)
+proved that this holds iff a time function exists, and that equivalence is not formalised here.
+*Causally simple*: causal with closed `J⁺(x)` and `J⁻(x)`. *Globally hyperbolic*: strongly causal
+with compact causal diamonds `J⁺(x) ∩ J⁻(y)`. A *Cauchy surface* is a set met exactly once by every
 inextendible timelike curve.
 
 ## Main definitions
@@ -61,8 +62,9 @@ between distinct points. -/
 def IsTimeFunction (τ : M → ℝ) : Prop :=
   Continuous τ ∧ ∀ x y : M, y ∈ causalFuture T x → y ≠ x → τ x < τ y
 
-/-- **Stable causality**, defined by the existence of a time function (equivalent to causality
-being stable under small widenings of the light cones: Hawking 1969). -/
+/-- **Stable causality**, defined by the existence of a time function. By Hawking's theorem (1969)
+this is equivalent to causality being stable under small widenings of the light cones, which was
+the original definition; that equivalence is not formalised here. -/
 def IsStablyCausal : Prop := ∃ τ : M → ℝ, IsTimeFunction T τ
 
 /-- **Causal simplicity**: causal, and the causal futures and pasts of points are closed. -/
