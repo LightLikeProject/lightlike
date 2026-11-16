@@ -1222,7 +1222,9 @@
   decls: [Lightlike.Asymptotics.EPRL.k5Contract4_eprlCohNode, Lightlike.Asymptotics.EPRL.eprlVertex_coherent]
   status: proven
   tier: frontier
-  source: structural
+  source:
+    refs:
+      - {ref: bdfgh-2009, location: "Section 3.4", check: "Exponentiated expression"}
   review: kernel-checked
   note: "BDFGH (J. Math. Phys. 50 (2009) 112504, section 3) write the Euclidean EPRL vertex on Livine-Speziale boundary states as an integral over Spin(4)^5 (eprlCoh); this entry proves the identification in this library. For γ < 1, with the same SU(2) elements g on the self-dual and anti-self-dual halves, the EPRL map sends the SU(2) coherent intertwiner iota_{n+m}(g) to iota_n(g) (x) iota_m(g) (eprlIntertwiner_homForm_cohInt); the coherent EPRL node tensor sum_z c_z eprlNode n m z is the product of the two coherent node tensors projNode, with no sign (eprlCohNode_eq); the K5 contraction of these is eprlCoh (k5Contract4_eprlCohNode), which equals coh15j * coh15j by Fubini on Spin(4) = SU(2) x SU(2) (eprlCoh_eq_mul, already in EPRLFormula.lean); expanding each node in the intertwiner basis, sum over z of prod_a c_a(z_a) eprlVertex n m z equals eprlCoh (eprlVertex_coherent), with c_a(z) = nodeSign * <iota_z, homForm iota> the coefficients of the coherent intertwiner in the fourJ basis. Exact at every spin: an identification, not an asymptotic formula. Limits: gamma < 1 only (the same g on both chiral halves; the gamma > 1 reflected normal is not covered); the sign (-1)^chi of BFH eq. (1) belongs to their 15j convention and is not compared with this library's, whose contraction is exactly the coherent integral (k5Contract_cohInt). Numerical check of the node identity: scripts/spinfoam/eprl_node_check.py, four spin configurations to 3e-16 with a wrong-g control."
   since: unreleased
