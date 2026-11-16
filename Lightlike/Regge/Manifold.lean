@@ -13,15 +13,13 @@ vertices other than `a, b` form a cycle `w 0, w 1, …, w (n-1), w n = w 0`, the
 and the tetrahedra are `{a, b, w i, w (i+1)}`. Around a boundary edge they form a fan whose link is
 a path `w 0, …, w n`.
 
-## Definitions
+## Main results
 
 * `IsCycleLink K a b n w`: the link of `{a, b}` is a cycle of length `n ≥ 3`.
 * `IsPathLink K a b n w`: the link of `{a, b}` is a path with `n ≥ 1` edges.
 * `IsEdgeManifold K`: the link of every edge is a cycle or a path. This is the part of the
   combinatorial manifold condition that Regge calculus uses (curvature sits on edges); the full
   condition would also ask the links of vertices to be spheres or discs.
-
-## Main results
 
 * `IsCycleLink.mem_intEdges`, `IsPathLink.mem_bdryEdges`: an edge with a cycle link is interior and
   an edge with a path link is a boundary edge.

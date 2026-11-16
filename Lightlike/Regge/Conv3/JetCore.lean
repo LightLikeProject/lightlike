@@ -16,7 +16,7 @@ This file sets up, for the 36 incidences (tetrahedron, hinge) of a cube, the six
 `q`, `c`, `r` of each tetrahedron, and states the jet-level star identity as a named hypothesis
 `JetStarCore`. The hypothesis is about one jet: it does not mention the Regge sum or its limit.
 
-## Main definitions
+## Main results
 
 * `edgeQ`, `edgeC`, `edgeR`: the three homogeneous parts of `edgePoly`.
 * `incVec`: the six squared lengths of a tetrahedron at a hinge, from a function of the midpoint

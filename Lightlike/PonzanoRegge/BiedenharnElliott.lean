@@ -14,7 +14,7 @@ the nine fixed spins,
 Here it is stated for Physlib's 6j symbol `sixJSym` in **doubled units** (`2j ∈ ℕ`, so `2x+1`
 becomes `x+1` and `(-1)^(S+x)` becomes `(-1)^((S₂+x₂)/2)`).
 
-## Status
+**Status.**
 
 * `BiedenharnElliott` - the statement, as a `Prop`. **PROVEN for all spins:**
   `Lightlike.Pentagon.biedenharnElliott` (`BEZero.lean`). The positive case comes from the recoupling
@@ -30,7 +30,7 @@ becomes `x+1` and `(-1)^(S+x)` becomes `(-1)^((S₂+x₂)/2)`).
   `262 144` choices of the nine spins in `{0, ½, 1, 3/2}` (1 495 nontrivial), checked against
   SymPy's independent `wigner_6j`.
 
-## Proof plan (recoupling route - the pentagon)
+## Implementation notes
 
 Work with *vectors* in `((V(a) ⊗ V(b)) ⊗ V(c)) ⊗ V(d)`, indexed by naturals, not with maps out of
 `V(J)`. This avoids casts between `StandardSl2Module ℝ n` for numerically equal but syntactically

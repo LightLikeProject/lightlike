@@ -8,6 +8,8 @@ matter when the sets in question *force* every triangle of `K` (`Forces K K.tris
 zero colouring has nonzero weight, and the state sum is `1` at every cutoff
 (`amplitudeGF_eq_one_of_forces`).
 
+## Main results
+
 * `amplitudeGF_eq_of_forces`: two forcing sets give the same state sum, at every cutoff and every
   pair of cutoffs.
 * `amplitudeGF_eq_of_isGauge_forces`: the same for two gauge sets (`IsGauge`) that force.

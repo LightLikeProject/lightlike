@@ -10,12 +10,10 @@ triangle at a vertex is computed from them by the law of cosines. This file defi
 proves that it is the Euclidean angle for every triangle in an inner product space, and that the
 three angles of a triangle sum to `π`.
 
-## Definitions
+## Main results
 
 * `triAngle a b c`: the angle at the vertex whose two edges have squared lengths `a`, `b`, opposite
   to the edge of squared length `c`: `arccos ((a + b - c) / (2 √(a b)))`.
-
-## Main results
 
 * `triAngle_eq_angle`: for points `x v w`, `triAngle ‖x - v‖² ‖w - v‖² ‖x - w‖² = ∠ x v w`.
 * `triAngle_sum`: the three angles of a triangle with distinct vertices sum to `π`.

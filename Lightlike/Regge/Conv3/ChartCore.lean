@@ -5,6 +5,20 @@ import Lightlike.Regge.Conv3.ChartCases3
 import Lightlike.Regge.Conv3.ChartCases4
 import Lightlike.Regge.Conv3.ChartCases5
 
+/-!
+# The sum of the closed forms in a diagonal chart is `-R·αβγ/2`
+
+The files `ChartCases0` … `ChartCases5` give the closed form of `ldth` at every incidence
+(`ldth_eq_cf`). Their sum over the 36 incidences is `-R·αβγ/2` for the scalar curvature `R` of the
+symmetric tensor `ric` (`cf_sum`, `diag_core`). An example chart gives `-3`, which differs from the
+orthonormal value `-3/2` (`diag_core_example`, `diag_core_ne_orthonormal`).
+
+## Main results
+
+* `ldth_eq_cf`, `cf_sum`, `diag_core`: the closed forms and their sum.
+* `diag_core_example`, `diag_core_ne_orthonormal`: a value check and a wrong-model control.
+-/
+
 open Real
 namespace Lightlike.Regge.Conv3
 

@@ -9,6 +9,15 @@ recurrence at `u = e^{iπ/r}` gives a linear relation between the sums for the t
 `(a₁+1, a₂, a₃, a₄+1, β₁, β₂+1, β₃+1)`, `(a₁, …, β₃)` and `(a₁-1, a₂, a₃, a₄-1, β₁, β₂-1, β₃-1)`.
 All side conditions (bounds below `r - 1` that keep the local step relations valid, and the
 nonvanishing of the quantum-integer denominators) are explicit hypotheses.
+
+## Main results
+
+* `SR`: the finite q-Racah sum.
+* `real_recurrence`: the three-term recurrence of `SR` at `u = e^{iπ/r}`.
+
+## References
+
+* `koekoek-swarttouw-1996`, the q-Racah polynomials.
 -/
 
 set_option maxRecDepth 100000

@@ -13,12 +13,16 @@ with three changes:
 Every sum is then finite, and the state sum is normalised by `W⁻¹` per vertex, with
 `W = Σ_J [J + 1]²`.
 
+## Main results
+
 * `tvModel r`: the 6j model. Proven here: the fusion count (`tv_count`, from `sum_qAdm_qnum`) and
   that all dimensions are positive (`tv_dim_ne`).
 * `turaevViro r K`: the normalised state sum of a complex `K`.
 * `turaevViro_move23`: invariant under the 2-3 move, **given** `qBiedenharnElliott r`.
 * `turaevViro_move14`: invariant under the 1-4 move, **given** `qBiedenharnElliott r` and
   `qOrthogonality r`.
+
+## Implementation notes
 
 **Hypotheses.** `qBiedenharnElliott r` and `qOrthogonality r`, the q-analogues of the identities
 proven classically for the Ponzano–Regge model. They are proven for `r = 3`
@@ -29,6 +33,10 @@ q-hypergeometric summation, and neither exists in Mathlib or Physlib.
 
 Evidence: `scripts/tv_check.py` verifies both, and the moves themselves, at `r = 3, …, 6` to
 40 digits. Replacing quantum dimensions by integers breaks all of them.
+
+## References
+
+* `turaev-1994`, Chapter VI (6j symbols) and Chapter VII (state sums).
 -/
 
 open Finset Lightlike.Pentagon Lightlike.PR

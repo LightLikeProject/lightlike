@@ -8,15 +8,13 @@ The 4D counterpart of `Lightlike/Regge/Embedded.lean`: in a 4-dimensional Euclid
 4-simplices around an interior triangle are non-degenerate and their interiors are pairwise
 disjoint, the deficit angle of the triangle is zero.
 
-## Definitions
+## Main results
 
 * `open4 p q r s u`: the points with five positive barycentric coordinates; for a non-degenerate
   4-simplex in a 4-dimensional space this is the interior of its convex hull
   (`open4_eq_interior`).
 * `IsGeometric4 K x`: the placement `x` of the vertices is a geometric triangulation: every
   4-simplex is non-degenerate and distinct 4-simplices have disjoint interiors.
-
-## Main results
 
 * `deficit4_eq_zero_of_embedded`: let `E` be a real inner product space of dimension 4 and `x` a
   placement with the induced edge lengths. Let the link of the triangle `abc` be a cycle
@@ -26,7 +24,7 @@ disjoint, the deficit angle of the triangle is zero.
   region of 4-space has deficit angle zero; `IsGeometric4.reggeAction4_eq`: the Regge action is
   then a pure boundary term.
 
-## Proof
+## Implementation notes
 
 The dihedral angle at `abc` is measured in the plane orthogonal to the triangle
 (`dihedral4_dist`). Choose an orthonormal basis `e₂, e₃` of that plane (`exists_planeFrame`) and

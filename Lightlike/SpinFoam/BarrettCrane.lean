@@ -3,9 +3,7 @@ import Lightlike.Spin4.Vertex
 /-!
 # The Barrett–Crane vertex amplitude
 
-The vertex amplitude of the Euclidean Barrett–Crane model (Barrett–Crane, *Relativistic spin
-networks and quantum gravity*, J. Math. Phys. 39 (1998) 3296, arXiv:gr-qc/9709028, §IV;
-Reisenberger, arXiv:gr-qc/9809067) built on the SU(2) recoupling theory of
+The vertex amplitude of the Euclidean Barrett–Crane model, built on the SU(2) recoupling theory of
 `Lightlike/Recoupling/` and the contraction `k5Contract4` of `Lightlike/Spin4/Vertex.lean`.
 Doubled spins throughout.
 
@@ -14,7 +12,7 @@ simplicity constraint of the model is `j⁺ = j⁻`). Every tetrahedron carries 
 intertwiner** `Σ_i ι_i ⊗ ι_i`, the sum over an orthonormal basis `ι_i` of the SU(2) intertwiners of
 its four legs, with one copy on the self-dual and one on the anti-self-dual factor
 (`bcNode`). It does not depend on the basis; this is the property that makes it the
-unique intertwiner of the four simple representations (Reisenberger). The vertex amplitude
+unique intertwiner of the four simple representations. The vertex amplitude
 (`bcVertex`) is the contraction of five such tensors along the edges of `K₅`.
 
 ## Main results
@@ -29,6 +27,12 @@ unique intertwiner of the four simple representations (Reisenberger). The vertex
 The 15j symbol is `Lightlike.Recoupling.fifteenJSimplex`, in the orthonormal basis of
 `Lightlike.Recoupling.fourJ` (no dimension factor per tetrahedron). The face amplitude of the model
 is the dimension `(j + 1)²` of `(j, j)`.
+
+## References
+
+* `barrett-crane-1998`, §IV: the vertex amplitude of the model.
+* `reisenberger-1999`: the Barrett–Crane intertwiner is the unique one of four simple
+  representations.
 -/
 
 open Finset Matrix Lightlike.Recoupling

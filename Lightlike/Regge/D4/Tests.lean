@@ -7,7 +7,7 @@ import Lightlike.Regge.D4.Gradient
 Checks of the definitions in `Regge/D4/` against known values, and deliberately wrong formulas and
 inputs shown to fail.
 
-## Flat
+**Flat.**
 
 * `flatRing`: three 4-simplices `{0, 1, 2, w, w'}` around the triangle `{0, 1, 2}`, placed in `ℝ⁴`
   with the link vertices at `e₀ + e₂`, `e₀ + e₃`, `e₀ - e₂ - e₃` (`ringPos`). It is a geometric
@@ -20,7 +20,7 @@ inputs shown to fail.
   an interior edge leaves the action stationary (`cone5_stationary`): flat space solves Regge's
   equations.
 
-## Curved
+**Curved.**
 
 * `sphere5`: the boundary of the 5-simplex (six 4-simplices, the smallest triangulation of the
   4-sphere). With unit lengths every triangle lies in three 4-simplices and has deficit
@@ -29,7 +29,7 @@ inputs shown to fail.
 * `regular_never_flat`: `n` regular 4-simplices never close up flat around a triangle:
   `4 arccos(1/4) < 2π < 5 arccos(1/4)`.
 
-## Wrong formulas and inputs
+**Wrong formulas and inputs.**
 
 * `flatRing_exterior`: the exterior angle `π - θ` instead of the dihedral angle reports deficit
   `π` on the flat ring.
@@ -40,7 +40,7 @@ inputs shown to fail.
 * `tripleBook4_not_isTriManifold`: three 4-simplices sharing a tetrahedron violate the manifold
   condition at triangles.
 
-## One 4-simplex
+**One 4-simplex.**
 
 * `simplex5_reggeAction`: for one regular 4-simplex the action is the boundary term
   `10 (√3/4)(π - arccos(1/4))`.

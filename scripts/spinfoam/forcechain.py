@@ -7,7 +7,10 @@ of the new complex? Start: the boundary of the 5-simplex with T = the ten triang
 
 Forward moves: 3-3 (T unchanged), 2-4 (T plus the triangle {p, q, a}, a in the old tetrahedron),
 1-5 (T plus {v, a_0, a_j}, j = 1..4). Inverse moves 4-2 and 5-1: the gauge set is given on the
-complex before the move and loses the triangles that the forward move adds.
+complex before the move and loses the triangles that the forward move adds. Only inverse moves whose
+result is a closed 4-manifold triangulation (every tetrahedron in exactly two 4-simplices, `closed4`) are
+counted: a 5-1 move on the boundary of the 5-simplex, for example, leaves a single 4-simplex. Earlier
+versions of this script counted such results too, so its printed inverse-move counts were larger.
 Controls: with one triangle removed from the starting T, the closure forces fewer than all
 triangles, so the check can fail; a wrong rule (2-4 without adding a triangle) must be caught.
 Exit 0 when no preserved-forcing failure occurs and the controls fail as they should.
@@ -92,6 +95,12 @@ def collapsible(K, T):
     return len(cx) == 1
 
 
+def closed4(K):
+    """Every tetrahedron of K lies in exactly two 4-simplices (a closed 4-manifold triangulation)."""
+    cnt = Counter(fs(c) for x in K for c in itertools.combinations(sorted(x), 4))
+    return set(cnt.values()) == {2}
+
+
 def inverse_moves(K, T):
     """All 4-2 and 5-1 moves of (K, T) whose triangles to remove lie in T and leave a gauge set:
     yield (name, K', T')."""
@@ -104,7 +113,7 @@ def inverse_moves(K, T):
                 K2 = (K - set(st)) | {tet | {p}, tet | {q}}
                 for a in tet:
                     f = fs({p, q, a})
-                    if f in T and collapsible(K2, T - {f}):
+                    if f in T and closed4(K2) and collapsible(K2, T - {f}):
                         yield "42", K2, T - {f}
     for v in {x for s in K for x in s}:
         st = [s for s in K if v in s]
@@ -113,7 +122,7 @@ def inverse_moves(K, T):
             if len(link) == 5 and all(len(s - {v}) == 4 for s in st):
                 for a0 in link:
                     fl = {fs({v, a0, x}) for x in link - {a0}}
-                    if fl <= T and collapsible((K - set(st)) | {link}, T - fl):
+                    if fl <= T and closed4((K - set(st)) | {link}) and collapsible((K - set(st)) | {link}, T - fl):
                         yield "51", (K - set(st)) | {link}, T - fl
 
 

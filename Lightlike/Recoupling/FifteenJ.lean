@@ -3,7 +3,7 @@ import Lightlike.Recoupling.Ladder
 /-!
 # The 15j symbol and the 4-simplex
 
-## The 15j symbol of the first kind
+**The 15j symbol of the first kind.**
 
 There is no single "15j symbol": Yutsis, Levinson and Vanagas classify five topologically distinct
 ones (Martin-Dussaud, §5.6). The one of the 4-simplex is the **15j symbol of the first kind**, a
@@ -18,7 +18,7 @@ with the twisted closure `(a₆, b₆) = (b₁, a₁)` and `S` the sum of all fi
 `(a_t a_{t+1} c_t)` and `(b_t b_{t+1} c_t)`, is a 10-cycle with five antipodal chords `c_t` (a
 Möbius ladder). `S` is even whenever a term is nonzero, so the floor in `S/2` is harmless.
 
-## The 4-simplex
+**The 4-simplex.**
 
 The **4-simplex 15j** (`fifteenJSimplex`) contracts five 4-valent intertwiners `fourJ`, one per
 vertex `a ∈ {0, …, 4}` (a tetrahedron of the 4-simplex), along the ten edges `ab` (its triangles)

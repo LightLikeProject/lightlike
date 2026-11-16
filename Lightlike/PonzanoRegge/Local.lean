@@ -8,7 +8,7 @@ public import Lightlike.PonzanoRegge.BiedenharnElliott
 Spins are **doubled** (`J = 2j ∈ ℕ`), as in Physlib. A *colouring* assigns a doubled spin to
 every finite set of vertices; only its values on edges (2-element sets) are ever used.
 
-## Weights (Barrett–Naish-Guzman convention)
+## Conventions
 
 * edge `e`: `(2j+1)(-1)^{2j}` = `edgeW J = (J+1)(-1)^J`;
 * triangle `uvw`: `(-1)^{j_uv + j_vw + j_wu}` = `triSign col u v w`;
@@ -19,7 +19,7 @@ every finite set of vertices; only its values on edges (2-element sets) are ever
   tetrahedral symmetry (`sixJSymEdge_comp_map`) then makes `tetAmp` independent of how the four
   vertices are enumerated (`tetAmp_comp_perm`).
 
-## Main result
+## Main results
 
 `pachner23_local`: for five distinct vertices `A B C D E` and any colouring,
 

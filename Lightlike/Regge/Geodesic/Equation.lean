@@ -9,12 +9,10 @@ and acceleration `w' = -Γ(γ)(w, w)`, the Christoffel symbols of the core (`Lig
 first-order system on positions and velocities this is the flow of the geodesic vector field
 `(x, v) ↦ (v, -Γ(x)(v, v))`, which is smooth on `U × ℝⁿ`, so Picard–Lindelöf applies.
 
-## Definitions
+## Main results
 
 * `accel g x v = -Γ(x)(v, v)`; `geodField g (x, v) = (v, accel g x v)`.
 * `IsGeodesicOn g γ w I`: on `I`, `γ' = w` and `w' = accel g γ w`.
-
-## Main results
 
 * `contDiffOn_geodField`: the geodesic vector field is smooth on `U × ℝⁿ`.
 * `exists_geodesic`: through every point of `U`, with every initial velocity near a given one,

@@ -23,13 +23,11 @@ normal directions, or Euclidean angles, and disjoint 4-simplices give disjoint w
 `Lightlike.Regge.sum_arccos_cos_eq_two_pi` finish the proof. The inner product on `E` is used only to
 state that the 4-simplices do not overlap; the metric is `minkG φ`.
 
-## Main definitions
+## Main results
 
 * `minkG φ`: the Minkowski form `η(φ y, φ z)` on `E`.
 * `lorLen φ x`: the signed squared edge lengths of a placement `x`.
 * `IsNonNull4 K L`: no triangle and no tetrahedron is null.
-
-## Main results
 
 * `lorDeficit_eq_zero_of_spacelike`, `lorDeficit_eq_zero_of_timelike`,
   `lorDeficit_eq_zero_of_embedded`: a non-null triangle whose link is a cycle of non-degenerate,
