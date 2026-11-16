@@ -1020,3 +1020,18 @@
   review: kernel-checked
   note: "Forcing is this library's rule (a tetrahedron with three of its triangles in the set forces the fourth), used to show that the gauge-fixed state sum is 1. Statement: for a 3-3 move K -> K' that replaces the triangle sigma by tau, and T a set of triangles of K that does not contain sigma and forces every triangle of K, T forces every triangle of K' exactly when the closure of T under the tetrahedra of K that do not contain sigma reaches every triangle of K other than sigma (forces_move33_iff, ForcesIn is forcing by an arbitrary set of tetrahedra). The proof splits the tetrahedra into those common to K and K' and the three that contain sigma (resp. tau). If the common closure is complete, one tetrahedron forces sigma (resp. tau) from the mixed triangles. If it is not, a derivation can leave the common closure only through a tetrahedron sigma + c whose three mixed triangles are in it (a full row), and after the move only through a full row for tau; if both exist, a finite lemma on the eighteen mixed triangles (local33_prop, a Boolean statement over eighteen variables checked by the kernel with decide) shows that adding sigma, or tau, forces nothing more, so at most one of the two complexes forces (forcing_dichotomy). Non-vacuity: forces_move33_example applies it to the boundary of the 5-simplex after a 1-5 and a 2-4 move, with a set of fifteen triangles and the move {0,2,3} -> {4,5,6}, every hypothesis checked by the kernel. Wrong-input control: local33_control shows that without a full row of tau-triangles the conclusion of the finite lemma fails. Scope: the 3-3 move only, with the set T unchanged by the move and not containing sigma; the 2-4 move and the inverse 4-2 and 5-1 moves are not covered. Numerical evidence (scripts/spinfoam/forcechain.py, not part of the proof): a collapsible forcing gauge set of size E-V+1 on a 48-simplex 4-sphere triangulation loses forcing under a 3-3 move (so the second condition is not automatic), and in about 162,000 random trials the characterization held in every case."
   since: unreleased
+- id: LL-XXXX
+  title: One link of the principal-series Lorentzian vertex is the exponential of the coherent action times the density of Omega (the identity eprlVertex = lorVertex is not proved)
+  area: Asymptotics
+  file: Lightlike/Asymptotics/Lorentzian/Bridge.lean
+  decls: [Lightlike.Asymptotics.Lorentzian.link_eq_lor, Lightlike.Asymptotics.Lorentzian.link_pointwise, Lightlike.Asymptotics.Lorentzian.exp_triAction_nat, Lightlike.Asymptotics.Lorentzian.lam_emb_cohState, Lightlike.Asymptotics.Lorentzian.suV_ae, Lightlike.Asymptotics.Lorentzian.inner_principalSeries_eq_integral]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: bdfhp-2010, location: "Section 4, eq. (17)", check: "action"}
+      - {ref: bdfhp-2010, location: "Section 3.3, eqs. (15), (16)", check: "coherent states"}
+      - {ref: engle-pereira-2009, location: "eqs. (22), (23)", check: "gauge fixing"}
+  review: kernel-checked
+  note: "For a doubled spin n = 2k and the lowest SU(2) level, with the source spinor the first column of the complex conjugate of g1 and the target spinor the first column of w g2, conj F_{g1}(Z) F_{g2}(Z') = e^S / (|Z|^2 |Z'|^2), where F = hvec n 0 rho of the coherent state, e^S is the power-form action (exp_triAction_nat) and Z, Z' are the transported chart spinors; no sign and no constant appear. NOT PROVED: eprlVertex = lorVertex, and hence the finiteness of lorVertex. Still open: the sum over magnetic configurations as a product over links, Fubini over SL(2,C)^4 x C^10, the substitution X = conj(a) by Haar invariance, and the explicit normalisation constants of suV (abstract nrmA)."
+  since: unreleased
