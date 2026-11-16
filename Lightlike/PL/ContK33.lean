@@ -39,6 +39,29 @@ lemma segment_inter_sphere {c q q' y : ℝ × ℝ} {r : ℝ} (hr : 0 < r) (hq : 
     have := smul_right_injective _ h.ne' this
     simpa using this
 
+/-- The set of the chain `x, h, y`, when `h` goes from `α` to `β`. -/
+lemma chainSet_ends {x y α β : ℝ × ℝ} {h : List (ℝ × ℝ)} (h1 : h.head? = some α)
+    (h2 : h.getLast? = some β) :
+    chainSet (x :: h ++ [y]) = segment ℝ x α ∪ chainSet h ∪ segment ℝ β y := by
+  obtain ⟨m, rfl⟩ : ∃ m, h = α :: m := by
+    rcases h with _ | ⟨a, m⟩
+    · simp at h1
+    · simp only [List.head?_cons, Option.some.injEq] at h1; subst h1; exact ⟨m, rfl⟩
+  obtain ⟨m', hm'⟩ : ∃ m', α :: m = m' ++ [β] := by
+    rcases List.eq_nil_or_concat (α :: m) with h | ⟨L, b, hL⟩
+    · simp at h
+    · rw [hL] at h2
+      rw [List.concat_eq_append, List.getLast?_concat, Option.some.injEq] at h2
+      subst h2
+      exact ⟨L, by rw [hL, List.concat_eq_append]⟩
+  have e2 : α :: (m ++ [y]) = m' ++ β :: [y] := by
+    have := congrArg (· ++ [y]) hm'
+    simpa using this
+  have e3 : chainSet (x :: α :: m ++ [y]) = segment ℝ x α ∪ chainSet (α :: (m ++ [y])) := by
+    have : x :: α :: m ++ [y] = x :: α :: (m ++ [y]) := by simp
+    rw [this]; rfl
+  rw [e3, e2, chainSet_append m' β [y], chainSet_pair, ← hm', union_assoc]
+
 /-- A **drawing of `K₃,₃` by continuous arcs**: six distinct points `u i`, `v j` and nine injective
 continuous arcs `γ i j : [0, 1] → ℝ²` from `u i` to `v j` that meet only in common endpoints. -/
 structure ContDrawing where
