@@ -65,7 +65,10 @@ Gaussian is the example, and the opposite sign violates `Re S ≤ 0` [7].
 With a weight `w(λ) = O(λ^m)` and an amplitude split into a compactly supported part and a remainder
 whose integral is assumed to be `O(λ^{-n/2-1})`, the integral `w(λ) ∫ A e^{λ S}` is the weight
 times the sum over the critical points, with error `O(λ^{m-n/2-1})` [8]. The remainder bound is a
-hypothesis, not proved, and it holds trivially for a zero remainder [8].
+hypothesis, not proved, and it holds trivially for a zero remainder [8]. The global smoothness of the
+action in these statements cannot hold for the Lorentzian action (logarithms of the overlaps and
+norms): the local version needs smoothness only on an open set containing the support of the
+localised amplitude, by a smooth cutoff of the action [24].
 
 The vertex action `lorAction` is the sum of the triangle actions over the ten edges at the spinors
 `X†z` [9]. Its real part is at most zero where the spinors and overlaps are nonzero [9]. In a chart
@@ -219,6 +222,9 @@ frame (`scripts/asymptotics/lorentzian_hessian_check.py`).
     `Asymptotics.Lorentzian.lorAction_smul`, `Asymptotics.Lorentzian.lorVertex_asymptotic_formula`
 23. Lightlike/Asymptotics/Lorentzian/ExpPhaseTwoPoints.lean - `Asymptotics.Lorentzian.toyAction`,
     `Asymptotics.Lorentzian.toy_two_points`
+24. Lightlike/Asymptotics/Lorentzian/VertexLocal.lean - `Asymptotics.Lorentzian.exists_smooth_extension`,
+    `Asymptotics.Lorentzian.weighted_asymptotics_local`,
+    `Asymptotics.Lorentzian.lorVertex_asymptotics_local`
 
 ## References
 
