@@ -1,0 +1,319 @@
+import Lightlike.PL.Interlaced
+
+/-!
+# A hexagon with chords
+
+A polygonal hexagon with three chords joining opposite vertices: six points `p k`, six simple
+polygonal arcs `H k` from `p k` to `p (k + 1)`, and chords `D k` from `p k` to `p (k + 3)`, two
+different arcs or chords meeting only in common endpoints. This is the shape of a polygonal
+drawing of `K₃,₃`.
+-/
+
+open Set Lightlike.PL.Polygon
+
+namespace Lightlike.PL
+
+/-- The chain of the arc `H k`: the points `p k`, the interior points `h k`, the point `p (k+1)`. -/
+def hexArc (p : Fin 6 → ℝ × ℝ) (h : Fin 6 → List (ℝ × ℝ)) (k : Fin 6) : List (ℝ × ℝ) :=
+  p k :: h k ++ [p (k + 1)]
+
+/-- The chain of the chord `D k`. -/
+def hexChord (p : Fin 6 → ℝ × ℝ) (d : Fin 6 → List (ℝ × ℝ)) (k : Fin 6) : List (ℝ × ℝ) :=
+  p k :: d k ++ [p (k + 3)]
+
+/-- A **hexagon with three chords**. The chord `D (k + 3)` is the chord `D k` traversed backwards. -/
+structure Hex where
+  /-- The six corners. -/
+  p : Fin 6 → ℝ × ℝ
+  /-- The interior points of the six sides. -/
+  h : Fin 6 → List (ℝ × ℝ)
+  /-- The interior points of the chords. -/
+  d : Fin 6 → List (ℝ × ℝ)
+  inj : Function.Injective p
+  hrev : ∀ k, d (k + 3) = (d k).reverse
+  simpleH : ∀ k, IsSimpleChain (hexArc p h k)
+  simpleD : ∀ k, IsSimpleChain (hexChord p d k)
+  /-- Two different sides meet only in common endpoints. -/
+  interHH : ∀ i j, i ≠ j →
+    chainSet (hexArc p h i) ∩ chainSet (hexArc p h j) ⊆ {p i, p (i + 1)} ∩ {p j, p (j + 1)}
+  /-- A side and a chord meet only in common endpoints. -/
+  interHD : ∀ i j,
+    chainSet (hexArc p h i) ∩ chainSet (hexChord p d j) ⊆ {p i, p (i + 1)} ∩ {p j, p (j + 3)}
+  /-- Two different chords meet only in common endpoints. -/
+  interDD : ∀ i j, i ≠ j → i ≠ j + 3 →
+    chainSet (hexChord p d i) ∩ chainSet (hexChord p d j) ⊆ {p i, p (i + 3)} ∩ {p j, p (j + 3)}
+
+/-- The set of three chains glued end to end. -/
+lemma chainSet_glue3 (a b c d : ℝ × ℝ) (x y z : List (ℝ × ℝ)) :
+    chainSet (a :: x ++ b :: y ++ c :: z ++ [d]) =
+      chainSet (a :: x ++ [b]) ∪ chainSet (b :: y ++ [c]) ∪ chainSet (c :: z ++ [d]) := by
+  have h1 := chainSet_append (a :: x ++ b :: y) c (z ++ [d])
+  have h2 := chainSet_append (a :: x) b (y ++ [c])
+  have e1 : a :: x ++ b :: y ++ c :: z ++ [d] = (a :: x ++ b :: y) ++ c :: (z ++ [d]) := by simp
+  have e2 : a :: x ++ b :: y ++ [c] = (a :: x) ++ b :: (y ++ [c]) := by simp
+  rw [e1, h1, e2, h2]
+  simp [Set.union_assoc]
+
+/-- Three simple chains meeting only at the points where they are glued give a simple chain. -/
+lemma isSimpleChain_glue3 {a b c d : ℝ × ℝ} {x y z : List (ℝ × ℝ)}
+    (h1 : IsSimpleChain (a :: x ++ [b])) (h2 : IsSimpleChain (b :: y ++ [c]))
+    (h3 : IsSimpleChain (c :: z ++ [d]))
+    (h12 : chainSet (a :: x ++ [b]) ∩ chainSet (b :: y ++ [c]) = {b})
+    (h13 : (chainSet (a :: x ++ [b]) ∪ chainSet (b :: y ++ [c])) ∩ chainSet (c :: z ++ [d]) = {c}) :
+    IsSimpleChain (a :: x ++ b :: y ++ c :: z ++ [d]) := by
+  have e1 : a :: x ++ b :: y ++ c :: z ++ [d] = (a :: x ++ b :: y) ++ c :: (z ++ [d]) := by simp
+  have e2 : a :: x ++ b :: y ++ [c] = (a :: x) ++ b :: (y ++ [c]) := by simp
+  have hxy : IsSimpleChain (a :: x ++ b :: y ++ [c]) := by
+    rw [e2]
+    exact isSimpleChain_append (l₁ := a :: x) (l₂ := y ++ [c]) (b := b) h1 (by simpa using h2)
+      (by simpa using h12)
+  rw [e1]
+  refine isSimpleChain_append hxy (by simpa using h3) ?_
+  have hs : chainSet (a :: x ++ b :: y ++ [c]) = chainSet (a :: x ++ [b]) ∪ chainSet (b :: y ++ [c]) := by
+    rw [e2, chainSet_append]; simp
+  rw [hs]
+  simpa using h13
+
+namespace Hex
+
+variable (H : Hex)
+
+/-- Shifting the labels by one step. -/
+def rot : Hex where
+  p k := H.p (k + 1)
+  h k := H.h (k + 1)
+  d k := H.d (k + 1)
+  inj := H.inj.comp (add_left_injective 1)
+  hrev k := by
+    have := H.hrev (k + 1)
+    rw [show k + 1 + 3 = k + 3 + 1 by abel] at this
+    exact this
+  simpleH k := by
+    have := H.simpleH (k + 1)
+    simpa [hexArc] using this
+  simpleD k := by
+    have := H.simpleD (k + 1)
+    simpa [hexChord, add_right_comm] using this
+  interHH i j hij := by
+    have := H.interHH (i + 1) (j + 1) (fun h => hij (add_right_cancel h))
+    simpa [hexArc] using this
+  interHD i j := by
+    have := H.interHD (i + 1) (j + 1)
+    simpa [hexArc, hexChord, add_right_comm] using this
+  interDD i j hij hij3 := by
+    have := H.interDD (i + 1) (j + 1) (fun h => hij (add_right_cancel h))
+      (fun h => hij3 (by
+        have : i + 1 = j + 3 + 1 := by rw [h]; abel
+        exact add_right_cancel this))
+    simpa [hexChord, add_right_comm] using this
+
+lemma mem_S_head (k : Fin 6) : H.p k ∈ chainSet (hexArc H.p H.h k) := mem_chainSet_head _ _
+lemma mem_S_last (k : Fin 6) : H.p (k + 1) ∈ chainSet (hexArc H.p H.h k) :=
+  mem_chainSet_last (H.p k :: H.h k) _
+lemma mem_T_head (k : Fin 6) : H.p k ∈ chainSet (hexChord H.p H.d k) := mem_chainSet_head _ _
+lemma mem_T_last (k : Fin 6) : H.p (k + 3) ∈ chainSet (hexChord H.p H.d k) :=
+  mem_chainSet_last (H.p k :: H.d k) _
+
+-- Close a goal about a point `y` known to lie in two sets of corners.
+set_option hygiene false in
+local macro "ends_close" : tactic =>
+  `(tactic| (rcases this with ⟨h1 | h1, h2 | h2⟩ <;>
+    first
+    | exact h1 | exact h2 | exact Or.inl h1 | exact Or.inr h1 | exact Or.inl h2 | exact Or.inr h2
+    | exact absurd (H.inj (h1.symm.trans h2)) (by decide)
+    | exact absurd (H.inj (h1.symm.trans h2)) (by decide)))
+
+lemma ends_HH {y : ℝ × ℝ} {i j : Fin 6} (hij : i ≠ j) (h1 : y ∈ chainSet (hexArc H.p H.h i))
+    (h2 : y ∈ chainSet (hexArc H.p H.h j)) :
+    (y = H.p i ∨ y = H.p (i + 1)) ∧ (y = H.p j ∨ y = H.p (j + 1)) := by
+  have := H.interHH i j hij ⟨h1, h2⟩
+  simpa using this
+
+lemma ends_HD {y : ℝ × ℝ} {i j : Fin 6} (h1 : y ∈ chainSet (hexArc H.p H.h i))
+    (h2 : y ∈ chainSet (hexChord H.p H.d j)) :
+    (y = H.p i ∨ y = H.p (i + 1)) ∧ (y = H.p j ∨ y = H.p (j + 3)) := by
+  have := H.interHD i j ⟨h1, h2⟩
+  simpa using this
+
+lemma ends_DD {y : ℝ × ℝ} {i j : Fin 6} (hij : i ≠ j) (hij3 : i ≠ j + 3)
+    (h1 : y ∈ chainSet (hexChord H.p H.d i)) (h2 : y ∈ chainSet (hexChord H.p H.d j)) :
+    (y = H.p i ∨ y = H.p (i + 3)) ∧ (y = H.p j ∨ y = H.p (j + 3)) := by
+  have := H.interDD i j hij hij3 ⟨h1, h2⟩
+  simpa using this
+
+lemma S01 : chainSet (hexArc H.p H.h 0) ∩ chainSet (hexArc H.p H.h 1) = {H.p 1} := by
+  apply Set.eq_singleton_iff_unique_mem.2
+  refine ⟨⟨H.mem_S_last 0, H.mem_S_head 1⟩, fun y hy => ?_⟩
+  have := H.ends_HH (by decide) hy.1 hy.2
+  simp at this
+  ends_close
+
+lemma S012 : (chainSet (hexArc H.p H.h 0) ∪ chainSet (hexArc H.p H.h 1)) ∩
+    chainSet (hexArc H.p H.h 2) = {H.p 2} := by
+  apply Set.eq_singleton_iff_unique_mem.2
+  refine ⟨⟨Or.inr (H.mem_S_last 1), H.mem_S_head 2⟩, fun y ⟨hy1, hy2⟩ => ?_⟩
+  rcases hy1 with h | h
+  · have := H.ends_HH (by decide) h hy2
+    simp at this
+    ends_close
+  · have := H.ends_HH (by decide) h hy2
+    simp at this
+    ends_close
+
+lemma S34 : chainSet (hexArc H.p H.h 3) ∩ chainSet (hexArc H.p H.h 4) = {H.p 4} := by
+  apply Set.eq_singleton_iff_unique_mem.2
+  refine ⟨⟨H.mem_S_last 3, H.mem_S_head 4⟩, fun y hy => ?_⟩
+  have := H.ends_HH (by decide) hy.1 hy.2
+  simp at this
+  ends_close
+
+lemma S345 : (chainSet (hexArc H.p H.h 3) ∪ chainSet (hexArc H.p H.h 4)) ∩
+    chainSet (hexArc H.p H.h 5) = {H.p 5} := by
+  apply Set.eq_singleton_iff_unique_mem.2
+  refine ⟨⟨Or.inr (H.mem_S_last 4), H.mem_S_head 5⟩, fun y ⟨hy1, hy2⟩ => ?_⟩
+  rcases hy1 with h | h
+  · have := H.ends_HH (by decide) h hy2
+    simp at this
+    ends_close
+  · have := H.ends_HH (by decide) h hy2
+    simp at this
+    ends_close
+
+/-- The two halves of the hexagon meet only in `p 0` and `p 3`. -/
+lemma arcs_inter : ((chainSet (hexArc H.p H.h 0) ∪ chainSet (hexArc H.p H.h 1)) ∪
+    chainSet (hexArc H.p H.h 2)) ∩ ((chainSet (hexArc H.p H.h 3) ∪ chainSet (hexArc H.p H.h 4)) ∪
+    chainSet (hexArc H.p H.h 5)) = {H.p 3, H.p 0} := by
+  apply Set.eq_of_subset_of_subset
+  · rintro y ⟨hy1, hy2⟩
+    rcases hy1 with (h | h) | h <;> rcases hy2 with (h' | h') | h' <;>
+    · have := H.ends_HH (by decide) h h'
+      simp at this
+      first
+      | (rcases this with ⟨h1 | h1, h2 | h2⟩ <;>
+          first
+          | exact Or.inl h1 | exact Or.inr h1 | exact Or.inl h2 | exact Or.inr h2
+          | exact absurd (H.inj (h1.symm.trans h2)) (by decide))
+  · rintro y (rfl | rfl)
+    · exact ⟨Or.inr (H.mem_S_last 2), Or.inl (Or.inl (H.mem_S_head 3))⟩
+    · exact ⟨Or.inl (Or.inl (H.mem_S_head 0)), Or.inr (by simpa using H.mem_S_last 5)⟩
+
+-- Close a case where two sets of corners meet.
+set_option hygiene false in
+local macro "ends_pair" : tactic =>
+  `(tactic| (first
+    | exact Or.inl h1 | exact Or.inr h1 | exact Or.inl h2 | exact Or.inr h2
+    | exact h1 | exact h2
+    | exact absurd (H.inj (h1.symm.trans h2)) (by decide)))
+
+lemma T0_inter_first : (chainSet (hexArc H.p H.h 0) ∪ chainSet (hexArc H.p H.h 1) ∪
+    chainSet (hexArc H.p H.h 2)) ∩ chainSet (hexChord H.p H.d 0) = {H.p 0, H.p 3} := by
+  apply Set.eq_of_subset_of_subset
+  · rintro y ⟨hy1, hy2⟩
+    rcases hy1 with (h | h) | h <;> (have := H.ends_HD h hy2; simp at this; exact this.2)
+  · rintro y (rfl | rfl)
+    · exact ⟨Or.inl (Or.inl (H.mem_S_head 0)), H.mem_T_head 0⟩
+    · exact ⟨Or.inr (H.mem_S_last 2), by simpa using H.mem_T_last 0⟩
+
+lemma T0_inter_second : (chainSet (hexArc H.p H.h 3) ∪ chainSet (hexArc H.p H.h 4) ∪
+    chainSet (hexArc H.p H.h 5)) ∩ chainSet (hexChord H.p H.d 0) = {H.p 0, H.p 3} := by
+  apply Set.eq_of_subset_of_subset
+  · rintro y ⟨hy1, hy2⟩
+    rcases hy1 with (h | h) | h <;> (have := H.ends_HD h hy2; simp at this; exact this.2)
+  · rintro y (rfl | rfl)
+    · exact ⟨Or.inr (by simpa using H.mem_S_last 5), H.mem_T_head 0⟩
+    · exact ⟨Or.inl (Or.inl (H.mem_S_head 3)), by simpa using H.mem_T_last 0⟩
+
+lemma T1_inter_first : chainSet (hexChord H.p H.d 1) ∩ (chainSet (hexArc H.p H.h 0) ∪
+    chainSet (hexArc H.p H.h 1) ∪ chainSet (hexArc H.p H.h 2)) = {H.p 1} := by
+  apply Set.eq_singleton_iff_unique_mem.2
+  refine ⟨⟨H.mem_T_head 1, Or.inl (Or.inr (H.mem_S_head 1))⟩, fun y ⟨hy1, hy2⟩ => ?_⟩
+  rcases hy2 with (h | h) | h <;> (have := H.ends_HD h hy1; simp at this) <;>
+    (rcases this with ⟨h1 | h1, h2 | h2⟩ <;> ends_pair)
+
+lemma T1_inter_second : chainSet (hexChord H.p H.d 1) ∩ (chainSet (hexArc H.p H.h 3) ∪
+    chainSet (hexArc H.p H.h 4) ∪ chainSet (hexArc H.p H.h 5)) = {H.p 4} := by
+  apply Set.eq_singleton_iff_unique_mem.2
+  refine ⟨⟨by simpa using H.mem_T_last 1, Or.inl (Or.inl (by simpa using H.mem_S_last 3))⟩,
+    fun y ⟨hy1, hy2⟩ => ?_⟩
+  rcases hy2 with (h | h) | h <;> (have := H.ends_HD h hy1; simp at this) <;>
+    (rcases this with ⟨h1 | h1, h2 | h2⟩ <;> ends_pair)
+
+lemma T1_inter_T0 : chainSet (hexChord H.p H.d 1) ∩ chainSet (hexChord H.p H.d 0) = ∅ := by
+  apply Set.eq_empty_of_forall_notMem
+  rintro y ⟨hy1, hy2⟩
+  have := H.ends_DD (by decide) (by decide) hy1 hy2
+  simp at this
+  rcases this with ⟨h1 | h1, h2 | h2⟩ <;> exact absurd (H.inj (h1.symm.trans h2)) (by decide)
+
+/-- The list of the vertices of the hexagon, with the interior points of the sides. -/
+def list : List (ℝ × ℝ) :=
+  H.p 0 :: H.h 0 ++ H.p 1 :: H.h 1 ++ H.p 2 :: H.h 2 ++ H.p 3 :: H.h 3 ++ H.p 4 :: H.h 4 ++
+    H.p 5 :: H.h 5
+
+/-- **Two neighbouring chords of the hexagon cannot lie on the same side.** -/
+theorem pair_false
+    (hside : (chainSet (hexChord H.p H.d 0) \ {H.p 0, H.p 3} ⊆ (Polygon.ofList H.list).inside ∧
+        chainSet (hexChord H.p H.d 1) \ {H.p 1, H.p 4} ⊆ (Polygon.ofList H.list).inside) ∨
+      (chainSet (hexChord H.p H.d 0) \ {H.p 0, H.p 3} ⊆ (Polygon.ofList H.list).outside ∧
+        chainSet (hexChord H.p H.d 1) \ {H.p 1, H.p 4} ⊆ (Polygon.ofList H.list).outside)) :
+    False := by
+  have hA0 : hexArc H.p H.h 0 = H.p 0 :: H.h 0 ++ [H.p 1] := rfl
+  have hA1 : hexArc H.p H.h 1 = H.p 1 :: H.h 1 ++ [H.p 2] := rfl
+  have hA2 : hexArc H.p H.h 2 = H.p 2 :: H.h 2 ++ [H.p 3] := rfl
+  have hA3 : hexArc H.p H.h 3 = H.p 3 :: H.h 3 ++ [H.p 4] := rfl
+  have hA4 : hexArc H.p H.h 4 = H.p 4 :: H.h 4 ++ [H.p 5] := rfl
+  have hA5 : hexArc H.p H.h 5 = H.p 5 :: H.h 5 ++ [H.p 0] := rfl
+  have hD0 : hexChord H.p H.d 0 = H.p 0 :: H.d 0 ++ [H.p 3] := rfl
+  have hD1 : hexChord H.p H.d 1 = H.p 1 :: H.d 1 ++ [H.p 4] := rfl
+  have hs0 := H.simpleH 0
+  have hs1 := H.simpleH 1
+  have hs2 := H.simpleH 2
+  have hs3 := H.simpleH 3
+  have hs4 := H.simpleH 4
+  have hs5 := H.simpleH 5
+  have hd0 := H.simpleD 0
+  have hd1 := H.simpleD 1
+  rw [hA0] at hs0; rw [hA1] at hs1; rw [hA2] at hs2
+  rw [hA3] at hs3; rw [hA4] at hs4; rw [hA5] at hs5
+  rw [hD0] at hd0; rw [hD1] at hd1
+  have f01 := H.S01; have f012 := H.S012; have f34 := H.S34; have f345 := H.S345
+  have fin := H.arcs_inter; have g1 := H.T0_inter_first; have g2 := H.T0_inter_second
+  have k1 := H.T1_inter_first; have k2 := H.T1_inter_second; have k3 := H.T1_inter_T0
+  rw [hA0, hA1] at f01; rw [hA0, hA1, hA2] at f012; rw [hA3, hA4] at f34
+  rw [hA3, hA4, hA5] at f345; rw [hA0, hA1, hA2, hA3, hA4, hA5] at fin
+  rw [hA0, hA1, hA2, hD0] at g1; rw [hA3, hA4, hA5, hD0] at g2
+  rw [hD1, hA0, hA1, hA2] at k1; rw [hD1, hA3, hA4, hA5] at k2; rw [hD1, hD0] at k3
+  rw [hD0, hD1] at hside
+  set m₁ : List (ℝ × ℝ) := H.h 0 ++ H.p 1 :: H.h 1 ++ H.p 2 :: H.h 2 with hm₁
+  set m₂ : List (ℝ × ℝ) := H.h 3 ++ H.p 4 :: H.h 4 ++ H.p 5 :: H.h 5 with hm₂
+  have e1 : H.p 0 :: m₁ ++ [H.p 3] = H.p 0 :: H.h 0 ++ H.p 1 :: H.h 1 ++ H.p 2 :: H.h 2 ++ [H.p 3] := by
+    simp [hm₁]
+  have e2 : H.p 3 :: m₂ ++ [H.p 0] = H.p 3 :: H.h 3 ++ H.p 4 :: H.h 4 ++ H.p 5 :: H.h 5 ++ [H.p 0] := by
+    simp [hm₂]
+  have eL : H.p 0 :: m₁ ++ H.p 3 :: m₂ = H.list := by simp [hm₁, hm₂, Hex.list]
+  have c1 : chainSet (H.p 0 :: m₁ ++ [H.p 3]) = chainSet (H.p 0 :: H.h 0 ++ [H.p 1]) ∪
+      chainSet (H.p 1 :: H.h 1 ++ [H.p 2]) ∪ chainSet (H.p 2 :: H.h 2 ++ [H.p 3]) := by
+    rw [e1, chainSet_glue3]
+  have c2 : chainSet (H.p 3 :: m₂ ++ [H.p 0]) = chainSet (H.p 3 :: H.h 3 ++ [H.p 4]) ∪
+      chainSet (H.p 4 :: H.h 4 ++ [H.p 5]) ∪ chainSet (H.p 5 :: H.h 5 ++ [H.p 0]) := by
+    rw [e2, chainSet_glue3]
+  have hne : ∀ i j : Fin 6, i ≠ j → H.p i ≠ H.p j := fun i j h h' => h (H.inj h')
+  refine no_interlaced_chord (a := H.p 0) (b := H.p 3) (x := H.p 1) (y := H.p 4)
+    (m₁ := m₁) (m₂ := m₂) (mₑ := H.d 0) (m_f := H.d 1) (hne 0 3 (by decide)) ?_ ?_ hd0 hd1 ?_ ?_ ?_
+    ?_ (hne 1 0 (by decide)) (hne 1 3 (by decide)) ?_ (hne 4 0 (by decide)) (hne 4 3 (by decide))
+    ?_ ?_ ?_ ?_
+  · rw [e1]; exact isSimpleChain_glue3 hs0 hs1 hs2 f01 f012
+  · rw [e2]; exact isSimpleChain_glue3 hs3 hs4 hs5 f34 f345
+  · rw [c1, c2, Set.pair_comm]; exact fin
+  · rw [c1]; exact g1
+  · rw [c2]; exact g2
+  · rw [c1]; exact Or.inl (Or.inr (mem_chainSet_head _ _))
+  · rw [c2]; exact Or.inl (Or.inr (mem_chainSet_head _ _))
+  · rw [c1]; exact k1
+  · rw [c2]; exact k2
+  · exact k3
+  · rw [← eL] at hside; exact hside
+
+end Hex
+
+end Lightlike.PL

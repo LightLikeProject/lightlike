@@ -3,10 +3,10 @@ Lorentzian vertex action are nondegenerate at the critical configurations consid
 cross-check of the sign structure of the real part (numpy only, fixed seed).
 
 The block is built from BDFHP (arXiv:0907.2440, Appendix A, eqs. (58)-(61), p. 32-33) in the form
-established by `Lightlike/Asymptotics/Lorentzian/HessianNode.lean` (`hessXX_block`), which for the
+established by the theorem `hessXX_block` (the Hessian-block pull request), which for the
 generators J = i sigma / 2, K = sigma / 2 is 1/4 of (61) at the ends where the node is the source of
 the edge and has, at the ends where it is the target, the sign s_e = -1 and the triple-product term
-(`scripts/asymptotics/lorentzian_hessian_paper61_check.py` documents the comparison with (61)):
+(the comparison with (61) is documented in the script of that pull request):
     Q(alpha, beta) = sum_e k_e [ -1/2 (a,a)_e + i s_e (a,b)_e + s_e m_e.(a x b)
                                  - (1/2 + i s_e gamma) (b,b)_e ],   (u,v)_e = u.v - (m_e.u)(m_e.v),
 so the symmetric matrix H (Q = v^T H v, v = (alpha, beta)) has the blocks
