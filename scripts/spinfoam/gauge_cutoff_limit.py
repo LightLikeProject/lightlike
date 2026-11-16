@@ -11,9 +11,10 @@ Result (exact 3j symbols, double-precision contraction; the rounding error of th
 estimated by re-running with the tensors and pair matrices shuffled: the largest spread of the five
 values is 3e-15 at C = 10 and 8e-14 at C = 20, not measured at larger C; on this machine
 `np.longdouble` is `float64`, so no extended-precision comparison exists): the state sum at doubled cutoff
-C = 2, 4, ..., 34 is
+C = 2, 4, ..., 40 is
 3.5, 2.43, -3.40, -6.00, 1.28, 11.64, 10.81, -3.80, -16.10, -9.06, 12.39, 23.59, 8.57, -18.14, -25.31,
--1.53, 28.20: it changes sign (9 times in these values) and its size grows. Numerically, then, the
+-1.53, 28.20, 28.76, -3.66, -33.77: it changes sign 7 times and its size grows (largest absolute value
+6.0 up to C = 8, 33.8 from C = 12). Numerically, then, the
 cutoff sums do not settle for this gauge set. This is an observation, not a proof (no limit statement
 is proved), and the floating-point sums of the first version of this script, which used `vertex_check`'s
 float 3j symbols, are wrong above C = 18 (the Racah sum loses all digits).
