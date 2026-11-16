@@ -197,6 +197,7 @@ import Lightlike.PL.PolygonEars
 import Lightlike.PL.PolygonBall
 import Lightlike.PL.PolygonBoundary
 import Lightlike.PL.Realisation
+import Lightlike.PL.StarClosure
 import Lightlike.PL.Starring
 import Lightlike.PL.Boundary
 import Lightlike.PL.Ball
