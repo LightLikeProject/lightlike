@@ -197,6 +197,54 @@ lemma arcs_inter : ((chainSet (hexArc H.p H.h 0) ∪ chainSet (hexArc H.p H.h 1)
     · exact ⟨Or.inr (H.mem_S_last 2), Or.inl (Or.inl (H.mem_S_head 3))⟩
     · exact ⟨Or.inl (Or.inl (H.mem_S_head 0)), Or.inr (by simpa using H.mem_S_last 5)⟩
 
+-- Close a case where two sets of corners meet.
+set_option hygiene false in
+local macro "ends_pair" : tactic =>
+  `(tactic| (first
+    | exact Or.inl h1 | exact Or.inr h1 | exact Or.inl h2 | exact Or.inr h2
+    | exact h1 | exact h2
+    | exact absurd (H.inj (h1.symm.trans h2)) (by decide)))
+
+lemma T0_inter_first : (chainSet (hexArc H.p H.h 0) ∪ chainSet (hexArc H.p H.h 1) ∪
+    chainSet (hexArc H.p H.h 2)) ∩ chainSet (hexChord H.p H.d 0) = {H.p 0, H.p 3} := by
+  apply Set.eq_of_subset_of_subset
+  · rintro y ⟨hy1, hy2⟩
+    rcases hy1 with (h | h) | h <;> (have := H.ends_HD h hy2; simp at this; exact this.2)
+  · rintro y (rfl | rfl)
+    · exact ⟨Or.inl (Or.inl (H.mem_S_head 0)), H.mem_T_head 0⟩
+    · exact ⟨Or.inr (H.mem_S_last 2), by simpa using H.mem_T_last 0⟩
+
+lemma T0_inter_second : (chainSet (hexArc H.p H.h 3) ∪ chainSet (hexArc H.p H.h 4) ∪
+    chainSet (hexArc H.p H.h 5)) ∩ chainSet (hexChord H.p H.d 0) = {H.p 0, H.p 3} := by
+  apply Set.eq_of_subset_of_subset
+  · rintro y ⟨hy1, hy2⟩
+    rcases hy1 with (h | h) | h <;> (have := H.ends_HD h hy2; simp at this; exact this.2)
+  · rintro y (rfl | rfl)
+    · exact ⟨Or.inr (by simpa using H.mem_S_last 5), H.mem_T_head 0⟩
+    · exact ⟨Or.inl (Or.inl (H.mem_S_head 3)), by simpa using H.mem_T_last 0⟩
+
+lemma T1_inter_first : chainSet (hexChord H.p H.d 1) ∩ (chainSet (hexArc H.p H.h 0) ∪
+    chainSet (hexArc H.p H.h 1) ∪ chainSet (hexArc H.p H.h 2)) = {H.p 1} := by
+  apply Set.eq_singleton_iff_unique_mem.2
+  refine ⟨⟨H.mem_T_head 1, Or.inl (Or.inr (H.mem_S_head 1))⟩, fun y ⟨hy1, hy2⟩ => ?_⟩
+  rcases hy2 with (h | h) | h <;> (have := H.ends_HD h hy1; simp at this) <;>
+    (rcases this with ⟨h1 | h1, h2 | h2⟩ <;> ends_pair)
+
+lemma T1_inter_second : chainSet (hexChord H.p H.d 1) ∩ (chainSet (hexArc H.p H.h 3) ∪
+    chainSet (hexArc H.p H.h 4) ∪ chainSet (hexArc H.p H.h 5)) = {H.p 4} := by
+  apply Set.eq_singleton_iff_unique_mem.2
+  refine ⟨⟨by simpa using H.mem_T_last 1, Or.inl (Or.inl (by simpa using H.mem_S_last 3))⟩,
+    fun y ⟨hy1, hy2⟩ => ?_⟩
+  rcases hy2 with (h | h) | h <;> (have := H.ends_HD h hy1; simp at this) <;>
+    (rcases this with ⟨h1 | h1, h2 | h2⟩ <;> ends_pair)
+
+lemma T1_inter_T0 : chainSet (hexChord H.p H.d 1) ∩ chainSet (hexChord H.p H.d 0) = ∅ := by
+  apply Set.eq_empty_of_forall_notMem
+  rintro y ⟨hy1, hy2⟩
+  have := H.ends_DD (by decide) (by decide) hy1 hy2
+  simp at this
+  rcases this with ⟨h1 | h1, h2 | h2⟩ <;> exact absurd (H.inj (h1.symm.trans h2)) (by decide)
+
 end Hex
 
 end Lightlike.PL
