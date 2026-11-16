@@ -118,6 +118,48 @@ tasks:
       - Representation theory of U_q(sl₂) at roots of unity (Turaev 1994).
       - Kauffman–Lins recoupling theory (1994).
 
+  - id: T-SF10-P1
+    milestone: SF10
+    kind: proof
+    title: Joint integrability of the Lorentzian vertex integrand
+    file: Tasks/SF/T_SF10_P1.lean
+    decl: Lightlike.Asymptotics.Lorentzian.lorVertex_jointIntegrable
+    size: L
+    difficulty: research-level
+    routes:
+      - "Bound the modulus of the integrand by the product of the weights `triWeight` of the ten edges and integrate edge by edge: the finiteness of the Lorentzian EPRL vertex (Kaminski–Kisielowski–Lewandowski, arXiv:0909.0939) or a direct estimate of `∏_e ∫ ‖g_e‖ dw` from `norm_exp_triAction` and the integrability of the `Ω` density (`Lightlike/Asymptotics/Lorentzian/Amplitude.lean`)."
+  - id: T-SF10-P2
+    milestone: SF10
+    kind: proof
+    title: Invertibility of the Hessian of the Lorentzian vertex action at a critical point
+    file: Tasks/SF/T_SF10_P2.lean
+    decl: Lightlike.Asymptotics.Lorentzian.lorHessian_invertible_at_critical
+    size: L
+    difficulty: research-level
+    routes:
+      - "Reduce to `Im(-H)` injective on the kernel of `Re(-H)`: `Re(-H)` is positive semidefinite (a sum of squares of the linearised alignment conditions) and `-H v = 0` forces `Re(-H) v = 0` and `Im(-H) v = 0`. The closed form of the blocks is `hessBlockMatrix` (`Lightlike/Asymptotics/Lorentzian/HessianAssembly.lean`)."
+      - "A certified computation for the regular simplex (numerical evidence: `scripts/asymptotics/lorentzian_hessian_kernel_check.py`) does not settle all nondegenerate data."
+  - id: T-SF10-P3
+    milestone: SF10
+    kind: proof
+    title: The far part of the Lorentzian vertex integral is of lower order
+    file: Tasks/SF/T_SF10_P3.lean
+    decl: Lightlike.Asymptotics.Lorentzian.lorVertex_farRemainder
+    size: L
+    difficulty: research-level
+    routes:
+      - "Where `Re S ≤ -δ` on the support of `1 - χ` the integrand decays exponentially; the non-compact directions need an integrability estimate of `e^{λ S}` against the amplitude (`Ω` density) uniform in `λ`, and non-stationary phase (`nonstationary_phase`, `Lightlike/Oscillatory/Localisation.lean`) where `Re S = 0` and `dS ≠ 0`."
+  - id: T-SF10-P4
+    milestone: SF10
+    kind: proof
+    title: Finiteness and classification of the critical points of the Lorentzian vertex action
+    file: Tasks/SF/T_SF10_P4.lean
+    decl: Lightlike.Asymptotics.Lorentzian.lorVertex_criticalSet_finite
+    size: L
+    difficulty: research-level
+    routes:
+      - "The bivector reconstruction theorem for Lorentzian data (BDFHP Sec. 5.4.3, via Barrett–Dowdall–Fairbairn–Gomes–Hellmann, arXiv:0902.1170): critical points give bivector geometries. The SU(2) case is `Lightlike/Asymptotics/Lorentzian/Classification.lean`."
+
 # Upstream tasks: finished results that belong in Mathlib (general mathematics) or Physlib
 # (general physics), with the rework each needs. Exclusive, like definition
 # tasks; `target` gives the label `upstream: <library>`.
