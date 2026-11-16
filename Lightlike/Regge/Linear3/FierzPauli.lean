@@ -54,16 +54,45 @@ noncomputable def tdiv (H : Fin 3 → Fin 3 → ℝ) (dh : Fin 3 → Fin 3 → F
     + ∑ b, ∑ c, (1 / 4) * (dh m b c * dh b m c + H b c * dd b m m c)
     - ∑ b, ∑ c, (1 / 4) * (dh m m b * dh c c b + H m b * dd c m c b))
 
--- needs about 0.12 million heartbeats (measured with `#count_heartbeats`); the cap is about twice that
-set_option maxHeartbeats 250000 in
+-- The values of the Levi-Civita symbol `eps3` on `Fin 3`, one lemma for each triple.
+section epsTable
+theorem eps3_000 : eps3 0 0 0 = 0 := by norm_num [eps3]
+theorem eps3_001 : eps3 0 0 1 = 0 := by norm_num [eps3]
+theorem eps3_002 : eps3 0 0 2 = 0 := by norm_num [eps3]
+theorem eps3_010 : eps3 0 1 0 = 0 := by norm_num [eps3]
+theorem eps3_011 : eps3 0 1 1 = 0 := by norm_num [eps3]
+theorem eps3_012 : eps3 0 1 2 = 1 := by norm_num [eps3]
+theorem eps3_020 : eps3 0 2 0 = 0 := by norm_num [eps3]
+theorem eps3_021 : eps3 0 2 1 = -1 := by norm_num [eps3]
+theorem eps3_022 : eps3 0 2 2 = 0 := by norm_num [eps3]
+theorem eps3_100 : eps3 1 0 0 = 0 := by norm_num [eps3]
+theorem eps3_101 : eps3 1 0 1 = 0 := by norm_num [eps3]
+theorem eps3_102 : eps3 1 0 2 = -1 := by norm_num [eps3]
+theorem eps3_110 : eps3 1 1 0 = 0 := by norm_num [eps3]
+theorem eps3_111 : eps3 1 1 1 = 0 := by norm_num [eps3]
+theorem eps3_112 : eps3 1 1 2 = 0 := by norm_num [eps3]
+theorem eps3_120 : eps3 1 2 0 = 1 := by norm_num [eps3]
+theorem eps3_121 : eps3 1 2 1 = 0 := by norm_num [eps3]
+theorem eps3_122 : eps3 1 2 2 = 0 := by norm_num [eps3]
+theorem eps3_200 : eps3 2 0 0 = 0 := by norm_num [eps3]
+theorem eps3_201 : eps3 2 0 1 = 1 := by norm_num [eps3]
+theorem eps3_202 : eps3 2 0 2 = 0 := by norm_num [eps3]
+theorem eps3_210 : eps3 2 1 0 = -1 := by norm_num [eps3]
+theorem eps3_211 : eps3 2 1 1 = 0 := by norm_num [eps3]
+theorem eps3_212 : eps3 2 1 2 = 0 := by norm_num [eps3]
+theorem eps3_220 : eps3 2 2 0 = 0 := by norm_num [eps3]
+theorem eps3_221 : eps3 2 2 1 = 0 := by norm_num [eps3]
+theorem eps3_222 : eps3 2 2 2 = 0 := by norm_num [eps3]
+end epsTable
+
 /-- **The pointwise identity**: `-¼ svPair - fpDens` is the divergence `tdiv`. -/
 theorem fp_identity (H : Fin 3 → Fin 3 → ℝ) (dh : Fin 3 → Fin 3 → Fin 3 → ℝ)
     (dd : Fin 3 → Fin 3 → Fin 3 → Fin 3 → ℝ)
     (hH : ∀ i j, H i j = H j i) (hd : ∀ k i j, dh k i j = dh k j i)
     (hd1 : ∀ k l i j, dd k l i j = dd l k i j) (hd2 : ∀ k l i j, dd k l i j = dd k l j i) :
     -(1 / 4) * svPair H dd - fpDens dh = tdiv H dh dd := by
-  simp only [svPair, fpDens, tdiv, eps3, Fin.sum_univ_three, Fin.val_zero, Fin.val_one, Fin.val_two,
-    Nat.cast_zero, Nat.cast_one, Nat.cast_ofNat]
+  simp only [svPair, fpDens, tdiv, Fin.sum_univ_three, eps3_000, eps3_001, eps3_002, eps3_010, eps3_011, eps3_012, eps3_020, eps3_021, eps3_022, eps3_100, eps3_101, eps3_102, eps3_110, eps3_111, eps3_112, eps3_120, eps3_121, eps3_122, eps3_200, eps3_201, eps3_202, eps3_210, eps3_211, eps3_212, eps3_220, eps3_221, eps3_222,
+    zero_mul, mul_zero, zero_add, add_zero]
   simp only [hH 1 0, hH 2 0, hH 2 1, hd 0 1 0, hd 0 2 0, hd 0 2 1, hd 1 1 0, hd 1 2 0, hd 1 2 1,
     hd 2 1 0, hd 2 2 0, hd 2 2 1, hd1 1 0, hd1 2 0, hd1 2 1, hd2 _ _ 1 0, hd2 _ _ 2 0, hd2 _ _ 2 1]
   ring
