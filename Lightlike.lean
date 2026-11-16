@@ -354,6 +354,10 @@ import Lightlike.Regge.Conv3.DihedralTaylor2
 import Lightlike.Regge.Conv3.DivergencePeriodic
 import Lightlike.Regge.Conv3.CurvatureEta
 import Lightlike.Regge.Conv3.FetaTaylor
+import Lightlike.Regge.Conv3.Exp2
+import Lightlike.Regge.Conv3.Exp2Inv
+import Lightlike.Regge.Conv3.CurvatureCoeffs
+import Lightlike.Regge.Conv3.CurvaturePoly
 import Lightlike.Regge.Conv3.DihedralScale
 import Lightlike.Regge.Conv3.EdgePoly
 import Lightlike.Regge.Conv3.JetCore

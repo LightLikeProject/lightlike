@@ -67,6 +67,7 @@ CHECKS = [
     ("scripts/regge/regge3d_sphere_check.py", True),
     ("scripts/regge/regge3d_linearized_check.py", True),
     ("scripts/regge/fierz_pauli_check.py", True),
+    ("scripts/regge/eh_jet_poly_check.py", True),
     ("scripts/spinfoam/vertex_check.py", False),
     ("scripts/spinfoam/bc_sign_check.py", False),
     ("scripts/spinfoam/bing_house_check.py", False),

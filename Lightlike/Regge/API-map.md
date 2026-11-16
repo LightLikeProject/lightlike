@@ -149,6 +149,14 @@ no expansion in `η` and no integral yet.
 The curvature density `Feta` of `1 + η h` expands to second order in `η`, with a cubic remainder that is uniform on compact
 sets of jets [80]; the two coefficients are defined as derivatives and not yet computed.
 
+Second-order expansions at `η = 0` of real functions are closed under sums, products, inverses and square roots, and their
+coefficients are unique [81] [82]. With them the curvature density of `1 + η h` is expanded from its explicit formula: the inverse
+metric, the Christoffel symbols and their derivatives, and the scalar curvature have explicit first and second coefficients, and the
+coefficients `F1`, `F2` of the uniform expansion [80] are `R1 / 2` and `R2 + R1 tr h / 2` [83]. For symmetric jets `F1` is half the
+linearized scalar curvature and `F2` is the Fierz–Pauli density of `∂h` plus the divergence of an explicit field [84]. The identities
+are polynomial; they are also checked with exact arithmetic in `scripts/regge/eh_jet_poly_check.py`, with a control that fails.
+Nothing here is an integral statement.
+
 A 2-complex with boundary is a disc in the combinatorial sense exactly when it is an intrinsic
 triangulated disc [16].
 
@@ -303,6 +311,15 @@ triangulated disc [16].
 
 80. Lightlike/Regge/Conv3/FetaTaylor.lean - `Regge.Conv3.F1`, `Regge.Conv3.F2`,
     `Regge.Conv3.feta_expansion`
+
+81. Lightlike/Regge/Conv3/Exp2.lean - `Regge.Conv3.Exp2`, `Regge.Conv3.Exp2.poly`, `Regge.Conv3.Exp2.add`,
+    `Regge.Conv3.Exp2.mul`, `Regge.Conv3.Exp2.sum`, `Regge.Conv3.Exp2.congr`
+82. Lightlike/Regge/Conv3/Exp2Inv.lean - `Regge.Conv3.Exp2.inv`, `Regge.Conv3.Exp2.sqrt`,
+    `Regge.Conv3.Exp2.unique`, `Regge.Conv3.poly2_unique`
+83. Lightlike/Regge/Conv3/CurvatureCoeffs.lean - `Regge.Conv3.Gi_exp`, `Regge.Conv3.dchr_exp`,
+    `Regge.Conv3.curv_exp`, `Regge.Conv3.feta_exp`, `Regge.Conv3.F_eq`
+84. Lightlike/Regge/Conv3/CurvaturePoly.lean - `Regge.Conv3.divTp`, `Regge.Conv3.F2_poly`,
+    `Regge.Conv3.F1_eq`, `Regge.Conv3.F2_eq`
 
 ## References
 
