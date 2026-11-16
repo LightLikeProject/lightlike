@@ -200,6 +200,18 @@ import Lightlike.PL.Interlaced
 import Lightlike.PL.Hexagon
 import Lightlike.PL.HexFalse
 import Lightlike.PL.K33
+import Lightlike.PL.LoopErase
+import Lightlike.PL.ArcApprox
+import Lightlike.PL.ArcTrim
+import Lightlike.PL.ContK33
+import Lightlike.PL.ArcSet
+import Lightlike.PL.ArcK33
+import Lightlike.PL.WeakJordanT
+import Lightlike.PL.WeakJordanOuter
+import Lightlike.PL.WeakJordanLink
+import Lightlike.PL.WeakJordanAssemble
+import Lightlike.PL.WeakJordan
+import Lightlike.PL.WeakJordanCircle
 import Lightlike.PL.Relabel
 import Lightlike.PL.RealGeom
 import Lightlike.PL.Realisation
@@ -253,6 +265,7 @@ import Lightlike.PL.TestsPachner
 import Lightlike.PL.TestsNewman
 import Lightlike.PL.TestsPolygon
 import Lightlike.PL.TestsK33
+import Lightlike.PL.TestsJordan
 import Lightlike.PonzanoRegge.Amplitude
 import Lightlike.PonzanoRegge.Asymptotics
 import Lightlike.PonzanoRegge.BEPositive
