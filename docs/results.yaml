@@ -305,6 +305,7 @@
   decls: [Lightlike.PL.SComplex.pachner]
   status: proven
   tier: established
+  main: true
   source:
     refs:
       - {ref: lickorish-1999, location: "Theorem 4.5", check: "stellar"}
@@ -394,6 +395,7 @@
   decls: [Lightlike.Asymptotics.ponzanoReggeFormula]
   status: proven
   tier: established
+  main: true
   source:
     refs:
       - {ref: roberts-1999, location: "Theorem 1", check: "Asymptotic formula"}
@@ -595,6 +597,7 @@
   decls: [Lightlike.Lorentz.integrable_eprlIntegrand, Lightlike.Lorentz.lintegral_enorm_eprlIntegrand_lt_top, Lightlike.Lorentz.eprlVertex_eq_integral, Lightlike.Lorentz.integrable_linkProd_inner]
   status: proven
   tier: frontier
+  main: true
   source:
     refs:
       - {ref: eprl-2008, location: "Abstract", check: "Lorentzian"}
@@ -609,6 +612,7 @@
   decls: [Lightlike.Asymptotics.EPRL.eprlAsymptoticFormula]
   status: proven
   tier: frontier
+  main: true
   source:
     refs:
       - {ref: bdfgh-2009, location: "Section 4", check: "Asymptotic formula"}
@@ -849,6 +853,7 @@
   decls: [Lightlike.PL.SComplex.pachner_plHomeomorphic, Lightlike.PL.SComplex.isClosedCombManifold_iff_plHomeomorphic]
   status: proven
   tier: established
+  main: true
   source:
     refs:
       - {ref: lickorish-1999, location: "Theorem 5.9"}
@@ -886,6 +891,7 @@
   decls: [Lightlike.SpinFoam.amplitudeGF_congr_cut, Lightlike.SpinFoam.GFStep4.isGauge, Lightlike.SpinFoam.amplitudeGF_eqvGen4, Lightlike.SpinFoam.amplitudeGF_tendsto_one_of_forces]
   status: proven
   tier: frontier
+  main: true
   source:
     refs:
       - {ref: freidel-louapre-2003, location: "Section IV", check: "GAUGE SYMMETRIES AND DIVERGENCES"}
@@ -1001,6 +1007,7 @@
   decls: [Lightlike.PL.Polygon.polygon_jordan, Lightlike.PL.Polygon.frontier_class]
   status: proven
   tier: established
+  main: true
   source:
     refs:
       - {ref: moise-1977, location: "Chapter: Separation properties of polygons in R 2|10.1007/978-1-4612-9906-6_3"}
@@ -1099,6 +1106,7 @@
   decls: [Lightlike.PL.Polygon.polygon_schoenflies, Lightlike.PL.Polygon.mem_bd_closure_iff, Lightlike.PL.Polygon.bd_space_eq_carrier, Lightlike.PL.Polygon.unique_triangle_of_ball]
   status: proven
   tier: established
+  main: true
   source:
     refs:
       - {ref: moise-1977, location: "Chapter: The Schönflies theorem for polygons in R 2|10.1007/978-1-4612-9906-6_4"}

@@ -8,6 +8,21 @@ Tier: **established** (standard mathematics and physics that the frontier work n
 
 Review: every entry is **kernel-checked**: Lean's kernel verified the proof (for a stated target, that the statement is well-formed). A kernel check guarantees the proof, not that a statement or a definition means what its source means. An entry that a domain expert has compared with its source is marked **human-reviewed**, with a link to the issue that holds the review. To review an entry, or to report that a statement does not match its source, open an issue that names the entry's ID.
 
+## Main results
+
+The main theorem of a cited paper or book, or a named theorem (`main: true` in `docs/results.yaml`). Each is listed again in its area below.
+
+| ID | Result | Area | Tier | Lean |
+|---|---|---|---|---|
+| LL-0023 | Pachner's theorem, stellar version, in all dimensions | PL topology of simplicial complexes | established | `Lightlike.PL.SComplex.pachner` in [PachnerMain.lean](../Lightlike/PL/PachnerMain.lean) |
+| LL-0030 | The Ponzano–Regge asymptotic formula for the 6j symbol | The Ponzano–Regge model | established | `Lightlike.Asymptotics.ponzanoReggeFormula` in [SaddleAssembly.lean](../Lightlike/Asymptotics/SaddleAssembly.lean) |
+| LL-0046 | The Lorentzian EPRL vertex amplitude is finite for every Immirzi parameter, all spins and every coefficient array | SL(2,ℂ) and its unitary principal series | frontier | `Lightlike.Lorentz.integrable_eprlIntegrand`, `Lightlike.Lorentz.lintegral_enorm_eprlIntegrand_lt_top`, `Lightlike.Lorentz.eprlVertex_eq_integral`, `Lightlike.Lorentz.integrable_linkProd_inner` in [EPRL.lean](../Lightlike/Lorentz/EPRL.lean) |
+| LL-0047 | The large-spin asymptotic formula of the Euclidean EPRL vertex amplitude in coherent boundary states | Saddle points of the 6j symbol | frontier | `Lightlike.Asymptotics.EPRL.eprlAsymptoticFormula` in [EPRLFormula.lean](../Lightlike/Asymptotics/EPRL/EPRLFormula.lean) |
+| LL-0065 | Pachner's theorem, PL form, closed combinatorial manifolds are PL homeomorphic iff related by bistellar moves | PL topology of simplicial complexes | established | `Lightlike.PL.SComplex.pachner_plHomeomorphic`, `Lightlike.PL.SComplex.isClosedCombManifold_iff_plHomeomorphic` in [PachnerPL.lean](../Lightlike/PL/PachnerPL.lean) |
+| LL-0068 | The gauge-fixed Ooguri state sum at finite cutoff is constant along every chain of 4D Pachner moves, and a gauge set that forces every triangle gives 1 at every cutoff | Spin foam models: Ooguri and Barrett–Crane | frontier | `Lightlike.SpinFoam.amplitudeGF_congr_cut`, `Lightlike.SpinFoam.GFStep4.isGauge`, `Lightlike.SpinFoam.amplitudeGF_eqvGen4`, `Lightlike.SpinFoam.amplitudeGF_tendsto_one_of_forces` in [GaugeChain.lean](../Lightlike/SpinFoam/GaugeChain.lean) |
+| LL-0076 | The Jordan curve theorem for simple closed polygons in the plane, with the inside of a triangle | PL topology of simplicial complexes | established | `Lightlike.PL.Polygon.polygon_jordan`, `Lightlike.PL.Polygon.frontier_class` in [PolygonJordan.lean](../Lightlike/PL/PolygonJordan.lean) |
+| LL-0084 | The polygonal Schoenflies theorem: the closed region bounded by a simple closed polygon in the plane is a PL ball whose boundary is the polygon | PL topology of simplicial complexes | established | `Lightlike.PL.Polygon.polygon_schoenflies`, `Lightlike.PL.Polygon.mem_bd_closure_iff`, `Lightlike.PL.Polygon.bd_space_eq_carrier`, `Lightlike.PL.Polygon.unique_triangle_of_ball` in [PolygonBoundary.lean](../Lightlike/PL/PolygonBoundary.lean) |
+
 ## Spacetime geometry in coordinates
 
 API map: [Lightlike/Spacetime/API-map.md](../Lightlike/Spacetime/API-map.md)
