@@ -60,6 +60,7 @@ import Lightlike.Asymptotics.Lorentzian.Suppression
 import Lightlike.Asymptotics.Lorentzian.Hessian
 import Lightlike.Asymptotics.EPRL.Normals
 import Lightlike.Asymptotics.EPRL.ReggeState
+import Lightlike.Asymptotics.EPRL.Suppression
 import Lightlike.Asymptotics.GammaBounds
 import Lightlike.Asymptotics.GammaBoundsTests
 import Lightlike.Asymptotics.HalfSixJ

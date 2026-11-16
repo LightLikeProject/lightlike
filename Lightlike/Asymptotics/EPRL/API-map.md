@@ -50,6 +50,14 @@ first step towards writing the coherent 15j as a contraction of coherent intertw
 `k5Contract_cohInt` completes it: the coherent 15j is the `K₅` contraction of the coherent
 intertwiners, with no extra sign in these conventions [29].
 
+If the maximum set of the integrand is finite and the logarithmic phase has nonzero differential at
+each of its points, then there is no critical point of the extended stationary phase and the coherent
+15j integral decays faster than every power of the spin scale: the chart-level statement follows from
+the non-stationary phase theorem [30], and `localise_pieces` glues the charts into the `SU(2)^4` statement
+[30]. This is the case in which the proportionality of the spins to the areas is not assumed, and
+the noncriticality of the maxima is the hypothesis; that it holds for spins that are not areas is not
+proved here.
+
 ## Lean References
 
 1. Lightlike/Asymptotics/EPRL/Amplitude.lean - `Asymptotics.EPRL.prop`, `Asymptotics.EPRL.cohAmp`,
@@ -117,6 +125,8 @@ intertwiners, with no extra sign in these conventions [29].
     `Asymptotics.EPRL.k5Contract_prod`, `Asymptotics.EPRL.k5Contract_integral`,
     `Asymptotics.EPRL.projNode_cohInt`, `Asymptotics.EPRL.k5Contract_cohInt`,
     `Asymptotics.EPRL.pair_ne_overlap`
+30. Lightlike/Asymptotics/EPRL/Suppression.lean - `Asymptotics.EPRL.local_suppression`,
+    `Asymptotics.EPRL.suppression_finite_max`
 
 ## References
 
