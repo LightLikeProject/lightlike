@@ -21,7 +21,7 @@ Padua-Argüelles, arXiv:2104.00485, Appendix B, eqs. B4–B6):
 * at a **timelike** triangle (`G < 0`) the orthogonal plane is Euclidean and the angle is
   `arccos(−M / √(G_s G_u))`. The sign is opposite to the Euclidean formula of M12 because `G < 0`.
 
-## Definitions
+## Main results
 
 * `sqL L a b`, `ipL L o a b`, `gram2L`, `gram3L`, `mixedL`, `gram4L`: squared lengths, inner
   products and determinants from signed squared lengths.
@@ -29,8 +29,6 @@ Padua-Argüelles, arXiv:2104.00485, Appendix B, eqs. B4–B6):
   `pqrs` and `pqru`, a complex number (zero, a junk value, at null triangles).
 * `perpL g a b c`: the component of `c` that is `g`-orthogonal to `a` and `b`, for a symmetric
   bilinear form `g`.
-
-## Main results
 
 * `mixedL_swap_pq`, …, `lorDihedral4_swap_su`: the formulas depend only on the triangle and the
   two opposite vertices.

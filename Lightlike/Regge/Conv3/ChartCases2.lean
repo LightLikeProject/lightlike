@@ -1,4 +1,17 @@
 import Lightlike.Regge.Conv3.ChartBase
+/-!
+# Closed forms at the hinges of tetrahedron 2 of the Kuhn cube (diagonal chart)
+
+For the diagonal chart `diag(α, β, γ)` and a symmetric tensor `ric`, the hinge length times the first
+variation of the dihedral angle (`ldth`) at the incidence (2, `h`) is the rational function `cf2h` of
+`α, β, γ` and `ric`, for the six hinges `h = 0, …, 5`. Each is proved by exact algebra after
+`inc_geom`.
+
+## Main results
+
+* `ldth_cf20`, …, `ldth_cf25`: the six closed forms.
+-/
+
 open Real
 namespace Lightlike.Regge.Conv3
 

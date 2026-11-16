@@ -17,7 +17,7 @@ combinatorial 2-sphere. (A PL disc becomes a sphere this way, and conversely a s
 open star of a vertex is a disc.) The new vertex is `none : Option V`; the old vertices are
 `some x`.
 
-## Definitions
+## Main results
 
 * `bdryEdges2 L`: the edges of `L` lying in exactly one triangle.
 * `coneComplete L`: the triangles of `L` together with the triangles `{none, x, y}` over the
@@ -25,8 +25,6 @@ open star of a vertex is a disc.) The new vertex is `none : Option V`; the old v
 * `IsDisc2 L`: the boundary is nonempty and the cone completion is a combinatorial 2-sphere.
 * `IsCombManifoldBd K`: every vertex link of `K` is a combinatorial 2-sphere or a 2-disc.
 * `IsSurfaceDisc L`: the intrinsic conditions of a triangulated disc.
-
-## Main results
 
 * `exists_rotate`: a cycle can be started at any of its vertices.
 * `exists_edgeLink_of_coneComplete`: if the link of the vertex `a` has a sphere as cone completion,
