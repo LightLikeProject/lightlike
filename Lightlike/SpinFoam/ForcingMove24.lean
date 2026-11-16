@@ -141,6 +141,18 @@ lemma dist_ntX_4 : nnX 1 ≠ nnX 3 ∧ nnX 1 ≠ mpX 4 ∧ nnX 1 ≠ mqX 4 ∧ n
 lemma dist_ntX_5 : nnX 2 ≠ nnX 3 ∧ nnX 2 ≠ mpX 5 ∧ nnX 2 ≠ mqX 5 ∧ nnX 3 ≠ mpX 5 ∧
     nnX 3 ≠ mqX 5 ∧ mpX 5 ≠ mqX 5 := by decide
 
+/-- The first element of the pair `r`. -/
+def p1 : Fin 6 → Fin 4 := ![0, 0, 0, 1, 1, 2]
+
+/-- The second element of the pair `r`. -/
+def p2 : Fin 6 → Fin 4 := ![1, 2, 3, 2, 3, 3]
+
+lemma tris_ntX : ∀ r : Fin 6, (ntX r).powersetCard 3 =
+    {nnX (p1 r), nnX (p2 r), mpX r, mqX r} := by decide +kernel
+
+lemma exists_pair : ∀ a i : Fin 4, a ≠ i → ∃ r : Fin 6, (p1 r = a ∧ p2 r = i) ∨ (p1 r = i ∧ p2 r = a) := by
+  decide
+
 lemma sgX_ne_nnX : ∀ i j : Fin 4, sgX i ≠ nnX j := by decide
 
 lemma mpX_ne_nnX : ∀ r : Fin 6, ∀ j : Fin 4, mpX r ≠ nnX j := by decide
@@ -421,6 +433,41 @@ theorem forcing_dichotomy24 (P0 C T : Finset (Finset V)) (a : Fin 4)
     · exact h
     · obtain ⟨j, -, hj⟩ := mem_image.mp h
       exact absurd (hj ▸ hf) (hNC j)
+
+/-- **The easy direction.** If `T` forces `C` using the common tetrahedra alone, then it forces `C`
+using the common tetrahedra and `σ`, and it forces `C` together with the four triangles `N_i` using the
+common tetrahedra and the six new ones once `N_a` is added to `T`: from `N_a` and the triangles
+`P_{ak}`, `Q_{ak}` of `C`, the tetrahedron `{p, q, s_a, s_k}` forces `N_k`. -/
+theorem forces24_of_common (P0 C T : Finset (Finset V)) (a : Fin 4)
+    (hmix : ∀ r, tx e (mpX r) ∈ C ∧ tx e (mqX r) ∈ C) (hS : ForcesIn P0 C T) :
+    ForcesIn (insert (tx e sig4) P0) C T ∧
+      ForcesIn (P0 ∪ univ.image fun r => tx e (ntX r))
+        (C ∪ univ.image fun i => tx e (nnX i)) (insert (tx e (nnX a)) T) := by
+  refine ⟨hS.mono (subset_insert _ _) subset_rfl, ?_⟩
+  have h1 : ForcesIn (P0 ∪ univ.image fun r => tx e (ntX r)) C (insert (tx e (nnX a)) T) :=
+    hS.mono subset_union_left (subset_insert _ _)
+  refine h1.union (ForcesIn.of_singles fun g hg => ?_)
+  obtain ⟨i, -, rfl⟩ := mem_image.mp hg
+  by_cases hia : i = a
+  · subst hia
+    exact .done (by simp)
+  · obtain ⟨r, hr⟩ := exists_pair a i (Ne.symm hia)
+    have ht : tx e (ntX r) ∈ P0 ∪ univ.image fun r => tx e (ntX r) :=
+      mem_union_right _ (mem_image_of_mem _ (mem_univ _))
+    have htr := tris_four e (tris_ntX r)
+    refine h1.of_union (ForcesIn.single ht ((htr _).mpr ?_) fun g hg hne => ?_)
+    · rcases hr with ⟨h1', h2'⟩ | ⟨h1', h2'⟩
+      · exact Or.inr (Or.inl (by rw [h2']))
+      · exact Or.inl (by rw [h1'])
+    · rcases (htr g).mp hg with rfl | rfl | rfl | rfl
+      · rcases hr with ⟨h1', -⟩ | ⟨h1', -⟩
+        · exact mem_union_left _ (by rw [h1']; exact mem_insert_self _ _)
+        · exact absurd (by rw [h1']) hne
+      · rcases hr with ⟨-, h2'⟩ | ⟨-, h2'⟩
+        · exact absurd (by rw [h2']) hne
+        · exact mem_union_left _ (by rw [h2']; exact mem_insert_self _ _)
+      · exact mem_union_right _ (hmix r).1
+      · exact mem_union_right _ (hmix r).2
 
 end Abstract
 
