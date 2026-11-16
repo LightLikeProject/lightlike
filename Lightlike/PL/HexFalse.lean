@@ -73,6 +73,40 @@ lemma chord_side (k : Fin 6) :
   · exact Or.inr h
   · exact Or.inl h
 
+/-- Rotating the labels does not change the inside and outside of the hexagon. -/
+lemma rot_inside : (Polygon.ofList H.rot.list).inside = (Polygon.ofList H.list).inside ∧
+    (Polygon.ofList H.rot.list).outside = (Polygon.ofList H.list).outside := by
+  have e1 : H.list = H.p 0 :: H.h 0 ++ H.p 1 :: (H.h 1 ++ H.p 2 :: H.h 2 ++ H.p 3 :: H.h 3 ++
+      H.p 4 :: H.h 4 ++ H.p 5 :: H.h 5) := by simp [Hex.list]
+  have e2 : H.rot.list = H.p 1 :: (H.h 1 ++ H.p 2 :: H.h 2 ++ H.p 3 :: H.h 3 ++
+      H.p 4 :: H.h 4 ++ H.p 5 :: H.h 5) ++ H.p 0 :: H.h 0 := by
+    simp [Hex.list, Hex.rot]
+  have := inside_swap (H.p 0) (H.p 1) (H.h 0)
+    (H.h 1 ++ H.p 2 :: H.h 2 ++ H.p 3 :: H.h 3 ++ H.p 4 :: H.h 4 ++ H.p 5 :: H.h 5)
+  rw [e1, e2]
+  exact this
+
+/-- The chords of the rotated hexagon are the chords of the hexagon, shifted by one. -/
+lemma rot_chord (k : Fin 6) :
+    chainSet (hexChord H.rot.p H.rot.d k) \ {H.rot.p k, H.rot.p (k + 3)} =
+      chainSet (hexChord H.p H.d (k + 1)) \ {H.p (k + 1), H.p (k + 1 + 3)} := by
+  have : hexChord H.rot.p H.rot.d k = hexChord H.p H.d (k + 1) := by
+    simp [hexChord, Hex.rot, add_right_comm]
+  rw [this]
+  simp [Hex.rot, add_right_comm]
+
+/-- The chord `D 3` is the chord `D 0` traversed backwards. -/
+lemma chord_three : chainSet (hexChord H.p H.d 3) \ {H.p 3, H.p (3 + 3)} =
+    chainSet (hexChord H.p H.d 0) \ {H.p 0, H.p (0 + 3)} := by
+  have h3 : hexChord H.p H.d 3 = (hexChord H.p H.d 0).reverse := by
+    have h := H.hrev 0
+    rw [show (0 : Fin 6) + 3 = 3 from by decide] at h
+    simp [hexChord, h]
+  rw [h3, chainSet_reverse]
+  have e : ((3 : Fin 6) + 3) = 0 := by decide
+  have e' : ((0 : Fin 6) + 3) = 3 := by decide
+  rw [e, e', Set.pair_comm]
+
 end Hex
 
 end Lightlike.PL
