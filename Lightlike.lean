@@ -177,6 +177,17 @@ import Lightlike.PL.Polygon
 import Lightlike.PL.PolygonInside
 import Lightlike.PL.PolygonTriangle
 import Lightlike.PL.PolygonJordan
+import Lightlike.PL.PolygonDiagonal
+import Lightlike.PL.WedgeChord
+import Lightlike.PL.PolygonWedge
+import Lightlike.PL.PolygonDiagonal2
+import Lightlike.PL.PolygonDiagonal3
+import Lightlike.PL.PolygonSplit
+import Lightlike.PL.PolygonTriangulation
+import Lightlike.PL.Attach
+import Lightlike.PL.PolygonEars
+import Lightlike.PL.PolygonBall
+import Lightlike.PL.PolygonBoundary
 import Lightlike.PL.Realisation
 import Lightlike.PL.Starring
 import Lightlike.PL.Boundary
