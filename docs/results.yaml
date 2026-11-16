@@ -1421,3 +1421,16 @@
   review: kernel-checked
   note: "A global logarithm of s -> f(exp s) - R over the real line, obtained by lifting through the exponential covering of the nonzero complex numbers from the simply connected line, shows that the logarithm increment of the loop around a Jordan curve is the same for every splitting of the curve into two arcs of the circle, so the index about the curve is well defined; the index is also constant on the points not joined to Omega. The numbering of lemmas follows the lecture-notes version of chapter 9 of McCleary's book: the chapter location is verified, the lemma-level numbering is not. The statements and proofs are Lean's own. Proves: independence of the splitting. Does not prove: that the complement has exactly two components. Limits: curves in the plane. Check: TestsThetaIndex.lean."
   since: unreleased
+- id: LL-XXXX-r
+  title: The Jordan curve theorem
+  area: PL
+  file: Lightlike/PL/JordanCurve.lean
+  decls: [Lightlike.PL.jordan_at_most_two, Lightlike.PL.jordan_at_most_two_prod, Lightlike.PL.jordan_curve_theorem]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
+  review: kernel-checked
+  note: "The complement of the image of a continuous injective map from the circle into the plane is the disjoint union of two open connected sets, one bounded and one unbounded, and the curve is the frontier of each. The proof compares the index about the curve, computed with two different theta configurations (the index does not depend on the splitting): it vanishes on the component of a point above the curve and is nonzero elsewhere, and a configuration at a point of another component shows there is at most one other component; the bounded and unbounded components come from the weak result on components, and the frontier statement from the arc theorem. The statement for maps into the complex numbers is transferred to the plane along the standard homeomorphism. The numbering of lemmas follows the lecture-notes version of chapter 9 of McCleary's book: the chapter location is verified, the lemma-level numbering is not. The statements and proofs are Lean's own. Proves: the Jordan curve theorem for continuous injective maps from the circle to the plane. Does not prove: the Schoenflies theorem. Limits: the plane as the product of two copies of the reals. Check: TestsJordanCurve.lean (the unit circle gives two components; a constant map is not injective, so it is excluded)."
+  since: unreleased
