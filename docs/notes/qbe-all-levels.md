@@ -82,3 +82,59 @@ admissible tuple too rarely to be useful. These are numerical checks of the stat
 
 Consequence: with `qBiedenharnElliott_all`, `turaevViro_move23_of_BE` and `turaevViro_move14_of_BE`
 (`Lightlike/TuraevViro/TuraevViroMoves.lean`) become hypothesis-free statements for every `r ≥ 2`.
+
+## Second reading of DLMF (17.9.15), term by term, with a numerical check
+
+Notation: `(x; q)_k = ∏_{i<k} (1 - x q^i)`, `(x_1, …, x_m; q)_k = ∏ (x_i; q)_k`, `n ≥ 0` an integer, `q` generic.
+The very-well-poised factor of the `₈φ₇` is `(q a^{1/2}, -q a^{1/2}; q)_k / (a^{1/2}, -a^{1/2}; q)_k = (1 - a q^{2k}) / (1 - a)`,
+which is the factor in the library's summand `Tj`. Then, term by term, (17.9.15) reads
+
+    ((aq, aq/(de); q)_n / (aq/d, aq/e; q)_n) · ∑_{k=0}^{n}  (aq/(bc), d, e, q^{-n}; q)_k / ((q, aq/b, aq/c, d e q^{-n}/a; q)_k) · q^k
+
+    =  ∑_{k=0}^{n} ((1 - a q^{2k})/(1 - a)) · (a, b, c, d, e, q^{-n}; q)_k / ((q, aq/b, aq/c, aq/d, aq/e, a q^{n+1}; q)_k)
+                    · ( a² q^{n+2} / (b c d e) )^k.
+
+Parameters on the left: upper `aq/(bc), d, e, q^{-n}`, lower `aq/b, aq/c, de q^{-n}/a`, argument `q`: the `₄φ₃` is balanced
+(product of lower = `q` times product of upper: `aq/b · aq/c · de q^{-n}/a = a q² d e q^{-n} /(bc)` and `q · aq/(bc) · d e q^{-n}`
+agree). Parameters on the right: the argument is `a² q^{n+2}/(bcde)` and the upper parameter `q^{-n}` terminates both series.
+Jackson's sum (17.7.14) is the case where the right side is balanced, `a² q = b c d e q^{-n}`, i.e. argument `q`.
+
+Independent check (MEASURED, not a reading): both identities were evaluated numerically in 40-digit arithmetic at 20 random complex
+parameter sets with `n = 1` to `4`: (17.9.15) as written above, maximum relative error `2e-40`; Jackson's (17.7.14) with `e` fixed
+by the balance condition, `1.7e-40`; a control with the argument `q` of the `₄φ₃` replaced by `q²` fails by `1.4` (relative). So the
+formulas as written here are correct, whatever the page rendering.
+
+## Kirillov–Reshetikhin and Carter–Flath–Saito: status
+
+UNVERIFIED, and not resolvable from open sources. Kirillov–Reshetikhin (1989) and the book of Carter, Flath and Saito (Princeton,
+Mathematical Notes 43) have no free full text; a search finds only bibliographic records and secondary citations. Their equation numbers
+stay unread and uncited. The ebook of Carter–Flath–Saito or a library copy is the way to settle it; until then the identity is cited
+from Taylor–Woodward, eq. (5), which is read.
+
+## Draft Lean statements (text only; no `.lean` file yet)
+
+```lean
+/-- **Watson's q-analogue of Whipple's transformation** (DLMF 17.9.15): a terminating very-well-poised `₈φ₇` series
+equals a prefactor times a terminating balanced `₄φ₃` series. `pk x q k = (x; q)_k`. -/
+theorem watson_q_whipple {q a b c d e : ℂ} (n : ℕ) (hq : q ≠ 0) (ha : 1 - a ≠ 0) (hb : b ≠ 0) (hc : c ≠ 0) (hd : d ≠ 0)
+    (he : e ≠ 0) (hden : <nonvanishing of the denominators pk q q k, pk (a*q/b) q k, ..., k ≤ n>) :
+    ∑ k ∈ range (n + 1), (1 - a * q ^ (2 * k)) / (1 - a) *
+        (pk a q k * pk b q k * pk c q k * pk d q k * pk e q k * pk (q ^ n)⁻¹ q k) /
+        (pk q q k * pk (a * q / b) q k * pk (a * q / c) q k * pk (a * q / d) q k * pk (a * q / e) q k *
+          pk (a * q ^ (n + 1)) q k) * (a ^ 2 * q ^ (n + 2) / (b * c * d * e)) ^ k =
+      pk (a * q) q n * pk (a * q / (d * e)) q n / (pk (a * q / d) q n * pk (a * q / e) q n) *
+        ∑ k ∈ range (n + 1), (pk (a * q / (b * c)) q k * pk d q k * pk e q k * pk (q ^ n)⁻¹ q k) /
+          (pk q q k * pk (a * q / b) q k * pk (a * q / c) q k * pk (d * e * (q ^ n)⁻¹ / a) q k) * q ^ k
+```
+Proof plan for it: the same telescoping (Wilf–Zeilberger style) certificate method as `jackson_sumT` (`Lightlike/TuraevViro/Reflect/JacksonWZ.lean`),
+in the parameter `n` or `e`; stop trigger: a certificate of degree above 8 in `q^n`, or an effort above 4 hours of build time.
+
+```lean
+/-- **q-Biedenharn–Elliott for every `r ≥ 2`** (Taylor–Woodward eq. (5); in the library `Model.BE` of `tvModel r hr`): the sum over the middle
+colour of three quantum 6j symbols, with the sign `(-1)^((a+b+c+d+e+f+p+q+r'+x)/2)` and the weight `[x+1]`, equals a product of two. -/
+theorem qBiedenharnElliott_all {r : ℕ} (hr : 2 ≤ r) : qBiedenharnElliott hr
+```
+Supporting statements the proof would need, in order: (1) `watson_q_whipple` above; (2) its specialisation at `Q = u²`, `u = e^{iπ/r}`, with the level
+truncation device (`Q^r = 1`, `qfact_mul_qfact_reflect`); (3) the q-Racah sum `qRacahSum` as a terminating `₄φ₃` (a rewriting lemma of the
+same kind as `Sj_val`, with free third and sixth colours); (4) the sum rule for two q-6j symbols summed over a common colour, obtained from
+(1) to (3); (5) the pentagon from the sum rule. Nothing from (3) on is stated precisely yet.
