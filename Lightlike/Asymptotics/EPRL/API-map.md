@@ -75,8 +75,10 @@ of the coherent node tensors, each a Spin(4) integral at the projections [43]. T
 closed value of `c₀` are not proved. The contraction of tensors that are products over their legs
 is the product over the ten edges of the edge pairings, and the contraction of node integrals is the
 integral over `Spin(4)^5` of the contraction of the integrands [44]; the lift of the Hom form of a
-product tensor is rank one, with the leg vectors `Y s_l` [45]; the `Spin(4)^5` integral of edge forms
-itself is not yet in the library.
+product tensor is rank one, with the leg vectors `Y s_l` [45]; the node integrand is a product over the
+four legs [46], and the vertex sum with coherent boundary data is a constant times the `Spin(4)^5`
+integral of the product over the ten edges of the edge forms [47]; the closed form of the edge form
+through the leg amplitude is not yet in the library.
 
 If the maximum set of the integrand is finite and the logarithmic phase has nonzero differential at
 each of its points, then there is no critical point of the extended stationary phase and the coherent
@@ -200,6 +202,13 @@ proved here.
     `Asymptotics.EPRL.eprlMapLow_Wm_conjTranspose`,
     `Asymptotics.EPRL.singlet2_mul_eprlPairLow_conjTranspose`,
     `Asymptotics.EPRL.eprlPairLow_mulVec_prod`, `Asymptotics.EPRL.eprlLiftLow_homForm_prod`
+46. Lightlike/Asymptotics/EPRL/EprlHighLegs.lean - `Asymptotics.EPRL.legFun`,
+    `Asymptotics.EPRL.liftLow_entry`, `Asymptotics.EPRL.nodeLeg`,
+    `Asymptotics.EPRL.nodeLeg_projOf`, `Asymptotics.EPRL.legFam`,
+    `Asymptotics.EPRL.nodeLeg_eq_prod`, `Asymptotics.EPRL.continuous_nodeLeg`
+47. Lightlike/Asymptotics/EPRL/EprlHighEdgeForms.lean -
+    `Asymptotics.EPRL.eprlCohNodeHigh_legs`, `Asymptotics.EPRL.nodeConst`,
+    `Asymptotics.EPRL.k5Contract4_const_mul`, `Asymptotics.EPRL.eprlVertexHigh_edgeForms`
 
 ## References
 
