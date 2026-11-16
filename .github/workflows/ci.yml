@@ -32,9 +32,11 @@ on:
   workflow_dispatch:
 
 # One run at a time per pull request: a new commit cancels the run still going for the older one.
-# Runs on main are queued, never cancelled, so each finishes and saves its build cache.
+# Each commit on main has its own group, so its run is never cancelled and every merged commit gets
+# a result. (With one group for all of main, GitHub keeps a single pending run and cancels the
+# older pending one, so merges closer together than a build cancelled the runs in between.)
 concurrency:
-  group: ci-${{ github.event.pull_request.number || github.ref }}
+  group: ci-${{ github.event.pull_request.number || github.sha }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 # The workflow only reads the repository (prune-caches may also delete Actions caches).
