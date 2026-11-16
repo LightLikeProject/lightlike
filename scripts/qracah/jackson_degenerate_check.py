@@ -40,7 +40,7 @@ def tj(q, a, b, c, x, k):
 
 
 def main():
-    random.seed(20261116)
+    random.seed(314159)
     e_term = e_tel = e_sum = e_rhs = e_ctl = 0.0
     for _ in range(200):
         q = complex(random.uniform(.3, 1.3), random.uniform(-.8, .8))
