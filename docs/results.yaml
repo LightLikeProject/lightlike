@@ -1350,3 +1350,17 @@
   review: kernel-checked
   note: "For a continuous injective map f of the circle into the plane, the complement of the image has exactly one unbounded connected component (the one that contains the plane outside a square around the curve, which is connected, isPreconnected_squareOutside), and, since the complement is not connected (weak_jordan, LL-XXXX-b), a bounded component whose frontier lies in the curve (jordan_components). Limits: this is the part of the Jordan curve theorem that holds without the Arc Theorem. That there is exactly one bounded component, and that the curve is the frontier of each component, are open here: they need the Arc Theorem (the complement of an arc is connected), for which no proof is available in this library, and are not claimed. Check: the unit circle satisfies the hypotheses (TestsJordan.unitCircle)."
   since: unreleased
+- id: LL-XXXX-e
+  title: "Stationary phase: the leading term of an oscillatory integral with a complex phase at finitely many nondegenerate critical points"
+  area: Oscillatory
+  file: Lightlike/Oscillatory/StationaryPhase.lean
+  decls: [Lightlike.Oscillatory.stationary_phase, Lightlike.Oscillatory.stationary_phase_of_isOpen]
+  status: proven
+  tier: established
+  main: true
+  source:
+    refs:
+      - {ref: hormander-1990, location: "Chapter: The Fourier Transformation|10.1007/978-3-642-61497-2_8", check: "Fourier"}
+  review: kernel-checked
+  note: "Theorem 7.7.5 of Hormander (ALPDO I), leading term: for a smooth phase phi on EuclideanSpace R^n and a smooth compactly supported amplitude a, with Im phi >= 0 on the support, the critical points in the support (Im phi = 0, d phi = 0) forming a finite set K of nondegenerate points (det(-iH) != 0), the integral of a e^{i lambda phi} equals the sum over K of e^{i lambda phi(x0)} (2 pi / lambda)^{n/2} det(-iH(x0))^{-1/2} a(x0) up to O(lambda^{-n/2-1}); the square root is the product of the principal roots of the eigenvalues of -iH (invSqrtDet). Away from the critical points the integral is O(lambda^{-k}) for every k (Theorem 7.7.1, nonstationary_phase). stationary_phase assumes Im phi >= 0 on the support of a only, so critical points on the boundary of the support are allowed; stationary_phase_of_isOpen assumes it on an open set containing the support, as Hormander does. The higher-order terms of the expansion in Theorem 7.7.5 are not stated."
+  since: unreleased
