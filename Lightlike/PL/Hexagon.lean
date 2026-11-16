@@ -160,6 +160,43 @@ lemma S012 : (chainSet (hexArc H.p H.h 0) ∪ chainSet (hexArc H.p H.h 1)) ∩
     simp at this
     ends_close
 
+lemma S34 : chainSet (hexArc H.p H.h 3) ∩ chainSet (hexArc H.p H.h 4) = {H.p 4} := by
+  apply Set.eq_singleton_iff_unique_mem.2
+  refine ⟨⟨H.mem_S_last 3, H.mem_S_head 4⟩, fun y hy => ?_⟩
+  have := H.ends_HH (by decide) hy.1 hy.2
+  simp at this
+  ends_close
+
+lemma S345 : (chainSet (hexArc H.p H.h 3) ∪ chainSet (hexArc H.p H.h 4)) ∩
+    chainSet (hexArc H.p H.h 5) = {H.p 5} := by
+  apply Set.eq_singleton_iff_unique_mem.2
+  refine ⟨⟨Or.inr (H.mem_S_last 4), H.mem_S_head 5⟩, fun y ⟨hy1, hy2⟩ => ?_⟩
+  rcases hy1 with h | h
+  · have := H.ends_HH (by decide) h hy2
+    simp at this
+    ends_close
+  · have := H.ends_HH (by decide) h hy2
+    simp at this
+    ends_close
+
+/-- The two halves of the hexagon meet only in `p 0` and `p 3`. -/
+lemma arcs_inter : ((chainSet (hexArc H.p H.h 0) ∪ chainSet (hexArc H.p H.h 1)) ∪
+    chainSet (hexArc H.p H.h 2)) ∩ ((chainSet (hexArc H.p H.h 3) ∪ chainSet (hexArc H.p H.h 4)) ∪
+    chainSet (hexArc H.p H.h 5)) = {H.p 3, H.p 0} := by
+  apply Set.eq_of_subset_of_subset
+  · rintro y ⟨hy1, hy2⟩
+    rcases hy1 with (h | h) | h <;> rcases hy2 with (h' | h') | h' <;>
+    · have := H.ends_HH (by decide) h h'
+      simp at this
+      first
+      | (rcases this with ⟨h1 | h1, h2 | h2⟩ <;>
+          first
+          | exact Or.inl h1 | exact Or.inr h1 | exact Or.inl h2 | exact Or.inr h2
+          | exact absurd (H.inj (h1.symm.trans h2)) (by decide))
+  · rintro y (rfl | rfl)
+    · exact ⟨Or.inr (H.mem_S_last 2), Or.inl (Or.inl (H.mem_S_head 3))⟩
+    · exact ⟨Or.inl (Or.inl (H.mem_S_head 0)), Or.inr (by simpa using H.mem_S_last 5)⟩
+
 end Hex
 
 end Lightlike.PL
