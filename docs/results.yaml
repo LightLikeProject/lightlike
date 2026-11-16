@@ -994,7 +994,7 @@
   review: kernel-checked
   note: "Given QDougallAll (the q-Dougall boundary evaluation for all admissible colours), the diagonal orthogonality qOrthogonality of the model holds at every level r ≥ 2. Together with qBiedenharnElliott this would give the Turaev–Viro invariance of LL-0031 at level r. Not proved: QDougallAll itself, and qBiedenharnElliott for r ≥ 4. No instance of the hypothesis is proved here."
   since: 0.2.1
-- id: LL-XXXX
+- id: LL-0076
   title: The Jordan curve theorem for simple closed polygons in the plane, with the inside of a triangle
   area: PL
   file: Lightlike/PL/PolygonJordan.lean
