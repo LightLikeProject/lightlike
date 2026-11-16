@@ -1105,7 +1105,7 @@
   review: kernel-checked
   note: "For a simple closed polygon p with n ≥ 3 vertices there is a geometric complex K in the plane (IsGeom) whose underlying set is the closed region bounded by p (the inside together with the carrier), which is a PL ball (IsBallIn, stellar equivalent to a simplex), and whose boundary complex (SComplex.bd: the faces inside a face whose link is a PL ball) has underlying set exactly the polygon (polygon_schoenflies). The complex is the ear-clipping triangulation of the previous entry. The new ingredients are the invariant that every edge of the triangulation that is not an edge of the polygon lies in two triangles (NonBdry), and the computation, by the signed count of the link, that a face whose link is a ball lies in exactly one triangle (unique_triangle_of_ball); the faces of the boundary are then exactly the faces inside an edge of the polygon (mem_bd_closure_iff), and their hulls are the edges (bd_space_eq_carrier). Limits: the ball is combinatorial (stellar equivalent to a simplex) with the geometric realisation given by the triangles; a PL homeomorphism of the region onto a triangle is not constructed, and this is the polygonal case only, not the Schoenflies theorem for arbitrary Jordan curves. The polygon is simple in the sense of Polygon.IsSimple. Check: the theorem applies to the triangle (0,0), (1,0), (0,1) (triangle_schoenflies); the bow tie, which is not simple, is excluded (not_isSimple_bowtie)."
   since: unreleased
-- id: LL-XXXX
+- id: LL-0085
   title: One link of the principal-series Lorentzian vertex is the exponential of the coherent action times the density of Omega (the identity eprlVertex = lorVertex is not proved)
   area: Asymptotics
   file: Lightlike/Asymptotics/Lorentzian/Bridge.lean
