@@ -136,6 +136,11 @@ the constants of eq. (57)), none of which is proved here [22]; these hypotheses 
 model phase with two nondegenerate critical points shows [23]. The Hessian at the SU(2) critical
 point of the regular simplex is numerically nondegenerate, with margin about 0.15 in the Fubini–Study
 frame (`scripts/asymptotics/lorentzian_hessian_check.py`).
+The oscillation frequency of eq. (53), `γ Σ k Θ` with the dihedral boost angles of a symmetric Lorentzian
+4-simplex (four spins on one tetrahedron, six others; the type 4-1 signs), reproduces to the published
+digits the four frequencies fitted to the numerical amplitude of Donà–Fanizza–Sarno–Speziale
+(`scripts/asymptotics/lorentzian_regge_frequency_check.py`); this is a numerical check of the
+statement, not a proof.
 
 ## Lean References
 

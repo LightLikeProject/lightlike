@@ -43,6 +43,7 @@ CHECKS = [
     ("scripts/asymptotics/landing_check.py", False),
     ("scripts/asymptotics/link_integral_check.py", False),
     ("scripts/asymptotics/lorentzian_hessian_check.py", True),
+    ("scripts/asymptotics/lorentzian_regge_frequency_check.py", False),
     ("scripts/asymptotics/level_check.py", False),
     ("scripts/asymptotics/racah_sum_asymptotics.py", False),
     ("scripts/asymptotics/stirling_check.py", False),
