@@ -81,6 +81,7 @@ NOT_CHECKS = {"scripts/ci_check.py", "scripts/prune_docs.py", "scripts/gate.py",
               "scripts/regge/gen_chart_change.py",  # generator of Lightlike/Regge/Conv3/ChartChangeClasses.lean
               "scripts/regge/gen_star_angle.py",  # generator of the edge-class fans in Lightlike/Regge/Conv3/StarAngle.lean
               "scripts/regge/gen_kuhn_basis.py",  # generator of Lightlike/Regge/Conv3/KuhnBasis.lean from regge3d_g0_certificate.py
+              "scripts/regge/gen_flat_star.py",  # generator of Lightlike/Regge/Conv3/FlatStar.lean (prints, no exit code)
               "scripts/pl/check_chain.py",  # a library of surf_chains.py
               "scripts/pl/surf_search.py",  # a search tool; its results are checked by surf_chains.py
               # q-Racah certificate pipeline: generators that write Lightlike/TuraevViro/Reflect/Racah*.lean

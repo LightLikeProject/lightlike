@@ -6,7 +6,7 @@ around the axis w. This script lists the incidences of each class from the table
 (`kv`, `perms`, `hP`, `hQ`, `hR`, `hS`), orients and chains them into a cycle of lattice vectors
 v_0, ..., v_n (consecutive vectors have positive triple product with w, and v_n = v_0 or
 v_3 = -v_0, v_6 = v_0 modulo w), and prints the Lean block (from `fan_mem` to `cls6_sum`) that is
-pasted between the markers of StarAngle.lean.  Usage: python3 scripts/regge/gen_star_angle.py OUT.lean
+pasted between the markers of StarAngle.lean.  Usage: python3 scripts/regge/gen_star_angle.py FILE (the block pasted into Lightlike/Regge/Conv3/StarAngle.lean)
 """
 import sys
 
