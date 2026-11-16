@@ -490,6 +490,45 @@ theorem forcing_dichotomy (e : Fin 6 ↪ V) (P0 C T : Finset (Finset V))
   · exact absurd (h ▸ hf) hσC
   · exact h
 
+
+/-- **The easy direction.** If `T` forces the common triangles `C` using the common tetrahedra alone,
+then it also forces them together with `σ` once the tetrahedra `σ ∪ {c_k}` are added: one of them
+forces `σ` from its three mixed triangles. -/
+theorem forces_sigma_of_common (e : Fin 6 ↪ V) (P0 C T : Finset (Finset V))
+    (hmixM : ∀ k p, tx e (mX k p) ∈ C) (hS : ForcesIn P0 C T) :
+    ForcesIn (P0 ∪ univ.image fun k => tx e (tetS k)) (insert (tx e sigX) C) T := by
+  have hP : P0 ⊆ P0 ∪ univ.image fun k => tx e (tetS k) := subset_union_left
+  have h1 : ForcesIn (P0 ∪ univ.image fun k => tx e (tetS k)) C T := hS.mono hP subset_rfl
+  have ht : tx e (tetS 0) ∈ P0 ∪ univ.image fun k => tx e (tetS k) :=
+    mem_union_right _ (mem_image_of_mem _ (mem_univ _))
+  have h2 : ForcesIn (P0 ∪ univ.image fun k => tx e (tetS k)) {tx e sigX} T :=
+    h1.of_union (ForcesIn.single ht ((mem_tris_tetS e 0).mpr (Or.inl rfl)) fun g hg hne => by
+      rcases (mem_tris_tetS e 0).mp hg with rfl | ⟨p, rfl⟩
+      · exact absurd rfl hne
+      · exact mem_union_right _ (hmixM 0 p))
+  exact (h1.union h2).mono_target (fun x hx => by
+    rcases mem_insert.mp hx with rfl | hx
+    · exact mem_union_left _ (mem_union_right _ (mem_singleton_self _))
+    · exact mem_union_left _ (mem_union_left _ hx))
+
+/-- The same for `τ` and the tetrahedra `τ ∪ {s_x}`. -/
+theorem forces_tau_of_common (e : Fin 6 ↪ V) (P0 C T : Finset (Finset V))
+    (hmixN : ∀ x q, tx e (nX x q) ∈ C) (hS : ForcesIn P0 C T) :
+    ForcesIn (P0 ∪ univ.image fun x => tx e (tetT x)) (insert (tx e tauX) C) T := by
+  have hP : P0 ⊆ P0 ∪ univ.image fun x => tx e (tetT x) := subset_union_left
+  have h1 : ForcesIn (P0 ∪ univ.image fun x => tx e (tetT x)) C T := hS.mono hP subset_rfl
+  have ht : tx e (tetT 0) ∈ P0 ∪ univ.image fun x => tx e (tetT x) :=
+    mem_union_right _ (mem_image_of_mem _ (mem_univ _))
+  have h2 : ForcesIn (P0 ∪ univ.image fun x => tx e (tetT x)) {tx e tauX} T :=
+    h1.of_union (ForcesIn.single ht ((mem_tris_tetT e 0).mpr (Or.inl rfl)) fun g hg hne => by
+      rcases (mem_tris_tetT e 0).mp hg with rfl | ⟨q, rfl⟩
+      · exact absurd rfl hne
+      · exact mem_union_right _ (hmixN 0 q))
+  exact (h1.union h2).mono_target (fun x hx => by
+    rcases mem_insert.mp hx with rfl | hx
+    · exact mem_union_left _ (mem_union_right _ (mem_singleton_self _))
+    · exact mem_union_left _ (mem_union_left _ hx))
+
 end Dichotomy
 
 end Forcing33
