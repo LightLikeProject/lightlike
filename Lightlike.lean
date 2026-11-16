@@ -240,6 +240,11 @@ import Lightlike.PL.TestsIndex
 import Lightlike.PL.TestsIndexConstancy
 import Lightlike.PL.TestsIndexTheta
 import Lightlike.PL.TestsIndexTriangle
+import Lightlike.PL.IndexOmega
+import Lightlike.PL.ThetaExists
+import Lightlike.PL.ThetaRay
+import Lightlike.PL.IndexCurve
+import Lightlike.PL.TestsThetaIndex
 import Lightlike.PL.TestsGrating
 import Lightlike.PL.HexFalse
 import Lightlike.PL.K33
