@@ -36,16 +36,19 @@ sum of `|Γ(s, Δ)|²_G` and a term `ρ` that is linear in the second derivative
 with `dd' = ∂∂g` minus an explicit quadratic expression in `(G, ∂g)` (the second derivatives in the
 chart `x ↦ x + Γ(x, x)/2`, in which the first derivatives vanish).
 
-1. **Edge level (A1), the step to settle first.** The identity `c = 2 Δ·GΓ(s,Δ)` is exact. The
-   `ε⁴` coefficient is not simply `|Γ(s,Δ)|² + r_flat(dd')`: the edge polynomial contains the chord
-   correction `-(1/12)|Γ(Δ,Δ)|²_G`, whereas the quartic form `|Γ(s,Δ)|²` evaluated at `s = Δ` has
-   coefficient `1`, so no symmetric `dd'` absorbs the difference. The displaced positions therefore
-   need a cubic term `ε³ C(k,k,k)` as well (it changes the lengths at order `ε⁴` by
-   `2 Δ·G (C(k_b) - C(k_a))`), and one has to check that the remainder has the form of a difference of a
-   function of the two vertices. This is a polynomial identity in `(G, ∂g, ∂∂g, s, Δ)` of degree at
-   most 4 with `G⁻¹ = adj/det` once; if it holds, estimated size a few 10⁴ terms, one `ring1` for generic
-   `s, Δ` (minutes). If it does not hold, the route fails at this step and the obstruction is
-   exactly this mismatch.
+1. **Edge level (A1).** The identity `c = 2 Δ·GΓ(s,Δ)` is exact. For the `ε⁴` coefficient, a cubic
+   term in the displacement is not needed: in exact rational arithmetic, for random jets, there is a
+   unique symmetric `S` (symmetric in `(k,l)` and in `(i,j)`, 36 unknowns) with
+   `r(s,Δ) = |Γ(s,Δ)|²_G + ½ Δ·S(s,s)·Δ + (1/24) Δ·S(Δ,Δ)·Δ` as polynomials in `(s, Δ)`; the naive
+   mismatch of the chord term `-(1/12)|Γ(Δ,Δ)|²` against `|Γ(Δ,Δ)|²` is absorbed by `S`. `S` is `∂∂g` plus
+   an explicit combination of 18 terms of the form `g^{ab} ∂_p g_{qa} ∂_r g_{sb}`,
+   `g^{ab} ∂_a g_{pq} ∂_r g_{sb}`, `g^{ab} ∂_a g_{pq} ∂_b g_{rs}` over index permutations of `(k, l, i, j)`
+   (`scripts/regge/` does not carry this fit yet; it matched the unique solution on four independent
+   random jets). Moreover `2 Rnum(G, S)/det²` equals the scalar curvature of the jet (checked exactly on
+   one jet). The remaining work is to prove these two identities for all jets: polynomial identities of
+   degree at most 4 (A1) and a rational identity with `det` as the only denominator (A4), in the
+   variables `(G, ∂g, ∂∂g)` and, for A1, `(s, Δ)`; estimated size a few 10⁴ terms each, one `ring1`
+   each (minutes).
 2. **Displaced flat star (A2).** For any positions of the vertices of the star in a flat metric, the
    dihedral angles of each class add up to `2π` as long as the orientation stays positive. The proof of
    `StarAngle.lean` (a fan around the hinge axis, complex coordinate in the plane quotient) gives
@@ -58,7 +61,7 @@ chart `x ↦ x + Γ(x, x)/2`, in which the first derivatives vanish).
    that of the flat case of `FlatStarJet.lean` with `dd'` in place of `dd`. `first_order` follows
    from A2. Estimated size: 100 lines.
 4. **Curvature (A4).** The flat identity `flat_star_identity` is stated for arbitrary symmetric
-   `dd`, so it applies to `dd'`. It remains to show that `2 Rnum(G, dd') / det²` is the scalar curvature
+   `dd`, so it applies to `S`. It remains to show that `2 Rnum(G, dd') / det²` is the scalar curvature
    of the jet `(G, ∂g, ∂∂g)`: `scalarCurvature_jet` gives the right side explicitly and the identity is a
    rational identity in `(G, ∂g, ∂∂g)` with `det` as the only denominator after using `G⁻¹ = adj/det`.
    Estimated size: some 10⁴ terms, one `ring1` (minutes); this is the transformation of the scalar
