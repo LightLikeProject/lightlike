@@ -801,32 +801,13 @@ lemma parity_jump_at (hs : p.IsSimple) {w a : ℝ × ℝ} (hre : RayEdge p w a) 
     · intro h; exact hy.2 (by nlinarith)
 
 open Metric in
-/-- **The two sides of the carrier at a point where it is two rays along edges.** Near `w` the
-complement of the carrier is the union of two preconnected sets, both accumulating at `w`, on
-which the parity takes different values. -/
-theorem exists_sectors (hs : p.IsSimple) {w a b : ℝ × ℝ} (ha : RayEdge p w a) (hb : RayEdge p w b)
-    (hnp : ∀ l : ℝ, 0 < l → b ≠ l • a) {ρ : ℝ} (hρ : 0 < ρ)
-    (hcar : ∀ z ∈ ball w ρ, z ∈ p.carrier ↔ z - w ∈ ray0 a ∪ ray0 b) :
-    ∃ Q₁ Q₂ : Set (ℝ × ℝ), IsPreconnected Q₁ ∧ IsPreconnected Q₂ ∧
-      ball w ρ \ p.carrier = Q₁ ∪ Q₂ ∧ w ∈ closure Q₁ ∧ w ∈ closure Q₂ ∧
-      ∃ y₁ ∈ Q₁, ∃ y₂ ∈ Q₂, p.parity y₁ ≠ p.parity y₂ := by
-  obtain ⟨a', b', hab, hcl, hv, hcase⟩ := planar_two_rays ha.1 hb.1 hnp
-  have ha' : RayEdge p w a' := by rcases hab with ⟨rfl, -⟩ | ⟨rfl, -⟩ <;> assumption
-  have hU : ray0 a' ∪ ray0 b' = ray0 a ∪ ray0 b := by
-    rcases hab with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
-    · rfl
-    · exact union_comm _ _
-  obtain ⟨h1, h2, h3, h4, h5⟩ := sectors (w := w) hρ hcl hv
-  have hEq : ball w ρ \ p.carrier = sec1 w a' b' ρ ∪ sec2 w a' b' ρ := by
-    rw [← h3]
-    ext z
-    constructor
-    · rintro ⟨hz, hn⟩
-      refine ⟨hz, fun hm => hn ?_⟩
-      rw [hcar z hz, ← hU]; exact hm
-    · rintro ⟨hz, hn⟩
-      refine ⟨hz, fun hm => hn ?_⟩
-      rw [hcar z hz, ← hU] at hm; exact hm
+open Metric in
+/-- **The parity differs between the two sectors at a point of an edge ray.** For rays `a'`, `b'`
+from `w`, with `a'` along an edge and `b'` either on the positive side of `a'` or opposite to it,
+the open sectors `sec1` and `sec2` of a small ball contain points of different parity. -/
+lemma parity_ne_sectors (hs : p.IsSimple) {w a' b' : ℝ × ℝ} (ha' : RayEdge p w a')
+    (hcase : 0 < cross a' b' ∨ ∃ l : ℝ, 0 < l ∧ b' = (-l) • a') {ρ : ℝ} (hρ : 0 < ρ) :
+    ∃ y₁ ∈ sec1 w a' b' ρ, ∃ y₂ ∈ sec2 w a' b' ρ, p.parity y₁ ≠ p.parity y₂ := by
   obtain ⟨c, t0, ht0, ht1, hball, hev⟩ := parity_jump_at hs ha' hρ
   -- a vector perpendicular to `a'`
   set u : ℝ × ℝ := (-a'.2, a'.1) with hu
@@ -862,8 +843,7 @@ theorem exists_sectors (hs : p.IsSimple) {w a b : ℝ × ℝ} (ha : RayEdge p w 
     (self_mem_nhdsWithin : ∀ᶠ δ : ℝ in 𝓝[>] 0, 0 < δ)).exists
   obtain ⟨δ2, hG2, hδ2⟩ := (((tend (-1)).eventually hG).and
     (self_mem_nhdsWithin : ∀ᶠ δ : ℝ in 𝓝[>] 0, 0 < δ)).exists
-  refine ⟨sec1 w a' b' ρ, sec2 w a' b' ρ, h1, h2, hEq, h4, h5, w + t0 • a' + (1 * δ1) • u, ?_,
-    w + t0 • a' + (-1 * δ2) • u, ?_, ?_⟩
+  refine ⟨w + t0 • a' + (1 * δ1) • u, ?_, w + t0 • a' + (-1 * δ2) • u, ?_, ?_⟩
   · obtain ⟨⟨hp1, hp2⟩, hα1, hb1⟩ := hG1
     have hβ1 : 0 < cross a' (w + t0 • a' + (1 * δ1) • u - w) := by
       rw [hβu]; nlinarith [mul_pos hδ1 hN]
@@ -881,6 +861,36 @@ theorem exists_sectors (hs : p.IsSimple) {w a b : ℝ × ℝ} (ha : RayEdge p w 
     rw [hp1 hβ1, hq2 hβ2]
     intro h
     exact absurd (by linear_combination h : (0 : ZMod 2) = 1) (by decide)
+
+open Metric in
+/-- **The two sides of the carrier at a point where it is two rays along edges.** Near `w` the
+complement of the carrier is the union of two preconnected sets, both accumulating at `w`, on
+which the parity takes different values. -/
+theorem exists_sectors (hs : p.IsSimple) {w a b : ℝ × ℝ} (ha : RayEdge p w a) (hb : RayEdge p w b)
+    (hnp : ∀ l : ℝ, 0 < l → b ≠ l • a) {ρ : ℝ} (hρ : 0 < ρ)
+    (hcar : ∀ z ∈ ball w ρ, z ∈ p.carrier ↔ z - w ∈ ray0 a ∪ ray0 b) :
+    ∃ Q₁ Q₂ : Set (ℝ × ℝ), IsPreconnected Q₁ ∧ IsPreconnected Q₂ ∧
+      ball w ρ \ p.carrier = Q₁ ∪ Q₂ ∧ w ∈ closure Q₁ ∧ w ∈ closure Q₂ ∧
+      ∃ y₁ ∈ Q₁, ∃ y₂ ∈ Q₂, p.parity y₁ ≠ p.parity y₂ := by
+  obtain ⟨a', b', hab, hcl, hv, hcase⟩ := planar_two_rays ha.1 hb.1 hnp
+  have ha' : RayEdge p w a' := by rcases hab with ⟨rfl, -⟩ | ⟨rfl, -⟩ <;> assumption
+  have hU : ray0 a' ∪ ray0 b' = ray0 a ∪ ray0 b := by
+    rcases hab with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+    · rfl
+    · exact union_comm _ _
+  obtain ⟨h1, h2, h3, h4, h5⟩ := sectors (w := w) hρ hcl hv
+  have hEq : ball w ρ \ p.carrier = sec1 w a' b' ρ ∪ sec2 w a' b' ρ := by
+    rw [← h3]
+    ext z
+    constructor
+    · rintro ⟨hz, hn⟩
+      refine ⟨hz, fun hm => hn ?_⟩
+      rw [hcar z hz, ← hU]; exact hm
+    · rintro ⟨hz, hn⟩
+      refine ⟨hz, fun hm => hn ?_⟩
+      rw [hcar z hz, ← hU] at hm; exact hm
+  obtain ⟨y₁, hy₁, y₂, hy₂, hne⟩ := parity_ne_sectors hs ha' hcase hρ
+  exact ⟨sec1 w a' b' ρ, sec2 w a' b' ρ, h1, h2, hEq, h4, h5, y₁, hy₁, y₂, hy₂, hne⟩
 
 /-! ## The carrier near a point -/
 
