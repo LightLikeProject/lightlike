@@ -5,9 +5,17 @@ see [CONTRIBUTING.md](../CONTRIBUTING.md).
 
 - **Results.** Add a result to the API map of its folder and to the end of `docs/results.yaml` with
   the draft ID `LL-XXXX` (`LL-XXXX-a`, `-b`, ... for several; the merge assigns the numbers), then
-  run `python3 scripts/api_map.py generate` (`docs/RESULTS.md`, the `README.md` counts) and `check`.
+  run `python3 scripts/api_map.py check`.
+- **Generated files.** A pull request does not change `docs/RESULTS.md`, the task board,
+  `Tasks.lean` or the generated counts in `README.md`, `ROADMAP.md` and `CHANGELOG.md`
+  (`scripts/generated.py check`, a hard rule). After merging a batch, one commit runs
+  `python3 scripts/api_map.py generate && python3 scripts/tasks.py generate`. Since `main` takes
+  changes only through pull requests, an integration branch (`integration/...`, in this
+  repository) carries that commit as its last; for it the check requires instead that the
+  generated content is exactly what the generators produce. On a branch, `api_map.py check` and
+  `tasks.py check` report the generated files as out of date; that is expected.
 - **Tasks.** `docs/tasks/milestones.md` and `docs/tasks/decomposition.yaml` are the plan, and the
-  sources of the board. `python3 scripts/tasks.py generate` writes the board,
+  sources of the board. `python3 scripts/tasks.py generate` (after merging) writes the board,
   `docs/tasks/tasks.yaml`, `Tasks.lean` and the milestone counts in `ROADMAP.md`; `tasks.py deps`
   writes the header of each proof-task file: the statement, a hint, what the statement uses and the
   references; `tasks.py lock <ID>` locks a reviewed statement. `tasks.py sync` prints what it would

@@ -357,10 +357,12 @@ def check(root: Path, base: str | None = None) -> list[str]:
     errs += lint_registry(root, reg)
     res = root / "docs/RESULTS.md"
     if not res.is_file() or res.read_text(encoding="utf-8") != render(reg, root):
-        errs.append("docs/RESULTS.md is out of date: run python3 scripts/api_map.py generate")
+        errs.append("docs/RESULTS.md is out of date (expected on a branch: the maintainers regenerate it "
+                    "after merging; see scripts/generated.py)")
     readme = root / "README.md"
     if readme.is_file() and readme.read_text(encoding="utf-8") != readme_summary(readme.read_text(encoding="utf-8"), reg):
-        errs.append("the results summary in README.md is out of date: run python3 scripts/api_map.py generate")
+        errs.append("the results summary in README.md is out of date (expected on a branch: the "
+                    "maintainers regenerate it after merging; see scripts/generated.py)")
     if base:
         r = subprocess.run(["git", "-C", str(root), "show", f"{base}:docs/results.yaml"],
                            capture_output=True, text=True)

@@ -24,6 +24,7 @@ cross-checks. Neither is part of the library, and nothing in `Lightlike/` depend
 |---|---|
 | `tasks.py` | the task list and its dependencies; writes the task board, `Tasks.lean` and the counts in `ROADMAP.md`; `sync` keeps the task issues' labels current (run by `.github/workflows/tasks.yml`) |
 | `api_map.py` | checks the API maps and `docs/results.yaml`; writes `docs/RESULTS.md` |
+| `generated.py` | refuses a pull request that changes generated content; `reset` undoes such a change |
 | `sources.py` | looks up the literature sources at their publishers; the offline `check` runs in CI |
 | `context-pack`, `ContextPack.lean` | print everything one declaration depends on, as a single block |
 | `templates/proof-task-issue.md` | the issue text of a proof task, filled in by `tasks.py` |

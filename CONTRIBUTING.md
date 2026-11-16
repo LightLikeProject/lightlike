@@ -88,6 +88,11 @@ the modules it changes and the modules that import them.
    docstring (`scripts/DocCheck.lean`).
 6. The literature sources of the catalog check out (`scripts/sources.py check`).
 7. No local path, private e-mail address, token or key in a tracked file (`scripts/leak_check.py`).
+8. No change to a generated file: `docs/RESULTS.md`, the task board (`docs/tasks/README.md`,
+   `docs/tasks/tasks.yaml`, `Tasks.lean`) and the generated counts in `README.md`, `ROADMAP.md` and
+   `CHANGELOG.md`. The maintainers regenerate them after merging, in one commit per batch, so
+   that pull requests do not conflict in them (`scripts/generated.py check`;
+   `python3 scripts/generated.py reset` undoes such a change and keeps the rest).
 
 A proof-task pull request must also change only the proof of its declaration: the statement was
 reviewed and locked (the `Proof task` workflow checks this). Other CI steps are `[advisory]`.

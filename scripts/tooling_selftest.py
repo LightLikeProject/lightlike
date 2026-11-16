@@ -66,6 +66,9 @@ with tempfile.TemporaryDirectory() as d:
            len(ci_check.check_exploratory_imports(tmp)) == 2)
 
 import api_map  # noqa: E402
+import generated  # noqa: E402
+expect("generated files: the guard tells generated from hand-written parts, and its planted changes fail",
+       generated.selftest() == 0)
 _root = pathlib.Path(__file__).resolve().parent.parent
 expect("review control: kernel-checked needs no reference; a human review with its issue URL passes",
        api_map.review_errors("x", "kernel-checked", None, _root) == []
