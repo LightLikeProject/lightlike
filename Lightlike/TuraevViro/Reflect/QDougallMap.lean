@@ -1,6 +1,7 @@
 import Lightlike.TuraevViro.Reflect.JacksonWZ
 import Lightlike.TuraevViro.Reflect.RacahDc
 import Lightlike.TuraevViro.Reflect.SixJNormOne
+import Lightlike.TuraevViro.Reflect.SixJSingle
 
 /-!
 # Steps toward the boundary evaluation `QDougall` from Jackson's sum
@@ -20,6 +21,10 @@ ingredients of that matching.
 * `one_sub_Q_ne`: `1 - Q^m ≠ 0` unless `r ∣ m`.
 * `jhypT_of_exponents`: the sharper hypotheses `JHypT` of Jackson's sum for `Q`-powers, from
   inequalities between the exponents.
+* `Sj_val`, `Sj_val_succ`: the single term of `Sj` at the lowest sixth colour `j1 - j5`, as a signed
+  product of inverse quantum factorials, and its step in the third colour.
+* `wTerm`, `wTerm_succ`: the weighted term of the boundary evaluation and its step, a product of
+  quantum integers (cross-multiplied).
 * `qd_jhyp`: they hold at the parameters of the boundary evaluation in the case `x0 = j1 - j2`,
   `q0 = j1 - j5`, `j4 + j5 < j1 + j2`, for admissible spins.
 
@@ -155,5 +160,148 @@ theorem qd_jhyp {r j1 j2 j4 j5 n : ℕ} (hr : 2 ≤ r) (h21 : j2 ≤ j1) (h51 : 
   rw [e]
   exact jhypT_of_exponents hr (by omega) (by omega) (by omega) (by omega) (by omega) (by omega)
     (by omega) (by omega) (by omega)
+
+
+/-- `1/[m]!` at a natural number. -/
+lemma invQFact_nat (r m : ℕ) : invQFact r (m : ℤ) = (qfact r m)⁻¹ := by
+  simp [invQFact]
+
+/-- The single term of `Sj` at the lowest sixth colour `j1 - j5`, for the third colour
+`j1 - j2 + 2k`, as a signed product of inverse quantum factorials. -/
+lemma Sj_val (r : ℕ) {j1 j2 j4 j5 k A3 S B δ γ n : ℕ} (h21 : j2 ≤ j1) (h51 : j5 ≤ j1)
+    (hA3 : 2 * A3 = j4 + j2 + (j1 - j5)) (hS : 2 * S = j4 + j5 + (j1 - j2))
+    (hB : 2 * B = j1 + j2 + j4 + j5) (hδ : 2 * δ + j4 + j5 = j1 + j2)
+    (hγ : 2 * γ + j2 = (j1 - j5) + j4) (hnS : S = (j1 - j2) + n) (hk : k ≤ n)
+    (hA : j4 + j2 ≤ j5 + j1) :
+    Sj r j1 j2 j4 j5 (j1 - j5) ((j1 - j2 + 2 * k : ℕ) : ℤ) =
+      (-1) ^ (j1 + k) * qfact r (j1 + k + 1) * (qfact r k)⁻¹ * (qfact r (j1 + k - A3))⁻¹ *
+        (qfact r δ)⁻¹ * (qfact r (n - k))⁻¹ * (qfact r γ)⁻¹ := by
+  unfold Sj
+  have e1 : (((j1 : ℤ) + j2 + ((j1 - j2 + 2 * k : ℕ) : ℤ)) / 2) = ((j1 + k : ℕ) : ℤ) := by omega
+  have e2 : (((j1 : ℤ) + j5 + ((j1 - j5 : ℕ) : ℤ)) / 2) = (j1 : ℤ) := by omega
+  have e3 : (((j4 : ℤ) + j2 + ((j1 - j5 : ℕ) : ℤ)) / 2) = (A3 : ℤ) := by omega
+  have e4 : (((j4 : ℤ) + j5 + ((j1 - j2 + 2 * k : ℕ) : ℤ)) / 2) = ((S + k : ℕ) : ℤ) := by omega
+  have e5 : (((j1 : ℤ) + j2 + j4 + j5) / 2) = (B : ℤ) := by omega
+  have e6 : ((((j1 - j2 + 2 * k : ℕ) : ℤ) + j2 + j5 + ((j1 - j5 : ℕ) : ℤ)) / 2) = ((j1 + k : ℕ) : ℤ) := by
+    omega
+  have e7 : ((((j1 - j2 + 2 * k : ℕ) : ℤ) + j1 + ((j1 - j5 : ℕ) : ℤ) + j4) / 2) =
+      ((j1 + k + γ : ℕ) : ℤ) := by omega
+  rw [e1, e2, e3, e4, e5, e6, e7]
+  rw [SR_single (z0 := j1 + k) (by simp) (Or.inl (by simp)) (by omega)]
+  have key : ∀ (m : ℕ) (a b : ℤ), a - b = (m : ℤ) → invQFact r (a - b) = (qfact r m)⁻¹ := by
+    intro m a b h; rw [h, invQFact_nat]
+  have q0 : qfact r 0 = 1 := by simp [qfact]
+  unfold qRacahTerm
+  rw [key 0 ((j1 + k : ℕ) : ℤ) ((j1 + k : ℕ) : ℤ) (by simp),
+    key k ((j1 + k : ℕ) : ℤ) (j1 : ℤ) (by push_cast; omega),
+    key (j1 + k - A3) ((j1 + k : ℕ) : ℤ) (A3 : ℤ) (by push_cast; omega),
+    key δ ((j1 + k : ℕ) : ℤ) ((S + k : ℕ) : ℤ) (by push_cast; omega),
+    key (n - k) (B : ℤ) ((j1 + k : ℕ) : ℤ) (by push_cast; omega),
+    key γ ((j1 + k + γ : ℕ) : ℤ) ((j1 + k : ℕ) : ℤ) (by push_cast; omega), q0]
+  simp only [inv_one, mul_one, one_mul]
+  ring
+
+/-- The weighted term of the boundary evaluation at the third colour `j1 - j2 + 2k` and the lowest
+sixth colour `j1 - j5`. -/
+noncomputable def wTerm (r j1 j2 j4 j5 k : ℕ) : ℝ :=
+  jOmega r j1 j2 j4 j5 (j1 - j2 + 2 * k) *
+    Sj r j1 j2 j4 j5 (j1 - j5) ((j1 - j2 + 2 * k : ℕ) : ℤ) ^ 2
+
+/-- The step of `Sj` from `k` to `k + 1`, cross-multiplied. -/
+lemma Sj_val_succ {r : ℕ} (hr : 2 ≤ r) {j1 j2 j4 j5 k A3 S B δ γ n : ℕ} (h21 : j2 ≤ j1)
+    (h51 : j5 ≤ j1) (hA3 : 2 * A3 = j4 + j2 + (j1 - j5)) (hS : 2 * S = j4 + j5 + (j1 - j2))
+    (hB : 2 * B = j1 + j2 + j4 + j5) (hδ : 2 * δ + j4 + j5 = j1 + j2)
+    (hγ : 2 * γ + j2 = (j1 - j5) + j4) (hnS : S = (j1 - j2) + n) (hk : k + 1 ≤ n)
+    (hA : j4 + j2 ≤ j5 + j1) (hlt : j1 + k + 2 < r) (hδr : δ < r) (hγr : γ < r) (hnr : n < r) :
+    Sj r j1 j2 j4 j5 (j1 - j5) ((j1 - j2 + 2 * (k + 1) : ℕ) : ℤ) *
+        (qnum r (k + 1) * qnum r (j1 + k + 1 - A3)) =
+      - (Sj r j1 j2 j4 j5 (j1 - j5) ((j1 - j2 + 2 * k : ℕ) : ℤ) *
+        (qnum r (j1 + k + 2) * qnum r (n - k))) := by
+  rw [Sj_val (k := k + 1) r h21 h51 hA3 hS hB hδ hγ hnS hk hA,
+    Sj_val (k := k) r h21 h51 hA3 hS hB hδ hγ hnS (by omega) hA]
+  have f1 : qfact r (j1 + (k + 1) + 1) = qfact r (j1 + k + 1) * qnum r (j1 + k + 2) :=
+    qfact_succ' r (j1 + k + 1)
+  have f2 : qfact r (k + 1) = qfact r k * qnum r (k + 1) := qfact_succ' r k
+  have f3 : qfact r (j1 + (k + 1) - A3) = qfact r (j1 + k - A3) * qnum r (j1 + k + 1 - A3) := by
+    rw [show j1 + (k + 1) - A3 = (j1 + k - A3) + 1 by omega,
+      show j1 + k + 1 - A3 = (j1 + k - A3) + 1 by omega]; exact qfact_succ' r _
+  have f4 : qfact r (n - k) = qfact r (n - (k + 1)) * qnum r (n - k) := by
+    rw [show n - k = (n - (k + 1)) + 1 by omega]; exact qfact_succ' r _
+  rw [f1, f2, f3, f4]
+  have p1 := qfact_pos (r := r) (n := k) hr (by omega)
+  have p2 := qfact_pos (r := r) (n := j1 + k - A3) hr (by omega)
+  have p3 := qfact_pos (r := r) (n := δ) hr hδr
+  have p4 := qfact_pos (r := r) (n := n - (k + 1)) hr (by omega)
+  have p5 := qfact_pos (r := r) (n := γ) hr hγr
+  have p6 := qfact_pos (r := r) (n := j1 + k + 1) hr (by omega)
+  have q1 : 0 < qnum r (k + 1) := qnum_pos hr (by omega) (by omega)
+  have q2 : 0 < qnum r (j1 + k + 1 - A3) := qnum_pos hr (by omega) (by omega)
+  have q3 : 0 < qnum r (n - k) := qnum_pos hr (by omega) (by omega)
+  rw [show (-1 : ℝ) ^ (j1 + (k + 1)) = - (-1) ^ (j1 + k) by
+    rw [show j1 + (k + 1) = (j1 + k) + 1 by ring, pow_succ]; ring]
+  field_simp
+
+/-- **The step of the weighted term**, cross-multiplied (no division): with `d = j1 - j2`,
+`W(k+1) · [d+2k+1] [j2-k] [j1+k+2] [n-k] [S+k+2] [k+1]² [j1+k+1-A3]²` equals
+`W(k) · [d+2k+3] [k+1] [d+k+1] [S+k+1-j4] [S+k+1-j5] [j1+k+2]² [n-k]²`. -/
+theorem wTerm_succ {r : ℕ} (hr : 2 ≤ r) {j1 j2 j4 j5 k A3 S B δ γ n : ℕ} (h21 : j2 ≤ j1)
+    (h51 : j5 ≤ j1) (hA3 : 2 * A3 = j4 + j2 + (j1 - j5)) (hS : 2 * S = j4 + j5 + (j1 - j2))
+    (hB : 2 * B = j1 + j2 + j4 + j5) (hδ : 2 * δ + j4 + j5 = j1 + j2)
+    (hγ : 2 * γ + j2 = (j1 - j5) + j4) (hnS : S = (j1 - j2) + n) (hk : k + 1 ≤ n)
+    (hA : j4 + j2 ≤ j5 + j1) (hlt : j1 + k + 2 < r) (hδr : δ < r) (hγr : γ < r) (hnr : n < r)
+    (a1 : qAdm r j1 j2 (j1 - j2 + 2 * k)) (a1' : qAdm r j1 j2 (j1 - j2 + 2 * (k + 1)))
+    (a2 : qAdm r j4 j5 (j1 - j2 + 2 * k)) (a2' : qAdm r j4 j5 (j1 - j2 + 2 * (k + 1))) :
+    wTerm r j1 j2 j4 j5 (k + 1) *
+        (qnum r (j1 - j2 + 2 * k + 1) * qnum r (j2 - k) * qnum r (j1 + k + 2) * qnum r (n - k) *
+          qnum r (S + k + 2) * qnum r (k + 1) ^ 2 * qnum r (j1 + k + 1 - A3) ^ 2) =
+      wTerm r j1 j2 j4 j5 k *
+        (qnum r (j1 - j2 + 2 * k + 3) * qnum r (k + 1) * qnum r (j1 - j2 + k + 1) *
+          qnum r (S + k + 1 - j4) * qnum r (S + k + 1 - j5) * qnum r (j1 + k + 2) ^ 2 *
+          qnum r (n - k) ^ 2) := by
+  have st1 := qDelta_sq_step hr a1 a1'
+  have st2 := qDelta_sq_step hr a2 a2'
+  have sj := Sj_val_succ hr h21 h51 hA3 hS hB hδ hγ hnS hk hA hlt hδr hγr hnr
+  have e1 : (j1 + j2 + (j1 - j2 + 2 * k)) / 2 = j1 + k := by omega
+  have e2 : (j4 + j5 + (j1 - j2 + 2 * k)) / 2 = S + k := by omega
+  rw [e1, show j1 + k - (j1 - j2 + 2 * k) = j2 - k by omega,
+    show j1 + k - j1 + 1 = k + 1 by omega, show j1 + k - j2 + 1 = j1 - j2 + k + 1 by omega] at st1
+  rw [e2, show S + k - (j1 - j2 + 2 * k) = n - k by omega,
+    show S + k - j4 + 1 = S + k + 1 - j4 by omega,
+    show S + k - j5 + 1 = S + k + 1 - j5 by omega] at st2
+  have sj2 : Sj r j1 j2 j4 j5 (j1 - j5) ((j1 - j2 + 2 * (k + 1) : ℕ) : ℤ) ^ 2 *
+        (qnum r (k + 1) * qnum r (j1 + k + 1 - A3)) ^ 2 =
+      Sj r j1 j2 j4 j5 (j1 - j5) ((j1 - j2 + 2 * k : ℕ) : ℤ) ^ 2 *
+        (qnum r (j1 + k + 2) * qnum r (n - k)) ^ 2 := by
+    calc _ = (Sj r j1 j2 j4 j5 (j1 - j5) ((j1 - j2 + 2 * (k + 1) : ℕ) : ℤ) *
+          (qnum r (k + 1) * qnum r (j1 + k + 1 - A3))) ^ 2 := by ring
+      _ = (-(Sj r j1 j2 j4 j5 (j1 - j5) ((j1 - j2 + 2 * k : ℕ) : ℤ) *
+          (qnum r (j1 + k + 2) * qnum r (n - k)))) ^ 2 := by rw [sj]
+      _ = _ := by ring
+  have e : j1 - j2 + 2 * (k + 1) = j1 - j2 + 2 * k + 2 := by ring
+  have q3 : qnum r (j1 - j2 + 2 * k + 2 + 1) = qnum r (j1 - j2 + 2 * k + 3) := by
+    rw [show j1 - j2 + 2 * k + 2 + 1 = j1 - j2 + 2 * k + 3 by ring]
+  unfold wTerm jOmega
+  rw [e, q3]
+  rw [e] at sj2
+  set qy := qnum r (j1 - j2 + 2 * k + 1)
+  set q3' := qnum r (j1 - j2 + 2 * k + 3)
+  set A1 := qnum r (j2 - k)
+  set A2 := qnum r (j1 + k + 2)
+  set C1 := qnum r (n - k)
+  set C2 := qnum r (S + k + 2)
+  set B1 := qnum r (k + 1)
+  set B2 := qnum r (j1 - j2 + k + 1)
+  set E1 := qnum r (S + k + 1 - j4)
+  set E2 := qnum r (S + k + 1 - j5)
+  set F := qnum r (j1 + k + 1 - A3)
+  set D1 := qDelta r j1 j2 (j1 - j2 + 2 * k) ^ 2
+  set D1' := qDelta r j1 j2 (j1 - j2 + 2 * k + 2) ^ 2
+  set D2 := qDelta r j4 j5 (j1 - j2 + 2 * k) ^ 2
+  set D2' := qDelta r j4 j5 (j1 - j2 + 2 * k + 2) ^ 2
+  set T := Sj r j1 j2 j4 j5 (j1 - j5) ((j1 - j2 + 2 * k : ℕ) : ℤ) ^ 2
+  set T' := Sj r j1 j2 j4 j5 (j1 - j5) ((j1 - j2 + 2 * k + 2 : ℕ) : ℤ) ^ 2
+  linear_combination (q3' * qy * D2' * C1 * C2 * T' * B1 ^ 2 * F ^ 2) * st1 +
+    (q3' * qy * D1 * B1 * B2 * T' * B1 ^ 2 * F ^ 2) * st2 +
+    (q3' * qy * D1 * B1 * B2 * D2 * E1 * E2) * sj2
 
 end Lightlike.TV.Refl
