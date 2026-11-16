@@ -252,6 +252,133 @@ theorem isSimple_ofList {l : List (ℝ × ℝ)} {a b : ℝ × ℝ} (h3 : 3 ≤ (
     (hc : IsSimpleChain (a :: l ++ [b])) (hab : a ≠ b)
     (hcl : segment ℝ b a ∩ chainSet (a :: l ++ [b]) = {a, b}) :
     (Polygon.ofList (a :: l ++ [b])).IsSimple := by
-  sorry
+  set c : List (ℝ × ℝ) := a :: l ++ [b] with hcdef
+  set n := c.length with hn
+  have : NeZero n := ⟨by omega⟩
+  have hc0 : c.getD 0 0 = a := by simp [hcdef]
+  have hcl' : c.getD (n - 1) 0 = b := by
+    have hn1 : n - 1 = (a :: l).length := by simp [hn, hcdef]
+    rw [hn1, hcdef, List.getD_append_right _ _ _ _ le_rfl]
+    simp
+  have hcycL : ∀ i, i < n → (Polygon.ofList c).cyc i = c.getD i 0 := fun i hi => by
+    rw [Polygon.ofList_cyc c 0, Nat.mod_eq_of_lt hi]
+  have hcycN : (Polygon.ofList c).cyc n = a := by
+    rw [Polygon.ofList_cyc c 0, Nat.mod_self, hc0]
+  -- the endpoints are not on the segments they do not belong to
+  have fa : ∀ k, 1 ≤ k → k + 1 < n → a ∉ cseg c k := by
+    intro k hk hkn ha
+    have ha0 : a ∈ cseg c 0 := by rw [← hc0]; exact left_mem_cseg c 0
+    rcases Nat.lt_or_ge k 2 with hk2 | hk2
+    · have hk1 : k = 1 := by omega
+      subst hk1
+      have := hc.cseg_inter 0 1 rfl hkn
+      have hm : a ∈ cseg c 0 ∩ cseg c 1 := ⟨ha0, ha⟩
+      rw [this] at hm
+      exact hc.getD_ne 0 (by omega) (by rw [hc0]; exact hm)
+    · exact Set.disjoint_left.1 (hc.cseg_disjoint 0 k (by omega) hkn) ha0 ha
+  have fb : ∀ k, k + 3 ≤ n → b ∉ cseg c k := by
+    intro k hk hb
+    have hb' : b ∈ cseg c (n - 2) := by
+      rw [← hcl']
+      have := right_mem_cseg c (n - 2)
+      rwa [show n - 2 + 1 = n - 1 by omega] at this
+    rcases Nat.lt_or_ge (k + 3) n with hk2 | hk2
+    · exact Set.disjoint_left.1 (hc.cseg_disjoint k (n - 2) (by omega) (by omega)) hb hb'
+    · have hk3 : k = n - 3 := by omega
+      subst hk3
+      have := hc.cseg_inter (n - 3) (n - 2) (by omega) (by omega)
+      have hm : b ∈ cseg c (n - 3) ∩ cseg c (n - 2) := ⟨hb, hb'⟩
+      rw [this] at hm
+      have hne := hc.getD_ne (n - 2) (by omega)
+      rw [show n - 2 + 1 = n - 1 by omega, hcl'] at hne
+      exact hne (by simpa using hm.symm)
+  have hmem : ∀ k, k + 1 < n → ∀ y, y ∈ cseg c k → y ∈ segment ℝ b a → y = a ∨ y = b := by
+    intro k hk y h1 h2
+    have : y ∈ segment ℝ b a ∩ chainSet c := ⟨h2, cseg_subset_chainSet c k hk h1⟩
+    rw [hcl] at this
+    simpa using this
+  have hseg : ∀ i, i + 1 < n → segment ℝ ((Polygon.ofList c).cyc i) ((Polygon.ofList c).cyc (i + 1)) =
+      cseg c i := fun i hi => by rw [hcycL i (by omega), hcycL (i + 1) hi]; rfl
+  have hsegL : segment ℝ ((Polygon.ofList c).cyc (n - 1)) ((Polygon.ofList c).cyc (n - 1 + 1)) =
+      segment ℝ b a := by
+    rw [hcycL (n - 1) (by omega), show n - 1 + 1 = n by omega, hcycN, hcl']
+  rw [Polygon.isSimple_iff_nat (by omega)]
+  refine ⟨fun i hi => ?_, fun i j hi hj hij h1 h2 => ?_, fun i hi => ?_⟩
+  · rcases Nat.lt_or_ge (i + 1) n with h | h
+    · rw [hcycL i hi, hcycL (i + 1) h]; exact hc.getD_ne i h
+    · have hin : i + 1 = n := by omega
+      rw [hin, hcycN, hcycL i hi, show i = n - 1 by omega, hcl']; exact hab.symm
+  · have key : ∀ i j, i < j → j < n → j ≠ i + 1 → ¬(i = 0 ∧ j = n - 1) →
+        Disjoint (segment ℝ ((Polygon.ofList c).cyc i) ((Polygon.ofList c).cyc (i + 1)))
+          (segment ℝ ((Polygon.ofList c).cyc j) ((Polygon.ofList c).cyc (j + 1))) := by
+      intro i j hij hj hne hex
+      rcases Nat.lt_or_ge (j + 1) n with hj1 | hj1
+      · rw [hseg i (by omega), hseg j hj1]
+        exact hc.cseg_disjoint i j (by omega) hj1
+      · have hjn : j = n - 1 := by omega
+        have hi1 : 1 ≤ i := by
+          by_contra h
+          exact hex ⟨by omega, hjn⟩
+        rw [hseg i (by omega), hjn, hsegL, Set.disjoint_left]
+        intro y hy1 hy2
+        rcases hmem i (by omega) y hy1 hy2 with rfl | rfl
+        · exact fa i hi1 (by omega) hy1
+        · exact fb i (by omega) hy1
+    rcases lt_or_gt_of_ne hij with hlt | hgt
+    · apply key i j hlt hj
+      · intro h
+        apply h1
+        rw [Nat.mod_eq_of_lt (by omega)]; omega
+      · rintro ⟨rfl, hjn⟩
+        apply h2
+        rw [hjn, Nat.sub_add_cancel (by omega), Nat.mod_self]
+    · apply Disjoint.symm
+      apply key j i hgt hi
+      · intro h
+        apply h2
+        rw [Nat.mod_eq_of_lt (by omega)]; omega
+      · rintro ⟨rfl, hin⟩
+        apply h1
+        rw [hin, Nat.sub_add_cancel (by omega), Nat.mod_self]
+  · rcases Nat.lt_or_ge (i + 2) n with h | h
+    · rw [Nat.mod_eq_of_lt (by omega : i + 1 < n), hseg i (by omega), hseg (i + 1) h,
+        hcycL (i + 1) (by omega)]
+      exact hc.cseg_inter i (i + 1) rfl h
+    · rcases Nat.lt_or_ge (i + 1) n with h' | h'
+      · -- the edge before the closing segment
+        have hin : i = n - 2 := by omega
+        subst hin
+        have e1 := hseg (n - 2) (by omega)
+        have e2 : segment ℝ ((Polygon.ofList c).cyc ((n - 2 + 1) % n))
+            ((Polygon.ofList c).cyc ((n - 2 + 1) % n + 1)) = segment ℝ b a := by
+          rw [Nat.mod_eq_of_lt (by omega : n - 2 + 1 < n), show n - 2 + 1 = n - 1 by omega]
+          exact hsegL
+        have e3 : (Polygon.ofList c).cyc (n - 2 + 1) = b := by
+          rw [hcycL (n - 2 + 1) (by omega), show n - 2 + 1 = n - 1 by omega, hcl']
+        rw [e1, e2, e3]
+        apply Set.eq_singleton_iff_unique_mem.2
+        refine ⟨⟨?_, left_mem_segment ℝ _ _⟩, fun y ⟨hy1, hy2⟩ => ?_⟩
+        · rw [← hcl']
+          have := right_mem_cseg c (n - 2)
+          rwa [show n - 2 + 1 = n - 1 by omega] at this
+        · rcases hmem (n - 2) (by omega) y hy1 hy2 with rfl | rfl
+          · exact absurd hy1 (fa (n - 2) (by omega) (by omega))
+          · rfl
+      · -- the closing segment and the first segment
+        have hin : i = n - 1 := by omega
+        subst hin
+        have e2 : segment ℝ ((Polygon.ofList c).cyc ((n - 1 + 1) % n))
+            ((Polygon.ofList c).cyc ((n - 1 + 1) % n + 1)) = cseg c 0 := by
+          rw [show n - 1 + 1 = n by omega, Nat.mod_self]
+          exact hseg 0 (by omega)
+        have e3 : (Polygon.ofList c).cyc (n - 1 + 1) = a := by
+          rw [show n - 1 + 1 = n by omega, hcycN]
+        rw [hsegL, e2, e3]
+        apply Set.eq_singleton_iff_unique_mem.2
+        refine ⟨⟨right_mem_segment ℝ _ _, by rw [← hc0]; exact left_mem_cseg c 0⟩,
+          fun y ⟨hy1, hy2⟩ => ?_⟩
+        rcases hmem 0 (by omega) y hy2 hy1 with rfl | rfl
+        · rfl
+        · exact absurd hy2 (fb 0 (by omega))
 
 end Lightlike.PL
