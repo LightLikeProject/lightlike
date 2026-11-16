@@ -84,3 +84,107 @@ Entry on the leg amplitude (`eprlMapLow_cohState`, `weight_of_equivariant`):
 * *Does not prove.* That `c₀ ≠ 0`, or its value `√((k+1)/(n+1))` (numerical evidence only); that the
   `U(1)`-invariant integrand of the vertex follows from it (derived on paper, checked numerically, not
   formalized); equality with the source's equation (19).
+
+## Draft: Lean statements and docstrings for the remaining pieces (text only, not compiled)
+
+Each is tied to the source equation it formalizes. `n m : Fin 10 → ℕ` are doubled spins, `k = n − m`.
+
+**Piece 3, covariance of the edge pairing** (no source equation: this is the invariance of the singlet
+pairing that underlies the edge sign of `k5Contract4`; the structure map `J` of BDFGH Section 3.3 is its
+antilinear counterpart).
+
+```lean
+/-- **The edge pairing is invariant under the diagonal action**: for `A A' : SU2` and `u w` on
+`V_n ⊗ V_m`, `B ((A ⊗ A') u) ((A ⊗ A') w) = B u w`, with `B` the pairing of `k5Contract4`
+(`edgeSign n μ * edgeSign m ν`). Stated for `SU(2)` elements only. -/
+theorem edgePair_invariant (n m : ℕ) (A A' : SU2) (u w : Idx n m → ℂ) :
+    edgePair n m (act2 n m A A' *ᵥ u) (act2 n m A A' *ᵥ w) = edgePair n m u w
+```
+
+**Piece 4, regrouping by edges** (BDFGH Section 3.4, the product over edges `∏_{a<b}` in eq. (17) and the
+sum over the ten edges in the action (18)).
+
+```lean
+/-- **Regrouping the `K₅` contraction by edges, for Spin(4)**: if every node tensor is a product over its
+legs, `T_a(μ, ν) = ∏_l f_{a,l}(μ_l, ν_l)`, the contraction is the product over the ten edges of the
+edge pairings `Σ_{μ,ν} ε_n(μ) ε_m(ν) f_src(μ,ν) f_tgt(−μ,−ν)`. -/
+theorem k5Contract4_prod (n m : Fin 10 → ℕ) (f : Fin 5 → Fin 4 → ℤ → ℤ → ℂ) :
+    k5Contract4 n m (fun a μ ν => ∏ l, f a l (μ l) (ν l)) = ∏ e, edgeForm n m e f
+```
+
+**Piece 5, Fubini over Spin(4)⁵** (BDFGH eq. (19): the integral `∫_{Spin(4)⁵} ∏_c dG_c` over the five
+nodes).
+
+```lean
+/-- **Fubini for the Spin(4) `K₅` contraction**: if the node tensors are Haar integrals over Spin(4) of
+continuous functions, the contraction is the integral over `Spin(4)⁵` of the contraction of the
+integrands. -/
+theorem k5Contract4_integral (n m : Fin 10 → ℕ) (G : Fin 5 → Spin4 → (Fin 4 → ℤ) → (Fin 4 → ℤ) → ℂ)
+    (hG : ∀ a μ ν, Continuous fun X => G a X μ ν) :
+    k5Contract4 n m (fun a μ ν => ∫ X, G a X μ ν ∂haarSpin4) =
+      ∫ X : Fin 5 → Spin4, k5Contract4 n m (fun a => G a (X a)) ∂haarN5
+```
+
+**Piece 6, the low lift of a product** (BDFGH Section 3.4, Figure 4 and the paragraph before eq. (17): the
+Clebsch–Gordan intertwiner injects into the lowest state `k = j⁺ − j⁻`; EPRL eq. (27)).
+
+```lean
+/-- **The `γ > 1` lift of a product of leg vectors is the outer product of the leg images**:
+`eprlLiftLow (homForm (prodVec s))` is the tensor product over the legs of `Y_low s_l`, with the
+singlet signs of the bridge. Not a product of coherent states when `s_l` are coherent. -/
+theorem eprlLiftLow_homForm_prod (n m : Fin 4 → ℕ) (hmn : ∀ l, m l ≤ n l) (s : …) : …
+```
+
+**Piece 7, the edge form** (BDFGH eq. (16) for the resolution of the identity and eq. (17) for the edge
+amplitude; the integrand is the derived `U(1)`-invariant one, not the printed one).
+
+```lean
+/-- **The edge amplitude as a sphere integral**: with `E = (n+1)(m+1)` and the resolution of the identity
+on `V_n ⊗ V_m` by coherent states, `B u v = E ∫∫ B(u, |M,M'⟩) ⟨M,M'|v⟩ dM dM'`. -/
+theorem edgePair_resolution …
+/-- **The closed integrand** (`c₀` abstract): `⟨J u | M,M'⟩ ⟨M,M'| v⟩ = c₀² conj(⟨P_a|J g_ab⟩)^k …`. -/
+theorem edgeIntegrand_eq …
+```
+
+Limits to carry in each docstring: exact at every spin; `c₀` abstract; no equality with eq. (19) and no
+`(−1)^{χ'}`; the `U(1)`-invariant form is derived here.
+
+## Draft: limits text for a combined PR of the robustness and the Plancherel changes
+
+*Proved* (robustness change, task `T-SF5d`): a robust forcing set keeps forcing under every 2-4 move and,
+if it does not contain the moved triangle, under the 3-3 move (Lemma X by blocking sets); robustness is
+**not** kept by the 3-3 move in general, shown by an explicit 4-sphere with 20 simplices (kernel-checked
+data, independently re-verified by a script). *Not proved*: the 2-4 counterexample (independent script
+only; measured at 1 of 67,712 random 2-4 locations); whether the gauge set carried from the boundary of
+the 5-simplex stays robust (robust in every sample, not proved); existence of a robust forcing gauge set on
+every sphere reached from it. The task stays open. The change corrects the catalogue note and docstrings
+on main that called robustness "conjecture, not claimed".
+
+*Proved / documented* (Plancherel change, task `T-HA2`): a catalogue entry for `plancherel` and
+`plancherel_trace` with the constant `16π⁴`; the constant is checked by hand on `K`-biinvariant functions
+and numerically to 2e-7; the `1/(8π⁴)` of Perez–Rovelli (A11, A16) is four times too large in this
+normalization. *Not proved*: the full `L²` theorem (smooth compactly supported functions only); the
+section or equation of Knapp (1986, chapter II) and of Gelfand–Graev–Vilenkin (1966) behind the constant
+are not located; Rühl's text is seen only through a quotation.
+
+*Combination.* The two changes have different tasks and touch disjoint files; the repository rule is one
+task per pull request, so the combination is the owner's decision and each task keeps its own `Task:` line
+and no `Closes` keyword.
+
+## Sources check of the existing `sf9` catalogue entries
+
+Method: `python scripts/sources.py check` (registry shape; passes: 226 references, 187 milestones, 97
+results) and a read of the registry's verification record for the cited locations.
+
+| Entry | Cited source location | What the registry verified | What it does not verify |
+|---|---|---|---|
+| `eprlVertex_coherent`, `k5Contract4_eprlCohNode` | BDFGH, Section 3.4 | the heading "3.4 Exponentiated expression for the four-simplex amplitude" exists in arXiv:0902.1170 | that eq. (17)–(19) say what the note says; the sign `(−1)^χ` of the 15j equation |
+| `local_suppression`, `suppression_finite_max`, `coh15j_dichotomy`, `eprlCoh_exp_decay_of_no_gluing` | BDFGH, Section 4 | the heading "4 Asymptotic formula" exists | the exact theorem and its hypotheses; the entries are original statements about integrals, and the source is the context |
+| `eprlCohNodeHigh_integral`, `eprlVertexHigh_coherent`, `eprlMapLow_cohState` | BDFGH, Section 3.4 (and EPRL, Section III, eq. (27) in the note) | heading only (EPRL "III. Euclidean theory" is registered) | the equation numbers (16)–(19) and (27) were read from the converted text, not registered; the J-map page is unregistered |
+
+Finding: every `sf9` location verifies that a *section exists*, none verifies an *equation*. The entries
+are written so that they claim from the source only the context (γ > 1 selects the lowest component; the
+vertex is a Spin(4)⁵ integral with sphere points) and nothing about its signs or constants, so the
+weaker verification is enough for what they state; a reviewer who wants the equations pinned would register
+the locations "Section 3.4, eqs. (16)–(19)" and "Section III, eq. (27)" with `sources.py verify` once
+builds and network checks are allowed.
