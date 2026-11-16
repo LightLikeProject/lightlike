@@ -225,9 +225,11 @@ import Lightlike.PL.Grating
 import Lightlike.PL.GratingPath
 import Lightlike.PL.Alexander
 import Lightlike.PL.UnionLemma
+import Lightlike.PL.ArcNotSeparating
 import Lightlike.PL.TestsGratingPath
 import Lightlike.PL.TestsAlexander
 import Lightlike.PL.TestsUnion
+import Lightlike.PL.TestsArcNotSeparating
 import Lightlike.PL.TestsGrating
 import Lightlike.PL.HexFalse
 import Lightlike.PL.K33

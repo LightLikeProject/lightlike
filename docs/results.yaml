@@ -1304,3 +1304,16 @@
   review: kernel-checked
   note: "If K1 and K2 are compact subsets of the plane with K1 intersect K2 equal to one point and P is joined to Q by a path off K1 and by a path off K2, then P is joined to Q by a path off K1 union K2. The proof puts the two chains of the path-to-chain step on one fine grating with a margin, takes the 2-chain of their cycle, uses its complement when the common point is inside it, and applies Alexander's theorem. This is Corollary 9.11 of the lecture-notes version of chapter 9 of McCleary's book, which states it with a one-sentence argument and takes the complement 2-chain from its Theorem 9.10; here the complement step is made explicit on a fixed rectangular grating; the statement and proof are Lean's own. Proves: a Janiszewski-type union lemma for two compact sets meeting in one point. Does not prove: that an arc does not separate the plane (that is the next entry), nor the Jordan curve theorem. Limits: compact sets in the plane. Check: TestsUnion.lean."
   since: unreleased
+- id: LL-XXXX-i
+  title: An arc does not separate the plane
+  area: PL
+  file: Lightlike/PL/ArcNotSeparating.lean
+  decls: [Lightlike.PL.arc_not_separating]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
+  review: kernel-checked
+  note: "For an arc A, the image of an injective continuous map of [0, 1] into the plane, the complement of A is connected (preconnected). The proof bisects the parameter interval: if the image of an interval separates two points P, Q off it, one of the two halves does (the union lemma); the nested intervals shrink to a parameter t, and a small neighbourhood of gamma(t) does not separate the two points, a contradiction. This is the Separation Theorem for Jordan arcs of the lecture-notes version of chapter 9 of McCleary's book; the statement and proof are Lean's own. Proves: the complement of an arc is connected. Does not prove: that the complement of a Jordan curve has exactly two components, or that the curve is the frontier of each; those need further steps. Limits: arcs in the plane (IsArc). Check: TestsArcNotSeparating.lean."
+  since: unreleased
