@@ -2024,4 +2024,169 @@ theorem qfact_mul_qfact_reflect {r m : ℕ} (hr : 2 ≤ r) (hm : m + 1 ≤ r) :
   simp only [mem_range] at hi
   rw [show m + i + 1 = r - (t - 1 - i + 1) by omega, qnum_sub hr (by omega)]
 
+/-- **The summand of the `₆φ₅` series is symmetric in `b`, `c` and `x⁻¹`**: exchanging `b` with `x⁻¹`
+(and `x` with `b⁻¹`). -/
+theorem Tj_perm {q a b c x : ℂ} (hb : b ≠ 0) (hc : c ≠ 0) (hx : x ≠ 0) (k : ℕ) :
+    Tj q a x⁻¹ c b⁻¹ k = Tj q a b c x k := by
+  unfold Tj
+  have e1 : a * q / x⁻¹ = a * q * x := by field_simp
+  have e2 : a * q * b⁻¹ = a * q / b := by field_simp
+  have e3 : a * q / b / (x⁻¹ * c) = a * q * x / (b * c) := by field_simp
+  rw [e1, e2, e3]
+  simp only [inv_inv]
+  generalize pk a q k = A
+  generalize pk b q k = B
+  generalize pk c q k = C
+  generalize pk x⁻¹ q k = X
+  generalize pk (a * q * x) q k = P
+  generalize pk (a * q / b) q k = R
+  ring
+
+/-- **A balanced ratio of four Pochhammer symbols at powers of `Q = uC r ^ 2`, with positive
+exponents, as a ratio of quantum factorials.** The exponents `e1 + e2 = e3 + e4` balance, so the
+powers of `uC r` cancel. -/
+theorem pk_ratio_pos {r : ℕ} (hr : 2 ≤ r) {e1 e2 e3 e4 K : ℕ} (h1 : 1 ≤ e1) (h2 : 1 ≤ e2)
+    (h3 : 1 ≤ e3) (h4 : 1 ≤ e4) (hbal : e1 + e2 = e3 + e4) (b1 : e1 - 1 + K < r)
+    (b2 : e2 - 1 + K < r) (b3 : e3 - 1 + K < r) (b4 : e4 - 1 + K < r) :
+    pk ((uC r ^ 2) ^ e1) (uC r ^ 2) K * pk ((uC r ^ 2) ^ e2) (uC r ^ 2) K /
+        (pk ((uC r ^ 2) ^ e3) (uC r ^ 2) K * pk ((uC r ^ 2) ^ e4) (uC r ^ 2) K) =
+      (((qfact r (e1 - 1 + K) / qfact r (e1 - 1)) * (qfact r (e2 - 1 + K) / qfact r (e2 - 1)) /
+        ((qfact r (e3 - 1 + K) / qfact r (e3 - 1)) * (qfact r (e4 - 1 + K) / qfact r (e4 - 1))) :
+          ℝ) : ℂ) := by
+  have hu : uC r ≠ 0 := uC_ne_zero r
+  have z : ∀ e : ℕ, (uC r ^ 2) ^ e = (uC r ^ 2) ^ (e : ℤ) := fun e => (zpow_natCast _ e).symm
+  rw [z e1, z e2, z e3, z e4, pk_Q_zpow hr, pk_Q_zpow hr, pk_Q_zpow hr, pk_Q_zpow hr]
+  have pf : ∀ m : ℕ, m < r → 0 < qfact r m := fun m h => qfact_pos hr h
+  have g : ∀ e : ℕ, 1 ≤ e → e - 1 + K < r →
+      ∏ i ∈ range K, qZ r ((e : ℤ) + i) = qfact r (e - 1 + K) / qfact r (e - 1) := by
+    intro e he hb
+    rw [eq_div_iff (pf _ (by omega)).ne']
+    have := prod_qnum (r := r) (e - 1) K hb hr
+    rw [← this]
+    congr 1
+    refine prod_congr rfl fun i _ => ?_
+    rw [show (e : ℤ) + i = ((e - 1 + 1 + i : ℕ) : ℤ) by push_cast; omega, qZ_natCast]
+  have hsum : ∀ e : ℤ, ∑ i ∈ range K, (e + (i : ℤ)) = K * e + ∑ i ∈ range K, (i : ℤ) := by
+    intro e; simp [sum_add_distrib]
+  have hb : uC r ^ (∑ i ∈ range K, ((e1 : ℤ) + (i : ℤ))) * uC r ^ (∑ i ∈ range K, ((e2 : ℤ) + (i : ℤ))) =
+      uC r ^ (∑ i ∈ range K, ((e3 : ℤ) + (i : ℤ))) * uC r ^ (∑ i ∈ range K, ((e4 : ℤ) + (i : ℤ))) := by
+    rw [← zpow_add₀ hu, ← zpow_add₀ hu]
+    congr 1
+    rw [hsum, hsum, hsum, hsum]
+    have : (e1 : ℤ) + e2 = e3 + e4 := by exact_mod_cast hbal
+    linear_combination (K : ℤ) * this
+  have ht := uC_sub_inv_ne hr
+  have hX : (-(uC r - (uC r)⁻¹)) ^ K ≠ 0 := pow_ne_zero K (neg_ne_zero.2 ht)
+  have hzp : ∀ z : ℤ, uC r ^ z ≠ 0 := fun z => zpow_ne_zero z hu
+  have c1 := (pf (e1 - 1 + K) b1).ne'
+  have c2 := (pf (e1 - 1) (by omega)).ne'
+  have c3 := (pf (e2 - 1 + K) b2).ne'
+  have c4 := (pf (e2 - 1) (by omega)).ne'
+  have c5 := (pf (e3 - 1 + K) b3).ne'
+  have c6 := (pf (e3 - 1) (by omega)).ne'
+  have c7 := (pf (e4 - 1 + K) b4).ne'
+  have c8 := (pf (e4 - 1) (by omega)).ne'
+  simp only [← Complex.ofReal_prod]
+  rw [g e1 h1 b1, g e2 h2 b2, g e3 h3 b3, g e4 h4 b4]
+  have z1 := hzp (∑ i ∈ range K, ((e1 : ℤ) + (i : ℤ)))
+  have z2 := hzp (∑ i ∈ range K, ((e2 : ℤ) + (i : ℤ)))
+  have z3 := hzp (∑ i ∈ range K, ((e3 : ℤ) + (i : ℤ)))
+  have z4 := hzp (∑ i ∈ range K, ((e4 : ℤ) + (i : ℤ)))
+  generalize uC r ^ (∑ i ∈ range K, ((e1 : ℤ) + (i : ℤ))) = Z1 at *
+  generalize uC r ^ (∑ i ∈ range K, ((e2 : ℤ) + (i : ℤ))) = Z2 at *
+  generalize uC r ^ (∑ i ∈ range K, ((e3 : ℤ) + (i : ℤ))) = Z3 at *
+  generalize uC r ^ (∑ i ∈ range K, ((e4 : ℤ) + (i : ℤ))) = Z4 at *
+  generalize (-(uC r - (uC r)⁻¹)) ^ K = X at *
+  have hZ4 : Z4 = Z1 * Z2 / Z3 := by
+    rw [eq_div_iff z3]; linear_combination (-1 : ℂ) * hb
+  rw [hZ4]
+  push_cast
+  field_simp
+
+/-- **The truncated right side equals the untruncated one.** With `K + m + d + 2 = r` (the
+level cut-off), the ratio of quantum factorials from Jackson's sum for the terminating parameter
+`Q^K` equals the one for the terminating parameter `Q^n`, by `[x]! · [r-1-x]! = [r-1]!`. -/
+theorem rhs_trunc_eq {r d m n j5 K : ℕ} (hr : 2 ≤ r) (hK : K + m + d + 2 = r) (hnm : n ≤ m)
+    (hj5 : j5 ≤ m + d) (hnj : n ≤ j5) (hj5' : j5 ≤ d + n) :
+    (qfact r (d + 1 + K) / qfact r (d + 1)) * (qfact r (j5 + K) / qfact r j5) /
+        ((qfact r (d + n + 1 + K) / qfact r (d + n + 1)) *
+          (qfact r (j5 - n + K) / qfact r (j5 - n))) =
+      (qfact r (d + n + 1) / qfact r (d + 1)) *
+        (qfact r (m + (d + n + 1 - j5)) / qfact r (m + (d + n + 1 - j5) - n)) /
+        ((qfact r m / qfact r (m - n)) * (qfact r j5 / qfact r (j5 - n))) := by
+  have pos : ∀ x : ℕ, x < r → 0 < qfact r x := fun x h => qfact_pos hr h
+  have R1 := qfact_mul_qfact_reflect hr (m := m) (by omega)
+  have R2 := qfact_mul_qfact_reflect hr (m := m + d + 1 - j5) (by omega)
+  have R3 := qfact_mul_qfact_reflect hr (m := m - n) (by omega)
+  have R4 := qfact_mul_qfact_reflect hr (m := m + d + 1 - j5 + n) (by omega)
+  rw [show r - 1 - m = d + 1 + K by omega] at R1
+  rw [show r - 1 - (m + d + 1 - j5) = j5 + K by omega] at R2
+  rw [show r - 1 - (m - n) = d + n + 1 + K by omega] at R3
+  rw [show r - 1 - (m + d + 1 - j5 + n) = j5 - n + K by omega] at R4
+  rw [show m + (d + n + 1 - j5) = m + d + 1 - j5 + n by omega,
+    show m + d + 1 - j5 + n - n = m + d + 1 - j5 by omega]
+  have p1 := (pos m (by omega)).ne'
+  have p2 := (pos (d + 1) (by omega)).ne'
+  have p3 := (pos j5 (by omega)).ne'
+  have p4 := (pos (m + d + 1 - j5) (by omega)).ne'
+  have p5 := (pos (m - n) (by omega)).ne'
+  have p6 := (pos (d + n + 1) (by omega)).ne'
+  have p7 := (pos (j5 - n) (by omega)).ne'
+  have p8 := (pos (m + d + 1 - j5 + n) (by omega)).ne'
+  have p9 := (pos (r - 1) (by omega)).ne'
+  have f1 : qfact r (d + 1 + K) = qfact r (r - 1) / qfact r m := by rw [← R1]; field_simp
+  have f2 : qfact r (j5 + K) = qfact r (r - 1) / qfact r (m + d + 1 - j5) := by rw [← R2]; field_simp
+  have f3 : qfact r (d + n + 1 + K) = qfact r (r - 1) / qfact r (m - n) := by rw [← R3]; field_simp
+  have f4 : qfact r (j5 - n + K) = qfact r (r - 1) / qfact r (m + d + 1 - j5 + n) := by
+    rw [← R4]; field_simp
+  rw [f1, f2, f3, f4]
+  field_simp
+
+/-- `Q ^ (2 r) = 1` for `Q = uC r ^ 2`, in the form `Q ^ r = 1`. -/
+lemma Q_pow_r {r : ℕ} (hr : 2 ≤ r) : (uC r ^ 2) ^ r = 1 := by
+  rw [← pow_mul, mul_comm, pow_mul, uC_pow_self hr]; norm_num
+
+/-- `JHypT` for the terminating parameter `b = (Q^n)⁻¹` of length `K`, with `a = Q^(d+1)` and
+`c = Q^ec`: the exponents of `Q` stay between `0` and `r`. -/
+theorem jhypT_trunc {r : ℕ} (hr : 2 ≤ r) {d n ec K : ℕ} (h1 : K + 1 < r) (h2 : d + 1 < r)
+    (h3 : d + 2 + n + K < r) (hec : ec ≤ d + 1) (h4 : d + 2 - ec + K < r)
+    (h5 : d + 1 + 2 * K < r) (hec0 : 0 < ec) :
+    JHypT (uC r ^ 2) ((uC r ^ 2) ^ (d + 1)) ((uC r ^ 2) ^ n)⁻¹ ((uC r ^ 2) ^ ec) K := by
+  have hQ : uC r ^ 2 ≠ 0 := pow_ne_zero 2 (uC_ne_zero r)
+  have ne : ∀ m : ℤ, 0 < m → m < r → 1 - (uC r ^ 2) ^ m ≠ 0 := fun m h0 h1 => Qne_pos hr h0 h1
+  have e1 : ∀ i : ℕ, 1 - (uC r ^ 2) * (uC r ^ 2) ^ i = 1 - (uC r ^ 2) ^ ((1 + i : ℕ) : ℤ) := by
+    intro i; rw [zpow_natCast, pow_add, pow_one]
+  have hpowQ : ∀ e : ℕ, (uC r ^ 2) ^ e = (uC r ^ 2) ^ (e : ℤ) := fun e => (zpow_natCast _ e).symm
+  have f3 : ∀ i : ℕ, (uC r ^ 2) ^ (d + 1) * (uC r ^ 2) / ((uC r ^ 2) ^ n)⁻¹ * (uC r ^ 2) ^ i =
+      (uC r ^ 2) ^ ((d + 2 + n + i : ℕ) : ℤ) := by
+    intro i; rw [zpow_natCast]; field_simp; ring
+  have f4 : ∀ i : ℕ, (uC r ^ 2) ^ (d + 1) * (uC r ^ 2) / (uC r ^ 2) ^ ec * (uC r ^ 2) ^ i =
+      (uC r ^ 2) ^ ((d + 2 - ec + i : ℕ) : ℤ) := by
+    intro i
+    rw [zpow_natCast, div_mul_eq_mul_div, div_eq_iff (pow_ne_zero _ hQ), ← pow_succ, ← pow_add,
+      ← pow_add]
+    congr 1; omega
+  have f5 : ∀ m i : ℕ, (uC r ^ 2) ^ (d + 1) * (uC r ^ 2) * (uC r ^ 2) ^ m * (uC r ^ 2) ^ i =
+      (uC r ^ 2) ^ ((d + 2 + m + i : ℕ) : ℤ) := by
+    intro m i; rw [zpow_natCast]; ring
+  have f6 : ∀ m : ℕ, (uC r ^ 2) ^ (d + 1) * (uC r ^ 2) * (uC r ^ 2) ^ m / ((uC r ^ 2) ^ n)⁻¹ =
+      (uC r ^ 2) ^ ((d + 2 + m + n : ℕ) : ℤ) := by
+    intro m; rw [zpow_natCast]; field_simp; ring
+  have f7 : ∀ m : ℕ, (uC r ^ 2) ^ (d + 1) * (uC r ^ 2) * (uC r ^ 2) ^ m / (uC r ^ 2) ^ ec =
+      (uC r ^ 2) ^ ((d + 2 + m - ec : ℕ) : ℤ) := by
+    intro m
+    rw [zpow_natCast, div_eq_iff (pow_ne_zero _ hQ), ← pow_succ, ← pow_add, ← pow_add]
+    congr 1; omega
+  unfold JHypT
+  refine ⟨hQ, inv_ne_zero (pow_ne_zero _ hQ), pow_ne_zero _ hQ, ?_, ?_, ?_, ?_, ?_, ?_⟩
+  · rw [hpowQ]; exact ne (d + 1) (by exact_mod_cast Nat.succ_pos d) (by exact_mod_cast h2)
+  · intro i hi; rw [e1]; exact ne _ (by push_cast; omega) (by push_cast; omega)
+  · intro i hi; rw [f3]; exact ne _ (by push_cast; omega) (by push_cast; omega)
+  · intro i hi; rw [f4]; exact ne _ (by push_cast; omega) (by push_cast; omega)
+  · intro m hm i hi; rw [f5]; exact ne _ (by push_cast; omega) (by push_cast; omega)
+  · intro m hm
+    constructor
+    · rw [f6]; exact ne _ (by push_cast; omega) (by push_cast; omega)
+    · rw [f7]; exact ne _ (by push_cast; omega) (by push_cast; omega)
+
 end Lightlike.TV.Refl
