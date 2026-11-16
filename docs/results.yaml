@@ -1177,3 +1177,27 @@
   review: kernel-checked
   note: "Forcing is this library's rule (a tetrahedron with three of its triangles in the set forces the fourth). A set T is robust for a complex K (Robust K T) if it forces every triangle of K using the tetrahedra of K with any one of them removed. Statement: if T is robust for K, then T together with the four gauge triangles {v, a_0, a_j} of a 1-5 move is robust for the complex after the move (robust_move15). The old triangles are forced as before, because the 1-5 move only adds tetrahedra; the ten new triangles {v, x, y} are forced by the tetrahedron {v, a_0, x, y}, and when that tetrahedron is the removed one, through a fifth vertex z (the triangles {v, x, z} and {v, y, z} by {v, a_0, x, z} and {v, a_0, y, z}, then {v, x, y} by {v, z, x, y}). Non-vacuity: robust_move15_example applies it on the boundary of the 5-simplex, where the ten triangles through a vertex are robust (Robust K0 starK0, checked by the kernel by robustBy with explicit forcing steps for each of the fifteen removed tetrahedra). Scope: the 1-5 move only. Conjecture, not claimed: robust sets stay robust under the 3-3 and 2-4 moves, so that a robust forcing gauge set exists on every complex reached from the boundary of the 5-simplex by forward moves. Numerical evidence only (scripts/spinfoam/robust_check.py (longer runs of the same code)): the gauge set carried along from the boundary of the 5-simplex was robust at every one of 1,104,480 tetrahedra on random complexes, the condition of the 3-3 characterization held at every 3-3 location (38,176 of 38,176), and robustness held after each of 822 consecutive forward moves; robustness implies the conditions of forces_move33_iff and forces_move24_iff only through an unproved lemma (that a robust set never needs the moved triangle), measured at 34,270 of 34,270 3-3 locations."
   since: unreleased
+- id: LL-XXXX-a
+  title: The Regge action of a flat closed 3-complex is a quadratic form in the first variations of the lengths up to third order
+  area: Regge
+  file: Lightlike/Regge/Linear3/SecondOrder.lean
+  decls: [Lightlike.Regge.Linear3.regge_second_order]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: christiansen-2011, location: "Proposition 3.2", check: "constant Euclidean metric"}
+  review: kernel-checked
+  note: "Part of the linearization of 3D Regge calculus (T-RC3), which stays open. For a closed 3-complex K with non-degenerate edge lengths at which every deficit angle δ_e vanishes, and squared lengths varying along ℓ₀² + ε a, the Regge action Σ_e ℓ_e δ_e equals ε²/2 · Σ_e (a_e/(2ℓ₀_e)) δ_e'(0) + O(ε³), where δ_e'(0) is the derivative of the deficit angle along the line. Proof: Regge's equations dS = Σ δ_e dℓ_e (Schläfli's identity) give dS/dε = Σ ℓ_e' δ_e near 0, the dihedral angles are C³ in the squared lengths at admissible tuples, and a one-variable Taylor bound gives the remainder; this is the argument of Christiansen's Proposition 3.2, eq. (75) and its consequence (81), here for an arbitrary closed complex. The statement is non-vacuous: the periodic Kuhn complex of (ℤ/n)³ (n ≥ 3) with its Euclidean lengths is closed, non-degenerate and flat (torus_second_order, Lightlike/Regge/Linear3/TorusComplex.lean), and for the boundary of the 4-simplex with all lengths 1 every deficit angle is 2π − 3 arccos(1/3) > 0 (WrongModel.lean), so the flatness hypothesis is needed. Limits: fixed mesh (the constant M depends on the complex); one line of squared lengths; the identification of the coefficient with ⟨curl^t curl u', u'⟩ (Christiansen's Theorem 3.3) and the limit as the mesh tends to zero are not claimed; the lengths ℓ₀ are required positive on every vertex pair, which only normalises the values off the edges of the complex."
+  since: unreleased
+- id: LL-XXXX-b
+  title: The periodic Kuhn complex of the 3-torus (Z/n)^3 is closed, non-degenerate and flat
+  area: Regge
+  file: Lightlike/Regge/Linear3/TorusComplex.lean
+  decls: [Lightlike.Regge.Linear3.torusComplex, Lightlike.Regge.Linear3.bdryTris_torus, Lightlike.Regge.Linear3.lengthsNondeg_len0, Lightlike.Regge.Linear3.deficit_len0, Lightlike.Regge.Linear3.torus_second_order]
+  status: proven
+  tier: frontier
+  source: structural
+  review: kernel-checked
+  note: "The six Kuhn tetrahedra of every cube of the grid (Z/n)^3, n >= 3, form a closed simplicial 3-complex: every triangle lies in two tetrahedra (the neighbouring tetrahedron is found by a finite table checked by decide). With the Euclidean base lengths, the square root of the number of differing coordinates of the two vertices of an edge, the tetrahedra are non-degenerate and every deficit angle vanishes: the dihedral angle at a hinge is the angle of the Kuhn orthoscheme (Lightlike.Regge.Conv3.hang) and the 36 (tetrahedron, hinge) pairs of the Kuhn star, sorted by direction, add up to 2π (Lightlike.Regge.Conv3.star_angle_sum). Tetrahedra of distinct (cube, permutation) pairs are distinct (tetV_injective), so the star sums are exact. Limits: the standard cubical Kuhn triangulation of the torus only; the base lengths are Euclidean only on the edges of the complex (the value 1 elsewhere, which does not enter the Regge action); the mesh 1/n appears only after rescaling the lengths. It makes the hypotheses of the second-order expansion LL-XXXX-a non-vacuous (torus_second_order)."
+  since: unreleased

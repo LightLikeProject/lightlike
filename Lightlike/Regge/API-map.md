@@ -121,6 +121,17 @@ derivatives the sum is `3`, not `0` and not `6` [68]. The identity of [66] is ge
 in exact arithmetic by `scripts/regge/gen_flat_star.py`, and the fans of [64] by
 `scripts/regge/gen_star_angle.py`.
 
+Along a line of squared lengths `ℓ₀² + ε a` on a closed 3-complex whose base lengths are non-degenerate and flat
+(every deficit angle is zero), the Regge action is `ε²/2 · Σ_e (a_e / (2 ℓ₀_e)) δ_e'(0) + O(ε³)` [69]: Regge's equations
+differentiate the action to `Σ δ_e dℓ_e`, the dihedral angles are `C³` in the squared lengths at admissible tuples [70], and
+a one-variable Taylor bound [71] gives the remainder. This is the argument of Christiansen (2011) [5], Proposition 3.2 (eqs. (75)
+and (81)), for an arbitrary closed complex with a fixed mesh. The flatness hypothesis is needed: on the boundary of the
+4-simplex with all lengths `1` every deficit angle is `2π - 3 arccos (1/3) > 0` [72]. The hypotheses are non-vacuous: the periodic
+Kuhn complex of the grid `(ℤ/n)³` (`n ≥ 3`) is a closed simplicial 3-complex whose Euclidean base lengths are non-degenerate
+and flat, the angles at an edge being the 36 (tetrahedron, hinge) pairs of the Kuhn star sorted by direction, which add up to
+`2π` [73]. Limits: the constant of the `O(ε³)` depends on the complex; there is no limit as the mesh tends to zero and no
+identification of the coefficient with `⟨curl^t curl u', u'⟩` (Christiansen's Theorem 3.3).
+
 A 2-complex with boundary is a disc in the combinatorial sense exactly when it is an intrinsic
 triangulated disc [16].
 
@@ -250,6 +261,18 @@ triangulated disc [16].
     `Regge.Conv3.jetStarCore_of_flat`
 68. Lightlike/Regge/Conv3/FlatStarTests.lean - `Regge.Conv3.euclid_flat_core`,
     `Regge.Conv3.sphere_sum`, `Regge.Conv3.sphere_sum_ne_double`
+
+69. Lightlike/Regge/Linear3/SecondOrder.lean - `Regge.Linear3.regge_second_order`,
+    `Regge.Linear3.contDiffAt_deficit`, `Regge.Linear3.eventually_lengthsNondeg`,
+    `Regge.Linear3.hasDerivAt_reggeAction_line`
+70. Lightlike/Regge/Linear3/AngleSmooth.lean - `Regge.Linear3.valid_of_tetNondeg`,
+    `Regge.Linear3.dihedral_sqrt_eq`, `Regge.Linear3.contDiffAt_dihedralAt`
+71. Lightlike/Regge/Linear3/Taylor.lean - `Regge.Linear3.taylor2_cubic`
+72. Lightlike/Regge/Linear3/WrongModel.lean - `Regge.Linear3.simplexBoundary`,
+    `Regge.Linear3.simplexBoundary_deficit_pos`
+73. Lightlike/Regge/Linear3/TorusComplex.lean - `Regge.Linear3.torusComplex`,
+    `Regge.Linear3.bdryTris_torus`, `Regge.Linear3.lengthsNondeg_len0`, `Regge.Linear3.deficit_len0`,
+    `Regge.Linear3.torus_second_order`
 
 ## References
 

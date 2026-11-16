@@ -388,6 +388,11 @@ import Lightlike.Regge.Linear.Taylor
 import Lightlike.Regge.Linear.Riemann
 import Lightlike.Regge.Linear.Converge
 import Lightlike.Regge.Linear.Tests
+import Lightlike.Regge.Linear3.AngleSmooth
+import Lightlike.Regge.Linear3.SecondOrder
+import Lightlike.Regge.Linear3.Taylor
+import Lightlike.Regge.Linear3.TorusComplex
+import Lightlike.Regge.Linear3.WrongModel
 import Lightlike.Regge.AreaRegge.Basic
 import Lightlike.Regge.AreaRegge.Deriv
 import Lightlike.Regge.AreaRegge.Realization

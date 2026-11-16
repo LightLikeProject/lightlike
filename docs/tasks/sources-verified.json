@@ -1239,7 +1239,7 @@
   "citations_via": "Semantic Scholar"
  },
  "christiansen-2011": {
-  "checked": "2026-11-15",
+  "checked": "2026-11-16",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "On the linearization of Regge calculus",
@@ -1254,14 +1254,19 @@
     "snippet": "Proposition 3.1. The derivative of the deficit angle θ at ǫ = 0 is given as a sum of jumps: X θ′ = 1/2 mtf (u′f +1/2 − u′f −1/2 )nf . (57) f Proof. Let m̃f be the oriented unit normal to t in face f , with respect to uf",
     "why": null
    },
+   "Proposition 3.2": {
+    "verified": true,
+    "snippet": "Proposition 3.2. Let Regge metrics u(ǫ) ∈ Xh depend smoothly on a small real parameter ǫ. We use the notations: R(ǫ) = R(u(ǫ)), θe (ǫ) = θe (u(ǫ)), le (ǫ) = le (u(ǫ)). (74) We suppose that u(0) is the constant Euclidean",
+    "why": null
+   },
    "Section 1": {
     "verified": true,
     "snippet": "1 We hope that this paper can contribute to developing RC into a good al- ternative, or facilitate the integration of some of its",
     "why": null
    }
   },
-  "citations": 49,
-  "citations_via": "OpenAlex"
+  "citations": 60,
+  "citations_via": "Semantic Scholar"
  },
  "cky-1997": {
   "checked": "2026-11-07",
