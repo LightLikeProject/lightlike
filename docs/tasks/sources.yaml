@@ -100,6 +100,10 @@ references:
     cite: "C. Thomassen, The Jordan-Schönflies theorem and the classification of surfaces, Amer. Math. Monthly 99 (1992) 116-130"
     title: "The Jordan-Schönflies Theorem and the Classification of Surfaces"
     doi: 10.1080/00029890.1992.11995820
+  klazar-2026:
+    cite: "M. Klazar, Thomassen's proof and Filippov's proof of the Weak Jordan Theorem, arXiv:2604.04296 (2026)"
+    title: "Thomassen's proof and Filippov's proof of the Weak Jordan Theorem"
+    arxiv: "2604.04296"
   senovilla-garfinkle-2015:
     cite: "J. M. M. Senovilla and D. Garfinkle, The 1965 Penrose singularity theorem, Class. Quantum Grav. 32 (2015) 124008"
     title: "The 1965 Penrose singularity theorem"
@@ -865,6 +869,11 @@ references:
     cite: "Pietro Dona and Giorgio Sarno, Numerical methods for EPRL spin foam transition amplitudes and Lorentzian recoupling theory, arXiv:1807.03066 (2018)"
     title: "Numerical methods for EPRL spin foam transition amplitudes and Lorentzian recoupling theory"
     arxiv: "1807.03066"
+  dona-fanizza-sarno-speziale-2019:
+    cite: "Pietro Dona, Marco Fanizza, Giorgio Sarno and Simone Speziale, Numerical study of the Lorentzian Engle-Pereira-Rovelli-Livine spin foam amplitude, Phys. Rev. D 100 (2019) 106003"
+    title: "Numerical study of the Lorentzian Engle-Pereira-Rovelli-Livine spin foam amplitude"
+    arxiv: "1903.12624"
+    doi: 10.1103/PhysRevD.100.106003
   kaminski-kisielowski-lewandowski-2011:
     cite: "Wojciech Kaminski, Marcin Kisielowski and Jerzy Lewandowski, The kernel and the injectivity of the EPRL map, arXiv:1109.5023 (2011)"
     title: "The kernel and the injectivity of the EPRL map"
