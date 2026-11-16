@@ -66,10 +66,9 @@ noncomputable def lorIntegrand (j p : Fin 10 → ℝ) (g : BdryData) (X : Fin 5 
 /-- **The gauge-fixed Lorentzian vertex amplitude** (BDFHP §4):
 `(∏_e c_e) ∫_{SL(2,ℂ)^4} ∫_{ℂ^10} e^{S} ∏_e Ω_e`, with `X₄ = 1` and the Haar measure on each
 `SL(2,ℂ)`. The constants `c_e` stand for `c_{ab} dk_{ab}` and the normalisation of `Ω`; the sign
-`(-1)^χ` is not included. Finiteness is a separate statement. The action `lorAction` is written
-as `exp(k log u)`, which equals the integrand `u^k` of the EPRL amplitude only for even doubled
-spins; for odd doubled spins it differs by a locally constant sign, since BDFHP (p. 16) define `S`
-only modulo `2πi`. The modulus of the integrand is not affected. -/
+`(-1)^χ` is not included. Finiteness is a separate statement. The action `lorAction` is in the power form of `triAction`,
+so `e^S` is the integrand of the EPRL amplitude for every doubled spin (BDFHP, p. 16, define `S`
+only modulo `2πi`). -/
 noncomputable def lorVertex (j p : Fin 10 → ℝ) (c : Fin 10 → ℂ) (g : BdryData) : ℂ :=
   (∏ e, c e) * ∫ x : Fin 4 → SL2C, ∫ w : Fin 10 → ℂ,
     lorIntegrand j p g (Lightlike.Lorentz.gauge x) w ∂volume

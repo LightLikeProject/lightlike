@@ -107,8 +107,10 @@ where the normals close. Two opposite triangles close, and one triangle does not
 The vertex amplitude itself is written with the fifth `SL(2, ℂ)` element fixed to `1` and the chart
 `z = (1, w)` of each `ℂP¹`; its integrand is measurable, bounded by the product of the densities of
 `Ω` wherever no overlap vanishes, and each density is integrable on `ℂ`. The finiteness of the
-whole integral is not proved here, and the action as written agrees with the EPRL integrand only
-for even doubled spins [14].
+whole integral is not proved here; the action is in the power form, so its exponential is the
+EPRL integrand for every doubled spin; at an odd doubled spin and a point where the logarithm of
+the earlier form changes branch, the two forms differ by `-1`, and the bound `|e^S| ≤ 1` fails
+for a negative spin [14, 15].
 
 ## Lean References
 
@@ -166,6 +168,9 @@ for even doubled spins [14].
     `Asymptotics.Lorentzian.lorVertex`, `Asymptotics.Lorentzian.measurable_lorIntegrand`,
     `Asymptotics.Lorentzian.norm_lorIntegrand_le`, `Asymptotics.Lorentzian.integrable_lorEdgeDensity`,
     `Asymptotics.Lorentzian.lorEdgeDensity_one`
+15. Lightlike/Asymptotics/Lorentzian/ActionTests.lean - `Asymptotics.Lorentzian.exp_triAction_odd_sign`,
+    `Asymptotics.Lorentzian.exp_triAction_even_agree`,
+    `Asymptotics.Lorentzian.triWeight_neg_spin_gt_one`
 
 ## References
 
