@@ -141,6 +141,108 @@ lemma tris_move15 {f : Finset V} (hf : f ∈ (Complex4.move K h).tris) :
       exact Complex4.mem_faces.mpr ⟨σ, mem_simps_of_move15 h hτ,
         fun x hx => hsub x hx (fun e => hvf (e ▸ hx)), hc⟩
 
+/-- **One new triangle of the 1-5 move is forced in one step.** For `x ≠ y` in `σ` different from `a_0`,
+the tetrahedron `{v, a_0, x, y}` of the complex after the move has the triangle `{v, x, y}` and the
+three others `{v, a_0, x}`, `{v, a_0, y}` (gauge triangles) and `{a_0, x, y}` (a triangle of `K`). -/
+lemma tet15 (hσ : #σ = 5) {c x y : V} (hc : c ∈ σ) (hx : x ∈ σ) (hy : y ∈ σ) (hxy : x ≠ y)
+    (hxa : x ≠ c) (hya : y ≠ c) {Z : Finset (Finset V)} (hKZ : K.tris ⊆ Z)
+    (hZx : insert v (insert c {x}) ∈ Z) (hZy : insert v (insert c {y}) ∈ Z) :
+    (insert v (insert c {x, y}) : Finset V) ∈ (Complex4.move K h).tets ∧
+      (insert v {x, y} : Finset V) ∈ (insert v (insert c {x, y}) : Finset V).powersetCard 3 ∧
+      ∀ g ∈ (insert v (insert c {x, y}) : Finset V).powersetCard 3,
+        g ≠ (insert v {x, y} : Finset V) → g ∈ Z := by
+  have hv : v ∉ σ := hvσ h hτ
+  have hσK := mem_simps_of_move15 h hτ
+  have hxv0 : x ≠ v := fun e => hv (e ▸ hx)
+  have hyv0 : y ≠ v := fun e => hv (e ▸ hy)
+  have hc3 : #(insert v {x, y}) = 3 := by
+    rw [card_insert_of_notMem (by simp [hxv0.symm, hyv0.symm]), card_pair hxy]
+  have hxv : x ≠ v := fun e => hv (e ▸ hx)
+  have hyv : y ≠ v := fun e => hv (e ▸ hy)
+  have hav : c ≠ v := fun e => hv (e ▸ hc)
+  set t : Finset V := insert v (insert c {x, y}) with ht
+  have htc : #t = 4 := by
+    rw [ht, card_insert_of_notMem, card_insert_of_notMem, card_pair hxy]
+    · simp [hxa.symm, hya.symm]
+    · simp [hav.symm, hxv.symm, hyv.symm]
+  obtain ⟨u, hu, hut⟩ : ∃ u ∈ σ, u ∉ t := by
+    by_contra hcon
+    have hsub : σ ⊆ insert c {x, y} := fun u hu => by
+      by_contra hn
+      exact hcon ⟨u, hu, by
+        simp only [ht, mem_insert, mem_singleton] at hn ⊢
+        rintro (rfl | h' | h' | h')
+        · exact hv hu
+        · exact hn (by simp [h'])
+        · exact hn (by simp [h'])
+        · exact hn (by simp [h'])⟩
+    have := card_le_card hsub
+    have := card_le_three c x y
+    omega
+  refine ⟨Complex4.mem_faces.mpr ⟨(σ ∪ τ).erase u,
+    Complex4.mem_move.mpr (Or.inr ⟨u, hu, rfl⟩), ?_, htc⟩, ?_, ?_⟩
+  · refine Complex4.subset_erase_of_notMem ?_ hut
+    intro z hz
+    simp only [ht, mem_insert, mem_singleton] at hz
+    rw [hτ]
+    rcases hz with rfl | rfl | rfl | rfl
+    · exact mem_union_right _ (mem_singleton_self _)
+    · exact mem_union_left _ (hc)
+    · exact mem_union_left _ hx
+    · exact mem_union_left _ hy
+  · exact mem_powersetCard.mpr ⟨by
+      intro z hz; simp only [ht, mem_insert, mem_singleton] at hz ⊢; tauto, hc3⟩
+  · intro g hg hgf
+    obtain ⟨hgt', hgc⟩ := mem_powersetCard.mp hg
+    have hcs : #(t \ g) = 1 := by rw [card_sdiff_of_subset hgt', htc, hgc]
+    obtain ⟨w, hw⟩ := card_eq_one.mp hcs
+    have hwt : w ∈ t := (mem_sdiff.mp (by rw [hw]; exact mem_singleton_self w)).1
+    have hwg : w ∉ g := (mem_sdiff.mp (by rw [hw]; exact mem_singleton_self w)).2
+    have hsubw : ∀ z ∈ g, z ∈ t ∧ z ≠ w := fun z hz =>
+      ⟨hgt' hz, fun e => hwg (e ▸ hz)⟩
+    simp only [ht, mem_insert, mem_singleton] at hwt
+    rcases hwt with rfl | rfl | rfl | rfl
+    · refine hKZ (Complex4.mem_faces.mpr ⟨σ, hσK, fun z hz => ?_, hgc⟩)
+      obtain ⟨hz1, hz2⟩ := hsubw z hz
+      simp only [ht, mem_insert, mem_singleton] at hz1
+      rcases hz1 with e | e | e | e
+      · exact absurd e hz2
+      · exact e ▸ hc
+      · exact e ▸ hx
+      · exact e ▸ hy
+    · exact absurd (eq_of_subset_of_card_le (fun z hz => by
+        obtain ⟨hz1, hz2⟩ := hsubw z hz
+        simp only [ht, mem_insert, mem_singleton] at hz1 ⊢
+        tauto) (by omega : #(insert v {x, y}) ≤ #g)) hgf
+    · have : g = insert v (insert c {y}) := eq_of_subset_of_card_le (fun z hz => by
+        obtain ⟨hz1, hz2⟩ := hsubw z hz
+        simp only [ht, mem_insert, mem_singleton] at hz1 ⊢
+        tauto) (by simpa [hgc] using card_le_three v c y)
+      exact this ▸ hZy
+    · have : g = insert v (insert c {x}) := eq_of_subset_of_card_le (fun z hz => by
+        obtain ⟨hz1, hz2⟩ := hsubw z hz
+        simp only [ht, mem_insert, mem_singleton] at hz1 ⊢
+        tauto) (by simpa [hgc] using card_le_three v c x)
+      exact this ▸ hZx
+
+
+/-- **One new triangle of the 1-5 move is forced in one step by `{v, a_0, x, y}`**, from the gauge
+triangles `{v, a_0, x}`, `{v, a_0, y}` and the triangles of `K`. -/
+lemma direct15 (hσ : #σ = 5) {a : Fin 5 → V} (hsurj : ∀ x, x ∈ σ ↔ ∃ j, a j = x)
+    {T : Finset (Finset V)} {x y : V} (hx : x ∈ σ) (hy : y ∈ σ) (hxy : x ≠ y) (hxa : x ≠ a 0)
+    (hya : y ≠ a 0) :
+    (insert v (insert (a 0) {x, y}) : Finset V) ∈ (Complex4.move K h).tets ∧
+      (insert v {x, y} : Finset V) ∈ (insert v (insert (a 0) {x, y}) : Finset V).powersetCard 3 ∧
+      ∀ g ∈ (insert v (insert (a 0) {x, y}) : Finset V).powersetCard 3,
+        g ≠ (insert v {x, y} : Finset V) → g ∈ (gaugeTri a v ∪ T) ∪ K.tris := by
+  have hgt : ∀ z ∈ σ, z ≠ a 0 → insert v (insert (a 0) {z}) ∈ gaugeTri a v := by
+    intro z hz hne
+    obtain ⟨j, rfl⟩ := (hsurj z).mp hz
+    exact mem_image.mpr ⟨j, mem_erase.mpr ⟨fun e => hne (e ▸ rfl), mem_univ _⟩, rfl⟩
+  exact tet15 h hτ hσ ((hsurj _).mpr ⟨0, rfl⟩) hx hy hxy hxa hya subset_union_right
+    (mem_union_left _ (mem_union_left _ (hgt x hx hxa)))
+    (mem_union_left _ (mem_union_left _ (hgt y hy hya)))
+
 /-- **A forcing gauge set stays forcing under the 1-5 move.** If `T` forces every triangle of `K`,
 then `T` together with the four gauge triangles `{v, a_0, a_j}` of the move forces every triangle
 of the complex after the move. This is for complexes reached by the moves treated here; it says
@@ -165,79 +267,12 @@ theorem forces_move15 (hσ : #σ = 5) {a : Fin 5 → V}
     obtain ⟨hf, hfZ⟩ := mem_sdiff.mp hfm
     obtain hfK | ⟨x, hx, y, hy, hxy, rfl⟩ := tris_move15 h hτ hf
     · exact absurd (mem_union_right _ hfK) hfZ
-    · have hc3 : #(insert v {x, y}) = 3 := by
-        have := (Complex4.mem_faces.mp hf); obtain ⟨_, _, _, hc⟩ := this; omega
-      have hxa : x ≠ a 0 := fun e => hfZ (mem_union_left _ (mem_union_left _ (by
+    · have hxa : x ≠ a 0 := fun e => hfZ (mem_union_left _ (mem_union_left _ (by
         have := hgt y hy (fun e' => hxy (e.trans e'.symm)); rw [e]; simpa using this)))
       have hya : y ≠ a 0 := fun e => hfZ (mem_union_left _ (mem_union_left _ (by
         have := hgt x hx (fun e' => hxy (e'.trans e.symm)); rw [e, pair_comm]; simpa using this)))
-      have hxv : x ≠ v := fun e => hv (e ▸ hx)
-      have hyv : y ≠ v := fun e => hv (e ▸ hy)
-      have hav : a 0 ≠ v := fun e => hv (e ▸ hmemσ 0)
-      set t : Finset V := insert v (insert (a 0) {x, y}) with ht
-      have htc : #t = 4 := by
-        rw [ht, card_insert_of_notMem, card_insert_of_notMem, card_pair hxy]
-        · simp [hxa.symm, hya.symm]
-        · simp [hav.symm, hxv.symm, hyv.symm]
-      obtain ⟨u, hu, hut⟩ : ∃ u ∈ σ, u ∉ t := by
-        by_contra hcon
-        have hsub : σ ⊆ insert (a 0) {x, y} := fun u hu => by
-          by_contra hn
-          exact hcon ⟨u, hu, by
-            simp only [ht, mem_insert, mem_singleton] at hn ⊢
-            rintro (rfl | h' | h' | h')
-            · exact hv hu
-            · exact hn (by simp [h'])
-            · exact hn (by simp [h'])
-            · exact hn (by simp [h'])⟩
-        have := card_le_card hsub
-        have := card_le_three (a 0) x y
-        omega
-      refine ⟨t, Complex4.mem_faces.mpr ⟨(σ ∪ τ).erase u,
-        Complex4.mem_move.mpr (Or.inr ⟨u, hu, rfl⟩), ?_, htc⟩, ?_, ?_⟩
-      · refine Complex4.subset_erase_of_notMem ?_ hut
-        intro z hz
-        simp only [ht, mem_insert, mem_singleton] at hz
-        rw [hτ]
-        rcases hz with rfl | rfl | rfl | rfl
-        · exact mem_union_right _ (mem_singleton_self _)
-        · exact mem_union_left _ (hmemσ 0)
-        · exact mem_union_left _ hx
-        · exact mem_union_left _ hy
-      · exact mem_powersetCard.mpr ⟨by
-          intro z hz; simp only [ht, mem_insert, mem_singleton] at hz ⊢; tauto, hc3⟩
-      · intro g hg hgf
-        obtain ⟨hgt', hgc⟩ := mem_powersetCard.mp hg
-        have hcs : #(t \ g) = 1 := by rw [card_sdiff_of_subset hgt', htc, hgc]
-        obtain ⟨w, hw⟩ := card_eq_one.mp hcs
-        have hwt : w ∈ t := (mem_sdiff.mp (by rw [hw]; exact mem_singleton_self w)).1
-        have hwg : w ∉ g := (mem_sdiff.mp (by rw [hw]; exact mem_singleton_self w)).2
-        have hsubw : ∀ z ∈ g, z ∈ t ∧ z ≠ w := fun z hz =>
-          ⟨hgt' hz, fun e => hwg (e ▸ hz)⟩
-        simp only [ht, mem_insert, mem_singleton] at hwt
-        rcases hwt with rfl | rfl | rfl | rfl
-        · refine mem_union_right _ (Complex4.mem_faces.mpr ⟨σ, hσK, fun z hz => ?_, hgc⟩)
-          obtain ⟨hz1, hz2⟩ := hsubw z hz
-          simp only [ht, mem_insert, mem_singleton] at hz1
-          rcases hz1 with e | e | e | e
-          · exact absurd e hz2
-          · exact e ▸ hmemσ 0
-          · exact e ▸ hx
-          · exact e ▸ hy
-        · exact absurd (eq_of_subset_of_card_le (fun z hz => by
-            obtain ⟨hz1, hz2⟩ := hsubw z hz
-            simp only [ht, mem_insert, mem_singleton] at hz1 ⊢
-            tauto) (by omega : #(insert v {x, y}) ≤ #g)) hgf
-        · have : g = insert v (insert (a 0) {y}) := eq_of_subset_of_card_le (fun z hz => by
-            obtain ⟨hz1, hz2⟩ := hsubw z hz
-            simp only [ht, mem_insert, mem_singleton] at hz1 ⊢
-            tauto) (by simpa [hgc] using card_le_three v (a 0) y)
-          exact mem_union_left _ (mem_union_left _ (this ▸ hgt y hy hya))
-        · have : g = insert v (insert (a 0) {x}) := eq_of_subset_of_card_le (fun z hz => by
-            obtain ⟨hz1, hz2⟩ := hsubw z hz
-            simp only [ht, mem_insert, mem_singleton] at hz1 ⊢
-            tauto) (by simpa [hgc] using card_le_three v (a 0) x)
-          exact mem_union_left _ (mem_union_left _ (this ▸ hgt x hx hxa))
+      obtain ⟨h1', h2', h3'⟩ := direct15 h hτ hσ hsurj hx hy hxy hxa hya
+      exact ⟨_, h1', h2', h3'⟩
   have h2 : Forces (Complex4.move K h) (Complex4.move K h).tris Z :=
     (forces_of_direct _ Z hdirect).mono_target (fun x hx => by
       by_cases hxZ : x ∈ Z
