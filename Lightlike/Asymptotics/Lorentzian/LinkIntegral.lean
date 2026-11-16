@@ -46,4 +46,35 @@ theorem eprlCoeff_pair (γ : ℝ) (J : ℕ) (u v : Fin (dsp (J : ℤ) 0 + 1) →
   rw [map_smul, inner_smul_left, inner_smul_right, eprlCoeff, Complex.conj_conj]
   ring
 
+/-- `Λ` of a coherent state of spin `n/2` on the level `(p, q)` with `p = n`, `q = 0`, with the
+index cast of `Fin (n+1)` to `Fin (p+q+1)`. -/
+theorem lam_emb_cohState_cast (n p q : ℕ) (hp : p = n) (hq : q = 0)
+    (g : Matrix (Fin 2) (Fin 2) ℂ) (ζ : Fin 2 → ℂ) :
+    lam p q (emb (p + q) *ᵥ fun k : Fin (p + q + 1) => cohState n g (Fin.cast (by omega) k)) ζ =
+      (g 0 0 * ζ 0 + g 1 0 * ζ 1) ^ n := by
+  subst hp hq
+  simpa using lam_emb_cohState p g ζ
+
+/-- `dsp n 0 = n` for the lowest level of `(n/2, ρ)`, `n : ℕ`. -/
+theorem dsp_natCast_zero' (n : ℕ) : dsp (n : ℤ) 0 = n := by
+  rw [dsp_eq]; simp
+
+/-- The coherent state `|n/2, g⟩`, as a vector of the lowest SU(2) level `ℂ^{dsp + 1}`. -/
+noncomputable def cohVec (n : ℕ) (g : Matrix (Fin 2) (Fin 2) ℂ) : Espace (dsp (n : ℤ) 0) :=
+  WithLp.toLp 2 fun k => cohState n g (Fin.cast (by rw [dsp_natCast_zero']) k)
+
+/-- **The coherent state of the lowest level on the chart**: `suV |n/2, g⟩` is, almost everywhere,
+`(‖A e₀‖)⁻¹ · wgt(z) · (g₀₀ z + g₁₀)^n`. -/
+theorem suV_cohVec_ae (n : ℕ) (ρ : ℝ) (g : Matrix (Fin 2) (Fin 2) ℂ) :
+    (suV (n : ℤ) ρ 0 (cohVec n g) : ℂ → ℂ) =ᵐ[MeasureTheory.volume] fun z =>
+      ((nrmA (tlin (0 + p0 (n : ℤ)) (0 + q0 (n : ℤ)) ρ))⁻¹ : ℂ) *
+        (wgt (0 + p0 (n : ℤ)) (0 + q0 (n : ℤ)) ρ z * (g 0 0 * z + g 1 0) ^ n) := by
+  filter_upwards [suV_ae (n : ℤ) ρ 0 (cohVec n g)] with z hz
+  rw [hz]
+  have hp : 0 + p0 (n : ℤ) = n := by simp [p0]
+  have hq : 0 + q0 (n : ℤ) = 0 := by simp [q0]
+  have h := lam_emb_cohState_cast n (0 + p0 (n : ℤ)) (0 + q0 (n : ℤ)) hp hq g ![z, 1]
+  simp only [Matrix.cons_val_zero, Matrix.cons_val_one, mul_one] at h
+  exact congrArg _ (congrArg _ h)
+
 end Lightlike.Asymptotics.Lorentzian
