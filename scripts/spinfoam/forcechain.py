@@ -133,6 +133,94 @@ def direct_forcing_gauge(K, rng, tries=20):
     return None
 
 
+# A pinned counterexample (found by random search over forcing sets of random complexes reachable
+# from the boundary of the 5-simplex): a collapsible forcing gauge set T of size E - V + 1 on a closed
+# 4-manifold triangulation with 48 simplices, and a 3-3 move (sigma = {1,4,5}, tau = {0,6,9}) after which
+# the same T no longer forces: forcing is not preserved by 3-3 for every forcing gauge set.
+CEX_K = [[0, 1, 2, 4, 7], [0, 1, 2, 4, 9], [0, 1, 2, 5, 8], [0, 1, 2, 5, 9], [0, 1, 2, 7, 8], [0, 1, 3, 5, 6], [0, 1, 3, 5, 8], [0, 1, 3, 6, 7], [0, 1, 3, 7, 10], [0, 1, 3, 8, 10], [0, 1, 4, 5, 6], [0, 1, 4, 5, 9], [0, 1, 4, 6, 7], [0, 1, 7, 8, 11], [0, 1, 7, 10, 11], [0, 1, 8, 10, 11], [0, 2, 3, 4, 5], [0, 2, 3, 4, 7], [0, 2, 3, 5, 7], [0, 2, 4, 5, 9], [0, 2, 5, 7, 8], [0, 3, 4, 5, 6], [0, 3, 4, 6, 7], [0, 3, 5, 7, 10], [0, 3, 5, 8, 10], [0, 5, 7, 8, 10], [0, 7, 8, 10, 11], [1, 2, 3, 6, 7], [1, 2, 3, 6, 8], [1, 2, 3, 7, 8], [1, 2, 4, 6, 7], [1, 2, 4, 6, 9], [1, 2, 5, 6, 8], [1, 2, 5, 6, 9], [1, 3, 5, 6, 8], [1, 3, 7, 8, 10], [1, 4, 5, 6, 9], [1, 7, 8, 10, 11], [2, 3, 4, 5, 6], [2, 3, 4, 6, 12], [2, 3, 4, 7, 12], [2, 3, 5, 6, 8], [2, 3, 5, 7, 8], [2, 3, 6, 7, 12], [2, 4, 5, 6, 9], [2, 4, 6, 7, 12], [3, 4, 6, 7, 12], [3, 5, 7, 8, 10]]
+CEX_T = [[0, 1, 4], [0, 1, 5], [0, 1, 7], [0, 1, 8], [0, 2, 3], [0, 2, 5], [0, 2, 9], [0, 3, 6], [0, 3, 7], [0, 4, 6], [0, 6, 7], [0, 7, 11], [0, 10, 11], [1, 2, 6], [1, 2, 9], [1, 3, 5], [1, 3, 6], [1, 3, 10], [1, 4, 9], [1, 5, 9], [1, 6, 9], [1, 8, 11], [1, 10, 11], [2, 3, 4], [2, 3, 6], [2, 3, 8], [2, 4, 12], [2, 5, 6], [2, 5, 7], [2, 6, 8], [2, 7, 8], [3, 4, 5], [3, 4, 6], [3, 4, 7], [3, 5, 10], [3, 7, 8], [3, 7, 10], [3, 7, 12], [3, 8, 10], [4, 5, 9], [4, 6, 12], [5, 6, 8], [6, 7, 12], [7, 10, 11], [8, 10, 11]]
+CEX_SIGMA, CEX_TAU = fs({1, 4, 5}), fs({0, 6, 9})
+
+
+def sigma_not_needed(K, T, sigma):
+    """True if the closure of T under the tetrahedra that do not contain the triangle `sigma` of a
+    3-3 move reaches every triangle except `sigma`: no forcing step needs `sigma`. This is
+    sufficient for T to force after the move (the new triangle tau is then forced by a new
+    tetrahedron), and in all sampled cases it was also necessary."""
+    tets = {t for t in faces(K, 4) if not sigma <= t}
+    Z, ch = set(T), True
+    while ch:
+        ch = False
+        for t in tets:
+            miss = [f for f in map(fs, itertools.combinations(sorted(t), 3)) if f not in Z]
+            if len(miss) == 1:
+                Z.add(miss[0])
+                ch = True
+    return faces(K, 3) - {sigma} <= Z
+
+
+def counterexample_33():
+    """True if the pinned counterexample is valid: T forces on K, sigma not in T, the move is a 3-3 move
+    of K, and T does not force after it."""
+    K = {fs(s) for s in CEX_K}
+    T = {fs(t) for t in CEX_T}
+    st = [s for s in K if CEX_SIGMA <= s]
+    new = [fs((CEX_SIGMA | CEX_TAU) - {a}) for a in CEX_SIGMA]
+    legal = (len(st) == 3 and fs().union(*[s - CEX_SIGMA for s in st]) == CEX_TAU
+             and CEX_TAU not in faces(K, 3) and not any(n in K for n in new) and CEX_SIGMA not in T)
+    K2 = (K - set(st)) | set(new)
+    return (legal and forces(K, T) and collapsible(K, T) and not forces(K2, T)
+            and not sigma_not_needed(K, T, CEX_SIGMA))
+
+
+def moves33(K):
+    """All 3-3 moves of K: (sigma, tau, K after the move)."""
+    tris = faces(K, 3)
+    for sg in sorted(tris, key=sorted):
+        st = [s for s in K if sg <= s]
+        if len(st) != 3:
+            continue
+        tau = fs().union(*[s - sg for s in st])
+        new = [fs((sg | tau) - {a}) for a in sg]
+        if len(tau) == 3 and tau not in tris and not any(n in K for n in new):
+            yield sg, tau, (K - set(st)) | set(new)
+
+
+def minimal_forcing(K, rng):
+    """A random minimal set of triangles that forces every triangle of K."""
+    L = sorted(faces(K, 3), key=sorted)
+    rng.shuffle(L)
+    T = set(L)
+    for f in L:
+        if forces(K, T - {f}):
+            T.discard(f)
+    return T
+
+
+def sampled_equivalence(seeds=25):
+    """For random minimal forcing sets T (not nec. gauge sets) on random complexes and every 3-3 move
+    with sigma not in T: T forces after the move iff `sigma_not_needed`. Returns the counts."""
+    cnt = Counter()
+    for sd in range(seeds):
+        rng = random.Random(1000 + sd)
+        K, T, nv = start()[0], None, 6
+        for _ in range(rng.randrange(3, 20)):
+            r = rng.choice(["15", "24", "33"])
+            if r == "15":
+                K, _ = m15(K, set(), nv, rng)
+                nv += 1
+            else:
+                o = (m24 if r == "24" else m33)(K, set(), rng)
+                if o:
+                    K = o[0]
+        for _ in range(2):
+            T = minimal_forcing(K, rng)
+            for sg, tau, K2 in moves33(K):
+                if sg not in T:
+                    cnt[(sigma_not_needed(K, T, sg), forces(K2, T))] += 1
+    return cnt
+
+
 def start():
     K = {fs(c) for c in itertools.combinations(range(6), 5)}
     return K, {fs(t) for t in itertools.combinations(range(6), 3) if 5 in t}
@@ -166,6 +254,16 @@ def main():
                 if not good and sum(direct.values()) < 15 and fs(K2) not in seen:
                     seen.add(fs(K2))
                     direct[direct_forcing_gauge(K2, rng) is not None] += 1
+    # a pinned counterexample: 3-3 does not preserve forcing for every forcing gauge set
+    if not counterexample_33():
+        print("the pinned 3-3 counterexample no longer holds")
+        return 1
+    print("pinned counterexample: a collapsible forcing set on a 48-simplex 4-sphere loses forcing under 3-3")
+    eq = sampled_equivalence()
+    print("3-3 with T unchanged, (sigma not needed, T forces after the move):", dict(eq))
+    if eq[(True, False)] or eq[(False, True)] or not eq[(True, True)]:
+        print("the sufficient condition and forcing after 3-3 disagree")
+        return 1
     # control 2: the 2-4 move without the added triangle must lose forcing sometimes
     wrong = Counter()
     for sd in range(60):
