@@ -1,5 +1,6 @@
 import Lightlike.PL.PolygonJordan
 import Lightlike.PL.PolygonTriangulation
+import Lightlike.PL.PolygonBall
 
 /-!
 # Checks of the polygonal Jordan theorem
@@ -118,6 +119,11 @@ theorem not_isSimple_bowtie : ¬ bowtie.IsSimple := by
 `(0,0)`, `(1,0)`, `(0,1)`. -/
 theorem triangle_triangulation : ∃ T, IsTriangulation triangle T :=
   exists_triangulation 3 triangle le_rfl triangle_isSimple
+
+/-- **Non-vacuity of the ball theorem.** The theorem applies to the triangle. -/
+theorem triangle_ball : ∃ T, IsTriangulation triangle T ∧ EdgeUnique triangle T ∧
+    SComplex.IsBallIn (SComplex.closure T) :=
+  exists_ball_triangulation 3 triangle le_rfl triangle_isSimple
 
 end Polygon
 end Lightlike.PL
