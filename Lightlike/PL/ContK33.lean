@@ -242,6 +242,26 @@ lemma exists_eps {r : ℝ} (hr : 0 < r) (s t : Fin 3 × Fin 3 → ℝ)
   have := hη0 p0
   linarith
 
+/-- Simple chains close to the trimmed subarcs. -/
+lemma exists_polys (s t : Fin 3 × Fin 3 → ℝ) (hst : ∀ e, 0 ≤ s e ∧ s e < t e ∧ t e ≤ 1) {ε : ℝ}
+    (hε : 0 < ε) : ∃ h : Fin 3 × Fin 3 → List (ℝ × ℝ), ∀ e, IsSimpleChain (h e) ∧
+      (h e).head? = some (D.γ e.1 e.2 (s e)) ∧ (h e).getLast? = some (D.γ e.1 e.2 (t e)) ∧
+      ∀ y ∈ chainSet (h e), ∃ g ∈ D.γ e.1 e.2 '' Icc (s e) (t e), dist y g < ε := by
+  have : ∀ e : Fin 3 × Fin 3, ∃ h : List (ℝ × ℝ), IsSimpleChain h ∧
+      h.head? = some (D.γ e.1 e.2 (s e)) ∧ h.getLast? = some (D.γ e.1 e.2 (t e)) ∧
+      ∀ y ∈ chainSet h, ∃ g ∈ D.γ e.1 e.2 '' Icc (s e) (t e), dist y g < ε := fun e => by
+    have hmap : ∀ τ ∈ Icc (0 : ℝ) 1, s e + τ * (t e - s e) ∈ Icc (s e) (t e) := fun τ hτ =>
+      ⟨by nlinarith [hτ.1, (hst e).2.1], by nlinarith [hτ.2, (hst e).2.1]⟩
+    have hsub : Icc (s e) (t e) ⊆ Icc (0 : ℝ) 1 := Icc_subset_Icc (hst e).1 (hst e).2.2
+    have hc : ContinuousOn (fun τ => D.γ e.1 e.2 (s e + τ * (t e - s e))) (Icc 0 1) :=
+      ((D.cont e.1 e.2).mono hsub).comp (by fun_prop) hmap
+    obtain ⟨l, hl, h1, h2, h3⟩ := exists_simple_chain_near hc hε
+    refine ⟨l, hl, by simpa using h1, by simpa using h2, fun y hy => ?_⟩
+    obtain ⟨τ, hτ, hd⟩ := h3 y hy
+    exact ⟨_, ⟨_, hmap τ hτ, rfl⟩, hd⟩
+  choose h hh using this
+  exact ⟨h, hh⟩
+
 end ContDrawing
 
 end Lightlike.PL
