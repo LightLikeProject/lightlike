@@ -6,7 +6,7 @@ import Lightlike.Asymptotics.EPRL.EprlCoherentVertex
 For `γ > 1` the simplicity constraint selects the lowest irreducible component `k = j⁺ - j⁻` of
 `V_{j⁺} ⊗ V_{j⁻}` (Engle–Pereira–Rovelli–Livine, arXiv:0711.0146, Section III, eq. (27); Barrett–Dowdall–
 Fairbairn–Gomes–Hellmann, arXiv:0902.1170, Section 3.4, Figure 4 and eqs. (17)–(19)). This file copies
-the `γ < 1` definitions of `Fusion.lean` and `Vertex.lean` with the lowest Clebsch–Gordan component
+the `γ < 1` definitions of `Lightlike/Spin4/Fusion.lean` and `Lightlike/Spin4/Vertex.lean` with the lowest Clebsch–Gordan component
 `eprlMapLow` in place of the highest one, for doubled spins `n`, `m` with `m ≤ n` and the `SU(2)` spin
 `k = n - m` on every leg.
 
