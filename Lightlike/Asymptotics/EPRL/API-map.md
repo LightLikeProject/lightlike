@@ -65,6 +65,14 @@ the coherent 15j integral is zero for all boundary data and the even node sums a
 The statement is exact at every spin and is not an asymptotic formula; the sign `(-1)^χ` of the
 source's 15j equation is not compared with these conventions.
 
+For `γ > 1` the lowest Clebsch–Gordan component replaces the sum of the two spins. The map, the
+fusion coefficients and the node tensor are redefined for it [39]. The projection onto Spin(4)
+intertwiners is the Haar average of the conjugation action [40]. The image of the `SU(2)` coherent
+intertwiner is then a Spin(4) integral of the lifted coherent tensor [41], and the leg amplitude of
+the lowest component on coherent states is, up to the abstract Clebsch–Gordan constant `c₀`, the
+product of two overlaps [42]. The positivity and the closed value of `c₀` are not proved, and the
+vertex statement for `γ > 1` is not yet in the library.
+
 If the maximum set of the integrand is finite and the logarithmic phase has nonzero differential at
 each of its points, then there is no critical point of the extended stationary phase and the coherent
 15j integral decays faster than every power of the spin scale: the chart-level statement follows from
@@ -164,6 +172,20 @@ proved here.
 38. Lightlike/Asymptotics/EPRL/Suppression.lean - `Asymptotics.EPRL.local_suppression`,
     `Asymptotics.EPRL.suppression_finite_max`, `Asymptotics.EPRL.coh15j_dichotomy`,
     `Asymptotics.EPRL.eprlCoh_exp_decay_of_no_gluing`
+39. Lightlike/Asymptotics/EPRL/EprlHighMap.lean - `Asymptotics.EPRL.eprlMapLow`,
+    `Asymptotics.EPRL.eprlMapLow_isometry`, `Asymptotics.EPRL.eprlMapLow_equivariant`,
+    `Asymptotics.EPRL.eprlLiftLow`, `Asymptotics.EPRL.eprlIntertwinerLow`,
+    `Asymptotics.EPRL.fusionLow`, `Asymptotics.EPRL.eprlNodeLow`,
+    `Asymptotics.EPRL.eprlNodeLow_eq_eprlIntertwinerLow`
+40. Lightlike/Asymptotics/EPRL/EprlHighProj.lean - `Asymptotics.EPRL.matInt4`,
+    `Asymptotics.EPRL.act4`, `Asymptotics.EPRL.hsInner_conj_of_intertwines`,
+    `Asymptotics.EPRL.projSpin4_eq_integral`
+41. Lightlike/Asymptotics/EPRL/EprlHighNode.lean -
+    `Asymptotics.EPRL.homForm_avgP_eq_matInt`, `Asymptotics.EPRL.projSpin4_matInt`,
+    `Asymptotics.EPRL.eprlIntertwinerLow_homForm_cohInt`
+42. Lightlike/Asymptotics/EPRL/EprlHighLeg.lean - `Asymptotics.EPRL.weight_of_equivariant`,
+    `Asymptotics.EPRL.c0Low`, `Asymptotics.EPRL.legAmp_mul`,
+    `Asymptotics.EPRL.eprlMapLow_cohState_one`, `Asymptotics.EPRL.eprlMapLow_cohState`
 
 ## References
 
