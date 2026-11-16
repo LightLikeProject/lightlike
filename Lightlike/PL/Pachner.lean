@@ -30,7 +30,7 @@ shellings: if `C₁ = C' ∪ {c}`, the exchange `κ(A, B)` is the exchange `κ(A
 `∂B * ∂C₂ * ⋯`) followed by `κ(A, B ∪ {c})` (link `∂(B ∪ c) * ∂C' * ∂C₂ * ⋯`), and both are of
 the same kind with smaller links (`exch_std_split`).
 
-## Main results (this file)
+## Main results
 
 * `BistellarEquivIn`, `BistellarEquiv`: bistellar equivalence (bistellar moves only), inside the
   vertex type and with an unlimited supply of new vertices; `BistellarEquiv.stellarEquiv`.

@@ -19,7 +19,7 @@ This is the formula of Gel'fand–Naimark and Harish-Chandra that recovers `F(1)
 orbital integrals. It is the step of the Plancherel formula where the Plancherel density
 `n² + 4ρ²` comes from.
 
-## Proof
+## Implementation notes
 
 For complex groups the formula is elementary. With `n_r = [[1, r], [0, 1]]` (`nMat`), compare
 the curve `β(t) = [[e^{tw}, r], [0, e^{-tw}]]` (`βc`) with the curve
