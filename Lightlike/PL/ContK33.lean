@@ -89,6 +89,47 @@ structure ContDrawing where
   /-- The two classes are disjoint. -/
   uv_ne : ∀ i j, u i ≠ v j
 
+/-- A drawing of the bipartite graph with edge set `E ⊆ Fin 3 × Fin 3` by continuous arcs (the
+arcs of the pairs outside `E` are not used). With `E = Set.univ` this is a `ContDrawing`. -/
+structure ContDrawingOn (E : Set (Fin 3 × Fin 3)) where
+  /-- The three points of the first class. -/
+  u : Fin 3 → ℝ × ℝ
+  /-- The three points of the second class. -/
+  v : Fin 3 → ℝ × ℝ
+  /-- The arc from `u i` to `v j`, as a map on `[0, 1]` (for `(i, j) ∈ E`). -/
+  γ : Fin 3 → Fin 3 → ℝ → ℝ × ℝ
+  /-- Each arc is continuous. -/
+  cont : ∀ i j, (i, j) ∈ E → ContinuousOn (γ i j) (Icc 0 1)
+  /-- Each arc is injective. -/
+  inj : ∀ i j, (i, j) ∈ E → InjOn (γ i j) (Icc 0 1)
+  /-- Each arc starts at `u i`. -/
+  start : ∀ i j, (i, j) ∈ E → γ i j 0 = u i
+  /-- Each arc ends at `v j`. -/
+  stop : ∀ i j, (i, j) ∈ E → γ i j 1 = v j
+  /-- Two different arcs meet only in common endpoints. -/
+  disj : ∀ i j i' j', (i, j) ∈ E → (i', j') ∈ E → (i, j) ≠ (i', j') →
+    γ i j '' Icc 0 1 ∩ γ i' j' '' Icc 0 1 ⊆ {u i, v j} ∩ {u i', v j'}
+  /-- The three points of the first class are distinct. -/
+  inj_u : Function.Injective u
+  /-- The three points of the second class are distinct. -/
+  inj_v : Function.Injective v
+  /-- The two classes are disjoint. -/
+  uv_ne : ∀ i j, u i ≠ v j
+
+/-- A drawing with all nine edges is a `ContDrawing`. -/
+def ContDrawingOn.toFull (D : ContDrawingOn Set.univ) : ContDrawing where
+  u := D.u
+  v := D.v
+  γ := D.γ
+  cont i j := D.cont i j (Set.mem_univ _)
+  inj i j := D.inj i j (Set.mem_univ _)
+  start i j := D.start i j (Set.mem_univ _)
+  stop i j := D.stop i j (Set.mem_univ _)
+  disj i j i' j' h := D.disj i j i' j' (Set.mem_univ _) (Set.mem_univ _) h
+  inj_u := D.inj_u
+  inj_v := D.inj_v
+  uv_ne := D.uv_ne
+
 namespace ContDrawing
 
 variable (D : ContDrawing)
@@ -402,5 +443,12 @@ theorem no_K33 (D : ContDrawing) : False := by
       inj_u := D.inj_u
       inj_v := D.inj_v
       uv_ne := D.uv_ne }
+
+end Lightlike.PL
+
+namespace Lightlike.PL
+
+/-- **There is no drawing of `K₃,₃` by continuous arcs**, in the form of `ContDrawingOn`. -/
+theorem no_K33_on (D : ContDrawingOn Set.univ) : False := no_K33 D.toFull
 
 end Lightlike.PL
