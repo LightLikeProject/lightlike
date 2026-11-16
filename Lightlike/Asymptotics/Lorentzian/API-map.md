@@ -117,6 +117,11 @@ exponential of the action is the product of the overlap power, the real power of
 the imaginary power of their ratio, and one link of the principal-series vertex, with the boundary
 spinors `ξ = first column of ḡ₁` and `ξ' = first column of w g₂`, is `e^S` times the density of `Ω` [16].
 The sum over the links and the Fubini step, hence the identity of the two amplitudes, are not proved yet.
+One link as an integral over the chart is proved: the contraction of the EPRL matrix coefficients
+`D_{m m'}(a⁻¹ b)` with coherent coefficients equals `(‖A e₀‖²)⁻¹ ∫_ℂ e^S / (‖Z‖² ‖Z'‖²) dw` [17], with
+`‖A e₀‖² = π/(n+1)` for the lowest level, from the Beta integral `∫₀^∞ u^n (1+u)^{-n-2} du = 1/(n+1)`
+[18] and the polar integral over `ℂ` [19]; a numerical check of the identity and of the constant
+is `scripts/asymptotics/link_integral_check.py`.
 
 ## Lean References
 
@@ -182,6 +187,13 @@ The sum over the links and the Fubini step, hence the identity of the two amplit
     `Asymptotics.Lorentzian.inner_principalSeries_eq_integral`,
     `Asymptotics.Lorentzian.exp_triAction_nat`, `Asymptotics.Lorentzian.weight_pair`,
     `Asymptotics.Lorentzian.link_pointwise`, `Asymptotics.Lorentzian.link_eq_lor`
+17. Lightlike/Asymptotics/Lorentzian/LinkIntegral.lean - `Asymptotics.Lorentzian.inner_pi_inv_mul`,
+    `Asymptotics.Lorentzian.eprlVec_sum`, `Asymptotics.Lorentzian.eprlCoeff_pair`,
+    `Asymptotics.Lorentzian.suV_cohVec_eq`, `Asymptotics.Lorentzian.ae_pairing_ne_zero`,
+    `Asymptotics.Lorentzian.link_integral`
+18. Lightlike/Asymptotics/Lorentzian/RadialBeta.lean - `Asymptotics.Lorentzian.radial_integral`
+19. Lightlike/Asymptotics/Lorentzian/NormLowest.lean - `Asymptotics.Lorentzian.norm_sq_wgt`,
+    `Asymptotics.Lorentzian.nrmA_sq_lowest`, `Asymptotics.Lorentzian.link_integral_explicit`
 
 ## References
 

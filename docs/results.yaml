@@ -1036,3 +1036,17 @@
   review: kernel-checked
   note: "For a doubled spin n = 2k and the lowest SU(2) level, with the source spinor the first column of the complex conjugate of g1 and the target spinor the first column of w g2, conj F_{g1}(Z) F_{g2}(Z') = e^S / (|Z|^2 |Z'|^2), where F = hvec n 0 rho of the coherent state, e^S is the power-form action (exp_triAction_nat) and Z, Z' are the transported chart spinors; no sign and no constant appear. NOT PROVED: eprlVertex = lorVertex, and hence the finiteness of lorVertex. Still open: the sum over magnetic configurations as a product over links, Fubini over SL(2,C)^4 x C^10, the substitution X = conj(a) by Haar invariance, and the explicit normalisation constants of suV (abstract nrmA)."
   since: unreleased
+- id: LL-XXXX-a
+  title: One link of the principal-series Lorentzian vertex is an integral over the chart with the explicit constant (n+1)/pi (the identity eprlVertex = lorVertex is not proved)
+  area: Asymptotics
+  file: Lightlike/Asymptotics/Lorentzian/NormLowest.lean
+  decls: [Lightlike.Asymptotics.Lorentzian.link_integral_explicit, Lightlike.Asymptotics.Lorentzian.nrmA_sq_lowest]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: bdfhp-2010, location: "Section 4, eq. (17)", check: "action"}
+      - {ref: engle-pereira-2009, location: "eq. (22)", check: "independent"}
+  review: kernel-checked
+  note: "For n a natural number (the lowest SU(2) level of the principal series (n/2, rho)), SU(2) data g1, g2 and a, b in SL(2,C), the sum over m, m' of conj(coherent_m(g1)) coherent_m'(g2) D_{m m'}(a^-1 b) equals ((n+1)/pi) times the integral over C of e^S / (|Z|^2 |Z'|^2), with Z = a^T (w,1), Z' = b^T (w,1), source spinor the first column of conj(g1), target spinor the first column of w g2 and S the power-form action with 2k = n, p = rho; the constant is pi/(n+1) = the squared norm of the lowest-level vector, from the integral of u^n (1+u)^(-n-2) over (0, infinity) equal to 1/(n+1). NOT PROVED: eprlVertex = lorVertex (the sum over the ten links, the integral over SL(2,C)^4, and the substitution X = conj(a) are open); finiteness of lorVertex is not claimed. Only the lowest K-type and product coherent boundary data. Checked numerically in scripts/asymptotics/link_integral_check.py (not a proof)."
+  since: unreleased
