@@ -14,8 +14,9 @@ What is **assumed**, not constructed: (i) the chart `chart : ℝⁿ → SL(2,ℂ
 neighbourhood of the critical points and its smoothness of the pulled-back action; (ii) the
 amplitude `aLoc + aFar` is the pullback of the Haar density of `SL(2,ℂ)^4` and of the spinor
 measure times the coherent amplitude, with `aLoc` compactly supported near the critical points
-(the Haar measure `SL2C.haar` exists and `Lorentzian/Amplitude.lean` writes the amplitude, but the
-pullback to the chart is not constructed); (iii) the finiteness and nondegeneracy of the
+(the Haar measure `SL2C.haar` exists and
+`Lightlike/Asymptotics/Lorentzian/Amplitude.lean` writes the amplitude, but the pullback to the
+chart is not constructed); (iii) the finiteness and nondegeneracy of the
 critical set `K` (the critical set classification outside SU(2) is not proved); (iv) `hfar` and
 `hint`. The weight `w` stands for the dimension factors.
 
