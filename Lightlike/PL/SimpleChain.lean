@@ -167,6 +167,86 @@ theorem isSimpleChain_reverse {l : List (ℝ × ℝ)} (h : IsSimpleChain l) :
       rw [Set.inter_comm]
       exact hseg
 
+/-- The `i`-th segment of a chain. -/
+def cseg (c : List (ℝ × ℝ)) (i : ℕ) : Set (ℝ × ℝ) := segment ℝ (c.getD i 0) (c.getD (i + 1) 0)
+
+lemma cseg_cons_succ (a : ℝ × ℝ) (c : List (ℝ × ℝ)) (i : ℕ) : cseg (a :: c) (i + 1) = cseg c i := by
+  simp [cseg]
+
+lemma cseg_subset_chainSet : ∀ (c : List (ℝ × ℝ)) (i : ℕ), i + 1 < c.length → cseg c i ⊆ chainSet c
+  | [], i, h => by simp at h
+  | [_], i, h => by simp at h
+  | a :: b :: l, 0, _ => by simp [cseg, chainSet]
+  | a :: b :: l, i + 1, h => by
+    rw [cseg_cons_succ]
+    simp only [chainSet]
+    exact (cseg_subset_chainSet (b :: l) i (by simpa using h)).trans subset_union_right
+
+/-- Consecutive points of a simple chain differ. -/
+lemma IsSimpleChain.getD_ne : ∀ {c : List (ℝ × ℝ)}, IsSimpleChain c → ∀ i, i + 1 < c.length →
+    c.getD i 0 ≠ c.getD (i + 1) 0
+  | [], _, i, h => by simp at h
+  | [_], _, i, h => by simp at h
+  | a :: b :: l, hc, 0, _ => by simpa using hc.1
+  | a :: b :: l, hc, i + 1, h => by
+    simpa using hc.2.2.getD_ne i (by simpa using h)
+
+
+lemma left_mem_cseg (c : List (ℝ × ℝ)) (i : ℕ) : c.getD i 0 ∈ cseg c i := left_mem_segment ℝ _ _
+lemma right_mem_cseg (c : List (ℝ × ℝ)) (i : ℕ) : c.getD (i + 1) 0 ∈ cseg c i :=
+  right_mem_segment ℝ _ _
+
+/-- **Neighbouring segments of a simple chain meet only at their common vertex.** -/
+lemma IsSimpleChain.cseg_inter : ∀ {c : List (ℝ × ℝ)}, IsSimpleChain c → ∀ i j, i + 1 = j →
+    j + 1 < c.length → cseg c i ∩ cseg c j = {c.getD j 0}
+  | [], _, i, j, _, h => by simp at h
+  | [_], _, i, j, _, h => by simp at h
+  | a :: b :: l, hc, 0, j, hij, hj => by
+    subst hij
+    apply Set.eq_singleton_iff_unique_mem.2
+    refine ⟨⟨?_, ?_⟩, fun y ⟨hy1, hy2⟩ => ?_⟩
+    · simpa [cseg] using right_mem_segment ℝ a b
+    · simpa [cseg] using left_mem_segment ℝ b ((b :: l).getD 1 0)
+    · have h2 : y ∈ chainSet (b :: l) := by
+        rw [show cseg (a :: b :: l) 1 = cseg (b :: l) 0 from cseg_cons_succ _ _ _] at hy2
+        exact cseg_subset_chainSet (b :: l) 0 (by simpa using hj) hy2
+      have h1 : y ∈ segment ℝ a b ∩ chainSet (b :: l) := ⟨by simpa [cseg] using hy1, h2⟩
+      rw [hc.2.1] at h1
+      simpa using h1
+  | a :: b :: l, hc, i + 1, j, hij, hj => by
+    subst hij
+    rw [cseg_cons_succ, cseg_cons_succ]
+    simpa using hc.2.2.cseg_inter i (i + 1) rfl (by simpa using hj)
+
+/-- **Non-neighbouring segments of a simple chain are disjoint.** -/
+lemma IsSimpleChain.cseg_disjoint : ∀ {c : List (ℝ × ℝ)}, IsSimpleChain c → ∀ i j, i + 2 ≤ j →
+    j + 1 < c.length → Disjoint (cseg c i) (cseg c j)
+  | [], _, i, j, _, h => by simp at h
+  | [_], _, i, j, _, h => by simp at h
+  | a :: b :: l, hc, 0, j + 1, hij, hj => by
+    rw [Set.disjoint_left]
+    intro y hy1 hy2
+    have hj' : 1 ≤ j := by omega
+    rw [cseg_cons_succ] at hy2
+    have hlen : j + 1 < (b :: l).length := by simpa using hj
+    have h2 : y ∈ chainSet (b :: l) := cseg_subset_chainSet (b :: l) j hlen hy2
+    have h1 : y ∈ segment ℝ a b ∩ chainSet (b :: l) := ⟨by simpa [cseg] using hy1, h2⟩
+    rw [hc.2.1] at h1
+    have hyb : y = b := by simpa using h1
+    subst hyb
+    have hb0 : y ∈ cseg (y :: l) 0 := by simpa [cseg] using left_mem_segment ℝ y ((y :: l).getD 1 0)
+    rcases Nat.lt_or_ge j 2 with hj2 | hj2
+    · have hj1 : j = 1 := by omega
+      subst hj1
+      have := hc.2.2.cseg_inter 0 1 rfl hlen
+      have hmem : y ∈ cseg (y :: l) 0 ∩ cseg (y :: l) 1 := ⟨hb0, hy2⟩
+      rw [this] at hmem
+      exact hc.2.2.getD_ne 0 (by have := hlen; simp only [List.length_cons] at this ⊢; omega) (by simpa using hmem)
+    · exact Set.disjoint_left.1 (hc.2.2.cseg_disjoint 0 j (by omega) hlen) hb0 hy2
+  | a :: b :: l, hc, i + 1, j + 1, hij, hj => by
+    rw [cseg_cons_succ, cseg_cons_succ]
+    exact hc.2.2.cseg_disjoint i j (by omega) (by simpa using hj)
+
 /-- **A closed simple chain is a simple polygon.** -/
 theorem isSimple_ofList {l : List (ℝ × ℝ)} {a b : ℝ × ℝ} (h3 : 3 ≤ (a :: l ++ [b]).length)
     (hc : IsSimpleChain (a :: l ++ [b])) (hab : a ≠ b)
