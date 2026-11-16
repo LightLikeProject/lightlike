@@ -11,6 +11,7 @@ level of the principal series on a coherent state is a power of a linear form.
 -/
 
 open Matrix Complex
+open scoped ComplexConjugate
 open Lightlike.Spin4 Lightlike.SU2 Lightlike.Lorentz
 
 namespace Lightlike.Asymptotics.Lorentzian
@@ -89,5 +90,31 @@ theorem suV_ae (n : ℤ) (ρ : ℝ) (ℓ : ℕ) (x : Espace (dsp n ℓ)) :
   rw [hz1, Pi.smul_apply, hz2, smul_eq_mul]
   unfold tfun
   rw [chart_hvec]
+
+/-- **The pairing of two boosted functions as an integral over the chart**: for homogeneous `F`,
+`G` of the same degree with `L²` charts,
+`⟪π(a) [F], π(b) [G]⟫ = ∫ conj(F(aᵀ(z, 1))) G(bᵀ(z, 1)) dz`. -/
+theorem inner_principalSeries_eq_integral (n : ℤ) (ρ : ℝ) (a b : SL2C) {F G : C2 → ℂ}
+    (hF : IsHomog n ρ F) (hG : IsHomog n ρ G)
+    (hFm : MeasureTheory.MemLp (chart F) 2 MeasureTheory.volume)
+    (hGm : MeasureTheory.MemLp (chart G) 2 MeasureTheory.volume) :
+    inner ℂ (principalSeries n ρ a (hFm.toLp (chart F))) (principalSeries n ρ b (hGm.toLp (chart G))) =
+      ∫ z : ℂ, conj (F ((a : Matrix (Fin 2) (Fin 2) ℂ)ᵀ *ᵥ ![z, 1])) *
+        G ((b : Matrix (Fin 2) (Fin 2) ℂ)ᵀ *ᵥ ![z, 1]) := by
+  rw [MeasureTheory.L2.inner_def]
+  refine MeasureTheory.integral_congr_ae ?_
+  have h1 := coeFn_principalSeries n ρ a (hFm.toLp (chart F))
+  have h2 := coeFn_principalSeries n ρ b (hGm.toLp (chart G))
+  have h3 := ae_eq_comp_mob a (MeasureTheory.MemLp.coeFn_toLp hFm)
+  have h4 := ae_eq_comp_mob b (MeasureTheory.MemLp.coeFn_toLp hGm)
+  filter_upwards [h1, h2, h3, h4, ae_den_ne_zero a, ae_den_ne_zero b] with z z1 z2 z3 z4 da db
+  simp only [Function.comp_apply] at z3 z4
+  have ea := chart_actH hF a da
+  have eb := chart_actH hG b db
+  simp only [chart, actH] at ea eb
+  rw [RCLike.inner_apply, z1, z2, z3, z4]
+  simp only [act, chart] at ea eb ⊢
+  rw [← ea, ← eb]
+  ring
 
 end Lightlike.Asymptotics.Lorentzian
