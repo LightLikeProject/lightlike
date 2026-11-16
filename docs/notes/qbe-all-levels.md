@@ -253,3 +253,31 @@ no single series transformation acts on the `x`-sum directly.
 
 Recorded: Route A' is not a one-transformation-plus-one-summation argument. What it would need is not determined here. No further identity was searched, as agreed.
 The classical proofs known to the author of this note go through recoupling (UNVERIFIED), not through a single hypergeometric collapse.
+
+## Rosengren, arXiv:math/0312310: what it proves, and whether it is a route (read from the PDF text; no build, no derivation)
+
+The ID is right: H. Rosengren, "An elementary approach to 6j-symbols (classical, quantum, rational, trigonometric, and elliptic)", arXiv:math/0312310 (v1, Dec 2003),
+open access. It was read from the PDF text (`pdftotext`), not through a summariser.
+
+(1) The Biedenharn–Elliott identity is NOT in the paper: a text search for "Biedenharn", "Elliott", "pentagon", "sum rule" and "Racah identity" finds only a bibliography entry. The
+paper builds the 6j-symbols as connection coefficients `R_kl(a, b, c, d; N; q)` between two bases of products `h_k(x; a) h_{N-k}(x; b)` and `h_l(x; c) h_{N-l}(x; d)` (eq. (3.6)),
+with `h_k(x; a) = (a x, a/x; q)_k` in the basic case. What it states and proves, with the equation numbers of the paper:
+ - orthogonality of the coefficients, (4.1), in the q-Racah case (2.18) (an inversion of (2.16)), (2.7) in the rational case;
+ - Theorem 3.4: existence, uniqueness and the explicit formula for `R_kl` as a `₁₀W₉` series (very-well-poised `₁₀φ₉`); in the basic case it reduces to the q-Racah polynomials (4 phi 3);
+ - Corollary 4.4, eq. (4.8): **convolution formulas**
+   `R^{k+j}_{l}(a,b,c,d; M+N) = Σ_{m+n=l} R^{k}_{m}(a q^{αj}, b q^{β(N-j)}, c, d; M) · R^{j}_{n}(a q^{(1-α)k}, b q^{(1-β)(M-k)}, c q^m, d q^{M-m}; N)`
+   for `α, β ∈ {0, 1}`, proved by comparing coefficients after splitting `h_{m+n}(x; c) = h_m(x; c) h_n(x; c q^m)` (eq. (3.4));
+   its n-fold form (4.10) and the case `M_i = 1` (4.11), the "combinatorial formulas".
+ The convolution (4.8) is an addition formula for the connection coefficients and may be the pentagon in disguise, but the paper does not say so and it is NOT checked here whether (4.8) is equivalent to `Model.BE`.
+
+(2) Chain of identities the paper's proofs use: (a) the splitting (3.4), elementary; (b) the expansion (3.6) and its uniqueness for generic parameters (a dimension count in the space of
+symmetric Laurent polynomials); (c) the "generalized binomial theorem" (3.9), which the paper says is solved by Jackson's `₈W₇` summation ([GR1] = Gasper–Rahman, and Jackson's paper; equation numbers not
+read here); (d) Theorem 3.4, whose proof applies (3.9) twice; (e) Corollary 4.4 by coefficient comparison. Jackson's `₈W₇` summation is DLMF (17.7.14), read and numerically checked above.
+
+(3) Status in the library: steps 1 (Watson), 3 (`₄φ₃` form) and 4 (twisted Racah) are not used by this proof at all. New: (i) the basis and connection-coefficient framework `h_k(x; a)`, with
+the uniqueness statement; (ii) Jackson's terminating `₈φ₇` summation (the library has only the `₆φ₅` case); (iii) the identification of `R_kl` with `qSixJ` at `Q = e^{2πi/r}` including the
+truncation at the level `r` (the paper's parameters are generic); (iv) the derivation of `Model.BE` from (4.8), which the paper does not give. That is at least three new identities or
+constructions, so by the rule agreed for this note the route is recorded and stopped.
+
+Recorded options (no commitment): the second paper to read for a direct proof of the pentagon is the one Rosengren cites for the connection-coefficient view of the Biedenharn–Elliott identity if any
+(none found in this text); and the relation of (4.8) to the pentagon could be tested numerically first, in the basic case at generic `q`, before any Lean statement.
