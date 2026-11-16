@@ -16,6 +16,15 @@ variables are Booleans (`true`: the triangle is in the set), and the pairs `{j, 
 eight common tetrahedra and exactly three of the `σ_i` are in it (the case where `σ` forces the
 fourth), then for every `a` the triangles `N_i` can be added, starting with `N_a`, without any
 forcing by the six new tetrahedra: the two complexes cannot both make progress.
+
+## Main results
+
+* `local24`, `local24_control`: the finite lemma, and its wrong-input control.
+* `forcing_dichotomy24`: if `T` does not force by the common tetrahedra alone, it does not force
+  both complexes.
+* `forces24_of_common`: the easy direction.
+* `forces_move24_iff`: `T ∪ {a, p, q}` forces the complex after the 2-4 move iff the closure of
+  `T` under the tetrahedra other than the removed one is complete.
 -/
 
 open Finset
