@@ -3,9 +3,12 @@
 How the catalog, the task board and the sources are kept. Contributing a proof needs none of this:
 see [CONTRIBUTING.md](../CONTRIBUTING.md).
 
-- **Results.** Add a result to the API map of its folder and to the end of `docs/results.yaml` with
-  the draft ID `LL-XXXX` (`LL-XXXX-a`, `-b`, ... for several; the merge assigns the numbers), then
-  run `python3 scripts/api_map.py check`.
+- **Results.** Add a result to the API map of its folder and, in a file of the pull request's own,
+  `docs/results.d/<topic>.yaml`, as an entry with the draft ID `LL-XXXX` (`LL-XXXX-a`, `-b`, ...
+  for several), then run `python3 scripts/api_map.py check`. One file per pull request, so that
+  parallel pull requests do not conflict at the end of `docs/results.yaml`. At merge,
+  `python3 scripts/api_map.py combine` appends the files to `docs/results.yaml` and removes them,
+  and the drafts get their numbers.
 - **Generated files.** A pull request does not change `docs/RESULTS.md`, the task board,
   `Tasks.lean` or the generated counts in `README.md`, `ROADMAP.md` and `CHANGELOG.md`
   (`scripts/generated.py check`, a hard rule). After merging a batch, one commit runs

@@ -50,6 +50,12 @@ with tempfile.TemporaryDirectory() as d:
     (tmp / "Lightlike" / "Tests" / "T.lean").write_text("example := foo\nexample := Lightlike.bar\n")
     expect("untested results control: a use qualified by the namespace, `Lightlike.bar`, counts",
            ci_check.check_test_coverage(tmp) == [])
+    (tmp / "docs" / "results.d").mkdir()
+    (tmp / "docs" / "results.d" / "new.yaml").write_text("- id: LL-XXXX\n  decls: [Lightlike.baz]\n")
+    w = ci_check.check_test_coverage(tmp)
+    expect("untested results planted: a new entry in docs/results.d is covered too",
+           len(w) == 1 and "Lightlike.baz" in w[0])
+    (tmp / "docs" / "results.d" / "new.yaml").unlink()
     (tmp / "Lightlike" / "Tests" / "T.lean").write_text("example := foo\nexample := h.bar\n")
     expect("untested results planted: dot notation `h.bar` is not counted as a use of `bar`",
            len(ci_check.check_test_coverage(tmp)) == 1)
@@ -580,6 +586,12 @@ with tempfile.TemporaryDirectory() as d:
            len(drc.check_paths(tmp, _f)) == 2)
     (tmp / "Lightlike" / "B" / "C.lean").write_text("/-! `foo` is not proven yet. -/\n")
     expect("doc refs planted: a claim that the proven theorem `foo` is not proven is reported",
+           len(drc.check_claims(tmp, _f)) == 1)
+    (tmp / "docs" / "results.d").mkdir()
+    (tmp / "docs" / "results.d" / "new.yaml").write_text(
+        (tmp / "docs" / "results.yaml").read_text().replace("LL-0001", "LL-XXXX"))
+    (tmp / "docs" / "results.yaml").write_text("[]\n")
+    expect("doc refs planted: the claim is reported when the result is a new entry in docs/results.d",
            len(drc.check_claims(tmp, _f)) == 1)
 
 # Leak check: local paths, other e-mail addresses, token-like strings and secrets files fail;

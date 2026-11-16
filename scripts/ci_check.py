@@ -9,8 +9,9 @@
    `lake exe mk_all --lib Lightlike` adds the missing imports.
 4. Deprecations (needs --build-log): a warning, never a failure, for deprecation warnings in the
    build log beyond the counts per file recorded in `scripts/deprecation_baseline.txt`.
-5. Test coverage: a warning, never a failure, for every declaration of a result in
-   `docs/results.yaml` that no Tests/ directory file and no `*Tests.lean` file mentions.
+5. Test coverage: a warning, never a failure, for every declaration of a result in the registry
+   (`docs/results.yaml`, `docs/results.d/`) that no Tests/ directory file and no `*Tests.lean` file
+   mentions.
 6. Exploratory imports: no Lean module outside an `Exploratory/` folder imports, directly or
    through other modules, a module inside one. Exempt are the build roots that only collect
    modules (`Lightlike.lean` and `Exploratory.lean` files).
@@ -195,15 +196,16 @@ def is_test_file(rel: str) -> bool:
 
 
 def check_test_coverage(root: pathlib.Path = ROOT) -> list[str]:
-    """Warnings: declarations of results in docs/results.yaml mentioned by no test file.
+    """Warnings: declarations of results in the registry (docs/results.yaml and the new entries in
+    docs/results.d/) mentioned by no test file.
     Matching is by the last component of the name, as a whole word, in comment-stripped code, bare
     or qualified by a suffix of its namespace (`C.name`, `B.C.name` for `A.B.C.name`). A use after
     any other dot, as in dot notation `h.name`, is not counted: a regex cannot tell it from an
     unrelated declaration with the same last component."""
-    registry = root / "docs" / "results.yaml"
-    names = [n.strip() for line in re.findall(r"^\s*decls:\s*\[([^\]]*)\]",
-                                              registry.read_text(encoding="utf-8"), re.M)
-             for n in line.split(",") if n.strip()] if registry.exists() else []
+    files = [root / "docs" / "results.yaml", *sorted((root / "docs" / "results.d").glob("*.yaml"))]
+    text = "\n".join(f.read_text(encoding="utf-8") for f in files if f.is_file())
+    names = [n.strip() for line in re.findall(r"^\s*decls:\s*\[([^\]]*)\]", text, re.M)
+             for n in line.split(",") if n.strip()]
     tests = {str(f.relative_to(root)): strip_comments(f.read_text(encoding="utf-8"))
              for f in (root / "Lightlike").rglob("*.lean")
              if is_test_file(str(f.relative_to(root)))}

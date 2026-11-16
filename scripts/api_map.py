@@ -1,13 +1,21 @@
 #!/usr/bin/env python3
 """API maps (`Lightlike/<Area>/API-map.md`) and the results registry (`docs/results.yaml`).
 
+A pull request puts its new entries in a file of its own, `docs/results.d/<topic>.yaml`, with draft
+IDs (`LL-XXXX`, or `LL-XXXX-a`, `LL-XXXX-b`, ... for several), so that parallel pull requests do not
+conflict at the end of `docs/results.yaml`. At merge, `combine` appends those files to
+`docs/results.yaml` and removes them, and the maintainers assign the numbers. The registry is
+`docs/results.yaml` followed by the files of `docs/results.d/`, in file-name order.
+
 Usage, from the repository root:
 
     python3 scripts/api_map.py check [--base REF]   lint the API maps and the registry, and fail if
                                                    docs/RESULTS.md is out of date; with --base, also
                                                    check that IDs at git ref REF are kept
     python3 scripts/api_map.py names               write .lake/api_names.tsv for scripts/NameCheck.lean
-    python3 scripts/api_map.py generate            write docs/RESULTS.md from docs/results.yaml
+    python3 scripts/api_map.py generate            write docs/RESULTS.md from the registry
+    python3 scripts/api_map.py combine             at merge: append docs/results.d/*.yaml to
+                                                   docs/results.yaml and remove those files
     python3 scripts/api_map.py --selftest          planted bad cases must be caught
 
 The API-map format follows Physlib's: `# Title` (in words, not the module path), then exactly the
@@ -81,6 +89,9 @@ def review_cell(review, ref, prefix: str = "") -> str:
 
 # LL-XXXX and LL-XXXX-<letter> are draft IDs in a pull request; merging assigns the numbers
 ID_RE = re.compile(r"^LL-(?:\d{4}|XXXX(?:-[a-z])?)$")
+DRAFT_RE = re.compile(r"^LL-XXXX(?:-[a-z])?$")
+REGISTRY = "docs/results.yaml"
+PENDING = "docs/results.d"
 ENTRY_RE = re.compile(r"^(\d+)\. (\S+\.lean) [-\u2014] (.+)$")
 REF_RE = re.compile(r"^(\d+)\. \S")
 
@@ -189,8 +200,67 @@ def lint_map(root: Path, path: Path) -> tuple[list[str], list[tuple[str, str]]]:
     return [f"{rel}: {e}" for e in errs], names
 
 
+def pending_files(root: Path) -> list[Path]:
+    """The files of new entries, `docs/results.d/*.yaml`, in file-name order."""
+    return sorted((root / PENDING).glob("*.yaml"))
+
+
+def load_file(path: Path) -> list:
+    data = yaml.safe_load(path.read_text(encoding="utf-8")) if path.is_file() else None
+    return data if isinstance(data, list) else []
+
+
 def load(root: Path) -> list[dict]:
-    return yaml.safe_load((root / "docs/results.yaml").read_text(encoding="utf-8")) or []
+    """The registry: `docs/results.yaml`, then the new entries in `docs/results.d/`."""
+    reg = load_file(root / REGISTRY)
+    for p in pending_files(root):
+        reg += load_file(p)
+    return [e for e in reg if isinstance(e, dict)]
+
+
+def lint_pending(root: Path) -> list[str]:
+    """New entries live in `docs/results.d/` with draft IDs; `docs/results.yaml` has numbers only."""
+    errs = [f"{e.get('id')}: a new entry goes in {PENDING}/<topic>.yaml, not in {REGISTRY}"
+            for e in load_file(root / REGISTRY) if isinstance(e, dict) and DRAFT_RE.match(str(e.get("id")))]
+    for p in pending_files(root):
+        rel = p.relative_to(root)
+        data = yaml.safe_load(p.read_text(encoding="utf-8"))
+        if not isinstance(data, list) or not all(isinstance(e, dict) for e in data):
+            errs.append(f"{rel}: must be a list of entries, as in {REGISTRY}")
+            continue
+        errs += [f"{rel}: {e.get('id')}: an entry in {PENDING} has a draft ID (LL-XXXX, or "
+                 f"LL-XXXX-a, LL-XXXX-b, ...); the merge assigns the number"
+                 for e in data if not DRAFT_RE.match(str(e.get("id")))]
+    return errs
+
+
+def combine(root: Path) -> list[str]:
+    """Append the files of `docs/results.d/` to `docs/results.yaml`, in file-name order, and
+    remove them. Refuses, changing nothing, if the joined text would not read as the same entries."""
+    files = pending_files(root)
+    if not files:
+        return []
+    before = load(root)
+    reg = root / REGISTRY
+    text = reg.read_text(encoding="utf-8") if reg.is_file() else ""
+    for p in files:
+        add = p.read_text(encoding="utf-8")
+        if text and not text.endswith("\n"):
+            text += "\n"
+        text += add if add.endswith("\n") or not add else add + "\n"
+    try:
+        after = yaml.safe_load(text) or []
+    except yaml.YAMLError:
+        after = None
+    if after != before:
+        raise SystemExit(f"api_map combine: the files of {PENDING} do not append cleanly to "
+                         f"{REGISTRY} (a document marker, another indentation?); nothing changed")
+    reg.write_text(text, encoding="utf-8")
+    for p in files:
+        p.unlink()
+    if not any((root / PENDING).iterdir()):
+        (root / PENDING).rmdir()
+    return [str(p.relative_to(root)) for p in files]
 
 
 def lint_registry(root: Path, reg: list[dict]) -> list[str]:
@@ -354,6 +424,7 @@ def check(root: Path, base: str | None = None) -> list[str]:
     for m in maps(root):
         errs += lint_map(root, m)[0]
     reg = load(root)
+    errs += lint_pending(root)
     errs += lint_registry(root, reg)
     res = root / "docs/RESULTS.md"
     if not res.is_file() or res.read_text(encoding="utf-8") != render(reg, root):
@@ -424,8 +495,11 @@ def selftest() -> int:
         ("planted: shared brackets", "The lemma [1]", "The lemma [1, 1]", True),
         ("planted: uncited literature reference", " follows {1}.", " follows.", True),
         ("planted: bad ID", "REG:LL-0001", "LL-001", True),
-        ("draft ID accepted", "REG:LL-0001", "LL-XXXX-a", False),
-        ("planted: bad draft ID", "REG:LL-0001", "LL-XXXX-1", True),
+        ("a draft ID in docs/results.d is accepted", "NEW:LL-0001", "LL-XXXX-a", False),
+        ("planted: bad draft ID", "NEW:LL-0001", "LL-XXXX-1", True),
+        ("planted: a numbered ID in docs/results.d", "NEW:LL-0001", "LL-0002", True),
+        ("planted: a draft ID in docs/results.yaml", "REG:LL-0001", "LL-XXXX", True),
+        ("planted: the same draft in two files of docs/results.d", "TWO:LL-0001", "LL-XXXX", True),
         ("planted: unknown tier", "REG:tier: established", "tier: central", True),
         ("planted: RESULTS.md out of date", "RES", "", True),
     ]
@@ -437,19 +511,45 @@ def selftest() -> int:
             (root / "docs").mkdir()
             (root / "Lightlike/Toy/A.lean").write_text(
                 "theorem lemma1 : True := trivial\ntheorem lemma2 : True := trivial\n")
-            mp, rg = GOOD_MAP, GOOD_REG
+            mp, rg, new_files = GOOD_MAP, GOOD_REG, []
             if old and old.startswith("REG:"):
                 rg = rg.replace(old[4:], new)
+            elif old and old[:4] in ("NEW:", "TWO:"):
+                new_files = [GOOD_REG.replace(old[4:], new)] * (2 if old[:4] == "TWO:" else 1)
             elif old and old != "RES":
                 mp = mp.replace(old, new)
             (root / "Lightlike/Toy/API-map.md").write_text(mp)
             (root / "docs/results.yaml").write_text(rg)
+            for n, text in enumerate(new_files):
+                (root / PENDING).mkdir(exist_ok=True)
+                (root / PENDING / f"topic{n}.yaml").write_text(text)
             if old != "RES":
                 (root / "docs/RESULTS.md").write_text(render(load(root), root))
             errs = check(root)
             ok = bool(errs) == bad
             fails += not ok
             print(f"{'ok  ' if ok else 'FAIL'} {name}" + ("" if ok else f": {errs}"))
+    with tempfile.TemporaryDirectory() as d:
+        root = Path(d)
+        (root / "docs" / "results.d").mkdir(parents=True)
+        (root / REGISTRY).write_text(GOOD_REG)
+        for n, i in ((1, "LL-XXXX"), (2, "LL-XXXX-a")):
+            (root / PENDING / f"t{n}.yaml").write_text(GOOD_REG.replace("LL-0001", i))
+        before = load(root)
+        done = combine(root)
+        ok = (len(done) == 2 and not (root / PENDING).exists() and load(root) == before
+              and [e["id"] for e in load_file(root / REGISTRY)] == ["LL-0001", "LL-XXXX", "LL-XXXX-a"])
+        (root / PENDING).mkdir()
+        (root / PENDING / "bad.yaml").write_text("---\n" + GOOD_REG.replace("LL-0001", "LL-XXXX-b"))
+        reg_text = (root / REGISTRY).read_text()
+        try:
+            combine(root)
+            ok = False
+        except SystemExit:
+            ok = ok and (root / REGISTRY).read_text() == reg_text and len(pending_files(root)) == 1
+    fails += not ok
+    print(f"{'ok  ' if ok else 'FAIL'} combine appends docs/results.d in order and removes it; "
+          f"planted: a file that does not append cleanly changes nothing")
     base = yaml.safe_load(GOOD_REG)
     ok = bool(stability([], base)) and not stability(base, base)
     fails += not ok
@@ -460,7 +560,7 @@ def selftest() -> int:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument("cmd", nargs="?", choices=["check", "names", "generate"])
+    ap.add_argument("cmd", nargs="?", choices=["check", "names", "generate", "combine"])
     ap.add_argument("--base", help="git ref whose docs/results.yaml IDs must be kept")
     ap.add_argument("--selftest", action="store_true")
     a = ap.parse_args()
@@ -477,6 +577,10 @@ def main() -> int:
         return 0
     if a.cmd == "names":
         return names(root)
+    if a.cmd == "combine":
+        done = combine(root)
+        print(f"combined into {REGISTRY}: {', '.join(done)}" if done else f"nothing in {PENDING}")
+        return 0
     if a.cmd == "check":
         errs = check(root, a.base)
         for e in errs:

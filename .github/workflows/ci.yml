@@ -62,8 +62,9 @@ jobs:
 
       # lean=true when a pull request changes a Lean or build file (*.lean, lakefile,
       # lake-manifest.json, lean-toolchain), or a file the build job's checks read besides Lean
-      # files: docs/results.yaml and the API maps (DocCheck), ci_check.py, api_map.py, the deprecation
-      # baseline, the task plan (the headers of the proof-task files), and this workflow.
+      # files: the results registry (docs/results.yaml, docs/results.d/) and the API maps
+      # (DocCheck), ci_check.py, api_map.py, the deprecation baseline, the task plan (the headers
+      # of the proof-task files), and this workflow.
       # python=true when it changes scripts/, requirements.txt or this workflow.
       - name: Decide which jobs the change needs [ci-only]
         id: diff
@@ -77,7 +78,7 @@ jobs:
           changed="$RUNNER_TEMP/changed.txt"
           git diff --name-only HEAD^1 HEAD > "$changed"
           lean_re='\.lean$|^lakefile\.(lean|toml)$|^lake-manifest\.json$|^lean-toolchain$'
-          lean_re+='|^docs/results\.yaml$|(^|/)API-map\.md$'
+          lean_re+='|^docs/results\.yaml$|^docs/results\.d/|(^|/)API-map\.md$'
           lean_re+='|^scripts/(ci_check\.py|api_map\.py|deprecation_baseline\.txt)$'
           lean_re+='|^docs/tasks/(decomposition\.yaml|milestones\.md|sources\.yaml|sources-verified\.json)$'
           lean_re+='|^\.github/workflows/ci\.yml$'
