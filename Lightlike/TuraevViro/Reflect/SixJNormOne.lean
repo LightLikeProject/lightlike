@@ -8,6 +8,16 @@ constant is `1` is the evaluation of one terminating very-well-poised basic hype
 (a `₆φ₅` at a root of unity, the quantum analogue of Dougall's `₅F₄` sum): the weighted norm of
 the column of the lowest sixth colour. It is stated here as the hypothesis `QDougall`, and the
 conclusion that every row and every column has norm `1` is derived from it.
+
+## Main results
+
+* `QDougall`: the boundary evaluation, a hypothesis.
+* `sixj_norm_one`: given `QDougall`, every weighted norm of the q-6j matrix is `1`.
+
+## References
+
+* `koekoek-swarttouw-1996`, the q-Racah polynomials. No source for the summation itself has been
+  verified, so none is listed.
 -/
 
 

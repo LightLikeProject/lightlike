@@ -8,7 +8,7 @@ public import Mathlib
 Conventions: spacetime dimension `n`, coordinate index `0` is time, signature is
 "mostly plus" `η = diag(-1, +1, …, +1)` (Misner–Thorne–Wheeler / Wald convention).
 
-## Design notes
+## Implementation notes
 
 * Mathlib (v4.35) has smooth *Riemannian* metrics (`Bundle.ContMDiffRiemannianMetric`) but no
   pseudo-Riemannian / Lorentzian ones. `LorentzianMetric` below follows the Riemannian structure

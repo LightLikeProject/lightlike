@@ -10,7 +10,7 @@ Along the vertical line `x + iy`, `y > 0`, the real part of `ψ` has a strict mi
 real part as the saddle has `Re ψ > Re ψ(s)` (`IsEuclid.re_phaseC_saddle_lt_of_re_eq`). A path on
 which `Re ψ < Re ψ(s)`, such as a descent path from the saddle, therefore never crosses this line.
 
-## The argument
+## Implementation notes
 
 Write `Θ(y) = Im ψ'(x + iy)`, so that `d/dy Re ψ(x + iy) = −Θ(y)`
 (`hasDerivAt_re_phaseC_vertical`). It suffices that `Θ > 0` on `(0, y₀)` and `Θ < 0` on `(y₀, ∞)`

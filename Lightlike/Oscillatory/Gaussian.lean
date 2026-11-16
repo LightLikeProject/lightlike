@@ -21,7 +21,7 @@ writes it as `(2π)^{n/2} (det A)^{-1/2}`, with the branch obtained by continuit
 positive definite `A`. That branch is the eigenvalue product, not the principal root of `det A`:
 the two differ in sign for `A = (1 + 2i) · I₃` (see `invSqrtDet`).
 
-## Proof
+## Implementation notes
 
 Induction on `n` by completing the square in the first variable:
 
@@ -36,7 +36,7 @@ Induction on `n` by completing the square in the first variable:
 Integrability on `ℝⁿ` (needed for Fubini) follows from the coercivity bound
 `μ ∑ xᵢ² ≤ Re ⟨A x, x⟩` (`exists_coercive`), obtained from the minimum on the unit sphere.
 
-## The branch
+**The branch.**
 
 Along the segment `A_t = (1 - t) • 1 + t • A`, `t ∈ [0, 1]`:
 
