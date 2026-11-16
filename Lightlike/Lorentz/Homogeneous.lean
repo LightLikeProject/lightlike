@@ -11,7 +11,9 @@ functions on `ℂ² ∖ 0` that are **homogeneous of degree `(-1+iρ+k, -1+iρ-k
 (`IsHomog`). The space `L²(ℂ)` of `PrincipalSeries.lean` is its affine chart `f(z) = F(z, 1)`:
 `chart_actH` shows that the chart turns `F ↦ F ∘ gᵀ` into the operator `π(g)` of that file.
 
-## The Lie algebra and the Casimirs
+## Implementation notes
+
+The Lie algebra action and the two Casimirs.
 
 For `X ∈ sl(2,ℂ)` (as a real Lie algebra) the generator acts on differentiable `F` by
 `dπ(X) F (ζ) = DF_ζ (Xᵀ ζ)` (`lie`), the derivative of `t ↦ F(γ(t)ᵀ ζ)` at `t = 0` along any curve
