@@ -1190,3 +1190,16 @@
   review: kernel-checked
   note: "The passage from named hypotheses to the asymptotic formula (the sum over the critical points, error O(lambda^(m - n/2 - 1)), the constants of eq. (57)) is proved for a chart action that is smooth only on an open set containing the support of the localised amplitude (weighted_asymptotics_local: a smooth cutoff reduces to the global case), which is what the Lorentzian action needs (logarithms of the overlaps and norms); the 44-variable chart X_a = X0_a cayley(phi_a + i theta_a), z_e = (w0_e + u_e + i v_e, 1) is smooth where the Cayley denominators are nonzero and the overlap products are off the cut (VertexChart.lean: vertexChart, lorChartAction_vertexChart_contDiffOn, lorVertex_asymptotics_vertexChart). NOT PROVED (named hypotheses): the pull-back of the Haar measure and of the densities to the chart (hpull), the classification of the critical set, the invertibility of the Hessian, the remainder bound hfar, the identification of the constants of eq. (57)."
   since: unreleased
+- id: LL-XXXX-a
+  title: The scaled Lorentzian vertex is an integral over R^44 of a(x) e^{lambda S(x)} in the fixed charts of SL(2,C) with Lebesgue density, and its asymptotic formula holds there with the remaining analytic claims as named hypotheses
+  area: Asymptotics
+  file: Lightlike/Asymptotics/Lorentzian/VertexFixChart.lean
+  decls: [Lightlike.Asymptotics.Lorentzian.lorVertex_asymptotics_fixChart, Lightlike.Asymptotics.Lorentzian.lorChartAction_fixVertexChart_contDiffOn, Lightlike.Asymptotics.Lorentzian.fixVertexChart_group_contDiffOn]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: bdfhp-2010, location: "eq. (53)", check: "Regge state"}
+  review: kernel-checked
+  note: "The Haar measure of SL(2,C) is Lebesgue measure in the chart g_0 (FixedChart.lean, density 1); through a measure-preserving linear identification of R^44 with (C^3)^4 x C^10 the vertex of the scaled data (lambda j, lambda p) with constants cc(lambda) is (prod cc) s^-4 times the integral over R^44 of a(x) e^{lambda S(x)}, a = prod 1/(|Z_ab|^2 |Z_ba|^2) independent of lambda, s the Haar normalisation factor (VertexHaarChart.lean). The chart is smooth where the third coordinate of each chart is nonzero, and the sum over the critical points with the error O(lambda^(m - 23)) follows from weighted_asymptotics_local. NOT PROVED (named hypotheses): the joint integrability of the integrand on SL(2,C)^4 x C^10 and the measurability of the outer integral (the vertex is defined as an iterated integral; the existing finiteness is of the complex inner integral, not of its modulus), the classification of the critical set (hK), the invertibility of the Hessian (hdet), the remainder bound (hfar) and its integrability (hint), and the weight bound. The constants of eq. (57) are not computed."
+  since: unreleased

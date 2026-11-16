@@ -82,7 +82,10 @@ constants of eq. (57) holds for an action smooth only on an open set [28]. The H
 `SL(2,ℂ)` is Lebesgue measure in the chart `g_z` of `FixedChart.lean` (density `1`), so, if the
 integrand is jointly integrable, the vertex is `(∏ c_e) s⁻⁴` times the Lebesgue integral of the
 integrand over `(ℂ³)⁴ × ℂ¹⁰` [29]; through a measure-preserving identification with `ℝ⁴⁴` the vertex of the
-scaled data is `(∏ c_e) s⁻⁴ ∫ a(x) e^{λ S(x)} dx` with the `λ`-independent amplitude `a = ∏ Ω_e` [29].
+scaled data is `(∏ c_e) s⁻⁴ ∫ a(x) e^{λ S(x)} dx` with the `λ`-independent amplitude `a = ∏ Ω_e` [29]. The chart `fixVertexChart` is smooth where the
+`λ`-coordinates are nonzero, and the asymptotic formula for the scaled vertex holds in it with the
+cutoff split `a = χ a + (1 - χ) a`; the named hypotheses (joint integrability, `hK`, `hdet`, `hint`,
+`hfar`, the weight bound) are those of the statement [30].
 
 The vertex action `lorAction` is the sum of the triangle actions over the ten edges at the spinors
 `X†z` [9]. Its real part is at most zero where the spinors and overlaps are nonzero [9]. In a chart
@@ -257,6 +260,10 @@ frame (`scripts/asymptotics/lorentzian_hessian_check.py`).
     `Asymptotics.Lorentzian.integral_pi_haar_eq`, `Asymptotics.Lorentzian.lorVertex_eq_fixChart_integral`,
     `Asymptotics.Lorentzian.exists_measurePreserving_vertex_space`, `Asymptotics.Lorentzian.fixVertexChart`,
     `Asymptotics.Lorentzian.chartAmplitude`, `Asymptotics.Lorentzian.lorVertex_scaled_eq_chart_integral`
+30. Lightlike/Asymptotics/Lorentzian/VertexFixChart.lean - `Asymptotics.Lorentzian.fixDomain`,
+    `Asymptotics.Lorentzian.fixVertexChart_group_contDiffOn`,
+    `Asymptotics.Lorentzian.lorChartAction_fixVertexChart_contDiffOn`,
+    `Asymptotics.Lorentzian.lorVertex_asymptotics_fixChart`
 
 ## References
 
