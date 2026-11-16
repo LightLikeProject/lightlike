@@ -10,10 +10,11 @@ end. A chain whose boundary is two vertices joins them: the two lie in one compo
 because a component contains an even number of vertices of odd degree.
 
 This is the combinatorial setting of the proof that an arc does not separate the plane. The proof
-follows the lecture notes "The Jordan Curve Theorem" (chapter 9, at
-`https://pages.vassar.edu/mccleary/files/2011/04/FinalChapter9.pdf`, after M. H. A. Newman), which
-are not a registered source; the statements and proofs here are Lean's own. The part proved here is
-the direction from chains to paths of the notes' Proposition 9.8.
+follows chapter 9 of J. McCleary, *A First Course in Topology: Continuity and Dimension* (AMS,
+2006), after M. H. A. Newman; the numbering used here is that of the lecture-notes version of the
+chapter (`https://pages.vassar.edu/mccleary/files/2011/04/FinalChapter9.pdf`), not checked against
+the printed book. The statements and proofs are Lean's own. The part proved here is the direction
+from chains to paths of Proposition 9.8 of the notes.
 
 ## Main results
 
