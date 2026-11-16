@@ -17,7 +17,7 @@ with `m_{n,ρ}(λ) = |λ|^{2iρ-2} (λ/|λ|)^n` the multiplier of the principal 
 `π T_F(n, ρ)` is the integrated diagonal `∫ K^{n,ρ}_F(z, z) d²z` of the kernel of `π_{n,ρ}(F)`, so
 this is the analytic core of the Plancherel formula of `SL(2, ℂ)`.
 
-## Proof
+## Implementation notes
 
 * **Exponential coordinates.** In `λ = e^{s + iφ}` the measure `d²λ` is `e^{2s} ds dφ`
   (`integral_polar_exp`, from polar coordinates and `r = e^s`). With `Ψ_F(t, θ) = Φ_F(e^{t+iθ})`

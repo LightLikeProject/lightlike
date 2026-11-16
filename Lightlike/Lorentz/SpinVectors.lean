@@ -16,7 +16,7 @@ For `p, q ∈ ℕ` with `p - q = n = 2k` and `x ∈ ℂ^{p+q+1}` we build an exp
 so `tlin p q ρ : ℂ^{2j+1} →ₗ L²(ℂ)` is an intertwiner into the principal series restricted to
 `SU(2)` (`principalSeries_tlin`), and it is nonzero (`tlin_ne_zero`).
 
-## Construction
+## Implementation notes
 
 `Lightlike/SU2/SpinRep.lean` realises spin `j` as the symmetric part of `(ℂ²)^{⊗ 2j}`. Contract the
 `2j` tensor factors with `p` copies of `ζ` and `q` copies of `εζ̄ = (ζ̄₁, -ζ̄₀)`:
