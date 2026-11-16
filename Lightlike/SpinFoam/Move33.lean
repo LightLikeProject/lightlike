@@ -31,11 +31,9 @@ bitmasks of positions, so that every combinatorial hypothesis is checked by `dec
 
 ## References
 
-- H. Ooguri, *Topological lattice models in four dimensions*, Mod. Phys. Lett. A 7, 2799 (1992),
-  arXiv:hep-th/9205090: the model, with 15j vertex amplitudes, and the invariance of its partition
+* `ooguri-1992`: the model, with 15j vertex amplitudes, and the invariance of its partition
   function under the Alexander moves of the triangulation.
-- L. Freidel, D. Louapre, *Diffeomorphisms and spin foam models*, Nucl. Phys. B 662, 279 (2003),
-  arXiv:gr-qc/0212001: the residual symmetry behind the divergences of spin foam state sums and
+* `freidel-louapre-2003`: the residual symmetry behind the divergences of spin foam state sums and
   its gauge fixing, worked out for the Ponzano–Regge model.
 -/
 

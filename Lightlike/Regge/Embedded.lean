@@ -15,14 +15,14 @@ barycentric coordinates are all positive; for a non-degenerate tetrahedron in a 
 this is exactly the topological interior of its convex hull (`openTet_eq_interior`), which is how
 `IsGeometric` states disjointness.
 
-## Main result
+## Main results
 
 * `deficit_eq_zero_of_embedded`: let `E` be a real inner product space of dimension 3 and `x` a
   placement of the vertices of `K` in `E`, with the induced edge lengths. Let the link of the edge
   `ab` be a cycle (`IsCycleLink`), each tetrahedron `{a, b, w i, w (i+1)}` around it non-degenerate,
   and their interiors pairwise disjoint. Then the deficit angle at `ab` is zero.
 
-## Proof
+## Implementation notes
 
 Put an orthonormal frame `e₀, e₁, e₂` with `x b - x a = L • e₀` (`exists_frame`) and write the link
 vertices in cylindrical coordinates around the line `ab` (`cyl_repr`). The dihedral angle of the

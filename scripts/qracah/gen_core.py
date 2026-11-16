@@ -188,7 +188,8 @@ i0=pre.index("/-!"); i1=pre.index("def X0 :")
 head=pre[i0:i1]
 rest=pre[i1:]
 ns="namespace Lightlike.TV.Refl"
-opts="set_option maxHeartbeats 0\nset_option maxRecDepth 100000\n"
+import docs  # module docstrings of the generated files
+opts="set_option maxRecDepth 100000\n"  # the heartbeat limits are per declaration (caps.json, chunk.py)
 def hdr(t): return t
 # base: everything up to X0 def
 base_imps="\n".join(imps)+"\n\n"
@@ -203,10 +204,10 @@ for n in ["X0","E1","E3","E5"]:
         pre_="".join(f"def T{i+1} : Poly := {t}\ndef Y{i+1} : Poly := {_lit(_parse(expand(t)))}\ntheorem tY{i+1} : T{i+1} = Y{i+1} := by decide +kernel\n" for i,t in enumerate(Ts))
         body=pre_+"def X0 : Poly := (add (add T1 T2) (add T3 (neg T4)))\n"+grab(["bigX0"])+"\ntheorem tree_X0 : X0 = bigX0 := by\n  unfold X0; rw [tY1, tY2, tY3, tY4]; decide +kernel"
     # keep def order
-    open(D+f"RacahTree{n}.lean","w").write(base_imps+"import Lightlike.TuraevViro.Reflect.RacahBase\n\n"+opts+"\n"+ns+"\n\n"+body+"\n\nend Lightlike.TV.Refl\n")
+    open(D+f"RacahTree{n}.lean","w").write(base_imps+"import Lightlike.TuraevViro.Reflect.RacahBase\n\n"+docs.DOC[f"Tree{n}"]+"\n\n"+opts+"\n"+ns+"\n\n"+body+"\n\nend Lightlike.TV.Refl\n")
 core="\n".join(l for l in rl if not (l.startswith("def X0") or l.startswith("def E1") or l.startswith("def E3") or l.startswith("def E5") or l.startswith("def big") or l.startswith("theorem tree_")))
 tim="".join(f"import Lightlike.TuraevViro.Reflect.RacahTree{n}\n" for n in ["X0","E1","E3","E5"])
-open(D+"RacahCore.lean","w").write(base_imps+"import Lightlike.TuraevViro.Reflect.RacahBase\n"+tim+"\n"+opts+"\n"+ns+"\n\n"+core)
+open(D+"RacahCore.lean","w").write(base_imps+"import Lightlike.TuraevViro.Reflect.RacahBase\n"+tim+"\n"+docs.DOC["Core"]+"\n\n"+opts+"\n"+ns+"\n\n"+core)
 
 import json as _json
 _json.dump({k:expand(v) for k,v in _names}, open("facs.out","w"), ensure_ascii=False)

@@ -13,208 +13,113 @@ import Lightlike.SpinFoam.EPRLTests
 import Lightlike.SpinFoam.BarrettCraneTests
 
 /-!
-# Trust checks for the Ooguri vertex amplitude, the 3-3 move and the gauge rule
+# Trust checks for the Ooguri vertex amplitude, the Pachner moves and the gauge rule
+
+Each check states a value, a wrong input that gives another value, and a non-vacuity example in its
+own docstring; this header keeps the values, the library results under test, the sources and the
+numerical cross-checks. A check marked "numerical evidence" is not part of the proof.
 
 ## The vertex conventions (`Vertex.lean`)
 
 `vertexContr_eq` proves for all colourings that the contraction of the canonical intertwiners with
 `FourD`'s strand rule is the closed form `vertexAmp` (the 15j symbol `fifteenJSimplex` in the
-pentagram order `(s₀, s₂, s₄, s₁, s₃)`, with signs), for both orientations. The checks below
-evaluate the closed form on explicit colourings at the level of positions (`ampP`), where
+pentagram order `(s₀, s₂, s₄, s₁, s₃)`, with signs), for both orientations. At the level of positions,
 `vertexAmp s col = ampP J K` with `J p q = col (s∖{s_p, s_q})` and `K i = col (s∖{sᵢ})` holds by
 definition.
 
 | check | value | theorem |
 |---|---|---|
 | all spins `0` | `1` | `ampP_zero`, `vertexAmp_zero` |
-| spins `½` on the triangles `{0,1}ᶜ, {0,3}ᶜ, {1,2}ᶜ, {2,3}ᶜ`, virtual spins `½` on the tetrahedra at positions `1, 2` | `1/2` | `ampP_cycle` |
+| spins `½` on `{0,1}ᶜ, {0,3}ᶜ, {1,2}ᶜ, {2,3}ᶜ`, virtual spins `½` on the tetrahedra at positions `1, 2` | `1/2` | `ampP_cycle` |
 | spins `½` on the three triangles and three tetrahedra through the edge of positions `0, 1` | `1/√2` | `ampP_tri` |
 
-The last two values agree with the direct numerical contraction of the five intertwiners with the
-strand rule, for both orientations (`scripts/spinfoam/vertex_check.py`; numerical evidence, not
-proof). `tri_of_ampP_ne_zero` (`Ooguri.lean`) lists the ten triads that a nonzero vertex
-amplitude needs.
+The last two values agree with the numerical contraction of the five intertwiners with the strand
+rule, for both orientations (`scripts/spinfoam/vertex_check.py`; numerical evidence).
+`tri_of_ampP_ne_zero` (`Ooguri.lean`) lists the ten triads that a nonzero vertex amplitude needs.
+Wrong input: the 15j symbol with the identity labelling `(s₀, s₁, s₂, s₃, s₄)`, that is
+`fifteenJSimplex` fed with the vertex order of `Complex4`, gives `0` on the cycle colouring
+(`fifteenJSimplex_identity_labels`).
 
-Wrong input: the 15j symbol with the identity labelling `(s₀, s₁, s₂, s₃, s₄)` instead of the
-pentagram order, i.e. `fifteenJSimplex` fed directly with the vertex order of `Complex4`, gives
-`0` on the same colouring, because it couples the wrong pairs of triangles at the tetrahedron
-opposite `s₀` (`fifteenJSimplex_identity_labels`).
+## The Pachner moves (`Move33.lean`, `Move24.lean`, `Move24Global.lean`, `Move15.lean`, `Move15Global.lean`)
 
-## The 3-3 move (`Move33.lean`)
+The invariance theorems `amplitudeGF_move33`, `amplitudeGF_move24`, `amplitudeGF_move15` and the
+gauge-fixed `amplitudeGF_move33_gauge` are applied to genuine complexes, with every cutoff
+hypothesis checked by `decide +kernel`:
 
-Non-vacuity: `amplitudeGF_move33_example` applies `amplitudeGF_move33` to the 3-3 move
-`{0,2,3} → {4,5,6}` on the closed 4-sphere `Lightlike.FourD.Tests.K2` (34 triangles, 30 tetrahedra,
-12 4-simplices), with no gauge fixing and the cutoffs `3` on the two inner triangles, `6` on every
-tetrahedron and `1` on every other triangle. All cutoff hypotheses are checked by
-`decide +kernel`, so the theorem applies to a genuine complex. `amplitudeGF_move33_T33` applies it
-with the nonempty gauge set `T33`, which fixes every colourable face of `K2` at spin `0` except the
-triangle `{0,2,3}` that the move removes and its three tetrahedra.
+| move | complex | cutoffs | non-vacuity | gauge-fixed |
+|---|---|---|---|---|
+| 3-3 `{0,2,3} → {4,5,6}` (`isMove33`) | `Lightlike.FourD.Tests.K2` (34 triangles, 30 tetrahedra, 12 4-simplices) | `3` on the two inner triangles, `6` on every tetrahedron, `1` elsewhere (`cut33`) | `amplitudeGF_move33_example` | `amplitudeGF_move33_T33`, `amplitudeGF_move33_star1` (`star1`) |
+| 2-4 `{0,1,2,3} → {5,6}` (`isMove24`) | `K1`, the 1-5 subdivision of `∂Δ⁵` | `cut24` | `amplitudeGF_move24_example` | `amplitudeGF_move24_gauge_example` (`T14`, `isGauge_T14`) |
+| 1-5 `{0,1,2,3,4} → {6}` (`isMove15`) | `K0 = ∂Δ⁵` | `cut15`; the sixteen conditions `Cut15` | `amplitudeGF_move15_example` | `amplitudeGF_move15_gauge_example` (`starK0`, `isGauge_starK0`) |
+
+The vertices of the removed simplex are read in sorted order through `orderEmbOfFin_unique`.
+`T33` fixes every colourable face of `K2` at spin `0` except the removed triangle `{0,2,3}` and its
+three tetrahedra.
 
 ## The gauge-fixed state sum
 
-The state sum is also defined for an arbitrary vertex amplitude `a` (`amplitudeGFWith`, equal to
-`amplitudeGF` for `a = ampP`), so that a deliberately wrong amplitude can be run through it.
+`amplitudeGFWith` takes an arbitrary vertex amplitude `a` (`amplitudeGF` is the case `a = ampP`), so
+that a wrong amplitude can be run through the state sum.
 
 | check | value | theorem |
 |---|---|---|
-| `∂Δ⁵`, every face outside the edge `{0,1}` fixed at `0`, cutoff `½` on the faces through it | `5` | `amplitudeGF_sphere6_edge` |
+| `∂Δ⁵`, every face outside the edge `{0,1}` fixed at `0`, cutoff `½` on the faces through it | `5` (`1 + 4`) | `amplitudeGF_sphere6_edge` |
 | 3-3 move on `K2` with the gauge set `T33`, both sides | `1` | `amplitudeGF_T33` |
 | the same with the wrong amplitude `ampBad` | `1` after, `3` before | `ampBad_breaks_move33` |
+| `∂Δ⁵`, the ten triangles through a vertex, or ten with no common vertex | gauge rule holds; sum `1` for every cutoff | `isGauge_starT`, `amplitudeGF_starT`, `isGauge_twistT`, `amplitudeGF_twistT` |
+| `K2`, the fifteen triangles through a vertex, before and after the 3-3 move | gauge rule holds; sum `1` | `isGauge_star1`, `amplitudeGF_K2_star1`, `amplitudeGF_K3_star1` |
+| `gauge9`, `starT` without one triangle | breaks the rule (9 triangles, `E − V + 1 = 10`); sum `5` at cutoff `½` | `not_isGauge_gauge9`, `amplitudeGF_gauge9_one` |
 
-The first value agrees with the direct numerical state sum, where every tetrahedron is summed over
-all its admissible virtual spins (`scripts/recoupling/ooguri_moves_check.py`; numerical evidence,
-not proof). In it only the zero colouring and the constant colouring `½` contribute (`1 + 4`).
+`ampBad` is `ampP` plus `1` on the single colouring `(e34, 0)`, where `ampP` vanishes. Before the 3-3
+move the colouring `colStar` (spin `½` on `{0,2,3}`) gives each of the three 4-simplices around that
+triangle this colouring and adds `2 · 1³`; after the move only the zero colouring survives. So the
+invariance `amplitudeGF_move33` depends on the vertex amplitude, not only on the combinatorics.
 
-Wrong model: `ampBad` is `ampP` plus `1` on the single colouring `(e34, 0)` (spin `½` on one
-triangle), where `ampP` vanishes. Before the 3-3 move the colouring `colStar` with spin `½` on
-`{0,2,3}` gives each of the three 4-simplices around that triangle this colouring, so it adds
-`2 · 1³` to the state sum. After the move only the zero colouring survives. The invariance
-`amplitudeGF_move33` therefore depends on the vertex amplitude, not only on the combinatorics of
-the state sum.
-
-## The 2-4 move (`Move24.lean`, `Move24Global.lean`)
-
-Non-vacuity: `amplitudeGF_move24_example` applies `amplitudeGF_move24` to the 2-4 move
-`{0,1,2,3} → {5,6}` on `K1`, the 1-5 subdivision of `∂Δ⁵`, with the cutoffs `cut24`; every
-cutoff hypothesis is checked by the kernel, and the vertices of the tetrahedron are read in sorted
-order through `orderEmbOfFin_unique`. `amplitudeGF_move24_gauge_example` is the gauge-fixed form
-with the fourteen-triangle gauge set `T14` of `K1` (`isGauge_T14`).
-
-## The 1-5 move (`Move15.lean`, `Move15Global.lean`)
-
-Non-vacuity: `amplitudeGF_move15_example` applies `amplitudeGF_move15` to the 1-5 move
-`{0,1,2,3,4} → {6}` on `K0 = ∂Δ⁵`, with the cutoffs `cut15`; the sixteen cutoff conditions
-`Cut15` are checked by the kernel, and the vertices of the 4-simplex are read in sorted order
-through `orderEmbOfFin_unique`. `amplitudeGF_move15_gauge_example` is the gauge-fixed form with the
-ten triangles `starK0` through a vertex of `K0` (`isGauge_starK0`).
-
-## The gauge rule (`Ooguri.lean`)
-
-| check | value | theorem |
-|---|---|---|
-| `∂Δ⁵`, the ten triangles through a vertex | gauge rule holds; state sum `1` for every cutoff | `isGauge_starT`, `amplitudeGF_starT` |
-| `∂Δ⁵`, ten triangles with no common vertex | gauge rule holds; state sum `1` for every cutoff | `isGauge_twistT`, `amplitudeGF_twistT` |
-| `K2`, the fifteen triangles through a vertex, before and after the 3-3 move | gauge rule holds; state sum `1` for every cutoff | `isGauge_star1`, `amplitudeGF_K2_star1`, `amplitudeGF_K3_star1` |
-
-Wrong input: `gauge9`, the star of `∂Δ⁵` without one triangle, breaks the gauge rule (nine
-triangles, where `E − V + 1 = 10`; `not_isGauge_gauge9`), and its state sum with cutoff `½` is `5`
-instead of `1` (`amplitudeGF_gauge9_one`): the spins on the faces through the edge it leaves free
-are summed over.
-
-Non-vacuity: `amplitudeGF_move33_star1` applies `amplitudeGF_move33_gauge` to the 3-3 move on
-`K2` with the gauge set `star1` and the cutoffs `cut33`, with every hypothesis checked by the
-kernel.
-
-Numerical evidence, not proof: on `∂Δ⁵` a set of ten triangles obeys the gauge rule exactly when
-it forces all twenty triangles to spin `0`, for all 184756 such sets.
+The first value agrees with the numerical state sum over all virtual spins
+(`scripts/recoupling/ooguri_moves_check.py`; numerical evidence). On `∂Δ⁵` a set of ten triangles
+obeys the gauge rule (`Ooguri.lean`) exactly when it forces all twenty triangles to spin `0`, for all
+184756 such sets (numerical evidence).
 
 ## Inputs: the Pachner moves (`Lightlike/FourD/Pachner.lean`)
 
-`Lightlike.FourD.Tests` computes the 1-5, 2-4 and 3-3 moves `K0 → K1 → K2 → K3` on the boundary of the
-5-simplex and their inverses directly. The checks below run the two general theorems on the same
-moves and compare them with the computation.
+`Lightlike.FourD.Tests` computes the moves `K0 → K1 → K2 → K3` on `∂Δ⁵` and their inverses directly;
+the two general theorems are checked against it:
 
 | check | value | theorem | computed |
 |---|---|---|---|
-| the moves with `σ` and `τ` exchanged undo the three moves | `K1 → K0`, `K2 → K1`, `K3 → K2` | `pachner_move_move_predicts` | `pachner_move_move_direct` |
-| Euler characteristic of `K1`, `K2`, `K3` from that of `K0` | `2` | `pachner_euler4_predicts` | `pachner_euler4_direct` |
+| the moves with `σ`, `τ` exchanged undo the three moves | `K1 → K0`, `K2 → K1`, `K3 → K2` | `pachner_move_move_predicts` | `pachner_move_move_direct` |
+| Euler characteristic `euler4` of `K1`, `K2`, `K3` | `2` | `pachner_euler4_predicts` | `pachner_euler4_direct` |
 
-Wrong inputs: repeating the 1-5 move on `K1` without exchanging `σ` and `τ` is not a move, and
-the move formula then returns `K1` itself, not `K0` (`pachner_repeat_fails`); without the signs
-`(-1)^k` the face count `f₀ + ⋯ + f₄` is `62` on `K0` and `92` on `K1`, so the signs in `euler4`
-are what makes it invariant (`pachner_unsigned_euler_fails`). Non-vacuity: `isMove15`,
-`isMove24` and `isMove33` are genuine moves, checked by the kernel, and the theorems are applied
-to them. `scripts/recoupling/ooguri_moves_check.py` repeats the sequence with an independent
-implementation (numerical evidence, not proof).
+Wrong inputs: repeating the 1-5 move on `K1` without exchanging `σ`, `τ` returns `K1`
+(`pachner_repeat_fails`); without the signs `(-1)^k` the face count `f₀ + ⋯ + f₄` is `62` on `K0` and
+`92` on `K1` (`pachner_unsigned_euler_fails`). `scripts/recoupling/ooguri_moves_check.py` repeats the
+sequence independently (numerical evidence).
 
-## Inputs: the injectivity criterion for the EPRL map (`Lightlike/Spin4/Fusion.lean`)
+## Inputs from `Lightlike/Spin4`
 
-`eprlIntertwiner_injective_iff` says that for `0 < γ < 1` the EPRL map is injective exactly when
-`Σ_a 2j⁺_a` is even **or** there are no SU(2) intertwiners. `Lightlike.Spin4.Test` already checks the
-first branch through `eprlIntertwiner_injective` (`injective_third`) and the failure of both
-(`not_injective_counterexample`); the checks below cover the second branch.
-
-| check | value | from the criterion | without the criterion |
+| result | check | value | wrong input |
 |---|---|---|---|
-| `γ = 1/3`, `J = (3, 3, 3, 3)`: SU(2) intertwiners exist, `Σ 2j⁺ = 8` | injective | `eprl_injective_iff_parity_predicts` | `injective_third` (from `eprlIntertwiner_injective`) |
-| `γ = 1/2`, `J = (4, 4, 4, 16)`: no SU(2) intertwiners (triangle condition; `Σ J = 28` is even), `Σ 2j⁺ = 21` odd | injective | `eprl_injective_iff_empty_predicts` | `eprl_injective_iff_empty_direct` (from the intertwiner basis) |
+| EPRL injectivity (`eprlIntertwiner_injective_iff`, `Lightlike/Spin4/Fusion.lean`) | `γ = 1/3`, `J = (3,3,3,3)`: injective (`eprl_injective_iff_parity_predicts`; `injective_third` from `eprlIntertwiner_injective`). `γ = 1/2`, `J = (4,4,4,16)`: no SU(2) intertwiners, `Σ 2j⁺ = 21` odd, injective (`eprl_injective_iff_empty_predicts`, `eprl_injective_iff_empty_direct`) | | the parity-only criterion fails at `(4,4,4,16)` (`eprl_injective_parity_only_fails`; with `not_injective_counterexample` of `Lightlike.Spin4.Test`) |
+| Clebsch–Gordan on the diagonal (`spin4_diag_clebschGordan`, `Lightlike/Spin4/ClebschGordan.lean`) | trace of `cgMat 1 1` at `diag(e^{iθ}, e^{−iθ})` | `2 cos 2θ + 2` (`cg_trace_half_half_predicts`, `cg_trace_half_half_direct`; `cg_trace_predicts` from `trace_eq_of_intertwine`; `card_cgIdx` of `Lightlike.Spin4.Test`) | off the diagonal the trace is `−4`, not `4` (`cg_offdiag_fails`) |
+| double cover (`toSO4_eq_one_iff`, `Lightlike/Spin4/SO4.lean`) | `(−1,−1)` acts as the identity; `(1,−1)`, `(−1,1)` as `x ↦ −x`; `(i,1)`: `1 ↦ i`, `j ↦ k` (from `toSO4_apply`) | `so4_kernel_predicts`, `so4_half_kernel_predicts`, `so4_left_i_values` | "`toSO4` is injective" fails (`so4_trivial_kernel_fails`) |
+| completeness (`spin4Rep_complete`, `Lightlike/Spin4/Completeness.lean`) | `vecRep` (the SO(4) matrix `toSO4Mat`) has labels `(½, ½)` | `completeness_vector_predicts`, `completeness_vector_labels`, `completeness_vector_direct` (`half_half_equiv_vector`) | `(3/2, 0)`, `(0, 3/2)` also have dimension 4 but are not equivalent to `vecRep` (`completeness_vector_wrong_labels`; the continuity hypothesis is needed: `Lightlike.Spin4.Test.spin4Rep_complete_needs_continuity`) |
 
-Wrong model: the criterion without the alternative "no SU(2) intertwiners", "injective exactly
-when `Σ_a 2j⁺_a` is even", is false at `J = (4, 4, 4, 16)` (`eprl_injective_parity_only_fails`).
-Non-vacuity: the labels `label_half_four`, `label_half_sixteen` and `label_third_three` satisfy
-the hypotheses of the theorem. `scripts/recoupling/intertwiner_check.py` (section 6) counts the
-SU(2) intertwiners from the weights (numerical evidence, not proof).
-
-## Inputs: Clebsch–Gordan on the diagonal SU(2) (`Lightlike/Spin4/ClebschGordan.lean`)
-
-`spin4_diag_clebschGordan` gives a linear equivalence that carries `(n/2, m/2)` at `(g, g)` to the
-block-diagonal matrix `cgMat n m g` with the spins `(n + m)/2 − k`, `k ≤ min(n, m)`.
-`Lightlike.Spin4.Test` checks the total dimension of the blocks (`card_cgIdx`) but never applies the
-equivalence; the checks below compare traces, which an equivalence preserves
-(`trace_eq_of_intertwine`), so `cg_trace_predicts` turns the theorem into an identity of characters.
-
-| check | value | from the theorem | computed |
-|---|---|---|---|
-| trace of `cgMat 1 1` at `diag(e^{iθ}, e^{−iθ})` | `2 cos 2θ + 2` | `cg_trace_half_half_predicts` | `cg_trace_half_half_direct` (the spin-1 block plus the spin-0 block, and the trace of `(½, ½)` at `(g, g)`) |
-
-Wrong input: off the diagonal. At `(g₊, g₋) = (−1, 1)` the trace of `(½, ½)` is `−4`, while the
-blocks have trace `4` at `−1`, so no equivalence carries `(½, ½)` at every pair `(g, h)` to the
-blocks at `g` (`cg_offdiag_fails`): the theorem needs `g₊ = g₋`. Non-vacuity: the theorem has no
-hypotheses; it is applied at `n = m = 1` for every `θ`. `scripts/recoupling/intertwiner_check.py`
-(section 7) compares the two characters as Laurent polynomials for all doubled `n, m ≤ 8` and
-repeats the off-diagonal control (numerical evidence, not proof).
-
-## Inputs: the double cover Spin(4) → SO(4) (`Lightlike/Spin4/SO4.lean`)
-
-`toSO4` sends `(p, q) ∈ SU(2) × SU(2)` to `x ↦ p x q̄` on the quaternions, and
-`toSO4_eq_one_iff` says that its kernel is `{(1, 1), (−1, −1)}`. The checks compare the theorem
-with the action computed from `toSO4_apply`.
-
-| check | value | from the theorem | computed |
-|---|---|---|---|
-| `(−1, −1)` | the identity | `so4_kernel_predicts` | `so4_kernel_direct` (`x ↦ (−1) x (−1)* = x`) |
-| `(1, −1)` and `(−1, 1)` | one element, not the identity | `so4_half_kernel_predicts` | `so4_half_kernel_direct` (both are `x ↦ −x`), `so4Mat_one_negOne` (the matrix `−1`) |
-| `(i, 1)` | `1 ↦ i`, `j ↦ k` | | `so4_left_i_values` |
-
-Wrong input: "`toSO4` is injective" fails, since `(−1, −1)` lies in the kernel
-(`so4_trivial_kernel_fails`). Non-vacuity: `toSO4_eq_one_iff` has no hypotheses; it is applied at
-`(−1, −1)`, `(1, −1)` and `(−1, 1)`. `scripts/recoupling/intertwiner_check.py` (section 8)
-computes the matrices of the 64 pairs from the quaternion group `{±1, ±i, ±j, ±k}`, finds the
-kernel `{(1, 1), (−1, −1)}` among them and checks that every image lies in SO(4) (an independent
-computation, not proof).
-
-## Inputs: completeness of the `(j₊, j₋)` representations (`Lightlike/Spin4/Completeness.lean`)
-
-`spin4Rep_complete` says that every continuous irreducible representation of Spin(4) on `ℂᵈ` is
-equivalent to some `(n/2, m/2)`; `Lightlike.Spin4.Test.spin4Rep_complete_needs_continuity` shows that the
-continuity hypothesis is needed. The checks below apply the theorem to the vector representation
-`vecRep`, the SO(4) matrix of `toSO4Mat` with its entries viewed as complex numbers.
-
-| check | value | from the theorem | computed |
-|---|---|---|---|
-| labels of `vecRep` | `(½, ½)` | `completeness_vector_predicts` (some `(n/2, m/2)`) and `completeness_vector_labels` (any equivalence has `n = m = 1`: dimension `(n + 1)(m + 1) = 4`, traces `−4` at `(1, −1)` and `(−1, 1)`) | `completeness_vector_direct` (an explicit equivalence, from `half_half_equiv_vector`) |
-
-Wrong input: `(3/2, 0)` and `(0, 3/2)` also have dimension 4, but `vecRep` is equivalent to neither
-(`completeness_vector_wrong_labels`): one of the two traces would be `+4`. Non-vacuity: `vecRep`
-satisfies the hypotheses (`continuous_vecRep`, `vecRep_irreducible`).
-`scripts/recoupling/intertwiner_check.py` (section 9) lists the labels of dimension 4, finds that
-the traces force `(1, 1)`, and compares the character `4 cos a cos b` of `vecRep` on the torus with
-`χ_½(a) χ_½(b)` and with the characters of the wrong labels (an independent computation, not
-proof).
+The labels `label_half_four`, `label_half_sixteen`, `label_third_three` and `vecRep` (`continuous_vecRep`,
+`vecRep_irreducible`) satisfy the hypotheses. Independent computations in
+`scripts/recoupling/intertwiner_check.py` (sections 6–9: intertwiner counts, characters for doubled
+`n, m ≤ 8`, the 64 pairs from the quaternion group, the torus characters) agree (numerical evidence).
 
 ## References
 
-- H. Ooguri, *Topological lattice models in four dimensions*, Mod. Phys. Lett. A 7, 2799 (1992),
-  arXiv:hep-th/9205090: the vertex amplitude and the state sum that these checks test.
-- V. Bonzom, M. Smerlak, *Bubble divergences from cellular cohomology*, Lett. Math. Phys. 93, 295
-  (2010), arXiv:1004.5196: the number of divergent spin sums, `E − V + 1` on a 4-sphere, which
-  the gauge rule matches.
-- W. Kamiński, M. Kisielowski, J. Lewandowski, *The kernel and the injectivity of the EPRL map*,
-  Class. Quantum Grav. 29, 085001 (2012), arXiv:1109.5023, Theorem 2: the injectivity criterion
-  that `eprlIntertwiner_injective_iff` extends.
-- A. R. Edmonds, *Angular Momentum in Quantum Mechanics*, Princeton University Press (1957),
-  Ch. 3: the coupling of two angular momenta, `j₊ ⊗ j₋ = ⊕_{k} (j₊ + j₋ − k)`, that
+* `ooguri-1992`: the vertex amplitude and the state sum that these checks test.
+* `kaminski-kisielowski-lewandowski-2011`, Theorem 2: the injectivity criterion that
+  `eprlIntertwiner_injective_iff` extends.
+* `edmonds-1957`, Ch. 3: the coupling of two angular momenta, `j₊ ⊗ j₋ = ⊕_{k} (j₊ + j₋ − k)`, that
   `spin4_diag_clebschGordan` proves on the diagonal SU(2).
+
+The number of divergent spin sums, `E − V + 1` on a 4-sphere, which the gauge rule matches, is from
+Bonzom–Smerlak, *Bubble divergences from cellular cohomology*, Lett. Math. Phys. 93, 295 (2010),
+arXiv:1004.5196 (not in `sources.yaml`).
 -/
 
 open Finset Lightlike.Recoupling PhyslibAlpha.Sl2 Lightlike.Pentagon

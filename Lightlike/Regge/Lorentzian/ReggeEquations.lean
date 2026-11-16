@@ -24,7 +24,7 @@ As in the Euclidean case (`Lightlike/Regge/D4/ReggeEquations.lean`) the action i
 of the edge data, here the signed squared lengths, which are the natural variables of Lorentzian
 Regge calculus: they change sign across the light cone, the lengths do not.
 
-## Definitions
+## Main results
 
 * `LorLengthsNondeg4 K L`: no null triangle and no null tetrahedron, and every 4-simplex
   Lorentzian (`gram4L < 0`), in every labelling.
@@ -32,8 +32,6 @@ Regge calculus: they change sign across the light cone, the lengths do not.
 * `lorAreaPartial L t e`: the partial derivative `∂A_t/∂L_e`; `lorAreaDeriv L v t`: the
   derivative of `A_t` along `L + τ v`.
 * `lorReggePartial K L e = Σ_{t ∋ e} ∂A_t/∂L_e · (ε_t or π Z_t − Σ θ)`.
-
-## Main results
 
 * `lorReggeAction_eq_sum_simps`: the action regrouped 4-simplex by 4-simplex.
 * `hasDerivAt_lorArea`: the derivative of the area at a non-null triangle, for both causal types.

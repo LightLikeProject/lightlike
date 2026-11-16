@@ -1,5 +1,18 @@
 import Lightlike.TuraevViro.Reflect.RacahPoint
 
+/-!
+# The recurrence coefficients do not involve `Z`
+
+Kernel checks (`decide +kernel`) that the polynomials `Dc`, `N1`, `N3`, `N5` and the factors `fQ0`,
+`fQ1`, `fQ2`, `fNa`, `fNc`, `fbn`, `fCq` have no monomial containing `Z`, so that `eval_noZ` of
+`RacahPoint` applies to them (used in `RacahRec`). Written by hand, not generated.
+
+## Main results
+
+* `noZ_Dc`, `noZ_N1`, `noZ_N3`, `noZ_N5`: `noZ` holds for the four coefficient polynomials.
+* `noZ_Q0`, `noZ_Q1`, `noZ_Q2`, `noZ_Na`, `noZ_Nc`, `noZ_bn`, `noZ_Cq`: the same for the factors.
+-/
+
 set_option maxRecDepth 100000
 
 namespace Lightlike.TV.Refl

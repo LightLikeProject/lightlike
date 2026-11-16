@@ -105,12 +105,37 @@ remainder bound holds for every order, and it excludes the single vector geometr
 where the normals close. Two opposite triangles close, and one triangle does not [13].
 
 The vertex amplitude itself is written with the fifth `SL(2, ℂ)` element fixed to `1` and the chart
-`z = (1, w)` of each `ℂP¹`; its integrand is measurable, bounded by the product of the densities of
+`z = (w, 1)` of each `ℂP¹`; its integrand is measurable, bounded by the product of the densities of
 `Ω` wherever no overlap vanishes, and each density is integrable on `ℂ` [14]. The finiteness of the
 whole integral is not proved here; the action is in the power form, so its exponential is the
 EPRL integrand for every doubled spin; at an odd doubled spin and a point where the logarithm of
 the earlier form changes branch, the two forms differ by `-1`, and the bound `|e^S| ≤ 1` fails
 for a negative spin [15].
+Towards the identification with the finite principal-series vertex, the lowest SU(2) level of the
+principal series on a coherent state is the `n`-th power of a linear form, and for `2k = n` the
+exponential of the action is the product of the overlap power, the real power of the norms and
+the imaginary power of their ratio, and one link of the principal-series vertex, with the boundary
+spinors `ξ = first column of ḡ₁` and `ξ' = first column of w g₂`, is `e^S` times the density of `Ω` [16].
+The sum over the links and the Fubini step, hence the identity of the two amplitudes, are not proved yet.
+One link as an integral over the chart is proved: the contraction of the EPRL matrix coefficients
+`D_{m m'}(a⁻¹ b)` with coherent coefficients equals `(‖A e₀‖²)⁻¹ ∫_ℂ e^S / (‖Z‖² ‖Z'‖²) dw` [17], with
+`‖A e₀‖² = π/(n+1)` for the lowest level, from the Beta integral `∫₀^∞ u^n (1+u)^{-n-2} du = 1/(n+1)`
+[18] and the polar integral over `ℂ` [19]; a numerical check of the identity and of the constant
+is `scripts/asymptotics/link_integral_check.py`.
+Assembling the ten links, the coherent principal-series vertex equals the Lorentzian vertex up to the
+explicit factor `(haarScalarFactor haarC SL2C.haar)^4`, which comes from the chart measure of the
+finite vertex; the outer integral of the Lorentzian vertex is therefore finite, and the value of one
+link at spin zero is `π` [20].
+The inner integral over `ℂ^10` also converges at every point of `SL(2, ℂ)^5`, as a product over the ten
+edges of functions bounded by the density of `Ω`, so the Lorentzian vertex of the coherent data is a
+genuine integral [21].
+The asymptotic formula with two critical points is proved as a reduction: the amplitude of the scaled
+data minus `λ^{m - n/2} (A₁ e^{iλθ} + A₂ e^{-iλθ})` is `O(λ^{m - n/2 - 1})` under named hypotheses (a
+chart representation of the amplitude, the two critical points, the Hessians, the far-field decay and
+the constants of eq. (57)), none of which is proved here [22]; these hypotheses are consistent, as a
+model phase with two nondegenerate critical points shows [23]. The Hessian at the SU(2) critical
+point of the regular simplex is numerically nondegenerate, with margin about 0.15 in the Fubini–Study
+frame (`scripts/asymptotics/lorentzian_hessian_check.py`).
 
 ## Lean References
 
@@ -171,6 +196,29 @@ for a negative spin [15].
 15. Lightlike/Asymptotics/Lorentzian/ActionTests.lean - `Asymptotics.Lorentzian.exp_triAction_odd_sign`,
     `Asymptotics.Lorentzian.exp_triAction_even_agree`,
     `Asymptotics.Lorentzian.triWeight_neg_spin_gt_one`
+16. Lightlike/Asymptotics/Lorentzian/Bridge.lean - `Asymptotics.Lorentzian.lam_emb_cohState`,
+    `Asymptotics.Lorentzian.suV_ae`, `Asymptotics.Lorentzian.hvec_cohState`,
+    `Asymptotics.Lorentzian.inner_principalSeries_eq_integral`,
+    `Asymptotics.Lorentzian.exp_triAction_nat`, `Asymptotics.Lorentzian.weight_pair`,
+    `Asymptotics.Lorentzian.link_pointwise`, `Asymptotics.Lorentzian.link_eq_lor`
+17. Lightlike/Asymptotics/Lorentzian/LinkIntegral.lean - `Asymptotics.Lorentzian.inner_pi_inv_mul`,
+    `Asymptotics.Lorentzian.eprlVec_sum`, `Asymptotics.Lorentzian.eprlCoeff_pair`,
+    `Asymptotics.Lorentzian.suV_cohVec_eq`, `Asymptotics.Lorentzian.ae_pairing_ne_zero`,
+    `Asymptotics.Lorentzian.link_integral`
+18. Lightlike/Asymptotics/Lorentzian/RadialBeta.lean - `Asymptotics.Lorentzian.radial_integral`
+19. Lightlike/Asymptotics/Lorentzian/NormLowest.lean - `Asymptotics.Lorentzian.norm_sq_wgt`,
+    `Asymptotics.Lorentzian.nrmA_sq_lowest`, `Asymptotics.Lorentzian.link_integral_explicit`
+20. Lightlike/Asymptotics/Lorentzian/CoherentVertex.lean - `Asymptotics.Lorentzian.map_conjSL_haar`,
+    `Asymptotics.Lorentzian.sum_magBox_linkProd`, `Asymptotics.Lorentzian.eprlIntegrand_iotaProd`,
+    `Asymptotics.Lorentzian.eprlIntegrand_coh`, `Asymptotics.Lorentzian.eprlVertex_eq_lorVertex`,
+    `Asymptotics.Lorentzian.integrable_lorOuter`, `Asymptotics.Lorentzian.link_value_spin_zero`
+21. Lightlike/Asymptotics/Lorentzian/InnerIntegrable.lean - `Asymptotics.Lorentzian.ae_overlap_src`,
+    `Asymptotics.Lorentzian.ae_overlap_tgt`, `Asymptotics.Lorentzian.integrable_edge`,
+    `Asymptotics.Lorentzian.integrable_lorInner`, `Asymptotics.Lorentzian.integrable_lorInner_coh`
+22. Lightlike/Asymptotics/Lorentzian/AsymptoticFormula.lean - `Asymptotics.Lorentzian.triAction_smul`,
+    `Asymptotics.Lorentzian.lorAction_smul`, `Asymptotics.Lorentzian.lorVertex_asymptotic_formula`
+23. Lightlike/Asymptotics/Lorentzian/ExpPhaseTwoPoints.lean - `Asymptotics.Lorentzian.toyAction`,
+    `Asymptotics.Lorentzian.toy_two_points`
 
 ## References
 
