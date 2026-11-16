@@ -76,7 +76,9 @@ on each edge, the product of the overlaps is off the cut of the logarithm [25]. 
 `a < 4`, `z_e = (w₀_e + u_e + i v_e, 1)`) is smooth where the four Cayley denominators are nonzero, and
 the vertex asymptotics hold in it with the smoothness hypothesis replaced by that open set and the
 overlap condition; the Haar density and the identification of the vertex integral with the chart
-integral stay named hypotheses (`aLoc`, `aFar`) [27].
+integral stay named hypotheses (`aLoc`, `aFar`) [27]. Along `t ↦ t v` the chart has the tangent map
+`X_a ↦ X₀_a · chartGen (φ_a + iθ_a)`, `z_e ↦ (u_e + i v_e, 0)` [27]. The two-point formula with the
+constants of eq. (57) holds for an action smooth only on an open set [28].
 
 The vertex action `lorAction` is the sum of the triangle actions over the ten edges at the spinors
 `X†z` [9]. Its real part is at most zero where the spinors and overlaps are nonzero [9]. In a chart
@@ -242,7 +244,11 @@ frame (`scripts/asymptotics/lorentzian_hessian_check.py`).
 27. Lightlike/Asymptotics/Lorentzian/VertexChart.lean - `Asymptotics.Lorentzian.vertexChart`,
     `Asymptotics.Lorentzian.vertexChart_zero`, `Asymptotics.Lorentzian.cayleyDomain`,
     `Asymptotics.Lorentzian.lorChartAction_vertexChart_contDiffOn`,
-    `Asymptotics.Lorentzian.lorVertex_asymptotics_vertexChart`
+    `Asymptotics.Lorentzian.lorVertex_asymptotics_vertexChart`,
+    `Asymptotics.Lorentzian.vertexChart_group_hasDerivAt`, `Asymptotics.Lorentzian.vertexChart_spinor_hasDerivAt`
+28. Lightlike/Asymptotics/Lorentzian/AsymptoticFormulaLocal.lean - `Asymptotics.Lorentzian.weighted_two_points_local`,
+    `Asymptotics.Lorentzian.weighted_two_points_eq57_local`,
+    `Asymptotics.Lorentzian.lorVertex_asymptotic_formula_local`
 
 ## References
 

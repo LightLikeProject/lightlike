@@ -122,6 +122,78 @@ theorem lorChartAction_vertexChart_contDiffOn (j p : Fin 10 → ℝ) (g : BdryDa
     (fun a i k => (vertexChart_group_contDiffOn X₀ w₀ a i k).mono hUc)
     (fun e => (vertexChart_spinor_contDiff X₀ w₀ e).contDiffOn) hP
 
+/-- The chart coordinates are homogeneous: `chartCoord (t v) a = t · chartCoord v a`. -/
+theorem chartCoord_smul (t : ℝ) (v : Fin 44 → ℝ) (a : Fin 4) :
+    chartCoord (t • v) a = fun m => (t : ℂ) * chartCoord v a m := by
+  funext m; simp [chartCoord]; ring
+
+/-- **The tangent map of the chart at `0`, group part**: along `t ↦ t v`, the entries of `X_a` have
+derivative the entries of `X₀_a · chartGen (φ_a + iθ_a)` for `a < 4` (and `0` for `a = 4`). -/
+theorem vertexChart_group_hasDerivAt (X₀ : Fin 5 → SL2C) (w₀ : Fin 10 → ℂ) (v : Fin 44 → ℝ)
+    (a : Fin 5) (i k : Fin 2) :
+    HasDerivAt (fun t : ℝ => ((vertexChart X₀ w₀ (t • v)).1 a : Matrix (Fin 2) (Fin 2) ℂ) i k)
+      ((if h : a.val < 4 then (X₀ a : Matrix (Fin 2) (Fin 2) ℂ) * chartGen (chartCoord v ⟨a.val, h⟩)
+        else 0) i k) 0 := by
+  by_cases h : a.val < 4
+  · simp only [h, ↓reduceDIte]
+    have hev : ∀ᶠ t : ℝ in nhds 0, cayleyS (chartCoord (t • v) ⟨a.val, h⟩) ≠ 1 := by
+      have hc : Continuous fun t : ℝ => cayleyS (chartCoord (t • v) ⟨a.val, h⟩) := by
+        have h1 : Continuous fun t : ℝ => chartCoord (t • v) ⟨a.val, h⟩ :=
+          (contDiff_chartCoord ⟨a.val, h⟩).continuous.comp (continuous_id.smul continuous_const)
+        have h2 : Continuous cayleyS := by unfold cayleyS; fun_prop
+        exact h2.comp h1
+      have h0 : cayleyS (chartCoord ((0 : ℝ) • v) ⟨a.val, h⟩) ≠ 1 := by
+        simp [cayleyS, chartCoord]
+      exact hc.continuousAt.eventually_ne h0
+    have hf : (fun t : ℝ => ((vertexChart X₀ w₀ (t • v)).1 a : Matrix (Fin 2) (Fin 2) ℂ) i k) =ᶠ[nhds 0]
+        fun t : ℝ => ∑ l, (X₀ a : Matrix (Fin 2) (Fin 2) ℂ) i l *
+          cayleyMat (fun m => (t : ℂ) * chartCoord v ⟨a.val, h⟩ m) l k := by
+      filter_upwards [hev] with t ht
+      simp only [vertexChart, h, ↓reduceDIte, Matrix.SpecialLinearGroup.coe_mul]
+      rw [coe_cayley ht, Matrix.mul_apply, chartCoord_smul]
+    refine HasDerivAt.congr_of_eventuallyEq ?_ hf
+    have := HasDerivAt.sum (u := Finset.univ) (fun l _ =>
+      (hasDerivAt_cayleyMat_zero (chartCoord v ⟨a.val, h⟩) l k).const_mul
+        ((X₀ a : Matrix (Fin 2) (Fin 2) ℂ) i l))
+    rw [Matrix.mul_apply]
+    exact this
+  · simp only [h, ↓reduceDIte]
+    have : (fun t : ℝ => ((vertexChart X₀ w₀ (t • v)).1 a : Matrix (Fin 2) (Fin 2) ℂ) i k) =
+        fun _ => (X₀ a : Matrix (Fin 2) (Fin 2) ℂ) i k := by
+      funext t; simp [vertexChart, h]
+    rw [this]
+    simpa using hasDerivAt_const (0 : ℝ) ((X₀ a : Matrix (Fin 2) (Fin 2) ℂ) i k)
+
+/-- A spinor curve is differentiable when its two coordinates are. -/
+theorem hasDerivAt_spinor_of_coords {v : ℝ → Spinor} {v' : Spinor} {t : ℝ}
+    (h : ∀ i, HasDerivAt (fun s => v s i) (v' i) t) : HasDerivAt v v' t := by
+  have hp : HasDerivAt (fun s => (WithLp.ofLp (v s) : Fin 2 → ℂ)) (WithLp.ofLp v') t :=
+    hasDerivAt_pi.mpr h
+  let L : (Fin 2 → ℂ) →L[ℝ] Spinor :=
+    ((EuclideanSpace.equiv (Fin 2) ℂ).symm.toContinuousLinearMap).restrictScalars ℝ
+  exact (L.hasFDerivAt (x := WithLp.ofLp (v t))).comp_hasDerivAt t hp
+
+/-- **The tangent map of the chart at `0`, spinor part**: `z_e` has derivative
+`(u_e + i v_e, 0)` along `t ↦ t v`. -/
+theorem vertexChart_spinor_hasDerivAt (X₀ : Fin 5 → SL2C) (w₀ : Fin 10 → ℂ) (v : Fin 44 → ℝ)
+    (e : Fin 10) :
+    HasDerivAt (fun t : ℝ => (vertexChart X₀ w₀ (t • v)).2 e)
+      !₂[(v ⟨24 + 2 * e, by omega⟩ : ℂ) + Complex.I * (v ⟨25 + 2 * e, by omega⟩ : ℂ), 0] 0 := by
+  refine hasDerivAt_spinor_of_coords fun i => ?_
+  fin_cases i
+  · have := ((hasDerivAt_const (0 : ℝ) (w₀ e)).add
+      ((Complex.ofRealCLM.hasDerivAt (x := (0 : ℝ))).mul_const (v ⟨24 + 2 * e, by omega⟩ : ℂ))).add
+      (((Complex.ofRealCLM.hasDerivAt (x := (0 : ℝ))).mul_const (v ⟨25 + 2 * e, by omega⟩ : ℂ)).const_mul
+        Complex.I)
+    have hfun : (fun s : ℝ => (vertexChart X₀ w₀ (s • v)).2 e ⟨0, by norm_num⟩) =
+        fun s : ℝ => w₀ e + (s : ℂ) * (v ⟨24 + 2 * e, by omega⟩ : ℂ) +
+          Complex.I * ((s : ℂ) * (v ⟨25 + 2 * e, by omega⟩ : ℂ)) := by
+      funext s; simp [vertexChart]
+    rw [hfun]
+    refine this.congr_deriv ?_
+    simp
+  · simpa [vertexChart] using hasDerivAt_const (0 : ℝ) (1 : ℂ)
+
 open Filter MeasureTheory Lightlike.Oscillatory in
 open _root_.Asymptotics in
 /-- **The vertex asymptotics in the 44-variable chart**: `lorVertex_asymptotics_local` for
