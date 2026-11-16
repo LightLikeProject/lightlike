@@ -234,3 +234,22 @@ tools for a different route:
    double sum collapses as described for a few small cases.
  - Route B', representation-theoretic: U_q(sl₂) at a root of unity and the fusion category (Turaev's book, Chapter VI; the pentagon is a coherence axiom there); too large for the library today.
 Not widened: the search for further Racah-type rules was stopped as agreed.
+
+## Route A' count test: one transformation plus one summation is not enough (stop trigger; no derivation written)
+
+Question: does the x-sum of the pentagon, with each 6j symbol written as a balanced `₄φ₃` (step 3), collapse under one transformation of DLMF §17.9
+(Watson (17.9.15) or Bailey (17.9.16)) plus one summation (Jackson (17.7.14) or a `₆φ₅`)?
+
+Count (MEASURED, Python only; structured sampler as above; 3000 admissible tuples at each of `r = 5, 7, 9, 11`). A term of the left side of `Model.BE` is a sum
+over `x` of a product of three 6j symbols, each itself a terminating series (length `n_i = min B - max A`, `n_i ≥ 1` for a nontrivial series). The maximum number
+of nontrivial nested sums on the left is `4` at every level (`x` plus the three symbol series), seen in 1, 9, 40, 81 of the tuples at `r = 5, 7, 9, 11`;
+the right side, a product of two 6j symbols, has at most `2` (two series). A transformation of Watson or Bailey type exchanges one single series for another
+(it removes no sum), and one summation removes one. So at least two sums must be removed beyond what one transformation and one summation can do, in any
+tuple with all three left series nontrivial. The collapse therefore needs a second summation or a second identity (for example a summation of a double
+series, or an identity of Bailey-transform type), which is outside the list allowed for this test.
+
+Second observation: as a function of `x` the summand is a product of three `₄φ₃` series in `x` (three different q-Racah polynomials), not a q-hypergeometric term, so
+no single series transformation acts on the `x`-sum directly.
+
+Recorded: Route A' is not a one-transformation-plus-one-summation argument. What it would need is not determined here. No further identity was searched, as agreed.
+The classical proofs known to the author of this note go through recoupling (UNVERIFIED), not through a single hypergeometric collapse.
