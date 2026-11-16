@@ -141,6 +141,9 @@ The oscillation frequency of eq. (53), `γ Σ k Θ` with the dihedral boost angl
 digits the four frequencies fitted to the numerical amplitude of Donà–Fanizza–Sarno–Speziale
 (`scripts/asymptotics/lorentzian_regge_frequency_check.py`); this is a numerical check of the
 statement, not a proof.
+For a configuration satisfying the z-eliminated critical equations (20), (21), the spinors
+`z_e = (X_a†)⁻¹ ξ_ab` give `Z_ab = ξ_ab` and `Z_ba = r c J ξ_ba`, and the real part of the action
+attains its maximum `0` there [24].
 
 ## Lean References
 
@@ -224,6 +227,9 @@ statement, not a proof.
     `Asymptotics.Lorentzian.lorAction_smul`, `Asymptotics.Lorentzian.lorVertex_asymptotic_formula`
 23. Lightlike/Asymptotics/Lorentzian/ExpPhaseTwoPoints.lean - `Asymptotics.Lorentzian.toyAction`,
     `Asymptotics.Lorentzian.toy_two_points`
+24. Lightlike/Asymptotics/Lorentzian/CriticalSpinors.lean - `Asymptotics.Lorentzian.critZ`,
+    `Asymptotics.Lorentzian.critZ_src`, `Asymptotics.Lorentzian.critZ_tgt`,
+    `Asymptotics.Lorentzian.re_lorAction_critZ`
 
 ## References
 
