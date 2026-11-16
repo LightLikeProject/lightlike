@@ -27,10 +27,13 @@ hypothesis holds at the regular 4-simplex with `γ = 1/2` and `(n, m) = (3, 1)` 
 (`regular_coh15j_hyps`, `regular_eprl_hyps`), and its exterior dihedral angles are
 `π - arccos(1/4)` (`reggeAngle_regular`).
 
-The statements concern the coherent integral forms. The 15j symbol and the EPRL vertex of
-`Lightlike.Spin4.eprlVertex`, contracted with coherent intertwiners, differ from them by a sign
-`(-1)^χ` (BFH, eq. (1)); that identification is a separate statement. The case `γ > 1`, where the
-anti-self-dual boundary state carries the reflected normal, is not covered.
+The statements concern the coherent integral forms. In this library's conventions the 15j symbol
+contracted with coherent intertwiners is exactly the coherent integral, with no sign
+(`k5Contract_cohInt`); for `γ < 1` the EPRL vertex `Lightlike.Spin4.eprlVertex`, contracted with the
+coherent boundary intertwiners, is `eprlCoh` (`eprlVertex_coherent`, `EprlCoherentVertex.lean`). The
+sign `(-1)^χ` of BFH, eq. (1), belongs to their own conventions for the 15j symbol and is not compared
+with this library's. The case `γ > 1`, where the anti-self-dual boundary state carries the reflected
+normal, is not covered.
 -/
 
 open Matrix Complex Filter Asymptotics Finset
