@@ -352,6 +352,7 @@ import Lightlike.Regge.Conv3.ChartCore
 import Lightlike.Regge.Conv3.DihedralTaylor
 import Lightlike.Regge.Conv3.DihedralTaylor2
 import Lightlike.Regge.Conv3.DivergencePeriodic
+import Lightlike.Regge.Conv3.CurvatureEta
 import Lightlike.Regge.Conv3.DihedralScale
 import Lightlike.Regge.Conv3.EdgePoly
 import Lightlike.Regge.Conv3.JetCore
