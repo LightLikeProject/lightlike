@@ -1217,4 +1217,16 @@
   review: kernel-checked
   note: "Let F be continuous on SU(2)^4 with |F| <= 1 whose modulus is one only on a finite set K, such that for p in K the chart function F(chart_p q) is smooth and its logarithmic phase -i log(F/F(p)) has nonzero differential at q = 0. Then for every k, the integral of F^lambda over SU(2)^4 with the Haar probability measure is O(lambda^-k) (suppression_finite_max). Near each p, F^lambda = F(p)^lambda e^{i lambda phi} with phi the cut-off logarithmic phase, and the non-stationary phase theorem (Hormander, ALPDO I, Theorem 7.7.1, formalized in Lightlike/Oscillatory/Localisation.lean) bounds the chart integral (local_suppression); localise_pieces glues the charts. This is the case of BDFGH Theorem 1, case 3 (eq. (22)), and eq. (24) of section 5.1, in which the extended stationary phase has no critical point. Limits: finitely many maxima only; the noncriticality of the maxima is a hypothesis (for the coherent 15j integral with spins that are not proportional to the areas, that the maxima are noncritical is not proved here: it is the geometric lemma relating the phase gradient at a gluing solution to the closure of the spins); no statement for an infinite maximum set."
   since: unreleased
-
+- id: LL-XXXX-a
+  title: For SU(2) boundary data the coherent 15j integral either has a gluing solution or decays exponentially, and the coherent EPRL integral decays exponentially when the self-dual spins admit no gluing solution
+  area: Asymptotics
+  file: Lightlike/Asymptotics/EPRL/Suppression.lean
+  decls: [Lightlike.Asymptotics.EPRL.coh15j_dichotomy, Lightlike.Asymptotics.EPRL.eprlCoh_exp_decay_of_no_gluing]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: bdfgh-2009, location: "Section 4", check: "Asymptotic formula"}
+  review: kernel-checked
+  since: unreleased
+  note: "For SU(2) boundary data g and any doubled spins n, either some point of SU(2)^5 has |F_n| = 1 (the data glue for the spins n) or there is q < 1 with |coh15j(lambda n) g| <= q^lambda for all lambda (coh15j_dichotomy: |F_n| <= 1 by norm_cohAmp_le, the maximum of the continuous |F_n| on the compact group is below 1 when no point reaches 1, then the existing coh15j_exp_decay). The EPRL form: if the self-dual spins n admit no gluing solution then |eprlCoh(lambda n, lambda m) g| <= q^lambda (eprlCoh_exp_decay_of_no_gluing, from eprlCoh = coh15j * coh15j and |coh15j(lambda m)| <= 1). This is the exponential-suppression check of the done-when of T-SF9 in its EPRL form. Limits: the case 'some point has |F_n| = 1' is only named, not analysed (the finite-maximum case with noncritical maxima is suppression_finite_max; critical maxima give the asymptotic formula); nothing is said for spins not proportional to areas beyond the dichotomy."

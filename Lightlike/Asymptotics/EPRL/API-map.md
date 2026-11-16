@@ -54,7 +54,7 @@ If the maximum set of the integrand is finite and the logarithmic phase has nonz
 each of its points, then there is no critical point of the extended stationary phase and the coherent
 15j integral decays faster than every power of the spin scale: the chart-level statement follows from
 the non-stationary phase theorem [30], and `localise_pieces` glues the charts into the `SU(2)^4` statement
-[30]. This is the case in which the proportionality of the spins to the areas is not assumed, and
+[30]. For SU(2) boundary data either some point of `SU(2)^5` has `|F_n| = 1` or the integral decays exponentially, and the coherent EPRL integral decays exponentially when the self-dual spins admit no gluing solution [30]. This is the case in which the proportionality of the spins to the areas is not assumed, and
 the noncriticality of the maxima is the hypothesis; that it holds for spins that are not areas is not
 proved here.
 
@@ -126,7 +126,8 @@ proved here.
     `Asymptotics.EPRL.projNode_cohInt`, `Asymptotics.EPRL.k5Contract_cohInt`,
     `Asymptotics.EPRL.pair_ne_overlap`
 30. Lightlike/Asymptotics/EPRL/Suppression.lean - `Asymptotics.EPRL.local_suppression`,
-    `Asymptotics.EPRL.suppression_finite_max`
+    `Asymptotics.EPRL.suppression_finite_max`, `Asymptotics.EPRL.coh15j_dichotomy`,
+    `Asymptotics.EPRL.eprlCoh_exp_decay_of_no_gluing`
 
 ## References
 

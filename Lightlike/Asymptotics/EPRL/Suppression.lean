@@ -1,3 +1,4 @@
+import Lightlike.Asymptotics.EPRL.EPRLFormula
 import Lightlike.Asymptotics.EPRL.FiniteMax
 import Lightlike.Oscillatory.Localisation
 
@@ -20,6 +21,10 @@ areas; what it needs is that every point of modulus one is noncritical, which is
   where `|G| = 1` only at noncritical points.
 * `suppression_finite_max`: the `SU(2)^4` statement for a continuous `F` with `|F| ≤ 1` and finitely
   many noncritical maxima.
+* `coh15j_dichotomy`: for SU(2) boundary data and any doubled spins, either some point has `|F_n| = 1`
+  (the data glue for these spins) or the integral decays exponentially.
+* `eprlCoh_exp_decay_of_no_gluing`: the coherent EPRL integral decays exponentially when the self-dual
+  spins admit no gluing solution.
 
 ## References
 
@@ -162,5 +167,36 @@ theorem suppression_finite_max (F : (Fin 4 → SU2) → ℂ) (hF : Continuous F)
   simp only [Finset.sum_apply]
   rw [hI]
   ring
+
+/-- **Dichotomy for the coherent 15j integral**: for SU(2) boundary data and any doubled spins, either
+some point of `SU(2)^5` has `|F_n| = 1`, that is, the data glue for the spins `n`, or the integral decays
+exponentially in the spin scale. -/
+theorem coh15j_dichotomy (n : Fin 10 → ℕ) {g : BdryData} (hg : IsSU2Data g) :
+    (∃ X : Fin 5 → SU2, ‖cohAmp n g (fun a => (X a : Matrix (Fin 2) (Fin 2) ℂ))‖ = 1) ∨
+      ∃ q : ℝ, 0 ≤ q ∧ q < 1 ∧ ∀ lam : ℕ, ‖coh15j (lam • n) g‖ ≤ q ^ lam := by
+  by_cases h : ∃ X : Fin 5 → SU2, ‖cohAmp n g (fun a => (X a : Matrix (Fin 2) (Fin 2) ℂ))‖ = 1
+  · exact Or.inl h
+  · refine Or.inr (coh15j_exp_decay n g fun X => ?_)
+    exact lt_of_le_of_ne (norm_cohAmp_le n hg X) fun h1 => h ⟨X, h1⟩
+
+/-- **The coherent EPRL integral decays exponentially unless both halves glue**: if the self-dual spins
+`n` or the anti-self-dual spins `m` admit no gluing solution, then `eprlCoh (λ n) (λ m) g` decays
+exponentially (`eprlCoh = coh15j · coh15j`, and the other factor is bounded by one). -/
+theorem eprlCoh_exp_decay_of_no_gluing (n m : Fin 10 → ℕ) {g : BdryData} (hg : IsSU2Data g)
+    (h : ¬ ∃ X : Fin 5 → SU2, ‖cohAmp n g (fun a => (X a : Matrix (Fin 2) (Fin 2) ℂ))‖ = 1) :
+    ∃ q : ℝ, 0 ≤ q ∧ q < 1 ∧ ∀ lam : ℕ, ‖eprlCoh (lam • n) (lam • m) g‖ ≤ q ^ lam := by
+  obtain ⟨q, hq0, hq1, hq⟩ := (coh15j_dichotomy n hg).resolve_left h
+  refine ⟨q, hq0, hq1, fun lam => ?_⟩
+  rw [eprlCoh_eq_mul, norm_mul]
+  have hm : ‖coh15j (lam • m) g‖ ≤ 1 := by
+    unfold coh15j
+    calc _ ≤ 1 * (haarN (N := 5)).real Set.univ :=
+          MeasureTheory.norm_integral_le_of_norm_le_const (Filter.Eventually.of_forall fun X => by
+            rw [cohAmp_smul, norm_pow]
+            exact pow_le_one₀ (norm_nonneg _) (norm_cohAmp_le m hg X))
+      _ = 1 := by simp
+  calc ‖coh15j (lam • n) g‖ * ‖coh15j (lam • m) g‖ ≤ q ^ lam * 1 :=
+        mul_le_mul (hq lam) hm (norm_nonneg _) (pow_nonneg hq0 lam)
+    _ = q ^ lam := mul_one _
 
 end Lightlike.Asymptotics.EPRL
