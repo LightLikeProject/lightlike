@@ -361,10 +361,20 @@ noncomputable def endVec (g : BdryData) (e : Fin 10) (a : Fin 5) : Fin 3 → ℝ
 def endSign (e : Fin 10) (a : Fin 5) : ℝ := if edgeSrc e = a then 1 else -1
 
 /-- **The Hessian block `H^{X_a X_a}` of the vertex action at a critical configuration** (BDFHP
-Appendix A, eq. (61), in the normalisation of the generators `J = iσ/2`, `K = σ/2`): the second
-derivative at `0` of `t ↦ lorAction j p g (X₀ with X₀ a replaced by X₀ a * Y t) (critZ g X₀)`,
-for a one-parameter subgroup `Y' = Y · genMat (β + iα)`, equals `Σ_{e ∋ a} endForm (j e) (p e)
-σ_e m_e α β`, under `p = γ j` and the vector closure `Σ_e j e m_e = 0` at the node `a`. -/
+Appendix A, eq. (61), in the normalisation of the generators `J = iσ/2`, `K = σ/2`).
+
+Hypotheses: `X₀` satisfies the z-eliminated critical equations (`IsLorCritical`) and the spinors are
+the critical ones (`critZ`); the boundary spinors `ξ_ab = firstCol (g e 0)` and `ξ_ba = firstCol
+(g e 1)` have norm one; `j e = n e / 2` and `p e = γ j e` (BDFHP eq. (24)); on every edge the product
+of the overlaps `⟨Z,ξ⟩⟨Jξ',Z'⟩ = r c` at the critical point is off the cut of the logarithm
+(`∈ slitPlane`); the vector closure `Σ_e j e m_e = 0` holds at the node `a`, with `m_e` the spin vector
+of the spinor at the `a`-end of `e` (BDFHP eq. (25)); `Y : ℝ → SL(2,ℂ)` has `Y 0 = 1` and entrywise
+`Y' = Y · genMat (β + iα)`.
+
+Conclusion: the second derivative at `0` of `t ↦ lorAction j p g (X₀ with X₀ a replaced by X₀ a * Y t)
+(critZ g X₀)` equals `Σ_{e ∋ a} endForm (j e) (p e) σ_e m_e α β`, with `σ_e = 1` at a source end and
+`-1` at a target end. The first derivative is not assumed to vanish: it vanishes by closure
+(`hasDerivAt_lorAction_critical`), which is not needed here. -/
 theorem hessXX_block {j p : Fin 10 → ℝ} {n : Fin 10 → ℕ} {γ : ℝ}
     (hj : ∀ e, j e = (n e : ℝ) / 2) (hp : ∀ e, p e = γ * j e) {g : BdryData} {X₀ : Fin 5 → SL2C}
     (hcrit : IsLorCritical g X₀) (hξ : ∀ e, ‖firstCol (g e 0)‖ = 1)
