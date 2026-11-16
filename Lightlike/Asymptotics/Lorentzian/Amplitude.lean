@@ -9,14 +9,14 @@ BDFHP, eq. before (17) (Barrett, Dowdall, Fairbairn, Hellmann, Pereira, arXiv:09
 `Ω_{ab} = Ω / (⟨Z_{ab}, Z_{ab}⟩ ⟨Z_{ba}, Z_{ba}⟩)`, `Z_{ab} = X_a† z_{ab}`, `Z_{ba} = X_b† z_{ab}`.
 This file writes the integrand and the amplitude, with the integration over `SL(2,ℂ)^4` (the
 fifth element fixed to `1`, since the integral over all five copies diverges) and over the chart
-`z = (1, w)`, `w ∈ ℂ`, of each `ℂP¹`, where `Ω` is Lebesgue measure `dw`.
+`z = (w, 1)`, `w ∈ ℂ`, of each `ℂP¹`, where `Ω` is Lebesgue measure `dw`.
 
 What is **not** here, so that nothing reads stronger than it is: (i) the finiteness of the
 integral (that of the principal-series form of the same amplitude is
 `Lightlike.Lorentz.integrable_eprlIntegrand`, after Engle and Pereira 2009, Section 4; the
 equality of that form with this one is not proved), (ii) the constants `c_{ab} dk_{ab}`, the
 normalisation of `Ω` and the sign `(-1)^χ`, which `lorVertex` takes as the parameters `c_e` and
-omits, and (iii) the spinors with `z_0 = 0`, a null set missed by the chart. The logarithms of the
+omits, and (iii) the spinors with `z_1 = 0`, a null set missed by the chart. The logarithms of the
 action take junk values only where a spinor or an overlap vanishes, a null set.
 -/
 
@@ -40,15 +40,16 @@ theorem continuous_spinAct :
   · exact (h00.mul v0).add (h01.mul v1)
   · exact (h10.mul v0).add (h11.mul v1)
 
-/-- The spinor `(1, w)` of the chart `w ↦ [1 : w]` of `ℂP¹`. -/
-def lorSpinor (w : ℂ) : Spinor := !₂[1, w]
+/-- The spinor `(w, 1)` of the chart `w ↦ [w : 1]` of `ℂP¹`, the chart of the principal series
+on `L²(ℂ)`. -/
+def lorSpinor (w : ℂ) : Spinor := !₂[w, 1]
 
 theorem continuous_lorSpinor : Continuous lorSpinor := by
   unfold lorSpinor
   refine (PiLp.continuous_toLp 2 (fun _ : Fin 2 => ℂ)).comp (continuous_pi fun i => ?_)
   fin_cases i
-  · exact continuous_const
   · exact continuous_id
+  · exact continuous_const
 
 /-- The density `1 / (⟨Z_{ab}, Z_{ab}⟩ ⟨Z_{ba}, Z_{ba}⟩)` of `Ω_{ab}` (BDFHP §4) on the triangle `e`,
 with `Z_{ab} = X_a† z_e` and `Z_{ba} = X_b† z_e`. -/
@@ -56,7 +57,7 @@ noncomputable def lorEdgeDensity (X : Fin 5 → SL2C) (z : Fin 10 → Spinor) (e
   (‖spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)‖ ^ 2 *
     ‖spinAct (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)‖ ^ 2)⁻¹
 
-/-- **The integrand of the Lorentzian vertex** in the chart `z_e = (1, w_e)` of each `ℂP¹`:
+/-- **The integrand of the Lorentzian vertex** in the chart `z_e = (w_e, 1)` of each `ℂP¹`:
 `e^{S[X, z]} ∏_e 1 / (⟨Z_{ab}, Z_{ab}⟩ ⟨Z_{ba}, Z_{ba}⟩)`, with `S = lorAction`. -/
 noncomputable def lorIntegrand (j p : Fin 10 → ℝ) (g : BdryData) (X : Fin 5 → SL2C)
     (w : Fin 10 → ℂ) : ℂ :=
@@ -133,10 +134,10 @@ theorem measurable_lorIntegrand (j p : Fin 10 → ℝ) (g : BdryData) :
     · exact ((continuous_nodeSpinor (edgeSrc e) e).norm.pow 2).measurable
     · exact ((continuous_nodeSpinor (edgeTgt e) e).norm.pow 2).measurable
 
-/-- The spinor `(1, w)` is nonzero. -/
+/-- The spinor `(w, 1)` is nonzero. -/
 theorem lorSpinor_ne_zero (w : ℂ) : lorSpinor w ≠ 0 := by
   intro h
-  have := congrArg (fun v : Spinor => v 0) h
+  have := congrArg (fun v : Spinor => v 1) h
   simp [lorSpinor] at this
 
 /-- The adjoint of an element of `SL(2, ℂ)` acts injectively on spinors: it has determinant `1`. -/
@@ -154,7 +155,7 @@ theorem spinAct_conjTranspose_ne_zero (X : SL2C) {v : Spinor} (hv : v ≠ 0) :
   ext i; fin_cases i <;> simp [spinAct]
 
 /-- **The integrand is bounded by the density of `Ω`** where no overlap vanishes:
-`‖e^S Π_e ρ_e‖ ≤ Π_e ρ_e`, because `Re S ≤ 0` (`re_lorAction_le_zero`). The spinors `X† (1, w)`
+`‖e^S Π_e ρ_e‖ ≤ Π_e ρ_e`, because `Re S ≤ 0` (`re_lorAction_le_zero`). The spinors `X† (w, 1)`
 never vanish, and the overlaps vanish on a null set only, so the hypotheses `h1`, `h2` are the
 only ones left. -/
 theorem norm_lorIntegrand_le {j p : Fin 10 → ℝ} (hj : ∀ e, 0 ≤ j e) {g : BdryData}
@@ -225,7 +226,7 @@ theorem norm_sq_le_spinAct_conjTranspose (X : SL2C) (v : Spinor) :
     (spinAct (X : Matrix (Fin 2) (Fin 2) ℂ)ᴴ v)
   rwa [← spinAct_mul, h1, spinAct_one] at this
 
-/-- The density of `Ω_e` is continuous in `w`, since the spinors `X† (1, w)` never vanish. -/
+/-- The density of `Ω_e` is continuous in `w`, since the spinors `X† (w, 1)` never vanish. -/
 theorem continuous_lorEdgeDensity_aux (A B : SL2C) :
     Continuous fun w : ℂ => (‖spinAct (A : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (lorSpinor w)‖ ^ 2 *
       ‖spinAct (B : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (lorSpinor w)‖ ^ 2)⁻¹ := by
@@ -239,10 +240,10 @@ theorem continuous_lorEdgeDensity_aux (A B : SL2C) :
         (spinAct_conjTranspose_ne_zero B (lorSpinor_ne_zero w))))
 
 
-/-- `‖(1, w)‖² = 1 + ‖w‖²`. -/
+/-- `‖(w, 1)‖² = 1 + ‖w‖²`. -/
 theorem norm_lorSpinor_sq (w : ℂ) : ‖lorSpinor w‖ ^ 2 = 1 + ‖w‖ ^ 2 := by
   rw [EuclideanSpace.norm_sq_eq]
-  simp [lorSpinor, Fin.sum_univ_two]
+  simp [lorSpinor, Fin.sum_univ_two, add_comm]
 
 /-- **The density of `Ω_e` is integrable on the chart `ℂ`** (BDFHP §4): it is continuous and
 `O(|w|⁻⁴)`, because `X†` is bounded below on spinors. At `A = B = 1` it is the Fubini–Study density
@@ -295,13 +296,13 @@ theorem integrable_lorEdgeDensity (A B : SL2C) :
 
 /-! ### Trust check -/
 
-/-- **Known value**: at `X = 1` the density of `Ω_e` on the chart `z = (1, w)` is the
+/-- **Known value**: at `X = 1` the density of `Ω_e` on the chart `z = (w, 1)` is the
 Fubini–Study density `(1 + |w|²)⁻²` of `ℂP¹`. -/
 theorem lorEdgeDensity_one (w : Fin 10 → ℂ) (e : Fin 10) :
     lorEdgeDensity (fun _ => 1) (fun e => lorSpinor (w e)) e = (1 + ‖w e‖ ^ 2)⁻¹ ^ 2 := by
   have h : ‖lorSpinor (w e)‖ ^ 2 = 1 + ‖w e‖ ^ 2 := by
     rw [EuclideanSpace.norm_sq_eq]
-    simp [lorSpinor, Fin.sum_univ_two]
+    simp [lorSpinor, Fin.sum_univ_two, add_comm]
   unfold lorEdgeDensity
   have h1 : ((1 : SL2C) : Matrix (Fin 2) (Fin 2) ℂ) = 1 := Matrix.SpecialLinearGroup.coe_one
   simp only [h1, conjTranspose_one, spinAct_one, h]
