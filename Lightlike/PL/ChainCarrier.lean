@@ -78,4 +78,30 @@ theorem carrier_ofList {a z : ℝ × ℝ} {l : List (ℝ × ℝ)} :
       rw [hcycL (n - 1) (by omega), show n - 1 + 1 = n by omega, hcycN, hcl']
       exact hx
 
+/-- **The parity of a polygon made of two arcs is the sum of the parities of the arcs.** -/
+theorem parity_two_arcs (a b x : ℝ × ℝ) (m₁ m₂ : List (ℝ × ℝ)) :
+    (Polygon.ofList (a :: m₁ ++ b :: m₂)).parity x =
+      chainParity x (a :: m₁ ++ [b]) + chainParity x (b :: m₂ ++ [a]) := by
+  have h2 : 2 ≤ (a :: m₁ ++ b :: m₂).length := by simp; omega
+  rw [Polygon.parity_ofList _ x a h2]
+  have e : (a :: m₁ ++ b :: m₂) ++ [(a :: m₁ ++ b :: m₂).getD 0 a] = (a :: m₁) ++ b :: (m₂ ++ [a]) := by
+    simp
+  rw [e, chainParity_append]
+  simp
+
+/-- **The theta identity for parities.** Cutting the polygon `C` made of the arcs `arc1`, `arc2`
+along a chord `e` from `a` to `b` gives two polygons whose parities add up to that of `C`: the
+chord is counted twice, and `1 + 1 = 0` modulo 2. -/
+theorem parity_theta (a b x : ℝ × ℝ) (m₁ m₂ me : List (ℝ × ℝ)) :
+    (Polygon.ofList (a :: m₁ ++ b :: me.reverse)).parity x +
+        (Polygon.ofList (b :: m₂ ++ a :: me)).parity x =
+      (Polygon.ofList (a :: m₁ ++ b :: m₂)).parity x := by
+  rw [parity_two_arcs, parity_two_arcs, parity_two_arcs]
+  have h1 : chainParity x (b :: me.reverse ++ [a]) = chainParity x (a :: me ++ [b]) := by
+    have : b :: me.reverse ++ [a] = (a :: me ++ [b]).reverse := by simp
+    rw [this, chainParity_reverse]
+  rw [h1]
+  have h2 := CharTwo.add_self_eq_zero (chainParity x (a :: me ++ [b]))
+  linear_combination h2
+
 end Lightlike.PL
