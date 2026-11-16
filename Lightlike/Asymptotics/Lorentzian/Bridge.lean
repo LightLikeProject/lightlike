@@ -183,4 +183,52 @@ theorem exp_triAction_nat {n : ℕ} {p : ℝ} {Z ξ Z' ξ' : Spinor} (hZ : Z ≠
   congr 3
   ring
 
+/-- `‖aᵀ ζ‖²` of a transposed action on the chart is `nsq`, and `spinAct` is `mulVec`. -/
+theorem spinAct_lorSpinor_apply (M : Matrix (Fin 2) (Fin 2) ℂ) (w : ℂ) (i : Fin 2) :
+    spinAct M (lorSpinor w) i = (M *ᵥ ![w, 1]) i := by
+  fin_cases i <;> simp [spinAct, lorSpinor, mulVec, dotProduct, Fin.sum_univ_two]
+
+theorem norm_sq_spinAct_lorSpinor (M : Matrix (Fin 2) (Fin 2) ℂ) (w : ℂ) :
+    ‖spinAct M (lorSpinor w)‖ ^ 2 = nsq (M *ᵥ ![w, 1]) := by
+  rw [EuclideanSpace.norm_sq_eq, nsq]
+  simp [Fin.sum_univ_two, spinAct_lorSpinor_apply]
+
+/-- The conjugate of a positive real to a complex power. -/
+theorem conj_ofReal_cpow {x : ℝ} (hx : 0 < x) (s : ℂ) :
+    conj (((x : ℝ) : ℂ) ^ s) = ((x : ℝ) : ℂ) ^ (conj s) := by
+  have h : (((x : ℝ) : ℂ)).arg ≠ Real.pi := by
+    rw [Complex.arg_ofReal_of_nonneg hx.le]; exact Real.pi_ne_zero.symm
+  have := Complex.cpow_conj (((x : ℝ) : ℂ)) s h
+  rw [this, Complex.conj_ofReal]
+
+/-- The real prefactor `(√N⁻¹)^n` is `N^{-n/2}`. -/
+theorem sqrt_inv_pow_eq_rpow {N : ℝ} (hN : 0 < N) (n : ℕ) :
+    (Real.sqrt N)⁻¹ ^ n = N ^ (-(n : ℝ) / 2) := by
+  rw [Real.sqrt_eq_rpow, ← Real.rpow_neg hN.le, ← Real.rpow_natCast, ← Real.rpow_mul hN.le]
+  congr 1; ring
+
+/-- **The weights of the two ends of a link**: for `Na, Nb > 0`,
+`conj(Na^{iρ-1}) Nb^{iρ-1} = (Nb/Na)^{iρ} (Na Nb)⁻¹`. -/
+theorem weight_pair {Na Nb : ℝ} (ha : 0 < Na) (hb : 0 < Nb) (ρ : ℝ) :
+    conj (((Na : ℝ) : ℂ) ^ (I * ρ - 1)) * (((Nb : ℝ) : ℂ) ^ (I * ρ - 1)) =
+      ((((Nb / Na : ℝ)) : ℂ) ^ (I * ρ)) * (((Na * Nb)⁻¹ : ℝ) : ℂ) := by
+  rw [conj_ofReal_cpow ha]
+  have hc : conj (I * (ρ : ℂ) - 1) = -(I * ρ) - 1 := by
+    simp [map_sub, map_mul, Complex.conj_I, Complex.conj_ofReal]
+  rw [hc, Complex.cpow_def_of_ne_zero (by exact_mod_cast ha.ne'),
+    Complex.cpow_def_of_ne_zero (by exact_mod_cast hb.ne'),
+    Complex.cpow_def_of_ne_zero (by exact_mod_cast (div_pos hb ha).ne'),
+    ← Complex.ofReal_log ha.le, ← Complex.ofReal_log hb.le, ← Complex.ofReal_log (div_pos hb ha).le,
+    Real.log_div hb.ne' ha.ne']
+  have hinv : (((Na * Nb)⁻¹ : ℝ) : ℂ) =
+      Complex.exp (-(Real.log Na : ℂ) - (Real.log Nb : ℂ)) := by
+    have : (Na * Nb)⁻¹ = Real.exp (-Real.log Na - Real.log Nb) := by
+      rw [show -Real.log Na - Real.log Nb = -(Real.log Na + Real.log Nb) by ring,
+        Real.exp_neg, ← Real.log_mul ha.ne' hb.ne', Real.exp_log (mul_pos ha hb)]
+    rw [this, Complex.ofReal_exp]; push_cast; rfl
+  rw [hinv, ← Complex.exp_add, ← Complex.exp_add]
+  congr 1
+  push_cast
+  ring
+
 end Lightlike.Asymptotics.Lorentzian
