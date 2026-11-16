@@ -90,6 +90,77 @@ theorem no_interlaced_chord {a b x y : ℝ × ℝ} {m₁ m₂ mₑ m_f : List (�
     rw [hEs] at this; exact this
   have cC₂ : C₂.carrier = A₂ ∪ E := carrier_two_arcs b a m₂ mₑ
   have hpar : ∀ z, C₁.parity z + C₂.parity z = C.parity z := fun z => parity_theta a b z m₁ m₂ mₑ
+  -- the points `a`, `b`, `x`, `y`
+  have haA₁ : a ∈ A₁ := mem_chainSet_head a _
+  have haA₂ : a ∈ A₂ := mem_chainSet_last (b :: m₂) a
+  have hbA₁ : b ∈ A₁ := mem_chainSet_last (a :: m₁) b
+  have hbA₂ : b ∈ A₂ := mem_chainSet_head b _
+  have hxA₂ : x ∉ A₂ := fun h => by
+    have : x ∈ A₁ ∩ A₂ := ⟨hx₁, h⟩
+    rw [h₁₂] at this
+    rcases this with rfl | rfl
+    · exact hxa rfl
+    · exact hxb rfl
+  have hxE : x ∉ E := fun h => by
+    have : x ∈ A₁ ∩ E := ⟨hx₁, h⟩
+    rw [h₁ₑ] at this
+    rcases this with rfl | rfl
+    · exact hxa rfl
+    · exact hxb rfl
+  have hyA₁ : y ∉ A₁ := fun h => by
+    have : y ∈ A₁ ∩ A₂ := ⟨h, hy₂⟩
+    rw [h₁₂] at this
+    rcases this with rfl | rfl
+    · exact hya rfl
+    · exact hyb rfl
+  have hyE : y ∉ E := fun h => by
+    have : y ∈ A₂ ∩ E := ⟨hy₂, h⟩
+    rw [h₂ₑ] at this
+    rcases this with rfl | rfl
+    · exact hya rfl
+    · exact hyb rfl
+  have hxy : x ≠ y := fun h => hxA₂ (h ▸ hy₂)
+  have hxF : x ∈ F := mem_chainSet_head x _
+  have hyF : y ∈ F := mem_chainSet_last (x :: m_f) y
+  -- the open chord
+  set F₀ := F \ {x, y} with hF₀
+  have hF₀pre : IsPreconnected F₀ := isPreconnected_chainSet_diff_ends' h_f
+  have hF₀N : ∀ z ∈ F₀, z ∉ A₁ ∧ z ∉ A₂ ∧ z ∉ E := by
+    intro z ⟨hzF, hzxy⟩
+    refine ⟨fun h => ?_, fun h => ?_, fun h => ?_⟩
+    · have : z ∈ F ∩ A₁ := ⟨hzF, h⟩
+      rw [hf₁] at this
+      exact hzxy (Or.inl (by simpa using this))
+    · have : z ∈ F ∩ A₂ := ⟨hzF, h⟩
+      rw [hf₂] at this
+      exact hzxy (Or.inr (by simpa using this))
+    · have : z ∈ F ∩ E := ⟨hzF, h⟩
+      rw [hfₑ] at this
+      exact this
+  have hclA₁ : IsClosed A₁ := isClosed_chainSet _
+  have hclA₂ : IsClosed A₂ := isClosed_chainSet _
+  have hclE : IsClosed E := isClosed_chainSet _
+  -- points of the chord near its ends
+  have hnear_x : ∀ ρ > 0, ∃ u ∈ F₀, dist u x < ρ := by
+    intro ρ hρ
+    have hd : 0 < dist x y := dist_pos.2 hxy
+    obtain ⟨u, hu1, hu2, hu3⟩ := exists_near_first h_f (lt_min hρ hd)
+    refine ⟨u, ⟨hu1, ?_⟩, lt_of_lt_of_le hu3 (min_le_left _ _)⟩
+    simp only [mem_insert_iff, mem_singleton_iff, not_or]
+    refine ⟨hu2, fun h => ?_⟩
+    have := lt_of_lt_of_le hu3 (min_le_right _ _)
+    rw [h, dist_comm] at this
+    exact lt_irrefl _ this
+  have hnear_y : ∀ ρ > 0, ∃ u ∈ F₀, dist u y < ρ := by
+    intro ρ hρ
+    have hd : 0 < dist x y := dist_pos.2 hxy
+    obtain ⟨u, hu1, hu2, hu3⟩ := exists_near_last h_f (lt_min hρ hd)
+    refine ⟨u, ⟨hu1, ?_⟩, lt_of_lt_of_le hu3 (min_le_left _ _)⟩
+    simp only [mem_insert_iff, mem_singleton_iff, not_or]
+    refine ⟨fun h => ?_, hu2⟩
+    have := lt_of_lt_of_le hu3 (min_le_right _ _)
+    rw [h] at this
+    exact lt_irrefl _ this
   sorry
 
 end Lightlike.PL
