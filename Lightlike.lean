@@ -42,6 +42,7 @@ import Lightlike.Asymptotics.Lorentzian.Bridge
 import Lightlike.Asymptotics.Lorentzian.RadialBeta
 import Lightlike.Asymptotics.Lorentzian.LinkIntegral
 import Lightlike.Asymptotics.Lorentzian.NormLowest
+import Lightlike.Asymptotics.Lorentzian.Assembly
 import Lightlike.Asymptotics.Lorentzian.Stationary
 import Lightlike.Asymptotics.Lorentzian.Critical
 import Lightlike.Asymptotics.Lorentzian.Classification

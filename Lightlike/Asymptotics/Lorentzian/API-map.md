@@ -122,6 +122,10 @@ One link as an integral over the chart is proved: the contraction of the EPRL ma
 `‖A e₀‖² = π/(n+1)` for the lowest level, from the Beta integral `∫₀^∞ u^n (1+u)^{-n-2} du = 1/(n+1)`
 [18] and the polar integral over `ℂ` [19]; a numerical check of the identity and of the constant
 is `scripts/asymptotics/link_integral_check.py`.
+Assembling the ten links, the coherent principal-series vertex equals the Lorentzian vertex up to the
+explicit factor `(haarScalarFactor haarC SL2C.haar)^4`, which comes from the chart measure of the
+finite vertex; the outer integral of the Lorentzian vertex is therefore finite, and the value of one
+link at spin zero is `π` [20].
 
 ## Lean References
 
@@ -194,6 +198,10 @@ is `scripts/asymptotics/link_integral_check.py`.
 18. Lightlike/Asymptotics/Lorentzian/RadialBeta.lean - `Asymptotics.Lorentzian.radial_integral`
 19. Lightlike/Asymptotics/Lorentzian/NormLowest.lean - `Asymptotics.Lorentzian.norm_sq_wgt`,
     `Asymptotics.Lorentzian.nrmA_sq_lowest`, `Asymptotics.Lorentzian.link_integral_explicit`
+20. Lightlike/Asymptotics/Lorentzian/Assembly.lean - `Asymptotics.Lorentzian.map_conjSL_haar`,
+    `Asymptotics.Lorentzian.sum_magBox_linkProd`, `Asymptotics.Lorentzian.eprlIntegrand_iotaProd`,
+    `Asymptotics.Lorentzian.eprlIntegrand_coh`, `Asymptotics.Lorentzian.eprlVertex_eq_lorVertex`,
+    `Asymptotics.Lorentzian.integrable_lorOuter`, `Asymptotics.Lorentzian.link_value_spin_zero`
 
 ## References
 
