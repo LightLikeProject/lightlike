@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Leak check (a hard rule, run by CI): no tracked file contains a local home-directory path, an
-e-mail address other than a noreply one, an access token or a private key, and no secrets file is
-tracked.
+e-mail address other than a noreply one, an access token, a private key, a link to an AI
+assistant's chat session or a session trailer, and no secrets file is tracked.
 
 Scans the files tracked by git (`git ls-files`); binary files are skipped. Allowed: GitHub and
 Anthropic noreply addresses, the project address, the example domains, and `/home/vscode/` (the
@@ -26,6 +26,8 @@ PATTERNS = [
     (re.compile(r"\bAKIA[0-9A-Z]{16}\b"), "AWS access key"),
     (re.compile(r"\bxox[abprs]-[A-Za-z0-9-]{10,}"), "Slack token"),
     (re.compile(r"-----BEGIN [A-Z ]*PRIVATE KEY-----"), "private key"),
+    (re.compile(r"\bclaude\.ai/(?:code/)?(?:session[_/]|chat/|share/)", re.I), "link to an AI chat session"),
+    (re.compile(r"^\s*Claude-Session\s*:", re.I), "session trailer"),
 ]
 EMAIL = re.compile(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b")
 ALLOWED_EMAIL = re.compile(r"(?:@users\.noreply\.github\.com|^noreply@(?:anthropic|github)\.com|"

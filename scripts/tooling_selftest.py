@@ -585,14 +585,16 @@ with tempfile.TemporaryDirectory() as d:
 import leak_check as lk  # noqa: E402
 
 _ok = [("a.md", "Co-Authored-By: x <noreply@github.com>, 1+x@users.noreply.github.com"),
-       ("b.json", '"remoteEnv": "/home/vscode/.elan/bin", "pkg@1.2.3"')]
-expect("leak check control: noreply addresses, a version pin and the container user pass",
+       ("b.json", '"remoteEnv": "/home/vscode/.elan/bin", "pkg@1.2.3"'),
+       ("c.md", "AI assistance: Claude Code, model Claude Opus; claude.ai/code/artifact")]
+expect("leak check control: noreply addresses, a version pin, the container user and naming the AI tool pass",
        lk.check(_ok) == [])
 _bad = [("a.md", "see " + "/Us" + "ers/alice/notes"), ("b.md", "mail " + "bob" + "@corp.io"),
         ("c.py", "t = '" + "gh" + "p_" + "a" * 36 + "'"), ("d.txt", "~" + "/Desktop/x"),
-        ("config/id_rsa", None)]
-expect("leak check planted: a local path, an e-mail, a token, ~/Desktop and a key file fail",
-       len(lk.check(_bad)) == 5)
+        ("config/id_rsa", None), ("e.md", "see https://" + "claude" + ".ai/code/session" + "_01abc"),
+        ("f.md", "chat at " + "claude" + ".ai/chat/1234"), ("g.txt", "Claude" + "-Session: x")]
+expect("leak check planted: a local path, an e-mail, a token, ~/Desktop, a key file, two session"
+       " links and a session trailer fail", len(lk.check(_bad)) == 8)
 
 print("selftest:", "OK" if not fails else f"FAILED ({len(fails)})")
 sys.exit(1 if fails else 0)
