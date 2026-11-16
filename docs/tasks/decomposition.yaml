@@ -118,6 +118,177 @@ tasks:
       - Representation theory of U_q(sl₂) at roots of unity (Turaev 1994).
       - Kauffman–Lins recoupling theory (1994).
 
+  - id: T-GE2-P1
+    milestone: GE2
+    kind: proof
+    title: "Timelike futures are causal futures: I⁺(x) ⊆ J⁺(x)"
+    file: Tasks/GE2/T_GE2_P1.lean
+    decl: Lightlike.Causal.chronFuture_subset_causalFuture
+    size: S
+    difficulty: intermediate
+    routes:
+      - "Unfold both definitions; `IsFutureTimelike v` gives `IsFutureCausal v` (the vector is nonzero because `g(v, X) < 0`)."
+  - id: T-GE2-P2
+    milestone: GE2
+    kind: proof
+    title: "A point is in its own causal future: x ∈ J⁺(x)"
+    file: Tasks/GE2/T_GE2_P2.lean
+    decl: Lightlike.Causal.mem_causalFuture_self
+    size: S
+    difficulty: intermediate
+    routes:
+      - "The constant curve on `Icc 0 0`: locally Lipschitz on a point, and the velocity condition holds almost everywhere on a null set."
+  - id: T-GE2-P3
+    milestone: GE2
+    kind: proof
+    title: "The causal future is transitive: y ∈ J⁺(x), z ∈ J⁺(y) imply z ∈ J⁺(x)"
+    file: Tasks/GE2/T_GE2_P3.lean
+    decl: Lightlike.Causal.causalFuture_trans
+    size: M
+    difficulty: intermediate
+    routes:
+      - "Glue the curves at the junction; the glued curve is locally Lipschitz in charts, and the velocity condition holds almost everywhere since a point is null."
+  - id: T-GE2-P4
+    milestone: GE2
+    kind: proof
+    title: "The chronological future is transitive: y ∈ I⁺(x), z ∈ I⁺(y) imply z ∈ I⁺(x)"
+    file: Tasks/GE2/T_GE2_P4.lean
+    decl: Lightlike.Causal.chronFuture_trans
+    size: M
+    difficulty: intermediate
+    routes:
+      - "As `causalFuture_trans`."
+  - id: T-GE2-P5
+    milestone: GE2
+    kind: proof
+    title: "Push-up, first form: y ∈ I⁺(x), z ∈ J⁺(y) imply z ∈ I⁺(x)"
+    file: Tasks/GE2/T_GE2_P5.lean
+    decl: Lightlike.Causal.chronFuture_causalFuture_trans
+    size: L
+    difficulty: research-level
+    routes:
+      - "Local result in a convex normal neighbourhood, then chain along the causal curve by compactness of its parameter interval."
+  - id: T-GE2-P6
+    milestone: GE2
+    kind: proof
+    title: "Push-up, second form: y ∈ J⁺(x), z ∈ I⁺(y) imply z ∈ I⁺(x)"
+    file: Tasks/GE2/T_GE2_P6.lean
+    decl: Lightlike.Causal.causalFuture_chronFuture_trans
+    size: M
+    difficulty: research-level
+    routes:
+      - "As `chronFuture_causalFuture_trans`, deforming the causal curve at its end."
+  - id: T-GE2-P7
+    milestone: GE2
+    kind: proof
+    title: The chronological future is open
+    file: Tasks/GE2/T_GE2_P7.lean
+    decl: Lightlike.Causal.isOpen_chronFuture
+    size: L
+    difficulty: research-level
+    routes:
+      - "Perturb the end of a timelike curve inside a chart; the open future cone at the end point supplies the room."
+  - id: T-GE2-P8
+    milestone: GE2
+    kind: proof
+    title: Causality implies chronology
+    file: Tasks/GE2/T_GE2_P8.lean
+    decl: Lightlike.Causal.isChronological_of_isCausal
+    size: M
+    difficulty: intermediate
+    routes:
+      - "A timelike curve from `x` to `x` has a point `y ≠ x` (the velocity is nonzero almost everywhere); `y ∈ J⁺(x)` and `x ∈ J⁺(y)`."
+  - id: T-GE2-P9
+    milestone: GE2
+    kind: proof
+    title: Strong causality implies causality
+    file: Tasks/GE2/T_GE2_P9.lean
+    decl: Lightlike.Causal.isCausal_of_isStronglyCausal
+    size: M
+    difficulty: intermediate
+    routes:
+      - "If `y ∈ J⁺(x)` and `x ∈ J⁺(y)` with `x ≠ y`, a causally convex neighbourhood of `x` missing `y` contains the whole loop, contradiction."
+  - id: T-GE2-P10
+    milestone: GE2
+    kind: proof
+    title: Stable causality implies strong causality
+    file: Tasks/GE2/T_GE2_P10.lean
+    decl: Lightlike.Causal.isStronglyCausal_of_isStablyCausal
+    size: L
+    difficulty: research-level
+    routes:
+      - "Preimages of small intervals of the time function intersected with a chart box are causally convex."
+  - id: T-GE2-P11
+    milestone: GE2
+    kind: proof
+    title: Causal simplicity implies stable causality
+    file: Tasks/GE2/T_GE2_P11.lean
+    decl: Lightlike.Causal.isStablyCausal_of_isCausallySimple
+    size: L
+    difficulty: research-level
+    routes:
+      - "Construct a time function by Hawking's averaging of volumes of futures, using closedness of `J±`."
+  - id: T-GE2-P12
+    milestone: GE2
+    kind: proof
+    title: Global hyperbolicity implies causal simplicity
+    file: Tasks/GE2/T_GE2_P12.lean
+    decl: Lightlike.Causal.isCausallySimple_of_isGloballyHyperbolic
+    size: L
+    difficulty: research-level
+    routes:
+      - "The limit curve theorem for causal curves with endpoints converging, using compactness of the diamonds."
+  - id: T-GE2-P13
+    milestone: GE2
+    kind: proof
+    title: A Cauchy surface is achronal
+    file: Tasks/GE2/T_GE2_P13.lean
+    decl: Lightlike.Causal.IsCauchySurface.isAchronal
+    size: M
+    difficulty: intermediate
+    routes:
+      - "Extend a timelike curve by Zorn's lemma to an inextendible one; it meets `S` at both points, contradicting uniqueness."
+  - id: T-GE2-P14
+    milestone: GE2
+    kind: proof
+    title: The causal future in Minkowski space is the closed light cone
+    file: Tasks/GE2/T_GE2_P14.lean
+    decl: Lightlike.Causal.minkowski_causalFuture
+    size: L
+    difficulty: intermediate
+    routes:
+      - "`⊇` by a straight line (`isFutureCausalCurve_line`-type lemma); `⊆` by integrating the velocity of a Lipschitz curve (absolutely continuous) and the reverse triangle inequality of the cone."
+  - id: T-GE2-P15
+    milestone: GE2
+    kind: proof
+    title: Minkowski space is globally hyperbolic
+    file: Tasks/GE2/T_GE2_P15.lean
+    decl: Lightlike.Causal.minkowski_isGloballyHyperbolic
+    size: L
+    difficulty: intermediate
+    routes:
+      - "From `minkowski_causalFuture`: the diamonds are closed and bounded subsets of `ℝ^{d+1}`."
+  - id: T-GE2-P16
+    milestone: GE2
+    kind: proof
+    title: The slice t = 0 is a Cauchy surface of Minkowski space
+    file: Tasks/GE2/T_GE2_P16.lean
+    decl: Lightlike.Causal.minkowski_isCauchySurface
+    size: L
+    difficulty: intermediate
+    routes:
+      - "The time coordinate is strictly increasing along a timelike curve and unbounded on an inextendible one (the cone is bounded by lines)."
+  - id: T-GE2-P17
+    milestone: GE2
+    kind: proof
+    title: A continuous time orientation can be replaced by a smooth one
+    file: Tasks/GE2/T_GE2_P17.lean
+    decl: Lightlike.Causal.exists_smooth_timeOrientation
+    size: L
+    difficulty: research-level
+    routes:
+      - "Smooth partition of unity subordinate to charts where a constant timelike field is future-directed; convex combinations of future-directed timelike vectors stay in the cone."
+
 # Upstream tasks: finished results that belong in Mathlib (general mathematics) or Physlib
 # (general physics), with the rework each needs. Exclusive, like definition
 # tasks; `target` gives the label `upstream: <library>`.
