@@ -1020,7 +1020,92 @@
   review: kernel-checked
   note: "Forcing is this library's rule (a tetrahedron with three of its triangles in the set forces the fourth), used to show that the gauge-fixed state sum is 1. Statement: for a 3-3 move K -> K' that replaces the triangle sigma by tau, and T a set of triangles of K that does not contain sigma and forces every triangle of K, T forces every triangle of K' exactly when the closure of T under the tetrahedra of K that do not contain sigma reaches every triangle of K other than sigma (forces_move33_iff, ForcesIn is forcing by an arbitrary set of tetrahedra). The proof splits the tetrahedra into those common to K and K' and the three that contain sigma (resp. tau). If the common closure is complete, one tetrahedron forces sigma (resp. tau) from the mixed triangles. If it is not, a derivation can leave the common closure only through a tetrahedron sigma + c whose three mixed triangles are in it (a full row), and after the move only through a full row for tau; if both exist, a finite lemma on the eighteen mixed triangles (local33_prop, a Boolean statement over eighteen variables checked by the kernel with decide) shows that adding sigma, or tau, forces nothing more, so at most one of the two complexes forces (forcing_dichotomy). Non-vacuity: forces_move33_example applies it to the boundary of the 5-simplex after a 1-5 and a 2-4 move, with a set of fifteen triangles and the move {0,2,3} -> {4,5,6}, every hypothesis checked by the kernel. Wrong-input control: local33_control shows that without a full row of tau-triangles the conclusion of the finite lemma fails. Scope: the 3-3 move only, with the set T unchanged by the move and not containing sigma; the 2-4 move and the inverse 4-2 and 5-1 moves are not covered. Numerical evidence (scripts/spinfoam/forcechain.py, not part of the proof): a collapsible forcing gauge set of size E-V+1 on a 48-simplex 4-sphere triangulation loses forcing under a 3-3 move (so the second condition is not automatic), and in about 162,000 random trials the characterization held in every case."
   since: unreleased
-- id: LL-XXXX
+- id: LL-0078
+  title: "For a positive definite Gram matrix the squared lengths of the 36 incidences of the Kuhn triangulation are admissible, and the dihedral angles of each of the seven edge classes add up to 2π"
+  area: Regge
+  file: Lightlike/Regge/Conv3/StarAngle.lean
+  decls: [Lightlike.Regge.Conv3.valid_incQ, Lightlike.Regge.Conv3.jet_angle_sum]
+  status: proven
+  tier: frontier
+  source: structural
+  review: kernel-checked
+  note: "G is any positive definite 3x3 matrix; the incidences are the 36 pairs (tetrahedron, hinge) of the Kuhn triangulation of the unit cube (six tetrahedra, seven edge directions). Each class of incidences is a fan of four or six tetrahedra around the hinge axis; the proof uses the complex coordinate in the plane quotient, so it holds for every G and does not use G = identity. Limits: only the cube star of one lattice point is treated; nothing is said about a triangulation of a manifold, and the lattice is the standard one (no other triangulations)."
+  since: unreleased
+- id: LL-0079
+  title: The Christoffel symbols, Riemann tensor and scalar curvature of a smooth metric at a point are explicit expressions in the metric, its inverse and its first and second partial derivatives
+  area: Regge
+  file: Lightlike/Regge/Conv3/JetCurvature.lean
+  decls: [Lightlike.Regge.Conv3.pd_inv, Lightlike.Regge.Conv3.pd_christoffel, Lightlike.Regge.Conv3.riemann_jet, Lightlike.Regge.Conv3.scalarCurvature_jet]
+  status: proven
+  tier: established
+  source: structural
+  review: kernel-checked
+  note: "For a coordinate metric g on an open set U (smooth, symmetric, invertible) and a point m of U: the derivative of the inverse metric is minus g⁻¹ (∂g) g⁻¹ (pd_inv), and the derivative of the Christoffel symbols, the Riemann tensor and the scalar curvature at m are written with (g m)⁻¹, ∂g(m) and ∂∂g(m) only. Limits: this unfolds the coordinate definitions of the library (Lightlike.christoffel, riemann, scalarCurvature); it is the textbook computation, not a statement about tensors or charts."
+  since: unreleased
+- id: LL-0080
+  title: The jet-level star identity of the 3D Regge calculus holds at a point where the first derivatives of a Riemannian metric vanish
+  area: Regge
+  file: Lightlike/Regge/Conv3/FlatStarJet.lean
+  decls: [Lightlike.Regge.Conv3.jetStarCore_of_flat, Lightlike.Regge.Conv3.scalar_flat]
+  status: proven
+  tier: frontier
+  source: structural
+  review: kernel-checked
+  note: "Part of the 3D convergence of the Regge action (T-RC6), which stays open. Scope: at a point m where all first partial derivatives of a Riemannian metric g on an open set of R^3 vanish (for example the centre of normal coordinates); not the general chart. The convergence theorem needs the same statement at every hinge, where the first derivatives do not vanish, and that case is open. For any positive definite g(m) and any second derivatives, the star of one edge of the Kuhn triangulation (flat star: the dihedral angles of each of the seven edge classes add up to 2π; first-order coefficient 0; weights: the hinge lengths √(g(m)(w, w)) of the seven directions w, where g(m)(w, w) is the squared length) satisfies: the sum over the seven classes of the hinge length times the second-order coefficient of the class angle sum equals minus half the scalar curvature times the square root of det g(m) (JetStarCore). The core is an exact polynomial identity in the six entries of g(m) and the 36 independent second derivatives (flat_star_identity), generated and checked in exact arithmetic by scripts/regge/gen_flat_star.py. Limits: second derivatives are those of g at the single point m; the Kuhn triangulation is the standard cubical one; the Gram lengths g(m) are the metric at m, not integrated along edges. Trust checks: the Euclidean metric satisfies the hypotheses, and for sphere-like second derivatives the sum over the 36 incidences is 3, not 0 and not 6 (FlatStarTests.lean)."
+  since: unreleased
+- id: LL-0081
+  title: "A set of triangles that forces every triangle of a closed 4D complex, together with the triangle {a, p, q}, forces every triangle after a 2-4 Pachner move if and only if the closure under the tetrahedra other than the removed one is complete"
+  area: SpinFoam
+  file: Lightlike/SpinFoam/ForcingMove24.lean
+  decls: [Lightlike.SpinFoam.Forcing24.local24, Lightlike.SpinFoam.Forcing24.forcing_dichotomy24, Lightlike.SpinFoam.Forcing24.forces24_of_common, Lightlike.SpinFoam.Forcing24.forces_move24_iff]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: freidel-louapre-2003, location: "Section IV", check: "GAUGE SYMMETRIES AND DIVERGENCES"}
+  review: kernel-checked
+  note: "Forcing is this library's rule (a tetrahedron with three of its triangles in the set forces the fourth), used to show that the gauge-fixed state sum is 1. Statement: for a 2-4 move K -> K' that removes the tetrahedron sigma (shared by the two 4-simplices sigma + p and sigma + q) and adds the edge {p, q}, a vertex a of sigma, and T a set of triangles of K that forces every triangle of K, the set T together with {a, p, q} (the triangle that the gauge rule adds) forces every triangle of K' exactly when the closure of T under the tetrahedra of K other than sigma already reaches every triangle of K (forces_move24_iff). The move keeps all triangles and adds the four triangles {p, q, s} for s in sigma; the tetrahedra before the move are the common ones and sigma, after it the common ones and the six {p, q, s, s'}. If the common closure is complete, K forces trivially and the new triangles are forced one after the other from {a, p, q} and the triangles {p, s, s'}, {q, s, s'} (forces24_of_common). If not, K can leave the common closure only through sigma, when exactly three of its four triangles are in it, and in that case a finite lemma on the sixteen triangles {p, s, s'}, {q, s, s'} and sigma minus a vertex (local24, a Boolean statement checked by the kernel with decide) shows that the new triangles can be added without forcing anything more in K', so at most one of the two complexes forces (forcing_dichotomy24). Non-vacuity: forces_move24_example applies it to the boundary of the 5-simplex after a 1-5 move, with fourteen triangles, a = 0 and the move {0,1,2,3} -> {5,6}, every hypothesis checked by the kernel. Wrong-input control: local24_control shows that without the hypothesis that exactly three triangles of sigma are in the set, the conclusion of the finite lemma fails. Scope: the 2-4 move only, with the triangle {a, p, q} the only one added to T; the 3-3 move is LL-0077, and the inverse 4-2 and 5-1 moves are not covered (numerical evidence in scripts/spinfoam/forcechain.py shows that the transported set can lose forcing there). Numerical evidence, not part of the proof: in about 526,000 random cases (random complexes, random minimal forcing sets, every 2-4 move and every a) the characterization held in every case."
+  since: unreleased
+- id: LL-0082
+  title: Every simple closed polygon in the plane has a triangulation by its own vertices
+  area: PL
+  file: Lightlike/PL/PolygonTriangulation.lean
+  decls: [Lightlike.PL.Polygon.exists_triangulation, Lightlike.PL.Polygon.IsTriangulation, Lightlike.PL.Polygon.isTriangulation_triangle, Lightlike.PL.Polygon.isTriangulation_union]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: moise-1977, location: "Chapter: The Schönflies theorem for polygons in R 2|10.1007/978-1-4612-9906-6_4"}
+  review: kernel-checked
+  note: "A simple closed polygon with n ≥ 3 vertices has a triangulation: a finite family of triangles, each spanned by three vertices of the polygon, whose faces form a geometric complex (IsGeom) whose underlying set is the closed region bounded by the polygon (the inside together with the carrier), and in which every edge of the polygon is a face (exists_triangulation). The proof is by induction on n. A triangle is its own triangulation (isTriangulation_triangle). A polygon with at least four vertices has an interior diagonal, a pair of non-neighbouring vertices whose open segment lies in the inside: the extreme vertex has no vertex strictly inside its wedge below the nearest vertex of its corner triangle, or else the two neighbours of the extreme vertex span the diagonal. The diagonal splits the polygon into two simple polygons whose insides are disjoint and add up, with the open diagonal, to the inside (Polygon.inside_split), and the two triangulations fit together along the diagonal (isTriangulation_union). Limits: this entry does not say that the complex is a PL ball (that is the next entry); the triangles use only the polygon's own vertices; the polygon is simple in the sense of Polygon.IsSimple (no repeated vertices, non-consecutive edges disjoint). Check: the theorem applies to the triangle (0,0), (1,0), (0,1) (triangle_triangulation, whose hypothesis is the simplicity checked in triangle_isSimple); the bow tie, which is not simple, is excluded (not_isSimple_bowtie)."
+  since: unreleased
+- id: LL-0083
+  title: The triangulated region of a simple closed polygon in the plane is a PL ball
+  area: PL
+  file: Lightlike/PL/PolygonBall.lean
+  decls: [Lightlike.PL.Polygon.exists_ball_triangulation, Lightlike.PL.Polygon.ball_step, Lightlike.PL.Polygon.EdgeUnique]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: moise-1977, location: "Chapter: The Schönflies theorem for polygons in R 2|10.1007/978-1-4612-9906-6_4"}
+  review: kernel-checked
+  note: "A simple closed polygon with n ≥ 3 vertices has a triangulation by its own vertices (see the previous entry), in which every edge of the polygon lies in exactly one triangle (EdgeUnique), and the complex generated by the triangles is a PL ball in the sense of the library, stellar equivalent to a simplex (IsBallIn; exists_ball_triangulation). The proof is by induction on n by clipping an ear: a simple polygon with at least four vertices has an interior diagonal between the vertices k and k + 2 (an ear), found by induction from the splitting along an interior diagonal (Polygon.two_ears: of two ears with non-neighbouring indices in a part, at most one touches the diagonal). The ear triangle is attached to the triangulation of the polygon with the ear removed along the diagonal, which lies in exactly one triangle there; attaching a triangle on a new vertex along such a boundary edge is a stellar equivalence, a stellar subdivision of the edge followed by a bistellar flip (SComplex.stellarEquivIn_closure_insert), so the complex stays a PL ball (ball_step). Limits: this entry does not identify the boundary of the ball with the polygon (the next entry does); the ball is combinatorial (IsBallIn, stellar equivalent to a simplex) with a geometric realisation given by the triangles, not shown here to be PL homeomorphic to a triangle. The polygon is simple in the sense of Polygon.IsSimple. Check: the theorem applies to the triangle (0,0), (1,0), (0,1) (triangle_ball)."
+  since: unreleased
+- id: LL-0084
+  title: The polygonal Schoenflies theorem, the closed region bounded by a simple closed polygon in the plane is a PL ball whose boundary is the polygon
+  area: PL
+  file: Lightlike/PL/PolygonBoundary.lean
+  decls: [Lightlike.PL.Polygon.polygon_schoenflies, Lightlike.PL.Polygon.mem_bd_closure_iff, Lightlike.PL.Polygon.bd_space_eq_carrier, Lightlike.PL.Polygon.unique_triangle_of_ball]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: moise-1977, location: "Chapter: The Schönflies theorem for polygons in R 2|10.1007/978-1-4612-9906-6_4"}
+  review: kernel-checked
+  note: "For a simple closed polygon p with n ≥ 3 vertices there is a geometric complex K in the plane (IsGeom) whose underlying set is the closed region bounded by p (the inside together with the carrier), which is a PL ball (IsBallIn, stellar equivalent to a simplex), and whose boundary complex (SComplex.bd: the faces inside a face whose link is a PL ball) has underlying set exactly the polygon (polygon_schoenflies). The complex is the ear-clipping triangulation of the previous entry. The new ingredients are the invariant that every edge of the triangulation that is not an edge of the polygon lies in two triangles (NonBdry), and the computation, by the signed count of the link, that a face whose link is a ball lies in exactly one triangle (unique_triangle_of_ball); the faces of the boundary are then exactly the faces inside an edge of the polygon (mem_bd_closure_iff), and their hulls are the edges (bd_space_eq_carrier). Limits: the ball is combinatorial (stellar equivalent to a simplex) with the geometric realisation given by the triangles; a PL homeomorphism of the region onto a triangle is not constructed, and this is the polygonal case only, not the Schoenflies theorem for arbitrary Jordan curves. The polygon is simple in the sense of Polygon.IsSimple. Check: the theorem applies to the triangle (0,0), (1,0), (0,1) (triangle_schoenflies); the bow tie, which is not simple, is excluded (not_isSimple_bowtie)."
+  since: unreleased
+- id: LL-0085
   title: One link of the principal-series Lorentzian vertex is the exponential of the coherent action times the density of Omega (the identity eprlVertex = lorVertex is not proved)
   area: Asymptotics
   file: Lightlike/Asymptotics/Lorentzian/Bridge.lean
