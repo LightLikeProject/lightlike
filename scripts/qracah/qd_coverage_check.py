@@ -84,7 +84,7 @@ def covered(r, B, A, E, F, shift=0):
     if rep3(F, E, A, B):
         return "qDougallAt_O3_k3"
     def rept(b, a, e, f):  # the hypotheses of qDougallAt_O1_trunc for (b, a, e, f)
-        return (a <= b and f <= b and e + f < b + a and aLo(b, a, e, f) == b - a + shift
+        return (a <= b and f <= b and e + f <= b + a and aLo(b, a, e, f) == b - a + shift
                 and aLo(b, f, e, a) == b - f and aHi(r, b, a, e, f) == 2 * (r - 2) - (b + a))
     if rept(B, A, E, F):
         return "qDougallAt_O1_trunc"
@@ -121,8 +121,8 @@ def run(shift=0):
 
 
 EXPECTED = {'O1/truncated': (64, 64), 'O1/untruncated': (160, 160),
-            'O1+O2+O3+O4/truncated': (190, 138), 'O1+O2+O3+O4/untruncated': (316, 316),
-            'O1+O3/truncated': (234, 96), 'O1+O3/untruncated': (422, 422),
+            'O1+O2+O3+O4/truncated': (190, 190), 'O1+O2+O3+O4/untruncated': (316, 316),
+            'O1+O3/truncated': (234, 234), 'O1+O3/untruncated': (422, 422),
             'O3/truncated': (64, 0), 'O3/untruncated': (160, 160)}
 
 

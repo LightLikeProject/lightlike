@@ -2283,13 +2283,212 @@ theorem qDougall_trunc_param {r d m n j5 K : ℕ} (hr : 2 ≤ r) (hK : K + m + d
     exact_mod_cast sumC
   exact qDougall_of_sumR_N hr hnj hj5 hnm.le hKn hadmX hadmQ sumR
 
+/-- The closed form of the degenerate partial sums at `a = Q^(d+1)`, `c = Q^ec` with `ec` free, as a ratio of quantum factorials. -/
+theorem sDeg_gen {r : ℕ} (hr : 2 ≤ r) {d n ec : ℕ} (hec1 : ec ≤ d + 1) (hec0 : 0 < ec)
+    (hb1 : d + n + 1 < r) (hb2 : ec + n < r) (hb3 : d + 1 - ec + n < r) :
+    sDeg (uC r ^ 2) ((uC r ^ 2) ^ (d + 1)) ((uC r ^ 2) ^ ec) n =
+      (((qfact r (d + n + 1) / qfact r (d + 1)) * (qfact r (ec + n) / qfact r ec) /
+        (qfact r n * (qfact r (d + 1 - ec + n) / qfact r (d + 1 - ec))) : ℝ) : ℂ) := by
+  have hu : uC r ≠ 0 := uC_ne_zero r
+  have hQ : uC r ^ 2 ≠ 0 := pow_ne_zero 2 hu
+  have A : (uC r ^ 2) ^ (d + 1) * (uC r ^ 2) = (uC r ^ 2) ^ ((d : ℤ) + 2) := by
+    rw [zpow_add₀ hQ, zpow_natCast]; simp; ring
+  have Cq : (uC r ^ 2) ^ ec * (uC r ^ 2) = (uC r ^ 2) ^ ((ec : ℤ) + 1) := by
+    rw [zpow_add₀ hQ, zpow_natCast]; simp
+  have D : (uC r ^ 2) ^ (d + 1) * (uC r ^ 2) / (uC r ^ 2) ^ ec =
+      (uC r ^ 2) ^ (((d + 1 - ec + 1 : ℕ)) : ℤ) := by
+    rw [zpow_natCast, div_eq_iff (pow_ne_zero _ hQ), ← pow_succ, ← pow_add]
+    congr 1; omega
+  have E : pk (uC r ^ 2) (uC r ^ 2) n = pk ((uC r ^ 2) ^ (1 : ℤ)) (uC r ^ 2) n := by rw [zpow_one]
+  have F : ((uC r ^ 2) ^ ec) ^ n = uC r ^ (((2 * ec * n : ℕ)) : ℤ) := by
+    rw [zpow_natCast, ← pow_mul, ← pow_mul]; congr 1; ring
+  unfold sDeg
+  rw [D, A, Cq, E, F, pk_Q_zpow hr, pk_Q_zpow hr, pk_Q_zpow hr, pk_Q_zpow hr]
+  have pf : ∀ m : ℕ, m < r → 0 < qfact r m := fun m h => qfact_pos hr h
+  have g1 : ∏ i ∈ range n, qZ r (((d : ℤ) + 2) + i) = qfact r (d + n + 1) / qfact r (d + 1) := by
+    rw [eq_div_iff (pf _ (by omega)).ne']
+    have := prod_qnum (r := r) (d + 1) n (by omega) hr
+    rw [show d + 1 + n = d + n + 1 by ring] at this
+    rw [← this]
+    congr 1
+  have g5 : ∏ i ∈ range n, qZ r (((ec : ℤ) + 1) + i) = qfact r (ec + n) / qfact r ec := by
+    rw [eq_div_iff (pf _ (by omega)).ne']
+    have := prod_qnum (r := r) ec n (by omega) hr
+    rw [← this]
+    congr 1
+  have g6 : ∏ i ∈ range n, qZ r ((1 : ℤ) + i) = qfact r n := by
+    have := prod_qnum (r := r) 0 n (by omega) hr
+    have q0 : qfact r 0 = 1 := by simp [qfact]
+    simp only [zero_add, q0, mul_one] at this
+    rw [← this]
+    exact prod_congr rfl fun i _ => by
+      rw [show (1 : ℤ) + i = ((1 + i : ℕ) : ℤ) by push_cast; ring, qZ_natCast]
+  have g4 : ∏ i ∈ range n, qZ r ((((d + 1 - ec + 1 : ℕ)) : ℤ) + i) = qfact r (d + 1 - ec + n) / qfact r (d + 1 - ec) := by
+    rw [eq_div_iff (pf _ (by omega)).ne']
+    have := prod_qnum (r := r) (d + 1 - ec) n (by omega) hr
+    rw [← this]
+    congr 1
+  have hsum : ∀ e : ℤ, ∑ i ∈ range n, (e + (i : ℤ)) = n * e + ∑ i ∈ range n, (i : ℤ) := by
+    intro e; simp [sum_add_distrib]
+  have hbal : uC r ^ (∑ i ∈ range n, (((d : ℤ) + 2) + (i : ℤ))) *
+      uC r ^ (∑ i ∈ range n, (((ec : ℤ) + 1) + (i : ℤ))) =
+      uC r ^ (∑ i ∈ range n, ((1 : ℤ) + (i : ℤ))) *
+        uC r ^ (∑ i ∈ range n, ((((d + 1 - ec + 1 : ℕ)) : ℤ) + (i : ℤ))) *
+        uC r ^ (((2 * ec * n : ℕ)) : ℤ) := by
+    rw [← zpow_add₀ hu, ← zpow_add₀ hu, ← zpow_add₀ hu]
+    congr 1
+    rw [hsum, hsum, hsum, hsum]
+    have h2' : ((d + 1 - ec : ℕ) : ℤ) = d + 1 - ec := by omega
+    push_cast
+    rw [h2']; ring
+  have ht := uC_sub_inv_ne hr
+  have hX : (-(uC r - (uC r)⁻¹)) ^ n ≠ 0 := pow_ne_zero n (neg_ne_zero.2 ht)
+  have hzp : ∀ z : ℤ, uC r ^ z ≠ 0 := fun z => zpow_ne_zero z hu
+  have pos : ∀ m : ℕ, m < r → (0 : ℝ) < qfact r m := fun m h => qfact_pos hr h
+  have c1 := (pos (d + n + 1) (by omega)).ne'
+  have c2 := (pos (d + 1) (by omega)).ne'
+  have c3 := (pos (ec + n) hb2).ne'
+  have c4 := (pos ec (by omega)).ne'
+  have c5 := (pos n (by omega)).ne'
+  have c7 := (pos (d + 1 - ec + n) hb3).ne'
+  have c8 := (pos (d + 1 - ec) (by omega)).ne'
+  simp only [← Complex.ofReal_prod]
+  rw [g1, g5, g6, g4]
+  have z1 := hzp (∑ i ∈ range n, (((d : ℤ) + 2) + (i : ℤ)))
+  have z2 := hzp (∑ i ∈ range n, (((ec : ℤ) + 1) + (i : ℤ)))
+  have z3 := hzp (∑ i ∈ range n, ((1 : ℤ) + (i : ℤ)))
+  have z4 := hzp (∑ i ∈ range n, ((((d + 1 - ec + 1 : ℕ)) : ℤ) + (i : ℤ)))
+  have zc := hzp (((2 * ec * n : ℕ)) : ℤ)
+  generalize uC r ^ (∑ i ∈ range n, (((d : ℤ) + 2) + (i : ℤ))) = Z1 at *
+  generalize uC r ^ (∑ i ∈ range n, (((ec : ℤ) + 1) + (i : ℤ))) = Z2 at *
+  generalize uC r ^ (∑ i ∈ range n, ((1 : ℤ) + (i : ℤ))) = Z3 at *
+  generalize uC r ^ (∑ i ∈ range n, ((((d + 1 - ec + 1 : ℕ)) : ℤ) + (i : ℤ))) = Z4 at *
+  generalize uC r ^ (((2 * ec * n : ℕ)) : ℤ) = Zc at *
+  generalize (-(uC r - (uC r)⁻¹)) ^ n = X at *
+  have hZc : Zc = Z1 * Z2 / (Z3 * Z4) := by
+    rw [eq_div_iff (mul_ne_zero z3 z4)]; linear_combination (-1 : ℂ) * hbal
+  rw [hZc]
+  push_cast
+  field_simp
+
+
+/-- **The truncated degenerate closed form equals the untruncated one** (`n = m`), by
+`[x]! · [r-1-x]! = [r-1]!`. -/
+theorem sdeg_trunc_eq {r d m j5 K : ℕ} (hr : 2 ≤ r) (hK : K + m + d + 2 = r) (hnj : m ≤ j5)
+    (hj5 : j5 ≤ d + m) (hj5m : j5 ≤ m + d) :
+    (qfact r (d + K + 1) / qfact r (d + 1)) * (qfact r (d + m + 1 - j5 + K) / qfact r (d + m + 1 - j5)) /
+        (qfact r K * (qfact r (d + 1 - (d + m + 1 - j5) + K) / qfact r (d + 1 - (d + m + 1 - j5)))) =
+      (qfact r (d + m + 1) / qfact r (d + 1)) *
+        (qfact r (m + (d + m + 1 - j5)) / qfact r (m + (d + m + 1 - j5) - m)) /
+        ((qfact r m / qfact r (m - m)) * (qfact r j5 / qfact r (j5 - m))) := by
+  have pos : ∀ x : ℕ, x < r → 0 < qfact r x := fun x h => qfact_pos hr h
+  have R1 := qfact_mul_qfact_reflect hr (m := m) (by omega)
+  have R2 := qfact_mul_qfact_reflect hr (m := j5) (by omega)
+  have R3 := qfact_mul_qfact_reflect hr (m := d + m + 1) (by omega)
+  have R4 := qfact_mul_qfact_reflect hr (m := d + m + 1 - j5 + m) (by omega)
+  rw [show r - 1 - m = d + K + 1 by omega] at R1
+  rw [show r - 1 - j5 = d + m + 1 - j5 + K by omega] at R2
+  rw [show r - 1 - (d + m + 1) = K by omega] at R3
+  rw [show r - 1 - (d + m + 1 - j5 + m) = j5 - m + K by omega] at R4
+  rw [show d + 1 - (d + m + 1 - j5) = j5 - m by omega, show m + (d + m + 1 - j5) = d + m + 1 - j5 + m by omega,
+    show d + m + 1 - j5 + m - m = d + m + 1 - j5 by omega, show m - m = 0 by omega]
+  have q0 : qfact r 0 = 1 := by simp [qfact]
+  rw [q0]
+  have p1 := (pos m (by omega)).ne'
+  have p2 := (pos (d + 1) (by omega)).ne'
+  have p3 := (pos j5 (by omega)).ne'
+  have p4 := (pos (d + m + 1 - j5) (by omega)).ne'
+  have p5 := (pos (d + m + 1) (by omega)).ne'
+  have p6 := (pos (j5 - m) (by omega)).ne'
+  have p7 := (pos (d + m + 1 - j5 + m) (by omega)).ne'
+  have p9 := (pos (r - 1) (by omega)).ne'
+  have p10 := (pos K (by omega)).ne'
+  have f1 : qfact r (d + K + 1) = qfact r (r - 1) / qfact r m := by rw [← R1]; field_simp
+  have f2 : qfact r (d + m + 1 - j5 + K) = qfact r (r - 1) / qfact r j5 := by rw [← R2]; field_simp
+  have f3 : qfact r K = qfact r (r - 1) / qfact r (d + m + 1) := by rw [← R3]; field_simp
+  have f4 : qfact r (j5 - m + K) = qfact r (r - 1) / qfact r (d + m + 1 - j5 + m) := by
+    rw [← R4]; field_simp
+  rw [f1, f2, f3, f4]
+  field_simp
+
+/-- **The boundary evaluation `QDougall`, level-truncated first orbit, `n = m`.** Here
+`j4 + j5 = j1 + j2`, so after exchanging `b` with `x⁻¹` the parameters satisfy `b = a q x`, where
+the hypotheses of Jackson's sum fail; the partial sums of the series with fewer parameters
+(`tDeg_sum`) replace it, and the closed form `sDeg_gen` equals the untruncated one by
+`[x]! · [r-1-x]! = [r-1]!`. -/
+theorem qDougall_trunc_deg_param {r d m j5 K : ℕ} (hr : 2 ≤ r) (hK : K + m + d + 2 = r)
+    (hKn : K ≤ m) (hnj : m ≤ j5) (hj5 : j5 ≤ d + m) (hj5m : j5 ≤ m + d)
+    (hadmX : ∀ k ≤ K, qAdm r (m + d) m (d + 2 * k) ∧ qAdm r (d + 2 * m - j5) j5 (d + 2 * k))
+    (hadmQ : qAdm r (m + d) j5 (m + d - j5) ∧ qAdm r (d + 2 * m - j5) m (m + d - j5)) :
+    QDougall r (m + d) m (d + 2 * m - j5) j5 d K (m + d - j5) := by
+  have hX' : ∀ k ≤ K, qAdm r (m + d) m (m + d - m + 2 * k) ∧
+      qAdm r (d + 2 * m - j5) j5 (m + d - m + 2 * k) := by
+    simpa only [Nat.add_sub_cancel_left] using hadmX
+  have hmap := wTerm_eq_Tj_N hr (j1 := m + d) (j2 := m) (j4 := d + 2 * m - j5) (j5 := j5) (n := m)
+    (N := K) (by omega) (by omega) (by omega) (by omega) hKn hX' hadmQ
+  have e1 : m + d - m + 1 = d + 1 := by omega
+  have e2 : (m + d - m + (d + 2 * m - j5) - j5) / 2 + 1 = d + m + 1 - j5 := by omega
+  have e2' : (d + (d + 2 * m - j5) - j5) / 2 + 1 = d + m + 1 - j5 := by omega
+  simp only [Nat.add_sub_cancel_left, e1, e2, e2'] at hmap
+  obtain ⟨_, bQ1⟩ := hadmQ.1
+  obtain ⟨_, bQ2⟩ := hadmQ.2
+  obtain ⟨_, bX0⟩ := (hadmX 0 (by omega)).1
+  obtain ⟨_, bY0⟩ := (hadmX 0 (by omega)).2
+  have hQ : uC r ^ 2 ≠ 0 := pow_ne_zero 2 (uC_ne_zero r)
+  have hQr := Q_pow_r hr
+  have hbinv : ((uC r ^ 2) ^ (m + d + 2))⁻¹ = (uC r ^ 2) ^ K := by
+    apply inv_eq_of_mul_eq_one_right
+    rw [← pow_add, show m + d + 2 + K = r by omega, hQr]
+  have hbq : ((uC r ^ 2) ^ m)⁻¹ = (uC r ^ 2) ^ (d + 1) * (uC r ^ 2) * (uC r ^ 2) ^ K := by
+    apply inv_eq_of_mul_eq_one_right
+    rw [← pow_succ, ← pow_add, ← pow_add, show m + (d + 1 + 1 + K) = r by omega, hQr]
+  have hTj : ∀ k ≤ K, Tj (uC r ^ 2) ((uC r ^ 2) ^ (d + 1)) ((uC r ^ 2) ^ (m + d + 2))
+      ((uC r ^ 2) ^ (d + m + 1 - j5)) ((uC r ^ 2) ^ m) k =
+      tDeg (uC r ^ 2) ((uC r ^ 2) ^ (d + 1)) ((uC r ^ 2) ^ (d + m + 1 - j5)) k := by
+    intro k hk
+    rw [← Tj_perm (pow_ne_zero _ hQ) (pow_ne_zero _ hQ) (pow_ne_zero _ hQ), hbinv, hbq]
+    refine Tj_eq_tDeg k hQ (pow_ne_zero _ hQ) (pow_ne_zero _ hQ) (pow_ne_zero _ hQ) ?_ ?_
+    · refine pk_ne_zero _ _ _ fun i hi => ?_
+      rw [show (uC r ^ 2) ^ (d + 1) * (uC r ^ 2) * (uC r ^ 2) ^ K * (uC r ^ 2) ^ i =
+        (uC r ^ 2) ^ ((d + 2 + K + i : ℕ) : ℤ) by rw [zpow_natCast]; ring]
+      exact Qne_pos hr (by push_cast; omega) (by push_cast; omega)
+    · refine pk_ne_zero _ _ _ fun i hi => ?_
+      rw [show ((uC r ^ 2) ^ K)⁻¹ * (uC r ^ 2) ^ i = (uC r ^ 2) ^ ((i : ℤ) - K) by
+        rw [zpow_sub₀ hQ, zpow_natCast, zpow_natCast]; field_simp]
+      exact Qne_neg hr (by omega) (by omega)
+  have hsumT := tDeg_sum (q := uC r ^ 2) (a := (uC r ^ 2) ^ (d + 1))
+    (c := (uC r ^ 2) ^ (d + m + 1 - j5)) (N := K) hQ (pow_ne_zero _ hQ) (by
+      rw [← zpow_natCast]; exact Qne_pos hr (by push_cast; omega) (by push_cast; omega))
+    (fun i hi => ⟨by
+      rw [show (uC r ^ 2) * (uC r ^ 2) ^ i = (uC r ^ 2) ^ ((1 + i : ℕ) : ℤ) by rw [zpow_natCast]; ring]
+      exact Qne_pos hr (by push_cast; omega) (by push_cast; omega), by
+      rw [Qpow_ratio _ hQ]
+      exact Qne_pos hr (by push_cast; omega) (by push_cast; omega)⟩) K le_rfl
+  have hv := sDeg_gen hr (d := d) (n := K) (ec := d + m + 1 - j5) (by omega) (by omega)
+    (by omega) (by omega) (by omega)
+  have hS2 := sdeg_trunc_eq (r := r) (d := d) (m := m) (j5 := j5) (K := K) hr hK hnj hj5 hj5m
+  have sumC : (∑ k ∈ range (K + 1), (wTerm r (m + d) m (d + 2 * m - j5) j5 k : ℂ)) =
+      (wTerm r (m + d) m (d + 2 * m - j5) j5 0 : ℂ) *
+        ((((qfact r (d + m + 1) / qfact r (d + 1)) *
+          (qfact r (m + (d + m + 1 - j5)) / qfact r (m + (d + m + 1 - j5) - m)) /
+          ((qfact r m / qfact r (m - m)) * (qfact r j5 / qfact r (j5 - m)))) : ℝ) : ℂ) := by
+    rw [sum_congr rfl (fun k hk => (hmap k (by simp only [mem_range] at hk; omega)).trans
+      (by rw [hTj k (by simp only [mem_range] at hk; omega)])), ← mul_sum, hsumT, hv, hS2]
+  have sumR : ∑ k ∈ range (K + 1), wTerm r (m + d) m (d + 2 * m - j5) j5 k =
+      wTerm r (m + d) m (d + 2 * m - j5) j5 0 *
+        ((qfact r (d + m + 1) / qfact r (d + 1)) *
+          (qfact r (m + (d + m + 1 - j5)) / qfact r (m + (d + m + 1 - j5) - m)) /
+          ((qfact r m / qfact r (m - m)) * (qfact r j5 / qfact r (j5 - m)))) := by
+    exact_mod_cast sumC
+  exact qDougall_of_sumR_N hr hnj hj5 le_rfl hKn hadmX hadmQ sumR
+
 -- 400000 heartbeats: the default 200000 times out (whnf); 400000 passes.
 set_option maxHeartbeats 400000 in
-/-- **`QDougallAt` for the first orbit, level-truncated range with `E + F < B + A`**: the lowest
+/-- **`QDougallAt` for the first orbit, level-truncated range with `E + F ≤ B + A`**: the lowest
 third colour is `B - A`, the lowest sixth colour `B - F`, and the third colours stop at the level
 cut-off `2(r-2) - (B + A)`, before the triangle top `E + F`. -/
 theorem qDougallAt_O1_trunc {r : ℕ} (hr : 2 ≤ r) (B A E F q : ℕ) (hq1 : qAdm r B F q)
-    (hq2 : qAdm r E A q) (hA : A ≤ B) (hF : F ≤ B) (hnd : E + F < B + A)
+    (hq2 : qAdm r E A q) (hA : A ≤ B) (hF : F ≤ B) (hnd : E + F ≤ B + A)
     (hx : aLo B A E F = B - A) (hq : aLo B F E A = B - F)
     (htop : aHi r B A E F = 2 * (r - 2) - (B + A)) : QDougallAt r B A E F := by
   have hqf := hq1; have hqe := hq2
@@ -2334,27 +2533,35 @@ theorem qDougallAt_O1_trunc {r : ℕ} (hr : 2 ≤ r) (B A E F q : ℕ) (hq1 : qA
   obtain ⟨d, rfl⟩ : ∃ d, B = A + d := ⟨B - A, by omega⟩
   obtain ⟨n, hn⟩ : ∃ n, 2 * n = E + F - d := ⟨(E + F - d) / 2, by omega⟩
   obtain rfl : E = d + 2 * n - F := by omega
-  have key := qDougall_trunc_param (r := r) (d := d) (m := A) (n := n) (j5 := F)
-    (K := r - 2 - (A + d)) hr (by omega) (by omega) (by omega) (by omega) (by omega) (by omega)
-    (by
+  have key : QDougall r (A + d) A (d + 2 * n - F) F d (r - 2 - (A + d)) (A + d - F) := by
+    have hX : ∀ k ≤ r - 2 - (A + d), qAdm r (A + d) A (d + 2 * k) ∧
+        qAdm r (d + 2 * n - F) F (d + 2 * k) := by
       intro k hk
       have := hadmX k (by omega)
-      simpa only [Nat.add_sub_cancel_left] using this)
-    (by simpa only [Nat.add_sub_cancel_left] using hqL)
+      simpa only [Nat.add_sub_cancel_left] using this
+    have hQ := hqL
+    rcases (show n ≤ A by omega).lt_or_eq with hlt | heq
+    · exact qDougall_trunc_param (r := r) (d := d) (m := A) (n := n) (j5 := F)
+        (K := r - 2 - (A + d)) hr (by omega) (by omega) hlt (by omega) (by omega) (by omega) hX
+        (by simpa only [Nat.add_sub_cancel_left] using hQ)
+    · subst heq
+      exact qDougall_trunc_deg_param (r := r) (d := d) (m := n) (j5 := F)
+        (K := r - 2 - (n + d)) hr (by omega) (by omega) (by omega) (by omega) (by omega) hX
+        (by simpa only [Nat.add_sub_cancel_left] using hQ)
   have e1 : (2 * (r - 2) - (A + d + A)) - (A + d - A) = 2 * (r - 2 - (A + d)) := by omega
   rw [e1, Nat.mul_div_cancel_left _ (by norm_num : 0 < 2)]
   simpa only [Nat.add_sub_cancel_left] using key
 
 /-- The truncated first orbit for the image under `(B E)(A F)`. -/
 theorem qDougallAt_O1_trunc_k1 {r : ℕ} (hr : 2 ≤ r) (B A E F q : ℕ) (hq1 : qAdm r B F q)
-    (hq2 : qAdm r E A q) (hA : F ≤ E) (hF : A ≤ E) (hnd : B + A < E + F)
+    (hq2 : qAdm r E A q) (hA : F ≤ E) (hF : A ≤ E) (hnd : B + A ≤ E + F)
     (hx : aLo E F B A = E - F) (hq : aLo E A B F = E - A)
     (htop : aHi r E F B A = 2 * (r - 2) - (E + F)) : QDougallAt r B A E F :=
   (qDougallAt_k1 r B A E F).1 (qDougallAt_O1_trunc hr E F B A q hq2 hq1 hA hF hnd hx hq htop)
 
 /-- The truncated first orbit for the image under `(B A)(E F)`. -/
 theorem qDougallAt_O1_trunc_k2 {r : ℕ} (hr : 2 ≤ r) (B A E F q : ℕ) (hq1 : qAdm r B F q)
-    (hq2 : qAdm r E A q) (hA : B ≤ A) (hF : E ≤ A) (hnd : F + E < A + B)
+    (hq2 : qAdm r E A q) (hA : B ≤ A) (hF : E ≤ A) (hnd : F + E ≤ A + B)
     (hx : aLo A B F E = A - B) (hq : aLo A E F B = A - E)
     (htop : aHi r A B F E = 2 * (r - 2) - (A + B)) : QDougallAt r B A E F :=
   (qDougallAt_k2 r B A E F).1 (qDougallAt_O1_trunc hr A B F E q (qAdm_swap12 hq2)
@@ -2362,7 +2569,7 @@ theorem qDougallAt_O1_trunc_k2 {r : ℕ} (hr : 2 ≤ r) (B A E F q : ℕ) (hq1 :
 
 /-- The truncated first orbit for the image under `(B F)(A E)`. -/
 theorem qDougallAt_O1_trunc_k3 {r : ℕ} (hr : 2 ≤ r) (B A E F q : ℕ) (hq1 : qAdm r B F q)
-    (hq2 : qAdm r E A q) (hA : E ≤ F) (hF : B ≤ F) (hnd : A + B < F + E)
+    (hq2 : qAdm r E A q) (hA : E ≤ F) (hF : B ≤ F) (hnd : A + B ≤ F + E)
     (hx : aLo F E A B = F - E) (hq : aLo F B A E = F - B)
     (htop : aHi r F E A B = 2 * (r - 2) - (F + E)) : QDougallAt r B A E F :=
   (qDougallAt_k3 r B A E F).1 (qDougallAt_O1_trunc hr F E A B q (qAdm_swap12 hq1)
