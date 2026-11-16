@@ -43,6 +43,37 @@ structure Hex where
   interDD : ∀ i j, i ≠ j → i ≠ j + 3 →
     chainSet (hexChord p d i) ∩ chainSet (hexChord p d j) ⊆ {p i, p (i + 3)} ∩ {p j, p (j + 3)}
 
+/-- The set of three chains glued end to end. -/
+lemma chainSet_glue3 (a b c d : ℝ × ℝ) (x y z : List (ℝ × ℝ)) :
+    chainSet (a :: x ++ b :: y ++ c :: z ++ [d]) =
+      chainSet (a :: x ++ [b]) ∪ chainSet (b :: y ++ [c]) ∪ chainSet (c :: z ++ [d]) := by
+  have h1 := chainSet_append (a :: x ++ b :: y) c (z ++ [d])
+  have h2 := chainSet_append (a :: x) b (y ++ [c])
+  have e1 : a :: x ++ b :: y ++ c :: z ++ [d] = (a :: x ++ b :: y) ++ c :: (z ++ [d]) := by simp
+  have e2 : a :: x ++ b :: y ++ [c] = (a :: x) ++ b :: (y ++ [c]) := by simp
+  rw [e1, h1, e2, h2]
+  simp [Set.union_assoc]
+
+/-- Three simple chains meeting only at the points where they are glued give a simple chain. -/
+lemma isSimpleChain_glue3 {a b c d : ℝ × ℝ} {x y z : List (ℝ × ℝ)}
+    (h1 : IsSimpleChain (a :: x ++ [b])) (h2 : IsSimpleChain (b :: y ++ [c]))
+    (h3 : IsSimpleChain (c :: z ++ [d]))
+    (h12 : chainSet (a :: x ++ [b]) ∩ chainSet (b :: y ++ [c]) = {b})
+    (h13 : (chainSet (a :: x ++ [b]) ∪ chainSet (b :: y ++ [c])) ∩ chainSet (c :: z ++ [d]) = {c}) :
+    IsSimpleChain (a :: x ++ b :: y ++ c :: z ++ [d]) := by
+  have e1 : a :: x ++ b :: y ++ c :: z ++ [d] = (a :: x ++ b :: y) ++ c :: (z ++ [d]) := by simp
+  have e2 : a :: x ++ b :: y ++ [c] = (a :: x) ++ b :: (y ++ [c]) := by simp
+  have hxy : IsSimpleChain (a :: x ++ b :: y ++ [c]) := by
+    rw [e2]
+    exact isSimpleChain_append (l₁ := a :: x) (l₂ := y ++ [c]) (b := b) h1 (by simpa using h2)
+      (by simpa using h12)
+  rw [e1]
+  refine isSimpleChain_append hxy (by simpa using h3) ?_
+  have hs : chainSet (a :: x ++ b :: y ++ [c]) = chainSet (a :: x ++ [b]) ∪ chainSet (b :: y ++ [c]) := by
+    rw [e2, chainSet_append]; simp
+  rw [hs]
+  simpa using h13
+
 namespace Hex
 
 variable (H : Hex)
