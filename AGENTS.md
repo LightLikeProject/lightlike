@@ -32,15 +32,19 @@ Everything below is recommended practice, with the reason for it.
 - **One task per pull request**, with the template's line `Task: <ID>` (or `Task: none`), and
   `Closes #<issue>` when it finishes that task's issue.
 - **AI assistance.** Fill in the template's field: the tool and the model.
+- **Size and pace.** A pull request is a finished milestone or a batch of related steps, not
+  each step on its own. One account opens at most five pull requests a day and does not push to
+  the same branch in quick succession.
 - **Claims.** Comment `claiming` on a definition, statement or upstream task before starting it,
   so that two competing definitions of one notion do not appear, and `stopping` to release it.
   Proof tasks are non-exclusive: comment `attempting`; the first proof that passes CI is merged.
 - **Branches.** Work on a branch, in a fork or, with write access, in this repository. To bring a
   pushed branch up to date, merge `main` into it (`git fetch origin` and `git merge origin/main`).
   Never force-push or rewrite pushed history.
-- **Merging.** A maintainer squash-merges a pull request once every CI check is green. `main` gets
-  one commit: the title with the pull request's number, and the description as its body. Write
-  both for the history.
+- **Merging.** A maintainer squash-merges a pull request once every CI check is green, in batches
+  with a daily limit, so a green pull request can wait some hours. `main` gets one commit: the
+  title with the pull request's number, and the description as its body. Write both for the
+  history.
 
 ## Commits
 
@@ -75,8 +79,9 @@ Everything below is recommended practice, with the reason for it.
 - **Numerics.** Cross-check independently with SymPy (`scripts/`, each check with a wrong-input
   control) and label the results as numerical evidence, not proof.
 - **Write for outside readers.** Commit bodies, docstrings and pull requests should make sense to
-  someone who has not seen the session that produced them. Session state, agent notes, local paths
-  and e-mail addresses stay out of tracked files.
+  someone who has not seen the session that produced them. Session state, agent notes, links to
+  chat sessions, local paths and e-mail addresses stay out of tracked files, commit messages and
+  pull requests.
 - **Push when there are no loose ends:** the build and the local checks pass, finished results
   have trust checks and a non-vacuity example, docstrings exist, and every limitation is fixed or
   reported. A gap that cannot be closed yet is reported, never hidden.
