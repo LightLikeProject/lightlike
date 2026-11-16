@@ -121,6 +121,12 @@ derivatives the sum is `3`, not `0` and not `6` [68]. The identity of [66] is ge
 in exact arithmetic by `scripts/regge/gen_flat_star.py`, and the fans of [64] by
 `scripts/regge/gen_star_angle.py`.
 
+In two dimensions the deficit angles of a closed triangulated surface with Euclidean triangles add up to `2π (V - E + F)`
+[69]: the angles sum to `π` per triangle, so the angle sum over all vertices is `π F`, and `3 F = 2 E` when every edge lies in
+two triangles. The octahedron inscribed in the unit sphere (chordal edge lengths) has deficit sum `4π`, and the octahedron with
+one face removed has `5π`, not `2π χ`, so the closedness is needed [69]. This is a combinatorial check of the round-sphere
+value `4π`, not a convergence theorem and not a statement about triangulations of other surfaces.
+
 A 2-complex with boundary is a disc in the combinatorial sense exactly when it is an intrinsic
 triangulated disc [16].
 
@@ -250,6 +256,9 @@ triangulated disc [16].
     `Regge.Conv3.jetStarCore_of_flat`
 68. Lightlike/Regge/Conv3/FlatStarTests.lean - `Regge.Conv3.euclid_flat_core`,
     `Regge.Conv3.sphere_sum`, `Regge.Conv3.sphere_sum_ne_double`
+
+69. Lightlike/Regge/GaussBonnet2D.lean - `Regge.discrete_gauss_bonnet`, `Regge.sum_angleOf`,
+    `Regge.octahedron_deficit_sum`, `Regge.octOpen_deficit_sum_ne`
 
 ## References
 

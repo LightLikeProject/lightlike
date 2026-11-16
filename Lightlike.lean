@@ -310,6 +310,7 @@ import Lightlike.Regge.Disc
 import Lightlike.Regge.Embedded
 import Lightlike.Regge.Flat
 import Lightlike.Regge.FlatSolution
+import Lightlike.Regge.GaussBonnet2D
 import Lightlike.Regge.Geodesic.DistExpansion
 import Lightlike.Regge.Geodesic.Equation
 import Lightlike.Regge.Geodesic.Exp
