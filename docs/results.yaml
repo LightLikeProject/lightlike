@@ -1252,5 +1252,5 @@
     refs:
       - {ref: bdfgh-2009, location: "Section 4", check: "Asymptotic formula"}
   review: kernel-checked
-  since: unreleased
   note: "For SU(2) boundary data g and any doubled spins n, either some point of SU(2)^5 has |F_n| = 1 (the data glue for the spins n) or there is q < 1 with |coh15j(lambda n) g| <= q^lambda for all lambda (coh15j_dichotomy: |F_n| <= 1 by norm_cohAmp_le, the maximum of the continuous |F_n| on the compact group is below 1 when no point reaches 1, then the existing coh15j_exp_decay). The EPRL form: if the self-dual spins n admit no gluing solution then |eprlCoh(lambda n, lambda m) g| <= q^lambda (eprlCoh_exp_decay_of_no_gluing, from eprlCoh = coh15j * coh15j and |coh15j(lambda m)| <= 1). This is the exponential-suppression check of the done-when of T-SF9 in its EPRL form. Limits: the case 'some point has |F_n| = 1' is only named, not analysed (the finite-maximum case with noncritical maxima is suppression_finite_max; critical maxima give the asymptotic formula); nothing is said for spins not proportional to areas beyond the dichotomy."
+  since: unreleased
