@@ -11,6 +11,12 @@ is compared with the limit L = integral over [0,1]^3 of (R/2) sqrt(det g) = inte
 (Lightlike.Regge.Conv3.regge3d_tendsto). Checks: S_N approaches L (the error halves each time N doubles,
 the Richardson extrapolation 2 S_32 - S_16 is within 0.2% of L), and the wrong sign (-L) and the wrong factor (2 L) are far away.
 The rate is an observation; the theorem proves convergence only.
+Observation on the origin of the 1/N (MEASURED, N = 4, 8, 16, 32): let R_N be the Riemann sum
+sum_k sum_z eps^3 d_k(eps (z + w_k/2)) of the limit class densities d_k (computed as l delta / eps^3 at
+eps = 0.01, 0.005, Richardson-extrapolated) at the same hinge midpoints. Then N (R_N - L) = 6.55, 6.31, 6.19, 6.13
+while S_N - R_N = -0.0682, -0.00666, -0.00059, -0.00003: the geometric error is far smaller than the
+quadrature error, so the 1/N is the midpoint-of-edge sampling of the Riemann sum, not a first-order term
+of the hinge expansion.
 Usage: python3 scripts/regge/regge3d_sphere_check.py     (a few seconds)
 """
 import itertools
