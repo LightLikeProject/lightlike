@@ -74,8 +74,9 @@ product of two overlaps [42]. The vertex sum with coherent boundary data is the 
 of the coherent node tensors, each a Spin(4) integral at the projections [43]. The positivity and the
 closed value of `c₀` are not proved. The contraction of tensors that are products over their legs
 is the product over the ten edges of the edge pairings, and the contraction of node integrals is the
-integral over `Spin(4)^5` of the contraction of the integrands [44]; the `Spin(4)^5` integral of edge
-forms itself is not yet in the library.
+integral over `Spin(4)^5` of the contraction of the integrands [44]; the lift of the Hom form of a
+product tensor is rank one, with the leg vectors `Y s_l` [45]; the `Spin(4)^5` integral of edge forms
+itself is not yet in the library.
 
 If the maximum set of the integrand is finite and the logarithmic phase has nonzero differential at
 each of its points, then there is no critical point of the extended stationary phase and the coherent
@@ -195,6 +196,10 @@ proved here.
     `Asymptotics.EPRL.eprlCohNodeHigh_integral`, `Asymptotics.EPRL.eprlVertexHigh_coherent`
 44. Lightlike/Asymptotics/EPRL/EprlHighEdge.lean - `Asymptotics.EPRL.k5Contract4_prod`,
     `Asymptotics.EPRL.k5Contract4_integral`
+45. Lightlike/Asymptotics/EPRL/EprlHighLift.lean -
+    `Asymptotics.EPRL.eprlMapLow_Wm_conjTranspose`,
+    `Asymptotics.EPRL.singlet2_mul_eprlPairLow_conjTranspose`,
+    `Asymptotics.EPRL.eprlPairLow_mulVec_prod`, `Asymptotics.EPRL.eprlLiftLow_homForm_prod`
 
 ## References
 
