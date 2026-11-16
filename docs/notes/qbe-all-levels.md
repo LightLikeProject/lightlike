@@ -281,3 +281,21 @@ constructions, so by the rule agreed for this note the route is recorded and sto
 
 Recorded options (no commitment): the second paper to read for a direct proof of the pentagon is the one Rosengren cites for the connection-coefficient view of the Biedenharn–Elliott identity if any
 (none found in this text); and the relation of (4.8) to the pentagon could be tested numerically first, in the basic case at generic `q`, before any Lean statement.
+
+## Watson's transformation: certificate search so far (Python only, exact rational arithmetic; no Lean)
+
+Setting. `L_n` is the terminating very-well-poised `₈φ₇` side of DLMF (17.9.15) and `R_n` the prefactor times the balanced `₄φ₃` side, both with the terminating parameter `q^{-n}`,
+generic rational `q, a, b, c, d, e` (`q = 3/2`, the others random fractions with numerators and denominators in `11..97`), exact `Fraction` arithmetic.
+
+Findings.
+ - Exactness: `L_n = R_n` exactly (equality of rationals, not floats) for `n = 0, …, 6`.
+ - Recurrences (linear algebra over ℚ, unknown polynomial coefficients in `x = q^n`, nullspace dimension 1): `L_n` and `R_n` each satisfy a recurrence of order 2 with coefficients of degree 4 in `x`
+   (nothing of order 1 or 2 with degree below 4; orders up to 3 and degrees up to 8 were searched). They are the same recurrence, as they must be.
+ - Dependence of the normalised recurrence coefficients on one parameter at a time (rational-function reconstruction from 26 to 34 exact points): degree at most `(1, 1)` (numerator, denominator) in each of `b, c, d, e`,
+   and a polynomial of degree 4 in `a`.
+Both are inside the stop rules (order at most 3, degree at most 8). What was NOT done: the Zeilberger certificate `R(n, k)` of each sum, which is what a Lean proof by induction on `n` needs (the
+method of `jackson_sumT`: a telescoping identity in `k`, then `L_{n+2}, L_{n+1}, L_n` combined by the recurrence, then the base cases `n = 0, 1`). The certificate has to be found symbolically in the five parameters and `q`,
+and then verified by `field_simp; ring` in Lean; the coefficient degrees above suggest it is not out of reach in principle, but the symbolic size (several variables, order 2) is the real cost and was not measured.
+
+Priority. Watson's transformation is a tool for route A' of the pentagon, which stopped at the count of nested sums (above). Without a derivation of the pentagon from steps 1, 3 and 4, proving step 1 does not
+yet advance q-Biedenharn–Elliott; it is worth doing only together with a route that uses it. Recorded, not continued.
