@@ -13,7 +13,8 @@ contributes through the Hessian. Here the expansion is carried one order further
 
 * `taylor3_uniform`: for a `C³` function on an open set of a proper normed space `E` (for instance `Fin 6 → ℝ`) and a compact subset,
   `|F (L + δ) - F L - F'(L) δ - ½ F''(L)(δ, δ)| ≤ M ‖δ‖³`, uniformly.
-* `contDiffAt_Dsq`: the dihedral angle `Dsq` is `C³` at every admissible tuple.
+* `contDiffAt_Dsq_all`: the dihedral angle `Dsq` is smooth, of every order `n`, at every admissible tuple.
+* `contDiffAt_Dsq`: the special case `C³`.
 * `fderiv_Dsq`: its derivative is the first variation `Dh`.
 * `dihSq_taylor3`: the bound for `Dsq` on compact sets of admissible tuples.
 -/
