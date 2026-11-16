@@ -85,6 +85,7 @@ NOT_CHECKS = {"scripts/ci_check.py", "scripts/prune_docs.py", "scripts/gate.py",
               "scripts/regge/gen_flat_star.py",  # generator of Lightlike/Regge/Conv3/FlatStar.lean (prints, no exit code)
               "scripts/pl/check_chain.py",  # a library of surf_chains.py
               "scripts/pl/surf_search.py",  # a search tool; its results are checked by surf_chains.py
+              "scripts/spinfoam/exact3j.py",  # a library of gauge_cutoff_limit.py (exact 3j symbols)
               # q-Racah certificate pipeline: generators that write Lightlike/TuraevViro/Reflect/Racah*.lean
               # from intermediate files (parts.pkl, facs.out), run by hand from scripts/qracah
               "scripts/qracah/wz8.py", "scripts/qracah/size.py", "scripts/qracah/size2.py",
