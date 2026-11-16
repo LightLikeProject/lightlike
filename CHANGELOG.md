@@ -4,6 +4,78 @@ Notable changes to Lightlike. Results are identified by stable IDs (`LL-NNNN`), 
 sources and review status in [docs/RESULTS.md](docs/RESULTS.md). Versions follow
 [Semantic Versioning](https://semver.org/); before 1.0.0, minor versions may change the API.
 
+## [0.3.0]
+
+### Library
+
+- 19 new results, LL-0067 to LL-0085: Turaev–Viro (6), spin foams (5), PL topology (4), Regge
+  calculus (3) and Lorentzian asymptotics (1). 17 are proven and 2 are conditional (LL-0074,
+  LL-0075, under the q-Dougall summation).
+- The catalog has 85 entries: 82 proven results and 3 conditional results.
+- LL-0076's `since` said 0.2.0, but it was merged after that release, and LL-0070 to LL-0075 said
+  0.2.1, a version that was not released; all of them now say 0.3.0.
+- The new entries are `kernel-checked`. Unlike 0.2.0, no reviewer agent compared them with their
+  cited sources before this release.
+- Fix: the one-triangle action of the Lorentzian vertex (`lorAction`, Asymptotics) matched the
+  EPRL integrand only for even doubled spins and differed by a sign for odd ones. It is now
+  written in the power form and is exact for every doubled spin.
+- The Racah certificate files have per-declaration heartbeat limits instead of file-level ones.
+- Turaev–Viro: Jackson's summation of the terminating very-well-poised 6φ5 series, proved by a
+  telescoping certificate. It has no catalog entry, because no edition, page and equation
+  of the formula in a book has been verified; it is the main step towards the q-Dougall summation.
+
+### Notable results
+
+- LL-0076: the Jordan curve theorem for simple closed polygons in the plane. The complement is
+  the disjoint union of a bounded and an unbounded connected open set, and the polygon is the
+  frontier of each (Moise 1977, the chapter "Separation properties of polygons in R²").
+- LL-0082 to LL-0084: the polygonal Schoenflies theorem. A simple closed polygon in the plane has a
+  triangulation by its own vertices, and the closed region it bounds is a PL ball whose boundary is
+  the polygon (Moise 1977, the chapter "The Schönflies theorem for polygons in R²").
+- LL-0070 to LL-0073: for the real q-Racah sum at q = e^{iπ/r}, the three-term recurrence in the
+  third colour (Koekoek and Swarttouw 1996, eqs. (3.2.1)–(3.2.2)); the row identity of the
+  quantum 6j symbol, endpoints included; detailed balance and weighted orthogonality of the rows
+  for different sixth colours; and one common weighted norm for all rows and columns. LL-0074
+  and LL-0075 give norm one and q-orthogonality at every level r ≥ 2 under the q-Dougall
+  summation, an explicit hypothesis that is checked numerically (exact at r = 4 to 7) and not
+  proved in Lean.
+- LL-0068: the gauge-fixed Ooguri state sum at finite cutoff is constant along every chain of
+  3-3, 2-4 and 1-5 Pachner moves and their inverses (with the hypotheses of LL-0049 to LL-0051).
+  LL-0069, LL-0077 and LL-0081 say when a gauge set that forces every triangle still does after a
+  1-5, 3-3 or 2-4 move. Forcing is this library's rule, used to show that the gauge-fixed sum is 1.
+- LL-0067: the cut-off sum of the tetrahedron over doubled edge spins up to N is at least
+  (N + 1)², so it has no limit without rescaling.
+- LL-0078 to LL-0080: steps towards the 3D convergence of the Regge action (task T-RC6, open):
+  admissibility and dihedral angles of the Kuhn triangulation for every positive definite Gram
+  matrix; explicit Christoffel symbols, Riemann tensor and scalar curvature at a point; and the
+  jet-level star identity at a point where the first derivatives of the metric vanish.
+- LL-0085: one link of the principal-series Lorentzian vertex is the exponential of the coherent
+  action times the density of Ω, the first step of identifying the coherent vertex of Barrett,
+  Dowdall, Fairbairn, Hellmann and Pereira (2010) with the principal-series vertex (task T-SF10,
+  open; the identity of the two vertices is not proved).
+
+### Open work
+
+- Turaev–Viro: the q-Dougall summation itself (LL-0074, LL-0075), and qBiedenharnElliott for
+  r ≥ 4, which with LL-0075 would give the invariance of LL-0031 at level r.
+- Spin foams: forcing under the inverse moves 4-2 and 5-1; removing the cutoff and the independence
+  of the gauge set (LL-0049 to LL-0051, LL-0068). A gauge set that does not force every triangle
+  gives cutoff sums that change sign and grow (a numerical observation).
+- Lorentzian asymptotics: the identity of the coherent and principal-series vertices (T-SF10).
+- Regge calculus: the jet-level star identity at a general point (LL-0080), then the 3D
+  convergence of the action (T-RC6).
+
+### Checks
+
+- A leak check (local paths, e-mail addresses, tokens) is a hard rule in CI.
+- A pull request may carry draft IDs (LL-XXXX, LL-XXXX-a, ...); the ID is assigned when it is
+  merged.
+- CI counts a use of a result declaration under a namespace suffix as a test use.
+- The Python scripts run on 3.9 to 3.14; CI tests 3.12.
+- Every commit on main gets its own CI run; before, close merges cancelled the runs in between.
+- CONTRIBUTING gives one template for module docstrings: a title, a summary, then
+  `## Main results` and `## References` when the file has them.
+
 ## [0.2.0]
 
 ### Library
