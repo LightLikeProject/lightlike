@@ -151,8 +151,10 @@ jobs:
       run:
         shell: bash  # -eo pipefail, so `cmd | tee log` fails when cmd fails
     steps:
-      # A clean build needs about 17 GB (Mathlib's unpacked build cache and its download, Physlib,
-      # Lightlike), more than the runner has free; this removes SDKs the build does not use.
+      # The runner starts with about 88 GB of 145 GB free and the build takes about 15 GB (measured
+      # by the last step of this job on a run that restored the dependency cache: .lake/packages
+      # 7.5 GB, .lake/build 4.0 GB, Mathlib's download cache 0.45 GB), so the build fits without
+      # this step. It removes SDKs the build does not use, about 19 GB more, in about 80 s.
       - name: Free disk space [ci-only]
         run: |
           df -h /
