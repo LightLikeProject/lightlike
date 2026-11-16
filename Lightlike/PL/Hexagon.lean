@@ -245,6 +245,46 @@ lemma T1_inter_T0 : chainSet (hexChord H.p H.d 1) ∩ chainSet (hexChord H.p H.d
   simp at this
   rcases this with ⟨h1 | h1, h2 | h2⟩ <;> exact absurd (H.inj (h1.symm.trans h2)) (by decide)
 
+/-- The list of the vertices of the hexagon, with the interior points of the sides. -/
+def list : List (ℝ × ℝ) :=
+  H.p 0 :: H.h 0 ++ H.p 1 :: H.h 1 ++ H.p 2 :: H.h 2 ++ H.p 3 :: H.h 3 ++ H.p 4 :: H.h 4 ++
+    H.p 5 :: H.h 5
+
+/-- **Two neighbouring chords of the hexagon cannot lie on the same side.** -/
+theorem pair_false
+    (hside : (chainSet (hexChord H.p H.d 0) \ {H.p 0, H.p 3} ⊆ (Polygon.ofList H.list).inside ∧
+        chainSet (hexChord H.p H.d 1) \ {H.p 1, H.p 4} ⊆ (Polygon.ofList H.list).inside) ∨
+      (chainSet (hexChord H.p H.d 0) \ {H.p 0, H.p 3} ⊆ (Polygon.ofList H.list).outside ∧
+        chainSet (hexChord H.p H.d 1) \ {H.p 1, H.p 4} ⊆ (Polygon.ofList H.list).outside)) :
+    False := by
+  have hA0 : hexArc H.p H.h 0 = H.p 0 :: H.h 0 ++ [H.p 1] := rfl
+  have hA1 : hexArc H.p H.h 1 = H.p 1 :: H.h 1 ++ [H.p 2] := rfl
+  have hA2 : hexArc H.p H.h 2 = H.p 2 :: H.h 2 ++ [H.p 3] := rfl
+  have hA3 : hexArc H.p H.h 3 = H.p 3 :: H.h 3 ++ [H.p 4] := rfl
+  have hA4 : hexArc H.p H.h 4 = H.p 4 :: H.h 4 ++ [H.p 5] := rfl
+  have hA5 : hexArc H.p H.h 5 = H.p 5 :: H.h 5 ++ [H.p 0] := rfl
+  have hD0 : hexChord H.p H.d 0 = H.p 0 :: H.d 0 ++ [H.p 3] := rfl
+  have hD1 : hexChord H.p H.d 1 = H.p 1 :: H.d 1 ++ [H.p 4] := rfl
+  have hs0 := H.simpleH 0
+  have hs1 := H.simpleH 1
+  have hs2 := H.simpleH 2
+  have hs3 := H.simpleH 3
+  have hs4 := H.simpleH 4
+  have hs5 := H.simpleH 5
+  have hd0 := H.simpleD 0
+  have hd1 := H.simpleD 1
+  rw [hA0] at hs0; rw [hA1] at hs1; rw [hA2] at hs2
+  rw [hA3] at hs3; rw [hA4] at hs4; rw [hA5] at hs5
+  rw [hD0] at hd0; rw [hD1] at hd1
+  have f01 := H.S01; have f012 := H.S012; have f34 := H.S34; have f345 := H.S345
+  have fin := H.arcs_inter; have g1 := H.T0_inter_first; have g2 := H.T0_inter_second
+  have k1 := H.T1_inter_first; have k2 := H.T1_inter_second; have k3 := H.T1_inter_T0
+  rw [hA0, hA1] at f01; rw [hA0, hA1, hA2] at f012; rw [hA3, hA4] at f34
+  rw [hA3, hA4, hA5] at f345; rw [hA0, hA1, hA2, hA3, hA4, hA5] at fin
+  rw [hA0, hA1, hA2, hD0] at g1; rw [hA3, hA4, hA5, hD0] at g2
+  rw [hD1, hA0, hA1, hA2] at k1; rw [hD1, hA3, hA4, hA5] at k2; rw [hD1, hD0] at k3
+  sorry
+
 end Hex
 
 end Lightlike.PL
