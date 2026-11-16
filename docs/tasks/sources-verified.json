@@ -539,11 +539,16 @@
   "citations_via": "Semantic Scholar"
  },
  "bdfgh-2009": {
-  "checked": "2026-11-15",
+  "checked": "2026-11-16",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "Asymptotic analysis of the EPRL four-simplex amplitude",
   "locations": {
+   "Section 3.4": {
+    "verified": true,
+    "snippet": "3.4 Exponentiated expression for the four-simplex amplitude The general considerations of the previous sections are now applied, for the rest of the paper, to the case of a 4-simplex σ. The boundary data is specifie",
+    "why": null
+   },
    "Section 4": {
     "verified": true,
     "snippet": "4 Asymptotic formula To study the semi-classical approximation of the theory we consider the large spin limit, and study the asymptotics. We start by scaling all ten spins by a constant parameter kab → λkab . Then t",
