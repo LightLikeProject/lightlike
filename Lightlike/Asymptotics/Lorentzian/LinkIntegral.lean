@@ -148,13 +148,26 @@ theorem ae_pairing_ne_zero (M g : Matrix (Fin 2) (Fin 2) ℂ) (hM : M.det = 1) (
     ring
   rw [e]; exact hw
 
-/-- **One link as an integral over the chart.** For `n : ℕ` (the lowest level of `(n/2, ρ)`),
-SU(2) data `g₁, g₂` and `a, b ∈ SL(2,ℂ)`, the contraction of the EPRL matrix coefficients
-`D_{m m'}(a⁻¹ b)` with the coherent coefficients (conjugated on the bra slot) is
-`(‖A e₀‖²)⁻¹ ∫_ℂ e^S / (‖Z‖² ‖Z'‖²) dw`, with `Z = aᵀ (w, 1)`, `Z' = bᵀ (w, 1)`, the source
-spinor the first column of `ḡ₁`, the target spinor the first column of `w g₂`, and `S` the
-power-form action with `2k = n`, `p = ρ` (BDFHP §4 p. 16, eq. (17); Engle–Pereira eqs. (28), (30)
-p. 7). The constant `‖A e₀‖² = ‖tlin e₀‖²` is `π/(n+1)` (to be proved; checked numerically). -/
+/-- **One link as an integral over the chart.**
+
+*Statement.* For `n : ℕ` (the lowest SU(2) level of the principal series `(n/2, ρ)`, `ρ = γ (n/2 + 1)`
+of `Lightlike.Lorentz.EPRL`), SU(2) data `g₁, g₂` and `a, b ∈ SL(2,ℂ)`, the contraction of the EPRL
+matrix coefficients `D_{m m'}(a⁻¹ b)` with the coherent coefficients (conjugated on the bra slot) is
+`(‖A e₀‖²)⁻¹ ∫_ℂ e^S / (‖Z‖² ‖Z'‖²) dw`, with `Z = aᵀ (w, 1)`, `Z' = bᵀ (w, 1)`, the source spinor
+the first column of `ḡ₁`, the target spinor the first column of `w g₂`, and `S = triAction (n/2) ρ …`
+the power-form action (`2k = n`, `p = ρ`). Sources: BDFHP (arXiv:0907.2440) §4 p. 16, the propagator
+as an integral over `ℂP¹` and eq. (17); Engle–Pereira (arXiv:0805.4696) eqs. (28), (30), p. 7.
+
+*Hypotheses.* Any `γ : ℝ`, any `n : ℕ` including `n = 0`; `g₁, g₂ ∈ SU(2)`; `a, b ∈ SL(2,ℂ)`. No
+relation between `ρ` and `n` is used. The integral over `ℂ` is the Lebesgue integral of an
+integrable function: the integrand has modulus at most the density of `Ω`
+(`norm_lorIntegrand_le`, `integrable_lorEdgeDensity`) where the overlaps are nonzero, and they vanish
+on a null set only (`ae_pairing_ne_zero`).
+
+*Not covered.* The constant `‖A e₀‖² = ‖tlin e₀‖²` is left abstract here (it is `π/(n+1)`, proved
+separately and checked numerically); only the lowest K-type `ℓ = 0` and product coherent boundary
+data; the sum over the ten links and the integral over `SL(2,ℂ)⁴` (hence `eprlVertex = lorVertex`) are
+not part of this statement. The Lebesgue measure is the one of `PrincipalSeries.lean`. -/
 theorem link_integral (γ : ℝ) (n : ℕ) (g1 g2 : SU2) (a b : SL2C) :
     ∑ m : Fin (dsp (n : ℤ) 0 + 1), ∑ m' : Fin (dsp (n : ℤ) 0 + 1),
         conj (cohVec n (g1 : Matrix (Fin 2) (Fin 2) ℂ) m) *
