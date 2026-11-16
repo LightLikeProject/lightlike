@@ -19,7 +19,10 @@ dimension two the dual complex has one triangle for each vertex, one edge for ea
 vertex for each bicolored cycle, so its Euler characteristic is the number of bicolored cycles
 minus half the number of vertices [1]. The graph with two vertices gives the 2-sphere and a graph
 with six vertices gives the torus [1]. A graph with two lines of one color at a vertex is not a
-colored graph [1]. That the dual of every colored graph is a normal simplicial pseudo-manifold, and
+colored graph [1]. The `1`-bubbles are the lines, a line has exactly two ends, every bubble contains a
+vertex, and in a connected graph any two vertices are joined by a chain of lines [2]. The lines of `p`
+colors restricted to a bubble form a colored graph of dimension `p - 1`, and it is connected [2]. That
+the dual of every colored graph is a normal simplicial pseudo-manifold, and
 the identification of the bubbles with the links of the dual simplices, are due to Gurau {1}; they
 are [TODO] here.
 
@@ -30,6 +33,10 @@ are [TODO] here.
    `GFT.not_nonempty_coloredGraph_fin3`,
    `GFT.ColoredGraph.twoChi2`, `GFT.theta`, `GFT.twoChi2_theta`, `GFT.torus`, `GFT.twoChi2_torus`,
    `GFT.IsProper`, `GFT.badLines_not_proper`
+2. Lightlike/GFT/Bubble.lean - `GFT.ColoredGraph.mem_bubble_self`,
+   `GFT.ColoredGraph.bubble_singleton`, `GFT.ColoredGraph.card_bubble_singleton`,
+   `GFT.ColoredGraph.IsConnected`, `GFT.ColoredGraph.strongChain_of_connected`,
+   `GFT.ColoredGraph.restrict`, `GFT.ColoredGraph.restrict_isConnected`
 
 ## References
 
