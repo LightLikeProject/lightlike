@@ -182,6 +182,7 @@ import Lightlike.PL.PolygonDiagonal3
 import Lightlike.PL.PolygonSplit
 import Lightlike.PL.PolygonTriangulation
 import Lightlike.PL.Attach
+import Lightlike.PL.PolygonEars
 import Lightlike.PL.Realisation
 import Lightlike.PL.Starring
 import Lightlike.PL.Boundary
