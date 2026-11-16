@@ -26,13 +26,14 @@ equivalence holds with Physlib's equations on the right [2]. The statement on a 
 
 ## Lean References
 
-1. Lightlike/Cosmology/FLRW.lean - `flrwMetric`, `flrwDomain`, `perfectFluid`,
-   `IsEinsteinSolution`, `FirstFriedmann`, `SecondFriedmann`, `flrw_einstein_iff_friedmann`,
-   `friedmann_continuity`, `deSitter_einstein_iff`, `einsteinStatic_einstein_iff`,
-   `not_einsteinStatic_einstein_of_negCurvature`
-2. Lightlike/Cosmology/FLRWPhyslib.lean - `onTime`, `timeDeriv_onTime`,
-   `firstOrderFriedmann_onTime_iff`, `secondOrderFriedmann_onTime_iff`,
-   `flrw_einstein_iff_physlib_friedmann`
+1. Lightlike/Cosmology/FLRW.lean - `Cosmology.flrwMetric`, `Cosmology.flrwDomain`,
+   `Cosmology.perfectFluid`, `Cosmology.IsEinsteinSolution`, `Cosmology.FirstFriedmann`,
+   `Cosmology.SecondFriedmann`, `Cosmology.flrw_einstein_iff_friedmann`,
+   `Cosmology.friedmann_continuity`, `Cosmology.deSitter_einstein_iff`,
+   `Cosmology.einsteinStatic_einstein_iff`, `Cosmology.not_einsteinStatic_einstein_of_negCurvature`
+2. Lightlike/Cosmology/FLRWPhyslib.lean - `Cosmology.onTime`, `Cosmology.timeDeriv_onTime`,
+   `Cosmology.firstOrderFriedmann_onTime_iff`, `Cosmology.secondOrderFriedmann_onTime_iff`,
+   `Cosmology.flrw_einstein_iff_physlib_friedmann`
 
 ## References
 

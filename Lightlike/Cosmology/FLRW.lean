@@ -68,6 +68,7 @@ def SecondFriedmann (a ρ p : ℝ → ℝ) (Λ Gn : ℝ) (t : ℝ) : Prop :=
 
 section FLRWCurvature
 
+/-- `f` is differentiable at `x` and its partial derivative in the direction `j` there is `v`. -/
 def HasPd (j : Fin 4) (f : (Fin 4 → ℝ) → ℝ) (x : Fin 4 → ℝ) (v : ℝ) : Prop :=
   DifferentiableAt ℝ f x ∧ pd j f x = v
 
@@ -198,16 +199,21 @@ theorem pd_flrwEntry {a : ℝ → ℝ} (ha : DifferentiableAt ℝ a (x 0)) (hD :
   · subst h
     by_cases hp : p = 0
     · simp [hp, pd_const]
-    · simp only [hp, if_true, if_false]
+    · simp only [hp, ite_true, ite_false]
       have := (hasPd_Psi (j := m) ha hD).mul (hasPd_Psi (j := m) ha hD)
       rw [this.2]; ring
   · simp [h, pd_const]
 
+/-- The diagonal of the FLRW metric in the chart: `-1` in time, `(a(t) / (1 + k |x|²/4))²`
+in space. -/
 def dF (a : ℝ → ℝ) (k : ℝ) (y : Fin 4 → ℝ) : Fin 4 → ℝ :=
   fun μ => if μ = 0 then -1 else (a (y 0) / (1 + k * spatialNormSq y / 4)) ^ 2
 
+/-- `a a' / (1 + k |x|²/4)²`, the time-space Christoffel symbols' common factor. -/
 def F0 (a : ℝ → ℝ) (k : ℝ) (y : Fin 4 → ℝ) : ℝ := a (y 0) * deriv a (y 0) * Sf k y ^ 2
+/-- The Hubble rate `a'/a` at the time coordinate of `y`. -/
 def Hf (a : ℝ → ℝ) (y : Fin 4 → ℝ) : ℝ := deriv a (y 0) / a (y 0)
+/-- `-(k/2) xᵢ / (1 + k |x|²/4)`, the spatial Christoffel symbols' common factor. -/
 def Lf (k : ℝ) (i : Fin 4) (y : Fin 4 → ℝ) : ℝ := -(k / 2 * y i) * Sf k y
 
 /-- The Christoffel symbols `Γ^i_{jl}` of the FLRW metric, in closed form. -/
@@ -233,11 +239,14 @@ theorem christoffel_flrw {a : ℝ → ℝ} (ha : DifferentiableAt ℝ a (x 0)) (
   fin_cases i <;> fin_cases j <;> fin_cases l <;>
     simp [Γf, F0, Hf, Lf, dPsi, dF, Sf, Dn] <;> field_simp <;> ring
 
+/-- The partial derivative of `F0` in the direction `m`. -/
 def dF0 (a : ℝ → ℝ) (k : ℝ) (m : Fin 4) (x : Fin 4 → ℝ) : ℝ :=
   if m = 0 then (deriv a (x 0) ^ 2 + a (x 0) * deriv (deriv a) (x 0)) * Sf k x ^ 2
   else -(k * a (x 0) * deriv a (x 0) * x m) * Sf k x ^ 3
+/-- The partial derivative of `Hf` in the direction `m`. -/
 def dH (a : ℝ → ℝ) (m : Fin 4) (x : Fin 4 → ℝ) : ℝ :=
   if m = 0 then (deriv (deriv a) (x 0) * a (x 0) - deriv a (x 0) ^ 2) / a (x 0) ^ 2 else 0
+/-- The partial derivative of `Lf k i` in the direction `m`. -/
 def dL (k : ℝ) (m i : Fin 4) (x : Fin 4 → ℝ) : ℝ :=
   if m = 0 then 0 else
     -(k / 2 * (if m = i then 1 else 0)) * Sf k x + (-(k / 2 * x i)) * (-(k / 2 * x m) * Sf k x ^ 2)
