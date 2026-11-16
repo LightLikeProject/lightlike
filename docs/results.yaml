@@ -1254,3 +1254,29 @@
   review: kernel-checked
   note: "For SU(2) boundary data g and any doubled spins n, either some point of SU(2)^5 has |F_n| = 1 (the data glue for the spins n) or there is q < 1 with |coh15j(lambda n) g| <= q^lambda for all lambda (coh15j_dichotomy: |F_n| <= 1 by norm_cohAmp_le, the maximum of the continuous |F_n| on the compact group is below 1 when no point reaches 1, then the existing coh15j_exp_decay). The EPRL form: if the self-dual spins n admit no gluing solution then |eprlCoh(lambda n, lambda m) g| <= q^lambda (eprlCoh_exp_decay_of_no_gluing, from eprlCoh = coh15j * coh15j and |coh15j(lambda m)| <= 1). This is the exponential-suppression check of the done-when of T-SF9 in its EPRL form. Limits: the case 'some point has |F_n| = 1' is only named, not analysed (the finite-maximum case with noncritical maxima is suppression_finite_max; critical maxima give the asymptotic formula); nothing is said for spins not proportional to areas beyond the dichotomy."
   since: unreleased
+- id: LL-XXXX-d
+  title: For γ > 1 the coherent EPRL node tensor at the projections is a signed entry of a Spin(4) average, and the EPRL vertex sum with coherent boundary data is the K5 contraction of these node tensors
+  area: Asymptotics
+  file: Lightlike/Asymptotics/EPRL/EprlHighVertex.lean
+  decls: [Lightlike.Asymptotics.EPRL.eprlCohNodeHigh_integral, Lightlike.Asymptotics.EPRL.eprlVertexHigh_coherent]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: bdfgh-2009, location: "Section 3.4", check: "Exponentiated expression"}
+  review: kernel-checked
+  note: "For γ > 1 the EPRL map is the lowest Clebsch-Gordan component V_{(n-m)/2} -> V_{n/2} (x) V_{m/2} (EPRL, arXiv:0711.0146, section III, eq. (27)). With the same SU(2) elements g on both chiral halves, the image of the SU(2) coherent intertwiner iota_{n-m}(g) is the Spin(4) average of the conjugates of the lifted rank-one tensor (eprlIntertwinerLow_homForm_cohInt, from projSpin4_eq_integral: projSpin4 is the Haar average of the Spin(4) conjugation action); the coherent node tensor sum_z c_z eprlNodeLow n m z is, at the projections of two components, nodeSign times the signs of the bridge times the matrix entry of that average (eprlCohNodeHigh_integral); the vertex sum with coherent boundary data is the K5 contraction of these node tensors (eprlVertexHigh_coherent), with c_a(z) = nodeSign * <iota_z, homForm iota>. Exact at every spin. Limits: the image is a superposition, not a product of coherent states, so there is no factorization into two SU(2) coherent node tensors as for γ < 1; the Spin(4)^5 integral of edge forms (Fubini over the five nodes) is not yet in the library; the sign (-1)^chi' of the source is not compared. Numerical check of the node integral: scripts/spinfoam/eprl_high_check.py (check 2, error 2.2e-14, with a weak-design control)."
+  since: unreleased
+- id: LL-XXXX-e
+  title: The leg amplitude of the lowest Clebsch-Gordan component on coherent states is (-1)^m c0 times two overlaps
+  area: Asymptotics
+  file: Lightlike/Asymptotics/EPRL/EprlHighLeg.lean
+  decls: [Lightlike.Asymptotics.EPRL.eprlMapLow_cohState, Lightlike.Asymptotics.EPRL.weight_of_equivariant]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: bdfgh-2009, location: "Section 3.4", check: "Exponentiated expression"}
+  review: kernel-checked
+  note: "(<n,M| (x) <m,M'|) Y_low |k,g> = (-1)^m c0 <M|g>^k <M|J M'>^m for SU(2) elements M, M', g and k = n - m, where c0 = Y_low[(0,m),0] is the Clebsch-Gordan entry of the lowest component, <M|g> = (M^dagger g)_00 and <M|J M'> = (M^dagger M' eps)_00. Proof: an SU(2)-equivariant map conserves weights (weight_of_equivariant, by the torus element exp(i pi / W)), covariance reduces the amplitude to M = 1 (legAmp_mul), where one entry of Y_low survives. Limits: c0 is kept abstract; its positivity and its value sqrt((k+1)/(n+1)) are not proved here (numerical check only: scripts/spinfoam/eprl_high_check.py, check 0, wrong-input controls); the U(1)-invariant form of the edge integrand is derived here from the source's eqs. (17)-(19), not printed in the source; the phase (-1)^chi' of eq. (19) is not compared."
+  since: unreleased
