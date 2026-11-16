@@ -234,7 +234,8 @@ the chart action is not made.
     `Asymptotics.Lorentzian.critZ_src`, `Asymptotics.Lorentzian.critZ_tgt`,
     `Asymptotics.Lorentzian.re_lorAction_critZ`
 25. Lightlike/Asymptotics/Lorentzian/ZStationary.lean - `Asymptotics.Lorentzian.hasDerivAt_triFactor_joint`,
-    `Asymptotics.Lorentzian.zedge_cancel`, `Asymptotics.Lorentzian.edge_variation`,
+    `Asymptotics.Lorentzian.hasDerivAt_triFactor_curve`, `Asymptotics.Lorentzian.zedge_cancel`,
+    `Asymptotics.Lorentzian.edge_variation`,
     `Asymptotics.Lorentzian.sum_logDeriv_nodes`
 
 ## References

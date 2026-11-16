@@ -10,8 +10,9 @@ The first variation of the triangle factor along a simultaneous variation of its
 (`zedge_cancel`, `edge_variation`): at `Z = ξ`, `Z' = r c J ξ'` the second critical equation (21)
 makes the `z` terms cancel for every `δz`, and the group terms are the `logDeriv` of
 `Stationary.lean`. `sum_logDeriv_nodes` sums them over the nodes, where closure makes them vanish.
-These are statements about the derivative of the action along lines in the spinor and group
-variables; the identification with the gradient of the chart action is not made here.
+`hasDerivAt_triFactor_curve` extends the line derivative to curves (the triangle factor is
+differentiable in both spinors). These are statements about the derivative of the action in the
+spinor and group variables; the identification with the gradient of the chart action is not made here.
 -/
 
 open Complex
@@ -338,5 +339,90 @@ theorem sum_logDeriv_nodes {E V : Type*} [Fintype E] [Fintype V] [DecidableEq V]
   simp_rw [h1]
   rw [Finset.sum_comm]
   exact Finset.sum_eq_zero fun a _ => hcl a (ca a)
+
+
+theorem differentiableAt_inner_left (ξ : Spinor) (Z : Spinor) :
+    DifferentiableAt ℝ (fun x : Spinor => inner ℂ x ξ) Z := by
+  have : (fun x : Spinor => inner ℂ x ξ) = fun x => (starRingEnd ℂ) (inner ℂ ξ x) := by
+    funext x; rw [inner_conj_symm]
+  rw [this]
+  exact (Complex.conjCLE.differentiableAt).comp Z
+    (((innerSL ℂ ξ).restrictScalars ℝ).differentiableAt)
+
+theorem differentiableAt_inner_right (ξ : Spinor) (Z : Spinor) :
+    DifferentiableAt ℝ (fun x : Spinor => inner ℂ ξ x) Z :=
+  ((innerSL ℂ ξ).restrictScalars ℝ).differentiableAt
+
+theorem differentiableAt_triFactor (n : ℕ) (p : ℝ) (ξ ξ' : Spinor) {Z Z' : Spinor}
+    (hZ : Z ≠ 0) (hZ' : Z' ≠ 0) :
+    DifferentiableAt ℝ (fun x : Spinor × Spinor => triFactor n p x.1 ξ x.2 ξ') (Z, Z') := by
+  unfold triFactor
+  have hn1 : DifferentiableAt ℝ (fun x : Spinor × Spinor => ‖x.1‖) (Z, Z') :=
+    differentiableAt_fst.norm ℝ (by simpa using hZ)
+  have hn2 : DifferentiableAt ℝ (fun x : Spinor × Spinor => ‖x.2‖) (Z, Z') :=
+    differentiableAt_snd.norm ℝ (by simpa using hZ')
+  have hi1 : DifferentiableAt ℝ (fun x : Spinor × Spinor => inner ℂ x.1 ξ) (Z, Z') :=
+    DifferentiableAt.comp (𝕜 := ℝ) (g := fun x : Spinor => inner ℂ x ξ) (f := Prod.fst) (Z, Z')
+      (differentiableAt_inner_left ξ Z) differentiableAt_fst
+  have hi2 : DifferentiableAt ℝ (fun x : Spinor × Spinor => inner ℂ (jMap ξ') x.2) (Z, Z') :=
+    DifferentiableAt.comp (𝕜 := ℝ) (g := fun x : Spinor => inner ℂ (jMap ξ') x) (f := Prod.snd)
+      (Z, Z') (differentiableAt_inner_right (jMap ξ') Z') differentiableAt_snd
+  have hz : ‖Z‖ ≠ 0 := norm_ne_zero_iff.mpr hZ
+  have hz' : ‖Z'‖ ≠ 0 := norm_ne_zero_iff.mpr hZ'
+  have hq : DifferentiableAt ℝ (fun x : Spinor × Spinor => ‖x.2‖ ^ 2 / ‖x.1‖ ^ 2) (Z, Z') :=
+    by
+      simp only [div_eq_mul_inv]
+      exact (hn2.fun_pow 2).mul ((hn1.fun_pow 2).inv (pow_ne_zero 2 hz))
+  have hlog : DifferentiableAt ℝ
+      (fun x : Spinor × Spinor => Real.log (‖x.2‖ ^ 2 / ‖x.1‖ ^ 2)) (Z, Z') :=
+    hq.log (by simp [hz, hz'])
+  have hden : DifferentiableAt ℝ (fun x : Spinor × Spinor => (((‖x.1‖ * ‖x.2‖) ^ n : ℝ) : ℂ))
+      (Z, Z') :=
+    (Complex.ofRealCLM.differentiableAt).comp (Z, Z') ((hn1.mul hn2).pow n)
+  have hnum : DifferentiableAt ℝ (fun x : Spinor × Spinor =>
+      (inner ℂ x.1 ξ * inner ℂ (jMap ξ') x.2) ^ n) (Z, Z') := (hi1.mul hi2).pow n
+  have hden0 : (((‖Z‖ * ‖Z'‖) ^ n : ℝ) : ℂ) ≠ 0 := by
+    exact_mod_cast (pow_ne_zero n (mul_ne_zero hz hz'))
+  simp only [div_eq_mul_inv]
+  refine (hnum.mul (hden.inv hden0)).mul ?_
+  · refine DifferentiableAt.cexp ?_
+    exact ((differentiableAt_const _).mul
+      ((Complex.ofRealCLM.differentiableAt).comp (Z, Z') hlog))
+
+/-- **The derivative of the triangle factor along a curve**: if `Z(t)`, `Z'(t)` are differentiable
+at `0` with derivatives `W`, `W'`, the derivative of `triFactor n p Z(t) ξ Z'(t) ξ'` at `0` is the
+same as along the straight line in `hasDerivAt_triFactor_joint` (the triangle factor is
+differentiable in both spinors where they are nonzero). -/
+theorem hasDerivAt_triFactor_curve (n : ℕ) (p : ℝ) {Z ξ Z' ξ' : Spinor} (W W' : Spinor)
+    {Zc Z'c : ℝ → Spinor} (hZc : HasDerivAt Zc W 0) (hZ'c : HasDerivAt Z'c W' 0)
+    (h0 : Zc 0 = Z) (h0' : Z'c 0 = Z')
+    (hZ : Z ≠ 0) (hZ' : Z' ≠ 0) (h1 : inner ℂ Z ξ ≠ 0) (h2 : inner ℂ (jMap ξ') Z' ≠ 0) :
+    HasDerivAt (fun t : ℝ => triFactor n p (Zc t) ξ (Z'c t) ξ')
+      (triFactor n p Z ξ Z' ξ' *
+        (((n : ℂ) * (inner ℂ W ξ / inner ℂ Z ξ) -
+            ((n : ℂ) + 2 * Complex.I * p) * (((inner ℂ Z W).re / ‖Z‖ ^ 2 : ℝ) : ℂ)) +
+          ((n : ℂ) * (inner ℂ (jMap ξ') W' / inner ℂ (jMap ξ') Z') -
+            ((n : ℂ) - 2 * Complex.I * p) * (((inner ℂ Z' W').re / ‖Z'‖ ^ 2 : ℝ) : ℂ)))) 0 := by
+  have hF := (differentiableAt_triFactor n p ξ ξ' hZ hZ').hasFDerivAt
+  have hcurve : HasDerivAt (fun t : ℝ => (Zc t, Z'c t)) (W, W') 0 := hZc.prodMk hZ'c
+  have hline : HasDerivAt (fun t : ℝ => ((Z + t • W : Spinor), (Z' + t • W' : Spinor))) (W, W') 0 := by
+    refine HasDerivAt.prodMk ?_ ?_
+    · simpa using ((hasDerivAt_id (0 : ℝ)).smul_const W).const_add Z
+    · simpa using ((hasDerivAt_id (0 : ℝ)).smul_const W').const_add Z'
+  have hpt : (Zc 0, Z'c 0) = (Z, Z') := by rw [h0, h0']
+  have hc := (hpt ▸ hF).comp_hasDerivAt (0 : ℝ) hcurve
+  have hF0 : HasFDerivAt (fun x : Spinor × Spinor => triFactor n p x.1 ξ x.2 ξ')
+      (fderiv ℝ (fun x : Spinor × Spinor => triFactor n p x.1 ξ x.2 ξ') (Z, Z'))
+      (Z + (0 : ℝ) • W, Z' + (0 : ℝ) • W') := by simpa using hF
+  have hl := hF0.comp_hasDerivAt (0 : ℝ) hline
+  have hj := hasDerivAt_triFactor_joint n p W W' hZ hZ' h1 h2
+  have hl' : HasDerivAt (fun t : ℝ => triFactor n p (Z + t • W) ξ (Z' + t • W') ξ')
+      (fderiv ℝ (fun x : Spinor × Spinor => triFactor n p x.1 ξ x.2 ξ') (Z, Z') (W, W')) 0 := hl
+  have hu := hl'.unique hj
+  have hc' : HasDerivAt (fun t : ℝ => triFactor n p (Zc t) ξ (Z'c t) ξ')
+      (fderiv ℝ (fun x : Spinor × Spinor => triFactor n p x.1 ξ x.2 ξ') (Z, Z') (W, W')) 0 := by
+    rw [h0, h0'] at hc
+    exact hc
+  rw [← hu]; exact hc'
 
 end Lightlike.Asymptotics.Lorentzian
