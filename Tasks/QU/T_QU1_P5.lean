@@ -30,6 +30,7 @@ Lemmas about them, which a proof may use:
 * `TV.turaevViro_move14` (`Lightlike/TuraevViro/TuraevViro.lean`)
 * `TV.qOrthogonality_three` (`Lightlike/TuraevViro/LevelOne.lean`)
 * `TV.Refl.qOrthogonality_of` (`Lightlike/TuraevViro/Reflect/OrthConditional.lean`)
+* `TV.Refl.qOrthogonality_proved` (`Lightlike/TuraevViro/Reflect/QDougallAll.lean`)
 
 Everything they depend on, and the further lemmas about them, in one block:
 

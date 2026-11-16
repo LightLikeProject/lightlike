@@ -515,6 +515,7 @@ import Lightlike.Tests.JacksonDegenerate
 import Lightlike.Tests.Manifold
 import Lightlike.Tests.PonzanoRegge
 import Lightlike.Tests.QDougall
+import Lightlike.Tests.TuraevViroMoves
 import Lightlike.Tests.QM
 import Lightlike.Tests.SU2
 import Lightlike.Tests.SixJ
@@ -561,6 +562,10 @@ import Lightlike.TuraevViro.Reflect.SixJEnd
 import Lightlike.TuraevViro.Reflect.GramConst
 import Lightlike.TuraevViro.Reflect.SixJNorm
 import Lightlike.TuraevViro.Reflect.JacksonWZ
+import Lightlike.TuraevViro.Reflect.QDougallMap
+import Lightlike.TuraevViro.Reflect.QDougallAll
+import Lightlike.TuraevViro.Reflect.SixJNormOneAll
+import Lightlike.TuraevViro.TuraevViroMoves
 import Lightlike.TuraevViro.Reflect.JacksonDegenerate
 import Lightlike.TuraevViro.Reflect.SixJNormOne
 import Lightlike.TuraevViro.Reflect.SixJSingle
