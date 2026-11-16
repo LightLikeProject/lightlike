@@ -1691,10 +1691,15 @@
     "verified": true,
     "snippet": "(23) 4 Proof of finiteness For each set of labels {ρf , Nf ; ktf , it } determining a projected spin-network on the 4-simplex boundary graph, let F̃ρf ,Nf ;ktf ,it : SL(2, C)5 → C denote the integrand in the definition o",
     "why": null
+   },
+   "eq. (30)": {
+    "verified": true,
+    "snippet": "(30) Because the contraction \u0002 sums \u0003 on the right hand side are all finite, it is sufficient to prove finiteness of the elements Fρf ,Nf ;kf t {m } in order to prove finiteness of the vertex. We shall do this, using (tf",
+    "why": null
    }
   },
-  "citations": 66,
-  "citations_via": "OpenAlex"
+  "citations": 31,
+  "citations_via": "Semantic Scholar"
  },
  "eprl-2008": {
   "checked": "2026-11-08",
