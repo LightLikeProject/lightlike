@@ -213,6 +213,8 @@ lemma mX_ne_sigX : ∀ k p : Fin 3, mX k p ≠ sigX := by decide
 
 lemma nX_ne_tauX : ∀ x q : Fin 3, nX x q ≠ tauX := by decide
 
+lemma nX_ne_sigX : ∀ x q : Fin 3, nX x q ≠ sigX := by decide
+
 lemma mX_inj : ∀ k p p' : Fin 3, mX k p = mX k p' → p = p' := by decide
 
 lemma nX_inj : ∀ x q q' : Fin 3, nX x q = nX x q' → q = q' := by decide
@@ -237,6 +239,52 @@ lemma fill_of_ne2 (a b c : Bool) (h : ne2 a b c = true) :
     (b = true → c = true → a = true) ∧ (a = true → c = true → b = true) ∧
       (a = true → b = true → c = true) := by
   cases a <;> cases b <;> cases c <;> simp_all [ne2]
+
+lemma natAdd_mem_tauX : ∀ j : Fin 3, Fin.natAdd 3 j ∈ tauX := by decide
+
+lemma castAdd_mem_sigX : ∀ i : Fin 3, Fin.castAdd 3 i ∈ sigX := by decide
+
+lemma tetS_eq : ∀ k : Fin 3, tetS k = insert (Fin.natAdd 3 k) sigX := by decide
+
+lemma tetT_eq : ∀ x : Fin 3, tetT x = insert (Fin.castAdd 3 x) tauX := by decide
+
+lemma sigX_union_tauX : sigX ∪ tauX = univ := by decide
+
+lemma exists_natAdd : ∀ i ∈ tauX, ∃ j : Fin 3, i = Fin.natAdd 3 j := by decide
+
+lemma exists_castAdd : ∀ i ∈ sigX, ∃ j : Fin 3, i = Fin.castAdd 3 j := by decide
+
+lemma tetS_of : ∀ j : Fin 3, ∀ u : Finset (Fin 6), u ⊆ univ.erase (Fin.natAdd 3 j) → sigX ⊆ u →
+    #u = 4 → ∃ k, u = tetS k := by decide
+
+lemma tetT_of : ∀ i : Fin 3, ∀ u : Finset (Fin 6), u ⊆ univ.erase (Fin.castAdd 3 i) → tauX ⊆ u →
+    #u = 4 → ∃ x, u = tetT x := by decide
+
+lemma tetS_sub : ∀ k j : Fin 3, j ≠ k → tetS k ⊆ univ.erase (Fin.natAdd 3 j) := by decide
+
+lemma tetT_sub : ∀ x i : Fin 3, i ≠ x → tetT x ⊆ univ.erase (Fin.castAdd 3 i) := by decide
+
+lemma card_tetS : ∀ k : Fin 3, #(tetS k) = 4 := by decide
+
+lemma card_tetT : ∀ x : Fin 3, #(tetT x) = 4 := by decide
+
+lemma tetC_sub : ∀ p q : Fin 3, tetC p q ⊆ univ.erase (Fin.natAdd 3 q) := by decide
+
+lemma not_sig_tetC : ∀ p q : Fin 3, ¬ sigX ⊆ tetC p q := by decide
+
+lemma mX_sub : ∀ k p j : Fin 3, j ≠ k → mX k p ⊆ univ.erase (Fin.natAdd 3 j) := by decide
+
+lemma nX_sub : ∀ x q : Fin 3, nX x q ⊆ univ.erase (Fin.natAdd 3 q) := by decide
+
+lemma card_tetC : ∀ p q : Fin 3, #(tetC p q) = 4 := by decide
+
+lemma card_mX : ∀ k p : Fin 3, #(mX k p) = 3 := by decide
+
+lemma card_nX : ∀ x q : Fin 3, #(nX x q) = 3 := by decide
+
+lemma sigX_sub : sigX ⊆ univ.erase (Fin.natAdd 3 (0 : Fin 3)) := by decide
+
+lemma tauX_sub : tauX ⊆ univ.erase (Fin.castAdd 3 (0 : Fin 3)) := by decide
 
 section Abstract
 
@@ -530,6 +578,257 @@ theorem forces_tau_of_common (e : Fin 6 ↪ V) (P0 C T : Finset (Finset V))
     · exact mem_union_left _ (mem_union_left _ hx))
 
 end Dichotomy
+
+/-! ## The complexes before and after the move -/
+
+section Complex
+
+open Lightlike.FourD Complex4
+
+variable {V : Type*} [LinearOrder V] {K : Complex4 V} {σ τ : Finset V}
+
+/-- A 3-3 move: the two triangles have three vertices each. -/
+lemma card_tau (h : K.IsMove σ τ) (hσ : #σ = 3) : #τ = 3 := by have := h.card; omega
+
+/-- **Six positions for the six vertices.** The vertices of `σ` and `τ` are the images of `{0,1,2}` and
+`{3,4,5}` under an embedding `Fin 6 ↪ V`. -/
+lemma exists_embedding (h : K.IsMove σ τ) (hσ : #σ = 3) :
+    ∃ e : Fin 6 ↪ V, tx e sigX = σ ∧ tx e tauX = τ := by
+  have hτ := card_tau h hσ
+  let s := σ.orderEmbOfFin hσ
+  let c := τ.orderEmbOfFin hτ
+  let f : Fin 6 → V := fun i => if hi : i.val < 3 then s ⟨i, hi⟩ else c ⟨i - 3, by omega⟩
+  have hs : ∀ i, s i ∈ σ := fun i => σ.orderEmbOfFin_mem hσ i
+  have hc : ∀ i, c i ∈ τ := fun i => τ.orderEmbOfFin_mem hτ i
+  have hdisj : ∀ x ∈ σ, ∀ y ∈ τ, x ≠ y := fun x hx y hy hxy =>
+    disjoint_left.mp h.disj hx (hxy ▸ hy)
+  have hinj : Function.Injective f := by
+    intro i j hij
+    simp only [f] at hij
+    by_cases hi : i.val < 3 <;> by_cases hj : j.val < 3 <;> simp only [hi, hj, dite_true, dite_false] at hij
+    · have := s.injective hij; exact Fin.ext (by simpa using congrArg Fin.val this)
+    · exact absurd hij (hdisj _ (hs _) _ (hc _))
+    · exact absurd hij.symm (hdisj _ (hs _) _ (hc _))
+    · have := c.injective hij
+      have := congrArg Fin.val this
+      exact Fin.ext (by simp at this; omega)
+  refine ⟨⟨f, hinj⟩, ?_, ?_⟩
+  · refine eq_of_subset_of_card_le ?_ (by rw [hσ]; simp only [tx, card_map]; decide)
+    intro x hx
+    simp only [tx, mem_map, Function.Embedding.coeFn_mk, sigX] at hx
+    obtain ⟨i, hi, rfl⟩ := hx
+    have : i.val < 3 := by fin_cases i <;> simp_all
+    simp only [f, this, dite_true]
+    exact hs _
+  · refine eq_of_subset_of_card_le ?_ (by rw [hτ]; simp only [tx, card_map]; decide)
+    intro x hx
+    simp only [tx, mem_map, Function.Embedding.coeFn_mk, tauX] at hx
+    obtain ⟨i, hi, rfl⟩ := hx
+    have : ¬ i.val < 3 := by fin_cases i <;> simp_all
+    simp only [f, this, dite_false]
+    exact hc _
+
+/-- A face of `K` that does not contain `σ` is a face of the complex after the move, and does not
+contain `τ`. -/
+lemma sub_face (h : K.IsMove σ τ) {k : ℕ} {f : Finset V} (hf : f ∈ K.faces k) (hσf : ¬ σ ⊆ f) :
+    f ∈ (K.move h).faces k ∧ ¬ τ ⊆ f := by
+  obtain ⟨S, hS, hfS, hc⟩ := mem_faces.mp hf
+  by_cases hσS : σ ⊆ S
+  · obtain ⟨b, hb, rfl⟩ := h.star S hS hσS
+    obtain ⟨a, ha, haf⟩ := Finset.not_subset.mp hσf
+    refine ⟨mem_faces.mpr ⟨(σ ∪ τ).erase a, mem_move.mpr (Or.inr ⟨a, ha, rfl⟩),
+      subset_erase_of_notMem (hfS.trans (erase_subset _ _)) haf, hc⟩, fun hτf => ?_⟩
+    exact (mem_erase.mp (hfS (hτf hb))).1 rfl
+  · exact ⟨mem_faces.mpr ⟨S, mem_move.mpr (Or.inl ⟨hS, hσS⟩), hfS, hc⟩,
+      fun hτf => h.fresh S hS (hτf.trans hfS)⟩
+
+/-- The converse: a face of the complex after the move that does not contain `τ` is a face of `K`
+that does not contain `σ`. -/
+lemma sub_face_back (h : K.IsMove σ τ) {k : ℕ} {f : Finset V} (hf : f ∈ (K.move h).faces k)
+    (hτf : ¬ τ ⊆ f) : f ∈ K.faces k ∧ ¬ σ ⊆ f := by
+  have := sub_face h.symm hf hτf
+  rwa [move_move] at this
+
+section Decomposition
+
+variable (e : Fin 6 ↪ V)
+
+lemma tx_univ_erase (i : Fin 6) : (tx e sigX ∪ tx e tauX).erase (e i) = tx e (univ.erase i) := by
+  unfold tx
+  rw [← map_union, sigX_union_tauX, map_erase]
+
+/-- The 4-simplices of `K` that contain `σ` are the `(σ ∪ τ) \ {c_j}`. -/
+lemma star_form (h : K.IsMove (tx e sigX) (tx e tauX)) {S : Finset V} (hS : S ∈ K.simps)
+    (hσS : tx e sigX ⊆ S) : ∃ j : Fin 3, S = tx e (univ.erase (Fin.natAdd 3 j)) := by
+  obtain ⟨b, hb, rfl⟩ := h.star S hS hσS
+  obtain ⟨i, hi, rfl⟩ := mem_map.mp hb
+  obtain ⟨j, rfl⟩ := exists_natAdd i hi
+  exact ⟨j, tx_univ_erase e _⟩
+
+/-- The tetrahedra of `K` are those that do not contain `σ` and the three `σ ∪ {c_k}`. -/
+lemma tets_before (h : K.IsMove (tx e sigX) (tx e tauX)) :
+    K.tets = K.tets.filter (fun t => ¬ tx e sigX ⊆ t) ∪ univ.image fun k => tx e (tetS k) := by
+  ext t
+  simp only [mem_union, mem_filter, mem_image, mem_univ, true_and]
+  constructor
+  · intro ht
+    by_cases hσt : tx e sigX ⊆ t
+    · right
+      obtain ⟨S, hS, htS, hc⟩ := mem_faces.mp ht
+      obtain ⟨j, rfl⟩ := star_form e h hS (hσt.trans htS)
+      obtain ⟨u, hu, rfl⟩ := subset_map_iff.mp htS
+      have hsu : sigX ⊆ u := (map_subset_map).mp hσt
+      have hc' : #u = 4 := by simpa [card_map] using hc
+      obtain ⟨k, rfl⟩ := tetS_of j u hu hsu hc'
+      exact ⟨k, rfl⟩
+    · exact Or.inl ⟨ht, hσt⟩
+  · rintro (⟨ht, -⟩ | ⟨k, rfl⟩)
+    · exact ht
+    · obtain ⟨j, hj⟩ : ∃ j : Fin 3, j ≠ k := by revert k; decide
+      refine mem_faces.mpr ⟨tx e (univ.erase (Fin.natAdd 3 j)), ?_, ?_, ?_⟩
+      · rw [← tx_univ_erase]
+        exact h.mem _ (mem_map_of_mem _ (natAdd_mem_tauX j))
+      · exact map_subset_map.mpr (tetS_sub k j hj)
+      · simp [tx, card_map, card_tetS]
+
+/-- The tetrahedra after the move are those that do not contain `τ` and the three `τ ∪ {s_x}`. -/
+lemma tets_after (h : K.IsMove (tx e sigX) (tx e tauX)) :
+    (K.move h).tets = (K.move h).tets.filter (fun t => ¬ tx e tauX ⊆ t) ∪
+      univ.image fun x => tx e (tetT x) := by
+  ext t
+  simp only [mem_union, mem_filter, mem_image, mem_univ, true_and]
+  constructor
+  · intro ht
+    by_cases hτt : tx e tauX ⊆ t
+    · right
+      obtain ⟨S, hS, htS, hc⟩ := mem_faces.mp ht
+      rcases mem_move.mp hS with ⟨hSK, -⟩ | ⟨a, ha, rfl⟩
+      · exact absurd (hτt.trans htS) (h.fresh S hSK)
+      · obtain ⟨i, hi, rfl⟩ := mem_map.mp ha
+        obtain ⟨j, rfl⟩ := exists_castAdd i hi
+        rw [tx_univ_erase] at htS
+        obtain ⟨u, hu, rfl⟩ := subset_map_iff.mp htS
+        have hsu : tauX ⊆ u := (map_subset_map).mp hτt
+        have hc' : #u = 4 := by simpa [card_map] using hc
+        obtain ⟨x, rfl⟩ := tetT_of j u hu hsu hc'
+        exact ⟨x, rfl⟩
+    · exact Or.inl ⟨ht, hτt⟩
+  · rintro (⟨ht, -⟩ | ⟨x, rfl⟩)
+    · exact ht
+    · obtain ⟨i, hi⟩ : ∃ i : Fin 3, i ≠ x := by revert x; decide
+      refine mem_faces.mpr ⟨tx e (univ.erase (Fin.castAdd 3 i)), ?_, ?_, ?_⟩
+      · rw [← tx_univ_erase]
+        exact mem_move.mpr (Or.inr ⟨e (Fin.castAdd 3 i), mem_map_of_mem _ (castAdd_mem_sigX i), rfl⟩)
+      · exact map_subset_map.mpr (tetT_sub x i hi)
+      · simp [tx, card_map, card_tetT]
+
+end Decomposition
+
+/-- Forcing in a complex is forcing by its tetrahedra. -/
+theorem forces_iff_forcesIn (K : Complex4 V) (U T : Finset (Finset V)) :
+    Forces K U T ↔ ForcesIn K.tets U T := by
+  constructor
+  · intro h
+    induction h with
+    | done h => exact .done h
+    | step t f ht hf hg _ ih => exact .step t f ht hf hg ih
+  · intro h
+    induction h with
+    | done h => exact .done h
+    | step t f ht hf hg _ ih => exact .step t f ht hf hg ih
+
+/-- **Forcing after a 3-3 move.** Let `K → K'` be a 3-3 move that replaces the triangle `σ` by `τ`,
+and `T` a set of triangles of `K` not containing `σ`. If `T` forces every triangle of `K`, then `T`
+forces every triangle of `K'` if and only if the closure of `T` under the tetrahedra that do not
+contain `σ` already reaches every triangle of `K` other than `σ`. -/
+theorem forces_move33_iff (h : K.IsMove σ τ) (hσ : #σ = 3) {T : Finset (Finset V)}
+    (hT : T ⊆ K.tris) (hσT : σ ∉ T) (hF : Forces K K.tris T) :
+    Forces (K.move h) (K.move h).tris T ↔
+      ForcesIn (K.tets.filter fun t => ¬ σ ⊆ t) (K.tris.erase σ) T := by
+  obtain ⟨e, hσe, hτe⟩ := exists_embedding h hσ
+  subst hσe hτe
+  have hSj : ∀ j : Fin 3, tx e (univ.erase (Fin.natAdd 3 j)) ∈ K.simps := fun j => by
+    rw [← tx_univ_erase]; exact h.mem _ (mem_map_of_mem _ (natAdd_mem_tauX j))
+  have hRi : ∀ i : Fin 3, tx e (univ.erase (Fin.castAdd 3 i)) ∈ (K.move h).simps := fun i => by
+    rw [← tx_univ_erase]
+    exact mem_move.mpr (Or.inr ⟨e (Fin.castAdd 3 i), mem_map_of_mem _ (castAdd_mem_sigX i), rfl⟩)
+  have hcσ : #(tx e sigX) = 3 := hσ
+  have hcτ : #(tx e tauX) = 3 := card_tau h hσ
+  have hσtri : tx e sigX ∈ K.tris :=
+    mem_faces.mpr ⟨_, hSj 0, map_subset_map.mpr sigX_sub, hcσ⟩
+  have hτtri : tx e tauX ∈ (K.move h).tris :=
+    mem_faces.mpr ⟨_, hRi 0, map_subset_map.mpr tauX_sub, hcτ⟩
+  set P0 := K.tets.filter fun t => ¬ tx e sigX ⊆ t with hP0
+  set C := K.tris.erase (tx e sigX) with hC
+  have hKtris : K.tris = insert (tx e sigX) C := (insert_erase hσtri).symm
+  have hnσ : ∀ f ∈ K.tris, f ≠ tx e sigX → ¬ tx e sigX ⊆ f := fun f hf hne hs =>
+    hne (eq_of_subset_of_card_le hs (by rw [hcσ, (mem_faces.mp hf).choose_spec.2.2])).symm
+  have hnτ : ∀ f ∈ (K.move h).tris, f ≠ tx e tauX → ¬ tx e tauX ⊆ f := fun f hf hne hs =>
+    hne (eq_of_subset_of_card_le hs (by rw [hcτ, (mem_faces.mp hf).choose_spec.2.2])).symm
+  have hK'tris : (K.move h).tris = insert (tx e tauX) C := by
+    ext f
+    constructor
+    · intro hf
+      by_cases hτf : tx e tauX ⊆ f
+      · exact (not_not.mp fun hne => hnτ f hf hne hτf) ▸ mem_insert_self _ _
+      · obtain ⟨hfK, hσf⟩ := sub_face_back h hf hτf
+        exact mem_insert_of_mem (mem_erase.mpr ⟨fun hfs => hσf (hfs ▸ subset_rfl), hfK⟩)
+    · intro hf
+      rcases mem_insert.mp hf with rfl | hf
+      · exact hτtri
+      · obtain ⟨hne, hfK⟩ := mem_erase.mp hf
+        exact (sub_face h hfK (hnσ f hfK hne)).1
+  have hP0' : (K.move h).tets.filter (fun t => ¬ tx e tauX ⊆ t) = P0 := by
+    ext t
+    simp only [mem_filter, hP0]
+    constructor
+    · rintro ⟨ht, hτt⟩
+      obtain ⟨h1, h2⟩ := sub_face_back h ht hτt
+      exact ⟨h1, h2⟩
+    · rintro ⟨ht, hσt⟩
+      obtain ⟨h1, h2⟩ := sub_face h ht hσt
+      exact ⟨h1, h2⟩
+  have hKt : K.tets = P0 ∪ univ.image fun k => tx e (tetS k) := tets_before e h
+  have hK't : (K.move h).tets = P0 ∪ univ.image fun x => tx e (tetT x) := by
+    rw [← hP0']; exact tets_after e h
+  have hCt : ∀ t ∈ P0, ∀ g ∈ t.powersetCard 3, g ∈ C := by
+    intro t ht g hg
+    obtain ⟨htK, hσt⟩ := mem_filter.mp ht
+    obtain ⟨hgt, hgc⟩ := mem_powersetCard.mp hg
+    obtain ⟨S, hS, htS, -⟩ := mem_faces.mp htK
+    exact mem_erase.mpr ⟨fun hgs => hσt (hgs ▸ hgt),
+      mem_faces.mpr ⟨S, hS, hgt.trans htS, hgc⟩⟩
+  have hσC : tx e sigX ∉ C := fun hh => (mem_erase.mp hh).1 rfl
+  have hτC : tx e tauX ∉ C := fun hh => by
+    obtain ⟨S, hS, hτS, -⟩ := mem_faces.mp (mem_erase.mp hh).2
+    exact h.fresh S hS hτS
+  have hcom : ∀ p q, tx e (tetC p q) ∈ P0 := fun p q =>
+    mem_filter.mpr ⟨mem_faces.mpr ⟨_, hSj q, map_subset_map.mpr (tetC_sub p q),
+      by simp [tx, card_map, card_tetC]⟩,
+      fun hs => not_sig_tetC p q (map_subset_map.mp hs)⟩
+  have hmixM : ∀ k p, tx e (mX k p) ∈ C := fun k p => by
+    obtain ⟨j, hj⟩ : ∃ j : Fin 3, j ≠ k := by revert k; decide
+    exact mem_erase.mpr ⟨fun hh => mX_ne_sigX k p ((tx_inj e).mp hh),
+      mem_faces.mpr ⟨_, hSj j, map_subset_map.mpr (mX_sub k p j hj), by simp [tx, card_map, card_mX]⟩⟩
+  have hmixN : ∀ x q, tx e (nX x q) ∈ C := fun x q =>
+    mem_erase.mpr ⟨fun hh => nX_ne_sigX x q ((tx_inj e).mp hh), mem_faces.mpr ⟨_, hSj q, map_subset_map.mpr (nX_sub x q),
+      by simp [tx, card_map, card_nX]⟩⟩
+  have hTC : T ⊆ C := fun f hf => mem_erase.mpr ⟨fun hh => hσT (hh ▸ hf), hT hf⟩
+  have hF1 : ForcesIn (P0 ∪ univ.image fun k => tx e (tetS k)) (insert (tx e sigX) C) T := by
+    rw [← hKt, ← hKtris]; exact (forces_iff_forcesIn K _ _).mp hF
+  have e2 : Forces (K.move h) (K.move h).tris T ↔
+      ForcesIn (P0 ∪ univ.image fun x => tx e (tetT x)) (insert (tx e tauX) C) T := by
+    rw [forces_iff_forcesIn, hK't, hK'tris]
+  rw [e2]
+  constructor
+  · intro hF2
+    by_contra hnot
+    rcases forcing_dichotomy e P0 C T hCt hσC hτC hcom hTC hnot with hh | hh
+    · exact hh hF1
+    · exact hh hF2
+  · exact fun hS => forces_tau_of_common e P0 C T hmixN hS
+
+end Complex
 
 end Forcing33
 
