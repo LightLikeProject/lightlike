@@ -10,9 +10,9 @@ one tetrahedron of `K` is removed. A robust set keeps forcing under every 2-4 mo
 move that does not remove one of its triangles (`forces_move24_of_robust`, `forces_move33_of_robust`; the
 3-3 case rests on `forcesIn_common_of_robust_33`, "Lemma X", proved with blocking sets), and it stays
 robust under the 1-5 move (`robust_move15`). Robust sets do not in general stay robust under the 3-3 move:
-`SpinFoam.robust_not_kept_by_move33` (`Tests.lean`) proves it on an explicit 4-sphere with 20 simplices and a
+`SpinFoam.robust_not_kept_by_move33` (`ForcingRobustCounterexample.lean`) proves it on an explicit 4-sphere with 20 simplices and a
 set of 23 triangles (the failure is a common tetrahedron removed together with a tetrahedron `σ ∪ {c}`).
-A random search found a counterexample for the 2-4 move too (numerical evidence only). Whether the gauge set
+A random search found a counterexample for the 2-4 move too (checked by script, not proved in Lean). Whether the gauge set
 carried along from the boundary of the 5-simplex by random 3-3, 2-4 and 1-5 moves stays robust is open:
 it was robust at every tetrahedron sampled (1,104,480 of 1,104,480 tetrahedra, measured), at every 3-3
 location (38,176 of 38,176) and after each of 822 consecutive moves.
