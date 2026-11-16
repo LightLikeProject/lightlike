@@ -1343,3 +1343,16 @@
   review: kernel-checked
   note: "A path in the plane that avoids a point has a continuous logarithm about it (path lifting through the covering map exp from the complex numbers to the nonzero complex numbers), unique up to an integer multiple of 2 pi i. The increment of the logarithm along the path does not depend on the choice, is additive under concatenation of paths and changes sign under reversal, and along a loop it is 2 pi i times an integer, the index of the loop about the point. The Theta Lemma follows: for a curve in two parts alpha, gamma and an arc beta joining their ends, the index of alpha * gamma is the sum of those of alpha * beta and beta^-1 * gamma. This is the index of a point not on a Jordan curve and the Theta Lemma of the lecture-notes version of chapter 9 of McCleary's book (numbering not checked against the printed book); the notes read the index off the fundamental group of the punctured plane, here it is read off a lift, and the Theta Lemma is proved through path increments instead of the homotopy of beta * beta^-1 with a constant. The statements and proofs are Lean's own. Proves: the index and the Theta Lemma. Does not prove: Lemmas 9.12 to 9.14 of the notes, that the index is constant on components of the complement of a curve, or the Jordan curve theorem. Limits: loops in the plane identified with the complex numbers. Check: TestsIndex.lean (the unit circle has index 1 about the origin and 0 about the point -3)."
   since: unreleased
+- id: LL-XXXX-l
+  title: The index of a loop is constant along a path avoiding it, and zero for a loop in a half plane
+  area: PL
+  file: Lightlike/PL/IndexConstancy.lean
+  decls: [Lightlike.PL.loopIndex_eq_of_joinedIn, Lightlike.PL.loopIndex_eq_zero_of_halfplane]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
+  review: kernel-checked
+  note: "If two points of the plane are joined by a path that avoids the range of a loop, the loop has the same index about both (the index of LL-XXXX-k). If the loop lies in an open half plane seen from the point, its index about the point is zero. These are Lemmas 9.13 and 9.12 of the lecture-notes version of chapter 9 of McCleary's book (numbering not checked against the printed book). The notes prove the first with a homeomorphism of the punctured planes fixing the curve; here the logarithms about the points of the path are lifted together through the covering map exp, and their increments are compared with the integer at the first point. The second is proved with a continuous logarithm on the convex, hence simply connected, half plane; the notes deform the loop into a small circle. The statements and proofs are Lean's own. Proves: the two lemmas for loops in the plane identified with the complex numbers. Does not prove: Lemma 9.14, that the complement of a Jordan curve has exactly two components, or the Jordan curve theorem. Limits: loops in the complex plane. Check: TestsIndexConstancy.lean (the unit circle has index 1 about 1/2 as about 0; a constant loop has index 0; the unit circle lies in no half plane seen from the origin)."
+  since: unreleased
