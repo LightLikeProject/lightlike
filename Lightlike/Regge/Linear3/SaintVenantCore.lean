@@ -1,5 +1,6 @@
 import Lightlike.Regge.Conv3.FlatStarIdentity
 import Lightlike.Regge.Conv3.KuhnCore
+import Lightlike.Regge.Conv3.JetCore
 
 /-!
 # The pointwise Saint-Venant identity for the Kuhn star
@@ -16,6 +17,9 @@ with `curl^t curl` as defined in his section 2 (the curl of the rows, transposed
 `(curl^t curl u)_ij = ε_ikl ε_jmn ∂_k ∂_m u_ln` for symmetric `u`.
 
 ## Main results
+
+* `class_A0`, `class_A1`: the zeroth- and first-order interpolated variations have vanishing class sums of `dth`
+  (the angle sums stay `2π` for a constant metric and to first order).
 
 * `svPair`: the Saint-Venant pairing `Σ h_ij ε_ikl ε_jmn ∂_k ∂_m h_ln` at a point.
 * `sv_pointwise`: the identity, a polynomial identity bilinear in `H` and `dd`.
@@ -52,5 +56,37 @@ theorem sv_pointwise (H : Fin 3 → Fin 3 → ℝ) (dd : Fin 3 → Fin 3 → Fin
     dth, rf, ddq, qf, svPair, eps3, Fin.sum_univ_three, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, Matrix.head_cons, Fin.val_zero, Fin.val_one, Fin.val_two, Nat.cast_zero, Nat.cast_one, Nat.cast_ofNat]
   simp only [hH 1 0, hH 2 0, hH 2 1, hd1 1 0, hd1 2 0, hd1 2 1, hd2 _ _ 1 0, hd2 _ _ 2 0, hd2 _ _ 2 1]
   ring
+
+
+/-- The first-derivative form `Σ s_k ∂_k h_ij Δ_i Δ_j` of the interpolated squared length. -/
+noncomputable def d1q (dh : Fin 3 → Fin 3 → Fin 3 → ℝ) (s Δ : Fin 3 → ℝ) : ℝ :=
+  ∑ k, ∑ i, ∑ j, s k * dh k i j * Δ i * Δ j
+
+theorem class_A0 (H : Fin 3 → Fin 3 → ℝ) (hH : ∀ i j, H i j = H j i) (k : Fin 7) :
+    clsSum (dirs k) (fun σ h => dth h (incVec (fun _ Δ => qf H Δ) σ h)) = 0 := by
+  fin_cases k <;>
+  · simp only [clsSum, InClass, dirs, Fin.sum_univ_six, Fin.forall_fin_succ,
+      perms, hP, hQ, kv, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, Matrix.head_cons]
+    norm_num [Matrix.cons_val_zero]
+    simp only [incVec, dth, qf, kpos, perms, hP, hQ, hR, hS, kv, Fin.sum_univ_three,
+      Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, Matrix.head_cons]
+    norm_num
+    simp only [hH 1 0, hH 2 0, hH 2 1]
+    ring
+
+
+-- needs about 0.66 million heartbeats (measured with `#count_heartbeats`); the cap is about twice that
+set_option maxHeartbeats 1400000 in
+theorem class_A1 (dh : Fin 3 → Fin 3 → Fin 3 → ℝ) (hd : ∀ k i j, dh k i j = dh k j i) (k : Fin 7) :
+    clsSum (dirs k) (fun σ h => dth h (incVec (fun s Δ => d1q dh s Δ) σ h)) = 0 := by
+  fin_cases k <;>
+  · simp only [clsSum, InClass, dirs, Fin.sum_univ_six, Fin.forall_fin_succ,
+      perms, hP, hQ, kv, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, Matrix.head_cons]
+    norm_num [Matrix.cons_val_zero]
+    simp only [incVec, dth, d1q, kpos, perms, hP, hQ, hR, hS, kv, Fin.sum_univ_three,
+      Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, Matrix.head_cons]
+    norm_num
+    simp only [hd _ 1 0, hd _ 2 0, hd _ 2 1]
+    ring
 
 end Lightlike.Regge.Linear3
