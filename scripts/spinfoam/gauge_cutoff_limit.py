@@ -7,12 +7,17 @@ triangles stay free). With the doubled spins of the free triangles at most C, th
 are few (1, 3, 7, 12, 19, ... for C = 1, 2, 4, 6, 8, ...), every tetrahedron has a single virtual spin, and
 the state sum factorises over the closed-form vertex amplitudes of `vertex_check.py`.
 
-Result: the state sum at doubled cutoff C = 2, 4, ..., 20 is
-3.5, 2.43, -3.40, -6.00, 1.28, 11.64, 10.81, -3.80, -16.10, -9.60: it changes sign and its size grows,
-so the cutoff cannot be removed for this gauge set (floating point, so the check is stopped at C = 20,
-where the closed-form amplitudes are still accurate; at C = 22 the numbers overflow).
-Checks: C = 1 gives 1 and C = 2 gives 3.5 (as in `gauge_manifold_check.py`), the sequence changes sign
-at least three times, and its largest absolute value for C >= 12 exceeds the largest for C <= 8.
+Result (exact 3j symbols, double-precision contraction; the contraction was re-done in extended
+precision at C = 10 and 20 with identical doubles): the state sum at doubled cutoff
+C = 2, 4, ..., 34 is
+3.5, 2.43, -3.40, -6.00, 1.28, 11.64, 10.81, -3.80, -16.10, -9.06, 12.39, 23.59, 8.57, -18.14, -25.31,
+-1.53, 28.20: it changes sign (9 times in these values) and its size grows. Numerically, then, the
+cutoff sums do not settle for this gauge set. This is an observation, not a proof (no limit statement
+is proved), and the floating-point sums of the first version of this script, which used `vertex_check`'s
+float 3j symbols, are wrong above C = 18 (the Racah sum loses all digits).
+Checks (default CMAX = 24): C = 1 gives 1 and C = 2 gives 3.5 (as in `gauge_manifold_check.py`), the
+sequence changes sign at least three times, and its largest absolute value for C >= 12 exceeds the
+largest for C <= 8. Run with an argument to go higher: `python3 gauge_cutoff_limit.py 40`.
 """
 import itertools
 import os
@@ -26,7 +31,7 @@ import vertex_check as vc
 vc.threej = exact3j.threej_exact  # exact Racah sums; the float version loses all digits above spin ~10
 vc.fourj.cache_clear()
 
-CMAX = int(sys.argv[1]) if len(sys.argv) > 1 else 40
+CMAX = int(sys.argv[1]) if len(sys.argv) > 1 else 24
 
 
 def main():
