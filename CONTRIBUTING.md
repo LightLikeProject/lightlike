@@ -47,6 +47,25 @@ Then, on either route:
 6. Open the pull request from the link that `git push` prints, with the line `Task: T-QU1-P5`.
    Once it is merged, the task's issue is closed.
 
+## Working with an AI agent
+
+Paste this into your coding agent, started in a clone set up as above. It follows the same steps.
+
+```text
+You are contributing one proof to Lightlike, a Lean 4 library; this folder is a clone of it.
+1. Read AGENTS.md and CONTRIBUTING.md before anything else, and follow them.
+2. Pick one open proof task labelled `ready` (CONTRIBUTING.md, "Your first proof task"). Tell me
+   which, and comment `attempting` on its issue (or ask me to) before you start.
+3. Work on a branch `proof/<task ID>`, one task per pull request.
+4. Change only the proof in the task's file. Never edit the locked statement, and never add
+   `sorry`, `admit`, `axiom`, `native_decide` or `maxHeartbeats 0`.
+5. Build the task with `lake build Tasks.<Area>.<File>` until it reports no error.
+6. Run `python3 -I scripts/gate.py --task <task ID>` and fix everything it reports.
+7. Push and open the pull request with the template filled in: the `Task:` line, the AI-assistance
+   field, and the last lines of the gate's output quoted in the summary.
+8. If you are stuck, stop and tell me what you tried. Never weaken the statement to make it pass.
+```
+
 ## Hard rules
 
 A pull request is merged when the steps of `.github/workflows/ci.yml` marked `[hard rule]` pass.
@@ -187,31 +206,14 @@ blank line, then a body that says why. `type` is one of `feat`, `fix`, `proof`, 
 proof-task commit is `proof(<area>): T-<ID>`, for example `proof(tv): T-QU1-P5`. Examples:
 `feat(regge): define deficit angles`, `fix(curvature): sign of the Ricci term`.
 
- To update a pushed branch, merge
-`main` into it; never force-push. A maintainer squash-merges once every CI check is green; the
-commit on `main` takes the pull request's title, number and description: write them for outsiders.
+To update a pushed branch, merge `main` into it; never force-push. A maintainer squash-merges once
+every CI check is green; the commit on `main` takes the pull request's title, number and
+description: write them for outsiders.
 
 ## For maintainers
 
-- **Results.** Add a result to the API map of its folder and to the end of `docs/results.yaml` with
-  the draft ID `LL-XXXX` (`LL-XXXX-a`, `-b`, ... for several; the merge assigns the numbers), then
-  run `python3 scripts/api_map.py generate` (`docs/RESULTS.md`, the `README.md` counts) and `check`.
-- **Tasks.** `docs/tasks/milestones.md` and `docs/tasks/decomposition.yaml` are the plan, and the
-  sources of the board. `python3 scripts/tasks.py generate` writes the board,
-  `docs/tasks/tasks.yaml`, `Tasks.lean` and the milestone counts in `ROADMAP.md`; `tasks.py deps`
-  writes the header of each proof-task file: the statement, a hint, what the statement uses and the
-  references; `tasks.py lock <ID>` locks a reviewed statement. `tasks.py sync` prints what it would
-  change on the task issues; the workflow `.github/workflows/tasks.yml` runs it with `--apply` once
-  the repository variable `TASK_SYNC` is `on`. A change of scope is a pull request to the plan,
-  after an issue.
-- **Sources.** `python3 scripts/sources.py verify` looks up every reference at its publisher and
-  writes `docs/tasks/sources-verified.json`, which the offline CI check reads; `verify` needs
-  Poppler's `pdftotext`.
-- **Upgrading Mathlib or Physlib.** On its own branch: bump the pins, run the gate, and fix what
-  breaks. The risk is concentrated in the files that import `PhyslibAlpha` directly
-  (`grep -rl 'import PhyslibAlpha' Lightlike`) and in names deprecated at the new version.
-- **Scripts.** [scripts/README.md](scripts/README.md) lists the tools and the numerical
-  cross-checks that Lean docstrings cite.
+Adding results, keeping the task board and the sources, upgrading Mathlib or Physlib, and the
+scripts: [docs/MAINTAINERS.md](docs/MAINTAINERS.md).
 
 ## Conduct and contact
 
