@@ -43,6 +43,7 @@ import Lightlike.Asymptotics.EPRL.EprlHighLeg
 import Lightlike.Asymptotics.EPRL.EprlHighMap
 import Lightlike.Asymptotics.EPRL.EprlHighNode
 import Lightlike.Asymptotics.EPRL.EprlHighProj
+import Lightlike.Asymptotics.EPRL.EprlHighVertex
 import Lightlike.Asymptotics.EPRL.HaarNode
 import Lightlike.Asymptotics.EPRL.HomForm
 import Lightlike.Asymptotics.EPRL.HomFormExpansion
