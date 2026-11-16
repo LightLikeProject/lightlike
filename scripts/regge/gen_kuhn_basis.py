@@ -2,7 +2,7 @@
 
 The Lean file proves, for each of the six symmetric basis matrices B, the polynomial identity
 (face polynomials P_i divide their numerators exactly, see the certificate), and then assembles the
-identity for a general symmetric B by linearity. Usage: python3 scripts/regge/gen_kuhn_basis.py OUT.lean
+identity for a general symmetric B by linearity. Usage: python3 scripts/regge/gen_kuhn_basis.py KuhnBasis.lean KuhnLinear.lean KuhnLinear2.lean KuhnStar.lean (in Lightlike/Regge/Conv3/)
 """
 import sys
 import sympy as sp

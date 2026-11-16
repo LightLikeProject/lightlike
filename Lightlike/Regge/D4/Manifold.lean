@@ -14,14 +14,12 @@ vertices other than `a, b, c` form a cycle `w 0, …, w (n-1)`, `w n = w 0`, the
 triangle, and the 4-simplices are `{a, b, c, w i, w (i+1)}`. Around a boundary triangle they form a
 fan whose link is a path `w 0, …, w n`.
 
-## Definitions
+## Main results
 
 * `IsCycleLink4 K a b c n w`: the link of `{a, b, c}` is a cycle of length `n ≥ 3`.
 * `IsPathLink4 K a b c n w`: the link of `{a, b, c}` is a path with `n ≥ 1` edges.
 * `IsTriManifold K`: the link of every triangle is a cycle or a path. This is the part of the
   manifold condition that 4D Regge calculus uses (curvature sits on triangles).
-
-## Main results
 
 * `IsCycleLink4.mem_intTris4`, `IsPathLink4.mem_bdryTris4`: a triangle with a cycle link is
   interior, one with a path link is on the boundary.

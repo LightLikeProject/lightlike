@@ -25,7 +25,7 @@ used for the finiteness of the Lorentzian EPRL amplitude.
   through the Cartan decomposition (`Cartan.lean`).
 * `kernelI_eq`: `I(g) = π · sphericalFn 0 r`.
 
-## Method
+## Implementation notes
 
 `π(g) e₀ = π^{-1/2} ‖gᵀ(z, 1)‖^{2(iρ - 1)}`, so `⟨e₀, π(a_r) e₀⟩` is a radial integral over `ℂ`.
 In the variable `s = log((e^r y² + e^{-r})/(1 + y²))`, which runs from `-r` to `r`, the integrand

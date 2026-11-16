@@ -15,7 +15,7 @@ end point `s + r v` of a valley ray by a descent path, which lands on the real a
 valley `ε = 1` and one from the end point of a ray in the valley `ε = −1` never land at the same
 point.
 
-## Proof
+## Implementation notes
 
 Suppose both land at `p`. Cut the two descent paths shortly before `p`, at points `w₁`, `w₂`
 within `ρ` of `p`, where `Re ψ ≤ D − δ/2` by continuity (`δ = ‖b‖ r² / 4`). The two valley
@@ -35,7 +35,7 @@ exponentially smaller. This is the closing argument of the steepest-descent proo
 Ponzano–Regge formula; no winding numbers or Jordan curve theorem are needed, only a primitive
 on a disc.
 
-## Laplace's method
+**Laplace's method.**
 
 The uniform Laplace bound on a ray is `Lightlike.Oscillatory.laplace_ray_uniform`
 (`Lightlike/Oscillatory/LaplaceRay.lean`): for `Re a ≥ α > 0` and the bounds

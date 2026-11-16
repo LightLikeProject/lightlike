@@ -15,7 +15,7 @@ Hörmander, *The Analysis of Linear Partial Differential Operators I*, §7.6, Th
 Stationary phase uses it to write `∫ v(x) e^{-⟨B x, x⟩/2} dx` through the Fourier transform of
 `v`.
 
-## Method
+## Implementation notes
 
 Hörmander proves Theorem 7.6.1 by analytic continuation in `B`. Here the proof is an ODE in
 the linear term instead, which needs no holomorphy in several matrix variables:

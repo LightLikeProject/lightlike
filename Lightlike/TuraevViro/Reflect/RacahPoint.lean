@@ -1,5 +1,17 @@
 import Lightlike.TuraevViro.Reflect.RacahGTerm
 
+/-!
+# Polynomials without the variable `Z`
+
+`noZ P` tests that no monomial of the reflected polynomial `P` contains `Z`, and `eval_noZ` shows
+that the value of such a polynomial does not depend on `Z`. `RacahRec` uses this to evaluate the
+recurrence coefficients independently of `Z`. Written by hand, not generated.
+
+## Main results
+
+* `eval_noZ`: if `noZ P = true`, the evaluation of `P` is the same for every value of `Z`.
+-/
+
 set_option maxRecDepth 100000
 
 namespace Lightlike.TV.Refl

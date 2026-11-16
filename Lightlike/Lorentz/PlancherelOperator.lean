@@ -23,7 +23,7 @@ that `psKernel` (`PlancherelKernel.lean`), the kernel in the Plancherel formula
 * `plancherel_piOp`: the Plancherel formula (`plancherel`) stated for the operators `piOp`: their
   kernels are `psKernel`, and the weighted sum of the squared kernel norms is `16π⁴ ‖f‖²`.
 
-## Proof
+## Implementation notes
 
 1. `⟪ψ, π(f) φ⟫ = ∫ f(g) ⟪ψ, π(g) φ⟫ dg` (`integral_inner`), and
    `⟪ψ, π(g) φ⟫ = ∫ conj ψ(z) m(den g z) φ(mob g z) d²z` (`coeFn_principalSeries`).
@@ -36,7 +36,7 @@ that `psKernel` (`PlancherelKernel.lean`), the kernel in the Plancherel formula
 4. Testing against the indicators of the sets of finite measure gives the identity almost
    everywhere (`ae_eq_of_forall_setIntegral_eq_of_sigmaFinite`).
 
-## Scope
+**Scope.**
 
 The theorems identify the kernel of `π(f)`. That `π(f)` is Hilbert–Schmidt with
 `‖π(f)‖²_HS = ∫∫ |K_f(z', z)|² d²z' d²z` (the left side of `plancherel`) is the standard formula

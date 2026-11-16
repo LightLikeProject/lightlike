@@ -16,14 +16,12 @@ or `2π`. The **deficit angle** is `ε_t = 2π Z_t − Σ_{σ ⊃ t} θ_{tσ}` a
 `S = Σ_t A_t ε_t`, with positive areas `A_t = √|triHL L t| / 4` for both causal types, plus the
 boundary term with `π Z_t` (ADP's `Z_t / 2`) in place of `2π Z_t`. The action is complex valued.
 
-## Definitions
+## Main results
 
 * `lorDihedralAt L σ t`: the dihedral angle of the 4-simplex `σ` at its triangle `t`, without
   choosing a labelling (`Lightlike.Regge4.angleAvg4` of its real and imaginary parts).
 * `triHL L t`: sixteen times the signed squared area, Heron's formula in squared lengths.
 * `causalZ L t`, `lorAngleSum`, `lorDeficit`, `lorBdryAngle`, `lorArea`, `lorReggeAction`.
-
-## Main results
 
 * `lorDihedralAt_eq`: in any labelling, `lorDihedralAt` is the length formula `lorDihedral4`.
 * `triHL_eq`: `triHL L {p, q, r} = 4 · gram2L L p q r`; `triHL_sq`: for `L = ℓ²` it is the

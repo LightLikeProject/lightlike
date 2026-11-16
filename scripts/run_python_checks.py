@@ -41,6 +41,8 @@ CHECKS = [
     ("scripts/asymptotics/gamma_bounds_check.py", False),
     ("scripts/asymptotics/kernel_bound_check.py", False),
     ("scripts/asymptotics/landing_check.py", False),
+    ("scripts/asymptotics/link_integral_check.py", False),
+    ("scripts/asymptotics/lorentzian_hessian_check.py", True),
     ("scripts/asymptotics/level_check.py", False),
     ("scripts/asymptotics/racah_sum_asymptotics.py", False),
     ("scripts/asymptotics/stirling_check.py", False),
@@ -71,6 +73,7 @@ CHECKS = [
     ("scripts/spinfoam/forcechain.py", True),
     ("scripts/spinfoam/gauge_cutoff_limit.py", True),
     ("scripts/spinfoam/robust_check.py", False),
+    ("scripts/spinfoam/forcing_repair_check.py", False),
     ("scripts/spinfoam/gauge_independence_check.py", True),
     ("scripts/spinfoam/tetra_partition_check.py", False), ("scripts/spinfoam/u1_bubble.py", False),
 ]
@@ -85,6 +88,7 @@ NOT_CHECKS = {"scripts/ci_check.py", "scripts/prune_docs.py", "scripts/gate.py",
               "scripts/regge/gen_flat_star.py",  # generator of Lightlike/Regge/Conv3/FlatStar.lean (prints, no exit code)
               "scripts/pl/check_chain.py",  # a library of surf_chains.py
               "scripts/pl/surf_search.py",  # a search tool; its results are checked by surf_chains.py
+              "scripts/spinfoam/exact3j.py",  # a library of gauge_cutoff_limit.py (exact 3j symbols)
               # q-Racah certificate pipeline: generators that write Lightlike/TuraevViro/Reflect/Racah*.lean
               # from intermediate files (parts.pkl, facs.out), run by hand from scripts/qracah
               "scripts/qracah/wz8.py", "scripts/qracah/size.py", "scripts/qracah/size2.py",
@@ -94,6 +98,7 @@ NOT_CHECKS = {"scripts/ci_check.py", "scripts/prune_docs.py", "scripts/gate.py",
               "scripts/qracah/endrow_check.py", "scripts/qracah/jacobi_check.py",
               "scripts/qracah/orth_support.py",
               "scripts/qracah/chunk.py",  # splits the long Poly literals of the generated certificates; used by gen_cert.py
+              "scripts/qracah/docs.py",  # module docstrings of the generated Racah files; used by gen_core.py
               "scripts/spinfoam/all15.py", "scripts/spinfoam/all24.py",  # print the reduction data of the 1-5 and 2-4 moves; Lean checks them
               "scripts/spinfoam/gen15.py", "scripts/spinfoam/gen24.py",  # generators of the Lean tables of Move15 and Move24
               "scripts/spinfoam/gauge_match.py", "scripts/spinfoam/net_model.py",  # libraries of the move searches

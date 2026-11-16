@@ -20,7 +20,7 @@ Integrated over `z`, the left side is the trace of `π(f* ∗ f)` and the right 
 Hilbert–Schmidt norm of `π(f)`. This is the step of the Plancherel formula that connects the
 group side with the kernels.
 
-## Ingredients
+## Implementation notes
 
 * `isInvInvariant_haarC`: the Haar measure is inversion invariant (`SL(2,ℂ)` is unimodular).
 * `fixChart_inv`, `fixChart_mul`: inverses and products of chart points, from
