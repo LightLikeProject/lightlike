@@ -100,4 +100,66 @@ lemma exists_two_arcs (g : Circle → ℝ × ℝ) (hc : Continuous g) (hi : Func
   · rw [← Set.image_inter hi, hE, Set.image_pair]
   · rw [← Set.image_union, hU, Set.image_univ]
 
+/-- The weak Jordan theorem for an embedded circle that is not contained in a horizontal line. -/
+theorem weak_jordan_aux {f : Circle → ℝ × ℝ} (hc : Continuous f) (hi : Function.Injective f)
+    (hy : ∃ z w, (f z).2 ≠ (f w).2) : ¬ IsPreconnected (range f)ᶜ := by
+  obtain ⟨za, -, hza⟩ := isCompact_univ.exists_isMaxOn ⟨1, mem_univ _⟩
+    (continuous_snd.comp hc).continuousOn
+  obtain ⟨zb, -, hzb⟩ := isCompact_univ.exists_isMinOn ⟨1, mem_univ _⟩
+    (continuous_snd.comp hc).continuousOn
+  have hmax : ∀ z, (f z).2 ≤ (f za).2 := fun z => hza (mem_univ z)
+  have hmin : ∀ z, (f zb).2 ≤ (f z).2 := fun z => hzb (mem_univ z)
+  have hab : (f zb).2 < (f za).2 := by
+    by_contra hcon
+    rw [not_lt] at hcon
+    obtain ⟨z, w, hzw⟩ := hy
+    apply hzw
+    have := hmax z; have := hmax w; have := hmin z; have := hmin w
+    linarith
+  set g : Circle → ℝ × ℝ := fun w => f (za * w) with hg
+  have hgc : Continuous g := hc.comp (continuous_const.mul continuous_id)
+  have hgi : Function.Injective g := hi.comp (mul_right_injective za)
+  have hrange : range g = range f := by
+    ext y; constructor
+    · rintro ⟨w, rfl⟩; exact ⟨_, rfl⟩
+    · rintro ⟨z, rfl⟩; exact ⟨za⁻¹ * z, by simp [hg]⟩
+  set wb : Circle := za⁻¹ * zb with hwb
+  have hwb1 : wb ≠ 1 := fun h => by
+    have : zb = za := by
+      have := congrArg (za * ·) h
+      simpa [hwb] using this
+    rw [this] at hab
+    exact lt_irrefl _ hab
+  obtain ⟨A₀, A₁, h₀, h₁, hint, hun⟩ := exists_two_arcs g hgc hgi hwb1
+  have e1 : g 1 = f za := by simp [hg]
+  have e2 : g wb = f zb := by simp [hg, hwb]
+  rw [e1, e2] at h₀ h₁ hint
+  have := weak_jordan_extremal h₀ h₁ hint hab (fun z hz => by
+    rw [hun, hrange] at hz
+    obtain ⟨w, rfl⟩ := hz
+    exact ⟨hmin w, hmax w⟩)
+  rwa [hun, hrange] at this
+
+/-- **The weak Jordan theorem.** The complement of a circle embedded in the plane is not connected
+(Klazar, arXiv:2604.04296, Section 2, Claim 4, after Thomassen; Klazar's numbering). -/
+theorem weak_jordan {f : Circle → ℝ × ℝ} (hc : Continuous f) (hi : Function.Injective f) :
+    ¬ IsPreconnected (range f)ᶜ := by
+  by_cases hy : ∃ z w, (f z).2 ≠ (f w).2
+  · exact weak_jordan_aux hc hi hy
+  · push Not at hy
+    -- the image lies on a horizontal line: swap the coordinates
+    have hne : f 1 ≠ f (-1) := fun h => by
+      have := hi h
+      exact Circle.neg_ne_self 1 this.symm
+    have hx : (f 1).1 ≠ (f (-1)).1 := fun h => hne (Prod.ext h (hy 1 (-1)))
+    have hc' : Continuous (Prod.swap ∘ f) := continuous_swap.comp hc
+    have hi' : Function.Injective (Prod.swap ∘ f) := Prod.swap_injective.comp hi
+    have := weak_jordan_aux hc' hi' ⟨1, -1, by simpa using hx⟩
+    intro hpre
+    apply this
+    have himg : (range (Prod.swap ∘ f))ᶜ = Prod.swap '' (range f)ᶜ := by
+      rw [range_comp, ← Set.image_compl_eq Prod.swap_bijective]
+    rw [himg]
+    exact hpre.image _ continuous_swap.continuousOn
+
 end Lightlike.PL
