@@ -12,7 +12,7 @@ prove `spinGroup Q ≃* SU(2) × SU(2) = Spin4` (`spinEquiv`). The same holds fo
 becoming `X ↦ J Xᴴ J`, `J = diag(1, -1)`. For both forms the isomorphism carries the action
 `v ↦ x v x⁻¹` on vectors to the double cover `toSO4` (`spinGroup_conj_ι`, `spinGroupP_conj_ι`).
 
-## Construction
+## Implementation notes
 
 * `cliffordToMat : Cl(Q) →ₐ[ℝ] M₂(ℍ)`, the algebra homomorphism with `v ↦ [[0, v], [-v̄, 0]]`
   (this squares to `-|v|²`). It sends Clifford conjugation to the quaternionic conjugate

@@ -12,7 +12,7 @@ representation of the first factor and the spin-`m/2` representation of the seco
 
 Spins are doubled, as everywhere in this library: `n = 2j₊`, `m = 2j₋ ∈ ℕ`.
 
-## Two forms of the same representation
+**Two forms of the same representation.**
 
 * **Tensor form** `spin4Tensor n m`: Mathlib's tensor product `ℂ^{n+1} ⊗ ℂ^{m+1}` with
   `(g₊, g₋) ↦ D^{n/2}(g₊) ⊗ D^{m/2}(g₋)` (the external tensor product `extTprod` of
@@ -25,7 +25,7 @@ Spins are doubled, as everywhere in this library: `n = 2j₊`, `m = 2j₋ ∈ �
 `spin4Equiv` is an equivalence of representations between the two forms: the product basis of the
 tensor product goes to the standard basis indexed by pairs.
 
-## Proven here (standard axioms only)
+## Main results
 
 * **Homomorphism, unitary, continuous:** `spin4Mat_mul`, `spin4Mat_one`,
   `spin4Mat_mem_unitaryGroup`, `spin4Rep`, `continuous_spin4Rep`.
@@ -42,7 +42,7 @@ tensor product goes to the standard basis indexed by pairs.
   `ℂ^{n+1} ⊗ ℂ^{m+1}` with the tensor-product inner product), equal to `spin4Tensor` on the
   underlying vector space (`hilbertEquiv_spin4Isometry`); `inner_spin4Unitary`.
 
-## Companion files
+## Implementation notes
 
 * `Lightlike/Spin4/SO4.lean`: `Spin4` is the double cover of SO(4) (`toSO4`, surjective, kernel
   `±(1,1)`).
