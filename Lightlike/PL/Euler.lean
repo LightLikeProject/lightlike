@@ -200,6 +200,10 @@ theorem StellarEquiv.euler_eq {K L : SComplex V} (h : StellarEquiv K L) : K.eule
   rw [euler_eq_signedCount, euler_eq_signedCount, h₁]
   simp only [h₂]
 
+/-- **Complexes with different Euler characteristics are not stellar equivalent.** -/
+theorem not_stellarEquiv_of_euler_ne {K L : SComplex V} (h : K.euler ≠ L.euler) :
+    ¬ StellarEquiv K L := fun hs => h hs.euler_eq
+
 /-- The Euler characteristic of the boundary of the simplex on `A`: `1 + (−1)^{#A}`, i.e.
 `χ(Sⁿ) = 1 + (−1)ⁿ` for `#A = n + 2`. -/
 theorem euler_boundary {A : Finset V} (hA : A.Nonempty) :

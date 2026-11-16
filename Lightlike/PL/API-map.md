@@ -46,7 +46,11 @@ functionals, for which the two slicings have the same cells as sets and hence is
 [20]. With the slicing result this gives, by induction on the dimension, that every geometric
 subdivision of a complex with the empty face is stellar equivalent to it [20], and from that
 Newman's theorem [21]. With it, the sphere results above no longer assume stellar equivalence of
-subdivisions of lower dimension [21].
+subdivisions of lower dimension [21]. Conversely a stellar subdivision is a PL homeomorphism of the
+realisations, and so is any chain of subdivisions and welds {1} [38]. The Euler characteristic is
+invariant under stellar equivalence, so complexes with different Euler characteristics are not stellar
+equivalent, and, when both or neither contain the empty face, their realisations are not PL
+homeomorphic [39] [21].
 
 The 3-complexes of the Ponzano–Regge API generate simplicial complexes, and its closed
 combinatorial 3-manifolds are closed combinatorial 3-manifolds in this sense [6]. In dimension two, a connected graph with two
@@ -108,6 +112,7 @@ Cutting along such a diagonal gives two polygons, made of the edges from the ver
     `PL.SComplex.cell_le_iff_segments`, `PL.SComplex.stellarEquiv_of_cutting`,
     `PL.SComplex.subdivStellar`
 21. Lightlike/PL/Newman.lean - `PL.SComplex.StellarEquiv.of_plHomeomorphic`,
+    `PL.SComplex.not_plHomeomorphic_of_euler_ne`,
     `PL.SComplex.derivedBoundary_isSphere_of_infinite`, `PL.SComplex.cutSpheres_of_infinite`,
     `PL.SComplex.isSB_of_polytope_boundary_of_infinite`
 22. Lightlike/PL/PachnerPL.lean - `PL.SComplex.pachner_plHomeomorphic`,
@@ -147,6 +152,10 @@ Cutting along such a diagonal gives two polygons, made of the edges from the ver
     `PL.Polygon.bd_space_eq_carrier`, `PL.Polygon.polygon_schoenflies`
 37. Lightlike/PL/Cycle.lean - `PL.CycleGraph`, `PL.CycleGraph.isSphere1`,
     `PL.CycleGraph.isPLSphere`, `PL.isPLSphere_closure_of_isSphere1`
+38. Lightlike/PL/StellarHomeo.lean - `PL.SComplex.PLHomeomorphic.starAt`,
+    `PL.SComplex.PLHomeomorphic.of_stellarEquiv`
+39. Lightlike/PL/Euler.lean - `PL.SComplex.StellarEquiv.euler_eq`,
+    `PL.SComplex.not_stellarEquiv_of_euler_ne`
 
 ## References
 
