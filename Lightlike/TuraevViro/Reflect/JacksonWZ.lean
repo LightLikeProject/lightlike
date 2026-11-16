@@ -10,15 +10,24 @@ explicit `G` that carries no pole. Summing over `k = 0, …, n+1` at `x = q^n` g
 `S (n+1) = ρ (n) S n`, and by induction on `n` Jackson's sum `jackson_sum`. The identity holds for
 generic `x`; all denominators that occur are hypotheses.
 
-The proof is a direct check of the telescoping identity (found by computer algebra and verified
-here); it does not follow a published derivation. The summation formula itself is a known one (the
-terminating very-well-poised `₆φ₅` sum), but no source and no equation number for it have been
-verified yet, so none is cited.
+The summation is the terminating very-well-poised `₆φ₅` sum, DLMF §17.7(iii), equation (17.7.16)
+(`jacksonRhs` is its right side). The proof here is a direct check of the telescoping identity
+(found by computer algebra and verified here); it does not follow a published derivation.
+
+The hypotheses `JHyp` of the first version require nonvanishing up to index `N + 2`. The proof only
+touches indices up to `N`, so `JHypT` states exactly that, and `jackson_sum` is kept as its
+corollary. `JHypT` still fails when a numerator and a denominator vanish together at index `N`
+(the removable case), which is not covered here.
 
 ## Main results
 
-* `jackson_sum`: for `JHyp q a b c N` and `n ≤ N`, the sum of `Tj q a b c (q ^ n) k` over
+* `jackson_sumT`: for `JHypT q a b c N` and `n ≤ N`, the sum of `Tj q a b c (q ^ n) k` over
   `k ≤ n` equals `jacksonRhs q a b c n`.
+* `jackson_sum`: the same under the stronger `JHyp q a b c N`.
+
+## References
+
+* DLMF §17.7(iii), equation (17.7.16).
 -/
 
 namespace Lightlike.TV.Refl
@@ -242,6 +251,24 @@ def JHyp (q a b c : ℂ) (N : ℕ) : Prop :=
     (∀ n ≤ N, ∀ i ≤ N + 2, 1 - a * q * q ^ n * q ^ i ≠ 0) ∧
     (∀ n ≤ N, 1 - a * q * q ^ n / b ≠ 0 ∧ 1 - a * q * q ^ n / c ≠ 0)
 
+/-- The nonvanishing conditions that the proof of Jackson's sum for `n ≤ N` uses: the indices the
+telescoping touches are at most `N` (not `N + 2`), and the outer index `n` is below `N`. They hold
+in more cases than `JHyp`, for instance when `aq/b` is a power of `q` with an exponent larger than
+`N`; they still fail when a numerator and a denominator both vanish at index `N`. -/
+def JHypT (q a b c : ℂ) (N : ℕ) : Prop :=
+  q ≠ 0 ∧ b ≠ 0 ∧ c ≠ 0 ∧ 1 - a ≠ 0 ∧
+    (∀ i ≤ N, 1 - q * q ^ i ≠ 0) ∧ (∀ i ≤ N, 1 - a * q / b * q ^ i ≠ 0) ∧
+    (∀ i ≤ N, 1 - a * q / c * q ^ i ≠ 0) ∧
+    (∀ n < N, ∀ i ≤ N, 1 - a * q * q ^ n * q ^ i ≠ 0) ∧
+    (∀ n < N, 1 - a * q * q ^ n / b ≠ 0 ∧ 1 - a * q * q ^ n / c ≠ 0)
+
+/-- Every hypothesis of `JHypT` is one of `JHyp`. -/
+lemma JHyp.toT {q a b c : ℂ} {N : ℕ} (h : JHyp q a b c N) : JHypT q a b c N := by
+  obtain ⟨hq, hb, hc, ha, hP1, hP2, hP3, hP4, hP5⟩ := h
+  exact ⟨hq, hb, hc, ha, fun i hi => hP1 i (by omega), fun i hi => hP2 i (by omega),
+    fun i hi => hP3 i (by omega), fun n hn i hi => hP4 n (by omega) i (by omega),
+    fun n hn => hP5 n (by omega)⟩
+
 /-- The right side of Jackson's sum. -/
 noncomputable def jacksonRhs (q a b c : ℂ) (n : ℕ) : ℂ :=
   pk (a * q) q n * pk (a * q / (b * c)) q n / (pk (a * q / b) q n * pk (a * q / c) q n)
@@ -252,8 +279,9 @@ lemma pk_inv_pow_zero {q : ℂ} (hq : q ≠ 0) (n : ℕ) : pk (q ^ n)⁻¹ q (n 
   have : (q ^ n)⁻¹ * q ^ n = 1 := inv_mul_cancel₀ (pow_ne_zero n hq)
   rw [this]; simp
 
-/-- One step of Jackson's sum: the sum for `n + 1` is `ρ` times the sum for `n`. -/
-lemma jackson_step {q a b c : ℂ} {N : ℕ} (h : JHyp q a b c N) {n : ℕ} (hn : n + 1 ≤ N) :
+/-- One step of Jackson's sum under the sharper hypotheses `JHypT`: the sum for `n + 1` is `ρ`
+times the sum for `n`. -/
+lemma jackson_stepT {q a b c : ℂ} {N : ℕ} (h : JHypT q a b c N) {n : ℕ} (hn : n + 1 ≤ N) :
     ∑ k ∈ Finset.range (n + 2), Tj q a b c (q ^ (n + 1)) k =
       rhoJ q a b c (q ^ n) * ∑ k ∈ Finset.range (n + 1), Tj q a b c (q ^ n) k := by
   obtain ⟨hq, hb, hc, ha, hP1, hP2, hP3, hP4, hP5⟩ := h
@@ -282,8 +310,9 @@ lemma jackson_step {q a b c : ℂ} {N : ℕ} (h : JHyp q a b c N) {n : ℕ} (hn 
   rw [show Finset.range (n + 2) = Finset.range (n + 1 + 1) from rfl, hqn, K,
     Finset.sum_range_succ (fun k => Tj q a b c (q ^ n) k) (n + 1), hT, add_zero]
 
-/-- **Jackson's sum**: the terminating very-well-poised `₆φ₅` sum, with `q^n` the number of terms. -/
-theorem jackson_sum {q a b c : ℂ} {N : ℕ} (h : JHyp q a b c N) :
+/-- **Jackson's sum** under the sharper hypotheses `JHypT`: the terminating very-well-poised `₆φ₅`
+sum, with `q^n` the number of terms. -/
+theorem jackson_sumT {q a b c : ℂ} {N : ℕ} (h : JHypT q a b c N) :
     ∀ n ≤ N, ∑ k ∈ Finset.range (n + 1), Tj q a b c (q ^ n) k = jacksonRhs q a b c n := by
   intro n
   induction n with
@@ -293,7 +322,7 @@ theorem jackson_sum {q a b c : ℂ} {N : ℕ} (h : JHyp q a b c N) :
     simp [Tj, jacksonRhs, pk, ha]
   | succ n ih =>
     intro hn
-    rw [jackson_step h hn, ih (by omega)]
+    rw [jackson_stepT h hn, ih (by omega)]
     obtain ⟨hq, hb, hc, ha, hP1, hP2, hP3, hP4, hP5⟩ := h
     have P2 := pk_ne_zero (a * q / b) q n fun i hi => hP2 i (by omega)
     have P3 := pk_ne_zero (a * q / c) q n fun i hi => hP3 i (by omega)
@@ -306,5 +335,16 @@ theorem jackson_sum {q a b c : ℂ} {N : ℕ} (h : JHyp q a b c N) :
     simp only [rhoJ, jacksonRhs, pk]
     field_simp
     try ring
+
+/-- One step of Jackson's sum: the sum for `n + 1` is `ρ` times the sum for `n`. -/
+lemma jackson_step {q a b c : ℂ} {N : ℕ} (h : JHyp q a b c N) {n : ℕ} (hn : n + 1 ≤ N) :
+    ∑ k ∈ Finset.range (n + 2), Tj q a b c (q ^ (n + 1)) k =
+      rhoJ q a b c (q ^ n) * ∑ k ∈ Finset.range (n + 1), Tj q a b c (q ^ n) k :=
+  jackson_stepT h.toT hn
+
+/-- **Jackson's sum**: the terminating very-well-poised `₆φ₅` sum, with `q^n` the number of terms. -/
+theorem jackson_sum {q a b c : ℂ} {N : ℕ} (h : JHyp q a b c N) :
+    ∀ n ≤ N, ∑ k ∈ Finset.range (n + 1), Tj q a b c (q ^ n) k = jacksonRhs q a b c n :=
+  jackson_sumT h.toT
 
 end Lightlike.TV.Refl

@@ -2,7 +2,7 @@
 
 # Results
 
-86 proven results with stable IDs and 3 conditional results (proven under hypotheses that are named Lean propositions). An ID is never reused; a withdrawn result is kept as `retired`. Every declaration of the library, and so every proven result, depends only on the axioms `propext`, `Classical.choice` and `Quot.sound`.
+87 proven results with stable IDs and 3 conditional results (proven under hypotheses that are named Lean propositions). An ID is never reused; a withdrawn result is kept as `retired`. Every declaration of the library, and so every proven result, depends only on the axioms `propext`, `Classical.choice` and `Quot.sound`.
 
 Tier: **established** (standard mathematics and physics that the frontier work needs; candidates for Mathlib or Physlib later); **frontier** (proposals published in the peer-reviewed literature, labelled as proposals); **exploratory** (new or unpublished models and conjectures, kept in `Exploratory/` folders that nothing else imports; promoted to frontier only after publication). Every result is about the mathematics of a model, not a claim that the model describes nature.
 
@@ -145,6 +145,7 @@ API map: [Lightlike/TuraevViro/API-map.md](../Lightlike/TuraevViro/API-map.md)
 | LL-0073 | The weighted norms of all rows and columns of the q-6j matrix are one common constant (see note) | proven | established | `Lightlike.TV.Refl.gram_const` in [GramConst.lean](../Lightlike/TuraevViro/Reflect/GramConst.lean) |
 | LL-0074 | Norm one of the q-6j matrix, under the q-Dougall summation (see note) | conditional on `Lightlike.TV.Refl.QDougall` | established | `Lightlike.TV.Refl.sixj_norm_one` in [SixJNormOne.lean](../Lightlike/TuraevViro/Reflect/SixJNormOne.lean) |
 | LL-0075 | q-orthogonality of the 6j symbol at level r, under the q-Dougall summation (see note) | conditional on `Lightlike.TV.Refl.QDougallAll` | established | `Lightlike.TV.Refl.qOrthogonality_of` in [OrthConditional.lean](../Lightlike/TuraevViro/Reflect/OrthConditional.lean) |
+| LL-XXXX | Jackson's sum, the terminating very-well-poised 6φ5 summation, by a telescoping certificate and induction on the number of terms (see note) | proven | established | `Lightlike.TV.Refl.jackson_sumT`, `Lightlike.TV.Refl.jackson_sum` in [JacksonWZ.lean](../Lightlike/TuraevViro/Reflect/JacksonWZ.lean) |
 
 Notes:
 
@@ -154,6 +155,7 @@ Notes:
 - **LL-0073.** The weighted norms of all rows and all columns of the matrix of q-6j sums are one common constant (Gram-matrix argument, gram_const for the columns and sixj_norm_const for the rows). Its value is not proved by these results; see the two conditional results that follow.
 - **LL-0074.** Under the boundary evaluation QDougall (the terminating very-well-poised 6φ5 summation at the lowest sixth colour, the q-Dougall summation), every weighted norm equals 1. QDougall is an explicit hypothesis, not proved in Lean in general. It is satisfiable: the instance at level r = 2 (qDougall_two, where the only colour is 0) is proved, and another at level r = 3 (qDougall_three); this says nothing about larger r, where it is checked numerically (exact at r = 4 to 7).
 - **LL-0075.** Given QDougallAll (the q-Dougall boundary evaluation for all admissible colours), the diagonal orthogonality qOrthogonality of the model holds at every level r ≥ 2. Together with qBiedenharnElliott this would give the Turaev–Viro invariance of LL-0031 at level r. Not proved: QDougallAll itself, and qBiedenharnElliott for r ≥ 4. The hypothesis is satisfiable at level r = 2 (qDougallAll_two, where the only colour is 0); this says nothing about r ≥ 3, where QDougall is checked numerically (exact at r = 4 to 7).
+- **LL-XXXX.** Over the complex numbers, for q, a, b, c with the nonvanishing conditions JHypT q a b c N (the factors 1 - q·q^i, 1 - aq/b·q^i and 1 - aq/c·q^i for i ≤ N, 1 - aq·q^n·q^i and 1 - aq·q^n/b, 1 - aq·q^n/c for n < N, and b, c, 1 - a ≠ 0), the terminating very-well-poised 6φ5 sum holds for every n ≤ N: Σ_{k ≤ n} (1 - a q^{2k})/(1 - a) · (a, b, c, q^{-n}; q)_k / (q, aq/b, aq/c, aq^{n+1}; q)_k · (aq^{n+1}/(bc))^k = (aq, aq/(bc); q)_n / (aq/b, aq/c; q)_n (jackson_sumT; jackson_sum is the same under the stronger JHyp, which asks for nonvanishing up to index N + 2). This is DLMF §17.7(iii), equation (17.7.16), with d = q^{-n}; the location was read in the DLMF page, and no sources.yaml key is used. The proof is a telescoping certificate found by computer algebra and checked in Lean (wz_zero, wz_succ, wz_sum), then induction on n; it does not follow a published derivation. Not shown: the case where a numerator and a denominator of a term vanish together at index N (a removable singularity, for instance aq/b = q^{-N}); and this sum is not yet connected to the q-6j symbol (the boundary evaluation QDougall of LL-0074 and LL-0075 remains a hypothesis).
 
 ## Saddle points of the 6j symbol
 
