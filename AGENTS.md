@@ -123,7 +123,7 @@ python3 scripts/gate.py
   single proof task; `gate.py --task T-<ID>` also checks it (no full library build). `lake env lean` checks a single file but does not read the options in
   `lakefile.toml`, hence `-DautoImplicit=false`.
 - `scripts/gate.py` runs the steps of `.github/workflows/ci.yml` in order. It needs Python 3.9 to
-  3.12 and the packages pinned in `requirements.txt`. Commit before running it.
+  3.14 and the packages pinned in `requirements.txt`. Commit before running it.
 - `scripts/context-pack <declaration>` prints everything one declaration depends on in one block.
 - CI runs on every pull request. One that changes no Lean or build file gets only the text checks.
 - Lean and Mathlib `v4.35.0`. Physlib is pinned to one commit in `lakefile.toml`; its 6j symbols

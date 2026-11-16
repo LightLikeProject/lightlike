@@ -10,96 +10,28 @@ import Lightlike.Regge.Disc
 /-!
 # Trust checks for 3D Regge calculus
 
-Checks of the definitions in `Lightlike/Regge/Complex.lean` against known values, and deliberately
-wrong models and inputs that must fail.
+Checks of the definitions in `Lightlike/Regge/Complex.lean`, `Manifold.lean` and `Embedded.lean`
+against known values, and deliberately wrong models and inputs that must fail. Each check's
+docstring says what it shows. With all lengths `1` every dihedral angle is `θ = arccos (1/3)`
+(`dihedral_one`), and an edge in `n` tetrahedra has deficit `2π - n θ`; we prove `π/3 < θ < 2π/5`.
 
-## Flat triangulations of regions of `ℝ³`: deficit zero
-
-* `octahedron_deficit`: the octahedron split into four tetrahedra around an axis, placed in `ℝ³`.
-  Obtained from the general theorem `deficit_eq_zero_of_cyl`, which shows its hypotheses can be
-  met.
-* `cube_deficit`: the unit cube split into the six Kuhn tetrahedra around its main diagonal,
-  placed in `ℝ³`. Computed directly: each tetrahedron has dihedral angle `π/3` at the diagonal
-  (`dihedral_kuhn`), and `2π - 6 · π/3 = 0`.
-
-## Curved examples: deficit nonzero
-
-With all lengths `1` every dihedral angle is `θ = arccos (1/3) ≈ 70.53°` (`dihedral_one`), and an
-edge in `n` tetrahedra has deficit `2π - n θ`. We prove `π/3 < θ < 2π/5`, so:
-
-* `simplexBoundary`: the boundary of the 4-simplex (five tetrahedra, a triangulated 3-sphere) is
-  closed, every edge lies in three tetrahedra, and every deficit is `2π - 3θ > 0`; its Regge action
-  is `10 (2π - 3θ) > 0` (positive curvature, as for a sphere).
-* `ring5_deficit`: five regular tetrahedra around an edge leave a gap `2π - 5θ > 0`; certified
-  between `7.31°` and `7.41°` (`ring5_gap_mem`, from `1.2308 < θ < 1.2311`,
-  `arccos_one_third_mem`); `cube_deficit_unit`: six overlap, `2π - 6θ < 0`.
-* `deficit_unit_ne_zero`: in any complex, regular tetrahedra never close up flat around an edge
-  (the classical fact that regular tetrahedra do not fill space).
-
-## Wrong inputs and wrong formulas
-
-* `cubeStretched_deficit`: stretching the cube's diagonal from `√3` to `2` gives the negative
-  deficit `2π - 6 arccos (1/7)`.
-* `cube_faceAngle_fails`: the face angle (angle between two edges at a vertex) in place of the
-  dihedral angle reports `π/2` on the flat cube.
-* `cube_exterior_fails`: the exterior angle `π - θ` reports `-2π` on the flat cube. In general it
-  reports `(4 - n) π - δ` (`deficitWith_exterior`), so on a four-valent edge such as the
-  octahedron's axis it goes unnoticed (`octahedron_exterior_passes`): a flatness test needs an
-  edge of valence other than four.
-* `octahedron_deficit_zero_lengths`: with all lengths `0`, Lean's junk value `0 / 0 = 0` gives
-  every dihedral angle `π/2` and the octahedron's axis a fake zero deficit.
-
-## The manifold condition (`Lightlike/Regge/Manifold.lean`)
-
-* `cube_diagonal_cycleLink`, `octahedron_axis_cycleLink`, `simplexBoundary_cycleLink`: the
-  interior edges used above have cycle links (a hexagon, a square, a triangle).
-* `cube_edge_pathLink`: an edge of the cube has a path link and is a boundary edge.
-* `tripleBook_not_edgeManifold`: three tetrahedra sharing a triangle fail the manifold condition.
-
-## Geometric triangulations (`Lightlike/Regge/Embedded.lean`)
-
-* `octahedron_geometric`: the octahedron placed in `ℝ³` is a geometric triangulation (its four
-  tetrahedra are non-degenerate and lie in the four open quadrants of the `xy`-plane), so
-  `octahedron_deficit_geometric` gets the axis deficit zero with no winding hypothesis.
-* `doubleRing_deficit`, `doubleRing_overlap`: eight non-degenerate tetrahedra around an edge with a
-  cycle link, placed so that they wind twice around it, have deficit `-2π`; hence, by
-  `deficit_eq_zero_of_embedded`, some two of them overlap. Disjoint interiors cannot be dropped.
-
-## Regge's equations
-
-* `regularTet_gradient`: the gradient of the regular tetrahedron's action `Lightlike.PR.reggeAction` is
-  the exterior angle `π - arccos (1/3)`, not the interior one (`regularTet_gradient_ne_interior`).
-* `simplexBoundary_reggeEquations`: on the regular 3-sphere the variation of the action is
-  `Σ_e v_e (2π - 3 arccos (1/3))`; it is not a stationary point (`simplexBoundary_not_stationary`).
-* Numerically, `scripts/regge/regge_equations_check.py` compares finite differences of the action
-  with the deficit angles on a randomly perturbed 3-sphere (agreement to `10⁻⁸`).
-
-## Combinatorial 3-manifolds and flat solutions
-
-* `simplexBoundary_isCombManifold`: the boundary of the 4-simplex is a closed combinatorial
-  3-manifold of the core (`Lightlike.PR.IsCombManifold`), hence an edge-manifold
-  (`simplexBoundary_edgeManifold`, through `IsCombManifold.isEdgeManifold`).
-* `singleTet_edgeManifold`, `octahedron_edgeManifold`, `cube_edgeManifold`,
-  `bowtie_edgeManifold`: examples with boundary, decided by the kernel.
-* `doubleSphere_edgeManifold`, `doubleSphere_not_isCombManifold`: two 3-spheres glued at a vertex
-  satisfy the edge condition but not the vertex condition.
-* `singleTet_isCombManifoldBd`, `octahedron_isCombManifoldBd`, `cube_isCombManifoldBd`:
-  combinatorial 3-manifolds with boundary (vertex links spheres or discs), decided by the kernel;
-  `cube_link_isDisc2`: a disc with an interior vertex; `cube_edgeManifold_of_isCombManifoldBd`: the
-  edge condition from the general theorem.
-* `bowtie_not_isCombManifoldBd`, `tripleBook_not_isCombManifoldBd`,
-  `doubleSphere_not_isCombManifoldBd`: non-manifolds rejected (the bowtie is an edge-manifold).
-* `pinchedDisc_passes`, `pinchedDisc_not_isDisc2` (wrong model): a projective plane with a triangle
-  attached at a vertex meets every condition of `IsSurfaceDisc` except connected vertex links, and
-  is not a disc. `moebius_passes`, `moebius_not_isDisc2` (wrong model): the Möbius band meets every
-  condition except the Euler characteristic, and is not a disc.
-* `octahedron_stationary`: the flat octahedron is a stationary point of its Regge action.
-* `simplexBoundary_gradient`: the gradient of the regular 3-sphere's action.
-
-## Bridge to Ponzano–Regge
-
-* `reggeAction_singleTet`: for one tetrahedron the Regge action (boundary term only) equals the
-  phase `Lightlike.PR.reggeAction` of the Ponzano–Regge asymptotic formula.
+* **Flat triangulations of `ℝ³`, deficit zero:** the octahedron around its axis
+  (`octahedron_deficit`) and the cube split into six Kuhn tetrahedra (`cube_deficit`).
+* **Curved examples, deficit nonzero:** the boundary of the 4-simplex (`simplexBoundary`), five
+  and six regular tetrahedra around an edge (`ring5_gap_mem`, `cube_deficit_unit`), and any
+  complex with unit lengths (`deficit_unit_ne_zero`).
+* **Wrong inputs and formulas:** a stretched cube, face angles, exterior angles (which go unnoticed
+  on a four-valent edge, `octahedron_exterior_passes`), and all-zero lengths.
+* **The manifold condition:** cycle and path links, and three tetrahedra sharing a triangle.
+* **Geometric triangulations:** the octahedron (`octahedron_geometric`), and a double ring whose
+  deficit `-2π` forces two tetrahedra to overlap (`doubleRing_overlap`).
+* **Regge's equations:** the gradient of the regular tetrahedron's action is the exterior angle
+  (`regularTet_gradient`); the regular 3-sphere is not stationary, the flat octahedron is
+  (`octahedron_stationary`). `scripts/regge/regge_equations_check.py` compares finite differences
+  of the action with the deficit angles on a perturbed 3-sphere (agreement to `10⁻⁸`).
+* **Combinatorial 3-manifolds:** closed and with boundary, decided by the kernel, and the
+  non-manifolds and wrong disc models they reject.
+* **Bridge to Ponzano–Regge:** `reggeAction_singleTet`, the phase of the asymptotic formula.
 -/
 
 open Real Finset InnerProductSpace

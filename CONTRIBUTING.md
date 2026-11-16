@@ -162,7 +162,7 @@ lake build Tasks
 The toolchain is pinned in `lean-toolchain` and the dependencies in `lake-manifest.json`. To check
 a single file, `lake env lean -DautoImplicit=false path/File.lean`. Before opening a pull request,
 commit and run `python3 scripts/gate.py`: it executes the steps of `.github/workflows/ci.yml` in
-order. It needs Python 3.9 to 3.12 and the packages pinned in `requirements.txt`:
+order. It needs Python 3.9 to 3.14 and the packages pinned in `requirements.txt`:
 `python3 -m venv .venv && . .venv/bin/activate && pip install -r requirements.txt` (on Windows the
 venv is activated with `.venv\Scripts\activate`). No script in `scripts/` is bash-only, but `gate.py`
 runs each CI step with bash and the POSIX tools the steps call, so on Windows run it in WSL.
