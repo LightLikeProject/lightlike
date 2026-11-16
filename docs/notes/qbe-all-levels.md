@@ -176,3 +176,33 @@ orthogonality (the classical argument of Biedenharn and of Edmonds; location UNV
 Status of the chain: step 1 (Watson, stated, checked at 40 digits), step 3 (stated, checked), steps 2, 4 and 5 not yet stated precisely. The chain
 cannot be compiled in one go yet. The order of work once a build slot is open: (1) `watson_q_whipple`; (2) `qRacahSum_eq_phi43`; (3) find and check the quantum Racah
 sum rule numerically (no build); (4) the derivation of the pentagon; stop if the pentagon derivation needs a second new identity.
+
+## Step 4 resolved numerically: the quantum Racah sum rule carries a twist phase (MEASURED; no Lean yet)
+
+Search (Python only). (1) The library's `qSixJ` has the 24 tetrahedral symmetries (column permutations and the exchange of upper and lower
+entries in two columns): 400 admissible tuples at each of `r = 7` and `r = 9`, 24 images each, no mismatch. So symbols are searched
+up to these symmetries: 30 classes of arrangement of six labels instead of 720 permutations. (2) Searched space: second symbol over the 30
+classes of `{a, b, c, d, x, q}`, right-hand side over the 30 classes of `{a, b, c, d, p, q}`, weight `[x+1]` or `1`, alternation of the sign
+between consecutive `x` (on or off), and a twist phase `exp(iπ s c_x / r)` with `c_x = x(x+2)/4` (doubled spin `x`, `c = j(j+1)`) for
+`s ∈ {0, ±1/4, ±1/2, ±1, ±2}`, requiring equal magnitudes on 40 to 150 admissible tuples. Result at `r = 5` to `9`: a single class
+survives, the DLMF arrangement `{a b x; d c q}` with weight `[x+1]`, alternating sign and twist `s = ±1`; no combination without the twist survives.
+(3) The overall phase was then fitted over coefficient vectors in `{-1, -1/2, 0, 1/2, 1}` for the `c_j` of `a, b, c, d, p, q`: exactly one fits,
+`(1, 1, 1, 1, -1, -1)`.
+
+The identity (with `u = e^{iπ/r}`, `c_J = J(J+2)/4` for a doubled spin `J`, `f = qSixJ r`):
+
+    ∑_{x < r-1}  (-1)^((x+p+q)/2) · [x+1] · u^{c_x} · f a b x c d p · f a b x d c q
+        =  u^{c_a + c_b + c_c + c_d - c_p - c_q} · f a c q b d p        (terms with x+p+q odd omitted: they vanish).
+
+Check: unrestricted random tuples (no admissibility assumed; both sides vanish when a triad is inadmissible), 60000 per level at `r = 4, 5, 7, 9`:
+maximum `|LHS - RHS|` is `4.6e-16`, `3.4e-16`, `2.8e-16`, `5.9e-16`, with 121, 52, 19, 29 tuples having a nonzero right side; the same identity with
+`u^{-c}` in place of `u^{c}` also holds (complex conjugation); the control without any twist differs by `1.1` at `r = 7`. A tuple-sampler that restricts
+to admissible tuples gives hundreds of nonzero cases per level at `r = 5` to `10` with errors at most `1.5e-15` (see the fit script outline above).
+The twist exponents `c_j` are those of the twist/braiding of `U_q(sl₂)`: ASSUMPTION about their origin, unverified against a source; the identity itself is
+measured. The classical limit `r → ∞` is DLMF (34.5.15) (read on the page): the phases `u^{c}` tend to `1`.
+
+Consequence for the chain. Step 4 is now a precise statement, to be proved (not assumed). Its Lean form needs a complex-valued weight (`Complex.exp` of
+`I * π * c_x / r`, or `uC r ^ c` with the half-integer `c` written as `uC r ^ (J (J+2))` over `4`: use `u^{c_x} = (u^{1/4})^{J(J+2)}`; a fourth root of `u` is `e^{iπ/(4r)}`, so state it with
+`Complex.exp`). It is a Racah-type sum of two q-6j symbols that Watson's transformation (step 1) with the `₄φ₃` form (step 3) should evaluate; the twist
+phase is the factor that makes the arguments of the two series combine. The derivation of the pentagon from it (step 5) is still not written; the classical derivation
+uses this identity and orthogonality, and the twist phases must cancel in the pentagon; stop trigger: if they do not cancel by a one-line computation, report.
