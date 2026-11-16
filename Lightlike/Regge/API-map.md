@@ -123,7 +123,7 @@ in exact arithmetic by `scripts/regge/gen_flat_star.py`, and the fans of [64] by
 
 At a point of a Riemannian 3-metric where the first derivatives need not vanish, the edge polynomial
 splits into the squared length of the vertices displaced by `ε Γ(k, k)/2` and the flat second-order part of
-the shifted second derivatives `Sdd = ∂∂g - g ΓΓ` [69]. The complex-number lemmas of closed fans, of pinning
+the shifted second derivatives `Sdd = ∂∂g - g ΓΓ` [69], and the derivative of the Christoffel symbols in terms of `Sdd` [77]. The complex-number lemmas of closed fans, of pinning
 a multiple of `2π` by continuity, and of vanishing expansion coefficients [70], [71] show that a closed
 fan of displaced vectors keeps its angle sum `2π` for small displacement [72]; applied to the seven edge
 classes of the Kuhn star this gives angle sum `2π` for small `ε` in each class [73], and the first- and
