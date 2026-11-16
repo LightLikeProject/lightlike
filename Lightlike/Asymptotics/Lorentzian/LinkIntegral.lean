@@ -31,4 +31,19 @@ theorem eprlVec_sum (γ : ℝ) (J : ℕ) (c : Fin (dsp (J : ℤ) 0 + 1) → ℂ)
   refine Finset.sum_congr rfl fun m _ => ?_
   rw [map_smul, eprlVec, dite_eq_left m.2]
 
+/-- **The contracted matrix coefficients are one inner product**: since `eprlCoeff` is conjugate
+linear in the bra slot, `Σ u_m v_{m'} D_{m m'}(g) = ⟪Σ conj(u_m) Y e_m, π(g) Σ v_{m'} Y e_{m'}⟫`. -/
+theorem eprlCoeff_pair (γ : ℝ) (J : ℕ) (u v : Fin (dsp (J : ℤ) 0 + 1) → ℂ) (g : SL2C) :
+    ∑ m : Fin (dsp (J : ℤ) 0 + 1), ∑ m' : Fin (dsp (J : ℤ) 0 + 1),
+        u m * v m' * eprlCoeff γ J m m' g =
+      inner ℂ (∑ m : Fin (dsp (J : ℤ) 0 + 1), conj (u m) • eprlVec γ J m)
+        (principalSeries (J : ℤ) (eprlRho γ J) g
+          (∑ m' : Fin (dsp (J : ℤ) 0 + 1), v m' • eprlVec γ J m')) := by
+  rw [map_sum, sum_inner]
+  refine Finset.sum_congr rfl fun m _ => ?_
+  rw [inner_sum]
+  refine Finset.sum_congr rfl fun m' _ => ?_
+  rw [map_smul, inner_smul_left, inner_smul_right, eprlCoeff, Complex.conj_conj]
+  ring
+
 end Lightlike.Asymptotics.Lorentzian
