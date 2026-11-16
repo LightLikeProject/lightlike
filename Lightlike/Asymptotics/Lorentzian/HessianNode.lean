@@ -17,6 +17,9 @@ fixed, is the sum over the ends at the node `a` of `endForm`: the closed form of
   of one triangle along a one-parameter orbit.
 * `hasDerivAt_srcCoeff_eval`, `hasDerivAt_tgtCoeff_eval`: their values in `α, β, m`.
 * `hessXX_block`: the block, `Σ_{e ∋ a} endForm`.
+* `hessZZ_line`: the second derivative of the vertex action along a straight line in one spinor `z_e`
+  (the quadratic form of the block `H^{zz}`), from `hasDerivAt_srcCoeff_line`, `hasDerivAt_tgtCoeff_line`
+  and `deriv_deriv_triAction_line`.
 * `re_hessRR_neg`: the real part of the rotation block is negative definite exactly when the normals
   are not all parallel (`sum_projForm_pos_iff`, Lagrange's identity `projForm_eq_minorSq`).
 
@@ -672,5 +675,199 @@ theorem re_hessRR_neg {ι : Type*} [Fintype ι] (k p σ : ι → ℝ) (m : ι �
     exact Finset.sum_congr rfl fun e _ => by rw [re_endForm_beta_zero]; ring
   rw [this, ← Finset.mul_sum]
   linarith
+
+/-- **Derivative of the source coefficient along a straight line** `Z(t) = Z + t W` with the direction
+`W` fixed: at `t = 0`, `d/dt srcCoeff n p ξ (Z + tW) W = -n ⟨W,ξ⟩²/⟨Z,ξ⟩² -
+(n + 2 i p)(‖W‖²/‖Z‖² - 2 (Re⟨Z,W⟩)²/‖Z‖⁴)`. -/
+theorem hasDerivAt_srcCoeff_line (n : ℕ) (p : ℝ) {ξ Z : Spinor} (W : Spinor) (h1 : inner ℂ Z ξ ≠ 0)
+    (hZ : Z ≠ 0) :
+    HasDerivAt (fun t : ℝ => srcCoeff n p ξ (Z + t • W) W)
+      (-(n : ℂ) * (inner ℂ W ξ ^ 2 / inner ℂ Z ξ ^ 2) -
+        ((n : ℂ) + 2 * Complex.I * p) *
+          (((‖W‖ ^ 2 / ‖Z‖ ^ 2 - 2 * (inner ℂ Z W).re ^ 2 / ‖Z‖ ^ 4 : ℝ)) : ℂ)) 0 := by
+  have hz : ‖Z‖ ≠ 0 := norm_ne_zero_iff.mpr hZ
+  have hl : HasDerivAt (fun t : ℝ => Z + t • W) W 0 := by
+    simpa using ((hasDerivAt_id (0 : ℝ)).smul_const W).const_add Z
+  have hc : HasDerivAt (fun _ : ℝ => W) 0 0 := hasDerivAt_const _ _
+  have hD := hasDerivAt_inner_spinor hl (hasDerivAt_const (0 : ℝ) ξ)
+  have hR := hasDerivAt_inner_spinor hl hc
+  have hQ := hasDerivAt_inner_spinor hl hl
+  have hRre : HasDerivAt (fun t : ℝ => (inner ℂ (Z + t • W) W).re)
+      (inner ℂ W W).re 0 := by
+    have := Complex.reCLM.hasFDerivAt.comp_hasDerivAt (0 : ℝ) hR
+    refine this.congr_deriv ?_
+    simp [inner_zero_right]
+  have hQre : HasDerivAt (fun t : ℝ => ‖Z + t • W‖ ^ 2)
+      (inner ℂ W Z + inner ℂ Z W).re 0 := by
+    have := Complex.reCLM.hasFDerivAt.comp_hasDerivAt (0 : ℝ) hQ
+    have e : (fun t : ℝ => (inner ℂ (Z + t • W) (Z + t • W)).re) = fun t : ℝ => ‖Z + t • W‖ ^ 2 := by
+      funext t; rw [inner_self_eq_norm_sq_to_K]; norm_cast
+    rw [← e]
+    refine this.congr_deriv ?_
+    simp
+  have hQ0 : ‖Z‖ ^ 2 ≠ 0 := pow_ne_zero 2 hz
+  have hq := hRre.div hQre (by simpa using hQ0)
+  have hqC : HasDerivAt (fun t : ℝ => (((inner ℂ (Z + t • W) W).re / ‖Z + t • W‖ ^ 2 : ℝ) : ℂ)) _ 0 :=
+    Complex.ofRealCLM.hasFDerivAt.comp_hasDerivAt (0 : ℝ) hq
+  have hnd := (hD.congr_deriv rfl).inv (by simpa using h1)
+  have hnum : HasDerivAt (fun _ : ℝ => inner ℂ W ξ) 0 0 := hasDerivAt_const _ _
+  have hfin := ((hnum.mul hnd).const_mul (n : ℂ)).sub (hqC.const_mul ((n : ℂ) + 2 * Complex.I * p))
+  refine hfin.congr_deriv ?_
+  have h1' : (inner ℂ W W).re = ‖W‖ ^ 2 := by
+    rw [inner_self_eq_norm_sq_to_K]; norm_cast
+  have h2' : (inner ℂ W Z + inner ℂ Z W).re = 2 * (inner ℂ Z W).re := by
+    rw [← inner_conj_symm Z W, Complex.add_re, Complex.conj_re]; ring
+  simp only [zero_smul, add_zero, inner_zero_right, neg_zero, zero_add, Complex.ofRealCLM_apply, h1', h2']
+  have hZ2 : (‖Z‖ : ℝ) ^ 2 ≠ 0 := hQ0
+  push_cast
+  field_simp
+  ring
+
+/-- **Derivative of the target coefficient along a straight line** `Z'(t) = Z' + t W'`: the
+`J`-conjugate of `hasDerivAt_srcCoeff_line` with `p ↦ -p` (`tgtCoeff_eq`). -/
+theorem hasDerivAt_tgtCoeff_line (n : ℕ) (p : ℝ) {ξ' Z' : Spinor} (W' : Spinor)
+    (h1 : inner ℂ (jMap Z') ξ' ≠ 0) (hZ : Z' ≠ 0) :
+    HasDerivAt (fun t : ℝ => tgtCoeff n p ξ' (Z' + t • W') W')
+      (-(n : ℂ) * (inner ℂ (jMap W') ξ' ^ 2 / inner ℂ (jMap Z') ξ' ^ 2) -
+        ((n : ℂ) + 2 * Complex.I * (-p : ℝ)) *
+          (((‖W'‖ ^ 2 / ‖Z'‖ ^ 2 - 2 * (inner ℂ Z' W').re ^ 2 / ‖Z'‖ ^ 4 : ℝ)) : ℂ)) 0 := by
+  have hJZ : jMap Z' ≠ 0 := jMap_ne_zero hZ
+  have h := hasDerivAt_srcCoeff_line n (-p) (ξ := ξ') (Z := jMap Z') (jMap W') h1 hJZ
+  have hfun : (fun t : ℝ => tgtCoeff n p ξ' (Z' + t • W') W') =
+      fun t : ℝ => srcCoeff n (-p) ξ' (jMap Z' + t • jMap W') (jMap W') := by
+    funext t
+    rw [tgtCoeff_eq, jMap_add, jMap_real_smul]
+  rw [hfun]
+  refine h.congr_deriv ?_
+  rw [norm_jMap, norm_jMap, inner_jMap_jMap, Complex.conj_re]
+
+/-- **The second derivative of the one-triangle action along a straight line** in both spinors
+(`2k = n`): for `Z(s) = Z + s W`, `Z'(s) = Z' + s W'` with nonzero overlaps and the product off the cut,
+`d²/ds² triAction (n/2) p Z(s) ξ Z'(s) ξ'` at `0` is the sum of the source line value
+`-n ⟨W,ξ⟩²/⟨Z,ξ⟩² - (n + 2ip)(‖W‖²/‖Z‖² - 2 Re⟨Z,W⟩²/‖Z‖⁴)` and the target one
+(`hasDerivAt_srcCoeff_line`, `hasDerivAt_tgtCoeff_line`). -/
+theorem deriv_deriv_triAction_line (n : ℕ) (p : ℝ) {Z ξ Z' ξ' : Spinor} (W W' : Spinor)
+    (hZ : Z ≠ 0) (hZ' : Z' ≠ 0) (h1 : inner ℂ Z ξ ≠ 0) (h2 : inner ℂ (jMap ξ') Z' ≠ 0)
+    (hP : inner ℂ Z ξ * inner ℂ (jMap ξ') Z' ∈ Complex.slitPlane) :
+    deriv (fun s : ℝ => deriv (fun t : ℝ =>
+        triAction ((n : ℝ) / 2) p (Z + t • W) ξ (Z' + t • W') ξ') s) 0 =
+      (-(n : ℂ) * (inner ℂ W ξ ^ 2 / inner ℂ Z ξ ^ 2) -
+        ((n : ℂ) + 2 * Complex.I * p) *
+          (((‖W‖ ^ 2 / ‖Z‖ ^ 2 - 2 * (inner ℂ Z W).re ^ 2 / ‖Z‖ ^ 4 : ℝ)) : ℂ)) +
+      (-(n : ℂ) * (inner ℂ (jMap W') ξ' ^ 2 / inner ℂ (jMap Z') ξ' ^ 2) -
+        ((n : ℂ) + 2 * Complex.I * (-p : ℝ)) *
+          (((‖W'‖ ^ 2 / ‖Z'‖ ^ 2 - 2 * (inner ℂ Z' W').re ^ 2 / ‖Z'‖ ^ 4 : ℝ)) : ℂ)) := by
+  have hl : HasDerivAt (fun t : ℝ => Z + t • W) W 0 := by
+    simpa using ((hasDerivAt_id (0 : ℝ)).smul_const W).const_add Z
+  have hl' : HasDerivAt (fun t : ℝ => Z' + t • W') W' 0 := by
+    simpa using ((hasDerivAt_id (0 : ℝ)).smul_const W').const_add Z'
+  have hlt : ∀ t : ℝ, HasDerivAt (fun s : ℝ => Z + s • W) W t := fun t => by
+    simpa using ((hasDerivAt_id t).smul_const W).const_add Z
+  have hlt' : ∀ t : ℝ, HasDerivAt (fun s : ℝ => Z' + s • W') W' t := fun t => by
+    simpa using ((hasDerivAt_id t).smul_const W').const_add Z'
+  have hcont : ContinuousAt (fun t : ℝ => inner ℂ (Z + t • W) ξ * inner ℂ (jMap ξ') (Z' + t • W')) 0 :=
+    ((hl.continuousAt).inner continuousAt_const).mul (continuousAt_const.inner hl'.continuousAt)
+  have hev : ∀ᶠ t : ℝ in nhds 0, inner ℂ (Z + t • W) ξ * inner ℂ (jMap ξ') (Z' + t • W') ∈
+      Complex.slitPlane := by
+    refine hcont.eventually (Complex.isOpen_slitPlane.mem_nhds ?_)
+    simpa using hP
+  have h0 : (0 : ℂ) ∉ Complex.slitPlane := by simp [Complex.slitPlane]
+  set D : ℝ → ℂ := fun t => srcCoeff n p ξ (Z + t • W) W + tgtCoeff n p ξ' (Z' + t • W') W' with hD
+  have hderiv : ∀ᶠ t : ℝ in nhds 0, deriv (fun s : ℝ =>
+      triAction ((n : ℝ) / 2) p (Z + s • W) ξ (Z' + s • W') ξ') t = D t := by
+    filter_upwards [hev] with t ht
+    have hne0 : inner ℂ (Z + t • W) ξ * inner ℂ (jMap ξ') (Z' + t • W') ≠ 0 := fun h => h0 (h ▸ ht)
+    have a1 := left_ne_zero_of_mul hne0
+    have a2 := right_ne_zero_of_mul hne0
+    have b1 : Z + t • W ≠ 0 := fun h => a1 (by rw [h]; simp)
+    have b2 : Z' + t • W' ≠ 0 := fun h => a2 (by rw [h]; simp)
+    exact (hasDerivAt_triAction_curve_at n p (ξ := ξ) (ξ' := ξ') W W' (hlt t) (hlt' t) b1 b2 a1 a2 ht).deriv
+  have hsrc := hasDerivAt_srcCoeff_line n p (ξ := ξ) W h1 hZ
+  have htgt := hasDerivAt_tgtCoeff_line n p (ξ' := ξ') W' (by
+    intro h
+    apply h2
+    have e1 : ∀ Y : Spinor, inner ℂ (jMap ξ') Y = -inner ℂ (jMap Y) ξ' := by
+      intro Y
+      have : Y = -jMap (jMap Y) := by rw [jMap_jMap]; simp
+      conv_lhs => rw [this]
+      rw [inner_neg_right, inner_jMap_jMap, inner_conj_symm]
+    rw [e1, h, neg_zero]) hZ'
+  have hDd := hsrc.add htgt
+  have hfin : HasDerivAt (deriv (fun s : ℝ => triAction ((n : ℝ) / 2) p (Z + s • W) ξ (Z' + s • W') ξ')) _ 0 :=
+    hDd.congr_of_eventuallyEq hderiv
+  exact hfin.deriv
+
+/-- `spinAct M` is additive and homogeneous for real scalars. -/
+theorem spinAct_add_real_smul (M : Matrix (Fin 2) (Fin 2) ℂ) (u v : Spinor) (t : ℝ) :
+    spinAct M (u + t • v) = spinAct M u + t • spinAct M v := by
+  ext i; fin_cases i <;> simp [Complex.real_smul] <;> ring
+
+/-- **The second derivative of the vertex action along a straight line in one spinor `z_e`** (the
+block `H^{zz}` of BDFHP Appendix A as a quadratic form): for the edge `e`, `Z = X_a† z_e`,
+`Z' = X_b† z_e`, `W = X_a† δ`, `W' = X_b† δ`, with nonzero overlaps and the overlap product off the cut
+at `z`, `d²/dt² lorAction (z with z_e ↦ z_e + t δ)` at `0` equals the source and target line values of
+`deriv_deriv_triAction_line` (the other edges do not depend on `t`). The closed form in the entries
+(Wirtinger form `f_ww τ² + 2 f_ww̄ |τ|² + f_w̄w̄ conj τ²` for `δ = (τ, 0)`, `zzWirtinger`) is the algebra
+of the next step. -/
+theorem hessZZ_line {j p : Fin 10 → ℝ} {n : Fin 10 → ℕ} (hj : ∀ e, j e = (n e : ℝ) / 2) (g : BdryData)
+    (X : Fin 5 → SL2C) (z : Fin 10 → Spinor) (e : Fin 10) (δ : Spinor)
+    (hZ : spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e) ≠ 0)
+    (hZ' : spinAct (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e) ≠ 0)
+    (h1 : inner ℂ (spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)) (firstCol (g e 0)) ≠ 0)
+    (h2 : inner ℂ (jMap (firstCol (g e 1)))
+      (spinAct (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)) ≠ 0)
+    (hP : inner ℂ (spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)) (firstCol (g e 0)) *
+      inner ℂ (jMap (firstCol (g e 1)))
+        (spinAct (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)) ∈ Complex.slitPlane) :
+    deriv (fun s : ℝ => deriv (fun t : ℝ => lorAction j p g X (Function.update z e (z e + t • δ))) s) 0 =
+      (-(n e : ℂ) * (inner ℂ (spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ δ) (firstCol (g e 0)) ^ 2 /
+          inner ℂ (spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)) (firstCol (g e 0)) ^ 2) -
+        ((n e : ℂ) + 2 * Complex.I * p e) *
+          (((‖spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ δ‖ ^ 2 /
+              ‖spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)‖ ^ 2 -
+            2 * (inner ℂ (spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e))
+              (spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ δ)).re ^ 2 /
+              ‖spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)‖ ^ 4 : ℝ)) : ℂ)) +
+      (-(n e : ℂ) * (inner ℂ (jMap (spinAct (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ δ))
+            (firstCol (g e 1)) ^ 2 /
+          inner ℂ (jMap (spinAct (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e))) (firstCol (g e 1)) ^ 2) -
+        ((n e : ℂ) + 2 * Complex.I * (-p e : ℝ)) *
+          (((‖spinAct (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ δ‖ ^ 2 /
+              ‖spinAct (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)‖ ^ 2 -
+            2 * (inner ℂ (spinAct (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e))
+              (spinAct (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ δ)).re ^ 2 /
+              ‖spinAct (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)‖ ^ 4 : ℝ)) : ℂ)) := by
+  set A : Matrix (Fin 2) (Fin 2) ℂ := (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ) with hA
+  set B : Matrix (Fin 2) (Fin 2) ℂ := (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ) with hB
+  have hK : ∀ t : ℝ, lorAction j p g X (Function.update z e (z e + t • δ)) =
+      triAction ((n e : ℝ) / 2) (p e) (spinAct Aᴴ (z e) + t • spinAct Aᴴ δ) (firstCol (g e 0))
+        (spinAct Bᴴ (z e) + t • spinAct Bᴴ δ) (firstCol (g e 1)) +
+      ∑ e' ∈ Finset.univ.erase e, triAction (j e') (p e')
+        (spinAct (X (edgeSrc e') : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e')) (firstCol (g e' 0))
+        (spinAct (X (edgeTgt e') : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e')) (firstCol (g e' 1)) := by
+    intro t
+    unfold lorAction
+    rw [← Finset.add_sum_erase _ _ (Finset.mem_univ e)]
+    congr 1
+    · simp only [Function.update_self, spinAct_add_real_smul, hj e]
+      rfl
+    · refine Finset.sum_congr rfl fun e' he' => ?_
+      rw [Function.update_of_ne (Finset.ne_of_mem_erase he')]
+  set K : ℂ := ∑ e' ∈ Finset.univ.erase e, triAction (j e') (p e')
+        (spinAct (X (edgeSrc e') : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e')) (firstCol (g e' 0))
+        (spinAct (X (edgeTgt e') : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e')) (firstCol (g e' 1)) with hKdef
+  have hfun : (fun t : ℝ => lorAction j p g X (Function.update z e (z e + t • δ))) =
+      fun t : ℝ => triAction ((n e : ℝ) / 2) (p e) (spinAct Aᴴ (z e) + t • spinAct Aᴴ δ)
+        (firstCol (g e 0)) (spinAct Bᴴ (z e) + t • spinAct Bᴴ δ) (firstCol (g e 1)) + K := funext hK
+  rw [hfun]
+  have hd : (fun s : ℝ => deriv (fun t : ℝ => triAction ((n e : ℝ) / 2) (p e)
+      (spinAct Aᴴ (z e) + t • spinAct Aᴴ δ) (firstCol (g e 0))
+      (spinAct Bᴴ (z e) + t • spinAct Bᴴ δ) (firstCol (g e 1)) + K) s) =
+      fun s : ℝ => deriv (fun t : ℝ => triAction ((n e : ℝ) / 2) (p e)
+        (spinAct Aᴴ (z e) + t • spinAct Aᴴ δ) (firstCol (g e 0))
+        (spinAct Bᴴ (z e) + t • spinAct Bᴴ δ) (firstCol (g e 1))) s := by
+    funext s; exact deriv_add_const K
+  rw [hd]
+  exact deriv_deriv_triAction_line (n e) (p e) (spinAct Aᴴ δ) (spinAct Bᴴ δ) hZ hZ' h1 h2 hP
 
 end Lightlike.Asymptotics.Lorentzian

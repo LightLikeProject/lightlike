@@ -259,7 +259,8 @@ independent `44 × 44` numerics to `2·10⁻¹⁹` (`scripts/asymptotics/lorentz
     `Asymptotics.Lorentzian.tgtCoeff`, `Asymptotics.Lorentzian.endForm`,
     `Asymptotics.Lorentzian.hasDerivAt_srcCoeff`, `Asymptotics.Lorentzian.hasDerivAt_tgtCoeff`,
     `Asymptotics.Lorentzian.hessXX_block`, `Asymptotics.Lorentzian.sum_projForm_pos_iff`,
-    `Asymptotics.Lorentzian.re_hessRR_neg`
+    `Asymptotics.Lorentzian.re_hessRR_neg`, `Asymptotics.Lorentzian.hessZZ_line`,
+    `Asymptotics.Lorentzian.deriv_deriv_triAction_line`
 
 ## References
 
