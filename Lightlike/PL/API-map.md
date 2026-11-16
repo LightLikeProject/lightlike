@@ -155,7 +155,7 @@ A simple chain is a list of points in the plane whose consecutive segments meet 
     `PL.isSimpleChain_reverse`
 41. Lightlike/PL/Chain.lean - `PL.chainParity_append`, `PL.chainParity_reverse`,
     `PL.Polygon.ofList`, `PL.Polygon.parity_ofList`
-42. Lightlike/PL/Theta.lean - `PL.Polygon.carrier_two_arcs`, `PL.Polygon.near_two`
+42. Lightlike/PL/Theta.lean - `PL.carrier_two_arcs`, `PL.Polygon.near_two`
 43. Lightlike/PL/Interlaced.lean - `PL.no_interlaced_chord`
 44. Lightlike/PL/HexFalse.lean - `PL.Hex.false`
 45. Lightlike/PL/K33.lean - `PL.PLDrawing`, `PL.no_PL_K33`
