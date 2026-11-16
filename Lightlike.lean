@@ -509,6 +509,7 @@ import Lightlike.SpinFoam.BarrettCrane
 import Lightlike.SpinFoam.BarrettCraneTests
 import Lightlike.SpinFoam.GaugeIndependence
 import Lightlike.SpinFoam.ForcingMoves
+import Lightlike.SpinFoam.ForcingMove33
 import Lightlike.SpinFoam.GaugeChain
 import Lightlike.SpinFoam.TwistedCohomology
 import Lightlike.SpinFoam.TwistedCohomologySU2
