@@ -171,6 +171,26 @@ theorem of_forced_others (ht : t ∈ P) (hf : f ∈ t.powersetCard 3)
 
 end ForcesIn
 
+/-- A list of forcing steps `(t, f)` for the tetrahedra `P`, checked one after the other: a decision
+procedure whose success proves `ForcesIn` (`forcesIn_of_forcesInBy`). -/
+def forcesInBy (P U : Finset (Finset V)) :
+    List (Finset V × Finset V) → Finset (Finset V) → Bool
+  | [], T => decide (U ⊆ T)
+  | (t, f) :: l, T => decide (t ∈ P ∧ f ∈ t.powersetCard 3 ∧
+      ∀ g ∈ t.powersetCard 3, g ≠ f → g ∈ T) && forcesInBy P U l (insert f T)
+
+/-- A successful `forcesInBy` check proves `ForcesIn`. -/
+theorem forcesIn_of_forcesInBy {P U : Finset (Finset V)} {l : List (Finset V × Finset V)}
+    {T : Finset (Finset V)} (h : forcesInBy P U l T = true) : ForcesIn P U T := by
+  induction l generalizing T with
+  | nil => exact .done (of_decide_eq_true h)
+  | cons p l ih =>
+    obtain ⟨t, f⟩ := p
+    simp only [forcesInBy, Bool.and_eq_true] at h
+    obtain ⟨h1, h2⟩ := h
+    obtain ⟨ht, hf, hg⟩ := of_decide_eq_true h1
+    exact .step t f ht hf hg (ih h2)
+
 /-! ## The six vertices as `Fin 6` -/
 
 namespace Forcing33
