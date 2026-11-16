@@ -18,7 +18,7 @@ Then
 
   `cos θ = mixed / √(gram3(pqrs) · gram3(pqru))`.
 
-## Definitions
+## Main results
 
 * `sq ℓ a b`: the squared length of the edge `ab` (zero for `a = b`), from lengths `ℓ` on
   2-element vertex sets as everywhere in `Regge/`.
@@ -26,8 +26,6 @@ Then
 * `cosDihedral4 ℓ p q r s u`, `dihedral4 ℓ p q r s u`: the dihedral angle at the triangle `pqr`
   between the tetrahedra `pqrs` and `pqru`.
 * `perp2 a b c`: the component of `c` orthogonal to `a` and `b`.
-
-## Main results
 
 * `mixed_swap_pq`, `mixed_swap_qr`, `mixed_swap_su`, `gram3_swap_pq`, `gram3_swap_qr`,
   `gram3_swap_rs`: the formulas are exactly symmetric, so `dihedral4` depends only on the

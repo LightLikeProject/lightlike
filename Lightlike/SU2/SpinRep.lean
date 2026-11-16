@@ -10,7 +10,9 @@ For every `n : ℕ` (twice the spin, `n = 2j`) we construct a unitary representa
 
   `spinRep n : SU2 →* Matrix.unitaryGroup (Fin (n+1)) ℂ`.
 
-## Construction (textbook: spin `j` = symmetric part of `n` spins ½)
+## Implementation notes
+
+The construction is the textbook one: spin `j` is the symmetric part of `n` spins ½.
 
 * `kron n g` is the `n`-fold Kronecker (tensor) power of a `2 × 2` matrix, acting on
   `(ℂ²)^{⊗n} = ℂ^{Str n}` (`Str n = Fin n → Fin 2`, strings of up/down labels). It is
@@ -24,7 +26,9 @@ For every `n : ℕ` (twice the spin, `n = 2j`) we construct a unitary representa
 Why not a closed formula (Wigner D-matrices)? Their multiplicativity would have to be proven by
 hand. Here it is inherited from `(gh)^{⊗n} = g^{⊗n} h^{⊗n}`, and unitarity from that of `g^{⊗n}`.
 
-## Proven here (all with Lean's standard axioms only)
+## Main results
+
+All with Lean's standard axioms only.
 
 * **Homomorphism, unitary, continuous:** `spinMat_mul`, `spinMat_one`, `spinMat_mem_unitaryGroup`,
   `spinRep : SU2 →* unitaryGroup (Fin (n+1)) ℂ`, `continuous_spinRep`; as a Mathlib
@@ -42,7 +46,7 @@ hand. Here it is inherited from `(gh)^{⊗n} = g^{⊗n} h^{⊗n}`, and unitarity
 Audited against textbook values in `Lightlike/Tests/SU2.lean` (spin 0, spin ½, the Wigner matrix
 `d¹(π/2)`, reducibility of the unsymmetrised `(ℂ²)^{⊗2}`).
 
-## Proven elsewhere
+**Proven elsewhere.**
 
 * **Completeness:** every continuous irreducible finite-dimensional representation of SU(2) is
   isomorphic to some `spinRep n` (`Lightlike.SU2.spinRep_complete`,

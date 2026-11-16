@@ -5,7 +5,7 @@ import Lightlike.Tests.SixJ
 /-!
 # Bing's house: the Racah sum rule and the iterated Ponzano–Regge sum
 
-Barrett and Naish-Guzman (2009, §2.4): for Bing's house with two rooms (a 2-complex with no
+For Bing's house with two rooms (a 2-complex with no
 interior vertex that is not collapsible) the Ponzano–Regge sum is
 `Z = Σ_c Σ_b Σ_a (-1)^(a+b) (2a+1)(2b+1)(2c+1) {a c c; c c c} {b c c; c c c}`,
 and it is not absolutely convergent. Summing over `a` and `b` first gives `Z = 1`, by the
@@ -17,13 +17,18 @@ iterated sum is `bingIterated_eq_one`. The sign `(-1)^((2C + x)/2)` is the Racah
 product of the two factors `a` and `b`; both sums are `0` there anyway.
 
 ## Main results
+
 * `racah_sum`: the sum rule (6), from the orthogonality of 6j symbols.
 * `bingIterated_eq_one`: the sum over `a` and `b` first gives `1` for every cutoff in `c`.
 * `bingCutoff`, `bingCutoff_two`: the simple cut-off with all doubled spins `≤ L` truncates the room
   sums before `2C`; at `L = 2` it drops the term `x = 4` for `C = 2` and the partial sum is `37/12`.
-  The sum is not absolutely convergent (BNG §2.4), so this is a different summation, not a second
-  value of the model; `Z_L` has no limit (BNG fig. 6; `scripts/spinfoam/bing_house_check.py` is
-  numerical evidence only).
+  The sum is not absolutely convergent, so this is a different summation, not a second value of
+  the model; `Z_L` has no limit (`scripts/spinfoam/bing_house_check.py` is numerical evidence only).
+
+## References
+
+* `barrett-naish-guzman-2009`, §2.4 and fig. 6: Bing's house, the sum `Z`, and the behaviour of the
+  cut-off sums `Z_L`.
 -/
 
 open Lightlike.Pentagon Lightlike.Recoupling Finset PhyslibAlpha.Sl2

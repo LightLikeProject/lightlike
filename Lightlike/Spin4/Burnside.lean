@@ -5,7 +5,7 @@ import Mathlib
 
 General representation theory used for Spin(4) = SU(2) × SU(2); nothing here is specific to SU(2).
 
-## Results
+## Main results
 
 * `lsmul_surjective_of_isAlgClosed` (**Burnside's theorem**): if `V` is a simple module over a
   `k`-algebra `A` and finite-dimensional over an algebraically closed field `k`, every

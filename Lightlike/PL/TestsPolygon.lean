@@ -2,6 +2,7 @@ import Lightlike.PL.PolygonJordan
 import Lightlike.PL.PolygonTriangulation
 import Lightlike.PL.PolygonBall
 import Lightlike.PL.PolygonBoundary
+import Lightlike.PL.PolygonPLHomeo
 
 /-!
 # Checks of the polygonal Jordan theorem
@@ -131,6 +132,12 @@ theorem triangle_schoenflies : ∃ K : SComplex (ℝ × ℝ), SComplex.IsGeom K 
     K.space = triangle.inside ∪ triangle.carrier ∧ SComplex.IsBallIn K ∧
       K.bd.space = triangle.carrier :=
   polygon_schoenflies triangle le_rfl triangle_isSimple
+
+/-- **Non-vacuity of the PL homeomorphism theorem.** The theorem applies to the triangle. -/
+theorem triangle_plHomeo : ∃ (K : SComplex (ℝ × ℝ)) (f : ℝ × ℝ → ℝ × ℝ),
+    K.space = triangle.inside ∪ triangle.carrier ∧
+      SComplex.IsPLHomeo K (SComplex.simplex {((0 : ℝ), (0 : ℝ)), (1, 0), (0, 1)}) f :=
+  polygon_plHomeo_triangle triangle le_rfl triangle_isSimple
 
 end Polygon
 end Lightlike.PL

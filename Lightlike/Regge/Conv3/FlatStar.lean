@@ -1,6 +1,24 @@
 import Lightlike.Regge.Conv3.KuhnBridge
 import Lightlike.Regge.Conv3.StarAngle
 
+/-!
+# The weighted first variation of a dihedral angle, and the polynomial form of the star sum
+
+For a positive definite `g m` and an incidence `(σ, h)` of the Kuhn triangulation, `√(a) Dh(q, δ)` is minus
+the polynomial derivative combination `NPoly' - NPoly/2 (PPoly'/PPoly + PPoly'/PPoly)` of the squared
+lengths, over `√(det g m)` (`sqrt_Dh_inc`). It uses the Gram identity (`Nn_bf`, `Pp_bf`), the fact that
+the triple product of an incidence is `±1` (`trip_sq`), and the derivative of the dihedral angle without
+nested square roots (`dihSq'_comb`). The file also defines the polynomial data of the flat star:
+the Gram length `qf`, the second-order part `rf`, `Einc`, the lengths `lenQ`, `lenR` of an incidence, and
+the numerator `Rnum` of `det R / 2`.
+
+## Main results
+
+* `sqrt_Dh_inc`: the weighted first variation of the dihedral angle as a rational expression.
+* `dihSq'_comb`: the first variation `dihSq'` without nested square roots.
+* `Einc`, `Rnum`: the derivative combination of one incidence and the numerator of `det R / 2`.
+-/
+
 open Real Matrix
 namespace Lightlike.Regge.Conv3
 
