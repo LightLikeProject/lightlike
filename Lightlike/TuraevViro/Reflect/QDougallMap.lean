@@ -1355,4 +1355,649 @@ theorem qDougallAt_O1_k3 {r : ℕ} (hr : 2 ≤ r) (B A E F q : ℕ) (hq1 : qAdm 
   (qDougallAt_k3 r B A E F).1 (qDougallAt_O1 hr F E A B q (qAdm_swap12 hq1) (qAdm_swap12 hq2)
     hA hF hx hq htop)
 
+/-- The ratio of Jackson's summand at the parameters `a = Q^(d+1)`, `b = Q^(n+d+2)`, `c = Q^ec`, `x = Q^j2`, with the fourth Pochhammer argument `d + 2 + k - ec` free (the exponent `ec` is not tied to a spin here). -/
+theorem rhoT_gen {r : ℕ} (hr : 2 ≤ r) {d j2 n k ec : ℕ} (hec0 : 0 < ec) (hec1 : ec ≤ d + 1)
+    (hkn : k < n) (hj2 : k < j2)
+    (h1 : d + 2 * k + 3 < r) (h2 : j2 + d + k + 2 < r) (h3 : d + n + k + 2 < r)
+    (h5 : d + 2 + k - ec < r) :
+    rhoT (uC r ^ 2) ((uC r ^ 2) ^ (d + 1)) ((uC r ^ 2) ^ (j2 + d + 2)) ((uC r ^ 2) ^ ec)
+        ((uC r ^ 2) ^ n) k =
+      (((qnum r (d + 2 * k + 3) * qnum r (d + k + 1) * qnum r (j2 + d + k + 2) *
+          qnum r (ec + k) * qnum r (n - k)) /
+        (qnum r (d + 2 * k + 1) * qnum r (k + 1) * qnum r (j2 - k) * qnum r (d + 2 + k - ec) *
+          qnum r (d + n + k + 2)) : ℝ) : ℂ) := by
+  have hkj : k ≤ j2 := by omega
+  have hQ : uC r ^ 2 ≠ 0 := pow_ne_zero 2 (uC_ne_zero r)
+  have hu : uC r ≠ 0 := uC_ne_zero r
+  have z : ∀ e : ℕ, (uC r ^ 2) ^ e = (uC r ^ 2) ^ (e : ℤ) := fun e => (zpow_natCast _ e).symm
+  have p1 : (uC r ^ 2) ^ (d + 1) * (uC r ^ 2) ^ (2 * (k + 1)) = (uC r ^ 2) ^ ((d + 2 * k + 3 : ℕ) : ℤ) := by
+    rw [zpow_natCast]; ring
+  have p2 : (uC r ^ 2) ^ (d + 1) * (uC r ^ 2) ^ (2 * k) = (uC r ^ 2) ^ ((d + 2 * k + 1 : ℕ) : ℤ) := by
+    rw [zpow_natCast]; ring
+  have p3 : (uC r ^ 2) ^ (d + 1) * (uC r ^ 2) ^ k = (uC r ^ 2) ^ ((d + k + 1 : ℕ) : ℤ) := by
+    rw [zpow_natCast]; ring
+  have p4 : (uC r ^ 2) ^ (j2 + d + 2) * (uC r ^ 2) ^ k = (uC r ^ 2) ^ ((j2 + d + k + 2 : ℕ) : ℤ) := by
+    rw [zpow_natCast]; ring
+  have p5 : (uC r ^ 2) ^ ec * (uC r ^ 2) ^ k = (uC r ^ 2) ^ ((ec + k : ℕ) : ℤ) := by
+    rw [zpow_natCast]; ring
+  have p6 : ((uC r ^ 2) ^ n)⁻¹ * (uC r ^ 2) ^ k = (uC r ^ 2) ^ ((k : ℤ) - n) := by
+    rw [zpow_sub₀ hQ, zpow_natCast, zpow_natCast]; field_simp
+  have p7 : (uC r ^ 2) * (uC r ^ 2) ^ k = (uC r ^ 2) ^ ((k + 1 : ℕ) : ℤ) := by
+    rw [← zpow_natCast, ← pow_succ']; congr 1
+  have p8 := Qpow_ratio (uC r ^ 2) hQ (d + 1) (j2 + d + 2) k
+  have p9 := Qpow_ratio (uC r ^ 2) hQ (d + 1) ec k
+  have p10 : (uC r ^ 2) ^ (d + 1) * (uC r ^ 2) * (uC r ^ 2) ^ n * (uC r ^ 2) ^ k =
+      (uC r ^ 2) ^ ((d + n + k + 2 : ℕ) : ℤ) := by
+    rw [zpow_natCast]; ring
+  unfold rhoT
+  have p11 : (uC r ^ 2) ^ (d + 1) * uC r ^ 2 * (uC r ^ 2) ^ n / ((uC r ^ 2) ^ (j2 + d + 2) * (uC r ^ 2) ^ ec) =
+      (uC r ^ 2) ^ ((n : ℤ) - j2 - ec) := by
+    rw [zpow_sub₀ hQ, zpow_sub₀ hQ, zpow_natCast, zpow_natCast, zpow_natCast]
+    field_simp; ring
+  have hbal : uC r ^ ((d + 2 * k + 3 : ℕ) : ℤ) * uC r ^ ((d + k + 1 : ℕ) : ℤ) *
+      uC r ^ ((j2 + d + k + 2 : ℕ) : ℤ) * uC r ^ ((ec + k : ℕ) : ℤ) * uC r ^ (-((n - k : ℕ) : ℤ)) *
+      (uC r ^ ((n : ℤ) - j2 - ec)) * uC r ^ ((n : ℤ) - j2 - ec) =
+      uC r ^ ((d + 2 * k + 1 : ℕ) : ℤ) * uC r ^ ((k + 1 : ℕ) : ℤ) * uC r ^ (-((j2 - k : ℕ) : ℤ)) *
+        uC r ^ ((d + 2 + k - ec : ℕ) : ℤ) * uC r ^ ((d + n + k + 2 : ℕ) : ℤ) := by
+    simp only [← zpow_add₀ hu]
+    congr 1
+    omega
+  have hQsq : ∀ m : ℤ, (uC r ^ 2) ^ m = uC r ^ m * uC r ^ m := fun m => by
+    rw [← zpow_natCast, ← zpow_mul, ← zpow_add₀ hu]; congr 1; push_cast; ring
+  rw [p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, hQsq ((n : ℤ) - j2 - ec)]
+  rw [show ((d + 1 : ℕ) : ℤ) + 1 - ((j2 + d + 2 : ℕ) : ℤ) + k = -((j2 - k : ℕ) : ℤ) by push_cast; omega,
+    show ((d + 1 : ℕ) : ℤ) + 1 - ec + k = ((d + 2 + k - ec : ℕ) : ℤ) by push_cast; omega,
+    show (k : ℤ) - n = -((n - k : ℕ) : ℤ) by push_cast; omega]
+  simp only [one_sub_Q_qZ hr, qZ_neg, qZ_natCast]
+  have ht := uC_sub_inv_ne hr
+  have qp : ∀ m : ℕ, 0 < m → m < r → ((qnum r m : ℝ) : ℂ) ≠ 0 := fun m h0 h1 =>
+    Complex.ofReal_ne_zero.2 (qnum_pos hr h0 h1).ne'
+  have a1 := qp (d + 2 * k + 3) (by omega) (by omega)
+  have a2 := qp (d + 2 * k + 1) (by omega) (by omega)
+  have a3 := qp (d + k + 1) (by omega) (by omega)
+  have a4 := qp (j2 + d + k + 2) (by omega) (by omega)
+  have a5 := qp (ec + k) (by omega) (by omega)
+  have a6 := qp (n - k) (by omega) (by omega)
+  have a7 := qp (k + 1) (by omega) (by omega)
+  have a8 := qp (j2 - k) (by omega) (by omega)
+  have a9 := qp (d + 2 + k - ec) (by omega) (by omega)
+  have a10 := qp (d + n + k + 2) (by omega) (by omega)
+  have b : ∀ m : ℤ, uC r ^ m ≠ 0 := fun m => zpow_ne_zero m hu
+  have hX : uC r ^ ((n : ℤ) - j2 - ec) * uC r ^ ((n : ℤ) - j2 - ec) =
+      (uC r ^ ((d + 2 * k + 1 : ℕ) : ℤ) * uC r ^ ((k + 1 : ℕ) : ℤ) * uC r ^ (-((j2 - k : ℕ) : ℤ)) *
+        uC r ^ ((d + 2 + k - ec : ℕ) : ℤ) * uC r ^ ((d + n + k + 2 : ℕ) : ℤ)) /
+      (uC r ^ ((d + 2 * k + 3 : ℕ) : ℤ) * uC r ^ ((d + k + 1 : ℕ) : ℤ) *
+        uC r ^ ((j2 + d + k + 2 : ℕ) : ℤ) * uC r ^ ((ec + k : ℕ) : ℤ) * uC r ^ (-((n - k : ℕ) : ℤ))) := by
+    rw [eq_div_iff (by simp only [ne_eq, mul_eq_zero, b, or_self, not_false_eq_true])]
+    linear_combination hbal
+  have hu2 : -1 + uC r ^ 2 ≠ 0 := by
+    intro h
+    apply ht
+    have : uC r - (uC r)⁻¹ = (uC r ^ 2 - 1) / uC r := by field_simp
+    rw [this, show uC r ^ 2 - 1 = -1 + uC r ^ 2 by ring, h, zero_div]
+  rw [hX]
+  push_cast
+  field_simp
+  ring_nf
+  linear_combination mul_inv_cancel₀ hu2
+
+
+
+/-- The nonvanishing facts that `Tj_succ` needs, at the parameters of `rhoT_gen`. -/
+theorem Tj_succ_hyps_gen {r : ℕ} (hr : 2 ≤ r) {d j2 n k ec : ℕ} (hec0 : 0 < ec) (hec1 : ec ≤ d + 1)
+    (hkn : k < n) (hj2 : k < j2)
+    (h1 : d + 2 * k + 3 < r) (h2 : j2 + d + k + 2 < r) (h3 : d + n + k + 2 < r)
+    (h5 : d + 2 + k - ec < r) :
+    let Q := uC r ^ 2
+    1 - Q ^ (d + 1) ≠ 0 ∧ 1 - Q ^ (d + 1) * Q ^ (2 * k) ≠ 0 ∧ pk Q Q k ≠ 0 ∧
+      pk (Q ^ (d + 1) * Q / Q ^ (j2 + d + 2)) Q k ≠ 0 ∧ pk (Q ^ (d + 1) * Q / Q ^ ec) Q k ≠ 0 ∧
+      pk (Q ^ (d + 1) * Q * Q ^ n) Q k ≠ 0 ∧ 1 - Q * Q ^ k ≠ 0 ∧
+      1 - Q ^ (d + 1) * Q / Q ^ (j2 + d + 2) * Q ^ k ≠ 0 ∧ 1 - Q ^ (d + 1) * Q / Q ^ ec * Q ^ k ≠ 0 ∧
+      1 - Q ^ (d + 1) * Q * Q ^ n * Q ^ k ≠ 0 := by
+  intro Q
+  have hQ : Q ≠ 0 := pow_ne_zero 2 (uC_ne_zero r)
+  have hz : ∀ e : ℕ, Q ^ e = Q ^ (e : ℤ) := fun e => (zpow_natCast _ e).symm
+  have F1 : ∀ i ≤ k, 1 - Q * Q ^ i ≠ 0 := by
+    intro i hi
+    rw [show Q * Q ^ i = Q ^ ((1 + i : ℕ) : ℤ) by rw [zpow_natCast]; ring]
+    exact Qne_pos hr (by push_cast; omega) (by push_cast; omega)
+  have F2 : ∀ i ≤ k, 1 - Q ^ (d + 1) * Q / Q ^ (j2 + d + 2) * Q ^ i ≠ 0 := by
+    intro i hi
+    rw [Qpow_ratio Q hQ]
+    exact Qne_neg hr (by push_cast; omega) (by push_cast; omega)
+  have F3 : ∀ i ≤ k, 1 - Q ^ (d + 1) * Q / Q ^ ec * Q ^ i ≠ 0 := by
+    intro i hi
+    rw [Qpow_ratio Q hQ]
+    exact Qne_pos hr (by push_cast; omega) (by push_cast; omega)
+  have F4 : ∀ i ≤ k, 1 - Q ^ (d + 1) * Q * Q ^ n * Q ^ i ≠ 0 := by
+    intro i hi
+    rw [show Q ^ (d + 1) * Q * Q ^ n * Q ^ i = Q ^ ((d + n + 2 + i : ℕ) : ℤ) by rw [zpow_natCast]; ring]
+    exact Qne_pos hr (by push_cast; omega) (by push_cast; omega)
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, F1 k le_rfl, F2 k le_rfl, F3 k le_rfl, F4 k le_rfl⟩
+  · rw [hz]; exact Qne_pos hr (by push_cast; omega) (by push_cast; omega)
+  · rw [show Q ^ (d + 1) * Q ^ (2 * k) = Q ^ ((d + 1 + 2 * k : ℕ) : ℤ) by rw [zpow_natCast]; ring]
+    exact Qne_pos hr (by push_cast; omega) (by push_cast; omega)
+  · exact pk_ne_zero Q Q k fun i hi => F1 i (by omega)
+  · exact pk_ne_zero _ Q k fun i hi => F2 i (by omega)
+  · exact pk_ne_zero _ Q k fun i hi => F3 i (by omega)
+  · exact pk_ne_zero _ Q k fun i hi => F4 i (by omega)
+
+
+
+
+/-- The right side of Jackson's sum at `a = Q^(d+1)`, `b = Q^(j2+d+2)`, `c = Q^ec`, `x = Q^n` as a ratio of quantum factorials, with `ec` free. -/
+theorem jacksonRhs_gen {r : ℕ} (hr : 2 ≤ r) {d j2 n ec : ℕ} (hec1 : ec ≤ d + 1) (hn2 : n ≤ j2)
+    (hb1 : d + n + 1 < r) (hb2 : j2 + ec < r) (hb3 : d + 1 - ec + n < r) (hec0 : 0 < ec) :
+    jacksonRhs (uC r ^ 2) ((uC r ^ 2) ^ (d + 1)) ((uC r ^ 2) ^ (j2 + d + 2)) ((uC r ^ 2) ^ ec) n =
+      (((qfact r (d + n + 1) / qfact r (d + 1)) * (qfact r (j2 + ec) / qfact r (j2 + ec - n)) /
+        ((qfact r j2 / qfact r (j2 - n)) *
+          (qfact r (d + 1 - ec + n) / qfact r (d + 1 - ec))) : ℝ) : ℂ) := by
+  have hu : uC r ≠ 0 := uC_ne_zero r
+  have hQ : uC r ^ 2 ≠ 0 := pow_ne_zero 2 hu
+  have A : (uC r ^ 2) ^ (d + 1) * (uC r ^ 2) = (uC r ^ 2) ^ ((d : ℤ) + 2) := by
+    rw [zpow_add₀ hQ]; rw [zpow_natCast]; simp; ring
+  have B : (uC r ^ 2) ^ (d + 1) * (uC r ^ 2) / ((uC r ^ 2) ^ (j2 + d + 2) * (uC r ^ 2) ^ ec) =
+      (uC r ^ 2) ^ (-(j2 : ℤ) - ec) := by
+    rw [show -(j2 : ℤ) - ec = -((j2 + ec : ℕ) : ℤ) by push_cast; ring, zpow_neg, zpow_natCast]
+    field_simp; ring
+  have C : (uC r ^ 2) ^ (d + 1) * (uC r ^ 2) / (uC r ^ 2) ^ (j2 + d + 2) =
+      (uC r ^ 2) ^ (-(j2 : ℤ)) := by
+    rw [zpow_neg, zpow_natCast]
+    field_simp; ring
+  have D : (uC r ^ 2) ^ (d + 1) * (uC r ^ 2) / (uC r ^ 2) ^ ec =
+      (uC r ^ 2) ^ (((d + 1 - ec + 1 : ℕ)) : ℤ) := by
+    rw [zpow_natCast, div_eq_iff (pow_ne_zero _ hQ), ← pow_succ, ← pow_add]
+    congr 1; omega
+  unfold jacksonRhs
+  rw [B, C, D, A, pk_Q_zpow hr, pk_Q_zpow hr, pk_Q_zpow hr, pk_Q_zpow hr]
+  have pf : ∀ m : ℕ, m < r → 0 < qfact r m := fun m h => qfact_pos hr h
+  have g1 : ∏ i ∈ range n, qZ r (((d : ℤ) + 2) + i) = qfact r (d + n + 1) / qfact r (d + 1) := by
+    rw [eq_div_iff (pf _ (by omega)).ne']
+    have := prod_qnum (r := r) (d + 1) n (by omega) hr
+    rw [show d + 1 + n = d + n + 1 by ring] at this
+    rw [← this]
+    congr 1
+  have g4 : ∏ i ∈ range n, qZ r ((((d + 1 - ec + 1 : ℕ)) : ℤ) + i) = qfact r (d + 1 - ec + n) / qfact r (d + 1 - ec) := by
+    rw [eq_div_iff (pf _ (by omega)).ne']
+    have := prod_qnum (r := r) (d + 1 - ec) n (by omega) hr
+    rw [← this]
+    congr 1
+  have g3 : ∏ i ∈ range n, qZ r (-(j2 : ℤ) + i) = (-1) ^ n * (qfact r j2 / qfact r (j2 - n)) := by
+    rw [mul_div_assoc', eq_div_iff (pf _ (by omega)).ne']
+    exact prod_qZ_neg j2 n (by omega) (by omega)
+  have g2 : ∏ i ∈ range n, qZ r (-(j2 : ℤ) - ec + i) =
+      (-1) ^ n * (qfact r (j2 + ec) / qfact r (j2 + ec - n)) := by
+    rw [mul_div_assoc', eq_div_iff (pf _ (by omega)).ne']
+    have := prod_qZ_neg (r := r) (j2 + ec) n (by omega) hb2
+    rw [← this]
+    congr 1
+    refine prod_congr rfl fun i _ => ?_
+    rw [show -(j2 : ℤ) - ec + i = -((j2 + ec : ℕ) : ℤ) + i by push_cast; ring]
+  have hsum : ∀ e : ℤ, ∑ i ∈ range n, (e + (i : ℤ)) = n * e + ∑ i ∈ range n, (i : ℤ) := by
+    intro e; simp [sum_add_distrib]
+  have hbal : uC r ^ (∑ i ∈ range n, (((d : ℤ) + 2) + (i : ℤ))) *
+      uC r ^ (∑ i ∈ range n, ((-(j2 : ℤ) - ec) + (i : ℤ))) =
+      uC r ^ (∑ i ∈ range n, ((-(j2 : ℤ)) + (i : ℤ))) *
+        uC r ^ (∑ i ∈ range n, ((((d + 1 - ec + 1 : ℕ)) : ℤ) + (i : ℤ))) := by
+    rw [← zpow_add₀ hu, ← zpow_add₀ hu]
+    congr 1
+    rw [hsum, hsum, hsum, hsum]
+    have h2 : (((d + 1 - ec + 1 : ℕ)) : ℤ) = d + 1 - ec + 1 := by omega
+    rw [h2]; ring
+  have ht := uC_sub_inv_ne hr
+  have hX : (-(uC r - (uC r)⁻¹)) ^ n ≠ 0 := pow_ne_zero n (neg_ne_zero.2 ht)
+  have hzp : ∀ z : ℤ, uC r ^ z ≠ 0 := fun z => zpow_ne_zero z hu
+  have pos : ∀ m : ℕ, m < r → (0 : ℝ) < qfact r m := fun m h => qfact_pos hr h
+  have c1 := (pos (d + n + 1) (by omega)).ne'
+  have c2 := (pos (d + 1) (by omega)).ne'
+  have c3 := (pos (j2 + ec) hb2).ne'
+  have c4 := (pos (j2 + ec - n) (by omega)).ne'
+  have c5 := (pos j2 (by omega)).ne'
+  have c6 := (pos (j2 - n) (by omega)).ne'
+  have c7 := (pos (d + 1 - ec + n) hb3).ne'
+  have c8 := (pos (d + 1 - ec) (by omega)).ne'
+  simp only [← Complex.ofReal_prod]
+  rw [g1, g2, g3, g4]
+  have z1 := hzp (∑ i ∈ range n, (((d : ℤ) + 2) + (i : ℤ)))
+  have z2 := hzp (∑ i ∈ range n, ((-(j2 : ℤ) - ec) + (i : ℤ)))
+  have z3 := hzp (∑ i ∈ range n, ((-(j2 : ℤ)) + (i : ℤ)))
+  have z4 := hzp (∑ i ∈ range n, ((((d + 1 - ec + 1 : ℕ)) : ℤ) + (i : ℤ)))
+  have hs : ((-1 : ℂ)) ^ n ≠ 0 := pow_ne_zero n (by norm_num)
+  generalize uC r ^ (∑ i ∈ range n, (((d : ℤ) + 2) + (i : ℤ))) = Z1 at *
+  generalize uC r ^ (∑ i ∈ range n, ((-(j2 : ℤ) - ec) + (i : ℤ))) = Z2 at *
+  generalize uC r ^ (∑ i ∈ range n, ((-(j2 : ℤ)) + (i : ℤ))) = Z3 at *
+  generalize uC r ^ (∑ i ∈ range n, ((((d + 1 - ec + 1 : ℕ)) : ℤ) + (i : ℤ))) = Z4 at *
+  generalize (-(uC r - (uC r)⁻¹)) ^ n = X at *
+  have hZ4 : Z4 = Z1 * Z2 / Z3 := by
+    rw [eq_div_iff z3]; linear_combination (-1 : ℂ) * hbal
+  rw [hZ4]
+  push_cast
+  field_simp
+
+
+
+/-- The single term of `Sj` at the lowest sixth colour `j4 - j2`, for the third colour
+`j1 - j2 + 2k`, as a signed product of inverse quantum factorials. -/
+lemma Sj_val3 (r : ℕ) {j1 j2 j4 j5 k S B ε γ : ℕ} (h21 : j2 ≤ j1) (h42 : j2 ≤ j4)
+    (hS : 2 * S = j4 + j5 + (j1 - j2)) (hB : 2 * B = j1 + j2 + j4 + j5)
+    (hε : 2 * ε + j1 + j2 = j4 + j5) (hγ : 2 * γ + j5 = (j1 - j2) + j4) (hk : k ≤ j2)
+    (hA : j4 ≤ S + k) :
+    Sj r j1 j2 j4 j5 (j4 - j2) ((j1 - j2 + 2 * k : ℕ) : ℤ) =
+      (-1) ^ (S + k) * qfact r (S + k + 1) * (qfact r ε)⁻¹ * (qfact r k)⁻¹ *
+        (qfact r (S + k - j4))⁻¹ * (qfact r (j2 - k))⁻¹ * (qfact r γ)⁻¹ := by
+  unfold Sj
+  have e1 : (((j1 : ℤ) + j2 + ((j1 - j2 + 2 * k : ℕ) : ℤ)) / 2) = ((j1 + k : ℕ) : ℤ) := by omega
+  have e2 : (((j1 : ℤ) + j5 + ((j4 - j2 : ℕ) : ℤ)) / 2) = (S : ℤ) := by omega
+  have e3 : (((j4 : ℤ) + j2 + ((j4 - j2 : ℕ) : ℤ)) / 2) = (j4 : ℤ) := by omega
+  have e4 : (((j4 : ℤ) + j5 + ((j1 - j2 + 2 * k : ℕ) : ℤ)) / 2) = ((S + k : ℕ) : ℤ) := by omega
+  have e5 : (((j1 : ℤ) + j2 + j4 + j5) / 2) = (B : ℤ) := by omega
+  have e6 : ((((j1 - j2 + 2 * k : ℕ) : ℤ) + j2 + j5 + ((j4 - j2 : ℕ) : ℤ)) / 2) =
+      ((S + k : ℕ) : ℤ) := by omega
+  have e7 : ((((j1 - j2 + 2 * k : ℕ) : ℤ) + j1 + ((j4 - j2 : ℕ) : ℤ) + j4) / 2) =
+      ((S + k + γ : ℕ) : ℤ) := by omega
+  rw [e1, e2, e3, e4, e5, e6, e7]
+  rw [SR_single (z0 := S + k) (by simp) (Or.inl (by simp)) (by omega)]
+  have key : ∀ (m : ℕ) (a b : ℤ), a - b = (m : ℤ) → invQFact r (a - b) = (qfact r m)⁻¹ := by
+    intro m a b h; rw [h, invQFact_nat]
+  have q0 : qfact r 0 = 1 := by simp [qfact]
+  unfold qRacahTerm
+  rw [key ε ((S + k : ℕ) : ℤ) ((j1 + k : ℕ) : ℤ) (by push_cast; omega),
+    key k ((S + k : ℕ) : ℤ) (S : ℤ) (by push_cast; omega),
+    key (S + k - j4) ((S + k : ℕ) : ℤ) (j4 : ℤ) (by push_cast; omega),
+    key 0 ((S + k : ℕ) : ℤ) ((S + k : ℕ) : ℤ) (by simp),
+    key (j2 - k) (B : ℤ) ((S + k : ℕ) : ℤ) (by push_cast; omega),
+    key γ ((S + k + γ : ℕ) : ℤ) ((S + k : ℕ) : ℤ) (by push_cast; omega), q0]
+  simp only [inv_one, mul_one, one_mul]
+  ring
+
+/-- The step of `Sj` from `k` to `k + 1` at the lowest sixth colour `j4 - j2`, cross-multiplied. -/
+lemma Sj_val3_succ {r : ℕ} (hr : 2 ≤ r) {j1 j2 j4 j5 k S B ε γ : ℕ} (h21 : j2 ≤ j1)
+    (h42 : j2 ≤ j4) (hS : 2 * S = j4 + j5 + (j1 - j2)) (hB : 2 * B = j1 + j2 + j4 + j5)
+    (hε : 2 * ε + j1 + j2 = j4 + j5) (hγ : 2 * γ + j5 = (j1 - j2) + j4) (hk : k + 1 ≤ j2)
+    (hA : j4 ≤ S + k) (hlt : S + k + 2 < r) (hεr : ε < r) (hγr : γ < r) :
+    Sj r j1 j2 j4 j5 (j4 - j2) ((j1 - j2 + 2 * (k + 1) : ℕ) : ℤ) *
+        (qnum r (k + 1) * qnum r (S + k + 1 - j4)) =
+      - (Sj r j1 j2 j4 j5 (j4 - j2) ((j1 - j2 + 2 * k : ℕ) : ℤ) *
+        (qnum r (S + k + 2) * qnum r (j2 - k))) := by
+  rw [Sj_val3 (k := k + 1) r h21 h42 hS hB hε hγ hk (by omega),
+    Sj_val3 (k := k) r h21 h42 hS hB hε hγ (by omega) hA]
+  have f1 : qfact r (S + (k + 1) + 1) = qfact r (S + k + 1) * qnum r (S + k + 2) :=
+    qfact_succ' r (S + k + 1)
+  have f2 : qfact r (k + 1) = qfact r k * qnum r (k + 1) := qfact_succ' r k
+  have f3 : qfact r (S + (k + 1) - j4) = qfact r (S + k - j4) * qnum r (S + k + 1 - j4) := by
+    rw [show S + (k + 1) - j4 = (S + k - j4) + 1 by omega,
+      show S + k + 1 - j4 = (S + k - j4) + 1 by omega]; exact qfact_succ' r _
+  have f4 : qfact r (j2 - k) = qfact r (j2 - (k + 1)) * qnum r (j2 - k) := by
+    rw [show j2 - k = (j2 - (k + 1)) + 1 by omega]; exact qfact_succ' r _
+  rw [f1, f2, f3, f4]
+  have p1 := qfact_pos (r := r) (n := k) hr (by omega)
+  have p2 := qfact_pos (r := r) (n := S + k - j4) hr (by omega)
+  have p3 := qfact_pos (r := r) (n := ε) hr hεr
+  have p4 := qfact_pos (r := r) (n := j2 - (k + 1)) hr (by omega)
+  have p5 := qfact_pos (r := r) (n := γ) hr hγr
+  have p6 := qfact_pos (r := r) (n := S + k + 1) hr (by omega)
+  have q1 : 0 < qnum r (k + 1) := qnum_pos hr (by omega) (by omega)
+  have q2 : 0 < qnum r (S + k + 1 - j4) := qnum_pos hr (by omega) (by omega)
+  have q3 : 0 < qnum r (j2 - k) := qnum_pos hr (by omega) (by omega)
+  rw [show (-1 : ℝ) ^ (S + (k + 1)) = - (-1) ^ (S + k) by
+    rw [show S + (k + 1) = (S + k) + 1 by ring, pow_succ]; ring]
+  field_simp
+
+/-- The weighted term of the boundary evaluation at the third colour `j1 - j2 + 2k` and the lowest
+sixth colour `j4 - j2`. -/
+noncomputable def wTerm3 (r j1 j2 j4 j5 k : ℕ) : ℝ :=
+  jOmega r j1 j2 j4 j5 (j1 - j2 + 2 * k) *
+    Sj r j1 j2 j4 j5 (j4 - j2) ((j1 - j2 + 2 * k : ℕ) : ℤ) ^ 2
+
+/-- **The step of the weighted term at the lowest sixth colour `j4 - j2`**, cross-multiplied. -/
+theorem wTerm3_succ {r : ℕ} (hr : 2 ≤ r) {j1 j2 j4 j5 k S B ε γ n : ℕ} (h21 : j2 ≤ j1)
+    (h42 : j2 ≤ j4) (hS : 2 * S = j4 + j5 + (j1 - j2)) (hB : 2 * B = j1 + j2 + j4 + j5)
+    (hε : 2 * ε + j1 + j2 = j4 + j5) (hγ : 2 * γ + j5 = (j1 - j2) + j4) (hnS : S = (j1 - j2) + n)
+    (hk : k + 1 ≤ j2) (hA : j4 ≤ S + k) (hlt : S + k + 2 < r) (hεr : ε < r) (hγr : γ < r)
+    (a1 : qAdm r j1 j2 (j1 - j2 + 2 * k)) (a1' : qAdm r j1 j2 (j1 - j2 + 2 * (k + 1)))
+    (a2 : qAdm r j4 j5 (j1 - j2 + 2 * k)) (a2' : qAdm r j4 j5 (j1 - j2 + 2 * (k + 1))) :
+    wTerm3 r j1 j2 j4 j5 (k + 1) *
+        (qnum r (j1 - j2 + 2 * k + 1) * qnum r (j2 - k) * qnum r (j1 + k + 2) * qnum r (n - k) *
+          qnum r (S + k + 2) * qnum r (k + 1) ^ 2 * qnum r (S + k + 1 - j4) ^ 2) =
+      wTerm3 r j1 j2 j4 j5 k *
+        (qnum r (j1 - j2 + 2 * k + 3) * qnum r (k + 1) * qnum r (j1 - j2 + k + 1) *
+          qnum r (S + k + 1 - j4) * qnum r (S + k + 1 - j5) * qnum r (S + k + 2) ^ 2 *
+          qnum r (j2 - k) ^ 2) := by
+  have st1 := qDelta_sq_step hr a1 a1'
+  have st2 := qDelta_sq_step hr a2 a2'
+  have sj := Sj_val3_succ hr h21 h42 hS hB hε hγ hk hA hlt hεr hγr
+  have e1 : (j1 + j2 + (j1 - j2 + 2 * k)) / 2 = j1 + k := by omega
+  have e2 : (j4 + j5 + (j1 - j2 + 2 * k)) / 2 = S + k := by omega
+  rw [e1, show j1 + k - (j1 - j2 + 2 * k) = j2 - k by omega,
+    show j1 + k - j1 + 1 = k + 1 by omega, show j1 + k - j2 + 1 = j1 - j2 + k + 1 by omega] at st1
+  rw [e2, show S + k - (j1 - j2 + 2 * k) = n - k by omega,
+    show S + k - j4 + 1 = S + k + 1 - j4 by omega,
+    show S + k - j5 + 1 = S + k + 1 - j5 by omega] at st2
+  have sj2 : Sj r j1 j2 j4 j5 (j4 - j2) ((j1 - j2 + 2 * (k + 1) : ℕ) : ℤ) ^ 2 *
+        (qnum r (k + 1) * qnum r (S + k + 1 - j4)) ^ 2 =
+      Sj r j1 j2 j4 j5 (j4 - j2) ((j1 - j2 + 2 * k : ℕ) : ℤ) ^ 2 *
+        (qnum r (S + k + 2) * qnum r (j2 - k)) ^ 2 := by
+    calc _ = (Sj r j1 j2 j4 j5 (j4 - j2) ((j1 - j2 + 2 * (k + 1) : ℕ) : ℤ) *
+          (qnum r (k + 1) * qnum r (S + k + 1 - j4))) ^ 2 := by ring
+      _ = (-(Sj r j1 j2 j4 j5 (j4 - j2) ((j1 - j2 + 2 * k : ℕ) : ℤ) *
+          (qnum r (S + k + 2) * qnum r (j2 - k)))) ^ 2 := by rw [sj]
+      _ = _ := by ring
+  have e : j1 - j2 + 2 * (k + 1) = j1 - j2 + 2 * k + 2 := by ring
+  have q3 : qnum r (j1 - j2 + 2 * k + 2 + 1) = qnum r (j1 - j2 + 2 * k + 3) := by
+    rw [show j1 - j2 + 2 * k + 2 + 1 = j1 - j2 + 2 * k + 3 by ring]
+  unfold wTerm3 jOmega
+  rw [e, q3]
+  rw [e] at sj2
+  set qy := qnum r (j1 - j2 + 2 * k + 1)
+  set q3' := qnum r (j1 - j2 + 2 * k + 3)
+  set A1 := qnum r (j2 - k)
+  set A2 := qnum r (j1 + k + 2)
+  set C1 := qnum r (n - k)
+  set C2 := qnum r (S + k + 2)
+  set B1 := qnum r (k + 1)
+  set B2 := qnum r (j1 - j2 + k + 1)
+  set E1 := qnum r (S + k + 1 - j4)
+  set E2 := qnum r (S + k + 1 - j5)
+  set D1 := qDelta r j1 j2 (j1 - j2 + 2 * k) ^ 2
+  set D1' := qDelta r j1 j2 (j1 - j2 + 2 * k + 2) ^ 2
+  set D2 := qDelta r j4 j5 (j1 - j2 + 2 * k) ^ 2
+  set D2' := qDelta r j4 j5 (j1 - j2 + 2 * k + 2) ^ 2
+  set T := Sj r j1 j2 j4 j5 (j4 - j2) ((j1 - j2 + 2 * k : ℕ) : ℤ) ^ 2
+  set T' := Sj r j1 j2 j4 j5 (j4 - j2) ((j1 - j2 + 2 * k + 2 : ℕ) : ℤ) ^ 2
+  linear_combination (q3' * qy * D2' * C1 * C2 * T' * B1 ^ 2 * E1 ^ 2) * st1 +
+    (q3' * qy * D1 * B1 * B2 * T' * B1 ^ 2 * E1 ^ 2) * st2 +
+    (q3' * qy * D1 * B1 * B2 * D2 * E1 * E2) * sj2
+
+
+-- 400000 heartbeats: the default 200000 fails (timeout at `whnf`); 400000 passes.
+set_option maxHeartbeats 400000 in
+/-- **The map for the lowest sixth colour `j4 - j2`.** For the third colours `j1 - j2 + 2k` up to
+`j1 + j2` (`k ≤ j2`, `j1 + j2 < j4 + j5`), the weighted terms are the first term times the summand
+of Jackson's series at `Q = uC r ^ 2`, `a = Q^(x0+1)`, `b = Q^(n+x0+2)`, `c = Q^((x0+j4-j5)/2+1)`,
+`x = Q^j2`, with `2n = j4 + j5 - x0`. -/
+theorem wTerm3_eq_Tj {r j1 j2 j4 j5 n : ℕ} (hr : 2 ≤ r) (h21 : j2 ≤ j1) (h42 : j2 ≤ j4)
+    (hnd : j1 + j2 < j4 + j5) (hn : 2 * n = j4 + j5 - (j1 - j2))
+    (hadmX : ∀ k ≤ j2, qAdm r j1 j2 (j1 - j2 + 2 * k) ∧ qAdm r j4 j5 (j1 - j2 + 2 * k))
+    (hadmQ : qAdm r j1 j5 (j4 - j2) ∧ qAdm r j4 j2 (j4 - j2)) :
+    ∀ k ≤ j2, (wTerm3 r j1 j2 j4 j5 k : ℂ) = (wTerm3 r j1 j2 j4 j5 0 : ℂ) *
+      Tj (uC r ^ 2) ((uC r ^ 2) ^ (j1 - j2 + 1)) ((uC r ^ 2) ^ (n + (j1 - j2) + 2))
+        ((uC r ^ 2) ^ ((j1 - j2 + j4 - j5) / 2 + 1)) ((uC r ^ 2) ^ j2) k := by
+  have A0 := hadmX 0 (by omega)
+  have An := hadmX j2 le_rfl
+  obtain ⟨⟨hp0, h01, h02, h03⟩, hr0⟩ := A0.1
+  obtain ⟨⟨hq0, h11, h12, h13⟩, hs0⟩ := A0.2
+  obtain ⟨⟨hpn, hn1, hn2, hn3⟩, hrn⟩ := An.1
+  obtain ⟨⟨hqn, hm1, hm2, hm3⟩, hsn⟩ := An.2
+  obtain ⟨S, hS⟩ : ∃ S, S = (j1 - j2) + n := ⟨_, rfl⟩
+  obtain ⟨B, hB⟩ : ∃ B, 2 * B = j1 + j2 + j4 + j5 := ⟨(j1 + j2 + j4 + j5) / 2, by omega⟩
+  obtain ⟨ε, hε⟩ : ∃ ε, ε = n - j2 := ⟨_, rfl⟩
+  obtain ⟨γ, hγ⟩ : ∃ γ, γ = n + (j1 - j2) - j5 := ⟨_, rfl⟩
+  obtain ⟨ec, hecd⟩ : ∃ ec, ec = (j1 - j2 + j4 - j5) / 2 + 1 := ⟨_, rfl⟩
+  rw [← hecd]
+  have hec : ec = (j1 - j2) + n + 1 - j5 := by omega
+  have hec0 : 0 < ec := by omega
+  have hec1 : ec ≤ (j1 - j2) + 1 := by omega
+  intro k
+  induction k with
+  | zero =>
+    intro _
+    have ha : 1 - (uC r ^ 2) ^ (j1 - j2 + 1) ≠ 0 := by
+      rw [← zpow_natCast]
+      exact Qne_pos hr (by push_cast; omega) (by push_cast; omega)
+    simp [Tj, pk, ha]
+  | succ k ih =>
+    intro hk
+    have ihk := ih (by omega)
+    have W := wTerm3_succ hr (S := S) (B := B) (ε := ε) (γ := γ) (n := n) h21 h42
+      (by omega) hB (by omega) (by omega) (by omega) hk (by omega) (by omega) (by omega) (by omega)
+      (hadmX k (by omega)).1 (hadmX (k + 1) hk).1 (hadmX k (by omega)).2 (hadmX (k + 1) hk).2
+    have hkn : k < n := by omega
+    have hkj : k < j2 := by omega
+    have h1 : (j1 - j2) + 2 * k + 3 < r := by omega
+    have h2 : n + (j1 - j2) + k + 2 < r := by omega
+    have h3 : (j1 - j2) + j2 + k + 2 < r := by omega
+    have h5 : (j1 - j2) + 2 + k - ec < r := by omega
+    have rt := rhoT_gen hr (d := j1 - j2) (j2 := n) (n := j2) (k := k) (ec := ec) hec0 hec1 hkj hkn
+      h1 h2 h3 h5
+    obtain ⟨c1, c2, c3, c4, c5, c6, c7, c8, c9, c10⟩ :=
+      Tj_succ_hyps_gen hr (d := j1 - j2) (j2 := n) (n := j2) (k := k) (ec := ec) hec0 hec1 hkj hkn
+        h1 h2 h3 h5
+    have hQ : uC r ^ 2 ≠ 0 := pow_ne_zero 2 (uC_ne_zero r)
+    have T := Tj_succ (q := uC r ^ 2) (a := (uC r ^ 2) ^ ((j1 - j2) + 1))
+      (b := (uC r ^ 2) ^ (n + (j1 - j2) + 2)) (c := (uC r ^ 2) ^ ec) (x := (uC r ^ 2) ^ j2) k
+      c1 (pow_ne_zero _ hQ) (pow_ne_zero _ hQ) c2 c3 c4 c5 c6 c7 c8 c9 c10
+    have T' : Tj (uC r ^ 2) ((uC r ^ 2) ^ ((j1 - j2) + 1)) ((uC r ^ 2) ^ (n + (j1 - j2) + 2))
+        ((uC r ^ 2) ^ ec) ((uC r ^ 2) ^ j2) (k + 1) =
+        Tj (uC r ^ 2) ((uC r ^ 2) ^ ((j1 - j2) + 1)) ((uC r ^ 2) ^ (n + (j1 - j2) + 2))
+          ((uC r ^ 2) ^ ec) ((uC r ^ 2) ^ j2) k *
+        rhoT (uC r ^ 2) ((uC r ^ 2) ^ ((j1 - j2) + 1)) ((uC r ^ 2) ^ (n + (j1 - j2) + 2))
+          ((uC r ^ 2) ^ ec) ((uC r ^ 2) ^ j2) k := T
+    rw [show S + k + 2 = n + (j1 - j2) + k + 2 by omega,
+      show j1 + k + 2 = (j1 - j2) + j2 + k + 2 by omega,
+      show S + k + 1 - j4 = (j1 - j2) + 2 + k - ec by omega,
+      show S + k + 1 - j5 = ec + k by omega] at W
+    have pq : ∀ m : ℕ, 0 < m → m < r → 0 < qnum r m := fun m h0 h1 => qnum_pos hr h0 h1
+    have hM : qnum r (j2 - k) * qnum r (n + (j1 - j2) + k + 2) * qnum r (k + 1) *
+        qnum r ((j1 - j2) + 2 + k - ec) ≠ 0 :=
+      (mul_pos (mul_pos (mul_pos (pq _ (by omega) (by omega)) (pq _ (by omega) (by omega)))
+        (pq _ (by omega) (by omega))) (pq _ (by omega) (by omega))).ne'
+    have hden : qnum r ((j1 - j2) + 2 * k + 1) * qnum r (k + 1) * qnum r (n - k) *
+        qnum r ((j1 - j2) + 2 + k - ec) * qnum r ((j1 - j2) + j2 + k + 2) ≠ 0 :=
+      (mul_pos (mul_pos (mul_pos (mul_pos (pq _ (by omega) (by omega)) (pq _ (by omega) (by omega)))
+        (pq _ (by omega) (by omega))) (pq _ (by omega) (by omega)))
+        (pq _ (by omega) (by omega))).ne'
+    have hRatio : wTerm3 r j1 j2 j4 j5 (k + 1) = wTerm3 r j1 j2 j4 j5 k *
+        ((qnum r ((j1 - j2) + 2 * k + 3) * qnum r ((j1 - j2) + k + 1) *
+            qnum r (n + (j1 - j2) + k + 2) * qnum r (ec + k) * qnum r (j2 - k)) /
+          (qnum r ((j1 - j2) + 2 * k + 1) * qnum r (k + 1) * qnum r (n - k) *
+            qnum r ((j1 - j2) + 2 + k - ec) * qnum r ((j1 - j2) + j2 + k + 2))) := by
+      rw [mul_div_assoc', eq_div_iff hden]
+      apply mul_right_cancel₀ hM
+      linear_combination W
+    have hc : (wTerm3 r j1 j2 j4 j5 (k + 1) : ℂ) = (wTerm3 r j1 j2 j4 j5 k : ℂ) *
+        rhoT (uC r ^ 2) ((uC r ^ 2) ^ ((j1 - j2) + 1)) ((uC r ^ 2) ^ (n + (j1 - j2) + 2))
+          ((uC r ^ 2) ^ ec) ((uC r ^ 2) ^ j2) k := by
+      rw [rt, hRatio]; push_cast; ring
+    rw [hc, ihk, T']; ring
+
+/-- **The product identity for the lowest sixth colour `j4 - j2`**, in clean parameters `j1 = m + d`, `j4 = d + 2n - j5`, `j2 = m`: the weight of the lowest column, the first weighted term and Jackson's right side multiply to `1`. Every quantum factorial cancels. -/
+theorem prod_identity3 {r : ℕ} (hr : 2 ≤ r) {d m n j5 : ℕ} (hmn : m < n) (hj5 : n ≤ j5)
+    (hj5' : j5 ≤ d + n) (hq0 : m + j5 ≤ d + 2 * n)
+    (hb1 : d + n + 1 < r) (hb2 : d + 2 * n + 1 - j5 < r) (hb3 : m + d + 1 < r)
+    (hb4 : j5 - n + m < r) :
+    qnum r (d + 2 * n - j5 - m + 1) *
+        (qfact r (n - m) * qfact r (d + n - j5) * qfact r (j5 - n + m) / qfact r (d + n + 1)) *
+        (qfact r 0 * qfact r (d + 2 * n - j5 - m) * qfact r m / qfact r (d + 2 * n - j5 + 1)) *
+      (qnum r (d + 1) * (qfact r 0 * qfact r d * qfact r m / qfact r (m + d + 1)) *
+        (qfact r (j5 - n) * qfact r (d + n - j5) * qfact r n / qfact r (d + n + 1)) *
+        (qfact r (d + n + 1) /
+          (qfact r (n - m) * qfact r (j5 - n) * qfact r m * qfact r (d + n - j5))) ^ 2) *
+      ((qfact r (m + d + 1) / qfact r (d + 1)) *
+        (qfact r (n + (d + n + 1 - j5)) / qfact r (n + (d + n + 1 - j5) - m)) /
+        ((qfact r n / qfact r (n - m)) * (qfact r (d + 1 - (d + n + 1 - j5) + m) /
+          qfact r (d + 1 - (d + n + 1 - j5))))) = 1 := by
+  have pos : ∀ k : ℕ, k < r → 0 < qfact r k := fun k h => qfact_pos hr h
+  have q0 : qfact r 0 = 1 := by simp [qfact]
+  have f1 : qfact r (d + 2 * n - j5 - m + 1) = qfact r (d + 2 * n - j5 - m) * qnum r (d + 2 * n - j5 - m + 1) :=
+    qfact_succ' r _
+  have f2 : qfact r (d + 1) = qfact r d * qnum r (d + 1) := qfact_succ' r _
+  have f3 : qfact r (d + 2 * n - j5 + 1) = qfact r (d + 2 * n - j5) * qnum r (d + 2 * n - j5 + 1) :=
+    qfact_succ' r _
+  have e1 : n + (d + n + 1 - j5) = d + 2 * n + 1 - j5 := by omega
+  have e2 : d + 2 * n + 1 - j5 - m = d + 2 * n - j5 - m + 1 := by omega
+  have e3 : d + 1 - (d + n + 1 - j5) = j5 - n := by omega
+  have e4 : d + 2 * n + 1 - j5 = d + 2 * n - j5 + 1 := by omega
+  rw [e1, show d + 2 * n + 1 - j5 - m = d + 2 * n - j5 - m + 1 by omega, e3, q0, e4, f1, f2, f3]
+  have p1 := (pos (n - m) (by omega)).ne'
+  have p2 := (pos (d + n - j5) (by omega)).ne'
+  have p3 := (pos (j5 - n + m) hb4).ne'
+  have p4 := (pos (d + n + 1) hb1).ne'
+  have p5 := (pos (d + 2 * n - j5 - m) (by omega)).ne'
+  have p6 := (pos m (by omega)).ne'
+  have p7 := (pos (d + 2 * n - j5) (by omega)).ne'
+  have p8 := (pos d (by omega)).ne'
+  have p9 := (pos (m + d + 1) hb3).ne'
+  have p10 := (pos (j5 - n) (by omega)).ne'
+  have p11 := (pos n (by omega)).ne'
+  have q1 : 0 < qnum r (d + 2 * n - j5 - m + 1) := qnum_pos hr (by omega) (by omega)
+  have q2 : 0 < qnum r (d + 1) := qnum_pos hr (by omega) (by omega)
+  have q3 : 0 < qnum r (d + 2 * n - j5 + 1) := qnum_pos hr (by omega) (by omega)
+  field_simp
+
+
+/-- **The boundary evaluation `QDougall` for the lowest sixth colour `j4 - j2`**, in the parameters
+`j1 = m + d`, `j4 = d + 2n - j5`, `j2 = m < n`: the third colours run from `d` to `d + 2m`. -/
+theorem qDougall_orbit3_param {r d m n j5 : ℕ} (hr : 2 ≤ r) (hmn : m < n) (hj5 : n ≤ j5)
+    (hj5' : j5 ≤ d + n) (hq0 : m + j5 ≤ d + 2 * n)
+    (hadmX : ∀ k ≤ m, qAdm r (m + d) m (d + 2 * k) ∧ qAdm r (d + 2 * n - j5) j5 (d + 2 * k))
+    (hadmQ : qAdm r (m + d) j5 (d + 2 * n - j5 - m) ∧ qAdm r (d + 2 * n - j5) m (d + 2 * n - j5 - m)) :
+    QDougall r (m + d) m (d + 2 * n - j5) j5 d m (d + 2 * n - j5 - m) := by
+  have hX' : ∀ k ≤ m, qAdm r (m + d) m (m + d - m + 2 * k) ∧
+      qAdm r (d + 2 * n - j5) j5 (m + d - m + 2 * k) := by
+    simpa only [Nat.add_sub_cancel_left] using hadmX
+  have hmap := wTerm3_eq_Tj hr (j1 := m + d) (j2 := m) (j4 := d + 2 * n - j5) (j5 := j5) (n := n)
+    (by omega) (by omega) (by omega) (by omega) hX' hadmQ
+  obtain ⟨_, bX⟩ := (hadmX m le_rfl).1
+  obtain ⟨_, bY⟩ := (hadmX m le_rfl).2
+  obtain ⟨_, bQ1⟩ := hadmQ.1
+  obtain ⟨_, bQ2⟩ := hadmQ.2
+  obtain ⟨_, bX0⟩ := (hadmX 0 (by omega)).1
+  obtain ⟨_, bY0⟩ := (hadmX 0 (by omega)).2
+  have e1 : m + d - m + 1 = d + 1 := by omega
+  have e2 : (m + d - m + (d + 2 * n - j5) - j5) / 2 + 1 = d + n + 1 - j5 := by omega
+  simp only [Nat.add_sub_cancel_left, e1, e2] at hmap
+  have e2' : (d + (d + 2 * n - j5) - j5) / 2 + 1 = d + n + 1 - j5 := by omega
+  rw [e2'] at hmap
+  have jh : JHypT (uC r ^ 2) ((uC r ^ 2) ^ (d + 1)) ((uC r ^ 2) ^ (n + d + 2))
+      ((uC r ^ 2) ^ (d + n + 1 - j5)) m :=
+    jhypT_of_exponents hr (by omega) (by omega) (by omega) (by omega) (by omega) (by omega)
+      (by omega) (by omega) (by omega)
+  have jsum := jackson_sumT jh m le_rfl
+  have hRhs := jacksonRhs_gen hr (d := d) (j2 := n) (n := m) (ec := d + n + 1 - j5)
+    (by omega) (by omega) (by omega) (by omega) (by omega) (by omega)
+  have sumC : (∑ k ∈ range (m + 1), (wTerm3 r (m + d) m (d + 2 * n - j5) j5 k : ℂ)) =
+      (wTerm3 r (m + d) m (d + 2 * n - j5) j5 0 : ℂ) *
+        ((((qfact r (d + m + 1) / qfact r (d + 1)) *
+          (qfact r (n + (d + n + 1 - j5)) / qfact r (n + (d + n + 1 - j5) - m)) /
+          ((qfact r n / qfact r (n - m)) *
+            (qfact r (d + 1 - (d + n + 1 - j5) + m) / qfact r (d + 1 - (d + n + 1 - j5))))) : ℝ) : ℂ) := by
+    rw [sum_congr rfl (fun k hk => hmap k (by simp only [mem_range] at hk; omega)), ← mul_sum,
+      jsum, hRhs]
+  have sumR : ∑ k ∈ range (m + 1), wTerm3 r (m + d) m (d + 2 * n - j5) j5 k =
+      wTerm3 r (m + d) m (d + 2 * n - j5) j5 0 *
+        ((qfact r (d + m + 1) / qfact r (d + 1)) *
+          (qfact r (n + (d + n + 1 - j5)) / qfact r (n + (d + n + 1 - j5) - m)) /
+          ((qfact r n / qfact r (n - m)) *
+            (qfact r (d + 1 - (d + n + 1 - j5) + m) / qfact r (d + 1 - (d + n + 1 - j5))))) := by
+    exact_mod_cast sumC
+  have hS : (∑ k ∈ range (m + 1), (jOmega r (m + d) m (d + 2 * n - j5) j5 (d + 2 * k) *
+      Sj r (m + d) m (d + 2 * n - j5) j5 (d + 2 * n - j5 - m) ((d + 2 * k : ℕ) : ℤ) ^ 2)) =
+      ∑ k ∈ range (m + 1), wTerm3 r (m + d) m (d + 2 * n - j5) j5 k := by
+    simp only [wTerm3, Nat.add_sub_cancel_left]
+  unfold QDougall
+  rw [hS, sumR]
+  unfold wTerm3 jOmega
+  simp only [Nat.add_sub_cancel_left, mul_zero, add_zero]
+  have hSj := Sj_val3 r (j1 := m + d) (j2 := m) (j4 := d + 2 * n - j5) (j5 := j5) (k := 0)
+    (S := d + n) (B := m + d + n) (ε := n - m) (γ := d + n - j5)
+    (by omega) (by omega) (by omega) (by omega) (by omega) (by omega) (by omega) (by omega)
+  rw [show ((m + d - m + 2 * 0 : ℕ) : ℤ) = (d : ℤ) by omega,
+    show d + n + 0 - (d + 2 * n - j5) = j5 - n by omega, show m - 0 = m by omega,
+    show d + n + 0 + 1 = d + n + 1 by omega, show d + 2 * n - j5 - m = d + 2 * n - j5 - m from rfl]
+    at hSj
+  have sq1 : ∀ k : ℕ, ((-1 : ℝ) ^ k) ^ 2 = 1 := fun k => by
+    rw [← pow_mul, mul_comm, pow_mul]; simp
+  have T1 := qDelta_sq_of hr hadmQ.1 (s := d + n) (x := n - m) (y := d + n - j5) (z := j5 - n + m)
+    (w := d + n + 1) (by omega) (by omega) (by omega) (by omega) (by omega)
+  have T2 := qDelta_sq_of hr hadmQ.2 (s := d + 2 * n - j5) (x := 0) (y := d + 2 * n - j5 - m)
+    (z := m) (w := d + 2 * n - j5 + 1) (by omega) (by omega) (by omega) (by omega) (by omega)
+  have X0 := hadmX 0 (by omega)
+  simp only [mul_zero, add_zero] at X0
+  have T3 := qDelta_sq_of hr X0.1 (s := m + d) (x := 0) (y := d) (z := m) (w := m + d + 1)
+    (by omega) (by omega) (by omega) (by omega) (by omega)
+  have T4 := qDelta_sq_of hr X0.2 (s := d + n) (x := j5 - n) (y := d + n - j5) (z := n)
+    (w := d + n + 1) (by omega) (by omega) (by omega) (by omega) (by omega)
+  rw [T1, T2, T3, T4]
+  have hsqSj : Sj r (m + d) m (d + 2 * n - j5) j5 (d + 2 * n - j5 - m) (d : ℤ) ^ 2 =
+      (qfact r (d + n + 1) / (qfact r (n - m) * qfact r (j5 - n) * qfact r m *
+        qfact r (d + n - j5))) ^ 2 := by
+    rw [hSj, mul_pow, mul_pow, mul_pow, mul_pow, mul_pow, mul_pow, sq1]
+    have q0 : qfact r 0 = 1 := by simp [qfact]
+    rw [q0]; field_simp
+  rw [hsqSj]
+  have key := prod_identity3 hr hmn hj5 hj5' hq0 (by omega) (by omega) (by omega) (by omega)
+  rw [show d + m + 1 = m + d + 1 by ring]
+  linear_combination key
+
+
+/-- **The boundary evaluation `QDougall` for the lowest sixth colour `j4 - j2`**, for admissible spins
+whose third colours run from `j1 - j2` up to `j1 + j2` (no level cut-off inside the range) and
+`j1 + j2 < j4 + j5`. -/
+theorem qDougall_orbit3 {r j1 j2 j4 j5 n : ℕ} (hr : 2 ≤ r) (h21 : j2 ≤ j1) (h42 : j2 ≤ j4)
+    (hnd : j1 + j2 < j4 + j5) (hn : 2 * n = j4 + j5 - (j1 - j2))
+    (hadmX : ∀ k ≤ j2, qAdm r j1 j2 (j1 - j2 + 2 * k) ∧ qAdm r j4 j5 (j1 - j2 + 2 * k))
+    (hadmQ : qAdm r j1 j5 (j4 - j2) ∧ qAdm r j4 j2 (j4 - j2)) :
+    QDougall r j1 j2 j4 j5 (j1 - j2) j2 (j4 - j2) := by
+  have A0 := hadmX 0 (by omega)
+  obtain ⟨⟨hp0, h01, h02, h03⟩, hr0⟩ := A0.1
+  obtain ⟨⟨hq0, h11, h12, h13⟩, hs0⟩ := A0.2
+  obtain ⟨d, rfl⟩ : ∃ d, j1 = j2 + d := ⟨j1 - j2, by omega⟩
+  obtain rfl : j4 = d + 2 * n - j5 := by omega
+  simp only [Nat.add_sub_cancel_left] at hadmX ⊢
+  exact qDougall_orbit3_param hr (by omega) (by omega) (by omega) (by omega) hadmX hadmQ
+
+/-- **`QDougallAt` for the third orbit, untruncated range**: the lowest third colour is `B - A`, the
+lowest sixth colour is `E - A`, and the third colours run up to `B + A`, below `E + F`. -/
+theorem qDougallAt_O3 {r : ℕ} (hr : 2 ≤ r) (B A E F q : ℕ) (hq1 : qAdm r B F q)
+    (hq2 : qAdm r E A q) (hA : A ≤ B) (hE : A ≤ E) (hnd : B + A < E + F)
+    (hx : aLo B A E F = B - A) (hq : aLo B F E A = E - A) (htop : aHi r B A E F = B + A) :
+    QDougallAt r B A E F := by
+  have hqf := hq1; have hqe := hq2
+  unfold qAdm Lightlike.Pentagon.Tri at hq1 hq2
+  have hparX : (B + A + E + F) % 2 = 0 := by omega
+  have hparQ : (B + F + E + A) % 2 = 0 := by omega
+  have iffX := adm_pair_iff hr hparX
+  have iffQ := adm_pair_iff hr hparQ
+  obtain ⟨xLpar, xHpar, -, -, -⟩ :=
+    pair_facts (r := r) (a := B) (b := A) (c := E) (d := F) hparX (by omega) (by omega)
+  obtain ⟨qLpar, qHpar, -, -, -⟩ :=
+    pair_facts (r := r) (a := B) (b := F) (c := E) (d := A) hparQ (by omega) (by omega)
+  have hqmem := (iffQ q).1 ⟨hqf, hqe⟩
+  have hqL := (iffQ (aLo B F E A)).2 ⟨le_rfl, by omega, qLpar, hqmem.2.2.2⟩
+  unfold QDougallAt
+  rw [hx, htop, hq]
+  have hxle : B - A ≤ B + A := by omega
+  have hadmX : ∀ k ≤ ((B + A) - (B - A)) / 2, qAdm r B A (B - A + 2 * k) ∧
+      qAdm r E F (B - A + 2 * k) := by
+    intro k hk
+    rw [iffX]
+    rw [hx, htop]
+    refine ⟨by omega, by omega, by omega, by omega, by omega⟩
+  rw [hq] at hqL
+  rw [show ((B + A) - (B - A)) / 2 = A by omega] at hadmX ⊢
+  exact qDougall_orbit3 hr hA hE hnd (n := (E + F - (B - A)) / 2) (by omega) hadmX hqL
+
+/-- The third orbit, untruncated, for the image under `(B E)(A F)`. -/
+theorem qDougallAt_O3_k1 {r : ℕ} (hr : 2 ≤ r) (B A E F q : ℕ) (hq1 : qAdm r B F q)
+    (hq2 : qAdm r E A q) (hA : F ≤ E) (hE : F ≤ B) (hnd : E + F < B + A)
+    (hx : aLo E F B A = E - F) (hq : aLo E A B F = B - F) (htop : aHi r E F B A = E + F) :
+    QDougallAt r B A E F :=
+  (qDougallAt_k1 r B A E F).1 (qDougallAt_O3 hr E F B A q hq2 hq1 hA hE hnd hx hq htop)
+
+/-- The third orbit, untruncated, for the image under `(B A)(E F)`. -/
+theorem qDougallAt_O3_k2 {r : ℕ} (hr : 2 ≤ r) (B A E F q : ℕ) (hq1 : qAdm r B F q)
+    (hq2 : qAdm r E A q) (hA : B ≤ A) (hE : B ≤ F) (hnd : A + B < F + E)
+    (hx : aLo A B F E = A - B) (hq : aLo A E F B = F - B) (htop : aHi r A B F E = A + B) :
+    QDougallAt r B A E F :=
+  (qDougallAt_k2 r B A E F).1 (qDougallAt_O3 hr A B F E q (qAdm_swap12 hq2) (qAdm_swap12 hq1)
+    hA hE hnd hx hq htop)
+
+/-- The third orbit, untruncated, for the image under `(B F)(A E)`. -/
+theorem qDougallAt_O3_k3 {r : ℕ} (hr : 2 ≤ r) (B A E F q : ℕ) (hq1 : qAdm r B F q)
+    (hq2 : qAdm r E A q) (hA : E ≤ F) (hE : E ≤ A) (hnd : F + E < A + B)
+    (hx : aLo F E A B = F - E) (hq : aLo F B A E = A - E) (htop : aHi r F E A B = F + E) :
+    QDougallAt r B A E F :=
+  (qDougallAt_k3 r B A E F).1 (qDougallAt_O3 hr F E A B q (qAdm_swap12 hq1) (qAdm_swap12 hq2)
+    hA hE hnd hx hq htop)
+
 end Lightlike.TV.Refl
