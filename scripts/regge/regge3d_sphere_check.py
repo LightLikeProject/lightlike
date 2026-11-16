@@ -97,6 +97,11 @@ if __name__ == '__main__':
     ok = all(1.7 < r < 2.4 for r in ratios) and abs(rich - L) < 0.002 * L
     # controls: the wrong sign and the wrong factor are far from the computed action
     ok = ok and abs(acts[32] + L) > 1.5 * L and abs(acts[32] - 2 * L) > 0.5 * L
+    # control: the curvature density without the volume weight sqrt(det g), integral of R/2 = 3, is not the limit
+    unweighted = 3.0
+    print('unweighted density: integral of R/2 = %.4f, |S_32 - that| = %.3f (vs |S_32 - L| = %.3f)'
+          % (unweighted, abs(acts[32] - unweighted), errs[3]))
+    ok = ok and abs(acts[32] - unweighted) > 5 * errs[3]
     for i, r in enumerate(ratios):
         print('error ratio N=%d -> %d: %.2f' % (4 * 2 ** i, 4 * 2 ** (i + 1), r))
     print('OK' if ok else 'FAILED')
