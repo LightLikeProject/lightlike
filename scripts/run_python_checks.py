@@ -78,7 +78,7 @@ CHECKS = [
     ("scripts/spinfoam/forcing_repair_check.py", False),
     ("scripts/spinfoam/gauge_independence_check.py", True),
     ("scripts/spinfoam/tetra_partition_check.py", False),
-    ("scripts/spinfoam/eprl_node_check.py", False), ("scripts/spinfoam/u1_bubble.py", False),
+    ("scripts/spinfoam/eprl_node_check.py", False), ("scripts/spinfoam/eprl_high_check.py", False), ("scripts/spinfoam/u1_bubble.py", False),
 ]
 # Scripts that are not cross-checks (tools, the gate itself)
 NOT_CHECKS = {"scripts/ci_check.py", "scripts/prune_docs.py", "scripts/gate.py", "scripts/sixj_support.py", "scripts/tooling_selftest.py",
