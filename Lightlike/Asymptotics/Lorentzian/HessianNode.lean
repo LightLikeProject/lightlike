@@ -1322,12 +1322,12 @@ theorem hessZZ_block {j p : Fin 10 → ℝ} {n : Fin 10 → ℕ} (hj : ∀ e, j 
 `H^{Xz}`): `a` is the source of the edge `e`, `Y' = Y L`, `Y 0 = 1`. The `t`-derivative at each `s` is the
 first variation of the edge `e` (the other edges do not depend on `z_e`), and its `s`-derivative is
 `srcGenDeriv` at `Z = X_a† z_e`, `W = X_a† δ`, `Z' = L† Z`, `W' = L† W` (the target end of `e` does not
-depend on `s`). -/
+depend on `s`).  The curve `Y` is only assumed to have the entrywise derivative `Y 0 · L` at `0`: the mixed derivative involves the velocity of `Y`, not its acceleration. -/
 theorem hessXZ_orbit_src {j p : Fin 10 → ℝ} {n : Fin 10 → ℕ} (hj : ∀ e, j e = (n e : ℝ) / 2)
     (g : BdryData) (X : Fin 5 → SL2C) (z : Fin 10 → Spinor) (e : Fin 10) (δ : Spinor)
     (L : Matrix (Fin 2) (Fin 2) ℂ) (Y : ℝ → SL2C) (hY0 : Y 0 = 1)
-    (hY : ∀ t i k, HasDerivAt (fun s => (Y s : Matrix (Fin 2) (Fin 2) ℂ) i k)
-      (((Y t : Matrix (Fin 2) (Fin 2) ℂ) * L) i k) t)
+    (hY : ∀ i k, HasDerivAt (fun s => (Y s : Matrix (Fin 2) (Fin 2) ℂ) i k)
+      (((Y 0 : Matrix (Fin 2) (Fin 2) ℂ) * L) i k) 0)
     (hZ : spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e) ≠ 0)
     (hZ' : spinAct (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e) ≠ 0)
     (h1 : inner ℂ (spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)) (firstCol (g e 0)) ≠ 0)
@@ -1357,10 +1357,10 @@ theorem hessXZ_orbit_src {j p : Fin 10 → ℝ} {n : Fin 10 → ℕ} (hj : ∀ e
   have hZs0 : Zs 0 = Z0 := by simp [hZs, hY0, spinAct_one]
   have hWs0 : Ws 0 = W0 := by simp [hWs, hY0, spinAct_one]
   have hdZ : HasDerivAt Zs (spinAct Lᴴ Z0) 0 := by
-    have := hasDerivAt_orbit L Y hY Z0 0
+    have := hasDerivAt_orbit_pt L Y 0 hY Z0
     simpa [hY0, spinAct_one] using this
   have hdW : HasDerivAt Ws (spinAct Lᴴ W0) 0 := by
-    have := hasDerivAt_orbit L Y hY W0 0
+    have := hasDerivAt_orbit_pt L Y 0 hY W0
     simpa [hY0, spinAct_one] using this
   -- the action splits into the edge e (t-dependent) and the rest (t-independent)
   set K : ℝ → ℂ := fun s => ∑ e' ∈ Finset.univ.erase e, triAction (j e') (p e')
@@ -1419,12 +1419,12 @@ theorem hessXZ_orbit_src {j p : Fin 10 → ℝ} {n : Fin 10 → ℕ} (hj : ∀ e
 /-- **The mixed second derivative at a target end, along an orbit and a line**: `a` is the target of the edge `e`, `Y' = Y L`, `Y 0 = 1`. The `t`-derivative at each `s` is the
 first variation of the edge `e` (the other edges do not depend on `z_e`), and its `s`-derivative is
 `srcGenDeriv` at `Z = X_a† z_e`, `W = X_a† δ`, `Z' = L† Z`, `W' = L† W` (the target end of `e` does not
-depend on `s`). -/
+depend on `s`).  The curve `Y` is only assumed to have the entrywise derivative `Y 0 · L` at `0`: the mixed derivative involves the velocity of `Y`, not its acceleration. -/
 theorem hessXZ_orbit_tgt {j p : Fin 10 → ℝ} {n : Fin 10 → ℕ} (hj : ∀ e, j e = (n e : ℝ) / 2)
     (g : BdryData) (X : Fin 5 → SL2C) (z : Fin 10 → Spinor) (e : Fin 10) (δ : Spinor)
     (L : Matrix (Fin 2) (Fin 2) ℂ) (Y : ℝ → SL2C) (hY0 : Y 0 = 1)
-    (hY : ∀ t i k, HasDerivAt (fun s => (Y s : Matrix (Fin 2) (Fin 2) ℂ) i k)
-      (((Y t : Matrix (Fin 2) (Fin 2) ℂ) * L) i k) t)
+    (hY : ∀ i k, HasDerivAt (fun s => (Y s : Matrix (Fin 2) (Fin 2) ℂ) i k)
+      (((Y 0 : Matrix (Fin 2) (Fin 2) ℂ) * L) i k) 0)
     (hZ : spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e) ≠ 0)
     (hZ' : spinAct (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e) ≠ 0)
     (h1 : inner ℂ (spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)) (firstCol (g e 0)) ≠ 0)
@@ -1455,10 +1455,10 @@ theorem hessXZ_orbit_tgt {j p : Fin 10 → ℝ} {n : Fin 10 → ℕ} (hj : ∀ e
   have hZs0 : Zs 0 = Z1 := by simp [hZs, hY0, spinAct_one]
   have hWs0 : Ws 0 = W1 := by simp [hWs, hY0, spinAct_one]
   have hdZ : HasDerivAt Zs (spinAct Lᴴ Z1) 0 := by
-    have := hasDerivAt_orbit L Y hY Z1 0
+    have := hasDerivAt_orbit_pt L Y 0 hY Z1
     simpa [hY0, spinAct_one] using this
   have hdW : HasDerivAt Ws (spinAct Lᴴ W1) 0 := by
-    have := hasDerivAt_orbit L Y hY W1 0
+    have := hasDerivAt_orbit_pt L Y 0 hY W1
     simpa [hY0, spinAct_one] using this
   set K : ℝ → ℂ := fun s => ∑ e' ∈ Finset.univ.erase e, triAction (j e') (p e')
       (spinAct ((Function.update X (edgeTgt e) (X (edgeTgt e) * Y s) (edgeSrc e') : SL2C) :
@@ -1559,8 +1559,8 @@ theorem hessXZ_src {j p : Fin 10 → ℝ} {n : Fin 10 → ℕ} (hj : ∀ e, j e 
     (g : BdryData) (X : Fin 5 → SL2C) (z : Fin 10 → Spinor) (e : Fin 10) (w τ : ℂ)
     (hz : z e = !₂[w, 1])
     (L : Matrix (Fin 2) (Fin 2) ℂ) (Y : ℝ → SL2C) (hY0 : Y 0 = 1)
-    (hY : ∀ t i k, HasDerivAt (fun s => (Y s : Matrix (Fin 2) (Fin 2) ℂ) i k)
-      (((Y t : Matrix (Fin 2) (Fin 2) ℂ) * L) i k) t)
+    (hY : ∀ i k, HasDerivAt (fun s => (Y s : Matrix (Fin 2) (Fin 2) ℂ) i k)
+      (((Y 0 : Matrix (Fin 2) (Fin 2) ℂ) * L) i k) 0)
     (hZ : spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e) ≠ 0)
     (hZ' : spinAct (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e) ≠ 0)
     (h1 : inner ℂ (spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)) (firstCol (g e 0)) ≠ 0)
@@ -1652,8 +1652,8 @@ theorem hessXZ_tgt {j p : Fin 10 → ℝ} {n : Fin 10 → ℕ} (hj : ∀ e, j e 
     (g : BdryData) (X : Fin 5 → SL2C) (z : Fin 10 → Spinor) (e : Fin 10) (w τ : ℂ)
     (hz : z e = !₂[w, 1])
     (L : Matrix (Fin 2) (Fin 2) ℂ) (Y : ℝ → SL2C) (hY0 : Y 0 = 1)
-    (hY : ∀ t i k, HasDerivAt (fun s => (Y s : Matrix (Fin 2) (Fin 2) ℂ) i k)
-      (((Y t : Matrix (Fin 2) (Fin 2) ℂ) * L) i k) t)
+    (hY : ∀ i k, HasDerivAt (fun s => (Y s : Matrix (Fin 2) (Fin 2) ℂ) i k)
+      (((Y 0 : Matrix (Fin 2) (Fin 2) ℂ) * L) i k) 0)
     (hZ : spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e) ≠ 0)
     (hZ' : spinAct (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e) ≠ 0)
     (h1 : inner ℂ (spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)) (firstCol (g e 0)) ≠ 0)
@@ -1731,13 +1731,13 @@ of `lorAction` at `X_a ↦ X_a Y s`, `z_e ↦ z_e + t δ` is `f_w' τ + f_w̄' c
 `xzSource` if `a` is the source of `e`, `xzTarget` if it is the target, and the sum is `0` if `a` is
 neither end. No criticality is assumed: only that the spinors `X_b† z_e` of the two ends are nonzero, that
 the overlaps `⟨X_a† z_e, ξ⟩`, `⟨J ξ', X_b† z_e⟩` do not vanish and that their product is off the cut of the
-logarithm. -/
+logarithm.  The curve `Y` is only assumed to have the entrywise derivative `Y 0 · L` at `0`: the mixed derivative involves the velocity of `Y`, not its acceleration. -/
 theorem hessXZ_block {j p : Fin 10 → ℝ} {n : Fin 10 → ℕ} (hj : ∀ e, j e = (n e : ℝ) / 2)
     (g : BdryData) (X : Fin 5 → SL2C) (z : Fin 10 → Spinor) (e : Fin 10) (a : Fin 5) (w τ : ℂ)
     (hz : z e = !₂[w, 1])
     (L : Matrix (Fin 2) (Fin 2) ℂ) (Y : ℝ → SL2C) (hY0 : Y 0 = 1)
-    (hY : ∀ t i k, HasDerivAt (fun s => (Y s : Matrix (Fin 2) (Fin 2) ℂ) i k)
-      (((Y t : Matrix (Fin 2) (Fin 2) ℂ) * L) i k) t)
+    (hY : ∀ i k, HasDerivAt (fun s => (Y s : Matrix (Fin 2) (Fin 2) ℂ) i k)
+      (((Y 0 : Matrix (Fin 2) (Fin 2) ℂ) * L) i k) 0)
     (hZ : spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e) ≠ 0)
     (hZ' : spinAct (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e) ≠ 0)
     (h1 : inner ℂ (spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)) (firstCol (g e 0)) ≠ 0)

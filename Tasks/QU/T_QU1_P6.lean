@@ -27,6 +27,8 @@ Lemmas about them, which a proof may use:
 
 * `TV.turaevViro_move14` (`Lightlike/TuraevViro/TuraevViro.lean`)
 * `TV.turaevViro_move23` (`Lightlike/TuraevViro/TuraevViro.lean`)
+* `TV.turaevViro_move14_of_BE` (`Lightlike/TuraevViro/TuraevViroMoves.lean`)
+* `TV.turaevViro_move23_of_BE` (`Lightlike/TuraevViro/TuraevViroMoves.lean`)
 * `TV.qBiedenharnElliott_three` (`Lightlike/TuraevViro/LevelOne.lean`)
 
 Everything they depend on, and the further lemmas about them, in one block:
