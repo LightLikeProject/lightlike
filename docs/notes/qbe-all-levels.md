@@ -60,8 +60,17 @@ admissible tuple too rarely to be useful. These are numerical checks of the stat
    series (Watson's transformation) followed by a `₆φ₅` evaluation. The library has Jackson's `₆φ₅` sum
    (`jackson_sumT`, and `tDeg_sum` for the degenerate case) and the level-truncation device (`Q^r = 1`, `b ↔ 1/x`,
    `qfact_mul_qfact_reflect`); it has no `₈φ₇` transformation. A statement of Watson's transformation and a proof by the
-   same telescoping certificates would be the main new lemma (UNVERIFIED: the equation number of the
-   transformation in the standard references is not read here).
+   same telescoping certificates would be the main new lemma. Source (read on the DLMF page): Watson's q-analogue
+   of Whipple's transformation, DLMF §17.9(iii), equation (17.9.15), for `n` a nonnegative integer:
+   `(aq, aq/(de); q)_n / (aq/d, aq/e; q)_n · ₄φ₃(aq/(bc), d, e, q^{-n}; aq/b, aq/c, d e q^{-n}/a; q, q)
+   = ₈φ₇(a, q a^{1/2}, -q a^{1/2}, b, c, d, e, q^{-n}; a^{1/2}, -a^{1/2}, aq/b, aq/c, aq/d, aq/e, a q^{n+1}; q, a² q^{2+n}/(b c d e))`
+   (the page does not call the `₄φ₃` balanced; its parameters satisfy the balance condition). The related sum of a
+   terminating balanced very-well-poised `₈φ₇`, Jackson's q-analogue of Dougall's `₇F₆(1)` sum, is DLMF equation
+   (17.7.14): the series with parameters `a, q a^{1/2}, -q a^{1/2}, b, c, d, e, q^{-n}` and argument `q`, balanced by
+   `a² q = b c d e q^{-n}`, equals `(aq, aq/(bc), aq/(bd), aq/(cd); q)_n / (aq/b, aq/c, aq/d, aq/(bcd); q)_n`
+   (its subsection letter is not recorded here). Bailey's `₈φ₇` transformation is (17.9.16). The page text was read
+   through a summariser; the statements agree with the `₆φ₅` limit (17.7.16) that the library already uses, but an
+   independent reading of the printed formulas is still advisable before a Lean statement is fixed.
 3. Route B (orthogonality): the sum rule `Σ_x (-1)^{..}[x+1] {a b x; c d p}{c d x; e f q} = ...` from the proved
    orthogonality (`qOrthogonality_proved`) and the three-term recurrence in `Lightlike/TuraevViro/Reflect`, then the pentagon
    from the sum rule as in the classical derivation. This needs one new two-parameter identity.
