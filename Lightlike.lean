@@ -196,6 +196,19 @@ import Lightlike.PL.Attach
 import Lightlike.PL.PolygonEars
 import Lightlike.PL.PolygonBall
 import Lightlike.PL.PolygonBoundary
+import Lightlike.PL.PolygonPLHomeo
+import Lightlike.PL.SimpleChain
+import Lightlike.PL.Chain
+import Lightlike.PL.TwoArcs
+import Lightlike.PL.ChainConn
+import Lightlike.PL.ChainCarrier
+import Lightlike.PL.Theta
+import Lightlike.PL.Interlaced
+import Lightlike.PL.Hexagon
+import Lightlike.PL.HexFalse
+import Lightlike.PL.K33
+import Lightlike.PL.Relabel
+import Lightlike.PL.RealGeom
 import Lightlike.PL.Realisation
 import Lightlike.PL.Starring
 import Lightlike.PL.Boundary
@@ -246,6 +259,7 @@ import Lightlike.PL.Tests4
 import Lightlike.PL.TestsPachner
 import Lightlike.PL.TestsNewman
 import Lightlike.PL.TestsPolygon
+import Lightlike.PL.TestsK33
 import Lightlike.PonzanoRegge.Amplitude
 import Lightlike.PonzanoRegge.Asymptotics
 import Lightlike.PonzanoRegge.BEPositive

@@ -2530,9 +2530,15 @@
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "Thomassen's proof and Filippov's proof of the Weak Jordan Theorem",
-  "locations": {},
+  "locations": {
+   "Section 2": {
+    "verified": true,
+    "snippet": "2 Thomassen’s proof of the WJT 10 3 Filippov’s proof of the WJT",
+    "why": null
+   }
+  },
   "citations": 0,
-  "citations_via": "Semantic Scholar"
+  "citations_via": "OpenAlex"
  },
  "knapp-1986": {
   "checked": "2026-11-08",
