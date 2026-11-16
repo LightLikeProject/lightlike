@@ -52,7 +52,7 @@ theorem continuousOn_pd2 (hg : IsCoordMetric g U) (k l i j : Fin 3) :
 theorem continuousOn_christoffel (hg : IsCoordMetric g U) (a j k : Fin 3) :
     ContinuousOn (fun y => christoffel g a j k y) U := by
   unfold christoffel
-  refine continuousOn_const.mul (continuousOn_finset_sum _ fun l _ => ?_)
+  refine continuousOn_const.mul (continuousOn_finsetSum _ fun l _ => ?_)
   refine ((cdo_inv g hg a l).continuousOn).mul ?_
   exact (((continuousOn_pd hg j l k).add (continuousOn_pd hg k l j)).sub (continuousOn_pd hg l j k))
 
@@ -60,17 +60,17 @@ theorem continuousOn_christoffel (hg : IsCoordMetric g U) (a j k : Fin 3) :
 theorem continuousOn_edgeQ (hg : IsCoordMetric g U) (Δ : Fin 3 → ℝ) :
     ContinuousOn (fun v => edgeQ g v Δ) U := by
   simp only [edgeQ, dotProduct, Matrix.mulVec]
-  refine continuousOn_finset_sum _ fun i _ => continuousOn_const.mul ?_
-  refine continuousOn_finset_sum _ fun j _ => ?_
+  refine continuousOn_finsetSum _ fun i _ => continuousOn_const.mul ?_
+  refine continuousOn_finsetSum _ fun j _ => ?_
   exact (continuousOn_g hg i j).mul continuousOn_const
 
 /-- `edgeC` is continuous in the base point. -/
 theorem continuousOn_edgeC (hg : IsCoordMetric g U) (s Δ : Fin 3 → ℝ) :
     ContinuousOn (fun v => edgeC g v s Δ) U := by
   simp only [edgeC, dmat, dotProduct, Matrix.mulVec, Matrix.of_apply]
-  refine continuousOn_finset_sum _ fun i _ => continuousOn_const.mul ?_
-  refine continuousOn_finset_sum _ fun j _ => ?_
-  refine (continuousOn_finset_sum _ fun k _ => ?_).mul continuousOn_const
+  refine continuousOn_finsetSum _ fun i _ => continuousOn_const.mul ?_
+  refine continuousOn_finsetSum _ fun j _ => ?_
+  refine (continuousOn_finsetSum _ fun k _ => ?_).mul continuousOn_const
   exact continuousOn_const.mul (continuousOn_pd hg k i j)
 
 /-- `edgeR` is continuous in the base point. -/
@@ -79,20 +79,20 @@ theorem continuousOn_edgeR (hg : IsCoordMetric g U) (s Δ : Fin 3 → ℝ) :
   have hdd : ∀ u u' : Fin 3 → ℝ, ∀ i j : Fin 3,
       ContinuousOn (fun v => ddmat g v u u' i j) U := fun u u' i j => by
     simp only [ddmat, Matrix.of_apply]
-    refine continuousOn_finset_sum _ fun k _ => continuousOn_finset_sum _ fun l _ => ?_
+    refine continuousOn_finsetSum _ fun k _ => continuousOn_finsetSum _ fun l _ => ?_
     exact (continuousOn_const.mul continuousOn_const).mul (continuousOn_pd2 hg k l i j)
   have hq : ∀ u u' : Fin 3 → ℝ, ContinuousOn (fun v => Δ ⬝ᵥ (ddmat g v u u' *ᵥ Δ)) U := fun u u' => by
     simp only [dotProduct, Matrix.mulVec]
-    refine continuousOn_finset_sum _ fun i _ => continuousOn_const.mul ?_
-    exact continuousOn_finset_sum _ fun j _ => (hdd u u' i j).mul continuousOn_const
+    refine continuousOn_finsetSum _ fun i _ => continuousOn_const.mul ?_
+    exact continuousOn_finsetSum _ fun j _ => (hdd u u' i j).mul continuousOn_const
   have hch : ∀ i, ContinuousOn (fun v => chr g v Δ Δ i) U := fun i => by
     simp only [chr]
-    refine continuousOn_finset_sum _ fun j _ => continuousOn_finset_sum _ fun k _ => ?_
+    refine continuousOn_finsetSum _ fun j _ => continuousOn_finsetSum _ fun k _ => ?_
     exact ((continuousOn_christoffel hg i j k).mul continuousOn_const).mul continuousOn_const
   have hgc : ContinuousOn (fun v => chr g v Δ Δ ⬝ᵥ (g v *ᵥ chr g v Δ Δ)) U := by
     simp only [dotProduct, Matrix.mulVec]
-    refine continuousOn_finset_sum _ fun i _ => (hch i).mul ?_
-    exact continuousOn_finset_sum _ fun j _ => (continuousOn_g hg i j).mul (hch j)
+    refine continuousOn_finsetSum _ fun i _ => (hch i).mul ?_
+    exact continuousOn_finsetSum _ fun j _ => (continuousOn_g hg i j).mul (hch j)
   unfold edgeR
   exact (((hq s s).const_smul (1 / 2 : ℝ)).add ((hq Δ Δ).const_smul (1 / 24 : ℝ))).sub
     (hgc.const_smul (1 / 12 : ℝ))

@@ -59,11 +59,11 @@ theorem hinge_data (hg : IsRiemMetric g U) {K : Set (Fin 3 → ℝ)} (hK : IsCom
   haveI : Nonempty K := hne.to_subtype
   have hP : ∀ p : K, (g p).PosDef := fun p => hg.posDef p (hKU p.2)
   have hqc : ∀ σ h, Continuous fun p : K => incQ g p σ h := fun σ h =>
-    ((continuousOn_incQ hg.coord σ h).mono hKU).restrict
+    ((continuousOn_incQ hg.coord σ h).mono hKU).domRestrict
   have hcc : ∀ σ h, Continuous fun p : K => incC g p σ h := fun σ h =>
-    ((continuousOn_incC hg.coord σ h).mono hKU).restrict
+    ((continuousOn_incC hg.coord σ h).mono hKU).domRestrict
   have hρc : ∀ σ h, Continuous fun p : K => incR g p σ h := fun σ h =>
-    ((continuousOn_incR hg.coord σ h).mono hKU).restrict
+    ((continuousOn_incR hg.coord σ h).mono hKU).domRestrict
   have hv : ∀ p : K, ∀ σ h, Valid (incQ g p σ h) := fun p σ h => valid_incQ (hP p) σ h
   have hsum : ∀ p : K, clsSum (dirs k) (fun σ h => Dsq (incQ g p σ h)) = 2 * π := fun p =>
     jet_angle_sum (hP p) k
