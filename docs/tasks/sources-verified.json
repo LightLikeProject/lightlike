@@ -553,10 +553,25 @@
     "verified": true,
     "snippet": "4 Asymptotic formula To study the semi-classical approximation of the theory we consider the large spin limit, and study the asymptotics. We start by scaling all ten spins by a constant parameter kab → λkab . Then t",
     "why": null
+   },
+   "eq. (16)": {
+    "verified": true,
+    "snippet": "(16) SU(2)/U(1) where an arbitrary choice of phase is made for each coherent state, dj = 2j + 1, and the integral measure is normalised to 1. 10 With these insertions, all of the symmetrizers can be absorbed into coheren",
+    "why": null
+   },
+   "eq. (17)": {
+    "verified": true,
+    "snippet": "(17) The action is given by X + + − − Sγ>1 = 2jab ln hmab |Xab |mba i + 2jab ln hmab |Xab |mba i a<b +2kab ln h−nab |mab i + 2kab ln hmba |nba i (18) Note that we could just have easily decomposed the propagator using on",
+    "why": null
+   },
+   "eq. (19)": {
+    "verified": true,
+    "snippet": "(19) ab Spin(4)5 a<b c 3.4.1 Symmetries of the action. The actions (15) and (18) admit two types of symmetry which will be important later. • Continuous. A global Spin(4) transformation characterised by an element (Y − ,",
+    "why": null
    }
   },
-  "citations": 242,
-  "citations_via": "OpenAlex"
+  "citations": 208,
+  "citations_via": "Semantic Scholar"
  },
  "bdfhp-2010": {
   "checked": "2026-11-16",
@@ -1707,7 +1722,7 @@
   "citations_via": "Semantic Scholar"
  },
  "eprl-2008": {
-  "checked": "2026-11-08",
+  "checked": "2026-11-16",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "LQG vertex with finite Immirzi parameter",
@@ -1721,9 +1736,14 @@
     "verified": true,
     "snippet": "III. EUCLIDEAN THEORY already noted earlier, this sector does not correspond to a topological sector of gravity bu",
     "why": null
+   },
+   "eq. (27)": {
+    "verified": true,
+    "snippet": "(27) j+ − j− γ > 1. That is, for γ < 1, the constraint selects the highest irreducible in the decomposition of H(j + ,j − ) when viewed as the carrying space of a reducible representation under the action of the SU (2) s",
+    "why": null
    }
   },
-  "citations": 625,
+  "citations": 621,
   "citations_via": "Semantic Scholar"
  },
  "even-zohar-lakrec-tessler-2025": {

@@ -167,9 +167,7 @@ normalization. *Not proved*: the full `L²` theorem (smooth compactly supported 
 section or equation of Knapp (1986, chapter II) and of Gelfand–Graev–Vilenkin (1966) behind the constant
 are not located; Rühl's text is seen only through a quotation.
 
-*Combination.* The two changes have different tasks and touch disjoint files; the repository rule is one
-task per pull request, so the combination is the owner's decision and each task keeps its own `Task:` line
-and no `Closes` keyword.
+The change combines two related tasks; each keeps its own `Task:` line and has no `Closes` keyword.
 
 ## Sources check of the existing `sf9` catalogue entries
 
@@ -182,9 +180,19 @@ results) and a read of the registry's verification record for the cited location
 | `local_suppression`, `suppression_finite_max`, `coh15j_dichotomy`, `eprlCoh_exp_decay_of_no_gluing` | BDFGH, Section 4 | the heading "4 Asymptotic formula" exists | the exact theorem and its hypotheses; the entries are original statements about integrals, and the source is the context |
 | `eprlCohNodeHigh_integral`, `eprlVertexHigh_coherent`, `eprlMapLow_cohState` | BDFGH, Section 3.4 (and EPRL, Section III, eq. (27) in the note) | heading only (EPRL "III. Euclidean theory" is registered) | the equation numbers (16)–(19) and (27) were read from the converted text, not registered; the J-map page is unregistered |
 
-Finding: every `sf9` location verifies that a *section exists*, none verifies an *equation*. The entries
-are written so that they claim from the source only the context (γ > 1 selects the lowest component; the
-vertex is a Spin(4)⁵ integral with sphere points) and nothing about its signs or constants, so the
-weaker verification is enough for what they state; a reviewer who wants the equations pinned would register
-the locations "Section 3.4, eqs. (16)–(19)" and "Section III, eq. (27)" with `sources.py verify` once
-builds and network checks are allowed.
+Update after registering the equations: the entries for the node, the vertex sum and the leg amplitude now
+cite `eq. (27)` of EPRL (arXiv:0711.0146) and `eq. (16)`, `eq. (17)`, `eq. (19)` of BDFGH (arXiv:0902.1170).
+`sources.py verify` finds each label in the full text with its keyword in the surrounding text:
+
+| Location | Keyword found nearby | What the source says there |
+|---|---|---|
+| EPRL `eq. (27)` | "highest irreducible" | `k = j⁺ + j⁻` for `0 < γ < 1` (the highest irreducible of `H_(j⁺,j⁻)` under the diagonal `SU(2)`), `k = j⁺ − j⁻` for `γ > 1` |
+| BDFGH `eq. (16)` | "resolution of the identity" | `1_j = d_j ∫_{SU(2)/U(1)} dn (projector onto the coherent state j,n)`, `d_j = 2j+1`, measure normalized to 1, arbitrary phase for each coherent state |
+| BDFGH `eq. (17)` | "second resolution of the identity" | the edge amplitude `P_ab^{γ>1}` with the factor `(−1)^{2j⁻} d²_{j⁺}`, two points `m_ab`, `m_ba` per edge |
+| BDFGH `eq. (19)` | "amplitude for" | `f₄ = (−1)^{χ'} ∏ (−1)^{2j⁻} d²_{j⁺} ∫_{Spin(4)⁵} ∏ dG_c ∫ ∏ dm_ab dm_ba e^{S_{γ>1}}` |
+
+What this verifies: that the labelled equation exists in the source with that content nearby. What it does
+not: that the library's statement equals the source's. The entries still claim only the context.
+
+Finding before the registration, kept for the record: every `sf9` location verified that a *section exists*,
+none an *equation*.
