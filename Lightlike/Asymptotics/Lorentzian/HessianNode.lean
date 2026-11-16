@@ -20,6 +20,8 @@ fixed, is the sum over the ends at the node `a` of `endForm`: the closed form of
 * `hessZZ_line`: the second derivative of the vertex action along a straight line in one spinor `z_e`
   (the quadratic form of the block `H^{zz}`), from `hasDerivAt_srcCoeff_line`, `hasDerivAt_tgtCoeff_line`
   and `deriv_deriv_triAction_line`.
+* `hessZZ_block`: the entries of `H^{zz}` in Wirtinger form (`zzWirtinger`): for `z_e = (w, 1)` and
+  `δ = (τ, 0)` the second derivative along `z_e + t δ` is `f_ww τ² + 2 f_ww̄ |τ|² + f_w̄w̄ conj(τ)²`.
 * `re_hessRR_neg`: the real part of the rotation block is negative definite exactly when the normals
   are not all parallel (`sum_projForm_pos_iff`, Lagrange's identity `projForm_eq_minorSq`).
 
@@ -869,5 +871,169 @@ theorem hessZZ_line {j p : Fin 10 → ℝ} {n : Fin 10 → ℕ} (hj : ∀ e, j e
     funext s; exact deriv_add_const K
   rw [hd]
   exact deriv_deriv_triAction_line (n e) (p e) (spinAct Aᴴ δ) (spinAct Bᴴ δ) hZ hZ' h1 h2 hP
+
+/-- `⟨A† (τ,0), ξ⟩ = conj τ (A ξ)₀`. -/
+theorem inner_adj_delta (A : Matrix (Fin 2) (Fin 2) ℂ) (τ : ℂ) (ξ : Spinor) :
+    inner ℂ (spinAct Aᴴ !₂[τ, 0]) ξ = conj τ * (spinAct A ξ) 0 := by
+  simp only [PiLp.inner_apply, Fin.sum_univ_two, RCLike.inner_apply, spinAct_zero_apply,
+    spinAct_one_apply, Matrix.conjTranspose_apply]
+  simp
+  ring
+
+/-- `⟨A† (w,1), ξ⟩ = conj w (A ξ)₀ + (A ξ)₁`. -/
+theorem inner_adj_z (A : Matrix (Fin 2) (Fin 2) ℂ) (w : ℂ) (ξ : Spinor) :
+    inner ℂ (spinAct Aᴴ !₂[w, 1]) ξ = conj w * (spinAct A ξ) 0 + (spinAct A ξ) 1 := by
+  simp only [PiLp.inner_apply, Fin.sum_univ_two, RCLike.inner_apply, spinAct_zero_apply,
+    spinAct_one_apply, Matrix.conjTranspose_apply]
+  simp
+  ring
+
+/-- `⟨A† (w,1), A† (τ,0)⟩ = τ (conj w M₀₀ + M₁₀)`, `M = A A†`. -/
+theorem inner_adj_z_delta (A : Matrix (Fin 2) (Fin 2) ℂ) (w τ : ℂ) :
+    inner ℂ (spinAct Aᴴ !₂[w, 1]) (spinAct Aᴴ !₂[τ, 0]) =
+      τ * (conj w * (A * Aᴴ) 0 0 + (A * Aᴴ) 1 0) := by
+  simp only [PiLp.inner_apply, Fin.sum_univ_two, RCLike.inner_apply, spinAct_zero_apply,
+    spinAct_one_apply, Matrix.conjTranspose_apply, Matrix.mul_apply]
+  simp
+  ring
+
+/-- `⟨A† (w,1), A† (w,1)⟩ = z† M z`, `M = A A†`. -/
+theorem inner_adj_z_self (A : Matrix (Fin 2) (Fin 2) ℂ) (w : ℂ) :
+    inner ℂ (spinAct Aᴴ !₂[w, 1]) (spinAct Aᴴ !₂[w, 1]) =
+      (A * Aᴴ) 0 0 * (w * conj w) + (A * Aᴴ) 0 1 * conj w + (A * Aᴴ) 1 0 * w + (A * Aᴴ) 1 1 := by
+  simp only [PiLp.inner_apply, Fin.sum_univ_two, RCLike.inner_apply, spinAct_zero_apply,
+    spinAct_one_apply, Matrix.conjTranspose_apply, Matrix.mul_apply]
+  simp
+  ring
+
+/-- `⟨A† (τ,0), A† (τ,0)⟩ = |τ|² M₀₀`. -/
+theorem inner_adj_delta_self (A : Matrix (Fin 2) (Fin 2) ℂ) (τ : ℂ) :
+    inner ℂ (spinAct Aᴴ !₂[τ, 0]) (spinAct Aᴴ !₂[τ, 0]) = (τ * conj τ) * (A * Aᴴ) 0 0 := by
+  simp only [PiLp.inner_apply, Fin.sum_univ_two, RCLike.inner_apply, spinAct_zero_apply,
+    spinAct_one_apply, Matrix.conjTranspose_apply, Matrix.mul_apply]
+  simp
+  ring
+
+/-- The Wirtinger second derivatives `(f_ww, f_ww̄, f_w̄w̄)` of the action of the edge `e` with respect to
+its chart variable `w` (`z_e = (w, 1)`), for the group elements `A = X_a`, `B = X_b`, the boundary spinors
+`ξ = ξ_ab`, `ξ' = ξ_ba`, `k = n/2` and `p`: with `η = A ξ`, `θ = B J ξ'`, `M_A = A A†`, `M_B = B B†`,
+`q_A = z† M_A z`, `q_B = z† M_B z`, `s₁ = conj w η₀ + η₁` and `s₂ = conj θ₀ w + conj θ₁`:
+`f_ww = -2k (conj θ₀/s₂)² + (k+ip) ((M_A00 conj w + M_A10)/q_A)² + (k-ip) ((M_B00 conj w + M_B10)/q_B)²`,
+`f_w̄w̄ = -2k (η₀/s₁)² + (k+ip) ((M_A00 w + M_A01)/q_A)² + (k-ip) ((M_B00 w + M_B01)/q_B)²`,
+`f_ww̄ = -(k+ip)(M_A00/q_A - |M_A00 w + M_A01|²/q_A²) - (k-ip)(M_B00/q_B - |M_B00 w + M_B01|²/q_B²)`. -/
+noncomputable def zzWirtinger (k p : ℝ) (A B : Matrix (Fin 2) (Fin 2) ℂ) (ξ ξ' : Spinor) (w : ℂ) :
+    ℂ × ℂ × ℂ :=
+  let η := spinAct A ξ
+  let θ := spinAct B (jMap ξ')
+  let MA := A * Aᴴ
+  let MB := B * Bᴴ
+  let qA : ℂ := MA 0 0 * (w * conj w) + MA 0 1 * conj w + MA 1 0 * w + MA 1 1
+  let qB : ℂ := MB 0 0 * (w * conj w) + MB 0 1 * conj w + MB 1 0 * w + MB 1 1
+  let s1 := conj w * η 0 + η 1
+  let s2 := conj (θ 0) * w + conj (θ 1)
+  let cA : ℂ := (k : ℂ) + Complex.I * p
+  let cB : ℂ := (k : ℂ) - Complex.I * p
+  ( -2 * k * (conj (θ 0) / s2) ^ 2 + cA * ((MA 0 0 * conj w + MA 1 0) / qA) ^ 2 +
+      cB * ((MB 0 0 * conj w + MB 1 0) / qB) ^ 2,
+    -(cA * (MA 0 0 / qA - ((MA 0 0 * w + MA 0 1) * (MA 0 0 * conj w + MA 1 0)) / qA ^ 2)) -
+      cB * (MB 0 0 / qB - ((MB 0 0 * w + MB 0 1) * (MB 0 0 * conj w + MB 1 0)) / qB ^ 2),
+    -2 * k * (η 0 / s1) ^ 2 + cA * ((MA 0 0 * w + MA 0 1) / qA) ^ 2 +
+      cB * ((MB 0 0 * w + MB 0 1) / qB) ^ 2)
+
+/-- `⟨J ξ', B† (τ,0)⟩ = conj θ₀ τ`, `θ = B J ξ'`. -/
+theorem inner_jmap_adj_delta (B : Matrix (Fin 2) (Fin 2) ℂ) (ξ' : Spinor) (τ : ℂ) :
+    inner ℂ (jMap ξ') (spinAct Bᴴ !₂[τ, 0]) = conj (spinAct B (jMap ξ') 0) * τ := by
+  rw [inner_spinAct_conjTranspose]
+  simp only [PiLp.inner_apply, Fin.sum_univ_two, RCLike.inner_apply]
+  simp
+  ring
+
+/-- `⟨J ξ', B† (w,1)⟩ = conj θ₀ w + conj θ₁`. -/
+theorem inner_jmap_adj_z (B : Matrix (Fin 2) (Fin 2) ℂ) (ξ' : Spinor) (w : ℂ) :
+    inner ℂ (jMap ξ') (spinAct Bᴴ !₂[w, 1]) =
+      conj (spinAct B (jMap ξ') 0) * w + conj (spinAct B (jMap ξ') 1) := by
+  rw [inner_spinAct_conjTranspose]
+  simp only [PiLp.inner_apply, Fin.sum_univ_two, RCLike.inner_apply]
+  simp
+  ring
+
+/-- `⟨J Y, ξ'⟩ = -⟨J ξ', Y⟩`. -/
+theorem inner_jmap_swap (ξ' Y : Spinor) : inner ℂ (jMap Y) ξ' = -inner ℂ (jMap ξ') Y := by
+  have : Y = -jMap (jMap Y) := by rw [jMap_jMap]; simp
+  conv_rhs => rw [this]
+  rw [inner_neg_right, inner_jMap_jMap, inner_conj_symm, neg_neg]
+
+/-- **The block `H^{zz}` of the Hessian** (BDFHP Appendix A p. 33; closed form found here): for `z_e = (w, 1)`
+and the direction `δ = (τ, 0)`, `d²/dt² lorAction` along `z_e + t δ` is `f_ww τ² + 2 f_ww̄ |τ|² + f_w̄w̄ conj(τ)²`
+(`zzWirtinger`). -/
+theorem hessZZ_block {j p : Fin 10 → ℝ} {n : Fin 10 → ℕ} (hj : ∀ e, j e = (n e : ℝ) / 2) (g : BdryData)
+    (X : Fin 5 → SL2C) (z : Fin 10 → Spinor) (e : Fin 10) (w τ : ℂ) (hz : z e = !₂[w, 1])
+    (hZ : spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e) ≠ 0)
+    (hZ' : spinAct (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e) ≠ 0)
+    (h1 : inner ℂ (spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)) (firstCol (g e 0)) ≠ 0)
+    (h2 : inner ℂ (jMap (firstCol (g e 1)))
+      (spinAct (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)) ≠ 0)
+    (hP : inner ℂ (spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)) (firstCol (g e 0)) *
+      inner ℂ (jMap (firstCol (g e 1)))
+        (spinAct (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)) ∈ Complex.slitPlane) :
+    deriv (fun s : ℝ => deriv (fun t : ℝ => lorAction j p g X
+        (Function.update z e (z e + t • !₂[τ, 0]))) s) 0 =
+      (zzWirtinger (n e / 2 : ℝ) (p e) (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)
+        (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ) (firstCol (g e 0)) (firstCol (g e 1)) w).1 * τ ^ 2 +
+      2 * (zzWirtinger (n e / 2 : ℝ) (p e) (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)
+        (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ) (firstCol (g e 0)) (firstCol (g e 1)) w).2.1 *
+        (τ * conj τ) +
+      (zzWirtinger (n e / 2 : ℝ) (p e) (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)
+        (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ) (firstCol (g e 0)) (firstCol (g e 1)) w).2.2 *
+        conj τ ^ 2 := by
+  have hL := hessZZ_line (p := p) hj g X z e !₂[τ, 0] hZ hZ' h1 h2 hP
+  rw [hL]
+  simp only [hz] at *
+  set A : Matrix (Fin 2) (Fin 2) ℂ := (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ) with hA
+  set B : Matrix (Fin 2) (Fin 2) ℂ := (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ) with hB
+  have hr : ∀ (u : Spinor), (((‖u‖ : ℝ) : ℂ)) ^ 2 = inner ℂ u u := fun u => by
+    rw [inner_self_eq_norm_sq_to_K]; rfl
+  have hre : ∀ z : ℂ, ((z.re : ℝ) : ℂ) = (z + conj z) / 2 := fun z => by
+    rw [Complex.re_eq_add_conj]
+  push_cast
+  rw [inner_jmap_swap (firstCol (g e 1)) (spinAct Bᴴ !₂[τ, 0]),
+    inner_jmap_swap (firstCol (g e 1)) (spinAct Bᴴ !₂[w, 1]), inner_adj_delta, inner_adj_z,
+    inner_jmap_adj_delta, inner_jmap_adj_z]
+  have hn4 : ∀ u : Spinor, (((‖u‖ : ℝ) : ℂ)) ^ 4 = (inner ℂ u u) ^ 2 := fun u => by
+    rw [show (4 : ℕ) = 2 * 2 by norm_num, pow_mul, hr]
+  simp only [hn4, hr, hre, inner_adj_z_self, inner_adj_delta_self, inner_adj_z_delta, map_add, map_mul]
+  unfold zzWirtinger
+  simp only [Fin.isValue]
+  have hMA00 : conj ((A * Aᴴ) 0 0) = (A * Aᴴ) 0 0 := by
+    have h : (A * Aᴴ)ᴴ = A * Aᴴ := by simp
+    have := congrFun (congrFun h 0) 0
+    simpa [Matrix.conjTranspose_apply] using this
+  have hMA10 : conj ((A * Aᴴ) 1 0) = (A * Aᴴ) 0 1 := by
+    have h : (A * Aᴴ)ᴴ = A * Aᴴ := by simp
+    have := congrFun (congrFun h 0) 1
+    simpa [Matrix.conjTranspose_apply] using this
+  have hMB00 : conj ((B * Bᴴ) 0 0) = (B * Bᴴ) 0 0 := by
+    have h : (B * Bᴴ)ᴴ = B * Bᴴ := by simp
+    have := congrFun (congrFun h 0) 0
+    simpa [Matrix.conjTranspose_apply] using this
+  have hMB10 : conj ((B * Bᴴ) 1 0) = (B * Bᴴ) 0 1 := by
+    have h : (B * Bᴴ)ᴴ = B * Bᴴ := by simp
+    have := congrFun (congrFun h 0) 1
+    simpa [Matrix.conjTranspose_apply] using this
+  have hMA01 : conj ((A * Aᴴ) 0 1) = (A * Aᴴ) 1 0 := by rw [← hMA10]; simp
+  have hMB01 : conj ((B * Bᴴ) 0 1) = (B * Bᴴ) 1 0 := by rw [← hMB10]; simp
+  have hs1 : conj w * (spinAct A (firstCol (g e 0))) 0 + (spinAct A (firstCol (g e 0))) 1 ≠ 0 := by
+    rw [← inner_adj_z]; exact h1
+  have hs2 : conj (spinAct B (jMap (firstCol (g e 1))) 0) * w + conj (spinAct B (jMap (firstCol (g e 1))) 1) ≠ 0 := by
+    rw [← inner_jmap_adj_z]; exact h2
+  have hqA : (A * Aᴴ) 0 0 * (w * conj w) + (A * Aᴴ) 0 1 * conj w + (A * Aᴴ) 1 0 * w + (A * Aᴴ) 1 1 ≠ 0 := by
+    rw [← inner_adj_z_self]; exact inner_self_ne_zero.mpr hZ
+  have hqB : (B * Bᴴ) 0 0 * (w * conj w) + (B * Bᴴ) 0 1 * conj w + (B * Bᴴ) 1 0 * w + (B * Bᴴ) 1 1 ≠ 0 := by
+    rw [← inner_adj_z_self]; exact inner_self_ne_zero.mpr hZ'
+  simp only [map_add, map_mul, map_sub, map_div₀, map_neg, Complex.conj_conj, hMA00, hMA10, hMA01,
+    hMB00, hMB10, hMB01]
+  push_cast
+  field_simp
+  ring
 
 end Lightlike.Asymptotics.Lorentzian
