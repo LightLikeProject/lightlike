@@ -2283,4 +2283,89 @@ theorem qDougall_trunc_param {r d m n j5 K : ℕ} (hr : 2 ≤ r) (hK : K + m + d
     exact_mod_cast sumC
   exact qDougall_of_sumR_N hr hnj hj5 hnm.le hKn hadmX hadmQ sumR
 
+-- 400000 heartbeats: the default 200000 times out (whnf); 400000 passes.
+set_option maxHeartbeats 400000 in
+/-- **`QDougallAt` for the first orbit, level-truncated range with `E + F < B + A`**: the lowest
+third colour is `B - A`, the lowest sixth colour `B - F`, and the third colours stop at the level
+cut-off `2(r-2) - (B + A)`, before the triangle top `E + F`. -/
+theorem qDougallAt_O1_trunc {r : ℕ} (hr : 2 ≤ r) (B A E F q : ℕ) (hq1 : qAdm r B F q)
+    (hq2 : qAdm r E A q) (hA : A ≤ B) (hF : F ≤ B) (hnd : E + F < B + A)
+    (hx : aLo B A E F = B - A) (hq : aLo B F E A = B - F)
+    (htop : aHi r B A E F = 2 * (r - 2) - (B + A)) : QDougallAt r B A E F := by
+  have hqf := hq1; have hqe := hq2
+  unfold qAdm Lightlike.Pentagon.Tri at hq1 hq2
+  have hparX : (B + A + E + F) % 2 = 0 := by omega
+  have hparQ : (B + F + E + A) % 2 = 0 := by omega
+  have iffX := adm_pair_iff hr hparX
+  have iffQ := adm_pair_iff hr hparQ
+  obtain ⟨xLpar, xHpar, -, -, -⟩ :=
+    pair_facts (r := r) (a := B) (b := A) (c := E) (d := F) hparX (by omega) (by omega)
+  obtain ⟨qLpar, qHpar, -, -, -⟩ :=
+    pair_facts (r := r) (a := B) (b := F) (c := E) (d := A) hparQ (by omega) (by omega)
+  have hqmem := (iffQ q).1 ⟨hqf, hqe⟩
+  have hqL := (iffQ (aLo B F E A)).2 ⟨le_rfl, by omega, qLpar, hqmem.2.2.2⟩
+  have hBA : B + A ≤ 2 * (r - 2) := by omega
+  have hEF : E + F ≤ 2 * (r - 2) := by omega
+  have hxle := (aLo_spec B A E F).2.2.2.2
+  have hxhi := (aHi_spec r B A E F).2.2.2.2
+  have hle : B - A ≤ 2 * (r - 2) - (B + A) := by
+    have := (aLo_spec B A E F).2.2.2.2
+    have h2 := (aHi_spec r B A E F).2.2.2.2
+    omega
+  unfold QDougallAt
+  rw [hx, htop, hq]
+  have hadmX : ∀ k ≤ ((2 * (r - 2) - (B + A)) - (B - A)) / 2,
+      qAdm r B A (B - A + 2 * k) ∧ qAdm r E F (B - A + 2 * k) := by
+    intro k hk
+    rw [iffX]
+    rw [hx, htop]
+    clear * - hk hA hBA hEF hle
+    refine ⟨?_, ?_, ?_, ?_, ?_⟩
+    · omega
+    · omega
+    · have : (B - A + 2 * k + B + A) = 2 * (B + k) := by omega
+      omega
+    · exact hBA
+    · exact hEF
+  rw [hq] at hqL
+  obtain ⟨sL1, sL2, sL3, sL4, -⟩ := aLo_spec B A E F
+  obtain ⟨sH1, sH2, sH3, sH4, -⟩ := aHi_spec r B A E F
+  clear * - hparX hr hA hF hnd hadmX hqL hle hBA hEF hx htop hq sL1 sL2 sL3 sL4 sH1 sH2 sH3 sH4
+  obtain ⟨d, rfl⟩ : ∃ d, B = A + d := ⟨B - A, by omega⟩
+  obtain ⟨n, hn⟩ : ∃ n, 2 * n = E + F - d := ⟨(E + F - d) / 2, by omega⟩
+  obtain rfl : E = d + 2 * n - F := by omega
+  have key := qDougall_trunc_param (r := r) (d := d) (m := A) (n := n) (j5 := F)
+    (K := r - 2 - (A + d)) hr (by omega) (by omega) (by omega) (by omega) (by omega) (by omega)
+    (by
+      intro k hk
+      have := hadmX k (by omega)
+      simpa only [Nat.add_sub_cancel_left] using this)
+    (by simpa only [Nat.add_sub_cancel_left] using hqL)
+  have e1 : (2 * (r - 2) - (A + d + A)) - (A + d - A) = 2 * (r - 2 - (A + d)) := by omega
+  rw [e1, Nat.mul_div_cancel_left _ (by norm_num : 0 < 2)]
+  simpa only [Nat.add_sub_cancel_left] using key
+
+/-- The truncated first orbit for the image under `(B E)(A F)`. -/
+theorem qDougallAt_O1_trunc_k1 {r : ℕ} (hr : 2 ≤ r) (B A E F q : ℕ) (hq1 : qAdm r B F q)
+    (hq2 : qAdm r E A q) (hA : F ≤ E) (hF : A ≤ E) (hnd : B + A < E + F)
+    (hx : aLo E F B A = E - F) (hq : aLo E A B F = E - A)
+    (htop : aHi r E F B A = 2 * (r - 2) - (E + F)) : QDougallAt r B A E F :=
+  (qDougallAt_k1 r B A E F).1 (qDougallAt_O1_trunc hr E F B A q hq2 hq1 hA hF hnd hx hq htop)
+
+/-- The truncated first orbit for the image under `(B A)(E F)`. -/
+theorem qDougallAt_O1_trunc_k2 {r : ℕ} (hr : 2 ≤ r) (B A E F q : ℕ) (hq1 : qAdm r B F q)
+    (hq2 : qAdm r E A q) (hA : B ≤ A) (hF : E ≤ A) (hnd : F + E < A + B)
+    (hx : aLo A B F E = A - B) (hq : aLo A E F B = A - E)
+    (htop : aHi r A B F E = 2 * (r - 2) - (A + B)) : QDougallAt r B A E F :=
+  (qDougallAt_k2 r B A E F).1 (qDougallAt_O1_trunc hr A B F E q (qAdm_swap12 hq2)
+    (qAdm_swap12 hq1) hA hF hnd hx hq htop)
+
+/-- The truncated first orbit for the image under `(B F)(A E)`. -/
+theorem qDougallAt_O1_trunc_k3 {r : ℕ} (hr : 2 ≤ r) (B A E F q : ℕ) (hq1 : qAdm r B F q)
+    (hq2 : qAdm r E A q) (hA : E ≤ F) (hF : B ≤ F) (hnd : A + B < F + E)
+    (hx : aLo F E A B = F - E) (hq : aLo F B A E = F - B)
+    (htop : aHi r F E A B = 2 * (r - 2) - (F + E)) : QDougallAt r B A E F :=
+  (qDougallAt_k3 r B A E F).1 (qDougallAt_O1_trunc hr F E A B q (qAdm_swap12 hq1)
+    (qAdm_swap12 hq2) hA hF hnd hx hq htop)
+
 end Lightlike.TV.Refl
