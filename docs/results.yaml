@@ -1031,7 +1031,8 @@
     refs:
       - {ref: bdfhp-2010, location: "Section 4, eq. (17)", check: "action"}
       - {ref: bdfhp-2010, location: "Section 3.3, eqs. (15), (16)", check: "coherent states"}
-      - {ref: engle-pereira-2009, location: "eqs. (22), (23)", check: "gauge fixing"}
+      - {ref: engle-pereira-2009, location: "eq. (22)", check: "independent"}
+      - {ref: engle-pereira-2009, location: "eq. (23)", check: "regularize"}
   review: kernel-checked
   note: "For a doubled spin n = 2k and the lowest SU(2) level, with the source spinor the first column of the complex conjugate of g1 and the target spinor the first column of w g2, conj F_{g1}(Z) F_{g2}(Z') = e^S / (|Z|^2 |Z'|^2), where F = hvec n 0 rho of the coherent state, e^S is the power-form action (exp_triAction_nat) and Z, Z' are the transported chart spinors; no sign and no constant appear. NOT PROVED: eprlVertex = lorVertex, and hence the finiteness of lorVertex. Still open: the sum over magnetic configurations as a product over links, Fubini over SL(2,C)^4 x C^10, the substitution X = conj(a) by Haar invariance, and the explicit normalisation constants of suV (abstract nrmA)."
   since: unreleased
