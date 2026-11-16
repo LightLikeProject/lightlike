@@ -162,6 +162,10 @@ The cube integral of the scalar-curvature density `(R/2) √det` of `1 + η h`, 
 and the second differs from the Fierz–Pauli density by an explicit periodic divergence [85]. This is a statement about the integrated
 density of `1 + η h`: nothing about the Regge action, about geodesic or interpolated edge lengths, or about triangulations.
 
+For a non-zero periodic field, `cos (2π y₀) E₁₂`, the cube integral of the Fierz–Pauli density is `-π²` [87]. The hinge density with
+the volume weights replaced by `1` integrates to `-7π²/3` for the same field, so it does not give the `η²` coefficient [87]; the
+exact-arithmetic computation of both densities is `scripts/regge/eh_wrong_model_check.py`.
+
 A 2-complex with boundary is a disc in the combinatorial sense exactly when it is an intrinsic
 triangulated disc [16].
 
@@ -330,6 +334,9 @@ triangulated disc [16].
     `Regge.Linear3.integral_F1_zero`, `Regge.Linear3.integral_F2_eq`
 86. Lightlike/Regge/Linear3/EtaCoefficient.lean - `Regge.Linear3.eh_eta_sq_coeff`,
     `Regge.Linear3.eh_eta_sq_coeff_zero`
+
+87. Lightlike/Regge/Linear3/EtaCoefficientTests.lean - `Regge.Linear3.integral_fpDens_hTest`,
+    `Regge.Linear3.integral_wrongDens_hTest`, `Regge.Linear3.wrong_weights_ne`
 
 ## References
 

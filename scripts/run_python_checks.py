@@ -70,6 +70,7 @@ CHECKS = [
     ("scripts/regge/regge3d_linearized_check.py", True),
     ("scripts/regge/fierz_pauli_check.py", True),
     ("scripts/regge/eh_jet_poly_check.py", True),
+    ("scripts/regge/eh_wrong_model_check.py", True),
     ("scripts/qracah/qd_map_check.py", False), ("scripts/qracah/jhyp_coverage_check.py", False),
     ("scripts/qracah/jackson_degenerate_check.py", False),
     ("scripts/spinfoam/vertex_check.py", False),

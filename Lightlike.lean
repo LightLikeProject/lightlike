@@ -382,6 +382,7 @@ import Lightlike.Regge.Conv3.CurvatureCoeffs
 import Lightlike.Regge.Conv3.CurvaturePoly
 import Lightlike.Regge.Linear3.PeriodicDivergences
 import Lightlike.Regge.Linear3.EtaCoefficient
+import Lightlike.Regge.Linear3.EtaCoefficientTests
 import Lightlike.Regge.Conv3.DihedralScale
 import Lightlike.Regge.Conv3.EdgePoly
 import Lightlike.Regge.Conv3.JetCore
