@@ -342,4 +342,33 @@ lemma move2_of_bistellarEquivIn [Infinite V] {M N : SComplex V} (h : BistellarEq
     exact (ih₁ hM hmax).trans _ _ _ (ih₂ ((SComplex.BistellarEquivIn.isMfdIn_iff hMN).1 hM)
       (hmax ▸ (SComplex.BistellarEquivIn.stellarEquivIn hMN).maxCard_eq.symm))
 
+/-- The triangles of `L`, with the vertices placed by an embedding. -/
+def mapTri {W : Type*} [DecidableEq W] (L : Finset (Finset V)) (f : V ↪ W) : Finset (Finset W) :=
+  L.image (Finset.map f)
+
+lemma isTri2_mapTri {W : Type*} [DecidableEq W] {L : Finset (Finset V)} (hT : IsTri2 L)
+    (f : V ↪ W) : IsTri2 (mapTri L f) := by
+  intro t ht
+  obtain ⟨s, hs, rfl⟩ := mem_image.1 ht
+  rw [card_map, hT s hs]
+
+/-- **Stellar equivalent closed surfaces are related by a chain of 2D moves** on the triangles placed
+in `V ⊕ ℕ` (the extra vertices are the new vertices of the stellar moves). -/
+theorem eqvGen_move2_of_stellarEquiv {L L' : Finset (Finset V)} (hS : IsSurface L)
+    (h : StellarEquiv (closure L) (closure L')) (hT' : IsTri2 L') :
+    Relation.EqvGen Move2 (mapTri L (Function.Embedding.inl : V ↪ V ⊕ ℕ))
+      (mapTri L' (Function.Embedding.inl : V ↪ V ⊕ ℕ)) := by
+  have hK := hS.isClosedCombManifold
+  have hb := (pachner hK).1 h
+  have hM : IsMfdIn false 2 (closure L).lift := isMfdIn_false_iff.2 hK
+  have hmax : (closure L).lift.maxCard = 3 := by
+    rw [lift, maxCard_map, maxCard_closure hS.card hS.nonempty]
+  have := move2_of_bistellarEquivIn hb hM hmax
+  rw [lift, lift, map_closure, map_closure] at this
+  have e₁ : toTri2 (closure (L.image (Finset.map (Function.Embedding.inl : V ↪ V ⊕ ℕ)))) =
+      mapTri L (Function.Embedding.inl : V ↪ V ⊕ ℕ) := toTri2_closure (isTri2_mapTri hS.card _)
+  have e₂ : toTri2 (closure (L'.image (Finset.map (Function.Embedding.inl : V ↪ V ⊕ ℕ)))) =
+      mapTri L' (Function.Embedding.inl : V ↪ V ⊕ ℕ) := toTri2_closure (isTri2_mapTri hT' _)
+  rwa [e₁, e₂] at this
+
 end Lightlike.Surfaces
