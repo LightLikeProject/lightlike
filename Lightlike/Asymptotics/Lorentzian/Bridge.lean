@@ -127,4 +127,45 @@ theorem hvec_cohState (n : ℕ) (ρ : ℝ) (g : Matrix (Fin 2) (Fin 2) ℂ) (ζ 
   rw [← lam_emb_cohState n g ζ]
   rfl
 
+/-- **The exponential of the one-triangle action for `2k = n`** (BDFHP (17), power form): where
+the overlaps and spinors are nonzero,
+`e^S = (⟨Z,ξ⟩⟨Jξ',Z'⟩)^n · ((‖Z‖²‖Z'‖²)^{-n/2}) · (‖Z'‖²/‖Z‖²)^{iρ}`. -/
+theorem exp_triAction_nat {n : ℕ} {p : ℝ} {Z ξ Z' ξ' : Spinor} (hZ : Z ≠ 0) (hZ' : Z' ≠ 0)
+    (h1 : inner ℂ Z ξ ≠ 0) (h2 : inner ℂ (jMap ξ') Z' ≠ 0) :
+    Complex.exp (triAction ((n : ℝ) / 2) p Z ξ Z' ξ') =
+      (inner ℂ Z ξ * inner ℂ (jMap ξ') Z') ^ n *
+        ((((‖Z‖ ^ 2 * ‖Z'‖ ^ 2 : ℝ) ^ (-(n : ℝ) / 2) : ℝ)) : ℂ) *
+        ((((‖Z'‖ ^ 2 / ‖Z‖ ^ 2 : ℝ) : ℝ) : ℂ) ^ (I * p)) := by
+  have hz : 0 < ‖Z‖ := norm_pos_iff.mpr hZ
+  have hz' : 0 < ‖Z'‖ := norm_pos_iff.mpr hZ'
+  have hab : inner ℂ Z ξ * inner ℂ (jMap ξ') Z' ≠ 0 := mul_ne_zero h1 h2
+  have hr : 0 < ‖Z‖ ^ 2 * ‖Z'‖ ^ 2 := by positivity
+  have hq : 0 < ‖Z'‖ ^ 2 / ‖Z‖ ^ 2 := by positivity
+  have e1 : Complex.exp (((2 * ((n : ℝ) / 2) : ℝ) : ℂ) *
+      Complex.log (inner ℂ Z ξ * inner ℂ (jMap ξ') Z')) =
+      (inner ℂ Z ξ * inner ℂ (jMap ξ') Z') ^ n := by
+    have : ((2 * ((n : ℝ) / 2) : ℝ) : ℂ) = (n : ℂ) := by push_cast; ring
+    rw [this, Complex.exp_nat_mul, Complex.exp_log hab]
+  have e2 : Complex.exp (-(((n : ℝ) / 2 : ℝ) : ℂ) *
+      Complex.log (((‖Z‖ ^ 2 : ℝ) : ℂ) * ((‖Z'‖ ^ 2 : ℝ) : ℂ))) =
+      (((‖Z‖ ^ 2 * ‖Z'‖ ^ 2 : ℝ) ^ (-(n : ℝ) / 2) : ℝ) : ℂ) := by
+    have h : ((‖Z‖ ^ 2 : ℝ) : ℂ) * ((‖Z'‖ ^ 2 : ℝ) : ℂ) = (((‖Z‖ ^ 2 * ‖Z'‖ ^ 2 : ℝ)) : ℂ) := by
+      push_cast; rfl
+    rw [h, ← Complex.ofReal_log hr.le, ← Complex.ofReal_neg, ← Complex.ofReal_mul,
+      ← Complex.ofReal_exp, Real.rpow_def_of_pos hr]
+    congr 2
+    ring
+  have e3 : Complex.exp (I * (p : ℂ) * Complex.log (((‖Z'‖ ^ 2 : ℝ) : ℂ) / ((‖Z‖ ^ 2 : ℝ) : ℂ))) =
+      (((‖Z'‖ ^ 2 / ‖Z‖ ^ 2 : ℝ) : ℝ) : ℂ) ^ (I * p) := by
+    have h : ((‖Z'‖ ^ 2 : ℝ) : ℂ) / ((‖Z‖ ^ 2 : ℝ) : ℂ) = (((‖Z'‖ ^ 2 / ‖Z‖ ^ 2 : ℝ)) : ℂ) := by
+      push_cast; rfl
+    rw [h, Complex.cpow_def_of_ne_zero (by exact_mod_cast hq.ne')]
+    congr 1; ring
+  unfold triAction
+  have : ∀ A B C : ℂ, Complex.exp (A - B + C) = Complex.exp A * Complex.exp (-B) * Complex.exp C := by
+    intro A B C; rw [Complex.exp_add, Complex.exp_sub, div_eq_mul_inv, ← Complex.exp_neg]
+  rw [this, e1, ← e2, ← e3]
+  congr 3
+  ring
+
 end Lightlike.Asymptotics.Lorentzian
