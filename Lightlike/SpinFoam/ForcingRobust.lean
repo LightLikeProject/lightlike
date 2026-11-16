@@ -25,6 +25,17 @@ them removed. -/
 def Robust (K : Complex4 V) (T : Finset (Finset V)) : Prop :=
   ∀ t ∈ K.tets, ForcesIn (K.tets.erase t) K.tris T
 
+/-- A checker for `Robust`: for every tetrahedron `t` of `K`, `L.lookup t` is a list of forcing steps,
+checked by `forcesInBy`, that forces every triangle of `K` from `T` with `t` removed. -/
+def robustBy (K : Complex4 V) (T : Finset (Finset V))
+    (L : List (Finset V × List (Finset V × Finset V))) : Bool :=
+  decide (∀ t ∈ K.tets, forcesInBy (K.tets.erase t) K.tris ((L.lookup t).getD []) T = true)
+
+/-- A successful `robustBy` check proves `Robust`. -/
+theorem robust_of_robustBy {K : Complex4 V} {T : Finset (Finset V)}
+    {L : List (Finset V × List (Finset V × Finset V))} (h : robustBy K T L = true) : Robust K T :=
+  fun t ht => forcesIn_of_forcesInBy (of_decide_eq_true h t ht)
+
 namespace Move15
 
 variable {K : Complex4 V} {σ τ : Finset V} (h : K.IsMove σ τ) {v : V} (hτ : τ = {v})
