@@ -530,6 +530,7 @@ import Lightlike.TuraevViro.Reflect.SixJNorm
 import Lightlike.TuraevViro.Reflect.JacksonWZ
 import Lightlike.TuraevViro.Reflect.QDougallMap
 import Lightlike.TuraevViro.Reflect.QDougallAll
+import Lightlike.TuraevViro.Reflect.SixJNormOneAll
 import Lightlike.TuraevViro.Reflect.JacksonDegenerate
 import Lightlike.TuraevViro.Reflect.SixJNormOne
 import Lightlike.TuraevViro.Reflect.SixJSingle
