@@ -206,3 +206,31 @@ Consequence for the chain. Step 4 is now a precise statement, to be proved (not 
 `Complex.exp`). It is a Racah-type sum of two q-6j symbols that Watson's transformation (step 1) with the `₄φ₃` form (step 3) should evaluate; the twist
 phase is the factor that makes the arguments of the two series combine. The derivation of the pentagon from it (step 5) is still not written; the classical derivation
 uses this identity and orthogonality, and the twist phases must cancel in the pentagon; stop trigger: if they do not cancel by a one-line computation, report.
+
+## Step 5 check: the chain does NOT close from Racah plus orthogonality (stop trigger reached; no derivation written)
+
+Question: does the pentagon (`Model.BE`, Taylor–Woodward eq. (5)) follow from the twisted Racah rule (step 4), orthogonality and the 24 symmetries?
+
+What was tried (Python only). (i) The pair of symbols that Racah's rule handles must share a triad and have bottoms that are a permutation of each other,
+`{a b x; c d p} · {a b x; d c q}`. In the pentagon sum the three symbols `{a b x; c d p}`, `{c d x; e f q}`, `{e f x; b a r'}` pair up as follows: the first two share the triad
+`(c d x)` but their other entries `(a b p)` and `(e f q)` are unrelated; the first and the third share `(a b x)` but their bottoms `(c d p)` and `(f e r')` are unrelated; the last
+two share `(e f x)` with unrelated remaining entries. So the rule cannot be applied to any pair of the three symbols as it stands. (ii) The rule can be inverted with
+orthogonality (the matrix `√([x+1][p+1]) {a b x; c d p}` is orthogonal in `x, p`; the sign `(-1)^((x+p+q)/2)` splits into factors depending on `x`, `p`, `q` once the
+parities, which are fixed by the tuple, are fixed): this expresses one 6j symbol as a sum over a new colour of two others, the Racah expansion. Substituting it into
+one factor of the pentagon makes a double sum whose `x`-sum still contains three symbols, so the reduction is circular. A quick numerical test of the inverted expansion with a
+naive sign gave no match (differences up to `1.1`); the sign bookkeeping above was not carried through, so that test is inconclusive and is not evidence either way.
+
+Structural reason (ASSUMPTION, not checked against a source): in the categorical reading the twisted Racah rule is the relation between the 6j symbols (the F-matrices) and the braiding
+(hexagon type), and orthogonality is unitarity of F, while the pentagon is an independent axiom of the fusion category. Relations of the first kind do not imply the
+second in general. The known derivations of the Biedenharn–Elliott identity in the classical case go through recoupling of four angular momenta (DLMF §34.5(vi) lists the Racah sum rule (34.5.15)
+and the Biedenharn–Elliott identity (34.5.16) as separate "sum rules"; the page was read through a summariser), not from the Racah sum rule alone. The Racah rule is plausibly the case of the pentagon with
+one spin zero, i.e. the implication goes from the pentagon to the Racah rule, not back (not checked numerically here).
+
+Consequence. The recorded trigger applies: step 5 as "pentagon from step 4 plus orthogonality" is not a viable plan. Steps 1 (Watson), 3 (`₄φ₃` form) and 4 (twisted Racah) remain true and useful
+tools for a different route:
+ - Route A', direct: write both sides of `Model.BE` with step 3 as terminating balanced `₄φ₃` series, so the left side is a double sum (over `x` and over the summation index of one 6j symbol) and the right side
+   a product of two `₄φ₃`; collapse the sum over `x` by a transformation of very-well-poised `₈φ₇` type (Watson, step 1, or Bailey (17.9.16)) and a `₆φ₅` or `₈φ₇` summation (Jackson (17.7.14), (17.7.16)).
+   The structure is that of the classical proofs of the Biedenharn–Elliott identity by hypergeometric transformations (UNVERIFIED reference). Next numerical step, Python only: check that the
+   double sum collapses as described for a few small cases.
+ - Route B', representation-theoretic: U_q(sl₂) at a root of unity and the fusion category (Turaev's book, Chapter VI; the pentagon is a coherence axiom there); too large for the library today.
+Not widened: the search for further Racah-type rules was stopped as agreed.
