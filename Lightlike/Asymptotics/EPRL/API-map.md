@@ -1,4 +1,4 @@
-# Lightlike/Asymptotics/EPRL
+# Large-spin asymptotics of the Euclidean EPRL vertex
 
 ## Abstract (Alpha)
 

@@ -36,6 +36,7 @@ import Lightlike.Asymptotics.EPRL.EPRLFormula
 import Lightlike.Asymptotics.EPRL.EdgeBridge
 import Lightlike.Asymptotics.EPRL.HaarNode
 import Lightlike.Asymptotics.Lorentzian.Action
+import Lightlike.Asymptotics.Lorentzian.ActionTests
 import Lightlike.Asymptotics.Lorentzian.Amplitude
 import Lightlike.Asymptotics.Lorentzian.Stationary
 import Lightlike.Asymptotics.Lorentzian.Critical
@@ -434,6 +435,7 @@ import Lightlike.Tests.GaugeChange
 import Lightlike.Tests.InverseMoves
 import Lightlike.Tests.Manifold
 import Lightlike.Tests.PonzanoRegge
+import Lightlike.Tests.QDougall
 import Lightlike.Tests.QM
 import Lightlike.Tests.SU2
 import Lightlike.Tests.SixJ

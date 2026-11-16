@@ -76,11 +76,18 @@ noncomputable def triReal (Z ξ Z' ξ' : Spinor) : ℝ :=
 noncomputable def triWeight (k : ℝ) (Z ξ Z' ξ' : Spinor) : ℝ :=
   triReal Z ξ Z' ξ' ^ k
 
-/-- The complex action of one triangle, BDFHP eq. (17). Its real part is the exponent `k log
-triReal`, its imaginary part `p log (‖Z'‖²/‖Z‖²)` (plus the argument of the overlaps). -/
+/-- The complex action of one triangle, BDFHP eq. (17), in the form whose exponential is the
+integrand for every spin: for `2k ∈ ℕ`,
+`e^S = (⟨Z,ξ⟩⟨Jξ',Z'⟩)^{2k} / (‖Z‖ ‖Z'‖)^{2k} · (‖Z'‖²/‖Z‖²)^{ip}`.
+The first term of (17) is `k log(u²)` with `u = ⟨Z,ξ⟩⟨Jξ',Z'⟩/(‖Z‖‖Z'‖)`; BDFHP (p. 16) define `S`
+only modulo `2πi`, which is harmless for integer `k` but changes the sign of `e^S` for odd `2k`.
+Here the logarithm is taken of `⟨Z,ξ⟩⟨Jξ',Z'⟩` itself, `2k log(⟨Z,ξ⟩⟨Jξ',Z'⟩)`, so that `e^S` is the
+power for `2k ∈ ℕ`. The two forms have the same real part, `k log triReal`, and the same
+derivative wherever both are defined; the imaginary part `p log (‖Z'‖²/‖Z‖²)` has a positive real
+argument. -/
 noncomputable def triAction (k p : ℝ) (Z ξ Z' ξ' : Spinor) : ℂ :=
-  (k : ℂ) * Complex.log ((inner ℂ Z ξ) ^ 2 * (inner ℂ (jMap ξ') Z') ^ 2 /
-      ((‖Z‖ ^ 2 : ℝ) * (‖Z'‖ ^ 2 : ℝ))) +
+  ((2 * k : ℝ) : ℂ) * Complex.log (inner ℂ Z ξ * inner ℂ (jMap ξ') Z') -
+    (k : ℂ) * Complex.log (((‖Z‖ ^ 2 : ℝ) : ℂ) * ((‖Z'‖ ^ 2 : ℝ) : ℂ)) +
     Complex.I * (p : ℂ) * Complex.log (((‖Z'‖ ^ 2 : ℝ) : ℂ) / ((‖Z‖ ^ 2 : ℝ) : ℂ))
 
 lemma triReal_nonneg (Z ξ Z' ξ' : Spinor) : 0 ≤ triReal Z ξ Z' ξ' := by
@@ -172,14 +179,18 @@ lemma norm_exp_triAction {k p : ℝ} {Z ξ Z' ξ' : Spinor} (hZ : Z ≠ 0) (hZ' 
         (((‖Z'‖ ^ 2 / ‖Z‖ ^ 2 : ℝ)) : ℂ) := by push_cast; rfl
     have harg : (Complex.log (((‖Z'‖ ^ 2 : ℝ) : ℂ) / ((‖Z‖ ^ 2 : ℝ) : ℂ))).im = 0 := by
       rw [hq, Complex.log_im, Complex.arg_ofReal_of_nonneg (by positivity)]
-    have hn : ‖(inner ℂ Z ξ) ^ 2 * (inner ℂ (jMap ξ') Z') ^ 2 /
-        (((‖Z‖ ^ 2 : ℝ) : ℂ) * ((‖Z'‖ ^ 2 : ℝ) : ℂ))‖ = triReal Z ξ Z' ξ' := by
-      rw [norm_div, norm_mul, norm_pow, norm_pow, ← Complex.ofReal_mul, Complex.norm_real,
-        Real.norm_of_nonneg (by positivity)]
-      unfold triReal; ring
-    simp only [triAction, Complex.add_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im,
-      Complex.log_re, hn, zero_mul, sub_zero, Complex.mul_im, Complex.I_re, Complex.I_im,
-      zero_add, one_mul, harg, mul_zero]
+    have hnn : ((‖Z‖ ^ 2 : ℝ) : ℂ) * ((‖Z'‖ ^ 2 : ℝ) : ℂ) = (((‖Z‖ ^ 2 * ‖Z'‖ ^ 2 : ℝ)) : ℂ) := by
+      push_cast; rfl
+    have ha : ‖inner ℂ Z ξ‖ ≠ 0 := norm_ne_zero_iff.mpr h1
+    have hb : ‖inner ℂ (jMap ξ') Z'‖ ≠ 0 := norm_ne_zero_iff.mpr h2
+    have hlog : (triReal Z ξ Z' ξ') = (‖inner ℂ Z ξ‖ * ‖inner ℂ (jMap ξ') Z'‖) ^ 2 /
+        (‖Z‖ ^ 2 * ‖Z'‖ ^ 2) := by unfold triReal; ring
+    simp only [triAction, Complex.add_re, Complex.sub_re, Complex.mul_re, Complex.ofReal_re,
+      Complex.ofReal_im, Complex.log_re, zero_mul, sub_zero, Complex.mul_im, Complex.I_re,
+      Complex.I_im, zero_add, one_mul, harg, mul_zero, hnn, norm_mul, Complex.norm_real,
+      Real.norm_of_nonneg (by positivity : (0 : ℝ) ≤ ‖Z‖ ^ 2 * ‖Z'‖ ^ 2)]
+    rw [hlog, Real.log_div (by positivity) (by positivity), Real.log_pow]
+    push_cast
     ring
   rw [hre, triWeight]
   by_cases h0 : triReal Z ξ Z' ξ' = 0
