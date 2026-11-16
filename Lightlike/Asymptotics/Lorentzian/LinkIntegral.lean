@@ -130,6 +130,24 @@ theorem suV_cohVec_eq (n : ℕ) (ρ : ℝ) (g : Matrix (Fin 2) (Fin 2) ℂ)
   rw [hw]
   simp only [Matrix.cons_val_zero, Matrix.cons_val_one, mul_one]
 
+/-- **The overlap with a unit boundary spinor vanishes on a null set only**: for `M`, `g` of
+determinant `1`, `g₀₀ Z₀ + g₁₀ Z₁ ≠ 0` for almost every `w`, where `Z = Mᵀ (w, 1)`. -/
+theorem ae_pairing_ne_zero (M g : Matrix (Fin 2) (Fin 2) ℂ) (hM : M.det = 1) (hg : g.det = 1) :
+    ∀ᵐ w : ℂ ∂MeasureTheory.volume,
+      g 0 0 * spinAct Mᵀ (lorSpinor w) 0 + g 1 0 * spinAct Mᵀ (lorSpinor w) 1 ≠ 0 := by
+  have h := ae_affine_ne_zero ((M * g) 0 0) ((M * g) 1 0) (by
+    by_contra hcon
+    rw [not_or, not_not, not_not] at hcon
+    have hd : (M * g).det = 1 := by rw [Matrix.det_mul, hM, hg, one_mul]
+    rw [Matrix.det_fin_two, hcon.1, hcon.2] at hd
+    simp at hd)
+  filter_upwards [h] with w hw
+  have e : g 0 0 * spinAct Mᵀ (lorSpinor w) 0 + g 1 0 * spinAct Mᵀ (lorSpinor w) 1 =
+      (M * g) 0 0 * w + (M * g) 1 0 := by
+    simp [spinAct, lorSpinor, Matrix.mul_apply, Fin.sum_univ_two]
+    ring
+  rw [e]; exact hw
+
 /-- **One link as an integral over the chart.** For `n : ℕ` (the lowest level of `(n/2, ρ)`),
 SU(2) data `g₁, g₂` and `a, b ∈ SL(2,ℂ)`, the contraction of the EPRL matrix coefficients
 `D_{m m'}(a⁻¹ b)` with the coherent coefficients (conjugated on the bra slot) is
@@ -162,6 +180,44 @@ theorem link_integral (γ : ℝ) (n : ℕ) (g1 g2 : SU2) (a b : SL2C) :
     simp only [Complex.conj_conj]
     rw [eprlVec_sum, eprlVec_sum, hsum, hsum]
   rw [step1, inner_pi_inv_mul]
-  sorry
+  set ρ := eprlRho γ n with hρ
+  set ν := nrmA (tlin (0 + p0 (n : ℤ)) (0 + q0 (n : ℤ)) ρ) with hν
+  have hm1 := memLp_tfun n 0 ρ (cohState n (g1 : Matrix (Fin 2) (Fin 2) ℂ))
+  have hm2 := memLp_tfun n 0 ρ (cohState n (g2 : Matrix (Fin 2) (Fin 2) ℂ))
+  have hF1 : IsHomog (n : ℤ) ρ (hvec n 0 ρ (cohState n (g1 : Matrix (Fin 2) (Fin 2) ℂ))) :=
+    isHomog_hvec (by simp) ρ _
+  have hF2 : IsHomog (n : ℤ) ρ (hvec n 0 ρ (cohState n (g2 : Matrix (Fin 2) (Fin 2) ℂ))) :=
+    isHomog_hvec (by simp) ρ _
+  have hνpos : 0 < ν := nrmA_pos (n : ℤ) ρ (tlin_isPS (n : ℤ) ρ 0) (tlin_ne_zero _ _ ρ)
+  rw [suV_cohVec_eq n ρ _ hm1, suV_cohVec_eq n ρ _ hm2, map_smul, map_smul, inner_smul_left,
+    inner_smul_right, inner_principalSeries_eq_integral (n : ℤ) ρ a b hF1 hF2 hm1 hm2]
+  have hdetA : ((a : Matrix (Fin 2) (Fin 2) ℂ)ᵀ).det = 1 := by
+    rw [Matrix.det_transpose]; exact a.2
+  have hdetB : ((b : Matrix (Fin 2) (Fin 2) ℂ)ᵀ).det = 1 := by
+    rw [Matrix.det_transpose]; exact b.2
+  have hg1 : (g1 : Matrix (Fin 2) (Fin 2) ℂ).det = 1 := (Matrix.mem_specialUnitaryGroup_iff.mp g1.2).2
+  have hg2 : (g2 : Matrix (Fin 2) (Fin 2) ℂ).det = 1 := (Matrix.mem_specialUnitaryGroup_iff.mp g2.2).2
+  have hint : ∫ z : ℂ, conj (hvec n 0 ρ (cohState n (g1 : Matrix (Fin 2) (Fin 2) ℂ))
+        ((a : Matrix (Fin 2) (Fin 2) ℂ)ᵀ *ᵥ ![z, 1])) *
+      hvec n 0 ρ (cohState n (g2 : Matrix (Fin 2) (Fin 2) ℂ))
+        ((b : Matrix (Fin 2) (Fin 2) ℂ)ᵀ *ᵥ ![z, 1]) = ∫ w : ℂ, Complex.exp (triAction
+        ((n : ℝ) / 2) ρ (spinAct ((a : Matrix (Fin 2) (Fin 2) ℂ)ᵀ) (lorSpinor w))
+        (firstCol ((g1 : Matrix (Fin 2) (Fin 2) ℂ).map star))
+        (spinAct ((b : Matrix (Fin 2) (Fin 2) ℂ)ᵀ) (lorSpinor w))
+        (firstCol (wM * (g2 : Matrix (Fin 2) (Fin 2) ℂ)))) *
+          (((‖spinAct ((a : Matrix (Fin 2) (Fin 2) ℂ)ᵀ) (lorSpinor w)‖ ^ 2 *
+            ‖spinAct ((b : Matrix (Fin 2) (Fin 2) ℂ)ᵀ) (lorSpinor w)‖ ^ 2)⁻¹ : ℝ) : ℂ) := by
+    refine MeasureTheory.integral_congr_ae ?_
+    filter_upwards [ae_pairing_ne_zero _ _ a.2 hg1, ae_pairing_ne_zero _ _ b.2 hg2] with w w1 w2
+    refine link_eq_lor n ρ _ _ _ _ w
+      (spinAct_ne_zero_of_det _ (by rw [hdetA]; exact one_ne_zero) (lorSpinor_ne_zero w))
+      (spinAct_ne_zero_of_det _ (by rw [hdetB]; exact one_ne_zero) (lorSpinor_ne_zero w)) ?_ ?_
+    · rw [inner_firstCol_map_star]; exact (map_ne_zero (starRingEnd ℂ)).mpr w1
+    · rw [inner_jMap_firstCol_wM]; exact w2
+  rw [hint]
+  have hc : conj ((ν : ℂ)⁻¹) = (ν : ℂ)⁻¹ := by simp
+  rw [hc]
+  push_cast
+  ring
 
 end Lightlike.Asymptotics.Lorentzian
