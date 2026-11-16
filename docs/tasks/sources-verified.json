@@ -1773,18 +1773,18 @@
   "citations_via": "Semantic Scholar"
  },
  "freidel-louapre-2003": {
-  "checked": "2026-11-08",
+  "checked": "2026-11-15",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "Diffeomorphisms and spin foam models",
   "locations": {
-   "Section III": {
+   "Section IV": {
     "verified": true,
-    "snippet": "III. GAUGE SYMMETRIES IN DISCRETE QUANTUM GRAVITY In this section we recall briefly the discretization procedure leading to the Ponzano- Regge model for 3d euclidian quantum gravity. We emphasize the implementati",
+    "snippet": "IV. GAUGE SYMMETRIES AND DIVERGENCES In this part we complete the construction of the Ponzano-Regge model, taking into ac- count the infinite volume of the translational gauge symmetry. A. Division",
     "why": null
    }
   },
-  "citations": 163,
+  "citations": 162,
   "citations_via": "Semantic Scholar"
  },
  "freidel-louapre-2004": {

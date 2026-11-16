@@ -47,6 +47,25 @@ Then, on either route:
 6. Open the pull request from the link that `git push` prints, with the line `Task: T-QU1-P5`.
    Once it is merged, the task's issue is closed.
 
+## Working with an AI agent
+
+Paste this into your coding agent, started in a clone set up as above. It follows the same steps.
+
+```text
+You are contributing one proof to Lightlike, a Lean 4 library; this folder is a clone of it.
+1. Read AGENTS.md and CONTRIBUTING.md before anything else, and follow them.
+2. Pick one open proof task labelled `ready` (CONTRIBUTING.md, "Your first proof task"). Tell me
+   which, and comment `attempting` on its issue (or ask me to) before you start.
+3. Work on a branch `proof/<task ID>`, one task per pull request.
+4. Change only the proof in the task's file. Never edit the locked statement, and never add
+   `sorry`, `admit`, `axiom`, `native_decide` or `maxHeartbeats 0`.
+5. Build the task with `lake build Tasks.<Area>.<File>` until it reports no error.
+6. Run `python3 -I scripts/gate.py --task <task ID>` and fix everything it reports.
+7. Push and open the pull request with the template filled in: the `Task:` line, the AI-assistance
+   field, and the last lines of the gate's output quoted in the summary.
+8. If you are stuck, stop and tell me what you tried. Never weaken the statement to make it pass.
+```
+
 ## Hard rules
 
 A pull request is merged when the steps of `.github/workflows/ci.yml` marked `[hard rule]` pass.

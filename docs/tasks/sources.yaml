@@ -1044,7 +1044,7 @@ milestones:
   SF5d:
     class: sourced
     refs:
-      - {ref: freidel-louapre-2003, location: "Section III", check: "GAUGE SYMMETRIES"}
+      - {ref: freidel-louapre-2003, location: "Section IV", check: "GAUGE SYMMETRIES AND DIVERGENCES"}
   SF6b:
     class: sourced
     refs:

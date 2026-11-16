@@ -68,8 +68,9 @@ CHECKS = [
     ("scripts/spinfoam/bc_sign_check.py", False),
     ("scripts/spinfoam/bing_house_check.py", False),
     ("scripts/spinfoam/gauge_manifold_check.py", False),
+    ("scripts/spinfoam/forcechain.py", True),
     ("scripts/spinfoam/gauge_independence_check.py", True),
-    ("scripts/spinfoam/tetra_partition_check.py", False),
+    ("scripts/spinfoam/tetra_partition_check.py", False), ("scripts/spinfoam/u1_bubble.py", False),
 ]
 # Scripts that are not cross-checks (tools, the gate itself)
 NOT_CHECKS = {"scripts/ci_check.py", "scripts/prune_docs.py", "scripts/gate.py", "scripts/sixj_support.py", "scripts/tooling_selftest.py",
@@ -81,6 +82,15 @@ NOT_CHECKS = {"scripts/ci_check.py", "scripts/prune_docs.py", "scripts/gate.py",
               "scripts/regge/gen_kuhn_basis.py",  # generator of Lightlike/Regge/Conv3/KuhnBasis.lean from regge3d_g0_certificate.py
               "scripts/pl/check_chain.py",  # a library of surf_chains.py
               "scripts/pl/surf_search.py",  # a search tool; its results are checked by surf_chains.py
+              # q-Racah certificate pipeline: generators that write Lightlike/TuraevViro/Reflect/Racah*.lean
+              # from intermediate files (parts.pkl, facs.out), run by hand from scripts/qracah
+              "scripts/qracah/wz8.py", "scripts/qracah/size.py", "scripts/qracah/size2.py",
+              "scripts/qracah/gen_cert.py", "scripts/qracah/gen_core.py", "scripts/qracah/gen_eval.py",
+              "scripts/qracah/mu_check.py",  # needs parts.pkl from size2.py; prints, no exit code
+              # numerical evidence that takes the level r on the command line and prints; no exit code
+              "scripts/qracah/endrow_check.py", "scripts/qracah/jacobi_check.py",
+              "scripts/qracah/orth_support.py",
+              "scripts/qracah/chunk.py",  # splits the long Poly literals of the generated certificates; used by gen_cert.py
               "scripts/spinfoam/all15.py", "scripts/spinfoam/all24.py",  # print the reduction data of the 1-5 and 2-4 moves; Lean checks them
               "scripts/spinfoam/gen15.py", "scripts/spinfoam/gen24.py",  # generators of the Lean tables of Move15 and Move24
               "scripts/spinfoam/gauge_match.py", "scripts/spinfoam/net_model.py",  # libraries of the move searches

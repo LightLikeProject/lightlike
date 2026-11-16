@@ -33,9 +33,16 @@ def z(N):
 if __name__ == "__main__":
     assert six_j((2,) * 6) == Rational(1, 6), "all-2 control"
     assert six_j((1, 1, 1, 0, 0, 0)) == 0, "inadmissible triad control"
+    # the term at the doubled spins (0, n, n, n, n, 0) is (n+1)^2 (tetraTerm_zeroSpin); control: (n+1)^3 fails
+    for n in range(0, 7):
+        t = (n + 1) ** 4 * six_j((0, n, n, n, n, 0)) ** 2
+        assert t == (n + 1) ** 2, ("zero-spin term", n, t)
+        assert n == 0 or t != (n + 1) ** 3, "wrong-exponent control"
+    print("zero-spin term (n+1)^2 for n = 0..6: OK")
     prev = 0
     for N in range(0, 4):
         zn = z(N)
         assert zn >= prev
+        assert zn >= (N + 1) ** 2, ("tetraPartition_ge", N)
         prev = zn
         print(N, zn, float(zn))

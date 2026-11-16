@@ -44,6 +44,11 @@ two coherent 15j integrals, which gives the EPRL formula [8]. The regular 4-simp
 hypotheses, and spins not proportional to the areas, or with an odd node sum, do not [10]. The
 script `scripts/asymptotics/eprl_asymptotics_check.py` compares the formula with the exact integral
 at the regular 4-simplex, with wrong-formula controls; this is numerical evidence, not proof.
+The edge pairing of the `K₅` contraction of the spin-network 15j, `Σ_μ (-1)^((n-μ)/2) u(μ) v(-μ)`,
+is the bilinear form `u ⬝ᵥ (W v)` of the structure map on the coherent-state vectors [28]; it is the
+first step towards writing the coherent 15j as a contraction of coherent intertwiners.
+`k5Contract_cohInt` completes it: the coherent 15j is the `K₅` contraction of the coherent
+intertwiners, with no extra sign in these conventions [29].
 
 ## Lean References
 
@@ -104,6 +109,14 @@ at the regular 4-simplex, with wrong-formula controls; this is numerical evidenc
 26. Lightlike/Asymptotics/EPRL/Pieces.lean - `Asymptotics.EPRL.localise_pieces`
 27. Lightlike/Asymptotics/EPRL/ReggeState.lean - `Asymptotics.EPRL.reggeState`,
     `Asymptotics.EPRL.edge_injective`, `Asymptotics.EPRL.simplexLength_pair`
+28. Lightlike/Asymptotics/EPRL/EdgeBridge.lean - `Asymptotics.EPRL.projVec`,
+    `Asymptotics.EPRL.edgePair_eq_sum`, `Asymptotics.EPRL.edgePair_eq`,
+    `Asymptotics.EPRL.edgePair_antisymm_one`
+29. Lightlike/Asymptotics/EPRL/HaarNode.lean - `Asymptotics.EPRL.cohInt_apply_eq_integral`,
+    `Asymptotics.EPRL.cohState_pair`, `Asymptotics.EPRL.prop_eq_pair`,
+    `Asymptotics.EPRL.k5Contract_prod`, `Asymptotics.EPRL.k5Contract_integral`,
+    `Asymptotics.EPRL.projNode_cohInt`, `Asymptotics.EPRL.k5Contract_cohInt`,
+    `Asymptotics.EPRL.pair_ne_overlap`
 
 ## References
 
