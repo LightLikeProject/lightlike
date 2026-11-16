@@ -1,4 +1,5 @@
 import Lightlike.Regge.Conv3.ChartChangeCoeffs
+import Lightlike.Regge.Conv3.ChartChangeDChr
 import Lightlike.Regge.Conv3.FlatStarJet
 import Lightlike.Regge.Conv3.JetSlice
 
@@ -33,44 +34,6 @@ namespace Lightlike.Regge.Conv3
 open Lightlike.Geodesic
 
 variable {g : (Fin 3 → ℝ) → Matrix (Fin 3) (Fin 3) ℝ} {m : Fin 3 → ℝ} {U : Set (Fin 3 → ℝ)}
-
--- measured: about 7.7 million heartbeats for all 81 index cases; the cap is about twice that
-set_option maxHeartbeats 16000000 in
-set_option maxRecDepth 100000 in
-/-- **The derivative of the Christoffel symbols at a point, in the shifted flat form.** -/
-theorem dChr_eq_flat (hg : IsCoordMetric g U) (hm : m ∈ U) (μ ρ ν σ : Fin 3) :
-    dChr g m μ ρ ν σ = (1 / 2) * ∑ l, (g m)⁻¹ ρ l *
-        (Sdd g m ν μ l σ + Sdd g m σ μ l ν - Sdd g m l μ ν σ)
-      - ∑ r, christoffel g ρ μ r m * christoffel g r ν σ m := by
-  have e : ∀ a b c d, pd a (fun y => pd b (fun z => g z c d) y) m = ddv g m b a c d :=
-    fun _ _ _ _ => rfl
-  have hinv : (g m)⁻¹ = ((g m).det)⁻¹ • (g m).adjugate := by
-    rw [Matrix.inv_def, Ring.inverse_eq_inv']
-  have hdet : (g m).det ≠ 0 := (hg.isUnit_det m hm).ne_zero
-  have gs10 := g_symm_m hg hm 1 0
-  have gs20 := g_symm_m hg hm 2 0
-  have gs21 := g_symm_m hg hm 2 1
-  have c1 := fun a => christoffel_symm_low hg hm a 1 0
-  have c2 := fun a => christoffel_symm_low hg hm a 2 0
-  have c3 := fun a => christoffel_symm_low hg hm a 2 1
-  have hD2 : g m 0 0 * (g m 1 1 * g m 2 2 - g m 1 2 ^ 2) - g m 2 2 * g m 0 1 ^ 2
-      + g m 1 2 * g m 0 1 * g m 0 2 + g m 1 2 * g m 0 1 * g m 0 2 - g m 1 1 * g m 0 2 ^ 2 ≠ 0 := by
-    intro h; apply hdet
-    rw [Matrix.det_fin_three]
-    simp only [gs10, gs20, gs21]
-    linear_combination h
-  simp only [dChr, e, pd_g_eq_chr hg hm, Sdd, hinv, Matrix.smul_apply, smul_eq_mul,
-    Fin.sum_univ_three]
-  have h3 : ∀ x : Fin 3, x = 0 ∨ x = 1 ∨ x = 2 := by decide
-  rcases h3 μ with rfl | rfl | rfl <;> rcases h3 ρ with rfl | rfl | rfl <;>
-  rcases h3 ν with rfl | rfl | rfl <;> rcases h3 σ with rfl | rfl | rfl <;>
-  · simp only [Matrix.adjugate_fin_three, Matrix.of_apply, Matrix.cons_val_zero,
-      Matrix.cons_val_one, Matrix.cons_val, Matrix.head_cons, gs10, gs20, gs21, c1, c2, c3]
-    rw [Matrix.det_fin_three]
-    simp only [Matrix.of_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val,
-      Matrix.head_cons, gs10, gs20, gs21]
-    field_simp
-    ring
 
 /-- **Scalar curvature at a general point as the flat formula for the shifted second derivatives.**
 `R = 2 Rnum(g m, Sdd) / det²`: the scalar curvature at `m` equals the scalar curvature of a jet with

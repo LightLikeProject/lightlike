@@ -279,6 +279,8 @@ triangulated disc [16].
     `Regge.Conv3.jetStarCore_of_chart`
 76. Lightlike/Regge/Conv3/ChartChangeTests.lean - `Regge.Conv3.euclid_chart_core`,
     `Regge.Conv3.expMetric_core`, `Regge.Conv3.expMetric_not_flat`
+77. Lightlike/Regge/Conv3/ChartChangeDChr.lean - `Regge.Conv3.dChr_eq_flat`,
+    `Regge.Conv3.inv_contract`
 
 ## References
 

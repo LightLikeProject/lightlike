@@ -379,6 +379,7 @@ import Lightlike.Regge.Conv3.ChartChangeFan
 import Lightlike.Regge.Conv3.ClassPin
 import Lightlike.Regge.Conv3.ChartChangeClasses
 import Lightlike.Regge.Conv3.ChartChangeCoeffs
+import Lightlike.Regge.Conv3.ChartChangeDChr
 import Lightlike.Regge.Conv3.ChartChangeGeneral
 import Lightlike.Regge.Conv3.ChartChangeTests
 import Lightlike.Regge.Conv3.HypProductCore
