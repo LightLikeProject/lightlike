@@ -130,4 +130,38 @@ theorem suV_cohVec_eq (n : ℕ) (ρ : ℝ) (g : Matrix (Fin 2) (Fin 2) ℂ)
   rw [hw]
   simp only [Matrix.cons_val_zero, Matrix.cons_val_one, mul_one]
 
+/-- **One link as an integral over the chart.** For `n : ℕ` (the lowest level of `(n/2, ρ)`),
+SU(2) data `g₁, g₂` and `a, b ∈ SL(2,ℂ)`, the contraction of the EPRL matrix coefficients
+`D_{m m'}(a⁻¹ b)` with the coherent coefficients (conjugated on the bra slot) is
+`(‖A e₀‖²)⁻¹ ∫_ℂ e^S / (‖Z‖² ‖Z'‖²) dw`, with `Z = aᵀ (w, 1)`, `Z' = bᵀ (w, 1)`, the source
+spinor the first column of `ḡ₁`, the target spinor the first column of `w g₂`, and `S` the
+power-form action with `2k = n`, `p = ρ` (BDFHP §4 p. 16, eq. (17); Engle–Pereira eqs. (28), (30)
+p. 7). The constant `‖A e₀‖² = ‖tlin e₀‖²` is `π/(n+1)` (to be proved; checked numerically). -/
+theorem link_integral (γ : ℝ) (n : ℕ) (g1 g2 : SU2) (a b : SL2C) :
+    ∑ m : Fin (dsp (n : ℤ) 0 + 1), ∑ m' : Fin (dsp (n : ℤ) 0 + 1),
+        conj (cohVec n (g1 : Matrix (Fin 2) (Fin 2) ℂ) m) *
+          cohVec n (g2 : Matrix (Fin 2) (Fin 2) ℂ) m' * eprlCoeff γ n m m' (a⁻¹ * b) =
+      (((nrmA (tlin (0 + p0 (n : ℤ)) (0 + q0 (n : ℤ)) (eprlRho γ n)) ^ 2)⁻¹ : ℝ) : ℂ) *
+        ∫ w : ℂ, Complex.exp (triAction ((n : ℝ) / 2) (eprlRho γ n)
+            (spinAct ((a : Matrix (Fin 2) (Fin 2) ℂ)ᵀ) (lorSpinor w))
+            (firstCol ((g1 : Matrix (Fin 2) (Fin 2) ℂ).map star))
+            (spinAct ((b : Matrix (Fin 2) (Fin 2) ℂ)ᵀ) (lorSpinor w))
+            (firstCol (wM * (g2 : Matrix (Fin 2) (Fin 2) ℂ)))) *
+          (((‖spinAct ((a : Matrix (Fin 2) (Fin 2) ℂ)ᵀ) (lorSpinor w)‖ ^ 2 *
+            ‖spinAct ((b : Matrix (Fin 2) (Fin 2) ℂ)ᵀ) (lorSpinor w)‖ ^ 2)⁻¹ : ℝ) : ℂ) := by
+  have hsum : ∀ (c : Espace (dsp (n : ℤ) 0)),
+      ∑ m : Fin (dsp (n : ℤ) 0 + 1), c m • EuclideanSpace.single m (1 : ℂ) = c := by
+    intro c; ext k; simp [Finset.sum_apply, Pi.single_apply]
+  have step1 : ∑ m : Fin (dsp (n : ℤ) 0 + 1), ∑ m' : Fin (dsp (n : ℤ) 0 + 1),
+        conj (cohVec n (g1 : Matrix (Fin 2) (Fin 2) ℂ) m) *
+          cohVec n (g2 : Matrix (Fin 2) (Fin 2) ℂ) m' * eprlCoeff γ n m m' (a⁻¹ * b) =
+      inner ℂ (suV (n : ℤ) (eprlRho γ n) 0 (cohVec n (g1 : Matrix (Fin 2) (Fin 2) ℂ)))
+        (principalSeries (n : ℤ) (eprlRho γ n) (a⁻¹ * b)
+          (suV (n : ℤ) (eprlRho γ n) 0 (cohVec n (g2 : Matrix (Fin 2) (Fin 2) ℂ)))) := by
+    rw [eprlCoeff_pair]
+    simp only [Complex.conj_conj]
+    rw [eprlVec_sum, eprlVec_sum, hsum, hsum]
+  rw [step1, inner_pi_inv_mul]
+  sorry
+
 end Lightlike.Asymptotics.Lorentzian
