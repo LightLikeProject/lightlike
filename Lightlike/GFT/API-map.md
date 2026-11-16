@@ -23,7 +23,9 @@ colored graph [1]. The `1`-bubbles are the lines, a line has exactly two ends, e
 vertex, and in a connected graph any two vertices are joined by a chain of lines [2]. The lines of `p`
 colors restricted to a bubble form a colored graph of dimension `p - 1`, and it is connected [2]. The conditions for a complex with indexed
 simplices to be a pseudo-manifold or a normal pseudo-manifold, and its Euler characteristic, are defined in
-a form that keeps repeated simplices distinct [3]. That
+a form that keeps repeated simplices distinct [3]. The dual of a colored graph, with one simplex for each bubble of the
+complementary colors, is pure and non-branching, strongly connected when the graph is connected, and
+normal, so the dual of a connected colored graph is a normal pseudo-manifold [4]. That
 the dual of every colored graph is a normal simplicial pseudo-manifold, and
 the identification of the bubbles with the links of the dual simplices, are due to Gurau {1}; they
 are [TODO] here.
@@ -42,6 +44,10 @@ are [TODO] here.
 3. Lightlike/GFT/PseudoComplex.lean - `GFT.GradedPoset`, `GFT.GradedPoset.IsPseudoManifold`,
    `GFT.GradedPoset.link`, `GFT.GradedPoset.IsNormal`, `GFT.GradedPoset.f`,
    `GFT.GradedPoset.eulerChar`
+4. Lightlike/GFT/Dual.lean - `GFT.ColoredGraph.DualSimplex`, `GFT.ColoredGraph.dual`,
+   `GFT.ColoredGraph.dual_isPure`, `GFT.ColoredGraph.dual_isNonBranching`,
+   `GFT.ColoredGraph.dual_isStronglyConnected`, `GFT.ColoredGraph.dual_isNormal`,
+   `GFT.ColoredGraph.dual_isNormalPseudoManifold`
 
 ## References
 
