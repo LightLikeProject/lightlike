@@ -10,8 +10,8 @@ its image has the whole image as its frontier (`jordan_frontier`).
 The inclusion of the frontier in the curve holds for every component of the complement of a closed
 set. For the other inclusion, a point `p` of the curve outside the frontier of a component `U` gives an
 arc `B` of the curve that contains the compact frontier of `U` and misses `p` (`exists_arc_of_compact`);
-the complement of `B` is connected by the arc theorem (`arc_not_separating`), and `U` is open and relatively
-closed in it, so it is all of it and contains `p`, a contradiction.
+the complement of `B` is connected by the arc theorem (`arc_not_separating`), and `U`, an open set that is relatively
+closed in it, is all of it and contains `p`, a contradiction.
 
 This is the clause "each sharing `C` as boundary" of the statement of the Jordan Curve Theorem in the
 introduction of chapter 9 of J. McCleary, *A First Course in Topology: Continuity and Dimension*
