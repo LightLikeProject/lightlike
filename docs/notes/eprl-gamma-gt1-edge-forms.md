@@ -196,3 +196,30 @@ not: that the library's statement equals the source's. The entries still claim o
 
 Finding before the registration, kept for the record: every `sf9` location verified that a *section exists*,
 none an *equation*.
+
+## Sources check of the `γ < 1` identification and of the suppression entries
+
+Same method as above: `sources.py check` passes, and the registry records headings only
+(BDFGH `Section 3.4` for the identification entry and `Section 4` for the two suppression entries). The
+equations the entries stand next to, read from the full text of arXiv:0902.1170:
+
+| Entry | Source statement it stands next to | What the source says |
+|---|---|---|
+| `eprlVertex_coherent`, `k5Contract4_eprlCohNode` (γ < 1) | eq. (14), with (13) and (15) | `f₄ = (−1)^{χ'} ∫_{Spin(4)⁵} ∏_a dG_a e^{S_{γ<1}}`, with the propagator `P_ab = ⟨−n_ab\|X⁻_ab\|n_ba⟩^{2j⁻} ⟨−n_ab\|X⁺_ab\|n_ba⟩^{2j⁺}` (13) and the action (15). Prefactor `(−1)^{χ'}` is the source's; the library's `eprlCoh` has no such sign. |
+| `local_suppression`, `suppression_finite_max` | Theorem 1, part 3, eq. (22) | for boundary data that is neither a non-degenerate 4-geometry nor a vector geometry, `f₄(ψ_λ) = o(λ^{−M})` for all `M` |
+| `coh15j_dichotomy`, `eprlCoh_exp_decay_of_no_gluing` | the same, and the sentence after the proof outline of Section 5 | exponential suppression of points where the modulus is below one; "all other points are exponentially suppressed" (near eq. (37)) |
+
+Findings:
+
+* The suppression entries prove an analytic mechanism (non-stationary phase with finitely many noncritical
+  maxima, and a dichotomy for `SU(2)` data). The source's statement (22) is the geometric conclusion that
+  non-Regge, non-vector boundary data is suppressed to `o(λ^{−M})`. The library does not prove that
+  conclusion: the noncriticality of the maxima is a hypothesis, and for spins that are not areas of the
+  boundary geometry it is not shown. The entries do not claim eq. (22).
+* The identification entry matches the source's integral up to the source's prefactor `(−1)^{χ'}`, which
+  the library does not carry and does not compare.
+* Possible registration (not done; it changes the registry): `eq. (14)` with the keyword "re-expressed"
+  for the identification entry, and `eq. (22)` with the keyword "supressed" (the source's spelling) for
+  the two suppression entries as context. Each would verify the label with its content nearby, as for the
+  `γ > 1` entries.
+
