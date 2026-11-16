@@ -1334,7 +1334,7 @@
   title: The index of a loop about a point, and the Theta Lemma
   area: PL
   file: Lightlike/PL/Index.lean
-  decls: [Lightlike.PL.exists_isLog, Lightlike.PL.logInc, Lightlike.PL.logInc_trans, Lightlike.PL.ind, Lightlike.PL.theta_lemma]
+  decls: [Lightlike.PL.exists_isLog, Lightlike.PL.logInc, Lightlike.PL.logInc_trans, Lightlike.PL.loopIndex, Lightlike.PL.theta_lemma]
   status: proven
   tier: established
   source:
