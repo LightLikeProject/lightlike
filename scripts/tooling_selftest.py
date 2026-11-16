@@ -47,6 +47,12 @@ with tempfile.TemporaryDirectory() as d:
     w = ci_check.check_test_coverage(tmp)
     expect("untested results planted: untested declaration `bar` warned, tested `foo` not",
            len(w) == 1 and "Lightlike.bar" in w[0])
+    (tmp / "Lightlike" / "Tests" / "T.lean").write_text("example := foo\nexample := Lightlike.bar\n")
+    expect("untested results control: a use qualified by the namespace, `Lightlike.bar`, counts",
+           ci_check.check_test_coverage(tmp) == [])
+    (tmp / "Lightlike" / "Tests" / "T.lean").write_text("example := foo\nexample := h.bar\n")
+    expect("untested results planted: dot notation `h.bar` is not counted as a use of `bar`",
+           len(ci_check.check_test_coverage(tmp)) == 1)
     e = tmp / "Lightlike" / "Exploratory"
     e.mkdir()
     (e / "M.lean").write_text("import Lightlike.A\ntheorem m : True := trivial\n")
