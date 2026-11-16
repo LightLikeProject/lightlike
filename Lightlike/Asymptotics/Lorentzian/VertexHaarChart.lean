@@ -19,6 +19,18 @@ outer integral for coherent data is `integrable_lorOuter`); the joint integrabil
 is a hypothesis here, which BDFHP use implicitly when they apply the stationary phase formula to the
 whole integral.
 
+## Limits
+
+* **Joint integrability (`hjoint`) and measurability of the outer integral (`hF`) are hypotheses, not
+  results.** They do not follow from `integrable_lorInner` and `integrable_lorOuter`: the inner
+  integrability is per point of `SL(2,ℂ)⁵` and the outer one is the integrability of the *complex*
+  inner integral `x ↦ ∫ G(x,w) dw` (the finiteness of the EPRL amplitude, which uses the decay of the
+  matrix coefficients, i.e. cancellations in the sum over magnetic numbers); joint integrability is
+  that of `‖G‖`, `∫ ∏_e N_e(x) dx` with `N_e(x) = ∫ ‖g_e(x, w)‖ dw`, which needs a separate estimate
+  and is not proved here (the weights `e^{Re S} ≤ 1` give no decay in `x`).
+* The statement is for the chart `g_0` of `SL(2,ℂ)`; the Haar density is `1` there, and the
+  Jacobian of a change of chart enters when the Hessian is computed in another chart.
+
 ## Main results
 
 * `integral_haar4_fixChart`: `∫ F d(haarC)⁴ = ∫ F(g_z(y₁), …, g_z(y₄)) dy`.
