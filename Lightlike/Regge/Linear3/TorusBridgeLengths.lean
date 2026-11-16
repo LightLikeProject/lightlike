@@ -8,7 +8,7 @@ import Lightlike.Regge.Conv3.ReggeConvergence
 Take a metric `g` on `ℝ³` that is invariant under integer translations and give the edge `{z, z + w}` of
 the periodic Kuhn complex `torusComplex n` the geodesic length `d (z/n) ((z + w)/n)` of the real lifts
 (`lenD`, with `d = Lightlike.Geodesic.dist g univ`). The distance is symmetric and translation invariant
-(`Geodesic/DistSymm.lean`), so the length of the edge between two corners of a Kuhn tetrahedron is
+(`Lightlike/Regge/Geodesic/DistSymm.lean`), so the length of the edge between two corners of a Kuhn tetrahedron is
 the distance of any two real lifts of the corners that differ by the edge vector (`lenD_corner`), and
 the dihedral angle of a tetrahedron is the angle `Dsq` of the squared distances of its corners
 (`dihedralAt_inc`). The squared lengths of the star of a hinge used by `reggeAction3` are the same
