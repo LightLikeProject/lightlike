@@ -107,6 +107,29 @@ def rot : Hex where
         exact add_right_cancel this))
     simpa [hexChord, add_right_comm] using this
 
+lemma mem_S_head (k : Fin 6) : H.p k ∈ chainSet (hexArc H.p H.h k) := mem_chainSet_head _ _
+lemma mem_S_last (k : Fin 6) : H.p (k + 1) ∈ chainSet (hexArc H.p H.h k) :=
+  mem_chainSet_last (H.p k :: H.h k) _
+lemma mem_T_head (k : Fin 6) : H.p k ∈ chainSet (hexChord H.p H.d k) := mem_chainSet_head _ _
+lemma mem_T_last (k : Fin 6) : H.p (k + 3) ∈ chainSet (hexChord H.p H.d k) :=
+  mem_chainSet_last (H.p k :: H.d k) _
+
+-- Close a goal about a point `y` known to lie in two sets of corners.
+set_option hygiene false in
+local macro "ends_close" : tactic =>
+  `(tactic| (rcases this with ⟨h1 | h1, h2 | h2⟩ <;>
+    first
+    | exact h1 | exact h2 | exact Or.inl h1 | exact Or.inr h1 | exact Or.inl h2 | exact Or.inr h2
+    | exact absurd (H.inj (h1.symm.trans h2)) (by decide)
+    | exact absurd (H.inj (h1.symm.trans h2)) (by decide)))
+
+lemma S01 : chainSet (hexArc H.p H.h 0) ∩ chainSet (hexArc H.p H.h 1) = {H.p 1} := by
+  apply Set.eq_singleton_iff_unique_mem.2
+  refine ⟨⟨H.mem_S_last 0, H.mem_S_head 1⟩, fun y hy => ?_⟩
+  have := H.interHH 0 1 (by decide) hy
+  simp at this
+  ends_close
+
 end Hex
 
 end Lightlike.PL
