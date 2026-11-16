@@ -4,7 +4,9 @@ Per k, each of the four products (Dc*n0, N1*n1, N3*n3, N5*n5) is checked against
 (small kernel run), then the sum of the four normal forms is checked to be empty. This keeps each
 kernel computation small. Run from scripts/qracah with parts.pkl present."""
 import pickle, sympy as sp, sys
-import chunk  # splits long list literals (see chunk.py); the generated files carry no heartbeat cap
+import chunk  # splits long list literals and applies the per-declaration caps (see chunk.py)
+import json
+CAPS=json.load(open("caps.json"))
 Dc,Ns,res=pickle.load(open('parts.pkl','rb'))
 gens=sp.symbols("u p1 p2 p3 p4 q2 q3")
 def P(e): return sp.Poly(sp.sympify(e),*gens)
@@ -50,5 +52,5 @@ namespace Lightlike.TV.Refl
     out+="  rw ["+", ".join(["← eval_add"]*(len(items)-1))+"]\n"
     out+=f"  have h := sum{k}\n  rw [List.isEmpty_iff] at h\n  rw [h]; rfl\n\n"
     out+="end Lightlike.TV.Refl\n"
-    open(f"../../Lightlike/TuraevViro/Reflect/RacahCert{k}.lean","w").write(chunk.rewrite(out))
+    open(f"../../Lightlike/TuraevViro/Reflect/RacahCert{k}.lean","w").write(chunk.rewrite(out, caps=CAPS.get(f"RacahCert{k}"), split=f"RacahCert{k}" not in CAPS))
 print(sorted(res))

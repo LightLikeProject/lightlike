@@ -45,6 +45,7 @@ TEMPLATE = "scripts/templates/proof-task-issue.md"
 SECTIONS = ("Gravity and cosmology", "Mathematical and QFT foundations", "Approaches to quantum gravity")
 TIER = dict(zip(SECTIONS, ("established", "established", "frontier")))  # by group of areas
 ROADMAP_COUNT = "- **Milestones:**"  # ROADMAP.md lines whose count `generate` keeps current
+DONE_LINK = " · [done]("  # and the link to their closed issues that it appends to those lines
 README_KINDS = "The plan has "  # README.md paragraph whose counts `generate` keeps current
 SIZES = ["XS", "S", "M", "L", "R"]
 DIFFICULTIES = ["good first issue", "intermediate", "advanced", "research-level"]
@@ -666,8 +667,10 @@ def anchor(title):
     return re.sub(r"[^\w\- ]", "", title.lower()).replace(" ", "-")
 
 
-def roadmap_counts(text, ms):
-    """ROADMAP.md with the milestone count of each area section brought up to date."""
+def roadmap_counts(text, ms, repo="LightlikeProject/lightlike"):
+    """ROADMAP.md with the milestone count of each area section brought up to date, and a link to
+    the area's done milestones. A milestone is done when its issue is closed as completed; the link
+    is that issue search, so ROADMAP.md shows what is done without a status column to keep."""
     out, title = [], None
     for line in text.split("\n"):
         if line.startswith("## "):
@@ -675,8 +678,13 @@ def roadmap_counts(text, ms):
         elif line.startswith("### "):
             title = line[4:].strip()
         elif line.startswith(ROADMAP_COUNT) and title:
-            n = sum(m["section"] == title for m in ms.values())
-            line = f"{ROADMAP_COUNT} {n} ·" + line.split(" ·", 1)[1]
+            mine = [m for m in ms.values() if m["section"] == title]
+            links = line.split(" ·", 1)[1].split(DONE_LINK, 1)[0]
+            line = f"{ROADMAP_COUNT} {len(mine)} ·{links}"
+            areas = {m["area"] for m in mine}
+            if len(areas) == 1:
+                q = f'is:closed reason:completed label:milestone label:"area: {areas.pop()}"'
+                line += f"{DONE_LINK}{search(repo, q)})"
         out.append(line)
     return "\n".join(out)
 
@@ -718,13 +726,13 @@ def changelog_counts(text, tasks, ms):
 
 
 def outputs(tasks, ms, root=ROOT):
-    road = {"ROADMAP.md": roadmap_counts((root / "ROADMAP.md").read_text(), ms)} \
+    repo = yaml_load((root / BOARD).read_text())["repo"] if (root / BOARD).exists() else "LightlikeProject/lightlike"
+    road = {"ROADMAP.md": roadmap_counts((root / "ROADMAP.md").read_text(), ms, repo)} \
         if (root / "ROADMAP.md").exists() else {}
     if (root / "README.md").exists():
         road["README.md"] = readme_kinds((root / "README.md").read_text(), tasks)
     if (root / "CHANGELOG.md").exists():
         road["CHANGELOG.md"] = changelog_counts((root / "CHANGELOG.md").read_text(), tasks, ms)
-    repo = yaml_load((root / BOARD).read_text())["repo"] if (root / BOARD).exists() else "LightlikeProject/lightlike"
     return {OUT_YAML: to_yaml(tasks), OUT_MD: readme(tasks, ms, repo), OUT_LEAN: tasks_lean(tasks), **road}
 
 

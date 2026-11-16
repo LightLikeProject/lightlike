@@ -25,8 +25,8 @@ groups the order is alphabetical; it is not a ranking. Each area lists:
 - **Scope:** what the area covers, and for foundations which areas use it;
 - **Open:** the main open questions of the field, or for foundations the main theorems the plan
   still needs;
-- **Milestones:** how many there are, with links to the area's milestone table and its tasks on
-  the board; which are done is on their issues.
+- **Milestones:** how many there are, with links to the area's milestone table, its tasks on the
+  board and the closed issues of the milestones that are done.
 
 ## Gravity and cosmology
 
@@ -37,7 +37,7 @@ groups the order is alphabetical; it is not a ranking. Each area lists:
   most other areas.
 - **Open:** in the field, weak and strong cosmic censorship. In the plan: intrinsic curvature on
   smooth manifolds (GE1), global causal structure (GE2) and Penrose's singularity theorem (GE4).
-- **Milestones:** 10 · [milestones](docs/tasks/milestones.md#lorentzian-and-riemannian-geometry) · [tasks](docs/tasks/README.md#lorentzian-and-riemannian-geometry)
+- **Milestones:** 10 · [milestones](docs/tasks/milestones.md#lorentzian-and-riemannian-geometry) · [tasks](docs/tasks/README.md#lorentzian-and-riemannian-geometry) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+geometry%22)
 
 ### Cosmology
 
@@ -46,7 +46,7 @@ groups the order is alphabetical; it is not a ranking. Each area lists:
   no-hair and nonlinear stability. Quantum cosmology is under canonical quantum gravity.
 - **Open:** baryogenesis and the early phase transitions; the measure problem of eternal inflation;
   the back-reaction of inhomogeneities on the expansion.
-- **Milestones:** 16 · [milestones](docs/tasks/milestones.md#cosmology) · [tasks](docs/tasks/README.md#cosmology)
+- **Milestones:** 16 · [milestones](docs/tasks/milestones.md#cosmology) · [tasks](docs/tasks/README.md#cosmology) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+cosmology%22)
 
 ### Semiclassical gravity
 
@@ -55,7 +55,7 @@ groups the order is alphabetical; it is not a ranking. Each area lists:
   states.
 - **Open:** back-reaction in general; islands and replica wormholes, which rest on the gravitational
   path integral; the conformal-factor problem of the Euclidean path integral.
-- **Milestones:** 9 · [milestones](docs/tasks/milestones.md#semiclassical-gravity) · [tasks](docs/tasks/README.md#semiclassical-gravity)
+- **Milestones:** 9 · [milestones](docs/tasks/milestones.md#semiclassical-gravity) · [tasks](docs/tasks/README.md#semiclassical-gravity) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+semiclassical%22)
 
 ## Mathematical and QFT foundations
 
@@ -68,7 +68,7 @@ Each foundation is cut to what the areas that use it need, so that no area build
   holography and low-dimensional gravity.
 - **Open:** in the plan, all of it; the first milestone decides whether to build on an existing
   Lean formalization of the Virasoro algebra.
-- **Milestones:** 5 · [milestones](docs/tasks/milestones.md#conformal-field-theory) · [tasks](docs/tasks/README.md#conformal-field-theory)
+- **Milestones:** 5 · [milestones](docs/tasks/milestones.md#conformal-field-theory) · [tasks](docs/tasks/README.md#conformal-field-theory) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+cft%22)
 
 ### Gauge theory and constrained systems
 
@@ -77,7 +77,7 @@ Each foundation is cut to what the areas that use it need, so that no area build
   Holst, Ashtekar–Barbero). Used by canonical quantum gravity, low-dimensional and perturbative
   gravity, and spin foams.
 - **Open:** in the field, the construction of 4D Yang–Mills theory. In the plan, all of it.
-- **Milestones:** 5 · [milestones](docs/tasks/milestones.md#gauge-theory-and-constrained-systems) · [tasks](docs/tasks/README.md#gauge-theory-and-constrained-systems)
+- **Milestones:** 5 · [milestones](docs/tasks/milestones.md#gauge-theory-and-constrained-systems) · [tasks](docs/tasks/README.md#gauge-theory-and-constrained-systems) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+gauge-constrained%22)
 
 ### Harmonic analysis on Lie groups
 
@@ -85,7 +85,7 @@ Each foundation is cut to what the areas that use it need, so that no area build
   formulas. Used by spin foams, JT gravity and AdS₃ holography.
 - **Open:** in the plan, the Plancherel measure of SL(2,ℂ) (HA2) and the representations of
   SL(2,ℝ) (HA3).
-- **Milestones:** 4 · [milestones](docs/tasks/milestones.md#harmonic-analysis-on-lie-groups) · [tasks](docs/tasks/README.md#harmonic-analysis-on-lie-groups)
+- **Milestones:** 4 · [milestones](docs/tasks/milestones.md#harmonic-analysis-on-lie-groups) · [tasks](docs/tasks/README.md#harmonic-analysis-on-lie-groups) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+harmonic-analysis%22)
 
 ### Operator algebras and quantum information
 
@@ -93,7 +93,7 @@ Each foundation is cut to what the areas that use it need, so that no area build
   entropy inequalities, finite-dimensional quantum mechanics. Used by semiclassical gravity,
   canonical quantum gravity, holography, noncommutative geometry, causal sets and matrix models.
 - **Open:** in the plan, Stone's theorem, Fock space, modular theory and strong subadditivity.
-- **Milestones:** 5 · [milestones](docs/tasks/milestones.md#operator-algebras-and-quantum-information) · [tasks](docs/tasks/README.md#operator-algebras-and-quantum-information)
+- **Milestones:** 5 · [milestones](docs/tasks/milestones.md#operator-algebras-and-quantum-information) · [tasks](docs/tasks/README.md#operator-algebras-and-quantum-information) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+operator-algebras%22)
 
 ### Oscillatory and saddle-point asymptotics
 
@@ -102,7 +102,7 @@ Each foundation is cut to what the areas that use it need, so that no area build
   spin-foam asymptotics and later by any semiclassical expansion.
 - **Open:** in the plan, the asymptotics of balanced alternating Gamma-ratio sums (SP2), which
   real-variable methods cannot give.
-- **Milestones:** 2 · [milestones](docs/tasks/milestones.md#oscillatory-and-saddle-point-asymptotics) · [tasks](docs/tasks/README.md#oscillatory-and-saddle-point-asymptotics)
+- **Milestones:** 2 · [milestones](docs/tasks/milestones.md#oscillatory-and-saddle-point-asymptotics) · [tasks](docs/tasks/README.md#oscillatory-and-saddle-point-asymptotics) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+asymptotics%22)
 
 ### Perturbative QFT and the renormalization group
 
@@ -111,7 +111,7 @@ Each foundation is cut to what the areas that use it need, so that no area build
   Used by perturbative gravity, asymptotic safety, tensor and matrix models, and string theory.
 - **Open:** in the field, a construction of interacting quantum field theories in four dimensions.
   The plan covers the perturbative and finite-dimensional parts.
-- **Milestones:** 5 · [milestones](docs/tasks/milestones.md#perturbative-qft-and-the-renormalization-group) · [tasks](docs/tasks/README.md#perturbative-qft-and-the-renormalization-group)
+- **Milestones:** 5 · [milestones](docs/tasks/milestones.md#perturbative-qft-and-the-renormalization-group) · [tasks](docs/tasks/README.md#perturbative-qft-and-the-renormalization-group) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+qft-rg%22)
 
 ### PL topology
 
@@ -121,7 +121,7 @@ Each foundation is cut to what the areas that use it need, so that no area build
 - **Open:** in the plan, the classification of surfaces up to bistellar moves (PL3), Newman's and
   Moise's theorems, and their assembly: homeomorphic closed 3-manifolds have triangulations related
   by Pachner moves.
-- **Milestones:** 7 · [milestones](docs/tasks/milestones.md#pl-topology) · [tasks](docs/tasks/README.md#pl-topology)
+- **Milestones:** 7 · [milestones](docs/tasks/milestones.md#pl-topology) · [tasks](docs/tasks/README.md#pl-topology) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+pl-topology%22)
 
 ### Quantum groups and state-sum TQFTs
 
@@ -130,7 +130,7 @@ Each foundation is cut to what the areas that use it need, so that no area build
   invariants. Used by 3D and 4D state sums and low-dimensional gravity.
 - **Open:** in the plan, the triangulation independence of the Ponzano–Regge amplitude (it needs
   the PL chain PL4–PL7 and the removal of the spin cutoff), and the quantum identities for `r ≥ 4`.
-- **Milestones:** 5 · [milestones](docs/tasks/milestones.md#quantum-groups-and-state-sum-tqfts) · [tasks](docs/tasks/README.md#quantum-groups-and-state-sum-tqfts)
+- **Milestones:** 5 · [milestones](docs/tasks/milestones.md#quantum-groups-and-state-sum-tqfts) · [tasks](docs/tasks/README.md#quantum-groups-and-state-sum-tqfts) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+quantum-groups%22)
 
 ### Random geometry
 
@@ -138,7 +138,7 @@ Each foundation is cut to what the areas that use it need, so that no area build
   branched polymers, Wigner's semicircle law, the Gaussian free field and multiplicative chaos. Used
   by dynamical triangulations, causal sets, matrix and tensor models, and Liouville gravity.
 - **Open:** in the plan, all of it; the Brownian map is a later target.
-- **Milestones:** 5 · [milestones](docs/tasks/milestones.md#random-geometry) · [tasks](docs/tasks/README.md#random-geometry)
+- **Milestones:** 5 · [milestones](docs/tasks/milestones.md#random-geometry) · [tasks](docs/tasks/README.md#random-geometry) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+random-geometry%22)
 
 ## Approaches to quantum gravity
 
@@ -148,7 +148,7 @@ Each foundation is cut to what the areas that use it need, so that no area build
   an ODE, the 2 + ε expansion, asymptotic safety in rigorous toy models.
 - **Open:** the gravitational renormalization-group flow beyond truncations, and the existence of
   its ultraviolet fixed point.
-- **Milestones:** 4 · [milestones](docs/tasks/milestones.md#asymptotic-safety) · [tasks](docs/tasks/README.md#asymptotic-safety)
+- **Milestones:** 4 · [milestones](docs/tasks/milestones.md#asymptotic-safety) · [tasks](docs/tasks/README.md#asymptotic-safety) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+asymptotic-safety%22)
 
 ### Canonical quantum gravity
 
@@ -157,7 +157,7 @@ Each foundation is cut to what the areas that use it need, so that no area build
   minisuperspace Wheeler–DeWitt models.
 - **Open:** the physical Hilbert space of full loop quantum gravity (an anomaly-free constraint
   algebra and a physical inner product); the full Wheeler–DeWitt equation; semiclassical states.
-- **Milestones:** 9 · [milestones](docs/tasks/milestones.md#canonical-quantum-gravity) · [tasks](docs/tasks/README.md#canonical-quantum-gravity)
+- **Milestones:** 9 · [milestones](docs/tasks/milestones.md#canonical-quantum-gravity) · [tasks](docs/tasks/README.md#canonical-quantum-gravity) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+canonical-qg%22)
 
 ### Causal sets
 
@@ -165,14 +165,14 @@ Each foundation is cut to what the areas that use it need, so that no area build
   Lorentz-invariance theorem, classical sequential growth, the Sorkin–Johnston state.
 - **Open:** the quantum dynamics (quantum sequential growth, the quantum measure); the
   Hauptvermutung, that a causal set approximates at most one spacetime.
-- **Milestones:** 8 · [milestones](docs/tasks/milestones.md#causal-sets) · [tasks](docs/tasks/README.md#causal-sets)
+- **Milestones:** 8 · [milestones](docs/tasks/milestones.md#causal-sets) · [tasks](docs/tasks/README.md#causal-sets) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+causal-sets%22)
 
 ### Dynamical triangulations
 
 - **Scope:** Euclidean and causal dynamical triangulations: the 2D models as random planar maps and
   their exact solutions, the Brownian map, finite triangulations in 3D and 4D.
 - **Open:** the continuum limit in 3D and 4D; the 4D phase diagram is known numerically only.
-- **Milestones:** 5 · [milestones](docs/tasks/milestones.md#dynamical-triangulations) · [tasks](docs/tasks/README.md#dynamical-triangulations)
+- **Milestones:** 5 · [milestones](docs/tasks/milestones.md#dynamical-triangulations) · [tasks](docs/tasks/README.md#dynamical-triangulations) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+dynamical-triangulations%22)
 
 ### Group field theory and tensor models
 
@@ -180,7 +180,7 @@ Each foundation is cut to what the areas that use it need, so that no area build
   renormalizability of tensorial group field theories, constructive results.
 - **Open:** a 4D gravitational group field theory beyond perturbation theory; the condensate phase
   used in group field theory cosmology.
-- **Milestones:** 7 · [milestones](docs/tasks/milestones.md#group-field-theory-and-tensor-models) · [tasks](docs/tasks/README.md#group-field-theory-and-tensor-models)
+- **Milestones:** 7 · [milestones](docs/tasks/milestones.md#group-field-theory-and-tensor-models) · [tasks](docs/tasks/README.md#group-field-theory-and-tensor-models) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+gft-tensor%22)
 
 ### Holography
 
@@ -189,7 +189,7 @@ Each foundation is cut to what the areas that use it need, so that no area build
   holographic renormalization.
 - **Open:** the AdS/CFT correspondence itself, a conjecture tested in many limits; bulk
   reconstruction beyond code models.
-- **Milestones:** 8 · [milestones](docs/tasks/milestones.md#holography) · [tasks](docs/tasks/README.md#holography)
+- **Milestones:** 8 · [milestones](docs/tasks/milestones.md#holography) · [tasks](docs/tasks/README.md#holography) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+holography%22)
 
 ### Low-dimensional gravity
 
@@ -198,7 +198,7 @@ Each foundation is cut to what the areas that use it need, so that no area build
   Liouville theory.
 - **Open:** the 3D gravity path integral with a sum over topologies; the completion of JT gravity
   by a matrix model, which is a proposal.
-- **Milestones:** 7 · [milestones](docs/tasks/milestones.md#low-dimensional-gravity) · [tasks](docs/tasks/README.md#low-dimensional-gravity)
+- **Milestones:** 7 · [milestones](docs/tasks/milestones.md#low-dimensional-gravity) · [tasks](docs/tasks/README.md#low-dimensional-gravity) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+low-dim-gravity%22)
 
 ### Matrix models
 
@@ -206,7 +206,7 @@ Each foundation is cut to what the areas that use it need, so that no area build
   enumeration, the double-scaling limit and Painlevé I, the BFSS and IKKT models.
 - **Open:** BFSS and IKKT as definitions of M-theory and type IIB string theory, which are
   conjectures; BFSS threshold bound states for all N.
-- **Milestones:** 5 · [milestones](docs/tasks/milestones.md#matrix-models) · [tasks](docs/tasks/README.md#matrix-models)
+- **Milestones:** 5 · [milestones](docs/tasks/milestones.md#matrix-models) · [tasks](docs/tasks/README.md#matrix-models) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+matrix-models%22)
 
 ### Noncommutative geometry
 
@@ -214,7 +214,7 @@ Each foundation is cut to what the areas that use it need, so that no area build
   geometry of the Standard Model, fuzzy spaces, the spectral action, the reconstruction theorem.
 - **Open:** Lorentzian spectral triples (several proposals, none accepted); a quantum theory of the
   spectral action.
-- **Milestones:** 6 · [milestones](docs/tasks/milestones.md#noncommutative-geometry) · [tasks](docs/tasks/README.md#noncommutative-geometry)
+- **Milestones:** 6 · [milestones](docs/tasks/milestones.md#noncommutative-geometry) · [tasks](docs/tasks/README.md#noncommutative-geometry) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+ncg%22)
 
 ### Perturbative quantum gravity
 
@@ -223,7 +223,7 @@ Each foundation is cut to what the areas that use it need, so that no area build
   double copy.
 - **Open:** a non-perturbative completion; the ultraviolet finiteness of N = 8 supergravity rests
   on explicit computations, not on a theorem.
-- **Milestones:** 7 · [milestones](docs/tasks/milestones.md#perturbative-quantum-gravity) · [tasks](docs/tasks/README.md#perturbative-quantum-gravity)
+- **Milestones:** 7 · [milestones](docs/tasks/milestones.md#perturbative-quantum-gravity) · [tasks](docs/tasks/README.md#perturbative-quantum-gravity) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+perturbative-qg%22)
 
 ### Regge calculus
 
@@ -231,7 +231,7 @@ Each foundation is cut to what the areas that use it need, so that no area build
   (Cheeger–Müller–Schrader), Lorentzian and area Regge calculus, linearized convergence.
 - **Open:** convergence of solutions of the full Regge equations to Einstein solutions; a quantum
   Regge measure.
-- **Milestones:** 6 · [milestones](docs/tasks/milestones.md#regge-calculus) · [tasks](docs/tasks/README.md#regge-calculus)
+- **Milestones:** 6 · [milestones](docs/tasks/milestones.md#regge-calculus) · [tasks](docs/tasks/README.md#regge-calculus) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+regge%22)
 
 ### Spin foams
 
@@ -240,7 +240,7 @@ Each foundation is cut to what the areas that use it need, so that no area build
   asymptotics.
 - **Open:** the refinement and continuum limit of the 4D models; the sum over 2-complexes; whether
   the semiclassical regime reproduces curved geometries (the flatness question).
-- **Milestones:** 16 · [milestones](docs/tasks/milestones.md#spin-foams) · [tasks](docs/tasks/README.md#spin-foams)
+- **Milestones:** 16 · [milestones](docs/tasks/milestones.md#spin-foams) · [tasks](docs/tasks/README.md#spin-foams) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+spin-foams%22)
 
 ### String theory
 
@@ -249,7 +249,7 @@ Each foundation is cut to what the areas that use it need, so that no area build
   parts of mirror symmetry.
 - **Open:** non-perturbative string theory and M-theory; superstring perturbation theory at all
   genera; the landscape of vacua.
-- **Milestones:** 11 · [milestones](docs/tasks/milestones.md#string-theory) · [tasks](docs/tasks/README.md#string-theory)
+- **Milestones:** 11 · [milestones](docs/tasks/milestones.md#string-theory) · [tasks](docs/tasks/README.md#string-theory) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+string-theory%22)
 
 ### Twistor theory
 
@@ -257,7 +257,7 @@ Each foundation is cut to what the areas that use it need, so that no area build
   graviton, spinor-helicity methods and recursion for amplitudes, the amplituhedron.
 - **Open:** a twistor formulation of quantum gravity; the nonlinear graviton gives only self-dual
   geometries.
-- **Milestones:** 6 · [milestones](docs/tasks/milestones.md#twistor-theory) · [tasks](docs/tasks/README.md#twistor-theory)
+- **Milestones:** 6 · [milestones](docs/tasks/milestones.md#twistor-theory) · [tasks](docs/tasks/README.md#twistor-theory) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+twistors%22)
 
 ### Other approaches
 
@@ -267,7 +267,7 @@ Each foundation is cut to what the areas that use it need, so that no area build
   (holography), Euclidean quantum gravity (semiclassical).
 - **Open:** the consistency of non-projectable Hořava–Lifshitz gravity; the thermodynamic and
   entropic derivations of Einstein's equations are heuristic.
-- **Milestones:** 4 · [milestones](docs/tasks/milestones.md#other-approaches) · [tasks](docs/tasks/README.md#other-approaches)
+- **Milestones:** 4 · [milestones](docs/tasks/milestones.md#other-approaches) · [tasks](docs/tasks/README.md#other-approaches) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+other%22)
 
 ## What's next
 

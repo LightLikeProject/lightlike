@@ -21,7 +21,8 @@ namespace SComplex
 
 variable {V : Type*} [DecidableEq V]
 
-set_option maxHeartbeats 500000 in
+-- needs 150000–200000 heartbeats (measured); twice the smallest passing limit
+set_option maxHeartbeats 400000 in
 /-- **Attaching an ear.** -/
 theorem stellarEquivIn_closure_insert [Infinite V] {T : Finset (Finset V)} {u w x v : V}
     (huw : u ≠ w) (hxu : x ≠ u) (hxw : x ≠ w)
