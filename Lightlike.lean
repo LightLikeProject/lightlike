@@ -187,6 +187,9 @@ import Lightlike.PL.Attach
 import Lightlike.PL.PolygonEars
 import Lightlike.PL.PolygonBall
 import Lightlike.PL.PolygonBoundary
+import Lightlike.PL.PolygonPLHomeo
+import Lightlike.PL.Relabel
+import Lightlike.PL.RealGeom
 import Lightlike.PL.Realisation
 import Lightlike.PL.Starring
 import Lightlike.PL.Boundary
