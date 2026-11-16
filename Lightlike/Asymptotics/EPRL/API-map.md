@@ -70,8 +70,10 @@ fusion coefficients and the node tensor are redefined for it [39]. The projectio
 intertwiners is the Haar average of the conjugation action [40]. The image of the `SU(2)` coherent
 intertwiner is then a Spin(4) integral of the lifted coherent tensor [41], and the leg amplitude of
 the lowest component on coherent states is, up to the abstract Clebsch–Gordan constant `c₀`, the
-product of two overlaps [42]. The positivity and the closed value of `c₀` are not proved, and the
-vertex statement for `γ > 1` is not yet in the library.
+product of two overlaps [42]. The vertex sum with coherent boundary data is the `K₅` contraction
+of the coherent node tensors, each a Spin(4) integral at the projections [43]. The positivity and the
+closed value of `c₀` are not proved, and the `Spin(4)^5` integral of edge forms is not yet in the
+library.
 
 If the maximum set of the integrand is finite and the logarithmic phase has nonzero differential at
 each of its points, then there is no critical point of the extended stationary phase and the coherent
@@ -186,6 +188,9 @@ proved here.
 42. Lightlike/Asymptotics/EPRL/EprlHighLeg.lean - `Asymptotics.EPRL.weight_of_equivariant`,
     `Asymptotics.EPRL.c0Low`, `Asymptotics.EPRL.legAmp_mul`,
     `Asymptotics.EPRL.eprlMapLow_cohState_one`, `Asymptotics.EPRL.eprlMapLow_cohState`
+43. Lightlike/Asymptotics/EPRL/EprlHighVertex.lean -
+    `Asymptotics.EPRL.eprlVertexHigh`, `Asymptotics.EPRL.eprlCohNodeHigh`,
+    `Asymptotics.EPRL.eprlCohNodeHigh_integral`, `Asymptotics.EPRL.eprlVertexHigh_coherent`
 
 ## References
 
