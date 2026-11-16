@@ -1377,3 +1377,133 @@
   review: kernel-checked
   note: "For positive spin parameters, unit boundary spinors, nonvanishing overlaps with products off the cut of the logarithm, Re S = 0 makes every edge aligned (Z_ab = lambda xi_ab, Z_ba = mu J xi_ba; triWeight_eq_one_iff), the derivative of the vertex action along X_a Y(t) with Y(0) = 1 and Y'(0) = genMat c is then the sum of the logarithmic derivatives of the ends at a for any scalings lambda, mu, and stationarity along every such curve (a Cayley curve exists for every c) gives sum_e n_e n_e-hat = 0 at every node. Hence no configuration with Re S = 0 that is stationary along the curves exists for boundary data whose normals do not close at some node. NOT PROVED: the suppression of the integral for such data (BDFHP eq. (56), sub-case without closure), which needs this statement in a chart for an action smooth only on an open set and the non-stationary phase bound; the converse (closure gives a critical configuration) and the case of data with closure that are not the boundary of a 4-simplex (the classification, a named hypothesis of the vertex formula)."
   since: unreleased
+- id: LL-0106
+  title: A chain on a grating with boundary two vertices joins them
+  area: PL
+  file: Lightlike/PL/Grating.lean
+  decls: [Lightlike.PL.Grating, Lightlike.PL.Grating.bdy, Lightlike.PL.Grating.bdy_symmDiff, Lightlike.PL.Grating.reach_of_bdy, Lightlike.PL.Grating.joinedIn_of_bdy]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
+  review: kernel-checked
+  note: "A grating is a rectangular grid with strictly increasing coordinates, a 1-chain a finite set of its edges added by symmetric difference (mod 2), and the boundary of a chain the set of vertices at which an odd number of its edges end. The boundary is additive (bdy_symmDiff), and a chain with boundary {x, y} joins x to y inside its locus (joinedIn_of_bdy), because a component of the chain has an even number of vertices of odd degree (reach_of_bdy). This is the chain-to-path direction of Proposition 9.8 of chapter 9 of McCleary's book, numbering as in the lecture-notes version of the chapter; the statements and proofs are Lean's own. Proves: the combinatorial fact that a chain with two odd vertices joins them. Does not prove: anything about arcs or curves of the plane, the arc theorem or the Jordan curve theorem; it is the first step of the proof that an arc does not separate the plane (LL-0107 to LL-0110). Limits: rectangular gratings in the plane, chains mod 2 only. Check: on a 2 x 2 grating the boundary of an edge, of a path of two edges and of a closed square (TestsGrating.lean); joinedIn_of_bdy applies to the path of two edges; two disjoint edges have a four-vertex boundary and do not link their ends."
+  since: unreleased
+- id: LL-0107
+  title: A path in the complement of a compact set gives a chain of a grating that avoids it
+  area: PL
+  file: Lightlike/PL/GratingPath.lean
+  decls: [Lightlike.PL.Grating.exists_grating, Lightlike.PL.Grating.exists_chain_box, Lightlike.PL.Grating.exists_chain_of_joinedIn]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
+  review: kernel-checked
+  note: "If A is a compact subset of the plane and P, Q are joined by a path in the complement of A, there is a distance rho > 0 and two finite sets of coordinates such that every grating whose coordinates contain them has P and Q as vertices and a chain, with boundary {P, Q}, all of whose points are at distance at least rho from A. The coordinates of sample points of the path are put on the grid and consecutive samples are joined by a stepwise chain in the box they span (exists_chain_box). This is the path-to-chain direction of Proposition 9.8 of chapter 9 of McCleary's book, numbering as in the lecture-notes version of the chapter; the statements and proofs are Lean's own. Proves: a path in the complement of a compact set gives a chain of a grating, avoiding the set, with the same end points, on every grating that contains the coordinates of the samples. Does not prove: that an arc does not separate the plane, or any statement about curves; it only converts paths into chains (the converse is LL-0106). Limits: A compact in the plane; chains modulo 2 on rectangular gratings. Check: TestsGratingPath.lean."
+  since: unreleased
+- id: LL-0108
+  title: A cycle on a grating bounds a 2-chain, and Alexander's theorem
+  area: PL
+  file: Lightlike/PL/Alexander.lean
+  decls: [Lightlike.PL.Grating.bdy₂, Lightlike.PL.Grating.bdy_bdy₂, Lightlike.PL.Grating.alexander, Lightlike.PL.Grating.exists_bdy₂]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
+  review: kernel-checked
+  note: "A 2-chain is a finite set of cells of a grating; its boundary is the set of edges that are a side of an odd number of its cells, and the boundary of a boundary is empty. A chain without boundary is the boundary of a 2-chain. Alexander's theorem: if x and y are the boundary of a chain l1 avoiding K and of a chain l2 avoiding L, l1 + l2 is the boundary of a 2-chain w up to a set E of edges avoiding K union L (the outer edges of the grating: the notes' Theorem 9.10 gives a 2-chain and its complement, the complement using an outer cell), and no cell of w meets both K and L, then x is joined to y off K union L. This is the Alexander Theorem of chapter 9 of McCleary's book (numbering as in the lecture-notes version), for a grating that is already fine, with the outer-edge set E added; the statements and proofs are Lean's own. Limits: chains modulo 2, rectangular gratings. Check: TestsAlexander.lean."
+  since: unreleased
+- id: LL-0109
+  title: Two compact sets meeting in one point do not separate two points that neither separates
+  area: PL
+  file: Lightlike/PL/UnionLemma.lean
+  decls: [Lightlike.PL.joinedIn_union_compl]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
+  review: kernel-checked
+  note: "If K1 and K2 are compact subsets of the plane with K1 intersect K2 equal to one point and P is joined to Q by a path off K1 and by a path off K2, then P is joined to Q by a path off K1 union K2. The proof puts the two chains of the path-to-chain step on one fine grating with a margin, takes the 2-chain of their cycle, uses its complement when the common point is inside it, and applies Alexander's theorem. This is Corollary 9.11 of the lecture-notes version of chapter 9 of McCleary's book, which states it with a one-sentence argument and takes the complement 2-chain from its Theorem 9.10; here the complement step is made explicit on a fixed rectangular grating; the statement and proof are Lean's own. Proves: a Janiszewski-type union lemma for two compact sets meeting in one point. Does not prove: that an arc does not separate the plane (that is the next entry), nor the Jordan curve theorem. Limits: compact sets in the plane. Check: TestsUnion.lean."
+  since: unreleased
+- id: LL-0110
+  title: An arc does not separate the plane
+  area: PL
+  file: Lightlike/PL/ArcNotSeparating.lean
+  decls: [Lightlike.PL.arc_not_separating]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
+  review: kernel-checked
+  note: "For an arc A, the image of an injective continuous map of [0, 1] into the plane, the complement of A is connected (preconnected). The proof bisects the parameter interval: if the image of an interval separates two points P, Q off it, one of the two halves does (the union lemma); the nested intervals shrink to a parameter t, and a small neighbourhood of gamma(t) does not separate the two points, a contradiction. This is the Separation Theorem for Jordan arcs of the lecture-notes version of chapter 9 of McCleary's book; the statement and proof are Lean's own. Proves: the complement of an arc is connected. Does not prove: that the complement of a Jordan curve has exactly two components, or that the curve is the frontier of each; those need further steps. Limits: arcs in the plane (IsArc). Check: TestsArcNotSeparating.lean."
+  since: unreleased
+- id: LL-0111
+  title: Every component of the complement of a Jordan curve has the whole curve as its frontier
+  area: PL
+  file: Lightlike/PL/JordanFrontier.lean
+  decls: [Lightlike.PL.jordan_frontier]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
+  review: kernel-checked
+  note: "For a continuous injective map f of the circle into the plane, every connected component of the complement of the image has the image as its frontier. This is the clause 'each sharing C as boundary' of the statement of the Jordan Curve Theorem in the introduction of chapter 9 of McCleary's book; the statement carries no number in the lecture-notes version of the chapter. The proof is Lean's own, not the notes': if a point x of the curve were not in the frontier of a component U, the compact frontier of U would lie in an arc B of the curve missing x; the complement of B is connected (the arc theorem, LL-0110) and U is clopen in it, so U is the whole complement of B and contains x, a contradiction. Limits: continuous injective images of the circle in the plane. Check: TestsJordanFrontier.lean (the unit circle satisfies the hypotheses; a constant map does not)."
+  since: unreleased
+- id: LL-0112
+  title: The index of a loop about a point, and the Theta Lemma
+  area: PL
+  file: Lightlike/PL/Index.lean
+  decls: [Lightlike.PL.exists_isLog, Lightlike.PL.logInc, Lightlike.PL.logInc_trans, Lightlike.PL.loopIndex, Lightlike.PL.theta_lemma]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
+  review: kernel-checked
+  note: "A path in the plane that avoids a point has a continuous logarithm about it (path lifting through the covering map exp from the complex numbers to the nonzero complex numbers), unique up to an integer multiple of 2 pi i. The increment of the logarithm along the path does not depend on the choice, is additive under concatenation of paths and changes sign under reversal, and along a loop it is 2 pi i times an integer, the index of the loop about the point. The Theta Lemma follows: for a curve in two parts alpha, gamma and an arc beta joining their ends, the index of alpha * gamma is the sum of those of alpha * beta and beta^-1 * gamma. This is the index of a point not on a Jordan curve and the Theta Lemma of the lecture-notes version of chapter 9 of McCleary's book (numbering not checked against the printed book); the notes read the index off the fundamental group of the punctured plane, here it is read off a lift, and the Theta Lemma is proved through path increments instead of the homotopy of beta * beta^-1 with a constant. The statements and proofs are Lean's own. Proves: the index and the Theta Lemma. Does not prove: Lemmas 9.12 to 9.14 of the notes, that the index is constant on components of the complement of a curve, or the Jordan curve theorem. Limits: loops in the plane identified with the complex numbers. Check: TestsIndex.lean (the unit circle has index 1 about the origin and 0 about the point -3)."
+  since: unreleased
+- id: LL-0113
+  title: The index of a loop is constant along a path avoiding it, and zero for a loop in a half plane
+  area: PL
+  file: Lightlike/PL/IndexConstancy.lean
+  decls: [Lightlike.PL.loopIndex_eq_of_joinedIn, Lightlike.PL.loopIndex_eq_zero_of_halfplane]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
+  review: kernel-checked
+  note: "If two points of the plane are joined by a path that avoids the range of a loop, the loop has the same index about both (the index of LL-0112). If the loop lies in an open half plane seen from the point, its index about the point is zero. These are Lemmas 9.13 and 9.12 of the lecture-notes version of chapter 9 of McCleary's book (numbering not checked against the printed book). The notes prove the first with a homeomorphism of the punctured planes fixing the curve; here the logarithms about the points of the path are lifted together through the covering map exp, and their increments are compared with the integer at the first point. The second is proved with a continuous logarithm on the convex, hence simply connected, half plane; the notes deform the loop into a small circle. The statements and proofs are Lean's own. Proves: the two lemmas for loops in the plane identified with the complex numbers. Does not prove: Lemma 9.14, that the complement of a Jordan curve has exactly two components, or the Jordan curve theorem. Limits: loops in the complex plane. Check: TestsIndexConstancy.lean (the unit circle has index 1 about 1/2 as about 0; a constant loop has index 0; the unit circle lies in no half plane seen from the origin)."
+  since: unreleased
+- id: LL-0114
+  title: Lemma 9.14 of the theta configuration of a Jordan curve
+  area: PL
+  file: Lightlike/PL/IndexTheta.lean
+  decls: [Lightlike.PL.Theta, Lightlike.PL.Theta.lemma_9_14, Lightlike.PL.theta_arc, Lightlike.PL.joinedIn_compl_range]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
+  review: kernel-checked
+  note: "A Jordan curve is split at two of its points P and Q into arcs gamma1 from P to Q and gamma2 from Q to P, and Omega is a point off the curve such that the segments P Omega and Q Omega meet the curve only at P and Q (the theta configuration). With omega1 = gamma1 * (Q Omega * Omega P) and omega2 = (Q Omega * Omega P)^-1 * gamma2, a point R off the curve and the two segments whose index about omega1 differs from that of a point of gamma2, or whose index about omega2 differs from that of a point of gamma1, is joined to Omega by a path in the complement of the curve. The proof: an arc does not separate the plane (LL-0110), so a path from R to Omega misses the arc; follow it to its first hit with the segments; before it the index is constant (LL-0113), so it cannot meet the other arc, whose points all have the index of the given point because the open arc is connected and avoids the loop. This is Lemma 9.14 of the lecture-notes version of chapter 9 of McCleary's book (numbering not checked against the printed book); the notes prove the case of omega1 and both cases are proved here. The statements and proofs are Lean's own. Proves: Lemma 9.14. Does not prove: that the complement of a Jordan curve has exactly two components, or the Jordan curve theorem; those need the final argument of the notes' chapter. Limits: curves in the plane identified with the complex numbers. Check: TestsIndexTheta.lean (the unit circle split into its halves, with the centre as the point, is a theta configuration; a point Omega that makes a segment cross the curve fails the hypotheses)."
+  since: unreleased
+- id: LL-0115
+  title: The index of a triangle about an interior point, and of loops about points outside them
+  area: PL
+  file: Lightlike/PL/IndexTriangle.lean
+  decls: [Lightlike.PL.logInc_segPath, Lightlike.PL.triangle_log_sum, Lightlike.PL.loopIndex_triangle, Lightlike.PL.loopIndex_eq_zero_of_above, Lightlike.PL.loopIndex_eq_zero_of_below, Lightlike.PL.loopIndex_eq_zero_of_far]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
+  review: kernel-checked
+  note: "The increment of the logarithm along a straight segment, about a point, is the principal logarithm of the ratio of the vectors from the point to the ends of the segment when that ratio avoids the negative real axis. Three points seen counterclockwise from a point have angles that add up to 2 pi, so the triangle they span, taken as a loop, has index 1 about the point. The index of a loop is zero about a point strictly above or below it and about a point outside a disc that contains it. These are the computation, left to a picture in the lecture-notes version of chapter 9 of McCleary's book (numbering not checked against the printed book), that a triangle has index plus or minus 1 about an interior point, and Lemma 9.12 in the forms used in the notes' last argument; the notes read the value off the fundamental group of the circle, here it is computed from the angles. The statements and proofs are Lean's own. Proves: the index of a triangle and the vanishing for loops with a point outside. Does not prove: the last argument of the notes, that the complement of a Jordan curve has exactly two components, or the Jordan curve theorem. Limits: loops in the complex plane. Check: TestsIndexTriangle.lean (a concrete triangle has index 1 about the origin; the orientation hypothesis fails for the clockwise order; the unit circle has index 0 about the point 2)."
+  since: unreleased

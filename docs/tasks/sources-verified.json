@@ -2955,6 +2955,21 @@
   "citations": 36,
   "citations_via": "Semantic Scholar"
  },
+ "mccleary-2006": {
+  "checked": "2026-11-16",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "A First Course in Topology ",
+  "locations": {
+   "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09": {
+    "verified": true,
+    "snippet": "The Jordan Curve Theorem ",
+    "why": null
+   }
+  },
+  "citations": 18,
+  "citations_via": "OpenAlex"
+ },
  "meda-pinamonti-siemssen-2021": {
   "checked": "2026-11-08",
   "exists": true,
