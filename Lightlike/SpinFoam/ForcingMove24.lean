@@ -18,6 +18,9 @@ fourth), then for every `a` the triangles `N_i` can be added, starting with `N_a
 forcing by the six new tetrahedra: the two complexes cannot both make progress.
 -/
 
+open Finset
+open Lightlike.SpinFoam Lightlike.SpinFoam.Forcing33
+
 namespace Lightlike.SpinFoam.Forcing24
 
 open Lightlike.SpinFoam.Forcing33
@@ -50,5 +53,277 @@ theorem local24_control :
     ok4 false true false true = true ∧
     eq3 false false false false = false ∧
     (bools.any fun n0 => bools.any fun n1 => bools.any fun n2 => bools.any fun n3 => (n0 && ok4 n0 n1 true true && ok4 n0 n2 false false && ok4 n0 n3 true true && ok4 n1 n2 true true && ok4 n1 n3 false false && ok4 n2 n3 true false)) = false := by decide
+
+
+/-! ## The six vertices of the 2-4 move as `Fin 6`
+
+Positions `0, 1, 2, 3` are `s_0, …, s_3` (the tetrahedron `σ`), position `4` is `p` and `5` is `q`. -/
+
+/-- The tetrahedron `σ` removed by the move: positions `0, 1, 2, 3`. -/
+def sig4 : Finset (Fin 6) := {0, 1, 2, 3}
+
+/-- The edge `τ = {p, q}`: positions `4, 5`. -/
+def tau2 : Finset (Fin 6) := {4, 5}
+
+/-- The pair `{s_j, s_k}` number `r`, in the order `01, 02, 03, 12, 13, 23`. -/
+def ps : Fin 6 → Finset (Fin 6) := ![{0, 1}, {0, 2}, {0, 3}, {1, 2}, {1, 3}, {2, 3}]
+
+/-- The triangle `σ ∖ {s_i}`. -/
+def sgX (i : Fin 4) : Finset (Fin 6) := univ.filter fun v => v.val < 4 ∧ v.val ≠ i.val
+
+/-- The triangle `{p, s_j, s_k}` of the pair `r`. -/
+def mpX (r : Fin 6) : Finset (Fin 6) := insert 4 (ps r)
+
+/-- The triangle `{q, s_j, s_k}` of the pair `r`. -/
+def mqX (r : Fin 6) : Finset (Fin 6) := insert 5 (ps r)
+
+/-- The new triangle `{p, q, s_i}`. -/
+def nnX (i : Fin 4) : Finset (Fin 6) := univ.filter fun v => v.val = 4 ∨ v.val = 5 ∨ v.val = i.val
+
+/-- The common tetrahedron `{p} ∪ (σ ∖ {s_i})`. -/
+def tpX (i : Fin 4) : Finset (Fin 6) := univ.filter fun v => v.val = 4 ∨ (v.val < 4 ∧ v.val ≠ i.val)
+
+/-- The common tetrahedron `{q} ∪ (σ ∖ {s_i})`. -/
+def tqX (i : Fin 4) : Finset (Fin 6) := univ.filter fun v => v.val = 5 ∨ (v.val < 4 ∧ v.val ≠ i.val)
+
+/-- The new tetrahedron `{p, q, s_j, s_k}` of the pair `r`. -/
+def ntX (r : Fin 6) : Finset (Fin 6) := insert 4 (insert 5 (ps r))
+
+lemma tris_sig4 : sig4.powersetCard 3 = {sgX 0, sgX 1, sgX 2, sgX 3} := by decide +kernel
+
+lemma tris_tpX_0 : (tpX 0).powersetCard 3 = {sgX 0, mpX 3, mpX 4, mpX 5} := by decide +kernel
+
+lemma tris_tqX_0 : (tqX 0).powersetCard 3 = {sgX 0, mqX 3, mqX 4, mqX 5} := by decide +kernel
+
+lemma tris_tpX_1 : (tpX 1).powersetCard 3 = {sgX 1, mpX 1, mpX 2, mpX 5} := by decide +kernel
+
+lemma tris_tqX_1 : (tqX 1).powersetCard 3 = {sgX 1, mqX 1, mqX 2, mqX 5} := by decide +kernel
+
+lemma tris_tpX_2 : (tpX 2).powersetCard 3 = {sgX 2, mpX 0, mpX 2, mpX 4} := by decide +kernel
+
+lemma tris_tqX_2 : (tqX 2).powersetCard 3 = {sgX 2, mqX 0, mqX 2, mqX 4} := by decide +kernel
+
+lemma tris_tpX_3 : (tpX 3).powersetCard 3 = {sgX 3, mpX 0, mpX 1, mpX 3} := by decide +kernel
+
+lemma tris_tqX_3 : (tqX 3).powersetCard 3 = {sgX 3, mqX 0, mqX 1, mqX 3} := by decide +kernel
+
+lemma tris_ntX_0 : (ntX 0).powersetCard 3 = {nnX 0, nnX 1, mpX 0, mqX 0} := by decide +kernel
+
+lemma tris_ntX_1 : (ntX 1).powersetCard 3 = {nnX 0, nnX 2, mpX 1, mqX 1} := by decide +kernel
+
+lemma tris_ntX_2 : (ntX 2).powersetCard 3 = {nnX 0, nnX 3, mpX 2, mqX 2} := by decide +kernel
+
+lemma tris_ntX_3 : (ntX 3).powersetCard 3 = {nnX 1, nnX 2, mpX 3, mqX 3} := by decide +kernel
+
+lemma tris_ntX_4 : (ntX 4).powersetCard 3 = {nnX 1, nnX 3, mpX 4, mqX 4} := by decide +kernel
+
+lemma tris_ntX_5 : (ntX 5).powersetCard 3 = {nnX 2, nnX 3, mpX 5, mqX 5} := by decide +kernel
+
+lemma sgX_inj : ∀ i j : Fin 4, sgX i = sgX j → i = j := by decide
+
+lemma nnX_inj : ∀ i j : Fin 4, nnX i = nnX j → i = j := by decide
+
+lemma dist_ntX_0 : nnX 0 ≠ nnX 1 ∧ nnX 0 ≠ mpX 0 ∧ nnX 0 ≠ mqX 0 ∧ nnX 1 ≠ mpX 0 ∧
+    nnX 1 ≠ mqX 0 ∧ mpX 0 ≠ mqX 0 := by decide
+
+lemma dist_ntX_1 : nnX 0 ≠ nnX 2 ∧ nnX 0 ≠ mpX 1 ∧ nnX 0 ≠ mqX 1 ∧ nnX 2 ≠ mpX 1 ∧
+    nnX 2 ≠ mqX 1 ∧ mpX 1 ≠ mqX 1 := by decide
+
+lemma dist_ntX_2 : nnX 0 ≠ nnX 3 ∧ nnX 0 ≠ mpX 2 ∧ nnX 0 ≠ mqX 2 ∧ nnX 3 ≠ mpX 2 ∧
+    nnX 3 ≠ mqX 2 ∧ mpX 2 ≠ mqX 2 := by decide
+
+lemma dist_ntX_3 : nnX 1 ≠ nnX 2 ∧ nnX 1 ≠ mpX 3 ∧ nnX 1 ≠ mqX 3 ∧ nnX 2 ≠ mpX 3 ∧
+    nnX 2 ≠ mqX 3 ∧ mpX 3 ≠ mqX 3 := by decide
+
+lemma dist_ntX_4 : nnX 1 ≠ nnX 3 ∧ nnX 1 ≠ mpX 4 ∧ nnX 1 ≠ mqX 4 ∧ nnX 3 ≠ mpX 4 ∧
+    nnX 3 ≠ mqX 4 ∧ mpX 4 ≠ mqX 4 := by decide
+
+lemma dist_ntX_5 : nnX 2 ≠ nnX 3 ∧ nnX 2 ≠ mpX 5 ∧ nnX 2 ≠ mqX 5 ∧ nnX 3 ≠ mpX 5 ∧
+    nnX 3 ≠ mqX 5 ∧ mpX 5 ≠ mqX 5 := by decide
+
+lemma sgX_ne_nnX : ∀ i j : Fin 4, sgX i ≠ nnX j := by decide
+
+lemma mpX_ne_nnX : ∀ r : Fin 6, ∀ j : Fin 4, mpX r ≠ nnX j := by decide
+
+lemma mqX_ne_nnX : ∀ r : Fin 6, ∀ j : Fin 4, mqX r ≠ nnX j := by decide
+
+
+/-- Extraction of the witnesses `n_i` from the conclusion of `local24`. -/
+lemma extract_n (pb qb : Fin 6 → Bool) (a : Fin 4)
+    (H : (bools.any fun n0 => bools.any fun n1 => bools.any fun n2 => bools.any fun n3 => (n0 && ok4 n0 n1 (pb 0) (qb 0) && ok4 n0 n2 (pb 1) (qb 1) && ok4 n0 n3 (pb 2) (qb 2) && ok4 n1 n2 (pb 3) (qb 3) && ok4 n1 n3 (pb 4) (qb 4) && ok4 n2 n3 (pb 5) (qb 5))) = true ∧
+    (bools.any fun n0 => bools.any fun n1 => bools.any fun n2 => bools.any fun n3 => (n1 && ok4 n0 n1 (pb 0) (qb 0) && ok4 n0 n2 (pb 1) (qb 1) && ok4 n0 n3 (pb 2) (qb 2) && ok4 n1 n2 (pb 3) (qb 3) && ok4 n1 n3 (pb 4) (qb 4) && ok4 n2 n3 (pb 5) (qb 5))) = true ∧
+    (bools.any fun n0 => bools.any fun n1 => bools.any fun n2 => bools.any fun n3 => (n2 && ok4 n0 n1 (pb 0) (qb 0) && ok4 n0 n2 (pb 1) (qb 1) && ok4 n0 n3 (pb 2) (qb 2) && ok4 n1 n2 (pb 3) (qb 3) && ok4 n1 n3 (pb 4) (qb 4) && ok4 n2 n3 (pb 5) (qb 5))) = true ∧
+    (bools.any fun n0 => bools.any fun n1 => bools.any fun n2 => bools.any fun n3 => (n3 && ok4 n0 n1 (pb 0) (qb 0) && ok4 n0 n2 (pb 1) (qb 1) && ok4 n0 n3 (pb 2) (qb 2) && ok4 n1 n2 (pb 3) (qb 3) && ok4 n1 n3 (pb 4) (qb 4) && ok4 n2 n3 (pb 5) (qb 5))) = true) :
+    ∃ nb : Fin 4 → Bool, nb a = true ∧
+      ok4 (nb 0) (nb 1) (pb 0) (qb 0) = true ∧
+      ok4 (nb 0) (nb 2) (pb 1) (qb 1) = true ∧
+      ok4 (nb 0) (nb 3) (pb 2) (qb 2) = true ∧
+      ok4 (nb 1) (nb 2) (pb 3) (qb 3) = true ∧
+      ok4 (nb 1) (nb 3) (pb 4) (qb 4) = true ∧
+      ok4 (nb 2) (nb 3) (pb 5) (qb 5) = true := by
+  fin_cases a
+  · obtain ⟨n0, -, h0⟩ := List.any_eq_true.mp H.1
+    obtain ⟨n1, -, h1⟩ := List.any_eq_true.mp h0
+    obtain ⟨n2, -, h2⟩ := List.any_eq_true.mp h1
+    obtain ⟨n3, -, h3⟩ := List.any_eq_true.mp h2
+    simp only [Bool.and_eq_true] at h3
+    obtain ⟨⟨⟨⟨⟨⟨hna, o0⟩, o1⟩, o2⟩, o3⟩, o4⟩, o5⟩ := h3
+    exact ⟨![n0, n1, n2, n3], by simpa using hna, by simpa using ⟨o0, o1, o2, o3, o4, o5⟩⟩
+  · obtain ⟨n0, -, h0⟩ := List.any_eq_true.mp H.2.1
+    obtain ⟨n1, -, h1⟩ := List.any_eq_true.mp h0
+    obtain ⟨n2, -, h2⟩ := List.any_eq_true.mp h1
+    obtain ⟨n3, -, h3⟩ := List.any_eq_true.mp h2
+    simp only [Bool.and_eq_true] at h3
+    obtain ⟨⟨⟨⟨⟨⟨hna, o0⟩, o1⟩, o2⟩, o3⟩, o4⟩, o5⟩ := h3
+    exact ⟨![n0, n1, n2, n3], by simpa using hna, by simpa using ⟨o0, o1, o2, o3, o4, o5⟩⟩
+  · obtain ⟨n0, -, h0⟩ := List.any_eq_true.mp H.2.2.1
+    obtain ⟨n1, -, h1⟩ := List.any_eq_true.mp h0
+    obtain ⟨n2, -, h2⟩ := List.any_eq_true.mp h1
+    obtain ⟨n3, -, h3⟩ := List.any_eq_true.mp h2
+    simp only [Bool.and_eq_true] at h3
+    obtain ⟨⟨⟨⟨⟨⟨hna, o0⟩, o1⟩, o2⟩, o3⟩, o4⟩, o5⟩ := h3
+    exact ⟨![n0, n1, n2, n3], by simpa using hna, by simpa using ⟨o0, o1, o2, o3, o4, o5⟩⟩
+  · obtain ⟨n0, -, h0⟩ := List.any_eq_true.mp H.2.2.2
+    obtain ⟨n1, -, h1⟩ := List.any_eq_true.mp h0
+    obtain ⟨n2, -, h2⟩ := List.any_eq_true.mp h1
+    obtain ⟨n3, -, h3⟩ := List.any_eq_true.mp h2
+    simp only [Bool.and_eq_true] at h3
+    obtain ⟨⟨⟨⟨⟨⟨hna, o0⟩, o1⟩, o2⟩, o3⟩, o4⟩, o5⟩ := h3
+    exact ⟨![n0, n1, n2, n3], by simpa using hna, by simpa using ⟨o0, o1, o2, o3, o4, o5⟩⟩
+
+
+section Abstract
+
+variable {V : Type*} [DecidableEq V] (e : Fin 6 ↪ V)
+
+lemma tris_four {X Y1 Y2 Y3 Y4 : Finset (Fin 6)} (h : X.powersetCard 3 = {Y1, Y2, Y3, Y4})
+    (g : Finset V) : g ∈ (tx e X).powersetCard 3 ↔
+      g = tx e Y1 ∨ g = tx e Y2 ∨ g = tx e Y3 ∨ g = tx e Y4 := by
+  rw [mem_tris_tx]
+  constructor
+  · rintro ⟨Y, hY, rfl⟩
+    rw [h] at hY
+    simp only [mem_insert, mem_singleton] at hY
+    rcases hY with rfl | rfl | rfl | rfl <;> simp
+  · rintro (rfl | rfl | rfl | rfl) <;> exact ⟨_, by rw [h]; simp, rfl⟩
+
+/-- A closed tetrahedron whose four triangles are `X1, …, X4` has not exactly three of them in the set
+(Boolean form). -/
+lemma ok4_of_closedTet {A : Finset (Finset V)} {t : Finset V} {X1 X2 X3 X4 : Finset V}
+    (hcl : ∀ f ∈ t.powersetCard 3, (∀ g ∈ t.powersetCard 3, g ≠ f → g ∈ A) → f ∈ A)
+    (htr : ∀ g, g ∈ t.powersetCard 3 ↔ g = X1 ∨ g = X2 ∨ g = X3 ∨ g = X4) :
+    ok4 (decide (X1 ∈ A)) (decide (X2 ∈ A)) (decide (X3 ∈ A)) (decide (X4 ∈ A)) = true := by
+  obtain ⟨c1, c2, c3, c4⟩ := closed_four hcl htr
+  exact ok4_of_closed _ _ _ _
+    (fun hb hc hd => decide_eq_true (c1 (of_decide_eq_true hb) (of_decide_eq_true hc)
+      (of_decide_eq_true hd)))
+    (fun ha hc hd => decide_eq_true (c2 (of_decide_eq_true ha) (of_decide_eq_true hc)
+      (of_decide_eq_true hd)))
+    (fun ha hb hd => decide_eq_true (c3 (of_decide_eq_true ha) (of_decide_eq_true hb)
+      (of_decide_eq_true hd)))
+    (fun ha hb hc => decide_eq_true (c4 (of_decide_eq_true ha) (of_decide_eq_true hb)
+      (of_decide_eq_true hc)))
+
+/-- Conversely, a tetrahedron with `ok4` and three triangles in the set has the fourth in it. -/
+lemma mem_of_ok4 {A : Finset (Finset V)} {X1 X2 X3 X4 : Finset V}
+    (h : ok4 (decide (X1 ∈ A)) (decide (X2 ∈ A)) (decide (X3 ∈ A)) (decide (X4 ∈ A)) = true) :
+    (X2 ∈ A → X3 ∈ A → X4 ∈ A → X1 ∈ A) ∧ (X1 ∈ A → X3 ∈ A → X4 ∈ A → X2 ∈ A) ∧
+      (X1 ∈ A → X2 ∈ A → X4 ∈ A → X3 ∈ A) ∧ (X1 ∈ A → X2 ∈ A → X3 ∈ A → X4 ∈ A) := by
+  by_cases h1 : X1 ∈ A <;> by_cases h2 : X2 ∈ A <;> by_cases h3 : X3 ∈ A <;>
+    by_cases h4 : X4 ∈ A <;> simp_all [ok4]
+
+
+/-- Closedness of a tetrahedron from the four implications, when its four triangles are distinct. -/
+lemma closed_of_four {W : Finset (Finset V)} {t : Finset V} {X1 X2 X3 X4 : Finset V}
+    (htr : ∀ g, g ∈ t.powersetCard 3 ↔ g = X1 ∨ g = X2 ∨ g = X3 ∨ g = X4)
+    (d12 : X1 ≠ X2) (d13 : X1 ≠ X3) (d14 : X1 ≠ X4) (d23 : X2 ≠ X3) (d24 : X2 ≠ X4) (d34 : X3 ≠ X4)
+    (c1 : X2 ∈ W → X3 ∈ W → X4 ∈ W → X1 ∈ W) (c2 : X1 ∈ W → X3 ∈ W → X4 ∈ W → X2 ∈ W)
+    (c3 : X1 ∈ W → X2 ∈ W → X4 ∈ W → X3 ∈ W) (c4 : X1 ∈ W → X2 ∈ W → X3 ∈ W → X4 ∈ W) :
+    ∀ f ∈ t.powersetCard 3, (∀ g ∈ t.powersetCard 3, g ≠ f → g ∈ W) → f ∈ W := by
+  intro f hf hothers
+  have o1 := fun h => hothers X1 ((htr _).mpr (Or.inl rfl)) h
+  have o2 := fun h => hothers X2 ((htr _).mpr (Or.inr (Or.inl rfl))) h
+  have o3 := fun h => hothers X3 ((htr _).mpr (Or.inr (Or.inr (Or.inl rfl)))) h
+  have o4 := fun h => hothers X4 ((htr _).mpr (Or.inr (Or.inr (Or.inr rfl)))) h
+  rcases (htr f).mp hf with rfl | rfl | rfl | rfl
+  · exact c1 (o2 d12.symm) (o3 d13.symm) (o4 d14.symm)
+  · exact c2 (o1 d12) (o3 d23.symm) (o4 d24.symm)
+  · exact c3 (o1 d13) (o2 d23) (o4 d34.symm)
+  · exact c4 (o1 d14) (o2 d24) (o3 d34)
+
+open Classical in
+/-- **The dichotomy of the 2-4 move.** `P0` are the tetrahedra common to the complexes before and
+after the move, `C` the triangles of the complex before it (all of which are also triangles after
+it). If `T ⊆ C` does not force `C` by `P0` alone, then it does not force both complexes: not the
+complex before (with the tetrahedron `σ`), or not the complex after (with the six new tetrahedra and
+the triangle `{p, q, s_a}` added to `T`). -/
+theorem forcing_dichotomy24 (P0 C T : Finset (Finset V)) (a : Fin 4)
+    (hCt : ∀ t ∈ P0, ∀ g ∈ t.powersetCard 3, g ∈ C)
+    (hcom : ∀ i : Fin 4, tx e (tpX i) ∈ P0 ∧ tx e (tqX i) ∈ P0)
+    (hNC : ∀ i, tx e (nnX i) ∉ C) (hT : T ⊆ C) (hnot : ¬ ForcesIn P0 C T) :
+    ¬ ForcesIn (insert (tx e sig4) P0) C T ∨
+      ¬ ForcesIn (P0 ∪ univ.image fun r => tx e (ntX r))
+        (C ∪ univ.image fun i => tx e (nnX i)) (insert (tx e (nnX a)) T) := by
+  set A : Finset (Finset V) := C.filter (fun f => ForcesIn P0 {f} T) with hA
+  have hAC : A ⊆ C := filter_subset _ _
+  have hTA : T ⊆ A := fun f hf => mem_filter.mpr ⟨hT hf, .done (by simpa using hf)⟩
+  have hAforced : ForcesIn P0 A T := ForcesIn.of_singles fun g hg => (mem_filter.mp hg).2
+  have hAcl : ClosedUnder P0 A := fun t ht f hf hothers =>
+    mem_filter.mpr ⟨hCt t ht f hf, ForcesIn.of_forced_others ht hf
+      fun g hg hne => (mem_filter.mp (hothers g hg hne)).2⟩
+  have hCA : ¬ C ⊆ A := fun h => hnot (hAforced.mono_target (fun x hx => mem_union_left _ (h hx)))
+  by_cases hfire : ∃ i, tx e (sgX i) ∉ A ∧ ∀ j, j ≠ i → tx e (sgX j) ∈ A
+  swap
+  · left
+    intro hK
+    have hcl : ClosedUnder {tx e sig4} A := by
+      intro t ht f hf hothers
+      rw [mem_singleton] at ht
+      subst ht
+      rcases (tris_four e tris_sig4 f).mp hf with rfl | rfl | rfl | rfl
+      all_goals
+        first
+        | (by_contra hfA
+           exact hfire ⟨_, hfA, fun j hj => hothers _ ((tris_four e tris_sig4 _).mpr (by
+             fin_cases j <;> simp)) (fun h => hj (sgX_inj _ _ ((tx_inj e).mp h)))⟩)
+    have hcl' : ClosedUnder (insert (tx e sig4) P0) A := by
+      rw [insert_eq]; exact closedUnder_union hcl hAcl
+    exact hCA (hK.sound hcl' hTA)
+  · right
+    obtain ⟨i0, hi0, hrest⟩ := hfire
+    intro hK'
+    set sb : Fin 4 → Bool := fun i => decide (tx e (sgX i) ∈ A) with hsb
+    set pb : Fin 6 → Bool := fun r => decide (tx e (mpX r) ∈ A) with hpb
+    set qb : Fin 6 → Bool := fun r => decide (tx e (mqX r) ∈ A) with hqb
+    have htp0 : ok4 (sb 0) (pb 3) (pb 4) (pb 5) = true :=
+    ok4_of_closedTet (hAcl _ (hcom 0).1) (tris_four e tris_tpX_0)
+    have htq0 : ok4 (sb 0) (qb 3) (qb 4) (qb 5) = true :=
+    ok4_of_closedTet (hAcl _ (hcom 0).2) (tris_four e tris_tqX_0)
+    have htp1 : ok4 (sb 1) (pb 1) (pb 2) (pb 5) = true :=
+    ok4_of_closedTet (hAcl _ (hcom 1).1) (tris_four e tris_tpX_1)
+    have htq1 : ok4 (sb 1) (qb 1) (qb 2) (qb 5) = true :=
+    ok4_of_closedTet (hAcl _ (hcom 1).2) (tris_four e tris_tqX_1)
+    have htp2 : ok4 (sb 2) (pb 0) (pb 2) (pb 4) = true :=
+    ok4_of_closedTet (hAcl _ (hcom 2).1) (tris_four e tris_tpX_2)
+    have htq2 : ok4 (sb 2) (qb 0) (qb 2) (qb 4) = true :=
+    ok4_of_closedTet (hAcl _ (hcom 2).2) (tris_four e tris_tqX_2)
+    have htp3 : ok4 (sb 3) (pb 0) (pb 1) (pb 3) = true :=
+    ok4_of_closedTet (hAcl _ (hcom 3).1) (tris_four e tris_tpX_3)
+    have htq3 : ok4 (sb 3) (qb 0) (qb 1) (qb 3) = true :=
+    ok4_of_closedTet (hAcl _ (hcom 3).2) (tris_four e tris_tqX_3)
+    have hs : ∀ j, sb j = decide (j ≠ i0) := by
+    intro j
+    show decide (tx e (sgX j) ∈ A) = decide (j ≠ i0)
+    by_cases hj : j = i0
+    · rw [hj]; simp [hi0]
+    · simp [hj, hrest j hj]
+    have heq3 : eq3 (sb 0) (sb 1) (sb 2) (sb 3) = true := by
+    rw [hs 0, hs 1, hs 2, hs 3]
+    fin_cases i0 <;> decide
+    have key := local24 (sb 0) (sb 1) (sb 2) (sb 3) (pb 0) (pb 1) (pb 2) (pb 3) htp3 (pb 4) htp2 (pb 5) htp0 htp1 (qb 0) (qb 1) (qb 2) (qb 3) htq3 (qb 4) htq2 (qb 5) htq0 htq1 heq3
+    obtain ⟨nb, hna, hn0, hn1, hn2, hn3, hn4, hn5⟩ := extract_n pb qb a key
+    sorry
+
+end Abstract
 
 end Lightlike.SpinFoam.Forcing24
