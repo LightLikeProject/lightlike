@@ -117,6 +117,66 @@ tasks:
       - The q-Racah formula and q-hypergeometric identities (Kirillov–Reshetikhin 1989).
       - Representation theory of U_q(sl₂) at roots of unity (Turaev 1994).
       - Kauffman–Lins recoupling theory (1994).
+  - id: T-GE1-P1
+    milestone: GE1
+    kind: proof
+    title: Existence and uniqueness of the Levi-Civita connection of a Lorentzian metric
+    file: Tasks/GE/T_GE1_P1.lean
+    decl: Lightlike.leviCivita_exists_unique
+    size: L
+    difficulty: research-level
+    routes:
+      - See the hint in the header of the file.
+  - id: T-GE1-P2
+    milestone: GE1
+    kind: proof
+    title: The curvature tensor is computed by any smooth extensions
+    file: Tasks/GE/T_GE1_P2.lean
+    decl: Lightlike.curvatureAt_apply
+    size: L
+    difficulty: research-level
+    routes:
+      - See the hint in the header of the file.
+  - id: T-GE1-P3
+    milestone: GE1
+    kind: proof
+    title: The Ricci tensor of a Levi-Civita connection is symmetric
+    file: Tasks/GE/T_GE1_P3.lean
+    decl: Lightlike.ricciAt_symm
+    size: L
+    difficulty: research-level
+    routes:
+      - See the hint in the header of the file.
+  - id: T-GE1-P4
+    milestone: GE1
+    kind: proof
+    title: The first Bianchi identity and the pair symmetry of the lowered curvature
+    file: Tasks/GE/T_GE1_P4.lean
+    decl: Lightlike.bianchi_first_and_pair_symm
+    size: L
+    difficulty: research-level
+    routes:
+      - See the hint in the header of the file.
+  - id: T-GE1-P5
+    milestone: GE1
+    kind: proof
+    title: The intrinsic scalar curvature is the coordinate scalar curvature in every chart
+    file: Tasks/GE/T_GE1_P5.lean
+    decl: Lightlike.scalarCurvatureAt_chart
+    size: L
+    difficulty: research-level
+    routes:
+      - See the hint in the header of the file.
+  - id: T-GE1-P6
+    milestone: GE1
+    kind: proof
+    title: The manifold-level Einstein equations are the coordinate ones in every chart
+    file: Tasks/GE/T_GE1_P6.lean
+    decl: Lightlike.satisfiesEinstein_iff_chart
+    size: L
+    difficulty: research-level
+    routes:
+      - See the hint in the header of the file.
 
 # Upstream tasks: finished results that belong in Mathlib (general mathematics) or Physlib
 # (general physics), with the rework each needs. Exclusive, like definition

@@ -1,3 +1,9 @@
+import Tasks.GE.T_GE1_P1
+import Tasks.GE.T_GE1_P2
+import Tasks.GE.T_GE1_P3
+import Tasks.GE.T_GE1_P4
+import Tasks.GE.T_GE1_P5
+import Tasks.GE.T_GE1_P6
 import Tasks.QU.T_QU1_P1
 import Tasks.QU.T_QU1_P2
 import Tasks.QU.T_QU1_P3

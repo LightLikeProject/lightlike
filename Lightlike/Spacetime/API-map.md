@@ -22,8 +22,16 @@ transform as tensors, and solutions of the vacuum Einstein equations pull back t
 
 A Lorentzian metric on a smooth manifold modelled on `ℝⁿ` is a smooth symmetric bilinear form on
 each tangent space with signature (−,+,…,+), in the mostly-plus convention {2} [4]. In every chart
-of the atlas its components form a coordinate metric of Lorentzian signature [5]. The curvature of
-a manifold-level metric as a tensor field, independent of charts, is not yet formalized. [TODO]
+of the atlas its components form a coordinate metric of Lorentzian signature [5].
+
+The curvature of a manifold-level metric as a tensor field is defined in `Connection.lean` [7]: a connection is Mathlib's
+covariant derivative on the tangent bundle; the Riemann curvature is `R(X, Y) Z = ∇_X ∇_Y Z - ∇_Y ∇_X Z - ∇_{[X,Y]} Z`
+(the sign convention of Mathlib pull request 45069), the Ricci tensor is its trace over the first slot, the scalar
+curvature its trace with the metric, the Levi-Civita connection is the torsion-free connection compatible with `g`, and the Einstein
+equations with cosmological constant are `Ric - (S/2) g + Λ g = 0` [7]. These are definitions only: the existence and
+uniqueness of the Levi-Civita connection, the independence of the curvature from the extensions, its symmetries, and the
+agreement with the coordinate curvature of [1] in every chart are stated as proof tasks `T-GE1-P1` to `T-GE1-P6`
+(`Tasks/GE/`), with open proofs. [TODO]
 
 In Minkowski space, an observer who travels out and back along two straight segments ages less
 than one who stays at rest [6].
@@ -39,6 +47,9 @@ than one who stays at rest [6].
 4. Lightlike/Spacetime/Lorentzian.lean - `LorentzianMetric`
 5. Lightlike/Spacetime/Coordinates.lean - `LorentzianMetric.isLorentzianCoordMetric_coordMetric`
 6. Lightlike/Spacetime/Minkowski.lean - `twin_paradox`
+7. Lightlike/Spacetime/Connection.lean - `Connection`, `Connection.curvatureAt`, `Connection.riemannLowerAt`,
+   `Connection.ricciAt`, `Connection.scalarCurvatureAt`, `Connection.IsMetricCompatible`,
+   `Connection.IsLeviCivita`, `LorentzianMetric.SatisfiesEinstein`
 
 ## References
 
