@@ -150,7 +150,12 @@ the chart action is not made. The derivative of `triAction` itself along a curve
 expression where the product of the overlaps is off the cut of the logarithm [26]. Along any curve through a critical configuration with
 the critical spinors, the derivative of `lorAction` is zero when closure holds at every node [27];
 the curves are given by their entrywise derivative `X₀ · genMat c`, and the Fréchet derivative of
-`lorChartAction` is not identified here.
+`lorChartAction` is not identified here. The second derivative along a one-parameter subgroup of one
+node, with the other elements and the spinors fixed, is the sum over the ends at the node of the end
+formula `endForm` [29] [28]: the block `H^{X_a X_a}` of BDFHP Appendix A, equal to a quarter of eq. (61)
+at source ends (the printed blocks correspond to the generators `iσ`, `σ`) and different from (61) at
+target ends, where the sign of the parameter `p` and a term `m·(α×β)` appear; checked against the
+independent `44 × 44` numerics to `2·10⁻¹⁹` (`scripts/asymptotics/lorentzian_hessian_node_check.py`).
 
 ## Lean References
 
@@ -247,6 +252,13 @@ the curves are given by their entrywise derivative `X₀ · genMat c`, and the F
 27. Lightlike/Asymptotics/Lorentzian/CriticalGradient.lean - `Asymptotics.Lorentzian.genMat`,
     `Asymptotics.Lorentzian.hasDerivAt_spinAct`,
     `Asymptotics.Lorentzian.hasDerivAt_lorAction_critical`, `Asymptotics.Lorentzian.hcl_of_closure`
+28. Lightlike/Asymptotics/Lorentzian/SpinorPauli.lean - `Asymptotics.Lorentzian.inner_genMat`,
+    `Asymptotics.Lorentzian.inner_genMat_genMat`, `Asymptotics.Lorentzian.srcValue_eval`,
+    `Asymptotics.Lorentzian.projForm`, `Asymptotics.Lorentzian.tripleForm`
+29. Lightlike/Asymptotics/Lorentzian/HessianNode.lean - `Asymptotics.Lorentzian.srcCoeff`,
+    `Asymptotics.Lorentzian.tgtCoeff`, `Asymptotics.Lorentzian.endForm`,
+    `Asymptotics.Lorentzian.hasDerivAt_srcCoeff`, `Asymptotics.Lorentzian.hasDerivAt_tgtCoeff`,
+    `Asymptotics.Lorentzian.hessXX_block`
 
 ## References
 

@@ -50,6 +50,8 @@ import Lightlike.Asymptotics.Lorentzian.CriticalSpinors
 import Lightlike.Asymptotics.Lorentzian.ZStationary
 import Lightlike.Asymptotics.Lorentzian.TriActionDeriv
 import Lightlike.Asymptotics.Lorentzian.CriticalGradient
+import Lightlike.Asymptotics.Lorentzian.SpinorPauli
+import Lightlike.Asymptotics.Lorentzian.HessianNode
 import Lightlike.Asymptotics.Lorentzian.Stationary
 import Lightlike.Asymptotics.Lorentzian.Critical
 import Lightlike.Asymptotics.Lorentzian.Classification

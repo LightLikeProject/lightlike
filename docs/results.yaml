@@ -1191,3 +1191,16 @@
   review: kernel-checked
   note: "The variation of z cancels by the second critical equation (21) alone (zedge_cancel in ZStationary.lean); the group variations are the logarithmic derivatives of Stationary.lean and sum to zero by closure at each node, with p = gamma n / 2 (hcl_of_closure). Conditional on closure at every node and on the product of the overlaps r c on each edge lying off the negative real axis (slitPlane). The curves in SL(2,C) are given by their entrywise derivative X0 genMat c. NOT PROVED: that the Frechet derivative of the pulled-back action vanishes, which needs the chart of step 5."
   since: unreleased
+- id: LL-XXXX-b
+  title: The second derivative of the Lorentzian vertex action along a one-parameter subgroup at one node is the sum over its ends of an explicit end formula, a quarter of BDFHP eq. (61) at source ends and different from it at target ends
+  area: Asymptotics
+  file: Lightlike/Asymptotics/Lorentzian/HessianNode.lean
+  decls: [Lightlike.Asymptotics.Lorentzian.hessXX_block, Lightlike.Asymptotics.Lorentzian.endForm, Lightlike.Asymptotics.Lorentzian.hasDerivAt_srcCoeff, Lightlike.Asymptotics.Lorentzian.hasDerivAt_tgtCoeff]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: bdfhp-2010, location: "eq. (61)", check: "critical and stationary point"}
+  review: kernel-checked
+  note: "At a critical configuration (IsLorCritical, critical spinors), with p = gamma k, unit boundary spinors, the overlaps off the cut of the logarithm and the closure sum_e k_e m_e = 0 at the node a, the second derivative at 0 of the action along X_a Y(t), Y' = Y genMat(beta + i alpha) (generators J = i sigma / 2, K = sigma / 2), with the other elements and z fixed, equals the sum over the ends e at a of k [ -1/2 (alpha,alpha) + i s (alpha,beta) + s m.(alpha x beta) ] - (k/2 + i s p) (beta,beta), (u,v) = u.v - (m.u)(m.v), s = +1 at a source end and -1 at a target end. Measured: this agrees with the independent 44 x 44 Hessian of lorentzian_hessian_check.py to 2e-19; BDFHP (61) equals four times it at source ends with s = 1 (their blocks correspond to the generators i sigma and sigma), and no variant of (61) reproduces it at target ends. NOT PROVED: the Hessian blocks coupling X and z, the nondegeneracy of the 44 x 44 matrix, and the identification with the second Frechet derivative of the pulled-back action (needs the chart of step 5)."
+  since: unreleased

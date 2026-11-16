@@ -599,6 +599,11 @@
     "snippet": "(57) 1 − iγ p det H|crit a<b In the Lorentzian case the two contributions to the asymptotics correspond to the parity related reconstructions of this 4 simplex geometry, σ and P σ. The factor (2π)22 comes from the statio",
     "why": null
    },
+   "eq. (61)": {
+    "verified": true,
+    "snippet": "(61) Where i, j = 1, 2, 3 and we have used the critical and stationary point equations. H zz is a 20 × 20 matrix. The derivatives are with respect to the spinor variables zab on each of the ten edges ab of the amplitude.",
+    "why": null
+   },
    "§4.2.2": {
     "verified": true,
     "snippet": "4.2.2 Stationary and critical points We now compute the critical points of the action by evaluating the first derivative of the action of the configurations satisfying the condition (18). The action (17) is a function",
