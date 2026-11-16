@@ -69,7 +69,10 @@ hypothesis, not proved, and it holds trivially for a zero remainder [8]. The glo
 action in these statements cannot hold for the Lorentzian action (logarithms of the overlaps and
 norms): the local version needs smoothness only on an open set containing the support of the
 localised amplitude, by a smooth cutoff of the action [24]. The action of a smooth chart is smooth on every open set where,
-on each edge, the product of the overlaps is off the cut of the logarithm [25].
+on each edge, the product of the overlaps is off the cut of the logarithm [25]. A chart of `SL(2,ℂ)` near the identity with the tangent map
+`X ↦ X exp(M)` of BDFHP Appendix A is the Cayley transform `((1 + s) 1 + M)/(1 - s)`, `s = c·c/16`, of
+`M = ½ Σ c_i σ_i`: determinant one, value `1` and derivative `M` at `0`, smooth entries where `s ≠ 1`
+[26]; Mathlib has no `det exp = exp tr`.
 
 The vertex action `lorAction` is the sum of the triangle actions over the ten edges at the spinors
 `X†z` [9]. Its real part is at most zero where the spinors and overlaps are nonzero [9]. In a chart
@@ -227,7 +230,11 @@ frame (`scripts/asymptotics/lorentzian_hessian_check.py`).
     `Asymptotics.Lorentzian.weighted_asymptotics_local`,
     `Asymptotics.Lorentzian.lorVertex_asymptotics_local`
 25. Lightlike/Asymptotics/Lorentzian/ActionSmooth.lean - `Asymptotics.Lorentzian.contDiffAt_triAction`,
-    `Asymptotics.Lorentzian.contDiff_spinAct`, `Asymptotics.Lorentzian.lorChartAction_contDiffOn`
+    `Asymptotics.Lorentzian.contDiffAt_spinAct`, `Asymptotics.Lorentzian.lorChartAction_contDiffOn`
+26. Lightlike/Asymptotics/Lorentzian/CayleyChart.lean - `Asymptotics.Lorentzian.chartGen`,
+    `Asymptotics.Lorentzian.cayleyMat`, `Asymptotics.Lorentzian.cayley`,
+    `Asymptotics.Lorentzian.cayley_zero`, `Asymptotics.Lorentzian.contDiffOn_cayleyMat`,
+    `Asymptotics.Lorentzian.hasDerivAt_cayleyMat_zero`
 
 ## References
 

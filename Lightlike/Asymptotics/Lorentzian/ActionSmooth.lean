@@ -12,7 +12,8 @@ hypothesis of the vertex asymptotics.
 ## Main results
 
 * `contDiffAt_triAction`: smoothness of `triAction` at such a pair of spinors.
-* `lorChartAction_contDiffOn`: smoothness of `lorChartAction` on an open set of a smooth chart.
+* `lorChartAction_contDiffOn`: smoothness of `lorChartAction` on an open set on which the chart is
+  smooth.
 -/
 
 open Complex
@@ -80,34 +81,38 @@ theorem contDiffAt_triAction (k p : ℝ) (ξ ξ' : Spinor) {Z Z' : Spinor} (hZ :
   exact (((contDiffAt_const).mul hlogP).sub ((contDiffAt_const).mul hlog1)).add
     ((contDiffAt_const).mul hlog2)
 
-/-- A spinor curve `x ↦ M x · v x` is smooth when the entries of `M` and the spinor `v` are. -/
-theorem contDiff_spinAct {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
-    {M : E → Matrix (Fin 2) (Fin 2) ℂ} {v : E → Spinor}
-    (hM : ∀ i k, ContDiff ℝ ∞ (fun x => M x i k)) (hv : ContDiff ℝ ∞ v) :
-    ContDiff ℝ ∞ (fun x => spinAct (M x) (v x)) := by
-  have hiff : ∀ {w : E → Spinor}, ContDiff ℝ ∞ w ↔ ∀ i, ContDiff ℝ ∞ (fun x => w x i) := by
-    intro w
-    constructor
-    · intro hw i
-      exact (((EuclideanSpace.proj (𝕜 := ℂ) i).restrictScalars ℝ).contDiff).comp hw
-    · intro h
-      let L : (Fin 2 → ℂ) →L[ℝ] Spinor :=
-        ((EuclideanSpace.equiv (Fin 2) ℂ).symm.toContinuousLinearMap).restrictScalars ℝ
-      exact L.contDiff.comp (contDiff_pi.2 h)
-  rw [hiff]
-  have hv' := hiff.mp hv
+/-- A spinor-valued map is smooth at a point exactly when its coordinates are. -/
+theorem contDiffAt_spinor_iff {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {w : E → Spinor}
+    {x : E} : ContDiffAt ℝ ∞ w x ↔ ∀ i, ContDiffAt ℝ ∞ (fun y => w y i) x := by
+  constructor
+  · intro hw i
+    exact (((EuclideanSpace.proj (𝕜 := ℂ) i).restrictScalars ℝ).contDiff).contDiffAt.comp x hw
+  · intro h
+    let L : (Fin 2 → ℂ) →L[ℝ] Spinor :=
+      ((EuclideanSpace.equiv (Fin 2) ℂ).symm.toContinuousLinearMap).restrictScalars ℝ
+    exact L.contDiff.contDiffAt.comp x (contDiffAt_pi.2 h)
+
+/-- A spinor `x ↦ M x · v x` is smooth at `x` when the entries of `M` and the spinor `v` are. -/
+theorem contDiffAt_spinAct {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {M : E → Matrix (Fin 2) (Fin 2) ℂ} {v : E → Spinor} {x : E}
+    (hM : ∀ i k, ContDiffAt ℝ ∞ (fun y => M y i k) x) (hv : ContDiffAt ℝ ∞ v x) :
+    ContDiffAt ℝ ∞ (fun y => spinAct (M y) (v y)) x := by
+  rw [contDiffAt_spinor_iff]
+  have hv' := contDiffAt_spinor_iff.mp hv
   intro i
   fin_cases i
   · simpa [spinAct_zero_apply] using ((hM 0 0).mul (hv' 0)).add ((hM 0 1).mul (hv' 1))
   · simpa [spinAct_one_apply] using ((hM 1 0).mul (hv' 0)).add ((hM 1 1).mul (hv' 1))
 
-/-- **The vertex action in a smooth chart is smooth on an open set** where, on every edge, the
-product of the overlaps `⟨Z,ξ⟩⟨Jξ',Z'⟩` is off the cut of the logarithm (this also gives `Z ≠ 0`
-and `Z' ≠ 0`). The chart is a map `x ↦ (X(x), z(x))` with smooth matrix entries and smooth spinors. -/
+/-- **The vertex action in a chart is smooth on an open set** `U` on which the chart is smooth
+(matrix entries and spinors) and, on every edge, the product of the overlaps `⟨Z,ξ⟩⟨Jξ',Z'⟩` is off
+the cut of the logarithm (this also gives `Z ≠ 0` and `Z' ≠ 0`). The chart is a map
+`x ↦ (X(x), z(x))`. -/
 theorem lorChartAction_contDiffOn {n : ℕ} (j p : Fin 10 → ℝ) (g : BdryData)
-    {chart : (Fin n → ℝ) → (Fin 5 → SL2C) × (Fin 10 → Spinor)}
-    (hX : ∀ a i k, ContDiff ℝ ∞ (fun x => ((chart x).1 a : Matrix (Fin 2) (Fin 2) ℂ) i k))
-    (hz : ∀ e, ContDiff ℝ ∞ (fun x => (chart x).2 e)) {U : Set (Fin n → ℝ)}
+    {chart : (Fin n → ℝ) → (Fin 5 → SL2C) × (Fin 10 → Spinor)} {U : Set (Fin n → ℝ)}
+    (hU : IsOpen U)
+    (hX : ∀ a i k, ContDiffOn ℝ ∞ (fun x => ((chart x).1 a : Matrix (Fin 2) (Fin 2) ℂ) i k) U)
+    (hz : ∀ e, ContDiffOn ℝ ∞ (fun x => (chart x).2 e) U)
     (hP : ∀ x ∈ U, ∀ e,
       inner ℂ (spinAct ((chart x).1 (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ ((chart x).2 e))
           (firstCol (g e 0)) *
@@ -119,12 +124,14 @@ theorem lorChartAction_contDiffOn {n : ℕ} (j p : Fin 10 → ℝ) (g : BdryData
   refine ContDiffAt.contDiffWithinAt ?_
   unfold lorChartAction lorAction
   refine ContDiffAt.sum fun e _ => ?_
-  have hM : ∀ a, ∀ i k, ContDiff ℝ ∞ (fun x => (((chart x).1 a : Matrix (Fin 2) (Fin 2) ℂ)ᴴ) i k) := by
+  have hxn : U ∈ nhds x := hU.mem_nhds hx
+  have hM : ∀ a, ∀ i k, ContDiffAt ℝ ∞
+      (fun y => (((chart y).1 a : Matrix (Fin 2) (Fin 2) ℂ)ᴴ) i k) x := by
     intro a i k
-    have := Complex.conjCLE.contDiff.comp (hX a k i)
+    have := Complex.conjCLE.contDiff.contDiffAt.comp x ((hX a k i).contDiffAt hxn)
     simpa [Function.comp_def, Matrix.conjTranspose_apply] using this
-  have hZs := contDiff_spinAct (hM (edgeSrc e)) (hz e)
-  have hZt := contDiff_spinAct (hM (edgeTgt e)) (hz e)
+  have hZs := contDiffAt_spinAct (hM (edgeSrc e)) ((hz e).contDiffAt hxn)
+  have hZt := contDiffAt_spinAct (hM (edgeTgt e)) ((hz e).contDiffAt hxn)
   have hP0 := hP x hx e
   have h0 : (0 : ℂ) ∉ Complex.slitPlane := by simp [Complex.slitPlane]
   have hne : inner ℂ (spinAct ((chart x).1 (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ ((chart x).2 e))
@@ -137,6 +144,6 @@ theorem lorChartAction_contDiffOn {n : ℕ} (j p : Fin 10 → ℝ) (g : BdryData
   have hZ' : spinAct ((chart x).1 (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ ((chart x).2 e) ≠ 0 :=
     fun h => (right_ne_zero_of_mul hne) (by rw [h]; simp)
   exact (contDiffAt_triAction (j e) (p e) (firstCol (g e 0)) (firstCol (g e 1)) hZ hZ' hP0).comp x
-    (hZs.contDiffAt.prodMk hZt.contDiffAt)
+    (hZs.prodMk hZt)
 
 end Lightlike.Asymptotics.Lorentzian
