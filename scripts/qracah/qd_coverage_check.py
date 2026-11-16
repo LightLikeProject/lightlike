@@ -6,7 +6,7 @@ For r = 5, ..., 8 and every `(B, A, E, F)` with an admissible pair on both sides
 permutations `(B E)(A F)`, `(B A)(E F)`, `(B F)(A E)` of the four spins), by whether the range of third
 colours is cut by the level (`aHi r B A E F < min (B + A) (E + F)`), and by the theorem that covers it
 (`none` if there is none). Every class is printed, nothing is filtered. The covered classes are those
-of `qDougallAt_O1` and its images `qDougallAt_O1_k1`, `qDougallAt_O1_k2`, `qDougallAt_O1_k3`
+of `qDougallAt_O1`, `qDougallAt_O3` and their images `_k1`, `_k2`, `_k3`
 (`Lightlike/TuraevViro/Reflect/QDougallMap.lean`), whose hypotheses are tested literally.
 
 The recorded counts are checked; a control with a wrong form (the lowest third colour `B - A + 1`) covers
@@ -72,6 +72,17 @@ def covered(r, B, A, E, F, shift=0):
         return "qDougallAt_O1_k2"
     if rep(F, E, A, B):
         return "qDougallAt_O1_k3"
+    def rep3(b, a, e, f):  # the hypotheses of qDougallAt_O3 for (b, a, e, f)
+        return (a <= b and a <= e and b + a < e + f and aLo(b, a, e, f) == b - a + shift
+                and aLo(b, f, e, a) == e - a and aHi(r, b, a, e, f) == b + a)
+    if rep3(B, A, E, F):
+        return "qDougallAt_O3"
+    if rep3(E, F, B, A):
+        return "qDougallAt_O3_k1"
+    if rep3(A, B, F, E):
+        return "qDougallAt_O3_k2"
+    if rep3(F, E, A, B):
+        return "qDougallAt_O3_k3"
     return None
 
 
@@ -101,7 +112,7 @@ def run(shift=0):
 EXPECTED = {'O1/truncated': (64, 0), 'O1/untruncated': (160, 160),
             'O1+O2+O3+O4/truncated': (190, 0), 'O1+O2+O3+O4/untruncated': (316, 316),
             'O1+O3/truncated': (234, 0), 'O1+O3/untruncated': (422, 422),
-            'O3/truncated': (64, 0), 'O3/untruncated': (160, 0)}
+            'O3/truncated': (64, 0), 'O3/untruncated': (160, 160)}
 
 
 def main():
