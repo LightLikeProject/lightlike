@@ -25,8 +25,8 @@ consecutive moves.
 * `Forcing33.forces_move33_of_robust`: a robust set keeps forcing under a 3-3 move that does not remove
   one of its triangles.
 * `forces_move24_of_robust`: a robust set keeps forcing under every 2-4 move, with the triangle
-  `{a, p, q}` added. No conjecture is involved: the closure condition of `forces_move24_iff` is the
-  robustness condition at the removed tetrahedron.
+  `{a, p, q}` added: the closure condition of `forces_move24_iff` is the robustness condition at the
+  removed tetrahedron.
 
 ## References
 
