@@ -124,10 +124,48 @@ theorem isSimpleChain_append {l₁ l₂ : List (ℝ × ℝ)} {b : ℝ × ℝ}
           rw [hyb]; exact mem_chainSet_last (x :: l'') b
         rw [hseg] at this; exact this
 
+lemma chainSet_pair (a b : ℝ × ℝ) : chainSet [a, b] = segment ℝ a b := by
+  simp only [chainSet]
+  ext y; simp only [mem_union, mem_singleton_iff]
+  constructor
+  · rintro (h | rfl)
+    · exact h
+    · exact right_mem_segment ℝ _ _
+  · exact Or.inl
+
+lemma chainSet_reverse (l : List (ℝ × ℝ)) : chainSet l.reverse = chainSet l := by
+  induction l with
+  | nil => rfl
+  | cons a l ih =>
+    cases l with
+    | nil => rfl
+    | cons b l'' =>
+      have e : (a :: b :: l'').reverse = l''.reverse ++ b :: [a] := by simp
+      have e2 : l''.reverse ++ [b] = (b :: l'').reverse := by simp
+      rw [e, chainSet_append, e2, ih, chainSet_pair, segment_symm]
+      simp only [chainSet]
+      exact Set.union_comm _ _
+
 /-- **A reversed simple chain is simple.** -/
 theorem isSimpleChain_reverse {l : List (ℝ × ℝ)} (h : IsSimpleChain l) :
     IsSimpleChain l.reverse := by
-  sorry
+  induction l with
+  | nil => trivial
+  | cons a l ih =>
+    cases l with
+    | nil => trivial
+    | cons b l'' =>
+      obtain ⟨hab, hseg, hrest⟩ := h
+      have e : (a :: b :: l'').reverse = l''.reverse ++ b :: [a] := by simp
+      have e2 : l''.reverse ++ [b] = (b :: l'').reverse := by simp
+      have hb : IsSimpleChain ([b, a] : List (ℝ × ℝ)) :=
+        ⟨hab.symm, Set.inter_eq_right.2 (Set.singleton_subset_iff.2 (right_mem_segment ℝ b a)),
+          trivial⟩
+      rw [e]
+      refine isSimpleChain_append (by rw [e2]; exact ih hrest) hb ?_
+      rw [e2, chainSet_reverse, chainSet_pair, segment_symm]
+      rw [Set.inter_comm]
+      exact hseg
 
 /-- **A closed simple chain is a simple polygon.** -/
 theorem isSimple_ofList {l : List (ℝ × ℝ)} {a b : ℝ × ℝ} (h3 : 3 ≤ (a :: l ++ [b]).length)
