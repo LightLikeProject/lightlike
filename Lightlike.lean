@@ -434,6 +434,7 @@ import Lightlike.Tests.GaugeChange
 import Lightlike.Tests.InverseMoves
 import Lightlike.Tests.Manifold
 import Lightlike.Tests.PonzanoRegge
+import Lightlike.Tests.QDougall
 import Lightlike.Tests.QM
 import Lightlike.Tests.SU2
 import Lightlike.Tests.SixJ
