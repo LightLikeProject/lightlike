@@ -388,6 +388,7 @@ import Lightlike.Regge.Linear3.TorusBridgeLengths
 import Lightlike.Regge.Linear3.DeficitDeriv
 import Lightlike.Regge.Linear3.InterpEdge
 import Lightlike.Regge.Linear3.InterpTaylor
+import Lightlike.Regge.Linear3.LinearizedLattice
 import Lightlike.Regge.Linear3.LinearizedTorus
 import Lightlike.Regge.Linear3.TorusConvergence
 import Lightlike.Regge.Linear3.TorusConvergenceTests
