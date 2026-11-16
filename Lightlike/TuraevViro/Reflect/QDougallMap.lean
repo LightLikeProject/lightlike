@@ -28,6 +28,8 @@ ingredients of that matching.
 * `one_sub_Q_qZ`, `rhoT_eq`: each factor `1 - Q^m` is `- u^m (u - u⁻¹) [m]`, and the ratio factor of
   consecutive Jackson summands at the parameters of the boundary evaluation is the ratio of quantum
   integers by which `wTerm` steps.
+* `wTerm_eq_Tj` (the map): in the case `x0 = j1 - j2`, `q0 = j1 - j5`, `j4 + j5 < j1 + j2`, the
+  weighted terms are the first term times the summand `Tj` of Jackson's series.
 * `qd_jhyp`: they hold at the parameters of the boundary evaluation in the case `x0 = j1 - j2`,
   `q0 = j1 - j5`, `j4 + j5 < j1 + j2`, for admissible spins.
 
@@ -50,7 +52,8 @@ lemma one_sub_Q_zpow (r : ℕ) (m : ℤ) :
   field_simp
   ring
 
-set_option maxHeartbeats 800000 in
+-- 400000 heartbeats: the default 200000 is not enough.
+set_option maxHeartbeats 400000 in
 /-- One step of the Jackson summand, when the denominators involved do not vanish. -/
 lemma Tj_succ {q a b c x : ℂ} (k : ℕ) (ha : 1 - a ≠ 0) (hb : b ≠ 0) (hc : c ≠ 0)
     (h0 : 1 - a * q ^ (2 * k) ≠ 0)
@@ -425,5 +428,153 @@ theorem rhoT_eq {r : ℕ} (hr : 2 ≤ r) {d j2 n j5 k ec : ℕ} (hec : ec + j5 =
   field_simp
   ring_nf
   linear_combination mul_inv_cancel₀ hu2
+
+
+/-- `1 - Q^m ≠ 0` for `0 < m < r`. -/
+lemma Qne_pos {r : ℕ} (hr : 2 ≤ r) {m : ℤ} (h0 : 0 < m) (h1 : m < r) : 1 - (uC r ^ 2) ^ m ≠ 0 :=
+  one_sub_Q_ne hr (fun hd => by
+    obtain ⟨t, ht⟩ := hd
+    rcases lt_trichotomy t 0 with h | h | h <;> nlinarith [show (0:ℤ) < r by omega])
+
+/-- `1 - Q^m ≠ 0` for `-r < m < 0`. -/
+lemma Qne_neg {r : ℕ} (hr : 2 ≤ r) {m : ℤ} (h0 : m < 0) (h1 : -(r : ℤ) < m) :
+    1 - (uC r ^ 2) ^ m ≠ 0 :=
+  one_sub_Q_ne hr (fun hd => by
+    obtain ⟨t, ht⟩ := hd
+    rcases lt_trichotomy t 0 with h | h | h <;> nlinarith [show (0:ℤ) < r by omega])
+
+/-- The nonvanishing hypotheses of `Tj_succ` at the parameters of the boundary evaluation. -/
+theorem Tj_succ_hyps {r : ℕ} (hr : 2 ≤ r) {d j2 n j5 k ec : ℕ} (hec : ec + j5 = d + n + 1)
+    (hnj : n ≤ j5) (hj5 : j5 ≤ d + n) (hkn : k < n) (hj2 : n < j2)
+    (h1 : d + 2 * k + 3 < r) (h2 : j2 + d + k + 2 < r) (h3 : d + n + k + 2 < r)
+    (h5 : k + j5 + 1 < r) :
+    let Q := uC r ^ 2
+    1 - Q ^ (d + 1) ≠ 0 ∧ 1 - Q ^ (d + 1) * Q ^ (2 * k) ≠ 0 ∧ pk Q Q k ≠ 0 ∧
+      pk (Q ^ (d + 1) * Q / Q ^ (j2 + d + 2)) Q k ≠ 0 ∧ pk (Q ^ (d + 1) * Q / Q ^ ec) Q k ≠ 0 ∧
+      pk (Q ^ (d + 1) * Q * Q ^ n) Q k ≠ 0 ∧ 1 - Q * Q ^ k ≠ 0 ∧
+      1 - Q ^ (d + 1) * Q / Q ^ (j2 + d + 2) * Q ^ k ≠ 0 ∧ 1 - Q ^ (d + 1) * Q / Q ^ ec * Q ^ k ≠ 0 ∧
+      1 - Q ^ (d + 1) * Q * Q ^ n * Q ^ k ≠ 0 := by
+  intro Q
+  have hQ : Q ≠ 0 := pow_ne_zero 2 (uC_ne_zero r)
+  have hz : ∀ e : ℕ, Q ^ e = Q ^ (e : ℤ) := fun e => (zpow_natCast _ e).symm
+  have F1 : ∀ i ≤ k, 1 - Q * Q ^ i ≠ 0 := by
+    intro i hi
+    rw [show Q * Q ^ i = Q ^ ((1 + i : ℕ) : ℤ) by rw [zpow_natCast]; ring]
+    exact Qne_pos hr (by push_cast; omega) (by push_cast; omega)
+  have F2 : ∀ i ≤ k, 1 - Q ^ (d + 1) * Q / Q ^ (j2 + d + 2) * Q ^ i ≠ 0 := by
+    intro i hi
+    rw [Qpow_ratio Q hQ]
+    exact Qne_neg hr (by push_cast; omega) (by push_cast; omega)
+  have F3 : ∀ i ≤ k, 1 - Q ^ (d + 1) * Q / Q ^ ec * Q ^ i ≠ 0 := by
+    intro i hi
+    rw [Qpow_ratio Q hQ]
+    exact Qne_pos hr (by push_cast; omega) (by push_cast; omega)
+  have F4 : ∀ i ≤ k, 1 - Q ^ (d + 1) * Q * Q ^ n * Q ^ i ≠ 0 := by
+    intro i hi
+    rw [show Q ^ (d + 1) * Q * Q ^ n * Q ^ i = Q ^ ((d + n + 2 + i : ℕ) : ℤ) by rw [zpow_natCast]; ring]
+    exact Qne_pos hr (by push_cast; omega) (by push_cast; omega)
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, F1 k le_rfl, F2 k le_rfl, F3 k le_rfl, F4 k le_rfl⟩
+  · rw [hz]; exact Qne_pos hr (by push_cast; omega) (by push_cast; omega)
+  · rw [show Q ^ (d + 1) * Q ^ (2 * k) = Q ^ ((d + 1 + 2 * k : ℕ) : ℤ) by rw [zpow_natCast]; ring]
+    exact Qne_pos hr (by push_cast; omega) (by push_cast; omega)
+  · exact pk_ne_zero Q Q k fun i hi => F1 i (by omega)
+  · exact pk_ne_zero _ Q k fun i hi => F2 i (by omega)
+  · exact pk_ne_zero _ Q k fun i hi => F3 i (by omega)
+  · exact pk_ne_zero _ Q k fun i hi => F4 i (by omega)
+
+-- 400000 heartbeats: the default 200000 is not enough.
+set_option maxHeartbeats 400000 in
+/-- **The map.** In the case `x0 = j1 - j2`, `q0 = j1 - j5`, `j4 + j5 < j1 + j2`, the weighted terms
+of the boundary evaluation are the first term times the summand of Jackson's series at
+`Q = uC r ^ 2`, `a = Q^(x0+1)`, `b = Q^(j1+2)`, `c = Q^((x0+j4-j5)/2+1)`, `x = Q^n`. -/
+theorem wTerm_eq_Tj {r j1 j2 j4 j5 n : ℕ} (hr : 2 ≤ r) (h21 : j2 ≤ j1) (h51 : j5 ≤ j1)
+    (hnd : j4 + j5 < j1 + j2) (hn : 2 * n = j4 + j5 - (j1 - j2))
+    (hadmX : ∀ k ≤ n, qAdm r j1 j2 (j1 - j2 + 2 * k) ∧ qAdm r j4 j5 (j1 - j2 + 2 * k))
+    (hadmQ : qAdm r j1 j5 (j1 - j5) ∧ qAdm r j4 j2 (j1 - j5)) :
+    ∀ k ≤ n, (wTerm r j1 j2 j4 j5 k : ℂ) = (wTerm r j1 j2 j4 j5 0 : ℂ) *
+      Tj (uC r ^ 2) ((uC r ^ 2) ^ (j1 - j2 + 1)) ((uC r ^ 2) ^ (j1 + 2))
+        ((uC r ^ 2) ^ ((j1 - j2 + j4 - j5) / 2 + 1)) ((uC r ^ 2) ^ n) k := by
+  have A0 := hadmX 0 (by omega)
+  have An := hadmX n le_rfl
+  obtain ⟨⟨hp0, h01, h02, h03⟩, hr0⟩ := A0.1
+  obtain ⟨⟨hq0, h11, h12, h13⟩, hs0⟩ := A0.2
+  obtain ⟨⟨hqn, h21', h22, h23⟩, hsn⟩ := An.2
+  obtain ⟨⟨hpQ, hQ1, hQ2, hQ3⟩, hrQ⟩ := hadmQ.2
+  obtain ⟨A3, hA3⟩ : ∃ A3, 2 * A3 = j4 + j2 + (j1 - j5) := ⟨(j4 + j2 + (j1 - j5)) / 2, by omega⟩
+  obtain ⟨S, hS⟩ : ∃ S, 2 * S = j4 + j5 + (j1 - j2) := ⟨(j4 + j5 + (j1 - j2)) / 2, by omega⟩
+  obtain ⟨B, hB⟩ : ∃ B, 2 * B = j1 + j2 + j4 + j5 := ⟨(j1 + j2 + j4 + j5) / 2, by omega⟩
+  obtain ⟨δ, hδ⟩ : ∃ δ, 2 * δ + j4 + j5 = j1 + j2 := ⟨(j1 + j2 - j4 - j5) / 2, by omega⟩
+  obtain ⟨γ, hγ⟩ : ∃ γ, 2 * γ + j2 = (j1 - j5) + j4 := ⟨((j1 - j5) + j4 - j2) / 2, by omega⟩
+  have hnS : S = (j1 - j2) + n := by omega
+  have hA : j4 + j2 ≤ j5 + j1 := by omega
+  obtain ⟨_, hsum⟩ := An.1
+  obtain ⟨ec, hecd⟩ : ∃ ec, ec = (j1 - j2 + j4 - j5) / 2 + 1 := ⟨_, rfl⟩
+  rw [← hecd]
+  have eb : (uC r ^ 2) ^ (j1 + 2) = (uC r ^ 2) ^ (j2 + (j1 - j2) + 2) := by
+    congr 1; omega
+  rw [eb]
+  have hec : ec + j5 = (j1 - j2) + n + 1 := by omega
+  have hnj : n ≤ j5 := by omega
+  have hj5 : j5 ≤ (j1 - j2) + n := by omega
+  have hj2 : n < j2 := by omega
+  intro k
+  induction k with
+  | zero =>
+    intro _
+    have ha : 1 - (uC r ^ 2) ^ (j1 - j2 + 1) ≠ 0 := by
+      rw [← zpow_natCast]
+      exact Qne_pos hr (by push_cast; omega) (by push_cast; omega)
+    simp [Tj, pk, ha]
+  | succ k ih =>
+    intro hk
+    have ihk := ih (by omega)
+    have W := wTerm_succ hr h21 h51 hA3 hS hB hδ hγ hnS hk hA (by omega)
+      (by omega) (by omega) (by omega) (hadmX k (by omega)).1 (hadmX (k + 1) hk).1
+      (hadmX k (by omega)).2 (hadmX (k + 1) hk).2
+    have hkn : k < n := by omega
+    have h1 : (j1 - j2) + 2 * k + 3 < r := by omega
+    have h2 : j2 + (j1 - j2) + k + 2 < r := by omega
+    have h3 : (j1 - j2) + n + k + 2 < r := by omega
+    have h5 : k + j5 + 1 < r := by omega
+    have rt := rhoT_eq hr hec hnj hj5 hkn hj2 h1 h2 h3 h5
+    obtain ⟨c1, c2, c3, c4, c5, c6, c7, c8, c9, c10⟩ := Tj_succ_hyps hr hec hnj hj5 hkn hj2 h1 h2 h3 h5
+    have hQ : uC r ^ 2 ≠ 0 := pow_ne_zero 2 (uC_ne_zero r)
+    have T := Tj_succ (q := uC r ^ 2) (a := (uC r ^ 2) ^ ((j1 - j2) + 1))
+      (b := (uC r ^ 2) ^ (j2 + (j1 - j2) + 2)) (c := (uC r ^ 2) ^ ec) (x := (uC r ^ 2) ^ n) k
+      c1 (pow_ne_zero _ hQ) (pow_ne_zero _ hQ) c2 c3 c4 c5 c6 c7 c8 c9 c10
+    have T' : Tj (uC r ^ 2) ((uC r ^ 2) ^ ((j1 - j2) + 1)) ((uC r ^ 2) ^ (j2 + (j1 - j2) + 2))
+        ((uC r ^ 2) ^ ec) ((uC r ^ 2) ^ n) (k + 1) =
+        Tj (uC r ^ 2) ((uC r ^ 2) ^ ((j1 - j2) + 1)) ((uC r ^ 2) ^ (j2 + (j1 - j2) + 2))
+          ((uC r ^ 2) ^ ec) ((uC r ^ 2) ^ n) k *
+        rhoT (uC r ^ 2) ((uC r ^ 2) ^ ((j1 - j2) + 1)) ((uC r ^ 2) ^ (j2 + (j1 - j2) + 2))
+          ((uC r ^ 2) ^ ec) ((uC r ^ 2) ^ n) k := T
+    rw [show j1 + k + 2 = j2 + (j1 - j2) + k + 2 by omega,
+      show S + k + 2 = (j1 - j2) + n + k + 2 by omega,
+      show j1 + k + 1 - A3 = k + j5 - n + 1 by omega,
+      show S + k + 1 - j4 = k + j5 - n + 1 by omega,
+      show S + k + 1 - j5 = ec + k by omega] at W
+    have pq : ∀ m : ℕ, 0 < m → m < r → 0 < qnum r m := fun m h0 h1 => qnum_pos hr h0 h1
+    have hM : qnum r (j2 + (j1 - j2) + k + 2) * qnum r (n - k) * qnum r (k + 1) *
+        qnum r (k + j5 - n + 1) ≠ 0 :=
+      (mul_pos (mul_pos (mul_pos (pq _ (by omega) (by omega)) (pq _ (by omega) (by omega)))
+        (pq _ (by omega) (by omega))) (pq _ (by omega) (by omega))).ne'
+    have hden : qnum r ((j1 - j2) + 2 * k + 1) * qnum r (k + 1) * qnum r (j2 - k) *
+        qnum r (k + j5 - n + 1) * qnum r ((j1 - j2) + n + k + 2) ≠ 0 :=
+      (mul_pos (mul_pos (mul_pos (mul_pos (pq _ (by omega) (by omega)) (pq _ (by omega) (by omega)))
+        (pq _ (by omega) (by omega))) (pq _ (by omega) (by omega)))
+        (pq _ (by omega) (by omega))).ne'
+    have hRatio : wTerm r j1 j2 j4 j5 (k + 1) = wTerm r j1 j2 j4 j5 k *
+        ((qnum r ((j1 - j2) + 2 * k + 3) * qnum r ((j1 - j2) + k + 1) *
+            qnum r (j2 + (j1 - j2) + k + 2) * qnum r (ec + k) * qnum r (n - k)) /
+          (qnum r ((j1 - j2) + 2 * k + 1) * qnum r (k + 1) * qnum r (j2 - k) *
+            qnum r (k + j5 - n + 1) * qnum r ((j1 - j2) + n + k + 2))) := by
+      rw [mul_div_assoc', eq_div_iff hden]
+      apply mul_right_cancel₀ hM
+      linear_combination W
+    have hc : (wTerm r j1 j2 j4 j5 (k + 1) : ℂ) = (wTerm r j1 j2 j4 j5 k : ℂ) *
+        rhoT (uC r ^ 2) ((uC r ^ 2) ^ ((j1 - j2) + 1)) ((uC r ^ 2) ^ (j2 + (j1 - j2) + 2))
+          ((uC r ^ 2) ^ ec) ((uC r ^ 2) ^ n) k := by
+      rw [rt, hRatio]; push_cast; ring
+    rw [hc, ihk, T']; ring
 
 end Lightlike.TV.Refl
