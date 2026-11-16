@@ -1625,3 +1625,16 @@
   review: kernel-checked
   note: "For a colored graph, the bubble of the single color c at v is {v, inv c v} (the 1-bubbles are the lines), so it has exactly two vertices because inv c has no fixed point: the non-branching condition for the dual. A vertex lies in its own bubble (purity), in a connected graph any two vertices are joined by a chain of lines (strong connectivity), and the lines of p colors restricted to a bubble form a colored graph of dimension p - 1 (ColoredGraph.restrict) that is connected (restrict_isConnected): the graph-side shadow of the condition that the links of the dual are pseudo manifolds. These formalize the definitions of Gurau 2010, Sections 2 and 5, for the graph only. Limits: Theorem 1 (the p-bubbles are the link graphs of the (n - p)-simplices) and Theorem 2 (the dual is a normal simplicial pseudo manifold) are not stated: they need the stranded graph and the multiset gluing of eqs. (37) and (38), and a set of faces cannot represent it (in the graph with two vertices and three lines both top simplices have the same vertex set). Trust check: in that graph the 1-bubble of color 0 at 0 is {0, 1} and differs from the 0-bubble."
   since: unreleased
+- id: LL-0125
+  title: The Jordan curve theorem
+  area: PL
+  file: Lightlike/PL/JordanCurve.lean
+  decls: [Lightlike.PL.jordan_at_most_two, Lightlike.PL.jordan_at_most_two_prod, Lightlike.PL.jordan_curve_theorem]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
+  review: kernel-checked
+  note: "The complement of the image of a continuous injective map from the circle into the plane is the disjoint union of two open connected sets, one bounded and one unbounded, and the curve is the frontier of each. The proof compares the index about the curve, computed with two different theta configurations (the index does not depend on the splitting): it vanishes on the component of a point above the curve and is nonzero elsewhere, and a configuration at a point of another component shows there is at most one other component; the bounded and unbounded components come from the weak result on components, and the frontier statement from the arc theorem. The statement for maps into the complex numbers is transferred to the plane along the standard homeomorphism. The numbering of lemmas follows the lecture-notes version of chapter 9 of McCleary's book: the chapter location is verified, the lemma-level numbering is not. The statements and proofs are Lean's own. Proves: the Jordan curve theorem for continuous injective maps from the circle to the plane. Does not prove: the Schoenflies theorem. Limits: the plane as the product of two copies of the reals. Check: TestsJordanCurve.lean (the unit circle gives two components; a constant map is not injective, so it is excluded)."
+  since: unreleased
