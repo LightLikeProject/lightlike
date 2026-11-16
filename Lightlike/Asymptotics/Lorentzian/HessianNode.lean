@@ -22,6 +22,10 @@ fixed, is the sum over the ends at the node `a` of `endForm`: the closed form of
   and `deriv_deriv_triAction_line`.
 * `hessZZ_block`: the entries of `H^{zz}` in Wirtinger form (`zzWirtinger`): for `z_e = (w, 1)` and
   `δ = (τ, 0)` the second derivative along `z_e + t δ` is `f_ww τ² + 2 f_ww̄ |τ|² + f_w̄w̄ conj(τ)²`.
+* `hasDerivAt_srcCoeff_gen`, `hasDerivAt_tgtCoeff_gen`: the derivative of the first-variation coefficients
+  along two general curves (they generalise the line lemmas).
+* `hessXZ_orbit_src`, `hessXZ_orbit_tgt`, `hessXZ_src`, `hessXZ_tgt`, `hessXZ_block`: the entries of `H^{Xz}`
+  (mixed derivative along an orbit and a line), with `xzSource`, `xzTarget`; no criticality.
 * `re_hessRR_neg`: the real part of the rotation block is negative definite exactly when the normals
   are not all parallel (`sum_projForm_pos_iff`, Lagrange's identity `projForm_eq_minorSq`).
 
@@ -1035,5 +1039,541 @@ theorem hessZZ_block {j p : Fin 10 → ℝ} {n : Fin 10 → ℕ} (hj : ∀ e, j 
   push_cast
   field_simp
   ring
+
+/-- The derivative of `srcCoeff n p ξ (Z s) (W s)` at a point where `Z`, `W` have values `Z`, `W` and
+derivatives `Z'`, `W'`. -/
+noncomputable def srcGenDeriv (n : ℕ) (p : ℝ) (ξ Z W Z' W' : Spinor) : ℂ :=
+  (n : ℂ) * (inner ℂ W' ξ / inner ℂ Z ξ - inner ℂ W ξ * inner ℂ Z' ξ / inner ℂ Z ξ ^ 2) -
+    ((n : ℂ) + 2 * Complex.I * p) *
+      ((((inner ℂ Z' W).re + (inner ℂ Z W').re) / ‖Z‖ ^ 2 -
+        2 * (inner ℂ Z W).re * (inner ℂ Z Z').re / ‖Z‖ ^ 4 : ℝ) : ℂ)
+
+/-- **Derivative of the source coefficient along two general curves**: if `Z`, `W` have derivatives
+`Z'`, `W'` at `t` and `⟨Z t, ξ⟩ ≠ 0`, `Z t ≠ 0`, the derivative of `s ↦ srcCoeff n p ξ (Z s) (W s)` is
+`srcGenDeriv n p ξ (Z t) (W t) Z' W'`. It generalises `hasDerivAt_srcCoeff_line` (`Z' = W`, `W' = 0`)
+and `hasDerivAt_srcCoeff` (`Z' = M Z`, `W = M Z`). -/
+theorem hasDerivAt_srcCoeff_gen (n : ℕ) (p : ℝ) {ξ : Spinor} {Z W : ℝ → Spinor} {Z' W' : Spinor} {t : ℝ}
+    (hZ : HasDerivAt Z Z' t) (hW : HasDerivAt W W' t) (h1 : inner ℂ (Z t) ξ ≠ 0) (h0 : Z t ≠ 0) :
+    HasDerivAt (fun s => srcCoeff n p ξ (Z s) (W s)) (srcGenDeriv n p ξ (Z t) (W t) Z' W') t := by
+  unfold srcGenDeriv
+  have hz : ‖Z t‖ ≠ 0 := norm_ne_zero_iff.mpr h0
+  have hD := hasDerivAt_inner_spinor hZ (hasDerivAt_const t ξ)
+  have hN := hasDerivAt_inner_spinor hW (hasDerivAt_const t ξ)
+  have hR := hasDerivAt_inner_spinor hZ hW
+  have hQ := hasDerivAt_inner_spinor hZ hZ
+  have hRre : HasDerivAt (fun s : ℝ => (inner ℂ (Z s) (W s)).re)
+      (inner ℂ Z' (W t) + inner ℂ (Z t) W').re t :=
+    Complex.reCLM.hasFDerivAt.comp_hasDerivAt t hR
+  have hQre : HasDerivAt (fun s : ℝ => ‖Z s‖ ^ 2)
+      (2 * (inner ℂ (Z t) Z').re) t := by
+    have := Complex.reCLM.hasFDerivAt.comp_hasDerivAt t hQ
+    have e : (fun s : ℝ => (inner ℂ (Z s) (Z s)).re) = fun s : ℝ => ‖Z s‖ ^ 2 := by
+      funext s; rw [inner_self_eq_norm_sq_to_K]; norm_cast
+    rw [← e]
+    refine this.congr_deriv ?_
+    have : (inner ℂ Z' (Z t)).re = (inner ℂ (Z t) Z').re := by
+      rw [← inner_conj_symm (Z t) Z', Complex.conj_re]
+    simp only [Complex.reCLM_apply, Complex.add_re, this]; ring
+  have hQ0 : ‖Z t‖ ^ 2 ≠ 0 := pow_ne_zero 2 hz
+  have hq := hRre.div hQre hQ0
+  have hqC := Complex.ofRealCLM.hasFDerivAt.comp_hasDerivAt t hq
+  have hnd := hD.inv h1
+  have hfin := ((hN.mul hnd).const_mul (n : ℂ)).sub (hqC.const_mul ((n : ℂ) + 2 * Complex.I * p))
+  refine hfin.congr_deriv ?_
+  simp only [Complex.ofRealCLM_apply, inner_zero_right, add_zero, Pi.inv_apply, Complex.add_re,
+    Complex.ofReal_add]
+  push_cast
+  have hZ2 : (‖Z t‖ : ℂ) ^ 2 ≠ 0 := by exact_mod_cast hQ0
+  have h1' : (inner ℂ (Z t) ξ) ^ 2 ≠ 0 := pow_ne_zero 2 h1
+  field_simp
+  ring
+
+/-- **Derivative of the target coefficient along two general curves**, from `hasDerivAt_srcCoeff_gen`
+with `p ↦ -p` and the curves `J Z`, `J W` (`tgtCoeff_eq`, `hasDerivAt_jMap`). -/
+theorem hasDerivAt_tgtCoeff_gen (n : ℕ) (p : ℝ) {ξ' : Spinor} {Z W : ℝ → Spinor} {Z' W' : Spinor}
+    {t : ℝ} (hZ : HasDerivAt Z Z' t) (hW : HasDerivAt W W' t) (h1 : inner ℂ (jMap (Z t)) ξ' ≠ 0)
+    (h0 : Z t ≠ 0) :
+    HasDerivAt (fun s => tgtCoeff n p ξ' (Z s) (W s))
+      (srcGenDeriv n (-p) ξ' (jMap (Z t)) (jMap (W t)) (jMap Z') (jMap W')) t := by
+  have hfun : (fun s => tgtCoeff n p ξ' (Z s) (W s)) =
+      fun s => srcCoeff n (-p) ξ' (jMap (Z s)) (jMap (W s)) := funext fun s => tgtCoeff_eq n p ξ' _ _
+  rw [hfun]
+  exact hasDerivAt_srcCoeff_gen n (-p) (hasDerivAt_jMap hZ) (hasDerivAt_jMap hW) h1
+    (jMap_ne_zero h0)
+
+/-- **The mixed second derivative at a source end, along an orbit and a line** (the orbit step of the block
+`H^{Xz}`): `a` is the source of the edge `e`, `Y' = Y L`, `Y 0 = 1`. The `t`-derivative at each `s` is the
+first variation of the edge `e` (the other edges do not depend on `z_e`), and its `s`-derivative is
+`srcGenDeriv` at `Z = X_a† z_e`, `W = X_a† δ`, `Z' = L† Z`, `W' = L† W` (the target end of `e` does not
+depend on `s`). -/
+theorem hessXZ_orbit_src {j p : Fin 10 → ℝ} {n : Fin 10 → ℕ} (hj : ∀ e, j e = (n e : ℝ) / 2)
+    (g : BdryData) (X : Fin 5 → SL2C) (z : Fin 10 → Spinor) (e : Fin 10) (δ : Spinor)
+    (L : Matrix (Fin 2) (Fin 2) ℂ) (Y : ℝ → SL2C) (hY0 : Y 0 = 1)
+    (hY : ∀ t i k, HasDerivAt (fun s => (Y s : Matrix (Fin 2) (Fin 2) ℂ) i k)
+      (((Y t : Matrix (Fin 2) (Fin 2) ℂ) * L) i k) t)
+    (hZ : spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e) ≠ 0)
+    (hZ' : spinAct (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e) ≠ 0)
+    (h1 : inner ℂ (spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)) (firstCol (g e 0)) ≠ 0)
+    (h2 : inner ℂ (jMap (firstCol (g e 1)))
+      (spinAct (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)) ≠ 0)
+    (hP : inner ℂ (spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)) (firstCol (g e 0)) *
+      inner ℂ (jMap (firstCol (g e 1)))
+        (spinAct (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)) ∈ Complex.slitPlane) :
+    deriv (fun s : ℝ => deriv (fun t : ℝ => lorAction j p g
+        (Function.update X (edgeSrc e) (X (edgeSrc e) * Y s))
+        (Function.update z e (z e + t • δ))) 0) 0 =
+      srcGenDeriv (n e) (p e) (firstCol (g e 0)) (spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e))
+        (spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ δ)
+        (spinAct Lᴴ (spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)))
+        (spinAct Lᴴ (spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ δ)) := by
+  set A : Matrix (Fin 2) (Fin 2) ℂ := (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ) with hA
+  set B : Matrix (Fin 2) (Fin 2) ℂ := (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ) with hB
+  set Z0 : Spinor := spinAct Aᴴ (z e) with hZ0
+  set W0 : Spinor := spinAct Aᴴ δ with hW0
+  set Z1 : Spinor := spinAct Bᴴ (z e) with hZ1
+  set W1 : Spinor := spinAct Bᴴ δ with hW1
+  set ξ := firstCol (g e 0) with hξ
+  set ξ' := firstCol (g e 1) with hξ'
+  have hne : edgeTgt e ≠ edgeSrc e := (edgeSrc_ne_edgeTgt e).symm
+  set Zs : ℝ → Spinor := fun s => spinAct (Y s : Matrix (Fin 2) (Fin 2) ℂ)ᴴ Z0 with hZs
+  set Ws : ℝ → Spinor := fun s => spinAct (Y s : Matrix (Fin 2) (Fin 2) ℂ)ᴴ W0 with hWs
+  have hZs0 : Zs 0 = Z0 := by simp [hZs, hY0, spinAct_one]
+  have hWs0 : Ws 0 = W0 := by simp [hWs, hY0, spinAct_one]
+  have hdZ : HasDerivAt Zs (spinAct Lᴴ Z0) 0 := by
+    have := hasDerivAt_orbit L Y hY Z0 0
+    simpa [hY0, spinAct_one] using this
+  have hdW : HasDerivAt Ws (spinAct Lᴴ W0) 0 := by
+    have := hasDerivAt_orbit L Y hY W0 0
+    simpa [hY0, spinAct_one] using this
+  -- the action splits into the edge e (t-dependent) and the rest (t-independent)
+  set K : ℝ → ℂ := fun s => ∑ e' ∈ Finset.univ.erase e, triAction (j e') (p e')
+      (spinAct ((Function.update X (edgeSrc e) (X (edgeSrc e) * Y s) (edgeSrc e') : SL2C) :
+        Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e')) (firstCol (g e' 0))
+      (spinAct ((Function.update X (edgeSrc e) (X (edgeSrc e) * Y s) (edgeTgt e') : SL2C) :
+        Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e')) (firstCol (g e' 1)) with hK
+  have hsplit : ∀ s t : ℝ, lorAction j p g (Function.update X (edgeSrc e) (X (edgeSrc e) * Y s))
+      (Function.update z e (z e + t • δ)) =
+      triAction ((n e : ℝ) / 2) (p e) (Zs s + t • Ws s) ξ (Z1 + t • W1) ξ' + K s := by
+    intro s t
+    unfold lorAction
+    rw [← Finset.add_sum_erase _ _ (Finset.mem_univ e)]
+    congr 1
+    · simp only [Function.update_self, Function.update_of_ne hne, hj e,
+        Matrix.SpecialLinearGroup.coe_mul, Matrix.conjTranspose_mul, spinAct_mul, spinAct_add_real_smul]
+      rfl
+    · refine Finset.sum_congr rfl fun e' he' => ?_
+      rw [Function.update_of_ne (Finset.ne_of_mem_erase he')]
+  have hlt : ∀ s t : ℝ, HasDerivAt (fun u : ℝ => Zs s + u • Ws s) (Ws s) t := fun s t => by
+    simpa using ((hasDerivAt_id t).smul_const (Ws s)).const_add (Zs s)
+  have hlt' : ∀ t : ℝ, HasDerivAt (fun u : ℝ => Z1 + u • W1) W1 t := fun t => by
+    simpa using ((hasDerivAt_id t).smul_const W1).const_add Z1
+  have hcont : ContinuousAt (fun s : ℝ => inner ℂ (Zs s) ξ * inner ℂ (jMap ξ') Z1) 0 :=
+    (hdZ.continuousAt.inner continuousAt_const).mul continuousAt_const
+  have hev : ∀ᶠ s : ℝ in nhds 0, inner ℂ (Zs s) ξ * inner ℂ (jMap ξ') Z1 ∈ Complex.slitPlane := by
+    refine hcont.eventually (Complex.isOpen_slitPlane.mem_nhds ?_)
+    simpa [hZs0] using hP
+  have h0 : (0 : ℂ) ∉ Complex.slitPlane := by simp [Complex.slitPlane]
+  set D : ℝ → ℂ := fun s => srcCoeff (n e) (p e) ξ (Zs s) (Ws s) + tgtCoeff (n e) (p e) ξ' Z1 W1 with hD
+  have hderiv : ∀ᶠ s : ℝ in nhds 0, deriv (fun t : ℝ => lorAction j p g
+      (Function.update X (edgeSrc e) (X (edgeSrc e) * Y s)) (Function.update z e (z e + t • δ))) 0 = D s := by
+    filter_upwards [hev] with s hs
+    have hne0 : inner ℂ (Zs s) ξ * inner ℂ (jMap ξ') Z1 ≠ 0 := fun h => h0 (h ▸ hs)
+    have a1 := left_ne_zero_of_mul hne0
+    have b1 : Zs s ≠ 0 := fun h => a1 (by rw [h]; simp)
+    have hfun : (fun t : ℝ => lorAction j p g (Function.update X (edgeSrc e) (X (edgeSrc e) * Y s))
+        (Function.update z e (z e + t • δ))) =
+        fun t : ℝ => triAction ((n e : ℝ) / 2) (p e) (Zs s + t • Ws s) ξ (Z1 + t • W1) ξ' + K s :=
+      funext fun t => hsplit s t
+    rw [hfun, deriv_add_const]
+    have hd := (hasDerivAt_triAction_curve_at (n e) (p e) (ξ := ξ) (ξ' := ξ') (Ws s) W1 (hlt s 0) (hlt' 0)
+      (by simpa using b1) (by simpa using hZ') (by simpa using a1) (by simpa using h2)
+      (by simpa using hs)).deriv
+    rw [hd]
+    simp [hD, srcCoeff, tgtCoeff]
+  have hsrc := hasDerivAt_srcCoeff_gen (n e) (p e) (ξ := ξ) hdZ hdW (by rwa [hZs0]) (by rwa [hZs0])
+  rw [hZs0, hWs0] at hsrc
+  have hfin : HasDerivAt (fun s : ℝ => deriv (fun t : ℝ => lorAction j p g
+      (Function.update X (edgeSrc e) (X (edgeSrc e) * Y s)) (Function.update z e (z e + t • δ))) 0)
+      (srcGenDeriv (n e) (p e) ξ Z0 W0 (spinAct Lᴴ Z0) (spinAct Lᴴ W0)) 0 := by
+    refine HasDerivAt.congr_of_eventuallyEq ?_ hderiv
+    simpa [hD] using hsrc.add_const (tgtCoeff (n e) (p e) ξ' Z1 W1)
+  exact hfin.deriv
+
+/-- **The mixed second derivative at a target end, along an orbit and a line**: `a` is the target of the edge `e`, `Y' = Y L`, `Y 0 = 1`. The `t`-derivative at each `s` is the
+first variation of the edge `e` (the other edges do not depend on `z_e`), and its `s`-derivative is
+`srcGenDeriv` at `Z = X_a† z_e`, `W = X_a† δ`, `Z' = L† Z`, `W' = L† W` (the target end of `e` does not
+depend on `s`). -/
+theorem hessXZ_orbit_tgt {j p : Fin 10 → ℝ} {n : Fin 10 → ℕ} (hj : ∀ e, j e = (n e : ℝ) / 2)
+    (g : BdryData) (X : Fin 5 → SL2C) (z : Fin 10 → Spinor) (e : Fin 10) (δ : Spinor)
+    (L : Matrix (Fin 2) (Fin 2) ℂ) (Y : ℝ → SL2C) (hY0 : Y 0 = 1)
+    (hY : ∀ t i k, HasDerivAt (fun s => (Y s : Matrix (Fin 2) (Fin 2) ℂ) i k)
+      (((Y t : Matrix (Fin 2) (Fin 2) ℂ) * L) i k) t)
+    (hZ : spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e) ≠ 0)
+    (hZ' : spinAct (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e) ≠ 0)
+    (h1 : inner ℂ (spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)) (firstCol (g e 0)) ≠ 0)
+    (h2 : inner ℂ (jMap (firstCol (g e 1)))
+      (spinAct (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)) ≠ 0)
+    (hP : inner ℂ (spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)) (firstCol (g e 0)) *
+      inner ℂ (jMap (firstCol (g e 1)))
+        (spinAct (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)) ∈ Complex.slitPlane) :
+    deriv (fun s : ℝ => deriv (fun t : ℝ => lorAction j p g
+        (Function.update X (edgeTgt e) (X (edgeTgt e) * Y s))
+        (Function.update z e (z e + t • δ))) 0) 0 =
+      srcGenDeriv (n e) (-p e) (firstCol (g e 1))
+        (jMap (spinAct (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)))
+        (jMap (spinAct (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ δ))
+        (jMap (spinAct Lᴴ (spinAct (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e))))
+        (jMap (spinAct Lᴴ (spinAct (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ δ))) := by
+  set A : Matrix (Fin 2) (Fin 2) ℂ := (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ) with hA
+  set B : Matrix (Fin 2) (Fin 2) ℂ := (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ) with hB
+  set Z0 : Spinor := spinAct Aᴴ (z e) with hZ0
+  set W0 : Spinor := spinAct Aᴴ δ with hW0
+  set Z1 : Spinor := spinAct Bᴴ (z e) with hZ1
+  set W1 : Spinor := spinAct Bᴴ δ with hW1
+  set ξ := firstCol (g e 0) with hξ
+  set ξ' := firstCol (g e 1) with hξ'
+  have hne : edgeSrc e ≠ edgeTgt e := edgeSrc_ne_edgeTgt e
+  set Zs : ℝ → Spinor := fun s => spinAct (Y s : Matrix (Fin 2) (Fin 2) ℂ)ᴴ Z1 with hZs
+  set Ws : ℝ → Spinor := fun s => spinAct (Y s : Matrix (Fin 2) (Fin 2) ℂ)ᴴ W1 with hWs
+  have hZs0 : Zs 0 = Z1 := by simp [hZs, hY0, spinAct_one]
+  have hWs0 : Ws 0 = W1 := by simp [hWs, hY0, spinAct_one]
+  have hdZ : HasDerivAt Zs (spinAct Lᴴ Z1) 0 := by
+    have := hasDerivAt_orbit L Y hY Z1 0
+    simpa [hY0, spinAct_one] using this
+  have hdW : HasDerivAt Ws (spinAct Lᴴ W1) 0 := by
+    have := hasDerivAt_orbit L Y hY W1 0
+    simpa [hY0, spinAct_one] using this
+  set K : ℝ → ℂ := fun s => ∑ e' ∈ Finset.univ.erase e, triAction (j e') (p e')
+      (spinAct ((Function.update X (edgeTgt e) (X (edgeTgt e) * Y s) (edgeSrc e') : SL2C) :
+        Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e')) (firstCol (g e' 0))
+      (spinAct ((Function.update X (edgeTgt e) (X (edgeTgt e) * Y s) (edgeTgt e') : SL2C) :
+        Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e')) (firstCol (g e' 1)) with hK
+  have hsplit : ∀ s t : ℝ, lorAction j p g (Function.update X (edgeTgt e) (X (edgeTgt e) * Y s))
+      (Function.update z e (z e + t • δ)) =
+      triAction ((n e : ℝ) / 2) (p e) (Z0 + t • W0) ξ (Zs s + t • Ws s) ξ' + K s := by
+    intro s t
+    unfold lorAction
+    rw [← Finset.add_sum_erase _ _ (Finset.mem_univ e)]
+    congr 1
+    · simp only [Function.update_self, Function.update_of_ne hne, hj e,
+        Matrix.SpecialLinearGroup.coe_mul, Matrix.conjTranspose_mul, spinAct_mul, spinAct_add_real_smul]
+      rfl
+    · refine Finset.sum_congr rfl fun e' he' => ?_
+      rw [Function.update_of_ne (Finset.ne_of_mem_erase he')]
+  have hlt : ∀ t : ℝ, HasDerivAt (fun u : ℝ => Z0 + u • W0) W0 t := fun t => by
+    simpa using ((hasDerivAt_id t).smul_const W0).const_add Z0
+  have hlt' : ∀ s t : ℝ, HasDerivAt (fun u : ℝ => Zs s + u • Ws s) (Ws s) t := fun s t => by
+    simpa using ((hasDerivAt_id t).smul_const (Ws s)).const_add (Zs s)
+  have hcont : ContinuousAt (fun s : ℝ => inner ℂ Z0 ξ * inner ℂ (jMap ξ') (Zs s)) 0 :=
+    continuousAt_const.mul (continuousAt_const.inner hdZ.continuousAt)
+  have hev : ∀ᶠ s : ℝ in nhds 0, inner ℂ Z0 ξ * inner ℂ (jMap ξ') (Zs s) ∈ Complex.slitPlane := by
+    refine hcont.eventually (Complex.isOpen_slitPlane.mem_nhds ?_)
+    simpa [hZs0] using hP
+  have h0 : (0 : ℂ) ∉ Complex.slitPlane := by simp [Complex.slitPlane]
+  set D : ℝ → ℂ := fun s => srcCoeff (n e) (p e) ξ Z0 W0 + tgtCoeff (n e) (p e) ξ' (Zs s) (Ws s) with hD
+  have hderiv : ∀ᶠ s : ℝ in nhds 0, deriv (fun t : ℝ => lorAction j p g
+      (Function.update X (edgeTgt e) (X (edgeTgt e) * Y s)) (Function.update z e (z e + t • δ))) 0 = D s := by
+    filter_upwards [hev] with s hs
+    have hne0 : inner ℂ Z0 ξ * inner ℂ (jMap ξ') (Zs s) ≠ 0 := fun h => h0 (h ▸ hs)
+    have a2 := right_ne_zero_of_mul hne0
+    have b2 : Zs s ≠ 0 := fun h => a2 (by rw [h]; simp)
+    have hfun : (fun t : ℝ => lorAction j p g (Function.update X (edgeTgt e) (X (edgeTgt e) * Y s))
+        (Function.update z e (z e + t • δ))) =
+        fun t : ℝ => triAction ((n e : ℝ) / 2) (p e) (Z0 + t • W0) ξ (Zs s + t • Ws s) ξ' + K s :=
+      funext fun t => hsplit s t
+    rw [hfun, deriv_add_const]
+    have hd := (hasDerivAt_triAction_curve_at (n e) (p e) (ξ := ξ) (ξ' := ξ') W0 (Ws s) (hlt 0) (hlt' s 0)
+      (by simpa using hZ) (by simpa using b2) (by simpa using h1) (by simpa using a2)
+      (by simpa using hs)).deriv
+    rw [hd]
+    simp [hD, srcCoeff, tgtCoeff]
+  have h1' : inner ℂ (jMap (Zs 0)) ξ' ≠ 0 := by
+    rw [hZs0, inner_jmap_swap]; exact neg_ne_zero.mpr h2
+  have htgt := hasDerivAt_tgtCoeff_gen (n e) (p e) (ξ' := ξ') hdZ hdW h1' (by rwa [hZs0])
+  rw [hZs0, hWs0] at htgt
+  have hfin : HasDerivAt (fun s : ℝ => deriv (fun t : ℝ => lorAction j p g
+      (Function.update X (edgeTgt e) (X (edgeTgt e) * Y s)) (Function.update z e (z e + t • δ))) 0)
+      (srcGenDeriv (n e) (-p e) ξ' (jMap Z1) (jMap W1) (jMap (spinAct Lᴴ Z1)) (jMap (spinAct Lᴴ W1))) 0 := by
+    refine HasDerivAt.congr_of_eventuallyEq ?_ hderiv
+    simpa [hD] using htgt.const_add (srcCoeff (n e) (p e) ξ Z0 W0)
+  exact hfin.deriv
+
+/-- `⟨P† (w,1), Q† (τ,0)⟩ = τ (conj w (P Q†)₀₀ + (P Q†)₁₀)`. -/
+theorem inner_adj2_z_delta (P Q : Matrix (Fin 2) (Fin 2) ℂ) (w τ : ℂ) :
+    inner ℂ (spinAct Pᴴ !₂[w, 1]) (spinAct Qᴴ !₂[τ, 0]) =
+      τ * (conj w * (P * Qᴴ) 0 0 + (P * Qᴴ) 1 0) := by
+  simp only [PiLp.inner_apply, Fin.sum_univ_two, RCLike.inner_apply, spinAct_zero_apply,
+    spinAct_one_apply, Matrix.conjTranspose_apply, Matrix.mul_apply]
+  simp
+  ring
+
+/-- `⟨P† (w,1), Q† (w,1)⟩ = (P Q†)₀₀ |w|² + (P Q†)₀₁ conj w + (P Q†)₁₀ w + (P Q†)₁₁`. -/
+theorem inner_adj2_z_z (P Q : Matrix (Fin 2) (Fin 2) ℂ) (w : ℂ) :
+    inner ℂ (spinAct Pᴴ !₂[w, 1]) (spinAct Qᴴ !₂[w, 1]) =
+      (P * Qᴴ) 0 0 * (w * conj w) + (P * Qᴴ) 0 1 * conj w + (P * Qᴴ) 1 0 * w + (P * Qᴴ) 1 1 := by
+  simp only [PiLp.inner_apply, Fin.sum_univ_two, RCLike.inner_apply, spinAct_zero_apply,
+    spinAct_one_apply, Matrix.conjTranspose_apply, Matrix.mul_apply]
+  simp
+  ring
+
+/-- The entries of the mixed block `H^{Xz}` for a source end: the pair `(f_w', f_w̄')` of the derivative of the
+coefficients of `dw` and `dw̄` in the first variation of the edge along `A ↦ A e^{sL}`. -/
+noncomputable def xzSource (k p : ℝ) (A L : Matrix (Fin 2) (Fin 2) ℂ) (ξ : Spinor) (w : ℂ) : ℂ × ℂ :=
+  let η := spinAct A ξ
+  let aL := spinAct (A * L) ξ
+  let M := A * Aᴴ
+  let Q := A * L * Aᴴ
+  let q : ℂ := M 0 0 * (w * conj w) + M 0 1 * conj w + M 1 0 * w + M 1 1
+  let N00 : ℂ := Q 0 0 + conj (Q 0 0)
+  let N01 : ℂ := Q 0 1 + conj (Q 1 0)
+  let N10 : ℂ := Q 1 0 + conj (Q 0 1)
+  let N11 : ℂ := Q 1 1 + conj (Q 1 1)
+  let qd : ℂ := N00 * (w * conj w) + N01 * conj w + N10 * w + N11
+  let s1 := conj w * η 0 + η 1
+  let s1d := conj w * aL 0 + aL 1
+  let dlw : ℂ := (N00 * conj w + N10) / q - (M 0 0 * conj w + M 1 0) * qd / q ^ 2
+  let dlwb : ℂ := (N00 * w + N01) / q - (M 0 0 * w + M 0 1) * qd / q ^ 2
+  let c : ℂ := (k : ℂ) + Complex.I * p
+  (-c * dlw, 2 * k * (aL 0 / s1 - η 0 * s1d / s1 ^ 2) - c * dlwb)
+
+/-- **The block `H^{Xz}` at a source end**: `a = edgeSrc e`, the mixed derivative along `X_a ↦ X_a Y s` and
+`z_e ↦ z_e + t (τ, 0)` is `f_w' τ + f_w̄' conj τ` with `(f_w', f_w̄') = xzSource`. Special case of `hessXZ_block`. -/
+theorem hessXZ_src {j p : Fin 10 → ℝ} {n : Fin 10 → ℕ} (hj : ∀ e, j e = (n e : ℝ) / 2)
+    (g : BdryData) (X : Fin 5 → SL2C) (z : Fin 10 → Spinor) (e : Fin 10) (w τ : ℂ)
+    (hz : z e = !₂[w, 1])
+    (L : Matrix (Fin 2) (Fin 2) ℂ) (Y : ℝ → SL2C) (hY0 : Y 0 = 1)
+    (hY : ∀ t i k, HasDerivAt (fun s => (Y s : Matrix (Fin 2) (Fin 2) ℂ) i k)
+      (((Y t : Matrix (Fin 2) (Fin 2) ℂ) * L) i k) t)
+    (hZ : spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e) ≠ 0)
+    (hZ' : spinAct (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e) ≠ 0)
+    (h1 : inner ℂ (spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)) (firstCol (g e 0)) ≠ 0)
+    (h2 : inner ℂ (jMap (firstCol (g e 1)))
+      (spinAct (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)) ≠ 0)
+    (hP : inner ℂ (spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)) (firstCol (g e 0)) *
+      inner ℂ (jMap (firstCol (g e 1)))
+        (spinAct (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)) ∈ Complex.slitPlane) :
+    deriv (fun s : ℝ => deriv (fun t : ℝ => lorAction j p g
+        (Function.update X (edgeSrc e) (X (edgeSrc e) * Y s))
+        (Function.update z e (z e + t • !₂[τ, 0]))) 0) 0 =
+      (xzSource ((n e : ℝ) / 2) (p e) (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ) L
+        (firstCol (g e 0)) w).1 * τ +
+      (xzSource ((n e : ℝ) / 2) (p e) (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ) L
+        (firstCol (g e 0)) w).2 * conj τ := by
+  rw [hessXZ_orbit_src hj g X z e !₂[τ, 0] L Y hY0 hY hZ hZ' h1 h2 hP]
+  set A : Matrix (Fin 2) (Fin 2) ℂ := (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ) with hA
+  rw [hz]
+  have hLA : ∀ v : Spinor, spinAct Lᴴ (spinAct Aᴴ v) = spinAct (A * L)ᴴ v := fun v => by
+    rw [Matrix.conjTranspose_mul, spinAct_mul]
+  have hAQ : A * (A * L)ᴴ = (A * L * Aᴴ)ᴴ := by
+    simp [Matrix.conjTranspose_mul, Matrix.mul_assoc]
+  simp only [hLA]
+  have hr : ∀ u : Spinor, (((‖u‖ : ℝ) : ℂ)) ^ 2 = inner ℂ u u := fun u => by
+    rw [inner_self_eq_norm_sq_to_K]; rfl
+  have hn4 : ∀ u : Spinor, (((‖u‖ : ℝ) : ℂ)) ^ 4 = (inner ℂ u u) ^ 2 := fun u => by
+    rw [show (4 : ℕ) = 2 * 2 by norm_num, pow_mul, hr]
+  have hre : ∀ u : ℂ, ((u.re : ℝ) : ℂ) = (u + conj u) / 2 := fun u => by
+    rw [Complex.re_eq_add_conj]
+  have hs1 : conj w * (spinAct A (firstCol (g e 0))) 0 + (spinAct A (firstCol (g e 0))) 1 ≠ 0 := by
+    rw [← inner_adj_z]; rw [hz] at h1; exact h1
+  have hqA : (A * Aᴴ) 0 0 * (w * conj w) + (A * Aᴴ) 0 1 * conj w + (A * Aᴴ) 1 0 * w + (A * Aᴴ) 1 1 ≠ 0 := by
+    have := (inner_self_ne_zero (𝕜 := ℂ)).mpr (hz ▸ hZ : spinAct Aᴴ !₂[w, 1] ≠ 0)
+    rw [inner_adj2_z_z A A w] at this
+    exact this
+  have hMh : (A * Aᴴ)ᴴ = A * Aᴴ := by simp
+  have hM00 : conj ((A * Aᴴ) 0 0) = (A * Aᴴ) 0 0 := by
+    simpa [Matrix.conjTranspose_apply] using congrFun (congrFun hMh 0) 0
+  have hM11 : conj ((A * Aᴴ) 1 1) = (A * Aᴴ) 1 1 := by
+    simpa [Matrix.conjTranspose_apply] using congrFun (congrFun hMh 1) 1
+  have hM10 : conj ((A * Aᴴ) 1 0) = (A * Aᴴ) 0 1 := by
+    simpa [Matrix.conjTranspose_apply] using congrFun (congrFun hMh 0) 1
+  have hM01 : conj ((A * Aᴴ) 0 1) = (A * Aᴴ) 1 0 := by rw [← hM10]; simp
+  unfold srcGenDeriv xzSource
+  dsimp only
+  rw [inner_adj_delta (A * L) τ, inner_adj_z (A * L) w, inner_adj_delta A τ, inner_adj_z A w,
+    inner_adj2_z_delta (A * L) A w τ, inner_adj2_z_delta A (A * L) w τ, hAQ, inner_adj2_z_delta A A w τ,
+    inner_adj2_z_z A (A * L) w, hAQ]
+  push_cast
+  simp only [hr, hn4, hre, inner_adj2_z_z A A w, inner_adj2_z_delta, hAQ, map_add, map_mul, map_div₀, map_sub,
+    Complex.conj_conj, Matrix.conjTranspose_apply, Complex.star_def, hM00, hM11, hM10, hM01]
+  generalize (A * L * Aᴴ) 0 0 = q00
+  generalize (A * L * Aᴴ) 0 1 = q01
+  generalize (A * L * Aᴴ) 1 0 = q10
+  generalize (A * L * Aᴴ) 1 1 = q11
+  generalize (A * Aᴴ) 0 0 = m00 at *
+  generalize (A * Aᴴ) 0 1 = m01 at *
+  generalize (A * Aᴴ) 1 0 = m10 at *
+  generalize (A * Aᴴ) 1 1 = m11 at *
+  generalize (spinAct A (firstCol (g e 0))) 0 = e0 at *
+  generalize (spinAct A (firstCol (g e 0))) 1 = e1 at *
+  generalize (spinAct (A * L) (firstCol (g e 0))) 0 = a0
+  generalize (spinAct (A * L) (firstCol (g e 0))) 1 = a1
+  field_simp
+  ring
+
+/-- The entries of the mixed block `H^{Xz}` for a target end `B`, with `θ = B J ξ'`, `θ' = B L J ξ'`. -/
+noncomputable def xzTarget (k p : ℝ) (B L : Matrix (Fin 2) (Fin 2) ℂ) (ξ' : Spinor) (w : ℂ) : ℂ × ℂ :=
+  let θ := spinAct B (jMap ξ')
+  let θL := spinAct (B * L) (jMap ξ')
+  let M := B * Bᴴ
+  let Q := B * L * Bᴴ
+  let q : ℂ := M 0 0 * (w * conj w) + M 0 1 * conj w + M 1 0 * w + M 1 1
+  let N00 : ℂ := Q 0 0 + conj (Q 0 0)
+  let N01 : ℂ := Q 0 1 + conj (Q 1 0)
+  let N10 : ℂ := Q 1 0 + conj (Q 0 1)
+  let N11 : ℂ := Q 1 1 + conj (Q 1 1)
+  let qd : ℂ := N00 * (w * conj w) + N01 * conj w + N10 * w + N11
+  let s2 := conj (θ 0) * w + conj (θ 1)
+  let s2d := conj (θL 0) * w + conj (θL 1)
+  let dlw : ℂ := (N00 * conj w + N10) / q - (M 0 0 * conj w + M 1 0) * qd / q ^ 2
+  let dlwb : ℂ := (N00 * w + N01) / q - (M 0 0 * w + M 0 1) * qd / q ^ 2
+  let c : ℂ := (k : ℂ) - Complex.I * p
+  (2 * k * (conj (θL 0) / s2 - conj (θ 0) * s2d / s2 ^ 2) - c * dlw, -c * dlwb)
+
+/-- **The block `H^{Xz}` at a target end**: `a = edgeTgt e`, the same with `xzTarget`. Special case of
+`hessXZ_block`. -/
+theorem hessXZ_tgt {j p : Fin 10 → ℝ} {n : Fin 10 → ℕ} (hj : ∀ e, j e = (n e : ℝ) / 2)
+    (g : BdryData) (X : Fin 5 → SL2C) (z : Fin 10 → Spinor) (e : Fin 10) (w τ : ℂ)
+    (hz : z e = !₂[w, 1])
+    (L : Matrix (Fin 2) (Fin 2) ℂ) (Y : ℝ → SL2C) (hY0 : Y 0 = 1)
+    (hY : ∀ t i k, HasDerivAt (fun s => (Y s : Matrix (Fin 2) (Fin 2) ℂ) i k)
+      (((Y t : Matrix (Fin 2) (Fin 2) ℂ) * L) i k) t)
+    (hZ : spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e) ≠ 0)
+    (hZ' : spinAct (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e) ≠ 0)
+    (h1 : inner ℂ (spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)) (firstCol (g e 0)) ≠ 0)
+    (h2 : inner ℂ (jMap (firstCol (g e 1)))
+      (spinAct (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)) ≠ 0)
+    (hP : inner ℂ (spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)) (firstCol (g e 0)) *
+      inner ℂ (jMap (firstCol (g e 1)))
+        (spinAct (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)) ∈ Complex.slitPlane) :
+    deriv (fun s : ℝ => deriv (fun t : ℝ => lorAction j p g
+        (Function.update X (edgeTgt e) (X (edgeTgt e) * Y s))
+        (Function.update z e (z e + t • !₂[τ, 0]))) 0) 0 =
+      (xzTarget ((n e : ℝ) / 2) (p e) (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ) L
+        (firstCol (g e 1)) w).1 * τ +
+      (xzTarget ((n e : ℝ) / 2) (p e) (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ) L
+        (firstCol (g e 1)) w).2 * conj τ := by
+  rw [hessXZ_orbit_tgt hj g X z e !₂[τ, 0] L Y hY0 hY hZ hZ' h1 h2 hP]
+  set B : Matrix (Fin 2) (Fin 2) ℂ := (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ) with hB
+  rw [hz]
+  have hLB : ∀ v : Spinor, spinAct Lᴴ (spinAct Bᴴ v) = spinAct (B * L)ᴴ v := fun v => by
+    rw [Matrix.conjTranspose_mul, spinAct_mul]
+  have hBQ : B * (B * L)ᴴ = (B * L * Bᴴ)ᴴ := by
+    simp [Matrix.conjTranspose_mul, Matrix.mul_assoc]
+  simp only [hLB]
+  unfold srcGenDeriv xzTarget
+  have hr : ∀ u : Spinor, (((‖u‖ : ℝ) : ℂ)) ^ 2 = inner ℂ u u := fun u => by
+    rw [inner_self_eq_norm_sq_to_K]; rfl
+  have hn4 : ∀ u : Spinor, (((‖u‖ : ℝ) : ℂ)) ^ 4 = (inner ℂ u u) ^ 2 := fun u => by
+    rw [show (4 : ℕ) = 2 * 2 by norm_num, pow_mul, hr]
+  have hre : ∀ u : ℂ, ((u.re : ℝ) : ℂ) = (u + conj u) / 2 := fun u => by
+    rw [Complex.re_eq_add_conj]
+  have hs2 : conj (spinAct B (jMap (firstCol (g e 1))) 0) * w + conj (spinAct B (jMap (firstCol (g e 1))) 1) ≠ 0 := by
+    rw [← inner_jmap_adj_z]; rw [hz] at h2; exact h2
+  have hqB : (B * Bᴴ) 0 0 * (w * conj w) + (B * Bᴴ) 0 1 * conj w + (B * Bᴴ) 1 0 * w + (B * Bᴴ) 1 1 ≠ 0 := by
+    have := (inner_self_ne_zero (𝕜 := ℂ)).mpr (hz ▸ hZ' : spinAct Bᴴ !₂[w, 1] ≠ 0)
+    rw [inner_adj2_z_z B B w] at this
+    exact this
+  have hMh : (B * Bᴴ)ᴴ = B * Bᴴ := by simp
+  have hM00 : conj ((B * Bᴴ) 0 0) = (B * Bᴴ) 0 0 := by
+    simpa [Matrix.conjTranspose_apply] using congrFun (congrFun hMh 0) 0
+  have hM11 : conj ((B * Bᴴ) 1 1) = (B * Bᴴ) 1 1 := by
+    simpa [Matrix.conjTranspose_apply] using congrFun (congrFun hMh 1) 1
+  have hM10 : conj ((B * Bᴴ) 1 0) = (B * Bᴴ) 0 1 := by
+    simpa [Matrix.conjTranspose_apply] using congrFun (congrFun hMh 0) 1
+  have hM01 : conj ((B * Bᴴ) 0 1) = (B * Bᴴ) 1 0 := by rw [← hM10]; simp
+  dsimp only
+  have hsw := fun Y : Spinor => inner_jmap_swap (firstCol (g e 1)) Y
+  simp only [hsw, inner_jMap_jMap, Complex.conj_re, norm_jMap]
+  rw [inner_jmap_adj_delta (B * L) _ τ, inner_jmap_adj_z (B * L) _ w, inner_jmap_adj_delta B _ τ,
+    inner_jmap_adj_z B _ w]
+  rw [inner_adj2_z_delta (B * L) B w τ, inner_adj2_z_delta B (B * L) w τ, hBQ, inner_adj2_z_delta B B w τ,
+    inner_adj2_z_z B (B * L) w, hBQ]
+  push_cast
+  simp only [hr, hn4, hre, inner_adj2_z_z B B w, inner_adj2_z_delta, hBQ, map_add, map_mul, map_div₀, map_sub,
+    Complex.conj_conj, Matrix.conjTranspose_apply, Complex.star_def, hM00, hM11, hM10, hM01]
+  generalize (B * L * Bᴴ) 0 0 = q00
+  generalize (B * L * Bᴴ) 0 1 = q01
+  generalize (B * L * Bᴴ) 1 0 = q10
+  generalize (B * L * Bᴴ) 1 1 = q11
+  generalize (B * Bᴴ) 0 0 = m00 at *
+  generalize (B * Bᴴ) 0 1 = m01 at *
+  generalize (B * Bᴴ) 1 0 = m10 at *
+  generalize (B * Bᴴ) 1 1 = m11 at *
+  generalize (spinAct B (jMap (firstCol (g e 1)))) 0 = t0 at *
+  generalize (spinAct B (jMap (firstCol (g e 1)))) 1 = t1 at *
+  generalize (spinAct (B * L) (jMap (firstCol (g e 1)))) 0 = a0
+  generalize (spinAct (B * L) (jMap (firstCol (g e 1)))) 1 = a1
+  trace_state
+  field_simp
+  ring
+
+/-- **The block `H^{Xz}` of the Hessian** (BDFHP Appendix A pp. 32 to 33; the closed form is found here and
+checked numerically at non-critical configurations): for a node `a`, a curve `Y` in `SL(2, ℂ)` with `Y 0 = 1`,
+`Y' = Y L`, the edge `e`, `z_e = (w, 1)` and the direction `δ = (τ, 0)`, the mixed second derivative at `0`
+of `lorAction` at `X_a ↦ X_a Y s`, `z_e ↦ z_e + t δ` is `f_w' τ + f_w̄' conj τ`, where `(f_w', f_w̄')` is
+`xzSource` if `a` is the source of `e`, `xzTarget` if it is the target, and the sum is `0` if `a` is
+neither end. No criticality is assumed: only that the spinors `X_b† z_e` of the two ends are nonzero, that
+the overlaps `⟨X_a† z_e, ξ⟩`, `⟨J ξ', X_b† z_e⟩` do not vanish and that their product is off the cut of the
+logarithm. -/
+theorem hessXZ_block {j p : Fin 10 → ℝ} {n : Fin 10 → ℕ} (hj : ∀ e, j e = (n e : ℝ) / 2)
+    (g : BdryData) (X : Fin 5 → SL2C) (z : Fin 10 → Spinor) (e : Fin 10) (a : Fin 5) (w τ : ℂ)
+    (hz : z e = !₂[w, 1])
+    (L : Matrix (Fin 2) (Fin 2) ℂ) (Y : ℝ → SL2C) (hY0 : Y 0 = 1)
+    (hY : ∀ t i k, HasDerivAt (fun s => (Y s : Matrix (Fin 2) (Fin 2) ℂ) i k)
+      (((Y t : Matrix (Fin 2) (Fin 2) ℂ) * L) i k) t)
+    (hZ : spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e) ≠ 0)
+    (hZ' : spinAct (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e) ≠ 0)
+    (h1 : inner ℂ (spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)) (firstCol (g e 0)) ≠ 0)
+    (h2 : inner ℂ (jMap (firstCol (g e 1)))
+      (spinAct (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)) ≠ 0)
+    (hP : inner ℂ (spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)) (firstCol (g e 0)) *
+      inner ℂ (jMap (firstCol (g e 1)))
+        (spinAct (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)) ∈ Complex.slitPlane) :
+    deriv (fun s : ℝ => deriv (fun t : ℝ => lorAction j p g
+        (Function.update X a (X a * Y s)) (Function.update z e (z e + t • !₂[τ, 0]))) 0) 0 =
+      (if edgeSrc e = a then
+        (xzSource ((n e : ℝ) / 2) (p e) (X a : Matrix (Fin 2) (Fin 2) ℂ) L (firstCol (g e 0)) w).1 * τ +
+          (xzSource ((n e : ℝ) / 2) (p e) (X a : Matrix (Fin 2) (Fin 2) ℂ) L (firstCol (g e 0)) w).2 * conj τ
+       else 0) +
+      (if edgeTgt e = a then
+        (xzTarget ((n e : ℝ) / 2) (p e) (X a : Matrix (Fin 2) (Fin 2) ℂ) L (firstCol (g e 1)) w).1 * τ +
+          (xzTarget ((n e : ℝ) / 2) (p e) (X a : Matrix (Fin 2) (Fin 2) ℂ) L (firstCol (g e 1)) w).2 * conj τ
+       else 0) := by
+  by_cases hs : edgeSrc e = a
+  · subst hs
+    have ht : edgeTgt e ≠ edgeSrc e := (edgeSrc_ne_edgeTgt e).symm
+    simp only [if_true, ht, if_false, add_zero]
+    exact hessXZ_src hj g X z e w τ hz L Y hY0 hY hZ hZ' h1 h2 hP
+  by_cases ht : edgeTgt e = a
+  · subst ht
+    simp only [hs, if_false, if_true, zero_add]
+    exact hessXZ_tgt hj g X z e w τ hz L Y hY0 hY hZ hZ' h1 h2 hP
+  · simp only [hs, ht, if_false, add_zero]
+    -- `a` is neither end: the edge `e` does not depend on `s`, the other edges do not depend on `t`
+    set T : ℝ → ℂ := fun t => triAction ((n e : ℝ) / 2) (p e)
+      (spinAct (X (edgeSrc e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e + t • !₂[τ, 0])) (firstCol (g e 0))
+      (spinAct (X (edgeTgt e) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e + t • !₂[τ, 0])) (firstCol (g e 1)) with hT
+    set K : ℝ → ℂ := fun s => ∑ e' ∈ Finset.univ.erase e, triAction (j e') (p e')
+      (spinAct ((Function.update X a (X a * Y s) (edgeSrc e') : SL2C) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e'))
+      (firstCol (g e' 0))
+      (spinAct ((Function.update X a (X a * Y s) (edgeTgt e') : SL2C) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e'))
+      (firstCol (g e' 1)) with hK
+    have hsplit : ∀ s t : ℝ, lorAction j p g (Function.update X a (X a * Y s))
+        (Function.update z e (z e + t • !₂[τ, 0])) = T t + K s := by
+      intro s t
+      unfold lorAction
+      rw [← Finset.add_sum_erase _ _ (Finset.mem_univ e)]
+      congr 1
+      · simp only [Function.update_self, Function.update_of_ne hs, Function.update_of_ne ht, hj e, hT]
+      · refine Finset.sum_congr rfl fun e' he' => ?_
+        rw [Function.update_of_ne (Finset.ne_of_mem_erase he')]
+    have hfun : (fun s : ℝ => deriv (fun t : ℝ => lorAction j p g (Function.update X a (X a * Y s))
+        (Function.update z e (z e + t • !₂[τ, 0]))) 0) = fun _ => deriv T 0 := by
+      funext s
+      have : (fun t : ℝ => lorAction j p g (Function.update X a (X a * Y s))
+          (Function.update z e (z e + t • !₂[τ, 0]))) = fun t => T t + K s := funext fun t => hsplit s t
+      rw [this, deriv_add_const]
+    rw [hfun]
+    exact deriv_const _ _
 
 end Lightlike.Asymptotics.Lorentzian
