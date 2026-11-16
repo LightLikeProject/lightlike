@@ -11,7 +11,7 @@ Directions in the plane are given by angles `α ∈ ℝ`. The open wedge spanned
 and `β` consists of the directions `τ` with `(cos τ, sin τ)` a positive combination of
 `(cos α, sin α)` and `(cos β, sin β)` (`InWedge α β τ`).
 
-## Main result
+## Main results
 
 * `sum_arccos_cos_eq_two_pi`: let `α 0, …, α n` be directions, `n ≥ 1`, with `α n` the same
   direction as `α 0`, no two consecutive ones parallel, and the open wedges between consecutive

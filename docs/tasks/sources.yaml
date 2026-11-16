@@ -1102,6 +1102,8 @@ milestones:
     class: sourced
     refs:
       - {ref: barrett-naish-guzman-2009, location: "§4.4", check: "Existence criterion"}
+      - {ref: barrett-naish-guzman-2009, location: "§2.2", check: "divergent"}
+      - {ref: barrett-naish-guzman-2009, location: "§2.4", check: "no rescaling by powers"}
   RC6:
     class: sourced
     refs:

@@ -10,15 +10,13 @@ coordinate metric of the core (`Lightlike.IsCoordMetric`: smooth, symmetric, inv
 definite. The length and the energy of a curve are the integrals of `√(g(c', c'))` and
 `g(c', c')`, and the distance of `(U, g)` is the infimum of the lengths of `C¹` curves in `U`.
 
-## Definitions
+## Main results
 
 * `IsRiemMetric g U`: `g` is a Riemannian metric on `U`.
 * `normSq g x v = g_x(v, v)`; `eNormSq v = v ⬝ v`, the Euclidean squared norm.
 * `length g c a b`, `energy g c a b`: length and energy of a curve on `[a, b]`.
 * `IsAdmissible U c x y`: `c` is a `C¹` curve with `c 0 = x`, `c 1 = y` and `c [0, 1] ⊆ U`.
 * `dist g U x y`: the infimum of the lengths of admissible curves.
-
-## Main results
 
 * `exists_bounds_of_isCompact`: on a compact subset of `U` the metric is comparable to the
   Euclidean one, `λ |v|² ≤ g_x(v, v) ≤ Λ |v|²`.
@@ -30,7 +28,7 @@ definite. The length and the energy of a curve are the integrals of `√(g(c', c
 * `dist_euclid`: for the Euclidean metric on a convex set the distance is the Euclidean
   distance (trust check).
 
-## Relation to Mathlib
+## Implementation notes
 
 Mathlib defines the Riemannian distance of a manifold with a Riemannian bundle,
 `riemannianEDist` (`Mathlib/Geometry/Manifold/Riemannian/PathELength.lean`), as an infimum over
