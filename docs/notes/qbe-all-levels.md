@@ -282,7 +282,7 @@ constructions, so by the rule agreed for this note the route is recorded and sto
 Recorded options (no commitment): the second paper to read for a direct proof of the pentagon is the one Rosengren cites for the connection-coefficient view of the Biedenharn–Elliott identity if any
 (none found in this text); and the relation of (4.8) to the pentagon could be tested numerically first, in the basic case at generic `q`, before any Lean statement.
 
-## Watson's transformation: certificate search so far (Python only, exact rational arithmetic; no Lean)
+## Watson's transformation: the certificate search (Python only, exact rational arithmetic; no Lean)
 
 Setting. `L_n` is the terminating very-well-poised `₈φ₇` side of DLMF (17.9.15) and `R_n` the prefactor times the balanced `₄φ₃` side, both with the terminating parameter `q^{-n}`,
 generic rational `q, a, b, c, d, e` (`q = 3/2`, the others random fractions with numerators and denominators in `11..97`), exact `Fraction` arithmetic.
