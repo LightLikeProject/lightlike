@@ -321,7 +321,7 @@ def cross5 : Lightlike.FourD.Complex4 (Fin 10) where
 /-- The boundary of the 5-dimensional cross-polytope has 32 4-simplices. -/
 theorem card_cross5 : #cross5.simps = 32 := by decide +kernel
 
-set_option maxHeartbeats 0 in
+set_option maxHeartbeats 800000 in
 /-- **Known value**: starring the facet `01234` of `∂Δ⁵` on `{0, 1, 2, 3, 4, 8}` (new vertex `9`),
 then the facet `0123` of `∂(01234)` (new vertex `5`), then the edges `01` and `23` (new vertices
 `6`, `7`), gives the boundary of the 5-dimensional cross-polytope. -/
@@ -330,7 +330,7 @@ theorem ofComplex4_cross5 : ofComplex4 cross5 =
       {0, 1, 2, 3} 5).starAt {0, 1} 6).starAt {2, 3} 7 := by
   apply SComplex.ext; decide +kernel
 
-set_option maxHeartbeats 0 in
+set_option maxHeartbeats 600000 in
 /-- **The boundary of the 5-simplex and the boundary of the 5-dimensional cross-polytope are
 stellar equivalent**, by four starrings. -/
 theorem stellarEquiv_cross5 :
