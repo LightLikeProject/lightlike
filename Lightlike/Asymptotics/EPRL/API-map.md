@@ -72,8 +72,10 @@ intertwiner is then a Spin(4) integral of the lifted coherent tensor [41], and t
 the lowest component on coherent states is, up to the abstract Clebsch–Gordan constant `c₀`, the
 product of two overlaps [42]. The vertex sum with coherent boundary data is the `K₅` contraction
 of the coherent node tensors, each a Spin(4) integral at the projections [43]. The positivity and the
-closed value of `c₀` are not proved, and the `Spin(4)^5` integral of edge forms is not yet in the
-library.
+closed value of `c₀` are not proved. The contraction of tensors that are products over their legs
+is the product over the ten edges of the edge pairings, and the contraction of node integrals is the
+integral over `Spin(4)^5` of the contraction of the integrands [44]; the `Spin(4)^5` integral of edge
+forms itself is not yet in the library.
 
 If the maximum set of the integrand is finite and the logarithmic phase has nonzero differential at
 each of its points, then there is no critical point of the extended stationary phase and the coherent
@@ -191,6 +193,8 @@ proved here.
 43. Lightlike/Asymptotics/EPRL/EprlHighVertex.lean -
     `Asymptotics.EPRL.eprlVertexHigh`, `Asymptotics.EPRL.eprlCohNodeHigh`,
     `Asymptotics.EPRL.eprlCohNodeHigh_integral`, `Asymptotics.EPRL.eprlVertexHigh_coherent`
+44. Lightlike/Asymptotics/EPRL/EprlHighEdge.lean - `Asymptotics.EPRL.k5Contract4_prod`,
+    `Asymptotics.EPRL.k5Contract4_integral`
 
 ## References
 
