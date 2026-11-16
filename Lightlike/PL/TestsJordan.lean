@@ -1,5 +1,7 @@
 import Lightlike.PL.WeakJordanCircle
 import Lightlike.PL.TestsK33
+import Lightlike.PL.PolygonApprox
+import Lightlike.PL.JordanComponents
 
 /-!
 # Checks for the weak Jordan theorem
@@ -73,5 +75,14 @@ sends the circle to a point, whose complement is connected). -/
 example : ¬ Function.Injective (fun _ : Circle => ((0 : ℝ), (0 : ℝ))) := by
   intro h
   exact Circle.neg_ne_self 1 (h rfl).symm
+
+/-- The polygonal approximation applies to the unit circle. -/
+theorem unitCircle_polygon_near : ∃ l : List (ℝ × ℝ), (Polygon.ofList l).IsSimple ∧
+    (∀ z ∈ (Polygon.ofList l).carrier, ∃ w, dist z (unitCircle w) < 1 / 10) ∧
+    (∀ w, ∃ z ∈ (Polygon.ofList l).carrier, dist (unitCircle w) z < 1 / 10) :=
+  exists_polygon_near unitCircle_continuous unitCircle_injective (by norm_num)
+
+-- The components theorem applies to the unit circle.
+example := jordan_components unitCircle_continuous unitCircle_injective
 
 end Lightlike.PL
