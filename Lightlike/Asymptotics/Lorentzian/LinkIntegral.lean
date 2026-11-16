@@ -77,4 +77,34 @@ theorem suV_cohVec_ae (n : ℕ) (ρ : ℝ) (g : Matrix (Fin 2) (Fin 2) ℂ) :
   simp only [Matrix.cons_val_zero, Matrix.cons_val_one, mul_one] at h
   exact congrArg _ (congrArg _ h)
 
+/-- An invertible matrix acts injectively on spinors. -/
+theorem spinAct_ne_zero_of_det (M : Matrix (Fin 2) (Fin 2) ℂ) (hM : M.det ≠ 0) {v : Spinor}
+    (hv : v ≠ 0) : spinAct M v ≠ 0 := by
+  intro h
+  apply hv
+  have h1 : M.adjugate * M = M.det • (1 : Matrix (Fin 2) (Fin 2) ℂ) := Matrix.adjugate_mul M
+  have h2 := congrArg (spinAct M.adjugate) h
+  rw [← spinAct_mul, h1] at h2
+  have h3 : spinAct (M.det • (1 : Matrix (Fin 2) (Fin 2) ℂ)) v = M.det • v := by
+    ext i; fin_cases i <;> simp [spinAct]
+  rw [h3] at h2
+  have h4 : spinAct M.adjugate 0 = 0 := by ext i; fin_cases i <;> simp [spinAct]
+  rw [h4] at h2
+  exact (smul_eq_zero.mp h2).resolve_left hM
+
+/-- **An affine function of `w` vanishes on a null set** unless it is identically zero. -/
+theorem ae_affine_ne_zero (α β : ℂ) (h : α ≠ 0 ∨ β ≠ 0) :
+    ∀ᵐ w : ℂ ∂MeasureTheory.volume, α * w + β ≠ 0 := by
+  by_cases hα : α = 0
+  · have hβ : β ≠ 0 := by simpa [hα] using h
+    exact Filter.Eventually.of_forall fun w => by simpa [hα] using hβ
+  · have : {w : ℂ | α * w + β = 0} ⊆ {-β / α} := by
+      intro w hw
+      have hw' : α * w + β = 0 := hw
+      simp only [Set.mem_singleton_iff]
+      field_simp
+      linear_combination hw'
+    rw [MeasureTheory.ae_iff]
+    exact MeasureTheory.measure_mono_null (by simpa using this) (MeasureTheory.measure_singleton _)
+
 end Lightlike.Asymptotics.Lorentzian
