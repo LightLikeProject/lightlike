@@ -162,7 +162,7 @@ lake build Tasks
 The toolchain is pinned in `lean-toolchain` and the dependencies in `lake-manifest.json`. To check
 a single file, `lake env lean -DautoImplicit=false path/File.lean`. Before opening a pull request,
 commit and run `python3 scripts/gate.py`: it executes the steps of `.github/workflows/ci.yml` in
-order. It needs Python 3.9 to 3.12 and the packages pinned in `requirements.txt`:
+order. It needs Python 3.9 to 3.14 and the packages pinned in `requirements.txt`:
 `python3 -m venv .venv && . .venv/bin/activate && pip install -r requirements.txt` (on Windows the
 venv is activated with `.venv\Scripts\activate`). No script in `scripts/` is bash-only, but `gate.py`
 runs each CI step with bash and the POSIX tools the steps call, so on Windows run it in WSL.
@@ -188,7 +188,10 @@ Each of these makes a result easier to trust or to reuse. None blocks a merge.
   and why a definition departs from them, so that results compose.
 - **Style.** Follow the [Mathlib style guide](https://leanprover-community.github.io/contribute/style.html).
   Give every main theorem a docstring and every file a module docstring: readers find results
-  through them.
+  through them. A module docstring starts with `# Title` in words and a summary paragraph, then
+  `## Main results` (the main declarations, one line each) and `## References` (keys of
+  [docs/tasks/sources.yaml](docs/tasks/sources.yaml)) when the file has them. Other sections are
+  named `## Conventions` or `## Implementation notes`. A short file keeps the title and prose.
 - **Lean files only.** A pull request changes Lean files. The catalog (`docs/results.yaml` and
   `docs/RESULTS.md`, the API maps, the milestone and task pages, the source list) is kept by the
   maintainers, who add a new result to it after merging; say in the pull request what it should
