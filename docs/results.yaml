@@ -1243,3 +1243,16 @@
   review: kernel-checked
   note: "A 2-chain is a finite set of cells of a grating; its boundary is the set of edges that are a side of an odd number of its cells, and the boundary of a boundary is empty. A chain without boundary is the boundary of a 2-chain. Alexander's theorem: if x and y are the boundary of a chain l1 avoiding K and of a chain l2 avoiding L, l1 + l2 is the boundary of a 2-chain w up to a set E of edges avoiding K union L (the outer edges of the grating: the notes' Theorem 9.10 gives a 2-chain and its complement, the complement using an outer cell), and no cell of w meets both K and L, then x is joined to y off K union L. This is the Alexander Theorem of chapter 9 of McCleary's book (numbering as in the lecture-notes version), for a grating that is already fine, with the outer-edge set E added; the statements and proofs are Lean's own. Limits: chains modulo 2, rectangular gratings. Check: TestsAlexander.lean."
   since: unreleased
+- id: LL-XXXX-d
+  title: Two compact sets meeting in one point do not separate two points that neither separates
+  area: PL
+  file: Lightlike/PL/UnionLemma.lean
+  decls: [Lightlike.PL.joinedIn_union_compl]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
+  review: kernel-checked
+  note: "If K1 and K2 are compact subsets of the plane with K1 intersect K2 equal to one point and P is joined to Q by a path off K1 and by a path off K2, then P is joined to Q by a path off K1 union K2. The proof puts the two chains of the path-to-chain step on one fine grating with a margin, takes the 2-chain of their cycle, uses its complement when the common point is inside it, and applies Alexander's theorem. This is Corollary 9.11 of the lecture-notes version of chapter 9 of McCleary's book, which states it with a one-sentence argument and takes the complement 2-chain from its Theorem 9.10; here the complement step is made explicit on a fixed rectangular grating; the statement and proof are Lean's own. Proves: a Janiszewski-type union lemma for two compact sets meeting in one point. Does not prove: that an arc does not separate the plane (that is the next entry), nor the Jordan curve theorem. Limits: compact sets in the plane. Check: TestsUnion.lean."
+  since: unreleased

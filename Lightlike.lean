@@ -208,8 +208,10 @@ import Lightlike.PL.Hexagon
 import Lightlike.PL.Grating
 import Lightlike.PL.GratingPath
 import Lightlike.PL.Alexander
+import Lightlike.PL.UnionLemma
 import Lightlike.PL.TestsGratingPath
 import Lightlike.PL.TestsAlexander
+import Lightlike.PL.TestsUnion
 import Lightlike.PL.TestsGrating
 import Lightlike.PL.HexFalse
 import Lightlike.PL.K33
