@@ -5,8 +5,7 @@ import Lightlike.Spin4.Vertex
 # The Euclidean EPRL state sum
 
 The state sum of the Euclidean Engle–Pereira–Rovelli–Livine (EPRL) spin foam model with Immirzi
-parameter `γ < 1` (EPRL 2008, arXiv:0711.0146, §III; Bianchi–Regoli–Rovelli, arXiv:0912.4054, §IV;
-Perez, *Living Rev. Relativ.* 16 (2013) 3, §2.3.8) on a 4-complex `K`. Doubled spins throughout.
+parameter `γ < 1` on a 4-complex `K`. Doubled spins throughout.
 
 A colouring `col : Finset V → ℕ` gives the doubled SU(2) spin `J` of every triangle and the
 doubled intertwiner label `z` of every tetrahedron (the virtual spin in the recoupling basis
@@ -42,6 +41,12 @@ the faces `f ∉ T` and colour `0` on `T`, exactly as for the Ooguri model (`Lig
 The vertex is `eprlVertex` of `Lightlike/Spin4/Vertex.lean`, which contracts the five node tensors
 along the edges of `K₅` with the orientation of ascending vertices. The orientation independence
 known for the Ooguri vertex (`vertexContr_neg`) is not claimed for it.
+
+## References
+
+* `eprl-2008`, §III: the model, its vertex and face amplitudes.
+* `bianchi-regoli-rovelli-2010`, §IV: the face amplitude.
+* `perez-2013`, §2.3.8: the EPRL state sum as a review.
 -/
 
 open Finset Lightlike.Spin4 Lightlike.FourD

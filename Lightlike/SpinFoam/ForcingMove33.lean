@@ -16,6 +16,18 @@ that is closed under the nine common tetrahedra and contains a full row of `m` (
 for one `c`: the three triangles of the tetrahedron `σ ∪ {c}` other than `σ`) and a full row of `n`
 has no row of `m` or of `n` with exactly two triangles, so adding `σ` (or `τ`) to it creates no
 further forcing in the tetrahedra `σ ∪ {c}` (or `τ ∪ {x}`).
+
+## Main results
+
+* `local33_prop`, `local33_vars`, `local33_control`: the finite lemma, with its variables explicit,
+  and its wrong-input control.
+* `ForcesIn`: forcing by an arbitrary set of tetrahedra (`sound`, `mono`, `union`, `of_union`),
+  with the checker `forcesInBy`.
+* `forcing_dichotomy`: if `T` does not force by the common tetrahedra alone, it does not force both
+  complexes.
+* `forces_sigma_of_common`, `forces_tau_of_common`: the easy direction.
+* `forces_move33_iff`: a forcing set that does not contain the moved triangle forces the complex
+  after the 3-3 move iff the closure under the tetrahedra without that triangle is complete.
 -/
 
 namespace Lightlike.SpinFoam.Forcing33

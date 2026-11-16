@@ -10,6 +10,7 @@ Haar measure, so the face holonomies are independent and Haar distributed. The c
 the cut-off sum then has a single nonzero coefficient, at the labelling `c = 0`, where it is `1`.
 
 ## Main results
+
 * `integral_haarE_two`: integration over `SU(2)^(Fin 2)` as an iterated integral.
 * `coeff_twoFace`: the expansion coefficient is `1` at `c = 0` and `0` elsewhere.
 * `absSummable_twoFace`: the expansion is absolutely summable, so `twoFaceCx` is removable
