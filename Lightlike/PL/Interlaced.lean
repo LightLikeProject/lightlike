@@ -15,7 +15,7 @@ polygon occur (`near_two`). The proof splits the 6-cycle of `K₃,₃` along cho
 of using an orientation argument.
 -/
 
-open Set
+open Set Lightlike.PL.Polygon
 
 namespace Lightlike.PL
 
@@ -161,6 +161,50 @@ theorem no_interlaced_chord {a b x y : ℝ × ℝ} {m₁ m₂ mₑ m_f : List (�
     have := lt_of_lt_of_le hu3 (min_le_right _ _)
     rw [h] at this
     exact lt_irrefl _ this
+  -- the parities are constant on the open chord
+  have hF₀C₁ : F₀ ⊆ C₁.carrierᶜ := fun z hz => by
+    rw [cC₁]
+    rintro (h | h)
+    exacts [(hF₀N z hz).1 h, (hF₀N z hz).2.2 h]
+  have hF₀C₂ : F₀ ⊆ C₂.carrierᶜ := fun z hz => by
+    rw [cC₂]
+    rintro (h | h)
+    exacts [(hF₀N z hz).2.1 h, (hF₀N z hz).2.2 h]
+  have hF₀C : F₀ ⊆ C.carrierᶜ := fun z hz => by
+    rw [cC]
+    rintro (h | h)
+    exacts [(hF₀N z hz).1 h, (hF₀N z hz).2.1 h]
+  obtain ⟨s₁, hs₁⟩ := const_parity_of_preconnected hF₀pre hF₀C₁
+  obtain ⟨s₂, hs₂⟩ := const_parity_of_preconnected hF₀pre hF₀C₂
+  obtain ⟨s, hs⟩ := const_parity_of_preconnected hF₀pre hF₀C
+  obtain ⟨u₀, hu₀⟩ : ∃ u, u ∈ F₀ := (hnear_x 1 one_pos).imp fun u h => h.1
+  have hss : s₁ + s₂ = s := by
+    rw [← hs₁ u₀ hu₀, ← hs₂ u₀ hu₀, ← hs u₀ hu₀]; exact hpar u₀
+  -- regions of points off the three carriers, by the parities of `C₁` and `C₂`
+  set Reg : ZMod 2 → ZMod 2 → Prop := fun p q =>
+    ∃ z, z ∉ A₁ ∧ z ∉ A₂ ∧ z ∉ E ∧ C₁.parity z = p ∧ C₂.parity z = q with hReg
+  have hy_C₁ : y ∉ C₁.carrier := by
+    rw [cC₁]; rintro (h | h)
+    exacts [hyA₁ h, hyE h]
+  have hy_C₂ : y ∈ C₂.carrier := by rw [cC₂]; exact Or.inl hy₂
+  have hx_C₁ : x ∈ C₁.carrier := by rw [cC₁]; exact Or.inl hx₁
+  have hx_C₂ : x ∉ C₂.carrier := by
+    rw [cC₂]; rintro (h | h)
+    exacts [hxA₂ h, hxE h]
+  have regY : ∀ c, Reg s₁ c := by
+    intro c
+    obtain ⟨ε, hε, hεy⟩ := locally_const_parity hy_C₁
+    obtain ⟨u, hu, hud⟩ := hnear_y ε hε
+    have hpy : C₁.parity y = s₁ := by rw [← hs₁ u hu]; exact (hεy u hud).2.symm
+    obtain ⟨z, -, hz2, hz3, hz4, hz5, hz6⟩ := near_two sC₂ hy_C₂ hy_C₁ hclA₁ hyA₁ c one_pos
+    rw [cC₂] at hz2
+    exact ⟨z, hz3, fun h => hz2 (Or.inl h), fun h => hz2 (Or.inr h), by rw [hz6, hpy], hz4⟩
+  have regX : ∀ c, Reg c s₂ := by
+    intro c
+    obtain ⟨ε, hε, hεx⟩ := locally_const_parity hx_C₂
+    obtain ⟨u, hu, hud⟩ := hnear_x ε hε
+    have hpx : C₂.parity x = s₂ := by rw [← hs₂ u hu]; exact (hεx u hud).2.symm
+    obtain ⟨z, -, hz2, hz3, hz4, hz5, hz6⟩ := near_two sC₁ hx_C₁ hx_C₂ hclA₂ hxA₂ c one_pos
+    rw [cC₁] at hz2
+    exact ⟨z, fun h => hz2 (Or.inl h), hz3, fun h => hz2 (Or.inr h), hz4, by rw [hz6, hpx]⟩
   sorry
-
-end Lightlike.PL
