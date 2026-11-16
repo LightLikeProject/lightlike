@@ -100,6 +100,27 @@ orthonormal one [47]. The squared dihedral angle of a tetrahedron is smooth on t
 (`scripts/regge/regge3d_affine.py`), not proven, and the convergence of the Regge action itself in
 dimension 3 is not yet formalized.
 
+For a general positive definite Gram matrix `G` at the centre of a Kuhn cell, the dihedral-angle
+derivative combination is a polynomial in the squared lengths [58], and for the second-order
+lengths of the algebraic form `-(1/3) Rm(y, z, y, z)` the sum over the 36 incidences equals
+`det G · tr (adj G · B) / 2` as an exact polynomial identity, first for the six symmetric basis
+matrices and then for a general `B` [59], [60], [61], [62]. In a chart, the Christoffel symbols and
+the Riemann tensor of a smooth metric at a point are explicit expressions in the metric, its inverse
+and its first and second partial derivatives [63]. For every positive definite `G` the 36 Gram
+tetrahedra are admissible and the dihedral angles in each of the seven edge classes add up to `2π`:
+each class is a fan around the hinge axis, and the complex coordinate in the plane quotient turns the
+angle sum into the argument of a product [64]. At a point where all first partial derivatives of a
+Riemannian 3-metric vanish (for example the centre of normal coordinates), but for any positive
+definite metric matrix and any second derivatives, the weighted sum over the 36 incidences of the
+first variation of the dihedral angle along the second-order lengths is a rational expression [65]
+that equals `det R / 2` [66], and therefore the jet-level star identity `JetStarCore` holds there
+with scalar curvature `R` [67]. This is not the general chart: the first derivatives of the metric
+are zero at the point, and the convergence of the 3D Regge action needs the same statement at
+every hinge. Trust checks: the Euclidean metric satisfies the hypotheses; for sphere-like second
+derivatives the sum is `3`, not `0` and not `6` [68]. The identity of [66] is generated and checked
+in exact arithmetic by `scripts/regge/gen_flat_star.py`, and the fans of [64] by
+`scripts/regge/gen_star_angle.py`.
+
 A 2-complex with boundary is a disc in the combinatorial sense exactly when it is an intrinsic
 triangulated disc [16].
 
@@ -208,6 +229,27 @@ triangulated disc [16].
     `Regge.Conv3.h2r_wrong_weight_one`, `Regge.Conv3.h2r_wrong_weights_differ`
 57. Lightlike/Regge/Conv3/LatticeSum.lean - `Regge.Conv3.riemann_sum_lipschitz`,
     `Regge.Conv3.lattice_sum_converges`
+58. Lightlike/Regge/Conv3/KuhnBridge.lean - `Regge.Conv3.mul_Pp_eq`, `Regge.Conv3.mul_Nn_eq`,
+    `Regge.Conv3.mul_diff_eq`
+59. Lightlike/Regge/Conv3/KuhnBasis.lean - `Regge.Conv3.kuhn_basis_00`, `Regge.Conv3.kuhn_basis_01`,
+    `Regge.Conv3.kuhn_basis_02`, `Regge.Conv3.kuhn_basis_11`, `Regge.Conv3.kuhn_basis_12`,
+    `Regge.Conv3.kuhn_basis_22`, `Regge.Conv3.kuhn_assemble`
+60. Lightlike/Regge/Conv3/KuhnLinear.lean - `Regge.Conv3.kuhn_lin_poly`,
+    `Regge.Conv3.kuhn_lin_num1`, `Regge.Conv3.kuhn_lin_num2`, `Regge.Conv3.kuhn_lin_num3`
+61. Lightlike/Regge/Conv3/KuhnLinear2.lean - `Regge.Conv3.kuhn_lin_num4`,
+    `Regge.Conv3.kuhn_lin_num5`, `Regge.Conv3.kuhn_lin_num6`, `Regge.Conv3.kuhn_lin_rho`
+62. Lightlike/Regge/Conv3/KuhnStar.lean - `Regge.Conv3.kuhn_star_identity`
+63. Lightlike/Regge/Conv3/JetCurvature.lean - `Regge.Conv3.pd_inv`, `Regge.Conv3.pd_christoffel`,
+    `Regge.Conv3.riemann_jet`, `Regge.Conv3.scalarCurvature_jet`
+64. Lightlike/Regge/Conv3/StarAngle.lean - `Regge.Conv3.quad_fan`, `Regge.Conv3.hex_fan`,
+    `Regge.Conv3.valid_incQ`, `Regge.Conv3.jet_angle_sum`
+65. Lightlike/Regge/Conv3/FlatStar.lean - `Regge.Conv3.sqrt_Dh_inc`, `Regge.Conv3.Einc`,
+    `Regge.Conv3.Rnum`
+66. Lightlike/Regge/Conv3/FlatStarIdentity.lean - `Regge.Conv3.flat_star_identity`
+67. Lightlike/Regge/Conv3/FlatStarJet.lean - `Regge.Conv3.scalar_flat`,
+    `Regge.Conv3.jetStarCore_of_flat`
+68. Lightlike/Regge/Conv3/FlatStarTests.lean - `Regge.Conv3.euclid_flat_core`,
+    `Regge.Conv3.sphere_sum`, `Regge.Conv3.sphere_sum_ne_double`
 
 ## References
 
