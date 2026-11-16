@@ -918,3 +918,92 @@
   review: kernel-checked
   note: "Forcing is this library's rule (a tetrahedron with three of its triangles in the set forces the fourth), used to show that the gauge-fixed state sum is 1. Statement: for a 3-3 move K -> K' that replaces the triangle sigma by tau, and T a set of triangles of K that does not contain sigma and forces every triangle of K, T forces every triangle of K' exactly when the closure of T under the tetrahedra of K that do not contain sigma reaches every triangle of K other than sigma (forces_move33_iff, ForcesIn is forcing by an arbitrary set of tetrahedra). The proof splits the tetrahedra into those common to K and K' and the three that contain sigma (resp. tau). If the common closure is complete, one tetrahedron forces sigma (resp. tau) from the mixed triangles. If it is not, a derivation can leave the common closure only through a tetrahedron sigma + c whose three mixed triangles are in it (a full row), and after the move only through a full row for tau; if both exist, a finite lemma on the eighteen mixed triangles (local33_prop, a Boolean statement over eighteen variables checked by the kernel with decide) shows that adding sigma, or tau, forces nothing more, so at most one of the two complexes forces (forcing_dichotomy). Non-vacuity: forces_move33_example applies it to the boundary of the 5-simplex after a 1-5 and a 2-4 move, with a set of fifteen triangles and the move {0,2,3} -> {4,5,6}, every hypothesis checked by the kernel. Wrong-input control: local33_control shows that without a full row of tau-triangles the conclusion of the finite lemma fails. Scope: the 3-3 move only, with the set T unchanged by the move and not containing sigma; the 2-4 move and the inverse 4-2 and 5-1 moves are not covered. Numerical evidence (scripts/spinfoam/forcechain.py, not part of the proof): a collapsible forcing gauge set of size E-V+1 on a 48-simplex 4-sphere triangulation loses forcing under a 3-3 move (so the second condition is not automatic), and in about 162,000 random trials the characterization held in every case."
   since: unreleased
+- id: LL-0070
+  title: Three-term recurrence of the real q-Racah sum at a root of unity
+  area: TuraevViro
+  file: Lightlike/TuraevViro/Reflect/RacahReal.lean
+  decls: [Lightlike.TV.Refl.real_recurrence]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: koekoek-swarttouw-1996, location: "eq. (3.2.1)", check: "q-Racah"}
+      - {ref: koekoek-swarttouw-1996, location: "eq. (3.2.2)", check: "orthogonality"}
+  review: kernel-checked
+  note: "For the finite q-Racah sum SR at q = e^{iπ/r}, the three-term recurrence in the third colour holds under explicit conditions: some a_i = L + 1 with L ≥ 0, b₁ - a_i ≤ r - 2, b₂ - L ≤ r - 2, b₃ - L ≤ r - 2, and r does not divide b₂ + b₃ - a₂ - a₃ + k for k = 0, 1, 2. The case where all a_i = 0, and the case where r divides one of those quantum-integer arguments (which occurs for admissible data), are not covered by this statement. Compare Koekoek–Swarttouw (3.2.5); the coefficients were not compared term by term with that source."
+  since: 0.2.1
+- id: LL-0071
+  title: Row identity of the quantum 6j symbol in its third colour
+  area: TuraevViro
+  file: Lightlike/TuraevViro/Reflect/EndRowCoef.lean
+  decls: [Lightlike.TV.Refl.row_at]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: koekoek-swarttouw-1996, location: "eq. (3.2.1)", check: "q-Racah"}
+      - {ref: koekoek-swarttouw-1996, location: "eq. (3.2.2)", check: "orthogonality"}
+      - {ref: turaev-1994, location: "Chapter: Chapter VI. 6j-symbols|10.1515/9783110883275-007"}
+  review: kernel-checked
+  note: "The row identity for qSixJ in the third colour, for all admissible data, the two endpoint colours 0 and r - 2 included (row_at, which packages sixj_row for the interior colours with the separate proofs of the two endpoint rows). r ≥ 3 is needed at the top endpoint. Not shown: the recurrence in the other colours."
+  since: 0.2.1
+- id: LL-0072
+  title: Detailed balance and weighted orthogonality of the q-6j rows for different sixth colours
+  area: TuraevViro
+  file: Lightlike/TuraevViro/Reflect/SixJOrth.lean
+  decls: [Lightlike.TV.Refl.sixj_offdiag]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: koekoek-swarttouw-1996, location: "eq. (3.2.1)", check: "q-Racah"}
+      - {ref: koekoek-swarttouw-1996, location: "eq. (3.2.2)", check: "orthogonality"}
+      - {ref: turaev-1994, location: "Chapter: Chapter VI. 6j-symbols|10.1515/9783110883275-007"}
+  review: kernel-checked
+  note: "The weights jOmega make the recurrence coefficients symmetric (detailed balance, sixj_balance); an abstract weighted Jacobi lemma (jacobi_orth) then gives orthogonality of the q-6j sums for different sixth colours (sixj_offdiag; by duality also in the sixth colour, sixj_offdiag_dual). It uses that the eigenvalues 2 cos((q+1)π/r) are distinct. Not shown: the value of the diagonal norm."
+  since: 0.2.1
+- id: LL-0073
+  title: The weighted norms of all rows and columns of the q-6j matrix are one common constant
+  area: TuraevViro
+  file: Lightlike/TuraevViro/Reflect/GramConst.lean
+  decls: [Lightlike.TV.Refl.gram_const]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: koekoek-swarttouw-1996, location: "eq. (3.2.1)", check: "q-Racah"}
+      - {ref: koekoek-swarttouw-1996, location: "eq. (3.2.2)", check: "orthogonality"}
+      - {ref: turaev-1994, location: "Chapter: Chapter VI. 6j-symbols|10.1515/9783110883275-007"}
+  review: kernel-checked
+  note: "The weighted norms of all rows and all columns of the matrix of q-6j sums are one common constant (Gram-matrix argument, gram_const for the columns and sixj_norm_const for the rows). Its value is not proved by these results; see the two conditional results that follow."
+  since: 0.2.1
+- id: LL-0074
+  title: Norm one of the q-6j matrix, under the q-Dougall summation
+  area: TuraevViro
+  file: Lightlike/TuraevViro/Reflect/SixJNormOne.lean
+  decls: [Lightlike.TV.Refl.sixj_norm_one]
+  status: conditional
+  hypotheses: [Lightlike.TV.Refl.QDougall]
+  tier: established
+  source:
+    refs:
+      - {ref: koekoek-swarttouw-1996, location: "eq. (3.2.1)", check: "q-Racah"}
+      - {ref: koekoek-swarttouw-1996, location: "eq. (3.2.2)", check: "orthogonality"}
+  review: kernel-checked
+  note: "Under the boundary evaluation QDougall (the terminating very-well-poised 6φ5 summation at the lowest sixth colour, the q-Dougall summation), every weighted norm equals 1. QDougall is an explicit hypothesis, checked numerically (exact at r = 4 to 7) but not proved in Lean, and no instance of it is proved here, so the hypothesis is not shown to be satisfiable by a Lean example."
+  since: 0.2.1
+- id: LL-0075
+  title: q-orthogonality of the 6j symbol at level r, under the q-Dougall summation
+  area: TuraevViro
+  file: Lightlike/TuraevViro/Reflect/OrthConditional.lean
+  decls: [Lightlike.TV.Refl.qOrthogonality_of]
+  status: conditional
+  hypotheses: [Lightlike.TV.Refl.QDougallAll]
+  tier: established
+  source:
+    refs:
+      - {ref: koekoek-swarttouw-1996, location: "eq. (3.2.1)", check: "q-Racah"}
+      - {ref: koekoek-swarttouw-1996, location: "eq. (3.2.2)", check: "orthogonality"}
+  review: kernel-checked
+  note: "Given QDougallAll (the q-Dougall boundary evaluation for all admissible colours), the diagonal orthogonality qOrthogonality of the model holds at every level r ≥ 2. Together with qBiedenharnElliott this would give the Turaev–Viro invariance of LL-0031 at level r. Not proved: QDougallAll itself, and qBiedenharnElliott for r ≥ 4. No instance of the hypothesis is proved here."
+  since: 0.2.1

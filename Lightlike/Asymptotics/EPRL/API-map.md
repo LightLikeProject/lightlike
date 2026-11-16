@@ -47,6 +47,8 @@ at the regular 4-simplex, with wrong-formula controls; this is numerical evidenc
 The edge pairing of the `K₅` contraction of the spin-network 15j, `Σ_μ (-1)^((n-μ)/2) u(μ) v(-μ)`,
 is the bilinear form `u ⬝ᵥ (W v)` of the structure map on the coherent-state vectors [28]; it is the
 first step towards writing the coherent 15j as a contraction of coherent intertwiners.
+`k5Contract_cohInt` completes it: the coherent 15j is the `K₅` contraction of the coherent
+intertwiners, with no extra sign in these conventions [29].
 
 ## Lean References
 
@@ -114,7 +116,7 @@ first step towards writing the coherent 15j as a contraction of coherent intertw
     `Asymptotics.EPRL.cohState_pair`, `Asymptotics.EPRL.prop_eq_pair`,
     `Asymptotics.EPRL.k5Contract_prod`, `Asymptotics.EPRL.k5Contract_integral`,
     `Asymptotics.EPRL.projNode_cohInt`, `Asymptotics.EPRL.k5Contract_cohInt`,
-    `Asymptotics.EPRL.coh15j_zero`
+    `Asymptotics.EPRL.pair_ne_overlap`
 
 ## References
 

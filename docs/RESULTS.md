@@ -2,7 +2,7 @@
 
 # Results
 
-69 proven results with stable IDs and 1 conditional result (proven under hypotheses that are named Lean propositions). An ID is never reused; a withdrawn result is kept as `retired`. Every declaration of the library, and so every proven result, depends only on the axioms `propext`, `Classical.choice` and `Quot.sound`.
+73 proven results with stable IDs and 3 conditional results (proven under hypotheses that are named Lean propositions). An ID is never reused; a withdrawn result is kept as `retired`. Every declaration of the library, and so every proven result, depends only on the axioms `propext`, `Classical.choice` and `Quot.sound`.
 
 Tier: **established** (standard mathematics and physics that the frontier work needs; candidates for Mathlib or Physlib later); **frontier** (proposals published in the peer-reviewed literature, labelled as proposals); **exploratory** (new or unpublished models and conjectures, kept in `Exploratory/` folders that nothing else imports; promoted to frontier only after publication). Every result is about the mathematics of a model, not a claim that the model describes nature.
 
@@ -131,6 +131,21 @@ API map: [Lightlike/TuraevViro/API-map.md](../Lightlike/TuraevViro/API-map.md)
 |---|---|---|---|---|
 | LL-0031 | Turaev–Viro invariance under the 2-3 and 1-4 moves at level r | conditional on `Lightlike.TV.qBiedenharnElliott`, `Lightlike.TV.qOrthogonality` | established | `Lightlike.TV.turaevViro_move23`, `Lightlike.TV.turaevViro_move14` in [TuraevViro.lean](../Lightlike/TuraevViro/TuraevViro.lean) |
 | LL-0032 | Turaev–Viro invariance under the 2-3 and 1-4 moves at r = 3 | proven | established | `Lightlike.TV.turaevViro3_move23`, `Lightlike.TV.turaevViro3_move14` in [LevelOne.lean](../Lightlike/TuraevViro/LevelOne.lean) |
+| LL-0070 | Three-term recurrence of the real q-Racah sum at a root of unity (see note) | proven | established | `Lightlike.TV.Refl.real_recurrence` in [RacahReal.lean](../Lightlike/TuraevViro/Reflect/RacahReal.lean) |
+| LL-0071 | Row identity of the quantum 6j symbol in its third colour (see note) | proven | established | `Lightlike.TV.Refl.row_at` in [EndRowCoef.lean](../Lightlike/TuraevViro/Reflect/EndRowCoef.lean) |
+| LL-0072 | Detailed balance and weighted orthogonality of the q-6j rows for different sixth colours (see note) | proven | established | `Lightlike.TV.Refl.sixj_offdiag` in [SixJOrth.lean](../Lightlike/TuraevViro/Reflect/SixJOrth.lean) |
+| LL-0073 | The weighted norms of all rows and columns of the q-6j matrix are one common constant (see note) | proven | established | `Lightlike.TV.Refl.gram_const` in [GramConst.lean](../Lightlike/TuraevViro/Reflect/GramConst.lean) |
+| LL-0074 | Norm one of the q-6j matrix, under the q-Dougall summation (see note) | conditional on `Lightlike.TV.Refl.QDougall` | established | `Lightlike.TV.Refl.sixj_norm_one` in [SixJNormOne.lean](../Lightlike/TuraevViro/Reflect/SixJNormOne.lean) |
+| LL-0075 | q-orthogonality of the 6j symbol at level r, under the q-Dougall summation (see note) | conditional on `Lightlike.TV.Refl.QDougallAll` | established | `Lightlike.TV.Refl.qOrthogonality_of` in [OrthConditional.lean](../Lightlike/TuraevViro/Reflect/OrthConditional.lean) |
+
+Notes:
+
+- **LL-0070.** For the finite q-Racah sum SR at q = e^{iπ/r}, the three-term recurrence in the third colour holds under explicit conditions: some a_i = L + 1 with L ≥ 0, b₁ - a_i ≤ r - 2, b₂ - L ≤ r - 2, b₃ - L ≤ r - 2, and r does not divide b₂ + b₃ - a₂ - a₃ + k for k = 0, 1, 2. The case where all a_i = 0, and the case where r divides one of those quantum-integer arguments (which occurs for admissible data), are not covered by this statement. Compare Koekoek–Swarttouw (3.2.5); the coefficients were not compared term by term with that source.
+- **LL-0071.** The row identity for qSixJ in the third colour, for all admissible data, the two endpoint colours 0 and r - 2 included (row_at, which packages sixj_row for the interior colours with the separate proofs of the two endpoint rows). r ≥ 3 is needed at the top endpoint. Not shown: the recurrence in the other colours.
+- **LL-0072.** The weights jOmega make the recurrence coefficients symmetric (detailed balance, sixj_balance); an abstract weighted Jacobi lemma (jacobi_orth) then gives orthogonality of the q-6j sums for different sixth colours (sixj_offdiag; by duality also in the sixth colour, sixj_offdiag_dual). It uses that the eigenvalues 2 cos((q+1)π/r) are distinct. Not shown: the value of the diagonal norm.
+- **LL-0073.** The weighted norms of all rows and all columns of the matrix of q-6j sums are one common constant (Gram-matrix argument, gram_const for the columns and sixj_norm_const for the rows). Its value is not proved by these results; see the two conditional results that follow.
+- **LL-0074.** Under the boundary evaluation QDougall (the terminating very-well-poised 6φ5 summation at the lowest sixth colour, the q-Dougall summation), every weighted norm equals 1. QDougall is an explicit hypothesis, checked numerically (exact at r = 4 to 7) but not proved in Lean, and no instance of it is proved here, so the hypothesis is not shown to be satisfiable by a Lean example.
+- **LL-0075.** Given QDougallAll (the q-Dougall boundary evaluation for all admissible colours), the diagonal orthogonality qOrthogonality of the model holds at every level r ≥ 2. Together with qBiedenharnElliott this would give the Turaev–Viro invariance of LL-0031 at level r. Not proved: QDougallAll itself, and qBiedenharnElliott for r ≥ 4. No instance of the hypothesis is proved here.
 
 ## Saddle points of the 6j symbol
 
