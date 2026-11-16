@@ -23,6 +23,12 @@ from chains to paths of Proposition 9.8 of the notes.
 * `Grating.reach_of_bdy`: the ends of a chain with boundary `{x, y}` are linked by the chain.
 * `Grating.joinedIn_of_bdy`: a chain with boundary `{x, y}` joins the points `x` and `y` inside its
   locus.
+
+## References
+
+* `mccleary-2006`: chapter "The Jordan Curve Theorem" (the chapter location is verified with
+  `scripts/sources.py verify`; the lemma-level numbering quoted above is that of the lecture-notes
+  version and is not checked).
 -/
 
 open Set Finset

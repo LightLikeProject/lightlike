@@ -28,6 +28,12 @@ assumed fine in the hypothesis on the cells of `w`, so no refinement of chains i
 * `Grating.mem_bdy₂_v`: when a vertical edge is in the boundary of a 2-chain.
 * `Grating.exists_bdy₂`: a cycle bounds a 2-chain.
 * `Grating.alexander`: Alexander's theorem on a fine grating.
+
+## References
+
+* `mccleary-2006`: chapter "The Jordan Curve Theorem" (the chapter location is verified with
+  `scripts/sources.py verify`; the lemma-level numbering quoted above is that of the lecture-notes
+  version and is not checked).
 -/
 
 open Set Finset

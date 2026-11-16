@@ -22,6 +22,12 @@ inside the box they span (`exists_chain_box`). So no mesh and no refinement of t
 * `Grating.exists_grating`: finite sets of coordinates are the coordinates of a grating.
 * `Grating.exists_chain_box`: two vertices are the boundary of a chain inside the box they span.
 * `Grating.exists_chain_of_joinedIn`: the chain of a path in the complement of a compact set.
+
+## References
+
+* `mccleary-2006`: chapter "The Jordan Curve Theorem" (the chapter location is verified with
+  `scripts/sources.py verify`; the lemma-level numbering quoted above is that of the lecture-notes
+  version and is not checked).
 -/
 
 open Set Finset
