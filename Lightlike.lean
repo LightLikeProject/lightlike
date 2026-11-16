@@ -210,6 +210,7 @@ import Lightlike.PL.K33
 import Lightlike.PL.Relabel
 import Lightlike.PL.RealGeom
 import Lightlike.PL.Realisation
+import Lightlike.PL.StarClosure
 import Lightlike.PL.Starring
 import Lightlike.PL.Boundary
 import Lightlike.PL.Ball
