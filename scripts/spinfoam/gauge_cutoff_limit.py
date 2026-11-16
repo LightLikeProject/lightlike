@@ -19,10 +19,14 @@ import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import exact3j
 import gauge_manifold_check as G
 import vertex_check as vc
 
-CMAX = 20
+vc.threej = exact3j.threej_exact  # exact Racah sums; the float version loses all digits above spin ~10
+vc.fourj.cache_clear()
+
+CMAX = int(sys.argv[1]) if len(sys.argv) > 1 else 40
 
 
 def main():
