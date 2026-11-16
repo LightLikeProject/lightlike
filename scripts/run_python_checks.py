@@ -74,6 +74,7 @@ CHECKS = [
     ("scripts/spinfoam/gauge_manifold_check.py", False),
     ("scripts/spinfoam/forcechain.py", True),
     ("scripts/spinfoam/gauge_cutoff_limit.py", True),
+    ("scripts/spinfoam/robust_check.py", False),
     ("scripts/spinfoam/forcing_repair_check.py", False),
     ("scripts/spinfoam/gauge_independence_check.py", True),
     ("scripts/spinfoam/tetra_partition_check.py", False), ("scripts/spinfoam/u1_bubble.py", False),
