@@ -9,7 +9,7 @@ import Mathlib.MeasureTheory.Integral.Pi
 
 For a finite 2-complex with edge group elements `g : E → SU(2)`, the group-variable form of the
 Ponzano–Regge partition function integrates a delta function of the holonomy of every face
-(Barrett and Naish-Guzman, 2009). On `SU(2)` the delta function is the character series
+(the group-variable form of the model). On `SU(2)` the delta function is the character series
 `δ(g) = Σ_n (n+1) χ_n(g)` over the spins `n/2`. This file takes it truncated at spin `N/2` and
 proves that the resulting integral over `SU(2)^E` is the cut-off state sum over spin labellings of
 the faces:
@@ -20,13 +20,13 @@ The labelling `c` is the doubled spin of each face. The integral on the right is
 the labelled complex; it contains the product of the 6j symbols after the edge integrals are done
 (not formalized here).
 
-## Main definitions
+## Main results
+
 * `spinChar n g`: the character of the spin-`n/2` representation, `tr D^{n/2}(g)`.
 * `truncDelta N g`: the delta function cut off at spin `N/2`, `Σ_{n ≤ N} (n+1) χ_n(g)`.
 * `partitionN C N`: the integral over `SU(2)^E` of the product over the faces of `truncDelta N`
   of the face holonomy.
 
-## Main results
 * `integral_spinChar`: `∫ χ_n dg = 1` for `n = 0` and `0` for `n ≥ 1`.
 * `partitionN_eq_sum`: the expansion into labelled amplitudes above.
 * `partitionN_loop`: a single face bounded by one edge loop gives `1` at every cut-off.
@@ -37,7 +37,7 @@ the labelled complex; it contains the product of the 6j symbols after the edge i
 
 ## References
 
-* J. W. Barrett, I. Naish-Guzman, *The Ponzano–Regge model*, Class. Quantum Grav. 26 (2009) 155014.
+* `barrett-naish-guzman-2009`: the group-variable form of the Ponzano–Regge partition function.
 -/
 
 open Matrix MeasureTheory Finset Lightlike.SU2 Lightlike.Spin4
