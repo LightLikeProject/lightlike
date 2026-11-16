@@ -104,14 +104,15 @@ variable {Q : Type*} [TopologicalSpace Q] [MeasurableSpace Q] [OpensMeasurableSp
 theorem measurable_triAction (k p : ℝ) {Z Z' : Q → Spinor} (hZ : Continuous Z)
     (hZ' : Continuous Z') (ξ ξ' : Spinor) :
     Measurable fun q => triAction k p (Z q) ξ (Z' q) ξ' := by
-  have n1 : Continuous fun q => (inner ℂ (Z q) ξ) ^ 2 * (inner ℂ (jMap ξ') (Z' q)) ^ 2 :=
-    ((hZ.inner continuous_const).pow 2).mul ((continuous_const.inner hZ').pow 2)
+  have n1 : Continuous fun q => inner ℂ (Z q) ξ * inner ℂ (jMap ξ') (Z' q) :=
+    (hZ.inner continuous_const).mul (continuous_const.inner hZ')
   have d1 : Continuous fun q => ((‖Z q‖ ^ 2 : ℝ) : ℂ) * ((‖Z' q‖ ^ 2 : ℝ) : ℂ) :=
     (Complex.continuous_ofReal.comp (hZ.norm.pow 2)).mul
       (Complex.continuous_ofReal.comp (hZ'.norm.pow 2))
   unfold triAction
-  refine Measurable.add ?_ ?_
-  · exact (Complex.measurable_log.comp (n1.measurable.div d1.measurable)).const_mul _
+  refine Measurable.add (Measurable.sub ?_ ?_) ?_
+  · exact (Complex.measurable_log.comp n1.measurable).const_mul _
+  · exact (Complex.measurable_log.comp d1.measurable).const_mul _
   · exact (Complex.measurable_log.comp
       ((Complex.continuous_ofReal.comp (hZ'.norm.pow 2)).measurable.div
         (Complex.continuous_ofReal.comp (hZ.norm.pow 2)).measurable)).const_mul _
