@@ -55,6 +55,7 @@ theorem adj_exp (a b : Fin 3) :
   fin_cases a <;> fin_cases b <;>
     simp [Matrix.adjugate_fin_three, gJ, trH, e2H, sqH, Fin.sum_univ_three] <;> ring
 
+/-- The inverse of `1 + η h` has the expansion `1 - η h + η² h² + O(η³)` entrywise. -/
 theorem Gi_exp (a b : Fin 3) :
     Exp2 (fun η => (gJ (η, H, dh, dd))⁻¹ a b) (if a = b then 1 else 0) (-H a b) (sqH H a b) := by
   have h1 := (det_exp H dh dd).inv
@@ -107,6 +108,7 @@ theorem A_exp (μ ρ l : Fin 3) :
   · simp
   · simp [Finset.sum_ite_eq]
 
+/-- The derivative of the Christoffel symbols of `1 + η h` has the expansion `η D₁ + η² D₂ + O(η³)`. -/
 theorem dchr_exp (μ ρ ν σ : Fin 3) :
     Exp2 (fun η => dChrJ (gJ (η, H, dh, dd))⁻¹ (fun a i j => η * dh a i j) (fun a b i j => η * dd a b i j) μ ρ ν σ)
       0 (1 / 2 * Bdd dd μ ν σ ρ)
@@ -144,6 +146,7 @@ noncomputable def R1 : ℝ := ∑ σ, I1 dd σ σ
 /-- The second coefficient of the scalar curvature of `1 + η h`. -/
 noncomputable def R2 : ℝ := ∑ σ, ∑ ν, ((if σ = ν then 1 else 0) * I2 H dh dd σ ν - H σ ν * I1 dd σ ν)
 
+/-- The scalar curvature of `1 + η h` has the expansion `η R₁ + η² R₂ + O(η³)`. -/
 theorem curv_exp :
     Exp2 (fun η => curvJ (gJ (η, H, dh, dd))⁻¹ (fun a i j => η * dh a i j) (fun a b i j => η * dd a b i j))
       0 (R1 dd) (R2 H dh dd) := by
@@ -172,6 +175,7 @@ theorem curv_exp :
 
 end coeffs
 
+/-- The curvature density `Feta` has the expansion `η R₁/2 + η² (R₂/2 + R₁ tr h/4) + O(η³)`. -/
 theorem feta_exp (J : Jet3) :
     Exp2 (fun η => Feta (η, J)) 0 (R1 J.2.2 / 2) (R2 J.1 J.2.1 J.2.2 / 2 + R1 J.2.2 * trH J.1 / 4) := by
   obtain ⟨H, dh, dd⟩ := J

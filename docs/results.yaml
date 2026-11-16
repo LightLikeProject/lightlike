@@ -1157,7 +1157,7 @@
   title: On the 3-torus, the Saint-Venant form of the linearized Regge limit and the Fierz-Pauli form have the same integral
   area: Regge
   file: Lightlike/Regge/Linear3/FierzPauli.lean
-  decls: [Lightlike.Regge.Linear3.fp_identity, Lightlike.Regge.Linear3.div_Tfield, Lightlike.Regge.Linear3.saintVenant_eq_fierzPauli, Lightlike.Regge.Conv3.integral_div_periodic]
+  decls: [Lightlike.Regge.Linear3.fp_identity, Lightlike.Regge.Linear3.div_Tfield, Lightlike.Regge.Linear3.saintVenant_eq_fierzPauli]
   status: proven
   tier: frontier
   source:
@@ -1192,7 +1192,7 @@
   title: The first two eta-coefficients of the curvature density of 1 + eta h are the linearized scalar curvature and the Fierz-Pauli density plus a divergence
   area: Regge
   file: Lightlike/Regge/Conv3/CurvaturePoly.lean
-  decls: [Lightlike.Regge.Conv3.F_eq, Lightlike.Regge.Conv3.F1_eq, Lightlike.Regge.Conv3.F2_eq, Lightlike.Regge.Conv3.F2_poly]
+  decls: [Lightlike.Regge.Conv3.F1_eq, Lightlike.Regge.Conv3.F2_eq, Lightlike.Regge.Conv3.F2_poly]
   status: proven
   tier: frontier
   source: structural

@@ -42,6 +42,7 @@ theorem R1_eq (hd1 : ∀ k l i j, dd k l i j = dd l k i j) :
   ring
 
 set_option maxRecDepth 100000 in
+/-- **The second coefficient is the Fierz–Pauli density plus a divergence**, as a polynomial identity in the symmetric jet. -/
 theorem F2_poly (hH : ∀ i j, H i j = H j i) (hd : ∀ k i j, dh k i j = dh k j i)
     (hd1 : ∀ k l i j, dd k l i j = dd l k i j) (hd2 : ∀ k l i j, dd k l i j = dd k l j i) :
     R2 H dh dd + R1 dd * trH H / 2 = fpDens dh + divTp H dh dd := by
