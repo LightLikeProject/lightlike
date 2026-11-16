@@ -112,6 +112,35 @@ theorem exists_near_parity {Pg : Polygon n} (hs : Pg.IsSimple) {w : ℝ × ℝ}
   obtain ⟨z, ⟨hz1, hz2⟩, hz3, hz4⟩ := mem_closure_iff.1 hcl _ hU ⟨mem_ball_self hρ, hwF⟩
   exact ⟨z, hz1, hz3, hz2, hz4⟩
 
+omit [NeZero n] in
+/-- The parity is locally constant off the carrier. -/
+lemma locally_const_parity {Pg : Polygon n} {w : ℝ × ℝ} (hw : w ∉ Pg.carrier) :
+    ∃ ε > 0, ∀ u, dist u w < ε → u ∉ Pg.carrier ∧ Pg.parity u = Pg.parity w := by
+  have h1 : ∀ᶠ u in nhds w, u ∉ Pg.carrier := (isClosed_carrier Pg).isOpen_compl.mem_nhds hw
+  have h2 : ∀ᶠ u in nhds w, Pg.parity u = Pg.parity w := eventually_parity_eq Pg hw
+  obtain ⟨ε, hε, h⟩ := Metric.eventually_nhds_iff.1 (h1.and h2)
+  exact ⟨ε, hε, fun u hu => h hu⟩
+
+/-- **Nearby points with a prescribed parity for one polygon and the parity of the other.** -/
+theorem near_two {m k : ℕ} [NeZero m] [NeZero k] {P₁ : Polygon m} {P₂ : Polygon k}
+    (hs₂ : P₂.IsSimple) {w : ℝ × ℝ} (hw₂ : w ∈ P₂.carrier) (hw₁ : w ∉ P₁.carrier)
+    {F : Set (ℝ × ℝ)} (hF : IsClosed F) (hwF : w ∉ F) (c : ZMod 2) {ρ : ℝ} (hρ : 0 < ρ) :
+    ∃ z, dist z w < ρ ∧ z ∉ P₂.carrier ∧ z ∉ F ∧ P₂.parity z = c ∧ z ∉ P₁.carrier ∧
+      P₁.parity z = P₁.parity w := by
+  obtain ⟨ε, hε, h⟩ := locally_const_parity hw₁
+  obtain ⟨z, hz1, hz2, hz3, hz4⟩ := exists_near_parity hs₂ hw₂ hF hwF c (lt_min hρ hε)
+  have hd : dist z w < min ρ ε := by simpa using hz1
+  exact ⟨z, lt_of_lt_of_le hd (min_le_left _ _), hz2, hz3, hz4,
+    (h z (lt_of_lt_of_le hd (min_le_right _ _))).1, (h z (lt_of_lt_of_le hd (min_le_right _ _))).2⟩
+
+omit [NeZero n] in
+/-- A preconnected set off the carrier has constant parity. -/
+lemma const_parity_of_preconnected {Pg : Polygon n} {S : Set (ℝ × ℝ)} (hS : IsPreconnected S)
+    (hc : S ⊆ Pg.carrierᶜ) : ∃ s : ZMod 2, ∀ z ∈ S, Pg.parity z = s := by
+  rcases subset_outside_or_inside hS hc with h | h
+  · exact ⟨0, fun z hz => (h hz).2⟩
+  · exact ⟨1, fun z hz => (h hz).2⟩
+
 end Polygon
 
 end Lightlike.PL
