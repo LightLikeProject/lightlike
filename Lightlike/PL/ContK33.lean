@@ -105,6 +105,48 @@ lemma w_notMem {e : Fin 3 × Fin 3} {x : Fin 3 ⊕ Fin 3} (h : ∀ k, x ≠ ep e
     · exact D.uv_ne _ _ (by simpa [w] using h1.symm)
     · exact h true (by simp [ep]; exact D.inj_v h1)
 
+/-- A radius `r` such that the closed balls of radius `r` around the six points are disjoint and an
+arc keeps a distance larger than `r` from the points that are not its ends. -/
+lemma exists_radius : ∃ r : ℝ, 0 < r ∧ (∀ x x', x ≠ x' → 2 * r < dist (D.w x) (D.w x')) ∧
+    ∀ e x, (∀ k, x ≠ ep e k) → ∀ t ∈ Icc (0 : ℝ) 1, r < dist (D.γ e.1 e.2 t) (D.w x) := by
+  have hpos : ∀ p : ((Fin 3 ⊕ Fin 3) × (Fin 3 ⊕ Fin 3)) ⊕ ((Fin 3 × Fin 3) × (Fin 3 ⊕ Fin 3)),
+      ∃ m : ℝ, 0 < m ∧ (∀ x x', p = Sum.inl (x, x') → x ≠ x' → m ≤ dist (D.w x) (D.w x')) ∧
+        ∀ e x, p = Sum.inr (e, x) → (∀ k, x ≠ ep e k) → ∀ t ∈ Icc (0 : ℝ) 1,
+          m ≤ dist (D.γ e.1 e.2 t) (D.w x) := by
+    rintro (⟨x, x'⟩ | ⟨e, x⟩)
+    · by_cases hx : x = x'
+      · exact ⟨1, one_pos, fun a b h h' => by
+          simp only [Sum.inl.injEq, Prod.mk.injEq] at h; obtain ⟨rfl, rfl⟩ := h; exact absurd hx h',
+          fun _ _ h => by simp at h⟩
+      · exact ⟨dist (D.w x) (D.w x'), dist_pos.2 (fun h => hx (D.w_inj h)), fun a b h _ => by
+          simp only [Sum.inl.injEq, Prod.mk.injEq] at h; obtain ⟨rfl, rfl⟩ := h; exact le_rfl,
+          fun _ _ h => by simp at h⟩
+    · by_cases hx : ∀ k, x ≠ ep e k
+      · have hc : IsCompact (D.γ e.1 e.2 '' Icc 0 1) := isCompact_Icc.image_of_continuousOn (D.cont _ _)
+        have hcont : ContinuousOn (fun t => dist (D.γ e.1 e.2 t) (D.w x)) (Icc 0 1) :=
+          (by fun_prop : Continuous fun p : ℝ × ℝ => dist p (D.w x)).comp_continuousOn (D.cont _ _)
+        obtain ⟨t0, ht0, hmin⟩ := isCompact_Icc.exists_isMinOn ⟨0, le_rfl, zero_le_one⟩ hcont
+        refine ⟨dist (D.γ e.1 e.2 t0) (D.w x), dist_pos.2 ?_, fun _ _ h => by simp at h, ?_⟩
+        · intro h
+          exact D.w_notMem hx ⟨t0, ht0, h⟩
+        · intro a b h _ t ht
+          simp only [Sum.inr.injEq, Prod.mk.injEq] at h
+          obtain ⟨rfl, rfl⟩ := h
+          exact hmin ht
+      · exact ⟨1, one_pos, fun _ _ h => by simp at h, fun a b h h' => absurd (by
+          simp only [Sum.inr.injEq, Prod.mk.injEq] at h; obtain ⟨rfl, rfl⟩ := h; exact h') hx⟩
+  choose m hm0 hm1 hm2 using hpos
+  obtain ⟨p0, hp0⟩ := Finite.exists_min m
+  refine ⟨m p0 / 3, by have := hm0 p0; positivity, fun x x' hxx => ?_, fun e x hx t ht => ?_⟩
+  · have := hm1 (Sum.inl (x, x')) x x' rfl hxx
+    have := hp0 (Sum.inl (x, x'))
+    have := hm0 p0
+    linarith
+  · have := hm2 (Sum.inr (e, x)) e x rfl hx t ht
+    have := hp0 (Sum.inr (e, x))
+    have := hm0 p0
+    linarith
+
 end ContDrawing
 
 end Lightlike.PL
