@@ -32,7 +32,14 @@ Everything they depend on, and the further lemmas about them, in one block:
 Milestone QU1 (q-deformed Biedenharn–Elliott identity and orthogonality for `r ≥ 4`), ROADMAP
 section "Quantum groups and state-sum TQFTs".
 Source: V. G. Turaev, Quantum Invariants of Knots and 3-Manifolds, de Gruyter Studies in Mathematics
-18 (1994), Chapter VI. 6j-symbols (`turaev-1994` in docs/tasks/sources.yaml).
+18 (1994), Chapter VI. 6j-symbols; R. Koekoek and R. F. Swarttouw, The Askey-scheme of
+hypergeometric orthogonal polynomials and its q-analogue, Delft University of Technology report
+98-17 (arXiv:math/9602214), eq. (3.2.1); R. Koekoek and R. F. Swarttouw, The Askey-scheme of
+hypergeometric orthogonal polynomials and its q-analogue, Delft University of Technology report
+98-17 (arXiv:math/9602214), eq. (3.2.2); R. Koekoek and R. F. Swarttouw, The Askey-scheme of
+hypergeometric orthogonal polynomials and its q-analogue, Delft University of Technology report
+98-17 (arXiv:math/9602214), eq. (0.5.11) (`turaev-1994`, `koekoek-swarttouw-1996`,
+`koekoek-swarttouw-1996`, `koekoek-swarttouw-1996` in docs/tasks/sources.yaml).
 Lock and dependencies: `docs/tasks/tasks.yaml`. This header is written by `scripts/tasks.py deps`
 from the plan, the sources and the library.
 -/
