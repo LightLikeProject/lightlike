@@ -16,6 +16,12 @@ random search; `scripts/spinfoam/robust_counterexample_verify.py` checks the sam
 
 * `robust_not_kept_by_move33`: robustness is not kept by the 3-3 move.
 * `robust_Kcex`, `not_robust_Kcex_move`: the two halves, with `Kcex`, `Tcex`, `Xcex`, `isMoveCex` the data.
+
+The 2-4 move has a counterexample too (a 4-sphere with 30 simplices on 11 vertices, 34 triangles, found
+by random search; `scripts/spinfoam/robust_counterexample_verify.py` checks it independently with explicit
+forcing traces and a blocking certificate). It is not proved here: with `decide +kernel` the data
+definitions alone take about a minute and the whole proof ran past ten minutes before it was stopped,
+so the 2-4 failure stays a verified numerical example.
 -/
 
 open Finset Lightlike.FourD Complex4
