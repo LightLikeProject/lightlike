@@ -9,11 +9,13 @@ A set `T` of triangles is *robust* for a complex `K` if it forces every triangle
 one tetrahedron of `K` is removed. A robust set keeps forcing under every 2-4 move and under every 3-3
 move that does not remove one of its triangles (`forces_move24_of_robust`, `forces_move33_of_robust`; the
 3-3 case rests on `forcesIn_common_of_robust_33`, "Lemma X", proved with blocking sets), and it stays
-robust under the 1-5 move (`robust_move15`). It is a conjecture that robust sets also stay robust under
-the 3-3 and 2-4 moves. Numerical evidence (`scripts/spinfoam/robust_check.py`): the set carried along from
-the boundary of the 5-simplex by random 3-3, 2-4 and 1-5 moves is robust at every tetrahedron sampled
-(1,104,480 of 1,104,480 tetrahedra), at every 3-3 location (38,176 of 38,176), and after each of 822
-consecutive moves.
+robust under the 1-5 move (`robust_move15`). Robust sets do not in general stay robust under the 3-3 move:
+`SpinFoam.robust_not_kept_by_move33` (`Tests.lean`) proves it on an explicit 4-sphere with 20 simplices and a
+set of 23 triangles (the failure is a common tetrahedron removed together with a tetrahedron `σ ∪ {c}`).
+A random search found a counterexample for the 2-4 move too (numerical evidence only). Whether the gauge set
+carried along from the boundary of the 5-simplex by random 3-3, 2-4 and 1-5 moves stays robust is open:
+it was robust at every tetrahedron sampled (1,104,480 of 1,104,480 tetrahedra, measured), at every 3-3
+location (38,176 of 38,176) and after each of 822 consecutive moves.
 
 ## Main results
 
@@ -63,7 +65,7 @@ include h hτ
 
 /-- **Robust forcing sets stay robust under the 1-5 move.** If `T` is robust for `K`, then `T` together
 with the four gauge triangles `{v, a_0, a_j}` is robust for the complex after the move. This is the
-1-5 case of a conjecture; the 3-3 and 2-4 moves are not covered. -/
+1-5 case; for the 3-3 and 2-4 moves robustness is not kept in general (see the module docstring). -/
 theorem robust_move15 (hσ : #σ = 5) {a : Fin 5 → V} (hsurj : ∀ x, x ∈ σ ↔ ∃ j, a j = x)
     {T : Finset (Finset V)} (hR : Robust K T) :
     Robust (Complex4.move K h) (gaugeTri a v ∪ T) := by

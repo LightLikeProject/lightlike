@@ -40,8 +40,9 @@ than the removed one is already complete [11]. The sets that the inverse moves 4
 (numerical evidence only). Call a set robust for a complex when it forces every triangle with any one
 tetrahedron removed: robust sets stay robust under the 1-5 move, and a robust set keeps forcing under every 2-4 move and under
 every 3-3 move that does not remove one of its triangles [12];
-whether robust sets stay robust under the 3-3 and 2-4 moves is a conjecture, supported by numerical evidence only (every tetrahedron of 1,104,480 on
-random 4-spheres reached from the boundary of the 5-simplex, and 822 consecutive forward moves). For gauge sets that do not force, the state sum at a finite
+robust sets do not in general stay robust under the 3-3 move (an explicit counterexample is proved by `decide`
+in the tests; for the 2-4 move a random search found one, numerical evidence only), while the gauge set carried along from the boundary of the 5-simplex was robust in every sample
+(every tetrahedron of 1,104,480 on random 4-spheres, and 822 consecutive forward moves; numerical evidence only). For gauge sets that do not force, the state sum at a finite
 cutoff can depend on the gauge set (numerical evidence, a non-manifold complex and a closed 4-sphere
 triangulation), so independence for all gauge sets is not claimed. Removing the cutoff is not yet
 formalized. [TODO]
@@ -128,7 +129,7 @@ proved).
 6. Lightlike/SpinFoam/Tests.lean - `SpinFoam.amplitudeGF_move33_example`,
    `SpinFoam.amplitudeGF_move24_example`, `SpinFoam.amplitudeGF_move15_example`,
    `SpinFoam.amplitudeGF_move24_gauge_example`, `SpinFoam.amplitudeGF_move15_gauge_example`,
-   `SpinFoam.ampBad_breaks_move33`, `SpinFoam.forces_move15_example`, `SpinFoam.forces_move33_example`, `SpinFoam.forces_move24_example`, `SpinFoam.robust_move15_example`, `SpinFoam.forces_move24_of_robust_example`, `SpinFoam.forces_move33_of_robust_example`
+   `SpinFoam.ampBad_breaks_move33`, `SpinFoam.forces_move15_example`, `SpinFoam.forces_move33_example`, `SpinFoam.forces_move24_example`, `SpinFoam.robust_move15_example`, `SpinFoam.forces_move24_of_robust_example`, `SpinFoam.forces_move33_of_robust_example`, `SpinFoam.robust_not_kept_by_move33`
 7. Lightlike/SpinFoam/GaugeIndependence.lean - `SpinFoam.amplitudeGF_eq_of_forces`,
    `SpinFoam.amplitudeGF_eq_of_isGauge_forces`
 8. Lightlike/SpinFoam/GaugeChain.lean - `SpinFoam.GFStep4`, `SpinFoam.GFStep4.isGauge`,
