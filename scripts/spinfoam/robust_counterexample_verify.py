@@ -17,7 +17,11 @@ verified by a short routine that can be read and checked by hand:
    than t' (no tetrahedron has exactly one of its triangles in X). Such a set cannot be reached by
    forcing: the triangles outside X contain T and are closed under the rule, so forcing from T never
    enters X.
-Exit code 0 when all three hold.
+The same is done for a 2-4 move (below): a 4-sphere with 30 simplices on 10 vertices, a set T of 34
+triangles robust for K, the move that removes the tetrahedron {0,5,7,8} (shared by the simplices with
+apexes 1 and 9) and adds the edge {1,9}, with the triangle {1,7,9} added to T; T plus that triangle is not
+robust for K' (removing {0,5,8,9} stops the forcing).
+Exit code 0 when all checks hold.
 """
 import itertools
 import sys
@@ -128,5 +132,63 @@ def main():
     return 0
 
 
+K24 = [[0, 1, 2, 3, 4], [0, 1, 2, 3, 6], [0, 1, 2, 4, 5], [0, 1, 2, 5, 6], [0, 1, 3, 4, 5], [0, 1, 3, 5, 8], [0, 1, 3, 6, 7], [0, 1, 3, 7, 8], [0, 1, 5, 6, 7], [0, 1, 5, 7, 8], [0, 2, 3, 4, 6], [0, 2, 4, 5, 6], [0, 3, 4, 5, 6], [0, 3, 5, 6, 9], [0, 3, 5, 8, 9], [0, 3, 6, 7, 9], [0, 3, 7, 8, 10], [0, 3, 7, 9, 10], [0, 3, 8, 9, 10], [0, 5, 6, 7, 9], [0, 5, 7, 8, 9], [0, 7, 8, 9, 10], [1, 2, 3, 4, 5], [1, 2, 3, 5, 6], [1, 3, 5, 6, 7], [1, 3, 5, 7, 8], [2, 3, 4, 5, 6], [3, 5, 6, 7, 9], [3, 5, 7, 8, 9], [3, 7, 8, 9, 10]]
+T24 = [[0, 1, 2], [0, 1, 5], [0, 1, 8], [0, 2, 6], [0, 3, 4], [0, 3, 7], [0, 3, 10], [0, 4, 5], [0, 5, 7], [0, 5, 8], [0, 6, 9], [0, 8, 9], [1, 2, 3], [1, 2, 5], [1, 2, 6], [1, 3, 6], [1, 4, 5], [1, 6, 7], [2, 3, 4], [2, 4, 6], [2, 5, 6], [3, 4, 6], [3, 5, 6], [3, 6, 7], [3, 6, 9], [3, 7, 9], [3, 7, 10], [3, 8, 9], [3, 8, 10], [5, 7, 8], [5, 8, 9], [6, 7, 9], [7, 8, 9], [7, 9, 10]]
+TET24, P24, Q24, A24 = (0, 5, 7, 8), 1, 9, 7
+T_REMOVED24 = (0, 5, 8, 9)
+
+
+def main24():
+    Ks = [tuple(s) for s in K24]
+    Ts = {tuple(t) for t in T24}
+    tets, tris = faces(Ks, 4), faces(Ks, 3)
+
+    def closed(simplices):
+        count = {}
+        for s in simplices:
+            for t in itertools.combinations(s, 4):
+                count[t] = count.get(t, 0) + 1
+        return set(count.values()) == {2}
+
+    assert closed(Ks), "K is not closed"
+    around = [s for s in Ks if set(TET24) <= set(s)]
+    assert sorted(around) == sorted(tuple(sorted(set(TET24) | {v})) for v in (P24, Q24)), "not a 2-4 move"
+    assert (min(P24, Q24), max(P24, Q24)) not in faces(Ks, 2), "the edge {p, q} is already in K"
+    K2 = [s for s in Ks if s not in around] + [tuple(sorted({P24, Q24} | (set(TET24) - {x}))) for x in TET24]
+    assert closed(K2), "K' is not closed"
+    tets2, tris2 = faces(K2, 4), faces(K2, 3)
+    n_steps = 0
+    for t in sorted(tets):
+        allowed = tets - {t}
+        steps = worklist_derivation(sorted(allowed), tris, Ts)
+        assert steps is not None, f"forcing fails without {t}"
+        assert check_derivation(steps, allowed, tris, Ts)
+        n_steps += len(steps)
+    print("2-4: K has", len(Ks), "simplices,", len(tets), "tetrahedra,", len(tris), "triangles; T has", len(Ts),
+          "triangles; every one of the", len(tets), "removals still forces (", n_steps, "checked steps )")
+    T2 = Ts | {tuple(sorted((P24, Q24, A24)))}
+    allowed2 = tets2 - {T_REMOVED24}
+    known = set(T2)
+    changed = True
+    while changed:
+        changed = False
+        for t in allowed2:
+            miss = [f for f in tri_of(t) if f not in known]
+            if len(miss) == 1:
+                known.add(miss[0])
+                changed = True
+    X = sorted(tris2 - known)
+    assert X, "forcing succeeds without t'"
+    Xs = set(X)
+    assert not (Xs & T2)
+    for t in allowed2:
+        assert sum(1 for f in tri_of(t) if f in Xs) != 1, f"X is not blocking at {t}"
+    print("2-4: K' has", len(tets2), "tetrahedra; removing", T_REMOVED24, "the forcing from T plus {p, q, a} stops;",
+          "blocking set X of", len(X), "triangles, disjoint from T plus {p, q, a}:")
+    print("  X =", X)
+    print("OK")
+    return 0
+
+
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(main() or main24())
