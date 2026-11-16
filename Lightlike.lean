@@ -379,6 +379,7 @@ import Lightlike.Regge.Conv3.RiemannSumCont
 import Lightlike.Regge.Conv3.ReggeConvergence
 import Lightlike.Regge.Conv3.ReggeConvergenceTests
 import Lightlike.Regge.Linear3.AngleSmooth
+import Lightlike.Regge.Linear3.SecondOrder
 import Lightlike.Regge.Linear3.Taylor
 import Lightlike.Regge.Conv3.TrueLength
 import Lightlike.Regge.Conv3.JetContinuity
