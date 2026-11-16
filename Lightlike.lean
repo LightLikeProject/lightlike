@@ -619,3 +619,4 @@ import Lightlike.DynamicalTriangulations.Tests
 import Lightlike.DynamicalTriangulations.Tests3
 import Lightlike.GFT.Bubble
 import Lightlike.GFT.ColoredGraph
+import Lightlike.GFT.Euler
