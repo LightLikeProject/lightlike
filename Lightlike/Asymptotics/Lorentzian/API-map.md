@@ -111,6 +111,10 @@ whole integral is not proved here; the action is in the power form, so its expon
 EPRL integrand for every doubled spin; at an odd doubled spin and a point where the logarithm of
 the earlier form changes branch, the two forms differ by `-1`, and the bound `|e^S| ≤ 1` fails
 for a negative spin [15].
+Towards the identification with the finite principal-series vertex, the lowest SU(2) level of the
+principal series on a coherent state is the `n`-th power of a linear form, and for `2k = n` the
+exponential of the action is the product of the overlap power, the real power of the norms and
+the imaginary power of their ratio [16]. The identity itself is not proved yet.
 
 ## Lean References
 
@@ -171,6 +175,10 @@ for a negative spin [15].
 15. Lightlike/Asymptotics/Lorentzian/ActionTests.lean - `Asymptotics.Lorentzian.exp_triAction_odd_sign`,
     `Asymptotics.Lorentzian.exp_triAction_even_agree`,
     `Asymptotics.Lorentzian.triWeight_neg_spin_gt_one`
+16. Lightlike/Asymptotics/Lorentzian/Bridge.lean - `Asymptotics.Lorentzian.lam_emb_cohState`,
+    `Asymptotics.Lorentzian.suV_ae`, `Asymptotics.Lorentzian.hvec_cohState`,
+    `Asymptotics.Lorentzian.inner_principalSeries_eq_integral`,
+    `Asymptotics.Lorentzian.exp_triAction_nat`
 
 ## References
 

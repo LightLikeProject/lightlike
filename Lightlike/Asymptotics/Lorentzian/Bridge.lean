@@ -5,9 +5,24 @@ import Lightlike.Asymptotics.Lorentzian.Amplitude
 /-!
 # The coherent Lorentzian vertex and the principal-series vertex
 
-First steps of the identification of `lorVertex` (BDFHP coherent form) with `eprlVertex`
-(`Lightlike.Lorentz.EPRL`, after Engle and Pereira 2009): the contraction `Λ` of the lowest SU(2)
-level of the principal series on a coherent state is a power of a linear form.
+Steps towards the identification of `lorVertex` (BDFHP, arXiv:0907.2440, §3.2–3.3 and §4, eq. (17))
+with `Lightlike.Lorentz.eprlVertex` (after Engle and Pereira, arXiv:0805.4696, eqs. (22), (23)),
+which is finite for every spin (`integrable_eprlIntegrand`):
+
+* `lam_emb_cohState`: the contraction `Λ` of the lowest SU(2) level of the principal series on a
+  coherent state is the `n`-th power of a linear form, `(g₀₀ ζ₀ + g₁₀ ζ₁)^n`;
+* `suV_ae`: the isometry `suV` of the SU(2) decomposition is, on the chart `z ↦ (z, 1)` and almost
+  everywhere, the constant `(‖A e₀‖)⁻¹` times the weight and `Λ`;
+* `hvec_cohState`: the explicit homogeneous function of a coherent state of the lowest level;
+* `inner_principalSeries_eq_integral`: the pairing of two boosted homogeneous functions is an
+  integral over the chart;
+* `exp_triAction_nat`: for `2k = n`, `e^S` of the power-form action is the product of
+  `(⟨Z,ξ⟩⟨Jξ',Z'⟩)^n`, `(‖Z‖²‖Z'‖²)^{-n/2}` and `(‖Z'‖²/‖Z‖²)^{iρ}`.
+
+**Not here:** the identity `eprlVertex = lorVertex` itself. It needs the pointwise identity of the
+two integrands (with `X = conj a`, the source spinor `firstCol (conj g)` and the target spinor
+`firstCol (wM g)`), the sum over the magnetic configurations, and Fubini over `SL(2,ℂ)^4 × ℂ^10`;
+the normalisation constants of `suV` stay abstract (`nrmA`).
 -/
 
 open Matrix Complex
