@@ -17,6 +17,8 @@ fixed, is the sum over the ends at the node `a` of `endForm`: the closed form of
   of one triangle along a one-parameter orbit.
 * `hasDerivAt_srcCoeff_eval`, `hasDerivAt_tgtCoeff_eval`: their values in `α, β, m`.
 * `hessXX_block`: the block, `Σ_{e ∋ a} endForm`.
+* `re_hessRR_neg`: the real part of the rotation block is negative definite exactly when the normals
+  are not all parallel (`sum_projForm_pos_iff`, Lagrange's identity `projForm_eq_minorSq`).
 
 ## Conventions
 
@@ -582,5 +584,93 @@ theorem hessXX_block {j p : Fin 10 → ℝ} {n : Fin 10 → ℕ} {γ : ℝ}
         simp only [Complex.ofReal_sum, Complex.ofReal_mul, Complex.ofReal_zero] at this
         simp only [mul_assoc, ← Finset.mul_sum, this, mul_zero]
       rw [this, add_zero]
+
+/-- The minors `α_i m_j - α_j m_i` of the pair `(α, m)`: they all vanish exactly when `α` and `m` are
+parallel. -/
+def minorSq (m α : Fin 3 → ℝ) : ℝ :=
+  (α 0 * m 1 - α 1 * m 0) ^ 2 + (α 0 * m 2 - α 2 * m 0) ^ 2 + (α 1 * m 2 - α 2 * m 1) ^ 2
+
+/-- **Lagrange's identity for a unit vector**: `(α,α)_m = |α|² - (m·α)²` is the sum of the squares of
+the minors of `(α, m)`, hence `≥ 0`, and `= 0` exactly when `α ∥ m`. -/
+theorem projForm_eq_minorSq {m : Fin 3 → ℝ} (hm : ∑ i, m i ^ 2 = 1) (α : Fin 3 → ℝ) :
+    projForm m α α = minorSq m α := by
+  simp only [projForm, minorSq, Fin.sum_univ_three] at *
+  nlinarith [hm]
+
+theorem minorSq_nonneg (m α : Fin 3 → ℝ) : 0 ≤ minorSq m α := by
+  unfold minorSq; positivity
+
+theorem minorSq_eq_zero_iff (m α : Fin 3 → ℝ) :
+    minorSq m α = 0 ↔ α 0 * m 1 - α 1 * m 0 = 0 ∧ α 0 * m 2 - α 2 * m 0 = 0 ∧
+      α 1 * m 2 - α 2 * m 1 = 0 := by
+  unfold minorSq
+  constructor
+  · intro h
+    refine ⟨?_, ?_, ?_⟩ <;> nlinarith [sq_nonneg (α 0 * m 1 - α 1 * m 0),
+      sq_nonneg (α 0 * m 2 - α 2 * m 0), sq_nonneg (α 1 * m 2 - α 2 * m 1)]
+  · rintro ⟨h1, h2, h3⟩
+    rw [h1, h2, h3]; norm_num
+
+/-- **The rotation block of the Hessian is negative definite exactly when the normals are not all
+parallel to `α`**: for positive `k_e` and unit `m_e`, `Σ_e k_e (α,α)_e ≥ 0`, with equality iff every
+`m_e` is parallel to `α` (all minors of `(α, m_e)` vanish). Combined with `Re endForm (β = 0) =
+-½ k (α,α)` this is the statement that `Re H^RR` is negative definite iff the normals are not all
+parallel (BDFHP App. A, eq. (61), `H^{RR} = -2 Σ k (δ - n n)` in their generators). -/
+theorem sum_projForm_pos_iff {ι : Type*} [Fintype ι] (k : ι → ℝ) (m : ι → Fin 3 → ℝ)
+    (hk : ∀ e, 0 < k e) (hm : ∀ e, ∑ i, m e i ^ 2 = 1) (α : Fin 3 → ℝ) :
+    0 ≤ ∑ e, k e * projForm (m e) α α ∧
+      (∑ e, k e * projForm (m e) α α = 0 ↔ ∀ e, minorSq (m e) α = 0) := by
+  have hterm : ∀ e, k e * projForm (m e) α α = k e * minorSq (m e) α := fun e => by
+    rw [projForm_eq_minorSq (hm e)]
+  simp only [hterm]
+  refine ⟨Finset.sum_nonneg fun e _ => mul_nonneg (hk e).le (minorSq_nonneg _ _), ?_⟩
+  constructor
+  · intro h e
+    have hz := (Finset.sum_eq_zero_iff_of_nonneg fun e _ => mul_nonneg (hk e).le (minorSq_nonneg (m e) α)).mp h e
+      (Finset.mem_univ e)
+    rcases mul_eq_zero.mp hz with h0 | h0
+    · exact absurd h0 (hk e).ne'
+    · exact h0
+  · intro h
+    exact Finset.sum_eq_zero fun e _ => by rw [h e, mul_zero]
+
+/-- **Strict negativity of the rotation block**: if some normal is not parallel to `α` (some minor of
+`(α, m_e)` is nonzero), `Σ_e k_e (α,α)_e > 0`. -/
+theorem sum_projForm_pos {ι : Type*} [Fintype ι] (k : ι → ℝ) (m : ι → Fin 3 → ℝ)
+    (hk : ∀ e, 0 < k e) (hm : ∀ e, ∑ i, m e i ^ 2 = 1) (α : Fin 3 → ℝ)
+    (hnp : ∃ e, minorSq (m e) α ≠ 0) : 0 < ∑ e, k e * projForm (m e) α α := by
+  obtain ⟨h0, h1⟩ := sum_projForm_pos_iff k m hk hm α
+  refine lt_of_le_of_ne h0 fun h => ?_
+  obtain ⟨e, he⟩ := hnp
+  exact he ((h1.mp h.symm) e)
+
+
+/-- **The rotation part of `endForm` has real part `-½ k (α,α)`**: with `β = 0`, the form of one end is
+`k (-½ (α,α) + i σ·0 + σ m·(α × 0)) - 0 = -½ k (α,α)`. -/
+theorem re_endForm_beta_zero (k p σ : ℝ) (m α : Fin 3 → ℝ) :
+    (endForm k p σ m α 0).re = -(1 / 2) * k * projForm m α α := by
+  simp [endForm, projForm, tripleForm]
+  ring
+
+/-- **The rotation block of the Hessian is negative definite exactly when the normals are not all
+parallel.** Sign convention: `H` is the Hessian matrix of `hessXX_block`, `Q(v) = vᵀ H v` the second
+derivative along `X_a exp(t (α J + β K))`; at `β = 0` the real part of the sum of the end formulas is
+`Re Q(α, 0) = Σ_e Re endForm = -½ Σ_e k_e (α,α)_e`, i.e. `Re H^{RR}(α, α) = -½ Σ_e k_e (α,α)_e`.
+For `k_e > 0` and unit `m_e`, `Re H^{RR}(α, α) < 0` for every `α ≠ 0` iff for no `α ≠ 0` are all the
+`m_e` parallel to `α` (`sum_projForm_pos`): the quadratic form is definite precisely when the normals
+are not all parallel (BDFHP App. A eq. (61), `H^{RR} = -2 Σ k (δ - n n)` in their generators, four times
+this). Cross-checked numerically by a numpy certificate (regular tetrahedron and seeded random closed
+configurations; the all-parallel control is degenerate). -/
+theorem re_hessRR_neg {ι : Type*} [Fintype ι] (k p σ : ι → ℝ) (m : ι → Fin 3 → ℝ)
+    (hk : ∀ e, 0 < k e) (hm : ∀ e, ∑ i, m e i ^ 2 = 1) (α : Fin 3 → ℝ)
+    (hnp : ∃ e, minorSq (m e) α ≠ 0) :
+    (∑ e, endForm (k e) (p e) (σ e) (m e) α 0).re < 0 := by
+  have h := sum_projForm_pos k m hk hm α hnp
+  have : (∑ e, endForm (k e) (p e) (σ e) (m e) α 0).re =
+      ∑ e, -(1 / 2) * (k e * projForm (m e) α α) := by
+    rw [Complex.re_sum]
+    exact Finset.sum_congr rfl fun e _ => by rw [re_endForm_beta_zero]; ring
+  rw [this, ← Finset.mul_sum]
+  linarith
 
 end Lightlike.Asymptotics.Lorentzian
