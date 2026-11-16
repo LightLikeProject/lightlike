@@ -1382,45 +1382,6 @@
   review: kernel-checked
   note: "The increment of the logarithm along a straight segment, about a point, is the principal logarithm of the ratio of the vectors from the point to the ends of the segment when that ratio avoids the negative real axis. Three points seen counterclockwise from a point have angles that add up to 2 pi, so the triangle they span, taken as a loop, has index 1 about the point. The index of a loop is zero about a point strictly above or below it and about a point outside a disc that contains it. These are the computation, left to a picture in the lecture-notes version of chapter 9 of McCleary's book (numbering not checked against the printed book), that a triangle has index plus or minus 1 about an interior point, and Lemma 9.12 in the forms used in the notes' last argument; the notes read the value off the fundamental group of the circle, here it is computed from the angles. The statements and proofs are Lean's own. Proves: the index of a triangle and the vanishing for loops with a point outside. Does not prove: the last argument of the notes, that the complement of a Jordan curve has exactly two components, or the Jordan curve theorem. Limits: loops in the complex plane. Check: TestsIndexTriangle.lean (a concrete triangle has index 1 about the origin; the orientation hypothesis fails for the clockwise order; the unit circle has index 0 about the point 2)."
   since: unreleased
-- id: LL-XXXX-o
-  title: A theta configuration on a Jordan curve
-  area: PL
-  file: Lightlike/PL/ThetaExists.lean
-  decls: [Lightlike.PL.exists_theta_gen, Lightlike.PL.not_injective_circle_real]
-  status: proven
-  tier: established
-  source:
-    refs:
-      - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
-  review: kernel-checked
-  note: "For a Jordan curve given as an injective continuous map from the circle, a point Omega off the curve, a point P of the curve visible from Omega and a point c of the curve off the ray through P, the curve is split at P and at the first point Q of the curve on the segment from Omega towards c into two arcs that are images of arcs of the circle, forming a theta configuration with the point Omega. The geometry is left to a picture in the notes. The numbering of lemmas follows the lecture-notes version of chapter 9 of McCleary's book: the chapter location is verified, the lemma-level numbering is not. The statements and proofs are Lean's own. Proves: existence of the configuration. Does not prove: that the complement has two components. Limits: curves in the plane identified with the complex numbers. Check: TestsThetaIndex.lean (the unit circle has such a configuration; the collinear case is excluded by a nonvanishing cross product)."
-  since: unreleased
-- id: LL-XXXX-p
-  title: "The ray argument, nonzero index off the component of the point above a Jordan curve"
-  area: PL
-  file: Lightlike/PL/ThetaRay.lean
-  decls: [Lightlike.PL.Theta.sum_ne_zero, Lightlike.PL.Theta.iota_ne_zero, Lightlike.PL.Theta.iota_of_joined, Lightlike.PL.exists_theta_top, Lightlike.PL.exists_theta_at]
-  status: proven
-  tier: established
-  source:
-    refs:
-      - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
-  review: kernel-checked
-  note: "With Omega one unit above the topmost point P of a Jordan curve and Q the first curve point towards a point off the vertical line, a vertical ray from a point inside the triangle P Q Omega meets both arcs; looking at its first and last hits shows that the indices of the two arcs about points of the other arc add up to a nonzero number, so every point off the curve and the segments that is not joined to Omega in the complement has nonzero index about the curve (with the Theta Lemma and Lemma 9.14), while the points joined to Omega have index zero. The notes' last argument asserts that the ray meets gamma1 first and gamma2 last; the case analysis of first and last hits here replaces it. The numbering of lemmas follows the lecture-notes version of chapter 9 of McCleary's book: the chapter location is verified, the lemma-level numbering is not. The statements and proofs are Lean's own. Proves: nonvanishing off the component of Omega. Does not prove: that there are exactly two components. Limits: curves in the plane. Check: TestsThetaIndex.lean (non-vacuity for the unit circle)."
-  since: unreleased
-- id: LL-XXXX-q
-  title: The index about a Jordan curve does not depend on the splitting
-  area: PL
-  file: Lightlike/PL/IndexCurve.lean
-  decls: [Lightlike.PL.Theta.iota_eq, Lightlike.PL.Theta.iota_const, Lightlike.PL.exists_global_log, Lightlike.PL.global_log_period, Lightlike.PL.logInc_arc, Lightlike.PL.Theta.logInc_ω₀]
-  status: proven
-  tier: established
-  source:
-    refs:
-      - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
-  review: kernel-checked
-  note: "A global logarithm of s -> f(exp s) - R over the real line, obtained by lifting through the exponential covering of the nonzero complex numbers from the simply connected line, shows that the logarithm increment of the loop around a Jordan curve is the same for every splitting of the curve into two arcs of the circle, so the index about the curve is well defined; the index is also constant on the points not joined to Omega. The numbering of lemmas follows the lecture-notes version of chapter 9 of McCleary's book: the chapter location is verified, the lemma-level numbering is not. The statements and proofs are Lean's own. Proves: independence of the splitting. Does not prove: that the complement has exactly two components. Limits: curves in the plane. Check: TestsThetaIndex.lean."
-  since: unreleased
 - id: LL-XXXX-r
   title: The Jordan curve theorem
   area: PL
