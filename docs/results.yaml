@@ -1188,3 +1188,14 @@
   review: kernel-checked
   note: "Second step of the second variation of the Einstein-Hilbert action as a jet identity (T-RC3 in dimension 3, which stays open). For every compact set K of jets (h, dh, ddh) there are M and r > 0 with |Feta(eta, J) - eta F1(J) - eta^2/2 F2(J)| <= M |eta|^3 for J in K and |eta| <= r (feta_expansion), where F1 and F2 are the first and second derivatives of Feta along the eta-axis at eta = 0. It is the uniform Taylor expansion taylor3_uniform applied to the smooth function Feta of the preceding step (LL-XXXX-f) on the open set det(1 + eta h) > 0, using Feta(0, J) = 0. Limits: dimension 3; F1 and F2 are defined as derivatives, not computed (their polynomial form is the next step, so nothing is claimed here about the Einstein-Hilbert action or the Fierz-Pauli form); nothing about integrals or periodic fields. The statement is an existence statement, so its non-vacuity is that of the domain (the zero jet, LL-XXXX-f)."
   since: unreleased
+- id: LL-XXXX-h
+  title: The first two eta-coefficients of the curvature density of 1 + eta h are the linearized scalar curvature and the Fierz-Pauli density plus a divergence
+  area: Regge
+  file: Lightlike/Regge/Conv3/CurvaturePoly.lean
+  decls: [Lightlike.Regge.Conv3.F_eq, Lightlike.Regge.Conv3.F1_eq, Lightlike.Regge.Conv3.F2_eq, Lightlike.Regge.Conv3.F2_poly]
+  status: proven
+  tier: frontier
+  source: structural
+  review: kernel-checked
+  note: "Third step of the second variation of the Einstein-Hilbert action as a jet identity (T-RC3 in dimension 3, which stays open). For a jet J = (h, dh, ddh) of a symmetric matrix field, the coefficients F1 J and F2 J of the uniform second-order expansion of the curvature density (R/2) sqrt(det) of 1 + eta h (LL-XXXX-g) are computed from the explicit jet formula of the scalar curvature with a second-order expansion calculus (Exp2: sums, products, inverse, square root, unique coefficients): F1 J = (1/2)(sum_ij dd_ijij - sum_ki dd_kkii) (F1_eq) and F2 J = fpDens(dh) + divTp(h, dh, ddh) (F2_eq), where fpDens is the Fierz-Pauli density of LL-XXXX-e and divTp is the divergence of the explicit field T'_m = (1/2) tr h sum_c d_c h_cm - (1/2) tr h d_m tr h - (1/2) sum_ab h_ab d_a h_bm + sum_a h_am d_a tr h + sum_ab h_ab d_m h_ab - (3/2) sum_ac h_am d_c h_ac (F2_poly, a polynomial identity proved by expanding the index sums). Limits: dimension 3; the hypotheses are the symmetries of the jet of a C^2 symmetric field (h, dh in the last two indices, ddh in both pairs); the statement is pointwise in the jet: nothing about integrals, periodic fields or the second variation of the Einstein-Hilbert action itself. Trust checks: scripts/regge/eh_jet_poly_check.py recomputes F1, F2 and the divergence identity in exact arithmetic with sympy (numerical-algebraic evidence, not a proof), and a control with the coefficient -3/2 of T' replaced by -1 fails."
+  since: unreleased
