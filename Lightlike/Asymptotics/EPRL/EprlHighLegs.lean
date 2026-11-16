@@ -236,6 +236,8 @@ noncomputable def legFam (n m : Fin 4 → ℕ) (g : Fin 4 → SU2) (G : Spin4) :
     fun μ ν => legFun (n 3) (m 3) (((eprlMapLow (n 3) (m 3) *ᵥ cohState ((n - m) 3) (g 3)) ᵥ*
       ((Wm (n 3))ᴴ ⊗ₖ (Wm (m 3))ᴴ)) ᵥ* (spin4Mat (n 3) (m 3) G)ᴴ) (-μ) (-ν)]
 
+/-- **The node leg function is the product of the four leg functions of `legFam`**, each a function of
+the pair of projections of its leg. -/
 theorem nodeLeg_eq_prod (n m : Fin 4 → ℕ) (g : Fin 4 → SU2) (G : Spin4) (μ ν : Fin 4 → ℤ) :
     nodeLeg n m g G μ ν = ∏ l, legFam n m g G l (μ l) (ν l) := by
   simp [nodeLeg, legFam, Fin.prod_univ_four]
