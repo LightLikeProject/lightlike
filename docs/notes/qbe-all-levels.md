@@ -152,8 +152,7 @@ satisfies, when `n ≥ 1` and `Q^{z0+2} ≠ 1`,
 
     qRacahSum r j1 … j6 = t(z0) · ₄φ₃( Q^{z0+2}, Q^{-(b_1 - z0)}, Q^{-(b_2 - z0)}, Q^{-(b_3 - z0)} ;  Q^{1+z0-a'_1}, Q^{1+z0-a'_2}, Q^{1+z0-a'_3} ; Q, Q ),
 
-the argument being exactly `Q` (balanced: the lower parameters multiplied by `Q^{-1}` ... the product of the lower parameters equals `Q` times the
-product of the upper ones). Numerical check: every case with `n ≥ 1` at `r = 7` (8 cases), `r = 9` (120) and `r = 11` (400 sampled): the fitted
+the argument being exactly `Q` (balanced: the product of the lower parameters equals `Q` times the product of the upper ones). Numerical check: every case with `n ≥ 1` at `r = 7` (8 cases), `r = 9` (120) and `r = 11` (400 sampled): the fitted
 argument is `Q` in every case (a single distinct value) and the relative error of the formula is at most `2.2e-15`. When `Q^{z0+2} = 1` (that is
 `z0 = r - 2`) the second term vanishes and the sum is `t(z0)`, which the formula also gives (an upper parameter equal to `1`). Source: this
 is the standard q-Racah ₄φ₃ in Askey–Wilson form (argument `q`); the library's `Sj_val` is the case `n = 0`. Lean statement: a rewriting lemma
