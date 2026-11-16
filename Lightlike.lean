@@ -381,6 +381,7 @@ import Lightlike.Regge.Conv3.ReggeConvergence
 import Lightlike.Regge.Conv3.ReggeConvergenceTests
 import Lightlike.Regge.Linear3.AngleSmooth
 import Lightlike.Regge.Linear3.SecondOrder
+import Lightlike.Regge.Linear3.SaintVenantCore
 import Lightlike.Regge.Linear3.TorusComplex
 import Lightlike.Regge.Linear3.TorusBridge
 import Lightlike.Regge.Linear3.TorusBridgeLengths
