@@ -26,11 +26,11 @@ Saint-Venant density by the pointwise identity `sv_pointwise` (`sum_clsDens`), b
 * `Qn_converges`: the convergence.
 
 **Limits.** Convergence only, no rate; one smooth periodic field on the standard cubical Kuhn complex of the
-torus; the second variation of the Regge action in the interpolated lengths, not in the geodesic lengths (the two
+torus; the `ε²` coefficient of the Regge action in the interpolated lengths, not in the geodesic lengths (the two
 have the same first variation at `ε = 0`; that equality is not formalized). The identification of
-`-¼ ⟨curl^t curl h, h⟩` with the Fierz–Pauli form (the second variation of `∫ (R/2) √det g`) is by an
-integration by parts on the torus that is not proved here (numerically checked in
-`scripts/regge/regge3d_linearized_check.py`); the sign of the paper's deficit angle (a holonomy rotation angle)
+`-¼ ⟨curl^t curl h, h⟩` with the Fierz–Pauli form is an integration by parts on the torus (`FierzPauli`), and that
+this form is the `η²` coefficient of `∫ (R/2) √det g` for `g = 1 + η h` is `EtaCoefficient`; neither is used here
+(numerically checked in `scripts/regge/regge3d_linearized_check.py`); the sign of the paper's deficit angle (a holonomy rotation angle)
 relative to `2π - Σ θ` is fixed by that check, not by the paper.
 -/
 

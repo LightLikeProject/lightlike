@@ -6,8 +6,8 @@ import Lightlike.Regge.Conv3.JetCurvature
 For a smooth symmetric matrix field `h` on `ℝ³` and a real `η`, the scalar curvature of the metric `g_η = 1 + η h` at a
 point `m` where `det g_η (m) ≠ 0` is an explicit function of the jet `(η, h(m), ∂h(m), ∂∂h(m))`
 (`scalar_gEta`, from `scalarCurvature_jet`), and `(R/2) √det g_η` is a smooth function `Feta` of that jet on the set where
-`det (1 + η h) > 0` (`contDiffOn_Feta`). This is the first step towards the second variation of the Einstein–Hilbert
-action as a jet identity: the next steps expand `Feta` to second order in `η` uniformly on compact sets of jets.
+`det (1 + η h) > 0` (`contDiffOn_Feta`). This is the first step towards the `η²` coefficient of the integrated curvature density
+as a jet identity: the next steps expand `Feta` to second order in `η` uniformly on compact sets of jets.
 
 ## Main results
 
