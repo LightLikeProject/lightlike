@@ -19,7 +19,6 @@ The statements are elementary algebra, generated from an exact computer-algebra 
 
 namespace Lightlike.Regge.Conv3
 
-set_option maxHeartbeats 1600000 in
 /-- The Kuhn star identity for the basis matrix `E_00`: the sum over the incidences equals
 `det g0 * tr (adj g0 * E_00) / 2`, by exact division of each numerator by its face polynomial. -/
 theorem kuhn_basis_00 (g00 g01 g02 g11 g12 g22 : ℝ) (hP1 : ((1 : ℝ)*g00*g22 + (2 : ℝ)*g01*g22 + (-1 : ℝ)*g02^(2:ℕ) + (-2 : ℝ)*g02*g12 + (1 : ℝ)*g11*g22 + (-1 : ℝ)*g12^(2:ℕ)) ≠ 0) (hP2 : ((1 : ℝ)*g00*g22 + (-1 : ℝ)*g02^(2:ℕ)) ≠ 0) (hP3 : ((1 : ℝ)*g11*g22 + (-1 : ℝ)*g12^(2:ℕ)) ≠ 0) (hP4 : ((1 : ℝ)*g00*g11 + (-1 : ℝ)*g01^(2:ℕ)) ≠ 0) (hP5 : ((1 : ℝ)*g00*g11 + (-1 : ℝ)*g01^(2:ℕ) + (-2 : ℝ)*g01*g12 + (2 : ℝ)*g02*g11 + (1 : ℝ)*g11*g22 + (-1 : ℝ)*g12^(2:ℕ)) ≠ 0) (hP6 : ((1 : ℝ)*g00*g11 + (2 : ℝ)*g00*g12 + (1 : ℝ)*g00*g22 + (-1 : ℝ)*g01^(2:ℕ) + (-2 : ℝ)*g01*g02 + (-1 : ℝ)*g02^(2:ℕ)) ≠ 0) :
@@ -46,7 +45,6 @@ theorem kuhn_basis_00 (g00 g01 g02 g11 g12 g22 : ℝ) (hP1 : ((1 : ℝ)*g00*g22 
   rw [q1, q2, q3, q4, q5, q6]
   ring1
 
-set_option maxHeartbeats 1600000 in
 /-- The Kuhn star identity for the basis matrix `E_01`: the sum over the incidences equals
 `det g0 * tr (adj g0 * E_01) / 2`, by exact division of each numerator by its face polynomial. -/
 theorem kuhn_basis_01 (g00 g01 g02 g11 g12 g22 : ℝ) (hP1 : ((1 : ℝ)*g00*g22 + (2 : ℝ)*g01*g22 + (-1 : ℝ)*g02^(2:ℕ) + (-2 : ℝ)*g02*g12 + (1 : ℝ)*g11*g22 + (-1 : ℝ)*g12^(2:ℕ)) ≠ 0) (hP2 : ((1 : ℝ)*g00*g22 + (-1 : ℝ)*g02^(2:ℕ)) ≠ 0) (hP3 : ((1 : ℝ)*g11*g22 + (-1 : ℝ)*g12^(2:ℕ)) ≠ 0) (hP4 : ((1 : ℝ)*g00*g11 + (-1 : ℝ)*g01^(2:ℕ)) ≠ 0) (hP5 : ((1 : ℝ)*g00*g11 + (-1 : ℝ)*g01^(2:ℕ) + (-2 : ℝ)*g01*g12 + (2 : ℝ)*g02*g11 + (1 : ℝ)*g11*g22 + (-1 : ℝ)*g12^(2:ℕ)) ≠ 0) (hP6 : ((1 : ℝ)*g00*g11 + (2 : ℝ)*g00*g12 + (1 : ℝ)*g00*g22 + (-1 : ℝ)*g01^(2:ℕ) + (-2 : ℝ)*g01*g02 + (-1 : ℝ)*g02^(2:ℕ)) ≠ 0) :
@@ -73,7 +71,6 @@ theorem kuhn_basis_01 (g00 g01 g02 g11 g12 g22 : ℝ) (hP1 : ((1 : ℝ)*g00*g22 
   rw [q1, q2, q3, q4, q5, q6]
   ring1
 
-set_option maxHeartbeats 1600000 in
 /-- The Kuhn star identity for the basis matrix `E_02`: the sum over the incidences equals
 `det g0 * tr (adj g0 * E_02) / 2`, by exact division of each numerator by its face polynomial. -/
 theorem kuhn_basis_02 (g00 g01 g02 g11 g12 g22 : ℝ) (hP1 : ((1 : ℝ)*g00*g22 + (2 : ℝ)*g01*g22 + (-1 : ℝ)*g02^(2:ℕ) + (-2 : ℝ)*g02*g12 + (1 : ℝ)*g11*g22 + (-1 : ℝ)*g12^(2:ℕ)) ≠ 0) (hP2 : ((1 : ℝ)*g00*g22 + (-1 : ℝ)*g02^(2:ℕ)) ≠ 0) (hP3 : ((1 : ℝ)*g11*g22 + (-1 : ℝ)*g12^(2:ℕ)) ≠ 0) (hP4 : ((1 : ℝ)*g00*g11 + (-1 : ℝ)*g01^(2:ℕ)) ≠ 0) (hP5 : ((1 : ℝ)*g00*g11 + (-1 : ℝ)*g01^(2:ℕ) + (-2 : ℝ)*g01*g12 + (2 : ℝ)*g02*g11 + (1 : ℝ)*g11*g22 + (-1 : ℝ)*g12^(2:ℕ)) ≠ 0) (hP6 : ((1 : ℝ)*g00*g11 + (2 : ℝ)*g00*g12 + (1 : ℝ)*g00*g22 + (-1 : ℝ)*g01^(2:ℕ) + (-2 : ℝ)*g01*g02 + (-1 : ℝ)*g02^(2:ℕ)) ≠ 0) :
@@ -100,7 +97,6 @@ theorem kuhn_basis_02 (g00 g01 g02 g11 g12 g22 : ℝ) (hP1 : ((1 : ℝ)*g00*g22 
   rw [q1, q2, q3, q4, q5, q6]
   ring1
 
-set_option maxHeartbeats 1600000 in
 /-- The Kuhn star identity for the basis matrix `E_11`: the sum over the incidences equals
 `det g0 * tr (adj g0 * E_11) / 2`, by exact division of each numerator by its face polynomial. -/
 theorem kuhn_basis_11 (g00 g01 g02 g11 g12 g22 : ℝ) (hP1 : ((1 : ℝ)*g00*g22 + (2 : ℝ)*g01*g22 + (-1 : ℝ)*g02^(2:ℕ) + (-2 : ℝ)*g02*g12 + (1 : ℝ)*g11*g22 + (-1 : ℝ)*g12^(2:ℕ)) ≠ 0) (hP2 : ((1 : ℝ)*g00*g22 + (-1 : ℝ)*g02^(2:ℕ)) ≠ 0) (hP3 : ((1 : ℝ)*g11*g22 + (-1 : ℝ)*g12^(2:ℕ)) ≠ 0) (hP4 : ((1 : ℝ)*g00*g11 + (-1 : ℝ)*g01^(2:ℕ)) ≠ 0) (hP5 : ((1 : ℝ)*g00*g11 + (-1 : ℝ)*g01^(2:ℕ) + (-2 : ℝ)*g01*g12 + (2 : ℝ)*g02*g11 + (1 : ℝ)*g11*g22 + (-1 : ℝ)*g12^(2:ℕ)) ≠ 0) (hP6 : ((1 : ℝ)*g00*g11 + (2 : ℝ)*g00*g12 + (1 : ℝ)*g00*g22 + (-1 : ℝ)*g01^(2:ℕ) + (-2 : ℝ)*g01*g02 + (-1 : ℝ)*g02^(2:ℕ)) ≠ 0) :
@@ -127,7 +123,6 @@ theorem kuhn_basis_11 (g00 g01 g02 g11 g12 g22 : ℝ) (hP1 : ((1 : ℝ)*g00*g22 
   rw [q1, q2, q3, q4, q5, q6]
   ring1
 
-set_option maxHeartbeats 1600000 in
 /-- The Kuhn star identity for the basis matrix `E_12`: the sum over the incidences equals
 `det g0 * tr (adj g0 * E_12) / 2`, by exact division of each numerator by its face polynomial. -/
 theorem kuhn_basis_12 (g00 g01 g02 g11 g12 g22 : ℝ) (hP1 : ((1 : ℝ)*g00*g22 + (2 : ℝ)*g01*g22 + (-1 : ℝ)*g02^(2:ℕ) + (-2 : ℝ)*g02*g12 + (1 : ℝ)*g11*g22 + (-1 : ℝ)*g12^(2:ℕ)) ≠ 0) (hP2 : ((1 : ℝ)*g00*g22 + (-1 : ℝ)*g02^(2:ℕ)) ≠ 0) (hP3 : ((1 : ℝ)*g11*g22 + (-1 : ℝ)*g12^(2:ℕ)) ≠ 0) (hP4 : ((1 : ℝ)*g00*g11 + (-1 : ℝ)*g01^(2:ℕ)) ≠ 0) (hP5 : ((1 : ℝ)*g00*g11 + (-1 : ℝ)*g01^(2:ℕ) + (-2 : ℝ)*g01*g12 + (2 : ℝ)*g02*g11 + (1 : ℝ)*g11*g22 + (-1 : ℝ)*g12^(2:ℕ)) ≠ 0) (hP6 : ((1 : ℝ)*g00*g11 + (2 : ℝ)*g00*g12 + (1 : ℝ)*g00*g22 + (-1 : ℝ)*g01^(2:ℕ) + (-2 : ℝ)*g01*g02 + (-1 : ℝ)*g02^(2:ℕ)) ≠ 0) :
@@ -154,7 +149,6 @@ theorem kuhn_basis_12 (g00 g01 g02 g11 g12 g22 : ℝ) (hP1 : ((1 : ℝ)*g00*g22 
   rw [q1, q2, q3, q4, q5, q6]
   ring1
 
-set_option maxHeartbeats 1600000 in
 /-- The Kuhn star identity for the basis matrix `E_22`: the sum over the incidences equals
 `det g0 * tr (adj g0 * E_22) / 2`, by exact division of each numerator by its face polynomial. -/
 theorem kuhn_basis_22 (g00 g01 g02 g11 g12 g22 : ℝ) (hP1 : ((1 : ℝ)*g00*g22 + (2 : ℝ)*g01*g22 + (-1 : ℝ)*g02^(2:ℕ) + (-2 : ℝ)*g02*g12 + (1 : ℝ)*g11*g22 + (-1 : ℝ)*g12^(2:ℕ)) ≠ 0) (hP2 : ((1 : ℝ)*g00*g22 + (-1 : ℝ)*g02^(2:ℕ)) ≠ 0) (hP3 : ((1 : ℝ)*g11*g22 + (-1 : ℝ)*g12^(2:ℕ)) ≠ 0) (hP4 : ((1 : ℝ)*g00*g11 + (-1 : ℝ)*g01^(2:ℕ)) ≠ 0) (hP5 : ((1 : ℝ)*g00*g11 + (-1 : ℝ)*g01^(2:ℕ) + (-2 : ℝ)*g01*g12 + (2 : ℝ)*g02*g11 + (1 : ℝ)*g11*g22 + (-1 : ℝ)*g12^(2:ℕ)) ≠ 0) (hP6 : ((1 : ℝ)*g00*g11 + (2 : ℝ)*g00*g12 + (1 : ℝ)*g00*g22 + (-1 : ℝ)*g01^(2:ℕ) + (-2 : ℝ)*g01*g02 + (-1 : ℝ)*g02^(2:ℕ)) ≠ 0) :

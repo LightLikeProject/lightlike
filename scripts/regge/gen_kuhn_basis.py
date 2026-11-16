@@ -50,8 +50,7 @@ for idx, nm in enumerate(NAMES):
     Ql = [lean(sp.quo(sp.Poly(sp.expand(nums[P].subs(sub)), *gv), sp.Poly(P, *gv)).as_expr()) for P in Ps]
     lhs = ' + '.join([lean(poly.subs(sub))] + ['%s / %s' % (Nl[k], Pl[k]) for k in range(6)])
     tgt = '%s * %s / 2' % (lean(G.detg), lean(G.rho.subs(sub)))
-    out += ['set_option maxHeartbeats 1600000 in',
-            '/-- The Kuhn star identity for the basis matrix `E_%s`: the sum over the incidences equals' % nm,
+    out += [            '/-- The Kuhn star identity for the basis matrix `E_%s`: the sum over the incidences equals' % nm,
             '`det g0 * tr (adj g0 * E_%s) / 2`, by exact division of each numerator by its face polynomial. -/' % nm,
             'theorem kuhn_basis_%s (%s : ℝ) %s :' % (nm, gs, hyps), '    ' + lhs + ' =', '    ' + tgt + ' := by']
     out += ['  have q%d : %s / %s = %s := by' % (k + 1, Nl[k], Pl[k], Ql[k]) + '\n    rw [div_eq_iff hP%d]\n    ring1' % (k + 1) for k in range(6)]
@@ -80,7 +79,7 @@ out += ['    : (%s) + %s =' % (' + '.join('%s * y%d' % (bn[j], j) for j in range
         '    D * (%s) / 2 := by' % ' + '.join('%s * r%d' % (bn[j], j) for j in range(6)),
         '  linear_combination ' + ' + '.join('%s * h%d' % (bn[j], j) for j in range(6)), '']
 SPLIT = len(out)
-out += ['set_option maxHeartbeats 1600000 in',
+out += ['set_option maxHeartbeats 650000 in',
         'set_option maxRecDepth 100000 in',
         '/-- The Kuhn star identity for a general symmetric matrix `B` with entries `b00, …, b22`, by',
         'linearity in `B` from the six basis identities. -/',
@@ -89,7 +88,8 @@ lhsg = ' + '.join([lin(poly)] + ['%s / %s' % (lin(nums[Ps[k]]), Pl[k]) for k in 
 out += ['    ' + lhsg + ' =', '    %s * %s / 2 := by' % (lean(G.detg), lin(G.rho))]
 hdr = '(%s %s : ℝ)' % (gs, ' '.join(map(str, bv)))
 def lem(name, doc, stmt):
-    return ['set_option maxHeartbeats 1600000 in', 'set_option maxRecDepth 100000 in', '/-- %s -/' % doc, 'theorem %s %s :' % (name, hdr), '    ' + stmt + ' := by', '  ring1', '']
+    caps = {'kuhn_lin_num1': 500000, 'kuhn_lin_num5': 500000, 'kuhn_lin_num6': 450000}
+    return ([('set_option maxHeartbeats %d in' % caps[name])] if name in caps else []) + ['set_option maxRecDepth 100000 in', '/-- %s -/' % doc, 'theorem %s %s :' % (name, hdr), '    ' + stmt + ' := by', '  ring1', '']
 LEMS = []
 LEMS += lem('kuhn_lin_poly', 'The polynomial part is linear in `B`.', '%s = %s' % (lin(poly), bsum(Yj)))
 for k in range(6):
@@ -111,7 +111,12 @@ def lin_file(name, blocks):
     return '\n'.join(['import Mathlib', '', '/-!', '# Linearity in the jet for the Kuhn star identity (%s)' % name, '',
         'Pieces of the identity of `KuhnBasis` (the polynomial part, the six fractions and the trace',
         'term) are linear in the symmetric matrix `B`; each is proved by `ring1`. -/', ''] + blocks) + '\n'
-blk = [LEMS[i:i + 7] for i in range(0, len(LEMS), 7)]
+blk = []   # one block per lemma (each ends with an empty line)
+cur = []
+for l in LEMS:
+    cur.append(l)
+    if l == '':
+        blk.append(cur); cur = []
 assert len(blk) == 8
 flat = lambda bs: [l for b in bs for l in b]
 def wrap(t):

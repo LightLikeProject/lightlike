@@ -10,7 +10,7 @@ The identity of `KuhnBasis` for a general symmetric `B`, from the six basis iden
 
 namespace Lightlike.Regge.Conv3
 
-set_option maxHeartbeats 1600000 in
+set_option maxHeartbeats 650000 in
 set_option maxRecDepth 100000 in
 /-- The Kuhn star identity for a general symmetric matrix `B` with entries `b00, …, b22`, by
 linearity in `B` from the six basis identities. -/

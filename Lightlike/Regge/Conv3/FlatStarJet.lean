@@ -155,7 +155,6 @@ theorem inClass_incQ_zero {w : Fin 3 → ℝ} {σ h : Fin 6} (hw : InClass w σ 
   simp only [incQ, incVec, Matrix.cons_val_zero]
   rw [this]
 
-set_option maxHeartbeats 8000000 in
 /-- **Scalar curvature at a point with vanishing metric gradient**, in terms of the adjugate and the second derivatives: `R = 2 Rnum / det²`. -/
 theorem scalar_flat (hg : IsCoordMetric g U) (hm : m ∈ U)
     (hdg : ∀ k i j, pd k (fun y => g y i j) m = 0) :
