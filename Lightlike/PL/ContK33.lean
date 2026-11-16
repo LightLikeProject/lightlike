@@ -174,6 +174,51 @@ lemma exists_trims {r : ℝ} (hr : 0 < r) (h2 : ∀ x x', x ≠ x' → 2 * r < d
   choose s t hs using this
   exact ⟨s, t, hs⟩
 
+/-- Two different trimmed subarcs are at positive distance. -/
+lemma exists_eps {r : ℝ} (hr : 0 < r) (s t : Fin 3 × Fin 3 → ℝ)
+    (hst : ∀ e, 0 ≤ s e ∧ s e < t e ∧ t e ≤ 1 ∧
+      ∀ τ ∈ Icc (s e) (t e), ∀ x, r ≤ dist (D.γ e.1 e.2 τ) (D.w x)) :
+    ∃ ε : ℝ, 0 < ε ∧ ∀ e e', e ≠ e' → ∀ y ∈ D.γ e.1 e.2 '' Icc (s e) (t e),
+      ∀ y' ∈ D.γ e'.1 e'.2 '' Icc (s e') (t e'), 2 * ε < dist y y' := by
+  have hsub : ∀ e, Icc (s e) (t e) ⊆ Icc (0 : ℝ) 1 := fun e =>
+    Icc_subset_Icc (hst e).1 (hst e).2.2.1
+  have hcomp : ∀ e, IsCompact (D.γ e.1 e.2 '' Icc (s e) (t e)) := fun e =>
+    isCompact_Icc.image_of_continuousOn ((D.cont _ _).mono (hsub e))
+  have hpos : ∀ p : (Fin 3 × Fin 3) × (Fin 3 × Fin 3), ∃ η : ℝ, 0 < η ∧ (p.1 ≠ p.2 →
+      ∀ y ∈ D.γ p.1.1 p.1.2 '' Icc (s p.1) (t p.1), ∀ y' ∈ D.γ p.2.1 p.2.2 '' Icc (s p.2) (t p.2),
+        η ≤ dist y y') := by
+    rintro ⟨e, e'⟩
+    by_cases he : e = e'
+    · exact ⟨1, one_pos, fun h => absurd he h⟩
+    · have hne : (D.γ e.1 e.2 '' Icc (s e) (t e)).Nonempty :=
+        ⟨_, ⟨s e, ⟨le_rfl, (hst e).2.1.le⟩, rfl⟩⟩
+      have hne' : (D.γ e'.1 e'.2 '' Icc (s e') (t e')).Nonempty :=
+        ⟨_, ⟨s e', ⟨le_rfl, (hst e').2.1.le⟩, rfl⟩⟩
+      obtain ⟨⟨y0, y0'⟩, ⟨hy0, hy0'⟩, hmin⟩ := ((hcomp e).prod (hcomp e')).exists_isMinOn
+        (hne.prod hne') (by fun_prop : Continuous fun q : (ℝ × ℝ) × (ℝ × ℝ) => dist q.1 q.2).continuousOn
+      refine ⟨dist y0 y0', dist_pos.2 fun h => ?_, fun _ y hy y' hy' => hmin (⟨hy, hy'⟩ :
+        (y, y') ∈ (D.γ e.1 e.2 '' Icc (s e) (t e)) ×ˢ (D.γ e'.1 e'.2 '' Icc (s e') (t e')))⟩
+      subst h
+      obtain ⟨τ, hτ, rfl⟩ := hy0
+      obtain ⟨τ', hτ', hτ'e⟩ := hy0'
+      have hmem := D.disj e.1 e.2 e'.1 e'.2 (fun h => he (Prod.ext (congrArg Prod.fst h) (congrArg Prod.snd h)))
+        ⟨⟨τ, hsub e hτ, rfl⟩, ⟨τ', hsub e' hτ', hτ'e⟩⟩
+      simp only [mem_inter_iff, mem_insert_iff, mem_singleton_iff] at hmem
+      rcases hmem.1 with h1 | h1
+      · have := (hst e).2.2.2 τ hτ (Sum.inl e.1)
+        rw [h1] at this
+        simp [w] at this; linarith
+      · have := (hst e).2.2.2 τ hτ (Sum.inr e.2)
+        rw [h1] at this
+        simp [w] at this; linarith
+  choose η hη0 hη using hpos
+  obtain ⟨p0, hp0⟩ := Finite.exists_min η
+  refine ⟨η p0 / 3, by have := hη0 p0; positivity, fun e e' hee y hy y' hy' => ?_⟩
+  have := hη (e, e') hee y hy y' hy'
+  have := hp0 (e, e')
+  have := hη0 p0
+  linarith
+
 end ContDrawing
 
 end Lightlike.PL
