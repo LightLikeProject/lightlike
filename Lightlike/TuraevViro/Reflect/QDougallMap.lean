@@ -37,13 +37,19 @@ ingredients of that matching.
 * `prod_identity`: the weight of the lowest column, the first weighted term and Jackson's right side
   multiply to `1`; every quantum factorial cancels.
 * `qDougall_nondeg`: **`QDougall` holds** in the case `x0 = j1 - j2`, `q0 = j1 - j5`,
-  `j4 + j5 < j1 + j2`, for admissible spins, from Jackson's sum (`jackson_sumT`).
+  `j4 + j5 < j1 + j2`, for admissible spins whose third colours run up to `j4 + j5`, from Jackson's
+  sum (`jackson_sumT`).
 * `Tj_eq_tDeg`, `sDeg_val`, `qDougall_deg_param`: the degenerate case `j1 + j2 = j4 + j5`, where the
   hypotheses of Jackson's sum fail, from the partial sums of the series with fewer parameters.
 * `qDougall_orbit`: **`QDougall` holds** for the lowest sixth colour `j1 - j5` and the third colours
-  from `j1 - j2`, in both cases.
+  from `j1 - j2`, in both cases, when the admissible third colours run up to `j4 + j5` (the
+  hypothesis `2 * n = j4 + j5 - (j1 - j2)` with admissibility at every step). When the level cut-off
+  `2 (r - 2)` ends the range earlier, this does not apply.
 * `qDougallAt_dual`: the boundary evaluation for the dual data `B, F, E, A` gives the one for
   `B, A, E, F` (the weighted norms of the rows and of the columns of one matrix are equal).
+* `qDougall_k1`, `qDougall_k2`, `qDougall_k3`, `qDougallAt_k1`, `qDougallAt_k2`, `qDougallAt_k3`: the
+  boundary evaluation is invariant under the permutations `(j1 j4)(j2 j5)`, `(j1 j2)(j4 j5)` and
+  `(j1 j5)(j2 j4)` of the four spins.
 * `qd_jhyp`: they hold at the parameters of the boundary evaluation in the case `x0 = j1 - j2`,
   `q0 = j1 - j5`, `j4 + j5 < j1 + j2`, for admissible spins.
 
@@ -1110,7 +1116,8 @@ theorem qDougall_deg_param {r d n j5 : ℕ} (hr : 2 ≤ r) (hnj : n ≤ j5) (hj5
   exact qDougall_of_sumR hr hnj hj5 le_rfl hadmX hadmQ sumR
 
 /-- **The boundary evaluation `QDougall` for the lowest sixth colour `j1 - j5` and the third colours
-from `j1 - j2`**, for admissible spins: the non-degenerate case by Jackson's sum and the degenerate
+from `j1 - j2`**, for admissible spins whose third colours run up to `j4 + j5` (no level cut-off
+inside the range): the non-degenerate case by Jackson's sum and the degenerate
 case `j1 + j2 = j4 + j5` by the partial sums of the series with fewer parameters. -/
 theorem qDougall_orbit {r j1 j2 j4 j5 n : ℕ} (hr : 2 ≤ r) (h21 : j2 ≤ j1) (h51 : j5 ≤ j1)
     (hn : 2 * n = j4 + j5 - (j1 - j2))
@@ -1186,5 +1193,110 @@ theorem qDougallAt_dual {r : ℕ} (hr : 2 ≤ r) (B A E F x : ℕ) (hx1 : qAdm r
         Sj r B A E F xL ((qL + 2 * l : ℕ) : ℤ) ^ 2 from
     sum_congr rfl fun l _ => by rw [Sj_dual r B A E F xL (qL + 2 * l)]] at h0
   exact h0
+
+
+/-- Exchanging the two pairs of `jOmega`. -/
+lemma jOmega_swap_pairs (r a b c d x : ℕ) : jOmega r c d a b x = jOmega r a b c d x := by
+  unfold jOmega; ring
+
+/-- Exchanging the entries of both pairs of `jOmega`. -/
+lemma jOmega_swap_in (r a b c d x : ℕ) : jOmega r b a d c x = jOmega r a b c d x := by
+  unfold jOmega; rw [qDelta_swap12 r a b x, qDelta_swap12 r c d x]
+
+/-- `qRacahTerm` is symmetric in the four `α` and in `β₂, β₃`: the three permutations used. -/
+lemma qRacahTerm_k1 (r : ℕ) (a1 a2 a3 a4 b1 b2 b3 : ℤ) (z : ℕ) :
+    qRacahTerm r a4 a3 a2 a1 b1 b2 b3 z = qRacahTerm r a1 a2 a3 a4 b1 b2 b3 z := by
+  unfold qRacahTerm; ring
+
+lemma qRacahTerm_k2 (r : ℕ) (a1 a2 a3 a4 b1 b2 b3 : ℤ) (z : ℕ) :
+    qRacahTerm r a1 a3 a2 a4 b1 b3 b2 z = qRacahTerm r a1 a2 a3 a4 b1 b2 b3 z := by
+  unfold qRacahTerm; ring
+
+lemma qRacahTerm_k3 (r : ℕ) (a1 a2 a3 a4 b1 b2 b3 : ℤ) (z : ℕ) :
+    qRacahTerm r a4 a2 a3 a1 b1 b3 b2 z = qRacahTerm r a1 a2 a3 a4 b1 b2 b3 z := by
+  unfold qRacahTerm; ring
+
+lemma SR_k1 (r : ℕ) (a1 a2 a3 a4 b1 b2 b3 : ℤ) :
+    SR r a4 a3 a2 a1 b1 b2 b3 = SR r a1 a2 a3 a4 b1 b2 b3 := by
+  unfold SR; exact sum_congr rfl fun z _ => qRacahTerm_k1 r a1 a2 a3 a4 b1 b2 b3 z
+
+lemma SR_k2 (r : ℕ) (a1 a2 a3 a4 b1 b2 b3 : ℤ) :
+    SR r a1 a3 a2 a4 b1 b3 b2 = SR r a1 a2 a3 a4 b1 b2 b3 := by
+  unfold SR; exact sum_congr rfl fun z _ => qRacahTerm_k2 r a1 a2 a3 a4 b1 b2 b3 z
+
+lemma SR_k3 (r : ℕ) (a1 a2 a3 a4 b1 b2 b3 : ℤ) :
+    SR r a4 a2 a3 a1 b1 b3 b2 = SR r a1 a2 a3 a4 b1 b2 b3 := by
+  unfold SR; exact sum_congr rfl fun z _ => qRacahTerm_k3 r a1 a2 a3 a4 b1 b2 b3 z
+
+/-- `Sj` under `(j1 j4)(j2 j5)`. -/
+lemma Sj_k1 (r j1 j2 j4 j5 q : ℕ) (y : ℤ) :
+    Sj r j4 j5 j1 j2 q y = Sj r j1 j2 j4 j5 q y := by
+  have key := SR_k1 r (((j1 : ℤ) + j2 + y) / 2) (((j1 : ℤ) + j5 + q) / 2) (((j4 : ℤ) + j2 + q) / 2)
+    (((j4 : ℤ) + j5 + y) / 2) (((j1 : ℤ) + j2 + j4 + j5) / 2) ((y + j2 + j5 + q) / 2)
+    ((y + j1 + q + j4) / 2)
+  unfold Sj; rw [← key]; congr 1 <;> omega
+
+/-- `Sj` under `(j1 j2)(j4 j5)`. -/
+lemma Sj_k2 (r j1 j2 j4 j5 q : ℕ) (y : ℤ) :
+    Sj r j2 j1 j5 j4 q y = Sj r j1 j2 j4 j5 q y := by
+  have key := SR_k2 r (((j1 : ℤ) + j2 + y) / 2) (((j1 : ℤ) + j5 + q) / 2) (((j4 : ℤ) + j2 + q) / 2)
+    (((j4 : ℤ) + j5 + y) / 2) (((j1 : ℤ) + j2 + j4 + j5) / 2) ((y + j2 + j5 + q) / 2)
+    ((y + j1 + q + j4) / 2)
+  unfold Sj; rw [← key]; congr 1 <;> omega
+
+/-- `Sj` under `(j1 j5)(j2 j4)`. -/
+lemma Sj_k3 (r j1 j2 j4 j5 q : ℕ) (y : ℤ) :
+    Sj r j5 j4 j2 j1 q y = Sj r j1 j2 j4 j5 q y := by
+  have key := SR_k3 r (((j1 : ℤ) + j2 + y) / 2) (((j1 : ℤ) + j5 + q) / 2) (((j4 : ℤ) + j2 + q) / 2)
+    (((j4 : ℤ) + j5 + y) / 2) (((j1 : ℤ) + j2 + j4 + j5) / 2) ((y + j2 + j5 + q) / 2)
+    ((y + j1 + q + j4) / 2)
+  unfold Sj; rw [← key]; congr 1 <;> omega
+
+/-- `QDougall` is invariant under `(j1 j4)(j2 j5)`. -/
+theorem qDougall_k1 (r j1 j2 j4 j5 x n q : ℕ) :
+    QDougall r j4 j5 j1 j2 x n q ↔ QDougall r j1 j2 j4 j5 x n q := by
+  unfold QDougall
+  simp only [jOmega_swap_pairs r j1 j5 j4 j2 q, jOmega_swap_pairs r j1 j2 j4 j5, Sj_k1]
+
+/-- `QDougall` is invariant under `(j1 j2)(j4 j5)`. -/
+theorem qDougall_k2 (r j1 j2 j4 j5 x n q : ℕ) :
+    QDougall r j2 j1 j5 j4 x n q ↔ QDougall r j1 j2 j4 j5 x n q := by
+  unfold QDougall
+  have w : jOmega r j2 j4 j5 j1 q = jOmega r j1 j5 j4 j2 q := by
+    rw [jOmega_swap_in r j4 j2 j1 j5 q, jOmega_swap_pairs r j1 j5 j4 j2 q]
+  simp only [w, jOmega_swap_in r j1 j2 j4 j5, Sj_k2]
+
+/-- `QDougall` is invariant under `(j1 j5)(j2 j4)`. -/
+theorem qDougall_k3 (r j1 j2 j4 j5 x n q : ℕ) :
+    QDougall r j5 j4 j2 j1 x n q ↔ QDougall r j1 j2 j4 j5 x n q := by
+  unfold QDougall
+  have w : jOmega r j5 j1 j2 j4 q = jOmega r j1 j5 j4 j2 q := jOmega_swap_in r j1 j5 j4 j2 q
+  have t : ∀ y, jOmega r j5 j4 j2 j1 y = jOmega r j1 j2 j4 j5 y := fun y => by
+    rw [jOmega_swap_pairs r j2 j1 j5 j4 y, jOmega_swap_in r j1 j2 j4 j5 y]
+  simp only [w, t, Sj_k3]
+
+/-- The boundary evaluation for the data is invariant under `(B E)(A F)`. -/
+theorem qDougallAt_k1 (r B A E F : ℕ) : QDougallAt r E F B A ↔ QDougallAt r B A E F := by
+  unfold QDougallAt
+  have h1 : aLo E F B A = aLo B A E F := by unfold aLo; omega
+  have h2 : aHi r E F B A = aHi r B A E F := by unfold aHi; omega
+  have h3 : aLo E A B F = aLo B F E A := by unfold aLo; omega
+  rw [h1, h2, h3]; exact qDougall_k1 r B A E F _ _ _
+
+/-- The boundary evaluation for the data is invariant under `(B A)(E F)`. -/
+theorem qDougallAt_k2 (r B A E F : ℕ) : QDougallAt r A B F E ↔ QDougallAt r B A E F := by
+  unfold QDougallAt
+  have h1 : aLo A B F E = aLo B A E F := by unfold aLo; omega
+  have h2 : aHi r A B F E = aHi r B A E F := by unfold aHi; omega
+  have h3 : aLo A E F B = aLo B F E A := by unfold aLo; omega
+  rw [h1, h2, h3]; exact qDougall_k2 r B A E F _ _ _
+
+/-- The boundary evaluation for the data is invariant under `(B F)(A E)`. -/
+theorem qDougallAt_k3 (r B A E F : ℕ) : QDougallAt r F E A B ↔ QDougallAt r B A E F := by
+  unfold QDougallAt
+  have h1 : aLo F E A B = aLo B A E F := by unfold aLo; omega
+  have h2 : aHi r F E A B = aHi r B A E F := by unfold aHi; omega
+  have h3 : aLo F B A E = aLo B F E A := by unfold aLo; omega
+  rw [h1, h2, h3]; exact qDougall_k3 r B A E F _ _ _
 
 end Lightlike.TV.Refl
