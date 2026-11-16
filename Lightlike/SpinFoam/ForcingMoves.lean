@@ -11,6 +11,13 @@ The statements are for complexes reached from `∂Δ⁵` by 3-3, 2-4 and 1-5 mov
 that a forcing gauge set exists on every triangulation of the 4-sphere (numerical evidence in
 `scripts/spinfoam/forcechain.py` shows that the inverse moves 4-2 and 5-1 can lose forcing of the
 transported set).
+
+## Main results
+
+* `Forces.mono`, `Forces.of_union`, `Forces.mono_target`, `forces_of_direct`: forcing is monotone
+  in the tetrahedra and composes.
+* `Move15.forces_move15`: a set that forces `K` forces the complex after a 1-5 move once the four
+  gauge triangles of the move are added.
 -/
 
 open Finset Lightlike.FourD Complex4

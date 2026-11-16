@@ -549,11 +549,21 @@
   "citations_via": "OpenAlex"
  },
  "bdfhp-2010": {
-  "checked": "2026-11-15",
+  "checked": "2026-11-16",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "Lorentzian spin foam amplitudes: graphical calculus and asymptotics",
   "locations": {
+   "Section 3.3, eqs. (15), (16)": {
+    "verified": true,
+    "snippet": "3.3 Coherent states and propagators The boundary states used for the asymptotic analysis are those determined by coherent states in each SU(2) representation [25]. These states have the property that a definite geomet",
+    "why": null
+   },
+   "Section 4, eq. (17)": {
+    "verified": true,
+    "snippet": "4 This integral can now be computed directly, the result being r p 2k dk k2 + p2",
+    "why": null
+   },
    "eq. (53)": {
     "verified": true,
     "snippet": "(53) λ a<b a<b N|σ and N|P σ are independent of λ and are given below. 2. If the boundary state is the Regge state of the boundary geometry of a 4d Euclidean 4-simplex σE we obtain: \u0012 \u001312 \" ! !# χ 1 X E X E f4 ∼ (−1) N|σ",
@@ -595,8 +605,8 @@
     "why": null
    }
   },
-  "citations": 252,
-  "citations_via": "Semantic Scholar"
+  "citations": 279,
+  "citations_via": "OpenAlex"
  },
  "bekaert-boulanger-sundell-2010": {
   "checked": "2026-11-08",
@@ -1657,7 +1667,7 @@
   "citations_via": "Semantic Scholar"
  },
  "engle-pereira-2009": {
-  "checked": "2026-11-08",
+  "checked": "2026-11-16",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "Regularization and finiteness of the Lorentzian LQG vertices",
@@ -1666,10 +1676,20 @@
     "verified": true,
     "snippet": "4 Proof of finiteness For each set of labels {ρf , Nf ; ktf , it } determining a projected spin-network on the 4-simplex boundary graph, let F̃ρf ,Nf ;ktf ,it : SL(2, C)5 → C denote the integrand in the definition",
     "why": null
+   },
+   "eq. (22)": {
+    "verified": true,
+    "snippet": "(22) V3−1 V4 V2−1 V4 V1−1 V3 V1−1 V2 V2−1 V3 which is manifestly independent of the unintegrated group element V5 . Thus, the last integral, when performed, simply introduces a factor equal to the volume of SL(2, C), whi",
+    "why": null
+   },
+   "eq. (23)": {
+    "verified": true,
+    "snippet": "(23) 4 Proof of finiteness For each set of labels {ρf , Nf ; ktf , it } determining a projected spin-network on the 4-simplex boundary graph, let F̃ρf ,Nf ;ktf ,it : SL(2, C)5 → C denote the integrand in the definition o",
+    "why": null
    }
   },
-  "citations": 31,
-  "citations_via": "Semantic Scholar"
+  "citations": 66,
+  "citations_via": "OpenAlex"
  },
  "eprl-2008": {
   "checked": "2026-11-08",
