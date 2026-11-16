@@ -21,9 +21,9 @@ namespace Lightlike.Regge.Conv3
 theorem continuous_quad {G : Matrix (Fin 3) (Fin 3) ℝ} {u v : ℝ → Fin 3 → ℝ}
     (hu : Continuous u) (hv : Continuous v) : Continuous (fun t => u t ⬝ᵥ (G *ᵥ v t)) := by
   simp only [dotProduct, Matrix.mulVec]
-  refine continuous_finsetSum _ fun i _ => ?_
+  refine continuous_finset_sum _ fun i _ => ?_
   refine (continuous_pi_iff.1 hu i).mul ?_
-  refine continuous_finsetSum _ fun j _ => ?_
+  refine continuous_finset_sum _ fun j _ => ?_
   exact continuous_const.mul (continuous_pi_iff.1 hv j)
 
 /-- The Schur form `bf` of continuous curves is continuous where the hinge is not null. -/
@@ -101,7 +101,7 @@ theorem closed_class_pin {G : Matrix (Fin 3) (Fin 3) ℝ} (hG : G.PosDef) {n : �
       have h1 := hbf0 i (by omega)
       have h2 := hbf0 (i + 1) (by omega)
       exact continuousAt_fanAng hwc (hxc i) (hxc (i + 1)) (posDef_dpos hG hw0).ne' h1 h2
-    exact tendsto_finsetSum _ hterm
+    exact tendsto_finset_sum _ hterm
   -- multiple of 2π eventually
   have hint : ∀ᶠ ε in 𝓝 (0 : ℝ), ∃ k : ℤ, ∑ i ∈ Finset.range n,
       fanAng G (w ε) (xs i ε) (xs (i + 1) ε) = 2 * π * k := by

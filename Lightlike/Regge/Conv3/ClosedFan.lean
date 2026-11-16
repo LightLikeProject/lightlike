@@ -69,7 +69,7 @@ theorem eventually_eq_of_int_mul {S : ℝ → ℝ} (hS : ContinuousAt S 0) (h0 :
     rwa [this] at hε
   rw [abs_mul, abs_of_pos (by positivity : (0 : ℝ) < 2 * π)] at h1
   have h2 : |(k : ℝ) - 1| < 1 / 2 := by
-    by_contra h; push Not at h; nlinarith
+    by_contra h; push_neg at h; nlinarith
   have h3 : k = 1 := by
     have : |((k - 1 : ℤ) : ℝ)| < 1 := by push_cast; linarith
     have := Int.abs_lt_one_iff.1 (by exact_mod_cast this)

@@ -73,7 +73,7 @@ theorem g_mul_christoffel (hg : IsCoordMetric g U) (hm : m ∈ U) (b j k : Fin 3
       = (1 / 2) * ((∑ a, g m b a * (g m)⁻¹ a l) *
       (pd j (fun y => g y l k) m + pd k (fun y => g y l j) m - pd l (fun y => g y j k) m)) := by
     intro l; rw [Finset.sum_mul, Finset.mul_sum]; refine Finset.sum_congr rfl fun a _ => by ring
-  simp only [this, hGi, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, ite_true]
+  simp only [this, hGi, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]
   rw [← Finset.mul_sum]
   simp [Finset.sum_ite_eq]
 

@@ -1056,7 +1056,7 @@ tasks:
     area: "pl-topology"
     tier: "established"
     source_class: "sourced"
-    source: "moise-1977, Chapter: Separation properties of polygons in R 2; moise-1977, Chapter: The Schönflies theorem for polygons in R 2; moise-1977, Chapter: The Jordan curve theorem; moise-1977, Chapter: The Schönflies theorem"
+    source: "moise-1977, Chapter: Separation properties of polygons in R 2; moise-1977, Chapter: The Schönflies theorem for polygons in R 2; moise-1977, Chapter: The Jordan curve theorem; mccleary-2006, Chapter: The Jordan Curve Theorem; moise-1977, Chapter: The Schönflies theorem"
     priority: 3
     priority_basis: "canonical"
     size: "R"

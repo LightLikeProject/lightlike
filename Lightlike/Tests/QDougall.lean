@@ -1,5 +1,7 @@
 import Lightlike.TuraevViro.Reflect.OrthConditional
 import Lightlike.TuraevViro.Reflect.SixJSingle
+import Lightlike.TuraevViro.Reflect.QDougallMap
+import Lightlike.TuraevViro.Reflect.SixJNormOneAll
 
 /-!
 # Non-vacuity of the boundary evaluation `QDougall`
@@ -100,3 +102,41 @@ theorem Sj_single_three :
         (((1 : ℤ) + 1 + 0) / 2) (((1 : ℤ) + 1 + 1 + 1) / 2) ((0 + 1 + 1 + 0) / 2)
         ((0 + 1 + 0 + 1) / 2) z0 :=
   Sj_single 3 1 1 1 1 0 0 (by norm_num) (by norm_num) (by norm_num) (Or.inl (by norm_num))
+
+/-- Non-vacuity of `qDougall_orbit`: at level `5`, spins `(2, 2, 1, 1)`, the third colours `0` and `2`
+and the sixth colour `0`, the evaluation holds. -/
+theorem qDougall_five : QDougall 5 2 2 1 1 0 1 1 := by
+  have := qDougall_orbit (r := 5) (j1 := 2) (j2 := 2) (j4 := 1) (j5 := 1) (n := 1) (by norm_num)
+    (by norm_num) (by norm_num) (by norm_num)
+    (by intro k hk; interval_cases k <;> decide) (by decide)
+  simpa using this
+
+/-- Non-vacuity of `qDougall_orbit3`: at level `5`, spins `(1, 1, 2, 2)`, the third colours `0` and `2`
+and the lowest sixth colour `j₄ - j₂ = 1`, the evaluation holds. -/
+theorem qDougall_five_orbit3 : QDougall 5 1 1 2 2 0 1 1 := by
+  have := qDougall_orbit3 (r := 5) (j1 := 1) (j2 := 1) (j4 := 2) (j5 := 2) (n := 2) (by norm_num)
+    (by norm_num) (by norm_num) (by norm_num) (by norm_num)
+    (by intro k hk; interval_cases k <;> decide) (by decide)
+  simpa using this
+
+/-- Non-vacuity of `qDougall_orbit` in the degenerate case `j1 + j2 = j4 + j5`: at level `7`,
+spins `(2, 2, 2, 2)`, the third colours `0, 2, 4` and the sixth colour `0`. -/
+theorem qDougall_seven_degenerate : QDougall 7 2 2 2 2 0 2 0 := by
+  have := qDougall_orbit (r := 7) (j1 := 2) (j2 := 2) (j4 := 2) (j5 := 2) (n := 2) (by norm_num)
+    (by norm_num) (by norm_num) (by norm_num)
+    (by intro k hk; interval_cases k <;> decide) (by decide)
+  simpa using this
+
+/-- Non-vacuity of `sixj_norm_one_proved`: at level `2`, all spins `0`, the only colour `0`. -/
+theorem sixj_norm_one_proved_two : (∀ l ≤ 0, jOmega 2 0 0 0 0 (0 + 2 * l) *
+        (∑ k ∈ range (0 + 1), jOmega 2 0 0 0 0 (0 + 2 * k) *
+          Sj 2 0 0 0 0 (0 + 2 * l) ((0 + 2 * k : ℕ) : ℤ) ^ 2) = 1) ∧
+      (∀ k ≤ 0, jOmega 2 0 0 0 0 (0 + 2 * k) *
+        (∑ l ∈ range (0 + 1), jOmega 2 0 0 0 0 (0 + 2 * l) *
+          Sj 2 0 0 0 0 (0 + 2 * l) ((0 + 2 * k : ℕ) : ℤ) ^ 2) = 1) :=
+  sixj_norm_one_proved (by norm_num) 0 0 0 0 0 0 0 0
+    (by intro k hk; interval_cases k; decide) (by norm_num) (by norm_num)
+    (by intro k hk; interval_cases k; decide) (by norm_num) (by norm_num)
+    (Or.inl (by norm_num)) (Or.inl (by norm_num))
+
+end Lightlike.TV.Refl

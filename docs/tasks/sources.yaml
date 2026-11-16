@@ -96,6 +96,10 @@ references:
     cite: "E. E. Moise, Geometric Topology in Dimensions 2 and 3, Graduate Texts in Mathematics 47, Springer (1977)"
     title: "Geometric Topology in Dimensions 2 and 3"
     doi: 10.1007/978-1-4612-9906-6
+  mccleary-2006:
+    cite: "J. McCleary, A First Course in Topology: Continuity and Dimension, Student Mathematical Library 31, American Mathematical Society (2006)"
+    title: "A First Course in Topology"
+    doi: 10.1090/stml/031
   thomassen-1992:
     cite: "C. Thomassen, The Jordan-Schönflies theorem and the classification of surfaces, Amer. Math. Monthly 99 (1992) 116-130"
     title: "The Jordan-Schönflies Theorem and the Classification of Surfaces"
@@ -968,6 +972,7 @@ milestones:
       - {ref: moise-1977, location: "Chapter: Separation properties of polygons in R 2|10.1007/978-1-4612-9906-6_3"}
       - {ref: moise-1977, location: "Chapter: The Schönflies theorem for polygons in R 2|10.1007/978-1-4612-9906-6_4"}
       - {ref: moise-1977, location: "Chapter: The Jordan curve theorem|10.1007/978-1-4612-9906-6_5"}
+      - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
       - {ref: moise-1977, location: "Chapter: The Schönflies theorem|10.1007/978-1-4612-9906-6_10"}
   PL6:
     class: sourced
