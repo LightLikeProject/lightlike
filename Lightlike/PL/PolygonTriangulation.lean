@@ -102,13 +102,13 @@ def IsTriangulation (q : Polygon n) (T : Finset (Finset (ℝ × ℝ))) : Prop :=
 
 /-- **A triangle is its own triangulation.** -/
 theorem isTriangulation_triangle {q : Polygon 3} (hs : q.IsSimple) :
-    ∃ T, IsTriangulation q T := by
+    IsTriangulation q {(Finset.univ.image q : Finset (ℝ × ℝ))} := by
   classical
   have hind := affineIndependent_of_isSimple hs
   have hinj : Function.Injective q := hind.injective
   set S : Finset (ℝ × ℝ) := Finset.univ.image q with hS
   have hSset : (S : Set (ℝ × ℝ)) = Set.range q := by simp [hS]
-  refine ⟨{S}, ⟨fun t ht => ?_, ?_, ?_, fun i => ?_⟩⟩
+  refine ⟨fun t ht => ?_, ?_, ?_, fun i => ?_⟩
   · rw [Finset.mem_singleton] at ht
     subst ht
     refine ⟨?_, hSset.le⟩
@@ -301,7 +301,7 @@ theorem exists_triangulation : ∀ (n : ℕ) (p : Polygon n), 3 ≤ n → p.IsSi
     intro p hn hs
     have : NeZero n := ⟨by omega⟩
     rcases (by omega : n = 3 ∨ 4 ≤ n) with rfl | h4
-    · exact isTriangulation_triangle hs
+    · exact ⟨_, isTriangulation_triangle hs⟩
     · obtain ⟨a, b, hb2, hb3, hL, hR, hdis, hspl⟩ := exists_split hs h4
       obtain ⟨T₁, h₁⟩ := ih (b + 1) (by omega) ((p.rot a).left b) (by omega) hL
       obtain ⟨T₂, h₂⟩ := ih (n - b + 1) (by omega) ((p.rot a).right b) (by omega) hR
