@@ -41,9 +41,14 @@ def integral(expr):
     N = 8; g = (np.arange(N) + 0.5) / N
     X = np.meshgrid(g, g, g, indexing="ij")
     return float(np.mean(f(*X)))
+worst = {}
 for periodic in (True, False):
     errs = []
     for seed in range(4):
         a, b = densities(field(periodic, seed))
         errs.append(abs(integral(a) - integral(b)))
+    worst[periodic] = max(errs)
     print("periodic" if periodic else "NOT periodic (control)", "max |int(sv) - int(fp)| =", max(errs))
+assert worst[True] < 1e-10, "the two integrals must agree for periodic fields"
+assert worst[False] > 1.0, "control: a non-periodic field must break the equality"
+print("OK: equal for periodic fields, control fails")

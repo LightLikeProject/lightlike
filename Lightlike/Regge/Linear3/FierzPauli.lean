@@ -198,6 +198,7 @@ section field
 
 variable {hf : (Fin 3 → ℝ) → Matrix (Fin 3) (Fin 3) ℝ}
 
+/-- The divergence of `Tfield` at a point is the polynomial `tdiv` of the jet of `h`. -/
 theorem div_Tfield (hsm : ∀ i j, ContDiff ℝ 3 (fun y => hf y i j)) (y : Fin 3 → ℝ) :
     ∑ m, pd1 (Tfield hf m) y m = tdiv (Hm hf y) (dh1 hf y) (dd2 hf y) := by
   have hA : ∀ i j, Differentiable ℝ (fun z => hf z i j) := fun i j => (hsm i j).differentiable (by norm_num)

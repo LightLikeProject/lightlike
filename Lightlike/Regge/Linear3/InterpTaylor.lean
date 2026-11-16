@@ -30,6 +30,7 @@ open Lightlike.Regge.Conv3
 noncomputable def pd1 (F : (Fin 3 → ℝ) → ℝ) (v : Fin 3 → ℝ) (k : Fin 3) : ℝ :=
   fderiv ℝ F v (Pi.single k 1)
 
+/-- The second partial derivative `∂_l ∂_k F (v)` of a function on `ℝ³`, as the second Fréchet derivative on basis vectors. -/
 noncomputable def pd2 (F : (Fin 3 → ℝ) → ℝ) (v : Fin 3 → ℝ) (k l : Fin 3) : ℝ :=
   fderiv ℝ (fderiv ℝ F) v (Pi.single l 1) (Pi.single k 1)
 
