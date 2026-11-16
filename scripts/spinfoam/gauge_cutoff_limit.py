@@ -7,8 +7,8 @@ triangles stay free). With the doubled spins of the free triangles at most C, th
 are few (1, 3, 7, 12, 19, ... for C = 1, 2, 4, 6, 8, ...), every tetrahedron has a single virtual spin, and
 the state sum factorises over the closed-form vertex amplitudes of `vertex_check.py`.
 
-Result (exact 3j symbols, double-precision contraction; the contraction was re-done in extended
-precision at C = 10 and 20 with identical doubles): the state sum at doubled cutoff
+Result (exact 3j symbols, double-precision contraction; the rounding error of the contraction has
+not been bounded): the state sum at doubled cutoff
 C = 2, 4, ..., 34 is
 3.5, 2.43, -3.40, -6.00, 1.28, 11.64, 10.81, -3.80, -16.10, -9.06, 12.39, 23.59, 8.57, -18.14, -25.31,
 -1.53, 28.20: it changes sign (9 times in these values) and its size grows. Numerically, then, the
