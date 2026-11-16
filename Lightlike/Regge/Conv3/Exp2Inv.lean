@@ -88,10 +88,10 @@ theorem poly2_unique {d0 d1 d2 C r : ℝ} (hr : 0 < r) (hr1 : r ≤ 1) (hC : 0 �
     have h5 : d1 * t ≤ C * t ^ 3 := by nlinarith [k1.2, k2.1]
     have h6 : -(C * t ^ 3) ≤ d1 * t := by nlinarith [k1.1, k2.2]
     have h7 : d1 ≤ C * t ^ 2 := by
-      by_contra hc; push_neg at hc
+      by_contra hc; push Not at hc
       nlinarith [mul_pos ht ht, mul_lt_mul_of_pos_right hc ht]
     have h8 : -(C * t ^ 2) ≤ d1 := by
-      by_contra hc; push_neg at hc
+      by_contra hc; push Not at hc
       nlinarith [mul_pos ht ht, mul_lt_mul_of_pos_right hc ht]
     have h9 : C * t ^ 2 ≤ C * t := mul_le_mul_of_nonneg_left h4 hC
     constructor <;> linarith
@@ -108,10 +108,10 @@ theorem poly2_unique {d0 d1 d2 C r : ℝ} (hr : 0 < r) (hr1 : r ≤ 1) (hC : 0 �
     have h6 : -(3 / 2 * C * t ^ 3) ≤ d2 * t ^ 2 := by nlinarith [k1.1, k1.2, k2.1, k2.2]
     have ht2 : 0 < t ^ 2 := by positivity
     have h7 : d2 ≤ 3 / 2 * C * t := by
-      by_contra hc; push_neg at hc
+      by_contra hc; push Not at hc
       nlinarith [mul_lt_mul_of_pos_right hc ht2]
     have h8 : -(3 / 2 * C * t) ≤ d2 := by
-      by_contra hc; push_neg at hc
+      by_contra hc; push Not at hc
       nlinarith [mul_lt_mul_of_pos_right hc ht2]
     constructor <;> nlinarith [mul_nonneg hC ht.le]
   refine ⟨?_, hd1, hd2⟩

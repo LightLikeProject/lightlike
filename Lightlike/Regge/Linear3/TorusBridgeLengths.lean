@@ -48,7 +48,7 @@ theorem lenD_edgeOf (hn : 3 ≤ n) (d : (Fin 3 → ℝ) → (Fin 3 → ℝ) → 
     lenD n d (edgeOf n z k) = d (liftPt n z) (liftPt n z + fun i => ((dirsN k i : ℕ) : ℝ) / n) := by
   have h : ∃ p : TV n × Fin 7, edgeOf n p.1 p.2 = edgeOf n z k := ⟨(z, k), rfl⟩
   unfold lenD
-  rw [dif_pos h]
+  rw [dite_eq_left h]
   have := @edgeOf_injective n _ hn h.choose (z, k) h.choose_spec
   rw [this]
 
@@ -291,7 +291,7 @@ theorem reggeAction_torus_eq (hn : 3 ≤ n) (g : (Fin 3 → ℝ) → Matrix (Fin
   refine sum_congr rfl fun σ _ => sum_congr rfl fun h _ => ?_
   rw [← cond_iff_inClass]
   by_cases hc : Cond (dirsN k) σ h
-  · simp only [hc, if_true]
+  · simp only [hc, ite_true]
     have hct : ∀ i, (((z' i : ℕ) : ℤ) - koff (hP h) (perms σ i) : ℤ) = ((z' i : ℕ) : ℤ) - koff (hP h) (perms σ i) :=
       fun _ => rfl
     have hcc : ∀ i, ((((z' i : ℕ) : ℤ) - koff (hP h) (perms σ i) : ℤ) : ZMod n) =

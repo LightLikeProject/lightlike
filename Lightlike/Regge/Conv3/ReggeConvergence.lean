@@ -174,10 +174,10 @@ theorem regge3d_tendsto (hg : IsRiemMetric g U)
     have h1 : ContinuousOn (fun v => √(edgeQ g v (dirs k))) U :=
       Real.continuous_sqrt.comp_continuousOn (continuousOn_edgeQ hg.coord (dirs k))
     exact (((h1.mul (continuousOn_clsAngC2 hg (dirs k))).neg).mono hsubU).integrableOn_compact hcomp
-  have hsum := tendsto_finset_sum (Finset.univ : Finset (Fin 7)) fun k _ => regge_class_tendsto hg hQU k
+  have hsum := tendsto_finsetSum (Finset.univ : Finset (Fin 7)) fun k _ => regge_class_tendsto hg hQU k
   have hlim : ∑ k : Fin 7, ∫ y in unitCube, classDensity g k y =
       ∫ y in unitCube, scalarCurvature g y / 2 * √((g y).det) := by
-    rw [← integral_finset_sum _ (fun k _ => hint k)]
+    rw [← MeasureTheory.integral_finsetSum _ (fun k _ => hint k)]
     exact setIntegral_congr_fun hcomp.measurableSet (fun y hy => sum_classDensity hg (hsubU hy))
   rw [hlim] at hsum
   refine hsum.congr' (Eventually.of_forall fun N => ?_)

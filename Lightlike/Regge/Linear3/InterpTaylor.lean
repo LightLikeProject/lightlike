@@ -47,7 +47,7 @@ theorem fderiv_expand (F : (Fin 3 → ℝ) → ℝ) (v y : Fin 3 → ℝ) :
 theorem fderiv2_expand (F : (Fin 3 → ℝ) → ℝ) (v y : Fin 3 → ℝ) :
     fderiv ℝ (fderiv ℝ F) v y y = ∑ k, ∑ l, y k * y l * pd2 F v k l := by
   conv_lhs => rw [vec_expand y]
-  simp only [map_sum, ContinuousLinearMap.sum_apply, map_smul, ContinuousLinearMap.smul_apply, pd2,
+  simp only [map_sum, sum_apply, map_smul, smul_apply, pd2,
     smul_eq_mul]
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [Finset.mul_sum]
@@ -185,14 +185,14 @@ theorem quad_taylor {hf : (Fin 3 → ℝ) → Matrix (Fin 3) (Fin 3) ℝ}
     have hi : ∀ i ∈ (Finset.univ : Finset (Fin 3)),
         IntervalIntegrable (fun t : ℝ => ∑ j, D i * D j * hf (v + ε • (s0 + t • D)) i j)
           MeasureTheory.volume 0 1 := fun i _ =>
-      (continuous_finset_sum _ fun j _ => continuous_const.mul (hcont i j)).intervalIntegrable _ _
-    rw [intervalIntegral.integral_finset_sum hi]
+      (continuous_finsetSum _ fun j _ => continuous_const.mul (hcont i j)).intervalIntegrable _ _
+    rw [intervalIntegral.integral_finsetSum hi]
     refine Finset.sum_congr rfl fun i _ => ?_
     have hj : ∀ j ∈ (Finset.univ : Finset (Fin 3)),
         IntervalIntegrable (fun t : ℝ => D i * D j * hf (v + ε • (s0 + t • D)) i j)
           MeasureTheory.volume 0 1 := fun j _ =>
       (continuous_const.mul (hcont i j)).intervalIntegrable _ _
-    rw [intervalIntegral.integral_finset_sum hj]
+    rw [intervalIntegral.integral_finsetSum hj]
     exact Finset.sum_congr rfl fun j _ => intervalIntegral.integral_const_mul _ _
   rw [hI, ← Finset.sum_sub_distrib]
   refine (Finset.abs_sum_le_sum_abs _ _).trans ?_

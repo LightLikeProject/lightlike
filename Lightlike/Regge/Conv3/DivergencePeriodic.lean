@@ -32,7 +32,7 @@ theorem integral_div_periodic (T : Fin 3 → (Fin 3 → ℝ) → ℝ) (hT : ∀ 
     (fun x _ i => ((hT i).differentiable (by norm_num) x).hasFDerivAt)
     (by
       have : Continuous fun x : Fin 3 → ℝ => ∑ i, fderiv ℝ (T i) x (Pi.single i 1) := by
-        refine continuous_finset_sum _ fun i _ => ?_
+        refine continuous_finsetSum _ fun i _ => ?_
         exact ((hT i).continuous_fderiv (by norm_num)).clm_apply continuous_const
       exact this.continuousOn.integrableOn_Icc)
   rw [this]

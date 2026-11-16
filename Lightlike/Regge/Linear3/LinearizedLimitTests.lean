@@ -21,8 +21,8 @@ noncomputable def cosField : (Fin 3 → ℝ) → Matrix (Fin 3) (Fin 3) ℝ :=
 theorem cosField_smooth (i j : Fin 3) : ContDiff ℝ 3 (fun y => cosField y i j) := by
   unfold cosField
   by_cases h : (i = 0 ∧ j = 1) ∨ (i = 1 ∧ j = 0)
-  · simp only [Matrix.of_apply, h, if_true]; fun_prop
-  · simp only [Matrix.of_apply, h, if_false]; exact contDiff_const
+  · simp only [Matrix.of_apply, h, ite_true]; fun_prop
+  · simp only [Matrix.of_apply, h, ite_false]; exact contDiff_const
 
 theorem cosField_symm (y : Fin 3 → ℝ) (i j : Fin 3) : cosField y i j = cosField y j i := by
   unfold cosField
