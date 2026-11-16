@@ -1053,3 +1053,27 @@
   review: kernel-checked
   note: "Part of the 3D convergence of the Regge action (T-RC6), which stays open. Scope: at a point m where all first partial derivatives of a Riemannian metric g on an open set of R^3 vanish (for example the centre of normal coordinates); not the general chart. The convergence theorem needs the same statement at every hinge, where the first derivatives do not vanish, and that case is open. For any positive definite g(m) and any second derivatives, the star of one edge of the Kuhn triangulation (flat star: the dihedral angles of each of the seven edge classes add up to 2π; first-order coefficient 0; weights: the hinge lengths √(g(m)(w, w)) of the seven directions w, where g(m)(w, w) is the squared length) satisfies: the sum over the seven classes of the hinge length times the second-order coefficient of the class angle sum equals minus half the scalar curvature times the square root of det g(m) (JetStarCore). The core is an exact polynomial identity in the six entries of g(m) and the 36 independent second derivatives (flat_star_identity), generated and checked in exact arithmetic by scripts/regge/gen_flat_star.py. Limits: second derivatives are those of g at the single point m; the Kuhn triangulation is the standard cubical one; the Gram lengths g(m) are the metric at m, not integrated along edges. Trust checks: the Euclidean metric satisfies the hypotheses, and for sphere-like second derivatives the sum over the 36 incidences is 3, not 0 and not 6 (FlatStarTests.lean)."
   since: unreleased
+- id: LL-XXXX-a
+  title: In each of the seven edge classes of the Kuhn star with vertices displaced by ε Γ(k, k)/2, the dihedral angles add up to 2π for small ε
+  area: Regge
+  file: Lightlike/Regge/Conv3/ChartChangeClasses.lean
+  decls: [Lightlike.Regge.Conv3.cls0_disp, Lightlike.Regge.Conv3.cls1_disp, Lightlike.Regge.Conv3.cls2_disp, Lightlike.Regge.Conv3.cls3_disp, Lightlike.Regge.Conv3.cls4_disp, Lightlike.Regge.Conv3.cls5_disp, Lightlike.Regge.Conv3.cls6_disp]
+  status: proven
+  tier: frontier
+  source: structural
+  review: kernel-checked
+  note: "Part of the 3D convergence of the Regge action (T-RC6), which stays open. For a Riemannian metric g on U and m in U, displace every point k of the star around an edge to k + (ε/2) Γ(k, k) (Γ the Christoffel symbols at m). In each edge class the displaced tetrahedra form a closed fan around the displaced hinge axis that is positively oriented at ε = 0, so the sum of their dihedral angles (computed with the quadratic form g(m)) is 2π for all ε in a neighbourhood of 0 (a neighbourhood, no explicit radius). Uses closed fans of complex numbers, continuity in ε and the lattice result of LL-0078. Limits: one edge star of the standard cubical Kuhn triangulation, one point m; nothing about a triangulation of a manifold or about convergence."
+  since: unreleased
+- id: LL-XXXX-b
+  title: The jet-level star identity of the 3D Regge calculus holds at every point of a Riemannian metric, with no condition on the first derivatives
+  area: Regge
+  file: Lightlike/Regge/Conv3/ChartChangeGeneral.lean
+  decls: [Lightlike.Regge.Conv3.scalar_eq_flat, Lightlike.Regge.Conv3.jetStarCore_of_chart]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (2.19)", check: "tensor transformation law"}
+  review: kernel-checked
+  note: "Part of the 3D convergence of the Regge action (T-RC6), which stays open: this is the jet-level statement at one point, not the convergence. For a Riemannian metric g on an open set U of R^3 and any point m of U (no condition on the first derivatives of g), the star of one edge of the standard Kuhn triangulation satisfies JetStarCore: admissible Gram lengths, angle sums 2π in the seven classes, vanishing first-order coefficient, and the sum over the classes of the hinge length (√(g(m)(w, w))) times the second-order coefficient equals minus half the scalar curvature times √det g(m). Proof: the edge polynomial of the jet of g equals that of a flat jet with second derivatives Sdd = ∂∂g - g ΓΓ after displacing the vertices by εΓ(k, k)/2 (edgeC_eq_chr, edgeR_eq_displaced), the displaced flat star has angle sums 2π (LL-XXXX-a) so its first- and second-order coefficients vanish (disp_coeffs), the flat identity of LL-0080 applies to Sdd, and the scalar curvature at m is that of the flat jet with Sdd (scalar_eq_flat; the transformation of the curvature under the change of chart is the tensor transformation law cited). Limits: second derivatives at the single point m; standard cubical Kuhn triangulation; no convergence statement, no manifold triangulation; Riemannian (positive definite) signature only. Trust checks: the Euclidean metric and diag(exp x0, 1, 1), whose first derivative at 0 is nonzero so that LL-0080 does not apply to it (ChartChangeTests.lean)."
+  since: unreleased
