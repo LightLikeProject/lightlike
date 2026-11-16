@@ -539,7 +539,7 @@
   "citations_via": "Semantic Scholar"
  },
  "bdfgh-2009": {
-  "checked": "2026-11-15",
+  "checked": "2026-11-16",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "Asymptotic analysis of the EPRL four-simplex amplitude",
@@ -547,6 +547,31 @@
    "Section 4": {
     "verified": true,
     "snippet": "4 Asymptotic formula To study the semi-classical approximation of the theory we consider the large spin limit, and study the asymptotics. We start by scaling all ten spins by a constant parameter kab → λkab . Then t",
+    "why": null
+   },
+   "eq. (14)": {
+    "verified": true,
+    "snippet": "(14) Spin(4)5 a with the action given by X − − + + Sγ<1 = 2jab ln h−nab |Xab |nba i + 2jab ln h−nab |Xab |nba i. (15) a<b Notice that this action is in general complex. The logarithm of a complex number is only defined u",
+    "why": null
+   },
+   "eq. (16)": {
+    "verified": true,
+    "snippet": "(16) SU(2)/U(1) where an arbitrary choice of phase is made for each coherent state, dj = 2j + 1, and the integral measure is normalised to 1. 10 With these insertions, all of the symmetrizers can be absorbed into coheren",
+    "why": null
+   },
+   "eq. (17)": {
+    "verified": true,
+    "snippet": "(17) The action is given by X + + − − Sγ>1 = 2jab ln hmab |Xab |mba i + 2jab ln hmab |Xab |mba i a<b +2kab ln h−nab |mab i + 2kab ln hmba |nba i (18) Note that we could just have easily decomposed the propagator using on",
+    "why": null
+   },
+   "eq. (19)": {
+    "verified": true,
+    "snippet": "(19) ab Spin(4)5 a<b c 3.4.1 Symmetries of the action. The actions (15) and (18) admit two types of symmetry which will be important later. • Continuous. A global Spin(4) transformation characterised by an element (Y − ,",
+    "why": null
+   },
+   "eq. (22)": {
+    "verified": true,
+    "snippet": "(22) 12 5 Proof of the asymptotic formula In this section, we provide a proof of the above theorem. We first review the notion of (extended) stationary phase, showing how the asymptotic formula is dominated by the critic",
     "why": null
    }
   },
@@ -1722,7 +1747,7 @@
   "citations_via": "Semantic Scholar"
  },
  "eprl-2008": {
-  "checked": "2026-11-08",
+  "checked": "2026-11-16",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "LQG vertex with finite Immirzi parameter",
@@ -1735,6 +1760,11 @@
    "Section III": {
     "verified": true,
     "snippet": "III. EUCLIDEAN THEORY already noted earlier, this sector does not correspond to a topological sector of gravity bu",
+    "why": null
+   },
+   "eq. (27)": {
+    "verified": true,
+    "snippet": "(27) j+ − j− γ > 1. That is, for γ < 1, the constraint selects the highest irreducible in the decomposition of H(j + ,j − ) when viewed as the carrying space of a reducible representation under the action of the SU (2) s",
     "why": null
    }
   },

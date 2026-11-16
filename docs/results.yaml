@@ -1507,3 +1507,94 @@
   review: kernel-checked
   note: "The increment of the logarithm along a straight segment, about a point, is the principal logarithm of the ratio of the vectors from the point to the ends of the segment when that ratio avoids the negative real axis. Three points seen counterclockwise from a point have angles that add up to 2 pi, so the triangle they span, taken as a loop, has index 1 about the point. The index of a loop is zero about a point strictly above or below it and about a point outside a disc that contains it. These are the computation, left to a picture in the lecture-notes version of chapter 9 of McCleary's book (numbering not checked against the printed book), that a triangle has index plus or minus 1 about an interior point, and Lemma 9.12 in the forms used in the notes' last argument; the notes read the value off the fundamental group of the circle, here it is computed from the angles. The statements and proofs are Lean's own. Proves: the index of a triangle and the vanishing for loops with a point outside. Does not prove: the last argument of the notes, that the complement of a Jordan curve has exactly two components, or the Jordan curve theorem. Limits: loops in the complex plane. Check: TestsIndexTriangle.lean (a concrete triangle has index 1 about the origin; the orientation hypothesis fails for the clockwise order; the unit circle has index 0 about the point 2)."
   since: unreleased
+- id: LL-0116
+  title: An odd sum of the doubled spins at a node of the 4-simplex makes the coherent 15j integral vanish for all boundary data
+  area: Asymptotics
+  file: Lightlike/Asymptotics/EPRL/OddSum.lean
+  decls: [Lightlike.Asymptotics.EPRL.rhoN_negOne, Lightlike.Asymptotics.EPRL.cohInt_eq_zero_of_odd, Lightlike.Asymptotics.EPRL.coh15j_eq_zero_of_odd]
+  status: proven
+  tier: established
+  source: structural
+  review: kernel-checked
+  note: "The centre element -1 of SU(2) acts on the tensor product of the spin-J_a/2 representations as (-1)^(sum J_a) (rhoN_negOne). A coherent intertwiner is invariant, so if the doubled spins at a node have an odd sum it is zero (cohInt_eq_zero_of_odd), and then the coherent 15j integral coh15j vanishes for every choice of boundary data (coh15j_eq_zero_of_odd, through k5Contract_cohInt). So the nonzero leading term of Coh15jAsymptoticFormula cannot hold with an odd node sum: the even node sums of that formula are necessary. A trust check of its hypotheses, not a new asymptotic statement. Limits: SU(2) coherent intertwiners only; the statement says nothing about the Hessian hypotheses."
+  since: unreleased
+- id: LL-0117
+  title: For γ < 1 the Euclidean EPRL vertex, contracted with the coherent boundary intertwiners, is the coherent EPRL integral, which is the product of two coherent 15j integrals
+  area: Asymptotics
+  file: Lightlike/Asymptotics/EPRL/EprlCoherentVertex.lean
+  decls: [Lightlike.Asymptotics.EPRL.k5Contract4_eprlCohNode, Lightlike.Asymptotics.EPRL.eprlVertex_coherent]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: bdfgh-2009, location: "eq. (14)", check: "re-expressed"}
+  review: kernel-checked
+  note: "BDFGH (J. Math. Phys. 50 (2009) 112504, section 3) write the Euclidean EPRL vertex on Livine-Speziale boundary states as an integral over Spin(4)^5 (eprlCoh); this entry proves the identification in this library. For γ < 1, with the same SU(2) elements g on the self-dual and anti-self-dual halves, the EPRL map sends the SU(2) coherent intertwiner iota_{n+m}(g) to iota_n(g) (x) iota_m(g) (eprlIntertwiner_homForm_cohInt); the coherent EPRL node tensor sum_z c_z eprlNode n m z is the product of the two coherent node tensors projNode, with no sign (eprlCohNode_eq); the K5 contraction of these is eprlCoh (k5Contract4_eprlCohNode), which equals coh15j * coh15j by Fubini on Spin(4) = SU(2) x SU(2) (eprlCoh_eq_mul, already in EPRLFormula.lean); expanding each node in the intertwiner basis, sum over z of prod_a c_a(z_a) eprlVertex n m z equals eprlCoh (eprlVertex_coherent), with c_a(z) = nodeSign * <iota_z, homForm iota> the coefficients of the coherent intertwiner in the fourJ basis. Exact at every spin: an identification, not an asymptotic formula. Limits: gamma < 1 only (the same g on both chiral halves; the gamma > 1 reflected normal is not covered); the sign (-1)^chi of BFH eq. (1) belongs to their 15j convention and is not compared with this library's, whose contraction is exactly the coherent integral (k5Contract_cohInt). Numerical check of the node identity: scripts/spinfoam/eprl_node_check.py, four spin configurations to 3e-16 with a wrong-g control."
+  since: unreleased
+- id: LL-0118
+  title: The coherent 15j integral decays faster than every power of the spin scale when its finitely many maxima are noncritical
+  area: Asymptotics
+  file: Lightlike/Asymptotics/EPRL/Suppression.lean
+  decls: [Lightlike.Asymptotics.EPRL.local_suppression, Lightlike.Asymptotics.EPRL.suppression_finite_max]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: bdfgh-2009, location: "eq. (22)", check: "supressed"}
+  review: kernel-checked
+  note: "Let F be continuous on SU(2)^4 with |F| <= 1 whose modulus is one only on a finite set K, such that for p in K the chart function F(chart_p q) is smooth and its logarithmic phase -i log(F/F(p)) has nonzero differential at q = 0. Then for every k, the integral of F^lambda over SU(2)^4 with the Haar probability measure is O(lambda^-k) (suppression_finite_max). Near each p, F^lambda = F(p)^lambda e^{i lambda phi} with phi the cut-off logarithmic phase, and the non-stationary phase theorem (Hormander, ALPDO I, Theorem 7.7.1, formalized in Lightlike/Oscillatory/Localisation.lean) bounds the chart integral (local_suppression); localise_pieces glues the charts. This is the case of BDFGH Theorem 1, case 3 (eq. (22)), and eq. (24) of section 5.1, in which the extended stationary phase has no critical point. Limits: finitely many maxima only; the noncriticality of the maxima is a hypothesis (for the coherent 15j integral with spins that are not proportional to the areas, that the maxima are noncritical is not proved here: it is the geometric lemma relating the phase gradient at a gluing solution to the closure of the spins); no statement for an infinite maximum set."
+  since: unreleased
+- id: LL-0119
+  title: For SU(2) boundary data the coherent 15j integral either has a gluing solution or decays exponentially, and the coherent EPRL integral decays exponentially when the self-dual spins admit no gluing solution
+  area: Asymptotics
+  file: Lightlike/Asymptotics/EPRL/Suppression.lean
+  decls: [Lightlike.Asymptotics.EPRL.coh15j_dichotomy, Lightlike.Asymptotics.EPRL.eprlCoh_exp_decay_of_no_gluing]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: bdfgh-2009, location: "eq. (22)", check: "supressed"}
+  review: kernel-checked
+  note: "For SU(2) boundary data g and any doubled spins n, either some point of SU(2)^5 has |F_n| = 1 (the data glue for the spins n) or there is q < 1 with |coh15j(lambda n) g| <= q^lambda for all lambda (coh15j_dichotomy: |F_n| <= 1 by norm_cohAmp_le, the maximum of the continuous |F_n| on the compact group is below 1 when no point reaches 1, then the existing coh15j_exp_decay). The EPRL form: if the self-dual spins n admit no gluing solution then |eprlCoh(lambda n, lambda m) g| <= q^lambda (eprlCoh_exp_decay_of_no_gluing, from eprlCoh = coh15j * coh15j and |coh15j(lambda m)| <= 1). This is the exponential-suppression check of the done-when of T-SF9 in its EPRL form. Limits: the case 'some point has |F_n| = 1' is only named, not analysed (the finite-maximum case with noncritical maxima is suppression_finite_max; critical maxima give the asymptotic formula); nothing is said for spins not proportional to areas beyond the dichotomy."
+  since: unreleased
+- id: LL-0120
+  title: For γ > 1 the coherent EPRL node tensor at the projections is a signed entry of a Spin(4) average, and the EPRL vertex sum with coherent boundary data is the K5 contraction of these node tensors
+  area: Asymptotics
+  file: Lightlike/Asymptotics/EPRL/EprlHighVertex.lean
+  decls: [Lightlike.Asymptotics.EPRL.eprlCohNodeHigh_integral, Lightlike.Asymptotics.EPRL.eprlVertexHigh_coherent]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: eprl-2008, location: "eq. (27)", check: "highest irreducible"}
+      - {ref: bdfgh-2009, location: "eq. (19)", check: "amplitude for"}
+  review: kernel-checked
+  note: "For γ > 1 the EPRL map is the lowest Clebsch-Gordan component V_{(n-m)/2} -> V_{n/2} (x) V_{m/2} (EPRL, arXiv:0711.0146, section III, eq. (27)). With the same SU(2) elements g on both chiral halves, the image of the SU(2) coherent intertwiner iota_{n-m}(g) is the Spin(4) average of the conjugates of the lifted rank-one tensor (eprlIntertwinerLow_homForm_cohInt, from projSpin4_eq_integral: projSpin4 is the Haar average of the Spin(4) conjugation action); the coherent node tensor sum_z c_z eprlNodeLow n m z is, at the projections of two components, nodeSign times the signs of the bridge times the matrix entry of that average (eprlCohNodeHigh_integral); the vertex sum with coherent boundary data is the K5 contraction of these node tensors (eprlVertexHigh_coherent), with c_a(z) = nodeSign * <iota_z, homForm iota>. Exact at every spin. Limits: the image is a superposition, not a product of coherent states, so there is no factorization into two SU(2) coherent node tensors as for γ < 1; the Spin(4)^5 integral of edge forms is the next entry; the sign (-1)^chi' of the source is not compared. Numerical check of the node integral: scripts/spinfoam/eprl_high_check.py (check 2, error 2.2e-14, with a weak-design control)."
+  since: unreleased
+- id: LL-0121
+  title: The leg amplitude of the lowest Clebsch-Gordan component on coherent states is (-1)^m c0 times two overlaps
+  area: Asymptotics
+  file: Lightlike/Asymptotics/EPRL/EprlHighLeg.lean
+  decls: [Lightlike.Asymptotics.EPRL.eprlMapLow_cohState, Lightlike.Asymptotics.EPRL.weight_of_equivariant]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: bdfgh-2009, location: "eq. (16)", check: "resolution of the identity"}
+      - {ref: bdfgh-2009, location: "eq. (17)", check: "second resolution of the identity"}
+  review: kernel-checked
+  note: "(<n,M| (x) <m,M'|) Y_low |k,g> = (-1)^m c0 <M|g>^k <M|J M'>^m for SU(2) elements M, M', g and k = n - m, where c0 = Y_low[(0,m),0] is the Clebsch-Gordan entry of the lowest component, <M|g> = (M^dagger g)_00 and <M|J M'> = (M^dagger M' eps)_00. Proof: an SU(2)-equivariant map conserves weights (weight_of_equivariant, by the torus element exp(i pi / W)), covariance reduces the amplitude to M = 1 (legAmp_mul), where one entry of Y_low survives. Limits: c0 is kept abstract; its positivity and its value sqrt((k+1)/(n+1)) are not proved here (numerical check only: scripts/spinfoam/eprl_high_check.py, check 0, wrong-input controls); the U(1)-invariant form of the edge integrand is derived here from the source's eqs. (17)-(19), not printed in the source; the phase (-1)^chi' of eq. (19) is not compared."
+  since: unreleased
+- id: LL-0122
+  title: For γ > 1 the EPRL vertex sum with coherent boundary data is a constant times the Spin(4)^5 integral of the product over the ten edges of the edge forms
+  area: Asymptotics
+  file: Lightlike/Asymptotics/EPRL/EprlHighEdgeForms.lean
+  decls: [Lightlike.Asymptotics.EPRL.eprlCohNodeHigh_legs, Lightlike.Asymptotics.EPRL.eprlVertexHigh_edgeForms]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: bdfgh-2009, location: "eq. (19)", check: "amplitude for"}
+  review: kernel-checked
+  note: "For γ > 1 (the EPRL map is the lowest Clebsch-Gordan component, EPRL eq. (27)) and the same SU(2) elements g on both chiral halves, the coherent node tensor sum_z c_z eprlNodeLow is the Spin(4) integral of a product over the four legs of the node: the outgoing legs carry D(G) Y_low |k,g_l>, the incoming legs (Y_low |k,g_l>) E D(G)^H with the singlet form E = W^H (x) W^H, as functions of the pair of projections (eprlCohNodeHigh_legs, with the signs of the bridge and nodeSign as an explicit constant). Contracting along K5 factors over the edges (k5Contract4_prod) and commutes with the five node integrals (k5Contract4_integral), so the vertex sum equals (product over nodes of the constants) times the integral over Spin(4)^5 of the product over the ten edges of the edge forms sum_{mu,nu} eps_n(mu) eps_m(nu) f_src(mu,nu) f_tgt(-mu,-nu) (eprlVertexHigh_edgeForms), the integral over Spin(4)^5 of BDFGH eq. (19) with the edge form in place of its integrand over SU(2)/U(1) points. Exact at every spin. Limits: Y_low is kept as it is, so the leg functions are not coherent-state overlaps; the closed form of the edge form through the leg amplitude (eprlMapLow_cohState), the resolution of the identity that gives the sphere integrals of eq. (17), and the comparison with the source's integrand are not in this entry; the sign (-1)^chi' and the factor (-1)^{2 j-} d_{j+}^2 are not compared; c0 stays abstract in the leg amplitude. Numerical check of the building blocks: scripts/spinfoam/eprl_high_check.py."
+  since: unreleased
