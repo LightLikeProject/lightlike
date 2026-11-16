@@ -126,6 +126,9 @@ Assembling the ten links, the coherent principal-series vertex equals the Lorent
 explicit factor `(haarScalarFactor haarC SL2C.haar)^4`, which comes from the chart measure of the
 finite vertex; the outer integral of the Lorentzian vertex is therefore finite, and the value of one
 link at spin zero is `π` [20].
+The inner integral over `ℂ^10` also converges at every point of `SL(2, ℂ)^5`, as a product over the ten
+edges of functions bounded by the density of `Ω`, so the Lorentzian vertex of the coherent data is a
+genuine integral [21].
 
 ## Lean References
 
@@ -198,10 +201,13 @@ link at spin zero is `π` [20].
 18. Lightlike/Asymptotics/Lorentzian/RadialBeta.lean - `Asymptotics.Lorentzian.radial_integral`
 19. Lightlike/Asymptotics/Lorentzian/NormLowest.lean - `Asymptotics.Lorentzian.norm_sq_wgt`,
     `Asymptotics.Lorentzian.nrmA_sq_lowest`, `Asymptotics.Lorentzian.link_integral_explicit`
-20. Lightlike/Asymptotics/Lorentzian/Assembly.lean - `Asymptotics.Lorentzian.map_conjSL_haar`,
+20. Lightlike/Asymptotics/Lorentzian/CoherentVertex.lean - `Asymptotics.Lorentzian.map_conjSL_haar`,
     `Asymptotics.Lorentzian.sum_magBox_linkProd`, `Asymptotics.Lorentzian.eprlIntegrand_iotaProd`,
     `Asymptotics.Lorentzian.eprlIntegrand_coh`, `Asymptotics.Lorentzian.eprlVertex_eq_lorVertex`,
     `Asymptotics.Lorentzian.integrable_lorOuter`, `Asymptotics.Lorentzian.link_value_spin_zero`
+21. Lightlike/Asymptotics/Lorentzian/InnerIntegrable.lean - `Asymptotics.Lorentzian.ae_overlap_src`,
+    `Asymptotics.Lorentzian.ae_overlap_tgt`, `Asymptotics.Lorentzian.integrable_edge`,
+    `Asymptotics.Lorentzian.integrable_lorInner`, `Asymptotics.Lorentzian.integrable_lorInner_coh`
 
 ## References
 
