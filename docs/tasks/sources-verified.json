@@ -450,7 +450,7 @@
   "via": "arXiv API",
   "fetched_title": "Invariants of Piecewise-Linear 3-Manifolds",
   "locations": {},
-  "citations": 250,
+  "citations": 242,
   "citations_via": "Semantic Scholar"
  },
  "barvinsky-blas-herrero-valea-2016": {
@@ -544,14 +544,14 @@
   "via": "arXiv API",
   "fetched_title": "Asymptotic analysis of the EPRL four-simplex amplitude",
   "locations": {
-   "Section 3.4": {
-    "verified": true,
-    "snippet": "3.4 Exponentiated expression for the four-simplex amplitude The general considerations of the previous sections are now applied, for the rest of the paper, to the case of a 4-simplex σ. The boundary data is specifie",
-    "why": null
-   },
    "Section 4": {
     "verified": true,
     "snippet": "4 Asymptotic formula To study the semi-classical approximation of the theory we consider the large spin limit, and study the asymptotics. We start by scaling all ten spins by a constant parameter kab → λkab . Then t",
+    "why": null
+   },
+   "eq. (14)": {
+    "verified": true,
+    "snippet": "(14) Spin(4)5 a with the action given by X − − + + Sγ<1 = 2jab ln h−nab |Xab |nba i + 2jab ln h−nab |Xab |nba i. (15) a<b Notice that this action is in general complex. The logarithm of a complex number is only defined u",
     "why": null
    },
    "eq. (16)": {
@@ -568,9 +568,14 @@
     "verified": true,
     "snippet": "(19) ab Spin(4)5 a<b c 3.4.1 Symmetries of the action. The actions (15) and (18) admit two types of symmetry which will be important later. • Continuous. A global Spin(4) transformation characterised by an element (Y − ,",
     "why": null
+   },
+   "eq. (22)": {
+    "verified": true,
+    "snippet": "(22) 12 5 Proof of the asymptotic formula In this section, we provide a proof of the above theorem. We first review the notion of (extended) stationary phase, showing how the asymptotic formula is dominated by the critic",
+    "why": null
    }
   },
-  "citations": 242,
+  "citations": 250,
   "citations_via": "OpenAlex"
  },
  "bdfhp-2010": {
