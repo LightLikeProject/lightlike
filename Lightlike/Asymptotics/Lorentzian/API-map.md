@@ -155,7 +155,12 @@ node, with the other elements and the spinors fixed, is the sum over the ends at
 formula `endForm` [29] [28]: the block `H^{X_a X_a}` of BDFHP Appendix A, equal to a quarter of eq. (61)
 at source ends (the printed blocks correspond to the generators `iσ`, `σ`) and different from (61) at
 target ends, where the sign of the parameter `p` and a term `m·(α×β)` appear; checked against the
-independent `44 × 44` numerics to `2·10⁻¹⁹` (`scripts/asymptotics/lorentzian_hessian_node_check.py`).
+independent `44 × 44` numerics to `2·10⁻¹⁹` (`scripts/asymptotics/lorentzian_hessian_node_check.py`). The blocks `H^{zz}` (in the
+Wirtinger entries `zzWirtinger`) and `H^{Xz}` (`xzSource`, `xzTarget`) are proved without criticality [29]
+and checked at non-critical configurations (`scripts/asymptotics/lorentzian_hessian_noncritical_check.py`).
+The mixed second derivatives along two different nodes or two different spinors vanish, and the
+`44 × 44` matrix `hessBlockMatrix` assembled from the blocks is symmetric [30]; its identification with the
+matrix of second derivatives in a chart is not proved.
 
 ## Lean References
 
@@ -264,6 +269,10 @@ independent `44 × 44` numerics to `2·10⁻¹⁹` (`scripts/asymptotics/lorentz
     `Asymptotics.Lorentzian.hessZZ_block`, `Asymptotics.Lorentzian.hessXZ_block`,
     `Asymptotics.Lorentzian.xzSource`, `Asymptotics.Lorentzian.xzTarget`,
     `Asymptotics.Lorentzian.hasDerivAt_srcCoeff_gen`
+30. Lightlike/Asymptotics/Lorentzian/HessianAssembly.lean - `Asymptotics.Lorentzian.hessZZ_cross`,
+    `Asymptotics.Lorentzian.hessXX_cross`, `Asymptotics.Lorentzian.nodeQuad`,
+    `Asymptotics.Lorentzian.nodeBilin`, `Asymptotics.Lorentzian.hessBlockMatrix`,
+    `Asymptotics.Lorentzian.hessBlockMatrix_symm`
 
 ## References
 
