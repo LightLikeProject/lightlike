@@ -85,7 +85,6 @@ theorem coverO3_k3 {r : ℕ} (hr : 2 ≤ r) (B A E F q : ℕ) (hq1 : qAdm r B F 
     QDougallAt r B A E F :=
   (qDougallAt_k3 r B A E F).1 (coverO3 hr F E A B q (qAdm_swap12 hq1) (qAdm_swap12 hq2) hA hE hx hq)
 
-set_option maxHeartbeats 4000000 in
 /-- Covering of the pair of lowest colours `(B-A, B-F)`. -/
 theorem coverPair00 {r : ℕ} (hr : 2 ≤ r) (B A E F q : ℕ) (h1 : qAdm r B F q)
     (h2 : qAdm r E A q) (hx : aLo B A E F + A = B) (hq : aLo B F E A + F = B) :
