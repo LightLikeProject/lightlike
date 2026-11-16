@@ -5,13 +5,25 @@ import Lightlike.SpinFoam.ForcingMove33
 # Robust forcing sets and the 1-5 move
 
 A set `T` of triangles is *robust* for a complex `K` if it forces every triangle of `K` even when any
-one tetrahedron of `K` is removed. Numerical evidence (`scripts/spinfoam/forcechain.py`): the set carried
+one tetrahedron of `K` is removed. Numerical evidence (`scripts/spinfoam/robust_check.py`): the set carried
 along from the boundary of the 5-simplex by random 3-3, 2-4 and 1-5 moves is robust at every
 tetrahedron sampled (1,104,480 of 1,104,480 tetrahedra), at every 3-3 location (38,176 of 38,176), and
 after each of 822 consecutive moves. It is a conjecture that the three moves preserve robustness.
 
 This file proves the 1-5 case: if `T` is robust for `K`, then `T` together with the four gauge
-triangles of the move is robust for the complex after the move. The 3-3 and 2-4 moves are not covered.
+triangles of the move is robust for the complex after the move. The 3-3 and 2-4 moves are not
+covered.
+
+## Main results
+
+* `Robust`: the definition; `robustBy`, `robust_of_robustBy`: a kernel checker from explicit forcing
+  steps.
+* `Move15.robust_move15`: robust sets stay robust under the 1-5 move.
+
+## References
+
+* `freidel-louapre-2003`, Section IV: the motivation (gauge fixing); the forcing rule itself is this
+  library's.
 -/
 
 open Finset Lightlike.FourD Complex4
