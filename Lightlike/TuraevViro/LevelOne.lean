@@ -12,6 +12,17 @@ kernel (`decide`, no `native_decide`). This gives the **unconditional** invarian
 Turaev–Viro state sum under both moves (`turaevViro3_move23`, `turaevViro3_move14`). It is also
 a non-vacuity check: the hypotheses of `turaevViro_move23/14` hold for an actual Turaev–Viro
 model.
+
+## Main results
+
+* `qSixJ_three`: the quantum 6j symbol at `r = 3`.
+* `qBiedenharnElliott_three`, `qOrthogonality_three`: both identities at `r = 3`.
+* `turaevViro3_move23`, `turaevViro3_move14`: invariance of the `r = 3` state sum under the 2-3 and
+  1-4 moves, without hypotheses.
+
+## References
+
+* `turaev-1994`, Chapter VII (state sums).
 -/
 
 open Finset Lightlike.Pentagon Lightlike.PR

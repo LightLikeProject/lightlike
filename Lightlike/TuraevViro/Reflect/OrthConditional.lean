@@ -7,6 +7,15 @@ import Lightlike.TuraevViro.TuraevViro
 `qOrthogonality r` follows from one named hypothesis, the boundary evaluation `QDougallAll` (the
 terminating very-well-poised sum). The endpoint rows of the recurrence, at the third colours `0`
 and `r - 2`, are proved, so no hypothesis about the edge colours remains.
+
+## Main results
+
+* `QDougallAll`: the boundary evaluation for all admissible colours, a hypothesis.
+* `qOrthogonality_of`: given `QDougallAll`, `qOrthogonality r` holds for `r ≥ 2`.
+
+## References
+
+* `koekoek-swarttouw-1996`, the q-Racah polynomials.
 -/
 
 set_option maxHeartbeats 400000
