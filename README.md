@@ -141,7 +141,7 @@ Lightlike, which took 28 min 34 s on GitHub's 4-core Linux runner and takes more
 2-core machine; later builds compile only what changed. A build needs about 11 GB of disk, and some
 modules up to about 6 GB of RAM per Lean process (16 GB is recommended; 8 GB machines may build very
 slowly). `lake build Tasks` builds the proof-task files in `Tasks/`, which are not part of the
-library. The checks in `scripts/` need Python 3.9 to 3.12 and the packages in `requirements.txt`:
+library. The checks in `scripts/` need Python 3.9 to 3.14 and the packages in `requirements.txt`:
 `python3 -m venv .venv && . .venv/bin/activate && pip install -r requirements.txt` (on Windows the
 venv is activated with `.venv\Scripts\activate`; `scripts/gate.py` runs the CI steps with bash).
 
