@@ -1,6 +1,7 @@
 import Lightlike.Asymptotics.Lorentzian.CoherentVertex
 import Lightlike.Lorentz.FixedChart
 import Lightlike.Asymptotics.Lorentzian.Amplitude
+import Lightlike.Asymptotics.Lorentzian.AsymptoticFormula
 
 /-!
 # The Haar measure of the vertex in the fixed chart
@@ -37,6 +38,11 @@ whole integral.
 * `integral_pi_haar_eq`: the integral against `Measure.pi SL2C.haar` is `s⁻⁴` times the one against
   `Measure.pi haarC`.
 * `lorVertex_eq_fixChart_integral`: the vertex as a Lebesgue integral in the fixed charts.
+* `exists_measurePreserving_vertex_space`: `ℝ⁴⁴ ≃ (ℂ³)⁴ × ℂ¹⁰` preserving Lebesgue measure.
+* `fixVertexChart`, `chartAmplitude`, `lorVertex_eq_chart_integral`,
+  `lorVertex_scaled_eq_chart_integral`: the vertex (and the vertex of the scaled data `(λ j, λ p)`) as
+  `(∏ c_e) s⁻⁴ ∫_{ℝ⁴⁴} a(x) e^{λ S(x)} dx` with the `λ`-independent amplitude `a = ∏ Ω_e`: the
+  statement `hpull` of the asymptotic formula, without cutoff.
 -/
 
 open MeasureTheory Complex
@@ -109,5 +115,124 @@ theorem lorVertex_eq_fixChart_integral (j p : Fin 10 → ℝ) (c : Fin 10 → �
   rw [integral_pi_haar_eq, integral_haar4_fixChart 0 hF, ← integral_prod _ hjoint]
   rw [mul_assoc]
   rfl
+
+/-- **Uncurrying `ι → κ → α` into `ι × κ → α` preserves the product measure.** -/
+theorem measurePreserving_uncurry_pi (ι κ α : Type*) [Fintype ι] [Fintype κ] [MeasureSpace α]
+    [SigmaFinite (volume : Measure α)] :
+    MeasurePreserving (fun f : ι → κ → α => fun p : ι × κ => f p.1 p.2)
+      (volume : Measure (ι → κ → α)) (volume : Measure (ι × κ → α)) := by
+  have hmeas : Measurable (fun f : ι → κ → α => fun p : ι × κ => f p.1 p.2) :=
+    Measurable.of_eval fun p => (measurable_pi_apply p.2).comp (measurable_pi_apply p.1)
+  refine ⟨hmeas, ?_⟩
+  symm
+  refine Measure.pi_eq fun s hs => ?_
+  rw [Measure.map_apply hmeas (MeasurableSet.univ_pi hs)]
+  have : (fun f : ι → κ → α => fun p : ι × κ => f p.1 p.2) ⁻¹' (Set.univ.pi s) =
+      Set.univ.pi fun i => Set.univ.pi fun k => s (i, k) := by
+    ext f; simp [Set.mem_pi]
+  rw [this]
+  rw [show (volume : Measure (ι → κ → α)) = Measure.pi fun _ => Measure.pi fun _ => volume from rfl]
+  rw [Measure.pi_pi]
+  simp only [Measure.pi_pi]
+  rw [Fintype.prod_prod_type]
+
+/-- A complex vector indexed by `ι` is a real vector indexed by `ι × Fin 2`, with the same Lebesgue
+measure. -/
+theorem exists_measurePreserving_complex_pi (ι : Type*) [Fintype ι] :
+    ∃ e : (ι × Fin 2 → ℝ) ≃ᵐ (ι → ℂ), MeasurePreserving e volume volume := by
+  let e1 : (ι × Fin 2 → ℝ) ≃ᵐ (ι → Fin 2 → ℝ) := MeasurableEquiv.curry ι (Fin 2) ℝ
+  have h1 : MeasurePreserving e1 (volume : Measure (ι × Fin 2 → ℝ)) (volume : Measure (ι → Fin 2 → ℝ)) :=
+    (measurePreserving_uncurry_pi ι (Fin 2) ℝ).symm (MeasurableEquiv.curry ι (Fin 2) ℝ).symm
+  let e2 : (ι → Fin 2 → ℝ) ≃ᵐ (ι → ℂ) :=
+    MeasurableEquiv.piCongrRight fun _ => Complex.measurableEquivPi.symm
+  have h2 : MeasurePreserving e2 (volume : Measure (ι → Fin 2 → ℝ)) (volume : Measure (ι → ℂ)) :=
+    volume_preserving_pi fun _ => Complex.volume_preserving_equiv_pi.symm
+  exact ⟨e1.trans e2, h1.trans h2⟩
+
+/-- **A measure-preserving identification of `ℝ⁴⁴` with `(ℂ³)⁴ × ℂ¹⁰`** (the variables of the vertex):
+`24 + 20 = 44` real coordinates. -/
+theorem exists_measurePreserving_vertex_space :
+    ∃ e : (Fin 44 → ℝ) ≃ᵐ ((Fin 4 → Fin 3 → ℂ) × (Fin 10 → ℂ)),
+      MeasurePreserving e volume volume := by
+  obtain ⟨eA, hA⟩ := exists_measurePreserving_complex_pi (Fin 4 × Fin 3)
+  obtain ⟨eB, hB⟩ := exists_measurePreserving_complex_pi (Fin 10)
+  let κ := ((Fin 4 × Fin 3) × Fin 2) ⊕ (Fin 10 × Fin 2)
+  have hcard : Fintype.card κ = 44 := by simp [κ]
+  let f : Fin 44 ≃ κ := (Fintype.equivFinOfCardEq hcard).symm
+  let c1 : (Fin 44 → ℝ) ≃ᵐ (κ → ℝ) := MeasurableEquiv.piCongrLeft (fun _ => ℝ) f
+  have h1 : MeasurePreserving c1 (volume : Measure (Fin 44 → ℝ)) (volume : Measure (κ → ℝ)) :=
+    volume_measurePreserving_piCongrLeft (fun _ => ℝ) f
+  let c2 : (κ → ℝ) ≃ᵐ (((Fin 4 × Fin 3) × Fin 2 → ℝ) × (Fin 10 × Fin 2 → ℝ)) :=
+    MeasurableEquiv.sumPiEquivProdPi (fun _ => ℝ)
+  have h2 : MeasurePreserving c2 (volume : Measure (κ → ℝ)) volume :=
+    volume_measurePreserving_sumPiEquivProdPi (fun _ => ℝ)
+  let c3 := eA.prodCongr eB
+  have h3 : MeasurePreserving c3 (volume : Measure (((Fin 4 × Fin 3) × Fin 2 → ℝ) × (Fin 10 × Fin 2 → ℝ)))
+      (volume : Measure ((Fin 4 × Fin 3 → ℂ) × (Fin 10 → ℂ))) := hA.prod hB
+  let c4 : (Fin 4 × Fin 3 → ℂ) ≃ᵐ (Fin 4 → Fin 3 → ℂ) := MeasurableEquiv.curry (Fin 4) (Fin 3) ℂ
+  have h4 : MeasurePreserving c4 (volume : Measure (Fin 4 × Fin 3 → ℂ)) (volume : Measure (Fin 4 → Fin 3 → ℂ)) :=
+    (measurePreserving_uncurry_pi (Fin 4) (Fin 3) ℂ).symm (MeasurableEquiv.curry (Fin 4) (Fin 3) ℂ).symm
+  let c5 := c4.prodCongr (MeasurableEquiv.refl (Fin 10 → ℂ))
+  have h5 : MeasurePreserving c5 (volume : Measure ((Fin 4 × Fin 3 → ℂ) × (Fin 10 → ℂ)))
+      (volume : Measure ((Fin 4 → Fin 3 → ℂ) × (Fin 10 → ℂ))) := h4.prod (MeasurePreserving.id _)
+  exact ⟨c1.trans (c2.trans (c3.trans c5)), h1.trans (h2.trans (h3.trans h5))⟩
+
+
+/-- The vertex chart of the fixed charts, on `ℝ⁴⁴` through a measure-preserving identification
+`e : ℝ⁴⁴ ≃ (ℂ³)⁴ × ℂ¹⁰`: `X_a = g_0(y_a)` for `a < 4`, `X_4 = 1` (the gauge) and `z_e = (w_e, 1)`. -/
+noncomputable def fixVertexChart (e : (Fin 44 → ℝ) ≃ᵐ ((Fin 4 → Fin 3 → ℂ) × (Fin 10 → ℂ)))
+    (x : Fin 44 → ℝ) : (Fin 5 → SL2C) × (Fin 10 → Spinor) :=
+  (Lightlike.Lorentz.gauge (fun a => Lightlike.Lorentz.fixChart 0 ((e x).1 a)),
+    fun k => lorSpinor ((e x).2 k))
+
+/-- The amplitude of the chart integral: the product of the densities `Ω_e = 1/(‖Z_ab‖² ‖Z_ba‖²)`. -/
+noncomputable def chartAmplitude (e : (Fin 44 → ℝ) ≃ᵐ ((Fin 4 → Fin 3 → ℂ) × (Fin 10 → ℂ)))
+    (x : Fin 44 → ℝ) : ℂ :=
+  ∏ k, ((lorEdgeDensity (fixVertexChart e x).1 (fixVertexChart e x).2 k : ℝ) : ℂ)
+
+/-- **The vertex as an integral over `ℝ⁴⁴` of `a(x) e^{S(x)}`** (the statement `hpull` of the
+asymptotic formula, for the cutoff-free amplitude `a = ∏ Ω_e`), under joint integrability (named
+limit above). -/
+theorem lorVertex_eq_chart_integral (e : (Fin 44 → ℝ) ≃ᵐ ((Fin 4 → Fin 3 → ℂ) × (Fin 10 → ℂ)))
+    (he : MeasurePreserving e volume volume) (j p : Fin 10 → ℝ) (c : Fin 10 → ℂ) (g : BdryData)
+    (hF : AEStronglyMeasurable (fun x : Fin 4 → SL2C => ∫ w : Fin 10 → ℂ,
+      lorIntegrand j p g (Lightlike.Lorentz.gauge x) w) (Measure.pi fun _ : Fin 4 => Lightlike.Lorentz.haarC))
+    (hjoint : Integrable (fun q : (Fin 4 → (Fin 3 → ℂ)) × (Fin 10 → ℂ) =>
+      lorIntegrand j p g (Lightlike.Lorentz.gauge (fun a => Lightlike.Lorentz.fixChart 0 (q.1 a))) q.2)) :
+    lorVertex j p c g = (∏ k, c k) *
+      ((((((Measure.haarScalarFactor Lightlike.Lorentz.haarC SL2C.haar) ^ 4)⁻¹ : ℝ≥0) : ℝ)) : ℂ) *
+        ∫ x : Fin 44 → ℝ, chartAmplitude e x *
+          Complex.exp (lorChartAction j p g (fixVertexChart e) x) := by
+  rw [lorVertex_eq_fixChart_integral j p c g hF hjoint]
+  congr 1
+  rw [← he.integral_comp' (fun q : (Fin 4 → (Fin 3 → ℂ)) × (Fin 10 → ℂ) =>
+    lorIntegrand j p g (Lightlike.Lorentz.gauge (fun a => Lightlike.Lorentz.fixChart 0 (q.1 a))) q.2)]
+  refine integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)
+  simp only [lorIntegrand, chartAmplitude, lorChartAction, fixVertexChart]
+  ring
+
+/-- **The scaled vertex** `(λ j, λ p)` (weights `c λ`): the integrand is `a(x) e^{λ S(x)}` with the
+same `λ`-independent amplitude `a`, since `S(λ j, λ p) = λ S(j, p)` (`lorAction_smul`). -/
+theorem lorVertex_scaled_eq_chart_integral (e : (Fin 44 → ℝ) ≃ᵐ ((Fin 4 → Fin 3 → ℂ) × (Fin 10 → ℂ)))
+    (he : MeasurePreserving e volume volume) (j p : Fin 10 → ℝ) (lam : ℝ) (c : Fin 10 → ℂ)
+    (g : BdryData)
+    (hF : AEStronglyMeasurable (fun x : Fin 4 → SL2C => ∫ w : Fin 10 → ℂ,
+      lorIntegrand (fun k => lam * j k) (fun k => lam * p k) g (Lightlike.Lorentz.gauge x) w)
+      (Measure.pi fun _ : Fin 4 => Lightlike.Lorentz.haarC))
+    (hjoint : Integrable (fun q : (Fin 4 → (Fin 3 → ℂ)) × (Fin 10 → ℂ) =>
+      lorIntegrand (fun k => lam * j k) (fun k => lam * p k) g
+        (Lightlike.Lorentz.gauge (fun a => Lightlike.Lorentz.fixChart 0 (q.1 a))) q.2)) :
+    lorVertex (fun k => lam * j k) (fun k => lam * p k) c g = (∏ k, c k) *
+      ((((((Measure.haarScalarFactor Lightlike.Lorentz.haarC SL2C.haar) ^ 4)⁻¹ : ℝ≥0) : ℝ)) : ℂ) *
+        ∫ x : Fin 44 → ℝ, chartAmplitude e x *
+          Complex.exp ((lam : ℂ) * lorChartAction j p g (fixVertexChart e) x) := by
+  rw [lorVertex_eq_chart_integral e he _ _ c g hF hjoint]
+  have hfun : (fun x : Fin 44 → ℝ => chartAmplitude e x *
+      Complex.exp (lorChartAction (fun k => lam * j k) (fun k => lam * p k) g (fixVertexChart e) x)) =
+      fun x => chartAmplitude e x *
+        Complex.exp ((lam : ℂ) * lorChartAction j p g (fixVertexChart e) x) := by
+    funext x
+    simp only [lorChartAction, lorAction_smul]
+  rw [hfun]
 
 end Lightlike.Asymptotics.Lorentzian
