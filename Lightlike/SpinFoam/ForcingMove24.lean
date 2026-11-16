@@ -296,33 +296,131 @@ theorem forcing_dichotomy24 (P0 C T : Finset (Finset V)) (a : Fin 4)
     set pb : Fin 6 → Bool := fun r => decide (tx e (mpX r) ∈ A) with hpb
     set qb : Fin 6 → Bool := fun r => decide (tx e (mqX r) ∈ A) with hqb
     have htp0 : ok4 (sb 0) (pb 3) (pb 4) (pb 5) = true :=
-    ok4_of_closedTet (hAcl _ (hcom 0).1) (tris_four e tris_tpX_0)
+      ok4_of_closedTet (hAcl _ (hcom 0).1) (tris_four e tris_tpX_0)
     have htq0 : ok4 (sb 0) (qb 3) (qb 4) (qb 5) = true :=
-    ok4_of_closedTet (hAcl _ (hcom 0).2) (tris_four e tris_tqX_0)
+      ok4_of_closedTet (hAcl _ (hcom 0).2) (tris_four e tris_tqX_0)
     have htp1 : ok4 (sb 1) (pb 1) (pb 2) (pb 5) = true :=
-    ok4_of_closedTet (hAcl _ (hcom 1).1) (tris_four e tris_tpX_1)
+      ok4_of_closedTet (hAcl _ (hcom 1).1) (tris_four e tris_tpX_1)
     have htq1 : ok4 (sb 1) (qb 1) (qb 2) (qb 5) = true :=
-    ok4_of_closedTet (hAcl _ (hcom 1).2) (tris_four e tris_tqX_1)
+      ok4_of_closedTet (hAcl _ (hcom 1).2) (tris_four e tris_tqX_1)
     have htp2 : ok4 (sb 2) (pb 0) (pb 2) (pb 4) = true :=
-    ok4_of_closedTet (hAcl _ (hcom 2).1) (tris_four e tris_tpX_2)
+      ok4_of_closedTet (hAcl _ (hcom 2).1) (tris_four e tris_tpX_2)
     have htq2 : ok4 (sb 2) (qb 0) (qb 2) (qb 4) = true :=
-    ok4_of_closedTet (hAcl _ (hcom 2).2) (tris_four e tris_tqX_2)
+      ok4_of_closedTet (hAcl _ (hcom 2).2) (tris_four e tris_tqX_2)
     have htp3 : ok4 (sb 3) (pb 0) (pb 1) (pb 3) = true :=
-    ok4_of_closedTet (hAcl _ (hcom 3).1) (tris_four e tris_tpX_3)
+      ok4_of_closedTet (hAcl _ (hcom 3).1) (tris_four e tris_tpX_3)
     have htq3 : ok4 (sb 3) (qb 0) (qb 1) (qb 3) = true :=
-    ok4_of_closedTet (hAcl _ (hcom 3).2) (tris_four e tris_tqX_3)
+      ok4_of_closedTet (hAcl _ (hcom 3).2) (tris_four e tris_tqX_3)
     have hs : ∀ j, sb j = decide (j ≠ i0) := by
-    intro j
-    show decide (tx e (sgX j) ∈ A) = decide (j ≠ i0)
-    by_cases hj : j = i0
-    · rw [hj]; simp [hi0]
-    · simp [hj, hrest j hj]
+      intro j
+      show decide (tx e (sgX j) ∈ A) = decide (j ≠ i0)
+      by_cases hj : j = i0
+      · rw [hj]; simp [hi0]
+      · simp [hj, hrest j hj]
     have heq3 : eq3 (sb 0) (sb 1) (sb 2) (sb 3) = true := by
-    rw [hs 0, hs 1, hs 2, hs 3]
-    fin_cases i0 <;> decide
+      rw [hs 0, hs 1, hs 2, hs 3]
+      fin_cases i0 <;> decide
     have key := local24 (sb 0) (sb 1) (sb 2) (sb 3) (pb 0) (pb 1) (pb 2) (pb 3) htp3 (pb 4) htp2 (pb 5) htp0 htp1 (qb 0) (qb 1) (qb 2) (qb 3) htq3 (qb 4) htq2 (qb 5) htq0 htq1 heq3
     obtain ⟨nb, hna, hn0, hn1, hn2, hn3, hn4, hn5⟩ := extract_n pb qb a key
-    sorry
+    set W' : Finset (Finset V) :=
+      A ∪ (univ.filter fun i : Fin 4 => nb i = true).image (fun i => tx e (nnX i)) with hW'
+    have hmemnn : ∀ i, tx e (nnX i) ∈ W' ↔ nb i = true := by
+      intro i
+      constructor
+      · intro h
+        rcases mem_union.mp h with h | h
+        · exact absurd (hAC h) (hNC i)
+        · obtain ⟨j, hj, hji⟩ := mem_image.mp h
+          have := nnX_inj _ _ ((tx_inj e).mp hji)
+          rw [← this]; exact (mem_filter.mp hj).2
+      · intro h
+        exact mem_union_right _ (mem_image_of_mem _ (mem_filter.mpr ⟨mem_univ _, h⟩))
+    have hmemA : ∀ X : Finset (Fin 6), (∀ j, X ≠ nnX j) → (tx e X ∈ W' ↔ tx e X ∈ A) := by
+      intro X hX
+      constructor
+      · intro h
+        rcases mem_union.mp h with h | h
+        · exact h
+        · obtain ⟨j, -, hj⟩ := mem_image.mp h
+          exact absurd ((tx_inj e).mp hj).symm (hX j)
+      · exact fun h => mem_union_left _ h
+    have hdn : ∀ i, decide (tx e (nnX i) ∈ W') = nb i := fun i => by
+      cases h : nb i <;> simp [hmemnn, h]
+    have hdp : ∀ r, decide (tx e (mpX r) ∈ W') = pb r := fun r =>
+      decide_eq_decide.mpr (hmemA _ (mpX_ne_nnX r))
+    have hdq : ∀ r, decide (tx e (mqX r) ∈ W') = qb r := fun r =>
+      decide_eq_decide.mpr (hmemA _ (mqX_ne_nnX r))
+    have hTW : insert (tx e (nnX a)) T ⊆ W' := by
+      intro f hf
+      rcases mem_insert.mp hf with rfl | hf
+      · exact (hmemnn a).mpr hna
+      · exact mem_union_left _ (hTA hf)
+    have hcl0 : ClosedUnder P0 W' := by
+      intro t ht f hf hothers
+      refine mem_union_left _ (hAcl t ht f hf fun g hg hne => ?_)
+      have hgW := hothers g hg hne
+      rcases mem_union.mp hgW with h | h
+      · exact h
+      · obtain ⟨j, -, hj⟩ := mem_image.mp h
+        exact absurd (hj ▸ hCt t ht g hg) (hNC j)
+    have hcl1 : ClosedUnder (univ.image fun r => tx e (ntX r)) W' := by
+      intro t ht f hf hothers
+      obtain ⟨r, -, rfl⟩ := mem_image.mp ht
+      fin_cases r
+      · have h' : ok4 (decide (tx e (nnX 0) ∈ W')) (decide (tx e (nnX 1) ∈ W'))
+            (decide (tx e (mpX 0) ∈ W')) (decide (tx e (mqX 0) ∈ W')) = true := by
+          rw [hdn 0, hdn 1, hdp 0, hdq 0]; exact hn0
+        obtain ⟨c1, c2, c3, c4⟩ := mem_of_ok4 h'
+        have d := dist_ntX_0
+        exact closed_of_four (tris_four e tris_ntX_0) ((tx_inj e).not.mpr d.1)
+          ((tx_inj e).not.mpr d.2.1) ((tx_inj e).not.mpr d.2.2.1) ((tx_inj e).not.mpr d.2.2.2.1)
+          ((tx_inj e).not.mpr d.2.2.2.2.1) ((tx_inj e).not.mpr d.2.2.2.2.2) c1 c2 c3 c4 f hf hothers
+      · have h' : ok4 (decide (tx e (nnX 0) ∈ W')) (decide (tx e (nnX 2) ∈ W'))
+            (decide (tx e (mpX 1) ∈ W')) (decide (tx e (mqX 1) ∈ W')) = true := by
+          rw [hdn 0, hdn 2, hdp 1, hdq 1]; exact hn1
+        obtain ⟨c1, c2, c3, c4⟩ := mem_of_ok4 h'
+        have d := dist_ntX_1
+        exact closed_of_four (tris_four e tris_ntX_1) ((tx_inj e).not.mpr d.1)
+          ((tx_inj e).not.mpr d.2.1) ((tx_inj e).not.mpr d.2.2.1) ((tx_inj e).not.mpr d.2.2.2.1)
+          ((tx_inj e).not.mpr d.2.2.2.2.1) ((tx_inj e).not.mpr d.2.2.2.2.2) c1 c2 c3 c4 f hf hothers
+      · have h' : ok4 (decide (tx e (nnX 0) ∈ W')) (decide (tx e (nnX 3) ∈ W'))
+            (decide (tx e (mpX 2) ∈ W')) (decide (tx e (mqX 2) ∈ W')) = true := by
+          rw [hdn 0, hdn 3, hdp 2, hdq 2]; exact hn2
+        obtain ⟨c1, c2, c3, c4⟩ := mem_of_ok4 h'
+        have d := dist_ntX_2
+        exact closed_of_four (tris_four e tris_ntX_2) ((tx_inj e).not.mpr d.1)
+          ((tx_inj e).not.mpr d.2.1) ((tx_inj e).not.mpr d.2.2.1) ((tx_inj e).not.mpr d.2.2.2.1)
+          ((tx_inj e).not.mpr d.2.2.2.2.1) ((tx_inj e).not.mpr d.2.2.2.2.2) c1 c2 c3 c4 f hf hothers
+      · have h' : ok4 (decide (tx e (nnX 1) ∈ W')) (decide (tx e (nnX 2) ∈ W'))
+            (decide (tx e (mpX 3) ∈ W')) (decide (tx e (mqX 3) ∈ W')) = true := by
+          rw [hdn 1, hdn 2, hdp 3, hdq 3]; exact hn3
+        obtain ⟨c1, c2, c3, c4⟩ := mem_of_ok4 h'
+        have d := dist_ntX_3
+        exact closed_of_four (tris_four e tris_ntX_3) ((tx_inj e).not.mpr d.1)
+          ((tx_inj e).not.mpr d.2.1) ((tx_inj e).not.mpr d.2.2.1) ((tx_inj e).not.mpr d.2.2.2.1)
+          ((tx_inj e).not.mpr d.2.2.2.2.1) ((tx_inj e).not.mpr d.2.2.2.2.2) c1 c2 c3 c4 f hf hothers
+      · have h' : ok4 (decide (tx e (nnX 1) ∈ W')) (decide (tx e (nnX 3) ∈ W'))
+            (decide (tx e (mpX 4) ∈ W')) (decide (tx e (mqX 4) ∈ W')) = true := by
+          rw [hdn 1, hdn 3, hdp 4, hdq 4]; exact hn4
+        obtain ⟨c1, c2, c3, c4⟩ := mem_of_ok4 h'
+        have d := dist_ntX_4
+        exact closed_of_four (tris_four e tris_ntX_4) ((tx_inj e).not.mpr d.1)
+          ((tx_inj e).not.mpr d.2.1) ((tx_inj e).not.mpr d.2.2.1) ((tx_inj e).not.mpr d.2.2.2.1)
+          ((tx_inj e).not.mpr d.2.2.2.2.1) ((tx_inj e).not.mpr d.2.2.2.2.2) c1 c2 c3 c4 f hf hothers
+      · have h' : ok4 (decide (tx e (nnX 2) ∈ W')) (decide (tx e (nnX 3) ∈ W'))
+            (decide (tx e (mpX 5) ∈ W')) (decide (tx e (mqX 5) ∈ W')) = true := by
+          rw [hdn 2, hdn 3, hdp 5, hdq 5]; exact hn5
+        obtain ⟨c1, c2, c3, c4⟩ := mem_of_ok4 h'
+        have d := dist_ntX_5
+        exact closed_of_four (tris_four e tris_ntX_5) ((tx_inj e).not.mpr d.1)
+          ((tx_inj e).not.mpr d.2.1) ((tx_inj e).not.mpr d.2.2.1) ((tx_inj e).not.mpr d.2.2.2.1)
+          ((tx_inj e).not.mpr d.2.2.2.2.1) ((tx_inj e).not.mpr d.2.2.2.2.2) c1 c2 c3 c4 f hf hothers
+    have hsound := hK'.sound (closedUnder_union hcl0 hcl1) hTW
+    refine hCA fun f hf => ?_
+    rcases mem_union.mp (hsound (mem_union_left _ hf)) with h | h
+    · exact h
+    · obtain ⟨j, -, hj⟩ := mem_image.mp h
+      exact absurd (hj ▸ hf) (hNC j)
 
 end Abstract
 
