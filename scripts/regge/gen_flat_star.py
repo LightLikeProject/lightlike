@@ -186,8 +186,9 @@ def emit_lean():
     out.append('  rw [eq_div_iff hdet, ← hdetp]')
     out.append('  simp only [Rnum, Matrix.adjugate_fin_three, Matrix.of_apply, Matrix.cons_val_zero, Matrix.cons_val_one,')
     out.append('    Matrix.cons_val, Matrix.head_cons, Fin.sum_univ_three]')
-    out.append("  simp (config := { maxSteps := 100000000 }) only [Fin.sum_univ_six, Einc, lenQ, lenR, incVec, NPoly, NPoly', PPoly,")
-    out.append("    PPoly', qf, rf, ddq, kpos, kv, perms, hP, hQ, hR, hS, Fin.sum_univ_three, Matrix.cons_val_zero,")
+    lem_names = ', '.join('lenQ_%d_%d, lenR_%d_%d' % (a, b, a, b) for a in range(6) for b in range(6))
+    out.append("  simp (config := { maxSteps := 100000000 }) only [Fin.sum_univ_six, %s, Einc, NPoly, NPoly', PPoly," % lem_names)
+    out.append("    PPoly', qf, rf, ddq, Fin.sum_univ_three, Matrix.cons_val_zero,")
     out.append("    Matrix.cons_val_one, Matrix.cons_val, Matrix.head_cons, div_eq_mul_inv]")
     out.append('  rw [hG 1 0, hG 2 0, hG 2 1]')
     out.append('  simp only [hd1 1 0, hd1 2 0, hd1 2 1, hd2 _ _ 1 0, hd2 _ _ 2 0, hd2 _ _ 2 1]')
@@ -195,9 +196,30 @@ def emit_lean():
     out.append('  linear_combination ' + comb)
     return '\n'.join(out)
 
+def emit_lemmas():
+    out = []
+    for s_ in range(6):
+        for h in range(6):
+            p = [kpos(s_, h, k) for k in range(4)]
+            pairs = [(hP[h], hQ[h]), (hP[h], hR[h]), (hQ[h], hR[h]), (hP[h], hS[h]), (hQ[h], hS[h]), (hR[h], hS[h])]
+            qs = []; rs = []
+            for (a, b) in pairs:
+                mid = [(p[a][i] + p[b][i]) / 2 for i in range(3)]
+                D = [p[b][i] - p[a][i] for i in range(3)]
+                qs.append('qf G %s' % vec3(D)); rs.append('rf dd %s %s' % (vec3(mid), vec3(D)))
+            tac = ('  ext i\n  fin_cases i <;> simp [%s, incVec, kpos, kv, perms, hP, hQ, hR, hS] <;> congr 1 <;> ext j <;>\n'
+                   '    fin_cases j <;> simp <;> norm_num')
+            out.append('/-- The Gram squared lengths of the incidence `(%d, %d)` with explicit edge vectors. -/\n'
+                       'theorem lenQ_%d_%d (G : Fin 3 → Fin 3 → ℝ) : lenQ G %d %d = ![%s] := by\n%s\n'
+                       % (s_, h, s_, h, s_, h, ', '.join(qs), tac % 'lenQ'))
+            out.append('/-- The second-order lengths of the incidence `(%d, %d)` with explicit edge data. -/\n'
+                       'theorem lenR_%d_%d (dd : Fin 3 → Fin 3 → Fin 3 → Fin 3 → ℝ) : lenR dd %d %d = ![%s] := by\n%s\n'
+                       % (s_, h, s_, h, s_, h, ', '.join(rs), tac % 'lenR'))
+    return '\n'.join(out)
+
 if __name__ == '__main__':
     import sys
     if len(sys.argv) > 1:
-        open(sys.argv[1], 'w').write(emit_lean() + '\n')
+        open(sys.argv[1], 'w').write(emit_lemmas() + '\n' + emit_lean() + '\n')
     else:
         print('identity (Poly + sum Q) det = RHS:', check())
