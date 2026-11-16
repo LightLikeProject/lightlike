@@ -281,6 +281,70 @@ theorem no_K33 (D : ContDrawing) : False := by
   obtain ⟨ε, hε, hsep⟩ := D.exists_eps hr s t
     (fun e => ⟨(hs e).1, (hs e).2.1, (hs e).2.2.1, (hs e).2.2.2.2.2⟩)
   obtain ⟨h, hh⟩ := D.exists_polys s t (fun e => ⟨(hs e).1, (hs e).2.1, (hs e).2.2.1⟩) hε
+  -- the trimmed subarcs and the ends of their spheres
+  set G : Fin 3 × Fin 3 → Set (ℝ × ℝ) := fun e => D.γ e.1 e.2 '' Icc (s e) (t e) with hG
+  set Q : Fin 3 × Fin 3 → Bool → ℝ × ℝ := fun e k => cond k (D.γ e.1 e.2 (t e)) (D.γ e.1 e.2 (s e))
+    with hQ
+  have hQG : ∀ e k, Q e k ∈ G e := fun e k => by
+    cases k
+    · exact ⟨s e, ⟨le_rfl, (hs e).2.1.le⟩, rfl⟩
+    · exact ⟨t e, ⟨(hs e).2.1.le, le_rfl⟩, rfl⟩
+  have hQd : ∀ e k, dist (Q e k) (D.w (ContDrawing.ep e k)) = r := fun e k => by
+    cases k
+    · exact (hs e).2.2.2.1
+    · exact (hs e).2.2.2.2.1
+  have hGfar : ∀ e, ∀ y ∈ G e, ∀ x, r ≤ dist y (D.w x) := by
+    rintro e _ ⟨τ, hτ, rfl⟩ x
+    exact (hs e).2.2.2.2.2 τ hτ x
+  -- the pieces
+  set Seg : Fin 3 × Fin 3 → Bool → Set (ℝ × ℝ) := fun e k =>
+    segment ℝ (D.w (ContDrawing.ep e k)) (Q e k) with hSeg
+  have hHH : ∀ e e', e ≠ e' → ∀ z ∈ chainSet (h e), z ∈ chainSet (h e') → False := by
+    intro e e' hee z hz hz'
+    obtain ⟨g, hg, hzg⟩ := (hh e).2.2.2 z hz
+    obtain ⟨g', hg', hzg'⟩ := (hh e').2.2.2 z hz'
+    have h1 := hsep e e' hee g hg g' hg'
+    have h2' := dist_triangle_left g g' z
+    linarith
+  have hHS : ∀ e e', e ≠ e' → ∀ k z, z ∈ chainSet (h e) → z ∈ Seg e' k → False := by
+    intro e e' hee k z hz hzs
+    obtain ⟨g, hg, hzg⟩ := (hh e).2.2.2 z hz
+    have hsum := dist_add_dist_of_mem_segment hzs
+    have hq := hQd e' k
+    have hfar := hGfar e g hg (ContDrawing.ep e' k)
+    have h1 := dist_triangle g z (D.w (ContDrawing.ep e' k))
+    have h2' := dist_triangle g z (Q e' k)
+    have h3' := hsep e e' hee g hg (Q e' k) (hQG e' k)
+    have c1 := dist_comm g z
+    have c2 := dist_comm (Q e' k) (D.w (ContDrawing.ep e' k))
+    have c3 := dist_comm z (D.w (ContDrawing.ep e' k))
+    linarith
+  have hSS : ∀ e e', e ≠ e' → ∀ k k' z, z ∈ Seg e k → z ∈ Seg e' k' →
+      ContDrawing.ep e k = ContDrawing.ep e' k' ∧ z = D.w (ContDrawing.ep e k) := by
+    intro e e' hee k k' z hz hz'
+    have hs1 := dist_add_dist_of_mem_segment hz
+    have hs2 := dist_add_dist_of_mem_segment hz'
+    have hq1 := hQd e k
+    have hq2 := hQd e' k'
+    have c1 := dist_comm (Q e k) (D.w (ContDrawing.ep e k))
+    have c2 := dist_comm (Q e' k') (D.w (ContDrawing.ep e' k'))
+    by_cases hx : ContDrawing.ep e k = ContDrawing.ep e' k'
+    · refine ⟨hx, ?_⟩
+      have hne : Q e k ≠ Q e' k' := fun heq => by
+        have := hsep e e' hee _ (hQG e k) _ (hQG e' k')
+        rw [← heq, dist_self] at this
+        linarith
+      have hz'' : z ∈ segment ℝ (D.w (ContDrawing.ep e' k')) (Q e' k') := hz'
+      rw [← hx] at hz'' hq2 c2
+      exact segment_inter_sphere hr hq1 hq2
+        hne hz hz''
+    · exfalso
+      have h1 := h2 _ _ hx
+      have h4 := dist_triangle (D.w (ContDrawing.ep e k)) z (D.w (ContDrawing.ep e' k'))
+      have c3 := dist_comm z (D.w (ContDrawing.ep e' k'))
+      have := dist_nonneg (x := z) (y := Q e k)
+      have := dist_nonneg (x := z) (y := Q e' k')
+      linarith
   sorry
 
 end Lightlike.PL
