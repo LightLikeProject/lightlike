@@ -114,7 +114,9 @@ for a negative spin [15].
 Towards the identification with the finite principal-series vertex, the lowest SU(2) level of the
 principal series on a coherent state is the `n`-th power of a linear form, and for `2k = n` the
 exponential of the action is the product of the overlap power, the real power of the norms and
-the imaginary power of their ratio [16]. The identity itself is not proved yet.
+the imaginary power of their ratio, and one link of the principal-series vertex, with the boundary
+spinors `ξ = first column of ḡ₁` and `ξ' = first column of w g₂`, is `e^S` times the density of `Ω` [16].
+The sum over the links and the Fubini step, hence the identity of the two amplitudes, are not proved yet.
 
 ## Lean References
 
@@ -178,7 +180,8 @@ the imaginary power of their ratio [16]. The identity itself is not proved yet.
 16. Lightlike/Asymptotics/Lorentzian/Bridge.lean - `Asymptotics.Lorentzian.lam_emb_cohState`,
     `Asymptotics.Lorentzian.suV_ae`, `Asymptotics.Lorentzian.hvec_cohState`,
     `Asymptotics.Lorentzian.inner_principalSeries_eq_integral`,
-    `Asymptotics.Lorentzian.exp_triAction_nat`
+    `Asymptotics.Lorentzian.exp_triAction_nat`, `Asymptotics.Lorentzian.weight_pair`,
+    `Asymptotics.Lorentzian.link_pointwise`, `Asymptotics.Lorentzian.link_eq_lor`
 
 ## References
 

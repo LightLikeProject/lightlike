@@ -18,11 +18,14 @@ which is finite for every spin (`integrable_eprlIntegrand`):
 * `inner_principalSeries_eq_integral`: the pairing of two boosted homogeneous functions is an
   integral over the chart;
 * `exp_triAction_nat`: for `2k = n`, `e^S` of the power-form action is the product of
-  `(⟨Z,ξ⟩⟨Jξ',Z'⟩)^n`, `(‖Z‖²‖Z'‖²)^{-n/2}` and `(‖Z'‖²/‖Z‖²)^{iρ}`.
+  `(⟨Z,ξ⟩⟨Jξ',Z'⟩)^n`, `(‖Z‖²‖Z'‖²)^{-n/2}` and `(‖Z'‖²/‖Z‖²)^{iρ}`;
+* `link_pointwise`, `link_eq_lor`: one link of the principal-series vertex, `conj F_{g₁}(Z) F_{g₂}(Z')`
+  with `F_g = hvec n 0 ρ (|n/2, g⟩)`, is `e^S / (‖Z‖² ‖Z'‖²)` for the source spinor `ξ` = first
+  column of `ḡ₁` and the target spinor `ξ'` = first column of `w g₂`, with no sign and no constant.
 
-**Not here:** the identity `eprlVertex = lorVertex` itself. It needs the pointwise identity of the
-two integrands (with `X = conj a`, the source spinor `firstCol (conj g)` and the target spinor
-`firstCol (wM g)`), the sum over the magnetic configurations, and Fubini over `SL(2,ℂ)^4 × ℂ^10`;
+**Not here:** the identity `eprlVertex = lorVertex` itself. It still needs that a combination of
+`eprlVec` is `suV` of its coefficients, the sum over the magnetic configurations as a product over
+the links, and Fubini over `SL(2,ℂ)^4 × ℂ^10` with the substitution `X = conj a` (Haar invariance);
 the normalisation constants of `suV` stay abstract (`nrmA`).
 -/
 
