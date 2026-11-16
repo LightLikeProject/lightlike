@@ -351,7 +351,7 @@ noncomputable def rhoT (q a b c x : ℂ) (k : ℕ) : ℂ :=
 evaluation is the ratio of quantum integers by which the weighted terms step: the powers of `u` and
 the signs of the brackets cancel. -/
 theorem rhoT_eq {r : ℕ} (hr : 2 ≤ r) {d j2 n j5 k ec : ℕ} (hec : ec + j5 = d + n + 1)
-    (hnj : n ≤ j5) (hj5 : j5 ≤ d + n) (hkn : k < n) (hj2 : n < j2)
+    (hnj : n ≤ j5) (hj5 : j5 ≤ d + n) (hkn : k < n) (hj2 : n ≤ j2)
     (h1 : d + 2 * k + 3 < r) (h2 : j2 + d + k + 2 < r) (h3 : d + n + k + 2 < r)
     (h5 : k + j5 + 1 < r) :
     rhoT (uC r ^ 2) ((uC r ^ 2) ^ (d + 1)) ((uC r ^ 2) ^ (j2 + d + 2)) ((uC r ^ 2) ^ ec)
@@ -451,7 +451,7 @@ lemma Qne_neg {r : ℕ} (hr : 2 ≤ r) {m : ℤ} (h0 : m < 0) (h1 : -(r : ℤ) <
 
 /-- The nonvanishing hypotheses of `Tj_succ` at the parameters of the boundary evaluation. -/
 theorem Tj_succ_hyps {r : ℕ} (hr : 2 ≤ r) {d j2 n j5 k ec : ℕ} (hec : ec + j5 = d + n + 1)
-    (hnj : n ≤ j5) (hj5 : j5 ≤ d + n) (hkn : k < n) (hj2 : n < j2)
+    (hnj : n ≤ j5) (hj5 : j5 ≤ d + n) (hkn : k < n) (hj2 : n ≤ j2)
     (h1 : d + 2 * k + 3 < r) (h2 : j2 + d + k + 2 < r) (h3 : d + n + k + 2 < r)
     (h5 : k + j5 + 1 < r) :
     let Q := uC r ^ 2
@@ -494,7 +494,7 @@ set_option maxHeartbeats 400000 in
 of the boundary evaluation are the first term times the summand of Jackson's series at
 `Q = uC r ^ 2`, `a = Q^(x0+1)`, `b = Q^(j1+2)`, `c = Q^((x0+j4-j5)/2+1)`, `x = Q^n`. -/
 theorem wTerm_eq_Tj {r j1 j2 j4 j5 n : ℕ} (hr : 2 ≤ r) (h21 : j2 ≤ j1) (h51 : j5 ≤ j1)
-    (hnd : j4 + j5 < j1 + j2) (hn : 2 * n = j4 + j5 - (j1 - j2))
+    (hnd : j4 + j5 ≤ j1 + j2) (hn : 2 * n = j4 + j5 - (j1 - j2))
     (hadmX : ∀ k ≤ n, qAdm r j1 j2 (j1 - j2 + 2 * k) ∧ qAdm r j4 j5 (j1 - j2 + 2 * k))
     (hadmQ : qAdm r j1 j5 (j1 - j5) ∧ qAdm r j4 j2 (j1 - j5)) :
     ∀ k ≤ n, (wTerm r j1 j2 j4 j5 k : ℂ) = (wTerm r j1 j2 j4 j5 0 : ℂ) *
@@ -522,7 +522,7 @@ theorem wTerm_eq_Tj {r j1 j2 j4 j5 n : ℕ} (hr : 2 ≤ r) (h21 : j2 ≤ j1) (h5
   have hec : ec + j5 = (j1 - j2) + n + 1 := by omega
   have hnj : n ≤ j5 := by omega
   have hj5 : j5 ≤ (j1 - j2) + n := by omega
-  have hj2 : n < j2 := by omega
+  have hj2 : n ≤ j2 := by omega
   intro k
   induction k with
   | zero =>
@@ -627,7 +627,7 @@ lemma prod_qZ_neg {r : ℕ} (m n : ℕ) (h : n ≤ m) (hm : m < r) :
 /-- **Jackson's right side at the parameters of the boundary evaluation** is a ratio of quantum
 factorials. -/
 theorem jacksonRhs_val {r : ℕ} (hr : 2 ≤ r) {d j2 n j5 ec : ℕ} (hec : ec + j5 = d + n + 1)
-    (hnj : n ≤ j5) (hj5 : j5 ≤ d + n) (hj2 : n < j2) (hb1 : d + n + 1 < r) (hb2 : j2 + ec < r) :
+    (hnj : n ≤ j5) (hj5 : j5 ≤ d + n) (hj2 : n ≤ j2) (hb1 : d + n + 1 < r) (hb2 : j2 + ec < r) :
     jacksonRhs (uC r ^ 2) ((uC r ^ 2) ^ (d + 1)) ((uC r ^ 2) ^ (j2 + d + 2)) ((uC r ^ 2) ^ ec) n =
       (((qfact r (d + n + 1) / qfact r (d + 1)) * (qfact r (j2 + ec) / qfact r (j2 + ec - n)) /
         ((qfact r j2 / qfact r (j2 - n)) * (qfact r j5 / qfact r (j5 - n))) : ℝ) : ℂ) := by
@@ -719,7 +719,7 @@ theorem jacksonRhs_val {r : ℕ} (hr : 2 ≤ r) {d j2 n j5 ec : ℕ} (hec : ec +
 `q0 = j2 + d - j5`, `ec = d + n + 1 - j5`: the weight of the lowest column, the first weighted term
 and Jackson's right side multiply to `1`. Every quantum factorial cancels. -/
 theorem prod_identity {r : ℕ} (hr : 2 ≤ r) {d j2 n j5 : ℕ} (hnj : n ≤ j5) (hj5 : j5 ≤ d + n)
-    (hj2 : n < j2) (hb1 : d + n + 1 < r) (hb2 : j2 + d + n + 1 - j5 < r) (hb3 : j2 + d + 1 < r) :
+    (hj2 : n ≤ j2) (hb1 : d + n + 1 < r) (hb2 : j2 + d + n + 1 - j5 < r) (hb3 : j2 + d + 1 < r) :
     qnum r (j2 + d - j5 + 1) *
         (qfact r (j2 + d - j5) * qfact r j5 / qfact r (j2 + d + 1)) *
         (qfact r (j2 - n) * qfact r (d + n - j5) * qfact r n / qfact r (j2 + d + n + 1 - j5)) *
@@ -786,7 +786,7 @@ theorem qDougall_nondeg_param {r d j2 n j5 : ℕ} (hr : 2 ≤ r) (hnj : n ≤ j5
   have hb1 : d + n + 1 < r := by omega
   have hb2 : j2 + (d + n + 1 - j5) < r := by omega
   have hRhs := jacksonRhs_val hr (d := d) (j2 := j2) (n := n) (j5 := j5) (ec := d + n + 1 - j5)
-    (by omega) hnj hj5 hj2 hb1 hb2
+    (by omega) hnj hj5 hj2.le hb1 hb2
   have sumC : (∑ k ∈ range (n + 1), (wTerm r (j2 + d) j2 (d + 2 * n - j5) j5 k : ℂ)) =
       (wTerm r (j2 + d) j2 (d + 2 * n - j5) j5 0 : ℂ) *
         ((((qfact r (d + n + 1) / qfact r (d + 1)) *
@@ -838,7 +838,7 @@ theorem qDougall_nondeg_param {r d j2 n j5 : ℕ} (hr : 2 ≤ r) (hnj : n ≤ j5
   rw [hsqSj]
   have q0 : qfact r 0 = 1 := by simp [qfact]
   rw [q0]
-  have key := prod_identity hr hnj hj5 hj2 hb1 (by omega) (by omega)
+  have key := prod_identity hr hnj hj5 hj2.le hb1 (by omega) (by omega)
   linear_combination key
 
 /-- **The boundary evaluation `QDougall`, non-degenerate case, for admissible spins.** In the case
