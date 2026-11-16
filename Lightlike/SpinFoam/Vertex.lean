@@ -9,7 +9,9 @@ network on the boundary of a 4-simplex `s`: one 4-valent intertwiner for each of
 tetrahedra, joined along the ten triangles. This file fixes its conventions and proves that they
 agree with Recoupling's 15j symbol `fifteenJSimplex` and with the orientations of `FourD`.
 
-## Conventions (doubled spins)
+## Conventions
+
+Doubled spins throughout.
 
 * A colouring `col : Finset V → ℕ` gives a spin to every triangle and a virtual spin to every
   tetrahedron.
@@ -38,7 +40,7 @@ agree with Recoupling's 15j symbol `fifteenJSimplex` and with the orientations o
   tetrahedra; at orientation `-1` the six extra signs cancel by the parity of the intertwiners at
   positions `1` and `3`.
 
-## Position level
+## Implementation notes
 
 The statements are reduced to the positions `0, …, 4` of the sorted vertices:
 `contrP σ J K` is the contraction for triangle spins `J p q` (`p < q`), virtual spins `K i`, and
@@ -47,11 +49,9 @@ leg signs `σ i q`; `σPlus` and `σMinus` are the leg signs of the two orientat
 
 ## References
 
-- H. Ooguri, *Topological lattice models in four dimensions*, Mod. Phys. Lett. A 7, 2799 (1992),
-  arXiv:hep-th/9205090: the 15j symbol as the vertex amplitude.
-- P. Martin-Dussaud, *A primer of group theory for loop quantum gravity and spin-foams*,
-  Gen. Relativ. Gravit. 51, 110 (2019), arXiv:1902.08439: §5.6 (the 15j symbol as a Yutsis
-  diagram) and §9.2 (the vertex amplitude as the evaluation of the vertex graph).
+* `ooguri-1992`: the 15j symbol as the vertex amplitude.
+* `martin-dussaud-2019`, §5.6 and §9.2: the 15j symbol as a Yutsis diagram, and the vertex
+  amplitude as the evaluation of the vertex graph.
 -/
 
 open Finset Lightlike.Recoupling PhyslibAlpha.Sl2 Lightlike.Pentagon

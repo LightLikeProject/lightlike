@@ -1105,3 +1105,19 @@
   review: kernel-checked
   note: "For a simple closed polygon p with n ≥ 3 vertices there is a geometric complex K in the plane (IsGeom) whose underlying set is the closed region bounded by p (the inside together with the carrier), which is a PL ball (IsBallIn, stellar equivalent to a simplex), and whose boundary complex (SComplex.bd: the faces inside a face whose link is a PL ball) has underlying set exactly the polygon (polygon_schoenflies). The complex is the ear-clipping triangulation of the previous entry. The new ingredients are the invariant that every edge of the triangulation that is not an edge of the polygon lies in two triangles (NonBdry), and the computation, by the signed count of the link, that a face whose link is a ball lies in exactly one triangle (unique_triangle_of_ball); the faces of the boundary are then exactly the faces inside an edge of the polygon (mem_bd_closure_iff), and their hulls are the edges (bd_space_eq_carrier). Limits: the ball is combinatorial (stellar equivalent to a simplex) with the geometric realisation given by the triangles; a PL homeomorphism of the region onto a triangle is not constructed, and this is the polygonal case only, not the Schoenflies theorem for arbitrary Jordan curves. The polygon is simple in the sense of Polygon.IsSimple. Check: the theorem applies to the triangle (0,0), (1,0), (0,1) (triangle_schoenflies); the bow tie, which is not simple, is excluded (not_isSimple_bowtie)."
   since: unreleased
+- id: LL-0085
+  title: One link of the principal-series Lorentzian vertex is the exponential of the coherent action times the density of Omega (the identity eprlVertex = lorVertex is not proved)
+  area: Asymptotics
+  file: Lightlike/Asymptotics/Lorentzian/Bridge.lean
+  decls: [Lightlike.Asymptotics.Lorentzian.link_eq_lor, Lightlike.Asymptotics.Lorentzian.link_pointwise, Lightlike.Asymptotics.Lorentzian.exp_triAction_nat, Lightlike.Asymptotics.Lorentzian.lam_emb_cohState, Lightlike.Asymptotics.Lorentzian.suV_ae, Lightlike.Asymptotics.Lorentzian.inner_principalSeries_eq_integral]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: bdfhp-2010, location: "Section 4, eq. (17)", check: "action"}
+      - {ref: bdfhp-2010, location: "Section 3.3, eqs. (15), (16)", check: "coherent states"}
+      - {ref: engle-pereira-2009, location: "eq. (22)", check: "independent"}
+      - {ref: engle-pereira-2009, location: "eq. (23)", check: "regularize"}
+  review: kernel-checked
+  note: "For a doubled spin n = 2k and the lowest SU(2) level, with the source spinor the first column of the complex conjugate of g1 and the target spinor the first column of w g2, conj F_{g1}(Z) F_{g2}(Z') = e^S / (|Z|^2 |Z'|^2), where F = hvec n 0 rho of the coherent state, e^S is the power-form action (exp_triAction_nat) and Z, Z' are the transported chart spinors; no sign and no constant appear. NOT PROVED: eprlVertex = lorVertex, and hence the finiteness of lorVertex. Still open: the sum over magnetic configurations as a product over links, Fubini over SL(2,C)^4 x C^10, the substitution X = conj(a) by Haar invariance, and the explicit normalisation constants of suV (abstract nrmA)."
+  since: unreleased

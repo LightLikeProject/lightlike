@@ -6,8 +6,7 @@ import Lightlike.Recoupling.Span
 /-!
 # The Ooguri state sum
 
-The 4-dimensional SU(2) BF model of Ooguri (*Mod. Phys. Lett. A* 7 (1992) 2799; Baez,
-*Spin foam models*, *Class. Quantum Grav.* 15 (1998) 1827, §3) on a 4-complex `K`: a spin on every
+The 4-dimensional SU(2) BF model of Ooguri on a 4-complex `K`: a spin on every
 triangle, an intertwiner (a virtual spin in the canonical basis) on every tetrahedron, the vertex
 amplitude `vertexAmp` (a 15j symbol) for every 4-simplex, and the dimension `2j + 1` of every
 triangle. In doubled units the weight of a colouring `col` is
@@ -52,19 +51,15 @@ ten triangles is collapsible together with the edges exactly when it forces all 
 
 ## References
 
-- H. Ooguri, *Topological lattice models in four dimensions*, Mod. Phys. Lett. A 7, 2799 (1992),
-  arXiv:hep-th/9205090: the state sum.
-- J. C. Baez, *Spin foam models*, Class. Quantum Grav. 15, 1827 (1998), arXiv:gr-qc/9709052:
-  spin foams, 2-complexes with faces labelled by representations and edges by intertwining
-  operators.
-- J. C. Baez, *An introduction to spin foam models of BF theory and quantum gravity*,
-  Lect. Notes Phys. 543, 25 (2000), arXiv:gr-qc/9905087: spin foam models of BF theory.
-- L. Freidel, D. Louapre, *Diffeomorphisms and spin foam models*, Nucl. Phys. B 662, 279 (2003),
-  arXiv:gr-qc/0212001: the gauge fixing of the divergences, worked out for the Ponzano–Regge
+* `ooguri-1992`: the state sum.
+* `baez-2000`: spin foam models of BF theory (2-complexes with faces labelled by representations
+  and edges by intertwining operators).
+* `freidel-louapre-2003`: the gauge fixing of the divergences, worked out for the Ponzano–Regge
   model, with a maximal tree of fixed spins.
-- V. Bonzom, M. Smerlak, *Bubble divergences from cellular cohomology*, Lett. Math. Phys. 93, 295
-  (2010), arXiv:1004.5196: the divergence degree of the BF spin foam models from the cellular
-  cohomology of the 2-complex.
+
+The divergence degree of the BF spin foam models from the cellular cohomology of the 2-complex is
+the subject of Bonzom–Smerlak, *Bubble divergences from cellular cohomology*, Lett. Math. Phys. 93,
+295 (2010), arXiv:1004.5196 (not in `sources.yaml`).
 -/
 
 open Finset Lightlike.FourD
