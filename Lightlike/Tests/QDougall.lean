@@ -1,5 +1,6 @@
 import Lightlike.TuraevViro.Reflect.OrthConditional
 import Lightlike.TuraevViro.Reflect.SixJSingle
+import Lightlike.TuraevViro.Reflect.QDougallMap
 
 /-!
 # Non-vacuity of the boundary evaluation `QDougall`
