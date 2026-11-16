@@ -143,7 +143,10 @@ digits the four frequencies fitted to the numerical amplitude of Donà–Fanizza
 statement, not a proof.
 For a configuration satisfying the z-eliminated critical equations (20), (21), the spinors
 `z_e = (X_a†)⁻¹ ξ_ab` give `Z_ab = ξ_ab` and `Z_ba = r c J ξ_ba`, and the real part of the action
-attains its maximum `0` there [24].
+attains its maximum `0` there [24]. On such an edge the derivative of the triangle factor along a
+variation `δz` (which moves both spinors at once) vanishes by (21) alone, and the group variations
+sum to zero by closure at each node [25]; the passage from these line derivatives to the gradient of
+the chart action is not made.
 
 ## Lean References
 
@@ -230,6 +233,9 @@ attains its maximum `0` there [24].
 24. Lightlike/Asymptotics/Lorentzian/CriticalSpinors.lean - `Asymptotics.Lorentzian.critZ`,
     `Asymptotics.Lorentzian.critZ_src`, `Asymptotics.Lorentzian.critZ_tgt`,
     `Asymptotics.Lorentzian.re_lorAction_critZ`
+25. Lightlike/Asymptotics/Lorentzian/ZStationary.lean - `Asymptotics.Lorentzian.hasDerivAt_triFactor_joint`,
+    `Asymptotics.Lorentzian.zedge_cancel`, `Asymptotics.Lorentzian.edge_variation`,
+    `Asymptotics.Lorentzian.sum_logDeriv_nodes`
 
 ## References
 
