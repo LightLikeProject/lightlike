@@ -39,6 +39,7 @@ import Lightlike.Asymptotics.EPRL.EprlCoherentNode
 import Lightlike.Asymptotics.EPRL.EprlCoherentNodeIdentity
 import Lightlike.Asymptotics.EPRL.EprlCoherentPullback
 import Lightlike.Asymptotics.EPRL.EprlCoherentVertex
+import Lightlike.Asymptotics.EPRL.EprlHighLeg
 import Lightlike.Asymptotics.EPRL.EprlHighMap
 import Lightlike.Asymptotics.EPRL.EprlHighNode
 import Lightlike.Asymptotics.EPRL.EprlHighProj
