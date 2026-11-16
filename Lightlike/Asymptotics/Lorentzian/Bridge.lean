@@ -266,4 +266,34 @@ theorem inner_jMap_firstCol_wM (Z : Spinor) (g : Matrix (Fin 2) (Fin 2) ℂ) :
     inner ℂ (jMap (firstCol (wM * g))) Z = g 0 0 * Z 0 + g 1 0 * Z 1 := by
   simp [firstCol, jMap, wM, PiLp.inner_apply, Fin.sum_univ_two, mul_comm, Matrix.mul_apply]
 
+/-- **One link of the principal-series vertex is `e^S` times the density of `Ω`**: with the boundary
+spinors `ξ = first column of ḡ₁` and `ξ' = first column of w g₂`, the transported chart spinors
+`Z = A (w, 1)`, `Z' = B (w, 1)` (`A = aᵀ`, `B = bᵀ` for `a = X̄_a`) and nonvanishing overlaps,
+`conj F_{g₁}(Z) · F_{g₂}(Z') = e^{S(Z, ξ, Z', ξ')} / (‖Z‖² ‖Z'‖²)` for the power-form action with
+`2k = n` and `p = ρ`. -/
+theorem link_eq_lor (n : ℕ) (ρ : ℝ) (A B g1 g2 : Matrix (Fin 2) (Fin 2) ℂ) (w : ℂ)
+    (hZ : spinAct A (lorSpinor w) ≠ 0) (hZ' : spinAct B (lorSpinor w) ≠ 0)
+    (h1 : inner ℂ (spinAct A (lorSpinor w)) (firstCol (g1.map star)) ≠ 0)
+    (h2 : inner ℂ (jMap (firstCol (wM * g2))) (spinAct B (lorSpinor w)) ≠ 0) :
+    conj (hvec n 0 ρ (cohState n g1) (A *ᵥ ![w, 1])) * hvec n 0 ρ (cohState n g2) (B *ᵥ ![w, 1]) =
+      Complex.exp (triAction ((n : ℝ) / 2) ρ (spinAct A (lorSpinor w)) (firstCol (g1.map star))
+        (spinAct B (lorSpinor w)) (firstCol (wM * g2))) *
+        (((‖spinAct A (lorSpinor w)‖ ^ 2 * ‖spinAct B (lorSpinor w)‖ ^ 2)⁻¹ : ℝ) : ℂ) := by
+  have hna : nsq (A *ᵥ ![w, 1]) = ‖spinAct A (lorSpinor w)‖ ^ 2 :=
+    (norm_sq_spinAct_lorSpinor A w).symm
+  have hnb : nsq (B *ᵥ ![w, 1]) = ‖spinAct B (lorSpinor w)‖ ^ 2 :=
+    (norm_sq_spinAct_lorSpinor B w).symm
+  have hpa : 0 < nsq (A *ᵥ ![w, 1]) := by
+    rw [hna]; have := norm_pos_iff.mpr hZ; positivity
+  have hpb : 0 < nsq (B *ᵥ ![w, 1]) := by
+    rw [hnb]; have := norm_pos_iff.mpr hZ'; positivity
+  rw [link_pointwise n ρ g1 g2 _ _ hpa hpb, exp_triAction_nat hZ hZ' h1 h2,
+    inner_firstCol_map_star, inner_jMap_firstCol_wM, hna, hnb]
+  have e0 : ∀ i, (A *ᵥ ![w, 1]) i = spinAct A (lorSpinor w) i := fun i =>
+    (spinAct_lorSpinor_apply A w i).symm
+  have f0 : ∀ i, (B *ᵥ ![w, 1]) i = spinAct B (lorSpinor w) i := fun i =>
+    (spinAct_lorSpinor_apply B w i).symm
+  simp only [e0, f0]
+  ring
+
 end Lightlike.Asymptotics.Lorentzian
