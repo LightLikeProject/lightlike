@@ -1144,7 +1144,7 @@
   title: The Regge action of a flat closed 3-complex is a quadratic form in the first variations of the lengths up to third order
   area: Regge
   file: Lightlike/Regge/Linear3/SecondOrder.lean
-  decls: [Lightlike.Regge.Linear3.regge_second_order, Lightlike.Regge.Linear3.torus_second_order]
+  decls: [Lightlike.Regge.Linear3.regge_second_order]
   status: proven
   tier: frontier
   source:
@@ -1152,4 +1152,17 @@
       - {ref: christiansen-2011, location: "Proposition 3.2", check: "constant Euclidean metric"}
   review: kernel-checked
   note: "Part of the linearization of 3D Regge calculus (T-RC3), which stays open. For a closed 3-complex K with non-degenerate edge lengths at which every deficit angle δ_e vanishes, and squared lengths varying along ℓ₀² + ε a, the Regge action Σ_e ℓ_e δ_e equals ε²/2 · Σ_e (a_e/(2ℓ₀_e)) δ_e'(0) + O(ε³), where δ_e'(0) is the derivative of the deficit angle along the line. Proof: Regge's equations dS = Σ δ_e dℓ_e (Schläfli's identity) give dS/dε = Σ ℓ_e' δ_e near 0, the dihedral angles are C³ in the squared lengths at admissible tuples, and a one-variable Taylor bound gives the remainder; this is the argument of Christiansen's Proposition 3.2, eq. (75) and its consequence (81), here for an arbitrary closed complex. The statement is non-vacuous: the periodic Kuhn complex of (ℤ/n)³ (n ≥ 3) with its Euclidean lengths is closed, non-degenerate and flat (torus_second_order, Lightlike/Regge/Linear3/TorusComplex.lean), and for the boundary of the 4-simplex with all lengths 1 every deficit angle is 2π − 3 arccos(1/3) > 0 (WrongModel.lean), so the flatness hypothesis is needed. Limits: fixed mesh (the constant M depends on the complex); one line of squared lengths; the identification of the coefficient with ⟨curl^t curl u', u'⟩ (Christiansen's Theorem 3.3) and the limit as the mesh tends to zero are not claimed; the lengths ℓ₀ are required positive on every vertex pair, which only normalises the values off the edges of the complex."
+  since: unreleased
+- id: LL-XXXX-e
+  title: On the 3-torus, the Saint-Venant form of the linearized Regge limit and the Fierz-Pauli form have the same integral
+  area: Regge
+  file: Lightlike/Regge/Linear3/FierzPauli.lean
+  decls: [Lightlike.Regge.Linear3.fp_identity, Lightlike.Regge.Linear3.div_Tfield, Lightlike.Regge.Linear3.saintVenant_eq_fierzPauli, Lightlike.Regge.Conv3.integral_div_periodic]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: hinterbichler-2012, location: "eq. (2.1)", check: "Fierz-Pauli"}
+  review: kernel-checked
+  note: "Part of the linearization of 3D Regge calculus (T-RC3), which stays open. For a C^3 symmetric field h of 3x3 matrices on R^3 invariant under integer translations, the integral over the unit cube of -1/4 Sum h_ij eps_ikl eps_jmn d_k d_m h_ln (the Saint-Venant form, the limit of Qn_converges) equals the integral of -1/4 Sum (d_l h_mn)^2 + 1/2 |div h|^2 - 1/2 (div h).(d tr h) + 1/4 |d tr h|^2, one half of the massless Fierz-Pauli Lagrangian of a time-independent field with the term d_m h_nl d_n h_ml written as (div h)^2 (saintVenant_eq_fierzPauli). Proof: the difference of the two densities is the divergence of an explicit periodic C^1 field (fp_identity, a polynomial identity for symmetric h, dh, dd; div_Tfield), and the integral of a periodic divergence over the unit cube is zero (integral_div_periodic, Mathlib's divergence theorem on the box). The hypothesis eq. (2.1) of the reference is the Fierz-Pauli action by name only; the comparison of the density with it is made in the module docstring, not by the source tool. Limits: C^3 periodic symmetric fields on the torus R^3/Z^3, Euclidean indices; that fpDens is the second variation of the integral of (R/2) sqrt(det g) is not proved here; no gauge condition, no mass term. Trust checks: scripts/regge/fierz_pauli_check.py integrates both densities over the unit cube for random periodic trigonometric fields (difference below 1e-13) and shows that a field with a non-periodic polynomial part gives a difference of about 2.8 (numerical evidence, not proof)."
   since: unreleased
