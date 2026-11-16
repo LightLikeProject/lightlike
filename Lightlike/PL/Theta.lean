@@ -48,6 +48,57 @@ theorem carrier_two_arcs (a b : ℝ × ℝ) (m₁ m₂ : List (ℝ × ℝ)) :
     rw [hW, hQ]
     ext y; simp only [mem_union]; tauto
 
+/-- A simple chain from `x` to `y` minus its ends is preconnected (the chain given as
+`x :: m ++ [y]`). -/
+theorem isPreconnected_chainSet_diff_ends' {x y : ℝ × ℝ} {m : List (ℝ × ℝ)}
+    (h : IsSimpleChain (x :: m ++ [y])) :
+    IsPreconnected (chainSet (x :: m ++ [y]) \ {x, y}) := by
+  rcases m with _ | ⟨c, m'⟩
+  · have : chainSet [x, y] \ {x, y} = segment ℝ x y \ {x, y} := by rw [chainSet_pair]
+    have h' : IsSimpleChain [x, y] := h
+    show IsPreconnected (chainSet [x, y] \ {x, y})
+    rw [this]
+    exact isPreconnected_segment_diff_ends h'.1
+  · have := isPreconnected_chainSet_diff_ends (a := x) (b := c) (l := m' ++ [y])
+      (by simpa using h)
+    simpa using this
+
+/-- Points of the first segment of a chain, other than its start, come arbitrarily close to the
+start. -/
+lemma exists_near_start {x w : ℝ × ℝ} {r : List (ℝ × ℝ)} (hxw : x ≠ w) {ρ : ℝ} (hρ : 0 < ρ) :
+    ∃ u ∈ segment ℝ x w, u ≠ x ∧ dist u x < ρ ∧ u ∈ chainSet (x :: w :: r) := by
+  set d := dist w x with hd
+  have hd0 : 0 < d := dist_pos.2 hxw.symm
+  set t : ℝ := min 1 (ρ / (2 * d)) with ht
+  have ht0 : 0 < t := lt_min one_pos (div_pos hρ (by positivity))
+  have ht1 : t ≤ 1 := min_le_left _ _
+  have ht2 : t ≤ ρ / (2 * d) := min_le_right _ _
+  refine ⟨AffineMap.lineMap x w t, ?_, ?_, ?_, ?_⟩
+  · rw [segment_eq_image_lineMap]; exact ⟨t, ⟨ht0.le, ht1⟩, rfl⟩
+  · intro h
+    have := (AffineMap.lineMap_injective ℝ hxw) (h.trans (AffineMap.lineMap_apply_zero x w).symm)
+    exact ht0.ne' this
+  · rw [dist_lineMap_left, Real.norm_of_nonneg ht0.le, dist_comm x w]
+    have : t * d ≤ ρ / 2 := by
+      calc t * d ≤ ρ / (2 * d) * d := mul_le_mul_of_nonneg_right ht2 hd0.le
+        _ = ρ / 2 := by field_simp
+    linarith
+  · simp only [chainSet]
+    left
+    rw [segment_eq_image_lineMap]; exact ⟨t, ⟨ht0.le, ht1⟩, rfl⟩
+
+/-- Points of the last segment of a chain, other than its end, come arbitrarily close to the end. -/
+lemma exists_near_end {c : List (ℝ × ℝ)} {z y : ℝ × ℝ} (hzy : z ≠ y) {ρ : ℝ} (hρ : 0 < ρ) :
+    ∃ u ∈ segment ℝ z y, u ≠ y ∧ dist u y < ρ ∧ u ∈ chainSet (c ++ [z, y]) := by
+  obtain ⟨u, hu1, hu2, hu3, -⟩ := exists_near_start (r := []) hzy.symm hρ
+  refine ⟨u, by rw [segment_symm]; exact hu1, hu2, hu3, ?_⟩
+  have := chainSet_append c z [y]
+  rw [show c ++ z :: [y] = c ++ [z, y] from rfl] at this
+  rw [this]
+  right
+  rw [chainSet_pair]
+  rw [segment_symm]; exact hu1
+
 namespace Polygon
 
 variable {n : ℕ} [NeZero n]
