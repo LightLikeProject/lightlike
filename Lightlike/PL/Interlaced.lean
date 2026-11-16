@@ -1,0 +1,294 @@
+import Lightlike.PL.Theta
+
+/-!
+# Interlaced chords of a polygon cannot lie on the same side
+
+Let `C` be a simple polygon made of two arcs `arc1` from `a` to `b` and `arc2` from `b` to `a`,
+`e` a polygonal chord from `a` to `b`, and `f` a polygonal chord from a point `x` inside `arc1` to a
+point `y` inside `arc2`, all meeting only where forced. Then `e` and `f` cannot lie on the same
+side of `C`.
+
+The proof splits `C` along `e` into `C₁ = arc1 ∪ e` and `C₂ = arc2 ∪ e`; the parities of the
+crossings of the horizontal ray add up modulo 2 (`parity_theta`), the chord `f` is connected and
+meets neither carrier, so it lies in one parity class, and near its ends both parities of the other
+polygon occur (`near_two`). The proof splits the 6-cycle of `K₃,₃` along chords in this way instead
+of using an orientation argument.
+-/
+
+open Set Lightlike.PL.Polygon
+
+namespace Lightlike.PL
+
+lemma exists_near_first {x y : ℝ × ℝ} {m : List (ℝ × ℝ)} (hf : IsSimpleChain (x :: m ++ [y]))
+    {ρ : ℝ} (hρ : 0 < ρ) :
+    ∃ u ∈ chainSet (x :: m ++ [y]), u ≠ x ∧ dist u x < ρ := by
+  rcases m with _ | ⟨w, r⟩
+  · have hxy : x ≠ y := hf.1
+    obtain ⟨u, -, hu2, hu3, hu4⟩ := exists_near_start (r := []) hxy hρ
+    exact ⟨u, hu4, hu2, hu3⟩
+  · have hxw : x ≠ w := hf.1
+    obtain ⟨u, -, hu2, hu3, hu4⟩ := exists_near_start (r := r ++ [y]) hxw hρ
+    exact ⟨u, by simpa using hu4, hu2, hu3⟩
+
+lemma exists_near_last {x y : ℝ × ℝ} {m : List (ℝ × ℝ)} (hf : IsSimpleChain (x :: m ++ [y]))
+    {ρ : ℝ} (hρ : 0 < ρ) :
+    ∃ u ∈ chainSet (x :: m ++ [y]), u ≠ y ∧ dist u y < ρ := by
+  rcases List.eq_nil_or_concat m with rfl | ⟨m', z, rfl⟩
+  · have hxy : x ≠ y := hf.1
+    obtain ⟨u, -, hu2, hu3, hu4⟩ := exists_near_end (c := []) hxy hρ
+    exact ⟨u, hu4, hu2, hu3⟩
+  · simp only [List.concat_eq_append] at hf ⊢
+    have hzy : z ≠ y := by
+      have h := isSimpleChain_reverse hf
+      have e : (x :: (m' ++ [z]) ++ [y]).reverse = y :: z :: (x :: m').reverse := by simp
+      rw [e] at h
+      exact h.1.symm
+    obtain ⟨u, -, hu2, hu3, hu4⟩ := exists_near_end (c := x :: m') hzy hρ
+    exact ⟨u, by simpa using hu4, hu2, hu3⟩
+
+/-- **Interlaced chords of a simple polygon cannot lie on the same side.** -/
+theorem no_interlaced_chord {a b x y : ℝ × ℝ} {m₁ m₂ mₑ m_f : List (ℝ × ℝ)} (hab : a ≠ b)
+    (h₁ : IsSimpleChain (a :: m₁ ++ [b])) (h₂ : IsSimpleChain (b :: m₂ ++ [a]))
+    (hₑ : IsSimpleChain (a :: mₑ ++ [b])) (h_f : IsSimpleChain (x :: m_f ++ [y]))
+    (h₁₂ : chainSet (a :: m₁ ++ [b]) ∩ chainSet (b :: m₂ ++ [a]) = {a, b})
+    (h₁ₑ : chainSet (a :: m₁ ++ [b]) ∩ chainSet (a :: mₑ ++ [b]) = {a, b})
+    (h₂ₑ : chainSet (b :: m₂ ++ [a]) ∩ chainSet (a :: mₑ ++ [b]) = {a, b})
+    (hx₁ : x ∈ chainSet (a :: m₁ ++ [b])) (hxa : x ≠ a) (hxb : x ≠ b)
+    (hy₂ : y ∈ chainSet (b :: m₂ ++ [a])) (hya : y ≠ a) (hyb : y ≠ b)
+    (hf₁ : chainSet (x :: m_f ++ [y]) ∩ chainSet (a :: m₁ ++ [b]) = {x})
+    (hf₂ : chainSet (x :: m_f ++ [y]) ∩ chainSet (b :: m₂ ++ [a]) = {y})
+    (hfₑ : chainSet (x :: m_f ++ [y]) ∩ chainSet (a :: mₑ ++ [b]) = ∅)
+    (hside : (chainSet (a :: mₑ ++ [b]) \ {a, b} ⊆ (Polygon.ofList (a :: m₁ ++ b :: m₂)).inside ∧
+        chainSet (x :: m_f ++ [y]) \ {x, y} ⊆ (Polygon.ofList (a :: m₁ ++ b :: m₂)).inside) ∨
+      (chainSet (a :: mₑ ++ [b]) \ {a, b} ⊆ (Polygon.ofList (a :: m₁ ++ b :: m₂)).outside ∧
+        chainSet (x :: m_f ++ [y]) \ {x, y} ⊆ (Polygon.ofList (a :: m₁ ++ b :: m₂)).outside)) :
+    False := by
+  classical
+  have h01 : ∀ t : ZMod 2, t = 0 ∨ t = 1 := by decide
+  set A₁ := chainSet (a :: m₁ ++ [b]) with hA₁
+  set A₂ := chainSet (b :: m₂ ++ [a]) with hA₂
+  set E := chainSet (a :: mₑ ++ [b]) with hE
+  set F := chainSet (x :: m_f ++ [y]) with hF
+  set C := Polygon.ofList (a :: m₁ ++ b :: m₂) with hC
+  set C₁ := Polygon.ofList (a :: m₁ ++ b :: mₑ.reverse) with hC₁
+  set C₂ := Polygon.ofList (b :: m₂ ++ a :: mₑ) with hC₂
+  have iC : NeZero (a :: m₁ ++ b :: m₂).length := ⟨by simp⟩
+  have iC₁ : NeZero (a :: m₁ ++ b :: mₑ.reverse).length := ⟨by simp⟩
+  have iC₂ : NeZero (b :: m₂ ++ a :: mₑ).length := ⟨by simp⟩
+  -- the three polygons are simple
+  have hrev : (a :: mₑ ++ [b]).reverse = b :: mₑ.reverse ++ [a] := by simp
+  have hEr : IsSimpleChain (b :: mₑ.reverse ++ [a]) := hrev ▸ isSimpleChain_reverse hₑ
+  have hEs : chainSet (b :: mₑ.reverse ++ [a]) = E := by
+    rw [← hrev, chainSet_reverse]
+  have sC : C.IsSimple := isSimple_two_arcs h₁ h₂ h₁₂ hab
+  have sC₁ : C₁.IsSimple := isSimple_two_arcs h₁ hEr (by rw [hEs]; exact h₁ₑ) hab
+  have sC₂ : C₂.IsSimple := isSimple_two_arcs (a := b) (b := a) h₂ hₑ
+    (by rw [Set.pair_comm]; exact h₂ₑ) hab.symm
+  have cC : C.carrier = A₁ ∪ A₂ := carrier_two_arcs a b m₁ m₂
+  have cC₁ : C₁.carrier = A₁ ∪ E := by
+    have := carrier_two_arcs a b m₁ mₑ.reverse
+    rw [hEs] at this; exact this
+  have cC₂ : C₂.carrier = A₂ ∪ E := carrier_two_arcs b a m₂ mₑ
+  have hpar : ∀ z, C₁.parity z + C₂.parity z = C.parity z := fun z => parity_theta a b z m₁ m₂ mₑ
+  -- the points `a`, `b`, `x`, `y`
+  have haA₁ : a ∈ A₁ := mem_chainSet_head a _
+  have haA₂ : a ∈ A₂ := mem_chainSet_last (b :: m₂) a
+  have hbA₁ : b ∈ A₁ := mem_chainSet_last (a :: m₁) b
+  have hbA₂ : b ∈ A₂ := mem_chainSet_head b _
+  have hxA₂ : x ∉ A₂ := fun h => by
+    have : x ∈ A₁ ∩ A₂ := ⟨hx₁, h⟩
+    rw [h₁₂] at this
+    rcases this with rfl | rfl
+    · exact hxa rfl
+    · exact hxb rfl
+  have hxE : x ∉ E := fun h => by
+    have : x ∈ A₁ ∩ E := ⟨hx₁, h⟩
+    rw [h₁ₑ] at this
+    rcases this with rfl | rfl
+    · exact hxa rfl
+    · exact hxb rfl
+  have hyA₁ : y ∉ A₁ := fun h => by
+    have : y ∈ A₁ ∩ A₂ := ⟨h, hy₂⟩
+    rw [h₁₂] at this
+    rcases this with rfl | rfl
+    · exact hya rfl
+    · exact hyb rfl
+  have hyE : y ∉ E := fun h => by
+    have : y ∈ A₂ ∩ E := ⟨hy₂, h⟩
+    rw [h₂ₑ] at this
+    rcases this with rfl | rfl
+    · exact hya rfl
+    · exact hyb rfl
+  have hxy : x ≠ y := fun h => hxA₂ (h ▸ hy₂)
+  have hxF : x ∈ F := mem_chainSet_head x _
+  have hyF : y ∈ F := mem_chainSet_last (x :: m_f) y
+  -- the open chord
+  set F₀ := F \ {x, y} with hF₀
+  have hF₀pre : IsPreconnected F₀ := isPreconnected_chainSet_diff_ends' h_f
+  have hF₀N : ∀ z ∈ F₀, z ∉ A₁ ∧ z ∉ A₂ ∧ z ∉ E := by
+    intro z ⟨hzF, hzxy⟩
+    refine ⟨fun h => ?_, fun h => ?_, fun h => ?_⟩
+    · have : z ∈ F ∩ A₁ := ⟨hzF, h⟩
+      rw [hf₁] at this
+      exact hzxy (Or.inl (by simpa using this))
+    · have : z ∈ F ∩ A₂ := ⟨hzF, h⟩
+      rw [hf₂] at this
+      exact hzxy (Or.inr (by simpa using this))
+    · have : z ∈ F ∩ E := ⟨hzF, h⟩
+      rw [hfₑ] at this
+      exact this
+  have hclA₁ : IsClosed A₁ := isClosed_chainSet _
+  have hclA₂ : IsClosed A₂ := isClosed_chainSet _
+  have hclE : IsClosed E := isClosed_chainSet _
+  -- points of the chord near its ends
+  have hnear_x : ∀ ρ > 0, ∃ u ∈ F₀, dist u x < ρ := by
+    intro ρ hρ
+    have hd : 0 < dist x y := dist_pos.2 hxy
+    obtain ⟨u, hu1, hu2, hu3⟩ := exists_near_first h_f (lt_min hρ hd)
+    refine ⟨u, ⟨hu1, ?_⟩, lt_of_lt_of_le hu3 (min_le_left _ _)⟩
+    simp only [mem_insert_iff, mem_singleton_iff, not_or]
+    refine ⟨hu2, fun h => ?_⟩
+    have := lt_of_lt_of_le hu3 (min_le_right _ _)
+    rw [h, dist_comm] at this
+    exact lt_irrefl _ this
+  have hnear_y : ∀ ρ > 0, ∃ u ∈ F₀, dist u y < ρ := by
+    intro ρ hρ
+    have hd : 0 < dist x y := dist_pos.2 hxy
+    obtain ⟨u, hu1, hu2, hu3⟩ := exists_near_last h_f (lt_min hρ hd)
+    refine ⟨u, ⟨hu1, ?_⟩, lt_of_lt_of_le hu3 (min_le_left _ _)⟩
+    simp only [mem_insert_iff, mem_singleton_iff, not_or]
+    refine ⟨fun h => ?_, hu2⟩
+    have := lt_of_lt_of_le hu3 (min_le_right _ _)
+    rw [h] at this
+    exact lt_irrefl _ this
+  -- the parities are constant on the open chord
+  have hF₀C₁ : F₀ ⊆ C₁.carrierᶜ := fun z hz => by
+    rw [cC₁]
+    rintro (h | h)
+    exacts [(hF₀N z hz).1 h, (hF₀N z hz).2.2 h]
+  have hF₀C₂ : F₀ ⊆ C₂.carrierᶜ := fun z hz => by
+    rw [cC₂]
+    rintro (h | h)
+    exacts [(hF₀N z hz).2.1 h, (hF₀N z hz).2.2 h]
+  have hF₀C : F₀ ⊆ C.carrierᶜ := fun z hz => by
+    rw [cC]
+    rintro (h | h)
+    exacts [(hF₀N z hz).1 h, (hF₀N z hz).2.1 h]
+  obtain ⟨s₁, hs₁⟩ := const_parity_of_preconnected hF₀pre hF₀C₁
+  obtain ⟨s₂, hs₂⟩ := const_parity_of_preconnected hF₀pre hF₀C₂
+  obtain ⟨s, hs⟩ := const_parity_of_preconnected hF₀pre hF₀C
+  obtain ⟨u₀, hu₀⟩ : ∃ u, u ∈ F₀ := (hnear_x 1 one_pos).imp fun u h => h.1
+  have hss : s₁ + s₂ = s := by
+    rw [← hs₁ u₀ hu₀, ← hs₂ u₀ hu₀, ← hs u₀ hu₀]; exact hpar u₀
+  -- regions of points off the three carriers, by the parities of `C₁` and `C₂`
+  set Reg : ZMod 2 → ZMod 2 → Prop := fun p q =>
+    ∃ z, z ∉ A₁ ∧ z ∉ A₂ ∧ z ∉ E ∧ C₁.parity z = p ∧ C₂.parity z = q with hReg
+  have hy_C₁ : y ∉ C₁.carrier := by
+    rw [cC₁]; rintro (h | h)
+    exacts [hyA₁ h, hyE h]
+  have hy_C₂ : y ∈ C₂.carrier := by rw [cC₂]; exact Or.inl hy₂
+  have hx_C₁ : x ∈ C₁.carrier := by rw [cC₁]; exact Or.inl hx₁
+  have hx_C₂ : x ∉ C₂.carrier := by
+    rw [cC₂]; rintro (h | h)
+    exacts [hxA₂ h, hxE h]
+  have regY : ∀ c, Reg s₁ c := by
+    intro c
+    obtain ⟨ε, hε, hεy⟩ := locally_const_parity hy_C₁
+    obtain ⟨u, hu, hud⟩ := hnear_y ε hε
+    have hpy : C₁.parity y = s₁ := by rw [← hs₁ u hu]; exact (hεy u hud).2.symm
+    obtain ⟨z, -, hz2, hz3, hz4, hz5, hz6⟩ := near_two sC₂ hy_C₂ hy_C₁ hclA₁ hyA₁ c one_pos
+    rw [cC₂] at hz2
+    exact ⟨z, hz3, fun h => hz2 (Or.inl h), fun h => hz2 (Or.inr h), by rw [hz6, hpy], hz4⟩
+  have regX : ∀ c, Reg c s₂ := by
+    intro c
+    obtain ⟨ε, hε, hεx⟩ := locally_const_parity hx_C₂
+    obtain ⟨u, hu, hud⟩ := hnear_x ε hε
+    have hpx : C₂.parity x = s₂ := by rw [← hs₂ u hu]; exact (hεx u hud).2.symm
+    obtain ⟨z, -, hz2, hz3, hz4, hz5, hz6⟩ := near_two sC₁ hx_C₁ hx_C₂ hclA₂ hxA₂ c one_pos
+    rw [cC₁] at hz2
+    exact ⟨z, fun h => hz2 (Or.inl h), hz3, fun h => hz2 (Or.inr h), hz4, by rw [hz6, hpx]⟩
+  have hnotC : ∀ z, z ∉ A₁ → z ∉ A₂ → z ∉ C.carrier ∨ False := fun z h1 h2 =>
+    Or.inl (by rw [cC]; rintro (h | h); exacts [h1 h, h2 h])
+  have haC : a ∈ C.carrier := by rw [cC]; exact Or.inl haA₁
+  have hbC : b ∈ C.carrier := by rw [cC]; exact Or.inl hbA₁
+  have hE_ab : E ⊆ (E \ {a, b}) ∪ {a, b} := fun z hz => by
+    by_cases h : z ∈ ({a, b} : Set (ℝ × ℝ))
+    · exact Or.inr h
+    · exact Or.inl ⟨hz, h⟩
+  rcases hside with ⟨hE_in, hF_in⟩ | ⟨hE_out, hF_out⟩
+  · -- both chords inside `C`
+    have hs1 : s = 1 := by
+      have := (hF_in hu₀).2
+      rw [← hs u₀ hu₀]; exact this
+    have hno11 : ¬ Reg 1 1 := by
+      rintro ⟨z, hz1, hz2, hz3, hp1, hp2⟩
+      have hzo : z ∈ C.outside := by
+        refine ⟨by rw [cC]; rintro (h | h); exacts [hz1 h, hz2 h], ?_⟩
+        rw [← hpar z, hp1, hp2]; decide
+      have hout : ∀ w ∈ C.outside, w ∉ C₁.carrier ∧ w ∉ C₂.carrier := by
+        intro w hw
+        have hwE : w ∉ E := fun h => by
+          rcases hE_ab h with h' | h'
+          · exact (Set.disjoint_left.1 (disjoint_outside_inside C)) hw (hE_in h')
+          · rcases h' with rfl | rfl
+            · exact hw.1 haC
+            · exact hw.1 hbC
+        have hw1 : w ∉ A₁ := fun h => hw.1 (by rw [cC]; exact Or.inl h)
+        have hw2 : w ∉ A₂ := fun h => hw.1 (by rw [cC]; exact Or.inr h)
+        exact ⟨by rw [cC₁]; rintro (h | h); exacts [hw1 h, hwE h],
+          by rw [cC₂]; rintro (h | h); exacts [hw2 h, hwE h]⟩
+      have hpre := isPreconnected_outside sC
+      obtain ⟨t₁, ht₁⟩ := const_parity_of_preconnected hpre (fun w hw => (hout w hw).1)
+      have hsub : C.outside ⊆ C₁.inside := fun w hw =>
+        ⟨(hout w hw).1, by rw [ht₁ w hw, ← ht₁ z hzo, hp1]⟩
+      exact not_isBounded_outside C ((isBounded_inside C₁).subset hsub)
+    rcases h01 s₁ with h | h
+    · have h2 : s₂ = 1 := by
+        have := hss; rw [h, hs1] at this
+        simpa using this
+      exact hno11 (h2 ▸ regX 1)
+    · exact hno11 (h ▸ regY 1)
+  · -- both chords outside `C`
+    have hs0 : s = 0 := by
+      have := (hF_out hu₀).2
+      rw [← hs u₀ hu₀]; exact this
+    have hin : ∀ w ∈ C.inside, w ∉ C₁.carrier ∧ w ∉ C₂.carrier := by
+      intro w hw
+      have hwE : w ∉ E := fun h => by
+        rcases hE_ab h with h' | h'
+        · exact (Set.disjoint_left.1 (disjoint_outside_inside C)) (hE_out h') hw
+        · rcases h' with rfl | rfl
+          · exact hw.1 haC
+          · exact hw.1 hbC
+      have hw1 : w ∉ A₁ := fun h => hw.1 (by rw [cC]; exact Or.inl h)
+      have hw2 : w ∉ A₂ := fun h => hw.1 (by rw [cC]; exact Or.inr h)
+      exact ⟨by rw [cC₁]; rintro (h | h); exacts [hw1 h, hwE h],
+        by rw [cC₂]; rintro (h | h); exacts [hw2 h, hwE h]⟩
+    have hpre := isPreconnected_inside sC
+    obtain ⟨t₁, ht₁⟩ := const_parity_of_preconnected hpre (fun w hw => (hin w hw).1)
+    obtain ⟨t₂, ht₂⟩ := const_parity_of_preconnected hpre (fun w hw => (hin w hw).2)
+    have hReg_in : ∀ p q, Reg p q → p + q = 1 → p = t₁ ∧ q = t₂ := by
+      rintro p q ⟨z, hz1, hz2, hz3, hp, hq⟩ hpq
+      have hzi : z ∈ C.inside := by
+        refine ⟨by rw [cC]; rintro (h | h); exacts [hz1 h, hz2 h], ?_⟩
+        rw [← hpar z, hp, hq]; exact hpq
+      exact ⟨by rw [← hp]; exact ht₁ z hzi, by rw [← hq]; exact ht₂ z hzi⟩
+    rcases h01 s₁ with h | h
+    · have h2 : s₂ = 0 := by
+        have := hss; rw [h, hs0] at this
+        simpa using this
+      have r1 := hReg_in 0 1 (h ▸ regY 1) (by decide)
+      have r2 := hReg_in 1 0 (h2 ▸ regX 1) (by decide)
+      exact absurd (r1.1.trans r2.1.symm) (by decide)
+    · have h2 : s₂ = 1 := by
+        rcases h01 s₂ with h2 | h2
+        · exfalso
+          have := hss
+          rw [h, h2, hs0] at this
+          exact absurd this (by decide)
+        · exact h2
+      have r1 := hReg_in 1 0 (h ▸ regY 0) (by decide)
+      have r2 := hReg_in 0 1 (h2 ▸ regX 0) (by decide)
+      exact absurd (r1.1.trans r2.1.symm) (by decide)
+
+end Lightlike.PL
