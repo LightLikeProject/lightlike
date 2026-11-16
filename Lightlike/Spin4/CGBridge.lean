@@ -23,7 +23,7 @@ For doubled spins `n, m` and `k ≤ min(n, m)`, put `N = n + m - 2k` (twice the 
 * `cgMatrix_top_sign`: the coefficients of the highest state `l = 0` alternate in sign,
   `(-1)^a` times a positive number (Condon–Shortley convention).
 
-## Proof
+## Implementation notes
 
 The basis `e_a` of `ℂ^{n+1}` carries the same matrix elements of `E, F, H` as Physlib's normalised
 basis `u_a` (`Lightlike/Spin4/Ladder.lean`). Physlib's contravariant form makes `E` and `F` adjoint

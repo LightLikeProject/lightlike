@@ -8,7 +8,7 @@ cover of the rotation group of `ℝ⁴`, modelled as the quaternions `ℍ` with 
 product `⟪a, b⟫ = Re(a b̄)` (`Quaternion.linearIsometryEquivTuple` identifies `ℍ` with
 `EuclideanSpace ℝ (Fin 4)`).
 
-## Construction
+## Implementation notes
 
 * `toMat : ℍ →ₐ[ℝ] M₂(ℂ)`, `a + bi + cj + dk ↦ [[a + bi, c + di], [-c + di, a - bi]]`, the
   standard embedding of the quaternions in `2 × 2` complex matrices. It sends `q̄` to the
@@ -17,7 +17,7 @@ product `⟪a, b⟫ = Re(a b̄)` (`Quaternion.linearIsometryEquivTuple` identifi
 * `rot (p, q) x = p x q⁻¹` for unit quaternions `p`, `q`; `toSO4 : Spin4 →* SO4` is this map
   after `quatEquiv`, where `SO4` is the group of linear isometries of `ℍ` with determinant `1`.
 
-## Proven here (standard axioms only)
+## Main results
 
 * `toSO4_surjective`: every rotation of `ℝ⁴` is `x ↦ p x q⁻¹`. By the Cartan–Dieudonné theorem
   (Mathlib's `LinearIsometryEquiv.reflections_generate_dim`) every isometry is a product of

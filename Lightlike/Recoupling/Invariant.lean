@@ -9,7 +9,7 @@ and an invariant tensor with two legs is a multiple of the identity (Schur's lem
 up that language for tensors given by their components, in the doubled units used throughout the
 library (spins `j ∈ ℕ`, projections `m ∈ ℤ` with `|m| ≤ j` and `j - m` even).
 
-## Tensors
+**Tensors.**
 
 A tensor with legs `ι` (a finite type) and spins `j : ι → ℕ` is a function `X : (ι → ℤ) → ℝ`
 giving the component of each assignment of projections to the legs. Each leg is *incoming*
@@ -22,7 +22,7 @@ real matrix elements
 On an outgoing leg the dual representation acts by `-Jᵀ`; since `J₊ᵀ = J₋`, this is again an
 explicit shift of the components.
 
-## Invariance
+**Invariance.**
 
 `IsInv j d X`: `X` is supported on admissible projections, has total weight `0`
 (`Σ_in mᵢ - Σ_out mᵢ = 0`), and is annihilated by the total raising and lowering operators. This
