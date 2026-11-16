@@ -1,17 +1,18 @@
-"""Numerical check (not a proof) that the closed form of the mixed block H^{Xz} of the Hessian of the
-Lorentzian vertex action holds at NON-critical configurations, i.e. needs no criticality.
+"""Numerical check (not a proof) that the closed forms of the blocks H^{Xz} (mixed) and H^{zz} of the Hessian of
+the Lorentzian vertex action hold at NON-critical configurations, i.e. need no criticality.
 
-Reference: mixed second differences of the action itself (`lorentzian_hessian_check.action`: the sum over
+Reference: second differences of the action itself (`lorentzian_hessian_check.action`: the sum over
 edges of 2k log(ab/ref) - k log(nz nz') + i p log(nz'/nz), computed from X, w and the spinors, independent
 of the closed form), in mpmath with 25 digits and step h = 1e-6:
-  entry (i, j) = (f(+h,+h) - f(+h,-h) - f(-h,+h) + f(-h,-h)) / (4 h^2)
+  entry (i, j), i != j: (f(+h,+h) - f(+h,-h) - f(-h,+h) + f(-h,-h)) / (4 h^2)
+  entry (i, i):         (f(+h) - 2 f(0) + f(-h)) / h^2
 Error budget: truncation O(h^2) ~ 1e-12 (relative), roundoff 1e-25 / h^2 ~ 1e-13; the match must be
 below 1e-9.
 Configuration: the regular-simplex critical data with X_a -> X_a exp(M_a), M_a random traceless of size
 0.3, w, xi, xi' all shifted by random complex numbers of size 0.3 (the gradient is then of order 1).
-Controls (must fail with relative error above 1e-3): the conjugate part of the closed form with flipped
-sign; the entries of edge 0 dropped.
-Usage: python3 -I scripts/asymptotics/lorentzian_hessian_xz_noncritical_check.py
+Controls (must fail with relative error above 1e-3): H^{Xz} with the conjugate part flipped, H^{Xz} with the
+entries of edge 0 dropped, H^{zz} without the target terms c_B.
+Usage: python3 -I scripts/asymptotics/lorentzian_hessian_noncritical_check.py
 """
 import random
 import sys
@@ -58,7 +59,20 @@ def main():
         Xb, w = hc.build(x, X, w0)
         return hc.action(Xb, w, xs, xt, k, p, ref)[0]
 
+    f0 = f([mpf(0)] * 44)
+
+    def second_fd(i):
+        h = H_STEP
+        xp = [mpf(0)] * 44
+        xp[i] = h
+        xm = [mpf(0)] * 44
+        xm[i] = -h
+        return (f(xp) - 2 * f0 + f(xm)) / (h * h)
+
     def mixed_fd(i, j):
+        if i == j:
+            return second_fd(i)
+
         def pt(a, b):
             x = [mpf(0)] * 44
             x[i] = a
@@ -91,9 +105,26 @@ def main():
     ok = cmp(lambda e, u, v: (u, v))
     c1 = cmp(flip)
     c2 = cmp(lambda e, u, v: (0, 0) if e == 0 else (u, v))
+    def zz_err(drop_cB):
+        err = mpf(0)
+        mx = mpf(0)
+        for e, bl in enumerate(cf.hzz(mpf("0.5"), drop_cB)):
+            for i in range(2):
+                for jj in range(2):
+                    fd = mixed_fd(24 + 2 * e + i, 24 + 2 * e + jj)
+                    err = max(err, abs(fd - bl[i, jj]))
+                    mx = max(mx, abs(fd))
+        return err / mx
+
+    z_ok = zz_err(False)
+    z_ctl = zz_err(True)
     print("H^Xz at a non-critical configuration: relative error of the closed form = %s" % mp.nstr(ok, 4))
-    print("control, conjugate part flipped: %s; control, edge 0 dropped: %s" % (mp.nstr(c1, 4), mp.nstr(c2, 4)))
-    good = ok < mpf(10) ** (-9) and c1 > mpf(10) ** (-3) and c2 > mpf(10) ** (-3)
+    print("H^zz at a non-critical configuration: relative error of the closed form = %s" % mp.nstr(z_ok, 4))
+    print("controls: H^Xz conjugate part flipped %s; H^Xz edge 0 dropped %s; H^zz without c_B %s"
+          % (mp.nstr(c1, 4), mp.nstr(c2, 4), mp.nstr(z_ctl, 4)))
+    tol = mpf(10) ** (-9)
+    ctl = mpf(10) ** (-3)
+    good = ok < tol and z_ok < tol and c1 > ctl and c2 > ctl and z_ctl > ctl
     print("OK" if good else "FAIL")
     sys.exit(0 if good else 1)
 
