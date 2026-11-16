@@ -129,6 +129,13 @@ link at spin zero is `π` [20].
 The inner integral over `ℂ^10` also converges at every point of `SL(2, ℂ)^5`, as a product over the ten
 edges of functions bounded by the density of `Ω`, so the Lorentzian vertex of the coherent data is a
 genuine integral [21].
+The asymptotic formula with two critical points is proved as a reduction: the amplitude of the scaled
+data minus `λ^{m - n/2} (A₁ e^{iλθ} + A₂ e^{-iλθ})` is `O(λ^{m - n/2 - 1})` under named hypotheses (a
+chart representation of the amplitude, the two critical points, the Hessians, the far-field decay and
+the constants of eq. (57)), none of which is proved here [22]; these hypotheses are consistent, as a
+model phase with two nondegenerate critical points shows [23]. The Hessian at the SU(2) critical
+point of the regular simplex is numerically nondegenerate, with margin about 0.15 in the Fubini–Study
+frame (`scripts/asymptotics/lorentzian_hessian_check.py`).
 
 ## Lean References
 
@@ -208,6 +215,10 @@ genuine integral [21].
 21. Lightlike/Asymptotics/Lorentzian/InnerIntegrable.lean - `Asymptotics.Lorentzian.ae_overlap_src`,
     `Asymptotics.Lorentzian.ae_overlap_tgt`, `Asymptotics.Lorentzian.integrable_edge`,
     `Asymptotics.Lorentzian.integrable_lorInner`, `Asymptotics.Lorentzian.integrable_lorInner_coh`
+22. Lightlike/Asymptotics/Lorentzian/AsymptoticFormula.lean - `Asymptotics.Lorentzian.triAction_smul`,
+    `Asymptotics.Lorentzian.lorAction_smul`, `Asymptotics.Lorentzian.lorVertex_asymptotic_formula`
+23. Lightlike/Asymptotics/Lorentzian/ExpPhaseTwoPoints.lean - `Asymptotics.Lorentzian.toyAction`,
+    `Asymptotics.Lorentzian.toy_two_points`
 
 ## References
 
