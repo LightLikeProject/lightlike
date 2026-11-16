@@ -117,4 +117,14 @@ theorem inner_principalSeries_eq_integral (n : ℤ) (ρ : ℝ) (a b : SL2C) {F G
   rw [← ea, ← eb]
   ring
 
+/-- **The coherent function of the lowest level**: `hvec n 0 ρ (|n/2, g⟩)` is
+`N^{iρ-1} N^{-n/2} (g₀₀ ζ₀ + g₁₀ ζ₁)^n` with `N = ‖ζ‖²`. -/
+theorem hvec_cohState (n : ℕ) (ρ : ℝ) (g : Matrix (Fin 2) (Fin 2) ℂ) (ζ : C2) :
+    hvec n 0 ρ (cohState n g) ζ =
+      ((nsq ζ : ℝ) : ℂ) ^ (I * ρ - 1) * (((Real.sqrt (nsq ζ))⁻¹ ^ n : ℝ) : ℂ) *
+        (g 0 0 * ζ 0 + g 1 0 * ζ 1) ^ n := by
+  unfold hvec
+  rw [← lam_emb_cohState n g ζ]
+  rfl
+
 end Lightlike.Asymptotics.Lorentzian
