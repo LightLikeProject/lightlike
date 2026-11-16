@@ -391,6 +391,7 @@ import Lightlike.Regge.Linear3.InterpTaylor
 import Lightlike.Regge.Linear3.LinearizedLattice
 import Lightlike.Regge.Linear3.LinearizedExpansion
 import Lightlike.Regge.Linear3.LinearizedLimit
+import Lightlike.Regge.Linear3.LinearizedLimitTests
 import Lightlike.Regge.Linear3.LinearizedTorus
 import Lightlike.Regge.Linear3.TorusConvergence
 import Lightlike.Regge.Linear3.TorusConvergenceTests
