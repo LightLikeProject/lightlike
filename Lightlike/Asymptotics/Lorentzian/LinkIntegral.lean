@@ -107,4 +107,27 @@ theorem ae_affine_ne_zero (α β : ℂ) (h : α ≠ 0 ∨ β ≠ 0) :
     rw [MeasureTheory.ae_iff]
     exact MeasureTheory.measure_mono_null (by simpa using this) (MeasureTheory.measure_singleton _)
 
+/-- The weight `wgt p q ρ` depends on `p + q` only. -/
+theorem wgt_congr {p q p' q' : ℕ} (h : p + q = p' + q') (ρ : ℝ) (z : ℂ) :
+    wgt p q ρ z = wgt p' q' ρ z := by
+  unfold wgt; rw [h]
+
+/-- **`suV` of a coherent state is a multiple of the explicit homogeneous function**:
+`suV |n/2, g⟩ = (‖A e₀‖)⁻¹ · [hvec n 0 ρ |n/2, g⟩]`, as elements of `L²(ℂ)`. -/
+theorem suV_cohVec_eq (n : ℕ) (ρ : ℝ) (g : Matrix (Fin 2) (Fin 2) ℂ)
+    (hm : MeasureTheory.MemLp (chart (hvec n 0 ρ (cohState n g))) 2 MeasureTheory.volume) :
+    suV (n : ℤ) ρ 0 (cohVec n g) =
+      ((nrmA (tlin (0 + p0 (n : ℤ)) (0 + q0 (n : ℤ)) ρ))⁻¹ : ℂ) •
+        hm.toLp (chart (hvec n 0 ρ (cohState n g))) := by
+  refine MeasureTheory.Lp.ext ?_
+  have h1 := suV_cohVec_ae n ρ g
+  have h2 := MeasureTheory.MemLp.coeFn_toLp hm
+  filter_upwards [h1, h2, MeasureTheory.Lp.coeFn_smul (((nrmA (tlin (0 + p0 (n : ℤ))
+    (0 + q0 (n : ℤ)) ρ))⁻¹ : ℂ)) (hm.toLp (chart (hvec n 0 ρ (cohState n g))))] with z z1 z2 z3
+  rw [z1, z3, Pi.smul_apply, z2, smul_eq_mul, chart_hvec, lam_emb_cohState]
+  have hw : wgt (0 + p0 (n : ℤ)) (0 + q0 (n : ℤ)) ρ z = wgt n 0 ρ z :=
+    wgt_congr (by simp [p0, q0]) ρ z
+  rw [hw]
+  simp only [Matrix.cons_val_zero, Matrix.cons_val_one, mul_one]
+
 end Lightlike.Asymptotics.Lorentzian
