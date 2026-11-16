@@ -345,6 +345,62 @@ theorem no_K33 (D : ContDrawing) : False := by
       have := dist_nonneg (x := z) (y := Q e k)
       have := dist_nonneg (x := z) (y := Q e' k')
       linarith
-  sorry
+  -- the polygonal arcs
+  have hL : ∀ e : Fin 3 × Fin 3, ∃ c : List (ℝ × ℝ), IsSimpleChain c ∧
+      c.head? = some (D.w (ContDrawing.ep e false)) ∧ c.getLast? = some (D.w (ContDrawing.ep e true)) ∧
+      chainSet c ⊆ Seg e false ∪ chainSet (h e) ∪ Seg e true := fun e => by
+    have hset := chainSet_ends (x := D.w (ContDrawing.ep e false)) (y := D.w (ContDrawing.ep e true))
+      (hh e).2.1 (hh e).2.2.1
+    obtain ⟨c, hc, hc1, hc2, hc3⟩ := exists_simple_sub
+      (D.w (ContDrawing.ep e false) :: h e ++ [D.w (ContDrawing.ep e true)])
+      (D.w (ContDrawing.ep e false)) (D.w (ContDrawing.ep e true)) (by simp)
+      (List.getLast?_concat ..)
+    refine ⟨c, hc, hc1, hc2, fun y hy => ?_⟩
+    have := hc3 hy
+    rw [hset] at this
+    rcases this with (h1 | h1) | h1
+    · exact Or.inl (Or.inl h1)
+    · exact Or.inl (Or.inr h1)
+    · exact Or.inr (by show y ∈ segment ℝ _ _; rw [segment_symm]; exact h1)
+  choose C hC using hL
+  have hpair : ∀ e e', e ≠ e' → ∀ z, z ∈ chainSet (C e) → z ∈ chainSet (C e') →
+      ∃ x, (∃ k, x = ContDrawing.ep e k) ∧ (∃ k', x = ContDrawing.ep e' k') ∧ z = D.w x := by
+    intro e e' hee z hz hz'
+    have a1 := (hC e).2.2.2 hz
+    have a2 := (hC e').2.2.2 hz'
+    rcases a1 with (a1 | a1) | a1 <;> rcases a2 with (a2 | a2) | a2
+    · obtain ⟨hx, hz⟩ := hSS e e' hee false false z a1 a2
+      exact ⟨_, ⟨false, rfl⟩, ⟨false, hx⟩, hz⟩
+    · exact (hHS e' e hee.symm false z a2 a1).elim
+    · obtain ⟨hx, hz⟩ := hSS e e' hee false true z a1 a2
+      exact ⟨_, ⟨false, rfl⟩, ⟨true, hx⟩, hz⟩
+    · exact (hHS e e' hee false z a1 a2).elim
+    · exact (hHH e e' hee z a1 a2).elim
+    · exact (hHS e e' hee true z a1 a2).elim
+    · obtain ⟨hx, hz⟩ := hSS e e' hee true false z a1 a2
+      exact ⟨_, ⟨true, rfl⟩, ⟨false, hx⟩, hz⟩
+    · exact (hHS e' e hee.symm true z a2 a1).elim
+    · obtain ⟨hx, hz⟩ := hSS e e' hee true true z a1 a2
+      exact ⟨_, ⟨true, rfl⟩, ⟨true, hx⟩, hz⟩
+  have hne : ∀ i j, D.u i ≠ D.v j := D.uv_ne
+  exact no_PL_K33
+    { u := D.u
+      v := D.v
+      arc := fun i j => C (i, j)
+      simple := fun i j _ => (hC (i, j)).1
+      head := fun i j _ => by simpa [ContDrawing.ep, ContDrawing.w] using (hC (i, j)).2.1
+      last := fun i j _ => by simpa [ContDrawing.ep, ContDrawing.w] using (hC (i, j)).2.2.1
+      length_ge := fun i j _ => two_le_length (a := D.u i) (b := D.v j)
+        (by simpa [ContDrawing.ep, ContDrawing.w] using (hC (i, j)).2.1)
+        (by simpa [ContDrawing.ep, ContDrawing.w] using (hC (i, j)).2.2.1) (D.uv_ne i j)
+      disj := fun i j i' j' _ _ hne' z ⟨hz, hz'⟩ => by
+        obtain ⟨x, ⟨k, hk⟩, ⟨k', hk'⟩, rfl⟩ := hpair (i, j) (i', j') hne' z hz hz'
+        subst hk
+        refine ⟨?_, ?_⟩
+        · cases k <;> simp [ContDrawing.ep, ContDrawing.w]
+        · rw [hk']; cases k' <;> simp [ContDrawing.ep, ContDrawing.w]
+      inj_u := D.inj_u
+      inj_v := D.inj_v
+      uv_ne := D.uv_ne }
 
 end Lightlike.PL
