@@ -241,7 +241,7 @@ lemma Sj_val_succ {r : ℕ} (hr : 2 ≤ r) {j1 j2 j4 j5 k A3 S B δ γ n : ℕ} 
     (h51 : j5 ≤ j1) (hA3 : 2 * A3 = j4 + j2 + (j1 - j5)) (hS : 2 * S = j4 + j5 + (j1 - j2))
     (hB : 2 * B = j1 + j2 + j4 + j5) (hδ : 2 * δ + j4 + j5 = j1 + j2)
     (hγ : 2 * γ + j2 = (j1 - j5) + j4) (hnS : S = (j1 - j2) + n) (hk : k + 1 ≤ n)
-    (hA : j4 + j2 ≤ j5 + j1) (hlt : j1 + k + 2 < r) (hδr : δ < r) (hγr : γ < r) (hnr : n < r) :
+    (hA : j4 + j2 ≤ j5 + j1) (hlt : j1 + k + 2 < r) (hδr : δ < r) (hγr : γ < r) (hnr : n - k < r) :
     Sj r j1 j2 j4 j5 (j1 - j5) ((j1 - j2 + 2 * (k + 1) : ℕ) : ℤ) *
         (qnum r (k + 1) * qnum r (j1 + k + 1 - A3)) =
       - (Sj r j1 j2 j4 j5 (j1 - j5) ((j1 - j2 + 2 * k : ℕ) : ℤ) *
@@ -277,7 +277,7 @@ theorem wTerm_succ {r : ℕ} (hr : 2 ≤ r) {j1 j2 j4 j5 k A3 S B δ γ n : ℕ}
     (h51 : j5 ≤ j1) (hA3 : 2 * A3 = j4 + j2 + (j1 - j5)) (hS : 2 * S = j4 + j5 + (j1 - j2))
     (hB : 2 * B = j1 + j2 + j4 + j5) (hδ : 2 * δ + j4 + j5 = j1 + j2)
     (hγ : 2 * γ + j2 = (j1 - j5) + j4) (hnS : S = (j1 - j2) + n) (hk : k + 1 ≤ n)
-    (hA : j4 + j2 ≤ j5 + j1) (hlt : j1 + k + 2 < r) (hδr : δ < r) (hγr : γ < r) (hnr : n < r)
+    (hA : j4 + j2 ≤ j5 + j1) (hlt : j1 + k + 2 < r) (hδr : δ < r) (hγr : γ < r) (hnr : n - k < r)
     (a1 : qAdm r j1 j2 (j1 - j2 + 2 * k)) (a1' : qAdm r j1 j2 (j1 - j2 + 2 * (k + 1)))
     (a2 : qAdm r j4 j5 (j1 - j2 + 2 * k)) (a2' : qAdm r j4 j5 (j1 - j2 + 2 * (k + 1))) :
     wTerm r j1 j2 j4 j5 (k + 1) *
@@ -507,18 +507,19 @@ theorem Tj_succ_hyps {r : ℕ} (hr : 2 ≤ r) {d j2 n j5 k ec : ℕ} (hec : ec +
 
 -- 400000 heartbeats: the default 200000 is not enough.
 set_option maxHeartbeats 400000 in
-/-- **The map.** In the case `x0 = j1 - j2`, `q0 = j1 - j5`, `j4 + j5 < j1 + j2`, the weighted terms
+/-- **The map, with the range `N ≤ n` separate from the length `n`.** (The sum may stop at `N` before the triangle top `n`, e.g. at a level cut-off.) In the case `x0 = j1 - j2`, `q0 = j1 - j5`, `j4 + j5 < j1 + j2`, the weighted terms
 of the boundary evaluation are the first term times the summand of Jackson's series at
 `Q = uC r ^ 2`, `a = Q^(x0+1)`, `b = Q^(j1+2)`, `c = Q^((x0+j4-j5)/2+1)`, `x = Q^n`. -/
-theorem wTerm_eq_Tj {r j1 j2 j4 j5 n : ℕ} (hr : 2 ≤ r) (h21 : j2 ≤ j1) (h51 : j5 ≤ j1)
+theorem wTerm_eq_Tj_N {r j1 j2 j4 j5 n N : ℕ} (hr : 2 ≤ r) (h21 : j2 ≤ j1) (h51 : j5 ≤ j1)
     (hnd : j4 + j5 ≤ j1 + j2) (hn : 2 * n = j4 + j5 - (j1 - j2))
-    (hadmX : ∀ k ≤ n, qAdm r j1 j2 (j1 - j2 + 2 * k) ∧ qAdm r j4 j5 (j1 - j2 + 2 * k))
+    (hN : N ≤ n)
+    (hadmX : ∀ k ≤ N, qAdm r j1 j2 (j1 - j2 + 2 * k) ∧ qAdm r j4 j5 (j1 - j2 + 2 * k))
     (hadmQ : qAdm r j1 j5 (j1 - j5) ∧ qAdm r j4 j2 (j1 - j5)) :
-    ∀ k ≤ n, (wTerm r j1 j2 j4 j5 k : ℂ) = (wTerm r j1 j2 j4 j5 0 : ℂ) *
+    ∀ k ≤ N, (wTerm r j1 j2 j4 j5 k : ℂ) = (wTerm r j1 j2 j4 j5 0 : ℂ) *
       Tj (uC r ^ 2) ((uC r ^ 2) ^ (j1 - j2 + 1)) ((uC r ^ 2) ^ (j1 + 2))
         ((uC r ^ 2) ^ ((j1 - j2 + j4 - j5) / 2 + 1)) ((uC r ^ 2) ^ n) k := by
   have A0 := hadmX 0 (by omega)
-  have An := hadmX n le_rfl
+  have An := hadmX N le_rfl
   obtain ⟨⟨hp0, h01, h02, h03⟩, hr0⟩ := A0.1
   obtain ⟨⟨hq0, h11, h12, h13⟩, hs0⟩ := A0.2
   obtain ⟨⟨hqn, h21', h22, h23⟩, hsn⟩ := An.2
@@ -551,7 +552,7 @@ theorem wTerm_eq_Tj {r j1 j2 j4 j5 n : ℕ} (hr : 2 ≤ r) (h21 : j2 ≤ j1) (h5
   | succ k ih =>
     intro hk
     have ihk := ih (by omega)
-    have W := wTerm_succ hr h21 h51 hA3 hS hB hδ hγ hnS hk hA (by omega)
+    have W := wTerm_succ hr h21 h51 hA3 hS hB hδ hγ hnS (by omega) hA (by omega)
       (by omega) (by omega) (by omega) (hadmX k (by omega)).1 (hadmX (k + 1) hk).1
       (hadmX k (by omega)).2 (hadmX (k + 1) hk).2
     have hkn : k < n := by omega
@@ -600,6 +601,15 @@ theorem wTerm_eq_Tj {r j1 j2 j4 j5 n : ℕ} (hr : 2 ≤ r) (h21 : j2 ≤ j1) (h5
       rw [rt, hRatio]; push_cast; ring
     rw [hc, ihk, T']; ring
 
+/-- **The map.** The case `N = n` of `wTerm_eq_Tj_N`. -/
+theorem wTerm_eq_Tj {r j1 j2 j4 j5 n : ℕ} (hr : 2 ≤ r) (h21 : j2 ≤ j1) (h51 : j5 ≤ j1)
+    (hnd : j4 + j5 ≤ j1 + j2) (hn : 2 * n = j4 + j5 - (j1 - j2))
+    (hadmX : ∀ k ≤ n, qAdm r j1 j2 (j1 - j2 + 2 * k) ∧ qAdm r j4 j5 (j1 - j2 + 2 * k))
+    (hadmQ : qAdm r j1 j5 (j1 - j5) ∧ qAdm r j4 j2 (j1 - j5)) :
+    ∀ k ≤ n, (wTerm r j1 j2 j4 j5 k : ℂ) = (wTerm r j1 j2 j4 j5 0 : ℂ) *
+      Tj (uC r ^ 2) ((uC r ^ 2) ^ (j1 - j2 + 1)) ((uC r ^ 2) ^ (j1 + 2))
+        ((uC r ^ 2) ^ ((j1 - j2 + j4 - j5) / 2 + 1)) ((uC r ^ 2) ^ n) k :=
+  wTerm_eq_Tj_N hr h21 h51 hnd hn le_rfl hadmX hadmQ
 
 /-- A `q`-Pochhammer symbol of a power of `Q = u²` is a product of quantum integers, up to a power
 of `-(u - u⁻¹)` and a power of `u`. -/
@@ -1999,5 +2009,19 @@ theorem qDougallAt_O3_k3 {r : ℕ} (hr : 2 ≤ r) (B A E F q : ℕ) (hq1 : qAdm 
     QDougallAt r B A E F :=
   (qDougallAt_k3 r B A E F).1 (qDougallAt_O3 hr F E A B q (qAdm_swap12 hq1) (qAdm_swap12 hq2)
     hA hE hnd hx hq htop)
+
+/-- The reflection of the quantum factorial: `[m]! · [r-1-m]! = [r-1]!` for `m ≤ r - 1`, from
+`[r - k] = [k]`. -/
+theorem qfact_mul_qfact_reflect {r m : ℕ} (hr : 2 ≤ r) (hm : m + 1 ≤ r) :
+    qfact r m * qfact r (r - 1 - m) = qfact r (r - 1) := by
+  obtain ⟨t, ht⟩ : ∃ t, r - 1 = m + t := ⟨r - 1 - m, by omega⟩
+  rw [ht, show m + t - m = t by omega]
+  unfold qfact
+  rw [prod_range_add]
+  congr 1
+  rw [← prod_range_reflect]
+  refine prod_congr rfl fun i hi => ?_
+  simp only [mem_range] at hi
+  rw [show m + i + 1 = r - (t - 1 - i + 1) by omega, qnum_sub hr (by omega)]
 
 end Lightlike.TV.Refl
