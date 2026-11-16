@@ -81,4 +81,79 @@ lemma getLast_ne_head {a b : ℝ × ℝ} {l : List (ℝ × ℝ)} (h : IsSimpleCh
   rw [he] at hl
   exact head_notMem_tail h hl
 
+/-- A simple chain without its last point is preconnected. -/
+theorem isPreconnected_chainSet_diff_last :
+    ∀ (c : List (ℝ × ℝ)) (hc : c ≠ []), IsSimpleChain c →
+      IsPreconnected (chainSet c \ {c.getLast hc})
+  | [], hc, _ => absurd rfl hc
+  | [x], _, _ => by simp [chainSet]; exact isPreconnected_empty
+  | a :: b :: l, hc, hs => by
+    by_cases hl : l = []
+    · subst hl
+      have : chainSet [a, b] \ {[a, b].getLast hc} = segment ℝ a b \ {b} := by
+        rw [chainSet_pair]; simp
+      rw [this]
+      exact isPreconnected_segment_diff_right hs.1
+    · set z := (b :: l).getLast (by simp) with hz
+      have hzc : z ∈ chainSet (b :: l) := last_mem_chainSet _ _
+      have hzb : z ≠ b := by
+        obtain ⟨c', l', rfl⟩ := List.exists_cons_of_ne_nil hl
+        exact getLast_ne_head hs.2.2
+      have hzs : z ∉ segment ℝ a b := fun hzs => by
+        have : z ∈ segment ℝ a b ∩ chainSet (b :: l) := ⟨hzs, hzc⟩
+        rw [hs.2.1] at this
+        exact hzb (by simpa using this)
+      have e : chainSet (a :: b :: l) \ {(a :: b :: l).getLast hc} =
+          segment ℝ a b ∪ (chainSet (b :: l) \ {z}) := by
+        rw [List.getLast_cons (by simp)]
+        ext y
+        simp only [chainSet, mem_sdiff, mem_union, mem_singleton_iff]
+        constructor
+        · rintro ⟨h | h, hy⟩
+          · exact Or.inl h
+          · exact Or.inr ⟨h, hy⟩
+        · rintro (h | ⟨h, hy⟩)
+          · exact ⟨Or.inl h, fun hyz => hzs (by have hyz' : y = z := hyz; rw [← hyz']; exact h)⟩
+          · exact ⟨Or.inr h, hy⟩
+      rw [e]
+      refine IsPreconnected.union b (right_mem_segment ℝ a b) ⟨mem_chainSet_head b l, hzb.symm⟩
+        (convex_segment a b).isPreconnected (isPreconnected_chainSet_diff_last (b :: l) (by simp) hs.2.2)
+
+/-- **A simple chain minus its two ends is preconnected.** -/
+theorem isPreconnected_chainSet_diff_ends {a b : ℝ × ℝ} {l : List (ℝ × ℝ)}
+    (hs : IsSimpleChain (a :: b :: l)) :
+    IsPreconnected (chainSet (a :: b :: l) \ {a, (a :: b :: l).getLast (by simp)}) := by
+  by_cases hl : l = []
+  · subst hl
+    have : chainSet [a, b] \ {a, [a, b].getLast (by simp)} = segment ℝ a b \ {a, b} := by
+      rw [chainSet_pair]; simp
+    rw [this]
+    exact isPreconnected_segment_diff_ends hs.1
+  · set z := (b :: l).getLast (by simp) with hz
+    have hzc : z ∈ chainSet (b :: l) := last_mem_chainSet _ _
+    have hzb : z ≠ b := by
+      obtain ⟨c', l', rfl⟩ := List.exists_cons_of_ne_nil hl
+      exact getLast_ne_head hs.2.2
+    have hzs : z ∉ segment ℝ a b := fun hzs => by
+      have : z ∈ segment ℝ a b ∩ chainSet (b :: l) := ⟨hzs, hzc⟩
+      rw [hs.2.1] at this
+      exact hzb (by simpa using this)
+    have has : a ∉ chainSet (b :: l) := head_notMem_tail hs
+    have e : chainSet (a :: b :: l) \ {a, (a :: b :: l).getLast (by simp)} =
+        (segment ℝ a b \ {a}) ∪ (chainSet (b :: l) \ {z}) := by
+      rw [List.getLast_cons (by simp)]
+      ext y
+      simp only [chainSet, mem_sdiff, mem_union, mem_singleton_iff, mem_insert_iff]
+      constructor
+      · rintro ⟨h | h, hy⟩
+        · exact Or.inl ⟨h, fun hya => hy (Or.inl hya)⟩
+        · exact Or.inr ⟨h, fun hyz => hy (Or.inr hyz)⟩
+      · rintro (⟨h, hya⟩ | ⟨h, hy⟩)
+        · exact ⟨Or.inl h, fun hh => hh.elim hya fun hyz => hzs (by have hyz' : y = z := hyz; rw [← hyz']; exact h)⟩
+        · exact ⟨Or.inr h, fun hh => hh.elim (fun hya => has (by rw [← hya]; exact h)) hy⟩
+    rw [e]
+    refine IsPreconnected.union b ⟨right_mem_segment ℝ a b, fun h => hs.1 h.symm⟩
+      ⟨mem_chainSet_head b l, hzb.symm⟩ (isPreconnected_segment_diff_left hs.1)
+      (isPreconnected_chainSet_diff_last (b :: l) (by simp) hs.2.2)
+
 end Lightlike.PL
