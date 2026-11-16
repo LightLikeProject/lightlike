@@ -7,8 +7,18 @@ With `q`-Pochhammer symbols `pk z q k = (z; q)_k` and
 `T x k = (1 - a q^{2k}) / (1 - a) · (a, b, c, 1/x; q)_k / (q, aq/b, aq/c, aqx; q)_k · (aqx/(bc))^k`,
 the difference `T (q x) k - ρ x · T x k` telescopes in `k`: it equals `G x (k+1) - G x k` for an
 explicit `G` that carries no pole. Summing over `k = 0, …, n+1` at `x = q^n` gives the recurrence
-`S (n+1) = ρ (n) S n` of Jackson's sum. The identity holds for generic `x`; all denominators that
-occur are hypotheses.
+`S (n+1) = ρ (n) S n`, and by induction on `n` Jackson's sum `jackson_sum`. The identity holds for
+generic `x`; all denominators that occur are hypotheses.
+
+The proof is a direct check of the telescoping identity (found by computer algebra and verified
+here); it does not follow a published derivation. The summation formula itself is a known one (the
+terminating very-well-poised `₆φ₅` sum), but no source and no equation number for it have been
+verified yet, so none is cited.
+
+## Main results
+
+* `jackson_sum`: for `JHyp q a b c N` and `n ≤ N`, the sum of `Tj q a b c (q ^ n) k` over
+  `k ≤ n` equals `jacksonRhs q a b c n`.
 -/
 
 namespace Lightlike.TV.Refl
