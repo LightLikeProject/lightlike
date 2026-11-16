@@ -87,7 +87,11 @@ scaled data is `(∏ c_e) s⁻⁴ ∫ a(x) e^{λ S(x)} dx` with the `λ`-indepen
 cutoff split `a = χ a + (1 - χ) a`; the named hypotheses (joint integrability, `hK`, `hdet`, `hint`,
 `hfar`, the weight bound) are those of the statement [38]; `hint` is assumed only along `λ ∈ ℕ` (the form `∀ τ : ℝ` fails for `τ < 0`
 where an overlap vanishes). The numerical factor of BDFHP eq. (57) and its second line for `p = γ k`
-are in [39].
+are in [39]. For boundary data whose normals do not close at a node `a < 4`, the weighted vertex integral in the fixed charts
+is `O(λ^{m-N})` for every `N`: the differential of the chart `g_0` is onto the tangent space, so at a point with
+`Re S = 0` (an aligned point) the derivative of the pulled-back action along a suitable chart direction is the sum of
+the logarithmic derivatives of the ends at the node, which does not vanish; `Re S ≤ 0`, the smoothness of the action
+and the absence of critical points are proved, and the far remainder stays under `hint` and `hfar` [40].
 
 The vertex action `lorAction` is the sum of the triangle actions over the ten edges at the spinors
 `X†z` [9]. Its real part is at most zero where the spinors and overlaps are nonzero [9]. In a chart
@@ -334,6 +338,12 @@ data (BDFHP eq. (56)) needs this in a chart and is not proved.
 39. Lightlike/Asymptotics/Lorentzian/Eq57Constants.lean - `Asymptotics.Lorentzian.bdfhpC`,
     `Asymptotics.Lorentzian.bdfhpN`, `Asymptotics.Lorentzian.bdfhpN_eq`,
     `Asymptotics.Lorentzian.lorEdgeDensity_smul`
+
+40. Lightlike/Asymptotics/Lorentzian/VertexSuppressed.lean -
+    `Asymptotics.Lorentzian.fixPre`, `Asymptotics.Lorentzian.hasDerivAt_fixMat_line`,
+    `Asymptotics.Lorentzian.fixVertexChart_curve`, `Asymptotics.Lorentzian.hasDerivAt_chartAction_aligned`,
+    `Asymptotics.Lorentzian.weighted_suppressed_local`,
+    `Asymptotics.Lorentzian.lorVertex_suppressed_fixChart`
 
 ## References
 

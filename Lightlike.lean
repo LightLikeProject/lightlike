@@ -89,6 +89,7 @@ import Lightlike.Asymptotics.Lorentzian.VertexHaarChart
 import Lightlike.Asymptotics.Lorentzian.VertexFixChart
 import Lightlike.Asymptotics.Lorentzian.Eq57Constants
 import Lightlike.Asymptotics.Lorentzian.Suppression
+import Lightlike.Asymptotics.Lorentzian.VertexSuppressed
 import Lightlike.Asymptotics.Lorentzian.Hessian
 import Lightlike.Asymptotics.EPRL.Normals
 import Lightlike.Asymptotics.EPRL.OddSum
