@@ -656,7 +656,7 @@
       - {ref: ooguri-1992, location: "Abstract", check: "Alexander moves"}
       - {ref: perez-2013, location: "§6.1.3", check: "BF theory"}
   review: kernel-checked
-  note: "An identity at finite cutoff: the cutoff conditions make the cutoffs on the faces inside the move non-binding. The 2-4 move adds one triangle to the gauge set (IsGauge.move24); the 4-2 move is the 2-4 move read backwards (the gauge set is given on the complex after the 4-2 move). Non-vacuity: amplitudeGF_move24_example checks every hypothesis of amplitudeGF_move24 in the kernel on the 1-5 subdivision of the boundary of the 5-simplex, with no gauge triangles; the gauge-fixed forms are not instantiated in the kernel. There is no wrong-model check for this move; the perturbed amplitude ampBad is checked against the 3-3 move only (LL-0049). Removal of the cutoff and independence of the gauge set are not proven."
+  note: "An identity at finite cutoff: the cutoff conditions make the cutoffs on the faces inside the move non-binding. The 2-4 move adds one triangle to the gauge set (IsGauge.move24); the 4-2 move is the 2-4 move read backwards (the gauge set is given on the complex after the 4-2 move). Non-vacuity: amplitudeGF_move24_example checks every hypothesis of amplitudeGF_move24 in the kernel on the 1-5 subdivision of the boundary of the 5-simplex, with no gauge triangles, and amplitudeGF_move24_gauge_example does the same for the gauge-fixed form with a gauge set of fourteen triangles (isGauge_T14), so the gauge-fixed statement is instantiated in the kernel; the two sums are shown equal, their value is not computed. There is no wrong-model check for this move; the perturbed amplitude ampBad is checked against the 3-3 move only (LL-0049). Removal of the cutoff and independence of the gauge set are not proven."
   since: 0.2.0
 - id: LL-0051
   title: The gauge-fixed Ooguri state sum at finite cutoff is invariant under the 4D Pachner 1-5 and 5-1 moves, and the gauge rule survives the 1-5 move
@@ -670,7 +670,7 @@
       - {ref: ooguri-1992, location: "Abstract", check: "Alexander moves"}
       - {ref: perez-2013, location: "§6.1.3", check: "BF theory"}
   review: kernel-checked
-  note: "An identity at finite cutoff (the cutoff conditions Cut15 make the cutoffs on the faces inside the move non-binding). The 1-5 move adds the four triangles {v, a_0, a_j} to the gauge set (isGauge_move15); the 5-1 move is the 1-5 move read backwards (the gauge set is given on the complex after the 5-1 move). Non-vacuity: amplitudeGF_move15_example checks every hypothesis of amplitudeGF_move15 in the kernel on the boundary of the 5-simplex, with no gauge triangles; the gauge-fixed forms are not instantiated in the kernel. There is no wrong-model check for this move; the perturbed amplitude ampBad is checked against the 3-3 move only (LL-0049). Removal of the cutoff and independence of the gauge set are not proven."
+  note: "An identity at finite cutoff (the cutoff conditions Cut15 make the cutoffs on the faces inside the move non-binding). The 1-5 move adds the four triangles {v, a_0, a_j} to the gauge set (isGauge_move15); the 5-1 move is the 1-5 move read backwards (the gauge set is given on the complex after the 5-1 move). Non-vacuity: amplitudeGF_move15_example checks every hypothesis of amplitudeGF_move15 in the kernel on the boundary of the 5-simplex, with no gauge triangles, and amplitudeGF_move15_gauge_example does the same for the gauge-fixed form with the ten gauge triangles through a vertex (isGauge_starK0), so the gauge-fixed statement is instantiated in the kernel; the two sums are shown equal, their value is not computed. There is no wrong-model check for this move; the perturbed amplitude ampBad is checked against the 3-3 move only (LL-0049). Removal of the cutoff and independence of the gauge set are not proven."
   since: 0.2.0
 - id: LL-0052
   title: The Barrett–Crane vertex amplitude is a sum of squared 15j symbols, so it is real and non-negative
@@ -879,7 +879,122 @@
   review: kernel-checked
   note: "The tetrahedron sum over the six doubled edge spins up to a cut-off N has the nonnegative terms Π(s_e+1)·{s₀ s₁ s₂; s₅ s₄ s₃}² (tetraTerm_nonneg). At the doubled spins (0, n, n, n, n, 0) the dimension factor is (n+1)⁴ and the 6j symbol is ±1/(n+1) by the zero-spin formula (sixJSym_zero_left; DLMF eq. 34.5.1 after the 34.5(ii) column symmetry), so the term is (n+1)² (tetraTerm_zeroSpin). Hence the sum is at least (N+1)² (tetraPartition_ge), it is unbounded (tetraPartition_unbounded), and by the monotone-limit criterion it has no limit (not_tetraRemovable). This is the sum without the rescaling M_Λ^{-v} of the simple cut-off of Barrett and Naish-Guzman (§2.2), who do not define M_Λ here; whether the rescaled limit exists is not decided. The tests: the cut-off values 1, 29, 2393/4 at doubled cut-offs 0, 1, 2 are numerical (scripts/spinfoam/tetra_partition_check.py) and lie above (N+1)². Not covered: existence of the sum as a distribution and H² = 0 (Barrett and Naish-Guzman, §4.4), and the link from H² = 0 to the removal of the cut-off."
   since: unreleased
-- id: LL-XXXX
+- id: LL-0068
+  title: "The gauge-fixed Ooguri state sum at finite cutoff is constant along every chain of 4D Pachner moves, and a gauge set that forces every triangle gives 1 at every cutoff"
+  area: SpinFoam
+  file: Lightlike/SpinFoam/GaugeChain.lean
+  decls: [Lightlike.SpinFoam.amplitudeGF_congr_cut, Lightlike.SpinFoam.GFStep4.isGauge, Lightlike.SpinFoam.amplitudeGF_eqvGen4, Lightlike.SpinFoam.amplitudeGF_tendsto_one_of_forces]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: freidel-louapre-2003, location: "Section IV", check: "GAUGE SYMMETRIES AND DIVERGENCES"}
+  review: kernel-checked
+  note: "The three moves 3-3, 2-4 and 1-5 (LL-0049 to LL-0051) are put into one relation GFStep4 on triples (complex, gauge set, cutoffs), with the hypotheses of the three move theorems and a step recut that changes the cutoffs on faces that are not summed (amplitudeGF_congr_cut). A step takes a gauge set to a gauge set (GFStep4.isGauge), and the gauge-fixed amplitude is constant along every chain of steps and their inverses, which are the 4-2 and 5-1 moves (amplitudeGF_eqvGen4). If a gauge set T forces every triangle, the state sum is 1 at every constant cutoff, so it converges as the cutoff is removed (amplitudeGF_tendsto_one_of_forces). Non-vacuity: amplitudeGF_chain_example runs a 1-5 move followed by a 2-4 move on the boundary of the 5-simplex with ten gauge triangles; amplitudeGF_tendsto_starT is the forcing case on the boundary of the 5-simplex. The gauge rule is this library's proposal for the 4D analogue of the maximal tree of Freidel and Louapre (Section IV.B of the paper, the gauge-fixing procedure; the location checked in the registry is the title of Section IV), not a construction from the literature; their independence of the choice of tree is argued there by BRST invariance and is formal. Not proven: finite cutoff only, the cutoffs must be re-chosen by recut between moves and the cutoff conditions are sufficient, not necessary; independence of the gauge set is not proven for gauge sets that do not force every triangle (numerical examples in scripts/spinfoam/gauge_independence_check.py show finite-cutoff dependence for non-forcing sets); the second tree, the global symmetry left at the root vertex, the Faddeev-Popov measure and the limit of the ungauged sum are not treated."
+  since: unreleased
+- id: LL-0069
+  title: "A set of triangles that forces every triangle of a closed 4D complex still forces every triangle after a 1-5 Pachner move, when the four gauge triangles of the move are added"
+  area: SpinFoam
+  file: Lightlike/SpinFoam/ForcingMoves.lean
+  decls: [Lightlike.SpinFoam.Forces.mono, Lightlike.SpinFoam.Forces.of_union, Lightlike.SpinFoam.Move15.forces_move15]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: freidel-louapre-2003, location: "Section IV", check: "GAUGE SYMMETRIES AND DIVERGENCES"}
+  review: kernel-checked
+  note: "Forcing is the rule that a tetrahedron with three of its triangles in the set forces the fourth (Forces); the rule is this library's, used to show that the gauge-fixed state sum is 1 (amplitudeGF_tendsto_one_of_forces). Forces is monotone in the tetrahedra and in the starting set (Forces.mono) and composes (Forces.of_union). The 1-5 move only adds tetrahedra, and each new triangle {v, x, y} is forced by the tetrahedron {v, a_0, x, y} from the four gauge triangles {v, a_0, a_j} (forces_move15). Non-vacuity: forces_move15_example applies it on the boundary of the 5-simplex with the ten triangles through a vertex. Scope: for complexes reached from the boundary of the 5-simplex by 1-5 moves, and in general whenever the hypothesis Forces K K.tris T holds. Open, not proven: the 3-3 and 2-4 moves. A proof that stays inside the six vertices of a 3-3 move cannot work: over the 2^18 sets of the 18 triangles on the six vertices, the closure before the move minus the triangle sigma is not contained in the closure after the move in 3744 cases, and the converse fails in 3744; the map that replaces sigma by tau sends 12016 of the 39942 closed local sets to non-closed ones. What holds locally (exhaustive): all 18 mixed triangles are forced before the move iff they are forced after it. Numerical evidence only (scripts/spinfoam/forcechain.py): random sequences of 3-3, 2-4 and 1-5 moves from the boundary of the 5-simplex kept the gauge set forcing in every sampled case; the inverse 4-2 and 5-1 moves lose forcing of the transported set at some locations, though a forcing gauge set was found directly on every such complex sampled. Counterexample for the 3-3 move (numerical, pinned by counterexample_33() in scripts/spinfoam/forcechain.py): on a closed triangulation of the 4-sphere with 48 simplices there is a collapsible forcing gauge set of size E-V+1 that stops forcing after a 3-3 move with the set unchanged (42 triangles left unforced). Random search found such cases in 11 of about 99,000 trials, so forcing is not preserved by 3-3 for every forcing gauge set. Measured in about 162,000 further trials with random minimal forcing sets: T forces after the 3-3 move exactly when the closure of T under the tetrahedra that do not contain the moved triangle sigma already reaches every other triangle (no forcing step needs sigma); the 'if' direction is an easy argument, the 'only if' direction is numerical (9 of 9 cases without that property lose forcing)."
+  since: unreleased
+- id: LL-0070
+  title: Three-term recurrence of the real q-Racah sum at a root of unity
+  area: TuraevViro
+  file: Lightlike/TuraevViro/Reflect/RacahReal.lean
+  decls: [Lightlike.TV.Refl.real_recurrence]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: koekoek-swarttouw-1996, location: "eq. (3.2.1)", check: "q-Racah"}
+      - {ref: koekoek-swarttouw-1996, location: "eq. (3.2.2)", check: "orthogonality"}
+  review: kernel-checked
+  note: "For the finite q-Racah sum SR at q = e^{iπ/r}, the three-term recurrence in the third colour holds under explicit conditions: some a_i = L + 1 with L ≥ 0, b₁ - a_i ≤ r - 2, b₂ - L ≤ r - 2, b₃ - L ≤ r - 2, and r does not divide b₂ + b₃ - a₂ - a₃ + k for k = 0, 1, 2. The case where all a_i = 0, and the case where r divides one of those quantum-integer arguments (which occurs for admissible data), are not covered by this statement. Compare Koekoek–Swarttouw (3.2.5); the coefficients were not compared term by term with that source."
+  since: 0.2.1
+- id: LL-0071
+  title: Row identity of the quantum 6j symbol in its third colour
+  area: TuraevViro
+  file: Lightlike/TuraevViro/Reflect/EndRowCoef.lean
+  decls: [Lightlike.TV.Refl.row_at]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: koekoek-swarttouw-1996, location: "eq. (3.2.1)", check: "q-Racah"}
+      - {ref: koekoek-swarttouw-1996, location: "eq. (3.2.2)", check: "orthogonality"}
+      - {ref: turaev-1994, location: "Chapter: Chapter VI. 6j-symbols|10.1515/9783110883275-007"}
+  review: kernel-checked
+  note: "The row identity for qSixJ in the third colour, for all admissible data, the two endpoint colours 0 and r - 2 included (row_at, which packages sixj_row for the interior colours with the separate proofs of the two endpoint rows). r ≥ 3 is needed at the top endpoint. Not shown: the recurrence in the other colours."
+  since: 0.2.1
+- id: LL-0072
+  title: Detailed balance and weighted orthogonality of the q-6j rows for different sixth colours
+  area: TuraevViro
+  file: Lightlike/TuraevViro/Reflect/SixJOrth.lean
+  decls: [Lightlike.TV.Refl.sixj_offdiag]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: koekoek-swarttouw-1996, location: "eq. (3.2.1)", check: "q-Racah"}
+      - {ref: koekoek-swarttouw-1996, location: "eq. (3.2.2)", check: "orthogonality"}
+      - {ref: turaev-1994, location: "Chapter: Chapter VI. 6j-symbols|10.1515/9783110883275-007"}
+  review: kernel-checked
+  note: "The weights jOmega make the recurrence coefficients symmetric (detailed balance, sixj_balance); an abstract weighted Jacobi lemma (jacobi_orth) then gives orthogonality of the q-6j sums for different sixth colours (sixj_offdiag; by duality also in the sixth colour, sixj_offdiag_dual). It uses that the eigenvalues 2 cos((q+1)π/r) are distinct. Not shown: the value of the diagonal norm."
+  since: 0.2.1
+- id: LL-0073
+  title: The weighted norms of all rows and columns of the q-6j matrix are one common constant
+  area: TuraevViro
+  file: Lightlike/TuraevViro/Reflect/GramConst.lean
+  decls: [Lightlike.TV.Refl.gram_const]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: koekoek-swarttouw-1996, location: "eq. (3.2.1)", check: "q-Racah"}
+      - {ref: koekoek-swarttouw-1996, location: "eq. (3.2.2)", check: "orthogonality"}
+      - {ref: turaev-1994, location: "Chapter: Chapter VI. 6j-symbols|10.1515/9783110883275-007"}
+  review: kernel-checked
+  note: "The weighted norms of all rows and all columns of the matrix of q-6j sums are one common constant (Gram-matrix argument, gram_const for the columns and sixj_norm_const for the rows). Its value is not proved by these results; see the two conditional results that follow."
+  since: 0.2.1
+- id: LL-0074
+  title: Norm one of the q-6j matrix, under the q-Dougall summation
+  area: TuraevViro
+  file: Lightlike/TuraevViro/Reflect/SixJNormOne.lean
+  decls: [Lightlike.TV.Refl.sixj_norm_one]
+  status: conditional
+  hypotheses: [Lightlike.TV.Refl.QDougall]
+  tier: established
+  source:
+    refs:
+      - {ref: koekoek-swarttouw-1996, location: "eq. (3.2.1)", check: "q-Racah"}
+      - {ref: koekoek-swarttouw-1996, location: "eq. (3.2.2)", check: "orthogonality"}
+  review: kernel-checked
+  note: "Under the boundary evaluation QDougall (the terminating very-well-poised 6φ5 summation at the lowest sixth colour, the q-Dougall summation), every weighted norm equals 1. QDougall is an explicit hypothesis, checked numerically (exact at r = 4 to 7) but not proved in Lean, and no instance of it is proved here, so the hypothesis is not shown to be satisfiable by a Lean example."
+  since: 0.2.1
+- id: LL-0075
+  title: q-orthogonality of the 6j symbol at level r, under the q-Dougall summation
+  area: TuraevViro
+  file: Lightlike/TuraevViro/Reflect/OrthConditional.lean
+  decls: [Lightlike.TV.Refl.qOrthogonality_of]
+  status: conditional
+  hypotheses: [Lightlike.TV.Refl.QDougallAll]
+  tier: established
+  source:
+    refs:
+      - {ref: koekoek-swarttouw-1996, location: "eq. (3.2.1)", check: "q-Racah"}
+      - {ref: koekoek-swarttouw-1996, location: "eq. (3.2.2)", check: "orthogonality"}
+  review: kernel-checked
+  note: "Given QDougallAll (the q-Dougall boundary evaluation for all admissible colours), the diagonal orthogonality qOrthogonality of the model holds at every level r ≥ 2. Together with qBiedenharnElliott this would give the Turaev–Viro invariance of LL-0031 at level r. Not proved: QDougallAll itself, and qBiedenharnElliott for r ≥ 4. No instance of the hypothesis is proved here."
+  since: 0.2.1
+- id: LL-0076
   title: The Jordan curve theorem for simple closed polygons in the plane, with the inside of a triangle
   area: PL
   file: Lightlike/PL/PolygonJordan.lean
