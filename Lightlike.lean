@@ -444,6 +444,7 @@ import Lightlike.Tests.CutoffDivergence
 import Lightlike.Tests.Forcing
 import Lightlike.Tests.GaugeChange
 import Lightlike.Tests.InverseMoves
+import Lightlike.Tests.Jackson
 import Lightlike.Tests.Manifold
 import Lightlike.Tests.PonzanoRegge
 import Lightlike.Tests.QDougall
@@ -492,6 +493,7 @@ import Lightlike.TuraevViro.Reflect.SixJDual
 import Lightlike.TuraevViro.Reflect.SixJEnd
 import Lightlike.TuraevViro.Reflect.GramConst
 import Lightlike.TuraevViro.Reflect.SixJNorm
+import Lightlike.TuraevViro.Reflect.JacksonWZ
 import Lightlike.TuraevViro.Reflect.SixJNormOne
 import Lightlike.TuraevViro.Reflect.SixJSingle
 import Lightlike.TuraevViro.Reflect.AdmRange
