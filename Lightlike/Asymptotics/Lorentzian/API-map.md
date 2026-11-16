@@ -68,26 +68,26 @@ times the sum over the critical points, with error `O(λ^{m-n/2-1})` [8]. The re
 hypothesis, not proved, and it holds trivially for a zero remainder [8]. The global smoothness of the
 action in these statements cannot hold for the Lorentzian action (logarithms of the overlaps and
 norms): the local version needs smoothness only on an open set containing the support of the
-localised amplitude, by a smooth cutoff of the action [24]. The action of a smooth chart is smooth on every open set where,
-on each edge, the product of the overlaps is off the cut of the logarithm [25]. A chart of `SL(2,ℂ)` near the identity with the tangent map
+localised amplitude, by a smooth cutoff of the action [32]. The action of a smooth chart is smooth on every open set where,
+on each edge, the product of the overlaps is off the cut of the logarithm [33]. A chart of `SL(2,ℂ)` near the identity with the tangent map
 `X ↦ X exp(M)` of BDFHP Appendix A is the Cayley transform `((1 + s) 1 + M)/(1 - s)`, `s = c·c/16`, of
 `M = ½ Σ c_i σ_i`: determinant one, value `1` and derivative `M` at `0`, smooth entries where `s ≠ 1`
-[26]; Mathlib has no `det exp = exp tr`. The 44-variable chart (`X_a = X₀_a · cayley (φ_a + iθ_a)` for
+[34]; Mathlib has no `det exp = exp tr`. The 44-variable chart (`X_a = X₀_a · cayley (φ_a + iθ_a)` for
 `a < 4`, `z_e = (w₀_e + u_e + i v_e, 1)`) is smooth where the four Cayley denominators are nonzero, and
 the vertex asymptotics hold in it with the smoothness hypothesis replaced by that open set and the
 overlap condition; the Haar density and the identification of the vertex integral with the chart
-integral stay named hypotheses (`aLoc`, `aFar`) [27]. Along `t ↦ t v` the chart has the tangent map
-`X_a ↦ X₀_a · chartGen (φ_a + iθ_a)`, `z_e ↦ (u_e + i v_e, 0)` [27]. The two-point formula with the
-constants of eq. (57) holds for an action smooth only on an open set [28]. The Haar measure of
+integral stay named hypotheses (`aLoc`, `aFar`) [35]. Along `t ↦ t v` the chart has the tangent map
+`X_a ↦ X₀_a · chartGen (φ_a + iθ_a)`, `z_e ↦ (u_e + i v_e, 0)` [35]. The two-point formula with the
+constants of eq. (57) holds for an action smooth only on an open set [36]. The Haar measure of
 `SL(2,ℂ)` is Lebesgue measure in the chart `g_z` of `FixedChart.lean` (density `1`), so, if the
 integrand is jointly integrable, the vertex is `(∏ c_e) s⁻⁴` times the Lebesgue integral of the
-integrand over `(ℂ³)⁴ × ℂ¹⁰` [29]; through a measure-preserving identification with `ℝ⁴⁴` the vertex of the
-scaled data is `(∏ c_e) s⁻⁴ ∫ a(x) e^{λ S(x)} dx` with the `λ`-independent amplitude `a = ∏ Ω_e` [29]. The chart `fixVertexChart` is smooth where the
+integrand over `(ℂ³)⁴ × ℂ¹⁰` [37]; through a measure-preserving identification with `ℝ⁴⁴` the vertex of the
+scaled data is `(∏ c_e) s⁻⁴ ∫ a(x) e^{λ S(x)} dx` with the `λ`-independent amplitude `a = ∏ Ω_e` [37]. The chart `fixVertexChart` is smooth where the
 `λ`-coordinates are nonzero, and the asymptotic formula for the scaled vertex holds in it with the
 cutoff split `a = χ a + (1 - χ) a`; the named hypotheses (joint integrability, `hK`, `hdet`, `hint`,
-`hfar`, the weight bound) are those of the statement [30]; `hint` is assumed only along `λ ∈ ℕ` (the form `∀ τ : ℝ` fails for `τ < 0`
+`hfar`, the weight bound) are those of the statement [38]; `hint` is assumed only along `λ ∈ ℕ` (the form `∀ τ : ℝ` fails for `τ < 0`
 where an overlap vanishes). The numerical factor of BDFHP eq. (57) and its second line for `p = γ k`
-are in [31].
+are in [39].
 
 The vertex action `lorAction` is the sum of the triangle actions over the ten edges at the spinors
 `X†z` [9]. Its real part is at most zero where the spinors and overlaps are nonzero [9]. In a chart
@@ -158,6 +158,35 @@ the constants of eq. (57)), none of which is proved here [22]; these hypotheses 
 model phase with two nondegenerate critical points shows [23]. The Hessian at the SU(2) critical
 point of the regular simplex is numerically nondegenerate, with margin about 0.15 in the Fubini–Study
 frame (`scripts/asymptotics/lorentzian_hessian_check.py`).
+The oscillation frequency of eq. (53), `γ Σ k Θ` with the dihedral boost angles of a symmetric Lorentzian
+4-simplex (four spins on one tetrahedron, six others; the type 4-1 signs), reproduces to the published
+digits the four frequencies fitted to the numerical amplitude of Donà–Fanizza–Sarno–Speziale
+(`scripts/asymptotics/lorentzian_regge_frequency_check.py`); this is a numerical check of the
+statement, not a proof.
+For a configuration satisfying the z-eliminated critical equations (20), (21), the spinors
+`z_e = (X_a†)⁻¹ ξ_ab` give `Z_ab = ξ_ab` and `Z_ba = r c J ξ_ba`, and the real part of the action
+attains its maximum `0` there [24]. On such an edge the derivative of the triangle factor along a
+variation `δz` (which moves both spinors at once) vanishes by (21) alone, and the group variations
+sum to zero by closure at each node [25]; the passage from these line derivatives to the gradient of
+the chart action is not made. The derivative of `triAction` itself along a curve is the same
+expression where the product of the overlaps is off the cut of the logarithm [26]. Along any curve through a critical configuration with
+the critical spinors, the derivative of `lorAction` is zero when closure holds at every node [27];
+the curves are given by their entrywise derivative `X₀ · genMat c`, and the Fréchet derivative of
+`lorChartAction` is not identified here. The second derivative along a one-parameter subgroup of one
+node, with the other elements and the spinors fixed, is the sum over the ends at the node of the end
+formula `endForm` [29] [28]: the block `H^{X_a X_a}` of BDFHP Appendix A, equal to a quarter of eq. (61)
+at source ends (the printed blocks correspond to the generators `iσ`, `σ`) and different from (61) at
+target ends, where the sign of the parameter `p` and a term `m·(α×β)` appear; checked against the
+independent `44 × 44` numerics to `2·10⁻¹⁹` (`scripts/asymptotics/lorentzian_hessian_node_check.py`). The blocks `H^{zz}` (in the
+Wirtinger entries `zzWirtinger`) and `H^{Xz}` (`xzSource`, `xzTarget`) are proved without criticality [29]
+and checked at non-critical configurations (`scripts/asymptotics/lorentzian_hessian_noncritical_check.py`).
+The mixed second derivatives along two different nodes or two different spinors vanish, and the
+`44 × 44` matrix `hessBlockMatrix` assembled from the blocks is symmetric [30]; its identification with the
+matrix of second derivatives in a chart is not proved. Conversely, at a configuration with `Re S = 0` every edge is aligned
+(`Z_ab = λ ξ_ab`, `Z_ba = μ J ξ_ba`), the first derivative along a curve `X_a Y(t)` is the sum of the logarithmic
+derivatives of the ends at `a`, and stationarity along every such curve gives the closure `Σ n_e n̂_e = 0` at each node:
+there is no critical configuration for boundary data without closure [31]. The suppression of the integral for such
+data (BDFHP eq. (56)) needs this in a chart and is not proved.
 
 ## Lean References
 
@@ -241,32 +270,68 @@ frame (`scripts/asymptotics/lorentzian_hessian_check.py`).
     `Asymptotics.Lorentzian.lorAction_smul`, `Asymptotics.Lorentzian.lorVertex_asymptotic_formula`
 23. Lightlike/Asymptotics/Lorentzian/ExpPhaseTwoPoints.lean - `Asymptotics.Lorentzian.toyAction`,
     `Asymptotics.Lorentzian.toy_two_points`
-24. Lightlike/Asymptotics/Lorentzian/VertexLocal.lean - `Asymptotics.Lorentzian.exists_smooth_extension`,
+24. Lightlike/Asymptotics/Lorentzian/CriticalSpinors.lean - `Asymptotics.Lorentzian.critZ`,
+    `Asymptotics.Lorentzian.critZ_src`, `Asymptotics.Lorentzian.critZ_tgt`,
+    `Asymptotics.Lorentzian.re_lorAction_critZ`
+25. Lightlike/Asymptotics/Lorentzian/ZStationary.lean - `Asymptotics.Lorentzian.hasDerivAt_triFactor_joint`,
+    `Asymptotics.Lorentzian.hasDerivAt_triFactor_curve`, `Asymptotics.Lorentzian.zedge_cancel`,
+    `Asymptotics.Lorentzian.edge_variation`,
+    `Asymptotics.Lorentzian.sum_logDeriv_nodes`
+26. Lightlike/Asymptotics/Lorentzian/TriActionDeriv.lean - `Asymptotics.Lorentzian.exp_triAction_eq_triFactor`,
+    `Asymptotics.Lorentzian.differentiableAt_triAction`,
+    `Asymptotics.Lorentzian.hasDerivAt_triAction_curve`
+27. Lightlike/Asymptotics/Lorentzian/CriticalGradient.lean - `Asymptotics.Lorentzian.genMat`,
+    `Asymptotics.Lorentzian.hasDerivAt_spinAct`,
+    `Asymptotics.Lorentzian.hasDerivAt_lorAction_critical`, `Asymptotics.Lorentzian.hcl_of_closure`
+28. Lightlike/Asymptotics/Lorentzian/SpinorPauli.lean - `Asymptotics.Lorentzian.inner_genMat`,
+    `Asymptotics.Lorentzian.inner_genMat_genMat`, `Asymptotics.Lorentzian.srcValue_eval`,
+    `Asymptotics.Lorentzian.projForm`, `Asymptotics.Lorentzian.tripleForm`
+29. Lightlike/Asymptotics/Lorentzian/HessianNode.lean - `Asymptotics.Lorentzian.srcCoeff`,
+    `Asymptotics.Lorentzian.tgtCoeff`, `Asymptotics.Lorentzian.endForm`,
+    `Asymptotics.Lorentzian.hasDerivAt_srcCoeff`, `Asymptotics.Lorentzian.hasDerivAt_tgtCoeff`,
+    `Asymptotics.Lorentzian.hessXX_block`, `Asymptotics.Lorentzian.sum_projForm_pos_iff`,
+    `Asymptotics.Lorentzian.re_hessRR_neg`, `Asymptotics.Lorentzian.hessZZ_line`,
+    `Asymptotics.Lorentzian.deriv_deriv_triAction_line`, `Asymptotics.Lorentzian.zzWirtinger`,
+    `Asymptotics.Lorentzian.hessZZ_block`, `Asymptotics.Lorentzian.hessXZ_block`,
+    `Asymptotics.Lorentzian.xzSource`, `Asymptotics.Lorentzian.xzTarget`,
+    `Asymptotics.Lorentzian.hasDerivAt_srcCoeff_gen`, `Asymptotics.Lorentzian.hessXX_curve`,
+    `Asymptotics.Lorentzian.srcCoeff_adj_gen`, `Asymptotics.Lorentzian.tgtCoeff_adj_gen`
+30. Lightlike/Asymptotics/Lorentzian/HessianAssembly.lean - `Asymptotics.Lorentzian.hessZZ_cross`,
+    `Asymptotics.Lorentzian.hessXX_cross`, `Asymptotics.Lorentzian.nodeQuad`,
+    `Asymptotics.Lorentzian.nodeBilin`, `Asymptotics.Lorentzian.hessBlockMatrix`,
+    `Asymptotics.Lorentzian.hessBlockMatrix_symm`
+
+31. Lightlike/Asymptotics/Lorentzian/ClosureFromCritical.lean -
+    `Asymptotics.Lorentzian.hasDerivAt_lorAction_aligned`, `Asymptotics.Lorentzian.exists_sl2_curve`,
+    `Asymptotics.Lorentzian.aligned_of_re_lorAction_eq_zero`,
+    `Asymptotics.Lorentzian.critical_configuration_closure`,
+    `Asymptotics.Lorentzian.no_critical_without_closure`
+32. Lightlike/Asymptotics/Lorentzian/VertexLocal.lean - `Asymptotics.Lorentzian.exists_smooth_extension`,
     `Asymptotics.Lorentzian.weighted_asymptotics_local`,
     `Asymptotics.Lorentzian.lorVertex_asymptotics_local`
-25. Lightlike/Asymptotics/Lorentzian/ActionSmooth.lean - `Asymptotics.Lorentzian.contDiffAt_triAction`,
+33. Lightlike/Asymptotics/Lorentzian/ActionSmooth.lean - `Asymptotics.Lorentzian.contDiffAt_triAction`,
     `Asymptotics.Lorentzian.contDiffAt_spinAct`, `Asymptotics.Lorentzian.lorChartAction_contDiffOn`
-26. Lightlike/Asymptotics/Lorentzian/CayleyChart.lean - `Asymptotics.Lorentzian.chartGen`,
+34. Lightlike/Asymptotics/Lorentzian/CayleyChart.lean - `Asymptotics.Lorentzian.chartGen`,
     `Asymptotics.Lorentzian.cayleyMat`, `Asymptotics.Lorentzian.cayley`,
     `Asymptotics.Lorentzian.cayley_zero`, `Asymptotics.Lorentzian.contDiffOn_cayleyMat`,
     `Asymptotics.Lorentzian.hasDerivAt_cayleyMat_zero`
-27. Lightlike/Asymptotics/Lorentzian/VertexChart.lean - `Asymptotics.Lorentzian.vertexChart`,
+35. Lightlike/Asymptotics/Lorentzian/VertexChart.lean - `Asymptotics.Lorentzian.vertexChart`,
     `Asymptotics.Lorentzian.vertexChart_zero`, `Asymptotics.Lorentzian.cayleyDomain`,
     `Asymptotics.Lorentzian.lorChartAction_vertexChart_contDiffOn`,
     `Asymptotics.Lorentzian.lorVertex_asymptotics_vertexChart`,
     `Asymptotics.Lorentzian.vertexChart_group_hasDerivAt`, `Asymptotics.Lorentzian.vertexChart_spinor_hasDerivAt`
-28. Lightlike/Asymptotics/Lorentzian/AsymptoticFormulaLocal.lean - `Asymptotics.Lorentzian.weighted_two_points_local`,
+36. Lightlike/Asymptotics/Lorentzian/AsymptoticFormulaLocal.lean - `Asymptotics.Lorentzian.weighted_two_points_local`,
     `Asymptotics.Lorentzian.weighted_two_points_eq57_local`,
     `Asymptotics.Lorentzian.lorVertex_asymptotic_formula_local`
-29. Lightlike/Asymptotics/Lorentzian/VertexHaarChart.lean - `Asymptotics.Lorentzian.integral_haar4_fixChart`,
+37. Lightlike/Asymptotics/Lorentzian/VertexHaarChart.lean - `Asymptotics.Lorentzian.integral_haar4_fixChart`,
     `Asymptotics.Lorentzian.integral_pi_haar_eq`, `Asymptotics.Lorentzian.lorVertex_eq_fixChart_integral`,
     `Asymptotics.Lorentzian.exists_measurePreserving_vertex_space`, `Asymptotics.Lorentzian.fixVertexChart`,
     `Asymptotics.Lorentzian.chartAmplitude`, `Asymptotics.Lorentzian.lorVertex_scaled_eq_chart_integral`
-30. Lightlike/Asymptotics/Lorentzian/VertexFixChart.lean - `Asymptotics.Lorentzian.fixDomain`,
+38. Lightlike/Asymptotics/Lorentzian/VertexFixChart.lean - `Asymptotics.Lorentzian.fixDomain`,
     `Asymptotics.Lorentzian.fixVertexChart_group_contDiffOn`,
     `Asymptotics.Lorentzian.lorChartAction_fixVertexChart_contDiffOn`,
     `Asymptotics.Lorentzian.lorVertex_asymptotics_fixChart`
-31. Lightlike/Asymptotics/Lorentzian/Eq57Constants.lean - `Asymptotics.Lorentzian.bdfhpC`,
+39. Lightlike/Asymptotics/Lorentzian/Eq57Constants.lean - `Asymptotics.Lorentzian.bdfhpC`,
     `Asymptotics.Lorentzian.bdfhpN`, `Asymptotics.Lorentzian.bdfhpN_eq`,
     `Asymptotics.Lorentzian.lorEdgeDensity_smul`
 

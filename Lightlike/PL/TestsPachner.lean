@@ -1,3 +1,4 @@
+import Lightlike.PL.StarClosure
 import Lightlike.PL.PachnerMoves
 import Lightlike.PL.Tests
 import Lightlike.PL.Tests4
@@ -328,7 +329,10 @@ then the facet `0123` of `∂(01234)` (new vertex `5`), then the edges `01` and 
 theorem ofComplex4_cross5 : ofComplex4 cross5 =
     ((((boundary ({0, 1, 2, 3, 4, 8} : Finset (Fin 10))).starAt {0, 1, 2, 3, 4} 9).starAt
       {0, 1, 2, 3} 5).starAt {0, 1} 6).starAt {2, 3} 7 := by
-  apply SComplex.ext; decide +kernel
+  rw [boundary_eq_closure, starAt_closure, starAt_closure, starAt_closure, starAt_closure]
+  change SComplex.closure (crossFacets 10 5) = _
+  congr 1
+  decide +kernel
 
 set_option maxHeartbeats 600000 in
 /-- **The boundary of the 5-simplex and the boundary of the 5-dimensional cross-polytope are

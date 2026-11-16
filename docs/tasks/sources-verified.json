@@ -539,7 +539,7 @@
   "citations_via": "Semantic Scholar"
  },
  "bdfgh-2009": {
-  "checked": "2026-11-15",
+  "checked": "2026-11-16",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "Asymptotic analysis of the EPRL four-simplex amplitude",
@@ -547,6 +547,31 @@
    "Section 4": {
     "verified": true,
     "snippet": "4 Asymptotic formula To study the semi-classical approximation of the theory we consider the large spin limit, and study the asymptotics. We start by scaling all ten spins by a constant parameter kab → λkab . Then t",
+    "why": null
+   },
+   "eq. (14)": {
+    "verified": true,
+    "snippet": "(14) Spin(4)5 a with the action given by X − − + + Sγ<1 = 2jab ln h−nab |Xab |nba i + 2jab ln h−nab |Xab |nba i. (15) a<b Notice that this action is in general complex. The logarithm of a complex number is only defined u",
+    "why": null
+   },
+   "eq. (16)": {
+    "verified": true,
+    "snippet": "(16) SU(2)/U(1) where an arbitrary choice of phase is made for each coherent state, dj = 2j + 1, and the integral measure is normalised to 1. 10 With these insertions, all of the symmetrizers can be absorbed into coheren",
+    "why": null
+   },
+   "eq. (17)": {
+    "verified": true,
+    "snippet": "(17) The action is given by X + + − − Sγ>1 = 2jab ln hmab |Xab |mba i + 2jab ln hmab |Xab |mba i a<b +2kab ln h−nab |mab i + 2kab ln hmba |nba i (18) Note that we could just have easily decomposed the propagator using on",
+    "why": null
+   },
+   "eq. (19)": {
+    "verified": true,
+    "snippet": "(19) ab Spin(4)5 a<b c 3.4.1 Symmetries of the action. The actions (15) and (18) admit two types of symmetry which will be important later. • Continuous. A global Spin(4) transformation characterised by an element (Y − ,",
+    "why": null
+   },
+   "eq. (22)": {
+    "verified": true,
+    "snippet": "(22) 12 5 Proof of the asymptotic formula In this section, we provide a proof of the above theorem. We first review the notion of (extended) stationary phase, showing how the asymptotic formula is dominated by the critic",
     "why": null
    }
   },
@@ -569,6 +594,21 @@
     "snippet": "4 This integral can now be computed directly, the result being r p 2k dk k2 + p2",
     "why": null
    },
+   "Section 4.2.1, eqs. (18)-(20)": {
+    "verified": true,
+    "snippet": "4.2.1 Condition on the real part of the action The real part of the action X |hZab , ξab i|2 |hJξba , Zba i|2 Re S = kab",
+    "why": null
+   },
+   "eq. (21)": {
+    "verified": true,
+    "snippet": "(21) k Zba k 17 Finally, we consider stationarity with respect to the group variables. The right variation of an arbitrary SL(2, C) element X and its Hermitian conjugate are given by δX = XL, and δX † = L† X † , (22) whe",
+    "why": null
+   },
+   "eq. (25)": {
+    "verified": true,
+    "snippet": "(25) b:b6=a 7 The variation with respect to the variable Xa performed here corresponds to a vertex which is the source of all its edges. The variation for a vertex which is the target of some, or all, of its edges will r",
+    "why": null
+   },
    "eq. (53)": {
     "verified": true,
     "snippet": "(53) λ a<b a<b N|σ and N|P σ are independent of λ and are given below. 2. If the boundary state is the Regge state of the boundary geometry of a 4d Euclidean 4-simplex σE we obtain: \u0012 \u001312 \" ! !# χ 1 X E X E f4 ∼ (−1) N|σ",
@@ -582,6 +622,11 @@
    "eq. (57)": {
     "verified": true,
     "snippet": "(57) 1 − iγ p det H|crit a<b In the Lorentzian case the two contributions to the asymptotics correspond to the parity related reconstructions of this 4 simplex geometry, σ and P σ. The factor (2π)22 comes from the statio",
+    "why": null
+   },
+   "eq. (61)": {
+    "verified": true,
+    "snippet": "(61) Where i, j = 1, 2, 3 and we have used the critical and stationary point equations. H zz is a 20 × 20 matrix. The derivatives are with respect to the spinor variables zab on each of the ten edges ab of the amplitude.",
     "why": null
    },
    "§4.2.2": {
@@ -1702,7 +1747,7 @@
   "citations_via": "Semantic Scholar"
  },
  "eprl-2008": {
-  "checked": "2026-11-08",
+  "checked": "2026-11-16",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "LQG vertex with finite Immirzi parameter",
@@ -1715,6 +1760,11 @@
    "Section III": {
     "verified": true,
     "snippet": "III. EUCLIDEAN THEORY already noted earlier, this sector does not correspond to a topological sector of gravity bu",
+    "why": null
+   },
+   "eq. (27)": {
+    "verified": true,
+    "snippet": "(27) j+ − j− γ > 1. That is, for γ < 1, the constraint selects the highest irreducible in the decomposition of H(j + ,j − ) when viewed as the carrying space of a reducible representation under the action of the SU (2) s",
     "why": null
    }
   },
@@ -1982,7 +2032,7 @@
   "citations_via": "Semantic Scholar"
  },
  "gurau-2010": {
-  "checked": "2026-11-08",
+  "checked": "2026-11-16",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "Lost in Translation: Topological Singularities in Group Field Theory",
@@ -1990,6 +2040,16 @@
    "Abstract": {
     "verified": true,
     "snippet": "random matrix models generalize to group field theories gft whose feynman graphs are dual to gluings of higher dimensional simplices it is generally assumed that gft graphs are always dual to pseudo m",
+    "why": null
+   },
+   "Theorem 1": {
+    "verified": true,
+    "snippet": "Theorem 1. For p ≥ 2, the p-bubbles of a CGFT graph are the link graphs of the (n − p) simplices in the gluing ∆G . Proof: Consider two vertices vA (positive) and vB (negative) connected by a line of color i (see figure",
+    "why": null
+   },
+   "Theorem 2": {
+    "verified": true,
+    "snippet": "Theorem 2. Any connected n dimensional CGFT graph is dual to a normal simplicial pseudo manifold. Proof By lemma 1 it is enough to prove that the gluing ∆G dual to any CGFT graph is a simplicial complex. This is trivial",
     "why": null
    }
   },
@@ -2934,6 +2994,21 @@
   },
   "citations": 36,
   "citations_via": "Semantic Scholar"
+ },
+ "mccleary-2006": {
+  "checked": "2026-11-16",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "A First Course in Topology ",
+  "locations": {
+   "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09": {
+    "verified": true,
+    "snippet": "The Jordan Curve Theorem ",
+    "why": null
+   }
+  },
+  "citations": 18,
+  "citations_via": "OpenAlex"
  },
  "meda-pinamonti-siemssen-2021": {
   "checked": "2026-11-08",

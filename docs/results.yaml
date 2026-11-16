@@ -414,6 +414,7 @@
       - {ref: turaev-1994, location: "Chapter: Chapter VI. 6j-symbols|10.1515/9783110883275-007"}
   review: kernel-checked
   hypotheses: [Lightlike.TV.qBiedenharnElliott, Lightlike.TV.qOrthogonality]
+  note: "Both moves leave the state sum unchanged, given the q-Biedenharn–Elliott identity and q-orthogonality at level r. q-orthogonality is now proved at every level (LL-0075): turaevViro_move14_of_BE and turaevViro_move23_of_BE in Lightlike/TuraevViro/TuraevViroMoves.lean state both moves with q-Biedenharn–Elliott as their only hypothesis. That identity is proved at r = 3 (LL-0032) and checked numerically at r = 4 to 10, so the result stays conditional for r ≥ 4."
   since: 0.1.0
 - id: LL-0032
   title: Turaev–Viro invariance under the 2-3 and 1-4 moves at r = 3
@@ -965,34 +966,32 @@
   note: "The weighted norms of all rows and all columns of the matrix of q-6j sums are one common constant (Gram-matrix argument, gram_const for the columns and sixj_norm_const for the rows). Its value is not proved by these results; see the two conditional results that follow."
   since: 0.3.0
 - id: LL-0074
-  title: Norm one of the q-6j matrix, under the q-Dougall summation
+  title: Norm one of the q-6j matrix at every level r ≥ 2
   area: TuraevViro
-  file: Lightlike/TuraevViro/Reflect/SixJNormOne.lean
-  decls: [Lightlike.TV.Refl.sixj_norm_one]
-  status: conditional
-  hypotheses: [Lightlike.TV.Refl.QDougall]
+  file: Lightlike/TuraevViro/Reflect/SixJNormOneAll.lean
+  decls: [Lightlike.TV.Refl.sixj_norm_one_proved]
+  status: proven
   tier: established
   source:
     refs:
       - {ref: koekoek-swarttouw-1996, location: "eq. (3.2.1)", check: "q-Racah"}
       - {ref: koekoek-swarttouw-1996, location: "eq. (3.2.2)", check: "orthogonality"}
   review: kernel-checked
-  note: "Under the boundary evaluation QDougall (the terminating very-well-poised 6φ5 summation at the lowest sixth colour, the q-Dougall summation), every weighted norm equals 1. QDougall is an explicit hypothesis, not proved in Lean in general. It is satisfiable: the instance at level r = 2 (qDougall_two, where the only colour is 0) is proved, and another at level r = 3 (qDougall_three); this says nothing about larger r, where it is checked numerically (exact at r = 4 to 7)."
+  note: "Every weighted norm of the q-6j matrix, of each row and of each column, equals 1 at every level r ≥ 2, without hypothesis: sixj_norm_one with its hypothesis QDougall discharged. The range hypotheses of sixj_norm_one force the lowest third colour, the highest third colour and the lowest sixth colour to be the extremes of the admissible ranges (range_eq), so the boundary evaluation is QDougallAt, which qDougallAll_proved proves at every level (LL-0104). The earlier conditional form sixj_norm_one remains in Lightlike/TuraevViro/Reflect/SixJNormOne.lean."
   since: 0.3.0
 - id: LL-0075
-  title: q-orthogonality of the 6j symbol at level r, under the q-Dougall summation
+  title: q-orthogonality of the 6j symbol at every level r ≥ 2
   area: TuraevViro
-  file: Lightlike/TuraevViro/Reflect/OrthConditional.lean
-  decls: [Lightlike.TV.Refl.qOrthogonality_of]
-  status: conditional
-  hypotheses: [Lightlike.TV.Refl.QDougallAll]
+  file: Lightlike/TuraevViro/Reflect/QDougallAll.lean
+  decls: [Lightlike.TV.Refl.qOrthogonality_proved]
+  status: proven
   tier: established
   source:
     refs:
       - {ref: koekoek-swarttouw-1996, location: "eq. (3.2.1)", check: "q-Racah"}
       - {ref: koekoek-swarttouw-1996, location: "eq. (3.2.2)", check: "orthogonality"}
   review: kernel-checked
-  note: "Given QDougallAll (the q-Dougall boundary evaluation for all admissible colours), the diagonal orthogonality qOrthogonality of the model holds at every level r ≥ 2. Together with qBiedenharnElliott this would give the Turaev–Viro invariance of LL-0031 at level r. Not proved: QDougallAll itself, and qBiedenharnElliott for r ≥ 4. The hypothesis is satisfiable at level r = 2 (qDougallAll_two, where the only colour is 0); this says nothing about r ≥ 3, where QDougall is checked numerically (exact at r = 4 to 7)."
+  note: "The diagonal orthogonality qOrthogonality of the model holds at every level r ≥ 2, without hypothesis: the q-Dougall boundary evaluation QDougallAll is now a theorem (qDougallAll_proved, LL-0104) and qOrthogonality_proved applies qOrthogonality_of to it. The earlier conditional form qOrthogonality_of remains in Lightlike/TuraevViro/Reflect/OrthConditional.lean. Together with qBiedenharnElliott this would give the Turaev–Viro invariance of LL-0031 at level r. Not proved: qBiedenharnElliott for r ≥ 4."
   since: 0.3.0
 - id: LL-0076
   title: The Jordan curve theorem for simple closed polygons in the plane, with the inside of a triangle
@@ -1203,6 +1202,428 @@
       - {ref: klazar-2026, location: "Section 2", check: "Thomassen"}
   review: kernel-checked
   note: "Six distinct points u i, v j (i, j ∈ Fin 3) joined across the two classes by nine simple polygonal arcs (finite chains of segments, IsSimpleChain) that meet only in common endpoints do not exist (no_PL_K33; PLDrawing is the notion of drawing, for a set E of edges). This is the second claim of the proof of the weak Jordan theorem by Thomassen in the exposition of Klazar, Section 2, Claim 2 (Klazar's numbering), restricted to polygonal arcs. The proof differs from the orientation (left/right) argument there: the 6-cycle u0 v0 u1 v1 u2 v2 is a simple polygon (two arcs glued by isSimpleChain_append), and each of the three remaining arcs is a chord joining opposite corners. Each chord, without its ends, lies in the inside or in the outside of the polygon (it is connected and misses the carrier). Two of the three chords lie on the same side, and two chords on the same side cannot join interlaced pairs of the polygon's points (no_interlaced_chord): the proof uses only that the crossing parity of a ray, which is a count modulo 2, is additive when a closed chain is cut along a chord and glued from the two halves (chainParity_append, chainParity_reverse, parity_theta), and that the parity jumps across an arc near its interior points (near_two). A rotation of the labels does not change the inside and outside of the hexagon (inside_swap), so the same lemma covers every pair of chords (Hex.false). Limits: the arcs are polygonal arcs only; the statement for arbitrary continuous arcs is Klazar, Claim 3, a later step, and is not claimed here. Check: the drawing of K₃,₃ without the edge (2, 2), with straight segments, exists (TestsK33.drawing, so the hypotheses are satisfiable); two crossing diagonals of a square violate the disjointness field."
+  since: unreleased
+- id: LL-0092
+  title: In each of the seven edge classes of the Kuhn star with vertices displaced by ε Γ(k, k)/2, the dihedral angles add up to 2π for small ε
+  area: Regge
+  file: Lightlike/Regge/Conv3/ChartChangeClasses.lean
+  decls: [Lightlike.Regge.Conv3.cls0_disp, Lightlike.Regge.Conv3.cls1_disp, Lightlike.Regge.Conv3.cls2_disp, Lightlike.Regge.Conv3.cls3_disp, Lightlike.Regge.Conv3.cls4_disp, Lightlike.Regge.Conv3.cls5_disp, Lightlike.Regge.Conv3.cls6_disp]
+  status: proven
+  tier: frontier
+  source: structural
+  review: kernel-checked
+  note: "Part of the 3D convergence of the Regge action (T-RC6), which stays open. For a Riemannian metric g on U and m in U, displace every point k of the star around an edge to k + (ε/2) Γ(k, k) (Γ the Christoffel symbols at m). In each edge class the displaced tetrahedra form a closed fan around the displaced hinge axis that is positively oriented at ε = 0, so the sum of their dihedral angles (computed with the quadratic form g(m)) is 2π for all ε in a neighbourhood of 0 (a neighbourhood, no explicit radius). Uses closed fans of complex numbers, continuity in ε and the lattice result of LL-0078. Limits: one edge star of the standard cubical Kuhn triangulation, one point m; nothing about a triangulation of a manifold or about convergence."
+  since: unreleased
+- id: LL-0093
+  title: The jet-level star identity of the 3D Regge calculus holds at every point of a Riemannian metric, with no condition on the first derivatives
+  area: Regge
+  file: Lightlike/Regge/Conv3/ChartChangeGeneral.lean
+  decls: [Lightlike.Regge.Conv3.scalar_eq_flat, Lightlike.Regge.Conv3.jetStarCore_of_chart]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (2.19)", check: "tensor transformation law"}
+  review: kernel-checked
+  note: "Part of the 3D convergence of the Regge action (T-RC6), which stays open: this is the jet-level statement at one point, not the convergence. For a Riemannian metric g on an open set U of R^3 and any point m of U (no condition on the first derivatives of g), the star of one edge of the standard Kuhn triangulation satisfies JetStarCore: admissible Gram lengths, angle sums 2π in the seven classes, vanishing first-order coefficient, and the sum over the classes of the hinge length (√(g(m)(w, w))) times the second-order coefficient equals minus half the scalar curvature times √det g(m). Proof: the edge polynomial of the jet of g equals that of a flat jet with second derivatives Sdd = ∂∂g - g ΓΓ after displacing the vertices by εΓ(k, k)/2 (edgeC_eq_chr, edgeR_eq_displaced), the displaced flat star has angle sums 2π (LL-0092) so its first- and second-order coefficients vanish (disp_coeffs), the flat identity of LL-0080 applies to Sdd, and the scalar curvature at m is that of the flat jet with Sdd (scalar_eq_flat; the transformation of the curvature under the change of chart is the tensor transformation law cited). Limits: second derivatives at the single point m; standard cubical Kuhn triangulation; no convergence statement, no manifold triangulation; Riemannian (positive definite) signature only. Trust checks: the Euclidean metric and diag(exp x0, 1, 1), whose first derivative at 0 is nonzero so that LL-0080 does not apply to it (ChartChangeTests.lean)."
+  since: unreleased
+- id: LL-0094
+  title: At a configuration satisfying the z-eliminated critical equations, the critical spinors give Z = xi, Z' = r c J xi' and the real part of the Lorentzian vertex action is zero
+  area: Asymptotics
+  file: Lightlike/Asymptotics/Lorentzian/CriticalSpinors.lean
+  decls: [Lightlike.Asymptotics.Lorentzian.critZ, Lightlike.Asymptotics.Lorentzian.critZ_src, Lightlike.Asymptotics.Lorentzian.critZ_tgt, Lightlike.Asymptotics.Lorentzian.re_lorAction_critZ]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: bdfhp-2010, location: "Section 4.2.1, eqs. (18)-(20)", check: "real part"}
+  review: kernel-checked
+  note: "For positive spins, unit boundary spinors and IsLorCritical g X (BDFHP eqs. (20), (21) with z eliminated), the spinors z_e = (X_a^dagger)^-1 xi_ab satisfy X_a^dagger z_e = xi_ab and X_b^dagger z_e = r c J xi_ba, and Re S = 0. No claim that such an X exists outside SU(2) or that the critical set is finite."
+  since: unreleased
+- id: LL-0095
+  title: The Lorentzian vertex action has zero derivative along every curve through a critical configuration with the critical spinors, given closure at every node and the overlaps off the cut of the logarithm (line derivatives; no chart)
+  area: Asymptotics
+  file: Lightlike/Asymptotics/Lorentzian/CriticalGradient.lean
+  decls: [Lightlike.Asymptotics.Lorentzian.hasDerivAt_lorAction_critical, Lightlike.Asymptotics.Lorentzian.hcl_of_closure]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: bdfhp-2010, location: "eq. (21)", check: "second critical equation"}
+      - {ref: bdfhp-2010, location: "eq. (25)", check: "stationary point"}
+  review: kernel-checked
+  note: "The variation of z cancels by the second critical equation (21) alone (zedge_cancel in ZStationary.lean); the group variations are the logarithmic derivatives of Stationary.lean and sum to zero by closure at each node, with p = gamma n / 2 (hcl_of_closure). Conditional on closure at every node and on the product of the overlaps r c on each edge lying off the negative real axis (slitPlane). The curves in SL(2,C) are given by their entrywise derivative X0 genMat c. NOT PROVED: that the Frechet derivative of the pulled-back action vanishes, which needs the chart of step 5."
+  since: unreleased
+- id: LL-0096
+  title: The second derivative of the Lorentzian vertex action along a one-parameter subgroup at one node is the sum over its ends of an explicit end formula, a quarter of BDFHP eq. (61) at source ends and different from it at target ends
+  area: Asymptotics
+  file: Lightlike/Asymptotics/Lorentzian/HessianNode.lean
+  decls: [Lightlike.Asymptotics.Lorentzian.hessXX_block, Lightlike.Asymptotics.Lorentzian.re_hessRR_neg, Lightlike.Asymptotics.Lorentzian.hessZZ_line, Lightlike.Asymptotics.Lorentzian.hessZZ_block, Lightlike.Asymptotics.Lorentzian.hessXZ_block, Lightlike.Asymptotics.Lorentzian.endForm, Lightlike.Asymptotics.Lorentzian.hasDerivAt_srcCoeff, Lightlike.Asymptotics.Lorentzian.hasDerivAt_tgtCoeff]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: bdfhp-2010, location: "eq. (61)", check: "critical and stationary point"}
+  review: kernel-checked
+  note: "At a critical configuration (IsLorCritical, critical spinors), with p = gamma k, unit boundary spinors, the overlaps off the cut of the logarithm and the closure sum_e k_e m_e = 0 at the node a, the second derivative at 0 of the action along X_a Y(t), Y' = Y genMat(beta + i alpha) (generators J = i sigma / 2, K = sigma / 2), with the other elements and z fixed, equals the sum over the ends e at a of k [ -1/2 (alpha,alpha) + i s (alpha,beta) + s m.(alpha x beta) ] - (k/2 + i s p) (beta,beta), (u,v) = u.v - (m.u)(m.v), s = +1 at a source end and -1 at a target end. Measured: this agrees with the independent 44 x 44 Hessian of lorentzian_hessian_check.py to 2e-19; BDFHP (61) equals four times it at source ends with s = 1 (their blocks correspond to the generators i sigma and sigma), and no variant of (61) reproduces it at target ends. Also: the real part of the rotation block is negative definite exactly when the normals are not all parallel (re_hessRR_neg), and the second derivative along a straight line in one spinor z_e is the sum of the source and target line values (hessZZ_line, the quadratic form of H^zz). The entries of H^zz in Wirtinger form (hessZZ_block: f_ww tau^2 + 2 f_wwb |tau|^2 + f_wbwb conj(tau)^2) are proved from it, under nonvanishing overlaps and the overlap product off the cut; no criticality is needed. The mixed block H^Xz (hessXZ_block, with xzSource and xzTarget): the derivative along an orbit X_a to X_a Y(s) and a line z_e to z_e + t (tau, 0) is f_w' tau + f_wb' conj(tau) at a source end, the target form at a target end, and 0 at any other node; no criticality is assumed, and the closed form agrees with mixed second differences of the action at non-critical configurations to 1.6e-12 (lorentzian_hessian_noncritical_check.py; the closed form of H^zz agrees to 4.9e-13 at the same configuration; wrong-input controls fail at 1.2, 0.50 and 0.47). NOT PROVED: the nondegeneracy of the 44 x 44 matrix, and the identification with the second Frechet derivative of the pulled-back action (needs the chart of step 5); BDFHP eq. (57) assumes the nondegeneracy without proof (Sec. 6.4, p. 30)."
+  since: unreleased
+- id: LL-0097
+  title: The mixed second derivatives of the Lorentzian vertex action along two different nodes, or two different spinors, vanish, and the 44 x 44 matrix assembled from the node, spinor and mixed blocks is symmetric
+  area: Asymptotics
+  file: Lightlike/Asymptotics/Lorentzian/HessianAssembly.lean
+  decls: [Lightlike.Asymptotics.Lorentzian.hessXX_cross, Lightlike.Asymptotics.Lorentzian.hessZZ_cross, Lightlike.Asymptotics.Lorentzian.nodeBilin_self, Lightlike.Asymptotics.Lorentzian.hessBlockMatrix_symm]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: bdfhp-2010, location: "eq. (61)", check: "node block"}
+  review: kernel-checked
+  note: "The block structure of the Hessian of BDFHP Appendix A, eqs. (58), (59), with the node block of eq. (61): z_e appears only in the term of the edge e (hessZZ_cross, no hypothesis), and the end terms at two different nodes do not couple (hessXX_cross; hypothesis: the product of the two overlaps of every edge is off the cut of the logarithm at X_a to X_a Ya(s) for s near 0, with Yb 0 = 1 and Yb' = Yb L). The chart order of hessBlockMatrix is (theta1, theta2, theta3, phi1, phi2, phi3) for each of the nodes X_1 to X_4 (X_5 is gauge fixed), then (u, v) with w = u + i v for each of the ten edges. hessBlockMatrix collects hessXX_block (through the polarisation nodeBilin of the quadratic form nodeQuad), hessZZ_block and hessXZ_block. For this Lorentzian integral with spinor variables, Re(-H) is positive semidefinite with a kernel of dimension at least 4 (44 variables, 40 linearised alignment conditions): measured at the regular simplex, exactly 4 for gamma = 0.5, 1 and 4, with Re S falling off as the fourth power along the kernel (scripts/asymptotics/lorentzian_hessian_kernel_check.py). So the nondegeneracy of -H is not implied by positivity of the real part; it is checked numerically at the regular simplex (Im(-H) is injective on the kernel, smallest singular value 2.0 at gamma = 0.5), not proved. NOT PROVED: that hessBlockMatrix is the matrix of second derivatives of the action in a chart at a critical point (needs the chart and the vanishing of the first derivative), and the nondegeneracy of the matrix (BDFHP eq. (57) assumes it without proof, Sec. 6.4, p. 30)."
+  since: unreleased
+- id: LL-0098
+  title: The second derivative of the Lorentzian vertex action at a critical configuration along a curve through a node depends only on the velocity of the curve, not on its acceleration
+  area: Asymptotics
+  file: Lightlike/Asymptotics/Lorentzian/HessianNode.lean
+  decls: [Lightlike.Asymptotics.Lorentzian.hessXX_curve, Lightlike.Asymptotics.Lorentzian.srcCoeff_adj_gen, Lightlike.Asymptotics.Lorentzian.tgtCoeff_adj_gen]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: bdfhp-2010, location: "eq. (61)", check: "node block"}
+  review: kernel-checked
+  note: "At a critical configuration (IsLorCritical, critical spinors), with p = gamma k, unit boundary spinors, closure at the node, and the overlap products off the cut of the logarithm, the second derivative of lorAction along X_a Y(t) for a curve Y with Y(0) = 1 and Y' = Y genMat(cv(t)), cv differentiable at 0, equals the sum of the end formulas of hessXX_block at the velocity cv(0): the derivative cv'(0) contributes the first variation in the direction genMat(cv'(0)), which is zero by closure (srcCoeff_adj_gen, tgtCoeff_adj_gen identify it with the logarithmic derivative). hessXX_block is the case of a constant velocity. This is the independence of the Hessian of the curve at a critical point for the node variables. NOT PROVED: the same for the spinor variables and the mixed block (hessZZ_block and hessXZ_block do not need criticality and are stated for straight lines in z), and the identification of the matrix of second derivatives in a chart with hessBlockMatrix (needs the chart and the congruence by its differential)."
+  since: unreleased
+- id: LL-0099
+  title: There is no drawing of the complete bipartite graph K₃,₃ in the plane by continuous arcs
+  area: PL
+  file: Lightlike/PL/ContK33.lean
+  decls: [Lightlike.PL.ContDrawing, Lightlike.PL.no_K33]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: klazar-2026, location: "Section 2", check: "Thomassen"}
+  review: kernel-checked
+  note: "Six distinct points u i, v j (i, j ∈ Fin 3) joined across the two classes by nine continuous injective arcs γ i j : [0, 1] → ℝ² from u i to v j that meet only in common endpoints do not exist (no_K33; ContDrawing is the notion of drawing). This is Claim 3 of the proof of the weak Jordan theorem by Thomassen in the exposition of Klazar, Section 2 (Klazar's numbering). The polygonal case is LL-0091. The reduction to it follows Klazar: radius r such that the closed balls around the six points are disjoint and an arc keeps distance larger than r from the points that are not its ends; each arc is trimmed to the subarc between the last visit of the ball around its first end and the first visit of the ball around its second end (exists_trim); a polygonal chain within ε of the trimmed subarc is obtained from the values of the arc at the points k/N, which gives a chain by uniform continuity (exists_chain_near), and loop erasure turns it into a simple chain in the same set (exists_simple_sub); with ε smaller than a third of the distance between any two trimmed subarcs, the chains are pairwise disjoint and meet the segments from the vertices to the ends of the trimmed subarcs only at the ends of those segments (the segment argument uses that two segments from a centre to different points of one sphere meet only at the centre, segment_inter_sphere); the nine chains, loop-erased with the segments, form a polygonal drawing of K₃,₃, which does not exist by LL-0091. Limits: the arcs are injective continuous images of [0, 1] in the plane; the statement is for K₃,₃ only and does not say anything about the Jordan curve theorem by itself (the next entry). Check: the straight-line drawing of K₃,₃ without the edge (2, 2) of LL-0091 is a drawing by continuous arcs (TestsJordan.contDrawing, ContDrawingOn), so the hypotheses are satisfiable."
+  since: unreleased
+- id: LL-0100
+  title: "The weak Jordan theorem: the complement of a circle embedded in the plane is not connected"
+  area: PL
+  file: Lightlike/PL/WeakJordanCircle.lean
+  decls: [Lightlike.PL.weak_jordan]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: klazar-2026, location: "Section 2", check: "Thomassen"}
+  review: kernel-checked
+  note: "For a continuous injective map f of the circle into the plane, the complement of the image is not connected (weak_jordan). This is Claim 4 of the proof of the weak Jordan theorem by Thomassen in the exposition of Klazar, Section 2 (Klazar's numbering). The proof: if the image is not contained in a horizontal line, take a highest point a and a lowest point b of the image; rotating the circle, the image is the union of two arcs from a to b that meet only at a and b (exists_two_arcs); if the complement were connected, an outer polygonal arc from a to b is drawn around the image (exists_outer), a horizontal segment between a point c of the first arc and a point d of the second is chosen at minimal distance so that its interior misses both arcs (exists_T), and an arc from an interior point e of the segment to a point g of the outer arc is drawn in the complement (exists_link, using polygonal connectedness of connected open sets, exists_chain_in_open); the nine arcs between a, b, e and c, d, g that this cuts out of the pieces have mutually disjoint interiors (false_of_pieces), a drawing of K₃,₃ by continuous arcs, which does not exist by LL-0099. If the image lies in a horizontal line the coordinates are swapped. Limits: this is the weak Jordan theorem only: the complement is not connected, but it is not shown to have exactly two components, one bounded and one unbounded, with the circle as the boundary of each; this needs the arc theorem (the complement of an arc is connected), which is not proved here. Check: the unit circle satisfies the hypotheses (TestsJordan, unitCircle), and a non-injective map does not."
+  since: unreleased
+- id: LL-0101
+  title: A Jordan curve is approximated by simple polygons, within any distance in both directions
+  area: PL
+  file: Lightlike/PL/PolygonApprox.lean
+  decls: [Lightlike.PL.exists_polygon_near, Lightlike.PL.exists_two_chains]
+  status: proven
+  tier: established
+  source: structural
+  review: kernel-checked
+  note: "For a continuous injective map f of the circle into the plane and ε > 0 there is a list of points whose polygon is simple, such that every point of its carrier is within ε of the image of f and every point of the image is within ε of the carrier (exists_polygon_near; the Hausdorff distance between the carrier and the curve is less than ε). The circle is cut into two arcs from a = f 1 to b = f (-1) that meet only at a and b (exists_two_arcs); each arc is trimmed outside small balls around a and b (exists_trim), approximated by a simple chain near the trimmed subarc (exists_simple_chain_near, with loop erasure), and joined to the vertices by segments; the two resulting chains meet only at a and b, by the three arguments of no_K33 specialised to two arcs (exists_two_chains), and glue to a simple polygon (isSimple_two_arcs). The loop erasure could delete a loop of the sample chain and leave part of the arc far from the polygon; this does not happen because the inverse of an arc is uniformly continuous, so that a connected compact set that contains both ends of the arc and lies near it is near every point of it (arc_density, exists_inverse_modulus; Lightlike/PL/ArcDensity.lean). Limits: it approximates by a simple closed polygon, but says nothing about on which side of the polygon the curve lies; that the curve separates the plane into exactly two components needs the Arc Theorem and is not proved here. Check: the theorem applies to the unit circle (TestsJordan.unitCircle); two arcs that cross in a point of their interiors would not have simple chains meeting only at their ends, and the hypothesis of exists_two_chains excludes them."
+  since: unreleased
+- id: LL-0102
+  title: The complement of a Jordan curve has exactly one unbounded component and a bounded component whose frontier lies in the curve
+  area: PL
+  file: Lightlike/PL/JordanComponents.lean
+  decls: [Lightlike.PL.jordan_components]
+  status: proven
+  tier: established
+  source: structural
+  review: kernel-checked
+  note: "For a continuous injective map f of the circle into the plane, the complement of the image has exactly one unbounded connected component (the one that contains the plane outside a square around the curve, which is connected, isPreconnected_squareOutside), and, since the complement is not connected (weak_jordan, LL-0100), a bounded component whose frontier lies in the curve (jordan_components). Limits: this is the part of the Jordan curve theorem that holds without the Arc Theorem. That there is exactly one bounded component, and that the curve is the frontier of each component, are open here: they need the Arc Theorem (the complement of an arc is connected), for which no proof is available in this library, and are not claimed. Check: the unit circle satisfies the hypotheses (TestsJordan.unitCircle)."
+  since: unreleased
+- id: LL-0103
+  title: The boundary evaluation QDougall holds for the lowest sixth colours j1 - j5 and j4 - j2 with third colours from j1 - j2 up to j4 + j5 (respectively j1 + j2), by Jackson's sum and its degenerate case
+  area: TuraevViro
+  file: Lightlike/TuraevViro/Reflect/QDougallMap.lean
+  decls: [Lightlike.TV.Refl.qDougall_orbit, Lightlike.TV.Refl.qDougall_nondeg, Lightlike.TV.Refl.qDougall_orbit3, Lightlike.TV.Refl.qDougall_trunc_param, Lightlike.TV.Refl.qDougall_trunc_deg_param, Lightlike.TV.Refl.qDougall_orbit3_trunc_param]
+  status: proven
+  tier: established
+  source: structural
+  review: kernel-checked
+  note: "For spins admissible at level r (hypotheses hadmX at every third colour j1 - j2 + 2k, k ≤ n, with 2n = j4 + j5 - (j1 - j2), and hadmQ at q0 = j1 - j5), the boundary evaluation QDougall of LL-0074 holds in the case x0 = j1 - j2, q0 = j1 - j5 in the untruncated range (2n = j4 + j5 - (j1 - j2) and every third colour admissible up to it): jOmega(q0) · Σ_k jOmega(x0+2k) · Sj(q0, x0+2k)² = 1 (qDougall_orbit). When j4 + j5 < j1 + j2 the proof matches the weighted terms with the summand of Jackson's terminating very-well-poised 6φ5 sum at Q = u², u = e^{iπ/r}, with a = Q^(x0+1), b = Q^(j1+2), c = Q^((x0+j4-j5)/2+1), x = Q^n (wTerm_eq_Tj, from the one-term form of Sj at the lowest sixth colour and the one-step ratio of the Δ² factors), applies jackson_sumT with its nonvanishing hypotheses checked from the admissibility (qd_jhyp), writes Jackson's right side as a ratio of quantum factorials (jacksonRhs_val), and finishes with an exact cancellation of the quantum factorials (prod_identity). When j4 + j5 = j1 + j2, where the hypotheses of Jackson's sum fail because a numerator and a denominator vanish together, the same map holds, the summand is the term of a series with fewer parameters, and its partial sums have a closed form proved by induction (tDeg_sum, sDeg_val); the same cancellation closes the proof (qDougall_deg_param). The sum is DLMF §17.7(iii), equation (17.7.16); the location was read in the DLMF page, and no sources.yaml key is used. The case x0 = j1 - j2, q0 = j4 - j2 (the third orbit of the spin symmetries) with j1 + j2 < j4 + j5, and third colours from j1 - j2 up to j1 + j2, is proved the same way (qDougall_orbit3): the one-term form of Sj at q0 = j4 - j2, the summand of Jackson's sum with b = Q^(n+x0+2), c = Q^((x0+j4-j5)/2+1), x = Q^(j2) as the terminating parameter, and the cancellation prod_identity3. Instances: QDougall at level r = 5, spins (2, 2, 1, 1) (qDougall_five), at level r = 5, spins (1, 1, 2, 2) in the third orbit (qDougall_five_orbit3), and at level r = 7, spins (2, 2, 2, 2), in the degenerate case (qDougall_seven_degenerate). Not shown: a Lean proof that every admissible case falls into one of the proved forms for every level r; the forms cover all 1610 cases at levels 5 to 8 by a count (scripts/qracah/qd_coverage_check.py), not by a proof for all r. The truncated first orbit is proved by exchanging b with 1/x in Jackson's summand (the series is symmetric in b, c, 1/x) and terminating at Q^K = b^-1, K = r - 2 - j1, since Q^r = 1 (qDougall_trunc_param for j4 + j5 < j1 + j2, qDougallAt_O1_trunc); the truncated right side equals the untruncated one by [m]! [r-1-m]! = [r-1]!. For j4 + j5 = j1 + j2 the hypotheses of Jackson's sum fail (b = a q x) and the partial sums of the series with fewer parameters are used instead (qDougall_trunc_deg_param). By the symmetries of the four spins, the statement QDougallAt is proved for the untruncated first and third orbit and the truncated first orbit and the truncated third orbit (qDougall_orbit3_trunc_param, qDougallAt_O3_trunc): all 1610 cases at levels 5 to 8 (scripts/qracah/qd_coverage_check.py); the second and fourth orbit never occur alone, since a case matching one of them matches the others too. So LL-0074 and LL-0075 stay conditional on QDougall and QDougallAll."
+  since: unreleased
+- id: LL-0104
+  title: The boundary evaluation QDougallAll holds at every level r ≥ 2, and with it the q-orthogonality of the 6j symbol
+  area: TuraevViro
+  file: Lightlike/TuraevViro/Reflect/QDougallAll.lean
+  decls: [Lightlike.TV.Refl.qDougallAll_proved, Lightlike.TV.Refl.qOrthogonality_proved]
+  status: proven
+  tier: established
+  source: structural
+  review: kernel-checked
+  note: "For every level r ≥ 2 and all spins B, A, E, F with an admissible colour q on both sides, the norm of the lowest column of the q-6j matrix is 1 (QDougallAll r, the hypothesis of LL-0075 and, in each instance, the one that LL-0074 discharges). The lowest third colour and the lowest sixth colour are each one of four differences; the 16 pairs lie in the first or the third orbit of the permutations of the four spins (a case in the second or fourth orbit matches one of them as well); within an orbit the third colours run up to the triangle top or stop at the level cut-off 2(r-2), and each of those forms is one of the summation theorems of LL-0103 (Jackson's sum, or the partial sums of the series with fewer parameters when two factors vanish together). The case split is a finite one, by linear arithmetic (qDougallAll_proved, coverPair00 to coverPair33), without induction on the level; scripts/qracah/qd_coverage_check.py counts all 13662 cases at levels 2 to 12 as covered, as an independent check. Consequence: qOrthogonality_proved, the diagonal orthogonality of the model at every level r ≥ 2, without hypothesis. Not shown: the quantum Biedenharn–Elliott identity for r ≥ 4 (LL-0075), so the Turaev–Viro invariance of LL-0031 at level r is still conditional on it."
+  since: unreleased
+- id: LL-0105
+  title: A configuration of the Lorentzian vertex action with maximal real part that is stationary along the group curves has closure of the normals at every node, so boundary data without closure have no critical configuration
+  area: Asymptotics
+  file: Lightlike/Asymptotics/Lorentzian/ClosureFromCritical.lean
+  decls: [Lightlike.Asymptotics.Lorentzian.critical_configuration_closure, Lightlike.Asymptotics.Lorentzian.no_critical_without_closure, Lightlike.Asymptotics.Lorentzian.aligned_of_re_lorAction_eq_zero, Lightlike.Asymptotics.Lorentzian.hasDerivAt_lorAction_aligned, Lightlike.Asymptotics.Lorentzian.exists_sl2_curve]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: bdfhp-2010, location: "Section 4.2.1, eqs. (18)-(20)", check: "real part"}
+      - {ref: bdfhp-2010, location: "eq. (25)", check: "stationary point"}
+  review: kernel-checked
+  note: "For positive spin parameters, unit boundary spinors, nonvanishing overlaps with products off the cut of the logarithm, Re S = 0 makes every edge aligned (Z_ab = lambda xi_ab, Z_ba = mu J xi_ba; triWeight_eq_one_iff), the derivative of the vertex action along X_a Y(t) with Y(0) = 1 and Y'(0) = genMat c is then the sum of the logarithmic derivatives of the ends at a for any scalings lambda, mu, and stationarity along every such curve (a Cayley curve exists for every c) gives sum_e n_e n_e-hat = 0 at every node. Hence no configuration with Re S = 0 that is stationary along the curves exists for boundary data whose normals do not close at some node. NOT PROVED: the suppression of the integral for such data (BDFHP eq. (56), sub-case without closure), which needs this statement in a chart for an action smooth only on an open set and the non-stationary phase bound; the converse (closure gives a critical configuration) and the case of data with closure that are not the boundary of a 4-simplex (the classification, a named hypothesis of the vertex formula)."
+  since: unreleased
+- id: LL-0106
+  title: A chain on a grating with boundary two vertices joins them
+  area: PL
+  file: Lightlike/PL/Grating.lean
+  decls: [Lightlike.PL.Grating, Lightlike.PL.Grating.bdy, Lightlike.PL.Grating.bdy_symmDiff, Lightlike.PL.Grating.reach_of_bdy, Lightlike.PL.Grating.joinedIn_of_bdy]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
+  review: kernel-checked
+  note: "A grating is a rectangular grid with strictly increasing coordinates, a 1-chain a finite set of its edges added by symmetric difference (mod 2), and the boundary of a chain the set of vertices at which an odd number of its edges end. The boundary is additive (bdy_symmDiff), and a chain with boundary {x, y} joins x to y inside its locus (joinedIn_of_bdy), because a component of the chain has an even number of vertices of odd degree (reach_of_bdy). This is the chain-to-path direction of Proposition 9.8 of chapter 9 of McCleary's book, numbering as in the lecture-notes version of the chapter; the statements and proofs are Lean's own. Proves: the combinatorial fact that a chain with two odd vertices joins them. Does not prove: anything about arcs or curves of the plane, the arc theorem or the Jordan curve theorem; it is the first step of the proof that an arc does not separate the plane (LL-0107 to LL-0110). Limits: rectangular gratings in the plane, chains mod 2 only. Check: on a 2 x 2 grating the boundary of an edge, of a path of two edges and of a closed square (TestsGrating.lean); joinedIn_of_bdy applies to the path of two edges; two disjoint edges have a four-vertex boundary and do not link their ends."
+  since: unreleased
+- id: LL-0107
+  title: A path in the complement of a compact set gives a chain of a grating that avoids it
+  area: PL
+  file: Lightlike/PL/GratingPath.lean
+  decls: [Lightlike.PL.Grating.exists_grating, Lightlike.PL.Grating.exists_chain_box, Lightlike.PL.Grating.exists_chain_of_joinedIn]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
+  review: kernel-checked
+  note: "If A is a compact subset of the plane and P, Q are joined by a path in the complement of A, there is a distance rho > 0 and two finite sets of coordinates such that every grating whose coordinates contain them has P and Q as vertices and a chain, with boundary {P, Q}, all of whose points are at distance at least rho from A. The coordinates of sample points of the path are put on the grid and consecutive samples are joined by a stepwise chain in the box they span (exists_chain_box). This is the path-to-chain direction of Proposition 9.8 of chapter 9 of McCleary's book, numbering as in the lecture-notes version of the chapter; the statements and proofs are Lean's own. Proves: a path in the complement of a compact set gives a chain of a grating, avoiding the set, with the same end points, on every grating that contains the coordinates of the samples. Does not prove: that an arc does not separate the plane, or any statement about curves; it only converts paths into chains (the converse is LL-0106). Limits: A compact in the plane; chains modulo 2 on rectangular gratings. Check: TestsGratingPath.lean."
+  since: unreleased
+- id: LL-0108
+  title: A cycle on a grating bounds a 2-chain, and Alexander's theorem
+  area: PL
+  file: Lightlike/PL/Alexander.lean
+  decls: [Lightlike.PL.Grating.bdy₂, Lightlike.PL.Grating.bdy_bdy₂, Lightlike.PL.Grating.alexander, Lightlike.PL.Grating.exists_bdy₂]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
+  review: kernel-checked
+  note: "A 2-chain is a finite set of cells of a grating; its boundary is the set of edges that are a side of an odd number of its cells, and the boundary of a boundary is empty. A chain without boundary is the boundary of a 2-chain. Alexander's theorem: if x and y are the boundary of a chain l1 avoiding K and of a chain l2 avoiding L, l1 + l2 is the boundary of a 2-chain w up to a set E of edges avoiding K union L (the outer edges of the grating: the notes' Theorem 9.10 gives a 2-chain and its complement, the complement using an outer cell), and no cell of w meets both K and L, then x is joined to y off K union L. This is the Alexander Theorem of chapter 9 of McCleary's book (numbering as in the lecture-notes version), for a grating that is already fine, with the outer-edge set E added; the statements and proofs are Lean's own. Limits: chains modulo 2, rectangular gratings. Check: TestsAlexander.lean."
+  since: unreleased
+- id: LL-0109
+  title: Two compact sets meeting in one point do not separate two points that neither separates
+  area: PL
+  file: Lightlike/PL/UnionLemma.lean
+  decls: [Lightlike.PL.joinedIn_union_compl]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
+  review: kernel-checked
+  note: "If K1 and K2 are compact subsets of the plane with K1 intersect K2 equal to one point and P is joined to Q by a path off K1 and by a path off K2, then P is joined to Q by a path off K1 union K2. The proof puts the two chains of the path-to-chain step on one fine grating with a margin, takes the 2-chain of their cycle, uses its complement when the common point is inside it, and applies Alexander's theorem. This is Corollary 9.11 of the lecture-notes version of chapter 9 of McCleary's book, which states it with a one-sentence argument and takes the complement 2-chain from its Theorem 9.10; here the complement step is made explicit on a fixed rectangular grating; the statement and proof are Lean's own. Proves: a Janiszewski-type union lemma for two compact sets meeting in one point. Does not prove: that an arc does not separate the plane (that is the next entry), nor the Jordan curve theorem. Limits: compact sets in the plane. Check: TestsUnion.lean."
+  since: unreleased
+- id: LL-0110
+  title: An arc does not separate the plane
+  area: PL
+  file: Lightlike/PL/ArcNotSeparating.lean
+  decls: [Lightlike.PL.arc_not_separating]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
+  review: kernel-checked
+  note: "For an arc A, the image of an injective continuous map of [0, 1] into the plane, the complement of A is connected (preconnected). The proof bisects the parameter interval: if the image of an interval separates two points P, Q off it, one of the two halves does (the union lemma); the nested intervals shrink to a parameter t, and a small neighbourhood of gamma(t) does not separate the two points, a contradiction. This is the Separation Theorem for Jordan arcs of the lecture-notes version of chapter 9 of McCleary's book; the statement and proof are Lean's own. Proves: the complement of an arc is connected. Does not prove: that the complement of a Jordan curve has exactly two components, or that the curve is the frontier of each; those need further steps. Limits: arcs in the plane (IsArc). Check: TestsArcNotSeparating.lean."
+  since: unreleased
+- id: LL-0111
+  title: Every component of the complement of a Jordan curve has the whole curve as its frontier
+  area: PL
+  file: Lightlike/PL/JordanFrontier.lean
+  decls: [Lightlike.PL.jordan_frontier]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
+  review: kernel-checked
+  note: "For a continuous injective map f of the circle into the plane, every connected component of the complement of the image has the image as its frontier. This is the clause 'each sharing C as boundary' of the statement of the Jordan Curve Theorem in the introduction of chapter 9 of McCleary's book; the statement carries no number in the lecture-notes version of the chapter. The proof is Lean's own, not the notes': if a point x of the curve were not in the frontier of a component U, the compact frontier of U would lie in an arc B of the curve missing x; the complement of B is connected (the arc theorem, LL-0110) and U is clopen in it, so U is the whole complement of B and contains x, a contradiction. Limits: continuous injective images of the circle in the plane. Check: TestsJordanFrontier.lean (the unit circle satisfies the hypotheses; a constant map does not)."
+  since: unreleased
+- id: LL-0112
+  title: The index of a loop about a point, and the Theta Lemma
+  area: PL
+  file: Lightlike/PL/Index.lean
+  decls: [Lightlike.PL.exists_isLog, Lightlike.PL.logInc, Lightlike.PL.logInc_trans, Lightlike.PL.loopIndex, Lightlike.PL.theta_lemma]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
+  review: kernel-checked
+  note: "A path in the plane that avoids a point has a continuous logarithm about it (path lifting through the covering map exp from the complex numbers to the nonzero complex numbers), unique up to an integer multiple of 2 pi i. The increment of the logarithm along the path does not depend on the choice, is additive under concatenation of paths and changes sign under reversal, and along a loop it is 2 pi i times an integer, the index of the loop about the point. The Theta Lemma follows: for a curve in two parts alpha, gamma and an arc beta joining their ends, the index of alpha * gamma is the sum of those of alpha * beta and beta^-1 * gamma. This is the index of a point not on a Jordan curve and the Theta Lemma of the lecture-notes version of chapter 9 of McCleary's book (numbering not checked against the printed book); the notes read the index off the fundamental group of the punctured plane, here it is read off a lift, and the Theta Lemma is proved through path increments instead of the homotopy of beta * beta^-1 with a constant. The statements and proofs are Lean's own. Proves: the index and the Theta Lemma. Does not prove: Lemmas 9.12 to 9.14 of the notes, that the index is constant on components of the complement of a curve, or the Jordan curve theorem. Limits: loops in the plane identified with the complex numbers. Check: TestsIndex.lean (the unit circle has index 1 about the origin and 0 about the point -3)."
+  since: unreleased
+- id: LL-0113
+  title: The index of a loop is constant along a path avoiding it, and zero for a loop in a half plane
+  area: PL
+  file: Lightlike/PL/IndexConstancy.lean
+  decls: [Lightlike.PL.loopIndex_eq_of_joinedIn, Lightlike.PL.loopIndex_eq_zero_of_halfplane]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
+  review: kernel-checked
+  note: "If two points of the plane are joined by a path that avoids the range of a loop, the loop has the same index about both (the index of LL-0112). If the loop lies in an open half plane seen from the point, its index about the point is zero. These are Lemmas 9.13 and 9.12 of the lecture-notes version of chapter 9 of McCleary's book (numbering not checked against the printed book). The notes prove the first with a homeomorphism of the punctured planes fixing the curve; here the logarithms about the points of the path are lifted together through the covering map exp, and their increments are compared with the integer at the first point. The second is proved with a continuous logarithm on the convex, hence simply connected, half plane; the notes deform the loop into a small circle. The statements and proofs are Lean's own. Proves: the two lemmas for loops in the plane identified with the complex numbers. Does not prove: Lemma 9.14, that the complement of a Jordan curve has exactly two components, or the Jordan curve theorem. Limits: loops in the complex plane. Check: TestsIndexConstancy.lean (the unit circle has index 1 about 1/2 as about 0; a constant loop has index 0; the unit circle lies in no half plane seen from the origin)."
+  since: unreleased
+- id: LL-0114
+  title: Lemma 9.14 of the theta configuration of a Jordan curve
+  area: PL
+  file: Lightlike/PL/IndexTheta.lean
+  decls: [Lightlike.PL.Theta, Lightlike.PL.Theta.lemma_9_14, Lightlike.PL.theta_arc, Lightlike.PL.joinedIn_compl_range]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
+  review: kernel-checked
+  note: "A Jordan curve is split at two of its points P and Q into arcs gamma1 from P to Q and gamma2 from Q to P, and Omega is a point off the curve such that the segments P Omega and Q Omega meet the curve only at P and Q (the theta configuration). With omega1 = gamma1 * (Q Omega * Omega P) and omega2 = (Q Omega * Omega P)^-1 * gamma2, a point R off the curve and the two segments whose index about omega1 differs from that of a point of gamma2, or whose index about omega2 differs from that of a point of gamma1, is joined to Omega by a path in the complement of the curve. The proof: an arc does not separate the plane (LL-0110), so a path from R to Omega misses the arc; follow it to its first hit with the segments; before it the index is constant (LL-0113), so it cannot meet the other arc, whose points all have the index of the given point because the open arc is connected and avoids the loop. This is Lemma 9.14 of the lecture-notes version of chapter 9 of McCleary's book (numbering not checked against the printed book); the notes prove the case of omega1 and both cases are proved here. The statements and proofs are Lean's own. Proves: Lemma 9.14. Does not prove: that the complement of a Jordan curve has exactly two components, or the Jordan curve theorem; those need the final argument of the notes' chapter. Limits: curves in the plane identified with the complex numbers. Check: TestsIndexTheta.lean (the unit circle split into its halves, with the centre as the point, is a theta configuration; a point Omega that makes a segment cross the curve fails the hypotheses)."
+  since: unreleased
+- id: LL-0115
+  title: The index of a triangle about an interior point, and of loops about points outside them
+  area: PL
+  file: Lightlike/PL/IndexTriangle.lean
+  decls: [Lightlike.PL.logInc_segPath, Lightlike.PL.triangle_log_sum, Lightlike.PL.loopIndex_triangle, Lightlike.PL.loopIndex_eq_zero_of_above, Lightlike.PL.loopIndex_eq_zero_of_below, Lightlike.PL.loopIndex_eq_zero_of_far]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
+  review: kernel-checked
+  note: "The increment of the logarithm along a straight segment, about a point, is the principal logarithm of the ratio of the vectors from the point to the ends of the segment when that ratio avoids the negative real axis. Three points seen counterclockwise from a point have angles that add up to 2 pi, so the triangle they span, taken as a loop, has index 1 about the point. The index of a loop is zero about a point strictly above or below it and about a point outside a disc that contains it. These are the computation, left to a picture in the lecture-notes version of chapter 9 of McCleary's book (numbering not checked against the printed book), that a triangle has index plus or minus 1 about an interior point, and Lemma 9.12 in the forms used in the notes' last argument; the notes read the value off the fundamental group of the circle, here it is computed from the angles. The statements and proofs are Lean's own. Proves: the index of a triangle and the vanishing for loops with a point outside. Does not prove: the last argument of the notes, that the complement of a Jordan curve has exactly two components, or the Jordan curve theorem. Limits: loops in the complex plane. Check: TestsIndexTriangle.lean (a concrete triangle has index 1 about the origin; the orientation hypothesis fails for the clockwise order; the unit circle has index 0 about the point 2)."
+  since: unreleased
+- id: LL-0116
+  title: An odd sum of the doubled spins at a node of the 4-simplex makes the coherent 15j integral vanish for all boundary data
+  area: Asymptotics
+  file: Lightlike/Asymptotics/EPRL/OddSum.lean
+  decls: [Lightlike.Asymptotics.EPRL.rhoN_negOne, Lightlike.Asymptotics.EPRL.cohInt_eq_zero_of_odd, Lightlike.Asymptotics.EPRL.coh15j_eq_zero_of_odd]
+  status: proven
+  tier: established
+  source: structural
+  review: kernel-checked
+  note: "The centre element -1 of SU(2) acts on the tensor product of the spin-J_a/2 representations as (-1)^(sum J_a) (rhoN_negOne). A coherent intertwiner is invariant, so if the doubled spins at a node have an odd sum it is zero (cohInt_eq_zero_of_odd), and then the coherent 15j integral coh15j vanishes for every choice of boundary data (coh15j_eq_zero_of_odd, through k5Contract_cohInt). So the nonzero leading term of Coh15jAsymptoticFormula cannot hold with an odd node sum: the even node sums of that formula are necessary. A trust check of its hypotheses, not a new asymptotic statement. Limits: SU(2) coherent intertwiners only; the statement says nothing about the Hessian hypotheses."
+  since: unreleased
+- id: LL-0117
+  title: For γ < 1 the Euclidean EPRL vertex, contracted with the coherent boundary intertwiners, is the coherent EPRL integral, which is the product of two coherent 15j integrals
+  area: Asymptotics
+  file: Lightlike/Asymptotics/EPRL/EprlCoherentVertex.lean
+  decls: [Lightlike.Asymptotics.EPRL.k5Contract4_eprlCohNode, Lightlike.Asymptotics.EPRL.eprlVertex_coherent]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: bdfgh-2009, location: "eq. (14)", check: "re-expressed"}
+  review: kernel-checked
+  note: "BDFGH (J. Math. Phys. 50 (2009) 112504, section 3) write the Euclidean EPRL vertex on Livine-Speziale boundary states as an integral over Spin(4)^5 (eprlCoh); this entry proves the identification in this library. For γ < 1, with the same SU(2) elements g on the self-dual and anti-self-dual halves, the EPRL map sends the SU(2) coherent intertwiner iota_{n+m}(g) to iota_n(g) (x) iota_m(g) (eprlIntertwiner_homForm_cohInt); the coherent EPRL node tensor sum_z c_z eprlNode n m z is the product of the two coherent node tensors projNode, with no sign (eprlCohNode_eq); the K5 contraction of these is eprlCoh (k5Contract4_eprlCohNode), which equals coh15j * coh15j by Fubini on Spin(4) = SU(2) x SU(2) (eprlCoh_eq_mul, already in EPRLFormula.lean); expanding each node in the intertwiner basis, sum over z of prod_a c_a(z_a) eprlVertex n m z equals eprlCoh (eprlVertex_coherent), with c_a(z) = nodeSign * <iota_z, homForm iota> the coefficients of the coherent intertwiner in the fourJ basis. Exact at every spin: an identification, not an asymptotic formula. Limits: gamma < 1 only (the same g on both chiral halves; the gamma > 1 reflected normal is not covered); the sign (-1)^chi of BFH eq. (1) belongs to their 15j convention and is not compared with this library's, whose contraction is exactly the coherent integral (k5Contract_cohInt). Numerical check of the node identity: scripts/spinfoam/eprl_node_check.py, four spin configurations to 3e-16 with a wrong-g control."
+  since: unreleased
+- id: LL-0118
+  title: The coherent 15j integral decays faster than every power of the spin scale when its finitely many maxima are noncritical
+  area: Asymptotics
+  file: Lightlike/Asymptotics/EPRL/Suppression.lean
+  decls: [Lightlike.Asymptotics.EPRL.local_suppression, Lightlike.Asymptotics.EPRL.suppression_finite_max]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: bdfgh-2009, location: "eq. (22)", check: "supressed"}
+  review: kernel-checked
+  note: "Let F be continuous on SU(2)^4 with |F| <= 1 whose modulus is one only on a finite set K, such that for p in K the chart function F(chart_p q) is smooth and its logarithmic phase -i log(F/F(p)) has nonzero differential at q = 0. Then for every k, the integral of F^lambda over SU(2)^4 with the Haar probability measure is O(lambda^-k) (suppression_finite_max). Near each p, F^lambda = F(p)^lambda e^{i lambda phi} with phi the cut-off logarithmic phase, and the non-stationary phase theorem (Hormander, ALPDO I, Theorem 7.7.1, formalized in Lightlike/Oscillatory/Localisation.lean) bounds the chart integral (local_suppression); localise_pieces glues the charts. This is the case of BDFGH Theorem 1, case 3 (eq. (22)), and eq. (24) of section 5.1, in which the extended stationary phase has no critical point. Limits: finitely many maxima only; the noncriticality of the maxima is a hypothesis (for the coherent 15j integral with spins that are not proportional to the areas, that the maxima are noncritical is not proved here: it is the geometric lemma relating the phase gradient at a gluing solution to the closure of the spins); no statement for an infinite maximum set."
+  since: unreleased
+- id: LL-0119
+  title: For SU(2) boundary data the coherent 15j integral either has a gluing solution or decays exponentially, and the coherent EPRL integral decays exponentially when the self-dual spins admit no gluing solution
+  area: Asymptotics
+  file: Lightlike/Asymptotics/EPRL/Suppression.lean
+  decls: [Lightlike.Asymptotics.EPRL.coh15j_dichotomy, Lightlike.Asymptotics.EPRL.eprlCoh_exp_decay_of_no_gluing]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: bdfgh-2009, location: "eq. (22)", check: "supressed"}
+  review: kernel-checked
+  note: "For SU(2) boundary data g and any doubled spins n, either some point of SU(2)^5 has |F_n| = 1 (the data glue for the spins n) or there is q < 1 with |coh15j(lambda n) g| <= q^lambda for all lambda (coh15j_dichotomy: |F_n| <= 1 by norm_cohAmp_le, the maximum of the continuous |F_n| on the compact group is below 1 when no point reaches 1, then the existing coh15j_exp_decay). The EPRL form: if the self-dual spins n admit no gluing solution then |eprlCoh(lambda n, lambda m) g| <= q^lambda (eprlCoh_exp_decay_of_no_gluing, from eprlCoh = coh15j * coh15j and |coh15j(lambda m)| <= 1). This is the exponential-suppression check of the done-when of T-SF9 in its EPRL form. Limits: the case 'some point has |F_n| = 1' is only named, not analysed (the finite-maximum case with noncritical maxima is suppression_finite_max; critical maxima give the asymptotic formula); nothing is said for spins not proportional to areas beyond the dichotomy."
+  since: unreleased
+- id: LL-0120
+  title: For γ > 1 the coherent EPRL node tensor at the projections is a signed entry of a Spin(4) average, and the EPRL vertex sum with coherent boundary data is the K5 contraction of these node tensors
+  area: Asymptotics
+  file: Lightlike/Asymptotics/EPRL/EprlHighVertex.lean
+  decls: [Lightlike.Asymptotics.EPRL.eprlCohNodeHigh_integral, Lightlike.Asymptotics.EPRL.eprlVertexHigh_coherent]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: eprl-2008, location: "eq. (27)", check: "highest irreducible"}
+      - {ref: bdfgh-2009, location: "eq. (19)", check: "amplitude for"}
+  review: kernel-checked
+  note: "For γ > 1 the EPRL map is the lowest Clebsch-Gordan component V_{(n-m)/2} -> V_{n/2} (x) V_{m/2} (EPRL, arXiv:0711.0146, section III, eq. (27)). With the same SU(2) elements g on both chiral halves, the image of the SU(2) coherent intertwiner iota_{n-m}(g) is the Spin(4) average of the conjugates of the lifted rank-one tensor (eprlIntertwinerLow_homForm_cohInt, from projSpin4_eq_integral: projSpin4 is the Haar average of the Spin(4) conjugation action); the coherent node tensor sum_z c_z eprlNodeLow n m z is, at the projections of two components, nodeSign times the signs of the bridge times the matrix entry of that average (eprlCohNodeHigh_integral); the vertex sum with coherent boundary data is the K5 contraction of these node tensors (eprlVertexHigh_coherent), with c_a(z) = nodeSign * <iota_z, homForm iota>. Exact at every spin. Limits: the image is a superposition, not a product of coherent states, so there is no factorization into two SU(2) coherent node tensors as for γ < 1; the Spin(4)^5 integral of edge forms is the next entry; the sign (-1)^chi' of the source is not compared. Numerical check of the node integral: scripts/spinfoam/eprl_high_check.py (check 2, error 2.2e-14, with a weak-design control)."
+  since: unreleased
+- id: LL-0121
+  title: The leg amplitude of the lowest Clebsch-Gordan component on coherent states is (-1)^m c0 times two overlaps
+  area: Asymptotics
+  file: Lightlike/Asymptotics/EPRL/EprlHighLeg.lean
+  decls: [Lightlike.Asymptotics.EPRL.eprlMapLow_cohState, Lightlike.Asymptotics.EPRL.weight_of_equivariant]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: bdfgh-2009, location: "eq. (16)", check: "resolution of the identity"}
+      - {ref: bdfgh-2009, location: "eq. (17)", check: "second resolution of the identity"}
+  review: kernel-checked
+  note: "(<n,M| (x) <m,M'|) Y_low |k,g> = (-1)^m c0 <M|g>^k <M|J M'>^m for SU(2) elements M, M', g and k = n - m, where c0 = Y_low[(0,m),0] is the Clebsch-Gordan entry of the lowest component, <M|g> = (M^dagger g)_00 and <M|J M'> = (M^dagger M' eps)_00. Proof: an SU(2)-equivariant map conserves weights (weight_of_equivariant, by the torus element exp(i pi / W)), covariance reduces the amplitude to M = 1 (legAmp_mul), where one entry of Y_low survives. Limits: c0 is kept abstract; its positivity and its value sqrt((k+1)/(n+1)) are not proved here (numerical check only: scripts/spinfoam/eprl_high_check.py, check 0, wrong-input controls); the U(1)-invariant form of the edge integrand is derived here from the source's eqs. (17)-(19), not printed in the source; the phase (-1)^chi' of eq. (19) is not compared."
+  since: unreleased
+- id: LL-0122
+  title: For γ > 1 the EPRL vertex sum with coherent boundary data is a constant times the Spin(4)^5 integral of the product over the ten edges of the edge forms
+  area: Asymptotics
+  file: Lightlike/Asymptotics/EPRL/EprlHighEdgeForms.lean
+  decls: [Lightlike.Asymptotics.EPRL.eprlCohNodeHigh_legs, Lightlike.Asymptotics.EPRL.eprlVertexHigh_edgeForms]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: bdfgh-2009, location: "eq. (19)", check: "amplitude for"}
+  review: kernel-checked
+  note: "For γ > 1 (the EPRL map is the lowest Clebsch-Gordan component, EPRL eq. (27)) and the same SU(2) elements g on both chiral halves, the coherent node tensor sum_z c_z eprlNodeLow is the Spin(4) integral of a product over the four legs of the node: the outgoing legs carry D(G) Y_low |k,g_l>, the incoming legs (Y_low |k,g_l>) E D(G)^H with the singlet form E = W^H (x) W^H, as functions of the pair of projections (eprlCohNodeHigh_legs, with the signs of the bridge and nodeSign as an explicit constant). Contracting along K5 factors over the edges (k5Contract4_prod) and commutes with the five node integrals (k5Contract4_integral), so the vertex sum equals (product over nodes of the constants) times the integral over Spin(4)^5 of the product over the ten edges of the edge forms sum_{mu,nu} eps_n(mu) eps_m(nu) f_src(mu,nu) f_tgt(-mu,-nu) (eprlVertexHigh_edgeForms), the integral over Spin(4)^5 of BDFGH eq. (19) with the edge form in place of its integrand over SU(2)/U(1) points. Exact at every spin. Limits: Y_low is kept as it is, so the leg functions are not coherent-state overlaps; the closed form of the edge form through the leg amplitude (eprlMapLow_cohState), the resolution of the identity that gives the sphere integrals of eq. (17), and the comparison with the source's integrand are not in this entry; the sign (-1)^chi' and the factor (-1)^{2 j-} d_{j+}^2 are not compared; c0 stays abstract in the leg amplitude. Numerical check of the building blocks: scripts/spinfoam/eprl_high_check.py."
+  since: unreleased
+- id: LL-0123
+  title: Colored graphs and the Euler characteristic of their dual complex in dimension 2, checked on the 2-sphere and the torus
+  area: GFT
+  file: Lightlike/GFT/ColoredGraph.lean
+  decls: [Lightlike.GFT.ColoredGraph, Lightlike.GFT.ColoredGraph.bubble, Lightlike.GFT.ColoredGraph.nBubbles, Lightlike.GFT.ColoredGraph.mem_bubble_iff, Lightlike.GFT.ColoredGraph.nBubbles_empty, Lightlike.GFT.ColoredGraph.even_card, Lightlike.GFT.not_nonempty_coloredGraph_fin3, Lightlike.GFT.ColoredGraph.twoChi2, Lightlike.GFT.twoChi2_theta, Lightlike.GFT.twoChi2_torus, Lightlike.GFT.badLines_not_proper]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: gurau-2010, location: "Abstract", check: "pseudo manifolds"}
+  review: kernel-checked
+  note: "Definitions after Gurau 2010, Section 5: a colored graph of dimension D has vertices of two orientations and lines of D + 1 colors, exactly one line of each color at every vertex, every line joining opposite orientations (ColoredGraph: one fixed-point-free involution per color and an orientation that each involution flips); a p-bubble is a connected component of the subgraph of the lines with colors in a set of size p (bubble: the vertices reachable in #V steps); the dual complex has one k-simplex for each (D - k)-bubble (Theorem 2, eq. (38)). Proved: the computed bubble is the connected component, i.e. the set reachable along lines with colors in S (mem_bubble_iff); the 0-bubbles are the vertices (nBubbles_empty); a colored graph has an even number of vertices, so none exists on three (even_card, not_nonempty_coloredGraph_fin3). For D = 2 the dual has #V triangles, 3#V/2 edges and one vertex for each bicolored cycle, so 2χ = 2(B01 + B02 + B12) - #V (twoChi2): the graph with two vertices and three lines gives χ = 2, the sphere (twoChi2_theta), and a graph with six vertices gives χ = 0, the torus (twoChi2_torus), both by decide +kernel. Wrong model: a vertex with two lines of one color makes the graph not properly colored (IsProper, badLines_not_proper). Not proved: Gurau's Theorem 1 (the p-bubbles are the links of the (n-p)-simplices of the dual) and Theorem 2 (the dual is a normal simplicial pseudo-manifold); that twoChi2 is the Euler characteristic of a closed surface built from the dual (only the face count is formalized); that the Euler characteristic of a connected graph is even. The D = 2 genus statement is standard (ribbon graphs and crystallization theory) and is not in Gurau 2010. Only two examples are computed, not a general theorem."
+  since: unreleased
+- id: LL-0124
+  title: A bubble of one color is a line with two ends, and a bubble of p colors is a connected colored graph in dimension p - 1
+  area: GFT
+  file: Lightlike/GFT/Bubble.lean
+  decls: [Lightlike.GFT.ColoredGraph.bubble_singleton, Lightlike.GFT.ColoredGraph.card_bubble_singleton, Lightlike.GFT.ColoredGraph.restrict_isConnected]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: gurau-2010, location: "Theorem 1", check: "link graphs"}
+      - {ref: gurau-2010, location: "Theorem 2", check: "normal simplicial pseudo manifold"}
+  review: kernel-checked
+  note: "For a colored graph, the bubble of the single color c at v is {v, inv c v} (the 1-bubbles are the lines), so it has exactly two vertices because inv c has no fixed point: the non-branching condition for the dual. A vertex lies in its own bubble (purity), in a connected graph any two vertices are joined by a chain of lines (strong connectivity), and the lines of p colors restricted to a bubble form a colored graph of dimension p - 1 (ColoredGraph.restrict) that is connected (restrict_isConnected): the graph-side shadow of the condition that the links of the dual are pseudo manifolds. These formalize the definitions of Gurau 2010, Sections 2 and 5, for the graph only. Limits: Theorem 1 (the p-bubbles are the link graphs of the (n - p)-simplices) and Theorem 2 (the dual is a normal simplicial pseudo manifold) are not stated: they need the stranded graph and the multiset gluing of eqs. (37) and (38), and a set of faces cannot represent it (in the graph with two vertices and three lines both top simplices have the same vertex set). Trust check: in that graph the 1-bubble of color 0 at 0 is {0, 1} and differs from the 0-bubble."
   since: unreleased
 - id: LL-XXXX
   title: The scaled Lorentzian vertex is an integral over R^44 of a(x) e^{lambda S(x)} in the fixed charts of SL(2,C) with Lebesgue density, and its asymptotic formula holds there with the remaining analytic claims as named hypotheses
