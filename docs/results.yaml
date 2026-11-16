@@ -1625,3 +1625,16 @@
   review: kernel-checked
   note: "For a colored graph, the bubble of the single color c at v is {v, inv c v} (the 1-bubbles are the lines), so it has exactly two vertices because inv c has no fixed point: the non-branching condition for the dual. A vertex lies in its own bubble (purity), in a connected graph any two vertices are joined by a chain of lines (strong connectivity), and the lines of p colors restricted to a bubble form a colored graph of dimension p - 1 (ColoredGraph.restrict) that is connected (restrict_isConnected): the graph-side shadow of the condition that the links of the dual are pseudo manifolds. These formalize the definitions of Gurau 2010, Sections 2 and 5, for the graph only. Limits: Theorem 1 (the p-bubbles are the link graphs of the (n - p)-simplices) and Theorem 2 (the dual is a normal simplicial pseudo manifold) are not stated: they need the stranded graph and the multiset gluing of eqs. (37) and (38), and a set of faces cannot represent it (in the graph with two vertices and three lines both top simplices have the same vertex set). Trust check: in that graph the 1-bubble of color 0 at 0 is {0, 1} and differs from the 0-bubble."
   since: unreleased
+- id: LL-XXXX
+  title: Einstein's equations for an FLRW spacetime with a perfect fluid are equivalent to Friedmann's two equations
+  area: Cosmology
+  file: Lightlike/Cosmology/FLRW.lean
+  decls: [Lightlike.Cosmology.flrw_einstein_iff_friedmann]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (8.36)", check: "Friedmann"}
+  review: kernel-checked
+  note: "The FLRW metric -dt² + a(t)² dx² / (1 + k|x|²/4)² in isotropic coordinates, for every real k, on the set where t ∈ I and 1 + k|x|²/4 > 0 (the Poincaré ball for k < 0, all of ℝ³ for k ≥ 0), with a smooth positive a on an open interval I and the perfect fluid (ρ + p) u u + p g at rest in the chart: G + Λ g = 8πG T holds there iff Friedmann's first and second equations hold at every t ∈ I (units c = 1). The same statement with Physlib's FirstOrderFriedmann and SecondOrderFriedmann at c = 1 on the right is flrw_einstein_iff_physlib_friedmann in Lightlike/Cosmology/FLRWPhyslib.lean. The continuity equation follows (friedmann_continuity, for G ≠ 0). Trust checks: de Sitter with k = 0 solves the equations iff H² = 8πGρ/3; Einstein's static dust universe with k = 1 iff Λ = 1/a² = 4πGρ; with k = -1 there is no static dust solution; scripts/flrw_check.py recomputes the Ricci and Einstein components with sympy and shows that the metric with the sign of k flipped fails them. Limits: a statement in one chart, not on a manifold I × Σ; for k > 0 the chart misses one point of the 3-sphere; ρ and p depend on t only and the fluid is comoving, by assumption."
+  since: unreleased

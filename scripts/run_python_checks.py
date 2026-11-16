@@ -23,6 +23,7 @@ CHECKS = [
     ("scripts/pr23_check.py", False), ("scripts/pr_asymptotics.py", False),
     ("scripts/pr_tree_check.py", False), ("scripts/sixj_zero_check.py", False),
     ("scripts/wrong_schwarzschild_check.py", False), ("scripts/tv_check.py", False),
+    ("scripts/flrw_check.py", False),
     ("scripts/asymptotics/eprl_asymptotics_check.py", False),
     ("scripts/asymptotics/pr_hypotheses_search.py", False),
     ("scripts/asymptotics/saddle_identities.py", False),
