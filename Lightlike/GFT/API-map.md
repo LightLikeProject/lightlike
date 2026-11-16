@@ -21,7 +21,9 @@ minus half the number of vertices [1]. The graph with two vertices gives the 2-s
 with six vertices gives the torus [1]. A graph with two lines of one color at a vertex is not a
 colored graph [1]. The `1`-bubbles are the lines, a line has exactly two ends, every bubble contains a
 vertex, and in a connected graph any two vertices are joined by a chain of lines [2]. The lines of `p`
-colors restricted to a bubble form a colored graph of dimension `p - 1`, and it is connected [2]. That
+colors restricted to a bubble form a colored graph of dimension `p - 1`, and it is connected [2]. The conditions for a complex with indexed
+simplices to be a pseudo-manifold or a normal pseudo-manifold, and its Euler characteristic, are defined in
+a form that keeps repeated simplices distinct [3]. That
 the dual of every colored graph is a normal simplicial pseudo-manifold, and
 the identification of the bubbles with the links of the dual simplices, are due to Gurau {1}; they
 are [TODO] here.
@@ -37,6 +39,9 @@ are [TODO] here.
    `GFT.ColoredGraph.bubble_singleton`, `GFT.ColoredGraph.card_bubble_singleton`,
    `GFT.ColoredGraph.IsConnected`, `GFT.ColoredGraph.strongChain_of_connected`,
    `GFT.ColoredGraph.restrict`, `GFT.ColoredGraph.restrict_isConnected`
+3. Lightlike/GFT/PseudoComplex.lean - `GFT.GradedPoset`, `GFT.GradedPoset.IsPseudoManifold`,
+   `GFT.GradedPoset.link`, `GFT.GradedPoset.IsNormal`, `GFT.GradedPoset.f`,
+   `GFT.GradedPoset.eulerChar`
 
 ## References
 
