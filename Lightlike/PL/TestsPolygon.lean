@@ -122,9 +122,9 @@ theorem triangle_triangulation : ∃ T, IsTriangulation triangle T :=
   exists_triangulation 3 triangle le_rfl triangle_isSimple
 
 /-- **Non-vacuity of the ball theorem.** The theorem applies to the triangle. -/
-theorem triangle_ball : ∃ T, IsTriangulation triangle T ∧ EdgeUnique triangle T ∧
-    NonBdry triangle T ∧ SComplex.IsBallIn (SComplex.closure T) :=
-  exists_ball_triangulation 3 triangle le_rfl triangle_isSimple
+theorem triangle_ball : ∃ T, IsTriangulation triangle T ∧ SComplex.IsBallIn (SComplex.closure T) := by
+  obtain ⟨T, hT, -, -, hB⟩ := exists_ball_triangulation 3 triangle le_rfl triangle_isSimple
+  exact ⟨T, hT, hB⟩
 
 /-- **Non-vacuity of the polygonal Schoenflies theorem.** The theorem applies to the triangle. -/
 theorem triangle_schoenflies : ∃ K : SComplex (ℝ × ℝ), SComplex.IsGeom K ∧
