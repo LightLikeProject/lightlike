@@ -343,6 +343,17 @@ import Lightlike.Regge.Conv3.DihedralScale
 import Lightlike.Regge.Conv3.EdgePoly
 import Lightlike.Regge.Conv3.JetCore
 import Lightlike.Regge.Conv3.JetSlice
+import Lightlike.Regge.Conv3.KuhnBasis
+import Lightlike.Regge.Conv3.KuhnBridge
+import Lightlike.Regge.Conv3.KuhnLinear
+import Lightlike.Regge.Conv3.KuhnLinear2
+import Lightlike.Regge.Conv3.KuhnStar
+import Lightlike.Regge.Conv3.JetCurvature
+import Lightlike.Regge.Conv3.StarAngle
+import Lightlike.Regge.Conv3.FlatStar
+import Lightlike.Regge.Conv3.FlatStarIdentity
+import Lightlike.Regge.Conv3.FlatStarJet
+import Lightlike.Regge.Conv3.FlatStarTests
 import Lightlike.Regge.Conv3.HypProductCore
 import Lightlike.Regge.Conv3.LatticeSum
 import Lightlike.Regge.Conv3.EdgePolyTests
@@ -482,6 +493,7 @@ import Lightlike.TuraevViro.Reflect.SixJEnd
 import Lightlike.TuraevViro.Reflect.GramConst
 import Lightlike.TuraevViro.Reflect.SixJNorm
 import Lightlike.TuraevViro.Reflect.SixJNormOne
+import Lightlike.TuraevViro.Reflect.SixJSingle
 import Lightlike.TuraevViro.Reflect.AdmRange
 import Lightlike.TuraevViro.Reflect.OrthInterior
 import Lightlike.TuraevViro.Reflect.OrthConditional

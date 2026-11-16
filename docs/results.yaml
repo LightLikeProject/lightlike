@@ -1020,3 +1020,36 @@
   review: kernel-checked
   note: "Forcing is this library's rule (a tetrahedron with three of its triangles in the set forces the fourth), used to show that the gauge-fixed state sum is 1. Statement: for a 3-3 move K -> K' that replaces the triangle sigma by tau, and T a set of triangles of K that does not contain sigma and forces every triangle of K, T forces every triangle of K' exactly when the closure of T under the tetrahedra of K that do not contain sigma reaches every triangle of K other than sigma (forces_move33_iff, ForcesIn is forcing by an arbitrary set of tetrahedra). The proof splits the tetrahedra into those common to K and K' and the three that contain sigma (resp. tau). If the common closure is complete, one tetrahedron forces sigma (resp. tau) from the mixed triangles. If it is not, a derivation can leave the common closure only through a tetrahedron sigma + c whose three mixed triangles are in it (a full row), and after the move only through a full row for tau; if both exist, a finite lemma on the eighteen mixed triangles (local33_prop, a Boolean statement over eighteen variables checked by the kernel with decide) shows that adding sigma, or tau, forces nothing more, so at most one of the two complexes forces (forcing_dichotomy). Non-vacuity: forces_move33_example applies it to the boundary of the 5-simplex after a 1-5 and a 2-4 move, with a set of fifteen triangles and the move {0,2,3} -> {4,5,6}, every hypothesis checked by the kernel. Wrong-input control: local33_control shows that without a full row of tau-triangles the conclusion of the finite lemma fails. Scope: the 3-3 move only, with the set T unchanged by the move and not containing sigma; the 2-4 move and the inverse 4-2 and 5-1 moves are not covered. Numerical evidence (scripts/spinfoam/forcechain.py, not part of the proof): a collapsible forcing gauge set of size E-V+1 on a 48-simplex 4-sphere triangulation loses forcing under a 3-3 move (so the second condition is not automatic), and in about 162,000 random trials the characterization held in every case."
   since: unreleased
+- id: LL-0078
+  title: "For a positive definite Gram matrix the squared lengths of the 36 incidences of the Kuhn triangulation are admissible, and the dihedral angles of each of the seven edge classes add up to 2π"
+  area: Regge
+  file: Lightlike/Regge/Conv3/StarAngle.lean
+  decls: [Lightlike.Regge.Conv3.valid_incQ, Lightlike.Regge.Conv3.jet_angle_sum]
+  status: proven
+  tier: frontier
+  source: structural
+  review: kernel-checked
+  note: "G is any positive definite 3x3 matrix; the incidences are the 36 pairs (tetrahedron, hinge) of the Kuhn triangulation of the unit cube (six tetrahedra, seven edge directions). Each class of incidences is a fan of four or six tetrahedra around the hinge axis; the proof uses the complex coordinate in the plane quotient, so it holds for every G and does not use G = identity. Limits: only the cube star of one lattice point is treated; nothing is said about a triangulation of a manifold, and the lattice is the standard one (no other triangulations)."
+  since: unreleased
+- id: LL-0079
+  title: The Christoffel symbols, Riemann tensor and scalar curvature of a smooth metric at a point are explicit expressions in the metric, its inverse and its first and second partial derivatives
+  area: Regge
+  file: Lightlike/Regge/Conv3/JetCurvature.lean
+  decls: [Lightlike.Regge.Conv3.pd_inv, Lightlike.Regge.Conv3.pd_christoffel, Lightlike.Regge.Conv3.riemann_jet, Lightlike.Regge.Conv3.scalarCurvature_jet]
+  status: proven
+  tier: established
+  source: structural
+  review: kernel-checked
+  note: "For a coordinate metric g on an open set U (smooth, symmetric, invertible) and a point m of U: the derivative of the inverse metric is minus g⁻¹ (∂g) g⁻¹ (pd_inv), and the derivative of the Christoffel symbols, the Riemann tensor and the scalar curvature at m are written with (g m)⁻¹, ∂g(m) and ∂∂g(m) only. Limits: this unfolds the coordinate definitions of the library (Lightlike.christoffel, riemann, scalarCurvature); it is the textbook computation, not a statement about tensors or charts."
+  since: unreleased
+- id: LL-0080
+  title: The jet-level star identity of the 3D Regge calculus holds at a point where the first derivatives of a Riemannian metric vanish
+  area: Regge
+  file: Lightlike/Regge/Conv3/FlatStarJet.lean
+  decls: [Lightlike.Regge.Conv3.jetStarCore_of_flat, Lightlike.Regge.Conv3.scalar_flat]
+  status: proven
+  tier: frontier
+  source: structural
+  review: kernel-checked
+  note: "Part of the 3D convergence of the Regge action (T-RC6), which stays open. Scope: at a point m where all first partial derivatives of a Riemannian metric g on an open set of R^3 vanish (for example the centre of normal coordinates); not the general chart. The convergence theorem needs the same statement at every hinge, where the first derivatives do not vanish, and that case is open. For any positive definite g(m) and any second derivatives, the star of one edge of the Kuhn triangulation (flat star: the dihedral angles of each of the seven edge classes add up to 2π; first-order coefficient 0; weights: the hinge lengths √(g(m)(w, w)) of the seven directions w, where g(m)(w, w) is the squared length) satisfies: the sum over the seven classes of the hinge length times the second-order coefficient of the class angle sum equals minus half the scalar curvature times the square root of det g(m) (JetStarCore). The core is an exact polynomial identity in the six entries of g(m) and the 36 independent second derivatives (flat_star_identity), generated and checked in exact arithmetic by scripts/regge/gen_flat_star.py. Limits: second derivatives are those of g at the single point m; the Kuhn triangulation is the standard cubical one; the Gram lengths g(m) are the metric at m, not integrated along edges. Trust checks: the Euclidean metric satisfies the hypotheses, and for sphere-like second derivatives the sum over the 36 incidences is 3, not 0 and not 6 (FlatStarTests.lean)."
+  since: unreleased
