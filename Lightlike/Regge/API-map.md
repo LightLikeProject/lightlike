@@ -146,6 +146,9 @@ derivatives [79]. For the metric `1 + η h` of a smooth symmetric field `h` this
 `Feta` of the jet `(η, h, ∂h, ∂∂h)` where the determinant is positive [79]; it vanishes at `η = 0` [79]. Dimension 3, smooth `h`;
 no expansion in `η` and no integral yet.
 
+The curvature density `Feta` of `1 + η h` expands to second order in `η`, with a cubic remainder that is uniform on compact
+sets of jets [80]; the two coefficients are defined as derivatives and not yet computed.
+
 A 2-complex with boundary is a disc in the combinatorial sense exactly when it is an intrinsic
 triangulated disc [16].
 
@@ -297,6 +300,9 @@ triangulated disc [16].
 
 79. Lightlike/Regge/Conv3/CurvatureEta.lean - `Regge.Conv3.curvJ`, `Regge.Conv3.scalar_curvJ`,
     `Regge.Conv3.scalar_gEta`, `Regge.Conv3.Feta_eq`, `Regge.Conv3.contDiffOn_Feta`, `Regge.Conv3.Feta_flat`
+
+80. Lightlike/Regge/Conv3/FetaTaylor.lean - `Regge.Conv3.F1`, `Regge.Conv3.F2`,
+    `Regge.Conv3.feta_expansion`
 
 ## References
 

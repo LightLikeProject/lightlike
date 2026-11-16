@@ -1177,3 +1177,14 @@
   review: kernel-checked
   note: "First step of the second variation of the Einstein-Hilbert action as a jet identity (T-RC3 in dimension 3, which stays open). For a coordinate metric g on an open set of R^3 the scalar curvature at m is curvJ applied to (g m)^-1, the first and second partial derivatives of g at m (scalar_curvJ, a restatement of scalarCurvature_jet). For a smooth symmetric matrix field h and a real eta with det(1 + eta h(m)) != 0, the scalar curvature of 1 + eta h at m is curvJ of the jet (eta h, eta dh, eta ddh) (scalar_gEta), so (R/2) sqrt(det) equals Feta of the jet (Feta_eq), and Feta is C-infinity in (eta, h, dh, ddh) on the open set where det(1 + eta h) > 0 (contDiffOn_Feta: the inverse is the adjugate over the determinant, every other ingredient is a finite sum of products). Limits: dimension 3; h smooth (C-infinity, as IsCoordMetric requires) and symmetric; the statement is about one point and the jet, nothing about the expansion in eta, about integrals or about periodic fields. Trust check: Feta vanishes at eta = 0 (the flat metric), and the zero jet lies in the domain (Feta_flat, zero_mem_posJ)."
   since: unreleased
+- id: LL-XXXX-g
+  title: The curvature density of 1 + eta h expands to second order in eta with a remainder uniform on compact sets of jets
+  area: Regge
+  file: Lightlike/Regge/Conv3/FetaTaylor.lean
+  decls: [Lightlike.Regge.Conv3.feta_expansion]
+  status: proven
+  tier: frontier
+  source: structural
+  review: kernel-checked
+  note: "Second step of the second variation of the Einstein-Hilbert action as a jet identity (T-RC3 in dimension 3, which stays open). For every compact set K of jets (h, dh, ddh) there are M and r > 0 with |Feta(eta, J) - eta F1(J) - eta^2/2 F2(J)| <= M |eta|^3 for J in K and |eta| <= r (feta_expansion), where F1 and F2 are the first and second derivatives of Feta along the eta-axis at eta = 0. It is the uniform Taylor expansion taylor3_uniform applied to the smooth function Feta of the preceding step (LL-XXXX-f) on the open set det(1 + eta h) > 0, using Feta(0, J) = 0. Limits: dimension 3; F1 and F2 are defined as derivatives, not computed (their polynomial form is the next step, so nothing is claimed here about the Einstein-Hilbert action or the Fierz-Pauli form); nothing about integrals or periodic fields. The statement is an existence statement, so its non-vacuity is that of the domain (the zero jet, LL-XXXX-f)."
+  since: unreleased
