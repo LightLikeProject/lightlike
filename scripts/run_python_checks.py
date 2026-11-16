@@ -91,6 +91,7 @@ NOT_CHECKS = {"scripts/ci_check.py", "scripts/prune_docs.py", "scripts/gate.py",
               "scripts/qracah/endrow_check.py", "scripts/qracah/jacobi_check.py",
               "scripts/qracah/orth_support.py",
               "scripts/qracah/chunk.py",  # splits the long Poly literals of the generated certificates; used by gen_cert.py
+              "scripts/qracah/docs.py",  # module docstrings of the generated Racah files; used by gen_core.py
               "scripts/spinfoam/all15.py", "scripts/spinfoam/all24.py",  # print the reduction data of the 1-5 and 2-4 moves; Lean checks them
               "scripts/spinfoam/gen15.py", "scripts/spinfoam/gen24.py",  # generators of the Lean tables of Move15 and Move24
               "scripts/spinfoam/gauge_match.py", "scripts/spinfoam/net_model.py",  # libraries of the move searches
