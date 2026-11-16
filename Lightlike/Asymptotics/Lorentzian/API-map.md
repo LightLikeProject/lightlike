@@ -147,7 +147,10 @@ attains its maximum `0` there [24]. On such an edge the derivative of the triang
 variation `δz` (which moves both spinors at once) vanishes by (21) alone, and the group variations
 sum to zero by closure at each node [25]; the passage from these line derivatives to the gradient of
 the chart action is not made. The derivative of `triAction` itself along a curve is the same
-expression where the product of the overlaps is off the cut of the logarithm [26].
+expression where the product of the overlaps is off the cut of the logarithm [26]. Along any curve through a critical configuration with
+the critical spinors, the derivative of `lorAction` is zero when closure holds at every node [27];
+the curves are given by their entrywise derivative `X₀ · genMat c`, and the Fréchet derivative of
+`lorChartAction` is not identified here.
 
 ## Lean References
 
@@ -241,6 +244,9 @@ expression where the product of the overlaps is off the cut of the logarithm [26
 26. Lightlike/Asymptotics/Lorentzian/TriActionDeriv.lean - `Asymptotics.Lorentzian.exp_triAction_eq_triFactor`,
     `Asymptotics.Lorentzian.differentiableAt_triAction`,
     `Asymptotics.Lorentzian.hasDerivAt_triAction_curve`
+27. Lightlike/Asymptotics/Lorentzian/CriticalGradient.lean - `Asymptotics.Lorentzian.genMat`,
+    `Asymptotics.Lorentzian.hasDerivAt_spinAct`,
+    `Asymptotics.Lorentzian.hasDerivAt_lorAction_critical`
 
 ## References
 
