@@ -25,6 +25,9 @@ ingredients of that matching.
   product of inverse quantum factorials, and its step in the third colour.
 * `wTerm`, `wTerm_succ`: the weighted term of the boundary evaluation and its step, a product of
   quantum integers (cross-multiplied).
+* `one_sub_Q_qZ`, `rhoT_eq`: each factor `1 - Q^m` is `- u^m (u - u⁻¹) [m]`, and the ratio factor of
+  consecutive Jackson summands at the parameters of the boundary evaluation is the ratio of quantum
+  integers by which `wTerm` steps.
 * `qd_jhyp`: they hold at the parameters of the boundary evaluation in the case `x0 = j1 - j2`,
   `q0 = j1 - j5`, `j4 + j5 < j1 + j2`, for admissible spins.
 
@@ -303,5 +306,124 @@ theorem wTerm_succ {r : ℕ} (hr : 2 ≤ r) {j1 j2 j4 j5 k A3 S B δ γ n : ℕ}
   linear_combination (q3' * qy * D2' * C1 * C2 * T' * B1 ^ 2 * F ^ 2) * st1 +
     (q3' * qy * D1 * B1 * B2 * T' * B1 ^ 2 * F ^ 2) * st2 +
     (q3' * qy * D1 * B1 * B2 * D2 * E1 * E2) * sj2
+
+
+/-- The quantum integer `qZ` at a natural number is `qnum`. -/
+lemma qZ_natCast (r m : ℕ) : qZ r (m : ℤ) = qnum r m := by
+  simp [qZ, qnum]
+
+/-- `qZ` is odd. -/
+lemma qZ_neg (r : ℕ) (m : ℤ) : qZ r (-m) = - qZ r m := by
+  simp only [qZ]; push_cast
+  rw [show (-(m : ℝ)) * Real.pi / r = -((m : ℝ) * Real.pi / r) by ring, Real.sin_neg]; ring
+
+/-- `u - u⁻¹ ≠ 0` at the root of unity. -/
+lemma uC_sub_inv_ne {r : ℕ} (hr : 2 ≤ r) : uC r - (uC r)⁻¹ ≠ 0 := by
+  have := bk_uC_ne hr (m := 1) (by
+    intro h
+    have : (r : ℤ) ≤ 1 := Int.le_of_dvd (by norm_num) h
+    omega)
+  simpa [bk] using this
+
+/-- Each factor of Jackson's series is a quantum integer: `1 - Q^m = - u^m (u - u⁻¹) [m]`. -/
+lemma one_sub_Q_qZ {r : ℕ} (hr : 2 ≤ r) (m : ℤ) :
+    1 - (uC r ^ 2) ^ m = - uC r ^ m * (uC r - (uC r)⁻¹) * ((qZ r m : ℝ) : ℂ) := by
+  have h := (div_eq_iff (uC_sub_inv_ne hr)).1 (bk_uC_div hr m)
+  rw [one_sub_Q_zpow, h]; ring
+
+/-- The ratio factor of consecutive Jackson summands (`Tj_succ`) at `Q`-power parameters. -/
+noncomputable def rhoT (q a b c x : ℂ) (k : ℕ) : ℂ :=
+  (1 - a * q ^ (2 * (k + 1))) / (1 - a * q ^ (2 * k)) *
+    ((1 - a * q ^ k) * (1 - b * q ^ k) * (1 - c * q ^ k) * (1 - x⁻¹ * q ^ k)) /
+    ((1 - q * q ^ k) * (1 - a * q / b * q ^ k) * (1 - a * q / c * q ^ k) *
+      (1 - a * q * x * q ^ k)) * (a * q * x / (b * c))
+
+/-- **Step C.** The ratio factor of consecutive Jackson summands at the parameters of the boundary
+evaluation is the ratio of quantum integers by which the weighted terms step: the powers of `u` and
+the signs of the brackets cancel. -/
+theorem rhoT_eq {r : ℕ} (hr : 2 ≤ r) {d j2 n j5 k ec : ℕ} (hec : ec + j5 = d + n + 1)
+    (hnj : n ≤ j5) (hj5 : j5 ≤ d + n) (hkn : k < n) (hj2 : n < j2)
+    (h1 : d + 2 * k + 3 < r) (h2 : j2 + d + k + 2 < r) (h3 : d + n + k + 2 < r)
+    (h5 : k + j5 + 1 < r) :
+    rhoT (uC r ^ 2) ((uC r ^ 2) ^ (d + 1)) ((uC r ^ 2) ^ (j2 + d + 2)) ((uC r ^ 2) ^ ec)
+        ((uC r ^ 2) ^ n) k =
+      (((qnum r (d + 2 * k + 3) * qnum r (d + k + 1) * qnum r (j2 + d + k + 2) *
+          qnum r (ec + k) * qnum r (n - k)) /
+        (qnum r (d + 2 * k + 1) * qnum r (k + 1) * qnum r (j2 - k) * qnum r (k + j5 - n + 1) *
+          qnum r (d + n + k + 2)) : ℝ) : ℂ) := by
+  have hkj : k ≤ j2 := by omega
+  have hQ : uC r ^ 2 ≠ 0 := pow_ne_zero 2 (uC_ne_zero r)
+  have hu : uC r ≠ 0 := uC_ne_zero r
+  have z : ∀ e : ℕ, (uC r ^ 2) ^ e = (uC r ^ 2) ^ (e : ℤ) := fun e => (zpow_natCast _ e).symm
+  have p1 : (uC r ^ 2) ^ (d + 1) * (uC r ^ 2) ^ (2 * (k + 1)) = (uC r ^ 2) ^ ((d + 2 * k + 3 : ℕ) : ℤ) := by
+    rw [zpow_natCast]; ring
+  have p2 : (uC r ^ 2) ^ (d + 1) * (uC r ^ 2) ^ (2 * k) = (uC r ^ 2) ^ ((d + 2 * k + 1 : ℕ) : ℤ) := by
+    rw [zpow_natCast]; ring
+  have p3 : (uC r ^ 2) ^ (d + 1) * (uC r ^ 2) ^ k = (uC r ^ 2) ^ ((d + k + 1 : ℕ) : ℤ) := by
+    rw [zpow_natCast]; ring
+  have p4 : (uC r ^ 2) ^ (j2 + d + 2) * (uC r ^ 2) ^ k = (uC r ^ 2) ^ ((j2 + d + k + 2 : ℕ) : ℤ) := by
+    rw [zpow_natCast]; ring
+  have p5 : (uC r ^ 2) ^ ec * (uC r ^ 2) ^ k = (uC r ^ 2) ^ ((ec + k : ℕ) : ℤ) := by
+    rw [zpow_natCast]; ring
+  have p6 : ((uC r ^ 2) ^ n)⁻¹ * (uC r ^ 2) ^ k = (uC r ^ 2) ^ ((k : ℤ) - n) := by
+    rw [zpow_sub₀ hQ, zpow_natCast, zpow_natCast]; field_simp
+  have p7 : (uC r ^ 2) * (uC r ^ 2) ^ k = (uC r ^ 2) ^ ((k + 1 : ℕ) : ℤ) := by
+    rw [← zpow_natCast, ← pow_succ']; congr 1
+  have p8 := Qpow_ratio (uC r ^ 2) hQ (d + 1) (j2 + d + 2) k
+  have p9 := Qpow_ratio (uC r ^ 2) hQ (d + 1) ec k
+  have p10 : (uC r ^ 2) ^ (d + 1) * (uC r ^ 2) * (uC r ^ 2) ^ n * (uC r ^ 2) ^ k =
+      (uC r ^ 2) ^ ((d + n + k + 2 : ℕ) : ℤ) := by
+    rw [zpow_natCast]; ring
+  unfold rhoT
+  have p11 : (uC r ^ 2) ^ (d + 1) * uC r ^ 2 * (uC r ^ 2) ^ n / ((uC r ^ 2) ^ (j2 + d + 2) * (uC r ^ 2) ^ ec) =
+      (uC r ^ 2) ^ ((n : ℤ) - j2 - ec) := by
+    rw [zpow_sub₀ hQ, zpow_sub₀ hQ, zpow_natCast, zpow_natCast, zpow_natCast]
+    field_simp; ring
+  have hbal : uC r ^ ((d + 2 * k + 3 : ℕ) : ℤ) * uC r ^ ((d + k + 1 : ℕ) : ℤ) *
+      uC r ^ ((j2 + d + k + 2 : ℕ) : ℤ) * uC r ^ ((ec + k : ℕ) : ℤ) * uC r ^ (-((n - k : ℕ) : ℤ)) *
+      (uC r ^ ((n : ℤ) - j2 - ec)) * uC r ^ ((n : ℤ) - j2 - ec) =
+      uC r ^ ((d + 2 * k + 1 : ℕ) : ℤ) * uC r ^ ((k + 1 : ℕ) : ℤ) * uC r ^ (-((j2 - k : ℕ) : ℤ)) *
+        uC r ^ ((k + j5 - n + 1 : ℕ) : ℤ) * uC r ^ ((d + n + k + 2 : ℕ) : ℤ) := by
+    simp only [← zpow_add₀ hu]
+    congr 1
+    omega
+  have hQsq : ∀ m : ℤ, (uC r ^ 2) ^ m = uC r ^ m * uC r ^ m := fun m => by
+    rw [← zpow_natCast, ← zpow_mul, ← zpow_add₀ hu]; congr 1; push_cast; ring
+  rw [p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, hQsq ((n : ℤ) - j2 - ec)]
+  rw [show ((d + 1 : ℕ) : ℤ) + 1 - ((j2 + d + 2 : ℕ) : ℤ) + k = -((j2 - k : ℕ) : ℤ) by push_cast; omega,
+    show ((d + 1 : ℕ) : ℤ) + 1 - ec + k = ((k + j5 - n + 1 : ℕ) : ℤ) by push_cast; omega,
+    show (k : ℤ) - n = -((n - k : ℕ) : ℤ) by push_cast; omega]
+  simp only [one_sub_Q_qZ hr, qZ_neg, qZ_natCast]
+  have ht := uC_sub_inv_ne hr
+  have qp : ∀ m : ℕ, 0 < m → m < r → ((qnum r m : ℝ) : ℂ) ≠ 0 := fun m h0 h1 =>
+    Complex.ofReal_ne_zero.2 (qnum_pos hr h0 h1).ne'
+  have a1 := qp (d + 2 * k + 3) (by omega) (by omega)
+  have a2 := qp (d + 2 * k + 1) (by omega) (by omega)
+  have a3 := qp (d + k + 1) (by omega) (by omega)
+  have a4 := qp (j2 + d + k + 2) (by omega) (by omega)
+  have a5 := qp (ec + k) (by omega) (by omega)
+  have a6 := qp (n - k) (by omega) (by omega)
+  have a7 := qp (k + 1) (by omega) (by omega)
+  have a8 := qp (j2 - k) (by omega) (by omega)
+  have a9 := qp (k + j5 - n + 1) (by omega) (by omega)
+  have a10 := qp (d + n + k + 2) (by omega) (by omega)
+  have b : ∀ m : ℤ, uC r ^ m ≠ 0 := fun m => zpow_ne_zero m hu
+  have hX : uC r ^ ((n : ℤ) - j2 - ec) * uC r ^ ((n : ℤ) - j2 - ec) =
+      (uC r ^ ((d + 2 * k + 1 : ℕ) : ℤ) * uC r ^ ((k + 1 : ℕ) : ℤ) * uC r ^ (-((j2 - k : ℕ) : ℤ)) *
+        uC r ^ ((k + j5 - n + 1 : ℕ) : ℤ) * uC r ^ ((d + n + k + 2 : ℕ) : ℤ)) /
+      (uC r ^ ((d + 2 * k + 3 : ℕ) : ℤ) * uC r ^ ((d + k + 1 : ℕ) : ℤ) *
+        uC r ^ ((j2 + d + k + 2 : ℕ) : ℤ) * uC r ^ ((ec + k : ℕ) : ℤ) * uC r ^ (-((n - k : ℕ) : ℤ))) := by
+    rw [eq_div_iff (by simp only [ne_eq, mul_eq_zero, b, or_self, not_false_eq_true])]
+    linear_combination hbal
+  have hu2 : -1 + uC r ^ 2 ≠ 0 := by
+    intro h
+    apply ht
+    have : uC r - (uC r)⁻¹ = (uC r ^ 2 - 1) / uC r := by field_simp
+    rw [this, show uC r ^ 2 - 1 = -1 + uC r ^ 2 by ring, h, zero_div]
+  rw [hX]
+  push_cast
+  field_simp
+  ring_nf
+  linear_combination mul_inv_cancel₀ hu2
 
 end Lightlike.TV.Refl
