@@ -6,9 +6,12 @@ import Lightlike.Spin4.CoherentIntertwiner
 # Haar integrals of products of characters of `SU(2)`
 
 Schur orthogonality of the spin-`n/2` characters and the integrals of products of characters that
-the cut-off Ponzano–Regge sum needs (`Lightlike.SpinFoam.partitionN`).
+the cut-off Ponzano–Regge sum needs (`Lightlike.SpinFoam.partitionN`); see Serre, *Linear
+Representations of Finite Groups* (1977), §2.3, and Fulton–Harris, *Representation Theory* (1991),
+Lecture 1, for the orthogonality of characters.
 
 ## Main results
+
 * `matInt_spinMat_cross`: for `n ≠ m`, `∫ D^{n/2}(g) A D^{m/2}(g)ᴴ dg = 0` for every matrix `A`
   (Schur's lemma for different spins and left invariance of the Haar measure).
 * `integral_spinChar_mul_star`: `∫ χ_n(g) conj χ_m(g) dg = δ_{nm}`.
@@ -17,11 +20,6 @@ the cut-off Ponzano–Regge sum needs (`Lightlike.SpinFoam.partitionN`).
 * `sphereCx`, `partitionN_sphere`: two faces glued along one edge loop with opposite orientations
   (the 2-sphere) give `Σ_{n ≤ N} (n+1)²` at cut-off `N`, so the cut-off cannot be removed, while a
   single face on the loop gives `1` (`partitionN_loop`).
-
-## References
-
-* J.-P. Serre, *Linear Representations of Finite Groups*, GTM 42 (1977), §2.3 (orthogonality of
-  characters); W. Fulton, J. Harris, *Representation Theory*, GTM 129 (1991), Lecture 1.
 -/
 
 open Matrix MeasureTheory Finset Lightlike.SU2 Lightlike.Spin4

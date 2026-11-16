@@ -8,6 +8,7 @@ The cut-off sum `partitionN C N` (`Lightlike.SpinFoam.GroupIntegral`) is *remova
 limit as `N → ∞`.
 
 ## Main results
+
 * `Removable`: `partitionN C N` converges as `N → ∞`.
 * `removable_loop`: the disc (one face on one loop) is removable, with limit `1`.
 * `not_removable_sphere`, `not_removable_emptyFace`: the 2-sphere and a face with empty boundary are
@@ -18,7 +19,9 @@ limit as `N → ∞`.
   absolutely summable. **This implication is not proved here**; it is a named proposition, not a
   theorem. Checked by hand: disc (`H² = 0`, removable) and sphere (`H² ≠ 0`, not removable).
 
-## Why a hypothesis is needed
+## Implementation notes
+
+Why a hypothesis is needed.
 
 `truncDelta N = Σ_{n ≤ N} (n+1) χ_n` is the sharp truncation of the delta function of `SU(2)`. On a
 maximal torus it is a Dirichlet-type kernel in `θ`, not positive, so it is not an approximate
