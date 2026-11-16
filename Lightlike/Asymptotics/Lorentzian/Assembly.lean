@@ -58,6 +58,9 @@ noncomputable def conjEquiv : SL2C ≃ₜ* SL2C where
   continuous_toFun := continuous_conjSL
   continuous_invFun := continuous_conjSL
 
+/-- **Complex conjugation preserves the Haar measure of `SL(2,ℂ)`**: it is an involutive
+continuous automorphism, so its Haar character `c` satisfies `c = c⁻¹` and `c > 0`, hence `c = 1`
+(`mulEquivHaarChar_smul_map`, `mulEquivHaarChar_symm`). -/
 theorem map_conjSL_haar : SL2C.haar.map conjSL = SL2C.haar := by
   have h := mulEquivHaarChar_smul_map SL2C.haar conjEquiv
   have hs : conjEquiv.symm = conjEquiv := by
