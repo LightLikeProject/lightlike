@@ -2032,7 +2032,7 @@
   "citations_via": "Semantic Scholar"
  },
  "gurau-2010": {
-  "checked": "2026-11-08",
+  "checked": "2026-11-16",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "Lost in Translation: Topological Singularities in Group Field Theory",
@@ -2040,6 +2040,16 @@
    "Abstract": {
     "verified": true,
     "snippet": "random matrix models generalize to group field theories gft whose feynman graphs are dual to gluings of higher dimensional simplices it is generally assumed that gft graphs are always dual to pseudo m",
+    "why": null
+   },
+   "Theorem 1": {
+    "verified": true,
+    "snippet": "Theorem 1. For p ≥ 2, the p-bubbles of a CGFT graph are the link graphs of the (n − p) simplices in the gluing ∆G . Proof: Consider two vertices vA (positive) and vB (negative) connected by a line of color i (see figure",
+    "why": null
+   },
+   "Theorem 2": {
+    "verified": true,
+    "snippet": "Theorem 2. Any connected n dimensional CGFT graph is dual to a normal simplicial pseudo manifold. Proof By lemma 1 it is enough to prove that the gluing ∆G dual to any CGFT graph is a simplicial complex. This is trivial",
     "why": null
    }
   },

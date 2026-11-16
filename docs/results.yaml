@@ -1598,3 +1598,30 @@
   review: kernel-checked
   note: "For γ > 1 (the EPRL map is the lowest Clebsch-Gordan component, EPRL eq. (27)) and the same SU(2) elements g on both chiral halves, the coherent node tensor sum_z c_z eprlNodeLow is the Spin(4) integral of a product over the four legs of the node: the outgoing legs carry D(G) Y_low |k,g_l>, the incoming legs (Y_low |k,g_l>) E D(G)^H with the singlet form E = W^H (x) W^H, as functions of the pair of projections (eprlCohNodeHigh_legs, with the signs of the bridge and nodeSign as an explicit constant). Contracting along K5 factors over the edges (k5Contract4_prod) and commutes with the five node integrals (k5Contract4_integral), so the vertex sum equals (product over nodes of the constants) times the integral over Spin(4)^5 of the product over the ten edges of the edge forms sum_{mu,nu} eps_n(mu) eps_m(nu) f_src(mu,nu) f_tgt(-mu,-nu) (eprlVertexHigh_edgeForms), the integral over Spin(4)^5 of BDFGH eq. (19) with the edge form in place of its integrand over SU(2)/U(1) points. Exact at every spin. Limits: Y_low is kept as it is, so the leg functions are not coherent-state overlaps; the closed form of the edge form through the leg amplitude (eprlMapLow_cohState), the resolution of the identity that gives the sphere integrals of eq. (17), and the comparison with the source's integrand are not in this entry; the sign (-1)^chi' and the factor (-1)^{2 j-} d_{j+}^2 are not compared; c0 stays abstract in the leg amplitude. Numerical check of the building blocks: scripts/spinfoam/eprl_high_check.py."
   since: unreleased
+- id: LL-0123
+  title: Colored graphs and the Euler characteristic of their dual complex in dimension 2, checked on the 2-sphere and the torus
+  area: GFT
+  file: Lightlike/GFT/ColoredGraph.lean
+  decls: [Lightlike.GFT.ColoredGraph, Lightlike.GFT.ColoredGraph.bubble, Lightlike.GFT.ColoredGraph.nBubbles, Lightlike.GFT.ColoredGraph.mem_bubble_iff, Lightlike.GFT.ColoredGraph.nBubbles_empty, Lightlike.GFT.ColoredGraph.even_card, Lightlike.GFT.not_nonempty_coloredGraph_fin3, Lightlike.GFT.ColoredGraph.twoChi2, Lightlike.GFT.twoChi2_theta, Lightlike.GFT.twoChi2_torus, Lightlike.GFT.badLines_not_proper]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: gurau-2010, location: "Abstract", check: "pseudo manifolds"}
+  review: kernel-checked
+  note: "Definitions after Gurau 2010, Section 5: a colored graph of dimension D has vertices of two orientations and lines of D + 1 colors, exactly one line of each color at every vertex, every line joining opposite orientations (ColoredGraph: one fixed-point-free involution per color and an orientation that each involution flips); a p-bubble is a connected component of the subgraph of the lines with colors in a set of size p (bubble: the vertices reachable in #V steps); the dual complex has one k-simplex for each (D - k)-bubble (Theorem 2, eq. (38)). Proved: the computed bubble is the connected component, i.e. the set reachable along lines with colors in S (mem_bubble_iff); the 0-bubbles are the vertices (nBubbles_empty); a colored graph has an even number of vertices, so none exists on three (even_card, not_nonempty_coloredGraph_fin3). For D = 2 the dual has #V triangles, 3#V/2 edges and one vertex for each bicolored cycle, so 2χ = 2(B01 + B02 + B12) - #V (twoChi2): the graph with two vertices and three lines gives χ = 2, the sphere (twoChi2_theta), and a graph with six vertices gives χ = 0, the torus (twoChi2_torus), both by decide +kernel. Wrong model: a vertex with two lines of one color makes the graph not properly colored (IsProper, badLines_not_proper). Not proved: Gurau's Theorem 1 (the p-bubbles are the links of the (n-p)-simplices of the dual) and Theorem 2 (the dual is a normal simplicial pseudo-manifold); that twoChi2 is the Euler characteristic of a closed surface built from the dual (only the face count is formalized); that the Euler characteristic of a connected graph is even. The D = 2 genus statement is standard (ribbon graphs and crystallization theory) and is not in Gurau 2010. Only two examples are computed, not a general theorem."
+  since: unreleased
+- id: LL-0124
+  title: A bubble of one color is a line with two ends, and a bubble of p colors is a connected colored graph in dimension p - 1
+  area: GFT
+  file: Lightlike/GFT/Bubble.lean
+  decls: [Lightlike.GFT.ColoredGraph.bubble_singleton, Lightlike.GFT.ColoredGraph.card_bubble_singleton, Lightlike.GFT.ColoredGraph.restrict_isConnected]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: gurau-2010, location: "Theorem 1", check: "link graphs"}
+      - {ref: gurau-2010, location: "Theorem 2", check: "normal simplicial pseudo manifold"}
+  review: kernel-checked
+  note: "For a colored graph, the bubble of the single color c at v is {v, inv c v} (the 1-bubbles are the lines), so it has exactly two vertices because inv c has no fixed point: the non-branching condition for the dual. A vertex lies in its own bubble (purity), in a connected graph any two vertices are joined by a chain of lines (strong connectivity), and the lines of p colors restricted to a bubble form a colored graph of dimension p - 1 (ColoredGraph.restrict) that is connected (restrict_isConnected): the graph-side shadow of the condition that the links of the dual are pseudo manifolds. These formalize the definitions of Gurau 2010, Sections 2 and 5, for the graph only. Limits: Theorem 1 (the p-bubbles are the link graphs of the (n - p)-simplices) and Theorem 2 (the dual is a normal simplicial pseudo manifold) are not stated: they need the stranded graph and the multiset gluing of eqs. (37) and (38), and a set of faces cannot represent it (in the graph with two vertices and three lines both top simplices have the same vertex set). Trust check: in that graph the 1-bubble of color 0 at 0 is {0, 1} and differs from the 0-bubble."
+  since: unreleased
