@@ -1,4 +1,5 @@
 import Lightlike.Regge.Linear3.LinearizedLattice
+import Lightlike.Regge.Linear3.SaintVenantClass
 
 /-!
 # The second-order expansion of the unit-scale degrees of freedom and of the class sums

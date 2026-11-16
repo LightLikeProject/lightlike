@@ -381,7 +381,15 @@ import Lightlike.Regge.Conv3.ReggeConvergence
 import Lightlike.Regge.Conv3.ReggeConvergenceTests
 import Lightlike.Regge.Linear3.AngleSmooth
 import Lightlike.Regge.Linear3.SecondOrder
+import Lightlike.Regge.Linear3.SaintVenantHvec
+import Lightlike.Regge.Linear3.SaintVenantSigma0
+import Lightlike.Regge.Linear3.SaintVenantSigma1
+import Lightlike.Regge.Linear3.SaintVenantSigma2
+import Lightlike.Regge.Linear3.SaintVenantSigma3
+import Lightlike.Regge.Linear3.SaintVenantSigma4
+import Lightlike.Regge.Linear3.SaintVenantSigma5
 import Lightlike.Regge.Linear3.SaintVenantCore
+import Lightlike.Regge.Linear3.SaintVenantClass
 import Lightlike.Regge.Linear3.TorusComplex
 import Lightlike.Regge.Linear3.TorusBridge
 import Lightlike.Regge.Linear3.TorusBridgeLengths
