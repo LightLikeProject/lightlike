@@ -10,6 +10,12 @@ cutoff conditions that make the cutoffs on the faces inside the move non-binding
 gauge set along. This file puts them into one relation, as the 3D file `Lightlike/PonzanoRegge/GaugeFixed.lean`
 does for the 2-3 and 1-4 moves.
 
+Limits: finite cutoff only. The cutoffs must be re-chosen by `recut` between moves, and the
+cutoff conditions are sufficient, not necessary. Nothing here says that the state sum is
+independent of the gauge set.
+
+## Main results
+
 * `GFStep4`: one step between triples `(complex, gauge set, cutoffs)`: a 3-3, 2-4 or 1-5 move with
   the hypotheses of the matching theorem, or a change of the cutoffs on faces that are not summed.
   The 4-2 and 5-1 moves are the steps read backwards.
@@ -19,12 +25,10 @@ does for the 2-3 and 1-4 moves.
 * `amplitudeGF_tendsto_one_of_forces`: for a gauge set that forces every triangle, the state sum
   at the constant cutoff `L` is `1` for every `L`, so it converges as the cutoff is removed.
 
-Source: Freidel and Louapre, "Diffeomorphisms and spin foam models" (2003), Section IV.B (gauge fixing
-by a maximal tree). The gauge rule `IsGauge` is this library's 4D analogue, not their construction.
+## References
 
-Limits: finite cutoff only. The cutoffs must be re-chosen by `recut` between moves, and the
-cutoff conditions are sufficient, not necessary. Nothing here says that the state sum is
-independent of the gauge set.
+* `freidel-louapre-2003`, Section IV.B: gauge fixing by a maximal tree. The gauge rule `IsGauge` is
+  this library's 4D analogue, not their construction.
 -/
 
 open Finset Lightlike.FourD Complex4

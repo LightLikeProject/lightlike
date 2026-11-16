@@ -10,6 +10,7 @@ The Ponzano–Regge-type sum of the tetrahedron integral over the six edge spins
 `N` keeps the doubled spins `≤ N`.
 
 ## Main results
+
 * `tetraPartition`: the cut-off sum.
 * `tetraTerm_nonneg`, `tetraPartition_mono`: the terms are nonnegative, so the sum is monotone.
 * `tetraTerm_eq`: the term is the weight times `(tetraInt s).re`.
@@ -21,13 +22,18 @@ The Ponzano–Regge-type sum of the tetrahedron integral over the six edge spins
 * `tetraTerm_zeroSpin`, `tetraPartition_ge`, `tetraPartition_unbounded`: the term with the doubled
   spins `(0, n, n, n, n, 0)` is `(n+1)^2`, so the sum is at least `(N+1)^2` and is unbounded.
 * `not_tetraRemovable`: the cut-off sum has no limit. This is the sum without the rescaling
-  `M_Λ^{-v}` of Barrett and Naish-Guzman (§2.2); existence as a distribution is a different
-  statement and is not treated here.
+  `M_Λ^{-v}` of Barrett and Naish-Guzman; existence as a distribution is a different statement and
+  is not treated here.
 
 Numerical evidence only (`scripts/spinfoam/tetra_partition_check.py`, exact SymPy values): the sums
 for doubled cut-offs `0, 1, 2, 3` are `1`, `29`, `2393/4`, `488337/100`, and the zero-spin term is
 `(n+1)^2` for `n = 0..6`. The proof of unboundedness is `tetraPartition_ge`; these values only
 check it.
+
+## References
+
+* `barrett-naish-guzman-2009`, §2.2: the rescaling `M_Λ^{-v}` that the cut-off sum here does not
+  use.
 -/
 
 open Finset Filter Topology PhyslibAlpha.Sl2

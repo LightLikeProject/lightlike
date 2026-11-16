@@ -19,9 +19,8 @@ sum over one projection for each face of `T`.
 
 ## References
 
-- H. Ooguri, *Topological lattice models in four dimensions*, Mod. Phys. Lett. A 7, 2799 (1992):
-  the vertex amplitude as the contraction of five intertwiners along the triangles of a
-  4-simplex.
+* `ooguri-1992`: the vertex amplitude as the contraction of five intertwiners along the triangles
+  of a 4-simplex.
 -/
 
 open Finset Lightlike.Recoupling
