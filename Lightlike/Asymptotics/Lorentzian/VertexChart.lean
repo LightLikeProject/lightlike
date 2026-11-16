@@ -221,8 +221,8 @@ theorem lorVertex_asymptotics_vertexChart {j p : Fin 10 → ℝ} (hj : ∀ e, 0 
         fderiv ℝ (lorChartAction j p g (vertexChart X₀ w₀)) x = 0) ↔ x ∈ K)
     (hKs : ∀ x ∈ K, x ∈ tsupport aLoc)
     (hdet : ∀ x ∈ K, (-lorHessian j p g (vertexChart X₀ w₀) x).det ≠ 0)
-    (hint : ∀ τ : ℝ, Integrable fun x =>
-      aFar x * cexp (τ * lorChartAction j p g (vertexChart X₀ w₀) x))
+    (hint : ∀ lam : ℕ, Integrable fun x =>
+      aFar x * cexp ((lam : ℝ) * lorChartAction j p g (vertexChart X₀ w₀) x))
     (hfar : (fun lam : ℕ => ∫ x, aFar x *
         cexp ((lam : ℝ) * lorChartAction j p g (vertexChart X₀ w₀) x))
       =O[atTop] fun lam : ℕ => ((lam : ℝ) ^ (-((44 : ℝ) / 2) - 1)))

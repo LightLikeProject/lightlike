@@ -85,7 +85,9 @@ integrand over `(ℂ³)⁴ × ℂ¹⁰` [29]; through a measure-preserving ident
 scaled data is `(∏ c_e) s⁻⁴ ∫ a(x) e^{λ S(x)} dx` with the `λ`-independent amplitude `a = ∏ Ω_e` [29]. The chart `fixVertexChart` is smooth where the
 `λ`-coordinates are nonzero, and the asymptotic formula for the scaled vertex holds in it with the
 cutoff split `a = χ a + (1 - χ) a`; the named hypotheses (joint integrability, `hK`, `hdet`, `hint`,
-`hfar`, the weight bound) are those of the statement [30].
+`hfar`, the weight bound) are those of the statement [30]; `hint` is assumed only along `λ ∈ ℕ` (the form `∀ τ : ℝ` fails for `τ < 0`
+where an overlap vanishes). The numerical factor of BDFHP eq. (57) and its second line for `p = γ k`
+are in [31].
 
 The vertex action `lorAction` is the sum of the triangle actions over the ten edges at the spinors
 `X†z` [9]. Its real part is at most zero where the spinors and overlaps are nonzero [9]. In a chart
@@ -264,6 +266,9 @@ frame (`scripts/asymptotics/lorentzian_hessian_check.py`).
     `Asymptotics.Lorentzian.fixVertexChart_group_contDiffOn`,
     `Asymptotics.Lorentzian.lorChartAction_fixVertexChart_contDiffOn`,
     `Asymptotics.Lorentzian.lorVertex_asymptotics_fixChart`
+31. Lightlike/Asymptotics/Lorentzian/Eq57Constants.lean - `Asymptotics.Lorentzian.bdfhpC`,
+    `Asymptotics.Lorentzian.bdfhpN`, `Asymptotics.Lorentzian.bdfhpN_eq`,
+    `Asymptotics.Lorentzian.lorEdgeDensity_smul`
 
 ## References
 

@@ -39,7 +39,7 @@ theorem weighted_two_points_local {S aLoc aFar : (Fin n → ℝ) → ℂ} {U : S
     (hK : ∀ x ∈ tsupport aLoc, ((S x).re = 0 ∧ fderiv ℝ S x = 0) ↔ x ∈ ({x₁, x₂} : Finset _))
     (hKs₁ : x₁ ∈ tsupport aLoc) (hKs₂ : x₂ ∈ tsupport aLoc)
     (hdet₁ : (-hessMat S x₁).det ≠ 0) (hdet₂ : (-hessMat S x₂).det ≠ 0)
-    (hint : ∀ τ : ℝ, Integrable fun x => aFar x * cexp (τ * S x))
+    (hint : ∀ lam : ℕ, Integrable fun x => aFar x * cexp ((lam : ℝ) * S x))
     (hfar : (fun lam : ℕ => ∫ x, aFar x * cexp ((lam : ℝ) * S x)) =O[atTop]
       fun lam : ℕ => ((lam : ℝ) ^ (-((n : ℝ) / 2) - 1)))
     (θ : ℝ) (h₁ : S x₁ = I * θ) (h₂ : S x₂ = -(I * θ)) (c : ℂ) (m : ℝ) :
@@ -88,7 +88,7 @@ theorem weighted_two_points_eq57_local {S aLoc aFar : (Fin n → ℝ) → ℂ} {
     (hK : ∀ x ∈ tsupport aLoc, ((S x).re = 0 ∧ fderiv ℝ S x = 0) ↔ x ∈ ({x₁, x₂} : Finset _))
     (hKs₁ : x₁ ∈ tsupport aLoc) (hKs₂ : x₂ ∈ tsupport aLoc)
     (hdet₁ : (-hessMat S x₁).det ≠ 0) (hdet₂ : (-hessMat S x₂).det ≠ 0)
-    (hint : ∀ τ : ℝ, Integrable fun x => aFar x * cexp (τ * S x))
+    (hint : ∀ lam : ℕ, Integrable fun x => aFar x * cexp ((lam : ℝ) * S x))
     (hfar : (fun lam : ℕ => ∫ x, aFar x * cexp ((lam : ℝ) * S x)) =O[atTop]
       fun lam : ℕ => ((lam : ℝ) ^ (-((n : ℝ) / 2) - 1)))
     (θ : ℝ) (h₁ : S x₁ = I * θ) (h₂ : S x₂ = -(I * θ)) (c : ℂ) (m : ℝ)
@@ -154,7 +154,7 @@ theorem lorVertex_asymptotic_formula_local {n : ℕ} {j p : Fin 10 → ℝ} {g :
         x ∈ ({x₁, x₂} : Finset (Fin n → ℝ)))
     (hKs₁ : x₁ ∈ tsupport aLoc) (hKs₂ : x₂ ∈ tsupport aLoc)
     (hdet₁ : (-lorHessian j p g chart x₁).det ≠ 0) (hdet₂ : (-lorHessian j p g chart x₂).det ≠ 0)
-    (hint : ∀ τ : ℝ, Integrable fun x => aFar x * cexp (τ * lorChartAction j p g chart x))
+    (hint : ∀ lam : ℕ, Integrable fun x => aFar x * cexp ((lam : ℝ) * lorChartAction j p g chart x))
     (hfar : (fun lam : ℕ => ∫ x, aFar x * cexp ((lam : ℝ) * lorChartAction j p g chart x)) =O[atTop]
       fun lam : ℕ => ((lam : ℝ) ^ (-((n : ℝ) / 2) - 1)))
     (θ : ℝ) (h₁ : lorChartAction j p g chart x₁ = I * θ)

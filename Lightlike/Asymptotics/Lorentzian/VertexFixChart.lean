@@ -116,6 +116,63 @@ theorem lorChartAction_fixVertexChart_contDiffOn
 
 open Filter MeasureTheory Lightlike.Oscillatory in
 open _root_.Asymptotics in
+/-- **Hypothesis `VertexJointIntegrable`** (open fact about `lorVertex`, not proved): for every
+`λ ∈ ℕ` the outer integral of the vertex of the scaled data is measurable and the integrand is jointly
+integrable on `(ℂ³)⁴ × ℂ¹⁰` in the fixed charts. The vertex is defined as an iterated integral and the
+existing finiteness (`integrable_lorOuter`) is that of the complex inner integral, not of its modulus;
+BDFHP use the joint integral implicitly (Sec. 6.4 p. 30). Provable in Lean only with an estimate of
+`∏_e ∫ ‖g_e‖ dw` (a source for the finiteness of the EPRL vertex would be needed). -/
+def VertexJointIntegrable (j p : Fin 10 → ℝ) (g : BdryData) : Prop :=
+  ∀ lam : ℕ, AEStronglyMeasurable (fun x : Fin 4 → SL2C => ∫ w : Fin 10 → ℂ,
+      lorIntegrand (fun k => (lam : ℝ) * j k) (fun k => (lam : ℝ) * p k) g (Lightlike.Lorentz.gauge x) w)
+      (Measure.pi fun _ : Fin 4 => Lightlike.Lorentz.haarC) ∧
+    Integrable (fun q : (Fin 4 → (Fin 3 → ℂ)) × (Fin 10 → ℂ) =>
+      lorIntegrand (fun k => (lam : ℝ) * j k) (fun k => (lam : ℝ) * p k) g
+        (Lightlike.Lorentz.gauge (fun a => Lightlike.Lorentz.fixChart 0 (q.1 a))) q.2)
+
+open Filter MeasureTheory Lightlike.Oscillatory in
+open _root_.Asymptotics in
+/-- **Hypothesis `HessianInvertible`** (open fact, not proved): the Hessian of `-S` in the fixed charts
+is invertible at every point of `K`. BDFHP assume it ("non-degenerate boundary data", Sec. 6.4 p. 30,
+eq. (57); Sec. 7 p. 31: a geometric formula for the Hessian is missing; Appendix A pp. 32-33,
+eqs. (58)-(61)). Checked numerically on the regular simplex
+(`scripts/asymptotics/lorentzian_hessian_check.py`) and for the node blocks
+(`scripts/asymptotics/lorentzian_hessian_xx_certificate.py`). -/
+def HessianInvertible (j p : Fin 10 → ℝ) (g : BdryData)
+    (e : (Fin 44 → ℝ) ≃ᵐ ((Fin 4 → Fin 3 → ℂ) × (Fin 10 → ℂ))) (K : Finset (Fin 44 → ℝ)) : Prop :=
+  ∀ x ∈ K, (-lorHessian j p g (fixVertexChart e) x).det ≠ 0
+
+open Filter MeasureTheory Lightlike.Oscillatory in
+open _root_.Asymptotics in
+/-- **Hypothesis `FarRemainderBound`** (open fact, not proved; not in BDFHP): the remainder
+`(1 - χ) a e^{λ S}` is integrable for `λ ∈ ℕ` and its integral is `O(λ^{-23})`. Assumed only along the
+integer sequence the proof uses; the form for all real `τ` fails for `τ < 0` wherever an overlap
+vanishes. Needs `Re S ≤ -δ` on the support of `1 - χ` or an integrability estimate in the
+non-compact directions: a new estimate. -/
+def FarRemainderBound (j p : Fin 10 → ℝ) (g : BdryData)
+    (e : (Fin 44 → ℝ) ≃ᵐ ((Fin 4 → Fin 3 → ℂ) × (Fin 10 → ℂ))) (χ : (Fin 44 → ℝ) → ℝ) : Prop :=
+  (∀ lam : ℕ, Integrable fun x => (((1 - χ x : ℝ) : ℂ) * chartAmplitude e x) *
+      cexp ((lam : ℝ) * lorChartAction j p g (fixVertexChart e) x)) ∧
+    (fun lam : ℕ => ∫ x, (((1 - χ x : ℝ) : ℂ) * chartAmplitude e x) *
+        cexp ((lam : ℝ) * lorChartAction j p g (fixVertexChart e) x))
+      =O[atTop] fun lam : ℕ => ((lam : ℝ) ^ (-((44 : ℝ) / 2) - 1))
+
+open Filter MeasureTheory Lightlike.Oscillatory in
+open _root_.Asymptotics in
+/-- **Hypothesis `CriticalSetIs`** (the classification of the critical points, not proved outside
+SU(2)): the points of the support of the localised amplitude with `Re S = 0` and `dS = 0` are exactly
+`K`. BDFHP Sec. 5.4.3 p. 23 (two parity-related critical points for Lorentzian data, via the bivector
+reconstruction theorem of arXiv:0902.1170). -/
+def CriticalSetIs (j p : Fin 10 → ℝ) (g : BdryData)
+    (e : (Fin 44 → ℝ) ≃ᵐ ((Fin 4 → Fin 3 → ℂ) × (Fin 10 → ℂ))) (χ : (Fin 44 → ℝ) → ℝ)
+    (K : Finset (Fin 44 → ℝ)) : Prop :=
+  (∀ x ∈ tsupport (fun x => (χ x : ℂ) * chartAmplitude e x),
+      ((lorChartAction j p g (fixVertexChart e) x).re = 0 ∧
+        fderiv ℝ (lorChartAction j p g (fixVertexChart e)) x = 0) ↔ x ∈ K) ∧
+    ∀ x ∈ K, x ∈ tsupport (fun x => (χ x : ℂ) * chartAmplitude e x)
+
+open Filter MeasureTheory Lightlike.Oscillatory in
+open _root_.Asymptotics in
 /-- **The asymptotics of the scaled vertex in the fixed charts** (BDFHP eq. (53), (57) in the
 form of `lorVertex_asymptotics_local`): the vertex of the scaled data `(λ j, λ p)` with constants
 `cc λ` equals `w(λ) ∫_{ℝ⁴⁴} a(x) e^{λ S(x)} dx` with `w(λ) = (∏ cc λ) s⁻⁴` (`lorVertex_scaled_eq_chart_integral`)
@@ -123,10 +180,11 @@ and `a = ∏ Ω_e`; with the cutoff `a = χ a + (1 - χ) a`, `χ` smooth with co
 over the critical points `K` of `w(λ) e^{λ S(x₀)} (2π/λ)^{22} (det (-H(x₀)))^{-1/2} χ a (x₀)` approximates
 it up to `O(λ^{m - 23})`.
 
-**Named hypotheses (limits).** Joint integrability and measurability (`hjoint`, `hF`, for each `λ`);
-`hK` (the critical points with `Re S = 0` in the support are exactly `K`: the classification),
-`hdet` (the Hessian of `-S` is invertible), `hint` and `hfar` (the remainder `(1 - χ) a e^{λ S}` is
-integrable and `O(λ^{-23})`), and the weight bound `hw`. None is proved here. -/
+**Named hypotheses (limits)**, each a `Prop` with its own docstring: `VertexJointIntegrable`,
+`CriticalSetIs` (the classification), `HessianInvertible`, `FarRemainderBound`, and the weight bound
+`hw` (a condition on the data). None is proved here. The error exponent: the stationary phase in 44
+real dimensions gives the leading order `λ^{-22}`, the error one further power, times the order `λ^m`
+of the weight (`hw`). -/
 theorem lorVertex_asymptotics_fixChart
     (e : (Fin 44 → ℝ) ≃ᵐ ((Fin 4 → Fin 3 → ℂ) × (Fin 10 → ℂ))) (he : MeasurePreserving e volume volume)
     (hl : IsLinearMap ℝ e) {j p : Fin 10 → ℝ} (hj : ∀ k, 0 ≤ j k) {g : BdryData}
@@ -140,27 +198,13 @@ theorem lorVertex_asymptotics_fixChart
             ((fixVertexChart e x).2 k)) ∈ Complex.slitPlane)
     (χ : (Fin 44 → ℝ) → ℝ) (hχ : ContDiff ℝ ∞ χ) (hχc : HasCompactSupport χ) (hχU : tsupport χ ⊆ U)
     (hA : ContDiffOn ℝ ∞ (chartAmplitude e) U)
-    (K : Finset (Fin 44 → ℝ))
-    (hK : ∀ x ∈ tsupport (fun x => (χ x : ℂ) * chartAmplitude e x),
-      ((lorChartAction j p g (fixVertexChart e) x).re = 0 ∧
-        fderiv ℝ (lorChartAction j p g (fixVertexChart e)) x = 0) ↔ x ∈ K)
-    (hKs : ∀ x ∈ K, x ∈ tsupport (fun x => (χ x : ℂ) * chartAmplitude e x))
-    (hdet : ∀ x ∈ K, (-lorHessian j p g (fixVertexChart e) x).det ≠ 0)
-    (hint : ∀ τ : ℝ, Integrable fun x => (((1 - χ x : ℝ) : ℂ) * chartAmplitude e x) *
-      cexp (τ * lorChartAction j p g (fixVertexChart e) x))
-    (hfar : (fun lam : ℕ => ∫ x, (((1 - χ x : ℝ) : ℂ) * chartAmplitude e x) *
-        cexp ((lam : ℝ) * lorChartAction j p g (fixVertexChart e) x))
-      =O[atTop] fun lam : ℕ => ((lam : ℝ) ^ (-((44 : ℝ) / 2) - 1)))
+    (K : Finset (Fin 44 → ℝ)) (hK : CriticalSetIs j p g e χ K)
+    (hdet : HessianInvertible j p g e K) (hfarB : FarRemainderBound j p g e χ)
     (cc : ℕ → Fin 10 → ℂ) (m : ℝ)
     (hw : (fun lam : ℕ => (∏ k, cc lam k) *
         ((((((Measure.haarScalarFactor Lightlike.Lorentz.haarC SL2C.haar) ^ 4)⁻¹ : ℝ≥0) : ℝ)) : ℂ))
       =O[atTop] fun lam : ℕ => ((lam : ℝ) ^ m))
-    (hF : ∀ lam : ℕ, AEStronglyMeasurable (fun x : Fin 4 → SL2C => ∫ w : Fin 10 → ℂ,
-      lorIntegrand (fun k => (lam : ℝ) * j k) (fun k => (lam : ℝ) * p k) g (Lightlike.Lorentz.gauge x) w)
-      (Measure.pi fun _ : Fin 4 => Lightlike.Lorentz.haarC))
-    (hjoint : ∀ lam : ℕ, Integrable (fun q : (Fin 4 → (Fin 3 → ℂ)) × (Fin 10 → ℂ) =>
-      lorIntegrand (fun k => (lam : ℝ) * j k) (fun k => (lam : ℝ) * p k) g
-        (Lightlike.Lorentz.gauge (fun a => Lightlike.Lorentz.fixChart 0 (q.1 a))) q.2)) :
+    (hvertex : VertexJointIntegrable j p g) :
     (fun lam : ℕ => lorVertex (fun k => (lam : ℝ) * j k) (fun k => (lam : ℝ) * p k) (cc lam) g -
       ((∏ k, cc lam k) *
         ((((((Measure.haarScalarFactor Lightlike.Lorentz.haarC SL2C.haar) ^ 4)⁻¹ : ℝ≥0) : ℝ)) : ℂ)) *
@@ -204,7 +248,7 @@ theorem lorVertex_asymptotics_fixChart
     (fun x hx k h => (left_ne_zero_of_mul (hne x hx k)) (by rw [h]; simp))
     (fun x hx k h => (right_ne_zero_of_mul (hne x hx k)) (by rw [h]; simp))
     (fun x hx k => left_ne_zero_of_mul (hne x hx k))
-    (fun x hx k => right_ne_zero_of_mul (hne x hx k)) K hK hKs hdet hint hfar
+    (fun x hx k => right_ne_zero_of_mul (hne x hx k)) K hK.1 hK.2 hdet hfarB.1 hfarB.2
     (fun lam => (∏ k, cc lam k) *
         ((((((Measure.haarScalarFactor Lightlike.Lorentz.haarC SL2C.haar) ^ 4)⁻¹ : ℝ≥0) : ℝ)) : ℂ))
     m hw
@@ -218,7 +262,7 @@ theorem lorVertex_asymptotics_fixChart
     simp only [haLoc, haFar, hAdef]
     push_cast
     ring_nf
-  rw [lorVertex_scaled_eq_chart_integral e he j p (lam : ℝ) (cc lam) g (hF lam) (hjoint lam)]
+  rw [lorVertex_scaled_eq_chart_integral e he j p (lam : ℝ) (cc lam) g (hvertex lam).1 (hvertex lam).2]
   simp only [hsplit]
   simp only [haLoc, hSdef, hAdef]
   congr 2
