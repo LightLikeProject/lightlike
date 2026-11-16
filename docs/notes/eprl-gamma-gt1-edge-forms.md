@@ -65,3 +65,22 @@ About 225 lines in total for pieces 3–7; if the assembly alone passes 300 line
 * The positivity and closed value of `c₀`.
 * Whether the product of the two edge resolutions of the source and the single resolution here give the
   same integral term by term (they are both exact rewritings of one vertex; the comparison is not made).
+
+## Draft: tightened limits text for the catalogue entries
+
+Entry on the node and the vertex sum (`eprlCohNodeHigh_integral`, `eprlVertexHigh_coherent`):
+
+* *Proves.* For every spin, with the same `SU(2)` elements on both chiral halves, the coherent node
+  tensor of the lowest component is, at the projections of two components, `nodeSign` times the bridge
+  signs times a matrix entry of the Spin(4) average of the lifted rank-one tensor, and the vertex sum with
+  coherent boundary data is the `K₅` contraction of these node tensors.
+* *Does not prove.* A `Spin(4)⁵` integral of edge forms; a factorization into `SU(2)` node tensors (false
+  for this map: the image is a superposition); any comparison with the source's vertex equation, its
+  signs `(−1)^{χ'}` and `(−1)^{2j⁻}`, or its constant `d_{j⁺}²`; any asymptotic statement.
+
+Entry on the leg amplitude (`eprlMapLow_cohState`, `weight_of_equivariant`):
+
+* *Proves.* `(⟨n,M| ⊗ ⟨m,M'|) Y_low |k,g⟩ = (−1)^m c₀ ⟨M|g⟩^k ⟨M|J M'⟩^m` with `c₀ = Y_low[(0,m),0]`.
+* *Does not prove.* That `c₀ ≠ 0`, or its value `√((k+1)/(n+1))` (numerical evidence only); that the
+  `U(1)`-invariant integrand of the vertex follows from it (derived on paper, checked numerically, not
+  formalized); equality with the source's equation (19).
