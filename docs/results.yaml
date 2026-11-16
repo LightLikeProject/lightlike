@@ -1363,3 +1363,17 @@
   review: kernel-checked
   note: "For every level r ≥ 2 and all spins B, A, E, F with an admissible colour q on both sides, the norm of the lowest column of the q-6j matrix is 1 (QDougallAll r, the hypothesis of LL-0075 and, in each instance, the one that LL-0074 discharges). The lowest third colour and the lowest sixth colour are each one of four differences; the 16 pairs lie in the first or the third orbit of the permutations of the four spins (a case in the second or fourth orbit matches one of them as well); within an orbit the third colours run up to the triangle top or stop at the level cut-off 2(r-2), and each of those forms is one of the summation theorems of LL-0103 (Jackson's sum, or the partial sums of the series with fewer parameters when two factors vanish together). The case split is a finite one, by linear arithmetic (qDougallAll_proved, coverPair00 to coverPair33), without induction on the level; scripts/qracah/qd_coverage_check.py counts all 13662 cases at levels 2 to 12 as covered, as an independent check. Consequence: qOrthogonality_proved, the diagonal orthogonality of the model at every level r ≥ 2, without hypothesis. Not shown: the quantum Biedenharn–Elliott identity for r ≥ 4 (LL-0075), so the Turaev–Viro invariance of LL-0031 at level r is still conditional on it."
   since: unreleased
+- id: LL-0105
+  title: A configuration of the Lorentzian vertex action with maximal real part that is stationary along the group curves has closure of the normals at every node, so boundary data without closure have no critical configuration
+  area: Asymptotics
+  file: Lightlike/Asymptotics/Lorentzian/ClosureFromCritical.lean
+  decls: [Lightlike.Asymptotics.Lorentzian.critical_configuration_closure, Lightlike.Asymptotics.Lorentzian.no_critical_without_closure, Lightlike.Asymptotics.Lorentzian.aligned_of_re_lorAction_eq_zero, Lightlike.Asymptotics.Lorentzian.hasDerivAt_lorAction_aligned, Lightlike.Asymptotics.Lorentzian.exists_sl2_curve]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: bdfhp-2010, location: "Section 4.2.1, eqs. (18)-(20)", check: "real part"}
+      - {ref: bdfhp-2010, location: "eq. (25)", check: "stationary point"}
+  review: kernel-checked
+  note: "For positive spin parameters, unit boundary spinors, nonvanishing overlaps with products off the cut of the logarithm, Re S = 0 makes every edge aligned (Z_ab = lambda xi_ab, Z_ba = mu J xi_ba; triWeight_eq_one_iff), the derivative of the vertex action along X_a Y(t) with Y(0) = 1 and Y'(0) = genMat c is then the sum of the logarithmic derivatives of the ends at a for any scalings lambda, mu, and stationarity along every such curve (a Cayley curve exists for every c) gives sum_e n_e n_e-hat = 0 at every node. Hence no configuration with Re S = 0 that is stationary along the curves exists for boundary data whose normals do not close at some node. NOT PROVED: the suppression of the integral for such data (BDFHP eq. (56), sub-case without closure), which needs this statement in a chart for an action smooth only on an open set and the non-stationary phase bound; the converse (closure gives a critical configuration) and the case of data with closure that are not the boundary of a 4-simplex (the classification, a named hypothesis of the vertex formula)."
+  since: unreleased

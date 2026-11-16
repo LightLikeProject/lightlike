@@ -160,7 +160,11 @@ Wirtinger entries `zzWirtinger`) and `H^{Xz}` (`xzSource`, `xzTarget`) are prove
 and checked at non-critical configurations (`scripts/asymptotics/lorentzian_hessian_noncritical_check.py`).
 The mixed second derivatives along two different nodes or two different spinors vanish, and the
 `44 × 44` matrix `hessBlockMatrix` assembled from the blocks is symmetric [30]; its identification with the
-matrix of second derivatives in a chart is not proved.
+matrix of second derivatives in a chart is not proved. Conversely, at a configuration with `Re S = 0` every edge is aligned
+(`Z_ab = λ ξ_ab`, `Z_ba = μ J ξ_ba`), the first derivative along a curve `X_a Y(t)` is the sum of the logarithmic
+derivatives of the ends at `a`, and stationarity along every such curve gives the closure `Σ n_e n̂_e = 0` at each node:
+there is no critical configuration for boundary data without closure [31]. The suppression of the integral for such
+data (BDFHP eq. (56)) needs this in a chart and is not proved.
 
 ## Lean References
 
@@ -274,6 +278,12 @@ matrix of second derivatives in a chart is not proved.
     `Asymptotics.Lorentzian.hessXX_cross`, `Asymptotics.Lorentzian.nodeQuad`,
     `Asymptotics.Lorentzian.nodeBilin`, `Asymptotics.Lorentzian.hessBlockMatrix`,
     `Asymptotics.Lorentzian.hessBlockMatrix_symm`
+
+31. Lightlike/Asymptotics/Lorentzian/ClosureFromCritical.lean -
+    `Asymptotics.Lorentzian.hasDerivAt_lorAction_aligned`, `Asymptotics.Lorentzian.exists_sl2_curve`,
+    `Asymptotics.Lorentzian.aligned_of_re_lorAction_eq_zero`,
+    `Asymptotics.Lorentzian.critical_configuration_closure`,
+    `Asymptotics.Lorentzian.no_critical_without_closure`
 
 ## References
 

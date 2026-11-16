@@ -66,12 +66,12 @@ theorem hessZZ_cross (j p : Fin 10 → ℝ) (g : BdryData) (X : Fin 5 → SL2C) 
 zero"): for two different nodes `a ≠ b` the mixed second derivative of the vertex action along
 `X_a ↦ X_a Ya(s)` and `X_b ↦ X_b Yb(t)` (`Yb 0 = 1`, `Yb' = Yb L`) is `0`. The first variation in `t` at a
 fixed `s` involves only the ends at `b`, whose spinors do not depend on `s`. The hypothesis `hslit` is that the
-overlap products are off the cut at the moved configuration `X_a ↦ X_a Ya(s)`, for `s` near `0`. -/
+overlap products are off the cut at the moved configuration `X_a ↦ X_a Ya(s)`, for `s` near `0`.  The curve `Yb` is only assumed to have the entrywise derivative `Yb 0 · L` at `0`. -/
 theorem hessXX_cross {j p : Fin 10 → ℝ} {n : Fin 10 → ℕ} (hj : ∀ e, j e = (n e : ℝ) / 2)
     (g : BdryData) (X : Fin 5 → SL2C) (z : Fin 10 → Spinor) {a b : Fin 5} (hab : a ≠ b)
     (Ya Yb : ℝ → SL2C) (L : Matrix (Fin 2) (Fin 2) ℂ) (hYb0 : Yb 0 = 1)
-    (hYb : ∀ t i k, HasDerivAt (fun s => (Yb s : Matrix (Fin 2) (Fin 2) ℂ) i k)
-      (((Yb t : Matrix (Fin 2) (Fin 2) ℂ) * L) i k) t)
+    (hYb : ∀ i k, HasDerivAt (fun s => (Yb s : Matrix (Fin 2) (Fin 2) ℂ) i k)
+      (((Yb 0 : Matrix (Fin 2) (Fin 2) ℂ) * L) i k) 0)
     (hslit : ∀ᶠ s : ℝ in nhds 0, ∀ e, inner ℂ
         (spinAct ((Function.update X a (X a * Ya s) (edgeSrc e) : SL2C) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e))
         (firstCol (g e 0)) *
@@ -90,9 +90,9 @@ theorem hessXX_cross {j p : Fin 10 → ℝ} {n : Fin 10 → ℕ} (hj : ∀ e, j 
     with hZt
   have hX0 : ∀ s, Function.update (Xs s) b (X b * Yb 0) = Xs s := fun s => by
     rw [hYb0, mul_one]; exact Function.update_eq_self_iff.2 (hXsb s).symm
-  have hdZs : ∀ e s t, HasDerivAt (Zs e s) (if edgeSrc e = b then
-      spinAct Lᴴ (Zs e s t) else 0) t := by
-    intro e s t
+  have hdZs : ∀ e s, HasDerivAt (Zs e s) (if edgeSrc e = b then
+      spinAct Lᴴ (Zs e s 0) else 0) 0 := by
+    intro e s
     by_cases h : edgeSrc e = b
     · have hfun : Zs e s = fun u => spinAct (Yb u : Matrix (Fin 2) (Fin 2) ℂ)ᴴ
           (spinAct (X b : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)) := by
@@ -101,16 +101,16 @@ theorem hessXX_cross {j p : Fin 10 → ℝ} {n : Fin 10 → ℕ} (hj : ∀ e, j 
           Matrix.conjTranspose_mul, spinAct_mul]
       rw [hfun]
       simp only [h, ↓reduceIte]
-      exact hasDerivAt_orbit L Yb hYb _ t
+      exact hasDerivAt_orbit_pt L Yb 0 hYb _
     · have hfun : Zs e s = fun _ => spinAct ((Xs s (edgeSrc e) : SL2C) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e) := by
         funext u
         simp only [hZs, Function.update_of_ne h]
       rw [hfun]
       simp only [h, ↓reduceIte]
-      exact hasDerivAt_const t _
-  have hdZt : ∀ e s t, HasDerivAt (Zt e s) (if edgeTgt e = b then
-      spinAct Lᴴ (Zt e s t) else 0) t := by
-    intro e s t
+      exact hasDerivAt_const 0 _
+  have hdZt : ∀ e s, HasDerivAt (Zt e s) (if edgeTgt e = b then
+      spinAct Lᴴ (Zt e s 0) else 0) 0 := by
+    intro e s
     by_cases h : edgeTgt e = b
     · have hfun : Zt e s = fun u => spinAct (Yb u : Matrix (Fin 2) (Fin 2) ℂ)ᴴ
           (spinAct (X b : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e)) := by
@@ -119,13 +119,13 @@ theorem hessXX_cross {j p : Fin 10 → ℝ} {n : Fin 10 → ℕ} (hj : ∀ e, j 
           Matrix.conjTranspose_mul, spinAct_mul]
       rw [hfun]
       simp only [h, ↓reduceIte]
-      exact hasDerivAt_orbit L Yb hYb _ t
+      exact hasDerivAt_orbit_pt L Yb 0 hYb _
     · have hfun : Zt e s = fun _ => spinAct ((Xs s (edgeTgt e) : SL2C) : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e) := by
         funext u
         simp only [hZt, Function.update_of_ne h]
       rw [hfun]
       simp only [h, ↓reduceIte]
-      exact hasDerivAt_const t _
+      exact hasDerivAt_const 0 _
   set Ws : Fin 10 → ℝ → Spinor := fun e s =>
     if edgeSrc e = b then spinAct Lᴴ (Zs e s 0) else 0 with hWs
   set Wt : Fin 10 → ℝ → Spinor := fun e s =>
@@ -150,8 +150,8 @@ theorem hessXX_cross {j p : Fin 10 → ℝ} {n : Fin 10 → ℕ} (hj : ∀ e, j 
     have hz : Zs e s 0 ≠ 0 := fun h => h1 (by rw [h]; simp)
     have hz' : Zt e s 0 ≠ 0 := fun h => h2 (by rw [h]; simp)
     rw [hj e]
-    exact hasDerivAt_triAction_curve_at (n e) (p e) (Ws e s) (Wt e s) (by simpa [hWs] using hdZs e s 0)
-      (by simpa [hWt] using hdZt e s 0) hz hz' h1 h2 (by rw [hZ0s, hZ0t]; exact hpr)
+    exact hasDerivAt_triAction_curve_at (n e) (p e) (Ws e s) (Wt e s) (by simpa [hWs] using hdZs e s)
+      (by simpa [hWt] using hdZt e s) hz hz' h1 h2 (by rw [hZ0s, hZ0t]; exact hpr)
   set E : Fin 10 → ℂ := fun e =>
     (if edgeSrc e = b then srcCoeff (n e) (p e) (firstCol (g e 0))
       (spinAct (X b : Matrix (Fin 2) (Fin 2) ℂ)ᴴ (z e))
