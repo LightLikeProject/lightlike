@@ -13,7 +13,7 @@ add up to `2π` exactly when the geometry is flat there, and the **deficit angle
 boundary it is completed by the boundary term `Σ_{e ∈ ∂} ℓ_e (π - Σ_{t ∋ e} θ_t(e))`
 (Hartle–Sorkin, *Gen. Rel. Grav.* 13 (1981) 541). Both are written without the factor `1/(8πG)`.
 
-## Definitions
+## Main results
 
 Triangulations are `Lightlike.PR.Complex3 V` (tetrahedra as 4-element vertex sets, as for the
 Ponzano–Regge amplitude), and lengths are functions `ℓ : Finset V → ℝ` read on 2-element sets,
@@ -32,8 +32,6 @@ in the same way as the colourings of `PonzanoRegge/`.
 * `bdryTris K`: triangles in exactly one tetrahedron; `bdryEdges K`: edges of boundary triangles;
   `intEdges K`: the other edges. No manifold condition is imposed.
 * `reggeAction K ℓ = Σ_{e interior} ℓ_e δ_e + Σ_{e boundary} ℓ_e (π - Σ θ)`.
-
-## Main results
 
 * `dihedralAt_eq`: for `t = {p, q, r, s}` and `e = {p, q}` the angle is the length formula with
   this labelling, whatever labelling of `e` and `t \ e` is used.

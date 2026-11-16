@@ -34,60 +34,80 @@ moves), and for a gauge set that forces every triangle it is `1` at every consta
 move, when the four gauge triangles of the move are added [9]; for the 3-3 move, a set that forces the complex before the move and does not contain the moved triangle
 forces the complex after it if and only if the closure of the set under the tetrahedra that do not contain that
 triangle is already complete [10]; a 48-simplex 4-sphere gives a collapsible forcing gauge set that loses forcing under
-3-3 (numerical evidence only). The 2-4 move is open, and the sets that the inverse moves 4-2 and 5-1 transport can
-lose forcing (numerical evidence only). For gauge sets that do not force, the state sum at a finite
+3-3 (numerical evidence only). For the 2-4 move, a set that forces the complex before the move, together with
+one new triangle `{a, p, q}`, forces the complex after it if and only if the closure of the set under the tetrahedra other
+than the removed one is already complete [11]. The sets that the inverse moves 4-2 and 5-1 transport can lose forcing
+(numerical evidence only). For gauge sets that do not force, the state sum at a finite
 cutoff can depend on the gauge set (numerical evidence, a non-manifold complex and a closed 4-sphere
 triangulation), so independence for all gauge sets is not claimed. Removing the cutoff is not yet
 formalized. [TODO]
 
 The Barrett–Crane model {5} puts a simple representation `(j, j)` of Spin(4) on every triangle and
 the Barrett–Crane intertwiner `Σ_i ι_i ⊗ ι_i` on every tetrahedron. A representation `(n, m)`
-satisfies the simplicity constraint exactly when `n = m` [11]. The vertex amplitude is the sum of the
+satisfies the simplicity constraint exactly when `n = m` [12]. The vertex amplitude is the sum of the
 squares of the 15j symbols over the virtual spins of the five tetrahedra, so it is real and
-non-negative for all spins [11]. Baez and Christensen's Riemannian 10j symbol, where nonzero, is
+non-negative for all spins [12]. Baez and Christensen's Riemannian 10j symbol, where nonzero, is
 negative when the ten spins sum to a half-integer {6}, so the two sign conventions differ. The
 Baez–Christensen vertex `bcVertexBC` is `(-1)^(Σ_e j_e)` times ours, with `j_e` the doubled spins
-[11]: its absolute value is ours, it is non-negative when the spins sum to an integer and
-non-positive when they sum to a half-integer [11]. The vertex is 1 at spin 0, `1/(j + 1)²` on the
+[12]: its absolute value is ours, it is non-negative when the spins sum to an integer and
+non-positive when they sum to a half-integer [12]. The vertex is 1 at spin 0, `1/(j + 1)²` on the
 closed loop of spin `j/2`, which sums to an integer, and `1/(j + 1)` on the triangle of spin
-`j/2`, whose spins sum to `3j/2`; so at spin `1/2` the two conventions give `1/2` and `-1/2` [12].
+`j/2`, whose spins sum to `3j/2`; so at spin `1/2` the two conventions give `1/2` and `-1/2` [13].
 
 Whether the Ponzano–Regge cutoff can be removed is a cohomological question {7}. A flat `SU(2)`
 connection on a finite 2-complex, with the adjoint representation on `su(2) ≅ ℝ³`, has a twisted
 cochain complex whose differential `d1` obeys `d1 ∘ d0 = 0` exactly when the connection is flat
-and the boundary words are closed walks [13]. For a flat connection, `d1` is the differential of
-the holonomy map along the curves `exp(tΦ) g`, and it is onto exactly when `H² = 0` [14]. The
+and the boundary words are closed walks [14]. For a flat connection, `d1` is the differential of
+the holonomy map along the curves `exp(tΦ) g`, and it is onto exactly when `H² = 0` [15]. The
 2-sphere with the trivial connection has `d1` not onto, and the disc has it onto; for `SU(2)` the
-sphere has `H² ≠ 0` [15]. For Bing's house, summing over the two room spins first gives `1`, by the
-Racah sum rule (6) [16]. The sum is not absolutely convergent: the simple cutoff on all spins truncates the room sums, and at doubled cutoff `2` its partial sum is `37/12` [16]; it has no limit (numerical evidence only). With the delta function of `SU(2)` cut off at spin `N/2`, the
+sphere has `H² ≠ 0` [16]. For Bing's house, summing over the two room spins first gives `1`, by the
+Racah sum rule (6) [17]. The sum is not absolutely convergent: the simple cutoff on all spins truncates the room sums, and at doubled cutoff `2` its partial sum is `37/12` [17]; it has no limit (numerical evidence only). With the delta function of `SU(2)` cut off at spin `N/2`, the
 Ponzano–Regge sum is the Haar integral over the edge variables of the product of the cut-off delta
 functions of the face holonomies, and it expands into the labelled amplitudes over all face spins
-up to the cutoff [17]. One edge loop bounding one face gives `1` at every cutoff, while a face
-with empty boundary gives `Σ (n+1)²`, which grows without bound [17]. The characters are
+up to the cutoff [18]. One edge loop bounding one face gives `1` at every cutoff, while a face
+with empty boundary gives `Σ (n+1)²`, which grows without bound [18]. The characters are
 orthonormal for the Haar measure, and the integral of a product of characters is the trace of the
 projection onto the invariant vectors of the tensor product, which is the triangle indicator for
-three spins and the number of virtual spins for four [21]; with this the 2-sphere (two faces
+three spins and the number of virtual spins for four [22]; with this the 2-sphere (two faces
 glued along one loop) gives `Σ (n+1)²` at cutoff `N` as well, so the cutoff sum is constant
-on the disc (`H² = 0`) and unbounded on the sphere (`H² ≠ 0`) [18]. If the character
+on the disc (`H² = 0`) and unbounded on the sphere (`H² ≠ 0`) [19]. If the character
 expansion of the cutoff sum is absolutely summable the cutoff is removable, with the sum as limit
-[19]. That a vanishing `H²` gives this summability is stated as a hypothesis (`H2AbsSummable`)
+[20]. That a vanishing `H²` gives this summability is stated as a hypothesis (`H2AbsSummable`)
 and is not proved in general; it is proved for the disc and for a complex with two edges and two
-faces (`H² = 0` there) [20]. For three spins the projection onto the invariant vectors is a
+faces (`H² = 0` there) [21]. For three spins the projection onto the invariant vectors is a
 rank-one projector onto a unit vector for a triad and zero otherwise, and the character of `g h⁻¹`
 expands into products of matrix elements of `g` and of `h` coupled by the matrix of `w` (this
 removes the conjugate representation from the group integral of a tetrahedron, whose four vertex
-integrals are then such projectors) [22]. The tetrahedron integral equals `Z Z̄` for the tetrahedral
+integrals are then such projectors) [23]. The tetrahedron integral equals `Z Z̄` for the tetrahedral
 network `Z` of the four vertex vectors contracted along the six edges by `W`. The vertex vector
 is the 3j symbol up to a phase, and `Z` is the 6j symbol up to sign, so the tetrahedron integral is
-the square of the 6j symbol of the six edge spins [23]; it is 1 for spin 0, 1/36 for spin 1 on
-every edge, and 0 when a vertex is not a triad [24]. The cut-off sum over the six edge spins, with the
+the square of the 6j symbol of the six edge spins [24]; it is 1 for spin 0, 1/36 for spin 1 on
+every edge, and 0 when a vertex is not a triad [25]. The cut-off sum over the six edge spins, with the
 weights `Π (s + 1)`, has nonnegative terms, so it is monotone and has a limit exactly when it is
-bounded; at doubled cut-off `0` it is `1`, and at `2` it is at least `1 + 81/4` [25]. It is
+bounded; at doubled cut-off `0` it is `1`, and at `2` it is at least `1 + 81/4` [26]. It is
 unbounded, as for the 2-sphere: the single term with the doubled spins `(0, N, N, N, N, 0)` equals
-`(N+1)^2`, because the `6j` symbol with a zero spin is `±1/(N+1)` [25], so the sum has no limit
+`(N+1)^2`, because the `6j` symbol with a zero spin is `±1/(N+1)` [26], so the sum has no limit
 without the rescaling `M_Λ^{-v}` of Barrett and Naish-Guzman (§2.2). Existence as a distribution
 is a different statement and is not treated. Exact values for doubled cut-offs `0` to `3` (`1`, `29`,
 `2393/4`, `488337/100`) are numerical evidence only.
+
+Three different statements about the cut-off must be kept apart. (A) Existence as a distribution
+in the boundary data: Barrett and Naish-Guzman (§4.4) show that it holds exactly when the second
+twisted cohomology `H²` at the flat connections is trivial. Only the finite-dimensional step is
+proved here: `d1` is the differential of the holonomy map, so `H² = 0` exactly when every
+variation of the face holonomies is realised [15]. The measure-theoretic step is not. (B) The
+simple cut-off sum. For Bing's house, summing the room spins first gives `1`, while the simple
+cut-off with all spins `≤ 1` gives `37/12` [17] (§2.4 of the same paper: no interior vertex, so no
+rescaling, and the simple cut-off is not triangulation independent). The cut-off sum of the
+tetrahedron is at least `(N+1)^2` [26]; §2.2 of the paper notes that such sums can diverge and
+regularises with a rescaling per interior vertex. (C) What follows, for these two complexes: the
+value of the sum depends on the summation order or the regularisation, and the unrescaled cut-off
+sum of the tetrahedron has no limit. What does not follow, and is not claimed: that `H² ≠ 0` causes
+this; that `H² = 0` makes the cut-off removable (this is the hypothesis `H2AbsSummable`, proved
+only for the disc and a two-edge, two-face complex); that the rescaled limit of the tetrahedron
+sum diverges (the rescaling factor is not defined here); and that the simple cut-off sum of
+Bing's house is unbounded (the paper shows this numerically; here only the two values above are
+proved).
 
 ## Lean References
 
@@ -104,7 +124,7 @@ is a different statement and is not treated. Exact values for doubled cut-offs `
 6. Lightlike/SpinFoam/Tests.lean - `SpinFoam.amplitudeGF_move33_example`,
    `SpinFoam.amplitudeGF_move24_example`, `SpinFoam.amplitudeGF_move15_example`,
    `SpinFoam.amplitudeGF_move24_gauge_example`, `SpinFoam.amplitudeGF_move15_gauge_example`,
-   `SpinFoam.ampBad_breaks_move33`, `SpinFoam.forces_move15_example`, `SpinFoam.forces_move33_example`
+   `SpinFoam.ampBad_breaks_move33`, `SpinFoam.forces_move15_example`, `SpinFoam.forces_move33_example`, `SpinFoam.forces_move24_example`
 7. Lightlike/SpinFoam/GaugeIndependence.lean - `SpinFoam.amplitudeGF_eq_of_forces`,
    `SpinFoam.amplitudeGF_eq_of_isGauge_forces`
 8. Lightlike/SpinFoam/GaugeChain.lean - `SpinFoam.GFStep4`, `SpinFoam.GFStep4.isGauge`,
@@ -118,45 +138,48 @@ is a different statement and is not treated. Exact values for doubled cut-offs `
    `SpinFoam.Forcing33.forcing_dichotomy`, `SpinFoam.Forcing33.forces_sigma_of_common`,
    `SpinFoam.Forcing33.forces_tau_of_common`, `SpinFoam.Forcing33.forces_iff_forcesIn`,
    `SpinFoam.Forcing33.forces_move33_iff`
-11. Lightlike/SpinFoam/BarrettCrane.lean - `SpinFoam.BC.bcVertex`, `SpinFoam.BC.bcVertex_eq_sum`,
+11. Lightlike/SpinFoam/ForcingMove24.lean - `SpinFoam.Forcing24.local24`,
+   `SpinFoam.Forcing24.local24_control`, `SpinFoam.Forcing24.forcing_dichotomy24`,
+   `SpinFoam.Forcing24.forces24_of_common`, `SpinFoam.Forcing24.forces_move24_iff`
+12. Lightlike/SpinFoam/BarrettCrane.lean - `SpinFoam.BC.bcVertex`, `SpinFoam.BC.bcVertex_eq_sum`,
    `SpinFoam.BC.bcVertex_nonneg`, `SpinFoam.BC.simple_iff`, `SpinFoam.BC.bcVertexBC`,
    `SpinFoam.BC.abs_bcVertexBC`, `SpinFoam.BC.bcVertexBC_of_even`,
    `SpinFoam.BC.bcVertexBC_of_odd`, `SpinFoam.BC.bcVertexBC_nonneg_of_even`,
    `SpinFoam.BC.bcVertexBC_nonpos_of_odd`
-12. Lightlike/SpinFoam/BarrettCraneTests.lean - `SpinFoam.BC.Tests.bcVertex_zero`,
+13. Lightlike/SpinFoam/BarrettCraneTests.lean - `SpinFoam.BC.Tests.bcVertex_zero`,
    `SpinFoam.BC.Tests.bcVertex_cyc`, `SpinFoam.BC.Tests.bcVertex_triangle`,
    `SpinFoam.BC.Tests.bcVertexBC_cyc`, `SpinFoam.BC.Tests.bcVertexBC_triangle_one`,
    `SpinFoam.BC.Tests.bcVertexBC_triangle_ne`, `SpinFoam.BC.Tests.not_simple_half_zero`
-13. Lightlike/SpinFoam/TwistedCohomology.lean - `SpinFoam.Cell2`, `SpinFoam.d0`, `SpinFoam.d1`,
+14. Lightlike/SpinFoam/TwistedCohomology.lean - `SpinFoam.Cell2`, `SpinFoam.d0`, `SpinFoam.d1`,
     `SpinFoam.d1_comp_d0`, `SpinFoam.H2`, `SpinFoam.d1_surjective_iff`
-14. Lightlike/SpinFoam/TwistedCohomologySU2.lean - `SpinFoam.adRep`,
+15. Lightlike/SpinFoam/TwistedCohomologySU2.lean - `SpinFoam.adRep`,
     `SpinFoam.holonomy_hasDerivAt`, `SpinFoam.face_variation_iff`, `SpinFoam.h2_trivial_iff_face_variation`
-15. Lightlike/SpinFoam/TwistedCohomologyTests.lean - `SpinFoam.disc_d1_surjective`,
+16. Lightlike/SpinFoam/TwistedCohomologyTests.lean - `SpinFoam.disc_d1_surjective`,
     `SpinFoam.sphere_d1_not_surjective`, `SpinFoam.disc_nonflat_d1_comp_d0_ne`,
     `SpinFoam.sphere_su2_not_surjective`, `SpinFoam.sphere_su2_H2_nontrivial`
-16. Lightlike/SpinFoam/BingsHouse.lean - `SpinFoam.racah_sum`, `SpinFoam.bingIterated_eq_one`,
+17. Lightlike/SpinFoam/BingsHouse.lean - `SpinFoam.racah_sum`, `SpinFoam.bingIterated_eq_one`,
     `SpinFoam.bingCutoff`, `SpinFoam.bingCutoff_two`, `SpinFoam.bingCutoff_two_ne_iterated`
-17. Lightlike/SpinFoam/GroupIntegral.lean - `SpinFoam.spinChar`, `SpinFoam.truncDelta`,
+18. Lightlike/SpinFoam/GroupIntegral.lean - `SpinFoam.spinChar`, `SpinFoam.truncDelta`,
     `SpinFoam.integral_spinChar`, `SpinFoam.partitionN`, `SpinFoam.partitionN_eq_sum`,
     `SpinFoam.partitionN_loop`, `SpinFoam.partitionN_emptyFace`,
     `SpinFoam.partitionN_loop_ne_emptyFace`
-18. Lightlike/SpinFoam/HaarProducts.lean - `SpinFoam.matInt_spinMat_cross`,
+19. Lightlike/SpinFoam/HaarProducts.lean - `SpinFoam.matInt_spinMat_cross`,
     `SpinFoam.integral_spinChar_mul_star`, `SpinFoam.integral_prod_spinChar`,
     `SpinFoam.trace_avgP_single`, `SpinFoam.partitionN_sphere`,
     `SpinFoam.partitionN_loop_ne_sphere`
-19. Lightlike/SpinFoam/Removable.lean - `SpinFoam.Removable`, `SpinFoam.removable_loop`,
+20. Lightlike/SpinFoam/Removable.lean - `SpinFoam.Removable`, `SpinFoam.removable_loop`,
     `SpinFoam.not_removable_sphere`, `SpinFoam.not_removable_emptyFace`, `SpinFoam.coeff`,
     `SpinFoam.AbsSummable`, `SpinFoam.removable_of_absSummable`, `SpinFoam.H2AbsSummable`
     (hypothesis, not proved), `SpinFoam.h2AbsSummable_sphere_iff`
-20. Lightlike/SpinFoam/TwoFace.lean - `SpinFoam.twoFaceCx`, `SpinFoam.integral_haarE_two`,
+21. Lightlike/SpinFoam/TwoFace.lean - `SpinFoam.twoFaceCx`, `SpinFoam.integral_haarE_two`,
     `SpinFoam.coeff_twoFace`, `SpinFoam.absSummable_twoFace`, `SpinFoam.partitionN_twoFace`,
     `SpinFoam.removable_twoFace`, `SpinFoam.twoFace_H2_trivial`, `SpinFoam.twoFace_premise`,
     `SpinFoam.h2AbsSummable_twoFace`
-21. Lightlike/SpinFoam/IntertwinerCount.lean - `SpinFoam.spinChar_real`,
+22. Lightlike/SpinFoam/IntertwinerCount.lean - `SpinFoam.spinChar_real`,
     `SpinFoam.spinChar_mul_eq_sum`, `SpinFoam.integral_spinChar_mul`,
     `SpinFoam.integral_spinChar_three`, `SpinFoam.integral_spinChar_four`,
     `SpinFoam.trace_avgP_three`, `SpinFoam.trace_avgP_four`
-22. Lightlike/SpinFoam/Tetrahedron.lean - `SpinFoam.eq_zero_of_trace_zero`,
+23. Lightlike/SpinFoam/Tetrahedron.lean - `SpinFoam.eq_zero_of_trace_zero`,
     `SpinFoam.exists_vecMulVec_of_trace_one`, `SpinFoam.wM`, `SpinFoam.Wm`,
     `SpinFoam.map_star_su2`, `SpinFoam.spinMat_map_star`, `SpinFoam.star_spinMat_eq`,
     `SpinFoam.YI`, `SpinFoam.spinChar_mul_inv_expand`, `SpinFoam.avgP_three_rank_one`,
@@ -164,16 +187,16 @@ is a different statement and is not treated. Exact values for doubled cut-offs `
     `SpinFoam.rhoN_entry`, `SpinFoam.tetra_term`, `SpinFoam.uV`, `SpinFoam.avgP_eq_uV`,
     `SpinFoam.aa`, `SpinFoam.Zt`, `SpinFoam.cc_eq`, `SpinFoam.continuous_tetra_term`,
     `SpinFoam.tetraInt_eq`
-23. Lightlike/SpinFoam/TetrahedronSixJ.lean - `SpinFoam.Wm_eq_rev`, `SpinFoam.Smat`,
+24. Lightlike/SpinFoam/TetrahedronSixJ.lean - `SpinFoam.Wm_eq_rev`, `SpinFoam.Smat`,
     `SpinFoam.svec`, `SpinFoam.svec_invariant`, `SpinFoam.svec_norm`, `SpinFoam.tV`,
     `SpinFoam.svec_eq`, `SpinFoam.eq_phase_of_rank_one`, `SpinFoam.uV_eq_phase_tV`,
     `SpinFoam.yOf`, `SpinFoam.sum_yOf`, `SpinFoam.pr`, `SpinFoam.ZR`,
     `SpinFoam.Zt_eq_phase_ZR`, `SpinFoam.kap`, `SpinFoam.epsS`, `SpinFoam.sixJTerm_kap`,
     `SpinFoam.sum_sixJTerm_kap`, `SpinFoam.ZR_eq`, `SpinFoam.tetraInt_eq_sixJ_sq`
-24. Lightlike/SpinFoam/TetrahedronTests.lean - `SpinFoam.Tests.sixJ_all_two`,
+25. Lightlike/SpinFoam/TetrahedronTests.lean - `SpinFoam.Tests.sixJ_all_two`,
     `SpinFoam.Tests.tetraInt_zero`, `SpinFoam.Tests.tetraInt_two`,
     `SpinFoam.Tests.tetraInt_eq_zero_of_not_tri`, `SpinFoam.Tests.tetraInt_ones_vertex`
-25. Lightlike/SpinFoam/TetrahedronCutoff.lean - `SpinFoam.tetraTerm`, `SpinFoam.tetraPartition`,
+26. Lightlike/SpinFoam/TetrahedronCutoff.lean - `SpinFoam.tetraTerm`, `SpinFoam.tetraPartition`,
     `SpinFoam.tetraTerm_eq`, `SpinFoam.tetraPartition_mono`, `SpinFoam.tetraPartition_zero`,
     `SpinFoam.tetraRemovable_iff_bddAbove`, `SpinFoam.tetraTerm_zeroSpin`,
     `SpinFoam.tetraPartition_ge`, `SpinFoam.tetraPartition_unbounded`,

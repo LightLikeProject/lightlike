@@ -9,7 +9,7 @@ For a Lorentzian 4-simplex with triangle areas `A_t` and Sorkin's complex dihedr
 variation of the ten signed squared edge lengths. Sorkin (1975) used it to derive the Lorentzian
 Regge equations, as `Lightlike/Regge/Lorentzian/ReggeEquations.lean` does here.
 
-## Method
+## Implementation notes
 
 The proof follows the Euclidean one (`Lightlike/Regge/D4/Schlaefli.lean`) with signed squared lengths. At
 the triangle `pqr` with opposite vertices `s, u`, write `M = mixedL`, `G_s = gram3L(pqrs)`,

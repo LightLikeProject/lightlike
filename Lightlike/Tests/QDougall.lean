@@ -1,4 +1,5 @@
 import Lightlike.TuraevViro.Reflect.OrthConditional
+import Lightlike.TuraevViro.Reflect.SixJSingle
 
 /-!
 # Non-vacuity of the boundary evaluation `QDougall`
@@ -6,7 +7,8 @@ import Lightlike.TuraevViro.Reflect.OrthConditional
 The conditional results `sixj_norm_one` and `qOrthogonality_of` assume `QDougall` and `QDougallAll`.
 These checks show the hypotheses are satisfiable: `QDougall` at level `2` (all spins `0`) and at
 level `3` (spins `1, 1, 1, 1`, where the sum is `(-1)² = 1`), `QDougallAll` at level `2`, and a
-control where the evaluation fails (an inadmissible colour). Not a proof of `QDougall` in general.
+control where the evaluation fails (an inadmissible colour). It also checks that the hypotheses
+of `Sj_single` (the one-term form of the sum at the lowest sixth colour) hold at level `3`. Not a proof of `QDougall` in general.
 -/
 
 namespace Lightlike.TV.Refl
@@ -89,3 +91,12 @@ theorem qDougall_three : QDougall 3 1 1 1 1 0 0 0 := by
 theorem not_qDougall_three_bad : ¬ QDougall 3 1 1 1 1 0 0 2 := by
   unfold QDougall jOmega Sj SR qRacahTerm qDelta
   norm_num [qnum_three_one, qnum_three_two, qfact_three_one, qfact_three_two, qfact_three_three, qfact_zero', invQFact, Finset.sum_range_succ, qnum_three_three]
+
+/-- Non-vacuity of `Sj_single`: at spins `(1, 1, 1, 1)`, sixth colour `0 = j₁ - j₅` and third colour
+`0`, the hypotheses hold and the sum is a single term. -/
+theorem Sj_single_three :
+    ∃ z0 : ℕ, Sj 3 1 1 1 1 0 (0 : ℤ) =
+      qRacahTerm 3 (((1 : ℤ) + 1 + 0) / 2) (((1 : ℤ) + 1 + 0) / 2) (((1 : ℤ) + 1 + 0) / 2)
+        (((1 : ℤ) + 1 + 0) / 2) (((1 : ℤ) + 1 + 1 + 1) / 2) ((0 + 1 + 1 + 0) / 2)
+        ((0 + 1 + 0 + 1) / 2) z0 :=
+  Sj_single 3 1 1 1 1 0 0 (by norm_num) (by norm_num) (by norm_num) (Or.inl (by norm_num))

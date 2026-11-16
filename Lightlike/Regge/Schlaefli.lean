@@ -8,7 +8,7 @@ identity** says `Σ_e ℓ_e dθ_e = 0` for every variation of the lengths. Equiv
 tetrahedron's Regge action `Σ_e ℓ_e (π - θ_e)` has gradient `π - θ_e`, the exterior dihedral
 angles. This is the lemma behind Regge's equations of motion.
 
-## Method
+## Implementation notes
 
 Everything is reduced to polynomials in the edge lengths. For the edge `pq` of the tetrahedron
 `pqrs`, with `H_F = 16 · area(F)²` (`heron`) for the two faces `F = pqr, pqs` at the edge:

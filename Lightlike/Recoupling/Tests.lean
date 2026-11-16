@@ -24,14 +24,9 @@ virtual spin `k ∈ {0, 1}` (doubled `0, 2`).
 The magnitudes `1/2` and `√3/2` are the standard singlet/triplet recoupling of four spins 1/2;
 the signs follow from the Condon–Shortley 3j phases and are those found by SymPy.
 
-Wrong inputs:
-
-- without the factor `√(2k + 1)` (the bare 4jm symbol) the `k = 1` intertwiner has norm squared
-  `1/3`, not `1` (`fourJ_unnormalised_fails`);
-- the change-of-channel formula without the phase `(-1)^(j₂+j₃+k+l)` gives `-1/2` instead of the
-  true overlap `1/2` (`fourRecoupling_without_phase_fails`);
-- an inadmissible virtual spin (`k = 2 > ½ + ½`) gives the zero tensor
-  (`fourJ_inadmissible_zero`).
+Wrong inputs: the bare 4jm symbol, without `√(2k + 1)` (`fourJ_unnormalised_fails`); the change of
+channel without its phase (`fourRecoupling_without_phase_fails`); an inadmissible virtual spin
+(`fourJ_inadmissible_zero`).
 
 ## The 15j symbol and the 4-simplex (`FifteenJ.lean`)
 
@@ -45,21 +40,11 @@ Wrong inputs:
 | `{15j}` with `a = (1,½,1,½,1)`, `b = (½,1,½,1,½)`, `c = (½,½,½,½,½)`: all fifteen spins nonzero | `-7/432` | `fifteenJ_all_nonzero` |
 | contraction with all triangle spins `½` and all virtual spins `1`, `9√3 · (-7/432)` | `-7√3/48` | `fifteenJSimplex_all_nonzero` |
 
-The last line is an instance of the identity between the 4-simplex contraction and the 15j symbol
-of the first kind, proven in general as `Lightlike.Recoupling.fifteenJSimplex_eq`; here both sides are
-evaluated independently (the contraction from its definition, the 15j symbol through the zero-spin
-reduction), so it also checks that theorem against explicit values.
-
-The values with a zero row reduce the sum over `x` to one term. In `fifteenJ_all_nonzero` no spin
-is zero and two terms contribute: `2 · (1/6)⁵ = 1/3888` at `x = ½` and `4 · (-1/3)⁵ = -4/243` at
-`x = 3/2`, with the 6j symbols `{1 ½ ½; 1 ½ ½} = {½ 1 ½; ½ 1 ½} = 1/6` and
-`{1 ½ 3/2; 1 ½ ½} = {½ 1 3/2; ½ 1 ½} = -1/3` evaluated from Physlib's definition.
-`scripts/recoupling/fifteenj_check.py` evaluates the 4-simplex contraction at the same spins
-exactly, from SymPy's 3j symbols and without the 6j formula, and finds `-7√3/48`.
-
-Wrong input: the 15j sum with an untwisted closure `(a₅, b₅) = (a₀, b₀)` (the wrong graph) gives
-`0` instead of `1/4` (`fifteenJ_untwisted_fails`), and `0` instead of `-7/432` at the spins of
-`fifteenJ_all_nonzero` (`fifteenJ_all_nonzero_untwisted_fails`).
+The last row checks the general identity `Lightlike.Recoupling.fifteenJSimplex_eq` against
+explicit values, both sides evaluated independently. `scripts/recoupling/fifteenj_check.py` finds
+`-7√3/48` for the contraction from SymPy's 3j symbols, without the 6j formula. Wrong input: the
+untwisted closure `(a₅, b₅) = (a₀, b₀)` gives `0` (`fifteenJ_untwisted_fails`,
+`fifteenJ_all_nonzero_untwisted_fails`).
 
 ## Orthogonality of the 15j symbols (`Orthogonality.lean`)
 
@@ -75,15 +60,11 @@ conditions can hold); evaluated directly, the sum has the single term `(1/4)² =
 | `Σ_{m₁m₂} (½ ½ J; m₁ m₂ 0)(½ ½ J'; m₁ m₂ 0)` for `(J, J') = (1,1), (1,0), (0,0)` | `1/3, 0, 1` | `threeJ_orth_direct`, `threeJ_orth_predicts` |
 | `Σ_x (2x+1)(2q+1) {1 ½ x; 1 ½ q}{1 ½ x; 1 ½ r}` for `q, r ∈ {½, 3/2}` | `δ_{qr}` | `sixJ_orth_direct`, `sixJ_orth_predicts` |
 
-Each sum is evaluated twice: from explicit symbols (`…_direct`; the 3j values
-`(½ ½ 1; ±½ ∓½ 0) = 1/√6`, `(½ ½ 0; ±½ ∓½ 0) = ±1/√2` and the 6j values `1/6`, `-1/3`, `-1/3`,
-`-1/12`, all from Physlib's definitions) and from the general theorem (`…_predicts`, which also
-shows that its admissibility conditions can hold). `scripts/recoupling/intertwiner_check.py`
-finds the same values with SymPy.
-
-Wrong inputs: with the absolute values of the 3j symbols (no Condon–Shortley signs) the singlet and
-the triplet are not orthogonal (`threeJ_orth_unsigned_fails`); without the weight `2x + 1` the 6j
-sum at `q = r = ½` is `5/18`, not `1` (`sixJ_orth_unweighted_fails`).
+Each sum is evaluated from explicit symbols (`…_direct`) and from the general theorem
+(`…_predicts`, which also shows that its conditions can hold);
+`scripts/recoupling/intertwiner_check.py` finds the same values with SymPy. Wrong inputs: 3j
+symbols without the Condon–Shortley signs (`threeJ_orth_unsigned_fails`) and the 6j sum without
+the weight `2x + 1` (`sixJ_orth_unweighted_fails`).
 
 ## References
 

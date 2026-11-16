@@ -196,7 +196,10 @@ def is_test_file(rel: str) -> bool:
 
 def check_test_coverage(root: pathlib.Path = ROOT) -> list[str]:
     """Warnings: declarations of results in docs/results.yaml mentioned by no test file.
-    Matching is by the last component of the name, as a whole word, in comment-stripped code."""
+    Matching is by the last component of the name, as a whole word, in comment-stripped code, bare
+    or qualified by a suffix of its namespace (`C.name`, `B.C.name` for `A.B.C.name`). A use after
+    any other dot, as in dot notation `h.name`, is not counted: a regex cannot tell it from an
+    unrelated declaration with the same last component."""
     registry = root / "docs" / "results.yaml"
     names = [n.strip() for line in re.findall(r"^\s*decls:\s*\[([^\]]*)\]",
                                               registry.read_text(encoding="utf-8"), re.M)
@@ -207,8 +210,10 @@ def check_test_coverage(root: pathlib.Path = ROOT) -> list[str]:
     warns, total = [], 0
     for name in names:
         total += 1
-        short = re.escape(name.split(".")[-1])
-        if not any(re.search(rf"(?<![\w.']){short}(?![\w']|\.)", c) for c in tests.values()):
+        parts = name.split(".")
+        quals = "|".join(re.escape(".".join(parts[i:-1])) + r"\." for i in range(len(parts) - 1))
+        word = (f"(?:{quals})?" if quals else "") + re.escape(parts[-1])
+        if not any(re.search(rf"(?<![\w.']){word}(?![\w']|\.)", c) for c in tests.values()):
             warns.append(name)
     print(f"[test coverage] {total} result declarations, {len(warns)} mentioned by no test file")
     return warns

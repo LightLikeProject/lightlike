@@ -15,7 +15,7 @@ the triangle (Regge 1961), completed for a triangulation with boundary by the te
 Triangulations are the 4-complexes `Lightlike.FourD.Complex4 V` of `FourD/` (4-simplices as 5-element
 vertex sets); lengths are functions `ℓ : Finset V → ℝ` read on 2-element sets, as in 3D.
 
-## Definitions
+## Main results
 
 * `angleAvg4 F ℓ σ t`: an angle formula `F ℓ p q r s u` (triangle `pqr`, opposite vertices `s, u`)
   applied to the 4-simplex `σ` at its triangle `t`, averaged over the `12` labellings, so that no
@@ -28,8 +28,6 @@ vertex sets); lengths are functions `ℓ : Finset V → ℝ` read on 2-element s
 * `area4 ℓ t = √(triH ℓ t) / 4`, by Heron's formula (`Lightlike.Regge.triH`, sixteen times the squared
   area, without a labelling).
 * `reggeAction4 K ℓ = Σ_{t interior} A_t δ_t + Σ_{t boundary} A_t ψ_t`.
-
-## Main results
 
 * `angleAvg4_eq`, `dihedralAt4_eq`: for a symmetric formula the average is the formula in any
   labelling.

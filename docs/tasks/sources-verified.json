@@ -415,6 +415,11 @@
   "via": "arXiv API",
   "fetched_title": "The Ponzano-Regge model",
   "locations": {
+   "§2.2": {
+    "verified": true,
+    "snippet": "2.2 The partition function The partition function, or state sum, is obtained by summing over all values of the variables, subject to fixed values on the boundary. X",
+    "why": null
+   },
    "§2.2.1": {
     "verified": true,
     "snippet": "2.2.1 Pachner moves Any two triangulations of a 3-manifold can be related by a sequences of local moves on the triangulation known as Pachner moves. Therefore a strategy for proving triangulation independence is to sh",
@@ -436,8 +441,8 @@
     "why": null
    }
   },
-  "citations": 154,
-  "citations_via": "OpenAlex"
+  "citations": 169,
+  "citations_via": "Semantic Scholar"
  },
  "barrett-westbury-1996": {
   "checked": "2026-11-07",
@@ -562,6 +567,21 @@
    "Section 4, eq. (17)": {
     "verified": true,
     "snippet": "4 This integral can now be computed directly, the result being r p 2k dk k2 + p2",
+    "why": null
+   },
+   "Section 4.2.1, eqs. (18)-(20)": {
+    "verified": true,
+    "snippet": "4.2.1 Condition on the real part of the action The real part of the action X |hZab , ξab i|2 |hJξba , Zba i|2 Re S = kab",
+    "why": null
+   },
+   "eq. (21)": {
+    "verified": true,
+    "snippet": "(21) k Zba k 17 Finally, we consider stationarity with respect to the group variables. The right variation of an arbitrary SL(2, C) element X and its Hermitian conjugate are given by δX = XL, and δX † = L† X † , (22) whe",
+    "why": null
+   },
+   "eq. (25)": {
+    "verified": true,
+    "snippet": "(25) b:b6=a 7 The variation with respect to the variable Xa performed here corresponds to a vertex which is the source of all its edges. The variation for a vertex which is the target of some, or all, of its edges will r",
     "why": null
    },
    "eq. (53)": {
