@@ -3,12 +3,12 @@ import Lightlike.PL.Chain
 /-!
 # Simple polygonal chains and the polygons they close up
 
-Statements only for now (`sorry`; not imported). A polygonal chain is a list of points. It is
+A polygonal chain is a list of points. It is
 **simple** when each segment meets the union of the following segments only at its endpoint
 shared with the next segment. This recursive description makes gluing and reversing chains
 manageable; a closed simple chain is a simple polygon in the sense of `Polygon.IsSimple`.
 
-## Plan
+## Main results
 
 * `chainSet`, `IsSimpleChain`: recursive definitions.
 * `isSimpleChain_append`: chains that meet only at the shared endpoint glue to a simple chain.
