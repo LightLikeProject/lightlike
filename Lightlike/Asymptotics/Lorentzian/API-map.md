@@ -136,6 +136,31 @@ the constants of eq. (57)), none of which is proved here [22]; these hypotheses 
 model phase with two nondegenerate critical points shows [23]. The Hessian at the SU(2) critical
 point of the regular simplex is numerically nondegenerate, with margin about 0.15 in the Fubini–Study
 frame (`scripts/asymptotics/lorentzian_hessian_check.py`).
+The oscillation frequency of eq. (53), `γ Σ k Θ` with the dihedral boost angles of a symmetric Lorentzian
+4-simplex (four spins on one tetrahedron, six others; the type 4-1 signs), reproduces to the published
+digits the four frequencies fitted to the numerical amplitude of Donà–Fanizza–Sarno–Speziale
+(`scripts/asymptotics/lorentzian_regge_frequency_check.py`); this is a numerical check of the
+statement, not a proof.
+For a configuration satisfying the z-eliminated critical equations (20), (21), the spinors
+`z_e = (X_a†)⁻¹ ξ_ab` give `Z_ab = ξ_ab` and `Z_ba = r c J ξ_ba`, and the real part of the action
+attains its maximum `0` there [24]. On such an edge the derivative of the triangle factor along a
+variation `δz` (which moves both spinors at once) vanishes by (21) alone, and the group variations
+sum to zero by closure at each node [25]; the passage from these line derivatives to the gradient of
+the chart action is not made. The derivative of `triAction` itself along a curve is the same
+expression where the product of the overlaps is off the cut of the logarithm [26]. Along any curve through a critical configuration with
+the critical spinors, the derivative of `lorAction` is zero when closure holds at every node [27];
+the curves are given by their entrywise derivative `X₀ · genMat c`, and the Fréchet derivative of
+`lorChartAction` is not identified here. The second derivative along a one-parameter subgroup of one
+node, with the other elements and the spinors fixed, is the sum over the ends at the node of the end
+formula `endForm` [29] [28]: the block `H^{X_a X_a}` of BDFHP Appendix A, equal to a quarter of eq. (61)
+at source ends (the printed blocks correspond to the generators `iσ`, `σ`) and different from (61) at
+target ends, where the sign of the parameter `p` and a term `m·(α×β)` appear; checked against the
+independent `44 × 44` numerics to `2·10⁻¹⁹` (`scripts/asymptotics/lorentzian_hessian_node_check.py`). The blocks `H^{zz}` (in the
+Wirtinger entries `zzWirtinger`) and `H^{Xz}` (`xzSource`, `xzTarget`) are proved without criticality [29]
+and checked at non-critical configurations (`scripts/asymptotics/lorentzian_hessian_noncritical_check.py`).
+The mixed second derivatives along two different nodes or two different spinors vanish, and the
+`44 × 44` matrix `hessBlockMatrix` assembled from the blocks is symmetric [30]; its identification with the
+matrix of second derivatives in a chart is not proved.
 
 ## Lean References
 
@@ -219,6 +244,36 @@ frame (`scripts/asymptotics/lorentzian_hessian_check.py`).
     `Asymptotics.Lorentzian.lorAction_smul`, `Asymptotics.Lorentzian.lorVertex_asymptotic_formula`
 23. Lightlike/Asymptotics/Lorentzian/ExpPhaseTwoPoints.lean - `Asymptotics.Lorentzian.toyAction`,
     `Asymptotics.Lorentzian.toy_two_points`
+24. Lightlike/Asymptotics/Lorentzian/CriticalSpinors.lean - `Asymptotics.Lorentzian.critZ`,
+    `Asymptotics.Lorentzian.critZ_src`, `Asymptotics.Lorentzian.critZ_tgt`,
+    `Asymptotics.Lorentzian.re_lorAction_critZ`
+25. Lightlike/Asymptotics/Lorentzian/ZStationary.lean - `Asymptotics.Lorentzian.hasDerivAt_triFactor_joint`,
+    `Asymptotics.Lorentzian.hasDerivAt_triFactor_curve`, `Asymptotics.Lorentzian.zedge_cancel`,
+    `Asymptotics.Lorentzian.edge_variation`,
+    `Asymptotics.Lorentzian.sum_logDeriv_nodes`
+26. Lightlike/Asymptotics/Lorentzian/TriActionDeriv.lean - `Asymptotics.Lorentzian.exp_triAction_eq_triFactor`,
+    `Asymptotics.Lorentzian.differentiableAt_triAction`,
+    `Asymptotics.Lorentzian.hasDerivAt_triAction_curve`
+27. Lightlike/Asymptotics/Lorentzian/CriticalGradient.lean - `Asymptotics.Lorentzian.genMat`,
+    `Asymptotics.Lorentzian.hasDerivAt_spinAct`,
+    `Asymptotics.Lorentzian.hasDerivAt_lorAction_critical`, `Asymptotics.Lorentzian.hcl_of_closure`
+28. Lightlike/Asymptotics/Lorentzian/SpinorPauli.lean - `Asymptotics.Lorentzian.inner_genMat`,
+    `Asymptotics.Lorentzian.inner_genMat_genMat`, `Asymptotics.Lorentzian.srcValue_eval`,
+    `Asymptotics.Lorentzian.projForm`, `Asymptotics.Lorentzian.tripleForm`
+29. Lightlike/Asymptotics/Lorentzian/HessianNode.lean - `Asymptotics.Lorentzian.srcCoeff`,
+    `Asymptotics.Lorentzian.tgtCoeff`, `Asymptotics.Lorentzian.endForm`,
+    `Asymptotics.Lorentzian.hasDerivAt_srcCoeff`, `Asymptotics.Lorentzian.hasDerivAt_tgtCoeff`,
+    `Asymptotics.Lorentzian.hessXX_block`, `Asymptotics.Lorentzian.sum_projForm_pos_iff`,
+    `Asymptotics.Lorentzian.re_hessRR_neg`, `Asymptotics.Lorentzian.hessZZ_line`,
+    `Asymptotics.Lorentzian.deriv_deriv_triAction_line`, `Asymptotics.Lorentzian.zzWirtinger`,
+    `Asymptotics.Lorentzian.hessZZ_block`, `Asymptotics.Lorentzian.hessXZ_block`,
+    `Asymptotics.Lorentzian.xzSource`, `Asymptotics.Lorentzian.xzTarget`,
+    `Asymptotics.Lorentzian.hasDerivAt_srcCoeff_gen`, `Asymptotics.Lorentzian.hessXX_curve`,
+    `Asymptotics.Lorentzian.srcCoeff_adj_gen`, `Asymptotics.Lorentzian.tgtCoeff_adj_gen`
+30. Lightlike/Asymptotics/Lorentzian/HessianAssembly.lean - `Asymptotics.Lorentzian.hessZZ_cross`,
+    `Asymptotics.Lorentzian.hessXX_cross`, `Asymptotics.Lorentzian.nodeQuad`,
+    `Asymptotics.Lorentzian.nodeBilin`, `Asymptotics.Lorentzian.hessBlockMatrix`,
+    `Asymptotics.Lorentzian.hessBlockMatrix_symm`
 
 ## References
 
