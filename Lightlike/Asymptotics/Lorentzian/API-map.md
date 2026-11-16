@@ -68,7 +68,8 @@ times the sum over the critical points, with error `O(λ^{m-n/2-1})` [8]. The re
 hypothesis, not proved, and it holds trivially for a zero remainder [8]. The global smoothness of the
 action in these statements cannot hold for the Lorentzian action (logarithms of the overlaps and
 norms): the local version needs smoothness only on an open set containing the support of the
-localised amplitude, by a smooth cutoff of the action [24].
+localised amplitude, by a smooth cutoff of the action [24]. The action of a smooth chart is smooth on every open set where,
+on each edge, the product of the overlaps is off the cut of the logarithm [25].
 
 The vertex action `lorAction` is the sum of the triangle actions over the ten edges at the spinors
 `X†z` [9]. Its real part is at most zero where the spinors and overlaps are nonzero [9]. In a chart
@@ -225,6 +226,8 @@ frame (`scripts/asymptotics/lorentzian_hessian_check.py`).
 24. Lightlike/Asymptotics/Lorentzian/VertexLocal.lean - `Asymptotics.Lorentzian.exists_smooth_extension`,
     `Asymptotics.Lorentzian.weighted_asymptotics_local`,
     `Asymptotics.Lorentzian.lorVertex_asymptotics_local`
+25. Lightlike/Asymptotics/Lorentzian/ActionSmooth.lean - `Asymptotics.Lorentzian.contDiffAt_triAction`,
+    `Asymptotics.Lorentzian.contDiff_spinAct`, `Asymptotics.Lorentzian.lorChartAction_contDiffOn`
 
 ## References
 

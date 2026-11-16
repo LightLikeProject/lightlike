@@ -57,6 +57,7 @@ import Lightlike.Asymptotics.Lorentzian.NonClosing
 import Lightlike.Asymptotics.Lorentzian.VertexFormula
 import Lightlike.Asymptotics.Lorentzian.Vertex
 import Lightlike.Asymptotics.Lorentzian.VertexLocal
+import Lightlike.Asymptotics.Lorentzian.ActionSmooth
 import Lightlike.Asymptotics.Lorentzian.Suppression
 import Lightlike.Asymptotics.Lorentzian.Hessian
 import Lightlike.Asymptotics.EPRL.Normals
