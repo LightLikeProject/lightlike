@@ -30,7 +30,8 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
-      - run: python3 -m pip install pyyaml
+      - name: Install the pinned PyYAML
+        run: python3 -m pip install --quiet "$(grep -i '^pyyaml' requirements.txt)"
       - name: Only the proof body of the task's declaration changed
         env:
           BODY: ${{ github.event.pull_request.body }}

@@ -1,6 +1,8 @@
 import Lightlike.SpinFoam.Move33
 import Lightlike.SpinFoam.Move24Global
 import Lightlike.SpinFoam.Move15Global
+import Lightlike.SpinFoam.GaugeChain
+import Lightlike.SpinFoam.ForcingMoves
 import Lightlike.Recoupling.Tests
 import Lightlike.FourD.Tests
 import Lightlike.Spin4.EPRLTests
@@ -73,14 +75,16 @@ the state sum.
 Non-vacuity: `amplitudeGF_move24_example` applies `amplitudeGF_move24` to the 2-4 move
 `{0,1,2,3} → {5,6}` on `K1`, the 1-5 subdivision of `∂Δ⁵`, with the cutoffs `cut24`; every
 cutoff hypothesis is checked by the kernel, and the vertices of the tetrahedron are read in sorted
-order through `orderEmbOfFin_unique`.
+order through `orderEmbOfFin_unique`. `amplitudeGF_move24_gauge_example` is the gauge-fixed form
+with the fourteen-triangle gauge set `T14` of `K1` (`isGauge_T14`).
 
 ## The 1-5 move (`Move15.lean`, `Move15Global.lean`)
 
 Non-vacuity: `amplitudeGF_move15_example` applies `amplitudeGF_move15` to the 1-5 move
 `{0,1,2,3,4} → {6}` on `K0 = ∂Δ⁵`, with the cutoffs `cut15`; the sixteen cutoff conditions
 `Cut15` are checked by the kernel, and the vertices of the 4-simplex are read in sorted order
-through `orderEmbOfFin_unique`.
+through `orderEmbOfFin_unique`. `amplitudeGF_move15_gauge_example` is the gauge-fixed form with the
+ten triangles `starK0` through a vertex of `K0` (`isGauge_starK0`).
 
 ## The gauge rule (`Ooguri.lean`)
 
@@ -325,6 +329,51 @@ theorem amplitudeGF_move24_example :
   simpa using h
 
 open Lightlike.FourD.Tests in
+/-- A gauge set of `K1`: fourteen triangles (`#edges - #vertices + 1 = 20 - 7 + 1`) that collapse
+with the edges onto the vertex `0`. The cone from one vertex is not a gauge set here, since `5` and
+`6` are not adjacent; the collapse order is a certificate found by a search outside Lean. -/
+def T14 : Finset (Finset (Fin 8)) :=
+  {{1, 2, 4}, {0, 2, 4}, {1, 3, 6}, {0, 1, 2}, {0, 4, 5}, {0, 2, 5}, {1, 2, 6},
+    {1, 3, 4}, {3, 4, 6}, {1, 2, 3}, {1, 4, 5}, {0, 3, 4}, {0, 3, 6}, {2, 3, 5}}
+
+open Lightlike.FourD.Tests in
+/-- **Non-vacuity of the gauge rule on `K1`.** `T14` obeys the gauge rule: the vertices, the edges
+and `T14` collapse onto the vertex `0`, each step checked by the kernel. -/
+theorem isGauge_T14 : IsGauge K1 T14 :=
+  ⟨by decide +kernel, collapsible_of_collapsesBy (v := 0)
+    (l := [({3, 5}, {2, 3, 5}), ({0, 6}, {0, 3, 6}), ({0, 3}, {0, 3, 4}), ({1, 5}, {1, 4, 5}),
+      ({2, 3}, {1, 2, 3}), ({4, 6}, {3, 4, 6}), ({3, 4}, {1, 3, 4}), ({2, 6}, {1, 2, 6}),
+      ({2, 5}, {0, 2, 5}), ({4, 5}, {0, 4, 5}), ({0, 1}, {0, 1, 2}), ({1, 3}, {1, 3, 6}),
+      ({0, 4}, {0, 2, 4}), ({1, 2}, {1, 2, 4}), ({3}, {3, 6}), ({6}, {1, 6}), ({5}, {0, 5}),
+      ({1}, {1, 4}), ({4}, {2, 4}), ({2}, {0, 2})])
+    (by decide +kernel)⟩
+
+open Lightlike.FourD.Tests in
+/-- **Non-vacuity of the gauge-fixed 2-4 invariance.** On `K1` with the nonempty gauge set `T14`,
+the 2-4 move `{0,1,2,3} → {5,6}` gives the gauge set `T14 ∪ {{0,5,6}}` of the moved complex and the
+same state sum for the cutoffs `cut24`; every hypothesis of `amplitudeGF_move24_gauge` is checked
+by the kernel. Only the equality of the two sums is shown, not their value. -/
+theorem amplitudeGF_move24_gauge_example :
+    IsGauge (K1.move isMove24) (insert {0, 5, 6} T14) ∧
+      amplitudeGF (K1.move isMove24) (insert {0, 5, 6} T14) cut24 = amplitudeGF K1 T14 cut24 := by
+  have hσ : #({0, 1, 2, 3} : Finset (Fin 8)) = 4 := by decide
+  have eo : ∀ k : Fin 4, ({0, 1, 2, 3} : Finset (Fin 8)).orderEmbOfFin hσ k = Fin.castLE (by omega) k := fun k => by
+    have := Finset.orderEmbOfFin_unique (s := ({0, 1, 2, 3} : Finset (Fin 8))) hσ
+      (f := fun k : Fin 4 => Fin.castLE (by omega) k)
+      (fun k => by revert k; decide) (fun a b hab => hab)
+    exact (congrFun this k).symm
+  have e0 : ({0, 1, 2, 3} : Finset (Fin 8)).orderEmbOfFin hσ 0 = 0 := by rw [eo]; rfl
+  have e1 : ({0, 1, 2, 3} : Finset (Fin 8)).orderEmbOfFin hσ 1 = 1 := by rw [eo]; rfl
+  have e2 : ({0, 1, 2, 3} : Finset (Fin 8)).orderEmbOfFin hσ 2 = 2 := by rw [eo]; rfl
+  have e3 : ({0, 1, 2, 3} : Finset (Fin 8)).orderEmbOfFin hσ 3 = 3 := by rw [eo]; rfl
+  have h := amplitudeGF_move24_gauge K1 isMove24 (σ := {0, 1, 2, 3}) (τ := {5, 6}) hσ T14
+    isGauge_T14 cut24 (by decide +kernel) (by rw [e3]; decide +kernel)
+    (by rw [e3, e2]; decide +kernel) (by rw [e3, e1]; decide +kernel)
+    (by rw [e3, e2, e1]; decide +kernel)
+  rw [e0] at h
+  simpa using h
+
+open Lightlike.FourD.Tests in
 /-- The cutoffs of the non-vacuity check of the 1-5 move: `3` on the triangles `{6,1,2}`, `{6,1,3}`
 and `{6,2,3}`, `10` on the tetrahedra, `1` on the other faces. -/
 def cut15 (f : Finset (Fin 8)) : ℕ :=
@@ -359,6 +408,142 @@ theorem amplitudeGF_move15_example :
     (by simp) cut15 (by rw [e]; exact hcut)
   rw [e, hg] at h
   exact h
+
+open Lightlike.FourD.Tests in
+/-- The ten triangles of `K0 = ∂Δ⁵` through the vertex `5`: the cone from `5` on the edges of the
+opposite 4-simplex, the same set as `starT` with the vertex type `Fin 8`. -/
+def starK0 : Finset (Finset (Fin 8)) := K0.tris.filter (5 ∈ ·)
+
+open Lightlike.FourD.Tests in
+/-- **Non-vacuity of the gauge rule on `K0`.** `starK0` obeys the gauge rule: the vertices, the
+edges and `starK0` collapse onto the vertex `5`. -/
+theorem isGauge_starK0 : IsGauge K0 starK0 :=
+  ⟨filter_subset _ _, collapsible_of_collapsesBy (v := 5)
+    (l := [({0, 1}, {0, 1, 5}), ({0, 2}, {0, 2, 5}), ({0, 3}, {0, 3, 5}), ({0, 4}, {0, 4, 5}),
+      ({1, 2}, {1, 2, 5}), ({1, 3}, {1, 3, 5}), ({1, 4}, {1, 4, 5}), ({2, 3}, {2, 3, 5}),
+      ({2, 4}, {2, 4, 5}), ({3, 4}, {3, 4, 5}), ({0}, {0, 5}), ({1}, {1, 5}), ({2}, {2, 5}),
+      ({3}, {3, 5}), ({4}, {4, 5})])
+    (by decide +kernel)⟩
+
+open Lightlike.FourD.Tests in
+/-- **Non-vacuity of the gauge-fixed 1-5 invariance.** On `K0 = ∂Δ⁵` with the ten gauge triangles
+`starK0`, the 1-5 move `{0,1,2,3,4} → {6}` gives the gauge set `starK0` plus the four triangles
+`{6,0,j}` of the moved complex and the same state sum for the cutoffs `cut15`; every hypothesis of
+`amplitudeGF_move15_gauge` is checked by the kernel. Only the equality of the two sums is shown,
+not their value. -/
+theorem amplitudeGF_move15_gauge_example :
+    IsGauge (K0.move isMove15) ({{6, 0, 1}, {6, 0, 2}, {6, 0, 3}, {6, 0, 4}} ∪ starK0) ∧
+      amplitudeGF (K0.move isMove15) ({{6, 0, 1}, {6, 0, 2}, {6, 0, 3}, {6, 0, 4}} ∪ starK0) cut15 =
+        amplitudeGF K0 starK0 cut15 := by
+  have hσ : #({0, 1, 2, 3, 4} : Finset (Fin 8)) = 5 := by decide
+  have eo : ∀ k : Fin 5, ({0, 1, 2, 3, 4} : Finset (Fin 8)).orderEmbOfFin hσ k =
+      Fin.castLE (by omega) k := fun k => by
+    have := Finset.orderEmbOfFin_unique (s := ({0, 1, 2, 3, 4} : Finset (Fin 8))) hσ
+      (f := fun k : Fin 5 => Fin.castLE (by omega) k)
+      (fun k => by revert k; decide) (fun a b hab => hab)
+    exact (congrFun this k).symm
+  have e : ⇑(({0, 1, 2, 3, 4} : Finset (Fin 8)).orderEmbOfFin hσ) =
+      fun k : Fin 5 => Fin.castLE (by omega) k := funext eo
+  have hcut : Move15.Cut15 cut15 (Move15.triV (fun k : Fin 5 => Fin.castLE (by omega) k) (6 : Fin 8))
+      (Move15.teV (fun k : Fin 5 => Fin.castLE (by omega) k) (6 : Fin 8))
+      (Move15.otV (fun k : Fin 5 => Fin.castLE (by omega) k)) := by
+    unfold Move15.Cut15 Move15.triV Move15.teV Move15.otV
+    decide +kernel
+  have hg : Move15.gaugeTri (fun k : Fin 5 => Fin.castLE (by omega) k) (6 : Fin 8) =
+      {{6, 0, 1}, {6, 0, 2}, {6, 0, 3}, {6, 0, 4}} := by
+    unfold Move15.gaugeTri
+    decide +kernel
+  have h := Move15.amplitudeGF_move15_gauge K0 isMove15 (σ := {0, 1, 2, 3, 4}) (τ := {6}) hσ
+    (v := 6) rfl starK0 isGauge_starK0 cut15 (by rw [e]; exact hcut)
+  rw [e, hg] at h
+  exact h
+
+open Lightlike.FourD.Tests in
+/-- **Non-vacuity of the forcing lemma for the 1-5 move.** On `K0 = ∂Δ⁵` the ten triangles
+`starK0` force every triangle (each of the ten tetrahedra through the vertex `5` forces one triangle,
+checked by the kernel). After the 1-5 move `{0,1,2,3,4} → {6}`, the set `starK0` plus the four
+triangles `{6,0,j}` forces every triangle of the moved complex. This is the gauge set of
+`amplitudeGF_move15_gauge_example`. -/
+theorem forces_move15_example :
+    Forces (K0.move isMove15) (K0.move isMove15).tris
+      ({{6, 0, 1}, {6, 0, 2}, {6, 0, 3}, {6, 0, 4}} ∪ starK0) := by
+  have hσ : #({0, 1, 2, 3, 4} : Finset (Fin 8)) = 5 := by decide
+  have hF : Forces K0 K0.tris starK0 := forces_of_forcesBy
+    (l := [({0, 1, 2, 5}, {0, 1, 2}), ({0, 1, 3, 5}, {0, 1, 3}), ({0, 1, 4, 5}, {0, 1, 4}),
+      ({0, 2, 3, 5}, {0, 2, 3}), ({0, 2, 4, 5}, {0, 2, 4}), ({0, 3, 4, 5}, {0, 3, 4}),
+      ({1, 2, 3, 5}, {1, 2, 3}), ({1, 2, 4, 5}, {1, 2, 4}), ({1, 3, 4, 5}, {1, 3, 4}),
+      ({2, 3, 4, 5}, {2, 3, 4})])
+    (by decide +kernel)
+  have hg : Move15.gaugeTri (fun k : Fin 5 => Fin.castLE (by omega) k) (6 : Fin 8) =
+      {{6, 0, 1}, {6, 0, 2}, {6, 0, 3}, {6, 0, 4}} := by
+    unfold Move15.gaugeTri
+    decide +kernel
+  have hsurj : ∀ x : Fin 8, x ∈ ({0, 1, 2, 3, 4} : Finset (Fin 8)) ↔
+      ∃ j : Fin 5, (fun k : Fin 5 => (Fin.castLE (by omega) k : Fin 8)) j = x := by decide
+  have h := Move15.forces_move15 isMove15 (σ := {0, 1, 2, 3, 4}) (τ := {6}) (v := 6) rfl hσ
+    (a := fun k : Fin 5 => Fin.castLE (by omega) k) hsurj hF
+  rwa [hg] at h
+
+open Lightlike.FourD.Tests in
+/-- The cutoffs of the chain example: `3` on the triangles `{6,1,2}`, `{6,1,3}` and `{6,2,3}` (the
+1-5 move asks for them), `40` on `{3,5,6}`, `100` on `{1,5,6}` and `{2,5,6}`, `1000` on the
+tetrahedra and `1` on the other faces; the cutoff conditions of both moves hold. -/
+def cutChain (f : Finset (Fin 8)) : ℕ :=
+  if f = {6, 1, 2} ∨ f = {6, 1, 3} ∨ f = {6, 2, 3} then 3
+  else if f = {3, 5, 6} then 40 else if f = {1, 5, 6} ∨ f = {2, 5, 6} then 100
+  else if #f = 4 then 1000 else 1
+
+open Lightlike.FourD.Tests in
+/-- **Non-vacuity of the chain theorem.** On `∂Δ⁵` with the ten gauge triangles `starK0` and the
+cutoffs `cutChain`, the 1-5 move `{0,1,2,3,4} → {6}` followed by the 2-4 move `{0,1,2,3} → {5,6}` is a
+chain of two steps of `GFStep4`, and `amplitudeGF_eqvGen4` gives the equality of the state sums at
+its two ends. The gauge set after the first step is the one that the second step needs
+(`GFStep4.isGauge`); the cutoffs are not changed along the chain. -/
+theorem amplitudeGF_chain_example :
+    amplitudeGF (K1.move isMove24)
+        (insert {0, 5, 6} ({{6, 0, 1}, {6, 0, 2}, {6, 0, 3}, {6, 0, 4}} ∪ starK0)) cutChain =
+      amplitudeGF K0 starK0 cutChain := by
+  have hσ : #({0, 1, 2, 3, 4} : Finset (Fin 8)) = 5 := by decide
+  have eo : ∀ k : Fin 5, ({0, 1, 2, 3, 4} : Finset (Fin 8)).orderEmbOfFin hσ k =
+      Fin.castLE (by omega) k := fun k => by
+    have := Finset.orderEmbOfFin_unique (s := ({0, 1, 2, 3, 4} : Finset (Fin 8))) hσ
+      (f := fun k : Fin 5 => Fin.castLE (by omega) k)
+      (fun k => by revert k; decide) (fun a b hab => hab)
+    exact (congrFun this k).symm
+  have e : ⇑(({0, 1, 2, 3, 4} : Finset (Fin 8)).orderEmbOfFin hσ) =
+      fun k : Fin 5 => Fin.castLE (by omega) k := funext eo
+  have hcut : Move15.Cut15 cutChain (Move15.triV (fun k : Fin 5 => Fin.castLE (by omega) k) (6 : Fin 8))
+      (Move15.teV (fun k : Fin 5 => Fin.castLE (by omega) k) (6 : Fin 8))
+      (Move15.otV (fun k : Fin 5 => Fin.castLE (by omega) k)) := by
+    unfold Move15.Cut15 Move15.triV Move15.teV Move15.otV
+    decide +kernel
+  have hg : Move15.gaugeTri (fun k : Fin 5 => Fin.castLE (by omega) k) (6 : Fin 8) =
+      {{6, 0, 1}, {6, 0, 2}, {6, 0, 3}, {6, 0, 4}} := by
+    unfold Move15.gaugeTri
+    decide +kernel
+  have s1 := GFStep4.move15 isMove15 hσ (v := 6) rfl isGauge_starK0 (cut := cutChain)
+    (by rw [e]; exact hcut)
+  rw [e, hg] at s1
+  have hσ' : #({0, 1, 2, 3} : Finset (Fin 8)) = 4 := by decide
+  have eo' : ∀ k : Fin 4, ({0, 1, 2, 3} : Finset (Fin 8)).orderEmbOfFin hσ' k =
+      Fin.castLE (by omega) k := fun k => by
+    have := Finset.orderEmbOfFin_unique (s := ({0, 1, 2, 3} : Finset (Fin 8))) hσ'
+      (f := fun k : Fin 4 => Fin.castLE (by omega) k)
+      (fun k => by revert k; decide) (fun a b hab => hab)
+    exact (congrFun this k).symm
+  have e0 : ({0, 1, 2, 3} : Finset (Fin 8)).orderEmbOfFin hσ' 0 = 0 := by rw [eo']; rfl
+  have e1 : ({0, 1, 2, 3} : Finset (Fin 8)).orderEmbOfFin hσ' 1 = 1 := by rw [eo']; rfl
+  have e2 : ({0, 1, 2, 3} : Finset (Fin 8)).orderEmbOfFin hσ' 2 = 2 := by rw [eo']; rfl
+  have e3 : ({0, 1, 2, 3} : Finset (Fin 8)).orderEmbOfFin hσ' 3 = 3 := by rw [eo']; rfl
+  have s2 := GFStep4.move24 isMove24 (σ := {0, 1, 2, 3}) (τ := {5, 6}) hσ'
+    (T := {{6, 0, 1}, {6, 0, 2}, {6, 0, 3}, {6, 0, 4}} ∪ starK0)
+    (s1.isGauge isGauge_starK0) (cut := cutChain) (by decide +kernel) (by rw [e3]; decide +kernel)
+    (by rw [e3, e2]; decide +kernel) (by rw [e3, e1]; decide +kernel)
+    (by rw [e3, e2, e1]; decide +kernel)
+  rw [e0] at s2
+  have := amplitudeGF_eqvGen4 (Relation.EqvGen.trans _ _ _ (Relation.EqvGen.rel _ _ s1)
+    (Relation.EqvGen.rel _ _ s2))
+  simpa using this.symm
 
 /-! ## Trust checks of the gauge-fixed state sum
 
@@ -1089,6 +1274,17 @@ theorem amplitudeGF_starT (cut : Finset (Fin 6) → ℕ) : amplitudeGF sphere6 s
       ({1, 2, 3, 5}, {1, 2, 3}), ({1, 2, 4, 5}, {1, 2, 4}), ({1, 3, 4, 5}, {1, 3, 4}),
       ({2, 3, 4, 5}, {2, 3, 4})])
     (by decide +kernel)) cut
+
+/-- **Non-vacuity of the removable cutoff.** In the gauge `starT` the state sum of `∂Δ⁵` at the
+constant cutoff `L` tends to `1` as `L → ∞`: it is `1` for every `L`. -/
+theorem amplitudeGF_tendsto_starT :
+    Filter.Tendsto (fun L : ℕ => amplitudeGF sphere6 starT (fun _ => L)) Filter.atTop (nhds 1) :=
+  amplitudeGF_tendsto_one_of_forces (forces_of_forcesBy
+    (l := [({0, 1, 2, 5}, {0, 1, 2}), ({0, 1, 3, 5}, {0, 1, 3}), ({0, 1, 4, 5}, {0, 1, 4}),
+      ({0, 2, 3, 5}, {0, 2, 3}), ({0, 2, 4, 5}, {0, 2, 4}), ({0, 3, 4, 5}, {0, 3, 4}),
+      ({1, 2, 3, 5}, {1, 2, 3}), ({1, 2, 4, 5}, {1, 2, 4}), ({1, 3, 4, 5}, {1, 3, 4}),
+      ({2, 3, 4, 5}, {2, 3, 4})])
+    (by decide +kernel))
 
 /-- A second gauge set on `∂Δ⁵`, not a star: ten triangles that collapse with the edges onto the
 vertex `5`, with no vertex common to all of them. -/
