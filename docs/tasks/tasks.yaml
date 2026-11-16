@@ -2514,7 +2514,7 @@ tasks:
     area: "regge"
     tier: "frontier"
     source_class: "sourced"
-    source: "christiansen-2011"
+    source: "christiansen-2011; christiansen-2011, eq. (5)"
     priority: 6
     priority_basis: "other"
     size: "R"
