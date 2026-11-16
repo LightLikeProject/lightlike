@@ -47,6 +47,7 @@ CHECKS = [
     ("scripts/asymptotics/lorentzian_hessian_node_check.py", True),
     ("scripts/asymptotics/lorentzian_hessian_paper61_check.py", False),
     ("scripts/asymptotics/lorentzian_hessian_noncritical_check.py", False),
+    ("scripts/asymptotics/lorentzian_hessian_kernel_check.py", False),
     ("scripts/asymptotics/lorentzian_regge_frequency_check.py", False),
     ("scripts/asymptotics/level_check.py", False),
     ("scripts/asymptotics/racah_sum_asymptotics.py", False),
