@@ -1205,6 +1205,30 @@
   note: "Six distinct points u i, v j (i, j ∈ Fin 3) joined across the two classes by nine simple polygonal arcs (finite chains of segments, IsSimpleChain) that meet only in common endpoints do not exist (no_PL_K33; PLDrawing is the notion of drawing, for a set E of edges). This is the second claim of the proof of the weak Jordan theorem by Thomassen in the exposition of Klazar, Section 2, Claim 2 (Klazar's numbering), restricted to polygonal arcs. The proof differs from the orientation (left/right) argument there: the 6-cycle u0 v0 u1 v1 u2 v2 is a simple polygon (two arcs glued by isSimpleChain_append), and each of the three remaining arcs is a chord joining opposite corners. Each chord, without its ends, lies in the inside or in the outside of the polygon (it is connected and misses the carrier). Two of the three chords lie on the same side, and two chords on the same side cannot join interlaced pairs of the polygon's points (no_interlaced_chord): the proof uses only that the crossing parity of a ray, which is a count modulo 2, is additive when a closed chain is cut along a chord and glued from the two halves (chainParity_append, chainParity_reverse, parity_theta), and that the parity jumps across an arc near its interior points (near_two). A rotation of the labels does not change the inside and outside of the hexagon (inside_swap), so the same lemma covers every pair of chords (Hex.false). Limits: the arcs are polygonal arcs only; the statement for arbitrary continuous arcs is Klazar, Claim 3, a later step, and is not claimed here. Check: the drawing of K₃,₃ without the edge (2, 2), with straight segments, exists (TestsK33.drawing, so the hypotheses are satisfiable); two crossing diagonals of a square violate the disjointness field."
   since: unreleased
 - id: LL-XXXX
+  title: An odd sum of the doubled spins at a node of the 4-simplex makes the coherent 15j integral vanish for all boundary data
+  area: Asymptotics
+  file: Lightlike/Asymptotics/EPRL/OddSum.lean
+  decls: [Lightlike.Asymptotics.EPRL.rhoN_negOne, Lightlike.Asymptotics.EPRL.cohInt_eq_zero_of_odd, Lightlike.Asymptotics.EPRL.coh15j_eq_zero_of_odd]
+  status: proven
+  tier: established
+  source: structural
+  review: kernel-checked
+  note: "The centre element -1 of SU(2) acts on the tensor product of the spin-J_a/2 representations as (-1)^(sum J_a) (rhoN_negOne). A coherent intertwiner is invariant, so if the doubled spins at a node have an odd sum it is zero (cohInt_eq_zero_of_odd), and then the coherent 15j integral coh15j vanishes for every choice of boundary data (coh15j_eq_zero_of_odd, through k5Contract_cohInt). So the nonzero leading term of Coh15jAsymptoticFormula cannot hold with an odd node sum: the even node sums of that formula are necessary. A trust check of its hypotheses, not a new asymptotic statement. Limits: SU(2) coherent intertwiners only; the statement says nothing about the Hessian hypotheses."
+  since: unreleased
+- id: LL-XXXX-a
+  title: For γ < 1 the Euclidean EPRL vertex, contracted with the coherent boundary intertwiners, is the coherent EPRL integral, which is the product of two coherent 15j integrals
+  area: Asymptotics
+  file: Lightlike/Asymptotics/EPRL/EprlCoherentVertex.lean
+  decls: [Lightlike.Asymptotics.EPRL.k5Contract4_eprlCohNode, Lightlike.Asymptotics.EPRL.eprlVertex_coherent]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: bdfgh-2009, location: "Section 3.4", check: "Exponentiated expression"}
+  review: kernel-checked
+  note: "BDFGH (J. Math. Phys. 50 (2009) 112504, section 3) write the Euclidean EPRL vertex on Livine-Speziale boundary states as an integral over Spin(4)^5 (eprlCoh); this entry proves the identification in this library. For γ < 1, with the same SU(2) elements g on the self-dual and anti-self-dual halves, the EPRL map sends the SU(2) coherent intertwiner iota_{n+m}(g) to iota_n(g) (x) iota_m(g) (eprlIntertwiner_homForm_cohInt); the coherent EPRL node tensor sum_z c_z eprlNode n m z is the product of the two coherent node tensors projNode, with no sign (eprlCohNode_eq); the K5 contraction of these is eprlCoh (k5Contract4_eprlCohNode), which equals coh15j * coh15j by Fubini on Spin(4) = SU(2) x SU(2) (eprlCoh_eq_mul, already in EPRLFormula.lean); expanding each node in the intertwiner basis, sum over z of prod_a c_a(z_a) eprlVertex n m z equals eprlCoh (eprlVertex_coherent), with c_a(z) = nodeSign * <iota_z, homForm iota> the coefficients of the coherent intertwiner in the fourJ basis. Exact at every spin: an identification, not an asymptotic formula. Limits: gamma < 1 only (the same g on both chiral halves; the gamma > 1 reflected normal is not covered); the sign (-1)^chi of BFH eq. (1) belongs to their 15j convention and is not compared with this library's, whose contraction is exactly the coherent integral (k5Contract_cohInt). Numerical check of the node identity: scripts/spinfoam/eprl_node_check.py, four spin configurations to 3e-16 with a wrong-g control."
+  since: unreleased
+- id: LL-XXXX-b
   title: The coherent 15j integral decays faster than every power of the spin scale when its finitely many maxima are noncritical
   area: Asymptotics
   file: Lightlike/Asymptotics/EPRL/Suppression.lean
@@ -1217,7 +1241,7 @@
   review: kernel-checked
   note: "Let F be continuous on SU(2)^4 with |F| <= 1 whose modulus is one only on a finite set K, such that for p in K the chart function F(chart_p q) is smooth and its logarithmic phase -i log(F/F(p)) has nonzero differential at q = 0. Then for every k, the integral of F^lambda over SU(2)^4 with the Haar probability measure is O(lambda^-k) (suppression_finite_max). Near each p, F^lambda = F(p)^lambda e^{i lambda phi} with phi the cut-off logarithmic phase, and the non-stationary phase theorem (Hormander, ALPDO I, Theorem 7.7.1, formalized in Lightlike/Oscillatory/Localisation.lean) bounds the chart integral (local_suppression); localise_pieces glues the charts. This is the case of BDFGH Theorem 1, case 3 (eq. (22)), and eq. (24) of section 5.1, in which the extended stationary phase has no critical point. Limits: finitely many maxima only; the noncriticality of the maxima is a hypothesis (for the coherent 15j integral with spins that are not proportional to the areas, that the maxima are noncritical is not proved here: it is the geometric lemma relating the phase gradient at a gluing solution to the closure of the spins); no statement for an infinite maximum set."
   since: unreleased
-- id: LL-XXXX-a
+- id: LL-XXXX-c
   title: For SU(2) boundary data the coherent 15j integral either has a gluing solution or decays exponentially, and the coherent EPRL integral decays exponentially when the self-dual spins admit no gluing solution
   area: Asymptotics
   file: Lightlike/Asymptotics/EPRL/Suppression.lean

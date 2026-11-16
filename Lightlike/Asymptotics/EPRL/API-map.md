@@ -7,8 +7,8 @@ vertex integral in the Regge boundary state of a geometric 4-simplex. The integr
 points where the integrand has modulus one, which are the solutions of the gluing equations up to
 sign, and stationary phase at each of these points gives the asymptotic formula, with two critical
 values. Boundary data that do not glue give exponential suppression. The nondegeneracy of the two
-Hessians is a hypothesis, as in the source. The equality of the coherent integral with the EPRL
-vertex on Livine-Speziale intertwiners and the case `γ > 1` are not covered.
+Hessians is a hypothesis, as in the source. The coherent integral is identified with the EPRL
+vertex on coherent boundary intertwiners for `γ < 1`; the case `γ > 1` is not covered.
 
 ## Content (Alpha)
 
@@ -50,11 +50,26 @@ first step towards writing the coherent 15j as a contraction of coherent intertw
 `k5Contract_cohInt` completes it: the coherent 15j is the `K₅` contraction of the coherent
 intertwiners, with no extra sign in these conventions [29].
 
+For `γ < 1` the Euclidean EPRL vertex contracted with the coherent boundary intertwiners is the
+coherent EPRL integral. An invariant four-leg tensor becomes an `SU(2)` intertwiner in Hom form [31],
+it is supported on total weight zero and expands in the `fourJ` basis with one constant sign [32], and
+the EPRL map intertwines the singlet forms and sends products of coherent states to products of
+self-dual and anti-self-dual coherent states [33]. The pairing of a Spin(4) basis intertwiner with the
+EPRL lift of a coherent intertwiner is the product of the two `SU(2)` pairings [34], so the EPRL map
+sends `ι_{n+m}(g)` to `ι_n(g) ⊗ ι_m(g)`; the signs of the bridge cancel by the additivity of the
+constant sign [35]. The coherent EPRL node tensor is the product of the self-dual and anti-self-dual
+coherent node tensors [36]. The `K₅` contraction of these is the coherent EPRL integral, which is the
+product of the two coherent 15j integrals; expanding every node in the intertwiner basis gives the
+vertex statement [37]. With an odd doubled-spin sum at a node the coherent intertwiner vanishes, so
+the coherent 15j integral is zero for all boundary data and the even node sums are necessary [30].
+The statement is exact at every spin and is not an asymptotic formula; the sign `(-1)^χ` of the
+source's 15j equation is not compared with these conventions.
+
 If the maximum set of the integrand is finite and the logarithmic phase has nonzero differential at
 each of its points, then there is no critical point of the extended stationary phase and the coherent
 15j integral decays faster than every power of the spin scale: the chart-level statement follows from
-the non-stationary phase theorem [30], and `localise_pieces` glues the charts into the `SU(2)^4` statement
-[30]. For SU(2) boundary data either some point of `SU(2)^5` has `|F_n| = 1` or the integral decays exponentially, and the coherent EPRL integral decays exponentially when the self-dual spins admit no gluing solution [30]. This is the case in which the proportionality of the spins to the areas is not assumed, and
+the non-stationary phase theorem [38], and `localise_pieces` glues the charts into the `SU(2)^4` statement
+[38]. For SU(2) boundary data either some point of `SU(2)^5` has `|F_n| = 1` or the integral decays exponentially, and the coherent EPRL integral decays exponentially when the self-dual spins admit no gluing solution [38]. This is the case in which the proportionality of the spins to the areas is not assumed, and
 the noncriticality of the maxima is the hypothesis; that it holds for spins that are not areas is not
 proved here.
 
@@ -125,7 +140,28 @@ proved here.
     `Asymptotics.EPRL.k5Contract_prod`, `Asymptotics.EPRL.k5Contract_integral`,
     `Asymptotics.EPRL.projNode_cohInt`, `Asymptotics.EPRL.k5Contract_cohInt`,
     `Asymptotics.EPRL.pair_ne_overlap`
-30. Lightlike/Asymptotics/EPRL/Suppression.lean - `Asymptotics.EPRL.local_suppression`,
+30. Lightlike/Asymptotics/EPRL/OddSum.lean - `Asymptotics.EPRL.rhoN_negOne`,
+    `Asymptotics.EPRL.cohInt_eq_zero_of_odd`, `Asymptotics.EPRL.coh15j_eq_zero_of_odd`
+31. Lightlike/Asymptotics/EPRL/HomForm.lean - `Asymptotics.EPRL.asMat_rhoN`,
+    `Asymptotics.EPRL.homForm_rhoN`, `Asymptotics.EPRL.hsInner_conj_of_isIntertwiner`,
+    `Asymptotics.EPRL.homForm_isIntertwiner`
+32. Lightlike/Asymptotics/EPRL/HomFormExpansion.lean - `Asymptotics.EPRL.invariant_weight_zero`,
+    `Asymptotics.EPRL.fourJ_support`, `Asymptotics.EPRL.homForm_apply`,
+    `Asymptotics.EPRL.vec_eq_sum`, `Asymptotics.EPRL.hsInner_homForm_avgP`
+33. Lightlike/Asymptotics/EPRL/EprlCoherentNode.lean - `Asymptotics.EPRL.eprlMap_Wm`,
+    `Asymptotics.EPRL.eprlPair_Wm`, `Asymptotics.EPRL.singlet2_mul_eprlPair_conjTranspose`,
+    `Asymptotics.EPRL.eprlPair_mulVec_coh`, `Asymptotics.EPRL.eprlLift_homForm_prod`
+34. Lightlike/Asymptotics/EPRL/EprlCoherentPullback.lean -
+    `Asymptotics.EPRL.pullback_isIntertwiner`, `Asymptotics.EPRL.hsInner_ivec4_eprlLift_cohInt`
+35. Lightlike/Asymptotics/EPRL/EprlCoherentIntertwiner.lean -
+    `Asymptotics.EPRL.eprlIntertwiner_homForm_cohInt`, `Asymptotics.EPRL.nodeSign_add`,
+    `Asymptotics.EPRL.projNode_projOf`, `Asymptotics.EPRL.eprlNode_eq_eprlIntertwiner'`,
+    `Asymptotics.EPRL.eprlIntertwiner_sum_smul`
+36. Lightlike/Asymptotics/EPRL/EprlCoherentNodeIdentity.lean - `Asymptotics.EPRL.eprlCohNode`,
+    `Asymptotics.EPRL.eprlCohNode_projOf`, `Asymptotics.EPRL.eprlCohNode_eq`
+37. Lightlike/Asymptotics/EPRL/EprlCoherentVertex.lean -
+    `Asymptotics.EPRL.k5Contract4_eprlCohNode`, `Asymptotics.EPRL.eprlVertex_coherent`
+38. Lightlike/Asymptotics/EPRL/Suppression.lean - `Asymptotics.EPRL.local_suppression`,
     `Asymptotics.EPRL.suppression_finite_max`, `Asymptotics.EPRL.coh15j_dichotomy`,
     `Asymptotics.EPRL.eprlCoh_exp_decay_of_no_gluing`
 
