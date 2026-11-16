@@ -68,6 +68,7 @@ CHECKS = [
     ("scripts/regge/regge3d_g0_certificate.py", False),
     ("scripts/qracah/qd_map_check.py", False), ("scripts/qracah/jhyp_coverage_check.py", False),
     ("scripts/qracah/jackson_degenerate_check.py", False),
+    ("scripts/qracah/qd_coverage_check.py", False),
     ("scripts/spinfoam/vertex_check.py", False),
     ("scripts/spinfoam/bc_sign_check.py", False),
     ("scripts/spinfoam/bing_house_check.py", False),
