@@ -207,4 +207,88 @@ theorem no_interlaced_chord {a b x y : ℝ × ℝ} {m₁ m₂ mₑ m_f : List (�
     obtain ⟨z, -, hz2, hz3, hz4, hz5, hz6⟩ := near_two sC₁ hx_C₁ hx_C₂ hclA₂ hxA₂ c one_pos
     rw [cC₁] at hz2
     exact ⟨z, fun h => hz2 (Or.inl h), hz3, fun h => hz2 (Or.inr h), hz4, by rw [hz6, hpx]⟩
-  sorry
+  have hnotC : ∀ z, z ∉ A₁ → z ∉ A₂ → z ∉ C.carrier ∨ False := fun z h1 h2 =>
+    Or.inl (by rw [cC]; rintro (h | h); exacts [h1 h, h2 h])
+  have haC : a ∈ C.carrier := by rw [cC]; exact Or.inl haA₁
+  have hbC : b ∈ C.carrier := by rw [cC]; exact Or.inl hbA₁
+  have hE_ab : E ⊆ (E \ {a, b}) ∪ {a, b} := fun z hz => by
+    by_cases h : z ∈ ({a, b} : Set (ℝ × ℝ))
+    · exact Or.inr h
+    · exact Or.inl ⟨hz, h⟩
+  rcases hside with ⟨hE_in, hF_in⟩ | ⟨hE_out, hF_out⟩
+  · -- both chords inside `C`
+    have hs1 : s = 1 := by
+      have := (hF_in hu₀).2
+      rw [← hs u₀ hu₀]; exact this
+    have hno11 : ¬ Reg 1 1 := by
+      rintro ⟨z, hz1, hz2, hz3, hp1, hp2⟩
+      have hzo : z ∈ C.outside := by
+        refine ⟨by rw [cC]; rintro (h | h); exacts [hz1 h, hz2 h], ?_⟩
+        rw [← hpar z, hp1, hp2]; decide
+      have hout : ∀ w ∈ C.outside, w ∉ C₁.carrier ∧ w ∉ C₂.carrier := by
+        intro w hw
+        have hwE : w ∉ E := fun h => by
+          rcases hE_ab h with h' | h'
+          · exact (Set.disjoint_left.1 (disjoint_outside_inside C)) hw (hE_in h')
+          · rcases h' with rfl | rfl
+            · exact hw.1 haC
+            · exact hw.1 hbC
+        have hw1 : w ∉ A₁ := fun h => hw.1 (by rw [cC]; exact Or.inl h)
+        have hw2 : w ∉ A₂ := fun h => hw.1 (by rw [cC]; exact Or.inr h)
+        exact ⟨by rw [cC₁]; rintro (h | h); exacts [hw1 h, hwE h],
+          by rw [cC₂]; rintro (h | h); exacts [hw2 h, hwE h]⟩
+      have hpre := isPreconnected_outside sC
+      obtain ⟨t₁, ht₁⟩ := const_parity_of_preconnected hpre (fun w hw => (hout w hw).1)
+      have hsub : C.outside ⊆ C₁.inside := fun w hw =>
+        ⟨(hout w hw).1, by rw [ht₁ w hw, ← ht₁ z hzo, hp1]⟩
+      exact not_isBounded_outside C ((isBounded_inside C₁).subset hsub)
+    rcases h01 s₁ with h | h
+    · have h2 : s₂ = 1 := by
+        have := hss; rw [h, hs1] at this
+        simpa using this
+      exact hno11 (h2 ▸ regX 1)
+    · exact hno11 (h ▸ regY 1)
+  · -- both chords outside `C`
+    have hs0 : s = 0 := by
+      have := (hF_out hu₀).2
+      rw [← hs u₀ hu₀]; exact this
+    have hin : ∀ w ∈ C.inside, w ∉ C₁.carrier ∧ w ∉ C₂.carrier := by
+      intro w hw
+      have hwE : w ∉ E := fun h => by
+        rcases hE_ab h with h' | h'
+        · exact (Set.disjoint_left.1 (disjoint_outside_inside C)) (hE_out h') hw
+        · rcases h' with rfl | rfl
+          · exact hw.1 haC
+          · exact hw.1 hbC
+      have hw1 : w ∉ A₁ := fun h => hw.1 (by rw [cC]; exact Or.inl h)
+      have hw2 : w ∉ A₂ := fun h => hw.1 (by rw [cC]; exact Or.inr h)
+      exact ⟨by rw [cC₁]; rintro (h | h); exacts [hw1 h, hwE h],
+        by rw [cC₂]; rintro (h | h); exacts [hw2 h, hwE h]⟩
+    have hpre := isPreconnected_inside sC
+    obtain ⟨t₁, ht₁⟩ := const_parity_of_preconnected hpre (fun w hw => (hin w hw).1)
+    obtain ⟨t₂, ht₂⟩ := const_parity_of_preconnected hpre (fun w hw => (hin w hw).2)
+    have hReg_in : ∀ p q, Reg p q → p + q = 1 → p = t₁ ∧ q = t₂ := by
+      rintro p q ⟨z, hz1, hz2, hz3, hp, hq⟩ hpq
+      have hzi : z ∈ C.inside := by
+        refine ⟨by rw [cC]; rintro (h | h); exacts [hz1 h, hz2 h], ?_⟩
+        rw [← hpar z, hp, hq]; exact hpq
+      exact ⟨by rw [← hp]; exact ht₁ z hzi, by rw [← hq]; exact ht₂ z hzi⟩
+    rcases h01 s₁ with h | h
+    · have h2 : s₂ = 0 := by
+        have := hss; rw [h, hs0] at this
+        simpa using this
+      have r1 := hReg_in 0 1 (h ▸ regY 1) (by decide)
+      have r2 := hReg_in 1 0 (h2 ▸ regX 1) (by decide)
+      exact absurd (r1.1.trans r2.1.symm) (by decide)
+    · have h2 : s₂ = 1 := by
+        rcases h01 s₂ with h2 | h2
+        · exfalso
+          have := hss
+          rw [h, h2, hs0] at this
+          exact absurd this (by decide)
+        · exact h2
+      have r1 := hReg_in 1 0 (h ▸ regY 0) (by decide)
+      have r2 := hReg_in 0 1 (h2 ▸ regX 0) (by decide)
+      exact absurd (r1.1.trans r2.1.symm) (by decide)
+
+end Lightlike.PL
