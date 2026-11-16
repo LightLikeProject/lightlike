@@ -188,7 +188,10 @@ Each of these makes a result easier to trust or to reuse. None blocks a merge.
   and why a definition departs from them, so that results compose.
 - **Style.** Follow the [Mathlib style guide](https://leanprover-community.github.io/contribute/style.html).
   Give every main theorem a docstring and every file a module docstring: readers find results
-  through them.
+  through them. A module docstring starts with `# Title` in words and a summary paragraph, then
+  `## Main results` (the main declarations, one line each) and `## References` (keys of
+  [docs/tasks/sources.yaml](docs/tasks/sources.yaml)) when the file has them. Other sections are
+  named `## Conventions` or `## Implementation notes`. A short file keeps the title and prose.
 - **Lean files only.** A pull request changes Lean files. The catalog (`docs/results.yaml` and
   `docs/RESULTS.md`, the API maps, the milestone and task pages, the source list) is kept by the
   maintainers, who add a new result to it after merging; say in the pull request what it should
