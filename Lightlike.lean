@@ -165,6 +165,7 @@ import Lightlike.Oscillatory.StationaryPhase
 import Lightlike.Oscillatory.StationaryPhaseTests
 import Lightlike.Oscillatory.Vanishing
 import Lightlike.PL.ArcApprox
+import Lightlike.PL.ArcDensity
 import Lightlike.PL.ArcK33
 import Lightlike.PL.ArcSet
 import Lightlike.PL.ArcTrim
@@ -181,6 +182,7 @@ import Lightlike.PL.Image
 import Lightlike.PL.Invariants
 import Lightlike.PL.Join
 import Lightlike.PL.Links
+import Lightlike.PL.JordanComponents
 import Lightlike.PL.LoopErase
 import Lightlike.PL.Manifold
 import Lightlike.PL.Pachner
@@ -207,6 +209,7 @@ import Lightlike.PL.PolygonSplit
 import Lightlike.PL.PolygonTriangulation
 import Lightlike.PL.Attach
 import Lightlike.PL.PolygonEars
+import Lightlike.PL.PolygonApprox
 import Lightlike.PL.PolygonBall
 import Lightlike.PL.PolygonBoundary
 import Lightlike.PL.PolygonPLHomeo

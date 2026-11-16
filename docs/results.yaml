@@ -1230,3 +1230,25 @@
   review: kernel-checked
   note: "For a continuous injective map f of the circle into the plane, the complement of the image is not connected (weak_jordan). This is Claim 4 of the proof of the weak Jordan theorem by Thomassen in the exposition of Klazar, Section 2 (Klazar's numbering). The proof: if the image is not contained in a horizontal line, take a highest point a and a lowest point b of the image; rotating the circle, the image is the union of two arcs from a to b that meet only at a and b (exists_two_arcs); if the complement were connected, an outer polygonal arc from a to b is drawn around the image (exists_outer), a horizontal segment between a point c of the first arc and a point d of the second is chosen at minimal distance so that its interior misses both arcs (exists_T), and an arc from an interior point e of the segment to a point g of the outer arc is drawn in the complement (exists_link, using polygonal connectedness of connected open sets, exists_chain_in_open); the nine arcs between a, b, e and c, d, g that this cuts out of the pieces have mutually disjoint interiors (false_of_pieces), a drawing of K₃,₃ by continuous arcs, which does not exist by LL-XXXX-a. If the image lies in a horizontal line the coordinates are swapped. Limits: this is the weak Jordan theorem only: the complement is not connected, but it is not shown to have exactly two components, one bounded and one unbounded, with the circle as the boundary of each; this needs the arc theorem (the complement of an arc is connected), which is not proved here. Check: the unit circle satisfies the hypotheses (TestsJordan, unitCircle), and a non-injective map does not."
   since: unreleased
+- id: LL-XXXX-c
+  title: A Jordan curve is approximated by simple polygons, within any distance in both directions
+  area: PL
+  file: Lightlike/PL/PolygonApprox.lean
+  decls: [Lightlike.PL.exists_polygon_near, Lightlike.PL.exists_two_chains]
+  status: proven
+  tier: established
+  source: structural
+  review: kernel-checked
+  note: "For a continuous injective map f of the circle into the plane and ε > 0 there is a list of points whose polygon is simple, such that every point of its carrier is within ε of the image of f and every point of the image is within ε of the carrier (exists_polygon_near; the Hausdorff distance between the carrier and the curve is less than ε). The circle is cut into two arcs from a = f 1 to b = f (-1) that meet only at a and b (exists_two_arcs); each arc is trimmed outside small balls around a and b (exists_trim), approximated by a simple chain near the trimmed subarc (exists_simple_chain_near, with loop erasure), and joined to the vertices by segments; the two resulting chains meet only at a and b, by the three arguments of no_K33 specialised to two arcs (exists_two_chains), and glue to a simple polygon (isSimple_two_arcs). The loop erasure could delete a loop of the sample chain and leave part of the arc far from the polygon; this does not happen because the inverse of an arc is uniformly continuous, so that a connected compact set that contains both ends of the arc and lies near it is near every point of it (arc_density, exists_inverse_modulus; Lightlike/PL/ArcDensity.lean). Limits: it approximates by a simple closed polygon, but says nothing about on which side of the polygon the curve lies; that the curve separates the plane into exactly two components needs the Arc Theorem and is not proved here. Check: the theorem applies to the unit circle (TestsJordan.unitCircle); two arcs that cross in a point of their interiors would not have simple chains meeting only at their ends, and the hypothesis of exists_two_chains excludes them."
+  since: unreleased
+- id: LL-XXXX-d
+  title: The complement of a Jordan curve has exactly one unbounded component and a bounded component whose frontier lies in the curve
+  area: PL
+  file: Lightlike/PL/JordanComponents.lean
+  decls: [Lightlike.PL.jordan_components]
+  status: proven
+  tier: established
+  source: structural
+  review: kernel-checked
+  note: "For a continuous injective map f of the circle into the plane, the complement of the image has exactly one unbounded connected component (the one that contains the plane outside a square around the curve, which is connected, isPreconnected_squareOutside), and, since the complement is not connected (weak_jordan, LL-XXXX-b), a bounded component whose frontier lies in the curve (jordan_components). Limits: this is the part of the Jordan curve theorem that holds without the Arc Theorem. That there is exactly one bounded component, and that the curve is the frontier of each component, are open here: they need the Arc Theorem (the complement of an arc is connected), for which no proof is available in this library, and are not claimed. Check: the unit circle satisfies the hypotheses (TestsJordan.unitCircle)."
+  since: unreleased
