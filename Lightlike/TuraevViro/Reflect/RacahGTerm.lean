@@ -1,6 +1,8 @@
 import Lightlike.TuraevViro.Reflect.RacahTerm
 
-/-! # The certificate term `G(z)` and `G(z+1)` as bracket multiples of the base `Psi`. -/
+/-!
+# The certificate term `G(z)` and `G(z+1)` as bracket multiples of the base `Psi`
+-/
 
 set_option maxRecDepth 100000
 

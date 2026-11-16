@@ -6,6 +6,14 @@ import Mathlib
 Let `P k l` be a matrix with `Σ_k wk k · P k l · P k l' = 0` for `l ≠ l'` and
 `Σ_l wl l · P k l · P k' l = 0` for `k ≠ k'`. Then `wl l · N l = wk k · M k` whenever `P k l ≠ 0`,
 where `N l = Σ_k wk k · P k l²` and `M k = Σ_l wl l · P k l²`.
+
+## Main results
+
+* `gram_const`: the identity `wl l · N l = wk k · M k` for `P k l ≠ 0`.
+
+## References
+
+* `koekoek-swarttouw-1996`, the q-Racah polynomials; `turaev-1994`, Chapter VI (6j symbols).
 -/
 
 namespace Lightlike.TV.Refl

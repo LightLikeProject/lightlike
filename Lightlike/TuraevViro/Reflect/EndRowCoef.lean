@@ -7,6 +7,14 @@ import Lightlike.TuraevViro.Reflect.SixJRow
 At `x = 0` the upper coefficient `jA` and at `x = r - 2` the lower coefficient `jC` are regular and
 equal to `bz(1)² / cz(1)`. Only the middle coefficient has to be replaced by `± cz(j₁+1) cz(j₄+1) /
 cz(1)`. This file states the two endpoint rows with the regular coefficients.
+
+## Main results
+
+* `row_at`: the row identity of the q-6j symbol at every third colour, the two endpoints included.
+
+## References
+
+* `koekoek-swarttouw-1996`, the q-Racah polynomials; `turaev-1994`, Chapter VI (6j symbols).
 -/
 
 set_option maxHeartbeats 400000

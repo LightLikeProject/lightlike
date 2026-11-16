@@ -15,7 +15,7 @@ The right side is `cgMat n m g`, the block-diagonal matrix with blocks `spinMat 
 on `ℂ^{(n+1)(m+1)}` indexed by `CGIdx n m` (pairs `(k, l)` with `k ≤ min(n,m)`,
 `l ≤ n + m - 2k`).
 
-## Proof
+## Implementation notes
 
 Physlib proves the decomposition for the Lie algebra `sl₂`: `cgEquiv` is an explicit linear
 equivalence `V(n) ⊗ V(m) ≃ ⊕_k V(n + m - 2k)` (from the lowering strings of the highest-weight

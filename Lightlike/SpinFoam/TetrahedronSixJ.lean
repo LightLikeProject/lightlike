@@ -6,6 +6,24 @@ open Matrix Finset MeasureTheory Lightlike.SU2 Lightlike.Spin4 Lightlike.Pentago
 open PhyslibAlpha.Sl2
 open scoped Kronecker
 
+/-!
+# The tetrahedron integral is the square of a 6j symbol
+
+The integral over `SU(2)^4` of the six characters of a tetrahedron (`tetraInt`) is the square of a 6j
+symbol. The proof builds the invariant vector `svec J` of the three spins of a triad from the coupling
+matrix `Smat` and the singlet matrix `Wm`, shows that it is invariant and of norm one, and identifies
+it with the 3j vector `tV J` up to a phase (`uV_eq_phase_tV`); the four triads of the tetrahedron then
+give the sum of products of 3j symbols that defines the 6j symbol.
+
+## Main results
+
+* `Wm_eq_rev`, `spinMat_mul_Wm_mul_transpose`: the singlet matrix has one entry per row and is invariant.
+* `svec_invariant`, `svec_norm`: the invariant vector of a triad is invariant and has norm one.
+* `uV_eq_phase_tV`, `tV_invariant`, `tV_norm`: the 3j vector spans the same line.
+* `Zt_eq_phase_ZR`, `ZR_eq`: the tetrahedron value is a phase times a signed 6j symbol.
+* `tetraInt_eq_sixJ_sq`: the tetrahedron integral is the square of the 6j symbol of the six spins.
+-/
+
 namespace Lightlike.SpinFoam
 
 variable {n : ℕ}
