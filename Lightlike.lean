@@ -206,6 +206,8 @@ import Lightlike.PL.Theta
 import Lightlike.PL.Interlaced
 import Lightlike.PL.Hexagon
 import Lightlike.PL.Grating
+import Lightlike.PL.GratingPath
+import Lightlike.PL.TestsGratingPath
 import Lightlike.PL.TestsGrating
 import Lightlike.PL.HexFalse
 import Lightlike.PL.K33
