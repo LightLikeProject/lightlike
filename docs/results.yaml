@@ -1739,3 +1739,16 @@
   review: kernel-checked
   note: "For a C^3 symmetric Z^3-periodic matrix field h on R^3, Q_n(h) = sum over edges of (mu_e / (2 l_e)) delta_e'(0) for the periodic Kuhn complex of mesh 1/n with the squared lengths l_e^2 + eps mu_e(h), mu_e the degrees of freedom of the Regge interpolant (Christiansen 2011, eq. (5)), tends as n goes to infinity to the integral over the unit cube of -1/4 sum h_ij eps_ikl eps_jmn d_k d_m h_ln, the Saint-Venant form (Qn_converges). Proof: the lattice form of Q_n, the second-order expansion of the degrees of freedom, the vanishing of the zeroth and first order class sums, the pointwise identity of the 36 incidences, Riemann sums with cell sample points. Limits: convergence only, no rate; the interpolated lengths, not the geodesic lengths; one smooth periodic field on the standard cubical Kuhn complex; the sign of the deficit angle relative to 2 pi minus the angle sum is fixed by the numerical check, not by the paper. Trust checks: non-zero field, the numerical check scripts/regge/regge3d_linearized_check.py (sign and factor controls fail)."
   since: unreleased
+- id: LL-XXXX
+  title: Exterior Schwarzschild is a vacuum solution on the manifold layer
+  area: Spacetime
+  file: Lightlike/Spacetime/SchwarzschildManifold.lean
+  decls: [Lightlike.schwarzschild_coordMetric, Lightlike.schwarzschild_satisfiesEinstein, Lightlike.schwarzschild_ricci_eq_zero]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (7.29)", check: "Schwarzschild metric"}
+  review: kernel-checked
+  note: "The manifold form of LL-0005, through schwarzschild_coordMetric (in every chart the components of the manifold metric are the coordinate metric schMetric of LL-0005). The manifold is the chart domain r > 2M, 0 < theta < pi of the coordinates (t, r, theta, phi), with phi unrestricted, so it covers the exterior region with the axis removed and is not R x (2M, infinity) x S^2; there is no extension across r = 2M; signature is -+++. The vacuum equations and the vanishing of the Ricci tensor are proved for every C^infinity Levi-Civita connection of the metric; the smoothness of the Levi-Civita connection of a Lorentzian metric is not yet proved in the library. The comparison with Carroll's chapter 7 and with Wald's chapter 6 is pending: they were not read at the cited locations."
+  since: unreleased
