@@ -75,7 +75,10 @@ def momentumDensity (ξ : VectorField d) (h π : TensorField d) (x : Fin d → �
 /-- The kinetic part of the Hamiltonian constraint, `(tr (hπhπ) − (tr hπ)²/(d − 1))/√det h`. For `d = 3`
 this is the ADM `(π^{ij}π_ij − ½π²)/√g`; the coefficient `1/(d − 1)` is the one for which the algebra of the
 constraints closes in dimension `d` (for `d = 1` it is the Lean junk value `0`, so `2 ≤ d` is assumed
-wherever the algebra is stated). -/
+wherever the algebra is stated). Why `1/(d - 1)`: the Legendre transform gives `π^{ij} = √h (K^{ij} − K h^{ij})`,
+so `tr π = √h K (1 − d)`, and the kinetic term `K_ij K^ij − K²` becomes `π^{ij}π_ij − π²/(d − 1)`, which is
+`π^{ij}π_ij − π²/2` only at `d = 3`. A grid computation in dimension two (`scripts/adm_algebra_check.py`,
+numerical evidence) gives `{H[N],H[M]} = 4.97 = D[Y]` with this coefficient and `2.68` with `1/2`. -/
 def kineticDensity (h π : TensorField d) (x : Fin d → ℝ) : ℝ :=
   ((h x * π x * h x * π x).trace - (1 / ((d : ℝ) - 1)) * ((h x * π x).trace) ^ 2) / Real.sqrt (h x).det
 
