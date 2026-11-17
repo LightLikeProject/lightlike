@@ -8,10 +8,10 @@ probability `1/2`, so an ordered pair `x ≺ y` has probability `1/4` (`relProb_
 uniform points have `n (n - 1) / 4` relations in expectation (`expected_relations_diamond_one`).
 This is the case of spacetime dimension `2` of the Myrheim–Meyer count
 `⟨R⟩ = n (n - 1) Γ(D + 1) Γ(D / 2) / (4 Γ(3 D / 2))`, which at `D = 2` is `n (n - 1) / 4`.
-**Scope.** Only the dimension `D = 2` is proved here; the value `1/20` at `D = 4` is proved in
-`Lightlike/CausalSets/Myrheim4D.lean`, and the formula in general dimension is the open proof task
-`T-CS2-P1`. The comparison of the formula with the sources is pending: they have not been read at a
-location.
+**Scope.** Only the dimension `D = 2` is proved here, by light-cone coordinates; the value `1/20` at
+`D = 4` is in `Lightlike/CausalSets/Myrheim4D.lean`, and the formula in every dimension is proved in
+`Lightlike/CausalSets/MyrheimGen.lean` (`myrheimMeyer_eq`; the task `T-CS2-P1` states it). The
+comparison of the formula with the sources is pending: they have not been read at a location.
 
 The proof passes to light-cone coordinates `(t + x, t - x)`, in which the diamond is the unit square
 and the causal order is the coordinatewise order; two independent coordinates are ordered with

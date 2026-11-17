@@ -11,7 +11,7 @@ boost along the spatial direction of `w` (`boost`): the boost is linear, preserv
 because a linear map preserving the form has `det² = 1` (`det_sq_of_mSq`), so it preserves
 Lebesgue measure; then a rescaling by `τ` gives the unit diamond. A lightlike `w` is approached from
 above. This is part of a bridge between Lorentzian geometry and causal sets: the interval volume is
-the input of the Myrheim–Meyer count of `Lightlike/CausalSets/Myrheim4D.lean`.
+the input of the Myrheim–Meyer count of `Lightlike/CausalSets/MyrheimGen.lean`.
 
 ## References
 

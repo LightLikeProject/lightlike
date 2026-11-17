@@ -1,4 +1,4 @@
-import Lightlike.CausalSets.Myrheim
+import Lightlike.CausalSets.MyrheimGen
 
 /-!
 # Task T-CS2-P1
@@ -49,6 +49,6 @@ namespace Lightlike.CausalSets
 theorem myrheimMeyer (d : ℕ) :
     relProb d = Real.Gamma ((d : ℝ) + 2) * Real.Gamma (((d : ℝ) + 1) / 2) /
       (4 * Real.Gamma (3 * ((d : ℝ) + 1) / 2)) := by
-  sorry
+  exact myrheimMeyer_eq d
 
 end Lightlike.CausalSets

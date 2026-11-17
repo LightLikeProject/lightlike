@@ -7,7 +7,8 @@ relations is n (n - 1) p.
 * Exact (SymPy): the 1+1 diamond gives 1/4 (light-cone coordinates u = t + x, v = t - x make it the
   unit square, ordered coordinatewise); the rectangle [0,1] x [0,2] (time extent 1, space extent 2)
   gives the integral of (1 - s)(s - s^2/4) over [0,1], which is 7/48.
-* Myrheim-Meyer formula Gamma(D+1) Gamma(D/2) / (4 Gamma(3D/2)): 1/4 at D = 2 and 1/20 at D = 4.
+* Myrheim-Meyer formula Gamma(D+1) Gamma(D/2) / (4 Gamma(3D/2)): 1/2 at D = 1, 1/4 at D = 2, 4/35 at
+  D = 3 and 1/20 at D = 4; it equals the Beta form (d/2) B((d+3)/2, d) of the proof (d = D - 1).
 * Monte Carlo (numpy, fixed seed): the 1+1 diamond sampled in (t, x) coordinates, the 1+1 rectangle,
   and the 3+1 diamond, which agree with the exact values to the statistical error.
 * Wrong-input controls, each must be detected: the rectangle value is not the diamond value; a
@@ -36,6 +37,15 @@ check("Myrheim-Meyer D=4 is 1/20", simplify(mm(4) - Rational(1, 20)) == 0)
 unit_square = integrate((1 - s) * (2 * s - s**2), (s, 0, 1))
 check("square [0,1]x[0,1] in (t,x) also gives 1/4 (coincidence of the 1+1 case)",
       simplify(unit_square - Rational(1, 4)) == 0)
+
+# the Beta-integral form of the proof, (d/2) B((d+3)/2, d), equals the Gamma form for d = 1..8
+from sympy import beta as sym_beta
+for dd in range(1, 9):
+    ok = simplify(gamma(Rational(dd + 3, 2)) * gamma(dd) / gamma(Rational(3 * dd + 3, 2)) * Rational(dd, 2)
+                  - mm(dd + 1)) == 0
+    check(f"Beta form (d/2) B((d+3)/2, d) = Myrheim-Meyer formula at D={dd + 1}", ok)
+check("Myrheim-Meyer D=1 (two points of an interval) is 1/2", simplify(mm(1) - Rational(1, 2)) == 0)
+check("Myrheim-Meyer D=3 is 4/35", simplify(mm(3) - Rational(4, 35)) == 0)
 
 rng = np.random.default_rng(20240607)
 
@@ -67,6 +77,8 @@ d2 = mc("diamond", 2)
 check(f"Monte Carlo 1+1 diamond {d2:.4f} vs 1/4", abs(d2 - 0.25) < TOL)
 r2 = mc((1.0, 2.0), 2)
 check(f"Monte Carlo 1+1 rectangle {r2:.4f} vs 7/48", abs(r2 - 7 / 48) < TOL)
+d3 = mc("diamond", 3)
+check(f"Monte Carlo 2+1 diamond {d3:.4f} vs 4/35", abs(d3 - 4 / 35) < TOL)
 d4 = mc("diamond", 4)
 check(f"Monte Carlo 3+1 diamond {d4:.4f} vs 1/20", abs(d4 - 1 / 20) < TOL)
 
