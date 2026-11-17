@@ -34,7 +34,7 @@ Lemmas about them, which a proof may use:
 * `mvfderiv_gamHat_coord` (`Lightlike/Spacetime/ChartAgreement.lean`)
 * `satisfiesEinstein_iff_chart_proved` (`Lightlike/Spacetime/ChartAgreement.lean`)
 * `leviCivita_unique` (`Lightlike/Spacetime/LeviCivita.lean`)
-* `koszul_of_isLeviCivita` (`Lightlike/Spacetime/LeviCivita.lean`)
+* `einsteinField_eq_bilOf` (`Lightlike/Spacetime/ChartTensor.lean`)
 
 Everything they depend on, and the further lemmas about them, in one block:
 

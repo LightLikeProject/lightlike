@@ -32,8 +32,8 @@ Lemmas about them, which a proof may use:
 * `ricciAt_eq_sum` (`Lightlike/Spacetime/CurvatureSymmetries.lean`)
 * `leviCivita_unique` (`Lightlike/Spacetime/LeviCivita.lean`)
 * `mvfderiv_gamHat_coord` (`Lightlike/Spacetime/ChartAgreement.lean`)
+* `einsteinField_eq_bilOf` (`Lightlike/Spacetime/ChartTensor.lean`)
 * `koszul_of_isLeviCivita` (`Lightlike/Spacetime/LeviCivita.lean`)
-* `scalarCurvatureAt_coord` (`Lightlike/Spacetime/ChartAgreement.lean`)
 
 Everything they depend on, and the further lemmas about them, in one block:
 
