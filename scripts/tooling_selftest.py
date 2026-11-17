@@ -542,6 +542,21 @@ expect("tasks sync: a proof task proven on main has its issue closed, once",
        len(_on(_s6, "T-X1-P1", "close")) == 1 and "has no `sorry`" in _on(_s6, "T-X1-P1", "close")[0]["body"]
        and not _on(tk.sync_plan(_ts6, _cfg2, _data6, _card)[1], "T-X1-P1", "close"))
 
+with tempfile.TemporaryDirectory() as d:
+    tmp = pathlib.Path(d)
+    (tmp / "Lightlike").mkdir()
+    (tmp / "Tasks").mkdir()
+    (tmp / "Lightlike" / "A.lean").write_text("theorem Lightlike.A.done (n : Nat) : n + 0 = n := rfl\n")
+    _dt = [{"id": "T-X1-P1", "kind": "proof", "file": "Tasks/T.lean", "decl": "Lightlike.Tasks.t"}]
+    (tmp / "Tasks" / "T.lean").write_text("theorem Lightlike.Tasks.t (n : Nat) : n + 0 = n := by\n  sorry\n")
+    _dup_open = tk.library_duplicates(_dt, tmp)
+    (tmp / "Tasks" / "T.lean").write_text("theorem Lightlike.Tasks.t (n : Nat) : n + 0 = n := by\n  rfl\n")
+    _dup_done = tk.library_duplicates(_dt, tmp)
+expect("tasks check: an open proof task whose statement the library proves is a duplicate",
+       list(_dup_open) == ["T-X1-P1"])
+expect("tasks check: once the task's own sorry is filled it is done, not a duplicate",
+       _dup_done == {})
+
 import doc_refs_check as drc  # noqa: E402
 with tempfile.TemporaryDirectory() as d:
     tmp = pathlib.Path(d)

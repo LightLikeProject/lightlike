@@ -1,4 +1,5 @@
 import Lightlike.TuraevViro.TuraevViro
+import Lightlike.TuraevViro.Reflect.QDougallAll
 
 /-!
 # Task T-QU1-P5
@@ -30,6 +31,7 @@ Lemmas about them, which a proof may use:
 * `TV.turaevViro_move14` (`Lightlike/TuraevViro/TuraevViro.lean`)
 * `TV.qOrthogonality_three` (`Lightlike/TuraevViro/LevelOne.lean`)
 * `TV.Refl.qOrthogonality_of` (`Lightlike/TuraevViro/Reflect/OrthConditional.lean`)
+* `TV.Refl.qOrthogonality_proved` (`Lightlike/TuraevViro/Reflect/QDougallAll.lean`)
 
 Everything they depend on, and the further lemmas about them, in one block:
 
@@ -58,6 +60,6 @@ namespace Lightlike.TV
 
 /-- **q-orthogonality** for every `r ≥ 2`. -/
 theorem qOrthogonality_all {r : ℕ} (hr : 2 ≤ r) : qOrthogonality hr := by
-  sorry
+  exact Refl.qOrthogonality_proved hr
 
 end Lightlike.TV
