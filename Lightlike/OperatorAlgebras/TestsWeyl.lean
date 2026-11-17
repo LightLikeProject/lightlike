@@ -8,9 +8,13 @@ One mode: `h = ℂ`. The squeezing `T (x + i y) = e^r x + i e^{-r} y` (that is, 
 preserves `σ(f, g) = Im ⟪f, g⟫` and has `α = cosh r`, `β = sinh r`, so `|α|² - |β|² = 1`. The dilation
 `f ↦ 2 f` does not preserve `σ`, so it is not a Bogoliubov transformation (negative control).
 
-Not checked here: infinitely many modes with constant `|β|` give a map that is not Hilbert–Schmidt
-(needs a Hilbert basis of `ℓ²`).
+Infinitely many modes with constant `|β|`: a map `B` with `‖B f‖ = c ‖f‖`, `c > 0`, is not Hilbert–Schmidt
+when a Hilbert basis of the space is infinite (`not_isHilbertSchmidt_of_norm_eq`), so by Shale's criterion
+the transformation with antilinear part `B` would not be implementable. The concrete diagonal squeezing of
+`ℓ²` (every mode squeezed by the same `r ≠ 0`) is not constructed here.
 -/
+
+universe u
 
 namespace Lightlike.OperatorAlgebras
 
@@ -77,5 +81,18 @@ theorem dilation_not_symplectic :
   have := h 1 Complex.I
   simp [symp, inner] at this
   norm_num at this
+
+/-- **Infinitely many modes of constant `|β|`**: a map `B` of a Hilbert space with `‖B f‖ = c ‖f‖` for
+`c > 0` is not Hilbert–Schmidt as soon as some Hilbert basis is infinite, because `∑ ‖B bᵢ‖² = ∑ c²`
+diverges. -/
+theorem not_isHilbertSchmidt_of_norm_eq {h : Type u} [NormedAddCommGroup h] [InnerProductSpace ℂ h]
+    {B : h → h} {c : ℝ} (hc : 0 < c) (hB : ∀ f, ‖B f‖ = c * ‖f‖) {ι : Type u}
+    (b : HilbertBasis ι ℂ h) [Infinite ι] : ¬ IsHilbertSchmidt B := by
+  intro hHS
+  have hs := hHS ι b
+  have hn : ∀ i, ‖B (b i)‖ ^ 2 = c ^ 2 := fun i => by
+    rw [hB, b.orthonormal.norm_eq_one, mul_one]
+  simp only [hn] at hs
+  exact (pow_pos hc 2).ne' (tendsto_const_nhds_iff.mp hs.tendsto_cofinite_zero)
 
 end Lightlike.OperatorAlgebras

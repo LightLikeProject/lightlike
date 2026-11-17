@@ -21,7 +21,7 @@ antilinear part [3]. A representation of the Weyl relations is a family of unita
 `W f ∘ W g = exp (-i Im ⟪f, g⟫ / 2) W (f + g)`, and a Fock representation has a cyclic unit vector with the
 vacuum expectation `exp (-‖f‖² / 4)` [3]. Shale's criterion says that a Bogoliubov transformation is
 implemented by a unitary of the Fock representation exactly when its antilinear part is Hilbert–Schmidt {2}.
-In one mode the squeezing has `|α|² - |β|² = 1` and the dilation `f ↦ 2 f` is not symplectic [4]. The
+In one mode the squeezing has `|α|² - |β|² = 1` and the dilation `f ↦ 2 f` is not symplectic [4]. A map with `‖B f‖ = c ‖f‖`, `c > 0`, is not Hilbert–Schmidt when a Hilbert basis is infinite [4]. On `L²(ℝ)` translation `ψ(x + t)` is a strongly continuous unitary group [5], and its generator is `-i d/dx` on `C²` functions with compact support, not `+i d/dx` [6]. The
 Fock space itself is not built here, and a Fock representation is characterized by its vacuum. The
 unbounded spectral theorem is not in Mathlib. Stone's theorem and Shale's criterion are [TODO] here.
 
@@ -38,7 +38,14 @@ unbounded spectral theorem is not in Mathlib. Stone's theorem and Shale's criter
    `OperatorAlgebras.Implements`
 4. Lightlike/OperatorAlgebras/TestsWeyl.lean - `OperatorAlgebras.squeezeMap`,
    `OperatorAlgebras.squeeze`, `OperatorAlgebras.squeeze_alpha`, `OperatorAlgebras.squeeze_beta`,
-   `OperatorAlgebras.squeeze_norm_sq`, `OperatorAlgebras.dilation_not_symplectic`
+   `OperatorAlgebras.squeeze_norm_sq`, `OperatorAlgebras.dilation_not_symplectic`,
+   `OperatorAlgebras.not_isHilbertSchmidt_of_norm_eq`
+5. Lightlike/OperatorAlgebras/Translation.lean - `OperatorAlgebras.L2R`,
+   `OperatorAlgebras.shiftL`, `OperatorAlgebras.translationGroup`
+6. Lightlike/OperatorAlgebras/GeneratorTranslation.lean - `OperatorAlgebras.norm_toLp_le`,
+   `OperatorAlgebras.taylor_bound`, `OperatorAlgebras.ofCS`,
+   `OperatorAlgebras.translationGroup_hasDerivAt`, `OperatorAlgebras.translationGroup_generator_ofCS`,
+   `OperatorAlgebras.translationGroup_generator_ne`, `OperatorAlgebras.exists_core_ne_zero`
 
 ## References
 
