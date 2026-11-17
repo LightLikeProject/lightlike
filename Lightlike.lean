@@ -126,7 +126,9 @@ import Lightlike.Asymptotics.ValleyTests
 import Lightlike.CausalSets.Basic
 import Lightlike.CausalSets.ConeOrder
 import Lightlike.CausalSets.Expected
+import Lightlike.CausalSets.IntervalVolume
 import Lightlike.CausalSets.Myrheim
+import Lightlike.CausalSets.Myrheim4D
 import Lightlike.CausalSets.Rectangle
 import Lightlike.CausalSets.Sprinkling
 import Lightlike.CausalSets.TestsCausalSets

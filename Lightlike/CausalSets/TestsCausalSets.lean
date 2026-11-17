@@ -1,4 +1,5 @@
-import Lightlike.CausalSets.Myrheim
+import Lightlike.CausalSets.Myrheim4D
+import Lightlike.CausalSets.Rectangle
 
 /-!
 # Checks of the causal-set definitions
@@ -55,6 +56,12 @@ is `1/2`. -/
 example : ∫ ω, (relCount {p : (Fin 2 → ℝ) × (Fin 2 → ℝ) | coneLT p.1 p.2} ω : ℝ)
     ∂Measure.pi (fun _ : Fin 2 => diamondMeasure 1) = 1 / 2 := by
   rw [expected_relations_diamond_one]; norm_num
+
+/-- In `3 + 1` dimensions two uniform points of the diamond are related with probability `1/20`, so
+the expected number of relations of two points is `1/10`, and not the `1/2` of `1 + 1` dimensions. -/
+example : ∫ ω, (relCount {p : (Fin 4 → ℝ) × (Fin 4 → ℝ) | coneLT p.1 p.2} ω : ℝ)
+    ∂Measure.pi (fun _ : Fin 2 => diamondMeasure 3) = 1 / 10 := by
+  rw [expected_relations_diamond_three]; norm_num
 
 /-- The diamond measure is a probability measure (non-vacuity of the hypotheses of the
 sprinkling theorems). -/
