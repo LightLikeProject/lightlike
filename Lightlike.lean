@@ -543,6 +543,7 @@ import Lightlike.SU2.SpinRep
 import Lightlike.SU2.Su2Exp
 import Lightlike.Spacetime.ChartChange
 import Lightlike.Spacetime.BianchiSecond
+import Lightlike.Spacetime.ChartTensor
 import Lightlike.Spacetime.ChartAgreement
 import Lightlike.Spacetime.ChartConnection
 import Lightlike.Spacetime.ChartCovariant
