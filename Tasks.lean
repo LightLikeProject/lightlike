@@ -19,6 +19,14 @@ import Tasks.GE2.T_GE2_P15
 import Tasks.GE2.T_GE2_P16
 import Tasks.GE2.T_GE2_P17
 import Tasks.GE2.T_GE2_P18
+import Tasks.OP.T_OP1_P1
+import Tasks.OP.T_OP1_P2
+import Tasks.OP.T_OP1_P3
+import Tasks.OP.T_OP1_P4
+import Tasks.OP.T_OP1_P5
+import Tasks.OP.T_OP2_P1
+import Tasks.OP.T_OP2_P2
+import Tasks.OP.T_OP2_P3
 import Tasks.QU.T_QU1_P1
 import Tasks.QU.T_QU1_P2
 import Tasks.QU.T_QU1_P3
