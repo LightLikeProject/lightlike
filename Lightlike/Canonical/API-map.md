@@ -31,15 +31,15 @@ the momentum constraint of the structure function.
 
 ## Lean References
 
-1. Lightlike/Canonical/ADM.lean - `hamiltonianDensity`, `momentumDensity`, `hamiltonianConstraint`,
-   `momentumConstraint`, `admBracket`
-2. Lightlike/Tests/ADM.lean - `flat_hamiltonian`, `flat_momentum`, `wrong_momentum_violates`,
-   `wrong_hamiltonian_violates`
-3. Lightlike/Canonical/MomentumBracket.lean - `isPiGradient_momentumConstraint`, `bracket_momentum_momentum`
-4. Lightlike/Canonical/HamiltonianBracket.lean - `admBracket_momentum_hamiltonian`
-5. Lightlike/Canonical/CurvatureJet.lean - `scalarCurvature_eq_Rjet`, `differentiableAt_Rjet`
-6. Lightlike/Canonical/CurvatureCovariance.lean - `hasDerivAt_scalar_lie`
-7. Lightlike/Canonical/KineticCovariance.lean - `dkinJ_lie`
+1. Lightlike/Canonical/ADM.lean - `Lightlike.Canonical.hamiltonianDensity`, `Lightlike.Canonical.momentumDensity`, `Lightlike.Canonical.hamiltonianConstraint`,
+   `Lightlike.Canonical.momentumConstraint`, `Lightlike.Canonical.admBracket`
+2. Lightlike/Tests/ADM.lean - `Lightlike.Canonical.flat_hamiltonian`, `Lightlike.Canonical.flat_momentum`, `Lightlike.Canonical.wrong_momentum_violates`,
+   `Lightlike.Canonical.wrong_hamiltonian_violates`
+3. Lightlike/Canonical/MomentumBracket.lean - `Lightlike.Canonical.isPiGradient_momentumConstraint`, `Lightlike.Canonical.bracket_momentum_momentum`
+4. Lightlike/Canonical/HamiltonianBracket.lean - `Lightlike.Canonical.admBracket_momentum_hamiltonian`
+5. Lightlike/Canonical/CurvatureJet.lean - `Lightlike.Canonical.scalarCurvature_eq_Rjet`, `Lightlike.Canonical.differentiableAt_Rjet`
+6. Lightlike/Canonical/CurvatureCovariance.lean - `Lightlike.Canonical.hasDerivAt_scalar_lie`
+7. Lightlike/Canonical/KineticCovariance.lean - `Lightlike.Canonical.dkinJ_lie`
 
 ## References
 

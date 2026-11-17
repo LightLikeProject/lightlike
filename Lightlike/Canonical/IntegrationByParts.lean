@@ -80,8 +80,8 @@ lemma integrable_pd {F : (Fin d → ℝ) → ℝ} (hF : ContDiff ℝ ∞ F) (hFc
 theorem integral_sum_pd_eq_zero {F : Fin d → (Fin d → ℝ) → ℝ} (hF : ∀ k, ContDiff ℝ ∞ (F k))
     (hFc : ∀ k, HasCompactSupport (F k)) :
     Integrable (fun x => ∑ k, Lightlike.pd k (F k) x) volume ∧ ∫ x, ∑ k, Lightlike.pd k (F k) x = 0 := by
-  refine ⟨integrable_finset_sum _ fun k _ => integrable_pd (hF k) (hFc k) k, ?_⟩
-  rw [integral_finset_sum _ fun k _ => integrable_pd (hF k) (hFc k) k]
+  refine ⟨integrable_finsetSum _ fun k _ => integrable_pd (hF k) (hFc k) k, ?_⟩
+  rw [integral_finsetSum _ fun k _ => integrable_pd (hF k) (hFc k) k]
   exact Finset.sum_eq_zero fun k _ => integral_pd_eq_zero ((hF k).of_le (by simp)) (hFc k) k
 
 end Lightlike.Canonical
