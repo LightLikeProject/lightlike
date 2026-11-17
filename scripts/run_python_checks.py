@@ -18,7 +18,7 @@ import argparse, ast, importlib.util, pathlib, re, subprocess, sys, time
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 # (path, slow?) -- slow = more than about 60 s on a laptop
 CHECKS = [
-    ("scripts/be_check.py", False), ("scripts/be_symmetry_check.py", True),
+    ("scripts/adm_algebra_check.py", False), ("scripts/be_check.py", False), ("scripts/be_symmetry_check.py", True),
     ("scripts/pentagon_dict_check.py", False), ("scripts/pr14_check.py", False),
     ("scripts/pr23_check.py", False), ("scripts/pr_asymptotics.py", False),
     ("scripts/causal_sets/cs2_check.py", False), ("scripts/pr_tree_check.py", False), ("scripts/sixj_zero_check.py", False),
