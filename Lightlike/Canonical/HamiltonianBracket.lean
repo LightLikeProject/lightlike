@@ -121,8 +121,8 @@ theorem bracket_pointwise {ξ : VectorField d} {N : (Fin d → ℝ) → ℝ}
 `{D[ξ], H[N]} = H[ξ^k ∂_k N]`, for smooth compactly supported `ξ`, `N` and smooth data `(h, π)` with `h` positive
 definite and `π` symmetric (the symmetry is not used in the proof).
 
-The comparison with the cited source (Hojman-Kuchar-Teitelboim 1976; Thiemann 2007, Chapter 1) is pending: neither
-has been read. Differences to be approved: (a) `C^∞` data and compactly supported test fields, `h` positive
+Comparison pending: the comparison with the cited source (Hojman-Kuchar-Teitelboim 1976; Thiemann 2007, Chapter 1) is pending: neither
+has been read. Differences, approved by the owner (17 November 2026): (a) the source's own setting, (b) as partial, (c) as convention, (d) and (e) as representation. Comparison pending: the comparison with the cited source is pending: (a) `C^∞` data and compactly supported test fields, `h` positive
 definite; (b) one global chart `ℝᵈ`, no manifold and no foliation; (c) units `16πG = 1` and the kinetic coefficient
 `1/(d - 1)` (`1/2` for `d = 3`); (d) the momentum constraint in the Lie-derivative form; (e) the bracket through
 `π`-gradients and Gateaux derivatives, and the sign conventions of `admBracket` and `lieBracket`. A grid

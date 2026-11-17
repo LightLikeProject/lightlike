@@ -135,8 +135,8 @@ theorem isPiGradient_momentumConstraint {ξ : VectorField d} (hξ : SmoothVec ξ
 /-- **The bracket of two smeared momentum constraints**: `{D[ξ], D[η]} = D[[ξ, η]]` for smooth,
 compactly supported shifts, smooth `h` and continuous `π`, with `[ξ,η]^k = ξ^j ∂_j η^k − η^j ∂_j ξ^k`.
 
-The comparison with the cited source (Hojman-Kuchar-Teitelboim 1976; Thiemann 2007) is pending: neither
-has been read. Differences to be approved: (a) `C^∞` data and compactly supported test fields, `π`
+Comparison pending: the comparison with the cited source (Hojman-Kuchar-Teitelboim 1976; Thiemann 2007) is pending: neither
+has been read. Differences, approved by the owner (17 November 2026): (a) the source's own setting, (b) as partial, (c) as convention, (d) and (e) as representation. Comparison pending: the comparison with the cited source is pending: (a) `C^∞` data and compactly supported test fields, `π`
 continuous; (b) one global chart `ℝᵈ`, no manifold and no foliation; (c) units `16πG = 1`; (d) the momentum
 constraint in the Lie-derivative form; (e) the bracket through `π`-gradients and Gateaux derivatives, and
 the sign conventions of `admBracket` and `lieBracket`. -/
