@@ -1666,6 +1666,78 @@
   review: kernel-checked
   note: "Theorem 7.7.5 of Hormander (ALPDO I), leading term: for a smooth phase phi on EuclideanSpace R^n and a smooth compactly supported amplitude a, with Im phi >= 0 on the support, the critical points in the support (Im phi = 0, d phi = 0) forming a finite set K of nondegenerate points (det(-iH) != 0), the integral of a e^{i lambda phi} equals the sum over K of e^{i lambda phi(x0)} (2 pi / lambda)^{n/2} det(-iH(x0))^{-1/2} a(x0) up to O(lambda^{-n/2-1}); the square root is the product of the principal roots of the eigenvalues of -iH (invSqrtDet). Away from the critical points the integral is O(lambda^{-k}) for every k (Theorem 7.7.1, nonstationary_phase). stationary_phase assumes Im phi >= 0 on the support of a only, so critical points on the boundary of the support are allowed; stationary_phase_of_isOpen assumes it on an open set containing the support, as Hormander does. The higher-order terms of the expansion in Theorem 7.7.5 are not stated."
   since: unreleased
+- id: LL-0127
+  title: The 3D Regge action of the Kuhn triangulation of a grid converges to half the Einstein-Hilbert action of a Riemannian metric
+  area: Regge
+  file: Lightlike/Regge/Conv3/ReggeConvergence.lean
+  decls: [Lightlike.Regge.Conv3.reggeAction3, Lightlike.Regge.Conv3.regge3d_tendsto]
+  status: proven
+  tier: frontier
+  source: structural
+  review: kernel-checked
+  note: "Part of T-RC6, which stays open for the general statement. For a Riemannian metric g on an open set U of R^3 containing the cube [0,2]^3, the Regge action of the Kuhn triangulation of the grid of mesh 1/N (the sum over the seven edge classes and the hinges with lower corner in [0,1)^3 of the geodesic length of the hinge times its deficit angle 2π minus the sum of the dihedral angles, all computed from the geodesic distance of g) tends to the integral over [0,1]^3 of (R/2)√det g, R the scalar curvature, as N tends to infinity. Proof: the hinge term is -ε^3 √(g(w,w)) c2 + O(ε^4) uniformly on compact sets (hinge_term, from the uniform class-sum expansion and the geodesic length expansion), the seven densities add up to (R/2)√det g at every point (jetStarCore_of_chart, LL-0093), and Riemann sums with sample points in the cells converge for a continuous function. Limits: convergence only, no rate; one chart and the standard cubical Kuhn triangulation, not Cheeger-Müller-Schrader's theorem for arbitrary fine triangulations of a manifold; Riemannian signature only. Trust checks: the hypotheses hold for the flat metric (limit 0) and for the round 3-sphere in stereographic coordinates (ReggeConvergenceTests.lean), and scripts/regge/regge3d_sphere_check.py computes the action from true geodesic lengths for the sphere: S_N = 6.140, 5.353, 4.958, 4.763 at N = 4, 8, 16, 32 against the limit 4.5712, the error halving as N doubles (observation, the theorem gives no rate); the reversed sign and a factor 2 are far from the computed values."
+  since: unreleased
+- id: LL-0128
+  title: The Regge action of a flat closed 3-complex is a quadratic form in the first variations of the lengths up to third order
+  area: Regge
+  file: Lightlike/Regge/Linear3/SecondOrder.lean
+  decls: [Lightlike.Regge.Linear3.regge_second_order]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: christiansen-2011, location: "Proposition 3.2", check: "constant Euclidean metric"}
+  review: kernel-checked
+  note: "Part of the linearization of 3D Regge calculus (T-RC3), which stays open. For a closed 3-complex K with non-degenerate edge lengths at which every deficit angle δ_e vanishes, and squared lengths varying along ℓ₀² + ε a, the Regge action Σ_e ℓ_e δ_e equals ε²/2 · Σ_e (a_e/(2ℓ₀_e)) δ_e'(0) + O(ε³), where δ_e'(0) is the derivative of the deficit angle along the line. Proof: Regge's equations dS = Σ δ_e dℓ_e (Schläfli's identity) give dS/dε = Σ ℓ_e' δ_e near 0, the dihedral angles are C³ in the squared lengths at admissible tuples, and a one-variable Taylor bound gives the remainder; this is the argument of Christiansen's Proposition 3.2, eq. (75) and its consequence (81), here for an arbitrary closed complex. The statement is non-vacuous: the periodic Kuhn complex of (ℤ/n)³ (n ≥ 3) with its Euclidean lengths is closed, non-degenerate and flat (torus_second_order, Lightlike/Regge/Linear3/TorusComplex.lean), and for the boundary of the 4-simplex with all lengths 1 every deficit angle is 2π − 3 arccos(1/3) > 0 (WrongModel.lean), so the flatness hypothesis is needed. Limits: fixed mesh (the constant M depends on the complex); one line of squared lengths; the identification of the coefficient with ⟨curl^t curl u', u'⟩ (Christiansen's Theorem 3.3) and the limit as the mesh tends to zero are not claimed; the lengths ℓ₀ are required positive on every vertex pair, which only normalises the values off the edges of the complex."
+  since: unreleased
+- id: LL-0129
+  title: On the 3-torus, the Saint-Venant form of the linearized Regge limit and the Fierz-Pauli form have the same integral
+  area: Regge
+  file: Lightlike/Regge/Linear3/FierzPauli.lean
+  decls: [Lightlike.Regge.Linear3.fp_identity, Lightlike.Regge.Linear3.div_Tfield, Lightlike.Regge.Linear3.saintVenant_eq_fierzPauli]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: hinterbichler-2012, location: "eq. (2.1)", check: "Fierz-Pauli"}
+  review: kernel-checked
+  note: "Part of the linearization of 3D Regge calculus (T-RC3), which stays open. For a C^3 symmetric field h of 3x3 matrices on R^3 invariant under integer translations, the integral over the unit cube of -1/4 Sum h_ij eps_ikl eps_jmn d_k d_m h_ln (the Saint-Venant form, the limit of Qn_converges) equals the integral of -1/4 Sum (d_l h_mn)^2 + 1/2 |div h|^2 - 1/2 (div h).(d tr h) + 1/4 |d tr h|^2, one half of the massless Fierz-Pauli Lagrangian of a time-independent field with the term d_m h_nl d_n h_ml written as (div h)^2 (saintVenant_eq_fierzPauli). Proof: the difference of the two densities is the divergence of an explicit periodic C^1 field (fp_identity, a polynomial identity for symmetric h, dh, dd; div_Tfield), and the integral of a periodic divergence over the unit cube is zero (integral_div_periodic, Mathlib's divergence theorem on the box). The hypothesis eq. (2.1) of the reference is the Fierz-Pauli action by name only; the comparison of the density with it is made in the module docstring, not by the source tool. Limits: C^3 periodic symmetric fields on the torus R^3/Z^3, Euclidean indices; that fpDens is the eta^2 coefficient of the cube integral of (R/2) sqrt(det g) for g = 1 + eta h is proved in a later entry (LL-0130), not here; no gauge condition, no mass term. Trust checks: scripts/regge/fierz_pauli_check.py integrates both densities over the unit cube for random periodic trigonometric fields (difference below 1e-13) and shows that a field with a non-periodic polynomial part gives a difference of about 2.8 (numerical evidence, not proof)."
+  since: unreleased
+- id: LL-0130
+  title: The eta^2 coefficient of the cube integral of the scalar-curvature density of 1 + eta h is half the integral of the Fierz-Pauli density, with an O(|eta|^3) remainder
+  area: Regge
+  file: Lightlike/Regge/Linear3/EtaCoefficient.lean
+  decls: [Lightlike.Regge.Linear3.eh_eta_sq_coeff, Lightlike.Regge.Linear3.eh_eta_sq_coeff_zero]
+  status: proven
+  tier: frontier
+  source: structural
+  review: kernel-checked
+  note: "Fourth step of the comparison of the linearized Regge action with the Einstein-Hilbert action (T-RC3 in dimension 3, which stays open). For a C-infinity symmetric Z^3-periodic matrix field h on R^3 there are C and eta_0 > 0 such that for |eta| <= eta_0 the integral over the unit cube of (R/2) sqrt(det g) for g = 1 + eta h differs from (eta^2/2) times the integral over the unit cube of the Fierz-Pauli density fpDens(dh) = -1/4 |dh|^2 + 1/2 |div h|^2 - 1/2 div h . d tr h + 1/4 |d tr h|^2 by at most C |eta|^3 (eh_eta_sq_coeff). The first coefficient integrates to zero because it is the divergence of the periodic field S_i = sum_j d_j h_ij - d_i tr h, and the second coefficient differs from fpDens by the divergence of an explicit periodic field T' (F2_eq in CurvaturePoly.lean), so both integrate by Mathlib's divergence theorem on the box with the faces cancelling by periodicity; the pointwise expansion is the uniform second-order expansion of the curvature density (feta_expansion) applied to the jet of h, restricted to the cube. Together with the convergence of the linearized Regge coefficient to the Saint-Venant form and the equality of the Saint-Venant and Fierz-Pauli integrals (LL-0129), this identifies the limit of the linearized Regge coefficient with the eta^2 coefficient of the integrated curvature density of 1 + eta h. Limits: dimension 3; the unit cube with periodic C-infinity symmetric fields (C-infinity as IsCoordMetric requires); the remainder constant is not explicit; the statement is about the integral of the density of the metric 1 + eta h, not about the Regge action, about interpolated or geodesic edge lengths or about a limit of triangulations; two parts of the 3D linearization (RC3) stay open: the envelope step relating geodesic edge lengths to the interpolated ones, and the 3D wrong-model control. Trust checks: the zero field satisfies the hypotheses (eh_eta_sq_coeff_zero); the coefficient for a non-zero field is checked numerically (scripts/regge/regge3d_linearized_check.py: the second eta-derivative of the integrated density equals the Fierz-Pauli integral to six digits for one random field), not in Lean."
+  since: unreleased
+- id: LL-0131
+  title: The Regge action of the periodic Kuhn complex of the 3-torus with geodesic lengths of a periodic Riemannian metric tends to the Einstein-Hilbert action
+  area: Regge
+  file: Lightlike/Regge/Linear3/TorusConvergence.lean
+  decls: [Lightlike.Regge.Linear3.torus_regge_converges]
+  status: proven
+  tier: frontier
+  source: structural
+  review: kernel-checked
+  note: "For a Z^3-periodic Riemannian metric g on R^3, the Regge action of the periodic Kuhn complex of the 3-torus with mesh 1/N and the geodesic edge lengths of g equals the lattice hinge sum of the convergence theorem on the cube (reggeAction_torus_eq; edges are in bijection with (cell, class) pairs, the dihedral angles are the angles of the squared corner distances, no boundary layer), so it converges to the integral over the unit cube of (R/2) sqrt(det g) (torus_regge_converges). Limits: convergence only, no rate; the standard cubical Kuhn triangulation of the torus; one periodic Riemannian metric; not the theorem of Cheeger, Mueller and Schrader for arbitrary fine triangulations of a manifold."
+  since: unreleased
+- id: LL-0132
+  title: The coefficient of the linearized Regge action of the periodic Kuhn complex converges to the Saint-Venant form
+  area: Regge
+  file: Lightlike/Regge/Linear3/LinearizedLimit.lean
+  decls: [Lightlike.Regge.Linear3.Qn_converges]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: christiansen-2011, location: "eq. (5)", check: "The degrees of freedom (5) make sense"}
+      - {ref: christiansen-2011, location: "Proposition 3.2", check: "constant Euclidean metric"}
+  review: kernel-checked
+  note: "For a C^3 symmetric Z^3-periodic matrix field h on R^3, Q_n(h) = sum over edges of (mu_e / (2 l_e)) delta_e'(0) for the periodic Kuhn complex of mesh 1/n with the squared lengths l_e^2 + eps mu_e(h), mu_e the degrees of freedom of the Regge interpolant (Christiansen 2011, eq. (5)), tends as n goes to infinity to the integral over the unit cube of -1/4 sum h_ij eps_ikl eps_jmn d_k d_m h_ln, the Saint-Venant form (Qn_converges). Proof: the lattice form of Q_n, the second-order expansion of the degrees of freedom, the vanishing of the zeroth and first order class sums, the pointwise identity of the 36 incidences, Riemann sums with cell sample points. Limits: convergence only, no rate; the interpolated lengths, not the geodesic lengths; one smooth periodic field on the standard cubical Kuhn complex; the sign of the deficit angle relative to 2 pi minus the angle sum is fixed by the numerical check, not by the paper. Trust checks: non-zero field, the numerical check scripts/regge/regge3d_linearized_check.py (sign and factor controls fail)."
 - id: LL-XXXX-a
   title: The bracket of two smeared momentum constraints is the smeared constraint of the Lie bracket of the shifts
   area: Canonical
