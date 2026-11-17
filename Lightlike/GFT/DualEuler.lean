@@ -1,4 +1,5 @@
 import Lightlike.GFT.Dual
+import Lightlike.GFT.Euler
 
 /-!
 # The Euler characteristic of the dual of a colored graph
@@ -126,6 +127,14 @@ theorem eulerChar_dual (G : ColoredGraph 2 V) : 2 * (dual G).eulerChar 3 = G.two
   unfold GradedPoset.eulerChar
   simp only [sum_range_succ, sum_range_zero, h0, h1, h2]
   push_cast
+  omega
+
+/-- **The two Euler characteristics agree**: the Euler characteristic `f₀ - f₁ + f₂` of the pseudo-complex
+`Δ_G` (`GradedPoset.eulerChar`) equals the integer `χ = twoChi2 / 2` of `ColoredGraph.euler`, so the
+dual's characteristic is defined once and `euler` is a name for the face count. -/
+theorem eulerChar_dual_eq_euler (G : ColoredGraph 2 V) : (dual G).eulerChar 3 = G.euler := by
+  have h1 := eulerChar_dual G
+  have h2 := two_mul_euler G
   omega
 
 end ColoredGraph
