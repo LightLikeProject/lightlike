@@ -301,8 +301,9 @@ colors restricted to the bubble of `σ` (an order-preserving bijection that lowe
 compared): Gurau states that the `p`-bubbles, as colored (stranded) graphs, *are* the link graphs of the
 `(n - p)`-simplices, where the link graph is the stranded graph of his Section 3.1; here the link is the poset of
 simplices containing `σ`, identified with the dual of the colored graph of the bubble by an order isomorphism, not
-an equality of graphs, and the stranded graph is not defined. Until a maintainer approves these differences, the
-result is partial. -/
+an equality of graphs, and the stranded graph is not defined. The maintainers approved this form on 17 November
+2026, as a difference of representation; if stranded graphs are defined in the library, their equivalence with
+this form becomes a task. -/
 theorem link_isDual_of_two_le (σ : DualSimplex G) (h : 2 ≤ (univ \ σ.colors).card) :
     ∃ (E : ℕ) (e : Fin (E + 1) ↪ Fin (D + 1)) (v0 : V),
       ∃ (_ : univ.image e = univ \ σ.colors) (_ : σ.bub = G.bubble (univ.image e) v0),
