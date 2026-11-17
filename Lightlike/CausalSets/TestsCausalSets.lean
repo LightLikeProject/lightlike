@@ -1,5 +1,6 @@
 import Lightlike.CausalSets.Myrheim4D
 import Lightlike.CausalSets.Rectangle
+import Lightlike.CausalSets.BetaReal
 
 /-!
 # Checks of the causal-set definitions
@@ -66,6 +67,15 @@ example : ∫ ω, (relCount {p : (Fin 4 → ℝ) × (Fin 4 → ℝ) | coneLT p.1
 /-- The diamond measure is a probability measure (non-vacuity of the hypotheses of the
 sprinkling theorems). -/
 example (d : ℕ) : IsProbabilityMeasure (diamondMeasure d) := inferInstance
+
+/-- The real Beta integral gives `B(2, 3) = 1/12`, which is the value of the integral of
+`s (1 - s)²` over `[0, 1]`. -/
+example : ∫ s in (0 : ℝ)..1, s ^ ((2 : ℝ) - 1) * (1 - s) ^ ((3 : ℝ) - 1) = 1 / 12 := by
+  rw [real_beta (by norm_num) (by norm_num)]
+  have e2 : Real.Gamma 2 = 1 := by simp
+  have e3 : Real.Gamma 3 = 2 := by simp
+  have e5 : Real.Gamma (2 + 3) = 24 := by norm_num
+  rw [e2, e3, e5]; norm_num
 
 end TestsCausalSets
 

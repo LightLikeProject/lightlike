@@ -124,6 +124,7 @@ import Lightlike.Asymptotics.UniformValleyTests
 import Lightlike.Asymptotics.Valley
 import Lightlike.Asymptotics.ValleyTests
 import Lightlike.CausalSets.Basic
+import Lightlike.CausalSets.BetaReal
 import Lightlike.CausalSets.ConeOrder
 import Lightlike.CausalSets.Expected
 import Lightlike.CausalSets.IntervalVolume

@@ -30,6 +30,10 @@ open Lightlike
 
 namespace Lightlike.CausalSets
 
+/-- The squared spatial length in `ℝ^{3+1}`. -/
+lemma spatialSq_four (v : Fin 4 → ℝ) : spatialSq v = v 1 ^ 2 + v 2 ^ 2 + v 3 ^ 2 := by
+  simp [spatialSq, Fin.sum_univ_succ, add_assoc]
+
 lemma gamma_five_half : Real.Gamma (5 / 2) = 3 * √Real.pi / 4 := by
   have h1 : Real.Gamma (5 / 2) = 3 / 2 * Real.Gamma (3 / 2) := by
     rw [show (5 / 2 : ℝ) = 3 / 2 + 1 by norm_num, Real.Gamma_add_one (by norm_num)]
@@ -271,20 +275,24 @@ lemma volume_above (p : Fin 4 → ℝ) (hp : p ∈ diamond 3) :
       ENNReal.ofReal (((1 - p 0) ^ 2 - (p 1 ^ 2 + p 2 ^ 2 + p 3 ^ 2)) ^ 2) *
         MeasureTheory.volume (diamond 3) := by
   have hset : {q : Fin 4 → ℝ | coneLE p q ∧ coneLE q (diamondTop 3)} =
-      (fun q => q + (-p)) ⁻¹' interval4 (diamondTop 3 - p) := by
+      (fun q => q + (-p)) ⁻¹' intervalSet (diamondTop 3 - p) := by
     ext q
-    simp only [Set.mem_ofPred_eq, Set.mem_preimage, interval4]
+    simp only [Set.mem_ofPred_eq, Set.mem_preimage, intervalSet]
     have e1 : q + -p - 0 = q - p := by simp [sub_eq_add_neg]
     have e2 : diamondTop 3 - p - (q + -p) = diamondTop 3 - q := by abel
     simp only [coneLE, e1, e2]
   rw [hset, measure_preimage_add_right]
   have hF : Fut (diamondTop 3 - p) := by
     rw [Fut_iff_coneLE]; exact hp.2
-  rw [volume_interval4_all hF]
+  rw [volume_interval_all (by norm_num) hF]
   have h0 : (diamondTop 3 - p) 0 = 1 - p 0 := by simp [diamondTop]
   have hs : spatialSq (diamondTop 3 - p) = p 1 ^ 2 + p 2 ^ 2 + p 3 ^ 2 := by
     rw [spatialSq_four]; simp [diamondTop]
+  have hx : 0 ≤ (1 - p 0) ^ 2 - (p 1 ^ 2 + p 2 ^ 2 + p 3 ^ 2) := by
+    have := hF.2; rw [h0, hs] at this; linarith
   rw [h0, hs]
+  congr 2
+  rw [show (3 + 1 : ℕ) = 2 * 2 from rfl, pow_mul, Real.sq_sqrt hx]
 
 lemma slice_measure (p : Fin 4 → ℝ) (hp : p ∈ diamond 3) :
     (MeasureTheory.volume.restrict (diamond 3)) {q : Fin 4 → ℝ | coneLT p q} =

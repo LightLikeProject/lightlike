@@ -1,15 +1,17 @@
-import Lightlike.CausalSets.Myrheim
+import Lightlike.CausalSets.Sprinkling
 
 /-!
-# The volume of a causal interval in `3 + 1` dimensions
+# The volume of a causal interval in `d + 1` dimensions
 
 The volume of the causal interval `{z | 0 ≼ z ≼ w}` between `0` and a future causal vector `w` of
-Minkowski space `ℝ^{3+1}` is the volume of the unit causal diamond times the fourth power of the
-proper time `τ(w) = √(w⁰² - |w⃗|²)` (`volume_interval4_all`). The proof moves `w` to `τ e₀` by a
-Lorentz boost (an explicit matrix of determinant `1` that preserves the Minkowski form and the
-future cone, `boostMat_det`, `boost_form`, `coneLE_boost`), then rescales by `τ`; a lightlike `w`
-is approached from above. This is part of a bridge between Lorentzian geometry and causal sets:
-the interval volume is the input of the Myrheim–Meyer count in `Lightlike/CausalSets/Myrheim4D.lean`.
+Minkowski space `ℝ^{d+1}` is the volume of the unit causal diamond times the power `d + 1` of the
+proper time `τ(w) = √(w⁰² - |w⃗|²)` (`volume_interval_all`). The proof moves `w` to `τ e₀` by a Lorentz
+boost along the spatial direction of `w` (`boost`): the boost is linear, preserves the Minkowski form
+(`boost_form`) and the future cone (`coneLE_boost`), and has determinant of absolute value `1`
+because a linear map preserving the form has `det² = 1` (`det_sq_of_mSq`), so it preserves
+Lebesgue measure; then a rescaling by `τ` gives the unit diamond. A lightlike `w` is approached from
+above. This is part of a bridge between Lorentzian geometry and causal sets: the interval volume is
+the input of the Myrheim–Meyer count of `Lightlike/CausalSets/Myrheim4D.lean`.
 
 ## References
 
@@ -25,155 +27,193 @@ open scoped Pointwise
 
 namespace Lightlike.CausalSets
 
-/-- The matrix of the **Lorentz boost** of `ℝ^{3+1}` along the unit vector `n` with Lorentz factor
-`g` and rapidity parameter `h` (`g² - h² = 1`): `t ↦ g t - h n·x`,
-`x ↦ x + ((g - 1) n·x - h t) n`. -/
-def boostMat (n : Fin 3 → ℝ) (g h : ℝ) : Matrix (Fin 4) (Fin 4) ℝ :=
-  !![g, -h * n 0, -h * n 1, -h * n 2;
-     -h * n 0, 1 + (g - 1) * n 0 * n 0, (g - 1) * n 0 * n 1, (g - 1) * n 0 * n 2;
-     -h * n 1, (g - 1) * n 1 * n 0, 1 + (g - 1) * n 1 * n 1, (g - 1) * n 1 * n 2;
-     -h * n 2, (g - 1) * n 2 * n 0, (g - 1) * n 2 * n 1, 1 + (g - 1) * n 2 * n 2]
+variable {d : ℕ}
 
-/-- The boost matrix has determinant `1` when `n` is a unit vector and `g² - h² = 1`, so the boost
-preserves Lebesgue measure. -/
-lemma boostMat_det (n : Fin 3 → ℝ) (g h : ℝ) (hn : n 0 ^ 2 + n 1 ^ 2 + n 2 ^ 2 = 1)
-    (hg : g ^ 2 - h ^ 2 = 1) : (boostMat n g h).det = 1 := by
-  rw [Matrix.det_succ_row_zero]
-  simp only [Fin.sum_univ_succ, Fin.sum_univ_zero, add_zero, Matrix.det_fin_three]
-  simp [boostMat, Fin.succAbove, Fin.lt_def]
-  linear_combination (g ^ 2 - g - h ^ 2) * hn + hg
+/-- The **Lorentz boost** of `ℝ^{d+1}` along the unit vector `n` of space, with Lorentz factor `g`
+and `h = g β` (`g² - h² = 1`): `t ↦ g t - h n·x`, `x ↦ x + ((g - 1) n·x - h t) n`. -/
+def boost (n : Fin d → ℝ) (g h : ℝ) (z : Fin (d + 1) → ℝ) : Fin (d + 1) → ℝ :=
+  Fin.cons (g * z 0 - h * ∑ i, n i * z i.succ)
+    (fun i => z i.succ + ((g - 1) * ∑ j, n j * z j.succ - h * z 0) * n i)
 
+lemma boost_zero (n : Fin d → ℝ) (g h : ℝ) (z : Fin (d + 1) → ℝ) :
+    boost n g h z 0 = g * z 0 - h * ∑ i, n i * z i.succ := by simp [boost]
 
-/-- The Lorentz boost as a map of `ℝ^{3+1}` (`boostMat n g h` acting on a vector). -/
-def boost (n : Fin 3 → ℝ) (g h : ℝ) (z : Fin 4 → ℝ) : Fin 4 → ℝ := (boostMat n g h).mulVec z
+lemma boost_succ (n : Fin d → ℝ) (g h : ℝ) (z : Fin (d + 1) → ℝ) (i : Fin d) :
+    boost n g h z i.succ = z i.succ + ((g - 1) * ∑ j, n j * z j.succ - h * z 0) * n i := by
+  simp [boost]
 
-lemma boost0 (n : Fin 3 → ℝ) (g h : ℝ) (z : Fin 4 → ℝ) :
-    boost n g h z 0 = g * z 0 - h * (n 0 * z 1 + n 1 * z 2 + n 2 * z 3) := by
-  simp [boost, boostMat, Matrix.mulVec, dotProduct, Fin.sum_univ_succ]; ring
+lemma spatialSq_eq_sum (v : Fin (d + 1) → ℝ) : spatialSq v = ∑ i : Fin d, v i.succ ^ 2 := rfl
 
-lemma boost1 (n : Fin 3 → ℝ) (g h : ℝ) (z : Fin 4 → ℝ) :
-    boost n g h z 1 = z 1 + ((g - 1) * (n 0 * z 1 + n 1 * z 2 + n 2 * z 3) - h * z 0) * n 0 := by
-  simp [boost, boostMat, Matrix.mulVec, dotProduct, Fin.sum_univ_succ]; ring
-
-lemma boost2 (n : Fin 3 → ℝ) (g h : ℝ) (z : Fin 4 → ℝ) :
-    boost n g h z 2 = z 2 + ((g - 1) * (n 0 * z 1 + n 1 * z 2 + n 2 * z 3) - h * z 0) * n 1 := by
-  simp [boost, boostMat, Matrix.mulVec, dotProduct, Fin.sum_univ_succ]; ring
-
-lemma boost3 (n : Fin 3 → ℝ) (g h : ℝ) (z : Fin 4 → ℝ) :
-    boost n g h z 3 = z 3 + ((g - 1) * (n 0 * z 1 + n 1 * z 2 + n 2 * z 3) - h * z 0) * n 2 := by
-  simp [boost, boostMat, Matrix.mulVec, dotProduct, Fin.sum_univ_succ]; ring
-
-lemma spatialSq_four (v : Fin 4 → ℝ) : spatialSq v = v 1 ^ 2 + v 2 ^ 2 + v 3 ^ 2 := by
-  simp [spatialSq, Fin.sum_univ_succ, add_assoc]
-
-/-- Lorentz invariance of the boost. -/
-lemma boost_form (n : Fin 3 → ℝ) (g h : ℝ) (hn : n 0 ^ 2 + n 1 ^ 2 + n 2 ^ 2 = 1)
-    (hg : g ^ 2 - h ^ 2 = 1) (z : Fin 4 → ℝ) :
+/-- The boost preserves the Minkowski form. -/
+lemma boost_form (n : Fin d → ℝ) (g h : ℝ) (hn : ∑ i, n i ^ 2 = 1) (hg : g ^ 2 - h ^ 2 = 1)
+    (z : Fin (d + 1) → ℝ) :
     (boost n g h z 0) ^ 2 - spatialSq (boost n g h z) = z 0 ^ 2 - spatialSq z := by
-  rw [spatialSq_four, spatialSq_four, boost0, boost1, boost2, boost3]
-  generalize n 0 = n0 at hn ⊢
-  generalize n 1 = n1 at hn ⊢
-  generalize n 2 = n2 at hn ⊢
-  generalize z 0 = z0
-  generalize z 1 = z1
-  generalize z 2 = z2
-  generalize z 3 = z3
-  linear_combination (-g^2*n0^2*z1^2 - 2*g^2*n0*n1*z1*z2 - 2*g^2*n0*n2*z1*z3 - g^2*n1^2*z2^2 - 2*g^2*n1*n2*z2*z3 - g^2*n2^2*z3^2 - g^2*z1^2 + 2*g*h*n0*z0*z1 + 2*g*h*n1*z0*z2 + 2*g*h*n2*z0*z3 + 2*g*n0^2*z1^2 + 4*g*n0*n1*z1*z2 + 4*g*n0*n2*z1*z3 + 2*g*n1^2*z2^2 + 4*g*n1*n2*z2*z3 + 2*g*n2^2*z3^2 - h^2*z0^2 + h^2*z1^2 - 2*h*n0*z0*z1 - 2*h*n1*z0*z2 - 2*h*n2*z0*z3 - n0^2*z1^2 - 2*n0*n1*z1*z2 - 2*n0*n2*z1*z3 - n1^2*z2^2 - 2*n1*n2*z2*z3 - n2^2*z3^2 + z1^2) * hn + (-2*n0*n1*z1*z2 - 2*n0*n2*z1*z3 + n1^2*z1^2 - n1^2*z2^2 - 2*n1*n2*z2*z3 + n2^2*z1^2 - n2^2*z3^2 + z0^2 - z1^2) * hg
+  set s := ∑ j, n j * z j.succ with hs
+  set c := (g - 1) * s - h * z 0 with hc
+  have h1 : spatialSq (boost n g h z) = spatialSq z + 2 * c * s + c ^ 2 := by
+    simp only [spatialSq_eq_sum, boost_succ, add_sq, Finset.sum_add_distrib, mul_pow, ← Finset.mul_sum, hn]
+    rw [← hc]
+    have : ∑ i : Fin d, 2 * z i.succ * (c * n i) = 2 * c * s := by
+      rw [hs, Finset.mul_sum]; refine Finset.sum_congr rfl fun i _ => by ring
+    rw [this]; ring
+  rw [h1, boost_zero]
+  rw [← hs]
+  have hc' : c = (g - 1) * s - h * z 0 := hc
+  rw [hc']
+  linear_combination (z 0 ^ 2 - s ^ 2) * hg
 
+lemma boost_inv (n : Fin d → ℝ) (g h : ℝ) (hn : ∑ i, n i ^ 2 = 1) (hg : g ^ 2 - h ^ 2 = 1)
+    (z : Fin (d + 1) → ℝ) : boost n g (-h) (boost n g h z) = z := by
+  set s := ∑ j, n j * z j.succ with hs
+  have hs' : ∑ j, n j * boost n g h z j.succ = s + ((g - 1) * s - h * z 0) := by
+    simp only [boost_succ]
+    have : ∀ j, n j * (z j.succ + ((g - 1) * s - h * z 0) * n j) =
+        n j * z j.succ + ((g - 1) * s - h * z 0) * n j ^ 2 := fun j => by ring
+    rw [← hs]
+    simp only [this, Finset.sum_add_distrib, ← Finset.mul_sum, hn]; rw [← hs]; ring
+  funext i
+  refine Fin.cases ?_ (fun j => ?_) i
+  · rw [boost_zero, boost_zero, hs']
+    rw [← hs]
+    linear_combination (z 0) * hg
+  · rw [boost_succ, boost_succ, boost_zero, hs']
+    rw [← hs]
+    linear_combination (s * n j) * hg
 
-lemma boostMat_inv (n : Fin 3 → ℝ) (g h : ℝ) (hn : n 0 ^ 2 + n 1 ^ 2 + n 2 ^ 2 = 1)
-    (hg : g ^ 2 - h ^ 2 = 1) : boostMat n g (-h) * boostMat n g h = 1 := by
-  ext i j
-  fin_cases i <;> fin_cases j
-  · simp [boostMat, Matrix.mul_apply, Fin.sum_univ_succ]
-    linear_combination (-h^2) * hn + (1) * hg
-  · simp [boostMat, Matrix.mul_apply, Fin.sum_univ_succ]
-    linear_combination (g*h*(n 0) - h*(n 0)) * hn + (0) * hg
-  · simp [boostMat, Matrix.mul_apply, Fin.sum_univ_succ]
-    linear_combination (g*h*(n 1) - h*(n 1)) * hn + (0) * hg
-  · simp [boostMat, Matrix.mul_apply, Fin.sum_univ_succ]
-    linear_combination (g*h*(n 2) - h*(n 2)) * hn + (0) * hg
-  · simp [boostMat, Matrix.mul_apply, Fin.sum_univ_succ]
-    linear_combination (-g*h*(n 0) + h*(n 0)) * hn + (0) * hg
-  · simp [boostMat, Matrix.mul_apply, Fin.sum_univ_succ]
-    linear_combination (g^2*(n 0)^2 + g^2 - 2*g*(n 0)^2 - h^2 + (n 0)^2 - 1) * hn + (-(n 1)^2 - (n 2)^2 + 1) * hg
-  · simp [boostMat, Matrix.mul_apply, Fin.sum_univ_succ]
-    linear_combination (g^2*(n 0)*(n 1) - 2*g*(n 0)*(n 1) + (n 0)*(n 1)) * hn + ((n 0)*(n 1)) * hg
-  · simp [boostMat, Matrix.mul_apply, Fin.sum_univ_succ]
-    linear_combination (g^2*(n 0)*(n 2) - 2*g*(n 0)*(n 2) + (n 0)*(n 2)) * hn + ((n 0)*(n 2)) * hg
-  · simp [boostMat, Matrix.mul_apply, Fin.sum_univ_succ]
-    linear_combination (-g*h*(n 1) + h*(n 1)) * hn + (0) * hg
-  · simp [boostMat, Matrix.mul_apply, Fin.sum_univ_succ]
-    linear_combination (g^2*(n 0)*(n 1) - 2*g*(n 0)*(n 1) + (n 0)*(n 1)) * hn + ((n 0)*(n 1)) * hg
-  · simp [boostMat, Matrix.mul_apply, Fin.sum_univ_succ]
-    linear_combination (g^2*(n 1)^2 - 2*g*(n 1)^2 + (n 1)^2) * hn + ((n 1)^2) * hg
-  · simp [boostMat, Matrix.mul_apply, Fin.sum_univ_succ]
-    linear_combination (g^2*(n 1)*(n 2) - 2*g*(n 1)*(n 2) + (n 1)*(n 2)) * hn + ((n 1)*(n 2)) * hg
-  · simp [boostMat, Matrix.mul_apply, Fin.sum_univ_succ]
-    linear_combination (-g*h*(n 2) + h*(n 2)) * hn + (0) * hg
-  · simp [boostMat, Matrix.mul_apply, Fin.sum_univ_succ]
-    linear_combination (g^2*(n 0)*(n 2) - 2*g*(n 0)*(n 2) + (n 0)*(n 2)) * hn + ((n 0)*(n 2)) * hg
-  · simp [boostMat, Matrix.mul_apply, Fin.sum_univ_succ]
-    linear_combination (g^2*(n 1)*(n 2) - 2*g*(n 1)*(n 2) + (n 1)*(n 2)) * hn + ((n 1)*(n 2)) * hg
-  · simp [boostMat, Matrix.mul_apply, Fin.sum_univ_succ]
-    linear_combination (g^2*(n 2)^2 - 2*g*(n 2)^2 + (n 2)^2) * hn + ((n 2)^2) * hg
-
-/-- `v` is in the closed future light cone of `ℝ^{3+1}`: `0 ≤ v⁰` and `|v⃗|² ≤ (v⁰)²`. -/
-def Fut (v : Fin 4 → ℝ) : Prop := 0 ≤ v 0 ∧ spatialSq v ≤ v 0 ^ 2
-
-lemma boost_fut (n : Fin 3 → ℝ) (g h : ℝ) (hn : n 0 ^ 2 + n 1 ^ 2 + n 2 ^ 2 = 1)
-    (hg : g ^ 2 - h ^ 2 = 1) (hg0 : 0 < g) {z : Fin 4 → ℝ} (hz : Fut z) :
-    Fut (boost n g h z) := by
-  obtain ⟨hz0, hz1⟩ := hz
+lemma boost_fut (n : Fin d → ℝ) (g h : ℝ) (hn : ∑ i, n i ^ 2 = 1) (hg : g ^ 2 - h ^ 2 = 1)
+    (hg0 : 0 < g) {z : Fin (d + 1) → ℝ} (hz0 : 0 ≤ z 0) (hz : spatialSq z ≤ z 0 ^ 2) :
+    0 ≤ boost n g h z 0 ∧ spatialSq (boost n g h z) ≤ boost n g h z 0 ^ 2 := by
   have hform := boost_form n g h hn hg z
   refine ⟨?_, by nlinarith [hform]⟩
-  rw [boost0]
-  have hS : (n 0 * z 1 + n 1 * z 2 + n 2 * z 3) ^ 2 ≤ spatialSq z := by
-    rw [spatialSq_four]
-    nlinarith [sq_nonneg (n 0 * z 2 - n 1 * z 1), sq_nonneg (n 0 * z 3 - n 2 * z 1),
-      sq_nonneg (n 1 * z 3 - n 2 * z 2)]
-  have hs : |n 0 * z 1 + n 1 * z 2 + n 2 * z 3| ≤ z 0 :=
-    abs_le_of_sq_le_sq' (hS.trans hz1) hz0 |> fun h => abs_le.2 h
-  have hh : |h| ≤ g := by
-    apply abs_le_of_sq_le_sq' _ hg0.le |> fun h => abs_le.2 h
-    nlinarith
-  have := abs_le.1 hs
-  have := abs_le.1 hh
-  nlinarith [mul_nonneg hz0 hg0.le, mul_nonneg (sub_nonneg.2 hs) (sub_nonneg.2 (le_abs_self h))]
+  rw [boost_zero]
+  have hS : (∑ i, n i * z i.succ) ^ 2 ≤ spatialSq z := by
+    have := Finset.sum_mul_sq_le_sq_mul_sq Finset.univ n (fun i => z i.succ)
+    simpa [hn, spatialSq_eq_sum] using this
+  have hs : |∑ i, n i * z i.succ| ≤ z 0 := abs_le.2 (abs_le_of_sq_le_sq' (hS.trans hz) hz0)
+  have hh : |h| ≤ g := abs_le.2 (abs_le_of_sq_le_sq' (by nlinarith) hg0.le)
+  nlinarith [mul_nonneg hz0 hg0.le, mul_nonneg (sub_nonneg.2 hs) (sub_nonneg.2 (le_abs_self h)),
+    mul_nonneg (sub_nonneg.2 hh) hz0, abs_nonneg h, neg_abs_le h, mul_nonneg (sub_nonneg.2 hh) (abs_nonneg (∑ i, n i * z i.succ)),
+    le_abs_self (∑ i, n i * z i.succ), neg_abs_le (∑ i, n i * z i.succ)]
 
-lemma boost_sub (n : Fin 3 → ℝ) (g h : ℝ) (x y : Fin 4 → ℝ) :
-    boost n g h (y - x) = boost n g h y - boost n g h x := by
-  simp [boost, Matrix.mulVec_sub]
+lemma form_polar {D : ℕ} (u v : Fin D → ℝ) :
+    minkowskiForm D u v = (mSq (u + v) - mSq u - mSq v) / 2 := by
+  simp only [mSq, minkowskiForm_apply, Pi.add_apply]
+  rw [← sub_eq_zero]
+  have : ∑ i, etaDiag i * (u i + v i) * (u i + v i) - ∑ i, etaDiag i * u i * u i -
+      ∑ i, etaDiag i * v i * v i = 2 * ∑ i, etaDiag i * u i * v i := by
+    rw [← Finset.sum_sub_distrib, ← Finset.sum_sub_distrib, Finset.mul_sum]
+    refine Finset.sum_congr rfl fun i _ => by ring
+  rw [this]; ring
 
-lemma boost_inv (n : Fin 3 → ℝ) (g h : ℝ) (hn : n 0 ^ 2 + n 1 ^ 2 + n 2 ^ 2 = 1)
-    (hg : g ^ 2 - h ^ 2 = 1) (z : Fin 4 → ℝ) : boost n g (-h) (boost n g h z) = z := by
-  simp [boost, Matrix.mulVec_mulVec, boostMat_inv n g h hn hg]
+lemma det_sq_of_mSq {D : ℕ} (f : (Fin D → ℝ) →ₗ[ℝ] (Fin D → ℝ)) (hf : ∀ z, mSq (f z) = mSq z) :
+    (LinearMap.det f) ^ 2 = 1 := by
+  have hη : ∀ u v, minkowskiForm D (f u) (f v) = minkowskiForm D u v := by
+    intro u v
+    rw [form_polar, form_polar u v, ← map_add, hf, hf, hf]
+  set M := LinearMap.toMatrix' f with hM
+  have hMat : Mᵀ * eta D * M = eta D := by
+    ext i j
+    have h1 := hη (fun k => if k = i then 1 else 0) (fun k => if k = j then 1 else 0)
+    simp only [minkowskiForm_apply] at h1
+    simp only [eta, Matrix.mul_apply, Matrix.diagonal_apply, Matrix.transpose_apply, hM,
+      LinearMap.toMatrix'_apply]
+    have hsingle : ∀ i : Fin D, (Pi.single i (1 : ℝ) : Fin D → ℝ) = fun k => if k = i then 1 else 0 := by
+      intro i; funext k; simp [Pi.single_apply]
+    simp only [hsingle]
+    have e1 : ∀ j1 : Fin D, (∑ j, f (fun k => if k = i then 1 else 0) j * if j = j1 then etaDiag j else 0) =
+        f (fun k => if k = i then 1 else 0) j1 * etaDiag j1 := by
+      intro j1; simp [Finset.sum_ite_eq']
+    simp only [e1]
+    have e2 : ∑ k : Fin D, (etaDiag k * (if k = i then (1 : ℝ) else 0)) * (if k = j then (1 : ℝ) else 0) =
+        if i = j then etaDiag i else 0 := by
+      by_cases hij : i = j
+      · subst hij
+        rw [Finset.sum_eq_single i]
+        · simp
+        · intro k _ hk; simp [hk]
+        · simp
+      · rw [ite_eq_right_iff.2 (fun h => absurd h hij)]
+        refine Finset.sum_eq_zero fun k _ => ?_
+        by_cases hk : k = i
+        · subst hk; simp [hij]
+        · simp [hk]
+    rw [e2] at h1
+    rw [← h1]
+    refine Finset.sum_congr rfl fun k _ => by ring
+  have hd := congrArg Matrix.det hMat
+  rw [Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose] at hd
+  have hne : (eta D).det ≠ 0 := by
+    rw [eta, Matrix.det_diagonal]
+    refine Finset.prod_ne_zero_iff.2 fun i _ => ?_
+    unfold etaDiag; split_ifs <;> norm_num
+  rw [← LinearMap.det_toMatrix' f, ← hM]
+  have : (M.det ^ 2 - 1) * (eta D).det = 0 := by linear_combination hd
+  rcases mul_eq_zero.1 this with h | h
+  · linarith
+  · exact absurd h hne
 
-lemma Fut_iff_coneLE (x y : Fin 4 → ℝ) : Fut (y - x) ↔ coneLE x y := by
+/-- The boost as a linear map. -/
+def boostLin (n : Fin d → ℝ) (g h : ℝ) : (Fin (d + 1) → ℝ) →ₗ[ℝ] (Fin (d + 1) → ℝ) where
+  toFun := boost n g h
+  map_add' x y := by
+    funext i
+    refine Fin.cases ?_ (fun j => ?_) i
+    · simp only [boost_zero, Pi.add_apply, mul_add, Finset.sum_add_distrib]; ring
+    · simp only [boost_succ, Pi.add_apply, mul_add, Finset.sum_add_distrib]; ring
+  map_smul' c x := by
+    have hsum : ∑ j, n j * (c * x j.succ) = c * ∑ j, n j * x j.succ := by
+      rw [Finset.mul_sum]; exact Finset.sum_congr rfl fun j _ => by ring
+    funext i
+    refine Fin.cases ?_ (fun j => ?_) i
+    · simp only [boost_zero, Pi.smul_apply, smul_eq_mul, RingHom.id_apply, hsum]; ring
+    · simp only [boost_succ, Pi.smul_apply, smul_eq_mul, RingHom.id_apply, hsum]; ring
+
+lemma boostLin_apply (n : Fin d → ℝ) (g h : ℝ) (z : Fin (d + 1) → ℝ) :
+    boostLin n g h z = boost n g h z := rfl
+
+/-- The boost has determinant of absolute value `1`. -/
+lemma abs_det_boost (n : Fin d → ℝ) (g h : ℝ) (hn : ∑ i, n i ^ 2 = 1) (hg : g ^ 2 - h ^ 2 = 1) :
+    |LinearMap.det (boostLin n g h)| = 1 := by
+  have := det_sq_of_mSq (boostLin n g h) (fun z => by
+    rw [boostLin_apply, mSq_eq, mSq_eq]
+    have := boost_form n g h hn hg z
+    linarith)
+  have h2 : |LinearMap.det (boostLin n g h)| ^ 2 = 1 := by rw [sq_abs]; exact this
+  nlinarith [abs_nonneg (LinearMap.det (boostLin n g h))]
+
+/-- `v` is in the closed future light cone of `ℝ^{d+1}`: `0 ≤ v⁰` and `|v⃗|² ≤ (v⁰)²`. -/
+def Fut (v : Fin (d + 1) → ℝ) : Prop := 0 ≤ v 0 ∧ spatialSq v ≤ v 0 ^ 2
+
+lemma Fut_iff_coneLE (x y : Fin (d + 1) → ℝ) : Fut (y - x) ↔ coneLE x y := by
   rw [coneLE_iff_spatial]; rfl
 
-lemma coneLE_boost (n : Fin 3 → ℝ) (g h : ℝ) (hn : n 0 ^ 2 + n 1 ^ 2 + n 2 ^ 2 = 1)
-    (hg : g ^ 2 - h ^ 2 = 1) (hg0 : 0 < g) (x y : Fin 4 → ℝ) :
+lemma boost_sub (n : Fin d → ℝ) (g h : ℝ) (x y : Fin (d + 1) → ℝ) :
+    boost n g h (y - x) = boost n g h y - boost n g h x := (boostLin n g h).map_sub y x
+
+lemma coneLE_boost (n : Fin d → ℝ) (g h : ℝ) (hn : ∑ i, n i ^ 2 = 1) (hg : g ^ 2 - h ^ 2 = 1)
+    (hg0 : 0 < g) (x y : Fin (d + 1) → ℝ) :
     coneLE (boost n g h x) (boost n g h y) ↔ coneLE x y := by
   rw [← Fut_iff_coneLE, ← Fut_iff_coneLE, ← boost_sub]
   constructor
   · intro hf
-    have := boost_fut n g (-h) hn (by linarith [hg]) hg0 hf
+    have := boost_fut n g (-h) hn (by linarith [hg]) hg0 hf.1 hf.2
     rwa [boost_inv n g h hn hg] at this
-  · exact boost_fut n g h hn hg hg0
+  · intro hf; exact boost_fut n g h hn hg hg0 hf.1 hf.2
 
-/-- The **causal interval** between `0` and `w` in `ℝ^{3+1}`: the points `z` with `0 ≼ z ≼ w`. -/
-def interval4 (w : Fin 4 → ℝ) : Set (Fin 4 → ℝ) := {z | coneLE 0 z ∧ coneLE z w}
+/-- The **causal interval** between `0` and `w` in `ℝ^{d+1}`: the points `z` with `0 ≼ z ≼ w`. -/
+def intervalSet (w : Fin (d + 1) → ℝ) : Set (Fin (d + 1) → ℝ) := {z | coneLE 0 z ∧ coneLE z w}
 
-lemma boost_image_interval (n : Fin 3 → ℝ) (g h : ℝ) (hn : n 0 ^ 2 + n 1 ^ 2 + n 2 ^ 2 = 1)
-    (hg : g ^ 2 - h ^ 2 = 1) (hg0 : 0 < g) (w : Fin 4 → ℝ) :
-    boost n g h '' interval4 w = interval4 (boost n g h w) := by
-  have h0 : boost n g h 0 = 0 := by simp [boost]
+lemma boost_zero_vec (n : Fin d → ℝ) (g h : ℝ) : boost n g h (0 : Fin (d + 1) → ℝ) = 0 :=
+  (boostLin n g h).map_zero
+
+lemma boost_image_interval (n : Fin d → ℝ) (g h : ℝ) (hn : ∑ i, n i ^ 2 = 1) (hg : g ^ 2 - h ^ 2 = 1)
+    (hg0 : 0 < g) (w : Fin (d + 1) → ℝ) :
+    boost n g h '' intervalSet w = intervalSet (boost n g h w) := by
   ext z
   constructor
   · rintro ⟨x, ⟨hx1, hx2⟩, rfl⟩
     refine ⟨?_, ?_⟩
-    · rw [← h0]; exact (coneLE_boost n g h hn hg hg0 _ _).2 hx1
+    · rw [← boost_zero_vec n g h]; exact (coneLE_boost n g h hn hg hg0 _ _).2 hx1
     · exact (coneLE_boost n g h hn hg hg0 _ _).2 hx2
   · rintro ⟨hz1, hz2⟩
     have hg' : g ^ 2 - (-h) ^ 2 = 1 := by linarith [hg]
@@ -181,24 +221,26 @@ lemma boost_image_interval (n : Fin 3 → ℝ) (g h : ℝ) (hn : n 0 ^ 2 + n 1 ^
       simpa using boost_inv n g (-h) hn hg' z
     refine ⟨boost n g (-h) z, ⟨?_, ?_⟩, e⟩
     · have := (coneLE_boost n g (-h) hn hg' hg0 0 z).2 hz1
-      rwa [show boost n g (-h) 0 = 0 by simp [boost]] at this
+      rwa [boost_zero_vec] at this
     · have := (coneLE_boost n g (-h) hn hg' hg0 z (boost n g h w)).2 hz2
       rwa [boost_inv n g h hn hg] at this
 
-lemma volume_boost_image (n : Fin 3 → ℝ) (g h : ℝ) (hn : n 0 ^ 2 + n 1 ^ 2 + n 2 ^ 2 = 1)
-    (hg : g ^ 2 - h ^ 2 = 1) (s : Set (Fin 4 → ℝ)) :
+lemma volume_boost_image (n : Fin d → ℝ) (g h : ℝ) (hn : ∑ i, n i ^ 2 = 1) (hg : g ^ 2 - h ^ 2 = 1)
+    (s : Set (Fin (d + 1) → ℝ)) :
     MeasureTheory.volume (boost n g h '' s) = MeasureTheory.volume s := by
-  have hf : boost n g h = ⇑(Matrix.toLin' (boostMat n g h)) := by
-    funext z; simp [boost, Matrix.toLin'_apply]
-  rw [hf, MeasureTheory.Measure.addHaar_image_linearMap, LinearMap.det_toLin',
-    boostMat_det n g h hn hg]
+  have := MeasureTheory.Measure.addHaar_image_linearMap (MeasureTheory.volume : Measure (Fin (d + 1) → ℝ))
+    (boostLin n g h) s
+  have himg : (⇑(boostLin n g h) : (Fin (d + 1) → ℝ) → (Fin (d + 1) → ℝ)) = boost n g h := rfl
+  rw [himg] at this
+  rw [this, abs_det_boost n g h hn hg]
   simp
 
-lemma coneLE_smul {c : ℝ} (hc : 0 < c) (x y : Fin 4 → ℝ) : coneLE (c • x) (c • y) ↔ coneLE x y := by
-  rw [coneLE_iff_spatial, coneLE_iff_spatial, ← smul_sub]
-  have h1 : spatialSq (c • (y - x)) = c ^ 2 * spatialSq (y - x) := by
-    simp [spatialSq, mul_pow, Finset.mul_sum]
-  rw [h1]
+lemma spatialSq_smul (c : ℝ) (v : Fin (d + 1) → ℝ) : spatialSq (c • v) = c ^ 2 * spatialSq v := by
+  simp [spatialSq, mul_pow, Finset.mul_sum]
+
+lemma coneLE_smul {c : ℝ} (hc : 0 < c) (x y : Fin (d + 1) → ℝ) :
+    coneLE (c • x) (c • y) ↔ coneLE x y := by
+  rw [coneLE_iff_spatial, coneLE_iff_spatial, ← smul_sub, spatialSq_smul]
   simp only [Pi.smul_apply, smul_eq_mul]
   constructor
   · rintro ⟨a, b⟩
@@ -208,8 +250,8 @@ lemma coneLE_smul {c : ℝ} (hc : 0 < c) (x y : Fin 4 → ℝ) : coneLE (c • x
   · rintro ⟨a, b⟩
     exact ⟨by positivity, by nlinarith [b, sq_nonneg c]⟩
 
-lemma interval4_smul {c : ℝ} (hc : 0 < c) (w : Fin 4 → ℝ) :
-    interval4 (c • w) = c • interval4 w := by
+lemma interval_smul {c : ℝ} (hc : 0 < c) (w : Fin (d + 1) → ℝ) :
+    intervalSet (c • w) = c • intervalSet w := by
   ext z
   constructor
   · rintro ⟨h1, h2⟩
@@ -223,135 +265,123 @@ lemma interval4_smul {c : ℝ} (hc : 0 < c) (w : Fin 4 → ℝ) :
     · have := (coneLE_smul hc 0 x).2 h1; simpa using this
     · exact (coneLE_smul hc x w).2 h2
 
-lemma diamond3_eq : diamond 3 = interval4 (diamondTop 3) := rfl
+lemma diamond_eq_interval (d : ℕ) : diamond d = intervalSet (diamondTop d) := rfl
 
-/-- **The volume of a causal interval in `3 + 1` dimensions** is the volume of the unit diamond times
-the fourth power of the proper time. -/
-lemma volume_interval4 {w : Fin 4 → ℝ} (hw : Fut w) (hτ : 0 < w 0 ^ 2 - spatialSq w) :
-    MeasureTheory.volume (interval4 w) =
-      ENNReal.ofReal ((w 0 ^ 2 - spatialSq w) ^ 2) * MeasureTheory.volume (diamond 3) := by
+lemma exists_dir (hd : 0 < d) (w : Fin (d + 1) → ℝ) :
+    ∃ n : Fin d → ℝ, ∑ i, n i ^ 2 = 1 ∧ ∀ i : Fin d, w i.succ = √(spatialSq w) * n i := by
+  set c := √(spatialSq w) with hc
+  have hc2 : c ^ 2 = spatialSq w := Real.sq_sqrt (spatialSq_nonneg w)
+  by_cases hc0 : c = 0
+  · have h0 : spatialSq w = 0 := by rw [← hc2, hc0]; norm_num
+    refine ⟨Pi.single ⟨0, hd⟩ 1, ?_, fun i => ?_⟩
+    · simp [Pi.single_apply]
+    · have : ∀ j : Fin d, w j.succ ^ 2 = 0 := by
+        intro j
+        have := (Finset.sum_eq_zero_iff_of_nonneg (fun k _ => sq_nonneg (w k.succ))).1
+          (by simpa [spatialSq_eq_sum] using h0) j (Finset.mem_univ j)
+        exact this
+      have := pow_eq_zero_iff (two_ne_zero) |>.1 (this i)
+      simp [hc0, this]
+  · refine ⟨fun i => w i.succ / c, ?_, fun i => by field_simp⟩
+    have : ∑ i : Fin d, (w i.succ / c) ^ 2 = spatialSq w / c ^ 2 := by
+      simp [spatialSq_eq_sum, div_pow, Finset.sum_div]
+    rw [this, ← hc2]; field_simp
+
+/-- The volume of a causal interval with a timelike endpoint: a Lorentz boost moves the endpoint onto
+the time axis and a rescaling gives the unit diamond. -/
+lemma volume_interval (hd : 0 < d) {w : Fin (d + 1) → ℝ} (hw : Fut w)
+    (hτ : 0 < w 0 ^ 2 - spatialSq w) :
+    MeasureTheory.volume (intervalSet w) =
+      ENNReal.ofReal (√(w 0 ^ 2 - spatialSq w) ^ (d + 1)) * MeasureTheory.volume (diamond d) := by
   set τ := √(w 0 ^ 2 - spatialSq w) with hτdef
   have hτ0 : 0 < τ := Real.sqrt_pos.2 hτ
   have hτ2 : τ ^ 2 = w 0 ^ 2 - spatialSq w := Real.sq_sqrt hτ.le
+  obtain ⟨n, hn, hnw⟩ := exists_dir hd w
   set c := √(spatialSq w) with hc
   have hc2 : c ^ 2 = spatialSq w := Real.sq_sqrt (spatialSq_nonneg w)
   have hw0 : 0 < w 0 := by
     rcases hw.1.eq_or_lt with h | h
     · exfalso; nlinarith [spatialSq_nonneg w]
     · exact h
-  -- the direction
-  obtain ⟨n, hn, hnw⟩ : ∃ n : Fin 3 → ℝ, n 0 ^ 2 + n 1 ^ 2 + n 2 ^ 2 = 1 ∧
-      ∀ i : Fin 3, w i.succ = c * n i := by
-    by_cases hc0 : c = 0
-    · refine ⟨![1, 0, 0], by simp, fun i => ?_⟩
-      have : spatialSq w = 0 := by rw [← hc2, hc0]; norm_num
-      rw [spatialSq_four] at this
-      have h1 : w 1 = 0 := by nlinarith [sq_nonneg (w 1), sq_nonneg (w 2), sq_nonneg (w 3)]
-      have h2 : w 2 = 0 := by nlinarith [sq_nonneg (w 1), sq_nonneg (w 2), sq_nonneg (w 3)]
-      have h3 : w 3 = 0 := by nlinarith [sq_nonneg (w 1), sq_nonneg (w 2), sq_nonneg (w 3)]
-      fin_cases i <;> simp [hc0, h1, h2, h3]
-    · refine ⟨fun i => w i.succ / c, ?_, fun i => by field_simp⟩
-      have : spatialSq w = c ^ 2 := hc2.symm
-      rw [spatialSq_four] at this
-      simp only [Fin.isValue]
-      field_simp
-      simpa using this
   have hg : (w 0 / τ) ^ 2 - (c / τ) ^ 2 = 1 := by
     field_simp; nlinarith [hτ2, hc2]
   have hg0 : 0 < w 0 / τ := by positivity
-  have hnw' : n 0 * w 1 + n 1 * w 2 + n 2 * w 3 = c := by
-    have e1 := hnw 0; have e2 := hnw 1; have e3 := hnw 2
-    simp only [Fin.succ_zero_eq_one, Fin.succ_one_eq_two] at e1 e2 e3
-    have e4 : w 3 = c * n 2 := by simpa using hnw 2
-    rw [e1, e2, e4]; linear_combination c * hn
-  have hBw : boost n (w 0 / τ) (c / τ) w = τ • diamondTop 3 := by
+  have hsw : ∑ j, n j * w j.succ = c := by
+    have : ∀ j, n j * w j.succ = c * n j ^ 2 := fun j => by rw [hnw j]; ring
+    simp only [this, ← Finset.mul_sum, hn]; ring
+  have hBw : boost n (w 0 / τ) (c / τ) w = τ • diamondTop d := by
     funext i
-    fin_cases i
-    · simp only [Fin.zero_eta, Fin.isValue]
-      rw [boost0, hnw']
+    refine Fin.cases ?_ (fun j => ?_) i
+    · rw [boost_zero, hsw]
       simp [diamondTop]
       field_simp
       nlinarith [hτ2, hc2]
-    · simp only [Fin.mk_one, Fin.isValue]
-      rw [boost1, hnw']
-      have := hnw 0; simp only [Fin.succ_zero_eq_one] at this
-      simp [diamondTop, this]
+    · rw [boost_succ, hsw, hnw j]
+      simp [diamondTop, Fin.succ_ne_zero]
       field_simp; ring
-    · simp only [Fin.reduceFinMk, Fin.isValue]
-      rw [boost2, hnw']
-      have := hnw 1; simp only [Fin.succ_one_eq_two] at this
-      simp [diamondTop, this]
-      field_simp; ring
-    · simp only [Fin.reduceFinMk, Fin.isValue]
-      rw [boost3, hnw']
-      have := hnw 2; simp at this
-      simp [diamondTop, this]
-      field_simp; ring
-  calc MeasureTheory.volume (interval4 w)
-      = MeasureTheory.volume (boost n (w 0 / τ) (c / τ) '' interval4 w) :=
+  calc MeasureTheory.volume (intervalSet w)
+      = MeasureTheory.volume (boost n (w 0 / τ) (c / τ) '' intervalSet w) :=
         (volume_boost_image n _ _ hn hg _).symm
-    _ = MeasureTheory.volume (interval4 (τ • diamondTop 3)) := by
+    _ = MeasureTheory.volume (intervalSet (τ • diamondTop d)) := by
         rw [boost_image_interval n _ _ hn hg hg0, hBw]
     _ = _ := by
-        rw [interval4_smul hτ0, MeasureTheory.Measure.addHaar_smul, diamond3_eq]
+        rw [interval_smul hτ0, MeasureTheory.Measure.addHaar_smul, ← diamond_eq_interval]
         simp only [Module.finrank_fin_fun]
         rw [abs_of_pos (by positivity)]
-        congr 2
-        rw [← hτ2]; ring
 
-
-lemma interval4_mono {w w' : Fin 4 → ℝ} (h : coneLE w w') : interval4 w ⊆ interval4 w' :=
+lemma interval_mono {w w' : Fin (d + 1) → ℝ} (h : coneLE w w') : intervalSet w ⊆ intervalSet w' :=
   fun _ hz => ⟨hz.1, coneLE_trans hz.2 h⟩
 
-/-- **The volume of a causal interval in `3 + 1` dimensions**: for a future causal vector `w`, the
-interval between `0` and `w` has volume `τ⁴` times the volume of the unit diamond, with
-`τ² = (w⁰)² - |w⃗|²` (the formula also holds, with value `0`, for a lightlike `w`). -/
-lemma volume_interval4_all {w : Fin 4 → ℝ} (hw : Fut w) :
-    MeasureTheory.volume (interval4 w) =
-      ENNReal.ofReal ((w 0 ^ 2 - spatialSq w) ^ 2) * MeasureTheory.volume (diamond 3) := by
+lemma spatialSq_add_top (w : Fin (d + 1) → ℝ) (ε : ℝ) :
+    spatialSq (w + ε • diamondTop d) = spatialSq w := by
+  simp [spatialSq_eq_sum, diamondTop, Fin.succ_ne_zero]
+
+/-- **The volume of a causal interval of `ℝ^{d+1}`** (`d ≥ 1`): for a future causal vector `w`, the
+interval between `0` and `w` has volume `τ^{d+1}` times the volume of the unit causal diamond, with
+`τ² = (w⁰)² - |w⃗|²`; for a lightlike `w` the value is `0`. -/
+lemma volume_interval_all (hd : 0 < d) {w : Fin (d + 1) → ℝ} (hw : Fut w) :
+    MeasureTheory.volume (intervalSet w) =
+      ENNReal.ofReal (√(w 0 ^ 2 - spatialSq w) ^ (d + 1)) * MeasureTheory.volume (diamond d) := by
   have hτ0 : 0 ≤ w 0 ^ 2 - spatialSq w := by linarith [hw.2]
   rcases hτ0.eq_or_lt with h0 | hpos
-  · -- lightlike: approximate from above
-    rw [← h0]
-    simp only [ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, ENNReal.ofReal_zero, zero_mul]
-    set V := MeasureTheory.volume (diamond 3) with hV
-    have hle : ∀ ε : ℝ, 0 < ε → MeasureTheory.volume (interval4 w) ≤
-        ENNReal.ofReal (((w 0 + ε) ^ 2 - spatialSq w) ^ 2) * V := by
+  · rw [← h0]
+    simp only [Real.sqrt_zero, ne_eq, Nat.add_eq_zero_iff, one_ne_zero, and_false, not_false_eq_true,
+      zero_pow, ENNReal.ofReal_zero, zero_mul]
+    set V := MeasureTheory.volume (diamond d) with hV
+    have hle : ∀ ε : ℝ, 0 < ε → MeasureTheory.volume (intervalSet w) ≤
+        ENNReal.ofReal (√((w 0 + ε) ^ 2 - spatialSq w) ^ (d + 1)) * V := by
       intro ε hε
-      have hsp : spatialSq (w + ε • diamondTop 3) = spatialSq w := by
-        rw [spatialSq_four, spatialSq_four]; simp [diamondTop]
-      have hw0' : (w + ε • diamondTop 3) 0 = w 0 + ε := by simp [diamondTop]
-      have hF : Fut (w + ε • diamondTop 3) := by
+      have hsp := spatialSq_add_top w ε
+      have hw0' : (w + ε • diamondTop d) 0 = w 0 + ε := by simp [diamondTop]
+      have hF : Fut (w + ε • diamondTop d) := by
         refine ⟨by rw [hw0']; linarith [hw.1], ?_⟩
         rw [hsp, hw0']; nlinarith [hw.1, hw.2]
-      have hsub : interval4 w ⊆ interval4 (w + ε • diamondTop 3) := by
-        apply interval4_mono
+      have hsub : intervalSet w ⊆ intervalSet (w + ε • diamondTop d) := by
+        apply interval_mono
         rw [coneLE_iff_spatial]
-        have e : (w + ε • diamondTop 3) - w = ε • diamondTop 3 := by abel
-        rw [e]
-        have : spatialSq (ε • diamondTop 3) = 0 := by
-          rw [spatialSq_four]; simp [diamondTop]
+        have e : (w + ε • diamondTop d) - w = ε • diamondTop d := by abel
+        rw [e, spatialSq_smul]
+        have : spatialSq (diamondTop d) = 0 := by simp [spatialSq_eq_sum, diamondTop, Fin.succ_ne_zero]
         rw [this]
-        simp [diamondTop]
-        exact ⟨hε.le, sq_nonneg ε⟩
-      have hτ' : 0 < (w + ε • diamondTop 3) 0 ^ 2 - spatialSq (w + ε • diamondTop 3) := by
+        simp [diamondTop]; exact ⟨hε.le, sq_nonneg ε⟩
+      have hτ' : 0 < (w + ε • diamondTop d) 0 ^ 2 - spatialSq (w + ε • diamondTop d) := by
         rw [hsp, hw0']; nlinarith [hw.1, hw.2]
       refine (measure_mono hsub).trans ?_
-      rw [volume_interval4 hF hτ', hsp, hw0']
-    have hT : Filter.Tendsto (fun ε : ℝ => ENNReal.ofReal (((w 0 + ε) ^ 2 - spatialSq w) ^ 2) * V)
+      rw [volume_interval hd hF hτ', hsp, hw0']
+    have hT : Filter.Tendsto (fun ε : ℝ => ENNReal.ofReal (√((w 0 + ε) ^ 2 - spatialSq w) ^ (d + 1)) * V)
         (nhdsWithin 0 (Set.Ioi 0)) (nhds 0) := by
-      have hc : Continuous fun ε : ℝ => ENNReal.ofReal (((w 0 + ε) ^ 2 - spatialSq w) ^ 2) :=
+      have hc : Continuous fun ε : ℝ => ENNReal.ofReal (√((w 0 + ε) ^ 2 - spatialSq w) ^ (d + 1)) :=
         ENNReal.continuous_ofReal.comp (by fun_prop)
       have h1 := hc.tendsto 0
-      have h2 : ENNReal.ofReal (((w 0 + 0) ^ 2 - spatialSq w) ^ 2) = 0 := by
+      have h2 : ENNReal.ofReal (√((w 0 + 0) ^ 2 - spatialSq w) ^ (d + 1)) = 0 := by
         rw [add_zero, ← h0]; simp
       rw [h2] at h1
-      have h3 : Filter.Tendsto (fun ε : ℝ => ENNReal.ofReal (((w 0 + ε) ^ 2 - spatialSq w) ^ 2))
+      have h3 : Filter.Tendsto (fun ε : ℝ => ENNReal.ofReal (√((w 0 + ε) ^ 2 - spatialSq w) ^ (d + 1)))
           (nhdsWithin 0 (Set.Ioi 0)) (nhds 0) := h1.mono_left nhdsWithin_le_nhds
-      have := ENNReal.Tendsto.mul_const h3 (Or.inr (volume_diamond_lt_top 3).ne)
+      have := ENNReal.Tendsto.mul_const h3 (Or.inr (volume_diamond_lt_top d).ne)
       simpa using this
     have := ge_of_tendsto hT (eventually_nhdsWithin_of_forall fun ε hε => hle ε hε)
     exact le_antisymm this bot_le
-  · exact volume_interval4 hw hpos
+  · exact volume_interval hd hw hpos
 
 end Lightlike.CausalSets
