@@ -1,4 +1,4 @@
-import Lightlike.Spacetime.Causal.MinkowskiCausal
+import Lightlike.Spacetime.Causal.BasicRelations
 
 /-!
 # Task T-GE2-P1
@@ -57,6 +57,6 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
 
 /-- **Timelike futures are causal futures: I⁺(x) ⊆ J⁺(x).** -/
 theorem chronFuture_subset_causalFuture (x : M) : chronFuture T x ⊆ causalFuture T x := by
-  sorry
+  exact chron_subset_causal T x
 
 end Lightlike.Causal

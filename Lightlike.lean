@@ -503,11 +503,14 @@ import Lightlike.SU2.LieProduct
 import Lightlike.SU2.OneParameter
 import Lightlike.SU2.SpinRep
 import Lightlike.SU2.Su2Exp
+import Lightlike.Spacetime.Causal.BasicRelations
 import Lightlike.Spacetime.Causal.CausalCurve
+import Lightlike.Spacetime.Causal.CurveOps
 import Lightlike.Spacetime.Causal.DomainOfDependence
 import Lightlike.Spacetime.Causal.Ladder
 import Lightlike.Spacetime.Causal.MinkowskiCausal
 import Lightlike.Spacetime.Causal.Relations
+import Lightlike.Spacetime.Causal.TestsBasic
 import Lightlike.Spacetime.Causal.TestsMinkowski
 import Lightlike.Spacetime.Causal.TimeOrientation
 import Lightlike.Spacetime.ChartChange

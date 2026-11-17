@@ -1,4 +1,4 @@
-import Lightlike.Spacetime.Causal.MinkowskiCausal
+import Lightlike.Spacetime.Causal.BasicRelations
 
 /-!
 # Task T-GE2-P8
@@ -57,6 +57,6 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
 
 /-- **Causality implies chronology.** -/
 theorem isChronological_of_isCausal (h : IsCausal T) : IsChronological T := by
-  sorry
+  exact chronological_of_causal T h
 
 end Lightlike.Causal
