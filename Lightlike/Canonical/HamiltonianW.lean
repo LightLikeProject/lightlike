@@ -43,6 +43,43 @@ lemma s2b (b : Fin d) (F : Fin d → Fin d → ℝ) :
   refine Finset.sum_congr rfl fun x _ => ?_
   simp
 
+lemma s4_1 (b : Fin d) (F : Fin d → Fin d → Fin d → Fin d → ℝ) :
+    (∑ x, ∑ y, ∑ z, ∑ w, if x = b then F x y z w else 0) = ∑ y, ∑ z, ∑ w, F b y z w := by
+  rw [Finset.sum_eq_single b]
+  · simp
+  · intro x _ hx; simp [hx]
+  · simp
+
+lemma s4_2 (b : Fin d) (F : Fin d → Fin d → Fin d → Fin d → ℝ) :
+    (∑ x, ∑ y, ∑ z, ∑ w, if y = b then F x y z w else 0) = ∑ x, ∑ z, ∑ w, F x b z w := by
+  refine Finset.sum_congr rfl fun x _ => ?_
+  rw [Finset.sum_eq_single b]
+  · simp
+  · intro y _ hy; simp [hy]
+  · simp
+
+lemma s4_3 (b : Fin d) (F : Fin d → Fin d → Fin d → Fin d → ℝ) :
+    (∑ x, ∑ y, ∑ z, ∑ w, if z = b then F x y z w else 0) = ∑ x, ∑ y, ∑ w, F x y b w := by
+  refine Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => ?_
+  rw [Finset.sum_eq_single b]
+  · simp
+  · intro z _ hz; simp [hz]
+  · simp
+
+lemma s4_4 (b : Fin d) (F : Fin d → Fin d → Fin d → Fin d → ℝ) :
+    (∑ x, ∑ y, ∑ z, ∑ w, if w = b then F x y z w else 0) = ∑ x, ∑ y, ∑ z, F x y z b := by
+  refine Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => Finset.sum_congr rfl fun z _ => ?_
+  simp
+
+/-- `Γ` of the jet `δ_b ⊗ P`. -/
+lemma gamJ_delta (Hi P : Matrix (Fin d) (Fin d) ℝ) (b i j k : Fin d) :
+    gamJ Hi (fun a i j => if a = b then P i j else 0) i j k =
+      1 / 2 * ((if j = b then ∑ l, Hi i l * P l k else 0) + (if k = b then ∑ l, Hi i l * P l j else 0) -
+        Hi i b * P j k) := by
+  unfold gamJ
+  simp only [mul_ite, mul_zero, mul_add, mul_sub, Finset.sum_add_distrib, Finset.sum_sub_distrib]
+  by_cases hj : j = b <;> by_cases hk : k = b <;> simp [hj, hk, Finset.sum_ite_eq']
+
 /-- `w^ρ` of the jet `δ_b ⊗ P`: `h^{ρl} h^{bν} P_{lν} − h^{ρb} tr (h⁻¹ P)`. -/
 lemma wJ_delta {Hi P : Matrix (Fin d) (Fin d) ℝ} (hHi : ∀ a b, Hi a b = Hi b a)
     (hP : ∀ a b, P a b = P b a) (b ρ : Fin d) :
