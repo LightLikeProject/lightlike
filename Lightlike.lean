@@ -601,6 +601,7 @@ import Lightlike.Spacetime.CausalLadder.ConeCurve
 import Lightlike.Spacetime.CausalLadder.ConeEstimate
 import Lightlike.Spacetime.CausalLadder.UniformCone
 import Lightlike.Spacetime.CausalLadder.LipschitzMono
+import Lightlike.Spacetime.CausalLadder.Reparam
 import Lightlike.Spacetime.Causal.BasicRelations
 import Lightlike.Spacetime.Causal.CausalCurve
 import Lightlike.Spacetime.Causal.CurveOps
