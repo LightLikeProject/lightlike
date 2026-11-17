@@ -26,14 +26,14 @@ Definitions the statement names (without the `Lightlike.` prefix), by file:
 
 Lemmas about them, which a proof may use:
 
-* `LorentzianMetric.symm` (`Lightlike/Spacetime/Lorentzian.lean`)
-* `LorentzianMetric.mk.inj` (`Lightlike/Spacetime/Lorentzian.lean`)
-* `LorentzianMetric.mk.injEq` (`Lightlike/Spacetime/Lorentzian.lean`)
-* `LorentzianMetric.contMDiff` (`Lightlike/Spacetime/Lorentzian.lean`)
-* `LorentzianMetric.lorentzian` (`Lightlike/Spacetime/Lorentzian.lean`)
-* `LorentzianMetric.nondegenerate` (`Lightlike/Spacetime/Lorentzian.lean`)
-* `LorentzianMetric.mk.sizeOf_spec` (`Lightlike/Spacetime/Lorentzian.lean`)
-* `LorentzianMetric.coordMetric_eq` (`Lightlike/Spacetime/Coordinates.lean`)
+* `leviCivita_unique` (`Lightlike/Spacetime/LeviCivita.lean`)
+* `koszul_of_isLeviCivita` (`Lightlike/Spacetime/LeviCivita.lean`)
+* `leviCivita_exists_unique_proved` (`Lightlike/Spacetime/LeviCivita.lean`)
+* `g_sharp` (`Lightlike/Spacetime/LeviCivita.lean`)
+* `g_leviOf` (`Lightlike/Spacetime/LeviCivita.lean`)
+* `sharp_add` (`Lightlike/Spacetime/LeviCivita.lean`)
+* `g_leviAux` (`Lightlike/Spacetime/LeviCivita.lean`)
+* `gpair_comm` (`Lightlike/Spacetime/LeviCivita.lean`)
 
 Everything they depend on, and the further lemmas about them, in one block:
 

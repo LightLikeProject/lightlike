@@ -27,14 +27,14 @@ Definitions the statement names (without the `Lightlike.` prefix), by file:
 
 Lemmas about them, which a proof may use:
 
+* `leviCivita_unique` (`Lightlike/Spacetime/LeviCivita.lean`)
+* `koszul_of_isLeviCivita` (`Lightlike/Spacetime/LeviCivita.lean`)
+* `leviCivita_exists_unique_proved` (`Lightlike/Spacetime/LeviCivita.lean`)
 * `minkowski_isVacuumSolution` (`Lightlike/GR/Einstein.lean`)
 * `LorentzianMetric.coordMetric_eq` (`Lightlike/Spacetime/Coordinates.lean`)
+* `minkowski_satisfiesEinstein_proved` (`Lightlike/Spacetime/FlatConnection.lean`)
 * `LorentzianMetric.coordMetric_smooth` (`Lightlike/Spacetime/Coordinates.lean`)
 * `LorentzianMetric.coordMetric_congr_eta` (`Lightlike/Spacetime/Coordinates.lean`)
-* `LorentzianMetric.coordMetric_transpose` (`Lightlike/Spacetime/Coordinates.lean`)
-* `LorentzianMetric.coordMetric_isUnit_det` (`Lightlike/Spacetime/Coordinates.lean`)
-* `minkowski_not_vacuumSolution_of_ne_zero` (`Lightlike/GR/Einstein.lean`)
-* `LorentzianMetric.isCoordMetric_coordMetric` (`Lightlike/Spacetime/Coordinates.lean`)
 
 Everything they depend on, and the further lemmas about them, in one block:
 

@@ -11,8 +11,8 @@ by a proof and change nothing else in the file: the proof-task check rejects any
 (CONTRIBUTING.md).
 
 Hint. In a chart the coordinate fields have vanishing brackets and `∇_{∂ᵢ} ∂ⱼ = Γᵏᵢⱼ ∂ₖ` (Koszul
-formula); the coordinate formula of `Lightlike/Spacetime/Curvature.lean` is then the trace of `curvatureAt`. This fixes
-the sign convention of the two definitions.
+formula); the coordinate formula of `Lightlike/Spacetime/Curvature.lean` is then the trace of
+`curvatureAt`. This fixes the sign convention of the two definitions.
 
 Partial results, as helper lemmas in separate pull requests, are welcome.
 
@@ -27,14 +27,14 @@ Definitions the statement names (without the `Lightlike.` prefix), by file:
 
 Lemmas about them, which a proof may use:
 
+* `leviCivita_unique` (`Lightlike/Spacetime/LeviCivita.lean`)
+* `koszul_of_isLeviCivita` (`Lightlike/Spacetime/LeviCivita.lean`)
+* `leviCivita_exists_unique_proved` (`Lightlike/Spacetime/LeviCivita.lean`)
 * `LorentzianMetric.coordMetric_eq` (`Lightlike/Spacetime/Coordinates.lean`)
 * `LorentzianMetric.coordMetric_smooth` (`Lightlike/Spacetime/Coordinates.lean`)
 * `LorentzianMetric.coordMetric_congr_eta` (`Lightlike/Spacetime/Coordinates.lean`)
 * `LorentzianMetric.coordMetric_transpose` (`Lightlike/Spacetime/Coordinates.lean`)
 * `LorentzianMetric.coordMetric_isUnit_det` (`Lightlike/Spacetime/Coordinates.lean`)
-* `LorentzianMetric.isCoordMetric_coordMetric` (`Lightlike/Spacetime/Coordinates.lean`)
-* `LorentzianMetric.isLorentzianCoordMetric_coordMetric` (`Lightlike/Spacetime/Coordinates.lean`)
-* `minkowski_flat` (`Lightlike/Spacetime/Curvature.lean`)
 
 Everything they depend on, and the further lemmas about them, in one block:
 

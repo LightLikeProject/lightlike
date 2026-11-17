@@ -28,6 +28,8 @@ On a manifold modelled on a normed space the Lie bracket of vector fields is the
 
 A Lorentzian metric has a Levi-Civita connection, the torsion-free connection compatible with it, given by the Koszul formula, and any two agree on vector fields differentiable at a point [10].
 
+In a chart of a manifold modelled on `ℝⁿ` the coordinate vector fields commute and the Levi-Civita connection is given by the Christoffel symbols of the coordinate components, `∇_{∂ᵢ} ∂ⱼ = Γᵏᵢⱼ ∂ₖ` [11].
+
 The curvature of a manifold-level metric as a tensor field is defined in `Connection.lean` [7]: a connection is Mathlib's
 covariant derivative on the tangent bundle; the Riemann curvature is `R(X, Y) Z = ∇_X ∇_Y Z - ∇_Y ∇_X Z - ∇_{[X,Y]} Z`
 (the sign convention of Mathlib pull request 45069), the Ricci tensor is its trace over the first slot, the scalar
@@ -61,6 +63,8 @@ than one who stays at rest [6].
    `dirDeriv`, `chartField`
 10. Lightlike/Spacetime/LeviCivita.lean - `koszul`, `leviCivita`, `leviCivita_torsion`,
    `leviCivita_compat`, `leviCivita_unique`, `leviCivita_exists_unique_proved`
+11. Lightlike/Spacetime/ChartConnection.lean - `coordField`, `mlieBracket_coordField`,
+   `leviCivita_coordField`
 
 ## References
 

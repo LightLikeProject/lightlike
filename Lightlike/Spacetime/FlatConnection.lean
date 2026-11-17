@@ -11,7 +11,7 @@ connection is `∇_v Y = DY(v)`. This file proves that it is a covariant derivat
 (`flat_isCov`), that it is torsion free, that it is compatible with a constant bilinear form, and that its
 curvature vanishes. For the Minkowski metric of `ℝⁿ` this gives a Levi-Civita connection with
 `Ric = 0`, hence a solution of the Einstein equations with `Λ = 0` (`minkowski_satisfiesEinstein`,
-the statement of the task T-GE1-P9).
+an Einstein solution).
 
 **Limits.** Normed spaces and the constant metric only; nothing about other manifolds.
 -/
@@ -176,7 +176,7 @@ theorem minkowski_satisfiesEinstein_flat (n : ℕ) :
       (congrArg (fun r => _ * r) (hric x _ _)).trans (mul_zero _)
   rw [hric, hs]; simp
 
-/-- **Proof of the statement of the task `T-GE1-P9`** (`Lightlike.minkowski_satisfiesEinstein`):
+/-- **Minkowski space is a vacuum solution**:
 the Minkowski metric of `ℝⁿ` satisfies the Einstein equations with `Λ = 0` for some connection. -/
 theorem minkowski_satisfiesEinstein_proved (n : ℕ) :
     ∃ cov : Connection 𝓘(ℝ, Fin n → ℝ) (Fin n → ℝ),

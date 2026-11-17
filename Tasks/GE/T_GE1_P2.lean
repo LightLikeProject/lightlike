@@ -11,7 +11,8 @@ proof and change nothing else in the file: the proof-task check rejects any othe
 (CONTRIBUTING.md).
 
 Hint. Tensoriality of `(X, Y, Z) ↦ ∇_X ∇_Y Z - ∇_Y ∇_X Z - ∇_{[X,Y]} Z` in each slot, as
-`CovariantDerivative.torsion_apply` (Mathlib/Geometry/Manifold/VectorBundle/CovariantDerivative/Torsion.lean), with `TensorialAt.mkHom`.
+`CovariantDerivative.torsion_apply`
+(Mathlib/Geometry/Manifold/VectorBundle/CovariantDerivative/Torsion.lean), with `TensorialAt.mkHom`.
 
 Partial results, as helper lemmas in separate pull requests, are welcome.
 
@@ -20,6 +21,14 @@ Partial results, as helper lemmas in separate pull requests, are welcome.
 Definitions the statement names (without the `Lightlike.` prefix), by file:
 
 * `Lightlike/Spacetime/Connection.lean`: `Connection`, `Connection.curvatureAt`
+
+Lemmas about them, which a proof may use:
+
+* `flat_curvatureAt` (`Lightlike/Spacetime/FlatConnection.lean`)
+* `leviCivita_unique` (`Lightlike/Spacetime/LeviCivita.lean`)
+* `koszul_of_isLeviCivita` (`Lightlike/Spacetime/LeviCivita.lean`)
+* `leviCivita_exists_unique_proved` (`Lightlike/Spacetime/LeviCivita.lean`)
+* `minkowski_satisfiesEinstein_proved` (`Lightlike/Spacetime/FlatConnection.lean`)
 
 Everything they depend on, and the further lemmas about them, in one block:
 

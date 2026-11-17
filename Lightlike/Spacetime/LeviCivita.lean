@@ -20,7 +20,7 @@ replaced by `g`, which only needs that `g` is symmetric and non-degenerate:
 * any torsion-free metric connection satisfies the Koszul formula (`koszul_of_isLeviCivita`), hence is equal
   to `leviCivita` on vector fields differentiable at the point (`leviCivita_unique`).
 
-`leviCivita_exists_unique_proved` is the statement of the task `T-GE1-P1`.
+`leviCivita_exists_unique_proved` is the existence and uniqueness statement.
 
 **Limits.** As in Mathlib, a covariant derivative is unconstrained on vector fields that are not
 differentiable at the point, so uniqueness is on differentiable fields. No smoothness of the connection is
@@ -375,8 +375,7 @@ theorem leviCivita_unique {cov cov' : Connection I M} (h : cov.IsLeviCivita g) (
   intro Z hZ
   rw [koszul_of_isLeviCivita g h hX hY hZ, koszul_of_isLeviCivita g h' hX hY hZ]
 
-/-- **Existence and uniqueness of the Levi-Civita connection of a Lorentzian metric** (the proof of the
-statement of the task `T-GE1-P1`). -/
+/-- **Existence and uniqueness of the Levi-Civita connection of a Lorentzian metric** . -/
 theorem leviCivita_exists_unique_proved (g : LorentzianMetric I M n) :
     (∃ cov : Connection I M, cov.IsLeviCivita g) ∧
       ∀ cov cov' : Connection I M, cov.IsLeviCivita g → cov'.IsLeviCivita g →

@@ -43,12 +43,13 @@ approaches.
 
 | Task | Statement | File | Milestone | Size | Difficulty |
 |---|---|---|---|---|---|
-| [`T-GE1-P1`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE1-P1%22) | Existence and uniqueness of the Levi-Civita connection of a Lorentzian metric | [T_GE1_P1.lean](../../Tasks/GE/T_GE1_P1.lean) | GE1 | L | research-level |
 | [`T-GE1-P2`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE1-P2%22) | The curvature tensor is computed by any smooth extensions | [T_GE1_P2.lean](../../Tasks/GE/T_GE1_P2.lean) | GE1 | L | research-level |
 | [`T-GE1-P3`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE1-P3%22) | The Ricci tensor of a Levi-Civita connection is symmetric | [T_GE1_P3.lean](../../Tasks/GE/T_GE1_P3.lean) | GE1 | L | research-level |
 | [`T-GE1-P4`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE1-P4%22) | The first Bianchi identity and the pair symmetry of the lowered curvature | [T_GE1_P4.lean](../../Tasks/GE/T_GE1_P4.lean) | GE1 | L | research-level |
 | [`T-GE1-P5`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE1-P5%22) | The intrinsic scalar curvature is the coordinate scalar curvature in every chart | [T_GE1_P5.lean](../../Tasks/GE/T_GE1_P5.lean) | GE1 | L | research-level |
 | [`T-GE1-P6`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE1-P6%22) | The manifold-level Einstein equations are the coordinate ones in every chart | [T_GE1_P6.lean](../../Tasks/GE/T_GE1_P6.lean) | GE1 | L | research-level |
+| [`T-GE1-P7`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE1-P7%22) | The second Bianchi identity of a Levi-Civita connection | [T_GE1_P7.lean](../../Tasks/GE/T_GE1_P7.lean) | GE1 | L | research-level |
+| [`T-GE1-P8`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE1-P8%22) | The Einstein tensor of a Levi-Civita connection is divergence free | [T_GE1_P8.lean](../../Tasks/GE/T_GE1_P8.lean) | GE1 | L | research-level |
 | [`T-QU1-P1`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-QU1-P1%22) | q-orthogonality of the quantum 6j symbols at r = 4 | [T_QU1_P1.lean](../../Tasks/QU/T_QU1_P1.lean) | QU1 | M | intermediate |
 | [`T-QU1-P2`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-QU1-P2%22) | q-Biedenharn–Elliott identity at r = 4 | [T_QU1_P2.lean](../../Tasks/QU/T_QU1_P2.lean) | QU1 | M | intermediate |
 | [`T-QU1-P3`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-QU1-P3%22) | q-orthogonality of the quantum 6j symbols at r = 5 | [T_QU1_P3.lean](../../Tasks/QU/T_QU1_P3.lean) | QU1 | M | intermediate |
