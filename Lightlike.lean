@@ -133,6 +133,7 @@ import Lightlike.CausalSets.LongestChain
 import Lightlike.CausalSets.Myrheim
 import Lightlike.CausalSets.Myrheim4D
 import Lightlike.CausalSets.MyrheimGen
+import Lightlike.CausalSets.PosetCount
 import Lightlike.CausalSets.Rectangle
 import Lightlike.CausalSets.Sprinkling
 import Lightlike.CausalSets.TestsCausalSets

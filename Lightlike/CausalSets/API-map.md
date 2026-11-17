@@ -14,6 +14,8 @@ The causal order of `n` points of the `1 + 1` diamond with distinct light-cone c
 
 A causal set grows by adding one element at a time above a down-set of the existing ones. Labelling by birth order gives the naturally labelled posets on `Fin n`, `1, 2, 7, 40` of them for `n = 1, …, 4`. In transitive percolation each new element is related to each earlier one independently with probability `p` and the relations are completed transitively, so the weight of a naturally labelled poset is the product over the new elements of `p^m q^(j - |D|)`, with `D` the past and `m` the number of its maximal elements; the weights of all naturally labelled posets on two and on three elements sum to `1` [11] {3}. The classification of all sequential growth laws obeying Bell causality and discrete general covariance is not formalised.
 
+The labelled strict partial orders on `0, 1, 2, 3, 4` elements number `1, 1, 3, 19, 219`, and those of height at most two (no chain of three) `1, 1, 3, 13, 87`, by exact enumeration; the two-layer fraction decreases (`13/19`, `87/219`), in line with the Kleitman–Rothschild theorem that almost all finite partial orders have three layers, which is not formalised [12] {4}.
+
 **Missing.** The Poisson form (the number of points is Poisson distributed) needs Poisson point processes (milestone RN1), which are not defined. The comparison of the statements with the sources is pending: the sources have not been read at the cited locations. The tasks T-CS2-P1 (the formula in every dimension), T-CS2-P2 (`1/20`) and T-CS2-P3 (the rectangle) state theorems proved in the library and are closed by those proofs.
 
 ## Lean References
@@ -29,9 +31,11 @@ A causal set grows by adding one element at a time above a down-set of the exist
 9. Lightlike/CausalSets/BetaReal.lean - `CausalSets.real_beta`
 10. Lightlike/CausalSets/LongestChain.lean - `CausalSets.longestChain`, `CausalSets.coneLE_sprinklePt`, `CausalSets.expected_longestChain_three`
 11. Lightlike/CausalSets/Growth.lean - `CausalSets.NatPoset`, `CausalSets.tpProb`, `CausalSets.sum_tpProb_three`
+12. Lightlike/CausalSets/PosetCount.lean - `CausalSets.countOrders`, `CausalSets.countTwoLayer`, `CausalSets.count_four`
 
 ## References
 
 1. L. Bombelli, J. Lee, D. Meyer and R. D. Sorkin, *Space-time as a causal set*, Physical Review Letters 59 (1987) 521.
 2. S. Surya, *The causal set approach to the problem of quantum gravity*, Living Reviews in Relativity 22 (2019), section 2.
 3. D. P. Rideout and R. D. Sorkin, *Classical sequential growth dynamics for causal sets*, Physical Review D 61 (2000) 024002.
+4. D. J. Kleitman and B. L. Rothschild, *Asymptotic enumeration of partial orders on a finite set*, Transactions of the American Mathematical Society 205 (1975) 205-220.
