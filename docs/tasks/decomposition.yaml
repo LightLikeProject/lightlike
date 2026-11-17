@@ -546,6 +546,17 @@ tasks:
     difficulty: research-level
     routes:
       - Contract the second Bianchi identity (T-GE1-P7) twice, using the symmetries of the curvature (T-GE1-P4) and metric compatibility.
+  - id: T-CA1-P3
+    milestone: CA1
+    kind: proof
+    title: "The Lie-derivative form of the smeared momentum constraint equals the ADM form with the covariant divergence of the momentum"
+    file: Tasks/CA/T_CA1_P3.lean
+    decl: Lightlike.Canonical.momentumConstraint_eq_adm
+    size: M
+    difficulty: intermediate
+    routes:
+      - "Pointwise `π^{ij} (ℒ_ξ h)_ij + 2 (h ξ)_i ∇_k π^{ik} = 2 ∂_j (π^{ij} h_{ik} ξ^k)` and `integral_pd_eq_zero`."
+      - "ADM (1962), eq. (3.14b)."
 
 # Upstream tasks: finished results that belong in Mathlib (general mathematics) or Physlib
 # (general physics), with the rework each needs. Exclusive, like definition
