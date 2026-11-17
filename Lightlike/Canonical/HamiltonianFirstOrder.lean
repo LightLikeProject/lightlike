@@ -373,3 +373,84 @@ end
 end Variation
 
 
+
+section Split
+
+open Matrix
+
+noncomputable section
+
+namespace Lightlike.Canonical
+
+variable {d : ℕ}
+
+/-- The part of the first-order density multiplying the lapse: `K − √h L`. -/
+def Psi (c : ℝ) (z : Arr d × H1arr d) : ℝ :=
+  Kfun c z.1 - Real.sqrt (Matrix.of z.1.1).det * LgJ (Matrix.of z.1.1)⁻¹ z.2
+
+/-- The part multiplying `∂_ρ N`: `√h w^ρ`. -/
+def Theta (ρ : Fin d) (z : Arr d × H1arr d) : ℝ :=
+  Real.sqrt (Matrix.of z.1.1).det * wJ (Matrix.of z.1.1)⁻¹ z.2 ρ
+
+lemma Phi1_eq (c : ℝ) (q : Par d) :
+    Phi1 c q = q.1 * Psi c q.2.2 + ∑ ρ, q.2.1 ρ * Theta ρ q.2.2 := by
+  unfold Phi1 Psi Theta
+  ring
+
+lemma contDiffAt_Psi (c : ℝ) {z : Arr d × H1arr d} (hdet : 0 < (Matrix.of z.1.1).det) :
+    ContDiffAt ℝ ∞ (Psi c) z := by
+  have := contDiffAt_Phi1 c (q := ((1 : ℝ), (fun _ => (0 : ℝ)), z)) (by simpa using hdet)
+  have e : Psi c = fun z : Arr d × H1arr d => Phi1 c ((1 : ℝ), (fun _ : Fin d => (0 : ℝ)), z) := by
+    funext z; rw [Phi1_eq]; simp
+  rw [e]
+  exact ContDiffAt.comp (g := Phi1 c) (f := fun z : Arr d × H1arr d => ((1 : ℝ), (fun _ => (0 : ℝ)), z)) z
+    this (by fun_prop)
+
+lemma contDiffAt_Theta (ρ : Fin d) {z : Arr d × H1arr d} (hdet : 0 < (Matrix.of z.1.1).det) :
+    ContDiffAt ℝ ∞ (Theta ρ) z := by
+  have := contDiffAt_Phi1 1 (q := ((0 : ℝ), (fun r => if r = ρ then (1 : ℝ) else 0), z)) (by simpa using hdet)
+  have e : Theta ρ = fun z : Arr d × H1arr d => Phi1 1 ((0 : ℝ), (fun r : Fin d => if r = ρ then (1 : ℝ) else 0), z) := by
+    funext z; rw [Phi1_eq]; simp [Theta]
+  rw [e]
+  exact ContDiffAt.comp (g := Phi1 1)
+    (f := fun z : Arr d × H1arr d => ((0 : ℝ), (fun r => if r = ρ then (1 : ℝ) else 0), z)) z this (by fun_prop)
+
+/-- **The derivative of `Φ₁` in a direction that does not change the lapse and its gradient.** -/
+lemma fderiv_Phi1_third (c : ℝ) {q : Par d} (hdet : 0 < (Matrix.of q.2.2.1.1).det)
+    (V3 : Arr d × H1arr d) :
+    fderiv ℝ (Phi1 c) q ((0 : ℝ), (0 : Fin d → ℝ), V3) =
+      q.1 * fderiv ℝ (Psi c) q.2.2 V3 + ∑ ρ, q.2.1 ρ * fderiv ℝ (Theta ρ) q.2.2 V3 := by
+  have hline3 : HasDerivAt (fun s : ℝ => q.2.2 + s • V3) V3 0 := by
+    have := ((hasDerivAt_id (0 : ℝ)).smul_const V3).const_add q.2.2
+    exact HasDerivAt.congr_deriv this (by simp)
+  have hΨ : HasDerivAt (fun s : ℝ => Psi c (q.2.2 + s • V3)) (fderiv ℝ (Psi c) q.2.2 V3) 0 := by
+    have h2 : HasFDerivAt (Psi c) (fderiv ℝ (Psi c) q.2.2) (q.2.2 + (0 : ℝ) • V3) := by
+      simpa using ((contDiffAt_Psi c hdet).differentiableAt (by simp)).hasFDerivAt
+    exact h2.comp_hasDerivAt (0 : ℝ) hline3
+  have hΘ : ∀ ρ, HasDerivAt (fun s : ℝ => Theta ρ (q.2.2 + s • V3)) (fderiv ℝ (Theta ρ) q.2.2 V3) 0 := by
+    intro ρ
+    have h2 : HasFDerivAt (Theta ρ) (fderiv ℝ (Theta ρ) q.2.2) (q.2.2 + (0 : ℝ) • V3) := by
+      simpa using ((contDiffAt_Theta ρ hdet).differentiableAt (by simp)).hasFDerivAt
+    exact h2.comp_hasDerivAt (0 : ℝ) hline3
+  have hsum : HasDerivAt (fun s : ℝ => q.1 * Psi c (q.2.2 + s • V3) + ∑ ρ, q.2.1 ρ * Theta ρ (q.2.2 + s • V3))
+      (q.1 * fderiv ℝ (Psi c) q.2.2 V3 + ∑ ρ, q.2.1 ρ * fderiv ℝ (Theta ρ) q.2.2 V3) 0 :=
+    (hΨ.const_mul q.1).add (HasDerivAt.fun_sum fun ρ _ => (hΘ ρ).const_mul (q.2.1 ρ))
+  have hline : HasDerivAt (fun s : ℝ => q + s • ((0 : ℝ), (0 : Fin d → ℝ), V3)) ((0 : ℝ), (0 : Fin d → ℝ), V3) 0 := by
+    have := ((hasDerivAt_id (0 : ℝ)).smul_const ((0 : ℝ), (0 : Fin d → ℝ), V3)).const_add q
+    exact HasDerivAt.congr_deriv this (by simp)
+  have h2 : HasFDerivAt (Phi1 c) (fderiv ℝ (Phi1 c) q) (q + (0 : ℝ) • ((0 : ℝ), (0 : Fin d → ℝ), V3)) := by
+    simpa using ((contDiffAt_Phi1 c hdet).differentiableAt (by simp)).hasFDerivAt
+  have h3 := h2.comp_hasDerivAt (0 : ℝ) hline
+  have e : (Phi1 c ∘ fun s : ℝ => q + s • ((0 : ℝ), (0 : Fin d → ℝ), V3)) =
+      fun s : ℝ => q.1 * Psi c (q.2.2 + s • V3) + ∑ ρ, q.2.1 ρ * Theta ρ (q.2.2 + s • V3) := by
+    funext s
+    simp only [Function.comp, Phi1_eq]
+    simp
+  rw [e] at h3
+  exact h3.unique hsum
+
+end Lightlike.Canonical
+
+end
+
+end Split
