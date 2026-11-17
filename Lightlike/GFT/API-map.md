@@ -25,7 +25,8 @@ colors restricted to a bubble form a colored graph of dimension `p - 1`, and it 
 simplices to be a pseudo-manifold or a normal pseudo-manifold, and its Euler characteristic, are defined in
 a form that keeps repeated simplices distinct [3]. The dual of a colored graph, with one simplex for each bubble of the
 complementary colors, is pure and non-branching, strongly connected when the graph is connected, and
-normal, so the dual of a connected colored graph is a normal pseudo-manifold [4]. That
+normal, so the dual of a connected colored graph is a normal pseudo-manifold, and every lower interval of the
+dual is a Boolean lattice [4]. That
 the dual of every colored graph is a normal simplicial pseudo-manifold, and
 the identification of the bubbles with the links of the dual simplices, are due to Gurau {1}; they
 are [TODO] here.
@@ -47,6 +48,7 @@ are [TODO] here.
 4. Lightlike/GFT/Dual.lean - `GFT.ColoredGraph.DualSimplex`, `GFT.ColoredGraph.dual`,
    `GFT.ColoredGraph.dual_isPure`, `GFT.ColoredGraph.dual_isNonBranching`,
    `GFT.ColoredGraph.dual_isStronglyConnected`, `GFT.ColoredGraph.dual_isNormal`,
+   `GFT.ColoredGraph.dual_isSimplicial`, `GFT.ColoredGraph.faceIso`,
    `GFT.ColoredGraph.dual_isNormalPseudoManifold`
 
 ## References

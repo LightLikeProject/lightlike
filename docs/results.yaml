@@ -1625,3 +1625,16 @@
   review: kernel-checked
   note: "For a colored graph, the bubble of the single color c at v is {v, inv c v} (the 1-bubbles are the lines), so it has exactly two vertices because inv c has no fixed point: the non-branching condition for the dual. A vertex lies in its own bubble (purity), in a connected graph any two vertices are joined by a chain of lines (strong connectivity), and the lines of p colors restricted to a bubble form a colored graph of dimension p - 1 (ColoredGraph.restrict) that is connected (restrict_isConnected): the graph-side shadow of the condition that the links of the dual are pseudo manifolds. These formalize the definitions of Gurau 2010, Sections 2 and 5, for the graph only. Limits: Theorem 1 (the p-bubbles are the link graphs of the (n - p)-simplices) and Theorem 2 (the dual is a normal simplicial pseudo manifold) are not stated: they need the stranded graph and the multiset gluing of eqs. (37) and (38), and a set of faces cannot represent it (in the graph with two vertices and three lines both top simplices have the same vertex set). Trust check: in that graph the 1-bubble of color 0 at 0 is {0, 1} and differs from the 0-bubble."
   since: unreleased
+- id: LL-XXXX
+  title: The dual of a connected colored graph is a normal pseudo-manifold
+  area: GFT
+  file: Lightlike/GFT/Dual.lean
+  decls: [Lightlike.GFT.ColoredGraph.dual_isNormalPseudoManifold, Lightlike.GFT.ColoredGraph.dual_isSimplicial]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: gurau-2010, location: "Theorem 2", check: "normal simplicial pseudo manifold"}
+  review: kernel-checked
+  note: "Gurau (2010), Theorem 2: any connected colored graph is dual to a normal simplicial pseudo-manifold. The dual Delta_G is built as a graded poset of pairs (S, B) of a set of colors and a bubble of the other colors, ordered by inclusion of the colors and reverse inclusion of the bubble, with the number of colors as rank, so that two simplices with the same vertex set stay distinct (as the source's multiset requires). For a connected graph of dimension D it is pure, non-branching (a simplex of rank D, the dual of a line, is a face of exactly two top simplices), strongly connected, and normal (the link of every simplex of rank at most D - 1 is a pseudo-manifold), and the lower interval of every simplex is the powerset of its colors (dual_isSimplicial), which is the simplicial structure. Limits: the vertex sets of the simplices are not part of the structure, so a simplicial complex in the sense of a set of vertex sets is not claimed (it fails already for the graph with two vertices and three lines); Theorem 1 (the link of a simplex is the dual of the bubble, as a colored graph) is not part of this entry."
+  since: unreleased

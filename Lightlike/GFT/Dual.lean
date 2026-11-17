@@ -21,14 +21,14 @@ distinct, as they must (the graph with two vertices and three lines).
 * `dual_isStronglyConnected`: for a connected graph, any two top simplices are joined by a chain of lines.
 * `dual_isNormal`: the link of every simplex of rank at most `D - 1` is a pseudo-manifold. No connectedness
   is needed: the bubble of the simplex is connected under the lines of the colors outside it.
+* `faceIso`, `dual_isSimplicial`: every lower interval is a Boolean lattice: the faces of a simplex are the
+  subsets of its colors, so `Δ_G` is a simplicial poset.
 * `dual_isNormalPseudoManifold`: for a connected graph `Δ_G` is a normal pseudo-manifold of top rank `D + 1`,
   which is Theorem 2 of Gurau for the indexed complex.
 
 ## Not proved here
 
-That the lower interval of every simplex is a Boolean lattice, the property that makes `Δ_G` a simplicial
-complex in the sense of Gurau's multiset (so that "simplicial" in his Theorem 2 is covered only through the
-rank and the face order); and Theorem 1, that the link of a simplex is the dual of the bubble as a colored
+Theorem 1, that the link of a simplex is the dual of the bubble as a colored
 graph (`ColoredGraph.restrict`), which is stated by an isomorphism of graded posets not constructed here.
 -/
 
@@ -354,6 +354,59 @@ Theorem 2, for the indexed complex `Δ_G`): pure, non-branching, strongly connec
 pseudo-manifold. -/
 theorem dual_isNormalPseudoManifold (h : G.IsConnected) : (dual G).IsNormalPseudoManifold (D + 1) :=
   ⟨⟨dual_isPure G, dual_isNonBranching G, dual_isStronglyConnected G h⟩, dual_isNormal G⟩
+
+/-- A bubble for more colors is larger. -/
+lemma bubble_mono (G : ColoredGraph D V) {S S' : Finset (Fin (D + 1))} (h : S ⊆ S') (v : V) :
+    G.bubble S v ⊆ G.bubble S' v := by
+  intro w hw
+  rw [mem_bubble_iff] at hw ⊢
+  exact Relation.ReflTransGen.mono (p := G.Adj S') (fun a b hab => by
+    obtain ⟨c, hc, e⟩ := hab
+    exact ⟨c, h hc, e⟩) _ _ hw
+
+variable {G : ColoredGraph D V}
+
+/-- **Every lower interval of `Δ_G` is a Boolean lattice**: the faces of `σ` are in order-preserving
+bijection with the subsets of its set of colors, so `σ` has `rk σ` vertices and `2 ^ rk σ` faces. This is
+what makes `Δ_G` a simplicial complex in the multiset sense of Gurau 2010, Section 2. -/
+noncomputable def faceIso (σ : DualSimplex G) :
+    Set.Iic σ ≃o {T : Finset (Fin (D + 1)) // T ⊆ σ.colors} :=
+  let v := Classical.choose (DualSimplex.exists_mem_bub σ)
+  have hv : v ∈ σ.bub := Classical.choose_spec (DualSimplex.exists_mem_bub σ)
+  have hσ : σ.bub = G.bubble (univ \ σ.colors) v := by
+    obtain ⟨v0, hv0⟩ := σ.bub_eq
+    rw [hv0] at hv ⊢
+    exact (bubble_eq_of_mem G _ hv).symm
+  have key : ∀ τ : DualSimplex G, τ ≤ σ → τ.bub = G.bubble (univ \ τ.colors) v := by
+    intro τ hτ
+    obtain ⟨w, hw⟩ := τ.bub_eq
+    have hvτ : v ∈ τ.bub := hτ.2 hv
+    rw [hw] at hvτ ⊢
+    exact (bubble_eq_of_mem G _ hvτ).symm
+  { toFun := fun τ => ⟨τ.1.colors, τ.2.1⟩
+    invFun := fun T => ⟨⟨(T.1, G.bubble (univ \ T.1) v), ⟨v, rfl⟩⟩, by
+      refine ⟨T.2, ?_⟩
+      show G.bubble (univ \ T.1) v ⊇ σ.bub
+      rw [hσ]
+      exact bubble_mono G (sdiff_subset_sdiff subset_rfl T.2) v⟩
+    left_inv := fun τ => by
+      apply Subtype.ext
+      exact Subtype.ext (Prod.ext rfl (key τ.1 τ.2).symm)
+    right_inv := fun T => rfl
+    map_rel_iff' := by
+      intro a b
+      constructor
+      · intro h
+        refine ⟨h, ?_⟩
+        rw [key a.1 a.2, key b.1 b.2]
+        exact bubble_mono G (sdiff_subset_sdiff subset_rfl h) v
+      · intro h
+        exact h.1 }
+
+/-- **`Δ_G` is a simplicial poset**: each lower interval has `2 ^ rk σ` elements, those of the powerset of the
+`rk σ` colors. -/
+theorem dual_isSimplicial (σ : DualSimplex G) :
+    Nonempty (Set.Iic σ ≃o {T : Finset (Fin (D + 1)) // T ⊆ σ.colors}) := ⟨faceIso σ⟩
 
 end ColoredGraph
 
