@@ -77,7 +77,16 @@ theorem plHomeomorphic_of_invariants [Infinite V] {L L' : Finset (Finset V)} (hS
 
 /-- **Classification of closed combinatorial surfaces up to PL homeomorphism.** Two closed
 surfaces on an infinite vertex type are PL homeomorphic exactly when they have the same
-orientability and the same Euler characteristic. -/
+orientability and the same Euler characteristic.
+
+**Differences from the cited sources.** The PL homeomorphism here is a PL bijection of the
+realisations, not Lickorish's simplicial isomorphism of subdivisions, and the equivalence of the two
+definitions is not formalised; the vertex type is infinite as a hypothesis, because the moves of a
+chain need new vertices; the proof composes the PL form of Pachner's theorem with the classification
+by moves of the surface API, and is not Moise's. Lickorish, Theorem 5.9, has not been compared with
+the statement word for word, and the theorem number of the Moise chapter on the classification of
+compact connected 2-manifolds has not been verified (only the chapter is located). The comparison
+with the cited sources is pending. -/
 theorem plHomeomorphic_iff [Infinite V] {L L' : Finset (Finset V)} (hS : IsSurface L)
     (hS' : IsSurface L') :
     PLHomeomorphic (closure L) (closure L') ↔
