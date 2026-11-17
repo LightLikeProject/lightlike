@@ -265,17 +265,11 @@ theorem linkIso_rk (τ : Set.Ici σ) :
 
 end Link
 
-/-- **Gurau's Theorem 1**: the link of every simplex `σ` of `Δ_G` that does not have all colors is the dual
-of a colored graph, the graph of the lines of the colors outside `σ` restricted to the bubble of `σ`: there
-is an order-preserving bijection from the simplices containing `σ` to the simplices of that dual, which
-lowers the rank by the rank of `σ`. The colors outside `σ` are enumerated in increasing order.
-**Differences from the source** (the statement of Theorem 1 was read in arXiv:1006.0714, Section 5; the proof
-was not compared): Gurau states that for `p ≥ 2` the `p`-bubbles, as colored (stranded) graphs, *are* the
-link graphs of the `(n - p)`-simplices, where the link graph is the stranded graph of Section 3.1; here the
-link is the poset of simplices containing `σ`, it is identified with the dual of the colored graph of the
-bubble (a poset isomorphism, not an equality of graphs), the stranded graph is not defined, and the range is
-every `σ` with fewer than all colors (`p ≥ 1`), wider than `p ≥ 2`. Pending the owner's approval of this form,
-the result counts as partial. -/
+/-- **Supporting lemma for Gurau's Theorem 1, for every `p ≥ 1`**: the link of every simplex `σ` of `Δ_G` that
+does not have all colors is the dual of a colored graph, the graph of the lines of the colors outside `σ`
+restricted to the bubble of `σ`: there is an order-preserving bijection from the simplices containing `σ` to
+the simplices of that dual, which lowers the rank by the rank of `σ`. The colors outside `σ` are enumerated in
+increasing order. The statement of the source's range `p ≥ 2` is `link_isDual_of_two_le`. -/
 theorem link_isDual (σ : DualSimplex G) (hσ : σ.colors ≠ univ) :
     ∃ (E : ℕ) (e : Fin (E + 1) ↪ Fin (D + 1)) (v0 : V),
       ∃ (_ : univ.image e = univ \ σ.colors) (_ : σ.bub = G.bubble (univ.image e) v0),
@@ -299,6 +293,24 @@ theorem link_isDual (σ : DualSimplex G) (hσ : σ.colors ≠ univ) :
   have hv0 : σ.bub = G.bubble (univ.image e) v0 := by
     rw [hT]; exact DualSimplex.bub_eq_of_mem σ hv0'
   exact ⟨k, e, v0, hT, hv0, linkIso σ e v0 hT hv0, linkIso_rk σ e v0 hT hv0⟩
+
+/-- **Gurau's Theorem 1** (arXiv:1006.0714, Section 5), in the range the source states, `p ≥ 2`: if the
+colors outside `σ` number at least two, the link of `σ` is the dual of the colored graph of the lines of those
+colors restricted to the bubble of `σ` (an order-preserving bijection that lowers the rank by the rank of `σ`).
+**Differences from the source** (the statement of Theorem 1 was read at the cited location; the proof was not
+compared): Gurau states that the `p`-bubbles, as colored (stranded) graphs, *are* the link graphs of the
+`(n - p)`-simplices, where the link graph is the stranded graph of his Section 3.1; here the link is the poset of
+simplices containing `σ`, identified with the dual of the colored graph of the bubble by an order isomorphism, not
+an equality of graphs, and the stranded graph is not defined. Until a maintainer approves these differences, the
+result is partial. -/
+theorem link_isDual_of_two_le (σ : DualSimplex G) (h : 2 ≤ (univ \ σ.colors).card) :
+    ∃ (E : ℕ) (e : Fin (E + 1) ↪ Fin (D + 1)) (v0 : V),
+      ∃ (_ : univ.image e = univ \ σ.colors) (_ : σ.bub = G.bubble (univ.image e) v0),
+        ∃ iso : Set.Ici σ ≃o DualSimplex (G.restrict e v0),
+          ∀ τ, ((dual G).link σ).rk τ = (dual (G.restrict e v0)).rk (iso τ) := by
+  refine link_isDual σ fun hu => ?_
+  rw [hu] at h
+  simp at h
 
 end ColoredGraph
 
