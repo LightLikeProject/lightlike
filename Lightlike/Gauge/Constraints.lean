@@ -25,7 +25,7 @@ bracket `{f, g} = ⟨∂_q f, ∂_p g⟩ - ⟨∂_p f, ∂_q g⟩` (`ClassicalMe
   without quotient manifolds.
 
 The statements about these are the proof tasks `T-GC4-P1` to `T-GC4-P5` (`Tasks/GC/`); the example of the particle
-on a circle and the wrong count are in `ConstraintsTests.lean`.
+on a circle and the wrong count are in `Lightlike/Tests/Constraints.lean`.
 
 ## References
 
