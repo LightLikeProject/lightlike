@@ -1,5 +1,6 @@
 import Lightlike.Spacetime.Causal.BasicRelations
 import Lightlike.Spacetime.Causal.MinkowskiGH
+import Lightlike.Spacetime.Causal.SmoothOrientation
 import Lightlike.Spacetime.Causal.TestsMinkowski
 
 /-!
@@ -74,5 +75,16 @@ example (x : Fin (d + 1) → ℝ) :
 
 example : IsCompact (causalFuture (minkowskiOrientation d) 0 ∩
     causalPast (minkowskiOrientation d) (Pi.single 0 1)) := minkowski_globallyHyperbolic.2 _ _
+
+set_option synthInstance.maxHeartbeats 200000 in
+/-- Non-vacuity of the smoothing of a time orientation: Minkowski space has a smooth field that is
+future timelike for `∂₀`. -/
+example : ∃ X' : (x : Fin (d + 1) → ℝ) → TangentSpace 𝓘(ℝ, Fin (d + 1) → ℝ) x,
+    ContMDiff 𝓘(ℝ, Fin (d + 1) → ℝ) (𝓘(ℝ, Fin (d + 1) → ℝ).prod 𝓘(ℝ, Fin (d + 1) → ℝ)) ∞
+      (fun x ↦ TotalSpace.mk' (Fin (d + 1) → ℝ)
+        (E := fun x : Fin (d + 1) → ℝ ↦ TangentSpace 𝓘(ℝ, Fin (d + 1) → ℝ) x) x (X' x)) ∧
+    ∀ x, (minkowskiMetric (d + 1)).g x (X' x) (X' x) < 0 ∧
+      (minkowskiMetric (d + 1)).g x (X' x) ((minkowskiOrientation d).X x) < 0 :=
+  exists_smooth_field (minkowskiOrientation d)
 
 end Lightlike.Causal
