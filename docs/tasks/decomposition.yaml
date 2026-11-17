@@ -121,23 +121,13 @@ tasks:
   - id: T-GC4-P1
     milestone: GC4
     kind: proof
-    title: The Jacobi identity for the Poisson bracket of smooth phase-space functions
-    file: Tasks/GC/T_GC4_P1.lean
-    decl: Lightlike.Gauge.poissonBracket_jacobi
-    size: M
-    difficulty: routine
-    routes:
-      - "Symmetry of second derivatives (`IsSymmSndFDerivAt`) on `X × X`, with the gradient written through `toDual`."
-  - id: T-GC4-P2
-    milestone: GC4
-    kind: proof
     title: The Jacobi identity for the Dirac bracket of smooth functions
-    file: Tasks/GC/T_GC4_P2.lean
+    file: Tasks/GC/T_GC4_P1.lean
     decl: Lightlike.Gauge.diracBracket_jacobi
     size: L
     difficulty: research-level
     routes:
-      - "Differentiate the inverse of the bracket matrix (`C⁻¹' = -C⁻¹ C' C⁻¹`) and use T-GC4-P1 (Henneaux-Teitelboim, Chapter 1)."
+      - "Differentiate the inverse of the bracket matrix (`C⁻¹' = -C⁻¹ C' C⁻¹`) and use `poissonBracket_jacobi` (Henneaux-Teitelboim, Chapter 1)."
 
 # Upstream tasks: finished results that belong in Mathlib (general mathematics) or Physlib
 # (general physics), with the rework each needs. Exclusive, like definition

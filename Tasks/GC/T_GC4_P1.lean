@@ -1,28 +1,28 @@
-import Lightlike.Gauge.ConstraintsAPI
+import Lightlike.Gauge.PoissonJacobi
 
 /-!
 # Task T-GC4-P1
 
-The Jacobi identity for the Poisson bracket of smooth phase-space functions.
+The Jacobi identity for the Dirac bracket of smooth functions.
 
-The statement is `Lightlike.Gauge.poissonBracket_jacobi`, at the end of this file. Replace its `sorry` by
+The statement is `Lightlike.Gauge.diracBracket_jacobi`, at the end of this file. Replace its `sorry` by
 a proof and change nothing else in the file: the proof-task check rejects any other change
 (CONTRIBUTING.md).
 
-For `C²` observables `f, g, h`, `{f, {g, h}} + {g, {h, f}} + {h, {f, g}} = 0` at every point of phase space.
+For `C²` constraints with nonsingular bracket matrix everywhere and `C²` observables `f, g, h`, the Dirac bracket satisfies the Jacobi identity.
 
-Hint. Write the bracket as `Ω (∇f, ∇g)` (`poissonBracket_eq_gradForm`) and use the symmetry of second derivatives.
+Hint. Differentiate the inverse of the bracket matrix and use `poissonBracket_jacobi` (`Lightlike/Gauge/PoissonJacobi.lean`).
 
 ## What the statement uses
 
 Everything the statement depends on, in one block:
 
-    scripts/context-pack Lightlike.Gauge.poissonBracket_jacobi
+    scripts/context-pack Lightlike.Gauge.diracBracket_jacobi
 
 ## References
 
 Milestone GC4 (constrained Hamiltonian systems), ROADMAP section "Gauge theory and constrained systems".
-Source: Physlib's Poisson bracket module lists this identity as a TODO (`henneaux-teitelboim-1992` in docs/tasks/sources.yaml).
+Source: Henneaux–Teitelboim, Chapter 1 (`henneaux-teitelboim-1992` in docs/tasks/sources.yaml).
 -/
 
 open ClassicalMechanics InnerProductSpace
@@ -30,13 +30,15 @@ open scoped ContDiff
 
 namespace Lightlike.Gauge
 
-theorem poissonBracket_jacobi {X : Type} [NormedAddCommGroup X] [InnerProductSpace ℝ X] [CompleteSpace X]
-    (f g h : X → X → ℝ) (hf : ContDiff ℝ 2 (fun x : X × X => f x.1 x.2))
-    (hg : ContDiff ℝ 2 (fun x : X × X => g x.1 x.2)) (hh : ContDiff ℝ 2 (fun x : X × X => h x.1 x.2))
+theorem diracBracket_jacobi {X : Type} [NormedAddCommGroup X] [InnerProductSpace ℝ X] [CompleteSpace X]
+    {m : ℕ} (φ : Fin m → X → X → ℝ) (hφ : ∀ a, ContDiff ℝ 3 (fun x : X × X => φ a x.1 x.2))
+    (hC : ∀ p q, (bracketMatrix φ p q).det ≠ 0)
+    (f g h : X → X → ℝ) (hf : ContDiff ℝ 3 (fun x : X × X => f x.1 x.2))
+    (hg : ContDiff ℝ 3 (fun x : X × X => g x.1 x.2)) (hh : ContDiff ℝ 3 (fun x : X × X => h x.1 x.2))
     (p q : X) :
-    poissonBracket f (fun p q => poissonBracket g h p q) p q +
-      poissonBracket g (fun p q => poissonBracket h f p q) p q +
-      poissonBracket h (fun p q => poissonBracket f g p q) p q = 0 := by
+    diracBracket φ f (fun p q => diracBracket φ g h p q) p q +
+      diracBracket φ g (fun p q => diracBracket φ h f p q) p q +
+      diracBracket φ h (fun p q => diracBracket φ f g p q) p q = 0 := by
   sorry
 
 end Lightlike.Gauge
