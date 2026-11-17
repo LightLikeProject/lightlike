@@ -607,6 +607,7 @@ import Lightlike.Spacetime.CausalLadder.UniformCone
 import Lightlike.Spacetime.CausalLadder.LipschitzMono
 import Lightlike.Spacetime.Causal.BasicRelations
 import Lightlike.Spacetime.Causal.CausalCurve
+import Lightlike.Spacetime.Causal.CurveMargin
 import Lightlike.Spacetime.Causal.CurveOps
 import Lightlike.Spacetime.Causal.ConeConvex
 import Lightlike.Spacetime.Causal.DomainOfDependence
