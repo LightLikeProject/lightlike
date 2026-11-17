@@ -1673,28 +1673,6 @@
   review: kernel-checked
   note: "Fourth step of the comparison of the linearized Regge action with the Einstein-Hilbert action (T-RC3 in dimension 3, which stays open). For a C-infinity symmetric Z^3-periodic matrix field h on R^3 there are C and eta_0 > 0 such that for |eta| <= eta_0 the integral over the unit cube of (R/2) sqrt(det g) for g = 1 + eta h differs from (eta^2/2) times the integral over the unit cube of the Fierz-Pauli density fpDens(dh) = -1/4 |dh|^2 + 1/2 |div h|^2 - 1/2 div h . d tr h + 1/4 |d tr h|^2 by at most C |eta|^3 (eh_eta_sq_coeff). The first coefficient integrates to zero because it is the divergence of the periodic field S_i = sum_j d_j h_ij - d_i tr h, and the second coefficient differs from fpDens by the divergence of an explicit periodic field T' (F2_eq in CurvaturePoly.lean), so both integrate by Mathlib's divergence theorem on the box with the faces cancelling by periodicity; the pointwise expansion is the uniform second-order expansion of the curvature density (feta_expansion) applied to the jet of h, restricted to the cube. Together with the convergence of the linearized Regge coefficient to the Saint-Venant form and the equality of the Saint-Venant and Fierz-Pauli integrals (LL-XXXX-e), this identifies the limit of the linearized Regge coefficient with the eta^2 coefficient of the integrated curvature density of 1 + eta h. Limits: dimension 3; the unit cube with periodic C-infinity symmetric fields (C-infinity as IsCoordMetric requires); the remainder constant is not explicit; the statement is about the integral of the density of the metric 1 + eta h, not about the Regge action, about interpolated or geodesic edge lengths or about a limit of triangulations; two parts of the 3D linearization (RC3) stay open: the envelope step relating geodesic edge lengths to the interpolated ones, and the 3D wrong-model control. Trust checks: the zero field satisfies the hypotheses (eh_eta_sq_coeff_zero); the coefficient for a non-zero field is checked numerically (scripts/regge/regge3d_linearized_check.py: the second eta-derivative of the integrated density equals the Fierz-Pauli integral to six digits for one random field), not in Lean."
   since: unreleased
-- id: LL-XXXX-j
-  title: For a non-zero periodic field the Fierz-Pauli density integrates to -pi^2 over the cube, and the hinge density without volume weights does not
-  area: Regge
-  file: Lightlike/Regge/Linear3/EtaCoefficientTests.lean
-  decls: [Lightlike.Regge.Linear3.integral_fpDens_hTest, Lightlike.Regge.Linear3.integral_wrongDens_hTest, Lightlike.Regge.Linear3.wrong_weights_ne, Lightlike.Regge.Linear3.rightDens_integral_hTest]
-  status: proven
-  tier: frontier
-  source: structural
-  review: kernel-checked
-  note: "Trust checks for the eta^2 coefficient of the integrated curvature density of 1 + eta h (T-RC3 in dimension 3, which stays open). For the test field h(y) = cos(2 pi y_0) E_12, with E_12 the symmetric matrix with 1 at (1,2) and (2,1) (smooth, symmetric, Z^3-periodic), the cube integral of the Fierz-Pauli density is -pi^2, so the coefficient of the preceding entry is non-zero for it (integral_fpDens_hTest). The hinge density of the linearized Regge coefficient with the weights 1/|w|^2 of the hinge vectors replaced by 1 (wrongDens: the density without volume weights, the analogue of the missing area weight of the 2D control) equals -14/3 pi^2 cos^2(2 pi y_0) for this field and integrates to -7 pi^2/3 (integral_wrongDens_hTest), which differs from -pi^2 (wrong_weights_ne); with the weights the same field gives -pi^2 (rightDens_integral_hTest, by the Saint-Venant identity of the 36 incidences). Limits: one test field and one wrong model (the weights dropped); the integrals are those of the densities, not of the Regge action of a triangulation; nothing about the relation between geodesic and interpolated edge lengths (the envelope step, still open). Trust checks: scripts/regge/eh_wrong_model_check.py recomputes both densities and integrals in exact arithmetic with sympy and asserts them (numerical-algebraic evidence, not proof)."
-  since: unreleased
-- id: LL-XXXX-k
-  title: The periodic Kuhn complex of the 3-torus (Z/n)^3 is closed, non-degenerate and flat
-  area: Regge
-  file: Lightlike/Regge/Linear3/TorusComplex.lean
-  decls: [Lightlike.Regge.Linear3.torusComplex, Lightlike.Regge.Linear3.lengthsNondeg_len0, Lightlike.Regge.Linear3.deficit_len0, Lightlike.Regge.Linear3.torus_second_order]
-  status: proven
-  tier: frontier
-  source: structural
-  review: kernel-checked
-  note: "The six Kuhn tetrahedra of every cube of the grid (Z/n)^3, n >= 3, form a closed simplicial 3-complex (every triangle lies in two tetrahedra; the neighbouring tetrahedron is found by a finite table checked by decide), with non-degenerate flat edge lengths for which every deficit angle is zero; the second-order expansion of its Regge action under squared lengths varying along a line holds (torus_second_order, from regge_second_order). Limits: the standard cubical Kuhn triangulation of the torus with n >= 3; nothing about convergence in n. Non-vacuity: this is the instance the second-order theorem needed. Wrong-model control: the four-simplex boundary with all lengths 1 has positive deficits (WrongModel)."
-  since: unreleased
 - id: LL-XXXX-l
   title: The Regge action of the periodic Kuhn complex of the 3-torus with geodesic lengths of a periodic Riemannian metric tends to the Einstein-Hilbert action
   area: Regge
