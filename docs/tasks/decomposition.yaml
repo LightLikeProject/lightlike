@@ -190,6 +190,16 @@ tasks:
     routes:
       - "Mollification: for ψ in the domain, ψ * ρ_ε is smooth and tends to ψ with its derivative; truncate by a cutoff and use that the generator commutes with convolution (Hall, Chapter 10)."
       - "A dense invariant subspace of the domain is a core (Reed–Simon I, Chapter VIII, on cores); the C² compactly supported functions are invariant under translation."
+  - id: T-OP1-P5
+    milestone: OP1
+    kind: proof
+    title: "On L²[0,1], -i d/dx without boundary conditions has deficiency indices (1,1)"
+    file: Tasks/OP/T_OP1_P5.lean
+    decl: Lightlike.OperatorAlgebras.momentumMin_deficiency
+    size: M
+    difficulty: intermediate
+    routes:
+      - "The adjoint of -i d/dx on C_c^∞(0,1) is -i d/dx on H¹(0,1) (weak derivative); ker(A† ∓ i) is spanned by exp(∓x), found by solving the ODE for an absolutely continuous function; density of C_c^∞(0,1) in L²(0,1) (Mathlib: density of compactly supported smooth functions in Lp)."
 
 # Upstream tasks: finished results that belong in Mathlib (general mathematics) or Physlib
 # (general physics), with the rework each needs. Exclusive, like definition

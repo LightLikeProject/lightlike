@@ -67,7 +67,9 @@ which is self-adjoint (Stone's theorem), and `-i d/dx` is essentially self-adjoi
 
 **Differences from the source** (not yet read at the cited location; the comparison is pending): the
 milestone's statement is for `C_c^∞(ℝ)`; the core is stated here for `C²` functions with compact support,
-the class on which the derivative of the group is proved. -/
+the class on which the derivative of the group is proved. A core property for the larger class `C²_c`
+is weaker than for `C_c^∞`: a core made of `C_c^∞` functions is also a core made of `C²_c` functions, not
+conversely. -/
 theorem translationGroup_core (ψ : L2R) (hψ : ψ ∈ translationGroup.generatorDomain) :
     ∃ (f : ℕ → ℝ → ℂ) (hf : ∀ n, ContDiff ℝ 2 (f n)) (hc : ∀ n, HasCompactSupport (f n)),
       Tendsto (fun n => ofCS (hf n).continuous (hc n)) atTop (𝓝 ψ) ∧
