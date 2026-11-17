@@ -46,10 +46,17 @@ functionals, for which the two slicings have the same cells as sets and hence is
 [20]. With the slicing result this gives, by induction on the dimension, that every geometric
 subdivision of a complex with the empty face is stellar equivalent to it [20], and from that
 Newman's theorem [21]. With it, the sphere results above no longer assume stellar equivalence of
-subdivisions of lower dimension [21].
+subdivisions of lower dimension [21]. Conversely a stellar subdivision is a PL homeomorphism of the
+realisations, and so is any chain of subdivisions and welds {1} [55]. The Euler characteristic is
+invariant under stellar equivalence, so complexes with different Euler characteristics are not stellar
+equivalent, and, when both or neither contain the empty face, their realisations are not PL
+homeomorphic [56] [21].
 
 The 3-complexes of the Ponzano–Regge API generate simplicial complexes, and its closed
-combinatorial 3-manifolds are closed combinatorial 3-manifolds in this sense [6]. The same
+combinatorial 3-manifolds are closed combinatorial 3-manifolds in this sense [6]. In dimension two, a connected graph with two
+edges at every vertex is reached from the boundary of a triangle by subdividing edges, and so
+generates a PL 1-sphere [54]; this identifies the vertex links of the closed surfaces of
+the surface API as PL 1-spheres. The same
 construction applies to the 4-complexes of the four-dimensional API, with closed combinatorial
 4-manifolds defined by their vertex links [7].
 
@@ -109,6 +116,7 @@ A simple chain is a list of points in the plane whose consecutive segments meet 
     `PL.SComplex.cell_le_iff_segments`, `PL.SComplex.stellarEquiv_of_cutting`,
     `PL.SComplex.subdivStellar`
 21. Lightlike/PL/Newman.lean - `PL.SComplex.StellarEquiv.of_plHomeomorphic`,
+    `PL.SComplex.not_plHomeomorphic_of_euler_ne`,
     `PL.SComplex.derivedBoundary_isSphere_of_infinite`, `PL.SComplex.cutSpheres_of_infinite`,
     `PL.SComplex.isSB_of_polytope_boundary_of_infinite`
 22. Lightlike/PL/PachnerPL.lean - `PL.SComplex.pachner_plHomeomorphic`,
@@ -167,6 +175,12 @@ A simple chain is a list of points in the plane whose consecutive segments meet 
 51. Lightlike/PL/ArcDensity.lean - `PL.arc_density`, `PL.exists_inverse_modulus`
 52. Lightlike/PL/PolygonApprox.lean - `PL.exists_two_chains`, `PL.exists_polygon_near`
 53. Lightlike/PL/JordanComponents.lean - `PL.jordan_components`
+54. Lightlike/PL/Cycle.lean - `PL.CycleGraph`, `PL.CycleGraph.isSphere1`,
+    `PL.CycleGraph.isPLSphere`, `PL.isPLSphere_closure_of_isSphere1`
+55. Lightlike/PL/StellarHomeo.lean - `PL.SComplex.PLHomeomorphic.starAt`,
+    `PL.SComplex.PLHomeomorphic.of_stellarEquiv`
+56. Lightlike/PL/Euler.lean - `PL.SComplex.StellarEquiv.euler_eq`,
+    `PL.SComplex.not_stellarEquiv_of_euler_ne`
 
 ## References
 

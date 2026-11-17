@@ -117,7 +117,131 @@ tasks:
       - The q-Racah formula and q-hypergeometric identities (Kirillov–Reshetikhin 1989).
       - Representation theory of U_q(sl₂) at roots of unity (Turaev 1994).
       - Kauffman–Lins recoupling theory (1994).
+  - id: T-OP1-P1
+    milestone: OP1
+    kind: proof
+    title: "The generator of a strongly continuous unitary group is self-adjoint (Stone's theorem, direction 1)"
+    file: Tasks/OP/T_OP1_P1.lean
+    decl: Lightlike.OperatorAlgebras.stone_generator_isSelfAdjoint
+    size: L
+    difficulty: research-level
+    routes:
+      - "Show `A` is closed, densely defined (domain is invariant and mollified vectors lie in it) and symmetric, then `ran (A ± i) = H` by the integral `∫₀^∞ e^{-t} U (∓ t) ψ dt` (Hall, Chapter 10, the proof of Stone's theorem)."
+      - "Reed–Simon I, Chapter VIII (Stone's theorem)."
+  - id: T-OP1-P2
+    milestone: OP1
+    kind: proof
+    title: "Every self-adjoint operator generates a strongly continuous unitary group (Stone's theorem, direction 2)"
+    file: Tasks/OP/T_OP1_P2.lean
+    decl: Lightlike.OperatorAlgebras.stone_exists
+    size: L
+    difficulty: research-level
+    routes:
+      - "The unbounded spectral theorem (Hall, Chapter 10) and the functional calculus `U t = ∫ e^{i t λ} dE(λ)`."
+      - "The Cayley transform and the spectral theorem for unitaries, or the Hille–Yosida resolvent route."
+  - id: T-OP1-P3
+    milestone: OP1
+    kind: proof
+    title: "A strongly continuous unitary group is determined by its generator (Stone's theorem, uniqueness)"
+    file: Tasks/OP/T_OP1_P3.lean
+    decl: Lightlike.OperatorAlgebras.stone_unique
+    size: L
+    difficulty: research-level
+    routes:
+      - "For `ψ` in the domain, `d/dt (V (-t) U t ψ) = 0`, so `V (-t) U t ψ` is constant; extend by density of the domain (needs the domain to be invariant under the group)."
+  - id: T-OP2-P1
+    milestone: OP2
+    kind: proof
+    title: "A Fock representation of the Weyl relations exists on every complex Hilbert space"
+    file: Tasks/OP/T_OP2_P1.lean
+    decl: Lightlike.OperatorAlgebras.fockRep_exists
+    size: L
+    difficulty: research-level
+    routes:
+      - "Symmetric Fock space `⨁ₙ Sym^n h` with the Weyl operators `exp(i φ(f))` (Bratteli–Robinson 2, Section 5.2.3), or the GNS representation of the quasi-free state `ω(W f) = exp(-‖f‖²/4)`."
+  - id: T-OP2-P2
+    milestone: OP2
+    kind: proof
+    title: "The Fock representation is unique up to unitary equivalence"
+    file: Tasks/OP/T_OP2_P2.lean
+    decl: Lightlike.OperatorAlgebras.fockRep_unique
+    size: L
+    difficulty: research-level
+    routes:
+      - "The map `W f Ω ↦ W' f Ω'` preserves inner products by the Weyl relation and the vacuum expectation; extend by cyclicity."
+  - id: T-OP2-P3
+    milestone: OP2
+    kind: proof
+    title: "Shale's criterion: a Bogoliubov transformation is implementable in the Fock representation iff its antilinear part is Hilbert–Schmidt"
+    file: Tasks/OP/T_OP2_P3.lean
+    decl: Lightlike.OperatorAlgebras.shale
+    size: L
+    difficulty: research-level
+    routes:
+      - "Implementability by the unitary built from the Bogoliubov coefficients (Shale 1962; Bratteli–Robinson 2, Chapter 5); the converse by the number operator and the vacuum's image."
+  - id: T-OP1-P4
+    milestone: OP1
+    kind: proof
+    title: "The C² functions with compact support are a core of the generator of the translation group on L²(ℝ)"
+    file: Tasks/OP/T_OP1_P4.lean
+    decl: Lightlike.OperatorAlgebras.translationGroup_core
+    size: M
+    difficulty: research-level
+    routes:
+      - "Mollification: for ψ in the domain, ψ * ρ_ε is smooth and tends to ψ with its derivative; truncate by a cutoff and use that the generator commutes with convolution (Hall, Chapter 10)."
+      - "A dense invariant subspace of the domain is a core (Reed–Simon I, Chapter VIII, on cores); the C² compactly supported functions are invariant under translation."
+  - id: T-OP1-P5
+    milestone: OP1
+    kind: proof
+    title: "On L²[0,1], -i d/dx without boundary conditions has deficiency indices (1,1)"
+    file: Tasks/OP/T_OP1_P5.lean
+    decl: Lightlike.OperatorAlgebras.momentumMin_deficiency
+    size: M
+    difficulty: intermediate
+    routes:
+      - "The adjoint of -i d/dx on C_c^∞(0,1) is -i d/dx on H¹(0,1) (weak derivative); ker(A† ∓ i) is spanned by exp(∓x), found by solving the ODE for an absolutely continuous function; density of C_c^∞(0,1) in L²(0,1) (Mathlib: density of compactly supported smooth functions in Lp)."
 
+  - id: T-SF10-P1
+    milestone: SF10
+    kind: proof
+    title: Joint integrability of the Lorentzian vertex integrand
+    file: Tasks/SF/T_SF10_P1.lean
+    decl: Lightlike.Asymptotics.Lorentzian.lorVertex_jointIntegrable
+    size: L
+    difficulty: research-level
+    routes:
+      - "Bound the modulus of the integrand by the product of the weights `triWeight` of the ten edges and integrate edge by edge: the finiteness of the Lorentzian EPRL vertex (Kaminski–Kisielowski–Lewandowski, arXiv:0909.0939) or a direct estimate of `∏_e ∫ ‖g_e‖ dw` from `norm_exp_triAction` and the integrability of the `Ω` density (`Lightlike/Asymptotics/Lorentzian/Amplitude.lean`)."
+  - id: T-SF10-P2
+    milestone: SF10
+    kind: proof
+    title: Invertibility of the Hessian of the Lorentzian vertex action at a critical point
+    file: Tasks/SF/T_SF10_P2.lean
+    decl: Lightlike.Asymptotics.Lorentzian.lorHessian_invertible_at_critical
+    size: L
+    difficulty: research-level
+    routes:
+      - "Reduce to `Im(-H)` injective on the kernel of `Re(-H)`: `Re(-H)` is positive semidefinite (a sum of squares of the linearised alignment conditions) and `-H v = 0` forces `Re(-H) v = 0` and `Im(-H) v = 0`. The closed form of the blocks is `hessBlockMatrix` (`Lightlike/Asymptotics/Lorentzian/HessianAssembly.lean`)."
+      - "A certified computation for the regular simplex (numerical evidence: `scripts/asymptotics/lorentzian_hessian_kernel_check.py`) does not settle all nondegenerate data."
+  - id: T-SF10-P3
+    milestone: SF10
+    kind: proof
+    title: The far part of the Lorentzian vertex integral is of lower order
+    file: Tasks/SF/T_SF10_P3.lean
+    decl: Lightlike.Asymptotics.Lorentzian.lorVertex_farRemainder
+    size: L
+    difficulty: research-level
+    routes:
+      - "Where `Re S ≤ -δ` on the support of `1 - χ` the integrand decays exponentially; the non-compact directions need an integrability estimate of `e^{λ S}` against the amplitude (`Ω` density) uniform in `λ`, and non-stationary phase (`nonstationary_phase`, `Lightlike/Oscillatory/Localisation.lean`) where `Re S = 0` and `dS ≠ 0`."
+  - id: T-SF10-P4
+    milestone: SF10
+    kind: proof
+    title: Finiteness and classification of the critical points of the Lorentzian vertex action
+    file: Tasks/SF/T_SF10_P4.lean
+    decl: Lightlike.Asymptotics.Lorentzian.lorVertex_criticalSet_finite
+    size: L
+    difficulty: research-level
+    routes:
+      - "The bivector reconstruction theorem for Lorentzian data (BDFHP Sec. 5.4.3, via Barrett–Dowdall–Fairbairn–Gomes–Hellmann, arXiv:0902.1170): critical points give bivector geometries. The SU(2) case is `Lightlike/Asymptotics/Lorentzian/Classification.lean`."
   - id: T-GE2-P1
     milestone: GE2
     kind: proof
@@ -340,6 +464,99 @@ tasks:
     difficulty: research-level
     routes:
       - "The order of the sprinkled points is the dominance order of a uniform random permutation (`coneLE_sprinklePt`), so the longest chain is the longest increasing subsequence. The limit `2` is the theorem of Vershik–Kerov and Logan–Shepp."
+
+  - id: T-CA1-P1
+    milestone: CA1
+    kind: proof
+    title: "The bracket of a smeared momentum constraint with a smeared Hamiltonian constraint is a smeared Hamiltonian constraint"
+    file: Tasks/CA/T_CA1_P1.lean
+    decl: Lightlike.Canonical.bracket_momentum_hamiltonian
+    size: L
+    difficulty: research-level
+    routes:
+      - "Covariance of the scalar density `√h R` under the flow of `ξ`, from `Lightlike.scalarCurvature_pullback`, and the first variation of the scalar curvature."
+      - "Hojman–Kuchař–Teitelboim (1976) and Thiemann (2007), Chapter 1: the hypersurface deformation algebra."
+  - id: T-CA1-P2
+    milestone: CA1
+    kind: proof
+    title: "The bracket of two smeared Hamiltonian constraints is a smeared momentum constraint with the structure function h^{ij}"
+    file: Tasks/CA/T_CA1_P2.lean
+    decl: Lightlike.Canonical.bracket_hamiltonian_hamiltonian
+    size: L
+    difficulty: research-level
+    routes:
+      - "The first variation of `√h R` (Palatini identity in coordinates), an integration by parts, and the antisymmetry in `N, M`."
+      - "Hojman–Kuchař–Teitelboim (1976) and Thiemann (2007), Chapter 1: the hypersurface deformation algebra."
+  - id: T-GE1-P2
+    milestone: GE1
+    kind: proof
+    title: The curvature tensor is computed by any smooth extensions
+    file: Tasks/GE/T_GE1_P2.lean
+    decl: Lightlike.curvatureAt_apply
+    size: L
+    difficulty: research-level
+    routes:
+      - Tensoriality of `(X, Y, Z) ↦ ∇_X ∇_Y Z - ∇_Y ∇_X Z - ∇_{[X,Y]} Z` in each slot, as `CovariantDerivative.torsion_apply` (Mathlib/Geometry/Manifold/VectorBundle/CovariantDerivative/Torsion.lean), with `TensorialAt.mkHom`.
+  - id: T-GE1-P3
+    milestone: GE1
+    kind: proof
+    title: The Ricci tensor of a Levi-Civita connection is symmetric
+    file: Tasks/GE/T_GE1_P3.lean
+    decl: Lightlike.ricciAt_symm
+    size: L
+    difficulty: research-level
+    routes:
+      - First Bianchi identity and the pair symmetry of the lowered curvature (T-GE1-P4), then trace.
+  - id: T-GE1-P4
+    milestone: GE1
+    kind: proof
+    title: The first Bianchi identity and the pair symmetry of the lowered curvature
+    file: Tasks/GE/T_GE1_P4.lean
+    decl: Lightlike.bianchi_first_and_pair_symm
+    size: L
+    difficulty: research-level
+    routes:
+      - Torsion-freeness gives the first identity (Jacobi identity of the Lie bracket); metric compatibility gives antisymmetry in the last pair; the pair symmetry follows by the usual four-term argument.
+  - id: T-GE1-P5
+    milestone: GE1
+    kind: proof
+    title: The intrinsic scalar curvature is the coordinate scalar curvature in every chart
+    file: Tasks/GE/T_GE1_P5.lean
+    decl: Lightlike.scalarCurvatureAt_chart
+    size: L
+    difficulty: research-level
+    routes:
+      - In a chart the coordinate fields have vanishing brackets and `∇_{∂ᵢ} ∂ⱼ = Γᵏᵢⱼ ∂ₖ` (Koszul formula); the coordinate formula of `Lightlike/Spacetime/Curvature.lean` is then the trace of `curvatureAt`. This fixes the sign convention of the two definitions.
+  - id: T-GE1-P6
+    milestone: GE1
+    kind: proof
+    title: The manifold-level Einstein equations are the coordinate ones in every chart
+    file: Tasks/GE/T_GE1_P6.lean
+    decl: Lightlike.satisfiesEinstein_iff_chart
+    size: L
+    difficulty: research-level
+    routes:
+      - T-GE1-P5 and its Ricci version in a chart; the `IsCoordMetric` part is `LorentzianMetric.isCoordMetric_coordMetric`.
+  - id: T-GE1-P7
+    milestone: GE1
+    kind: proof
+    title: The second Bianchi identity of a Levi-Civita connection
+    file: Tasks/GE/T_GE1_P7.lean
+    decl: Lightlike.bianchi_second
+    size: L
+    difficulty: research-level
+    routes:
+      - Torsion-freeness and the Jacobi identity: evaluate the cyclic sum on extensions of the vectors with vanishing brackets at the point (coordinate fields of a chart), where it reduces to the Jacobi identity for the covariant derivatives.
+  - id: T-GE1-P8
+    milestone: GE1
+    kind: proof
+    title: The Einstein tensor of a Levi-Civita connection is divergence free
+    file: Tasks/GE/T_GE1_P8.lean
+    decl: Lightlike.einstein_divergence_free
+    size: L
+    difficulty: research-level
+    routes:
+      - Contract the second Bianchi identity (T-GE1-P7) twice, using the symmetries of the curvature (T-GE1-P4) and metric compatibility.
 
 # Upstream tasks: finished results that belong in Mathlib (general mathematics) or Physlib
 # (general physics), with the rework each needs. Exclusive, like definition

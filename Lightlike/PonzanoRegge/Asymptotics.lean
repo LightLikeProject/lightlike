@@ -17,9 +17,9 @@ with `V` the volume and `θ_e` the exterior dihedral angles. The phase is the **
 the tetrahedron, discrete general relativity. This is the semiclassical link from the quantum
 amplitude back to classical gravity.
 
-This file **states** the formula precisely (`PonzanoReggeFormula`) and audits the geometry. It does
-not prove the formula: every known proof uses analysis Mathlib lacks (geometric quantization or
-WKB/stationary phase).
+This file **states** the formula precisely (`PonzanoReggeFormula`) and audits the geometry. The
+proof is `Lightlike.Asymptotics.ponzanoReggeFormula` (Lightlike/Asymptotics/SaddleAssembly.lean), through
+the large-spin asymptotics of the Racah sum.
 
 * `vol2`: the squared volume from the six edge lengths (Euler–Tartaglia).
 * `dihedral`: the interior dihedral angle at an edge, from the lengths.
@@ -83,11 +83,12 @@ noncomputable def sixJScaled (j : Fin 6 → ℕ) (lam : ℕ) : ℝ :=
 /-- The triangle inequalities for a triad `(a, b, c)`. -/
 def IsTriad (a b c : ℕ) : Prop := c ≤ a + b ∧ a ≤ b + c ∧ b ≤ a + c
 
-/-- **The Ponzano–Regge asymptotic formula**, stated (equivalent to Roberts' Theorem 1 via his
-§6.1, which uses the unshifted tetrahedron): for spins `j` whose four
-faces satisfy the triangle inequalities and that form a non-degenerate Euclidean tetrahedron
-(`vol2 > 0`), `√(12πV) {6j}(λj) - cos(S_Regge + π/4) → 0`. **Not proven here** (see the module
-docstring).
+/-- **The Ponzano–Regge asymptotic formula**, in the Ponzano–Regge form (edge lengths `j + ½`): for
+spins `j` whose four faces satisfy the triangle inequalities and that form a non-degenerate
+Euclidean tetrahedron (`vol2 > 0`), `√(12πV) {6j}(λj) - cos(S_Regge + π/4) → 0`. Proven as
+`Lightlike.Asymptotics.ponzanoReggeFormula`. Roberts' Theorem 1 uses the unshifted tetrahedron; the
+two forms agree by his §6.1 (the Schläfli identity), but that equivalence is not proven here, and
+Roberts' Minkowskian case (`vol2 < 0`) is not stated.
 
 The triangle inequalities are needed: `vol2 > 0` does not imply them. For `j = (1, 1, 3, 1, 5, 3)`
 `vol2 = 1.625 > 0`, but the face `(1, 1, 3)` is not a triangle, so the 6j symbol vanishes for every
