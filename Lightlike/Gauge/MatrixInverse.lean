@@ -7,7 +7,7 @@ If every entry of `M : E → Matrix (Fin n) (Fin n) ℝ` is differentiable and `
 then the entries of `M⁻¹` are differentiable and
 `d (M⁻¹)_{ae} (v) = - ∑_{b,c} (M⁻¹)_{ac} d M_{cb} (v) (M⁻¹)_{be}`, i.e. `d (M⁻¹) = - M⁻¹ (dM) M⁻¹`.
 The statements are entrywise, so no norm on matrices is used. They are used for the Jacobi identity of the
-Dirac bracket (`Tasks/GC/T_GC4_P1.lean`).
+Dirac bracket (`Lightlike.Gauge.diracBracket_jacobi`).
 -/
 
 open Matrix
