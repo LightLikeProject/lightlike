@@ -117,6 +117,15 @@ tasks:
       - The q-Racah formula and q-hypergeometric identities (Kirillov–Reshetikhin 1989).
       - Representation theory of U_q(sl₂) at roots of unity (Turaev 1994).
       - Kauffman–Lins recoupling theory (1994).
+  - id: T-GF1-P1
+    milestone: GF1
+    kind: proof
+    title: The genus side of the dual of a colored graph in dimension 2 (chi even, chi at most 2, the surface)
+    deps: [T-PL7]
+    size: M
+    difficulty: intermediate
+    routes:
+      - For a connected colored graph of dimension 2 the dual is a closed surface, so `ColoredGraph.euler` (`Lightlike/GFT/Euler.lean`) is its Euler characteristic, even, and at most 2 (Gurau 2010, Section 2; the classification of closed surfaces, PL3). No Lean statement is written until the surface type of the PL area (the PL7 milestone) exists; the link to the face count is `eulerChar_dual_eq_euler` (`Lightlike/GFT/DualEuler.lean`).
 
 # Upstream tasks: finished results that belong in Mathlib (general mathematics) or Physlib
 # (general physics), with the rework each needs. Exclusive, like definition
