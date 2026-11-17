@@ -41,6 +41,13 @@ theorem StellarEquiv.of_plHomeomorphic {K L : SComplex V} (h0 : ∅ ∈ K ↔ �
     exact subdivStellar (N.faces.sup Finset.card) M N hsub h0M h0N fun s hs =>
       (Finset.le_sup (f := Finset.card) hs).trans (Nat.le_succ _)
 
+/-- **Complexes with different Euler characteristics have PL non-homeomorphic realisations**, when
+both contain the empty face or both do not: a PL homeomorphism gives stellar equivalence
+(`StellarEquiv.of_plHomeomorphic`), which preserves the Euler characteristic. -/
+theorem not_plHomeomorphic_of_euler_ne {K L : SComplex V} (h0 : ∅ ∈ K ↔ ∅ ∈ L)
+    (h : K.euler ≠ L.euler) : ¬ PLHomeomorphic K L := fun hp =>
+  not_stellarEquiv_of_euler_ne h (StellarEquiv.of_plHomeomorphic h0 hp)
+
 variable {E : Type*} [AddCommGroup E] [Module ℝ E] [DecidableEq E] [Infinite E]
 
 open Classical in

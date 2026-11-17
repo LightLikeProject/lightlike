@@ -173,6 +173,12 @@ density of `1 + η h` (`eh_eta_sq_coeff`). This is a limit of a quadratic form o
 is the convergence of eigenpairs for shape-regular families on tori; it is not proved here, and neither are the comparison of
 geodesic with interpolated lengths nor a non-fat counterexample. The milestone stays open.
 
+In two dimensions the deficit angles of a closed triangulated surface with Euclidean triangles add up to `2π (V - E + F)`
+[89]: the angles sum to `π` per triangle, so the angle sum over all vertices is `π F`, and `3 F = 2 E` when every edge lies in
+two triangles. The octahedron inscribed in the unit sphere (chordal edge lengths) has deficit sum `4π`, and the octahedron with
+one face removed has `5π`, not `2π χ`, so the closedness is needed [89]. This is a combinatorial check of the round-sphere
+value `4π`, not a convergence theorem and not a statement about triangulations of other surfaces.
+
 A 2-complex with boundary is a disc in the combinatorial sense exactly when it is an intrinsic
 triangulated disc [16].
 
@@ -346,6 +352,9 @@ triangulated disc [16].
 
 88. Lightlike/Regge/Linear3/EtaCoefficientTests.lean - `Regge.Linear3.integral_fpDens_hTest`,
     `Regge.Linear3.integral_wrongDens_hTest`, `Regge.Linear3.wrong_weights_ne`
+
+89. Lightlike/Regge/GaussBonnet2D.lean - `Regge.discrete_gauss_bonnet`, `Regge.sum_angleOf`,
+    `Regge.octahedron_deficit_sum`, `Regge.octOpen_deficit_sum_ne`
 
 ## References
 
