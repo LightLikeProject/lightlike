@@ -127,6 +127,435 @@ tasks:
     routes:
       - For a connected colored graph of dimension 2 the dual is a closed surface, so `ColoredGraph.euler` (`Lightlike/GFT/Euler.lean`) is its Euler characteristic, even, and at most 2 (Gurau 2010, Section 2; the classification of closed surfaces, PL3). No Lean statement is written until the surface type of the PL area (the PL7 milestone) exists; the link to the face count is `eulerChar_dual_eq_euler` (`Lightlike/GFT/DualEuler.lean`).
 
+  - id: T-OP1-P1
+    milestone: OP1
+    kind: proof
+    title: "The generator of a strongly continuous unitary group is self-adjoint (Stone's theorem, direction 1)"
+    file: Tasks/OP/T_OP1_P1.lean
+    decl: Lightlike.OperatorAlgebras.stone_generator_isSelfAdjoint
+    size: L
+    difficulty: research-level
+    routes:
+      - "Show `A` is closed, densely defined (domain is invariant and mollified vectors lie in it) and symmetric, then `ran (A ± i) = H` by the integral `∫₀^∞ e^{-t} U (∓ t) ψ dt` (Hall, Chapter 10, the proof of Stone's theorem)."
+      - "Reed–Simon I, Chapter VIII (Stone's theorem)."
+  - id: T-OP1-P2
+    milestone: OP1
+    kind: proof
+    title: "Every self-adjoint operator generates a strongly continuous unitary group (Stone's theorem, direction 2)"
+    file: Tasks/OP/T_OP1_P2.lean
+    decl: Lightlike.OperatorAlgebras.stone_exists
+    size: L
+    difficulty: research-level
+    routes:
+      - "The unbounded spectral theorem (Hall, Chapter 10) and the functional calculus `U t = ∫ e^{i t λ} dE(λ)`."
+      - "The Cayley transform and the spectral theorem for unitaries, or the Hille–Yosida resolvent route."
+  - id: T-OP1-P3
+    milestone: OP1
+    kind: proof
+    title: "A strongly continuous unitary group is determined by its generator (Stone's theorem, uniqueness)"
+    file: Tasks/OP/T_OP1_P3.lean
+    decl: Lightlike.OperatorAlgebras.stone_unique
+    size: L
+    difficulty: research-level
+    routes:
+      - "For `ψ` in the domain, `d/dt (V (-t) U t ψ) = 0`, so `V (-t) U t ψ` is constant; extend by density of the domain (needs the domain to be invariant under the group)."
+  - id: T-OP2-P1
+    milestone: OP2
+    kind: proof
+    title: "A Fock representation of the Weyl relations exists on every complex Hilbert space"
+    file: Tasks/OP/T_OP2_P1.lean
+    decl: Lightlike.OperatorAlgebras.fockRep_exists
+    size: L
+    difficulty: research-level
+    routes:
+      - "Symmetric Fock space `⨁ₙ Sym^n h` with the Weyl operators `exp(i φ(f))` (Bratteli–Robinson 2, Section 5.2.3), or the GNS representation of the quasi-free state `ω(W f) = exp(-‖f‖²/4)`."
+  - id: T-OP2-P2
+    milestone: OP2
+    kind: proof
+    title: "The Fock representation is unique up to unitary equivalence"
+    file: Tasks/OP/T_OP2_P2.lean
+    decl: Lightlike.OperatorAlgebras.fockRep_unique
+    size: L
+    difficulty: research-level
+    routes:
+      - "The map `W f Ω ↦ W' f Ω'` preserves inner products by the Weyl relation and the vacuum expectation; extend by cyclicity."
+  - id: T-OP2-P3
+    milestone: OP2
+    kind: proof
+    title: "Shale's criterion: a Bogoliubov transformation is implementable in the Fock representation iff its antilinear part is Hilbert–Schmidt"
+    file: Tasks/OP/T_OP2_P3.lean
+    decl: Lightlike.OperatorAlgebras.shale
+    size: L
+    difficulty: research-level
+    routes:
+      - "Implementability by the unitary built from the Bogoliubov coefficients (Shale 1962; Bratteli–Robinson 2, Chapter 5); the converse by the number operator and the vacuum's image."
+  - id: T-OP1-P4
+    milestone: OP1
+    kind: proof
+    title: "The C² functions with compact support are a core of the generator of the translation group on L²(ℝ)"
+    file: Tasks/OP/T_OP1_P4.lean
+    decl: Lightlike.OperatorAlgebras.translationGroup_core
+    size: M
+    difficulty: research-level
+    routes:
+      - "Mollification: for ψ in the domain, ψ * ρ_ε is smooth and tends to ψ with its derivative; truncate by a cutoff and use that the generator commutes with convolution (Hall, Chapter 10)."
+      - "A dense invariant subspace of the domain is a core (Reed–Simon I, Chapter VIII, on cores); the C² compactly supported functions are invariant under translation."
+  - id: T-OP1-P5
+    milestone: OP1
+    kind: proof
+    title: "On L²[0,1], -i d/dx without boundary conditions has deficiency indices (1,1)"
+    file: Tasks/OP/T_OP1_P5.lean
+    decl: Lightlike.OperatorAlgebras.momentumMin_deficiency
+    size: M
+    difficulty: intermediate
+    routes:
+      - "The adjoint of -i d/dx on C_c^∞(0,1) is -i d/dx on H¹(0,1) (weak derivative); ker(A† ∓ i) is spanned by exp(∓x), found by solving the ODE for an absolutely continuous function; density of C_c^∞(0,1) in L²(0,1) (Mathlib: density of compactly supported smooth functions in Lp)."
+
+  - id: T-SF10-P1
+    milestone: SF10
+    kind: proof
+    title: Joint integrability of the Lorentzian vertex integrand
+    file: Tasks/SF/T_SF10_P1.lean
+    decl: Lightlike.Asymptotics.Lorentzian.lorVertex_jointIntegrable
+    size: L
+    difficulty: research-level
+    routes:
+      - "Bound the modulus of the integrand by the product of the weights `triWeight` of the ten edges and integrate edge by edge: the finiteness of the Lorentzian EPRL vertex (Kaminski–Kisielowski–Lewandowski, arXiv:0909.0939) or a direct estimate of `∏_e ∫ ‖g_e‖ dw` from `norm_exp_triAction` and the integrability of the `Ω` density (`Lightlike/Asymptotics/Lorentzian/Amplitude.lean`)."
+  - id: T-SF10-P2
+    milestone: SF10
+    kind: proof
+    title: Invertibility of the Hessian of the Lorentzian vertex action at a critical point
+    file: Tasks/SF/T_SF10_P2.lean
+    decl: Lightlike.Asymptotics.Lorentzian.lorHessian_invertible_at_critical
+    size: L
+    difficulty: research-level
+    routes:
+      - "Reduce to `Im(-H)` injective on the kernel of `Re(-H)`: `Re(-H)` is positive semidefinite (a sum of squares of the linearised alignment conditions) and `-H v = 0` forces `Re(-H) v = 0` and `Im(-H) v = 0`. The closed form of the blocks is `hessBlockMatrix` (`Lightlike/Asymptotics/Lorentzian/HessianAssembly.lean`)."
+      - "A certified computation for the regular simplex (numerical evidence: `scripts/asymptotics/lorentzian_hessian_kernel_check.py`) does not settle all nondegenerate data."
+  - id: T-SF10-P3
+    milestone: SF10
+    kind: proof
+    title: The far part of the Lorentzian vertex integral is of lower order
+    file: Tasks/SF/T_SF10_P3.lean
+    decl: Lightlike.Asymptotics.Lorentzian.lorVertex_farRemainder
+    size: L
+    difficulty: research-level
+    routes:
+      - "Where `Re S ≤ -δ` on the support of `1 - χ` the integrand decays exponentially; the non-compact directions need an integrability estimate of `e^{λ S}` against the amplitude (`Ω` density) uniform in `λ`, and non-stationary phase (`nonstationary_phase`, `Lightlike/Oscillatory/Localisation.lean`) where `Re S = 0` and `dS ≠ 0`."
+  - id: T-SF10-P4
+    milestone: SF10
+    kind: proof
+    title: Finiteness and classification of the critical points of the Lorentzian vertex action
+    file: Tasks/SF/T_SF10_P4.lean
+    decl: Lightlike.Asymptotics.Lorentzian.lorVertex_criticalSet_finite
+    size: L
+    difficulty: research-level
+    routes:
+      - "The bivector reconstruction theorem for Lorentzian data (BDFHP Sec. 5.4.3, via Barrett–Dowdall–Fairbairn–Gomes–Hellmann, arXiv:0902.1170): critical points give bivector geometries. The SU(2) case is `Lightlike/Asymptotics/Lorentzian/Classification.lean`."
+  - id: T-GE2-P1
+    milestone: GE2
+    kind: proof
+    title: "Timelike futures are causal futures: I⁺(x) ⊆ J⁺(x)"
+    file: Tasks/GE2/T_GE2_P1.lean
+    decl: Lightlike.Causal.chronFuture_subset_causalFuture
+    size: S
+    difficulty: intermediate
+    routes:
+      - "Unfold both definitions; `IsFutureTimelike v` gives `IsFutureCausal v` (the vector is nonzero because `g(v, X) < 0`)."
+  - id: T-GE2-P2
+    milestone: GE2
+    kind: proof
+    title: "A point is in its own causal future: x ∈ J⁺(x)"
+    file: Tasks/GE2/T_GE2_P2.lean
+    decl: Lightlike.Causal.mem_causalFuture_self
+    size: S
+    difficulty: intermediate
+    routes:
+      - "The constant curve on `Icc 0 0`: locally Lipschitz on a point, and the velocity condition holds almost everywhere on a null set."
+  - id: T-GE2-P3
+    milestone: GE2
+    kind: proof
+    title: "The causal future is transitive: y ∈ J⁺(x), z ∈ J⁺(y) imply z ∈ J⁺(x)"
+    file: Tasks/GE2/T_GE2_P3.lean
+    decl: Lightlike.Causal.causalFuture_trans
+    size: M
+    difficulty: intermediate
+    routes:
+      - "Glue the curves at the junction; the glued curve is locally Lipschitz in charts, and the velocity condition holds almost everywhere since a point is null."
+  - id: T-GE2-P4
+    milestone: GE2
+    kind: proof
+    title: "The chronological future is transitive: y ∈ I⁺(x), z ∈ I⁺(y) imply z ∈ I⁺(x)"
+    file: Tasks/GE2/T_GE2_P4.lean
+    decl: Lightlike.Causal.chronFuture_trans
+    size: M
+    difficulty: intermediate
+    routes:
+      - "As `causalFuture_trans`."
+  - id: T-GE2-P5
+    milestone: GE2
+    kind: proof
+    title: "Push-up, first form: y ∈ I⁺(x), z ∈ J⁺(y) imply z ∈ I⁺(x)"
+    file: Tasks/GE2/T_GE2_P5.lean
+    decl: Lightlike.Causal.chronFuture_causalFuture_trans
+    size: L
+    difficulty: research-level
+    routes:
+      - "Local result in a convex normal neighbourhood, then chain along the causal curve by compactness of its parameter interval."
+  - id: T-GE2-P6
+    milestone: GE2
+    kind: proof
+    title: "Push-up, second form: y ∈ J⁺(x), z ∈ I⁺(y) imply z ∈ I⁺(x)"
+    file: Tasks/GE2/T_GE2_P6.lean
+    decl: Lightlike.Causal.causalFuture_chronFuture_trans
+    size: M
+    difficulty: research-level
+    routes:
+      - "As `chronFuture_causalFuture_trans`, deforming the causal curve at its end."
+  - id: T-GE2-P7
+    milestone: GE2
+    kind: proof
+    title: The chronological future is open
+    file: Tasks/GE2/T_GE2_P7.lean
+    decl: Lightlike.Causal.isOpen_chronFuture
+    size: L
+    difficulty: research-level
+    routes:
+      - "Perturb the end of a timelike curve inside a chart; the open future cone at the end point supplies the room."
+  - id: T-GE2-P8
+    milestone: GE2
+    kind: proof
+    title: Causality implies chronology
+    file: Tasks/GE2/T_GE2_P8.lean
+    decl: Lightlike.Causal.isChronological_of_isCausal
+    size: M
+    difficulty: intermediate
+    routes:
+      - "A timelike curve from `x` to `x` has a point `y ≠ x` (the velocity is nonzero almost everywhere); `y ∈ J⁺(x)` and `x ∈ J⁺(y)`."
+  - id: T-GE2-P9
+    milestone: GE2
+    kind: proof
+    title: Strong causality implies causality
+    file: Tasks/GE2/T_GE2_P9.lean
+    decl: Lightlike.Causal.isCausal_of_isStronglyCausal
+    size: M
+    difficulty: intermediate
+    routes:
+      - "If `y ∈ J⁺(x)` and `x ∈ J⁺(y)` with `x ≠ y`, a causally convex neighbourhood of `x` missing `y` contains the whole loop, contradiction."
+  - id: T-GE2-P10
+    milestone: GE2
+    kind: proof
+    title: Stable causality implies strong causality
+    file: Tasks/GE2/T_GE2_P10.lean
+    decl: Lightlike.Causal.isStronglyCausal_of_isStablyCausal
+    size: L
+    difficulty: research-level
+    routes:
+      - "Preimages of small intervals of the time function intersected with a chart box are causally convex."
+  - id: T-GE2-P11
+    milestone: GE2
+    kind: proof
+    title: Causal simplicity implies stable causality
+    file: Tasks/GE2/T_GE2_P11.lean
+    decl: Lightlike.Causal.isStablyCausal_of_isCausallySimple
+    size: L
+    difficulty: research-level
+    routes:
+      - "Construct a time function by Hawking's averaging of volumes of futures, using closedness of `J±`."
+  - id: T-GE2-P12
+    milestone: GE2
+    kind: proof
+    title: Global hyperbolicity implies causal simplicity
+    file: Tasks/GE2/T_GE2_P12.lean
+    decl: Lightlike.Causal.isCausallySimple_of_isGloballyHyperbolic
+    size: L
+    difficulty: research-level
+    routes:
+      - "The limit curve theorem for causal curves with endpoints converging, using compactness of the diamonds."
+  - id: T-GE2-P13
+    milestone: GE2
+    kind: proof
+    title: A Cauchy surface is achronal
+    file: Tasks/GE2/T_GE2_P13.lean
+    decl: Lightlike.Causal.IsCauchySurface.isAchronal
+    size: M
+    difficulty: intermediate
+    routes:
+      - "Extend a timelike curve by Zorn's lemma to an inextendible one; it meets `S` at both points, contradicting uniqueness."
+  - id: T-GE2-P14
+    milestone: GE2
+    kind: proof
+    title: The causal future in Minkowski space is the closed light cone
+    file: Tasks/GE2/T_GE2_P14.lean
+    decl: Lightlike.Causal.minkowski_causalFuture
+    size: L
+    difficulty: intermediate
+    routes:
+      - "`⊇` by a straight line (`isFutureCausalCurve_line`-type lemma); `⊆` by integrating the velocity of a Lipschitz curve (absolutely continuous) and the reverse triangle inequality of the cone."
+  - id: T-GE2-P15
+    milestone: GE2
+    kind: proof
+    title: Minkowski space is globally hyperbolic
+    file: Tasks/GE2/T_GE2_P15.lean
+    decl: Lightlike.Causal.minkowski_isGloballyHyperbolic
+    size: L
+    difficulty: intermediate
+    routes:
+      - "From `minkowski_causalFuture`: the diamonds are closed and bounded subsets of `ℝ^{d+1}`."
+  - id: T-GE2-P16
+    milestone: GE2
+    kind: proof
+    title: The slice t = 0 is a Cauchy surface of Minkowski space
+    file: Tasks/GE2/T_GE2_P16.lean
+    decl: Lightlike.Causal.minkowski_isCauchySurface
+    size: L
+    difficulty: intermediate
+    routes:
+      - "The time coordinate is strictly increasing along a timelike curve and unbounded on an inextendible one (the cone is bounded by lines)."
+  - id: T-GE2-P17
+    milestone: GE2
+    kind: proof
+    title: A continuous time orientation can be replaced by a smooth one
+    file: Tasks/GE2/T_GE2_P17.lean
+    decl: Lightlike.Causal.exists_smooth_timeOrientation
+    size: L
+    difficulty: research-level
+    routes:
+      - "Smooth partition of unity subordinate to charts where a constant timelike field is future-directed; convex combinations of future-directed timelike vectors stay in the cone."
+
+  - id: T-GE2-P18
+    milestone: GE2
+    kind: proof
+    title: An achronal set is a Cauchy surface iff its domain of dependence is the whole manifold
+    file: Tasks/GE2/T_GE2_P18.lean
+    decl: Lightlike.Causal.isCauchySurface_iff_domainDep_eq_univ
+    size: L
+    difficulty: research-level
+    routes:
+      - "Both directions go through extension of a timelike curve to an inextendible one; achronality gives the uniqueness of the meeting point."
+  - id: T-CS2-P1
+    milestone: CS2
+    kind: proof
+    title: "The Myrheim–Meyer relation probability in every dimension"
+    file: Tasks/CS2/T_CS2_P1.lean
+    decl: Lightlike.CausalSets.myrheimMeyer
+    size: L
+    difficulty: research-level
+    routes:
+      - "Light-cone-type coordinates are not available beyond `d = 1`. Reduce, by the symmetry of the diamond, to the volume of the set of `y` in the diamond that are in the causal future of a point `x`, and integrate over `x`."
+  - id: T-CS2-P2
+    milestone: CS2
+    kind: proof
+    title: "The Myrheim–Meyer relation probability in four dimensions is 1/20"
+    file: Tasks/CS2/T_CS2_P2.lean
+    decl: Lightlike.CausalSets.relProb_three
+    size: M
+    difficulty: advanced
+    routes:
+      - "Either specialise `myrheimMeyer` (`Γ(5) Γ(2) / (4 Γ(6)) = 1/20`) or compute the volume of the intersection of the future cone of a point with the diamond directly."
+  - id: T-CS2-P3
+    milestone: CS2
+    kind: proof
+    title: "A rectangle instead of the diamond gives a different relation probability"
+    file: Tasks/CS2/T_CS2_P3.lean
+    decl: Lightlike.CausalSets.rectangle_relProb
+    size: M
+    difficulty: intermediate
+    routes:
+      - "For `s = t' - t ∈ [0, 1]` the density of the time difference is `1 - s`, and `|x' - x| ≤ s` has probability `s - s²/4` for the width `2`; integrate `(1 - s)(s - s²/4)` over `[0, 1]` to get `7/48`. The diamond value is `relProb_one`."
+
+  - id: T-CA1-P1
+    milestone: CA1
+    kind: proof
+    title: "The bracket of a smeared momentum constraint with a smeared Hamiltonian constraint is a smeared Hamiltonian constraint"
+    file: Tasks/CA/T_CA1_P1.lean
+    decl: Lightlike.Canonical.bracket_momentum_hamiltonian
+    size: L
+    difficulty: research-level
+    routes:
+      - "Covariance of the scalar density `√h R` under the flow of `ξ`, from `Lightlike.scalarCurvature_pullback`, and the first variation of the scalar curvature."
+      - "Hojman–Kuchař–Teitelboim (1976) and Thiemann (2007), Chapter 1: the hypersurface deformation algebra."
+  - id: T-CA1-P2
+    milestone: CA1
+    kind: proof
+    title: "The bracket of two smeared Hamiltonian constraints is a smeared momentum constraint with the structure function h^{ij}"
+    file: Tasks/CA/T_CA1_P2.lean
+    decl: Lightlike.Canonical.bracket_hamiltonian_hamiltonian
+    size: L
+    difficulty: research-level
+    routes:
+      - "The first variation of `√h R` (Palatini identity in coordinates), an integration by parts, and the antisymmetry in `N, M`."
+      - "Hojman–Kuchař–Teitelboim (1976) and Thiemann (2007), Chapter 1: the hypersurface deformation algebra."
+  - id: T-GE1-P2
+    milestone: GE1
+    kind: proof
+    title: The curvature tensor is computed by any smooth extensions
+    file: Tasks/GE/T_GE1_P2.lean
+    decl: Lightlike.curvatureAt_apply
+    size: L
+    difficulty: research-level
+    routes:
+      - Tensoriality of `(X, Y, Z) ↦ ∇_X ∇_Y Z - ∇_Y ∇_X Z - ∇_{[X,Y]} Z` in each slot, as `CovariantDerivative.torsion_apply` (Mathlib/Geometry/Manifold/VectorBundle/CovariantDerivative/Torsion.lean), with `TensorialAt.mkHom`.
+  - id: T-GE1-P3
+    milestone: GE1
+    kind: proof
+    title: The Ricci tensor of a Levi-Civita connection is symmetric
+    file: Tasks/GE/T_GE1_P3.lean
+    decl: Lightlike.ricciAt_symm
+    size: L
+    difficulty: research-level
+    routes:
+      - First Bianchi identity and the pair symmetry of the lowered curvature (T-GE1-P4), then trace.
+  - id: T-GE1-P4
+    milestone: GE1
+    kind: proof
+    title: The first Bianchi identity and the pair symmetry of the lowered curvature
+    file: Tasks/GE/T_GE1_P4.lean
+    decl: Lightlike.bianchi_first_and_pair_symm
+    size: L
+    difficulty: research-level
+    routes:
+      - Torsion-freeness gives the first identity (Jacobi identity of the Lie bracket); metric compatibility gives antisymmetry in the last pair; the pair symmetry follows by the usual four-term argument.
+  - id: T-GE1-P5
+    milestone: GE1
+    kind: proof
+    title: The intrinsic scalar curvature is the coordinate scalar curvature in every chart
+    file: Tasks/GE/T_GE1_P5.lean
+    decl: Lightlike.scalarCurvatureAt_chart
+    size: L
+    difficulty: research-level
+    routes:
+      - In a chart the coordinate fields have vanishing brackets and `∇_{∂ᵢ} ∂ⱼ = Γᵏᵢⱼ ∂ₖ` (Koszul formula); the coordinate formula of `Lightlike/Spacetime/Curvature.lean` is then the trace of `curvatureAt`. This fixes the sign convention of the two definitions.
+  - id: T-GE1-P6
+    milestone: GE1
+    kind: proof
+    title: The manifold-level Einstein equations are the coordinate ones in every chart
+    file: Tasks/GE/T_GE1_P6.lean
+    decl: Lightlike.satisfiesEinstein_iff_chart
+    size: L
+    difficulty: research-level
+    routes:
+      - T-GE1-P5 and its Ricci version in a chart; the `IsCoordMetric` part is `LorentzianMetric.isCoordMetric_coordMetric`.
+  - id: T-GE1-P7
+    milestone: GE1
+    kind: proof
+    title: The second Bianchi identity of a Levi-Civita connection
+    file: Tasks/GE/T_GE1_P7.lean
+    decl: Lightlike.bianchi_second
+    size: L
+    difficulty: research-level
+    routes:
+      - Torsion-freeness and the Jacobi identity: evaluate the cyclic sum on extensions of the vectors with vanishing brackets at the point (coordinate fields of a chart), where it reduces to the Jacobi identity for the covariant derivatives.
+  - id: T-GE1-P8
+    milestone: GE1
+    kind: proof
+    title: The Einstein tensor of a Levi-Civita connection is divergence free
+    file: Tasks/GE/T_GE1_P8.lean
+    decl: Lightlike.einstein_divergence_free
+    size: L
+    difficulty: research-level
+    routes:
+      - Contract the second Bianchi identity (T-GE1-P7) twice, using the symmetries of the curvature (T-GE1-P4) and metric compatibility.
 
 # Upstream tasks: finished results that belong in Mathlib (general mathematics) or Physlib
 # (general physics), with the rework each needs. Exclusive, like definition

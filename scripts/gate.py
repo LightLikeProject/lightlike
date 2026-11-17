@@ -12,7 +12,9 @@ The steps are read from ci.yml, so the gate and CI cannot drift apart:
     step they, and any other key the gate does not implement (`working-directory`, ...), are an
     error, so a step can never be skipped or misrun by accident;
   * a step with `continue-on-error: true` is advisory: a failure is recorded as WARN and the gate
-    goes on (only the hard rules of CONTRIBUTING.md fail the gate).
+    goes on (only the hard rules of CONTRIBUTING.md fail the gate). The last line names every
+    advisory warning, `GATE OK (2 advisory warnings: [9] ..., [28] ...)`, and the step that
+    failed the gate, `GATE FAILED at [19] ...`.
 The steps run with the interpreter that runs the gate first on PATH, so `python3` in a step is
 that interpreter (`venv/bin/python -I scripts/gate.py` makes the venv's `python3` the one every step
 uses), then `~/.elan/bin`.
@@ -217,6 +219,22 @@ def fast_mode(root, tid, base) -> int:
     return 0 if ok else 1
 
 
+def verdict(rec: dict) -> str:
+    """OK or FAILED, then the step that failed the gate and the advisory warnings, each by number
+    and name, and why the tree is not the one the record names, if it changed."""
+    name = lambda s: f"[{s['n']}] {s['name']}"
+    warn = [name(s) for s in rec["steps"] if s["result"] == "WARN"]
+    fail = [name(s) for s in rec["steps"] if s["result"] == "FAIL"]
+    out = "OK" if rec["ok"] else "FAILED"
+    if fail:
+        out += f" at {fail[0]}"
+    if warn:
+        out += f" ({len(warn)} advisory warning{'' if len(warn) == 1 else 's'}: {', '.join(warn)})"
+    if rec.get("note"):
+        out += f" ({rec['note']})"
+    return out
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--workflow", type=pathlib.Path)
@@ -276,7 +294,7 @@ def main() -> int:
     with open(d / "log.jsonl", "a", encoding="utf-8") as f:
         f.write(json.dumps(rec) + "\n")
     done = [s for s in rec["steps"] if s["result"] == "ok"]
-    print(f"GATE {'OK' if rec['ok'] else 'FAILED'} commit={commit[:7]} branch={rec['branch']} "
+    print(f"GATE {verdict(rec)} commit={commit[:7]} branch={rec['branch']} "
           f"steps_ok={len(done)}/{sum(1 for s in steps if not s['ci_only'])}"
           f"{' (partial: --from)' if rec['partial'] else ''} lean={rec['versions']['lean']}")
     return 0 if rec["ok"] else 1

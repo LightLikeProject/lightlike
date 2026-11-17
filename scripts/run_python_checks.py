@@ -18,11 +18,12 @@ import argparse, ast, importlib.util, pathlib, re, subprocess, sys, time
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 # (path, slow?) -- slow = more than about 60 s on a laptop
 CHECKS = [
-    ("scripts/be_check.py", False), ("scripts/be_symmetry_check.py", True),
+    ("scripts/adm_algebra_check.py", False), ("scripts/be_check.py", False), ("scripts/be_symmetry_check.py", True),
     ("scripts/pentagon_dict_check.py", False), ("scripts/pr14_check.py", False),
     ("scripts/pr23_check.py", False), ("scripts/pr_asymptotics.py", False),
-    ("scripts/pr_tree_check.py", False), ("scripts/sixj_zero_check.py", False),
+    ("scripts/causal_sets/cs2_check.py", False), ("scripts/pr_tree_check.py", False), ("scripts/sixj_zero_check.py", False),
     ("scripts/wrong_schwarzschild_check.py", False), ("scripts/tv_check.py", False),
+    ("scripts/flrw_check.py", False),
     ("scripts/asymptotics/eprl_asymptotics_check.py", False),
     ("scripts/asymptotics/pr_hypotheses_search.py", False),
     ("scripts/asymptotics/saddle_identities.py", False),
@@ -43,6 +44,7 @@ CHECKS = [
     ("scripts/asymptotics/landing_check.py", False),
     ("scripts/asymptotics/link_integral_check.py", False),
     ("scripts/asymptotics/lorentzian_hessian_check.py", True),
+    ("scripts/asymptotics/lorentzian_hessian_xx_certificate.py", False),
     ("scripts/asymptotics/lorentzian_hessian_closed_form_check.py", True),
     ("scripts/asymptotics/lorentzian_hessian_node_check.py", True),
     ("scripts/asymptotics/lorentzian_hessian_paper61_check.py", False),
@@ -72,6 +74,11 @@ CHECKS = [
     ("scripts/regge/regge3d_affine.py", False), ("scripts/regge/regge3d_core.py", False),
     ("scripts/regge/regge3d_jet.py", False), ("scripts/vertex_identity_check.py", False),
     ("scripts/regge/regge3d_g0_certificate.py", False),
+    ("scripts/regge/regge3d_sphere_check.py", True),
+    ("scripts/regge/regge3d_linearized_check.py", True),
+    ("scripts/regge/fierz_pauli_check.py", True),
+    ("scripts/regge/eh_jet_poly_check.py", True),
+    ("scripts/regge/eh_wrong_model_check.py", True),
     ("scripts/qracah/qd_map_check.py", False), ("scripts/qracah/jhyp_coverage_check.py", False),
     ("scripts/qracah/jackson_degenerate_check.py", False),
     ("scripts/qracah/qd_coverage_check.py", False),
@@ -82,6 +89,7 @@ CHECKS = [
     ("scripts/spinfoam/forcechain.py", True),
     ("scripts/spinfoam/gauge_cutoff_limit.py", True),
     ("scripts/spinfoam/robust_check.py", False),
+    ("scripts/spinfoam/robust_counterexample_verify.py", False),
     ("scripts/spinfoam/forcing_repair_check.py", False),
     ("scripts/spinfoam/gauge_independence_check.py", True),
     ("scripts/spinfoam/tetra_partition_check.py", False),
@@ -94,6 +102,7 @@ NOT_CHECKS = {"scripts/ci_check.py", "scripts/prune_docs.py", "scripts/gate.py",
               "scripts/sources.py", "scripts/doc_refs_check.py", "scripts/leak_check.py",
               "scripts/regge/regge3d_convergence.py",  # a library of the regge3d_* checks (dihedral); its demo has no verdict
               "scripts/regge/gen_chart_change.py",  # generator of Lightlike/Regge/Conv3/ChartChangeClasses.lean
+              "scripts/regge/gen_sv_sigma.py",  # generator of Lightlike/Regge/Linear3/SaintVenantSigma0..5.lean
               "scripts/regge/gen_star_angle.py",  # generator of the edge-class fans in Lightlike/Regge/Conv3/StarAngle.lean
               "scripts/regge/gen_kuhn_basis.py",  # generator of Lightlike/Regge/Conv3/KuhnBasis.lean from regge3d_g0_certificate.py
               "scripts/regge/gen_flat_star.py",  # generator of Lightlike/Regge/Conv3/FlatStar.lean (prints, no exit code)

@@ -65,7 +65,33 @@ Gaussian is the example, and the opposite sign violates `Re S ≤ 0` [7].
 With a weight `w(λ) = O(λ^m)` and an amplitude split into a compactly supported part and a remainder
 whose integral is assumed to be `O(λ^{-n/2-1})`, the integral `w(λ) ∫ A e^{λ S}` is the weight
 times the sum over the critical points, with error `O(λ^{m-n/2-1})` [8]. The remainder bound is a
-hypothesis, not proved, and it holds trivially for a zero remainder [8].
+hypothesis, not proved, and it holds trivially for a zero remainder [8]. The global smoothness of the
+action in these statements cannot hold for the Lorentzian action (logarithms of the overlaps and
+norms): the local version needs smoothness only on an open set containing the support of the
+localised amplitude, by a smooth cutoff of the action [32]. The action of a smooth chart is smooth on every open set where,
+on each edge, the product of the overlaps is off the cut of the logarithm [33]. A chart of `SL(2,ℂ)` near the identity with the tangent map
+`X ↦ X exp(M)` of BDFHP Appendix A is the Cayley transform `((1 + s) 1 + M)/(1 - s)`, `s = c·c/16`, of
+`M = ½ Σ c_i σ_i`: determinant one, value `1` and derivative `M` at `0`, smooth entries where `s ≠ 1`
+[34]; Mathlib has no `det exp = exp tr`. The 44-variable chart (`X_a = X₀_a · cayley (φ_a + iθ_a)` for
+`a < 4`, `z_e = (w₀_e + u_e + i v_e, 1)`) is smooth where the four Cayley denominators are nonzero, and
+the vertex asymptotics hold in it with the smoothness hypothesis replaced by that open set and the
+overlap condition; the Haar density and the identification of the vertex integral with the chart
+integral stay named hypotheses (`aLoc`, `aFar`) [35]. Along `t ↦ t v` the chart has the tangent map
+`X_a ↦ X₀_a · chartGen (φ_a + iθ_a)`, `z_e ↦ (u_e + i v_e, 0)` [35]. The two-point formula with the
+constants of eq. (57) holds for an action smooth only on an open set [36]. The Haar measure of
+`SL(2,ℂ)` is Lebesgue measure in the chart `g_z` of `FixedChart.lean` (density `1`), so, if the
+integrand is jointly integrable, the vertex is `(∏ c_e) s⁻⁴` times the Lebesgue integral of the
+integrand over `(ℂ³)⁴ × ℂ¹⁰` [37]; through a measure-preserving identification with `ℝ⁴⁴` the vertex of the
+scaled data is `(∏ c_e) s⁻⁴ ∫ a(x) e^{λ S(x)} dx` with the `λ`-independent amplitude `a = ∏ Ω_e` [37]. The chart `fixVertexChart` is smooth where the
+`λ`-coordinates are nonzero, and the asymptotic formula for the scaled vertex holds in it with the
+cutoff split `a = χ a + (1 - χ) a`; the named hypotheses (joint integrability, `hK`, `hdet`, `hint`,
+`hfar`, the weight bound) are those of the statement [38]; `hint` is assumed only along `λ ∈ ℕ` (the form `∀ τ : ℝ` fails for `τ < 0`
+where an overlap vanishes). The numerical factor of BDFHP eq. (57) and its second line for `p = γ k`
+are in [39]. For boundary data whose normals do not close at a node `a < 4`, the weighted vertex integral in the fixed charts
+is `O(λ^{m-N})` for every `N`: the differential of the chart `g_0` is onto the tangent space, so at a point with
+`Re S = 0` (an aligned point) the derivative of the pulled-back action along a suitable chart direction is the sum of
+the logarithmic derivatives of the ends at the node, which does not vanish; `Re S ≤ 0`, the smoothness of the action
+and the absence of critical points are proved, and the far remainder stays under `hint` and `hfar` [40].
 
 The vertex action `lorAction` is the sum of the triangle actions over the ten edges at the spinors
 `X†z` [9]. Its real part is at most zero where the spinors and overlaps are nonzero [9]. In a chart
@@ -284,6 +310,40 @@ data (BDFHP eq. (56)) needs this in a chart and is not proved.
     `Asymptotics.Lorentzian.aligned_of_re_lorAction_eq_zero`,
     `Asymptotics.Lorentzian.critical_configuration_closure`,
     `Asymptotics.Lorentzian.no_critical_without_closure`
+32. Lightlike/Asymptotics/Lorentzian/VertexLocal.lean - `Asymptotics.Lorentzian.exists_smooth_extension`,
+    `Asymptotics.Lorentzian.weighted_asymptotics_local`,
+    `Asymptotics.Lorentzian.lorVertex_asymptotics_local`
+33. Lightlike/Asymptotics/Lorentzian/ActionSmooth.lean - `Asymptotics.Lorentzian.contDiffAt_triAction`,
+    `Asymptotics.Lorentzian.contDiffAt_spinAct`, `Asymptotics.Lorentzian.lorChartAction_contDiffOn`
+34. Lightlike/Asymptotics/Lorentzian/CayleyChart.lean - `Asymptotics.Lorentzian.chartGen`,
+    `Asymptotics.Lorentzian.cayleyMat`, `Asymptotics.Lorentzian.cayley`,
+    `Asymptotics.Lorentzian.cayley_zero`, `Asymptotics.Lorentzian.contDiffOn_cayleyMat`,
+    `Asymptotics.Lorentzian.hasDerivAt_cayleyMat_zero`
+35. Lightlike/Asymptotics/Lorentzian/VertexChart.lean - `Asymptotics.Lorentzian.vertexChart`,
+    `Asymptotics.Lorentzian.vertexChart_zero`, `Asymptotics.Lorentzian.cayleyDomain`,
+    `Asymptotics.Lorentzian.lorChartAction_vertexChart_contDiffOn`,
+    `Asymptotics.Lorentzian.lorVertex_asymptotics_vertexChart`,
+    `Asymptotics.Lorentzian.vertexChart_group_hasDerivAt`, `Asymptotics.Lorentzian.vertexChart_spinor_hasDerivAt`
+36. Lightlike/Asymptotics/Lorentzian/AsymptoticFormulaLocal.lean - `Asymptotics.Lorentzian.weighted_two_points_local`,
+    `Asymptotics.Lorentzian.weighted_two_points_eq57_local`,
+    `Asymptotics.Lorentzian.lorVertex_asymptotic_formula_local`
+37. Lightlike/Asymptotics/Lorentzian/VertexHaarChart.lean - `Asymptotics.Lorentzian.integral_haar4_fixChart`,
+    `Asymptotics.Lorentzian.integral_pi_haar_eq`, `Asymptotics.Lorentzian.lorVertex_eq_fixChart_integral`,
+    `Asymptotics.Lorentzian.exists_measurePreserving_vertex_space`, `Asymptotics.Lorentzian.fixVertexChart`,
+    `Asymptotics.Lorentzian.chartAmplitude`, `Asymptotics.Lorentzian.lorVertex_scaled_eq_chart_integral`
+38. Lightlike/Asymptotics/Lorentzian/VertexFixChart.lean - `Asymptotics.Lorentzian.fixDomain`,
+    `Asymptotics.Lorentzian.fixVertexChart_group_contDiffOn`,
+    `Asymptotics.Lorentzian.lorChartAction_fixVertexChart_contDiffOn`,
+    `Asymptotics.Lorentzian.lorVertex_asymptotics_fixChart`
+39. Lightlike/Asymptotics/Lorentzian/Eq57Constants.lean - `Asymptotics.Lorentzian.bdfhpC`,
+    `Asymptotics.Lorentzian.bdfhpN`, `Asymptotics.Lorentzian.bdfhpN_eq`,
+    `Asymptotics.Lorentzian.lorEdgeDensity_smul`
+
+40. Lightlike/Asymptotics/Lorentzian/VertexSuppressed.lean -
+    `Asymptotics.Lorentzian.fixPre`, `Asymptotics.Lorentzian.hasDerivAt_fixMat_line`,
+    `Asymptotics.Lorentzian.fixVertexChart_curve`, `Asymptotics.Lorentzian.hasDerivAt_chartAction_aligned`,
+    `Asymptotics.Lorentzian.weighted_suppressed_local`,
+    `Asymptotics.Lorentzian.lorVertex_suppressed_fixChart`
 
 ## References
 

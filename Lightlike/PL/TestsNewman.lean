@@ -109,5 +109,16 @@ theorem stellarEquiv_edge_edgeSub : StellarEquiv edge edgeSub := by
     (mem_starAt_of_notMem (by simp)).2 ⟨empty_mem hA, by simp⟩
   exact ⟨fun _ => h0, fun _ => empty_mem hA⟩
 
+/-- **Different Euler characteristics rule out a PL homeomorphism**: the boundary of a triangle
+(`χ = 0`) and the triangle (`χ = 1`) are not PL homeomorphic. -/
+theorem not_plHomeomorphic_boundary_simplex :
+    ¬ PLHomeomorphic (boundary ({0, 1, 2} : Finset ℕ)) (simplex ({0, 1, 2} : Finset ℕ)) := by
+  refine not_plHomeomorphic_of_euler_ne (iff_of_true ?_ ?_) ?_
+  · rw [mem_boundary]
+    exact ⟨Finset.empty_subset _, fun h => by simpa using Finset.card_le_card h⟩
+  · exact empty_mem (mem_simplex.2 subset_rfl)
+  · rw [euler_boundary ⟨0, by simp⟩, euler_simplex ⟨0, by simp⟩]
+    norm_num
+
 end SComplex
 end Lightlike.PL

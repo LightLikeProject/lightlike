@@ -1125,6 +1125,7 @@ milestones:
     class: sourced
     refs:
       - {ref: christiansen-2011, location: "Abstract", check: "converge to their continuous counterparts"}
+      - {ref: christiansen-2011, location: "eq. (5)", check: "The degrees of freedom (5) make sense"}
   LD1:
     class: sourced
     refs:
