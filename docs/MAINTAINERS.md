@@ -11,6 +11,11 @@ see [CONTRIBUTING.md](../CONTRIBUTING.md).
   An entry is a result that a paper or book would state as a theorem. Supporting lemmas stay
   in the code with docstrings and get no entry; the review of a catalogue change checks every
   new entry against this.
+  Before an entry is numbered, its note names every difference from the cited theorem, and each
+  difference has a maintainer's approval on record (issue or pull request); otherwise the note
+  says that the result is partial, and its task or milestone stays open. A note presents a
+  comparison with a source only if the source was read at the cited location; otherwise it says
+  that the comparison is pending ([AGENTS.md](../AGENTS.md#review)).
 - **Tasks.** `docs/tasks/milestones.md` and `docs/tasks/decomposition.yaml` are the plan, and the
   sources of the board. `python3 scripts/tasks.py generate` writes the board,
   `docs/tasks/tasks.yaml`, `Tasks.lean` and the milestone counts in `ROADMAP.md`; `tasks.py deps`
