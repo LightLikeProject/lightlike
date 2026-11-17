@@ -139,6 +139,7 @@ theorem contMDiffAt_gamHat_apply (a b : E) {p : M} (hp : p ∈ (tTriv (E := E) x
   filter_upwards [(tTriv (E := E) x₀).open_baseSet.mem_nhds hp] with q hq
   exact gamHat_eq cov x₀ a b hq
 
+/-- **The Christoffel tensor `Γ̂` is differentiable** on the chart domain, for a smooth connection. -/
 theorem mdiffAt_gamHat {p : M} (hp : p ∈ (tTriv (E := E) x₀).baseSet) :
     MDifferentiableAt 𝓘(ℝ, E) 𝓘(ℝ, E →L[ℝ] E →L[ℝ] E) (gamHat cov x₀) p := by
   have h : ContMDiffAt 𝓘(ℝ, E) 𝓘(ℝ, E →L[ℝ] E →L[ℝ] E) 1 (gamHat cov x₀) p := by
