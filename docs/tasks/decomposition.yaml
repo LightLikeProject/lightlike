@@ -118,6 +118,57 @@ tasks:
       - Representation theory of U_q(sl₂) at roots of unity (Turaev 1994).
       - Kauffman–Lins recoupling theory (1994).
 
+  - id: T-GC4-P1
+    milestone: GC4
+    kind: proof
+    title: The Dirac bracket with a second-class constraint vanishes
+    file: Tasks/GC/T_GC4_P1.lean
+    decl: Lightlike.Gauge.diracBracket_constraint
+    size: S
+    difficulty: routine
+    routes:
+      - Matrix identity `C⁻¹ * C = 1` and `Finset.sum_eq_single`.
+  - id: T-GC4-P2
+    milestone: GC4
+    kind: proof
+    title: The Dirac bracket is antisymmetric
+    file: Tasks/GC/T_GC4_P2.lean
+    decl: Lightlike.Gauge.diracBracket_antisymm
+    size: S
+    difficulty: routine
+    routes:
+      - "`Matrix.transpose_nonsing_inv` with `Cᵀ = -C`, then `Finset.sum_comm`."
+  - id: T-GC4-P3
+    milestone: GC4
+    kind: proof
+    title: Second-class constraints come in an even number
+    file: Tasks/GC/T_GC4_P3.lean
+    decl: Lightlike.Gauge.even_of_isSecondClass
+    size: S
+    difficulty: routine
+    routes:
+      - "`det C = det (-C) = (-1)^m det C` and `det C ≠ 0`."
+  - id: T-GC4-P4
+    milestone: GC4
+    kind: proof
+    title: Dimension of the level set of a linear moment map
+    file: Tasks/GC/T_GC4_P4.lean
+    decl: Lightlike.Gauge.finrank_orbit_add_momentTangent
+    size: S
+    difficulty: routine
+    routes:
+      - Mathlib's dimension formula for the orthogonal of a subspace under a non-degenerate bilinear form.
+  - id: T-GC4-P5
+    milestone: GC4
+    kind: proof
+    title: The orbit through a zero of the moment map is isotropic
+    file: Tasks/GC/T_GC4_P5.lean
+    decl: Lightlike.Gauge.orbitDirections_le_momentTangent
+    size: S
+    difficulty: routine
+    routes:
+      - Souriau's identity (11.17 d) in `PhyslibAlpha.ClassicalMechanics.MomentMap.Basic`.
+
 # Upstream tasks: finished results that belong in Mathlib (general mathematics) or Physlib
 # (general physics), with the rework each needs. Exclusive, like definition
 # tasks; `target` gives the label `upstream: <library>`.
