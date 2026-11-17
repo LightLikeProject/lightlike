@@ -31,8 +31,8 @@ Lemmas about them, which a proof may use:
 * `leviCivita_exists_unique_proved` (`Lightlike/Spacetime/LeviCivita.lean`)
 * `g_sharp` (`Lightlike/Spacetime/LeviCivita.lean`)
 * `g_leviOf` (`Lightlike/Spacetime/LeviCivita.lean`)
-* `sharp_add` (`Lightlike/Spacetime/LeviCivita.lean`)
 * `g_leviAux` (`Lightlike/Spacetime/LeviCivita.lean`)
+* `sharp_add` (`Lightlike/Spacetime/LeviCivita.lean`)
 * `gpair_comm` (`Lightlike/Spacetime/LeviCivita.lean`)
 
 Everything they depend on, and the further lemmas about them, in one block:

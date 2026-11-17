@@ -30,6 +30,8 @@ A Lorentzian metric has a Levi-Civita connection, the torsion-free connection co
 
 In a chart of a manifold modelled on `ℝⁿ` the coordinate vector fields commute and the Levi-Civita connection is given by the Christoffel symbols of the coordinate components, `∇_{∂ᵢ} ∂ⱼ = Γᵏᵢⱼ ∂ₖ` [11].
 
+For a smooth connection on a Hausdorff manifold modelled on a finite-dimensional space without boundary, the curvature defined with extensions of tangent vectors does not depend on the extensions: in a chart it is an expression in the Christoffel tensor of the connection and its derivative, a function of the values of the three vectors only [12], [13].
+
 The curvature of a manifold-level metric as a tensor field is defined in `Connection.lean` [7]: a connection is Mathlib's
 covariant derivative on the tangent bundle; the Riemann curvature is `R(X, Y) Z = ∇_X ∇_Y Z - ∇_Y ∇_X Z - ∇_{[X,Y]} Z`
 (the sign convention of Mathlib pull request 45069), the Ricci tensor is its trace over the first slot, the scalar
@@ -65,6 +67,9 @@ than one who stays at rest [6].
    `leviCivita_compat`, `leviCivita_unique`, `leviCivita_exists_unique_proved`
 11. Lightlike/Spacetime/ChartConnection.lean - `coordField`, `mlieBracket_coordField`,
    `leviCivita_coordField`
+12. Lightlike/Spacetime/ChartCovariant.lean - `contMDiffAt_cov`, `hat`, `cov0`, `cov0_isCov`
+13. Lightlike/Spacetime/ChartCurvature.lean - `gamHat`, `mdiffAt_gamHat`, `hat_cov`, `hv_bracket`,
+   `Rhat`, `curvature_hat`, `curvatureAt_apply_proved`
 
 ## References
 

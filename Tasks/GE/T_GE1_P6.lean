@@ -30,11 +30,11 @@ Lemmas about them, which a proof may use:
 * `leviCivita_unique` (`Lightlike/Spacetime/LeviCivita.lean`)
 * `koszul_of_isLeviCivita` (`Lightlike/Spacetime/LeviCivita.lean`)
 * `leviCivita_exists_unique_proved` (`Lightlike/Spacetime/LeviCivita.lean`)
+* `g_coordField` (`Lightlike/Spacetime/ChartConnection.lean`)
+* `leviCivita_coordField` (`Lightlike/Spacetime/ChartConnection.lean`)
+* `mvfderiv_gpair_coordField` (`Lightlike/Spacetime/ChartConnection.lean`)
 * `minkowski_isVacuumSolution` (`Lightlike/GR/Einstein.lean`)
 * `LorentzianMetric.coordMetric_eq` (`Lightlike/Spacetime/Coordinates.lean`)
-* `minkowski_satisfiesEinstein_proved` (`Lightlike/Spacetime/FlatConnection.lean`)
-* `LorentzianMetric.coordMetric_smooth` (`Lightlike/Spacetime/Coordinates.lean`)
-* `LorentzianMetric.coordMetric_congr_eta` (`Lightlike/Spacetime/Coordinates.lean`)
 
 Everything they depend on, and the further lemmas about them, in one block:
 

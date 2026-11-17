@@ -3,7 +3,7 @@ import Mathlib
 /-!
 # The Lie bracket of vector fields is the commutator of derivations
 
-For a smooth function `g` and vector fields `X, Y` of a manifold modelled on a normed space `E`
+For a function `g` smooth near a point and vector fields `X, Y` of a manifold modelled on a normed space `E`
 (no boundary), `[X, Y] g = X (Y g) - Y (X g)` (`mfderiv_mlieBracket`). Mathlib defines the bracket
 `VectorField.mlieBracket` through charts and proves the identity for functions on a vector space
 (`fderiv_apply_lieBracket`); this file transports it through the chart `extChartAt`:
@@ -77,7 +77,7 @@ theorem mpullback_chart (Y : Π y : M, TangentSpace 𝓘(ℝ, E) y) (x₀ z : M)
 function `g` and vector fields `X, Y` smooth at `x₀`, on a manifold modelled on a finite-dimensional space. -/
 theorem mfderiv_mlieBracket [IsManifold 𝓘(ℝ, E) 2 M] [CompleteSpace E]
     (g : M → ℝ) (X Y : Π y : M, TangentSpace 𝓘(ℝ, E) y) (x₀ : M)
-    (hg : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g)
+    (hg : ∀ᶠ y in nhds x₀, ContMDiffAt 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g y)
     (hX : MDiffAt (T% X) x₀) (hY : MDiffAt (T% Y) x₀) :
     (show ℝ from mfderiv 𝓘(ℝ, E) 𝓘(ℝ, ℝ) g x₀ (mlieBracket 𝓘(ℝ, E) X Y x₀)) =
       (show ℝ from mfderiv 𝓘(ℝ, E) 𝓘(ℝ, ℝ) (dirDeriv g Y) x₀ (X x₀))
@@ -94,14 +94,14 @@ theorem mfderiv_mlieBracket [IsManifold 𝓘(ℝ, E) 2 M] [CompleteSpace E]
     have hLB : lieBracketWithin ℝ Xt Yt univ (φ x₀) = lieBracket ℝ Xt Yt (φ x₀) := by
       rw [lieBracketWithin_univ]
     exact congrArg (fun L : E => (mfderiv 𝓘(ℝ, E) 𝓘(ℝ, E) (extChartAt 𝓘(ℝ, E) x₀) x₀).inverse L) hLB
-  have hgs : MDiffAt g x₀ := (hg x₀).mdifferentiableAt (by norm_num)
+  have hgs : MDiffAt g x₀ := (hg.self_of_nhds).mdifferentiableAt (by norm_num)
   have hsymm : ContMDiffAt 𝓘(ℝ, E) 𝓘(ℝ, E) ∞ φ.symm (φ x₀) := by
     have := contMDiffWithinAt_extChartAt_symm_range (I := 𝓘(ℝ, E)) (n := ∞) x₀ (mem_extChartAt_target x₀)
     simpa [hφ, contMDiffWithinAt_univ] using this
   have hgt : ContDiffAt ℝ ∞ (g ∘ φ.symm) (φ x₀) := by
     have h : ContMDiffAt 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ (g ∘ φ.symm) (φ x₀) := by
       refine ContMDiffAt.comp (φ x₀) ?_ hsymm
-      rw [hφ, (extChartAt 𝓘(ℝ, E) x₀).left_inv hx]; exact hg x₀
+      rw [hφ, (extChartAt 𝓘(ℝ, E) x₀).left_inv hx]; exact hg.self_of_nhds
     exact contMDiffAt_iff_contDiffAt.1 h
   have hXd : DifferentiableAt ℝ Xt (φ x₀) := by
     have := hX.mdifferentiableWithinAt.differentiableWithinAt_mpullbackWithin_vectorField (s := univ)
@@ -111,7 +111,7 @@ theorem mfderiv_mlieBracket [IsManifold 𝓘(ℝ, E) 2 M] [CompleteSpace E]
     exact this.differentiableAt (by simp)
   have hB : (mfderiv 𝓘(ℝ, E) 𝓘(ℝ, E) φ x₀).IsInvertible := isInvertible_mfderiv_extChartAt (I := 𝓘(ℝ, E)) hx
   have hφd : MDiffAt φ x₀ := mdifferentiableAt_extChartAt (mem_chart_source E x₀)
-  have hev : ∀ᶠ z in nhds x₀, ContMDiffAt 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g z := Filter.Eventually.of_forall fun z => hg z
+  have hev : ∀ᶠ z in nhds x₀, ContMDiffAt 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g z := hg
   -- the derivative of g along a vector field, in the chart
   have key : ∀ W : Π y : M, TangentSpace 𝓘(ℝ, E) y,
       ∀ᶠ z in nhds x₀, dirDeriv g W z =

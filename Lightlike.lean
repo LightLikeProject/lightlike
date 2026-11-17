@@ -487,6 +487,8 @@ import Lightlike.SU2.SpinRep
 import Lightlike.SU2.Su2Exp
 import Lightlike.Spacetime.ChartChange
 import Lightlike.Spacetime.ChartConnection
+import Lightlike.Spacetime.ChartCovariant
+import Lightlike.Spacetime.ChartCurvature
 import Lightlike.Spacetime.Connection
 import Lightlike.Spacetime.Coordinates
 import Lightlike.Spacetime.Curvature
