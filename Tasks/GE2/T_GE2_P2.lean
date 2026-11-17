@@ -1,4 +1,4 @@
-import Lightlike.Spacetime.Causal.MinkowskiCausal
+import Lightlike.Spacetime.Causal.BasicRelations
 
 /-!
 # Task T-GE2-P2
@@ -57,6 +57,6 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
 
 /-- **A point is in its own causal future: x ∈ J⁺(x).** -/
 theorem mem_causalFuture_self (x : M) : x ∈ causalFuture T x := by
-  sorry
+  exact self_mem_causalFuture T x
 
 end Lightlike.Causal

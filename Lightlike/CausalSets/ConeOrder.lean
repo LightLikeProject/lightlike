@@ -6,9 +6,9 @@ import Lightlike.Spacetime.Causal.MinkowskiCausal
 
 This file is the geometric half of the bridge between Lorentzian geometry and causal sets. The
 causal future `J⁺(x)` of a point of Minkowski space `ℝ^{d+1}` is the closed future light cone
-(the statement `Causal.minkowski_causalFuture` is an open proof task of the causal-structure
-interface). Here the cone is used directly: `coneLE x y` says that `y - x` is in the closed future
-cone, `0 ≤ (y - x)⁰` and `η(y - x, y - x) ≤ 0`. It is shown to be a partial order, so any finite
+(`Causal.minkowski_causalFuture_eq`, proved in
+`Lightlike/Spacetime/Causal/MinkowskiFuture.lean`). Here the cone is used directly: `coneLE x y`
+says that `y - x` is in the closed future cone, `0 ≤ (y - x)⁰` and `η(y - x, y - x) ≤ 0`. It is shown to be a partial order, so any finite
 subset of Minkowski space, with the induced order, is a causal set.
 
 ## References
@@ -34,8 +34,8 @@ vector, `0 ≤ (y - x)⁰` and `η(y - x, y - x) ≤ 0`. -/
 def coneLE (x y : Fin (d + 1) → ℝ) : Prop :=
   0 ≤ (y - x) 0 ∧ minkowskiForm (d + 1) (y - x) (y - x) ≤ 0
 
-/-- The cone order is the causal future of Minkowski space (the right-hand side of the open task
-`Causal.minkowski_causalFuture`). -/
+/-- The cone order is the causal future of Minkowski space (the right-hand side of
+`Causal.minkowski_causalFuture_eq`). -/
 lemma coneLE_iff (x y : Fin (d + 1) → ℝ) :
     coneLE x y ↔ y ∈ {y | 0 ≤ (y - x) 0 ∧ minkowskiForm (d + 1) (y - x) (y - x) ≤ 0} := Iff.rfl
 

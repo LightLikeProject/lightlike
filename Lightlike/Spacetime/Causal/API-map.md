@@ -2,7 +2,7 @@
 
 ## Abstract (Alpha)
 
-This API gives the definitions of the causal theory of a Lorentzian manifold: a time orientation, causal and timelike curves, the chronological and causal futures and pasts, the causal ladder from chronology up to global hyperbolicity, and Cauchy surfaces. It contains definitions and checks on Minkowski space; the basic statements about these notions are open proof tasks.
+This API gives the definitions of the causal theory of a Lorentzian manifold: a time orientation, causal and timelike curves, the chronological and causal futures and pasts, the causal ladder from chronology up to global hyperbolicity, and Cauchy surfaces. It contains definitions, checks on Minkowski space, and the first statements about the futures: they contain each other, are reflexive and transitive, and causality implies chronology. In Minkowski space the causal future is the closed light cone and the space is globally hyperbolic. The deeper statements are open proof tasks.
 
 ## Content (Alpha)
 
@@ -10,7 +10,7 @@ A time orientation of a Lorentzian manifold is a continuous timelike vector fiel
 
 The causal ladder is chronology, causality, strong causality, stable causality, causal simplicity and global hyperbolicity [4] {4}; each is defined as a property of the time orientation, and the implications between them are open tasks. A Cauchy surface is a set that every inextendible timelike curve meets exactly once [4] {4}. The domain of dependence of a set is the set of points every inextendible causal curve through which meets the set on the correct side [6] {6}.
 
-In Minkowski space the constant field ∂₀ is a time orientation, and a straight line with a future-directed timelike direction is a timelike curve, so x + v is in the chronological future of x [5] {5}.
+The chronological future is contained in the causal future, a point lies in its own causal future, both futures are transitive, and a causal manifold is chronological; the proofs restrict, translate and glue locally Lipschitz curves [7] {3}. In Minkowski space the causal future of a point is the closed light cone, obtained by integrating the derivative of a Lipschitz causal curve [9] {5}, and the causal diamonds are compact and the open diamonds are causally convex neighbourhoods, so the space is globally hyperbolic [8] {5}. The constant field ∂₀ is a time orientation, and a straight line with a future-directed timelike direction is a timelike curve, so x + v is in the chronological future of x [5] {5}.
 
 ## Lean References
 
@@ -20,6 +20,9 @@ In Minkowski space the constant field ∂₀ is a time orientation, and a straig
 4. Lightlike/Spacetime/Causal/Ladder.lean - `Causal.IsGloballyHyperbolic`, `Causal.IsCauchySurface`
 5. Lightlike/Spacetime/Causal/MinkowskiCausal.lean - `Causal.minkowskiOrientation`, `Causal.line_mem_chronFuture`
 6. Lightlike/Spacetime/Causal/DomainOfDependence.lean - `Causal.domainDep`
+7. Lightlike/Spacetime/Causal/BasicRelations.lean - `Causal.chron_subset_causal`, `Causal.self_mem_causalFuture`, `Causal.causal_trans`, `Causal.chron_trans`, `Causal.chronological_of_causal`
+8. Lightlike/Spacetime/Causal/MinkowskiGH.lean - `Causal.minkowski_globallyHyperbolic`
+9. Lightlike/Spacetime/Causal/MinkowskiFuture.lean - `Causal.minkowski_causalFuture_eq`
 
 ## References
 

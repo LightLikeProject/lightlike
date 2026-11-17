@@ -1,4 +1,4 @@
-import Lightlike.Spacetime.Causal.MinkowskiCausal
+import Lightlike.Spacetime.Causal.BasicRelations
 
 /-!
 # Task T-GE2-P3
@@ -58,6 +58,6 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
 /-- **The causal future is transitive: y ∈ J⁺(x), z ∈ J⁺(y) imply z ∈ J⁺(x).** -/
 theorem causalFuture_trans {x y z : M} (hxy : y ∈ causalFuture T x) (hyz : z ∈ causalFuture T y) :
     z ∈ causalFuture T x := by
-  sorry
+  exact causal_trans T hxy hyz
 
 end Lightlike.Causal

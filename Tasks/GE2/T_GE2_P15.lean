@@ -1,4 +1,4 @@
-import Lightlike.Spacetime.Causal.MinkowskiCausal
+import Lightlike.Spacetime.Causal.MinkowskiGH
 
 /-!
 # Task T-GE2-P15
@@ -57,6 +57,6 @@ variable {d : ℕ}
 
 /-- **Minkowski space is globally hyperbolic.** -/
 theorem minkowski_isGloballyHyperbolic : IsGloballyHyperbolic (minkowskiOrientation d) := by
-  sorry
+  exact minkowski_globallyHyperbolic
 
 end Lightlike.Causal

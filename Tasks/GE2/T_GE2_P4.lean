@@ -1,4 +1,4 @@
-import Lightlike.Spacetime.Causal.MinkowskiCausal
+import Lightlike.Spacetime.Causal.BasicRelations
 
 /-!
 # Task T-GE2-P4
@@ -57,6 +57,6 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
 /-- **The chronological future is transitive: y ∈ I⁺(x), z ∈ I⁺(y) imply z ∈ I⁺(x).** -/
 theorem chronFuture_trans {x y z : M} (hxy : y ∈ chronFuture T x) (hyz : z ∈ chronFuture T y) :
     z ∈ chronFuture T x := by
-  sorry
+  exact chron_trans T hxy hyz
 
 end Lightlike.Causal
