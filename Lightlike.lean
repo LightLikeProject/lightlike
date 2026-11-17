@@ -349,6 +349,7 @@ import Lightlike.PL.MixedDecomp
 import Lightlike.PL.CutStep
 import Lightlike.PL.OrderCone
 import Lightlike.PL.CutStepMixed
+import Lightlike.PL.Cycle
 import Lightlike.PL.SliceSwap
 import Lightlike.PL.TestsSlice
 import Lightlike.PL.Projective
@@ -665,12 +666,17 @@ import Lightlike.Surfaces.Glue
 import Lightlike.Surfaces.Homology
 import Lightlike.Surfaces.Local
 import Lightlike.Surfaces.Models
+import Lightlike.Surfaces.PLBridge
+import Lightlike.Surfaces.PLClassify
+import Lightlike.Surfaces.PLMoves
 import Lightlike.Surfaces.Pieces
+import Lightlike.Surfaces.Relabel
 import Lightlike.Surfaces.Slides
 import Lightlike.Surfaces.Split
 import Lightlike.Surfaces.Sum
 import Lightlike.Surfaces.Surgery
 import Lightlike.Surfaces.Tests
+import Lightlike.Surfaces.TestsPL
 import Lightlike.Surfaces.Tube
 import Lightlike.Tests.Curvature
 import Lightlike.Tests.CutoffDivergence
