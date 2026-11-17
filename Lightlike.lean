@@ -140,11 +140,16 @@ import Lightlike.Canonical.DensityDeriv
 import Lightlike.Canonical.FirstOrderPotential
 import Lightlike.Canonical.FlowPullback
 import Lightlike.Canonical.HamiltonianBracket
+import Lightlike.Canonical.HamiltonianDeriv
+import Lightlike.Canonical.HamiltonianFirstOrder
+import Lightlike.Canonical.HamiltonianHH
 import Lightlike.Canonical.HamiltonianSmooth
+import Lightlike.Canonical.HamiltonianW
 import Lightlike.Canonical.IntegrationByParts
 import Lightlike.Canonical.KineticCovariance
 import Lightlike.Canonical.LieAlgebra
 import Lightlike.Canonical.LieDeriv
+import Lightlike.Canonical.LineIntegral
 import Lightlike.Canonical.MatrixDeriv
 import Lightlike.Canonical.MatrixInverseAt
 import Lightlike.Canonical.MatrixSmooth
