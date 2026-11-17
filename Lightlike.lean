@@ -123,6 +123,10 @@ import Lightlike.Asymptotics.UniformValley
 import Lightlike.Asymptotics.UniformValleyTests
 import Lightlike.Asymptotics.Valley
 import Lightlike.Asymptotics.ValleyTests
+import Lightlike.Canonical.ADM
+import Lightlike.Canonical.LieAlgebra
+import Lightlike.Canonical.LieDeriv
+import Lightlike.Canonical.MomentumBracket
 import Lightlike.FourD.Boundary
 import Lightlike.FourD.Complex
 import Lightlike.FourD.Orientation
@@ -676,5 +680,6 @@ import Lightlike.Gauge.DiracAlgebra
 import Lightlike.Gauge.DiracJacobi
 import Lightlike.Gauge.MatrixInverse
 import Lightlike.Gauge.PoissonJacobi
+import Lightlike.Tests.ADM
 import Lightlike.Tests.Constraints
 import Lightlike.GFT.Euler
