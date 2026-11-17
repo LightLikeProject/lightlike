@@ -50,6 +50,11 @@ TIER_TEXT = (
     "only after publication). Every result is about the mathematics of a model, not a claim that "
     "the model describes nature.")
 
+# A main result: the main theorem of a cited paper or book, or a named theorem.
+MAIN_TEXT = (
+    "The main theorem of a cited paper or book, or a named theorem (`main: true` in "
+    "`docs/results.yaml`). Each is listed again in its area below.")
+
 # Review status of a result or a locked statement. `ref` is the issue with the expert's review.
 REVIEWS = ("kernel-checked", "human-reviewed")
 REVIEW_TEXT = (
@@ -211,6 +216,14 @@ def lint_registry(root: Path, reg: list[dict]) -> list[str]:
         errs += review_errors(str(i), e.get("review"), e.get("review_ref"), root)
         if "tier" in e and e["tier"] not in TIERS:
             errs.append(f"{i}: tier must be one of {list(TIERS)}")
+        if "main" in e:
+            src = e.get("source")
+            if e["main"] is not True:
+                errs.append(f"{i}: main is `true` or absent")
+            elif st != "proven":
+                errs.append(f"{i}: a main result is proven")
+            elif not (isinstance(src, dict) and src.get("refs")):
+                errs.append(f"{i}: a main result cites its source")
         if e.get("tier") == "exploratory" and "/Exploratory/" not in str(e.get("file")):
             errs.append(f"{i}: an exploratory result lives in an Exploratory/ folder")
         if st == "conditional" and not e.get("hypotheses"):
@@ -280,6 +293,13 @@ def render(reg: list[dict], root: Path) -> str:
            "result is kept as `retired`. Every declaration of the library, and so every proven result, "
            "depends only on the axioms `propext`, `Classical.choice` and `Quot.sound`.", "",
            TIER_TEXT, "", REVIEW_TEXT, ""]
+    mains = [e for e in reg if e.get("main") is True and e["status"] == "proven"]
+    if mains:
+        out += ["## Main results", "", MAIN_TEXT, "",
+                "| ID | Result | Area | Tier | Lean |", "|---|---|---|---|---|"]
+        for e in mains:
+            out.append(f"| {e['id']} | {e['title']} | {area_title(root, e['area'])} | {e['tier']} | {lean_cell(e)} |")
+        out.append("")
     areas: list[str] = []
     for e in reg:
         if e["area"] not in areas and e["status"] != "stated":
@@ -426,6 +446,10 @@ def selftest() -> int:
         ("planted: bad draft ID", "REG:LL-0001", "LL-XXXX-1", True),
         ("planted: unknown tier", "REG:tier: established", "tier: central", True),
         ("planted: RESULTS.md out of date", "RES", "", True),
+        ("main result accepted", "REG:  since:", "  main: true\n  source:\n    refs:\n      - {ref: toy-2000, location: \"Theorem 1\"}\n  since:", False),
+        ("planted: main result without a source", "REG:  since:", "  main: true\n  since:", True),
+        ("planted: main result not proven", "REG:status: proven", "status: retired\n  note: gone\n  main: true\n  source:\n    refs:\n      - {ref: toy-2000, location: \"Theorem 1\"}\n", True),
+        ("planted: main not true", "REG:  since:", "  main: false\n  source:\n    refs:\n      - {ref: toy-2000, location: \"Theorem 1\"}\n  since:", True),
     ]
     fails = 0
     for name, old, new, bad in cases:
