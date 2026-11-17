@@ -1666,3 +1666,29 @@
   review: kernel-checked
   note: "Theorem 7.7.5 of Hormander (ALPDO I), leading term: for a smooth phase phi on EuclideanSpace R^n and a smooth compactly supported amplitude a, with Im phi >= 0 on the support, the critical points in the support (Im phi = 0, d phi = 0) forming a finite set K of nondegenerate points (det(-iH) != 0), the integral of a e^{i lambda phi} equals the sum over K of e^{i lambda phi(x0)} (2 pi / lambda)^{n/2} det(-iH(x0))^{-1/2} a(x0) up to O(lambda^{-n/2-1}); the square root is the product of the principal roots of the eigenvalues of -iH (invSqrtDet). Away from the critical points the integral is O(lambda^{-k}) for every k (Theorem 7.7.1, nonstationary_phase). stationary_phase assumes Im phi >= 0 on the support of a only, so critical points on the boundary of the support are allowed; stationary_phase_of_isOpen assumes it on an open set containing the support, as Hormander does. The higher-order terms of the expansion in Theorem 7.7.5 are not stated."
   since: unreleased
+- id: LL-XXXX-a
+  title: The bracket of two smeared momentum constraints is the smeared constraint of the Lie bracket of the shifts
+  area: Canonical
+  file: Lightlike/Canonical/MomentumBracket.lean
+  decls: [Lightlike.Canonical.bracket_momentum_momentum]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: thiemann-2007, location: "Chapter: Classical Hamiltonian formulation of General Relativity|10.1017/CBO9780511755682.005"}
+  review: kernel-checked
+  note: "{D[xi], D[eta]} = D[[xi, eta]] for smooth compactly supported shifts, smooth h and continuous pi, with D[xi] = integral of pi^ij (L_xi h)_ij and the bracket computed with Gateaux derivatives along compactly supported variations (the pi-gradient of D[xi] is L_xi h). The comparison with the cited source is pending: the registry location was checked, the text was not read there. Differences to be approved by the owner: (a) C^infinity data and compactly supported test fields; (b) one global chart R^d, no manifold and no foliation; (c) units 16 pi G = 1 and the kinetic coefficient 1/(d-1) of the Hamiltonian density (1/2 for d = 3), which does not enter this bracket; (d) the momentum constraint in the Lie-derivative form, equal to the ADM form -2 xi_i pi^ij_|j by an integration by parts that is not formalised; (e) the bracket is defined through pi-gradients and Gateaux derivatives, and the signs of the bracket and of the Lie bracket are fixed by admBracket and lieBracket."
+  since: unreleased
+- id: LL-XXXX-b
+  title: The bracket of a smeared momentum constraint with a smeared Hamiltonian constraint is the Hamiltonian constraint smeared with the derivative of the lapse along the shift
+  area: Canonical
+  file: Lightlike/Canonical/HamiltonianBracket.lean
+  decls: [Lightlike.Canonical.admBracket_momentum_hamiltonian]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: thiemann-2007, location: "Chapter: Classical Hamiltonian formulation of General Relativity|10.1017/CBO9780511755682.005"}
+  review: kernel-checked
+  note: "{D[xi], H[N]} = H[xi^k d_k N] for smooth compactly supported xi and N, smooth data with positive definite h, with the Hamiltonian density (tr (h pi h pi) - (tr h pi)^2/(d-1))/sqrt(det h) - sqrt(det h) R computed from the coordinate scalar curvature of the geometry API. The proof shows that the scalar curvature is a smooth function of the 2-jet of the metric, that it is covariant under the flow of xi (the library's finite pullback law), that the kinetic term is a scalar density, and differentiates the smeared constraint under the integral sign. The comparison with the cited source is pending: the registry location was checked, the text was not read there. Differences to be approved by the owner: (a) C^infinity data, positive definite h and compactly supported test fields; (b) one global chart R^d, no manifold and no foliation; (c) units 16 pi G = 1 and the kinetic coefficient 1/(d-1) in dimension d (1/2 for d = 3), the one for which the algebra of the constraints closes; (d) the momentum constraint in the Lie-derivative form; (e) the bracket is defined through pi-gradients and Gateaux derivatives, and the signs of the bracket and of the Lie bracket are fixed by admBracket and lieBracket. A grid computation in dimension two (scripts/adm_algebra_check.py) agrees to three digits."
+  since: unreleased
