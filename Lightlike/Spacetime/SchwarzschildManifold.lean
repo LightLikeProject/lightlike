@@ -1,6 +1,7 @@
 import Lightlike.GR.Schwarzschild
 import Lightlike.Spacetime.OpenCoordMetric
 import Lightlike.Spacetime.ChartAgreement
+import Lightlike.Spacetime.LeviCivitaSmooth
 
 /-!
 # The exterior Schwarzschild metric on the manifold layer
@@ -19,15 +20,16 @@ Proof. The Einstein equations on a manifold are the coordinate vacuum equations 
 (`satisfiesEinstein_iff_chart_proved`); the charts of an open subset of `ℝ⁴` are restrictions of the identity, so the
 coordinate components are `schMetric M` (`openMetric_coordMetric`) and the coordinate result `sch_isVacuumSolution` applies.
 
-**Differences from the cited statement** (the comparison is pending: Carroll, *Spacetime and Geometry*, ch. 7, eq. (7.29),
+**The exterior region `r > 2M`.** All statements here are about the exterior region `r > 2M` only.
+
+**Differences from the cited statement**, approved on 17 November 2026 (the comparison with the sources is pending: Carroll, *Spacetime and Geometry*, ch. 7, eq. (7.29),
 and Wald, *General Relativity*, ch. 6, were not read at the cited locations): the manifold is the chart domain of the
 coordinates `(t, r, θ, φ)` with `r > 2M` and `0 < θ < π` and **no condition on `φ ∈ ℝ`**, so it is a covering of the
 exterior region with the axis removed, not `ℝ × (2M, ∞) × S²`; there is no extension across `r = 2M`; the coordinate
 order is `(t, r, θ, φ)` with signature `−+++` (the convention of this library); the Einstein equations are those of
 `Connection.lean` for the Levi-Civita connection, whose existence and uniqueness are `leviCivita_exists_unique_proved`;
-`M > 0`. The theorems are for every `C^∞` Levi-Civita connection (`ContMDiffCovariantDerivative cov ∞`); that the
-Levi-Civita connection `leviCivita g` of `LeviCivita.lean` is smooth is not proved in the library, so the existence of such a
-connection for this metric is not shown here.
+`M > 0`. The theorems are for every `C^∞` Levi-Civita connection (`ContMDiffCovariantDerivative cov ∞`); such a connection
+exists (`schwarzschild_exists_vacuum_connection`: `leviCivita g` is smooth by `contMDiffCovariantDerivative_leviCivita`).
 -/
 
 open Bundle Manifold Set Filter TopologicalSpace
@@ -134,5 +136,20 @@ theorem schwarzschild_ricci_eq_zero (h : cov.IsLeviCivita (schwarzschildMetric M
       rw [ricci_sch M (schU_subset M hM hy'), mul_zero]
   rw [hS, hS0] at hE
   linarith
+
+
+/-- **Non-vacuity**: the Levi-Civita connection `leviCivita` of the exterior Schwarzschild metric is a smooth Levi-Civita
+connection and satisfies the vacuum Einstein equations with vanishing Ricci tensor. -/
+theorem schwarzschild_exists_vacuum_connection :
+    ∃ cov : Connection 𝓘(ℝ, Fin 4 → ℝ) (schOpen M hM),
+      cov.IsLeviCivita (schwarzschildMetric M hM) ∧
+        CovariantDerivative.ContMDiffCovariantDerivative cov ∞ ∧
+        (schwarzschildMetric M hM).SatisfiesEinstein cov 0 ∧
+        ∀ (x : schOpen M hM) (v w : TangentSpace 𝓘(ℝ, Fin 4 → ℝ) x), cov.ricciAt x v w = 0 := by
+  have hLC : (leviCivita (schwarzschildMetric M hM)).IsLeviCivita (schwarzschildMetric M hM) :=
+    ⟨leviCivita_torsion _, leviCivita_compat _⟩
+  haveI := contMDiffCovariantDerivative_leviCivita (schwarzschildMetric M hM)
+  exact ⟨leviCivita (schwarzschildMetric M hM), hLC, this,
+    schwarzschild_satisfiesEinstein M hM _ hLC, schwarzschild_ricci_eq_zero M hM _ hLC⟩
 
 end Lightlike
