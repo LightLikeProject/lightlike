@@ -169,6 +169,18 @@ expect("gate planted: a failing step fails the gate, is named, and stops it",
        res.returncode == 1 and not (r / "after.txt").exists() and "PyYAML" not in out
        and "bad" in out and "FAILED" in out
        and [x["result"] for x in json.loads((r / ".gate" / "log.jsonl").read_text().splitlines()[-1])["steps"]][:1] == ["ok"])
+r, g = toy("      - name: good\n        run: echo a\n      - name: adv\n        continue-on-error: true\n"
+           "        run: exit 1\n      - name: after\n        run: echo b > after.txt\n")
+res = gate(r)
+last = (res.stdout.strip().splitlines() or [""])[-1]
+expect("gate planted: a failing advisory step is a named warning, and the gate goes on and passes",
+       res.returncode == 0 and (r / "after.txt").exists()
+       and last.startswith("GATE OK (1 advisory warning: [2] adv) "))
+r, g = toy("      - name: good\n        run: echo a\n      - name: bad\n        run: exit 3\n")
+res = gate(r)
+last = (res.stdout.strip().splitlines() or [""])[-1]
+expect("gate planted: the last line names the step that failed the gate",
+       res.returncode == 1 and last.startswith("GATE FAILED at [2] bad "))
 r, g = toy("      - name: cond\n        if: github.ref == 'x'\n        run: echo a\n")
 res = gate(r)
 expect("gate planted: a step with a key the gate does not implement is an error",
