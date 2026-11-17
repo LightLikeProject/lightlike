@@ -26,7 +26,8 @@ simplices to be a pseudo-manifold or a normal pseudo-manifold, and its Euler cha
 a form that keeps repeated simplices distinct [3]. The dual of a colored graph, with one simplex for each bubble of the
 complementary colors, is pure and non-branching, strongly connected when the graph is connected, and
 normal, so the dual of a connected colored graph is a normal pseudo-manifold, and every lower interval of the
-dual is a Boolean lattice [4]. That
+dual is a Boolean lattice [4]. The link of a simplex of the dual is the dual of the bubble, as a colored graph, with the rank lowered
+by that of the simplex [5]. That
 the dual of every colored graph is a normal simplicial pseudo-manifold, and
 the identification of the bubbles with the links of the dual simplices, are due to Gurau {1}; they
 are [TODO] here.
@@ -50,6 +51,9 @@ are [TODO] here.
    `GFT.ColoredGraph.dual_isStronglyConnected`, `GFT.ColoredGraph.dual_isNormal`,
    `GFT.ColoredGraph.dual_isSimplicial`, `GFT.ColoredGraph.faceIso`,
    `GFT.ColoredGraph.dual_isNormalPseudoManifold`
+5. Lightlike/GFT/DualLink.lean - `GFT.ColoredGraph.mem_bubble_restrict`,
+   `GFT.ColoredGraph.linkTo`, `GFT.ColoredGraph.linkOf`, `GFT.ColoredGraph.linkIso`,
+   `GFT.ColoredGraph.linkIso_rk`, `GFT.ColoredGraph.link_isDual`
 
 ## References
 
