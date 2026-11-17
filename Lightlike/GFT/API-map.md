@@ -28,7 +28,7 @@ complementary colors, is pure and non-branching, strongly connected when the gra
 normal, so the dual of a connected colored graph is a normal pseudo-manifold, and every lower interval of the
 dual is a Boolean lattice [4]. The link of a simplex of the dual is the dual of the bubble, as a colored graph, with the rank lowered
 by that of the simplex [5]. In dimension two twice the Euler characteristic of the dual pseudo-complex is the count
-from the faces [6]. That
+from the faces [6], and it is an integer for every colored graph [7]. That
 the dual of every colored graph is a normal simplicial pseudo-manifold, and
 the identification of the bubbles with the links of the dual simplices, are due to Gurau {1}; they
 are [TODO] here.
@@ -56,7 +56,10 @@ are [TODO] here.
    `GFT.ColoredGraph.linkTo`, `GFT.ColoredGraph.linkOf`, `GFT.ColoredGraph.linkIso`,
    `GFT.ColoredGraph.linkIso_rk`, `GFT.ColoredGraph.link_isDual`
 6. Lightlike/GFT/DualEuler.lean - `GFT.ColoredGraph.dual_f`,
-   `GFT.ColoredGraph.two_mul_nBubbles_singleton`, `GFT.ColoredGraph.eulerChar_dual`
+   `GFT.ColoredGraph.two_mul_nBubbles_singleton`, `GFT.ColoredGraph.eulerChar_dual`,
+   `GFT.ColoredGraph.eulerChar_dual_eq_euler`
+7. Lightlike/GFT/Euler.lean - `GFT.ColoredGraph.even_twoChi2`, `GFT.ColoredGraph.euler`,
+   `GFT.ColoredGraph.two_mul_euler`
 
 ## References
 

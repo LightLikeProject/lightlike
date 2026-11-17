@@ -292,6 +292,7 @@
   decls: [Lightlike.Pentagon.biedenharnElliott]
   status: proven
   tier: established
+  main: true
   source:
     refs:
       - {ref: edmonds-1957, location: "Chapter: Chapter 6. The Construction of Invariants from the Vector-Coupling Coefficients|10.1515/9781400884186-007"}
@@ -305,6 +306,7 @@
   decls: [Lightlike.PL.SComplex.pachner]
   status: proven
   tier: established
+  main: true
   source:
     refs:
       - {ref: lickorish-1999, location: "Theorem 4.5", check: "stellar"}
@@ -394,6 +396,7 @@
   decls: [Lightlike.Asymptotics.ponzanoReggeFormula]
   status: proven
   tier: established
+  main: true
   source:
     refs:
       - {ref: roberts-1999, location: "Theorem 1", check: "Asymptotic formula"}
@@ -545,6 +548,7 @@
   decls: [Lightlike.Regge.schlaefli]
   status: proven
   tier: established
+  main: true
   source:
     refs:
       - {ref: dittrich-freidel-speziale-2007, location: "eq. (8)", check: "Schläfli identity"}
@@ -596,6 +600,7 @@
   decls: [Lightlike.Lorentz.integrable_eprlIntegrand, Lightlike.Lorentz.lintegral_enorm_eprlIntegrand_lt_top, Lightlike.Lorentz.eprlVertex_eq_integral, Lightlike.Lorentz.integrable_linkProd_inner]
   status: proven
   tier: frontier
+  main: true
   source:
     refs:
       - {ref: eprl-2008, location: "Abstract", check: "Lorentzian"}
@@ -610,6 +615,7 @@
   decls: [Lightlike.Asymptotics.EPRL.eprlAsymptoticFormula]
   status: proven
   tier: frontier
+  main: true
   source:
     refs:
       - {ref: bdfgh-2009, location: "Section 4", check: "Asymptotic formula"}
@@ -720,6 +726,7 @@
   decls: [Lightlike.PL.SComplex.IsClosedCombManifold.two_mul_card_eq, Lightlike.PL.SComplex.IsClosedCombManifold.dehnSommerville]
   status: proven
   tier: established
+  main: true
   source:
     refs:
       - {ref: ambjorn-jurkiewicz-loll-2001, location: "Section 3.2, eq. (26)", check: "Dehn-Sommerville"}
@@ -837,6 +844,7 @@
   decls: [Lightlike.PL.SComplex.StellarEquiv.of_plHomeomorphic]
   status: proven
   tier: established
+  main: true
   source:
     refs:
       - {ref: lickorish-1999, location: "Theorem 4.5"}
@@ -850,6 +858,7 @@
   decls: [Lightlike.PL.SComplex.pachner_plHomeomorphic, Lightlike.PL.SComplex.isClosedCombManifold_iff_plHomeomorphic]
   status: proven
   tier: established
+  main: true
   source:
     refs:
       - {ref: lickorish-1999, location: "Theorem 5.9"}
@@ -887,6 +896,7 @@
   decls: [Lightlike.SpinFoam.amplitudeGF_congr_cut, Lightlike.SpinFoam.GFStep4.isGauge, Lightlike.SpinFoam.amplitudeGF_eqvGen4, Lightlike.SpinFoam.amplitudeGF_tendsto_one_of_forces]
   status: proven
   tier: frontier
+  main: true
   source:
     refs:
       - {ref: freidel-louapre-2003, location: "Section IV", check: "GAUGE SYMMETRIES AND DIVERGENCES"}
@@ -1000,6 +1010,7 @@
   decls: [Lightlike.PL.Polygon.polygon_jordan, Lightlike.PL.Polygon.frontier_class]
   status: proven
   tier: established
+  main: true
   source:
     refs:
       - {ref: moise-1977, location: "Chapter: Separation properties of polygons in R 2|10.1007/978-1-4612-9906-6_3"}
@@ -1098,6 +1109,7 @@
   decls: [Lightlike.PL.Polygon.polygon_schoenflies, Lightlike.PL.Polygon.mem_bd_closure_iff, Lightlike.PL.Polygon.bd_space_eq_carrier, Lightlike.PL.Polygon.unique_triangle_of_ball]
   status: proven
   tier: established
+  main: true
   source:
     refs:
       - {ref: moise-1977, location: "Chapter: The Schönflies theorem for polygons in R 2|10.1007/978-1-4612-9906-6_4"}
@@ -1313,6 +1325,7 @@
   decls: [Lightlike.PL.weak_jordan]
   status: proven
   tier: established
+  main: true
   source:
     refs:
       - {ref: klazar-2026, location: "Section 2", check: "Thomassen"}
@@ -1650,4 +1663,32 @@
       - {ref: gurau-2010, location: "Theorem 1", check: "link graphs"}
   review: kernel-checked
   note: "Gurau (2010), Theorem 1: the p-bubbles of a colored graph are the link graphs of the (n - p)-simplices of the gluing. For a simplex sigma = (S, B) of the dual Delta_G (a set S of colors and a bubble B of the other colors) the simplices that contain sigma are in order-preserving bijection with the simplices of the dual of the colored graph G' of the lines of the colors outside S restricted to B (ColoredGraph.restrict), by linkIso, and the bijection lowers the rank by the rank of sigma (linkIso_rk); link_isDual states it for every simplex that does not have all colors, with the colors outside S enumerated in increasing order. The bijection is built from the two maps linkTo and linkOf, inverse to each other, and the bubbles of the restricted graph are the bubbles of G (mem_bubble_restrict). Limits: the link is the set of simplices containing sigma with the induced order, as a graded poset; the vertex sets of the simplices are not part of the structure; the statement is for the colored graph restricted to a bubble, not for the stranded graph of Gurau's Section 3.1."
+  since: unreleased
+- id: LL-0125
+  title: The Jordan curve theorem
+  area: PL
+  file: Lightlike/PL/JordanCurve.lean
+  decls: [Lightlike.PL.jordan_at_most_two, Lightlike.PL.jordan_at_most_two_prod, Lightlike.PL.jordan_curve_theorem]
+  status: proven
+  tier: established
+  main: true
+  source:
+    refs:
+      - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
+  review: kernel-checked
+  note: "The complement of the image of a continuous injective map from the circle into the plane is the disjoint union of two open connected sets, one bounded and one unbounded, and the curve is the frontier of each. The proof compares the index about the curve, computed with two different theta configurations (the index does not depend on the splitting): it vanishes on the component of a point above the curve and is nonzero elsewhere, and a configuration at a point of another component shows there is at most one other component; the bounded and unbounded components come from the weak result on components, and the frontier statement from the arc theorem. The statement for maps into the complex numbers is transferred to the plane along the standard homeomorphism. The numbering of lemmas follows the lecture-notes version of chapter 9 of McCleary's book: the chapter location is verified, the lemma-level numbering is not. The statements and proofs are Lean's own. Proves: the Jordan curve theorem for continuous injective maps from the circle to the plane. Does not prove: the Schoenflies theorem. Limits: the plane as the product of two copies of the reals. Check: TestsJordanCurve.lean (the unit circle gives two components; a constant map is not injective, so it is excluded)."
+  since: unreleased
+- id: LL-0126
+  title: "Stationary phase with complex phase, leading term (Hörmander, Theorem 7.7.5)"
+  area: Oscillatory
+  file: Lightlike/Oscillatory/StationaryPhase.lean
+  decls: [Lightlike.Oscillatory.stationary_phase, Lightlike.Oscillatory.stationary_phase_of_isOpen]
+  status: proven
+  tier: established
+  main: true
+  source:
+    refs:
+      - {ref: hormander-1990, location: "Chapter: The Fourier Transformation|10.1007/978-3-642-61497-2_8", check: "Fourier"}
+  review: kernel-checked
+  note: "Theorem 7.7.5 of Hormander (ALPDO I), leading term: for a smooth phase phi on EuclideanSpace R^n and a smooth compactly supported amplitude a, with Im phi >= 0 on the support, the critical points in the support (Im phi = 0, d phi = 0) forming a finite set K of nondegenerate points (det(-iH) != 0), the integral of a e^{i lambda phi} equals the sum over K of e^{i lambda phi(x0)} (2 pi / lambda)^{n/2} det(-iH(x0))^{-1/2} a(x0) up to O(lambda^{-n/2-1}); the square root is the product of the principal roots of the eigenvalues of -iH (invSqrtDet). Away from the critical points the integral is O(lambda^{-k}) for every k (Theorem 7.7.1, nonstationary_phase). stationary_phase assumes Im phi >= 0 on the support of a only, so critical points on the boundary of the support are allowed; stationary_phase_of_isOpen assumes it on an open set containing the support, as Hormander does. The higher-order terms of the expansion in Theorem 7.7.5 are not stated."
   since: unreleased

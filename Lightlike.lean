@@ -266,6 +266,13 @@ import Lightlike.PL.TestsIndex
 import Lightlike.PL.TestsIndexConstancy
 import Lightlike.PL.TestsIndexTheta
 import Lightlike.PL.TestsIndexTriangle
+import Lightlike.PL.IndexOmega
+import Lightlike.PL.ThetaExists
+import Lightlike.PL.ThetaRay
+import Lightlike.PL.IndexCurve
+import Lightlike.PL.TestsThetaIndex
+import Lightlike.PL.JordanCurve
+import Lightlike.PL.TestsJordanCurve
 import Lightlike.PL.TestsGrating
 import Lightlike.PL.HexFalse
 import Lightlike.PL.K33
@@ -667,3 +674,4 @@ import Lightlike.GFT.Dual
 import Lightlike.GFT.DualEuler
 import Lightlike.GFT.DualLink
 import Lightlike.GFT.PseudoComplex
+import Lightlike.GFT.Euler
