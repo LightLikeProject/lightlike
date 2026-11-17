@@ -38,6 +38,8 @@ In a chart of a manifold modelled on `ℝⁿ` (Hausdorff), the components of the
 
 For a smooth torsion-free connection the second Bianchi identity holds: the cyclic sum of the covariant derivative of the curvature vanishes [16].
 
+In a chart, the covariant derivative of a bilinear form field, in particular of the Einstein tensor, is given by the components formula, so it is tensorial in the three arguments [17].
+
 The curvature of a manifold-level metric as a tensor field is defined in `Connection.lean` [7]: a connection is Mathlib's
 covariant derivative on the tangent bundle; the Riemann curvature is `R(X, Y) Z = ∇_X ∇_Y Z - ∇_Y ∇_X Z - ∇_{[X,Y]} Z`
 (the sign convention of Mathlib pull request 45069), the Ricci tensor is its trace over the first slot, the scalar
