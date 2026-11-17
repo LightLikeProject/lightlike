@@ -21,7 +21,7 @@ antilinear part [3]. A representation of the Weyl relations is a family of unita
 `W f ∘ W g = exp (-i Im ⟪f, g⟫ / 2) W (f + g)`, and a Fock representation has a cyclic unit vector with the
 vacuum expectation `exp (-‖f‖² / 4)` [3]. Shale's criterion says that a Bogoliubov transformation is
 implemented by a unitary of the Fock representation exactly when its antilinear part is Hilbert–Schmidt {2}.
-In one mode the squeezing has `|α|² - |β|² = 1` and the dilation `f ↦ 2 f` is not symplectic [4]. A map with `‖B f‖ = c ‖f‖`, `c > 0`, is not Hilbert–Schmidt when a Hilbert basis is infinite [4]. On `L²(ℝ)` translation `ψ(x + t)` is a strongly continuous unitary group [5], and its generator is `-i d/dx` on `C²` functions with compact support, not `+i d/dx` [6]. The
+In one mode the squeezing has `|α|² - |β|² = 1` and the dilation `f ↦ 2 f` is not symplectic [4]. A map with `‖B f‖ = c ‖f‖`, `c > 0`, is not Hilbert–Schmidt when a Hilbert basis is infinite [4]. On `L²(ℝ)` translation `ψ(x + t)` is a strongly continuous unitary group [5], and its generator is `-i d/dx` on `C²` functions with compact support, not `+i d/dx` [6]. On `L²(0, 1)` the operator `-i d/dx` on the `C²` functions supported inside `(0, 1)` is given by its graph [7]. The deficiency spaces of an operator are the kernels of the adjoint minus `±i`, and a self-adjoint operator has none [8]. The
 Fock space itself is not built here, and a Fock representation is characterized by its vacuum. The
 unbounded spectral theorem is not in Mathlib. Stone's theorem and Shale's criterion are [TODO] here.
 
@@ -46,6 +46,11 @@ unbounded spectral theorem is not in Mathlib. Stone's theorem and Shale's criter
    `OperatorAlgebras.taylor_bound`, `OperatorAlgebras.ofCS`,
    `OperatorAlgebras.translationGroup_hasDerivAt`, `OperatorAlgebras.translationGroup_generator_ofCS`,
    `OperatorAlgebras.translationGroup_generator_ne`, `OperatorAlgebras.exists_core_ne_zero`
+7. Lightlike/OperatorAlgebras/MomentumInterval.lean - `OperatorAlgebras.L2I`, `OperatorAlgebras.classI`,
+   `OperatorAlgebras.testFunctions`, `OperatorAlgebras.momentumGraph`, `OperatorAlgebras.momentumMin`,
+   `OperatorAlgebras.momentumMin_graph`
+8. Lightlike/OperatorAlgebras/Deficiency.lean - `OperatorAlgebras.deficiencySpace`,
+   `OperatorAlgebras.deficiencyDim`, `OperatorAlgebras.deficiencyDim_of_isSelfAdjoint`
 
 ## References
 
