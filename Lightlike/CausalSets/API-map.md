@@ -12,6 +12,8 @@ A sprinkling is a sample of independent uniform points. For a region of finite p
 
 The causal order of `n` points of the `1 + 1` diamond with distinct light-cone coordinates is the dominance order of a permutation `σ`; the points with light-cone coordinates `(i, σ i)` realise it in Minkowski space, so the geometric order is the dominance order, a causal set whose longest chain has the length of a longest increasing subsequence of `σ` [10] {2}. Exact enumeration gives the sums `1, 3, 12, 58` of the longest chain over all permutations of `1, …, 4` points, so the expected longest chain of `3` points is `2`; the constant `1` in `c √n` is not the value at `n = 3` [10] {2}. The asymptotics `2 √n` (Vershik–Kerov, Logan–Shepp) is the open task T-CS3-P1.
 
+A causal set grows by adding one element at a time above a down-set of the existing ones. Labelling by birth order gives the naturally labelled posets on `Fin n`, `1, 2, 7, 40` of them for `n = 1, …, 4`. In transitive percolation each new element is related to each earlier one independently with probability `p` and the relations are completed transitively, so the weight of a naturally labelled poset is the product over the new elements of `p^m q^(j - |D|)`, with `D` the past and `m` the number of its maximal elements; the weights of all naturally labelled posets on two and on three elements sum to `1` [11] {3}. The classification of all sequential growth laws obeying Bell causality and discrete general covariance is not formalised.
+
 **Missing.** The Poisson form (the number of points is Poisson distributed) needs Poisson point processes (milestone RN1), which are not defined. The comparison of the statements with the sources is pending: the sources have not been read at the cited locations. The tasks T-CS2-P1 (the formula in every dimension), T-CS2-P2 (`1/20`) and T-CS2-P3 (the rectangle) state theorems proved in the library and are closed by those proofs.
 
 ## Lean References
@@ -26,8 +28,10 @@ The causal order of `n` points of the `1 + 1` diamond with distinct light-cone c
 8. Lightlike/CausalSets/Myrheim4D.lean - `CausalSets.relProb_three_eq`, `CausalSets.expected_relations_diamond_three`
 9. Lightlike/CausalSets/BetaReal.lean - `CausalSets.real_beta`
 10. Lightlike/CausalSets/LongestChain.lean - `CausalSets.longestChain`, `CausalSets.coneLE_sprinklePt`, `CausalSets.expected_longestChain_three`
+11. Lightlike/CausalSets/Growth.lean - `CausalSets.NatPoset`, `CausalSets.tpProb`, `CausalSets.sum_tpProb_three`
 
 ## References
 
 1. L. Bombelli, J. Lee, D. Meyer and R. D. Sorkin, *Space-time as a causal set*, Physical Review Letters 59 (1987) 521.
 2. S. Surya, *The causal set approach to the problem of quantum gravity*, Living Reviews in Relativity 22 (2019), section 2.
+3. D. P. Rideout and R. D. Sorkin, *Classical sequential growth dynamics for causal sets*, Physical Review D 61 (2000) 024002.
