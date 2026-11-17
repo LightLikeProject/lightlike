@@ -665,5 +665,6 @@ import Lightlike.GFT.Bubble
 import Lightlike.GFT.ColoredGraph
 import Lightlike.Gauge.Constraints
 import Lightlike.Gauge.ConstraintsAPI
+import Lightlike.Gauge.MatrixInverse
 import Lightlike.Gauge.PoissonJacobi
 import Lightlike.Tests.Constraints
