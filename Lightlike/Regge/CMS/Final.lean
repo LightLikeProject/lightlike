@@ -72,7 +72,13 @@ angle, `R / 2` the Gauss curvature and `√det g dx` the Riemannian area element
 The threshold `h₀` is smaller than the radius of a neighbourhood of `K` inside `U`, so every edge
 of a star lies in a ball contained in `U` and is joined by an admissible curve there: the
 distances `dist g U` in the deficit are genuine lengths, never the value `0` that `dist g U`
-takes when no admissible curve exists. -/
+takes when no admissible curve exists.
+
+**Differences from the source.** The comparison with the cited source (Christiansen 2011, Section 1) is pending: it
+was not read at that location. This is not the theorem of Cheeger, Müller and Schrader (1984), which holds in every
+dimension and for arbitrary fine triangulations of a manifold: here the region is planar (one chart), the vertex stars
+are `ρ`-fat of bounded valence, the edge lengths are geodesic, the weight `f` is Lipschitz, the rate is `O(h)`, and the
+vertex cells `S i` are hypotheses (building them from a triangulation is not proved). -/
 theorem _root_.Lightlike.Geodesic.IsRiemMetric.cms_convergence
     {g : (Fin 2 → ℝ) → Matrix (Fin 2) (Fin 2) ℝ} {U : Set (Fin 2 → ℝ)}
     (hg : IsRiemMetric g U) {K : Set (Fin 2 → ℝ)} (hK : IsCompact K) (hKU : K ⊆ U)

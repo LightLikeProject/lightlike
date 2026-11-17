@@ -217,6 +217,14 @@ theorem euler_octahedron' : octahedron.euler = 1 + (-1 : ℤ) ^ 2 := isPLSphere_
 /-- **Wrong model**: two disjoint 2-spheres have Euler characteristic `4`, not `2`. -/
 theorem euler_twoSpheres : twoSpheres.euler = 4 := by decide +kernel
 
+/-- **Different Euler characteristics rule out stellar equivalence**: the boundary of a
+tetrahedron (`χ = 2`) and two disjoint 2-spheres (`χ = 4`) are not stellar equivalent. -/
+theorem not_stellarEquiv_tetrahedron_twoSpheres :
+    ¬ StellarEquiv (boundary ({0, 1, 2, 3} : Finset (Fin 8))) twoSpheres :=
+  not_stellarEquiv_of_euler_ne (by
+    rw [euler_boundary ⟨0, by simp⟩, euler_twoSpheres]
+    norm_num)
+
 /-- **A PL sphere is not a PL ball**: the boundary of a tetrahedron is not a PL ball of any
 dimension. -/
 theorem not_isPLBall_tetrahedron (m : ℕ) :
