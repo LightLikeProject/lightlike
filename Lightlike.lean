@@ -158,10 +158,13 @@ import Lightlike.CausalSets.Basic
 import Lightlike.CausalSets.BetaReal
 import Lightlike.CausalSets.ConeOrder
 import Lightlike.CausalSets.Expected
+import Lightlike.CausalSets.Growth
 import Lightlike.CausalSets.IntervalVolume
+import Lightlike.CausalSets.LongestChain
 import Lightlike.CausalSets.Myrheim
 import Lightlike.CausalSets.Myrheim4D
 import Lightlike.CausalSets.MyrheimGen
+import Lightlike.CausalSets.PosetCount
 import Lightlike.CausalSets.Rectangle
 import Lightlike.CausalSets.Sprinkling
 import Lightlike.CausalSets.TestsCausalSets
@@ -808,6 +811,10 @@ import Lightlike.DynamicalTriangulations.Tests
 import Lightlike.DynamicalTriangulations.Tests3
 import Lightlike.GFT.Bubble
 import Lightlike.GFT.ColoredGraph
+import Lightlike.GFT.Dual
+import Lightlike.GFT.DualEuler
+import Lightlike.GFT.DualLink
+import Lightlike.GFT.PseudoComplex
 import Lightlike.Gauge.Constraints
 import Lightlike.Gauge.ConstraintsAPI
 import Lightlike.Gauge.DiracAlgebra
