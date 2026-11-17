@@ -359,7 +359,9 @@ appears only as the Boolean lower intervals of `faceIso`; the two readings are n
 (2) Gurau defines a pseudo-manifold as normal if "all its links are pseudo manifolds"; here `IsNormal` asks it
 only for the links of simplices of rank at most `n - 2` (links of dimension at least 1), so the links of the
 simplices of rank `n - 1` (two points) and `n` (empty) are not required to be pseudo-manifolds, a range the
-source does not restrict. Until a maintainer approves these differences, the result is partial. -/
+source does not restrict. The maintainers approved both differences on 17 November 2026 as differences of
+representation (asking normality for the links of rank at most `n - 2` is the standard definition); the agreement
+of the indexed form with the set-of-faces form when no simplices repeat is the task `T-GF1-P2`. -/
 theorem dual_isNormalPseudoManifold (h : G.IsConnected) : (dual G).IsNormalPseudoManifold (D + 1) :=
   ⟨⟨dual_isPure G, dual_isNonBranching G, dual_isStronglyConnected G h⟩, dual_isNormal G⟩
 
