@@ -24,8 +24,9 @@ bracket `{f, g} = ⟨∂_q f, ∂_p g⟩ - ⟨∂_p f, ∂_q g⟩` (`ClassicalMe
   tangent space of an orbit and of a level set of its moment map, for the reduction of Marsden and Weinstein
   without quotient manifolds.
 
-The statements about these are the proof tasks `T-GC4-P1` to `T-GC4-P5` (`Tasks/GC/`); the example of the particle
-on a circle and the wrong count are in `Lightlike/Tests/Constraints.lean`.
+The proved basic API is `Lightlike/Gauge/ConstraintsAPI.lean`, the open statements are the proof tasks
+`T-GC4-P1` and `T-GC4-P2` (`Tasks/GC/`), and the example of the particle on a circle and the wrong count are in
+`Lightlike/Tests/Constraints.lean`.
 
 ## References
 
