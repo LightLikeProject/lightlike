@@ -63,7 +63,7 @@ theorem coord_eq_sum_basis (b : Module.Basis ι ℝ (TangentSpace 𝓘(ℝ, E) x
   have hexp : ∀ j, g.g x u (b j) = ∑ k, b.coord k u * gramB g x b k j := by
     intro j
     conv_lhs => rw [← b.sum_repr u]
-    simp only [map_sum, map_smul, ContinuousLinearMap.sum_apply, smul_apply, smul_eq_mul]
+    simp only [map_sum, map_smul, sum_apply, smul_apply, smul_eq_mul]
     refine Finset.sum_congr rfl fun k _ => ?_
     simp [gramB, Module.Basis.coord_apply]
   simp only [hexp, Finset.mul_sum]
@@ -161,7 +161,7 @@ theorem gamHat_coord (g : LorentzianMetric 𝓘(ℝ, Fin n → ℝ) M n) (h : co
   rw [key]
   have hvc : ∀ u : TangentSpace 𝓘(ℝ, Fin n → ℝ) z,
       hv x₀ z u = (tTriv (E := Fin n → ℝ) x₀).continuousLinearMapAt ℝ z u := fun u => by
-    rw [Trivialization.continuousLinearMapAt_apply, Trivialization.linearMapAt_apply, if_pos hz]
+    rw [Trivialization.continuousLinearMapAt_apply, Trivialization.linearMapAt_apply, ite_eq_left hz]
   show hv x₀ z _ = _
   rw [hvc, map_sum]
   refine Finset.sum_congr rfl fun k _ => ?_
@@ -180,7 +180,7 @@ theorem mvfderiv_gamHat_apply {p : M} (hp : p ∈ (tTriv (E := Fin n → ℝ) x�
   have e2 := mvfderiv_clm_apply (E := Fin n → ℝ) (fun z => gamHat cov x₀ z a) (fun _ : M => b) p h1
     mdifferentiableAt_const u
   rw [mvfderiv_const] at e1 e2
-  simp only [ContinuousLinearMap.zero_apply, map_zero, add_zero] at e1 e2
+  simp only [zero_apply, map_zero, add_zero] at e1 e2
   rw [e2, e1]
 
 /-- The derivative of `Γ̂` along `∂_μ` in the chart is `Σ_k ∂_μ Γᵏ_{νσ} e_k`. -/
@@ -252,11 +252,11 @@ theorem riemann_coord_comp (g : LorentzianMetric 𝓘(ℝ, Fin n → ℝ) M n) (
     mvfderiv_gamHat_coord cov x₀ g h hy μ ν σ, mvfderiv_gamHat_coord cov x₀ g h hy ν μ σ,
     gamHat_coord cov x₀ g h hp' ν σ, gamHat_coord cov x₀ g h hp' μ σ,
     (extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).right_inv hy]
-  simp only [map_sum, map_smul, ContinuousLinearMap.sum_apply, smul_apply]
+  simp only [map_sum, map_smul, sum_apply, smul_apply]
   simp only [gamHat_coord cov x₀ g h hp', (extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).right_inv hy]
   simp only [Pi.sub_apply, Pi.add_apply, Finset.sum_apply, Pi.smul_apply, Pi.single_apply, smul_eq_mul]
-  simp only [riemann, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, Finset.sum_sub_distrib]
-  simp only [Finset.sum_ite_eq, Finset.mem_univ, if_true]
+  simp only [riemann, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, ite_true, Finset.sum_sub_distrib]
+  simp only [Finset.sum_ite_eq, Finset.mem_univ, ite_true]
   simp only [mul_comm]
   ring
 
@@ -315,7 +315,7 @@ theorem ricciAt_eq_trace {p : M} (hp : p ∈ (tTriv (E := Fin n → ℝ) x₀).b
   set hvC : TangentSpace 𝓘(ℝ, Fin n → ℝ) p →L[ℝ] (Fin n → ℝ) := (tTriv (E := Fin n → ℝ) x₀).continuousLinearMapAt ℝ p with hhv
   set sy : (Fin n → ℝ) →L[ℝ] TangentSpace 𝓘(ℝ, Fin n → ℝ) p := (tTriv (E := Fin n → ℝ) x₀).symmL ℝ p with hsy
   have hvc : ∀ u, hv x₀ p u = hvC u := fun u => by
-    rw [hhv, Trivialization.continuousLinearMapAt_apply, Trivialization.linearMapAt_apply, if_pos hp]
+    rw [hhv, Trivialization.continuousLinearMapAt_apply, Trivialization.linearMapAt_apply, ite_eq_left hp]
   have hcur : ∀ u : TangentSpace 𝓘(ℝ, Fin n → ℝ) p, cov.curvatureAt p u Y Z =
       sy (RhatFst cov x₀ p (hv x₀ p Y) (hv x₀ p Z) (hvC u)) := fun u => by
     have h := hv_curvatureAt cov x₀ hp u Y Z
