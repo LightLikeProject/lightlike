@@ -24,14 +24,14 @@ Definitions the statement names (without the `Lightlike.` prefix), by file:
 
 Lemmas about them, which a proof may use:
 
+* `bianchi_first_proved` (`Lightlike/Spacetime/CurvatureSymmetries.lean`)
 * `curvatureAt_apply_proved` (`Lightlike/Spacetime/ChartCurvature.lean`)
+* `curvatureAt_antisymm_left` (`Lightlike/Spacetime/CurvatureSymmetries.lean`)
+* `curvatureAt_apply_eventually` (`Lightlike/Spacetime/CurvatureSymmetries.lean`)
 * `hat_cov` (`Lightlike/Spacetime/ChartCurvature.lean`)
-* `gamHat_eq` (`Lightlike/Spacetime/ChartCurvature.lean`)
 * `gam_apply` (`Lightlike/Spacetime/ChartCurvature.lean`)
-* `mdiffAt_DY` (`Lightlike/Spacetime/ChartCurvature.lean`)
-* `hat_covApply` (`Lightlike/Spacetime/ChartCurvature.lean`)
-* `gamHat_apply` (`Lightlike/Spacetime/ChartCurvature.lean`)
-* `curvature_hat` (`Lightlike/Spacetime/ChartCurvature.lean`)
+* `gamHat_eq` (`Lightlike/Spacetime/ChartCurvature.lean`)
+* `compat_mv` (`Lightlike/Spacetime/CurvatureSymmetries.lean`)
 
 Everything they depend on, and the further lemmas about them, in one block:
 

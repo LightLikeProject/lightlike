@@ -72,8 +72,8 @@ than one who stays at rest [6].
 12. Lightlike/Spacetime/ChartCovariant.lean - `contMDiffAt_cov`, `hat`, `cov0`, `cov0_isCov`
 13. Lightlike/Spacetime/ChartCurvature.lean - `gamHat`, `mdiffAt_gamHat`, `hat_cov`, `hv_bracket`,
    `Rhat`, `curvature_hat`, `curvatureAt_apply_proved`
-14. Lightlike/Spacetime/CurvatureSymmetries.lean - `bianchi_first_proved`, `riemann_antisymm_last`,
-   `riemann_pair_symm`, `ricciAt_symm_proved`
+14. Lightlike/Spacetime/CurvatureSymmetries.lean - `bianchi_first_proved`, `riemannLowerAt_antisymm_last`,
+   `riemannLowerAt_pair_symm`, `ricciAt_symm_proved`
 
 ## References
 

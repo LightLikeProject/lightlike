@@ -10,9 +10,9 @@ under the same hypotheses as `curvatureAt_apply_proved` (`ChartCurvature.lean`):
   smooth near `x`;
 * `bianchi_first_proved`: the first Bianchi identity for a torsion-free connection (torsion freeness, the
   Jacobi identity `jacobi_cyc` of the Lie bracket);
-* `riemann_antisymm_last`: `g(R(X,Y)Z, W) = -g(R(X,Y)W, Z)` for a metric connection (from
+* `riemannLowerAt_antisymm_last`: `g(R(X,Y)Z, W) = -g(R(X,Y)W, Z)` for a metric connection (from
   `mfderiv_mlieBracket`), and `curvatureAt_antisymm_left` the antisymmetry in `X, Y`;
-* `riemann_pair_symm`: `g(R(X,Y)Z, W) = g(R(Z,W)X, Y)` for the Levi-Civita connection;
+* `riemannLowerAt_pair_symm`: `g(R(X,Y)Z, W) = g(R(Z,W)X, Y)` for the Levi-Civita connection;
 * `ricciAt_symm_proved`: the Ricci tensor is symmetric (trace with the inverse Gram matrix, `coord_eq_sum`).
 
 **Limits.** Boundaryless Hausdorff manifolds; the symmetry statements of the tasks `T-GE1-P3` and `T-GE1-P4` are
@@ -232,7 +232,7 @@ theorem riemann_antisymm_aux {X Y Z W : Π y : M, TangentSpace 𝓘(ℝ, E) y} {
   linarith
 
 /-- **The lowered curvature is antisymmetric in its last two slots** for a metric-compatible connection. -/
-theorem riemann_antisymm_last (hC : cov.IsMetricCompatible g) (x : M) (X₀ Y₀ Z₀ W₀ : TangentSpace 𝓘(ℝ, E) x) :
+theorem riemannLowerAt_antisymm_last (hC : cov.IsMetricCompatible g) (x : M) (X₀ Y₀ Z₀ W₀ : TangentSpace 𝓘(ℝ, E) x) :
     cov.riemannLowerAt g x X₀ Y₀ Z₀ W₀ = - cov.riemannLowerAt g x X₀ Y₀ W₀ Z₀ := by
   set X := FiberBundle.extend E X₀ with hXd
   set Y := FiberBundle.extend E Y₀ with hYd
@@ -272,14 +272,14 @@ theorem curvatureAt_antisymm_left (x : M) (X₀ Y₀ Z₀ : TangentSpace 𝓘(�
   abel
 
 /-- **The pair symmetry** `g(R(X,Y)Z, W) = g(R(Z,W)X, Y)` of the curvature of a Levi-Civita connection (from the first Bianchi identity and the antisymmetries). -/
-theorem riemann_pair_symm (hT : cov.torsion = 0) (hC : cov.IsMetricCompatible g) (x : M)
+theorem riemannLowerAt_pair_symm (hT : cov.torsion = 0) (hC : cov.IsMetricCompatible g) (x : M)
     (X Y Z W : TangentSpace 𝓘(ℝ, E) x) :
     cov.riemannLowerAt g x X Y Z W = cov.riemannLowerAt g x Z W X Y := by
   have A12 : ∀ a b c d : TangentSpace 𝓘(ℝ, E) x,
       cov.riemannLowerAt g x a b c d = - cov.riemannLowerAt g x b a c d := fun a b c d => by
     unfold Connection.riemannLowerAt
     rw [curvatureAt_antisymm_left cov x a b c, map_neg]; simp
-  have A34 := riemann_antisymm_last cov g hC x
+  have A34 := riemannLowerAt_antisymm_last cov g hC x
   have B : ∀ a b c d : TangentSpace 𝓘(ℝ, E) x,
       cov.riemannLowerAt g x a b c d + cov.riemannLowerAt g x b c a d + cov.riemannLowerAt g x c a b d = 0 :=
     fun a b c d => by
@@ -319,7 +319,7 @@ section Ricci
 variable (x : M)
 
 /-- The Gram matrix of `g` in the basis `Module.finBasis`. -/
-def gram : Matrix (Fin (Module.finrank ℝ E)) (Fin (Module.finrank ℝ E)) ℝ :=
+def metricGram : Matrix (Fin (Module.finrank ℝ E)) (Fin (Module.finrank ℝ E)) ℝ :=
   Matrix.of fun i j => g.g x (Module.finBasis ℝ E i : TangentSpace 𝓘(ℝ, E) x)
     (Module.finBasis ℝ E j : TangentSpace 𝓘(ℝ, E) x)
 
@@ -327,10 +327,10 @@ def gram : Matrix (Fin (Module.finrank ℝ E)) (Fin (Module.finrank ℝ E)) ℝ 
 def tb : Module.Basis (Fin (Module.finrank ℝ E)) ℝ (TangentSpace 𝓘(ℝ, E) x) := Module.finBasis ℝ E
 
 /-- The Gram matrix of a Lorentzian metric in a basis is invertible. -/
-theorem gram_isUnit : IsUnit (gram g x).det := by
+theorem metricGram_isUnit : IsUnit (metricGram g x).det := by
   have h := (LinearMap.BilinForm.nondegenerate_iff_det_ne_zero (tb x)).mp
     (g.lorentzian x).bilinForm_nondegenerate
-  have hmat : LinearMap.BilinForm.toMatrix (tb x) (g.g x).toBilinForm = gram g x := by
+  have hmat : LinearMap.BilinForm.toMatrix (tb x) (g.g x).toBilinForm = metricGram g x := by
     ext i j
     rw [LinearMap.BilinForm.toMatrix_apply]
     rfl
@@ -339,22 +339,22 @@ theorem gram_isUnit : IsUnit (gram g x).det := by
 
 /-- The coordinates of a tangent vector are `Σ g^{ij} g(u, e_j)`. -/
 theorem coord_eq_sum (u : TangentSpace 𝓘(ℝ, E) x) (i : Fin (Module.finrank ℝ E)) :
-    (tb x).coord i u = ∑ j, (gram g x)⁻¹ i j * g.g x u (tb x j) := by
-  have hsym : (gram g x).transpose = gram g x := by
+    (tb x).coord i u = ∑ j, (metricGram g x)⁻¹ i j * g.g x u (tb x j) := by
+  have hsym : (metricGram g x).transpose = metricGram g x := by
     ext i j; exact g.symm x _ _
-  have hG := Matrix.nonsing_inv_mul _ (gram_isUnit g x)
-  have hexp : ∀ j, g.g x u (tb x j) = ∑ k, (tb x).coord k u * gram g x k j := by
+  have hG := Matrix.nonsing_inv_mul _ (metricGram_isUnit g x)
+  have hexp : ∀ j, g.g x u (tb x j) = ∑ k, (tb x).coord k u * metricGram g x k j := by
     intro j
     conv_lhs => rw [← (tb x).sum_repr u]
     simp only [map_sum, map_smul, ContinuousLinearMap.sum_apply, smul_apply, smul_eq_mul]
     refine Finset.sum_congr rfl fun k _ => ?_
-    simp [gram, Module.Basis.coord_apply]
+    simp [metricGram, Module.Basis.coord_apply]
     exact Or.inl rfl
   simp only [hexp, Finset.mul_sum]
   rw [Finset.sum_comm]
   have h2 := congrFun (congrFun hG i)
   simp only [Matrix.mul_apply, Matrix.one_apply] at h2
-  have : ∀ k, ∑ j, (gram g x)⁻¹ i j * ((tb x).coord k u * gram g x k j) = (tb x).coord k u * (if i = k then 1 else 0) := by
+  have : ∀ k, ∑ j, (metricGram g x)⁻¹ i j * ((tb x).coord k u * metricGram g x k j) = (tb x).coord k u * (if i = k then 1 else 0) := by
     intro k
     rw [← h2 k]
     rw [Finset.mul_sum]
@@ -366,14 +366,14 @@ theorem coord_eq_sum (u : TangentSpace 𝓘(ℝ, E) x) (i : Fin (Module.finrank 
   simp
 
 /-- The lowered curvature is antisymmetric in its first two slots. -/
-theorem riemannLower_antisymm_first (x : M) (a b c d : TangentSpace 𝓘(ℝ, E) x) :
+theorem riemannLowerAt_antisymm_first (x : M) (a b c d : TangentSpace 𝓘(ℝ, E) x) :
     cov.riemannLowerAt g x a b c d = - cov.riemannLowerAt g x b a c d := by
   unfold Connection.riemannLowerAt
   rw [curvatureAt_antisymm_left cov x a b c, map_neg]; simp
 
 /-- The Ricci tensor as `Σ g^{ij} R(e_i, Y, Z, e_j)`. -/
 theorem ricciAt_eq_sum (x : M) (Y Z : TangentSpace 𝓘(ℝ, E) x) :
-    cov.ricciAt x Y Z = ∑ i, ∑ j, (gram g x)⁻¹ i j *
+    cov.ricciAt x Y Z = ∑ i, ∑ j, (metricGram g x)⁻¹ i j *
       cov.riemannLowerAt g x (tb x i) Y Z (tb x j) := by
   unfold Connection.ricciAt Connection.riemannLowerAt
   refine Finset.sum_congr rfl fun i _ => ?_
@@ -382,14 +382,14 @@ theorem ricciAt_eq_sum (x : M) (Y Z : TangentSpace 𝓘(ℝ, E) x) :
 /-- **The Ricci tensor of a Levi-Civita connection is symmetric.** -/
 theorem ricciAt_symm_proved (hT : cov.torsion = 0) (hC : cov.IsMetricCompatible g) (x : M)
     (Y Z : TangentSpace 𝓘(ℝ, E) x) : cov.ricciAt x Y Z = cov.ricciAt x Z Y := by
-  have hsym : (gram g x).transpose = gram g x := by
+  have hsym : (metricGram g x).transpose = metricGram g x := by
     ext i j; exact g.symm x _ _
-  have hinv : ((gram g x)⁻¹).transpose = (gram g x)⁻¹ := by
+  have hinv : ((metricGram g x)⁻¹).transpose = (metricGram g x)⁻¹ := by
     rw [Matrix.transpose_nonsing_inv, hsym]
   have hL : ∀ i j, cov.riemannLowerAt g x (tb x i) Y Z (tb x j) =
       cov.riemannLowerAt g x (tb x j) Z Y (tb x i) := fun i j => by
-    rw [riemann_pair_symm cov g hT hC x, riemannLower_antisymm_first cov g x Z (tb x j) (tb x i) Y,
-      riemann_antisymm_last cov g hC x (tb x j) Z (tb x i) Y]
+    rw [riemannLowerAt_pair_symm cov g hT hC x, riemannLowerAt_antisymm_first cov g x Z (tb x j) (tb x i) Y,
+      riemannLowerAt_antisymm_last cov g hC x (tb x j) Z (tb x i) Y]
     ring
   rw [ricciAt_eq_sum cov g x Y Z, ricciAt_eq_sum cov g x Z Y]
   simp only [hL]

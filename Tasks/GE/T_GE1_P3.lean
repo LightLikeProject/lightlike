@@ -24,14 +24,14 @@ Definitions the statement names (without the `Lightlike.` prefix), by file:
 
 Lemmas about them, which a proof may use:
 
+* `ricciAt_eq_sum` (`Lightlike/Spacetime/CurvatureSymmetries.lean`)
 * `leviCivita_unique` (`Lightlike/Spacetime/LeviCivita.lean`)
+* `ricciAt_symm_proved` (`Lightlike/Spacetime/CurvatureSymmetries.lean`)
 * `koszul_of_isLeviCivita` (`Lightlike/Spacetime/LeviCivita.lean`)
 * `leviCivita_exists_unique_proved` (`Lightlike/Spacetime/LeviCivita.lean`)
-* `g_sharp` (`Lightlike/Spacetime/LeviCivita.lean`)
-* `hat_cov` (`Lightlike/Spacetime/ChartCurvature.lean`)
-* `g_leviOf` (`Lightlike/Spacetime/LeviCivita.lean`)
-* `g_leviAux` (`Lightlike/Spacetime/LeviCivita.lean`)
-* `gam_apply` (`Lightlike/Spacetime/ChartCurvature.lean`)
+* `compat_mv` (`Lightlike/Spacetime/CurvatureSymmetries.lean`)
+* `compat_mv'` (`Lightlike/Spacetime/CurvatureSymmetries.lean`)
+* `riemann_antisymm_aux` (`Lightlike/Spacetime/CurvatureSymmetries.lean`)
 
 Everything they depend on, and the further lemmas about them, in one block:
 
