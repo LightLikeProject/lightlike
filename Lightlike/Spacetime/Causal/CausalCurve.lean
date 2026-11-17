@@ -20,19 +20,22 @@ curve stays in the chart at `γ t` and its chart image is Lipschitz.
 * `Causal.IsCurveWith P γ s`: locally Lipschitz and `P` holds almost everywhere on the velocity.
 * `Causal.IsFutureCausalCurve`, `IsFutureTimelikeCurve`: the two cases of interest, for a time
   orientation `T`; `IsPastCausalCurve`, `IsPastTimelikeCurve`.
-* `Causal.IsInextendibleWith P`: a curve with velocity in `P` and no proper extension to a larger
-  interval.
+* `Causal.HasFutureEndpoint`, `HasPastEndpoint`, `NoEndpoints`: endpoints of a curve.
+* `Causal.IsInextendibleWith P`: a curve with velocity in `P` and no endpoint;
+  `IsInextendibleFutureTimelike`: the same for future timelike curves.
 
 ## References
 
 * E. Minguzzi, *Lorentzian causality theory*, Living Reviews in Relativity 22 (2019), Section 2
   (causal curves as locally Lipschitz curves).
+* R. M. Wald, *General Relativity*, University of Chicago Press (1984), Section 8.1
+  (inextendible curves: curves without endpoint).
 * S. W. Hawking and G. F. R. Ellis, *The Large Scale Structure of Space-Time*, Cambridge University
   Press (1973), Section 6.2.
 -/
 
 open Bundle Manifold Set MeasureTheory
-open scoped Manifold ContDiff
+open scoped Manifold ContDiff Topology
 
 noncomputable section
 
@@ -69,27 +72,71 @@ structure IsCurveWith (P : ∀ x : M, TangentSpace I x → Prop) (γ : ℝ → M
 
 variable {n : ℕ} {g : LorentzianMetric I M n} (T : TimeOrientation g)
 
-/-- A **future-directed causal curve** on the interval `s`. -/
+/-- A tangent vector is **future-directed timelike with margin `ε`** if `g(v, X) < 0` and
+`g(v, v) ≤ -ε g(v, X)²`. The set of such vectors is a closed cone strictly inside the future
+timelike cone (in Minkowski space with `X = ∂ₜ`: `|v⃗| ≤ √(1 - ε) v⁰`); every closed cone strictly
+inside the future timelike cone, near a point, lies in one of them. -/
+def TimeOrientation.IsFutureTimelikeWith (ε : ℝ) {x : M} (v : TangentSpace I x) : Prop :=
+  g.g x v v ≤ -ε * (g.g x v (T.X x)) ^ 2 ∧ g.g x v (T.X x) < 0
+
+/-- A tangent vector is **past-directed timelike with margin `ε`**: `0 < g(v, X)` and
+`g(v, v) ≤ -ε g(v, X)²`. -/
+def TimeOrientation.IsPastTimelikeWith (ε : ℝ) {x : M} (v : TangentSpace I x) : Prop :=
+  g.g x v v ≤ -ε * (g.g x v (T.X x)) ^ 2 ∧ 0 < g.g x v (T.X x)
+
+/-- **Future-directed causal curve** on the interval `s`. -/
 def IsFutureCausalCurve (γ : ℝ → M) (s : Set ℝ) : Prop :=
   IsCurveWith (I := I) (fun _ v ↦ T.IsFutureCausal v) γ s
 
-/-- A **future-directed timelike curve** on the interval `s`. -/
+/-- A **future-directed timelike curve** on the interval `s`: a curve with future-directed timelike
+velocity almost everywhere, with a *margin* on every compact subinterval: on `[a, b] ⊆ s` there is
+`ε > 0` with `g(γ', γ') ≤ -ε g(γ', X)²` almost everywhere, i.e. the velocity stays in a closed
+cone strictly inside the future timelike cone.
+
+**Difference of form from the textbooks** (Hawking–Ellis, Section 6.2; Wald, Section 8.1), who ask
+only for a timelike velocity: the margin is an added hypothesis. For the curve classes of the
+textbooks (piecewise `C¹`) it holds (`isFutureTimelikeCurve_of_contMDiffOn`). It is approved by the
+project owner on 17 November 2026. Whether the two definitions give the same `I⁺` for smooth
+metrics is open (task T-GE2-OPEN-MARGIN), not claimed. -/
 def IsFutureTimelikeCurve (γ : ℝ → M) (s : Set ℝ) : Prop :=
-  IsCurveWith (I := I) (fun _ v ↦ T.IsFutureTimelike v) γ s
+  IsCurveWith (I := I) (fun _ v ↦ T.IsFutureTimelike v) γ s ∧
+    ∀ a b : ℝ, a < b → Icc a b ⊆ s →
+      ∃ ε : ℝ, 0 < ε ∧ IsCurveWith (I := I) (fun _ v ↦ T.IsFutureTimelikeWith ε v) γ (Icc a b)
 
 /-- A **past-directed causal curve** on the interval `s`. -/
 def IsPastCausalCurve (γ : ℝ → M) (s : Set ℝ) : Prop :=
   IsCurveWith (I := I) (fun _ v ↦ T.IsPastCausal v) γ s
 
-/-- A **past-directed timelike curve** on the interval `s`. -/
+/-- A **past-directed timelike curve** on the interval `s`, with a margin on compact
+subintervals as for `IsFutureTimelikeCurve`. -/
 def IsPastTimelikeCurve (γ : ℝ → M) (s : Set ℝ) : Prop :=
-  IsCurveWith (I := I) (fun _ v ↦ T.IsPastTimelike v) γ s
+  IsCurveWith (I := I) (fun _ v ↦ T.IsPastTimelike v) γ s ∧
+    ∀ a b : ℝ, a < b → Icc a b ⊆ s →
+      ∃ ε : ℝ, 0 < ε ∧ IsCurveWith (I := I) (fun _ v ↦ T.IsPastTimelikeWith ε v) γ (Icc a b)
 
-/-- A curve with velocity in `P` is **inextendible** if no curve with velocity in `P` agrees with it
-on `s` and has a strictly larger interval domain. -/
+/-- `p` is a **future endpoint** of `γ` on `s`: `s` is bounded above and `γ t → p` as `t` tends to
+the supremum of `s` within `s` (if the supremum belongs to `s`, the curve has a last point). -/
+def HasFutureEndpoint (γ : ℝ → M) (s : Set ℝ) (p : M) : Prop :=
+  BddAbove s ∧ Filter.Tendsto γ (𝓝[s] (sSup s)) (𝓝 p)
+
+/-- `p` is a **past endpoint** of `γ` on `s`: `s` is bounded below and `γ t → p` as `t` tends to
+the infimum of `s` within `s`. -/
+def HasPastEndpoint (γ : ℝ → M) (s : Set ℝ) (p : M) : Prop :=
+  BddBelow s ∧ Filter.Tendsto γ (𝓝[s] (sInf s)) (𝓝 p)
+
+/-- A curve has **no endpoint** if it has neither a future nor a past endpoint. -/
+def NoEndpoints (γ : ℝ → M) (s : Set ℝ) : Prop :=
+  (∀ p, ¬ HasFutureEndpoint γ s p) ∧ ∀ p, ¬ HasPastEndpoint γ s p
+
+/-- A curve with velocity in `P` is **inextendible** if it has neither a future nor a past
+endpoint (Wald, Section 8.1; Hawking–Ellis, Section 6.2: a causal curve is inextendible if it has
+no endpoint). -/
 def IsInextendibleWith (P : ∀ x : M, TangentSpace I x → Prop) (γ : ℝ → M) (s : Set ℝ) : Prop :=
-  IsCurveWith (I := I) P γ s ∧
-    ∀ (γ' : ℝ → M) (s' : Set ℝ), s ⊆ s' → IsCurveWith (I := I) P γ' s' → EqOn γ γ' s → s' = s
+  IsCurveWith (I := I) P γ s ∧ NoEndpoints γ s
+
+/-- An **inextendible future-directed timelike curve**. -/
+def IsInextendibleFutureTimelike (γ : ℝ → M) (s : Set ℝ) : Prop :=
+  IsFutureTimelikeCurve T γ s ∧ NoEndpoints γ s
 
 end Causal
 

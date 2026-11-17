@@ -1,4 +1,5 @@
 import Lightlike.Spacetime.Causal.BasicRelations
+import Lightlike.Spacetime.Causal.CurveMargin
 import Lightlike.Spacetime.Causal.MinkowskiGH
 import Lightlike.Spacetime.Causal.SmoothOrientation
 import Lightlike.Spacetime.Causal.TestsMinkowski
@@ -86,5 +87,33 @@ example : ∃ X' : (x : Fin (d + 1) → ℝ) → TangentSpace 𝓘(ℝ, Fin (d +
     ∀ x, (minkowskiMetric (d + 1)).g x (X' x) (X' x) < 0 ∧
       (minkowskiMetric (d + 1)).g x (X' x) ((minkowskiOrientation d).X x) < 0 :=
   exists_smooth_field (minkowskiOrientation d)
+
+/-- Trust check of the margin: a future-directed null vector (`g(v, v) = 0`, `g(v, X) < 0`) has no
+positive margin, so it is not future-directed timelike with any `ε > 0`. -/
+example {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {H : Type*} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I ∞ M] {n : ℕ} {g : LorentzianMetric I M n} (T : TimeOrientation g) {x : M}
+    (v : TangentSpace I x) (hv : g.g x v v = 0) {ε : ℝ} (hε : 0 < ε) :
+    ¬ T.IsFutureTimelikeWith ε v := fun h => by
+  have := (T.isFutureTimelike_of_with hε h).1
+  linarith
+
+/-- Trust check of the endpoint definition (the textbook one): a curve that is continuous on a
+closed interval `[a, b]` has the future endpoint `γ b`, so it is extendible, hence not
+inextendible. -/
+example {M : Type*} [TopologicalSpace M]
+    {γ : ℝ → M} {a b : ℝ} (hab : a ≤ b) (hγ : ContinuousOn γ (Set.Icc a b)) :
+    HasFutureEndpoint γ (Set.Icc a b) (γ b) := by
+  refine ⟨bddAbove_Icc, ?_⟩
+  rw [csSup_Icc hab]
+  exact hγ b ⟨hab, le_rfl⟩
+
+/-- Non-vacuity of the bridge: the Minkowski line has the margin on `[0, 1]`. -/
+example (v : Fin (d + 1) → ℝ)
+    (hv : minkowskiForm (d + 1) v v < 0 ∧ minkowskiForm (d + 1) v (Pi.single 0 1) < 0) :
+    ∃ ε : ℝ, 0 < ε ∧ IsCurveWith (I := 𝓘(ℝ, Fin (d + 1) → ℝ))
+      (fun _ w ↦ (minkowskiOrientation d).IsFutureTimelikeWith ε w)
+      (fun t : ℝ => (0 : Fin (d + 1) → ℝ) + t • v) (Set.Icc 0 1) :=
+  (isFutureTimelikeCurve_line 0 v zero_lt_one hv).2 0 1 zero_lt_one subset_rfl
 
 end Lightlike.Causal

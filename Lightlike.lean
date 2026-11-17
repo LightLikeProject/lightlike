@@ -599,6 +599,7 @@ import Lightlike.SU2.SpinRep
 import Lightlike.SU2.Su2Exp
 import Lightlike.Spacetime.Causal.BasicRelations
 import Lightlike.Spacetime.Causal.CausalCurve
+import Lightlike.Spacetime.Causal.CurveMargin
 import Lightlike.Spacetime.Causal.CurveOps
 import Lightlike.Spacetime.Causal.ConeConvex
 import Lightlike.Spacetime.Causal.DomainOfDependence
