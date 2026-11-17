@@ -14,8 +14,8 @@ namespace Lightlike.OperatorAlgebras.UnitaryGroup
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-/-- Equal partial operators agree on equal vectors (whatever the membership proofs). -/
 omit [CompleteSpace H] in
+/-- Equal partial operators agree on equal vectors (whatever the membership proofs). -/
 lemma pmap_apply_congr {B C : H →ₗ.[ℂ] H} (h : B = C) (x : H) (hx : x ∈ B.domain)
     (hx' : x ∈ C.domain) : B ⟨x, hx⟩ = C ⟨x, hx'⟩ := by
   subst h; rfl
