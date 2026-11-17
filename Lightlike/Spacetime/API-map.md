@@ -83,7 +83,7 @@ than one who stays at rest [6].
 15. Lightlike/Spacetime/ChartAgreement.lean - `riemann_coord_comp`, `ricciAt_coord`, `scalarCurvatureAt_coord`,
    `satisfiesEinstein_iff_chart_proved`
 16. Lightlike/Spacetime/BianchiSecond.lean - `bianchi_second_proved`
-17. Lightlike/Spacetime/ChartTensor.lean - `covDerivBilinAt_bilOf`, `covDerivBilinAt_einstein`: the covariant derivative of a bilinear field in chart components (tensorial); smoothness of the coordinate Riemann, Ricci, scalar and Einstein tensors. Step 1 for `T-GE1-P8`.
+17. Lightlike/Spacetime/ChartTensor.lean - `covDerivBilinAt_bilOf`, `covDerivBilinAt_einstein`: the covariant derivative of a bilinear field in chart components (tensorial); smoothness of the coordinate Riemann, Ricci, scalar and Einstein tensors. Step 1 for the task T-GE1-P8.
 
 ## References
 
