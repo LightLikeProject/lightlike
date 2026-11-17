@@ -1,4 +1,4 @@
-import Lightlike.Canonical.HamiltonianBracket
+import Lightlike.Canonical.MomentumBracket
 
 /-!
 # Task T-CA1-P1
@@ -48,6 +48,6 @@ theorem bracket_momentum_hamiltonian {d : ℕ} {ξ : VectorField d} {N : (Fin d 
     admBracket (momentumConstraint ξ) (hamiltonianConstraint N) (fun h _ => lieTensor ξ h)
         (hamiltonianPiGradient N) h π =
       hamiltonianConstraint (fun x => ∑ k, ξ x k * Lightlike.pd k N x) h π := by
-  exact admBracket_momentum_hamiltonian hξ hξc hN hNc hh hpos hπ hπs
+  sorry
 
 end Lightlike.Canonical
