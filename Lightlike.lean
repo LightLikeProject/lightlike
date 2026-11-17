@@ -173,6 +173,10 @@ import Lightlike.Lorentz.SpinVectors
 import Lightlike.Lorentz.StarBound
 import Lightlike.Lorentz.Tests
 import Lightlike.Lorentz.WeightedComp
+import Lightlike.OperatorAlgebras.TestsUnitaryGroup
+import Lightlike.OperatorAlgebras.TestsWeyl
+import Lightlike.OperatorAlgebras.UnitaryGroup
+import Lightlike.OperatorAlgebras.Weyl
 import Lightlike.Oscillatory.Flat
 import Lightlike.Oscillatory.GaussFourier
 import Lightlike.Oscillatory.GaussFourierTests
