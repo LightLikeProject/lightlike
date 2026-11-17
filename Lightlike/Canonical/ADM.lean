@@ -61,7 +61,7 @@ def lieBracket (ξ η : VectorField d) (x : Fin d → ℝ) (k : Fin d) : ℝ :=
 /-- The momentum constraint density of the smearing `ξ`: `π^{ij} (ℒ_ξ h)_ij`; its integral is
 `∫ ξ^i R_i` with the ADM 1962 eq. (3.14b) `R_i = −2 π^{ij}{}_{|j}`, after an integration by parts.
 
-**Differences from the cited sources, for the owner's approval** (the comparison with ADM 1962 eqs. (3.14a),
+**Differences from the cited sources, for a maintainer's approval** (the comparison with ADM 1962 eqs. (3.14a),
 (3.14b) was done at that location; the comparison of the brackets with Hojman-Kuchar-Teitelboim 1976 or
 Thiemann 2007 is pending, neither has been read): (a) `C^∞` data and compactly supported test fields
 (`π` only continuous for `{D, D}`); (b) one global chart `ℝᵈ`, no manifold and no foliation; (c) units
@@ -93,7 +93,7 @@ def hamiltonianPiGradient (N : (Fin d → ℝ) → ℝ) (h π : TensorField d) :
 spatial scalar curvature `R` of `Lightlike.scalarCurvature` (units `16πG = 1`). For `d = 3` this is ADM 1962 eq.
 (3.14a), `R⁰ = −√g [³R + g⁻¹(½π² − π^{ij}π_ij)]`.
 
-**Differences from the cited sources, for the owner's approval** (the comparison with ADM 1962 eqs. (3.14a),
+**Differences from the cited sources, for a maintainer's approval** (the comparison with ADM 1962 eqs. (3.14a),
 (3.14b) was done at that location; the comparison of the brackets with Hojman-Kuchar-Teitelboim 1976 or
 Thiemann 2007 is pending, neither has been read): (a) `C^∞` data and compactly supported test fields
 (`π` only continuous for `{D, D}`); (b) one global chart `ℝᵈ`, no manifold and no foliation; (c) units
@@ -149,7 +149,7 @@ def IsPiGradient (F : TensorField d → TensorField d → ℝ) (Fπ : TensorFiel
 /-- The bracket of two functionals of `(h, π)` with `π`-gradients `Fπ`, `Gπ`:
 `{F,G} = dF[(δG/δπ, 0)] − dG[(δF/δπ, 0)]`, the field-theoretic `∫ (δF/δh δG/δπ − δF/δπ δG/δh)`.
 
-**Differences from the cited sources, for the owner's approval** (the comparison with ADM 1962 eqs. (3.14a),
+**Differences from the cited sources, for a maintainer's approval** (the comparison with ADM 1962 eqs. (3.14a),
 (3.14b) was done at that location; the comparison of the brackets with Hojman-Kuchar-Teitelboim 1976 or
 Thiemann 2007 is pending, neither has been read): (a) `C^∞` data and compactly supported test fields
 (`π` only continuous for `{D, D}`); (b) one global chart `ℝᵈ`, no manifold and no foliation; (c) units
