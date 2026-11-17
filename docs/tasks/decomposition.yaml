@@ -177,6 +177,36 @@ tasks:
     difficulty: research-level
     routes:
       - T-GE1-P5 and its Ricci version in a chart; the `IsCoordMetric` part is `LorentzianMetric.isCoordMetric_coordMetric`.
+  - id: T-GE1-P7
+    milestone: GE1
+    kind: proof
+    title: The second Bianchi identity of a Levi-Civita connection
+    file: Tasks/GE/T_GE1_P7.lean
+    decl: Lightlike.bianchi_second
+    size: L
+    difficulty: research-level
+    routes:
+      - Torsion-freeness and the Jacobi identity: evaluate the cyclic sum on extensions of the vectors with vanishing brackets at the point (coordinate fields of a chart), where it reduces to the Jacobi identity for the covariant derivatives.
+  - id: T-GE1-P8
+    milestone: GE1
+    kind: proof
+    title: The Einstein tensor of a Levi-Civita connection is divergence free
+    file: Tasks/GE/T_GE1_P8.lean
+    decl: Lightlike.einstein_divergence_free
+    size: L
+    difficulty: research-level
+    routes:
+      - Contract the second Bianchi identity (T-GE1-P7) twice, using the symmetries of the curvature (T-GE1-P4) and metric compatibility.
+  - id: T-GE1-P9
+    milestone: GE1
+    kind: proof
+    title: Minkowski space solves the Einstein equations on the manifold
+    file: Tasks/GE/T_GE1_P9.lean
+    decl: Lightlike.minkowski_satisfiesEinstein
+    size: L
+    difficulty: research-level
+    routes:
+      - The connection is the trivial one, `∇_v Y = Dy(v)`: it is torsion free, compatible with the constant metric, and its curvature vanishes.
 
 # Upstream tasks: finished results that belong in Mathlib (general mathematics) or Physlib
 # (general physics), with the rework each needs. Exclusive, like definition

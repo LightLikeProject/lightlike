@@ -28,9 +28,9 @@ The curvature of a manifold-level metric as a tensor field is defined in `Connec
 covariant derivative on the tangent bundle; the Riemann curvature is `R(X, Y) Z = ∇_X ∇_Y Z - ∇_Y ∇_X Z - ∇_{[X,Y]} Z`
 (the sign convention of Mathlib pull request 45069), the Ricci tensor is its trace over the first slot, the scalar
 curvature its trace with the metric, the Levi-Civita connection is the torsion-free connection compatible with `g`, and the Einstein
-equations with cosmological constant are `Ric - (S/2) g + Λ g = 0` [7]. These are definitions only: the existence and
+equations with cosmological constant are `Ric - (S/2) g + Λ g = 0` [7]; the covariant derivative of the curvature and of a field of bilinear forms, the divergence and the Einstein tensor `Ric - (S/2) g` are defined there too [7]. These are definitions only: the existence and
 uniqueness of the Levi-Civita connection, the independence of the curvature from the extensions, its symmetries, and the
-agreement with the coordinate curvature of [1] in every chart are stated as proof tasks `T-GE1-P1` to `T-GE1-P6`
+agreement with the coordinate curvature of [1] in every chart are stated as proof tasks `T-GE1-P1` to `T-GE1-P9` (including the second and contracted Bianchi identities and Minkowski space as a solution)
 (`Tasks/GE/`), with open proofs. [TODO]
 
 In Minkowski space, an observer who travels out and back along two straight segments ages less
@@ -49,7 +49,8 @@ than one who stays at rest [6].
 6. Lightlike/Spacetime/Minkowski.lean - `twin_paradox`
 7. Lightlike/Spacetime/Connection.lean - `Connection`, `Connection.curvatureAt`, `Connection.riemannLowerAt`,
    `Connection.ricciAt`, `Connection.scalarCurvatureAt`, `Connection.IsMetricCompatible`,
-   `Connection.IsLeviCivita`, `LorentzianMetric.SatisfiesEinstein`
+   `Connection.IsLeviCivita`, `Connection.covDerivCurvatureAt`, `Connection.covDerivBilinAt`,
+   `Connection.divBilinAt`, `Connection.einsteinField`, `LorentzianMetric.SatisfiesEinstein`
 
 ## References
 

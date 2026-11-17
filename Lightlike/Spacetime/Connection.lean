@@ -108,6 +108,34 @@ def IsMetricCompatible {n : ℕ} (g : LorentzianMetric I M n) : Prop :=
 def IsLeviCivita {n : ℕ} (g : LorentzianMetric I M n) : Prop :=
   cov.torsion = 0 ∧ cov.IsMetricCompatible g
 
+/-- The covariant derivative `(∇_X R)(Y, Z) W` of the curvature at `x`, with the Leibniz rule applied to
+the four slots (extensions as in `curvatureAt`). -/
+def covDerivCurvatureAt (x : M) (X₀ Y₀ Z₀ W₀ : TangentSpace I x) : TangentSpace I x :=
+  cov (fun y => cov.curvatureAt y (extend E Y₀ y) (extend E Z₀ y) (extend E W₀ y)) x X₀
+    - cov.curvatureAt x (cov (extend E Y₀) x X₀) Z₀ W₀
+    - cov.curvatureAt x Y₀ (cov (extend E Z₀) x X₀) W₀
+    - cov.curvatureAt x Y₀ Z₀ (cov (extend E W₀) x X₀)
+
+/-- The covariant derivative `(∇_X T)(v, w) = X(T(v, w)) - T(∇_X v, w) - T(v, ∇_X w)` of a field of
+bilinear forms `T` at `x`. -/
+def covDerivBilinAt (T : Π x : M, TangentSpace I x → TangentSpace I x → ℝ) (x : M)
+    (X₀ v₀ w₀ : TangentSpace I x) : ℝ :=
+  (show ℝ from mfderiv I 𝓘(ℝ) (fun y => T y (extend E v₀ y) (extend E w₀ y)) x X₀)
+    - T x (cov (extend E v₀) x X₀) w₀ - T x v₀ (cov (extend E w₀) x X₀)
+
+/-- The divergence `(div T)(w) = g^{ij} (∇_i T)(e_j, w)` of a field of bilinear forms for the metric
+`g`, in a basis `e` of the tangent space with the inverse of its Gram matrix. -/
+def divBilinAt {n : ℕ} (g : LorentzianMetric I M n)
+    (T : Π x : M, TangentSpace I x → TangentSpace I x → ℝ) (x : M) (w₀ : TangentSpace I x) : ℝ :=
+  let b := Module.finBasis ℝ E
+  let G : Matrix _ _ ℝ := Matrix.of fun i j => g.g x (b i : TangentSpace I x) (b j : TangentSpace I x)
+  ∑ i, ∑ j, G⁻¹ i j * cov.covDerivBilinAt T x (b i : TangentSpace I x) (b j : TangentSpace I x) w₀
+
+/-- The **Einstein tensor** `G = Ric - (S/2) g` as a field of bilinear forms. -/
+def einsteinField {n : ℕ} (g : LorentzianMetric I M n) :
+    Π x : M, TangentSpace I x → TangentSpace I x → ℝ :=
+  fun x v w => cov.ricciAt x v w - cov.scalarCurvatureAt g x / 2 * g.g x v w
+
 end Connection
 
 namespace LorentzianMetric
