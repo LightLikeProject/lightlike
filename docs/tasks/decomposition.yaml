@@ -126,7 +126,7 @@ tasks:
     size: L
     difficulty: research-level
     routes:
-      - See the hint in the header of the file.
+      - Koszul formula as in Mathlib's `CovariantDerivative.leviCivitaConnection` (Riemannian case): it needs only non-degeneracy of `g`; use the musical isomorphism `LinearMap.BilinForm.toDual` (nondegenerate by `IsLorentzianForm.bilinForm_nondegenerate`). Uniqueness is on differentiable fields, as in Mathlib.
   - id: T-GE1-P2
     milestone: GE1
     kind: proof
@@ -136,7 +136,7 @@ tasks:
     size: L
     difficulty: research-level
     routes:
-      - See the hint in the header of the file.
+      - Tensoriality of `(X, Y, Z) ↦ ∇_X ∇_Y Z - ∇_Y ∇_X Z - ∇_{[X,Y]} Z` in each slot, as `torsion_apply` in Mathlib's `CovariantDerivative/Torsion.lean`, with `TensorialAt.mkHom`.
   - id: T-GE1-P3
     milestone: GE1
     kind: proof
@@ -146,7 +146,7 @@ tasks:
     size: L
     difficulty: research-level
     routes:
-      - See the hint in the header of the file.
+      - First Bianchi identity and the pair symmetry of the lowered curvature (T-GE1-P4), then trace.
   - id: T-GE1-P4
     milestone: GE1
     kind: proof
@@ -156,7 +156,7 @@ tasks:
     size: L
     difficulty: research-level
     routes:
-      - See the hint in the header of the file.
+      - Torsion-freeness gives the first identity (Jacobi identity of the Lie bracket); metric compatibility gives antisymmetry in the last pair; the pair symmetry follows by the usual four-term argument.
   - id: T-GE1-P5
     milestone: GE1
     kind: proof
@@ -166,7 +166,7 @@ tasks:
     size: L
     difficulty: research-level
     routes:
-      - See the hint in the header of the file.
+      - In a chart the coordinate fields have vanishing brackets and `∇_{∂ᵢ} ∂ⱼ = Γᵏᵢⱼ ∂ₖ` (Koszul formula); the coordinate formula of `Curvature.lean` is then the trace of `curvatureAt`. This fixes the sign convention of the two definitions.
   - id: T-GE1-P6
     milestone: GE1
     kind: proof
@@ -176,7 +176,7 @@ tasks:
     size: L
     difficulty: research-level
     routes:
-      - See the hint in the header of the file.
+      - T-GE1-P5 and its Ricci version in a chart; the `IsCoordMetric` part is `LorentzianMetric.isCoordMetric_coordMetric`.
 
 # Upstream tasks: finished results that belong in Mathlib (general mathematics) or Physlib
 # (general physics), with the rework each needs. Exclusive, like definition

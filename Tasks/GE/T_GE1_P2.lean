@@ -6,17 +6,20 @@ import Lightlike.GR.Einstein
 
 The curvature tensor is computed by any smooth extensions.
 
-The statement is `Lightlike.curvatureAt_apply`, at the end of this file. Replace its
-`sorry` by a proof and change nothing else in the file: the proof-task check rejects any other
-change (CONTRIBUTING.md).
+The statement is `Lightlike.curvatureAt_apply`, at the end of this file. Replace its `sorry` by a
+proof and change nothing else in the file: the proof-task check rejects any other change
+(CONTRIBUTING.md).
 
-Hint. Tensoriality of `(X, Y, Z) ↦ ∇_X ∇_Y Z - ∇_Y ∇_X Z - ∇_{[X,Y]} Z` in each slot, as `torsion_apply` in Mathlib's `CovariantDerivative/Torsion.lean`, with `TensorialAt.mkHom`.
+Hint. Tensoriality of `(X, Y, Z) ↦ ∇_X ∇_Y Z - ∇_Y ∇_X Z - ∇_{[X,Y]} Z` in each slot, as
+`torsion_apply` in Mathlib's `CovariantDerivative/Torsion.lean`, with `TensorialAt.mkHom`.
+
+Partial results, as helper lemmas in separate pull requests, are welcome.
 
 ## What the statement uses
 
 Definitions the statement names (without the `Lightlike.` prefix), by file:
 
-* Lightlike/Spacetime/Connection.lean: `Connection.curvatureAt`
+* `Lightlike/Spacetime/Connection.lean`: `Connection`, `Connection.curvatureAt`
 
 Everything they depend on, and the further lemmas about them, in one block:
 
@@ -24,10 +27,12 @@ Everything they depend on, and the further lemmas about them, in one block:
 
 ## References
 
-Milestone GE1 (smooth curvature from connections), ROADMAP section "Lorentzian and Riemannian geometry".
-Structural: statement of the manifold-level theory of `Lightlike/Spacetime/Connection.lean`; the
-conventions are those of Mathlib pull request 45069 for the curvature sign and signature `(-,+,…,+)`.
-Reference for the content: Wald, General Relativity (1984), eq. (3.2.11); not yet a verified location in docs/tasks/sources.yaml.
+Milestone GE1 (Smooth curvature from connections), ROADMAP section "Lorentzian and Riemannian
+geometry".
+Source: S. M. Carroll, Lecture Notes on General Relativity (1997), Chapter 3 (`carroll-1997` in
+docs/tasks/sources.yaml).
+Lock and dependencies: `docs/tasks/tasks.yaml`. This header is written by `scripts/tasks.py deps`
+from the plan, the sources and the library.
 -/
 
 open Bundle Manifold Set VectorField NormedSpace FiberBundle

@@ -6,17 +6,34 @@ import Lightlike.GR.Einstein
 
 Existence and uniqueness of the Levi-Civita connection of a Lorentzian metric.
 
-The statement is `Lightlike.leviCivita_exists_unique`, at the end of this file. Replace its
-`sorry` by a proof and change nothing else in the file: the proof-task check rejects any other
-change (CONTRIBUTING.md).
+The statement is `Lightlike.leviCivita_exists_unique`, at the end of this file. Replace its `sorry`
+by a proof and change nothing else in the file: the proof-task check rejects any other change
+(CONTRIBUTING.md).
 
-Hint. Koszul formula as in Mathlib's `CovariantDerivative.leviCivitaConnection` (Riemannian case, `Mathlib/Geometry/Manifold/VectorBundle/CovariantDerivative/LeviCivita.lean`): the formula needs only non-degeneracy of `g`, not positivity; use the musical isomorphism of `LinearMap.BilinForm.toDual` (nondegenerate by `IsLorentzianForm.bilinForm_nondegenerate`). Uniqueness is on differentiable fields, as in Mathlib.
+Hint. {"Koszul formula as in Mathlib's `CovariantDerivative.leviCivitaConnection` (Riemannian
+case)": 'it needs only non-degeneracy of `g`; use the musical isomorphism
+`LinearMap.BilinForm.toDual` (nondegenerate by `IsLorentzianForm.bilinForm_nondegenerate`).
+Uniqueness is on differentiable fields, as in Mathlib.'}
+
+Partial results, as helper lemmas in separate pull requests, are welcome.
 
 ## What the statement uses
 
 Definitions the statement names (without the `Lightlike.` prefix), by file:
 
-* Lightlike/Spacetime/Connection.lean: `Connection`, `Connection.IsLeviCivita`
+* `Lightlike/Spacetime/Lorentzian.lean`: `LorentzianMetric`
+* `Lightlike/Spacetime/Connection.lean`: `Connection`, `Connection.IsLeviCivita`
+
+Lemmas about them, which a proof may use:
+
+* `LorentzianMetric.symm` (`Lightlike/Spacetime/Lorentzian.lean`)
+* `LorentzianMetric.mk.inj` (`Lightlike/Spacetime/Lorentzian.lean`)
+* `LorentzianMetric.mk.injEq` (`Lightlike/Spacetime/Lorentzian.lean`)
+* `LorentzianMetric.contMDiff` (`Lightlike/Spacetime/Lorentzian.lean`)
+* `LorentzianMetric.lorentzian` (`Lightlike/Spacetime/Lorentzian.lean`)
+* `LorentzianMetric.nondegenerate` (`Lightlike/Spacetime/Lorentzian.lean`)
+* `LorentzianMetric.mk.sizeOf_spec` (`Lightlike/Spacetime/Lorentzian.lean`)
+* `LorentzianMetric.coordMetric_eq` (`Lightlike/Spacetime/Coordinates.lean`)
 
 Everything they depend on, and the further lemmas about them, in one block:
 
@@ -24,10 +41,12 @@ Everything they depend on, and the further lemmas about them, in one block:
 
 ## References
 
-Milestone GE1 (smooth curvature from connections), ROADMAP section "Lorentzian and Riemannian geometry".
-Structural: statement of the manifold-level theory of `Lightlike/Spacetime/Connection.lean`; the
-conventions are those of Mathlib pull request 45069 for the curvature sign and signature `(-,+,…,+)`.
-Reference for the content: O'Neill, Semi-Riemannian Geometry (1983), Theorem 3.11 (the fundamental theorem); not yet a verified location in docs/tasks/sources.yaml.
+Milestone GE1 (Smooth curvature from connections), ROADMAP section "Lorentzian and Riemannian
+geometry".
+Source: S. M. Carroll, Lecture Notes on General Relativity (1997), Chapter 3 (`carroll-1997` in
+docs/tasks/sources.yaml).
+Lock and dependencies: `docs/tasks/tasks.yaml`. This header is written by `scripts/tasks.py deps`
+from the plan, the sources and the library.
 -/
 
 open Bundle Manifold Set VectorField NormedSpace FiberBundle

@@ -10,13 +10,30 @@ The statement is `Lightlike.bianchi_first_and_pair_symm`, at the end of this fil
 `sorry` by a proof and change nothing else in the file: the proof-task check rejects any other
 change (CONTRIBUTING.md).
 
-Hint. Torsion-freeness gives the first identity (Jacobi identity of the Lie bracket); metric compatibility gives antisymmetry in the last pair, and the pair symmetry follows by the usual four-term argument.
+Hint. Torsion-freeness gives the first identity (Jacobi identity of the Lie bracket); metric
+compatibility gives antisymmetry in the last pair; the pair symmetry follows by the usual four-term
+argument.
+
+Partial results, as helper lemmas in separate pull requests, are welcome.
 
 ## What the statement uses
 
 Definitions the statement names (without the `Lightlike.` prefix), by file:
 
-* Lightlike/Spacetime/Connection.lean: `Connection.curvatureAt`, `Connection.riemannLowerAt`, `Connection.IsLeviCivita`
+* `Lightlike/Spacetime/Lorentzian.lean`: `LorentzianMetric`
+* `Lightlike/Spacetime/Connection.lean`: `Connection`, `Connection.IsLeviCivita`,
+  `Connection.curvatureAt`, `Connection.riemannLowerAt`
+
+Lemmas about them, which a proof may use:
+
+* `LorentzianMetric.symm` (`Lightlike/Spacetime/Lorentzian.lean`)
+* `LorentzianMetric.mk.inj` (`Lightlike/Spacetime/Lorentzian.lean`)
+* `LorentzianMetric.mk.injEq` (`Lightlike/Spacetime/Lorentzian.lean`)
+* `LorentzianMetric.contMDiff` (`Lightlike/Spacetime/Lorentzian.lean`)
+* `LorentzianMetric.lorentzian` (`Lightlike/Spacetime/Lorentzian.lean`)
+* `LorentzianMetric.nondegenerate` (`Lightlike/Spacetime/Lorentzian.lean`)
+* `LorentzianMetric.mk.sizeOf_spec` (`Lightlike/Spacetime/Lorentzian.lean`)
+* `LorentzianMetric.coordMetric_eq` (`Lightlike/Spacetime/Coordinates.lean`)
 
 Everything they depend on, and the further lemmas about them, in one block:
 
@@ -24,10 +41,12 @@ Everything they depend on, and the further lemmas about them, in one block:
 
 ## References
 
-Milestone GE1 (smooth curvature from connections), ROADMAP section "Lorentzian and Riemannian geometry".
-Structural: statement of the manifold-level theory of `Lightlike/Spacetime/Connection.lean`; the
-conventions are those of Mathlib pull request 45069 for the curvature sign and signature `(-,+,…,+)`.
-Reference for the content: Wald, General Relativity (1984), Section 3.2; not yet a verified location in docs/tasks/sources.yaml.
+Milestone GE1 (Smooth curvature from connections), ROADMAP section "Lorentzian and Riemannian
+geometry".
+Source: S. M. Carroll, Lecture Notes on General Relativity (1997), Chapter 3 (`carroll-1997` in
+docs/tasks/sources.yaml).
+Lock and dependencies: `docs/tasks/tasks.yaml`. This header is written by `scripts/tasks.py deps`
+from the plan, the sources and the library.
 -/
 
 open Bundle Manifold Set VectorField NormedSpace FiberBundle

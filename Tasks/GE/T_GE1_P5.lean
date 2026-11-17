@@ -6,17 +6,35 @@ import Lightlike.GR.Einstein
 
 The intrinsic scalar curvature is the coordinate scalar curvature in every chart.
 
-The statement is `Lightlike.scalarCurvatureAt_chart`, at the end of this file. Replace its
-`sorry` by a proof and change nothing else in the file: the proof-task check rejects any other
-change (CONTRIBUTING.md).
+The statement is `Lightlike.scalarCurvatureAt_chart`, at the end of this file. Replace its `sorry`
+by a proof and change nothing else in the file: the proof-task check rejects any other change
+(CONTRIBUTING.md).
 
-Hint. In the chart the coordinate vector fields `∂ᵢ` have vanishing brackets and `∇_{∂ᵢ} ∂ⱼ = Γᵏᵢⱼ ∂ₖ` for the Levi-Civita connection (Koszul formula); then the coordinate formula of `Curvature.lean` is the trace of `curvatureAt`. Fixes the sign convention of the two definitions.
+Hint. In a chart the coordinate fields have vanishing brackets and `∇_{∂ᵢ} ∂ⱼ = Γᵏᵢⱼ ∂ₖ` (Koszul
+formula); the coordinate formula of `Curvature.lean` is then the trace of `curvatureAt`. This fixes
+the sign convention of the two definitions.
+
+Partial results, as helper lemmas in separate pull requests, are welcome.
 
 ## What the statement uses
 
 Definitions the statement names (without the `Lightlike.` prefix), by file:
 
-* Lightlike/Spacetime/Connection.lean: `Connection.scalarCurvatureAt`; Lightlike/Spacetime/Curvature.lean: `scalarCurvature`; Lightlike/Spacetime/Coordinates.lean: `LorentzianMetric.coordMetric`
+* `Lightlike/Spacetime/Lorentzian.lean`: `LorentzianMetric`
+* `Lightlike/Spacetime/Connection.lean`: `Connection`, `Connection.IsLeviCivita`,
+  `Connection.scalarCurvatureAt`
+* `Lightlike/Spacetime/Curvature.lean`: `scalarCurvature`, `LorentzianMetric.coordMetric`
+
+Lemmas about them, which a proof may use:
+
+* `LorentzianMetric.coordMetric_eq` (`Lightlike/Spacetime/Coordinates.lean`)
+* `LorentzianMetric.coordMetric_smooth` (`Lightlike/Spacetime/Coordinates.lean`)
+* `LorentzianMetric.coordMetric_congr_eta` (`Lightlike/Spacetime/Coordinates.lean`)
+* `LorentzianMetric.coordMetric_transpose` (`Lightlike/Spacetime/Coordinates.lean`)
+* `LorentzianMetric.coordMetric_isUnit_det` (`Lightlike/Spacetime/Coordinates.lean`)
+* `LorentzianMetric.isCoordMetric_coordMetric` (`Lightlike/Spacetime/Coordinates.lean`)
+* `LorentzianMetric.isLorentzianCoordMetric_coordMetric` (`Lightlike/Spacetime/Coordinates.lean`)
+* `minkowski_flat` (`Lightlike/Spacetime/Curvature.lean`)
 
 Everything they depend on, and the further lemmas about them, in one block:
 
@@ -24,10 +42,12 @@ Everything they depend on, and the further lemmas about them, in one block:
 
 ## References
 
-Milestone GE1 (smooth curvature from connections), ROADMAP section "Lorentzian and Riemannian geometry".
-Structural: statement of the manifold-level theory of `Lightlike/Spacetime/Connection.lean`; the
-conventions are those of Mathlib pull request 45069 for the curvature sign and signature `(-,+,…,+)`.
-Reference for the content: Carroll, Spacetime and Geometry (2004), Chapter 3 (eqs. 3.4 and 3.113); not yet a verified location in docs/tasks/sources.yaml.
+Milestone GE1 (Smooth curvature from connections), ROADMAP section "Lorentzian and Riemannian
+geometry".
+Source: S. M. Carroll, Lecture Notes on General Relativity (1997), Chapter 3 (`carroll-1997` in
+docs/tasks/sources.yaml).
+Lock and dependencies: `docs/tasks/tasks.yaml`. This header is written by `scripts/tasks.py deps`
+from the plan, the sources and the library.
 -/
 
 open Bundle Manifold Set VectorField NormedSpace FiberBundle

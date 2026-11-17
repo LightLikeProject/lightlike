@@ -41,7 +41,7 @@ tasks:
     deps: []
     file: "Tasks/GE/T_GE1_P1.lean"
     decl: "Lightlike.leviCivita_exists_unique"
-    routes: ["See the hint in the header of the file."]
+    routes: [{"Koszul formula as in Mathlib's `CovariantDerivative.leviCivitaConnection` (Riemannian case)": "it needs only non-degeneracy of `g`; use the musical isomorphism `LinearMap.BilinForm.toDual` (nondegenerate by `IsLorentzianForm.bilinForm_nondegenerate`). Uniqueness is on differentiable fields, as in Mathlib."}]
     labels: ["proof-task", "area: geometry", "size: L", "research-level"]
   - id: "T-GE1-P2"
     kind: "proof"
@@ -59,7 +59,7 @@ tasks:
     deps: []
     file: "Tasks/GE/T_GE1_P2.lean"
     decl: "Lightlike.curvatureAt_apply"
-    routes: ["See the hint in the header of the file."]
+    routes: ["Tensoriality of `(X, Y, Z) ↦ ∇_X ∇_Y Z - ∇_Y ∇_X Z - ∇_{[X,Y]} Z` in each slot, as `torsion_apply` in Mathlib's `CovariantDerivative/Torsion.lean`, with `TensorialAt.mkHom`."]
     labels: ["proof-task", "area: geometry", "size: L", "research-level"]
   - id: "T-GE1-P3"
     kind: "proof"
@@ -77,7 +77,7 @@ tasks:
     deps: []
     file: "Tasks/GE/T_GE1_P3.lean"
     decl: "Lightlike.ricciAt_symm"
-    routes: ["See the hint in the header of the file."]
+    routes: ["First Bianchi identity and the pair symmetry of the lowered curvature (T-GE1-P4), then trace."]
     labels: ["proof-task", "area: geometry", "size: L", "research-level"]
   - id: "T-GE1-P4"
     kind: "proof"
@@ -95,7 +95,7 @@ tasks:
     deps: []
     file: "Tasks/GE/T_GE1_P4.lean"
     decl: "Lightlike.bianchi_first_and_pair_symm"
-    routes: ["See the hint in the header of the file."]
+    routes: ["Torsion-freeness gives the first identity (Jacobi identity of the Lie bracket); metric compatibility gives antisymmetry in the last pair; the pair symmetry follows by the usual four-term argument."]
     labels: ["proof-task", "area: geometry", "size: L", "research-level"]
   - id: "T-GE1-P5"
     kind: "proof"
@@ -113,7 +113,7 @@ tasks:
     deps: []
     file: "Tasks/GE/T_GE1_P5.lean"
     decl: "Lightlike.scalarCurvatureAt_chart"
-    routes: ["See the hint in the header of the file."]
+    routes: ["In a chart the coordinate fields have vanishing brackets and `∇_{∂ᵢ} ∂ⱼ = Γᵏᵢⱼ ∂ₖ` (Koszul formula); the coordinate formula of `Curvature.lean` is then the trace of `curvatureAt`. This fixes the sign convention of the two definitions."]
     labels: ["proof-task", "area: geometry", "size: L", "research-level"]
   - id: "T-GE1-P6"
     kind: "proof"
@@ -131,7 +131,7 @@ tasks:
     deps: []
     file: "Tasks/GE/T_GE1_P6.lean"
     decl: "Lightlike.satisfiesEinstein_iff_chart"
-    routes: ["See the hint in the header of the file."]
+    routes: ["T-GE1-P5 and its Ricci version in a chart; the `IsCoordMetric` part is `LorentzianMetric.isCoordMetric_coordMetric`."]
     labels: ["proof-task", "area: geometry", "size: L", "research-level"]
   - id: "T-GE2"
     kind: "milestone"
