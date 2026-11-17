@@ -111,7 +111,8 @@ theorem dirDeriv_hamiltonianConstraint {N : (Fin d → ℝ) → ℝ} (hN : ContD
     {h π k : TensorField d} (hh : SmoothTensor h) (hpos : ∀ y, (h y).PosDef)
     (hπ : ∀ i j, Continuous (fun x => π x i j)) (hk : SmoothTensor k)
     (hkc : ∀ i j, HasCompactSupport (fun x => k x i j)) :
-    dirDeriv (hamiltonianConstraint N) h π k 0 = ∫ x, N x * hamDirDeriv h π k x := by
+    Integrable (fun x => N x * hamDirDeriv h π k x) volume ∧
+      dirDeriv (hamiltonianConstraint N) h π k 0 = ∫ x, N x * hamDirDeriv h π k x := by
   set c : ℝ := 1 / ((d : ℝ) - 1) with hc
   obtain ⟨ε, hε, hεdet⟩ := exists_eps_det hh hpos hkc hk
   -- the smoothness of `Phi` along the line
@@ -189,13 +190,18 @@ theorem dirDeriv_hamiltonianConstraint {N : (Fin d → ℝ) → ℝ} (hN : ContD
     simp only [hF]
     rw [← hD t ht' x]
   have hDD : HasDerivAt (fun t : ℝ => hamiltonianConstraint N (fun x => h x + t • k x) π) (∫ x, F' 0 x) 0 :=
-    hDI.congr_of_eventuallyEq hint
+    hDI.2.congr_of_eventuallyEq hint
+  have hF'eq : ∀ x, F' 0 x = N x * hamDirDeriv h π k x := fun x => by
+    simp only [hF']
+    rw [zero_smul, add_zero, hid x]
+  refine ⟨?_, ?_⟩
+  · have h1 : F' 0 = fun x => N x * hamDirDeriv h π k x := funext hF'eq
+    have := hDI.1
+    rwa [h1] at this
   unfold dirDeriv
   simp only [Pi.zero_apply, smul_zero, add_zero]
   rw [hDD.deriv]
-  refine integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)
-  simp only [hF']
-  rw [zero_smul, add_zero, hid x]
+  exact integral_congr_ae (Filter.Eventually.of_forall hF'eq)
 
 end Lightlike.Canonical
 

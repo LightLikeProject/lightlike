@@ -18,7 +18,7 @@ theorem hasDerivAt_integral_compact {F F' : ℝ → (Fin d → ℝ) → ℝ} {K 
     (hderiv : ∀ t ∈ ball (0 : ℝ) ε, ∀ x, HasDerivAt (fun s => F s x) (F' t x) t)
     (hFc : ∀ t ∈ ball (0 : ℝ) ε, Continuous (F t))
     (hF'c : ContinuousOn (fun p : ℝ × (Fin d → ℝ) => F' p.1 p.2) (closedBall (0 : ℝ) (ε / 2) ×ˢ univ)) :
-    HasDerivAt (fun t => ∫ x, F t x) (∫ x, F' 0 x) 0 := by
+    Integrable (F' 0) volume ∧ HasDerivAt (fun t => ∫ x, F t x) (∫ x, F' 0 x) 0 := by
   have hε2 : 0 < ε / 2 := by linarith
   have hs : ball (0 : ℝ) (ε / 2) ∈ 𝓝 (0 : ℝ) := ball_mem_nhds _ hε2
   have hsub : ball (0 : ℝ) (ε / 2) ⊆ ball (0 : ℝ) ε := ball_subset_ball (by linarith)
@@ -43,7 +43,7 @@ theorem hasDerivAt_integral_compact {F F' : ℝ → (Fin d → ℝ) → ℝ} {K 
     (bound := K.indicator fun _ => max C 0) hs hF_meas hF_int hF'0.aestronglyMeasurable
     (Filter.Eventually.of_forall fun a t ht => ?_) hbound_int
     (Filter.Eventually.of_forall fun a t ht => hderiv t (hsub ht) a)
-  · exact this.2
+  · exact this
   · by_cases ha : a ∈ K
     · rw [indicator_of_mem ha]
       have := hC (t, a) ⟨mem_closedBall.mpr (by have := mem_ball.mp ht; rw [Real.dist_eq, sub_zero] at this; rw [Real.dist_eq, sub_zero]; exact this.le), ha⟩
