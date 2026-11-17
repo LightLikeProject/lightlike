@@ -1,4 +1,5 @@
 import Lightlike.TuraevViro.TuraevViro
+import Lightlike.TuraevViro.Reflect.QDougallAll
 
 /-!
 # Task T-QU1-P5
@@ -59,6 +60,6 @@ namespace Lightlike.TV
 
 /-- **q-orthogonality** for every `r ≥ 2`. -/
 theorem qOrthogonality_all {r : ℕ} (hr : 2 ≤ r) : qOrthogonality hr := by
-  sorry
+  exact Refl.qOrthogonality_proved hr
 
 end Lightlike.TV

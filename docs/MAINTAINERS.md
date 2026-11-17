@@ -8,7 +8,11 @@ see [CONTRIBUTING.md](../CONTRIBUTING.md).
   for several), then run `python3 scripts/api_map.py check`. One file per pull request, so that
   parallel pull requests do not conflict at the end of `docs/results.yaml`. At merge,
   `python3 scripts/api_map.py combine` appends the files to `docs/results.yaml` and removes them,
-  and the drafts get their numbers.
+  and the drafts get their numbers. A proven result that is the main theorem of a cited paper or
+  book, or a named theorem, gets `main: true`; it is then listed again under Main results at the
+  top of `docs/RESULTS.md`. An entry is a result that a paper or book would state as a theorem.
+  Supporting lemmas stay in the code with docstrings and get no entry; the review of a catalogue
+  change checks every new entry against this.
 - **Generated files.** A pull request does not change `docs/RESULTS.md`, the task board,
   `Tasks.lean` or the generated counts in `README.md`, `ROADMAP.md` and `CHANGELOG.md`
   (`scripts/generated.py check`, a hard rule). After merging a batch, one commit runs

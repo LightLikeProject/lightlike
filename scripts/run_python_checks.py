@@ -72,6 +72,11 @@ CHECKS = [
     ("scripts/regge/regge3d_affine.py", False), ("scripts/regge/regge3d_core.py", False),
     ("scripts/regge/regge3d_jet.py", False), ("scripts/vertex_identity_check.py", False),
     ("scripts/regge/regge3d_g0_certificate.py", False),
+    ("scripts/regge/regge3d_sphere_check.py", True),
+    ("scripts/regge/regge3d_linearized_check.py", True),
+    ("scripts/regge/fierz_pauli_check.py", True),
+    ("scripts/regge/eh_jet_poly_check.py", True),
+    ("scripts/regge/eh_wrong_model_check.py", True),
     ("scripts/qracah/qd_map_check.py", False), ("scripts/qracah/jhyp_coverage_check.py", False),
     ("scripts/qracah/jackson_degenerate_check.py", False),
     ("scripts/qracah/qd_coverage_check.py", False),
@@ -94,6 +99,7 @@ NOT_CHECKS = {"scripts/ci_check.py", "scripts/prune_docs.py", "scripts/gate.py",
               "scripts/sources.py", "scripts/doc_refs_check.py", "scripts/leak_check.py", "scripts/generated.py",
               "scripts/regge/regge3d_convergence.py",  # a library of the regge3d_* checks (dihedral); its demo has no verdict
               "scripts/regge/gen_chart_change.py",  # generator of Lightlike/Regge/Conv3/ChartChangeClasses.lean
+              "scripts/regge/gen_sv_sigma.py",  # generator of Lightlike/Regge/Linear3/SaintVenantSigma0..5.lean
               "scripts/regge/gen_star_angle.py",  # generator of the edge-class fans in Lightlike/Regge/Conv3/StarAngle.lean
               "scripts/regge/gen_kuhn_basis.py",  # generator of Lightlike/Regge/Conv3/KuhnBasis.lean from regge3d_g0_certificate.py
               "scripts/regge/gen_flat_star.py",  # generator of Lightlike/Regge/Conv3/FlatStar.lean (prints, no exit code)
