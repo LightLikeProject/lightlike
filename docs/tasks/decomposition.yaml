@@ -136,7 +136,7 @@ tasks:
     size: L
     difficulty: research-level
     routes:
-      - Tensoriality of `(X, Y, Z) ↦ ∇_X ∇_Y Z - ∇_Y ∇_X Z - ∇_{[X,Y]} Z` in each slot, as `torsion_apply` in Mathlib's `CovariantDerivative/Torsion.lean`, with `TensorialAt.mkHom`.
+      - Tensoriality of `(X, Y, Z) ↦ ∇_X ∇_Y Z - ∇_Y ∇_X Z - ∇_{[X,Y]} Z` in each slot, as `CovariantDerivative.torsion_apply` (Mathlib/Geometry/Manifold/VectorBundle/CovariantDerivative/Torsion.lean), with `TensorialAt.mkHom`.
   - id: T-GE1-P3
     milestone: GE1
     kind: proof
@@ -166,7 +166,7 @@ tasks:
     size: L
     difficulty: research-level
     routes:
-      - In a chart the coordinate fields have vanishing brackets and `∇_{∂ᵢ} ∂ⱼ = Γᵏᵢⱼ ∂ₖ` (Koszul formula); the coordinate formula of `Curvature.lean` is then the trace of `curvatureAt`. This fixes the sign convention of the two definitions.
+      - In a chart the coordinate fields have vanishing brackets and `∇_{∂ᵢ} ∂ⱼ = Γᵏᵢⱼ ∂ₖ` (Koszul formula); the coordinate formula of `Lightlike/Spacetime/Curvature.lean` is then the trace of `curvatureAt`. This fixes the sign convention of the two definitions.
   - id: T-GE1-P6
     milestone: GE1
     kind: proof

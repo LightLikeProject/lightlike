@@ -11,7 +11,7 @@ proof and change nothing else in the file: the proof-task check rejects any othe
 (CONTRIBUTING.md).
 
 Hint. Tensoriality of `(X, Y, Z) ↦ ∇_X ∇_Y Z - ∇_Y ∇_X Z - ∇_{[X,Y]} Z` in each slot, as
-`torsion_apply` in Mathlib's `CovariantDerivative/Torsion.lean`, with `TensorialAt.mkHom`.
+`CovariantDerivative.torsion_apply` (Mathlib/Geometry/Manifold/VectorBundle/CovariantDerivative/Torsion.lean), with `TensorialAt.mkHom`.
 
 Partial results, as helper lemmas in separate pull requests, are welcome.
 

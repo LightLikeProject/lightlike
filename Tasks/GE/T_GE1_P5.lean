@@ -11,7 +11,7 @@ by a proof and change nothing else in the file: the proof-task check rejects any
 (CONTRIBUTING.md).
 
 Hint. In a chart the coordinate fields have vanishing brackets and `∇_{∂ᵢ} ∂ⱼ = Γᵏᵢⱼ ∂ₖ` (Koszul
-formula); the coordinate formula of `Curvature.lean` is then the trace of `curvatureAt`. This fixes
+formula); the coordinate formula of `Lightlike/Spacetime/Curvature.lean` is then the trace of `curvatureAt`. This fixes
 the sign convention of the two definitions.
 
 Partial results, as helper lemmas in separate pull requests, are welcome.
