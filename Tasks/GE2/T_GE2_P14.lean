@@ -1,4 +1,4 @@
-import Lightlike.Spacetime.Causal.MinkowskiCausal
+import Lightlike.Spacetime.Causal.MinkowskiFuture
 
 /-!
 # Task T-GE2-P14
@@ -62,6 +62,6 @@ variable {d : ℕ}
 theorem minkowski_causalFuture (x : Fin (d + 1) → ℝ) :
     causalFuture (minkowskiOrientation d) x =
       {y | 0 ≤ (y - x) 0 ∧ minkowskiForm (d + 1) (y - x) (y - x) ≤ 0} := by
-  sorry
+  exact minkowski_causalFuture_eq x
 
 end Lightlike.Causal

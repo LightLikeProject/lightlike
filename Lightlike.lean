@@ -509,6 +509,8 @@ import Lightlike.Spacetime.Causal.CurveOps
 import Lightlike.Spacetime.Causal.DomainOfDependence
 import Lightlike.Spacetime.Causal.Ladder
 import Lightlike.Spacetime.Causal.MinkowskiCausal
+import Lightlike.Spacetime.Causal.MinkowskiFuture
+import Lightlike.Spacetime.Causal.MinkowskiGH
 import Lightlike.Spacetime.Causal.Relations
 import Lightlike.Spacetime.Causal.TestsBasic
 import Lightlike.Spacetime.Causal.TestsMinkowski
