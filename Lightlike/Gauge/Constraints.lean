@@ -24,9 +24,9 @@ bracket `{f, g} = ⟨∂_q f, ∂_p g⟩ - ⟨∂_p f, ∂_q g⟩` (`ClassicalMe
   tangent space of an orbit and of a level set of its moment map, for the reduction of Marsden and Weinstein
   without quotient manifolds.
 
-The proved basic API is `Lightlike/Gauge/ConstraintsAPI.lean`, the Jacobi identity of the Poisson bracket is
-proved in `Lightlike/Gauge/PoissonJacobi.lean` and that of the Dirac bracket is the proof task `T-GC4-P1` (`Tasks/GC/`), and the example of the particle on a circle and the wrong count are in
-`Lightlike/Tests/Constraints.lean`.
+The proved basic API is `Lightlike/Gauge/ConstraintsAPI.lean`; the Jacobi identities of the Poisson and of the
+Dirac bracket are in `Lightlike/Gauge/PoissonJacobi.lean` and `Lightlike/Gauge/DiracJacobi.lean`; the example of
+the particle on a circle and the wrong count are in `Lightlike/Tests/Constraints.lean`.
 
 ## References
 

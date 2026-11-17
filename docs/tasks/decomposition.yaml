@@ -118,17 +118,6 @@ tasks:
       - Representation theory of U_q(sl₂) at roots of unity (Turaev 1994).
       - Kauffman–Lins recoupling theory (1994).
 
-  - id: T-GC4-P1
-    milestone: GC4
-    kind: proof
-    title: The Jacobi identity for the Dirac bracket of smooth functions
-    file: Tasks/GC/T_GC4_P1.lean
-    decl: Lightlike.Gauge.diracBracket_jacobi
-    size: L
-    difficulty: research-level
-    routes:
-      - "Differentiate the inverse of the bracket matrix (`C⁻¹' = -C⁻¹ C' C⁻¹`) and use `poissonBracket_jacobi` (Henneaux-Teitelboim, Chapter 1)."
-
 # Upstream tasks: finished results that belong in Mathlib (general mathematics) or Physlib
 # (general physics), with the rework each needs. Exclusive, like definition
 # tasks; `target` gives the label `upstream: <library>`.

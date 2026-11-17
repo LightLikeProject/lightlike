@@ -64,7 +64,7 @@ theorem fderiv_inv_entry (M : E → Matrix (Fin n) (Fin n) ℝ)
       (fun c _ => (hCi a c).hasFDerivAt.mul ((hM c b x).hasFDerivAt))
     rw [hs.fderiv] at h1
     simp only [_root_.sum_apply, _root_.add_apply,
-      ContinuousLinearMap.smul_apply, smul_eq_mul] at h1
+      _root_.smul_apply, smul_eq_mul] at h1
     rw [← h1]
     refine Finset.sum_congr rfl fun c _ => ?_
     ring
