@@ -16,8 +16,10 @@
 #   build          the Lean build and the checks that need it. On a pull request it runs only when
 #                  the pull request changes a Lean or build file or a file those checks read;
 #                  otherwise it is skipped, and a skipped job passes the required `build` check;
-#   python-checks  the numerical cross-checks; on a pull request only when it changes scripts/ or
-#                  the pinned packages;
+#   python-checks  the numerical cross-checks, 4 at a time; on a pull request only when it changes
+#                  scripts/ or the pinned packages, and then only the quick checks and the slow
+#                  ones the change touches; a push to main runs every check, and a failure there
+#                  fails the run;
 #   prune-caches   after a push to main, deletes the library build caches the new one replaces.
 # Pushes to main and on-demand runs run every job.
 name: CI
@@ -291,7 +293,11 @@ jobs:
       run:
         shell: bash
     steps:
+      # Two commits: on a pull request the checkout is the merge commit, whose first parent is the
+      # base, so `git diff HEAD^1 HEAD` lists the files the pull request changes.
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
 
       - uses: actions/setup-python@v6
         with:
@@ -300,9 +306,20 @@ jobs:
       - name: Install the pinned Python packages [ci-only]
         run: python3 -m pip install --quiet -r requirements.txt
 
+      # --auto: on a pull request (or in a local gate, which sets LL_GATE_BASE) the quick checks and
+      # the slow ones the change touches; otherwise every check.
       - name: Python cross-checks (pinned versions, wrong-input controls) [advisory]
+        id: python
         continue-on-error: true
-        run: python3 -I scripts/run_python_checks.py --all
+        run: python3 -I scripts/run_python_checks.py --jobs 4 --auto
+
+      # The step above never fails a pull request (it is advisory), but on main a failing
+      # cross-check must be seen: this step turns it into a failed run, which is an alert.
+      - name: Alert when a cross-check fails on main [ci-only]
+        if: ${{ github.event_name != 'pull_request' && steps.python.outcome == 'failure' }}
+        run: |
+          echo "::error::A Python cross-check fails on main: see the step above."
+          exit 1
 
   # The repository has 10 GB of Actions cache. After a push to main has saved its library build, the
   # older library builds of main are deleted (the newest one is kept, the one pull requests restore).

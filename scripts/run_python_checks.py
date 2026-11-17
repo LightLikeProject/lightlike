@@ -22,7 +22,7 @@ reads are not followed; main runs every check after each merge.
 
 Exit 0 = all selected scripts passed. A script missing from the list below, or a listed script
 that does not exist, is an error (so a new cross-check cannot be forgotten)."""
-import argparse, ast, concurrent.futures, importlib.util, pathlib, re, subprocess, sys, time
+import argparse, ast, concurrent.futures, importlib.util, os, pathlib, re, subprocess, sys, time
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 # (path, slow?) -- slow = more than about 60 s on a laptop
@@ -266,6 +266,8 @@ def main() -> int:
     ap.add_argument("--all", action="store_true", help="include the slow scripts")
     ap.add_argument("--changed", metavar="FILE",
                     help="the changed paths, one per line: the quick set plus the slow checks they touch")
+    ap.add_argument("--auto", action="store_true",
+                    help="pull request or local gate: the checks the change selects (--changed); main: every check")
     ap.add_argument("--jobs", type=int, default=1, help="scripts run at a time (default 1)")
     ap.add_argument("--list", action="store_true")
     a = ap.parse_args()
@@ -279,10 +281,24 @@ def main() -> int:
     exit_errors, exit_warnings = exit_path_problems()
     problems += exit_errors
     if a.list:
+        picked = None
+        if a.changed:  # with --changed, --list also says which checks the change selects
+            picked = set(select({l.strip() for l in pathlib.Path(a.changed).read_text(encoding="utf-8").splitlines()
+                                 if l.strip()})[0])
         for c, slow in CHECKS:
-            print(("slow  " if slow else "quick ") + c)
+            print(("slow  " if slow else "quick ") + ("" if picked is None else ("RUN  " if c in picked else "skip ")) + c)
         return 0
-    if a.all:
+    if a.auto:
+        base = "HEAD^1" if os.environ.get("GITHUB_EVENT_NAME") == "pull_request" else os.environ.get("LL_GATE_BASE", "")
+        diff = subprocess.run(["git", "-C", str(ROOT), "diff", "--name-only", base, "HEAD"],
+                              capture_output=True, text=True) if base else None
+        if diff is not None and diff.returncode == 0:
+            run, reason = select({l.strip() for l in diff.stdout.splitlines() if l.strip()})
+            reason += f" (changes since {base})"
+            a.changed = a.changed or "auto"
+        else:  # a push to main, an on-demand run, or no base to compare with: everything
+            run, reason = [c for c, _ in CHECKS], "every check (no pull request to compare with)"
+    elif a.all:
         run, reason = [c for c, _ in CHECKS], "every check (--all)"
     elif a.changed:
         changed = {l.strip() for l in pathlib.Path(a.changed).read_text(encoding="utf-8").splitlines()
