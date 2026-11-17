@@ -612,6 +612,7 @@ import Lightlike.Spacetime.Causal.CurveOps
 import Lightlike.Spacetime.Causal.ConeConvex
 import Lightlike.Spacetime.Causal.DomainOfDependence
 import Lightlike.Spacetime.Causal.Ladder
+import Lightlike.Spacetime.Causal.MinkowskiCauchy
 import Lightlike.Spacetime.Causal.MinkowskiCausal
 import Lightlike.Spacetime.Causal.MinkowskiFuture
 import Lightlike.Spacetime.Causal.MinkowskiGH
