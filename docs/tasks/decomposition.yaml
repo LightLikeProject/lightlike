@@ -465,6 +465,76 @@ tasks:
     routes:
       - "The first variation of `√h R` (Palatini identity in coordinates), an integration by parts, and the antisymmetry in `N, M`."
       - "Hojman–Kuchař–Teitelboim (1976) and Thiemann (2007), Chapter 1: the hypersurface deformation algebra."
+  - id: T-GE1-P2
+    milestone: GE1
+    kind: proof
+    title: The curvature tensor is computed by any smooth extensions
+    file: Tasks/GE/T_GE1_P2.lean
+    decl: Lightlike.curvatureAt_apply
+    size: L
+    difficulty: research-level
+    routes:
+      - Tensoriality of `(X, Y, Z) ↦ ∇_X ∇_Y Z - ∇_Y ∇_X Z - ∇_{[X,Y]} Z` in each slot, as `CovariantDerivative.torsion_apply` (Mathlib/Geometry/Manifold/VectorBundle/CovariantDerivative/Torsion.lean), with `TensorialAt.mkHom`.
+  - id: T-GE1-P3
+    milestone: GE1
+    kind: proof
+    title: The Ricci tensor of a Levi-Civita connection is symmetric
+    file: Tasks/GE/T_GE1_P3.lean
+    decl: Lightlike.ricciAt_symm
+    size: L
+    difficulty: research-level
+    routes:
+      - First Bianchi identity and the pair symmetry of the lowered curvature (T-GE1-P4), then trace.
+  - id: T-GE1-P4
+    milestone: GE1
+    kind: proof
+    title: The first Bianchi identity and the pair symmetry of the lowered curvature
+    file: Tasks/GE/T_GE1_P4.lean
+    decl: Lightlike.bianchi_first_and_pair_symm
+    size: L
+    difficulty: research-level
+    routes:
+      - Torsion-freeness gives the first identity (Jacobi identity of the Lie bracket); metric compatibility gives antisymmetry in the last pair; the pair symmetry follows by the usual four-term argument.
+  - id: T-GE1-P5
+    milestone: GE1
+    kind: proof
+    title: The intrinsic scalar curvature is the coordinate scalar curvature in every chart
+    file: Tasks/GE/T_GE1_P5.lean
+    decl: Lightlike.scalarCurvatureAt_chart
+    size: L
+    difficulty: research-level
+    routes:
+      - In a chart the coordinate fields have vanishing brackets and `∇_{∂ᵢ} ∂ⱼ = Γᵏᵢⱼ ∂ₖ` (Koszul formula); the coordinate formula of `Lightlike/Spacetime/Curvature.lean` is then the trace of `curvatureAt`. This fixes the sign convention of the two definitions.
+  - id: T-GE1-P6
+    milestone: GE1
+    kind: proof
+    title: The manifold-level Einstein equations are the coordinate ones in every chart
+    file: Tasks/GE/T_GE1_P6.lean
+    decl: Lightlike.satisfiesEinstein_iff_chart
+    size: L
+    difficulty: research-level
+    routes:
+      - T-GE1-P5 and its Ricci version in a chart; the `IsCoordMetric` part is `LorentzianMetric.isCoordMetric_coordMetric`.
+  - id: T-GE1-P7
+    milestone: GE1
+    kind: proof
+    title: The second Bianchi identity of a Levi-Civita connection
+    file: Tasks/GE/T_GE1_P7.lean
+    decl: Lightlike.bianchi_second
+    size: L
+    difficulty: research-level
+    routes:
+      - Torsion-freeness and the Jacobi identity: evaluate the cyclic sum on extensions of the vectors with vanishing brackets at the point (coordinate fields of a chart), where it reduces to the Jacobi identity for the covariant derivatives.
+  - id: T-GE1-P8
+    milestone: GE1
+    kind: proof
+    title: The Einstein tensor of a Levi-Civita connection is divergence free
+    file: Tasks/GE/T_GE1_P8.lean
+    decl: Lightlike.einstein_divergence_free
+    size: L
+    difficulty: research-level
+    routes:
+      - Contract the second Bianchi identity (T-GE1-P7) twice, using the symmetries of the curvature (T-GE1-P4) and metric compatibility.
 
 # Upstream tasks: finished results that belong in Mathlib (general mathematics) or Physlib
 # (general physics), with the rework each needs. Exclusive, like definition
