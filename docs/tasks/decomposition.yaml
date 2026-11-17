@@ -423,6 +423,16 @@ tasks:
     difficulty: research-level
     routes:
       - "Both directions go through extension of a timelike curve to an inextendible one; achronality gives the uniqueness of the meeting point."
+  - id: T-GE2-P19
+    milestone: GE2
+    kind: proof
+    title: A curve with timelike velocity almost everywhere, without a margin, still joins its endpoints in the timelike future
+    file: Tasks/GE2/T_GE2_P19.lean
+    decl: Lightlike.Causal.mem_chronFuture_of_ae_timelike
+    size: L
+    difficulty: research-level
+    routes:
+      - "Open. The library's timelike curves carry a margin (the velocity stays in a closed cone strictly inside the timelike cone on compact intervals); the textbooks ask only for timelike velocity. The statement says the two definitions give the same chronological future. Approach: approximate the curve by piecewise-smooth timelike curves with margin in a convex chart neighbourhood."
   - id: T-CS2-P1
     milestone: CS2
     kind: proof
@@ -453,6 +463,17 @@ tasks:
     difficulty: intermediate
     routes:
       - "For `s = t' - t ∈ [0, 1]` the density of the time difference is `1 - s`, and `|x' - x| ≤ s` has probability `s - s²/4` for the width `2`; integrate `(1 - s)(s - s²/4)` over `[0, 1]` to get `7/48`. The diamond value is `relProb_one`."
+
+  - id: T-CS3-P1
+    milestone: CS3
+    kind: proof
+    title: "The longest chain of n uniform points of the 1+1 diamond is about 2 sqrt(n)"
+    file: Tasks/CS3/T_CS3_P1.lean
+    decl: Lightlike.CausalSets.expected_longestChain_asymptotic
+    size: L
+    difficulty: research-level
+    routes:
+      - "The order of the sprinkled points is the dominance order of a uniform random permutation (`coneLE_sprinklePt`), so the longest chain is the longest increasing subsequence. The limit `2` is the theorem of Vershik–Kerov and Logan–Shepp."
 
   - id: T-CA1-P1
     milestone: CA1
