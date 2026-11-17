@@ -184,7 +184,13 @@ it up to `O(λ^{m - 23})`.
 `CriticalSetIs` (the classification), `HessianInvertible`, `FarRemainderBound`, and the weight bound
 `hw` (a condition on the data). None is proved here. The error exponent: the stationary phase in 44
 real dimensions gives the leading order `λ^{-22}`, the error one further power, times the order `λ^m`
-of the weight (`hw`). -/
+of the weight (`hw`).
+
+**Differences from BDFHP eq. (53)** (Sec. 6.4): this is the generic stationary-phase sum over an
+abstract finite critical set `K`, with an error bound `O(λ^{m - 23})` where the source states an
+asymptotic equivalence; it does not identify the phase with `γ Σ k Θ`, the sign `(-1)^{χ + M}`, the
+order `λ^{-12}` or the two parity-related critical points of eq. (53); and `λ` runs over `ℕ`. Until a
+maintainer approves these differences, the result is partial. -/
 theorem lorVertex_asymptotics_fixChart
     (e : (Fin 44 → ℝ) ≃ᵐ ((Fin 4 → Fin 3 → ℂ) × (Fin 10 → ℂ))) (he : MeasurePreserving e volume volume)
     (hl : IsLinearMap ℝ e) {j p : Fin 10 → ℝ} (hj : ∀ k, 0 ≤ j k) {g : BdryData}
