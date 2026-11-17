@@ -126,9 +126,13 @@ import Lightlike.Asymptotics.ValleyTests
 import Lightlike.Canonical.ADM
 import Lightlike.Canonical.CurvatureCovariance
 import Lightlike.Canonical.CurvatureJet
+import Lightlike.Canonical.DensityCovariance
+import Lightlike.Canonical.DensityDeriv
 import Lightlike.Canonical.FlowPullback
+import Lightlike.Canonical.KineticCovariance
 import Lightlike.Canonical.LieAlgebra
 import Lightlike.Canonical.LieDeriv
+import Lightlike.Canonical.MatrixDeriv
 import Lightlike.Canonical.MatrixInverseAt
 import Lightlike.Canonical.MomentumBracket
 import Lightlike.Canonical.ParamPd

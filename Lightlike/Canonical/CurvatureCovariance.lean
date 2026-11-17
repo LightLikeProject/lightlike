@@ -94,6 +94,18 @@ lemma pullback_flowMap_zero {ξ : VectorField d} (hξ : SmoothVec ξ) (h : Tenso
   rw [this]
   simp [Finset.sum_ite_eq, Finset.sum_ite_eq']
 
+/-- The scalar curvature of a smooth, positive definite metric is differentiable. -/
+lemma differentiableAt_scalarCurvature {h : TensorField d} (hh : SmoothTensor h) (hpos : ∀ y, (h y).PosDef)
+    (x : Fin d → ℝ) : DifferentiableAt ℝ (Lightlike.scalarCurvature h) x := by
+  have hdetY : ∀ y, (h y).det ≠ 0 := fun y => (hpos y).det_pos.ne'
+  obtain ⟨Rh, hRhdef⟩ : ∃ Rh : (Fin d → ℝ) → ℝ, Rh = Lightlike.scalarCurvature h := ⟨_, rfl⟩
+  have hRh : Rh = fun y => Rjet (jetAt h y) := by
+    rw [hRhdef]; exact funext fun y => scalarCurvature_eq_Rjet hh (hdetY y)
+  have hJ0 : (Matrix.of (jetAt h x).1).det ≠ 0 := hdetY x
+  rw [← hRhdef, hRh]
+  have hg : DifferentiableAt ℝ Rjet (jetAt h x) := differentiableAt_Rjet hJ0
+  exact DifferentiableAt.comp (g := Rjet) (f := fun y => jetAt h y) x hg (differentiable_jetAt hh x)
+
 /-- **Infinitesimal covariance of the scalar curvature**: along `h + t ℒ_ξ h` the scalar curvature at `x` has
 derivative `ξ^k ∂_k R (x)`. -/
 theorem hasDerivAt_scalar_lie {h : TensorField d} {ξ : VectorField d} (hξ : SmoothVec ξ)

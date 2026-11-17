@@ -142,6 +142,19 @@ lemma pd_sqrt_det {h : TensorField d} (hh : SmoothTensor h) {x : Fin d → ℝ} 
   rw [hf]
   rfl
 
+/-- `x ↦ kinJ c (h x) (π x)` is differentiable where `det h > 0`. -/
+lemma differentiableAt_kinJ_comp {h π : TensorField d} (hh : SmoothTensor h) (hπ : SmoothTensor π) (c : ℝ)
+    {x : Fin d → ℝ} (hpos : 0 < (h x).det) :
+    DifferentiableAt ℝ (fun y => kinJ c (h y) (π y)) x := by
+  have hZpos : 0 < (Matrix.of ((fun a b => h x a b, fun a b => π x a b) : Arr d).1).det := hpos
+  exact (differentiableAt_Kfun c hZpos).comp x (hasFDerivAt_pair hh hπ x).differentiableAt
+
+/-- `x ↦ √det (h x)` is differentiable where `det h > 0`. -/
+lemma differentiableAt_sqrt_det_comp {h : TensorField d} (hh : SmoothTensor h) {x : Fin d → ℝ}
+    (hpos : 0 < (h x).det) : DifferentiableAt ℝ (fun y => Real.sqrt (h y).det) x := by
+  have h1 : ∀ i j, DifferentiableAt ℝ (fun y => h y i j) x := fun i j => diff_of_smooth (hh i j) x
+  exact (Gauge.differentiableAt_det h h1).sqrt hpos.ne'
+
 end Lightlike.Canonical
 
 end
