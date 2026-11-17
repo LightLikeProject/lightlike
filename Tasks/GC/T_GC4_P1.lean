@@ -22,7 +22,7 @@ Everything the statement depends on, in one block:
 ## References
 
 Milestone GC4 (constrained Hamiltonian systems), ROADMAP section "Gauge theory and constrained systems".
-Source: Physlib's `PoissonBracket.lean` lists this identity as a TODO (`henneaux-teitelboim-1992` in docs/tasks/sources.yaml).
+Source: Physlib's Poisson bracket module lists this identity as a TODO (`henneaux-teitelboim-1992` in docs/tasks/sources.yaml).
 -/
 
 open ClassicalMechanics InnerProductSpace
