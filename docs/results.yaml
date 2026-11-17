@@ -1642,6 +1642,32 @@
   review: kernel-checked
   note: "For a colored graph, the bubble of the single color c at v is {v, inv c v} (the 1-bubbles are the lines), so it has exactly two vertices because inv c has no fixed point: the non-branching condition for the dual. A vertex lies in its own bubble (purity), in a connected graph any two vertices are joined by a chain of lines (strong connectivity), and the lines of p colors restricted to a bubble form a colored graph of dimension p - 1 (ColoredGraph.restrict) that is connected (restrict_isConnected): the graph-side shadow of the condition that the links of the dual are pseudo manifolds. These formalize the definitions of Gurau 2010, Sections 2 and 5, for the graph only. Limits: Theorem 1 (the p-bubbles are the link graphs of the (n - p)-simplices) and Theorem 2 (the dual is a normal simplicial pseudo manifold) are not stated: they need the stranded graph and the multiset gluing of eqs. (37) and (38), and a set of faces cannot represent it (in the graph with two vertices and three lines both top simplices have the same vertex set). Trust check: in that graph the 1-bubble of color 0 at 0 is {0, 1} and differs from the 0-bubble."
   since: unreleased
+- id: LL-0148
+  title: The dual of a connected colored graph is a normal pseudo-manifold
+  area: GFT
+  file: Lightlike/GFT/Dual.lean
+  decls: [Lightlike.GFT.ColoredGraph.dual_isNormalPseudoManifold, Lightlike.GFT.ColoredGraph.dual_isSimplicial]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: gurau-2010, location: "Theorem 2", check: "normal simplicial pseudo manifold"}
+  review: kernel-checked
+  note: "Gurau (2010), Theorem 2: any connected colored graph is dual to a normal simplicial pseudo-manifold. The dual Delta_G is built as a graded poset of pairs (S, B) of a set of colors and a bubble of the other colors, ordered by inclusion of the colors and reverse inclusion of the bubble, with the number of colors as rank, so that two simplices with the same vertex set stay distinct (as the source's multiset requires). For a connected graph of dimension D it is pure, non-branching (a simplex of rank D, the dual of a line, is a face of exactly two top simplices), strongly connected, and normal (the link of every simplex of rank at most D - 1 is a pseudo-manifold), and the lower interval of every simplex is the powerset of its colors (dual_isSimplicial), which is the simplicial structure. Limits: the vertex sets of the simplices are not part of the structure, so a simplicial complex in the sense of a set of vertex sets is not claimed (it fails already for the graph with two vertices and three lines); Theorem 1 (the link of a simplex is the dual of the bubble, as a colored graph) is not part of this entry. Comparison with the source: the statement of Theorem 2 and the definitions of its Section 2 were read in arXiv:1006.0714 (the proof was not compared). Differences from the source: (1) Gurau states a normal simplicial pseudo-manifold, a collection of subsets of a vertex set that may repeat (his eq. (21) is the graph with two vertices and four lines), while this entry states it for a graded poset with indexed simplices, with the simplicial property only as Boolean lower intervals; the two are not proved equivalent. (2) Gurau defines a pseudo-manifold as normal if all its links are pseudo manifolds; here normality is asked only for the links of simplices of rank at most D - 1 (links of dimension at least 1), so the links of the simplices of rank D (two points) and D + 1 (empty) are not required to be pseudo-manifolds, a range the source does not restrict. The maintainers approved both differences on 17 November 2026 as differences of representation (asking normality for the links of rank at most D - 1 is the standard definition); the agreement of the indexed form with the set-of-faces form when no simplices repeat is the task T-GF1-P2."
+  since: unreleased
+- id: LL-0149
+  title: The link of a simplex of the dual of a colored graph is the dual of a bubble, as a colored graph
+  area: GFT
+  file: Lightlike/GFT/DualLink.lean
+  decls: [Lightlike.GFT.ColoredGraph.linkIso, Lightlike.GFT.ColoredGraph.link_isDual_of_two_le]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: gurau-2010, location: "Theorem 1", check: "link graphs"}
+  review: kernel-checked
+  note: "Gurau (2010), Theorem 1: the p-bubbles of a colored graph are the link graphs of the (n - p)-simplices of the gluing. For a simplex sigma = (S, B) of the dual Delta_G (a set S of colors and a bubble B of the other colors) the simplices that contain sigma are in order-preserving bijection with the simplices of the dual of the colored graph G' of the lines of the colors outside S restricted to B (ColoredGraph.restrict), by linkIso, and the bijection lowers the rank by the rank of sigma (linkIso_rk); link_isDual (a supporting lemma, for every simplex that does not have all colors, p >= 1) gives it with the colors outside S enumerated in increasing order, and link_isDual_of_two_le states it in the range of the source, at least two colors outside S (p >= 2). The bijection is built from the two maps linkTo and linkOf, inverse to each other, and the bubbles of the restricted graph are the bubbles of G (mem_bubble_restrict). Limits: the link is the set of simplices containing sigma with the induced order, as a graded poset; the vertex sets of the simplices are not part of the structure; the statement is for the colored graph restricted to a bubble, not for the stranded graph of Gurau's Section 3.1. Comparison with the source: the statement of Theorem 1 was read in arXiv:1006.0714, Section 5 (the proof was not compared). Differences from the source: Gurau states that for p >= 2 the p-bubbles are the link graphs (stranded graphs of his Section 3.1) of the (n - p)-simplices, an identification of graphs; this entry gives an order isomorphism between the link poset and the dual of the colored graph of the bubble, with no stranded graph, in the range p >= 2 that the source states. The maintainers approved this form on 17 November 2026, as a difference of representation. If stranded graphs are defined in the library, their equivalence with this form becomes a task."
+  since: unreleased
 - id: LL-0125
   title: The Jordan curve theorem
   area: PL
