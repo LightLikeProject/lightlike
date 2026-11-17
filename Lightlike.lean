@@ -545,6 +545,8 @@ import Lightlike.Spacetime.ChartChange
 import Lightlike.Spacetime.BianchiSecond
 import Lightlike.Spacetime.ContractedBianchi
 import Lightlike.Spacetime.DivergenceFree
+import Lightlike.Spacetime.OpenCoordMetric
+import Lightlike.Spacetime.SchwarzschildManifold
 import Lightlike.Spacetime.ChartTensor
 import Lightlike.Spacetime.ChartAgreement
 import Lightlike.Spacetime.ChartConnection
