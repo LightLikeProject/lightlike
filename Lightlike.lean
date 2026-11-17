@@ -127,6 +127,7 @@ import Lightlike.CausalSets.Basic
 import Lightlike.CausalSets.ConeOrder
 import Lightlike.CausalSets.Expected
 import Lightlike.CausalSets.Myrheim
+import Lightlike.CausalSets.Rectangle
 import Lightlike.CausalSets.Sprinkling
 import Lightlike.CausalSets.TestsCausalSets
 import Lightlike.FourD.Boundary

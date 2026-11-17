@@ -44,7 +44,7 @@ open Lightlike
 
 namespace Lightlike.CausalSets
 
-/-- **Wrong model.** Uniform points of the rectangle `[0, 1] × [0, 2]` of `ℝ^{1+1}` (time times space) are related with probability `7/48`, not the `1/4` of the diamond (`relProb_one`). -/
+/-- **Wrong model.** Uniform points of the rectangle `[0, 1] × [0, 2]` of `ℝ^{1+1}`, with the first coordinate the time (extent `1`) and the second the space (extent `2`), are related with probability `7/48`, not the `1/4` of the diamond (`relProb_one`). -/
 theorem rectangle_relProb :
     regionRelProb {x : Fin 2 → ℝ | x 0 ∈ Set.Icc (0 : ℝ) 1 ∧ x 1 ∈ Set.Icc (0 : ℝ) 2} = 7 / 48 ∧
       regionRelProb {x : Fin 2 → ℝ | x 0 ∈ Set.Icc (0 : ℝ) 1 ∧ x 1 ∈ Set.Icc (0 : ℝ) 2} ≠ relProb 1 := by
