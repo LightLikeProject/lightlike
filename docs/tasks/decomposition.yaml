@@ -299,6 +299,36 @@ tasks:
     difficulty: research-level
     routes:
       - "Both directions go through extension of a timelike curve to an inextendible one; achronality gives the uniqueness of the meeting point."
+  - id: T-CS2-P1
+    milestone: CS2
+    kind: proof
+    title: "The Myrheim–Meyer relation probability in every dimension"
+    file: Tasks/CS2/T_CS2_P1.lean
+    decl: Lightlike.CausalSets.myrheimMeyer
+    size: L
+    difficulty: research-level
+    routes:
+      - "Light-cone-type coordinates are not available beyond `d = 1`. Reduce, by the symmetry of the diamond, to the volume of the set of `y` in the diamond that are in the causal future of a point `x`, and integrate over `x`."
+  - id: T-CS2-P2
+    milestone: CS2
+    kind: proof
+    title: "The Myrheim–Meyer relation probability in four dimensions is 1/20"
+    file: Tasks/CS2/T_CS2_P2.lean
+    decl: Lightlike.CausalSets.relProb_three
+    size: M
+    difficulty: advanced
+    routes:
+      - "Either specialise `myrheimMeyer` (`Γ(5) Γ(2) / (4 Γ(6)) = 1/20`) or compute the volume of the intersection of the future cone of a point with the diamond directly."
+  - id: T-CS2-P3
+    milestone: CS2
+    kind: proof
+    title: "A rectangle instead of the diamond gives a different relation probability"
+    file: Tasks/CS2/T_CS2_P3.lean
+    decl: Lightlike.CausalSets.rectangle_relProb
+    size: M
+    difficulty: intermediate
+    routes:
+      - "For `s = t' - t ∈ [0, 1]` the density of the time difference is `1 - s`, and `|x' - x| ≤ s` has probability `s - s²/4` for the width `2`; integrate `(1 - s)(s - s²/4)` over `[0, 1]` to get `7/48`. The diamond value is `relProb_one`."
 
 # Upstream tasks: finished results that belong in Mathlib (general mathematics) or Physlib
 # (general physics), with the rework each needs. Exclusive, like definition
