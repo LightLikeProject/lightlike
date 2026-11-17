@@ -19,7 +19,8 @@ cosmological constant. The coordinate formulas of `Curvature.lean` are the same 
 * A connection is Mathlib's `CovariantDerivative I E (TangentSpace I)`: `∇ Y x` is the linear map
   `v ↦ ∇_v Y`. The torsion is Mathlib's `CovariantDerivative.torsion`,
   `T(X, Y) = ∇_X Y - ∇_Y X - [X, Y]` (written there as `cov Y x (X x) - cov X x (Y x) - [X, Y] x`).
-* **Curvature sign** (the convention of Mathlib pull request 45069, so that a later switch is a
+* **Curvature sign** (the convention of a Mathlib proposal,
+  <https://github.com/leanprover-community/mathlib4/pull/45069>, so that a later switch is a
   rename): `R(X, Y) Z = ∇_X ∇_Y Z - ∇_Y ∇_X Z - ∇_{[X,Y]} Z`. Ricci is the trace over the first
   slot, `Ric(Y, Z) = tr (X ↦ R(X, Y) Z)`, so that the round sphere has positive Ricci curvature and
   the scalar curvature is `S = g^{ij} Ric_ij`. With this, the coordinate `riemann`, `ricci`
@@ -70,7 +71,7 @@ namespace Connection
 variable (cov : Connection I M)
 
 /-- **Riemann curvature** of `cov` at `x`, `R(X₀, Y₀) Z₀ = ∇_X ∇_Y Z - ∇_Y ∇_X Z - ∇_{[X,Y]} Z`
-(sign of Mathlib pull request 45069), computed with extensions `X, Y, Z` of the tangent vectors
+(the module's sign convention), computed with extensions `X, Y, Z` of the tangent vectors
 to vector fields; it does not depend on the extensions (a task, tensoriality). -/
 def curvatureAt (x : M) (X₀ Y₀ Z₀ : TangentSpace I x) : TangentSpace I x :=
   let X := extend E X₀

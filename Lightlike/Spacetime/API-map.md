@@ -44,7 +44,7 @@ For a coordinate metric the contracted Bianchi identity holds, `g^{στ} ∇_σ 
 
 The curvature of a manifold-level metric as a tensor field is defined in `Connection.lean` [7]: a connection is Mathlib's
 covariant derivative on the tangent bundle; the Riemann curvature is `R(X, Y) Z = ∇_X ∇_Y Z - ∇_Y ∇_X Z - ∇_{[X,Y]} Z`
-(the sign convention of Mathlib pull request 45069), the Ricci tensor is its trace over the first slot, the scalar
+(the sign convention of a Mathlib proposal, <https://github.com/leanprover-community/mathlib4/pull/45069>), the Ricci tensor is its trace over the first slot, the scalar
 curvature its trace with the metric, the Levi-Civita connection is the torsion-free connection compatible with `g`, and the Einstein
 equations with cosmological constant are `Ric - (S/2) g + Λ g = 0` [7]; the covariant derivative of the curvature and of a field of bilinear forms, the divergence and the Einstein tensor `Ric - (S/2) g` are defined there too [7]. These are definitions only: the existence and
 uniqueness of the Levi-Civita connection, the independence of the curvature from the extensions, its symmetries, and the
