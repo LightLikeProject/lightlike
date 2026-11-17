@@ -31,7 +31,7 @@ curvature its trace with the metric, the Levi-Civita connection is the torsion-f
 equations with cosmological constant are `Ric - (S/2) g + Λ g = 0` [7]; the covariant derivative of the curvature and of a field of bilinear forms, the divergence and the Einstein tensor `Ric - (S/2) g` are defined there too [7]. These are definitions only: the existence and
 uniqueness of the Levi-Civita connection, the independence of the curvature from the extensions, its symmetries, and the
 agreement with the coordinate curvature of [1] in every chart are stated as proof tasks `T-GE1-P1` to `T-GE1-P9` (including the second and contracted Bianchi identities and Minkowski space as a solution)
-(`Tasks/GE/`), with open proofs. [TODO]
+(`Tasks/GE/`), with open proofs, except the last: on `ℝⁿ` the flat connection `∇_v Y = DY(v)` is a torsion-free connection compatible with the Minkowski metric with zero curvature, so Minkowski space satisfies the Einstein equations with `Λ = 0` [8]. [TODO]
 
 In Minkowski space, an observer who travels out and back along two straight segments ages less
 than one who stays at rest [6].
@@ -51,6 +51,8 @@ than one who stays at rest [6].
    `Connection.ricciAt`, `Connection.scalarCurvatureAt`, `Connection.IsMetricCompatible`,
    `Connection.IsLeviCivita`, `Connection.covDerivCurvatureAt`, `Connection.covDerivBilinAt`,
    `Connection.divBilinAt`, `Connection.einsteinField`, `LorentzianMetric.SatisfiesEinstein`
+8. Lightlike/Spacetime/FlatConnection.lean - `flatConnection`, `flat_torsion`, `flat_curvatureAt`,
+   `flat_isMetricCompatible`, `minkowski_satisfiesEinstein_proved`
 
 ## References
 
