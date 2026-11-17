@@ -113,7 +113,15 @@ theorem bracket_pointwise {ξ : VectorField d} {N : (Fin d → ℝ) → ℝ}
   linear_combination hpair - N x * hdens + hgrad - e3
 
 /-- **The bracket of a smeared momentum constraint with a smeared Hamiltonian constraint**:
-`{D[ξ], H[N]} = H[ξ^k ∂_k N]`. -/
+`{D[ξ], H[N]} = H[ξ^k ∂_k N]`, for smooth compactly supported `ξ`, `N` and smooth data `(h, π)` with `h` positive
+definite and `π` symmetric (the symmetry is not used in the proof).
+
+The comparison with the cited source (Hojman-Kuchar-Teitelboim 1976; Thiemann 2007, Chapter 1) is pending: neither
+has been read. Differences to be approved: (a) `C^∞` data and compactly supported test fields, `h` positive
+definite; (b) one global chart `ℝᵈ`, no manifold and no foliation; (c) units `16πG = 1` and the kinetic coefficient
+`1/(d - 1)` (`1/2` for `d = 3`); (d) the momentum constraint in the Lie-derivative form; (e) the bracket through
+`π`-gradients and Gateaux derivatives, and the sign conventions of `admBracket` and `lieBracket`. A grid
+computation in dimension two (`scripts/adm_algebra_check.py`) agrees with the statement to three digits. -/
 theorem bracket_momentum_hamiltonian {ξ : VectorField d} {N : (Fin d → ℝ) → ℝ}
     (hξ : SmoothVec ξ) (hξc : ∀ k, HasCompactSupport (fun y => ξ y k))
     (hN : ContDiff ℝ ∞ N) (hNc : HasCompactSupport N) {h π : TensorField d}
