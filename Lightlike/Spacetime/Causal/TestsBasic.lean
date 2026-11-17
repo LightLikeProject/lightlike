@@ -14,7 +14,7 @@ curves.
 -/
 
 open Bundle Manifold Set
-open scoped Manifold ContDiff
+open scoped Manifold ContDiff Topology
 
 namespace Lightlike.Causal
 
@@ -99,14 +99,29 @@ example {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {H : Type*} [Topo
   linarith
 
 /-- Trust check of the endpoint definition (the textbook one): a curve that is continuous on a
-closed interval `[a, b]` has the future endpoint `γ b`, so it is extendible, hence not
+closed interval `[a, b]`, `a < b`, has the future endpoint `γ b`, so it is extendible, hence not
 inextendible. -/
 example {M : Type*} [TopologicalSpace M]
-    {γ : ℝ → M} {a b : ℝ} (hab : a ≤ b) (hγ : ContinuousOn γ (Set.Icc a b)) :
+    {γ : ℝ → M} {a b : ℝ} (hab : a < b) (hγ : ContinuousOn γ (Set.Icc a b)) :
     HasFutureEndpoint γ (Set.Icc a b) (γ b) := by
-  refine ⟨bddAbove_Icc, ?_⟩
-  rw [csSup_Icc hab]
-  exact hγ b ⟨hab, le_rfl⟩
+  intro U hU
+  have h1 : γ ⁻¹' U ∈ 𝓝[Set.Icc a b] b := hγ b ⟨hab.le, le_rfl⟩ hU
+  rw [nhdsWithin_Icc_eq_nhdsLE hab, mem_nhdsLE_iff_exists_Icc_subset] at h1
+  obtain ⟨l, hl, hsub⟩ := h1
+  exact ⟨max l a, ⟨le_max_right _ _, (max_le hl.le hab.le)⟩, fun t ht hct =>
+    hsub ⟨(le_max_left _ _).trans hct, ht.2⟩⟩
+
+/-- Trust check: the curve `t ↦ eᵗ` of the line has a past endpoint `0`, although its parameter
+interval is unbounded below; a definition of "endpoint" that needs a bounded parameter interval
+would call it inextendible. -/
+example : HasPastEndpoint (fun t : ℝ => Real.exp t) Set.univ 0 := by
+  intro U hU
+  obtain ⟨ε, hε, hball⟩ := Metric.mem_nhds_iff.1 hU
+  refine ⟨Real.log (ε / 2), trivial, fun t _ ht => hball ?_⟩
+  rw [Metric.mem_ball, Real.dist_eq, sub_zero, abs_of_pos (Real.exp_pos t)]
+  calc Real.exp t ≤ Real.exp (Real.log (ε / 2)) := Real.exp_le_exp.2 ht
+    _ = ε / 2 := Real.exp_log (by positivity)
+    _ < ε := by linarith
 
 /-- Non-vacuity of the bridge: the Minkowski line has the margin on `[0, 1]`. -/
 example (v : Fin (d + 1) → ℝ)

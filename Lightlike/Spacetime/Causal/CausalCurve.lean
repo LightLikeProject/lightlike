@@ -114,19 +114,21 @@ def IsPastTimelikeCurve (γ : ℝ → M) (s : Set ℝ) : Prop :=
     ∀ a b : ℝ, a < b → Icc a b ⊆ s →
       ∃ ε : ℝ, 0 < ε ∧ IsCurveWith (I := I) (fun _ v ↦ T.IsPastTimelikeWith ε v) γ (Icc a b)
 
-/-- `p` is a **future endpoint** of `γ` on `s`: `s` is bounded above and `γ t → p` as `t` tends to
-the supremum of `s` within `s` (if the supremum belongs to `s`, the curve has a last point). -/
+/-- `p` is a **future endpoint** of `γ` on `s`: every neighbourhood of `p` contains `γ t` for all
+`t ∈ s` from some `c ∈ s` on (Wald, Section 8.1). The parameter interval may be unbounded; if it
+has a last point `b`, the curve ends in `γ b`. -/
 def HasFutureEndpoint (γ : ℝ → M) (s : Set ℝ) (p : M) : Prop :=
-  BddAbove s ∧ Filter.Tendsto γ (𝓝[s] (sSup s)) (𝓝 p)
+  ∀ U ∈ 𝓝 p, ∃ c ∈ s, ∀ t ∈ s, c ≤ t → γ t ∈ U
 
-/-- `p` is a **past endpoint** of `γ` on `s`: `s` is bounded below and `γ t → p` as `t` tends to
-the infimum of `s` within `s`. -/
+/-- `p` is a **past endpoint** of `γ` on `s`: every neighbourhood of `p` contains `γ t` for all
+`t ∈ s` up to some `c ∈ s`. -/
 def HasPastEndpoint (γ : ℝ → M) (s : Set ℝ) (p : M) : Prop :=
-  BddBelow s ∧ Filter.Tendsto γ (𝓝[s] (sInf s)) (𝓝 p)
+  ∀ U ∈ 𝓝 p, ∃ c ∈ s, ∀ t ∈ s, t ≤ c → γ t ∈ U
 
-/-- A curve has **no endpoint** if it has neither a future nor a past endpoint. -/
+/-- A curve has **no endpoint** if its domain is nonempty and it has neither a future nor a past
+endpoint. -/
 def NoEndpoints (γ : ℝ → M) (s : Set ℝ) : Prop :=
-  (∀ p, ¬ HasFutureEndpoint γ s p) ∧ ∀ p, ¬ HasPastEndpoint γ s p
+  s.Nonempty ∧ (∀ p, ¬ HasFutureEndpoint γ s p) ∧ ∀ p, ¬ HasPastEndpoint γ s p
 
 /-- A curve with velocity in `P` is **inextendible** if it has neither a future nor a past
 endpoint (Wald, Section 8.1; Hawking–Ellis, Section 6.2: a causal curve is inextendible if it has
