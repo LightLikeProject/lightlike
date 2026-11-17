@@ -351,7 +351,12 @@ theorem dual_isNormal : (dual G).IsNormal (D + 1) := by
 variable (G) in
 /-- **The dual of a connected colored graph is a normal pseudo-manifold** (Gurau 2010, Section 5,
 Theorem 2, for the indexed complex `Δ_G`): pure, non-branching, strongly connected, with every link a
-pseudo-manifold. -/
+pseudo-manifold. **Differences from the source** (the statement of Theorem 2 and the definitions of its
+Section 2 were read in arXiv:1006.0714; the proof was not compared): Gurau states that `Δ_G` is a normal
+*simplicial* pseudo-manifold, a collection of subsets of a vertex set that may repeat; here `Δ_G` is a graded
+poset with indexed simplices, whose vertex sets are not part of the structure, and the simplicial property
+appears only as the Boolean lower intervals of `faceIso`. The two readings are not proved equivalent. Pending
+the owner's approval of this form, the result counts as partial. -/
 theorem dual_isNormalPseudoManifold (h : G.IsConnected) : (dual G).IsNormalPseudoManifold (D + 1) :=
   ⟨⟨dual_isPure G, dual_isNonBranching G, dual_isStronglyConnected G h⟩, dual_isNormal G⟩
 

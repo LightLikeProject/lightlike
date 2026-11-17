@@ -268,7 +268,14 @@ end Link
 /-- **Gurau's Theorem 1**: the link of every simplex `σ` of `Δ_G` that does not have all colors is the dual
 of a colored graph, the graph of the lines of the colors outside `σ` restricted to the bubble of `σ`: there
 is an order-preserving bijection from the simplices containing `σ` to the simplices of that dual, which
-lowers the rank by the rank of `σ`. The colors outside `σ` are enumerated in increasing order. -/
+lowers the rank by the rank of `σ`. The colors outside `σ` are enumerated in increasing order.
+**Differences from the source** (the statement of Theorem 1 was read in arXiv:1006.0714, Section 5; the proof
+was not compared): Gurau states that for `p ≥ 2` the `p`-bubbles, as colored (stranded) graphs, *are* the
+link graphs of the `(n - p)`-simplices, where the link graph is the stranded graph of Section 3.1; here the
+link is the poset of simplices containing `σ`, it is identified with the dual of the colored graph of the
+bubble (a poset isomorphism, not an equality of graphs), the stranded graph is not defined, and the range is
+every `σ` with fewer than all colors (`p ≥ 1`), wider than `p ≥ 2`. Pending the owner's approval of this form,
+the result counts as partial. -/
 theorem link_isDual (σ : DualSimplex G) (hσ : σ.colors ≠ univ) :
     ∃ (E : ℕ) (e : Fin (E + 1) ↪ Fin (D + 1)) (v0 : V),
       ∃ (_ : univ.image e = univ \ σ.colors) (_ : σ.bub = G.bubble (univ.image e) v0),
