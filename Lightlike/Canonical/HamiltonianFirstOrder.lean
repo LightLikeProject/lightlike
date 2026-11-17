@@ -165,15 +165,14 @@ def firstOrderDensity (N : (Fin d → ℝ) → ℝ) (h π : TensorField d) (x : 
 /-- **The smeared Hamiltonian constraint in first-order form**, after one integration by parts. -/
 theorem hamiltonianConstraint_eq_firstOrder {N : (Fin d → ℝ) → ℝ} (hN : ContDiff ℝ ∞ N)
     (hNc : HasCompactSupport N) {h π : TensorField d} (hh : SmoothTensor h) (hπ : SmoothTensor π)
-    (hsymm : ∀ y a b, h y a b = h y b a) (hpos : ∀ y, (h y).PosDef) :
+    (hsymm : ∀ y a b, h y a b = h y b a) (hp : ∀ y, 0 < (h y).det) :
     hamiltonianConstraint N h π = ∫ x, firstOrderDensity N h π x := by
-  have hp : ∀ y, 0 < (h y).det := fun y => (hpos y).det_pos
   set V : Fin d → (Fin d → ℝ) → ℝ := fun ρ y => Real.sqrt (h y).det * wJ (h y)⁻¹ (jet1 h y) ρ with hV
   have hVs : ∀ ρ, ContDiff ℝ ∞ (V ρ) := fun ρ => contDiff_sqrt_w hh hp ρ
   have hF : ∀ ρ, ContDiff ℝ ∞ (fun y => N y * V ρ y) := fun ρ => hN.mul (hVs ρ)
   have hFc : ∀ ρ, HasCompactSupport (fun y => N y * V ρ y) := fun ρ => hNc.mul_right
   obtain ⟨hPi, hP0⟩ := integral_sum_pd_eq_zero hF hFc
-  have hham : ContDiff ℝ ∞ (hamiltonianDensity h π) := contDiff_hamiltonianDensity hh hπ hpos
+  have hham : ContDiff ℝ ∞ (hamiltonianDensity h π) := contDiff_hamiltonianDensity_of_det hh hπ hp
   have hK := contDiff_kineticDensity hh hπ hp
   have hL := contDiff_sqrt_L hh hp
   -- the first-order density is integrable
@@ -214,3 +213,163 @@ end Lightlike.Canonical
 end
 
 end Integrated
+
+section Variation
+
+open Matrix MeasureTheory Metric Set Filter
+
+noncomputable section
+
+namespace Lightlike.Canonical
+
+variable {d : ℕ}
+
+/-- The parameters of the first-order density: the lapse, its gradient, the metric and momentum, the 1-jet. -/
+abbrev Par (d : ℕ) := ℝ × (Fin d → ℝ) × (Arr d × H1arr d)
+
+/-- The first-order Hamiltonian density as a function of its parameters. -/
+def Phi1 (c : ℝ) (q : Par d) : ℝ :=
+  q.1 * Kfun c q.2.2.1 -
+      q.1 * (Real.sqrt (Matrix.of q.2.2.1.1).det * LgJ (Matrix.of q.2.2.1.1)⁻¹ q.2.2.2) +
+    ∑ ρ, q.2.1 ρ * (Real.sqrt (Matrix.of q.2.2.1.1).det * wJ (Matrix.of q.2.2.1.1)⁻¹ q.2.2.2 ρ)
+
+/-- The parameters at `x`. -/
+def Z1 (N : (Fin d → ℝ) → ℝ) (g π : TensorField d) (x : Fin d → ℝ) : Par d :=
+  (N x, fun ρ => Lightlike.pd ρ N x, (((fun a b => g x a b, fun a b => π x a b) : Arr d), jet1 g x))
+
+/-- The direction of the variation `g + t k` of the parameters. -/
+def V1 (k : TensorField d) (x : Fin d → ℝ) : Par d :=
+  (0, 0, (((fun a b => k x a b, fun _ _ => 0) : Arr d), jet1 k x))
+
+lemma firstOrderDensity_eq_Phi1 (N : (Fin d → ℝ) → ℝ) (g π : TensorField d) (x : Fin d → ℝ) :
+    firstOrderDensity N g π x = Phi1 (1 / ((d : ℝ) - 1)) (Z1 N g π x) := by
+  unfold firstOrderDensity Phi1 Z1
+  rw [kineticDensity_eq_kinJ]
+  rfl
+
+lemma jet1_add_smul {h k : TensorField d} (hh : SmoothTensor h) (hk : SmoothTensor k) (t : ℝ)
+    (x : Fin d → ℝ) : jet1 (fun y => h y + t • k y) x = jet1 h x + t • jet1 k x := by
+  have := congrArg (fun J : Jet d => J.2.1) (jetAt_add_smul hh hk t x)
+  simpa [jetAt] using this
+
+lemma Z1_add_smul {N : (Fin d → ℝ) → ℝ} {h k π : TensorField d} (hh : SmoothTensor h) (hk : SmoothTensor k)
+    (t : ℝ) (x : Fin d → ℝ) :
+    Z1 N (fun y => h y + t • k y) π x = Z1 N h π x + t • V1 k x := by
+  unfold Z1 V1
+  refine Prod.ext (by simp) (Prod.ext (by simp) (Prod.ext (Prod.ext ?_ ?_) ?_))
+  · funext a b; simp
+  · funext a b; simp
+  · exact jet1_add_smul hh hk t x
+
+lemma contDiffAt_Phi1 (c : ℝ) {q : Par d} (hdet : 0 < (Matrix.of q.2.2.1.1).det) :
+    ContDiffAt ℝ ∞ (Phi1 c) q := by
+  have h1 : ∀ i j, ContDiffAt ℝ ∞ (fun q : Par d => (Matrix.of q.2.2.1.1) i j) q := fun i j => by
+    simp only [Matrix.of_apply]; fun_prop
+  have hK : ContDiffAt ℝ ∞ (fun q : Par d => Kfun c q.2.2.1) q :=
+    ContDiffAt.comp (g := Kfun c) (f := fun q : Par d => q.2.2.1) q (contDiffAt_Kfun c hdet) (by fun_prop)
+  have hs : ContDiffAt ℝ ∞ (fun q : Par d => Real.sqrt (Matrix.of q.2.2.1.1).det) q :=
+    (contDiffAt_det (fun q : Par d => Matrix.of q.2.2.1.1) h1).sqrt hdet.ne'
+  have hZ : ContDiffAt ℝ ∞ (fun q : Par d => ((q.2.2.1.1, q.2.2.2) : (Fin d → Fin d → ℝ) × H1arr d)) q := by
+    fun_prop
+  have hL : ContDiffAt ℝ ∞ (fun q : Par d => LgJ (Matrix.of q.2.2.1.1)⁻¹ q.2.2.2) q :=
+    ContDiffAt.comp (g := fun Z : (Fin d → Fin d → ℝ) × H1arr d => LgJ (Matrix.of Z.1)⁻¹ Z.2)
+      (f := fun q : Par d => ((q.2.2.1.1, q.2.2.2) : (Fin d → Fin d → ℝ) × H1arr d)) q
+      (contDiffAt_LgJ hdet.ne') hZ
+  have hW : ∀ ρ, ContDiffAt ℝ ∞ (fun q : Par d => wJ (Matrix.of q.2.2.1.1)⁻¹ q.2.2.2 ρ) q := fun ρ =>
+    ContDiffAt.comp (g := fun Z : (Fin d → Fin d → ℝ) × H1arr d => wJ (Matrix.of Z.1)⁻¹ Z.2 ρ)
+      (f := fun q : Par d => ((q.2.2.1.1, q.2.2.2) : (Fin d → Fin d → ℝ) × H1arr d)) q
+      (contDiffAt_wJ hdet.ne' ρ) hZ
+  have hq1 : ContDiffAt ℝ ∞ (fun q : Par d => q.1) q := by fun_prop
+  have hq2 : ∀ ρ, ContDiffAt ℝ ∞ (fun q : Par d => q.2.1 ρ) q := fun ρ => by fun_prop
+  unfold Phi1
+  exact ((hq1.mul hK).sub (hq1.mul (hs.mul hL))).add (ContDiffAt.sum fun ρ _ => (hq2 ρ).mul (hs.mul (hW ρ)))
+
+lemma fderiv_eq_zero_of_line {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (Φ : E → ℝ) (q V : E)
+    (h : ∀ t : ℝ, Φ (q + t • V) = 0) : fderiv ℝ Φ q V = 0 := by
+  by_cases hd : DifferentiableAt ℝ Φ q
+  · have hline : HasDerivAt (fun s : ℝ => q + s • V) V 0 := by
+      have := ((hasDerivAt_id (0 : ℝ)).smul_const V).const_add q
+      exact HasDerivAt.congr_deriv this (by simp)
+    have h2 : HasFDerivAt Φ (fderiv ℝ Φ q) (q + (0 : ℝ) • V) := by simpa using hd.hasFDerivAt
+    have h3 := h2.comp_hasDerivAt (0 : ℝ) hline
+    have h4 : HasDerivAt (fun s : ℝ => Φ (q + s • V)) 0 0 := by
+      have : (fun s : ℝ => Φ (q + s • V)) = fun _ => 0 := funext h
+      rw [this]; exact hasDerivAt_const _ _
+    exact h3.unique h4
+  · simp [fderiv_zero_of_not_differentiableAt hd]
+
+lemma continuous_Z1 {N : (Fin d → ℝ) → ℝ} (hN : ContDiff ℝ ∞ N) {h π : TensorField d} (hh : SmoothTensor h)
+    (hπ : SmoothTensor π) : Continuous (Z1 N h π) := by
+  unfold Z1
+  refine Continuous.prodMk hN.continuous (Continuous.prodMk ?_ (Continuous.prodMk (Continuous.prodMk ?_ ?_) ?_))
+  · exact continuous_pi fun ρ => (smooth_pd hN ρ).continuous
+  · exact continuous_pi fun a => continuous_pi fun b => (hh a b).continuous
+  · exact continuous_pi fun a => continuous_pi fun b => (hπ a b).continuous
+  · exact continuous_pi fun k => continuous_pi fun a => continuous_pi fun b => (smooth_pd (hh a b) k).continuous
+
+lemma continuous_V1 {k : TensorField d} (hk : SmoothTensor k) : Continuous (V1 k) := by
+  unfold V1
+  refine Continuous.prodMk continuous_const (Continuous.prodMk continuous_const
+    (Continuous.prodMk (Continuous.prodMk ?_ continuous_const) ?_))
+  · exact continuous_pi fun a => continuous_pi fun b => (hk a b).continuous
+  · exact continuous_pi fun j => continuous_pi fun a => continuous_pi fun b => (smooth_pd (hk a b) j).continuous
+
+set_option maxHeartbeats 1600000 in
+/-- **Differentiation of the smeared Hamiltonian constraint along a compactly supported symmetric variation,
+in first-order form**: `d/dt H[N](h + t k, π) = ∫ Φ₁'(Z₁ x)(V₁ x)`. -/
+theorem dirDeriv_hamiltonianConstraint_first {N : (Fin d → ℝ) → ℝ} (hN : ContDiff ℝ ∞ N)
+    (hNc : HasCompactSupport N) {h π k : TensorField d} (hh : SmoothTensor h) (hπ : SmoothTensor π)
+    (hsymm : ∀ y a b, h y a b = h y b a) (hpos : ∀ y, (h y).PosDef) (hk : SmoothTensor k)
+    (hkc : ∀ i j, HasCompactSupport (fun x => k x i j)) (hks : ∀ y a b, k y a b = k y b a) :
+    Integrable (fun x => fderiv ℝ (Phi1 (1 / ((d : ℝ) - 1))) (Z1 N h π x) (V1 k x)) volume ∧
+      dirDeriv (hamiltonianConstraint N) h π k 0 =
+        ∫ x, fderiv ℝ (Phi1 (1 / ((d : ℝ) - 1))) (Z1 N h π x) (V1 k x) := by
+  set c : ℝ := 1 / ((d : ℝ) - 1) with hc
+  obtain ⟨ε, hε, hεdet⟩ := exists_eps_det hh hpos hkc hk
+  have hWdet : ∀ t : ℝ, ∀ x, Matrix.of (Z1 N h π x + t • V1 k x).2.2.1.1 = h x + t • k x := by
+    intro t x; ext a b; simp [Z1, V1]
+  have hΦ : ∀ t : ℝ, |t| < ε → ∀ x, ContDiffAt ℝ 1 (Phi1 c) (Z1 N h π x + t • V1 k x) := by
+    intro t ht x
+    have := contDiffAt_Phi1 c (q := Z1 N h π x + t • V1 k x) (by rw [hWdet]; exact hεdet t ht x)
+    exact this.of_le (by simp)
+  have hzero : ∀ t : ℝ, ∀ x, x ∉ tsupport N →
+      Phi1 c (Z1 N h π x + t • V1 k x) = 0 ∧ fderiv ℝ (Phi1 c) (Z1 N h π x + t • V1 k x) (V1 k x) = 0 := by
+    intro t x hx
+    have hN0 : N x = 0 := image_eq_zero_of_notMem_tsupport hx
+    have hdN0 : ∀ ρ, Lightlike.pd ρ N x = 0 := by
+      intro ρ
+      simp only [Lightlike.pd]
+      have hev : N =ᶠ[𝓝 x] fun _ => (0 : ℝ) := notMem_tsupport_iff_eventuallyEq.mp hx
+      rw [hev.fderiv_eq (𝕜 := ℝ)]
+      simp
+    have hP : ∀ s : ℝ, Phi1 c (Z1 N h π x + t • V1 k x + s • V1 k x) = 0 := by
+      intro s
+      unfold Phi1
+      simp [Z1, V1, hN0, hdN0]
+    refine ⟨by simpa using hP 0, ?_⟩
+    exact fderiv_eq_zero_of_line _ _ _ hP
+  have hDI := integral_hasDerivAt_line (E := Par d) (Phi1 c) (Z1 N h π) (V1 k) hNc hε
+    (continuous_Z1 hN hh hπ) (continuous_V1 hk) hΦ hzero
+  have hint : ∀ᶠ t in 𝓝 (0 : ℝ), hamiltonianConstraint N (fun x => h x + t • k x) π =
+      ∫ x, Phi1 c (Z1 N h π x + t • V1 k x) := by
+    filter_upwards [Metric.ball_mem_nhds (0 : ℝ) hε] with t ht
+    have ht' : |t| < ε := by simpa [Real.dist_eq] using mem_ball.mp ht
+    have hg : SmoothTensor (fun y => h y + t • k y) := smoothTensor_add_smul hh hk t
+    have hgs : ∀ y a b, (fun y => h y + t • k y) y a b = (fun y => h y + t • k y) y b a := by
+      intro y a b; simp [hsymm y a b, hks y a b]
+    rw [hamiltonianConstraint_eq_firstOrder hN hNc hg hπ hgs (fun y => hεdet t ht' y)]
+    refine integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)
+    rw [firstOrderDensity_eq_Phi1, Z1_add_smul hh hk t x]
+  refine ⟨hDI.1, ?_⟩
+  have hDD := hDI.2.congr_of_eventuallyEq hint
+  unfold dirDeriv
+  simp only [Pi.zero_apply, smul_zero, add_zero]
+  exact hDD.deriv
+
+end Lightlike.Canonical
+
+end
+
+end Variation
+
+

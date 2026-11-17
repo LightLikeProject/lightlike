@@ -30,18 +30,23 @@ lemma contDiff_Zpt {h π : TensorField d} (hh : SmoothTensor h) (hπ : SmoothTen
         (contDiff_pi.mpr fun k => contDiff_pi.mpr fun l => contDiff_pi.mpr fun a => contDiff_pi.mpr fun b =>
           smooth_pd (smooth_pd (hh a b) l) k))
 
-/-- **The Hamiltonian density of smooth data is smooth.** -/
-theorem contDiff_hamiltonianDensity {h π : TensorField d} (hh : SmoothTensor h) (hπ : SmoothTensor π)
-    (hpos : ∀ y, (h y).PosDef) : ContDiff ℝ ∞ (hamiltonianDensity h π) := by
+/-- **The Hamiltonian density of smooth data with positive determinant is smooth.** -/
+theorem contDiff_hamiltonianDensity_of_det {h π : TensorField d} (hh : SmoothTensor h) (hπ : SmoothTensor π)
+    (hdet : ∀ y, 0 < (h y).det) : ContDiff ℝ ∞ (hamiltonianDensity h π) := by
   rw [contDiff_iff_contDiffAt]
   intro y
-  have hH : 0 < (h y).det := (hpos y).det_pos
+  have hH : 0 < (h y).det := hdet y
   have e : hamiltonianDensity h π = fun z => Phi (1 / ((d : ℝ) - 1)) (Zpt h π z) := by
-    funext z; exact hamiltonianDensity_eq_Phi hh (hpos z).det_pos
+    funext z; exact hamiltonianDensity_eq_Phi hh (hdet z)
   rw [e]
   have hΦ : ContDiffAt ℝ ∞ (Phi (1 / ((d : ℝ) - 1))) (Zpt h π y) :=
     contDiffAt_Phi _ (by show 0 < (h y).det; exact hH) (by show (h y).det ≠ 0; exact hH.ne')
   exact hΦ.comp y (contDiff_Zpt hh hπ).contDiffAt
+
+/-- **The Hamiltonian density of smooth data is smooth.** -/
+theorem contDiff_hamiltonianDensity {h π : TensorField d} (hh : SmoothTensor h) (hπ : SmoothTensor π)
+    (hpos : ∀ y, (h y).PosDef) : ContDiff ℝ ∞ (hamiltonianDensity h π) :=
+  contDiff_hamiltonianDensity_of_det hh hπ fun y => (hpos y).det_pos
 
 /-- The `π`-gradient of the Hamiltonian constraint is a smooth tensor field for smooth data. -/
 theorem smoothTensor_hamiltonianPiGradient {N : (Fin d → ℝ) → ℝ} (hN : ContDiff ℝ ∞ N) {h π : TensorField d}
