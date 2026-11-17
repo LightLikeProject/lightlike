@@ -1334,18 +1334,18 @@
   "citations_via": "Semantic Scholar"
  },
  "cms-1984": {
-  "checked": "2026-11-08",
+  "checked": "2026-11-18",
   "exists": true,
   "via": "Crossref",
   "fetched_title": "On the curvature of piecewise flat spaces ",
   "locations": {
-   "Abstract": {
+   "abstract": {
     "verified": false,
     "snippet": null,
     "why": "no abstract"
    }
   },
-  "citations": 339,
+  "citations": 415,
   "citations_via": "OpenAlex"
  },
  "connes-2008": {
@@ -2336,7 +2336,7 @@
   "citations_via": "Semantic Scholar"
  },
  "hinterbichler-2012": {
-  "checked": "2026-11-08",
+  "checked": "2026-11-18",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "Theoretical Aspects of Massive Gravity",
@@ -2352,7 +2352,7 @@
     "why": null
    }
   },
-  "citations": 1202,
+  "citations": 1318,
   "citations_via": "OpenAlex"
  },
  "hodges-2012": {
@@ -3330,12 +3330,18 @@
   "citations_via": "Semantic Scholar"
  },
  "regge-1961": {
-  "checked": "2026-11-08",
+  "checked": "2026-11-18",
   "exists": true,
   "via": "Crossref",
   "fetched_title": "General relativity without coordinates ",
-  "locations": {},
-  "citations": 1496,
+  "locations": {
+   "abstract": {
+    "verified": false,
+    "snippet": null,
+    "why": "no abstract"
+   }
+  },
+  "citations": 1790,
   "citations_via": "OpenAlex"
  },
  "reisenberger-1999": {

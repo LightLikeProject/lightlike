@@ -4,13 +4,14 @@ import Lightlike.Regge.Linear3.InterpEdge
 import Lightlike.Regge.Linear3.SaintVenantCore
 
 /-!
-# The coefficient `Q_n (h)` of the linearized Regge action on the periodic Kuhn complex
+# The sum `Q_n (h)` of the linearized Regge action on the periodic Kuhn complex
 
 For a smooth field `h` of symmetric matrices on `ℝ³` invariant under integer translations, give the edges
 of the periodic Kuhn complex `torusComplex n` of mesh `1/n` the squared lengths `ℓ_e² + ε a_e`, with `ℓ_e` the
 Euclidean base lengths (`lenMesh`) and `a_e = μ_e (h)` Christiansen's degrees of freedom of the Regge
-interpolant of `δ + ε h` (`lenD n (muE h)`). `Qn` is the coefficient `Σ_e (a_e / (2 ℓ_e)) δ_e'(0)` of
-`ε²/2` in the Regge action (`SecondOrder.lean`). This file writes it as a sum over the edge classes `k`
+interpolant of `δ + ε h` (`lenD n (muE h)`). `Qn` is *defined* as the sum `Σ_e (a_e / (2 ℓ_e)) δ_e'(0)`; by `regge_second_order` (`SecondOrder.lean`) this is the coefficient
+of `ε²/2` in the Regge action when the hypotheses of that theorem hold (closed, non-degenerate, flat), which is proved for the
+base lengths `len0` (`torus_second_order`) but not for the rescaled lengths `lenMesh` used here. This file writes it as a sum over the edge classes `k`
 and the cells `z`, the deficit angle derivative being `-Σ dth h (n² μ-vector) / √(hbase h 0)` over the
 incidences of the class (`Qn_eq`): the hinge-length factor times the derivative of the dihedral angle of the
 Kuhn star in the unit-scale variation `muVec` (`Dh_inc`, using the scale invariance `Dh_scale`).
@@ -136,9 +137,10 @@ theorem lengthsNondeg_lenMesh (hn : 3 ≤ n) : LengthsNondeg (torusComplex n (by
   convert this using 2
   simp [lenMesh, div_eq_inv_mul]
 
-/-- **The coefficient `Q_n (h)`** of the second-order expansion of the Regge action of the periodic Kuhn
-complex of mesh `1/n` for the interpolated lengths of the perturbation `h`: `Σ_e (a_e / (2 ℓ_e)) δ_e'(0)`,
-with `a_e = μ_e (h)` (`Lightlike/Regge/Linear3/SecondOrder.lean`). -/
+/-- **The sum `Q_n (h) = Σ_e (a_e / (2 ℓ_e)) δ_e'(0)`** for the periodic Kuhn complex of mesh `1/n` and the interpolated lengths of the
+perturbation `h`, with `a_e = μ_e (h)`. It has the form of the coefficient of `ε²/2` in the Regge action given by
+`regge_second_order` (`Lightlike/Regge/Linear3/SecondOrder.lean`); that it is that coefficient for the lengths `lenMesh` is not proved
+(the theorem is applied to `len0` in `torus_second_order`). -/
 noncomputable def Qn (hn : 2 ≤ n) (hf : (Fin 3 → ℝ) → Matrix (Fin 3) (Fin 3) ℝ) : ℝ :=
   ∑ e ∈ (torusComplex n hn).edges,
     lenD n (muE hf) e / (2 * lenMesh n e) *
@@ -146,7 +148,7 @@ noncomputable def Qn (hn : 2 ≤ n) (hf : (Fin 3 → ℝ) → Matrix (Fin 3) (Fi
         (lenLine (lenMesh n) (lenD n (muE hf)) ε) e) 0
 
 
-/-- **The coefficient `Q_n (h)` as a sum over the edge classes and the cells.** -/
+/-- **The sum `Q_n (h)` as a sum over the edge classes and the cells.** -/
 theorem Qn_eq (hn : 3 ≤ n) (hf : (Fin 3 → ℝ) → Matrix (Fin 3) (Fin 3) ℝ)
     (hper : ∀ (p : Fin 3 → ℝ) (e : Fin 3 → ℤ), hf (p + fun i => (e i : ℝ)) = hf p) :
     Qn n (by omega) hf = ∑ k : Fin 7, ∑ z : TV n,
