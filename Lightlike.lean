@@ -128,6 +128,7 @@ import Lightlike.Canonical.CurvatureCovariance
 import Lightlike.Canonical.CurvatureJet
 import Lightlike.Canonical.DensityCovariance
 import Lightlike.Canonical.DensityDeriv
+import Lightlike.Canonical.FirstOrderPotential
 import Lightlike.Canonical.FlowPullback
 import Lightlike.Canonical.HamiltonianBracket
 import Lightlike.Canonical.HamiltonianSmooth

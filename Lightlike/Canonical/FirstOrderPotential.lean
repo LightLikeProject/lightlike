@@ -1,5 +1,6 @@
 import Mathlib
 import Lightlike.Canonical.CurvatureJet
+import Lightlike.Canonical.DensityDeriv
 
 /-!
 # The scalar curvature as a first-order Lagrangian plus a total derivative
@@ -263,7 +264,144 @@ theorem scalJ_eq (hHi : ∀ a b, Hi a b = Hi b a) (hH1 : ∀ k a b, H1 k a b = H
   have e7 := W3_eq (Hi := Hi) hHi hH1
   linarith [e1, e2, e3, e4, e5, e6, e7]
 
+/-- `Σ_l Γ^l_{ρ l} = ½ tr (h⁻¹ ∂_ρ h)`. -/
+lemma trace_gam_eq (hHi : ∀ a b, Hi a b = Hi b a) (hH1 : ∀ k a b, H1 k a b = H1 k b a) (ρ : Fin d) :
+    ∑ l, gamJ Hi H1 l ρ l = 1 / 2 * (Hi * Matrix.of fun a b => H1 ρ a b).trace := by
+  have hz : ∑ l, ∑ a, Hi l a * (H1 l a ρ - H1 a ρ l) = 0 := by
+    have : ∑ l, ∑ a, Hi l a * H1 l a ρ = ∑ l, ∑ a, Hi l a * H1 a ρ l := by
+      rw [Finset.sum_comm]
+      refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun l _ => ?_
+      rw [hHi a l, hH1 l a ρ]
+    simp only [mul_sub, Finset.sum_sub_distrib, this, sub_self]
+  unfold gamJ
+  simp only [Matrix.trace, Matrix.diag_apply, Matrix.mul_apply, Matrix.of_apply, Finset.mul_sum]
+  have h2 : ∑ x, ∑ i, 1 / 2 * (Hi x i * (H1 ρ i x + H1 x i ρ - H1 i ρ x)) =
+      (∑ x, ∑ i, 1 / 2 * (Hi x i * H1 ρ i x)) + 1 / 2 * ∑ l, ∑ a, Hi l a * (H1 l a ρ - H1 a ρ l) := by
+    rw [Finset.mul_sum, ← Finset.sum_add_distrib]
+    refine Finset.sum_congr rfl fun x _ => ?_
+    rw [Finset.mul_sum, ← Finset.sum_add_distrib]
+    exact Finset.sum_congr rfl fun i _ => by ring
+  rw [h2, hz]; ring
+
 end Algebra
+
+section Analytic
+
+variable {g : TensorField d}
+
+lemma differentiableAt_inv_comp (hg : SmoothTensor g) {x : Fin d → ℝ} (hdet : (g x).det ≠ 0) (a b : Fin d) :
+    DifferentiableAt ℝ (fun y => (g y)⁻¹ a b) x :=
+  Gauge.differentiableAt_inv_entry g (fun i j => diff_of_smooth (hg i j) x) hdet a b
+
+lemma pd_inv_entry (hg : SmoothTensor g) {x : Fin d → ℝ} (hdet : (g x).det ≠ 0) (μ a b : Fin d) :
+    Lightlike.pd μ (fun y => (g y)⁻¹ a b) x = dHiJ (g x)⁻¹ (jet1 g x) μ a b := by
+  unfold dHiJ Lightlike.pd
+  rw [Gauge.fderiv_inv_entry_at g (fun a b => (hg a b).differentiable (by simp)) _ _ hdet]
+  rfl
+
+lemma differentiableAt_christoffel (hg : SmoothTensor g) {x : Fin d → ℝ} (hdet : (g x).det ≠ 0) (i j k : Fin d) :
+    DifferentiableAt ℝ (fun y => Lightlike.christoffel g i j k y) x := by
+  have dHi : ∀ i l, DifferentiableAt ℝ (fun y => (g y)⁻¹ i l) x := differentiableAt_inv_comp hg hdet
+  have dT : ∀ l, DifferentiableAt ℝ (fun y => Lightlike.pd j (fun y => g y l k) y +
+      Lightlike.pd k (fun y => g y l j) y - Lightlike.pd l (fun y => g y j k) y) x := fun l =>
+    diff_of_smooth (((smooth_pd (hg l k) j).add (smooth_pd (hg l j) k)).sub (smooth_pd (hg j k) l)) x
+  have e1 : (fun y => Lightlike.christoffel g i j k y) = fun y => (1 / 2 : ℝ) * ∑ l, (g y)⁻¹ i l *
+      (Lightlike.pd j (fun y => g y l k) y + Lightlike.pd k (fun y => g y l j) y -
+        Lightlike.pd l (fun y => g y j k) y) := rfl
+  rw [e1]
+  exact (DifferentiableAt.fun_sum fun l _ => (dHi i l).mul (dT l)).const_mul _
+
+/-- The derivative of `w^ρ` in the direction `ρ`. -/
+lemma pd_wJ (hg : SmoothTensor g) {x : Fin d → ℝ} (hdet : (g x).det ≠ 0) (ρ : Fin d) :
+    Lightlike.pd ρ (fun y => wJ (g y)⁻¹ (jet1 g y) ρ) x =
+      (∑ σ, ∑ ν, (dHiJ (g x)⁻¹ (jet1 g x) ρ σ ν * gamJ (g x)⁻¹ (jet1 g x) ρ σ ν +
+          (g x)⁻¹ σ ν * dgamJ (g x)⁻¹ (jet1 g x) (jet2 g x) ρ ρ σ ν)) -
+        ∑ σ, (dHiJ (g x)⁻¹ (jet1 g x) ρ ρ σ * ∑ l, gamJ (g x)⁻¹ (jet1 g x) l σ l +
+          (g x)⁻¹ ρ σ * ∑ l, dgamJ (g x)⁻¹ (jet1 g x) (jet2 g x) ρ l σ l) := by
+  have dHi := differentiableAt_inv_comp hg hdet
+  have dΓ := differentiableAt_christoffel hg hdet
+  have hw : (fun y => wJ (g y)⁻¹ (jet1 g y) ρ) = fun y =>
+      (∑ σ, ∑ ν, (g y)⁻¹ σ ν * Lightlike.christoffel g ρ σ ν y) -
+        ∑ σ, (g y)⁻¹ ρ σ * ∑ l, Lightlike.christoffel g l σ l y := rfl
+  have dS1 : ∀ σ, DifferentiableAt ℝ (fun y => ∑ ν, (g y)⁻¹ σ ν * Lightlike.christoffel g ρ σ ν y) x :=
+    fun σ => DifferentiableAt.fun_sum fun ν _ => (dHi σ ν).mul (dΓ ρ σ ν)
+  have dS2 : ∀ σ, DifferentiableAt ℝ (fun y => (g y)⁻¹ ρ σ * ∑ l, Lightlike.christoffel g l σ l y) x :=
+    fun σ => (dHi ρ σ).mul (DifferentiableAt.fun_sum fun l _ => dΓ l σ l)
+  rw [hw]
+  rw [Lightlike.pd_sub (f₁ := fun y => ∑ σ, ∑ ν, (g y)⁻¹ σ ν * Lightlike.christoffel g ρ σ ν y)
+    (f₂ := fun y => ∑ σ, (g y)⁻¹ ρ σ * ∑ l, Lightlike.christoffel g l σ l y)
+    (DifferentiableAt.fun_sum fun σ _ => dS1 σ) (DifferentiableAt.fun_sum fun σ _ => dS2 σ)]
+  rw [Lightlike.pd_sum Finset.univ (f := fun σ y => ∑ ν, (g y)⁻¹ σ ν * Lightlike.christoffel g ρ σ ν y)
+    (fun σ _ => dS1 σ),
+    Lightlike.pd_sum Finset.univ (f := fun σ y => (g y)⁻¹ ρ σ * ∑ l, Lightlike.christoffel g l σ l y)
+    (fun σ _ => dS2 σ)]
+  congr 1
+  · refine Finset.sum_congr rfl fun σ _ => ?_
+    rw [Lightlike.pd_sum Finset.univ (f := fun ν y => (g y)⁻¹ σ ν * Lightlike.christoffel g ρ σ ν y)
+      (fun ν _ => (dHi σ ν).mul (dΓ ρ σ ν))]
+    refine Finset.sum_congr rfl fun ν _ => ?_
+    rw [Lightlike.pd_mul (dHi σ ν) (dΓ ρ σ ν), pd_inv_entry hg hdet, pd_christoffel hg hdet]
+    rfl
+  · refine Finset.sum_congr rfl fun σ _ => ?_
+    have dsum : DifferentiableAt ℝ (fun y => ∑ l, Lightlike.christoffel g l σ l y) x :=
+      DifferentiableAt.fun_sum fun l _ => dΓ l σ l
+    rw [Lightlike.pd_mul (dHi ρ σ) dsum, pd_inv_entry hg hdet,
+      Lightlike.pd_sum Finset.univ (f := fun l y => Lightlike.christoffel g l σ l y) (fun l _ => dΓ l σ l)]
+    congr 2
+    exact Finset.sum_congr rfl fun l _ => pd_christoffel hg hdet ρ l σ l
+
+/-- **`√h R = √h L + ∂_ρ (√h w^ρ)`** for a smooth symmetric metric with `det > 0` at `x`. -/
+theorem sqrtDet_mul_scalar (hg : SmoothTensor g) (hsymm : ∀ y a b, g y a b = g y b a) {x : Fin d → ℝ}
+    (hpos : 0 < (g x).det) :
+    Real.sqrt (g x).det * Lightlike.scalarCurvature g x =
+      Real.sqrt (g x).det * LgJ (g x)⁻¹ (jet1 g x) +
+        ∑ ρ, Lightlike.pd ρ (fun y => Real.sqrt (g y).det * wJ (g y)⁻¹ (jet1 g y) ρ) x := by
+  have hdet : (g x).det ≠ 0 := hpos.ne'
+  have hHi : ∀ a b, (g x)⁻¹ a b = (g x)⁻¹ b a := by
+    intro a b
+    have hT : (g x)ᵀ = g x := by ext i j; exact hsymm x j i
+    have := congrFun (congrFun (Matrix.transpose_nonsing_inv (g x)) b) a
+    rw [Matrix.transpose_apply, hT] at this
+    exact this
+  have hH1 : ∀ k a b, jet1 g x k a b = jet1 g x k b a := by
+    intro k a b
+    unfold jet1
+    have : (fun y => g y a b) = fun y => g y b a := funext fun y => hsymm y a b
+    rw [this]
+  have hH2 : ∀ m k a b, jet2 g x m k a b = jet2 g x m k b a := by
+    intro m k a b
+    unfold jet2
+    have : (fun y => g y a b) = fun y => g y b a := funext fun y => hsymm y a b
+    rw [this]
+  have hs := differentiableAt_sqrt_det_comp hg hpos
+  have hW : ∀ ρ, DifferentiableAt ℝ (fun y => wJ (g y)⁻¹ (jet1 g y) ρ) x := by
+    intro ρ
+    have dHi := differentiableAt_inv_comp hg hdet
+    have dΓ := differentiableAt_christoffel hg hdet
+    have hw : (fun y => wJ (g y)⁻¹ (jet1 g y) ρ) = fun y =>
+        (∑ σ, ∑ ν, (g y)⁻¹ σ ν * Lightlike.christoffel g ρ σ ν y) -
+          ∑ σ, (g y)⁻¹ ρ σ * ∑ l, Lightlike.christoffel g l σ l y := rfl
+    rw [hw]
+    exact (DifferentiableAt.fun_sum fun σ _ => DifferentiableAt.fun_sum fun ν _ => (dHi σ ν).mul (dΓ ρ σ ν)).sub
+      (DifferentiableAt.fun_sum fun σ _ => (dHi ρ σ).mul (DifferentiableAt.fun_sum fun l _ => dΓ l σ l))
+  have hps : ∀ ρ, Lightlike.pd ρ (fun y => Real.sqrt (g y).det) x =
+      Real.sqrt (g x).det * ∑ l, gamJ (g x)⁻¹ (jet1 g x) l ρ l := by
+    intro ρ
+    rw [pd_sqrt_det hg hpos ρ, trace_gam_eq hHi hH1 ρ]
+    have hsq : Real.sqrt (g x).det ^ 2 = (g x).det := Real.sq_sqrt hpos.le
+    have hs0 : Real.sqrt (g x).det ≠ 0 := (Real.sqrt_pos.mpr hpos).ne'
+    have e : (Matrix.of fun a b => Lightlike.pd ρ (fun y => g y a b) x) = Matrix.of fun a b => jet1 g x ρ a b := rfl
+    rw [e, div_eq_iff (by positivity)]
+    linear_combination (-(((g x)⁻¹ * Matrix.of fun a b => jet1 g x ρ a b).trace)) * hsq
+  have hR := scalarCurvature_eq_scalJ hg hdet
+  rw [hR, scalJ_eq hHi hH1 hH2]
+  simp only [Lightlike.pd_mul hs (hW _), hps, Finset.sum_add_distrib]
+  unfold dwSum divTerm
+  simp only [pd_wJ hg hdet, Finset.mul_sum, Finset.sum_mul]
+  simp only [mul_add, Finset.mul_sum, Finset.sum_add_distrib, mul_assoc]
+  ring
+
+end Analytic
 
 end Lightlike.Canonical
 
