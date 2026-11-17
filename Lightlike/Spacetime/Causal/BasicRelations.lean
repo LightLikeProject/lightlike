@@ -169,6 +169,16 @@ theorem chronological_of_causal (h : IsCausal T) : IsChronological T := by
     ⟨γ, t, b, htb.le, IsCurveWith.mono hc hta.le le_rfl htb, rfl, e2⟩
   exact hne (h x (γ t) hy hx').symm
 
+/-- **Strong causality implies causality.** If `y ∈ J⁺(x)` and `x ∈ J⁺(y)` with `x ≠ y`, a causally
+convex neighbourhood of `x` inside `{y}ᶜ` contains `y`, because `y` lies on a causal loop from `x`
+to `x`. (Hawking–Ellis, Chapter 6; the comparison with the book at its location is pending.) -/
+theorem causal_of_stronglyCausal [T1Space M] (h : IsStronglyCausal T) : IsCausal T := by
+  intro x y hxy hyx
+  by_contra hne
+  obtain ⟨V, hV, hVU, hconv⟩ := h x {y}ᶜ (isOpen_compl_singleton.mem_nhds (fun h => hne h))
+  have hxV : x ∈ V := mem_of_mem_nhds hV
+  exact hVU (hconv x hxV x hxV y hxy hyx) rfl
+
 end Causal
 
 end Lightlike

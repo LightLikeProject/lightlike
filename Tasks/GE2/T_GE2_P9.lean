@@ -1,4 +1,4 @@
-import Lightlike.Spacetime.Causal.MinkowskiCausal
+import Lightlike.Spacetime.Causal.BasicRelations
 
 /-!
 # Task T-GE2-P9
@@ -57,6 +57,6 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
 
 /-- **Strong causality implies causality.** -/
 theorem isCausal_of_isStronglyCausal [T2Space M] (h : IsStronglyCausal T) : IsCausal T := by
-  sorry
+  exact causal_of_stronglyCausal T h
 
 end Lightlike.Causal
