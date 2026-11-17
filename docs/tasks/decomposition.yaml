@@ -118,6 +118,17 @@ tasks:
       - Representation theory of U_q(sl₂) at roots of unity (Turaev 1994).
       - Kauffman–Lins recoupling theory (1994).
 
+  - id: T-CA1-P1
+    milestone: CA1
+    kind: proof
+    title: "The bracket of a smeared momentum constraint with a smeared Hamiltonian constraint is a smeared Hamiltonian constraint"
+    file: Tasks/CA/T_CA1_P1.lean
+    decl: Lightlike.Canonical.bracket_momentum_hamiltonian
+    size: L
+    difficulty: research-level
+    routes:
+      - "Covariance of the scalar density `√h R` under the flow of `ξ`, from `Lightlike.scalarCurvature_pullback`, and the first variation of the scalar curvature."
+      - "Hojman–Kuchař–Teitelboim (1976) and Thiemann (2007), Chapter 1: the hypersurface deformation algebra."
   - id: T-CA1-P2
     milestone: CA1
     kind: proof
