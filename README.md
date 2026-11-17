@@ -148,11 +148,10 @@ lake build Tasks
 
 `lake exe cache get` downloads Mathlib's prebuilt files; the first `lake build` compiles Physlib and
 Lightlike. On GitHub's 4-core Linux runner, Lightlike alone took about 42 minutes (Physlib comes on
-top); a 2-core machine takes more than 90 minutes. Later builds compile only what changed. A build
-needs about 11 GB of disk, and some modules up to about 6 GB of RAM per Lean process (16 GB is
-recommended; 8 GB machines may build very slowly). `lake build Tasks` builds the proof-task files in
-`Tasks/`, which are not part of the library. The checks in `scripts/` need Python 3.9 to 3.14 and
-the packages in `requirements.txt`:
+top). Later builds compile only what changed. A build needs about 11 GB of disk, and some modules up
+to about 6 GB of RAM per Lean process (16 GB is recommended; 8 GB machines may build very slowly).
+`lake build Tasks` builds the proof-task files in `Tasks/`, which are not part of the library. The
+checks in `scripts/` need Python 3.9 to 3.14 and the packages in `requirements.txt`:
 `python3 -m venv .venv && . .venv/bin/activate && pip install -r requirements.txt` (on Windows the
 venv is activated with `.venv\Scripts\activate`; `scripts/gate.py` runs the CI steps with bash).
 
