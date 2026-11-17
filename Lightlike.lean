@@ -614,6 +614,7 @@ import Lightlike.Spacetime.BianchiSecond
 import Lightlike.Spacetime.ContractedBianchi
 import Lightlike.Spacetime.DivergenceFree
 import Lightlike.Spacetime.ChartTensor
+import Lightlike.Spacetime.EinsteinEquations
 import Lightlike.Spacetime.ChartAgreement
 import Lightlike.Spacetime.ChartConnection
 import Lightlike.Spacetime.ChartCovariant
