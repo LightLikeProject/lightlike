@@ -71,13 +71,15 @@ continuous linear functional `ℓ` and a constant `C` such that for every future
 `ℓ (c s) ≤ ℓ (c t)` and `‖c t - c s‖ ≤ C (ℓ (c t) - ℓ (c s))`, where `c = extChartAt I p ∘ γ`. -/
 theorem exists_cone_estimate_curve (p : M) :
     ∃ W ∈ 𝓝 p, W ⊆ (tTriv I M p).baseSet ∧ ∃ (ℓ : E →L[ℝ] ℝ) (C : ℝ), 0 < C ∧
+      (∀ q ∈ W, ∀ v : TangentSpace I q, T.IsFutureCausal v →
+        ‖(tTriv I M p ⟨q, v⟩).2‖ ≤ C * ℓ (tTriv I M p ⟨q, v⟩).2) ∧
       ∀ (γ : ℝ → M) (a b : ℝ), IsFutureCausalCurve T γ (Icc a b) → (∀ t ∈ Icc a b, γ t ∈ W) →
         ∀ s ∈ Icc a b, ∀ t ∈ Icc a b, s ≤ t →
           ℓ (extChartAt I p (γ s)) ≤ ℓ (extChartAt I p (γ t)) ∧
           ‖extChartAt I p (γ t) - extChartAt I p (γ s)‖ ≤
             C * (ℓ (extChartAt I p (γ t)) - ℓ (extChartAt I p (γ s))) := by
   obtain ⟨W, hW, hWb, ℓ, C, hC, hcone⟩ := exists_cone_estimate T p
-  refine ⟨W, hW, hWb, ℓ, C, hC, ?_⟩
+  refine ⟨W, hW, hWb, ℓ, C, hC, hcone, ?_⟩
   intro γ a b hγ hmem s hs t ht hst
   have mono : ∀ F G : E →L[ℝ] ℝ, (∀ w : E, ‖w‖ ≤ C * ℓ w → F w ≤ G w) →
       F (extChartAt I p (γ t)) - F (extChartAt I p (γ s)) ≤

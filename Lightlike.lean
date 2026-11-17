@@ -608,6 +608,7 @@ import Lightlike.Spacetime.CausalLadder.LimitFunctional
 import Lightlike.Spacetime.CausalLadder.ReparamCurve
 import Lightlike.Spacetime.CausalLadder.ChartCurve
 import Lightlike.Spacetime.CausalLadder.LimitBound
+import Lightlike.Spacetime.CausalLadder.LimitCurve
 import Lightlike.Spacetime.Causal.BasicRelations
 import Lightlike.Spacetime.Causal.CausalCurve
 import Lightlike.Spacetime.Causal.CurveOps
