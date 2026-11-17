@@ -2,7 +2,7 @@
 
 # Results
 
-131 proven results with stable IDs and 1 conditional result (proven under hypotheses that are named Lean propositions). An ID is never reused; a withdrawn result is kept as `retired`. Every declaration of the library, and so every proven result, depends only on the axioms `propext`, `Classical.choice` and `Quot.sound`.
+132 proven results with stable IDs and 1 conditional result (proven under hypotheses that are named Lean propositions). An ID is never reused; a withdrawn result is kept as `retired`. Every declaration of the library, and so every proven result, depends only on the axioms `propext`, `Classical.choice` and `Quot.sound`.
 
 Tier: **established** (standard mathematics and physics that the frontier work needs; candidates for Mathlib or Physlib later); **frontier** (proposals published in the peer-reviewed literature, labelled as proposals); **exploratory** (new or unpublished models and conjectures, kept in `Exploratory/` folders that nothing else imports; promoted to frontier only after publication). Every result is about the mathematics of a model, not a claim that the model describes nature.
 
@@ -401,3 +401,15 @@ API map: [Lightlike/Oscillatory/API-map.md](../Lightlike/Oscillatory/API-map.md)
 Notes:
 
 - **LL-0126.** Theorem 7.7.5 of Hormander (ALPDO I), leading term: for a smooth phase phi on EuclideanSpace R^n and a smooth compactly supported amplitude a, with Im phi >= 0 on the support, the critical points in the support (Im phi = 0, d phi = 0) forming a finite set K of nondegenerate points (det(-iH) != 0), the integral of a e^{i lambda phi} equals the sum over K of e^{i lambda phi(x0)} (2 pi / lambda)^{n/2} det(-iH(x0))^{-1/2} a(x0) up to O(lambda^{-n/2-1}); the square root is the product of the principal roots of the eigenvalues of -iH (invSqrtDet). Away from the critical points the integral is O(lambda^{-k}) for every k (Theorem 7.7.1, nonstationary_phase). stationary_phase assumes Im phi >= 0 on the support of a only, so critical points on the boundary of the support are allowed; stationary_phase_of_isOpen assumes it on an open set containing the support, as Hormander does. The higher-order terms of the expansion in Theorem 7.7.5 are not stated.
+
+## Cosmology
+
+API map: [Lightlike/Cosmology/API-map.md](../Lightlike/Cosmology/API-map.md)
+
+| ID | Result | Status | Tier | Lean |
+|---|---|---|---|---|
+| LL-0133 | Einstein's equations for an FLRW spacetime with a perfect fluid are equivalent to Friedmann's two equations (see note) | proven | established | `Lightlike.Cosmology.flrw_einstein_iff_friedmann` in [FLRW.lean](../Lightlike/Cosmology/FLRW.lean) |
+
+Notes:
+
+- **LL-0133.** The FLRW metric -dt² + a(t)² dx² / (1 + k|x|²/4)² in isotropic coordinates, for every real k, on the set where t ∈ I and 1 + k|x|²/4 > 0 (the Poincaré ball for k < 0, all of ℝ³ for k ≥ 0), with a smooth positive a on an open interval I and the perfect fluid (ρ + p) u u + p g at rest in the chart: G + Λ g = 8πG T holds there iff Friedmann's first and second equations hold at every t ∈ I (units c = 1). The same statement with Physlib's FirstOrderFriedmann and SecondOrderFriedmann at c = 1 on the right is flrw_einstein_iff_physlib_friedmann in Lightlike/Cosmology/FLRWPhyslib.lean. The continuity equation follows (friedmann_continuity, for G ≠ 0). Trust checks: de Sitter with k = 0 solves the equations iff H² = 8πGρ/3; Einstein's static dust universe with k = 1 iff Λ = 1/a² = 4πGρ; with k = -1 there is no static dust solution; scripts/flrw_check.py recomputes the Ricci and Einstein components with sympy and shows that the metric with the sign of k flipped fails them. Limits: a statement in one chart, not on a manifold I × Σ; for k > 0 the chart misses one point of the 3-sphere; ρ and p depend on t only and the fluid is comoving, by assumption.

@@ -1739,3 +1739,16 @@
   review: kernel-checked
   note: "For a C^3 symmetric Z^3-periodic matrix field h on R^3, Q_n(h) = sum over edges of (mu_e / (2 l_e)) delta_e'(0) for the periodic Kuhn complex of mesh 1/n with the squared lengths l_e^2 + eps mu_e(h), mu_e the degrees of freedom of the Regge interpolant (Christiansen 2011, eq. (5)), tends as n goes to infinity to the integral over the unit cube of -1/4 sum h_ij eps_ikl eps_jmn d_k d_m h_ln, the Saint-Venant form (Qn_converges). Proof: the lattice form of Q_n, the second-order expansion of the degrees of freedom, the vanishing of the zeroth and first order class sums, the pointwise identity of the 36 incidences, Riemann sums with cell sample points. Limits: convergence only, no rate; the interpolated lengths, not the geodesic lengths; one smooth periodic field on the standard cubical Kuhn complex; the sign of the deficit angle relative to 2 pi minus the angle sum is fixed by the numerical check, not by the paper. Trust checks: non-zero field, the numerical check scripts/regge/regge3d_linearized_check.py (sign and factor controls fail)."
   since: unreleased
+- id: LL-0133
+  title: Einstein's equations for an FLRW spacetime with a perfect fluid are equivalent to Friedmann's two equations
+  area: Cosmology
+  file: Lightlike/Cosmology/FLRW.lean
+  decls: [Lightlike.Cosmology.flrw_einstein_iff_friedmann]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (8.36)", check: "Friedmann"}
+  review: kernel-checked
+  note: "The FLRW metric -dt² + a(t)² dx² / (1 + k|x|²/4)² in isotropic coordinates, for every real k, on the set where t ∈ I and 1 + k|x|²/4 > 0 (the Poincaré ball for k < 0, all of ℝ³ for k ≥ 0), with a smooth positive a on an open interval I and the perfect fluid (ρ + p) u u + p g at rest in the chart: G + Λ g = 8πG T holds there iff Friedmann's first and second equations hold at every t ∈ I (units c = 1). The same statement with Physlib's FirstOrderFriedmann and SecondOrderFriedmann at c = 1 on the right is flrw_einstein_iff_physlib_friedmann in Lightlike/Cosmology/FLRWPhyslib.lean. The continuity equation follows (friedmann_continuity, for G ≠ 0). Trust checks: de Sitter with k = 0 solves the equations iff H² = 8πGρ/3; Einstein's static dust universe with k = 1 iff Λ = 1/a² = 4πGρ; with k = -1 there is no static dust solution; scripts/flrw_check.py recomputes the Ricci and Einstein components with sympy and shows that the metric with the sign of k flipped fails them. Limits: a statement in one chart, not on a manifold I × Σ; for k > 0 the chart misses one point of the 3-sphere; ρ and p depend on t only and the fluid is comoving, by assumption."
+  since: unreleased
