@@ -43,6 +43,12 @@ CHECKS = [
     ("scripts/asymptotics/landing_check.py", False),
     ("scripts/asymptotics/link_integral_check.py", False),
     ("scripts/asymptotics/lorentzian_hessian_check.py", True),
+    ("scripts/asymptotics/lorentzian_hessian_closed_form_check.py", True),
+    ("scripts/asymptotics/lorentzian_hessian_node_check.py", True),
+    ("scripts/asymptotics/lorentzian_hessian_paper61_check.py", False),
+    ("scripts/asymptotics/lorentzian_hessian_noncritical_check.py", False),
+    ("scripts/asymptotics/lorentzian_hessian_kernel_check.py", False),
+    ("scripts/asymptotics/lorentzian_regge_frequency_check.py", False),
     ("scripts/asymptotics/level_check.py", False),
     ("scripts/asymptotics/racah_sum_asymptotics.py", False),
     ("scripts/asymptotics/stirling_check.py", False),
@@ -66,8 +72,14 @@ CHECKS = [
     ("scripts/regge/regge3d_affine.py", False), ("scripts/regge/regge3d_core.py", False),
     ("scripts/regge/regge3d_jet.py", False), ("scripts/vertex_identity_check.py", False),
     ("scripts/regge/regge3d_g0_certificate.py", False),
+    ("scripts/regge/regge3d_sphere_check.py", True),
+    ("scripts/regge/regge3d_linearized_check.py", True),
+    ("scripts/regge/fierz_pauli_check.py", True),
+    ("scripts/regge/eh_jet_poly_check.py", True),
+    ("scripts/regge/eh_wrong_model_check.py", True),
     ("scripts/qracah/qd_map_check.py", False), ("scripts/qracah/jhyp_coverage_check.py", False),
     ("scripts/qracah/jackson_degenerate_check.py", False),
+    ("scripts/qracah/qd_coverage_check.py", False),
     ("scripts/spinfoam/vertex_check.py", False),
     ("scripts/spinfoam/bc_sign_check.py", False),
     ("scripts/spinfoam/bing_house_check.py", False),
@@ -77,7 +89,8 @@ CHECKS = [
     ("scripts/spinfoam/robust_check.py", False),
     ("scripts/spinfoam/forcing_repair_check.py", False),
     ("scripts/spinfoam/gauge_independence_check.py", True),
-    ("scripts/spinfoam/tetra_partition_check.py", False), ("scripts/spinfoam/u1_bubble.py", False),
+    ("scripts/spinfoam/tetra_partition_check.py", False),
+    ("scripts/spinfoam/eprl_node_check.py", False), ("scripts/spinfoam/eprl_high_check.py", False), ("scripts/spinfoam/u1_bubble.py", False),
 ]
 # Scripts that are not cross-checks (tools, the gate itself)
 NOT_CHECKS = {"scripts/ci_check.py", "scripts/prune_docs.py", "scripts/gate.py", "scripts/sixj_support.py", "scripts/tooling_selftest.py",
@@ -85,6 +98,8 @@ NOT_CHECKS = {"scripts/ci_check.py", "scripts/prune_docs.py", "scripts/gate.py",
               "scripts/leansrc.py", "scripts/proof_task_check.py", "scripts/tasks.py",
               "scripts/sources.py", "scripts/doc_refs_check.py", "scripts/leak_check.py",
               "scripts/regge/regge3d_convergence.py",  # a library of the regge3d_* checks (dihedral); its demo has no verdict
+              "scripts/regge/gen_chart_change.py",  # generator of Lightlike/Regge/Conv3/ChartChangeClasses.lean
+              "scripts/regge/gen_sv_sigma.py",  # generator of Lightlike/Regge/Linear3/SaintVenantSigma0..5.lean
               "scripts/regge/gen_star_angle.py",  # generator of the edge-class fans in Lightlike/Regge/Conv3/StarAngle.lean
               "scripts/regge/gen_kuhn_basis.py",  # generator of Lightlike/Regge/Conv3/KuhnBasis.lean from regge3d_g0_certificate.py
               "scripts/regge/gen_flat_star.py",  # generator of Lightlike/Regge/Conv3/FlatStar.lean (prints, no exit code)

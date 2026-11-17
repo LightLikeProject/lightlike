@@ -283,8 +283,9 @@ def statement_key(header):
 
 
 def library_duplicates(tasks, root=ROOT):
-    """{task ID: [(file, line, name)]}: proof tasks whose statement is already a theorem of the
-    library (Lightlike/), proven there. A task for it would duplicate work that exists."""
+    """{task ID: [(file, line, name)]}: open proof tasks whose statement is already a theorem of the
+    library (Lightlike/), proven there. A task for it would duplicate work that exists. A task whose
+    own `sorry` is filled is done, not a duplicate, and is skipped."""
     keys = {}
     for f in sorted((root / "Lightlike").rglob("*.lean")):
         lines = f.read_text().split("\n")
@@ -303,7 +304,10 @@ def library_duplicates(tasks, root=ROOT):
     for t in tasks:
         if t.get("kind") != "proof" or not (root / t["file"]).exists():
             continue
-        parts = ptc.split_block((root / t["file"]).read_text(), t["decl"].split(".")[-1])
+        text = (root / t["file"]).read_text()
+        if proven(text, t["decl"]):
+            continue
+        parts = ptc.split_block(text, t["decl"].split(".")[-1])
         hits = keys.get(statement_key(parts[1])) if parts else None
         if hits:
             found[t["id"]] = hits

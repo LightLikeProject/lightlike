@@ -47,15 +47,15 @@ functionals, for which the two slicings have the same cells as sets and hence is
 subdivision of a complex with the empty face is stellar equivalent to it [20], and from that
 Newman's theorem [21]. With it, the sphere results above no longer assume stellar equivalence of
 subdivisions of lower dimension [21]. Conversely a stellar subdivision is a PL homeomorphism of the
-realisations, and so is any chain of subdivisions and welds {1} [47]. The Euler characteristic is
+realisations, and so is any chain of subdivisions and welds {1} [55]. The Euler characteristic is
 invariant under stellar equivalence, so complexes with different Euler characteristics are not stellar
 equivalent, and, when both or neither contain the empty face, their realisations are not PL
-homeomorphic [48] [21].
+homeomorphic [56] [21].
 
 The 3-complexes of the Ponzano–Regge API generate simplicial complexes, and its closed
 combinatorial 3-manifolds are closed combinatorial 3-manifolds in this sense [6]. In dimension two, a connected graph with two
 edges at every vertex is reached from the boundary of a triangle by subdividing edges, and so
-generates a PL 1-sphere [46]; this identifies the vertex links of the closed surfaces of
+generates a PL 1-sphere [54]; this identifies the vertex links of the closed surfaces of
 the surface API as PL 1-spheres. The same
 construction applies to the 4-complexes of the four-dimensional API, with closed combinatorial
 4-manifolds defined by their vertex links [7].
@@ -83,7 +83,7 @@ Cutting along such a diagonal gives two polygons, made of the edges from the ver
 
 A geometric complex is PL homeomorphic to its abstract realisation, by the linear map that sends the weights `x` to `∑ x v • v`: the faces are affinely independent and meet in common faces, which gives injectivity {1} [37]. A PL ball of dimension `n` is PL homeomorphic to the simplex on any `n + 1` vertices, since a permutation of the vertex type carries one vertex set to the other [38]. Composing with the stellar equivalence of the triangulated region of a polygon to a simplex, the closed region bounded by a simple closed polygon is PL homeomorphic to a triangle {4} [39]. The homeomorphism is not shown to map the polygon onto the boundary of the triangle.
 
-A simple chain is a list of points in the plane whose consecutive segments meet only at shared vertices; simple chains glue and reverse, and the set of a chain is its union of segments [40]. The ray crossing parity of a chain is additive under gluing and, modulo 2, invariant under reversal, which links the parity of a polygon built from a list to that of its chains [41]. The carrier of a polygon made of two arcs is the union of the two arcs, the parity of a ray crossing jumps across an arc near its interior points, and the interior of a simple chain without its ends is preconnected [42]. If a simple closed polygon is made of two arcs, a chord joining an interior point of the first arc to an interior point of the second, with its ends removed and meeting the arcs only at those points, cannot lie on the same side of the polygon as a second chord joining the two ends: the proof compares the parities of the three theta pieces and needs no orientation [43] {5}. Take the six-cycle of a drawing of `K₃,₃` as a hexagon with three chords; each chord lies inside or outside the hexagon, so two of them lie on the same side, and after a rotation of the labels they are neighbouring chords, which is impossible [44]. Hence six points joined across two classes of three by nine simple polygonal arcs that meet only in their common endpoints do not exist; the arcs are polygonal only, and the statement for continuous arcs is a later step [45].
+A simple chain is a list of points in the plane whose consecutive segments meet only at shared vertices; simple chains glue and reverse, and the set of a chain is its union of segments [40]. The ray crossing parity of a chain is additive under gluing and, modulo 2, invariant under reversal, which links the parity of a polygon built from a list to that of its chains [41]. The carrier of a polygon made of two arcs is the union of the two arcs, the parity of a ray crossing jumps across an arc near its interior points, and the interior of a simple chain without its ends is preconnected [42]. If a simple closed polygon is made of two arcs, a chord joining an interior point of the first arc to an interior point of the second, with its ends removed and meeting the arcs only at those points, cannot lie on the same side of the polygon as a second chord joining the two ends: the proof compares the parities of the three theta pieces and needs no orientation [43] {5}. Take the six-cycle of a drawing of `K₃,₃` as a hexagon with three chords; each chord lies inside or outside the hexagon, so two of them lie on the same side, and after a rotation of the labels they are neighbouring chords, which is impossible [44]. Hence six points joined across two classes of three by nine simple polygonal arcs that meet only in their common endpoints do not exist [45]. A simple chain contains, in its set, a simple chain with the same first and last point [46], and a continuous arc is approximated, within any distance, by such a chain [47]. Trimming each arc outside small balls around the six points, approximating the trimmed pieces by chains and joining them to the points by straight segments gives a polygonal drawing from any drawing by continuous arcs, so there is none [48]. An arc is the image of an injective continuous map of the unit interval; arcs reverse, split at a point and glue, and two points of a connected open set of the plane are joined by a chain in the set [49] {5}. Taking a highest and a lowest point of a circle embedded in the plane, which splits it into two arcs, and joining the two arcs by a horizontal segment and by an outer polygonal arc, with an arc through the complement if it were connected, gives nine arcs of a drawing of `K₃,₃`; the complement of an embedded circle is therefore not connected, which is the weak Jordan theorem [50] {5}. That the complement has exactly two components with the circle as boundary of each is not proved. A connected compact set that contains both ends of an arc and lies near it is near every point of it, because the inverse of an arc is uniformly continuous [51]. With it a Jordan curve is approximated, within any distance and in both directions, by a simple closed polygon [52]. The complement of a Jordan curve has exactly one unbounded component and a bounded component whose frontier lies in the curve [53]; that it has exactly one bounded component is open, as it needs the Arc Theorem.
 
 ## Lean References
 
@@ -167,11 +167,19 @@ A simple chain is a list of points in the plane whose consecutive segments meet 
 43. Lightlike/PL/Interlaced.lean - `PL.no_interlaced_chord`
 44. Lightlike/PL/HexFalse.lean - `PL.Hex.false`
 45. Lightlike/PL/K33.lean - `PL.PLDrawing`, `PL.no_PL_K33`
-46. Lightlike/PL/Cycle.lean - `PL.CycleGraph`, `PL.CycleGraph.isSphere1`,
+46. Lightlike/PL/LoopErase.lean - `PL.exists_simple_sub`
+47. Lightlike/PL/ArcApprox.lean - `PL.exists_simple_chain_near`
+48. Lightlike/PL/ContK33.lean - `PL.ContDrawing`, `PL.no_K33`
+49. Lightlike/PL/ArcSet.lean - `PL.IsArc`, `PL.exists_chain_in_open`
+50. Lightlike/PL/WeakJordanCircle.lean - `PL.weak_jordan`
+51. Lightlike/PL/ArcDensity.lean - `PL.arc_density`, `PL.exists_inverse_modulus`
+52. Lightlike/PL/PolygonApprox.lean - `PL.exists_two_chains`, `PL.exists_polygon_near`
+53. Lightlike/PL/JordanComponents.lean - `PL.jordan_components`
+54. Lightlike/PL/Cycle.lean - `PL.CycleGraph`, `PL.CycleGraph.isSphere1`,
     `PL.CycleGraph.isPLSphere`, `PL.isPLSphere_closure_of_isSphere1`
-47. Lightlike/PL/StellarHomeo.lean - `PL.SComplex.PLHomeomorphic.starAt`,
+55. Lightlike/PL/StellarHomeo.lean - `PL.SComplex.PLHomeomorphic.starAt`,
     `PL.SComplex.PLHomeomorphic.of_stellarEquiv`
-48. Lightlike/PL/Euler.lean - `PL.SComplex.StellarEquiv.euler_eq`,
+56. Lightlike/PL/Euler.lean - `PL.SComplex.StellarEquiv.euler_eq`,
     `PL.SComplex.not_stellarEquiv_of_euler_ne`
 
 ## References
