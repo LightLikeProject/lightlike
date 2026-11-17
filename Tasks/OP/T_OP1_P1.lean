@@ -29,12 +29,12 @@ Lemmas about them, which a proof may use:
 
 * `OperatorAlgebras.UnitaryGroup.ext` (`Lightlike/OperatorAlgebras/UnitaryGroup.lean`)
 * `OperatorAlgebras.UnitaryGroup.mk.inj` (`Lightlike/OperatorAlgebras/UnitaryGroup.lean`)
+* `OperatorAlgebras.phaseGroup_generator` (`Lightlike/OperatorAlgebras/TestsUnitaryGroup.lean`)
 * `OperatorAlgebras.UnitaryGroup.ext_iff` (`Lightlike/OperatorAlgebras/UnitaryGroup.lean`)
 * `OperatorAlgebras.UnitaryGroup.mk.injEq` (`Lightlike/OperatorAlgebras/UnitaryGroup.lean`)
 * `OperatorAlgebras.UnitaryGroup.map_add'` (`Lightlike/OperatorAlgebras/UnitaryGroup.lean`)
 * `OperatorAlgebras.UnitaryGroup.map_zero'` (`Lightlike/OperatorAlgebras/UnitaryGroup.lean`)
-* `OperatorAlgebras.UnitaryGroup.continuous'` (`Lightlike/OperatorAlgebras/UnitaryGroup.lean`)
-* `OperatorAlgebras.UnitaryGroup.mk.sizeOf_spec` (`Lightlike/OperatorAlgebras/UnitaryGroup.lean`)
+* `OperatorAlgebras.phaseGroup_generator_ne` (`Lightlike/OperatorAlgebras/TestsUnitaryGroup.lean`)
 
 Everything they depend on, and the further lemmas about them, in one block:
 

@@ -179,6 +179,17 @@ tasks:
     difficulty: research-level
     routes:
       - "Implementability by the unitary built from the Bogoliubov coefficients (Shale 1962; Bratteli–Robinson 2, Chapter 5); the converse by the number operator and the vacuum's image."
+  - id: T-OP1-P4
+    milestone: OP1
+    kind: proof
+    title: "The C² functions with compact support are a core of the generator of the translation group on L²(ℝ)"
+    file: Tasks/OP/T_OP1_P4.lean
+    decl: Lightlike.OperatorAlgebras.translationGroup_core
+    size: M
+    difficulty: research-level
+    routes:
+      - "Mollification: for ψ in the domain, ψ * ρ_ε is smooth and tends to ψ with its derivative; truncate by a cutoff and use that the generator commutes with convolution (Hall, Chapter 10)."
+      - "A dense invariant subspace of the domain is a core (Reed–Simon I, Chapter VIII, on cores); the C² compactly supported functions are invariant under translation."
 
 # Upstream tasks: finished results that belong in Mathlib (general mathematics) or Physlib
 # (general physics), with the rework each needs. Exclusive, like definition

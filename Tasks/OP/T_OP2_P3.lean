@@ -27,12 +27,12 @@ Lemmas about them, which a proof may use:
 
 * `OperatorAlgebras.FockRep.cyclic` (`Lightlike/OperatorAlgebras/Weyl.lean`)
 * `OperatorAlgebras.FockRep.vacuum_expectation` (`Lightlike/OperatorAlgebras/Weyl.lean`)
+* `OperatorAlgebras.squeeze_beta` (`Lightlike/OperatorAlgebras/TestsWeyl.lean`)
 * `OperatorAlgebras.FockRep.norm_Ω` (`Lightlike/OperatorAlgebras/Weyl.lean`)
 * `OperatorAlgebras.FockRep.mk.inj` (`Lightlike/OperatorAlgebras/Weyl.lean`)
+* `OperatorAlgebras.squeeze_norm_sq` (`Lightlike/OperatorAlgebras/TestsWeyl.lean`)
 * `OperatorAlgebras.FockRep.mk.injEq` (`Lightlike/OperatorAlgebras/Weyl.lean`)
 * `OperatorAlgebras.Bogoliubov.mk.inj` (`Lightlike/OperatorAlgebras/Weyl.lean`)
-* `OperatorAlgebras.Bogoliubov.symp_map` (`Lightlike/OperatorAlgebras/Weyl.lean`)
-* `OperatorAlgebras.Bogoliubov.mk.injEq` (`Lightlike/OperatorAlgebras/Weyl.lean`)
 
 Everything they depend on, and the further lemmas about them, in one block:
 
