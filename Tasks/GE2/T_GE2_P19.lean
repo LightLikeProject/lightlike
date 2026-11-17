@@ -12,7 +12,7 @@ change (CONTRIBUTING.md).
 
 Hint. This is open. The library's `IsFutureTimelikeCurve` asks, besides a timelike velocity almost
 everywhere, for a margin on compact intervals (a difference of form from the textbooks, approved by
-the project owner on 17 November 2026). The statement is that dropping the margin does not change
+the maintainers on 17 November 2026). The statement is that dropping the margin does not change
 `I⁺`.
 
 Partial results, as helper lemmas in separate pull requests, are welcome.

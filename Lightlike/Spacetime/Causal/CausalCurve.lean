@@ -96,8 +96,8 @@ cone strictly inside the future timelike cone.
 **Difference of form from the textbooks** (Hawking–Ellis, Section 6.2; Wald, Section 8.1), who ask
 only for a timelike velocity: the margin is an added hypothesis. For the curve classes of the
 textbooks (piecewise `C¹`) it holds (`isFutureTimelikeCurve_of_contMDiffOn`). It is approved by the
-project owner on 17 November 2026. Whether the two definitions give the same `I⁺` for smooth
-metrics is open (task T-GE2-OPEN-MARGIN), not claimed. -/
+maintainers on 17 November 2026. Whether the two definitions give the same `I⁺` for smooth
+metrics is open (task T-GE2-P19), not claimed. -/
 def IsFutureTimelikeCurve (γ : ℝ → M) (s : Set ℝ) : Prop :=
   IsCurveWith (I := I) (fun _ v ↦ T.IsFutureTimelike v) γ s ∧
     ∀ a b : ℝ, a < b → Icc a b ⊆ s →
