@@ -119,6 +119,7 @@ def jetAt (g : TensorField d) (x : Fin d → ℝ) : Jet d :=
 /-- The scalar curvature as a function on the space of jets. -/
 def Rjet (J : Jet d) : ℝ := scalJ (Matrix.of J.1)⁻¹ J.2.1 J.2.2
 
+/-- **The scalar curvature at `x` is `Rjet` of the 2-jet** of a smooth metric that is nondegenerate at `x`. -/
 lemma scalarCurvature_eq_Rjet {g : TensorField d} (hg : SmoothTensor g) {x : Fin d → ℝ}
     (hdet : (g x).det ≠ 0) : Lightlike.scalarCurvature g x = Rjet (jetAt g x) :=
   scalarCurvature_eq_scalJ hg hdet

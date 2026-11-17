@@ -122,7 +122,7 @@ definite; (b) one global chart `ℝᵈ`, no manifold and no foliation; (c) units
 `1/(d - 1)` (`1/2` for `d = 3`); (d) the momentum constraint in the Lie-derivative form; (e) the bracket through
 `π`-gradients and Gateaux derivatives, and the sign conventions of `admBracket` and `lieBracket`. A grid
 computation in dimension two (`scripts/adm_algebra_check.py`) agrees with the statement to three digits. -/
-theorem bracket_momentum_hamiltonian {ξ : VectorField d} {N : (Fin d → ℝ) → ℝ}
+theorem admBracket_momentum_hamiltonian {ξ : VectorField d} {N : (Fin d → ℝ) → ℝ}
     (hξ : SmoothVec ξ) (hξc : ∀ k, HasCompactSupport (fun y => ξ y k))
     (hN : ContDiff ℝ ∞ N) (hNc : HasCompactSupport N) {h π : TensorField d}
     (hh : SmoothTensor h) (hpos : ∀ x, (h x).PosDef) (hπ : SmoothTensor π) (hπs : ∀ x, (π x)ᵀ = π x) :

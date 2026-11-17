@@ -1738,7 +1738,6 @@
       - {ref: christiansen-2011, location: "Proposition 3.2", check: "constant Euclidean metric"}
   review: kernel-checked
   note: "For a C^3 symmetric Z^3-periodic matrix field h on R^3, Q_n(h) = sum over edges of (mu_e / (2 l_e)) delta_e'(0) for the periodic Kuhn complex of mesh 1/n with the squared lengths l_e^2 + eps mu_e(h), mu_e the degrees of freedom of the Regge interpolant (Christiansen 2011, eq. (5)), tends as n goes to infinity to the integral over the unit cube of -1/4 sum h_ij eps_ikl eps_jmn d_k d_m h_ln, the Saint-Venant form (Qn_converges). Proof: the lattice form of Q_n, the second-order expansion of the degrees of freedom, the vanishing of the zeroth and first order class sums, the pointwise identity of the 36 incidences, Riemann sums with cell sample points. Limits: convergence only, no rate; the interpolated lengths, not the geodesic lengths; one smooth periodic field on the standard cubical Kuhn complex; the sign of the deficit angle relative to 2 pi minus the angle sum is fixed by the numerical check, not by the paper. Trust checks: non-zero field, the numerical check scripts/regge/regge3d_linearized_check.py (sign and factor controls fail)."
-  since: unreleased
 - id: LL-0133
   title: Einstein's equations for an FLRW spacetime with a perfect fluid are equivalent to Friedmann's two equations
   area: Cosmology
@@ -1897,4 +1896,30 @@
       - {ref: lickorish-1999, location: "Theorem 4.5", check: "stellar"}
   review: kernel-checked
   note: "The Euler characteristic of a simplicial complex is unchanged by stellar subdivisions and welds, so by stellar equivalence (StellarEquiv.euler_eq, from the signed count of faces being unchanged by a stellar subdivision), and complexes with different Euler characteristics are not stellar equivalent (not_stellarEquiv_of_euler_ne). Together with Newman's theorem (LL-0064) this gives that realisations of complexes with different Euler characteristics, both or neither containing the empty face, are not PL homeomorphic (not_plHomeomorphic_of_euler_ne, Lightlike/PL/Newman.lean). The converse direction of Newman's theorem, that a stellar subdivision of a complex is PL homeomorphic to it by an explicit map, and so any chain of subdivisions and welds, is PLHomeomorphic.starAt and PLHomeomorphic.of_stellarEquiv (Lightlike/PL/StellarHomeo.lean), the easy half of Lickorish, Theorem 4.5. Limits: the Euler characteristic is the alternating count of nonempty faces for a complex with the empty face; the invariance is under stellar equivalence inside an unlimited supply of new vertices (StellarEquiv), not Lickorish's equivalence up to isomorphism, and the invariance of the Euler characteristic is not a statement of Lickorish Theorem 4.5. Differences from the cited source: the location of Theorem 4.5 was read, but its statement was not compared with the statement here word for word. The comparison with the cited source is pending. Check: the boundary of a tetrahedron and two disjoint 2-spheres, with Euler characteristics 2 and 4, are not stellar equivalent (not_stellarEquiv_tetrahedron_twoSpheres), the boundary of a triangle and the triangle are not PL homeomorphic (not_plHomeomorphic_boundary_simplex), and an edge and its subdivision at a new vertex are PL homeomorphic through the explicit map starMap (stellarEquiv_edge_edgeSub)."
+  since: unreleased
+- id: LL-0146
+  title: The bracket of two smeared momentum constraints is the smeared constraint of the Lie bracket of the shifts
+  area: Canonical
+  file: Lightlike/Canonical/MomentumBracket.lean
+  decls: [Lightlike.Canonical.bracket_momentum_momentum]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: thiemann-2007, location: "Chapter: Classical Hamiltonian formulation of General Relativity|10.1017/CBO9780511755682.005"}
+  review: kernel-checked
+  note: "{D[xi], D[eta]} = D[[xi, eta]] for smooth compactly supported shifts, smooth h and continuous pi, with D[xi] = integral of pi^ij (L_xi h)_ij and the bracket computed with Gateaux derivatives along compactly supported variations (the pi-gradient of D[xi] is L_xi h). The comparison with the cited source is pending: the registry location was checked, the text was not read there. Differences to be approved by the owner: (a) C^infinity data and compactly supported test fields; (b) one global chart R^d, no manifold and no foliation; (c) units 16 pi G = 1 and the kinetic coefficient 1/(d-1) of the Hamiltonian density (1/2 for d = 3), which does not enter this bracket; (d) the momentum constraint in the Lie-derivative form, equal to the ADM form -2 xi_i pi^ij_|j by an integration by parts that is not formalised; (e) the bracket is defined through pi-gradients and Gateaux derivatives, and the signs of the bracket and of the Lie bracket are fixed by admBracket and lieBracket."
+  since: unreleased
+- id: LL-0147
+  title: The bracket of a smeared momentum constraint with a smeared Hamiltonian constraint is the Hamiltonian constraint smeared with the derivative of the lapse along the shift
+  area: Canonical
+  file: Lightlike/Canonical/HamiltonianBracket.lean
+  decls: [Lightlike.Canonical.admBracket_momentum_hamiltonian]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: thiemann-2007, location: "Chapter: Classical Hamiltonian formulation of General Relativity|10.1017/CBO9780511755682.005"}
+  review: kernel-checked
+  note: "{D[xi], H[N]} = H[xi^k d_k N] for smooth compactly supported xi and N, smooth data with positive definite h, with the Hamiltonian density (tr (h pi h pi) - (tr h pi)^2/(d-1))/sqrt(det h) - sqrt(det h) R computed from the coordinate scalar curvature of the geometry API. The proof shows that the scalar curvature is a smooth function of the 2-jet of the metric, that it is covariant under the flow of xi (the library's finite pullback law), that the kinetic term is a scalar density, and differentiates the smeared constraint under the integral sign. The comparison with the cited source is pending: the registry location was checked, the text was not read there. Differences to be approved by the owner: (a) C^infinity data, positive definite h and compactly supported test fields; (b) one global chart R^d, no manifold and no foliation; (c) units 16 pi G = 1 and the kinetic coefficient 1/(d-1) in dimension d (1/2 for d = 3), the one for which the algebra of the constraints closes; (d) the momentum constraint in the Lie-derivative form; (e) the bracket is defined through pi-gradients and Gateaux derivatives, and the signs of the bracket and of the Lie bracket are fixed by admBracket and lieBracket. A grid computation in dimension two (scripts/adm_algebra_check.py) agrees to three digits."
   since: unreleased
