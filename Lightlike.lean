@@ -153,6 +153,7 @@ import Lightlike.Canonical.LineIntegral
 import Lightlike.Canonical.MatrixDeriv
 import Lightlike.Canonical.MatrixInverseAt
 import Lightlike.Canonical.MatrixSmooth
+import Lightlike.Canonical.MomentumADM
 import Lightlike.Canonical.MomentumBracket
 import Lightlike.Canonical.PairingCovariance
 import Lightlike.Canonical.ParamIntegral
