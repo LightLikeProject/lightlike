@@ -208,8 +208,8 @@ theorem leviCivita_coordField [IsManifold 𝓘(ℝ, Fin n → ℝ) 2 M]
     mvfderiv_gpair_coordField g x₀ j l i hy, mvfderiv_gpair_coordField g x₀ l i j hy,
     mvfderiv_gpair_coordField g x₀ i j l hy]
   simp only [map_zero, sub_zero, add_zero]
-  rw [map_sum, ContinuousLinearMap.sum_apply]
-  simp only [map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul, g_coordField g x₀ _ l hy]
+  rw [map_sum, sum_apply]
+  simp only [map_smul, smul_apply, smul_eq_mul, g_coordField g x₀ _ l hy]
   have hsym := g.coordMetric_transpose x₀ y
   have hdet := g.coordMetric_isUnit_det x₀ hy
   have hinv : ∀ m l : Fin n, ∑ k, (g.coordMetric x₀ y)⁻¹ k m * g.coordMetric x₀ y k l = if m = l then 1 else 0 := by
@@ -240,7 +240,7 @@ theorem leviCivita_coordField [IsManifold 𝓘(ℝ, Fin n → ℝ) 2 M]
     refine Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun x _ => by ring
   show _ = ∑ x, (1 / 2 * ∑ m, (g.coordMetric x₀ y)⁻¹ x m * T m) * g.coordMetric x₀ y x l
   rw [hsum]
-  simp only [hinv, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]
+  simp only [hinv, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, ite_true]
   rw [hfun]
   simp only [hT]
   ring

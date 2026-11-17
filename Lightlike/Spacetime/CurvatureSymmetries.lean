@@ -15,8 +15,10 @@ under the same hypotheses as `curvatureAt_apply_proved` (`ChartCurvature.lean`):
 * `riemannLowerAt_pair_symm`: `g(R(X,Y)Z, W) = g(R(Z,W)X, Y)` for the Levi-Civita connection;
 * `ricciAt_symm_proved`: the Ricci tensor is symmetric (trace with the inverse Gram matrix, `coord_eq_sum`).
 
-**Limits.** Boundaryless Hausdorff manifolds; the symmetry statements of the tasks `T-GE1-P3` and `T-GE1-P4` are
-for any `ModelWithCorners` and are not closed by this file.
+**Differences from the tasks `T-GE1-P3` and `T-GE1-P4`** (which stay open): the tasks are for any `ModelWithCorners` with
+`IsLeviCivita`, with no Hausdorff hypothesis; these theorems assume no boundary, `T2Space M`, a smooth connection and take
+torsion freeness and metric compatibility as two hypotheses. The comparison with Wald, *General Relativity*, Section 3.2
+is pending: the source was not read at the cited location.
 -/
 
 open Bundle Manifold Set VectorField NormedSpace FiberBundle Filter
@@ -346,7 +348,7 @@ theorem coord_eq_sum (u : TangentSpace 𝓘(ℝ, E) x) (i : Fin (Module.finrank 
   have hexp : ∀ j, g.g x u (tb x j) = ∑ k, (tb x).coord k u * metricGram g x k j := by
     intro j
     conv_lhs => rw [← (tb x).sum_repr u]
-    simp only [map_sum, map_smul, ContinuousLinearMap.sum_apply, smul_apply, smul_eq_mul]
+    simp only [map_sum, map_smul, sum_apply, smul_apply, smul_eq_mul]
     refine Finset.sum_congr rfl fun k _ => ?_
     simp [metricGram, Module.Basis.coord_apply]
     exact Or.inl rfl

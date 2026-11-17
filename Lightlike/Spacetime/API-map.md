@@ -34,6 +34,8 @@ For a smooth connection on a Hausdorff manifold modelled on a finite-dimensional
 
 For a Levi-Civita connection of a smooth Lorentzian metric (same hypotheses) the first Bianchi identity holds, the lowered curvature is antisymmetric in each pair of slots and symmetric under exchange of the pairs, and the Ricci tensor is symmetric [14].
 
+In a chart of a manifold modelled on `ℝⁿ` (Hausdorff), the components of the curvature of a Levi-Civita connection are the coordinate Riemann tensor, its Ricci tensor and scalar curvature are the coordinate ones, and the Einstein equations hold on the manifold iff the coordinate vacuum equations hold in every chart [15].
+
 The curvature of a manifold-level metric as a tensor field is defined in `Connection.lean` [7]: a connection is Mathlib's
 covariant derivative on the tangent bundle; the Riemann curvature is `R(X, Y) Z = ∇_X ∇_Y Z - ∇_Y ∇_X Z - ∇_{[X,Y]} Z`
 (the sign convention of Mathlib pull request 45069), the Ricci tensor is its trace over the first slot, the scalar
@@ -74,6 +76,8 @@ than one who stays at rest [6].
    `Rhat`, `curvature_hat`, `curvatureAt_apply_proved`
 14. Lightlike/Spacetime/CurvatureSymmetries.lean - `bianchi_first_proved`, `riemannLowerAt_antisymm_last`,
    `riemannLowerAt_pair_symm`, `ricciAt_symm_proved`
+15. Lightlike/Spacetime/ChartAgreement.lean - `riemann_coord_comp`, `ricciAt_coord`, `scalarCurvatureAt_coord`,
+   `satisfiesEinstein_iff_chart_proved`
 
 ## References
 

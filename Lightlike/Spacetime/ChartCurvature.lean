@@ -119,7 +119,7 @@ theorem gamHat_eq (a b : E) {z : M} (hz : z ∈ (tTriv (E := E) x₀).baseSet) :
     have := h1
     rw [sub_zero] at this
     exact this
-  rw [h2, Trivialization.continuousLinearMapAt_apply, Trivialization.linearMapAt_apply, if_pos hz]
+  rw [h2, Trivialization.continuousLinearMapAt_apply, Trivialization.linearMapAt_apply, ite_eq_left hz]
   rfl
 
 section
@@ -240,7 +240,7 @@ theorem hat_cov {z : M} (hz : z ∈ (tTriv (E := E) x₀).baseSet)
   congr 1
   · unfold cov0
     exact hv_symmL x₀ hz _
-  · rw [gamHat_apply, Trivialization.continuousLinearMapAt_apply, Trivialization.linearMapAt_apply, if_pos hz, symmL_hat x₀ hz, symmL_hv x₀ hz]
+  · rw [gamHat_apply, Trivialization.continuousLinearMapAt_apply, Trivialization.linearMapAt_apply, ite_eq_left hz, symmL_hat x₀ hz, symmL_hv x₀ hz]
 
 /-- A continuous linear map commutes with `mvfderiv`. -/
 theorem mvfderiv_clm_comp {F₁ F₂ : Type*} [NormedAddCommGroup F₁] [NormedSpace ℝ F₁]
@@ -273,7 +273,7 @@ theorem hv_bracket [IsManifold 𝓘(ℝ, E) 2 M] [CompleteSpace E] {p : M} (hp :
     have hzb : z ∈ (tTriv (E := E) x₀).baseSet := by
       simpa [tTriv, TangentBundle.trivializationAt_baseSet] using hz'
     have h2 : hv x₀ z v = (tTriv (E := E) x₀).continuousLinearMapAt ℝ z v := by
-      rw [Trivialization.continuousLinearMapAt_apply, Trivialization.linearMapAt_apply, if_pos hzb]
+      rw [Trivialization.continuousLinearMapAt_apply, Trivialization.linearMapAt_apply, ite_eq_left hzb]
     rw [h2]
     exact congrArg (fun L => L v) this
   set χ : M → ℝ := fun z => ℓ (φ z) with hχ
