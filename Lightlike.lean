@@ -492,6 +492,7 @@ import Lightlike.Spacetime.ChartCurvature
 import Lightlike.Spacetime.Connection
 import Lightlike.Spacetime.Coordinates
 import Lightlike.Spacetime.Curvature
+import Lightlike.Spacetime.CurvatureSymmetries
 import Lightlike.Spacetime.FlatConnection
 import Lightlike.Spacetime.LieDerivation
 import Lightlike.Spacetime.LeviCivita

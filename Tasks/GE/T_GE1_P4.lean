@@ -29,11 +29,11 @@ Lemmas about them, which a proof may use:
 * `leviCivita_unique` (`Lightlike/Spacetime/LeviCivita.lean`)
 * `koszul_of_isLeviCivita` (`Lightlike/Spacetime/LeviCivita.lean`)
 * `leviCivita_exists_unique_proved` (`Lightlike/Spacetime/LeviCivita.lean`)
+* `curvatureAt_apply_proved` (`Lightlike/Spacetime/ChartCurvature.lean`)
+* `hat_cov` (`Lightlike/Spacetime/ChartCurvature.lean`)
 * `g_sharp` (`Lightlike/Spacetime/LeviCivita.lean`)
 * `g_leviOf` (`Lightlike/Spacetime/LeviCivita.lean`)
-* `g_leviAux` (`Lightlike/Spacetime/LeviCivita.lean`)
 * `sharp_add` (`Lightlike/Spacetime/LeviCivita.lean`)
-* `gpair_comm` (`Lightlike/Spacetime/LeviCivita.lean`)
 
 Everything they depend on, and the further lemmas about them, in one block:
 
