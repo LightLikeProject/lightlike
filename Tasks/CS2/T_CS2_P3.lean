@@ -1,4 +1,4 @@
-import Lightlike.CausalSets.Myrheim
+import Lightlike.CausalSets.Rectangle
 
 /-!
 # Task T-CS2-P3
@@ -48,6 +48,6 @@ namespace Lightlike.CausalSets
 theorem rectangle_relProb :
     regionRelProb {x : Fin 2 → ℝ | x 0 ∈ Set.Icc (0 : ℝ) 1 ∧ x 1 ∈ Set.Icc (0 : ℝ) 2} = 7 / 48 ∧
       regionRelProb {x : Fin 2 → ℝ | x 0 ∈ Set.Icc (0 : ℝ) 1 ∧ x 1 ∈ Set.Icc (0 : ℝ) 2} ≠ relProb 1 := by
-  sorry
+  exact rectangle_relProb_eq
 
 end Lightlike.CausalSets

@@ -11,8 +11,8 @@ relations depends on the region, so the diamond value is a property of the diamo
 The proof integrates the band `|x' - x| ≤ s` over the space pair (its area in `[0, 2]²` is
 `4 s - s²`), then over the time pair with `s = t' - t`, where `∫∫ (4 s - s²) = 7/12`; dividing by
 the squared area `4` of the rectangle gives `7/48`. It uses the product decomposition of a pair
-of points into time pair and space pair. The same statement is the open task `T-CS2-P3`, whose
-statement is not changed.
+of points into time pair and space pair. The task `T-CS2-P3` states the same
+theorem and is closed by it.
 
 ## References
 

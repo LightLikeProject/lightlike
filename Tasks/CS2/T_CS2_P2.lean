@@ -1,4 +1,4 @@
-import Lightlike.CausalSets.Myrheim
+import Lightlike.CausalSets.Myrheim4D
 
 /-!
 # Task T-CS2-P2
@@ -44,6 +44,6 @@ namespace Lightlike.CausalSets
 
 /-- **Four dimensions.** Two uniform points of the causal diamond of `ℝ^{3+1}` satisfy `x ≺ y` with probability `1/20`, so `n` points have `n (n - 1) / 20` relations in expectation. -/
 theorem relProb_three : relProb 3 = 1 / 20 := by
-  sorry
+  exact relProb_three_eq
 
 end Lightlike.CausalSets
