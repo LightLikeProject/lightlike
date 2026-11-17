@@ -490,6 +490,7 @@ import Lightlike.Spacetime.Connection
 import Lightlike.Spacetime.Coordinates
 import Lightlike.Spacetime.Curvature
 import Lightlike.Spacetime.FlatConnection
+import Lightlike.Spacetime.LieDerivation
 import Lightlike.Spacetime.Lorentzian
 import Lightlike.Spacetime.Minkowski
 import Lightlike.Spacetime.RiemannSymmetry

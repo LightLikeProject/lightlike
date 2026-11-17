@@ -24,6 +24,8 @@ A Lorentzian metric on a smooth manifold modelled on `ℝⁿ` is a smooth symmet
 each tangent space with signature (−,+,…,+), in the mostly-plus convention {2} [4]. In every chart
 of the atlas its components form a coordinate metric of Lorentzian signature [5].
 
+On a manifold modelled on a normed space the Lie bracket of vector fields is the commutator of derivations of smooth functions, `[X, Y] g = X (Y g) - Y (X g)` [9]; Mathlib has this for a vector space only, and the identity is the step for the tensoriality of the curvature below.
+
 The curvature of a manifold-level metric as a tensor field is defined in `Connection.lean` [7]: a connection is Mathlib's
 covariant derivative on the tangent bundle; the Riemann curvature is `R(X, Y) Z = ∇_X ∇_Y Z - ∇_Y ∇_X Z - ∇_{[X,Y]} Z`
 (the sign convention of Mathlib pull request 45069), the Ricci tensor is its trace over the first slot, the scalar
@@ -53,6 +55,8 @@ than one who stays at rest [6].
    `Connection.divBilinAt`, `Connection.einsteinField`, `LorentzianMetric.SatisfiesEinstein`
 8. Lightlike/Spacetime/FlatConnection.lean - `flatConnection`, `flat_torsion`, `flat_curvatureAt`,
    `flat_isMetricCompatible`, `minkowski_satisfiesEinstein_proved`
+9. Lightlike/Spacetime/LieDerivation.lean - `mfderiv_mlieBracket`, `mfderiv_eq_chart`, `mpullback_chart`,
+   `dirDeriv`, `chartField`
 
 ## References
 
