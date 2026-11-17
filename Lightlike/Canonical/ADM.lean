@@ -12,7 +12,7 @@ constraints, and the bracket of smeared constraints computed on test fields.
   density `π : ℝᵈ → Matrix (Fin d) (Fin d) ℝ` (components `π^{ij}(x)`, a tensor density of weight one).
   The spatial curvature is `Lightlike.scalarCurvature h` of `Lightlike/Spacetime/Curvature.lean`: no
   curvature is defined here.
-* **Constraints.** `hamiltonianDensity h π = (tr (hπhπ) − ½ (tr hπ)²)/√det h − √det h · R[h]`
+* **Constraints.** `hamiltonianDensity h π = (tr (hπhπ) − (tr hπ)²/(d − 1))/√det h − √det h · R[h]`
   (units `16πG = 1`) and `momentumDensity ξ h π = π^{ij} (ℒ_ξ h)_ij`, the form obtained from
   `−2 ξ^i h_ij ∇_k π^{jk}` by an integration by parts (no boundary term for a compactly supported `ξ`).
   The smeared constraints are `H[N] = ∫ N ℋ` and `D[ξ] = ∫ π^{ij} ℒ_ξ h_ij`.
@@ -65,26 +65,36 @@ def lieBracket (ξ η : VectorField d) (x : Fin d → ℝ) (k : Fin d) : ℝ :=
 (3.14b) was done at that location; the comparison of the brackets with Hojman-Kuchar-Teitelboim 1976 or
 Thiemann 2007 is pending, neither has been read): (a) `C^∞` data and compactly supported test fields
 (`π` only continuous for `{D, D}`); (b) one global chart `ℝᵈ`, no manifold and no foliation; (c) units
-`16πG = 1`; (d) the momentum constraint in the Lie-derivative form `π^{ij} ℒ_ξ h_ij`, equal to the ADM
+`16πG = 1`, and the kinetic coefficient `1/(d - 1)` in dimension `d` (ADM: `1/2` for `d = 3`); (d) the momentum constraint in the Lie-derivative form `π^{ij} ℒ_ξ h_ij`, equal to the ADM
 `∫ ξ^i (−2 π^{ij}{}_{|j})` by an integration by parts that is not formalised; (e) the bracket is defined
 through `π`-gradients and Gateaux derivatives, without `δ/δh`, and the signs of the bracket and of the Lie
 bracket `[ξ,η]` are fixed here by `admBracket` and `lieBracket`. -/
 def momentumDensity (ξ : VectorField d) (h π : TensorField d) (x : Fin d → ℝ) : ℝ :=
   ∑ i, ∑ j, π x i j * lieDeriv ξ h i j x
 
-/-- The kinetic part of the Hamiltonian constraint, `(tr (hπhπ) − ½ (tr hπ)²)/√det h`. -/
+/-- The kinetic part of the Hamiltonian constraint, `(tr (hπhπ) − (tr hπ)²/(d − 1))/√det h`. For `d = 3`
+this is the ADM `(π^{ij}π_ij − ½π²)/√g`; the coefficient `1/(d − 1)` is the one for which the algebra of the
+constraints closes in dimension `d` (for `d = 1` it is the Lean junk value `0`, so `2 ≤ d` is assumed
+wherever the algebra is stated). -/
 def kineticDensity (h π : TensorField d) (x : Fin d → ℝ) : ℝ :=
-  ((h x * π x * h x * π x).trace - (1 / 2) * ((h x * π x).trace) ^ 2) / Real.sqrt (h x).det
+  ((h x * π x * h x * π x).trace - (1 / ((d : ℝ) - 1)) * ((h x * π x).trace) ^ 2) / Real.sqrt (h x).det
 
-/-- The Hamiltonian constraint density `ℋ = (tr (hπhπ) − ½ (tr hπ)²)/√det h − √det h · R[h]`, with the
-spatial scalar curvature `R` of `Lightlike.scalarCurvature` (units `16πG = 1`). This is ADM 1962 eq.
+/-- The `π`-gradient of the smeared Hamiltonian constraint `H[N]`, as a covariant tensor field:
+`δH[N]/δπ^{ij} = N (2 (hπh)_ji − (2/(d − 1)) (tr hπ) h_ji)/√det h` (the transpose is only visible for
+non-symmetric data). -/
+def hamiltonianPiGradient (N : (Fin d → ℝ) → ℝ) (h π : TensorField d) : TensorField d :=
+  fun x => ((N x / Real.sqrt (h x).det) •
+    (2 • (h x * π x * h x) - (2 / ((d : ℝ) - 1) * (h x * π x).trace) • h x)).transpose
+
+/-- The Hamiltonian constraint density `ℋ = (tr (hπhπ) − (tr hπ)²/(d − 1))/√det h − √det h · R[h]`, with the
+spatial scalar curvature `R` of `Lightlike.scalarCurvature` (units `16πG = 1`). For `d = 3` this is ADM 1962 eq.
 (3.14a), `R⁰ = −√g [³R + g⁻¹(½π² − π^{ij}π_ij)]`.
 
 **Differences from the cited sources, for the owner's approval** (the comparison with ADM 1962 eqs. (3.14a),
 (3.14b) was done at that location; the comparison of the brackets with Hojman-Kuchar-Teitelboim 1976 or
 Thiemann 2007 is pending, neither has been read): (a) `C^∞` data and compactly supported test fields
 (`π` only continuous for `{D, D}`); (b) one global chart `ℝᵈ`, no manifold and no foliation; (c) units
-`16πG = 1`; (d) the momentum constraint in the Lie-derivative form `π^{ij} ℒ_ξ h_ij`, equal to the ADM
+`16πG = 1`, and the kinetic coefficient `1/(d - 1)` in dimension `d` (ADM: `1/2` for `d = 3`); (d) the momentum constraint in the Lie-derivative form `π^{ij} ℒ_ξ h_ij`, equal to the ADM
 `∫ ξ^i (−2 π^{ij}{}_{|j})` by an integration by parts that is not formalised; (e) the bracket is defined
 through `π`-gradients and Gateaux derivatives, without `δ/δh`, and the signs of the bracket and of the Lie
 bracket `[ξ,η]` are fixed here by `admBracket` and `lieBracket`. -/
@@ -120,11 +130,16 @@ def MomentumConstraintAt (h π : TensorField d) (x : Fin d → ℝ) : Prop :=
 def dirDeriv (F : TensorField d → TensorField d → ℝ) (h π k p : TensorField d) : ℝ :=
   deriv (fun t : ℝ => F (fun x => h x + t • k x) (fun x => π x + t • p x)) 0
 
-/-- `Fπ` is the **`π`-gradient** of the functional `F` on smooth data: for every smooth `h`, continuous `π`
-and compactly supported smooth variation `p` of `π`, `dF[(0, p)] = ∫ ∑_ij (Fπ)_ij p^{ij} dx`
+/-- The **admissible data** of the ADM formulation: a smooth, positive definite spatial metric and a continuous
+momentum density. -/
+def Admissible (h π : TensorField d) : Prop :=
+  (∀ i j, ContDiff ℝ ∞ (fun x => h x i j)) ∧ (∀ x, (h x).PosDef) ∧ ∀ i j, Continuous (fun x => π x i j)
+
+/-- `Fπ` is the **`π`-gradient** of the functional `F` on admissible data: for every admissible `(h, π)` and
+compactly supported smooth variation `p` of `π`, `dF[(0, p)] = ∫ ∑_ij (Fπ)_ij p^{ij} dx`
 (so `Fπ = δF/δπ^{ij}`, a covariant tensor field). -/
 def IsPiGradient (F : TensorField d → TensorField d → ℝ) (Fπ : TensorField d → TensorField d → TensorField d) : Prop :=
-  ∀ h π p : TensorField d, (∀ i j, ContDiff ℝ ∞ (fun x => h x i j)) → (∀ i j, Continuous (fun x => π x i j)) →
+  ∀ h π p : TensorField d, Admissible h π →
     (∀ i j, HasCompactSupport (fun x => p x i j)) → (∀ i j, ContDiff ℝ ∞ (fun x => p x i j)) →
     dirDeriv F h π 0 p = ∫ x, ∑ i, ∑ j, Fπ h π x i j * p x i j
 
@@ -135,7 +150,7 @@ def IsPiGradient (F : TensorField d → TensorField d → ℝ) (Fπ : TensorFiel
 (3.14b) was done at that location; the comparison of the brackets with Hojman-Kuchar-Teitelboim 1976 or
 Thiemann 2007 is pending, neither has been read): (a) `C^∞` data and compactly supported test fields
 (`π` only continuous for `{D, D}`); (b) one global chart `ℝᵈ`, no manifold and no foliation; (c) units
-`16πG = 1`; (d) the momentum constraint in the Lie-derivative form `π^{ij} ℒ_ξ h_ij`, equal to the ADM
+`16πG = 1`, and the kinetic coefficient `1/(d - 1)` in dimension `d` (ADM: `1/2` for `d = 3`); (d) the momentum constraint in the Lie-derivative form `π^{ij} ℒ_ξ h_ij`, equal to the ADM
 `∫ ξ^i (−2 π^{ij}{}_{|j})` by an integration by parts that is not formalised; (e) the bracket is defined
 through `π`-gradients and Gateaux derivatives, without `δ/δh`, and the signs of the bracket and of the Lie
 bracket `[ξ,η]` are fixed here by `admBracket` and `lieBracket`. -/

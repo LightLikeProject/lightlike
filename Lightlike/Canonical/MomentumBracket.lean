@@ -105,7 +105,7 @@ lemma dirDeriv_momentum_h {ξ : VectorField d} (hξ : SmoothVec ξ) (hξc : ∀ 
 theorem isPiGradient_momentumConstraint {ξ : VectorField d} (hξ : SmoothVec ξ)
     (hξc : ∀ k, HasCompactSupport (fun y => ξ y k)) :
     IsPiGradient (momentumConstraint ξ) (fun h _ => lieTensor ξ h) := by
-  intro h π p hh hπ hpc hps
+  intro h π p ⟨hh, _, hπ⟩ hpc hps
   unfold dirDeriv
   have hint : Integrable (fun x => ∑ i, ∑ j, lieDeriv ξ h i j x * p x i j) := by
     refine Continuous.integrable_of_hasCompactSupport ?_ ?_

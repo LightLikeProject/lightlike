@@ -126,6 +126,7 @@ import Lightlike.Asymptotics.ValleyTests
 import Lightlike.Canonical.ADM
 import Lightlike.Canonical.LieAlgebra
 import Lightlike.Canonical.LieDeriv
+import Lightlike.Canonical.MatrixInverseAt
 import Lightlike.Canonical.MomentumBracket
 import Lightlike.FourD.Boundary
 import Lightlike.FourD.Complex

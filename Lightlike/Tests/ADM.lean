@@ -7,7 +7,7 @@ import Lightlike.Canonical.ADM
 * **Flat data.** The Euclidean metric `h = 1` with `π = 0` satisfies both constraints at every point
   (in every dimension), and its smeared constraints vanish for every test field.
 * **Wrong data.** In dimension one, `π(x) = x` on `h = 1` violates the momentum constraint
-  (`∇_k π^{ik} = 1`), and the constant `π = 1` violates the Hamiltonian constraint (`ℋ = 1/2`) while
+  (`∇_k π^{ik} = 1`), and in dimension `d ≥ 2` the constant `π = 1` violates the Hamiltonian constraint (`ℋ = −d/(d − 1)`) while
   satisfying the momentum constraint. So neither constraint is implied by the other, and neither
   definition is vacuous.
 -/
@@ -53,17 +53,23 @@ theorem wrong_momentum_violates (x : Fin 1 → ℝ) :
     intro k l; simp [Lightlike.christoffel_const]
   simp [momentumDivergence, hc, hp] at this
 
-/-- **Wrong Hamiltonian**: in dimension one, the constant `π = 1` on `h = 1` satisfies the momentum
-constraint but violates the Hamiltonian constraint (`ℋ = 1/2`). -/
-theorem wrong_hamiltonian_violates (x : Fin 1 → ℝ) :
-    MomentumConstraintAt (fun _ => (1 : Matrix (Fin 1) (Fin 1) ℝ)) (fun _ => 1) x ∧
-      ¬ HamiltonianConstraintAt (fun _ => (1 : Matrix (Fin 1) (Fin 1) ℝ)) (fun _ => 1) x := by
-  have hR : Lightlike.scalarCurvature (fun _ => (1 : Matrix (Fin 1) (Fin 1) ℝ)) x = 0 :=
+/-- **Wrong Hamiltonian**: in dimension `d ≥ 2`, the constant `π = 1` on `h = 1` satisfies the momentum
+constraint but violates the Hamiltonian constraint (`ℋ = −d/(d − 1)`). -/
+theorem wrong_hamiltonian_violates (hd : 2 ≤ d) (x : Fin d → ℝ) :
+    MomentumConstraintAt (fun _ => (1 : Matrix (Fin d) (Fin d) ℝ)) (fun _ => 1) x ∧
+      ¬ HamiltonianConstraintAt (fun _ => (1 : Matrix (Fin d) (Fin d) ℝ)) (fun _ => 1) x := by
+  have hR : Lightlike.scalarCurvature (fun _ => (1 : Matrix (Fin d) (Fin d) ℝ)) x = 0 :=
     Lightlike.scalarCurvature_eq_zero_of_riemann_eq_zero fun ρ σ μ ν =>
       Lightlike.riemann_const 1 ρ σ μ ν x
   refine ⟨fun i => ?_, fun h => ?_⟩
   · simp [momentumDivergence, Lightlike.pd, Lightlike.christoffel_const]
-  · simp [HamiltonianConstraintAt, hamiltonianDensity, kineticDensity, hR] at h
-    norm_num at h
+  · have h1 : ((d : ℝ) - 1) ≠ 0 := by
+      have : (2 : ℝ) ≤ d := by exact_mod_cast hd
+      linarith
+    simp only [HamiltonianConstraintAt, hamiltonianDensity, kineticDensity, hR, mul_zero, sub_zero] at h
+    simp [Matrix.trace_one] at h
+    field_simp at h
+    have : (2 : ℝ) ≤ d := by exact_mod_cast hd
+    nlinarith
 
 end Lightlike.Canonical
