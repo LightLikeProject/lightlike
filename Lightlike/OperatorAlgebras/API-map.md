@@ -56,6 +56,12 @@ unbounded spectral theorem is not in Mathlib. Stone's theorem and Shale's criter
    `OperatorAlgebras.UnitaryGroup.generator_isSelfAdjoint` (the proof of task T-OP1-P1)
 10. Lightlike/OperatorAlgebras/StoneUnique.lean - `OperatorAlgebras.UnitaryGroup.eq_of_generator_eq`
     (the proof of task T-OP1-P3)
+11. Lightlike/OperatorAlgebras/MomentumSmooth.lean - `OperatorAlgebras.momentumPairLin`,
+    `OperatorAlgebras.smoothTestFunctions`, `OperatorAlgebras.momentumGraphSmooth`,
+    `OperatorAlgebras.momentumGraphSmooth_le` (the graph of `-i d/dx` on `C_c^∞(0, 1)`; statement of task
+    T-OP1-P6, that its closure equals that of `momentumGraph`)
+12. Lightlike/OperatorAlgebras/TestsMomentumSmooth.lean - `OperatorAlgebras.bumpHalf`,
+    `OperatorAlgebras.momentumGraphSmooth_ne_bot`
 
 ## References
 
