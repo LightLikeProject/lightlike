@@ -49,6 +49,10 @@ approaches.
 | [`T-QU1-P4`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-QU1-P4%22) | q-Biedenharn–Elliott identity at r = 5 | [T_QU1_P4.lean](../../Tasks/QU/T_QU1_P4.lean) | QU1 | M | intermediate |
 | [`T-QU1-P5`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-QU1-P5%22) | q-orthogonality of the quantum 6j symbols for every r ≥ 2 | [T_QU1_P5.lean](../../Tasks/QU/T_QU1_P5.lean) | QU1 | L | research-level |
 | [`T-QU1-P6`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-QU1-P6%22) | q-Biedenharn–Elliott identity for every r ≥ 2 | [T_QU1_P6.lean](../../Tasks/QU/T_QU1_P6.lean) | QU1 | L | research-level |
+| [`T-SF10-P1`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-SF10-P1%22) | Joint integrability of the Lorentzian vertex integrand | [T_SF10_P1.lean](../../Tasks/SF/T_SF10_P1.lean) | SF10 | L | research-level |
+| [`T-SF10-P2`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-SF10-P2%22) | Invertibility of the Hessian of the Lorentzian vertex action at a critical point | [T_SF10_P2.lean](../../Tasks/SF/T_SF10_P2.lean) | SF10 | L | research-level |
+| [`T-SF10-P3`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-SF10-P3%22) | The far part of the Lorentzian vertex integral is of lower order | [T_SF10_P3.lean](../../Tasks/SF/T_SF10_P3.lean) | SF10 | L | research-level |
+| [`T-SF10-P4`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-SF10-P4%22) | Finiteness and classification of the critical points of the Lorentzian vertex action | [T_SF10_P4.lean](../../Tasks/SF/T_SF10_P4.lean) | SF10 | L | research-level |
 
 ## Upstream
 
