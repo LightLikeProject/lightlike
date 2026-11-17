@@ -26,13 +26,15 @@ of the atlas its components form a coordinate metric of Lorentzian signature [5]
 
 On a manifold modelled on a normed space the Lie bracket of vector fields is the commutator of derivations of smooth functions, `[X, Y] g = X (Y g) - Y (X g)` [9]; Mathlib has this for a vector space only, and the identity is the step for the tensoriality of the curvature below.
 
+A Lorentzian metric has a Levi-Civita connection, the torsion-free connection compatible with it, given by the Koszul formula, and any two agree on vector fields differentiable at a point [10].
+
 The curvature of a manifold-level metric as a tensor field is defined in `Connection.lean` [7]: a connection is Mathlib's
 covariant derivative on the tangent bundle; the Riemann curvature is `R(X, Y) Z = ∇_X ∇_Y Z - ∇_Y ∇_X Z - ∇_{[X,Y]} Z`
 (the sign convention of Mathlib pull request 45069), the Ricci tensor is its trace over the first slot, the scalar
 curvature its trace with the metric, the Levi-Civita connection is the torsion-free connection compatible with `g`, and the Einstein
 equations with cosmological constant are `Ric - (S/2) g + Λ g = 0` [7]; the covariant derivative of the curvature and of a field of bilinear forms, the divergence and the Einstein tensor `Ric - (S/2) g` are defined there too [7]. These are definitions only: the existence and
 uniqueness of the Levi-Civita connection, the independence of the curvature from the extensions, its symmetries, and the
-agreement with the coordinate curvature of [1] in every chart are stated as proof tasks `T-GE1-P1` to `T-GE1-P9` (including the second and contracted Bianchi identities and Minkowski space as a solution)
+agreement with the coordinate curvature of [1] in every chart are stated as proof tasks `T-GE1-P2` to `T-GE1-P8` (including the second and contracted Bianchi identities and Minkowski space as a solution)
 (`Tasks/GE/`), with open proofs, except the last: on `ℝⁿ` the flat connection `∇_v Y = DY(v)` is a torsion-free connection compatible with the Minkowski metric with zero curvature, so Minkowski space satisfies the Einstein equations with `Λ = 0` [8]. [TODO]
 
 In Minkowski space, an observer who travels out and back along two straight segments ages less
@@ -57,6 +59,8 @@ than one who stays at rest [6].
    `flat_isMetricCompatible`, `minkowski_satisfiesEinstein_proved`
 9. Lightlike/Spacetime/LieDerivation.lean - `mfderiv_mlieBracket`, `mfderiv_eq_chart`, `mpullback_chart`,
    `dirDeriv`, `chartField`
+10. Lightlike/Spacetime/LeviCivita.lean - `koszul`, `leviCivita`, `leviCivita_torsion`,
+   `leviCivita_compat`, `leviCivita_unique`, `leviCivita_exists_unique_proved`
 
 ## References
 

@@ -117,16 +117,6 @@ tasks:
       - The q-Racah formula and q-hypergeometric identities (Kirillov–Reshetikhin 1989).
       - Representation theory of U_q(sl₂) at roots of unity (Turaev 1994).
       - Kauffman–Lins recoupling theory (1994).
-  - id: T-GE1-P1
-    milestone: GE1
-    kind: proof
-    title: Existence and uniqueness of the Levi-Civita connection of a Lorentzian metric
-    file: Tasks/GE/T_GE1_P1.lean
-    decl: Lightlike.leviCivita_exists_unique
-    size: L
-    difficulty: research-level
-    routes:
-      - Koszul formula as in Mathlib's `CovariantDerivative.leviCivitaConnection` (Riemannian case): it needs only non-degeneracy of `g`; use the musical isomorphism `LinearMap.BilinForm.toDual` (nondegenerate by `IsLorentzianForm.bilinForm_nondegenerate`). Uniqueness is on differentiable fields, as in Mathlib.
   - id: T-GE1-P2
     milestone: GE1
     kind: proof
@@ -197,16 +187,6 @@ tasks:
     difficulty: research-level
     routes:
       - Contract the second Bianchi identity (T-GE1-P7) twice, using the symmetries of the curvature (T-GE1-P4) and metric compatibility.
-  - id: T-GE1-P9
-    milestone: GE1
-    kind: proof
-    title: Minkowski space solves the Einstein equations on the manifold
-    file: Tasks/GE/T_GE1_P9.lean
-    decl: Lightlike.minkowski_satisfiesEinstein
-    size: L
-    difficulty: research-level
-    routes:
-      - The connection is the trivial one, `∇_v Y = Dy(v)`: it is torsion free, compatible with the constant metric, and its curvature vanishes.
 
 # Upstream tasks: finished results that belong in Mathlib (general mathematics) or Physlib
 # (general physics), with the rework each needs. Exclusive, like definition
