@@ -58,7 +58,17 @@ def lieTensor (ξ : VectorField d) (h : TensorField d) : TensorField d :=
 def lieBracket (ξ η : VectorField d) (x : Fin d → ℝ) (k : Fin d) : ℝ :=
   ∑ j, (ξ x j * Lightlike.pd j (fun y => η y k) x - η x j * Lightlike.pd j (fun y => ξ y k) x)
 
-/-- The momentum constraint density of the smearing `ξ`: `π^{ij} (ℒ_ξ h)_ij`. -/
+/-- The momentum constraint density of the smearing `ξ`: `π^{ij} (ℒ_ξ h)_ij`; its integral is
+`∫ ξ^i R_i` with the ADM 1962 eq. (3.14b) `R_i = −2 π^{ij}{}_{|j}`, after an integration by parts.
+
+**Differences from the cited sources, for the owner's approval** (the comparison with ADM 1962 eqs. (3.14a),
+(3.14b) was done at that location; the comparison of the brackets with Hojman-Kuchar-Teitelboim 1976 or
+Thiemann 2007 is pending, neither has been read): (a) `C^∞` data and compactly supported test fields
+(`π` only continuous for `{D, D}`); (b) one global chart `ℝᵈ`, no manifold and no foliation; (c) units
+`16πG = 1`; (d) the momentum constraint in the Lie-derivative form `π^{ij} ℒ_ξ h_ij`, equal to the ADM
+`∫ ξ^i (−2 π^{ij}{}_{|j})` by an integration by parts that is not formalised; (e) the bracket is defined
+through `π`-gradients and Gateaux derivatives, without `δ/δh`, and the signs of the bracket and of the Lie
+bracket `[ξ,η]` are fixed here by `admBracket` and `lieBracket`. -/
 def momentumDensity (ξ : VectorField d) (h π : TensorField d) (x : Fin d → ℝ) : ℝ :=
   ∑ i, ∑ j, π x i j * lieDeriv ξ h i j x
 
@@ -67,7 +77,17 @@ def kineticDensity (h π : TensorField d) (x : Fin d → ℝ) : ℝ :=
   ((h x * π x * h x * π x).trace - (1 / 2) * ((h x * π x).trace) ^ 2) / Real.sqrt (h x).det
 
 /-- The Hamiltonian constraint density `ℋ = (tr (hπhπ) − ½ (tr hπ)²)/√det h − √det h · R[h]`, with the
-spatial scalar curvature `R` of `Lightlike.scalarCurvature` (units `16πG = 1`). -/
+spatial scalar curvature `R` of `Lightlike.scalarCurvature` (units `16πG = 1`). This is ADM 1962 eq.
+(3.14a), `R⁰ = −√g [³R + g⁻¹(½π² − π^{ij}π_ij)]`.
+
+**Differences from the cited sources, for the owner's approval** (the comparison with ADM 1962 eqs. (3.14a),
+(3.14b) was done at that location; the comparison of the brackets with Hojman-Kuchar-Teitelboim 1976 or
+Thiemann 2007 is pending, neither has been read): (a) `C^∞` data and compactly supported test fields
+(`π` only continuous for `{D, D}`); (b) one global chart `ℝᵈ`, no manifold and no foliation; (c) units
+`16πG = 1`; (d) the momentum constraint in the Lie-derivative form `π^{ij} ℒ_ξ h_ij`, equal to the ADM
+`∫ ξ^i (−2 π^{ij}{}_{|j})` by an integration by parts that is not formalised; (e) the bracket is defined
+through `π`-gradients and Gateaux derivatives, without `δ/δh`, and the signs of the bracket and of the Lie
+bracket `[ξ,η]` are fixed here by `admBracket` and `lieBracket`. -/
 def hamiltonianDensity (h π : TensorField d) (x : Fin d → ℝ) : ℝ :=
   kineticDensity h π x - Real.sqrt (h x).det * Lightlike.scalarCurvature h x
 
@@ -109,7 +129,16 @@ def IsPiGradient (F : TensorField d → TensorField d → ℝ) (Fπ : TensorFiel
     dirDeriv F h π 0 p = ∫ x, ∑ i, ∑ j, Fπ h π x i j * p x i j
 
 /-- The bracket of two functionals of `(h, π)` with `π`-gradients `Fπ`, `Gπ`:
-`{F,G} = dF[(δG/δπ, 0)] − dG[(δF/δπ, 0)]`, the field-theoretic `∫ (δF/δh δG/δπ − δF/δπ δG/δh)`. -/
+`{F,G} = dF[(δG/δπ, 0)] − dG[(δF/δπ, 0)]`, the field-theoretic `∫ (δF/δh δG/δπ − δF/δπ δG/δh)`.
+
+**Differences from the cited sources, for the owner's approval** (the comparison with ADM 1962 eqs. (3.14a),
+(3.14b) was done at that location; the comparison of the brackets with Hojman-Kuchar-Teitelboim 1976 or
+Thiemann 2007 is pending, neither has been read): (a) `C^∞` data and compactly supported test fields
+(`π` only continuous for `{D, D}`); (b) one global chart `ℝᵈ`, no manifold and no foliation; (c) units
+`16πG = 1`; (d) the momentum constraint in the Lie-derivative form `π^{ij} ℒ_ξ h_ij`, equal to the ADM
+`∫ ξ^i (−2 π^{ij}{}_{|j})` by an integration by parts that is not formalised; (e) the bracket is defined
+through `π`-gradients and Gateaux derivatives, without `δ/δh`, and the signs of the bracket and of the Lie
+bracket `[ξ,η]` are fixed here by `admBracket` and `lieBracket`. -/
 def admBracket (F G : TensorField d → TensorField d → ℝ) (Fπ Gπ : TensorField d → TensorField d → TensorField d)
     (h π : TensorField d) : ℝ :=
   dirDeriv F h π (Gπ h π) 0 - dirDeriv G h π (Fπ h π) 0
