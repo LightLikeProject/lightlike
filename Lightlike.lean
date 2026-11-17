@@ -128,6 +128,7 @@ import Lightlike.CausalSets.BetaReal
 import Lightlike.CausalSets.ConeOrder
 import Lightlike.CausalSets.Expected
 import Lightlike.CausalSets.IntervalVolume
+import Lightlike.CausalSets.LongestChain
 import Lightlike.CausalSets.Myrheim
 import Lightlike.CausalSets.Myrheim4D
 import Lightlike.CausalSets.MyrheimGen

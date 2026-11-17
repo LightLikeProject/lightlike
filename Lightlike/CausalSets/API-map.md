@@ -10,6 +10,8 @@ A causal set is a partial order in which every interval is finite; a link is a c
 
 A sprinkling is a sample of independent uniform points. For a region of finite positive volume, `n` points have `n (n - 1) p` pairs `x ≺ y` in expectation, with `p` the probability that two uniform points are related; this uses a fixed number of points and no Poisson process [3] {2}. In the causal diamond of `ℝ^{1+1}`, light-cone coordinates turn the diamond into a square and the order into the coordinatewise order, and `p = 1/4`, so `n (n - 1) / 4` relations in expectation [4] {2}. In every dimension `d + 1` with `d ≥ 1` the volume of a causal interval is the volume of the unit diamond times the power `d + 1` of the proper time, by a Lorentz boost that preserves the form, the cone and Lebesgue measure [6] {2}; integrating over the diamond with the radial formula and the real Beta integral gives the Myrheim–Meyer value in every dimension [7] {2}, and `p = 1/20` in `3 + 1` dimensions [8] {2}. The Beta integral for real exponents, `∫₀¹ s^(a-1)(1-s)^(b-1) = Γ(a)Γ(b)/Γ(a+b)`, is proved from Mathlib's complex form [9] {2}. A wrong-model check: uniform points of the rectangle of time extent `1` and space extent `2` are related with probability `7/48`, so the count depends on the region [5] {2}.
 
+The causal order of `n` points of the `1 + 1` diamond with distinct light-cone coordinates is the dominance order of a permutation `σ`; the points with light-cone coordinates `(i, σ i)` realise it in Minkowski space, so the geometric order is the dominance order, a causal set whose longest chain has the length of a longest increasing subsequence of `σ` [10] {2}. Exact enumeration gives the sums `1, 3, 12, 58` of the longest chain over all permutations of `1, …, 4` points, so the expected longest chain of `3` points is `2`; the constant `1` in `c √n` is not the value at `n = 3` [10] {2}. The asymptotics `2 √n` (Vershik–Kerov, Logan–Shepp) is the open task T-CS3-P1.
+
 **Missing.** The Poisson form (the number of points is Poisson distributed) needs Poisson point processes (milestone RN1), which are not defined. The comparison of the statements with the sources is pending: the sources have not been read at the cited locations. The tasks T-CS2-P1 (the formula in every dimension), T-CS2-P2 (`1/20`) and T-CS2-P3 (the rectangle) state theorems proved in the library and are closed by those proofs.
 
 ## Lean References
@@ -23,6 +25,7 @@ A sprinkling is a sample of independent uniform points. For a region of finite p
 7. Lightlike/CausalSets/MyrheimGen.lean - `CausalSets.myrheimMeyer_eq`, `CausalSets.relProb_beta`
 8. Lightlike/CausalSets/Myrheim4D.lean - `CausalSets.relProb_three_eq`, `CausalSets.expected_relations_diamond_three`
 9. Lightlike/CausalSets/BetaReal.lean - `CausalSets.real_beta`
+10. Lightlike/CausalSets/LongestChain.lean - `CausalSets.longestChain`, `CausalSets.coneLE_sprinklePt`, `CausalSets.expected_longestChain_three`
 
 ## References
 
