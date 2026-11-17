@@ -58,6 +58,28 @@ lemma lieDens_matrix (ξ : VectorField d) (π : TensorField d) (x : Fin d → �
 lemma kineticDensity_eq_kinJ (h π : TensorField d) (x : Fin d → ℝ) :
     kineticDensity h π x = kinJ (1 / ((d : ℝ) - 1)) (h x) (π x) := rfl
 
+/-- The `t`-derivative of the Hamiltonian density along a general direction `k`, at `t = 0` and a point `x`. -/
+def hamDirDeriv (g π k : TensorField d) (x : Fin d → ℝ) : ℝ :=
+  dkinJ (1 / ((d : ℝ) - 1)) (g x) (π x) (k x) 0 -
+    ((g x).det * ((g x)⁻¹ * k x).trace / (2 * Real.sqrt (g x).det) * Lightlike.scalarCurvature g x +
+      Real.sqrt (g x).det * fderiv ℝ Rjet (jetAt g x) (jetAt k x))
+
+/-- **The first variation of the Hamiltonian density** along `g + t k` at `t = 0`. -/
+theorem hasDerivAt_hamiltonianDensity_dir {g π k : TensorField d} (hg : SmoothTensor g) (hk : SmoothTensor k)
+    {x : Fin d → ℝ} (hH : 0 < (g x).det) :
+    HasDerivAt (fun t : ℝ => hamiltonianDensity (fun y => g y + t • k y) π x) (hamDirDeriv g π k x) 0 := by
+  have hkin : HasDerivAt (fun t : ℝ => kineticDensity (fun y => g y + t • k y) π x)
+      (dkinJ (1 / ((d : ℝ) - 1)) (g x) (π x) (k x) 0) 0 := by
+    have := hasDerivAt_kinJ (1 / ((d : ℝ) - 1)) (g x) (π x) (k x) 0 hH
+    simpa [kineticDensity_eq_kinJ] using this
+  have hs := hasDerivAt_sqrt_det (g x) (k x) hH
+  have hR := hasDerivAt_scalar_dir hg hk hH.ne'
+  have hprod := hs.mul hR
+  have := hkin.sub hprod
+  unfold hamDirDeriv hamiltonianDensity
+  refine HasDerivAt.congr_deriv this ?_
+  simp only [add_zero, zero_smul]
+
 /-- The `t`-derivative of the Hamiltonian density along `h + t ℒ_ξ h`, at `t = 0` and a point `x`. -/
 def hamDerivH (ξ : VectorField d) (h π : TensorField d) (x : Fin d → ℝ) : ℝ :=
   dkinJ (1 / ((d : ℝ) - 1)) (h x) (π x) (lieTensor ξ h x) 0 -
@@ -82,6 +104,12 @@ theorem hasDerivAt_hamiltonianDensity_lie {h π : TensorField d} {ξ : VectorFie
   unfold hamDerivH hamiltonianDensity
   refine HasDerivAt.congr_deriv this ?_
   simp only [add_zero, zero_smul]
+
+lemma hamDerivH_eq_dir {h π : TensorField d} {ξ : VectorField d} (hξ : SmoothVec ξ) (hh : SmoothTensor h)
+    (hpos : ∀ y, (h y).PosDef) (x : Fin d → ℝ) :
+    hamDerivH ξ h π x = hamDirDeriv h π (lieTensor ξ h) x := by
+  unfold hamDerivH hamDirDeriv
+  rw [fderivRjet_lie hξ hh hpos x]
 
 /-- **The Hamiltonian density is a scalar density**, pointwise:
 `hamDerivH + dkinJ(0, ℒ_ξ π) = Σ_k ∂_k (ξ^k ℋ)`. -/

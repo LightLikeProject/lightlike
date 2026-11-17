@@ -106,12 +106,41 @@ lemma differentiableAt_scalarCurvature {h : TensorField d} (hh : SmoothTensor h)
   have hg : DifferentiableAt ℝ Rjet (jetAt h x) := differentiableAt_Rjet hJ0
   exact DifferentiableAt.comp (g := Rjet) (f := fun y => jetAt h y) x hg (differentiable_jetAt hh x)
 
-/-- **Infinitesimal covariance of the scalar curvature**: along `h + t ℒ_ξ h` the scalar curvature at `x` has
-derivative `ξ^k ∂_k R (x)`. -/
-theorem hasDerivAt_scalar_lie {h : TensorField d} {ξ : VectorField d} (hξ : SmoothVec ξ)
+/-- **The first variation of the scalar curvature along a direction `k`**: the derivative of `R (g + t k)` at
+`t = 0` is the derivative of the function `Rjet` of the 2-jet along the 2-jet of `k`. -/
+theorem hasDerivAt_scalar_dir {g k : TensorField d} (hg : SmoothTensor g) (hk : SmoothTensor k)
+    {x : Fin d → ℝ} (hdet : (g x).det ≠ 0) :
+    HasDerivAt (fun t : ℝ => Lightlike.scalarCurvature (fun y => g y + t • k y) x)
+      (fderiv ℝ Rjet (jetAt g x) (jetAt k x)) 0 := by
+  set J0 := jetAt g x with hJ0def
+  set JL := jetAt k x with hJLdef
+  have hJ0 : (Matrix.of J0.1).det ≠ 0 := hdet
+  have hRd : HasFDerivAt Rjet (fderiv ℝ Rjet J0) J0 := (differentiableAt_Rjet hJ0).hasFDerivAt
+  set DR := fderiv ℝ Rjet J0 with hDR
+  have hc1 : HasDerivAt (fun t : ℝ => J0 + t • JL) JL 0 := by
+    simpa using ((hasDerivAt_id (0 : ℝ)).smul_const JL).const_add J0
+  have hR1 : HasDerivAt (fun t : ℝ => Rjet (J0 + t • JL)) (DR JL) 0 := by
+    have h1 : HasFDerivAt Rjet DR (J0 + (0 : ℝ) • JL) := by simpa using hRd
+    exact h1.comp_hasDerivAt (0 : ℝ) hc1
+  have hev1 : ∀ᶠ t in 𝓝 (0 : ℝ), Lightlike.scalarCurvature (fun y => g y + t • k y) x =
+      Rjet (J0 + t • JL) := by
+    have hcont : Continuous (fun t : ℝ => (Matrix.of (J0 + t • JL).1).det) :=
+      continuous_det_jet.comp (continuous_const.add (continuous_id.smul continuous_const))
+    have hne : ∀ᶠ t in 𝓝 (0 : ℝ), (Matrix.of (J0 + t • JL).1).det ≠ 0 :=
+      hcont.continuousAt.eventually_ne (by simpa using hJ0)
+    filter_upwards [hne] with t ht
+    have hd : ((fun y => g y + t • k y) x).det ≠ 0 := by
+      have e : (fun y => g y + t • k y) x = Matrix.of (J0 + t • JL).1 := by
+        ext a b; simp [J0, JL, jetAt]
+      rw [e]; exact ht
+    rw [scalarCurvature_eq_Rjet (smoothTensor_add_smul hg hk t) hd, jetAt_add_smul hg hk t x]
+  exact hR1.congr_of_eventuallyEq hev1
+
+/-- **The derivative of `Rjet` along the jet of `ℒ_ξ h`** is `ξ^k ∂_k R (x)`. -/
+theorem fderivRjet_lie {h : TensorField d} {ξ : VectorField d} (hξ : SmoothVec ξ)
     (hh : SmoothTensor h) (hpos : ∀ y, (h y).PosDef) (x : Fin d → ℝ) :
-    HasDerivAt (fun t : ℝ => Lightlike.scalarCurvature (fun y => h y + t • lieTensor ξ h y) x)
-      (∑ k, ξ x k * Lightlike.pd k (Lightlike.scalarCurvature h) x) 0 := by
+    fderiv ℝ Rjet (jetAt h x) (jetAt (lieTensor ξ h) x) =
+      ∑ k, ξ x k * Lightlike.pd k (Lightlike.scalarCurvature h) x := by
   set L := lieTensor ξ h with hLdef
   have hL : SmoothTensor L := smoothTensor_lieTensor hh hξ
   have hdetY : ∀ y, (h y).det ≠ 0 := fun y => (hpos y).det_pos.ne'
@@ -120,25 +149,6 @@ theorem hasDerivAt_scalar_lie {h : TensorField d} {ξ : VectorField d} (hξ : Sm
   have hJ0 : (Matrix.of J0.1).det ≠ 0 := hdetY x
   have hRd : HasFDerivAt Rjet (fderiv ℝ Rjet J0) J0 := (differentiableAt_Rjet hJ0).hasFDerivAt
   set DR := fderiv ℝ Rjet J0 with hDR
-  -- Part 1: along h + t L
-  have hc1 : HasDerivAt (fun t : ℝ => J0 + t • JL) JL 0 := by
-    simpa using ((hasDerivAt_id (0 : ℝ)).smul_const JL).const_add J0
-  have hR1 : HasDerivAt (fun t : ℝ => Rjet (J0 + t • JL)) (DR JL) 0 := by
-    have h1 : HasFDerivAt Rjet DR (J0 + (0 : ℝ) • JL) := by simpa using hRd
-    exact h1.comp_hasDerivAt (0 : ℝ) hc1
-  have hev1 : ∀ᶠ t in 𝓝 (0 : ℝ), Lightlike.scalarCurvature (fun y => h y + t • L y) x =
-      Rjet (J0 + t • JL) := by
-    have hcont : Continuous (fun t : ℝ => (Matrix.of (J0 + t • JL).1).det) :=
-      continuous_det_jet.comp (continuous_const.add (continuous_id.smul continuous_const))
-    have hne : ∀ᶠ t in 𝓝 (0 : ℝ), (Matrix.of (J0 + t • JL).1).det ≠ 0 :=
-      hcont.continuousAt.eventually_ne (by simpa using hJ0)
-    filter_upwards [hne] with t ht
-    have hd : ((fun y => h y + t • L y) x).det ≠ 0 := by
-      have e : (fun y => h y + t • L y) x = Matrix.of (J0 + t • JL).1 := by
-        ext a b; simp [J0, JL, jetAt]
-      rw [e]; exact ht
-    rw [scalarCurvature_eq_Rjet (smoothTensor_add_smul hh hL t) hd, jetAt_add_smul hh hL t x]
-  have hR1' := hR1.congr_of_eventuallyEq hev1
   -- Part 2: along the pullback by the flow
   have hc2 := hasDerivAt_jet_pullback hξ hh x
   have hc20 : jetAt (fun y => Lightlike.pullback h (flowMap ξ 0) y) x = J0 := by
@@ -195,8 +205,16 @@ theorem hasDerivAt_scalar_lie {h : TensorField d} {ξ : VectorField d} (hξ : Sm
   have hR2' := hR2.congr_of_eventuallyEq hev2
   have huniq : DR JL = fderiv ℝ Rh x (ξ x) := hR2'.unique hR3
   rw [fderiv_eq_sum_pd] at huniq
-  rw [huniq] at hR1'
-  exact hR1'
+  exact huniq
+
+/-- **Infinitesimal covariance of the scalar curvature**: along `h + t ℒ_ξ h` the scalar curvature at `x` has
+derivative `ξ^k ∂_k R (x)`. -/
+theorem hasDerivAt_scalar_lie {h : TensorField d} {ξ : VectorField d} (hξ : SmoothVec ξ)
+    (hh : SmoothTensor h) (hpos : ∀ y, (h y).PosDef) (x : Fin d → ℝ) :
+    HasDerivAt (fun t : ℝ => Lightlike.scalarCurvature (fun y => h y + t • lieTensor ξ h y) x)
+      (∑ k, ξ x k * Lightlike.pd k (Lightlike.scalarCurvature h) x) 0 := by
+  have := hasDerivAt_scalar_dir hh (smoothTensor_lieTensor hh hξ) (hpos x).det_pos.ne'
+  rwa [fderivRjet_lie hξ hh hpos x] at this
 
 end Lightlike.Canonical
 
