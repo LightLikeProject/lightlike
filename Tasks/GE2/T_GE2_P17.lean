@@ -1,4 +1,4 @@
-import Lightlike.Spacetime.Causal.MinkowskiCausal
+import Lightlike.Spacetime.Causal.SmoothOrientation
 
 /-!
 # Task T-GE2-P17
@@ -64,6 +64,6 @@ theorem exists_smooth_timeOrientation [T2Space M] [SecondCountableTopology M]
       ContMDiff I (I.prod 𝓘(ℝ, E)) ∞
         (fun x ↦ TotalSpace.mk' E (E := fun x : M ↦ TangentSpace I x) x (X' x)) ∧
       ∀ x, g.g x (X' x) (X' x) < 0 ∧ g.g x (X' x) (T.X x) < 0 := by
-  sorry
+  exact exists_smooth_field T
 
 end Lightlike.Causal

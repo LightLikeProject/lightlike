@@ -10,7 +10,7 @@ A time orientation of a Lorentzian manifold is a continuous timelike vector fiel
 
 The causal ladder is chronology, causality, strong causality, stable causality, causal simplicity and global hyperbolicity [4] {4}; each is defined as a property of the time orientation, and the implications between them are open tasks. A Cauchy surface is a set that every inextendible timelike curve meets exactly once [4] {4}. The domain of dependence of a set is the set of points every inextendible causal curve through which meets the set on the correct side [6] {6}.
 
-The chronological future is contained in the causal future, a point lies in its own causal future, both futures are transitive, and a causal manifold is chronological; the proofs restrict, translate and glue locally Lipschitz curves [7] {3}. In Minkowski space the causal future of a point is the closed light cone, obtained by integrating the derivative of a Lipschitz causal curve [9] {5}, and the causal diamonds are compact and the open diamonds are causally convex neighbourhoods, so the space is globally hyperbolic [8] {5}. The constant field ∂₀ is a time orientation, and a straight line with a future-directed timelike direction is a timelike curve, so x + v is in the chronological future of x [5] {5}.
+The chronological future is contained in the causal future, a point lies in its own causal future, both futures are transitive, and a causal manifold is chronological; the proofs restrict, translate and glue locally Lipschitz curves [7] {3}. In Minkowski space the causal future of a point is the closed light cone, obtained by integrating the derivative of a Lipschitz causal curve [9] {5}, and the causal diamonds are compact and the open diamonds are causally convex neighbourhoods, so the space is globally hyperbolic [8] {5}. A continuous time orientation can be replaced by a smooth one: smooth partitions of unity glue chart-constant fields, and the future timelike cone of a Lorentzian form is convex [10] {1} [11] {1}. The constant field ∂₀ is a time orientation, and a straight line with a future-directed timelike direction is a timelike curve, so x + v is in the chronological future of x [5] {5}.
 
 ## Lean References
 
@@ -23,6 +23,8 @@ The chronological future is contained in the causal future, a point lies in its 
 7. Lightlike/Spacetime/Causal/BasicRelations.lean - `Causal.chron_subset_causal`, `Causal.self_mem_causalFuture`, `Causal.causal_trans`, `Causal.chron_trans`, `Causal.chronological_of_causal`
 8. Lightlike/Spacetime/Causal/MinkowskiGH.lean - `Causal.minkowski_globallyHyperbolic`
 9. Lightlike/Spacetime/Causal/MinkowskiFuture.lean - `Causal.minkowski_causalFuture_eq`
+10. Lightlike/Spacetime/Causal/SmoothOrientation.lean - `Causal.exists_smooth_field`
+11. Lightlike/Spacetime/Causal/ConeConvex.lean - `IsLorentzianForm.convex_futureTimelike`
 
 ## References
 
