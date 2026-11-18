@@ -66,7 +66,8 @@ theorem NondegMetric.setIntegral_volumeMeasure_chart (x₀ : M) {K : Set M} (hK 
   show (ENNReal.ofReal (NondegMetric.volDensity g x₀ y)).toReal •
       f ((extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).symm y) =
     NondegMetric.volDensity g x₀ y * f ((extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).symm y)
-  rw [ENNReal.toReal_ofReal (Real.sqrt_nonneg _), smul_eq_mul]
+  have hnn : 0 ≤ NondegMetric.volDensity g x₀ y := Real.sqrt_nonneg _
+  rw [ENNReal.toReal_ofReal hnn, smul_eq_mul]
 
 variable (cov : Connection 𝓘(ℝ, Fin n → ℝ) M) [CovariantDerivative.ContMDiffCovariantDerivative cov ∞]
 
