@@ -113,6 +113,7 @@ than one who stays at rest [6].
 29. Lightlike/Spacetime/PoincareKilling.lean - `affField`, `affField_killing_iff`, `not_isKillingAt_dilation`, `mlieBracket_affField`, `skew_comm_skew`: in Minkowski space the affine fields with skew linear part are Killing, the dilation is not, and the affine fields close under the bracket with the Poincare relations.
 
 30. Lightlike/Spacetime/Hypersurface.lean - `Hypersurface.IsUnitNormal`, `Hypersurface.IsTangentNear`, `Hypersurface.secondFF`, `Hypersurface.lieBracket_isTangentNear`, `Hypersurface.secondFF_symm_fields`, `Hypersurface.exists_tangent_extension`, `Hypersurface.Dfield`, `Hypersurface.gaussCurv`, `Hypersurface.covK`, `Hypersurface.gauss_relation`, `Hypersurface.codazzi_relation`: the unit normal and second fundamental form of the level sets of a function, its symmetry, and the Gauss and Codazzi relations.
+31. Lightlike/Spacetime/KillingMinkowski.lean - `eq_affine_of_skew_deriv`, `killing_eq_affField`, `finrank_skewEta`, `finrank_killingFields`: every `C²` Killing field of Minkowski space is affine with an `η`-skew linear part, and the Killing fields form a space of dimension `n (n + 1) / 2`.
 
 ## References
 

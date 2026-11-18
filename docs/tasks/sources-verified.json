@@ -1254,6 +1254,11 @@
     "snippet": "(4.72) This is known as the Weak Energy Condition, or WEC. It seems like a fairly reasonable requirement, and many of the important theorems about solutions to general relativity (such as the singularity theorems of Hawk",
     "why": null
    },
+   "eq. (5.44)": {
+    "verified": true,
+    "snippet": "(5.44) 2 2 independent Killing vectors. The same kind of counting argument applies to maximally symmetric spaces with curvature (such as spheres) or a non-Euclidean signature (such as Minkowski space), although the detai",
+    "why": null
+   },
    "eq. (6.54)": {
     "verified": true,
     "snippet": "(6.54) Therefore we can drop the bars over hµν , as long as we are in this gauge. 6 WEAK FIELDS AND GRAVITATIONAL RADIATION 152 One nice feature of the transverse traceless gauge is that if you are given the components o",
