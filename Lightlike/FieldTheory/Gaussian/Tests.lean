@@ -1,14 +1,17 @@
-import Lightlike.FieldTheory.Gaussian.Integral
+import Lightlike.FieldTheory.Gaussian.Moments
 
 /-!
 # Checks of the Gaussian integral
 
 * Against Mathlib's independent computation `GaussianFourier.integral_rexp_neg_mul_sq_norm`: for
   `A = 1` the formula gives `(2π)^{n/2}`.
+* Isserlis for two points against Mathlib's covariance of the multivariate Gaussian
+  (`covariance_eval_multivariateGaussian`), an independent computation; the four-point function with
+  one variable and variance `1` is `3`, not `1`.
 * The determinant matters: for one variable the integrals for `A = 1` and `A = 2` differ.
 -/
 
-open MeasureTheory Matrix Real
+open MeasureTheory ProbabilityTheory Matrix Real
 
 namespace Lightlike.FieldTheory
 
@@ -45,5 +48,15 @@ example : ∫ x : EuclideanSpace ℝ Unit,
     rw [show (1 : ℝ) = Real.sqrt 1 from Real.sqrt_one.symm]
     exact Real.sqrt_lt_sqrt (by norm_num) (by norm_num)
   linarith
+
+/-- The Isserlis two-point function agrees with Mathlib's covariance. -/
+example {S : Matrix ι ι ℝ} (hS : S.PosDef) (i j : ι) :
+    moment S [i, j] = cov[fun x : EuclideanSpace ℝ ι => x i, fun x => x j; multivariateGaussian 0 S] := by
+  rw [moment_two hS, covariance_eval_multivariateGaussian hS.posSemidef]
+
+/-- The four-point function for one variable of variance `1` is `3`. -/
+example : moment (1 : Matrix Unit Unit ℝ) [(), (), (), ()] = 3 := by
+  rw [moment_four Matrix.PosDef.one]
+  norm_num
 
 end Lightlike.FieldTheory
