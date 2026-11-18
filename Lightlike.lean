@@ -677,6 +677,7 @@ import Lightlike.Spacetime.CausalLadder.ConeLift
 import Lightlike.Spacetime.CausalLadder.LiftData
 import Lightlike.Spacetime.CausalLadder.LocalLift
 import Lightlike.Spacetime.Causal.BasicRelations
+import Lightlike.Spacetime.Causal.CauchyClosed
 import Lightlike.Spacetime.Causal.ChainReach
 import Lightlike.Spacetime.Causal.TimeReversal
 import Lightlike.Spacetime.Causal.OpenPast
@@ -692,6 +693,7 @@ import Lightlike.Spacetime.Causal.PerturbCauchy
 import Lightlike.Spacetime.Causal.CauchySeparation
 import Lightlike.Spacetime.Causal.CauchyAssembly
 import Lightlike.Spacetime.Causal.CauchyCover
+import Lightlike.Spacetime.Causal.CauchyEquiv
 import Lightlike.Spacetime.Causal.CauchyDomain
 import Lightlike.Spacetime.Causal.CausalCurve
 import Lightlike.Spacetime.Causal.CurveGlobal
