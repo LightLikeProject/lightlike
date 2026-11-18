@@ -191,4 +191,30 @@ theorem differentiable_conj_FF (R : FockRep h K) (χ : K) (x v : h) :
   have := hloc.differentiableOn (Eventually.of_forall fun n => (hF n).differentiableOn) isOpen_univ
   exact differentiableOn_univ.1 this
 
+section Commutant
+
+omit [InnerProductSpace ℂ h] in
+lemma gaussE_neg' (x : h) : gaussE (-x) = gaussE x := by simp [gaussE]
+
+variable [CompleteSpace K]
+
+lemma kv_zero (R : FockRep h K) : kv R 0 = R.Ω := by
+  unfold kv; rw [R.W_zero]; rfl
+
+lemma FF_zero (R : FockRep h K) (χ : K) : FF R χ 0 = ⟪R.Ω, χ⟫_ℂ := by
+  unfold FF; rw [kv_zero]; simp [gaussE]
+
+/-- For `C` commuting with the Weyl unitaries, `F_{C Ω}(-b) = conj F_{C† Ω}(b)`. -/
+lemma FF_commutant (R : FockRep h K) (C : K →L[ℂ] K) (hC : ∀ f ψ, C (R.W f ψ) = R.W f (C ψ)) (b : h) :
+    FF R (C R.Ω) (-b) = (starRingEnd ℂ) (FF R ((ContinuousLinearMap.adjoint C) R.Ω) b) := by
+  have h1 : ⟪R.Ω, C (kv R b)⟫_ℂ = ⟪kv R (-b), C R.Ω⟫_ℂ := by
+    unfold kv
+    rw [hC, ← (R.W (-b)).inner_map_map, R.toCCRRep.W_neg_W]
+  have h2 : ⟪R.Ω, C (kv R b)⟫_ℂ = (starRingEnd ℂ) ⟪kv R b, (ContinuousLinearMap.adjoint C) R.Ω⟫_ℂ := by
+    rw [inner_conj_symm (𝕜 := ℂ), ContinuousLinearMap.adjoint_inner_left]
+  unfold FF
+  rw [← h1, h2, map_div₀, Complex.conj_ofReal, gaussE_neg']
+
+end Commutant
+
 end Lightlike.OperatorAlgebras
