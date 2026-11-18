@@ -1,9 +1,9 @@
 import Lightlike.Spacetime.Causal.BasicRelations
+import Lightlike.Spacetime.CausalLadder.CurveContinuity
 
 /-!
 # Push-up: the global step, time reversal
 
-* `IsLocallyLipschitzOn.continuousOn`: a locally Lipschitz curve is continuous.
 * `IsCurveWith.reverse`: reversal of a curve; `TimeOrientation.neg`, `chronFuture_neg_iff`, `causalFuture_neg_iff`: the opposite time
   orientation exchanges `I⁺`, `J⁺` with `I⁻`, `J⁻`.
 * `LocalPushUp T`: the local push-up property (a timelike curve in a small neighbourhood followed in it by a causal curve can be replaced
@@ -28,27 +28,6 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
   {H : Type*} [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
   {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I ∞ M]
   {P : ∀ x : M, TangentSpace I x → Prop}
-
-omit [IsManifold I ∞ M] in
-/-- A locally Lipschitz curve is continuous. -/
-theorem IsLocallyLipschitzOn.continuousOn {γ : ℝ → M} {s : Set ℝ} (h : IsLocallyLipschitzOn (I := I) γ s) :
-    ContinuousOn γ s := by
-  intro t ht
-  obtain ⟨K, U, hU, hm, hl⟩ := h t ht
-  have htU : t ∈ U := mem_of_mem_nhdsWithin ht hU
-  have h1 : ContinuousWithinAt ((extChartAt I (γ t)) ∘ γ) U t := hl.continuousOn t htU
-  have h2 : ContinuousWithinAt (extChartAt I (γ t)).symm (extChartAt I (γ t)).target
-      ((extChartAt I (γ t)) (γ t)) :=
-    (continuousOn_extChartAt_symm (I := I) (γ t)) _ ((extChartAt I (γ t)).map_source (mem_extChartAt_source (γ t)))
-  have h3 : MapsTo ((extChartAt I (γ t)) ∘ γ) U (extChartAt I (γ t)).target := fun u hu =>
-    (extChartAt I (γ t)).map_source (hm hu)
-  have h4 := ContinuousWithinAt.comp (f := (extChartAt I (γ t)) ∘ γ) (g := (extChartAt I (γ t)).symm) h2 h1 h3
-  have h5 : ContinuousWithinAt γ U t := by
-    refine h4.congr (fun u hu => ?_) ?_
-    · exact ((extChartAt I (γ t)).left_inv (hm hu)).symm
-    · exact ((extChartAt I (γ t)).left_inv (mem_extChartAt_source (γ t))).symm
-  exact h5.mono_of_mem_nhdsWithin hU
-
 
 omit [IsManifold I ∞ M] in
 /-- **Reflection of a curve**: if `γ` has its velocity in `P` on `[c, d]`, then `t ↦ γ (k - t)` has its velocity in
