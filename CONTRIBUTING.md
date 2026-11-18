@@ -76,7 +76,8 @@ the modules it changes and the modules that import them.
 
 1. `lake build` succeeds, and every Lean file under `Lightlike/` is imported by `Lightlike.lean`,
    so that it is built and checked. After adding a file, `lake exe mk_all --lib Lightlike`
-   updates `Lightlike.lean`.
+   updates `Lightlike.lean`. The task library builds too (`lake build Tasks`): every file under
+   `Tasks/` compiles, with `sorry` allowed only in the proof of its task declaration.
 2. No `sorry`, `admit`, `native_decide`, `axiom`, `implemented_by` or `extern` in `Lightlike/`,
    and no new `maxHeartbeats 0`: a heavy proof gets a finite limit for that declaration only,
    `set_option maxHeartbeats 400000 in` (`scripts/ci_check.py`, `scripts/heartbeats_baseline.txt`).
