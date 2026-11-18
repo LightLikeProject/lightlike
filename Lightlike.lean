@@ -974,9 +974,11 @@ import Lightlike.Gauge.ConstraintsAPI
 import Lightlike.Gauge.DiracAlgebra
 import Lightlike.Gauge.DiracJacobi
 import Lightlike.Gauge.DiracAlgorithm
+import Lightlike.Gauge.ReducedForm
 import Lightlike.Gauge.MatrixInverse
 import Lightlike.Gauge.PoissonJacobi
 import Lightlike.Tests.ADM
 import Lightlike.Tests.Constraints
 import Lightlike.Tests.DiracAlgorithm
+import Lightlike.Tests.ReducedForm
 import Lightlike.GFT.Euler
