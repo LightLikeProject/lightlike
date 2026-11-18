@@ -64,3 +64,11 @@ Open point: `S_F` is the compression of a symplectic matrix, not symplectic, and
 trace/determinant inequality alone; the Schur complement of the block form `[[1 + Γ, Λ], [Λ*, 1 + Γ̄]]`
 (`Γ = α*α + β*β`, `Λ` the antilinear coupling) has to be used, with `α*α - β*β = 1`.
 Estimated as the largest piece of the criterion.
+
+### Numerical check of the open point (PROXY, not a proof)
+
+For random symplectic `S = Tᵀ T` on `ℝ^{2N}` (`N = 5`, `exp (J H)` with random symmetric `H`, four scales), compressed to
+the first `n ∈ {1, 2, 3}` modes: `(det ((1 + S_F)/2) - 1) / tr (S_F - 1) ≥ 0.263` in 12000 samples with
+`tr (S_F - 1) > 10⁻⁶`. So the candidate inequality `det ((1 + S_F)/2) ≥ 1 + tr (S_F - 1)/4` held with no counterexample.
+A proof is still needed. Tools in sight: `S_F⁻¹ ≤ (S⁻¹)_F = J S_F Jᵀ` (compression of an inverse dominates the inverse of
+the compression, and `V_F` is `J`-invariant).
