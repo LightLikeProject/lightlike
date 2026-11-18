@@ -223,8 +223,7 @@ jobs:
       # The task library (Tasks/, not a default target) holds open proof tasks: `sorry` is allowed
       # there, but only in the proof of each file's task declaration. It is built before the cache is
       # saved, so the cache holds it too.
-      - name: Build the task library [advisory]
-        continue-on-error: true
+      - name: Build the task library [hard rule]
         run: lake build Tasks
 
       # Only pushes to main save; pull requests restore the cache of main.
