@@ -10,7 +10,7 @@ For a bounded operator `S` of a complex Hilbert space, `∑ᵢ ‖S bᵢ‖²` i
 
 Ported, with the index types generalised from subsets of `H` to arbitrary index types, from Physlib
 (`PhyslibAlpha/ProbabilisticTheory/HilbertSpace/TraceClass/Basic.lean`, `hasSum_norm_sq_inner_basis`, and
-`HilbertSchmidt.lean`, `hasSum_norm_sq_apply_eq_adjoint`, `hasSum_norm_sq_apply_of_basis`;
+the Physlib file `.../TraceClass/HilbertSchmidt`, `hasSum_norm_sq_apply_eq_adjoint`, `hasSum_norm_sq_apply_of_basis`;
 Copyright (c) 2026 Tom Ole Diem, Apache 2.0; Physlib commit `cdfa6094`). It is the shared base of the
 necessity part of Shale's criterion (`T-OP2-P6`) and of the trace-class and Hilbert-Schmidt layer.
 -/
