@@ -5,7 +5,7 @@ import Lightlike.Regge.Linear3.SaintVenantCore
 /-!
 # `Q_n (h)` as a lattice sum of hinge densities
 
-The coefficient `Q_n (h) = Σ_e (a_e / (2 ℓ_e)) δ_e'(0)` of the linearized Regge action on the periodic Kuhn complex
+The sum `Q_n (h) = Σ_e (a_e / (2 ℓ_e)) δ_e'(0)` of the linearized Regge action on the periodic Kuhn complex
 (`LinearizedTorus.lean`) is a sum over the cells `z` of the lattice and the seven edge classes `k` of
 `(1/n) · (A_h / (2 |w_k|)) · (-Σ_{(σ,h) in class k} dth h (atilV) / |w_k|)` (`Qn_lattice`), where
 `A_h = hAt` is the unit-scale degree of freedom of the hinge edge and `atilV` the six unit-scale degrees of
@@ -147,7 +147,7 @@ theorem hbase_wn (k : Fin 7) (σ h : Fin 6) (hc : Cond (dirsN k) σ h) : √(hba
 
 
 open Classical in
-/-- **The coefficient `Q_n (h)` as a lattice sum over the hinges.** -/
+/-- **The sum `Q_n (h)` as a lattice sum over the hinges.** -/
 theorem Qn_lattice (hn : 3 ≤ n) (hf : (Fin 3 → ℝ) → Matrix (Fin 3) (Fin 3) ℝ)
     (hper : ∀ (p : Fin 3 → ℝ) (e : Fin 3 → ℤ), hf (p + fun i => (e i : ℝ)) = hf p) :
     Qn n (by omega) hf = ∑ k : Fin 7, ∑ z : Fin 3 → Fin n,
