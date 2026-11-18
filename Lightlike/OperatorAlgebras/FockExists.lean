@@ -59,4 +59,26 @@ theorem posSemidef_fockKer : (fockKer h).PosSemidef := by
     rw [this]
     exact (Complex.nonneg_iff.1 hq).1
 
+instance fockFact : Fact (fockKer h).PosSemidef := ⟨posSemidef_fockKer⟩
+
+/-- **The Fock space**: the reproducing kernel Hilbert space of the Fock kernel (Mathlib: `RKHS.OfKernel`). -/
+abbrev FockSpace (h : Type u) [NormedAddCommGroup h] [InnerProductSpace ℂ h] : Type u :=
+  RKHS.OfKernel (fockKer h)
+
+noncomputable example : NormedAddCommGroup (FockSpace h) := inferInstance
+noncomputable example : InnerProductSpace ℂ (FockSpace h) := inferInstance
+example : CompleteSpace (FockSpace h) := inferInstance
+
+/-- The kernel vector `k_f`, the image of `f` in the Fock space (`W f Ω` in the Fock representation). -/
+noncomputable def kf (f : h) : FockSpace h := RKHS.kerFun (FockSpace h) f (1 : ℂ)
+
+lemma inner_kf (f g : h) : ⟪kf f, kf g⟫_ℂ = fockGram f g := by
+  have := RKHS.kernel_inner (FockSpace h) g f 1 1
+  rw [RKHS.OfKernel.kernel_ofKernel] at this
+  simp only [fockKer, Matrix.of_apply, ContinuousLinearMap.smul_apply,
+    ContinuousLinearMap.id_apply, smul_eq_mul, RCLike.inner_apply, map_one, mul_one, one_mul] at this
+  have h2 : ⟪kf f, kf g⟫_ℂ = (starRingEnd ℂ) (fockGram g f) := by
+    rw [kf, kf]; exact this.symm
+  rw [h2, ← fockGram_conj']
+
 end Lightlike.OperatorAlgebras
