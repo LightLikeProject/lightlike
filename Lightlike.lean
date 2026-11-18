@@ -189,6 +189,7 @@ import Lightlike.FourD.Orientation
 import Lightlike.FourD.Pachner
 import Lightlike.FourD.Tests
 import Lightlike.GR.Einstein
+import Lightlike.GR.EddingtonFinkelstein
 import Lightlike.GR.Schwarzschild
 import Lightlike.Lorentz.Cartan
 import Lightlike.Lorentz.Continuity
@@ -716,6 +717,7 @@ import Lightlike.Spacetime.ContractedBianchi
 import Lightlike.Spacetime.DivergenceFree
 import Lightlike.Spacetime.OpenCoordMetric
 import Lightlike.Spacetime.LeviCivitaSmooth
+import Lightlike.Spacetime.RicciContinuous
 import Lightlike.Spacetime.SchwarzschildManifold
 import Lightlike.Spacetime.ChartTensor
 import Lightlike.Spacetime.EinsteinEquations
