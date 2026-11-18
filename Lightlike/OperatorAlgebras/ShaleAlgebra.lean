@@ -11,7 +11,7 @@ with parts `α, β` (`T f = α f + β f`), the symplectic condition gives `‖α
 `q f = ‖T f‖²` alone.
 -/
 
-open scoped InnerProductSpace
+open scoped InnerProductSpace ComplexOrder
 
 universe u
 
@@ -145,5 +145,23 @@ lemma Bogoliubov.alpha_sub_one_nonneg (T : Bogoliubov h) :
     rw [← inner_conj_symm, h1]; simp
   rw [h2]
   refine ⟨?_, ?_⟩ <;> simp [← Complex.ofReal_pow, sq_nonneg]
+
+/-- `‖(√(α†α - 1)) e‖² = ‖β e‖²`. -/
+lemma Bogoliubov.norm_sqrt_sq (T : Bogoliubov h) (e : h) :
+    ‖CFC.sqrt (ContinuousLinearMap.adjoint T.alphaCLM * T.alphaCLM - 1) e‖ ^ 2 = ‖T.betaPart e‖ ^ 2 := by
+  set A := ContinuousLinearMap.adjoint T.alphaCLM * T.alphaCLM - 1 with hA
+  have hpos : 0 ≤ A := T.alpha_sub_one_nonneg
+  set S := CFC.sqrt A
+  have hSself : IsSelfAdjoint S := .of_nonneg (CFC.sqrt_nonneg A)
+  have hSS : S * S = A := CFC.sqrt_mul_sqrt_self A hpos
+  have hstar : ContinuousLinearMap.adjoint S = S :=
+    (ContinuousLinearMap.star_eq_adjoint S).symm.trans hSself
+  have h1 : ⟪e, A e⟫_ℂ = ⟪S e, S e⟫_ℂ := by
+    rw [← hSS, ContinuousLinearMap.mul_apply, ← ContinuousLinearMap.adjoint_inner_left S (S e) e, hstar]
+  have h2 := T.inner_alpha_sub_one e
+  rw [← hA, h1, inner_self_eq_norm_sq_to_K] at h2
+  have h3 : ((‖S e‖ ^ 2 : ℝ) : ℂ) = ((‖T.betaPart e‖ ^ 2 : ℝ) : ℂ) := by
+    rw [← h2]; push_cast; rfl
+  exact_mod_cast h3
 
 end Lightlike.OperatorAlgebras
