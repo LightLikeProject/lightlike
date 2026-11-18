@@ -139,7 +139,12 @@ import Lightlike.Canonical.DensityCovariance
 import Lightlike.Canonical.DensityDeriv
 import Lightlike.Canonical.FirstOrderPotential
 import Lightlike.Canonical.FlowPullback
+import Lightlike.Canonical.HamiltonianAlgebra
+import Lightlike.Canonical.HamiltonianLink
+import Lightlike.Canonical.HamiltonianPm
+import Lightlike.Canonical.HamiltonianWEq
 import Lightlike.Canonical.HamiltonianBracket
+import Lightlike.Canonical.HamiltonianHHBracket
 import Lightlike.Canonical.HamiltonianDeriv
 import Lightlike.Canonical.HamiltonianFirstOrder
 import Lightlike.Canonical.HamiltonianHH
