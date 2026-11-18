@@ -67,7 +67,7 @@ theorem phaseGrad_eq (F : X → X → ℝ) (hF : Differentiable ℝ (fun z : X �
   rfl
 
 /-- The Riesz map `StrongDual ℝ X → X` as a continuous real-linear map. -/
-noncomputable def rieszL : StrongDual ℝ X →L[ℝ] X :=
+noncomputable def rieszToX : StrongDual ℝ X →L[ℝ] X :=
   LinearMap.mkContinuous
     { toFun := (toDual ℝ X).symm
       map_add' := fun a b => map_add _ a b
@@ -79,18 +79,18 @@ theorem contDiff_hamField (F : X → X → ℝ) (hF : ContDiff ℝ 2 (fun z : X 
     ContDiff ℝ 1 (fun z : X × X => hamField F z.1 z.2) := by
   have hd : ContDiff ℝ 1 (fun z : X × X => fderiv ℝ (fun z : X × X => F z.1 z.2) z) :=
     hF.fderiv_right (by norm_num)
-  have hA1 : ContDiff ℝ 1 (fun z : X × X => rieszL ((ContinuousLinearMap.compL ℝ X (X × X) ℝ).flip
+  have hA1 : ContDiff ℝ 1 (fun z : X × X => rieszToX ((ContinuousLinearMap.compL ℝ X (X × X) ℝ).flip
       (ContinuousLinearMap.inl ℝ X X) (fderiv ℝ (fun z : X × X => F z.1 z.2) z))) := by
-    have := rieszL.contDiff.comp (((ContinuousLinearMap.compL ℝ X (X × X) ℝ).flip
+    have := rieszToX.contDiff.comp (((ContinuousLinearMap.compL ℝ X (X × X) ℝ).flip
       (ContinuousLinearMap.inl ℝ X X)).contDiff.comp hd)
     exact this
-  have hA2 : ContDiff ℝ 1 (fun z : X × X => rieszL ((ContinuousLinearMap.compL ℝ X (X × X) ℝ).flip
+  have hA2 : ContDiff ℝ 1 (fun z : X × X => rieszToX ((ContinuousLinearMap.compL ℝ X (X × X) ℝ).flip
       (ContinuousLinearMap.inr ℝ X X) (fderiv ℝ (fun z : X × X => F z.1 z.2) z))) := by
-    have := rieszL.contDiff.comp (((ContinuousLinearMap.compL ℝ X (X × X) ℝ).flip
+    have := rieszToX.contDiff.comp (((ContinuousLinearMap.compL ℝ X (X × X) ℝ).flip
       (ContinuousLinearMap.inr ℝ X X)).contDiff.comp hd)
     exact this
-  have heq : (fun z : X × X => hamField F z.1 z.2) = fun z => (-(rieszL ((ContinuousLinearMap.compL ℝ X (X × X) ℝ).flip
-      (ContinuousLinearMap.inr ℝ X X) (fderiv ℝ (fun z : X × X => F z.1 z.2) z))), rieszL ((ContinuousLinearMap.compL ℝ X (X × X) ℝ).flip
+  have heq : (fun z : X × X => hamField F z.1 z.2) = fun z => (-(rieszToX ((ContinuousLinearMap.compL ℝ X (X × X) ℝ).flip
+      (ContinuousLinearMap.inr ℝ X X) (fderiv ℝ (fun z : X × X => F z.1 z.2) z))), rieszToX ((ContinuousLinearMap.compL ℝ X (X × X) ℝ).flip
       (ContinuousLinearMap.inl ℝ X X) (fderiv ℝ (fun z : X × X => F z.1 z.2) z))) := by
     funext z
     have := phaseGrad_eq F (hF.differentiable (by norm_num)) z
