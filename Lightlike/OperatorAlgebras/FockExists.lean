@@ -291,4 +291,40 @@ lemma continuous_kf : Continuous (kf : h → FockSpace h) := by
   refine this.congr fun b => ?_
   rw [← Real.sqrt_sq (norm_nonneg (kf b - kf a)), norm_sq_kf_sub]
 
+/-- A family of isometries that is continuous on a dense set is strongly continuous. -/
+lemma continuous_of_dense_isometries {K : Type*} [NormedAddCommGroup K] [InnerProductSpace ℂ K]
+    {ι : Type*} [TopologicalSpace ι] (U : ι → K ≃ₗᵢ[ℂ] K) {D : Set K} (hd : Dense D)
+    (hc : ∀ ψ ∈ D, Continuous fun t => U t ψ) (ψ : K) : Continuous fun t => U t ψ := by
+  obtain ⟨u, hu, hlim⟩ := mem_closure_iff_seq_limit.1 (hd ψ)
+  refine TendstoUniformly.continuous (F := fun n t => U t (u n)) (p := Filter.atTop)
+    ?_ (Filter.Eventually.of_forall fun n => hc _ (hu n)).frequently
+  rw [Metric.tendstoUniformly_iff]
+  intro ε hε
+  have := (Metric.tendsto_nhds.1 hlim) ε hε
+  filter_upwards [this] with n hn t
+  rw [dist_comm, LinearIsometryEquiv.dist_map]
+  exact hn
+
+lemma continuous_fockPhase_left (x : h) : Continuous fun g : h => fockPhase g x := by
+  unfold fockPhase symp
+  fun_prop
+
+lemma continuous_fockW_line_kf (f x : h) : Continuous fun t : ℝ => fockW ((t : ℂ) • f) (kf x) := by
+  simp only [fockW_kf]
+  have hl : Continuous fun t : ℝ => (t : ℂ) • f := Complex.continuous_ofReal.smul continuous_const
+  exact ((continuous_fockPhase_left x).comp hl).smul (continuous_kf.comp (continuous_const.add hl))
+
+lemma continuous_fockW_line (f : h) (ψ : FockSpace h) : Continuous fun t : ℝ => fockW ((t : ℂ) • f) ψ := by
+  refine continuous_of_dense_isometries (fun t : ℝ => fockW ((t : ℂ) • f))
+    (dense_range_fockPhi (h := h)) (fun ψ hψ => ?_) ψ
+  have hr : LinearMap.range (fockPhi h) = Submodule.span ℂ (Set.range kf) :=
+    Finsupp.range_linearCombination _
+  have hψ' : ψ ∈ Submodule.span ℂ (Set.range kf) := hr ▸ hψ
+  clear hψ
+  induction hψ' using Submodule.span_induction with
+  | mem x hx => obtain ⟨y, rfl⟩ := hx; exact continuous_fockW_line_kf f y
+  | zero => simp only [map_zero]; exact continuous_const
+  | add x y _ _ hx hy => simp only [map_add]; exact hx.add hy
+  | smul a x _ hx => simp only [map_smul]; exact hx.const_smul a
+
 end Lightlike.OperatorAlgebras
