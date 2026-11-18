@@ -447,6 +447,117 @@ lemma stage1 (Hi P : Matrix (Fin d) (Fin d) ℝ) (G : Fin d → Fin d → Fin d 
   rw [s1]
   ring
 
+/-- Index algebra for the bracket of two Hamiltonian constraints (`contr_full`). -/
+lemma contr_full (Hi N : Matrix (Fin d) (Fin d) ℝ) :
+    ∑ σ, ∑ ν, Hi σ ν * N σ ν = (Hi * Nᵀ).trace := by
+  simp [Matrix.trace, Matrix.mul_apply, Matrix.transpose_apply]
+
+/-- Index algebra for the bracket of two Hamiltonian constraints (`Tnc_split`). -/
+lemma Tnc_split (Hi : Matrix (Fin d) (Fin d) ℝ) (X : Fin d → Fin d → Fin d → ℝ) (b : Fin d) :
+    Tnc Hi X b = (∑ σ, ∑ ν, Hi σ ν * ∑ l, Hi b l * X σ l ν) -
+      1 / 2 * (∑ σ, ∑ ν, Hi σ ν * ∑ l, Hi b l * X l σ ν) -
+      1 / 2 * ∑ σ, Hi b σ * ∑ l, ∑ m, Hi l m * X σ l m := by
+  unfold Tnc
+  have : ∀ σ ν, Hi σ ν * ∑ l, Hi b l * (X σ l ν - 1 / 2 * X l σ ν) =
+      Hi σ ν * ∑ l, Hi b l * X σ l ν - 1 / 2 * (Hi σ ν * ∑ l, Hi b l * X l σ ν) := fun σ ν => by
+    simp only [mul_sub, Finset.sum_sub_distrib, Finset.mul_sum]
+    rw [← Finset.sum_sub_distrib, ← Finset.sum_sub_distrib]
+    exact Finset.sum_congr rfl fun l _ => by ring
+  simp only [this, Finset.sum_sub_distrib, ← Finset.mul_sum]
+
+/-- Index algebra for the bracket of two Hamiltonian constraints (`sandwich`). -/
+lemma sandwich (Hi h M : Matrix (Fin d) (Fin d) ℝ) (hHh : Hi * h = 1) (hhH : h * Hi = 1) :
+    Hi * (h * M * h) * Hi = M := by
+  have : Hi * (h * M * h) * Hi = (Hi * h) * M * (h * Hi) := by simp only [Matrix.mul_assoc]
+  rw [this, hHh, hhH, Matrix.one_mul, Matrix.mul_one]
+
+/-- The tensor `Y_a = 2 h Dπ_a h − c (tr Dπ_a h) h`. -/
+def Ymat (h : Matrix (Fin d) (Fin d) ℝ) (Dπ : Fin d → Matrix (Fin d) (Fin d) ℝ) (c : ℝ) (a : Fin d) :
+    Matrix (Fin d) (Fin d) ℝ :=
+  (2 : ℝ) • (h * Dπ a * h) - (c * (Dπ a * h).trace) • h
+
+/-- Index algebra for the bracket of two Hamiltonian constraints (`Ymat_trace`). -/
+lemma Ymat_trace (Hi h : Matrix (Fin d) (Fin d) ℝ) (Dπ : Fin d → Matrix (Fin d) (Fin d) ℝ) (c : ℝ)
+    (hHh : Hi * h = 1) (hsym : hᵀ = h) (a : Fin d) :
+    ∑ l, ∑ m, Hi l m * Ymat h Dπ c a l m = (2 - c * d) * (Dπ a * h).trace := by
+  rw [contr_full]
+  unfold Ymat
+  have e1 : (((2 : ℝ) • (h * Dπ a * h) - (c * (Dπ a * h).trace) • h)ᵀ) =
+      (2 : ℝ) • (h * (Dπ a)ᵀ * h) - (c * (Dπ a * h).trace) • h := by
+    rw [Matrix.transpose_sub, Matrix.transpose_smul, Matrix.transpose_smul, Matrix.transpose_mul,
+      Matrix.transpose_mul, hsym]
+    simp only [Matrix.mul_assoc]
+  rw [e1, Matrix.mul_sub, Matrix.mul_smul, Matrix.mul_smul, Matrix.trace_sub, Matrix.trace_smul, Matrix.trace_smul]
+  have e2 : Hi * (h * (Dπ a)ᵀ * h) = (Hi * h) * (Dπ a)ᵀ * h := by simp only [Matrix.mul_assoc]
+  rw [e2, hHh, Matrix.one_mul, Matrix.trace_one]
+  have e3 : ((Dπ a)ᵀ * h).trace = (Dπ a * h).trace := by
+    calc ((Dπ a)ᵀ * h).trace = (((Dπ a)ᵀ * h)ᵀ).trace := (Matrix.trace_transpose _).symm
+      _ = (h * Dπ a).trace := by rw [Matrix.transpose_mul, hsym, Matrix.transpose_transpose]
+      _ = (Dπ a * h).trace := Matrix.trace_mul_comm _ _
+  rw [e3]
+  simp
+  ring
+
+/-- **Stage 2b**: the contraction of `Y_a = 2 h Dπ_a h − c (tr Dπ_a h) h` is twice the divergence of `Dπ`. -/
+lemma Tnc_Ymat (Hi h : Matrix (Fin d) (Fin d) ℝ) (Dπ : Fin d → Matrix (Fin d) (Fin d) ℝ) (c : ℝ)
+    (hHs : Hiᵀ = Hi) (hHh : Hi * h = 1) (hhH : h * Hi = 1) (hsym : hᵀ = h) (hc : c * ((d : ℝ) - 1) = 2)
+    (b : Fin d) :
+    Tnc Hi (fun a i j => Ymat h Dπ c a i j) b = 2 * ∑ σ, Dπ σ b σ := by
+  rw [Tnc_split]
+  have hA : ∀ σ, ∑ ν, Hi σ ν * ∑ l, Hi b l * Ymat h Dπ c σ l ν =
+      2 * Dπ σ b σ - c * (Dπ σ * h).trace * Hi b σ := by
+    intro σ
+    have e1 : ∀ ν, Hi σ ν * ∑ l, Hi b l * Ymat h Dπ c σ l ν = (Hi * Ymat h Dπ c σ) b ν * Hiᵀ ν σ := by
+      intro ν
+      rw [Matrix.mul_apply, Matrix.transpose_apply, mul_comm]
+    simp only [e1]
+    rw [← Matrix.mul_apply (M := Hi * Ymat h Dπ c σ) (N := Hiᵀ), hHs]
+    have : Hi * Ymat h Dπ c σ * Hi = (2 : ℝ) • Dπ σ - (c * (Dπ σ * h).trace) • Hi := by
+      unfold Ymat
+      rw [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_smul, Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_mul,
+        sandwich Hi h _ hHh hhH]
+      have : Hi * h * Hi = Hi := by rw [hHh, Matrix.one_mul]
+      rw [this]
+    rw [this]
+    simp [Matrix.sub_apply]
+  have hBC : ∀ a, ∑ σ, ∑ ν, Hi σ ν * Ymat h Dπ c a σ ν = (2 - c * d) * (Dπ a * h).trace := fun a =>
+    Ymat_trace Hi h Dπ c hHh hsym a
+  have hB : ∑ σ, ∑ ν, Hi σ ν * ∑ l, Hi b l * Ymat h Dπ c l σ ν =
+      ∑ l, Hi b l * ((2 - c * d) * (Dπ l * h).trace) := by
+    have : ∀ σ ν, Hi σ ν * ∑ l, Hi b l * Ymat h Dπ c l σ ν = ∑ l, Hi b l * (Hi σ ν * Ymat h Dπ c l σ ν) := by
+      intro σ ν; rw [Finset.mul_sum]; exact Finset.sum_congr rfl fun l _ => by ring
+    simp only [this]
+    rw [sum3_cyc']
+    refine Finset.sum_congr rfl fun l _ => ?_
+    rw [← hBC l, Finset.mul_sum]
+    refine Finset.sum_congr rfl fun σ _ => ?_
+    rw [Finset.mul_sum]
+  have hC : ∑ σ, Hi b σ * ∑ l, ∑ m, Hi l m * Ymat h Dπ c σ l m =
+      ∑ σ, Hi b σ * ((2 - c * d) * (Dπ σ * h).trace) :=
+    Finset.sum_congr rfl fun σ _ => by rw [Ymat_trace Hi h Dπ c hHh hsym σ]
+  rw [Finset.sum_congr rfl fun σ _ => hA σ, hB, hC]
+  simp only [Finset.mul_sum]
+  rw [← Finset.sum_sub_distrib, ← Finset.sum_sub_distrib]
+  refine Finset.sum_congr rfl fun σ _ => ?_
+  linear_combination ((Dπ σ * h).trace * Hi b σ) * hc
+
+/-- `Tnc` is additive. -/
+lemma Tnc_sub (Hi : Matrix (Fin d) (Fin d) ℝ) (X Y : Fin d → Fin d → Fin d → ℝ) (b : Fin d) :
+    Tnc Hi (fun a i j => X a i j - Y a i j) b = Tnc Hi X b - Tnc Hi Y b := by
+  rw [Tnc_split, Tnc_split, Tnc_split]
+  simp only [mul_sub, Finset.sum_sub_distrib]
+  ring
+
+/-- `Tnc` is homogeneous. -/
+lemma Tnc_smul (Hi : Matrix (Fin d) (Fin d) ℝ) (X : Fin d → Fin d → Fin d → ℝ) (k : ℝ) (b : Fin d) :
+    Tnc Hi (fun a i j => k * X a i j) b = k * Tnc Hi X b := by
+  unfold Tnc
+  simp only [Finset.mul_sum, mul_sub, Finset.sum_sub_distrib]
+  have S : ∀ f g : Fin d → Fin d → Fin d → ℝ, (∀ x y i, f x y i = g x y i) →
+      (∑ x, ∑ y, ∑ i, f x y i) = ∑ x, ∑ y, ∑ i, g x y i := fun f g h =>
+    Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => Finset.sum_congr rfl fun i _ => h x y i
+  refine congrArg₂ _ (congrArg₂ _ ?_ ?_) ?_ <;> exact S _ _ fun x y i => by ring
+
 end Lightlike.Canonical
 
 end
