@@ -260,4 +260,35 @@ lemma fockW_weyl (f g : h) (ψ : FockSpace h) :
 lemma fockW_kf_zero (f : h) : fockW f (kf 0) = kf f := by
   rw [fockW_kf, fockPhase_zero_right, one_smul, zero_add]
 
+lemma fockGram_self (a : h) : fockGram a a = 1 := by
+  unfold fockGram
+  rw [symp_neg_self]
+  simp
+
+lemma continuous_fockGram : Continuous fun p : h × h => fockGram p.1 p.2 := by
+  unfold fockGram symp
+  fun_prop
+
+lemma norm_sq_kf_sub (a b : h) : ‖kf a - kf b‖ ^ 2 = 2 - 2 * (fockGram a b).re := by
+  have h1 : ⟪kf a - kf b, kf a - kf b⟫_ℂ =
+      fockGram a a + fockGram b b - fockGram a b - fockGram b a := by
+    simp only [inner_sub_left, inner_sub_right, inner_kf]; ring
+  have h2 : ‖kf a - kf b‖ ^ 2 = (⟪kf a - kf b, kf a - kf b⟫_ℂ).re := by
+    rw [inner_self_eq_norm_sq_to_K]; norm_cast
+  rw [h2, h1, fockGram_self, fockGram_self, fockGram_conj' b a]
+  simp; ring
+
+lemma continuous_kf : Continuous (kf : h → FockSpace h) := by
+  rw [continuous_iff_continuousAt]
+  intro a
+  rw [ContinuousAt, tendsto_iff_norm_sub_tendsto_zero]
+  have hc : Continuous fun b : h => Real.sqrt (2 - 2 * (fockGram b a).re) := by
+    have := continuous_fockGram.comp (continuous_id.prodMk (continuous_const (y := a)))
+    exact (continuous_const.sub (continuous_const.mul (Complex.continuous_re.comp this))).sqrt
+  have h0 : Real.sqrt (2 - 2 * (fockGram a a).re) = 0 := by simp [fockGram_self]
+  have := hc.tendsto a
+  rw [h0] at this
+  refine this.congr fun b => ?_
+  rw [← Real.sqrt_sq (norm_nonneg (kf b - kf a)), norm_sq_kf_sub]
+
 end Lightlike.OperatorAlgebras
