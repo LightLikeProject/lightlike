@@ -12,9 +12,16 @@ Source read: S. M. Carroll, *Lecture Notes on General Relativity* (1997), arXiv 
 * The Poincare example (affine fields with skew linear part): Carroll counts `n(n+1)/2` independent Killing vectors for maximally symmetric spaces (p. 140, around (5.4x)); we prove that
   the skew affine fields are Killing and close under the bracket, not that they are all of them.
 
-## Gauss and Codazzi (GE13)
-Not in the Carroll notes read (no section on the second fundamental form of a hypersurface was found in ch. 3 or 5); the source for these is Wald, *General Relativity*, App. E / ch. 10,
-or Hawking-Ellis ch. 2: comparison pending, not read.
+## Gauss and Codazzi (GE13): source E. Gourgoulhon, *3+1 Formalism and Bases of Numerical Relativity*, arXiv gr-qc/0703035 (pdf text read)
+* Extrinsic curvature `K(u, v) = −u · ∇_v n`, eq. (2.43), p. 24 of the pdf numbering used; Gauss relation `γ γ γ γ ⁴R^ρ_{σμν} = R^γ_{δαβ} + K^γ_α K_{δβ} − K^γ_β K_{αδ}`,
+  eq. (2.92), p. 35; Codazzi relation `γ^γ_ρ n^σ γ γ ⁴R^ρ_{σμν} = D_β K^γ_α − D_α K^γ_β`, eq. (2.101), p. 36; contracted forms (2.93), (2.102), (2.103).
+* Comparison with ours (`gauss_relation`, `codazzi_relation`, `secondFF`): our `K(v, w) = g(∇_v n, w)` is Gourgoulhon's `K` with the opposite sign. The quadratic term of the Gauss relation is
+  independent of that sign: with `ε = g(n, n) = −1` ours reads `g(R(X,Y)Z, W) = g(R_D(X,Y)Z, W) + K(Y,Z)K(X,W) − K(X,Z)K(Y,W)`, and (2.92) read on `(X,Y,Z,W)` gives
+  `R + K(X,W) K(Y,Z) − K(Y,W) K(X,Z)`: the same. For Codazzi, `g(R(X,Y)Z, n) = −g(R(X,Y)n, Z)` (antisymmetry in the first pair), and (2.101) gives
+  `g(R(X,Y)n, W) = (D_Y K_G)(X,W) − (D_X K_G)(Y,W)`; with `K_G = −K` this is our `g(R(X,Y)Z, n) = −((D_X K)(Y,Z) − (D_Y K)(X,Z))`: the same.
+* Differences: Gourgoulhon treats spacelike hypersurfaces (`g(n,n) = −1`) of a Lorentzian manifold; our statement is for every non-null hypersurface (`ε = ±1`); the case `ε = +1` is not
+  covered by this source: comparison pending for it. Gourgoulhon has the hypersurface as a manifold with its induced connection `D`; ours has the level sets of a function and the tangential connection `D`
+  on tangent fields (leaves have no manifold structure). The symmetry of `K` is stated around eq. (2.43) ("is symmetric. It is called the second fundamental form", ch. 2.3) and in the remark after (2.75)-(2.76): read as stated, equation page not recorded; ours proves it (`secondFF_symm_fields`).
 
 ## Not checked
 The sphere and FLRW slice trust checks are not included yet.
