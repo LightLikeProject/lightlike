@@ -69,7 +69,7 @@ theorem window_le [IsFiniteMeasureOnCompacts σ] {β b δ Δ : ℝ} (hβ : 0 < �
 
 /-- **The Fourier representation** (MZ (4.4)): `16 b⁴ ∫ sinc(b (x - Δ))⁴ e^{-β x} dσ(x)` equals
 `∫ g(t) e^{i t Δ} L(β + i t) dt`. -/
-theorem fourier_representation [SFinite σ] (hσ : σ (Iio 0) = 0) {β b Δ : ℝ} (hβ : 0 < β)
+theorem fourier_representation [SFinite σ] {β b Δ : ℝ} (hβ : 0 < β)
     (hint : Integrable (fun x : ℝ => Real.exp (-β * x)) σ) {g : ℝ → ℝ} (hgi : Integrable g)
     (hg : ∀ x : ℝ, ∫ t, (g t : ℂ) * char x t = (((2 * b * Real.sinc (b * x)) ^ 4 : ℝ) : ℂ)) :
     ((∫ x, (2 * b * Real.sinc (b * (x - Δ))) ^ 4 * Real.exp (-β * x) ∂σ : ℝ) : ℂ) =
@@ -78,7 +78,7 @@ theorem fourier_representation [SFinite σ] (hσ : σ (Iio 0) = 0) {β b Δ : �
     refine hgi.ofReal.mul_bdd (by fun_prop : Continuous fun t : ℝ => Complex.exp (t * Δ * Complex.I)).aestronglyMeasurable
       (c := 1) (Filter.Eventually.of_forall fun t => ?_)
     rw [Complex.norm_exp]; simp
-  have h := integral_fourier_mul_exp σ hσ hβ hint hgt
+  have h := integral_fourier_mul_exp σ hint hgt
   rw [← integral_complex_ofReal]
   have e1 : ∀ x : ℝ, (∫ t, ((g t : ℂ) * Complex.exp (t * Δ * Complex.I)) *
       Complex.exp (-(t * x * Complex.I))) = (((2 * b * Real.sinc (b * (x - Δ))) ^ 4 : ℝ) : ℂ) := by
