@@ -731,6 +731,7 @@ import Lightlike.Spacetime.Lorentzian
 import Lightlike.Spacetime.Minkowski
 import Lightlike.Spacetime.RiemannSymmetry
 import Lightlike.Spacetime.EHManifold.BallCritical
+import Lightlike.Spacetime.EHManifold.BallCriticalConverse
 import Lightlike.Spacetime.EHManifold.BallVariation
 import Lightlike.Spacetime.EHManifold.ChartAction
 import Lightlike.Spacetime.EHManifold.ChartVariation
