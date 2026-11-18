@@ -21,7 +21,7 @@ CHECKS = [
     ("scripts/adm_algebra_check.py", False), ("scripts/be_check.py", False), ("scripts/be_symmetry_check.py", True),
     ("scripts/pentagon_dict_check.py", False), ("scripts/pr14_check.py", False),
     ("scripts/pr23_check.py", False), ("scripts/pr_asymptotics.py", False),
-    ("scripts/causal_sets/cs2_check.py", False), ("scripts/pr_tree_check.py", False), ("scripts/sixj_zero_check.py", False),
+    ("scripts/causal_sets/cs2_check.py", False), ("scripts/causal_sets/cs3_check.py", False), ("scripts/causal_sets/cs6_check.py", False), ("scripts/causal_sets/cs8_check.py", False), ("scripts/pr_tree_check.py", False), ("scripts/sixj_zero_check.py", False),
     ("scripts/wrong_schwarzschild_check.py", False), ("scripts/tv_check.py", False),
     ("scripts/flrw_check.py", False),
     ("scripts/asymptotics/eprl_asymptotics_check.py", False),
