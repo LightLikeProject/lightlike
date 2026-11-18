@@ -7,7 +7,8 @@
 For each task file under Tasks/ (docs/tasks/tasks.yaml gives its declaration) that the push changed
 and that no longer contains `sorry`, the challenge is the file as first committed (the locked
 statement, with its `sorry`) and the solution is the file now. `lake comparator` then establishes
-that the solution proves the same statement as the challenge, uses only the standard axioms and
+that the solution proves the same statement as the challenge (kernel type equality of the theorem,
+and of every definition the task file declares itself: `definition_names`, see definition_names()), uses only the standard axioms and
 is accepted by the kernel; `--paranoid` also runs the external kernels. `--all` takes every proved
 task file (the weekly run).
 
@@ -97,9 +98,36 @@ def select(before, after, root=ROOT, everything=False):
     return chosen, left
 
 
-def config(decl, challenge="ComparatorChallenge", solution="ComparatorSolution"):
+DEF_LINE = re.compile(r"^[ \t]*(?:@\[[^\]]*\][ \t]*)?(?:(?:protected|noncomputable|unsafe)[ \t]+)*"
+                      r"(?:def|abbrev|structure|inductive|class)[ \t]+([^\s:({\[⦃]+)", re.M)
+SCOPE = re.compile(r"^[ \t]*(namespace|section|end)\b[ \t]*([^\s]*)", re.M)
+
+
+def definition_names(text):
+    """Full names of the definitions (def, abbrev, structure, inductive, class) that a task file
+    declares itself, with the enclosing namespaces: the ones a solution could change to make the
+    statement easier. Definitions of imported modules are the same on both sides. Comments and
+    strings are ignored; `private` ones are skipped (mangled names, not reachable by name)."""
+    code = "".join(ch if c else " " for ch, c in zip(text, leansrc.code_mask(text)))
+    events = sorted([(m.start(), "scope", m) for m in SCOPE.finditer(code)]
+                    + [(m.start(), "def", m) for m in DEF_LINE.finditer(code)])
+    stack, names = [], []
+    for _, kind, m in events:
+        if kind == "def":
+            n = m.group(1)
+            ns = [x for k, nm in stack if k == "namespace" for x in nm.split(".")]
+            names.append(n[len("_root_."):] if n.startswith("_root_.") else ".".join(ns + [n]))
+        elif m.group(1) == "end":
+            if stack:
+                stack.pop()
+        else:
+            stack.append((m.group(1), m.group(2)))
+    return names
+
+
+def config(decl, challenge="ComparatorChallenge", solution="ComparatorSolution", defs=()):
     return {"challenge_module": challenge, "solution_module": solution,
-         "theorem_names": [decl], "definition_names": [], "permitted_axioms": AXIOMS}
+            "theorem_names": [decl], "definition_names": list(defs), "permitted_axioms": AXIOMS}
 
 
 def run_one(f, decl, lock, now, paranoid, dry, root=ROOT):
@@ -107,14 +135,14 @@ def run_one(f, decl, lock, now, paranoid, dry, root=ROOT):
     cfg = (root / "comparator").with_suffix(".json")
     print(f"== {f}: {decl}")
     if dry:
-        print(json.dumps(config(decl), indent=2))
+        print(json.dumps(config(decl, defs=definition_names(lock)), indent=2))
         return 0
     lake = (root / "lakefile").with_suffix(".toml")
     orig = lake.read_text()
     try:
         ch.write_text(lock)
         so.write_text(now)
-        cfg.write_text(json.dumps(config(decl)))
+        cfg.write_text(json.dumps(config(decl, defs=definition_names(lock))))
         lake.write_text(orig + LIB.format("ComparatorChallenge") + LIB.format("ComparatorSolution"))
         cmd = ["lake", "comparator"] + (["--paranoid"] if paranoid else [])
         r = subprocess.run(cmd, cwd=root)

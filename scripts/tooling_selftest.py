@@ -656,6 +656,15 @@ with tempfile.TemporaryDirectory() as _d:
     _g("add", "-A"); _g("commit", "-q", "-m", "proofs"); _head = _g("rev-parse", "HEAD")
     _ch, _left = cr.select(_lock, _head, root=_r)
     _why = dict(_left)
+    _src = ("namespace A\nnamespace B\ndef f : Nat := 0\nprotected abbrev g := 1\nprivate def h := 2\nend B\n"
+            "-- def c := 3\n/- def d := 4 -/\nstructure S where\n  x : Nat\nend A\ndef _root_.top := 5\n"
+            "theorem t : True := by sorry\n")
+    expect("comparator definitions: namespaces, protected, private, comments, _root_",
+           cr.definition_names(_src) == ["A.B.f", "A.B.g", "A.S", "top"])
+    expect("comparator definitions: none declared gives an empty list (flag off)",
+           cr.definition_names("theorem t : True := by sorry\n") == [])
+    expect("comparator definitions: the configuration carries them (flag on) and defaults to none",
+           cr.config("T", defs=["A.f"])["definition_names"] == ["A.f"] and cr.config("T")["definition_names"] == [])
     expect("comparator: a newly proved task file is judged, the challenge is the locked file with its sorry",
            [c[0] for c in _ch] == ["Tasks/A.lean"] and cr.has_sorry(_ch[0][2]) and not cr.has_sorry(_ch[0][3])
            and _ch[0][1] == "Lightlike.A")
