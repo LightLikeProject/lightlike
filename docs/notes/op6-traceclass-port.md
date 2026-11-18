@@ -19,3 +19,17 @@ Comparison with a source: none made. The source of the milestone, Reed and Simon
 Operators" (trace class and Hilbert-Schmidt operators, the duality theorem), has not been read at a location; the statements ported are those of
 Physlib, whose docstrings cite no source ("References: None"). The comparison with Reed-Simon is therefore pending and no catalogue entry is
 claimed as compared.
+
+## Source read: Kostenko, "Trace Ideals with Applications" (lecture notes, University of Ljubljana)
+
+Read (the free PDF, Chapter 3 "Trace Ideals"): Theorem 3.2.3 (the trace class `S¹` is a two-sided symmetric ideal, `‖BA‖₁ ≤ ‖B‖‖A‖₁`,
+`‖AB‖₁ ≤ ‖B‖‖A‖₁`), Theorem 3.2.4 (for `A ∈ S¹` the sum `∑ (Aφₙ, φₙ)` converges absolutely and is independent of the orthonormal basis; `tr (AB) = tr (BA)`
+for `B` bounded), Theorem 3.3.1 (`S²` is a two-sided symmetric ideal; `∑ (B*Aφₙ, φₙ)` independent of the basis; `S²` a Hilbert space) and
+Remark 3.2.1 (iii) (`S∞(H)* = S¹(H)`, `S¹(H)* = B(H)`, with the proof deferred to another book). The source works on a separable Hilbert space.
+
+Match: ideal property, basis independence and cyclicity of the trace are the statements of Theorems 3.2.3, 3.2.4, 3.3.1 (the ported versions are for
+Hilbert bases of any complex Hilbert space, and the cyclicity is stated for Hilbert-Schmidt factors `R`, `S`, not for `S¹` times bounded). The duality
+`(S¹)* = B(H)` is Remark 3.2.1 (iii) (a remark, proof not in these notes); `K* = S¹` is the same remark and is not proved here (task `T-OP6-P1`).
+
+Differences: separable versus arbitrary Hilbert space; cyclicity for `S¹ · B(H)` of the source is not stated in this form by the ported lemma
+(only for Hilbert-Schmidt pairs); the source's `S¹`-ideal norm inequalities are in the ported `IdealNorm` module and were not compared line by line.
