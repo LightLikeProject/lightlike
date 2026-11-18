@@ -28,16 +28,23 @@ variable {E : Type*}
 
 /-- A stage: a finite tuple of constraint functions on `E`. -/
 structure Stage (E : Type*) where
+  /-- The number of constraint functions. -/
   n : ℕ
+  /-- The constraint functions. -/
   Φ : Fin n → E → ℝ
 
 /-- A selection for a stage `S` and `M` primary constraints: row and column splittings into an invertible-block part and
 the rest. -/
 structure Sel (S : Stage E) (M : ℕ) where
+  /-- The size of the invertible block. -/
   r : ℕ
+  /-- The number of rows outside the block. -/
   p : ℕ
+  /-- The number of columns outside the block. -/
   l : ℕ
+  /-- The splitting of the rows (constraints) into the block rows and the rest. -/
   eR : Fin S.n ≃ Fin r ⊕ Fin p
+  /-- The splitting of the columns (primary constraints) into the block columns and the rest. -/
   eC : Fin M ≃ Fin r ⊕ Fin l
 
 variable {M : ℕ}
