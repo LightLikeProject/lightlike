@@ -19,6 +19,7 @@ namespace Lightlike.OperatorAlgebras
 
 variable {h : Type u} [NormedAddCommGroup h] [InnerProductSpace ℂ h]
 
+/-- **`T f = α f + β f`**: a Bogoliubov transformation is the sum of its complex-linear and antilinear parts. -/
 lemma Bogoliubov.map_eq (T : Bogoliubov h) (f : h) : T.toEquiv f = T.alphaPart f + T.betaPart f := by
   unfold Bogoliubov.alphaPart Bogoliubov.betaPart
   match_scalars <;> ring
