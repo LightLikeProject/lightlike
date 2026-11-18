@@ -231,6 +231,7 @@ import Lightlike.Lorentz.SpinVectors
 import Lightlike.Lorentz.StarBound
 import Lightlike.Lorentz.Tests
 import Lightlike.Lorentz.WeightedComp
+import Lightlike.OperatorAlgebras.BoundedGroup
 import Lightlike.OperatorAlgebras.Deficiency
 import Lightlike.OperatorAlgebras.FockExists
 import Lightlike.OperatorAlgebras.FockKernel
@@ -242,9 +243,11 @@ import Lightlike.OperatorAlgebras.MomentumInterval
 import Lightlike.OperatorAlgebras.MomentumMollify
 import Lightlike.OperatorAlgebras.MomentumSmooth
 import Lightlike.OperatorAlgebras.Resolvent
+import Lightlike.OperatorAlgebras.ResolventIdentity
 import Lightlike.OperatorAlgebras.StoneCore
 import Lightlike.OperatorAlgebras.StoneGenerator
 import Lightlike.OperatorAlgebras.StoneUnique
+import Lightlike.OperatorAlgebras.TestsBoundedGroup
 import Lightlike.OperatorAlgebras.TestsFock
 import Lightlike.OperatorAlgebras.TestsFockExists
 import Lightlike.OperatorAlgebras.TestsMomentumDeficiency
