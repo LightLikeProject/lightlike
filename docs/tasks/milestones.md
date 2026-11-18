@@ -54,7 +54,7 @@ geodesics of Regge calculus.
 |---|---|---|---|---|---|
 | GE1 | Smooth curvature from connections: Levi-Civita connection, Riemann, Ricci and scalar curvature on a smooth manifold | the curvature is defined intrinsically and proven to agree in every chart with the coordinate curvature | round 2-sphere of radius `r` has scalar curvature `2/r²`; Schwarzschild is Ricci-flat; a connection with torsion shown to give a different Ricci tensor | L | Mathlib manifolds |
 | GE2 | Causal structure: time orientation, causal curves, chronological and causal futures, global hyperbolicity, Cauchy surfaces | definitions with basic properties; Minkowski space globally hyperbolic with `t = 0` a Cauchy surface | Minkowski's causal future is the closed light cone; anti-de Sitter is not globally hyperbolic; a spacetime with closed timelike curves (Minkowski with time rolled up) violates chronology | L | GE1 |
-| GE3 | Geodesics, the exponential map and the Raychaudhuri equation on a manifold | the Raychaudhuri equation for timelike geodesic congruences, and focusing under the strong energy condition | expansion of comoving congruences in Minkowski and in FLRW in closed form; a congruence in a spacetime violating the energy condition does not focus | M | GE1, RC6a |
+| GE3 | Geodesics, the exponential map and the Raychaudhuri equation on a manifold | the Raychaudhuri equation for timelike geodesic congruences, and focusing under the strong energy condition | expansion of comoving congruences in Minkowski and in FLRW in closed form; a congruence in a spacetime violating the energy condition does not focus | M | GE1 |
 | GE4 | Penrose's singularity theorem (1965) | a globally hyperbolic spacetime with a non-compact Cauchy surface, the null energy condition and a closed trapped surface is null-geodesically incomplete | the hypotheses hold in the Schwarzschild interior (trapped spheres at `r < 2M`); Minkowski has no closed trapped surface | R | GE2, GE3 |
 | GE5 | Spin structures and the Dirac operator, on Mathlib's Clifford algebras; the Lichnerowicz formula | the Dirac operator on ℝⁿ and on a spin manifold; `D² = ∇*∇ + R/4` | Dirac spectrum on the unit 2-sphere `±(k+1)` with multiplicity `2(k+1)`; the formula with `R/2` shown to fail | L | GE1 |
 | GE6 | Kerr in Boyer–Lindquist coordinates; Killing horizons, surface gravity and angular velocity | Kerr proven a vacuum solution; `κ = √(M²−a²)/(2Mr₊)` and `Ω_H = a/(2Mr₊)` computed | `a = 0` gives Schwarzschild with `κ = 1/(4M)`; a sign flipped in g_tφ shown not to be Ricci-flat | M | GE10 |
@@ -62,6 +62,10 @@ geodesics of Regge calculus.
 | GE8 | Heat-kernel expansion of Laplace-type operators on compact Riemannian manifolds (Seeley–DeWitt coefficients `a₀`, `a₁`, `a₂`) | the asymptotic expansion of the heat trace with `a₁ = (4π)^{-n/2}∫R/6` | unit 2-sphere: `Σ(2l+1)e^{−t l(l+1)} = 1/t + 1/3 + t/15 + O(t²)`; the flat torus has no `t⁰` term | L | GE1 |
 | GE9 | Spacetime geometry: Lorentzian metrics, Minkowski space, coordinate curvature, Riemann symmetries, chart changes | - | - | - | - |
 | GE10 | Vacuum Einstein equations; Minkowski and exterior Schwarzschild as solutions | - | - | - | - |
+| GE12 | Lie derivatives of tensor fields, Killing vector fields and isometries; maximally symmetric spaces (de Sitter, anti-de Sitter, hyperbolic space) | the Lie derivative of tensor fields on a smooth manifold is defined, `£_V g = 0` is proven equivalent to Killing's equation `∇_(μ V_ν) = 0`, and the Killing fields form a Lie algebra; de Sitter, anti-de Sitter and `Hⁿ` are defined and proven maximally symmetric, with constant sectional curvature | the `n(n+1)/2` Killing fields of Minkowski space close into the Poincaré algebra; the rotation field of the round 2-sphere is Killing and a dilation is not | M | GE1 |
+| GE13 | Hypersurfaces: induced metric, unit normal, second fundamental form (extrinsic curvature), the Gauss and Codazzi relations | for a non-null hypersurface of a pseudo-Riemannian manifold the extrinsic curvature is defined and proven symmetric, and the Gauss and Codazzi relations are proven; the two relations are lockable statements | the sphere of radius `r` in ℝ³ has `K = h/r` and scalar curvature `2/r²` from the Gauss relation; a constant-time slice of FLRW has `K = (ȧ/a) h` | M | GE1 |
+| GE14 | Stress-energy tensors and energy conditions: perfect fluids, scalar and electromagnetic fields; the null, weak, strong and dominant energy conditions | the four energy conditions are defined for a symmetric (0,2)-tensor on a Lorentzian manifold, with dominant ⇒ weak ⇒ null and strong ⇒ null proven; for a perfect fluid each condition is proven equivalent to its inequalities in `ρ` and `p` | dust with `ρ ≥ 0` satisfies all four; a positive cosmological constant violates the strong condition; a Klein–Gordon field with a negative potential shown to violate the weak condition | M | GE1 |
+| GE15 | The Einstein–Hilbert action and its first variation; Einstein's equations as Euler–Lagrange equations | on a compact region, the first variation of `∫ √−g (R − 2Λ)` in the metric is proven to be `∫ √−g (G_{μν} + Λ g_{μν}) δg^{μν}` plus a boundary term, so the critical points with fixed boundary data are the vacuum Einstein equations with `Λ`; the variation formula is a lockable statement | the Palatini identity for `δR_{μν}`; in two dimensions the variation of `∫ √g R` vanishes (Gauss–Bonnet); a wrong sign of `Λ` shown to give the wrong de Sitter radius | L | GE1 |
 
 ### Cosmology
 
@@ -171,6 +175,8 @@ SU(2) representation theory is HA4; Spin(4) = SU(2) × SU(2) is in the spin foam
 | HA2 | The Plancherel measure of SL(2,ℂ) and the harmonic analysis the Lorentzian amplitudes use | below | below | L | HA1 |
 | HA3 | SL(2,ℝ): principal and discrete series, the Plancherel measure | the unitary irreducible representations used by JT gravity and AdS₃ are defined, with the Plancherel formula | Casimir values; the Plancherel density of the principal series `∝ ρ tanh(πρ)`; a non-unitary complementary-series parameter outside `(0, 1/2)` shown to fail | L | HA2 |
 | HA4 | Unitary irreducible representations of SU(2) and their completeness; link to Physlib's `sl₂`-modules and 6j symbols | - | - | - | - |
+| HA5 | The Peter–Weyl theorem for compact groups | for a compact Hausdorff group with its Haar measure, the matrix coefficients of finite-dimensional unitary representations are proven dense in `C(G)` and `L²(G)` the Hilbert direct sum of the isotypic components `End(V_π)`; both are lockable statements | for `U(1)` the characters `e^{inθ}` form an orthonormal basis of `L²`; Schur orthogonality of characters for SU(2); a non-compact group (ℝ) shown to have no square-integrable matrix coefficients | L | Mathlib |
+| HA6 | Unitary irreducible representations of the Poincaré group (Wigner 1939): the little-group method, mass, spin and helicity | the massive and massless one-particle representations are constructed by induction from the little groups SO(3) and ISO(2), unitary, with `P² = m²` and the Pauli–Lubanski square `W² = −m² s(s+1)` in signature `(+,−,−,−)`; the classification of the irreducible representations with positive energy is a lockable statement | massless finite-helicity states satisfy `W = h P`; a massive spin-1/2 representation has two states per momentum; a tachyonic orbit shown to have a non-compact little group | L | HA4 |
 
 - **HA1, done when:** the principal-series representations of SL(2,ℂ) are defined and proven
   unitary, with their decomposition into SU(2) representations `j ≥ k`. Trust checks: the
@@ -188,6 +194,7 @@ Folder `Lightlike/Operators/`.
 | OP3 | States, the KMS condition and modular theory: Tomita–Takesaki in finite dimensions, standard subspaces (Mathlib) | the modular operator of a faithful state on a matrix algebra; the state is KMS at `β = 1` for its modular flow | the Gibbs state of a qubit is KMS at its temperature; a non-Gibbs state fails | M | OP1 |
 | OP4 | Entropy: von Neumann and relative entropy, subadditivity, strong subadditivity (Lieb–Ruskai 1973) | strong subadditivity for finite-dimensional density matrices | Bell state: `S(A) = log 2`, `S(AB) = 0`; the classical inequality `S(AB) ≥ S(A)` shown to fail for it | L | Mathlib matrices |
 | OP5 | Finite-dimensional quantum mechanics: unitary evolution, Schrödinger equation, Born rule | - | - | - | - |
+| OP6 | Trace-class and Hilbert–Schmidt operators: the Schatten ideals `S¹` and `S²`, the trace, duality with the compact and the bounded operators | on a separable Hilbert space, the trace-class and Hilbert–Schmidt operators are proven two-sided ideals in the bounded operators with `S²·S² ⊆ S¹`, the trace well defined and cyclic, and the dualities `K* ≅ S¹`, `(S¹)* ≅ B(H)`; the dualities are lockable statements | the diagonal operator with eigenvalues `1/n` is Hilbert–Schmidt and not trace class; `tr(AB) = tr(BA)` for rank-one `A`, `B`; a bounded non-compact operator shown not to be Hilbert–Schmidt | L | Mathlib |
 
 ### Oscillatory and saddle-point asymptotics
 
@@ -198,6 +205,8 @@ upstreaming to Mathlib.
 |---|---|---|
 | SP1 | Stationary phase for oscillatory integrals on ℝⁿ, including complex phases with `Im φ ≥ 0` | L |
 | SP2 | Saddle-point asymptotics of balanced alternating Gamma-ratio sums (complex saddles) | L |
+| SP3 | Tauberian theorems for Laplace transforms: Karamata's theorem and Ingham's theorem with exponential growth | L |
+| SP4 | The Morse lemma, with smooth dependence on parameters | M |
 
 - **SP1, done when:** the stationary-phase theorem for `∫ a(x) e^{iλφ(x)} dx` on `ℝⁿ`, with a
   smooth compactly supported amplitude and non-degenerate critical points, is proven: the leading
@@ -220,6 +229,18 @@ upstreaming to Mathlib.
   spins against the formula; a sum with known asymptotics; the formula with only one of the two
   complex-conjugate saddles shown to fail; the real-variable estimate shown to be wrong.
 
+- **SP3, done when:** for a positive measure `ρ` on `[0, ∞)`, Karamata's Tauberian theorem (if
+  `∫ e^{−βx} dρ(x) ~ β^{−α} ℓ(1/β)` as `β → 0`, with `ℓ` slowly varying, then
+  `ρ[0, X] ~ X^α ℓ(X)/Γ(α+1)`) and Ingham's theorem for Laplace transforms growing like `e^{a/β}`
+  (Mukhametzhanov–Zhiboedov 2019, eq. (1.8)) are proven; both are lockable statements. The Cardy
+  formula bounds of CF5 use them. Trust checks: Lebesgue measure gives `α = 1`; the growth of the
+  spectrum of a free boson; a signed measure shown to break the conclusion.
+- **SP4, done when:** the Morse lemma is proven: near a non-degenerate critical point `p` a smooth
+  function on ℝⁿ equals `f(p) − y₁² − … − y_k² + y_{k+1}² + … + y_n²` in suitable smooth coordinates
+  (Milnor, *Morse Theory*, Part I), with the coordinates depending smoothly on parameters; the
+  statement is lockable. Trust checks: `k` equals the number of negative eigenvalues of the Hessian;
+  `x³` at `0` shown to have no such chart.
+
 ### Perturbative QFT and the renormalization group
 
 Folder `Lightlike/FieldTheory/`.
@@ -231,6 +252,7 @@ Folder `Lightlike/FieldTheory/`.
 | FT3 | Dimensional regularization at one loop | one-loop Euclidean integrals as meromorphic functions of the dimension `d`, with their poles | the massive tadpole `π^{d/2} Γ(1−d/2) m^{d−2}` and its poles; a cutoff scheme shown to give a different finite part | M | Mathlib Gamma |
 | FT4 | The renormalization group for finitely many couplings: flows, fixed points, linearization, critical exponents | linearization at a hyperbolic fixed point; the one-loop φ⁴ flow in `4 − ε` dimensions | Wilson–Fisher `ν = 1/2 + ε/12` at one loop (`N = 1`); the Gaussian fixed point gives `ν = 1/2` | M | FT1 |
 | FT5 | BRST and BV formalism in finite dimensions | for a free action of a compact group, BRST cohomology in degree 0 is the invariant functions on the constraint set | U(1) acting on ℝ²; a non-nilpotent differential shown to fail | M | Mathlib |
+| FT6 | The Legendre–Fenchel transform and the one-particle-irreducible effective action | the Legendre–Fenchel transform of a convex lower-semicontinuous function on ℝⁿ is proven convex and involutive (Fenchel–Moreau), and in zero dimensions the Legendre transform of `W = log Z` is proven to generate the one-particle-irreducible graphs of FT1's expansion; both are lockable statements | the Gaussian `W(J) = J²/2` gives `Γ(φ) = φ²/2`; the order-`g` 1PI vertex of the quartic model; a non-convex function shown to differ from its biconjugate | M | FT1 |
 
 ### PL topology
 
@@ -487,6 +509,7 @@ around a background, and gravity as an effective field theory.
 | PG5 | Two loops: the Goroff–Sagnotti counterterm (1986; van de Ven 1992) | the coefficient `209/2880` of the `R³` counterterm, in their normalization | the coefficient; a wrong graph set shown to differ | R | PG4 |
 | PG6 | Gravity as an effective field theory (Donoghue 1994): the quantum correction to the Newtonian potential (Bjerrum-Bohr–Donoghue–Holstein 2003) | the coefficient `41/(10π)` of `Għ/r²` from the one-loop non-analytic terms | the coefficient; dropping the vertex diagrams shown to give another | R | PG4 |
 | PG7 | Double copy: KLT relations (Kawai–Lewellen–Tye 1986) and BCJ (Bern–Carrasco–Johansson 2008) at tree level | four-point KLT as an identity of rational functions in spinor-helicity variables | the MHV four-graviton amplitude against Hodges (TW5); a relation with `s₁₃` in place of `s₁₂` fails | M | TW4 |
+| PG8 | Lie superalgebras and the four-dimensional supersymmetry algebra: super-Poincaré, massless and massive supermultiplets | the N-extended super-Poincaré algebra is proven a Lie superalgebra (graded Jacobi identity), and its massless supermultiplets are proven to have `2^N` helicity states, from `λ` to `λ + N/2` | N = 1: helicities `(λ, λ + 1/2)`; the N = 8 multiplet has 256 states with helicities from −2 to 2; a wrong sign in `{Q, Q̄} = 2σ·P` shown to break the Jacobi identity | L | HA6 |
 
 ### Regge calculus
 
