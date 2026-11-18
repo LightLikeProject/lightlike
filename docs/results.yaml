@@ -2103,3 +2103,16 @@
   review: kernel-checked
   note: "For a smooth metric g on R^n of any signature with nonzero determinant everywhere and a real Lambda: the first variation of the integral of sqrt|det g| (R - 2 Lambda) vanishes for every smooth symmetric perturbation of compact support (over any compact region containing the support) iff R^{ab} - R g^{ab}/2 + Lambda g^{ab} is antisymmetric in (a, b), that is (it is symmetric) iff it vanishes. Limits: coordinates on R^n; the manifold statement and the trust checks (two dimensions, sign of Lambda) are later stages; comparison with the source is pending and the location is the chapter."
   since: unreleased
+- id: LL-XXXX-j
+  title: In two dimensions the Einstein tensor of a smooth nondegenerate metric vanishes, so every metric is a critical point of the Einstein-Hilbert action without cosmological term
+  area: Spacetime
+  file: Lightlike/Spacetime/EinsteinTwoDim.lean
+  decls: [Lightlike.ricci_two_dim, Lightlike.isEHCritical_two_dim]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "Chapter 4"}
+  review: kernel-checked
+  note: "For a smooth metric on R^2 with nonzero determinant, the coordinate Ricci tensor is one half of the scalar curvature times the metric, so R^{ab} - R g^{ab}/2 = 0 and the first variation of the Einstein-Hilbert action vanishes for every perturbation of compact support (trust check of the Gauss-Bonnet theorem). Limits: coordinates on R^2; the integral invariance over a closed surface is not proved; comparison with the source is pending and the location is the chapter."
+  since: unreleased
