@@ -1,6 +1,6 @@
 # F11: the CA1 brackets on a hypersurface Σ — design note
 
-Status: design only. No Lean definitions yet; the task files wait for the Riemannian chart interface.
+Status: the definitions are in `Lightlike/Canonical/Hypersurface.lean` (chart families with change laws, `momentumConstraintM`, `hamiltonianConstraintM`, `admBracketM`); the statements are the tasks T-CA1-P4 to P7 (`Tasks/CA/`). The proofs are open.
 
 ## Goal
 
@@ -14,7 +14,7 @@ Reused, not redefined:
 
 * `h` is a `Bundle.ContMDiffRiemannianMetric` on the tangent bundle of `Σ` (Mathlib,
   `Mathlib/Geometry/Manifold/VectorBundle/Riemannian.lean`); `Lightlike.LorentzianMetric` mirrors it.
-* Needed from the metric layer (provided by the metric layer): the chart coordinate metric of `h`
+* Needed from the metric layer (`Lightlike/Spacetime/NondegMetric.lean`, `NondegOpen.lean`, `VolumeMeasure.lean`): the chart coordinate metric of `h`
   (as `LorentzianMetric.coordMetric`, with its tensor change law) and the volume measure of `h` (as `volumeMeasure`).
 * The coordinate Christoffel symbols, curvature and scalar curvature of a coordinate metric, and their covariance under a
   change of chart (`Lightlike/Spacetime/Chart*.lean`): the scalar curvature `R` of `h` in a chart is the existing chart
@@ -47,7 +47,7 @@ are, in that chart, the objects of the existing chart statements, and the three 
 
 ## Non-vacuity example
 
-A concrete `Σ`: the circle times `ℝ^{d-1}`... for `d = 2` the torus `T²` with the flat metric, `π = 0`, `ξ`, `N` bump functions
+A concrete `Σ`: for `d = 2` the torus `T²` with the flat metric, `π = 0`, `ξ`, `N` bump functions
 supported in one chart (the bracket is then the one-chart bracket, which is non-trivial for a non-constant lapse and shift),
 and a case where the supports meet two charts (a lapse equal to `1` near the seam).
 
