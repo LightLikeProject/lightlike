@@ -24,8 +24,8 @@ import subprocess
 import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+import api_map  # noqa: E402
 import leansrc  # noqa: E402
-import yaml  # noqa: E402
 
 # Maintainer tools: their file names are fixtures and command-line examples, not references.
 TOOLING = {"ci_check.py", "proof_task_check.py", "tooling_selftest.py", "run_python_checks.py",
@@ -123,7 +123,7 @@ def check_claims(root, files):
             for m in THEOREM.finditer((root / f).read_text()):
                 theorems.setdefault(m[1].split(".")[-1], set()).add(m[1])
     proven, stated = {}, {}
-    results = yaml.safe_load((root / "docs/results.yaml").read_text()) or []
+    results = api_map.load(root)
     for r in results:
         for d in r.get("decls", []):
             target = proven if r.get("status") == "proven" else stated if r.get("status") == "stated" else None
