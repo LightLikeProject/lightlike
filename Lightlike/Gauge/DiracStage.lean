@@ -31,29 +31,44 @@ def stageSet (Cm : E → Matrix (m ⊕ n) (m ⊕ n) ℝ) (h : E → (m ⊕ n) �
 noncomputable def chi (Cm : E → Matrix (m ⊕ n) (m ⊕ n) ℝ) (h : E → (m ⊕ n) → ℝ) (x : E) : n → ℝ :=
   (h x ∘ Sum.inr) - (Cm x).toBlocks₂₁ *ᵥ ((Cm x).toBlocks₁₁⁻¹ *ᵥ (h x ∘ Sum.inl))
 
+/-- The system for a block matrix splits into the two block equations. -/
+theorem block_system_iff (A : Matrix m m ℝ) (B : Matrix m n ℝ) (C : Matrix n m ℝ) (D : Matrix n n ℝ)
+    (u h : m ⊕ n → ℝ) :
+    fromBlocks A B C D *ᵥ u + h = 0 ↔
+      (A *ᵥ (u ∘ Sum.inl) + B *ᵥ (u ∘ Sum.inr) + h ∘ Sum.inl = 0 ∧
+        C *ᵥ (u ∘ Sum.inl) + D *ᵥ (u ∘ Sum.inr) + h ∘ Sum.inr = 0) := by
+  rw [fromBlocks_mulVec]
+  constructor
+  · intro H
+    exact ⟨funext fun i => by simpa using congrFun H (Sum.inl i),
+      funext fun i => by simpa using congrFun H (Sum.inr i)⟩
+  · rintro ⟨H1, H2⟩
+    funext i
+    rcases i with i | i
+    · simpa using congrFun H1 i
+    · simpa using congrFun H2 i
+
 /-- **The Dirac stage under constant rank**: at points where `B x` is invertible and `E x = D x (B x)⁻¹ C x`, a
 multiplier exists iff `χ x = 0`. -/
 theorem exists_multiplier_iff_chi (Cm : E → Matrix (m ⊕ n) (m ⊕ n) ℝ) (h : E → (m ⊕ n) → ℝ) {x : E}
-    (hB : IsUnit (Cm x).toBlocks₁₁.det) (hS : (Cm x).toBlocks₂₂ = (Cm x).toBlocks₂₁ * (Cm x).toBlocks₁₁⁻¹ * (Cm x).toBlocks₁₂) :
+    (hB : IsUnit (Cm x).toBlocks₁₁.det)
+    (hS : (Cm x).toBlocks₂₂ = (Cm x).toBlocks₂₁ * (Cm x).toBlocks₁₁⁻¹ * (Cm x).toBlocks₁₂) :
     (∃ u, Cm x *ᵥ u + h x = 0) ↔ chi Cm h x = 0 := by
-  set M := Cm x with hM
-  have hsplit : M = fromBlocks M.toBlocks₁₁ M.toBlocks₁₂ M.toBlocks₂₁ M.toBlocks₂₂ :=
-    (fromBlocks_toBlocks M).symm
-  have key := consistency_iff M.toBlocks₁₁ M.toBlocks₁₂ M.toBlocks₂₁ M.toBlocks₂₂ hB hS
+  have hsplit : Cm x = fromBlocks (Cm x).toBlocks₁₁ (Cm x).toBlocks₁₂ (Cm x).toBlocks₂₁ (Cm x).toBlocks₂₂ :=
+    (fromBlocks_toBlocks (Cm x)).symm
+  have key := consistency_iff (Cm x).toBlocks₁₁ (Cm x).toBlocks₁₂ (Cm x).toBlocks₂₁ (Cm x).toBlocks₂₂ hB hS
     (h x ∘ Sum.inl) (h x ∘ Sum.inr)
-  have hchi : chi Cm h x = (h x ∘ Sum.inr) - M.toBlocks₂₁ *ᵥ (M.toBlocks₁₁⁻¹ *ᵥ (h x ∘ Sum.inl)) := rfl
+  have hchi : chi Cm h x = (h x ∘ Sum.inr) - (Cm x).toBlocks₂₁ *ᵥ ((Cm x).toBlocks₁₁⁻¹ *ᵥ (h x ∘ Sum.inl)) :=
+    rfl
   rw [hchi, ← key]
   constructor
   · rintro ⟨u, hu⟩
-    refine ⟨u ∘ Sum.inl, u ∘ Sum.inr, ?_, ?_⟩
-    · have := congrFun hu (Sum.inl ·)
-      sorry
-    · sorry
+    rw [hsplit, block_system_iff] at hu
+    exact ⟨u ∘ Sum.inl, u ∘ Sum.inr, hu.1, hu.2⟩
   · rintro ⟨u₁, u₂, e1, e2⟩
     refine ⟨Sum.elim u₁ u₂, ?_⟩
-    rw [hsplit, fromBlocks_mulVec]
-    ext i
-    cases i <;> simp [← hsplit, e1, e2] <;> sorry
+    rw [hsplit, block_system_iff]
+    exact ⟨by simpa using e1, by simpa using e2⟩
 
 section Smooth
 
