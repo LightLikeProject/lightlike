@@ -1,4 +1,4 @@
-import Lightlike.OperatorAlgebras.MomentumSmooth
+import Lightlike.OperatorAlgebras.MomentumMollify
 
 /-!
 # Task T-OP1-P6
@@ -64,6 +64,6 @@ location is not verified) takes `C_c^∞(0, 1)` as the domain and does not state
 bridge between the `C²` operator of this library and the textbook operator (kind: representation). -/
 theorem momentumGraph_closure_eq :
     momentumGraphSmooth.topologicalClosure = momentumGraph.topologicalClosure := by
-  sorry
+  exact closure_momentumGraphSmooth_eq
 
 end Lightlike.OperatorAlgebras

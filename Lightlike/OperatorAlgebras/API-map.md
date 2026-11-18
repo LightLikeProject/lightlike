@@ -25,6 +25,8 @@ In one mode the squeezing has `|α|² - |β|² = 1` and the dilation `f ↦ 2 f`
 Fock space itself is not built here, and a Fock representation is characterized by its vacuum. The
 unbounded spectral theorem is not in Mathlib. Stone's theorem and Shale's criterion are [TODO] here.
 
+The graph of `-i d/dx` on the `C_c^∞(0, 1)` functions is the image of the smooth test functions under the same pair map, and lies inside the `C²` graph [11]. It contains a nonzero vector, a bump function supported in `(0, 1)` [12]. Mollification by a normed bump function maps a `C²` test function to a `C_c^∞` one, with the derivative of the mollified function the mollified derivative, and converges uniformly with its derivative, so the two graphs have the same closure [13].
+
 ## Lean References
 
 1. Lightlike/OperatorAlgebras/UnitaryGroup.lean - `OperatorAlgebras.UnitaryGroup`,
@@ -62,6 +64,9 @@ unbounded spectral theorem is not in Mathlib. Stone's theorem and Shale's criter
     the statement of task T-OP1-P6 is that its closure equals the closure of the C² graph)
 12. Lightlike/OperatorAlgebras/TestsMomentumSmooth.lean - `OperatorAlgebras.bumpHalf`,
     `OperatorAlgebras.momentumGraphSmooth_ne_bot`
+13. Lightlike/OperatorAlgebras/MomentumMollify.lean - `OperatorAlgebras.moll`,
+    `OperatorAlgebras.bumpOfRadius`, `OperatorAlgebras.momentumGraph_le_closure`,
+    `OperatorAlgebras.closure_momentumGraphSmooth_eq` (the proof of task T-OP1-P6, by mollification)
 
 ## References
 
