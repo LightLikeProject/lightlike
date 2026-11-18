@@ -1,4 +1,6 @@
 import Lightlike.OperatorAlgebras.Weyl
+import Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.Rpow.Basic
+import Mathlib.Analysis.InnerProductSpace.StarOrder
 
 /-!
 # The algebra of a Bogoliubov transformation
@@ -63,5 +65,61 @@ lemma Bogoliubov.norm_beta_sq_eq (T : Bogoliubov h) (e : h) :
     ‖T.betaPart e‖ ^ 2 = (‖T.toEquiv e‖ ^ 2 + ‖T.toEquiv (Complex.I • e)‖ ^ 2 - 2 * ‖e‖ ^ 2) / 4 := by
   have := T.four_norm_beta_sq e
   linarith
+
+lemma Bogoliubov.alphaPart_I_smul (T : Bogoliubov h) (f : h) :
+    T.alphaPart (Complex.I • f) = Complex.I • T.alphaPart f := by
+  unfold Bogoliubov.alphaPart
+  rw [smul_smul, Complex.I_mul_I, neg_one_smul]
+  simp only [smul_sub, smul_smul, T.toEquiv.map_neg, smul_neg]
+  match_scalars <;> simp <;> ring_nf <;> simp [Complex.I_sq] <;> norm_num
+
+lemma Bogoliubov.alphaPart_real_smul (T : Bogoliubov h) (r : ℝ) (f : h) :
+    T.alphaPart ((r : ℂ) • f) = (r : ℂ) • T.alphaPart f := by
+  unfold Bogoliubov.alphaPart
+  have h2 : Complex.I • ((r : ℂ) • f) = r • (Complex.I • f) := by
+    rw [smul_comm, Complex.coe_smul]
+  rw [h2, Complex.coe_smul, T.toEquiv.map_smul, T.toEquiv.map_smul]
+  simp only [Complex.coe_smul, smul_sub, smul_smul]
+  match_scalars <;> simp [Algebra.algebraMap_eq_smul_one] <;> ring
+
+lemma Bogoliubov.alphaPart_smul (T : Bogoliubov h) (c : ℂ) (f : h) :
+    T.alphaPart (c • f) = c • T.alphaPart f := by
+  have hc : c • f = (c.re : ℂ) • f + (c.im : ℂ) • (Complex.I • f) := by
+    rw [smul_smul, ← add_smul]; congr 1; apply Complex.ext <;> simp
+  have hadd : ∀ x y : h, T.alphaPart (x + y) = T.alphaPart x + T.alphaPart y := fun x y => by
+    unfold Bogoliubov.alphaPart
+    simp only [map_add, smul_add, smul_sub]
+    match_scalars <;> ring
+  rw [hc, hadd, T.alphaPart_real_smul, T.alphaPart_real_smul, T.alphaPart_I_smul,
+    smul_smul, ← add_smul]
+  congr 1; apply Complex.ext <;> simp
+
+variable [CompleteSpace h]
+
+/-- The complex-linear part `α` of a Bogoliubov transformation, as a bounded operator. -/
+noncomputable def Bogoliubov.alphaCLM (T : Bogoliubov h) : h →L[ℂ] h :=
+  LinearMap.mkContinuous
+    { toFun := T.alphaPart
+      map_add' := fun f g => by
+        unfold Bogoliubov.alphaPart
+        simp only [map_add, smul_add, smul_sub]
+        match_scalars <;> ring
+      map_smul' := fun c f => T.alphaPart_smul c f }
+    (‖(T.toEquiv : h →L[ℝ] h)‖) (fun f => by
+      show ‖T.alphaPart f‖ ≤ ‖(T.toEquiv : h →L[ℝ] h)‖ * ‖f‖
+      unfold Bogoliubov.alphaPart
+      have h1 : ‖T.toEquiv f‖ ≤ ‖(T.toEquiv : h →L[ℝ] h)‖ * ‖f‖ := (T.toEquiv : h →L[ℝ] h).le_opNorm f
+      have h2 : ‖T.toEquiv (Complex.I • f)‖ ≤ ‖(T.toEquiv : h →L[ℝ] h)‖ * ‖f‖ := by
+        have := (T.toEquiv : h →L[ℝ] h).le_opNorm (Complex.I • f)
+        rwa [norm_smul, Complex.norm_I, one_mul] at this
+      rw [norm_smul]
+      calc ‖(1 / 2 : ℂ)‖ * ‖T.toEquiv f - Complex.I • T.toEquiv (Complex.I • f)‖
+          ≤ ‖(1 / 2 : ℂ)‖ * (‖T.toEquiv f‖ + ‖T.toEquiv (Complex.I • f)‖) := by
+            gcongr
+            calc _ ≤ ‖T.toEquiv f‖ + ‖Complex.I • T.toEquiv (Complex.I • f)‖ := norm_sub_le _ _
+              _ = _ := by rw [norm_smul, Complex.norm_I, one_mul]
+        _ ≤ _ := by
+            have : ‖(1 / 2 : ℂ)‖ = 1 / 2 := by simp
+            rw [this]; nlinarith)
 
 end Lightlike.OperatorAlgebras
