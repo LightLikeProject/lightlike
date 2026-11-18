@@ -64,4 +64,19 @@ lemma bdU_norm {B : H →L[ℂ] H} (hB : IsSelfAdjoint B) (s : ℝ) (y : H) : �
     rw [← inner_self_eq_norm_sq (𝕜 := ℂ), ← inner_self_eq_norm_sq (𝕜 := ℂ), h2]
   exact (sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _)).1 h3
 
+/-- Evaluation at a vector, as a real-linear continuous map. -/
+noncomputable def evalAt (y : H) : (H →L[ℂ] H) →L[ℝ] H :=
+  ((ContinuousLinearMap.apply ℂ H y).restrictScalars ℝ)
+
+lemma evalAt_apply (y : H) (T : H →L[ℂ] H) : evalAt y T = T y := rfl
+
+/-- The derivative of `r ↦ bdU B r y`. -/
+lemma hasDerivAt_bdU_apply (B : H →L[ℂ] H) (y : H) (s : ℝ) :
+    HasDerivAt (fun r : ℝ => bdU B r y) (bdU B s (Complex.I • B y)) s := by
+  have h := hasDerivAt_exp_smul_const (𝕂 := ℝ) (Complex.I • B) s
+  have h2 := (evalAt y).hasFDerivAt.comp_hasDerivAt s h
+  convert h2 using 1
+  simp [evalAt_apply, bdU, Function.comp_def]
+  rfl
+
 end Lightlike.OperatorAlgebras
