@@ -119,8 +119,10 @@ theorem einsteinUp_symm_eq_zero_of_critical_ball (φ : ContDiffBump c)
     (μ := volume) (hfc.locallyIntegrable.locallyIntegrableOn _) hzero
   have hopen : IsOpen (ball c φ.rIn ∩ {y | f y ≠ 0}) :=
     isOpen_ball.inter (isOpen_ne_fun hfc continuous_const)
-  have hnull : volume (ball c φ.rIn ∩ {y | f y ≠ 0}) = 0 :=
-    measure_mono_null (fun y hy himp => hy.2 (himp hy.1)) (ae_iff.1 hae)
+  have hnull0 : volume {y : Fin n → ℝ | ¬(y ∈ ball c φ.rIn → f y = 0)} = 0 := ae_iff.1 hae
+  have hsub : ball c φ.rIn ∩ {y | f y ≠ 0} ⊆ {y : Fin n → ℝ | ¬(y ∈ ball c φ.rIn → f y = 0)} :=
+    fun y hy himp => hy.2 (himp hy.1)
+  have hnull : volume (ball c φ.rIn ∩ {y | f y ≠ 0}) = 0 := measure_mono_null hsub hnull0
   have hempty : ball c φ.rIn ∩ {y | f y ≠ 0} = ∅ := (hopen.measure_eq_zero_iff volume).1 hnull
   have hfx : f x = 0 := by
     by_contra hne
