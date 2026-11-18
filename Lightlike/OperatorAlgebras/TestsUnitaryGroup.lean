@@ -1,4 +1,5 @@
 import Lightlike.OperatorAlgebras.UnitaryGroup
+import Lightlike.OperatorAlgebras.StoneGenerator
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 import Mathlib.Analysis.Complex.RealDeriv
 
@@ -91,5 +92,11 @@ theorem phaseGroup_generator_ne :
       (phaseGroup (-1) : UnitaryGroup ℂ).generator ⟨1, mem_domain (-1) 1⟩ := by
   rw [phaseGroup_generator, phaseGroup_generator]
   norm_num
+
+/-- **Non-vacuity of `UnitaryGroup.generator_isSelfAdjoint`**: it applies to the phase group, whose
+generator is `λ • 1` on the whole space. -/
+theorem phaseGroup_generator_isSelfAdjoint [CompleteSpace H] (l : ℝ) :
+    IsSelfAdjoint (phaseGroup (H := H) l).generator :=
+  UnitaryGroup.generator_isSelfAdjoint _
 
 end Lightlike.OperatorAlgebras

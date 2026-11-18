@@ -223,6 +223,7 @@ import Lightlike.Lorentz.WeightedComp
 import Lightlike.OperatorAlgebras.Deficiency
 import Lightlike.OperatorAlgebras.GeneratorTranslation
 import Lightlike.OperatorAlgebras.MomentumInterval
+import Lightlike.OperatorAlgebras.StoneGenerator
 import Lightlike.OperatorAlgebras.TestsUnitaryGroup
 import Lightlike.OperatorAlgebras.TestsWeyl
 import Lightlike.OperatorAlgebras.Translation
