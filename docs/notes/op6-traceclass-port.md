@@ -33,3 +33,12 @@ Hilbert bases of any complex Hilbert space, and the cyclicity is stated for Hilb
 
 Differences: separable versus arbitrary Hilbert space; cyclicity for `S¹ · B(H)` of the source is not stated in this form by the ported lemma
 (only for Hilbert-Schmidt pairs); the source's `S¹`-ideal norm inequalities are in the ported `IdealNorm` module and were not compared line by line.
+
+## Plan for the proof of `T-OP6-P1` (`K* ≅ S¹`), bricks
+
+(1) done: `FiniteRankApprox.exists_finiteRank_approx` (compact operators are norm limits of finite-rank operators). (2) from `f ∈ K*` the bounded
+sesquilinear form `s (x, y) = f (|x⟩⟨y|)` (`‖|x⟩⟨y|‖ = ‖x‖ ‖y‖`) and the bounded operator `T` it defines (as in the ported
+`sesquilinearFormOfFunctional`, there for functionals on the trace class). (3) `T` is trace class with `‖T‖₁ ≤ ‖f‖`: for finite orthonormal
+families `φₙ`, `ψₙ`, `∑ |⟪ψₙ, T φₙ⟫| = |f (∑ cₙ |φₙ⟩⟨ψₙ|)| ≤ ‖f‖` with unimodular `cₙ`, since `‖∑ cₙ |φₙ⟩⟨ψₙ|‖ ≤ 1`; the trace-norm
+characterisation by such sums is in `IdealNorm` (`traceNorm_eq_tsum_norm_inner_polarFactor`). (4) `f K = Tr (K T)` on finite-rank `K` by (2), on compact `K`
+by (1) and continuity; `‖T‖₁ = ‖f‖` by the pairing isometry; uniqueness by the injectivity of the trace pairing.

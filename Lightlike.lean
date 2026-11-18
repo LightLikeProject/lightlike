@@ -289,6 +289,7 @@ import Lightlike.OperatorAlgebras.TraceClass.TraceAlgebra
 import Lightlike.OperatorAlgebras.TraceClass.TracePairingNorm
 import Lightlike.OperatorAlgebras.TraceClass.TracePairingSurjectivity
 import Lightlike.OperatorAlgebras.TestsTraceClass
+import Lightlike.OperatorAlgebras.FiniteRankApprox
 import Lightlike.OperatorAlgebras.YosidaLimit
 import Lightlike.Oscillatory.Flat
 import Lightlike.Oscillatory.GaussFourier
