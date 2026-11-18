@@ -604,6 +604,46 @@ tasks:
 # (general physics), with the rework each needs. Exclusive, like definition
 # tasks; `target` gives the label `upstream: <library>`.
 upstream:
+  - id: T-CA1-P4
+    milestone: CA1
+    kind: proof
+    title: "The bracket of two smeared momentum constraints on a hypersurface is the smeared constraint of the Lie bracket of the shifts"
+    file: Tasks/CA/T_CA1_P4.lean
+    decl: Lightlike.Canonical.bracket_momentum_momentum_M
+    size: L
+    difficulty: research-level
+    routes:
+      - "Chart by chart the integrands are those of `bracket_momentum_momentum`; the new content is the independence of the sum over the atlas pieces of the decomposition (change laws `IsCovTensor`, `IsVec`, `IsDensity`) and the commutation of the Gateaux derivative with the finite sum."
+  - id: T-CA1-P5
+    milestone: CA1
+    kind: proof
+    title: "The bracket of a smeared momentum constraint with a smeared Hamiltonian constraint on a hypersurface is the Hamiltonian constraint smeared with the derivative of the lapse along the shift"
+    file: Tasks/CA/T_CA1_P5.lean
+    decl: Lightlike.Canonical.bracket_momentum_hamiltonian_M
+    size: L
+    difficulty: research-level
+    routes:
+      - "As T-CA1-P4, with `admBracket_momentum_hamiltonian` in every chart and the chart covariance of the scalar curvature."
+  - id: T-CA1-P6
+    milestone: CA1
+    kind: proof
+    title: "The bracket of two smeared Hamiltonian constraints on a hypersurface is the smeared momentum constraint of the shift given by the inverse metric"
+    file: Tasks/CA/T_CA1_P6.lean
+    decl: Lightlike.Canonical.bracket_hamiltonian_hamiltonian_M
+    size: L
+    difficulty: research-level
+    routes:
+      - "As T-CA1-P4, with `bracket_hamiltonian_hamiltonian_of_smooth` in every chart; `structureShift` is a vector field."
+  - id: T-CA1-P7
+    milestone: CA1
+    kind: proof
+    title: "On a single global chart the constraints on a hypersurface are the constraints of the chart"
+    file: Tasks/CA/T_CA1_P7.lean
+    decl: Lightlike.Canonical.constraintM_bridge
+    size: M
+    difficulty: intermediate
+    routes:
+      - "On `M = ℝᵈ` the charts are the identity and the atlas pieces partition `ℝᵈ`; for continuous compactly supported integrands the sum of the integrals over the pieces is the integral (`integral_iUnion`)."
   - id: T-UP-1
     target: Mathlib
     area: harmonic-analysis
