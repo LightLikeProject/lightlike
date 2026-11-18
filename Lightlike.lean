@@ -908,6 +908,7 @@ import Lightlike.Gauge.DiracAlgebra
 import Lightlike.Gauge.DiracJacobi
 import Lightlike.Gauge.DiracAlgorithm
 import Lightlike.Gauge.DiracNonlinear
+import Lightlike.Gauge.DiracRegular
 import Lightlike.Gauge.MatrixInverse
 import Lightlike.Gauge.PoissonJacobi
 import Lightlike.Tests.ADM
