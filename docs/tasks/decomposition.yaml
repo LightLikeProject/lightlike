@@ -15,6 +15,7 @@ areas:
   Operator algebras and quantum information: operator-algebras
   Perturbative QFT and the renormalization group: qft-rg
   Conformal field theory: cft
+  Dynamical systems: dynamics
   Random geometry: random-geometry
   Gauge theory and constrained systems: gauge-constrained
   Spin foams: spin-foams
@@ -434,6 +435,16 @@ tasks:
     difficulty: research-level
     routes:
       - "Both directions go through extension of a timelike curve to an inextendible one; achronality gives the uniqueness of the meeting point."
+  - id: T-GE2-P19
+    milestone: GE2
+    kind: proof
+    title: A curve with timelike velocity almost everywhere, without a margin, still joins its endpoints in the timelike future
+    file: Tasks/GE2/T_GE2_P19.lean
+    decl: Lightlike.Causal.mem_chronFuture_of_ae_timelike
+    size: L
+    difficulty: research-level
+    routes:
+      - "Open. The library's timelike curves carry a margin (the velocity stays in a closed cone strictly inside the timelike cone on compact intervals); the textbooks ask only for timelike velocity. The statement says the two definitions give the same chronological future. Approach: approximate the curve by piecewise-smooth timelike curves with margin in a convex chart neighbourhood."
   - id: T-CS2-P1
     milestone: CS2
     kind: proof
@@ -464,6 +475,17 @@ tasks:
     difficulty: intermediate
     routes:
       - "For `s = t' - t ∈ [0, 1]` the density of the time difference is `1 - s`, and `|x' - x| ≤ s` has probability `s - s²/4` for the width `2`; integrate `(1 - s)(s - s²/4)` over `[0, 1]` to get `7/48`. The diamond value is `relProb_one`."
+
+  - id: T-CS3-P1
+    milestone: CS3
+    kind: proof
+    title: "The longest chain of n uniform points of the 1+1 diamond is about 2 sqrt(n)"
+    file: Tasks/CS3/T_CS3_P1.lean
+    decl: Lightlike.CausalSets.expected_longestChain_asymptotic
+    size: L
+    difficulty: research-level
+    routes:
+      - "The order of the sprinkled points is the dominance order of a uniform random permutation (`coneLE_sprinklePt`), so the longest chain is the longest increasing subsequence. The limit `2` is the theorem of Vershik–Kerov and Logan–Shepp."
 
   - id: T-CA1-P1
     milestone: CA1
@@ -557,6 +579,35 @@ tasks:
     difficulty: research-level
     routes:
       - Contract the second Bianchi identity (T-GE1-P7) twice, using the symmetries of the curvature (T-GE1-P4) and metric compatibility.
+  - id: T-GF1-P1
+    milestone: GF1
+    kind: proof
+    title: The genus side of the dual of a colored graph in dimension 2 (chi even, chi at most 2, the surface)
+    deps: [T-PL7]
+    size: M
+    difficulty: intermediate
+    routes:
+      - For a connected colored graph of dimension 2 the dual is a closed surface, so `ColoredGraph.euler` (`Lightlike/GFT/Euler.lean`) is its Euler characteristic, even, and at most 2 (Gurau 2010, Section 2; the classification of closed surfaces, PL3). No Lean statement is written until the surface type of the PL area (the PL7 milestone) exists; the link to the face count is `eulerChar_dual_eq_euler` (`Lightlike/GFT/DualEuler.lean`).
+  - id: T-GF1-P2
+    milestone: GF1
+    kind: proof
+    title: The set-of-faces form of the dual of a colored graph agrees with the indexed form when no simplices repeat
+    deps: []
+    size: M
+    difficulty: intermediate
+    routes:
+      - "The dual of a colored graph is built here as a graded poset with indexed simplices (`Lightlike/GFT/Dual.lean`), while Gurau (2010, Theorem 2) states a simplicial complex, a collection of vertex sets that may repeat. State the bridge: when no two simplices of the dual have the same vertex set, the indexed poset is isomorphic to the poset of the vertex sets ordered by inclusion, so the two readings of Theorem 2 agree. Until it is proved the difference named in the notes of the catalogue entry stays open. If stranded graphs are defined in the library, their equivalence with the link form of `link_isDual_of_two_le` becomes a task as well."
+  - id: T-CA1-P3
+    milestone: CA1
+    kind: proof
+    title: "The Lie-derivative form of the smeared momentum constraint equals the ADM form with the covariant divergence of the momentum"
+    file: Tasks/CA/T_CA1_P3.lean
+    decl: Lightlike.Canonical.momentumConstraint_eq_adm
+    size: M
+    difficulty: intermediate
+    routes:
+      - "Pointwise `π^{ij} (ℒ_ξ h)_ij + 2 (h ξ)_i ∇_k π^{ik} = 2 ∂_j (π^{ij} h_{ik} ξ^k)` and `integral_pd_eq_zero`."
+      - "ADM (1962), eq. (3.14b)."
 
 # Upstream tasks: finished results that belong in Mathlib (general mathematics) or Physlib
 # (general physics), with the rework each needs. Exclusive, like definition

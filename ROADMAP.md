@@ -43,10 +43,13 @@ groups the order is alphabetical; it is not a ranking. Each area lists:
 
 - **Scope:** FLRW spacetimes and their perturbations, the thermal history and freeze-out, slow-roll
   inflation and the primordial spectra, the CMB, singularity theorems, Bianchi models, cosmic
-  no-hair and nonlinear stability. Quantum cosmology is under canonical quantum gravity.
+  no-hair and nonlinear stability; scalar-field dark energy as an autonomous system, `f(R)` and
+  scalar-tensor gravity, Kaluza–Klein reduction, the cosmological constant problem, swampland
+  conjectures as explicit hypotheses, and cosmic strings. Quantum cosmology is under canonical
+  quantum gravity.
 - **Open:** baryogenesis and the early phase transitions; the measure problem of eternal inflation;
   the back-reaction of inhomogeneities on the expansion.
-- **Milestones:** 16 · [milestones](docs/tasks/milestones.md#cosmology) · [tasks](docs/tasks/README.md#cosmology) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+cosmology%22)
+- **Milestones:** 29 · [milestones](docs/tasks/milestones.md#cosmology) · [tasks](docs/tasks/README.md#cosmology) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+cosmology%22)
 
 ### Semiclassical gravity
 
@@ -69,6 +72,14 @@ Each foundation is cut to what the areas that use it need, so that no area build
 - **Open:** in the plan, all of it; the first milestone decides whether to build on an existing
   Lean formalization of the Virasoro algebra.
 - **Milestones:** 5 · [milestones](docs/tasks/milestones.md#conformal-field-theory) · [tasks](docs/tasks/README.md#conformal-field-theory) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+cft%22)
+
+### Dynamical systems
+
+- **Scope:** autonomous ordinary differential equations: linearized stability of an equilibrium,
+  planar systems and the Poincaré–Bendixson theorem, the Hartman–Grobman and stable manifold
+  theorems. Used by cosmology.
+- **Open:** in the plan, all of it.
+- **Milestones:** 3 · [milestones](docs/tasks/milestones.md#dynamical-systems) · [tasks](docs/tasks/README.md#dynamical-systems) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+dynamics%22)
 
 ### Gauge theory and constrained systems
 

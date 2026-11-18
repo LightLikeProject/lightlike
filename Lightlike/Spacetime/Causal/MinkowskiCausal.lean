@@ -75,12 +75,26 @@ timelike curve on a nondegenerate interval. -/
 theorem isFutureTimelikeCurve_line (x v : Fin (d + 1) → ℝ) {a b : ℝ} (hab : a < b)
     (hv : minkowskiForm (d + 1) v v < 0 ∧ minkowskiForm (d + 1) v (Pi.single 0 1) < 0) :
     IsFutureTimelikeCurve (minkowskiOrientation d) (fun t : ℝ => x + t • v) (Icc a b) := by
-  refine ⟨ordConnected_Icc, isLocallyLipschitzOn_line x v _, ?_⟩
-  refine (ae_restrict_iff' measurableSet_Icc).2 (Filter.Eventually.of_forall fun t ht => ?_)
-  obtain ⟨h1, h2⟩ := velocity_line x v hab ht
-  refine ⟨h2, ?_⟩
-  rw [h1]
-  exact hv
+  have hX : minkowskiForm (d + 1) v (Pi.single 0 1) ≠ 0 := hv.2.ne
+  set ε : ℝ := -minkowskiForm (d + 1) v v / (minkowskiForm (d + 1) v (Pi.single 0 1)) ^ 2 with hε
+  have hεpos : 0 < ε := div_pos (by linarith [hv.1]) (by positivity)
+  have hεeq : minkowskiForm (d + 1) v v ≤ -ε * (minkowskiForm (d + 1) v (Pi.single 0 1)) ^ 2 := by
+    have h2 : ε * (minkowskiForm (d + 1) v (Pi.single 0 1)) ^ 2 =
+        -minkowskiForm (d + 1) v v := by
+      rw [hε]; field_simp
+    linarith
+  have key : ∀ (P : ∀ y : Fin (d + 1) → ℝ, TangentSpace 𝓘(ℝ, Fin (d + 1) → ℝ) y → Prop)
+      {a b : ℝ}, a < b → (∀ y, P y v) →
+      IsCurveWith (I := 𝓘(ℝ, Fin (d + 1) → ℝ)) P (fun t : ℝ => x + t • v) (Icc a b) := by
+    intro P a b hab hP
+    refine ⟨ordConnected_Icc, isLocallyLipschitzOn_line x v _, ?_⟩
+    refine (ae_restrict_iff' measurableSet_Icc).2 (Filter.Eventually.of_forall fun t ht => ?_)
+    obtain ⟨h1, h2⟩ := velocity_line x v hab ht
+    refine ⟨h2, ?_⟩
+    rw [h1]
+    exact hP _
+  refine ⟨key _ hab fun _ => hv, fun c d' hcd hsub => ⟨ε, hεpos, ?_⟩⟩
+  exact key _ hcd fun _ => ⟨hεeq, hv.2⟩
 
 set_option synthInstance.maxHeartbeats 200000 in
 /-- `x + v` is in the chronological future of `x` for a future-directed timelike `v`. -/
