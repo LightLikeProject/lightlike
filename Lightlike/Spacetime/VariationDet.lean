@@ -165,4 +165,91 @@ theorem hasDerivAt_inv_add_smul (G H : Matrix (Fin n) (Fin n) ℝ) (hG : G.det �
   simpa [hf] using this
 
 
+
+section DirectionalInverse
+
+variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {n : ℕ}
+
+theorem differentiableAt_prod {ι : Type*} [DecidableEq ι] {x : E} (s : Finset ι) (g : ι → E → ℝ)
+    (h : ∀ i ∈ s, DifferentiableAt ℝ (g i) x) : DifferentiableAt ℝ (fun y => ∏ i ∈ s, g i y) x := by
+  induction s using Finset.induction_on with
+  | empty => simpa using differentiableAt_const (1 : ℝ)
+  | insert a s ha ih =>
+    simp only [Finset.prod_insert ha]
+    exact (h a (Finset.mem_insert_self a s)).mul (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
+
+theorem differentiableAt_det_of {f : E → Matrix (Fin n) (Fin n) ℝ} {x : E}
+    (hf : ∀ i j, DifferentiableAt ℝ (fun y => f y i j) x) : DifferentiableAt ℝ (fun y => (f y).det) x := by
+  simp only [Matrix.det_apply]
+  refine DifferentiableAt.fun_sum fun σ _ => ?_
+  exact (differentiableAt_prod Finset.univ _ fun i _ => hf (σ i) i).const_smul _
+
+theorem differentiableAt_adjugate_of {f : E → Matrix (Fin n) (Fin n) ℝ} {x : E}
+    (hf : ∀ i j, DifferentiableAt ℝ (fun y => f y i j) x) (i j : Fin n) :
+    DifferentiableAt ℝ (fun y => (f y).adjugate i j) x := by
+  simp only [Matrix.adjugate_apply]
+  refine differentiableAt_det_of fun a b => ?_
+  by_cases h : a = j
+  · subst h
+    simp only [Matrix.updateRow_self]
+    exact differentiableAt_const _
+  · simp only [Matrix.updateRow_ne h]
+    exact hf a b
+
+theorem differentiableAt_inv_entry {f : E → Matrix (Fin n) (Fin n) ℝ} {x : E}
+    (hf : ∀ i j, DifferentiableAt ℝ (fun y => f y i j) x) (hx : (f x).det ≠ 0) (i j : Fin n) :
+    DifferentiableAt ℝ (fun y => (f y)⁻¹ i j) x := by
+  have hd := differentiableAt_det_of hf
+  have ha := differentiableAt_adjugate_of hf i j
+  have : (fun y => (f y)⁻¹ i j) = fun y => ((f y).det)⁻¹ * (f y).adjugate i j := by
+    funext s
+    simp [Matrix.inv_def, Ring.inverse_eq_inv']
+  rw [this]
+  exact (hd.inv hx).mul ha
+
+/-- **The derivative of the matrix inverse along a direction**:
+`∂_v (f y)⁻¹ = - (f x)⁻¹ (∂_v f) (f x)⁻¹`, entrywise. -/
+theorem fderiv_inv_entry {f : E → Matrix (Fin n) (Fin n) ℝ} {x : E}
+    (hf : ∀ i j, DifferentiableAt ℝ (fun y => f y i j) x) (hx : (f x).det ≠ 0) (v : E) (i j : Fin n) :
+    fderiv ℝ (fun y => (f y)⁻¹ i j) x v =
+      -((f x)⁻¹ * (Matrix.of fun a b => fderiv ℝ (fun y => f y a b) x v) * (f x)⁻¹) i j := by
+  set Hv : Matrix (Fin n) (Fin n) ℝ := Matrix.of fun a b => fderiv ℝ (fun y => f y a b) x v with hHv
+  set D : Matrix (Fin n) (Fin n) ℝ := Matrix.of fun a b => fderiv ℝ (fun y => (f y)⁻¹ a b) x v with hD
+  have hdiff : ∀ i j, DifferentiableAt ℝ (fun y => (f y)⁻¹ i j) x := fun i j => differentiableAt_inv_entry hf hx i j
+  have hprod : ∀ i j, fderiv ℝ (fun y => (f y * (f y)⁻¹) i j) x v = (Hv * (f x)⁻¹ + f x * D) i j := by
+    intro i j
+    simp only [Matrix.mul_apply]
+    have hk : ∀ k, HasFDerivAt (fun y => f y i k * (f y)⁻¹ k j)
+        ((f x i k) • fderiv ℝ (fun y => (f y)⁻¹ k j) x + ((f x)⁻¹ k j) • fderiv ℝ (fun y => f y i k) x) x := by
+      intro k
+      exact (hf i k).hasFDerivAt.mul (hdiff k j).hasFDerivAt
+    have hs := HasFDerivAt.fun_sum (u := Finset.univ) (fun k _ => hk k)
+    rw [hs.fderiv]
+    simp [Matrix.add_apply, Matrix.mul_apply, Finset.sum_add_distrib, hHv, hD, mul_comm, add_comm]
+  have hone : ∀ᶠ y in nhds x, (f y).det ≠ 0 := by
+    have hc : ContinuousAt (fun y => (f y).det) x := (differentiableAt_det_of hf).continuousAt
+    exact hc.eventually_ne hx
+  have hev : ∀ i j, (fun y => (f y * (f y)⁻¹) i j) =ᶠ[nhds x] fun _ => (1 : Matrix (Fin n) (Fin n) ℝ) i j := by
+    intro i j
+    filter_upwards [hone] with y hy
+    rw [Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 hy)]
+  have hzero : Hv * (f x)⁻¹ + f x * D = 0 := by
+    ext a b
+    have := hprod a b
+    have h0 : fderiv ℝ (fun _ : E => (1 : Matrix (Fin n) (Fin n) ℝ) a b) x = 0 := (hasFDerivAt_const _ x).fderiv
+    rw [(hev a b).fderiv_eq, h0] at this
+    simpa using this.symm
+  have hu : IsUnit (f x).det := isUnit_iff_ne_zero.2 hx
+  have h1 : f x * D = -(Hv * (f x)⁻¹) := by
+    rw [add_eq_zero_iff_eq_neg'] at hzero
+    simpa using hzero
+  have hDeq : D = -((f x)⁻¹ * Hv * (f x)⁻¹) := by
+    calc D = (f x)⁻¹ * (f x * D) := by rw [← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu, Matrix.one_mul]
+      _ = -((f x)⁻¹ * Hv * (f x)⁻¹) := by rw [h1, Matrix.mul_neg, Matrix.mul_assoc]
+  have := congrArg (fun M => M i j) hDeq
+  simpa [hD] using this
+
+
+end DirectionalInverse
+
 end Lightlike
