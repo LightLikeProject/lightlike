@@ -227,12 +227,14 @@ import Lightlike.Lorentz.StarBound
 import Lightlike.Lorentz.Tests
 import Lightlike.Lorentz.WeightedComp
 import Lightlike.OperatorAlgebras.Deficiency
+import Lightlike.OperatorAlgebras.FockUnique
 import Lightlike.OperatorAlgebras.GeneratorTranslation
 import Lightlike.OperatorAlgebras.MomentumInterval
 import Lightlike.OperatorAlgebras.MomentumMollify
 import Lightlike.OperatorAlgebras.MomentumSmooth
 import Lightlike.OperatorAlgebras.StoneGenerator
 import Lightlike.OperatorAlgebras.StoneUnique
+import Lightlike.OperatorAlgebras.TestsFock
 import Lightlike.OperatorAlgebras.TestsMomentumSmooth
 import Lightlike.OperatorAlgebras.TestsUnitaryGroup
 import Lightlike.OperatorAlgebras.TestsWeyl

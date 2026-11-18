@@ -29,6 +29,8 @@ unbounded spectral theorem is not in Mathlib. Stone's theorem and Shale's criter
 
 The graph of `-i d/dx` on the `C_c^∞(0, 1)` functions is the image of the smooth test functions under the same pair map, and lies inside the `C²` graph [11]. It contains a nonzero vector, a bump function supported in `(0, 1)` [12]. Mollification by a normed bump function maps a `C²` test function to a `C_c^∞` one, with the derivative of the mollified function the mollified derivative, and converges uniformly with its derivative, so the two graphs have the same closure [13].
 
+The Gram matrix of the vectors `W f Ω` of a Fock representation is a function of `f` and `g` alone, by the Weyl relations and the vacuum expectation, so the map `c ↦ ∑ c f W f Ω` has the same norm for two Fock representations; it extends to a unitary that maps the vacuum to the vacuum and intertwines the Weyl unitaries, which is the uniqueness of the Fock representation [14]. The Gram function is Hermitian and normalized, and over the zero Hilbert space there is a Fock representation to which the uniqueness applies [15].
+
 ## Lean References
 
 1. Lightlike/OperatorAlgebras/UnitaryGroup.lean - `OperatorAlgebras.UnitaryGroup`,
@@ -69,6 +71,11 @@ The graph of `-i d/dx` on the `C_c^∞(0, 1)` functions is the image of the smoo
 13. Lightlike/OperatorAlgebras/MomentumMollify.lean - `OperatorAlgebras.moll`,
     `OperatorAlgebras.bumpOfRadius`, `OperatorAlgebras.momentumGraph_le_closure`,
     `OperatorAlgebras.closure_momentumGraphSmooth_eq` (the proof of task T-OP1-P6, by mollification)
+14. Lightlike/OperatorAlgebras/FockUnique.lean - `OperatorAlgebras.fockGram`, `OperatorAlgebras.fockMap`,
+    `OperatorAlgebras.fockEquiv`, `OperatorAlgebras.fockUnitary`, `OperatorAlgebras.fockUnitary_spec`
+    (the proof of task T-OP2-P2)
+15. Lightlike/OperatorAlgebras/TestsFock.lean - `OperatorAlgebras.fockGram_zero`,
+    `OperatorAlgebras.fockGram_conj`, `OperatorAlgebras.trivialFock`, `OperatorAlgebras.trivialFock_unitary`
 
 ## References
 

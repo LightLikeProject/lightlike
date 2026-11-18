@@ -1,4 +1,4 @@
-import Lightlike.OperatorAlgebras.Weyl
+import Lightlike.OperatorAlgebras.FockUnique
 
 /-!
 # Task T-OP2-P2
@@ -60,6 +60,6 @@ theorem fockRep_unique {h : Type u} [NormedAddCommGroup h] [InnerProductSpace �
     [NormedAddCommGroup K₂] [InnerProductSpace ℂ K₂] [CompleteSpace K₂]
     (R : FockRep h K₁) (S : FockRep h K₂) :
     ∃ U : K₁ ≃ₗᵢ[ℂ] K₂, U R.Ω = S.Ω ∧ ∀ f ψ, U (R.W f ψ) = S.W f (U ψ) := by
-  sorry
+  exact ⟨fockUnitary R S, fockUnitary_spec R S⟩
 
 end Lightlike.OperatorAlgebras
