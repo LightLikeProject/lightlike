@@ -75,3 +75,32 @@ checked against `PhyslibAlpha/Relativity/MinkowskiMatrix.lean`).
 
 No Lean has been written for HA6. Next: reuse check of Tau Ceti and physicslib4, then stage 1 (definitions of the orbits and little groups
 against `PoincareGroup`/`LorentzGroup` of Physlib).
+
+## Stage 5 sources read (18 November 2026; owner's decision: Wigner 1939 and Mackey 1952 are historical references only)
+
+Downloaded to scratch directories and extracted with `pdftotext`; read:
+
+* **Sunder, "Notes on the imprimitivity theorem"** (Draft: 8 April 1998, `https://www.imsc.res.in/~sunder/imp.pdf`, as obtained on
+  18 November 2026): §5 "semi-direct products", page 20 (document pages 20–21): the induced-by-the-stabiliser setting
+  `G = A ⋊_α K`, `A` abelian, `α̂_k(χ) = χ ∘ α_{k⁻¹}`; the unitary representation restricted to `A` gives a spectral measure
+  `P(E)`; if `π` is irreducible the measure `µ` is ergodic for `K` on `Â`; **the sentence "it is known — and not hard to
+  prove — that if … the action is ergodic and regular (there is a Borel set `C` meeting `µ`-almost every orbit in exactly one
+  point), then the measure is concentrated on one orbit" is stated without proof** (this is gap (i)); **Theorem 5.1** (page 21,
+  statement): for regular `α̂`, (a) `π_{χ,θ}(a, k_χ) = χ(a) θ(k_χ)` induced up to `G` is irreducible for `θ` irreducible
+  representation of the stabiliser `K_χ`, (b) every irreducible representation of `G` is equivalent to some `π_{χ,θ}`; the text
+  says that, "putting all the above analysis together, and invoking the imprimitivity theorem, it is not hard now to write
+  down a complete proof of part (b)" and that the proof of (a) is "not very difficult": **neither part is proved in the source**.
+* **Landsman, *Lecture Notes on C\*-Algebras, Hilbert C\*-modules, and Quantum Mechanics*, arXiv:math-ph/9807030v1**
+  (24 July 1998; draft of 8 April 1998): **Theorem 3.12.1, "Mackey's transitive imprimitivity theorem"** (section 3.12, page 82 of the
+  printed page numbering; the section's table-of-contents entry is `3.12 … 82`): for a closed subgroup `H ⊂ G` every covariant
+  representation `(U(G), π̃(C₀(G/H)))` is unitarily equivalent to one induced from a unitary representation `U_χ(H)`; the
+  correspondence is bijective on equivalence classes and preserves direct sums and irreducibility; the proof combines
+  Theorems 3.10.1, 3.6.1, 3.7.11, 3.8.7 (stated, with proofs in the notes). **This is the *transitive* theorem (homogeneous
+  space `G/H`)**; the non-transitive case needed for the Poincaré group (a measure on momentum space concentrated on one orbit)
+  is exactly gap (i), not covered. Also §3.6 (page 67, the quantum imprimitivity theorem) and §3.10 (page 78, the abstract
+  transitive imprimitivity theorem) are the ingredients.
+* **Bekaert–Boulanger** hep-th/0611263v2 (13 June 2021): read as recorded above (§3.1, §3.2, §5.2, §5.4); §3.3 "Classification"
+  (page of v2 around 13–14, `pdftotext` line 598 onwards) to be read before the stage 5 statement is locked.
+
+Scope (owner): the restricted Poincaré group only (no parity, no time reversal, no extended group). Gaps (i) ergodic measure of a
+regular action is concentrated on one orbit and (ii) the Lorentz action on momentum space is regular are to be proved in Lean.
