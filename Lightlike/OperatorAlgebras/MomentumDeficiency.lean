@@ -184,4 +184,135 @@ lemma mem_deficiencySpace_momentumMin_iff (z : ℂ) (y : L2I) :
     rw [hx']
     exact (hform f hx).2 (h f)
 
+lemma memLp_expC (b : ℝ) :
+    MemLp (expC b) 2 ((volume : Measure ℝ).restrict (Ioo (0 : ℝ) 1)) := by
+  refine MemLp.of_bound (expC_contDiff b).continuous.aestronglyMeasurable (Real.exp |b|) ?_
+  filter_upwards [ae_restrict_mem measurableSet_Ioo] with x hx
+  simp only [expC, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.exp_pos _)]
+  refine Real.exp_le_exp.2 ?_
+  have : |b * x| ≤ |b| := by
+    rw [abs_mul]
+    exact mul_le_of_le_one_right (abs_nonneg _) (by rw [abs_of_pos hx.1]; exact hx.2.le)
+  exact (le_abs_self _).trans this
+
+/-- The class of `x ↦ exp (b x)` in `L²(0, 1)`. -/
+noncomputable def expL2 (b : ℝ) : L2I := (memLp_expC b).toLp (expC b)
+
+lemma expL2_ae (b : ℝ) :
+    (expL2 b : ℝ → ℂ) =ᵐ[(volume : Measure ℝ).restrict (Ioo (0 : ℝ) 1)] expC b :=
+  MemLp.coeFn_toLp _
+
+/-- `exp (b x)` is in the deficiency space of `momentumMin` at `z` when `conj z = i b`. -/
+lemma expL2_mem_deficiency {z : ℂ} {b : ℝ} (hzb : (starRingEnd ℂ) z = Complex.I * b) :
+    expL2 b ∈ deficiencySpace momentumMin z := by
+  rw [mem_deficiencySpace_momentumMin_iff]
+  intro f
+  have hconj : ∀ x, (starRingEnd ℂ) (expC b x) = expC b x := fun x => by simp only [expC, Complex.conj_ofReal]
+  have e1 : ∀ g : ℝ → ℂ, ∫ x in Ioo (0 : ℝ) 1, g x * (starRingEnd ℂ) ((expL2 b : ℝ → ℂ) x) =
+      ∫ x in Ioo (0 : ℝ) 1, g x * expC b x := fun g => by
+    refine integral_congr_ae ?_
+    filter_upwards [expL2_ae b] with x hx
+    rw [hx, hconj]
+  rw [e1, e1, integral_deriv_mul_expC (f.2.1.of_le (by norm_num)) f.2.2 b, hzb]
+  simp; ring
+
+lemma norm_expC_le (b : ℝ) {x : ℝ} (hx : x ∈ Ioo (0 : ℝ) 1) : ‖expC b x‖ ≤ Real.exp |b| := by
+  simp only [expC, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.exp_pos _)]
+  refine Real.exp_le_exp.2 ?_
+  have : |b * x| ≤ |b| := by
+    rw [abs_mul]
+    exact mul_le_of_le_one_right (abs_nonneg _) (by rw [abs_of_pos hx.1]; exact hx.2.le)
+  exact (le_abs_self _).trans this
+
+lemma integrable_cs_mul {g u : ℝ → ℂ} {μ : Measure ℝ} (hg : Continuous g) (hc : HasCompactSupport g)
+    (hu : Integrable u μ) : Integrable (fun x => g x * u x) μ := by
+  obtain ⟨C, hC⟩ := hg.bounded_above_of_compact_support hc
+  exact hu.bdd_smul C hg.aestronglyMeasurable (Filter.Eventually.of_forall hC)
+
+/-- A deficiency vector at `z` with `conj z = i b` is a multiple of `exp (b x)`. -/
+lemma deficiency_eq_smul_expL2 {z : ℂ} {b : ℝ} (hzb : (starRingEnd ℂ) z = Complex.I * b) {y : L2I}
+    (hy : y ∈ deficiencySpace momentumMin z) : ∃ c : ℂ, y = c • expL2 b := by
+  rw [mem_deficiencySpace_momentumMin_iff] at hy
+  set μ : Measure ℝ := (volume : Measure ℝ).restrict (Ioo (0 : ℝ) 1) with hμ
+  have hyi0 : Integrable (fun x => (y : ℝ → ℂ) x) μ :=
+    (Lp.memLp y).integrable (by norm_num : (1 : ENNReal) ≤ 2)
+  have hyi : Integrable (fun x => (starRingEnd ℂ) ((y : ℝ → ℂ) x)) μ :=
+    Complex.conjCLE.toContinuousLinearMap.integrable_comp hyi0
+  set u : ℝ → ℂ := fun x => (starRingEnd ℂ) ((y : ℝ → ℂ) x) with hu
+  set e : ℝ → ℂ := expC (-b) with he
+  have hv : Integrable (fun x => e x * u x) μ := by
+    refine hyi.bdd_smul (Real.exp |b|) (expC_contDiff (-b)).continuous.aestronglyMeasurable ?_
+    filter_upwards [ae_restrict_mem measurableSet_Ioo] with x hx
+    simpa using norm_expC_le (-b) hx
+  have hderiv : ∀ ψ : ℝ → ℝ, ContDiff ℝ ∞ ψ → ∀ x, HasDerivAt (fun x => (ψ x : ℂ) * e x)
+      ((((deriv ψ x : ℝ)) : ℂ) * e x + (ψ x : ℂ) * ((-b : ℝ) * e x)) x := by
+    intro ψ hψ x
+    have h1 : HasDerivAt (fun x => (ψ x : ℂ)) (((deriv ψ x : ℝ)) : ℂ) x :=
+      ((hψ.differentiable (by simp) x).hasDerivAt).ofReal_comp
+    exact h1.mul (expC_hasDerivAt (-b) x)
+  have hconst := weak_const (v := fun x => e x * u x) hv (by
+    intro ψ hψ hψc hψs
+    let φ : ℝ → ℂ := fun x => (ψ x : ℂ) * e x
+    have hφ : ContDiff ℝ ∞ φ := (Complex.ofRealCLM.contDiff.comp hψ).mul (expC_contDiff (-b))
+    have hφs : tsupport φ ⊆ Ioo (0 : ℝ) 1 := by
+      refine (closure_mono ?_).trans hψs
+      intro x hx
+      simp only [Function.mem_support, φ] at hx ⊢
+      exact fun h => hx (by simp [h])
+    have hmem : φ ∈ testFunctions := ⟨hφ.of_le (by norm_num), hφs⟩
+    have hw := hy ⟨φ, hmem⟩
+    simp only at hw
+    have hdφ : deriv φ = fun x => (((deriv ψ x : ℝ)) : ℂ) * e x + (ψ x : ℂ) * ((-b : ℝ) * e x) :=
+      funext fun x => (hderiv ψ hψ x).deriv
+    rw [hdφ, hzb] at hw
+    -- integrability of the pieces
+    have hψ0 : Continuous fun x => (ψ x : ℂ) * e x := hφ.continuous
+    have c1 : HasCompactSupport fun x => (ψ x : ℂ) * e x := by
+      refine hψc.mono ?_
+      intro x hx
+      simp only [Function.mem_support] at hx ⊢
+      exact fun h => hx (by simp [h])
+    have c2 : HasCompactSupport fun x => (((deriv ψ x : ℝ)) : ℂ) * e x := by
+      refine hψc.deriv.mono ?_
+      intro x hx
+      simp only [Function.mem_support] at hx ⊢
+      exact fun h => hx (by simp [h])
+    have k1 : Continuous fun x => (((deriv ψ x : ℝ)) : ℂ) * e x :=
+      (Complex.continuous_ofReal.comp (hψ.continuous_deriv (by simp))).mul (expC_contDiff (-b)).continuous
+    have i1 := integrable_cs_mul hψ0 c1 hyi
+    have i2 := integrable_cs_mul k1 c2 hyi
+    set A1 : ℂ := ∫ x in Ioo (0 : ℝ) 1, (ψ x : ℂ) * e x * u x with hA1
+    set A2 : ℂ := ∫ x in Ioo (0 : ℝ) 1, (((deriv ψ x : ℝ)) : ℂ) * e x * u x with hA2
+    have hA : ∫ x in Ioo (0 : ℝ) 1, ((((deriv ψ x : ℝ)) : ℂ) * e x + (ψ x : ℂ) * ((-b : ℝ) * e x)) *
+        u x = A2 + ((-b : ℝ) : ℂ) * A1 := by
+      have : (fun x => ((((deriv ψ x : ℝ)) : ℂ) * e x + (ψ x : ℂ) * ((-b : ℝ) * e x)) * u x) =
+          fun x => (((deriv ψ x : ℝ)) : ℂ) * e x * u x +
+            ((-b : ℝ) : ℂ) * ((ψ x : ℂ) * e x * u x) := by
+        funext x; ring
+      rw [this, integral_add i2 (i1.const_mul _), integral_const_mul]
+    have hB : ∫ x in Ioo (0 : ℝ) 1, φ x * u x = A1 := rfl
+    rw [hA] at hw
+    change Complex.I * (b : ℂ) * ∫ x in Ioo (0 : ℝ) 1, φ x * u x = _ at hw
+    rw [hB] at hw
+    have hI : Complex.I * A2 = 0 := by
+      push_cast at hw
+      linear_combination hw
+    have hA20 : A2 = 0 := (mul_eq_zero.1 hI).resolve_left Complex.I_ne_zero
+    rw [← hA20, hA2]
+    refine integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)
+    simp only [Complex.real_smul, mul_assoc])
+  obtain ⟨c, hc⟩ := hconst
+  refine ⟨(starRingEnd ℂ) c, Lp.ext ?_⟩
+  filter_upwards [hc, Lp.coeFn_smul ((starRingEnd ℂ) c) (expL2 b), expL2_ae b] with x hx hs hex
+  rw [hs]
+  simp only [Pi.smul_apply, hex, smul_eq_mul]
+  have h1 : expC b x * e x = 1 := by
+    simp only [he, expC, ← Complex.ofReal_mul, ← Real.exp_add]; simp
+  have h2 : u x = c * expC b x := by
+    have : u x = expC b x * (e x * u x) := by rw [← mul_assoc, h1, one_mul]
+    rw [this, hx]; ring
+  have h3 : (y : ℝ → ℂ) x = (starRingEnd ℂ) (u x) := by simp [hu]
+  rw [h3, h2, map_mul]
+  simp only [expC, Complex.conj_ofReal]
+
 end Lightlike.OperatorAlgebras
