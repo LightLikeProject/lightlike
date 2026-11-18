@@ -123,7 +123,7 @@ theorem gamHat_eq (a b : E) {z : M} (hz : z ∈ (tTriv (E := E) x₀).baseSet) :
   rfl
 
 section
-variable [T2Space M] [CovariantDerivative.ContMDiffCovariantDerivative cov ∞]
+variable [LocallySmoothConnection cov]
 
 theorem contMDiffAt_gamHat_apply (a b : E) {p : M} (hp : p ∈ (tTriv (E := E) x₀).baseSet) :
     ContMDiffAt 𝓘(ℝ, E) 𝓘(ℝ, E) ∞ (fun z => gamHat cov x₀ z a b) p := by
@@ -356,7 +356,7 @@ def Rhat (p : M) (a b c : E) : E :=
     + gamHat cov x₀ p (gamHat cov x₀ p c b) a - gamHat cov x₀ p (gamHat cov x₀ p c a) b
 
 section
-variable [T2Space M] [CovariantDerivative.ContMDiffCovariantDerivative cov ∞] [IsManifold 𝓘(ℝ, E) 2 M]
+variable [LocallySmoothConnection cov] [IsManifold 𝓘(ℝ, E) 2 M]
   [CompleteSpace E]
 
 /-- `∇_Y Z` is smooth at `p` for a smooth connection and fields smooth near `p`. -/
