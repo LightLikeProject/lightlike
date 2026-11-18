@@ -40,7 +40,7 @@ theorem traceG_eq_sum [FiniteDimensional ℝ V] {n : ℕ} (g T : V →L[ℝ] V �
     have hd : ∀ k l, (g.toBilinForm.toDual hg) (e k) (e l) = eta n k l := fun k l => he k l
     simp only [LinearMap.sum_apply, LinearMap.smul_apply, hd, smul_eq_mul, eta_apply]
     rw [Finset.sum_eq_single l]
-    · simp only [if_true]
+    · simp only [ite_true]
       have h := etaDiag_mul_self l
       show (T x) (e l) = etaDiag l * (T x) (e l) * etaDiag l
       calc (T x) (e l) = (etaDiag l * etaDiag l) * (T x) (e l) := by rw [h, one_mul]
@@ -116,7 +116,7 @@ theorem lorentz_reverse_cs {m : ℕ} {g : V →L[ℝ] V →L[ℝ] ℝ} (hg : IsL
   by_cases hv : -(b * b) + sy < 0
   · have := lorentz_ineq hsx hsy hcs (a := a) (b := b) (by nlinarith) (by nlinarith)
     nlinarith
-  · push_neg at hv
+  · push Not at hv
     nlinarith [sq_nonneg (-(a * b) + p)]
 
 
@@ -171,7 +171,7 @@ theorem lorentz_coorient {m : ℕ} {g : V →L[ℝ] V →L[ℝ] ℝ} (hg : IsLor
   set c := e.repr η 0
   have hbc : 0 < b * c := by
     by_contra h
-    push_neg at h
+    push Not at h
     nlinarith
   have ha : 0 < a ^ 2 := by
     have : a ≠ 0 := by
@@ -267,7 +267,7 @@ theorem dust_energyConditions [FiniteDimensional ℝ V] {g : V →L[ℝ] V →L[
   · intro ξ hξ
     refine ⟨hsq ξ, ?_⟩
     rw [raiseT_dust hg]
-    simp only [map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul, hu]
+    simp only [map_smul, smul_apply, smul_eq_mul, hu]
     nlinarith [mul_self_nonneg (ρ * g u ξ)]
   · intro ξ η hξ hη hξη
     rw [dustT_apply]
@@ -288,7 +288,7 @@ theorem traceG_self [FiniteDimensional ℝ V] {g : V →L[ℝ] V →L[ℝ] ℝ} 
     traceG g g hg.bilinForm_nondegenerate = 4 := by
   obtain ⟨e, he⟩ := hg
   rw [traceG_eq_sum g g _ e he]
-  simp only [he, eta_apply, if_true]
+  simp only [he, eta_apply, ite_true]
   simp [etaDiag_mul_self]
 
 /-- **A positive cosmological constant satisfies the weak (and null) energy condition and violates the strong one** (trust check of GE14). -/
@@ -304,7 +304,7 @@ theorem cosmo_energyConditions [FiniteDimensional ℝ V] {g : V →L[ℝ] V →L
     obtain ⟨e, he⟩ := hg
     rw [traceG_eq_sum g _ _ e he]
     have : ∀ i : Fin 4, etaDiag i * cosmoT g ρΛ (e i) (e i) = -ρΛ := fun i => by
-      simp only [cosmoT, he, eta_apply, if_true, ContinuousLinearMap.smul_apply, smul_eq_mul]
+      simp only [cosmoT, he, eta_apply, ite_true, smul_apply, smul_eq_mul]
       calc etaDiag i * (-ρΛ * etaDiag i) = -ρΛ * (etaDiag i * etaDiag i) := by ring
         _ = -ρΛ := by rw [etaDiag_mul_self]; ring
     simp only [this]
@@ -388,7 +388,7 @@ theorem exists_orth_spacelike {m : ℕ} {g : V →L[ℝ] V →L[ℝ] ℝ} (hg : 
     linarith
   refine ⟨(Real.sqrt (g w0 w0))⁻¹ • w0, ?_, ?_⟩
   · simp [hw0]
-  · simp only [map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul]
+  · simp only [map_smul, smul_apply, smul_eq_mul]
     have h2 : Real.sqrt (g w0 w0) * Real.sqrt (g w0 w0) = g w0 w0 := Real.mul_self_sqrt hpos.le
     have h3 : Real.sqrt (g w0 w0) ≠ 0 := (Real.sqrt_pos.2 hpos).ne'
     field_simp
@@ -434,12 +434,12 @@ theorem null_timelike_family (hg : IsLorentzianForm 4 g) (hu : g u u = -1) :
     have := lorentz_symm_aux hg u w
     linarith
   refine ⟨u + w, ?_, ?_, fun ε => ?_⟩
-  · simp only [map_add, ContinuousLinearMap.add_apply, hu, hw1, hw2, hwu]; ring
-  · simp only [map_add, ContinuousLinearMap.add_apply, hu, hw1]; ring
+  · simp only [map_add, add_apply, hu, hw1, hw2, hwu]; ring
+  · simp only [map_add, add_apply, hu, hw1]; ring
   · constructor
-    · simp only [map_add, map_smul, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, hu, hw1, hw2, hwu]
+    · simp only [map_add, map_smul, add_apply, smul_apply, smul_eq_mul, hu, hw1, hw2, hwu]
       ring
-    · simp only [map_add, map_smul, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, hu, hw1]
+    · simp only [map_add, map_smul, add_apply, smul_apply, smul_eq_mul, hu, hw1]
       ring
 
 
@@ -524,7 +524,7 @@ theorem orth_cs {n : ℕ} (hg : IsLorentzianForm (n + 1) g) (hu : g u u < 0) {x 
   have hq : ∀ t : ℝ, 0 ≤ g y y * (t * t) + (2 * g x y) * t + g x x := fun t => by
     have h := hpsd (x + t • y) (by simp [hx, hy])
     have hs : g y x = g x y := hg.symm y x
-    simp only [map_add, map_smul, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, hs] at h
+    simp only [map_add, map_smul, add_apply, smul_apply, smul_eq_mul, hs] at h
     nlinarith
   by_cases hyy : g y y = 0
   · -- then g x y = 0, else a large t violates positivity
@@ -555,15 +555,15 @@ theorem neg_pair_le {n : ℕ} (hg : IsLorentzianForm (n + 1) g) (hu : g u u = -1
   have hηp : g u ηp = 0 := by simp [ηp, hB, hu]
   have hcs := orth_cs hg hu' hξp hηp
   have e1 : g ξp ξp = g ξ ξ + A ^ 2 := by
-    simp only [ξp, map_add, map_smul, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, hu, hs ξ u, ← hA]
+    simp only [ξp, map_add, map_smul, add_apply, smul_apply, smul_eq_mul, hu, hs ξ u, ← hA]
     ring
   have e2 : g ηp ηp = g η η + B ^ 2 := by
-    simp only [ηp, map_add, map_smul, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, hu, hs η u, ← hB]
+    simp only [ηp, map_add, map_smul, add_apply, smul_apply, smul_eq_mul, hu, hs η u, ← hB]
     ring
   have e3 : g ξ η = g ξp ηp - A * B := by
     have : ξ = ξp - A • u := by simp [ξp]
     have : η = ηp - B • u := by simp [ηp]
-    simp only [ξp, ηp, map_add, map_smul, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, hu, hs ξ u,
+    simp only [ξp, ηp, map_add, map_smul, add_apply, smul_apply, smul_eq_mul, hu, hs ξ u,
       hs η u, ← hA, ← hB, hs u ξ, hs u η]
     ring
   rw [e1, e2] at hcs
@@ -602,21 +602,21 @@ theorem fluid_dominantEC_iff (hg : IsLorentzianForm 4 g) (hu : g u u = -1) :
     have hf : 0 ≤ (fun ε : ℝ => ρ * (1 + ε) ^ 2 - p) 0 := by
       refine nonneg_of_pos_nonneg (f := fun ε : ℝ => ρ * (1 + ε) ^ 2 - p) (by fun_prop) fun ε hε => ?_
       have hξ : g ((1 + ε) • u + w) ((1 + ε) • u + w) < 0 := by
-        simp only [map_add, map_smul, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, hu, hw1, hw2,
+        simp only [map_add, map_smul, add_apply, smul_apply, smul_eq_mul, hu, hw1, hw2,
           hwu]
         nlinarith
       have hη : g ((1 + ε) • u - w) ((1 + ε) • u - w) < 0 := by
-        simp only [map_sub, map_add, map_smul, ContinuousLinearMap.sub_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, hu, hw1,
+        simp only [map_sub, map_add, map_smul, sub_apply, smul_apply, smul_eq_mul, hu, hw1,
           hw2, hwu]
         nlinarith
       have hco : g ((1 + ε) • u + w) ((1 + ε) • u - w) < 0 := by
-        simp only [map_sub, map_add, map_smul, ContinuousLinearMap.sub_apply, ContinuousLinearMap.add_apply,
-          ContinuousLinearMap.smul_apply, smul_eq_mul, hu, hw1, hw2, hwu]
+        simp only [map_sub, map_add, map_smul, sub_apply, add_apply,
+          smul_apply, smul_eq_mul, hu, hw1, hw2, hwu]
         nlinarith
       have := h2 _ _ hξ hη hco
       rw [fluidT_apply] at this
-      simp only [map_sub, map_add, map_smul, ContinuousLinearMap.sub_apply, ContinuousLinearMap.add_apply,
-        ContinuousLinearMap.smul_apply, smul_eq_mul, hu, hw1, hw2, hwu] at this
+      simp only [map_sub, map_add, map_smul, sub_apply, add_apply,
+        smul_apply, smul_eq_mul, hu, hw1, hw2, hwu] at this
       nlinarith
     have hp : p ≤ ρ := by simpa using hf
     exact abs_le.2 ⟨by linarith, hp⟩
@@ -626,7 +626,7 @@ theorem fluid_dominantEC_iff (hg : IsLorentzianForm 4 g) (hu : g u u = -1) :
     have hW := (fluid_weakEC_iff hg hu).2 ⟨hρ, hρp⟩
     refine ⟨fun ξ hξ => ⟨hW ξ hξ, ?_⟩, fun ξ η hξ hη hξη => ?_⟩
     · rw [raiseT_fluid hg]
-      simp only [map_add, map_smul, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, hu,
+      simp only [map_add, map_smul, add_apply, smul_apply, smul_eq_mul, hu,
         hg.symm u ξ]
       have hρ2 : p ^ 2 ≤ ρ ^ 2 := by nlinarith [abs_nonneg p, sq_abs p]
       nlinarith [mul_nonneg (sq_nonneg (g ξ u)) (sub_nonneg.2 hρ2), mul_nonneg (sq_nonneg p) (neg_nonneg.2 hξ.le)]
