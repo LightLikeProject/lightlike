@@ -45,7 +45,7 @@ For a coordinate metric the contracted Bianchi identity holds, `g^{στ} ∇_σ 
 A Lorentzian coordinate metric on an open subset of `ℝⁿ` is a Lorentzian metric on that open subset as a manifold, with the same components in every chart [20]; exterior Schwarzschild on the manifold layer satisfies the vacuum Einstein equations and has vanishing Ricci tensor [21]; the Levi-Civita connection of a Lorentzian metric is a smooth covariant derivative [22].
 The volume measure of a Lorentzian metric on a manifold is the pushforward of `√|det g| dx` in each chart, and for a set in a chart domain it is given by the integral over its chart image in any chart [24].
 
-The coordinate components and the volume measure are defined for a smooth symmetric nondegenerate bilinear field on the tangent bundle, a metric of any signature, of which a Lorentzian metric and a smooth Riemannian metric of Mathlib are the two cases; the coordinate matrix of a Riemannian metric is positive definite [25]. On an open subset of Euclidean space, a coordinate metric of any signature is a metric of the open subset with the same components in every chart, and the volume of a measurable set is the integral of the square root of the absolute value of the determinant over its image [26].
+The coordinate components and the volume measure are defined for a smooth symmetric nondegenerate bilinear field on the tangent bundle, a metric of any signature, of which a Lorentzian metric and a smooth Riemannian metric of Mathlib are the two cases; the coordinate matrix of a Riemannian metric is positive definite [25]. A Lorentzian metric extends this structure, and the Levi-Civita connection, the curvature symmetries, the second Bianchi identity, the divergence of the Einstein tensor and the Einstein equations are stated and proved for it, so they hold for every metric of every signature [25]. On an open subset of Euclidean space, a coordinate metric of any signature is a metric of the open subset with the same components in every chart, and the volume of a measurable set is the integral of the square root of the absolute value of the determinant over its image [26].
 
 The curvature of a manifold-level metric as a tensor field is defined in `Connection.lean` [7]: a connection is Mathlib's
 covariant derivative on the tangent bundle; the Riemann curvature is `R(X, Y) Z = ∇_X ∇_Y Z - ∇_Y ∇_X Z - ∇_{[X,Y]} Z`
@@ -73,7 +73,7 @@ than one who stays at rest [6].
 7. Lightlike/Spacetime/Connection.lean - `Connection`, `Connection.curvatureAt`, `Connection.riemannLowerAt`,
    `Connection.ricciAt`, `Connection.scalarCurvatureAt`, `Connection.IsMetricCompatible`,
    `Connection.IsLeviCivita`, `Connection.covDerivCurvatureAt`, `Connection.covDerivBilinAt`,
-   `Connection.divBilinAt`, `Connection.einsteinField`, `LorentzianMetric.SatisfiesEinstein`
+   `Connection.divBilinAt`, `Connection.einsteinField`, `NondegMetric.SatisfiesEinstein`
 8. Lightlike/Spacetime/FlatConnection.lean - `flatConnection`, `flat_torsion`, `flat_curvatureAt`,
    `flat_isMetricCompatible`, `minkowski_satisfiesEinstein_proved`
 9. Lightlike/Spacetime/LieDerivation.lean - `mfderiv_mlieBracket`, `mfderiv_eq_chart`, `mpullback_chart`,

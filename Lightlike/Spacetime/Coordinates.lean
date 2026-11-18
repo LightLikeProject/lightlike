@@ -10,7 +10,7 @@ public import Lightlike.Spacetime.NondegMetricBase
 Lorentzian metric `g` on a manifold `M` (modelled on `ℝⁿ`, no boundary) in the chart at `x₀`,
 evaluated at the chart point `y`.
 
-Main result: `LorentzianMetric.isCoordMetric_coordMetric` - on the chart's target (an open set
+Main result: `NondegMetric.isCoordMetric_coordMetric` - on the chart's target (an open set
 containing the image of `x₀`), these components form an `IsCoordMetric`: symmetric, invertible,
 with `C^∞` entries. Hence every coordinate curvature statement in `Curvature.lean` /
 `Einstein.lean` applies to the coordinate expression of any smooth Lorentzian metric.
