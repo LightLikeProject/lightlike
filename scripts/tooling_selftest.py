@@ -71,6 +71,29 @@ with tempfile.TemporaryDirectory() as d:
     expect("exploratory planted: a core module importing Exploratory/ through another module fails",
            len(ci_check.check_exploratory_imports(tmp)) == 2)
 
+with tempfile.TemporaryDirectory() as d:
+    tmp = pathlib.Path(d)
+    mini(tmp)
+    bl = tmp / "base.txt"
+    expect("constructs control (flag off): a clean tree passes", ci_check.scan_constructs(tmp, bl) == [])
+    kinds = ["elab x : term => pure x", "macro_rules | `(a) => `(b)", "syntax \"a\" : term",
+             "initialize r : IO.Ref Nat <- IO.mkRef 0", "run_cmd pure ()", "unsafe def u := 0",
+             "opaque o : Nat"]
+    for k in kinds:
+        (tmp / "Lightlike" / "A.lean").write_text("theorem foo : True := trivial\n" + k + "\n")
+        expect("constructs planted (flag on): `" + k.split()[0] + "` is reported",
+               len(ci_check.scan_constructs(tmp, bl)) == 1)
+    (tmp / "Lightlike" / "A.lean").write_text("-- unsafe opaque x\n/- syntax a -/\ntheorem foo : \"unsafe\" = \"unsafe\" := rfl\n")
+    expect("constructs control: comments and strings are ignored", ci_check.scan_constructs(tmp, bl) == [])
+    (tmp / "Lightlike" / "A.lean").write_text("local syntax \"a\" : term\n")
+    bl.write_text("Lightlike/A.lean syntax 1\n")
+    expect("constructs control: a baselined use passes", ci_check.scan_constructs(tmp, bl) == [])
+    (tmp / "Lightlike" / "A.lean").write_text("theorem foo : True := trivial\n")
+    expect("constructs planted: a baseline line whose use is gone must be lowered",
+           len(ci_check.scan_constructs(tmp, bl)) == 1)
+    expect("constructs: the real baseline matches the real tree",
+           ci_check.scan_constructs() == [])
+
 import api_map  # noqa: E402
 import generated  # noqa: E402
 expect("generated files: the guard tells generated from hand-written parts, and its planted changes fail",
