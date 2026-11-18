@@ -9,7 +9,7 @@ import Lightlike.Spacetime.Causal.Relations
 Let `S` be a Cauchy surface. A point `q` of the closure of `S` not in `S` lies on an inextendible
 timelike curve `G`, which meets `S` at a point `r` before or after `q`. If `r` is after `q` then `q`
 is in the chronological past of `r`, an open set, which therefore contains a point of `S`; if `r`
-is before `q` then `q` is in the chronological future of `r`, which is open (`isOpen_chronFuture_of_reach`),
+is before `q` then `q` is in the chronological future of `r`, which is an open set (`isOpen_chronFuture_of_reach`),
 so again it contains a point of `S`. Two points of `S` joined by a timelike curve contradict
 achronality (`IsCauchySurface.isAchronal_of_boundaryless`).
 
@@ -63,7 +63,7 @@ theorem IsCauchySurface.isClosed_of_isOpen_chronPast {S : Set M} (h : IsCauchySu
     exact hA _ hs'S _ htS hs'P
 
 /-- **A Cauchy surface is closed** (on a Hausdorff, second countable manifold without boundary):
-the chronological past is open by time reversal of `isOpen_chronFuture_of_reach`. -/
+the chronological past is an open set by time reversal of `isOpen_chronFuture_of_reach`. -/
 theorem IsCauchySurface.isClosed {S : Set M} (h : IsCauchySurface T S) : IsClosed S :=
   h.isClosed_of_isOpen_chronPast T (isOpen_chronPast T)
 
