@@ -278,6 +278,27 @@ lemma commutant_apply_Omega (R : FockRep h K) (C : K →L[ℂ] K)
   rw [inner_self_eq_zero] at this
   exact sub_eq_zero.1 this
 
+/-- **The commutant of a Fock representation is trivial**: a bounded operator commuting with all `W f` is a
+scalar. -/
+theorem commutant_scalar (R : FockRep h K) (C : K →L[ℂ] K) (hC : ∀ f ψ, C (R.W f ψ) = R.W f (C ψ)) :
+    ∃ c : ℂ, ∀ ψ, C ψ = c • ψ := by
+  refine ⟨⟪R.Ω, C R.Ω⟫_ℂ, fun ψ => ?_⟩
+  set c := ⟪R.Ω, C R.Ω⟫_ℂ with hc
+  have hdense : Dense ((Submodule.span ℂ (Set.range (kv R)) : Submodule ℂ K) : Set K) := by
+    rw [Submodule.dense_iff_topologicalClosure_eq_top]; exact R.cyclic
+  have hcont1 : Continuous fun w : K => C w := C.continuous
+  have hcont2 : Continuous fun w : K => c • w := continuous_const.smul continuous_id
+  have := Continuous.ext_on hdense hcont1 hcont2 (fun u hu => by
+    induction hu using Submodule.span_induction with
+    | mem y hy =>
+      obtain ⟨x, rfl⟩ := hy
+      show C (R.W x R.Ω) = c • R.W x R.Ω
+      rw [hC, commutant_apply_Omega R C hC, map_smul]
+    | zero => simp
+    | add a b _ _ ha hb => simp only [map_add, smul_add, ha, hb]
+    | smul a y _ hy => rw [map_smul, hy, smul_comm])
+  exact congrFun this ψ
+
 end Commutant
 
 end Lightlike.OperatorAlgebras
