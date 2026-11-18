@@ -894,6 +894,9 @@ import Lightlike.DynamicalTriangulations.Ergodicity
 import Lightlike.DynamicalTriangulations.Ergodicity3
 import Lightlike.DynamicalTriangulations.Tests
 import Lightlike.DynamicalTriangulations.Tests3
+import Lightlike.FieldTheory.Gaussian.Density
+import Lightlike.FieldTheory.Gaussian.Integral
+import Lightlike.FieldTheory.Gaussian.Tests
 import Lightlike.GFT.Bubble
 import Lightlike.GFT.ColoredGraph
 import Lightlike.GFT.Dual
