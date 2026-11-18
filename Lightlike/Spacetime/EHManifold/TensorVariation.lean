@@ -1,3 +1,4 @@
+import Lightlike.Spacetime.ChartTensor
 import Lightlike.Spacetime.LeviCivitaSmooth
 import Lightlike.Spacetime.EHManifold.IntrinsicAction
 import Lightlike.Spacetime.EHManifold.PerturbationExt
