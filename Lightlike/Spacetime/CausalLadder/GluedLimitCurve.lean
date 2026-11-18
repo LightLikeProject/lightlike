@@ -234,5 +234,3 @@ theorem goodState_succ (hcov : (⋃ j, N j) = univ) (hstep : ∀ j, StepAt T γ 
 end Family
 
 end Lightlike.Causal
-
-end Lightlike.Causal
