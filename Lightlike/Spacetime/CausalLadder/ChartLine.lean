@@ -180,15 +180,18 @@ theorem localField_smul (p : M) (r : ℝ) (w : E) {q : M} (hq : q ∈ (tTriv I M
     ((tTriv I M p).linearEquivAt_symm_apply (R := ℝ) q hq w).symm
   rw [h1, h2, map_smul]
 
-/-- **A chart segment gives a causal curve.** Around `p` (boundaryless model) there are a radius
-`r₀`, a scale `s > 0`, `ε > 0` and a vector `V` such that any two points `a`, `b` of the chart ball
-of radius `r₀` with `‖b - a - s V‖ < s ε` are joined by a future causal curve: the point
+/-- **A chart segment gives a causal curve, at every small scale.** Around `p` (manifold without
+boundary) there are a vector `V`, a radius `r₀ > 0` and `ε > 0` with the chart ball of radius `r₀`
+inside the chart target, such that for every `s > 0` with `‖s V‖ < r₀ / 2`, any two points `a`, `b`
+of the ball with `‖b - a - s V‖ < s ε` are joined by a future causal curve: the point
 `(extChartAt I p).symm b` lies in the causal future of `(extChartAt I p).symm a`. -/
-theorem exists_line_between [BoundarylessManifold I M] (p : M) :
-    ∃ (V : E) (s r₀ : ℝ), 0 < s ∧ 0 < r₀ ∧ ‖s • V‖ < r₀ / 2 ∧
-      ∃ ε > 0, ∀ a ∈ Metric.ball (extChartAt I p p) r₀, ∀ b ∈ Metric.ball (extChartAt I p p) r₀,
-        ‖b - a - s • V‖ < s * ε →
-          (extChartAt I p).symm b ∈ causalFuture T ((extChartAt I p).symm a) := by
+theorem exists_line_scale [BoundarylessManifold I M] (p : M) :
+    ∃ (V : E) (r₀ ε : ℝ), 0 < r₀ ∧ 0 < ε ∧
+      Metric.ball (extChartAt I p p) r₀ ⊆ (extChartAt I p).target ∧
+      ∀ s : ℝ, 0 < s → ‖s • V‖ < r₀ / 2 →
+        ∀ a ∈ Metric.ball (extChartAt I p p) r₀, ∀ b ∈ Metric.ball (extChartAt I p p) r₀,
+          ‖b - a - s • V‖ < s * ε →
+            (extChartAt I p).symm b ∈ causalFuture T ((extChartAt I p).symm a) := by
   have hp : p ∈ (tTriv I M p).baseSet :=
     mem_baseSet_trivializationAt E (fun x : M ↦ TangentSpace I x) p
   set V : E := (tTriv I M p ⟨p, T.X p⟩).2 with hV
@@ -202,17 +205,8 @@ theorem exists_line_between [BoundarylessManifold I M] (p : M) :
     exact hcont.preimage_mem_nhds (by rwa [(extChartAt I p).left_inv (mem_extChartAt_source p)])
   obtain ⟨r₀, hr₀, hball⟩ := Metric.mem_nhds_iff.1
     (inter_mem hpre (target_mem_nhds_of_boundaryless (I := I) p))
-  set s : ℝ := r₀ / (4 * (‖V‖ + 1)) with hs
-  have hspos : 0 < s := by positivity
-  have hsV : ‖s • V‖ < r₀ / 2 := by
-    rw [norm_smul, Real.norm_eq_abs, abs_of_pos hspos, hs]
-    have : ‖V‖ < ‖V‖ + 1 := by linarith
-    calc r₀ / (4 * (‖V‖ + 1)) * ‖V‖ ≤ r₀ / (4 * (‖V‖ + 1)) * (‖V‖ + 1) :=
-          mul_le_mul_of_nonneg_left this.le (by positivity)
-      _ = r₀ / 4 := by field_simp
-      _ < r₀ / 2 := by linarith
-  refine ⟨V, s, r₀, hspos, hr₀, hsV, ε, hε, ?_⟩
-  intro a ha b hb hab
+  refine ⟨V, r₀, ε, hr₀, hε, fun e he => (hball he).2, ?_⟩
+  intro s hspos hsV a ha b hb hab
   set w : E := b - a with hw
   -- the segment from `a` to `b` stays in the ball
   have hseg : ∀ t ∈ Icc (0 : ℝ) 1, a + t • w ∈ Metric.ball (extChartAt I p p) r₀ := by
@@ -249,6 +243,28 @@ theorem exists_line_between [BoundarylessManifold I M] (p : M) :
   · have hbt : b ∈ (extChartAt I p).target := by
       simpa [hw] using hsegT 1 ⟨zero_le_one, le_rfl⟩
     simp [hw]
+
+
+/-- **A chart segment gives a causal curve.** Around `p` (manifold without boundary) there are a
+radius `r₀`, a scale `s > 0`, `ε > 0` and a vector `V` such that any two points `a`, `b` of the chart
+ball of radius `r₀` with `‖b - a - s V‖ < s ε` are joined by a future causal curve: the point
+`(extChartAt I p).symm b` lies in the causal future of `(extChartAt I p).symm a`. -/
+theorem exists_line_between [BoundarylessManifold I M] (p : M) :
+    ∃ (V : E) (s r₀ : ℝ), 0 < s ∧ 0 < r₀ ∧ ‖s • V‖ < r₀ / 2 ∧
+      ∃ ε > 0, ∀ a ∈ Metric.ball (extChartAt I p p) r₀, ∀ b ∈ Metric.ball (extChartAt I p p) r₀,
+        ‖b - a - s • V‖ < s * ε →
+          (extChartAt I p).symm b ∈ causalFuture T ((extChartAt I p).symm a) := by
+  obtain ⟨V, r₀, ε, hr₀, hε, -, h⟩ := exists_line_scale T p
+  set s : ℝ := r₀ / (4 * (‖V‖ + 1)) with hs
+  have hspos : 0 < s := by positivity
+  have hsV : ‖s • V‖ < r₀ / 2 := by
+    rw [norm_smul, Real.norm_eq_abs, abs_of_pos hspos, hs]
+    have : ‖V‖ < ‖V‖ + 1 := by linarith
+    calc r₀ / (4 * (‖V‖ + 1)) * ‖V‖ ≤ r₀ / (4 * (‖V‖ + 1)) * (‖V‖ + 1) :=
+          mul_le_mul_of_nonneg_left this.le (by positivity)
+      _ = r₀ / 4 := by field_simp
+      _ < r₀ / 2 := by linarith
+  exact ⟨V, s, r₀, hspos, hr₀, hsV, ε, hε, h s hspos hsV⟩
 
 /-- Points near `p` in the chart: a neighbourhood on which the chart image is within `δ` of that of
 `p`. -/
