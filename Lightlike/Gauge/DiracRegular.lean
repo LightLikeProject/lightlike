@@ -80,4 +80,28 @@ theorem exists_stable_of_regular (n : ℕ → ℕ) (Φ : ∀ k, Fin (n k) → E 
     rw [← ih]
     exact zeroSet_eq_of_card_eq (Φ k) (Φ (k + 1)) (hmono k) (hext k) (by rw [hconst k hk, hconst (k+1) (by omega)])
 
+/-- **Adding the next constraints to a stage**: the tuple `Φ` followed by the new constraint functions `χ`. -/
+def appendStage {a b : ℕ} (Φ : Fin a → E → ℝ) (χ : Fin b → E → ℝ) : Fin (a + b) → E → ℝ :=
+  Fin.append Φ χ
+
+/-- The zero set of the extended stage is the zero set of the old stage cut by the new constraints. -/
+theorem zeroSet_appendStage {a b : ℕ} (Φ : Fin a → E → ℝ) (χ : Fin b → E → ℝ) :
+    zeroSet (appendStage Φ χ) = zeroSet Φ ∩ zeroSet χ := by
+  ext x
+  simp only [zeroSet, appendStage, Set.mem_setOf_eq, Set.mem_inter_iff]
+  constructor
+  · intro h
+    exact ⟨fun i => by simpa using h (Fin.castAdd b i), fun i => by simpa using h (Fin.natAdd a i)⟩
+  · rintro ⟨h1, h2⟩ i
+    refine Fin.addCases (fun i => ?_) (fun i => ?_) i
+    · simpa using h1 i
+    · simpa using h2 i
+
+/-- The extended stage restricts to the old one on the first `a` functions, as `exists_stable_of_regular` asks. -/
+theorem appendStage_castLE {a b : ℕ} (Φ : Fin a → E → ℝ) (χ : Fin b → E → ℝ) (i : Fin a) :
+    appendStage Φ χ (Fin.castLE (Nat.le_add_right a b) i) = Φ i := by
+  have : Fin.castLE (Nat.le_add_right a b) i = Fin.castAdd b i := rfl
+  rw [this]
+  simp [appendStage]
+
 end Lightlike.Gauge
