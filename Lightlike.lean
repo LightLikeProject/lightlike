@@ -126,6 +126,7 @@ import Lightlike.Asymptotics.SaddleRayTests
 import Lightlike.Asymptotics.Stirling
 import Lightlike.Asymptotics.StirlingTests
 import Lightlike.Asymptotics.Tauberian.FourierExchange
+import Lightlike.Asymptotics.Tauberian.Hks
 import Lightlike.Asymptotics.Tauberian.Ingham
 import Lightlike.Asymptotics.Tauberian.Lower
 import Lightlike.Asymptotics.Tauberian.Tests
