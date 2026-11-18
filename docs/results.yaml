@@ -2234,3 +2234,55 @@
   review: kernel-checked
   note: "A smooth function f of a variable x in a finite-dimensional real normed space E and a parameter l, with a critical point at x = 0 for every l near l0 and a nondegenerate Hessian at (0, l0), is f(0, l) plus the sum of w_i y_i^2, w_i = plus or minus one, in coordinates (y, l) that are a smooth local diffeomorphism of (x, l) near (0, l0). The number of negative signs is the Morse index (the largest dimension of a subspace on which the Hessian is negative definite). The function x^3 at 0 has no such chart. The parametric form generalises Milnor's Morse lemma; comparison with the book at that location is pending. Limits: f is smooth on the whole of E times F; the critical point is at x = 0; the index is not shown to equal the number of negative eigenvalues for an inner product."
   since: unreleased
+- id: LL-0171
+  title: The Lie derivative of a metric along a vector field equals the symmetrised covariant derivative of the field for the Levi-Civita connection, so Killing fields are those with vanishing Lie derivative
+  area: Spacetime
+  file: Lightlike/Spacetime/LieMetric.lean
+  decls: [Lightlike.lieDerivMetric_eq_of_isLeviCivita, Lightlike.isKillingAt_iff_lieDerivMetric_eq_zero]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "Chapter 3"}
+  review: kernel-checked
+  note: "For a metric g of any signature and a torsion-free connection compatible with g, X(g(V, W)) - g([X, V], W) - g(V, [X, W]) = g(nabla_V X, W) + g(V, nabla_W X) at every point where the fields are differentiable; hence the pointwise Killing equation holds at x iff the Lie derivative of g along X vanishes on all fields differentiable at x. Limits: pointwise statement only, no flows or isometries; not the Lie derivative of general tensors; the comparison with the source (Killing equation and Lie derivative in the lecture notes) is pending, and the location is the chapter, not an equation."
+  since: unreleased
+- id: LL-0172
+  title: The bracket of two Killing fields of a metric of any signature is a Killing field
+  area: Spacetime
+  file: Lightlike/Spacetime/KillingAlgebra.lean
+  decls: [Lightlike.IsKillingNear.lieBracket, Lightlike.lieDerivMetric_lieBracket]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "Chapter 3"}
+  review: kernel-checked
+  note: "If X and Y are smooth near x and the Lie derivative of g along each vanishes near x on all fields smooth near x, then so does the Lie derivative along the bracket [X, Y], by the Jacobi identity and [X, Y] f = X (Y f) - Y (X f). Limits: pointwise statement; the comparison with the source is pending and the location is the chapter."
+  since: unreleased
+- id: LL-0173
+  title: In Minkowski space the affine fields with skew linear part are Killing, the dilation is not, and affine fields close under the bracket with the Poincare relations
+  area: Spacetime
+  file: Lightlike/Spacetime/PoincareKilling.lean
+  decls: [Lightlike.affField_killing_iff, Lightlike.not_isKillingAt_dilation, Lightlike.mlieBracket_affField, Lightlike.skew_comm_skew]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "Chapter 3"}
+  review: kernel-checked
+  note: "On R^n with the Minkowski metric and the flat connection, the field y -> A y + c satisfies the Killing equation at every point iff A is skew for the metric; the dilation y -> y does not (n at least 1); [A y + c, B y + d] = (B A - A B) y + (B c - A d); the commutator of two skew endomorphisms is skew. Limits: not proved that these are all the Killing fields (the count n(n+1)/2); the 2-sphere check is not included; comparison with the source is pending."
+  since: unreleased
+- id: LL-0174
+  title: The second fundamental form of the level sets of a function is symmetric, and the Gauss and Codazzi relations hold for a non-null hypersurface
+  area: Spacetime
+  file: Lightlike/Spacetime/Hypersurface.lean
+  decls: [Lightlike.Hypersurface.secondFF_symm_fields, Lightlike.Hypersurface.gauss_relation, Lightlike.Hypersurface.codazzi_relation]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "Chapter 3"}
+  review: kernel-checked
+  note: "For a smooth function phi with a unit normal field n (g(n, n) = eps = plus or minus one, the kernel of d phi equal to the orthogonal of n), tangent fields X, Y, Z, W near a point and a metric compatible connection, g(R(X, Y) Z, W) equals the same expression for the tangential connection D plus the term minus eps (K(Y, Z) K(X, W) - K(X, Z) K(Y, W)) with K(v, w) = g(nabla_v n, w); for the Levi-Civita connection K is symmetric on tangent fields and g(R(X, Y) Z, n) = -((D_X K)(Y, Z) - (D_Y K)(X, Z)). Limits: the leaves are not given a manifold structure, so the intrinsic curvature of a leaf is that of the tangential connection D; existence of the unit normal is a hypothesis; the sphere and FLRW trust checks are not included; comparison with the source is pending and the location is the chapter."
+  since: unreleased
