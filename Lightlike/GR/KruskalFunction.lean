@@ -9,7 +9,7 @@ import Mathlib
 chart through `X² - T² = F(r)` (Lambert-W-like; Mathlib has no `W`).
 
 Gap row G1-020 (Kruskal extension), supporting file. Source comparison with Kruskal (1960) and
-Carroll, ch. 5, pending.
+Carroll, arXiv:gr-qc/9712019, eq. (7.81): the radius is defined implicitly by `(u² - v²) = (r/2GM - 1) e^{r/2GM}`.
 -/
 
 open Real Set Filter Topology
