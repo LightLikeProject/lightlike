@@ -10,8 +10,11 @@ anti-de Sitter space of radius `L` has the metric
 (`isCoordMetric_ads`, `ads_isLorentzian`) and solves the vacuum Einstein equations with the
 cosmological constant `Λ = -3/L²` (`ads_isVacuumSolution`): `Ric = Λ g`.
 
-Gap row G3-022. The comparison with Carroll, *Spacetime and Geometry*, ch. 8, and the AdS/CFT
-literature (Maldacena 1999) is pending: not read at a location.
+Gap row G3-022. Compared with O. Aharony, S. Gubser, J. Maldacena, H. Ooguri, Y. Oz, *Large N field theories, string
+theory and gravity*, arXiv:hep-th/9905111, section 2 (pdftotext): the Poincaré coordinates `(u, t, x)`, `ds² = R² (du²/u² + u² (-dt² + dx²))`
+(eq. (2.27), printed p. 42), which is `adsMetric` with `L = R`, `z = 1/u`; "The coordinates (u, t, x) are called the Poincaré coordinates"
+and "cover one half of the hyperboloid". The vacuum equation `G + Λ g = 0` is not stated in that passage (it has `Ric = -(d/R²) g` as maximal
+symmetry in a later section, not compared at a location). Carroll ch. 8: no Poincaré patch in the notes read.
 -/
 
 open Matrix Real
