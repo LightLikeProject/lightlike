@@ -47,9 +47,12 @@ theorem block_congruent (g00 g03 g33 g11 g22 : ℝ) (h33 : 0 < g33) (h11 : 0 < g
   have h22s : 0 < √g22 := Real.sqrt_pos.2 h22
   have h22q : √g22 ^ 2 = g22 := Real.sq_sqrt h22.le
   refine ⟨!![N, 0, 0, 0; 0, √g11, 0, 0; 0, 0, √g22, 0; g03 / √g33, 0, 0, √g33], ?_, ?_⟩
-  · simp [Matrix.det_succ_row_zero, Fin.sum_univ_succ, Fin.succAbove]
-    exact ⟨⟨hNpos.ne', h11s.ne'⟩, h22s.ne'⟩ |>.1 |> fun h => by
-      refine ⟨⟨hNpos.ne', h11s.ne'⟩, h22s.ne', h33s.ne'⟩
+  · have hdet : (!![N, 0, 0, 0; 0, √g11, 0, 0; 0, 0, √g22, 0; g03 / √g33, 0, 0, √g33] :
+        Matrix (Fin 4) (Fin 4) ℝ).det = N * √g11 * √g22 * √g33 := by
+      simp [Matrix.det_succ_row_zero, Fin.sum_univ_succ, Fin.succAbove]
+      ring
+    rw [hdet]
+    exact (mul_pos (mul_pos (mul_pos hNpos h11s) h22s) h33s).ne'.isUnit
   · ext i j
     fin_cases i <;> fin_cases j <;>
       simp [Matrix.mul_apply, Fin.sum_univ_four, eta, etaDiag, Matrix.diagonal_apply] <;>
