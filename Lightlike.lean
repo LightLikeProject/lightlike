@@ -669,6 +669,7 @@ import Lightlike.Spacetime.CausalLadder.UnitArcEndpoint
 import Lightlike.Spacetime.CausalLadder.GluedLimitCurve
 import Lightlike.Spacetime.CausalLadder.BoxExit
 import Lightlike.Spacetime.CausalLadder.AffineCurve
+import Lightlike.Spacetime.CausalLadder.LimitCurveStep
 import Lightlike.Spacetime.CausalLadder.LimitBound
 import Lightlike.Spacetime.CausalLadder.LimitCurve
 import Lightlike.Spacetime.CausalLadder.CurveContinuity
