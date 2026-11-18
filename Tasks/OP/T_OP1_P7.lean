@@ -50,8 +50,9 @@ representation (kind: representation): the hypotheses are bounded below by `λ` 
 "closed, `(0, ∞) ⊂ ρ(A)` and `‖R_λ(A)‖ ≤ 1/λ`" (equivalent: bounded below and surjective is `λ - A`
 bijective with an inverse of norm at most `λ⁻¹`, and a bounded inverse makes `A` closed); density of the
 domain is a hypothesis, which the source's Lemma 1.6 and its proof of Theorem 1.9 assume (kind:
-convention); only the direction "the hypotheses imply that `A` generates" is stated, the source states an
-equivalence (the converse is the task T-OP1-P9). -/
+convention). The source states an equivalence; this theorem is the direction "the hypotheses imply that `A`
+generates", and the converse is `contractionSemigroup_generator_hypotheses` in
+`Lightlike/OperatorAlgebras/Semigroup/Converse.lean`, which together give `hilleYosida_contraction`. -/
 theorem hilleYosida_contraction_generation (A : X →ₗ.[𝕜] X) (hdense : Dense (A.domain : Set X))
     (hdiss : ∀ l : ℝ, 0 < l → ∀ x : A.domain, l * ‖(x : X)‖ ≤ ‖(l : 𝕜) • (x : X) - A x‖)
     (hsurj : ∀ l : ℝ, 0 < l → ∀ y : X, ∃ x : A.domain, (l : 𝕜) • (x : X) - A x = y) :

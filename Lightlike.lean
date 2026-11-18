@@ -247,12 +247,15 @@ import Lightlike.OperatorAlgebras.Resolvent
 import Lightlike.OperatorAlgebras.ResolventIdentity
 import Lightlike.OperatorAlgebras.Semigroup.CauchyEstimate
 import Lightlike.OperatorAlgebras.Semigroup.Construct
+import Lightlike.OperatorAlgebras.Semigroup.Continuity
 import Lightlike.OperatorAlgebras.Semigroup.Contraction
+import Lightlike.OperatorAlgebras.Semigroup.Converse
 import Lightlike.OperatorAlgebras.Semigroup.Defs
 import Lightlike.OperatorAlgebras.Semigroup.ExpBound
 import Lightlike.OperatorAlgebras.Semigroup.ExpMVT
 import Lightlike.OperatorAlgebras.Semigroup.Generation
 import Lightlike.OperatorAlgebras.Semigroup.Generator
+import Lightlike.OperatorAlgebras.Semigroup.LaplaceResolvent
 import Lightlike.OperatorAlgebras.Semigroup.Limit
 import Lightlike.OperatorAlgebras.Semigroup.Resolvent
 import Lightlike.OperatorAlgebras.Semigroup.Tests

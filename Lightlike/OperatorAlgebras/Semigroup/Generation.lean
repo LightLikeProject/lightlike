@@ -26,8 +26,9 @@ Source: Math 7334 lecture notes, Georgia Tech (Spring 2017), Section 4,
 * *Density.* The source's statement says "closed operator" without density, but its Lemma 1.6 is
   stated for a closed densely defined operator and its proof of Theorem 1.9 uses that `D(A)` is
   dense; density of the domain is a hypothesis here. (Approved by the maintainers, 18 November 2026.)
-* *Only one direction.* The source states an equivalence; only the generation direction (the
-  hypotheses imply that `A` is a generator) is proved. The converse is the task T-OP1-P9.
+* *Equivalence.* The source states an equivalence; this file proves the generation direction (the
+  hypotheses imply that `A` is a generator), and the converse is proved in `Converse.lean`, where the
+  two are combined in `hilleYosida_contraction`.
 -/
 
 open NormedSpace Filter Topology Set NNReal
