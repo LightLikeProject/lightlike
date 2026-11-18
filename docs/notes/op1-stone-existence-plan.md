@@ -1,10 +1,9 @@
 # T-OP1-P2 (Stone's theorem, existence): plan
 
 Statement: for a self-adjoint `A : H →ₗ.[ℂ] H` there is a strongly continuous unitary group `U` with
-`U.generator = A` (`Tasks/OP/T_OP1_P2.lean`). Route: the Yosida approximation, without the spectral theorem
-(`docs/tasks/decomposition.yaml`, route 2).
+`U.generator = A` (task `T-OP1-P2`). Route: the Yosida approximation, without the spectral theorem.
 
-## Check before build (17-18 November 2026)
+## Check before build
 
 * Mathlib: `LinearPMap` has the adjoint, `IsSelfAdjoint`, `IsClosed`, `closure`; an open pull request adds a
   resolvent (`LinearPMap` resolvent and resolvent identities); there is no resolvent in the pinned checkout,
