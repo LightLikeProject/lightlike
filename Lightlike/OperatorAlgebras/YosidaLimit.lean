@@ -136,4 +136,63 @@ lemma Ulim_add_time (hA : IsSelfAdjoint A) (s t : ℝ) (y : H) :
           rw [(Un hA n s).norm_map]
   exact tendsto_nhds_unique (tendsto_Ulim hA (s + t) y) h1
 
+/-- **The limit unitary** `U t`. -/
+noncomputable def Uunit (hA : IsSelfAdjoint A) (t : ℝ) : H ≃ₗᵢ[ℂ] H where
+  toFun := Ulim hA t
+  invFun := Ulim hA (-t)
+  map_add' := Ulim_add hA t
+  map_smul' c y := Ulim_smul hA t c y
+  left_inv y := by
+    show Ulim hA (-t) (Ulim hA t y) = y
+    rw [← Ulim_add_time, neg_add_cancel, Ulim_zero]
+  right_inv y := by
+    show Ulim hA t (Ulim hA (-t) y) = y
+    rw [← Ulim_add_time, add_neg_cancel, Ulim_zero]
+  norm_map' := norm_Ulim hA t
+
+lemma Uunit_apply (hA : IsSelfAdjoint A) (t : ℝ) (y : H) : Uunit hA t y = Ulim hA t y := rfl
+
+/-- **The estimate** `‖U_n t x - U t x‖ ≤ |t| ‖A_n x - A x‖` for `x` in the domain. -/
+lemma Un_sub_Ulim_le (hA : IsSelfAdjoint A) (n : ℕ) (t : ℝ) (x : A.domain) :
+    ‖Un hA n t (x : H) - Ulim hA t (x : H)‖ ≤ |t| * ‖approx hA n (x : H) - A x‖ := by
+  have h1 : Tendsto (fun m => ‖Un hA n t (x : H) - Un hA m t (x : H)‖) atTop
+      (𝓝 ‖Un hA n t (x : H) - Ulim hA t (x : H)‖) :=
+    (tendsto_const_nhds.sub (tendsto_Ulim hA t (x : H))).norm
+  have h2 : Tendsto (fun m => |t| * ‖approx hA n (x : H) - approx hA m (x : H)‖) atTop
+      (𝓝 (|t| * ‖approx hA n (x : H) - A x‖)) :=
+    (tendsto_const_nhds.sub (approx_tendsto hA x)).norm.const_mul _
+  exact le_of_tendsto_of_tendsto h1 h2 (Eventually.of_forall fun m => Un_cauchy hA n m t x)
+
+/-- On the domain, `t ↦ U t x` is continuous. -/
+lemma continuous_Ulim_domain (hA : IsSelfAdjoint A) (x : A.domain) :
+    Continuous fun t : ℝ => Ulim hA t (x : H) := by
+  refine continuous_iff_continuousAt.2 fun t0 => ?_
+  set S : Set ℝ := Set.Icc (t0 - 1) (t0 + 1) with hS
+  have hSn : S ∈ 𝓝 t0 := Icc_mem_nhds (by linarith) (by linarith)
+  have hu : TendstoUniformlyOn (fun n t => Un hA n t (x : H)) (fun t => Ulim hA t (x : H)) atTop S := by
+    rw [Metric.tendstoUniformlyOn_iff]
+    intro ε hε
+    have hT : 0 < |t0| + 1 := by positivity
+    have h0 := (Metric.tendsto_atTop.1 (tendsto_iff_norm_sub_tendsto_zero.1 (approx_tendsto hA x)))
+      (ε / (|t0| + 1)) (by positivity)
+    obtain ⟨N, hN⟩ := h0
+    filter_upwards [eventually_ge_atTop N] with n hn t ht
+    have hb : |t| ≤ |t0| + 1 := by
+      have h1 : |t - t0| ≤ 1 := abs_le.2 ⟨by linarith [ht.1], by linarith [ht.2]⟩
+      calc |t| = |t0 + (t - t0)| := by ring_nf
+        _ ≤ |t0| + |t - t0| := abs_add_le _ _
+        _ ≤ |t0| + 1 := by linarith
+    rw [dist_comm, dist_eq_norm]
+    have h1 := Un_sub_Ulim_le hA n t x
+    have h2 := hN n hn
+    rw [Real.dist_eq, sub_zero, abs_of_nonneg (norm_nonneg _)] at h2
+    calc ‖Un hA n t (x : H) - Ulim hA t (x : H)‖ ≤ |t| * ‖approx hA n (x : H) - A x‖ := h1
+      _ ≤ (|t0| + 1) * ‖approx hA n (x : H) - A x‖ := by gcongr
+      _ < (|t0| + 1) * (ε / (|t0| + 1)) := by gcongr
+      _ = ε := by field_simp
+  have hcont : ContinuousOn (fun t => Ulim hA t (x : H)) S :=
+    hu.continuousOn (Eventually.of_forall fun n =>
+      (continuous_bdU_apply (approx hA n) (x : H)).continuousOn).frequently
+  exact hcont.continuousAt hSn
+
 end Lightlike.OperatorAlgebras
