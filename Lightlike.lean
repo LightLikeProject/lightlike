@@ -148,6 +148,10 @@ import Lightlike.Asymptotics.Tauberian.Vacuum
 import Lightlike.Asymptotics.Tauberian.Smoothing
 import Lightlike.Asymptotics.Tauberian.Window
 import Lightlike.Asymptotics.Tauberian.Window2
+import Lightlike.Asymptotics.Tauberian.KernelFacts
+import Lightlike.Asymptotics.Tauberian.Psi
+import Lightlike.Asymptotics.Tauberian.WindowSum
+import Lightlike.Asymptotics.Tauberian.Compare
 import Lightlike.Asymptotics.Tests
 import Lightlike.Asymptotics.UniformContour
 import Lightlike.Asymptotics.UniformContourTests
