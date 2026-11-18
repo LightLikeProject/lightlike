@@ -32,4 +32,22 @@ theorem dStep_zeroSet_eq (V : E → E) (W : ι → E → E) (Φ : Fin n → E �
   · rintro ⟨hx, u, hu⟩
     exact ⟨hx, u, (mem_tangentCone_zeroSet_iff (hΦ x hx) (hind x hx) hx _).mpr hu⟩
 
+/-- **Termination of the nonlinear Dirac chain when every stage is a regular tuple**: if each stage set `dChain k` is
+the zero set of a tuple `Φ k` (extending the previous one, regular, with nonempty zero set), the chain of stage sets,
+defined through tangent cones and no regularity, stabilises. The hypothesis `hstage` (the next stage's tuple cuts out the
+next step of the algorithm) is what `DiracStage` and `DiracWire` provide locally under constant rank of the bracket
+matrix, with the secondary constraints explicit. -/
+theorem dChain_stabilizes_of_regular (V : E → E) (W : ι → E → E) (n : ℕ → ℕ) (Φ : ∀ k, Fin (n k) → E → ℝ)
+    (hmono : ∀ k, n k ≤ n (k + 1)) (hext : ∀ k i, Φ (k + 1) (Fin.castLE (hmono k) i) = Φ k i)
+    (hreg : ∀ k, IsRegularStage (Φ k)) (hne : ∀ k, (zeroSet (Φ k)).Nonempty)
+    (hstage : ∀ k, zeroSet (Φ (k + 1)) = dStep V W (zeroSet (Φ k))) :
+    ∃ N, ∀ k, N ≤ k → dChain V W (zeroSet (Φ 0)) k = dChain V W (zeroSet (Φ 0)) N := by
+  have hchain : ∀ k, dChain V W (zeroSet (Φ 0)) k = zeroSet (Φ k) := by
+    intro k
+    induction k with
+    | zero => rfl
+    | succ k ih => rw [dChain_succ, ih, hstage k]
+  obtain ⟨N, hN⟩ := exists_stable_of_regular n Φ hmono hext hreg hne
+  exact ⟨N, fun k hk => by rw [hchain, hchain, hN k hk]⟩
+
 end Lightlike.Gauge
