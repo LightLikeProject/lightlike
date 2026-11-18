@@ -7,9 +7,9 @@ Pointwise energy conditions of a symmetric bilinear form `T` (the stress-energy 
 `NullEC`, `WeakEC`, `StrongEC` (dimension four) and `DominantEC` (Curiel, *A Primer on Energy Conditions*, section 2.1, physical forms).
 Proved: reverse Cauchy-Schwarz for a timelike vector, the sign rule for timelike vectors in a Lorentz frame (`lorentz_sign`), co-oriented timelike vectors pair with a
 timelike vector with a common sign (`lorentz_coorient`), the `g`-trace in a Lorentz frame (`traceG_eq_sum`); trust checks: dust with `ρ ≥ 0` satisfies all four,
-a positive cosmological constant violates the strong condition, a scalar field at a point of vanishing gradient with a negative potential violates the weak one.
+a positive cosmological constant violates the strong condition, a scalar field at a point of vanishing gradient with a negative potential violates the weak one; the effective forms for a perfect fluid (`fluid_nullEC_iff`: `ρ + p ≥ 0`, `fluid_weakEC_iff`: `ρ ≥ 0` and `ρ + p ≥ 0`, `fluid_strongEC_iff`: `ρ + p ≥ 0` and `ρ + 3p ≥ 0`).
 
-**Limits.** Pointwise statements on a vector space; no manifold or time-orientation field, perfect fluids only through the checks above.
+**Limits.** Pointwise statements on a vector space; no manifold or time-orientation field, the dominant condition is checked for dust only (`ρ ≥ |p|` for a fluid is not proved).
 -/
 
 open Module
@@ -338,5 +338,176 @@ theorem scalar_negative_potential_violates_weak [FiniteDimensional ℝ V] {g : V
   nlinarith
 
 end Scalar
+
+section Fluid
+variable {V : Type*} [AddCommGroup V] [Module ℝ V] [TopologicalSpace V]
+
+theorem lorentz_symm_aux {n : ℕ} {g : V →L[ℝ] V →L[ℝ] ℝ} (hg : IsLorentzianForm n g) (v w : V) : g v w = g w v := hg.symm v w
+
+/-- **A unit spacelike vector orthogonal to a timelike one exists** (dimension at least two). -/
+theorem exists_orth_spacelike {m : ℕ} {g : V →L[ℝ] V →L[ℝ] ℝ} (hg : IsLorentzianForm (m + 2) g) {u : V}
+    (hu : g u u < 0) : ∃ w : V, g u w = 0 ∧ g w w = 1 := by
+  obtain ⟨e, he⟩ := hg
+  have hcoord := lorentz_apply (m := m + 1) (g := g) e he
+  set a := e.repr u 0 with ha
+  set b := e.repr u (Fin.succ 0) with hb
+  have hu' : g u u = -(a * a) + ∑ i : Fin (m + 1), e.repr u i.succ * e.repr u i.succ := hcoord u u
+  have hb2 : b * b ≤ ∑ i : Fin (m + 1), e.repr u i.succ * e.repr u i.succ :=
+    Finset.single_le_sum (f := fun i : Fin (m + 1) => e.repr u i.succ * e.repr u i.succ)
+      (fun i _ => mul_self_nonneg _) (Finset.mem_univ 0)
+  have ha0 : a ≠ 0 := by
+    intro h0; rw [h0] at hu'
+    have : 0 ≤ ∑ i : Fin (m + 1), e.repr u i.succ * e.repr u i.succ := Finset.sum_nonneg fun i _ => mul_self_nonneg _
+    linarith
+  let w0 : V := (b / a) • e 0 + e (Fin.succ 0)
+  have hc0 : e.repr w0 0 = b / a := by
+    simp [w0, Module.Basis.repr_self, Finsupp.single_apply, Fin.succ_ne_zero]
+  have hs : ∀ j : Fin (m + 1), (j.succ : Fin (m + 2)) = 1 ↔ j = 0 := fun j => by
+    rw [← Fin.succ_zero_eq_one, Fin.succ_inj]
+  have hcj : ∀ j : Fin (m + 1), e.repr w0 j.succ = if j = 0 then 1 else 0 := by
+    intro j
+    simp [w0, Module.Basis.repr_self, Finsupp.single_apply, Fin.succ_ne_zero, Fin.succ_inj, eq_comm, hs]
+  have hsum : ∀ f : Fin (m + 1) → ℝ, ∑ i : Fin (m + 1), e.repr u i.succ * (e.repr w0 i.succ) = e.repr u (Fin.succ 0) := by
+    intro f
+    simp only [hcj]
+    simp
+  have hsum2 : ∑ i : Fin (m + 1), e.repr w0 i.succ * e.repr w0 i.succ = 1 := by
+    simp only [hcj]
+    simp
+  have hw0 : g u w0 = 0 := by
+    rw [hcoord u w0, hc0, hsum (fun _ => 0)]
+    field_simp
+    ring
+  have hww : g w0 w0 = 1 - (b / a) ^ 2 := by
+    rw [hcoord w0 w0, hc0, hsum2]; ring
+  have hpos : 0 < g w0 w0 := by
+    rw [hww]
+    have hab : (b / a) ^ 2 < 1 := by
+      rw [div_pow, div_lt_one (by positivity)]
+      nlinarith
+    linarith
+  refine ⟨(Real.sqrt (g w0 w0))⁻¹ • w0, ?_, ?_⟩
+  · simp [hw0]
+  · simp only [map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul]
+    have h2 : Real.sqrt (g w0 w0) * Real.sqrt (g w0 w0) = g w0 w0 := Real.mul_self_sqrt hpos.le
+    have h3 : Real.sqrt (g w0 w0) ≠ 0 := (Real.sqrt_pos.2 hpos).ne'
+    field_simp
+    linarith
+
+
+/-- The stress-energy of a perfect fluid with four-velocity `u`, energy density `ρ` and pressure `p`: `(ρ + p) u ⊗ u + p g`. -/
+def fluidT (g : V →L[ℝ] V →L[ℝ] ℝ) (u : V) (ρ p : ℝ) : V →L[ℝ] V →L[ℝ] ℝ :=
+  dustT g u (ρ + p) + p • g
+
+theorem fluidT_apply (g : V →L[ℝ] V →L[ℝ] ℝ) (u : V) (ρ p : ℝ) (v w : V) :
+    fluidT g u ρ p v w = (ρ + p) * (g u v * g u w) + p * g v w := by
+  simp [fluidT, dustT_apply]
+
+/-- The `g`-trace of a perfect fluid: `−(ρ + p) + 4p = 3p − ρ`. -/
+theorem traceG_fluid [FiniteDimensional ℝ V] {g : V →L[ℝ] V →L[ℝ] ℝ} (hg : IsLorentzianForm 4 g) {u : V}
+    (hu : g u u = -1) (ρ p : ℝ) :
+    traceG g (fluidT g u ρ p) hg.bilinForm_nondegenerate = 3 * p - ρ := by
+  have hd := traceG_dust hg u (ρ + p)
+  have hs := traceG_self hg
+  obtain ⟨e, he⟩ := hg
+  rw [traceG_eq_sum g _ _ e he] at hd hs ⊢
+  have : ∀ i, etaDiag i * fluidT g u ρ p (e i) (e i) =
+      etaDiag i * dustT g u (ρ + p) (e i) (e i) + p * (etaDiag i * g (e i) (e i)) := fun i => by
+    rw [fluidT_apply, dustT_apply]; ring
+  simp only [this, Finset.sum_add_distrib, ← Finset.mul_sum]
+  rw [hd, hs, hu]; ring
+
+/-- the limit used to extract `ρ + p ≥ 0`: a continuous function nonnegative for positive arguments is nonnegative at `0` -/
+theorem nonneg_of_pos_nonneg {f : ℝ → ℝ} (hf : Continuous f) (h : ∀ ε : ℝ, 0 < ε → 0 ≤ f ε) : 0 ≤ f 0 := by
+  have h1 : Filter.Tendsto f (nhdsWithin 0 (Set.Ioi 0)) (nhds (f 0)) := hf.continuousAt.tendsto.mono_left nhdsWithin_le_nhds
+  exact ge_of_tendsto h1 (Filter.eventually_of_mem (self_mem_nhdsWithin : Set.Ioi (0 : ℝ) ∈ nhdsWithin 0 (Set.Ioi 0)) h)
+
+
+section FluidIff
+variable [FiniteDimensional ℝ V] {g : V →L[ℝ] V →L[ℝ] ℝ} {u : V} {ρ p : ℝ}
+
+/-- the null vector `u + w` and the timelike vectors `u + w + ε u` of a unit timelike `u` -/
+theorem null_timelike_family (hg : IsLorentzianForm 4 g) (hu : g u u = -1) :
+    ∃ k : V, g k k = 0 ∧ g u k = -1 ∧ ∀ ε : ℝ, g (k + ε • u) (k + ε • u) = -(2 * ε) - ε ^ 2 ∧ g u (k + ε • u) = -1 - ε := by
+  obtain ⟨w, hw1, hw2⟩ := exists_orth_spacelike (m := 2) hg (u := u) (by rw [hu]; norm_num)
+  have hwu : g w u = 0 := by
+    have := lorentz_symm_aux hg u w
+    linarith
+  refine ⟨u + w, ?_, ?_, fun ε => ?_⟩
+  · simp only [map_add, ContinuousLinearMap.add_apply, hu, hw1, hw2, hwu]; ring
+  · simp only [map_add, ContinuousLinearMap.add_apply, hu, hw1]; ring
+  · constructor
+    · simp only [map_add, map_smul, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, hu, hw1, hw2, hwu]
+      ring
+    · simp only [map_add, map_smul, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, hu, hw1]
+      ring
+
+
+/-- **Perfect fluid, null energy condition**: `ρ + p ≥ 0`. -/
+theorem fluid_nullEC_iff (hg : IsLorentzianForm 4 g) (hu : g u u = -1) :
+    NullEC g (fluidT g u ρ p) ↔ 0 ≤ ρ + p := by
+  obtain ⟨k, hk0, hk1, -⟩ := null_timelike_family hg hu
+  constructor
+  · intro h
+    have := h k hk0
+    rw [fluidT_apply, hk0, hk1] at this
+    linarith
+  · intro h k' hk'
+    rw [fluidT_apply, hk']
+    nlinarith [mul_self_nonneg (g u k')]
+
+/-- **Perfect fluid, weak energy condition**: `ρ ≥ 0` and `ρ + p ≥ 0`. -/
+theorem fluid_weakEC_iff (hg : IsLorentzianForm 4 g) (hu : g u u = -1) :
+    WeakEC g (fluidT g u ρ p) ↔ 0 ≤ ρ ∧ 0 ≤ ρ + p := by
+  obtain ⟨k, hk0, hk1, hfam⟩ := null_timelike_family hg hu
+  constructor
+  · intro h
+    have hρ : 0 ≤ ρ := by
+      have := h u (by rw [hu]; norm_num)
+      rw [fluidT_apply, hu] at this
+      nlinarith
+    refine ⟨hρ, ?_⟩
+    have hf : 0 ≤ (fun ε : ℝ => (ρ + p) * (1 + ε) ^ 2 + p * (-(2 * ε) - ε ^ 2)) 0 := by
+      refine nonneg_of_pos_nonneg (f := fun ε : ℝ => (ρ + p) * (1 + ε) ^ 2 + p * (-(2 * ε) - ε ^ 2)) (by fun_prop) fun ε hε => ?_
+      have := h (k + ε • u) (by rw [(hfam ε).1]; nlinarith)
+      rw [fluidT_apply, (hfam ε).1, (hfam ε).2] at this
+      nlinarith
+    simpa using hf
+  · rintro ⟨hρ, hρp⟩ v hv
+    rw [fluidT_apply]
+    have h1 := lorentz_reverse_cs hg (u := u) (by rw [hu]; norm_num) v
+    rw [hu] at h1
+    nlinarith [mul_nonneg hρp (sub_nonneg.2 h1), mul_nonneg hρ (neg_nonneg.2 hv.le)]
+
+/-- **Perfect fluid, strong energy condition**: `ρ + p ≥ 0` and `ρ + 3p ≥ 0`. -/
+theorem fluid_strongEC_iff (hg : IsLorentzianForm 4 g) (hu : g u u = -1) :
+    StrongEC g (fluidT g u ρ p) hg ↔ 0 ≤ ρ + p ∧ 0 ≤ ρ + 3 * p := by
+  obtain ⟨k, hk0, hk1, hfam⟩ := null_timelike_family hg hu
+  have htr := traceG_fluid hg hu ρ p
+  constructor
+  · intro h
+    have h3 : 0 ≤ ρ + 3 * p := by
+      have := h u (by rw [hu]; norm_num)
+      rw [htr, fluidT_apply, hu] at this
+      nlinarith
+    refine ⟨?_, h3⟩
+    have hf : 0 ≤ (fun ε : ℝ => (ρ + p) * (1 + ε) ^ 2 + p * (-(2 * ε) - ε ^ 2)
+        - (1 / 2) * (3 * p - ρ) * (-(2 * ε) - ε ^ 2)) 0 := by
+      refine nonneg_of_pos_nonneg (f := fun ε : ℝ => (ρ + p) * (1 + ε) ^ 2 + p * (-(2 * ε) - ε ^ 2)
+        - (1 / 2) * (3 * p - ρ) * (-(2 * ε) - ε ^ 2)) (by fun_prop) fun ε hε => ?_
+      have := h (k + ε • u) (by rw [(hfam ε).1]; nlinarith)
+      rw [htr, fluidT_apply, (hfam ε).1, (hfam ε).2] at this
+      nlinarith
+    simpa using hf
+  · rintro ⟨hρp, h3⟩ v hv
+    rw [htr, fluidT_apply]
+    have h1 := lorentz_reverse_cs hg (u := u) (by rw [hu]; norm_num) v
+    rw [hu] at h1
+    nlinarith [mul_nonneg hρp (sub_nonneg.2 h1), mul_nonneg h3 (neg_nonneg.2 hv.le)]
+
+end FluidIff
+
+
+end Fluid
 
 end Lightlike
