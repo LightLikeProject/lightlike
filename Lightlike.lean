@@ -635,6 +635,7 @@ import Lightlike.Spacetime.CausalLadder.ExitDiamond
 import Lightlike.Spacetime.CausalLadder.StrongCausality
 import Lightlike.Spacetime.CausalLadder.TestsStrong
 import Lightlike.Spacetime.Causal.BasicRelations
+import Lightlike.Spacetime.Causal.ChainReach
 import Lightlike.Spacetime.Causal.CauchyDomain
 import Lightlike.Spacetime.Causal.CausalCurve
 import Lightlike.Spacetime.Causal.CurveGlobal
