@@ -240,10 +240,30 @@ tasks:
     title: The far part of the Lorentzian vertex integral is of lower order
     file: Tasks/SF/T_SF10_P3.lean
     decl: Lightlike.Asymptotics.Lorentzian.lorVertex_farRemainder
+    size: S
+    difficulty: intermediate
+    routes:
+      - "Split `1 - χ = (ψ - χ) + (1 - ψ)` for a cutoff `ψ` in `U` equal to `1` near `K`; the first part is `lorVertex_farRemainder_compact` (T-SF10-P5), the second `lorVertex_farRemainder_tail` (T-SF10-P6). The critical-set hypothesis is `CriticalSetIs` with the cutoff `1` (the first form, with `χ`, is false: a critical point outside `tsupport χ` contributes `λ^{-22}`; `docs/notes/sf10-p3-assessment.md`)."
+  - id: T-SF10-P5
+    milestone: SF10
+    kind: proof
+    title: The compact part of the Lorentzian far remainder is of rapidly decreasing order
+    file: Tasks/SF/T_SF10_P5.lean
+    decl: Lightlike.Asymptotics.Lorentzian.lorVertex_farRemainder_compact
+    size: M
+    difficulty: intermediate
+    routes:
+      - "`(ψ - χ) A` is smooth with compact support in `U` and has no critical point of `S` in its support: `expPhase_suppressed` (`Suppression.lean`) with `Re S ≤ 0` from `re_lorAction_le_zero`."
+  - id: T-SF10-P6
+    milestone: SF10
+    kind: proof
+    title: The non-compact tail of the Lorentzian far remainder is of lower order
+    file: Tasks/SF/T_SF10_P6.lean
+    decl: Lightlike.Asymptotics.Lorentzian.lorVertex_farRemainder_tail
     size: L
     difficulty: research-level
     routes:
-      - "Where `Re S ≤ -δ` on the support of `1 - χ` the integrand decays exponentially; the non-compact directions need an integrability estimate of `e^{λ S}` against the amplitude (`Ω` density) uniform in `λ`, and non-stationary phase (`nonstationary_phase`, `Lightlike/Oscillatory/Localisation.lean`) where `Re S = 0` and `dS ≠ 0`."
+      - "An integrable majorant uniform in `λ` (`‖A e^{λS}‖ ≤ ‖A‖ e^{S.re}` for `λ ≥ 1`, `Re S ≤ 0`) and a quantitative gap `Re S ≤ -δ` in the non-compact directions, with `nonstationary_phase` where `Re S = 0`, `dS ≠ 0`. Not in BDFHP; if false, report a counterexample."
   - id: T-SF10-P4
     milestone: SF10
     kind: proof

@@ -93,7 +93,9 @@ approaches.
 | [`T-CS3-P1`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CS3-P1%22) | The longest chain of n uniform points of the 1+1 diamond is about 2 sqrt(n) | [T_CS3_P1.lean](../../Tasks/CS3/T_CS3_P1.lean) | CS3 | L | research-level |
 | [`T-SF10-P1`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-SF10-P1%22) | Joint integrability of the Lorentzian vertex integrand | [T_SF10_P1.lean](../../Tasks/SF/T_SF10_P1.lean) | SF10 | L | research-level |
 | [`T-SF10-P2`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-SF10-P2%22) | Invertibility of the Hessian of the Lorentzian vertex action at a critical point | [T_SF10_P2.lean](../../Tasks/SF/T_SF10_P2.lean) | SF10 | L | research-level |
-| [`T-SF10-P3`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-SF10-P3%22) | The far part of the Lorentzian vertex integral is of lower order | [T_SF10_P3.lean](../../Tasks/SF/T_SF10_P3.lean) | SF10 | L | research-level |
+| [`T-SF10-P3`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-SF10-P3%22) | The far part of the Lorentzian vertex integral is of lower order | [T_SF10_P3.lean](../../Tasks/SF/T_SF10_P3.lean) | SF10 | S | intermediate |
+| [`T-SF10-P5`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-SF10-P5%22) | The compact part of the Lorentzian far remainder is of rapidly decreasing order | [T_SF10_P5.lean](../../Tasks/SF/T_SF10_P5.lean) | SF10 | M | intermediate |
+| [`T-SF10-P6`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-SF10-P6%22) | The non-compact tail of the Lorentzian far remainder is of lower order | [T_SF10_P6.lean](../../Tasks/SF/T_SF10_P6.lean) | SF10 | L | research-level |
 | [`T-SF10-P4`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-SF10-P4%22) | Finiteness and classification of the critical points of the Lorentzian vertex action | [T_SF10_P4.lean](../../Tasks/SF/T_SF10_P4.lean) | SF10 | L | research-level |
 
 ## Upstream
