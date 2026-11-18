@@ -189,6 +189,10 @@ import Lightlike.FourD.Orientation
 import Lightlike.FourD.Pachner
 import Lightlike.FourD.Tests
 import Lightlike.GR.Einstein
+import Lightlike.GR.AdSPoincare
+import Lightlike.GR.EddingtonFinkelstein
+import Lightlike.GR.EuclideanCigar
+import Lightlike.GR.EuclideanSchwarzschild
 import Lightlike.GR.Schwarzschild
 import Lightlike.Lorentz.Cartan
 import Lightlike.Lorentz.Continuity
@@ -674,6 +678,7 @@ import Lightlike.Spacetime.CausalLadder.TimeFunctionAssembly
 import Lightlike.Spacetime.CausalLadder.ChartLine
 import Lightlike.Spacetime.CausalLadder.GlobHypSimple
 import Lightlike.Spacetime.Causal.BasicRelations
+import Lightlike.Spacetime.Causal.CauchyClosed
 import Lightlike.Spacetime.Causal.ChainReach
 import Lightlike.Spacetime.Causal.TimeReversal
 import Lightlike.Spacetime.Causal.OpenPast
@@ -688,6 +693,7 @@ import Lightlike.Spacetime.Causal.PerturbCauchy
 import Lightlike.Spacetime.Causal.CauchySeparation
 import Lightlike.Spacetime.Causal.CauchyAssembly
 import Lightlike.Spacetime.Causal.CauchyCover
+import Lightlike.Spacetime.Causal.CauchyEquiv
 import Lightlike.Spacetime.Causal.CauchyDomain
 import Lightlike.Spacetime.Causal.CausalCurve
 import Lightlike.Spacetime.Causal.CurveGlobal
@@ -714,6 +720,7 @@ import Lightlike.Spacetime.ContractedBianchi
 import Lightlike.Spacetime.DivergenceFree
 import Lightlike.Spacetime.OpenCoordMetric
 import Lightlike.Spacetime.LeviCivitaSmooth
+import Lightlike.Spacetime.RicciContinuous
 import Lightlike.Spacetime.SchwarzschildManifold
 import Lightlike.Spacetime.ChartTensor
 import Lightlike.Spacetime.EinsteinEquations
@@ -913,6 +920,13 @@ import Lightlike.DynamicalTriangulations.Ergodicity
 import Lightlike.DynamicalTriangulations.Ergodicity3
 import Lightlike.DynamicalTriangulations.Tests
 import Lightlike.DynamicalTriangulations.Tests3
+import Lightlike.FieldTheory.Gaussian.Density
+import Lightlike.FieldTheory.Gaussian.Ibp
+import Lightlike.FieldTheory.Gaussian.Integral
+import Lightlike.FieldTheory.Gaussian.Measure
+import Lightlike.FieldTheory.Gaussian.Moments
+import Lightlike.FieldTheory.Gaussian.Mono
+import Lightlike.FieldTheory.Gaussian.Tests
 import Lightlike.GFT.Bubble
 import Lightlike.GFT.ColoredGraph
 import Lightlike.GFT.Dual
@@ -925,8 +939,10 @@ import Lightlike.Gauge.Constraints
 import Lightlike.Gauge.ConstraintsAPI
 import Lightlike.Gauge.DiracAlgebra
 import Lightlike.Gauge.DiracJacobi
+import Lightlike.Gauge.DiracAlgorithm
 import Lightlike.Gauge.MatrixInverse
 import Lightlike.Gauge.PoissonJacobi
 import Lightlike.Tests.ADM
 import Lightlike.Tests.Constraints
+import Lightlike.Tests.DiracAlgorithm
 import Lightlike.GFT.Euler
