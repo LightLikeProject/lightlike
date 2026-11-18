@@ -13,6 +13,9 @@ combination of the gauge directions is annihilated by every `dG_a` (tangent to t
 `linearIndependent_hamField_of_det_ne_zero`, `eq_zero_of_mem_ker_of_det_ne_zero` state that a nonzero determinant gives
 transversality of the orbit to the slice.
 
-Differences (none accepted): (1) only the infinitesimal statement at a point; the global attainability and uniqueness of the
-gauge (every orbit meets the slice once) and the Gribov copies are NOT claimed; (2) the second-class property of the combined
-set is not stated; (3) the library's phase space is Physlib's flat `X × X`.
+The second-class property after (5.30) is `FaddeevPopov.combinedBracket_det_ne_zero_iff`: at a point where the constraints are first class, the
+bracket matrix of the combined family `(φ, G)` is nonsingular iff the Faddeev-Popov determinant is nonzero.
+
+Scope: (1) the statements are at a point, as (5.29)-(5.30) are; the global attainability and uniqueness of the gauge (every orbit meets the slice
+once) and the Gribov copies, which the source cites (Gribov, Singer) and does not prove, are not claimed; (2) the phase space is Physlib's flat
+`X × X`.
