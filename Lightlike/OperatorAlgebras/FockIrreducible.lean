@@ -131,4 +131,64 @@ lemma differentiable_conj_FF_span (R : FockRep h K) {χ : K}
       funext z; simp [FF, inner_smul_right, mul_div_assoc]
     rw [this]; exact ha.const_mul _
 
+lemma norm_kv (R : FockRep h K) (f : h) : ‖kv R f‖ = 1 := by
+  unfold kv
+  rw [(R.W f).norm_map, R.norm_Ω]
+
+lemma norm_FF_sub_le (R : FockRep h K) (χ u : K) (y : h) :
+    ‖FF R χ y - FF R u y‖ ≤ ‖χ - u‖ / gaussE y := by
+  unfold FF
+  rw [← sub_div, ← inner_sub_right, norm_div, Complex.norm_real, Real.norm_eq_abs,
+    abs_of_pos (gaussE_pos y)]
+  refine div_le_div_of_nonneg_right ?_ (gaussE_pos y).le
+  calc ‖⟪kv R y, χ - u⟫_ℂ‖ ≤ ‖kv R y‖ * ‖χ - u‖ := norm_inner_le_norm _ _
+    _ = ‖χ - u‖ := by rw [norm_kv, one_mul]
+
+/-- **`F_χ` is antiholomorphic along complex lines** for every vector `χ`: a locally uniform limit of the
+antiholomorphic `F_u`, `u` in the span of the `k_f`, since `|F_χ(y) - F_u(y)| ≤ ‖χ - u‖ exp (‖y‖² / 4)`. -/
+theorem differentiable_conj_FF (R : FockRep h K) (χ : K) (x v : h) :
+    Differentiable ℂ fun z : ℂ => (starRingEnd ℂ) (FF R χ (x + z • v)) := by
+  have hmem : χ ∈ closure ((Submodule.span ℂ (Set.range (kv R)) : Submodule ℂ K) : Set K) := by
+    have this : (Submodule.span ℂ (Set.range (kv R))).topologicalClosure = ⊤ := R.cyclic
+    rw [← Submodule.topologicalClosure_coe, this]; trivial
+  obtain ⟨u, hu, hlim⟩ := mem_closure_iff_seq_limit.1 hmem
+  have hF : ∀ n, Differentiable ℂ fun z : ℂ => (starRingEnd ℂ) (FF R (u n) (x + z • v)) :=
+    fun n => differentiable_conj_FF_span R (hu n) x v
+  have hloc : TendstoLocallyUniformlyOn (fun (n : ℕ) (z : ℂ) => (starRingEnd ℂ) (FF R (u n) (x + z • v)))
+      (fun z : ℂ => (starRingEnd ℂ) (FF R χ (x + z • v))) atTop Set.univ := by
+    rw [tendstoLocallyUniformlyOn_iff_forall_isCompact isOpen_univ]
+    intro Kc _ hKc
+    obtain ⟨r, hr⟩ := (Metric.isBounded_iff_subset_closedBall (0 : ℂ)).1 hKc.isBounded
+    rw [Metric.tendstoUniformlyOn_iff]
+    intro ε hε
+    set ρ : ℝ := ‖x‖ + r * ‖v‖ with hρ
+    set M : ℝ := Real.exp (ρ ^ 2 / 4) + 1 with hM
+    have hMpos : 0 < M := by positivity
+    have h1 := (Metric.tendsto_nhds.1 hlim) (ε / M) (by positivity)
+    filter_upwards [h1] with n hn z hz
+    have hzr : ‖z‖ ≤ r := by simpa using hr hz
+    have hy : ‖x + z • v‖ ≤ ρ := by
+      calc ‖x + z • v‖ ≤ ‖x‖ + ‖z • v‖ := norm_add_le _ _
+        _ = ‖x‖ + ‖z‖ * ‖v‖ := by rw [norm_smul]
+        _ ≤ ‖x‖ + r * ‖v‖ := by gcongr
+    have hg : (gaussE (x + z • v))⁻¹ ≤ Real.exp (ρ ^ 2 / 4) := by
+      unfold gaussE
+      rw [← Real.exp_neg, neg_neg]
+      refine Real.exp_le_exp.2 ?_
+      have : ‖x + z • v‖ ^ 2 ≤ ρ ^ 2 := pow_le_pow_left₀ (norm_nonneg _) hy 2
+      linarith
+    have hdist : ‖χ - u n‖ < ε / M := by rw [← dist_eq_norm, dist_comm]; exact hn
+    calc dist ((starRingEnd ℂ) (FF R χ (x + z • v))) ((starRingEnd ℂ) (FF R (u n) (x + z • v)))
+        = ‖FF R χ (x + z • v) - FF R (u n) (x + z • v)‖ := by
+          rw [dist_eq_norm, ← map_sub]; exact RCLike.norm_conj _
+      _ ≤ ‖χ - u n‖ / gaussE (x + z • v) := norm_FF_sub_le R χ (u n) _
+      _ = ‖χ - u n‖ * (gaussE (x + z • v))⁻¹ := div_eq_mul_inv _ _
+      _ ≤ ‖χ - u n‖ * Real.exp (ρ ^ 2 / 4) := by gcongr
+      _ ≤ ‖χ - u n‖ * M := by gcongr; linarith
+      _ < ε := by
+        calc ‖χ - u n‖ * M < ε / M * M := by gcongr
+          _ = ε := by field_simp
+  have := hloc.differentiableOn (Eventually.of_forall fun n => (hF n).differentiableOn) isOpen_univ
+  exact differentiableOn_univ.1 this
+
 end Lightlike.OperatorAlgebras
