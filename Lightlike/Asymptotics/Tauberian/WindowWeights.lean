@@ -9,6 +9,8 @@ import Mathlib.Analysis.PSeries
 
 open Finset
 
+noncomputable section
+
 namespace Lightlike.Tauberian
 
 /-- The tail weight `r s = 1/(s-1)²` for `s ≥ 2`, else `0`. -/
@@ -173,3 +175,5 @@ lemma sum_Aw_le {b β : ℝ} (hb : 0 < b) (hβ : 0 ≤ β) (n : ℕ) :
   linarith
 
 end Lightlike.Tauberian
+
+end

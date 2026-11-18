@@ -153,6 +153,7 @@ import Lightlike.Asymptotics.Tauberian.Psi
 import Lightlike.Asymptotics.Tauberian.WindowSum
 import Lightlike.Asymptotics.Tauberian.Compare
 import Lightlike.Asymptotics.Tauberian.Tangent
+import Lightlike.Asymptotics.Tauberian.Inner
 import Lightlike.Asymptotics.Tauberian.WindowWeights
 import Lightlike.Asymptotics.Tests
 import Lightlike.Asymptotics.UniformContour
