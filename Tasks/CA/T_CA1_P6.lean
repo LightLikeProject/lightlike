@@ -38,7 +38,7 @@ open scoped ContDiff Manifold
 
 namespace Lightlike.Canonical
 
-theorem bracket_hamiltonian_hamiltonian_M (hd : 2 ≤ d) {d : ℕ} {M : Type*} [TopologicalSpace M] [ChartedSpace (Fin d → ℝ) M]
+theorem bracket_hamiltonian_hamiltonian_M {d : ℕ} (hd : 2 ≤ d) {M : Type*} [TopologicalSpace M] [ChartedSpace (Fin d → ℝ) M]
     [IsManifold 𝓘(ℝ, Fin d → ℝ) ∞ M] [SecondCountableTopology M] [T2Space M]
     [IsManifold 𝓘(ℝ, Fin d → ℝ) 2 M] [MeasurableSpace M] [BorelSpace M]
     (hR : Bundle.ContMDiffRiemannianMetric 𝓘(ℝ, Fin d → ℝ) ∞ (Fin d → ℝ)

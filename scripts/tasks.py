@@ -44,6 +44,8 @@ LEMMAS_SHOWN = 8
 TEMPLATE = "scripts/templates/proof-task-issue.md"
 SECTIONS = ("Gravity and cosmology", "Mathematical and QFT foundations", "Approaches to quantum gravity")
 TIER = dict(zip(SECTIONS, ("established", "established", "frontier")))  # by group of areas
+# milestones whose tier differs from their group: textbook material inside a frontier area
+TIER_OVERRIDE = {"ST1": "established", "SF3": "established"}
 ROADMAP_COUNT = "- **Milestones:**"  # ROADMAP.md lines whose count `generate` keeps current
 DONE_LINK = " · [done]("  # and the link to their closed issues that it appends to those lines
 README_KINDS = "The plan has "  # README.md paragraph whose counts `generate` keeps current
@@ -493,7 +495,7 @@ def build(root=ROOT):
     add_sources(tasks, ms, root)
     group = {m["area"]: m["group"] for m in ms.values() if m.get("group") in TIER}
     for t in tasks:
-        t["tier"] = TIER[group[t["area"]]]
+        t["tier"] = TIER_OVERRIDE.get(t.get("milestone"), TIER[group[t["area"]]])
         t["labels"] = labels_for(t)
     return cfg, ms, tasks
 
@@ -805,7 +807,8 @@ def cmd_check(root=ROOT):
     for path, text in outputs(tasks, ms, root).items():
         f = root / path
         if not f.exists() or f.read_text() != text:
-            problems.append(f"{path} is stale: run `python3 scripts/tasks.py generate`")
+            problems.append(f"{path} is stale (expected on a branch: the maintainers regenerate it after "
+                            "merging; see scripts/generated.py)")
     files = {str(p.relative_to(root)): p.read_text() for p in sorted((root / "Tasks").rglob("*.lean"))}
     problems += check_task_files(files, tasks)
     lib = [root / "Lightlike.lean", *sorted((root / "Lightlike").rglob("*.lean"))]
