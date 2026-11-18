@@ -149,7 +149,7 @@ theorem bianchi_first_proved (hT : cov.torsion = 0) (x : M) (X₀ Y₀ Z₀ : Ta
   rw [← j]
   abel
 
-variable {n : ℕ} (g : LorentzianMetric 𝓘(ℝ, E) M n)
+variable {n : ℕ} (g : NondegMetric 𝓘(ℝ, E) M)
 
 /-- Metric compatibility in terms of `mvfderiv`. -/
 theorem compat_mv (hC : cov.IsMetricCompatible g) {A B V : Π y : M, TangentSpace 𝓘(ℝ, E) y} {y : M}
@@ -328,10 +328,10 @@ def metricGram : Matrix (Fin (Module.finrank ℝ E)) (Fin (Module.finrank ℝ E)
 /-- The basis of the tangent space. -/
 def tb : Module.Basis (Fin (Module.finrank ℝ E)) ℝ (TangentSpace 𝓘(ℝ, E) x) := Module.finBasis ℝ E
 
-/-- The Gram matrix of a Lorentzian metric in a basis is invertible. -/
+/-- The Gram matrix of a metric in a basis is invertible. -/
 theorem metricGram_isUnit : IsUnit (metricGram g x).det := by
   have h := (LinearMap.BilinForm.nondegenerate_iff_det_ne_zero (tb x)).mp
-    (g.lorentzian x).bilinForm_nondegenerate
+    (g.bilinForm_nondegenerate x)
   have hmat : LinearMap.BilinForm.toMatrix (tb x) (g.g x).toBilinForm = metricGram g x := by
     ext i j
     rw [LinearMap.BilinForm.toMatrix_apply]

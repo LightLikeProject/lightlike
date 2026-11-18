@@ -1,6 +1,7 @@
 module
 
 public import Lightlike.Spacetime.Lorentzian
+public import Lightlike.Spacetime.NondegMetricBase
 public import Mathlib.Geometry.Manifold.VectorBundle.CovariantDerivative.Torsion
 
 /-!
@@ -80,8 +81,8 @@ def curvatureAt (x : M) (X₀ Y₀ Z₀ : TangentSpace I x) : TangentSpace I x :
   cov (fun y => cov Z y (Y y)) x (X x) - cov (fun y => cov Z y (X y)) x (Y x)
     - cov Z x (mlieBracket I X Y x)
 
-/-- The (0,4) curvature of a Lorentzian metric `g`: `g(R(X, Y) Z, W)`. -/
-def riemannLowerAt {n : ℕ} (g : LorentzianMetric I M n) (x : M) (X₀ Y₀ Z₀ W₀ : TangentSpace I x) : ℝ :=
+/-- The (0,4) curvature of a metric `g`: `g(R(X, Y) Z, W)`. -/
+def riemannLowerAt (g : NondegMetric I M) (x : M) (X₀ Y₀ Z₀ W₀ : TangentSpace I x) : ℝ :=
   g.g x (cov.curvatureAt x X₀ Y₀ Z₀) W₀
 
 /-- **Ricci tensor** `Ric(Y, Z) = tr (X ↦ R(X, Y) Z)`, the trace taken in a basis of the tangent
@@ -92,21 +93,21 @@ def ricciAt (x : M) (Y₀ Z₀ : TangentSpace I x) : ℝ :=
 
 /-- **Scalar curvature** `S = g^{ij} Ric_ij` of a Lorentzian metric, with the inverse of the Gram
 matrix of a basis of the tangent space. -/
-def scalarCurvatureAt {n : ℕ} (g : LorentzianMetric I M n) (x : M) : ℝ :=
+def scalarCurvatureAt (g : NondegMetric I M) (x : M) : ℝ :=
   let b := Module.finBasis ℝ E
   let G : Matrix _ _ ℝ := Matrix.of fun i j => g.g x (b i : TangentSpace I x) (b j : TangentSpace I x)
   ∑ i, ∑ j, G⁻¹ i j * cov.ricciAt x (b i : TangentSpace I x) (b j : TangentSpace I x)
 
 /-- `cov` is **compatible with `g`**: `X (g(σ, τ)) = g(∇_X σ, τ) + g(σ, ∇_X τ)` for fields
 differentiable at `x`. -/
-def IsMetricCompatible {n : ℕ} (g : LorentzianMetric I M n) : Prop :=
+def IsMetricCompatible (g : NondegMetric I M) : Prop :=
   ∀ (X σ τ : Π x : M, TangentSpace I x) (x : M),
     MDiffAt (T% X) x → MDiffAt (T% σ) x → MDiffAt (T% τ) x →
       mfderiv I 𝓘(ℝ) (fun y => g.g y (σ y) (τ y)) x (X x) =
         g.g x (cov σ x (X x)) (τ x) + g.g x (σ x) (cov τ x (X x))
 
 /-- `cov` is the **Levi-Civita connection** of `g`: torsion-free and compatible with `g`. -/
-def IsLeviCivita {n : ℕ} (g : LorentzianMetric I M n) : Prop :=
+def IsLeviCivita (g : NondegMetric I M) : Prop :=
   cov.torsion = 0 ∧ cov.IsMetricCompatible g
 
 /-- The covariant derivative `(∇_X R)(Y, Z) W` of the curvature at `x`, with the Leibniz rule applied to
@@ -126,14 +127,14 @@ def covDerivBilinAt (T : Π x : M, TangentSpace I x → TangentSpace I x → ℝ
 
 /-- The divergence `(div T)(w) = g^{ij} (∇_i T)(e_j, w)` of a field of bilinear forms for the metric
 `g`, in a basis `e` of the tangent space with the inverse of its Gram matrix. -/
-def divBilinAt {n : ℕ} (g : LorentzianMetric I M n)
+def divBilinAt (g : NondegMetric I M)
     (T : Π x : M, TangentSpace I x → TangentSpace I x → ℝ) (x : M) (w₀ : TangentSpace I x) : ℝ :=
   let b := Module.finBasis ℝ E
   let G : Matrix _ _ ℝ := Matrix.of fun i j => g.g x (b i : TangentSpace I x) (b j : TangentSpace I x)
   ∑ i, ∑ j, G⁻¹ i j * cov.covDerivBilinAt T x (b i : TangentSpace I x) (b j : TangentSpace I x) w₀
 
 /-- The **Einstein tensor** `G = Ric - (S/2) g` as a field of bilinear forms. -/
-def einsteinField {n : ℕ} (g : LorentzianMetric I M n) :
+def einsteinField (g : NondegMetric I M) :
     Π x : M, TangentSpace I x → TangentSpace I x → ℝ :=
   fun x v w => cov.ricciAt x v w - cov.scalarCurvatureAt g x / 2 * g.g x v w
 
@@ -151,5 +152,17 @@ def SatisfiesEinstein (cov : Connection I M) (Λ : ℝ) : Prop :=
     cov.ricciAt x v w - cov.scalarCurvatureAt g x / 2 * g.g x v w + Λ * g.g x v w = 0
 
 end LorentzianMetric
+
+namespace NondegMetric
+
+variable (g : NondegMetric I M)
+
+/-- **The Einstein equations with cosmological constant `Λ`** for a metric of any signature `g` and its connection
+`cov` (`cov` is Levi-Civita for `g`): `Ric - (S/2) g + Λ g = 0` at every point. -/
+def SatisfiesEinstein (cov : Connection I M) (Λ : ℝ) : Prop :=
+  cov.IsLeviCivita g ∧ ∀ x (v w : TangentSpace I x),
+    cov.ricciAt x v w - cov.scalarCurvatureAt g x / 2 * g.g x v w + Λ * g.g x v w = 0
+
+end NondegMetric
 
 end Lightlike
