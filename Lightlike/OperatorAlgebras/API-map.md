@@ -158,6 +158,27 @@ The Gram matrix of the vectors `W f Ω` of a Fock representation is a function o
 41. Lightlike/OperatorAlgebras/ShaleHilbertSchmidt.lean -
     `OperatorAlgebras.Bogoliubov.isHilbertSchmidt_betaPart`,
     `OperatorAlgebras.Bogoliubov.isHilbertSchmidt_of_finite_bound`
+42. Lightlike/OperatorAlgebras/ShaleDeterminant.lean - `OperatorAlgebras.det_four_add_of_posSemidef`,
+    `OperatorAlgebras.uncertaintyMatrix`, `OperatorAlgebras.cayleyBlock`,
+    `OperatorAlgebras.four_pow_mul_le_det_one_add` (the determinant bound from the uncertainty relation)
+43. Lightlike/OperatorAlgebras/FockVacuumAverage.lean - `OperatorAlgebras.modeVec`,
+    `OperatorAlgebras.integral_vacuumIntegrand`, `OperatorAlgebras.gaussZ_mul_norm_inner_sq_le` (the Gaussian
+    average of the Weyl unitaries over finitely many modes bounds the vacuum overlap)
+44. Lightlike/OperatorAlgebras/ShaleNecessity.lean - `OperatorAlgebras.covMatrix`,
+    `OperatorAlgebras.posSemidef_uncertaintyMatrix`, `OperatorAlgebras.norm_inner_sq_mul_sqrt_le_one`,
+    `OperatorAlgebras.shale_necessity_of_implements` (the proof of task T-OP2-P6)
+45. Lightlike/OperatorAlgebras/FockContinuity.lean - `OperatorAlgebras.FockRep.continuous_W` (norm continuity
+    of the Weyl unitaries of a Fock representation), `OperatorAlgebras.Bogoliubov.twist`
+46. Lightlike/OperatorAlgebras/VacuumProjection.lean - `OperatorAlgebras.vacAvg` (the vacuum projection of
+    finitely many modes), `OperatorAlgebras.vacAvg_symm`, `OperatorAlgebras.vacAvg_W_vacAvg`,
+    `OperatorAlgebras.vacAvg_idem`, `OperatorAlgebras.exists_fixed_of_decreasing_projections`
+47. Lightlike/OperatorAlgebras/ShaleSufficiency.lean - `OperatorAlgebras.det_le_exp_trace_sub_card`,
+    `OperatorAlgebras.norm_sq_vacAvg_twist_Ω`, `OperatorAlgebras.shale_sufficiency_of_hilbertSchmidt` (the
+    proof of task T-OP2-P7), `OperatorAlgebras.shale_criterion` (both directions)
+48. Lightlike/OperatorAlgebras/TestsShale.lean - `OperatorAlgebras.Bogoliubov.neg`,
+    `OperatorAlgebras.isHilbertSchmidt_id_betaPart`, `OperatorAlgebras.implements_neg`
+49. Lightlike/OperatorAlgebras/TestsShaleSqueeze.lean - `OperatorAlgebras.Bogoliubov.squeeze`,
+    `OperatorAlgebras.Bogoliubov.squeeze_betaPart`, `OperatorAlgebras.implements_squeeze`
 
 ## References
 
