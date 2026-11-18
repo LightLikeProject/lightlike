@@ -100,4 +100,31 @@ theorem schur_eq_zero_of_rank_le_block (B : Matrix m m ℝ) (C : Matrix m n ℝ)
   have hz := schur_eq_zero_of_rank_le B (E - D * B⁻¹ * C) hB (hrank ▸ h)
   exact sub_eq_zero.mp hz
 
+/-- **The consistency system and its secondary constraint**: with `B` invertible and the Schur complement zero
+(`E = D B⁻¹ C`, i.e. constant rank), the system `B u₁ + C u₂ + h₁ = 0`, `D u₁ + E u₂ + h₂ = 0` for the multipliers
+`(u₁, u₂)` is solvable exactly when `h₂ - D B⁻¹ h₁ = 0`. These are the secondary constraints, the entries of
+`ν · h` for the left null vectors `ν` of `leftNull_row_zero`. -/
+theorem consistency_iff (B : Matrix m m ℝ) (C : Matrix m n ℝ) (D : Matrix n m ℝ) (E : Matrix n n ℝ)
+    (hB : IsUnit B.det) (hS : E = D * B⁻¹ * C) (h₁ : m → ℝ) (h₂ : n → ℝ) :
+    (∃ (u₁ : m → ℝ) (u₂ : n → ℝ), B *ᵥ u₁ + C *ᵥ u₂ + h₁ = 0 ∧ D *ᵥ u₁ + E *ᵥ u₂ + h₂ = 0) ↔
+      h₂ - D *ᵥ (B⁻¹ *ᵥ h₁) = 0 := by
+  constructor
+  · rintro ⟨u₁, u₂, e1, e2⟩
+    have k1 : (D * B⁻¹) *ᵥ (B *ᵥ u₁) = D *ᵥ u₁ := by
+      rw [Matrix.mulVec_mulVec, Matrix.mul_assoc, Matrix.nonsing_inv_mul B hB, Matrix.mul_one]
+    have k2 : (D * B⁻¹) *ᵥ (C *ᵥ u₂) = E *ᵥ u₂ := by rw [Matrix.mulVec_mulVec, ← hS]
+    have k3 : (D * B⁻¹) *ᵥ h₁ = D *ᵥ (B⁻¹ *ᵥ h₁) := by rw [← Matrix.mulVec_mulVec]
+    have e3 := congrArg (fun v => (D * B⁻¹) *ᵥ v) e1
+    simp only [Matrix.mulVec_add, k1, k2, k3, Matrix.mulVec_zero] at e3
+    calc h₂ - D *ᵥ (B⁻¹ *ᵥ h₁)
+        = (D *ᵥ u₁ + E *ᵥ u₂ + h₂) - (D *ᵥ u₁ + E *ᵥ u₂ + D *ᵥ (B⁻¹ *ᵥ h₁)) := by abel
+      _ = 0 := by rw [e2, e3, sub_zero]
+  · intro h
+    refine ⟨-(B⁻¹ *ᵥ h₁), 0, ?_, ?_⟩
+    · rw [Matrix.mulVec_neg, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv B hB, Matrix.one_mulVec,
+        Matrix.mulVec_zero]
+      abel
+    · rw [Matrix.mulVec_neg, Matrix.mulVec_zero, add_zero, sub_eq_zero.mp h]
+      abel
+
 end Lightlike.Gauge
