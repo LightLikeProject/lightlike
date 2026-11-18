@@ -17,18 +17,17 @@ open Matrix Filter Topology
 
 variable {E : Type*}
 
+open scoped Classical in
 /-- The selection given by `r` rows `R` and `r` columns `C` (injective), the other rows and columns in the remaining parts. -/
 noncomputable def Sel.ofMinor {S : Stage E} {M r : ℕ} (R : Fin r → Fin S.n) (C : Fin r → Fin M)
-    (hR : Function.Injective R) (hC : Function.Injective C) : Sel S M := by
-  classical
-  exact
-    { r := r
-      p := Fintype.card {x // x ∉ Set.range R}
-      l := Fintype.card {x // x ∉ Set.range C}
-      eR := (Equiv.sumCompl (· ∈ Set.range R)).symm.trans
-        (Equiv.sumCongr (Equiv.ofInjective R hR).symm (Fintype.equivFin _))
-      eC := (Equiv.sumCompl (· ∈ Set.range C)).symm.trans
-        (Equiv.sumCongr (Equiv.ofInjective C hC).symm (Fintype.equivFin _)) }
+    (hR : Function.Injective R) (hC : Function.Injective C) : Sel S M where
+  r := r
+  p := Fintype.card {x // x ∉ Set.range R}
+  l := Fintype.card {x // x ∉ Set.range C}
+  eR := (Equiv.sumCompl (· ∈ Set.range R)).symm.trans
+    (Equiv.sumCongr (Equiv.ofInjective R hR).symm (Fintype.equivFin _))
+  eC := (Equiv.sumCompl (· ∈ Set.range C)).symm.trans
+    (Equiv.sumCongr (Equiv.ofInjective C hC).symm (Fintype.equivFin _))
 
 /-- The selected block is the submatrix on the chosen rows and columns. -/
 theorem Sel.ofMinor_block {S : Stage E} {M r : ℕ} (R : Fin r → Fin S.n) (C : Fin r → Fin M)
@@ -36,11 +35,19 @@ theorem Sel.ofMinor_block {S : Stage E} {M r : ℕ} (R : Fin r → Fin S.n) (C :
     (φ : Fin M → E → ℝ) (x : E) :
     (S.consCm br φ (Sel.ofMinor R C hR hC) x).toBlocks₁₁ =
       Matrix.of (fun i j => br (S.Φ (R i)) (φ (C j)) x) := by
-  classical
-  ext i j
-  simp [Stage.consCm, Matrix.toBlocks₁₁, Sel.ofMinor, Equiv.sumCompl_apply_inl, Equiv.ofInjective_apply]
-  sorry
+  refine Matrix.ext fun (i : Fin r) (j : Fin r) => ?_
+  simp only [Stage.consCm, Matrix.toBlocks₁₁, Matrix.of_apply, Sel.ofMinor, Equiv.symm_trans_apply,
+    Equiv.sumCongr_symm, Equiv.symm_symm, Equiv.sumCongr_apply, Sum.map_inl, Equiv.sumCompl_apply_inl,
+    Equiv.ofInjective_apply]
+  rfl
 
+/-- The consistency matrix of a stage in a selection is the reindexed matrix `({S_i, φ_a})`. -/
+theorem Stage.consCm_eq_reindex {S : Stage E} {M : ℕ} (br : (E → ℝ) → (E → ℝ) → E → ℝ) (φ : Fin M → E → ℝ)
+    (σ : Sel S M) (x : E) :
+    S.consCm br φ σ x =
+      Matrix.reindex σ.eR σ.eC (Matrix.of fun (i : Fin S.n) (a : Fin M) => br (S.Φ i) (φ a) x) := rfl
+
+set_option maxHeartbeats 1000000 in
 /-- **A selection adapted to a point, from constant rank**: if the entries of the consistency matrix are continuous at `x₀` and
 its rank is constant near `x₀`, some selection (rows and columns of a nonzero minor at `x₀`) has, on a neighbourhood of `x₀`, an
 invertible block and a vanishing Schur complement. -/
@@ -52,7 +59,6 @@ theorem exists_selection_near [TopologicalSpace E] {M : ℕ} (br : (E → ℝ) �
       IsUnit (S.consCm br φ σ x).toBlocks₁₁.det ∧
         (S.consCm br φ σ x).toBlocks₂₂ =
           (S.consCm br φ σ x).toBlocks₂₁ * (S.consCm br φ σ x).toBlocks₁₁⁻¹ * (S.consCm br φ σ x).toBlocks₁₂ := by
-  classical
   set A : E → Matrix (Fin S.n) (Fin M) ℝ := fun x => Matrix.of fun i a => br (S.Φ i) (φ a) x with hA
   obtain ⟨R, C, hR, hC, hunit⟩ := exists_isUnit_det_submatrix (A x₀)
   have hr0 : (A x₀).rank = r := hrank.self_of_nhds
@@ -63,17 +69,14 @@ theorem exists_selection_near [TopologicalSpace E] {M : ℕ} (br : (E → ℝ) �
   have hinv : ∀ᶠ x in 𝓝 x₀, IsUnit (S.consCm br φ σ x).toBlocks₁₁.det := by
     refine eventually_isUnit_det (B := fun x => (S.consCm br φ σ x).toBlocks₁₁) (fun i j => ?_) ?_
     · simp only [hB, Matrix.submatrix_apply]; exact hcont _ _
-    · simpa [hB] using hunit
+    · show IsUnit (S.consCm br φ σ x₀).toBlocks₁₁.det
+      rw [hB]; exact hunit
   filter_upwards [hinv, hrank] with x hx hxr
   refine ⟨hx, ?_⟩
-  have hsplit := fromBlocks_toBlocks (S.consCm br φ σ x)
   have hrk : (S.consCm br φ σ x).rank = r := by
-    have : S.consCm br φ σ x = Matrix.reindex σ.eR σ.eC (A x) := rfl
-    rw [this, Matrix.rank_reindex]; exact hxr
-  have hle : (fromBlocks (S.consCm br φ σ x).toBlocks₁₁ (S.consCm br φ σ x).toBlocks₁₂
-      (S.consCm br φ σ x).toBlocks₂₁ (S.consCm br φ σ x).toBlocks₂₂).rank ≤ Fintype.card (Fin σ.r) := by
-    rw [hsplit, hrk, Fintype.card_fin]
-    exact le_of_eq hr0.symm
-  exact schur_eq_zero_of_rank_le_block _ _ _ _ hx hle
+    rw [Stage.consCm_eq_reindex, Matrix.rank_reindex]; exact hxr
+  have hle0 : (S.consCm br φ σ x).rank ≤ Fintype.card (Fin σ.r) := by
+    rw [hrk, Fintype.card_fin]; exact le_of_eq hr0.symm
+  exact schur_eq_zero_of_rank_le_block _ _ _ _ hx (by rw [fromBlocks_toBlocks]; exact hle0)
 
 end Lightlike.Gauge
