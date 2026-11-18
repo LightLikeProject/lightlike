@@ -43,7 +43,7 @@ For a bounded self-adjoint operator `B`, `exp (i s B)` is a unitary group, stron
 
 The Gram matrix of the vectors `W f Ω` of a Fock representation is a function of `f` and `g` alone, by the Weyl relations and the vacuum expectation, so the map `c ↦ ∑ c f W f Ω` has the same norm for two Fock representations; it extends to a unitary that maps the vacuum to the vacuum and intertwines the Weyl unitaries, which is the uniqueness of the Fock representation [14]. The Gram function is Hermitian and normalized, and over the zero Hilbert space there is a Fock representation to which the uniqueness applies [15].
 
-A strongly continuous contraction semigroup on a Banach space has a generator, the limit of the difference quotients on the vectors where it exists, a partially defined linear map. A densely defined operator `A` with `λ - A` bounded below by `λ` and surjective for every `λ > 0` is the generator of a contraction semigroup (the generation direction of the Hille–Yosida theorem) [33] {3}: the resolvent `R(λ) = (λ - A)⁻¹` has norm at most `λ⁻¹`, the Yosida approximants `λ² R(λ) - λ` give contractions `exp (t (λ² R(λ) - λ))` that converge, by a Cauchy estimate and the density of the domain, to a semigroup whose generator contains `A`, and a dissipative generator with `λ - A` surjective equals `A`. The converse (the generator has dense domain and `λ - A` is bounded below and surjective) is the open task T-OP1-P9.
+A strongly continuous contraction semigroup on a Banach space has a generator, the limit of the difference quotients on the vectors where it exists, a partially defined linear map. A densely defined operator `A` with `λ - A` bounded below by `λ` and surjective for every `λ > 0` is the generator of a contraction semigroup (the generation direction of the Hille–Yosida theorem) [33] {3}: the resolvent `R(λ) = (λ - A)⁻¹` has norm at most `λ⁻¹`, the Yosida approximants `λ² R(λ) - λ` give contractions `exp (t (λ² R(λ) - λ))` that converge, by a Cauchy estimate and the density of the domain, to a semigroup whose generator contains `A`, and a dissipative generator with `λ - A` surjective equals `A`. Checks: the trivial semigroup is a contraction semigroup, the theorem applies to `A = 0`, and `A = id` fails the lower bound at `λ = 1` [34]. The converse (the generator has dense domain and `λ - A` is bounded below and surjective) is the open task T-OP1-P9.
 
 ## Lean References
 
@@ -131,7 +131,7 @@ A strongly continuous contraction semigroup on a Banach space has a generator, t
 32. Lightlike/OperatorAlgebras/TestsBoundedGroup.lean - `OperatorAlgebras.bdU_sub_self_le`
 33. Lightlike/OperatorAlgebras/Semigroup/Generation.lean - `OperatorAlgebras.hille_yosida_generation`,
     `OperatorAlgebras.ContractionSemigroup.norm_dissip` (the proof of task T-OP1-P7); definitions in
-    `Semigroup/Defs.lean`: `OperatorAlgebras.ContractionSemigroup`, `OperatorAlgebras.ContractionSemigroup.generator`
+    the file Semigroup/Defs: `OperatorAlgebras.ContractionSemigroup`, `OperatorAlgebras.ContractionSemigroup.generator`
 34. Lightlike/OperatorAlgebras/Semigroup/Tests.lean - `OperatorAlgebras.trivialSemigroup`
 
 ## References

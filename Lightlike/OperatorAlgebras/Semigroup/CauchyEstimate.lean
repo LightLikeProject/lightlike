@@ -24,6 +24,7 @@ noncomputable section
 
 namespace Lightlike.OperatorAlgebras
 
+/-- The algebra of bounded operators is a normed `ℚ`-algebra (needed for the exponential). -/
 local instance instNormedAlgebraRatCLM' {𝕜 : Type*} [RCLike 𝕜] {X : Type*} [NormedAddCommGroup X]
     [NormedSpace 𝕜 X] : NormedAlgebra ℚ (X →L[𝕜] X) :=
   NormedAlgebra.restrictScalars ℚ 𝕜 _
