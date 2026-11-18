@@ -13,7 +13,9 @@ causal curve through a point of `I⁺(S)` that does not meet `S` at parameters u
 being disjoint open sets), and a descending chain of points `q k ∈ I⁺(λ (t k))` joined by timelike pieces,
 followed by the future half of an inextendible timelike curve through `q 0`, is an inextendible
 future-directed timelike curve that lies in `I⁺(S)`, hence misses `S` (`exists_timelike_missing`).
-This is the perturbation step of the proof that a Cauchy surface has full domain of dependence.
+The push-up `J⁺ then I⁺ ⊆ I⁺` (the statement of `T-GE2-P6`) is a hypothesis `hpush` of the theorem, so
+this is conditional library code, with no task file and no catalogue claim. This is the perturbation step of the
+proof that a Cauchy surface has full domain of dependence.
 
 Supporting lemma for the causal structure; no catalogue entry.
 -/

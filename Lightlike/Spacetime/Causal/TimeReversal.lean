@@ -116,4 +116,31 @@ theorem chronFuture_reverse (x : M) : chronFuture T.reverse x = chronPast T x :=
     rw [TimeOrientation.reverse_reverse] at this
     exact this h
 
+/-- Reversing a vector and the time orientation preserves being future causal. -/
+theorem TimeOrientation.isFutureCausal_reverse_neg {x : M} (v : TangentSpace I x) :
+    T.reverse.IsFutureCausal (-v) ↔ T.IsFutureCausal v := by
+  simp [TimeOrientation.IsFutureCausal, TimeOrientation.reverse]
+
+/-- **A future causal curve for the reversed orientation, run backwards, is one for `T`.** -/
+theorem causalFuture_reverse_subset {x y : M} (h : y ∈ causalFuture T.reverse x) :
+    x ∈ causalFuture T y := by
+  obtain ⟨γ, a, b, hab, hγ, ha, hb⟩ := h
+  rcases hab.lt_or_eq with hlt | heq
+  · have hr := (IsCurveWith.reflect hγ hlt).mono_velocity fun x v hv =>
+      (T.isFutureCausal_reverse_neg v).1 hv
+    exact ⟨fun t => γ (-t), -b, -a, by linarith, hr, by simp [hb], by simp [ha]⟩
+  · subst heq
+    have : x = y := by rw [← ha, ← hb]
+    rw [← this]; exact self_mem_causalFuture T x
+
+/-- **`J⁺` for the reversed orientation is `J⁻`.** -/
+theorem causalFuture_reverse (x : M) : causalFuture T.reverse x = causalPast T x := by
+  ext y
+  constructor
+  · exact fun h => causalFuture_reverse_subset T h
+  · intro h
+    have := causalFuture_reverse_subset T.reverse (x := y) (y := x)
+    rw [TimeOrientation.reverse_reverse] at this
+    exact this h
+
 end Lightlike.Causal
