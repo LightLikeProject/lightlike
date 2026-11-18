@@ -57,3 +57,26 @@ gravity; the sign of `Λ` as a trust check.
 Difference from the source already known (kind: representation): Carroll varies the inverse metric and
 states the result for arbitrary variations vanishing at infinity; here the metric is perturbed as `g + t h`
 with `h` of compact support, as in regge's chart theorem.
+
+## Status (19 November 2026)
+
+Compiled, in `Lightlike/Spacetime/EHManifold/`:
+
+* `Locality.lean`: `christoffel_eventuallyEq`, `riemann_congr`, `ricci_congr`, `scalarCurvature_congr`: the
+  coordinate curvature at a point depends only on the germ of the metric there.
+* `Retraction.lean`: `ballRetract φ x = c + φ x • (x − c)` for a smooth bump `φ`; smooth, into the ball of
+  radius `φ.rOut`, the identity on the ball of radius `φ.rIn`.
+* `BallVariation.lean`: `eh_first_variation_ball`: regge's first-variation formula for a coordinate metric
+  that is smooth, symmetric and nondegenerate only on a ball, and a perturbation supported in a compact set
+  inside the smaller concentric ball. Proof: `eh_first_variation` for the metric composed with the retraction
+  (route (c) of the integrator; regge's theorem is used unchanged), and locality.
+* `ChartVariation.lean`: `eh_first_variation_chart`: the same formula for the chart components
+  `g.coordMetric x₀` of a metric `g` on a manifold, when the larger ball lies in the target of the chart.
+* `ChartAction.lean`: `NondegMetric.volumeMeasure_restrict_chart`: on a measurable `K` inside one chart
+  domain, the volume measure is the image under the inverse chart of `√|det g| dy`.
+
+Not done (this is still weaker than Carroll's statement on a manifold): the intrinsic form, in which the
+action is `∫_K (R − 2Λ) d vol_g` for the volume measure of `M` and the scalar curvature of the Levi-Civita
+connection (to be obtained from `volumeMeasure_restrict_chart` and `scalarCurvatureAt_coord`); perturbations
+whose support is not inside one small coordinate ball (partition of unity; needs the additivity of the
+first variation); and the equivalence "critical if and only if `G + Λ g = 0`" on the manifold.
