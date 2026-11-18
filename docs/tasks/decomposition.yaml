@@ -705,6 +705,17 @@ tasks:
 # Upstream tasks: finished results that belong in Mathlib (general mathematics) or Physlib
 # (general physics), with the rework each needs. Exclusive, like definition
 # tasks; `target` gives the label `upstream: <library>`.
+  - id: T-OP6-P1
+    milestone: OP6
+    kind: proof
+    title: "The dual of the compact operators is the trace class: every continuous functional on the compact operators is a trace pairing with a unique trace-class operator of the same norm"
+    file: Tasks/OP/T_OP6_P1.lean
+    decl: Lightlike.OperatorAlgebras.TraceClass.compact_dual_eq_traceClass
+    size: L
+    difficulty: advanced
+    routes:
+      - "Finite-rank operators are dense in the compact ones; a functional on them gives a bounded sesquilinear form on rank-one operators (`TraceClass.sesquilinearFormOfFunctional`), hence a bounded operator by Riesz, and its polar decomposition shows it is trace class with `‖T‖₁ = ‖f‖` (Reed-Simon I, Theorem VI.26)."
+
 upstream:
   - id: T-UP-1
     target: Mathlib
