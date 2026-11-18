@@ -943,6 +943,7 @@ import Lightlike.Gauge.DiracAlgorithm
 import Lightlike.Gauge.MatrixInverse
 import Lightlike.Gauge.PoissonJacobi
 import Lightlike.Tests.ADM
+import Lightlike.Tests.ADMBracket
 import Lightlike.Tests.Constraints
 import Lightlike.Tests.DiracAlgorithm
 import Lightlike.GFT.Euler
