@@ -31,7 +31,7 @@ Source: R. Arnowitt, S. Deser and C. W. Misner, The dynamics of general relativi
 constraint as `R_i = −2 π^{ij}{}_{|j}` and smears it as `∫ ξ^i R_i`; here `D[ξ]` is defined in the Lie-derivative form
 and this task states that the two agree. The setting is the ADM one: smooth data, a positive definite `h`, a compactly
 supported smearing field, one global chart `ℝᵈ` (a hypersurface in a manifold is the task of the geometry layer). A
-difference of representation, approved by the owner (17 November 2026).
+difference of representation, approved by the maintainers (17 November 2026).
 -/
 
 open Matrix MeasureTheory
