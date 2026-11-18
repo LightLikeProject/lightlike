@@ -72,3 +72,10 @@ the first `n ∈ {1, 2, 3}` modes: `(det ((1 + S_F)/2) - 1) / tr (S_F - 1) ≥ 0
 `tr (S_F - 1) > 10⁻⁶`. So the candidate inequality `det ((1 + S_F)/2) ≥ 1 + tr (S_F - 1)/4` held with no counterexample.
 A proof is still needed. Tools in sight: `S_F⁻¹ ≤ (S⁻¹)_F = J S_F Jᵀ` (compression of an inverse dominates the inverse of
 the compression, and `V_F` is `J`-invariant).
+
+### Status of the determinant bound (13:40)
+
+`S_F⁻¹ ≤ J S_F Jᵀ` was checked numerically (smallest eigenvalue of the difference `2.7·10⁻⁵ ≥ 0`, 3000 samples). It gives
+`det S_F ≥ 1`, but `det S_F ≥ 1` alone does NOT imply `det ((1+S_F)/2) ≥ 1 + tr (S_F-1)/4`: with eigenvalues
+`(0.3, 0.3, 100)` the left side is `21.3` and the right side `25.4`. So the proof must use the operator inequality, not
+the spectrum alone. No proof path yet.
