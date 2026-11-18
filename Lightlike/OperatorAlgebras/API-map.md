@@ -37,6 +37,8 @@ Two linear maps from finitely supported coefficients whose generators have the s
 
 Every nonzero vector of a Fock representation is cyclic for the Weyl unitaries (irreducibility): for a bounded operator `C` commuting with all `W f`, the function `x ↦ ⟪W x Ω, C Ω⟫ / exp (-‖x‖² / 4)` is antiholomorphic along complex lines, and equal to the conjugate of the corresponding function of `C* Ω` at `-x`, so it is both holomorphic and antiholomorphic, hence constant; so `C Ω` is a multiple of `Ω` and `C` is a scalar, and the projection onto the closed span of `W f ψ` is `1` [35]. The kernel vectors of the constructed representation are cyclic [36].
 
+A Bogoliubov transformation `T` is implemented in a Fock representation iff there is a vector `Ψ` with `⟪Ψ, W f Ψ⟫ = exp (-‖T f‖² / 4)`: `Ψ = U⁻¹ Ω` for an implementing unitary `U`, and conversely the vectors `W f Ψ` and `W (T f) Ω` have the same Gram matrix, `Ψ` is cyclic by irreducibility, and the Gram unitary intertwines the Weyl operators [37]. The identity transformation is implemented, with `Ψ = Ω` [38].
+
 For a self-adjoint operator `A` and `z` with `Im z ≠ 0`, `A - z` is a bijection from the domain onto the space with `‖(A - z) x‖ ≥ |Im z| ‖x‖`, and its inverse, the resolvent, is a bounded operator of norm at most `1 / |Im z|` whose adjoint is the resolvent at `conj z` [26]. The resolvent of the generator `λ • 1` of the phase group is `(λ - z)⁻¹` [27].
 
 For a self-adjoint `A`, `t R (i t) y → i y` and `t R (-i t) y → -i y` for every `y` (on the domain from `R z (A x) = x + z R z x`, then everywhere by density and the bound `‖t R‖ ≤ 1`) [28]. The operators `A_n = (t² / 2) (R (i t) + R (-i t))`, `t = n + 1`, are bounded and self-adjoint, and `A_n x → A x` on the domain [28]. For the phase-group generator `λ • 1` the approximant is `t² λ / (λ² + t²)` [29].
@@ -140,6 +142,11 @@ The Gram matrix of the vectors `W f Ω` of a Fock representation is a function o
     `OperatorAlgebras.kv`, `OperatorAlgebras.FF`, `OperatorAlgebras.differentiable_conj_FF`,
     `OperatorAlgebras.commutant_scalar`, `OperatorAlgebras.fockRep_cyclic` (the proof of task T-OP2-P4)
 36. Lightlike/OperatorAlgebras/TestsFockIrreducible.lean - `OperatorAlgebras.kf_cyclic`
+37. Lightlike/OperatorAlgebras/FockReduction.lean - `OperatorAlgebras.gaussian_vector_of_implements`,
+    `OperatorAlgebras.implements_of_gaussian_vector`, `OperatorAlgebras.implements_iff_gaussian_vector`
+    (the proof of task T-OP2-P5)
+38. Lightlike/OperatorAlgebras/TestsFockReduction.lean - `OperatorAlgebras.Bogoliubov.id`,
+    `OperatorAlgebras.implements_id`
 
 ## References
 

@@ -1,4 +1,4 @@
-import Lightlike.OperatorAlgebras.Weyl
+import Lightlike.OperatorAlgebras.FockReduction
 
 /-!
 # Task T-OP2-P5
@@ -41,6 +41,6 @@ theorem implements_iff_exists_gaussian_vector {h : Type u} [NormedAddCommGroup h
     (R : FockRep h K) (T : Bogoliubov h) :
     Implements R.toCCRRep T ↔
       ∃ Ψ : K, ∀ f, ⟪Ψ, R.W f Ψ⟫_ℂ = Complex.exp (-(‖T.toEquiv f‖ ^ 2 / 4 : ℝ)) := by
-  sorry
+  exact implements_iff_gaussian_vector R T
 
 end Lightlike.OperatorAlgebras

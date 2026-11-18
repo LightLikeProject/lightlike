@@ -1,4 +1,4 @@
-import Lightlike.OperatorAlgebras.FockExists
+import Lightlike.OperatorAlgebras.FockIrreducible
 import Lightlike.OperatorAlgebras.GramUnitary
 
 /-!
@@ -95,5 +95,20 @@ lemma implements_of_gaussian_vector (R : FockRep h K) (T : Bogoliubov h) {Ψ : K
     | add a b _ _ ha hb => simp only [map_add, ha, hb]
     | smul c a _ ha => simp only [map_smul, ha])
   exact congrFun this ψ
+
+/-- **The cyclic-vector reduction of Shale's criterion**: `T` is implemented in a Fock representation iff there is
+a vector `Ψ` with `⟪Ψ, W f Ψ⟫ = exp (-‖T f‖² / 4)` for all `f`. -/
+theorem implements_iff_gaussian_vector (R : FockRep h K) (T : Bogoliubov h) :
+    Implements R.toCCRRep T ↔
+      ∃ Ψ : K, ∀ f, ⟪Ψ, R.W f Ψ⟫_ℂ = Complex.exp (-(‖T.toEquiv f‖ ^ 2 / 4 : ℝ)) := by
+  refine ⟨gaussian_vector_of_implements R T, fun ⟨Ψ, hΨ⟩ => ?_⟩
+  have hne : Ψ ≠ 0 := by
+    intro h0
+    have := hΨ 0
+    rw [h0, inner_zero_left] at this
+    have h1 : Complex.exp (-(‖T.toEquiv 0‖ ^ 2 / 4 : ℝ)) = 1 := by simp
+    rw [h1] at this
+    exact zero_ne_one this
+  exact implements_of_gaussian_vector R T hΨ (fockRep_cyclic R hne)
 
 end Lightlike.OperatorAlgebras
