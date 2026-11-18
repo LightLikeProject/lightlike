@@ -669,6 +669,7 @@ import Lightlike.Spacetime.Causal.TimelikeAboveCurve
 import Lightlike.Spacetime.Causal.TimelikeBelowCurve
 import Lightlike.Spacetime.Causal.PerturbCauchy
 import Lightlike.Spacetime.Causal.CauchySeparation
+import Lightlike.Spacetime.Causal.CauchyAssembly
 import Lightlike.Spacetime.Causal.CauchyCover
 import Lightlike.Spacetime.Causal.CauchyDomain
 import Lightlike.Spacetime.Causal.CausalCurve
