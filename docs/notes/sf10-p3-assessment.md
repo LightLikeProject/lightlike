@@ -1,4 +1,4 @@
-# T-SF10-P3: assessment of `lorVertex_farRemainder` (18 November 2026)
+# T-SF10-P3: assessment of `lorVertex_farRemainder`
 
 Statement: `Lightlike.Asymptotics.Lorentzian.lorVertex_farRemainder` (Tasks/SF/T_SF10_P3.lean) concludes
 `FarRemainderBound j p g e χ`: for every `λ ∈ ℕ` the function `(1 − χ) A e^{λ S}` is integrable on `ℝ⁴⁴` and
@@ -23,12 +23,15 @@ monotonicity in `λ` for `Re S ≤ 0` gives uniformity once the `λ = 1` integra
 `Re S ≤ −δ` on the part of the support of `1 − χ` outside a compact set, plus non-stationary phase on the compact part.
 (ii) is the new estimate; it is not in BDFHP (the docstring of `lorVertex_farRemainder` says so).
 
-## Suggested split
+## What was done
 
-* P3a (compact part): for a smooth compactly supported cutoff `ψ ≥ χ` with `tsupport ψ` a neighbourhood of a ball containing
-  `K`, `∫ (ψ − χ) A e^{λ S} = O(λ^{-N})` for every `N`, from `expPhase_suppressed` once `CriticalSetIs` holds on `tsupport (ψ A)`.
-* P3b (tail): `∫ (1 − ψ) A e^{λ S} = O(λ^{-N})` from a decay hypothesis on `Re S` and an integrable majorant.
-* Statement fix: `CriticalSetIs` for all of `tsupport A` (cutoff `1`), not for `tsupport (χ A)`.
+1. The critical-set hypothesis of `lorVertex_farRemainder` is now `CriticalSetIs j p g e (fun _ => 1) K`: every point of
+   `tsupport A` with `Re S = 0 ∧ dS = 0` lies in `K`; the chart hypotheses of `lorVertex_asymptotics_fixChart` (`U`, `hP`,
+   `hA`, `tsupport χ ⊆ U`) are added. LL-0135 is unchanged (it only assumes `FarRemainderBound`).
+2. Split: T-SF10-P5 (`lorVertex_farRemainder_compact`): `∫ (ψ − χ) A e^{λ S} = O(λ^{-N})` for every `N`, provable from
+   `expPhase_suppressed`; T-SF10-P6 (`lorVertex_farRemainder_tail`): the integrability and `O(λ^{-23})` of the non-compact tail
+   `(1 − ψ) A e^{λ S}`, the new uniform estimate, with no decay hypothesis. T-SF10-P3 is the sum.
+   If P6 is false, report a counterexample.
 
 ## Reuse check
 
