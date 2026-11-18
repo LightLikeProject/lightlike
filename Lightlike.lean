@@ -715,6 +715,7 @@ import Lightlike.Spacetime.KillingAlgebra
 import Lightlike.Spacetime.PoincareKilling
 import Lightlike.Spacetime.Hypersurface
 import Lightlike.Spacetime.VariationDet
+import Lightlike.Spacetime.VariationChristoffel
 import Lightlike.Spacetime.Lorentzian
 import Lightlike.Spacetime.Minkowski
 import Lightlike.Spacetime.RiemannSymmetry
