@@ -302,7 +302,7 @@ def library_duplicates(tasks, root=ROOT):
                 keys.setdefault(key, []).append((str(f.relative_to(root)), i + 1, m.group(1)))
     found = {}
     for t in tasks:
-        if t.get("kind") != "proof" or not (root / t["file"]).exists():
+        if t.get("kind") != "proof" or not t.get("file") or not (root / t["file"]).exists():
             continue
         text = (root / t["file"]).read_text()
         if proven(text, t["decl"]):

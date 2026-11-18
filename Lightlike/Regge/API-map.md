@@ -139,7 +139,7 @@ The integral over the unit cube of the divergence of a periodic `C¹` field of `
 on the box with the opposite faces cancelling. With it the Saint-Venant form of the linearized Regge limit and the Fierz–Pauli density
 of a periodic smooth symmetric field have the same integral over the unit cube [79]: their difference is the divergence of an explicit
 periodic field, and the identity of the densities is pointwise and polynomial. This is the integration by parts on the torus only;
-that the Fierz–Pauli density is the `η²` coefficient of the integrated curvature density of `1 + η h` is proved separately [87].
+that the `η²` coefficient of the integrated curvature density of `1 + η h` is half the integral of the Fierz–Pauli density (the integral itself is the second `η`-derivative) is proved separately [87].
 
 The scalar curvature of a coordinate metric at a point is an explicit function of the inverse metric and its first and second
 derivatives [80]. For the metric `1 + η h` of a smooth symmetric field `h` this function, times `√det / 2`, is a smooth function
@@ -163,15 +163,21 @@ and the second differs from the Fierz–Pauli density by an explicit periodic di
 density of `1 + η h`: nothing about the Regge action, about geodesic or interpolated edge lengths, or about triangulations.
 
 For a non-zero periodic field, `cos (2π y₀) E₁₂`, the cube integral of the Fierz–Pauli density is `-π²` [88]. The hinge density with
-the volume weights replaced by `1` integrates to `-7π²/3` for the same field, so it does not give the `η²` coefficient [88]; the
+the volume weights replaced by `1` integrates to `-7π²/3` for the same field, so it does not give the Fierz–Pauli integral, twice the `η²` coefficient [88]; the
 exact-arithmetic computation of both densities is `scripts/regge/eh_wrong_model_check.py`.
 
 **Status of T-RC3 (partial).** In dimension 3 the library proves an energy-level limit on the periodic Kuhn complex of the
-3-torus: the coefficient of the linearized Regge action, built from the interpolated degrees of freedom of Christiansen (2011),
-eq. (5), converges to the Saint-Venant form (`Qn_converges`), and that limit is the `η²` coefficient of the integrated curvature
-density of `1 + η h` (`eh_eta_sq_coeff`). This is a limit of a quadratic form on one triangulation family. Christiansen's Theorem 4.7
+3-torus: the sum `Q_n` of the linearized Regge action, built from the interpolated degrees of freedom of Christiansen (2011),
+eq. (5), converges to the Saint-Venant form (`Qn_converges`), and that limit is the second `η`-derivative (twice the `η²` coefficient) of the
+integrated curvature density of `1 + η h` (`eh_eta_sq_coeff`). This is a limit of a quadratic form on one triangulation family. Christiansen's Theorem 4.7
 is the convergence of eigenpairs for shape-regular families on tori; it is not proved here, and neither are the comparison of
 geodesic with interpolated lengths nor a non-fat counterexample. The milestone stays open.
+
+In two dimensions the deficit angles of a closed triangulated surface with Euclidean triangles add up to `2π (V - E + F)`
+[89]: the angles sum to `π` per triangle, so the angle sum over all vertices is `π F`, and `3 F = 2 E` when every edge lies in
+two triangles. The octahedron inscribed in the unit sphere (chordal edge lengths) has deficit sum `4π`, and the octahedron with
+one face removed has `5π`, not `2π χ`, so the closedness is needed [89]. This is a combinatorial check of the round-sphere
+value `4π`, not a convergence theorem and not a statement about triangulations of other surfaces.
 
 A 2-complex with boundary is a disc in the combinatorial sense exactly when it is an intrinsic
 triangulated disc [16].
@@ -346,6 +352,9 @@ triangulated disc [16].
 
 88. Lightlike/Regge/Linear3/EtaCoefficientTests.lean - `Regge.Linear3.integral_fpDens_hTest`,
     `Regge.Linear3.integral_wrongDens_hTest`, `Regge.Linear3.wrong_weights_ne`
+
+89. Lightlike/Regge/GaussBonnet2D.lean - `Regge.discrete_gauss_bonnet`, `Regge.sum_angleOf`,
+    `Regge.octahedron_deficit_sum`, `Regge.octOpen_deficit_sum_ne`
 
 ## References
 

@@ -6,7 +6,9 @@ The generated content is docs/RESULTS.md (written by `api_map.py generate` from 
 the task board docs/tasks/README.md, docs/tasks/tasks.yaml and Tasks.lean (written by
 `tasks.py generate` from the plan); and the generated parts of README.md (the results summary and
 the paragraph of task counts), of ROADMAP.md (the milestone counts) and of CHANGELOG.md (the counts
-of its newest version). The rest of those three files is written by hand.
+of its newest version); and the module docstring of each proof-task file under Tasks/ (written by
+`tasks.py deps`; the statement and the proof below it are not generated). The rest of those files is
+written by hand.
 
   python3 -I scripts/generated.py check               # against the branch point, see below
   python3 -I scripts/generated.py check --base REV    # against REV
@@ -38,7 +40,7 @@ import tasks  # noqa: E402
 
 WHOLE = ["docs/RESULTS.md", "docs/tasks/README.md", "docs/tasks/tasks.yaml", "Tasks.lean"]
 PARTIAL = ["README.md", "ROADMAP.md", "CHANGELOG.md"]
-REGEN = "python3 scripts/api_map.py generate && python3 scripts/tasks.py generate"
+REGEN = "python3 scripts/api_map.py generate && python3 scripts/tasks.py generate && python3 scripts/tasks.py deps"
 CHANGELOG_COUNT = re.compile(r"^- (\d+) (?:areas in \[ROADMAP|tasks on the \[task board\])", re.M)
 
 
@@ -54,6 +56,11 @@ def spans(path: str, text: str) -> list[tuple[int, int]]:
         if m:
             end = re.compile(r"\n[ \t]*\n").search(text, m.start())
             out.append((m.start(), end.start() if end else len(text)))
+    elif path.startswith("Tasks/") and path.endswith(".lean"):
+        a = text.find("/-!")
+        b = text.find("-/", a) if a >= 0 else -1
+        if b >= 0:
+            out.append((a, b))
     elif path == "ROADMAP.md":
         out += [m.span() for m in re.finditer(rf"^{re.escape(tasks.ROADMAP_COUNT)}.*$", text, re.M)]
     elif path == "CHANGELOG.md":
@@ -69,6 +76,13 @@ def pieces(path: str, text: str | None) -> list[str] | None:
     if text is None:
         return None
     return [text] if path in WHOLE else [text[a:b] for a, b in spans(path, text)]
+
+
+def task_files(base: str) -> list[str]:
+    """The proof-task files that exist both at `base` and now: the module docstring of each is
+    written by `tasks.py deps`, so a pull request does not change it (a new task file is not a change)."""
+    r = git("ls-tree", "-r", "--name-only", base, "--", "Tasks", check=False)
+    return sorted(f for f in r.stdout.split() if f.endswith(".lean") and (ROOT / f).exists())
 
 
 def transplant(path: str, text: str, base: str) -> str:
@@ -140,7 +154,7 @@ def stale() -> list[str]:
 
 
 def changed(base: str) -> list[str]:
-    return [p for p in WHOLE + PARTIAL if pieces(p, here(p)) != pieces(p, at(base, p))]
+    return [p for p in WHOLE + PARTIAL + task_files(base) if pieces(p, here(p)) != pieces(p, at(base, p))]
 
 
 def cmd_check(base: str | None) -> int:
@@ -163,7 +177,7 @@ def cmd_check(base: str | None) -> int:
               f"regenerate after merging; undo with `python3 scripts/generated.py reset`")
     short = git("rev-parse", "--short", base).stdout.strip()
     print(f"generated: {'FAILED' if bad else 'OK'} (against {short}; "
-          f"{len(WHOLE)} generated files, the generated parts of {len(PARTIAL)} more)")
+          f"{len(WHOLE)} generated files, the generated parts of {len(PARTIAL)} more and of the task-file headers)")
     return 1 if bad else 0
 
 
@@ -224,6 +238,14 @@ def selftest() -> int:
     expect("CHANGELOG planted: a changed count of the newest version is a generated change",
            pieces("CHANGELOG.md", log.replace("- 300", "- 301")) != pieces("CHANGELOG.md", log)
            and pieces("CHANGELOG.md", log.replace("- 5 areas", "- 6 areas")) == pieces("CHANGELOG.md", log))
+    tf = "/-!\n# Task T-X1\n\nHeader.\n-/\nimport Mathlib\ntheorem t : True := by sorry\n"
+    expect("task file: only the module docstring is generated, not the proof",
+           pieces("Tasks/A.lean", tf) == ["/-!\n# Task T-X1\n\nHeader.\n"]
+           and pieces("Tasks/A.lean", tf.replace("sorry", "trivial")) == pieces("Tasks/A.lean", tf))
+    expect("task file planted: a changed header is a generated change, and reset restores it",
+           pieces("Tasks/A.lean", tf.replace("Header.", "Other.")) != pieces("Tasks/A.lean", tf)
+           and transplant("Tasks/A.lean", tf.replace("Header.", "Other.").replace("sorry", "trivial"), tf)
+           == tf.replace("sorry", "trivial"))
     expect("a generated file is generated as a whole",
            pieces("docs/RESULTS.md", "x\ny\n") == ["x\ny\n"])
     expect("the generated files are those the generators write",

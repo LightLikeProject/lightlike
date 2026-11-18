@@ -469,7 +469,7 @@
   "citations_via": "Semantic Scholar"
  },
  "baumann-2009": {
-  "checked": "2026-11-11",
+  "checked": "2026-11-17",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "TASI Lectures on Inflation",
@@ -503,10 +503,15 @@
     "verified": true,
     "snippet": "(196) 2k kτ 12.2.5 Power Spectrum in Quasi-de Sitter We then compute the power spectrum of the field ψ̂k ≡ a−1 v̂k , |vk (τ )|2 hψ̂k (τ )ψ̂k0 (τ )i = (2π)3 δ(k + k0 ) (197) a2 H 2 = (2π)3 δ(k + k0 ) 3 (1 + k 2 τ 2 ) . (1",
     "why": null
+   },
+   "eq. (A.140)": {
+    "verified": true,
+    "snippet": "(A.140) The standard slow-roll parameters are 1 \u0010 V,φ \u00112 1 φ̇2 V,φφ φ̈ 1 φ̇2 \u000fv = ≈ , ηv = ≈− + . (A.141) 2 V 2 H2 V H φ̇ 2 H 2 B.2 ADM Formalism We treat fluctuations in the ADM formalism [169] where spacetime is sliced",
+    "why": null
    }
   },
-  "citations": 1224,
-  "citations_via": "OpenAlex"
+  "citations": 296,
+  "citations_via": "Semantic Scholar"
  },
  "bcfw-2005": {
   "checked": "2026-11-08",
@@ -868,6 +873,21 @@
   "citations": 78,
   "citations_via": "OpenAlex"
  },
+ "bilal-2001": {
+  "checked": "2026-11-18",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Introduction to Supersymmetry",
+  "locations": {
+   "Section 3.3": {
+    "verified": true,
+    "snippet": "3.3 Massless supermultiplets . . . . . . . . . . . . . . . . . . . . . . . 11 3.4 Massive supermultiplets . . . . . . . . . . . . . . . . . . . . . . . 13 4 Superspace and superfields",
+    "why": null
+   }
+  },
+  "citations": 34,
+  "citations_via": "Semantic Scholar"
+ },
  "birrell-davies-1982": {
   "checked": "2026-11-08",
   "exists": true,
@@ -1024,7 +1044,7 @@
   "citations_via": "Semantic Scholar"
  },
  "brocker-tom-dieck-1985": {
-  "checked": "2026-11-08",
+  "checked": "2026-11-18",
   "exists": true,
   "via": "Crossref",
   "fetched_title": "Representations of Compact Lie Groups ",
@@ -1033,9 +1053,14 @@
     "verified": true,
     "snippet": "Elementary Representation Theory ",
     "why": null
+   },
+   "Chapter: Representative Functions|10.1007/978-3-662-12918-0_3": {
+    "verified": true,
+    "snippet": "Representative Functions ",
+    "why": null
    }
   },
-  "citations": 1235,
+  "citations": 1563,
   "citations_via": "OpenAlex"
  },
  "brunetti-guido-longo-2002": {
@@ -1174,7 +1199,7 @@
   "citations_via": "Semantic Scholar"
  },
  "carroll-1997": {
-  "checked": "2026-11-11",
+  "checked": "2026-11-18",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "Lecture Notes on General Relativity",
@@ -1182,6 +1207,16 @@
    "Chapter 3": {
     "verified": true,
     "snippet": "3. Curvature covariant derivatives and connections — connection coefficients — transformation properties — the Christoffel connection — structures on manifolds — parallel trans- port — the parallel propagator",
+    "why": null
+   },
+   "Chapter 4": {
+    "verified": true,
+    "snippet": "4. Gravitation the Principle of Equivalence — gravitational redshift — gravitation as spacetime cur- vature — the Newtonian limit — physics in curved spacetime — Einstein’s equations — the Hilbert action — the",
+    "why": null
+   },
+   "Chapter 5": {
+    "verified": true,
+    "snippet": "5. More Geometry pullbacks and pushforwards — diffeomorphisms — integral curves — Lie derivatives — the energy-momentum tensor one more time — isometries and Killing vectors",
     "why": null
    },
    "Section 8": {
@@ -1214,6 +1249,11 @@
     "snippet": "(4.53) can be very difficult to solve. The most popular sort of simplifying assumption is that the metric has a significant degree of symmetry, and we will talk later on about how symmetries of the metric make life easie",
     "why": null
    },
+   "eq. (4.72)": {
+    "verified": true,
+    "snippet": "(4.72) This is known as the Weak Energy Condition, or WEC. It seems like a fairly reasonable requirement, and many of the important theorems about solutions to general relativity (such as the singularity theorems of Hawk",
+    "why": null
+   },
    "eq. (6.54)": {
     "verified": true,
     "snippet": "(6.54) Therefore we can drop the bars over hµν , as long as we are in this gauge. 6 WEAK FIELDS AND GRAVITATIONAL RADIATION 152 One nice feature of the transverse traceless gauge is that if you are given the components o",
@@ -1230,7 +1270,7 @@
     "why": null
    }
   },
-  "citations": 428,
+  "citations": 427,
   "citations_via": "Semantic Scholar"
  },
  "carrozza-oriti-rivasseau-2014": {
@@ -1334,18 +1374,18 @@
   "citations_via": "Semantic Scholar"
  },
  "cms-1984": {
-  "checked": "2026-11-08",
+  "checked": "2026-11-18",
   "exists": true,
   "via": "Crossref",
   "fetched_title": "On the curvature of piecewise flat spaces ",
   "locations": {
-   "Abstract": {
+   "abstract": {
     "verified": false,
     "snippet": null,
     "why": "no abstract"
    }
   },
-  "citations": 339,
+  "citations": 415,
   "citations_via": "OpenAlex"
  },
  "connes-2008": {
@@ -1393,6 +1433,31 @@
   "citations": 110,
   "citations_via": "Semantic Scholar"
  },
+ "copeland-2006": {
+  "checked": "2026-11-17",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Dynamics of dark energy",
+  "locations": {
+   "eq. (122)": {
+    "verified": true,
+    "snippet": "(122) One of the motivations to consider this type of La- ρ 1 − 3X grangian originates from string theory [23]. The low- This shows that wφ does not vary for constant X. For energy effective string theory generates highe",
+    "why": null
+   },
+   "eq. (175)": {
+    "verified": true,
+    "snippet": "(175) 2 √ where C1 , C2 , C3 , C4 are integration constants. Thus the stability around the fixed points depends upon the na- dy 6 = − λxy ture of the eigenvalues. One generally uses the following dN 2 classification [14,",
+    "why": null
+   },
+   "eq. (177)": {
+    "verified": true,
+    "snippet": "(177) dN • (ii) Unstable node: µ1 > 0 and µ2 > 0. together with a constraint equation κ 2 ρm ǫx2 + y 2 + = 1. (178) • (iii) Saddle point: µ1 < 0 and µ2 > 0 (or µ1 > 0 3H 2 and µ2 < 0). The equation of state wφ and the fr",
+    "why": null
+   }
+  },
+  "citations": 5156,
+  "citations_via": "Semantic Scholar"
+ },
  "crispino-higuchi-matsas-2008": {
   "checked": "2026-11-08",
   "exists": true,
@@ -1408,19 +1473,39 @@
   "citations": 844,
   "citations_via": "Semantic Scholar"
  },
+ "defelice-tsujikawa-2010": {
+  "checked": "2026-11-17",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "f(R) theories",
+  "locations": {
+   "Section 3": {
+    "verified": true,
+    "snippet": "3 Ḣ − δF − 3H δF Ψ + 3H(HΦ + Ψ̇) = − a2 2F a2 \u0015 (8.90) + 3H Ḟ Φ + 3Ḟ (HΦ + Ψ̇) + κ2 δρm , Ψ−Φ= δF , F \u0012 ¨ + 3H δF ˙ + δF δ̈m + 2H δ̇m + (8.91) k2 κ2 + M 2 δF = δρm + Ḟ (3HΦ + 3Ψ̇ + Φ̇) + (2F̈ + 3H Ḟ )Φ , (8.92) 2",
+    "why": null
+   }
+  },
+  "citations": 4829,
+  "citations_via": "OpenAlex"
+ },
  "delamotte-2007": {
-  "checked": "2026-11-08",
+  "checked": "2026-11-18",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "An Introduction to the Nonperturbative Renormalization Group",
   "locations": {
+   "eq. (2.29)": {
+    "verified": true,
+    "snippet": "(2.29) that is, it behaves as a functional Dirac delta. Therefore, Γ′k [M ] + Wk [B] = BM (2.24) Γk [M ] → H[φ = M ] as k → Λ (2.30) where the magnetization M (x) is, by definition the av- if the cut-off Rk is such that",
+    "why": null
+   },
    "§2.5.3": {
     "verified": true,
     "snippet": "2.5.3 The critical exponents . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 36 2.6 Perturbative renormalizability, RG flows, continuum limit, asymptotic freedom and all that. . .",
     "why": null
    }
   },
-  "citations": 374,
+  "citations": 375,
   "citations_via": "Semantic Scholar"
  },
  "delepouve-gurau-rivasseau-2016": {
@@ -1946,6 +2031,15 @@
   "citations": 52,
   "citations_via": "OpenAlex"
  },
+ "garfinkle-1985": {
+  "checked": "2026-11-17",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "General relativistic strings ",
+  "locations": {},
+  "citations": 348,
+  "citations_via": "OpenAlex"
+ },
  "ggv-1966": {
   "checked": "2026-11-07",
   "exists": true,
@@ -2009,6 +2103,30 @@
    }
   },
   "citations": 805,
+  "citations_via": "Semantic Scholar"
+ },
+ "goto-1971": {
+  "checked": "2026-11-17",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "Relativistic Quantum Mechanics of One-Dimensional Mechanical Continuum and Subsidiary Condition of Dual Resonance Model ",
+  "locations": {},
+  "citations": 701,
+  "citations_via": "OpenAlex"
+ },
+ "gourgoulhon-2007": {
+  "checked": "2026-11-18",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "3+1 Formalism and Bases of Numerical Relativity",
+  "locations": {
+   "Section 2.5": {
+    "verified": true,
+    "snippet": "2.5 Gauss-Codazzi relations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 34 2.5.1 Gauss relation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 34 2.5.2 Codazzi relatio",
+    "why": null
+   }
+  },
+  "citations": 404,
   "citations_via": "Semantic Scholar"
  },
  "grosse-wulkenhaar-2005": {
@@ -2200,8 +2318,23 @@
   "citations": 1044,
   "citations_via": "Semantic Scholar"
  },
+ "hartman-1964": {
+  "checked": "2026-11-17",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "Ordinary Differential Equations ",
+  "locations": {
+   "Chapter: Ordinary Differential Equations|10.1137/1.9780898719222": {
+    "verified": true,
+    "snippet": "Ordinary Differential Equations ",
+    "why": null
+   }
+  },
+  "citations": 4019,
+  "citations_via": "OpenAlex"
+ },
  "hawking-ellis-1973": {
-  "checked": "2026-11-08",
+  "checked": "2026-11-18",
   "exists": true,
   "via": "Crossref",
   "fetched_title": "The Large Scale Structure of Space-Time ",
@@ -2227,7 +2360,7 @@
     "why": null
    }
   },
-  "citations": 10602,
+  "citations": 12420,
   "citations_via": "OpenAlex"
  },
  "hayden-headrick-maloney-2013": {
@@ -2335,8 +2468,38 @@
   "citations": 2033,
   "citations_via": "Semantic Scholar"
  },
+ "hindmarsh-kibble-1995": {
+  "checked": "2026-11-17",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Cosmic strings",
+  "locations": {
+   "eq. (1)": {
+    "verified": true,
+    "snippet": "(1) symmetry, the axion strings [14,18]. 18 2.2. Local or gauge strings Let us now consider what happens when the internal symmetry is a local one. This requires the introduction of a vector field Aµ . The Lagrangian den",
+    "why": null
+   },
+   "eq. (2.9)": {
+    "verified": true,
+    "snippet": "(2.9) for the Nielsen–Olesen vortex. Others are obtained by global SU(2) rotations. We issued a warning earlier that the topological condition did not guarantee the existence of a stable vortex solution. In the case at h",
+    "why": null
+   },
+   "eq. (3.19)": {
+    "verified": true,
+    "snippet": "(3.19) b́(v) = cos(2πN v/L)e1 + sin(2πN v/L)(cos ψe2 + sin ψe3 ) with M and N relatively prime. In figure 3.1 we display a sequence of projections of the string over one period for M = 1 and N = 2. This trajectory has tw",
+    "why": null
+   },
+   "eq. (6.1)": {
+    "verified": true,
+    "snippet": "(6.1) where µ6 = 106 Gµ. The most immediate observational prediction from the conical space-time around a string is of gravitational lensing [160,258,161,259]. If we look at a distant quasar, for example, (see figure 6.1",
+    "why": null
+   }
+  },
+  "citations": 1144,
+  "citations_via": "Semantic Scholar"
+ },
  "hinterbichler-2012": {
-  "checked": "2026-11-08",
+  "checked": "2026-11-18",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "Theoretical Aspects of Massive Gravity",
@@ -2352,7 +2515,16 @@
     "why": null
    }
   },
-  "citations": 1202,
+  "citations": 1318,
+  "citations_via": "OpenAlex"
+ },
+ "hiscock-1985": {
+  "checked": "2026-11-17",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "Exact gravitational field of a string ",
+  "locations": {},
+  "citations": 587,
   "citations_via": "OpenAlex"
  },
  "hodges-2012": {
@@ -2579,6 +2751,24 @@
   },
   "citations": 175,
   "citations_via": "Semantic Scholar"
+ },
+ "kibble-1976": {
+  "checked": "2026-11-17",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "Topology of cosmic domains and strings ",
+  "locations": {},
+  "citations": 5504,
+  "citations_via": "OpenAlex"
+ },
+ "kibble-turok-1982": {
+  "checked": "2026-11-17",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "Self-intersection of cosmic strings ",
+  "locations": {},
+  "citations": 283,
+  "citations_via": "OpenAlex"
  },
  "kitaev-2017": {
   "checked": "2026-11-08",
@@ -3065,6 +3255,21 @@
   "citations": 424,
   "citations_via": "Semantic Scholar"
  },
+ "milnor-1963": {
+  "checked": "2026-11-18",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "Morse Theory. (AM-51) ",
+  "locations": {
+   "Chapter: PART I. NON-DEGENERATE SMOOTH FUNCTIONS ON A MANIFOLD|10.1515/9781400881802-002": {
+    "verified": true,
+    "snippet": "PART I. NON-DEGENERATE SMOOTH FUNCTIONS ON A MANIFOLD ",
+    "why": null
+   }
+  },
+  "citations": 2096,
+  "citations_via": "OpenAlex"
+ },
  "moise-1977": {
   "checked": "2026-11-15",
   "exists": true,
@@ -3111,7 +3316,7 @@
   "citations_via": "OpenAlex"
  },
  "mukhametzhanov-zhiboedov-2019": {
-  "checked": "2026-11-08",
+  "checked": "2026-11-18",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "Modular Invariance, Tauberian Theorems, and Microcanonical Entropy",
@@ -3120,10 +3325,24 @@
     "verified": true,
     "snippet": "we analyze modular invariance drawing inspiration from tauberian theorems given a modular invariant partition function with a positive spectral density we derive lower and upper bounds on the number o",
     "why": null
+   },
+   "eq. (1.8)": {
+    "verified": true,
+    "snippet": "(1.8) with a bounded error term. The discontinuities of the LHS of (1.8) are hidden in the non-universal7 error term in the RHS. In particular, it does not make sense to write further smooth power suppressed terms in the",
+    "why": null
    }
   },
-  "citations": 77,
-  "citations_via": "Semantic Scholar"
+  "citations": 125,
+  "citations_via": "OpenAlex"
+ },
+ "nielsen-olesen-1973": {
+  "checked": "2026-11-17",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "Vortex-line models for dual strings ",
+  "locations": {},
+  "citations": 3209,
+  "citations_via": "OpenAlex"
  },
  "nielsen-petz-2005": {
   "checked": "2026-11-08",
@@ -3155,6 +3374,21 @@
   "citations": 82,
   "citations_via": "Semantic Scholar"
  },
+ "obied-2018": {
+  "checked": "2026-11-17",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "De Sitter Space and the Swampland",
+  "locations": {
+   "Section 2": {
+    "verified": true,
+    "snippet": "2 Z h D−2 p D−2 Ω̈ Ω−2 D−d−2 det gmn − D−d Ω i 1 d(D − 2) 2 (D−d) + R − (∇ log Ω) , (D − d) (D − d − 2)(D − d) (d − 1)H ≤ dy D−d (C.18) where we have used condition (C.13) and that the integral of the Laplacian of",
+    "why": null
+   }
+  },
+  "citations": 1180,
+  "citations_via": "OpenAlex"
+ },
  "ooguri-1992": {
   "checked": "2026-11-08",
   "exists": true,
@@ -3168,6 +3402,51 @@
    }
   },
   "citations": 327,
+  "citations_via": "Semantic Scholar"
+ },
+ "ooguri-vafa-2006": {
+  "checked": "2026-11-17",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "On the Geometry of the String Landscape and the Swampland",
+  "locations": {
+   "Section 2": {
+    "verified": true,
+    "snippet": "2 Jefferson Physical Laboratory, Harvard University",
+    "why": null
+   }
+  },
+  "citations": 1252,
+  "citations_via": "Semantic Scholar"
+ },
+ "overduin-wesson-1997": {
+  "checked": "2026-11-17",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Kaluza-Klein Gravity",
+  "locations": {
+   "Section 2": {
+    "verified": true,
+    "snippet": "2 The conservation of energy ∇ ˆ A θ̂AB = 0 implies not only conservation of four- current (∇α J α = 0) but also conservation of substrate energy: ∇β",
+    "why": null
+   }
+  },
+  "citations": 818,
+  "citations_via": "Semantic Scholar"
+ },
+ "padilla-2015": {
+  "checked": "2026-11-17",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Lectures on the Cosmological Constant Problem",
+  "locations": {
+   "Section 3.2": {
+    "verified": true,
+    "snippet": "3.2 Weinberg’s no go theorem 9 4 Symmetry 10 4.1 ’",
+    "why": null
+   }
+  },
+  "citations": 188,
   "citations_via": "Semantic Scholar"
  },
  "page-1993": {
@@ -3184,6 +3463,15 @@
   },
   "citations": 1553,
   "citations_via": "Semantic Scholar"
+ },
+ "palti-2019": {
+  "checked": "2026-11-17",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "The Swampland: Introduction and Review",
+  "locations": {},
+  "citations": 1334,
+  "citations_via": "OpenAlex"
  },
  "paschke-sitarz-1998": {
   "checked": "2026-11-08",
@@ -3233,6 +3521,26 @@
    }
   },
   "citations": 755,
+  "citations_via": "OpenAlex"
+ },
+ "perko-2001": {
+  "checked": "2026-11-17",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "Differential Equations and Dynamical Systems ",
+  "locations": {
+   "Chapter: Linear Systems in R^n|10.1007/978-1-4613-0003-8_1": {
+    "verified": true,
+    "snippet": "Linear Systems ",
+    "why": null
+   },
+   "Chapter: Nonlinear Systems: Local Theory|10.1007/978-1-4613-0003-8_2": {
+    "verified": true,
+    "snippet": "Nonlinear Systems: Local Theory ",
+    "why": null
+   }
+  },
+  "citations": 2736,
   "citations_via": "OpenAlex"
  },
  "pinamonti-2011": {
@@ -3329,13 +3637,34 @@
   "citations": 539,
   "citations_via": "Semantic Scholar"
  },
+ "reed-simon-1972": {
+  "checked": "2026-11-18",
+  "exists": true,
+  "via": "Open Library",
+  "fetched_title": "Methods of modern mathematical physics",
+  "locations": {
+   "Chapter: Bounded Operators|10.1016/b978-0-12-585001-8.50012-x": {
+    "verified": true,
+    "snippet": "Bounded Operators ",
+    "why": null
+   }
+  },
+  "citations": null,
+  "citations_via": "unavailable"
+ },
  "regge-1961": {
-  "checked": "2026-11-08",
+  "checked": "2026-11-18",
   "exists": true,
   "via": "Crossref",
   "fetched_title": "General relativity without coordinates ",
-  "locations": {},
-  "citations": 1496,
+  "locations": {
+   "abstract": {
+    "verified": false,
+    "snippet": null,
+    "why": "no abstract"
+   }
+  },
+  "citations": 1790,
   "citations_via": "OpenAlex"
  },
  "reisenberger-1999": {
@@ -3581,6 +3910,21 @@
   "citations": 22,
   "citations_via": "Semantic Scholar"
  },
+ "sotiriou-faraoni-2010": {
+  "checked": "2026-11-17",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "f(R) Theories Of Gravity",
+  "locations": {
+   "Section 2": {
+    "verified": true,
+    "snippet": "2. Field Equations 10 D. Gravitational waves in f (R) gravity 40 I",
+    "why": null
+   }
+  },
+  "citations": 5520,
+  "citations_via": "OpenAlex"
+ },
  "sss-2019": {
   "checked": "2026-11-08",
   "exists": true,
@@ -3681,6 +4025,15 @@
   "citations": 283,
   "citations_via": "Semantic Scholar"
  },
+ "taubes-1980": {
+  "checked": "2026-11-17",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "ArbitraryN-vortex solutions to the first order Ginzburg-Landau equations ",
+  "locations": {},
+  "citations": 505,
+  "citations_via": "OpenAlex"
+ },
  "taylor-2001": {
   "checked": "2026-11-08",
   "exists": true,
@@ -3739,6 +4092,21 @@
   "locations": {},
   "citations": 100,
   "citations_via": "OpenAlex"
+ },
+ "tong-2005": {
+  "checked": "2026-11-17",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "TASI Lectures on Solitons",
+  "locations": {
+   "eq. (3.14)": {
+    "verified": true,
+    "snippet": "(3.14) Look familiar? Remember the result for k instantons in U(N) that we found in lecture 1: dim(Ik,N ) = 4kN. We’ll see more of this similarity between instantons and vortices in the following. As for previous soliton",
+    "why": null
+   }
+  },
+  "citations": 106,
+  "citations_via": "Semantic Scholar"
  },
  "tong-2009": {
   "checked": "2026-11-08",
@@ -3865,6 +4233,15 @@
   "citations": 1254,
   "citations_via": "Semantic Scholar"
  },
+ "vilenkin-1981": {
+  "checked": "2026-11-17",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "Gravitational field of vacuum domain walls and strings ",
+  "locations": {},
+  "citations": 1510,
+  "citations_via": "OpenAlex"
+ },
  "visser-1998": {
   "checked": "2026-11-08",
   "exists": true,
@@ -3909,6 +4286,30 @@
   },
   "citations": 242,
   "citations_via": "Semantic Scholar"
+ },
+ "weinberg-1989": {
+  "checked": "2026-11-17",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "The cosmological constant problem ",
+  "locations": {},
+  "citations": 9189,
+  "citations_via": "OpenAlex"
+ },
+ "weinberg-1995": {
+  "checked": "2026-11-18",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "The Quantum Theory of Fields ",
+  "locations": {
+   "Chapter: RELATIVISTIC QUANTUM MECHANICS|10.1017/CBO9781139644167.004": {
+    "verified": true,
+    "snippet": "RELATIVISTIC QUANTUM MECHANICS ",
+    "why": null
+   }
+  },
+  "citations": 4163,
+  "citations_via": "OpenAlex"
  },
  "weinzierl-2006": {
   "checked": "2026-11-08",

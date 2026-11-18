@@ -43,12 +43,69 @@ approaches.
 
 | Task | Statement | File | Milestone | Size | Difficulty |
 |---|---|---|---|---|---|
+| [`T-GE1-P2`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE1-P2%22) | The curvature tensor is computed by any smooth extensions | [T_GE1_P2.lean](../../Tasks/GE/T_GE1_P2.lean) | GE1 | L | research-level |
+| [`T-GE1-P3`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE1-P3%22) | The Ricci tensor of a Levi-Civita connection is symmetric | [T_GE1_P3.lean](../../Tasks/GE/T_GE1_P3.lean) | GE1 | L | research-level |
+| [`T-GE1-P4`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE1-P4%22) | The first Bianchi identity and the pair symmetry of the lowered curvature | [T_GE1_P4.lean](../../Tasks/GE/T_GE1_P4.lean) | GE1 | L | research-level |
+| [`T-GE1-P5`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE1-P5%22) | The intrinsic scalar curvature is the coordinate scalar curvature in every chart | [T_GE1_P5.lean](../../Tasks/GE/T_GE1_P5.lean) | GE1 | L | research-level |
+| [`T-GE1-P6`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE1-P6%22) | The manifold-level Einstein equations are the coordinate ones in every chart | [T_GE1_P6.lean](../../Tasks/GE/T_GE1_P6.lean) | GE1 | L | research-level |
+| [`T-GE1-P7`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE1-P7%22) | The second Bianchi identity of a Levi-Civita connection | [T_GE1_P7.lean](../../Tasks/GE/T_GE1_P7.lean) | GE1 | L | research-level |
+| [`T-GE1-P8`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE1-P8%22) | The Einstein tensor of a Levi-Civita connection is divergence free | [T_GE1_P8.lean](../../Tasks/GE/T_GE1_P8.lean) | GE1 | L | research-level |
+| [`T-GE2-P1`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE2-P1%22) | Timelike futures are causal futures: I⁺(x) ⊆ J⁺(x) | [T_GE2_P1.lean](../../Tasks/GE2/T_GE2_P1.lean) | GE2 | S | intermediate |
+| [`T-GE2-P2`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE2-P2%22) | A point is in its own causal future: x ∈ J⁺(x) | [T_GE2_P2.lean](../../Tasks/GE2/T_GE2_P2.lean) | GE2 | S | intermediate |
+| [`T-GE2-P3`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE2-P3%22) | The causal future is transitive: y ∈ J⁺(x), z ∈ J⁺(y) imply z ∈ J⁺(x) | [T_GE2_P3.lean](../../Tasks/GE2/T_GE2_P3.lean) | GE2 | M | intermediate |
+| [`T-GE2-P4`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE2-P4%22) | The chronological future is transitive: y ∈ I⁺(x), z ∈ I⁺(y) imply z ∈ I⁺(x) | [T_GE2_P4.lean](../../Tasks/GE2/T_GE2_P4.lean) | GE2 | M | intermediate |
+| [`T-GE2-P5`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE2-P5%22) | Push-up, first form: y ∈ I⁺(x), z ∈ J⁺(y) imply z ∈ I⁺(x) | [T_GE2_P5.lean](../../Tasks/GE2/T_GE2_P5.lean) | GE2 | L | research-level |
+| [`T-GE2-P6`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE2-P6%22) | Push-up, second form: y ∈ J⁺(x), z ∈ I⁺(y) imply z ∈ I⁺(x) | [T_GE2_P6.lean](../../Tasks/GE2/T_GE2_P6.lean) | GE2 | M | research-level |
+| [`T-GE2-P7`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE2-P7%22) | The chronological future is open | [T_GE2_P7.lean](../../Tasks/GE2/T_GE2_P7.lean) | GE2 | L | research-level |
+| [`T-GE2-P8`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE2-P8%22) | Causality implies chronology | [T_GE2_P8.lean](../../Tasks/GE2/T_GE2_P8.lean) | GE2 | M | intermediate |
+| [`T-GE2-P9`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE2-P9%22) | Strong causality implies causality | [T_GE2_P9.lean](../../Tasks/GE2/T_GE2_P9.lean) | GE2 | M | intermediate |
+| [`T-GE2-P10`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE2-P10%22) | Stable causality implies strong causality | [T_GE2_P10.lean](../../Tasks/GE2/T_GE2_P10.lean) | GE2 | L | research-level |
+| [`T-GE2-P11`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE2-P11%22) | Causal simplicity implies stable causality | [T_GE2_P11.lean](../../Tasks/GE2/T_GE2_P11.lean) | GE2 | L | research-level |
+| [`T-GE2-P12`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE2-P12%22) | Global hyperbolicity implies causal simplicity | [T_GE2_P12.lean](../../Tasks/GE2/T_GE2_P12.lean) | GE2 | L | research-level |
+| [`T-GE2-P13`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE2-P13%22) | A Cauchy surface is achronal | [T_GE2_P13.lean](../../Tasks/GE2/T_GE2_P13.lean) | GE2 | M | intermediate |
+| [`T-GE2-P14`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE2-P14%22) | The causal future in Minkowski space is the closed light cone | [T_GE2_P14.lean](../../Tasks/GE2/T_GE2_P14.lean) | GE2 | L | intermediate |
+| [`T-GE2-P15`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE2-P15%22) | Minkowski space is globally hyperbolic | [T_GE2_P15.lean](../../Tasks/GE2/T_GE2_P15.lean) | GE2 | L | intermediate |
+| [`T-GE2-P16`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE2-P16%22) | The slice t = 0 is a Cauchy surface of Minkowski space | [T_GE2_P16.lean](../../Tasks/GE2/T_GE2_P16.lean) | GE2 | L | intermediate |
+| [`T-GE2-P17`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE2-P17%22) | A continuous time orientation can be replaced by a smooth one | [T_GE2_P17.lean](../../Tasks/GE2/T_GE2_P17.lean) | GE2 | L | research-level |
+| [`T-GE2-P18`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE2-P18%22) | An achronal set is a Cauchy surface iff its domain of dependence is the whole manifold | [T_GE2_P18.lean](../../Tasks/GE2/T_GE2_P18.lean) | GE2 | L | research-level |
+| [`T-GE2-P19`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE2-P19%22) | A curve with timelike velocity almost everywhere, without a margin, still joins its endpoints in the timelike … | [T_GE2_P19.lean](../../Tasks/GE2/T_GE2_P19.lean) | GE2 | L | research-level |
+| [`T-GE2-P20`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE2-P20%22) | A limit curve through a limit point of future-inextendible causal curves is a future-inextendible causal curve | [T_GE2_P20.lean](../../Tasks/GE2/T_GE2_P20.lean) | GE2 | L | research-level |
+| [`T-OP1-P1`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-OP1-P1%22) | The generator of a strongly continuous unitary group is self-adjoint (Stone's theorem, direction 1) | [T_OP1_P1.lean](../../Tasks/OP/T_OP1_P1.lean) | OP1 | L | research-level |
+| [`T-OP1-P2`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-OP1-P2%22) | Every self-adjoint operator generates a strongly continuous unitary group (Stone's theorem, direction 2) | [T_OP1_P2.lean](../../Tasks/OP/T_OP1_P2.lean) | OP1 | L | research-level |
+| [`T-OP1-P3`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-OP1-P3%22) | A strongly continuous unitary group is determined by its generator (Stone's theorem, uniqueness) | [T_OP1_P3.lean](../../Tasks/OP/T_OP1_P3.lean) | OP1 | L | research-level |
+| [`T-OP1-P4`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-OP1-P4%22) | The C_c^∞ functions are a core of the generator of the translation group on L²(ℝ) | [T_OP1_P4.lean](../../Tasks/OP/T_OP1_P4.lean) | OP1 | M | research-level |
+| [`T-OP1-P5`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-OP1-P5%22) | On L²[0,1], -i d/dx without boundary conditions has deficiency indices (1,1) | [T_OP1_P5.lean](../../Tasks/OP/T_OP1_P5.lean) | OP1 | M | intermediate |
+| [`T-OP1-P6`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-OP1-P6%22) | On L²(0,1), the closure of -i d/dx on C² functions supported inside (0,1) equals its closure on C_c^∞(0,1) | [T_OP1_P6.lean](../../Tasks/OP/T_OP1_P6.lean) | OP1 | M | intermediate |
+| [`T-OP2-P1`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-OP2-P1%22) | A Fock representation of the Weyl relations exists on every complex Hilbert space | [T_OP2_P1.lean](../../Tasks/OP/T_OP2_P1.lean) | OP2 | L | research-level |
+| [`T-OP2-P2`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-OP2-P2%22) | The Fock representation is unique up to unitary equivalence | [T_OP2_P2.lean](../../Tasks/OP/T_OP2_P2.lean) | OP2 | L | research-level |
+| [`T-OP2-P3`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-OP2-P3%22) | Shale's criterion: a Bogoliubov transformation is implementable in the Fock representation iff its antilinear … | [T_OP2_P3.lean](../../Tasks/OP/T_OP2_P3.lean) | OP2 | L | research-level |
+| [`T-OP2-P4`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-OP2-P4%22) | Every nonzero vector of a Fock representation is cyclic for the Weyl unitaries (the Fock representation is … | [T_OP2_P4.lean](../../Tasks/OP/T_OP2_P4.lean) | OP2 | L | research-level |
+| [`T-OP2-P5`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-OP2-P5%22) | A Bogoliubov transformation is implemented in a Fock representation iff there is a vector with Gaussian … | [T_OP2_P5.lean](../../Tasks/OP/T_OP2_P5.lean) | OP2 | M | advanced |
+| [`T-OP2-P6`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-OP2-P6%22) | Shale's criterion, necessity: an implementable Bogoliubov transformation has Hilbert-Schmidt antilinear part | [T_OP2_P6.lean](../../Tasks/OP/T_OP2_P6.lean) | OP2 | L | research-level |
+| [`T-OP2-P7`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-OP2-P7%22) | Shale's criterion, sufficiency: a Bogoliubov transformation with Hilbert-Schmidt antilinear part is … | [T_OP2_P7.lean](../../Tasks/OP/T_OP2_P7.lean) | OP2 | L | research-level |
 | [`T-QU1-P1`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-QU1-P1%22) | q-orthogonality of the quantum 6j symbols at r = 4 | [T_QU1_P1.lean](../../Tasks/QU/T_QU1_P1.lean) | QU1 | M | intermediate |
 | [`T-QU1-P2`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-QU1-P2%22) | q-Biedenharn–Elliott identity at r = 4 | [T_QU1_P2.lean](../../Tasks/QU/T_QU1_P2.lean) | QU1 | M | intermediate |
 | [`T-QU1-P3`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-QU1-P3%22) | q-orthogonality of the quantum 6j symbols at r = 5 | [T_QU1_P3.lean](../../Tasks/QU/T_QU1_P3.lean) | QU1 | M | intermediate |
 | [`T-QU1-P4`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-QU1-P4%22) | q-Biedenharn–Elliott identity at r = 5 | [T_QU1_P4.lean](../../Tasks/QU/T_QU1_P4.lean) | QU1 | M | intermediate |
 | [`T-QU1-P5`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-QU1-P5%22) | q-orthogonality of the quantum 6j symbols for every r ≥ 2 | [T_QU1_P5.lean](../../Tasks/QU/T_QU1_P5.lean) | QU1 | L | research-level |
 | [`T-QU1-P6`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-QU1-P6%22) | q-Biedenharn–Elliott identity for every r ≥ 2 | [T_QU1_P6.lean](../../Tasks/QU/T_QU1_P6.lean) | QU1 | L | research-level |
+| [`T-CA1-P1`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CA1-P1%22) | The bracket of a smeared momentum constraint with a smeared Hamiltonian constraint is a smeared Hamiltonian … | [T_CA1_P1.lean](../../Tasks/CA/T_CA1_P1.lean) | CA1 | L | research-level |
+| [`T-CA1-P2`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CA1-P2%22) | The bracket of two smeared Hamiltonian constraints is a smeared momentum constraint with the structure … | [T_CA1_P2.lean](../../Tasks/CA/T_CA1_P2.lean) | CA1 | L | research-level |
+| [`T-CA1-P3`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CA1-P3%22) | The Lie-derivative form of the smeared momentum constraint equals the ADM form with the covariant divergence … | [T_CA1_P3.lean](../../Tasks/CA/T_CA1_P3.lean) | CA1 | M | intermediate |
+| [`T-CA1-P4`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CA1-P4%22) | The bracket of two smeared momentum constraints on a hypersurface is the smeared constraint of the Lie … | [T_CA1_P4.lean](../../Tasks/CA/T_CA1_P4.lean) | CA1 | L | research-level |
+| [`T-CA1-P5`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CA1-P5%22) | The bracket of a smeared momentum constraint with a smeared Hamiltonian constraint on a hypersurface is the … | [T_CA1_P5.lean](../../Tasks/CA/T_CA1_P5.lean) | CA1 | L | research-level |
+| [`T-CA1-P6`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CA1-P6%22) | The bracket of two smeared Hamiltonian constraints on a hypersurface is the smeared momentum constraint of … | [T_CA1_P6.lean](../../Tasks/CA/T_CA1_P6.lean) | CA1 | L | research-level |
+| [`T-CA1-P7`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CA1-P7%22) | On a single global chart the constraints on a hypersurface are the constraints of the chart | [T_CA1_P7.lean](../../Tasks/CA/T_CA1_P7.lean) | CA1 | M | intermediate |
+| [`T-CS2-P1`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CS2-P1%22) | The Myrheim–Meyer relation probability in every dimension | [T_CS2_P1.lean](../../Tasks/CS2/T_CS2_P1.lean) | CS2 | L | research-level |
+| [`T-CS2-P2`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CS2-P2%22) | The Myrheim–Meyer relation probability in four dimensions is 1/20 | [T_CS2_P2.lean](../../Tasks/CS2/T_CS2_P2.lean) | CS2 | M | advanced |
+| [`T-CS2-P3`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CS2-P3%22) | A rectangle instead of the diamond gives a different relation probability | [T_CS2_P3.lean](../../Tasks/CS2/T_CS2_P3.lean) | CS2 | M | intermediate |
+| [`T-CS3-P1`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CS3-P1%22) | The longest chain of n uniform points of the 1+1 diamond is about 2 sqrt(n) | [T_CS3_P1.lean](../../Tasks/CS3/T_CS3_P1.lean) | CS3 | L | research-level |
+| [`T-SF10-P1`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-SF10-P1%22) | Joint integrability of the Lorentzian vertex integrand | [T_SF10_P1.lean](../../Tasks/SF/T_SF10_P1.lean) | SF10 | L | research-level |
+| [`T-SF10-P2`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-SF10-P2%22) | Invertibility of the Hessian of the Lorentzian vertex action at a critical point | [T_SF10_P2.lean](../../Tasks/SF/T_SF10_P2.lean) | SF10 | L | research-level |
+| [`T-SF10-P3`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-SF10-P3%22) | The far part of the Lorentzian vertex integral is of lower order | [T_SF10_P3.lean](../../Tasks/SF/T_SF10_P3.lean) | SF10 | S | intermediate |
+| [`T-SF10-P5`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-SF10-P5%22) | The compact part of the Lorentzian far remainder is of rapidly decreasing order | [T_SF10_P5.lean](../../Tasks/SF/T_SF10_P5.lean) | SF10 | M | intermediate |
+| [`T-SF10-P6`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-SF10-P6%22) | The non-compact tail of the Lorentzian far remainder is of lower order | [T_SF10_P6.lean](../../Tasks/SF/T_SF10_P6.lean) | SF10 | L | research-level |
+| [`T-SF10-P4`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-SF10-P4%22) | Finiteness and classification of the critical points of the Lorentzian vertex action | [T_SF10_P4.lean](../../Tasks/SF/T_SF10_P4.lean) | SF10 | L | research-level |
 
 ## Upstream
 
@@ -82,7 +139,7 @@ Results to contribute to Mathlib or Physlib, with the rework each needs ([tasks.
 
 ## Milestones by area
 
-[Lorentzian and Riemannian geometry](#lorentzian-and-riemannian-geometry) · [Cosmology](#cosmology) · [Semiclassical gravity](#semiclassical-gravity) · [Conformal field theory](#conformal-field-theory) · [Gauge theory and constrained systems](#gauge-theory-and-constrained-systems) · [Harmonic analysis on Lie groups](#harmonic-analysis-on-lie-groups) · [Operator algebras and quantum information](#operator-algebras-and-quantum-information) · [Oscillatory and saddle-point asymptotics](#oscillatory-and-saddle-point-asymptotics) · [Perturbative QFT and the renormalization group](#perturbative-qft-and-the-renormalization-group) · [PL topology](#pl-topology) · [Quantum groups and state-sum TQFTs](#quantum-groups-and-state-sum-tqfts) · [Random geometry](#random-geometry) · [Asymptotic safety](#asymptotic-safety) · [Canonical quantum gravity](#canonical-quantum-gravity) · [Causal sets](#causal-sets) · [Dynamical triangulations](#dynamical-triangulations) · [Group field theory and tensor models](#group-field-theory-and-tensor-models) · [Holography](#holography) · [Low-dimensional gravity](#low-dimensional-gravity) · [Matrix models](#matrix-models) · [Noncommutative geometry](#noncommutative-geometry) · [Perturbative quantum gravity](#perturbative-quantum-gravity) · [Regge calculus](#regge-calculus) · [Spin foams](#spin-foams) · [String theory](#string-theory) · [Twistor theory](#twistor-theory) · [Other approaches](#other-approaches)
+[Lorentzian and Riemannian geometry](#lorentzian-and-riemannian-geometry) · [Cosmology](#cosmology) · [Semiclassical gravity](#semiclassical-gravity) · [Conformal field theory](#conformal-field-theory) · [Dynamical systems](#dynamical-systems) · [Gauge theory and constrained systems](#gauge-theory-and-constrained-systems) · [Harmonic analysis on Lie groups](#harmonic-analysis-on-lie-groups) · [Operator algebras and quantum information](#operator-algebras-and-quantum-information) · [Oscillatory and saddle-point asymptotics](#oscillatory-and-saddle-point-asymptotics) · [Perturbative QFT and the renormalization group](#perturbative-qft-and-the-renormalization-group) · [PL topology](#pl-topology) · [Quantum groups and state-sum TQFTs](#quantum-groups-and-state-sum-tqfts) · [Random geometry](#random-geometry) · [Asymptotic safety](#asymptotic-safety) · [Canonical quantum gravity](#canonical-quantum-gravity) · [Causal sets](#causal-sets) · [Dynamical triangulations](#dynamical-triangulations) · [Group field theory and tensor models](#group-field-theory-and-tensor-models) · [Holography](#holography) · [Low-dimensional gravity](#low-dimensional-gravity) · [Matrix models](#matrix-models) · [Noncommutative geometry](#noncommutative-geometry) · [Perturbative quantum gravity](#perturbative-quantum-gravity) · [Regge calculus](#regge-calculus) · [Spin foams](#spin-foams) · [String theory](#string-theory) · [Twistor theory](#twistor-theory) · [Other approaches](#other-approaches)
 
 ### Lorentzian and Riemannian geometry
 
@@ -97,8 +154,12 @@ Done-when texts and trust checks: [milestones.md](milestones.md#lorentzian-and-r
 | [`T-GE10`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE10%22) | Vacuum Einstein equations; Minkowski and exterior Schwarzschild as solutions | carroll-1997, hawking-ellis-1973 | M | intermediate |  |
 | [`T-GE3`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE3%22) | Geodesics, the exponential map and the Raychaudhuri equation on a manifold | hawking-ellis-1973 | M | intermediate | GE1, RC6 |
 | [`T-GE4`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE4%22) | Penrose's singularity theorem (1965) | senovilla-garfinkle-2015, hawking-ellis-1973 | R | research-level | GE2, GE3 |
+| [`T-GE14`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE14%22) | Stress-energy tensors and energy conditions: perfect fluids, scalar and electromagnetic fields; the null, … | carroll-1997, hawking-ellis-1973 | M | intermediate | GE1 |
+| [`T-GE12`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE12%22) | Lie derivatives of tensor fields, Killing vector fields and isometries; maximally symmetric spaces (de … | carroll-1997 | M | intermediate | GE1 |
+| [`T-GE15`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE15%22) | The Einstein–Hilbert action and its first variation; Einstein's equations as Euler–Lagrange equations | carroll-1997 | L | advanced | GE1 |
 | [`T-GE8`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE8%22) | Heat-kernel expansion of Laplace-type operators on compact Riemannian manifolds (Seeley–DeWitt coefficients … | vassilevich-2003, bgv-1992 | L | advanced | GE1 |
 | [`T-GE5`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE5%22) | Spin structures and the Dirac operator, on Mathlib's Clifford algebras; the Lichnerowicz formula | bgv-1992 | L | advanced | GE1 |
+| [`T-GE13`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE13%22) | Hypersurfaces: induced metric, unit normal, second fundamental form (extrinsic curvature), the Gauss and … | gourgoulhon-2007 | M | intermediate | GE1 |
 | [`T-GE6`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE6%22) | Kerr in Boyer–Lindquist coordinates; Killing horizons, surface gravity and angular velocity | visser-2007 | M | intermediate | GE10 |
 
 ### Cosmology
@@ -107,21 +168,34 @@ Done-when texts and trust checks: [milestones.md](milestones.md#cosmology).
 
 | Task | Title | Source | Size | Difficulty | Needs |
 |---|---|---|---|---|---|
+| [`T-CO29`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CO29%22) | The scalar field in FLRW: the Einstein–Klein–Gordon equations for a homogeneous field | baumann-2009 | S | intermediate | CO1 |
+| [`T-CO17`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CO17%22) | Dark energy as a scalar field: quintessence with an exponential potential, as an autonomous system … | copeland-2006 | M | intermediate | CO1, CO29, DS1 |
+| [`T-CO9`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CO9%22) | Single-field inflation and the slow-roll approximation (Rendall 2005) | rendall-2005, baumann-2009 | M | intermediate | CO29, DS1 |
 | [`T-CO4`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CO4%22) | Linear perturbations of FLRW: scalar-vector-tensor decomposition, gauge transformations, Bardeen potentials … | baumann-2009 | L | advanced | CO1 |
-| [`T-CO9`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CO9%22) | Single-field inflation and the slow-roll approximation (Rendall 2005) | rendall-2005, baumann-2009 | M | intermediate |  |
-| [`T-CO10`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CO10%22) | Inflationary perturbations: the Mukhanov–Sasaki equation, Bunch–Davies modes, the exact solution for … | baumann-2009 | L | advanced | CO4, CO9 |
-| [`T-CO12`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CO12%22) | The cosmic microwave background in FLRW (Sachs–Wolfe 1967) | baumann-2009 | M | intermediate | CO1, CO4 |
+| [`T-CO18`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CO18%22) | Scaling and tracker solutions (Copeland–Sami–Tsujikawa 2006) | copeland-2006 | M | intermediate | CO17 |
+| [`T-CO19`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CO19%22) | Phantom, k-essence and tachyon fields (Copeland–Sami–Tsujikawa 2006) | copeland-2006 | M | intermediate | CO17, CO29 |
 | [`T-CO6`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CO6%22) | Equilibrium thermodynamics of the hot universe | kolb-turner-1990 | M | intermediate |  |
 | [`T-CO7`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CO7%22) | Freeze-out: the Boltzmann equation for a relic in FLRW | kolb-turner-1990 | M | intermediate |  |
+| [`T-CO10`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CO10%22) | Inflationary perturbations: the Mukhanov–Sasaki equation, Bunch–Davies modes, the exact solution for … | baumann-2009 | L | advanced | CO4, CO9 |
+| [`T-CO12`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CO12%22) | The cosmic microwave background in FLRW (Sachs–Wolfe 1967) | baumann-2009 | M | intermediate | CO1, CO4 |
 | [`T-CO1`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CO1%22) | The FLRW spacetime on `I × Σ` with `Σ` of constant curvature `k`; perfect fluids; the Friedmann equations … | carroll-1997 | M | intermediate | GE1 |
+| [`T-CO24`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CO24%22) | Abelian-Higgs vortices on `ℝ²`: winding number and the Bogomolny identity (Kibble 1976; Nielsen–Olesen 1973; … | hindmarsh-kibble-1995 | M | intermediate |  |
 | [`T-CO2`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CO2%22) | The big bang in FLRW | carroll-1997 | S | intermediate | CO1 |
+| [`T-CO20`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CO20%22) | `f(R)` gravity and scalar-tensor theories (De Felice–Tsujikawa 2010; Sotiriou–Faraoni 2010) | sotiriou-faraoni-2010, defelice-tsujikawa-2010 | L | advanced | CO1, GE1 |
 | [`T-CO5`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CO5%22) | Newtonian growth of structure and the Jeans scale | bernardeau-2002 | M | intermediate |  |
+| [`T-CO23`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CO23%22) | Swampland conjectures as explicit hypotheses (Obied–Ooguri–Spodyneiko–Vafa 2018; Ooguri–Vafa 2006; Palti 2019) | obied-2018, ooguri-vafa-2006 | M | intermediate | CO9, CO17 |
+| [`T-CO25`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CO25%22) | Existence of the radial vortex profile (Nielsen–Olesen ansatz) | hindmarsh-kibble-1995 | L | advanced | CO24 |
+| [`T-CO26`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CO26%22) | The conical metric of a straight string (Vilenkin 1981; Hiscock 1985; Garfinkle 1985) | hindmarsh-kibble-1995 | M | intermediate | GE1 |
+| [`T-CO27`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CO27%22) | Nambu–Goto strings in Minkowski space: general solution and cusps (Goto 1971; Kibble–Turok 1982) | hindmarsh-kibble-1995 | M | intermediate | ST1 |
+| [`T-CO21`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CO21%22) | Kaluza–Klein reduction on a circle (Overduin–Wesson 1997) | overduin-wesson-1997 | L | advanced | GE1 |
+| [`T-CO22`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CO22%22) | The cosmological constant problem: Weinberg's no-go theorem (Weinberg 1989; reviewed in Padilla 2015) | padilla-2015 | M | intermediate | CO1, CO17 |
 | [`T-CO3`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CO3%22) | Hawking's cosmological singularity theorem (Hawking 1967) | frs-2023 | L | advanced | GE2, GE3, GE4, CO2 |
 | [`T-CO16`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CO16%22) | Nonlinear stability: de Sitter (Friedrich 1986), FLRW with Λ (Ringström 2008; Rodnianski–Speck 2013), stable … | frs-2023 | R | research-level | CO1, CO13, GE2 |
 | [`T-CO13`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CO13%22) | Bianchi cosmologies: the classification of 3D real Lie algebras (Bianchi 1898; Ellis–MacCallum 1969); Kasner; … | heinzle-uggla-2009a | L | advanced | GE1 |
 | [`T-CO14`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CO14%22) | The Bianchi IX attractor theorem (Ringström 2001; Heinzle–Uggla 2009) | ringstrom-2001, heinzle-uggla-2009b | R | research-level | CO13 |
 | [`T-CO15`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CO15%22) | Cosmic no-hair for Bianchi models (Wald 1983; Rendall 2005 for a scalar field) | rendall-2005 | M | intermediate | CO13, GE3 |
 | [`T-CO11`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CO11%22) | Quantum states on FLRW: adiabatic states (Lüders–Roberts 1990; Junker–Schrohe 2002); the Bunch–Davies state … | junker-schrohe-2002 | L | advanced | SC6, CO1 |
+| [`T-CO28`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CO28%22) | Existence of vortices of every winding number as an explicit hypothesis (Taubes 1980) | tong-2005 | S | intermediate | CO24 |
 | [`T-CO8`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CO8%22) | Isotropic singularities (Goode–Wainwright 1985; Anguige–Tod 1999) | anguige-tod-1999 | M | intermediate | CO1, CO13 |
 
 ### Semiclassical gravity
@@ -152,6 +226,16 @@ Done-when texts and trust checks: [milestones.md](milestones.md#conformal-field-
 | [`T-CF3`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CF3%22) | Vertex operator algebras: the Heisenberg and lattice VOAs | lepowsky-li-2004, frenkel-ben-zvi-2004 | L | advanced | CF1 |
 | [`T-CF5`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CF5%22) | Cardy's formula from modular invariance, with the Tauberian error control of Mukhametzhanov–Zhiboedov (2019) | mukhametzhanov-zhiboedov-2019 | L | advanced | CF4 |
 
+### Dynamical systems
+
+Done-when texts and trust checks: [milestones.md](milestones.md#dynamical-systems).
+
+| Task | Title | Source | Size | Difficulty | Needs |
+|---|---|---|---|---|---|
+| [`T-DS1`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-DS1%22) | Linearized stability of an equilibrium of `ẋ = f(x)` with `f` of class `C¹` on a finite-dimensional real space | perko-2001 | L | advanced |  |
+| [`T-DS3`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-DS3%22) | The Hartman–Grobman theorem and the stable manifold theorem at a hyperbolic equilibrium | hartman-1964 | R | research-level | DS1 |
+| [`T-DS2`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-DS2%22) | Planar systems: classification of hyperbolic equilibria and the Poincaré–Bendixson theorem | perko-2001 | L | advanced | DS1 |
+
 ### Gauge theory and constrained systems
 
 Done-when texts and trust checks: [milestones.md](milestones.md#gauge-theory-and-constrained-systems).
@@ -174,6 +258,8 @@ Done-when texts and trust checks: [milestones.md](milestones.md#harmonic-analysi
 | [`T-HA3`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-HA3%22) | SL(2,ℝ): principal and discrete series, the Plancherel measure | kitaev-2017, ggv-1966 | L | advanced | HA2 |
 | [`T-HA4`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-HA4%22) | Unitary irreducible representations of SU(2) and their completeness; link to Physlib's `sl₂`-modules and 6j … | hall-2015, martin-dussaud-2019, brocker-tom-dieck-1985 | M | intermediate |  |
 | [`T-HA1`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-HA1%22) | SL(2,ℂ), its Haar measure and its unitary principal series; their restriction to SU(2) | knapp-1986, martin-dussaud-2019 | L | advanced |  |
+| [`T-HA6`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-HA6%22) | Unitary irreducible representations of the Poincaré group (Wigner 1939): the little-group method, mass, spin … | weinberg-1995 | L | advanced | HA4 |
+| [`T-HA5`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-HA5%22) | The Peter–Weyl theorem for compact groups | brocker-tom-dieck-1985 | L | advanced |  |
 
 ### Operator algebras and quantum information
 
@@ -186,6 +272,7 @@ Done-when texts and trust checks: [milestones.md](milestones.md#operator-algebra
 | [`T-OP1`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-OP1%22) | Unbounded self-adjoint operators: adjoints, essential self-adjointness, deficiency indices, Stone's theorem | hall-2013 | L | advanced |  |
 | [`T-OP5`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-OP5%22) | Finite-dimensional quantum mechanics: unitary evolution, Schrödinger equation, Born rule | hall-2013 | M | intermediate |  |
 | [`T-OP4`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-OP4%22) | Entropy: von Neumann and relative entropy, subadditivity, strong subadditivity (Lieb–Ruskai 1973) | nielsen-petz-2005 | L | advanced |  |
+| [`T-OP6`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-OP6%22) | Trace-class and Hilbert–Schmidt operators: the Schatten ideals `S¹` and `S²`, the trace, duality with the … | reed-simon-1972 | L | advanced |  |
 
 ### Oscillatory and saddle-point asymptotics
 
@@ -194,6 +281,8 @@ Done-when texts and trust checks: [milestones.md](milestones.md#oscillatory-and-
 | Task | Title | Source | Size | Difficulty | Needs |
 |---|---|---|---|---|---|
 | [`T-SP1`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-SP1%22) | Stationary phase for oscillatory integrals on ℝⁿ, including complex phases with `Im φ ≥ 0` | hormander-1990 | L | advanced |  |
+| [`T-SP4`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-SP4%22) | The Morse lemma, with smooth dependence on parameters | milnor-1963 | M | intermediate |  |
+| [`T-SP3`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-SP3%22) | Tauberian theorems for Laplace transforms: Karamata's theorem and Ingham's theorem with exponential growth | mukhametzhanov-zhiboedov-2019 | L | advanced |  |
 | [`T-SP2`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-SP2%22) | Saddle-point asymptotics of balanced alternating Gamma-ratio sums (complex saddles) | gurau-2008 | L | advanced |  |
 
 ### Perturbative QFT and the renormalization group
@@ -205,6 +294,7 @@ Done-when texts and trust checks: [milestones.md](milestones.md#perturbative-qft
 | [`T-FT5`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-FT5%22) | BRST and BV formalism in finite dimensions | henneaux-teitelboim-1992 | M | intermediate |  |
 | [`T-FT4`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-FT4%22) | The renormalization group for finitely many couplings: flows, fixed points, linearization, critical exponents | delamotte-2007 | M | intermediate | FT1 |
 | [`T-FT2`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-FT2%22) | Renormalization of graphs: BPHZ forests, the Connes–Kreimer Hopf algebra (1998–2000), Birkhoff decomposition | connes-kreimer-2000, kreimer-1998 | L | advanced | FT1 |
+| [`T-FT6`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-FT6%22) | The Legendre–Fenchel transform and the one-particle-irreducible effective action | delamotte-2007 | M | intermediate | FT1 |
 | [`T-FT1`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-FT1%22) | Gaussian integrals, Wick's theorem, Feynman graphs; zero-dimensional QFT as formal power series | borinsky-2018 | M | intermediate |  |
 | [`T-FT3`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-FT3%22) | Dimensional regularization at one loop | weinzierl-2006 | M | intermediate |  |
 
@@ -381,6 +471,7 @@ Done-when texts and trust checks: [milestones.md](milestones.md#perturbative-qua
 | [`T-PG6`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-PG6%22) | Gravity as an effective field theory (Donoghue 1994): the quantum correction to the Newtonian potential … | bjerrum-bohr-donoghue-holstein-2003, donoghue-1994 | R | research-level | PG4 |
 | [`T-PG3`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-PG3%22) | Gravitons as massless helicity ±2 representations; Weinberg's soft theorem (1965); Weinberg–Witten (1980) | bekaert-boulanger-sundell-2010 | L | advanced | HA1, PG1 |
 | [`T-PG5`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-PG5%22) | Two loops: the Goroff–Sagnotti counterterm (1986; van de Ven 1992) | bern-2015 | R | research-level | PG4 |
+| [`T-PG8`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-PG8%22) | Lie superalgebras and the four-dimensional supersymmetry algebra: super-Poincaré, massless and massive … | bilal-2001 | L | advanced | HA6 |
 
 ### Regge calculus
 
@@ -425,10 +516,10 @@ Done-when texts and trust checks: [milestones.md](milestones.md#string-theory).
 | Task | Title | Source | Size | Difficulty | Needs |
 |---|---|---|---|---|---|
 | [`T-ST8`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-ST8%22) | Calabi–Yau data: the quintic threefold; Yau's theorem (1978) stated | bouchard-2007, polchinski-1998b | L | advanced |  |
+| [`T-ST1`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-ST1%22) | Classical strings: Nambu–Goto and Polyakov, conformal gauge, Virasoro constraints | tong-2009 | M | intermediate |  |
 | [`T-ST6`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-ST6%22) | The GSO projection (1977) and spacetime supersymmetry | polchinski-1998b | M | intermediate | CF4 |
 | [`T-ST2`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-ST2%22) | The critical dimension from BRST (Kato–Ogawa 1983) | polchinski-1998a | M | intermediate | CF2, FT5 |
 | [`T-ST4`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-ST4%22) | The no-ghost theorem (Goddard–Thorn 1972; Brower 1972) | polchinski-1998a | L | advanced | CF1 |
-| [`T-ST1`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-ST1%22) | Classical strings: Nambu–Goto and Polyakov, conformal gauge, Virasoro constraints | tong-2009 | M | intermediate |  |
 | [`T-ST3`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-ST3%22) | Light-cone quantization (Goddard–Goldstone–Rebbi–Thorn 1973) | tong-2009 | L | advanced | CF1 |
 | [`T-ST5`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-ST5%22) | Tree amplitudes: Veneziano (1968), Virasoro–Shapiro (1969–70) | tong-2009 | M | intermediate |  |
 | [`T-ST10`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-ST10%22) | Strominger–Vafa (1996): the microscopic count for 5D extremal black holes | strominger-vafa-1996 | R | research-level | CF5, GE6 |

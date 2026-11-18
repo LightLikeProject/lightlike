@@ -13,10 +13,16 @@ see [CONTRIBUTING.md](../CONTRIBUTING.md).
   top of `docs/RESULTS.md`. An entry is a result that a paper or book would state as a theorem.
   Supporting lemmas stay in the code with docstrings and get no entry; the review of a catalogue
   change checks every new entry against this.
+  Before an entry is numbered, its note names every difference from the cited theorem, and each
+  difference has a maintainer's approval on record (issue or pull request); otherwise the note
+  says that the result is partial, and its task or milestone stays open. A note presents a
+  comparison with a source only if the source was read at the cited location; otherwise it says
+  that the comparison is pending ([AGENTS.md](../AGENTS.md#review)).
 - **Generated files.** A pull request does not change `docs/RESULTS.md`, the task board,
-  `Tasks.lean` or the generated counts in `README.md`, `ROADMAP.md` and `CHANGELOG.md`
-  (`scripts/generated.py check`, a hard rule). After merging a batch, one commit runs
-  `python3 scripts/api_map.py generate && python3 scripts/tasks.py generate`. Since `main` takes
+  `Tasks.lean`, the generated counts in `README.md`, `ROADMAP.md` and `CHANGELOG.md`, or the module
+  docstring (the header) of a proof-task file (`scripts/generated.py check`, a hard rule). After
+  merging a batch, one commit runs `python3 scripts/api_map.py generate && python3 scripts/tasks.py
+  generate && python3 scripts/tasks.py deps`. Since `main` takes
   changes only through pull requests, an integration branch (`integration/...`, in this
   repository) carries that commit as its last; for it the check requires instead that the
   generated content is exactly what the generators produce. On a branch, `api_map.py check` and

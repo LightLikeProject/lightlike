@@ -12,7 +12,9 @@ The steps are read from ci.yml, so the gate and CI cannot drift apart:
     step they, and any other key the gate does not implement (`working-directory`, ...), are an
     error, so a step can never be skipped or misrun by accident;
   * a step with `continue-on-error: true` is advisory: a failure is recorded as WARN and the gate
-    goes on (only the hard rules of CONTRIBUTING.md fail the gate).
+    goes on (only the hard rules of CONTRIBUTING.md fail the gate). The last line names every
+    advisory warning, `GATE OK (2 advisory warnings: [9] ..., [28] ...)`, and the step that
+    failed the gate, `GATE FAILED at [19] ...`.
 The steps run with the interpreter that runs the gate first on PATH, so `python3` in a step is
 that interpreter (`venv/bin/python -I scripts/gate.py` makes the venv's `python3` the one every step
 uses), then `~/.elan/bin`.
@@ -25,6 +27,8 @@ hash it records.
 
   python3 -I scripts/gate.py              # run everything
   python3 -I scripts/gate.py --list       # show the steps and what the gate does with each
+  python3 -I scripts/gate.py --full       # every Python cross-check (default: those the change since
+                                          # origin/main selects, as CI does on a pull request)
   python3 -I scripts/gate.py --from N     # resume at step N (the record is marked partial)
   python3 -I scripts/gate.py --task T-QU1-P5   # fast mode for a proof-task pull request
 
@@ -102,8 +106,13 @@ def versions(root) -> dict:
     return v
 
 
-def env() -> dict:
+def env(py_base=None) -> dict:
     e = dict(os.environ)
+    # The Python cross-check step runs `run_python_checks.py --auto`: with a base, only the checks the
+    # change since that base selects (as CI does on a pull request); without one, every check.
+    e.pop("LL_GATE_BASE", None)
+    if py_base:
+        e["LL_GATE_BASE"] = py_base
     # The steps run with the interpreter that runs the gate (its packages were checked), then elan.
     e["PATH"] = (os.path.dirname(sys.executable) + os.pathsep + str(pathlib.Path.home() / ".elan" / "bin")
                  + os.pathsep + e["PATH"])
@@ -141,7 +150,7 @@ def task_steps(root, tid, base):
         return 0
 
     def run(cmd):
-        return subprocess.run(cmd, cwd=root, env=env()).returncode
+        return subprocess.run(cmd, cwd=root, env=env(py_base)).returncode
 
     def check():
         return run([sys.executable, "-I", "scripts/proof_task_check.py", "--base", base, "--head", "HEAD",
@@ -217,6 +226,22 @@ def fast_mode(root, tid, base) -> int:
     return 0 if ok else 1
 
 
+def verdict(rec: dict) -> str:
+    """OK or FAILED, then the step that failed the gate and the advisory warnings, each by number
+    and name, and why the tree is not the one the record names, if it changed."""
+    name = lambda s: f"[{s['n']}] {s['name']}"
+    warn = [name(s) for s in rec["steps"] if s["result"] == "WARN"]
+    fail = [name(s) for s in rec["steps"] if s["result"] == "FAIL"]
+    out = "OK" if rec["ok"] else "FAILED"
+    if fail:
+        out += f" at {fail[0]}"
+    if warn:
+        out += f" ({len(warn)} advisory warning{'' if len(warn) == 1 else 's'}: {', '.join(warn)})"
+    if rec.get("note"):
+        out += f" ({rec['note']})"
+    return out
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--workflow", type=pathlib.Path)
@@ -224,6 +249,8 @@ def main() -> int:
     ap.add_argument("--list", action="store_true")
     ap.add_argument("--from", dest="start", type=int, default=1)
     ap.add_argument("--task", help="fast mode: check one proof task, e.g. T-QU1-P5")
+    ap.add_argument("--full", action="store_true",
+                    help="run every Python cross-check, not only those the change since origin/main selects")
     ap.add_argument("--base", help="fast mode: the ref the pull request is based on (default origin/main)")
     a = ap.parse_args()
     root = a.root.resolve()
@@ -245,7 +272,9 @@ def main() -> int:
         print("FAIL the working tree is not clean; commit first (the record names the commit)")
         return 3
     commit = git(root, "rev-parse", "HEAD")
+    py_base = None if a.full else git(root, "merge-base", a.base or default_base(root), "HEAD")
     rec = {"commit": commit, "branch": git(root, "rev-parse", "--abbrev-ref", "HEAD"),
+           "python_checks": f"selected by the change since {py_base[:7]}" if py_base else "all",
            "started": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "steps": [],
            "partial": a.start > 1, "versions": versions(root)}
     ok = True
@@ -276,7 +305,7 @@ def main() -> int:
     with open(d / "log.jsonl", "a", encoding="utf-8") as f:
         f.write(json.dumps(rec) + "\n")
     done = [s for s in rec["steps"] if s["result"] == "ok"]
-    print(f"GATE {'OK' if rec['ok'] else 'FAILED'} commit={commit[:7]} branch={rec['branch']} "
+    print(f"GATE {verdict(rec)} commit={commit[:7]} branch={rec['branch']} "
           f"steps_ok={len(done)}/{sum(1 for s in steps if not s['ci_only'])}"
           f"{' (partial: --from)' if rec['partial'] else ''} lean={rec['versions']['lean']}")
     return 0 if rec["ok"] else 1

@@ -61,7 +61,8 @@ Everything below is recommended practice, with the reason for it.
 - **Weaken statements openly, never silently.** If a goal is too hard, say exactly what is
   missing and propose a smaller version; an open identity becomes an explicit hypothesis (as with
   `BiedenharnElliott`), not a hidden `sorry`. A quietly weakened statement is a wrong result that
-  type-checks.
+  type-checks. A statement that differs from its cited source needs a maintainer's approval
+  ([Review](#review)).
 - **Document every `sorry` while exploring:** a comment saying what it stands for and how hard it
   looks. None may reach `Lightlike/`.
 - **Trust checks.** Prove that a new definition gives known values on non-trivial cases, and that
@@ -87,6 +88,19 @@ Everything below is recommended practice, with the reason for it.
 
 ## Review
 
+- **A statement that differs from its source needs a maintainer's approval.** When a statement
+  cites the theorem it formalizes, every difference from that theorem is named in its docstring
+  and in the catalogue entry's note: an added or stronger hypothesis, a narrower range (a
+  dimension, a class of spaces, no boundary), a weaker conclusion, a convention that changes the
+  meaning, or a different form of the result (an energy-level limit where the source proves
+  convergence of eigenpairs, for example). Until a maintainer approves the difference on the
+  result's issue or pull request, the result counts as partial: its task or milestone stays open,
+  and the statement as the source gives it stays as it was, never replaced by the narrower one.
+  A difference found later, in a review or an audit, is reported on an issue and handled the same
+  way.
+- **A comparison with a source needs the source read.** A statement may be presented as compared
+  with a source only if that source was read at the cited location; otherwise its note says that
+  the comparison is pending.
 - A statement or definition is compared with its cited source for conventions, quantifier
   ranges, hypotheses, junk values and non-vacuity ([README.md](README.md#review)). An agent asked
   to review works in a fresh context, preferably as a different model, never on its own work, and
