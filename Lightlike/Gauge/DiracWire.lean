@@ -40,4 +40,22 @@ theorem stageSet_inter_eq {a : ℕ} (Cm : E → Matrix (m ⊕ Fin b) (m ⊕ Fin 
     refine ⟨⟨hx, ?_⟩, hxU⟩
     exact (exists_multiplier_iff_chi Cm h (hU x hxU).1 (hU x hxU).2).mpr (funext hχ)
 
+/-- **The chain of regular stages and the final consistency**: let the stages `Φ k` (extending one another, regular,
+with nonempty zero sets) be related to the consistency conditions by `hstage` (on a set `U k` of constant rank, the
+points of `zeroSet (Φ k)` with a multiplier are those of `zeroSet (Φ (k + 1))`, as `stageSet_inter_eq` gives when
+`Φ (k + 1)` extends `Φ k` by the secondary constraints). Then from some stage `N` on the zero set no longer changes,
+and every point of it that lies in `U N` has a multiplier: the evolution is consistent there. -/
+theorem final_consistent (n : ℕ → ℕ) (Φ : ∀ k, Fin (n k) → E → ℝ) (hmono : ∀ k, n k ≤ n (k + 1))
+    (hext : ∀ k i, Φ (k + 1) (Fin.castLE (hmono k) i) = Φ k i) (hreg : ∀ k, IsRegularStage (Φ k))
+    (hne : ∀ k, (zeroSet (Φ k)).Nonempty) (Cm : ℕ → E → Matrix (m ⊕ Fin b) (m ⊕ Fin b) ℝ)
+    (h : ℕ → E → (m ⊕ Fin b) → ℝ) (U : ℕ → Set E)
+    (hstage : ∀ k, stageSet (Cm k) (h k) (zeroSet (Φ k)) ∩ U k = zeroSet (Φ (k + 1)) ∩ U k) :
+    ∃ N, (∀ k, N ≤ k → zeroSet (Φ k) = zeroSet (Φ N)) ∧
+      ∀ x ∈ zeroSet (Φ N) ∩ U N, ∃ u, Cm N x *ᵥ u + h N x = 0 := by
+  obtain ⟨N, hN⟩ := exists_stable_of_regular n Φ hmono hext hreg hne
+  refine ⟨N, hN, fun x hx => ?_⟩
+  have h1 : x ∈ zeroSet (Φ (N + 1)) ∩ U N := by rw [hN (N + 1) (by omega)]; exact hx
+  rw [← hstage N] at h1
+  exact h1.1.2
+
 end Lightlike.Gauge
