@@ -39,3 +39,17 @@ Remaining differences with the source: (a) local selection of the invertible blo
 on the whole surface (a representation difference: the null vectors used are the rows of `[-D B⁻¹, 1]`); (b) the cover
 hypothesis (from constant rank to a cover by invertible blocks); (c) regularity of every stage is an explicit hypothesis, as
 in the source, Section 3.3; (d) Wipf states the termination without proof; here it is `exists_stable_of_regular` by counting.
+
+## Constant rank gives a nonzero minor (hcover): what is proved, and the representation difference
+
+Proved (`MinorExists`): a real matrix of rank `r` has `r` rows and `r` columns with a nonzero `r × r` minor
+(`exists_isUnit_det_submatrix`; no such lemma is in the pinned Mathlib), and an invertible block of a matrix-valued function with
+continuous entries stays invertible on a neighbourhood (`eventually_isUnit_det`); with `DiracSchur.schur_eq_zero_of_rank_le_block`
+(constant rank `r` forces the Schur complement of an invertible `r × r` block to vanish) this gives, near every point of the
+surface and at each stage, an invertible block with vanishing Schur complement.
+
+Not proved, and a representation difference against Wipf (Section 3.3, left null vectors `w_a` on the whole surface): the
+block (the rows and columns of the minor) depends on the point, so the stage tuple built from a block is chart-dependent. The
+algorithm `DiracAlgo.stages` uses one selection per stage; the pointwise statement near a point `x₀` is that one such
+selection, adapted to `x₀`, works on a neighbourhood. A global statement needs a finite cover of the surface by such charts and
+the compatibility of the resulting stage tuples on overlaps, which is not formalised.
