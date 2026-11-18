@@ -1,6 +1,8 @@
 import Lightlike.OperatorAlgebras.MomentumSmooth
 import Lightlike.OperatorAlgebras.Deficiency
 import Mathlib.Analysis.Distribution.AEEqOfIntegralContDiff
+import Lightlike.OperatorAlgebras.WeakConstant
+import Mathlib.MeasureTheory.Integral.IntervalIntegral.IntegrationByParts
 
 /-!
 # The deficiency indices of `-i d/dx` on `L²(0, 1)`
@@ -99,5 +101,87 @@ lemma mem_deficiencySpace_iff {A : H →ₗ.[ℂ] H} (hA : Dense (A.domain : Set
     exact LinearPMap.adjoint_apply_eq hA ⟨y, hy⟩ fun x => h x
 
 end Generic
+
+/-- The real exponential `x ↦ exp (b x)` as a complex function. -/
+noncomputable def expC (b : ℝ) : ℝ → ℂ := fun x => ((Real.exp (b * x) : ℝ) : ℂ)
+
+lemma expC_contDiff (b : ℝ) : ContDiff ℝ ∞ (expC b) :=
+  Complex.ofRealCLM.contDiff.comp (Real.contDiff_exp.comp (contDiff_const.mul contDiff_id))
+
+lemma expC_hasDerivAt (b x : ℝ) : HasDerivAt (expC b) (b * expC b x) x := by
+  have h1 : HasDerivAt (fun x : ℝ => Real.exp (b * x)) (Real.exp (b * x) * b) x := by
+    simpa using ((hasDerivAt_id x).const_mul b).exp
+  have := h1.ofReal_comp
+  refine HasDerivAt.congr_deriv (f := fun y : ℝ => (((Real.exp (b * y) : ℝ)) : ℂ)) this ?_
+  simp [expC]; ring
+
+/-- **Integration by parts on `(0, 1)`** for a `C¹` function with support inside `(0, 1)`:
+`∫ φ' e^{bx} = -b ∫ φ e^{bx}`. -/
+lemma integral_deriv_mul_expC {φ : ℝ → ℂ} (hφ : ContDiff ℝ 1 φ) (hs : tsupport φ ⊆ Ioo (0 : ℝ) 1)
+    (b : ℝ) :
+    ∫ x in Ioo (0 : ℝ) 1, deriv φ x * expC b x = -b * ∫ x in Ioo (0 : ℝ) 1, φ x * expC b x := by
+  have hd : ∀ x, HasDerivAt (fun x => φ x * expC b x) (deriv φ x * expC b x + φ x * (b * expC b x)) x :=
+    fun x => ((hφ.differentiable (by norm_num) x).hasDerivAt).mul (expC_hasDerivAt b x)
+  have hc : Continuous fun x => deriv φ x * expC b x + φ x * (b * expC b x) :=
+    ((hφ.continuous_deriv le_rfl).mul (expC_contDiff b).continuous).add
+      (hφ.continuous.mul (continuous_const.mul (expC_contDiff b).continuous))
+  have h0 : φ 0 = 0 := image_eq_zero_of_notMem_tsupport fun h => by simpa using (hs h).1
+  have h1 : φ 1 = 0 := image_eq_zero_of_notMem_tsupport fun h => by simpa using (hs h).2
+  have key := intervalIntegral.integral_eq_sub_of_hasDerivAt (fun x _ => hd x)
+    (hc.intervalIntegrable 0 1)
+  rw [h0, h1] at key
+  simp only [zero_mul, sub_zero] at key
+  have e1 : ∫ x in (0 : ℝ)..1, (deriv φ x * expC b x + φ x * (b * expC b x)) =
+      ∫ x in Ioo (0 : ℝ) 1, (deriv φ x * expC b x + φ x * (b * expC b x)) := by
+    rw [intervalIntegral.integral_of_le zero_le_one, integral_Ioc_eq_integral_Ioo]
+  rw [e1] at key
+  have i1 : IntegrableOn (fun x => deriv φ x * expC b x) (Ioo (0 : ℝ) 1) :=
+    ((hφ.continuous_deriv le_rfl).mul (expC_contDiff b).continuous).continuousOn.integrableOn_Icc.mono_set
+      Ioo_subset_Icc_self
+  have i2 : IntegrableOn (fun x => φ x * (b * expC b x)) (Ioo (0 : ℝ) 1) :=
+    (hφ.continuous.mul (continuous_const.mul (expC_contDiff b).continuous)).continuousOn.integrableOn_Icc.mono_set
+      Ioo_subset_Icc_self
+  rw [integral_add i1 i2] at key
+  have e2 : ∫ x in Ioo (0 : ℝ) 1, φ x * (b * expC b x) = b * ∫ x in Ioo (0 : ℝ) 1, φ x * expC b x := by
+    rw [← integral_const_mul]; congr 1; funext x; ring
+  rw [e2] at key
+  linear_combination key
+
+/-- The inner product of `w` with the class of a function supported inside `(0, 1)` is an integral. -/
+lemma inner_classI_right (w : L2I) {g : ℝ → ℂ} (hg : Continuous g) (hs : tsupport g ⊆ Ioo (0 : ℝ) 1) :
+    ⟪w, classI g hg hs⟫_ℂ = ∫ x in Ioo (0 : ℝ) 1, g x * (starRingEnd ℂ) (w x) := by
+  rw [MeasureTheory.L2.inner_def]
+  refine integral_congr_ae ?_
+  have h1 : (classI g hg hs : ℝ → ℂ) =ᵐ[(volume : Measure ℝ).restrict (Ioo (0 : ℝ) 1)] g :=
+    MemLp.coeFn_toLp _
+  filter_upwards [h1] with x hx
+  rw [hx]; simp [RCLike.inner_apply]
+
+/-- **Weak form of the deficiency equation**: `y` is in the deficiency space of `momentumMin` at `z` iff
+`conj z ∫ φ conj y = -i ∫ φ' conj y` for every test function `φ`. -/
+lemma mem_deficiencySpace_momentumMin_iff (z : ℂ) (y : L2I) :
+    y ∈ deficiencySpace momentumMin z ↔ ∀ f : testFunctions,
+      (starRingEnd ℂ) z * ∫ x in Ioo (0 : ℝ) 1, f.1 x * (starRingEnd ℂ) (y x) =
+        (-Complex.I) * ∫ x in Ioo (0 : ℝ) 1, deriv f.1 x * (starRingEnd ℂ) (y x) := by
+  rw [mem_deficiencySpace_iff dense_momentumMin_domain]
+  have hform : ∀ f : testFunctions, ∀ hx : (momentumPair f).1 ∈ momentumMin.domain,
+      (⟪z • y, (⟨(momentumPair f).1, hx⟩ : momentumMin.domain)⟫_ℂ = ⟪y, momentumMin ⟨(momentumPair f).1, hx⟩⟫_ℂ) ↔
+      (starRingEnd ℂ) z * ∫ x in Ioo (0 : ℝ) 1, f.1 x * (starRingEnd ℂ) (y x) =
+        (-Complex.I) * ∫ x in Ioo (0 : ℝ) 1, deriv f.1 x * (starRingEnd ℂ) (y x) := by
+    intro f hx
+    rw [momentumMin_apply f hx]
+    show ⟪z • y, classI f.1 f.2.1.continuous f.2.2⟫_ℂ =
+      ⟪y, (-Complex.I) • classI (deriv f.1) _ _⟫_ℂ ↔ _
+    rw [inner_smul_left, inner_smul_right, inner_classI_right, inner_classI_right]
+  constructor
+  · intro h f
+    have hx : (momentumPair f).1 ∈ momentumMin.domain := mem_momentumMin_domain.2 ⟨f, rfl⟩
+    exact (hform f hx).1 (h ⟨_, hx⟩)
+  · intro h x
+    obtain ⟨f, hf⟩ := mem_momentumMin_domain.1 x.2
+    have hx : (momentumPair f).1 ∈ momentumMin.domain := mem_momentumMin_domain.2 ⟨f, rfl⟩
+    have hx' : x = ⟨(momentumPair f).1, hx⟩ := Subtype.ext hf.symm
+    rw [hx']
+    exact (hform f hx).2 (h f)
 
 end Lightlike.OperatorAlgebras
