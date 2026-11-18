@@ -109,6 +109,7 @@ import Lightlike.Asymptotics.LandingTests
 import Lightlike.Asymptotics.Level
 import Lightlike.Asymptotics.LevelTests
 import Lightlike.Asymptotics.Lift
+import Lightlike.Asymptotics.MorseLemma
 import Lightlike.Asymptotics.Orientation
 import Lightlike.Asymptotics.OrientationTests
 import Lightlike.Asymptotics.PhaseTests
