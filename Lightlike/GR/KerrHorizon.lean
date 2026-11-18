@@ -13,8 +13,9 @@ horizon is `r₊ = 2M`, `Ω_H = 0`, `κ = 1/(4M)` (`kerr_schwarzschild_limit`).
 Reversing the sign of `g_{tφ}` alone is the substitution `a ↦ -a` (`kerrMetric_neg`): that metric is again Kerr.
 
 Gap row GE6. Definition of `κ` through `Δ'(r₊)/(2(r₊²+a²))` is the standard closed form, not derived here from
-`χ^μ ∇_μ χ^ν = κ χ^ν` (the Boyer–Lindquist chart is singular at the horizon); comparison with Wald, ch. 12, and
-Carter (1968): pending, not read.
+`χ^μ ∇_μ χ^ν = κ χ^ν` (the Boyer–Lindquist chart is singular at the horizon). Compared with Visser, *The Kerr spacetime: A brief
+introduction* (arXiv:0706.0622v3): `r₊`, `Ω_H = a/(2 m r₊)` (eq. 112) and the null generator `(1, 0, 0, Ω_H)` (eqs. 113-114, p. 26);
+the surface gravity `κ` does not occur in that text and is not source-checked (Wald, ch. 12, Carter 1968: not read).
 -/
 
 open Matrix Real

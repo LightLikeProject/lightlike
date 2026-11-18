@@ -11,7 +11,9 @@ with `Σ = r² + a² cos²θ`, `Δ = r² - 2Mr + a²`, in coordinates `(t, r, θ
 (`kerrMetric_zero`).
 
 Gap row GE6, first stage. The Ricci-flatness, the Killing horizons `κ = √(M²-a²)/(2Mr₊)` and `Ω_H = a/(2Mr₊)`
-are not yet proved. Comparison with Boyer–Lindquist (1967) and Carroll, ch. 6: pending.
+are in `KerrHorizon.lean`. Compared with Visser, *The Kerr spacetime: A brief introduction* (arXiv:0706.0622v3), section 5,
+eq. (57) for the metric and eq. (106) for the determinant (see `docs/notes/ge6-kerr-source-and-controls.md`);
+Boyer–Lindquist (1967) and Carroll, ch. 6: not read.
 -/
 
 open Matrix Real
