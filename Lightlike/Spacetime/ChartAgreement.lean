@@ -127,6 +127,7 @@ theorem hv_curvatureAt {p : M} (hp : p ∈ (tTriv (E := Fin n → ℝ) x₀).bas
   simp only [FiberBundle.extend_apply_self]
   exact h2
 
+omit [CovariantDerivative.ContMDiffCovariantDerivative cov ∞] in
 /-- The Christoffel tensor in the components of the trivialization is the Christoffel symbol of the coordinate
 metric, for the Levi-Civita connection. -/
 theorem gamHat_coord (g : LorentzianMetric 𝓘(ℝ, Fin n → ℝ) M n) (h : cov.IsLeviCivita g)
