@@ -163,7 +163,8 @@ A bounded operator on a complex Hilbert space is trace class when the diagonal s
     `OperatorAlgebras.TraceClass.TraceClass.tracePairing_surjective_concrete`
 44. Lightlike/OperatorAlgebras/TestsTraceClass.lean - `OperatorAlgebras.TraceClass.trace_rankOne_complex_one`,
     `OperatorAlgebras.TraceClass.isTraceClass_id_complex`,
-    `OperatorAlgebras.TraceClass.not_isHilbertSchmidt_one`
+    `OperatorAlgebras.TraceClass.not_isHilbertSchmidt_one`,
+    `OperatorAlgebras.TraceClass.diag_weights_square_summable_not_summable`
 
 ## References
 

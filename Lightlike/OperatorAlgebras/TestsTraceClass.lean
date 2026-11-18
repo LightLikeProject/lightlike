@@ -1,4 +1,5 @@
 import Lightlike.OperatorAlgebras.TraceClass.RankOnePairing
+import Mathlib.Analysis.PSeries
 
 /-!
 # Trust checks for the trace-class layer
@@ -66,10 +67,11 @@ the trace-norm sum.) -/
 theorem diag_weights_square_summable_not_summable :
     Summable (fun n : ℕ => (((n : ℝ) + 1)⁻¹) ^ 2) ∧ ¬ Summable (fun n : ℕ => ((n : ℝ) + 1)⁻¹) := by
   constructor
-  · have h := (summable_nat_add_iff 1).mpr (Real.summable_nat_pow_inv.mpr (by norm_num : 1 < 2))
-    simpa [inv_pow] using h
+  · have h : Summable (fun n : ℕ => (((n + 1 : ℕ) : ℝ) ^ 2)⁻¹) :=
+      (summable_nat_add_iff 1).mpr (Real.summable_nat_pow_inv.mpr (by norm_num : 1 < 2))
+    simpa [inv_pow, Nat.cast_add] using h
   · intro h
-    have h' := (summable_nat_add_iff 1).mp (by simpa using h)
-    exact Real.not_summable_natCast_inv h'
+    have h2 : Summable (fun n : ℕ => ((n + 1 : ℕ) : ℝ)⁻¹) := by simpa [Nat.cast_add] using h
+    exact Real.not_summable_natCast_inv ((summable_nat_add_iff 1).mp h2)
 
 end Lightlike.OperatorAlgebras.TraceClass
