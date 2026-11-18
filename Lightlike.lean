@@ -912,6 +912,7 @@ import Lightlike.Gauge.DiracRegular
 import Lightlike.Gauge.DiracSchur
 import Lightlike.Gauge.DiracStage
 import Lightlike.Gauge.DiracWire
+import Lightlike.Gauge.DiracTangent
 import Lightlike.Gauge.MatrixInverse
 import Lightlike.Gauge.PoissonJacobi
 import Lightlike.Tests.ADM
