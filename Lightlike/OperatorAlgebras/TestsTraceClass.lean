@@ -59,4 +59,17 @@ theorem not_isHilbertSchmidt_one {H : Type*} [NormedAddCommGroup H] [InnerProduc
   rw [hspan] at hfd
   exact LinearEquiv.finiteDimensional (Submodule.topEquiv (R := ℂ) (M := H))
 
+/-- **The numerical core of the check "the diagonal operator with eigenvalues `1 / n` is Hilbert-Schmidt and not trace class"**:
+the squares of the eigenvalues `1 / (n + 1)` are summable, the eigenvalues themselves are not. (The operator form, on an explicit
+`ℓ²`, is not in the library yet; in a basis `eₙ` with `D eₙ = (n + 1)⁻¹ eₙ` the first sum is the Hilbert-Schmidt sum and the second
+the trace-norm sum.) -/
+theorem diag_weights_square_summable_not_summable :
+    Summable (fun n : ℕ => (((n : ℝ) + 1)⁻¹) ^ 2) ∧ ¬ Summable (fun n : ℕ => ((n : ℝ) + 1)⁻¹) := by
+  constructor
+  · have h := (summable_nat_add_iff 1).mpr (Real.summable_nat_pow_inv.mpr (by norm_num : 1 < 2))
+    simpa [inv_pow] using h
+  · intro h
+    have h' := (summable_nat_add_iff 1).mp (by simpa using h)
+    exact Real.not_summable_natCast_inv h'
+
 end Lightlike.OperatorAlgebras.TraceClass
