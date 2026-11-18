@@ -10,6 +10,8 @@ themselves are open proof tasks, in `Tasks/OP/`.
 
 ## Content (Alpha)
 
+The generator of a unitary group is self-adjoint: its domain is dense and invariant, it is symmetric, and a vector of the domain of its adjoint satisfies `U t y = y + i ∫₀ᵗ U s (A† y) ds`, so it lies in the domain [9]. Two groups with the same generator are equal, because the norm of `U t ψ - V t ψ` is constant [10].
+
 A strongly continuous one-parameter unitary group is a family of unitaries `U t` with `U 0 = 1`,
 `U (s + t) = U s ∘ U t` and `t ↦ U t ψ` continuous [1]. Its generator `A` is `-i d/dt U t ψ` at `0`, on
 the vectors where the derivative exists, so that formally `U t = exp (i t A)` [1]. Stone's theorem says
