@@ -290,4 +290,48 @@ theorem pd_pd_ctrlMetric (M a k : ℝ) {y : Fin 4 → ℝ} (hy : y ∈ kerrU M a
   rw [pd_const]
   split_ifs <;> rfl
 
+/-- The control metric agrees with Kerr off the `(t, φ)` off-diagonal entries. -/
+theorem ctrlMetric_eq_kerr (M a k : ℝ) (y : Fin 4 → ℝ) (i j : Fin 4)
+    (h : ¬ ((i = 0 ∧ j = 3) ∨ (i = 3 ∧ j = 0))) : ctrlMetric M a k y i j = kerrMetric M a y i j := by
+  rw [kerrMetric_eq_gjet]
+  simp only [ctrlMetric, Matrix.of_apply, gjetC0, gjet0]
+  split_ifs <;> simp_all
+
+/-- The `(t, φ)` off-diagonal entry of the control metric. -/
+theorem ctrlMetric_03 (M a k : ℝ) (y : Fin 4 → ℝ) : ctrlMetric M a k y 0 3 = kcg03 M a k (y 1) (y 2) := by
+  simp [ctrlMetric, gjetC0]
+
+theorem ctrlMetric_30 (M a k : ℝ) (y : Fin 4 → ℝ) : ctrlMetric M a k y 3 0 = kcg03 M a k (y 1) (y 2) := by
+  simp [ctrlMetric, gjetC0]
+
+/-- The determinant of the `(t, φ)` block of the control metric. -/
+def ctrlDet (M a k : ℝ) (y : Fin 4 → ℝ) : ℝ :=
+  kgg00 M a (y 1) (y 2) * kgg33 M a (y 1) (y 2) - kcg03 M a k (y 1) (y 2) ^ 2
+
+/-- The domain where the control metric is invertible (inside `kerrU`). -/
+def ctrlU (M a k : ℝ) : Set (Fin 4 → ℝ) := {y | y ∈ kerrU M a ∧ ctrlDet M a k y ≠ 0}
+
+/-- The inverse of the control metric. -/
+def ctrlInv (M a k : ℝ) (y : Fin 4 → ℝ) : Matrix (Fin 4) (Fin 4) ℝ :=
+  !![kgg33 M a (y 1) (y 2) / ctrlDet M a k y, 0, 0, -kcg03 M a k (y 1) (y 2) / ctrlDet M a k y;
+     0, kerrD M a y / kerrS a y, 0, 0;
+     0, 0, 1 / kerrS a y, 0;
+     -kcg03 M a k (y 1) (y 2) / ctrlDet M a k y, 0, 0, kgg00 M a (y 1) (y 2) / ctrlDet M a k y]
+
+theorem ctrlMetric_mul_ctrlInv (M a k : ℝ) {y : Fin 4 → ℝ} (hy : y ∈ ctrlU M a k) :
+    ctrlMetric M a k y * ctrlInv M a k y = 1 := by
+  have hS : kerrS a y ≠ 0 := (kerrS_pos a hy.1.1).ne'
+  have hD : kerrD M a y ≠ 0 := hy.1.2.1
+  have hd : ctrlDet M a k y ≠ 0 := hy.2
+  have hS2 : kerrS a y = y 1 ^ 2 + a ^ 2 * cos (y 2) ^ 2 := rfl
+  have hD2 : kerrD M a y = y 1 ^ 2 - 2 * M * y 1 + a ^ 2 := rfl
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [ctrlMetric, ctrlInv, gjetC0, Matrix.mul_apply, Fin.sum_univ_four, Matrix.one_apply,
+      kgg11, kgg22, kerrS, kerrD, ctrlDet] <;> field_simp <;> ring
+
+theorem ctrlMetric_inv (M a k : ℝ) {y : Fin 4 → ℝ} (hy : y ∈ ctrlU M a k) :
+    (ctrlMetric M a k y)⁻¹ = ctrlInv M a k y :=
+  Matrix.inv_eq_right_inv (ctrlMetric_mul_ctrlInv M a k hy)
+
 end Lightlike
