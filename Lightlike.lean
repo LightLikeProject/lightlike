@@ -244,6 +244,9 @@ import Lightlike.OperatorAlgebras.FockExists
 import Lightlike.OperatorAlgebras.FockIrreducible
 import Lightlike.OperatorAlgebras.FockKernel
 import Lightlike.OperatorAlgebras.FockReduction
+import Lightlike.OperatorAlgebras.HilbertSchmidtBasis
+import Lightlike.OperatorAlgebras.ShaleAlgebra
+import Lightlike.OperatorAlgebras.ShaleHilbertSchmidt
 import Lightlike.OperatorAlgebras.FockUnique
 import Lightlike.OperatorAlgebras.GeneratorTranslation
 import Lightlike.OperatorAlgebras.GramUnitary
