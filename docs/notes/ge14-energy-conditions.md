@@ -12,6 +12,10 @@ NEC, WEC, SEC, DEC); the lists of violating matter on pp. 29-31; S. M. Carroll, 
 * For the perfect fluid `(ρ + p) u ⊗ u + p g` (principal pressures all `p`, dimension four) the effective forms of Curiel's table give NEC: `ρ + p ≥ 0`; WEC: `ρ ≥ 0, ρ + p ≥ 0`; SEC: `ρ + 3p ≥ 0, ρ + p ≥ 0`;
   DEC: `ρ ≥ |p|`. These are the theorems `fluid_nullEC_iff`, `fluid_weakEC_iff`, `fluid_strongEC_iff`, `fluid_dominantEC_iff` (proved, not quoted).
 
+Also read: P. Martín-Moruno and M. Visser, *Classical and semi-classical energy conditions* (arXiv 1702.05915), p. 4: for a type I stress-energy tensor (perfect fluids, massive scalar fields and non-null
+electromagnetic fields are named as examples) the conditions are equivalent to NEC `ρ + p_i ≥ 0`; WEC `ρ ≥ 0` and `ρ + p_i ≥ 0`; SEC `ρ + Σ p_i ≥ 0` and `ρ + p_i ≥ 0`; DEC `|p_i| ≤ ρ` (and `ρ ≥ 0`): the same effective forms as Curiel's table.
+The paper does not state, for the Maxwell field, which conditions hold; p. 5 says non-minimally coupled scalar fields can violate all conditions classically.
+
 ## Stress-energy forms (Carroll lecture notes gr-qc/9712019, read)
 * Perfect fluid: `T^{μν} = (ρ + p) U^μ U^ν + p η^{μν}`, eq. (1.110), p. 30: our `fluidT`.
 * Electromagnetic field: `T^{μν}_{e+m} = (1/4π)(F^{μλ} F^ν{}_λ − ¼ η^{μν} F^{λσ} F_{λσ})`, eq. (8.25), pp. 221-222 (and eq. (1.111), p. 30, printed with the opposite overall sign: an index-order convention for `F^ν{}_λ`;
