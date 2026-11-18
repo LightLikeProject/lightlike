@@ -400,4 +400,21 @@ theorem kruskal_isVacuumSolution (hM : 0 < M) : IsVacuumSolution 0 (kruskalMetri
   ⟨isCoordMetric_kruskal M hM, fun y hy μ ν => by
     simp [einsteinTensor, scalarCurvature, ricci_kruskal_eq_zero M hM hy]⟩
 
+/-- **Signature.** The Kruskal metric has Lorentzian signature on `X² - T² > -1`:
+`g = Pᵀ η P` with `P = diag(√h, √h, r, r sin θ)`. -/
+theorem kruskal_isLorentzian (hM : 0 < M) : IsLorentzianCoordMetric (kruskalMetric M) kruskalU := by
+  refine ⟨isCoordMetric_kruskal M hM, fun y hy => ?_⟩
+  have hr := kr_pos M hM hy
+  have hs := sin_pos_of_pos_of_lt_pi hy.2.1 hy.2.2
+  have hh : 0 < kh M (kr M y) := by unfold kh; positivity
+  refine ⟨diagonal ![√(kh M (kr M y)), √(kh M (kr M y)), kr M y, kr M y * sin (y 2)], ?_, ?_⟩
+  · rw [det_diagonal, Fin.prod_univ_four]
+    simp [hh, hr, hs]
+    exact ⟨⟨(Real.sqrt_pos.2 hh).ne', hr.ne'⟩, hr.ne', hs.ne'⟩
+  · rw [diagonal_transpose, eta, diagonal_mul_diagonal, diagonal_mul_diagonal]
+    have hq : √(kh M (kr M y)) ^ 2 = kh M (kr M y) := Real.sq_sqrt hh.le
+    simp only [kruskalMetric]
+    ext i j
+    fin_cases i <;> fin_cases j <;> simp [etaDiag, diagonal_apply] <;> first | linarith [hq] | ring
+
 end Lightlike
