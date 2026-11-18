@@ -1,5 +1,6 @@
 import Lightlike.OperatorAlgebras.ResolventIdentity
 import Lightlike.OperatorAlgebras.BoundedGroup
+import Lightlike.OperatorAlgebras.StoneGenerator
 
 /-!
 # The strong limit of the approximating unitary groups
@@ -263,5 +264,43 @@ theorem hasDerivAt_Ulim_domain (hA : IsSelfAdjoint A) (x : A.domain) :
         ‖t⁻¹ • (bdU (approx hA n) t (x : H) - (x : H)) - Complex.I • approx hA n (x : H)‖ +
         ‖Complex.I • (approx hA n (x : H) - A x)‖ := norm_add₃_le
     _ < ε := by linarith
+
+/-- The generator of `stoneGroup hA` extends `A`. -/
+lemma le_generator_stoneGroup (hA : IsSelfAdjoint A) : A ≤ (stoneGroup hA).generator := by
+  refine ⟨fun x hx => ?_, fun x y hxy => ?_⟩
+  · exact (hasDerivAt_Ulim_domain hA ⟨x, hx⟩).differentiableAt
+  · have hy : (y : H) = (x : H) := hxy.symm
+    have hd := hasDerivAt_Ulim_domain hA x
+    rw [UnitaryGroup.generator_apply, UnitaryGroup.dvec]
+    have : deriv (fun t => (stoneGroup hA) t (y : H)) 0 = Complex.I • (A x : H) := by
+      rw [hy]; exact hd.deriv
+    rw [this, smul_smul]
+    simp
+
+/-- **Stone's theorem, existence**: the generator of `stoneGroup hA` is `A`. -/
+theorem generator_stoneGroup (hA : IsSelfAdjoint A) : (stoneGroup hA).generator = A := by
+  set G := (stoneGroup hA).generator with hG
+  have hAG := le_generator_stoneGroup hA
+  have hAA : A† = A := hA
+  have hdense : Dense (A.domain : Set H) := hA.dense_domain
+  refine le_antisymm ?_ hAG
+  have hGA : G ≤ A† := by
+    have hform : ∀ (y : G.domain) (x : A.domain),
+        ⟪(G y : H), (x : H)⟫_ℂ = ⟪(y : H), (A x : H)⟫_ℂ := by
+      intro y x
+      have hxG : (x : H) ∈ G.domain := hAG.1 x.2
+      have h1 := (stoneGroup hA).generator_isFormalAdjoint y ⟨(x : H), hxG⟩
+      have h2 : (G ⟨(x : H), hxG⟩ : H) = (A x : H) := by
+        have := hAG.2 (x := x) (y := ⟨(x : H), hxG⟩) rfl
+        exact this.symm
+      rw [h2] at h1
+      exact h1
+    refine ⟨fun y hy => ?_, fun y y' hyy' => ?_⟩
+    · exact LinearPMap.mem_adjoint_domain_of_exists _ ⟨G ⟨y, hy⟩, fun x => hform ⟨y, hy⟩ x⟩
+    · have hy' : (y : H) = (y' : H) := hyy'
+      have := LinearPMap.adjoint_apply_eq hdense y' (x₀ := (G y : H)) (fun x => by
+        rw [← hy']; exact hform y x)
+      exact this.symm
+  rwa [hAA] at hGA
 
 end Lightlike.OperatorAlgebras
