@@ -32,6 +32,7 @@ lemma mono_eq_prod (l : List ι) (x : EuclideanSpace ℝ ι) :
   congr 1
   apply List.ext_get <;> simp
 
+/-- Every monomial is integrable for the centred Gaussian measure. -/
 lemma integrable_mono (S : Matrix ι ι ℝ) (l : List ι) :
     Integrable (mono l) (multivariateGaussian 0 S) := by
   by_cases hn : l.length = 0

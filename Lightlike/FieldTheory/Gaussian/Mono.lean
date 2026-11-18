@@ -51,6 +51,7 @@ lemma hasLineDerivAt_coord (k j : ι) (x : EuclideanSpace ℝ ι) :
   rw [this]
   simpa using ((hasDerivAt_id (0 : ℝ)).mul_const (if k = j then (1 : ℝ) else 0)).const_add (x k)
 
+/-- The line derivative of a monomial along `eⱼ` is `dmono j l`. -/
 lemma hasLineDerivAt_mono (j : ι) (l : List ι) (x : EuclideanSpace ℝ ι) :
     HasLineDerivAt ℝ (mono l) (dmono j l x) x (e j) := by
   induction l with
