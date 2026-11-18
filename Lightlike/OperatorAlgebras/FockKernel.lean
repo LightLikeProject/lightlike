@@ -114,4 +114,18 @@ lemma posSemidef_expKer : (expKer h).PosSemidef := by
     simp [gramPow, div_pow]
     ring
 
+/-- The matrix of the Fock kernel `fockGram`. -/
+noncomputable def fockMat (h : Type u) [NormedAddCommGroup h] [InnerProductSpace ℂ h] : Matrix h h ℂ :=
+  Matrix.of fun f g => fockGram f g
+
+/-- **The Fock kernel is positive semidefinite**: it is the Hadamard product of the rank-one Gaussian
+`e f * e g` with `exp (⟪f, g⟫ / 2)` (Schur product theorem). -/
+theorem posSemidef_fockMat : (fockMat h).PosSemidef := by
+  have hU := posSemidef_gram_inf (fun f : h => ((gaussE f : ℝ) : ℂ))
+  have := hU.hadamard (posSemidef_expKer (h := h))
+  convert this using 1
+  ext f g
+  simp only [fockMat, Matrix.of_apply, Matrix.hadamard, Matrix.gram, expKer, fockGram_eq]
+  simp [Complex.conj_ofReal, mul_comm]
+
 end Lightlike.OperatorAlgebras
