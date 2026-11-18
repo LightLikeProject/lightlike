@@ -215,4 +215,49 @@ lemma fockW_phi (g : h) (c : h →₀ ℂ) : fockW g (fockPhi h c) = fockPhi h (
 lemma fockW_kf (g f : h) : fockW g (kf f) = fockPhase g f • kf (f + g) := by
   rw [← fockPhi_single, fockW_phi, fockPhi_tau_single]
 
+lemma fockPhase_zero_left (f : h) : fockPhase 0 f = 1 := by simp [fockPhase, symp_zero_left]
+
+lemma fockPhase_zero_right (g : h) : fockPhase g 0 = 1 := by simp [fockPhase, symp_zero_right]
+
+lemma fockTau_zero : fockTau (0 : h) = LinearMap.id := by
+  refine Finsupp.lhom_ext fun f a => ?_
+  rw [← Finsupp.smul_single_one, map_smul, fockTau_single, fockPhase_zero_left]
+  simp
+
+lemma fockTau_comp (f g : h) :
+    (fockTau f).comp (fockTau g) =
+      Complex.exp (-(Complex.I * (symp h f g / 2 : ℝ))) • fockTau (f + g) := by
+  refine Finsupp.lhom_ext fun x a => ?_
+  rw [← Finsupp.smul_single_one]
+  simp only [LinearMap.comp_apply, map_smul, fockTau_single, LinearMap.smul_apply]
+  simp only [smul_smul]
+  rw [fockPhase_cocycle f g x, show x + (f + g) = x + g + f by abel]
+
+lemma fockW_zero : fockW (0 : h) = LinearIsometryEquiv.refl ℂ (FockSpace h) := by
+  refine LinearIsometryEquiv.ext fun ψ => ?_
+  have hc1 : Continuous fun x : FockSpace h => fockW (0 : h) x := (fockW 0).continuous
+  have := Continuous.ext_on (dense_range_fockPhi (h := h)) hc1 continuous_id (fun x hx => by
+    obtain ⟨c, rfl⟩ := hx
+    simp only [fockW_phi, fockTau_zero, LinearMap.id_apply, id_eq])
+  exact congrFun this ψ
+
+lemma fockW_weyl (f g : h) (ψ : FockSpace h) :
+    fockW f (fockW g ψ) = Complex.exp (-(Complex.I * (symp h f g / 2 : ℝ))) • fockW (f + g) ψ := by
+  have hc1 : Continuous fun x : FockSpace h => fockW f (fockW g x) :=
+    (fockW f).continuous.comp (fockW g).continuous
+  have hc2 : Continuous fun x : FockSpace h =>
+      Complex.exp (-(Complex.I * (symp h f g / 2 : ℝ))) • fockW (f + g) x :=
+    (fockW (f + g)).continuous.const_smul (Complex.exp (-(Complex.I * (symp h f g / 2 : ℝ))))
+  have := Continuous.ext_on (dense_range_fockPhi (h := h)) hc1 hc2 (fun x hx => by
+    obtain ⟨c, rfl⟩ := hx
+    have h1 : fockTau f (fockTau g c) =
+        Complex.exp (-(Complex.I * (symp h f g / 2 : ℝ))) • fockTau (f + g) c := by
+      have := congrArg (fun L => L c) (fockTau_comp f g)
+      simpa using this
+    simp only [fockW_phi, map_smul, h1])
+  exact congrFun this ψ
+
+lemma fockW_kf_zero (f : h) : fockW f (kf 0) = kf f := by
+  rw [fockW_kf, fockPhase_zero_right, one_smul, zero_add]
+
 end Lightlike.OperatorAlgebras
