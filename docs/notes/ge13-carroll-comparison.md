@@ -19,9 +19,17 @@ Source read: S. M. Carroll, *Lecture Notes on General Relativity* (1997), arXiv 
   independent of that sign: with `ε = g(n, n) = −1` ours reads `g(R(X,Y)Z, W) = g(R_D(X,Y)Z, W) + K(Y,Z)K(X,W) − K(X,Z)K(Y,W)`, and (2.92) read on `(X,Y,Z,W)` gives
   `R + K(X,W) K(Y,Z) − K(Y,W) K(X,Z)`: the same. For Codazzi, `g(R(X,Y)Z, n) = −g(R(X,Y)n, Z)` (antisymmetry in the first pair), and (2.101) gives
   `g(R(X,Y)n, W) = (D_Y K_G)(X,W) − (D_X K_G)(Y,W)`; with `K_G = −K` this is our `g(R(X,Y)Z, n) = −((D_X K)(Y,Z) − (D_Y K)(X,Z))`: the same.
-* Differences: Gourgoulhon treats spacelike hypersurfaces (`g(n,n) = −1`) of a Lorentzian manifold; our statement is for every non-null hypersurface (`ε = ±1`); the case `ε = +1` is not
-  covered by this source: comparison pending for it. Gourgoulhon has the hypersurface as a manifold with its induced connection `D`; ours has the level sets of a function and the tangential connection `D`
+* Differences: Gourgoulhon treats spacelike hypersurfaces (`g(n,n) = −1`) of a Lorentzian manifold; our statement is for every non-null hypersurface (`ε = ±1`); the case `ε = +1` is covered by the Ammann notes below. Gourgoulhon has the hypersurface as a manifold with its induced connection `D`; ours has the level sets of a function and the tangential connection `D`
   on tangent fields (leaves have no manifold structure). The symmetry of `K` is stated around eq. (2.43) ("is symmetric. It is called the second fundamental form", ch. 2.3) and in the remark after (2.75)-(2.76): read as stated, equation page not recorded; ours proves it (`secondFF_symm_fields`).
+
+## Gauss and Codazzi for both signs: source M. Ammann (Regensburg), *Differential Geometry II, Lorentzian Geometry, Lecture Notes*, summer term 2021 (pdf text read)
+* Setting: semi-Riemannian hypersurface, unit normal `ν` with `ε := g(ν, ν) ∈ {−1, +1}` (Def. 2.3.2, Thm. 2.3.7), shape operator `S(X) = −∇_X ν` (Def. 2.3.4), `g(S X, Y) = g(II(X,Y), ν)` (Lemma 2.3.5, p. 69).
+* Gauss formula, Thm. 2.3.7 (i), p. 70: `R_M(X,Y)Z = (R̄(X,Y)Z)ᵀ + ε(⟨S Y, Z⟩ S X − ⟨S X, Z⟩ S Y)` (the bars on the curvatures were lost in the text extraction of the pdf; the reading is the standard one and the
+  sectional-curvature form (ii) below it, `sec_M = sec̄ + ε det S/…`, fixes the sign of the `ε` term). In our notation (`K = −⟨S ·, ·⟩`, quadratic in `K`) this is
+  `g(R̄(X,Y)Z, W) = g(R_D(X,Y)Z, W) − ε(K(Y,Z) K(X,W) − K(X,Z) K(Y,W))`, our `gauss_relation`, **for `ε = ±1`**.
+* Codazzi, Thm. 2.3.11, p. 72: `π_N(R̄(X,Y)Z) = (∇_X II)(Y,Z) − (∇_Y II)(X,Z)` with `II(X,Y) = ε II_scalar(X,Y) ν` and `II_scalar = g(S ·, ·) = −K`: taking `g(·, ν)` gives
+  `g(R̄(X,Y)Z, ν) = −((D_X K)(Y,Z) − (D_Y K)(X,Z))`, our `codazzi_relation`, for both signs.
+* So the timelike-hypersurface case (`ε = +1`) is compared and matches; the earlier "pending" for `ε = +1` is closed by this source. Caveat: the bars in the pdf extraction were reconstructed from context.
 
 ## Not checked
 The sphere and FLRW slice trust checks are not included yet.
