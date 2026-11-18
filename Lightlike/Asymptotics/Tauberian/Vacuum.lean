@@ -225,6 +225,48 @@ theorem no_mass_gap (σ : Measure ℝ) {v g K B : ℝ} (hB : 0 < B) (hg : 0 < g)
   obtain ⟨β, hβ⟩ := ((hlim.eventually (gt_mem_nhds hmpos)).and (eventually_ge_atTop B)).exists
   exact absurd (hm_le β hβ.2) (not_le.2 hβ.1)
 
+/-- **The low-temperature form** from the high-temperature form and real modular invariance:
+`|e^{-vβ'} Z(β') - 1| ≤ C e^{-(g/4π²) β'}` for `β' ≥ 4π²/β₀ + 1`. -/
+theorem low_temp_bound (σ : Measure ℝ) {v g C β₀ : ℝ} (hv : 0 < v) (hβ₀ : 0 < β₀)
+    (hmod : ∀ β : ℝ, 0 < β → ∫ x, Real.exp (-β * x) ∂σ = ∫ x, Real.exp (-(4 * Real.pi ^ 2 / β) * x) ∂σ)
+    (hasym : ∀ β : ℝ, 0 < β → β < β₀ →
+      |(∫ x, Real.exp (-β * x) ∂σ) - Real.exp (4 * Real.pi ^ 2 * v / β)| ≤
+        C * Real.exp ((4 * Real.pi ^ 2 * v - g) / β))
+    {β' : ℝ} (hβ' : 4 * Real.pi ^ 2 / β₀ + 1 ≤ β') :
+    |Real.exp (-(v * β')) * (∫ x, Real.exp (-β' * x) ∂σ) - 1| ≤
+      C * Real.exp (-(g / (4 * Real.pi ^ 2) * β')) := by
+  have hπ : 0 < 4 * Real.pi ^ 2 := by positivity
+  have hβ'0 : 0 < β' := by
+    have : 0 < 4 * Real.pi ^ 2 / β₀ := by positivity
+    linarith
+  set β : ℝ := 4 * Real.pi ^ 2 / β' with hβdef
+  have hβpos : 0 < β := by positivity
+  have hβlt : β < β₀ := by
+    rw [hβdef, div_lt_iff₀ hβ'0]
+    have : 4 * Real.pi ^ 2 / β₀ < β' := by linarith
+    rw [div_lt_iff₀ hβ₀] at this
+    linarith
+  have hβinv : 4 * Real.pi ^ 2 / β = β' := by rw [hβdef]; field_simp
+  have h1 := hasym β hβpos hβlt
+  have hZ : ∫ x, Real.exp (-β' * x) ∂σ = ∫ x, Real.exp (-β * x) ∂σ := by
+    have := hmod β hβpos
+    rw [hβinv] at this
+    exact this.symm
+  have e1 : 4 * Real.pi ^ 2 * v / β = v * β' := by rw [hβdef]; field_simp
+  have e2 : (4 * Real.pi ^ 2 * v - g) / β = v * β' - g / (4 * Real.pi ^ 2) * β' := by
+    rw [hβdef]; field_simp
+  rw [hZ]
+  rw [e1, e2] at h1
+  have h2 : Real.exp (-(v * β')) * (∫ x, Real.exp (-β * x) ∂σ) - 1 =
+      Real.exp (-(v * β')) * ((∫ x, Real.exp (-β * x) ∂σ) - Real.exp (v * β')) := by
+    rw [mul_sub, ← Real.exp_add]; simp
+  rw [h2, abs_mul, abs_of_pos (Real.exp_pos _)]
+  calc Real.exp (-(v * β')) * |(∫ x, Real.exp (-β * x) ∂σ) - Real.exp (v * β')|
+      ≤ Real.exp (-(v * β')) * (C * Real.exp (v * β' - g / (4 * Real.pi ^ 2) * β')) :=
+        mul_le_mul_of_nonneg_left h1 (Real.exp_pos _).le
+    _ = C * Real.exp (-(g / (4 * Real.pi ^ 2) * β')) := by
+        rw [← mul_assoc, mul_comm (Real.exp _) C, mul_assoc, ← Real.exp_add]; congr 2; ring
+
 /-- **MZ's hypothesis gives the vacuum and the gap.** Let `σ` be a positive measure with `Z(β) = ∫ e^{-β x} dσ`
 finite for `β > 0`, real modular invariance `Z(β) = Z(4π²/β)`, and the high-temperature form
 `|Z(β) - e^{a/β}| ≤ C e^{(a - g)/β}` for `0 < β < β₀`, `a = 4π² v`. Then there is no mass below `-v`, the
@@ -239,39 +281,10 @@ theorem vacuum_gap_of_modular (σ : Measure ℝ) {v g C β₀ : ℝ} (hv : 0 < v
   have hπ : 0 < 4 * Real.pi ^ 2 := by positivity
   set B : ℝ := 4 * Real.pi ^ 2 / β₀ + 1 with hBdef
   have hB : 0 < B := by positivity
-  -- the low-temperature form
   have hkey : ∀ β' : ℝ, B ≤ β' →
       |Real.exp (-(v * β')) * (∫ x, Real.exp (-β' * x) ∂σ) - 1| ≤
-        C * Real.exp (-(g / (4 * Real.pi ^ 2) * β')) := by
-    intro β' hβ'
-    have hβ'0 : 0 < β' := by linarith
-    set β : ℝ := 4 * Real.pi ^ 2 / β' with hβdef
-    have hβpos : 0 < β := by positivity
-    have hβlt : β < β₀ := by
-      rw [hβdef, div_lt_iff₀ hβ'0]
-      have : 4 * Real.pi ^ 2 / β₀ < β' := by linarith
-      rw [div_lt_iff₀ hβ₀] at this
-      linarith
-    have hβinv : 4 * Real.pi ^ 2 / β = β' := by rw [hβdef]; field_simp
-    have h1 := hasym β hβpos hβlt
-    have hZ : ∫ x, Real.exp (-β' * x) ∂σ = ∫ x, Real.exp (-β * x) ∂σ := by
-      have := hmod β hβpos
-      rw [hβinv] at this
-      exact this.symm
-    have e1 : 4 * Real.pi ^ 2 * v / β = v * β' := by rw [hβdef]; field_simp
-    have e2 : (4 * Real.pi ^ 2 * v - g) / β = v * β' - g / (4 * Real.pi ^ 2) * β' := by
-      rw [hβdef]; field_simp
-    rw [hZ]
-    rw [e1, e2] at h1
-    have h2 : Real.exp (-(v * β')) * (∫ x, Real.exp (-β * x) ∂σ) - 1 =
-        Real.exp (-(v * β')) * ((∫ x, Real.exp (-β * x) ∂σ) - Real.exp (v * β')) := by
-      rw [mul_sub, ← Real.exp_add]; simp
-    rw [h2, abs_mul, abs_of_pos (Real.exp_pos _)]
-    calc Real.exp (-(v * β')) * |(∫ x, Real.exp (-β * x) ∂σ) - Real.exp (v * β')|
-        ≤ Real.exp (-(v * β')) * (C * Real.exp (v * β' - g / (4 * Real.pi ^ 2) * β')) :=
-          mul_le_mul_of_nonneg_left h1 (Real.exp_pos _).le
-      _ = C * Real.exp (-(g / (4 * Real.pi ^ 2) * β')) := by
-          rw [← mul_assoc, mul_comm (Real.exp _) C, mul_assoc, ← Real.exp_add]; congr 2; ring
+        C * Real.exp (-(g / (4 * Real.pi ^ 2) * β')) :=
+    fun β' hβ' => low_temp_bound σ hv hβ₀ hmod hasym hβ'
   have hC0 : 0 ≤ C := by
     have := hkey B le_rfl
     have h0 := abs_nonneg (Real.exp (-(v * B)) * (∫ x, Real.exp (-B * x) ∂σ) - 1)
