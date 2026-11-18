@@ -197,6 +197,8 @@ import Lightlike.GR.KerrHorizon
 import Lightlike.GR.KerrJet
 import Lightlike.GR.KerrJetEntries
 import Lightlike.GR.KerrRicci
+import Lightlike.GR.KerrControl
+import Lightlike.GR.KerrSignature
 import Lightlike.GR.KruskalFunction
 import Lightlike.GR.KruskalMetric
 import Lightlike.GR.EuclideanSchwarzschild

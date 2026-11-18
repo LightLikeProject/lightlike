@@ -25,7 +25,8 @@ def kerrUext : Set (Fin 4 → ℝ) := {y | 0 < y 1 ∧ 0 < kerrD M a y ∧ 0 < y
 
 lemma isOpen_kerrUext : IsOpen (kerrUext M a) := by
   refine (isOpen_lt continuous_const (continuous_apply 1)).inter
-    ((isOpen_lt continuous_const (by unfold kerrD; fun_prop)).inter
+    ((isOpen_lt (continuous_const : Continuous fun _ : Fin 4 → ℝ => (0 : ℝ))
+      (by unfold kerrD; fun_prop : Continuous fun y : Fin 4 → ℝ => kerrD M a y)).inter
       ((isOpen_lt continuous_const (continuous_apply 2)).inter
         (isOpen_lt (continuous_apply 2) continuous_const)))
 
@@ -53,15 +54,19 @@ theorem block_congruent (g00 g03 g33 g11 g22 : ℝ) (h33 : 0 < g33) (h11 : 0 < g
       ring
     rw [hdet]
     exact (mul_pos (mul_pos (mul_pos hNpos h11s) h22s) h33s).ne'.isUnit
-  · ext i j
+  · have hNN : N * N = (g03 ^ 2 - g00 * g33) / g33 := by rw [← sq]; exact hN2
+    have h1 : (g03 / √g33) * (g03 / √g33) = g03 ^ 2 / g33 := by
+      rw [div_mul_div_comm, Real.mul_self_sqrt h33.le]; ring
+    have hne : √g33 ≠ 0 := h33s.ne'
+    ext i j
     fin_cases i <;> fin_cases j <;>
       simp [Matrix.mul_apply, Fin.sum_univ_four, eta, etaDiag, Matrix.diagonal_apply] <;>
       first
       | linarith [h11q]
       | linarith [h22q]
       | linarith [h33q]
-      | (field_simp; nlinarith [hN2, h33q])
-      | skip
+      | (rw [hNN, h1]; field_simp; ring)
+      | field_simp
 
 /-- **Kerr has Lorentzian signature outside the horizon** (`M > 0`). -/
 theorem kerr_isLorentzian_ext (hM : 0 < M) : IsLorentzianCoordMetric (kerrMetric M a) (kerrUext M a) := by

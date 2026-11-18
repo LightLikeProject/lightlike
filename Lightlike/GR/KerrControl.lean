@@ -12,6 +12,7 @@ control (the plan row asks for a sign flip of `g_{tφ}`, which is `k = -1`, stil
 -/
 
 open Matrix Real
+open scoped ContDiff
 
 noncomputable section
 
@@ -330,6 +331,11 @@ def ctrlInv (M a k : ℝ) (y : Fin 4 → ℝ) : Matrix (Fin 4) (Fin 4) ℝ :=
      0, 0, 1 / kerrS a y, 0;
      -kcg03 M a k (y 1) (y 2) / ctrlDet M a k y, 0, 0, kgg00 M a (y 1) (y 2) / ctrlDet M a k y]
 
+theorem kgg11_eq (M a : ℝ) (y : Fin 4 → ℝ) :
+    kgg11 M a (y 1) (y 2) = kerrS a y / kerrD M a y := rfl
+
+theorem kgg22_eq (M a : ℝ) (y : Fin 4 → ℝ) : kgg22 M a (y 1) (y 2) = kerrS a y := rfl
+
 theorem ctrlMetric_mul_ctrlInv (M a k : ℝ) {y : Fin 4 → ℝ} (hy : y ∈ ctrlU M a k) :
     ctrlMetric M a k y * ctrlInv M a k y = 1 := by
   have hS : kerrS a y ≠ 0 := (kerrS_pos a hy.1.1).ne'
@@ -337,10 +343,13 @@ theorem ctrlMetric_mul_ctrlInv (M a k : ℝ) {y : Fin 4 → ℝ} (hy : y ∈ ctr
   have hd : ctrlDet M a k y ≠ 0 := ctrlDet_ne M a k hy
   have hS2 : kerrS a y = y 1 ^ 2 + a ^ 2 * cos (y 2) ^ 2 := rfl
   have hD2 : kerrD M a y = y 1 ^ 2 - 2 * M * y 1 + a ^ 2 := rfl
+  have hS' : y 1 ^ 2 + a ^ 2 * cos (y 2) ^ 2 ≠ 0 := hS
+  have hD' : y 1 ^ 2 - 2 * M * y 1 + a ^ 2 ≠ 0 := hD
+  have hD'' : -(y 1 * M * 2) + y 1 ^ 2 + a ^ 2 ≠ 0 := by intro h; apply hD; linarith
   ext i j
   fin_cases i <;> fin_cases j <;>
     simp [ctrlMetric, ctrlInv, gjetC0, Matrix.mul_apply, Fin.sum_univ_four, Matrix.one_apply,
-      kgg11, kgg22, kerrS, kerrD, ctrlDet] <;> field_simp <;> ring
+      kgg11_eq, kgg22_eq] <;> field_simp <;> (try simp only [ctrlDet]) <;> ring
 
 theorem ctrlMetric_inv (M a k : ℝ) {y : Fin 4 → ℝ} (hy : y ∈ ctrlU M a k) :
     (ctrlMetric M a k y)⁻¹ = ctrlInv M a k y :=
