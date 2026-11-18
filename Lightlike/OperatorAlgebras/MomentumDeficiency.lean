@@ -9,7 +9,7 @@ Helper lemmas for `T-OP1-P5` (`Tasks/OP/T_OP1_P5.lean`).
 -/
 
 open MeasureTheory Set
-open scoped ContDiff InnerProductSpace
+open scoped ContDiff InnerProductSpace LinearPMap
 
 namespace Lightlike.OperatorAlgebras
 
@@ -79,5 +79,25 @@ theorem dense_momentumMin_domain : Dense (momentumMin.domain : Set L2I) := by
   intro y hy
   rw [Submodule.mem_orthogonal] at hy
   exact eq_zero_of_orthogonal fun f => hy _ (mem_momentumMin_domain.2 ⟨f, rfl⟩)
+
+section Generic
+
+variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
+
+/-- For a densely defined operator `A`, `y` is in the deficiency space at `z` iff
+`⟪z y, x⟫ = ⟪y, A x⟫` for all `x` in the domain of `A`. -/
+lemma mem_deficiencySpace_iff {A : H →ₗ.[ℂ] H} (hA : Dense (A.domain : Set H)) (z : ℂ) (y : H) :
+    y ∈ deficiencySpace A z ↔ ∀ x : A.domain, ⟪z • y, (x : H)⟫_ℂ = ⟪y, A x⟫_ℂ := by
+  constructor
+  · rintro ⟨hy, he⟩ x
+    have := LinearPMap.adjoint_isFormalAdjoint hA ⟨y, hy⟩ x
+    rw [← he]; exact this
+  · intro h
+    have hy : y ∈ (A†).domain :=
+      LinearPMap.mem_adjoint_domain_of_exists y ⟨z • y, fun x => h x⟩
+    refine ⟨hy, ?_⟩
+    exact LinearPMap.adjoint_apply_eq hA ⟨y, hy⟩ fun x => h x
+
+end Generic
 
 end Lightlike.OperatorAlgebras
