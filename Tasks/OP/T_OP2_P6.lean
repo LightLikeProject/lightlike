@@ -32,10 +32,13 @@ namespace Lightlike.OperatorAlgebras
 /-- **Shale's criterion, necessity**: if a Bogoliubov transformation `T` is implemented in the Fock representation, its
 antilinear part `β` is Hilbert-Schmidt.
 
-**Differences from the source** (not yet read at the cited location; the comparison is pending): the Fock
-representation is the cyclic vacuum characterization of `FockRep`, not the symmetric Fock space;
-`IsHilbertSchmidt` requires `∑ ‖β bᵢ‖² < ∞` for every Hilbert basis; `h` is an arbitrary complex Hilbert
-space here (whether the source assumes it separable is not checked). -/
+Source of the criterion: arXiv:1912.11004, Section 4, Lemma 4.2 (read): for a Bogoliubov map `V` on `h ⊕ h`
+there is a unitary `U_V` on the Fock space with `U_V A(F) U_V* = A(V F)` if and only if the Hilbert-Schmidt norm
+of the off-diagonal block of `V` is finite. **Differences from the source** (both of kind representation): the
+source uses the field operators `A(F)` on the symmetric Fock space `F(h)`, here the Weyl operators on the
+cyclic vacuum characterization `FockRep`; the source uses the complex block matrix of `V`, here the real-linear
+symplectic `T` with antilinear part `β`.
+`IsHilbertSchmidt` requires `∑ ‖β bᵢ‖² < ∞` for every Hilbert basis `bᵢ`. -/
 theorem shale_necessity {h : Type u} [NormedAddCommGroup h] [InnerProductSpace ℂ h] [CompleteSpace h]
     {K : Type*} [NormedAddCommGroup K] [InnerProductSpace ℂ K] [CompleteSpace K]
     (R : FockRep h K) (T : Bogoliubov h) (hT : Implements R.toCCRRep T) :
