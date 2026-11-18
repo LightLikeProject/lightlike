@@ -38,7 +38,7 @@ Lemmas about them, which a proof may use:
 * `OperatorAlgebras.translate_ofCS` (`Lightlike/OperatorAlgebras/GeneratorTranslation.lean`)
 * `OperatorAlgebras.exists_core_ne_zero` (`Lightlike/OperatorAlgebras/GeneratorTranslation.lean`)
 * `OperatorAlgebras.phaseGroup_domain` (`Lightlike/OperatorAlgebras/TestsUnitaryGroup.lean`)
-* `OperatorAlgebras.phaseGroup_generator` (`Lightlike/OperatorAlgebras/TestsUnitaryGroup.lean`)
+* `OperatorAlgebras.UnitaryGroup.dvec_eq` (`Lightlike/OperatorAlgebras/StoneGenerator.lean`)
 
 Everything they depend on, and the further lemmas about them, in one block:
 

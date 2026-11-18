@@ -23,14 +23,14 @@ Definitions the statement names (without the `Lightlike.` prefix), by file:
 
 Lemmas about them, which a proof may use:
 
-* `Causal.TimeOrientation.mk.inj` (`Lightlike/Spacetime/Causal/TimeOrientation.lean`)
-* `Causal.TimeOrientation.timelike` (`Lightlike/Spacetime/Causal/TimeOrientation.lean`)
-* `Causal.TimeOrientation.mk.injEq` (`Lightlike/Spacetime/Causal/TimeOrientation.lean`)
-* `Causal.TimeOrientation.contMDiff` (`Lightlike/Spacetime/Causal/TimeOrientation.lean`)
-* `Causal.TimeOrientation.mk.sizeOf_spec` (`Lightlike/Spacetime/Causal/TimeOrientation.lean`)
-* `LorentzianMetric.symm` (`Lightlike/Spacetime/Lorentzian.lean`)
-* `LorentzianMetric.mk.inj` (`Lightlike/Spacetime/Lorentzian.lean`)
-* `LorentzianMetric.mk.injEq` (`Lightlike/Spacetime/Lorentzian.lean`)
+* `Causal.isCauchySurface_of_domainDep_eq_univ` (`Lightlike/Spacetime/Causal/CauchyDomain.lean`)
+* `Causal.chron_trans` (`Lightlike/Spacetime/Causal/BasicRelations.lean`)
+* `Causal.causal_trans` (`Lightlike/Spacetime/Causal/BasicRelations.lean`)
+* `Causal.fieldAt_self` (`Lightlike/Spacetime/Causal/SmoothOrientation.lean`)
+* `Causal.fieldAt_coord` (`Lightlike/Spacetime/Causal/SmoothOrientation.lean`)
+* `Causal.exit_or_diamond` (`Lightlike/Spacetime/CausalLadder/ExitDiamond.lean`)
+* `Causal.isOpen_coverSet` (`Lightlike/Spacetime/Causal/SmoothOrientation.lean`)
+* `Causal.ReachIn.left_mem` (`Lightlike/Spacetime/CausalLadder/StrongCausality.lean`)
 
 Everything they depend on, and the further lemmas about them, in one block:
 
