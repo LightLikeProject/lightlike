@@ -78,6 +78,34 @@ theorem (docstring mention only), Fejer kernel, modified Bessel `I_1` (only `Com
 asymptotics), inverse Laplace transform. All absent; the first three were bypassed by the explicit kernel
 above, `I_1` by the series/Wallis route.
 
+## Attempt D (Lean): the pole-free smoothing route (replaces item 3, the contour functional)
+
+Why the contour route was dropped: the Dirichlet integral / Cauchy-Fourier pair for `1/(beta + it)`
+on the real line and a residue formula for a pole on a segment are not in the pinned Mathlib (grep:
+`Dirichlet`, `sinc` integral, `residue`). Replacement, all proved in Lean:
+
+* smoothed step `psi(y) = (1/N) int_{u<y} e^{beta u} kappa(u) du`, `kappa(u) = (2b sinc(bu))^4`
+  (`Psi.lean`); `int g(t)/(beta+it) e^{-ity} dt = int_0^infty e^{-beta s} kappa(y+s) ds` by Fubini and
+  `1/(beta+it) = int_0^infty e^{-(beta+it)s} ds` (`Smoothing.lean`, `fourier_inv_eq`, `smooth_representation`):
+  no inversion theorem and no pole;
+* `N psi(Delta - x) = e^{beta Delta} e^{-beta x} Psi(x - Delta)`; difference of two smoothed counting
+  functions `<= e^{beta Delta} 16 b^4 M/(N beta)` when the Laplace transforms differ by `<= M` on `|t| <= 4b`
+  (`Difference.lean`);
+* comparison of a measure with its smoothing at `beta = sqrt(a/Delta)`: pointwise error bound for `psi`
+  (first-order term in `beta` cancels by `int u kappa = 0`; `Psi.lean`, `Compare.lean`), outer region by
+  Markov against `e^{-beta x}`, inner region by unit windows against the local bound with the tangent-line
+  bound `2 sqrt(a(Delta-k)) <= 2 sqrt(a Delta) - beta k` (`Inner.lean`, `Assembly.lean`, `Tangent.lean`,
+  `WindowWeights.lean`, `CompareAsymp.lean`); size `Delta^{-3/4} e^{2 sqrt(a Delta)}`, MZ's order;
+* distribution function of the crossing measure `rho_0(-inf,x] = sum (ax)^m/(m!)^2 = I_0(2 sqrt(ax))`
+  (`Rho0Cdf.lean`, `BesselI0.lean`), local bound for `rho_0` (`Rho0Local.lean`), effective Laplace method for
+  `I_0` with relative error `O(1/s)` (`LaplaceEff.lean`: comparison with the Gaussian,
+  `1 - cos >= 2 theta^2/pi^2`, `theta^2/2 - (1-cos) <= theta^4/2`);
+* assembly `cardy_counting` (`CardyCounting.lean`): `|sigma(-inf,Delta] - I_0(2 sqrt(a Delta))| <= K Delta^{-3/4}
+  e^{2 sqrt(a Delta)}`; with `besselI0_eff` this is MZ (1.8) with the relative error `O(Delta^{-1/2})`.
+
+Comparison status against the source: statement not yet compared with the printed (1.8) in this stage
+("comparison pending"); the hypotheses are MZ's printed ones (see item 1).
+
 ## Difference of kind to name if only part lands
 
 Without the full (1.8): "no error estimate and hypotheses of the real-axis type" would be a
