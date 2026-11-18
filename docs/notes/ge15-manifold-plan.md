@@ -80,3 +80,11 @@ action is `∫_K (R − 2Λ) d vol_g` for the volume measure of `M` and the scal
 connection (to be obtained from `volumeMeasure_restrict_chart` and `scalarCurvatureAt_coord`); perturbations
 whose support is not inside one small coordinate ball (partition of unity; needs the additivity of the
 first variation); and the equivalence "critical if and only if `G + Λ g = 0`" on the manifold.
+
+Added after that status (19 November 2026): `IntrinsicAction.lean` compiles.
+`NondegMetric.setIntegral_volumeMeasure_chart` (`∫_K f d vol_g = ∫_{φ(K)} √|det g| · (f ∘ φ⁻¹) dy` for a
+measurable `K` inside one chart domain) and `eh_action_chart` (for a Levi-Civita connection of `g`:
+`∫_K (R − 2Λ) d vol_g` equals the chart integral of `lagDensity (g.coordMetric x₀) 0 Λ 0` over the chart image
+of `K`). So the intrinsic action of one metric is identified with regge's coordinate density. Still open for
+(i): the same identification along a family `g_t` whose chart components are `g + t h` (then
+`eh_first_variation_chart` gives the derivative of the intrinsic action); (ii) and (iii) as above.
