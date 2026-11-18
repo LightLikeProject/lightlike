@@ -15,6 +15,8 @@ namespace Lightlike.FieldTheory
 
 variable {ι : Type*} [Fintype ι]
 
+/-- The product of standard normal distributions is Lebesgue measure on `ι → ℝ` with the product
+density `∏ᵢ φ(xᵢ)`. -/
 lemma pi_gaussianReal_eq_withDensity :
     Measure.pi (fun _ : ι => gaussianReal 0 1) =
       (volume : Measure (ι → ℝ)).withDensity (fun x => ENNReal.ofReal (∏ i, gaussianPDFReal 0 1 (x i))) := by
