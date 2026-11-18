@@ -1,4 +1,7 @@
 import Lightlike.Spacetime.CausalLadder.NullBoundary
+import Lightlike.Spacetime.CausalLadder.LocalLift
+import Lightlike.Spacetime.CausalLadder.NearFuture
+import Lightlike.Spacetime.Causal.OpenPast
 import Lightlike.Spacetime.CausalLadder.ChartLine
 import Lightlike.Spacetime.VolumeMeasure
 import Lightlike.Spacetime.Causal.BasicRelations
@@ -127,11 +130,10 @@ theorem causalPast_isPastSet (x : M) :
 
 /-- **The null horismos, from the push-up property.** Suppose that every point of the interior of
 `J⁻(x)` has `x` in the interior of its causal future (a consequence of the push-up lemmas
-`I⁺ ∘ J⁺ ⊆ I⁺` and `J⁺ ∘ I⁺ ⊆ I⁺`), and that `J⁻(x)` is closed. Then the set of points of `J⁻(x)`
+`I⁺ ∘ J⁺ ⊆ I⁺` and `J⁺ ∘ I⁺ ⊆ I⁺`). Then the set of points of `J⁻(x)`
 whose causal future is not a neighbourhood of `x` has volume zero: it lies in the frontier of `J⁻(x)`,
 the frontier of a past set. -/
 theorem volumeMeasure_causalPast_diff_eq_zero (x : M)
-    (hclosed : IsClosed (causalPast T x))
     (hpush : ∀ a : M, a ∈ interior (causalPast T x) → causalFuture T a ∈ 𝓝 x) :
     volumeMeasure g (causalPast T x \ {a | causalFuture T a ∈ 𝓝 x}) = 0 := by
   refine measure_mono_null (t := frontier (causalPast T x)) ?_
@@ -140,5 +142,22 @@ theorem volumeMeasure_causalPast_diff_eq_zero (x : M)
   refine ⟨subset_closure ha, ?_⟩
   intro hint
   exact hna (hpush a hint)
+
+/-- **The push-up property for the interior of `J⁻(x)`.** If `a` is in the interior of `J⁻(x)`, then `x`
+is in the interior of `J⁺(a)`: a point `b ∈ I⁺(a)` of the neighbourhood lies in `J⁻(x)`, so `x ∈ J⁺(b)`, hence
+`x ∈ I⁺(a)` (first push-up, from the openness of the chronological futures), an open subset of `J⁺(a)`. -/
+theorem mem_nhds_causalFuture_of_mem_interior (x : M) {a : M} (ha : a ∈ interior (causalPast T x)) :
+    causalFuture T a ∈ 𝓝 x := by
+  obtain ⟨b, hbW, hbI⟩ := exists_mem_chronFuture_near T a (mem_interior_iff_mem_nhds.1 ha)
+  have hbx : x ∈ causalFuture T b := hbW
+  have hx : x ∈ chronFuture T a :=
+    chronFuture_causalFuture_trans_of_isOpen T (isOpen_chronFuture_of_reach T) hbI hbx
+  exact mem_of_superset ((isOpen_chronFuture_of_reach T a).mem_nhds hx) (chron_subset_causal T a)
+
+/-- **The null horismos, without hypothesis on the push-up**: the set of
+points of `J⁻(x)` whose causal future is not a neighbourhood of `x` has volume zero. -/
+theorem volumeMeasure_horismos_eq_zero (x : M) :
+    volumeMeasure g (causalPast T x \ {a | causalFuture T a ∈ 𝓝 x}) = 0 :=
+  volumeMeasure_causalPast_diff_eq_zero T x (fun _ ha => mem_nhds_causalFuture_of_mem_interior T x ha)
 
 end Lightlike.Causal
