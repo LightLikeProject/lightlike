@@ -649,5 +649,22 @@ expect("changed-file selection planted: a module no slow check imports selects n
 expect("changed-file selection: the runner, requirements.txt and ci.yml run everything",
        all(_sel(f) == _slow | _quick for f in ("scripts/run_python_checks.py", "requirements.txt", ".github/workflows/ci.yml")))
 
+# Shared slots of the Python checks (LL_CHECK_SLOTS): at most n scripts at a time over all runs
+import tempfile as _tf, os
+_sd = os.path.join(_tf.mkdtemp(), "slots")
+_s1 = rp.take_slot(_sd, 2); _s2 = rp.take_slot(_sd, 2)
+expect("check slots: two slots are two different directories, owned by this process",
+       _s1 != _s2 and open(os.path.join(_s1, "pid")).read() == str(os.getpid()))
+try:
+    subprocess.run([sys.executable, "-I", "-c",
+                    f"import sys; sys.path.insert(0, {str(HERE)!r}); import run_python_checks as r; r.take_slot({_sd!r}, 2)"],
+                   capture_output=True, text=True, timeout=5)
+    _waited = False
+except subprocess.TimeoutExpired:
+    _waited = True
+expect("check slots planted: a third taker waits while both slots are held by live processes", _waited)
+open(os.path.join(_s1, "pid"), "w").write("999999")
+expect("check slots: a slot whose owner process is gone is taken over", rp.take_slot(_sd, 2) == _s1)
+
 print("selftest:", "OK" if not fails else f"FAILED ({len(fails)})")
 sys.exit(1 if fails else 0)
