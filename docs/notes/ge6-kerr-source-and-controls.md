@@ -13,7 +13,10 @@ M. Visser, *The Kerr spacetime: A brief introduction*, arXiv:0706.0622v3 (mass w
 * Angular velocity and the null generator: `Ω± = a/(2 m r±) = a/(r±² + a²)` (112), `L^a = (1, 0, 0, Ω±)` (113),
   `g_ab(r±) L^a L^b = 0` (114), p. 26. Matches `kerrOmega`, `kerr_chi_null` (null for every θ at `r = r₊`).
 
-NOT found in this source: the surface gravity `κ` (no occurrence of surface gravity or κ in the text). `kerrKappa = Δ'(r₊)/(2(r₊² + a²))`
+Second source (pdftotext of the course PDF): K. Intriligator, UCSD Physics 2017 (3/13/17) "Lecture 15 outline", kintriligator.physics.ucsd.edu/w17/lec15.pdf, p. 3:
+"Null vector at r = r+ is ℓ^μ = K^μ + Ω_H R^μ, with Ω_H = a/2M r+ ... The angular velocity of the event horizon is Ω_H = (dφ/dt)(r+) = a/(r+² + a²)." (K = ∂_t, R = ∂_φ.) Matches `kerrOmega`, `kerr_chi_null`. The same lecture introduces the surface gravity only in general ("κ = V a"), not for Kerr.
+
+NOT found in these sources: the surface gravity `κ` (no occurrence of surface gravity or κ in the text). `kerrKappa = Δ'(r₊)/(2(r₊² + a²))`
 and `kerrKappa_eq : κ = √(M² − a²)/(2 M r₊)` are therefore compared with the plan row GE6 only (and my memory of the standard value
 (r₊ − r₋)/(2(r₊² + a²)), which is not a source); no location is cited for `κ`. Boyer–Lindquist (1967) and Carroll ch. 6 were not read.
 
