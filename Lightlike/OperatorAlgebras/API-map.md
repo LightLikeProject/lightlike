@@ -51,6 +51,8 @@ The Gram matrix of the vectors `W f Ω` of a Fock representation is a function o
 
 A strongly continuous contraction semigroup on a Banach space has a generator, the limit of the difference quotients on the vectors where it exists, a partially defined linear map. A densely defined operator `A` with `λ - A` bounded below by `λ` and surjective for every `λ > 0` is the generator of a contraction semigroup (the generation direction of the Hille–Yosida theorem) [42] {3}: the resolvent `R(λ) = (λ - A)⁻¹` has norm at most `λ⁻¹`, the Yosida approximants `λ² R(λ) - λ` give contractions `exp (t (λ² R(λ) - λ))` that converge, by a Cauchy estimate and the density of the domain, to a semigroup whose generator contains `A`, and a dissipative generator with `λ - A` surjective equals `A`. Checks: the trivial semigroup is a contraction semigroup, the theorem applies to `A = 0`, and `A = id` fails the lower bound at `λ = 1` [43]. The converse holds as well, so the two form the equivalence of the Hille–Yosida theorem for contraction semigroups [44] {3}: the orbits `t ↦ S t x` are continuous for all times `t ≥ 0` by the semigroup law and continuity at `0` [45], the averages `t⁻¹ ∫₀ᵗ S s x ds` lie in the domain of the generator and converge to `x`, which makes the domain dense [45], the resolvent `∫₀^∞ e^{-λ t} S t y dt` is a Bochner integral that lies in the domain with `(λ - A) R(λ) y = y` [46], and `norm_dissip` gives the lower bound [44].
 
+A bounded operator on a complex Hilbert space is trace class when the diagonal sum `∑ ⟪eᵢ, |T| eᵢ⟫` converges in a Hilbert basis, and the trace and the trace norm do not depend on the basis [47]. The Hilbert-Schmidt operators, those with `∑ ‖S eᵢ‖² < ∞` in one basis, are two-sided ideal elements, and the diagonal sums of `R S` and `S R` for Hilbert-Schmidt `R`, `S` agree (cyclicity of the trace) [48]; a product of two Hilbert-Schmidt operators is trace class [49]. The trace pairing `A ↦ Tr (A ·)` is an isometry of the bounded operators into the dual of the trace class [50], and every continuous functional on the trace class is a trace pairing, so the dual of the trace class is the bounded operators [51]. The trace of the rank-one operator on `ℂ` is `1`, and every operator on a finite-dimensional space is trace class; the identity of an infinite-dimensional Hilbert space is not Hilbert-Schmidt [52]. This layer is ported from Physlib with attribution; the duality between the compact operators and the trace class is not covered.
+
 ## Lean References
 
 1. Lightlike/OperatorAlgebras/UnitaryGroup.lean - `OperatorAlgebras.UnitaryGroup`,
@@ -169,6 +171,21 @@ A strongly continuous contraction semigroup on a Banach space has a generator, t
     `OperatorAlgebras.ContractionSemigroup.dense_generatorDomain`
 46. Lightlike/OperatorAlgebras/Semigroup/LaplaceResolvent.lean - `OperatorAlgebras.ContractionSemigroup.resolvent`,
     `OperatorAlgebras.ContractionSemigroup.tendsto_quot_resolvent`
+47. Lightlike/OperatorAlgebras/TraceClass/Basic.lean - `OperatorAlgebras.TraceClass.IsTraceClass`,
+    `OperatorAlgebras.TraceClass.trace`, `OperatorAlgebras.TraceClass.traceNorm`
+48. Lightlike/OperatorAlgebras/TraceClass/HilbertSchmidt.lean -
+    `OperatorAlgebras.TraceClass.HilbertSchmidt.IsHilbertSchmidt`,
+    `OperatorAlgebras.TraceClass.HilbertSchmidt.tsum_diagonal_mul_eq_tsum_diagonal_swap`
+49. Lightlike/OperatorAlgebras/TraceClass/GeneralProduct.lean -
+    `OperatorAlgebras.TraceClass.isTraceClass_mul_of_isHilbertSchmidt`
+50. Lightlike/OperatorAlgebras/TraceClass/TracePairingNorm.lean -
+    `OperatorAlgebras.TraceClass.TraceClass.tracePairingLinearIsometry`
+51. Lightlike/OperatorAlgebras/TraceClass/TracePairingSurjectivity.lean -
+    `OperatorAlgebras.TraceClass.TraceClass.tracePairing_surjective_concrete`
+52. Lightlike/OperatorAlgebras/TestsTraceClass.lean - `OperatorAlgebras.TraceClass.trace_rankOne_complex_one`,
+    `OperatorAlgebras.TraceClass.isTraceClass_id_complex`,
+    `OperatorAlgebras.TraceClass.not_isHilbertSchmidt_one`,
+    `OperatorAlgebras.TraceClass.diag_weights_square_summable_not_summable`
 
 ## References
 
