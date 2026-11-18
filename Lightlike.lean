@@ -671,6 +671,7 @@ import Lightlike.Spacetime.Causal.PerturbCauchy
 import Lightlike.Spacetime.Causal.CauchySeparation
 import Lightlike.Spacetime.Causal.CauchyAssembly
 import Lightlike.Spacetime.Causal.CauchyCover
+import Lightlike.Spacetime.Causal.CauchyEquiv
 import Lightlike.Spacetime.Causal.CauchyDomain
 import Lightlike.Spacetime.Causal.CausalCurve
 import Lightlike.Spacetime.Causal.CurveGlobal
