@@ -57,8 +57,7 @@ and a case where the supports meet two charts (a lapse equal to `1` near the sea
   the chart-family form is the cheapest and needs no new bundle.
 * Whether Gateaux variations of `h` are taken in `ContMDiffRiemannianMetric` (positive definiteness is open, so small
   compactly supported variations stay in it) or as symmetric tensor fields; the second is simpler.
-* Difference to record against the source: the `Σ` statement is `partial` in one respect, a closed (compact) or compactly
-  supported setting; boundary of `Σ` is excluded.
+* Same setting as the source: compactly supported smearing fields on a spatial manifold without boundary (`∂σ = ∅`), smooth data, positive definite `h`; nothing is weaker. The differences are of representation (chart families with change laws) and convention (units, `1/(d − 1)`).
 
 ## Source
 

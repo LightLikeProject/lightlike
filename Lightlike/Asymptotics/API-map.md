@@ -89,7 +89,9 @@ formula `√(12π √V²(ℓ)) {λj} − cos(S_R(ℓ) + π/4) → 0` without hyp
 Trust checks are in [6], [7], [9], [11], [13], [15], [17], [19], [21], [23], [25], [27], [29],
 [31], [33], [35] and [37].
 
-A positive measure on the half line whose Laplace transform grows like `e^{a/β}` in the logarithmic sense, `β log L(β) → a > 0` as `β → 0⁺`, has a counting function with `log F(X) / (2 √(a X)) → 1`: a logarithmic Tauberian theorem of Ingham type, the growth behind the Cardy formula [40] {3}. The upper bound is the saddle estimate `F(X) ≤ e^{β X} L(β)`, from the window estimates of the Laplace transform [38] {3}. For the lower bound the Laplace transform is split into three windows around the saddle `x = a / β²`; the outer two are bounded by the Laplace transform at slightly different `β`, so the middle window carries at least half of `L(β)` [39] {3}. The theorem is weaker than Ingham's, which gives the asymptotics of `F` itself; Karamata's theorem and Ingham's theorem with the power correction are open.
+The Morse lemma with parameters: a smooth function of a variable and a parameter with a critical point at the origin for every parameter near a base value and a nondegenerate Hessian at the base value is, in coordinates that depend smoothly on the parameter, its value at the origin plus half the Hessian of the base value; the coordinate change is a local diffeomorphism. The proof is Hadamard's lemma with a smooth parameter, which makes the remainder a smooth family of self-adjoint endomorphisms equal to the identity at the base point, followed by a smooth square root of such endomorphisms near the identity from the inverse function theorem; composing with Sylvester's law gives the diagonal form with signs, and the number of negative signs is the index of the Hessian; the function x cubed at the origin has no such chart [38].
+
+A positive measure on the half line whose Laplace transform grows like `e^{a/β}` in the logarithmic sense, `β log L(β) → a > 0` as `β → 0⁺`, has a counting function with `log F(X) / (2 √(a X)) → 1`: a logarithmic Tauberian theorem of Ingham type, the growth behind the Cardy formula [41] {3}. The upper bound is the saddle estimate `F(X) ≤ e^{β X} L(β)`, from the window estimates of the Laplace transform [39] {3}. For the lower bound the Laplace transform is split into three windows around the saddle `x = a / β²`; the outer two are bounded by the Laplace transform at slightly different `β`, so the middle window carries at least half of `L(β)` [40] {3}. The theorem is weaker than Ingham's, which gives the asymptotics of `F` itself; Karamata's theorem and Ingham's theorem with the power correction are open.
 
 ## Lean References
 
@@ -246,10 +248,14 @@ A positive measure on the half line whose Laplace transform grows like `e^{a/β}
    `Asymptotics.not_ponzanoReggeFormulaWith_neg_quarter`, `Asymptotics.ponzanoReggeFormula_regular`,
    `Asymptotics.kernelRegion_one_zero`, `Asymptotics.kernelRegion_zero_four`,
    `Asymptotics.not_kernelRegion_one_four`
-38. Lightlike/Asymptotics/Tauberian/Window.lean - `Tauberian.laplace`, `Tauberian.counting`,
+38. Lightlike/Asymptotics/MorseLemma.lean - `Morse.morse_lemma_with_parameters`,
+   `Morse.morse_coordinates`, `Morse.hadamard_integral`, `Morse.exists_smooth_selfadjoint_root`,
+   `Morse.contDiff_integral_unit_infty`, `Morse.morse_diagonal`, `Morse.HasDiagonalMorseChart`,
+   `Morse.not_hasDiagonalMorseChart_cube`
+39. Lightlike/Asymptotics/Tauberian/Window.lean - `Tauberian.laplace`, `Tauberian.counting`,
     `Tauberian.counting_mul_exp_le`, `Tauberian.laplace_eq_split`
-39. Lightlike/Asymptotics/Tauberian/Lower.lean - `Tauberian.counting_lower`
-40. Lightlike/Asymptotics/Tauberian/Ingham.lean - `Tauberian.laplace_bounds`, `Tauberian.log_counting_le`,
+40. Lightlike/Asymptotics/Tauberian/Lower.lean - `Tauberian.counting_lower`
+41. Lightlike/Asymptotics/Tauberian/Ingham.lean - `Tauberian.laplace_bounds`, `Tauberian.log_counting_le`,
     `Tauberian.lower_eventually`, `Tauberian.ingham_log`
 
 ## References

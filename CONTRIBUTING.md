@@ -76,7 +76,8 @@ the modules it changes and the modules that import them.
 
 1. `lake build` succeeds, and every Lean file under `Lightlike/` is imported by `Lightlike.lean`,
    so that it is built and checked. After adding a file, `lake exe mk_all --lib Lightlike`
-   updates `Lightlike.lean`.
+   updates `Lightlike.lean`. The task library builds too (`lake build Tasks`): every file under
+   `Tasks/` compiles, with `sorry` allowed only in the proof of its task declaration.
 2. No `sorry`, `admit`, `native_decide`, `axiom`, `implemented_by` or `extern` in `Lightlike/`,
    and no new `maxHeartbeats 0`: a heavy proof gets a finite limit for that declaration only,
    `set_option maxHeartbeats 400000 in` (`scripts/ci_check.py`, `scripts/heartbeats_baseline.txt`).
@@ -88,6 +89,11 @@ the modules it changes and the modules that import them.
    docstring (`scripts/DocCheck.lean`).
 6. The literature sources of the catalog check out (`scripts/sources.py check`).
 7. No local path, private e-mail address, token or key in a tracked file (`scripts/leak_check.py`).
+8. No change to a generated file: `docs/RESULTS.md`, the task board (`docs/tasks/README.md`,
+   `docs/tasks/tasks.yaml`, `Tasks.lean`) and the generated counts in `README.md`, `ROADMAP.md` and
+   `CHANGELOG.md`. The maintainers regenerate them after merging, in one commit per batch, so
+   that pull requests do not conflict in them (`scripts/generated.py check`;
+   `python3 scripts/generated.py reset` undoes such a change and keeps the rest).
 
 A proof-task pull request must also change only the proof of its declaration: the statement was
 reviewed and locked (the `Proof task` workflow checks this). Other CI steps are `[advisory]`.

@@ -108,7 +108,7 @@ CHECKS = [
 NOT_CHECKS = {"scripts/ci_check.py", "scripts/prune_docs.py", "scripts/gate.py", "scripts/sixj_support.py", "scripts/tooling_selftest.py",
               "scripts/run_python_checks.py", "scripts/api_map.py",
               "scripts/leansrc.py", "scripts/proof_task_check.py", "scripts/tasks.py",
-              "scripts/sources.py", "scripts/doc_refs_check.py", "scripts/leak_check.py",
+              "scripts/sources.py", "scripts/doc_refs_check.py", "scripts/leak_check.py", "scripts/generated.py",
               "scripts/regge/regge3d_convergence.py",  # a library of the regge3d_* checks (dihedral); its demo has no verdict
               "scripts/regge/gen_chart_change.py",  # generator of Lightlike/Regge/Conv3/ChartChangeClasses.lean
               "scripts/regge/gen_sv_sigma.py",  # generator of Lightlike/Regge/Linear3/SaintVenantSigma0..5.lean
