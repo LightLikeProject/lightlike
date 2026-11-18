@@ -35,6 +35,8 @@ A dense subspace of the domain of the generator of a unitary group that is invar
 
 Two linear maps from finitely supported coefficients whose generators have the same Gram matrix have the same norm, and with dense ranges there is a unitary between the spaces that intertwines them [22]. The Fock kernel `⟪k_f, k_g⟫ = e(f) e(g) exp (⟪f, g⟫ / 2)` is positive semidefinite: the kernel `exp (⟪f, g⟫ / 2)` is the sum of the entrywise powers of the Gram matrix, each positive semidefinite by the Schur product theorem [23]. Its reproducing kernel Hilbert space, with the Weyl unitaries `W g k_f = exp (-i σ(g, f) / 2) k_{f+g}` obtained from the Gram invariance of the shift and the vacuum `k_0`, is a Fock representation, so a Fock representation of every complex Hilbert space exists [24]. It is not the trivial representation [25].
 
+For a self-adjoint operator `A` and `z` with `Im z ≠ 0`, `A - z` is a bijection from the domain onto the space with `‖(A - z) x‖ ≥ |Im z| ‖x‖`, and its inverse, the resolvent, is a bounded operator of norm at most `1 / |Im z|` whose adjoint is the resolvent at `conj z` [26]. The resolvent of the generator `λ • 1` of the phase group is `(λ - z)⁻¹` [27].
+
 The Gram matrix of the vectors `W f Ω` of a Fock representation is a function of `f` and `g` alone, by the Weyl relations and the vacuum expectation, so the map `c ↦ ∑ c f W f Ω` has the same norm for two Fock representations; it extends to a unitary that maps the vacuum to the vacuum and intertwines the Weyl unitaries, which is the uniqueness of the Fock representation [14]. The Gram function is Hermitian and normalized, and over the zero Hilbert space there is a Fock representation to which the uniqueness applies [15].
 
 ## Lean References
@@ -106,6 +108,11 @@ The Gram matrix of the vectors `W f Ω` of a Fock representation is a function o
     `OperatorAlgebras.fockW`, `OperatorAlgebras.continuous_of_dense_isometries`,
     `OperatorAlgebras.fockRepOf` (the proof of task T-OP2-P1)
 25. Lightlike/OperatorAlgebras/TestsFockExists.lean - `OperatorAlgebras.fockRepOf_W_ne_one`
+26. Lightlike/OperatorAlgebras/Resolvent.lean - `OperatorAlgebras.shiftMap`,
+    `OperatorAlgebras.sa_shiftMap_surjective`, `OperatorAlgebras.shiftEquiv`,
+    `OperatorAlgebras.resolventCLM`, `OperatorAlgebras.resolvent_spec`,
+    `OperatorAlgebras.resolvent_adjoint`
+27. Lightlike/OperatorAlgebras/TestsResolvent.lean - `OperatorAlgebras.resolvent_phaseGroup`
 
 ## References
 
