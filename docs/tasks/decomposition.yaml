@@ -183,14 +183,14 @@ tasks:
   - id: T-OP1-P4
     milestone: OP1
     kind: proof
-    title: "The C² functions with compact support are a core of the generator of the translation group on L²(ℝ)"
+    title: "The C_c^∞ functions are a core of the generator of the translation group on L²(ℝ)"
     file: Tasks/OP/T_OP1_P4.lean
     decl: Lightlike.OperatorAlgebras.translationGroup_core
     size: M
     difficulty: research-level
     routes:
       - "Mollification: for ψ in the domain, ψ * ρ_ε is smooth and tends to ψ with its derivative; truncate by a cutoff and use that the generator commutes with convolution (Hall, Chapter 10)."
-      - "A dense invariant subspace of the domain is a core (Reed–Simon I, Chapter VIII, on cores); the C² compactly supported functions are invariant under translation."
+      - "A dense invariant subspace of the domain is a core (Reed–Simon I, Chapter VIII, on cores); the C_c^∞ functions are invariant under translation and dense (Mathlib: Lp.dense_hasCompactSupport_contDiff)."
   - id: T-OP1-P5
     milestone: OP1
     kind: proof
