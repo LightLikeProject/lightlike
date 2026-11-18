@@ -15,6 +15,7 @@ areas:
   Operator algebras and quantum information: operator-algebras
   Perturbative QFT and the renormalization group: qft-rg
   Conformal field theory: cft
+  Dynamical systems: dynamics
   Random geometry: random-geometry
   Gauge theory and constrained systems: gauge-constrained
   Spin foams: spin-foams
@@ -423,6 +424,16 @@ tasks:
     difficulty: research-level
     routes:
       - "Both directions go through extension of a timelike curve to an inextendible one; achronality gives the uniqueness of the meeting point."
+  - id: T-GE2-P19
+    milestone: GE2
+    kind: proof
+    title: A curve with timelike velocity almost everywhere, without a margin, still joins its endpoints in the timelike future
+    file: Tasks/GE2/T_GE2_P19.lean
+    decl: Lightlike.Causal.mem_chronFuture_of_ae_timelike
+    size: L
+    difficulty: research-level
+    routes:
+      - "Open. The library's timelike curves carry a margin (the velocity stays in a closed cone strictly inside the timelike cone on compact intervals); the textbooks ask only for timelike velocity. The statement says the two definitions give the same chronological future. Approach: approximate the curve by piecewise-smooth timelike curves with margin in a convex chart neighbourhood."
   - id: T-CS2-P1
     milestone: CS2
     kind: proof
@@ -566,7 +577,17 @@ tasks:
     difficulty: intermediate
     routes:
       - For a connected colored graph of dimension 2 the dual is a closed surface, so `ColoredGraph.euler` (`Lightlike/GFT/Euler.lean`) is its Euler characteristic, even, and at most 2 (Gurau 2010, Section 2; the classification of closed surfaces, PL3). No Lean statement is written until the surface type of the PL area (the PL7 milestone) exists; the link to the face count is `eulerChar_dual_eq_euler` (`Lightlike/GFT/DualEuler.lean`).
-
+  - id: T-CA1-P3
+    milestone: CA1
+    kind: proof
+    title: "The Lie-derivative form of the smeared momentum constraint equals the ADM form with the covariant divergence of the momentum"
+    file: Tasks/CA/T_CA1_P3.lean
+    decl: Lightlike.Canonical.momentumConstraint_eq_adm
+    size: M
+    difficulty: intermediate
+    routes:
+      - "Pointwise `π^{ij} (ℒ_ξ h)_ij + 2 (h ξ)_i ∇_k π^{ik} = 2 ∂_j (π^{ij} h_{ik} ξ^k)` and `integral_pd_eq_zero`."
+      - "ADM (1962), eq. (3.14b)."
 
 # Upstream tasks: finished results that belong in Mathlib (general mathematics) or Physlib
 # (general physics), with the rework each needs. Exclusive, like definition

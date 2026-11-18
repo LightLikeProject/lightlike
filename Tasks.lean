@@ -1,5 +1,6 @@
 import Tasks.CA.T_CA1_P1
 import Tasks.CA.T_CA1_P2
+import Tasks.CA.T_CA1_P3
 import Tasks.CS2.T_CS2_P1
 import Tasks.CS2.T_CS2_P2
 import Tasks.CS2.T_CS2_P3
@@ -22,6 +23,7 @@ import Tasks.GE2.T_GE2_P15
 import Tasks.GE2.T_GE2_P16
 import Tasks.GE2.T_GE2_P17
 import Tasks.GE2.T_GE2_P18
+import Tasks.GE2.T_GE2_P19
 import Tasks.GE.T_GE1_P2
 import Tasks.GE.T_GE1_P3
 import Tasks.GE.T_GE1_P4

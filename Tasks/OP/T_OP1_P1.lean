@@ -1,4 +1,4 @@
-import Lightlike.OperatorAlgebras.UnitaryGroup
+import Lightlike.OperatorAlgebras.StoneGenerator
 
 /-!
 # Task T-OP1-P1
@@ -63,6 +63,6 @@ generator is the operator `A` with `U t = exp (i t A)`; here `A` is given by `-i
 the derivative exists. -/
 theorem stone_generator_isSelfAdjoint {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [CompleteSpace H] (U : UnitaryGroup H) : IsSelfAdjoint U.generator := by
-  sorry
+  exact UnitaryGroup.generator_isSelfAdjoint U
 
 end Lightlike.OperatorAlgebras
