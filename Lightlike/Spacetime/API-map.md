@@ -56,6 +56,8 @@ uniqueness of the Levi-Civita connection, the independence of the curvature from
 agreement with the coordinate curvature of [1] in every chart are stated as proof tasks `T-GE1-P2` to `T-GE1-P8` (including the second and contracted Bianchi identities and Minkowski space as a solution)
 (`Tasks/GE/`), with open proofs, except the last: on `ℝⁿ` the flat connection `∇_v Y = DY(v)` is a torsion-free connection compatible with the Minkowski metric with zero curvature, so Minkowski space satisfies the Einstein equations with `Λ = 0` [8]. [TODO]
 
+The Lie derivative of the metric along a vector field, `(L_X g)(V, W) = X(g(V, W)) - g([X, V], W) - g(V, [X, W])`, equals `g(∇_V X, W) + g(V, ∇_W X)` for the Levi-Civita connection (metric compatibility and vanishing torsion), so a field is a Killing field, `g(∇_v X, w) + g(v, ∇_w X) = 0`, exactly when `L_X g = 0` [27].
+
 In Minkowski space, an observer who travels out and back along two straight segments ages less
 than one who stays at rest [6].
 
@@ -100,6 +102,8 @@ than one who stays at rest [6].
 24. Lightlike/Spacetime/VolumeMeasure.lean - `volumeMeasure`, `volumeMeasure_chart`, `volumeMeasure_minkowski`: the volume measure of a Lorentzian metric, its chart formula and the Minkowski trust check.
 25. Lightlike/Spacetime/NondegMetric.lean - `NondegMetric`, `NondegMetric.coordMetric`, `NondegMetric.ofRiemannian_coordMetric_posDef`: smooth symmetric nondegenerate bilinear fields on a manifold, the Lorentzian and the Riemannian metrics as cases, and the coordinate components with their tensor properties.
 26. Lightlike/Spacetime/NondegOpen.lean - `openNondeg`, `openNondeg_coordMetric`, `openNondeg_volumeMeasure`: a coordinate metric of any signature on an open subset of Euclidean space as a metric of the open subset, the coordinate components in every chart, and its volume measure.
+
+27. Lightlike/Spacetime/LieMetric.lean - `lieDerivMetric`, `IsKillingAt`, `lieDerivMetric_symm`, `lieDerivMetric_zero`, `lieDerivMetric_eq_of_isLeviCivita`, `isKillingAt_iff_lieDerivMetric_eq_zero`: the Lie derivative of a metric of any signature along a vector field, and for the Levi-Civita connection its equality with `g(∇_V X, W) + g(V, ∇_W X)`, so that the Killing equation is `L_X g = 0`.
 
 ## References
 
