@@ -36,19 +36,19 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
   {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I ∞ M]
   {n : ℕ} {g : LorentzianMetric I M n} (T : TimeOrientation g)
 
-/-- **Limit-curve theorem, endpoint form, in one chart** (Hawking–Ellis, Lemma 6.2.1, comparison
-pending). Around `p` there is a neighbourhood `W` such that, for every compact `K ⊆ interior W`, if
-future-directed causal curves `γ k` on `[a k, b k]` with values in `K` have initial points
-`γ k (a k)` converging to `x ∈ K` and final points converging to `y ∈ K` in the chart at `p`, then
-there is a future-directed causal curve `σ` on some `[α, β]` from `x` to `y`.
-
-Differences from the textbook form: (a) endpoint form, with converging endpoints, not a limit curve
-through a point of accumulation of an inextendible curve; (b) localised to one chart and a compact
-subset of its domain; (c) the regularity class is the library's (`IsFutureCausalCurve`: locally
-Lipschitz, velocity in the future causal cone almost everywhere), for which the closedness of the
-cone condition is proved here; (d) no Hausdorff or second countability assumption is used. -/
-theorem exists_limit_curve (p : M) :
-    ∃ W ∈ 𝓝 p, W ⊆ (tTriv I M p).baseSet ∧ ∀ K : Set M, IsCompact K → K ⊆ interior W →
+/-- **Limit-curve theorem from a chart cone estimate.** The statement of `exists_limit_curve` for
+any neighbourhood `W` of `p`, functional `ℓ` and constant `C` satisfying the cone estimate of
+`exists_cone_estimate_curve`; the same `W`, `ℓ` and `C` can then be used to control the curves. -/
+theorem limit_curve_of_cone_estimate (p : M) {W : Set M} (hWb : W ⊆ (tTriv I M p).baseSet)
+    {ℓ : E →L[ℝ] ℝ} {C : ℝ} (hC : 0 < C)
+    (hcone : ∀ q ∈ W, ∀ v : TangentSpace I q, T.IsFutureCausal v →
+      ‖(tTriv I M p ⟨q, v⟩).2‖ ≤ C * ℓ (tTriv I M p ⟨q, v⟩).2)
+    (hest : ∀ (γ : ℝ → M) (a b : ℝ), IsFutureCausalCurve T γ (Icc a b) → (∀ t ∈ Icc a b, γ t ∈ W) →
+        ∀ s ∈ Icc a b, ∀ t ∈ Icc a b, s ≤ t →
+          ℓ (extChartAt I p (γ s)) ≤ ℓ (extChartAt I p (γ t)) ∧
+          ‖extChartAt I p (γ t) - extChartAt I p (γ s)‖ ≤
+            C * (ℓ (extChartAt I p (γ t)) - ℓ (extChartAt I p (γ s)))) :
+    ∀ K : Set M, IsCompact K → K ⊆ interior W →
       ∀ (γ : ℕ → ℝ → M) (a b : ℕ → ℝ) (x y : M), x ∈ K → y ∈ K → (∀ k, a k ≤ b k) →
         (∀ k, IsFutureCausalCurve T (γ k) (Icc (a k) (b k))) →
         (∀ k, ∀ t ∈ Icc (a k) (b k), γ k t ∈ K) →
@@ -56,8 +56,6 @@ theorem exists_limit_curve (p : M) :
         Tendsto (fun k => extChartAt I p (γ k (b k))) atTop (𝓝 (extChartAt I p y)) →
         ∃ (σ : ℝ → M) (α β : ℝ), α ≤ β ∧ IsFutureCausalCurve T σ (Icc α β) ∧ σ α = x ∧
           σ β = y := by
-  obtain ⟨W, hW, hWb, ℓ, C, hC, hcone, hest⟩ := exists_cone_estimate_curve T p
-  refine ⟨W, hW, hWb, ?_⟩
   intro K hK hKW γ a b x y hxK hyK hab hγ hKmem hxlim hylim
   set φ := extChartAt I p with hφ
   have hKsrc : ∀ q ∈ K, q ∈ φ.source := fun q hq => by
@@ -235,6 +233,29 @@ theorem exists_limit_curve (p : M) :
     exact hcausal σ hσ' hdiff
   · exact (φ.left_inv (hKsrc x hxK)) ▸ (by simp [hxα])
   · exact (φ.left_inv (hKsrc y hyK)) ▸ (by simp [hyβ])
+
+/-- **Limit-curve theorem, endpoint form, in one chart** (Hawking–Ellis, Lemma 6.2.1, comparison
+pending). Around `p` there is a neighbourhood `W` such that, for every compact `K ⊆ interior W`, if
+future-directed causal curves `γ k` on `[a k, b k]` with values in `K` have initial points
+`γ k (a k)` converging to `x ∈ K` and final points converging to `y ∈ K` in the chart at `p`, then
+there is a future-directed causal curve `σ` on some `[α, β]` from `x` to `y`.
+
+Differences from the textbook form: (a) endpoint form, with converging endpoints, not a limit curve
+through a point of accumulation of an inextendible curve; (b) localised to one chart and a compact
+subset of its domain; (c) the regularity class is the library's (`IsFutureCausalCurve`: locally
+Lipschitz, velocity in the future causal cone almost everywhere), for which the closedness of the
+cone condition is proved here; (d) no Hausdorff or second countability assumption is used. -/
+theorem exists_limit_curve (p : M) :
+    ∃ W ∈ 𝓝 p, W ⊆ (tTriv I M p).baseSet ∧ ∀ K : Set M, IsCompact K → K ⊆ interior W →
+      ∀ (γ : ℕ → ℝ → M) (a b : ℕ → ℝ) (x y : M), x ∈ K → y ∈ K → (∀ k, a k ≤ b k) →
+        (∀ k, IsFutureCausalCurve T (γ k) (Icc (a k) (b k))) →
+        (∀ k, ∀ t ∈ Icc (a k) (b k), γ k t ∈ K) →
+        Tendsto (fun k => extChartAt I p (γ k (a k))) atTop (𝓝 (extChartAt I p x)) →
+        Tendsto (fun k => extChartAt I p (γ k (b k))) atTop (𝓝 (extChartAt I p y)) →
+        ∃ (σ : ℝ → M) (α β : ℝ), α ≤ β ∧ IsFutureCausalCurve T σ (Icc α β) ∧ σ α = x ∧
+          σ β = y := by
+  obtain ⟨W, hW, hWb, ℓ, C, hC, hcone, hest⟩ := exists_cone_estimate_curve T p
+  exact ⟨W, hW, hWb, limit_curve_of_cone_estimate T p hWb hC hcone hest⟩
 
 /-- **A limit of causal futures stays in the causal future, in one chart.** The conclusion of
 `exists_limit_curve` as membership `y ∈ J⁺(x)`. -/
