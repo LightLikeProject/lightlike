@@ -7,7 +7,7 @@ summary:
   by_difficulty: {"intermediate": 136, "advanced": 78, "research-level": 86}
   by_area: {"geometry": 49, "cosmology": 29, "semiclassical": 9, "cft": 5, "dynamics": 3, "gauge-constrained": 5, "harmonic-analysis": 17, "operator-algebras": 19, "asymptotics": 4, "qft-rg": 6, "pl-topology": 11, "quantum-groups": 11, "random-geometry": 5, "asymptotic-safety": 4, "canonical-qg": 16, "causal-sets": 12, "dynamical-triangulations": 5, "gft-tensor": 7, "holography": 8, "low-dim-gravity": 7, "matrix-models": 5, "ncg": 6, "perturbative-qg": 8, "regge": 6, "spin-foams": 22, "string-theory": 11, "twistors": 6, "other": 4}
   by_source_class: {"sourced": 277, "structural": 23}
-  by_priority_basis: {"canonical": 132, "highly cited": 81, "unlocks many": 6, "recent": 11, "other": 47}
+  by_priority_basis: {"canonical": 132, "highly cited": 81, "unlocks many": 5, "recent": 11, "other": 48}
 tasks:
   - id: "T-GE1"
     kind: "milestone"
@@ -540,7 +540,7 @@ tasks:
     size: "M"
     difficulty: "intermediate"
     mode: "exclusive"
-    deps: ["T-GE1", "T-RC6"]
+    deps: ["T-GE1"]
     checks: ["expansion of comoving congruences in Minkowski and in FLRW in closed form", "a congruence in a spacetime violating the energy condition does not focus"]
     labels: ["milestone", "area: geometry", "size: M", "intermediate"]
   - id: "T-GE4"
@@ -3817,8 +3817,8 @@ tasks:
     tier: "frontier"
     source_class: "sourced"
     source: "christiansen-2011, Section 1"
-    priority: 3
-    priority_basis: "unlocks many"
+    priority: 6
+    priority_basis: "other"
     size: "R"
     difficulty: "research-level"
     mode: "exclusive"
@@ -3833,7 +3833,7 @@ tasks:
     tier: "frontier"
     source_class: "sourced"
     source: "sorkin-2019, Section 2"
-    priority: 4
+    priority: 3
     priority_basis: "recent"
     size: "M"
     difficulty: "intermediate"
@@ -3849,7 +3849,7 @@ tasks:
     tier: "frontier"
     source_class: "sourced"
     source: "brw-1999, eq. (6)"
-    priority: 5
+    priority: 4
     priority_basis: "other"
     size: "S"
     difficulty: "intermediate"
@@ -3865,7 +3865,7 @@ tasks:
     tier: "frontier"
     source_class: "sourced"
     source: "christiansen-2011; christiansen-2011, eq. (5)"
-    priority: 6
+    priority: 5
     priority_basis: "other"
     size: "R"
     difficulty: "research-level"
@@ -3878,7 +3878,7 @@ tasks:
     title: "4D combinatorics: 4-complexes, 4-simplices, boundary data, orientation, 4D Pachner moves as operations"
     milestone: "SF3"
     area: "spin-foams"
-    tier: "frontier"
+    tier: "established"
     source_class: "sourced"
     source: "lickorish-1999, Theorem 5.9"
     priority: 11
@@ -4242,7 +4242,7 @@ tasks:
     title: "Classical strings: Nambu–Goto and Polyakov, conformal gauge, Virasoro constraints"
     milestone: "ST1"
     area: "string-theory"
-    tier: "frontier"
+    tier: "established"
     source_class: "sourced"
     source: "tong-2009, eq. (1.22)"
     priority: 2
