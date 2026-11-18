@@ -913,4 +913,5 @@ import Lightlike.Gauge.PoissonJacobi
 import Lightlike.Tests.ADM
 import Lightlike.Tests.Constraints
 import Lightlike.Tests.DiracAlgorithm
+import Lightlike.Tests.ReducedForm
 import Lightlike.GFT.Euler
