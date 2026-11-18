@@ -177,4 +177,10 @@ lemma mem_chart_target (x₀ : M) :
     extChartAt 𝓘(ℝ, Fin n → ℝ) x₀ x₀ ∈ (extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).target :=
   mem_extChartAt_target x₀
 
+
+/-- For a Lorentzian metric the general coordinate matrix is the Lorentzian one (the same expression: `ofLorentzian` is the
+underlying metric). Kept under this name for the files that cite it. -/
+theorem NondegMetric.ofLorentzian_coordMetric (g : LorentzianMetric 𝓘(ℝ, Fin n → ℝ) M n) (x₀ : M) :
+    (NondegMetric.ofLorentzian g).coordMetric x₀ = g.coordMetric x₀ := rfl
+
 end Lightlike

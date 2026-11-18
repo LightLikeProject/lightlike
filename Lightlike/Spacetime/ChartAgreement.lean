@@ -21,7 +21,7 @@ chart at `x₀`, at the point `φ⁻¹ y`:
   vacuum equations hold in every chart.
 
 **Differences from the tasks.** `scalarCurvatureAt_coord` is the statement of the task `T-GE1-P5` and
-`satisfiesEinstein_iff_chart_proved` that of `T-GE1-P6`, each with the added hypotheses `[T2Space M]` and
+`satisfiesEinstein_iff_chart_proved` that of `T-GE1-P6`, each with the added hypothesis
 `[IsManifold 𝓘(ℝ, Fin n → ℝ) 2 M]` (needed by `curvatureAt_apply_proved`); the tasks stay open. The comparison
 of the definitions with Carroll, *Spacetime and Geometry*, ch. 3, and Wald, *General Relativity*, is pending: the
 sources were not read at the cited locations.
@@ -112,8 +112,8 @@ theorem trace_raise (B : TangentSpace 𝓘(ℝ, E) x →ₗ[ℝ] TangentSpace �
 end General
 
 variable {n : ℕ} {M : Type*} [TopologicalSpace M] [ChartedSpace (Fin n → ℝ) M] [IsManifold 𝓘(ℝ, Fin n → ℝ) ∞ M]
-  [T2Space M] [IsManifold 𝓘(ℝ, Fin n → ℝ) 2 M]
-variable (cov : Connection 𝓘(ℝ, Fin n → ℝ) M) [CovariantDerivative.ContMDiffCovariantDerivative cov ∞] (x₀ : M)
+  [IsManifold 𝓘(ℝ, Fin n → ℝ) 2 M]
+variable (cov : Connection 𝓘(ℝ, Fin n → ℝ) M) [LocallySmoothConnection cov] (x₀ : M)
 
 /-- The components of the curvature at any point of the chart domain. -/
 theorem hv_curvatureAt {p : M} (hp : p ∈ (tTriv (E := Fin n → ℝ) x₀).baseSet)
@@ -127,7 +127,7 @@ theorem hv_curvatureAt {p : M} (hp : p ∈ (tTriv (E := Fin n → ℝ) x₀).bas
   simp only [FiberBundle.extend_apply_self]
   exact h2
 
-omit [CovariantDerivative.ContMDiffCovariantDerivative cov ∞] in
+omit [LocallySmoothConnection cov] in
 /-- The Christoffel tensor in the components of the trivialization is the Christoffel symbol of the coordinate
 metric, for the Levi-Civita connection. -/
 theorem gamHat_coord (g : NondegMetric 𝓘(ℝ, Fin n → ℝ) M) (h : cov.IsLeviCivita g)

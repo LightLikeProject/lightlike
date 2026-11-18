@@ -1,0 +1,6 @@
+# Constructs that may still occur (ci_check.py check 8): `path construct count`.
+# The list may only shrink: remove the use, then lower or delete its line.
+Lightlike/SpinFoam/Move15.lean macro_rules 1
+Lightlike/SpinFoam/Move15.lean syntax 1
+Lightlike/SpinFoam/Move24.lean macro_rules 1
+Lightlike/SpinFoam/Move24.lean syntax 1

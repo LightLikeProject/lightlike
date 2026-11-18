@@ -71,6 +71,29 @@ with tempfile.TemporaryDirectory() as d:
     expect("exploratory planted: a core module importing Exploratory/ through another module fails",
            len(ci_check.check_exploratory_imports(tmp)) == 2)
 
+with tempfile.TemporaryDirectory() as d:
+    tmp = pathlib.Path(d)
+    mini(tmp)
+    bl = tmp / "base.txt"
+    expect("constructs control (flag off): a clean tree passes", ci_check.scan_constructs(tmp, bl) == [])
+    kinds = ["elab x : term => pure x", "macro_rules | `(a) => `(b)", "syntax \"a\" : term",
+             "initialize r : IO.Ref Nat <- IO.mkRef 0", "run_cmd pure ()", "unsafe def u := 0",
+             "opaque o : Nat"]
+    for k in kinds:
+        (tmp / "Lightlike" / "A.lean").write_text("theorem foo : True := trivial\n" + k + "\n")
+        expect("constructs planted (flag on): `" + k.split()[0] + "` is reported",
+               len(ci_check.scan_constructs(tmp, bl)) == 1)
+    (tmp / "Lightlike" / "A.lean").write_text("-- unsafe opaque x\n/- syntax a -/\ntheorem foo : \"unsafe\" = \"unsafe\" := rfl\n")
+    expect("constructs control: comments and strings are ignored", ci_check.scan_constructs(tmp, bl) == [])
+    (tmp / "Lightlike" / "A.lean").write_text("local syntax \"a\" : term\n")
+    bl.write_text("Lightlike/A.lean syntax 1\n")
+    expect("constructs control: a baselined use passes", ci_check.scan_constructs(tmp, bl) == [])
+    (tmp / "Lightlike" / "A.lean").write_text("theorem foo : True := trivial\n")
+    expect("constructs planted: a baseline line whose use is gone must be lowered",
+           len(ci_check.scan_constructs(tmp, bl)) == 1)
+    expect("constructs: the real baseline matches the real tree",
+           ci_check.scan_constructs() == [])
+
 import api_map  # noqa: E402
 import generated  # noqa: E402
 expect("generated files: the guard tells generated from hand-written parts, and its planted changes fail",
@@ -648,6 +671,23 @@ expect("changed-file selection planted: a module no slow check imports selects n
        _sel("scripts/regge/regge3d_core.py") & _slow == set())
 expect("changed-file selection: the runner, requirements.txt and ci.yml run everything",
        all(_sel(f) == _slow | _quick for f in ("scripts/run_python_checks.py", "requirements.txt", ".github/workflows/ci.yml")))
+
+# Shared slots of the Python checks (LL_CHECK_SLOTS): at most n scripts at a time over all runs
+import tempfile as _tf, os
+_sd = os.path.join(_tf.mkdtemp(), "slots")
+_s1 = rp.take_slot(_sd, 2); _s2 = rp.take_slot(_sd, 2)
+expect("check slots: two slots are two different directories, owned by this process",
+       _s1 != _s2 and open(os.path.join(_s1, "pid")).read() == str(os.getpid()))
+try:
+    subprocess.run([sys.executable, "-I", "-c",
+                    f"import sys; sys.path.insert(0, {str(HERE)!r}); import run_python_checks as r; r.take_slot({_sd!r}, 2)"],
+                   capture_output=True, text=True, timeout=5)
+    _waited = False
+except subprocess.TimeoutExpired:
+    _waited = True
+expect("check slots planted: a third taker waits while both slots are held by live processes", _waited)
+open(os.path.join(_s1, "pid"), "w").write("999999")
+expect("check slots: a slot whose owner process is gone is taken over", rp.take_slot(_sd, 2) == _s1)
 
 print("selftest:", "OK" if not fails else f"FAILED ({len(fails)})")
 sys.exit(1 if fails else 0)
