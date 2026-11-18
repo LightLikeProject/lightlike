@@ -23,3 +23,19 @@ Differences (the library statement is weaker than the source in these respects, 
 `DiracAlgo.final_consistent_of_data` needs no hypothesis `hstage`; what remains hypotheses: the selection rule, regularity of
 every stage, and the sets `U k` on which the chosen block is invertible with vanishing Schur complement; (2) the construction of the null vectors is local, near a point where an `r × r` block is invertible, while the
 source uses null vectors on the whole surface; (3) [closed] `DiracPoisson` ties the bracket matrix and `h` to Physlib's Poisson bracket (`poisson_exists_multiplier_iff_chi`); (4) `DiracAlgorithm` (the linear case) is a special case of the source's algorithm.
+
+## Update: stages from primary data, and the cover corollary
+
+`DiracAlgo.final_consistent_of_cover`: if the sets `U k` (where the selected block is invertible with vanishing Schur
+complement) cover the zero sets of the stages, then every point of the final surface has a multiplier solving all
+consistency conditions `{S_i, H} + ∑_a {S_i, φ_a} u_a = 0` (eq. (3.24) with all the constraints of the earlier stages, Section 3.3 of Wipf's
+lectures). The source's assumption, stated in Section 3.3, is that the rank of the bracket matrix `C` is constant on the final
+constraint surface `Γ_c` and that the constraints are regular. Under constant rank `r` an invertible `r × r` block exists in a
+neighbourhood of every point (a nonzero `r`-minor stays nonzero nearby), so the cover hypothesis is the source's constant-rank
+assumption in local form; that step, from constant rank to the existence of the cover, is not proved here and is a
+hypothesis (`hcover`), as is the selection rule.
+
+Remaining differences with the source: (a) local selection of the invertible block instead of null eigenvectors `w_a` of `C`
+on the whole surface (a representation difference: the null vectors used are the rows of `[-D B⁻¹, 1]`); (b) the cover
+hypothesis (from constant rank to a cover by invertible blocks); (c) regularity of every stage is an explicit hypothesis, as
+in the source, Section 3.3; (d) Wipf states the termination without proof; here it is `exists_stable_of_regular` by counting.

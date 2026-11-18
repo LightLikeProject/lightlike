@@ -124,6 +124,27 @@ theorem final_consistent_of_data (br : (E → ℝ) → (E → ℝ) → E → ℝ
   obtain ⟨u', hu'⟩ := hx3.1.2
   exact (st N).consistency_translate br φ H (sel (st N)) x u' hu'
 
+/-- **Every point of the final surface has a multiplier, when the selected blocks cover the stages**: if the sets `U k`
+(where the chosen block is invertible with vanishing Schur complement, as under the constant-rank hypothesis of Wipf's
+lectures, Section 3.3, on the whole surface) cover the zero sets of the stages, the consistency conditions are solvable at
+every point of the final surface. -/
+theorem final_consistent_of_cover (br : (E → ℝ) → (E → ℝ) → E → ℝ) (φ : Fin M → E → ℝ) (H : E → ℝ)
+    (sel : ∀ S : Stage E, Sel S M) (S₀ : Stage E)
+    (hreg : ∀ k, IsRegularStage (stages br φ H sel S₀ k).Φ)
+    (hne : ∀ k, (zeroSet (stages br φ H sel S₀ k).Φ).Nonempty) (U : ℕ → Set E)
+    (hU : ∀ k, ∀ x ∈ U k,
+      IsUnit ((stages br φ H sel S₀ k).consCm br φ (sel (stages br φ H sel S₀ k)) x).toBlocks₁₁.det ∧
+      ((stages br φ H sel S₀ k).consCm br φ (sel (stages br φ H sel S₀ k)) x).toBlocks₂₂ =
+        ((stages br φ H sel S₀ k).consCm br φ (sel (stages br φ H sel S₀ k)) x).toBlocks₂₁ *
+          ((stages br φ H sel S₀ k).consCm br φ (sel (stages br φ H sel S₀ k)) x).toBlocks₁₁⁻¹ *
+          ((stages br φ H sel S₀ k).consCm br φ (sel (stages br φ H sel S₀ k)) x).toBlocks₁₂)
+    (hcover : ∀ k, zeroSet (stages br φ H sel S₀ k).Φ ⊆ U k) :
+    ∃ N, (∀ k, N ≤ k → zeroSet (stages br φ H sel S₀ k).Φ = zeroSet (stages br φ H sel S₀ N).Φ) ∧
+      ∀ x ∈ zeroSet (stages br φ H sel S₀ N).Φ, ∃ u : Fin M → ℝ, ∀ i : Fin (stages br φ H sel S₀ N).n,
+        br ((stages br φ H sel S₀ N).Φ i) H x + ∑ a, br ((stages br φ H sel S₀ N).Φ i) (φ a) x * u a = 0 := by
+  obtain ⟨N, hN, hfin⟩ := final_consistent_of_data br φ H sel S₀ hreg hne U hU
+  exact ⟨N, hN, fun x hx => hfin x ⟨hx, hcover N hx⟩⟩
+
 end Final
 
 end Lightlike.Gauge
