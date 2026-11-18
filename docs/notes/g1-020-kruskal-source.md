@@ -28,3 +28,17 @@ eqs. (7.75)-(7.85), printed pages 186-188 (units `G` kept, `G = 1` in Lean). Wor
   `(t, r) ↦ (v, u)` (7.78)-(7.79) is replaced by the chart change from ingoing Eddington-Finkelstein coordinates (`kruskalChange`).
 
 Not read: Kruskal (1960), Szekeres (1960), MTW section 31.5, Wald section 6.4.
+
+## Open parts of G1-020 (row text: Kruskal-Szekeres MAXIMAL extension of Schwarzschild, Eddington-Finkelstein, event horizon, interior region, Penrose diagram)
+
+Proved in Lean: Eddington-Finkelstein chart across the horizon (vacuum, `ef_isVacuumSolution`), the Kruskal-Szekeres metric on `X² - T² > -1` (vacuum, Lorentzian,
+`kruskal_isVacuumSolution`, `kruskal_isLorentzian`), the chart change from EF, the reflection symmetry.
+
+NOT proved (open, no attempt completed):
+* **Maximality (inextendibility)** of the Kruskal extension: needs the notion of an extension of a Lorentzian manifold and a curvature-blow-up or geodesic-completeness argument
+  (the Kretschmann scalar `48 M²/r⁶` diverges at `r = 0`); none of this is in the library. The same missing infrastructure blocks the non-extension routes of G1-058
+  (Riemannian length/distance, holonomy, Killing fields on manifolds).
+* **Null curves `v = ±u + const`** (Carroll (7.82)) and the statement of the event horizon as `v = ±u` (7.83): the horizon as a null hypersurface and the event horizon as the
+  boundary of the past of future null infinity need the causal structure of the Kruskal manifold (GE2 relations on a manifold with this chart): not formalized here.
+* **The four regions I-IV and the exterior map `(t, r) ↦ (v, u)`** (7.78)-(7.79) (we use the chart change from ingoing EF instead).
+* **The Penrose diagram** (conformal compactification of the Kruskal manifold: Penrose-Carter): this is GE7, only done for Minkowski space and AdS.
