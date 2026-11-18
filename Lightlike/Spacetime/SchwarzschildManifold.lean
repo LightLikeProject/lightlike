@@ -138,7 +138,6 @@ theorem schwarzschild_ricci_eq_zero (h : cov.IsLeviCivita (schwarzschildMetric M
   linarith
 
 
-set_option maxHeartbeats 1600000 in
 /-- **Non-vacuity**: the Levi-Civita connection `leviCivita` of the exterior Schwarzschild metric is a smooth Levi-Civita
 connection and satisfies the vacuum Einstein equations with vanishing Ricci tensor. -/
 theorem schwarzschild_exists_vacuum_connection :
@@ -147,10 +146,10 @@ theorem schwarzschild_exists_vacuum_connection :
         CovariantDerivative.ContMDiffCovariantDerivative cov ∞ ∧
         (schwarzschildMetric M hM).SatisfiesEinstein cov 0 ∧
         ∀ (x : schOpen M hM) (v w : TangentSpace 𝓘(ℝ, Fin 4 → ℝ) x), cov.ricciAt x v w = 0 := by
-  have hLC : (leviCivita (schwarzschildMetric M hM)).IsLeviCivita (schwarzschildMetric M hM) :=
-    ⟨leviCivita_torsion _, leviCivita_compat _⟩
-  haveI := contMDiffCovariantDerivative_leviCivita (schwarzschildMetric M hM)
-  exact ⟨leviCivita (schwarzschildMetric M hM), hLC, this,
-    schwarzschild_satisfiesEinstein M hM _ hLC, schwarzschild_ricci_eq_zero M hM _ hLC⟩
+  let gN : NondegMetric 𝓘(ℝ, Fin 4 → ℝ) (schOpen M hM) := (schwarzschildMetric M hM).toNondegMetric
+  have hLC : (leviCivita gN).IsLeviCivita gN := ⟨leviCivita_torsion gN, leviCivita_compat gN⟩
+  haveI := contMDiffCovariantDerivative_leviCivita gN
+  exact ⟨leviCivita gN, hLC, this, schwarzschild_satisfiesEinstein M hM _ hLC,
+    schwarzschild_ricci_eq_zero M hM _ hLC⟩
 
 end Lightlike
