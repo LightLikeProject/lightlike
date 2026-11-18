@@ -612,6 +612,8 @@ import Lightlike.Spacetime.CausalLadder.LimitCurve
 import Lightlike.Spacetime.CausalLadder.CurveContinuity
 import Lightlike.Spacetime.CausalLadder.FirstExit
 import Lightlike.Spacetime.CausalLadder.ExitDiamond
+import Lightlike.Spacetime.CausalLadder.StrongCausality
+import Lightlike.Spacetime.CausalLadder.TestsStrong
 import Lightlike.Spacetime.Causal.BasicRelations
 import Lightlike.Spacetime.Causal.CausalCurve
 import Lightlike.Spacetime.Causal.CurveOps
