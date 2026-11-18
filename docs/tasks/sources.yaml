@@ -160,6 +160,10 @@ references:
     cite: "S. M. Carroll, Lecture Notes on General Relativity (1997)"
     title: "Lecture Notes on General Relativity"
     arxiv: gr-qc/9712019
+  grumiller-kummer-vassilevich-2002:
+    cite: "D. Grumiller, W. Kummer and D. V. Vassilevich, Dilaton gravity in two dimensions, Phys. Rept. 369 (2002) 327-430"
+    title: "Dilaton gravity in two dimensions"
+    arxiv: hep-th/0204253
   cky-1997:
     cite: "L. Crane, L. H. Kauffman and D. N. Yetter, State-sum invariants of 4-manifolds, J. Knot Theory Ramifications 6 (1997) 177-234"
     title: "State-Sum Invariants of 4-Manifolds I"

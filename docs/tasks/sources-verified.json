@@ -1199,7 +1199,7 @@
   "citations_via": "Semantic Scholar"
  },
  "carroll-1997": {
-  "checked": "2026-11-18",
+  "checked": "2026-11-19",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "Lecture Notes on General Relativity",
@@ -1249,9 +1249,39 @@
     "snippet": "(4.53) can be very difficult to solve. The most popular sort of simplifying assumption is that the metric has a significant degree of symmetry, and we will talk later on about how symmetries of the metric make life easie",
     "why": null
    },
+   "eq. (4.60)": {
+    "verified": true,
+    "snippet": "(4.60) You can check this yourself. Therefore, the contribution of the first term in (4.56) to δS can be written Z h i √ (δS)1 = dn x −g g µν ∇λ (δΓλνµ ) − ∇ν (δΓλλµ ) Z h i √ = dn x −g ∇σ g µσ (δΓλλµ ) − g µν (δΓσµν ) ,",
+    "why": null
+   },
+   "eq. (4.66)": {
+    "verified": true,
+    "snippet": "(4.66) 2 This should vanish for arbitrary variations, so we are led to Einstein’s equations in vacuum: 1 δS 1 √ = Rµν − Rgµν = 0 . (4.67) −g δg µν 2 The fact that this simple action leads to the same vacuum field equatio",
+    "why": null
+   },
+   "eq. (4.67)": {
+    "verified": true,
+    "snippet": "(4.67) −g δg µν 2 The fact that this simple action leads to the same vacuum field equations as we had previously arrived at by more informal arguments certainly reassures us that we are doing something right. What we wou",
+    "why": null
+   },
    "eq. (4.72)": {
     "verified": true,
     "snippet": "(4.72) This is known as the Weak Energy Condition, or WEC. It seems like a fairly reasonable requirement, and many of the important theorems about solutions to general relativity (such as the singularity theorems of Hawk",
+    "why": null
+   },
+   "eq. (5.42)": {
+    "verified": true,
+    "snippet": "(5.42) This last version is Killing’s equation. If a spacetime has a Killing vector, then we know we can find a coordinate system in which the metric is independent of one of the coordinates. By far the most useful fact",
+    "why": null
+   },
+   "eq. (5.44)": {
+    "verified": true,
+    "snippet": "(5.44) 2 2 independent Killing vectors. The same kind of counting argument applies to maximally symmetric spaces with curvature (such as spheres) or a non-Euclidean signature (such as Minkowski space), although the detai",
+    "why": null
+   },
+   "eq. (5.46)": {
+    "verified": true,
+    "snippet": "(5.46) You can check for yourself that this actually does solve Killing’s equation. Note that in n ≥ 2 dimensions, there can be more Killing vectors than dimensions. This is because a set of Killing vector fields can be",
     "why": null
    },
    "eq. (6.54)": {
@@ -2115,7 +2145,7 @@
   "citations_via": "OpenAlex"
  },
  "gourgoulhon-2007": {
-  "checked": "2026-11-18",
+  "checked": "2026-11-19",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "3+1 Formalism and Bases of Numerical Relativity",
@@ -2123,6 +2153,16 @@
    "Section 2.5": {
     "verified": true,
     "snippet": "2.5 Gauss-Codazzi relations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 34 2.5.1 Gauss relation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 34 2.5.2 Codazzi relatio",
+    "why": null
+   },
+   "eq. (2.101)": {
+    "verified": true,
+    "snippet": "(2.101) This is the Codazzi relation, also called Codazzi-Mainardi relation in the mathematical litterature [52]. Remark : Thanks to the symmetries of the Riemann tensor (cf. Sec. 2.2.3), changing the index contracted wi",
+    "why": null
+   },
+   "eq. (2.92)": {
+    "verified": true,
+    "snippet": "(2.92) This is the Gauss relation. If we contract the Gauss relation on the indices γ and α and use γ µα γ αρ = γ µρ = δµρ + nµnρ , we obtain an expression that lets appear the Ricci tensors 4R and R associated with g an",
     "why": null
    }
   },
@@ -2143,6 +2183,21 @@
   },
   "citations": 491,
   "citations_via": "OpenAlex"
+ },
+ "grumiller-kummer-vassilevich-2002": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Dilaton Gravity in Two Dimensions",
+  "locations": {
+   "eq. (1.50)": {
+    "verified": true,
+    "snippet": "(1.50) Mγ Also the torsion simplifies to a volume form 1 T a = Tµν a dxµ ∧ dxν , Tµν a = (Dµ eν )a − (Dν eµ )a , (1.51) 2 with (Dµ )a b = ∂µ δ a b + ωµ ǫa b . (1.52) The Hodge dual of T a here is a diffeomorphism scalar:",
+    "why": null
+   }
+  },
+  "citations": 540,
+  "citations_via": "Semantic Scholar"
  },
  "gurau-2008": {
   "checked": "2026-11-08",
