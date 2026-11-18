@@ -113,11 +113,11 @@ theorem contDiff_pd {f : (Fin n → ℝ) → ℝ} (hf : ContDiff ℝ ∞ f) (j :
   unfold pd
   exact (hf.fderiv_right (by simp)).clm_apply contDiff_const
 
-/-- **The Christoffel family is smooth** in `(t, y)` near `(0, x)`. -/
-theorem contDiffAt_christoffel_family (g h : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ)
+/-- **The Christoffel family is smooth** in `(t, y)` near `(t₀, x)` where `det (g x + t₀ h x) ≠ 0`. -/
+theorem contDiffAt_christoffel_family_at (g h : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ)
     (hg : ∀ a b, ContDiff ℝ ∞ (fun y => g y a b)) (hh : ∀ a b, ContDiff ℝ ∞ (fun y => h y a b))
-    (x : Fin n → ℝ) (hx : (g x).det ≠ 0) (i j k : Fin n) :
-    ContDiffAt ℝ ∞ (fun p : ℝ × (Fin n → ℝ) => christoffel (fun y => g y + p.1 • h y) i j k p.2) (0, x) := by
+    (t₀ : ℝ) (x : Fin n → ℝ) (hx : (g x + t₀ • h x).det ≠ 0) (i j k : Fin n) :
+    ContDiffAt ℝ ∞ (fun p : ℝ × (Fin n → ℝ) => christoffel (fun y => g y + p.1 • h y) i j k p.2) (t₀, x) := by
   have hform : ∀ p : ℝ × (Fin n → ℝ), christoffel (fun y => g y + p.1 • h y) i j k p.2 =
       (1 / 2) * ∑ l, ((g p.2 + p.1 • h p.2)⁻¹ i l *
         ((pd j (fun y => g y l k) p.2 + pd k (fun y => g y l j) p.2 - pd l (fun y => g y j k) p.2) +
@@ -133,7 +133,7 @@ theorem contDiffAt_christoffel_family (g h : (Fin n → ℝ) → Matrix (Fin n) 
     intro a b
     simp only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]
     exact ((hg a b).comp contDiff_snd).add (contDiff_fst.mul ((hh a b).comp contDiff_snd))
-  have hdet : ((g (((0 : ℝ), x) : ℝ × (Fin n → ℝ)).2 + (((0 : ℝ), x) : ℝ × (Fin n → ℝ)).1 • h (((0 : ℝ), x) : ℝ × (Fin n → ℝ)).2)).det ≠ 0 := by simpa using hx
+  have hdet : ((g ((t₀, x) : ℝ × (Fin n → ℝ)).2 + ((t₀, x) : ℝ × (Fin n → ℝ)).1 • h ((t₀, x) : ℝ × (Fin n → ℝ)).2)).det ≠ 0 := hx
   have hA : ∀ a b c, ContDiff ℝ ∞ (fun p : ℝ × (Fin n → ℝ) => pd c (fun y => g y a b) p.2) :=
     fun a b c => (contDiff_pd (hg a b) c).comp contDiff_snd
   have hB : ∀ a b c, ContDiff ℝ ∞ (fun p : ℝ × (Fin n → ℝ) => pd c (fun y => h y a b) p.2) :=
@@ -142,6 +142,14 @@ theorem contDiffAt_christoffel_family (g h : (Fin n → ℝ) → Matrix (Fin n) 
   refine (contDiffAt_inv_entry hf hdet i l).mul ?_
   exact ((((hA l k j).add (hA l j k)).sub (hA j k l)).add
     (contDiff_fst.mul (((hB l k j).add (hB l j k)).sub (hB j k l)))).contDiffAt
+
+
+/-- **The Christoffel family is smooth** in `(t, y)` near `(0, x)`. -/
+theorem contDiffAt_christoffel_family (g h : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ)
+    (hg : ∀ a b, ContDiff ℝ ∞ (fun y => g y a b)) (hh : ∀ a b, ContDiff ℝ ∞ (fun y => h y a b))
+    (x : Fin n → ℝ) (hx : (g x).det ≠ 0) (i j k : Fin n) :
+    ContDiffAt ℝ ∞ (fun p : ℝ × (Fin n → ℝ) => christoffel (fun y => g y + p.1 • h y) i j k p.2) (0, x) := by
+  simpa using contDiffAt_christoffel_family_at g h hg hh 0 x (by simpa using hx) i j k
 
 /-- The first variation of the Christoffel symbols as a function of the point. -/
 def dChristoffel (g h : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ) (i j k : Fin n) (y : Fin n → ℝ) : ℝ :=

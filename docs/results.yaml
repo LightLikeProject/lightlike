@@ -2077,3 +2077,16 @@
   review: kernel-checked
   note: "For smooth symmetric g and h on R^n and a point x with det g(x) nonzero, the coordinate Ricci tensor of g + t h varies by the linearised Ricci tensor; with W^rho = g^{sigma nu} delta Gamma^rho_{sigma nu} - g^{rho sigma} delta Gamma^kappa_{kappa sigma}, sqrt|g| g^{sigma nu} delta R_{sigma nu} equals the divergence of sqrt|g| W^rho; and d/dt of sqrt|g_t| (R(g_t) - 2 Lambda) at t = 0 is minus sqrt|g| (R^{ab} - R g^{ab}/2 + Lambda g^{ab}) h_{ab} plus that divergence. Limits: pointwise statement in coordinates; the integral over a compact region (the divergence integrates to zero), the differentiation under the integral sign and the manifold statement are later stages; comparison with the source is pending and the location is the chapter."
   since: unreleased
+- id: LL-XXXX-h
+  title: The first variation of the Einstein-Hilbert action on a compact region is the Einstein tensor plus the cosmological term contracted with the perturbation, without a boundary term
+  area: Spacetime
+  file: Lightlike/Spacetime/VariationIntegral.lean
+  decls: [Lightlike.eh_first_variation, Lightlike.contDiffAt_lagDensity]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "Chapter 4"}
+  review: kernel-checked
+  note: "For a smooth metric g on R^n with nonzero determinant everywhere, a smooth symmetric perturbation h supported in a compact set T and Lambda real, d/dt of the integral over T of sqrt|det g_t| (R(g_t) - 2 Lambda), g_t = g + t h, at t = 0 is minus the integral over T of sqrt|det g| (R^{ab} - R g^{ab}/2 + Lambda g^{ab}) h_{ab}. Limits: coordinates on R^n; the vacuum Einstein equations as critical points (fundamental lemma), the manifold statement and the trust checks (two dimensions, sign of Lambda) are later stages; comparison with the source is pending and the location is the chapter."
+  since: unreleased
