@@ -916,6 +916,7 @@ import Lightlike.Gauge.DiracTangent
 import Lightlike.Gauge.DiracBridge
 import Lightlike.Gauge.DiracAlgo
 import Lightlike.Gauge.MinorExists
+import Lightlike.Gauge.DiracLocal
 import Lightlike.Gauge.DiracPoisson
 import Lightlike.Gauge.MatrixInverse
 import Lightlike.Gauge.PoissonJacobi
