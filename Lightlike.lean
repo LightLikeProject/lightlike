@@ -653,6 +653,7 @@ import Lightlike.Spacetime.OpenCoordMetric
 import Lightlike.Spacetime.LeviCivitaSmooth
 import Lightlike.Spacetime.SchwarzschildManifold
 import Lightlike.Spacetime.ChartTensor
+import Lightlike.Spacetime.EinsteinEquations
 import Lightlike.Spacetime.ChartAgreement
 import Lightlike.Spacetime.ChartConnection
 import Lightlike.Spacetime.ChartCovariant
