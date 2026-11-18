@@ -1,4 +1,4 @@
-import Lightlike.Canonical.Hypersurface
+import Lightlike.Canonical.HypersurfaceBridge
 
 /-!
 # Task T-CA1-P7
@@ -44,6 +44,6 @@ theorem constraintM_bridge {d : ℕ} {ξ : VectorField d} (hξ : SmoothVec ξ)
     (hπ : SmoothTensor π) :
     momentumConstraintM (M := Fin d → ℝ) (fun _ => ξ) (fun _ => h) (fun _ => π) = momentumConstraint ξ h π ∧
       hamiltonianConstraintM (M := Fin d → ℝ) N (fun _ => h) (fun _ => π) = hamiltonianConstraint N h π := by
-  sorry
+  exact constraintM_bridge_global ξ N h π
 
 end Lightlike.Canonical
