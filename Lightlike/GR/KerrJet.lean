@@ -16,42 +16,44 @@ noncomputable section
 
 namespace Lightlike
 
-/-- **Partial derivatives of a function of `(r, θ)`.** If `G` is differentiable at `(y 1, y 2)` with
-partial derivatives `A` (in the first variable) and `B` (in the second), then `∂_r`, `∂_θ` of
-`z ↦ G (z 1) (z 2)` at `y` are `A`, `B`, and `∂_t`, `∂_φ` vanish. -/
+/-- **Partial derivatives of a function of `(r, θ)`.** If `z ↦ G (z 1) (z 2)` is differentiable at `y`
+and `G` has partial derivatives `A` (in the first variable) and `B` (in the second) at `(y 1, y 2)`, then
+`∂_r`, `∂_θ` of `z ↦ G (z 1) (z 2)` at `y` are `A`, `B`, and `∂_t`, `∂_φ` vanish. -/
 theorem pd_rθ (G : ℝ → ℝ → ℝ) {y : Fin 4 → ℝ} {A B : ℝ}
-    (hG : DifferentiableAt ℝ (fun p : ℝ × ℝ => G p.1 p.2) (y 1, y 2))
+    (hG : DifferentiableAt ℝ (fun z : Fin 4 → ℝ => G (z 1) (z 2)) y)
     (h1 : HasDerivAt (fun r => G r (y 2)) A (y 1)) (h2 : HasDerivAt (fun t => G (y 1) t) B (y 2))
     (k : Fin 4) :
     pd k (fun z => G (z 1) (z 2)) y = if k = 1 then A else if k = 2 then B else 0 := by
-  set P : ℝ × ℝ → ℝ := fun p => G p.1 p.2 with hP
-  set L := fderiv ℝ P (y 1, y 2) with hL
-  have hPd : HasFDerivAt P L (y 1, y 2) := hG.hasFDerivAt
-  have hLA : L (1, 0) = A := by
-    have hl : HasDerivAt (fun r : ℝ => (r, y 2)) ((1 : ℝ), (0 : ℝ)) (y 1) :=
-      (hasDerivAt_id' (y 1)).prodMk (hasDerivAt_const _ _)
-    have := hPd.comp_hasDerivAt (y 1) hl
-    exact this.unique h1
-  have hLB : L (0, 1) = B := by
-    have hl : HasDerivAt (fun t : ℝ => (y 1, t)) ((0 : ℝ), (1 : ℝ)) (y 2) :=
-      (hasDerivAt_const _ _).prodMk (hasDerivAt_id' (y 2))
-    have := hPd.comp_hasDerivAt (y 2) hl
-    exact this.unique h2
-  let pr : (Fin 4 → ℝ) →L[ℝ] ℝ × ℝ :=
-    (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin 4 => ℝ) 1).prod
-      (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin 4 => ℝ) 2)
-  have hpr : HasFDerivAt (fun z : Fin 4 → ℝ => ((z 1, z 2) : ℝ × ℝ)) pr y := pr.hasFDerivAt
-  have hf0 : HasFDerivAt (P ∘ fun z : Fin 4 → ℝ => ((z 1, z 2) : ℝ × ℝ)) (L.comp pr) y := hPd.comp y hpr
-  have hf : HasFDerivAt (fun z : Fin 4 → ℝ => G (z 1) (z 2)) (L.comp pr) y := hf0
-  unfold pd
-  rw [hf.fderiv]
-  simp only [ContinuousLinearMap.comp_apply]
-  have e : ∀ k : Fin 4, pr (Pi.single k 1) = if k = 1 then ((1 : ℝ), (0 : ℝ))
-      else if k = 2 then ((0 : ℝ), (1 : ℝ)) else (0, 0) := by
+  set f : (Fin 4 → ℝ) → ℝ := fun z => G (z 1) (z 2) with hf
+  have hL : HasFDerivAt f (fderiv ℝ f y) y := hG.hasFDerivAt
+  have line : ∀ k : Fin 4, HasDerivAt (fun t : ℝ => f (y + t • Pi.single k 1))
+      (fderiv ℝ f y (Pi.single k 1)) 0 := by
     intro k
-    have hprv : ∀ v : Fin 4 → ℝ, pr v = (v 1, v 2) := fun v => rfl
-    fin_cases k <;> simp [hprv, Pi.single_apply, Fin.ext_iff]
-  rw [e k]
-  split_ifs <;> first | exact hLA | exact hLB | exact (congrArg L Prod.mk_zero_zero).trans L.map_zero
+    have hl : HasDerivAt (fun t : ℝ => y + t • (Pi.single k 1 : Fin 4 → ℝ)) (Pi.single k 1) 0 := by
+      simpa using ((hasDerivAt_id' (0 : ℝ)).smul_const (Pi.single k 1 : Fin 4 → ℝ)).const_add y
+    have := hL.comp_hasDerivAt_of_eq (0 : ℝ) hl (by simp)
+    exact this
+  unfold pd
+  have e1 : (fun t : ℝ => f (y + t • Pi.single 1 1)) = fun t => G (y 1 + t) (y 2) := by
+    funext t; simp [hf, Pi.single_apply]
+  have e2 : (fun t : ℝ => f (y + t • Pi.single 2 1)) = fun t => G (y 1) (y 2 + t) := by
+    funext t; simp [hf, Pi.single_apply]
+  have e0 : (fun t : ℝ => f (y + t • Pi.single 0 1)) = fun _ => G (y 1) (y 2) := by
+    funext t; simp [hf, Pi.single_apply]
+  have e3 : (fun t : ℝ => f (y + t • Pi.single 3 1)) = fun _ => G (y 1) (y 2) := by
+    funext t; simp [hf, Pi.single_apply]
+  have d1 : HasDerivAt (fun t : ℝ => G (y 1 + t) (y 2)) A 0 :=
+    HasDerivAt.comp_const_add (f := fun r => G r (y 2)) (y 1) 0 (by simpa using h1)
+  have d2 : HasDerivAt (fun t : ℝ => G (y 1) (y 2 + t)) B 0 :=
+    HasDerivAt.comp_const_add (f := fun t => G (y 1) t) (y 2) 0 (by simpa using h2)
+  fin_cases k
+  · have := line 0; rw [e0] at this
+    simpa using ((hasDerivAt_const (0 : ℝ) (G (y 1) (y 2))).unique this).symm
+  · have := line 1; rw [e1] at this
+    simpa using this.unique d1
+  · have := line 2; rw [e2] at this
+    simpa using this.unique d2
+  · have := line 3; rw [e3] at this
+    simpa using ((hasDerivAt_const (0 : ℝ) (G (y 1) (y 2))).unique this).symm
 
 end Lightlike
