@@ -158,4 +158,44 @@ lemma sa_shiftMap_injective (hA : IsSelfAdjoint A) {z : ℂ} (hz : z.im ≠ 0) :
     nlinarith [norm_nonneg (x : H)]
   exact Subtype.ext (norm_eq_zero.1 this)
 
+/-- The linear equivalence `A - z : domain ≃ H` for a self-adjoint `A` and non-real `z`. -/
+noncomputable def shiftEquiv (hA : IsSelfAdjoint A) {z : ℂ} (hz : z.im ≠ 0) : A.domain ≃ₗ[ℂ] H :=
+  LinearEquiv.ofBijective (shiftMap A z) ⟨sa_shiftMap_injective hA hz, sa_shiftMap_surjective hA hz⟩
+
+lemma shiftEquiv_symm_bound (hA : IsSelfAdjoint A) {z : ℂ} (hz : z.im ≠ 0) (y : H) :
+    ‖((shiftEquiv hA hz).symm y : H)‖ ≤ (|z.im|)⁻¹ * ‖y‖ := by
+  have h := sa_norm_sub_smul_ge hA z ((shiftEquiv hA hz).symm y)
+  have h2 : shiftMap A z ((shiftEquiv hA hz).symm y) = y := (shiftEquiv hA hz).apply_symm_apply y
+  rw [← shiftMap_apply, h2] at h
+  have hb : 0 < |z.im| := abs_pos.2 hz
+  rw [inv_mul_eq_div, le_div_iff₀ hb, mul_comm]
+  exact h
+
+/-- **The resolvent** `(A - z)⁻¹` of a self-adjoint operator at a non-real `z`, as a bounded operator of norm at
+most `1 / |Im z|`. -/
+noncomputable def resolventCLM (hA : IsSelfAdjoint A) {z : ℂ} (hz : z.im ≠ 0) : H →L[ℂ] H :=
+  LinearMap.mkContinuous (A.domain.subtype ∘ₗ (shiftEquiv hA hz).symm.toLinearMap) (|z.im|)⁻¹
+    (fun y => shiftEquiv_symm_bound hA hz y)
+
+/-- The resolvent maps into the domain. -/
+lemma resolvent_mem (hA : IsSelfAdjoint A) {z : ℂ} (hz : z.im ≠ 0) (y : H) :
+    resolventCLM hA hz y ∈ A.domain := ((shiftEquiv hA hz).symm y).2
+
+/-- `(A - z) (R y) = y`. -/
+lemma resolvent_spec (hA : IsSelfAdjoint A) {z : ℂ} (hz : z.im ≠ 0) (y : H) :
+    (A ⟨resolventCLM hA hz y, resolvent_mem hA hz y⟩ : H) - z • resolventCLM hA hz y = y :=
+  (shiftEquiv hA hz).apply_symm_apply y
+
+/-- `R (A x - z x) = x` on the domain. -/
+lemma resolvent_shift (hA : IsSelfAdjoint A) {z : ℂ} (hz : z.im ≠ 0) (x : A.domain) :
+    resolventCLM hA hz ((A x : H) - z • (x : H)) = x := by
+  have := (shiftEquiv hA hz).symm_apply_apply x
+  have h2 : (shiftEquiv hA hz) x = (A x : H) - z • (x : H) := rfl
+  rw [← h2]
+  exact congrArg Subtype.val this
+
+lemma norm_resolvent_le (hA : IsSelfAdjoint A) {z : ℂ} (hz : z.im ≠ 0) (y : H) :
+    ‖resolventCLM hA hz y‖ ≤ (|z.im|)⁻¹ * ‖y‖ :=
+  shiftEquiv_symm_bound hA hz y
+
 end Lightlike.OperatorAlgebras
