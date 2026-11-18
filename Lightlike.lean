@@ -959,6 +959,10 @@ import Lightlike.Gauge.ConstraintsAPI
 import Lightlike.Gauge.DiracAlgebra
 import Lightlike.Gauge.DiracJacobi
 import Lightlike.Gauge.DiracAlgorithm
+import Lightlike.Gauge.FlowDeriv
+import Lightlike.Gauge.GaugeFlow
+import Lightlike.Gauge.KernelSpan
+import Lightlike.Gauge.LinearODE
 import Lightlike.Gauge.MatrixInverse
 import Lightlike.Gauge.PoissonJacobi
 import Lightlike.Tests.ADM
