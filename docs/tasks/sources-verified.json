@@ -1473,6 +1473,21 @@
   "citations": 844,
   "citations_via": "Semantic Scholar"
  },
+ "curiel-2014": {
+  "checked": "2026-11-18",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "A Primer on Energy Conditions",
+  "locations": {
+   "§2.1": {
+    "verified": true,
+    "snippet": "2.1 Pointilliste Energy Conditions null energy condition (NEC) geometric for any null vector k a , Rmn k m k n ≥ 0 physical for any null vector k a , Tmn k m k n ≥ 0 effective for each µ̂, ρ + pµ̂ ≥",
+    "why": null
+   }
+  },
+  "citations": 327,
+  "citations_via": "OpenAlex"
+ },
  "defelice-tsujikawa-2010": {
   "checked": "2026-11-17",
   "exists": true,

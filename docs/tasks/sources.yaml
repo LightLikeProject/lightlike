@@ -160,6 +160,10 @@ references:
     cite: "S. M. Carroll, Lecture Notes on General Relativity (1997)"
     title: "Lecture Notes on General Relativity"
     arxiv: gr-qc/9712019
+  curiel-2014:
+    cite: "E. Curiel, A Primer on Energy Conditions (2014), in Towards a Theory of Spacetime Theories, Einstein Studies 13 (2017)"
+    title: "A Primer on Energy Conditions"
+    arxiv: "1405.0403"
   cky-1997:
     cite: "L. Crane, L. H. Kauffman and D. N. Yetter, State-sum invariants of 4-manifolds, J. Knot Theory Ramifications 6 (1997) 177-234"
     title: "State-Sum Invariants of 4-Manifolds I"

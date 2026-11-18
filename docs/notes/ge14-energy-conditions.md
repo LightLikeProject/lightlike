@@ -37,3 +37,25 @@ The paper does not state, for the Maxwell field, which conditions hold; p. 5 say
 
 ## Differences
 Curiel works on a spacetime with a time orientation; ours is pointwise on a Lorentzian vector space and "co-oriented" is the pointwise notion above.
+
+## Stage 2: stress-energy fields on a manifold and the geometric forms (`EnergyConditionsField.lean`)
+* `NullECField`, `WeakECField`, `StrongECField`, `DominantECField`: the stage-1 conditions at every point of a Lorentzian 4-manifold. Curiel's
+  conditions in §2.1 are pointwise ("pointilliste": "those ... that constrain behavior at individual points", p. 5), so a field satisfies one
+  iff it does at every point: no difference.
+* The perfect fluid, dust, Klein–Gordon and electromagnetic fields are the stage-1 forms at every point; the effective forms for a fluid with a
+  unit timelike velocity field follow pointwise. The constant Klein–Gordon field with a negative potential value violates the weak condition:
+  the same open comparison as in stage 1 (no read source states it).
+* Geometric forms. Curiel, §2, p. 5: "In every case, the physical formulation is logically equivalent to the geometric formulation if the
+  Einstein field equation is assumed to hold." Table of §2.1, p. 6, geometric column: NEC "for any null vector k^a, R_mn k^m k^n ≥ 0"; WEC
+  "for any timelike vector ξ^a, G_mn ξ^m ξ^n ≥ 0"; SEC "for any timelike vector ξ^a, R_mn ξ^m ξ^n ≥ 0"; DEC "1. for any timelike vector
+  ξ^a, G_mn ξ^m ξ^n ≥ 0, and G^a_n ξ^n is causal 2. for any two co-oriented timelike vectors ξ^a and η^a, G_mn ξ^m η^n ≥ 0".
+  Ours: `nullECField_iff_ricci`, `weakECField_iff_einstein`, `strongECField_iff_ricci`, `dominantECField_iff_einstein` under `G = κ T`, `κ > 0`
+  (`EinsteinEq` with `Λ = 0`); `G^a_n ξ^n` is written as the vector `w` with `g(w, ·) = G(ξ, ·)` (index raising); the strong form uses the
+  trace `R = −κ tr_g T` (`scalarCurvatureAt_of_einsteinEq`, dimension four). Curiel does not print the field equation in the pages read
+  (p. 2 note 1: `T_ab` is "the stress-energy tensor picked out in a spacetime model by the Einstein field equation"; conventions of Malament,
+  not read), so a general coupling `κ > 0` and the absorption of a cosmological constant into the source (`einsteinEq_iff_absorb`) are no
+  difference from a stated form.
+* Non-vacuity: Minkowski space with the flat connection solves `G = κ · 0` (`minkowski_einsteinEq_zero`), and the strong form gives
+  `Ric(ξ, ξ) ≥ 0` there (`minkowski_ricci_nonneg`). A non-vacuum check (closed de Sitter or Friedmann dust through the equivalence) waits for
+  regge/co30-sphere on main.
+* Differences: none found for stage 2.
