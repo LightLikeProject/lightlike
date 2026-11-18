@@ -155,7 +155,7 @@ end NondegMetric
 
 namespace LorentzianMetric
 
-variable (g : LorentzianMetric I M n)
+variable {n : ℕ} (g : LorentzianMetric I M n)
 
 /-- The Einstein equations with cosmological constant for a Lorentzian metric: those of the underlying metric of any
 signature (`NondegMetric.SatisfiesEinstein`). -/
