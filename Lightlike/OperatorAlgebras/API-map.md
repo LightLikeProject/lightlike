@@ -35,9 +35,15 @@ A dense subspace of the domain of the generator of a unitary group that is invar
 
 Two linear maps from finitely supported coefficients whose generators have the same Gram matrix have the same norm, and with dense ranges there is a unitary between the spaces that intertwines them [22]. The Fock kernel `⟪k_f, k_g⟫ = e(f) e(g) exp (⟪f, g⟫ / 2)` is positive semidefinite: the kernel `exp (⟪f, g⟫ / 2)` is the sum of the entrywise powers of the Gram matrix, each positive semidefinite by the Schur product theorem [23]. Its reproducing kernel Hilbert space, with the Weyl unitaries `W g k_f = exp (-i σ(g, f) / 2) k_{f+g}` obtained from the Gram invariance of the shift and the vacuum `k_0`, is a Fock representation, so a Fock representation of every complex Hilbert space exists [24]. It is not the trivial representation [25].
 
+For a self-adjoint operator `A` and `z` with `Im z ≠ 0`, `A - z` is a bijection from the domain onto the space with `‖(A - z) x‖ ≥ |Im z| ‖x‖`, and its inverse, the resolvent, is a bounded operator of norm at most `1 / |Im z|` whose adjoint is the resolvent at `conj z` [26]. The resolvent of the generator `λ • 1` of the phase group is `(λ - z)⁻¹` [27].
+
+For a self-adjoint `A`, `t R (i t) y → i y` and `t R (-i t) y → -i y` for every `y` (on the domain from `R z (A x) = x + z R z x`, then everywhere by density and the bound `‖t R‖ ≤ 1`) [28]. The operators `A_n = (t² / 2) (R (i t) + R (-i t))`, `t = n + 1`, are bounded and self-adjoint, and `A_n x → A x` on the domain [28]. For the phase-group generator `λ • 1` the approximant is `t² λ / (λ² + t²)` [29].
+
+For a bounded self-adjoint operator `B`, `exp (i s B)` is a unitary group, strongly continuous in `s`, and for two commuting bounded self-adjoint operators `‖exp (i t B) y - exp (i t B') y‖ ≤ |t| ‖(B - B') y‖`, the mean value inequality for `s ↦ exp (i s B) exp (i (t - s) B') y` [30]. With `B' = 0` this is `‖exp (i t B) y - y‖ ≤ |t| ‖B y‖` [32]. The resolvents of a self-adjoint operator satisfy `R z - R w = (z - w) R z R w`, so they commute, and so do the approximants, which are self-adjoint as bounded operators [31].
+
 The Gram matrix of the vectors `W f Ω` of a Fock representation is a function of `f` and `g` alone, by the Weyl relations and the vacuum expectation, so the map `c ↦ ∑ c f W f Ω` has the same norm for two Fock representations; it extends to a unitary that maps the vacuum to the vacuum and intertwines the Weyl unitaries, which is the uniqueness of the Fock representation [14]. The Gram function is Hermitian and normalized, and over the zero Hilbert space there is a Fock representation to which the uniqueness applies [15].
 
-A strongly continuous contraction semigroup on a Banach space has a generator, the limit of the difference quotients on the vectors where it exists, a partially defined linear map. A densely defined operator `A` with `λ - A` bounded below by `λ` and surjective for every `λ > 0` is the generator of a contraction semigroup (the generation direction of the Hille–Yosida theorem) [26] {3}: the resolvent `R(λ) = (λ - A)⁻¹` has norm at most `λ⁻¹`, the Yosida approximants `λ² R(λ) - λ` give contractions `exp (t (λ² R(λ) - λ))` that converge, by a Cauchy estimate and the density of the domain, to a semigroup whose generator contains `A`, and a dissipative generator with `λ - A` surjective equals `A`. The converse (the generator has dense domain and `λ - A` is bounded below and surjective) is the open task T-OP1-P9.
+A strongly continuous contraction semigroup on a Banach space has a generator, the limit of the difference quotients on the vectors where it exists, a partially defined linear map. A densely defined operator `A` with `λ - A` bounded below by `λ` and surjective for every `λ > 0` is the generator of a contraction semigroup (the generation direction of the Hille–Yosida theorem) [33] {3}: the resolvent `R(λ) = (λ - A)⁻¹` has norm at most `λ⁻¹`, the Yosida approximants `λ² R(λ) - λ` give contractions `exp (t (λ² R(λ) - λ))` that converge, by a Cauchy estimate and the density of the domain, to a semigroup whose generator contains `A`, and a dissipative generator with `λ - A` surjective equals `A`. The converse (the generator has dense domain and `λ - A` is bounded below and surjective) is the open task T-OP1-P9.
 
 ## Lean References
 
@@ -108,10 +114,25 @@ A strongly continuous contraction semigroup on a Banach space has a generator, t
     `OperatorAlgebras.fockW`, `OperatorAlgebras.continuous_of_dense_isometries`,
     `OperatorAlgebras.fockRepOf` (the proof of task T-OP2-P1)
 25. Lightlike/OperatorAlgebras/TestsFockExists.lean - `OperatorAlgebras.fockRepOf_W_ne_one`
-26. Lightlike/OperatorAlgebras/Semigroup/Generation.lean - `OperatorAlgebras.hille_yosida_generation`,
+26. Lightlike/OperatorAlgebras/Resolvent.lean - `OperatorAlgebras.shiftMap`,
+    `OperatorAlgebras.sa_shiftMap_surjective`, `OperatorAlgebras.shiftEquiv`,
+    `OperatorAlgebras.resolventCLM`, `OperatorAlgebras.resolvent_spec`,
+    `OperatorAlgebras.resolvent_adjoint`
+27. Lightlike/OperatorAlgebras/TestsResolvent.lean - `OperatorAlgebras.resolvent_phaseGroup`
+28. Lightlike/OperatorAlgebras/Yosida.lean - `OperatorAlgebras.tendsto_of_dense_bounded`,
+    `OperatorAlgebras.tResP_tendsto`, `OperatorAlgebras.tResM_tendsto`, `OperatorAlgebras.approx`,
+    `OperatorAlgebras.approx_tendsto`, `OperatorAlgebras.approx_selfadjoint`
+29. Lightlike/OperatorAlgebras/TestsYosida.lean - `OperatorAlgebras.approx_phaseGroup`
+30. Lightlike/OperatorAlgebras/BoundedGroup.lean - `OperatorAlgebras.bdU`, `OperatorAlgebras.bdU_norm`,
+    `OperatorAlgebras.bdU_cauchy`, `OperatorAlgebras.bdUnitary`
+31. Lightlike/OperatorAlgebras/ResolventIdentity.lean - `OperatorAlgebras.resolvent_identity`,
+    `OperatorAlgebras.resolvent_commute`, `OperatorAlgebras.approx_commute`,
+    `OperatorAlgebras.approx_isSelfAdjoint`
+32. Lightlike/OperatorAlgebras/TestsBoundedGroup.lean - `OperatorAlgebras.bdU_sub_self_le`
+33. Lightlike/OperatorAlgebras/Semigroup/Generation.lean - `OperatorAlgebras.hille_yosida_generation`,
     `OperatorAlgebras.ContractionSemigroup.norm_dissip` (the proof of task T-OP1-P7); definitions in
     `Semigroup/Defs.lean`: `OperatorAlgebras.ContractionSemigroup`, `OperatorAlgebras.ContractionSemigroup.generator`
-27. Lightlike/OperatorAlgebras/Semigroup/Tests.lean - `OperatorAlgebras.trivialSemigroup`
+34. Lightlike/OperatorAlgebras/Semigroup/Tests.lean - `OperatorAlgebras.trivialSemigroup`
 
 ## References
 
