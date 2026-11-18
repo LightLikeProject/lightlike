@@ -6,14 +6,14 @@ import Lightlike.Spacetime.Causal.CurveOps
 
 The time orientation `-X` of a time-oriented Lorentzian manifold is `TimeOrientation.reverse`. A curve
 with velocity in `P` on `[a, b]` gives, by `t ↦ γ (-t)`, a curve with velocity `v ↦ P (-v)` on `[-b, -a]`
-(`IsCurveWith.reflect`). Hence a future-directed timelike curve for `T.reverse` from `x` to `y` is, run
+(`IsCurveWith.reflectNeg`). Hence a future-directed timelike curve for `T.reverse` from `x` to `y` is, run
 backwards, a future-directed timelike curve for `T` from `y` to `x`: the chronological future for the
 reversed orientation is the chronological past (`chronFuture_reverse`).
 
 ## Main definitions
 
 * `Causal.TimeOrientation.reverse`: the time orientation `-X`.
-* `Causal.IsCurveWith.reflect`: reflecting the parameter.
+* `Causal.IsCurveWith.reflectNeg`: reflecting the parameter.
 * `Causal.chronFuture_reverse`: `I⁺` for `T.reverse` is `I⁻` for `T`.
 -/
 
@@ -39,7 +39,7 @@ def TimeOrientation.reverse (T : TimeOrientation g) : TimeOrientation g where
 omit [IsManifold I ∞ M] in
 /-- **Reflection of the parameter**: if `γ` has its velocity in `P` on `[a, b]`, then `t ↦ γ (-t)` has its
 velocity in `fun x v => P x (-v)` on `[-b, -a]`. -/
-theorem IsCurveWith.reflect {P : ∀ x : M, TangentSpace I x → Prop} {γ : ℝ → M} {a b : ℝ}
+theorem IsCurveWith.reflectNeg {P : ∀ x : M, TangentSpace I x → Prop} {γ : ℝ → M} {a b : ℝ}
     (h : IsCurveWith (I := I) P γ (Icc a b)) (hab : a < b) :
     IsCurveWith (I := I) (fun x v => P x (-v)) (fun t => γ (-t)) (Icc (-b) (-a)) := by
   have hmem : ∀ t, t ∈ Icc (-b) (-a) → -t ∈ Icc a b := fun t ht =>
@@ -101,7 +101,7 @@ theorem chronFuture_reverse_subset {x y : M} (h : y ∈ chronFuture T.reverse x)
     x ∈ chronFuture T y := by
   obtain ⟨γ, a, b, hab, hγ, ha, hb⟩ := h
   obtain ⟨ε, hε, hm⟩ := hγ.2 a b hab subset_rfl
-  have hr := (IsCurveWith.reflect hm hab).mono_velocity fun x v hv =>
+  have hr := (IsCurveWith.reflectNeg hm hab).mono_velocity fun x v hv =>
     (T.isFutureTimelikeWith_reverse_neg v).1 hv
   exact ⟨fun t => γ (-t), -b, -a, by linarith, isFutureTimelikeCurve_of_margin T hε hr,
     by simp [hb], by simp [ha]⟩
@@ -126,7 +126,7 @@ theorem causalFuture_reverse_subset {x y : M} (h : y ∈ causalFuture T.reverse 
     x ∈ causalFuture T y := by
   obtain ⟨γ, a, b, hab, hγ, ha, hb⟩ := h
   rcases hab.lt_or_eq with hlt | heq
-  · have hr := (IsCurveWith.reflect hγ hlt).mono_velocity fun x v hv =>
+  · have hr := (IsCurveWith.reflectNeg hγ hlt).mono_velocity fun x v hv =>
       (T.isFutureCausal_reverse_neg v).1 hv
     exact ⟨fun t => γ (-t), -b, -a, by linarith, hr, by simp [hb], by simp [ha]⟩
   · subst heq
