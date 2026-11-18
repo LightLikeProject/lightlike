@@ -11,7 +11,8 @@ Minkowski space `ds² = -dt² + dr² + r² dΩ²` (`minkSph`) in the coordinates
 `cos²(T + R) cos²(T - R) = 1/((1 + (t+r)²)(1 + (t-r)²))`: `pullback_compact` says the pullback of `compactMetric`
 is `(1/((1+(t+r)²)(1+(t-r)²))) • minkSph`. The factor tends to `0` along `r → ∞` (`conformalFactor_tendsto`):
 null infinity is at finite distance in the compactified metric. The image lies in `|T| + R < π/2`
-(`compactify_mem`). A rescaling of the two variables separately, `(t, r) ↦ (arctan t, arctan r)`, is not
+(`compactify_mem`); `compactMetric` is a quarter of the Einstein static universe metric `-dT² + dR² + sin²R dΩ²` of `R × S³` in the
+doubled coordinates (`pullback_esu_doubling`). A rescaling of the two variables separately, `(t, r) ↦ (arctan t, arctan r)`, is not
 conformal (`arctan_not_conformal`).
 
 Gap row GE7. Source read (pdftotext): D. Harlow, *Jerusalem Lectures on Black Holes and Quantum Information*,
@@ -204,5 +205,36 @@ theorem arctan_not_conformal :
   simp [compactMetric, nonConf, minkSph, Matrix.mul_apply, Fin.sum_univ_four, Matrix.diagonal_apply] at h00 h11
   norm_num at h00 h11
   linarith
+
+/-- The Einstein static universe `R × S³`, `-dT² + dR² + sin²R dΩ²`, in coordinates `(T, R, θ, φ)`
+(`R ∈ (0, π)`: the polar angle of the `S³`). -/
+def esuMetric (y : Fin 4 → ℝ) : Matrix (Fin 4) (Fin 4) ℝ :=
+  diagonal ![-1, 1, sin (y 1) ^ 2, sin (y 1) ^ 2 * sin (y 2) ^ 2]
+
+/-- The doubling `(T, R) ↦ (2T, 2R)`. -/
+def doubling (y : Fin 4 → ℝ) : Fin 4 → ℝ := ![2 * y 0, 2 * y 1, y 2, y 3]
+
+lemma jac_doubling (y : Fin 4 → ℝ) : jac doubling y = diagonal ![2, 2, 1, 1] := by
+  have D0 : ∀ k : Fin 4, pd k (fun z => 2 * z 0) y = if k = 0 then 2 else 0 := fun k =>
+    pd_coord (n := 4) 0 k (f := fun t => 2 * t) (f' := 2) (by simpa using (hasDerivAt_id' (y 0)).const_mul 2)
+  have D1 : ∀ k : Fin 4, pd k (fun z => 2 * z 1) y = if k = 1 then 2 else 0 := fun k =>
+    pd_coord (n := 4) 1 k (f := fun t => 2 * t) (f' := 2) (by simpa using (hasDerivAt_id' (y 1)).const_mul 2)
+  have P2 : ∀ k : Fin 4, pd k (fun z => z 2) y = if k = 2 then 1 else 0 := fun k =>
+    pd_coord (n := 4) 2 k (hasDerivAt_id' (y 2))
+  have P3 : ∀ k : Fin 4, pd k (fun z => z 3) y = if k = 3 then 1 else 0 := fun k =>
+    pd_coord (n := 4) 3 k (hasDerivAt_id' (y 3))
+  ext μ a
+  fin_cases μ <;> fin_cases a <;> simp [jac, doubling, D0, D1, P2, P3, Matrix.diagonal_apply]
+
+/-- **The compactified Minkowski metric is a quarter of the Einstein static universe metric** in the
+doubled coordinates `(2T, 2R)`: `compactMetric` is `esuMetric` up to the constant factor `4`, so
+`pullback_compact` exhibits Minkowski space as conformal to the region `|T ± R| < π/2`, `R > 0` of `R × S³`. -/
+theorem pullback_esu_doubling (y : Fin 4 → ℝ) :
+    pullback esuMetric doubling y = (4 : ℝ) • compactMetric y := by
+  rw [pullback_eq_mul, jac_doubling]
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [Matrix.mul_apply, Fin.sum_univ_four, esuMetric, doubling, compactMetric, Matrix.diagonal_apply] <;>
+    (try rw [Real.sin_two_mul]) <;> ring
 
 end Lightlike
