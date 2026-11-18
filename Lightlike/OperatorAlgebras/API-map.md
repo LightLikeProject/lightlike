@@ -148,6 +148,20 @@ The Gram matrix of the vectors `W f Ω` of a Fock representation is a function o
 38. Lightlike/OperatorAlgebras/TestsFockReduction.lean - `OperatorAlgebras.Bogoliubov.id`,
     `OperatorAlgebras.implements_id`
 
+39. Lightlike/OperatorAlgebras/TraceClass/Basic.lean - `OperatorAlgebras.TraceClass.IsTraceClass`,
+    `OperatorAlgebras.TraceClass.trace`, `OperatorAlgebras.TraceClass.traceNorm`
+40. Lightlike/OperatorAlgebras/TraceClass/HilbertSchmidt.lean -
+    `OperatorAlgebras.TraceClass.HilbertSchmidt.IsHilbertSchmidt`,
+    `OperatorAlgebras.TraceClass.HilbertSchmidt.tsum_diagonal_mul_eq_tsum_diagonal_swap`
+41. Lightlike/OperatorAlgebras/TraceClass/GeneralProduct.lean -
+    `OperatorAlgebras.TraceClass.isTraceClass_mul_of_isHilbertSchmidt`
+42. Lightlike/OperatorAlgebras/TraceClass/TracePairingNorm.lean -
+    `OperatorAlgebras.TraceClass.TraceClass.tracePairingLinearIsometry`
+43. Lightlike/OperatorAlgebras/TraceClass/TracePairingSurjectivity.lean -
+    `OperatorAlgebras.TraceClass.TraceClass.tracePairing_surjective_concrete`
+44. Lightlike/OperatorAlgebras/TestsTraceClass.lean - `OperatorAlgebras.TraceClass.trace_rankOne_complex_one`,
+    `OperatorAlgebras.TraceClass.isTraceClass_id_complex`
+
 ## References
 
 1. B. C. Hall, *Quantum Theory for Mathematicians*, Graduate Texts in Mathematics 267, Springer, 2013,
