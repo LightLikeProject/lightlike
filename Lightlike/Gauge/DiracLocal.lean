@@ -73,7 +73,7 @@ theorem exists_selection_near [TopologicalSpace E] {M : ℕ} (br : (E → ℝ) �
   have hle : (fromBlocks (S.consCm br φ σ x).toBlocks₁₁ (S.consCm br φ σ x).toBlocks₁₂
       (S.consCm br φ σ x).toBlocks₂₁ (S.consCm br φ σ x).toBlocks₂₂).rank ≤ Fintype.card (Fin σ.r) := by
     rw [hsplit, hrk, Fintype.card_fin]
-    sorry
+    exact le_of_eq hr0.symm
   exact schur_eq_zero_of_rank_le_block _ _ _ _ hx hle
 
 end Lightlike.Gauge

@@ -53,3 +53,8 @@ block (the rows and columns of the minor) depends on the point, so the stage tup
 algorithm `DiracAlgo.stages` uses one selection per stage; the pointwise statement near a point `x₀` is that one such
 selection, adapted to `x₀`, works on a neighbourhood. A global statement needs a finite cover of the surface by such charts and
 the compatibility of the resulting stage tuples on overlaps, which is not formalised.
+
+`DiracLocal.exists_selection_near` (written, to be checked by the build after the freeze): for the consistency matrix of a stage with
+entries continuous at `x₀` and constant rank near `x₀`, a selection built from the rows and columns of a nonzero minor at `x₀`
+(`MinorExists`) has an invertible block and a vanishing Schur complement on a neighbourhood of `x₀`. This is the pointwise form of the
+constant-rank hypothesis (the representation difference named above); the global cover is not formalised.
