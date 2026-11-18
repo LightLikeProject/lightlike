@@ -15,8 +15,15 @@ Fatou's lemma on the interior part `Ĩ⁻(x) = {a | J⁺(a) ∈ 𝓝 x}` of `J�
 push-up lemmas give `a ∈ int J⁻(x) ⇒ x ∈ int J⁺(a)`; a cone argument in chart boxes gives a Lebesgue-null
 frontier).
 
-Source: Hawking–Ellis, *The Large Scale Structure of Space-Time*, ch. 6 (Hawking's time function from the
-averaged volume of the past): not read at a location.
+Source read (pdftotext): E. Minguzzi, *Causality theory for closed cone structures with applications*,
+arXiv:1709.06494 (Rev. Math. Phys. 31, 2019): Definition 2.18 (\"causally simple if J is closed and antisymmetric\", p. 40),
+the causal ladder, Theorem 2.47 (p. 59: \"Causally simple ⇒ Causally continuous ⇒ Causally easy ⇒ Stably causal ⇒ ...\"), and
+Theorem 3.17 (p. 117): \"Let (M, C) be a causally simple closed cone structure, then (M, C) is stably causal and J = J_S = K = T₁ = T₂\".
+Differences recorded in `docs/notes/p11-source-and-differences.md`: causal simplicity here is pointwise closedness of `J⁺(x)`, `J⁻(x)`
+(the Hawking–Ellis form) plus causality, against the closedness of the relation `J` in `M × M`; stable causality here is the existence of a
+time function (`IsStablyCausal`), against the source's widening of the cones (their equivalence, Hawking's theorem, is not formalized);
+the setting is a smooth Lorentzian manifold modelled on `ℝⁿ`, a special case of the source's closed cone structures. Hawking–Ellis,
+ch. 6: not read at a location.
 -/
 
 open MeasureTheory Set Filter Topology Manifold
