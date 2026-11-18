@@ -465,6 +465,16 @@ tasks:
     difficulty: research-level
     routes:
       - "Open. The library's timelike curves carry a margin (the velocity stays in a closed cone strictly inside the timelike cone on compact intervals); the textbooks ask only for timelike velocity. The statement says the two definitions give the same chronological future. Approach: approximate the curve by piecewise-smooth timelike curves with margin in a convex chart neighbourhood."
+  - id: T-GE2-P20
+    milestone: GE2
+    kind: proof
+    title: A limit curve through a limit point of future-inextendible causal curves is a future-inextendible causal curve
+    file: Tasks/GE2/T_GE2_P20.lean
+    decl: Lightlike.Causal.exists_inextendible_limit_curve
+    size: L
+    difficulty: research-level
+    routes:
+      - "The full limit-curve theorem (Hawking-Ellis, Lemma 6.2.1) for future-inextendible curves, across charts, with the limit curve of one subsequence. The endpoint form in one chart is `Lightlike.Causal.exists_limit_curve` (LL-0151, Lightlike/Spacetime/CausalLadder/LimitCurve.lean). Approach: reparametrise each curve by a complete Riemannian length (or cover by charts and diagonalise), apply the one-chart theorem on each chart, glue by the compact-chart cover, and extend by a maximality argument to an inextendible curve."
   - id: T-CS2-P1
     milestone: CS2
     kind: proof
