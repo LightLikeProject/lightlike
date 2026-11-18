@@ -1,14 +1,13 @@
 import Mathlib
 
 /-!
-# The fundamental theorem of calculus for Lipschitz curves, and the chord in a convex set
+# The fundamental theorem of calculus for Lipschitz curves
 
 A Lipschitz curve `f : ℝ → E` into a finite-dimensional space is differentiable almost everywhere
 and `∫ₐᵇ f' = f b - f a` (`lipschitz_integral_deriv`; Mathlib has it for real-valued absolutely
-continuous functions, and the vector case follows by testing against linear functionals). Hence the
-chord `(f b - f a) / (b - a)` is the average of the velocity, so it lies in every closed convex set
-that contains the velocity almost everywhere (`chord_mem_of_deriv_mem`). This is the step that turns
-a cone condition on the velocity of a causal curve, in a chart, into the same condition on its chord.
+continuous functions, and the vector case follows by testing against linear functionals). A functional
+whose derivative along the curve is positive almost everywhere is nondecreasing along it and strictly
+larger at the end (`functional_increasing_of_ae_pos`).
 
 Supporting lemmas; no catalogue entry.
 -/
@@ -75,33 +74,6 @@ theorem lipschitz_integral_deriv {f : ℝ → E} {a b : ℝ} {K : NNReal} (hab :
   rw [uIoc_of_le hab] at hmem
   have hd' : DifferentiableAt ℝ f t := ht ⟨hmem.1, lt_of_le_of_ne hmem.2 htb⟩
   exact ((ℓ.hasFDerivAt.comp_hasDerivAt t hd'.hasDerivAt).deriv).symm
-
-/-- **The chord of a Lipschitz curve lies in a closed convex set containing its velocity almost
-everywhere**: if `deriv f t ∈ K` for almost every `t` then `(f b - f a) / (b - a) ∈ K`. -/
-theorem chord_mem_of_deriv_mem {f : ℝ → E} {a b : ℝ} {K : NNReal} {S : Set E} (hab : a < b)
-    (hf : LipschitzOnWith K f (Icc a b)) (hS : Convex ℝ S) (hSc : IsClosed S)
-    (hd : ∀ᵐ t ∂(volume : Measure ℝ), t ∈ Ioo a b → deriv f t ∈ S) :
-    (b - a)⁻¹ • (f b - f a) ∈ S := by
-  let _ : MeasurableSpace E := borel E
-  have : BorelSpace E := ⟨rfl⟩
-  have hbd : ∀ t ∈ Ioo a b, ‖deriv f t‖ ≤ K := fun t ht =>
-    norm_deriv_le_of_lipschitzOn (Icc_mem_nhds ht.1 ht.2) hf
-  have hne : ∀ᵐ t ∂(volume : Measure ℝ), t ≠ b := by
-    simpa using (Set.countable_singleton b).ae_notMem (volume : Measure ℝ)
-  have hint : IntegrableOn (deriv f) (Ioc a b) volume := by
-    refine Measure.integrableOn_of_bounded (μ := volume) (M := K) (by simp)
-      (measurable_deriv f).aestronglyMeasurable ?_
-    rw [ae_restrict_iff' measurableSet_Ioc]
-    filter_upwards [hne] with t htb ht
-    exact hbd t ⟨ht.1, lt_of_le_of_ne ht.2 htb⟩
-  have h0 : (volume : Measure ℝ) (Ioc a b) ≠ 0 := by simp [hab]
-  have h1 : (volume : Measure ℝ) (Ioc a b) ≠ ⊤ := by simp
-  have hmem := hS.set_average_mem hSc h0 h1 (by
-    rw [ae_restrict_iff' measurableSet_Ioc]
-    filter_upwards [hd, hne] with t ht htb hmem
-    exact ht ⟨hmem.1, lt_of_le_of_ne hmem.2 htb⟩) hint
-  rw [setAverage_eq, ← intervalIntegral.integral_of_le hab.le, lipschitz_integral_deriv hab.le hf] at hmem
-  simpa [Measure.real, Real.volume_Ioc, ENNReal.toReal_ofReal (sub_nonneg.2 hab.le)] using hmem
 
 /-- **A functional that is increasing along a Lipschitz curve almost everywhere is increasing.**
 If `λ (F' t) > 0` for almost every `t`, then `t ↦ λ (F t)` is nondecreasing on `[a, b]` and strictly
