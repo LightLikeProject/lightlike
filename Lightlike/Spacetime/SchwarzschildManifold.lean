@@ -138,6 +138,7 @@ theorem schwarzschild_ricci_eq_zero (h : cov.IsLeviCivita (schwarzschildMetric M
   linarith
 
 
+set_option maxHeartbeats 1600000 in
 /-- **Non-vacuity**: the Levi-Civita connection `leviCivita` of the exterior Schwarzschild metric is a smooth Levi-Civita
 connection and satisfies the vacuum Einstein equations with vanishing Ricci tensor. -/
 theorem schwarzschild_exists_vacuum_connection :
