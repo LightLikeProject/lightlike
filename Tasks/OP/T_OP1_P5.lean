@@ -1,5 +1,4 @@
-import Lightlike.OperatorAlgebras.MomentumInterval
-import Lightlike.OperatorAlgebras.Deficiency
+import Lightlike.OperatorAlgebras.MomentumDeficiency
 
 /-!
 # Task T-OP1-P5
@@ -66,6 +65,6 @@ this result counts as weaker. -/
 theorem momentumMin_deficiency :
     Dense (momentumMin.domain : Set L2I) ∧ deficiencyDim momentumMin Complex.I = 1 ∧
       deficiencyDim momentumMin (-Complex.I) = 1 := by
-  sorry
+  exact deficiency_indices_momentumMin
 
 end Lightlike.OperatorAlgebras

@@ -40,7 +40,7 @@ lemma momentumMin_apply (f : testFunctions) (hx : (momentumPair f).1 ∈ momentu
   rw [← this]; exact hy2
 
 /-- A real smooth function with compact support inside `(0, 1)`, as a `C²` test function. -/
-lemma realTest_mem {g : ℝ → ℝ} (hg : ContDiff ℝ ∞ g) (hc : HasCompactSupport g)
+lemma realTest_mem {g : ℝ → ℝ} (hg : ContDiff ℝ ∞ g) (_hc : HasCompactSupport g)
     (hs : tsupport g ⊆ Ioo (0 : ℝ) 1) :
     (fun x => (g x : ℂ)) ∈ testFunctions := by
   refine ⟨(Complex.ofRealCLM.contDiff.comp hg).of_le (by norm_num), ?_⟩
@@ -314,5 +314,34 @@ lemma deficiency_eq_smul_expL2 {z : ℂ} {b : ℝ} (hzb : (starRingEnd ℂ) z = 
   have h3 : (y : ℝ → ℂ) x = (starRingEnd ℂ) (u x) := by simp [hu]
   rw [h3, h2, map_mul]
   simp only [expC, Complex.conj_ofReal]
+
+lemma expL2_ne_zero (b : ℝ) : expL2 b ≠ 0 := by
+  intro h
+  have hμ : NeZero ((volume : Measure ℝ).restrict (Ioo (0 : ℝ) 1)) :=
+    ⟨by rw [Ne, Measure.restrict_eq_zero]; simp⟩
+  have : ∀ᵐ x ∂((volume : Measure ℝ).restrict (Ioo (0 : ℝ) 1)), False := by
+    filter_upwards [expL2_ae b, (Lp.eq_zero_iff_ae_eq_zero).1 h] with x h1 h2
+    have : expC b x = 0 := by rw [← h1]; simpa using h2
+    simp [expC] at this
+  obtain ⟨x, hx⟩ := this.exists
+  exact hx
+
+/-- The deficiency space at `z` with `conj z = i b` is one-dimensional. -/
+lemma deficiencyDim_eq_one {z : ℂ} {b : ℝ} (hzb : (starRingEnd ℂ) z = Complex.I * b) :
+    deficiencyDim momentumMin z = 1 := by
+  unfold deficiencyDim
+  rw [rank_eq_one_iff]
+  refine ⟨⟨expL2 b, expL2_mem_deficiency hzb⟩, fun h => expL2_ne_zero b (congrArg Subtype.val h), ?_⟩
+  intro v
+  obtain ⟨c, hc⟩ := deficiency_eq_smul_expL2 hzb v.2
+  exact ⟨c, Subtype.ext hc.symm⟩
+
+/-- **Deficiency indices of `-i d/dx` on `L²(0, 1)`** (statement of `T-OP1-P5`). -/
+theorem deficiency_indices_momentumMin :
+    Dense (momentumMin.domain : Set L2I) ∧ deficiencyDim momentumMin Complex.I = 1 ∧
+      deficiencyDim momentumMin (-Complex.I) = 1 :=
+  ⟨dense_momentumMin_domain,
+    deficiencyDim_eq_one (z := Complex.I) (b := -1) (by simp),
+    deficiencyDim_eq_one (z := -Complex.I) (b := 1) (by simp)⟩
 
 end Lightlike.OperatorAlgebras
