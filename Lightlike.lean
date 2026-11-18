@@ -656,6 +656,7 @@ import Lightlike.Spacetime.CausalLadder.CausalOpen
 import Lightlike.Spacetime.CausalLadder.ChartLine
 import Lightlike.Spacetime.CausalLadder.GlobHypSimple
 import Lightlike.Spacetime.Causal.BasicRelations
+import Lightlike.Spacetime.Causal.CauchyClosed
 import Lightlike.Spacetime.Causal.CauchyCover
 import Lightlike.Spacetime.Causal.CauchyDomain
 import Lightlike.Spacetime.Causal.CausalCurve
