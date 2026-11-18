@@ -16,7 +16,9 @@ M. Visser, *The Kerr spacetime: A brief introduction*, arXiv:0706.0622v3 (mass w
 Second source (pdftotext of the course PDF): K. Intriligator, UCSD Physics 2017 (3/13/17) "Lecture 15 outline", kintriligator.physics.ucsd.edu/w17/lec15.pdf, p. 3:
 "Null vector at r = r+ is ℓ^μ = K^μ + Ω_H R^μ, with Ω_H = a/2M r+ ... The angular velocity of the event horizon is Ω_H = (dφ/dt)(r+) = a/(r+² + a²)." (K = ∂_t, R = ∂_φ.) Matches `kerrOmega`, `kerr_chi_null`. The same lecture introduces the surface gravity only in general ("κ = V a"), not for Kerr.
 
-NOT found in these sources: the surface gravity `κ` (no occurrence of surface gravity or κ in the text). `kerrKappa = Δ'(r₊)/(2(r₊² + a²))`
+Third source (pdftotext): E. Altas, *Hawking Temperature as the Total Gauss-Bonnet Invariant of the Region Outside a Black Hole*, arXiv:2208.12993, section "Application to the Kerr black hole", pp. 6-7: "The outer event horizon is located at r_H = m + √(m² − a²) ... the surface gravity, κ, ... with the Killing vector field ζ = ∂_t + Ω_H ∂_φ (27) ... Ω_H = a/(r_H² + a²) (28), which makes ζ^μ ζ_μ = 0 on the event horizon ... the known result [10] for the surface gravity of the Kerr black hole κ = (r_H² − a²)/(2 r_H (r_H² + a²)) (29)". Lean: `kerrKappa_eq_altas` (same expression), `kerrKappa_eq` (equal to `√(M²−a²)/(2 M r₊)`). The source takes κ from the Killing-field definition (its eq. (1)); our `kerrKappa` is the closed form `Δ'(r₊)/(2(r₊²+a²))`, not derived from the Killing equation: difference kind representation.
+
+Previously NOT found (this paragraph is now superseded for κ by the Altas source above): the surface gravity `κ` (no occurrence of surface gravity or κ in the text). `kerrKappa = Δ'(r₊)/(2(r₊² + a²))`
 and `kerrKappa_eq : κ = √(M² − a²)/(2 M r₊)` are therefore compared with the plan row GE6 only (and my memory of the standard value
 (r₊ − r₋)/(2(r₊² + a²)), which is not a source); no location is cited for `κ`. Boyer–Lindquist (1967) and Carroll ch. 6 were not read.
 

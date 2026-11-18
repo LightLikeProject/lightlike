@@ -15,7 +15,7 @@ Reversing the sign of `g_{tφ}` alone is the substitution `a ↦ -a` (`kerrMetri
 Gap row GE6. Definition of `κ` through `Δ'(r₊)/(2(r₊²+a²))` is the standard closed form, not derived here from
 `χ^μ ∇_μ χ^ν = κ χ^ν` (the Boyer–Lindquist chart is singular at the horizon). Compared with Visser, *The Kerr spacetime: A brief
 introduction* (arXiv:0706.0622v3): `r₊`, `Ω_H = a/(2 m r₊)` (eq. 112) and the null generator `(1, 0, 0, Ω_H)` (eqs. 113-114, p. 26);
-the surface gravity `κ` does not occur in that text and is not source-checked (Wald, ch. 12, Carter 1968: not read).
+the surface gravity: E. Altas, arXiv:2208.12993 (EPJ C 83, 2023), section "Application to the Kerr black hole", eq. (29) `κ = (r_H² − a²)/(2 r_H (r_H² + a²))` with `ζ = ∂_t + Ω_H ∂_φ` (27), `Ω_H = a/(r_H² + a²)` (28): `kerrKappa_eq_altas`. Visser has no `κ`.
 -/
 
 open Matrix Real
@@ -56,6 +56,17 @@ theorem kerrKappa_eq (hM : 0 < M) (h : a ^ 2 ≤ M ^ 2) :
   have hr : 0 < kerrRplus M a := by
     unfold kerrRplus; have := Real.sqrt_nonneg (M ^ 2 - a ^ 2); linarith
   field_simp
+
+/-- **Surface gravity in the form `(r₊² - a²)/(2 r₊ (r₊² + a²))`** (Altas, arXiv:2208.12993, eq. (29)). -/
+theorem kerrKappa_eq_altas (hM : 0 < M) (h : a ^ 2 ≤ M ^ 2) :
+    kerrKappa M a = (kerrRplus M a ^ 2 - a ^ 2) / (2 * kerrRplus M a * (kerrRplus M a ^ 2 + a ^ 2)) := by
+  have h1 := rplus_sq_add M a h
+  have hr : 0 < kerrRplus M a := by
+    unfold kerrRplus; have := Real.sqrt_nonneg (M ^ 2 - a ^ 2); linarith
+  unfold kerrKappa
+  rw [h1]
+  field_simp
+  nlinarith [h1]
 
 /-- **The Killing field `χ = ∂_t + Ω_H ∂_φ` is null on the horizon**, for every `θ`:
 `g_tt + 2 Ω_H g_{tφ} + Ω_H² g_{φφ} = 0` at `r = r₊`. -/
