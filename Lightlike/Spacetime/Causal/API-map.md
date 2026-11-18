@@ -29,7 +29,7 @@ The push-up lemmas (a point of the chronological future of `x` followed by a cau
 11. Lightlike/Spacetime/Causal/ConeConvex.lean - `IsLorentzianForm.convex_futureTimelike`
 12. Lightlike/Spacetime/Causal/CurveMargin.lean - `Causal.isFutureTimelikeCurve_of_contMDiffOn`, `Causal.isLocallyLipschitzOn_of_contMDiffOn`
 13. Lightlike/Spacetime/Causal/MinkowskiCauchy.lean - `Causal.minkowski_slice_isCauchySurface`
-14. Lightlike/Spacetime/Causal/PushUp.lean - `Causal.chronFuture_causalFuture_trans_of`, `Causal.causalFuture_chronFuture_trans_of`, `Causal.chronFuture_neg_iff`: the push-up lemmas from the openness of `I⁺` and a local push-up property, and time reversal.
+14. Lightlike/Spacetime/Causal/PushUp.lean - `Causal.chronFuture_causalFuture_trans_of`, `Causal.causalFuture_chronFuture_trans_of`, `Causal.chronFuture_neg_iff`: the push-up lemmas from the openness of the chronological futures and a local push-up property, and time reversal.
 
 ## References
 
