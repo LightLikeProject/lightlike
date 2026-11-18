@@ -1,4 +1,5 @@
 import Lightlike.Spacetime.Causal.BasicRelations
+import Lightlike.Spacetime.CausalLadder.PointReach
 
 /-!
 # Task T-GE2-P19
@@ -60,14 +61,18 @@ namespace Lightlike.Causal
 
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
   {H : Type*} [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
-  {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I ∞ M]
+  {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I ∞ M] [BoundarylessManifold I M]
   {n : ℕ} {g : LorentzianMetric I M n} (T : TimeOrientation g)
 
 /-- **Timelike velocity almost everywhere is enough for `I⁺`.** If a curve from `x` to `y` on
-`[a, b]` has future-directed timelike velocity almost everywhere (no margin), then `y ∈ I⁺(x)`. -/
+`[a, b]` has future-directed timelike velocity almost everywhere (no margin), then `y ∈ I⁺(x)`.
+
+Matches the source (Hawking–Ellis: space-time has no boundary); the hypothesis `BoundarylessManifold I M`
+was added to the statement, approved by the maintainers, 18 November 2026. -/
 theorem mem_chronFuture_of_ae_timelike {x y : M} {γ : ℝ → M} {a b : ℝ} (hab : a < b)
     (hγ : IsCurveWith (I := I) (fun _ v ↦ T.IsFutureTimelike v) γ (Icc a b))
     (hx : γ a = x) (hy : γ b = y) : y ∈ chronFuture T x := by
-  sorry
+  subst hx hy
+  exact mem_chronFuture_of_ae_timelike_lib T hab hγ
 
 end Lightlike.Causal
