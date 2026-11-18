@@ -603,6 +603,7 @@ import Lightlike.Spacetime.CausalLadder.ChartLipschitz
 import Lightlike.Spacetime.CausalLadder.ConeAlgebra
 import Lightlike.Spacetime.CausalLadder.ConeCurve
 import Lightlike.Spacetime.CausalLadder.ConeEstimate
+import Lightlike.Spacetime.CausalLadder.ChartModel
 import Lightlike.Spacetime.CausalLadder.ConeTransfer
 import Lightlike.Spacetime.CausalLadder.UniformCone
 import Lightlike.Spacetime.CausalLadder.LipschitzMono
