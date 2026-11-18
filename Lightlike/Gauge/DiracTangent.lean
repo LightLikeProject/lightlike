@@ -4,6 +4,8 @@ import Mathlib.Analysis.Calculus.Deriv.Slope
 import Mathlib.Analysis.Calculus.Deriv.Add
 import Mathlib.Analysis.Calculus.Deriv.Prod
 import Mathlib.Analysis.Calculus.Deriv.Mul
+import Mathlib.Analysis.Calculus.FDeriv.Prod
+import Mathlib.LinearAlgebra.Dual.Lemmas
 import Mathlib.Analysis.SpecificLimits.Basic
 import Mathlib.Analysis.Calculus.TangentCone.Defs
 import Mathlib.Analysis.Calculus.TangentCone.Basic
@@ -89,5 +91,54 @@ theorem tangentCone_levelSet_subset_ker {f : E → F} {f' : E →L[ℝ] F} {a : 
     have hn' : f (a + d n) = f a := hn
     simp [hn', map_smul, smul_sub]
   exact tendsto_nhds_unique h1 h2
+
+section Tuple
+
+variable {n : ℕ}
+
+/-- The map `v ↦ (Φ'_i v)_i` of independent functionals is onto `ℝⁿ`. -/
+theorem range_pi_eq_top {Φ' : Fin n → E →L[ℝ] ℝ} (hind : LinearIndependent ℝ Φ') :
+    (ContinuousLinearMap.pi Φ').range = ⊤ := by
+  by_contra hne
+  obtain ⟨φ, hφ0, hφ⟩ := Submodule.exists_dual_map_eq_bot_of_lt_top (lt_top_iff_ne_top.mpr hne) inferInstance
+  have hlin : ∑ i, φ (Pi.single i 1) • Φ' i = 0 := by
+    ext v
+    have hv : φ (ContinuousLinearMap.pi Φ' v) = 0 := by
+      have : φ (ContinuousLinearMap.pi Φ' v) ∈ Submodule.map φ (ContinuousLinearMap.pi Φ').range :=
+        ⟨_, ⟨v, rfl⟩, rfl⟩
+      rw [hφ] at this
+      simpa using this
+    have hpi : ContinuousLinearMap.pi Φ' v = ∑ i, Φ' i v • (Pi.single i 1 : Fin n → ℝ) := by
+      ext j; simp [Pi.single_apply]
+    rw [hpi, map_sum] at hv
+    simpa [mul_comm] using hv
+  have hg := Fintype.linearIndependent_iff.mp hind _ hlin
+  apply hφ0
+  refine LinearMap.pi_ext fun i y => ?_
+  rw [show (Pi.single i y : Fin n → ℝ) = y • Pi.single i 1 by ext j; simp [Pi.single_apply]]
+  simp [hg i]
+
+/-- **The tangent cone of the zero set of a regular tuple is the common kernel of the derivatives**: for constraint
+functions with strict derivatives `Φ'_i` at `x`, linearly independent, and `x` in the zero set. -/
+theorem mem_tangentCone_zeroSet_iff {Φ : Fin n → E → ℝ} {Φ' : Fin n → E →L[ℝ] ℝ} {x : E}
+    (hΦ : ∀ i, HasStrictFDerivAt (Φ i) (Φ' i) x) (hind : LinearIndependent ℝ Φ')
+    (hx : ∀ i, Φ i x = 0) (v : E) :
+    v ∈ tangentConeAt ℝ {y | ∀ i, Φ i y = 0} x ↔ ∀ i, Φ' i v = 0 := by
+  let F : E → (Fin n → ℝ) := fun y i => Φ i y
+  have hF : HasStrictFDerivAt F (ContinuousLinearMap.pi Φ') x :=
+    hasStrictFDerivAt_pi'' fun i => by simpa using hΦ i
+  have hFx : F x = 0 := funext hx
+  have hset : {y | ∀ i, Φ i y = 0} = F ⁻¹' {F x} := by
+    ext y; simp [F, hFx, funext_iff]
+  rw [hset]
+  constructor
+  · intro hv i
+    have := tangentCone_levelSet_subset_ker hF.hasFDerivAt hv
+    exact congrFun (by simpa using this) i
+  · intro hv
+    exact ker_subset_tangentCone_levelSet hF (range_pi_eq_top hind) (by
+      simp [LinearMap.mem_ker, funext_iff, hv])
+
+end Tuple
 
 end Lightlike.Gauge
