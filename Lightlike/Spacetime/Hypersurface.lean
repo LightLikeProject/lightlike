@@ -74,12 +74,199 @@ theorem lieBracket_isTangentNear (hn : IsUnitNormal g φ n ε x₀) {X Y : Π y 
     filter_upwards [hXy] with z hz
     exact hz
   show mfderiv 𝓘(ℝ, E) 𝓘(ℝ, ℝ) φ y (mlieBracket 𝓘(ℝ, E) X Y y) = 0
+  have z1 : (show ℝ from mfderiv 𝓘(ℝ, E) 𝓘(ℝ, ℝ) (dirDeriv φ Y) y (X y)) = 0 := by
+    rw [e1.mfderiv_eq]; simp [mfderiv_const]; rfl
+  have z2 : (show ℝ from mfderiv 𝓘(ℝ, E) 𝓘(ℝ, ℝ) (dirDeriv φ X) y (Y y)) = 0 := by
+    rw [e2.mfderiv_eq]; simp [mfderiv_const]; rfl
   have h1 : (show ℝ from mfderiv 𝓘(ℝ, E) 𝓘(ℝ, ℝ) φ y (mlieBracket 𝓘(ℝ, E) X Y y)) = 0 := by
-    rw [key, e1.mfderiv_eq, e2.mfderiv_eq]
-    trace_state
-    simp [mfderiv_const]
-    trace_state
+    rw [key, z1, z2]; simp
   exact h1
+
+/-- `g(n, Y)` has zero derivative at `x₀` along any vector when `Y` is tangent near `x₀`. -/
+theorem IsTangentNear.mvfderiv_gpair (hn : IsUnitNormal g φ n ε x₀) {Y : Π y : M, TangentSpace 𝓘(ℝ, E) y}
+    (hY : IsTangentNear φ Y x₀) (u : TangentSpace 𝓘(ℝ, E) x₀) :
+    (show ℝ from mvfderiv 𝓘(ℝ, E) (gpair g n Y) x₀ u) = 0 := by
+  have e : gpair g n Y =ᶠ[𝓝 x₀] fun _ => (0 : ℝ) := by
+    filter_upwards [hY.ortho hn] with z hz using hz
+  rw [mvfderiv_congr e]
+  simp [mvfderiv, mfderiv_const]
+
+/-- **The second fundamental form is symmetric** on tangent fields, for a torsion-free metric connection:
+`g(∇_X n, Y) = g(∇_Y n, X)` at `x₀`. -/
+theorem secondFF_symm_fields {cov : Connection 𝓘(ℝ, E) M} (h : cov.IsLeviCivita g)
+    (hn : IsUnitNormal g φ n ε x₀) {X Y : Π y : M, TangentSpace 𝓘(ℝ, E) y}
+    (hXs : SmoothNear X x₀) (hYs : SmoothNear Y x₀) (hX : IsTangentNear φ X x₀)
+    (hY : IsTangentNear φ Y x₀) :
+    secondFF cov g n x₀ (X x₀) (Y x₀) = secondFF cov g n x₀ (Y x₀) (X x₀) := by
+  have mX := mdiffAt_of_smoothNear hXs
+  have mY := mdiffAt_of_smoothNear hYs
+  have mn := mdiffAt_of_smoothNear hn.smooth
+  have cA := h.2 Y n X x₀ mY mn mX
+  have cB := h.2 X n Y x₀ mX mn mY
+  have zA := hX.mvfderiv_gpair hn (Y x₀)
+  have zB := hY.mvfderiv_gpair hn (X x₀)
+  have tor := ((CovariantDerivative.torsion_eq_zero_iff cov).1 h.1) mX mY
+  have hbr : IsTangentNear φ (mlieBracket 𝓘(ℝ, E) X Y) x₀ := lieBracket_isTangentNear hn hXs hYs hX hY
+  have o := (hbr.ortho hn).self_of_nhds
+  have hsA : mvfderiv 𝓘(ℝ, E) (gpair g n X) x₀ (Y x₀) =
+      g.g x₀ (cov n x₀ (Y x₀)) (X x₀) + g.g x₀ (n x₀) (cov X x₀ (Y x₀)) := cA
+  have hsB : mvfderiv 𝓘(ℝ, E) (gpair g n Y) x₀ (X x₀) =
+      g.g x₀ (cov n x₀ (X x₀)) (Y x₀) + g.g x₀ (n x₀) (cov Y x₀ (X x₀)) := cB
+  unfold secondFF
+  have t2 : g.g x₀ (n x₀) (cov Y x₀ (X x₀)) - g.g x₀ (n x₀) (cov X x₀ (Y x₀)) = 0 := by
+    rw [← map_sub, tor]; exact o
+  have := zA; have := zB
+  linarith
+
+/-- **A tangent vector extends to a smooth tangent field**: the tangential part `V - ε g(V, n) n` of an extension `V`. -/
+theorem exists_tangent_extension (hn : IsUnitNormal g φ n ε x₀) (v : TangentSpace 𝓘(ℝ, E) x₀)
+    (hv : mfderiv 𝓘(ℝ, E) 𝓘(ℝ, ℝ) φ x₀ v = 0) :
+    ∃ X : Π y : M, TangentSpace 𝓘(ℝ, E) y, SmoothNear X x₀ ∧ IsTangentNear φ X x₀ ∧ X x₀ = v := by
+  set V := FiberBundle.extend E v with hV
+  have hVs : SmoothNear V x₀ := eventually_extend x₀ v
+  have hVx : V x₀ = v := FiberBundle.extend_apply_self E v
+  refine ⟨fun y => V y - (ε * g.g y (V y) (n y)) • n y, ?_, ?_, ?_⟩
+  · filter_upwards [hVs, hn.smooth] with y hVy hny
+    exact hVy.sub_section ((contMDiffAt_const.mul (contMDiffAt_gpair g hVy hny)).smul_section hny)
+  · filter_upwards [hn.ker, hn.norm] with y hk hnorm
+    refine (hk _).2 ?_
+    have hε : ε * ε = 1 := by rcases hn.eps with h | h <;> rw [h] <;> norm_num
+    have := g.symm y (V y) (n y)
+    simp only [map_sub, map_smul, ContinuousLinearMap.sub_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, hnorm]
+    rw [this]
+    linear_combination (-(g.g y (n y) (V y))) * hε
+  · have hk := hn.ker.self_of_nhds
+    have h0 : g.g x₀ (n x₀) v = 0 := (hk v).1 hv
+    simp only [hVx]
+    rw [g.symm x₀ v (n x₀), h0]
+    simp
+
+
+/-- The unit normal data persists near `x₀`. -/
+theorem IsUnitNormal.eventually (hn : IsUnitNormal g φ n ε x₀) : ∀ᶠ y in 𝓝 x₀, IsUnitNormal g φ n ε y := by
+  filter_upwards [eventually_eventually_nhds.2 hn.phi, eventually_eventually_nhds.2 hn.smooth,
+    eventually_eventually_nhds.2 hn.norm, eventually_eventually_nhds.2 hn.ker] with y h1 h2 h3 h4
+  exact ⟨hn.eps, h1, h2, h3, h4⟩
+
+theorem IsTangentNear.eventually {X : Π y : M, TangentSpace 𝓘(ℝ, E) y} (hX : IsTangentNear φ X x₀) :
+    ∀ᶠ y in 𝓝 x₀, IsTangentNear φ X y := eventually_eventually_nhds.2 hX
+
+/-- The tangential projection `v - ε g(v, n) n`. -/
+def tanProj (g : NondegMetric 𝓘(ℝ, E) M) (n : Π y : M, TangentSpace 𝓘(ℝ, E) y) (ε : ℝ) (y : M)
+    (v : TangentSpace 𝓘(ℝ, E) y) : TangentSpace 𝓘(ℝ, E) y :=
+  v - (ε * g.g y v (n y)) • n y
+
+variable (cov : Connection 𝓘(ℝ, E) M) [CovariantDerivative.ContMDiffCovariantDerivative cov ∞]
+
+/-- The derivative of the second fundamental form pairing `y ↦ g(∇_Y n, Z)`. -/
+def Kf (g : NondegMetric 𝓘(ℝ, E) M) (n Y Z : Π y : M, TangentSpace 𝓘(ℝ, E) y) : M → ℝ :=
+  gpair g (dd cov Y n) Z
+
+/-- The tangential connection `D_Y Z = (∇_Y Z)^T` as a field. -/
+def Dfield (g : NondegMetric 𝓘(ℝ, E) M) (n : Π y : M, TangentSpace 𝓘(ℝ, E) y) (ε : ℝ)
+    (Y Z : Π y : M, TangentSpace 𝓘(ℝ, E) y) : Π y : M, TangentSpace 𝓘(ℝ, E) y :=
+  fun y => tanProj g n ε y (dd cov Y Z y)
+
+/-- `∇_Y Z = D_Y Z - ε K(Y, Z) n` near `x₀`, for tangent fields and a metric connection. -/
+theorem dd_eq_Dfield (hC : cov.IsMetricCompatible g) (hn : IsUnitNormal g φ n ε x₀)
+    {Y Z : Π y : M, TangentSpace 𝓘(ℝ, E) y} (hYs : SmoothNear Y x₀) (hZs : SmoothNear Z x₀)
+    (hZ : IsTangentNear φ Z x₀) :
+    dd cov Y Z =ᶠ[𝓝 x₀] fun y => Dfield cov g n ε Y Z y + (-(ε * Kf cov g n Y Z y)) • n y := by
+  filter_upwards [hn.eventually, hZ.eventually, hYs, hZs, hn.smooth] with y hny hZy hYy hZsy hnsy
+  have mY := hYy.mdifferentiableAt (by simp)
+  have mZ := hZsy.mdifferentiableAt (by simp)
+  have mn := hnsy.mdifferentiableAt (by simp)
+  have c := hC Y n Z y mY mn mZ
+  have z := hZy.mvfderiv_gpair hny (Y y)
+  have hsy : mvfderiv 𝓘(ℝ, E) (gpair g n Z) y (Y y) =
+      g.g y (cov n y (Y y)) (Z y) + g.g y (n y) (cov Z y (Y y)) := c
+  have key : g.g y (dd cov Y Z y) (n y) = - Kf cov g n Y Z y := by
+    have := g.symm y (n y) (dd cov Y Z y)
+    simp only [Kf, gpair, dd] at this ⊢
+    linarith
+  show dd cov Y Z y = tanProj g n ε y (dd cov Y Z y) + (-(ε * Kf cov g n Y Z y)) • n y
+  unfold tanProj
+  rw [key]
+  module
+
+theorem smoothNear_Dfield (hn : IsUnitNormal g φ n ε x₀) {Y Z : Π y : M, TangentSpace 𝓘(ℝ, E) y}
+    (hYs : SmoothNear Y x₀) (hZs : SmoothNear Z x₀) : SmoothNear (Dfield cov g n ε Y Z) x₀ := by
+  filter_upwards [smoothNear_dd cov hYs hZs, hn.smooth] with y hd hny
+  exact hd.sub_section ((contMDiffAt_const.mul (contMDiffAt_gpair g hd hny)).smul_section hny)
+
+theorem contMDiffAt_Kf {Y Z n : Π y : M, TangentSpace 𝓘(ℝ, E) y} {x₀ : M}
+    (hYs : SmoothNear Y x₀) (hZs : SmoothNear Z x₀) (hn : SmoothNear n x₀) :
+    ContMDiffAt 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ (Kf cov g n Y Z) x₀ :=
+  contMDiffAt_gpair g (smoothNear_dd cov hYs hn).self_of_nhds hZs.self_of_nhds
+
+/-- **The normal component of `∇_u (∇_Y Z)`** against a tangent vector `w`:
+`g(∇_u ∇_Y Z, w) = g(∇_u D_Y Z, w) - ε K(Y, Z) K(u, w)`. -/
+theorem gauss_term (hC : cov.IsMetricCompatible g) (hn : IsUnitNormal g φ n ε x₀)
+    {Y Z : Π y : M, TangentSpace 𝓘(ℝ, E) y} (hYs : SmoothNear Y x₀) (hZs : SmoothNear Z x₀)
+    (hZ : IsTangentNear φ Z x₀) (u w : TangentSpace 𝓘(ℝ, E) x₀) (hw : g.g x₀ (n x₀) w = 0) :
+    g.g x₀ (cov (dd cov Y Z) x₀ u) w =
+      g.g x₀ (cov (Dfield cov g n ε Y Z) x₀ u) w - ε * Kf cov g n Y Z x₀ * secondFF cov g n x₀ u w := by
+  have hDs := smoothNear_Dfield cov hn hYs hZs
+  have hKs := contMDiffAt_Kf cov (g := g) hYs hZs hn.smooth
+  have hgs : ContMDiffAt 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ (fun y => -(ε * Kf cov g n Y Z y)) x₀ :=
+    (contMDiffAt_const.mul hKs).neg
+  have mD := mdiffAt_of_smoothNear hDs
+  have mn := mdiffAt_of_smoothNear hn.smooth
+  have mgn : MDiffAt (T% ((fun y => -(ε * Kf cov g n Y Z y)) • n)) x₀ :=
+    MDifferentiableAt.smul_section (hgs.mdifferentiableAt (by simp)) mn
+  have hcov := cov.isCovariantDerivativeOn (s := Set.univ)
+  have e := dd_eq_Dfield cov hC hn hYs hZs hZ
+  have mdd := mdiffAt_of_smoothNear (smoothNear_dd cov hYs hZs)
+  have e' : dd cov Y Z =ᶠ[𝓝 x₀] (Dfield cov g n ε Y Z + (fun y => -(ε * Kf cov g n Y Z y)) • n) := by
+    filter_upwards [e] with y hy using hy
+  have step1 : cov (dd cov Y Z) x₀ = cov (Dfield cov g n ε Y Z + (fun y => -(ε * Kf cov g n Y Z y)) • n) x₀ :=
+    hcov.congr_of_eventuallyEq mdd (mdifferentiableAt_add_section mD mgn) Filter.univ_mem e'
+  rw [step1, hcov.add mD mgn, hcov.leibniz mn (hgs.mdifferentiableAt (by simp))]
+  simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.smulRight_apply, map_add,
+    map_smul, smul_eq_mul, hw, mul_zero, add_zero]
+  unfold secondFF
+  ring
+
+/-- The curvature of the tangential connection `D` of the leaves:
+`R^D(X, Y) Z = D_X D_Y Z - D_Y D_X Z - D_{[X,Y]} Z` at `x`, with `D_u U = (∇_u U)^T`. -/
+def gaussCurv (g : NondegMetric 𝓘(ℝ, E) M) (n : Π y : M, TangentSpace 𝓘(ℝ, E) y) (ε : ℝ)
+    (X Y Z : Π y : M, TangentSpace 𝓘(ℝ, E) y) (x : M) : TangentSpace 𝓘(ℝ, E) x :=
+  tanProj g n ε x (cov (Dfield cov g n ε Y Z) x (X x)) - tanProj g n ε x (cov (Dfield cov g n ε X Z) x (Y x)) -
+    tanProj g n ε x (cov Z x (mlieBracket 𝓘(ℝ, E) X Y x))
+
+/-- **The Gauss relation**: for tangent fields `X, Y, Z, W` and a metric connection,
+`g(R(X, Y) Z, W) = g(R^D(X, Y) Z, W) - ε (K(Y, Z) K(X, W) - K(X, Z) K(Y, W))` at `x₀`. -/
+theorem gauss_relation (hC : cov.IsMetricCompatible g) (hn : IsUnitNormal g φ n ε x₀)
+    {X Y Z W : Π y : M, TangentSpace 𝓘(ℝ, E) y}
+    (hXs : SmoothNear X x₀) (hYs : SmoothNear Y x₀) (hZs : SmoothNear Z x₀)
+    (hX : IsTangentNear φ X x₀) (hY : IsTangentNear φ Y x₀) (hZ : IsTangentNear φ Z x₀)
+    (hW : IsTangentNear φ W x₀) :
+    g.g x₀ (cov.curvatureAt x₀ (X x₀) (Y x₀) (Z x₀)) (W x₀) =
+      g.g x₀ (gaussCurv cov g n ε X Y Z x₀) (W x₀) -
+        ε * (secondFF cov g n x₀ (Y x₀) (Z x₀) * secondFF cov g n x₀ (X x₀) (W x₀) -
+          secondFF cov g n x₀ (X x₀) (Z x₀) * secondFF cov g n x₀ (Y x₀) (W x₀)) := by
+  have hw : g.g x₀ (n x₀) (W x₀) = 0 := (hW.ortho hn).self_of_nhds
+  have hproj : ∀ v : TangentSpace 𝓘(ℝ, E) x₀, g.g x₀ (tanProj g n ε x₀ v) (W x₀) = g.g x₀ v (W x₀) := by
+    intro v
+    unfold tanProj
+    simp only [map_sub, map_smul, ContinuousLinearMap.sub_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]
+    rw [hw]
+    ring
+  have hR := curvatureAt_apply_eventually cov X Y Z x₀ hXs hYs hZs
+  have t1 := gauss_term cov hC hn hYs hZs hZ (X x₀) (W x₀) hw
+  have t2 := gauss_term cov hC hn hXs hZs hZ (Y x₀) (W x₀) hw
+  unfold gaussCurv
+  simp only [map_sub, ContinuousLinearMap.sub_apply, hproj]
+  rw [hR]
+  simp only [map_sub, ContinuousLinearMap.sub_apply]
+  have k1 : Kf cov g n Y Z x₀ = secondFF cov g n x₀ (Y x₀) (Z x₀) := rfl
+  have k2 : Kf cov g n X Z x₀ = secondFF cov g n x₀ (X x₀) (Z x₀) := rfl
+  rw [← k1, ← k2]
+  have := t1; have := t2
+  change g.g x₀ (cov (dd cov Y Z) x₀ (X x₀)) (W x₀) - g.g x₀ (cov (dd cov X Z) x₀ (Y x₀)) (W x₀) -
+    g.g x₀ (cov Z x₀ (mlieBracket 𝓘(ℝ, E) X Y x₀)) (W x₀) = _
+  rw [t1, t2]
+  ring
 
 end Hypersurface
 
