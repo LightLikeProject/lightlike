@@ -16,3 +16,21 @@ regularity is not needed for the equality, only for the dimension count); (2) Th
 gauge orbits) is not proved: only a forward local curve for one constraint, no manifold and no group action; (3) involutivity
 is a hypothesis with continuous coefficients; the source has structure constants that may depend on the phase-space point;
 (4) the library's phase space is Physlib's flat `X × X`, the source's is a general phase space of dimension `2N`.
+
+## Theorem 5 (gauge orbits are `M`-dimensional manifolds): what was tried and what is missing
+
+Tried (compiled): `FlowDeriv.exists_flow_on_surface`: one constraint, a local integral curve staying on the surface, from
+Mathlib's Picard-Lindelöf (`ContDiffAt.exists_forall_mem_closedBall_exists_eq_forall_mem_Ioo_hasDerivAt₀`) and Gronwall
+(`LinearODE`). The next step, `M` constraints, needs either (A) the flows of the fields `X_a` to commute when their Lie
+brackets vanish, so that `(t₁, …, t_M) ↦ Φ¹_{t₁} ∘ … ∘ Φ^M_{t_M} (x)` parametrises the orbit, or (B) Frobenius' theorem
+for the involutive family `{X_a}`.
+
+Search in the pinned Mathlib and Physlib (case-insensitive greps over `.lake/packages/mathlib/Mathlib` and
+`.lake/packages/Physlib`): no Frobenius integrability theorem (the only "Frobenius" hits are the Frobenius norm,
+Frobenius number and field theory), no result about involutive distributions or integral manifolds, no statement that flows
+of vector fields with vanishing Lie bracket commute (`Mathlib/Geometry/Manifold/VectorField/LieBracket.lean` has the Lie
+bracket, its pullback and the Leibniz rule, `Mathlib/Geometry/Manifold/IntegralCurve/` has existence, uniqueness and uniform
+time for one field).
+
+Missing pieces, named: (i) flows of two `C¹` vector fields with `[V, W] = 0` commute (for A); (ii) the Frobenius theorem for
+a finite involutive family (for B). Neither is in the pinned Mathlib or Physlib.
