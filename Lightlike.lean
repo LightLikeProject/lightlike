@@ -667,6 +667,7 @@ import Lightlike.Spacetime.CausalLadder.BoundarylessChart
 import Lightlike.Spacetime.CausalLadder.ChartCurve
 import Lightlike.Spacetime.CausalLadder.UnitArcEndpoint
 import Lightlike.Spacetime.CausalLadder.GluedLimitCurve
+import Lightlike.Spacetime.CausalLadder.BoxExit
 import Lightlike.Spacetime.CausalLadder.LimitBound
 import Lightlike.Spacetime.CausalLadder.LimitCurve
 import Lightlike.Spacetime.CausalLadder.CurveContinuity
