@@ -81,4 +81,72 @@ lemma inner_kf (f g : h) : ⟪kf f, kf g⟫_ℂ = fockGram f g := by
     rw [kf, kf]; exact this.symm
   rw [h2, ← fockGram_conj']
 
+/-- The Weyl phase `exp (-i σ(g, f) / 2)`. -/
+noncomputable def fockPhase (g f : h) : ℂ := Complex.exp (-(Complex.I * (symp h g f / 2 : ℝ)))
+
+lemma symp_add_left (f f' g : h) : symp h (f + f') g = symp h f g + symp h f' g := by
+  simp [symp, inner_add_left]
+
+lemma symp_add_right (f g g' : h) : symp h f (g + g') = symp h f g + symp h f g' := by
+  simp [symp, inner_add_right]
+
+lemma symp_zero_left (g : h) : symp h 0 g = 0 := by simp [symp]
+
+lemma symp_zero_right (f : h) : symp h f 0 = 0 := by simp [symp]
+
+lemma symp_antisymm (f g : h) : symp h f g = -symp h g f := by
+  have := inner_conj_symm (𝕜 := ℂ) f g
+  simp only [symp]
+  rw [← this, Complex.conj_im]
+
+/-- **The Weyl phase is a cocycle**: `ω(g, x) ω(f, x + g) = exp (-i σ(f, g) / 2) ω(f + g, x)`. -/
+lemma fockPhase_cocycle (f g x : h) :
+    fockPhase g x * fockPhase f (x + g) =
+      Complex.exp (-(Complex.I * (symp h f g / 2 : ℝ))) * fockPhase (f + g) x := by
+  unfold fockPhase
+  rw [← Complex.exp_add, ← Complex.exp_add]
+  congr 1
+  rw [symp_add_right, symp_add_left]
+  push_cast
+  ring
+
+/-- **The Gram matrix is invariant under the Weyl shift**:
+`conj ω(g, f) ω(g, f') ⟪k_{f+g}, k_{f'+g}⟫ = ⟪k_f, k_{f'}⟫`. -/
+lemma fockGram_shift (g f f' : h) :
+    (starRingEnd ℂ) (fockPhase g f) * fockPhase g f' * fockGram (f + g) (f' + g) = fockGram f f' := by
+  rw [fockGram_eq, fockGram_eq]
+  unfold fockPhase gaussE
+  rw [← Complex.exp_conj]
+  simp only [Complex.ofReal_exp]
+  simp only [mul_assoc, ← Complex.exp_add]
+  congr 1
+  have e1 : ‖f + g‖ ^ 2 = ‖f‖ ^ 2 + 2 * (⟪f, g⟫_ℂ).re + ‖g‖ ^ 2 := by
+    have := norm_add_sq (𝕜 := ℂ) f g
+    simpa using this
+  have e2 : ‖f' + g‖ ^ 2 = ‖f'‖ ^ 2 + 2 * (⟪g, f'⟫_ℂ).re + ‖g‖ ^ 2 := by
+    have := norm_add_sq (𝕜 := ℂ) f' g
+    have h3 : RCLike.re ⟪f', g⟫_ℂ = (⟪g, f'⟫_ℂ).re := by rw [inner_re_symm]; rfl
+    simpa [h3] using this
+  have e6 : ⟪g, g⟫_ℂ = ((‖g‖ ^ 2 : ℝ) : ℂ) := by
+    have := inner_self_eq_norm_sq_to_K (𝕜 := ℂ) g
+    rw [this]; push_cast; rfl
+  have e3 : ⟪f + g, f' + g⟫_ℂ = ⟪f, f'⟫_ℂ + ⟪f, g⟫_ℂ + ⟪g, f'⟫_ℂ + ((‖g‖ ^ 2 : ℝ) : ℂ) := by
+    rw [inner_add_left, inner_add_right, inner_add_right, e6]; ring
+  have e4 : symp h g f = -(⟪f, g⟫_ℂ).im := by rw [symp_antisymm]; simp [symp]
+  have e5 : symp h g f' = (⟪g, f'⟫_ℂ).im := rfl
+  rw [e3, e4, e5, e1, e2]
+  generalize ⟪f, g⟫_ℂ = a
+  generalize ⟪g, f'⟫_ℂ = b
+  generalize ⟪f, f'⟫_ℂ = c
+  obtain ⟨x1, y1⟩ := a
+  obtain ⟨x2, y2⟩ := b
+  have ha : (⟨x1, y1⟩ : ℂ) = (x1 : ℂ) + (y1 : ℂ) * Complex.I := by apply Complex.ext <;> simp
+  have hb : (⟨x2, y2⟩ : ℂ) = (x2 : ℂ) + (y2 : ℂ) * Complex.I := by apply Complex.ext <;> simp
+  dsimp only
+  push_cast
+  rw [ha, hb]
+  ring_nf
+  simp only [map_mul, Complex.conj_I, Complex.conj_ofReal, map_div₀, map_one, map_ofNat]
+  ring
+
 end Lightlike.OperatorAlgebras
