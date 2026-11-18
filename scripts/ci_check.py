@@ -19,7 +19,11 @@
    the listed number of uses until they are bounded; the list may only shrink, so a listed count
    that no longer matches the file also fails. The list is empty before v0.2.0.
 
-Checks 1-3, 6 and 7 are hard rules (CONTRIBUTING.md); 4 and 5 only print warnings. The axioms of
+8. Constructs: no `elab`, `elab_rules`, `macro_rules`, `syntax`, `initialize`, `run_cmd`, `unsafe` or
+   `opaque` (comments and strings ignored) under Lightlike/, except the counts per file listed in
+   `scripts/constructs_baseline.txt` (`path construct count`); the list may only shrink.
+
+Checks 1-3, 6, 7 and 8 are hard rules (CONTRIBUTING.md); 4 and 5 only print warnings. The axioms of
 every declaration are checked by `scripts/AxiomAudit.lean`.
 
 Usage (local):
@@ -87,6 +91,50 @@ def scan_sources() -> list[str]:
                 line = code.count("\n", 0, m.start()) + 1
                 errors.append(f"{f.relative_to(ROOT)}:{line}: forbidden `{name}`")
     print(f"[source] scanned {len(files)} files: {len(errors)} forbidden tokens")
+    return errors
+
+_DECL = r"^[ \t]*(?:@\[[^\]]*\][ \t]*)?(?:(?:local|scoped|private|protected|noncomputable)[ \t]+)*"
+CONSTRUCTS = [
+    (re.compile(_DECL + r"(?:elab|elab_rules)\b", re.M), "elab"),
+    (re.compile(_DECL + r"macro_rules\b", re.M), "macro_rules"),
+    (re.compile(_DECL + r"syntax\b", re.M), "syntax"),
+    (re.compile(r"^[ \t]*(?:builtin_)?initialize\b", re.M), "initialize"),
+    (re.compile(r"^[ \t]*run_(?:cmd|meta|elab)\b", re.M), "run_cmd"),
+    (re.compile(r"\bunsafe\b"), "unsafe"),
+    (re.compile(_DECL + r"opaque\b", re.M), "opaque"),
+]
+CONSTRUCTS_BASELINE = ROOT / "scripts" / "constructs_baseline.txt"
+
+
+def scan_constructs(root: pathlib.Path = ROOT, baseline_path: pathlib.Path = CONSTRUCTS_BASELINE
+                    ) -> list[str]:
+    """Check 8: no new syntax, elaborator, initializer, `run_cmd`, `unsafe` or `opaque` outside the baseline."""
+    found: dict[tuple[str, str], int] = {}
+    for f in sorted((root / "Lightlike").rglob("*.lean")) + [root / "Lightlike.lean"]:
+        if not f.exists():
+            continue
+        code = strip_comments(f.read_text(encoding="utf-8"))
+        for pat, name in CONSTRUCTS:
+            n = len(pat.findall(code))
+            if n:
+                found[(str(f.relative_to(root)), name)] = n
+    allowed: dict[tuple[str, str], int] = {}
+    if baseline_path.exists():
+        for line in baseline_path.read_text(encoding="utf-8").splitlines():
+            t = line.split("#")[0].split()
+            if len(t) == 3:
+                allowed[(t[0], t[1])] = int(t[2])
+    errors = []
+    for key in sorted(set(found) | set(allowed)):
+        have, ok = found.get(key, 0), allowed.get(key, 0)
+        if have > ok:
+            errors.append(f"{key[0]}: {have} uses of `{key[1]}` (allowed {ok}); "
+                          "these constructs change the language or run code at elaboration")
+        elif have < ok:
+            errors.append(f"{key[0]}: {have} uses of `{key[1]}`, baseline says {ok}; "
+                          f"lower its line in {baseline_path.name}")
+    print(f"[constructs] {sum(found.values())} uses in {len(found)} (file, construct) pairs "
+          f"(baseline {sum(allowed.values())})")
     return errors
 
 
@@ -257,6 +305,7 @@ def main() -> int:
     errors += check_reachability()
     errors += check_exploratory_imports()
     errors += check_heartbeats()
+    errors += scan_constructs()
     for w in check_test_coverage()[:None if args.list_untested else 0]:
         print("WARN not mentioned by any test file:", w)
     if args.build_log:
