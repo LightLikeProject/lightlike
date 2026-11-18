@@ -109,4 +109,29 @@ theorem kerrMetric_zero {y : Fin 4 → ℝ} (hr : y 1 ≠ 0) : kerrMetric M 0 y 
   fin_cases i <;> fin_cases j <;> simp [kerrMetric, schMetric, schD, hS, hD, diagonal_apply] <;>
     field_simp <;> ring
 
+/-- The inverse of the Kerr metric, in closed form. -/
+def kerrInv (y : Fin 4 → ℝ) : Matrix (Fin 4) (Fin 4) ℝ :=
+  let S := kerrS a y
+  let D := kerrD M a y
+  !![-((y 1 ^ 2 + a ^ 2) ^ 2 - D * a ^ 2 * sin (y 2) ^ 2) / (S * D), 0, 0,
+      -(2 * M * a * y 1) / (S * D);
+     0, D / S, 0, 0;
+     0, 0, 1 / S, 0;
+     -(2 * M * a * y 1) / (S * D), 0, 0, (D - a ^ 2 * sin (y 2) ^ 2) / (S * D * sin (y 2) ^ 2)]
+
+/-- **The closed form is the inverse** of the Kerr metric on `kerrU`. -/
+theorem kerrMetric_mul_kerrInv {y : Fin 4 → ℝ} (hy : y ∈ kerrU M a) :
+    kerrMetric M a y * kerrInv M a y = 1 := by
+  have hS : kerrS a y ≠ 0 := (kerrS_pos a hy.1).ne'
+  have hD : kerrD M a y ≠ 0 := hy.2.1
+  have hs : sin (y 2) ≠ 0 := (sin_pos_of_pos_of_lt_pi hy.2.2.1 hy.2.2.2).ne'
+  have hS2 : kerrS a y = y 1 ^ 2 + a ^ 2 * cos (y 2) ^ 2 := rfl
+  have hD2 : kerrD M a y = y 1 ^ 2 - 2 * M * y 1 + a ^ 2 := rfl
+  have hc := sin_sq_add_cos_sq (y 2)
+  have hc2 : cos (y 2) ^ 2 = 1 - sin (y 2) ^ 2 := by linarith
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [kerrMetric, kerrInv, Matrix.mul_apply, Fin.sum_univ_four, Matrix.one_apply] <;>
+    field_simp <;> (try rw [hS2, hD2, hc2]) <;> ring
+
 end Lightlike
