@@ -1,5 +1,20 @@
 import Lightlike.Spacetime.Causal.CurveOps
 
+/-!
+# The glued limit curve, from a uniform step
+
+Step of the proof of the limit-curve theorem (task `T-GE2-P20`, Hawking–Ellis Lemma 6.2.1): from the **step property** at
+every point (`StepAt`: near `q`, from every limit point of the curves of a subsequence there is a unit arc, a limit arc of a
+subsubsequence, inside the chart of `q` with chart displacement at least `ρ`, with `ρ` and the neighbourhood independent of the
+subsequence), a recursion over unit arcs gives one future causal curve on `[0, ∞)` that is a limit curve of a diagonal
+subsequence (`exists_glued_limit_curve_of_step`). The arc `n` is a step arc at the centre `c j` of a fixed countable family
+covering the manifold, `j` the least index with `σ n ∈ N j`, as needed by `not_tendsto_of_unit_arcs`. Also: a curve on `[0, ∞)` whose
+restrictions to `[0, m + 1]` have velocity in `P` has velocity in `P` (`IsCurveWith.of_forall_Icc`), and two curves that agree on
+an interval are curves with velocity in `P` together (`IsCurveWith.congr_on`).
+
+Supporting lemma for the limit-curve theorem; no catalogue entry.
+-/
+
 open Bundle Manifold Set Filter Topology MeasureTheory
 open scoped Manifold ContDiff
 
@@ -232,5 +247,132 @@ theorem goodState_succ (hcov : (⋃ j, N j) = univ) (hstep : ∀ j, StepAt T γ 
     exact hle u hu.2
 
 end Family
+
+
+/-- A sequence from a one-step existence property. -/
+theorem exists_seq_of_step {X : Type*} (P : ℕ → X → Prop) (R : ℕ → X → X → Prop) (x0 : X) (h0 : P 0 x0)
+    (hs : ∀ n x, P n x → ∃ y, P (n + 1) y ∧ R n x y) :
+    ∃ f : ℕ → X, (∀ n, P n (f n)) ∧ ∀ n, R n (f n) (f (n + 1)) := by
+  have key : ∀ n (x : {x // P n x}), ∃ y : {y // P (n + 1) y}, R n x.1 y.1 := fun n x => by
+    obtain ⟨y, hy1, hy2⟩ := hs n x.1 x.2
+    exact ⟨⟨y, hy1⟩, hy2⟩
+  choose g hg using key
+  let f : ∀ n, {x // P n x} := fun n => Nat.rec ⟨x0, h0⟩ (fun n x => g n x) n
+  exact ⟨fun n => (f n).1, fun n => (f n).2, fun n => hg n (f n)⟩
+
+theorem StepAt.mono {γ : ℕ → ℝ → M} {s : ℕ → Set ℝ} {q : M} {ρ : ℝ} {N N' : Set M}
+    (h : StepAt T γ s q ρ N) (hN : N' ⊆ N) : StepAt T γ s q ρ N' :=
+  fun φ hφ q' hq' hlp => h φ hφ q' (hN hq') hlp
+
+/-- `σ` on the interval `r` is a **limit curve of the subsequence `φ`** through `p`: a future causal
+curve on a nonempty interval, through `p`, each of whose points is met by all but finitely many curves
+`γ (φ k)` in every neighbourhood. -/
+def IsLimitCurveOf (γ : ℕ → ℝ → M) (s : ℕ → Set ℝ) (p : M) (σ : ℝ → M) (r : Set ℝ) (φ : ℕ → ℕ) :
+    Prop :=
+  IsFutureCausalCurve T σ r ∧ r.OrdConnected ∧ r.Nonempty ∧ p ∈ σ '' r ∧ StrictMono φ ∧
+    ∀ q ∈ σ '' r, ∀ U ∈ 𝓝 q, ∀ᶠ k in atTop, ∃ t ∈ s (φ k), γ (φ k) t ∈ U
+
+/-- **The glued curve, from the step property** (the recursion over unit arcs, with a diagonal subsequence). -/
+theorem exists_glued_limit_curve_of_step [SecondCountableTopology M] (γ : ℕ → ℝ → M) (s : ℕ → Set ℝ) (p : M)
+    (hp : ∀ U ∈ 𝓝 p, ∃ᶠ k in atTop, ∃ t ∈ s k, γ k t ∈ U)
+    (hstep : ∀ q : M, ∃ ρ : ℝ, 0 < ρ ∧ ∃ N ∈ 𝓝 q, closure N ⊆ (extChartAt I q).source ∧
+      StepAt T γ s q ρ N) :
+    ∃ (c : ℕ → M) (ρ : ℕ → ℝ) (N : ℕ → Set M) (σ : ℝ → M) (φ : ℕ → ℕ),
+      (∀ j, 0 < ρ j) ∧ (∀ j, IsOpen (N j)) ∧ (∀ j, closure (N j) ⊆ (extChartAt I (c j)).source) ∧
+      (⋃ j, N j) = univ ∧ IsLimitCurveOf T γ s p σ (Ici 0) φ ∧ σ 0 = p ∧
+      ∀ m : ℕ, ArcProp (I := I) c ρ N σ m := by
+  classical
+  choose ρq hρq Nq hNq hclq hstq using hstep
+  obtain ⟨S, hSc, hScov⟩ := TopologicalSpace.countable_cover_nhds (f := fun q => interior (Nq q))
+    fun q => interior_mem_nhds.2 (hNq q)
+  have hne : S.Nonempty := by
+    have : p ∈ ⋃ x ∈ S, interior (Nq x) := by rw [hScov]; exact mem_univ p
+    simp only [mem_iUnion] at this
+    obtain ⟨x, hx, -⟩ := this
+    exact ⟨x, hx⟩
+  obtain ⟨c, hc⟩ := hSc.exists_eq_range hne
+  have hcov : (⋃ j, interior (Nq (c j))) = univ := by
+    rw [← hScov, hc]
+    ext x; simp
+  have hstep' : ∀ j, StepAt T γ s (c j) (ρq (c j)) (interior (Nq (c j))) := fun j =>
+    StepAt.mono T (hstq (c j)) interior_subset
+  obtain ⟨φ₀, hφ₀, hp₀⟩ := exists_subseq_isLimitPointOf hp
+  obtain ⟨φ₁, σ₁, h₁⟩ := goodState_zero T hcov hstep' hφ₀ hp₀
+  -- the sequence of states
+  obtain ⟨f, hf, hR⟩ := exists_seq_of_step
+    (P := fun n (x : (ℕ → ℕ) × (ℝ → M)) => GoodState T γ s p c (fun j => ρq (c j)) (fun j => interior (Nq (c j))) n x.1 x.2)
+    (R := fun n x y => (∃ ψ : ℕ → ℕ, StrictMono ψ ∧ y.1 = x.1 ∘ ψ) ∧
+      ∀ u ∈ Icc (0 : ℝ) ((n : ℝ) + 1), y.2 u = x.2 u)
+    (φ₁, σ₁) h₁ (fun n x hx => by
+      obtain ⟨φ', σ', h', hr1, hr2⟩ := goodState_succ T hcov hstep' hx
+      exact ⟨(φ', σ'), h', hr1, hr2⟩)
+  have hext : ∀ n : ℕ, ∀ u ∈ Icc (0 : ℝ) ((n : ℝ) + 1), (f (n + 1)).2 u = (f n).2 u := fun n => (hR n).2
+  have hψ : ∀ n : ℕ, ∃ ψ : ℕ → ℕ, StrictMono ψ ∧ (f (n + 1)).1 = (f n).1 ∘ ψ := fun n => (hR n).1
+  have hcoh : ∀ m n : ℕ, m ≤ n → ∀ u ∈ Icc (0 : ℝ) ((m : ℝ) + 1), (f n).2 u = (f m).2 u := by
+    intro m n hmn
+    induction n, hmn using Nat.le_induction with
+    | base => intro u _; rfl
+    | succ k hk ih =>
+      intro u hu
+      rw [hext k u ⟨hu.1, hu.2.trans (by exact_mod_cast Nat.add_le_add_right hk 1)⟩]
+      exact ih u hu
+  have hphi : ∀ m n : ℕ, m ≤ n → ∃ Ψ : ℕ → ℕ, StrictMono Ψ ∧ (f n).1 = (f m).1 ∘ Ψ := by
+    intro m n hmn
+    induction n, hmn using Nat.le_induction with
+    | base => exact ⟨id, strictMono_id, rfl⟩
+    | succ k hk ih =>
+      obtain ⟨Ψ, hΨ, he⟩ := ih
+      obtain ⟨ψ, hψ', he'⟩ := hψ k
+      exact ⟨Ψ ∘ ψ, hΨ.comp hψ', by rw [he', he]; rfl⟩
+  obtain ⟨σinf, hσinfdef⟩ : ∃ σinf : ℝ → M, σinf = fun t => (f ⌈t⌉₊).2 t := ⟨_, rfl⟩
+  have hσinf : ∀ n : ℕ, ∀ u ∈ Icc (0 : ℝ) ((n : ℝ) + 1), σinf u = (f n).2 u := by
+    intro n u hu
+    rw [hσinfdef]
+    show (f ⌈u⌉₊).2 u = (f n).2 u
+    have hm : ⌈u⌉₊ ≤ n + 1 := Nat.ceil_le.2 (by exact_mod_cast hu.2)
+    have hum : u ≤ (⌈u⌉₊ : ℝ) := Nat.le_ceil u
+    rcases Nat.lt_or_ge ⌈u⌉₊ (n + 1) with h | h
+    · exact (hcoh ⌈u⌉₊ n (Nat.lt_succ_iff.1 h) u ⟨hu.1, by linarith⟩).symm
+    · have : ⌈u⌉₊ = n + 1 := le_antisymm hm h
+      rw [this]
+      exact hext n u hu
+  have hcurve : IsFutureCausalCurve T σinf (Ici 0) := by
+    refine IsCurveWith.of_forall_Icc fun m => ?_
+    exact IsCurveWith.congr_on (by positivity) (hf m).2.1 fun u hu => hσinf m u hu
+  have hσ0 : σinf 0 = p := by
+    rw [hσinf 0 0 ⟨le_rfl, by simp⟩]
+    exact (hf 0).2.2.1
+  have hdmono : StrictMono fun k => (f k).1 k := by
+    refine strictMono_nat_of_lt_succ fun k => ?_
+    obtain ⟨ψ, hψ', he⟩ := hψ k
+    show (f k).1 k < (f (k + 1)).1 (k + 1)
+    rw [he]
+    exact (hf k).1 (lt_of_lt_of_le (Nat.lt_succ_self k) (hψ'.id_le (k + 1)))
+  have hlimit : ∀ q ∈ σinf '' Ici 0, ∀ U ∈ 𝓝 q, ∀ᶠ k in atTop, ∃ t ∈ s ((f k).1 k), γ ((f k).1 k) t ∈ U := by
+    rintro q ⟨u, hu, rfl⟩ U hU
+    obtain ⟨n, hn⟩ := exists_nat_ge u
+    have hun : u ∈ Icc (0 : ℝ) ((n : ℝ) + 1) := ⟨hu, by linarith⟩
+    have hq := (hf n).2.2.2.1 u hun
+    rw [← hσinf n u hun] at hq
+    obtain ⟨M0, hM0⟩ := eventually_atTop.1 (hq U hU)
+    filter_upwards [eventually_ge_atTop (max n M0)] with k hk
+    obtain ⟨Ψ, hΨ, he⟩ := hphi n k (le_trans (le_max_left _ _) hk)
+    have := hM0 (Ψ k) (le_trans (le_trans (le_max_right _ _) hk) (hΨ.id_le k))
+    rw [he]
+    exact this
+  refine ⟨c, fun j => ρq (c j), fun j => interior (Nq (c j)), σinf, fun k => (f k).1 k, fun j => hρq _,
+    fun j => isOpen_interior, fun j => (closure_mono interior_subset).trans (hclq _), hcov,
+    ⟨hcurve, ordConnected_Ici, ⟨0, mem_Ici.2 le_rfl⟩, ⟨0, mem_Ici.2 le_rfl, hσ0⟩, hdmono, hlimit⟩, hσ0, ?_⟩
+  intro m
+  obtain ⟨j, h1, h2, h3, h4⟩ := (hf m).2.2.2.2 m le_rfl
+  have hmb : (m : ℝ) + 1 ≤ (m : ℝ) + 1 := le_rfl
+  have hm0 : (m : ℝ) ∈ Icc (0 : ℝ) ((m : ℝ) + 1) := ⟨Nat.cast_nonneg m, by linarith⟩
+  have hm1 : (m : ℝ) + 1 ∈ Icc (0 : ℝ) ((m : ℝ) + 1) := ⟨by positivity, le_rfl⟩
+  refine ⟨j, by rw [hσinf m m hm0]; exact h1, fun j' hj' => h2 j' (by rwa [hσinf m m hm0] at hj'), ?_, ?_⟩
+  · intro u hu
+    rw [hσinf m u ⟨le_trans (Nat.cast_nonneg m) hu.1, hu.2⟩]
+    exact h3 u hu
+  · rw [hσinf m _ hm1, hσinf m m hm0]
+    exact h4
 
 end Lightlike.Causal
