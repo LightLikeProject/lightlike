@@ -19,6 +19,15 @@ Bröcker–tom Dieck Ch. II.
   action on `SpaceTime d` and on functions), `LorentzGroup d` (`LorentzGroup/Basic.lean`, boosts, invariants),
   `SL2C/`, `PauliMatrices/`, `MinkowskiMatrix.lean`. Nothing on unitary representations, orbits of momentum space, little
   groups or induced representations (grep for `LittleGroup`, `Wigner`, `massShell`: no hit in Physlib or Mathlib).
+* **Physlib, finer inventory (`.lake/packages/Physlib/Physlib/Relativity/`, signature `(+,−,−,−)`, `Lorentz.Vector d := Fin 1 ⊕ Fin d → ℝ`)**:
+  `LorentzGroup d` (a set of matrices with a `Group` instance on the subtype, `LorentzGroup/Basic.lean:48`; defining relation
+  `Λᵀ η Λ = η`, `mem_iff_transpose_mul_minkowskiMatrix_mul_self`), the Minkowski product `⟪p, q⟫ₘ` with
+  `minkowskiProduct_invariant` (`Tensors/RealTensor/Vector/MinkowskiProduct.lean:147`), causal character (`Causality/`),
+  `LorentzGroup.IsOrthochronous`, `IsProper`, the restricted group, axis boosts `boost i β hβ` with
+  `Lorentz.Vector.boost_*` action lemmas (`LorentzGroup/Boosts/Basic.lean:89`, `Apply.lean`), and **generalized boosts**
+  `generalizedBoost u v : LorentzGroup d` taking a velocity `u` to a velocity `v`, orthochronous, proper, in the restricted
+  group (`LorentzGroup/Boosts/Generalized.lean:189,361-366`). So transitivity of the restricted Lorentz group on the mass
+  shell and the standard boost `L(p) = generalizedBoost (basis 0) (p/m)` are available; `Rotations.lean` has the rotations.
 * **Mathlib**: no Poincaré group, no Mackey theory, no induced unitary representations.
 * **In the repo**: `Lightlike/Lorentz/` (`SL2C`, `SL2R`, `Signature`, `Mobius`, `PrincipalSeries`, Haar measure and Plancherel
   for `SL(2,ℂ)`), `Lightlike/SU2/`, `Lightlike/Spin4/`.
