@@ -486,6 +486,12 @@ _c = lambda a, body, when: {"author": a, "body": body, "createdAt": when}  # noq
 _iss = lambda n, title, labels, comments, state="open", reason="", assignees=(): dict(  # noqa: E731
     number=n, title=title, state=state, reason=reason, labels=list(labels), assignees=list(assignees),
     comments=comments)
+def _sync(tasks, cfg, data, card, seed=None):
+    """sync_plan with the fixture's own clock, as `sync` passes it: without it the claim windows
+    of the fixture comments run out with the real date."""
+    return tk.sync_plan(tasks, cfg, data, card, seed, data.get("now"))
+
+
 _card = lambda tid: (f"{tid}: title", "body")  # noqa: E731
 _lapse = tk.MARK.format("lapse old 2026-10-01T00:00:00Z")
 _data = {"now": "2026-11-07T00:00:00Z", "labels": tk.LIVE + sorted({x for t in _ts2 for x in t["labels"]}), "issues": [
@@ -502,7 +508,7 @@ _data = {"now": "2026-11-07T00:00:00Z", "labels": tk.LIVE + sorted({x for t in _
     _iss(9, "T-X1: a later duplicate", [], [])],
     "pulls": [{"number": 7, "body": "<!--\nTask: T-X1\n-->\nTask: T-B1\n", "author": "eve", "state": "open",
                "updatedAt": "2026-11-05T00:00:00Z"}]}
-_st, _acts = tk.sync_plan(_ts2, _cfg2, _data, _card)
+_st, _acts = _sync(_ts2, _cfg2, _data, _card)
 _on = lambda acts, tid, op: [a for a in acts if a.get("task") == tid and a["op"] == op]  # noqa: E731
 _e = lambda acts, tid: (_on(acts, tid, "edit") or [{}])[0]  # noqa: E731
 expect("tasks sync: attempts are live comments `attempting` (released and lapsed ones drop out)",
@@ -519,7 +525,7 @@ _data3["issues"][2]["comments"].append(_c("github-actions[bot]", "lapsed\n" + _l
 _data3["issues"][2]["assignees"] = ["maint"]
 _data3["issues"][2]["labels"] = ["in review"]
 expect("tasks sync: the lapse notice is posted once and ends the claim",
-       not [a for a in tk.sync_plan(_ts2, _cfg2, _data3, _card)[1] if a.get("task") == "T-B1"])
+       not [a for a in _sync(_ts2, _cfg2, _data3, _card)[1] if a.get("task") == "T-B1"])
 expect("tasks sync: a closed issue loses its live labels and makes its task done; a duplicate is ignored",
        _e(_acts, "T-X2").get("remove") == ["blocked"] and _st["T-X2"][0] == "done"
        and not _on(_acts, "T-B2", "create") and not [a for a in _acts if a.get("issue") == 9])
@@ -530,7 +536,7 @@ expect("tasks sync: a task that becomes ready gets an issue; a blocked one does 
 expect("tasks sync control: labels that exist are not created again",
        not [a for a in _acts if a["op"] == "label"])
 _seed = {"closed": {"X4": "done (older work)"}, "notes": {"X3": "in progress"}}
-_s1 = tk.sync_plan(_ts2, _cfg2, _data, _card, _seed)[1]
+_s1 = _sync(_ts2, _cfg2, _data, _card, _seed)[1]
 expect("tasks sync: the seed opens and closes the issue of earlier done work, and posts earlier notes",
        [a["op"] for a in _s1 if a.get("task") == "T-X4"] == ["create", "close"]
        and "(older work)." in _on(_s1, "T-X4", "close")[0]["body"]
@@ -541,19 +547,19 @@ _data2["issues"] += [_iss(10, "T-X4: f", [], [_c("bot", tk.MARK.format("seed"), 
                      _iss(11, "T-X3: t", ["milestone", "blocked"],
                           [_c("bot", tk.MARK.format("seed"), "2026-11-06T00:00:00Z")])]
 expect("tasks sync: a second seed run changes nothing more",
-       not [a for a in tk.sync_plan(_ts2, _cfg2, _data2, _card, _seed)[1] if a.get("task") in ("T-X3", "T-X4")])
+       not [a for a in _sync(_ts2, _cfg2, _data2, _card, _seed)[1] if a.get("task") in ("T-X3", "T-X4")])
 _bad = []
 try:
-    tk.sync_plan(_ts2, _cfg2, _data, _card, {"closed": {"ZZ9": "done"}})
+    _sync(_ts2, _cfg2, _data, _card, {"closed": {"ZZ9": "done"}})
 except ValueError:
     _bad.append(True)
 expect("tasks sync planted: a seed entry that is not a task is refused", _bad == [True])
-_s6 = tk.sync_plan(_ts6, _cfg2, _data, _card)[1]
+_s6 = _sync(_ts6, _cfg2, _data, _card)[1]
 _data6 = json.loads(json.dumps(_data))
 _data6["issues"][0]["comments"].append(_c("bot", tk.MARK.format("proven"), "2026-11-06T00:00:00Z"))
 expect("tasks sync: a proof task proven on main has its issue closed, once",
        len(_on(_s6, "T-X1-P1", "close")) == 1 and "has no `sorry`" in _on(_s6, "T-X1-P1", "close")[0]["body"]
-       and not _on(tk.sync_plan(_ts6, _cfg2, _data6, _card)[1], "T-X1-P1", "close"))
+       and not _on(_sync(_ts6, _cfg2, _data6, _card)[1], "T-X1-P1", "close"))
 
 with tempfile.TemporaryDirectory() as d:
     tmp = pathlib.Path(d)
