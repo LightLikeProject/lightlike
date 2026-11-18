@@ -45,6 +45,8 @@ For a coordinate metric the contracted Bianchi identity holds, `g^{στ} ∇_σ 
 A Lorentzian coordinate metric on an open subset of `ℝⁿ` is a Lorentzian metric on that open subset as a manifold, with the same components in every chart [20]; exterior Schwarzschild on the manifold layer satisfies the vacuum Einstein equations and has vanishing Ricci tensor [21]; the Levi-Civita connection of a Lorentzian metric is a smooth covariant derivative [22].
 The volume measure of a Lorentzian metric on a manifold is the pushforward of `√|det g| dx` in each chart, and for a set in a chart domain it is given by the integral over its chart image in any chart [24].
 
+The coordinate components and the volume measure are defined for a smooth symmetric nondegenerate bilinear field on the tangent bundle, a metric of any signature, of which a Lorentzian metric and a smooth Riemannian metric of Mathlib are the two cases; the coordinate matrix of a Riemannian metric is positive definite [25]. On an open subset of `ℝⁿ`, a coordinate metric of any signature is a metric of the open subset with the same components in every chart, and the volume of a measurable set is the integral of `√|det g|` over its image [26].
+
 The curvature of a manifold-level metric as a tensor field is defined in `Connection.lean` [7]: a connection is Mathlib's
 covariant derivative on the tangent bundle; the Riemann curvature is `R(X, Y) Z = ∇_X ∇_Y Z - ∇_Y ∇_X Z - ∇_{[X,Y]} Z`
 (the sign convention of a Mathlib proposal, <https://github.com/leanprover-community/mathlib4/pull/45069>), the Ricci tensor is its trace over the first slot, the scalar
@@ -96,6 +98,8 @@ than one who stays at rest [6].
 22. Lightlike/Spacetime/LeviCivitaSmooth.lean - `contMDiffCovariantDerivative_leviCivita`: the Levi-Civita connection of a Lorentzian metric is smooth.
 23. Lightlike/Spacetime/EinsteinEquations.lean - `satisfiesEinstein_iff_ricci`, `satisfiesEinstein_zero_iff_ricci_eq_zero`: the vacuum Einstein equations with a cosmological constant are Ricci proportional to the metric, and Ricci-flat for no cosmological constant.
 24. Lightlike/Spacetime/VolumeMeasure.lean - `volumeMeasure`, `volumeMeasure_chart`, `volumeMeasure_minkowski`: the volume measure of a Lorentzian metric, its chart formula and the Minkowski trust check.
+25. Lightlike/Spacetime/NondegMetric.lean - `NondegMetric`, `NondegMetric.coordMetric`, `NondegMetric.ofRiemannian_coordMetric_posDef`: smooth symmetric nondegenerate bilinear fields on a manifold, the Lorentzian and the Riemannian metrics as cases, and the coordinate components with their tensor properties.
+26. Lightlike/Spacetime/NondegOpen.lean - `openNondeg`, `openNondeg_coordMetric`, `openNondeg_volumeMeasure`: a coordinate metric of any signature on an open subset of `ℝⁿ` as a metric of the open subset, the coordinate components in every chart, and its volume measure.
 
 ## References
 
