@@ -26,4 +26,21 @@ theorem Bogoliubov.isHilbertSchmidt_betaPart (T : Bogoliubov h) {ι : Type u} (b
   have := hasSum_norm_sq_apply_of_basis b c hb'
   simpa only [T.norm_sqrt_sq] using this.summable
 
+/-- **Hilbert-Schmidt from a uniform finite-mode bound**: if for one Hilbert basis `b` the finite sums
+`∑_{i ∈ s} (‖T bᵢ‖² + ‖T (i bᵢ)‖² - 2)` are bounded by `C`, the antilinear part of `T` is Hilbert-Schmidt. The
+bound is the quantity that the vacuum projections onto finitely many modes control in the necessity part of
+Shale's criterion. -/
+theorem Bogoliubov.isHilbertSchmidt_of_finite_bound (T : Bogoliubov h) {ι : Type u} (b : HilbertBasis ι ℂ h)
+    (C : ℝ) (hC : ∀ s : Finset ι,
+      ∑ i ∈ s, (‖T.toEquiv (b i)‖ ^ 2 + ‖T.toEquiv (Complex.I • b i)‖ ^ 2 - 2) ≤ C) :
+    IsHilbertSchmidt T.betaPart := by
+  refine T.isHilbertSchmidt_betaPart b ?_
+  refine summable_of_sum_le (c := C / 4) (fun i => sq_nonneg _) fun s => ?_
+  have hnorm : ∀ i, ‖b i‖ = 1 := fun i => b.orthonormal.1 i
+  have key : ∀ i, ‖T.betaPart (b i)‖ ^ 2 =
+      (‖T.toEquiv (b i)‖ ^ 2 + ‖T.toEquiv (Complex.I • b i)‖ ^ 2 - 2) / 4 := fun i => by
+    rw [T.norm_beta_sq_eq, hnorm]; ring
+  simp only [key, ← Finset.sum_div]
+  exact div_le_div_of_nonneg_right (hC s) (by norm_num)
+
 end Lightlike.OperatorAlgebras

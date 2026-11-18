@@ -99,3 +99,17 @@ but `α` does: `T` is continuous, so `α f = (T f - i T (i f))/2` is a bounded c
 `‖β e‖² = ‖α e‖² - ‖e‖² = ⟪e, (α†α - 1) e⟫` with `α†α - 1 ≥ 0`. So `IsHilbertSchmidt β` (every basis) follows from
 the trace of the positive operator `α†α - 1` in one basis plus that lemma. Cost (b) is therefore small; cost (a), the
 continuous-spectrum interval approximation, remains the open piece.
+
+## Necessity: state at 16:20 (what compiles, what is missing)
+
+Compiles (`ShaleAlgebra.lean`, `HilbertSchmidtBasis.lean`, `ShaleHilbertSchmidt.lean`, no `sorry`): the antilinear part
+through the quadratic form `q f = ‖T f‖²`; `α` as a bounded operator, `α†α - 1 ≥ 0`, `‖√(α†α - 1) e‖ = ‖β e‖`;
+basis independence of the Hilbert-Schmidt square sum (Physlib port); and
+`Bogoliubov.isHilbertSchmidt_of_finite_bound`: a uniform bound `∑_{i ∈ s} (q bᵢ + q (i bᵢ) - 2) ≤ C` over finite
+`s` for one Hilbert basis gives `IsHilbertSchmidt β`.
+
+Missing step: from a vector `Ψ` with `⟪Ψ, W f Ψ⟫ = exp (-q f/4)` (`gaussian_vector_of_implements`) to that uniform
+bound. This needs (i) the vacuum projection `P_F` of finitely many modes as the Gaussian average of `W f` over
+`V_F` (self-adjoint, idempotent, `P_F Ω = Ω`), (ii) the finite-dimensional Gaussian integral of `exp (-(‖f‖² + q f)/4)`
+against a positive quadratic form on `V_F`, and (iii) the determinant bound `det ((1 + P_F)/2) ≥ 1 + tr (P_F - 1)/4`
+on `J`-invariant spectral subspaces (continuous spectrum by interval approximation). No shortcut found.
