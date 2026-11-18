@@ -612,6 +612,7 @@ import Lightlike.Spacetime.CausalLadder.Ascoli
 import Lightlike.Spacetime.CausalLadder.FunctionalEstimate
 import Lightlike.Spacetime.CausalLadder.LimitFunctional
 import Lightlike.Spacetime.Causal.BasicRelations
+import Lightlike.Spacetime.Causal.CauchyDomain
 import Lightlike.Spacetime.Causal.CausalCurve
 import Lightlike.Spacetime.Causal.CurveMargin
 import Lightlike.Spacetime.Causal.CurveOps
