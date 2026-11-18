@@ -89,6 +89,8 @@ formula `√(12π √V²(ℓ)) {λj} − cos(S_R(ℓ) + π/4) → 0` without hyp
 Trust checks are in [6], [7], [9], [11], [13], [15], [17], [19], [21], [23], [25], [27], [29],
 [31], [33], [35] and [37].
 
+A positive measure on the half line whose Laplace transform grows like `e^{a/β}` in the logarithmic sense, `β log L(β) → a > 0` as `β → 0⁺`, has a counting function with `log F(X) / (2 √(a X)) → 1`: a logarithmic Tauberian theorem of Ingham type, the growth behind the Cardy formula [40] {3}. The upper bound is the saddle estimate `F(X) ≤ e^{β X} L(β)`, from the window estimates of the Laplace transform [38] {3}. For the lower bound the Laplace transform is split into three windows around the saddle `x = a / β²`; the outer two are bounded by the Laplace transform at slightly different `β`, so the middle window carries at least half of `L(β)` [39] {3}. The theorem is weaker than Ingham's, which gives the asymptotics of `F` itself; Karamata's theorem and Ingham's theorem with the power correction are open.
+
 ## Lean References
 
 1. Lightlike/Asymptotics/Saddle.lean - `Asymptotics.disc_eq`, `Asymptotics.saddle_root`,
@@ -244,9 +246,15 @@ Trust checks are in [6], [7], [9], [11], [13], [15], [17], [19], [21], [23], [25
    `Asymptotics.not_ponzanoReggeFormulaWith_neg_quarter`, `Asymptotics.ponzanoReggeFormula_regular`,
    `Asymptotics.kernelRegion_one_zero`, `Asymptotics.kernelRegion_zero_four`,
    `Asymptotics.not_kernelRegion_one_four`
+38. Lightlike/Asymptotics/Tauberian/Window.lean - `Tauberian.laplace`, `Tauberian.counting`,
+    `Tauberian.counting_mul_exp_le`, `Tauberian.laplace_eq_split`
+39. Lightlike/Asymptotics/Tauberian/Lower.lean - `Tauberian.counting_lower`
+40. Lightlike/Asymptotics/Tauberian/Ingham.lean - `Tauberian.laplace_bounds`, `Tauberian.log_counting_le`,
+    `Tauberian.lower_eventually`, `Tauberian.ingham_log`
 
 ## References
 
 1. G. Racah, Theory of complex spectra II, *Phys. Rev.* 62 (1942) 438.
 2. G. Ponzano, T. Regge, Semiclassical limit of Racah coefficients, in *Spectroscopic and Group
    Theoretical Methods in Physics*, North-Holland, 1968.
+3. B. Mukhametzhanov and A. Zhiboedov, Modular invariance, tauberian theorems and microcanonical entropy, JHEP 10 (2019) 261, arXiv:1904.06359, Section 1 (the paragraph before eq. (1.8)).

@@ -213,6 +213,17 @@ tasks:
     routes:
       - "Mollification: for f in C²_c(0,1), f * ρ_ε is C_c^∞(0,1) for small ε, and f * ρ_ε → f and (f * ρ_ε)' = f' * ρ_ε → f' in L²(0,1), so every graph point of the C² operator is a limit of graph points of the C_c^∞ operator; the other inclusion is monotonicity (momentumGraphSmooth_le). Needs: convolution with a mollifier commutes with the derivative and converges in L² (Mathlib: ContDiffBump, convolution approximation of the identity)."
 
+  - id: T-SP3-P1
+    milestone: SP3
+    kind: proof
+    title: "A logarithmic Tauberian theorem of Ingham type: if β log L(β) → a > 0 then log ρ[0, X] / (2 √(a X)) → 1"
+    file: Tasks/SP/T_SP3_P1.lean
+    decl: Lightlike.Tauberian.ingham_logarithmic
+    size: M
+    difficulty: intermediate
+    routes:
+      - "Upper bound ρ[0, X] ≤ e^{βX} L(β) with β = √(a/X). Lower bound: split L(β) into three windows around the saddle x = a/β²; the outer two are at most L(β)/4 each by comparing with the Laplace transform at β(1 + η/2) and β/(1 + η/2), so the middle window, at most e^{-βXl} ρ[0, Xh], carries at least half of L(β)."
+
   - id: T-SF10-P1
     milestone: SF10
     kind: proof
