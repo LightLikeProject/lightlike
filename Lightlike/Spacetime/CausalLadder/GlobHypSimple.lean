@@ -2,7 +2,7 @@ import Lightlike.Spacetime.CausalLadder.ChartLine
 import Lightlike.Spacetime.CausalLadder.StrongCausality
 
 /-!
-# Global hyperbolicity implies causal simplicity (boundaryless model)
+# Global hyperbolicity implies causal simplicity (manifold without boundary)
 
 Strong causality gives causality (`causal_of_stronglyCausal`). The causal future `J⁺(x)` is closed:
 if `y` lies in its closure, there is a point `z` in the causal future of every point near `y`
@@ -11,9 +11,9 @@ causal diamond `J⁺(x) ∩ J⁻(z)`, which is compact by global hyperbolicity, 
 in it. The causal past is closed in the same way, using a point in the causal past of every point
 near `y`.
 
-The straight-line step uses that the chart image is open (a boundaryless model, `I.Boundaryless`),
-so that a short segment from a point to a point in the time direction stays in the manifold. The
-locked statement of task `T-GE2-P12` has no such hypothesis.
+The straight-line step uses that the manifold has no boundary (`BoundarylessManifold I M`), so that
+the chart image is a neighbourhood of the image of the point and a short segment in the time direction
+stays in the manifold. Hawking–Ellis take space-time to be a manifold without boundary.
 
 Supporting lemma for the causal ladder.
 -/
@@ -28,8 +28,8 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
   {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I ∞ M]
   {n : ℕ} {g : LorentzianMetric I M n} (T : TimeOrientation g)
 
-/-- **Global hyperbolicity implies causal simplicity**, for a boundaryless model. -/
-theorem isCausallySimple_of_isGloballyHyperbolic_boundaryless [I.Boundaryless] [T2Space M]
+/-- **Global hyperbolicity implies causal simplicity**, for a manifold without boundary. -/
+theorem isCausallySimple_of_isGloballyHyperbolic_boundaryless [BoundarylessManifold I M] [T2Space M]
     (h : IsGloballyHyperbolic T) : IsCausallySimple T := by
   refine ⟨causal_of_stronglyCausal T h.1, fun x => ⟨?_, ?_⟩⟩
   · refine closure_subset_iff_isClosed.1 fun y hy => ?_

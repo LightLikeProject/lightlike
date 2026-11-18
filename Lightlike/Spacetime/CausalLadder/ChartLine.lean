@@ -162,6 +162,14 @@ theorem chartLine_isFutureCausalCurve (p : M) {N : Set M} (hNb : N ⊆ (tTriv I 
     rw [← this]
     exact TimeOrientation.isFutureCausal_of_isFutureTimelike T (hw _ hqN)
 
+/-- In a manifold without boundary the chart target is a neighbourhood of the image of the base
+point (`isInteriorPoint_iff`). -/
+theorem target_mem_nhds_of_boundaryless [BoundarylessManifold I M] (p : M) :
+    (extChartAt I p).target ∈ 𝓝 (extChartAt I p p) := by
+  have := (ModelWithCorners.isInteriorPoint_iff (I := I) (x := p)).1
+    (BoundarylessManifold.isInteriorPoint' p)
+  exact mem_of_superset (isOpen_interior.mem_nhds this) interior_subset
+
 /-- The transported constant field is homogeneous in the constant. -/
 theorem localField_smul (p : M) (r : ℝ) (w : E) {q : M} (hq : q ∈ (tTriv I M p).baseSet) :
     localField (I := I) p (r • w) q = r • localField (I := I) p w q := by
@@ -176,7 +184,7 @@ theorem localField_smul (p : M) (r : ℝ) (w : E) {q : M} (hq : q ∈ (tTriv I M
 `r₀`, a scale `s > 0`, `ε > 0` and a vector `V` such that any two points `a`, `b` of the chart ball
 of radius `r₀` with `‖b - a - s V‖ < s ε` are joined by a future causal curve: the point
 `(extChartAt I p).symm b` lies in the causal future of `(extChartAt I p).symm a`. -/
-theorem exists_line_between [I.Boundaryless] (p : M) :
+theorem exists_line_between [BoundarylessManifold I M] (p : M) :
     ∃ (V : E) (s r₀ : ℝ), 0 < s ∧ 0 < r₀ ∧ ‖s • V‖ < r₀ / 2 ∧
       ∃ ε > 0, ∀ a ∈ Metric.ball (extChartAt I p p) r₀, ∀ b ∈ Metric.ball (extChartAt I p p) r₀,
         ‖b - a - s • V‖ < s * ε →
@@ -193,7 +201,7 @@ theorem exists_line_between [I.Boundaryless] (p : M) :
       continuousAt_extChartAt_symm p
     exact hcont.preimage_mem_nhds (by rwa [(extChartAt I p).left_inv (mem_extChartAt_source p)])
   obtain ⟨r₀, hr₀, hball⟩ := Metric.mem_nhds_iff.1
-    (inter_mem hpre (extChartAt_target_mem_nhds (I := I) p))
+    (inter_mem hpre (target_mem_nhds_of_boundaryless (I := I) p))
   set s : ℝ := r₀ / (4 * (‖V‖ + 1)) with hs
   have hspos : 0 < s := by positivity
   have hsV : ‖s • V‖ < r₀ / 2 := by
@@ -253,7 +261,7 @@ theorem eventually_chart_near (p : M) {δ : ℝ} (hδ : 0 < δ) :
     using ⟨h1, h2⟩
 
 /-- **A point in the causal future of every point near `p`** (boundaryless model). -/
-theorem exists_future_point [I.Boundaryless] (p : M) :
+theorem exists_future_point [BoundarylessManifold I M] (p : M) :
     ∃ z : M, ∀ᶠ y in 𝓝 p, z ∈ causalFuture T y := by
   obtain ⟨V, s, r₀, hs, hr₀, hsV, ε, hε, hline⟩ := exists_line_between T p
   refine ⟨(extChartAt I p).symm (extChartAt I p p + s • V), ?_⟩
@@ -268,7 +276,7 @@ theorem exists_future_point [I.Boundaryless] (p : M) :
   rwa [(extChartAt I p).left_inv hy] at h
 
 /-- **A point in the causal past of every point near `p`** (boundaryless model). -/
-theorem exists_past_point [I.Boundaryless] (p : M) :
+theorem exists_past_point [BoundarylessManifold I M] (p : M) :
     ∃ z : M, ∀ᶠ y in 𝓝 p, y ∈ causalFuture T z := by
   obtain ⟨V, s, r₀, hs, hr₀, hsV, ε, hε, hline⟩ := exists_line_between T p
   refine ⟨(extChartAt I p).symm (extChartAt I p p - s • V), ?_⟩
