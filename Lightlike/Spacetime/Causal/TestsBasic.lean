@@ -1,6 +1,8 @@
 import Lightlike.Spacetime.Causal.BasicRelations
 import Lightlike.Spacetime.Causal.CurveMargin
 import Lightlike.Spacetime.Causal.MinkowskiCauchy
+import Lightlike.Spacetime.Causal.Extension
+import Lightlike.Spacetime.Causal.CauchyCover
 import Lightlike.Spacetime.Causal.MinkowskiGH
 import Lightlike.Spacetime.Causal.SmoothOrientation
 import Lightlike.Spacetime.Causal.TestsMinkowski
@@ -191,5 +193,21 @@ example (x : Fin (d + 1) → ℝ) :
     simp only [Metric.mem_ball] at h1 h2
     rw [dist_comm] at h1 h2
     linarith
+
+set_option synthInstance.maxHeartbeats 200000 in
+/-- Non-vacuity of the achronality of a Cauchy surface: the slice `t = 0` of Minkowski space is a
+Cauchy surface (`minkowski_slice_isCauchySurface`), hence achronal; the hypotheses
+(Hausdorff, second countable, without boundary) hold for `ℝ^{d+1}`. -/
+example : IsAchronal (minkowskiOrientation d) {y : Fin (d + 1) → ℝ | y 0 = 0} :=
+  (minkowski_slice_isCauchySurface (d := d)).isAchronal_of_boundaryless _
+
+set_option synthInstance.maxHeartbeats 200000 in
+/-- Non-vacuity of the covering by a Cauchy surface: every point of Minkowski space is in the slice
+`t = 0`, in the chronological future of a point of it, or in its chronological past. -/
+example (p : Fin (d + 1) → ℝ) :
+    p ∈ {y : Fin (d + 1) → ℝ | y 0 = 0} ∨
+      (∃ x ∈ {y : Fin (d + 1) → ℝ | y 0 = 0}, p ∈ chronFuture (minkowskiOrientation d) x) ∨
+      ∃ x ∈ {y : Fin (d + 1) → ℝ | y 0 = 0}, x ∈ chronFuture (minkowskiOrientation d) p :=
+  (minkowski_slice_isCauchySurface (d := d)).cover _ p
 
 end Lightlike.Causal

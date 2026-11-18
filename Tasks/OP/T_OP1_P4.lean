@@ -1,9 +1,9 @@
-import Lightlike.OperatorAlgebras.GeneratorTranslation
+import Lightlike.OperatorAlgebras.TranslationCore
 
 /-!
 # Task T-OP1-P4
 
-The C² functions with compact support are a core of the generator of the translation group on L²(ℝ).
+The C_c^∞ functions are a core of the generator of the translation group on L²(ℝ).
 
 The statement is `Lightlike.OperatorAlgebras.translationGroup_core`, at the end of this file.
 Replace its `sorry` by a proof and change nothing else in the file: the proof-task check rejects any
@@ -13,8 +13,8 @@ Routes, each welcome as a separate attempt:
 
 1. Mollification: for ψ in the domain, ψ * ρ_ε is smooth and tends to ψ with its derivative;
    truncate by a cutoff and use that the generator commutes with convolution (Hall, Chapter 10).
-2. A dense invariant subspace of the domain is a core (Reed–Simon I, Chapter VIII, on cores); the C²
-   compactly supported functions are invariant under translation.
+2. A dense invariant subspace of the domain is a core (Reed–Simon I, Chapter VIII, on cores); the C_c^∞
+   functions are invariant under translation and dense (Mathlib: Lp.dense_hasCompactSupport_contDiff).
 
 Partial results, as helper lemmas in separate pull requests, are welcome.
 
@@ -38,7 +38,7 @@ Lemmas about them, which a proof may use:
 * `OperatorAlgebras.translate_ofCS` (`Lightlike/OperatorAlgebras/GeneratorTranslation.lean`)
 * `OperatorAlgebras.exists_core_ne_zero` (`Lightlike/OperatorAlgebras/GeneratorTranslation.lean`)
 * `OperatorAlgebras.phaseGroup_domain` (`Lightlike/OperatorAlgebras/TestsUnitaryGroup.lean`)
-* `OperatorAlgebras.phaseGroup_generator` (`Lightlike/OperatorAlgebras/TestsUnitaryGroup.lean`)
+* `OperatorAlgebras.UnitaryGroup.dvec_eq` (`Lightlike/OperatorAlgebras/StoneGenerator.lean`)
 
 Everything they depend on, and the further lemmas about them, in one block:
 
@@ -57,24 +57,22 @@ from the plan, the sources and the library.
 -/
 
 open MeasureTheory Filter Topology
+open scoped ContDiff
 
 namespace Lightlike.OperatorAlgebras
 
 /-- **A core of the momentum operator**: every vector `ψ` of the domain of the generator of the translation
-group on `L²(ℝ)` is a limit of classes `ψₙ` of `C²` functions with compact support such that the generators
-`-i ψₙ'` converge to the generator of `ψ`; so the closure of `-i d/dx` on these functions is the generator,
-which is self-adjoint (Stone's theorem), and `-i d/dx` is essentially self-adjoint there.
+group on `L²(ℝ)` is a limit of classes `ψₙ` of `C_c^∞` functions (smooth with compact support) such that the
+derivatives `ψₙ'` converge to `i` times the generator of `ψ`; so the closure of `-i d/dx` on these functions
+is the generator, which is self-adjoint (Stone's theorem), and `-i d/dx` is essentially self-adjoint there.
 
-**Differences from the source** (not yet read at the cited location; the comparison is pending): the
-milestone's statement is for `C_c^∞(ℝ)`; the core is stated here for `C²` functions with compact support,
-the class on which the derivative of the group is proved. A core property for the larger class `C²_c`
-is weaker than for `C_c^∞`: a core made of `C_c^∞` functions is also a core made of `C²_c` functions, not
-conversely. -/
+**Differences from the source** (not yet read at the cited location; the comparison is pending): none known;
+the statement is for `C_c^∞(ℝ)` as in the milestone. -/
 theorem translationGroup_core (ψ : L2R) (hψ : ψ ∈ translationGroup.generatorDomain) :
-    ∃ (f : ℕ → ℝ → ℂ) (hf : ∀ n, ContDiff ℝ 2 (f n)) (hc : ∀ n, HasCompactSupport (f n)),
+    ∃ (f : ℕ → ℝ → ℂ) (hf : ∀ n, ContDiff ℝ ∞ (f n)) (hc : ∀ n, HasCompactSupport (f n)),
       Tendsto (fun n => ofCS (hf n).continuous (hc n)) atTop (𝓝 ψ) ∧
-      Tendsto (fun n => ofCS (continuous_deriv_of_two (hf n)) (hc n).deriv) atTop
-        (𝓝 (Complex.I • translationGroup.generator ⟨ψ, hψ⟩)) := by
-  sorry
+      Tendsto (fun n => ofCS (continuous_deriv_of_two ((hf n).of_le (by norm_num))) (hc n).deriv)
+        atTop (𝓝 (Complex.I • translationGroup.generator ⟨ψ, hψ⟩)) := by
+  exact translationGroup_core_smooth ψ hψ
 
 end Lightlike.OperatorAlgebras

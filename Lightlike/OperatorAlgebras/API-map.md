@@ -31,6 +31,10 @@ The graph of `-i d/dx` on the `C_c^∞(0, 1)` functions is the image of the smoo
 
 `-i d/dx` on the `C²` test functions of `(0, 1)` is densely defined, since a vector orthogonal to all test functions is zero [16]. A function with zero weak derivative on `(0, 1)` is almost everywhere constant, by a primitive of `ψ - (∫ ψ) φ₀` [16]. The deficiency vectors of this operator at `z` with `conj z = i b` are the multiples of `exp (b x)`, so both deficiency spaces are one-dimensional, the deficiency indices `(1, 1)` [17]. The exponentials lie in the right spaces and are nonzero [18].
 
+A dense subspace of the domain of the generator of a unitary group that is invariant under the group is a core: the closure of the generator restricted to it is the generator [19]. The classes of `C_c^∞` functions form such a subspace for the translation group on `L²(ℝ)`, so every vector of the domain of the momentum operator is a limit of `C_c^∞` functions with the derivatives converging [20], and the subspace is not zero [21].
+
+Two linear maps from finitely supported coefficients whose generators have the same Gram matrix have the same norm, and with dense ranges there is a unitary between the spaces that intertwines them [22]. The Fock kernel `⟪k_f, k_g⟫ = e(f) e(g) exp (⟪f, g⟫ / 2)` is positive semidefinite: the kernel `exp (⟪f, g⟫ / 2)` is the sum of the entrywise powers of the Gram matrix, each positive semidefinite by the Schur product theorem [23]. Its reproducing kernel Hilbert space, with the Weyl unitaries `W g k_f = exp (-i σ(g, f) / 2) k_{f+g}` obtained from the Gram invariance of the shift and the vacuum `k_0`, is a Fock representation, so a Fock representation of every complex Hilbert space exists [24]. It is not the trivial representation [25].
+
 The Gram matrix of the vectors `W f Ω` of a Fock representation is a function of `f` and `g` alone, by the Weyl relations and the vacuum expectation, so the map `c ↦ ∑ c f W f Ω` has the same norm for two Fock representations; it extends to a unitary that maps the vacuum to the vacuum and intertwines the Weyl unitaries, which is the uniqueness of the Fock representation [14]. The Gram function is Hermitian and normalized, and over the zero Hilbert space there is a Fock representation to which the uniqueness applies [15].
 
 ## Lean References
@@ -85,6 +89,23 @@ The Gram matrix of the vectors `W f Ω` of a Fock representation is a function o
     `OperatorAlgebras.deficiency_indices_momentumMin` (the proof of task T-OP1-P5)
 18. Lightlike/OperatorAlgebras/TestsMomentumDeficiency.lean - `OperatorAlgebras.expL2_neg_mem_deficiency_I`,
     `OperatorAlgebras.expL2_mem_deficiency_negI`
+19. Lightlike/OperatorAlgebras/StoneCore.lean - `OperatorAlgebras.UnitaryGroup.WeakGen`,
+    `OperatorAlgebras.UnitaryGroup.closure_domRestrict_generator`
+20. Lightlike/OperatorAlgebras/TranslationCore.lean - `OperatorAlgebras.smoothCS`,
+    `OperatorAlgebras.translationGroup_core_smooth` (the proof of task T-OP1-P4)
+21. Lightlike/OperatorAlgebras/TestsTranslationCore.lean - `OperatorAlgebras.bumpRB`,
+    `OperatorAlgebras.bumpR`, `OperatorAlgebras.smoothCS_exists_ne_zero`
+22. Lightlike/OperatorAlgebras/GramUnitary.lean - `OperatorAlgebras.exists_unitary_of_gram_eq`
+23. Lightlike/OperatorAlgebras/FockKernel.lean - `OperatorAlgebras.posSemidef_gram_inf`,
+    `OperatorAlgebras.gramPow`, `OperatorAlgebras.posSemidef_gramPow`,
+    `OperatorAlgebras.posSemidef_of_hasSum`, `OperatorAlgebras.gaussE`, `OperatorAlgebras.fockGram_eq`,
+    `OperatorAlgebras.expKer`, `OperatorAlgebras.fockMat`, `OperatorAlgebras.posSemidef_fockMat`
+24. Lightlike/OperatorAlgebras/FockExists.lean - `OperatorAlgebras.fockKer`, `OperatorAlgebras.FockSpace`,
+    `OperatorAlgebras.kf`, `OperatorAlgebras.fockPhase`, `OperatorAlgebras.fockPhase_cocycle`,
+    `OperatorAlgebras.fockGram_shift`, `OperatorAlgebras.fockPhi`, `OperatorAlgebras.exists_fockWeyl`,
+    `OperatorAlgebras.fockW`, `OperatorAlgebras.continuous_of_dense_isometries`,
+    `OperatorAlgebras.fockRepOf` (the proof of task T-OP2-P1)
+25. Lightlike/OperatorAlgebras/TestsFockExists.lean - `OperatorAlgebras.fockRepOf_W_ne_one`
 
 ## References
 

@@ -32,10 +32,10 @@ Lemmas about them, which a proof may use:
 * `Asymptotics.Lorentzian.hessXX_block` (`Lightlike/Asymptotics/Lorentzian/HessianNode.lean`)
 * `Asymptotics.Lorentzian.closure_of_stationary` (`Lightlike/Asymptotics/Lorentzian/ClosureFromCritical.lean`)
 * `Asymptotics.Lorentzian.no_critical_without_closure` (`Lightlike/Asymptotics/Lorentzian/ClosureFromCritical.lean`)
+* `Asymptotics.Lorentzian.lorVertex_suppressed_fixChart` (`Lightlike/Asymptotics/Lorentzian/VertexSuppressed.lean`)
 * `Asymptotics.Lorentzian.lorVertex_asymptotics_fixChart` (`Lightlike/Asymptotics/Lorentzian/VertexFixChart.lean`)
 * `Asymptotics.Lorentzian.critical_configuration_closure` (`Lightlike/Asymptotics/Lorentzian/ClosureFromCritical.lean`)
 * `Asymptotics.Lorentzian.critZ_tgt` (`Lightlike/Asymptotics/Lorentzian/CriticalSpinors.lean`)
-* `Asymptotics.Lorentzian.hessXZ_src` (`Lightlike/Asymptotics/Lorentzian/HessianNode.lean`)
 
 Everything they depend on, and the further lemmas about them, in one block:
 
