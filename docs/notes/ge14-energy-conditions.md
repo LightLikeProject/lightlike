@@ -59,3 +59,9 @@ Curiel works on a spacetime with a time orientation; ours is pointwise on a Lore
   `Ric(ξ, ξ) ≥ 0` there (`minkowski_ricci_nonneg`). A non-vacuum check (closed de Sitter or Friedmann dust through the equivalence) waits for
   regge/co30-sphere on main.
 * Differences: none found for stage 2.
+
+## Physlib (check before you build, found late)
+Physlib has `Physlib/Cosmology/FLRW/EnergyConditions.lean`: `CosmicFluid.NullEnergyCondition`, `WeakEnergyCondition`, `StrongEnergyCondition`,
+`DominantEnergyCondition`, defined by their effective forms in `ρ` and `p` with `c` explicit (no tensor). Ours are the tensor conditions; the effective forms
+for a perfect fluid are theorems here, and `EnergyConditionsPhyslib.lean` proves that they are exactly Physlib's conditions at `c = 1`
+(`fluid_*_iff_physlib`). No duplicated definition: Physlib's conditions are the right-hand sides of our theorems.

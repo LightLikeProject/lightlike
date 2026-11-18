@@ -720,6 +720,7 @@ import Lightlike.Spacetime.ContractedBianchi
 import Lightlike.Spacetime.DivergenceFree
 import Lightlike.Spacetime.EnergyConditions
 import Lightlike.Spacetime.EnergyConditionsField
+import Lightlike.Spacetime.EnergyConditionsPhyslib
 import Lightlike.Spacetime.OpenCoordMetric
 import Lightlike.Spacetime.LeviCivitaSmooth
 import Lightlike.Spacetime.RicciContinuous

@@ -104,6 +104,7 @@ The null, weak, strong and dominant energy conditions are stated pointwise for a
 26. Lightlike/Spacetime/NondegOpen.lean - `openNondeg`, `openNondeg_coordMetric`, `openNondeg_volumeMeasure`: a coordinate metric of any signature on an open subset of Euclidean space as a metric of the open subset, the coordinate components in every chart, and its volume measure.
 27. Lightlike/Spacetime/EnergyConditions.lean - `NullEC`, `WeakEC`, `StrongEC`, `DominantEC`, `dust_energyConditions`, `cosmo_energyConditions`, `scalar_negative_potential_violates_weak`: the pointwise energy conditions of a stress-energy tensor on a Lorentzian vector space and their trust checks.
 28. Lightlike/Spacetime/EnergyConditionsField.lean - `LorentzianMetric.NullECField`, `LorentzianMetric.fluidField_dominantEC_iff`, `LorentzianMetric.nullECField_iff_ricci`, `LorentzianMetric.strongECField_iff_ricci`, `LorentzianMetric.dominantECField_iff_einstein`: the energy conditions of a stress-energy field on a Lorentzian 4-manifold, the perfect-fluid forms, and the equivalence of the physical and geometric forms under the Einstein equations.
+29. Lightlike/Spacetime/EnergyConditionsPhyslib.lean - `fluid_nullEC_iff_physlib`, `fluid_weakEC_iff_physlib`, `fluid_strongEC_iff_physlib`, `fluid_dominantEC_iff_physlib`: for a perfect fluid the tensor energy conditions are Physlib's effective `CosmicFluid` conditions at `c = 1`.
 
 ## References
 
