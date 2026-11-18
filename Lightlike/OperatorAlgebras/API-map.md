@@ -39,6 +39,8 @@ For a self-adjoint operator `A` and `z` with `Im z ≠ 0`, `A - z` is a bijectio
 
 For a self-adjoint `A`, `t R (i t) y → i y` and `t R (-i t) y → -i y` for every `y` (on the domain from `R z (A x) = x + z R z x`, then everywhere by density and the bound `‖t R‖ ≤ 1`) [28]. The operators `A_n = (t² / 2) (R (i t) + R (-i t))`, `t = n + 1`, are bounded and self-adjoint, and `A_n x → A x` on the domain [28]. For the phase-group generator `λ • 1` the approximant is `t² λ / (λ² + t²)` [29].
 
+For a bounded self-adjoint operator `B`, `exp (i s B)` is a unitary group, strongly continuous in `s`, and for two commuting bounded self-adjoint operators `‖exp (i t B) y - exp (i t B') y‖ ≤ |t| ‖(B - B') y‖`, the mean value inequality for `s ↦ exp (i s B) exp (i (t - s) B') y` [30]. With `B' = 0` this is `‖exp (i t B) y - y‖ ≤ |t| ‖B y‖` [32]. The resolvents of a self-adjoint operator satisfy `R z - R w = (z - w) R z R w`, so they commute, and so do the approximants, which are self-adjoint as bounded operators [31].
+
 The Gram matrix of the vectors `W f Ω` of a Fock representation is a function of `f` and `g` alone, by the Weyl relations and the vacuum expectation, so the map `c ↦ ∑ c f W f Ω` has the same norm for two Fock representations; it extends to a unitary that maps the vacuum to the vacuum and intertwines the Weyl unitaries, which is the uniqueness of the Fock representation [14]. The Gram function is Hermitian and normalized, and over the zero Hilbert space there is a Fock representation to which the uniqueness applies [15].
 
 ## Lean References
@@ -119,6 +121,12 @@ The Gram matrix of the vectors `W f Ω` of a Fock representation is a function o
     `OperatorAlgebras.tResP_tendsto`, `OperatorAlgebras.tResM_tendsto`, `OperatorAlgebras.approx`,
     `OperatorAlgebras.approx_tendsto`, `OperatorAlgebras.approx_selfadjoint`
 29. Lightlike/OperatorAlgebras/TestsYosida.lean - `OperatorAlgebras.approx_phaseGroup`
+30. Lightlike/OperatorAlgebras/BoundedGroup.lean - `OperatorAlgebras.bdU`, `OperatorAlgebras.bdU_norm`,
+    `OperatorAlgebras.bdU_cauchy`, `OperatorAlgebras.bdUnitary`
+31. Lightlike/OperatorAlgebras/ResolventIdentity.lean - `OperatorAlgebras.resolvent_identity`,
+    `OperatorAlgebras.resolvent_commute`, `OperatorAlgebras.approx_commute`,
+    `OperatorAlgebras.approx_isSelfAdjoint`
+32. Lightlike/OperatorAlgebras/TestsBoundedGroup.lean - `OperatorAlgebras.bdU_sub_self_le`
 
 ## References
 
