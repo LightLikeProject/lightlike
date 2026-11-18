@@ -733,6 +733,7 @@ import Lightlike.Spacetime.RiemannSymmetry
 import Lightlike.Spacetime.EHManifold.BallVariation
 import Lightlike.Spacetime.EHManifold.ChartAction
 import Lightlike.Spacetime.EHManifold.ChartVariation
+import Lightlike.Spacetime.EHManifold.IntrinsicAction
 import Lightlike.Spacetime.EHManifold.Locality
 import Lightlike.Spacetime.EHManifold.Retraction
 import Lightlike.Spin4.Burnside
