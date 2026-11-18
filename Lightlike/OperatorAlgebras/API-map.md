@@ -148,6 +148,17 @@ The Gram matrix of the vectors `W f Ω` of a Fock representation is a function o
 38. Lightlike/OperatorAlgebras/TestsFockReduction.lean - `OperatorAlgebras.Bogoliubov.id`,
     `OperatorAlgebras.implements_id`
 
+39. Lightlike/OperatorAlgebras/HilbertSchmidtBasis.lean -
+    `OperatorAlgebras.hasSum_norm_sq_inner_basis`, `OperatorAlgebras.hasSum_norm_sq_apply_eq_adjoint`,
+    `OperatorAlgebras.hasSum_norm_sq_apply_of_basis`
+40. Lightlike/OperatorAlgebras/ShaleAlgebra.lean - `OperatorAlgebras.Bogoliubov.map_eq`,
+    `OperatorAlgebras.Bogoliubov.norm_alpha_sq_sub_norm_beta_sq`, `OperatorAlgebras.Bogoliubov.four_norm_beta_sq`,
+    `OperatorAlgebras.Bogoliubov.alphaCLM`, `OperatorAlgebras.Bogoliubov.alpha_sub_one_nonneg`,
+    `OperatorAlgebras.Bogoliubov.norm_sqrt_sq`
+41. Lightlike/OperatorAlgebras/ShaleHilbertSchmidt.lean -
+    `OperatorAlgebras.Bogoliubov.isHilbertSchmidt_betaPart`,
+    `OperatorAlgebras.Bogoliubov.isHilbertSchmidt_of_finite_bound`
+
 ## References
 
 1. B. C. Hall, *Quantum Theory for Mathematicians*, Graduate Texts in Mathematics 267, Springer, 2013,

@@ -130,3 +130,19 @@ pl's FT1 stage 1 (`38d10c8`, `Lightlike/FieldTheory/Gaussian/Integral.lean`, rea
 `integral_exp_neg_half_quad (A : Matrix ι ι ℝ) (hA : A.PosDef) : ∫ x, exp (-(1/2) xᵀ A x) = (2π)^{n/2} / √(det A)`
 on `EuclideanSpace ℝ ι`. This is (ii) once `1/2·(‖f‖² + q f)/2 = ½ xᵀ A x` is written in coordinates of `V_F`; to be
 imported when it is on main.
+
+## Sufficiency: brick plan, and why the polar-free route fails
+
+Why no polar-free route: let `ω(W f) = exp (-‖T f‖²/4)` and take its GNS representation `(R', Ψ')`. The family
+`f ↦ W'(T⁻¹ f)` is then a Fock representation of `h` (cyclic vector with expectation `exp (-‖f‖²/4)`), so
+`FockUnique` gives a unitary `K ≅ K'`. But `Ψ'` is not a vector of `K` and the unitary intertwines `W` with
+`W'∘T⁻¹` on `K'`, not `W ∘ T` on `K`; the argument proves nothing about implementability on `K`, and read as a
+proof of implementability it would prove it for every `T`. Shale's hypothesis must enter through an explicit
+vector `Ψ ∈ K`; the Bargmann-space (kernel domination) formulation needs the same determinants as necessity.
+
+Bricks (estimates in Lean lines): (1) conjugation `C` from a Hilbert basis, the complex-linear `β̂ = β ∘ C` and the
+block operator `M` on `h ⊕ h` (200); (2) polar decomposition of `M` by `CFC.sqrt (M† M)`, symplectic positive part
+(300); (3) `Γ(U)` for a complex-unitary Bogoliubov map by the Gram-matrix unitary (200); (4) finite-mode squeezed
+vectors in `K` (300); (5) the Cauchy estimate in the Hilbert-Schmidt tail (300); (6) the limit vector and its
+characteristic function (300); (7) assembly with P5 (100). Total 1500-2200 lines. After OP6 (trace class, Schatten),
+whose Hilbert-Schmidt API lowers bricks (2) and (5).
