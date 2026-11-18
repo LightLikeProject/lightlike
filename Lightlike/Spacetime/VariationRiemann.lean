@@ -65,6 +65,7 @@ def dRicci (σ ν : Fin n) : ℝ :=
         ∑ l, (dChristoffel g h ρ ρ l x * christoffel g l ν σ x + christoffel g ρ ρ l x * dChristoffel g h l ν σ x -
           dChristoffel g h ρ ν l x * christoffel g l ρ σ x - christoffel g ρ ν l x * dChristoffel g h l ρ σ x))
 
+/-- The first variation of the Ricci tensor of `g + t h` at `x` is `dRicci`. -/
 theorem hasDerivAt_ricci (σ ν : Fin n) :
     HasDerivAt (fun t : ℝ => ricci (fun z => g z + t • h z) σ ν x) (dRicci g h x σ ν) 0 := by
   have := HasDerivAt.fun_sum (u := Finset.univ) fun ρ _ => hasDerivAt_riemann g h hg hh x hx ρ σ ρ ν

@@ -259,6 +259,7 @@ variable (g h : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ)
     (hdet : ∀ x, (g x).det ≠ 0)
 include hg hh hdet
 
+/-- The flux `√|g| W^ρ` of the Palatini identity is smooth. -/
 theorem contDiff_flux (ρ : Fin n) : ContDiff ℝ ∞ (fun y => √|(g y).det| * Wvec g h ρ y) := by
   rw [contDiff_iff_contDiffAt]
   intro x

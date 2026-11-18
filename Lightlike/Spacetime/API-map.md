@@ -113,13 +113,13 @@ than one who stays at rest [6].
 
 27. Lightlike/Spacetime/LieMetric.lean - `lieDerivMetric`, `IsKillingAt`, `lieDerivMetric_symm`, `lieDerivMetric_zero`, `lieDerivMetric_eq_of_isLeviCivita`, `isKillingAt_iff_lieDerivMetric_eq_zero`: the Lie derivative of a metric of any signature along a vector field, and for the Levi-Civita connection its equality with the symmetrised covariant derivative of the field, so that the Killing equation says the Lie derivative of the metric vanishes.
 
-28. Lightlike/Spacetime/KillingAlgebra.lean - `IsKillingNear`, `mlieBracket_jacobi`, `lieDerivMetric_lieBracket`, `IsKillingNear.lieBracket`: the bracket of two Killing fields of a metric of any signature is Killing (the Jacobi identity and `[X, Y] f = X (Y f) - Y (X f)`).
+28. Lightlike/Spacetime/KillingAlgebra.lean - `IsKillingNear`, `mlieBracket_jacobi`, `lieDerivMetric_lieBracket`, `IsKillingNear.lieBracket`: the bracket of two Killing fields of a metric of any signature is Killing (the Jacobi identity and the bracket formula for derivatives of functions).
 29. Lightlike/Spacetime/PoincareKilling.lean - `affField`, `affField_killing_iff`, `not_isKillingAt_dilation`, `mlieBracket_affField`, `skew_comm_skew`: in Minkowski space the affine fields with skew linear part are Killing, the dilation is not, and the affine fields close under the bracket with the Poincare relations.
 
 30. Lightlike/Spacetime/Hypersurface.lean - `Hypersurface.IsUnitNormal`, `Hypersurface.IsTangentNear`, `Hypersurface.secondFF`, `Hypersurface.lieBracket_isTangentNear`, `Hypersurface.secondFF_symm_fields`, `Hypersurface.exists_tangent_extension`, `Hypersurface.Dfield`, `Hypersurface.gaussCurv`, `Hypersurface.covK`, `Hypersurface.gauss_relation`, `Hypersurface.codazzi_relation`: the unit normal and second fundamental form of the level sets of a function, its symmetry, and the Gauss and Codazzi relations.
 
 31. Lightlike/Spacetime/VariationDet.lean - `hasDerivAt_det_add_smul`, `hasDerivAt_sqrt_abs_det_add_smul`, `hasDerivAt_inv_add_smul`, `fderiv_inv_entry`: Jacobi's formula for the determinant, the variation of the volume density and the derivative of the matrix inverse.
-32. Lightlike/Spacetime/VariationChristoffel.lean - `hasDerivAt_christoffel_add_smul`: the variation of the Christoffel symbols of `g + t h`.
+32. Lightlike/Spacetime/VariationChristoffel.lean - `hasDerivAt_christoffel_add_smul`: the variation of the Christoffel symbols of the perturbed metric.
 33. Lightlike/Spacetime/PalatiniAlgebra.lean - `palatini_alg_nd`, `palatini_dd`: the algebra of the Palatini identity, finite sums only.
 34. Lightlike/Spacetime/VariationInverse.lean - `pd_inv_eq`, `pd_sqrt_abs_det`, `hasDerivAt_det_path`, `hasDerivAt_sqrt_abs`: the derivatives of the inverse metric and of the volume density in coordinates.
 35. Lightlike/Spacetime/VariationExchange.lean - `hasDerivAt_fderiv_exchange`, `contDiffAt_christoffel_family`, `dChristoffel`, `hasDerivAt_pd_christoffel`: exchange of the variation and a partial derivative.

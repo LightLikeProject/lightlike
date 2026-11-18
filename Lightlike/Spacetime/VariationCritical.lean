@@ -44,14 +44,17 @@ theorem contDiff_riemann (ρ σ μ ν : Fin n) : ContDiff ℝ ∞ (fun y => riem
   exact ((contDiff_christoffel g hg hdet ρ μ l).mul (contDiff_christoffel g hg hdet l ν σ)).sub
     ((contDiff_christoffel g hg hdet ρ ν l).mul (contDiff_christoffel g hg hdet l μ σ))
 
+/-- The coordinate Ricci tensor of a smooth nondegenerate metric is smooth. -/
 theorem contDiff_ricci (σ ν : Fin n) : ContDiff ℝ ∞ (fun y => ricci g σ ν y) := by
   unfold ricci
   exact ContDiff.sum fun ρ _ => contDiff_riemann g hg hdet ρ σ ρ ν
 
+/-- The scalar curvature of a smooth nondegenerate metric is smooth. -/
 theorem contDiff_scalarCurvature : ContDiff ℝ ∞ (fun y => scalarCurvature g y) := by
   unfold scalarCurvature
   exact ContDiff.sum fun σ _ => ContDiff.sum fun ν _ => (contDiff_inv_entry g hg hdet σ ν).mul (contDiff_ricci g hg hdet σ ν)
 
+/-- The Ricci tensor with both indices raised is smooth. -/
 theorem contDiff_ricciUp (α β : Fin n) : ContDiff ℝ ∞ (fun y => ricciUp g y α β) := by
   unfold ricciUp
   exact ContDiff.sum fun a _ => ContDiff.sum fun b _ =>
