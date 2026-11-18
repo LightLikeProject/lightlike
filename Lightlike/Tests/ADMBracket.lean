@@ -64,8 +64,7 @@ theorem bracket_momentum_momentum_ne_zero :
   have hdiv : ∀ y : Fin 1 → ℝ, momentumDivergence h π 0 y = 1 := fun y => by
     have hc : ∀ k l : Fin 1, Lightlike.christoffel h 0 k l y = 0 := by
       intro k l; simp [h, Lightlike.christoffel_const]
-    simp [momentumDivergence, hc, hp, π, Lightlike.pd]
-    sorry
+    simp [momentumDivergence, hc, hp, π]
   have hint : (fun x => -2 * ∑ i : Fin 1, (∑ k : Fin 1, h x i k * b x ^ 2) * momentumDivergence h π i x) =
       fun x => -2 * b x ^ 2 := by
     funext x; simp [h, hdiv]
