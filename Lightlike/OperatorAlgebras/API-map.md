@@ -25,7 +25,7 @@ vacuum expectation `exp (-‖f‖² / 4)` [3]. Shale's criterion says that a Bog
 implemented by a unitary of the Fock representation exactly when its antilinear part is Hilbert–Schmidt {2}.
 In one mode the squeezing has `|α|² - |β|² = 1` and the dilation `f ↦ 2 f` is not symplectic [4]. A map with `‖B f‖ = c ‖f‖`, `c > 0`, is not Hilbert–Schmidt when a Hilbert basis is infinite [4]. On `L²(ℝ)` translation `ψ(x + t)` is a strongly continuous unitary group [5], and its generator is `-i d/dx` on `C²` functions with compact support, not `+i d/dx` [6]. On `L²(0, 1)` the operator `-i d/dx` on the `C²` functions supported inside `(0, 1)` is given by its graph [7]. The deficiency spaces of an operator are the kernels of the adjoint minus `±i`, and a self-adjoint operator has none [8]. The
 Fock space itself is not built here, and a Fock representation is characterized by its vacuum. The
-unbounded spectral theorem is not in Mathlib. Stone's theorem and Shale's criterion are [TODO] here.
+unbounded spectral theorem is not in Mathlib. On a matrix algebra the modular flow of the faithful state `Tr (e^{-H} ·)` is `a ↦ e^{-izH} a e^{izH}` and the state is KMS at inverse temperature `1` for it {4} [35]; the Tomita operator `S` is an antilinear involution with `S (a ρ^{1/2}) = a† ρ^{1/2}` and the modular operator `Δ y = ρ y ρ⁻¹` satisfies `Δ = S† S` {4} [35]; the Gibbs state of a Hamiltonian is KMS at its own temperature, and a diagonal qubit state that is not Gibbs fails the condition [35]. Stone's theorem and Shale's criterion are [TODO] here.
 
 The graph of `-i d/dx` on the `C_c^∞(0, 1)` functions is the image of the smooth test functions under the same pair map, and lies inside the `C²` graph [11]. It contains a nonzero vector, a bump function supported in `(0, 1)` [12]. Mollification by a normed bump function maps a `C²` test function to a `C_c^∞` one, with the derivative of the mollified function the mollified derivative, and converges uniformly with its derivative, so the two graphs have the same closure [13].
 
@@ -148,6 +148,9 @@ The Gram matrix of the vectors `W f Ω` of a Fock representation is a function o
 38. Lightlike/OperatorAlgebras/TestsFockReduction.lean - `OperatorAlgebras.Bogoliubov.id`,
     `OperatorAlgebras.implements_id`
 
+35. Lightlike/OperatorAlgebras/ModularFinite.lean - `OperatorAlgebras.kms`, `OperatorAlgebras.inner_tomita`,
+    `OperatorAlgebras.isKMS_gibbs`, `OperatorAlgebras.not_isKMS_of_ne`
+
 ## References
 
 1. B. C. Hall, *Quantum Theory for Mathematicians*, Graduate Texts in Mathematics 267, Springer, 2013,
@@ -155,3 +158,5 @@ The Gram matrix of the vectors `W f Ω` of a Fock representation is a function o
 2. O. Bratteli and D. W. Robinson, *Operator Algebras and Quantum Statistical Mechanics 2*, 2nd ed.,
    Springer, 1997, Chapter 5, after D. Shale, *Linear symmetries of free boson fields*, Trans. Amer. Math.
    Soc. 103 (1962) 149.
+4. E. Witten, *Notes on some entanglement properties of quantum field theory*, Rev. Mod. Phys. 90 (2018) 045003,
+   arXiv:1803.04993, Sections 4.1 and 4.2.
