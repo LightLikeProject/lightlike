@@ -20,11 +20,11 @@ namespace Lightlike.Gauge
 open Matrix
 
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] {m : Type*} [Fintype m]
-  [DecidableEq m] {b : ℕ}
+  [DecidableEq m] {b : ℕ} {l : Type*} [Fintype l] [DecidableEq l]
 
 /-- **The stage as the next tuple**: on `U`, `stageSet` of the zero set of `Φ` is the zero set of `Φ` extended by the
 secondary constraints `χ`. -/
-theorem stageSet_inter_eq {a : ℕ} (Cm : E → Matrix (m ⊕ Fin b) (m ⊕ Fin b) ℝ) (h : E → (m ⊕ Fin b) → ℝ)
+theorem stageSet_inter_eq {a : ℕ} (Cm : E → Matrix (m ⊕ Fin b) (m ⊕ l) ℝ) (h : E → (m ⊕ Fin b) → ℝ)
     (Φ : Fin a → E → ℝ) (U : Set E)
     (hU : ∀ x ∈ U, IsUnit (Cm x).toBlocks₁₁.det ∧
       (Cm x).toBlocks₂₂ = (Cm x).toBlocks₂₁ * (Cm x).toBlocks₁₁⁻¹ * (Cm x).toBlocks₁₂) :
@@ -47,7 +47,7 @@ points of `zeroSet (Φ k)` with a multiplier are those of `zeroSet (Φ (k + 1))`
 and every point of it that lies in `U N` has a multiplier: the evolution is consistent there. -/
 theorem final_consistent (n : ℕ → ℕ) (Φ : ∀ k, Fin (n k) → E → ℝ) (hmono : ∀ k, n k ≤ n (k + 1))
     (hext : ∀ k i, Φ (k + 1) (Fin.castLE (hmono k) i) = Φ k i) (hreg : ∀ k, IsRegularStage (Φ k))
-    (hne : ∀ k, (zeroSet (Φ k)).Nonempty) (Cm : ℕ → E → Matrix (m ⊕ Fin b) (m ⊕ Fin b) ℝ)
+    (hne : ∀ k, (zeroSet (Φ k)).Nonempty) (Cm : ℕ → E → Matrix (m ⊕ Fin b) (m ⊕ l) ℝ)
     (h : ℕ → E → (m ⊕ Fin b) → ℝ) (U : ℕ → Set E)
     (hstage : ∀ k, stageSet (Cm k) (h k) (zeroSet (Φ k)) ∩ U k = zeroSet (Φ (k + 1)) ∩ U k) :
     ∃ N, (∀ k, N ≤ k → zeroSet (Φ k) = zeroSet (Φ N)) ∧

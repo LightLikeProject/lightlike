@@ -21,19 +21,20 @@ namespace Lightlike.Gauge
 
 open Matrix
 
-variable {E : Type*} {m n : Type*} [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n]
+variable {E : Type*} {m n l : Type*} [Fintype m] [Fintype n] [Fintype l] [DecidableEq m] [DecidableEq n]
+  [DecidableEq l]
 
 /-- The points of `S` at which the consistency system `Cmat x u + h x = 0` has a solution. -/
-def stageSet (Cm : E → Matrix (m ⊕ n) (m ⊕ n) ℝ) (h : E → (m ⊕ n) → ℝ) (S : Set E) : Set E :=
-  {x ∈ S | ∃ u, Cm x *ᵥ u + h x = 0}
+def stageSet (Cm : E → Matrix (m ⊕ n) (m ⊕ l) ℝ) (h : E → (m ⊕ n) → ℝ) (S : Set E) : Set E :=
+  {x ∈ S | ∃ u : m ⊕ l → ℝ, Cm x *ᵥ u + h x = 0}
 
 /-- The secondary-constraint functions `χ x = h₂ x - D x (B x)⁻¹ h₁ x`. -/
-noncomputable def chi (Cm : E → Matrix (m ⊕ n) (m ⊕ n) ℝ) (h : E → (m ⊕ n) → ℝ) (x : E) : n → ℝ :=
+noncomputable def chi (Cm : E → Matrix (m ⊕ n) (m ⊕ l) ℝ) (h : E → (m ⊕ n) → ℝ) (x : E) : n → ℝ :=
   (h x ∘ Sum.inr) - (Cm x).toBlocks₂₁ *ᵥ ((Cm x).toBlocks₁₁⁻¹ *ᵥ (h x ∘ Sum.inl))
 
 /-- The system for a block matrix splits into the two block equations. -/
-theorem block_system_iff (A : Matrix m m ℝ) (B : Matrix m n ℝ) (C : Matrix n m ℝ) (D : Matrix n n ℝ)
-    (u h : m ⊕ n → ℝ) :
+theorem block_system_iff (A : Matrix m m ℝ) (B : Matrix m l ℝ) (C : Matrix n m ℝ) (D : Matrix n l ℝ)
+    (u : m ⊕ l → ℝ) (h : m ⊕ n → ℝ) :
     fromBlocks A B C D *ᵥ u + h = 0 ↔
       (A *ᵥ (u ∘ Sum.inl) + B *ᵥ (u ∘ Sum.inr) + h ∘ Sum.inl = 0 ∧
         C *ᵥ (u ∘ Sum.inl) + D *ᵥ (u ∘ Sum.inr) + h ∘ Sum.inr = 0) := by
@@ -50,10 +51,10 @@ theorem block_system_iff (A : Matrix m m ℝ) (B : Matrix m n ℝ) (C : Matrix n
 
 /-- **The Dirac stage under constant rank**: at points where `B x` is invertible and `E x = D x (B x)⁻¹ C x`, a
 multiplier exists iff `χ x = 0`. -/
-theorem exists_multiplier_iff_chi (Cm : E → Matrix (m ⊕ n) (m ⊕ n) ℝ) (h : E → (m ⊕ n) → ℝ) {x : E}
+theorem exists_multiplier_iff_chi (Cm : E → Matrix (m ⊕ n) (m ⊕ l) ℝ) (h : E → (m ⊕ n) → ℝ) {x : E}
     (hB : IsUnit (Cm x).toBlocks₁₁.det)
     (hS : (Cm x).toBlocks₂₂ = (Cm x).toBlocks₂₁ * (Cm x).toBlocks₁₁⁻¹ * (Cm x).toBlocks₁₂) :
-    (∃ u, Cm x *ᵥ u + h x = 0) ↔ chi Cm h x = 0 := by
+    (∃ u : m ⊕ l → ℝ, Cm x *ᵥ u + h x = 0) ↔ chi Cm h x = 0 := by
   have hsplit : Cm x = fromBlocks (Cm x).toBlocks₁₁ (Cm x).toBlocks₁₂ (Cm x).toBlocks₂₁ (Cm x).toBlocks₂₂ :=
     (fromBlocks_toBlocks (Cm x)).symm
   have key := consistency_iff (Cm x).toBlocks₁₁ (Cm x).toBlocks₁₂ (Cm x).toBlocks₂₁ (Cm x).toBlocks₂₂ hB hS
