@@ -3,8 +3,8 @@ import Lightlike.Spacetime.Causal.CausalCurve
 /-!
 # Task T-GE2-P20
 
-A limit curve through an accumulation point of inextendible causal curves is an inextendible causal
-curve.
+A limit curve through a limit point of future-inextendible causal curves is a future-inextendible
+causal curve.
 
 The statement is `Lightlike.Causal.exists_inextendible_limit_curve`, at the end of this file. Replace
 its `sorry` by a proof and change nothing else in the file: the proof-task check rejects any other
@@ -30,19 +30,30 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
   {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I ∞ M]
   {n : ℕ} {g : LorentzianMetric I M n} (T : TimeOrientation g)
 
-/-- **Limit-curve theorem** (Hawking–Ellis, Lemma 6.2.1). If `p` is an accumulation point of a
-sequence of inextendible future-directed causal curves (every neighbourhood of `p` meets infinitely
-many of them), there is an inextendible future-directed causal curve through `p`, each of whose points
-is an accumulation point of the sequence. The hypothesis `[BoundarylessManifold I M]` matches the
-source (space-time has no boundary); the comparison with the source at a location is pending. The
-one-chart endpoint form is `exists_limit_curve` (`LL-0151`). -/
+/-- **Limit-curve theorem** (Hawking–Ellis, Lemma 6.2.1; the comparison with the source at a
+location is pending). Let `γ k` be future-inextendible future-directed causal curves, on the intervals
+`s k`: curves of the library's class (`IsFutureCausalCurve`) with no future endpoint (they do not
+converge to a point of `M` as the parameter tends to the top of `s k`). If `p` is a limit point of the
+sequence (every neighbourhood of `p` meets infinitely many of the curves), there is a future-inextendible
+future-directed causal curve `σ` through `p` that is a limit curve of one subsequence: for every point `q`
+of `σ` and every neighbourhood `U` of `q`, all but finitely many curves of the subsequence meet `U`.
+
+Differences from the source, all representation: the open set `O` of the source is taken to be the
+whole manifold (an open subset of a space-time is a space-time with the restricted metric, so the source's
+`O` is covered by applying the statement to it); `[T2Space M]`, `[SecondCountableTopology M]` and
+`[BoundarylessManifold I M]` are the conventions on space-time (Hawking–Ellis: a connected paracompact
+Hausdorff manifold without boundary); the curves are the library's causal curves (locally Lipschitz, with
+velocity in the future causal cone almost everywhere). Only the future end is asked to be inextendible, as
+in the source. The one-chart endpoint form is `exists_limit_curve` (`LL-0151`). -/
 theorem exists_inextendible_limit_curve [T2Space M] [SecondCountableTopology M]
     [BoundarylessManifold I M] (γ : ℕ → ℝ → M) (s : ℕ → Set ℝ)
-    (hγ : ∀ k, IsInextendibleWith (I := I) (fun _ v ↦ T.IsFutureCausal v) (γ k) (s k)) (p : M)
-    (hp : ∀ U ∈ 𝓝 p, ∃ᶠ k in atTop, ∃ t ∈ s k, γ k t ∈ U) :
-    ∃ (σ : ℝ → M) (r : Set ℝ),
-      IsInextendibleWith (I := I) (fun _ v ↦ T.IsFutureCausal v) σ r ∧ p ∈ σ '' r ∧
-        ∀ q ∈ σ '' r, ∀ U ∈ 𝓝 q, ∃ᶠ k in atTop, ∃ t ∈ s k, γ k t ∈ U := by
+    (hγ : ∀ k, IsFutureCausalCurve T (γ k) (s k) ∧
+      ∀ q : M, ¬ Tendsto (fun t : s k => γ k t) atTop (𝓝 q))
+    (p : M) (hp : ∀ U ∈ 𝓝 p, ∃ᶠ k in atTop, ∃ t ∈ s k, γ k t ∈ U) :
+    ∃ (σ : ℝ → M) (r : Set ℝ), (IsFutureCausalCurve T σ r ∧
+        ∀ q : M, ¬ Tendsto (fun t : r => σ t) atTop (𝓝 q)) ∧ p ∈ σ '' r ∧
+      ∃ φ : ℕ → ℕ, StrictMono φ ∧ ∀ q ∈ σ '' r, ∀ U ∈ 𝓝 q, ∀ᶠ k in atTop,
+        ∃ t ∈ s (φ k), γ (φ k) t ∈ U := by
   sorry
 
 end Lightlike.Causal
