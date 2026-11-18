@@ -55,6 +55,7 @@ theorem not_isCompact_littleGroup_tachyon (κ : ℝ) : ¬ IsCompact (littleGroup
   have hβ : |Real.tanh r| < 1 := abs_lt.2 ⟨Real.neg_one_lt_tanh r, Real.tanh_lt_one r⟩
   have hmem := boost_mem_littleGroup_tachyon κ (Real.tanh r) hβ
   have hle := hC ⟨_, hmem, rfl⟩
+  simp only at hle
   rw [boost_inl_0_inl_0, γ_tanh] at hle
   have h1 : r + 1 ≤ Real.exp r := Real.add_one_le_exp r
   have h2 : 0 ≤ Real.exp (-r) := (Real.exp_pos _).le
