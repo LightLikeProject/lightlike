@@ -13,8 +13,11 @@ cosmological constant `Λ = -3/L²` (`ads_isVacuumSolution`): `Ric = Λ g`.
 Gap row G3-022. Compared with O. Aharony, S. Gubser, J. Maldacena, H. Ooguri, Y. Oz, *Large N field theories, string
 theory and gravity*, arXiv:hep-th/9905111, section 2 (pdftotext): the Poincaré coordinates `(u, t, x)`, `ds² = R² (du²/u² + u² (-dt² + dx²))`
 (eq. (2.27), printed p. 42), which is `adsMetric` with `L = R`, `z = 1/u`; "The coordinates (u, t, x) are called the Poincaré coordinates"
-and "cover one half of the hyperboloid". The vacuum equation `G + Λ g = 0` is not stated in that passage (it has `Ric = -(d/R²) g` as maximal
-symmetry in a later section, not compared at a location). Carroll ch. 8: no Poincaré patch in the notes read.
+and "cover one half of the hyperboloid". For the curvature: section 2.2.3, eq. (2.49), printed p. 48: \"Since AdS is maximally symmetric, the curvature obeys
+`R_{μνρσ} = (1/R²)(g_{μρ} g_{νσ} − g_{μσ} g_{νρ})` ... if we choose the curvature of AdS to be `Λ = 3/R²` (this is necessary for AdS to be a classical
+solution of (2.43))\" (the action `R − 2Λ` of `N = 1` supergravity in four dimensions). Contracting (2.49) gives `Ric = (3/R²) g` for AdS₄ in the source's sign
+convention; in the library's convention (`ricci_ads`) the same tensor is `Ric = −(3/L²) g`, i.e. `Λ = −3/L²`: a sign-convention difference (representation),
+not a difference in the geometry. Carroll's notes (gr-qc/9712019) have no Poincaré patch.
 -/
 
 open Matrix Real
