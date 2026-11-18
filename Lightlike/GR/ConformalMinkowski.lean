@@ -18,7 +18,10 @@ conformal (`arctan_not_conformal`).
 Gap row GE7. Source read (pdftotext): D. Harlow, *Jerusalem Lectures on Black Holes and Quantum Information*,
 arXiv:1409.1231, section 2.3 "Penrose diagrams", eqs. (2.11)-(2.13), p. 7: `T ± R = arctan(t ± r)` and
 `ds² = (1/(cos²(T+R) cos²(T−R))) [−dT² + dR² + (sin 2R/2)² dΩ²]`. The same section states the theorem that
-conformally related metrics have the same null geodesics (not formalized here). Hawking–Ellis, ch. 5: not read.
+conformally related metrics have the same null geodesics (not formalized here). Second source: Aharony-Gubser-Maldacena-Ooguri-Oz,
+arXiv:hep-th/9905111, section 2, eqs. (2.13)-(2.16), pp. 38-39: `u± = t ± r = tan ũ±`, `ũ± = (τ ± θ)/2`, `ds² = (1/(4 cos²ũ₊ cos²ũ₋))
+(-dτ² + dθ² + sin²θ dΩ²)` (2.14), "the maximally extended space ... has the geometry of R × S^p (Einstein static universe)" (2.16): `pullback_esu_doubling`
+with `(τ, θ) = (2T, 2R)`. Hawking–Ellis, ch. 5: not read.
 -/
 
 open Matrix Real
