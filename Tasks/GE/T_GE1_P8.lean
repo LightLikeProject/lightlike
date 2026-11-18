@@ -25,14 +25,14 @@ Definitions the statement names (without the `Lightlike.` prefix), by file:
 
 Lemmas about them, which a proof may use:
 
+* `divBilinAt_einstein_coord` (`Lightlike/Spacetime/DivergenceFree.lean`)
+* `einstein_divergence_free_proved` (`Lightlike/Spacetime/DivergenceFree.lean`)
 * `einsteinField_eq_bilOf` (`Lightlike/Spacetime/ChartTensor.lean`)
 * `covDerivBilinAt_einstein` (`Lightlike/Spacetime/ChartTensor.lean`)
-* `gamHat_coord` (`Lightlike/Spacetime/ChartAgreement.lean`)
-* `ricciAt_coord` (`Lightlike/Spacetime/ChartAgreement.lean`)
-* `leviCivita_unique` (`Lightlike/Spacetime/LeviCivita.lean`)
-* `riemann_coord_comp` (`Lightlike/Spacetime/ChartAgreement.lean`)
-* `mvfderiv_gamHat_coord` (`Lightlike/Spacetime/ChartAgreement.lean`)
-* `koszul_of_isLeviCivita` (`Lightlike/Spacetime/LeviCivita.lean`)
+* `covDerivBilinAt_einstein_value` (`Lightlike/Spacetime/DivergenceFree.lean`)
+* `covDerivBilinAt_einstein_add_mid` (`Lightlike/Spacetime/DivergenceFree.lean`)
+* `covDerivBilinAt_einstein_add_left` (`Lightlike/Spacetime/DivergenceFree.lean`)
+* `covDerivBilinAt_einstein_smul_mid` (`Lightlike/Spacetime/DivergenceFree.lean`)
 
 Everything they depend on, and the further lemmas about them, in one block:
 

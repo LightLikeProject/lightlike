@@ -4,7 +4,7 @@ import Lightlike.Regge.Conv3.RiemannSumCont
 import Lightlike.Regge.Conv3.ReggeConvergence
 
 /-!
-# The coefficient of the linearized Regge action of the torus converges to the Saint-Venant form
+# The sum `Q_n` of the linearized Regge action of the torus converges to the Saint-Venant form
 
 For a smooth symmetric field `h` of matrices on `ℝ³` invariant under integer translations, the coefficient
 `Q_n (h) = Σ_e (a_e / (2 ℓ_e)) δ_e'(0)` of `ε²/2` in the Regge action of the periodic Kuhn complex of mesh `1/n`
@@ -29,7 +29,7 @@ Saint-Venant density by the pointwise identity `sv_pointwise` (`sum_clsDens`), b
 torus; the `ε²` coefficient of the Regge action in the interpolated lengths, not in the geodesic lengths (the two
 have the same first variation at `ε = 0`; that equality is not formalized). The identification of
 `-¼ ⟨curl^t curl h, h⟩` with the Fierz–Pauli form is an integration by parts on the torus (`FierzPauli`), and that
-this form is the `η²` coefficient of `∫ (R/2) √det g` for `g = 1 + η h` is `EtaCoefficient`; neither is used here
+this form is the second `η`-derivative at `η = 0` (twice the `η²` coefficient) of `∫ (R/2) √det g` for `g = 1 + η h` is `EtaCoefficient`; neither is used here
 (numerically checked in `scripts/regge/regge3d_linearized_check.py`); the sign of the paper's deficit angle (a holonomy rotation angle)
 relative to `2π - Σ θ` is fixed by that check, not by the paper.
 -/
@@ -293,7 +293,7 @@ theorem continuous_clsDens {hf : (Fin 3 → ℝ) → Matrix (Fin 3) (Fin 3) ℝ}
 
 
 open Classical in
-/-- **The coefficient of the linearized Regge action of the periodic Kuhn complex converges to the
+/-- **The sum `Q_n` of the linearized Regge action of the periodic Kuhn complex converges to the
 Saint-Venant form.** For a smooth symmetric field `hf` of matrices on `ℝ³` invariant under integer translations,
 `Q_n (h) → ∫_{[0,1]³} -¼ Σ h_ij ε_ikl ε_jmn ∂_k ∂_m h_ln` as `n → ∞`. -/
 theorem Qn_converges {hf : (Fin 3 → ℝ) → Matrix (Fin 3) (Fin 3) ℝ}

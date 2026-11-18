@@ -10,10 +10,11 @@ The statement is `Lightlike.Causal.mem_chronFuture_of_ae_timelike`, at the end o
 its `sorry` by a proof and change nothing else in the file: the proof-task check rejects any other
 change (CONTRIBUTING.md).
 
-Hint. This is open. The library's `IsFutureTimelikeCurve` asks, besides a timelike velocity almost
-everywhere, for a margin on compact intervals (a difference of form from the textbooks, approved by
-the maintainers on 17 November 2026). The statement is that dropping the margin does not change
-`I⁺`.
+Hint. Open. The library's timelike curves carry a margin (the velocity stays in a closed cone
+strictly inside the timelike cone on compact intervals); the textbooks ask only for timelike
+velocity. The statement says the two definitions give the same chronological future. Approach:
+approximate the curve by piecewise-smooth timelike curves with margin in a convex chart
+neighbourhood.
 
 Partial results, as helper lemmas in separate pull requests, are welcome.
 
@@ -21,8 +22,26 @@ Partial results, as helper lemmas in separate pull requests, are welcome.
 
 Definitions the statement names (without the `Lightlike.` prefix), by file:
 
+* `Lightlike/Spacetime/Lorentzian.lean`: `LorentzianMetric`
+* `Lightlike/Spacetime/Causal/TimeOrientation.lean`: `Causal.TimeOrientation`,
+  `Causal.TimeOrientation.IsFutureTimelike`
 * `Lightlike/Spacetime/Causal/CausalCurve.lean`: `Causal.IsCurveWith`
 * `Lightlike/Spacetime/Causal/Relations.lean`: `Causal.chronFuture`
+
+Lemmas about them, which a proof may use:
+
+* `Causal.chron_trans` (`Lightlike/Spacetime/Causal/BasicRelations.lean`)
+* `Causal.chron_subset_causal` (`Lightlike/Spacetime/Causal/BasicRelations.lean`)
+* `Causal.exists_margin_of_contMDiffOn` (`Lightlike/Spacetime/Causal/CurveMargin.lean`)
+* `Causal.isFutureTimelikeCurve_of_margin` (`Lightlike/Spacetime/Causal/BasicRelations.lean`)
+* `Causal.isFutureTimelikeCurve_of_contMDiffOn` (`Lightlike/Spacetime/Causal/CurveMargin.lean`)
+* `Causal.TimeOrientation.isFutureTimelike_of_with` (`Lightlike/Spacetime/Causal/BasicRelations.lean`)
+* `Causal.TimeOrientation.isFutureCausal_of_isFutureTimelike` (`Lightlike/Spacetime/Causal/BasicRelations.lean`)
+* `Causal.causal_trans` (`Lightlike/Spacetime/Causal/BasicRelations.lean`)
+
+Everything they depend on, and the further lemmas about them, in one block:
+
+    scripts/context-pack Lightlike.Causal.mem_chronFuture_of_ae_timelike
 
 ## References
 
