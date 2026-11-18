@@ -246,6 +246,7 @@ import Lightlike.OperatorAlgebras.FockReduction
 import Lightlike.OperatorAlgebras.FockUnique
 import Lightlike.OperatorAlgebras.GeneratorTranslation
 import Lightlike.OperatorAlgebras.GramUnitary
+import Lightlike.OperatorAlgebras.ModularFinite
 import Lightlike.OperatorAlgebras.MomentumDeficiency
 import Lightlike.OperatorAlgebras.MomentumInterval
 import Lightlike.OperatorAlgebras.MomentumMollify
