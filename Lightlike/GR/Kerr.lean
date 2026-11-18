@@ -1,4 +1,5 @@
 import Lightlike.GR.Schwarzschild
+import Lightlike.Spacetime.RiemannSymmetry
 
 /-!
 # The Kerr metric in Boyer–Lindquist coordinates
@@ -133,5 +134,32 @@ theorem kerrMetric_mul_kerrInv {y : Fin 4 → ℝ} (hy : y ∈ kerrU M a) :
   fin_cases i <;> fin_cases j <;>
     simp [kerrMetric, kerrInv, Matrix.mul_apply, Fin.sum_univ_four, Matrix.one_apply] <;>
     field_simp <;> (try rw [hS2, hD2, hc2]) <;> ring
+
+/-! ## Coordinate derivatives of `Σ` and `Δ` -/
+
+lemma pd_kerrS (y : Fin 4 → ℝ) (k : Fin 4) :
+    pd k (kerrS a) y =
+      (if k = 1 then 2 * y 1 else 0) + (if k = 2 then -(2 * a ^ 2 * cos (y 2) * sin (y 2)) else 0) := by
+  have h1 : HasDerivAt (fun t : ℝ => t ^ 2) (2 * y 1) (y 1) := by
+    simpa using hasDerivAt_pow 2 (y 1)
+  have h2 : HasDerivAt (fun t : ℝ => a ^ 2 * cos t ^ 2) (-(2 * a ^ 2 * cos (y 2) * sin (y 2))) (y 2) := by
+    have := ((hasDerivAt_cos (y 2)).pow 2).const_mul (a ^ 2)
+    refine this.congr_deriv ?_
+    simp; ring
+  have c1 := pd_coord (n := 4) 1 k h1
+  have c2 := pd_coord (n := 4) 2 k h2
+  have d1 : DifferentiableAt ℝ (fun z : Fin 4 → ℝ => z 1 ^ 2) y := by fun_prop
+  have d2 : DifferentiableAt ℝ (fun z : Fin 4 → ℝ => a ^ 2 * cos (z 2) ^ 2) y := by fun_prop
+  have := pd_add (n := 4) d1 d2 k
+  unfold kerrS
+  rw [this, c1, c2]
+
+lemma pd_kerrD (y : Fin 4 → ℝ) (k : Fin 4) :
+    pd k (kerrD M a) y = if k = 1 then 2 * y 1 - 2 * M else 0 := by
+  have h1 : HasDerivAt (fun t : ℝ => t ^ 2 - 2 * M * t + a ^ 2) (2 * y 1 - 2 * M) (y 1) := by
+    have := (((hasDerivAt_pow 2 (y 1)).sub ((hasDerivAt_id' (y 1)).const_mul (2 * M))).add_const (a ^ 2))
+    refine this.congr_deriv ?_
+    simp
+  exact pd_coord (n := 4) 1 k h1
 
 end Lightlike
