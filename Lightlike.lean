@@ -742,6 +742,8 @@ import Lightlike.Spacetime.OpenCoordMetric
 import Lightlike.Spacetime.LeviCivitaSmooth
 import Lightlike.Spacetime.RicciContinuous
 import Lightlike.Spacetime.SchwarzschildManifold
+import Lightlike.Spacetime.CoordKilling
+import Lightlike.Spacetime.SchwarzschildKilling
 import Lightlike.Spacetime.ChartTensor
 import Lightlike.Spacetime.EinsteinEquations
 import Lightlike.Spacetime.NondegMetric

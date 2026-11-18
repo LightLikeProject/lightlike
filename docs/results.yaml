@@ -2338,3 +2338,18 @@
   review: kernel-checked
   note: "For a smooth metric on R^2 with nonzero determinant, the coordinate Ricci tensor is one half of the scalar curvature times the metric, so R^{ab} - R g^{ab}/2 = 0 and the first variation of the Einstein-Hilbert action vanishes for every perturbation of compact support (trust check of the Gauss-Bonnet theorem). Limits: coordinates on R^2; the integral invariance over a closed surface is not proved; comparison with the source is pending and the location is the chapter."
   since: unreleased
+
+- id: LL-XXXX-p
+  title: A coordinate field along which the metric components are constant is a Killing field; the time translation of exterior Schwarzschild is a Killing field
+  area: Spacetime
+  file: Lightlike/Spacetime/SchwarzschildKilling.lean
+  decls: [Lightlike.coordField_killing, Lightlike.schwarzschild_killing]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (5.40)", check: "independent"}
+      - {ref: carroll-1997, location: "eq. (7.41)", check: "Killing"}
+  review: kernel-checked
+  note: "For the Levi-Civita connection of a smooth metric of any signature on a manifold modelled on R^n, the coordinate field d_k of a chart is a Killing field (g(nabla_v X, w) + g(v, nabla_w X) = 0, equivalently L_X g = 0) at every point of the chart domain when the coordinate components of the metric do not depend on x^k (from g_{nu lambda} Gamma^nu_{mu k} + g_{mu nu} Gamma^nu_{lambda k} = d_k g_{mu lambda}). For exterior Schwarzschild (r > 2M, 0 < theta < pi) the components do not depend on t, so d_t is a Killing field. Compared with Carroll's lecture notes (gr-qc/9712019), p. 140 after eq. (5.40) (independence of the components of one coordinate gives a symmetry; for the metric a Killing field, (5.41)-(5.42)) and ch. 7, pp. 173-174, eq. (7.41) (the timelike Killing vector K = d_t of Schwarzschild): match. Limits: the rotation Killing fields of Schwarzschild are not covered."
+  since: unreleased
