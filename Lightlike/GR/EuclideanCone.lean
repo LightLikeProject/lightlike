@@ -64,6 +64,13 @@ period the horizon is a conical singularity. -/
 theorem cone_ratio_eq_two_pi_iff (hM : 0 < M) : β / (4 * M) = 2 * π ↔ β = 8 * π * M := by
   constructor <;> intro h <;> field_simp at * <;> linarith
 
+/-- **The conical deficit.** `2π - β/(4M) = 2π (1 - β/(8πM))`: the angle deficit of the cone, zero iff the
+period is `8πM` (the form stated in the plan row SC3, `docs/tasks/milestones.md`). -/
+theorem cone_deficit (hM : 0 < M) : 2 * π - β / (4 * M) = 2 * π * (1 - β / (8 * π * M)) := by
+  have := Real.pi_pos
+  field_simp
+  ring
+
 /-- The Hawking temperature `1/β` at the smooth period `β = 8πM`. -/
 def hawkingTemperature : ℝ := 1 / (8 * π * M)
 
