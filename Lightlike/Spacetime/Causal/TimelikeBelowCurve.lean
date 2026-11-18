@@ -43,7 +43,7 @@ theorem IsCurveWith.reflect_open {P : ∀ x : M, TangentSpace I x → Prop} {γ 
   intro a b hab hsub
   have hsub' : Icc (-b) (-a) ⊆ s := fun x hx => by
     simpa using hsub (show -x ∈ Icc a b from ⟨by linarith [hx.2], by linarith [hx.1]⟩)
-  have := IsCurveWith.reflect (IsCurveWith.restrict h hsub' (by linarith)) (by linarith : -b < -a)
+  have := IsCurveWith.reflectNeg (IsCurveWith.restrict h hsub' (by linarith)) (by linarith : -b < -a)
   simpa using this
 
 /-- **Reflection of a future timelike curve for the reversed orientation.** -/
@@ -55,7 +55,7 @@ theorem IsFutureTimelikeCurve.reflect_open {γ : ℝ → M} {s : Set ℝ} (hso :
   have hsub' : Icc (-b) (-a) ⊆ s := fun x hx => by
     simpa using hsub (show -x ∈ Icc a b from ⟨by linarith [hx.2], by linarith [hx.1]⟩)
   obtain ⟨ε, hε, hm⟩ := h.2 (-b) (-a) (by linarith) hsub'
-  have hr := (IsCurveWith.reflect hm (by linarith : -b < -a)).mono_velocity fun x v hv =>
+  have hr := (IsCurveWith.reflectNeg hm (by linarith : -b < -a)).mono_velocity fun x v hv =>
     (T.isFutureTimelikeWith_reverse_neg v).1 hv
   have : IsCurveWith (I := I) (fun _ v ↦ T.IsFutureTimelikeWith ε v) (fun t => γ (-t)) (Icc a b) := by
     simpa using hr
