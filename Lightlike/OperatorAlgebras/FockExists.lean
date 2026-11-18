@@ -149,4 +149,70 @@ lemma fockGram_shift (g f f' : h) :
   simp only [map_mul, Complex.conj_I, Complex.conj_ofReal, map_div₀, map_one, map_ofNat]
   ring
 
+/-- The linear map `c ↦ ∑ c f • k_f` from finitely supported coefficients to the Fock space. -/
+noncomputable def fockPhi (h : Type u) [NormedAddCommGroup h] [InnerProductSpace ℂ h] :
+    (h →₀ ℂ) →ₗ[ℂ] FockSpace h := Finsupp.linearCombination ℂ kf
+
+lemma fockPhi_single (f : h) : fockPhi h (Finsupp.single f 1) = kf f := by
+  simp [fockPhi]
+
+/-- The kernel vectors span a dense subspace of the Fock space. -/
+lemma dense_range_fockPhi : Dense ((LinearMap.range (fockPhi h) : Submodule ℂ (FockSpace h)) : Set (FockSpace h)) := by
+  have hd := RKHS.kerFun_dense (FockSpace h)
+  rw [Submodule.dense_iff_topologicalClosure_eq_top]
+  refine eq_top_iff.2 (hd ▸ Submodule.topologicalClosure_mono ?_)
+  refine Submodule.span_le.2 ?_
+  rintro _ ⟨x, v, rfl⟩
+  have : RKHS.kerFun (FockSpace h) x v = v • kf x := by
+    rw [kf, ← map_smul]; simp
+  rw [this]
+  exact Submodule.smul_mem _ _ ⟨Finsupp.single x 1, fockPhi_single x⟩
+
+/-- The Weyl shift on finitely supported coefficients: `e_f ↦ ω(g, f) e_{f+g}`. -/
+noncomputable def fockTau (g : h) : (h →₀ ℂ) →ₗ[ℂ] (h →₀ ℂ) :=
+  Finsupp.linearCombination ℂ fun f => fockPhase g f • Finsupp.single (f + g) (1 : ℂ)
+
+lemma fockTau_single (g f : h) :
+    fockTau g (Finsupp.single f 1) = fockPhase g f • Finsupp.single (f + g) (1 : ℂ) := by
+  simp [fockTau]
+
+lemma fockPhi_tau_single (g f : h) :
+    fockPhi h (fockTau g (Finsupp.single f 1)) = fockPhase g f • kf (f + g) := by
+  rw [fockTau_single, map_smul, fockPhi_single]
+
+lemma fockPhase_ne_zero (g f : h) : fockPhase g f ≠ 0 := Complex.exp_ne_zero _
+
+lemma dense_range_fockPhi_tau (g : h) :
+    Dense ((LinearMap.range ((fockPhi h).comp (fockTau g)) : Submodule ℂ (FockSpace h)) : Set (FockSpace h)) := by
+  refine (dense_range_fockPhi (h := h)).mono ?_
+  have hsub : LinearMap.range (fockPhi h) ≤ LinearMap.range ((fockPhi h).comp (fockTau g)) := by
+    have hr : LinearMap.range (fockPhi h) = Submodule.span ℂ (Set.range kf) :=
+      Finsupp.range_linearCombination _
+    rw [hr, Submodule.span_le]
+    rintro _ ⟨x, rfl⟩
+    refine ⟨(fockPhase g (x - g))⁻¹ • Finsupp.single (x - g) (1 : ℂ), ?_⟩
+    simp only [LinearMap.comp_apply, map_smul, fockTau_single, fockPhi_single, smul_smul, sub_add_cancel]
+    rw [inv_mul_cancel₀ (fockPhase_ne_zero g _), one_smul]
+  exact fun x hx => hsub hx
+
+/-- **The Weyl unitary** `W g`: the unitary of the Fock space with `W g k_f = ω(g, f) k_{f+g}`. -/
+theorem exists_fockWeyl (g : h) :
+    ∃ U : FockSpace h ≃ₗᵢ[ℂ] FockSpace h, ∀ c, U (fockPhi h c) = fockPhi h (fockTau g c) := by
+  refine exists_unitary_of_gram_eq (Φ₁ := fockPhi h) (Φ₂ := (fockPhi h).comp (fockTau g)) ?_
+    dense_range_fockPhi (dense_range_fockPhi_tau g)
+  intro f f'
+  simp only [LinearMap.comp_apply, fockPhi_single, fockPhi_tau_single, inner_smul_left,
+    inner_smul_right, inner_kf]
+  rw [← fockGram_shift g f f']
+  ring
+
+/-- The Weyl unitary of `g` (a choice). -/
+noncomputable def fockW (g : h) : FockSpace h ≃ₗᵢ[ℂ] FockSpace h := Classical.choose (exists_fockWeyl g)
+
+lemma fockW_phi (g : h) (c : h →₀ ℂ) : fockW g (fockPhi h c) = fockPhi h (fockTau g c) :=
+  Classical.choose_spec (exists_fockWeyl g) c
+
+lemma fockW_kf (g f : h) : fockW g (kf f) = fockPhase g f • kf (f + g) := by
+  rw [← fockPhi_single, fockW_phi, fockPhi_tau_single]
+
 end Lightlike.OperatorAlgebras
