@@ -665,6 +665,8 @@ import Lightlike.Spacetime.CausalLadder.StrongCausality
 import Lightlike.Spacetime.CausalLadder.TestsStrong
 import Lightlike.Spacetime.CausalLadder.CausalOpen
 import Lightlike.Spacetime.CausalLadder.CausalPastLimsup
+import Lightlike.Spacetime.CausalLadder.CausalPastLiminf
+import Lightlike.Spacetime.CausalLadder.TimeFunctionAssembly
 import Lightlike.Spacetime.CausalLadder.ChartLine
 import Lightlike.Spacetime.CausalLadder.GlobHypSimple
 import Lightlike.Spacetime.Causal.BasicRelations
