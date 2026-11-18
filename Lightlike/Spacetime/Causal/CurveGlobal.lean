@@ -77,6 +77,40 @@ theorem IsCurveWith.of_Icc {γ : ℝ → M} {s : Set ℝ} (hso : IsOpen s) (hsc 
       (fun t => MDifferentiableWithinAt 𝓘(ℝ, ℝ) I γ s t ∧ P (γ t) (velocity I γ s t))).2 hae
     exact ae_restrict_of_ae_restrict_of_subset hcov this
 
+/-- A condition on the velocity passes to a curve that agrees with the given one along the interval
+(within the interval, at a point of it). -/
+theorem velocity_congr_within {γ G : ℝ → M} {s : Set ℝ} {t : ℝ} (ht : t ∈ s)
+    (hL : G =ᶠ[𝓝[s] t] γ) (hd : MDifferentiableWithinAt 𝓘(ℝ, ℝ) I γ s t)
+    (hP : P (γ t) (velocity I γ s t)) :
+    MDifferentiableWithinAt 𝓘(ℝ, ℝ) I G s t ∧ P (G t) (velocity I G s t) := by
+  have hx : G t = γ t := hL.self_of_nhdsWithin ht
+  refine ⟨hd.congr_of_eventuallyEq hL hx, ?_⟩
+  have h1 := Filter.EventuallyEq.mfderivWithin_eq (I := 𝓘(ℝ, ℝ)) (I' := I) hL hx
+  have h2 : velocity I G s t = tangentSpaceCast (I := I) (γ t) (G t) (velocity I γ s t) := by
+    unfold velocity
+    rw [h1]
+    rfl
+  rw [h2]
+  exact velocity_cast hx.symm _ hP
+
+/-- **A curve that equals a curve with velocity in `P` on `[c, d]` is one too.** -/
+theorem IsCurveWith.congr_Icc {γ γ' : ℝ → M} {c d : ℝ} (h : IsCurveWith (I := I) P γ (Icc c d))
+    (he : ∀ t ∈ Icc c d, γ' t = γ t) : IsCurveWith (I := I) P γ' (Icc c d) := by
+  refine ⟨ordConnected_Icc, ?_, ?_⟩
+  · intro t ht
+    obtain ⟨K, U, hU, hm, hl⟩ := h.lipschitz t ht
+    have hγt : γ' t = γ t := he t ht
+    refine ⟨K, U ∩ Icc c d, inter_mem hU self_mem_nhdsWithin, ?_, ?_⟩
+    · intro r hr
+      rw [hγt, he r hr.2]
+      exact hm hr.1
+    · rw [hγt]
+      refine LipschitzOnWith.of_dist_le_mul fun x hx y hy => ?_
+      simp only [Function.comp, he x hx.2, he y hy.2]
+      exact hl.dist_le_mul x hx.1 y hy.1
+  · filter_upwards [h.ae_velocity, ae_restrict_mem measurableSet_Icc] with t ⟨hd, hP⟩ ht
+    exact velocity_congr_within ht (eventually_nhdsWithin_of_forall fun r hr => he r hr) hd hP
+
 variable [IsManifold I ∞ M] {n : ℕ} {g : LorentzianMetric I M n} (T : TimeOrientation g)
 
 /-- **A timelike curve on an open interval, from its compact subintervals.** -/
@@ -86,6 +120,14 @@ theorem isFutureTimelikeCurve_of_Icc {γ : ℝ → M} {s : Set ℝ} (hso : IsOpe
     IsFutureTimelikeCurve T γ s :=
   ⟨IsCurveWith.of_Icc hso hsc fun a b hab hsub => (h a b hab hsub).1,
     fun a b hab hsub => (h a b hab hsub).2 a b hab subset_rfl⟩
+
+/-- **A curve that equals a timelike curve on `[c, d]` is a timelike curve there.** -/
+theorem IsFutureTimelikeCurve.congr_Icc {γ γ' : ℝ → M} {c d : ℝ}
+    (h : IsFutureTimelikeCurve T γ (Icc c d)) (he : ∀ t ∈ Icc c d, γ' t = γ t) :
+    IsFutureTimelikeCurve T γ' (Icc c d) := by
+  refine ⟨h.1.congr_Icc he, fun a b hab hsub => ?_⟩
+  obtain ⟨ε, hε, hm⟩ := h.2 a b hab hsub
+  exact ⟨ε, hε, hm.congr_Icc fun t ht => he t (hsub ht)⟩
 
 end Causal
 

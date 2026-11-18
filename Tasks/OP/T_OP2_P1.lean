@@ -1,4 +1,4 @@
-import Lightlike.OperatorAlgebras.Weyl
+import Lightlike.OperatorAlgebras.FockExists
 
 /-!
 # Task T-OP2-P1
@@ -56,6 +56,6 @@ expectation `exp (-‖f‖² / 4)`, not built on the symmetric Fock space. -/
 theorem fockRep_exists (h : Type u) [NormedAddCommGroup h] [InnerProductSpace ℂ h] :
     ∃ (K : Type u) (_ : NormedAddCommGroup K) (_ : InnerProductSpace ℂ K) (_ : CompleteSpace K),
       Nonempty (FockRep h K) := by
-  sorry
+  exact ⟨FockSpace h, inferInstance, inferInstance, inferInstance, ⟨fockRepOf h⟩⟩
 
 end Lightlike.OperatorAlgebras

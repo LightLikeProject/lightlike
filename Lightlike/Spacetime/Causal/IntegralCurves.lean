@@ -165,6 +165,28 @@ theorem hasMFDerivAt_glue {Y : (x : M) → TangentSpace I x}
     exact hL.union hR
   exact hasMFDerivAt_of_chart hGc hdG
 
+/-- **An integral curve of a continuous field is `C¹`.** -/
+theorem contMDiffAt_of_integralCurve {Y : (x : M) → TangentSpace I x}
+    (hYc : Continuous fun x => (⟨x, Y x⟩ : TangentBundle I M)) {c : ℝ → M} {t : ℝ}
+    (h : ∀ᶠ s in 𝓝 t, HasMFDerivAt 𝓘(ℝ, ℝ) I c s ((1 : ℝ →L[ℝ] ℝ).smulRight (Y (c s)))) :
+    ContMDiffAt 𝓘(ℝ, ℝ) I 1 c t := by
+  have hct : ContinuousAt c t := h.self_of_nhds.continuousAt
+  have hsrc : ∀ᶠ s in 𝓝 t, c s ∈ (chartAt H (c t)).source :=
+    hct.eventually ((chartAt H (c t)).open_source.mem_nhds (mem_chart_source H (c t)))
+  obtain ⟨v, hv, hvo, htv⟩ := mem_nhds_iff.1 (h.and hsrc)
+  refine contMDiffAt_iff_target.2 ⟨hct, ?_⟩
+  refine contMDiffAt_iff_contDiffAt.2 ?_
+  have hder : ∀ r ∈ v, HasDerivAt (extChartAt I (c t) ∘ c) (chartVel (c t) Y (c r)) r := fun r hr =>
+    hasDerivAt_chart_comp (hv hr).1 (by rw [extChartAt_source]; exact (hv hr).2)
+  have hcv : ContinuousOn c v := fun r hr => (hv hr).1.continuousAt.continuousWithinAt
+  have hcd : ContDiffOn ℝ 1 (extChartAt I (c t) ∘ c) v := by
+    rw [show (1 : WithTop ℕ∞) = (0 : ℕ) + 1 from rfl, contDiffOn_succ_iff_deriv_of_isOpen hvo]
+    refine ⟨fun r hr => (hder r hr).differentiableAt.differentiableWithinAt, by simp, ?_⟩
+    rw [show ((0 : ℕ) : WithTop ℕ∞) = 0 from rfl, contDiffOn_zero]
+    refine ((continuousOn_chartVel hYc).comp hcv fun r hr => (hv hr).2).congr fun r hr => ?_
+    exact (hder r hr).deriv
+  exact hcd.contDiffAt (hvo.mem_nhds htv)
+
 section Maximal
 
 variable [T2Space M] [BoundarylessManifold I M] [CompleteSpace E]
@@ -402,6 +424,31 @@ theorem curveMax_not_hasFutureEndpoint (hY : CMDiff 1 (fun x ↦ (⟨x, Y x⟩ :
       exact ⟨c0, hc0.2, fun t ht => hc t ⟨hall t (hc0.2.trans ht), hc0.2.trans ht⟩ ht⟩
 
 end Maximal
+
+variable {n : ℕ} {g : LorentzianMetric I M n} (T : TimeOrientation g)
+
+/-- **An integral curve of a field of future-directed timelike vectors is a future-directed
+timelike curve** (on an open interval). -/
+theorem isFutureTimelikeCurve_of_integralCurve {Y : (x : M) → TangentSpace I x}
+    (hYc : Continuous fun x => (⟨x, Y x⟩ : TangentBundle I M))
+    (hYT : ∀ x, T.IsFutureTimelike (Y x)) {c : ℝ → M} {D : Set ℝ} (hD : IsOpen D)
+    (hDc : D.OrdConnected) (hint : IsMIntegralCurveOn c Y D) : IsFutureTimelikeCurve T c D := by
+  refine isFutureTimelikeCurve_of_Icc T hD hDc fun a b hab hsub => ?_
+  have hat : ∀ t ∈ Icc a b, HasMFDerivAt 𝓘(ℝ, ℝ) I c t
+      ((1 : ℝ →L[ℝ] ℝ).smulRight (Y (c t))) := fun t ht =>
+    (hint t (hsub ht)).hasMFDerivAt (hD.mem_nhds (hsub ht))
+  refine isFutureTimelikeCurve_of_contMDiffOn T hab (fun t ht => ?_) (fun t ht => ?_)
+  · exact (contMDiffAt_of_integralCurve hYc
+      (Filter.mem_of_superset (hD.mem_nhds (hsub ht)) fun r hr =>
+        (hint r hr).hasMFDerivAt (hD.mem_nhds hr))).contMDiffWithinAt
+  · have hu : UniqueMDiffWithinAt 𝓘(ℝ, ℝ) (Icc a b) t :=
+      (uniqueDiffOn_Icc hab t ht).uniqueMDiffWithinAt
+    have : velocity I c (Icc a b) t = Y (c t) := by
+      unfold velocity
+      rw [(hat t ht).hasMFDerivWithinAt.mfderivWithin hu]
+      exact one_smul ℝ (Y (c t))
+    rw [this]
+    exact hYT _
 
 end Causal
 
