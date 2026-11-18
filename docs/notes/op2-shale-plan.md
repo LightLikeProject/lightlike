@@ -79,3 +79,13 @@ the compression, and `V_F` is `J`-invariant).
 `det S_F ≥ 1`, but `det S_F ≥ 1` alone does NOT imply `det ((1+S_F)/2) ≥ 1 + tr (S_F-1)/4`: with eigenvalues
 `(0.3, 0.3, 100)` the left side is `21.3` and the right side `25.4`. So the proof must use the operator inequality, not
 the spectrum alone. No proof path yet.
+
+### Route through spectral subspaces of `P = Tᵀ T` (13:50)
+
+For `P` positive symplectic, the spectrum is closed under `λ ↦ 1/λ` and `J` maps the `λ`-eigenspace onto the `1/λ` one.
+On a `J`-invariant spectral subspace each pair contributes `(1+λ)/2 · (1+1/λ)/2 = 1 + t/4`, `t = λ + 1/λ - 2 ≥ 0`, so
+`det ((1+P_F)/2) = ∏ (1 + tᵢ/4) ≥ 1 + tr (P_F - 1)/4` exactly (MEASURED by algebra, no operator inequality). The cost:
+the subspaces are spectral, not spanned by an arbitrary Hilbert basis, so (a) the continuous spectrum needs an
+interval approximation (`[r, r+δ]` paired with `[1/(r+δ), 1/r]`), and (b) the basis-independence of `∑ ⟨e, A e⟩` for
+positive `A` is needed to pass from the spectral sum to `IsHilbertSchmidt` (every basis). Neither is in Mathlib as
+far as checked. Open: which of (a)/(b) is the smaller piece.
