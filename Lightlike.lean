@@ -724,6 +724,7 @@ import Lightlike.Spacetime.ChartChange
 import Lightlike.Spacetime.BianchiSecond
 import Lightlike.Spacetime.ContractedBianchi
 import Lightlike.Spacetime.DivergenceFree
+import Lightlike.Spacetime.Kretschmann
 import Lightlike.Spacetime.OpenCoordMetric
 import Lightlike.Spacetime.LeviCivitaSmooth
 import Lightlike.Spacetime.RicciContinuous
