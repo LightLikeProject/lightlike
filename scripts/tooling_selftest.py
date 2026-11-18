@@ -575,6 +575,10 @@ expect("tasks check: an open proof task whose statement the library proves is a 
        list(_dup_open) == ["T-X1-P1"])
 expect("tasks check: once the task's own sorry is filled it is done, not a duplicate",
        _dup_done == {})
+_nofile = tk.library_duplicates([{"id": "T-X1-P2", "kind": "proof", "decl": "Lightlike.Tasks.t"},
+                                 {"id": "T-X1-P3", "kind": "proof", "file": "", "decl": "Lightlike.Tasks.t"}],
+                                pathlib.Path("/nonexistent"))
+expect("tasks check: a proof task without a file field is skipped, not a KeyError", _nofile == {})
 
 import doc_refs_check as drc  # noqa: E402
 with tempfile.TemporaryDirectory() as d:
