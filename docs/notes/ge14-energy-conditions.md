@@ -65,3 +65,20 @@ Physlib has `Physlib/Cosmology/FLRW/EnergyConditions.lean`: `CosmicFluid.NullEne
 `DominantEnergyCondition`, defined by their effective forms in `ρ` and `p` with `c` explicit (no tensor). Ours are the tensor conditions; the effective forms
 for a perfect fluid are theorems here, and `EnergyConditionsPhyslib.lean` proves that they are exactly Physlib's conditions at `c = 1`
 (`fluid_*_iff_physlib`). No duplicated definition: Physlib's conditions are the right-hand sides of our theorems.
+
+## Stage 3: the electromagnetic field, and the Klein–Gordon violation sourced (`EnergyConditionsEM.lean`, 19 November 2026 ~00:40)
+Source read: E.-A. Kontou and K. Sanders, *Energy conditions in general relativity and quantum field theory*, arXiv 2003.01815, §2.3
+"Examples and counter-examples of pointwise energy conditions", pp. 13-15, and Table 2 (p. 15).
+* Maxwell field: stress tensor (15) `T_ab = F_ac F_b^c − ¼ g_ab F^cd F_cd` (`m = 0`): our `emT` exactly. Energy density in an orthonormal
+  frame (36): `T(t, t) = ¼ Σ_μν (F_μν)²` (with the `F_0i` terms counted twice): our `emT_frame_00`. "Thus the WEC holds ... one may show
+  that the DEC also holds"; trace (37) zero for `n = 4`; (38) and "the SEC is satisfied for n > 2". Table 2: Maxwell/Proca: NEC, WEC, DEC,
+  SEC all hold. Ours, all in every dimension: `em_weakEC`, `em_dominantEC` (the Poynting bound from `|A E|² ≤ ½|A|²|E|²` for the
+  antisymmetric spatial part, `antisymm_op_bound`), `em_strongEC_dim` (`n ≥ 3`, with `tr_g T = (1 − n/4) F²`: KS (37)-(38)), and
+  `em_strongEC_of_eq` for the four-dimensional `StrongEC`; `em_nullEC` (stage 1). No difference.
+* The two stage-1 open comparisons are now closed:
+  - EM weak and dominant conditions: stated by Kontou–Sanders (above), now proved.
+  - Klein–Gordon with negative potential: (35) `T_ab = ∇_aφ ∇_bφ − ½ g_ab((∇φ)² + V(φ))`, "When V ≤ 0, on the other hand, the SEC holds,
+    but the WEC can be violated when V ≢ 0"; Table 2: modified Klein–Gordon (ξ = 0, V ≤ 0): WEC and DEC fail. Our
+    `scalar_negative_potential_violates_weak` (a point with `dφ = 0` and `V < 0`) is an instance. **Representation**: Kontou–Sanders' potential
+    enters as `½ V` (their (35)), ours as `V` (`scalarT = dφ ⊗ dφ − (½ |dφ|² + V) g`, Carroll (1.112) with `V = ½ m² φ²`): `V_ours = ½ V_KS`,
+    same sign, so the statement is the same.

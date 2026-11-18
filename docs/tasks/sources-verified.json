@@ -2870,6 +2870,21 @@
   "citations": 522,
   "citations_via": "OpenAlex"
  },
+ "kontou-sanders-2020": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Energy conditions in general relativity and quantum field theory",
+  "locations": {
+   "§2.3": {
+    "verified": true,
+    "snippet": "2.3 Examples and counter-examples of pointwise energy conditions Here we discuss matter models that obey or violate the main pointwise energy conditions introduced in Section 2.1. A summary of examples and counter-exa",
+    "why": null
+   }
+  },
+  "citations": 247,
+  "citations_via": "Semantic Scholar"
+ },
  "krajewski-1998": {
   "checked": "2026-11-08",
   "exists": true,

@@ -2249,3 +2249,17 @@
   review: kernel-checked
   note: "For a Lorentzian metric g on a four-manifold, a connection cov and a field T of bilinear forms with G = kappa T (the Einstein equations with Lambda = 0, kappa > 0): T satisfies the null condition everywhere iff Ric(k,k) >= 0 for every null k; the weak condition iff G(xi,xi) >= 0 for every timelike xi; the strong condition iff Ric(xi,xi) >= 0 for every timelike xi (via the trace R = -kappa tr_g T); the dominant condition iff G(xi,xi) >= 0 and the vector G^a_n xi^n is causal for timelike xi, and G(xi,eta) >= 0 for co-oriented timelike xi, eta. A cosmological constant moves into the source (einsteinEq_iff_absorb). Also on the manifold: the perfect-fluid field with a unit timelike velocity field satisfies the four conditions iff the effective forms hold at every point, dust with rho >= 0 satisfies all four, a constant Klein-Gordon field with negative potential violates the weak one, the electromagnetic field satisfies the null one. Compared with E. Curiel, A Primer on Energy Conditions (arXiv 1405.0403), section 2, p. 5 ('the physical formulation is logically equivalent to the geometric formulation if the Einstein field equation is assumed to hold') and the geometric and physical forms of the table of section 2.1, p. 6. Non-vacuity: Minkowski space with T = 0. Limits: the fields need not be smooth; the geometric forms on a boundaryless manifold modelled on a finite-dimensional space. See docs/notes/ge14-energy-conditions.md."
   since: unreleased
+
+- id: LL-XXXX-o
+  title: The electromagnetic field satisfies the null, weak, strong and dominant energy conditions
+  area: Spacetime
+  file: Lightlike/Spacetime/EnergyConditionsEM.lean
+  decls: [Lightlike.em_weakEC, Lightlike.em_dominantEC, Lightlike.em_strongEC_dim, Lightlike.em_strongEC_of_eq, Lightlike.em_nullEC]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: kontou-sanders-2020, location: "§2.3", check: "Maxwell"}
+  review: kernel-checked
+  note: "For an antisymmetric field strength F on a Lorentzian vector space (signature -+...+) and its stress-energy T_ab = F_ac F_b^c - (1/4) F_cd F^cd g_ab: T(v, v) >= 0 for every timelike v (in a Lorentz frame with e_0 = v/|v| the energy density is (1/2) sum_i F_0i^2 + (1/4) sum_ij F_ij^2); the Poynting bound sum_i T(e_0, e_i)^2 <= T(e_0, e_0)^2 (from |A E|^2 <= |A|^2 |E|^2 / 2 for the antisymmetric spatial part A) gives the dominant condition (T(xi, xi) >= 0 and the vector T^a_n xi^n causal for timelike xi, T(xi, eta) >= 0 for co-oriented timelike xi, eta); the strong condition (T - tr_g T/(n - 2) g)(v, v) >= 0 holds in every dimension n >= 3 (in four dimensions T is traceless and the four-dimensional StrongEC is the weak one); all in any dimension; the null condition is em_nullEC. Every unit timelike vector is the time vector of a Lorentz frame (exists_frame_of_timelike, a boost). Compared with E.-A. Kontou and K. Sanders, Energy conditions in general relativity and quantum field theory (arXiv 2003.01815), section 2.3, pp. 13-15: the stress tensor (15) with m = 0 is ours (no Gaussian factor), the energy density (36), the trace (37)-(38), and Table 2: Maxwell satisfies NEC, WEC, DEC and SEC. Limits: pointwise on a vector space. See docs/notes/ge14-energy-conditions.md."
+  since: unreleased
