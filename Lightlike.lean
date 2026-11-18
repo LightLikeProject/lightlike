@@ -137,6 +137,7 @@ import Lightlike.Canonical.CurvatureCovariance
 import Lightlike.Canonical.CurvatureJet
 import Lightlike.Canonical.DensityCovariance
 import Lightlike.Canonical.DensityDeriv
+import Lightlike.Canonical.FirstOrderPotential
 import Lightlike.Canonical.FlowPullback
 import Lightlike.Canonical.HamiltonianBracket
 import Lightlike.Canonical.HamiltonianSmooth
@@ -621,6 +622,8 @@ import Lightlike.Spacetime.Causal.CurveOps
 import Lightlike.Spacetime.Causal.ConeConvex
 import Lightlike.Spacetime.Causal.DomainOfDependence
 import Lightlike.Spacetime.Causal.Ladder
+import Lightlike.Spacetime.Causal.MinkowskiCauchy
+import Lightlike.Spacetime.Causal.PushUp
 import Lightlike.Spacetime.Causal.MinkowskiCausal
 import Lightlike.Spacetime.Causal.MinkowskiFuture
 import Lightlike.Spacetime.Causal.MinkowskiGH
@@ -633,6 +636,9 @@ import Lightlike.Spacetime.ChartChange
 import Lightlike.Spacetime.BianchiSecond
 import Lightlike.Spacetime.ContractedBianchi
 import Lightlike.Spacetime.DivergenceFree
+import Lightlike.Spacetime.OpenCoordMetric
+import Lightlike.Spacetime.LeviCivitaSmooth
+import Lightlike.Spacetime.SchwarzschildManifold
 import Lightlike.Spacetime.ChartTensor
 import Lightlike.Spacetime.ChartAgreement
 import Lightlike.Spacetime.ChartConnection
@@ -828,6 +834,10 @@ import Lightlike.DynamicalTriangulations.Tests
 import Lightlike.DynamicalTriangulations.Tests3
 import Lightlike.GFT.Bubble
 import Lightlike.GFT.ColoredGraph
+import Lightlike.GFT.Dual
+import Lightlike.GFT.DualEuler
+import Lightlike.GFT.DualLink
+import Lightlike.GFT.PseudoComplex
 import Lightlike.Gauge.Constraints
 import Lightlike.Gauge.ConstraintsAPI
 import Lightlike.Gauge.DiracAlgebra

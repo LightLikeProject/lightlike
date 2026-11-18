@@ -52,6 +52,82 @@ references:
     cite: "H. Ringstrom, The Bianchi IX attractor, Ann. Henri Poincare (2001)"
     title: "The Bianchi IX attractor"
     arxiv: gr-qc/0006035
+  copeland-2006:
+    cite: "E. J. Copeland, M. Sami, S. Tsujikawa, Dynamics of dark energy, Int. J. Mod. Phys. D 15 (2006) 1753"
+    title: "Dynamics of dark energy"
+    arxiv: hep-th/0603057
+  obied-2018:
+    cite: "G. Obied, H. Ooguri, L. Spodyneiko, C. Vafa, De Sitter Space and the Swampland (2018)"
+    title: "De Sitter Space and the Swampland"
+    arxiv: "1806.08362"
+  ooguri-vafa-2006:
+    cite: "H. Ooguri, C. Vafa, On the Geometry of the String Landscape and the Swampland, Nucl. Phys. B 766 (2007) 21"
+    title: "On the Geometry of the String Landscape and the Swampland"
+    arxiv: hep-th/0605264
+  palti-2019:
+    cite: "E. Palti, The Swampland: Introduction and Review, Fortsch. Phys. 67 (2019) 1900037"
+    title: "The Swampland: Introduction and Review"
+    arxiv: "1903.06239"
+  sotiriou-faraoni-2010:
+    cite: "T. P. Sotiriou, V. Faraoni, f(R) theories of gravity, Rev. Mod. Phys. 82 (2010) 451"
+    title: "f(R) theories of gravity"
+    arxiv: "0805.1726"
+  defelice-tsujikawa-2010:
+    cite: "A. De Felice, S. Tsujikawa, f(R) theories, Living Rev. Relativ. 13 (2010) 3"
+    title: "f(R) theories"
+    arxiv: "1002.4928"
+  overduin-wesson-1997:
+    cite: "J. M. Overduin, P. S. Wesson, Kaluza-Klein gravity, Phys. Rep. 283 (1997) 303"
+    title: "Kaluza-Klein gravity"
+    arxiv: gr-qc/9805018
+  weinberg-1989:
+    cite: "S. Weinberg, The cosmological constant problem, Rev. Mod. Phys. 61 (1989) 1"
+    title: "The cosmological constant problem"
+    doi: 10.1103/RevModPhys.61.1
+  hindmarsh-kibble-1995:
+    cite: "M. B. Hindmarsh, T. W. B. Kibble, Cosmic strings, Rep. Prog. Phys. 58 (1995) 477"
+    title: "Cosmic strings"
+    arxiv: hep-ph/9411342
+  nielsen-olesen-1973:
+    cite: "H. B. Nielsen, P. Olesen, Vortex-line models for dual strings, Nucl. Phys. B 61 (1973) 45"
+    title: "Vortex-line models for dual strings"
+    doi: 10.1016/0550-3213(73)90350-7
+  kibble-1976:
+    cite: "T. W. B. Kibble, Topology of cosmic domains and strings, J. Phys. A 9 (1976) 1387"
+    title: "Topology of cosmic domains and strings"
+    doi: 10.1088/0305-4470/9/8/029
+  taubes-1980:
+    cite: "C. H. Taubes, Arbitrary N-vortex solutions to the first order Ginzburg-Landau equations, Commun. Math. Phys. 72 (1980) 277"
+    title: "Arbitrary N-vortex solutions to the first order Ginzburg-Landau equations"
+    doi: 10.1007/BF01197552
+  goto-1971:
+    cite: "T. Goto, Relativistic quantum mechanics of one-dimensional mechanical continuum and subsidiary condition of dual resonance model, Prog. Theor. Phys. 46 (1971) 1560"
+    title: "Relativistic quantum mechanics of one-dimensional mechanical continuum and subsidiary condition of dual resonance model"
+    doi: 10.1143/PTP.46.1560
+  kibble-turok-1982:
+    cite: "T. W. B. Kibble, N. Turok, Self-intersection of cosmic strings, Phys. Lett. B 116 (1982) 141"
+    title: "Self-intersection of cosmic strings"
+    doi: 10.1016/0370-2693(82)90993-5
+  vilenkin-1981:
+    cite: "A. Vilenkin, Gravitational field of vacuum domain walls and strings, Phys. Rev. D 23 (1981) 852"
+    title: "Gravitational field of vacuum domain walls and strings"
+    doi: 10.1103/PhysRevD.23.852
+  hiscock-1985:
+    cite: "W. A. Hiscock, Exact gravitational field of a string, Phys. Rev. D 31 (1985) 3288"
+    title: "Exact gravitational field of a string"
+    doi: 10.1103/PhysRevD.31.3288
+  garfinkle-1985:
+    cite: "D. Garfinkle, General relativistic strings, Phys. Rev. D 32 (1985) 1323"
+    title: "General relativistic strings"
+    doi: 10.1103/PhysRevD.32.1323
+  padilla-2015:
+    cite: "A. Padilla, Lectures on the Cosmological Constant Problem (2015)"
+    title: "Lectures on the Cosmological Constant Problem"
+    arxiv: "1502.05296"
+  tong-2005:
+    cite: "D. Tong, TASI Lectures on Solitons (2005)"
+    title: "TASI Lectures on Solitons"
+    arxiv: hep-th/0509216
   barrett-westbury-1996:
     cite: "J. W. Barrett and B. W. Westbury, Invariants of piecewise-linear 3-manifolds, Trans. Amer. Math. Soc. 348 (1996) 3997-4022"
     title: "Invariants of Piecewise-Linear 3-Manifolds"
@@ -926,6 +1002,14 @@ references:
     cite: "A. Perelomov, Generalized Coherent States and Their Applications, Springer (1986)"
     title: "Generalized Coherent States and Their Applications"
     doi: 10.1007/978-3-642-61629-7
+  perko-2001:
+    cite: "L. Perko, Differential Equations and Dynamical Systems, 3rd ed., Springer (2001)"
+    title: "Differential Equations and Dynamical Systems"
+    doi: 10.1007/978-1-4613-0003-8
+  hartman-1964:
+    cite: "P. Hartman, Ordinary Differential Equations, Wiley (1964); SIAM reprint (2002)"
+    title: "Ordinary Differential Equations"
+    doi: 10.1137/1.9780898719222
 
 canonical:
   pl-topology: [lickorish-1999, moise-1977]
@@ -939,7 +1023,8 @@ canonical:
   gauge-constrained: [hamilton-2017, henneaux-teitelboim-1992]
   canonical-qg: [thiemann-2007, ashtekar-lewandowski-2004]
   semiclassical: [birrell-davies-1982, hollands-wald-2015]
-  cosmology: [kolb-turner-1990, baumann-2009]
+  cosmology: [kolb-turner-1990, baumann-2009, copeland-2006]
+  dynamics: [perko-2001, hartman-1964]
   causal-sets: [surya-2019]
   string-theory: [polchinski-1998a, polchinski-1998b, tong-2009]
   holography: [magoo-2000, rangamani-takayanagi-2016]
@@ -1748,6 +1833,73 @@ milestones:
     class: sourced
     refs:
       - {ref: frs-2023, location: "Section 1.6", check: "main theorem"}
+  CO17:
+    class: sourced
+    refs:
+      - {ref: copeland-2006, location: "eq. (175)", check: "Autonomous"}
+  CO18:
+    class: sourced
+    refs:
+      - {ref: copeland-2006, location: "eq. (177)", check: "Stable node"}
+  CO19:
+    class: sourced
+    refs:
+      - {ref: copeland-2006, location: "eq. (122)", check: "K-essence"}
+  CO20:
+    class: sourced
+    refs:
+      - {ref: sotiriou-faraoni-2010, location: "Section 2", check: "Brans-Dicke"}
+      - {ref: defelice-tsujikawa-2010, location: "Section 3", check: "scalar-tensor"}
+  CO21:
+    class: sourced
+    refs:
+      - {ref: overduin-wesson-1997, location: "Section 2", check: "Kaluza"}
+  CO22:
+    class: sourced
+    refs:
+      - {ref: padilla-2015, location: "Section 3.2", check: "Weinberg"}
+  CO23:
+    class: sourced
+    refs:
+      - {ref: obied-2018, location: "Section 2", check: "de Sitter"}
+      - {ref: ooguri-vafa-2006, location: "Section 2", check: "swampland"}
+  CO24:
+    class: sourced
+    refs:
+      - {ref: hindmarsh-kibble-1995, location: "eq. (1)", check: "Abelian Higgs"}
+      - {ref: hindmarsh-kibble-1995, location: "eq. (2.9)", check: "Nielsen"}
+  CO25:
+    class: sourced
+    refs:
+      - {ref: hindmarsh-kibble-1995, location: "eq. (2.9)", check: "Nielsen"}
+  CO26:
+    class: sourced
+    refs:
+      - {ref: hindmarsh-kibble-1995, location: "eq. (6.1)", check: "deficit angle"}
+  CO27:
+    class: sourced
+    refs:
+      - {ref: hindmarsh-kibble-1995, location: "eq. (3.19)", check: "cusp"}
+  CO28:
+    class: sourced
+    refs:
+      - {ref: tong-2005, location: "eq. (3.14)", check: "collective coordinates"}
+  CO29:
+    class: sourced
+    refs:
+      - {ref: baumann-2009, location: "eq. (A.140)", check: "Klein-Gordon"}
+  DS1:
+    class: sourced
+    refs:
+      - {ref: perko-2001, location: "Chapter: Linear Systems in R^n|10.1007/978-1-4613-0003-8_1"}
+  DS2:
+    class: sourced
+    refs:
+      - {ref: perko-2001, location: "Chapter: Nonlinear Systems: Local Theory|10.1007/978-1-4613-0003-8_2"}
+  DS3:
+    class: sourced
+    refs:
+      - {ref: hartman-1964, location: "Chapter: Ordinary Differential Equations|10.1137/1.9780898719222"}
   # Milestones whose results are in the library: the sources of those results (docs/results.yaml).
   GE9:
     class: sourced
