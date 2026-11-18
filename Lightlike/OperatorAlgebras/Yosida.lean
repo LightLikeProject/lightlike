@@ -123,4 +123,27 @@ lemma tResM_domain (hA : IsSelfAdjoint A) (x : A.domain) :
   have := ((h0).sub (tendsto_const_nhds (x := (x : H)))).const_smul Complex.I
   simpa using this
 
+lemma norm_tRes_le (hR : ℕ → H →L[ℂ] H) (hb : ∀ n w, ‖hR n w‖ ≤ (tn n)⁻¹ * ‖w‖) (n : ℕ) (w : H) :
+    ‖((tn n : ℝ) : ℂ) • hR n w‖ ≤ 1 * ‖w‖ := by
+  rw [norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (tn_pos n)]
+  calc tn n * ‖hR n w‖ ≤ tn n * ((tn n)⁻¹ * ‖w‖) := mul_le_mul_of_nonneg_left (hb n w) (tn_pos n).le
+    _ = 1 * ‖w‖ := by rw [← mul_assoc, mul_inv_cancel₀ (tn_pos n).ne']
+
+/-- **`t R (i t) y → i y`** for every `y`. -/
+lemma tResP_tendsto (hA : IsSelfAdjoint A) (y : H) :
+    Filter.Tendsto (fun n => ((tn n : ℝ) : ℂ) • resP hA n y) Filter.atTop (𝓝 (Complex.I • y)) := by
+  refine tendsto_of_dense_bounded (T := fun n => ((tn n : ℝ) : ℂ) • resP hA n) (C := 1) zero_le_one
+    (fun n w => norm_tRes_le (resP hA) (norm_resP_le hA) n w) hA.dense_domain Complex.I ?_ y
+  intro w hw
+  exact tResP_domain hA ⟨w, hw⟩
+
+/-- **`t R (-i t) y → -i y`** for every `y`. -/
+lemma tResM_tendsto (hA : IsSelfAdjoint A) (y : H) :
+    Filter.Tendsto (fun n => ((tn n : ℝ) : ℂ) • resM hA n y) Filter.atTop (𝓝 ((-Complex.I) • y)) := by
+  refine tendsto_of_dense_bounded (T := fun n => ((tn n : ℝ) : ℂ) • resM hA n) (C := 1) zero_le_one
+    (fun n w => norm_tRes_le (resM hA) (norm_resM_le hA) n w) hA.dense_domain (-Complex.I) ?_ y
+  intro w hw
+  have := tResM_domain hA ⟨w, hw⟩
+  simpa [neg_smul] using this
+
 end Lightlike.OperatorAlgebras
