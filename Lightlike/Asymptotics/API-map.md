@@ -89,7 +89,9 @@ formula `√(12π √V²(ℓ)) {λj} − cos(S_R(ℓ) + π/4) → 0` without hyp
 Trust checks are in [6], [7], [9], [11], [13], [15], [17], [19], [21], [23], [25], [27], [29],
 [31], [33], [35] and [37].
 
-A positive measure on the half line whose Laplace transform grows like `e^{a/β}` in the logarithmic sense, `β log L(β) → a > 0` as `β → 0⁺`, has a counting function with `log F(X) / (2 √(a X)) → 1`: a logarithmic Tauberian theorem of Ingham type, the growth behind the Cardy formula [40] {3}. The upper bound is the saddle estimate `F(X) ≤ e^{β X} L(β)`, from the window estimates of the Laplace transform [38] {3}. For the lower bound the Laplace transform is split into three windows around the saddle `x = a / β²`; the outer two are bounded by the Laplace transform at slightly different `β`, so the middle window carries at least half of `L(β)` [39] {3}. The theorem is weaker than Ingham's, which gives the asymptotics of `F` itself; Karamata's theorem and Ingham's theorem with the power correction are open.
+A positive measure on the half line whose Laplace transform grows like `e^{a/β}` in the logarithmic sense, `β log L(β) → a > 0` as `β → 0⁺`, has a counting function with `log F(X) / (2 √(a X)) → 1`: a logarithmic Tauberian theorem of Ingham type, the growth behind the Cardy formula [40] {3}. The upper bound is the saddle estimate `F(X) ≤ e^{β X} L(β)`, from the window estimates of the Laplace transform [38] {3}. For the lower bound the Laplace transform is split into three windows around the saddle `x = a / β²`; the outer two are bounded by the Laplace transform at slightly different `β`, so the middle window carries at least half of `L(β)` [39] {3}. The theorem is weaker than Ingham's, which gives the asymptotics of `F` itself; Ingham's theorem with the power correction is open.
+
+Karamata's Tauberian theorem for a regularly varying Laplace transform is proved: if `L(β) ~ β^{-α} ℓ(1/β)` as `β → 0⁺` with `α > 0` and `ℓ` slowly varying (eventually positive, `ℓ(c t)/ℓ(t) → 1` for every `c > 0`), then the counting function `F(t)` satisfies `F(t) / (t^α ℓ(t)) → 1/Γ(α+1)` [41]. The proof scales the Laplace transform [41], evaluates polynomials in `exp(-x/t)` against the measure [42], extends to continuous functions by Weierstrass approximation, with limit functional `∫ e^{-x} k(e^{-x}) x^{α-1}/Γ(α) dx` [43], and sandwiches the indicator of the interval from `0` to `t` between two continuous ramp functions [44], whose limit values tend to `1/Γ(α+1)` [45]. Lebesgue measure (`α = 1`, `ℓ = 1`) returns the exact value `1`. The comparison of the statement with the literature is pending: no source was opened at a cited location.
 
 ## Lean References
 
@@ -251,6 +253,11 @@ A positive measure on the half line whose Laplace transform grows like `e^{a/β}
 39. Lightlike/Asymptotics/Tauberian/Lower.lean - `Tauberian.counting_lower`
 40. Lightlike/Asymptotics/Tauberian/Ingham.lean - `Tauberian.laplace_bounds`, `Tauberian.log_counting_le`,
     `Tauberian.lower_eventually`, `Tauberian.ingham_log`
+41. Lightlike/Asymptotics/Tauberian/Scaling.lean - `Tauberian.SlowlyVarying`, `Tauberian.tendsto_scaled_laplace`
+42. Lightlike/Asymptotics/Tauberian/Poly.lean - `Tauberian.integral_poly_eq_sum`, `Tauberian.tendsto_poly_integral`
+43. Lightlike/Asymptotics/Tauberian/Functional.lean - `Tauberian.Phi`, `Tauberian.Lam`, `Tauberian.tendsto_lam`
+44. Lightlike/Asymptotics/Tauberian/Ramp.lean - `Tauberian.rampUp`, `Tauberian.rampDown`, `Tauberian.mul_rampUp_eq_one`
+45. Lightlike/Asymptotics/Tauberian/Karamata.lean - `Tauberian.counting_le_integral_rampUp`, `Tauberian.integral_rampDown_le_counting`, `Tauberian.karamata`
 
 ## References
 
