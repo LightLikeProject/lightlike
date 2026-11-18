@@ -99,6 +99,7 @@ import Lightlike.Asymptotics.GammaBounds
 import Lightlike.Asymptotics.GammaBoundsTests
 import Lightlike.Asymptotics.HalfSixJ
 import Lightlike.Asymptotics.Homogeneity
+import Lightlike.Asymptotics.MorseLemma
 import Lightlike.Asymptotics.HomogeneityTests
 import Lightlike.Asymptotics.KernelBound
 import Lightlike.Asymptotics.KernelBoundTests
