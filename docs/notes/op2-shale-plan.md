@@ -113,3 +113,13 @@ bound. This needs (i) the vacuum projection `P_F` of finitely many modes as the 
 `V_F` (self-adjoint, idempotent, `P_F Ω = Ω`), (ii) the finite-dimensional Gaussian integral of `exp (-(‖f‖² + q f)/4)`
 against a positive quadratic form on `V_F`, and (iii) the determinant bound `det ((1 + P_F)/2) ≥ 1 + tr (P_F - 1)/4`
 on `J`-invariant spectral subspaces (continuous spectrum by interval approximation). No shortcut found.
+
+## Sufficiency (`⇐`): route (start 16:30)
+
+Goal: `IsHilbertSchmidt β` gives `Ψ` with `⟪Ψ, W f Ψ⟫ = exp (-q f/4)`; then `implements_of_gaussian_vector` (P5).
+Route by polar decomposition `T = U S`: `U` complex-unitary (implemented by the Gram-matrix unitary lemma, `Γ(U) W f Ω = W (U f) Ω`),
+`S = √(Tᵀ T)` positive symplectic with `β_S` Hilbert-Schmidt. For `S`, finite-mode truncations `S_n` (spectral
+projections of a `J`-invariant finite-rank part) are implemented by finite-mode squeezed vectors; Cauchy estimate
+`‖Ψ_n - Ψ_m‖² ≤ C ∑_{i>m} ‖β bᵢ‖²`; the limit has the Gaussian characteristic function. Bricks: (1) real adjoint and
+polar decomposition of a symplectic `T` (symplectic `S`), (2) `Γ(U)` for complex-unitary `U`, (3) finite-mode
+squeezing in `K`, (4) the Cauchy estimate, (5) the limit and its characteristic function. Estimate 700 lines.
