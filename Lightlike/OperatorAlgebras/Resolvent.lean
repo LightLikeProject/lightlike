@@ -64,6 +64,14 @@ lemma sa_norm_sub_smul_ge (hA : IsSelfAdjoint A) (z : ℂ) (x : A.domain) :
     nlinarith [sq_nonneg ‖u‖, sq_nonneg ‖(x : H)‖, sq_nonneg z.im]
   exact (pow_le_pow_iff_left₀ (by positivity) (norm_nonneg _) two_ne_zero).1 h2
 
+/-- For a densely defined `A`: if `⟪z y, x⟫ = ⟪y, A x⟫` for all `x` in the domain, `y` is in the deficiency space
+at `z`. -/
+lemma mem_deficiencySpace_of_forall {A : H →ₗ.[ℂ] H} (hA : Dense (A.domain : Set H)) (z : ℂ) (y : H)
+    (h : ∀ x : A.domain, ⟪z • y, (x : H)⟫_ℂ = ⟪y, A x⟫_ℂ) : y ∈ deficiencySpace A z := by
+  have hy : y ∈ (A†).domain :=
+    LinearPMap.mem_adjoint_domain_of_exists y ⟨z • y, fun x => h x⟩
+  exact ⟨hy, LinearPMap.adjoint_apply_eq hA ⟨y, hy⟩ fun x => h x⟩
+
 /-- The map `x ↦ A x - z x` on the domain. -/
 noncomputable def shiftMap (A : H →ₗ.[ℂ] H) (z : ℂ) : A.domain →ₗ[ℂ] H :=
   A.toFun - z • A.domain.subtype
@@ -111,5 +119,43 @@ lemma sa_range_shiftMap_closed (hA : IsSelfAdjoint A) {z : ℂ} (hz : z.im ≠ 0
   rw [shiftMap_apply]
   simp only at hx'1 hx'2
   rw [hx'2, hx'1]; abel
+
+/-- **`A - z` is surjective** for a self-adjoint `A` and non-real `z`. -/
+lemma sa_shiftMap_surjective (hA : IsSelfAdjoint A) {z : ℂ} (hz : z.im ≠ 0) :
+    Function.Surjective (shiftMap A z) := by
+  have hcl := sa_range_shiftMap_closed hA hz
+  set R : Submodule ℂ H := LinearMap.range (shiftMap A z) with hR
+  have hbot : Rᗮ = ⊥ := by
+    rw [Submodule.eq_bot_iff]
+    intro y hy
+    rw [Submodule.mem_orthogonal] at hy
+    have hdef : y ∈ deficiencySpace A ((starRingEnd ℂ) z) := by
+      refine mem_deficiencySpace_of_forall hA.dense_domain _ _ fun x => ?_
+      have h0 := hy (shiftMap A z x) (LinearMap.mem_range_self _ x)
+      rw [shiftMap_apply, inner_sub_left, inner_smul_left, sub_eq_zero] at h0
+      rw [inner_smul_left, ← inner_conj_symm (𝕜 := ℂ) y (A x : H), h0, map_mul, starRingEnd_self_apply,
+        ← inner_conj_symm (𝕜 := ℂ) y (x : H)]
+    have hz' : ((starRingEnd ℂ) z).im ≠ 0 := by simpa using hz
+    rw [deficiencySpace_of_isSelfAdjoint hA hz'] at hdef
+    simpa using hdef
+  have hdense : R.topologicalClosure = ⊤ := Submodule.topologicalClosure_eq_top_iff.2 hbot
+  intro y
+  have hall : (R : Set H) = Set.univ := by
+    have := congrArg (fun S : Submodule ℂ H => (S : Set H)) hdense
+    simp only [Submodule.topologicalClosure_coe, Submodule.top_coe] at this
+    rwa [hcl.closure_eq] at this
+  have : y ∈ (R : Set H) := by rw [hall]; trivial
+  exact LinearMap.mem_range.1 this
+
+lemma sa_shiftMap_injective (hA : IsSelfAdjoint A) {z : ℂ} (hz : z.im ≠ 0) :
+    Function.Injective (shiftMap A z) := by
+  rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
+  intro x hx
+  have h := sa_norm_sub_smul_ge hA z x
+  rw [← shiftMap_apply, hx, norm_zero] at h
+  have : ‖(x : H)‖ = 0 := by
+    have hb : 0 < |z.im| := abs_pos.2 hz
+    nlinarith [norm_nonneg (x : H)]
+  exact Subtype.ext (norm_eq_zero.1 this)
 
 end Lightlike.OperatorAlgebras
