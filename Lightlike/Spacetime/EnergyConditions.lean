@@ -4,7 +4,7 @@ import Lightlike.Spacetime.Lorentzian
 # Energy conditions (GE14, stage 1)
 
 Pointwise energy conditions of a symmetric bilinear form `T` (the stress-energy tensor at a point) on a Lorentzian vector space `(V, g)`:
-`NullEC`, `WeakEC`, `StrongEC` (dimension four) and `DominantEC` (Curiel, *A Primer on Energy Conditions*, section 2.1, physical forms).
+`NullEC`, `WeakEC`, `StrongEC` (dimension four) and `DominantEC` (Curiel, *A Primer on Energy Conditions*, arXiv 1405.0403, section 2.1, pp. 5-6, physical forms; Carroll, lecture notes gr-qc/9712019, eq. (4.72), p. 117, for the weak condition).
 Proved: reverse Cauchy-Schwarz for a timelike vector, the sign rule for timelike vectors in a Lorentz frame (`lorentz_sign`), co-oriented timelike vectors pair with a
 timelike vector with a common sign (`lorentz_coorient`), the `g`-trace in a Lorentz frame (`traceG_eq_sum`); trust checks: dust with `ρ ≥ 0` satisfies all four,
 a positive cosmological constant violates the strong condition, a scalar field at a point of vanishing gradient with a negative potential violates the weak one; the effective forms for a perfect fluid (`fluid_nullEC_iff`: `ρ + p ≥ 0`, `fluid_weakEC_iff`: `ρ ≥ 0` and `ρ + p ≥ 0`, `fluid_strongEC_iff`: `ρ + p ≥ 0` and `ρ + 3p ≥ 0`, `fluid_dominantEC_iff`: `|p| ≤ ρ`).
