@@ -153,4 +153,15 @@ def SatisfiesEinstein (cov : Connection I M) (Λ : ℝ) : Prop :=
 
 end NondegMetric
 
+namespace LorentzianMetric
+
+variable {n : ℕ} (g : LorentzianMetric I M n)
+
+/-- The Einstein equations with cosmological constant for a Lorentzian metric: those of the underlying metric of any
+signature (`NondegMetric.SatisfiesEinstein`). -/
+abbrev SatisfiesEinstein (cov : Connection I M) (Λ : ℝ) : Prop :=
+  g.toNondegMetric.SatisfiesEinstein cov Λ
+
+end LorentzianMetric
+
 end Lightlike

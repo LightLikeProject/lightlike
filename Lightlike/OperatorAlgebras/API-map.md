@@ -41,6 +41,8 @@ For a self-adjoint `A`, `t R (i t) y → i y` and `t R (-i t) y → -i y` for ev
 
 For a bounded self-adjoint operator `B`, `exp (i s B)` is a unitary group, strongly continuous in `s`, and for two commuting bounded self-adjoint operators `‖exp (i t B) y - exp (i t B') y‖ ≤ |t| ‖(B - B') y‖`, the mean value inequality for `s ↦ exp (i s B) exp (i (t - s) B') y` [30]. With `B' = 0` this is `‖exp (i t B) y - y‖ ≤ |t| ‖B y‖` [32]. The resolvents of a self-adjoint operator satisfy `R z - R w = (z - w) R z R w`, so they commute, and so do the approximants, which are self-adjoint as bounded operators [31].
 
+For a self-adjoint `A`, the approximating unitaries `exp (i t A_n)` have a strong limit `U t`: `U_n t x` is Cauchy on the domain by the estimate above, hence for every vector by density and isometry, and `‖U_n t x - U t x‖ ≤ |t| ‖A_n x - A x‖` on the domain. The limit is a strongly continuous unitary group, the difference quotient of `U t x` at `0` is within `2 ‖A_n x - A x‖` of that of `exp (i t A_n) x`, so the generator of the limit extends `A`, and since both are self-adjoint it equals `A`: this is Stone's theorem, existence [33]. For the phase group it recovers the phase group [34].
+
 The Gram matrix of the vectors `W f Ω` of a Fock representation is a function of `f` and `g` alone, by the Weyl relations and the vacuum expectation, so the map `c ↦ ∑ c f W f Ω` has the same norm for two Fock representations; it extends to a unitary that maps the vacuum to the vacuum and intertwines the Weyl unitaries, which is the uniqueness of the Fock representation [14]. The Gram function is Hermitian and normalized, and over the zero Hilbert space there is a Fock representation to which the uniqueness applies [15].
 
 ## Lean References
@@ -127,6 +129,11 @@ The Gram matrix of the vectors `W f Ω` of a Fock representation is a function o
     `OperatorAlgebras.resolvent_commute`, `OperatorAlgebras.approx_commute`,
     `OperatorAlgebras.approx_isSelfAdjoint`
 32. Lightlike/OperatorAlgebras/TestsBoundedGroup.lean - `OperatorAlgebras.bdU_sub_self_le`
+33. Lightlike/OperatorAlgebras/YosidaLimit.lean - `OperatorAlgebras.Un`,
+    `OperatorAlgebras.cauchySeq_of_dense_isometries`, `OperatorAlgebras.Ulim`, `OperatorAlgebras.Uunit`,
+    `OperatorAlgebras.stoneGroup`, `OperatorAlgebras.hasDerivAt_Ulim_domain`,
+    `OperatorAlgebras.generator_stoneGroup` (the proof of task T-OP1-P2)
+34. Lightlike/OperatorAlgebras/TestsYosidaLimit.lean - `OperatorAlgebras.stoneGroup_phaseGroup`
 
 ## References
 
