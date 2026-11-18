@@ -28,6 +28,22 @@ theorem lipschitz_ae_differentiableAt {f : ℝ → E} {a b : ℝ} {K : NNReal}
   filter_upwards [h] with t ht hmem
   exact (ht (Ioo_subset_Icc_self hmem)).differentiableAt (Icc_mem_nhds hmem.1 hmem.2)
 
+/-- The derivative of a Lipschitz curve on `[a, b]` is integrable there. -/
+theorem lipschitz_intervalIntegrable_deriv {f : ℝ → E} {a b : ℝ} {K : NNReal} (hab : a ≤ b)
+    (hf : LipschitzOnWith K f (Icc a b)) : IntervalIntegrable (deriv f) volume a b := by
+  let _ : MeasurableSpace E := borel E
+  have : BorelSpace E := ⟨rfl⟩
+  have hbd : ∀ t ∈ Ioo a b, ‖deriv f t‖ ≤ K := fun t ht =>
+    norm_deriv_le_of_lipschitzOn (Icc_mem_nhds ht.1 ht.2) hf
+  have hne : ∀ᵐ t ∂(volume : Measure ℝ), t ≠ b := by
+    simpa using (Set.countable_singleton b).ae_notMem (volume : Measure ℝ)
+  rw [intervalIntegrable_iff_integrableOn_Ioc_of_le hab]
+  refine Measure.integrableOn_of_bounded (μ := volume) (M := K) (by simp)
+    (measurable_deriv f).aestronglyMeasurable ?_
+  rw [ae_restrict_iff' measurableSet_Ioc]
+  filter_upwards [hne] with t htb ht
+  exact hbd t ⟨ht.1, lt_of_le_of_ne ht.2 htb⟩
+
 /-- **Fundamental theorem of calculus for a Lipschitz curve in a finite-dimensional space.** -/
 theorem lipschitz_integral_deriv {f : ℝ → E} {a b : ℝ} {K : NNReal} (hab : a ≤ b)
     (hf : LipschitzOnWith K f (Icc a b)) :
@@ -86,5 +102,66 @@ theorem chord_mem_of_deriv_mem {f : ℝ → E} {a b : ℝ} {K : NNReal} {S : Set
     exact ht ⟨hmem.1, lt_of_le_of_ne hmem.2 htb⟩) hint
   rw [setAverage_eq, ← intervalIntegral.integral_of_le hab.le, lipschitz_integral_deriv hab.le hf] at hmem
   simpa [Measure.real, Real.volume_Ioc, ENNReal.toReal_ofReal (sub_nonneg.2 hab.le)] using hmem
+
+/-- **A functional that is increasing along a Lipschitz curve almost everywhere is increasing.**
+If `λ (F' t) > 0` for almost every `t`, then `t ↦ λ (F t)` is nondecreasing on `[a, b]` and strictly
+larger at `b` than at `a`. -/
+theorem functional_increasing_of_ae_pos {F : ℝ → E} {a b : ℝ} {K : NNReal} (hab : a < b)
+    (hF : LipschitzOnWith K F (Icc a b)) (lam : E →L[ℝ] ℝ)
+    (hpos : ∀ᵐ t ∂(volume : Measure ℝ), t ∈ Ioo a b → 0 < lam (deriv F t)) :
+    (∀ s ∈ Icc a b, ∀ t ∈ Icc a b, s ≤ t → lam (F s) ≤ lam (F t)) ∧ lam (F a) < lam (F b) := by
+  have hg : LipschitzOnWith (‖lam‖₊ * K) (fun t => lam (F t)) (Icc a b) :=
+    lam.lipschitzWith.comp_lipschitzOnWith hF
+  have hdiff := lipschitz_ae_differentiableAt hF
+  have hderiv : ∀ᵐ t ∂(volume : Measure ℝ), t ∈ Ioo a b → 0 < deriv (fun t => lam (F t)) t := by
+    filter_upwards [hdiff, hpos] with t h1 h2 ht
+    have hd := h1 ht
+    have : deriv (fun t => lam (F t)) t = lam (deriv F t) :=
+      (lam.hasFDerivAt.comp_hasDerivAt t hd.hasDerivAt).deriv
+    rw [this]; exact h2 ht
+  set f : ℝ → ℝ := fun t => lam (F t) with hf
+  have hftc : ∀ s ∈ Icc a b, ∀ t ∈ Icc a b, s ≤ t →
+      ∫ x in s..t, deriv f x = f t - f s := fun s hs t ht hst =>
+    lipschitz_integral_deriv hst (hg.mono (Icc_subset_Icc hs.1 ht.2))
+  have hint := lipschitz_intervalIntegrable_deriv hab.le hg
+  have hne2 : ∀ᵐ x ∂(volume : Measure ℝ), x ≠ a ∧ x ≠ b := by
+    have h1 : ∀ᵐ x ∂(volume : Measure ℝ), x ≠ a := by
+      simpa using (Set.countable_singleton a).ae_notMem (volume : Measure ℝ)
+    have h2 : ∀ᵐ x ∂(volume : Measure ℝ), x ≠ b := by
+      simpa using (Set.countable_singleton b).ae_notMem (volume : Measure ℝ)
+    filter_upwards [h1, h2] with x hx1 hx2 using ⟨hx1, hx2⟩
+  have hnn : ∀ s t : ℝ, s ∈ Icc a b → t ∈ Icc a b → ∀ᵐ x ∂(volume : Measure ℝ), x ∈ Icc s t → 0 ≤ deriv f x := by
+    intro s t hs ht
+    filter_upwards [hderiv, hne2] with x hx hxe hxm
+    exact (hx ⟨lt_of_le_of_ne (hs.1.trans hxm.1) (Ne.symm hxe.1),
+      lt_of_le_of_ne (hxm.2.trans ht.2) hxe.2⟩).le
+  refine ⟨fun s hs t ht hst => ?_, ?_⟩
+  · have h1 := hftc s hs t ht hst
+    have h2 : 0 ≤ ∫ x in s..t, deriv f x := by
+      refine intervalIntegral.integral_nonneg_of_ae_restrict hst ?_
+      have := (ae_restrict_iff' measurableSet_Icc).2 (hnn s t hs ht)
+      exact this
+    simp only [hf] at h1 ⊢
+    linarith
+  · have h1 := hftc a ⟨le_rfl, hab.le⟩ b ⟨hab.le, le_rfl⟩ hab.le
+    have h2 : 0 < ∫ x in a..b, deriv f x := by
+      rw [intervalIntegral.integral_of_le hab.le]
+      have hnn' : 0 ≤ᵐ[volume.restrict (Ioc a b)] deriv f := by
+        rw [Filter.EventuallyLE, ae_restrict_iff' measurableSet_Ioc]
+        filter_upwards [hderiv, hne2] with x hx hxe hxm
+        exact (hx ⟨hxm.1, lt_of_le_of_ne hxm.2 hxe.2⟩).le
+      rw [integral_pos_iff_support_of_nonneg_ae hnn' (hint.1)]
+      have hsupp : Function.support (deriv f) =ᵐ[volume.restrict (Ioc a b)] (Set.univ : Set ℝ) := by
+        have : ∀ᵐ x ∂(volume.restrict (Ioc a b)), x ∈ Function.support (deriv f) ↔ x ∈ (Set.univ : Set ℝ) := by
+          rw [ae_restrict_iff' measurableSet_Ioc]
+          filter_upwards [hderiv, hne2] with x hx hxe hxm
+          have hpos := hx ⟨hxm.1, lt_of_le_of_ne hxm.2 hxe.2⟩
+          simp only [Function.mem_support, ne_eq, mem_univ, iff_true]
+          exact hpos.ne'
+        exact this.mono fun x hx => propext hx
+      rw [measure_congr hsupp, Measure.restrict_apply_univ]
+      simp [hab]
+    simp only [hf] at h1 ⊢
+    linarith
 
 end Lightlike.Causal
