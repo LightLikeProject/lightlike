@@ -195,4 +195,27 @@ lemma continuous_Ulim_domain (hA : IsSelfAdjoint A) (x : A.domain) :
       (continuous_bdU_apply (approx hA n) (x : H)).continuousOn).frequently
   exact hcont.continuousAt hSn
 
+/-- **Strong continuity**: `t ↦ U t y` is continuous for every `y`. -/
+lemma continuous_Ulim (hA : IsSelfAdjoint A) (y : H) : Continuous fun t : ℝ => Ulim hA t y := by
+  obtain ⟨u, hu, hlim⟩ := mem_closure_iff_seq_limit.1 (hA.dense_domain y)
+  refine TendstoUniformly.continuous (F := fun n t => Ulim hA t (u n)) (p := atTop) ?_
+    (Eventually.of_forall fun n => continuous_Ulim_domain hA ⟨u n, hu n⟩).frequently
+  rw [Metric.tendstoUniformly_iff]
+  intro ε hε
+  have := (Metric.tendsto_nhds.1 hlim) ε hε
+  filter_upwards [this] with n hn t
+  have h := (Uunit hA t).dist_map y (u n)
+  rw [show Ulim hA t y = Uunit hA t y from rfl, show Ulim hA t (u n) = Uunit hA t (u n) from rfl,
+    h, dist_comm]
+  exact hn
+
+/-- **The strongly continuous unitary group** obtained as the strong limit of `exp (i t A_n)`. -/
+noncomputable def stoneGroup (hA : IsSelfAdjoint A) : UnitaryGroup H where
+  toFun := Uunit hA
+  map_zero' := LinearIsometryEquiv.ext fun y => Ulim_zero hA y
+  map_add' s t := LinearIsometryEquiv.ext fun y => Ulim_add_time hA s t y
+  continuous' y := continuous_Ulim hA y
+
+lemma stoneGroup_apply (hA : IsSelfAdjoint A) (t : ℝ) (y : H) : stoneGroup hA t y = Ulim hA t y := rfl
+
 end Lightlike.OperatorAlgebras
