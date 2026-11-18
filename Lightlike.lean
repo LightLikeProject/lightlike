@@ -253,11 +253,13 @@ import Lightlike.OperatorAlgebras.TestsResolvent
 import Lightlike.OperatorAlgebras.TestsTranslationCore
 import Lightlike.OperatorAlgebras.TestsUnitaryGroup
 import Lightlike.OperatorAlgebras.TestsWeyl
+import Lightlike.OperatorAlgebras.TestsYosida
 import Lightlike.OperatorAlgebras.Translation
 import Lightlike.OperatorAlgebras.TranslationCore
 import Lightlike.OperatorAlgebras.UnitaryGroup
 import Lightlike.OperatorAlgebras.WeakConstant
 import Lightlike.OperatorAlgebras.Weyl
+import Lightlike.OperatorAlgebras.Yosida
 import Lightlike.Oscillatory.Flat
 import Lightlike.Oscillatory.GaussFourier
 import Lightlike.Oscillatory.GaussFourierTests
