@@ -146,4 +146,57 @@ lemma tResM_tendsto (hA : IsSelfAdjoint A) (y : H) :
   have := tResM_domain hA ⟨w, hw⟩
   simpa [neg_smul] using this
 
+/-- **The approximants** `A_n = (t² / 2) (R (i t) + R (-i t))`, `t = n + 1`, bounded operators. -/
+noncomputable def approx (hA : IsSelfAdjoint A) (n : ℕ) : H →L[ℂ] H :=
+  ((((tn n) ^ 2 / 2 : ℝ) : ℂ)) • (resP hA n + resM hA n)
+
+lemma approx_apply (hA : IsSelfAdjoint A) (n : ℕ) (y : H) :
+    approx hA n y = ((((tn n) ^ 2 / 2 : ℝ) : ℂ)) • (resP hA n y + resM hA n y) := rfl
+
+/-- On the domain, `A_n x = (i / 2) (t R (-i t) A x - t R (i t) A x)`. -/
+lemma approx_apply_domain (hA : IsSelfAdjoint A) (n : ℕ) (x : A.domain) :
+    approx hA n (x : H) = (Complex.I / 2) •
+      (((tn n : ℝ) : ℂ) • resM hA n (A x : H) - ((tn n : ℝ) : ℂ) • resP hA n (A x : H)) := by
+  have h1 : resP hA n (A x : H) = (x : H) + (Complex.I * (tn n : ℂ)) • resP hA n (x : H) :=
+    resolvent_apply_A hA (z := Complex.I * (tn n : ℂ)) (by simpa using (tn_pos n).ne') x
+  have h2 : resM hA n (A x : H) = (x : H) + (-(Complex.I * (tn n : ℂ))) • resM hA n (x : H) :=
+    resolvent_apply_A hA (z := -(Complex.I * (tn n : ℂ))) (by simpa using (tn_pos n).ne') x
+  rw [approx_apply, h1, h2]
+  push_cast
+  match_scalars <;> ring_nf <;> simp [Complex.I_sq] <;> ring
+
+/-- **`A_n x → A x` on the domain.** -/
+theorem approx_tendsto (hA : IsSelfAdjoint A) (x : A.domain) :
+    Filter.Tendsto (fun n => approx hA n (x : H)) Filter.atTop (𝓝 (A x : H)) := by
+  simp only [approx_apply_domain]
+  have h := ((tResM_tendsto hA (A x : H)).sub (tResP_tendsto hA (A x : H))).const_smul (Complex.I / 2)
+  have e : (Complex.I / 2) • ((-Complex.I) • (A x : H) - Complex.I • (A x : H)) = (A x : H) := by
+    match_scalars <;> ring_nf <;> simp [Complex.I_sq]
+  rwa [e] at h
+
+/-- **The approximants are self-adjoint**: `⟪A_n y, w⟫ = ⟪y, A_n w⟫`. -/
+theorem approx_selfadjoint (hA : IsSelfAdjoint A) (n : ℕ) (y w : H) :
+    ⟪approx hA n y, w⟫_ℂ = ⟪y, approx hA n w⟫_ℂ := by
+  have hP : ∀ y w : H, ⟪resP hA n y, w⟫_ℂ = ⟪y, resM hA n w⟫_ℂ := by
+    intro y w
+    have := resolvent_adjoint hA (z := Complex.I * (tn n : ℂ)) (by simpa using (tn_pos n).ne')
+      (by simpa using (tn_pos n).ne') y w
+    unfold resP resM
+    rw [this]
+    congr 3
+    simp
+  have hM : ∀ y w : H, ⟪resM hA n y, w⟫_ℂ = ⟪y, resP hA n w⟫_ℂ := by
+    intro y w
+    have := resolvent_adjoint hA (z := -(Complex.I * (tn n : ℂ))) (by simpa using (tn_pos n).ne')
+      (by simpa using (tn_pos n).ne') y w
+    unfold resP resM
+    rw [this]
+    congr 3
+    simp
+  rw [approx_apply, approx_apply, inner_smul_left, inner_smul_right, inner_add_left, inner_add_right,
+    hP, hM]
+  simp only [Complex.conj_ofReal, map_div₀, map_pow, map_ofNat, Complex.ofReal_div, Complex.ofReal_pow,
+    Complex.ofReal_ofNat]
+  ring
+
 end Lightlike.OperatorAlgebras
