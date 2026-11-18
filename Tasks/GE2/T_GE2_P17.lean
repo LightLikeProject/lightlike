@@ -24,14 +24,14 @@ Definitions the statement names (without the `Lightlike.` prefix), by file:
 
 Lemmas about them, which a proof may use:
 
+* `Causal.exists_smooth_field` (`Lightlike/Spacetime/Causal/SmoothOrientation.lean`)
+* `Causal.exists_reparam_bound` (`Lightlike/Spacetime/CausalLadder/LimitBound.lean`)
 * `Causal.TimeOrientation.timelike` (`Lightlike/Spacetime/Causal/TimeOrientation.lean`)
+* `Causal.exists_functional_estimate` (`Lightlike/Spacetime/CausalLadder/FunctionalEstimate.lean`)
+* `Causal.isFutureCausal_of_forall_nonpos` (`Lightlike/Spacetime/CausalLadder/ChartCurve.lean`)
+* `Causal.fieldAt_self` (`Lightlike/Spacetime/Causal/SmoothOrientation.lean`)
+* `Causal.fieldAt_coord` (`Lightlike/Spacetime/Causal/SmoothOrientation.lean`)
 * `Causal.TimeOrientation.mk.inj` (`Lightlike/Spacetime/Causal/TimeOrientation.lean`)
-* `Causal.TimeOrientation.mk.injEq` (`Lightlike/Spacetime/Causal/TimeOrientation.lean`)
-* `Causal.TimeOrientation.contMDiff` (`Lightlike/Spacetime/Causal/TimeOrientation.lean`)
-* `Causal.TimeOrientation.mk.sizeOf_spec` (`Lightlike/Spacetime/Causal/TimeOrientation.lean`)
-* `LorentzianMetric.symm` (`Lightlike/Spacetime/Lorentzian.lean`)
-* `LorentzianMetric.contMDiff` (`Lightlike/Spacetime/Lorentzian.lean`)
-* `LorentzianMetric.lorentzian` (`Lightlike/Spacetime/Lorentzian.lean`)
 
 Everything they depend on, and the further lemmas about them, in one block:
 

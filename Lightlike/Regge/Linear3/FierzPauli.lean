@@ -31,7 +31,7 @@ Euclidean indices, all lower, `δ_ij` is the metric. `dh k i j = ∂_k h_ij`, `d
 
 * `C³` symmetric `ℤ³`-periodic fields on the torus `ℝ³/ℤ³`, the unit cube, nothing else.
 * Spatial (three-dimensional, time-independent) fields; no gauge condition, no mass term.
-* That `fpDens` is the `η²` coefficient of the cube integral of `(R/2) √det g` for `g = 1 + η h` is not proved in this file (see `EtaCoefficient`), and the term-by-term
+* That `fpDens` is the second `η`-derivative at `η = 0` (twice the `η²` coefficient) of the cube integral of `(R/2) √det g` for `g = 1 + η h` is not proved in this file (see `EtaCoefficient`), and the term-by-term
   agreement with the Lagrangian of Hinterbichler, Rev. Mod. Phys. 84 (2012), eq. (2.1) is a statement of this
   docstring, not checked by the source tool (which confirms that the equation is the Fierz–Pauli action).
 -/

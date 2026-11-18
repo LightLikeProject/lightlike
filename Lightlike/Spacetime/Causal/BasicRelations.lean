@@ -156,6 +156,19 @@ theorem IsFutureTimelikeCurve.trans {γ₁ γ₂ : ℝ → M} {a b c d : ℝ}
   obtain ⟨G, e, hae, hG, hG1, hG2⟩ := IsCurveWith.trans m₁' m₂' hab hcd hj
   exact ⟨G, e, hae, isFutureTimelikeCurve_of_margin T (lt_min hε₁ hε₂) hG, hG1, hG2⟩
 
+/-- **Gluing of future-directed timelike curves at a common point**, keeping the parameter: the
+curve that is `γ₁` up to `b` and `γ₂` after is a timelike curve on `[a, c]`. -/
+theorem IsFutureTimelikeCurve.glue {γ₁ γ₂ : ℝ → M} {a b c : ℝ}
+    (h₁ : IsFutureTimelikeCurve T γ₁ (Icc a b)) (h₂ : IsFutureTimelikeCurve T γ₂ (Icc b c))
+    (hab : a < b) (hbc : b < c) (hj : γ₁ b = γ₂ b) :
+    IsFutureTimelikeCurve T (fun t => if t ≤ b then γ₁ t else γ₂ t) (Icc a c) := by
+  obtain ⟨ε₁, hε₁, m₁⟩ := h₁.2 a b hab subset_rfl
+  obtain ⟨ε₂, hε₂, m₂⟩ := h₂.2 b c hbc subset_rfl
+  have m₁' := IsCurveWith.mono_velocity m₁ fun _ _ hv => T.isFutureTimelikeWith_mono (min_le_left ε₁ ε₂) hv
+  have m₂' := IsCurveWith.mono_velocity m₂ fun _ _ hv => T.isFutureTimelikeWith_mono (min_le_right ε₁ ε₂) hv
+  exact isFutureTimelikeCurve_of_margin T (lt_min hε₁ hε₂) (m₁'.glue m₂' hab hbc hj)
+
+
 /-- **The chronological future is transitive: `y ∈ I⁺(x)` and `z ∈ I⁺(y)` give `z ∈ I⁺(x)`.**
 (Hawking–Ellis, Chapter 6; the comparison with the book at its location is pending.) -/
 theorem chron_trans {x y z : M} (hxy : y ∈ chronFuture T x) (hyz : z ∈ chronFuture T y) :

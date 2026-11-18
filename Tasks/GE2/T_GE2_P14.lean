@@ -23,14 +23,14 @@ Definitions the statement names (without the `Lightlike.` prefix), by file:
 
 Lemmas about them, which a proof may use:
 
+* `Causal.minkowski_causalFuture_eq` (`Lightlike/Spacetime/Causal/MinkowskiFuture.lean`)
+* `Causal.mem_causalFuture_iff` (`Lightlike/Spacetime/Causal/MinkowskiGH.lean`)
 * `Causal.line_mem_chronFuture` (`Lightlike/Spacetime/Causal/MinkowskiCausal.lean`)
+* `Causal.isFutureCausalCurve_line` (`Lightlike/Spacetime/Causal/MinkowskiFuture.lean`)
 * `Causal.isFutureTimelikeCurve_line` (`Lightlike/Spacetime/Causal/MinkowskiCausal.lean`)
-* `Causal.form_e1` (`Lightlike/Spacetime/Causal/TestsMinkowski.lean`)
-* `minkowski_flat` (`Lightlike/Spacetime/Curvature.lean`)
-* `Causal.form_e0` (`Lightlike/Spacetime/Causal/TestsMinkowski.lean`)
-* `minkowskiForm_eq` (`Lightlike/Spacetime/Minkowski.lean`)
-* `minkowskiForm_apply` (`Lightlike/Spacetime/Minkowski.lean`)
-* `minkowskiForm_single` (`Lightlike/Spacetime/Minkowski.lean`)
+* `Causal.minkowski_isCompact_diamond` (`Lightlike/Spacetime/Causal/MinkowskiGH.lean`)
+* `Causal.coord_sub_le` (`Lightlike/Spacetime/Causal/MinkowskiCauchy.lean`)
+* `Causal.timeMinus_mono` (`Lightlike/Spacetime/Causal/MinkowskiFuture.lean`)
 
 Everything they depend on, and the further lemmas about them, in one block:
 
