@@ -50,4 +50,50 @@ lemma gram_gaussian_vector (R : FockRep h K) (T : Bogoliubov h) {Ψ : K}
     rw [symp_neg_left, symp_neg_left, T.symp_map]
   rw [e1, e2]
 
+/-- **`⇐`**: a cyclic vector with Gaussian characteristic function gives an implementing unitary. -/
+lemma implements_of_gaussian_vector (R : FockRep h K) (T : Bogoliubov h) {Ψ : K}
+    (hΨ : ∀ f, ⟪Ψ, R.W f Ψ⟫_ℂ = Complex.exp (-(‖T.toEquiv f‖ ^ 2 / 4 : ℝ)))
+    (hcyc : (Submodule.span ℂ (Set.range fun f => R.W f Ψ)).topologicalClosure = ⊤) :
+    Implements R.toCCRRep T := by
+  set Φ₁ : (h →₀ ℂ) →ₗ[ℂ] K := Finsupp.linearCombination ℂ (fun f : h => R.W f Ψ) with hΦ₁
+  set Φ₂ : (h →₀ ℂ) →ₗ[ℂ] K :=
+    Finsupp.linearCombination ℂ (fun f : h => R.W (T.toEquiv f) R.Ω) with hΦ₂
+  have hd₁ : Dense ((LinearMap.range Φ₁ : Submodule ℂ K) : Set K) := by
+    have hr : LinearMap.range Φ₁ = Submodule.span ℂ (Set.range fun f => R.W f Ψ) :=
+      Finsupp.range_linearCombination _
+    rw [hr, Submodule.dense_iff_topologicalClosure_eq_top]; exact hcyc
+  have hd₂ : Dense ((LinearMap.range Φ₂ : Submodule ℂ K) : Set K) := by
+    have hr : LinearMap.range Φ₂ = Submodule.span ℂ (Set.range fun f => R.W (T.toEquiv f) R.Ω) :=
+      Finsupp.range_linearCombination _
+    have hrange : (Set.range fun f : h => R.W (T.toEquiv f) R.Ω) = Set.range fun g : h => R.W g R.Ω := by
+      ext x
+      simp only [Set.mem_range]
+      constructor
+      · rintro ⟨f, rfl⟩; exact ⟨T.toEquiv f, rfl⟩
+      · rintro ⟨g, rfl⟩; exact ⟨T.toEquiv.symm g, by simp⟩
+    rw [hr, hrange, Submodule.dense_iff_topologicalClosure_eq_top]; exact R.cyclic
+  obtain ⟨U, hU⟩ := exists_unitary_of_gram_eq (Φ₁ := Φ₁) (Φ₂ := Φ₂) (fun x y => by
+    simp only [hΦ₁, hΦ₂, Finsupp.linearCombination_single, one_smul]
+    exact gram_gaussian_vector R T hΨ x y) hd₁ hd₂
+  have hUg : ∀ g, U (R.W g Ψ) = R.W (T.toEquiv g) R.Ω := fun g => by
+    have := hU (Finsupp.single g 1)
+    simpa [hΦ₁, hΦ₂] using this
+  have hUΨ : U Ψ = R.Ω := by
+    have := hUg 0
+    simpa [R.toCCRRep.W_zero_apply] using this
+  refine ⟨U, fun f ψ => ?_⟩
+  have hdense : Dense ((Submodule.span ℂ (Set.range fun f => R.W f Ψ) : Submodule ℂ K) : Set K) := by
+    rw [Submodule.dense_iff_topologicalClosure_eq_top]; exact hcyc
+  have hc1 : Continuous fun x : K => U (R.W f x) := U.continuous.comp (R.W f).continuous
+  have hc2 : Continuous fun x : K => R.W (T.toEquiv f) (U x) := (R.W _).continuous.comp U.continuous
+  have := Continuous.ext_on hdense hc1 hc2 (fun x hx => by
+    induction hx using Submodule.span_induction with
+    | mem y hy =>
+      obtain ⟨g, rfl⟩ := hy
+      rw [R.weyl, map_smul, hUg, hUg, R.weyl, T.toEquiv.map_add, T.symp_map]
+    | zero => simp
+    | add a b _ _ ha hb => simp only [map_add, ha, hb]
+    | smul c a _ ha => simp only [map_smul, ha])
+  exact congrFun this ψ
+
 end Lightlike.OperatorAlgebras
