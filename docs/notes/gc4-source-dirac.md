@@ -18,7 +18,8 @@ Match with the library:
 - `DiracTangent`: for a regular tuple the tangent cone of the surface is the common kernel of the derivatives (implicit function
   theorem), which is what "the evolution preserves the constraints" means.
 
-Differences (the library statement is weaker than the source in these respects, none is accepted here): (1) the stage tuples and
-the constant-rank sets `U k` enter as hypotheses (`hstage`); no theorem produces the whole sequence from the primary data
-`(φ_a, H)` alone; (2) the construction of the null vectors is local, near a point where an `r × r` block is invertible, while the
+Differences (the library statement is weaker than the source in these respects, none is accepted here): (1) [closed] the stage tuples are generated from the primary data by `DiracAlgo.stages`
+(secondary constraints `chiFun` from a selected invertible block of the consistency matrix of all the constraints of the earlier stages) and
+`DiracAlgo.final_consistent_of_data` needs no hypothesis `hstage`; what remains hypotheses: the selection rule, regularity of
+every stage, and the sets `U k` on which the chosen block is invertible with vanishing Schur complement; (2) the construction of the null vectors is local, near a point where an `r × r` block is invertible, while the
 source uses null vectors on the whole surface; (3) [closed] `DiracPoisson` ties the bracket matrix and `h` to Physlib's Poisson bracket (`poisson_exists_multiplier_iff_chi`); (4) `DiracAlgorithm` (the linear case) is a special case of the source's algorithm.

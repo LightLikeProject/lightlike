@@ -117,8 +117,11 @@ theorem final_consistent_of_data (br : (E → ℝ) → (E → ℝ) → E → ℝ
     (st N).Φ (U N) (hU N)
   have hx1 : x ∈ zeroSet (st (N + 1)).Φ ∩ U N := by rw [hN (N + 1) (by omega)]; exact hx
   have hx2 : x ∈ zeroSet (appendStage (st N).Φ ((st N).chiFun br φ H (sel (st N)))) ∩ U N := hx1
-  rw [← hwire] at hx2
-  obtain ⟨u', hu'⟩ := hx2.1.2
+  have hx3 := hx2
+  rw [show zeroSet (appendStage (st N).Φ ((st N).chiFun br φ H (sel (st N)))) ∩ U N =
+      zeroSet (appendStage (st N).Φ fun j x => chi ((st N).consCm br φ (sel (st N)))
+        ((st N).consH br H (sel (st N))) x j) ∩ U N from rfl, ← hwire] at hx3
+  obtain ⟨u', hu'⟩ := hx3.1.2
   exact (st N).consistency_translate br φ H (sel (st N)) x u' hu'
 
 end Final

@@ -1,5 +1,6 @@
 import Lightlike.Gauge.DiracStage
 import Lightlike.Gauge.Constraints
+import Lightlike.Gauge.DiracAlgo
 
 /-!
 # The Dirac stage for Physlib's Poisson bracket
@@ -66,5 +67,13 @@ theorem poisson_exists_multiplier_iff_chi (φ : Fin (r + p) → X → X → ℝ)
       chi (fun y => bracketCm φ y) (fun y => bracketH φ H y) x = 0 := by
   rw [poisson_consistency_iff]
   exact exists_multiplier_iff_chi (fun y => bracketCm φ y) (fun y => bracketH φ H y) hB hS
+
+/-- **Physlib's Poisson bracket as a bracket of functions on `X × X`**, the `br` of `DiracAlgo`. -/
+noncomputable def physBr (f g : X × X → ℝ) (z : X × X) : ℝ :=
+  poissonBracket (fun p q => f (p, q)) (fun p q => g (p, q)) z.1 z.2
+
+/-- On the constraint functions, `physBr` is the matrix `bracketMatrix` of `Constraints.lean`. -/
+theorem physBr_eq_bracketMatrix (φ : Fin (r + p) → X → X → ℝ) (a b : Fin (r + p)) (x : X × X) :
+    physBr (fun z => φ a z.1 z.2) (fun z => φ b z.1 z.2) x = bracketMatrix φ x.1 x.2 a b := rfl
 
 end Lightlike.Gauge
