@@ -327,4 +327,34 @@ lemma continuous_fockW_line (f : h) (ψ : FockSpace h) : Continuous fun t : ℝ 
   | add x y _ _ hx hy => simp only [map_add]; exact hx.add hy
   | smul a x _ hx => simp only [map_smul]; exact hx.const_smul a
 
+lemma norm_kf_zero : ‖kf (0 : h)‖ = 1 := by
+  have h1 : ‖kf (0 : h)‖ ^ 2 = 1 := by
+    have := inner_kf (0 : h) 0
+    rw [fockGram_self, inner_self_eq_norm_sq_to_K] at this
+    have h2 : ((‖kf (0 : h)‖ ^ 2 : ℝ) : ℂ) = 1 := by rw [← this]; push_cast; rfl
+    exact_mod_cast h2
+  exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h1
+
+/-- **The Fock representation**: the Weyl unitaries `fockW` on the reproducing kernel Hilbert space of the Fock
+kernel, with vacuum `k_0`. -/
+noncomputable def fockRepOf (h : Type u) [NormedAddCommGroup h] [InnerProductSpace ℂ h] :
+    FockRep h (FockSpace h) where
+  W := fockW
+  W_zero := fockW_zero
+  weyl := fun f g ψ => fockW_weyl f g ψ
+  continuous_line := continuous_fockW_line
+  Ω := kf 0
+  norm_Ω := norm_kf_zero
+  cyclic := by
+    have hr : LinearMap.range (fockPhi h) = Submodule.span ℂ (Set.range kf) :=
+      Finsupp.range_linearCombination _
+    have hrange : (Set.range fun f : h => fockW f (kf 0)) = Set.range kf := by
+      ext x; simp only [Set.mem_range, fockW_kf_zero]
+    rw [hrange, ← hr, ← Submodule.dense_iff_topologicalClosure_eq_top]
+    exact dense_range_fockPhi
+  vacuum_expectation := fun f => by
+    rw [fockW_kf_zero, inner_kf]
+    unfold fockGram
+    simp [symp]
+
 end Lightlike.OperatorAlgebras
