@@ -82,6 +82,7 @@ lemma mul_rampUp_eq_zero {c y : ℝ} (hy : y ≤ c) (hc : c < einv) : y * rampUp
   unfold rampUp
   rw [ramp_eq_zero hy hc]; simp
 
+/-- `y * rampUp c y = 1` for `y ≥ e⁻¹`. -/
 lemma mul_rampUp_eq_one {c y : ℝ} (hy : einv ≤ y) (hc : c < einv) : y * rampUp c y = 1 := by
   unfold rampUp
   rw [ramp_eq_one hy hc, max_eq_left hy]
