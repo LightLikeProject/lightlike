@@ -19,7 +19,7 @@ cone at `a` of the level set `f ⁻¹ {f a}`. The curve in the level set is `t �
 `ψ`, whose derivative at `0` is the inclusion of `ker f'`.
 -/
 
-open Filter Topology
+open Filter Topology Asymptotics
 
 namespace Lightlike.Gauge
 
@@ -61,5 +61,33 @@ theorem ker_subset_tangentCone_levelSet {f : E → F} {f' : E →L[ℝ] F} {a : 
   · have := hslope.comp htn
     refine this.congr fun n => ?_
     simp [Function.comp_def, tn, hψ0]
+
+omit [CompleteSpace E] [FiniteDimensional ℝ F] in
+/-- **The tangent cone of a level set lies in the kernel of the derivative**: if `f` is differentiable at `a` with
+derivative `f'`, every tangent vector of the level set `f ⁻¹ {f a}` at `a` is killed by `f'`. -/
+theorem tangentCone_levelSet_subset_ker {f : E → F} {f' : E →L[ℝ] F} {a : E} (hf : HasFDerivAt f f' a) :
+    tangentConeAt ℝ (f ⁻¹' {f a}) a ⊆ (f'.ker : Set E) := by
+  intro v hv
+  obtain ⟨α, l, hl, c, d, hd0, hds, hcd⟩ := exists_fun_of_mem_tangentConeAt hv
+  have hr : (fun n => f (a + d n) - f a - f' (d n)) =o[l] d := by
+    have hta : Tendsto (fun n => a + d n) l (𝓝 a) := by simpa using (tendsto_const_nhds (x := a)).add hd0
+    have := (hf.isLittleO).comp_tendsto hta
+    simpa [Function.comp_def] using this
+  have hr' : (fun n => c n • (f (a + d n) - f a - f' (d n))) =o[l] (fun n => c n • d n) := by
+    have h1 := (isBigO_refl (fun n => ‖c n‖) l).mul_isLittleO hr.norm_norm
+    refine IsLittleO.of_norm_norm ?_
+    simpa only [norm_smul] using h1
+  have hbig : (fun n => c n • d n) =O[l] (fun _ => (1 : ℝ)) := hcd.isBigO_one ℝ
+  have h0 : Tendsto (fun n => c n • (f (a + d n) - f a - f' (d n))) l (𝓝 0) :=
+    (isLittleO_one_iff ℝ).mp (hr'.trans_isBigO hbig)
+  have h1 : Tendsto (fun n => f' (c n • d n)) l (𝓝 (f' v)) := (f'.continuous.tendsto v).comp hcd
+  have h2 : Tendsto (fun n => f' (c n • d n)) l (𝓝 0) := by
+    have := h0.neg
+    rw [neg_zero] at this
+    refine this.congr' ?_
+    filter_upwards [hds] with n hn
+    have hn' : f (a + d n) = f a := hn
+    simp [hn', map_smul, smul_sub]
+  exact tendsto_nhds_unique h1 h2
 
 end Lightlike.Gauge
