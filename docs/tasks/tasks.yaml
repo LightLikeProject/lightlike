@@ -5,9 +5,9 @@ summary:
   by_kind: {"milestone": 203, "proof": 53, "upstream": 23}
   by_size: {"S": 16, "M": 113, "L": 104, "R": 46}
   by_difficulty: {"intermediate": 129, "advanced": 71, "research-level": 79}
-  by_area: {"geometry": 44, "cosmology": 29, "semiclassical": 9, "cft": 5, "dynamics": 3, "gauge-constrained": 5, "harmonic-analysis": 15, "operator-algebras": 13, "asymptotics": 2, "qft-rg": 5, "pl-topology": 11, "quantum-groups": 11, "random-geometry": 5, "asymptotic-safety": 4, "canonical-qg": 12, "causal-sets": 12, "dynamical-triangulations": 5, "gft-tensor": 9, "holography": 8, "low-dim-gravity": 7, "matrix-models": 5, "ncg": 6, "perturbative-qg": 7, "regge": 6, "spin-foams": 20, "string-theory": 11, "twistors": 6, "other": 4}
+  by_area: {"geometry": 44, "cosmology": 29, "semiclassical": 9, "cft": 5, "dynamics": 3, "gauge-constrained": 5, "harmonic-analysis": 15, "operator-algebras": 14, "asymptotics": 2, "qft-rg": 5, "pl-topology": 11, "quantum-groups": 11, "random-geometry": 5, "asymptotic-safety": 4, "canonical-qg": 12, "causal-sets": 12, "dynamical-triangulations": 5, "gft-tensor": 8, "holography": 8, "low-dim-gravity": 7, "matrix-models": 5, "ncg": 6, "perturbative-qg": 7, "regge": 6, "spin-foams": 20, "string-theory": 11, "twistors": 6, "other": 4}
   by_source_class: {"sourced": 256, "structural": 23}
-  by_priority_basis: {"canonical": 119, "highly cited": 76, "unlocks many": 8, "recent": 10, "other": 43}
+  by_priority_basis: {"canonical": 119, "highly cited": 77, "unlocks many": 7, "recent": 10, "other": 43}
 tasks:
   - id: "T-GE1"
     kind: "milestone"
@@ -1623,6 +1623,24 @@ tasks:
     decl: "Lightlike.OperatorAlgebras.momentumMin_deficiency"
     routes: ["The adjoint of -i d/dx on C_c^∞(0,1) is -i d/dx on H¹(0,1) (weak derivative); ker(A† ∓ i) is spanned by exp(∓x), found by solving the ODE for an absolutely continuous function; density of C_c^∞(0,1) in L²(0,1) (Mathlib: density of compactly supported smooth functions in Lp)."]
     labels: ["proof-task", "area: operator-algebras", "size: M", "intermediate"]
+  - id: "T-OP1-P6"
+    kind: "proof"
+    title: "On L²(0,1), the closure of -i d/dx on C² functions supported inside (0,1) equals its closure on C_c^∞(0,1)"
+    milestone: "OP1"
+    area: "operator-algebras"
+    tier: "established"
+    source_class: "sourced"
+    source: "hall-2013, Chapter: Unbounded Self-Adjoint Operators; hall-2013, Chapter: The Spectral Theorem for Unbounded Self-Adjoint Operators"
+    priority: 3
+    priority_basis: "highly cited"
+    size: "M"
+    difficulty: "intermediate"
+    mode: "non-exclusive"
+    deps: []
+    file: "Tasks/OP/T_OP1_P6.lean"
+    decl: "Lightlike.OperatorAlgebras.momentumGraph_closure_eq"
+    routes: ["Mollification: for f in C²_c(0,1), f * ρ_ε is C_c^∞(0,1) for small ε, and f * ρ_ε → f and (f * ρ_ε)' = f' * ρ_ε → f' in L²(0,1), so every graph point of the C² operator is a limit of graph points of the C_c^∞ operator; the other inclusion is monotonicity (momentumGraphSmooth_le). Needs: convolution with a mollifier commutes with the derivative and converges in L² (Mathlib: ContDiffBump, convolution approximation of the identity)."]
+    labels: ["proof-task", "area: operator-algebras", "size: M", "intermediate"]
   - id: "T-OP2"
     kind: "milestone"
     title: "CCR and CAR algebras: Weyl algebra, Fock space, quasi-free states, Bogoliubov transformations"
@@ -2812,22 +2830,6 @@ tasks:
     mode: "non-exclusive"
     deps: ["T-PL7"]
     routes: ["For a connected colored graph of dimension 2 the dual is a closed surface, so `ColoredGraph.euler` (`Lightlike/GFT/Euler.lean`) is its Euler characteristic, even, and at most 2 (Gurau 2010, Section 2; the classification of closed surfaces, PL3). No Lean statement is written until the surface type of the PL area (the PL7 milestone) exists; the link to the face count is `eulerChar_dual_eq_euler` (`Lightlike/GFT/DualEuler.lean`)."]
-    labels: ["proof-task", "area: gft-tensor", "size: M", "intermediate"]
-  - id: "T-GF1-P2"
-    kind: "proof"
-    title: "The set-of-faces form of the dual of a colored graph agrees with the indexed form when no simplices repeat"
-    milestone: "GF1"
-    area: "gft-tensor"
-    tier: "frontier"
-    source_class: "sourced"
-    source: "gurau-2010"
-    priority: 4
-    priority_basis: "unlocks many"
-    size: "M"
-    difficulty: "intermediate"
-    mode: "non-exclusive"
-    deps: []
-    routes: ["The dual of a colored graph is built here as a graded poset with indexed simplices (`Lightlike/GFT/Dual.lean`), while Gurau (2010, Theorem 2) states a simplicial complex, a collection of vertex sets that may repeat. State the bridge: when no two simplices of the dual have the same vertex set, the indexed poset is isomorphic to the poset of the vertex sets ordered by inclusion, so the two readings of Theorem 2 agree. Until it is proved the difference named in the notes of the catalogue entry stays open. If stranded graphs are defined in the library, their equivalence with the link form of `link_isDual_of_two_le` becomes a task as well."]
     labels: ["proof-task", "area: gft-tensor", "size: M", "intermediate"]
   - id: "T-GF2"
     kind: "milestone"

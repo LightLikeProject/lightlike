@@ -40,7 +40,7 @@ For a smooth torsion-free connection the second Bianchi identity holds: the cycl
 
 In a chart, the covariant derivative of a bilinear form field, in particular of the Einstein tensor, is given by the components formula, so it is tensorial in the three arguments [17].
 
-For a coordinate metric the contracted Bianchi identity holds, `g^{στ} ∇_σ G_{τν} = 0` for the coordinate Einstein tensor [18], and for the Levi-Civita connection of a Lorentzian metric on a manifold the divergence of the Einstein tensor vanishes [19].
+For a coordinate metric the contracted Bianchi identity holds, `g^{στ} ∇_σ G_{τν} = 0` for the coordinate Einstein tensor [18], and for the Levi-Civita connection of a Lorentzian metric on a manifold the divergence of the Einstein tensor vanishes [19]; the Einstein equations with a cosmological constant and a source, and in dimension other than two the vacuum equations are `Ric = 0` [23].
 
 A Lorentzian coordinate metric on an open subset of `ℝⁿ` is a Lorentzian metric on that open subset as a manifold, with the same components in every chart [20]; exterior Schwarzschild on the manifold layer satisfies the vacuum Einstein equations and has vanishing Ricci tensor [21]; the Levi-Civita connection of a Lorentzian metric is a smooth covariant derivative [22].
 
@@ -93,6 +93,7 @@ than one who stays at rest [6].
 20. Lightlike/Spacetime/OpenCoordMetric.lean - `openMetric`, `openMetric_coordMetric`: a Lorentzian coordinate metric on an open set as a Lorentzian metric on the manifold, and the bridge.
 21. Lightlike/Spacetime/SchwarzschildManifold.lean - `schwarzschildMetric`, `schwarzschild_coordMetric`, `schwarzschild_satisfiesEinstein`, `schwarzschild_ricci_eq_zero`: exterior Schwarzschild on the manifold layer.
 22. Lightlike/Spacetime/LeviCivitaSmooth.lean - `contMDiffCovariantDerivative_leviCivita`: the Levi-Civita connection of a Lorentzian metric is smooth.
+23. Lightlike/Spacetime/EinsteinEquations.lean - `satisfiesEinstein_iff_ricci`, `satisfiesEinstein_zero_iff_ricci_eq_zero`: the vacuum Einstein equations with a cosmological constant are Ricci proportional to the metric, and Ricci-flat for no cosmological constant.
 
 ## References
 
