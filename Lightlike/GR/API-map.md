@@ -22,6 +22,15 @@ exact solutions, such as Kerr and de Sitter, are not yet formalized. [TODO]
 1. Lightlike/GR/Einstein.lean - `einsteinTensor`, `IsVacuumSolution`,
    `vacuum_iff_ricci_eq_zero`, `minkowski_isVacuumSolution`
 2. Lightlike/GR/Schwarzschild.lean - `sch_isLorentzian`, `sch_isVacuumSolution`
+3. Lightlike/GR/KruskalRegions.lean - `kr_eq_two_mul_iff` (the horizon `r = 2M` is `T = ±X`), `kr_eq_kr_iff`,
+   `kruskalI`, `kruskalII`, `kruskalIII`, `kruskalIV`, `kruskalU_eq_union`, `two_mul_lt_kr_iff_mem`,
+   `kr_lt_two_mul_iff_mem`, `kruskalQuad_radial_eq_zero_iff` (radial null directions), `IsKruskalFutureCausal`,
+   `kruskalII_of_futureCausal` (nothing leaves region II), `kr_lt_of_futureCausal_kruskalII`
+4. Lightlike/GR/KruskalExterior.lean - `kruskalChange_exterior` (the Kruskal coordinates of the Schwarzschild
+   exterior), `kruskalChange_exterior_div`, `kruskalChange_exterior_mem`, `exists_exterior_of_mem_kruskalI`
+5. Lightlike/GR/KruskalPenrose.lean - `penroseMap`, `penroseU`, `bijOn_penroseMap` (the Penrose diagram of the
+   Kruskal extension), `tan_mul_tan_eq_one_of_abs_add`, `penroseMap_horizon_iff`,
+   `pullback_kruskal_penroseInv`, `penrose_conformalFactor_pos`
 
 ## References
 

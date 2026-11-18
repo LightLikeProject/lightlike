@@ -42,3 +42,31 @@ NOT proved (open, no attempt completed):
   boundary of the past of future null infinity need the causal structure of the Kruskal manifold (GE2 relations on a manifold with this chart): not formalized here.
 * **The four regions I-IV and the exterior map `(t, r) ↦ (v, u)`** (7.78)-(7.79) (we use the chart change from ingoing EF instead).
 * **The Penrose diagram** (conformal compactification of the Kruskal manifold: Penrose-Carter): this is GE7, only done for Minkowski space and AdS.
+
+## Parts closed after the metric (stream Fable-1, 19 November 2026)
+
+Source read for these: Carroll, arXiv:gr-qc/9712019, chapter 7, printed pages 186-190 (eqs. (7.75)-(7.85), the Kruskal
+diagram, the four regions and the text on regions II-IV) and pages 197-198 (eqs. (7.103)-(7.105), the Penrose diagram
+of the maximally extended solution). Kruskal (1960), Szekeres (1960), MTW, Wald, Hawking-Ellis: not read.
+
+* Lightlike/GR/KruskalRegions.lean: (7.83) horizon `r = 2M` iff `X² = T²`; (7.84) `r` constant iff `X² - T²` constant;
+  `T` timelike, `X` spacelike; (7.82) a radial vector `(a, b, 0, 0)` is null iff `a² = b²`; the regions
+  `I: X > |T|`, `II: T > |X|`, `III: T < -|X|`, `IV: X < -|T|` cover the domain with the horizon, `r > 2M` exactly in
+  `I ∪ IV`, `r < 2M` exactly in `II ∪ III`; a curve with future-directed causal velocity that is in region II stays in
+  it, and `r` strictly decreases along it (the source: "it can never return", "you cannot even stop yourself from
+  moving in the direction of decreasing r").
+* Lightlike/GR/KruskalExterior.lean: (7.78), (7.79) as the closed form of `kruskalChange` at `v = t + r*`; (7.85)
+  `T/X = tanh (t/4M)`; the image of the exterior `r > 2M` is exactly region I.
+* Lightlike/GR/KruskalPenrose.lean: (7.105) with `p = arctan (T + X)`, `q = arctan (T - X)`: a bijection of the
+  Kruskal domain onto `|p|, |q| < π/2`, `|p + q| < π/2`; the singularity lines `p + q = ±π/2` are straight; the horizon
+  is `p = 0` or `q = 0`; the metric in `(p, q, θ, φ)` is `-(h(r)/(2 cos²p cos²q))(dp dq + dq dp) + r² dΩ²`.
+
+Differences from the source in these files:
+* representation: causal curves are differentiable curves in the chart with `g(v, v) ≤ 0`, `0 < v⁰`; the manifold
+  notion `IsFutureCausalCurve` is not used; the regions are given by inequalities read off the source's figure.
+* convention: no factor `√(2GM)` inside the arctangent of (7.105) (our `T`, `X` are dimensionless).
+* representation: the source's ranges for `(u'', v'')` are `-π/2 < u'', v'' < π/2` and `-π < u'' + v'' < π`; the exact
+  image proved here is cut by `|p + q| < π/2` (our `q` belongs to `U = T - X`).
+
+Still open: maximality (inextendibility) of the extension; the event horizon as the boundary of the past of future
+null infinity on the manifold; conformal infinity as added points.
