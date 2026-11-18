@@ -45,6 +45,6 @@ by (1) and continuity; `‖T‖₁ = ‖f‖` by the pairing isometry; uniquenes
 
 Status of the bricks (see the plan above): (1) done, plus finite-rank and rank-one operators are compact (`FiniteRankApprox`); (2) done:
 `CompactDual.compactFunctionalOperator` and `compactFunctionalOperator_inner` (`⟪y, T x⟫ = f |x⟩⟨y|`). Open: (3) that `T` is trace class. The route through the
-polar factor `W` (`⟪e, |T| e⟫ = ⟪W e, T e⟫`) needs a Hilbert basis adapted to `(ker T)^⊥ ⊕ ker T`, on which `W e` is orthonormal; the pinned Mathlib has no
-gluing of Hilbert bases of an orthogonal decomposition in the form needed, which is the concrete missing piece for this route; an alternative is to
+polar factor `W` (`⟪e, |T| e⟫ = ⟪W e, T e⟫`) needs a Hilbert basis adapted to `(ker T)^⊥ ⊕ ker T`, on which `W e` is orthonormal; I did not find in the pinned Mathlib (not an exhaustive search: `IsHilbertSum` exists, but I did not check it for this)
+a gluing of Hilbert bases of an orthogonal decomposition in the form needed; an alternative is to
 show first that `T` is compact and use the spectral decomposition of `|T|`. `T-OP6-P1` stays an open proof task with these helper lemmas.
