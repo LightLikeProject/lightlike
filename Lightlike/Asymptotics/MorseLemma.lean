@@ -6,16 +6,17 @@ import Mathlib
 A smooth function `f (x, λ)` on `E × F` (finite-dimensional real normed spaces), with a critical point at `x = 0` for every `λ`
 near `λ₀` and a nondegenerate Hessian `B = ∂ₓ² f (0, λ₀)` there, is, in new coordinates `y = Φ (x, λ)`, a quadratic form:
 `f (x, λ) = f (0, λ) + ½ B (Φ (x, λ)) (Φ (x, λ))` near `(0, λ₀)`, with `Φ` smooth, `Φ (0, λ) = 0` and
-`∂ₓ Φ (0, λ₀) = id`; and `(x, λ) ↦ (Φ (x, λ), λ)` is a local diffeomorphism.
+`∂ₓ Φ (0, λ₀) = id`; and `(x, λ) ↦ (Φ (x, λ), λ)` is a local diffeomorphism. Composing with Sylvester's isomorphism (Mathlib) gives
+the diagonal form `f (x, λ) = f (0, λ) + ∑ wᵢ yᵢ²`, `wᵢ = ±1` (`morse_diagonal`), whose number of negative signs is the Morse index
+`sigNeg` of the Hessian; `x³` has no such chart (`not_hasDiagonalMorseChart_cube`). The parametric form generalises Milnor's Morse
+lemma (Milnor, *Morse Theory*, 1963, Part I, §2, Lemma 2.2; comparison pending).
 
-Proof (the textbook proof, Hörmander, *The Analysis of Linear Partial Differential Operators* III, Lemma C.6.1; the comparison with the
-book at that location is pending: it was not read): Hadamard's lemma gives `f (x, λ) = f (0, λ) + ½ B x (Q (x, λ) x)` with
+Proof: Hadamard's lemma and a smooth square root, as in the textbook proofs of the Morse lemma: Hadamard's lemma gives `f (x, λ) = f (0, λ) + ½ B x (Q (x, λ) x)` with
 `Q` a smooth family of `B`-self-adjoint endomorphisms, `Q (0, λ₀) = 1`; a smooth square root `ρ` near `1` of `B`-self-adjoint
 endomorphisms (inverse function theorem in the algebra of endomorphisms) gives `Φ (x, λ) = ρ (Q (x, λ)) x`.
 
 **Limits.** The function is smooth on the whole of `E × F` (a function defined near `(0, λ₀)` reduces to this by a cut-off); the
-critical point is at `x = 0` (a critical point depending on `λ` reduces to this by a smooth translation); the normal form has the
-Hessian at `λ₀` itself as quadratic form (a diagonal form follows by Sylvester's law, not proved here); `E` and `F` are
+critical point is at `x = 0` (a critical point depending on `λ` reduces to this by a smooth translation); the Morse index is `sigNeg`, the largest dimension of a subspace on which the Hessian is negative definite (equal to the number of negative eigenvalues for any inner product, not proved here); `E` and `F` are
 finite-dimensional real normed spaces in `Type` (not `Type u`).
 
 The Hessian is written with the partial derivatives `partialE`, `partialE2` of `f` in the `E` variable.
@@ -479,5 +480,114 @@ theorem morse_coordinates {f : E × F → ℝ} (hf : ContDiff ℝ ∞ f) {l₀ :
   refine e.contDiffAt_symm (f₀' := f') htgt ?_ ?_
   · rw [hsy]; exact hΨd'
   · rw [hsy]; exact hΨc
+
+
+/-- **The Morse quadratic form**: `v ↦ ½ B v v` for a continuous bilinear form `B`, as a `QuadraticForm`. -/
+noncomputable def hessQuad (B : E →L[ℝ] E →L[ℝ] ℝ) : QuadraticForm ℝ E :=
+  LinearMap.BilinMap.toQuadraticMap
+    (LinearMap.mk₂ ℝ (fun v w => (1 / 2 : ℝ) * B v w)
+      (fun v v' w => by simp only [map_add, ContinuousLinearMap.add_apply]; ring)
+      (fun c v w => by simp only [map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul]; ring)
+      (fun v w w' => by simp only [map_add]; ring)
+      (fun c v w => by simp only [map_smul, smul_eq_mul]; ring))
+
+theorem hessQuad_apply (B : E →L[ℝ] E →L[ℝ] ℝ) (v : E) : hessQuad B v = (1 / 2 : ℝ) * B v v := by
+  simp [hessQuad, LinearMap.BilinMap.toQuadraticMap_apply]
+
+/-- **A diagonal normal form with a diffeomorphism chart.** `e` is a local diffeomorphism of `E × F` onto an open set of
+`(Fin r → ℝ) × F`, fixing the parameter, in which `f - f(0, λ)` is the diagonal form `∑ w i yᵢ²`. -/
+def HasDiagonalMorseChart {r : ℕ} (f : E × F → ℝ) (l₀ : F) (w : Fin r → ℝ) : Prop :=
+  ∃ e : OpenPartialHomeomorph (E × F) ((Fin r → ℝ) × F),
+    ((0 : E), l₀) ∈ e.source ∧ (∀ p, (e p).2 = p.2) ∧ ContDiffAt ℝ ∞ e (0, l₀) ∧
+    ContDiffAt ℝ ∞ e.symm (e (0, l₀)) ∧
+    ∀ᶠ p in 𝓝 ((0 : E), l₀), f p = f (0, p.2) + ∑ i, w i * ((e p).1 i) ^ 2
+
+
+/-- **The Morse lemma with parameters, diagonal form.** Under the hypotheses of `morse_lemma_with_parameters`, with
+`r = dim E`, there are signs `w i = ±1` and a smooth chart `(x, λ) ↦ (y, λ)` with
+`f (x, λ) = f (0, λ) + ∑ wᵢ yᵢ²` near `(0, λ₀)`; the number of negative signs is the Morse index `sigNeg` of the Hessian
+(the largest dimension of a subspace on which it is negative definite). -/
+theorem morse_diagonal {f : E × F → ℝ} (hf : ContDiff ℝ ∞ f) {l₀ : F}
+    (hcrit : ∀ᶠ l in 𝓝 l₀, partialE f (0, l) = 0)
+    (hnd : ∀ v, (∀ w, partialE2 f (0, l₀) v w = 0) → v = 0) :
+    ∃ w : Fin (Module.finrank ℝ E) → ℝ, (∀ i, w i = -1 ∨ w i = 1) ∧
+      sigNeg (hessQuad (partialE2 f (0, l₀))) = {i | w i < 0}.ncard ∧
+      HasDiagonalMorseChart f l₀ w := by
+  obtain ⟨Φ, e, hΦ, hΦ0, hsrc, he, hsymm, hfΦ⟩ := morse_coordinates hf hcrit hnd
+  have hΦc : ContDiffAt ℝ ∞ e (0, l₀) := by
+    have : (e : E × F → E × F) = fun p => (Φ p, p.2) := funext he
+    rw [this]; exact hΦ.prodMk contDiffAt_snd
+  set B := partialE2 f (0, l₀) with hB
+  have hBs : ∀ u v, B u v = B v u := fun u v => partialE2_symm hf _ u v
+  have hsep : (QuadraticMap.associated (R := ℝ) (hessQuad B)).SeparatingLeft := by
+    intro x hx
+    refine hnd x fun y => ?_
+    have hflip : (LinearMap.mk₂ ℝ (fun v w => (1 / 2 : ℝ) * B v w)
+      (fun v v' w => by simp only [map_add, ContinuousLinearMap.add_apply]; ring)
+      (fun c v w => by simp only [map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul]; ring)
+      (fun v w w' => by simp only [map_add]; ring)
+      (fun c v w => by simp only [map_smul, smul_eq_mul]; ring)).flip = LinearMap.mk₂ ℝ (fun v w => (1 / 2 : ℝ) * B v w)
+      (fun v v' w => by simp only [map_add, ContinuousLinearMap.add_apply]; ring)
+      (fun c v w => by simp only [map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul]; ring)
+      (fun v w w' => by simp only [map_add]; ring)
+      (fun c v w => by simp only [map_smul, smul_eq_mul]; ring) := by
+      ext v w; simp [hBs v w]
+    have h1 := QuadraticMap.associated_left_inverse' (S := ℝ) hflip
+    have := hx y
+    unfold hessQuad at this
+    change QuadraticMap.associatedHom ℝ _ x y = 0 at this
+    rw [h1] at this
+    simpa using this
+  obtain ⟨w, hw, ⟨L⟩⟩ := QuadraticForm.equivalent_one_neg_one_weighted_sum_squared (hessQuad B) hsep
+  refine ⟨w, hw, QuadraticForm.sigNeg_of_equiv_weightedSumSquares ⟨L⟩, ?_⟩
+  set Lc : E ≃L[ℝ] (Fin (Module.finrank ℝ E) → ℝ) := L.toLinearEquiv.toContinuousLinearEquiv with hLc
+  set T : (E × F) ≃L[ℝ] ((Fin (Module.finrank ℝ E) → ℝ) × F) := Lc.prodCongr (ContinuousLinearEquiv.refl ℝ F) with hT
+  set e' := e.trans T.toHomeomorph.toOpenPartialHomeomorph with he'
+  have he'app : ∀ p, e' p = T (e p) := fun p => rfl
+  have hesnd : ∀ p, (e p).2 = p.2 := fun p => by rw [he]
+  refine ⟨e', ?_, fun p => ?_, ?_, ?_, ?_⟩
+  · exact ⟨hsrc, Set.mem_univ _⟩
+  · rw [he'app]; simp [hT, hesnd]
+  · have h1 : (e' : E × F → _) = T ∘ e := rfl
+    rw [h1]
+    exact T.contDiff.contDiffAt.comp _ hΦc
+  · have h1 : (e'.symm : _ → E × F) = e.symm ∘ T.symm := rfl
+    have h2 : e' (0, l₀) = T (e (0, l₀)) := rfl
+    rw [h1, h2]
+    have : T.symm (T (e (0, l₀))) = e (0, l₀) := T.symm_apply_apply _
+    refine ContDiffAt.comp (g := e.symm) (f := T.symm) _ ?_ T.symm.contDiff.contDiffAt
+    rw [this]; exact hsymm
+  · filter_upwards [hfΦ] with p hp
+    rw [hp, he'app]
+    have h1 : (T (e p)).1 = L (Φ p) := by
+      have : e p = (Φ p, p.2) := he p
+      rw [this]; rfl
+    have h2 := L.map_app (Φ p)
+    rw [h1, ← hessQuad_apply] at *
+    rw [← h2, QuadraticMap.weightedSumSquares_apply]
+    simp only [smul_eq_mul, sq]
+
+/-- **Trust check: `x³` has no diagonal Morse chart at `0`.** For `f (x, λ) = x³` on `ℝ × ℝ` no weight `w` and no chart
+satisfy the normal form: the difference `x³` changes sign at `0`, while `w y²` does not (the hypothesis of the Morse lemma,
+a nondegenerate Hessian, fails here: `∂ₓ² f (0, 0) = 0`). -/
+theorem not_hasDiagonalMorseChart_cube (w : Fin 1 → ℝ) :
+    ¬ HasDiagonalMorseChart (E := ℝ) (F := ℝ) (fun p : ℝ × ℝ => p.1 ^ 3) 0 w := by
+  rintro ⟨e, -, -, -, -, h⟩
+  obtain ⟨ε, hε, hball⟩ := Metric.eventually_nhds_iff.1 h
+  have hmem : ∀ t : ℝ, |t| < ε → dist ((t, (0 : ℝ)) : ℝ × ℝ) ((0 : ℝ), (0 : ℝ)) < ε := by
+    intro t ht
+    simpa [Prod.dist_eq, Real.dist_eq] using ht
+  have h1 := hball (hmem (ε / 2) (by rw [abs_of_pos (by linarith)]; linarith))
+  have h2 := hball (hmem (-(ε / 2)) (by rw [abs_neg, abs_of_pos (by linarith)]; linarith))
+  simp only [Fin.sum_univ_one, zero_pow (by norm_num : 3 ≠ 0), zero_add] at h1 h2
+  have s1 := sq_nonneg ((e (ε / 2, 0)).1 0)
+  have s2 := sq_nonneg ((e (-(ε / 2), 0)).1 0)
+  have p1 : 0 < (ε / 2) ^ 3 := by positivity
+  have p2 : (-(ε / 2)) ^ 3 < 0 := by
+    have : (-(ε / 2)) ^ 3 = -((ε / 2) ^ 3) := by ring
+    rw [this]; linarith
+  rcases le_or_gt (w 0) 0 with hw | hw
+  · nlinarith [mul_nonpos_of_nonpos_of_nonneg hw s1]
+  · nlinarith [mul_nonneg hw.le s2]
 
 end Lightlike.Morse

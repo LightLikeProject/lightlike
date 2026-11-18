@@ -2012,3 +2012,16 @@
   review: kernel-checked
   note: "{H[N], H[M]} = D[Y] with Y^i = h^ij (N d_j M - M d_j N) for smooth compactly supported N and M, smooth data with positive definite h and symmetric pi, in dimension d at least 2, with the Hamiltonian density (tr (h pi h pi) - (tr h pi)^2/(d-1))/sqrt(det h) - sqrt(det h) R, D[xi] the integral of pi^ij (L_xi h)_ij, and the bracket computed with Gateaux derivatives along compactly supported variations. The proof differentiates the first-order form of H[N] along M times the pi-gradient of H[M], antisymmetrizes, and reduces the remaining coefficient to -2 times the covariant divergence of pi by an index computation with the Christoffel symbols; the ADM form of the momentum constraint closes the argument. Compared with Thiemann, arXiv:gr-qc/0110034, sec. I.1.1, eq. (I.1.1.37) (the lecture-note version of the cited book), same signs and structure function; Hojman-Kuchar-Teitelboim 1976 has not been read. Differences, approved by the maintainers (17 November 2026): (a) same setting as the source; (b) partial: one global chart R^d, no manifold and no foliation (task F11); (c) convention: units 16 pi G = 1 and the kinetic coefficient 1/(d-1); (d) representation: D[xi] in the Lie-derivative form, equal to the ADM form by Lightlike.Canonical.momentumConstraint_eq_adm_of_smooth; (e) representation: the bracket through pi-gradients and Gateaux derivatives. The result is partial until the hypersurface version (task F11) replaces the one global chart (b)."
   since: unreleased
+- id: LL-XXXX
+  title: The Morse lemma with parameters, with its diagonal normal form (a generalisation of Milnor's Morse lemma)
+  area: Asymptotics
+  file: Lightlike/Asymptotics/MorseLemma.lean
+  decls: [Lightlike.Morse.morse_lemma_with_parameters, Lightlike.Morse.morse_coordinates, Lightlike.Morse.morse_diagonal, Lightlike.Morse.not_hasDiagonalMorseChart_cube]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: milnor-1963, location: "Chapter: PART I. NON-DEGENERATE SMOOTH FUNCTIONS ON A MANIFOLD|10.1515/9781400881802-002"}
+  review: kernel-checked
+  note: "A smooth function f of a variable x in a finite-dimensional real normed space E and a parameter l, with a critical point at x = 0 for every l near l0 and a nondegenerate Hessian at (0, l0), is f(0, l) plus the sum of w_i y_i^2, w_i = plus or minus one, in coordinates (y, l) that are a smooth local diffeomorphism of (x, l) near (0, l0). The number of negative signs is the Morse index (the largest dimension of a subspace on which the Hessian is negative definite). The function x^3 at 0 has no such chart. The parametric form generalises Milnor's Morse lemma; comparison with the book at that location is pending. Limits: f is smooth on the whole of E times F; the critical point is at x = 0; the index is not shown to equal the number of negative eigenvalues for an inner product."
+  since: unreleased
