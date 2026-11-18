@@ -865,6 +865,7 @@ import Lightlike.GFT.ColoredGraph
 import Lightlike.GFT.Dual
 import Lightlike.GFT.DualEuler
 import Lightlike.GFT.DualLink
+import Lightlike.GFT.DualSurface
 import Lightlike.GFT.DualVertexSets
 import Lightlike.GFT.PseudoComplex
 import Lightlike.Gauge.Constraints
