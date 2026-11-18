@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Lean Community
 -/
 /-
-Ported from physicslib4 (github.com/physicslib/physicslib4, Physicslib4/Spectral/Unbounded/Cayley.lean at commit 82f4433), Apache-2.0; adapted to Lightlike:
+Adapted from physicslib4 (github.com/physicslib/physicslib4), file `Physicslib4/Spectral/Unbounded/Cayley.lean` at commit 82f4433, licensed Apache-2.0; changes made for Lightlike:
 the namespace and import prefix `Physicslib4` is renamed to `Lightlike.OperatorAlgebras` and the file is moved to
 `Lightlike/OperatorAlgebras/Spectral/Unbounded/Cayley.lean`; the proofs are unchanged. The original copyright and license notice above is kept.
 -/
