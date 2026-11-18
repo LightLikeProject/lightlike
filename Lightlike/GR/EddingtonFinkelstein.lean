@@ -1,6 +1,7 @@
 import Lightlike.GR.Schwarzschild
 import Lightlike.Spacetime.ChartChange
 import Lightlike.Spacetime.SchwarzschildManifold
+import Lightlike.Spacetime.RicciContinuous
 
 /-!
 # The ingoing Eddington–Finkelstein chart of Schwarzschild
@@ -267,5 +268,46 @@ theorem ricci_ef_interior (hM : 0 < M) {y : Fin 4 → ℝ} (hr0 : 0 < y 1) (hr :
   ricci_ef_eq_zero M (S := Set.Ioo 0 (2 * M)) isOpen_Ioo (fun r hr => hr.1)
     (fun r hr => (ne_of_lt hr.2)) (fun r hr => hasDerivAt_tortoiseInt M hM hr.1 hr.2)
     (contDiffOn_tortoiseInt M hM) ⟨⟨hr0, hr⟩, hθ, hθ'⟩ b d
+
+/-- **Eddington–Finkelstein is Ricci-flat across the horizon.** For `M > 0` the Ricci tensor of the
+ingoing Eddington–Finkelstein metric vanishes at every point `r > 0`, `0 < θ < π`, including the
+horizon `r = 2M`: it is continuous (`continuousOn_ricci`) and vanishes at all points with `r ≠ 2M`
+(`ricci_ef_exterior`, `ricci_ef_interior`), which accumulate at the horizon. -/
+theorem ricci_ef_eq_zero_of_mem (hM : 0 < M) {y : Fin 4 → ℝ} (hy : y ∈ efU) (b d : Fin 4) :
+    ricci (efMetric M) b d y = 0 := by
+  obtain ⟨hr, hθ, hθ'⟩ := hy
+  rcases lt_trichotomy (y 1) (2 * M) with h | h | h
+  · exact ricci_ef_interior M hM hr h hθ hθ' b d
+  · -- the horizon: a limit of points off the horizon
+    have hcont : ContinuousAt (ricci (efMetric M) b d) y :=
+      (continuousOn_ricci (isCoordMetric_ef M) b d).continuousAt
+        (isOpen_efU.mem_nhds ⟨hr, hθ, hθ'⟩)
+    set c : ℝ → Fin 4 → ℝ := fun t => y + t • Pi.single 1 1 with hc
+    have hcc : Continuous c := continuous_const.add (continuous_id.smul continuous_const)
+    have hc0 : c 0 = y := by simp [hc]
+    have hlim : Filter.Tendsto (fun t => ricci (efMetric M) b d (c t)) (nhds 0)
+        (nhds (ricci (efMetric M) b d y)) := by
+      have h0 := hcc.tendsto 0
+      rw [hc0] at h0
+      exact hcont.tendsto.comp h0
+    have hzero : ∀ᶠ t in nhdsWithin (0 : ℝ) {0}ᶜ, ricci (efMetric M) b d (c t) = 0 := by
+      have hU : ∀ᶠ t in nhds (0 : ℝ), c t ∈ efU :=
+        hcc.continuousAt.preimage_mem_nhds (by rw [hc0]; exact isOpen_efU.mem_nhds ⟨hr, hθ, hθ'⟩)
+      filter_upwards [nhdsWithin_le_nhds hU, self_mem_nhdsWithin] with t ht ht0
+      have h1 : (c t) 1 = 2 * M + t := by simp [hc, h, Pi.single_apply]
+      have h2 : (c t) 2 = y 2 := by simp [hc, Pi.single_apply]
+      rcases lt_or_gt_of_ne (show t ≠ 0 from ht0) with hlt | hgt
+      · exact ricci_ef_interior M hM ht.1 (by rw [h1]; linarith) ht.2.1 ht.2.2 b d
+      · exact ricci_ef_exterior M hM (by rw [h1]; linarith) ht.2.1 ht.2.2 b d
+    have h0 : Filter.Tendsto (fun t => ricci (efMetric M) b d (c t)) (nhdsWithin (0 : ℝ) {0}ᶜ)
+        (nhds 0) := tendsto_const_nhds.congr' (hzero.mono fun t ht => ht.symm)
+    exact tendsto_nhds_unique (hlim.mono_left nhdsWithin_le_nhds) h0
+  · exact ricci_ef_exterior M hM h hθ hθ' b d
+
+/-- **The ingoing Eddington–Finkelstein metric solves the vacuum Einstein equations for every
+`r > 0`**, across the horizon `r = 2M`, with Lorentzian signature there (`ef_isLorentzian`). -/
+theorem ef_isVacuumSolution (hM : 0 < M) : IsVacuumSolution 0 (efMetric M) efU :=
+  ⟨isCoordMetric_ef M, fun y hy μ ν => by
+    simp [einsteinTensor, scalarCurvature, ricci_ef_eq_zero_of_mem M hM hy]⟩
 
 end Lightlike
