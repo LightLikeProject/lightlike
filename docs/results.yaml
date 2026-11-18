@@ -2012,7 +2012,7 @@
   review: kernel-checked
   note: "{H[N], H[M]} = D[Y] with Y^i = h^ij (N d_j M - M d_j N) for smooth compactly supported N and M, smooth data with positive definite h and symmetric pi, in dimension d at least 2, with the Hamiltonian density (tr (h pi h pi) - (tr h pi)^2/(d-1))/sqrt(det h) - sqrt(det h) R, D[xi] the integral of pi^ij (L_xi h)_ij, and the bracket computed with Gateaux derivatives along compactly supported variations. The proof differentiates the first-order form of H[N] along M times the pi-gradient of H[M], antisymmetrizes, and reduces the remaining coefficient to -2 times the covariant divergence of pi by an index computation with the Christoffel symbols; the ADM form of the momentum constraint closes the argument. Compared with Thiemann, arXiv:gr-qc/0110034, sec. I.1.1, eq. (I.1.1.37) (the lecture-note version of the cited book), same signs and structure function; Hojman-Kuchar-Teitelboim 1976 has not been read. Differences, approved by the maintainers (17 November 2026): (a) same setting as the source; (b) partial: one global chart R^d, no manifold and no foliation (task F11); (c) convention: units 16 pi G = 1 and the kinetic coefficient 1/(d-1); (d) representation: D[xi] in the Lie-derivative form, equal to the ADM form by Lightlike.Canonical.momentumConstraint_eq_adm_of_smooth; (e) representation: the bracket through pi-gradients and Gateaux derivatives. The result is partial until the hypersurface version (task F11) replaces the one global chart (b)."
   since: unreleased
-- id: LL-XXXX
+- id: LL-XXXX-a
   title: The Lie derivative of a metric along a vector field equals the symmetrised covariant derivative of the field for the Levi-Civita connection, so Killing fields are those with vanishing Lie derivative
   area: Spacetime
   file: Lightlike/Spacetime/LieMetric.lean
@@ -2023,5 +2023,31 @@
     refs:
       - {ref: carroll-1997, location: "Chapter 3"}
   review: kernel-checked
-  note: "For a metric g of any signature and a torsion-free connection compatible with g, X(g(V, W)) - g([X, V], W) - g(V, [X, W]) = g(nabla_V X, W) + g(V, nabla_W X) at every point where the fields are differentiable; hence the pointwise Killing equation holds at x iff the Lie derivative of g along X vanishes on all fields differentiable at x. Limits: pointwise statement only, no flows or isometries; the comparison with the source (Killing equation and Lie derivative in the lecture notes) is pending, and the location is the chapter, not an equation."
+  note: "For a metric g of any signature and a torsion-free connection compatible with g, X(g(V, W)) - g([X, V], W) - g(V, [X, W]) = g(nabla_V X, W) + g(V, nabla_W X) at every point where the fields are differentiable; hence the pointwise Killing equation holds at x iff the Lie derivative of g along X vanishes on all fields differentiable at x. Limits: pointwise statement only, no flows or isometries; not the Lie derivative of general tensors; the comparison with the source (Killing equation and Lie derivative in the lecture notes) is pending, and the location is the chapter, not an equation."
+  since: unreleased
+- id: LL-XXXX-b
+  title: The bracket of two Killing fields of a metric of any signature is a Killing field
+  area: Spacetime
+  file: Lightlike/Spacetime/KillingAlgebra.lean
+  decls: [Lightlike.IsKillingNear.lieBracket, Lightlike.lieDerivMetric_lieBracket]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "Chapter 3"}
+  review: kernel-checked
+  note: "If X and Y are smooth near x and the Lie derivative of g along each vanishes near x on all fields smooth near x, then so does the Lie derivative along the bracket [X, Y], by the Jacobi identity and [X, Y] f = X (Y f) - Y (X f). Limits: pointwise statement; the comparison with the source is pending and the location is the chapter."
+  since: unreleased
+- id: LL-XXXX-c
+  title: In Minkowski space the affine fields with skew linear part are Killing, the dilation is not, and affine fields close under the bracket with the Poincare relations
+  area: Spacetime
+  file: Lightlike/Spacetime/PoincareKilling.lean
+  decls: [Lightlike.affField_killing_iff, Lightlike.not_isKillingAt_dilation, Lightlike.mlieBracket_affField, Lightlike.skew_comm_skew]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "Chapter 3"}
+  review: kernel-checked
+  note: "On R^n with the Minkowski metric and the flat connection, the field y -> A y + c satisfies the Killing equation at every point iff A is skew for the metric; the dilation y -> y does not (n at least 1); [A y + c, B y + d] = (B A - A B) y + (B c - A d); the commutator of two skew endomorphisms is skew. Limits: not proved that these are all the Killing fields (the count n(n+1)/2); the 2-sphere check is not included; comparison with the source is pending."
   since: unreleased
