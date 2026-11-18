@@ -198,4 +198,19 @@ lemma norm_resolvent_le (hA : IsSelfAdjoint A) {z : ℂ} (hz : z.im ≠ 0) (y : 
     ‖resolventCLM hA hz y‖ ≤ (|z.im|)⁻¹ * ‖y‖ :=
   shiftEquiv_symm_bound hA hz y
 
+/-- **The adjoint of the resolvent**: `⟪R_z y, w⟫ = ⟪y, R_{conj z} w⟫`. -/
+lemma resolvent_adjoint (hA : IsSelfAdjoint A) {z : ℂ} (hz : z.im ≠ 0) (hz' : ((starRingEnd ℂ) z).im ≠ 0)
+    (y w : H) :
+    ⟪resolventCLM hA hz y, w⟫_ℂ = ⟪y, resolventCLM hA hz' w⟫_ℂ := by
+  set x : A.domain := ⟨resolventCLM hA hz y, resolvent_mem hA hz y⟩ with hx
+  set u : A.domain := ⟨resolventCLM hA hz' w, resolvent_mem hA hz' w⟩ with hu
+  have h1 : (A x : H) - z • (x : H) = y := resolvent_spec hA hz y
+  have h2 : (A u : H) - (starRingEnd ℂ) z • (u : H) = w := resolvent_spec hA hz' w
+  have key : ⟪(x : H), (A u : H) - (starRingEnd ℂ) z • (u : H)⟫_ℂ =
+      ⟪(A x : H) - z • (x : H), (u : H)⟫_ℂ := by
+    rw [inner_sub_right, inner_sub_left, inner_smul_right, inner_smul_left,
+      sa_symm_apply hA x u]
+  rw [h1, h2] at key
+  exact key
+
 end Lightlike.OperatorAlgebras
