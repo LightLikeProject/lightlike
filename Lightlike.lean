@@ -600,10 +600,12 @@ import Lightlike.SU2.Su2Exp
 import Lightlike.Spacetime.Causal.BasicRelations
 import Lightlike.Spacetime.Causal.CauchyDomain
 import Lightlike.Spacetime.Causal.CausalCurve
+import Lightlike.Spacetime.Causal.CurveGlobal
 import Lightlike.Spacetime.Causal.CurveMargin
 import Lightlike.Spacetime.Causal.CurveOps
 import Lightlike.Spacetime.Causal.ConeConvex
 import Lightlike.Spacetime.Causal.DomainOfDependence
+import Lightlike.Spacetime.Causal.IntegralCurves
 import Lightlike.Spacetime.Causal.Ladder
 import Lightlike.Spacetime.Causal.MinkowskiCauchy
 import Lightlike.Spacetime.Causal.MinkowskiCausal
