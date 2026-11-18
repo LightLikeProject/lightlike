@@ -5,3 +5,4 @@ import Lightlike.OperatorAlgebras.Spectral.Stone.Exponential
 import Lightlike.OperatorAlgebras.Spectral.Stone.Theorem
 import Lightlike.OperatorAlgebras.Spectral.StoneBridge
 import Lightlike.OperatorAlgebras.Spectral.StoneConsistency
+import Lightlike.OperatorAlgebras.Spectral.TestsStoneConsistency
