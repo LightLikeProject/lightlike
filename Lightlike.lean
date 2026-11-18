@@ -644,6 +644,8 @@ import Lightlike.Spacetime.Causal.BasicRelations
 import Lightlike.Spacetime.Causal.ChainReach
 import Lightlike.Spacetime.Causal.TimeReversal
 import Lightlike.Spacetime.Causal.OpenPast
+import Lightlike.Spacetime.CausalLadder.NearFuture
+import Lightlike.Spacetime.Causal.ChainStep
 import Lightlike.Spacetime.Causal.CauchySeparation
 import Lightlike.Spacetime.Causal.CauchyDomain
 import Lightlike.Spacetime.Causal.CausalCurve
