@@ -1,7 +1,7 @@
 # SP3, T-SP3-P1: the full-strength Tauberian theorem (record of the attempts)
 
 Status of 18 November 2026, branch `pl/sp3` (work in progress, not merged). Written for the PR body of
-the logarithmic result (`ingham_log`, queue entry 101) and for the owner's rule that a "weaker than the
+the logarithmic result (`ingham_log`, queue entry 101) and for the maintainers' rule that a "weaker than the
 source" result merges as partial only after two different full-proof attempts with concrete failure
 reasons. Claim tags follow the project convention: MEASURED = checked in Lean or by reading the cited
 location; PROXY / ASSUMPTION = stated as such.
