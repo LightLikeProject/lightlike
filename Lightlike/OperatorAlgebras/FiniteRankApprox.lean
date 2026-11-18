@@ -42,4 +42,26 @@ theorem exists_finiteRank_approx (K : H →L[ℂ] H) (hK : IsCompactOperator K) 
       _ ≤ ‖K x - y‖ := this
       _ ≤ ε := by rw [← dist_eq_norm]; exact (mem_ball.mp hy).le
 
+/-- **A finite-rank operator is compact**: the image of the unit ball lies in the compact ball of the finite-dimensional range. -/
+theorem isCompactOperator_of_finiteDimensional_range (F : H →L[ℂ] H)
+    [FiniteDimensional ℂ (LinearMap.range (F : H →ₗ[ℂ] H))] : IsCompactOperator F := by
+  let U : Submodule ℂ H := LinearMap.range (F : H →ₗ[ℂ] H)
+  refine (isCompactOperator_iff_image_closedBall_subset_compact (f := (F : H →ₗ[ℂ] H)) (r := 1) one_pos).mpr ?_
+  refine ⟨Subtype.val '' closedBall (0 : U) ‖F‖, (isCompact_closedBall _ _).image continuous_subtype_val, ?_⟩
+  rintro _ ⟨x, hx, rfl⟩
+  refine ⟨⟨F x, ⟨x, rfl⟩⟩, ?_, rfl⟩
+  rw [mem_closedBall, dist_zero_right]
+  have hx' : ‖x‖ ≤ 1 := by simpa using hx
+  calc ‖F x‖ ≤ ‖F‖ * ‖x‖ := F.le_opNorm x
+    _ ≤ ‖F‖ * 1 := by gcongr
+    _ = ‖F‖ := mul_one _
+
+/-- **A rank-one operator is compact**. -/
+theorem isCompactOperator_rankOne (x y : H) : IsCompactOperator (InnerProductSpace.rankOne ℂ x y) := by
+  haveI : FiniteDimensional ℂ (LinearMap.range ((InnerProductSpace.rankOne ℂ x y : H →L[ℂ] H) : H →ₗ[ℂ] H)) := by
+    refine Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ {x}) ?_
+    rintro _ ⟨z, rfl⟩
+    exact Submodule.mem_span_singleton.mpr ⟨inner ℂ y z, by simp [InnerProductSpace.rankOne_apply]⟩
+  exact isCompactOperator_of_finiteDimensional_range _
+
 end Lightlike.OperatorAlgebras
