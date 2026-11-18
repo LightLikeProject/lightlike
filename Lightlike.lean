@@ -668,6 +668,7 @@ import Lightlike.Spacetime.Causal.MeshSequence
 import Lightlike.Spacetime.Causal.ChainSequence
 import Lightlike.Spacetime.Causal.ChainCurve
 import Lightlike.Spacetime.Causal.TimelikeAboveCurve
+import Lightlike.Spacetime.CausalLadder.PointReach
 import Lightlike.Spacetime.Causal.TimelikeBelowCurve
 import Lightlike.Spacetime.Causal.PerturbCauchy
 import Lightlike.Spacetime.Causal.CauchySeparation
