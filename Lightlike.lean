@@ -730,6 +730,7 @@ import Lightlike.Spacetime.EinsteinTwoDim
 import Lightlike.Spacetime.Lorentzian
 import Lightlike.Spacetime.Minkowski
 import Lightlike.Spacetime.RiemannSymmetry
+import Lightlike.Spacetime.EHManifold.Locality
 import Lightlike.Spin4.Burnside
 import Lightlike.Spin4.CGBridge
 import Lightlike.Spin4.ClebschGordan
