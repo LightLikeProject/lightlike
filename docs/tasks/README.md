@@ -152,7 +152,7 @@ Done-when texts and trust checks: [milestones.md](milestones.md#lorentzian-and-r
 | [`T-GE9`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE9%22) | Spacetime geometry: Lorentzian metrics, Minkowski space, coordinate curvature, Riemann symmetries, chart … | carroll-1997 | M | intermediate |  |
 | [`T-GE7`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE7%22) | Conformal compactification: null infinity of Minkowski space, the conformal boundary of anti-de Sitter space | hawking-ellis-1973 | M | intermediate | GE2 |
 | [`T-GE10`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE10%22) | Vacuum Einstein equations; Minkowski and exterior Schwarzschild as solutions | carroll-1997, hawking-ellis-1973 | M | intermediate |  |
-| [`T-GE3`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE3%22) | Geodesics, the exponential map and the Raychaudhuri equation on a manifold | hawking-ellis-1973 | M | intermediate | GE1, RC6 |
+| [`T-GE3`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE3%22) | Geodesics, the exponential map and the Raychaudhuri equation on a manifold | hawking-ellis-1973 | M | intermediate | GE1 |
 | [`T-GE4`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE4%22) | Penrose's singularity theorem (1965) | senovilla-garfinkle-2015, hawking-ellis-1973 | R | research-level | GE2, GE3 |
 | [`T-GE14`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE14%22) | Stress-energy tensors and energy conditions: perfect fluids, scalar and electromagnetic fields; the null, … | carroll-1997, hawking-ellis-1973 | M | intermediate | GE1 |
 | [`T-GE12`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE12%22) | Lie derivatives of tensor fields, Killing vector fields and isometries; maximally symmetric spaces (de … | carroll-1997 | M | intermediate | GE1 |
@@ -481,10 +481,10 @@ Done-when texts and trust checks: [milestones.md](milestones.md#regge-calculus).
 |---|---|---|---|---|---|
 | [`T-RC4`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-RC4%22) | 3D Regge calculus: deficit angles and the Regge action on a triangulation | dittrich-freidel-speziale-2007 | M | intermediate | GE9 |
 | [`T-RC5`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-RC5%22) | 4D Regge calculus: 4-simplex geometry, deficit angles, the Regge action | dittrich-freidel-speziale-2007, brw-1999 | M | intermediate | RC4, SF3 |
-| [`T-RC6`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-RC6%22) | Regge calculus converges to the Einstein–Hilbert action (Cheeger–Müller–Schrader) | christiansen-2011 | R | research-level |  |
 | [`T-RC1`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-RC1%22) | Lorentzian Regge calculus (Sorkin 1975) | sorkin-2019 | M | intermediate | RC5 |
 | [`T-RC2`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-RC2%22) | Area Regge calculus (Barrett–Roček–Williams 1999) | brw-1999 | S | intermediate | RC5 |
 | [`T-RC3`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-RC3%22) | Linearized Regge calculus converges to linearized gravity (Roček–Williams 1981; Christiansen 2011) | christiansen-2011 | R | research-level | RC5, GE1 |
+| [`T-RC6`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-RC6%22) | Regge calculus converges to the Einstein–Hilbert action (Cheeger–Müller–Schrader) | christiansen-2011 | R | research-level |  |
 
 ### Spin foams
 
