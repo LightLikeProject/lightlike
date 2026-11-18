@@ -60,6 +60,11 @@ are [TODO] here.
    `GFT.ColoredGraph.eulerChar_dual_eq_euler`
 7. Lightlike/GFT/Euler.lean - `GFT.ColoredGraph.even_twoChi2`, `GFT.ColoredGraph.euler`,
    `GFT.ColoredGraph.two_mul_euler`
+8. Lightlike/GFT/DualVertexSets.lean - `GFT.ColoredGraph.DualSimplex.vertexSet`,
+   `GFT.ColoredGraph.DualSimplex.card_vertexSet`, `GFT.ColoredGraph.DualSimplex.vertexSet_mono`,
+   `GFT.ColoredGraph.DualSimplex.le_iff_vertexSet_subset_of_injective`,
+   `GFT.ColoredGraph.vertexSetOrderIso`, `GFT.ColoredGraph.not_injective_vertexSet_example`,
+   `GFT.ColoredGraph.injective_vertexSet_example`
 
 ## References
 
