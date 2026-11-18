@@ -18,7 +18,7 @@ variable {h : Type u} [NormedAddCommGroup h] [InnerProductSpace ℂ h]
   {K : Type*} [NormedAddCommGroup K] [InnerProductSpace ℂ K] [CompleteSpace K]
 
 /-- The identity Bogoliubov transformation. -/
-def Bogoliubov.id (h : Type u) [NormedAddCommGroup h] [InnerProductSpace ℂ h] : Bogoliubov h where
+noncomputable def Bogoliubov.id (h : Type u) [NormedAddCommGroup h] [InnerProductSpace ℂ h] : Bogoliubov h where
   toEquiv := ContinuousLinearEquiv.refl ℝ h
   symp_map _ _ := rfl
 
