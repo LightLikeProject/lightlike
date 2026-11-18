@@ -32,6 +32,11 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      cold:
+        description: "Time a from-scratch build: skip both build-cache restores (Mathlib's prebuilt cache is still fetched)"
+        type: boolean
+        default: false
 
 # One run at a time per pull request: a new commit cancels the run still going for the older one.
 # Each commit on main has its own group, so its run is never cancelled and every merged commit gets
@@ -192,6 +197,7 @@ jobs:
           echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
 
       - name: Restore dependency cache (Mathlib, Physlib builds)
+        if: ${{ !inputs.cold }}
         uses: actions/cache@v6
         with:
           path: .lake/packages
@@ -201,6 +207,7 @@ jobs:
       # the same toolchain and dependencies. Lake compares hashes, so a pull request rebuilds only the
       # modules it changes and the modules that import them.
       - name: Restore the library build of main
+        if: ${{ !inputs.cold }}
         uses: actions/cache/restore@v6
         with:
           path: .lake/build

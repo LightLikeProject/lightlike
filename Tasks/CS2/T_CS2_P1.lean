@@ -25,7 +25,12 @@ Lemmas about them, which a proof may use:
 
 * `CausalSets.relProb_eq` (`Lightlike/CausalSets/Sprinkling.lean`)
 * `CausalSets.relProb_one` (`Lightlike/CausalSets/Myrheim.lean`)
-* `CausalSets.expected_relations_diamond` (`Lightlike/CausalSets/Sprinkling.lean`)
+* `CausalSets.relProb_beta` (`Lightlike/CausalSets/MyrheimGen.lean`)
+* `CausalSets.relProb_zero` (`Lightlike/CausalSets/MyrheimGen.lean`)
+* `CausalSets.relProb_gamma` (`Lightlike/CausalSets/MyrheimGen.lean`)
+* `CausalSets.myrheimMeyer_eq` (`Lightlike/CausalSets/MyrheimGen.lean`)
+* `CausalSets.relProb_three_eq` (`Lightlike/CausalSets/Myrheim4D.lean`)
+* `CausalSets.rectangle_relProb_eq` (`Lightlike/CausalSets/Rectangle.lean`)
 
 Everything they depend on, and the further lemmas about them, in one block:
 

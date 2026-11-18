@@ -55,7 +55,28 @@ theorem IsCurveWith.mono_velocity {P Q : ∀ x : M, TangentSpace I x → Prop} {
 /-- A future-directed timelike curve is a future-directed causal curve. -/
 theorem isFutureCausalCurve_of_isFutureTimelikeCurve {γ : ℝ → M} {s : Set ℝ}
     (h : IsFutureTimelikeCurve T γ s) : IsFutureCausalCurve T γ s :=
-  IsCurveWith.mono_velocity h fun _ _ hv => T.isFutureCausal_of_isFutureTimelike hv
+  IsCurveWith.mono_velocity h.1 fun _ _ hv => T.isFutureCausal_of_isFutureTimelike hv
+
+/-- A vector with a positive margin is future-directed timelike. -/
+theorem TimeOrientation.isFutureTimelike_of_with {ε : ℝ} (hε : 0 < ε) {x : M}
+    {v : TangentSpace I x} (h : T.IsFutureTimelikeWith ε v) : T.IsFutureTimelike v := by
+  refine ⟨?_, h.2⟩
+  have : 0 < (g.g x v (T.X x)) ^ 2 := by exact sq_pos_of_neg h.2
+  nlinarith [h.1]
+
+/-- A smaller margin is weaker. -/
+theorem TimeOrientation.isFutureTimelikeWith_mono {ε ε' : ℝ} (hε : ε' ≤ ε) {x : M}
+    {v : TangentSpace I x} (h : T.IsFutureTimelikeWith ε v) : T.IsFutureTimelikeWith ε' v := by
+  refine ⟨le_trans h.1 ?_, h.2⟩
+  nlinarith [sq_nonneg (g.g x v (T.X x))]
+
+/-- A curve on `[a, b]` with a positive margin is a future-directed timelike curve. -/
+theorem isFutureTimelikeCurve_of_margin {γ : ℝ → M} {a b : ℝ} {ε : ℝ} (hε : 0 < ε)
+    (h : IsCurveWith (I := I) (fun _ v ↦ T.IsFutureTimelikeWith ε v) γ (Icc a b)) :
+    IsFutureTimelikeCurve T γ (Icc a b) := by
+  refine ⟨IsCurveWith.mono_velocity h fun _ _ hv => T.isFutureTimelike_of_with hε hv,
+    fun c d hcd hsub => ⟨ε, hε, ?_⟩⟩
+  exact h.mono (hsub (left_mem_Icc.2 hcd.le)).1 (hsub (right_mem_Icc.2 hcd.le)).2 hcd
 
 /-- **Timelike futures are causal futures: `I⁺(x) ⊆ J⁺(x)`.** (Hawking–Ellis, Chapter 6; the
 comparison with the book at its location is pending.) -/
@@ -119,13 +140,42 @@ theorem causal_trans {x y z : M} (hxy : y ∈ causalFuture T x) (hyz : z ∈ cau
   obtain ⟨G, e, hae, hG, hG1, hG2⟩ := IsCurveWith.trans h₁ h₂ hab' hcd' (e2.trans e3.symm)
   exact ⟨G, a, e, hae.le, hG, hG1.trans e1, hG2.trans e4⟩
 
+/-- **Concatenation of future-directed timelike curves**: two timelike curves on nondegenerate
+intervals, the first ending where the second starts, give one timelike curve (the margins combine
+by taking the smaller). With `isFutureTimelikeCurve_of_contMDiffOn` this covers piecewise `C¹`
+timelike curves. -/
+theorem IsFutureTimelikeCurve.trans {γ₁ γ₂ : ℝ → M} {a b c d : ℝ}
+    (h₁ : IsFutureTimelikeCurve T γ₁ (Icc a b)) (h₂ : IsFutureTimelikeCurve T γ₂ (Icc c d))
+    (hab : a < b) (hcd : c < d) (hj : γ₁ b = γ₂ c) :
+    ∃ (G : ℝ → M) (e : ℝ), a < e ∧ IsFutureTimelikeCurve T G (Icc a e) ∧ G a = γ₁ a ∧
+      G e = γ₂ d := by
+  obtain ⟨ε₁, hε₁, m₁⟩ := h₁.2 a b hab subset_rfl
+  obtain ⟨ε₂, hε₂, m₂⟩ := h₂.2 c d hcd subset_rfl
+  have m₁' := IsCurveWith.mono_velocity m₁ fun _ _ hv => T.isFutureTimelikeWith_mono (min_le_left ε₁ ε₂) hv
+  have m₂' := IsCurveWith.mono_velocity m₂ fun _ _ hv => T.isFutureTimelikeWith_mono (min_le_right ε₁ ε₂) hv
+  obtain ⟨G, e, hae, hG, hG1, hG2⟩ := IsCurveWith.trans m₁' m₂' hab hcd hj
+  exact ⟨G, e, hae, isFutureTimelikeCurve_of_margin T (lt_min hε₁ hε₂) hG, hG1, hG2⟩
+
+/-- **Gluing of future-directed timelike curves at a common point**, keeping the parameter: the
+curve that is `γ₁` up to `b` and `γ₂` after is a timelike curve on `[a, c]`. -/
+theorem IsFutureTimelikeCurve.glue {γ₁ γ₂ : ℝ → M} {a b c : ℝ}
+    (h₁ : IsFutureTimelikeCurve T γ₁ (Icc a b)) (h₂ : IsFutureTimelikeCurve T γ₂ (Icc b c))
+    (hab : a < b) (hbc : b < c) (hj : γ₁ b = γ₂ b) :
+    IsFutureTimelikeCurve T (fun t => if t ≤ b then γ₁ t else γ₂ t) (Icc a c) := by
+  obtain ⟨ε₁, hε₁, m₁⟩ := h₁.2 a b hab subset_rfl
+  obtain ⟨ε₂, hε₂, m₂⟩ := h₂.2 b c hbc subset_rfl
+  have m₁' := IsCurveWith.mono_velocity m₁ fun _ _ hv => T.isFutureTimelikeWith_mono (min_le_left ε₁ ε₂) hv
+  have m₂' := IsCurveWith.mono_velocity m₂ fun _ _ hv => T.isFutureTimelikeWith_mono (min_le_right ε₁ ε₂) hv
+  exact isFutureTimelikeCurve_of_margin T (lt_min hε₁ hε₂) (m₁'.glue m₂' hab hbc hj)
+
+
 /-- **The chronological future is transitive: `y ∈ I⁺(x)` and `z ∈ I⁺(y)` give `z ∈ I⁺(x)`.**
 (Hawking–Ellis, Chapter 6; the comparison with the book at its location is pending.) -/
 theorem chron_trans {x y z : M} (hxy : y ∈ chronFuture T x) (hyz : z ∈ chronFuture T y) :
     z ∈ chronFuture T x := by
   obtain ⟨γ₁, a, b, hab, h₁, e1, e2⟩ := hxy
   obtain ⟨γ₂, c, d, hcd, h₂, e3, e4⟩ := hyz
-  obtain ⟨G, e, hae, hG, hG1, hG2⟩ := IsCurveWith.trans h₁ h₂ hab hcd (e2.trans e3.symm)
+  obtain ⟨G, e, hae, hG, hG1, hG2⟩ := IsFutureTimelikeCurve.trans T h₁ h₂ hab hcd (e2.trans e3.symm)
   exact ⟨G, a, e, hae, hG, hG1.trans e1, hG2.trans e4⟩
 
 /-- A future-directed timelike curve on `[a, b]`, `a < b`, is not constant: some value differs from
@@ -136,7 +186,7 @@ theorem exists_ne_of_isFutureTimelikeCurve {γ : ℝ → M} {a b : ℝ} (hab : a
   by_contra hcon
   push Not at hcon
   have h1 : ∀ᵐ t ∂(volume : Measure ℝ), t ∈ Icc a b → False := by
-    filter_upwards [(ae_restrict_iff' measurableSet_Icc).1 h.ae_velocity] with t ht hmem
+    filter_upwards [(ae_restrict_iff' measurableSet_Icc).1 h.1.ae_velocity] with t ht hmem
     obtain ⟨hd, hv⟩ := ht hmem
     have hv0 : velocity I γ (Icc a b) t = 0 := by
       unfold velocity

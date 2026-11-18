@@ -21,8 +21,17 @@ minus half the number of vertices [1]. The graph with two vertices gives the 2-s
 with six vertices gives the torus [1]. A graph with two lines of one color at a vertex is not a
 colored graph [1]. The `1`-bubbles are the lines, a line has exactly two ends, every bubble contains a
 vertex, and in a connected graph any two vertices are joined by a chain of lines [2]. The lines of `p`
-colors restricted to a bubble form a colored graph of dimension `p - 1`, and it is connected [2]. The Euler
-characteristic of the dual in dimension two is an integer for every colored graph [3]. That
+colors restricted to a bubble form a colored graph of dimension `p - 1`, and it is connected [2]. The conditions for a complex with indexed
+simplices to be a pseudo-manifold or a normal pseudo-manifold, and its Euler characteristic, are defined in
+a form that keeps repeated simplices distinct [3]. The dual of a colored graph, with one simplex for each bubble of the
+complementary colors, is pure and non-branching, strongly connected when the graph is connected, and
+normal, so the dual of a connected colored graph is a normal pseudo-manifold, and every lower interval of the
+dual is a Boolean lattice [4]. The link of a simplex of the dual is the dual of the bubble, as a colored graph, with the rank lowered
+by that of the simplex [5]. In dimension two twice the Euler characteristic of the dual pseudo-complex is the count
+from the faces [6], and it is an integer for every colored graph [7]. The vertex sets of the simplices give the set-of-faces
+reading, with the face order as inclusion when no two simplices repeat [8]. In dimension two the barycentric
+subdivision of the dual of a connected colored graph is a closed surface of the surface classification, with the
+Euler characteristic of the dual, which is therefore at most two [9]. That
 the dual of every colored graph is a normal simplicial pseudo-manifold, and
 the identification of the bubbles with the links of the dual simplices, are due to Gurau {1}; they
 are [TODO] here.
@@ -38,8 +47,30 @@ are [TODO] here.
    `GFT.ColoredGraph.bubble_singleton`, `GFT.ColoredGraph.card_bubble_singleton`,
    `GFT.ColoredGraph.IsConnected`, `GFT.ColoredGraph.strongChain_of_connected`,
    `GFT.ColoredGraph.restrict`, `GFT.ColoredGraph.restrict_isConnected`
-3. Lightlike/GFT/Euler.lean - `GFT.ColoredGraph.even_twoChi2`, `GFT.ColoredGraph.euler`,
+3. Lightlike/GFT/PseudoComplex.lean - `GFT.GradedPoset`, `GFT.GradedPoset.IsPseudoManifold`,
+   `GFT.GradedPoset.link`, `GFT.GradedPoset.IsNormal`, `GFT.GradedPoset.f`,
+   `GFT.GradedPoset.eulerChar`
+4. Lightlike/GFT/Dual.lean - `GFT.ColoredGraph.DualSimplex`, `GFT.ColoredGraph.dual`,
+   `GFT.ColoredGraph.dual_isPure`, `GFT.ColoredGraph.dual_isNonBranching`,
+   `GFT.ColoredGraph.dual_isStronglyConnected`, `GFT.ColoredGraph.dual_isNormal`,
+   `GFT.ColoredGraph.dual_isSimplicial`, `GFT.ColoredGraph.faceIso`,
+   `GFT.ColoredGraph.dual_isNormalPseudoManifold`
+5. Lightlike/GFT/DualLink.lean - `GFT.ColoredGraph.mem_bubble_restrict`,
+   `GFT.ColoredGraph.linkTo`, `GFT.ColoredGraph.linkOf`, `GFT.ColoredGraph.linkIso`,
+   `GFT.ColoredGraph.linkIso_rk`, `GFT.ColoredGraph.link_isDual`
+6. Lightlike/GFT/DualEuler.lean - `GFT.ColoredGraph.dual_f`,
+   `GFT.ColoredGraph.two_mul_nBubbles_singleton`, `GFT.ColoredGraph.eulerChar_dual`,
+   `GFT.ColoredGraph.eulerChar_dual_eq_euler`
+7. Lightlike/GFT/Euler.lean - `GFT.ColoredGraph.even_twoChi2`, `GFT.ColoredGraph.euler`,
    `GFT.ColoredGraph.two_mul_euler`
+8. Lightlike/GFT/DualVertexSets.lean - `GFT.ColoredGraph.DualSimplex.vertexSet`,
+   `GFT.ColoredGraph.DualSimplex.card_vertexSet`, `GFT.ColoredGraph.DualSimplex.vertexSet_mono`,
+   `GFT.ColoredGraph.DualSimplex.le_iff_vertexSet_subset_of_injective`,
+   `GFT.ColoredGraph.vertexSetOrderIso`, `GFT.ColoredGraph.not_injective_vertexSet_example`,
+   `GFT.ColoredGraph.injective_vertexSet_example`
+9. Lightlike/GFT/DualSurface.lean - `GFT.ColoredGraph.face`, `GFT.ColoredGraph.flag`,
+   `GFT.ColoredGraph.surf`, `GFT.ColoredGraph.isSurface_surf`, `GFT.ColoredGraph.euler2_surf`,
+   `GFT.ColoredGraph.euler_le_two`
 
 ## References
 
