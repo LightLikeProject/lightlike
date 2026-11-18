@@ -5,8 +5,8 @@ import Lightlike.Regge.Linear3.SaintVenantCore
 # Trust checks for the `η²` coefficient: a non-zero field and the density without volume weights
 
 For the test field `h(y) = cos (2π y₀) · E₁₂` (`E₁₂` the symmetric matrix with `1` at `(1, 2)` and `(2, 1)`: smooth, symmetric,
-`ℤ³`-periodic) the cube integral of the Fierz–Pauli density is `-π²` (`integral_fpDens_hTest`), so the coefficient of
-`eh_eta_sq_coeff` is non-zero for it. The hinge density of the linearized Regge coefficient with the weights `1 / |w|²` of the
+`ℤ³`-periodic) the cube integral of the Fierz–Pauli density is `-π²` (`integral_fpDens_hTest`), so the `η²` coefficient of
+`eh_eta_sq_coeff` (half of it) is non-zero for it. The hinge density of the linearized Regge coefficient with the weights `1 / |w|²` of the
 hinge vectors replaced by `1`, the density without volume weights (`wrongDens`), is `-14/3 π² cos² (2π y₀)` for this field and
 integrates to `-7π²/3` (`integral_wrongDens_hTest`), different from `-π²` (`wrong_weights_ne`); with the weights the same field
 gives `-π²` (`rightDens_integral_hTest`).
@@ -15,7 +15,7 @@ gives `-π²` (`rightDens_integral_hTest`).
 
 * `hTest`, `wrongDens`: the test field and the density without volume weights.
 * `integral_fpDens_hTest`, `integral_wrongDens_hTest`, `rightDens_integral_hTest`: the three cube integrals.
-* `wrong_weights_ne`: the wrong weights do not reproduce the `η²` coefficient.
+* `wrong_weights_ne`: the wrong weights do not reproduce the Fierz–Pauli integral, the second `η`-derivative (twice the `η²` coefficient).
 
 **Limits.** One test field and one wrong model (the weights `1 / |w|²` dropped); the cube integrals are those of the
 densities, not of the Regge action of a triangulation. Exact-arithmetic evidence for the pointwise densities:
@@ -237,8 +237,8 @@ theorem integral_wrongDens_hTest :
     integral_cos_sq_two_pi]
   ring
 
-/-- **The wrong weights do not reproduce the `η²` coefficient.** The cube integral of the density without volume weights
-differs from the cube integral of the Fierz–Pauli density, the coefficient of `eh_eta_sq_coeff`, for the test field. -/
+/-- **The wrong weights do not reproduce the Fierz–Pauli integral.** The cube integral of the density without volume weights
+differs from the cube integral of the Fierz–Pauli density (twice the `η²` coefficient of `eh_eta_sq_coeff`) for the test field. -/
 theorem wrong_weights_ne :
     ∫ y in unitCube, wrongDens (Hm hTest y) (dd2 hTest y) ≠ ∫ y in unitCube, fpDens (dh1 hTest y) := by
   rw [integral_wrongDens_hTest, integral_fpDens_hTest]
