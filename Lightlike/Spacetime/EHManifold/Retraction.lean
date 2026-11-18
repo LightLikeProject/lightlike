@@ -17,6 +17,7 @@ Supporting lemmas for the Einstein–Hilbert variation on a manifold; no catalog
 -/
 
 open Filter Topology Metric
+open scoped ContDiff
 
 noncomputable section
 

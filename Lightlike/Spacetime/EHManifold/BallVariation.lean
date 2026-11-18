@@ -21,6 +21,7 @@ all of `ℝⁿ`) holds for a coordinate metric `g` that is smooth, symmetric and
 -/
 
 open Filter Topology Metric MeasureTheory
+open scoped ContDiff
 
 noncomputable section
 
