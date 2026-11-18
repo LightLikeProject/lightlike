@@ -739,6 +739,7 @@ import Lightlike.Spacetime.EHManifold.IntrinsicAction
 import Lightlike.Spacetime.EHManifold.Locality
 import Lightlike.Spacetime.EHManifold.ManifoldVariation
 import Lightlike.Spacetime.EHManifold.Perturbation
+import Lightlike.Spacetime.EHManifold.PerturbationExt
 import Lightlike.Spacetime.EHManifold.Retraction
 import Lightlike.Spacetime.EHManifold.SmallT
 import Lightlike.Spin4.Burnside
