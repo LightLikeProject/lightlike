@@ -56,7 +56,11 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
   {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I ∞ M]
   {n : ℕ} {g : LorentzianMetric I M n} (T : TimeOrientation g)
 
-/-- **A Cauchy surface is achronal.** -/
+/-- **A Cauchy surface is achronal.** The hypotheses `[BoundarylessManifold I M]` and
+`[SecondCountableTopology M]` match the source (Hawking–Ellis: a connected paracompact Hausdorff
+manifold without boundary is second countable); approved by the maintainers, 18 November 2026.
+With boundary allowed the statement is false: in a half-space of Minkowski space there is no
+inextendible timelike curve, so every set is a Cauchy surface. -/
 theorem IsCauchySurface.isAchronal [T2Space M] [BoundarylessManifold I M]
     [SecondCountableTopology M] {S : Set M} (h : IsCauchySurface T S) :
     IsAchronal T S := by

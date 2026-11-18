@@ -177,8 +177,10 @@ theorem exists_inextendible_of_timelike {γ : ℝ → M} {a b : ℝ} (hab : a < 
 
 /-- **A Cauchy surface is achronal** (on a Hausdorff, second countable manifold without boundary):
 a timelike curve from `x` to `y` in the set extends to an inextendible timelike curve, which would
-meet the set twice. (Hawking–Ellis, Chapter 6; the comparison with the book at its location is
-pending.) -/
+meet the set twice. The hypotheses (no boundary, second countable) match the source (Hawking–Ellis:
+a connected paracompact Hausdorff manifold without boundary is second countable); approved by the
+maintainers, 18 November 2026. (Hawking–Ellis, Chapter 6; the comparison with the book at its
+location is pending.) -/
 theorem IsCauchySurface.isAchronal_of_boundaryless {S : Set M} (h : IsCauchySurface T S) :
     IsAchronal T S := by
   rintro x hx y hy ⟨γ, a, b, hab, hγ, e1, e2⟩
