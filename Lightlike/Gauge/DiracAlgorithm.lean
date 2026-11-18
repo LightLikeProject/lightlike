@@ -9,7 +9,8 @@ For a constrained Hamiltonian system whose evolution is linear, `x' = A x + v` w
 over a subspace `U` (the span of the Hamiltonian vector fields of the primary constraints) and the primary
 constraint surface a subspace `C₀`, the evolution is consistent at `x ∈ C` (stays in `C`) iff `A x ∈ C + U`.
 The consistency conditions give the secondary constraints, and the process is iterated: `C_{k+1} = C_k ∩ A⁻¹ (C_k + U)`
-(Dirac 1950, 1964; Henneaux and Teitelboim 1992, Section 1.1).
+(Dirac 1950, 1964; Henneaux and Teitelboim 1992, Chapter One, "Constrained Hamiltonian Systems"; the statement here
+has not been compared with the text of that chapter).
 
 * `diracStep`, `diracChain`: one step and the chain `C₀ ⊇ C₁ ⊇ ...`.
 * `diracChain_stabilizes`: in finite dimension the chain terminates (no tertiary and later constraints beyond a finite
@@ -19,9 +20,9 @@ The consistency conditions give the secondary constraints, and the process is it
 * `le_diracChain`: every subspace `D ⊆ C₀` on which the evolution is consistent lies in every `C_k`, so the final
   subspace is the largest consistent one.
 
-**Scope.** Linear evolution and linear (homogeneous) constraints only. The nonlinear Dirac algorithm (constraint
-surfaces that are submanifolds, tangency in place of the subspace condition, termination without finite dimension
-arguments of linear algebra) is the follow-up and is not covered here.
+**Scope.** Linear evolution and linear (homogeneous) constraints only, which is weaker than the Dirac algorithm for
+nonlinear constraint surfaces; that case needs tangent spaces of the stage surfaces and a regularity (constant
+rank) hypothesis at each stage, added here as the follow-up, and is not covered.
 -/
 
 namespace Lightlike.Gauge
