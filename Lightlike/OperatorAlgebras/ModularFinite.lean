@@ -149,6 +149,36 @@ theorem tomita_apply {H : Matrix (Fin n) (Fin n) ℂ} (hH : H.IsHermitian) (a : 
         simp only [Matrix.mul_assoc]
     _ = _ := by rw [hAB, Matrix.one_mul]
 
+/-- **The modular flow is multiplicative**: `σ_z (a b) = σ_z(a) σ_z(b)` (conjugation by an invertible matrix). -/
+theorem flow_mul (H a b : Matrix (Fin n) (Fin n) ℂ) (z : ℂ) : flow H z (a * b) = flow H z a * flow H z b := by
+  unfold flow
+  have h : boltz H (Complex.I * z) * boltz H (-(Complex.I * z)) = 1 := boltz_mul_neg H _
+  calc boltz H (-(Complex.I * z)) * (a * b) * boltz H (Complex.I * z)
+      = boltz H (-(Complex.I * z)) * a * (boltz H (Complex.I * z) * boltz H (-(Complex.I * z))) * b *
+          boltz H (Complex.I * z) := by rw [h]; simp only [Matrix.mul_assoc, Matrix.mul_one]
+    _ = _ := by simp only [Matrix.mul_assoc]
+
+/-- **The modular flow is a one-parameter group**: `σ_{z + w} = σ_z ∘ σ_w`. -/
+theorem flow_add (H a : Matrix (Fin n) (Fin n) ℂ) (z w : ℂ) : flow H (z + w) a = flow H z (flow H w a) := by
+  unfold flow
+  have e1 : -(Complex.I * (z + w)) = -(Complex.I * z) + -(Complex.I * w) := by ring
+  have e2 : Complex.I * (z + w) = Complex.I * w + Complex.I * z := by ring
+  rw [e1, e2, boltz_add, boltz_add]
+  simp only [Matrix.mul_assoc]
+
+/-- **The state is invariant under its modular flow**: `ω(σ_z(a)) = ω(a)`. -/
+theorem omega_flow (H a : Matrix (Fin n) (Fin n) ℂ) (z : ℂ) : omega H (flow H z a) = omega H a := by
+  unfold omega flow
+  have hc : boltz H (-1) * boltz H (-(Complex.I * z)) = boltz H (-(Complex.I * z)) * boltz H (-1) := boltz_comm H _ _
+  have h : boltz H (Complex.I * z) * boltz H (-(Complex.I * z)) = 1 := boltz_mul_neg H _
+  calc trace (boltz H (-1) * (boltz H (-(Complex.I * z)) * a * boltz H (Complex.I * z)))
+      = trace ((boltz H (Complex.I * z) * (boltz H (-1) * boltz H (-(Complex.I * z)))) * a) := by
+        rw [show boltz H (-1) * (boltz H (-(Complex.I * z)) * a * boltz H (Complex.I * z)) =
+          (boltz H (-1) * (boltz H (-(Complex.I * z)) * a)) * boltz H (Complex.I * z) by simp only [Matrix.mul_assoc]]
+        rw [Matrix.trace_mul_comm]; simp only [Matrix.mul_assoc]
+    _ = trace (boltz H (-1) * a) := by
+        rw [hc, ← Matrix.mul_assoc, h, Matrix.one_mul]
+
 /-- `ρ` is `(H, β)`-KMS: `Tr (ρ b σ_{s - i β}(a)) = Tr (ρ σ_s(a) b)` for the flow `σ_z(a) = e^{-i z H} a e^{i z H}`. -/
 def IsKMS (ρ H : Matrix (Fin n) (Fin n) ℂ) (β : ℂ) : Prop :=
   ∀ a b : Matrix (Fin n) (Fin n) ℂ, ∀ s : ℂ,
