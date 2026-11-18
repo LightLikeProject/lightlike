@@ -8,7 +8,7 @@ textbook statement of the deficiency indices of the momentum operator on an inte
 `momentumMin` uses the larger class of `C²` functions supported inside `(0, 1)` (`testFunctions`), on which
 the derivative is proved to give a class of `L²(0, 1)`. Here the smooth class is a submodule of it, the
 graph is the image of that submodule under the same pair map, and so `momentumGraphSmooth ≤ momentumGraph`.
-Task `T-OP1-F17` (`Tasks/OP/T_OP1_F17.lean`) says that the two graphs have the same closure.
+Task T-OP1-P6 (`Tasks/OP/T_OP1_P6.lean`) says that the two graphs have the same closure.
 -/
 
 open MeasureTheory Set

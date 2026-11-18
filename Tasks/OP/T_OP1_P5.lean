@@ -60,7 +60,7 @@ milestone's operator `-i d/dx` on `L²[0, 1]` without boundary conditions is sta
 `C²` functions with compact support inside `(0, 1)`, not on `C_c^∞(0, 1)`; both have the same closure, which
 is not proved here, so the adjoint and the deficiency indices agree only if that is shown. `L²[0, 1]` is
 `L²(0, 1)`, the endpoints being null sets. The difference is of kind representation, approved by the
-owner, 17 November 2026; the equality of the two closures becomes a separate task, and until it is proved
+maintainers, 17 November 2026; the equality of the two closures becomes a separate task, and until it is proved
 this result counts as weaker. -/
 theorem momentumMin_deficiency :
     Dense (momentumMin.domain : Set L2I) ∧ deficiencyDim momentumMin Complex.I = 1 ∧
