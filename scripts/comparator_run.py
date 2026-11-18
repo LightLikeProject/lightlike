@@ -14,8 +14,8 @@ task file (the weekly run).
 It extends, not replaces, scripts/proof_task_check.py (statement text unchanged, in a pull
 request) and the axiom audit (audited theorems only). It is a main-only job that never blocks a
 pull request: .github/workflows/comparator.yml. `--dry-run` prints the selection and each
-comparator.json and runs nothing; without it the script needs `lake` and `bwrap` and edits the
-working copy (two scratch modules and their lean_lib entries in lakefile.toml), so run it only on a
+comparator configuration and runs nothing; without it the script needs `lake` and `bwrap` and edits the
+working copy (two scratch modules and their lean_lib entries in the root lakefile), so run it only on a
 disposable CI checkout. Exit 0 all accepted or nothing to judge, 1 a rejection, 2 could not run."""
 import argparse
 import json
@@ -103,13 +103,13 @@ def config(decl, challenge="ComparatorChallenge", solution="ComparatorSolution")
 
 
 def run_one(f, decl, lock, now, paranoid, dry, root=ROOT):
-    ch, so = root / "ComparatorChallenge.lean", root / "ComparatorSolution.lean"
-    cfg = root / "comparator.json"
+    ch, so = (root / "ComparatorChallenge").with_suffix(".lean"), (root / "ComparatorSolution").with_suffix(".lean")
+    cfg = (root / "comparator").with_suffix(".json")
     print(f"== {f}: {decl}")
     if dry:
         print(json.dumps(config(decl), indent=2))
         return 0
-    lake = root / "lakefile.toml"
+    lake = (root / "lakefile").with_suffix(".toml")
     orig = lake.read_text()
     try:
         ch.write_text(lock)
