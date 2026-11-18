@@ -648,6 +648,7 @@ import Lightlike.Spacetime.CausalLadder.NearFuture
 import Lightlike.Spacetime.Causal.ChainStep
 import Lightlike.Spacetime.Causal.MeshSequence
 import Lightlike.Spacetime.Causal.ChainSequence
+import Lightlike.Spacetime.Causal.ChainCurve
 import Lightlike.Spacetime.Causal.CauchySeparation
 import Lightlike.Spacetime.Causal.CauchyCover
 import Lightlike.Spacetime.Causal.CauchyDomain
