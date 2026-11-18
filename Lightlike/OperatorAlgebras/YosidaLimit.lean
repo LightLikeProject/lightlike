@@ -88,4 +88,52 @@ lemma Ulim_zero (hA : IsSelfAdjoint A) (y : H) : Ulim hA 0 y = y := by
   rw [this] at h
   exact tendsto_nhds_unique h tendsto_const_nhds |>.symm ▸ rfl
 
+lemma Ulim_add (hA : IsSelfAdjoint A) (t : ℝ) (y w : H) :
+    Ulim hA t (y + w) = Ulim hA t y + Ulim hA t w := by
+  have h := (tendsto_Ulim hA t y).add (tendsto_Ulim hA t w)
+  have h2 := tendsto_Ulim hA t (y + w)
+  simp only [map_add] at h2
+  exact tendsto_nhds_unique h2 h
+
+lemma Ulim_smul (hA : IsSelfAdjoint A) (t : ℝ) (c : ℂ) (y : H) :
+    Ulim hA t (c • y) = c • Ulim hA t y := by
+  have h := (tendsto_Ulim hA t y).const_smul c
+  have h2 := tendsto_Ulim hA t (c • y)
+  simp only [map_smul] at h2
+  exact tendsto_nhds_unique h2 h
+
+lemma norm_Ulim (hA : IsSelfAdjoint A) (t : ℝ) (y : H) : ‖Ulim hA t y‖ = ‖y‖ := by
+  have h := (tendsto_Ulim hA t y).norm
+  have : (fun n => ‖Un hA n t y‖) = fun _ => ‖y‖ := by
+    funext n; exact (Un hA n t).norm_map y
+  rw [this] at h
+  exact (tendsto_nhds_unique h tendsto_const_nhds)
+
+lemma Ulim_add_time (hA : IsSelfAdjoint A) (s t : ℝ) (y : H) :
+    Ulim hA (s + t) y = Ulim hA s (Ulim hA t y) := by
+  -- `U_n s (U_n t y) → U s (U t y)`
+  have h1 : Tendsto (fun n => Un hA n (s + t) y) atTop (𝓝 (Ulim hA s (Ulim hA t y))) := by
+    have e : ∀ n, Un hA n (s + t) y = Un hA n s (Un hA n t y) := fun n => by
+      simp only [Un_apply, bdU_add, ContinuousLinearMap.mul_apply]
+    simp only [e]
+    -- split `U_n s (U_n t y) - U s (U t y) = U_n s (U_n t y - U t y) + (U_n s - U s) (U t y)`
+    rw [tendsto_iff_norm_sub_tendsto_zero]
+    have hA1 : Tendsto (fun n => ‖Un hA n t y - Ulim hA t y‖) atTop (𝓝 0) :=
+      tendsto_iff_norm_sub_tendsto_zero.1 (tendsto_Ulim hA t y)
+    have hA2 : Tendsto (fun n => ‖Un hA n s (Ulim hA t y) - Ulim hA s (Ulim hA t y)‖) atTop (𝓝 0) :=
+      tendsto_iff_norm_sub_tendsto_zero.1 (tendsto_Ulim hA s (Ulim hA t y))
+    have hsum := hA1.add hA2
+    rw [add_zero] at hsum
+    refine squeeze_zero (fun n => norm_nonneg _) (fun n => ?_) hsum
+    have : Un hA n s (Un hA n t y) - Ulim hA s (Ulim hA t y) =
+        Un hA n s (Un hA n t y - Ulim hA t y) + (Un hA n s (Ulim hA t y) - Ulim hA s (Ulim hA t y)) := by
+      rw [map_sub]; abel
+    rw [this]
+    calc ‖Un hA n s (Un hA n t y - Ulim hA t y) + (Un hA n s (Ulim hA t y) - Ulim hA s (Ulim hA t y))‖
+        ≤ ‖Un hA n s (Un hA n t y - Ulim hA t y)‖ + ‖Un hA n s (Ulim hA t y) - Ulim hA s (Ulim hA t y)‖ :=
+          norm_add_le _ _
+      _ = ‖Un hA n t y - Ulim hA t y‖ + ‖Un hA n s (Ulim hA t y) - Ulim hA s (Ulim hA t y)‖ := by
+          rw [(Un hA n s).norm_map]
+  exact tendsto_nhds_unique (tendsto_Ulim hA (s + t) y) h1
+
 end Lightlike.OperatorAlgebras
