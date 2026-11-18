@@ -21,5 +21,4 @@ Match with the library:
 Differences (the library statement is weaker than the source in these respects, none is accepted here): (1) the stage tuples and
 the constant-rank sets `U k` enter as hypotheses (`hstage`); no theorem produces the whole sequence from the primary data
 `(φ_a, H)` alone; (2) the construction of the null vectors is local, near a point where an `r × r` block is invertible, while the
-source uses null vectors on the whole surface; (3) the bracket matrix and `h` are abstract functions, not yet tied to Physlib's
-Poisson bracket in this file; (4) `DiracAlgorithm` (the linear case) is a special case of the source's algorithm.
+source uses null vectors on the whole surface; (3) [closed] `DiracPoisson` ties the bracket matrix and `h` to Physlib's Poisson bracket (`poisson_exists_multiplier_iff_chi`); (4) `DiracAlgorithm` (the linear case) is a special case of the source's algorithm.
