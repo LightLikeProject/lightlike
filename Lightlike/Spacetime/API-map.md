@@ -59,6 +59,8 @@ agreement with the coordinate curvature of [1] in every chart are stated as proo
 In Minkowski space, an observer who travels out and back along two straight segments ages less
 than one who stays at rest [6].
 
+The null, weak, strong and dominant energy conditions are stated pointwise for a symmetric bilinear form on a Lorentzian vector space; dust with non-negative density satisfies all four, a positive cosmological constant violates the strong one, and a scalar field with negative potential at a point of vanishing gradient violates the weak one [27].
+
 ## Lean References
 
 1. Lightlike/Spacetime/Curvature.lean - `IsCoordMetric`, `christoffel`, `riemann`, `ricci`,
@@ -100,6 +102,7 @@ than one who stays at rest [6].
 24. Lightlike/Spacetime/VolumeMeasure.lean - `volumeMeasure`, `volumeMeasure_chart`, `volumeMeasure_minkowski`: the volume measure of a Lorentzian metric, its chart formula and the Minkowski trust check.
 25. Lightlike/Spacetime/NondegMetric.lean - `NondegMetric`, `NondegMetric.coordMetric`, `NondegMetric.ofRiemannian_coordMetric_posDef`: smooth symmetric nondegenerate bilinear fields on a manifold, the Lorentzian and the Riemannian metrics as cases, and the coordinate components with their tensor properties.
 26. Lightlike/Spacetime/NondegOpen.lean - `openNondeg`, `openNondeg_coordMetric`, `openNondeg_volumeMeasure`: a coordinate metric of any signature on an open subset of Euclidean space as a metric of the open subset, the coordinate components in every chart, and its volume measure.
+27. Lightlike/Spacetime/EnergyConditions.lean - `NullEC`, `WeakEC`, `StrongEC`, `DominantEC`, `dust_energyConditions`, `cosmo_energyConditions`, `scalar_negative_potential_violates_weak`: the pointwise energy conditions of a stress-energy tensor on a Lorentzian vector space and their trust checks.
 
 ## References
 
