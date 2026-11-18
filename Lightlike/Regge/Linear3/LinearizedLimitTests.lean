@@ -6,8 +6,8 @@ import Lightlike.Regge.Linear3.LinearizedLimit
 `Qn_converges` is not vacuous: its hypotheses (smooth, symmetric, invariant under integer translations) hold for the
 non-zero field `cosField` with `h₀₁ = h₁₀ = cos (2π x₂)` (`cosField_Qn`). The numerical check
 `scripts/regge/regge3d_linearized_check.py` computes `Q_n` for a random smooth periodic field on the complex with
-the interpolated lengths and compares it with the `η²` coefficient of `∫ (R/2) √det g` (equal to the Fierz–Pauli
-form), with sign and factor controls.
+the interpolated lengths and compares it with the second `η`-derivative at `η = 0` of `∫ (R/2) √det g` (equal to the Fierz–Pauli
+form, twice the `η²` coefficient), with sign and factor controls.
 -/
 
 open Real Filter Topology

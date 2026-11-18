@@ -26,7 +26,7 @@ theorem functional_le_of_tendstoUniformlyOn {Φ : E →L[ℝ] ℝ} {ε r C h₀ 
     (hlip : ∀ x y, ‖u x - u y‖ ≤ C * |x - y|)
     (hu : HasDerivAt u D σ₀)
     (hconv : TendstoUniformlyOn g u atTop (Icc σ₀ (σ₀ + h₀)))
-    (hbound : ∀ k σ₁ σ₂, σ₀ ≤ σ₁ → σ₁ ≤ σ₂ → σ₂ ≤ σ₀ + h₀ →
+    (hbound : ∀ᶠ k in atTop, ∀ σ₁ σ₂, σ₀ ≤ σ₁ → σ₁ ≤ σ₂ → σ₂ ≤ σ₀ + h₀ →
       (∀ σ ∈ Icc σ₁ σ₂, ‖g k σ - u σ₀‖ < r) → Φ (g k σ₂ - g k σ₁) ≤ ε * (σ₂ - σ₁)) :
     Φ D ≤ ε := by
   -- the displacement bound for the limit
@@ -35,8 +35,8 @@ theorem functional_le_of_tendstoUniformlyOn {Φ : E →L[ℝ] ℝ} {ε r C h₀ 
     have hev : ∀ᶠ k in atTop, ∀ σ ∈ Icc σ₀ (σ₀ + h₀), dist (u σ) (g k σ) < r / 2 :=
       Metric.tendstoUniformlyOn_iff.1 hconv (r / 2) (by positivity)
     have hk : ∀ᶠ k in atTop, Φ (g k (σ₀ + h) - g k σ₀) ≤ ε * h := by
-      filter_upwards [hev] with k hk
-      have := hbound k σ₀ (σ₀ + h) le_rfl (by linarith) (by linarith) (fun σ hσ => by
+      filter_upwards [hev, hbound] with k hk hbk
+      have := hbk σ₀ (σ₀ + h) le_rfl (by linarith) (by linarith) (fun σ hσ => by
         have h1 := hk σ ⟨hσ.1, hσ.2.trans (by linarith)⟩
         have h2 := hlip σ σ₀
         rw [abs_of_nonneg (by linarith [hσ.1])] at h2

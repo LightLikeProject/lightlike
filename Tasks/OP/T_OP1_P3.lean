@@ -1,4 +1,4 @@
-import Lightlike.OperatorAlgebras.UnitaryGroup
+import Lightlike.OperatorAlgebras.StoneUnique
 
 /-!
 # Task T-OP1-P3
@@ -54,6 +54,6 @@ namespace Lightlike.OperatorAlgebras
 generator are equal. -/
 theorem stone_unique {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     {U V : UnitaryGroup H} (h : U.generator = V.generator) : U = V := by
-  sorry
+  exact UnitaryGroup.eq_of_generator_eq h
 
 end Lightlike.OperatorAlgebras

@@ -1,5 +1,6 @@
 import Lightlike.Spacetime.Causal.BasicRelations
 import Lightlike.Spacetime.Causal.CurveMargin
+import Lightlike.Spacetime.Causal.MinkowskiCauchy
 import Lightlike.Spacetime.Causal.MinkowskiGH
 import Lightlike.Spacetime.Causal.SmoothOrientation
 import Lightlike.Spacetime.Causal.TestsMinkowski
@@ -130,5 +131,65 @@ example (v : Fin (d + 1) → ℝ)
       (fun _ w ↦ (minkowskiOrientation d).IsFutureTimelikeWith ε w)
       (fun t : ℝ => (0 : Fin (d + 1) → ℝ) + t • v) (Set.Icc 0 1) :=
   (isFutureTimelikeCurve_line 0 v zero_lt_one hv).2 0 1 zero_lt_one subset_rfl
+
+set_option synthInstance.maxHeartbeats 200000 in
+/-- Non-vacuity of the Cauchy surface definition: the line `t ↦ x + t ∂₀` on all of `ℝ` is an
+inextendible future-directed timelike curve (it has no endpoint: its time is unbounded, so no
+neighbourhood of a point contains it from some parameter on), and it meets the slice `t = 0`
+exactly once, as `minkowski_slice_isCauchySurface` says. -/
+example (x : Fin (d + 1) → ℝ) :
+    IsInextendibleFutureTimelike (minkowskiOrientation d)
+      (fun t : ℝ => x + t • (Pi.single 0 1 : Fin (d + 1) → ℝ)) Set.univ := by
+  set v : Fin (d + 1) → ℝ := Pi.single 0 1 with hv
+  have hvt : minkowskiForm (d + 1) v v < 0 ∧ minkowskiForm (d + 1) v (Pi.single 0 1) < 0 :=
+    ⟨form_e0.trans_lt (by norm_num), form_e0.trans_lt (by norm_num)⟩
+  refine ⟨⟨⟨ordConnected_univ, isLocallyLipschitzOn_line x v _, ?_⟩,
+    fun a b hab _ => (isFutureTimelikeCurve_line x v hab hvt).2 a b hab subset_rfl⟩,
+    ⟨0, trivial⟩, ?_, ?_⟩
+  · refine Filter.Eventually.of_forall fun t => ?_
+    have hd0 : HasDerivAt (fun t : ℝ => x + t • v) v t := by
+      simpa using ((hasDerivAt_id t).smul_const v).const_add x
+    have hd : HasDerivWithinAt (fun t : ℝ => x + t • v) v Set.univ t := hd0.hasDerivWithinAt
+    refine ⟨?_, ?_⟩
+    · rw [mdifferentiableWithinAt_iff_differentiableWithinAt]
+      exact hd.differentiableWithinAt
+    · have h1 : velocity 𝓘(ℝ, Fin (d + 1) → ℝ) (fun t : ℝ => x + t • v) Set.univ t = v := by
+        rw [velocity, mfderivWithin_eq_fderivWithin,
+          hd.hasFDerivWithinAt.fderivWithin uniqueDiffWithinAt_univ]
+        exact one_smul ℝ v
+      rw [h1]
+      exact hvt
+  · intro p hp
+    obtain ⟨c, -, hc⟩ := hp (Metric.ball p 1) (Metric.ball_mem_nhds p one_pos)
+    have h1 := hc c trivial le_rfl
+    have h2 := hc (c + 3) trivial (by linarith)
+    have := dist_triangle_left (x + c • v) (x + (c + 3) • v) p
+    have h3 : dist (x + c • v) (x + (c + 3) • v) = 3 := by
+      have hn : ‖v‖ = 1 := by
+        refine le_antisymm ((pi_norm_le_iff_of_nonneg zero_le_one).2 fun i => ?_) ?_
+        · by_cases h : i = 0 <;> simp [hv, h]
+        · simpa [hv] using norm_le_pi_norm v 0
+      rw [dist_eq_norm, show x + c • v - (x + (c + 3) • v) = (-3 : ℝ) • v by
+        rw [add_sub_add_left_eq_sub, ← sub_smul]; congr 1; ring, norm_smul, hn]
+      norm_num
+    simp only [Metric.mem_ball] at h1 h2
+    rw [dist_comm] at h1 h2
+    linarith
+  · intro p hp
+    obtain ⟨c, -, hc⟩ := hp (Metric.ball p 1) (Metric.ball_mem_nhds p one_pos)
+    have h1 := hc c trivial le_rfl
+    have h2 := hc (c - 3) trivial (by linarith)
+    have := dist_triangle_left (x + c • v) (x + (c - 3) • v) p
+    have h3 : dist (x + c • v) (x + (c - 3) • v) = 3 := by
+      have hn : ‖v‖ = 1 := by
+        refine le_antisymm ((pi_norm_le_iff_of_nonneg zero_le_one).2 fun i => ?_) ?_
+        · by_cases h : i = 0 <;> simp [hv, h]
+        · simpa [hv] using norm_le_pi_norm v 0
+      rw [dist_eq_norm, show x + c • v - (x + (c - 3) • v) = (3 : ℝ) • v by
+        rw [add_sub_add_left_eq_sub, ← sub_smul]; congr 1; ring, norm_smul, hn]
+      norm_num
+    simp only [Metric.mem_ball] at h1 h2
+    rw [dist_comm] at h1 h2
+    linarith
 
 end Lightlike.Causal
