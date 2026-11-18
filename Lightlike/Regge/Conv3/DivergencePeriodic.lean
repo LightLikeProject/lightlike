@@ -6,7 +6,7 @@ import Lightlike.Regge.Conv3.LatticeSum
 For a family `T i` (`i : Fin 3`) of `C¹` functions on `ℝ³` that are invariant under integer translations, the integral over the
 unit cube `[0, 1]³` of the divergence `Σ_i ∂_i T_i` is zero (`integral_div_periodic`): the divergence theorem of Mathlib on the box,
 the contributions of the opposite faces cancelling because the fields are periodic. It is the integration by parts on the torus
-that identifies the Saint-Venant and Fierz–Pauli forms of the `η²` coefficient of the integrated curvature density.
+that identifies the Saint-Venant and Fierz–Pauli forms of the second `η`-derivative (twice the `η²` coefficient) of the integrated curvature density.
 
 ## Main results
 

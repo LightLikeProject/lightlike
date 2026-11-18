@@ -7,8 +7,9 @@ import Lightlike.PonzanoRegge.Asymptotics
 The expansion `regge_second_order` needs a flat complex. The boundary of the 4-simplex on five vertices,
 with all edge lengths equal to `1`, is a closed complex in which every edge lies in three tetrahedra, and
 every deficit angle is `2π - 3 arccos (1/3) > 0` (`simplexBoundary_deficit_pos`). The flatness hypothesis
-therefore fails there, and the Regge action has a non-zero first-order term along any line of squared
-lengths, so the conclusion of `regge_second_order` cannot hold without it.
+therefore fails there. This file proves only the failure of the hypothesis (`simplexBoundary_deficit_pos`); it does not prove that
+the conclusion of `regge_second_order` fails (the first-order term of the Regge action along a line of squared lengths is not
+computed here).
 
 ## Main results
 

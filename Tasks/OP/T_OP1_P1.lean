@@ -1,4 +1,4 @@
-import Lightlike.OperatorAlgebras.UnitaryGroup
+import Lightlike.OperatorAlgebras.StoneGenerator
 
 /-!
 # Task T-OP1-P1
@@ -60,9 +60,10 @@ unitary group (`A ψ = -i d/dt U t ψ` at `0`) is a self-adjoint operator.
 **Differences from the source** (not yet read at the cited location; the comparison is pending): the group
 is a structure with the generator defined from it, while in the usual statement of Stone's theorem the
 generator is the operator `A` with `U t = exp (i t A)`; here `A` is given by `-i d/dt` on the vectors where
-the derivative exists. -/
+the derivative exists (kind: representation; approved by the maintainers, 18 November 2026, as the standard
+definition of the generator in Stone's theorem, Reed-Simon). -/
 theorem stone_generator_isSelfAdjoint {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [CompleteSpace H] (U : UnitaryGroup H) : IsSelfAdjoint U.generator := by
-  sorry
+  exact UnitaryGroup.generator_isSelfAdjoint U
 
 end Lightlike.OperatorAlgebras

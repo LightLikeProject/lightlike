@@ -10,6 +10,8 @@ themselves are open proof tasks, in `Tasks/OP/`.
 
 ## Content (Alpha)
 
+The generator of a unitary group is self-adjoint: its domain is dense and invariant, it is symmetric, and a vector of the domain of its adjoint satisfies `U t y = y + i ∫₀ᵗ U s (A† y) ds`, so it lies in the domain [9]. Two groups with the same generator are equal, because the norm of `U t ψ - V t ψ` is constant [10].
+
 A strongly continuous one-parameter unitary group is a family of unitaries `U t` with `U 0 = 1`,
 `U (s + t) = U s ∘ U t` and `t ↦ U t ψ` continuous [1]. Its generator `A` is `-i d/dt U t ψ` at `0`, on
 the vectors where the derivative exists, so that formally `U t = exp (i t A)` [1]. Stone's theorem says
@@ -24,6 +26,12 @@ implemented by a unitary of the Fock representation exactly when its antilinear 
 In one mode the squeezing has `|α|² - |β|² = 1` and the dilation `f ↦ 2 f` is not symplectic [4]. A map with `‖B f‖ = c ‖f‖`, `c > 0`, is not Hilbert–Schmidt when a Hilbert basis is infinite [4]. On `L²(ℝ)` translation `ψ(x + t)` is a strongly continuous unitary group [5], and its generator is `-i d/dx` on `C²` functions with compact support, not `+i d/dx` [6]. On `L²(0, 1)` the operator `-i d/dx` on the `C²` functions supported inside `(0, 1)` is given by its graph [7]. The deficiency spaces of an operator are the kernels of the adjoint minus `±i`, and a self-adjoint operator has none [8]. The
 Fock space itself is not built here, and a Fock representation is characterized by its vacuum. The
 unbounded spectral theorem is not in Mathlib. Stone's theorem and Shale's criterion are [TODO] here.
+
+The graph of `-i d/dx` on the `C_c^∞(0, 1)` functions is the image of the smooth test functions under the same pair map, and lies inside the `C²` graph [11]. It contains a nonzero vector, a bump function supported in `(0, 1)` [12]. Mollification by a normed bump function maps a `C²` test function to a `C_c^∞` one, with the derivative of the mollified function the mollified derivative, and converges uniformly with its derivative, so the two graphs have the same closure [13].
+
+`-i d/dx` on the `C²` test functions of `(0, 1)` is densely defined, since a vector orthogonal to all test functions is zero [16]. A function with zero weak derivative on `(0, 1)` is almost everywhere constant, by a primitive of `ψ - (∫ ψ) φ₀` [16]. The deficiency vectors of this operator at `z` with `conj z = i b` are the multiples of `exp (b x)`, so both deficiency spaces are one-dimensional, the deficiency indices `(1, 1)` [17]. The exponentials lie in the right spaces and are nonzero [18].
+
+The Gram matrix of the vectors `W f Ω` of a Fock representation is a function of `f` and `g` alone, by the Weyl relations and the vacuum expectation, so the map `c ↦ ∑ c f W f Ω` has the same norm for two Fock representations; it extends to a unitary that maps the vacuum to the vacuum and intertwines the Weyl unitaries, which is the uniqueness of the Fock representation [14]. The Gram function is Hermitian and normalized, and over the zero Hilbert space there is a Fock representation to which the uniqueness applies [15].
 
 ## Lean References
 
@@ -51,6 +59,32 @@ unbounded spectral theorem is not in Mathlib. Stone's theorem and Shale's criter
    `OperatorAlgebras.momentumMin_graph`
 8. Lightlike/OperatorAlgebras/Deficiency.lean - `OperatorAlgebras.deficiencySpace`,
    `OperatorAlgebras.deficiencyDim`, `OperatorAlgebras.deficiencyDim_of_isSelfAdjoint`
+9. Lightlike/OperatorAlgebras/StoneGenerator.lean - `OperatorAlgebras.UnitaryGroup.dvec`,
+   `OperatorAlgebras.UnitaryGroup.prim`, `OperatorAlgebras.UnitaryGroup.dense_generatorDomain`,
+   `OperatorAlgebras.UnitaryGroup.generator_isSelfAdjoint` (the proof of task T-OP1-P1)
+10. Lightlike/OperatorAlgebras/StoneUnique.lean - `OperatorAlgebras.UnitaryGroup.eq_of_generator_eq`
+    (the proof of task T-OP1-P3)
+11. Lightlike/OperatorAlgebras/MomentumSmooth.lean - `OperatorAlgebras.momentumPairLin`,
+    `OperatorAlgebras.smoothTestFunctions`, `OperatorAlgebras.momentumGraphSmooth`,
+    `OperatorAlgebras.momentumGraphSmooth_le` (the graph of the momentum operator on smooth test functions;
+    the statement of task T-OP1-P6 is that its closure equals the closure of the C² graph)
+12. Lightlike/OperatorAlgebras/TestsMomentumSmooth.lean - `OperatorAlgebras.bumpHalf`,
+    `OperatorAlgebras.momentumGraphSmooth_ne_bot`
+13. Lightlike/OperatorAlgebras/MomentumMollify.lean - `OperatorAlgebras.moll`,
+    `OperatorAlgebras.bumpOfRadius`, `OperatorAlgebras.momentumGraph_le_closure`,
+    `OperatorAlgebras.closure_momentumGraphSmooth_eq` (the proof of task T-OP1-P6, by mollification)
+14. Lightlike/OperatorAlgebras/FockUnique.lean - `OperatorAlgebras.fockGram`, `OperatorAlgebras.fockMap`,
+    `OperatorAlgebras.fockEquiv`, `OperatorAlgebras.fockUnitary`, `OperatorAlgebras.fockUnitary_spec`
+    (the proof of task T-OP2-P2)
+15. Lightlike/OperatorAlgebras/TestsFock.lean - `OperatorAlgebras.fockGram_zero`,
+    `OperatorAlgebras.fockGram_conj`, `OperatorAlgebras.trivialFock`, `OperatorAlgebras.trivialFock_unitary`
+16. Lightlike/OperatorAlgebras/WeakConstant.lean - `OperatorAlgebras.bumpB`, `OperatorAlgebras.bump0`,
+    `OperatorAlgebras.weak_const`
+17. Lightlike/OperatorAlgebras/MomentumDeficiency.lean - `OperatorAlgebras.dense_momentumMin_domain`,
+    `OperatorAlgebras.expC`, `OperatorAlgebras.expL2`, `OperatorAlgebras.deficiencyDim_eq_one`,
+    `OperatorAlgebras.deficiency_indices_momentumMin` (the proof of task T-OP1-P5)
+18. Lightlike/OperatorAlgebras/TestsMomentumDeficiency.lean - `OperatorAlgebras.expL2_neg_mem_deficiency_I`,
+    `OperatorAlgebras.expL2_mem_deficiency_negI`
 
 ## References
 
