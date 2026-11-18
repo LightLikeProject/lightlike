@@ -37,7 +37,7 @@ groups the order is alphabetical; it is not a ranking. Each area lists:
   most other areas.
 - **Open:** in the field, weak and strong cosmic censorship. In the plan: intrinsic curvature on
   smooth manifolds (GE1), global causal structure (GE2) and Penrose's singularity theorem (GE4).
-- **Milestones:** 10 · [milestones](docs/tasks/milestones.md#lorentzian-and-riemannian-geometry) · [tasks](docs/tasks/README.md#lorentzian-and-riemannian-geometry) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+geometry%22)
+- **Milestones:** 14 · [milestones](docs/tasks/milestones.md#lorentzian-and-riemannian-geometry) · [tasks](docs/tasks/README.md#lorentzian-and-riemannian-geometry) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+geometry%22)
 
 ### Cosmology
 
@@ -96,7 +96,7 @@ Each foundation is cut to what the areas that use it need, so that no area build
   formulas. Used by spin foams, JT gravity and AdS₃ holography.
 - **Open:** in the plan, the Plancherel measure of SL(2,ℂ) (HA2) and the representations of
   SL(2,ℝ) (HA3).
-- **Milestones:** 4 · [milestones](docs/tasks/milestones.md#harmonic-analysis-on-lie-groups) · [tasks](docs/tasks/README.md#harmonic-analysis-on-lie-groups) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+harmonic-analysis%22)
+- **Milestones:** 6 · [milestones](docs/tasks/milestones.md#harmonic-analysis-on-lie-groups) · [tasks](docs/tasks/README.md#harmonic-analysis-on-lie-groups) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+harmonic-analysis%22)
 
 ### Operator algebras and quantum information
 
@@ -104,7 +104,7 @@ Each foundation is cut to what the areas that use it need, so that no area build
   entropy inequalities, finite-dimensional quantum mechanics. Used by semiclassical gravity,
   canonical quantum gravity, holography, noncommutative geometry, causal sets and matrix models.
 - **Open:** in the plan, Stone's theorem, Fock space, modular theory and strong subadditivity.
-- **Milestones:** 5 · [milestones](docs/tasks/milestones.md#operator-algebras-and-quantum-information) · [tasks](docs/tasks/README.md#operator-algebras-and-quantum-information) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+operator-algebras%22)
+- **Milestones:** 6 · [milestones](docs/tasks/milestones.md#operator-algebras-and-quantum-information) · [tasks](docs/tasks/README.md#operator-algebras-and-quantum-information) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+operator-algebras%22)
 
 ### Oscillatory and saddle-point asymptotics
 
@@ -113,7 +113,7 @@ Each foundation is cut to what the areas that use it need, so that no area build
   spin-foam asymptotics and later by any semiclassical expansion.
 - **Open:** in the plan, the asymptotics of balanced alternating Gamma-ratio sums (SP2), which
   real-variable methods cannot give.
-- **Milestones:** 2 · [milestones](docs/tasks/milestones.md#oscillatory-and-saddle-point-asymptotics) · [tasks](docs/tasks/README.md#oscillatory-and-saddle-point-asymptotics) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+asymptotics%22)
+- **Milestones:** 4 · [milestones](docs/tasks/milestones.md#oscillatory-and-saddle-point-asymptotics) · [tasks](docs/tasks/README.md#oscillatory-and-saddle-point-asymptotics) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+asymptotics%22)
 
 ### Perturbative QFT and the renormalization group
 
@@ -122,7 +122,7 @@ Each foundation is cut to what the areas that use it need, so that no area build
   Used by perturbative gravity, asymptotic safety, tensor and matrix models, and string theory.
 - **Open:** in the field, a construction of interacting quantum field theories in four dimensions.
   The plan covers the perturbative and finite-dimensional parts.
-- **Milestones:** 5 · [milestones](docs/tasks/milestones.md#perturbative-qft-and-the-renormalization-group) · [tasks](docs/tasks/README.md#perturbative-qft-and-the-renormalization-group) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+qft-rg%22)
+- **Milestones:** 6 · [milestones](docs/tasks/milestones.md#perturbative-qft-and-the-renormalization-group) · [tasks](docs/tasks/README.md#perturbative-qft-and-the-renormalization-group) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+qft-rg%22)
 
 ### PL topology
 
@@ -234,7 +234,7 @@ Each foundation is cut to what the areas that use it need, so that no area build
   double copy.
 - **Open:** a non-perturbative completion; the ultraviolet finiteness of N = 8 supergravity rests
   on explicit computations, not on a theorem.
-- **Milestones:** 7 · [milestones](docs/tasks/milestones.md#perturbative-quantum-gravity) · [tasks](docs/tasks/README.md#perturbative-quantum-gravity) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+perturbative-qg%22)
+- **Milestones:** 8 · [milestones](docs/tasks/milestones.md#perturbative-quantum-gravity) · [tasks](docs/tasks/README.md#perturbative-quantum-gravity) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+perturbative-qg%22)
 
 ### Regge calculus
 
