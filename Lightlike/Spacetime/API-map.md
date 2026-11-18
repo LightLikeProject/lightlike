@@ -56,7 +56,7 @@ uniqueness of the Levi-Civita connection, the independence of the curvature from
 agreement with the coordinate curvature of [1] in every chart are stated as proof tasks `T-GE1-P2` to `T-GE1-P8` (including the second and contracted Bianchi identities and Minkowski space as a solution)
 (`Tasks/GE/`), with open proofs, except the last: on `ℝⁿ` the flat connection `∇_v Y = DY(v)` is a torsion-free connection compatible with the Minkowski metric with zero curvature, so Minkowski space satisfies the Einstein equations with `Λ = 0` [8]. [TODO]
 
-The Lie derivative of the metric along a vector field, `(L_X g)(V, W) = X(g(V, W)) - g([X, V], W) - g(V, [X, W])`, equals `g(∇_V X, W) + g(V, ∇_W X)` for the Levi-Civita connection (metric compatibility and vanishing torsion), so a field is a Killing field, `g(∇_v X, w) + g(v, ∇_w X) = 0`, exactly when `L_X g = 0` [27].
+The Lie derivative of the metric along a vector field, `(L_X g)(V, W) = X(g(V, W)) - g([X, V], W) - g(V, [X, W])`, equals `g(∇_V X, W) + g(V, ∇_W X)` for the Levi-Civita connection (metric compatibility and vanishing torsion), so a field is a Killing field, `g(∇_v X, w) + g(v, ∇_w X) = 0`, exactly when `L_X g = 0` [27]. The bracket of two Killing fields is Killing, so the Killing fields form a Lie algebra [28]. In Minkowski space the affine fields `y -> A y + c` with `A` skew for the metric are Killing, the dilation is not, and their brackets are again of this form with the Poincare relations [29].
 
 In Minkowski space, an observer who travels out and back along two straight segments ages less
 than one who stays at rest [6].
@@ -104,6 +104,9 @@ than one who stays at rest [6].
 26. Lightlike/Spacetime/NondegOpen.lean - `openNondeg`, `openNondeg_coordMetric`, `openNondeg_volumeMeasure`: a coordinate metric of any signature on an open subset of Euclidean space as a metric of the open subset, the coordinate components in every chart, and its volume measure.
 
 27. Lightlike/Spacetime/LieMetric.lean - `lieDerivMetric`, `IsKillingAt`, `lieDerivMetric_symm`, `lieDerivMetric_zero`, `lieDerivMetric_eq_of_isLeviCivita`, `isKillingAt_iff_lieDerivMetric_eq_zero`: the Lie derivative of a metric of any signature along a vector field, and for the Levi-Civita connection its equality with `g(∇_V X, W) + g(V, ∇_W X)`, so that the Killing equation is `L_X g = 0`.
+
+28. Lightlike/Spacetime/KillingAlgebra.lean - `IsKillingNear`, `mlieBracket_jacobi`, `lieDerivMetric_lieBracket`, `IsKillingNear.lieBracket`: the bracket of two Killing fields of a metric of any signature is Killing (the Jacobi identity and `[X, Y] f = X (Y f) - Y (X f)`).
+29. Lightlike/Spacetime/PoincareKilling.lean - `affField`, `affField_killing_iff`, `not_isKillingAt_dilation`, `mlieBracket_affField`, `skew_comm_skew`: in Minkowski space the affine fields with skew linear part are Killing, the dilation is not, and the affine fields close under the bracket with the Poincare relations.
 
 ## References
 
