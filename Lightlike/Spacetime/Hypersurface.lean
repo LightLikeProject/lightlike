@@ -2,21 +2,28 @@ import Lightlike.Spacetime.BianchiSecond
 import Lightlike.Spacetime.LieMetric
 
 /-!
-# Hypersurfaces: the unit normal and the second fundamental form (GE13, first part)
+# Hypersurfaces: unit normal, second fundamental form, Gauss and Codazzi relations (GE13)
 
-A hypersurface is given as a level set of a smooth function `φ` near a point `x₀`: the leaves `φ = c` through the points near
-`x₀` foliate a neighbourhood. `IsUnitNormal g φ n ε x₀` says that `n` is a smooth field near `x₀` with `g(n, n) = ε = ±1`
-and that the tangent vectors of the leaves (the kernel of `dφ`) are exactly the vectors `g`-orthogonal to `n`; so the
-leaves are non-null. A field `X` is tangent (`IsTangentNear φ X x₀`) when `dφ (X) = 0` near `x₀`.
+A hypersurface is given as a level set of a smooth function `φ` near a point `x₀`: the leaves `φ = c` near `x₀` foliate a
+neighbourhood. `IsUnitNormal g φ n ε x₀` says that `n` is a smooth field near `x₀` with `g(n, n) = ε = ±1` and that the tangent
+vectors of the leaves (the kernel of `dφ`) are exactly the vectors `g`-orthogonal to `n`, so the leaves are non-null.
+A field `X` is tangent (`IsTangentNear φ X x₀`) when `dφ (X) = 0` near `x₀`.
 
 * `lieBracket_isTangentNear`: the bracket of two tangent fields is tangent (`mfderiv_mlieBracket`);
 * `secondFF`: the second fundamental form (extrinsic curvature) `K(v, w) = g(∇_v n, w)`;
-* `secondFF_symm_fields`: `K` is symmetric on tangent fields, for a torsion-free metric connection.
+* `secondFF_symm_fields`: `K` is symmetric on tangent fields (torsion free, metric compatible connection);
+  `exists_tangent_extension`: a tangent vector extends to a smooth tangent field;
+* `Dfield`: the tangential connection `D_Y Z = (∇_Y Z)^T` of the leaves; `dd_eq_Dfield`: `∇_Y Z = D_Y Z - ε K(Y, Z) n`;
+* `gauss_relation`: `g(R(X, Y) Z, W) = g(R^D(X, Y) Z, W) - ε (K(Y, Z) K(X, W) - K(X, Z) K(Y, W))` for tangent fields,
+  with `R^D = gaussCurv` the curvature of `D` (metric compatible connection);
+* `codazzi_relation`: `g(R(X, Y) Z, n) = -((D_X K)(Y, Z) - (D_Y K)(X, Z))` (Levi-Civita connection), `covK` is `D_X K`.
 
-**Limits.** The leaves are not given a manifold structure, so "induced metric" and the intrinsic curvature of a leaf are not
-available as objects; the Gauss and Codazzi relations are stated with the tangential connection `D` of the leaves
-(second part). The existence of a unit normal `n` for a function `φ` with `dφ ≠ 0` and non-null gradient is a hypothesis,
-not proved. Manifolds as in `CurvatureSymmetries.lean`.
+**Limits.** The leaves are not given a manifold structure, so the "induced metric" and the intrinsic Levi-Civita curvature of
+a leaf are not objects here: `D` is the tangential part of `∇` on tangent fields, and `gaussCurv` is its curvature (`D` is
+torsion free and compatible with the restriction of `g` on tangent fields; that it is *the* Levi-Civita connection of the
+leaf is not stated). The existence of a unit normal for a function `φ` with `dφ ≠ 0` and non-null gradient is a hypothesis.
+The trust checks of the milestone (the sphere in `ℝ³`, a slice of FLRW) are not in this file. Manifolds as in
+`CurvatureSymmetries.lean` (no boundary, `T2Space`, smooth connection).
 -/
 
 open Bundle Manifold Set VectorField NormedSpace FiberBundle Filter
@@ -267,6 +274,151 @@ theorem gauss_relation (hC : cov.IsMetricCompatible g) (hn : IsUnitNormal g φ n
     g.g x₀ (cov Z x₀ (mlieBracket 𝓘(ℝ, E) X Y x₀)) (W x₀) = _
   rw [t1, t2]
   ring
+
+theorem mvfderiv_negEps {f : M → ℝ} {x : M} (ε : ℝ) (hf : MDiffAt f x) (u : TangentSpace 𝓘(ℝ, E) x) :
+    (show ℝ from mvfderiv 𝓘(ℝ, E) (fun y => -(ε * f y)) x u) = -(ε * (show ℝ from mvfderiv 𝓘(ℝ, E) f x u)) := by
+  have h1 : MDiffAt (fun y => ε * f y) x := mdifferentiableAt_const.mul hf
+  have h2 := congrArg (fun L => L u) (mvfderiv_fun_neg (I := 𝓘(ℝ, E)) (g := fun y => ε * f y) (x := x))
+  have h3 := congrArg (fun L => L u) (mvfderiv_fun_mul (I := 𝓘(ℝ, E)) (f := fun _ : M => ε) (g := f) (x := x)
+    mdifferentiableAt_const hf)
+  simp only [mvfderiv_const, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.zero_apply,
+    ContinuousLinearMap.neg_apply, smul_eq_mul, smul_zero, add_zero] at h2 h3
+  exact h2.trans (congrArg Neg.neg h3)
+
+/-- **The splitting of `∇_u (∇_Y Z)`** into the tangential part, the normal part along `∇_u n` and the derivative of the
+coefficient. -/
+theorem cov_dd_split (hC : cov.IsMetricCompatible g) (hn : IsUnitNormal g φ n ε x₀)
+    {Y Z : Π y : M, TangentSpace 𝓘(ℝ, E) y} (hYs : SmoothNear Y x₀) (hZs : SmoothNear Z x₀)
+    (hZ : IsTangentNear φ Z x₀) (u : TangentSpace 𝓘(ℝ, E) x₀) :
+    cov (dd cov Y Z) x₀ u = cov (Dfield cov g n ε Y Z) x₀ u +
+      (-(ε * Kf cov g n Y Z x₀)) • cov n x₀ u + (-(ε * (show ℝ from mvfderiv 𝓘(ℝ, E) (Kf cov g n Y Z) x₀ u))) • n x₀ := by
+  have hDs := smoothNear_Dfield cov hn hYs hZs
+  have hKs := contMDiffAt_Kf cov (g := g) hYs hZs hn.smooth
+  have hgs : ContMDiffAt 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ (fun y => -(ε * Kf cov g n Y Z y)) x₀ :=
+    (contMDiffAt_const.mul hKs).neg
+  have mD := mdiffAt_of_smoothNear hDs
+  have mn := mdiffAt_of_smoothNear hn.smooth
+  have hgd := hgs.mdifferentiableAt (by simp)
+  have mgn : MDiffAt (T% ((fun y => -(ε * Kf cov g n Y Z y)) • n)) x₀ :=
+    MDifferentiableAt.smul_section hgd mn
+  have hcov := cov.isCovariantDerivativeOn (s := Set.univ)
+  have e := dd_eq_Dfield cov hC hn hYs hZs hZ
+  have mdd := mdiffAt_of_smoothNear (smoothNear_dd cov hYs hZs)
+  have e' : dd cov Y Z =ᶠ[𝓝 x₀] (Dfield cov g n ε Y Z + (fun y => -(ε * Kf cov g n Y Z y)) • n) := by
+    filter_upwards [e] with y hy using hy
+  have step1 : cov (dd cov Y Z) x₀ = cov (Dfield cov g n ε Y Z + (fun y => -(ε * Kf cov g n Y Z y)) • n) x₀ :=
+    hcov.congr_of_eventuallyEq mdd (mdifferentiableAt_add_section mD mgn) Filter.univ_mem e'
+  rw [step1, hcov.add mD mgn, hcov.leibniz mn hgd]
+  simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.smulRight_apply]
+  rw [add_assoc]
+  congr 2
+  exact congrArg (fun r => r • n x₀) (mvfderiv_negEps ε (hKs.mdifferentiableAt (by simp)) u)
+
+/-- `g(∇_u n, n) = 0` since `g(n, n)` is constant. -/
+theorem cov_n_ortho (hC : cov.IsMetricCompatible g) (hn : IsUnitNormal g φ n ε x₀) (u : TangentSpace 𝓘(ℝ, E) x₀) :
+    g.g x₀ (cov n x₀ u) (n x₀) = 0 := by
+  set X := FiberBundle.extend E u with hX
+  have hXs : SmoothNear X x₀ := eventually_extend x₀ u
+  have hXx : X x₀ = u := FiberBundle.extend_apply_self E u
+  have mn := mdiffAt_of_smoothNear hn.smooth
+  have c := hC X n n x₀ (mdiffAt_of_smoothNear hXs) mn mn
+  have e : gpair g n n =ᶠ[𝓝 x₀] fun _ => ε := by
+    filter_upwards [hn.norm] with y hy using hy
+  have z : (show ℝ from mvfderiv 𝓘(ℝ, E) (gpair g n n) x₀ (X x₀)) = 0 := by
+    rw [mvfderiv_congr e]; simp [mvfderiv, mfderiv_const]
+  have hs : mvfderiv 𝓘(ℝ, E) (gpair g n n) x₀ (X x₀) =
+      g.g x₀ (cov n x₀ (X x₀)) (n x₀) + g.g x₀ (n x₀) (cov n x₀ (X x₀)) := c
+  rw [hXx] at z hs
+  have := g.symm x₀ (n x₀) (cov n x₀ u)
+  linarith
+
+/-- For a tangent field `U`: `g(∇_u U, n) = - g(∇_u n, U)`. -/
+theorem cov_tangent_ortho (hC : cov.IsMetricCompatible g) (hn : IsUnitNormal g φ n ε x₀)
+    {U : Π y : M, TangentSpace 𝓘(ℝ, E) y} (hUs : SmoothNear U x₀) (hU : IsTangentNear φ U x₀)
+    (u : TangentSpace 𝓘(ℝ, E) x₀) :
+    g.g x₀ (cov U x₀ u) (n x₀) = - g.g x₀ (cov n x₀ u) (U x₀) := by
+  set X := FiberBundle.extend E u with hX
+  have hXs : SmoothNear X x₀ := eventually_extend x₀ u
+  have hXx : X x₀ = u := FiberBundle.extend_apply_self E u
+  have c := hC X n U x₀ (mdiffAt_of_smoothNear hXs) (mdiffAt_of_smoothNear hn.smooth) (mdiffAt_of_smoothNear hUs)
+  have z := hU.mvfderiv_gpair hn (X x₀)
+  have hs : mvfderiv 𝓘(ℝ, E) (gpair g n U) x₀ (X x₀) =
+      g.g x₀ (cov n x₀ (X x₀)) (U x₀) + g.g x₀ (n x₀) (cov U x₀ (X x₀)) := c
+  rw [hXx] at z hs
+  have := g.symm x₀ (n x₀) (cov U x₀ u)
+  linarith
+
+theorem Dfield_isTangentNear (hn : IsUnitNormal g φ n ε x₀) (Y Z : Π y : M, TangentSpace 𝓘(ℝ, E) y) :
+    IsTangentNear φ (Dfield cov g n ε Y Z) x₀ := by
+  filter_upwards [hn.ker, hn.norm] with y hk hnorm
+  refine (hk _).2 ?_
+  have hε : ε * ε = 1 := by rcases hn.eps with h | h <;> rw [h] <;> norm_num
+  unfold Dfield tanProj
+  have := g.symm y (dd cov Y Z y) (n y)
+  simp only [map_sub, map_smul, ContinuousLinearMap.sub_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, hnorm]
+  linear_combination (-(g.g y (n y) (dd cov Y Z y))) * hε + (-(ε * ε)) * this
+
+/-- The covariant derivative of the second fundamental form along `X`, in the leaf connection `D`:
+`(D_X K)(Y, Z) = X (K(Y, Z)) - K(D_X Y, Z) - K(Y, D_X Z)`. -/
+def covK (g : NondegMetric 𝓘(ℝ, E) M) (n : Π y : M, TangentSpace 𝓘(ℝ, E) y) (ε : ℝ)
+    (X Y Z : Π y : M, TangentSpace 𝓘(ℝ, E) y) (x : M) : ℝ :=
+  (show ℝ from mvfderiv 𝓘(ℝ, E) (Kf cov g n Y Z) x (X x)) -
+    secondFF cov g n x (Dfield cov g n ε X Y x) (Z x) - secondFF cov g n x (Y x) (Dfield cov g n ε X Z x)
+
+/-- The normal-direction term of `∇_u (∇_Y Z)`: `g(∇_u ∇_Y Z, n) = - K(u, D_Y Z) - u (K(Y, Z))`. -/
+theorem codazzi_term (hC : cov.IsMetricCompatible g) (hn : IsUnitNormal g φ n ε x₀)
+    {Y Z : Π y : M, TangentSpace 𝓘(ℝ, E) y} (hYs : SmoothNear Y x₀) (hZs : SmoothNear Z x₀)
+    (hZ : IsTangentNear φ Z x₀) (u : TangentSpace 𝓘(ℝ, E) x₀) :
+    g.g x₀ (cov (dd cov Y Z) x₀ u) (n x₀) =
+      - secondFF cov g n x₀ u (Dfield cov g n ε Y Z x₀) - (show ℝ from mvfderiv 𝓘(ℝ, E) (Kf cov g n Y Z) x₀ u) := by
+  have hε : ε * ε = 1 := by rcases hn.eps with h | h <;> rw [h] <;> norm_num
+  have hnn : g.g x₀ (n x₀) (n x₀) = ε := hn.norm.self_of_nhds
+  have hDs := smoothNear_Dfield cov hn hYs hZs
+  have a := cov_tangent_ortho cov hC hn hDs (Dfield_isTangentNear cov hn Y Z) u
+  have b := cov_n_ortho cov hC hn u
+  rw [cov_dd_split cov hC hn hYs hZs hZ u]
+  simp only [map_add, map_smul, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, b, hnn, a, mul_zero, add_zero]
+  unfold secondFF
+  linear_combination (-(show ℝ from mvfderiv 𝓘(ℝ, E) (Kf cov g n Y Z) x₀ u)) * hε
+
+/-- **The Codazzi relation**: for tangent fields and the Levi-Civita connection,
+`g(R(X, Y) Z, n) = - ((D_X K)(Y, Z) - (D_Y K)(X, Z))` at `x₀`. -/
+theorem codazzi_relation (h : cov.IsLeviCivita g) (hn : IsUnitNormal g φ n ε x₀)
+    {X Y Z : Π y : M, TangentSpace 𝓘(ℝ, E) y}
+    (hXs : SmoothNear X x₀) (hYs : SmoothNear Y x₀) (hZs : SmoothNear Z x₀)
+    (hX : IsTangentNear φ X x₀) (hY : IsTangentNear φ Y x₀) (hZ : IsTangentNear φ Z x₀) :
+    g.g x₀ (cov.curvatureAt x₀ (X x₀) (Y x₀) (Z x₀)) (n x₀) =
+      -(covK cov g n ε X Y Z x₀ - covK cov g n ε Y X Z x₀) := by
+  have hC := h.2
+  have hR := curvatureAt_apply_eventually cov X Y Z x₀ hXs hYs hZs
+  have t1 := codazzi_term cov hC hn hYs hZs hZ (X x₀)
+  have t2 := codazzi_term cov hC hn hXs hZs hZ (Y x₀)
+  have t3 := cov_tangent_ortho cov hC hn hZs hZ (mlieBracket 𝓘(ℝ, E) X Y x₀)
+  have tor := ((CovariantDerivative.torsion_eq_zero_iff cov).1 h.1) (mdiffAt_of_smoothNear hXs) (mdiffAt_of_smoothNear hYs)
+  have hbr : IsTangentNear φ (mlieBracket 𝓘(ℝ, E) X Y) x₀ := lieBracket_isTangentNear hn hXs hYs hX hY
+  have o := (hbr.ortho hn).self_of_nhds
+  -- `D_X Y - D_Y X = [X, Y]`
+  have hgb : g.g x₀ (cov Y x₀ (X x₀)) (n x₀) = g.g x₀ (cov X x₀ (Y x₀)) (n x₀) := by
+    have h1 : g.g x₀ (cov Y x₀ (X x₀) - cov X x₀ (Y x₀)) (n x₀) = 0 := by
+      rw [tor, g.symm]; exact o
+    simp only [map_sub, ContinuousLinearMap.sub_apply] at h1
+    linarith
+  have hD : Dfield cov g n ε X Y x₀ - Dfield cov g n ε Y X x₀ = mlieBracket 𝓘(ℝ, E) X Y x₀ := by
+    unfold Dfield tanProj dd
+    rw [← tor, hgb]
+    abel
+  have hK : secondFF cov g n x₀ (mlieBracket 𝓘(ℝ, E) X Y x₀) (Z x₀) =
+      secondFF cov g n x₀ (Dfield cov g n ε X Y x₀) (Z x₀) - secondFF cov g n x₀ (Dfield cov g n ε Y X x₀) (Z x₀) := by
+    rw [← hD]; unfold secondFF
+    simp only [map_sub, ContinuousLinearMap.sub_apply]
+  have hg : g.g x₀ (cov.curvatureAt x₀ (X x₀) (Y x₀) (Z x₀)) (n x₀) =
+      g.g x₀ (cov (dd cov Y Z) x₀ (X x₀)) (n x₀) - g.g x₀ (cov (dd cov X Z) x₀ (Y x₀)) (n x₀) -
+        g.g x₀ (cov Z x₀ (mlieBracket 𝓘(ℝ, E) X Y x₀)) (n x₀) := by
+    rw [hR]; simp only [map_sub, ContinuousLinearMap.sub_apply]; rfl
+  rw [hg, t1, t2, t3]
+  unfold covK
+  unfold secondFF at hK ⊢
+  linarith
 
 end Hypersurface
 

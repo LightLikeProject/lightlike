@@ -713,6 +713,7 @@ import Lightlike.Spacetime.LeviCivita
 import Lightlike.Spacetime.LieMetric
 import Lightlike.Spacetime.KillingAlgebra
 import Lightlike.Spacetime.PoincareKilling
+import Lightlike.Spacetime.Hypersurface
 import Lightlike.Spacetime.Lorentzian
 import Lightlike.Spacetime.Minkowski
 import Lightlike.Spacetime.RiemannSymmetry

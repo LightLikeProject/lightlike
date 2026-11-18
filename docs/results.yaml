@@ -2051,3 +2051,16 @@
   review: kernel-checked
   note: "On R^n with the Minkowski metric and the flat connection, the field y -> A y + c satisfies the Killing equation at every point iff A is skew for the metric; the dilation y -> y does not (n at least 1); [A y + c, B y + d] = (B A - A B) y + (B c - A d); the commutator of two skew endomorphisms is skew. Limits: not proved that these are all the Killing fields (the count n(n+1)/2); the 2-sphere check is not included; comparison with the source is pending."
   since: unreleased
+- id: LL-XXXX-d
+  title: The second fundamental form of the level sets of a function is symmetric, and the Gauss and Codazzi relations hold for a non-null hypersurface
+  area: Spacetime
+  file: Lightlike/Spacetime/Hypersurface.lean
+  decls: [Lightlike.Hypersurface.secondFF_symm_fields, Lightlike.Hypersurface.gauss_relation, Lightlike.Hypersurface.codazzi_relation]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "Chapter 3"}
+  review: kernel-checked
+  note: "For a smooth function phi with a unit normal field n (g(n, n) = eps = plus or minus one, the kernel of d phi equal to the orthogonal of n), tangent fields X, Y, Z, W near a point and a metric compatible connection, g(R(X, Y) Z, W) equals the same expression for the tangential connection D plus the term minus eps (K(Y, Z) K(X, W) - K(X, Z) K(Y, W)) with K(v, w) = g(nabla_v n, w); for the Levi-Civita connection K is symmetric on tangent fields and g(R(X, Y) Z, n) = -((D_X K)(Y, Z) - (D_Y K)(X, Z)). Limits: the leaves are not given a manifold structure, so the intrinsic curvature of a leaf is that of the tangential connection D; existence of the unit normal is a hypothesis; the sphere and FLRW trust checks are not included; comparison with the source is pending and the location is the chapter."
+  since: unreleased
