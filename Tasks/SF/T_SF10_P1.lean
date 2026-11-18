@@ -35,8 +35,8 @@ Lemmas about them, which a proof may use:
 * `Asymptotics.Lorentzian.hessXZ_tgt` (`Lightlike/Asymptotics/Lorentzian/HessianNode.lean`)
 * `Asymptotics.Lorentzian.hessXZ_src` (`Lightlike/Asymptotics/Lorentzian/HessianNode.lean`)
 * `Asymptotics.Lorentzian.hessZZ_line` (`Lightlike/Asymptotics/Lorentzian/HessianNode.lean`)
+* `Asymptotics.Lorentzian.hessXX_block` (`Lightlike/Asymptotics/Lorentzian/HessianNode.lean`)
 * `Asymptotics.Lorentzian.hessXX_cross` (`Lightlike/Asymptotics/Lorentzian/HessianAssembly.lean`)
-* `Asymptotics.Lorentzian.hessXX_curve` (`Lightlike/Asymptotics/Lorentzian/HessianNode.lean`)
 
 Everything they depend on, and the further lemmas about them, in one block:
 

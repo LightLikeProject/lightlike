@@ -1,3 +1,4 @@
+import Lightlike.Spacetime.Causal.Extension
 import Lightlike.Spacetime.Causal.MinkowskiCausal
 
 /-!
@@ -22,14 +23,14 @@ Definitions the statement names (without the `Lightlike.` prefix), by file:
 
 Lemmas about them, which a proof may use:
 
-* `Causal.TimeOrientation.mk.inj` (`Lightlike/Spacetime/Causal/TimeOrientation.lean`)
-* `Causal.TimeOrientation.timelike` (`Lightlike/Spacetime/Causal/TimeOrientation.lean`)
-* `Causal.TimeOrientation.mk.injEq` (`Lightlike/Spacetime/Causal/TimeOrientation.lean`)
-* `Causal.TimeOrientation.contMDiff` (`Lightlike/Spacetime/Causal/TimeOrientation.lean`)
-* `Causal.TimeOrientation.mk.sizeOf_spec` (`Lightlike/Spacetime/Causal/TimeOrientation.lean`)
-* `LorentzianMetric.symm` (`Lightlike/Spacetime/Lorentzian.lean`)
-* `LorentzianMetric.mk.inj` (`Lightlike/Spacetime/Lorentzian.lean`)
-* `LorentzianMetric.mk.injEq` (`Lightlike/Spacetime/Lorentzian.lean`)
+* `Causal.isCauchySurface_of_domainDep_eq_univ` (`Lightlike/Spacetime/Causal/CauchyDomain.lean`)
+* `Causal.chron_trans` (`Lightlike/Spacetime/Causal/BasicRelations.lean`)
+* `Causal.causal_trans` (`Lightlike/Spacetime/Causal/BasicRelations.lean`)
+* `Causal.fieldAt_self` (`Lightlike/Spacetime/Causal/SmoothOrientation.lean`)
+* `Causal.fieldAt_coord` (`Lightlike/Spacetime/Causal/SmoothOrientation.lean`)
+* `Causal.exit_or_diamond` (`Lightlike/Spacetime/CausalLadder/ExitDiamond.lean`)
+* `Causal.isOpen_coverSet` (`Lightlike/Spacetime/Causal/SmoothOrientation.lean`)
+* `Causal.ReachIn.left_mem` (`Lightlike/Spacetime/CausalLadder/StrongCausality.lean`)
 
 Everything they depend on, and the further lemmas about them, in one block:
 
@@ -55,9 +56,14 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
   {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I ∞ M]
   {n : ℕ} {g : LorentzianMetric I M n} (T : TimeOrientation g)
 
-/-- **A Cauchy surface is achronal.** -/
-theorem IsCauchySurface.isAchronal [T2Space M] {S : Set M} (h : IsCauchySurface T S) :
+/-- **A Cauchy surface is achronal.** The hypotheses `[BoundarylessManifold I M]` and
+`[SecondCountableTopology M]` match the source (Hawking–Ellis: a connected paracompact Hausdorff
+manifold without boundary is second countable); approved by the maintainers, 18 November 2026.
+With boundary allowed the statement is false: in a half-space of Minkowski space there is no
+inextendible timelike curve, so every set is a Cauchy surface. -/
+theorem IsCauchySurface.isAchronal [T2Space M] [BoundarylessManifold I M]
+    [SecondCountableTopology M] {S : Set M} (h : IsCauchySurface T S) :
     IsAchronal T S := by
-  sorry
+  exact h.isAchronal_of_boundaryless
 
 end Lightlike.Causal

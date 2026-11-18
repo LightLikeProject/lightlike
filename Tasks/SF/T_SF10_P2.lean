@@ -36,14 +36,14 @@ Definitions the statement names (without the `Lightlike.` prefix), by file:
 
 Lemmas about them, which a proof may use:
 
+* `Asymptotics.Lorentzian.lorVertex_suppressed_fixChart` (`Lightlike/Asymptotics/Lorentzian/VertexSuppressed.lean`)
 * `Asymptotics.Lorentzian.lorVertex_asymptotics_fixChart` (`Lightlike/Asymptotics/Lorentzian/VertexFixChart.lean`)
 * `Asymptotics.Lorentzian.lorChartAction_fixVertexChart_contDiffOn` (`Lightlike/Asymptotics/Lorentzian/VertexFixChart.lean`)
 * `Asymptotics.Lorentzian.lorVertex_asymptotics` (`Lightlike/Asymptotics/Lorentzian/Vertex.lean`)
 * `Asymptotics.Lorentzian.lorVertex_asymptotics_local` (`Lightlike/Asymptotics/Lorentzian/VertexLocal.lean`)
+* `Asymptotics.Lorentzian.hasDerivAt_chartAction_aligned` (`Lightlike/Asymptotics/Lorentzian/VertexSuppressed.lean`)
+* `Asymptotics.Lorentzian.lorVertex_asymptotics_vertexChart` (`Lightlike/Asymptotics/Lorentzian/VertexChart.lean`)
 * `Asymptotics.Lorentzian.hessXX_block` (`Lightlike/Asymptotics/Lorentzian/HessianNode.lean`)
-* `Asymptotics.Lorentzian.hessXX_curve` (`Lightlike/Asymptotics/Lorentzian/HessianNode.lean`)
-* `Asymptotics.Lorentzian.closure_of_stationary` (`Lightlike/Asymptotics/Lorentzian/ClosureFromCritical.lean`)
-* `Asymptotics.Lorentzian.lorChartAction_contDiffOn` (`Lightlike/Asymptotics/Lorentzian/ActionSmooth.lean`)
 
 Everything they depend on, and the further lemmas about them, in one block:
 
