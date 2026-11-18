@@ -122,4 +122,30 @@ theorem bdU_cauchy {B B' : H →L[ℂ] H} (hB : IsSelfAdjoint B) (hB' : IsSelfAd
     Real.norm_eq_abs, mul_comm] at this ⊢
   exact this
 
+/-- `exp (i s B)` as a unitary for a self-adjoint `B`. -/
+noncomputable def bdUnitary {B : H →L[ℂ] H} (hB : IsSelfAdjoint B) (s : ℝ) : H ≃ₗᵢ[ℂ] H where
+  toFun := bdU B s
+  invFun := bdU B (-s)
+  map_add' := map_add _
+  map_smul' := map_smul _
+  left_inv y := by
+    have := congrArg (fun T : H →L[ℂ] H => T y) (bdU_neg_mul (B := B) s)
+    simpa using this
+  right_inv y := by
+    have := congrArg (fun T : H →L[ℂ] H => T y) (bdU_mul_neg (B := B) s)
+    simpa using this
+  norm_map' := bdU_norm hB s
+
+lemma bdUnitary_apply {B : H →L[ℂ] H} (hB : IsSelfAdjoint B) (s : ℝ) (y : H) :
+    bdUnitary hB s y = bdU B s y := rfl
+
+/-- The group law `U (s + t) = U s (U t)` for the unitaries. -/
+lemma bdUnitary_add {B : H →L[ℂ] H} (hB : IsSelfAdjoint B) (s t : ℝ) (y : H) :
+    bdUnitary hB (s + t) y = bdUnitary hB s (bdUnitary hB t y) := by
+  simp only [bdUnitary_apply, bdU_add, ContinuousLinearMap.mul_apply]
+
+/-- Strong continuity of `s ↦ exp (i s B) y`. -/
+lemma continuous_bdU_apply (B : H →L[ℂ] H) (y : H) : Continuous fun s : ℝ => bdU B s y :=
+  continuous_iff_continuousAt.2 fun s => (hasDerivAt_bdU_apply B y s).continuousAt
+
 end Lightlike.OperatorAlgebras
