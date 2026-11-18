@@ -381,4 +381,35 @@ theorem isCoordMetric_ctrl (M a k : ℝ) : IsCoordMetric (ctrlMetric M a k) (ctr
   isUnit_det := fun y hy => (hy.2).isUnit
   smooth := fun i j => (ctrlMetric_smooth M a k i j).mono (fun y hy => hy.1)
 
+/-- The test point `(t, r, θ, φ) = (0, 3, π/2, 0)`. -/
+def ctrlPoint : Fin 4 → ℝ := ![0, 3, π / 2, 0]
+
+theorem ctrlPoint_mem : ctrlPoint ∈ ctrlU 1 (1 / 2) (1 / 2) := by
+  refine ⟨⟨by simp [ctrlPoint], ?_, by simp [ctrlPoint, Real.pi_pos], by simp [ctrlPoint, Real.pi_pos]⟩, ?_⟩
+  · simp [kerrD, ctrlPoint]; norm_num
+  · rw [det_ctrlMetric]
+    simp [ctrlDet, kgg00, kgg03, kgg11, kgg22, kgg33, kcg03, kerrS, kerrD, ctrlPoint]
+    norm_num
+
+open Lightlike.Regge.Conv3 in
+/-- **A real negative control.** The Kerr metric with `g_{tφ}` halved (`k = 1/2`; `M = 1`, `a = 1/2`) is
+not Ricci-flat: `R_{22} = -25/456` at `(r, θ) = (3, π/2)`. -/
+theorem ctrl_ricci_22 : ricci (ctrlMetric 1 (1 / 2) (1 / 2)) 2 2 ctrlPoint = -(25 / 456) := by
+  have hy := ctrlPoint_mem
+  have hg := isCoordMetric_ctrl 1 (1 / 2 : ℝ) (1 / 2)
+  have hinv := ctrlMetric_inv 1 (1 / 2 : ℝ) (1 / 2) hy
+  simp only [ricci, riemann_jet hg hy, dChr, christoffel,
+    pd_ctrlMetric 1 (1 / 2) (1 / 2) hy.1, pd_pd_ctrlMetric 1 (1 / 2) (1 / 2) hy.1, hinv, Fin.sum_univ_four]
+  simp [kgg00R, kgg00T, kgg00RR, kgg00RT, kgg00TR, kgg00TT, kgg11R, kgg11T, kgg11RR, kgg11RT, kgg11TR, kgg11TT, kgg22R, kgg22T, kgg22RR, kgg22RT, kgg22TR, kgg22TT, kgg33R, kgg33T, kgg33RR, kgg33RT, kgg33TR, kgg33TT, kcg03R, kcg03T, kcg03RR, kcg03RT, kcg03TR, kcg03TT, gjetCR, gjetCT, gjetCRR, gjetCRT, gjetCTR, gjetCTT, ctrlInv, ctrlDet, kerrS, kerrD, kcg03, kgg00, kgg11, kgg22, kgg33, ctrlPoint]
+  norm_num
+
+/-- **The control is not Ricci-flat**, in contrast to Kerr (`kerr_isVacuumSolution`) and to `a ↦ -a`
+(`kerrMetric_neg`). -/
+theorem ctrl_not_ricci_flat : ¬ ∀ y ∈ ctrlU 1 (1 / 2) (1 / 2), ∀ σ ν : Fin 4,
+    ricci (ctrlMetric 1 (1 / 2) (1 / 2)) σ ν y = 0 := by
+  intro h
+  have := h ctrlPoint ctrlPoint_mem 2 2
+  rw [ctrl_ricci_22] at this
+  norm_num at this
+
 end Lightlike
