@@ -10,10 +10,19 @@ Install the pinned versions first:  python3 -m venv .venv && .venv/bin/pip insta
   python3 -I scripts/run_python_checks.py          # quick set (about 3 min)
   python3 -I scripts/run_python_checks.py --all    # also the slow scripts (about 10 min more)
   python3 -I scripts/run_python_checks.py --list   # list the scripts and whether they are slow
+  python3 -I scripts/run_python_checks.py --changed FILE   # quick set + the slow checks a change touches
+  python3 -I scripts/run_python_checks.py --all --jobs 4   # 4 scripts at a time (CI uses 4)
+
+--changed FILE reads the changed paths, one per line (a pull request's `git diff --name-only`), and
+runs the quick set plus every slow check whose script, or a scripts/ module it imports (directly or
+through other scripts/ modules), is among them. A change to this runner, requirements.txt or the CI
+workflow runs every check. The import match is generous: a name matches every scripts/ file it
+could be imported as, so a doubtful case runs the check rather than skipping it. Data files a script
+reads are not followed; main runs every check after each merge.
 
 Exit 0 = all selected scripts passed. A script missing from the list below, or a listed script
 that does not exist, is an error (so a new cross-check cannot be forgotten)."""
-import argparse, ast, importlib.util, pathlib, re, subprocess, sys, time
+import argparse, ast, concurrent.futures, importlib.util, os, pathlib, re, subprocess, sys, time
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 # (path, slow?) -- slow = more than about 60 s on a laptop
@@ -21,7 +30,7 @@ CHECKS = [
     ("scripts/adm_algebra_check.py", False), ("scripts/be_check.py", False), ("scripts/be_symmetry_check.py", True),
     ("scripts/pentagon_dict_check.py", False), ("scripts/pr14_check.py", False),
     ("scripts/pr23_check.py", False), ("scripts/pr_asymptotics.py", False),
-    ("scripts/causal_sets/cs2_check.py", False), ("scripts/pr_tree_check.py", False), ("scripts/sixj_zero_check.py", False),
+    ("scripts/causal_sets/cs2_check.py", False), ("scripts/causal_sets/cs3_check.py", False), ("scripts/causal_sets/cs6_check.py", False), ("scripts/causal_sets/cs8_check.py", False), ("scripts/pr_tree_check.py", False), ("scripts/sixj_zero_check.py", False),
     ("scripts/wrong_schwarzschild_check.py", False), ("scripts/tv_check.py", False),
     ("scripts/flrw_check.py", False),
     ("scripts/asymptotics/eprl_asymptotics_check.py", False),
@@ -175,9 +184,91 @@ def unlisted() -> list[str]:
     return sorted(on_disk - {c for c, _ in CHECKS} - NOT_CHECKS)
 
 
+# A change to one of these runs every check (they decide how every check runs).
+RUN_ALL_ON = {"scripts/run_python_checks.py", "requirements.txt", ".github/workflows/ci.yml"}
+
+
+def module_index() -> dict:
+    """Every dotted name a scripts/ file can be imported as -> the files it could be. A file
+    scripts/a/b.py is `a.b` (from scripts/) and `b` (from scripts/a/, as the scripts that put their
+    own folder or a sibling folder on sys.path import it)."""
+    idx: dict = {}
+    for f in (ROOT / "scripts").rglob("*.py"):
+        parts = list(f.relative_to(ROOT / "scripts").with_suffix("").parts)
+        if parts[-1] == "__init__":
+            parts = parts[:-1]
+        for k in range(len(parts)):
+            idx.setdefault(".".join(parts[k:]), set()).add(f)
+    return idx
+
+
+def imported_names(f: pathlib.Path) -> set:
+    """The module names a file imports (with their prefixes, and `from m import x` as m.x too)."""
+    names = set()
+    try:
+        tree = ast.parse(f.read_text(encoding="utf-8"))
+    except (OSError, SyntaxError, ValueError):
+        return names
+    for n in ast.walk(tree):
+        mods = []
+        if isinstance(n, ast.Import):
+            mods = [a.name for a in n.names]
+        elif isinstance(n, ast.ImportFrom):
+            base = n.module or ""
+            if n.level:  # relative: resolve against the file's own folder
+                pkg = f.parent
+                for _ in range(n.level - 1):
+                    pkg = pkg.parent
+                rel = ".".join(pkg.relative_to(ROOT / "scripts").parts) if pkg != ROOT / "scripts" else ""
+                base = ".".join(x for x in (rel, base) if x)
+            mods = [base] + [f"{base}.{a.name}" if base else a.name for a in n.names]
+        for m in mods:
+            ps = m.split(".")
+            names.update(".".join(ps[:k]) for k in range(1, len(ps) + 1))
+    return names
+
+
+def local_deps(check: str, idx: dict) -> set:
+    """The repository paths of a check script and every scripts/ module it imports, transitively."""
+    seen, todo = set(), [ROOT / check]
+    while todo:
+        f = todo.pop()
+        if f in seen:
+            continue
+        seen.add(f)
+        for name in imported_names(f):
+            todo.extend(idx.get(name, ()))
+    return {str(f.relative_to(ROOT)) for f in seen}
+
+
+def select(changed: set) -> tuple:
+    """(the checks to run, why) for a change: every check if it touches RUN_ALL_ON; otherwise the
+    quick set plus the slow checks whose script or a scripts/ module they import changed."""
+    hit = sorted(changed & RUN_ALL_ON)
+    if hit:
+        return [c for c, _ in CHECKS], f"every check: the change touches {', '.join(hit)}"
+    idx = module_index()
+    touched = [c for c, slow in CHECKS if slow and (ROOT / c).exists() and local_deps(c, idx) & changed]
+    run = [c for c, slow in CHECKS if not slow or c in touched]
+    return run, (f"the quick set and {len(touched)} slow check(s) the change touches"
+                 + (f": {', '.join(touched)}" if touched else ""))
+
+
+def run_one(c: str) -> tuple:
+    t = time.time()
+    r = subprocess.run([sys.executable, "-I", str(ROOT / c)], capture_output=True, text=True,
+                       cwd=ROOT)
+    return c, r, time.time() - t
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--all", action="store_true", help="include the slow scripts")
+    ap.add_argument("--changed", metavar="FILE",
+                    help="the changed paths, one per line: the quick set plus the slow checks they touch")
+    ap.add_argument("--auto", action="store_true",
+                    help="pull request or local gate: the checks the change selects (--changed); main: every check")
+    ap.add_argument("--jobs", type=int, default=1, help="scripts run at a time (default 1)")
     ap.add_argument("--list", action="store_true")
     a = ap.parse_args()
     miss = missing_packages()
@@ -190,23 +281,53 @@ def main() -> int:
     exit_errors, exit_warnings = exit_path_problems()
     problems += exit_errors
     if a.list:
+        picked = None
+        if a.changed:  # with --changed, --list also says which checks the change selects
+            picked = set(select({l.strip() for l in pathlib.Path(a.changed).read_text(encoding="utf-8").splitlines()
+                                 if l.strip()})[0])
         for c, slow in CHECKS:
-            print(("slow  " if slow else "quick ") + c)
+            print(("slow  " if slow else "quick ") + ("" if picked is None else ("RUN  " if c in picked else "skip ")) + c)
         return 0
-    failed = []
+    if a.auto:
+        base = "HEAD^1" if os.environ.get("GITHUB_EVENT_NAME") == "pull_request" else os.environ.get("LL_GATE_BASE", "")
+        diff = subprocess.run(["git", "-C", str(ROOT), "diff", "--name-only", base, "HEAD"],
+                              capture_output=True, text=True) if base else None
+        if diff is not None and diff.returncode == 0:
+            run, reason = select({l.strip() for l in diff.stdout.splitlines() if l.strip()})
+            reason += f" (changes since {base})"
+            a.changed = a.changed or "auto"
+        else:  # a push to main, an on-demand run, or no base to compare with: everything
+            run, reason = [c for c, _ in CHECKS], "every check (no pull request to compare with)"
+    elif a.all:
+        run, reason = [c for c, _ in CHECKS], "every check (--all)"
+    elif a.changed:
+        changed = {l.strip() for l in pathlib.Path(a.changed).read_text(encoding="utf-8").splitlines()
+                   if l.strip()}
+        run, reason = select(changed)
+    else:
+        run, reason = [c for c, slow in CHECKS if not slow], "the quick set"
+    run = [c for c in run if (ROOT / c).exists()]
+    print(f"Running {len(run)} of {len(CHECKS)} checks, {max(1, a.jobs)} at a time: {reason}.")
     for c, slow in CHECKS:
-        if slow and not a.all:
-            print(f"skip {c} (slow; use --all)")
-            continue
-        t = time.time()
-        r = subprocess.run([sys.executable, "-I", str(ROOT / c)], capture_output=True, text=True,
-                           cwd=ROOT)
-        bad = r.returncode != 0 or verdict_failed(r.stdout)
-        why = "" if not bad or r.returncode else ", exit 0 but the last line says FAIL"
-        print(f"{'FAIL' if bad else 'ok  '} {c} ({time.time() - t:.0f}s{why})")
-        if bad:
-            failed.append(c)
-            print("\n".join((r.stdout + r.stderr).splitlines()[-8:]))
+        if c not in run and (ROOT / c).exists():
+            print(f"skip {c} (slow; {'not touched by the change' if a.changed else 'use --all'})")
+    slow_set = {c for c, slow in CHECKS if slow}
+    order = sorted(run, key=lambda c: c not in slow_set)  # slow ones first: shorter wall time
+    failed = []
+    t0 = time.time()
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, a.jobs)) as pool:
+        for c, r, secs in (f.result() for f in concurrent.futures.as_completed(
+                [pool.submit(run_one, c) for c in order])):
+            bad = r.returncode != 0 or verdict_failed(r.stdout)
+            why = "" if not bad or r.returncode else ", exit 0 but the last line says FAIL"
+            print(f"{'FAIL' if bad else 'ok  '} {c} ({secs:.0f}s{why})", flush=True)
+            if bad:
+                failed.append(c)
+                print("\n".join((r.stdout + r.stderr).splitlines()[-8:]), flush=True)
+    print(f"{len(run)} checks in {time.time() - t0:.0f}s")
+    failed.sort(key=[c for c, _ in CHECKS].index)
+    for c in failed:
+        print("FAIL", c)
     for p in problems:
         print("FAIL", p)
     for w in exit_warnings:
