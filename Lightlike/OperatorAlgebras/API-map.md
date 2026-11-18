@@ -29,6 +29,8 @@ unbounded spectral theorem is not in Mathlib. Stone's theorem and Shale's criter
 
 The graph of `-i d/dx` on the `C_c^∞(0, 1)` functions is the image of the smooth test functions under the same pair map, and lies inside the `C²` graph [11]. It contains a nonzero vector, a bump function supported in `(0, 1)` [12]. Mollification by a normed bump function maps a `C²` test function to a `C_c^∞` one, with the derivative of the mollified function the mollified derivative, and converges uniformly with its derivative, so the two graphs have the same closure [13].
 
+`-i d/dx` on the `C²` test functions of `(0, 1)` is densely defined, since a vector orthogonal to all test functions is zero [16]. A function with zero weak derivative on `(0, 1)` is almost everywhere constant, by a primitive of `ψ - (∫ ψ) φ₀` [16]. The deficiency vectors of this operator at `z` with `conj z = i b` are the multiples of `exp (b x)`, so both deficiency spaces are one-dimensional, the deficiency indices `(1, 1)` [17]. The exponentials lie in the right spaces and are nonzero [18].
+
 The Gram matrix of the vectors `W f Ω` of a Fock representation is a function of `f` and `g` alone, by the Weyl relations and the vacuum expectation, so the map `c ↦ ∑ c f W f Ω` has the same norm for two Fock representations; it extends to a unitary that maps the vacuum to the vacuum and intertwines the Weyl unitaries, which is the uniqueness of the Fock representation [14]. The Gram function is Hermitian and normalized, and over the zero Hilbert space there is a Fock representation to which the uniqueness applies [15].
 
 ## Lean References
@@ -76,6 +78,13 @@ The Gram matrix of the vectors `W f Ω` of a Fock representation is a function o
     (the proof of task T-OP2-P2)
 15. Lightlike/OperatorAlgebras/TestsFock.lean - `OperatorAlgebras.fockGram_zero`,
     `OperatorAlgebras.fockGram_conj`, `OperatorAlgebras.trivialFock`, `OperatorAlgebras.trivialFock_unitary`
+16. Lightlike/OperatorAlgebras/WeakConstant.lean - `OperatorAlgebras.bumpB`, `OperatorAlgebras.bump0`,
+    `OperatorAlgebras.weak_const`
+17. Lightlike/OperatorAlgebras/MomentumDeficiency.lean - `OperatorAlgebras.dense_momentumMin_domain`,
+    `OperatorAlgebras.expC`, `OperatorAlgebras.expL2`, `OperatorAlgebras.deficiencyDim_eq_one`,
+    `OperatorAlgebras.deficiency_indices_momentumMin` (the proof of task T-OP1-P5)
+18. Lightlike/OperatorAlgebras/TestsMomentumDeficiency.lean - `OperatorAlgebras.expL2_neg_mem_deficiency_I`,
+    `OperatorAlgebras.expL2_mem_deficiency_negI`
 
 ## References
 
