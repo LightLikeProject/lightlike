@@ -718,6 +718,7 @@ import Lightlike.Spacetime.VariationDet
 import Lightlike.Spacetime.VariationChristoffel
 import Lightlike.Spacetime.PalatiniAlgebra
 import Lightlike.Spacetime.VariationInverse
+import Lightlike.Spacetime.VariationExchange
 import Lightlike.Spacetime.Lorentzian
 import Lightlike.Spacetime.Minkowski
 import Lightlike.Spacetime.RiemannSymmetry
