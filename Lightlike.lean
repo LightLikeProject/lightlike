@@ -194,6 +194,13 @@ import Lightlike.GR.AdSPoincare
 import Lightlike.GR.EddingtonFinkelstein
 import Lightlike.GR.EuclideanCigar
 import Lightlike.GR.EuclideanCone
+import Lightlike.GR.Kerr
+import Lightlike.GR.KerrHorizon
+import Lightlike.GR.KerrJet
+import Lightlike.GR.KerrJetEntries
+import Lightlike.GR.KerrRicci
+import Lightlike.GR.KerrControl
+import Lightlike.GR.KerrSignature
 import Lightlike.GR.KruskalFunction
 import Lightlike.GR.KruskalMetric
 import Lightlike.GR.EuclideanSchwarzschild
