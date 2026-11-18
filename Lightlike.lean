@@ -191,6 +191,8 @@ import Lightlike.FourD.Tests
 import Lightlike.GR.Einstein
 import Lightlike.GR.AdSPoincare
 import Lightlike.GR.EddingtonFinkelstein
+import Lightlike.GR.EuclideanCigar
+import Lightlike.GR.EuclideanSchwarzschild
 import Lightlike.GR.Schwarzschild
 import Lightlike.Lorentz.Cartan
 import Lightlike.Lorentz.Continuity
