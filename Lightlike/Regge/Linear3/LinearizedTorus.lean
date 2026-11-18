@@ -11,7 +11,7 @@ of the periodic Kuhn complex `torusComplex n` of mesh `1/n` the squared lengths 
 Euclidean base lengths (`lenMesh`) and `a_e = μ_e (h)` Christiansen's degrees of freedom of the Regge
 interpolant of `δ + ε h` (`lenD n (muE h)`). `Qn` is *defined* as the sum `Σ_e (a_e / (2 ℓ_e)) δ_e'(0)`; by `regge_second_order` (`SecondOrder.lean`) this is the coefficient
 of `ε²/2` in the Regge action when the hypotheses of that theorem hold (closed, non-degenerate, flat), which is proved for the
-base lengths `len0` (`torus_second_order`) but not for the rescaled lengths `lenMesh` used here. This file writes it as a sum over the edge classes `k`
+base lengths `len0` (`torus_second_order`); for the rescaled lengths `lenMesh` used here the expansion is not stated in this library. This file writes it as a sum over the edge classes `k`
 and the cells `z`, the deficit angle derivative being `-Σ dth h (n² μ-vector) / √(hbase h 0)` over the
 incidences of the class (`Qn_eq`): the hinge-length factor times the derivative of the dihedral angle of the
 Kuhn star in the unit-scale variation `muVec` (`Dh_inc`, using the scale invariance `Dh_scale`).
@@ -139,8 +139,8 @@ theorem lengthsNondeg_lenMesh (hn : 3 ≤ n) : LengthsNondeg (torusComplex n (by
 
 /-- **The sum `Q_n (h) = Σ_e (a_e / (2 ℓ_e)) δ_e'(0)`** for the periodic Kuhn complex of mesh `1/n` and the interpolated lengths of the
 perturbation `h`, with `a_e = μ_e (h)`. It has the form of the coefficient of `ε²/2` in the Regge action given by
-`regge_second_order` (`Lightlike/Regge/Linear3/SecondOrder.lean`); that it is that coefficient for the lengths `lenMesh` is not proved
-(the theorem is applied to `len0` in `torus_second_order`). -/
+`regge_second_order` (`Lightlike/Regge/Linear3/SecondOrder.lean`); `torus_second_order` gives the expansion for the base lengths `len0`; the expansion for the rescaled
+lengths `lenMesh` used here is not stated in this library. -/
 noncomputable def Qn (hn : 2 ≤ n) (hf : (Fin 3 → ℝ) → Matrix (Fin 3) (Fin 3) ℝ) : ℝ :=
   ∑ e ∈ (torusComplex n hn).edges,
     lenD n (muE hf) e / (2 * lenMesh n e) *
