@@ -14,7 +14,10 @@ boundary `ρ = π/2` (`adsFactor_tendsto`).
 `λ²` (`dilation_conformal_boundary`): a conformal transformation of the boundary. The rest of the conformal group (special
 conformal transformations) is not formalized.
 
-Gap row GE7. Source read (pdftotext): D. Harlow, *Jerusalem Lectures on Black Holes and Quantum Information*,
+Gap row GE7. Source read (pdftotext): Aharony-Gubser-Maldacena-Ooguri-Oz, arXiv:hep-th/9905111, section 2: global AdS (2.23)
+`ds² = R²(-cosh²ρ dτ² + dρ² + sinh²ρ dΩ²)`, its conformal map into one half of the Einstein static universe (2.24), the Poincaré metric (2.27) and
+the dilatation `(t, x, u) ↦ (ct, cx, u/c)` (2.28) "identified with the dilatation D in the conformal symmetry group", the conformal group (2.1)-(2.2)
+(scale and special conformal transformations); and D. Harlow, *Jerusalem Lectures on Black Holes and Quantum Information*,
 arXiv:1409.1231, section 6.1, eqs. (6.4)-(6.6) (global AdS, `r = tan ρ`, "conformally compactify by discarding the diverging
 prefactor and including the boundary at ρ = π/2") and section 6.2.2, eq. (6.7) with the text before it (dilatations
 `x'^μ = λ x^μ` and special conformal transformations). Hawking–Ellis, ch. 5: not read.
