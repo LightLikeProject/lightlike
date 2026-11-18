@@ -88,3 +88,17 @@ measurable `K` inside one chart domain) and `eh_action_chart` (for a Levi-Civita
 of `K`). So the intrinsic action of one metric is identified with regge's coordinate density. Still open for
 (i): the same identification along a family `g_t` whose chart components are `g + t h` (then
 `eh_first_variation_chart` gives the derivative of the intrinsic action); (ii) and (iii) as above.
+
+`ManifoldVariation.lean` compiles (19 November 2026): `eh_first_variation_manifold_chart`. For a metric `g`
+on `M`, a compact `K` inside one chart domain with chart image in a small coordinate ball, and a family `g_t`
+of metrics with Levi-Civita connections whose chart components are `g + t h` near the image of `K`
+(`h` smooth, symmetric, supported in the image of `K`): the intrinsic action
+`S(t) = ∫_K (R(g_t) − 2Λ) d vol_{g_t}` has derivative `−∫ √|g| (R^{αβ} − ½ R g^{αβ} + Λ g^{αβ}) h_{αβ}` at
+`t = 0`. This is Carroll's (4.66) (with `Λ`, and with the metric perturbed instead of its inverse) for a
+variation supported in one small coordinate ball; the left side is intrinsic, the right side is written in the
+components of the chart.
+
+Differences from Carroll that remain: (a) the family `g_t`, its Levi-Civita connections and the
+measurability of the integrand are hypotheses (data), not constructed from a tensor field `h` on `M`;
+(b) the perturbation is supported in one small coordinate ball; (c) the right side is in chart components,
+not `∫ (G^{μν} + Λ g^{μν}) h_{μν} d vol_g`; (d) no "critical if and only if `G + Λ g = 0`" on the manifold.
