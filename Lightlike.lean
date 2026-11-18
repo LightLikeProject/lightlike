@@ -667,7 +667,9 @@ import Lightlike.Spacetime.LeviCivitaSmooth
 import Lightlike.Spacetime.SchwarzschildManifold
 import Lightlike.Spacetime.ChartTensor
 import Lightlike.Spacetime.EinsteinEquations
+import Lightlike.Spacetime.NondegMetric
 import Lightlike.Spacetime.VolumeMeasure
+import Lightlike.Spacetime.NondegOpen
 import Lightlike.Spacetime.ChartAgreement
 import Lightlike.Spacetime.ChartConnection
 import Lightlike.Spacetime.ChartCovariant
