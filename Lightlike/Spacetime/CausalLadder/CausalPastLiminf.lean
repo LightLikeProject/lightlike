@@ -67,4 +67,22 @@ theorem measure_interiorCausalPast_le_liminf [MeasurableSpace M] [BorelSpace M] 
     exact ha k hk
   exact lt_of_lt_of_le hcc' (le_liminf_of_le (by isBoundedDefault) hev)
 
+/-- **Lower semicontinuity from the null horismos.** If `J⁻(x) \ Ĩ⁻(x)` is `μ`-null for every `x`,
+then `μ(J⁻(x)) ≤ liminf μ(J⁻(xₖ))` for `xₖ → x`. -/
+theorem measure_causalPast_le_liminf_of_null [MeasurableSpace M] [BorelSpace M] (μ : Measure M)
+    [IsFiniteMeasure μ] (hclosedP : ∀ a : M, IsClosed (causalPast T a))
+    (hnull : ∀ x : M, μ (causalPast T x \ interiorCausalPast T x) = 0) {xs : ℕ → M} {x : M}
+    (hx : Tendsto xs atTop (𝓝 x)) :
+    μ (causalPast T x) ≤ liminf (fun k => μ (causalPast T (xs k))) atTop := by
+  calc μ (causalPast T x)
+      ≤ μ (interiorCausalPast T x ∪ (causalPast T x \ interiorCausalPast T x)) :=
+        measure_mono fun a ha => by
+          by_cases h : a ∈ interiorCausalPast T x
+          · exact Or.inl h
+          · exact Or.inr ⟨ha, h⟩
+    _ ≤ μ (interiorCausalPast T x) + μ (causalPast T x \ interiorCausalPast T x) :=
+        measure_union_le _ _
+    _ = μ (interiorCausalPast T x) := by rw [hnull x, add_zero]
+    _ ≤ _ := measure_interiorCausalPast_le_liminf T μ hclosedP hx
+
 end Lightlike.Causal

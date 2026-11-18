@@ -1,4 +1,6 @@
 import Lightlike.Spacetime.CausalLadder.CausalOpen
+import Lightlike.Spacetime.CausalLadder.CausalPastLimsup
+import Lightlike.Spacetime.CausalLadder.CausalPastLiminf
 
 /-!
 # Assembly of Hawking's time function
@@ -44,5 +46,19 @@ theorem continuous_measure_causalPast [FirstCountableTopology M] (μ : Measure M
   refine continuous_iff_seqContinuous.2 fun xs x hx => ?_
   have h := tendsto_of_le_liminf_of_limsup_le (hlow xs x hx) (hup xs x hx)
   exact (ENNReal.tendsto_toReal (measure_ne_top μ _)).comp h
+
+/-- **Causal simplicity gives a time function, given a full-support finite measure with null
+horismos.** Let `μ` be a finite Borel measure on a second-countable manifold without boundary that is
+positive on nonempty open sets, with `J⁻(x) \ Ĩ⁻(x)` `μ`-null for every `x`. If the space is causal
+and the causal futures and pasts are closed, it is stably causal. -/
+theorem isStablyCausal_of_null_horismos [BoundarylessManifold I M] [MeasurableSpace M] [BorelSpace M]
+    [SecondCountableTopology M] (μ : Measure M) [IsFiniteMeasure μ]
+    (hμ : ∀ O : Set M, IsOpen O → O.Nonempty → 0 < μ O)
+    (hnull : ∀ x : M, μ (causalPast T x \ interiorCausalPast T x) = 0)
+    (hs : IsCausallySimple T) : IsStablyCausal T :=
+  isStablyCausal_of_continuous_measure T μ hμ hs.1 (fun x => (hs.2 x).2)
+    (continuous_measure_causalPast T μ
+      (fun xs x hx => limsup_measure_causalPast_le T μ (fun a => (hs.2 a).1) (fun a => (hs.2 a).2) hx)
+      (fun xs x hx => measure_causalPast_le_liminf_of_null T μ (fun a => (hs.2 a).2) hnull hx))
 
 end Lightlike.Causal
