@@ -43,7 +43,11 @@ stability subgroups" (mass shell, light cone, one-sheeted hyperboloid; stabilise
 proof, `SO(D−2,1)↑`; the invariant scalar product on the orbit), §5.2 (quartic Casimir on massive representations; "in four
 spacetime dimensions, the square of the Pauli–Lubanski vector acting on a massive field of spin-s is indeed equal to
 `m² s(s+1)`"), §5.4 (tachyonic: `C₄ = C₂(iso) C₂(so(D−2,1))`, momentum space-like, non-compact little group), §3.3 and §1.3 only
-skimmed. Weinberg Chapter 2 and Wigner 1939 are NOT read.
+skimmed. Weinberg Chapter 2 §2.5 (pp. 62–66) and Wigner, Ann. Math. 40 (1939) 149: searched for an openable copy on
+18 November 2026, none found (no legal PDF of Weinberg Vol. 1; Wigner 1939 is behind JSTOR). NOT read. Bekaert–Boulanger §3.1
+reproduces Weinberg's construction (their eqs (10)–(13) are Weinberg's (2.5.x) with the same `L(p)`, `W(Λ,p)`, `N(p)`), and
+§3.2 quotes Wigner on the null-vector stabiliser. A copy of Weinberg Chapter 2 or of Wigner 1939 supplied by the owner would
+close this item.
 
 Convention difference to record in any statement: Bekaert–Boulanger use signature `(−,+,+,+)` (so `p² = −m²` for a massive
 state and `W² = +m² s(s+1)`); T-HA6 in `docs/tasks/milestones.md` is in `(+,−,−,−)` with `W² = −m² s(s+1)`. Both give the same
