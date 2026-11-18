@@ -215,6 +215,69 @@ lemma FF_commutant (R : FockRep h K) (C : K →L[ℂ] K) (hC : ∀ f ψ, C (R.W 
   unfold FF
   rw [← h1, h2, map_div₀, Complex.conj_ofReal, gaussE_neg']
 
+/-- **`F_{C Ω}` is constant**, by holomorphy and antiholomorphy along complex lines. -/
+lemma FF_const (R : FockRep h K) (C : K →L[ℂ] K) (hC : ∀ f ψ, C (R.W f ψ) = R.W f (C ψ)) (x : h) :
+    FF R (C R.Ω) x = ⟪R.Ω, C R.Ω⟫_ℂ := by
+  have key : ∀ x₀ v : h, FF R (C R.Ω) x₀ = FF R (C R.Ω) (x₀ + v) := by
+    intro x₀ v
+    have h1 := differentiable_conj_FF R (C R.Ω) x₀ v
+    have h2 : Differentiable ℂ fun z : ℂ => FF R (C R.Ω) (x₀ + z • v) := by
+      have e : (fun z : ℂ => FF R (C R.Ω) (x₀ + z • v)) =
+          fun z : ℂ => (starRingEnd ℂ) (FF R ((ContinuousLinearMap.adjoint C) R.Ω) (-x₀ + z • (-v))) := by
+        funext z
+        have := FF_commutant R C hC (-x₀ + z • (-v))
+        rw [show -(-x₀ + z • (-v)) = x₀ + z • v by rw [smul_neg, neg_add, neg_neg, neg_neg]] at this
+        exact this
+      rw [e]
+      exact differentiable_conj_FF R ((ContinuousLinearMap.adjoint C) R.Ω) (-x₀) (-v)
+    have := const_of_holo_antiholo h2 h1 0 1
+    simpa using this
+  have := key 0 x
+  rw [zero_add, FF_zero] at this
+  exact this.symm
+
+/-- `C Ω` is a multiple of `Ω`. -/
+lemma commutant_apply_Omega (R : FockRep h K) (C : K →L[ℂ] K)
+    (hC : ∀ f ψ, C (R.W f ψ) = R.W f (C ψ)) : C R.Ω = ⟪R.Ω, C R.Ω⟫_ℂ • R.Ω := by
+  set c := ⟪R.Ω, C R.Ω⟫_ℂ with hc
+  have horth : ∀ x : h, ⟪kv R x, C R.Ω - c • R.Ω⟫_ℂ = 0 := by
+    intro x
+    have h1 : ⟪kv R x, C R.Ω⟫_ℂ = c * (gaussE x : ℂ) := by
+      have := FF_const R C hC x
+      unfold FF at this
+      rw [div_eq_iff (gaussE_ne x)] at this
+      rw [this]
+    have h2 : ⟪kv R x, R.Ω⟫_ℂ = (gaussE x : ℂ) := by
+      have := inner_kv R x 0
+      rw [kv_zero] at this
+      rw [this, fockGram_eq]
+      simp [gaussE]
+    rw [inner_sub_right, inner_smul_right, h1, h2]; ring
+  have hspan : ∀ u ∈ Submodule.span ℂ (Set.range (kv R)), ⟪u, C R.Ω - c • R.Ω⟫_ℂ = 0 := by
+    intro u hu
+    induction hu using Submodule.span_induction with
+    | mem y hy => obtain ⟨x, rfl⟩ := hy; exact horth x
+    | zero => simp
+    | add a b _ _ ha hb => rw [inner_add_left, ha, hb, add_zero]
+    | smul a y _ hy => rw [inner_smul_left, hy, mul_zero]
+  have hall : ∀ u : K, ⟪u, C R.Ω - c • R.Ω⟫_ℂ = 0 := by
+    intro u
+    have hmem : u ∈ closure ((Submodule.span ℂ (Set.range (kv R)) : Submodule ℂ K) : Set K) := by
+      have this : (Submodule.span ℂ (Set.range (kv R))).topologicalClosure = ⊤ := R.cyclic
+      rw [← Submodule.topologicalClosure_coe, this]; trivial
+    have hc1 : Continuous fun w : K => ⟪w, C R.Ω - c • R.Ω⟫_ℂ := continuous_id.inner continuous_const
+    have := Continuous.ext_on (f := fun w : K => ⟪w, C R.Ω - c • R.Ω⟫_ℂ) (g := fun _ => (0 : ℂ))
+      (s := ((Submodule.span ℂ (Set.range (kv R)) : Submodule ℂ K) : Set K))
+      (by
+        rw [dense_iff_closure_eq]
+        have this : (Submodule.span ℂ (Set.range (kv R))).topologicalClosure = ⊤ := R.cyclic
+        rw [← Submodule.topologicalClosure_coe, this]; rfl)
+      hc1 continuous_const hspan
+    exact congrFun this u
+  have := hall (C R.Ω - c • R.Ω)
+  rw [inner_self_eq_zero] at this
+  exact sub_eq_zero.1 this
+
 end Commutant
 
 end Lightlike.OperatorAlgebras
