@@ -123,3 +123,10 @@ projections of a `J`-invariant finite-rank part) are implemented by finite-mode 
 `‖Ψ_n - Ψ_m‖² ≤ C ∑_{i>m} ‖β bᵢ‖²`; the limit has the Gaussian characteristic function. Bricks: (1) real adjoint and
 polar decomposition of a symplectic `T` (symplectic `S`), (2) `Γ(U)` for complex-unitary `U`, (3) finite-mode
 squeezing in `K`, (4) the Cauchy estimate, (5) the limit and its characteristic function. Estimate 700 lines.
+
+### Reuse for the necessity integral (ii) (read 16:35)
+
+pl's FT1 stage 1 (`38d10c8`, `Lightlike/FieldTheory/Gaussian/Integral.lean`, read by `git show`, not imported):
+`integral_exp_neg_half_quad (A : Matrix ι ι ℝ) (hA : A.PosDef) : ∫ x, exp (-(1/2) xᵀ A x) = (2π)^{n/2} / √(det A)`
+on `EuclideanSpace ℝ ι`. This is (ii) once `1/2·(‖f‖² + q f)/2 = ½ xᵀ A x` is written in coordinates of `V_F`; to be
+imported when it is on main.
