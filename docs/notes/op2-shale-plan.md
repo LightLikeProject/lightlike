@@ -34,3 +34,15 @@ second quantization, no Gaussian measures on finite-dimensional subspaces.
 
 Research-level, about a week of work, with no standard Mathlib support for Gaussian integrals over
 finite-dimensional subspaces of a Hilbert space (finite-dimensional Gaussian integrals exist in Mathlib).
+
+## Revised route for the irreducibility (no Gaussian measures)
+
+For `C` in the commutant, `χ = C Ω`, put `k_x = W x Ω` and `F_χ(x) = ⟪k_x, χ⟫ / e(x)`, `e(x) = exp (-‖x‖² / 4)`.
+(a) `F_χ` is antiholomorphic along complex lines: for `χ = k_f` it is `e(f) exp (⟪x, f⟫ / 2)`, and a vector is a
+limit of finite combinations of the `k_f` with `|F_χ(y) - F_χ'(y)| ≤ ‖χ - χ'‖ exp (‖y‖² / 4)` (locally
+uniform).
+(b) `C k_b = W b χ`, so `⟪k_a, C k_b⟫ / (e(a) e(b)) = exp (⟪a, b⟫ / 2) F_χ(a - b)`; the left side is
+`conj F_{C* k_a}(b)`, holomorphic in `b`.
+(c) So `F_χ` is holomorphic and antiholomorphic along every complex line, hence constant, hence `χ ∈ ℂ Ω`,
+hence `C` is a scalar; a nonzero vector is cyclic because the projection onto its closed span commutes with
+the Weyl unitaries.

@@ -40,6 +40,10 @@ import Tasks.OP.T_OP1_P6
 import Tasks.OP.T_OP2_P1
 import Tasks.OP.T_OP2_P2
 import Tasks.OP.T_OP2_P3
+import Tasks.OP.T_OP2_P4
+import Tasks.OP.T_OP2_P5
+import Tasks.OP.T_OP2_P6
+import Tasks.OP.T_OP2_P7
 import Tasks.QU.T_QU1_P1
 import Tasks.QU.T_QU1_P2
 import Tasks.QU.T_QU1_P3
