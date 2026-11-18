@@ -89,3 +89,13 @@ the subspaces are spectral, not spanned by an arbitrary Hilbert basis, so (a) th
 interval approximation (`[r, r+δ]` paired with `[1/(r+δ), 1/r]`), and (b) the basis-independence of `∑ ⟨e, A e⟩` for
 positive `A` is needed to pass from the spectral sum to `IsHilbertSchmidt` (every basis). Neither is in Mathlib as
 far as checked. Open: which of (a)/(b) is the smaller piece.
+
+### Basis independence (b): found in Physlib (13:50)
+
+`PhyslibAlpha/ProbabilisticTheory/HilbertSpace/TraceClass/Basic.lean` has `trace_eq_of_hilbertBasis_of_nonneg`
+(trace of a positive bounded operator is the same in every Hilbert basis) and `HilbertSchmidt.lean` has
+`hasSum_norm_sq_apply_of_basis`, for complex-linear bounded operators `H →L[ℂ] H`. The antilinear `β` does not fit,
+but `α` does: `T` is continuous, so `α f = (T f - i T (i f))/2` is a bounded complex-linear operator, and
+`‖β e‖² = ‖α e‖² - ‖e‖² = ⟪e, (α†α - 1) e⟫` with `α†α - 1 ≥ 0`. So `IsHilbertSchmidt β` (every basis) follows from
+the trace of the positive operator `α†α - 1` in one basis plus that lemma. Cost (b) is therefore small; cost (a), the
+continuous-spectrum interval approximation, remains the open piece.
