@@ -33,6 +33,7 @@ def smoothCS : Submodule ℂ L2R where
     filter_upwards [Lp.coeFn_smul c f, h] with x hx h1
     rw [hx, Pi.smul_apply, h1]; rfl
 
+/-- The subspace of classes of `C_c^∞` functions is dense in `L²(ℝ)`. -/
 lemma dense_smoothCS : Dense (smoothCS : Set L2R) :=
   MeasureTheory.Lp.dense_hasCompactSupport_contDiff (p := 2) (by norm_num)
 

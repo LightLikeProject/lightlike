@@ -31,6 +31,8 @@ The graph of `-i d/dx` on the `C_c^∞(0, 1)` functions is the image of the smoo
 
 `-i d/dx` on the `C²` test functions of `(0, 1)` is densely defined, since a vector orthogonal to all test functions is zero [16]. A function with zero weak derivative on `(0, 1)` is almost everywhere constant, by a primitive of `ψ - (∫ ψ) φ₀` [16]. The deficiency vectors of this operator at `z` with `conj z = i b` are the multiples of `exp (b x)`, so both deficiency spaces are one-dimensional, the deficiency indices `(1, 1)` [17]. The exponentials lie in the right spaces and are nonzero [18].
 
+A dense subspace of the domain of the generator of a unitary group that is invariant under the group is a core: the closure of the generator restricted to it is the generator [19]. The classes of `C_c^∞` functions form such a subspace for the translation group on `L²(ℝ)`, so every vector of the domain of the momentum operator is a limit of `C_c^∞` functions with the derivatives converging [20], and the subspace is not zero [21].
+
 The Gram matrix of the vectors `W f Ω` of a Fock representation is a function of `f` and `g` alone, by the Weyl relations and the vacuum expectation, so the map `c ↦ ∑ c f W f Ω` has the same norm for two Fock representations; it extends to a unitary that maps the vacuum to the vacuum and intertwines the Weyl unitaries, which is the uniqueness of the Fock representation [14]. The Gram function is Hermitian and normalized, and over the zero Hilbert space there is a Fock representation to which the uniqueness applies [15].
 
 ## Lean References
@@ -85,6 +87,12 @@ The Gram matrix of the vectors `W f Ω` of a Fock representation is a function o
     `OperatorAlgebras.deficiency_indices_momentumMin` (the proof of task T-OP1-P5)
 18. Lightlike/OperatorAlgebras/TestsMomentumDeficiency.lean - `OperatorAlgebras.expL2_neg_mem_deficiency_I`,
     `OperatorAlgebras.expL2_mem_deficiency_negI`
+19. Lightlike/OperatorAlgebras/StoneCore.lean - `OperatorAlgebras.UnitaryGroup.WeakGen`,
+    `OperatorAlgebras.UnitaryGroup.closure_domRestrict_generator`
+20. Lightlike/OperatorAlgebras/TranslationCore.lean - `OperatorAlgebras.smoothCS`,
+    `OperatorAlgebras.translationGroup_core_smooth` (the proof of task T-OP1-P4)
+21. Lightlike/OperatorAlgebras/TestsTranslationCore.lean - `OperatorAlgebras.bumpRB`,
+    `OperatorAlgebras.bumpR`, `OperatorAlgebras.smoothCS_exists_ne_zero`
 
 ## References
 
