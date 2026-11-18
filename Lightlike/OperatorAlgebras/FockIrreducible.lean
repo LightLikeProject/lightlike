@@ -299,6 +299,57 @@ theorem commutant_scalar (R : FockRep h K) (C : K →L[ℂ] K) (hC : ∀ f ψ, C
     | smul a y _ hy => rw [map_smul, hy, smul_comm])
   exact congrFun this ψ
 
+/-- **Every nonzero vector of a Fock representation is cyclic** (irreducibility): the projection onto the closed
+span of the `W f ψ` commutes with the Weyl unitaries, so it is a scalar by `commutant_scalar`, hence `1`. -/
+theorem fockRep_cyclic (R : FockRep h K) {ψ : K} (hψ : ψ ≠ 0) :
+    (Submodule.span ℂ (Set.range fun f => R.W f ψ)).topologicalClosure = ⊤ := by
+  set S : Submodule ℂ K := Submodule.span ℂ (Set.range fun f => R.W f ψ) with hS
+  set M : Submodule ℂ K := S.topologicalClosure with hM
+  -- invariance under every `W f`
+  have hSinv : ∀ f, ∀ m ∈ S, R.W f m ∈ S := by
+    intro f m hm
+    induction hm using Submodule.span_induction with
+    | mem y hy =>
+      obtain ⟨g, rfl⟩ := hy
+      rw [R.weyl]
+      exact S.smul_mem _ (Submodule.subset_span ⟨f + g, rfl⟩)
+    | zero => simp
+    | add a b _ _ ha hb => rw [map_add]; exact S.add_mem ha hb
+    | smul c a _ ha => rw [map_smul]; exact S.smul_mem c ha
+  have hMinv : ∀ f, ∀ m ∈ M, R.W f m ∈ M := by
+    intro f m hm
+    have hm' : m ∈ closure (S : Set K) := hm
+    exact map_mem_closure (R.W f).continuous hm' (fun s hs => hSinv f s hs)
+  haveI : CompleteSpace M := (Submodule.isClosed_topologicalClosure S).completeSpace_coe
+  have hψM : ψ ∈ M := by
+    have : ψ ∈ S := by
+      have := Submodule.subset_span (R := ℂ) (s := Set.range fun f => R.W f ψ) ⟨0, rfl⟩
+      simpa [R.toCCRRep.W_zero_apply] using this
+    exact Submodule.le_topologicalClosure _ this
+  set P : K →L[ℂ] K := M.starProjection with hP
+  have hcomm : ∀ f x, P (R.W f x) = R.W f (P x) := by
+    intro f x
+    refine Submodule.eq_starProjection_of_mem_of_inner_eq_zero (hMinv f _ (M.starProjection_apply_mem x)) ?_
+    intro w hw
+    have h1 : ⟪R.W f x - R.W f (M.starProjection x), w⟫_ℂ =
+        ⟪x - M.starProjection x, R.W (-f) w⟫_ℂ := by
+      rw [← map_sub, ← (R.W (-f)).inner_map_map, R.toCCRRep.W_neg_W]
+    rw [h1]
+    exact Submodule.starProjection_inner_eq_zero x _ (hMinv (-f) w hw)
+  obtain ⟨c, hc⟩ := commutant_scalar R P hcomm
+  have hPψ : P ψ = ψ := (Submodule.starProjection_eq_self_iff).2 hψM
+  have hc1 : c = 1 := by
+    have h := hc ψ
+    rw [hPψ] at h
+    have : (1 - c) • ψ = 0 := by rw [sub_smul, one_smul, ← h, sub_self]
+    have := (smul_eq_zero.1 this).resolve_right hψ
+    linear_combination -this
+  rw [eq_top_iff]
+  intro x _
+  have : P x = x := by rw [hc x, hc1, one_smul]
+  rw [← this]
+  exact M.starProjection_apply_mem x
+
 end Commutant
 
 end Lightlike.OperatorAlgebras
