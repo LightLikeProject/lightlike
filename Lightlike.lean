@@ -276,6 +276,8 @@ import Lightlike.OperatorAlgebras.WeakConstant
 import Lightlike.OperatorAlgebras.Weyl
 import Lightlike.OperatorAlgebras.Yosida
 import Lightlike.OperatorAlgebras.YosidaLimit
+import Lightlike.OperatorAlgebras.VonNeumann
+import Lightlike.OperatorAlgebras.TestsVonNeumann
 import Lightlike.Oscillatory.Flat
 import Lightlike.Oscillatory.GaussFourier
 import Lightlike.Oscillatory.GaussFourierTests

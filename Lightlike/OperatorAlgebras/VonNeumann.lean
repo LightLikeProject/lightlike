@@ -173,4 +173,15 @@ theorem isSelfAdjoint_of_deficiency_bot (hA : ClosedSymm A) (h₁ : deficiencySp
     rw [this]; exact hle.symm
   exact le_antisymm hge hA.le_adjoint
 
+/-- A self-adjoint operator is closed symmetric and densely defined. -/
+theorem ClosedSymm.of_isSelfAdjoint (hA : IsSelfAdjoint A) : ClosedSymm A :=
+  ⟨hA.dense_domain, hA.isClosed, sa_symm_apply hA⟩
+
+/-- **Von Neumann, case `n₊ = n₋ = 0`, as an equivalence**: a closed symmetric densely defined operator is self-adjoint iff its
+deficiency spaces at `i` and `-i` are trivial (Bonneau, Faraut and Valent, arXiv:quant-ph/0103153, Section 4, Theorem 1, first case). -/
+theorem isSelfAdjoint_iff_deficiency_bot (hA : ClosedSymm A) :
+    IsSelfAdjoint A ↔ deficiencySpace A Complex.I = ⊥ ∧ deficiencySpace A (-Complex.I) = ⊥ :=
+  ⟨fun h => ⟨deficiencySpace_of_isSelfAdjoint h (by simp), deficiencySpace_of_isSelfAdjoint h (by simp)⟩,
+    fun h => isSelfAdjoint_of_deficiency_bot hA h.1 h.2⟩
+
 end Lightlike.OperatorAlgebras
