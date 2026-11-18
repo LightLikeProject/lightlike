@@ -16,30 +16,30 @@ open Complex
 namespace Lightlike.OperatorAlgebras
 
 /-- The real-linear map `z ↦ a z + b z̄` of `ℂ`. -/
-noncomputable def squeezeMap (a b : ℝ) : ℂ →L[ℝ] ℂ :=
+noncomputable def abSqueezeMap (a b : ℝ) : ℂ →L[ℝ] ℂ :=
   a • ContinuousLinearMap.id ℝ ℂ + b • (Complex.conjCLE : ℂ →L[ℝ] ℂ)
 
-lemma squeezeMap_apply (a b : ℝ) (z : ℂ) :
-    squeezeMap a b z = (a : ℂ) * z + (b : ℂ) * (starRingEnd ℂ) z := by
-  simp [squeezeMap, Complex.real_smul]
+lemma abSqueezeMap_apply (a b : ℝ) (z : ℂ) :
+    abSqueezeMap a b z = (a : ℂ) * z + (b : ℂ) * (starRingEnd ℂ) z := by
+  simp [abSqueezeMap, Complex.real_smul]
 
-lemma squeezeMap_comp (a b : ℝ) (hab : a ^ 2 - b ^ 2 = 1) (z : ℂ) :
-    squeezeMap a (-b) (squeezeMap a b z) = z := by
+lemma abSqueezeMap_comp (a b : ℝ) (hab : a ^ 2 - b ^ 2 = 1) (z : ℂ) :
+    abSqueezeMap a (-b) (abSqueezeMap a b z) = z := by
   have h1 : ((a : ℂ)) ^ 2 - (b : ℂ) ^ 2 = 1 := by exact_mod_cast hab
-  rw [squeezeMap_apply, squeezeMap_apply]
+  rw [abSqueezeMap_apply, abSqueezeMap_apply]
   simp only [map_add, map_mul, conj_ofReal, Complex.conj_conj, Complex.ofReal_neg]
   linear_combination z * h1
 
 /-- **The one-mode squeezing** `z ↦ a z + b z̄`, `a² - b² = 1`, as a Bogoliubov transformation of `ℂ`. -/
 noncomputable def Bogoliubov.squeeze (a b : ℝ) (hab : a ^ 2 - b ^ 2 = 1) : Bogoliubov ℂ where
-  toEquiv := ContinuousLinearEquiv.equivOfInverse (squeezeMap a b) (squeezeMap a (-b))
-    (squeezeMap_comp a b hab) (fun z => by
-      have := squeezeMap_comp a (-b) (by rw [neg_sq]; exact hab) z
+  toEquiv := ContinuousLinearEquiv.equivOfInverse (abSqueezeMap a b) (abSqueezeMap a (-b))
+    (abSqueezeMap_comp a b hab) (fun z => by
+      have := abSqueezeMap_comp a (-b) (by rw [neg_sq]; exact hab) z
       rwa [neg_neg] at this)
   symp_map z w := by
     have h1 : ((a : ℂ)) ^ 2 - (b : ℂ) ^ 2 = 1 := by exact_mod_cast hab
-    show (⟪squeezeMap a b z, squeezeMap a b w⟫_ℂ).im = (⟪z, w⟫_ℂ).im
-    rw [squeezeMap_apply, squeezeMap_apply, RCLike.inner_apply, RCLike.inner_apply]
+    show (⟪abSqueezeMap a b z, abSqueezeMap a b w⟫_ℂ).im = (⟪z, w⟫_ℂ).im
+    rw [abSqueezeMap_apply, abSqueezeMap_apply, RCLike.inner_apply, RCLike.inner_apply]
     simp only [map_add, map_mul, conj_ofReal, Complex.conj_conj]
     have h2 : ((starRingEnd ℂ) w * z).im = -(w * (starRingEnd ℂ) z).im := by
       simp only [Complex.mul_im, Complex.conj_re, Complex.conj_im]
@@ -59,7 +59,7 @@ noncomputable def Bogoliubov.squeeze (a b : ℝ) (hab : a ^ 2 - b ^ 2 = 1) : Bog
 
 lemma Bogoliubov.squeeze_apply (a b : ℝ) (hab : a ^ 2 - b ^ 2 = 1) (z : ℂ) :
     (Bogoliubov.squeeze a b hab).toEquiv z = (a : ℂ) * z + (b : ℂ) * (starRingEnd ℂ) z :=
-  squeezeMap_apply a b z
+  abSqueezeMap_apply a b z
 
 /-- **The antilinear part of the squeezing is `z ↦ b z̄`.** -/
 theorem Bogoliubov.squeeze_betaPart (a b : ℝ) (hab : a ^ 2 - b ^ 2 = 1) (z : ℂ) :
