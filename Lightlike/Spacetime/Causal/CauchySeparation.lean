@@ -6,7 +6,7 @@ import Lightlike.Spacetime.Causal.BasicRelations
 
 Let `S` be achronal. The chronological future `I⁺(S) = ⋃ x ∈ S, I⁺(x)` and the chronological past
 `I⁻(S)` of `S` are disjoint (`chronFutureSet_disjoint_chronPastSet`): a point in both would give two points
-of `S` joined by a timelike curve. If both are open (the openness of `I⁺` and of `I⁻`), a preconnected set
+of `S` joined by a timelike curve. Given the openness of `I⁺(S)` and of `I⁻(S)` (from that of `I⁺` and of `I⁻`), a preconnected set
 `C` that misses `S` and lies in `I⁺(S) ∪ I⁻(S)` is contained in one of them
 (`subset_chronFutureSet_of_preconnected`). This is the first step of the proof that a curve through a
 point of `I⁺(S)` that misses `S` stays in `I⁺(S)`.
@@ -38,7 +38,7 @@ theorem chronFutureSet_disjoint_chronPastSet {S : Set M} (hA : IsAchronal T S) :
   exact hA x hx y hy (chron_trans T hpx hpy)
 
 /-- **A preconnected set that misses an achronal set `S`, lies in `I⁺(S) ∪ I⁻(S)` and meets `I⁺(S)`
-is contained in `I⁺(S)`**, when `I⁺(S)` and `I⁻(S)` are open. -/
+is contained in `I⁺(S)`**, given the openness of `I⁺(S)` and of `I⁻(S)`. -/
 theorem subset_chronFutureSet_of_preconnected {S C : Set M} (hA : IsAchronal T S)
     (hFo : IsOpen (chronFutureSet T S)) (hPo : IsOpen (chronPastSet T S))
     (hcov : ∀ p ∈ C, p ∈ chronFutureSet T S ∨ p ∈ chronPastSet T S) (hC : IsPreconnected C)
