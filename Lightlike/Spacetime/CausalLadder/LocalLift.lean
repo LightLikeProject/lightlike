@@ -237,14 +237,14 @@ theorem localPushUp_of_isOpen [BoundarylessManifold I M]
 
 /-- **Push-up, first form, from the openness of `I⁺`**: if the chronological future of every point is
 open (the task T-GE2-P7), then `y ∈ I⁺(x)` and `z ∈ J⁺(y)` give `z ∈ I⁺(x)`. -/
-theorem chronFuture_causalFuture_trans [BoundarylessManifold I M]
+theorem chronFuture_causalFuture_trans_of_isOpen [BoundarylessManifold I M]
     (hopen : ∀ x : M, IsOpen (chronFuture T x)) {x y z : M} (hxy : y ∈ chronFuture T x)
     (hyz : z ∈ causalFuture T y) : z ∈ chronFuture T x :=
   chronFuture_causalFuture_trans_of T hopen (localPushUp_of_isOpen T hopen) hxy hyz
 
 /-- **Push-up, second form, from the openness of `I⁺` and of `I⁻`**: `y ∈ J⁺(x)` and `z ∈ I⁺(y)`
 give `z ∈ I⁺(x)`. -/
-theorem causalFuture_chronFuture_trans [BoundarylessManifold I M]
+theorem causalFuture_chronFuture_trans_of_isOpen [BoundarylessManifold I M]
     (hopenNeg : ∀ x : M, IsOpen (chronFuture T.neg x)) {x y z : M} (hxy : y ∈ causalFuture T x)
     (hyz : z ∈ chronFuture T y) : z ∈ chronFuture T x :=
   causalFuture_chronFuture_trans_of T hopenNeg (localPushUp_of_isOpen T.neg hopenNeg) hxy hyz
