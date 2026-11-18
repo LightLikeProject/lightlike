@@ -289,6 +289,7 @@ import Lightlike.OperatorAlgebras.TraceClass.TraceAlgebra
 import Lightlike.OperatorAlgebras.TraceClass.TracePairingNorm
 import Lightlike.OperatorAlgebras.TraceClass.TracePairingSurjectivity
 import Lightlike.OperatorAlgebras.TestsTraceClass
+import Lightlike.OperatorAlgebras.TestsTraceClassDiag
 import Lightlike.OperatorAlgebras.FiniteRankApprox
 import Lightlike.OperatorAlgebras.CompactDual
 import Lightlike.OperatorAlgebras.CompactDualIso

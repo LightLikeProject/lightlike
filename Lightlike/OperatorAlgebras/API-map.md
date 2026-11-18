@@ -49,7 +49,7 @@ For a self-adjoint `A`, the approximating unitaries `exp (i t A_n)` have a stron
 
 The Gram matrix of the vectors `W f Ω` of a Fock representation is a function of `f` and `g` alone, by the Weyl relations and the vacuum expectation, so the map `c ↦ ∑ c f W f Ω` has the same norm for two Fock representations; it extends to a unitary that maps the vacuum to the vacuum and intertwines the Weyl unitaries, which is the uniqueness of the Fock representation [14]. The Gram function is Hermitian and normalized, and over the zero Hilbert space there is a Fock representation to which the uniqueness applies [15].
 
-A bounded operator on a complex Hilbert space is trace class when the diagonal sum `∑ ⟪eᵢ, |T| eᵢ⟫` converges in a Hilbert basis, and the trace and the trace norm do not depend on the basis [39]. The Hilbert-Schmidt operators, those with `∑ ‖S eᵢ‖² < ∞` in one basis, are two-sided ideal elements, and the diagonal sums of `R S` and `S R` for Hilbert-Schmidt `R`, `S` agree (cyclicity of the trace) [40]; a product of two Hilbert-Schmidt operators is trace class [41]. The trace pairing `A ↦ Tr (A ·)` is an isometry of the bounded operators into the dual of the trace class [42], and every continuous functional on the trace class is a trace pairing, so the dual of the trace class is the bounded operators [43]. The trace of the rank-one operator on `ℂ` is `1`, and every operator on a finite-dimensional space is trace class; the identity of an infinite-dimensional Hilbert space is not Hilbert-Schmidt [44]. This layer is ported from Physlib with attribution; the duality between the compact operators and the trace class is not covered.
+A bounded operator on a complex Hilbert space is trace class when the diagonal sum `∑ ⟪eᵢ, |T| eᵢ⟫` converges in a Hilbert basis, and the trace and the trace norm do not depend on the basis [39]. The Hilbert-Schmidt operators, those with `∑ ‖S eᵢ‖² < ∞` in one basis, are two-sided ideal elements, and the diagonal sums of `R S` and `S R` for Hilbert-Schmidt `R`, `S` agree (cyclicity of the trace) [40]; a product of two Hilbert-Schmidt operators is trace class [41]. The trace pairing `A ↦ Tr (A ·)` is an isometry of the bounded operators into the dual of the trace class [42], and every continuous functional on the trace class is a trace pairing, so the dual of the trace class is the bounded operators [43]. The trace of the rank-one operator on `ℂ` is `1`, and every operator on a finite-dimensional space is trace class; the identity of an infinite-dimensional Hilbert space is not Hilbert-Schmidt [44]. The diagonal operator with eigenvalues `1 / (n + 1)` on `ℓ²(ℕ)` is Hilbert-Schmidt and not trace class [45]. This layer is ported from Physlib with attribution; the duality between the compact operators and the trace class is not covered.
 
 ## Lean References
 
@@ -165,6 +165,9 @@ A bounded operator on a complex Hilbert space is trace class when the diagonal s
     `OperatorAlgebras.TraceClass.isTraceClass_id_complex`,
     `OperatorAlgebras.TraceClass.not_isHilbertSchmidt_one`,
     `OperatorAlgebras.TraceClass.diag_weights_square_summable_not_summable`
+
+45. Lightlike/OperatorAlgebras/TestsTraceClassDiag.lean - `OperatorAlgebras.TraceClass.diagOp`,
+    `OperatorAlgebras.TraceClass.invDiag_isHilbertSchmidt`, `OperatorAlgebras.TraceClass.invDiag_not_isTraceClass`
 
 ## References
 
