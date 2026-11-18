@@ -5,8 +5,9 @@ import Lightlike.Gauge.ConstraintsAPI
 
 For an isotropic subspace `D` of a finite-dimensional symplectic vector space `(E, σ)` (the orbit directions of a
 group action at a zero of its moment map are such a subspace), the form `σ` descends to the quotient
-`D^⊥ / (D^⊥ ∩ D)` (the tangent space of the reduced space of Marsden and Weinstein, Cannas da Silva Section 23),
-and the descended form is nondegenerate.
+`D^⊥ / (D^⊥ ∩ D)` (the tangent space of the reduced space of Marsden and Weinstein; Cannas da Silva 2001, chapter "The
+Marsden-Weinstein-Meyer Theorem", which this statement has not been compared with), and the descended form is
+nondegenerate. This is the linear-algebra core only, weaker than the reduction theorem for a free proper action.
 
 * `reducedForm`: the descended bilinear form on `D^⊥ ⧸ D`.
 * `reducedForm_mk`, `reducedForm_nondegenerate`.
