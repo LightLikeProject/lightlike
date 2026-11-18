@@ -5,12 +5,14 @@ import Lightlike.Gauge.ConstraintsAPI
 
 For an isotropic subspace `D` of a finite-dimensional symplectic vector space `(E, σ)` (the orbit directions of a
 group action at a zero of its moment map are such a subspace), the form `σ` descends to the quotient
-`D^⊥ / (D^⊥ ∩ D)` (the tangent space of the reduced space of Marsden and Weinstein; Cannas da Silva 2001, chapter "The
-Marsden-Weinstein-Meyer Theorem", which this statement has not been compared with), and the descended form is
-nondegenerate. This is the linear-algebra core only, weaker than the reduction theorem for a free proper action.
+`D^⊥ / (D^⊥ ∩ D)` (the tangent space of the reduced space of Marsden and Weinstein), and the descended form is alternating and
+nondegenerate. This is Lemma 23.3 of A. Cannas da Silva, *Lectures on Symplectic Geometry*, Lecture Notes in
+Mathematics 1764 (Springer, 2001), chapter "The Marsden-Weinstein-Meyer Theorem", Section 23.2, item 2 (read; the
+comparison is in `docs/notes/gc4-source-checks.md`). It is the linear-algebra core only, weaker than the reduction
+theorem for a free proper action (Theorem 23.1 there), which is not covered.
 
 * `reducedForm`: the descended bilinear form on `D^⊥ ⧸ D`.
-* `reducedForm_mk`, `reducedForm_nondegenerate`.
+* `reducedForm_mk`, `reducedForm_isAlt`, `reducedForm_nondegenerate`.
 
 Linear case only: the nonlinear reduction of a manifold by a free proper action is not covered here.
 -/
@@ -80,5 +82,12 @@ theorem reducedForm_nondegenerate [FiniteDimensional ℝ E] (hσ : σ.Nondegener
       have := hm (Submodule.Quotient.mk v)
       rw [reducedForm_mk] at this ⊢
       exact hr _ _ this
+
+/-- **The descended form is alternating** (so, with nondegeneracy, symplectic): `Ω ([u], [u]) = σ (u, u) = 0`. -/
+theorem reducedForm_isAlt (hσ : σ.IsAlt) (hr : σ.IsRefl) (hD : IsIsotropicSub σ D) :
+    (reducedForm hr hD).IsAlt := by
+  intro m
+  induction m using Submodule.Quotient.induction_on with
+  | H u => rw [reducedForm_mk]; exact hσ _
 
 end Lightlike.Gauge
