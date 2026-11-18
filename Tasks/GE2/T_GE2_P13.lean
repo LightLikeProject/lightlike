@@ -1,3 +1,4 @@
+import Lightlike.Spacetime.Causal.Extension
 import Lightlike.Spacetime.Causal.MinkowskiCausal
 
 /-!
@@ -56,8 +57,9 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
   {n : ℕ} {g : LorentzianMetric I M n} (T : TimeOrientation g)
 
 /-- **A Cauchy surface is achronal.** -/
-theorem IsCauchySurface.isAchronal [T2Space M] {S : Set M} (h : IsCauchySurface T S) :
+theorem IsCauchySurface.isAchronal [T2Space M] [BoundarylessManifold I M]
+    [SecondCountableTopology M] {S : Set M} (h : IsCauchySurface T S) :
     IsAchronal T S := by
-  sorry
+  exact h.isAchronal_of_boundaryless
 
 end Lightlike.Causal
