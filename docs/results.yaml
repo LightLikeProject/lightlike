@@ -2064,3 +2064,16 @@
   review: kernel-checked
   note: "For a smooth function phi with a unit normal field n (g(n, n) = eps = plus or minus one, the kernel of d phi equal to the orthogonal of n), tangent fields X, Y, Z, W near a point and a metric compatible connection, g(R(X, Y) Z, W) equals the same expression for the tangential connection D plus the term minus eps (K(Y, Z) K(X, W) - K(X, Z) K(Y, W)) with K(v, w) = g(nabla_v n, w); for the Levi-Civita connection K is symmetric on tangent fields and g(R(X, Y) Z, n) = -((D_X K)(Y, Z) - (D_Y K)(X, Z)). Limits: the leaves are not given a manifold structure, so the intrinsic curvature of a leaf is that of the tangential connection D; existence of the unit normal is a hypothesis; the sphere and FLRW trust checks are not included; comparison with the source is pending and the location is the chapter."
   since: unreleased
+- id: LL-XXXX-g
+  title: The first variation of the Einstein-Hilbert density at a point is the Einstein tensor plus a divergence (the Palatini identity in coordinates)
+  area: Spacetime
+  file: Lightlike/Spacetime/PalatiniCoord.lean
+  decls: [Lightlike.palatini_coord, Lightlike.hasDerivAt_lagrangian]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "Chapter 4"}
+  review: kernel-checked
+  note: "For smooth symmetric g and h on R^n and a point x with det g(x) nonzero, the coordinate Ricci tensor of g + t h varies by the linearised Ricci tensor; with W^rho = g^{sigma nu} delta Gamma^rho_{sigma nu} - g^{rho sigma} delta Gamma^kappa_{kappa sigma}, sqrt|g| g^{sigma nu} delta R_{sigma nu} equals the divergence of sqrt|g| W^rho; and d/dt of sqrt|g_t| (R(g_t) - 2 Lambda) at t = 0 is minus sqrt|g| (R^{ab} - R g^{ab}/2 + Lambda g^{ab}) h_{ab} plus that divergence. Limits: pointwise statement in coordinates; the integral over a compact region (the divergence integrates to zero), the differentiation under the integral sign and the manifold statement are later stages; comparison with the source is pending and the location is the chapter."
+  since: unreleased

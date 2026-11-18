@@ -62,6 +62,8 @@ The Lie derivative of the metric along a vector field, `(L_X g)(V, W) = X(g(V, W
 
 For a non-null hypersurface given as a level set of a function, with unit normal `n`, the extrinsic curvature `K(v, w) = g(∇_v n, w)` is symmetric on tangent vectors, the Levi-Civita connection splits on tangent fields as `∇_Y Z = D_Y Z - ε K(Y, Z) n`, and the tangential and normal components of the curvature are the Gauss relation `g(R(X, Y) Z, W) = g(R^D(X, Y) Z, W) - ε (K(Y, Z) K(X, W) - K(X, Z) K(Y, W))` and the Codazzi relation `g(R(X, Y) Z, n) = -((D_X K)(Y, Z) - (D_Y K)(X, Z))` [30].
 
+The first variation of the Einstein-Hilbert density in coordinates: for a smooth metric `g` and a smooth symmetric perturbation `h` on `R^n`, the metric `g + t h` has volume density with derivative `1/2 sqrt(|g|) g^{ab} h_{ab}` [31], Christoffel symbols with the derivative `delta Gamma` [32], and curvature with first variation given by the linearised Riemann tensor [35] [36]; the contraction `g^{sigma nu} delta R_{sigma nu}` times the volume density is the divergence of `sqrt(|g|) W^rho` with `W^rho = g^{sigma nu} delta Gamma^rho_{sigma nu} - g^{rho sigma} delta Gamma^kappa_{kappa sigma}` (the Palatini identity [33] [34] [37]), so that the density `sqrt(|g|) (R - 2 Lambda)` has the first variation `-sqrt(|g|) (R^{ab} - R g^{ab}/2 + Lambda g^{ab}) h_{ab}` plus a divergence [37]. That the divergence integrates to zero for a compactly supported perturbation and the integral statement are not yet proved. [TODO]
+
 In Minkowski space, an observer who travels out and back along two straight segments ages less
 than one who stays at rest [6].
 
@@ -113,6 +115,14 @@ than one who stays at rest [6].
 29. Lightlike/Spacetime/PoincareKilling.lean - `affField`, `affField_killing_iff`, `not_isKillingAt_dilation`, `mlieBracket_affField`, `skew_comm_skew`: in Minkowski space the affine fields with skew linear part are Killing, the dilation is not, and the affine fields close under the bracket with the Poincare relations.
 
 30. Lightlike/Spacetime/Hypersurface.lean - `Hypersurface.IsUnitNormal`, `Hypersurface.IsTangentNear`, `Hypersurface.secondFF`, `Hypersurface.lieBracket_isTangentNear`, `Hypersurface.secondFF_symm_fields`, `Hypersurface.exists_tangent_extension`, `Hypersurface.Dfield`, `Hypersurface.gaussCurv`, `Hypersurface.covK`, `Hypersurface.gauss_relation`, `Hypersurface.codazzi_relation`: the unit normal and second fundamental form of the level sets of a function, its symmetry, and the Gauss and Codazzi relations.
+
+31. Lightlike/Spacetime/VariationDet.lean - `hasDerivAt_det_add_smul`, `hasDerivAt_sqrt_abs_det_add_smul`, `hasDerivAt_inv_add_smul`, `fderiv_inv_entry`: Jacobi's formula for the determinant, the variation of the volume density and the derivative of the matrix inverse.
+32. Lightlike/Spacetime/VariationChristoffel.lean - `hasDerivAt_christoffel_add_smul`: the variation of the Christoffel symbols of `g + t h`.
+33. Lightlike/Spacetime/PalatiniAlgebra.lean - `palatini_alg_nd`, `palatini_dd`: the algebra of the Palatini identity, finite sums only.
+34. Lightlike/Spacetime/VariationInverse.lean - `pd_inv_eq`, `pd_sqrt_abs_det`, `hasDerivAt_det_path`, `hasDerivAt_sqrt_abs`: the derivatives of the inverse metric and of the volume density in coordinates.
+35. Lightlike/Spacetime/VariationExchange.lean - `hasDerivAt_fderiv_exchange`, `contDiffAt_christoffel_family`, `dChristoffel`, `hasDerivAt_pd_christoffel`: exchange of the variation and a partial derivative.
+36. Lightlike/Spacetime/VariationRiemann.lean - `hasDerivAt_riemann`, `dRicci`, `hasDerivAt_ricci`, `hasDerivAt_scalarCurvature`: the first variation of the Riemann, Ricci and scalar curvature in coordinates.
+37. Lightlike/Spacetime/PalatiniCoord.lean - `Wvec`, `palatini_coord`, `ricciUp`, `hasDerivAt_lagrangian`: the Palatini identity in coordinates and the first variation of the Einstein-Hilbert density at a point.
 
 ## References
 
