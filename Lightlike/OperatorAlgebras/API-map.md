@@ -51,6 +51,11 @@ unbounded spectral theorem is not in Mathlib. Stone's theorem and Shale's criter
    `OperatorAlgebras.momentumMin_graph`
 8. Lightlike/OperatorAlgebras/Deficiency.lean - `OperatorAlgebras.deficiencySpace`,
    `OperatorAlgebras.deficiencyDim`, `OperatorAlgebras.deficiencyDim_of_isSelfAdjoint`
+9. Lightlike/OperatorAlgebras/StoneGenerator.lean - `OperatorAlgebras.UnitaryGroup.dvec`,
+   `OperatorAlgebras.UnitaryGroup.prim`, `OperatorAlgebras.UnitaryGroup.dense_generatorDomain`,
+   `OperatorAlgebras.UnitaryGroup.generator_isSelfAdjoint` (the proof of task T-OP1-P1)
+10. Lightlike/OperatorAlgebras/StoneUnique.lean - `OperatorAlgebras.UnitaryGroup.eq_of_generator_eq`
+    (the proof of task T-OP1-P3)
 
 ## References
 

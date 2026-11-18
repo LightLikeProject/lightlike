@@ -1,5 +1,6 @@
 import Mathlib
 import Lightlike.Canonical.ADM
+import Lightlike.Canonical.MomentumBracket
 
 /-!
 # Trust checks of the ADM constraints
@@ -71,5 +72,38 @@ theorem wrong_hamiltonian_violates (hd : 2 ≤ d) (x : Fin d → ℝ) :
     field_simp at h
     have : (2 : ℝ) ≤ d := by exact_mod_cast hd
     nlinarith
+
+/-- **Non-vacuity of `bracket_momentum_momentum`**: in dimension one there are nonzero, smooth, compactly supported
+shifts, a smooth positive metric and a continuous momentum, so the bracket of two smeared momentum constraints
+is `D` of the Lie bracket of two bump-function shifts on the flat metric. -/
+theorem bracket_momentum_momentum_nonvacuous :
+    ∃ (ξ η : VectorField 1) (h π : TensorField 1), SmoothVec ξ ∧ SmoothVec η ∧ SmoothTensor h ∧
+      (∀ x, (h x).PosDef) ∧ (∀ k, HasCompactSupport (fun y => ξ y k)) ∧ (∀ k, HasCompactSupport (fun y => η y k)) ∧
+      (∃ x, ξ x 0 ≠ 0) ∧ (∃ x, η x 0 ≠ 0) ∧
+      admBracket (momentumConstraint ξ) (momentumConstraint η) (fun h _ => lieTensor ξ h)
+        (fun h _ => lieTensor η h) h π = momentumConstraint (fun y k => lieBracket ξ η y k) h π := by
+  let b1 : ContDiffBump (0 : Fin 1 → ℝ) := ⟨1, 2, one_pos, one_lt_two⟩
+  let b2 : ContDiffBump (0 : Fin 1 → ℝ) := ⟨2, 3, two_pos, by norm_num⟩
+  let ξ : VectorField 1 := fun y _ => b1 y
+  let η : VectorField 1 := fun y _ => b2 y
+  let h : TensorField 1 := fun _ => 1
+  let π : TensorField 1 := fun y => Matrix.of fun _ _ => y 0
+  have hξ : SmoothVec ξ := fun _ => b1.contDiff
+  have hη : SmoothVec η := fun _ => b2.contDiff
+  have hh : SmoothTensor h := fun i j => contDiff_const
+  have hξc : ∀ k, HasCompactSupport (fun y => ξ y k) := fun _ => b1.hasCompactSupport
+  have hηc : ∀ k, HasCompactSupport (fun y => η y k) := fun _ => b2.hasCompactSupport
+  have hπ : ∀ i j, Continuous (fun x => π x i j) := fun i j => by
+    show Continuous (fun x : Fin 1 → ℝ => x 0)
+    exact continuous_apply 0
+  refine ⟨ξ, η, h, π, hξ, hη, hh, fun x => ?_, hξc, hηc, ⟨0, ?_⟩, ⟨0, ?_⟩,
+    bracket_momentum_momentum hξ hη hξc hηc hh hπ⟩
+  · simpa [h] using Matrix.PosDef.one
+  · show b1 0 ≠ 0
+    rw [b1.one_of_mem_closedBall (x := 0) (by simp [b1])]
+    exact one_ne_zero
+  · show b2 0 ≠ 0
+    rw [b2.one_of_mem_closedBall (x := 0) (by simp [b2])]
+    exact one_ne_zero
 
 end Lightlike.Canonical

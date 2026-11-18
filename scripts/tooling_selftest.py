@@ -92,7 +92,7 @@ expect("python checks control: every listed script outside NO_EXIT_BASELINE has 
 with tempfile.TemporaryDirectory() as d:
     (pathlib.Path(d) / "scripts").mkdir()
     (pathlib.Path(d) / "scripts" / "new_check.py").write_text("print('x')\n")
-    old, base = rp.ROOT, set(rp.NO_EXIT_BASELINE)
+    old, base, checks0 = rp.ROOT, set(rp.NO_EXIT_BASELINE), list(rp.CHECKS)
     rp.ROOT = pathlib.Path(d)
     rp.NO_EXIT_BASELINE.clear()  # the real entries do not exist here
     expect("python checks planted: an unlisted new script is reported",
@@ -124,6 +124,7 @@ with tempfile.TemporaryDirectory() as d:
     rp.NO_EXIT_BASELINE.clear()
     rp.NO_EXIT_BASELINE.update(base)
     rp.ROOT = old
+    rp.CHECKS[:] = checks0
 
 expect("python checks control: installed packages are found", rp.missing_packages(["sys", "json"]) == [])
 expect("python checks planted: a missing package is reported once, not per script",
@@ -605,6 +606,23 @@ _bad = [("a.md", "see " + "/Us" + "ers/alice/notes"), ("b.md", "mail " + "bob" +
         ("config/id_rsa", None)]
 expect("leak check planted: a local path, an e-mail, a token, ~/Desktop and a key file fail",
        len(lk.check(_bad)) == 5)
+
+# Selection of the Python checks on a pull request (run_python_checks.py --changed): the quick set
+# always, a slow check only when its script or a scripts/ module it imports changed, everything
+# when the runner, the pinned packages or the workflow change.
+_slow = {c for c, sl in rp.CHECKS if sl}
+_quick = {c for c, sl in rp.CHECKS if not sl}
+_sel = lambda *paths: set(rp.select(set(paths))[0])
+expect("changed-file selection: a Lean or docs change runs the quick set and no slow check",
+       _sel("Lightlike/A.lean", "docs/x.md") == _quick)
+expect("changed-file selection: a slow script runs itself, the quick set and no other slow check",
+       _sel("scripts/spinfoam/gauge_cutoff_limit.py") & _slow == {"scripts/spinfoam/gauge_cutoff_limit.py"})
+expect("changed-file selection: a module a slow check imports runs that check",
+       "scripts/spinfoam/gauge_cutoff_limit.py" in _sel("scripts/spinfoam/exact3j.py"))
+expect("changed-file selection planted: a module no slow check imports selects none",
+       _sel("scripts/regge/regge3d_core.py") & _slow == set())
+expect("changed-file selection: the runner, requirements.txt and ci.yml run everything",
+       all(_sel(f) == _slow | _quick for f in ("scripts/run_python_checks.py", "requirements.txt", ".github/workflows/ci.yml")))
 
 print("selftest:", "OK" if not fails else f"FAILED ({len(fails)})")
 sys.exit(1 if fails else 0)

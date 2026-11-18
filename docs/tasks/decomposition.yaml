@@ -586,6 +586,17 @@ tasks:
     difficulty: intermediate
     routes:
       - "The dual of a colored graph is built here as a graded poset with indexed simplices (`Lightlike/GFT/Dual.lean`), while Gurau (2010, Theorem 2) states a simplicial complex, a collection of vertex sets that may repeat. State the bridge: when no two simplices of the dual have the same vertex set, the indexed poset is isomorphic to the poset of the vertex sets ordered by inclusion, so the two readings of Theorem 2 agree. Until it is proved the difference named in the notes of the catalogue entry stays open. If stranded graphs are defined in the library, their equivalence with the link form of `link_isDual_of_two_le` becomes a task as well."
+  - id: T-CA1-P3
+    milestone: CA1
+    kind: proof
+    title: "The Lie-derivative form of the smeared momentum constraint equals the ADM form with the covariant divergence of the momentum"
+    file: Tasks/CA/T_CA1_P3.lean
+    decl: Lightlike.Canonical.momentumConstraint_eq_adm
+    size: M
+    difficulty: intermediate
+    routes:
+      - "Pointwise `π^{ij} (ℒ_ξ h)_ij + 2 (h ξ)_i ∇_k π^{ik} = 2 ∂_j (π^{ij} h_{ik} ξ^k)` and `integral_pd_eq_zero`."
+      - "ADM (1962), eq. (3.14b)."
 
 # Upstream tasks: finished results that belong in Mathlib (general mathematics) or Physlib
 # (general physics), with the rework each needs. Exclusive, like definition
