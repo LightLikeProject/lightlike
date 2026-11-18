@@ -46,3 +46,21 @@ uniform).
 (c) So `F_χ` is holomorphic and antiholomorphic along every complex line, hence constant, hence `χ ∈ ℂ Ω`,
 hence `C` is a scalar; a nonzero vector is cyclic because the projection onto its closed span commutes with
 the Weyl unitaries.
+
+## Necessity (`⇒`): what the finite-mode route needs
+
+Done (`ShaleAlgebra.lean`): `‖α e‖² - ‖β e‖² = ‖e‖²` and `4 ‖β e‖² = q(e) + q(i e) - 2 ‖e‖²`, `q f = ‖T f‖²`.
+
+The route: for a finite orthonormal set `F` and `V_F = span_ℝ {e, i e : e ∈ F}`, the operator
+`P_F = (2π)^{-n} ∫_{V_F} exp (-‖f‖²/4) W f df` is the projection onto the vectors in which the modes of `F` are in
+the vacuum (self-adjoint: `W f* = W (-f)`; idempotent: the Weyl relation and one Gaussian integral
+`∫ exp (-|u|²/2 - i σ(u, h)/2) du = (2π)^n exp (-|h|²/8)`; it fixes `Ω`, so `P_F ≥ |Ω⟩⟨Ω|`). For the vector `Ψ` with
+`⟪Ψ, W f Ψ⟫ = exp (-q f / 4)`, and any `g`, `⟪W g Ψ, P_F W g Ψ⟫ ≤ (2π)^{-n} ∫ exp (-(‖f‖² + q f)/4) df`
+(the phase `exp (i σ(f, g))` has modulus one), which is `2^n det (1 + S_F)^{-1/2}`, `S_F` the compression of
+`q` to `V_F`. By irreducibility `⟪Ω, W g Ψ⟫ ≠ 0` for some `g`, so `det ((1 + S_F)/2)` is bounded above
+uniformly in `F`.
+Open point: `S_F` is the compression of a symplectic matrix, not symplectic, and `S_F` need not dominate `1`
+(`q f < ‖f‖²` happens), so `det ((1 + S_F)/2) ≥ 1 + (1/4) ∑ (q(e) + q(i e) - 2)` does not follow from a
+trace/determinant inequality alone; the Schur complement of the block form `[[1 + Γ, Λ], [Λ*, 1 + Γ̄]]`
+(`Γ = α*α + β*β`, `Λ` the antilinear coupling) has to be used, with `α*α - β*β = 1`.
+Estimated as the largest piece of the criterion.
