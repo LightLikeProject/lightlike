@@ -752,6 +752,16 @@ import Lightlike.Spacetime.LieMetric
 import Lightlike.Spacetime.KillingAlgebra
 import Lightlike.Spacetime.PoincareKilling
 import Lightlike.Spacetime.Hypersurface
+import Lightlike.Spacetime.VariationDet
+import Lightlike.Spacetime.VariationChristoffel
+import Lightlike.Spacetime.PalatiniAlgebra
+import Lightlike.Spacetime.VariationInverse
+import Lightlike.Spacetime.VariationExchange
+import Lightlike.Spacetime.VariationRiemann
+import Lightlike.Spacetime.PalatiniCoord
+import Lightlike.Spacetime.VariationIntegral
+import Lightlike.Spacetime.VariationCritical
+import Lightlike.Spacetime.EinsteinTwoDim
 import Lightlike.Spacetime.Lorentzian
 import Lightlike.Spacetime.Minkowski
 import Lightlike.Spacetime.RiemannSymmetry
