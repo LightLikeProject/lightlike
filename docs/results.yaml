@@ -1984,7 +1984,7 @@
     refs:
       - {ref: hawking-ellis-1973, location: "Chapter: Causal structure|10.1017/CBO9780511524646.007"}
   review: kernel-checked
-  note: "Around every point p of a Lorentzian manifold with a time orientation there is a neighbourhood W such that, for every compact K in the interior of W, future-directed causal curves with values in K whose initial points converge to x in K and whose final points converge to y in K (in the chart at p) have a future-directed causal curve from x to y (exists_limit_curve); hence y is in the causal future of x (exists_limit_mem_causalFuture). The proof reparametrises the chart images by a fixed linear functional that is nondecreasing along causal curves and controls the displacement (the chart cone estimate, exists_cone_estimate_curve), extracts a uniformly convergent subsequence by Arzela-Ascoli, and shows that the derivative of the limit lies in the closed future cone: the metric frozen at the point bounds the cone from one side (exists_functional_estimate), a uniform limit inherits the bound (functional_le_of_tendstoUniformlyOn), and the future causal cone is self-dual (IsLorentzianForm.futureCausal_of_forall_nonpos). The textbook statement is Hawking-Ellis, Lemma 6.2.1 (also Beem-Ehrlich-Easley, Theorem 3.31; Minguzzi, Lorentzian causality theory, Section 2.4). The comparison with the cited source is pending: the registry location is the chapter, and the lemma was not read there. Differences to be approved by a maintainer: (a) endpoint form, with converging endpoints, not a limit curve through a point of accumulation of an inextendible curve, so the inextendible form is not covered; (b) one chart and a compact subset of its domain, so no statement about curves leaving a chart; (c) the regularity class of causal curves is the library's (IsFutureCausalCurve: locally Lipschitz, with velocity in the future causal cone almost everywhere); (d) no Hausdorff or second countability hypothesis is needed. Check: the hypotheses hold for a constant sequence of constant curves, whose limit is a constant curve (exists_limit_curve_const); the hypotheses are not checked on a nonconstant example, and no wrong-model control is given. The result is partial: (a) and (b) are weaker forms of the source's statement; the full version, the limit curve of an inextendible curve across charts, is open and not yet stated as a task."
+  note: "Around every point p of a Lorentzian manifold with a time orientation there is a neighbourhood W such that, for every compact K in the interior of W, future-directed causal curves with values in K whose initial points converge to x in K and whose final points converge to y in K (in the chart at p) have a future-directed causal curve from x to y (exists_limit_curve); hence y is in the causal future of x (exists_limit_mem_causalFuture). The proof reparametrises the chart images by a fixed linear functional that is nondecreasing along causal curves and controls the displacement (the chart cone estimate, exists_cone_estimate_curve), extracts a uniformly convergent subsequence by Arzela-Ascoli, and shows that the derivative of the limit lies in the closed future cone: the metric frozen at the point bounds the cone from one side (exists_functional_estimate), a uniform limit inherits the bound (functional_le_of_tendstoUniformlyOn), and the future causal cone is self-dual (IsLorentzianForm.futureCausal_of_forall_nonpos). The textbook statement is Hawking-Ellis, Lemma 6.2.1 (also Beem-Ehrlich-Easley, Theorem 3.31; Minguzzi, Lorentzian causality theory, Section 2.4). The comparison with the cited source is pending: the registry location is the chapter, and the lemma was not read there. Differences to be approved by a maintainer: (a) endpoint form, with converging endpoints, not a limit curve through a point of accumulation of an inextendible curve, so the inextendible form is not covered; (b) one chart and a compact subset of its domain, so no statement about curves leaving a chart; (c) the regularity class of causal curves is the library's (IsFutureCausalCurve: locally Lipschitz, with velocity in the future causal cone almost everywhere); (d) no Hausdorff or second countability hypothesis is needed. Check: the hypotheses hold for a constant sequence of constant curves, whose limit is a constant curve (exists_limit_curve_const); the hypotheses are not checked on a nonconstant example, and no wrong-model control is given. The result is partial: (a) and (b) are weaker forms of the source's statement; the full version, a limit curve through a limit point of future-inextendible causal curves across charts, is the task T-GE2-P20."
   since: unreleased
 - id: LL-0152
   title: The Lie-derivative form of the smeared momentum constraint equals the ADM form with the covariant divergence of the momentum
@@ -2011,4 +2011,213 @@
       - {ref: thiemann-2007, location: "Chapter: Classical Hamiltonian formulation of General Relativity|10.1017/CBO9780511755682.005"}
   review: kernel-checked
   note: "{H[N], H[M]} = D[Y] with Y^i = h^ij (N d_j M - M d_j N) for smooth compactly supported N and M, smooth data with positive definite h and symmetric pi, in dimension d at least 2, with the Hamiltonian density (tr (h pi h pi) - (tr h pi)^2/(d-1))/sqrt(det h) - sqrt(det h) R, D[xi] the integral of pi^ij (L_xi h)_ij, and the bracket computed with Gateaux derivatives along compactly supported variations. The proof differentiates the first-order form of H[N] along M times the pi-gradient of H[M], antisymmetrizes, and reduces the remaining coefficient to -2 times the covariant divergence of pi by an index computation with the Christoffel symbols; the ADM form of the momentum constraint closes the argument. Compared with Thiemann, arXiv:gr-qc/0110034, sec. I.1.1, eq. (I.1.1.37) (the lecture-note version of the cited book), same signs and structure function; Hojman-Kuchar-Teitelboim 1976 has not been read. Differences, approved by the maintainers (17 November 2026): (a) same setting as the source; (b) partial: one global chart R^d, no manifold and no foliation (task F11); (c) convention: units 16 pi G = 1 and the kinetic coefficient 1/(d-1); (d) representation: D[xi] in the Lie-derivative form, equal to the ADM form by Lightlike.Canonical.momentumConstraint_eq_adm_of_smooth; (e) representation: the bracket through pi-gradients and Gateaux derivatives. The result is partial until the hypersurface version (task F11) replaces the one global chart (b)."
+  since: unreleased
+- id: LL-0154
+  title: The chronological future of a point lies in its causal future, the causal future contains the point, and both relations are transitive
+  area: Spacetime
+  file: Lightlike/Spacetime/Causal/BasicRelations.lean
+  decls: [Lightlike.Causal.chron_subset_causal, Lightlike.Causal.self_mem_causalFuture, Lightlike.Causal.causal_trans, Lightlike.Causal.chron_trans]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: hawking-ellis-1973, location: "Chapter: Causal structure|10.1017/CBO9780511524646.007"}
+  review: kernel-checked
+  note: "On a Lorentzian manifold with a time orientation, I+(x) is the set of end points of future-directed timelike curves from x and J+(x) that of future-directed causal curves (IsFutureCausalCurve: locally Lipschitz, with velocity in the future causal cone almost everywhere). A timelike curve is causal (chron_subset_causal); the constant curve is causal, so x lies in J+(x) (self_mem_causalFuture); joining curves end to end makes J+ (causal_trans) and I+ (chron_trans) transitive. The comparison with the cited source is pending: the registry location is the chapter, and the statements were not read there. Differences to be approved by a maintainer: (a) the time orientation is a continuous timelike vector field, not a continuous choice of future cone; (b) the regularity class of curves is the library's."
+  since: unreleased
+- id: LL-0155
+  title: A causal spacetime is chronological, and a strongly causal spacetime is causal
+  area: Spacetime
+  file: Lightlike/Spacetime/Causal/BasicRelations.lean
+  decls: [Lightlike.Causal.chronological_of_causal, Lightlike.Causal.causal_of_stronglyCausal]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: hawking-ellis-1973, location: "Chapter: Causal structure|10.1017/CBO9780511524646.007"}
+  review: kernel-checked
+  note: "Chronological: no x lies in I+(x). Causal: y in J+(x) and x in J+(y) imply x = y. Strongly causal: every neighbourhood of a point contains a causally convex neighbourhood, one that contains every causal curve with both end points in it. A closed timelike curve through x passes through a point other than x, so a causal spacetime is chronological (chronological_of_causal); a strongly causal spacetime whose points are closed (T1) is causal (causal_of_stronglyCausal). These are two steps of the causal ladder. The comparison with the cited source is pending: the registry location is the chapter, and the statements were not read there. Differences to be approved by a maintainer: (a) the time orientation is a continuous timelike vector field; (b) the regularity class of curves is the library's; (c) the T1 hypothesis, which a Hausdorff space-time satisfies."
+  since: unreleased
+- id: LL-0156
+  title: A spacetime with a time function is strongly causal
+  area: Spacetime
+  file: Lightlike/Spacetime/CausalLadder/StrongCausality.lean
+  decls: [Lightlike.Causal.isStronglyCausal_of_isStablyCausal_aux]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: hawking-ellis-1973, location: "Chapter: Causal structure|10.1017/CBO9780511524646.007"}
+  review: kernel-checked
+  note: "If a Hausdorff time-oriented Lorentzian manifold has a time function (a continuous function strictly increasing along future causal curves between distinct points), it is strongly causal. The library defines stable causality (IsStablyCausal) as the existence of a time function. The proof uses the chart cone estimate (exists_cone_estimate_curve). The comparison with the cited source is pending: the registry location is the chapter, and the statement was not read there. Differences to be approved by a maintainer: (a) stable causality originally means that causality survives small widenings of the light cones; its equivalence with the existence of a time function (Hawking, 1969) is not formalised, so the statement covers the source's theorem only through that equivalence; (b) the time orientation and curve class of the basic relations. The result is partial because of (a): the full version needs the equivalence, which is not yet a task."
+  since: unreleased
+- id: LL-0157
+  title: A globally hyperbolic spacetime without boundary is causally simple
+  area: Spacetime
+  file: Lightlike/Spacetime/CausalLadder/GlobHypSimple.lean
+  decls: [Lightlike.Causal.isCausallySimple_of_isGloballyHyperbolic_boundaryless]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: hawking-ellis-1973, location: "Chapter: Causal structure|10.1017/CBO9780511524646.007"}
+  review: kernel-checked
+  note: "Globally hyperbolic: strongly causal, with compact causal diamonds J+(x) and J-(y) intersected. Causally simple: causal, with closed J+(x) and J-(x) for every x. On a Hausdorff manifold without boundary, global hyperbolicity implies causal simplicity. The comparison with the cited source is pending: the registry location is the chapter, and the statement was not read there. The no-boundary hypothesis (BoundarylessManifold) is approved by the maintainers as a change that makes the statement match its source, which takes space-time without boundary (18 November 2026). Differences to be approved by a maintainer: the time orientation and curve class of the basic relations."
+  since: unreleased
+- id: LL-0158
+  title: A Cauchy surface is achronal
+  area: Spacetime
+  file: Lightlike/Spacetime/Causal/Extension.lean
+  decls: [Lightlike.Causal.IsCauchySurface.isAchronal_of_boundaryless]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: hawking-ellis-1973, location: "Chapter: Causal structure|10.1017/CBO9780511524646.007"}
+  review: kernel-checked
+  note: "A Cauchy surface is a set that every inextendible future-directed timelike curve meets exactly once; achronal means that no two of its points are joined by a timelike curve. On a Hausdorff, second countable manifold without boundary every Cauchy surface is achronal: a timelike curve between two of its points extends to an inextendible timelike curve (exists_inextendible_of_timelike), which would meet the surface twice. The comparison with the cited source is pending: the registry location is the chapter, and the statement was not read there. The no-boundary and second-countability hypotheses are approved by the maintainers as changes that make the statement match its source, which takes space-time connected, Hausdorff, paracompact and without boundary (18 November 2026). Differences to be approved by a maintainer: (a) the definition of a Cauchy surface through timelike curves met exactly once is one standard form, and its agreement with the source's definition is not checked; (b) the time orientation and curve class of the basic relations."
+  since: unreleased
+- id: LL-0159
+  title: In Minkowski space the causal future of a point is its closed future light cone
+  area: Spacetime
+  file: Lightlike/Spacetime/Causal/MinkowskiFuture.lean
+  decls: [Lightlike.Causal.minkowski_causalFuture_eq]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: hawking-ellis-1973, location: "Chapter: Causal structure|10.1017/CBO9780511524646.007"}
+  review: kernel-checked
+  note: "On R^(d+1) with the Minkowski form eta = diag(-1, 1, ..., 1) and the time orientation of the first coordinate, J+(x) is the set of y with (y - x)_0 >= 0 and eta(y - x, y - x) <= 0. The comparison with the cited source is pending: the registry location is the chapter, and the statement was not read there. Difference to be approved by a maintainer: the curve class of the basic relations; the signature is the library's (-, +, ..., +)."
+  since: unreleased
+- id: LL-0160
+  title: Minkowski space is globally hyperbolic
+  area: Spacetime
+  file: Lightlike/Spacetime/Causal/MinkowskiGH.lean
+  decls: [Lightlike.Causal.minkowski_globallyHyperbolic]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: hawking-ellis-1973, location: "Chapter: Causal structure|10.1017/CBO9780511524646.007"}
+  review: kernel-checked
+  note: "Minkowski space R^(d+1) is strongly causal (minkowski_isStronglyCausal) and its causal diamonds are compact (minkowski_isCompact_diamond). The comparison with the cited source is pending: the registry location is the chapter, and the statement was not read there. Differences to be approved by a maintainer: the definition of global hyperbolicity (strong causality and compact causal diamonds) and the curve class of the basic relations."
+  since: unreleased
+- id: LL-0161
+  title: In Minkowski space every slice of constant time is a Cauchy surface
+  area: Spacetime
+  file: Lightlike/Spacetime/Causal/MinkowskiCauchy.lean
+  decls: [Lightlike.Causal.minkowski_slice_isCauchySurface]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: hawking-ellis-1973, location: "Chapter: Causal structure|10.1017/CBO9780511524646.007"}
+  review: kernel-checked
+  note: "The slice {y : y_0 = 0} of R^(d+1) is met exactly once by every inextendible future-directed timelike curve; the time coordinate strictly increases along a future-directed timelike curve, so such a curve meets the slice at most once. The comparison with the cited source is pending: the registry location is the chapter, and the statement was not read there. Differences to be approved by a maintainer: the definition of a Cauchy surface (difference (a) of the achronality of Cauchy surfaces) and the curve class of the basic relations. Only the slice y_0 = 0 is stated; the others are its translates."
+  since: unreleased
+- id: LL-0162
+  title: A time-oriented Lorentzian manifold has a smooth future-directed timelike vector field
+  area: Spacetime
+  file: Lightlike/Spacetime/Causal/SmoothOrientation.lean
+  decls: [Lightlike.Causal.exists_smooth_field]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: hawking-ellis-1973, location: "Chapter: Causal structure|10.1017/CBO9780511524646.007"}
+  review: kernel-checked
+  note: "On a Hausdorff, second countable, finite-dimensional Lorentzian manifold with a time orientation given by a continuous timelike field X, there is a smooth vector field X' with g(X', X') < 0 and g(X', X) < 0 everywhere: X' is timelike and future-directed. A smooth partition of unity glues local smooth fields; the future timelike cone is convex (IsLorentzianForm.convex_futureTimelike), so the glued field stays in it. The comparison with the cited source is pending: the registry location is the chapter, and the statement was not read there. Differences to be approved by a maintainer: the time orientation as a continuous field, and the second-countability hypothesis, which a connected paracompact manifold satisfies."
+  since: unreleased
+- id: LL-0163
+  title: The generator of a strongly continuous one-parameter unitary group is self-adjoint
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/StoneGenerator.lean
+  decls: [Lightlike.OperatorAlgebras.UnitaryGroup.generator_isSelfAdjoint]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: hall-2013, location: "Chapter: Unbounded Self-Adjoint Operators|10.1007/978-1-4614-7116-5_9"}
+      - {ref: hall-2013, location: "Chapter: The Spectral Theorem for Unbounded Self-Adjoint Operators|10.1007/978-1-4614-7116-5_10"}
+  review: kernel-checked
+  note: "For a strongly continuous one-parameter group of unitaries U(t) on a complex Hilbert space, the generator A psi = -i d/dt U(t) psi at t = 0, on the vectors where the derivative exists, is self-adjoint: A is contained in its adjoint and its adjoint in A. This is one direction of Stone's theorem; the converse, that every self-adjoint operator generates such a group, is the task T-OP1-P2. The comparison with the cited source is pending: the registry locations are the chapters, and the statement was not read there. Difference to be approved by a maintainer: the sign convention U(t) = exp(itA) is the library's."
+  since: unreleased
+- id: LL-0164
+  title: Two strongly continuous one-parameter unitary groups with the same generator are equal
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/StoneUnique.lean
+  decls: [Lightlike.OperatorAlgebras.UnitaryGroup.eq_of_generator_eq]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: hall-2013, location: "Chapter: The Spectral Theorem for Unbounded Self-Adjoint Operators|10.1007/978-1-4614-7116-5_10"}
+  review: kernel-checked
+  note: "On a complex Hilbert space, a strongly continuous one-parameter unitary group is determined by its generator: if U and V have the same generator then U(t) = V(t) for all t. This is the uniqueness part of Stone's theorem. The comparison with the cited source is pending: the registry location is the chapter, and the statement was not read there. Difference to be approved by a maintainer: the library's sign convention U(t) = exp(itA) for the generator."
+  since: unreleased
+- id: LL-0165
+  title: Smooth compactly supported functions approximate every vector in the domain of the generator of translations on the line
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/TranslationCore.lean
+  decls: [Lightlike.OperatorAlgebras.translationGroup_core_smooth]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: hall-2013, location: "Chapter: Unbounded Self-Adjoint Operators|10.1007/978-1-4614-7116-5_9"}
+  review: kernel-checked
+  note: "For the translation group (U(t) psi)(x) = psi(x + t) on L^2(R) and psi in the domain of its generator, there are smooth compactly supported functions psi_n with psi_n -> psi and psi_n' -> i A psi in L^2, where A is the generator: C_c^infinity is a core, and the generator is the momentum operator -i d/dx. The comparison with the cited source is pending: the registry location is the chapter, and the statement was not read there. Difference to be approved by a maintainer: the core property is stated through approximating sequences, not as the equality of the closure of the restriction with the generator."
+  since: unreleased
+- id: LL-0166
+  title: The momentum operator on smooth functions supported inside the unit interval has deficiency indices (1, 1)
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/MomentumDeficiency.lean
+  decls: [Lightlike.OperatorAlgebras.deficiency_indices_momentumMin]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: hall-2013, location: "Chapter: Unbounded Self-Adjoint Operators|10.1007/978-1-4614-7116-5_9"}
+  review: kernel-checked
+  note: "The operator -i d/dx on the C^2 functions supported inside (0, 1) is densely defined in L^2(0, 1), and its deficiency spaces at i and -i are one-dimensional, so it has self-adjoint extensions and none is distinguished. The comparison with the cited source is pending: the registry location is the chapter, and the statement was not read there. Difference to be approved by a maintainer: the domain is the C^2 functions supported inside (0, 1); the closure of the operator is the same from C_c^infinity (the closure of the momentum graph on the interval)."
+  since: unreleased
+- id: LL-0167
+  title: The closure of the momentum operator on the unit interval does not depend on the class of test functions
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/MomentumMollify.lean
+  decls: [Lightlike.OperatorAlgebras.closure_momentumGraphSmooth_eq]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: hall-2013, location: "Chapter: Unbounded Self-Adjoint Operators|10.1007/978-1-4614-7116-5_9"}
+  review: kernel-checked
+  note: "In L^2(0, 1) x L^2(0, 1), the closure of the graph of -i d/dx on C_c^infinity(0, 1) equals the closure of its graph on the C^2 functions supported inside (0, 1). The proof mollifies. The comparison with the cited source is pending: the registry location is the chapter, and the statement was not read there."
+  since: unreleased
+- id: LL-0168
+  title: Every complex inner product space has a Fock representation of the Weyl relations
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/FockExists.lean
+  decls: [Lightlike.OperatorAlgebras.fockRepOf]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: bratteli-robinson-1997, location: "Chapter: Continuous Quantum Systems. I|10.1007/978-3-662-03444-6_2"}
+  review: kernel-checked
+  note: "For a complex inner product space h, fockRepOf h is a Fock representation: Weyl unitaries W(f) satisfying the Weyl relations, with a unit vector Omega that is cyclic for them and has <Omega, W(f) Omega> = exp(-|f|^2 / 4). The Hilbert space is the reproducing kernel Hilbert space of the Fock kernel (Mathlib's RKHS.OfKernel). The representation difference is approved by the maintainers (18 November 2026): a Fock representation is characterised by its cyclic vacuum and vacuum expectation, not built on the symmetric Fock space; any two such representations are unitarily equivalent (uniqueness of the Fock representation). The comparison with the cited source is pending: the registry location is the chapter, and the statement was not read there."
+  since: unreleased
+- id: LL-0169
+  title: Any two Fock representations of the Weyl relations are unitarily equivalent
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/FockUnique.lean
+  decls: [Lightlike.OperatorAlgebras.fockUnitary_spec]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: bratteli-robinson-1997, location: "Chapter: Continuous Quantum Systems. I|10.1007/978-3-662-03444-6_2"}
+  review: kernel-checked
+  note: "For two Fock representations R on K1 and S on K2 (complete) of the same complex inner product space, the unitary fockUnitary R S from K1 onto K2 maps the vacuum to the vacuum and intertwines the Weyl unitaries. The map W(f) Omega to W(f) Omega' is well defined and norm preserving on the dense span of these vectors and extends to a unitary. The representation difference of the existence of a Fock representation is approved by the maintainers (18 November 2026). The comparison with the cited source is pending: the registry location is the chapter, and the statement was not read there."
   since: unreleased

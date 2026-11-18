@@ -180,6 +180,46 @@ tasks:
     difficulty: research-level
     routes:
       - "Implementability by the unitary built from the Bogoliubov coefficients (Shale 1962; Bratteli–Robinson 2, Chapter 5); the converse by the number operator and the vacuum's image."
+  - id: T-OP2-P4
+    milestone: OP2
+    kind: proof
+    title: "Every nonzero vector of a Fock representation is cyclic for the Weyl unitaries (the Fock representation is irreducible)"
+    file: Tasks/OP/T_OP2_P4.lean
+    decl: Lightlike.OperatorAlgebras.fockRep_cyclic_of_ne_zero
+    size: L
+    difficulty: research-level
+    routes:
+      - "The closed span of `W f ψ` is invariant, so its projection commutes with every `W f`; the projection onto the vacuum is a limit of Gaussian averages of the Weyl unitaries (over the span of finitely many vectors), which shows that the commutant is trivial."
+  - id: T-OP2-P5
+    milestone: OP2
+    kind: proof
+    title: "A Bogoliubov transformation is implemented in a Fock representation iff there is a vector with Gaussian characteristic function exp(-|T f|^2/4)"
+    file: Tasks/OP/T_OP2_P5.lean
+    decl: Lightlike.OperatorAlgebras.implements_iff_exists_gaussian_vector
+    size: M
+    difficulty: advanced
+    routes:
+      - "`⇒`: `Ψ = U⁻¹ Ω` has `⟪Ψ, W f Ψ⟫ = ⟪Ω, W (T f) Ω⟫`. `⇐`: the vectors `W (T f) Ω` and `W f Ψ` have the same Gram matrix (the transformation preserves the symplectic form), `Ψ` is cyclic by irreducibility, and the Gram unitary (`exists_unitary_of_gram_eq`) intertwines."
+  - id: T-OP2-P6
+    milestone: OP2
+    kind: proof
+    title: "Shale's criterion, necessity: an implementable Bogoliubov transformation has Hilbert-Schmidt antilinear part"
+    file: Tasks/OP/T_OP2_P6.lean
+    decl: Lightlike.OperatorAlgebras.shale_necessity
+    size: L
+    difficulty: research-level
+    routes:
+      - "By `T-OP2-P5` there is `Ψ` with `⟪Ψ, W f Ψ⟫ = exp (-‖T f‖² / 4)`. The overlap `|⟪Ω, Ψ⟫|²` is the limit over finite-dimensional subspaces of the Gaussian averages of `W f`, which is `∏ (1 + ‖β eᵢ‖²)⁻¹` for a Hilbert basis `eᵢ`; it is positive, so `∑ ‖β eᵢ‖² < ∞`."
+  - id: T-OP2-P7
+    milestone: OP2
+    kind: proof
+    title: "Shale's criterion, sufficiency: a Bogoliubov transformation with Hilbert-Schmidt antilinear part is implementable"
+    file: Tasks/OP/T_OP2_P7.lean
+    decl: Lightlike.OperatorAlgebras.shale_sufficiency
+    size: L
+    difficulty: research-level
+    routes:
+      - "Build the squeezed vector `Ψ` (a vector with `⟪Ψ, W f Ψ⟫ = exp (-‖T f‖² / 4)`) as a limit of finite-mode squeezed vectors, whose Cauchy estimate is `∑ ‖β eᵢ‖² < ∞`; then `T-OP2-P5` gives the unitary."
   - id: T-OP1-P4
     milestone: OP1
     kind: proof
@@ -240,10 +280,30 @@ tasks:
     title: The far part of the Lorentzian vertex integral is of lower order
     file: Tasks/SF/T_SF10_P3.lean
     decl: Lightlike.Asymptotics.Lorentzian.lorVertex_farRemainder
+    size: S
+    difficulty: intermediate
+    routes:
+      - "Split `1 - χ = (ψ - χ) + (1 - ψ)` for a cutoff `ψ` in `U` equal to `1` near `K`; the first part is `lorVertex_farRemainder_compact` (T-SF10-P5), the second `lorVertex_farRemainder_tail` (T-SF10-P6). The critical-set hypothesis is `CriticalSetIs` with the cutoff `1` (the first form, with `χ`, is false: a critical point outside `tsupport χ` contributes `λ^{-22}`; `docs/notes/sf10-p3-assessment.md`)."
+  - id: T-SF10-P5
+    milestone: SF10
+    kind: proof
+    title: The compact part of the Lorentzian far remainder is of rapidly decreasing order
+    file: Tasks/SF/T_SF10_P5.lean
+    decl: Lightlike.Asymptotics.Lorentzian.lorVertex_farRemainder_compact
+    size: M
+    difficulty: intermediate
+    routes:
+      - "`(ψ - χ) A` is smooth with compact support in `U` and has no critical point of `S` in its support: `expPhase_suppressed` (`Suppression.lean`) with `Re S ≤ 0` from `re_lorAction_le_zero`."
+  - id: T-SF10-P6
+    milestone: SF10
+    kind: proof
+    title: The non-compact tail of the Lorentzian far remainder is of lower order
+    file: Tasks/SF/T_SF10_P6.lean
+    decl: Lightlike.Asymptotics.Lorentzian.lorVertex_farRemainder_tail
     size: L
     difficulty: research-level
     routes:
-      - "Where `Re S ≤ -δ` on the support of `1 - χ` the integrand decays exponentially; the non-compact directions need an integrability estimate of `e^{λ S}` against the amplitude (`Ω` density) uniform in `λ`, and non-stationary phase (`nonstationary_phase`, `Lightlike/Oscillatory/Localisation.lean`) where `Re S = 0` and `dS ≠ 0`."
+      - "An integrable majorant uniform in `λ` (`‖A e^{λS}‖ ≤ ‖A‖ e^{S.re}` for `λ ≥ 1`, `Re S ≤ 0`) and a quantitative gap `Re S ≤ -δ` in the non-compact directions, with `nonstationary_phase` where `Re S = 0`, `dS ≠ 0`. Not in BDFHP; if false, report a counterexample."
   - id: T-SF10-P4
     milestone: SF10
     kind: proof
@@ -445,6 +505,16 @@ tasks:
     difficulty: research-level
     routes:
       - "Open. The library's timelike curves carry a margin (the velocity stays in a closed cone strictly inside the timelike cone on compact intervals); the textbooks ask only for timelike velocity. The statement says the two definitions give the same chronological future. Approach: approximate the curve by piecewise-smooth timelike curves with margin in a convex chart neighbourhood."
+  - id: T-GE2-P20
+    milestone: GE2
+    kind: proof
+    title: A limit curve through a limit point of future-inextendible causal curves is a future-inextendible causal curve
+    file: Tasks/GE2/T_GE2_P20.lean
+    decl: Lightlike.Causal.exists_inextendible_limit_curve
+    size: L
+    difficulty: research-level
+    routes:
+      - "The full limit-curve theorem (Hawking-Ellis, Lemma 6.2.1) for future-inextendible curves, across charts, with the limit curve of one subsequence. The endpoint form in one chart is `Lightlike.Causal.exists_limit_curve` (LL-0151, Lightlike/Spacetime/CausalLadder/LimitCurve.lean). Approach: reparametrise each curve by a complete Riemannian length (or cover by charts and diagonalise), apply the one-chart theorem on each chart, glue by the compact-chart cover, and extend by a maximality argument to an inextendible curve."
   - id: T-CS2-P1
     milestone: CS2
     kind: proof
@@ -590,6 +660,47 @@ tasks:
     routes:
       - "Pointwise `π^{ij} (ℒ_ξ h)_ij + 2 (h ξ)_i ∇_k π^{ik} = 2 ∂_j (π^{ij} h_{ik} ξ^k)` and `integral_pd_eq_zero`."
       - "ADM (1962), eq. (3.14b)."
+
+  - id: T-CA1-P4
+    milestone: CA1
+    kind: proof
+    title: "The bracket of two smeared momentum constraints on a hypersurface is the smeared constraint of the Lie bracket of the shifts"
+    file: Tasks/CA/T_CA1_P4.lean
+    decl: Lightlike.Canonical.bracket_momentum_momentum_M
+    size: L
+    difficulty: research-level
+    routes:
+      - "Chart by chart the integrands are those of `bracket_momentum_momentum`; the new content is the independence of the sum over the atlas pieces of the decomposition (change laws `IsCovTensor`, `IsVec`, `IsDensity`) and the commutation of the Gateaux derivative with the finite sum."
+  - id: T-CA1-P5
+    milestone: CA1
+    kind: proof
+    title: "The bracket of a smeared momentum constraint with a smeared Hamiltonian constraint on a hypersurface is the Hamiltonian constraint smeared with the derivative of the lapse along the shift"
+    file: Tasks/CA/T_CA1_P5.lean
+    decl: Lightlike.Canonical.bracket_momentum_hamiltonian_M
+    size: L
+    difficulty: research-level
+    routes:
+      - "As T-CA1-P4, with `admBracket_momentum_hamiltonian` in every chart and the chart covariance of the scalar curvature."
+  - id: T-CA1-P6
+    milestone: CA1
+    kind: proof
+    title: "The bracket of two smeared Hamiltonian constraints on a hypersurface is the smeared momentum constraint of the shift given by the inverse metric"
+    file: Tasks/CA/T_CA1_P6.lean
+    decl: Lightlike.Canonical.bracket_hamiltonian_hamiltonian_M
+    size: L
+    difficulty: research-level
+    routes:
+      - "As T-CA1-P4, with `bracket_hamiltonian_hamiltonian_of_smooth` in every chart; `structureShift` is a vector field."
+  - id: T-CA1-P7
+    milestone: CA1
+    kind: proof
+    title: "On a single global chart the constraints on a hypersurface are the constraints of the chart"
+    file: Tasks/CA/T_CA1_P7.lean
+    decl: Lightlike.Canonical.constraintM_bridge
+    size: M
+    difficulty: intermediate
+    routes:
+      - "On `M = ℝᵈ` the charts are the identity and the atlas pieces partition `ℝᵈ`; for continuous compactly supported integrands the sum of the integrals over the pieces is the integral (`integral_iUnion`)."
 
 # Upstream tasks: finished results that belong in Mathlib (general mathematics) or Physlib
 # (general physics), with the rework each needs. Exclusive, like definition

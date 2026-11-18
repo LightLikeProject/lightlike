@@ -873,6 +873,21 @@
   "citations": 78,
   "citations_via": "OpenAlex"
  },
+ "bilal-2001": {
+  "checked": "2026-11-18",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Introduction to Supersymmetry",
+  "locations": {
+   "Section 3.3": {
+    "verified": true,
+    "snippet": "3.3 Massless supermultiplets . . . . . . . . . . . . . . . . . . . . . . . 11 3.4 Massive supermultiplets . . . . . . . . . . . . . . . . . . . . . . . 13 4 Superspace and superfields",
+    "why": null
+   }
+  },
+  "citations": 34,
+  "citations_via": "Semantic Scholar"
+ },
  "birrell-davies-1982": {
   "checked": "2026-11-08",
   "exists": true,
@@ -1029,7 +1044,7 @@
   "citations_via": "Semantic Scholar"
  },
  "brocker-tom-dieck-1985": {
-  "checked": "2026-11-08",
+  "checked": "2026-11-18",
   "exists": true,
   "via": "Crossref",
   "fetched_title": "Representations of Compact Lie Groups ",
@@ -1038,9 +1053,14 @@
     "verified": true,
     "snippet": "Elementary Representation Theory ",
     "why": null
+   },
+   "Chapter: Representative Functions|10.1007/978-3-662-12918-0_3": {
+    "verified": true,
+    "snippet": "Representative Functions ",
+    "why": null
    }
   },
-  "citations": 1235,
+  "citations": 1563,
   "citations_via": "OpenAlex"
  },
  "brunetti-guido-longo-2002": {
@@ -1179,7 +1199,7 @@
   "citations_via": "Semantic Scholar"
  },
  "carroll-1997": {
-  "checked": "2026-11-11",
+  "checked": "2026-11-18",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "Lecture Notes on General Relativity",
@@ -1187,6 +1207,16 @@
    "Chapter 3": {
     "verified": true,
     "snippet": "3. Curvature covariant derivatives and connections — connection coefficients — transformation properties — the Christoffel connection — structures on manifolds — parallel trans- port — the parallel propagator",
+    "why": null
+   },
+   "Chapter 4": {
+    "verified": true,
+    "snippet": "4. Gravitation the Principle of Equivalence — gravitational redshift — gravitation as spacetime cur- vature — the Newtonian limit — physics in curved spacetime — Einstein’s equations — the Hilbert action — the",
+    "why": null
+   },
+   "Chapter 5": {
+    "verified": true,
+    "snippet": "5. More Geometry pullbacks and pushforwards — diffeomorphisms — integral curves — Lie derivatives — the energy-momentum tensor one more time — isometries and Killing vectors",
     "why": null
    },
    "Section 8": {
@@ -1219,6 +1249,11 @@
     "snippet": "(4.53) can be very difficult to solve. The most popular sort of simplifying assumption is that the metric has a significant degree of symmetry, and we will talk later on about how symmetries of the metric make life easie",
     "why": null
    },
+   "eq. (4.72)": {
+    "verified": true,
+    "snippet": "(4.72) This is known as the Weak Energy Condition, or WEC. It seems like a fairly reasonable requirement, and many of the important theorems about solutions to general relativity (such as the singularity theorems of Hawk",
+    "why": null
+   },
    "eq. (6.54)": {
     "verified": true,
     "snippet": "(6.54) Therefore we can drop the bars over hµν , as long as we are in this gauge. 6 WEAK FIELDS AND GRAVITATIONAL RADIATION 152 One nice feature of the transverse traceless gauge is that if you are given the components o",
@@ -1235,7 +1270,7 @@
     "why": null
    }
   },
-  "citations": 428,
+  "citations": 427,
   "citations_via": "Semantic Scholar"
  },
  "carrozza-oriti-rivasseau-2014": {
@@ -1454,18 +1489,23 @@
   "citations_via": "OpenAlex"
  },
  "delamotte-2007": {
-  "checked": "2026-11-08",
+  "checked": "2026-11-18",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "An Introduction to the Nonperturbative Renormalization Group",
   "locations": {
+   "eq. (2.29)": {
+    "verified": true,
+    "snippet": "(2.29) that is, it behaves as a functional Dirac delta. Therefore, Γ′k [M ] + Wk [B] = BM (2.24) Γk [M ] → H[φ = M ] as k → Λ (2.30) where the magnetization M (x) is, by definition the av- if the cut-off Rk is such that",
+    "why": null
+   },
    "§2.5.3": {
     "verified": true,
     "snippet": "2.5.3 The critical exponents . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 36 2.6 Perturbative renormalizability, RG flows, continuum limit, asymptotic freedom and all that. . .",
     "why": null
    }
   },
-  "citations": 374,
+  "citations": 375,
   "citations_via": "Semantic Scholar"
  },
  "delepouve-gurau-rivasseau-2016": {
@@ -2074,6 +2114,21 @@
   "citations": 701,
   "citations_via": "OpenAlex"
  },
+ "gourgoulhon-2007": {
+  "checked": "2026-11-18",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "3+1 Formalism and Bases of Numerical Relativity",
+  "locations": {
+   "Section 2.5": {
+    "verified": true,
+    "snippet": "2.5 Gauss-Codazzi relations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 34 2.5.1 Gauss relation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 34 2.5.2 Codazzi relatio",
+    "why": null
+   }
+  },
+  "citations": 404,
+  "citations_via": "Semantic Scholar"
+ },
  "grosse-wulkenhaar-2005": {
   "checked": "2026-11-08",
   "exists": true,
@@ -2279,7 +2334,7 @@
   "citations_via": "OpenAlex"
  },
  "hawking-ellis-1973": {
-  "checked": "2026-11-08",
+  "checked": "2026-11-18",
   "exists": true,
   "via": "Crossref",
   "fetched_title": "The Large Scale Structure of Space-Time ",
@@ -2305,7 +2360,7 @@
     "why": null
    }
   },
-  "citations": 10602,
+  "citations": 12420,
   "citations_via": "OpenAlex"
  },
  "hayden-headrick-maloney-2013": {
@@ -3200,6 +3255,21 @@
   "citations": 424,
   "citations_via": "Semantic Scholar"
  },
+ "milnor-1963": {
+  "checked": "2026-11-18",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "Morse Theory. (AM-51) ",
+  "locations": {
+   "Chapter: PART I. NON-DEGENERATE SMOOTH FUNCTIONS ON A MANIFOLD|10.1515/9781400881802-002": {
+    "verified": true,
+    "snippet": "PART I. NON-DEGENERATE SMOOTH FUNCTIONS ON A MANIFOLD ",
+    "why": null
+   }
+  },
+  "citations": 2096,
+  "citations_via": "OpenAlex"
+ },
  "moise-1977": {
   "checked": "2026-11-15",
   "exists": true,
@@ -3246,7 +3316,7 @@
   "citations_via": "OpenAlex"
  },
  "mukhametzhanov-zhiboedov-2019": {
-  "checked": "2026-11-08",
+  "checked": "2026-11-18",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "Modular Invariance, Tauberian Theorems, and Microcanonical Entropy",
@@ -3255,10 +3325,15 @@
     "verified": true,
     "snippet": "we analyze modular invariance drawing inspiration from tauberian theorems given a modular invariant partition function with a positive spectral density we derive lower and upper bounds on the number o",
     "why": null
+   },
+   "eq. (1.8)": {
+    "verified": true,
+    "snippet": "(1.8) with a bounded error term. The discontinuities of the LHS of (1.8) are hidden in the non-universal7 error term in the RHS. In particular, it does not make sense to write further smooth power suppressed terms in the",
+    "why": null
    }
   },
-  "citations": 77,
-  "citations_via": "Semantic Scholar"
+  "citations": 125,
+  "citations_via": "OpenAlex"
  },
  "nielsen-olesen-1973": {
   "checked": "2026-11-17",
@@ -3561,6 +3636,21 @@
   "locations": {},
   "citations": 539,
   "citations_via": "Semantic Scholar"
+ },
+ "reed-simon-1972": {
+  "checked": "2026-11-18",
+  "exists": true,
+  "via": "Open Library",
+  "fetched_title": "Methods of modern mathematical physics",
+  "locations": {
+   "Chapter: Bounded Operators|10.1016/b978-0-12-585001-8.50012-x": {
+    "verified": true,
+    "snippet": "Bounded Operators ",
+    "why": null
+   }
+  },
+  "citations": null,
+  "citations_via": "unavailable"
  },
  "regge-1961": {
   "checked": "2026-11-18",
@@ -4204,6 +4294,21 @@
   "fetched_title": "The cosmological constant problem ",
   "locations": {},
   "citations": 9189,
+  "citations_via": "OpenAlex"
+ },
+ "weinberg-1995": {
+  "checked": "2026-11-18",
+  "exists": true,
+  "via": "Crossref",
+  "fetched_title": "The Quantum Theory of Fields ",
+  "locations": {
+   "Chapter: RELATIVISTIC QUANTUM MECHANICS|10.1017/CBO9781139644167.004": {
+    "verified": true,
+    "snippet": "RELATIVISTIC QUANTUM MECHANICS ",
+    "why": null
+   }
+  },
+  "citations": 4163,
   "citations_via": "OpenAlex"
  },
  "weinzierl-2006": {

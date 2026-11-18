@@ -72,7 +72,15 @@ Everything below is recommended practice, with the reason for it.
   adds the axiom `Lean.ofReduceBool`; `decide +kernel` does not.
 - **Reuse Mathlib and Physlib** where they fit, and explain any custom definition. Before
   building a new component, check Physlib's main branch (Physlib, PhyslibAlpha, QuantumInfo) and
-  its open pull requests.
+  its open pull requests, then these libraries:
+  - TauCetiProject/TauCeti and physicslib/physicslib4: operator algebras and spectral theory;
+  - oliver-butterley/SpectralThm: the spectral theorem;
+  - mrdouglasny/gaussian-field, mrdouglasny/bochner, mrdouglasny/OSforGFF and
+    mrdouglasny/hille-yosida: Gaussian measures, Wick's formula, Bochner–Minlos and semigroups;
+  - CloK-Lab/OpenGA: Riemannian geodesics and the exponential map.
+
+  Port with attribution: name the source project, its license and the revision ported in the
+  module docstring.
 - **Numerics.** Cross-check independently with SymPy (`scripts/`, each check with a wrong-input
   control) and label the results as numerical evidence, not proof.
 - **Write for outside readers.** Commit bodies, docstrings and pull requests should make sense to

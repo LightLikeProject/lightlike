@@ -36,10 +36,11 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
   {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I ∞ M]
   {n : ℕ} {g : LorentzianMetric I M n} (T : TimeOrientation g)
 
-/-- **Limit-curve theorem from a chart cone estimate.** The statement of `exists_limit_curve` for
-any neighbourhood `W` of `p`, functional `ℓ` and constant `C` satisfying the cone estimate of
-`exists_cone_estimate_curve`; the same `W`, `ℓ` and `C` can then be used to control the curves. -/
-theorem limit_curve_of_cone_estimate (p : M) {W : Set M} (hWb : W ⊆ (tTriv I M p).baseSet)
+/-- **Limit-curve theorem from a chart cone estimate, with the points of the limit.** As
+`limit_curve_of_cone_estimate`, and moreover the limit curve stays in `K`, and for a subsequence `ψ`
+every point of the limit curve is met, in every neighbourhood, by all but finitely many of the curves
+`γ (ψ k)`. -/
+theorem limit_curve_points_of_cone_estimate (p : M) {W : Set M} (hWb : W ⊆ (tTriv I M p).baseSet)
     {ℓ : E →L[ℝ] ℝ} {C : ℝ} (hC : 0 < C)
     (hcone : ∀ q ∈ W, ∀ v : TangentSpace I q, T.IsFutureCausal v →
       ‖(tTriv I M p ⟨q, v⟩).2‖ ≤ C * ℓ (tTriv I M p ⟨q, v⟩).2)
@@ -55,7 +56,9 @@ theorem limit_curve_of_cone_estimate (p : M) {W : Set M} (hWb : W ⊆ (tTriv I M
         Tendsto (fun k => extChartAt I p (γ k (a k))) atTop (𝓝 (extChartAt I p x)) →
         Tendsto (fun k => extChartAt I p (γ k (b k))) atTop (𝓝 (extChartAt I p y)) →
         ∃ (σ : ℝ → M) (α β : ℝ), α ≤ β ∧ IsFutureCausalCurve T σ (Icc α β) ∧ σ α = x ∧
-          σ β = y := by
+          σ β = y ∧
+          (∃ ψ : ℕ → ℕ, StrictMono ψ ∧ ∀ u ∈ Icc α β, ∀ U ∈ 𝓝 (σ u), ∀ᶠ k in atTop,
+            ∃ t ∈ Icc (a (ψ k)) (b (ψ k)), γ (ψ k) t ∈ U) ∧ ∀ u ∈ Icc α β, σ u ∈ K := by
   intro K hK hKW γ a b x y hxK hyK hab hγ hKmem hxlim hylim
   set φ := extChartAt I p with hφ
   have hKsrc : ∀ q ∈ K, q ∈ φ.source := fun q hq => by
@@ -212,7 +215,7 @@ theorem limit_curve_of_cone_estimate (p : M) {W : Set M} (hWb : W ⊆ (tTriv I M
   have htarget : ∀ σ ∈ Icc α β, u σ ∈ φ.target := fun σ hσ => by
     obtain ⟨q, hq, e⟩ := hu_in σ hσ
     rw [← e]; exact φ.map_source (hKsrc q hq)
-  refine ⟨φ.symm ∘ u, α, β, hαβ, ⟨ordConnected_Icc, ?_, ?_⟩, ?_, ?_⟩
+  refine ⟨φ.symm ∘ u, α, β, hαβ, ⟨ordConnected_Icc, ?_, ?_⟩, ?_, ?_, ⟨ψ, hψ, ?_⟩, ?_⟩
   · exact isLocallyLipschitzOn_chart_symm (hulipw.lipschitzOnWith) p htarget
   · rw [ae_restrict_iff' measurableSet_Icc]
     filter_upwards [hulipw.ae_differentiableAt_real, Measure.ae_ne volume α,
@@ -233,6 +236,49 @@ theorem limit_curve_of_cone_estimate (p : M) {W : Set M} (hWb : W ⊆ (tTriv I M
     exact hcausal σ hσ' hdiff
   · exact (φ.left_inv (hKsrc x hxK)) ▸ (by simp [hxα])
   · exact (φ.left_inv (hKsrc y hyK)) ▸ (by simp [hyβ])
+  · intro u₀ hu₀ U hU
+    have hu₀' : u₀ ∈ Icc α β := hu₀
+    choose tk htk hftk using fun k => hfr (ψ k) u₀
+    have h1 : Tendsto (fun k => φ (γ (ψ k) (tk k))) atTop (𝓝 (u u₀)) :=
+      (hpt u₀ hu₀').congr fun k => hftk k
+    have hsy : ContinuousWithinAt φ.symm φ.target (u u₀) :=
+      (continuousOn_extChartAt_symm p) _ (htarget u₀ hu₀')
+    have h2 : Tendsto (fun k => φ (γ (ψ k) (tk k))) atTop (𝓝[φ.target] (u u₀)) :=
+      tendsto_nhdsWithin_iff.2 ⟨h1, Eventually.of_forall fun k =>
+        φ.map_source (hsrc (ψ k) (tk k) (htk k))⟩
+    have h3 := hsy.tendsto.comp h2
+    have h4 : Tendsto (fun k => γ (ψ k) (tk k)) atTop (𝓝 ((φ.symm ∘ u) u₀)) :=
+      h3.congr fun k => φ.left_inv (hsrc (ψ k) (tk k) (htk k))
+    exact (h4.eventually (mem_nhds_iff.2 (mem_nhds_iff.1 hU))).mono fun k hk => ⟨tk k, htk k, hk⟩
+  · intro u₀ hu₀
+    obtain ⟨q, hq, e⟩ := hu_in u₀ hu₀
+    show φ.symm (u u₀) ∈ K
+    rw [← e, φ.left_inv (hKsrc q hq)]; exact hq
+
+/-- **Limit-curve theorem from a chart cone estimate.** The statement of `exists_limit_curve` for
+any neighbourhood `W` of `p`, functional `ℓ` and constant `C` satisfying the cone estimate of
+`exists_cone_estimate_curve`; the same `W`, `ℓ` and `C` can then be used to control the curves. -/
+theorem limit_curve_of_cone_estimate (p : M) {W : Set M} (hWb : W ⊆ (tTriv I M p).baseSet)
+    {ℓ : E →L[ℝ] ℝ} {C : ℝ} (hC : 0 < C)
+    (hcone : ∀ q ∈ W, ∀ v : TangentSpace I q, T.IsFutureCausal v →
+      ‖(tTriv I M p ⟨q, v⟩).2‖ ≤ C * ℓ (tTriv I M p ⟨q, v⟩).2)
+    (hest : ∀ (γ : ℝ → M) (a b : ℝ), IsFutureCausalCurve T γ (Icc a b) → (∀ t ∈ Icc a b, γ t ∈ W) →
+        ∀ s ∈ Icc a b, ∀ t ∈ Icc a b, s ≤ t →
+          ℓ (extChartAt I p (γ s)) ≤ ℓ (extChartAt I p (γ t)) ∧
+          ‖extChartAt I p (γ t) - extChartAt I p (γ s)‖ ≤
+            C * (ℓ (extChartAt I p (γ t)) - ℓ (extChartAt I p (γ s)))) :
+    ∀ K : Set M, IsCompact K → K ⊆ interior W →
+      ∀ (γ : ℕ → ℝ → M) (a b : ℕ → ℝ) (x y : M), x ∈ K → y ∈ K → (∀ k, a k ≤ b k) →
+        (∀ k, IsFutureCausalCurve T (γ k) (Icc (a k) (b k))) →
+        (∀ k, ∀ t ∈ Icc (a k) (b k), γ k t ∈ K) →
+        Tendsto (fun k => extChartAt I p (γ k (a k))) atTop (𝓝 (extChartAt I p x)) →
+        Tendsto (fun k => extChartAt I p (γ k (b k))) atTop (𝓝 (extChartAt I p y)) →
+        ∃ (σ : ℝ → M) (α β : ℝ), α ≤ β ∧ IsFutureCausalCurve T σ (Icc α β) ∧ σ α = x ∧
+          σ β = y := by
+  intro K hK hKW γ a b x y hxK hyK hab hγ hKmem hxlim hylim
+  obtain ⟨σ, α, β, h1, h2, h3, h4, -, -⟩ := limit_curve_points_of_cone_estimate T p hWb hC hcone hest
+    K hK hKW γ a b x y hxK hyK hab hγ hKmem hxlim hylim
+  exact ⟨σ, α, β, h1, h2, h3, h4⟩
 
 /-- **Limit-curve theorem, endpoint form, in one chart** (Hawking–Ellis, Lemma 6.2.1, comparison
 pending). Around `p` there is a neighbourhood `W` such that, for every compact `K ⊆ interior W`, if
