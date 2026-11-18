@@ -8,21 +8,29 @@ sources and review status in [docs/RESULTS.md](docs/RESULTS.md). Versions follow
 
 ### Library
 
-- 19 new results, LL-0067 to LL-0085: Turaev–Viro (6), spin foams (5), PL topology (4), Regge
-  calculus (3) and Lorentzian asymptotics (1). 17 are proven and 2 are conditional (LL-0074,
-  LL-0075, under the q-Dougall summation).
-- The catalog has 85 entries: 82 proven results and 3 conditional results.
+- 103 new results, LL-0067 to LL-0169: PL topology (23), Lorentzian asymptotics (18), Regge
+  calculus (12), spacetime geometry and causal structure (11), spin foams (9), Turaev–Viro (8),
+  operator algebras (7), group field theory (4), surfaces (4), canonical gravity (4), oscillatory
+  integrals (1), cosmology (1) and Lorentz group representations (1). 102 are proven and 1 is
+  conditional (LL-0135).
+- Six areas have their first catalog entries: canonical gravity, cosmology, group field theory,
+  operator algebras, oscillatory integrals and surfaces.
+- The catalog has 169 entries: 167 proven results and 2 conditional results (LL-0031, LL-0135).
+- LL-0074 and LL-0075 (norm one and q-orthogonality of the q-6j matrix at every level r ≥ 2) are
+  proven without hypotheses: the boundary evaluation they need (the q-Dougall summation) is proved
+  at every level r ≥ 2 (LL-0103, LL-0104).
 - LL-0076's `since` said 0.2.0, but it was merged after that release, and LL-0070 to LL-0075 said
   0.2.1, a version that was not released; all of them now say 0.3.0.
-- The new entries are `kernel-checked`. Unlike 0.2.0, no reviewer agent compared them with their
-  cited sources before this release.
+- The new entries are `kernel-checked`; 67 are `established` and 36 are `frontier`. Unlike 0.2.0,
+  no reviewer agent compared them with their cited sources before this release.
 - Fix: the one-triangle action of the Lorentzian vertex (`lorAction`, Asymptotics) matched the
   EPRL integrand only for even doubled spins and differed by a sign for odd ones. It is now
   written in the power form and is exact for every doubled spin.
 - The Racah certificate files have per-declaration heartbeat limits instead of file-level ones.
 - Turaev–Viro: Jackson's summation of the terminating very-well-poised 6φ5 series, proved by a
-  telescoping certificate. It has no catalog entry, because no edition, page and equation
-  of the formula in a book has been verified; it is the main step towards the q-Dougall summation.
+  telescoping certificate. It has no catalog entry of its own, because no edition, page and
+  equation of the formula in a book has been verified; it is the step that proves the boundary
+  evaluation (LL-0103).
 - Results without a catalog entry: in Lorentzian asymptotics, the pieces of the vertex
   asymptotics and the K5 edge pairing, the coherent 15j integral as the K5 contraction of coherent
   intertwiners, and the gauge-fixed Lorentzian vertex amplitude with a bound on its integrand and
@@ -30,75 +38,126 @@ sources and review status in [docs/RESULTS.md](docs/RESULTS.md). Versions follow
   cutoff, and the cutoff can be removed exactly when the sums are bounded; in Turaev–Viro, the
   q-Racah sum at the lowest sixth colour has one term; in Regge calculus, the normal-coordinate
   slice of the jet-level star identity.
-- Spin foams, in the documentation: a forcing gauge set that stops forcing after a 3-3 move, and
-  when a 3-3 move keeps forcing.
 
 ### Notable results
 
+- LL-0125: the Jordan curve theorem (McCleary 2006, the chapter "The Jordan Curve Theorem").
+  LL-0106 to LL-0115 are lemmas from the same chapter: gratings and chains, Alexander's theorem,
+  the index of a loop and the Theta Lemma. LL-0100: the weak Jordan theorem, that the complement
+  of a circle embedded in the plane is not connected; LL-0091 and LL-0099: K₃,₃ has no polygonal
+  and no continuous drawing in the plane (Klazar 2026, Section 2).
 - LL-0076: the Jordan curve theorem for simple closed polygons in the plane. The complement is
   the disjoint union of a bounded and an unbounded connected open set, and the polygon is the
   frontier of each (Moise 1977, the chapter "Separation properties of polygons in R²").
 - LL-0082 to LL-0084: the polygonal Schoenflies theorem. A simple closed polygon in the plane has a
   triangulation by its own vertices, and the closed region it bounds is a PL ball whose boundary is
   the polygon (Moise 1977, the chapter "The Schönflies theorem for polygons in R²").
-- LL-0070 to LL-0073: for the real q-Racah sum at q = e^{iπ/r}, the three-term recurrence in the
+- LL-0143 and LL-0144: closed combinatorial surfaces are PL homeomorphic exactly when they have the
+  same orientability and Euler characteristic, and each is related by 2D bistellar moves to exactly
+  one standard model (Lickorish 1999, Theorem 5.9; Moise 1977). LL-0145: a stellar subdivision is a
+  PL homeomorphism, and the Euler characteristic is an invariant of stellar equivalence (Lickorish
+  1999, Theorem 4.5).
+- LL-0126: stationary phase with a complex phase, the leading term (Hörmander 1990, Theorem 7.7.5).
+- LL-0127: the 3D Regge action of the Kuhn triangulation of a grid converges to half the
+  Einstein–Hilbert action of a Riemannian metric, the Kuhn-grid case of the convergence theorem
+  of Cheeger, Müller and Schrader as described in Christiansen 2011, Section 1. LL-0093: the
+  jet-level star identity holds at every point of a Riemannian metric, with no condition on the
+  first derivatives. LL-0128 to LL-0132: the Regge action of a flat closed 3-complex is a quadratic
+  form in the first variations of the lengths up to third order; on the 3-torus, the Regge action
+  of the periodic Kuhn complex tends to half the Einstein–Hilbert action, its linearized sum
+  converges to the Saint-Venant form, and the Saint-Venant and Fierz–Pauli forms have the same
+  integral
+  (Christiansen 2011, Section 1, eq. (5) and Proposition 3.2; Hinterbichler 2012, eq. (2.1)).
+- LL-0070 to LL-0075: for the real q-Racah sum at q = e^{iπ/r}, the three-term recurrence in the
   third colour (Koekoek and Swarttouw 1996, eqs. (3.2.1)–(3.2.2)); the row identity of the
   quantum 6j symbol, endpoints included; detailed balance and weighted orthogonality of the rows
-  for different sixth colours; and one common weighted norm for all rows and columns. LL-0074
-  and LL-0075 give norm one and q-orthogonality at every level r ≥ 2 under the q-Dougall
-  summation, an explicit hypothesis that is checked numerically (exact at r = 4 to 7) and not
-  proved in Lean.
+  for different sixth colours; one common weighted norm for all rows and columns; and norm one and
+  q-orthogonality at every level r ≥ 2 (with LL-0104).
+- LL-0134: the Plancherel formula of SL(2,ℂ) for smooth compactly supported functions (Knapp 1986,
+  Chapter II).
+- LL-0087: at the lowest level and for product coherent boundary arrays, the coherent
+  principal-series Lorentzian vertex equals the coherent vertex of Barrett, Dowdall, Fairbairn,
+  Hellmann and Pereira (2010, Section 4, eq. (17)) up to an explicit Haar normalisation factor.
+  LL-0094 to LL-0098 and LL-0105: the critical points of the Lorentzian vertex action and its
+  second derivatives there (BDFHP 2010, eqs. (18)–(21), (25) and (61)). LL-0135 (conditional): the
+  scaled vertex is an integral over R^44 in fixed charts of SL(2,C), with a stationary-phase
+  expansion under four named hypotheses (joint integrability, the critical set, an invertible
+  Hessian and a bound on the far remainder; BDFHP 2010, eq. (53)).
+- LL-0117 to LL-0122: the Euclidean EPRL vertex with coherent boundary data, for γ < 1 and for
+  γ > 1 as a constant times a Spin(4)^5 integral of edge forms; the coherent 15j integral decays
+  faster than every power of the spin scale when its maxima are noncritical, and exponentially for
+  SU(2) boundary data without a gluing solution (Barrett, Dowdall, Fairbairn, Gomes and Hellmann
+  2009, eqs. (14), (16), (17), (19) and (22)).
+- LL-0146, LL-0147, LL-0152 and LL-0153: the hypersurface deformation algebra of the smeared
+  momentum and Hamiltonian constraints (Thiemann 2007, the chapter "Classical Hamiltonian
+  formulation of General Relativity"; Arnowitt, Deser and Misner 1962, Section 4).
+- LL-0133: Einstein's equations for an FLRW spacetime with a perfect fluid are equivalent to
+  Friedmann's two equations (Carroll 1997, eq. (8.36)). LL-0150: exterior Schwarzschild is a
+  vacuum solution on the manifold layer (Carroll 1997, eq. (7.29)).
+- LL-0151 and LL-0154 to LL-0162: causal structure (Hawking and Ellis 1973, the chapter "Causal
+  structure"): a spacetime with a time function is strongly causal, a strongly causal one is
+  causal and a causal one is chronological; a globally hyperbolic spacetime without boundary is
+  causally simple; a Cauchy surface is achronal; Minkowski space is globally hyperbolic, with every
+  slice of constant time a Cauchy surface; and, in one chart, a limit of future causal curves with
+  converging endpoints is a future causal curve.
+- LL-0163 to LL-0167: the generator of a strongly continuous one-parameter unitary group is
+  self-adjoint and determines the group, and the momentum operator on smooth functions supported
+  inside the unit interval has deficiency indices (1, 1) (Hall 2013). LL-0168 and LL-0169: every complex inner product space
+  has a Fock representation of the Weyl relations, and any two are unitarily equivalent (Bratteli
+  and Robinson 1997, the chapter "Continuous Quantum Systems. I").
+- LL-0123, LL-0124, LL-0148 and LL-0149: colored graphs of group field theory, their bubbles, and
+  the dual of a connected colored graph as a normal pseudo-manifold (Gurau 2010, Theorems 1 and 2).
 - LL-0068: the gauge-fixed Ooguri state sum at finite cutoff is constant along every chain of
   3-3, 2-4 and 1-5 Pachner moves and their inverses (with the hypotheses of LL-0049 to LL-0051).
   LL-0069, LL-0077 and LL-0081 say when a gauge set that forces every triangle still does after a
-  1-5, 3-3 or 2-4 move. Forcing is this library's rule, used to show that the gauge-fixed sum is 1.
+  1-5, 3-3 or 2-4 move, and LL-0089 and LL-0136 to LL-0138 do the same for robust forcing sets;
+  robustness is not kept by the 3-3 move (LL-0138). Forcing is this library's rule, used to show
+  that the gauge-fixed sum is 1.
 - LL-0067: the cut-off sum of the tetrahedron over doubled edge spins up to N is at least
   (N + 1)², so it has no limit without rescaling.
-- LL-0078 to LL-0080: steps towards the 3D convergence of the Regge action (task T-RC6, open):
-  admissibility and dihedral angles of the Kuhn triangulation for every positive definite Gram
-  matrix; explicit Christoffel symbols, Riemann tensor and scalar curvature at a point; and the
-  jet-level star identity at a point where the first derivatives of the metric vanish.
-- LL-0085: one link of the principal-series Lorentzian vertex is the exponential of the coherent
-  action times the density of Ω, the first step of identifying the coherent vertex of Barrett,
-  Dowdall, Fairbairn, Hellmann and Pereira (2010) with the principal-series vertex (task T-SF10,
-  open; the identity of the two vertices is not proved).
 
 ### Open work
 
-- Turaev–Viro: the q-Dougall summation itself (LL-0074, LL-0075), and qBiedenharnElliott for
-  r ≥ 4, which with LL-0075 would give the invariance of LL-0031 at level r.
+- Turaev–Viro: qBiedenharnElliott for r ≥ 4, which with LL-0075 would give the invariance of
+  LL-0031 at level r.
 - Spin foams: forcing under the inverse moves 4-2 and 5-1; removing the cutoff and the independence
   of the gauge set (LL-0049 to LL-0051, LL-0068). A gauge set that does not force every triangle
   gives cutoff sums that change sign and grow (a numerical observation).
-- Lorentzian asymptotics: the identity of the coherent and principal-series vertices (T-SF10).
-- Regge calculus: the jet-level star identity at a general point (LL-0080), then the 3D
-  convergence of the action (T-RC6).
+- Lorentzian asymptotics: the identity of the coherent and principal-series vertices beyond the
+  lowest level (T-SF10), and proofs of the four hypotheses of LL-0135.
+- Regge calculus: the convergence of the 3D Regge action beyond the Kuhn grid of LL-0127 (T-RC6).
 
 ### Checks
 
 - A leak check (local paths, e-mail addresses, tokens) is a hard rule in CI.
+- Building the task library is a hard rule in CI.
+- The Python checks run 4 at a time; on a pull request, only the checks its change touches run.
 - A pull request may carry draft IDs (LL-XXXX, LL-XXXX-a, ...); the ID is assigned when it is
   merged.
 - CI counts a use of a result declaration under a namespace suffix as a test use.
 - The Python scripts run on 3.9 to 3.14; CI tests 3.12.
 - Every commit on main gets its own CI run; before, close merges cancelled the runs in between.
-- The proof-task workflow checks only proof-task pull requests, and installs the pinned PyYAML.
+- The proof-task workflow checks only proof-task pull requests, and installs the pinned PyYAML. A
+  proof task whose own `sorry` is filled counts as done.
+- The build job has swap space and reports its memory use; a cold manual run skips the build-cache
+  restores.
 - Fixes from a test with a fresh agent: duplicate tasks, the fast gate, the setup and the commit
   format.
 
 ### Documentation
 
-- AGENTS.md: one pull-request route for everyone. CONTRIBUTING has a paste-in prompt for
-  contributors' agents and one template for module docstrings (a title, a summary, then
-  `## Main results` and `## References` when the file has them); the maintainer section moved to
-  docs/MAINTAINERS.md.
+- AGENTS.md: one pull-request route for everyone; a statement that differs from its source needs a
+  maintainer's approval; the libraries to check before building a new component. CONTRIBUTING has
+  a paste-in prompt for contributors' agents and one template for module docstrings (a title, a
+  summary, then `## Main results` and `## References` when the file has them); the maintainer
+  section moved to docs/MAINTAINERS.md.
 - The documentation site has a plain landing page at its root; the API documentation is under
   `docs/`.
 - The README says how the spin-foam and Regge parts relate to the physics literature; the ROADMAP
   links each area's done milestones; the EPRL and Lorentzian API maps have titles in words.
 - New sources with exact locations: Koekoek and Swarttouw for the quantum 6j task, equation-level
-  sources for the EPRL asymptotics tasks T-SF9 and T-SF10, Klazar's weak Jordan paper and the
-  Lorentzian EPRL numerics.
+  sources for the EPRL asymptotics tasks T-SF9 and T-SF10, Klazar's weak Jordan paper, the
+  Lorentzian EPRL numerics, and the sources of the new areas above.
 
 ## [0.2.0]
 
