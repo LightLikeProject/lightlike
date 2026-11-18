@@ -1,4 +1,4 @@
-import Lightlike.Spacetime.Causal.MinkowskiCausal
+import Lightlike.Spacetime.Causal.MinkowskiCauchy
 
 /-!
 # Task T-GE2-P16
@@ -59,6 +59,6 @@ variable {d : ℕ}
 /-- **The slice t = 0 is a Cauchy surface of Minkowski space.** -/
 theorem minkowski_isCauchySurface :
     IsCauchySurface (minkowskiOrientation d) {y : Fin (d + 1) → ℝ | y 0 = 0} := by
-  sorry
+  exact minkowski_slice_isCauchySurface
 
 end Lightlike.Causal
