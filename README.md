@@ -32,7 +32,7 @@ review of any entry is welcome ([how to report a mismatch](#review)).
 The [main results](docs/RESULTS.md#main-results), each the main theorem of a cited paper or book or
 a named theorem, are listed at the top of the catalog.
 
-The plan has 280 tasks, on the [task board](docs/tasks/README.md): 54 **proof tasks**, which need
+The plan has 284 tasks, on the [task board](docs/tasks/README.md): 58 **proof tasks**, which need
 Lean but no physics, because the statement is fixed and only its proof is open; 203 **milestones**,
 which add definitions and statements from the literature and need knowledge of their area; and 23
 **upstream** tasks, which rework a result of Lightlike for Mathlib or Physlib.

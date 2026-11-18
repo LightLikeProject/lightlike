@@ -1,6 +1,10 @@
 import Tasks.CA.T_CA1_P1
 import Tasks.CA.T_CA1_P2
 import Tasks.CA.T_CA1_P3
+import Tasks.CA.T_CA1_P4
+import Tasks.CA.T_CA1_P5
+import Tasks.CA.T_CA1_P6
+import Tasks.CA.T_CA1_P7
 import Tasks.CS2.T_CS2_P1
 import Tasks.CS2.T_CS2_P2
 import Tasks.CS2.T_CS2_P3
