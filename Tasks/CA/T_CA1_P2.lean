@@ -1,4 +1,4 @@
-import Lightlike.Canonical.MomentumBracket
+import Lightlike.Canonical.HamiltonianHHBracket
 
 /-!
 # Task T-CA1-P2
@@ -46,6 +46,6 @@ theorem bracket_hamiltonian_hamiltonian {d : ℕ} (hd : 2 ≤ d) {N M : (Fin d �
         (hamiltonianPiGradient M) h π =
       momentumConstraint
         (fun x i => ∑ j, (h x)⁻¹ i j * (N x * Lightlike.pd j M x - M x * Lightlike.pd j N x)) h π := by
-  sorry
+  exact bracket_hamiltonian_hamiltonian_of_smooth hd hN hNc hM hMc hh hpos hπ hπs
 
 end Lightlike.Canonical

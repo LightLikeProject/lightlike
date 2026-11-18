@@ -1,4 +1,4 @@
-import Lightlike.Canonical.MomentumBracket
+import Lightlike.Canonical.MomentumADM
 
 /-!
 # Task T-CA1-P3
@@ -44,6 +44,6 @@ theorem momentumConstraint_eq_adm {d : ℕ} {ξ : VectorField d} (hξ : SmoothVe
     (hpos : ∀ x, (h x).PosDef) (hπ : SmoothTensor π) (hπs : ∀ x, (π x)ᵀ = π x) :
     momentumConstraint ξ h π =
       ∫ x, -2 * ∑ i, (∑ k, h x i k * ξ x k) * momentumDivergence h π i x := by
-  sorry
+  exact momentumConstraint_eq_adm_of_smooth hξ hξc hh hpos hπ hπs
 
 end Lightlike.Canonical
