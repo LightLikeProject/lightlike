@@ -202,6 +202,17 @@ tasks:
     routes:
       - "The adjoint of -i d/dx on C_c^∞(0,1) is -i d/dx on H¹(0,1) (weak derivative); ker(A† ∓ i) is spanned by exp(∓x), found by solving the ODE for an absolutely continuous function; density of C_c^∞(0,1) in L²(0,1) (Mathlib: density of compactly supported smooth functions in Lp)."
 
+  - id: T-OP1-P6
+    milestone: OP1
+    kind: proof
+    title: "On L²(0,1), the closure of -i d/dx on C² functions supported inside (0,1) equals its closure on C_c^∞(0,1)"
+    file: Tasks/OP/T_OP1_P6.lean
+    decl: Lightlike.OperatorAlgebras.momentumGraph_closure_eq
+    size: M
+    difficulty: intermediate
+    routes:
+      - "Mollification: for f in C²_c(0,1), f * ρ_ε is C_c^∞(0,1) for small ε, and f * ρ_ε → f and (f * ρ_ε)' = f' * ρ_ε → f' in L²(0,1), so every graph point of the C² operator is a limit of graph points of the C_c^∞ operator; the other inclusion is monotonicity (momentumGraphSmooth_le). Needs: convolution with a mollifier commutes with the derivative and converges in L² (Mathlib: ContDiffBump, convolution approximation of the identity)."
+
   - id: T-SF10-P1
     milestone: SF10
     kind: proof
