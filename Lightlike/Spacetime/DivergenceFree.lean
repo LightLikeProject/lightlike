@@ -27,7 +27,7 @@ noncomputable section
 namespace Lightlike
 variable {n : ℕ} {M : Type*} [TopologicalSpace M] [ChartedSpace (Fin n → ℝ) M] [IsManifold 𝓘(ℝ, Fin n → ℝ) ∞ M]
   [T2Space M] [IsManifold 𝓘(ℝ, Fin n → ℝ) 2 M]
-  (g : LorentzianMetric 𝓘(ℝ, Fin n → ℝ) M n)
+  (g : NondegMetric 𝓘(ℝ, Fin n → ℝ) M)
   (cov : Connection 𝓘(ℝ, Fin n → ℝ) M) [CovariantDerivative.ContMDiffCovariantDerivative cov ∞]
 
 section Lin

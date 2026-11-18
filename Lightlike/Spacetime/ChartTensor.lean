@@ -110,7 +110,7 @@ section Einstein
 set_option synthInstance.maxHeartbeats 400000
 variable {n : ℕ} {M : Type*} [TopologicalSpace M] [ChartedSpace (Fin n → ℝ) M]
   [IsManifold 𝓘(ℝ, Fin n → ℝ) ∞ M] [T2Space M] [IsManifold 𝓘(ℝ, Fin n → ℝ) 2 M]
-  (g : LorentzianMetric 𝓘(ℝ, Fin n → ℝ) M n)
+  (g : NondegMetric 𝓘(ℝ, Fin n → ℝ) M)
 
 /-- The components of the Einstein tensor of the coordinate metric, as a bilinear form on `ℝⁿ`. -/
 def einsteinComp (x₀ : M) (y' : Fin n → ℝ) : (Fin n → ℝ) →L[ℝ] (Fin n → ℝ) →L[ℝ] ℝ :=

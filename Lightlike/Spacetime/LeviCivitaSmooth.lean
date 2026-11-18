@@ -85,7 +85,7 @@ theorem contMDiffAt_mvfderiv_cfield (s : M → F)
   rw [this, mfderiv_chart_symmL p hyb]
   rfl
 
-variable (g : LorentzianMetric 𝓘(ℝ, Fin n → ℝ) M n)
+variable (g : NondegMetric 𝓘(ℝ, Fin n → ℝ) M)
 
 /-- **The Christoffel tensor of the Levi-Civita connection applied to a smooth vector is smooth.** -/
 theorem contMDiffAt_gamHat_leviCivita (v : M → Fin n → ℝ) (hv : ContMDiffAt 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ, Fin n → ℝ) ∞ v p) (a : Fin n → ℝ) :
