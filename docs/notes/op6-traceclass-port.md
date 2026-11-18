@@ -48,3 +48,8 @@ Status of the bricks (see the plan above): (1) done, plus finite-rank and rank-o
 polar factor `W` (`⟪e, |T| e⟫ = ⟪W e, T e⟫`) needs a Hilbert basis adapted to `(ker T)^⊥ ⊕ ker T`, on which `W e` is orthonormal; I did not find in the pinned Mathlib (not an exhaustive search: `IsHilbertSum` exists, but I did not check it for this)
 a gluing of Hilbert bases of an orthogonal decomposition in the form needed; an alternative is to
 show first that `T` is compact and use the spectral decomposition of `|T|`. `T-OP6-P1` stays an open proof task with these helper lemmas.
+
+Update: `T-OP6-P1` is proved: `CompactDualIso.compact_dual_eq_traceClass_proof` (`CompactDual`, `CompactDualIso`, `FiniteRankApprox`): the operator `T` of a functional `f` on the
+compact operators is trace class with `‖T‖₁ ≤ ‖f‖` (the diagonal sums of `|T|`, `⟪bᵢ, |T| bᵢ⟫ = f |bᵢ⟩⟨W bᵢ|` with `W` the polar factor, are bounded by `‖f‖`, because
+`‖∑ |bᵢ⟩⟨W bᵢ|‖ ≤ 1` by Bessel; no basis adapted to `(ker T)^⊥ ⊕ ker T` is needed), `f = Tr (· T)` on rank-one, hence finite-rank, hence compact operators
+(norm density), `‖f‖ ≤ ‖T‖₁` by the pairing bound, and `T` is unique (rank-one operators separate). The earlier remark about gluing Hilbert bases is superseded.

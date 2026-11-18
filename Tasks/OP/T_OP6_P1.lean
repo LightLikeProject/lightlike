@@ -1,4 +1,4 @@
-import Lightlike.OperatorAlgebras.TraceClass.TracePairingSurjectivity
+import Lightlike.OperatorAlgebras.CompactDualIso
 
 /-!
 # Task T-OP6-P1
@@ -40,6 +40,6 @@ theorem compact_dual_eq_traceClass {H : Type u} [NormedAddCommGroup H] [InnerPro
       ‖T‖ = ‖f‖ ∧
       ∀ T' : TraceClass H, (∀ K : compactOperator (RingHom.id ℂ) H H, f K = TraceClass.tracePairing K.1 T') →
         T' = T := by
-  sorry
+  exact Lightlike.OperatorAlgebras.compact_dual_eq_traceClass_proof f
 
 end Lightlike.OperatorAlgebras.TraceClass
