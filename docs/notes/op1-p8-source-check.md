@@ -14,3 +14,5 @@ Chapter 3, Section 3.1 "The spectral theorem". Each item below was read at its l
 The Lean proof is ported from physicslib4 (`Spectral/Unbounded/Cayley.lean`, `existsUnique_spectralMeasure_unbounded`);
 the route there is the Cayley transform, not the resolvent and Stieltjes inversion of the source. The statement is the
 source's; the proof route is not.
+
+Not checked: B. C. Hall, *Quantum Theory for Mathematicians*, Chapter 10, was not read. The comments "Blueprint: thrm:hall-10.x" in the ported files are the original author's tags and are not verified here; only the match with Teschl above counts. A comparison with Hall is pending.
