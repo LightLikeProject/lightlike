@@ -14,6 +14,7 @@ its definition through `π`-gradients and Gateaux derivatives is exercised on a 
 -/
 
 open Matrix MeasureTheory
+open scoped ContDiff
 
 namespace Lightlike.Canonical
 
