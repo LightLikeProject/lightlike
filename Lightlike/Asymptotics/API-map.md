@@ -254,7 +254,7 @@ Karamata's Tauberian theorem for a regularly varying Laplace transform is proved
 40. Lightlike/Asymptotics/Tauberian/Ingham.lean - `Tauberian.laplace_bounds`, `Tauberian.log_counting_le`,
     `Tauberian.lower_eventually`, `Tauberian.ingham_log`
 41. Lightlike/Asymptotics/Tauberian/Scaling.lean - `Tauberian.SlowlyVarying`, `Tauberian.tendsto_scaled_laplace`
-42. Lightlike/Asymptotics/Tauberian/Poly.lean - `Tauberian.integral_poly_eq_sum`, `Tauberian.tendsto_poly_integral`
+42. Lightlike/Asymptotics/Tauberian/PolyIntegral.lean - `Tauberian.integral_poly_eq_sum`, `Tauberian.tendsto_poly_integral`
 43. Lightlike/Asymptotics/Tauberian/Functional.lean - `Tauberian.Phi`, `Tauberian.Lam`, `Tauberian.tendsto_lam`
 44. Lightlike/Asymptotics/Tauberian/Ramp.lean - `Tauberian.rampUp`, `Tauberian.rampDown`, `Tauberian.mul_rampUp_eq_one`
 45. Lightlike/Asymptotics/Tauberian/Karamata.lean - `Tauberian.counting_le_integral_rampUp`, `Tauberian.integral_rampDown_le_counting`, `Tauberian.karamata`

@@ -129,7 +129,7 @@ import Lightlike.Asymptotics.Tauberian.Functional
 import Lightlike.Asymptotics.Tauberian.Ingham
 import Lightlike.Asymptotics.Tauberian.Karamata
 import Lightlike.Asymptotics.Tauberian.Lower
-import Lightlike.Asymptotics.Tauberian.Poly
+import Lightlike.Asymptotics.Tauberian.PolyIntegral
 import Lightlike.Asymptotics.Tauberian.Ramp
 import Lightlike.Asymptotics.Tauberian.Scaling
 import Lightlike.Asymptotics.Tauberian.Tests

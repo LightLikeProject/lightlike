@@ -1,4 +1,4 @@
-import Lightlike.Asymptotics.Tauberian.Poly
+import Lightlike.Asymptotics.Tauberian.PolyIntegral
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Topology.ContinuousMap.Weierstrass
 
