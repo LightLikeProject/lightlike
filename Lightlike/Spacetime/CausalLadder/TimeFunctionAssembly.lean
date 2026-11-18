@@ -37,7 +37,8 @@ theorem isStablyCausal_of_continuous_measure [BoundarylessManifold I M] [Measura
 /-- **Continuity from the two semicontinuities.** On a first countable space, if for every sequence
 `xₖ → x` one has `limsup μ(J⁻(xₖ)) ≤ μ(J⁻(x)) ≤ liminf μ(J⁻(xₖ))`, then `x ↦ μ(J⁻(x)).toReal` is
 continuous. -/
-theorem continuous_measure_causalPast [FirstCountableTopology M] (μ : Measure M) [IsFiniteMeasure μ]
+theorem continuous_measure_causalPast [FirstCountableTopology M] [MeasurableSpace M] (μ : Measure M)
+    [IsFiniteMeasure μ]
     (hup : ∀ (xs : ℕ → M) (x : M), Tendsto xs atTop (𝓝 x) →
       limsup (fun k => μ (causalPast T (xs k))) atTop ≤ μ (causalPast T x))
     (hlow : ∀ (xs : ℕ → M) (x : M), Tendsto xs atTop (𝓝 x) →

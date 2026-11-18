@@ -28,7 +28,8 @@ def interiorCausalPast (x : M) : Set M := {a | causalFuture T a ∈ 𝓝 x}
 
 /-- The interior part is contained in the causal past. -/
 theorem interiorCausalPast_subset (x : M) : interiorCausalPast T x ⊆ causalPast T x :=
-  fun _ ha => mem_of_mem_nhds ha
+  fun a (ha : causalFuture T a ∈ 𝓝 x) =>
+    show x ∈ causalFuture T a from mem_of_mem_nhds ha
 
 /-- Points of `Ĩ⁻(x)` are in `J⁻(xₖ)` for all large `k` when `xₖ → x`. -/
 theorem eventually_mem_causalPast_of_mem_interior {xs : ℕ → M} {x : M}
