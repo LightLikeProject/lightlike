@@ -11,8 +11,12 @@ import Lightlike.GR.Einstein
 
 Built on the general static spherical Ricci tensor of `StaticSphericalRicci` (`ricci_ss_ij`).
 
-Gap row G3-022. Source comparison with Carroll, *Spacetime and Geometry* / lecture notes ch. 8, or Hawking-Page 1983: pending,
-not read at a location.
+Gap row G3-022. Compared with D. Harlow, *Jerusalem Lectures on Black Holes and Quantum Information*, arXiv:1409.1231
+(pdftotext), section 6.4, eqs. (6.30)-(6.32), p. 79: \"the AdS_{d+1} version of the Schwarzschild geometry, which is the unique spherically
+symmetric solution of Einstein's equation with negative vacuum energy\", `ds² = -f dt² + dr²/f + r² dΩ²_{d-1}`,
+`f = r² + 1 - α/r^{d-2}` (`r_ads = 1`), `α = 16πGM/((d-1)Ω_{d-1})`. For `d = 3` and `r_ads = L` general this is `sadsF` with `α = 2M`
+(`M` here is the Schwarzschild mass parameter). The source states uniqueness and the form of `f`; the Lean statement is that this metric
+solves `G + Λ g = 0` (not uniqueness). See `docs/notes/g3-022-ads-source.md`.
 -/
 
 open Matrix Real
