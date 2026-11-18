@@ -725,6 +725,7 @@ import Lightlike.Spacetime.VariationExchange
 import Lightlike.Spacetime.VariationRiemann
 import Lightlike.Spacetime.PalatiniCoord
 import Lightlike.Spacetime.VariationIntegral
+import Lightlike.Spacetime.VariationCritical
 import Lightlike.Spacetime.Lorentzian
 import Lightlike.Spacetime.Minkowski
 import Lightlike.Spacetime.RiemannSymmetry

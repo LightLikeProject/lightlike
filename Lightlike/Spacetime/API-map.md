@@ -64,6 +64,8 @@ For a non-null hypersurface given as a level set of a function, with unit normal
 
 The first variation of the Einstein-Hilbert density in coordinates: for a smooth metric `g` and a smooth symmetric perturbation `h` on `R^n`, the metric `g + t h` has volume density with derivative `1/2 sqrt(|g|) g^{ab} h_{ab}` [31], Christoffel symbols with the derivative `delta Gamma` [32], and curvature with first variation given by the linearised Riemann tensor [35] [36]; the contraction `g^{sigma nu} delta R_{sigma nu}` times the volume density is the divergence of `sqrt(|g|) W^rho` with `W^rho = g^{sigma nu} delta Gamma^rho_{sigma nu} - g^{rho sigma} delta Gamma^kappa_{kappa sigma}` (the Palatini identity [33] [34] [37]), so that the density `sqrt(|g|) (R - 2 Lambda)` has the first variation `-sqrt(|g|) (R^{ab} - R g^{ab}/2 + Lambda g^{ab}) h_{ab}` plus a divergence [37]. The divergence of a compactly supported field integrates to zero and the density is differentiable under the integral over a compact region, so the first variation of the integral over a compact region containing the support of the perturbation is `-∫ sqrt(|g|) (R^{ab} - R g^{ab}/2 + Lambda g^{ab}) h_{ab}`, with no boundary term [38]. That the critical points are the vacuum Einstein equations and the statement on a manifold are not yet proved. [TODO]
 
+A metric is a critical point of the Einstein-Hilbert action with a cosmological term, for every smooth symmetric perturbation of compact support, exactly when it satisfies the vacuum Einstein equations with that cosmological constant, by the first variation and the fundamental lemma of the calculus of variations [39].
+
 In Minkowski space, an observer who travels out and back along two straight segments ages less
 than one who stays at rest [6].
 
@@ -125,6 +127,8 @@ than one who stays at rest [6].
 37. Lightlike/Spacetime/PalatiniCoord.lean - `Wvec`, `palatini_coord`, `ricciUp`, `hasDerivAt_lagrangian`: the Palatini identity in coordinates and the first variation of the Einstein-Hilbert density at a point.
 
 38. Lightlike/Spacetime/VariationIntegral.lean - `lagDensity`, `contDiffAt_lagDensity`, `hasDerivAt_integral_family`, `integral_pd_eq_zero`, `contDiff_flux`, `eh_first_variation`: the Einstein-Hilbert density is smooth in the perturbation parameter and the point, and the first variation of its integral over a compact region containing the support of the perturbation is the Einstein tensor plus cosmological term contracted with the perturbation.
+
+39. Lightlike/Spacetime/VariationCritical.lean - `einsteinUp`, `IsEHCritical`, `contDiff_ricci`, `contDiff_scalarCurvature`, `isEHCritical_iff`: a smooth nondegenerate metric is a critical point of the Einstein-Hilbert action, for perturbations of compact support, if and only if it satisfies the vacuum Einstein equations with a cosmological constant.
 
 ## References
 

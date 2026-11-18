@@ -2090,3 +2090,16 @@
   review: kernel-checked
   note: "For a smooth metric g on R^n with nonzero determinant everywhere, a smooth symmetric perturbation h supported in a compact set T and Lambda real, d/dt of the integral over T of sqrt|det g_t| (R(g_t) - 2 Lambda), g_t = g + t h, at t = 0 is minus the integral over T of sqrt|det g| (R^{ab} - R g^{ab}/2 + Lambda g^{ab}) h_{ab}. Limits: coordinates on R^n; the vacuum Einstein equations as critical points (fundamental lemma), the manifold statement and the trust checks (two dimensions, sign of Lambda) are later stages; comparison with the source is pending and the location is the chapter."
   since: unreleased
+- id: LL-XXXX-i
+  title: A smooth nondegenerate metric is a critical point of the Einstein-Hilbert action with a cosmological constant for perturbations of compact support exactly when it satisfies the vacuum Einstein equations
+  area: Spacetime
+  file: Lightlike/Spacetime/VariationCritical.lean
+  decls: [Lightlike.isEHCritical_iff]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "Chapter 4"}
+  review: kernel-checked
+  note: "For a smooth metric g on R^n of any signature with nonzero determinant everywhere and a real Lambda: the first variation of the integral of sqrt|det g| (R - 2 Lambda) vanishes for every smooth symmetric perturbation of compact support (over any compact region containing the support) iff R^{ab} - R g^{ab}/2 + Lambda g^{ab} is antisymmetric in (a, b), that is (it is symmetric) iff it vanishes. Limits: coordinates on R^n; the manifold statement and the trust checks (two dimensions, sign of Lambda) are later stages; comparison with the source is pending and the location is the chapter."
+  since: unreleased
