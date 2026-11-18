@@ -158,6 +158,7 @@ theorem cone_lift_estimate {P : Type*} [MetricSpace P] {n : ℕ} {x₀ : P}
     ∃ m₀ > 0, ∃ r₁ > 0, r₁ ≤ r₀ ∧ ∀ ν : ℝ, 0 < ν → ν ≤ 1 → ∃ ε > 0,
       ∀ x ∈ Metric.ball x₀ r₁, ∀ x' ∈ Metric.ball x₀ r₁, dist x' x ≤ ν * m₀ →
       ∀ w : Fin n → ℝ, quadForm (A x) w ≤ 0 → linForm (B x) w < 0 →
+        0 < -(linForm (B x₀) w) ∧
         quadForm (A x') (w + (ν * (-(linForm (B x₀) w))) • e) ≤
             -ε * (linForm (B x') (w + (ν * (-(linForm (B x₀) w))) • e)) ^ 2 ∧
           linForm (B x') (w + (ν * (-(linForm (B x₀) w))) • e) < 0 := by
@@ -321,7 +322,7 @@ theorem cone_lift_estimate {P : Type*} [MetricSpace P] {n : ℕ} {x₀ : P}
     exact hsgn x' hx'r₀ _ (hneg τ hτ.1 hτ.2) hz
   rw [one_smul] at hf1
   rw [← hℓdef]
-  refine ⟨?_, hf1⟩
+  refine ⟨hℓ, ?_, hf1⟩
   have hQ1 := claim 1 zero_le_one le_rfl
   rw [one_smul] at hQ1
   have hlin : |linForm (B x') (w + (ν * ℓ) • e)| ≤ ℓ * M := by
