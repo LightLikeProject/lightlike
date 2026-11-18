@@ -89,6 +89,8 @@ formula `√(12π √V²(ℓ)) {λj} − cos(S_R(ℓ) + π/4) → 0` without hyp
 Trust checks are in [6], [7], [9], [11], [13], [15], [17], [19], [21], [23], [25], [27], [29],
 [31], [33], [35] and [37].
 
+The Morse lemma with parameters: a smooth function of a variable and a parameter with a critical point at the origin for every parameter near a base value and a nondegenerate Hessian at the base value is, in coordinates that depend smoothly on the parameter, its value at the origin plus half the Hessian of the base value; the coordinate change is a local diffeomorphism. The proof is Hadamard's lemma with a smooth parameter, which makes the remainder a smooth family of self-adjoint endomorphisms equal to the identity at the base point, followed by a smooth square root of such endomorphisms near the identity from the inverse function theorem; composing with Sylvester's law gives the diagonal form with signs, and the number of negative signs is the index of the Hessian; the function x cubed at the origin has no such chart [38].
+
 ## Lean References
 
 1. Lightlike/Asymptotics/Saddle.lean - `Asymptotics.disc_eq`, `Asymptotics.saddle_root`,
@@ -244,6 +246,10 @@ Trust checks are in [6], [7], [9], [11], [13], [15], [17], [19], [21], [23], [25
    `Asymptotics.not_ponzanoReggeFormulaWith_neg_quarter`, `Asymptotics.ponzanoReggeFormula_regular`,
    `Asymptotics.kernelRegion_one_zero`, `Asymptotics.kernelRegion_zero_four`,
    `Asymptotics.not_kernelRegion_one_four`
+38. Lightlike/Asymptotics/MorseLemma.lean - `Morse.morse_lemma_with_parameters`,
+   `Morse.morse_coordinates`, `Morse.hadamard_integral`, `Morse.exists_smooth_selfadjoint_root`,
+   `Morse.contDiff_integral_unit_infty`, `Morse.morse_diagonal`, `Morse.HasDiagonalMorseChart`,
+   `Morse.not_hasDiagonalMorseChart_cube`
 
 ## References
 
