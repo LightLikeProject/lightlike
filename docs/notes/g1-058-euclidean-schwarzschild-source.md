@@ -4,7 +4,7 @@ Lean files: `Lightlike/GR/EuclideanSchwarzschild.lean`, `EuclideanCigar.lean`, `
 
 ## Sources read
 
-1. S. Hawking-style statement, smooth period only: D. Harlow, *Jerusalem Lectures on Black Holes and Quantum Information*,
+1. Smooth period only: D. Harlow, *Jerusalem Lectures on Black Holes and Quantum Information*,
    arXiv:1409.1231, section 4.8 "The Euclidean black hole", eqs (4.42)-(4.44), p. 43 (pdftotext of the arXiv PDF; units r_s = 2M = 1).
    Wording: "if we were to decide to have t_E be an angular variable with period 4π then the apparent singularity at ρ = 0 would be
    resolved by the geometry capping off smoothly." (4π = 8πM.) It says nothing about other periods.
