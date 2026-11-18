@@ -241,6 +241,16 @@ import Lightlike.Lorentz.SpinVectors
 import Lightlike.Lorentz.StarBound
 import Lightlike.Lorentz.Tests
 import Lightlike.Lorentz.WeightedComp
+import Lightlike.ODE.CommutingFlows
+import Lightlike.ODE.CommutingFrame
+import Lightlike.ODE.FlowDeriv
+import Lightlike.ODE.FlowJoint
+import Lightlike.ODE.Frobenius
+import Lightlike.ODE.FrobeniusChart
+import Lightlike.ODE.Gronwall
+import Lightlike.ODE.InvolutiveFrame
+import Lightlike.ODE.LocalFlow
+import Lightlike.ODE.Tests
 import Lightlike.OperatorAlgebras.BoundedGroup
 import Lightlike.OperatorAlgebras.Deficiency
 import Lightlike.OperatorAlgebras.FockExists
