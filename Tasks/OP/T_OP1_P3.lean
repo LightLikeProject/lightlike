@@ -23,14 +23,14 @@ Definitions the statement names (without the `Lightlike.` prefix), by file:
 
 Lemmas about them, which a proof may use:
 
-* `OperatorAlgebras.UnitaryGroup.ext` (`Lightlike/OperatorAlgebras/UnitaryGroup.lean`)
-* `OperatorAlgebras.UnitaryGroup.mk.inj` (`Lightlike/OperatorAlgebras/UnitaryGroup.lean`)
-* `OperatorAlgebras.phaseGroup_generator` (`Lightlike/OperatorAlgebras/TestsUnitaryGroup.lean`)
-* `OperatorAlgebras.UnitaryGroup.ext_iff` (`Lightlike/OperatorAlgebras/UnitaryGroup.lean`)
-* `OperatorAlgebras.UnitaryGroup.mk.injEq` (`Lightlike/OperatorAlgebras/UnitaryGroup.lean`)
-* `OperatorAlgebras.UnitaryGroup.map_add'` (`Lightlike/OperatorAlgebras/UnitaryGroup.lean`)
-* `OperatorAlgebras.UnitaryGroup.map_zero'` (`Lightlike/OperatorAlgebras/UnitaryGroup.lean`)
-* `OperatorAlgebras.phaseGroup_generator_ne` (`Lightlike/OperatorAlgebras/TestsUnitaryGroup.lean`)
+* `OperatorAlgebras.UnitaryGroup.dvec_eq` (`Lightlike/OperatorAlgebras/StoneGenerator.lean`)
+* `OperatorAlgebras.UnitaryGroup.generator_apply` (`Lightlike/OperatorAlgebras/StoneGenerator.lean`)
+* `OperatorAlgebras.phaseGroup_eq_of_generator_eq` (`Lightlike/OperatorAlgebras/TestsUnitaryGroup.lean`)
+* `OperatorAlgebras.UnitaryGroup.apply_eq_of_adjoint` (`Lightlike/OperatorAlgebras/StoneGenerator.lean`)
+* `OperatorAlgebras.UnitaryGroup.adjoint_le_generator` (`Lightlike/OperatorAlgebras/StoneGenerator.lean`)
+* `OperatorAlgebras.UnitaryGroup.generator_le_adjoint` (`Lightlike/OperatorAlgebras/StoneGenerator.lean`)
+* `OperatorAlgebras.UnitaryGroup.generator_isSelfAdjoint` (`Lightlike/OperatorAlgebras/StoneGenerator.lean`)
+* `OperatorAlgebras.UnitaryGroup.hasDerivAt_inner_adjoint` (`Lightlike/OperatorAlgebras/StoneGenerator.lean`)
 
 Everything they depend on, and the further lemmas about them, in one block:
 

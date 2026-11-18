@@ -32,9 +32,9 @@ Lemmas about them, which a proof may use:
 * `ricciAt_coord` (`Lightlike/Spacetime/ChartAgreement.lean`)
 * `riemann_coord_comp` (`Lightlike/Spacetime/ChartAgreement.lean`)
 * `mvfderiv_gamHat_coord` (`Lightlike/Spacetime/ChartAgreement.lean`)
+* `divBilinAt_einstein_coord` (`Lightlike/Spacetime/DivergenceFree.lean`)
+* `covDerivBilinAt_einstein_value` (`Lightlike/Spacetime/DivergenceFree.lean`)
 * `satisfiesEinstein_iff_chart_proved` (`Lightlike/Spacetime/ChartAgreement.lean`)
-* `leviCivita_unique` (`Lightlike/Spacetime/LeviCivita.lean`)
-* `einsteinField_eq_bilOf` (`Lightlike/Spacetime/ChartTensor.lean`)
 
 Everything they depend on, and the further lemmas about them, in one block:
 

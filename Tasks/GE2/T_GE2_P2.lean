@@ -22,14 +22,14 @@ Definitions the statement names (without the `Lightlike.` prefix), by file:
 
 Lemmas about them, which a proof may use:
 
-* `Causal.TimeOrientation.mk.inj` (`Lightlike/Spacetime/Causal/TimeOrientation.lean`)
-* `Causal.TimeOrientation.timelike` (`Lightlike/Spacetime/Causal/TimeOrientation.lean`)
-* `Causal.TimeOrientation.mk.injEq` (`Lightlike/Spacetime/Causal/TimeOrientation.lean`)
-* `Causal.TimeOrientation.contMDiff` (`Lightlike/Spacetime/Causal/TimeOrientation.lean`)
-* `Causal.TimeOrientation.mk.sizeOf_spec` (`Lightlike/Spacetime/Causal/TimeOrientation.lean`)
-* `LorentzianMetric.symm` (`Lightlike/Spacetime/Lorentzian.lean`)
-* `LorentzianMetric.mk.inj` (`Lightlike/Spacetime/Lorentzian.lean`)
-* `LorentzianMetric.mk.injEq` (`Lightlike/Spacetime/Lorentzian.lean`)
+* `Causal.causal_trans` (`Lightlike/Spacetime/Causal/BasicRelations.lean`)
+* `Causal.exit_or_diamond` (`Lightlike/Spacetime/CausalLadder/ExitDiamond.lean`)
+* `Causal.chron_subset_causal` (`Lightlike/Spacetime/Causal/BasicRelations.lean`)
+* `Causal.self_mem_causalFuture` (`Lightlike/Spacetime/Causal/BasicRelations.lean`)
+* `Causal.causalFuture_of_subarc` (`Lightlike/Spacetime/CausalLadder/ExitDiamond.lean`)
+* `Causal.exists_limit_curve_const` (`Lightlike/Spacetime/CausalLadder/LimitCurve.lean`)
+* `Causal.exists_limit_mem_causalFuture` (`Lightlike/Spacetime/CausalLadder/LimitCurve.lean`)
+* `Causal.chron_trans` (`Lightlike/Spacetime/Causal/BasicRelations.lean`)
 
 Everything they depend on, and the further lemmas about them, in one block:
 

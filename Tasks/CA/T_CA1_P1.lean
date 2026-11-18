@@ -3,33 +3,56 @@ import Lightlike.Canonical.MomentumBracket
 /-!
 # Task T-CA1-P1
 
-The bracket of a smeared momentum constraint with a smeared Hamiltonian constraint:
-`{D[ξ], H[N]} = H[ξ^k ∂_k N]`.
+The bracket of a smeared momentum constraint with a smeared Hamiltonian constraint is a smeared
+Hamiltonian constraint.
 
-The statement is `Lightlike.Canonical.bracket_momentum_hamiltonian`, at the end of this file. Replace its
-`sorry` by a proof and change nothing else in the file: the proof-task check rejects any other change
-(CONTRIBUTING.md).
+The statement is `Lightlike.Canonical.bracket_momentum_hamiltonian`, at the end of this file.
+Replace its `sorry` by a proof and change nothing else in the file: the proof-task check rejects any
+other change (CONTRIBUTING.md).
 
-The bracket is `admBracket` of `Lightlike/Canonical/ADM.lean`: Gateaux derivatives along compactly supported
-variations, with the `π`-gradients `ℒ_ξ h` of `D[ξ]` and `hamiltonianPiGradient N` of `H[N]`. The numerical
-value of both sides was checked on a grid in dimension two (`4.9662` against `4.9687` for the companion
-statement T-CA1-P2, `0.5713` against `0.5710` here); that is evidence, not a proof.
+Routes, each welcome as a separate attempt:
 
-Hint. `H[N]` is a scalar density, so under the simultaneous change `(h, π, N) ↦ (ℒ_ξ h, ℒ_ξ π, ℒ_ξ N)` its
-density changes by `∂_k (ξ^k N ℋ)`, which integrates to zero; the curvature part follows from
-`Lightlike.scalarCurvature_pullback` for the flow `x ↦ x + t ξ(x)` and a first-variation formula.
+1. Covariance of the scalar density `√h R` under the flow of `ξ`, from
+   `Lightlike.scalarCurvature_pullback`, and the first variation of the scalar curvature.
+2. Hojman–Kuchař–Teitelboim (1976) and Thiemann (2007), Chapter 1: the hypersurface deformation
+   algebra.
+
+Partial results, as helper lemmas in separate pull requests, are welcome.
 
 ## What the statement uses
 
-Everything the statement depends on, in one block:
+Definitions the statement names (without the `Lightlike.` prefix), by file:
+
+* `Lightlike/Canonical/ADM.lean`: `Canonical.VectorField`, `Canonical.TensorField`,
+  `Canonical.admBracket`, `Canonical.momentumConstraint`, `Canonical.hamiltonianConstraint`,
+  `Canonical.lieTensor`, `Canonical.hamiltonianPiGradient`
+* `Lightlike/Canonical/LieDeriv.lean`: `Canonical.SmoothVec`, `Canonical.SmoothTensor`
+* `Lightlike/Spacetime/Curvature.lean`: `pd`
+
+Lemmas about them, which a proof may use:
+
+* `Canonical.admBracket_momentum_hamiltonian` (`Lightlike/Canonical/HamiltonianBracket.lean`)
+* `Canonical.bracket_pointwise` (`Lightlike/Canonical/HamiltonianBracket.lean`)
+* `Canonical.bracket_momentum_momentum` (`Lightlike/Canonical/MomentumBracket.lean`)
+* `Canonical.fderivRjet_lie` (`Lightlike/Canonical/CurvatureCovariance.lean`)
+* `Canonical.hasDerivAt_scalar_lie` (`Lightlike/Canonical/CurvatureCovariance.lean`)
+* `Canonical.pd_lower` (`Lightlike/Canonical/MomentumADM.lean`)
+* `Canonical.pd_lieDeriv` (`Lightlike/Canonical/LieDeriv.lean`)
+* `Canonical.hamDerivH_add_pi` (`Lightlike/Canonical/DensityCovariance.lean`)
+
+Everything they depend on, and the further lemmas about them, in one block:
 
     scripts/context-pack Lightlike.Canonical.bracket_momentum_hamiltonian
 
 ## References
 
-Milestone CA1 (ADM formulation, constraint algebra), ROADMAP section "Canonical quantum gravity".
-Source: Thiemann (2007), Modern Canonical Quantum General Relativity, Chapter 1 (`thiemann-2007` in
-docs/tasks/sources.yaml); the constraints are ADM (1962) eqs. (3.14a), (3.14b) (`adm-1962`). Compared with Thiemann, arXiv:gr-qc/0110034 (the lecture-note version of the cited book), §I.1.1, eqs. (I.1.1.27), (I.1.1.28), (I.1.1.36), (I.1.1.37); Hojman-Kuchar-Teitelboim 1976 has not been read. Differences, approved by the maintainers (17 November 2026): (a) same setting as the source (`C^∞` data, positive definite `h`, symmetric `π`, compactly supported test fields, `2 ≤ d`); (b) partial: one global chart `ℝᵈ`; (c) convention: units `16πG = 1` and the kinetic coefficient `1/(d − 1)`; (d) representation: `D[ξ]` in Lie-derivative form; (e) representation: the bracket through `π`-gradients and Gateaux derivatives, with the sign conventions of `admBracket` and `lieBracket`.
+Milestone CA1 (ADM formulation), ROADMAP section "Canonical quantum gravity".
+Source: R. Arnowitt, S. Deser and C. W. Misner, The dynamics of general relativity (1962), reprinted
+Gen. Rel. Grav. 40 (2008) 1997, Section 4; T. Thiemann, Modern Canonical Quantum General Relativity,
+Cambridge University Press (2007), Chapter: Classical Hamiltonian formulation of General Relativity
+(`adm-1962`, `thiemann-2007` in docs/tasks/sources.yaml).
+Lock and dependencies: `docs/tasks/tasks.yaml`. This header is written by `scripts/tasks.py deps`
+from the plan, the sources and the library.
 -/
 
 open Matrix
