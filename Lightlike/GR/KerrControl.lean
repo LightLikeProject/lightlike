@@ -309,7 +309,19 @@ def ctrlDet (M a k : ℝ) (y : Fin 4 → ℝ) : ℝ :=
   kgg00 M a (y 1) (y 2) * kgg33 M a (y 1) (y 2) - kcg03 M a k (y 1) (y 2) ^ 2
 
 /-- The domain where the control metric is invertible (inside `kerrU`). -/
-def ctrlU (M a k : ℝ) : Set (Fin 4 → ℝ) := {y | y ∈ kerrU M a ∧ ctrlDet M a k y ≠ 0}
+def ctrlU (M a k : ℝ) : Set (Fin 4 → ℝ) := {y | y ∈ kerrU M a ∧ (ctrlMetric M a k y).det ≠ 0}
+
+/-- The determinant of the control metric. -/
+theorem det_ctrlMetric (M a k : ℝ) (y : Fin 4 → ℝ) :
+    (ctrlMetric M a k y).det =
+      ctrlDet M a k y * (kgg11 M a (y 1) (y 2) * kgg22 M a (y 1) (y 2)) := by
+  simp [ctrlMetric, gjetC0, ctrlDet, Matrix.det_succ_row_zero, Fin.sum_univ_succ, Fin.succAbove]
+  ring
+
+theorem ctrlDet_ne (M a k : ℝ) {y : Fin 4 → ℝ} (hy : y ∈ ctrlU M a k) : ctrlDet M a k y ≠ 0 := by
+  have := hy.2
+  rw [det_ctrlMetric] at this
+  exact left_ne_zero_of_mul this
 
 /-- The inverse of the control metric. -/
 def ctrlInv (M a k : ℝ) (y : Fin 4 → ℝ) : Matrix (Fin 4) (Fin 4) ℝ :=
@@ -322,7 +334,7 @@ theorem ctrlMetric_mul_ctrlInv (M a k : ℝ) {y : Fin 4 → ℝ} (hy : y ∈ ctr
     ctrlMetric M a k y * ctrlInv M a k y = 1 := by
   have hS : kerrS a y ≠ 0 := (kerrS_pos a hy.1.1).ne'
   have hD : kerrD M a y ≠ 0 := hy.1.2.1
-  have hd : ctrlDet M a k y ≠ 0 := hy.2
+  have hd : ctrlDet M a k y ≠ 0 := ctrlDet_ne M a k hy
   have hS2 : kerrS a y = y 1 ^ 2 + a ^ 2 * cos (y 2) ^ 2 := rfl
   have hD2 : kerrD M a y = y 1 ^ 2 - 2 * M * y 1 + a ^ 2 := rfl
   ext i j
@@ -333,5 +345,40 @@ theorem ctrlMetric_mul_ctrlInv (M a k : ℝ) {y : Fin 4 → ℝ} (hy : y ∈ ctr
 theorem ctrlMetric_inv (M a k : ℝ) {y : Fin 4 → ℝ} (hy : y ∈ ctrlU M a k) :
     (ctrlMetric M a k y)⁻¹ = ctrlInv M a k y :=
   Matrix.inv_eq_right_inv (ctrlMetric_mul_ctrlInv M a k hy)
+
+/-- The entries of the control metric are smooth on `kerrU`. -/
+theorem ctrlMetric_smooth (M a k : ℝ) (i j : Fin 4) :
+    ContDiffOn ℝ ∞ (fun y => ctrlMetric M a k y i j) (kerrU M a) := by
+  by_cases h : (i = 0 ∧ j = 3) ∨ (i = 3 ∧ j = 0)
+  · intro y hy
+    refine ContDiffAt.contDiffWithinAt ?_
+    have hS : kerrS a y ≠ 0 := (kerrS_pos a hy.1).ne'
+    have hS' : y 1 ^ 2 + a ^ 2 * cos (y 2) ^ 2 ≠ 0 := hS
+    have e : (fun y => ctrlMetric M a k y i j) = fun y => kcg03 M a k (y 1) (y 2) := by
+      funext z
+      rcases h with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+      · exact ctrlMetric_03 M a k z
+      · exact ctrlMetric_30 M a k z
+    rw [e]
+    unfold kcg03
+    fun_prop (disch := apply_rules [mul_ne_zero, pow_ne_zero, hS', one_ne_zero])
+  · have e : (fun y => ctrlMetric M a k y i j) = fun y => kerrMetric M a y i j := by
+      funext z; exact ctrlMetric_eq_kerr M a k z i j h
+    rw [e]
+    exact (isCoordMetric_kerr M a).smooth i j
+
+theorem isOpen_ctrlU (M a k : ℝ) : IsOpen (ctrlU M a k) := by
+  have hc : ContinuousOn (fun y => (ctrlMetric M a k y).det) (kerrU M a) :=
+    (Regge.Conv3.cdo_det (U := kerrU M a) (k := ∞) (ctrlMetric M a k) (ctrlMetric_smooth M a k)).continuousOn
+  exact hc.isOpen_inter_preimage (isOpen_kerrU M a) isOpen_ne
+
+/-- The control metric is a coordinate metric on `ctrlU`. -/
+theorem isCoordMetric_ctrl (M a k : ℝ) : IsCoordMetric (ctrlMetric M a k) (ctrlU M a k) where
+  isOpen := isOpen_ctrlU M a k
+  symm := fun y _ => by
+    ext i j
+    fin_cases i <;> fin_cases j <;> simp [ctrlMetric, gjetC0]
+  isUnit_det := fun y hy => (hy.2).isUnit
+  smooth := fun i j => (ctrlMetric_smooth M a k i j).mono (fun y hy => hy.1)
 
 end Lightlike
