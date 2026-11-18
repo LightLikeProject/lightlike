@@ -263,6 +263,16 @@ tasks:
     difficulty: intermediate
     routes:
       - "Upper bound ρ[0, X] ≤ e^{βX} L(β) with β = √(a/X). Lower bound: split L(β) into three windows around the saddle x = a/β²; the outer two are at most L(β)/4 each by comparing with the Laplace transform at β(1 + η/2) and β/(1 + η/2), so the middle window, at most e^{-βXl} ρ[0, Xh], carries at least half of L(β)."
+  - id: T-OP1-P7
+    milestone: OP1
+    kind: proof
+    title: "The Hille–Yosida generation theorem for contraction semigroups on a Banach space"
+    file: Tasks/OP/T_OP1_P7.lean
+    decl: Lightlike.OperatorAlgebras.hilleYosida_contraction_generation
+    size: L
+    difficulty: intermediate
+    routes:
+      - "Yosida approximation: with R(λ) = (λ - A)⁻¹, the bounded operators Y_λ = λ² R(λ) - λ give contractions exp(t Y_λ); a Cauchy estimate and the density of dom A show that exp(t Y_λ) converges strongly to a semigroup S(t), uniformly on compact time intervals; the difference quotients of S converge to A x on dom A (mean value inequality for exp(t Y_λ)), so the generator contains A, and a dissipative generator with λ - A surjective is A."
 
   - id: T-SF10-P1
     milestone: SF10

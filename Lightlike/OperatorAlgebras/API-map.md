@@ -49,6 +49,8 @@ For a self-adjoint `A`, the approximating unitaries `exp (i t A_n)` have a stron
 
 The Gram matrix of the vectors `W f Ω` of a Fock representation is a function of `f` and `g` alone, by the Weyl relations and the vacuum expectation, so the map `c ↦ ∑ c f W f Ω` has the same norm for two Fock representations; it extends to a unitary that maps the vacuum to the vacuum and intertwines the Weyl unitaries, which is the uniqueness of the Fock representation [14]. The Gram function is Hermitian and normalized, and over the zero Hilbert space there is a Fock representation to which the uniqueness applies [15].
 
+A strongly continuous contraction semigroup on a Banach space has a generator, the limit of the difference quotients on the vectors where it exists, a partially defined linear map. A densely defined operator `A` with `λ - A` bounded below by `λ` and surjective for every `λ > 0` is the generator of a contraction semigroup (the generation direction of the Hille–Yosida theorem) [42] {3}: the resolvent `R(λ) = (λ - A)⁻¹` has norm at most `λ⁻¹`, the Yosida approximants `λ² R(λ) - λ` give contractions `exp (t (λ² R(λ) - λ))` that converge, by a Cauchy estimate and the density of the domain, to a semigroup whose generator contains `A`, and a dissipative generator with `λ - A` surjective equals `A`. Checks: the trivial semigroup is a contraction semigroup, the theorem applies to `A = 0`, and `A = id` fails the lower bound at `λ = 1` [43]. The converse holds as well, so the two form the equivalence of the Hille–Yosida theorem for contraction semigroups [44] {3}: the orbits `t ↦ S t x` are continuous for all times `t ≥ 0` by the semigroup law and continuity at `0` [45], the averages `t⁻¹ ∫₀ᵗ S s x ds` lie in the domain of the generator and converge to `x`, which makes the domain dense [45], the resolvent `∫₀^∞ e^{-λ t} S t y dt` is a Bochner integral that lies in the domain with `(λ - A) R(λ) y = y` [46], and `norm_dissip` gives the lower bound [44].
+
 ## Lean References
 
 1. Lightlike/OperatorAlgebras/UnitaryGroup.lean - `OperatorAlgebras.UnitaryGroup`,
@@ -147,7 +149,6 @@ The Gram matrix of the vectors `W f Ω` of a Fock representation is a function o
     (the proof of task T-OP2-P5)
 38. Lightlike/OperatorAlgebras/TestsFockReduction.lean - `OperatorAlgebras.Bogoliubov.id`,
     `OperatorAlgebras.implements_id`
-
 39. Lightlike/OperatorAlgebras/HilbertSchmidtBasis.lean -
     `OperatorAlgebras.hasSum_norm_sq_inner_basis`, `OperatorAlgebras.hasSum_norm_sq_apply_eq_adjoint`,
     `OperatorAlgebras.hasSum_norm_sq_apply_of_basis`
@@ -158,6 +159,16 @@ The Gram matrix of the vectors `W f Ω` of a Fock representation is a function o
 41. Lightlike/OperatorAlgebras/ShaleHilbertSchmidt.lean -
     `OperatorAlgebras.Bogoliubov.isHilbertSchmidt_betaPart`,
     `OperatorAlgebras.Bogoliubov.isHilbertSchmidt_of_finite_bound`
+42. Lightlike/OperatorAlgebras/Semigroup/Generation.lean - `OperatorAlgebras.hille_yosida_generation`,
+    `OperatorAlgebras.ContractionSemigroup.norm_dissip` (the proof of task T-OP1-P7); definitions in
+    the file Semigroup/Defs: `OperatorAlgebras.ContractionSemigroup`, `OperatorAlgebras.ContractionSemigroup.generator`
+43. Lightlike/OperatorAlgebras/Semigroup/Tests.lean - `OperatorAlgebras.trivialSemigroup`
+44. Lightlike/OperatorAlgebras/Semigroup/Converse.lean - `OperatorAlgebras.contractionSemigroup_generator_hypotheses`,
+    `OperatorAlgebras.hilleYosida_contraction`
+45. Lightlike/OperatorAlgebras/Semigroup/Continuity.lean - `OperatorAlgebras.ContractionSemigroup.continuous_orbit`,
+    `OperatorAlgebras.ContractionSemigroup.dense_generatorDomain`
+46. Lightlike/OperatorAlgebras/Semigroup/LaplaceResolvent.lean - `OperatorAlgebras.ContractionSemigroup.resolvent`,
+    `OperatorAlgebras.ContractionSemigroup.tendsto_quot_resolvent`
 
 ## References
 
@@ -166,3 +177,4 @@ The Gram matrix of the vectors `W f Ω` of a Fock representation is a function o
 2. O. Bratteli and D. W. Robinson, *Operator Algebras and Quantum Statistical Mechanics 2*, 2nd ed.,
    Springer, 1997, Chapter 5, after D. Shale, *Linear symmetries of free boson fields*, Trans. Amer. Math.
    Soc. 103 (1962) 149.
+3. Math 7334 lecture notes, Georgia Tech (Spring 2017), Section 4: The Theorem of Hille and Yosida concerning semi-groups, Theorem 1.9, https://loss.math.gatech.edu/17SPRINGTEA/7334/NOTES/section4hilleyosida.pdf.
