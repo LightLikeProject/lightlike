@@ -162,4 +162,8 @@ lemma pd_kerrD (y : Fin 4 → ℝ) (k : Fin 4) :
     simp
   exact pd_coord (n := 4) 1 k h1
 
+/-- The matrix inverse of the Kerr metric is `kerrInv`. -/
+theorem kerrMetric_inv {y : Fin 4 → ℝ} (hy : y ∈ kerrU M a) : (kerrMetric M a y)⁻¹ = kerrInv M a y :=
+  Matrix.inv_eq_right_inv (kerrMetric_mul_kerrInv M a hy)
+
 end Lightlike
