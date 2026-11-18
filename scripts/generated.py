@@ -240,11 +240,11 @@ def selftest() -> int:
            and pieces("CHANGELOG.md", log.replace("- 5 areas", "- 6 areas")) == pieces("CHANGELOG.md", log))
     tf = "/-!\n# Task T-X1\n\nHeader.\n-/\nimport Mathlib\ntheorem t : True := by sorry\n"
     expect("task file: only the module docstring is generated, not the proof",
-           pieces("Tasks/A.lean", tf) == ["/-!\n# Task T-X1\n\nHeader.\n"]
-           and pieces("Tasks/A.lean", tf.replace("sorry", "trivial")) == pieces("Tasks/A.lean", tf))
+           pieces("Tasks/OP/T_OP1_P3.lean", tf) == ["/-!\n# Task T-X1\n\nHeader.\n"]
+           and pieces("Tasks/OP/T_OP1_P3.lean", tf.replace("sorry", "trivial")) == pieces("Tasks/OP/T_OP1_P3.lean", tf))
     expect("task file planted: a changed header is a generated change, and reset restores it",
-           pieces("Tasks/A.lean", tf.replace("Header.", "Other.")) != pieces("Tasks/A.lean", tf)
-           and transplant("Tasks/A.lean", tf.replace("Header.", "Other.").replace("sorry", "trivial"), tf)
+           pieces("Tasks/OP/T_OP1_P3.lean", tf.replace("Header.", "Other.")) != pieces("Tasks/OP/T_OP1_P3.lean", tf)
+           and transplant("Tasks/OP/T_OP1_P3.lean", tf.replace("Header.", "Other.").replace("sorry", "trivial"), tf)
            == tf.replace("sorry", "trivial"))
     expect("a generated file is generated as a whole",
            pieces("docs/RESULTS.md", "x\ny\n") == ["x\ny\n"])
