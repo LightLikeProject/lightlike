@@ -29,7 +29,7 @@ theorem bracket_momentum_momentum_ne_zero :
   let η : VectorField 1 := fun y _ => y 0 * b y
   let h : TensorField 1 := fun _ => 1
   let π : TensorField 1 := fun y => Matrix.of fun _ _ => y 0
-  have hcoord : ContDiff ℝ ∞ (fun y : Fin 1 → ℝ => y 0) := contDiff_apply ℝ ℝ 0
+  have hcoord : ContDiff ℝ ∞ (fun y : Fin 1 → ℝ => y 0) := contDiff_apply ℝ ℝ (0 : Fin 1)
   have hξ : SmoothVec ξ := fun _ => b.contDiff
   have hη : SmoothVec η := fun _ => hcoord.mul b.contDiff
   have hh : SmoothTensor h := fun i j => contDiff_const
