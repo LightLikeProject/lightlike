@@ -600,10 +600,6 @@ tasks:
       - "Pointwise `π^{ij} (ℒ_ξ h)_ij + 2 (h ξ)_i ∇_k π^{ik} = 2 ∂_j (π^{ij} h_{ik} ξ^k)` and `integral_pd_eq_zero`."
       - "ADM (1962), eq. (3.14b)."
 
-# Upstream tasks: finished results that belong in Mathlib (general mathematics) or Physlib
-# (general physics), with the rework each needs. Exclusive, like definition
-# tasks; `target` gives the label `upstream: <library>`.
-upstream:
   - id: T-CA1-P4
     milestone: CA1
     kind: proof
@@ -644,6 +640,11 @@ upstream:
     difficulty: intermediate
     routes:
       - "On `M = ℝᵈ` the charts are the identity and the atlas pieces partition `ℝᵈ`; for continuous compactly supported integrands the sum of the integrals over the pieces is the integral (`integral_iUnion`)."
+
+# Upstream tasks: finished results that belong in Mathlib (general mathematics) or Physlib
+# (general physics), with the rework each needs. Exclusive, like definition
+# tasks; `target` gives the label `upstream: <library>`.
+upstream:
   - id: T-UP-1
     target: Mathlib
     area: harmonic-analysis
