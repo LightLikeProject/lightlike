@@ -7,9 +7,9 @@ Pointwise energy conditions of a symmetric bilinear form `T` (the stress-energy 
 `NullEC`, `WeakEC`, `StrongEC` (dimension four) and `DominantEC` (Curiel, *A Primer on Energy Conditions*, section 2.1, physical forms).
 Proved: reverse Cauchy-Schwarz for a timelike vector, the sign rule for timelike vectors in a Lorentz frame (`lorentz_sign`), co-oriented timelike vectors pair with a
 timelike vector with a common sign (`lorentz_coorient`), the `g`-trace in a Lorentz frame (`traceG_eq_sum`); trust checks: dust with `ρ ≥ 0` satisfies all four,
-a positive cosmological constant violates the strong condition, a scalar field at a point of vanishing gradient with a negative potential violates the weak one; the effective forms for a perfect fluid (`fluid_nullEC_iff`: `ρ + p ≥ 0`, `fluid_weakEC_iff`: `ρ ≥ 0` and `ρ + p ≥ 0`, `fluid_strongEC_iff`: `ρ + p ≥ 0` and `ρ + 3p ≥ 0`).
+a positive cosmological constant violates the strong condition, a scalar field at a point of vanishing gradient with a negative potential violates the weak one; the effective forms for a perfect fluid (`fluid_nullEC_iff`: `ρ + p ≥ 0`, `fluid_weakEC_iff`: `ρ ≥ 0` and `ρ + p ≥ 0`, `fluid_strongEC_iff`: `ρ + p ≥ 0` and `ρ + 3p ≥ 0`, `fluid_dominantEC_iff`: `|p| ≤ ρ`).
 
-**Limits.** Pointwise statements on a vector space; no manifold or time-orientation field, the dominant condition is checked for dust only (`ρ ≥ |p|` for a fluid is not proved).
+**Limits.** Pointwise statements on a vector space; no manifold or time-orientation field, the stress-energy is a form at a point, not a field.
 -/
 
 open Module
@@ -509,5 +509,136 @@ end FluidIff
 
 
 end Fluid
+
+section DEC
+variable {V : Type*} [AddCommGroup V] [Module ℝ V] [TopologicalSpace V]
+variable [FiniteDimensional ℝ V] {g : V →L[ℝ] V →L[ℝ] ℝ} {u : V} {ρ p : ℝ}
+
+/-- **Cauchy–Schwarz in the orthogonal complement of a timelike vector**: for `x, y ⟂ u`, `g(x, y)² ≤ g(x, x) g(y, y)`. -/
+theorem orth_cs {n : ℕ} (hg : IsLorentzianForm (n + 1) g) (hu : g u u < 0) {x y : V} (hx : g u x = 0) (hy : g u y = 0) :
+    g x y ^ 2 ≤ g x x * g y y := by
+  have hpsd : ∀ z : V, g u z = 0 → 0 ≤ g z z := fun z hz => by
+    have := lorentz_reverse_cs hg hu z
+    rw [hz] at this
+    nlinarith
+  have hq : ∀ t : ℝ, 0 ≤ g y y * (t * t) + (2 * g x y) * t + g x x := fun t => by
+    have h := hpsd (x + t • y) (by simp [hx, hy])
+    have hs : g y x = g x y := hg.symm y x
+    simp only [map_add, map_smul, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, hs] at h
+    nlinarith
+  by_cases hyy : g y y = 0
+  · -- then g x y = 0, else a large t violates positivity
+    have : g x y = 0 := by
+      by_contra hne
+      have h := hq (-(g x x + 1) / (2 * g x y))
+      have ht : (2 * g x y) * (-(g x x + 1) / (2 * g x y)) = -(g x x + 1) := by field_simp
+      rw [hyy, ht] at h
+      linarith
+    rw [this, hyy]; simp
+  · have hpos : 0 < g y y := lt_of_le_of_ne (hpsd y hy) (Ne.symm hyy)
+    have := discrim_le_zero hq
+    simp only [discrim] at this
+    nlinarith
+
+
+/-- For a unit timelike `u` and co-oriented timelike `ξ, η`: `−g(ξ, η) ≤ 2 g(u, ξ) g(u, η)`. -/
+theorem neg_pair_le {n : ℕ} (hg : IsLorentzianForm (n + 1) g) (hu : g u u = -1) {ξ η : V} (hξ : g ξ ξ < 0) (hη : g η η < 0)
+    (hξη : g ξ η < 0) : -g ξ η ≤ 2 * (g u ξ * g u η) := by
+  have hu' : g u u < 0 := by rw [hu]; norm_num
+  have hAB := lorentz_coorient hg hu' hξ hη hξη
+  set A := g u ξ with hA
+  set B := g u η with hB
+  have hs : ∀ x y : V, g x y = g y x := fun x y => hg.symm x y
+  set ξp : V := ξ + A • u
+  set ηp : V := η + B • u
+  have hξp : g u ξp = 0 := by simp [ξp, hA, hu]
+  have hηp : g u ηp = 0 := by simp [ηp, hB, hu]
+  have hcs := orth_cs hg hu' hξp hηp
+  have e1 : g ξp ξp = g ξ ξ + A ^ 2 := by
+    simp only [ξp, map_add, map_smul, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, hu, hs ξ u, ← hA]
+    ring
+  have e2 : g ηp ηp = g η η + B ^ 2 := by
+    simp only [ηp, map_add, map_smul, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, hu, hs η u, ← hB]
+    ring
+  have e3 : g ξ η = g ξp ηp - A * B := by
+    have : ξ = ξp - A • u := by simp [ξp]
+    have : η = ηp - B • u := by simp [ηp]
+    simp only [ξp, ηp, map_add, map_smul, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, hu, hs ξ u,
+      hs η u, ← hA, ← hB, hs u ξ, hs u η]
+    ring
+  rw [e1, e2] at hcs
+  have hxx : 0 ≤ g ξp ξp := by
+    have := lorentz_reverse_cs hg hu' ξp; rw [hξp] at this; nlinarith
+  have hyy : 0 ≤ g ηp ηp := by
+    have := lorentz_reverse_cs hg hu' ηp; rw [hηp] at this; nlinarith
+  rw [e1] at hxx; rw [e2] at hyy
+  have h1 : g ξp ηp ^ 2 ≤ (A * B) ^ 2 := by
+    calc g ξp ηp ^ 2 ≤ (g ξ ξ + A ^ 2) * (g η η + B ^ 2) := hcs
+      _ ≤ A ^ 2 * B ^ 2 := by nlinarith
+      _ = (A * B) ^ 2 := by ring
+  have h2 := abs_le_of_sq_le_sq' h1 hAB.le
+  rw [e3]; linarith [h2.1, h2.2]
+
+
+/-- `T^a_n ξ^n = (ρ + p) g(u, ξ) u + p ξ` for a perfect fluid. -/
+theorem raiseT_fluid (hg : IsLorentzianForm 4 g) (u : V) (ρ p : ℝ) (ξ : V) :
+    raiseT g (fluidT g u ρ p) hg.bilinForm_nondegenerate ξ = ((ρ + p) * g u ξ) • u + p • ξ := by
+  unfold raiseT
+  rw [LinearEquiv.symm_apply_eq]
+  refine LinearMap.ext fun w => ?_
+  simp [fluidT_apply, LinearMap.BilinForm.toDual_def]
+  ring
+
+/-- **Perfect fluid, dominant energy condition**: `|p| ≤ ρ`. -/
+theorem fluid_dominantEC_iff (hg : IsLorentzianForm 4 g) (hu : g u u = -1) :
+    DominantEC g (fluidT g u ρ p) hg ↔ |p| ≤ ρ := by
+  have hu' : g u u < 0 := by rw [hu]; norm_num
+  constructor
+  · rintro ⟨h1, h2⟩
+    have hW : WeakEC g (fluidT g u ρ p) := fun v hv => (h1 v hv).1
+    obtain ⟨hρ, hρp⟩ := (fluid_weakEC_iff hg hu).1 hW
+    obtain ⟨w, hw1, hw2⟩ := exists_orth_spacelike (m := 2) hg hu'
+    have hwu : g w u = 0 := by rw [hg.symm w u]; exact hw1
+    have hf : 0 ≤ (fun ε : ℝ => ρ * (1 + ε) ^ 2 - p) 0 := by
+      refine nonneg_of_pos_nonneg (f := fun ε : ℝ => ρ * (1 + ε) ^ 2 - p) (by fun_prop) fun ε hε => ?_
+      have hξ : g ((1 + ε) • u + w) ((1 + ε) • u + w) < 0 := by
+        simp only [map_add, map_smul, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, hu, hw1, hw2,
+          hwu]
+        nlinarith
+      have hη : g ((1 + ε) • u - w) ((1 + ε) • u - w) < 0 := by
+        simp only [map_sub, map_add, map_smul, ContinuousLinearMap.sub_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, hu, hw1,
+          hw2, hwu]
+        nlinarith
+      have hco : g ((1 + ε) • u + w) ((1 + ε) • u - w) < 0 := by
+        simp only [map_sub, map_add, map_smul, ContinuousLinearMap.sub_apply, ContinuousLinearMap.add_apply,
+          ContinuousLinearMap.smul_apply, smul_eq_mul, hu, hw1, hw2, hwu]
+        nlinarith
+      have := h2 _ _ hξ hη hco
+      rw [fluidT_apply] at this
+      simp only [map_sub, map_add, map_smul, ContinuousLinearMap.sub_apply, ContinuousLinearMap.add_apply,
+        ContinuousLinearMap.smul_apply, smul_eq_mul, hu, hw1, hw2, hwu] at this
+      nlinarith
+    have hp : p ≤ ρ := by simpa using hf
+    exact abs_le.2 ⟨by linarith, hp⟩
+  · intro h
+    have hρ : 0 ≤ ρ := (abs_nonneg p).trans h
+    have hρp : 0 ≤ ρ + p := by linarith [neg_abs_le p]
+    have hW := (fluid_weakEC_iff hg hu).2 ⟨hρ, hρp⟩
+    refine ⟨fun ξ hξ => ⟨hW ξ hξ, ?_⟩, fun ξ η hξ hη hξη => ?_⟩
+    · rw [raiseT_fluid hg]
+      simp only [map_add, map_smul, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, hu,
+        hg.symm u ξ]
+      have hρ2 : p ^ 2 ≤ ρ ^ 2 := by nlinarith [abs_nonneg p, sq_abs p]
+      nlinarith [mul_nonneg (sq_nonneg (g ξ u)) (sub_nonneg.2 hρ2), mul_nonneg (sq_nonneg p) (neg_nonneg.2 hξ.le)]
+    · have hAB := lorentz_coorient hg hu' hξ hη hξη
+      have hle := neg_pair_le hg hu hξ hη hξη
+      rw [fluidT_apply]
+      rcases le_or_gt 0 p with hp | hp
+      · rw [abs_of_nonneg hp] at h
+        nlinarith
+      · nlinarith
+
+end DEC
+
 
 end Lightlike
