@@ -6,8 +6,11 @@ import Lightlike.OperatorAlgebras.TraceClass.RankOnePairing
 Non-vacuity examples for the ported trace-class and Hilbert-Schmidt API (`Lightlike.OperatorAlgebras.TraceClass`): the
 hypotheses are satisfiable, and the trace has the expected values on the simplest operators.
 
-Not covered here: the diagonal operator with eigenvalues `1 / n` (Hilbert-Schmidt and not trace class) and a bounded
-non-compact operator that is not Hilbert-Schmidt; they need an explicit `ℓ²` and are open checks.
+Negative control: the identity of an infinite-dimensional Hilbert space is bounded, not compact, and not Hilbert-Schmidt
+(`not_isHilbertSchmidt_one`).
+
+Not covered here: the diagonal operator with eigenvalues `1 / n` (Hilbert-Schmidt and not trace class), which needs an
+explicit `ℓ²` and a diagonal operator, and a concrete infinite-dimensional space; open checks.
 -/
 
 open scoped InnerProductSpace
@@ -31,5 +34,29 @@ theorem isTraceClass_one_mul_one : IsTraceClass ((1 : ℂ →L[ℂ] ℂ) * 1) :=
     haveI : Finite w := b.orthonormal.linearIndependent.finite
     exact ⟨w, b, Summable.of_finite⟩
   exact isTraceClass_mul_of_isHilbertSchmidt h h
+
+/-- **Negative control**: the identity of a Hilbert space that is not finite-dimensional is not Hilbert-Schmidt: in any
+Hilbert basis the sum `∑ ‖e_i‖² = ∑ 1` diverges over the infinite index set. -/
+theorem not_isHilbertSchmidt_one {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
+    (hinf : ¬ FiniteDimensional ℂ H) : ¬ HilbertSchmidt.IsHilbertSchmidt (1 : H →L[ℂ] H) := by
+  intro hHS
+  obtain ⟨w, b, hb⟩ := exists_hilbertBasis ℂ H
+  have hsum := HilbertSchmidt.summable_norm_sq_apply_of_hilbertBasis w b hHS
+  have hnorm : ∀ i : w, ‖(1 : H →L[ℂ] H) (b i)‖ ^ 2 = 1 := fun i => by
+    simp [b.orthonormal.1 i]
+  simp only [hnorm] at hsum
+  have hfin : Finite w := by
+    by_contra hw
+    have : Infinite w := not_finite_iff_infinite.mp hw
+    exact (summable_const_iff (1 : ℝ)).mp hsum |> one_ne_zero
+  apply hinf
+  have hfd : FiniteDimensional ℂ (Submodule.span ℂ (Set.range b)) :=
+    FiniteDimensional.span_of_finite ℂ (Set.finite_range b)
+  have hc : IsClosed (Submodule.span ℂ (Set.range b) : Set H) := Submodule.closed_of_finiteDimensional _
+  have hspan : Submodule.span ℂ (Set.range b) = ⊤ := by
+    have hd := b.dense_span
+    rwa [hc.submodule_topologicalClosure_eq] at hd
+  rw [hspan] at hfd
+  exact LinearEquiv.finiteDimensional (Submodule.topEquiv (R := ℂ) (M := H))
 
 end Lightlike.OperatorAlgebras.TraceClass
