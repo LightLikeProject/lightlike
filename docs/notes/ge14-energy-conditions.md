@@ -22,4 +22,4 @@ NEC, WEC, SEC, DEC); the lists of violating matter on pp. 29-31; S. M. Carroll, 
   stress-energy `T = dφ ⊗ dφ − (½ |dφ|² + V) g` is the standard form, not compared with a read source.
 
 ## Differences
-Curiel works on a spacetime with a time orientation; ours is pointwise on a Lorentzian vector space and "co-oriented" is the pointwise notion above. Electromagnetic fields (named in the task) are not covered.
+Curiel works on a spacetime with a time orientation; ours is pointwise on a Lorentzian vector space and "co-oriented" is the pointwise notion above. Electromagnetic fields (named in the task): `emT` is the standard form `F_ac F_b^c − ¼ F² g_ab`, not compared with a read source (comparison pending), and only the null condition is proved (`em_nullEC`).

@@ -9,7 +9,7 @@ Proved: reverse Cauchy-Schwarz for a timelike vector, the sign rule for timelike
 timelike vector with a common sign (`lorentz_coorient`), the `g`-trace in a Lorentz frame (`traceG_eq_sum`); trust checks: dust with `ρ ≥ 0` satisfies all four,
 a positive cosmological constant violates the strong condition, a scalar field at a point of vanishing gradient with a negative potential violates the weak one; the effective forms for a perfect fluid (`fluid_nullEC_iff`: `ρ + p ≥ 0`, `fluid_weakEC_iff`: `ρ ≥ 0` and `ρ + p ≥ 0`, `fluid_strongEC_iff`: `ρ + p ≥ 0` and `ρ + 3p ≥ 0`, `fluid_dominantEC_iff`: `|p| ≤ ρ`).
 
-**Limits.** Pointwise statements on a vector space; no manifold or time-orientation field, the stress-energy is a form at a point, not a field.
+**Limits.** Pointwise statements on a vector space; no manifold or time-orientation field, the stress-energy is a form at a point, not a field; for an electromagnetic field only the null condition is proved (`em_nullEC`).
 -/
 
 open Module
@@ -639,6 +639,89 @@ theorem fluid_dominantEC_iff (hg : IsLorentzianForm 4 g) (hu : g u u = -1) :
       · nlinarith
 
 end DEC
+
+
+section EM
+variable {V : Type*} [AddCommGroup V] [Module ℝ V] [TopologicalSpace V]
+
+/-- **A vector orthogonal to a null vector has non-negative norm.** -/
+theorem null_orth_nonneg {m : ℕ} {g : V →L[ℝ] V →L[ℝ] ℝ} (hg : IsLorentzianForm (m + 1) g) {k z : V}
+    (hk : g k k = 0) (hkne : k ≠ 0) (hz : g z k = 0) : 0 ≤ g z z := by
+  obtain ⟨e, he⟩ := hg
+  have hk' := lorentz_apply e he k k
+  have hz' := lorentz_apply e he z k
+  have hzz := lorentz_apply e he z z
+  set a := e.repr k 0
+  set b := e.repr z 0
+  set sk := ∑ i : Fin m, e.repr k i.succ * e.repr k i.succ
+  set sz := ∑ i : Fin m, e.repr z i.succ * e.repr z i.succ
+  set p := ∑ i : Fin m, e.repr z i.succ * e.repr k i.succ
+  have hsk : 0 ≤ sk := Finset.sum_nonneg fun i _ => mul_self_nonneg _
+  have hsz : 0 ≤ sz := Finset.sum_nonneg fun i _ => mul_self_nonneg _
+  have hcs : p ^ 2 ≤ sz * sk := by
+    have := Finset.sum_mul_sq_le_sq_mul_sq Finset.univ (fun i : Fin m => e.repr z i.succ) (fun i => e.repr k i.succ)
+    simpa [sq, p, sz, sk] using this
+  rw [hk] at hk'
+  rw [hz] at hz'
+  rw [hzz]
+  have hka : sk = a * a := by linarith
+  have ha : a ≠ 0 := by
+    intro ha0
+    have hsk0 : sk = 0 := by rw [hka, ha0]; ring
+    apply hkne
+    have hall : ∀ i : Fin m, e.repr k i.succ = 0 := by
+      intro i
+      have := (Finset.sum_eq_zero_iff_of_nonneg (fun j _ => mul_self_nonneg (e.repr k j.succ))).1 hsk0 i (Finset.mem_univ i)
+      exact mul_self_eq_zero.1 this
+    have : e.repr k = 0 := by
+      ext j
+      refine Fin.cases ?_ (fun i => ?_) j
+      · simpa using ha0
+      · simpa using hall i
+    exact e.repr.injective (by simpa using this)
+  have hpb : p = a * b := by linarith
+  have : (a * b) ^ 2 ≤ sz * (a * a) := by rw [← hpb, ← hka]; exact hcs
+  have h2 : b * b ≤ sz := by
+    have hapos : 0 < a * a := mul_self_pos.2 ha
+    nlinarith
+  linarith
+
+
+/-- The endomorphism `v ↦ F^a_b v^b` of an electromagnetic field strength `F` (a bilinear form): `g(A v, w) = F(v, w)`. -/
+def emA [FiniteDimensional ℝ V] (g : V →L[ℝ] V →L[ℝ] ℝ) (hg : g.toBilinForm.Nondegenerate) (F : LinearMap.BilinForm ℝ V) :
+    V →ₗ[ℝ] V :=
+  ((g.toBilinForm).toDual hg).symm.toLinearMap ∘ₗ F
+
+theorem g_emA [FiniteDimensional ℝ V] (g : V →L[ℝ] V →L[ℝ] ℝ) (hg : g.toBilinForm.Nondegenerate) (F : LinearMap.BilinForm ℝ V)
+    (v w : V) : g (emA g hg F v) w = F v w := by
+  unfold emA
+  have := ((g.toBilinForm).toDual hg).apply_symm_apply (F v)
+  have h2 := congrArg (fun φ => φ w) this
+  exact h2
+
+/-- The invariant `F_ab F^ab = −tr(A²)`. -/
+def emF2 [FiniteDimensional ℝ V] (g : V →L[ℝ] V →L[ℝ] ℝ) (hg : g.toBilinForm.Nondegenerate) (F : LinearMap.BilinForm ℝ V) : ℝ :=
+  -LinearMap.trace ℝ V (emA g hg F ∘ₗ emA g hg F)
+
+/-- The stress-energy of an electromagnetic field: `T_ab = F_ac F_b^c − ¼ F_cd F^cd g_ab`. -/
+def emT [FiniteDimensional ℝ V] (g : V →L[ℝ] V →L[ℝ] ℝ) (hg : g.toBilinForm.Nondegenerate) (F : LinearMap.BilinForm ℝ V)
+    (v w : V) : ℝ :=
+  g (emA g hg F v) (emA g hg F w) - (1 / 4) * emF2 g hg F * g v w
+
+/-- **The electromagnetic stress-energy satisfies the null energy condition.** -/
+theorem em_nullEC [FiniteDimensional ℝ V] {g : V →L[ℝ] V →L[ℝ] ℝ} (hg : IsLorentzianForm 4 g) {F : LinearMap.BilinForm ℝ V}
+    (hF : ∀ v w, F v w = -F w v) (k : V) (hk : g k k = 0) : 0 ≤ emT g hg.bilinForm_nondegenerate F k k := by
+  by_cases hk0 : k = 0
+  · subst hk0; simp [emT, emA]
+  · have hz : g (emA g hg.bilinForm_nondegenerate F k) k = 0 := by
+      rw [g_emA]
+      have := hF k k
+      linarith
+    have := null_orth_nonneg hg hk hk0 hz
+    simp only [emT, hk, mul_zero, sub_zero]
+    exact this
+
+end EM
 
 
 end Lightlike
