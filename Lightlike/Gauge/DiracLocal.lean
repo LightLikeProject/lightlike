@@ -77,6 +77,8 @@ theorem exists_selection_near [TopologicalSpace E] {M : ℕ} (br : (E → ℝ) �
     rw [Stage.consCm_eq_reindex, Matrix.rank_reindex]; exact hxr
   have hle0 : (S.consCm br φ σ x).rank ≤ Fintype.card (Fin σ.r) := by
     rw [hrk, Fintype.card_fin]; exact le_of_eq hr0.symm
-  exact schur_eq_zero_of_rank_le_block _ _ _ _ hx (by rw [fromBlocks_toBlocks]; exact hle0)
+  have hfb := fromBlocks_toBlocks (S.consCm br φ σ x)
+  exact schur_eq_zero_of_rank_le_block (S.consCm br φ σ x).toBlocks₁₁ (S.consCm br φ σ x).toBlocks₁₂
+    (S.consCm br φ σ x).toBlocks₂₁ (S.consCm br φ σ x).toBlocks₂₂ hx (by rw [hfb]; exact hle0)
 
 end Lightlike.Gauge
