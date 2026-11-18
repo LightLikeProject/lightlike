@@ -218,4 +218,50 @@ noncomputable def stoneGroup (hA : IsSelfAdjoint A) : UnitaryGroup H where
 
 lemma stoneGroup_apply (hA : IsSelfAdjoint A) (t : ℝ) (y : H) : stoneGroup hA t y = Ulim hA t y := rfl
 
+/-- **The derivative at `0` of `t ↦ U t x`** for `x` in the domain is `i A x`: the difference quotient is within
+`2 ‖A_n x - A x‖` of that of `exp (i t A_n) x`, whose derivative at `0` is `i A_n x`. -/
+theorem hasDerivAt_Ulim_domain (hA : IsSelfAdjoint A) (x : A.domain) :
+    HasDerivAt (fun t : ℝ => Ulim hA t (x : H)) (Complex.I • (A x : H)) 0 := by
+  rw [hasDerivAt_iff_tendsto_slope_zero, Metric.tendsto_nhds]
+  intro ε hε
+  -- choose `n` with `‖A_n x - A x‖ < ε / 4`
+  obtain ⟨N, hN⟩ := (Metric.tendsto_atTop.1 (tendsto_iff_norm_sub_tendsto_zero.1 (approx_tendsto hA x)))
+    (ε / 4) (by positivity)
+  set n := N with hn
+  have hn' : ‖approx hA n (x : H) - A x‖ < ε / 4 := by
+    have := hN n le_rfl
+    rwa [Real.dist_eq, sub_zero, abs_of_nonneg (norm_nonneg _)] at this
+  -- the difference quotient of `exp (i t A_n) x` at `0`
+  have hq : Tendsto (fun t : ℝ => t⁻¹ • (bdU (approx hA n) t (x : H) - (x : H))) (𝓝[≠] 0)
+      (𝓝 (Complex.I • approx hA n (x : H))) := by
+    have := hasDerivAt_iff_tendsto_slope_zero.1
+      ((hasDerivAt_bdU_apply (approx hA n) (x : H) 0))
+    simpa [bdU_zero] using this
+  have hq' := (Metric.tendsto_nhds.1 hq) (ε / 2) (by positivity)
+  filter_upwards [hq', self_mem_nhdsWithin] with t ht ht0
+  have ht0' : t ≠ 0 := ht0
+  have e1 : t⁻¹ • (Ulim hA (0 + t) (x : H) - Ulim hA 0 (x : H)) - Complex.I • (A x : H) =
+      t⁻¹ • (Ulim hA t (x : H) - Un hA n t (x : H)) +
+        (t⁻¹ • (bdU (approx hA n) t (x : H) - (x : H)) - Complex.I • approx hA n (x : H)) +
+        Complex.I • (approx hA n (x : H) - A x) := by
+    simp only [zero_add, Ulim_zero, Un_apply, smul_sub, smul_add]
+    abel
+  rw [dist_eq_norm, e1]
+  have h1 : ‖t⁻¹ • (Ulim hA t (x : H) - Un hA n t (x : H))‖ ≤ ‖approx hA n (x : H) - A x‖ := by
+    rw [norm_smul, norm_inv, Real.norm_eq_abs, ← norm_neg, neg_sub]
+    have := Un_sub_Ulim_le hA n t x
+    rw [inv_mul_le_iff₀ (abs_pos.2 ht0')]
+    linarith
+  have h2 : ‖Complex.I • (approx hA n (x : H) - A x)‖ = ‖approx hA n (x : H) - A x‖ := by
+    rw [norm_smul, Complex.norm_I, one_mul]
+  have h3 : ‖t⁻¹ • (bdU (approx hA n) t (x : H) - (x : H)) - Complex.I • approx hA n (x : H)‖ < ε / 2 := by
+    rwa [dist_eq_norm] at ht
+  calc ‖t⁻¹ • (Ulim hA t (x : H) - Un hA n t (x : H)) +
+        (t⁻¹ • (bdU (approx hA n) t (x : H) - (x : H)) - Complex.I • approx hA n (x : H)) +
+        Complex.I • (approx hA n (x : H) - A x)‖
+      ≤ ‖t⁻¹ • (Ulim hA t (x : H) - Un hA n t (x : H))‖ +
+        ‖t⁻¹ • (bdU (approx hA n) t (x : H) - (x : H)) - Complex.I • approx hA n (x : H)‖ +
+        ‖Complex.I • (approx hA n (x : H) - A x)‖ := norm_add₃_le
+    _ < ε := by linarith
+
 end Lightlike.OperatorAlgebras
