@@ -13,6 +13,19 @@ E. Minguzzi, *Causality theory for closed cone structures with applications*, ar
   assumption J is closed, thus it is the smallest closed transitive relation containing J, hence K = J. But under the assumption J is antisymmetric hence K is antisymmetric
   (stable causality)", i.e. through K-causality (Section 3.2-3.6) and the existence of a temporal function (Theorem 3.11), not through Hawking's volume function.
 
+## Condition 2: the source's manifolds have charts into ℝⁿ (read)
+
+Same paper, section 1.3 "Notations and conventions" (printed p. 10): "The manifold M has dimension n + 1 ... A coordinate open neighborhood of M is an element of the
+atlas, namely one diffeomorphic with some open set of R^{n+1}." and the first paragraph of section 2 (same page): "In this work the manifold M is assumed to be connected,
+Hausdorff, second countable (hence paracompact) and of dimension n+1. Furthermore, it is C^r, 1 ≤ r ≤ ∞." So the charts take values in open subsets of ℝⁿ⁺¹ (in particular the
+manifold has no boundary), second countable and Hausdorff: matches the statement over the model `𝓘(ℝ, Fin n → ℝ)` with `[T2Space M] [SecondCountableTopology M]` (here `n` is the dimension
+of the model; the Lorentzian dimension is the same `n`). Connectedness (source) is not assumed in the statement (more general).
+
+## Change from the earlier lock (condition 1 of the approval of 18 November 2026)
+
+The earlier lock stated the theorem over an arbitrary normed model `E` with a `ModelWithCorners ℝ E H` (no boundaryless hypothesis, no `ℝⁿ`). The new statement fixes the model to
+`Fin n → ℝ` with `𝓘(ℝ, Fin n → ℝ)` (so the manifold is boundaryless) and keeps `[T2Space M] [SecondCountableTopology M]`.
+
 ## Differences (all representation)
 
 1. *Causal simplicity*: ours is `IsCausal ∧ ∀ x, IsClosed (J⁺ x) ∧ IsClosed (J⁻ x)` (the Hawking–Ellis form: closed futures and pasts of points); the source asks that the relation
