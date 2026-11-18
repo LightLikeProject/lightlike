@@ -42,7 +42,8 @@ In a chart, the covariant derivative of a bilinear form field, in particular of 
 
 For a coordinate metric the contracted Bianchi identity holds, `g^{στ} ∇_σ G_{τν} = 0` for the coordinate Einstein tensor [18], and for the Levi-Civita connection of a Lorentzian metric on a manifold the divergence of the Einstein tensor vanishes [19].
 
-The volume measure of a Lorentzian metric on a manifold is the pushforward of `√|det g| dx` in each chart, and for a set in a chart domain it is given by the integral over its chart image in any chart [20].
+A Lorentzian coordinate metric on an open subset of `ℝⁿ` is a Lorentzian metric on that open subset as a manifold, with the same components in every chart [20]; exterior Schwarzschild on the manifold layer satisfies the vacuum Einstein equations and has vanishing Ricci tensor [21]; the Levi-Civita connection of a Lorentzian metric is a smooth covariant derivative [22].
+The volume measure of a Lorentzian metric on a manifold is the pushforward of `√|det g| dx` in each chart, and for a set in a chart domain it is given by the integral over its chart image in any chart [23].
 
 The curvature of a manifold-level metric as a tensor field is defined in `Connection.lean` [7]: a connection is Mathlib's
 covariant derivative on the tangent bundle; the Riemann curvature is `R(X, Y) Z = ∇_X ∇_Y Z - ∇_Y ∇_X Z - ∇_{[X,Y]} Z`
@@ -90,7 +91,10 @@ than one who stays at rest [6].
 17. Lightlike/Spacetime/ChartTensor.lean - `covDerivBilinAt_bilOf`, `covDerivBilinAt_einstein`: the covariant derivative of a bilinear field in chart components (tensorial); smoothness of the coordinate Riemann, Ricci, scalar and Einstein tensors. Step 1 for the task T-GE1-P8.
 18. Lightlike/Spacetime/ContractedBianchi.lean - `covR_cyc`, `einstein_div_coord`: the second Bianchi identity in coordinates and its double contraction.
 19. Lightlike/Spacetime/DivergenceFree.lean - `einstein_divergence_free_proved`: the divergence of the Einstein tensor of a Levi-Civita connection vanishes.
-20. Lightlike/Spacetime/VolumeMeasure.lean - `volumeMeasure`, `volumeMeasure_chart`, `volumeMeasure_minkowski`: the volume measure of a Lorentzian metric, its chart formula and the Minkowski trust check.
+20. Lightlike/Spacetime/OpenCoordMetric.lean - `openMetric`, `openMetric_coordMetric`: a Lorentzian coordinate metric on an open set as a Lorentzian metric on the manifold, and the bridge.
+21. Lightlike/Spacetime/SchwarzschildManifold.lean - `schwarzschildMetric`, `schwarzschild_coordMetric`, `schwarzschild_satisfiesEinstein`, `schwarzschild_ricci_eq_zero`: exterior Schwarzschild on the manifold layer.
+22. Lightlike/Spacetime/LeviCivitaSmooth.lean - `contMDiffCovariantDerivative_leviCivita`: the Levi-Civita connection of a Lorentzian metric is smooth.
+23. Lightlike/Spacetime/VolumeMeasure.lean - `volumeMeasure`, `volumeMeasure_chart`, `volumeMeasure_minkowski`: the volume measure of a Lorentzian metric, its chart formula and the Minkowski trust check.
 
 ## References
 
