@@ -213,9 +213,11 @@ variable {E F : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensio
   [NormedAddCommGroup F] [NormedSpace ℝ F] [FiniteDimensional ℝ F]
 
 
+/-- The partial derivative of `f (x, λ)` in the variable `x`, at the point `p`, as a linear form on `E`. -/
 noncomputable def partialE (f : E × F → ℝ) (p : E × F) : E →L[ℝ] ℝ :=
   (fderiv ℝ f p).comp (ContinuousLinearMap.inl ℝ E F)
 
+/-- The second partial derivative in `x` of `f (x, λ)` at `p`, the Hessian in `x`, as a bilinear form on `E`. -/
 noncomputable def partialE2 (f : E × F → ℝ) (p : E × F) : E →L[ℝ] E →L[ℝ] ℝ :=
   (fderiv ℝ (partialE f) p).comp (ContinuousLinearMap.inl ℝ E F)
 
