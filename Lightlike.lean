@@ -129,6 +129,7 @@ import Lightlike.Asymptotics.Tauberian.FourierExchange
 import Lightlike.Asymptotics.Tauberian.Hks
 import Lightlike.Asymptotics.Tauberian.Ingham
 import Lightlike.Asymptotics.Tauberian.Lower
+import Lightlike.Asymptotics.Tauberian.Majorant
 import Lightlike.Asymptotics.Tauberian.Tests
 import Lightlike.Asymptotics.Tauberian.Window
 import Lightlike.Asymptotics.Tests
