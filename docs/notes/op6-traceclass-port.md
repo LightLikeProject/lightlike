@@ -42,3 +42,9 @@ sesquilinear form `s (x, y) = f (|x⟩⟨y|)` (`‖|x⟩⟨y|‖ = ‖x‖ ‖y�
 families `φₙ`, `ψₙ`, `∑ |⟪ψₙ, T φₙ⟫| = |f (∑ cₙ |φₙ⟩⟨ψₙ|)| ≤ ‖f‖` with unimodular `cₙ`, since `‖∑ cₙ |φₙ⟩⟨ψₙ|‖ ≤ 1`; the trace-norm
 characterisation by such sums is in `IdealNorm` (`traceNorm_eq_tsum_norm_inner_polarFactor`). (4) `f K = Tr (K T)` on finite-rank `K` by (2), on compact `K`
 by (1) and continuity; `‖T‖₁ = ‖f‖` by the pairing isometry; uniqueness by the injectivity of the trace pairing.
+
+Status of the bricks (see the plan above): (1) done, plus finite-rank and rank-one operators are compact (`FiniteRankApprox`); (2) done:
+`CompactDual.compactFunctionalOperator` and `compactFunctionalOperator_inner` (`⟪y, T x⟫ = f |x⟩⟨y|`). Open: (3) that `T` is trace class. The route through the
+polar factor `W` (`⟪e, |T| e⟫ = ⟪W e, T e⟫`) needs a Hilbert basis adapted to `(ker T)^⊥ ⊕ ker T`, on which `W e` is orthonormal; the pinned Mathlib has no
+gluing of Hilbert bases of an orthogonal decomposition in the form needed, which is the concrete missing piece for this route; an alternative is to
+show first that `T` is compact and use the spectral decomposition of `|T|`. `T-OP6-P1` stays an open proof task with these helper lemmas.
