@@ -34,3 +34,20 @@ time for one field).
 
 Missing pieces, named: (i) flows of two `C¹` vector fields with `[V, W] = 0` commute (for A); (ii) the Frobenius theorem for
 a finite involutive family (for B). Neither is in the pinned Mathlib or Physlib.
+
+### Second attempt at Theorem 5: commuting flows by ODE uniqueness in the flat finite-dimensional setting
+
+Route: for `C¹` fields `V`, `W` on a finite-dimensional normed space with `[V, W] = 0`, show that the flow `Φ_t` of `V` maps
+integral curves of `W` to integral curves of `W`, hence the flows commute. With `Ψ_s` the flow of `W`, the curve
+`s ↦ Φ_t (Ψ_s x)` has derivative `DΦ_t (Ψ_s x) · W (Ψ_s x)`; it is an integral curve of `W` iff `DΦ_t · W = W ∘ Φ_t`, which follows
+from `d/dt ((DΦ_t)⁻¹ W ∘ Φ_t) = (DΦ_t)⁻¹ [V, W] ∘ Φ_t = 0` (Gronwall/uniqueness machinery of `LinearODE` is available for
+the last step).
+
+Concrete obstacle: the first step needs the flow `x ↦ Φ_t(x)` to be differentiable with `DΦ_t` satisfying the variational
+equation `d/dt DΦ_t = DV(Φ_t) DΦ_t`. The pinned Mathlib has local existence and uniqueness of integral curves
+(`Mathlib/Analysis/ODE/ExistUnique.lean`, `PicardLindelof.lean`, `Gronwall.lean`, `Transform.lean`) but no differentiability of the
+flow in the initial condition (case-insensitive grep over `Mathlib/Analysis/ODE` and `Mathlib/Geometry/Manifold/IntegralCurve`
+for differentiability/smoothness of the flow and for dependence on initial data finds only the existence statement
+`ContDiffAt.exists_eventually_eq_hasDerivAt`). Without it neither this route nor the same step of the Frobenius proof is
+available. Two attempts are therefore on record: the compiled single-constraint flow with the missing pieces `(i)` flow
+commutation and `(ii)` Frobenius, and this route, blocked at differentiable dependence on initial data.
