@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Lean Community
 -/
 /-
-Adapted from physicslib4 (github.com/physicslib/physicslib4), file `Physicslib4/Spectral/Spectrum.lean` at commit 82f4433, licensed Apache-2.0; changes made for Lightlike:
+Adapted from physicslib4 (github.com/physicslib/physicslib4), its file Spectral/Spectrum at commit 82f4433, licensed Apache-2.0; changes made for Lightlike:
 the namespace and import prefix `Physicslib4` is renamed to `Lightlike.OperatorAlgebras` and the file is moved to
 `Lightlike/OperatorAlgebras/Spectral/Spectrum.lean`; the proofs are unchanged. The original copyright and license notice above is kept.
 -/
@@ -33,7 +33,7 @@ the same resolvent set and spectrum.
   resolvent set.
 * `Lightlike.OperatorAlgebras.Spectral.isOpen_resolventSet`,
   `Lightlike.OperatorAlgebras.Spectral.exists_hasSum_resolvent`,
-  `Lightlike.OperatorAlgebras.Spectral.hasSum_resolvent_of_norm_lt` — the resolvent set is open,
+  `Lightlike.OperatorAlgebras.Spectral.hasSum_resolvent_of_norm_lt` — the resolvent set is a neighbourhood of each of its points,
   the resolvent is locally given by a power series, and the Neumann expansion holds
   outside the disc of radius `‖A‖`.
 * `Lightlike.OperatorAlgebras.Spectral.sq_norm_sub_smul_apply_le` — the `b²` inequality for a
