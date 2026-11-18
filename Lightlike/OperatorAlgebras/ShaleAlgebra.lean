@@ -122,4 +122,28 @@ noncomputable def Bogoliubov.alphaCLM (T : Bogoliubov h) : h →L[ℂ] h :=
             have : ‖(1 / 2 : ℂ)‖ = 1 / 2 := by simp
             rw [this]; nlinarith)
 
+lemma Bogoliubov.alphaCLM_apply (T : Bogoliubov h) (f : h) : T.alphaCLM f = T.alphaPart f := rfl
+
+/-- `⟪e, (α†α - 1) e⟫ = ‖β e‖²`. -/
+lemma Bogoliubov.inner_alpha_sub_one (T : Bogoliubov h) (e : h) :
+    ⟪e, (ContinuousLinearMap.adjoint T.alphaCLM * T.alphaCLM - 1) e⟫_ℂ = ((‖T.betaPart e‖ ^ 2 : ℝ) : ℂ) := by
+  have h1 := T.norm_alpha_sq_sub_norm_beta_sq e
+  rw [ContinuousLinearMap.sub_apply, inner_sub_right, ContinuousLinearMap.mul_apply,
+    ContinuousLinearMap.adjoint_inner_right, ContinuousLinearMap.one_apply,
+    T.alphaCLM_apply, inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K]
+  have h2 : ‖T.betaPart e‖ ^ 2 = ‖T.alphaPart e‖ ^ 2 - ‖e‖ ^ 2 := by linarith
+  rw [h2]; push_cast; rfl
+
+/-- `α†α - 1` is a positive operator. -/
+lemma Bogoliubov.alpha_sub_one_nonneg (T : Bogoliubov h) :
+    0 ≤ ContinuousLinearMap.adjoint T.alphaCLM * T.alphaCLM - 1 := by
+  rw [ContinuousLinearMap.nonneg_iff_isPositive, ContinuousLinearMap.isPositive_iff_complex]
+  intro x
+  have h1 := T.inner_alpha_sub_one x
+  have h2 : ⟪(ContinuousLinearMap.adjoint T.alphaCLM * T.alphaCLM - 1) x, x⟫_ℂ =
+      ((‖T.betaPart x‖ ^ 2 : ℝ) : ℂ) := by
+    rw [← inner_conj_symm, h1]; simp
+  rw [h2]
+  refine ⟨?_, ?_⟩ <;> simp [← Complex.ofReal_pow, sq_nonneg]
+
 end Lightlike.OperatorAlgebras
