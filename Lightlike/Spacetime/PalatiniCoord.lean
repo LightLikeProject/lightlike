@@ -11,8 +11,10 @@ For smooth symmetric `g, h` on `ℝⁿ` with `det g x ≠ 0`, `W^ρ = g^{σν} �
 `g + t h`. The proof uses the algebraic core `palatini_alg_nd`, `palatini_dd`, the derivative of the inverse metric (`pd_inv_eq`) and of the
 volume density (`pd_sqrt_abs_det`).
 
-**Limits.** Coordinate statement on `ℝⁿ`, `C^∞` metric and perturbation; the integral statement (divergence of a compactly supported field)
-is the next stage.
+`hasDerivAt_lagrangian`: the first variation of the Einstein-Hilbert density at a point, `d/dt √|g_t| (R(g_t) - 2Λ) = -√|g| (R^{αβ} - ½ R g^{αβ} + Λ g^{αβ}) h_{αβ} + ∂_ρ (√|g| W^ρ)`.
+
+**Limits.** Coordinate statements on `ℝⁿ`, `C^∞` metric and perturbation; the integral statement (the divergence of a compactly supported field
+integrates to zero, and differentiation under the integral sign) is the next stage.
 -/
 
 open Matrix
@@ -175,6 +177,61 @@ theorem palatini_coord :
   simp only [hpd, hW, Finset.sum_add_distrib, Finset.sum_sub_distrib, add_mul, mul_add]
   ring
 
+
+/-- The Ricci tensor with both indices raised, `R^{αβ} = g^{αa} R_{ab} g^{bβ}`, at `x`. -/
+def ricciUp (g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ) (x : Fin n → ℝ) (α β : Fin n) : ℝ :=
+  ∑ a, ∑ b, (g x)⁻¹ α a * ricci g a b x * (g x)⁻¹ b β
+
+/-- **The first variation of the Einstein-Hilbert density at a point**: for the density `√|g_t| (R(g_t) - 2Λ)` of `g_t = g + t h`,
+`d/dt = -√|g| (R^{αβ} - ½ R g^{αβ} + Λ g^{αβ}) h_{αβ} + ∂_ρ (√|g| W^ρ)` at `t = 0`. -/
+theorem hasDerivAt_lagrangian (Λ : ℝ) :
+    HasDerivAt (fun t : ℝ => √|(g x + t • h x).det| * (scalarCurvature (fun z => g z + t • h z) x - 2 * Λ))
+      (-√|(g x).det| * ∑ α, ∑ β, h x α β *
+          (ricciUp g x α β - (1 / 2) * scalarCurvature g x * (g x)⁻¹ α β + Λ * (g x)⁻¹ α β) +
+        ∑ ρ, pd ρ (fun y => √|(g y).det| * Wvec g h ρ y) x) 0 := by
+  have h1 := hasDerivAt_sqrt_abs_det_add_smul (g x) (h x) hx
+  have h2 := (hasDerivAt_scalarCurvature g h hg hh x hx).sub_const (2 * Λ)
+  have h3 := h1.mul h2
+  have hpal := palatini_coord g h hg hh hgs hhs x hx
+  have hT : ((g x)⁻¹)ᵀ = (g x)⁻¹ := by
+    have : (g x)ᵀ = g x := by ext i j; exact hgs x j i
+    rw [Matrix.transpose_nonsing_inv, this]
+  have hG : ∀ a b, (g x)⁻¹ a b = (g x)⁻¹ b a := by
+    intro a b
+    simpa [Matrix.transpose_apply] using (congrFun (congrFun hT a) b).symm
+  have htr : ((g x)⁻¹ * h x).trace = ∑ α, ∑ β, h x α β * (g x)⁻¹ α β := by
+    simp only [Matrix.trace, Matrix.diag, Matrix.mul_apply]
+    rw [Finset.sum_comm]
+    refine Finset.sum_congr rfl fun α _ => Finset.sum_congr rfl fun β _ => ?_
+    rw [hG α β]; ring
+  have hRG : ∑ σ, ∑ ν, ((g x)⁻¹ * h x * (g x)⁻¹) σ ν * ricci g σ ν x = ∑ α, ∑ β, h x α β * ricciUp g x α β := by
+    unfold ricciUp
+    simp only [Matrix.mul_apply, Finset.sum_mul, Finset.mul_sum]
+    rw [sum4_eq, sum4_eq]
+    refine Fintype.sum_equiv
+      ⟨fun x => (x.2.2.2, x.2.2.1, x.1, x.2.1), fun y => (y.2.2.1, y.2.2.2, y.2.1, y.1), fun _ => rfl, fun _ => rfl⟩
+      _ _ fun x => ?_
+    obtain ⟨σ, ν, b, a⟩ := x
+    simp only [Equiv.coe_fn_mk]
+    rw [hG a σ, hG ν b]; ring
+  convert h3 using 1
+  simp only [zero_smul, add_zero]
+  have hexp : ∑ α, ∑ β, h x α β * (ricciUp g x α β - 1 / 2 * scalarCurvature g x * (g x)⁻¹ α β + Λ * (g x)⁻¹ α β) =
+      (∑ α, ∑ β, h x α β * ricciUp g x α β) +
+        (Λ - 1 / 2 * scalarCurvature g x) * ∑ α, ∑ β, h x α β * (g x)⁻¹ α β := by
+    rw [Finset.mul_sum, ← Finset.sum_add_distrib]
+    refine Finset.sum_congr rfl fun α _ => ?_
+    rw [Finset.mul_sum, ← Finset.sum_add_distrib]
+    refine Finset.sum_congr rfl fun β _ => ?_
+    ring
+  have hsplit : ∑ σ, ∑ ν, (-((g x)⁻¹ * h x * (g x)⁻¹) σ ν * ricci g σ ν x + (g x)⁻¹ σ ν * dRicci g h x σ ν) =
+      -(∑ σ, ∑ ν, ((g x)⁻¹ * h x * (g x)⁻¹) σ ν * ricci g σ ν x) + ∑ σ, ∑ ν, (g x)⁻¹ σ ν * dRicci g h x σ ν := by
+    simp only [Finset.sum_add_distrib, neg_mul, Finset.sum_neg_distrib]
+  rw [hexp, hsplit, htr, hRG, ← hpal]
+  have hscal : scalarCurvature (fun z => g z) x = scalarCurvature g x := rfl
+  rw [hscal]
+  ring
+  
 end
 
 end Lightlike
