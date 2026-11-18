@@ -37,6 +37,8 @@ Two linear maps from finitely supported coefficients whose generators have the s
 
 For a self-adjoint operator `A` and `z` with `Im z ≠ 0`, `A - z` is a bijection from the domain onto the space with `‖(A - z) x‖ ≥ |Im z| ‖x‖`, and its inverse, the resolvent, is a bounded operator of norm at most `1 / |Im z|` whose adjoint is the resolvent at `conj z` [26]. The resolvent of the generator `λ • 1` of the phase group is `(λ - z)⁻¹` [27].
 
+For a self-adjoint `A`, `t R (i t) y → i y` and `t R (-i t) y → -i y` for every `y` (on the domain from `R z (A x) = x + z R z x`, then everywhere by density and the bound `‖t R‖ ≤ 1`) [28]. The operators `A_n = (t² / 2) (R (i t) + R (-i t))`, `t = n + 1`, are bounded and self-adjoint, and `A_n x → A x` on the domain [28]. For the phase-group generator `λ • 1` the approximant is `t² λ / (λ² + t²)` [29].
+
 The Gram matrix of the vectors `W f Ω` of a Fock representation is a function of `f` and `g` alone, by the Weyl relations and the vacuum expectation, so the map `c ↦ ∑ c f W f Ω` has the same norm for two Fock representations; it extends to a unitary that maps the vacuum to the vacuum and intertwines the Weyl unitaries, which is the uniqueness of the Fock representation [14]. The Gram function is Hermitian and normalized, and over the zero Hilbert space there is a Fock representation to which the uniqueness applies [15].
 
 ## Lean References
@@ -113,6 +115,10 @@ The Gram matrix of the vectors `W f Ω` of a Fock representation is a function o
     `OperatorAlgebras.resolventCLM`, `OperatorAlgebras.resolvent_spec`,
     `OperatorAlgebras.resolvent_adjoint`
 27. Lightlike/OperatorAlgebras/TestsResolvent.lean - `OperatorAlgebras.resolvent_phaseGroup`
+28. Lightlike/OperatorAlgebras/Yosida.lean - `OperatorAlgebras.tendsto_of_dense_bounded`,
+    `OperatorAlgebras.tResP_tendsto`, `OperatorAlgebras.tResM_tendsto`, `OperatorAlgebras.approx`,
+    `OperatorAlgebras.approx_tendsto`, `OperatorAlgebras.approx_selfadjoint`
+29. Lightlike/OperatorAlgebras/TestsYosida.lean - `OperatorAlgebras.approx_phaseGroup`
 
 ## References
 
