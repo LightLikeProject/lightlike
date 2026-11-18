@@ -60,10 +60,11 @@ Proved in Lean on `pl/sp3`, no `sorry` (files in `Lightlike/Asymptotics/Tauberia
 Still to do, with the concrete difficulty of each (no piece is claimed missing from Mathlib unless
 stated):
 
-1. Hypotheses. MZ's printed form is `Z(beta) = e^{pi^2 c/3beta}(1 + O(e^{-Delta_1/beta}))` plus modular
-   invariance. Under modularity it is equivalent to `e^{-beta' v} Z(beta') = 1 + O(e^{-g beta'})` as
-   `beta' -> infinity`, which forces (for a positive locally finite measure) no mass below `-v`, a vacuum
-   atom of mass 1 at `-v`, and no mass in `(-v, -v+g)` (derivation by dominated convergence, not yet done).
+1. Hypotheses: DONE in Lean (`Vacuum.lean`, `vacuum_gap_of_modular`). MZ's printed form
+   `Z(beta) = e^{pi^2 c/3beta}(1 + O(e^{-Delta_1/beta}))` plus real modular invariance `Z(beta) = Z(4 pi^2/beta)`
+   gives, for a positive measure with `Z` finite: no mass below `-v` (`no_mass_below`), a vacuum atom of mass 1
+   at `-v` (`atom_eq_one`, dominated convergence) and no mass in `(-v, -v + g/(4 pi^2))` (`no_mass_gap`).
+   So the theorem can take MZ's printed hypothesis; no difference of kind arises from this step.
 2. The remainder estimate (5.19): `|Z(z) - e^{a/z}| <= Z'(4 pi^2 Re z/|z|^2)` from complex modular invariance
    and positivity, and the HKS bound for `Z'` over all `beta' > 0` (heavy/light split).
 3. The contour functional (5.3)-(5.7) with kernel `G(nu)` (Appendix A). Mathlib has the Cauchy integral
