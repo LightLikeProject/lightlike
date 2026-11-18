@@ -1,4 +1,4 @@
-import Lightlike.OperatorAlgebras.UnitaryGroup
+import Lightlike.OperatorAlgebras.YosidaLimit
 
 /-!
 # Task T-OP1-P2
@@ -63,6 +63,6 @@ to `A` through the generator (`U.generator = A`), since `exp (i t A)` is not def
 unbounded `A`. The two forms are equivalent in the source's setting; this is not proved here. -/
 theorem stone_exists {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) : ∃ U : UnitaryGroup H, U.generator = A := by
-  sorry
+  exact ⟨stoneGroup hA, generator_stoneGroup hA⟩
 
 end Lightlike.OperatorAlgebras
