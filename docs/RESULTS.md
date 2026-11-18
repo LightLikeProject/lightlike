@@ -2,7 +2,7 @@
 
 # Results
 
-147 proven results with stable IDs and 2 conditional results (proven under hypotheses that are named Lean propositions). An ID is never reused; a withdrawn result is kept as `retired`. Every declaration of the library, and so every proven result, depends only on the axioms `propext`, `Classical.choice` and `Quot.sound`.
+148 proven results with stable IDs and 2 conditional results (proven under hypotheses that are named Lean propositions). An ID is never reused; a withdrawn result is kept as `retired`. Every declaration of the library, and so every proven result, depends only on the axioms `propext`, `Classical.choice` and `Quot.sound`.
 
 Tier: **established** (standard mathematics and physics that the frontier work needs; candidates for Mathlib or Physlib later); **frontier** (proposals published in the peer-reviewed literature, labelled as proposals); **exploratory** (new or unpublished models and conjectures, kept in `Exploratory/` folders that nothing else imports; promoted to frontier only after publication). Every result is about the mathematics of a model, not a claim that the model describes nature.
 
@@ -39,6 +39,11 @@ API map: [Lightlike/Spacetime/API-map.md](../Lightlike/Spacetime/API-map.md)
 | LL-0001 | First Bianchi identity and pair symmetry of the Riemann tensor in coordinates | proven | established | `Lightlike.IsCoordMetric.bianchi_first`, `Lightlike.IsCoordMetric.riemannLower_pair_symm` in [RiemannSymmetry.lean](../Lightlike/Spacetime/RiemannSymmetry.lean) |
 | LL-0002 | Riemann, Ricci and scalar curvature transform as tensors under changes of coordinates | proven | established | `Lightlike.riemann_pullback`, `Lightlike.ricci_pullback`, `Lightlike.scalarCurvature_pullback` in [ChartChange.lean](../Lightlike/Spacetime/ChartChange.lean) |
 | LL-0003 | The components of a Lorentzian metric in every atlas chart have Lorentzian signature | proven | established | `Lightlike.LorentzianMetric.isLorentzianCoordMetric_coordMetric` in [Coordinates.lean](../Lightlike/Spacetime/Coordinates.lean) |
+| LL-0150 | Exterior Schwarzschild (the region r > 2M) is a vacuum solution on the manifold layer (see note) | proven | established | `Lightlike.schwarzschild_coordMetric`, `Lightlike.schwarzschild_satisfiesEinstein`, `Lightlike.schwarzschild_ricci_eq_zero`, `Lightlike.schwarzschild_exists_vacuum_connection` in [SchwarzschildManifold.lean](../Lightlike/Spacetime/SchwarzschildManifold.lean) |
+
+Notes:
+
+- **LL-0150.** The exterior region r > 2M only. The manifold form of LL-0005, through schwarzschild_coordMetric (in every chart the components of the manifold metric are the coordinate metric schMetric of LL-0005). The manifold is the chart domain r > 2M, 0 < theta < pi of the coordinates (t, r, theta, phi), with phi unrestricted, so it covers the exterior region with the axis removed and is not R x (2M, infinity) x S^2; there is no extension across r = 2M; signature is -+++. The vacuum equations and the vanishing of the Ricci tensor are proved for every C^infinity Levi-Civita connection of the metric; such a connection exists (the Levi-Civita connection of the metric is smooth). The differences listed here were approved on 17 November 2026. The comparison with Carroll's chapter 7 and with Wald's chapter 6 is pending: they were not read at the cited locations.
 
 ## Exact solutions of general relativity
 

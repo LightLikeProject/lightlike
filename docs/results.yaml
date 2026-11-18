@@ -1954,3 +1954,16 @@
   review: kernel-checked
   note: "Gurau (2010), Theorem 1: the p-bubbles of a colored graph are the link graphs of the (n - p)-simplices of the gluing. For a simplex sigma = (S, B) of the dual Delta_G (a set S of colors and a bubble B of the other colors) the simplices that contain sigma are in order-preserving bijection with the simplices of the dual of the colored graph G' of the lines of the colors outside S restricted to B (ColoredGraph.restrict), by linkIso, and the bijection lowers the rank by the rank of sigma (linkIso_rk); link_isDual (a supporting lemma, for every simplex that does not have all colors, p >= 1) gives it with the colors outside S enumerated in increasing order, and link_isDual_of_two_le states it in the range of the source, at least two colors outside S (p >= 2). The bijection is built from the two maps linkTo and linkOf, inverse to each other, and the bubbles of the restricted graph are the bubbles of G (mem_bubble_restrict). Limits: the link is the set of simplices containing sigma with the induced order, as a graded poset; the vertex sets of the simplices are not part of the structure; the statement is for the colored graph restricted to a bubble, not for the stranded graph of Gurau's Section 3.1. Comparison with the source: the statement of Theorem 1 was read in arXiv:1006.0714, Section 5 (the proof was not compared). Differences from the source: Gurau states that for p >= 2 the p-bubbles are the link graphs (stranded graphs of his Section 3.1) of the (n - p)-simplices, an identification of graphs; this entry gives an order isomorphism between the link poset and the dual of the colored graph of the bubble, with no stranded graph, in the range p >= 2 that the source states. The maintainers approved this form on 17 November 2026, as a difference of representation. If stranded graphs are defined in the library, their equivalence with this form becomes a task."
   since: unreleased
+- id: LL-0150
+  title: Exterior Schwarzschild (the region r > 2M) is a vacuum solution on the manifold layer
+  area: Spacetime
+  file: Lightlike/Spacetime/SchwarzschildManifold.lean
+  decls: [Lightlike.schwarzschild_coordMetric, Lightlike.schwarzschild_satisfiesEinstein, Lightlike.schwarzschild_ricci_eq_zero, Lightlike.schwarzschild_exists_vacuum_connection]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (7.29)", check: "Schwarzschild metric"}
+  review: kernel-checked
+  note: "The exterior region r > 2M only. The manifold form of LL-0005, through schwarzschild_coordMetric (in every chart the components of the manifold metric are the coordinate metric schMetric of LL-0005). The manifold is the chart domain r > 2M, 0 < theta < pi of the coordinates (t, r, theta, phi), with phi unrestricted, so it covers the exterior region with the axis removed and is not R x (2M, infinity) x S^2; there is no extension across r = 2M; signature is -+++. The vacuum equations and the vanishing of the Ricci tensor are proved for every C^infinity Levi-Civita connection of the metric; such a connection exists (the Levi-Civita connection of the metric is smooth). The differences listed here were approved on 17 November 2026. The comparison with Carroll's chapter 7 and with Wald's chapter 6 is pending: they were not read at the cited locations."
+  since: unreleased
