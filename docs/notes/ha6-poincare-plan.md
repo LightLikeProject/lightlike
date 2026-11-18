@@ -24,11 +24,22 @@ Bröcker–tom Dieck Ch. II.
   for `SL(2,ℂ)`), `Lightlike/SU2/`, `Lightlike/Spin4/`.
 * Tau Ceti and physicslib4: not yet checked (to do before the first Lean file).
 
-## Source (not yet read)
+## Source read (opened and read, 18 November 2026)
 
-Weinberg, *The Quantum Theory of Fields I* (1995), Chapter 2, §2.5 ("One-particle states", the table of standard momenta and
-little groups) and Wigner, Ann. Math. 40 (1939) 149; the statement text of T-HA6 in `docs/tasks/milestones.md` names
-Weinberg Chapter 2. Per the owner's 19:57 rule nothing below counts as checked until a text has been opened and located.
+X. Bekaert, N. Boulanger, *The unitary representations of the Poincaré group in any spacetime dimension*, arXiv:hep-th/0611263v2
+(13 June 2021), https://arxiv.org/pdf/hep-th/0611263 (text extracted with `pdftotext`; the full text was available).
+Read: §3.1 "Induced representations" (equations (10)–(13): standard boost `L(p)`, `Ψ_{p,σ} = N(p) U(L(p)) Ψ_{q,σ}`, Wigner
+rotation `W(Λ,p) = L⁻¹(Λp) Λ L(p)`, `U(Λ)Ψ_{p,σ} = (N(p)/N(Λp)) Σ D_{σ'σ}(W(Λ,p)) Ψ_{Λp,σ'}`), §3.2 "Orbits and
+stability subgroups" (mass shell, light cone, one-sheeted hyperboloid; stabilisers `SO(D−1)`, `ISO(D−2)` with an algebraic
+proof, `SO(D−2,1)↑`; the invariant scalar product on the orbit), §5.2 (quartic Casimir on massive representations; "in four
+spacetime dimensions, the square of the Pauli–Lubanski vector acting on a massive field of spin-s is indeed equal to
+`m² s(s+1)`"), §5.4 (tachyonic: `C₄ = C₂(iso) C₂(so(D−2,1))`, momentum space-like, non-compact little group), §3.3 and §1.3 only
+skimmed. Weinberg Chapter 2 and Wigner 1939 are NOT read.
+
+Convention difference to record in any statement: Bekaert–Boulanger use signature `(−,+,+,+)` (so `p² = −m²` for a massive
+state and `W² = +m² s(s+1)`); T-HA6 in `docs/tasks/milestones.md` is in `(+,−,−,−)` with `W² = −m² s(s+1)`. Both give the same
+representations; a formal statement has to fix the signature, and Lightlike/Physlib use `(+,−,−,−)`-style `SpaceTime d` (to be
+checked against `PhyslibAlpha/Relativity/MinkowskiMatrix.lean`).
 
 ## Staged plan (each stage a compiled, committable file)
 
@@ -49,5 +60,5 @@ Weinberg Chapter 2. Per the owner's 19:57 rule nothing below counts as checked u
 
 ## Not started
 
-No Lean has been written for HA6. Next: reuse check of Tau Ceti and physicslib4, read Weinberg Chapter 2 (or another open
-text) and record its location, then stage 1.
+No Lean has been written for HA6. Next: reuse check of Tau Ceti and physicslib4, then stage 1 (definitions of the orbits and little groups
+against `PoincareGroup`/`LorentzGroup` of Physlib).
