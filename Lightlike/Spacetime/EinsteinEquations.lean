@@ -23,7 +23,7 @@ noncomputable section
 namespace Lightlike
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
   {M : Type*} [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M]
-  [T2Space M] [IsManifold 𝓘(ℝ, E) 2 M] [CompleteSpace E] (g : NondegMetric 𝓘(ℝ, E) M)
+  [IsManifold 𝓘(ℝ, E) 2 M] [CompleteSpace E] (g : NondegMetric 𝓘(ℝ, E) M)
 variable (cov : Connection 𝓘(ℝ, E) M)
 
 /-- If the Ricci tensor at `x` is `c` times the metric, the scalar curvature at `x` is `c` times the dimension. -/
