@@ -1,3 +1,4 @@
+import Mathlib.LinearAlgebra.Matrix.Rank
 import Mathlib.LinearAlgebra.Matrix.SchurComplement
 import Mathlib.Data.Real.Basic
 
@@ -45,5 +46,58 @@ theorem leftNull_row_zero (B : Matrix m m ℝ) (C : Matrix m n ℝ) (D : Matrix 
     fromBlocks (1 : Matrix m m ℝ) 0 (-(D * B⁻¹)) (1 : Matrix n n ℝ) * fromBlocks B C D E =
       fromBlocks B C 0 0 := by
   rw [leftNull_mul B C D E hB, hS, sub_self]
+
+/-- **A vanishing Schur complement from the rank**: if an invertible `r × r` block `B` and a block `S` form the
+block-diagonal matrix `[[B, 0], [0, S]]` of rank at most `r`, then `S = 0`. (A nonzero entry `S i j` would give an
+invertible `(r + 1) × (r + 1)` submatrix.) -/
+theorem schur_eq_zero_of_rank_le (B : Matrix m m ℝ) (S : Matrix n n ℝ) (hB : IsUnit B.det)
+    (h : (fromBlocks B 0 0 S).rank ≤ Fintype.card m) : S = 0 := by
+  by_contra hS
+  obtain ⟨i, j, hij⟩ : ∃ i j, S i j ≠ 0 := by
+    by_contra hne
+    push Not at hne
+    exact hS (Matrix.ext hne)
+  let r : m ⊕ Unit → m ⊕ n := Sum.map id fun _ => i
+  let c : m ⊕ Unit → m ⊕ n := Sum.map id fun _ => j
+  have hsub : (fromBlocks B 0 0 S).submatrix r c = fromBlocks B 0 0 (Matrix.of fun _ _ => S i j) := by
+    ext x y
+    rcases x with x | x <;> rcases y with y | y <;> simp [r, c]
+  have hdet : ((fromBlocks B 0 0 S).submatrix r c).det ≠ 0 := by
+    rw [hsub, det_fromBlocks_zero₂₁]
+    simp only [det_unique, Matrix.of_apply]
+    exact mul_ne_zero (hB.ne_zero) hij
+  have hrank : ((fromBlocks B 0 0 S).submatrix r c).rank = Fintype.card m + 1 := by
+    rw [Matrix.rank_of_isUnit _ ((Matrix.isUnit_iff_isUnit_det _).mpr (isUnit_iff_ne_zero.mpr hdet))]
+    simp
+  have := Matrix.rank_submatrix_le (fromBlocks B 0 0 S) r c
+  omega
+
+/-- **Constant rank gives the Schur complement zero**: if `B` is invertible and the block matrix
+`[[B, C], [D, E]]` has rank at most `r = card m`, then `E = D B⁻¹ C`; so the rows of `[-D B⁻¹, 1]` are left null
+vectors (`leftNull_row_zero`). -/
+theorem schur_eq_zero_of_rank_le_block (B : Matrix m m ℝ) (C : Matrix m n ℝ) (D : Matrix n m ℝ)
+    (E : Matrix n n ℝ) (hB : IsUnit B.det) (h : (fromBlocks B C D E).rank ≤ Fintype.card m) :
+    E = D * B⁻¹ * C := by
+  have hL : IsUnit (fromBlocks (1 : Matrix m m ℝ) 0 (-(D * B⁻¹)) (1 : Matrix n n ℝ)).det := by
+    rw [det_fromBlocks_zero₁₂]; simp
+  have hR : IsUnit (fromBlocks (1 : Matrix m m ℝ) (-(B⁻¹ * C)) 0 (1 : Matrix n n ℝ)).det := by
+    rw [det_fromBlocks_zero₂₁]; simp
+  have h1 : fromBlocks (1 : Matrix m m ℝ) 0 (-(D * B⁻¹)) (1 : Matrix n n ℝ) * fromBlocks B C D E =
+      fromBlocks B C 0 (E - D * B⁻¹ * C) := leftNull_mul B C D E hB
+  have h2 : fromBlocks B C 0 (E - D * B⁻¹ * C) *
+      fromBlocks (1 : Matrix m m ℝ) (-(B⁻¹ * C)) 0 (1 : Matrix n n ℝ) =
+      fromBlocks B 0 0 (E - D * B⁻¹ * C) := by
+    rw [fromBlocks_multiply]
+    have e : B * -(B⁻¹ * C) + C * (1 : Matrix n n ℝ) = 0 := by
+      rw [Matrix.mul_neg, Matrix.mul_one, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv B hB, Matrix.one_mul,
+        neg_add_cancel]
+    have e' : -(B * (B⁻¹ * C)) + C = 0 := by
+      rw [← Matrix.mul_assoc, Matrix.mul_nonsing_inv B hB, Matrix.one_mul, neg_add_cancel]
+    simp [e']
+  have hrank : (fromBlocks B 0 0 (E - D * B⁻¹ * C)).rank = (fromBlocks B C D E).rank := by
+    rw [← h2, Matrix.rank_mul_eq_left_of_isUnit_det _ _ hR, ← h1,
+      Matrix.rank_mul_eq_right_of_isUnit_det _ _ hL]
+  have hz := schur_eq_zero_of_rank_le B (E - D * B⁻¹ * C) hB (hrank ▸ h)
+  exact sub_eq_zero.mp hz
 
 end Lightlike.Gauge
