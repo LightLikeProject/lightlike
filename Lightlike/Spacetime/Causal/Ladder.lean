@@ -81,7 +81,7 @@ def IsAchronal (S : Set M) : Prop := ∀ x ∈ S, ∀ y ∈ S, y ∉ chronFuture
 /-- A **Cauchy surface**: a set that every inextendible future-directed timelike curve meets
 exactly once. -/
 def IsCauchySurface (S : Set M) : Prop :=
-  ∀ (γ : ℝ → M) (s : Set ℝ), IsInextendibleWith (I := I) (fun _ v ↦ T.IsFutureTimelike v) γ s →
+  ∀ (γ : ℝ → M) (s : Set ℝ), IsInextendibleFutureTimelike T γ s →
     ∃! t, t ∈ s ∧ γ t ∈ S
 
 end Causal

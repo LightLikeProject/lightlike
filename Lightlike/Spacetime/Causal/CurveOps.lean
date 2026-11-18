@@ -51,6 +51,26 @@ theorem IsCurveWith.mono {γ : ℝ → M} {a b c d : ℝ} (h : IsCurveWith (I :=
     exact h3
 
 omit [IsManifold I ∞ M] in
+/-- **Restriction to a compact subinterval of any interval**: a curve with velocity in `P` on `s`
+is one on every nondegenerate `[c, d] ⊆ s`. -/
+theorem IsCurveWith.restrict {γ : ℝ → M} {s : Set ℝ} {c d : ℝ} (h : IsCurveWith (I := I) P γ s)
+    (hsub : Icc c d ⊆ s) (hcd : c < d) : IsCurveWith (I := I) P γ (Icc c d) := by
+  refine ⟨ordConnected_Icc, ?_, ?_⟩
+  · intro t ht
+    obtain ⟨K, U, hU, hm, hl⟩ := h.lipschitz t (hsub ht)
+    exact ⟨K, U, nhdsWithin_mono t hsub hU, hm, hl⟩
+  · have h1 := ae_mono (Measure.restrict_mono hsub le_rfl) h.ae_velocity
+    filter_upwards [ae_restrict_mem measurableSet_Icc, h1] with t ht ⟨h2, h3⟩
+    have hu : UniqueMDiffWithinAt 𝓘(ℝ, ℝ) (Icc c d) t :=
+      (uniqueDiffOn_Icc hcd t ht).uniqueMDiffWithinAt
+    refine ⟨h2.mono hsub, ?_⟩
+    have : velocity I γ (Icc c d) t = velocity I γ s t := by
+      unfold velocity
+      rw [h2.mfderivWithin_mono hu hsub]
+    rw [this]
+    exact h3
+
+omit [IsManifold I ∞ M] in
 /-- **Translation of the parameter**: if `γ` has its velocity in `P` on `[a, b]` then
 `t ↦ γ (t + k)` has it on `[a - k, b - k]`. -/
 theorem IsCurveWith.shift {γ : ℝ → M} {a b : ℝ} (h : IsCurveWith (I := I) P γ (Icc a b)) (hab : a < b)
