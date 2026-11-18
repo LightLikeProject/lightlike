@@ -136,7 +136,7 @@ theorem TimeOrientation.isFutureTimelikeWith_neg_iff (ε : ℝ) {x : M} (v : Tan
   simp [TimeOrientation.neg]
 
 /-- **Restriction of a timelike curve** to a nondegenerate subinterval. -/
-theorem IsFutureTimelikeCurve.restrictIcc {γ : ℝ → M} {a b c d : ℝ} (h : IsFutureTimelikeCurve T γ (Icc a b))
+theorem IsFutureTimelikeCurve.restrict_Icc {γ : ℝ → M} {a b c d : ℝ} (h : IsFutureTimelikeCurve T γ (Icc a b))
     (hc : a ≤ c) (hd : d ≤ b) (hcd : c < d) : IsFutureTimelikeCurve T γ (Icc c d) :=
   ⟨h.1.mono hc hd hcd, fun a' b' hab' hsub => h.2 a' b' hab' (hsub.trans (Icc_subset_Icc hc hd))⟩
 
@@ -243,14 +243,14 @@ theorem chronFuture_causalFuture_trans_of (hopen : ∀ x : M, IsOpen (chronFutur
           ⟨har.trans hu.1, hu.2⟩)
       have hβV : MapsTo β (Icc s₀ s') U := fun s hs =>
         interior_subset (hδV s ⟨hs₀.1.1.trans hs.1, hs.2.trans hs'mem.2⟩ (by rw [abs_lt]; constructor <;> linarith [hs.1, hs.2]))
-      have hα' : IsFutureTimelikeCurve T α (Icc r b') := IsFutureTimelikeCurve.restrictIcc T hα har le_rfl hrb
+      have hα' : IsFutureTimelikeCurve T α (Icc r b') := IsFutureTimelikeCurve.restrict_Icc T hα har le_rfl hrb
       have hβ' : IsFutureCausalCurve T β (Icc s₀ s') := hβ.mono hs₀.1.1 hs'mem.2 h0
       have hjoin : α b' = β s₀ := hαb
       have hlift := hloc' α β r b' s₀ s' hrb h0.le hα' hβ' hjoin hαV hβV
       have hxr : α r ∈ chronFuture T x ∨ α r = x := by
         rcases har.eq_or_lt with h | h
         · right; rw [← h]; exact hαa
-        · left; exact ⟨α, a', r, h, IsFutureTimelikeCurve.restrictIcc T hα le_rfl hrb.le h, hαa, rfl⟩
+        · left; exact ⟨α, a', r, h, IsFutureTimelikeCurve.restrict_Icc T hα le_rfl hrb.le h, hαa, rfl⟩
       rcases hxr with h | h
       · exact chron_trans T h hlift
       · rw [h] at hlift; exact hlift
