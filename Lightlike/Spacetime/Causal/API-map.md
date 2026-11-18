@@ -12,7 +12,7 @@ The causal ladder is chronology, causality, strong causality, stable causality, 
 
 The chronological future is contained in the causal future, a point lies in its own causal future, both futures are transitive, and a causal manifold is chronological; the proofs restrict, translate and glue locally Lipschitz curves [7] {3}. In Minkowski space the causal future of a point is the closed light cone, obtained by integrating the derivative of a Lipschitz causal curve [9] {5}, and the causal diamonds are compact and the open diamonds are causally convex neighbourhoods, so the space is globally hyperbolic [8] {5}. In Minkowski space the slice `t = 0` is a Cauchy surface: the time strictly increases along a timelike curve and the space displacement is bounded by it, so an inextendible curve meets the slice at most once, and at least once because otherwise its time is monotone and bounded, the curve is Cauchy at one end and has an endpoint [13] {5}. A continuous time orientation can be replaced by a smooth one: smooth partitions of unity glue chart-constant fields, and the future timelike cone of a Lorentzian form is convex [10] {1} [11] {1}. The constant field ∂₀ is a time orientation, and a straight line with a future-directed timelike direction is a timelike curve, so x + v is in the chronological future of x [5] {5}.
 
-The push-up lemmas (a point of the chronological future of `x` followed by a causal curve stays in it) follow from the openness of the chronological futures and a local push-up property, by connectedness along the causal curve, and the second form by time reversal [14].
+The push-up lemmas (a point of the chronological future of `x` followed by a causal curve stays in it) follow from the openness of the chronological futures and a local push-up property, by connectedness along the causal curve, and the second form by time reversal [14]. In a manifold without boundary the local push-up property follows from the openness of the chronological future: a causal curve in a small chart ball is lifted to a timelike curve with the same end by a displacement along a timelike vector proportional to the increase of the time function of the chart, and the lift starts in the open set that contains the start of the causal curve [15].
 
 ## Lean References
 
@@ -30,6 +30,7 @@ The push-up lemmas (a point of the chronological future of `x` followed by a cau
 12. Lightlike/Spacetime/Causal/CurveMargin.lean - `Causal.isFutureTimelikeCurve_of_contMDiffOn`, `Causal.isLocallyLipschitzOn_of_contMDiffOn`
 13. Lightlike/Spacetime/Causal/MinkowskiCauchy.lean - `Causal.minkowski_slice_isCauchySurface`
 14. Lightlike/Spacetime/Causal/PushUp.lean - `Causal.chronFuture_causalFuture_trans_of`, `Causal.causalFuture_chronFuture_trans_of`, `Causal.chronFuture_neg_iff`: the push-up lemmas from the openness of the chronological futures and a local push-up property, and time reversal.
+15. Lightlike/Spacetime/CausalLadder/LocalLift.lean - `Causal.localPushUp_of_isOpen`, `Causal.chronFuture_causalFuture_trans`, `Causal.causalFuture_chronFuture_trans`: the local push-up property from the openness of the chronological futures, in a manifold without boundary, and the two push-up lemmas from the openness alone.
 
 ## References
 
