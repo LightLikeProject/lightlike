@@ -1,4 +1,4 @@
-import Lightlike.Spacetime.Causal.MinkowskiCausal
+import Lightlike.Spacetime.CausalLadder.GlobHypSimple
 
 /-!
 # Task T-GE2-P12
@@ -57,9 +57,11 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
   {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I ∞ M]
   {n : ℕ} {g : LorentzianMetric I M n} (T : TimeOrientation g)
 
-/-- **Global hyperbolicity implies causal simplicity.** -/
+/-- **Global hyperbolicity implies causal simplicity.** The hypothesis `[BoundarylessManifold I M]`
+matches the source (Hawking–Ellis: space-time has no boundary); approved by the maintainers,
+18 November 2026. -/
 theorem isCausallySimple_of_isGloballyHyperbolic [T2Space M] [SecondCountableTopology M]
-    (h : IsGloballyHyperbolic T) : IsCausallySimple T := by
-  sorry
+    [BoundarylessManifold I M] (h : IsGloballyHyperbolic T) : IsCausallySimple T := by
+  exact isCausallySimple_of_isGloballyHyperbolic_boundaryless T h
 
 end Lightlike.Causal
