@@ -1,4 +1,5 @@
-import Lightlike.OperatorAlgebras.SpectralStone
+import Lightlike.OperatorAlgebras.Spectral.Stone.Theorem
+import Lightlike.OperatorAlgebras.Spectral.Stone.Exponential
 import Lightlike.OperatorAlgebras.UnitaryGroup
 
 /-!
