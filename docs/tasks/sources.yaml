@@ -12,6 +12,26 @@
 # Never add a reference or a location that has not been looked up.
 
 references:
+  bilal-2001:
+    cite: "A. Bilal, Introduction to Supersymmetry (2001)"
+    title: "Introduction to Supersymmetry"
+    arxiv: hep-th/0101055
+  gourgoulhon-2007:
+    cite: "E. Gourgoulhon, 3+1 Formalism and Bases of Numerical Relativity (2007)"
+    title: "3+1 Formalism and Bases of Numerical Relativity"
+    arxiv: gr-qc/0703035
+  milnor-1963:
+    cite: "J. Milnor, Morse Theory, Annals of Mathematics Studies 51, Princeton University Press (1963)"
+    title: "Morse Theory. (AM-51)"
+    doi: 10.1515/9781400881802
+  reed-simon-1972:
+    cite: "M. Reed and B. Simon, Methods of Modern Mathematical Physics I: Functional Analysis, Academic Press (1972)"
+    title: "Methods of modern mathematical physics"
+    isbn: "9780125850018"
+  weinberg-1995:
+    cite: "S. Weinberg, The Quantum Theory of Fields, Vol. I: Foundations, Cambridge University Press (1995)"
+    title: "The Quantum Theory of Fields"
+    doi: 10.1017/CBO9781139644167
   anguige-tod-1999:
     cite: "K. Anguige and K. P. Tod, Isotropic cosmological singularities I: polytropic perfect fluid spacetimes, Ann. Physics (1999)"
     title: "Isotropic cosmological singularities 1: Polytropic perfect fluid spacetimes"
@@ -1043,6 +1063,51 @@ canonical:
   other: [barcelo-liberati-visser-2005]
 
 milestones:
+  GE12:
+    class: sourced
+    refs:
+      - {ref: carroll-1997, location: "Chapter 5", check: "Killing"}
+  GE13:
+    class: sourced
+    refs:
+      - {ref: gourgoulhon-2007, location: "Section 2.5", check: "Codazzi"}
+  GE14:
+    class: sourced
+    refs:
+      - {ref: carroll-1997, location: "eq. (4.72)", check: "Weak Energy Condition"}
+      - {ref: hawking-ellis-1973, location: "Chapter: The physical significance of curvature|10.1017/CBO9780511524646.005"}
+  GE15:
+    class: sourced
+    refs:
+      - {ref: carroll-1997, location: "Chapter 4", check: "Hilbert action"}
+  HA5:
+    class: sourced
+    refs:
+      - {ref: brocker-tom-dieck-1985, location: "Chapter: Representative Functions|10.1007/978-3-662-12918-0_3"}
+  HA6:
+    class: sourced
+    refs:
+      - {ref: weinberg-1995, location: "Chapter: RELATIVISTIC QUANTUM MECHANICS|10.1017/CBO9781139644167.004"}
+  OP6:
+    class: sourced
+    refs:
+      - {ref: reed-simon-1972, location: "Chapter: Bounded Operators|10.1016/b978-0-12-585001-8.50012-x"}
+  SP3:
+    class: sourced
+    refs:
+      - {ref: mukhametzhanov-zhiboedov-2019, location: "eq. (1.8)", check: "Ingham"}
+  SP4:
+    class: sourced
+    refs:
+      - {ref: milnor-1963, location: "Chapter: PART I. NON-DEGENERATE SMOOTH FUNCTIONS ON A MANIFOLD|10.1515/9781400881802-002"}
+  FT6:
+    class: sourced
+    refs:
+      - {ref: delamotte-2007, location: "eq. (2.29)", check: "Legendre"}
+  PG8:
+    class: sourced
+    refs:
+      - {ref: bilal-2001, location: "Section 3.3", check: "massless"}
   PL3:
     class: sourced
     refs:
