@@ -86,9 +86,10 @@ lemma sinc_pow_four_le (y : ℝ) : Real.sinc y ^ 4 ≤ 2 / (1 + y ^ 2) := by
 open MeasureTheory Set in
 /-- **The elementary integral estimate** of the local bound (MZ (5.11)-(5.17), in the form needed
 here): if `0 ≤ H y ≤ M / (1 + y²)` then `∫₀^∞ x^{-3/4} H (b (x - Δ)) dx ≤ C Δ^{-3/4}` for `Δ ≥ 1`. -/
-theorem integral_rpow_mul_le {H : ℝ → ℝ} {M b : ℝ} (hM : 0 ≤ M) (hb : 0 < b)
+theorem integral_rpow_mul_le {H : ℝ → ℝ} {M b : ℝ} (hM : 0 ≤ M) (hb : 0 < b) (hHc : Continuous H)
     (hH0 : ∀ y, 0 ≤ H y) (hHM : ∀ y, H y ≤ M / (1 + y ^ 2)) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ Δ : ℝ, 1 ≤ Δ →
+      IntegrableOn (fun x : ℝ => x ^ (-(3 / 4 : ℝ)) * H (b * (x - Δ))) (Ioi 0) ∧
       ∫ x in Ioi (0 : ℝ), x ^ (-(3 / 4 : ℝ)) * H (b * (x - Δ)) ≤ C * Δ ^ (-(3 / 4 : ℝ)) := by
   set J : ℝ := ∫ x : ℝ, (1 + (b * x) ^ 2)⁻¹ with hJ
   have hJint : Integrable (fun x : ℝ => (1 + (b * x) ^ 2)⁻¹) := by
@@ -160,6 +161,14 @@ theorem integral_rpow_mul_le {H : ℝ → ℝ} {M b : ℝ} (hM : 0 ≤ M) (hb : 
         _ ≤ g1 x + g2 x := le_add_of_nonneg_left (hg10 x)
   have hsum_int : IntegrableOn (fun x => g1 x + g2 x) (Ioi 0) :=
     (hg1int.add hg2int).integrableOn
+  have hfint : IntegrableOn (fun x : ℝ => x ^ (-(3 / 4 : ℝ)) * H (b * (x - Δ))) (Ioi 0) := by
+    refine Integrable.mono' hsum_int ?_ ?_
+    · exact ((measurable_id.pow_const _).mul
+        (hHc.measurable.comp (by fun_prop : Measurable fun x : ℝ => b * (x - Δ)))).aestronglyMeasurable
+    · refine (ae_restrict_iff' measurableSet_Ioi).2 (Filter.Eventually.of_forall fun x hx => ?_)
+      rw [Real.norm_of_nonneg (mul_nonneg (Real.rpow_nonneg (le_of_lt hx) _) (hH0 _))]
+      exact hdom x hx
+  refine ⟨hfint, ?_⟩
   have step1 : ∫ x in Ioi (0 : ℝ), x ^ (-(3 / 4 : ℝ)) * H (b * (x - Δ)) ≤
       ∫ x in Ioi (0 : ℝ), (g1 x + g2 x) := by
     refine integral_mono_of_nonneg ?_ hsum_int ?_
@@ -206,5 +215,94 @@ theorem integral_rpow_mul_le {H : ℝ → ℝ} {M b : ℝ} (hM : 0 ≤ M) (hb : 
     _ ≤ 16 * M / b ^ 2 * Δ ^ (-(3 / 4 : ℝ)) + 2 * Δ ^ (-(3 / 4 : ℝ)) * M * J :=
         add_le_add hfin le_rfl
     _ = (16 * M / b ^ 2 + 2 * M * J) * Δ ^ (-(3 / 4 : ℝ)) := by ring
+
+/-- `2 √2 a / (z √z) = a^{1/4} x^{-3/4}` for `z = 2 √(a x)`. -/
+lemma coeff_eq {a x : ℝ} (ha : 0 < a) (hx : 0 < x) :
+    2 * Real.sqrt 2 * a / (2 * Real.sqrt (a * x)) / Real.sqrt (2 * Real.sqrt (a * x)) =
+      a ^ (1 / 4 : ℝ) * x ^ (-(3 / 4 : ℝ)) := by
+  have hax : 0 < a * x := by positivity
+  have hw : 0 < Real.sqrt (a * x) := Real.sqrt_pos.2 hax
+  rw [Real.sqrt_mul (by norm_num : (0 : ℝ) ≤ 2), Real.sqrt_eq_rpow (a * x),
+    Real.sqrt_eq_rpow ((a * x) ^ (1 / 2 : ℝ))]
+  have h1 : ((a * x) ^ (1 / 2 : ℝ)) ^ (1 / 2 : ℝ) = (a * x) ^ (1 / 4 : ℝ) := by
+    rw [← Real.rpow_mul hax.le]; norm_num
+  have h2 : (a * x) ^ (1 / 2 : ℝ) * (a * x) ^ (1 / 4 : ℝ) = (a * x) ^ (3 / 4 : ℝ) := by
+    rw [← Real.rpow_add hax]; norm_num
+  have h3 : (a * x) ^ (3 / 4 : ℝ) = a ^ (3 / 4 : ℝ) * x ^ (3 / 4 : ℝ) := Real.mul_rpow ha.le hx.le
+  have h4 : a ^ (1 / 4 : ℝ) * a ^ (3 / 4 : ℝ) = a := by
+    rw [← Real.rpow_add ha]; norm_num
+  have h5 : x ^ (-(3 / 4 : ℝ)) = (x ^ (3 / 4 : ℝ))⁻¹ := Real.rpow_neg hx.le _
+  have hA : 0 < (a * x) ^ (1 / 2 : ℝ) := by positivity
+  have hB : 0 < (a * x) ^ (1 / 4 : ℝ) := by positivity
+  have hs2 : 0 < Real.sqrt 2 := by positivity
+  rw [h1]
+  have e : 2 * Real.sqrt 2 * a / (2 * (a * x) ^ (1 / 2 : ℝ)) / (Real.sqrt 2 * (a * x) ^ (1 / 4 : ℝ)) =
+      a / ((a * x) ^ (1 / 2 : ℝ) * (a * x) ^ (1 / 4 : ℝ)) := by field_simp
+  rw [e, h2, h3, h5]
+  have hax' : 0 < a ^ (3 / 4 : ℝ) := by positivity
+  have hx' : 0 < x ^ (3 / 4 : ℝ) := by positivity
+  rw [div_eq_iff (by positivity)]
+  have : a ^ (1 / 4 : ℝ) * (x ^ (3 / 4 : ℝ))⁻¹ * (a ^ (3 / 4 : ℝ) * x ^ (3 / 4 : ℝ)) =
+      (a ^ (1 / 4 : ℝ) * a ^ (3 / 4 : ℝ)) * ((x ^ (3 / 4 : ℝ))⁻¹ * x ^ (3 / 4 : ℝ)) := by ring
+  rw [this, h4, inv_mul_cancel₀ hx'.ne', mul_one]
+
+open MeasureTheory Set in
+/-- **The main term of the local bound** (MZ (5.10), (5.11)-(5.17)): with `β = √(a/Δ)`,
+`∫₀^∞ ρ₀(x) e^{-β (x - Δ)} φ₊(x) dx ≤ C Δ^{-3/4} e^{2 √(a Δ)}` for `Δ ≥ 1`, where `ρ₀` is the crossing
+density and `φ₊ (x) = sinc(b (x - Δ))⁴ / sinc(b δ)⁴` the majorant of the indicator of
+`[Δ - δ, Δ + δ]` (`b δ < π`). -/
+theorem main_term_bound {a b δ : ℝ} (ha : 0 < a) (hb : 0 < b) (hδ : 0 < δ) (hbδ : b * δ < π) :
+    ∃ C : ℝ, 0 ≤ C ∧ ∀ Δ : ℝ, 1 ≤ Δ →
+      ∫ x in Ioi (0 : ℝ), crossingDensity a x * Real.exp (-(Real.sqrt (a / Δ)) * (x - Δ)) *
+          majorant (b * δ) (b * (x - Δ)) ≤
+        C * Δ ^ (-(3 / 4 : ℝ)) * Real.exp (2 * Real.sqrt (a * Δ)) := by
+  have hsp : 0 < Real.sinc (b * δ) := Real.sinc_pos (by rw [abs_of_pos (by positivity)]; exact hbδ)
+  set M : ℝ := 2 / Real.sinc (b * δ) ^ 4 with hMdef
+  have hM : 0 ≤ M := by positivity
+  have hHc : Continuous (majorant (b * δ)) := by
+    unfold majorant; exact (Real.continuous_sinc.pow 4).div_const _
+  have hHM : ∀ y, majorant (b * δ) y ≤ M / (1 + y ^ 2) := by
+    intro y
+    unfold majorant
+    have hD : 0 < Real.sinc (b * δ) ^ 4 := by positivity
+    calc Real.sinc y ^ 4 / Real.sinc (b * δ) ^ 4 ≤ (2 / (1 + y ^ 2)) / Real.sinc (b * δ) ^ 4 :=
+          div_le_div_of_nonneg_right (sinc_pow_four_le y) hD.le
+      _ = M / (1 + y ^ 2) := by rw [hMdef, div_right_comm]
+  obtain ⟨C0, hC0, hC⟩ := integral_rpow_mul_le hM hb hHc (majorant_nonneg _) hHM
+  refine ⟨a ^ (1 / 4 : ℝ) * C0, by positivity, fun Δ hΔ => ?_⟩
+  have hΔ0 : 0 < Δ := by linarith
+  obtain ⟨hint, hbound⟩ := hC Δ hΔ
+  set E : ℝ := Real.exp (2 * Real.sqrt (a * Δ)) with hE
+  have hE0 : 0 < E := Real.exp_pos _
+  have hcd : ∀ x : ℝ, 0 < x → 0 ≤ crossingDensity a x := fun x hx =>
+    tsum_nonneg fun k => crossingTerm_nonneg ha k hx.le
+  have hG : IntegrableOn (fun x : ℝ => a ^ (1 / 4 : ℝ) * E *
+      (x ^ (-(3 / 4 : ℝ)) * majorant (b * δ) (b * (x - Δ)))) (Ioi 0) := hint.const_mul _
+  have hmono : ∫ x in Ioi (0 : ℝ), crossingDensity a x * Real.exp (-(Real.sqrt (a / Δ)) * (x - Δ)) *
+        majorant (b * δ) (b * (x - Δ)) ≤
+      ∫ x in Ioi (0 : ℝ), a ^ (1 / 4 : ℝ) * E * (x ^ (-(3 / 4 : ℝ)) * majorant (b * δ) (b * (x - Δ))) := by
+    refine integral_mono_of_nonneg ?_ hG ?_
+    · refine (ae_restrict_iff' measurableSet_Ioi).2 (Filter.Eventually.of_forall fun x hx => ?_)
+      exact mul_nonneg (mul_nonneg (hcd x hx) (Real.exp_pos _).le) (majorant_nonneg _ _)
+    · refine (ae_restrict_iff' measurableSet_Ioi).2 (Filter.Eventually.of_forall fun x hx => ?_)
+      have hx0 : 0 < x := hx
+      have h1 := crossingDensity_mul_exp_le ha hΔ0 hx0
+      have h2 : (2 * Real.sqrt 2 * a / (2 * Real.sqrt (a * x))) *
+          (E / Real.sqrt (2 * Real.sqrt (a * x))) = a ^ (1 / 4 : ℝ) * E * x ^ (-(3 / 4 : ℝ)) := by
+        calc (2 * Real.sqrt 2 * a / (2 * Real.sqrt (a * x))) * (E / Real.sqrt (2 * Real.sqrt (a * x)))
+            = E * (2 * Real.sqrt 2 * a / (2 * Real.sqrt (a * x)) / Real.sqrt (2 * Real.sqrt (a * x))) := by ring
+          _ = _ := by rw [coeff_eq ha hx0]; ring
+      rw [h2] at h1
+      calc crossingDensity a x * Real.exp (-(Real.sqrt (a / Δ)) * (x - Δ)) *
+            majorant (b * δ) (b * (x - Δ))
+          ≤ (a ^ (1 / 4 : ℝ) * E * x ^ (-(3 / 4 : ℝ))) * majorant (b * δ) (b * (x - Δ)) :=
+            mul_le_mul_of_nonneg_right h1 (majorant_nonneg _ _)
+        _ = _ := by ring
+  refine hmono.trans ?_
+  rw [integral_const_mul]
+  calc a ^ (1 / 4 : ℝ) * E * ∫ x in Ioi (0 : ℝ), x ^ (-(3 / 4 : ℝ)) * majorant (b * δ) (b * (x - Δ))
+      ≤ a ^ (1 / 4 : ℝ) * E * (C0 * Δ ^ (-(3 / 4 : ℝ))) :=
+        mul_le_mul_of_nonneg_left hbound (by positivity)
+    _ = a ^ (1 / 4 : ℝ) * C0 * Δ ^ (-(3 / 4 : ℝ)) * E := by ring
 
 end Lightlike.Tauberian
