@@ -32,7 +32,7 @@ cosmological constant. The coordinate formulas of `Curvature.lean` are the same 
 
 * `Lightlike.curvatureAt`, `ricciAt`, `scalarCurvatureAt`: the curvature of a connection.
 * `Lightlike.IsMetricCompatible`, `Lightlike.IsLeviCivita`: the Levi-Civita conditions.
-* `Lightlike.LorentzianMetric.SatisfiesEinstein`: the Einstein equations on a manifold.
+* `Lightlike.NondegMetric.SatisfiesEinstein`: the Einstein equations on a manifold.
 
 **Relation to `Lightlike.Cosmology.IsEinsteinSolution`.** That predicate is on coordinate
 components (a `IsCoordMetric` on an open set of `ℝⁿ`); `SatisfiesEinstein` is on a Lorentzian
@@ -140,18 +140,6 @@ def einsteinField (g : NondegMetric I M) :
 
 end Connection
 
-namespace LorentzianMetric
-
-variable {n : ℕ} (g : LorentzianMetric I M n)
-
-/-- **The Einstein equations with cosmological constant `Λ`** for `g` and its connection `cov`
-(`cov` is Levi-Civita for `g`): `Ric - (S/2) g + Λ g = 0` at every point. The vacuum equations are
-`Λ = 0`. On a chart this is `Cosmology.IsEinsteinSolution`'s coordinate statement. -/
-def SatisfiesEinstein (cov : Connection I M) (Λ : ℝ) : Prop :=
-  cov.IsLeviCivita g ∧ ∀ x (v w : TangentSpace I x),
-    cov.ricciAt x v w - cov.scalarCurvatureAt g x / 2 * g.g x v w + Λ * g.g x v w = 0
-
-end LorentzianMetric
 
 namespace NondegMetric
 

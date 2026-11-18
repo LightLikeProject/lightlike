@@ -13,7 +13,7 @@ components of the existing coordinate metric `schMetric M` (`Lightlike/GR/Schwar
 * `schwarzschild_coordMetric` (**the bridge**): in every chart of the manifold the coordinate components of
   `schwarzschildMetric M hM` are `schMetric M`;
 * `schwarzschild_satisfiesEinstein`: for the Levi-Civita connection of `schwarzschildMetric M hM` the vacuum Einstein
-  equations hold (`Connection.lean`, `LorentzianMetric.SatisfiesEinstein` with `Λ = 0`);
+  equations hold (`Connection.lean`, `NondegMetric.SatisfiesEinstein` with `Λ = 0`);
 * `schwarzschild_ricci_eq_zero`: its Ricci tensor vanishes.
 
 Proof. The Einstein equations on a manifold are the coordinate vacuum equations in every chart

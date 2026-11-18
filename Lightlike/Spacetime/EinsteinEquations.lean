@@ -2,7 +2,7 @@ import Lightlike.Spacetime.CurvatureSymmetries
 /-!
 # The Einstein equations on a manifold: basic API
 
-* `LorentzianMetric.EinsteinEq g cov Λ κ T`: `cov` is the Levi-Civita connection of `g` and `G + Λ g = κ T` for a source `T`
+* `NondegMetric.EinsteinEq g cov Λ κ T`: `cov` is the Levi-Civita connection of `g` and `G + Λ g = κ T` for a source `T`
   (a field of bilinear forms); `satisfiesEinstein_iff_einsteinEq_zero`: the equations of `Connection.lean`
   (`SatisfiesEinstein`) are the case `κ = 1`, `T = 0`.
 * `scalarCurvatureAt_of_ricci_eq`: if `Ric = c g` at a point, the scalar curvature is `c d`, `d` the dimension.
@@ -23,7 +23,7 @@ noncomputable section
 namespace Lightlike
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
   {M : Type*} [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M]
-  [T2Space M] [IsManifold 𝓘(ℝ, E) 2 M] [CompleteSpace E] {n : ℕ} (g : LorentzianMetric 𝓘(ℝ, E) M n)
+  [T2Space M] [IsManifold 𝓘(ℝ, E) 2 M] [CompleteSpace E] (g : NondegMetric 𝓘(ℝ, E) M)
 variable (cov : Connection 𝓘(ℝ, E) M)
 
 /-- If the Ricci tensor at `x` is `c` times the metric, the scalar curvature at `x` is `c` times the dimension. -/
@@ -50,7 +50,7 @@ theorem scalarCurvatureAt_of_ricci_eq (x : M) (c : ℝ)
 
 /-- **The Einstein equations with a cosmological constant `Λ`, a coupling `κ` and a source `T`**: `cov` is the Levi-Civita connection of `g`
 and `G + Λ g = κ T`. -/
-def _root_.Lightlike.LorentzianMetric.EinsteinEq (cov : Connection 𝓘(ℝ, E) M) (Λ κ : ℝ)
+def _root_.Lightlike.NondegMetric.EinsteinEq (cov : Connection 𝓘(ℝ, E) M) (Λ κ : ℝ)
     (T : Π x : M, TangentSpace 𝓘(ℝ, E) x → TangentSpace 𝓘(ℝ, E) x → ℝ) : Prop :=
   cov.IsLeviCivita g ∧ ∀ x (v w : TangentSpace 𝓘(ℝ, E) x),
     cov.einsteinField g x v w + Λ * g.g x v w = κ * T x v w
@@ -58,7 +58,7 @@ def _root_.Lightlike.LorentzianMetric.EinsteinEq (cov : Connection 𝓘(ℝ, E) 
 /-- The vacuum equations are the equations with no source. -/
 theorem satisfiesEinstein_iff_einsteinEq_zero (Λ : ℝ) :
     g.SatisfiesEinstein cov Λ ↔ g.EinsteinEq cov Λ 1 (fun _ _ _ => 0) := by
-  unfold LorentzianMetric.SatisfiesEinstein LorentzianMetric.EinsteinEq Connection.einsteinField
+  unfold NondegMetric.SatisfiesEinstein NondegMetric.EinsteinEq Connection.einsteinField
   simp
 
 /-- **The vacuum equations with a cosmological constant are `Ric = (2 Λ / (d - 2)) g`** in dimension `d ≠ 2`. -/
@@ -66,7 +66,7 @@ theorem satisfiesEinstein_iff_ricci (Λ : ℝ) (hd : (Module.finrank ℝ E : ℝ
     g.SatisfiesEinstein cov Λ ↔ cov.IsLeviCivita g ∧ ∀ x (v w : TangentSpace 𝓘(ℝ, E) x),
       cov.ricciAt x v w = 2 * Λ / (Module.finrank ℝ E - 2) * g.g x v w := by
   have hd' : (Module.finrank ℝ E : ℝ) - 2 ≠ 0 := sub_ne_zero.2 hd
-  unfold LorentzianMetric.SatisfiesEinstein
+  unfold NondegMetric.SatisfiesEinstein
   refine and_congr_right fun _ => forall_congr' fun x => ?_
   set d : ℝ := (Module.finrank ℝ E : ℝ) with hdd
   constructor
