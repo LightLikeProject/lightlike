@@ -740,6 +740,7 @@ import Lightlike.Spacetime.EHManifold.Locality
 import Lightlike.Spacetime.EHManifold.ManifoldVariation
 import Lightlike.Spacetime.EHManifold.Perturbation
 import Lightlike.Spacetime.EHManifold.Retraction
+import Lightlike.Spacetime.EHManifold.SmallT
 import Lightlike.Spin4.Burnside
 import Lightlike.Spin4.CGBridge
 import Lightlike.Spin4.ClebschGordan
