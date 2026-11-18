@@ -3,15 +3,13 @@ message: "If you use Lightlike, please cite it using these metadata."
 title: "Lightlike: formalized results and open problems in fundamental physics, in Lean 4"
 type: software
 authors:
-  - family-names: "Tumėnas"
-    given-names: "Rolandas"
   - name: "The Lightlike contributors"
 repository-code: "https://github.com/LightlikeProject/lightlike"
 contact:
   - name: "The Lightlike project"
     email: "lightlike.project@gmail.com"
 license: Apache-2.0
-version: 0.1.0
+version: 0.2.0
 keywords:
   - Lean 4
   - formalization
