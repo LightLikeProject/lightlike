@@ -35,6 +35,9 @@ theorem heavy_le (ρ : Measure ℝ) (c β β' ΔH : ℝ) (hβ' : 0 < β') (hββ
     rw [← Real.exp_add]
     refine Real.exp_le_exp.2 ?_
     nlinarith
-  nlinarith [h1, hmod]
+  have h2 : partZ ρ c β' (Ici ΔH) =
+      partZ ρ c β (Ici ΔH) + (partZ ρ c β (Iio ΔH) - partZ ρ c β' (Iio ΔH)) := by linarith
+  rw [h2] at h1
+  nlinarith [h1]
 
 end Lightlike.Tauberian
