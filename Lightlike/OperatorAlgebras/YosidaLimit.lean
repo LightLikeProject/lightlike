@@ -52,4 +52,40 @@ lemma cauchySeq_Un_domain (hA : IsSelfAdjoint A) (t : ℝ) (x : A.domain) :
       rw [div_lt_iff₀ (by positivity)]
       nlinarith [abs_nonneg t]
 
+/-- A sequence of isometries that is Cauchy on a dense set is Cauchy everywhere. -/
+lemma cauchySeq_of_dense_isometries {V : ℕ → H ≃ₗᵢ[ℂ] H} {D : Set H} (hd : Dense D)
+    (hD : ∀ y ∈ D, CauchySeq fun n => V n y) (y : H) : CauchySeq fun n => V n y := by
+  rw [Metric.cauchySeq_iff]
+  intro ε hε
+  obtain ⟨y', hy', hdist⟩ := hd.exists_dist_lt y (show 0 < ε / 3 by positivity)
+  obtain ⟨N, hN⟩ := (Metric.cauchySeq_iff.1 (hD y' hy')) (ε / 3) (by positivity)
+  refine ⟨N, fun m hm n hn => ?_⟩
+  have h1 := hN m hm n hn
+  have h2 : dist (V m y) (V m y') = dist y y' := (V m).dist_map y y'
+  have h3 : dist (V n y') (V n y) = dist y' y := (V n).dist_map y' y
+  have h4 := dist_triangle (V m y) (V m y') (V n y)
+  have h5 := dist_triangle (V m y') (V n y') (V n y)
+  rw [dist_comm y' y] at h3
+  linarith
+
+/-- For every `y`, `U_n t y` is a Cauchy sequence. -/
+lemma cauchySeq_Un (hA : IsSelfAdjoint A) (t : ℝ) (y : H) : CauchySeq fun n => Un hA n t y :=
+  cauchySeq_of_dense_isometries (V := fun n => Un hA n t) hA.dense_domain
+    (fun w hw => cauchySeq_Un_domain hA t ⟨w, hw⟩) y
+
+/-- **The limit of the approximating unitary groups**: `U t y = lim U_n t y`. -/
+noncomputable def Ulim (hA : IsSelfAdjoint A) (t : ℝ) (y : H) : H :=
+  Classical.choose (cauchySeq_tendsto_of_complete (cauchySeq_Un hA t y))
+
+lemma tendsto_Ulim (hA : IsSelfAdjoint A) (t : ℝ) (y : H) :
+    Tendsto (fun n => Un hA n t y) atTop (𝓝 (Ulim hA t y)) :=
+  Classical.choose_spec (cauchySeq_tendsto_of_complete (cauchySeq_Un hA t y))
+
+lemma Ulim_zero (hA : IsSelfAdjoint A) (y : H) : Ulim hA 0 y = y := by
+  have h := tendsto_Ulim hA 0 y
+  have : (fun n => Un hA n 0 y) = fun _ => y := by
+    funext n; simp [Un_apply, bdU_zero]
+  rw [this] at h
+  exact tendsto_nhds_unique h tendsto_const_nhds |>.symm ▸ rfl
+
 end Lightlike.OperatorAlgebras
