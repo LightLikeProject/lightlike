@@ -1,4 +1,4 @@
-# T-SF10-P3: assessment of `lorVertex_farRemainder` (18 November 2026)
+# T-SF10-P3: assessment of `lorVertex_farRemainder`
 
 Statement: `Lightlike.Asymptotics.Lorentzian.lorVertex_farRemainder` (Tasks/SF/T_SF10_P3.lean) concludes
 `FarRemainderBound j p g e χ`: for every `λ ∈ ℕ` the function `(1 − χ) A e^{λ S}` is integrable on `ℝ⁴⁴` and
@@ -23,7 +23,7 @@ monotonicity in `λ` for `Re S ≤ 0` gives uniformity once the `λ = 1` integra
 `Re S ≤ −δ` on the part of the support of `1 − χ` outside a compact set, plus non-stationary phase on the compact part.
 (ii) is the new estimate; it is not in BDFHP (the docstring of `lorVertex_farRemainder` says so).
 
-## What was done (integrator's decision, 18 November 2026)
+## What was done
 
 1. The critical-set hypothesis of `lorVertex_farRemainder` is now `CriticalSetIs j p g e (fun _ => 1) K`: every point of
    `tsupport A` with `Re S = 0 ∧ dS = 0` lies in `K`; the chart hypotheses of `lorVertex_asymptotics_fixChart` (`U`, `hP`,

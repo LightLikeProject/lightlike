@@ -1,6 +1,6 @@
 # F11: the CA1 brackets on a hypersurface Σ — design note
 
-Status: design only (18 November 2026). No Lean definitions yet; the task file waits for the Riemannian chart interface.
+Status: design only. No Lean definitions yet; the task files wait for the Riemannian chart interface.
 
 ## Goal
 
@@ -14,7 +14,7 @@ Reused, not redefined:
 
 * `h` is a `Bundle.ContMDiffRiemannianMetric` on the tangent bundle of `Σ` (Mathlib,
   `Mathlib/Geometry/Manifold/VectorBundle/Riemannian.lean`); `Lightlike.LorentzianMetric` mirrors it.
-* Needed from the metric layer (regge, asked for by the integrator for integration/12): the chart coordinate metric of `h`
+* Needed from the metric layer (provided by the metric layer): the chart coordinate metric of `h`
   (as `LorentzianMetric.coordMetric`, with its tensor change law) and the volume measure of `h` (as `volumeMeasure`).
 * The coordinate Christoffel symbols, curvature and scalar curvature of a coordinate metric, and their covariance under a
   change of chart (`Lightlike/Spacetime/Chart*.lean`): the scalar curvature `R` of `h` in a chart is the existing chart
@@ -51,7 +51,7 @@ A concrete `Σ`: the circle times `ℝ^{d-1}`... for `d = 2` the torus `T²` wit
 supported in one chart (the bracket is then the one-chart bracket, which is non-trivial for a non-constant lapse and shift),
 and a case where the supports meet two charts (a lapse equal to `1` near the seam).
 
-## Open points (for the integrator)
+## Open points (for the maintainers)
 
 * The exact form of `π` as a weight-one density (a section of `Sym² TΣ ⊗ |Λ^d T*Σ|` or chart families with the change law);
   the chart-family form is the cheapest and needs no new bundle.
