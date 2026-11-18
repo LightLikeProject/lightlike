@@ -264,4 +264,140 @@ theorem ricci_kruskal_of_mem_image (hM : 0 < M) {y : Fin 4 → ℝ} (hy : y ∈ 
       rw [ricci_congr_on isOpen_efU (fun y' hy' => pullback_kruskal_ef M hM hy') hy]
       exact ricci_ef_eq_zero_of_mem M hM hy b d) b d
 
+/-- Every point of the Kruskal chart with `T + X > 0` is the image of an Eddington–Finkelstein point. -/
+lemma exists_kruskalChange_eq (hM : 0 < M) {z : Fin 4 → ℝ} (hz : z ∈ kruskalU) (hV : 0 < z 0 + z 1) :
+    ∃ y ∈ efU, kruskalChange M y = z := by
+  have hr := kG_pos M hM hz.1
+  have hF := kF_kG M hM hz.1
+  have hM0 : M ≠ 0 := hM.ne'
+  have hex : exp (4 * M * Real.log (z 0 + z 1) / (4 * M)) = z 0 + z 1 := by
+    rw [show 4 * M * Real.log (z 0 + z 1) / (4 * M) = Real.log (z 0 + z 1) by field_simp]
+    exact exp_log hV
+  refine ⟨![4 * M * Real.log (z 0 + z 1), kG M (z 1 ^ 2 - z 0 ^ 2), z 2, z 3], ⟨hr, hz.2.1, hz.2.2⟩, ?_⟩
+  have hexn : exp (-(4 * M * Real.log (z 0 + z 1) / (4 * M))) = (z 0 + z 1)⁻¹ := by
+    rw [exp_neg, hex]
+  have hV0 : z 0 + z 1 ≠ 0 := hV.ne'
+  have hs : kF M (kG M (z 1 ^ 2 - z 0 ^ 2)) * (z 0 + z 1)⁻¹ = z 1 - z 0 := by
+    rw [hF]; field_simp; ring
+  have e0 : kruskalChange M ![4 * M * Real.log (z 0 + z 1), kG M (z 1 ^ 2 - z 0 ^ 2), z 2, z 3] 0 = z 0 := by
+    show (exp (4 * M * Real.log (z 0 + z 1) / (4 * M)) - kF M (kG M (z 1 ^ 2 - z 0 ^ 2)) *
+      exp (-(4 * M * Real.log (z 0 + z 1) / (4 * M)))) / 2 = z 0
+    rw [hex, hexn, hs]; ring
+  have e1 : kruskalChange M ![4 * M * Real.log (z 0 + z 1), kG M (z 1 ^ 2 - z 0 ^ 2), z 2, z 3] 1 = z 1 := by
+    show (exp (4 * M * Real.log (z 0 + z 1) / (4 * M)) + kF M (kG M (z 1 ^ 2 - z 0 ^ 2)) *
+      exp (-(4 * M * Real.log (z 0 + z 1) / (4 * M)))) / 2 = z 1
+    rw [hex, hexn, hs]; ring
+  ext i
+  fin_cases i
+  · exact e0
+  · exact e1
+  · rfl
+  · rfl
+
+/-- The point reflection `(T, X) ↦ (-T, -X)`. -/
+def kruskalNeg (y : Fin 4 → ℝ) : Fin 4 → ℝ := ![-y 0, -y 1, y 2, y 3]
+
+lemma kr_neg (y : Fin 4 → ℝ) : kr M (kruskalNeg y) = kr M y := by simp [kr, kruskalNeg]
+
+lemma kruskalMetric_neg (y : Fin 4 → ℝ) : kruskalMetric M (kruskalNeg y) = kruskalMetric M y := by
+  have h : kr M ![-y 0, -y 1, y 2, y 3] = kr M y := kr_neg M y
+  ext i j
+  fin_cases i <;> fin_cases j <;> simp [kruskalMetric, h, kruskalNeg]
+
+lemma jac_kruskalNeg (y : Fin 4 → ℝ) :
+    jac kruskalNeg y = !![-1, 0, 0, 0; 0, -1, 0, 0; 0, 0, 1, 0; 0, 0, 0, 1] := by
+  have n0 : ∀ k, pd k (fun z => kruskalNeg z 0) y = if k = 0 then -1 else 0 := fun k =>
+    pd_coord (n := 4) 0 k (f := fun t => -t) (f' := -1) (hasDerivAt_neg _)
+  have n1 : ∀ k, pd k (fun z => kruskalNeg z 1) y = if k = 1 then -1 else 0 := fun k =>
+    pd_coord (n := 4) 1 k (f := fun t => -t) (f' := -1) (hasDerivAt_neg _)
+  have n2 : ∀ k, pd k (fun z => kruskalNeg z 2) y = if k = 2 then 1 else 0 := fun k =>
+    pd_coord (n := 4) 2 k (f := fun t => t) (f' := 1) (hasDerivAt_id' _)
+  have n3 : ∀ k, pd k (fun z => kruskalNeg z 3) y = if k = 3 then 1 else 0 := fun k =>
+    pd_coord (n := 4) 3 k (f := fun t => t) (f' := 1) (hasDerivAt_id' _)
+  ext μ a
+  fin_cases μ <;> fin_cases a <;> simp [jac, n0, n1, n2, n3]
+
+lemma kruskalNeg_mem {y : Fin 4 → ℝ} (hy : y ∈ kruskalU) : kruskalNeg y ∈ kruskalU := by
+  refine ⟨?_, hy.2.1, hy.2.2⟩
+  simpa [kruskalNeg] using hy.1
+
+theorem isChartChange_kruskalNeg : IsChartChange kruskalNeg kruskalU kruskalU where
+  isOpen := isOpen_kruskalU
+  mapsTo := fun y hy => kruskalNeg_mem hy
+  smooth := fun μ => by
+    refine ContDiff.contDiffOn ?_
+    fin_cases μ <;> simp only [kruskalNeg] <;> simp <;> fun_prop
+  isUnit_det := fun y _ => by
+    rw [jac_kruskalNeg]
+    simp [Matrix.det_succ_row_zero, Fin.sum_univ_succ, Fin.succAbove]
+
+lemma pullback_kruskalNeg (y : Fin 4 → ℝ) :
+    pullback (kruskalMetric M) kruskalNeg y = kruskalMetric M y := by
+  rw [pullback_eq_mul, jac_kruskalNeg, kruskalMetric_neg]
+  ext i j
+  fin_cases i <;> fin_cases j <;> simp [kruskalMetric, Matrix.mul_apply, Fin.sum_univ_four]
+
+/-- Ricci-flatness is symmetric under `(T, X) ↦ (-T, -X)`. -/
+theorem ricci_kruskal_neg (hM : 0 < M) {z : Fin 4 → ℝ} (hz : z ∈ kruskalU)
+    (h0 : ∀ b d, ricci (kruskalMetric M) b d z = 0) (b d : Fin 4) :
+    ricci (kruskalMetric M) b d (kruskalNeg z) = 0 :=
+  ricci_eq_zero_of_pullback (isCoordMetric_kruskal M hM) isChartChange_kruskalNeg hz
+    (fun b d => by
+      rw [ricci_congr_on isOpen_kruskalU (fun y _ => pullback_kruskalNeg M y) hz]
+      exact h0 b d) b d
+
+/-- Ricci-flatness off `T + X = 0`. -/
+theorem ricci_kruskal_of_ne (hM : 0 < M) {z : Fin 4 → ℝ} (hz : z ∈ kruskalU) (hV : z 0 + z 1 ≠ 0)
+    (b d : Fin 4) : ricci (kruskalMetric M) b d z = 0 := by
+  rcases lt_or_gt_of_ne hV with h | h
+  · have hzn : kruskalNeg z ∈ kruskalU := kruskalNeg_mem hz
+    obtain ⟨y, hy, hyz⟩ := exists_kruskalChange_eq M hM hzn (by simp [kruskalNeg]; linarith)
+    have h1 := ricci_kruskal_of_mem_image M hM hy
+    rw [hyz] at h1
+    have h2 := ricci_kruskal_neg M hM hzn h1 b d
+    have hnn : kruskalNeg (kruskalNeg z) = z := by
+      ext i; fin_cases i <;> simp [kruskalNeg]
+    rwa [hnn] at h2
+  · obtain ⟨y, hy, hyz⟩ := exists_kruskalChange_eq M hM hz h
+    have := ricci_kruskal_of_mem_image M hM hy b d
+    rwa [hyz] at this
+
+/-- **The Kruskal metric is Ricci-flat on all of `X² - T² > -1`, including the horizons `T = ±X`** (by
+continuity of the Ricci tensor from the points off `T + X = 0`). -/
+theorem ricci_kruskal_eq_zero (hM : 0 < M) {z : Fin 4 → ℝ} (hz : z ∈ kruskalU) (b d : Fin 4) :
+    ricci (kruskalMetric M) b d z = 0 := by
+  by_cases hV : z 0 + z 1 = 0
+  · have hcont : ContinuousAt (ricci (kruskalMetric M) b d) z :=
+      (continuousOn_ricci (isCoordMetric_kruskal M hM) b d).continuousAt
+        (isOpen_kruskalU.mem_nhds hz)
+    set c : ℝ → Fin 4 → ℝ := fun t => z + t • Pi.single 0 1 with hc
+    have hcc : Continuous c := continuous_const.add (continuous_id.smul continuous_const)
+    have hc0 : c 0 = z := by simp [hc]
+    have hlim : Filter.Tendsto (fun t => ricci (kruskalMetric M) b d (c t)) (nhds 0)
+        (nhds (ricci (kruskalMetric M) b d z)) := by
+      have h0 := hcc.tendsto 0
+      rw [hc0] at h0
+      exact hcont.tendsto.comp h0
+    have hzero : ∀ᶠ t in nhdsWithin (0 : ℝ) {0}ᶜ, ricci (kruskalMetric M) b d (c t) = 0 := by
+      have hU : ∀ᶠ t in nhds (0 : ℝ), c t ∈ kruskalU :=
+        hcc.continuousAt.preimage_mem_nhds (by rw [hc0]; exact isOpen_kruskalU.mem_nhds hz)
+      filter_upwards [nhdsWithin_le_nhds hU, self_mem_nhdsWithin] with t ht ht0
+      refine ricci_kruskal_of_ne M hM ht ?_ b d
+      have h0 : (c t) 0 = z 0 + t := by simp [hc]
+      have h1 : (c t) 1 = z 1 := by simp [hc, Pi.single_apply]
+      rw [h0, h1]
+      have : t ≠ 0 := ht0
+      intro h; apply this; linarith
+    have h0 : Filter.Tendsto (fun t => ricci (kruskalMetric M) b d (c t)) (nhdsWithin (0 : ℝ) {0}ᶜ)
+        (nhds 0) := tendsto_const_nhds.congr' (hzero.mono fun t ht => ht.symm)
+    exact tendsto_nhds_unique (hlim.mono_left nhdsWithin_le_nhds) h0
+  · exact ricci_kruskal_of_ne M hM hz hV b d
+
+/-- **The Kruskal–Szekeres metric solves the vacuum Einstein equations on the whole region
+`X² - T² > -1`**: the maximal analytic extension of the exterior of Schwarzschild across both horizons,
+with the two exteriors, the black and white hole interiors. -/
+theorem kruskal_isVacuumSolution (hM : 0 < M) : IsVacuumSolution 0 (kruskalMetric M) kruskalU :=
+  ⟨isCoordMetric_kruskal M hM, fun y hy μ ν => by
+    simp [einsteinTensor, scalarCurvature, ricci_kruskal_eq_zero M hM hy]⟩
+
 end Lightlike
