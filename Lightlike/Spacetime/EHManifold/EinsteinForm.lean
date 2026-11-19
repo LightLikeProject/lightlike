@@ -63,11 +63,11 @@ def einsteinBilin (hLC : cov.IsLeviCivita g) (p : M) :
     (fun u u' v => by
       rw [einsteinField_eq_BE g cov hLC, einsteinField_eq_BE g cov hLC, einsteinField_eq_BE g cov hLC,
         hv_add p (FiberBundle.mem_baseSet_trivializationAt' p), map_add,
-        ContinuousLinearMap.add_apply])
+        _root_.add_apply])
     (fun r u v => by
       rw [einsteinField_eq_BE g cov hLC, einsteinField_eq_BE g cov hLC,
         hv_smul' p (FiberBundle.mem_baseSet_trivializationAt' p), map_smul,
-        ContinuousLinearMap.smul_apply])
+        _root_.smul_apply])
     (fun u v v' => by
       rw [einsteinField_eq_BE g cov hLC, einsteinField_eq_BE g cov hLC, einsteinField_eq_BE g cov hLC,
         hv_add p (FiberBundle.mem_baseSet_trivializationAt' p), map_add])
