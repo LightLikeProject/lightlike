@@ -91,4 +91,29 @@ theorem ehFluxDiv_zero (x : Fin n → ℝ) :
   unfold pd
   simp
 
+omit hh₁ hh₂ in
+include hg hdet in
+/-- **The flux divergence of a finite sum of perturbations** is the sum of the flux divergences. -/
+theorem ehFluxDiv_sum {ι : Type*} (s : Finset ι) (hs : ι → (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ)
+    (hsm : ∀ i a b, ContDiff ℝ ∞ (fun y => hs i y a b)) (x : Fin n → ℝ) :
+    ehFluxDiv g (fun z => ∑ i ∈ s, hs i z) x = ∑ i ∈ s, ehFluxDiv g (hs i) x := by
+  classical
+  induction s using Finset.induction_on with
+  | empty =>
+    simp only [Finset.sum_empty]
+    exact ehFluxDiv_zero g hg x
+  | insert a s ha ih =>
+    have hfun : (fun z => ∑ i ∈ insert a s, hs i z) = fun z => hs a z + ∑ i ∈ s, hs i z := by
+      funext z
+      rw [Finset.sum_insert ha]
+    have hsum : ∀ c d, ContDiff ℝ ∞ (fun y => (∑ i ∈ s, hs i y) c d) := by
+      intro c d
+      have : (fun y => (∑ i ∈ s, hs i y) c d) = fun y => ∑ i ∈ s, hs i y c d := by
+        funext y
+        rw [Matrix.sum_apply]
+      rw [this]
+      exact ContDiff.sum fun i _ => hsm i c d
+    rw [hfun, ehFluxDiv_add g (hs a) (fun z => ∑ i ∈ s, hs i z) (hsm a) hsum hg hdet x, ih,
+      Finset.sum_insert ha]
+
 end Lightlike
