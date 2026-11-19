@@ -10,8 +10,9 @@ import Lightlike.Spacetime.Corners.CurvatureSymmetries
 * `satisfiesEinstein_iff_ricci`: in dimension `d ≠ 2`, `SatisfiesEinstein cov Λ` is `Ric = (2 Λ / (d - 2)) g` for the
   Levi-Civita connection; `satisfiesEinstein_zero_iff_ricci_eq_zero`: the vacuum equations are `Ric = 0`.
 
-The relation to the coordinate equations in every chart is `satisfiesEinstein_iff_chart_proved` (`ChartAgreement.lean`), the
-divergence-free property of `G` is `einstein_divergence_free_proved` (`DivergenceFree.lean`).
+The relation to the coordinate equations in every chart is `satisfiesEinstein_iff_chart_provedW`
+(`Lightlike/Spacetime/Corners/ChartAgreement.lean`), the divergence-free property of `G` is
+`einstein_divergence_free_provedW` (`Lightlike/Spacetime/Corners/DivergenceFree.lean`).
 
 **Limits.** `C²` manifolds with corners (any `ModelWithCorners I`) modelled on a finite-dimensional space (the setting of
 `CurvatureSymmetries.lean`); dimension `d = finrank ≠ 2` for the Ricci forms. No statement about the source `T` (its conservation

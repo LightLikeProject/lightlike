@@ -3516,3 +3516,75 @@
   review: kernel-checked
   note: "For the Levi-Civita connection of a smooth metric of any signature on a manifold modelled on R^n, the coordinate field d_k of a chart is a Killing field (g(nabla_v X, w) + g(v, nabla_w X) = 0, equivalently L_X g = 0) at every point of the chart domain when the coordinate components of the metric do not depend on x^k (from g_{nu lambda} Gamma^nu_{mu k} + g_{mu nu} Gamma^nu_{lambda k} = d_k g_{mu lambda}). Compared with Carroll's lecture notes (gr-qc/9712019), p. 140 after eq. (5.40) (independence of the components of one coordinate gives a symmetry; for the metric a Killing field, (5.41)-(5.42)): match. Limits: manifolds modelled on R^n without boundary."
   since: unreleased
+- id: LL-0265
+  title: In a C*-algebra with a Weyl system of a symplectic vector space the Weyl elements are at distance 2 from each other, ‖W(φ) - W(ψ)‖ = 2 for φ ≠ ψ, and the algebra is not separable unless the space is zero
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/WeylAlgebra.lean
+  decls: [Lightlike.OperatorAlgebras.IsWeylSystem.mem_spectrum, Lightlike.OperatorAlgebras.IsWeylSystem.norm_sub, Lightlike.OperatorAlgebras.IsWeylSystem.not_separableSpace, Lightlike.OperatorAlgebras.ccrAlgebra_not_separableSpace]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: bgp-2007, location: "Proposition 4.2.3, p. 117", check: "Proposition 4.2.3"}
+  review: kernel-checked
+  note: "Compared with Bär-Ginoux-Pfäffle, arXiv:0806.1036, Proposition 4.2.3 (2), (3), pp. 117-118 (read): ‖W(φ) - W(ψ)‖ = 2 for φ ≠ ψ, and the algebra A of a Weyl system (A, W) is not separable unless V = {0}; here A is any nontrivial C*-algebra, and the CCR algebra of Example 4.2.2 is the case ccrAlgebra_not_separableSpace."
+  since: unreleased
+- id: LL-0266
+  title: Second quantization of bounded operators on the bosonic and fermionic Fock spaces of any Hilbert space, [dΓ(h), a*(w)] = a*(hw), [dΓ(h), a(w)] = -a(h* w) and [dΓ(h₁), dΓ(h₂)] = dΓ([h₁, h₂]) for every h, h₁, h₂ ∈ B(Z)
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/SecondQuantFock.lean
+  decls: [Lightlike.OperatorAlgebras.SecondQuantFock.Statistics, Lightlike.OperatorAlgebras.SecondQuantFock.theta, Lightlike.OperatorAlgebras.SecondQuantFock.theta_theta, Lightlike.OperatorAlgebras.SecondQuantFock.adjoint_theta, Lightlike.OperatorAlgebras.SecondQuantFock.dGammaT, Lightlike.OperatorAlgebras.SecondQuantFock.dGammaT_theta, Lightlike.OperatorAlgebras.SecondQuantFock.adjoint_dGammaT, Lightlike.OperatorAlgebras.SecondQuantFock.creF, Lightlike.OperatorAlgebras.SecondQuantFock.annF, Lightlike.OperatorAlgebras.SecondQuantFock.creF_of_theta, Lightlike.OperatorAlgebras.SecondQuantFock.theta_creF, Lightlike.OperatorAlgebras.SecondQuantFock.theta_annF, Lightlike.OperatorAlgebras.SecondQuantFock.dGammaT_creF, Lightlike.OperatorAlgebras.SecondQuantFock.dGammaT_annF, Lightlike.OperatorAlgebras.SecondQuantFock.dGammaT_comm, Lightlike.OperatorAlgebras.SecondQuantFock.embCLM_creW, Lightlike.OperatorAlgebras.SecondQuantFock.embCLM_dGammaFock]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: derezinski-2006, location: "Theorem 18, p. 22", check: "Theorem 18"}
+      - {ref: derezinski-2006, location: "Theorem 13, p. 19", check: "Theorem 13"}
+      - {ref: derezinski-2006, location: "Section 5.3, p. 20", check: "Symmetric and antisymmetric Fock spaces"}
+      - {ref: derezinski-2006, location: "Section 5.7, p. 22", check: "Creation and annihilation operators"}
+  review: kernel-checked
+  note: "Compared with Dereziński, arXiv:math-ph/0511030, Theorem 18 (2), (4), p. 22 ([dΓ(h), a(w)] = -a(h* w), [dΓ(h), a*(w)] = a*(hw), in the bosonic and the fermionic case) and Theorem 13 (1), p. 19 ([dΓ(h₁), dΓ(h₂)] = dΓ([h₁, h₂])), with Γⁿ_{s/a}(Z) = Θⁿ_{s/a} ⊗ⁿZ (Section 5.3, p. 20), dΓₙ(h) = ∑ⱼ 1 ⊗ ⋯ ⊗ h ⊗ ⋯ ⊗ 1 (Section 5.2, p. 19), a*(w)Ψ = √(n+1) Θ_{s/a}(w ⊗ Ψ) and a(w) = a*(w)* (Section 5.7, p. 22) (read). Here ⊗ⁿZ is the coordinate tensor power ℓ²(Fin n → ι) of a Hilbert basis of Z, and the identities hold between consecutive tensor powers, sector by sector."
+  since: unreleased
+- id: LL-0267
+  title: The Parke–Taylor formula ⟨ij⟩⁴/(⟨12⟩⋯⟨n1⟩) for any positions i ≠ j of the two negative-helicity gluons by BCFW recursion, conditional on the BCFW large-z falloff (3.11), taken as a hypothesis
+  area: GR
+  file: Lightlike/GR/ParkeTaylorAll.lean
+  decls: [Lightlike.SpinorHelicity.IsBCFWFamilyMHV, Lightlike.SpinorHelicity.parkeTaylor_bcfw_far, Lightlike.SpinorHelicity.eq_parkeTaylor_of_bcfw_mhv, Lightlike.SpinorHelicity.eq_parkeTaylor_of_bcfw_mhv']
+  status: conditional
+  hypotheses: [Lightlike.SpinorHelicity.IsBCFWFamilyMHV]
+  tier: established
+  source:
+    refs:
+      - {ref: elvang-huang-2013, location: "eq. (3.11)", check: "background field"}
+      - {ref: elvang-huang-2013, location: "eq. (2.82)", check: "Cyclic"}
+  review: kernel-checked
+  note: "Compared with Elvang–Huang §3.2, (3.11), p. 37, the remark on the non-adjacent case, p. 39 ('Try your own hands on the proof for the non-adjacent case'), and the cyclic property, p. 25, stated just before (2.82) (read). Conditional on the BCFW large-z falloff (3.11), taken as a hypothesis: the single-diagram recursions of the family (IsBCFWFamilyMHV) encode the validity of the adjacent [−,+⟩ shift, whose 1/z falloff the source quotes from [17] and does not derive. Representation: the negative gluons at 0 and j, other positions by cyclic relabelling (p. 25, property 1)."
+  since: unreleased
+- id: LL-0268
+  title: The Brydges–Kennedy Taylor forest formula, H(1) as the sum over forests F of the integrals over the unit cube of F of the F-th partial derivative of H at X^F(h), for smooth H from R^{P_n} to a Banach space
+  area: FieldTheory
+  file: Lightlike/FieldTheory/Forest/Formula.lean
+  decls: [Lightlike.FieldTheory.Forest.forest_formula_restrict, Lightlike.FieldTheory.Forest.forest_formula, Lightlike.FieldTheory.Forest.forestPoint_eq_path_inf]
+  status: proven
+  tier: established
+  main: true
+  source:
+    refs:
+      - {ref: abdesselam-rivasseau-1994, location: "Theorem III.1", check: "forest"}
+      - {ref: gurau-rivasseau-sfondrini-2014, location: "Theorem 6.1", check: "forest"}
+  review: kernel-checked
+  note: "Compared with Abdesselam and Rivasseau, arXiv:hep-th/9409094, Theorem III.1, eq. (III.2), p. 13, and the definition of h^F_l on p. 3 (read): for H in the space of smooth functions from R^{P_n} to a Banach space V, H(1) is the sum over the forests F of the integrals over the h_l in the unit interval, l in F, of the product over l in F of the partial derivatives in x_l of H at X^F(h), whose entry at the link l is the infimum of the h along the unique path of F joining the ends of l, and 0 if there is none. forest_formula_restrict is this statement for H : (Link n -> R) -> V with ContDiff R infinity H and V a real Banach space; forest_formula states it with the integral over the whole cube of R^{P_n} of the same integrand, a function of the h_l, l in F, only. Differences from the cited theorem, all representation, with the meaning unchanged: the points 1, ..., n are Fin n and P_n is Link n, the unordered pairs s(a, b) with a /= b; X^F(h)_l is defined by the ultrametric of F (the largest h_m, m in F, such that the ends of l are joined by the links of F with parameter at least h_m, 0 if none), which for h >= 0, in particular on the unit cube, is the infimum along the path of F and 0 if there is no path (forestPoint_eq_path_inf, forestPoint_of_not_linked); the integral over the unit cube of F is the integral over F -> R for the product of the uniform measures on the unit interval, h extended by 0 off F, which does not change X^F(h) (forestPoint_congr); the product of the partial derivatives is the iterated Frechet partial derivative pdF along the coordinate vectors, independent of the order (pd_comm, pdF_insert). Proof: not the source's (the algebraic formula (II.1) for polynomials and density in S, pp. 13-14), but the iterated Taylor interpolation of Gurau, Rivasseau and Sfondrini, arXiv:1401.5003, Theorem 6.1, eq. (6.1), p. 107, and its proof, pp. 107-109 (read), as an induction on the number of links in which the new link is the one with the smallest parameter (T_succ, interp_insert_update); ties have measure zero (cube_eq_null)."
+  since: unreleased
+- id: LL-0269
+  title: The forest matrix, with 1 on the diagonal and the infimum of the parameters along the paths of F off it, is positive semidefinite for parameters at most 1
+  area: FieldTheory
+  file: Lightlike/FieldTheory/Forest/Positivity.lean
+  decls: [Lightlike.FieldTheory.Forest.forestMatrix, Lightlike.FieldTheory.Forest.posSemidef_forestMatrix]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: rivasseau-wang-2010, location: "Theorem II.1", check: "positive"}
+  review: kernel-checked
+  note: "Compared with Rivasseau and Wang, arXiv:1003.1037, Theorem II.1, eq. (II-1), p. 2, and the convex combination (II-4) of block matrices of ones, pp. 2-3 (read): the symmetric n x n matrix X^F with X_ii = 1 and X_ij the infimum of the parameters w on the path of the forest F from i to j (0 if there is none) is positive. posSemidef_forestMatrix: for any finite set of links F and parameters with w_l <= 1 on F, forestMatrix F w (1 on the diagonal, the ultrametric of F off it, equal to the path infimum for w >= 0 by forestPoint_eq_path_inf and forestMatrix_eq_forestPoint) is Matrix.PosSemidef. Difference, representation, with the meaning unchanged: positive is Matrix.PosSemidef (symmetric with x^T X x >= 0); the matrix can be singular (one link with parameter 1 gives the 2 x 2 matrix of ones), so the source's positive is positive semidefinite. Not a difference: the statement holds for any finite set of links and needs only w_l <= 1 on F, which contains the source's case of a forest with parameters in the unit interval. Proof: the integral form of (II-4): for t in (0, 1], t <= X_ij exactly when i and j are joined by the links with w >= t (le_ultra_iff), so X is the integral over t of the block matrices of ones of those clusters, each positive (sum_block_nonneg)."
+  since: unreleased

@@ -14,6 +14,21 @@
   "citations": 73,
   "citations_via": "Semantic Scholar"
  },
+ "abdesselam-rivasseau-1994": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Trees, forests and jungles: a botanical garden for cluster expansions",
+  "locations": {
+   "Theorem III.1": {
+    "verified": true,
+    "snippet": "Theorem III.1 (The Brydges-Kennedy Taylor forest formula) \u0012Y Z 1 \u0013\u0012\u0010Y \u0013 X ∂ \u0011 XFBK (h) \u0001 H(1l) = dhl H . (III.2) 0 ∂xl F u−forest l∈F l∈F Here XFBK (h) is the vector (xl )l∈Pn of IRPn defined by xl = hF l (h), which is t",
+    "why": null
+   }
+  },
+  "citations": 162,
+  "citations_via": "Semantic Scholar"
+ },
  "adamo-2018": {
   "checked": "2026-11-19",
   "exists": true,
@@ -1749,6 +1764,16 @@
     "snippet": "Corollary 2. Suppose that Y is an even dimensional real Hilbert space. Let Y ∋ y 7→ φπ1 (y) ∈ Bh (H) and Y ∋ y 7→ φπ2 (y) ∈ Bh (H) be two irreducible representations of the CAR. Then they are unitarily equivalent. 4.3 Fe",
     "why": null
    },
+   "Section 5.3, p. 20": {
+    "verified": true,
+    "snippet": "5.3 Symmetric and antisymmetric Fock spaces Let S n ∋ σ 7→ Θ(σ) ∈ U (⊗n Z) be the natural representation of the permuta- tion group S n given by Θ(σ)z1 ⊗ · · · ⊗ zn := zσ−1 (1) ⊗ · · · ⊗ zσ−1 (n) .",
+    "why": null
+   },
+   "Section 5.7, p. 22": {
+    "verified": true,
+    "snippet": "5.7 Creation and annihilation operators Let Z be a Hilbert space and w ∈ Z. We consider the bosonic/fermionic Fock space Γs/a (Z). fin Let w ∈ Z. We define two",
+    "why": null
+   },
    "Theorem 10, p. 17": {
     "verified": true,
     "snippet": "Theorem 10. 1) Let (φ1 , φ2 , . . . , φ2n ) be a representation of the CAR over R2n in a Hilbert space H. Then there exists a Hilbert space K and a unitary operator U : ⊗ n C2 ⊗ K → H such that \u0010 \u0011 (j) U Ij−1 σ1 ⊗ 1K = φ",
@@ -2145,6 +2170,11 @@
    "eq. (2.96)": {
     "verified": true,
     "snippet": "(2.96) This means that the helicity structure uniquely fixes the 3-particle amplitude up to an overall constant! This may remind you of a closely related fact, namely that in a conformal field theory, the 3-point correla",
+    "why": null
+   },
+   "eq. (3.11)": {
+    "verified": true,
+    "snippet": "(3.11) Ân (z) ∼ z3 z z z If i and j are non-adjacent, one gains an extra power 1/z in each case. Thus any one of the three types of shifts [−, −i, [−, +i, [+, +i give valid recursion relations for gluon tree amplitudes.",
     "why": null
    },
    "eq. (3.3)": {
@@ -2607,6 +2637,21 @@
    }
   },
   "citations": 302,
+  "citations_via": "Semantic Scholar"
+ },
+ "gurau-rivasseau-sfondrini-2014": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Renormalization: an advanced overview",
+  "locations": {
+   "Theorem 6.1": {
+    "verified": true,
+    "snippet": "Theorem 6.1 (The Forest Formula) XZ f (1) = dwF ∂F f [X F (wF )] (6.1) F where • The sum over F is over forests over n labeled vertices i = 1, · · · , n, in- cluding the empty forest with no edge. Such forests are exactl",
+    "why": null
+   }
+  },
+  "citations": 36,
   "citations_via": "Semantic Scholar"
  },
  "gurau-ryan-2012": {
@@ -4359,6 +4404,21 @@
   },
   "citations": 171,
   "citations_via": "Semantic Scholar"
+ },
+ "rivasseau-wang-2010": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Loop Vertex Expansion for Phi^2k Theory in Zero Dimension",
+  "locations": {
+   "Theorem II.1": {
+    "verified": true,
+    "snippet": "Theorem II.1. X\u0002 Y Z 1 \u0003 Y ∂` ]f · [X F ({w`0 })] \u0001 f (1, . . . , 1) = dw` [ (II-1) F `∈F 0 `∈F where • the sum over F is over forests over the n vertices, including the empty one, • xF 0 ` ({w`0 }) is the infimum of the",
+    "why": null
+   }
+  },
+  "citations": 79,
+  "citations_via": "OpenAlex"
  },
  "roberts-1999": {
   "checked": "2026-11-10",

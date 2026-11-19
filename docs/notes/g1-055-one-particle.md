@@ -47,14 +47,25 @@ stated).
 
 The classification says that every irreducible positive-energy unitary representation of the Poincaré group is
 one of the induced representations, labelled by the orbit and an irreducible representation of the little group.
-What stops it here, concretely:
+The first step, the joint spectral measure of the translations (the SNAG theorem), is formalised
+(`Lightlike/Poincare/SnagJoint.lean`): a strongly continuous unitary representation of `ℝⁿ` is
+`T(a) = ∫ e^{i⟨a, p⟩} dP(p)` for a unique projection-valued measure `P` on `ℝⁿ` (`exists_jointSpectralMeasure`,
+`jointSpectralMeasure_unique`; Freitag, Chapter V, §5, Theorem 5.1, p. 146, in the projection-valued-measure form of
+Remarks 5.3, 5.4 and Definition 5.5, p. 147). The proof takes the Stone generators of the axis subgroups, their
+commuting Cayley transforms (`SnagCommute.lean`), and the joint spectral measure of these through Gelfand duality
+(`SnagGelfand.lean`). The second step is formalised as well (`Lightlike/Poincare/OneOrbit.lean`): for a
+strongly continuous unitary representation `V(a, A)` of `ℝ⁴ ⋊ SL(2,ℂ)` (`IsPoincareRep`) the momentum measure is
+covariant (`covariant_jointSpectralMeasure`, `SnagCovariance.lean`); for an irreducible `V` the projection of an
+invariant Borel set of momenta is `0` or `1` (`momPVM_invariant_eq_zero_or_one`; Freitag, Lemma 7.1, p. 150); and
+under positive energy (the closed forward cone carries the momentum measure) the measure sits on one orbit: a mass
+shell `p² = m²`, `m > 0`, the light cone, or `{0}` (`exists_orbit`; Proposition 7.2, p. 151). What stops the rest,
+concretely:
 
-* the SNAG theorem (a strongly continuous unitary representation of `ℝ⁴` is `∫ e^{i p·a} dE(p)` for a
-  projection-valued measure `E` on `ℝ⁴`): the library has Stone's theorem for one-parameter groups and the spectral
-  theorem for one self-adjoint operator, not the joint version for `ℝ⁴`; above, `E` is constructed by hand for the
-  induced representations only;
 * Mackey's imprimitivity theorem (a system of imprimitivity based on a transitive orbit is induced from the little
-  group): not in the library.
+  group): not in the library. Its first step is formalised for the mass shells (`OrbitMeasureClass.lean`,
+  `momPVM_eq_zero_of_null`): a momentum measure carried by a shell is absolutely continuous with respect to the image
+  of the Haar measure; the decomposition of `H` over the orbit and the passage to a representation of the stabiliser
+  are not.
 
 The massless representations of helicity `n/2` act on `L²(ν)` of the forward light cone, for every invariant
 measure `ν` (`ConeL2.lean`). The standard lift of the cone is discontinuous on the half-line `P₀₀ = 0` (no continuous

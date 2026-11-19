@@ -1,6 +1,6 @@
 """Numerical check (not a proof) of the statement of the large-spin asymptotics of the coherent 15j
 integral and of the Euclidean EPRL vertex in Lightlike/Asymptotics/EPRL/Amplitude.lean,
-ReggeState.lean and Formula.lean, and of the gluing, stationarity, suppression and critical-point
+ReggeState.lean and Lightlike/Asymptotics/EPRL/Formula.lean, and of the gluing, stationarity, suppression and critical-point
 results proved there (Gluing.lean, Decay.lean, GluingSolutions.lean, Normals.lean, Lightlike/Asymptotics/EPRL/Critical.lean),
 built independently of the Lean files with numpy.
 
@@ -25,7 +25,7 @@ of det(-H); check 3 compares the two. The formula (Lean: Coh15jAsymptoticFormula
     Phi = sum_e (n_e/2) Theta_e (Lean: reggeAction).
 
 Checks, which must pass:
- 1. the Regge state, on the regular simplex of Formula.lean (Lean: regSimplex) and two random
+ 1. the Regge state, on the regular simplex of Lightlike/Asymptotics/EPRL/Formula.lean (Lean: regSimplex) and two random
     simplices: Theta_e = arccos(N_a . N_b) equals pi minus the interior dihedral angle computed from
     the vertices alone (projection onto the plane orthogonal to the triangle); on the regular
     simplex Theta = pi - arccos(1/4) and all triangle areas are sqrt(3)/2 (Lean:
@@ -36,7 +36,7 @@ Checks, which must pass:
     node is even (Lean: the parity hypothesis), so each critical point comes with 2^4 copies in the
     gauge X_4 = 1; the Haar measure is a probability measure and fixing X_4 = 1 does not change the
     integral (exact quadrature, all five factors integrated, at lam = 1, 2);
- 3. the Hessian at the instances of Formula.lean (Lean: regular_coh15j_hyps with n_e = 3 and
+ 3. the Hessian at the instances of Lightlike/Asymptotics/EPRL/Formula.lean (Lean: regular_coh15j_hyps with n_e = 3 and
     regular_eprl_hyps with gamma = 1/2, (n, m) = (3, 1)): H is symmetric; F^-1 d^2 F equals
     d^2 log F at U+-; H scales linearly in n; det(-H+-) is recorded with its distance from 0
     (|det|, smallest singular value, smallest eigenvalue of Re(-H), which is positive, so

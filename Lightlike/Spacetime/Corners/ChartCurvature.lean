@@ -22,8 +22,9 @@ For a smooth connection `cov` on a manifold `M` modelled with corners on a finit
 
 **Limits.** Manifolds modelled with corners (any `ModelWithCorners`) on a finite-dimensional space, no Hausdorff hypothesis, and a locally smooth connection
 (`LocallySmoothConnectionW`). The statement of the task `T-GE1-P2` is for any `ModelWithCorners` without the Hausdorff hypothesis; this file
-proves it with derivatives in the chart taken within `range I`. The coordinate files after it (`ChartAgreement`, `ChartTensor`,
-`DivergenceFree`, `LeviCivitaSmooth`, `EinsteinEquations`) still treat the model without boundary.
+proves it with derivatives in the chart taken within `range I`. The coordinate files after it have their versions for any model with
+corners in `Lightlike/Spacetime/Corners/` too (`ChartAgreement`, `ChartTensor`, `DivergenceFree`, `LeviCivitaSmooth`,
+`EinsteinEquations`), with the declarations that the files built on this layer use.
 
 This is the Corners layer of the CO30 branch: the versions for any model with corners of the declarations of
 `Lightlike/Spacetime/ChartCurvature.lean` that the CO30 and GE11 files use, with a `W` suffix where the boundaryless file owns the name.

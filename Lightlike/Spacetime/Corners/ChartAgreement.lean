@@ -26,7 +26,7 @@ chart at `x₀`, at the point `φ⁻¹ y`:
   `ricci`;
 * `scalarCurvatureAt_coordW`: the intrinsic scalar curvature is the coordinate `scalarCurvature` (the trace of the
   Ricci tensor with `g` does not depend on the basis: `trace_raiseW`);
-* `satisfiesEinstein_iff_chart_proved`: the Einstein equations of `Connection.lean` hold iff the coordinate
+* `satisfiesEinstein_iff_chart_provedW`: the Einstein equations of `Connection.lean` hold iff the coordinate
   vacuum equations hold in every chart.
 
 **Corners.** Everything is for any `ModelWithCorners I ℝ (Fin n → ℝ) H`; the coordinate Christoffel, Riemann, Ricci and scalar
@@ -34,7 +34,7 @@ curvature are those of `CurvatureWithin.lean`, with derivatives within `range I`
 (relatively open in `range I`).
 
 **Differences from the tasks.** `scalarCurvatureAt_coordW` is the statement of the task `T-GE1-P5` and
-`satisfiesEinstein_iff_chart_proved` that of `T-GE1-P6`, each with the added hypothesis
+`satisfiesEinstein_iff_chart_provedW` that of `T-GE1-P6`, each with the added hypothesis
 `[IsManifold I 2 M]` (needed by `curvatureAt_apply_proved`); the tasks stay open. The comparison
 of the definitions with Carroll, *Spacetime and Geometry*, ch. 3, and Wald, *General Relativity*, is pending: the
 sources were not read at the cited locations.
@@ -449,5 +449,73 @@ theorem scalarCurvatureAt_coordW (g : NondegMetric I M) (h : cov.IsLeviCivita g)
   have := congrFun (congrFun hsym ν) σ
   simp only [Matrix.transpose_apply] at this
   rw [hr, this]
+
+/-- **The Einstein equations on a manifold are the coordinate Einstein equations in every chart.** -/
+theorem satisfiesEinstein_iff_chart_provedW (g : NondegMetric I M)
+    (h : cov.IsLeviCivita g) (Λ : ℝ) :
+    g.SatisfiesEinstein cov Λ ↔
+      ∀ x₀ : M, IsVacuumSolutionW (range I) Λ (g.coordMetricW x₀) (extChartAt I x₀).target := by
+  constructor
+  · rintro ⟨-, hE⟩ x₀
+    refine ⟨g.isCoordMetricW_coordMetric x₀, fun y hy μ ν => ?_⟩
+    have hp := symm_mem_chartTriv_baseSetW x₀ hy
+    have e := hE _ (coordFieldW (I := I) x₀ μ ((extChartAt I x₀).symm y))
+      (coordFieldW (I := I) x₀ ν ((extChartAt I x₀).symm y))
+    have hs : cov.ricciAt ((extChartAt I x₀).symm y)
+        (coordFieldW (I := I) x₀ μ ((extChartAt I x₀).symm y))
+        (coordFieldW (I := I) x₀ ν ((extChartAt I x₀).symm y)) = ricciW (range I) (g.coordMetricW x₀) μ ν y := by
+      rw [ricciAt_symm_provedW cov g h.1 h.2 _ _ _]
+      exact ricciAt_coordW cov x₀ g h hy ν μ
+    have hg : g.g ((extChartAt I x₀).symm y)
+        (coordFieldW (I := I) x₀ μ ((extChartAt I x₀).symm y))
+        (coordFieldW (I := I) x₀ ν ((extChartAt I x₀).symm y)) = g.coordMetricW x₀ y μ ν := by
+      rw [coordField_applyW x₀ μ hy, coordField_applyW x₀ ν hy, g.coordMetric_eqW x₀ hy]
+    rw [hs, scalarCurvatureAt_coordW cov x₀ g h hy, hg] at e
+    unfold einsteinTensorW
+    linarith
+  · intro hvac
+    refine ⟨h, fun p v w => ?_⟩
+    set φ := extChartAt I p with hφ
+    have hzs : p ∈ φ.source := mem_extChartAt_source p
+    have hy : φ p ∈ φ.target := φ.map_source hzs
+    have hp : p ∈ (tTrivW (I := I) (E := Fin n → ℝ) p).baseSet := by
+      simpa [tTrivW, TangentBundle.trivializationAt_baseSet] using (mem_chart_source (Fin n → ℝ) p)
+    have hvac' := (hvac p).2 (φ p) hy
+    have hc : ∀ σ ν : Fin n, cov.ricciAt p (coordBasisW p hp σ) (coordBasisW p hp ν) -
+        cov.scalarCurvatureAt g p / 2 * g.g p (coordBasisW p hp σ) (coordBasisW p hp ν) +
+        Λ * g.g p (coordBasisW p hp σ) (coordBasisW p hp ν) = 0 := by
+      intro σ ν
+      have e := hvac' σ ν
+      have hr := ricciAt_coordW cov p g h hy σ ν
+      have hs := scalarCurvatureAt_coordW cov p g h hy
+      have hg := g_coordFieldW g p σ ν hy
+      rw [hφ, (extChartAt I p).left_inv hzs] at hr hs hg
+      have hr' := ricciAt_coordW cov p g h hy ν σ
+      rw [hφ, (extChartAt I p).left_inv hzs] at hr'
+      have e1 : ∀ k, coordBasisW p hp k = coordFieldW p k p := fun k =>
+        (coordBasis_applyW p hp k).trans (symmL_eq_coordFieldW p hp k)
+      rw [e1 σ, e1 ν]
+      have hsym := ricciAt_symm_provedW cov g h.1 h.2 p (coordFieldW p σ p) (coordFieldW p ν p)
+      rw [hr, hs, hg]
+      have hrs : ricciW (range I) (g.coordMetricW p) ν σ (φ p) = ricciW (range I) (g.coordMetricW p) σ ν (φ p) := by
+        rw [← hr, hsym, hr']
+      unfold einsteinTensorW at e
+      linarith
+    -- the bilinear form vanishes on the coordinate basis, hence everywhere
+    set B : TangentSpace I p →ₗ[ℝ] TangentSpace I p →ₗ[ℝ] ℝ :=
+      RicBW cov p hp - (cov.scalarCurvatureAt g p / 2 - Λ) • (g.g p).toBilinForm with hB
+    have hB0 : B = 0 := by
+      refine LinearMap.BilinForm.ext_basis (coordBasisW p hp) fun σ ν => ?_
+      have := hc σ ν
+      simp only [hB, LinearMap.sub_apply, LinearMap.smul_apply, smul_eq_mul, LinearMap.zero_apply]
+      show cov.ricciAt p _ _ - (cov.scalarCurvatureAt g p / 2 - Λ) * g.g p _ _ = 0
+      linarith
+    have := congrArg (fun B' => B' v w) hB0
+    simp only [hB, LinearMap.sub_apply, LinearMap.smul_apply, smul_eq_mul, LinearMap.zero_apply] at this
+    show cov.ricciAt p v w - cov.scalarCurvatureAt g p / 2 * g.g p v w + Λ * g.g p v w = 0
+    have h2 : (RicBW cov p hp) v w = cov.ricciAt p v w := rfl
+    have h3 : ((g.g p).toBilinForm) v w = g.g p v w := rfl
+    rw [h2, h3] at this
+    linarith
 
 end Lightlike

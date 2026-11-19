@@ -2,7 +2,8 @@
 
 Lean files: `Lightlike/ODE/GlobalLipschitz.lean`, `Lightlike/Canonical/Holonomy.lean`,
 `Lightlike/Canonical/HolonomyPaths.lean`, `Lightlike/Canonical/HolonomyGauge.lean`,
-`Lightlike/Canonical/HolonomyGraph.lean`, `Lightlike/Canonical/HolonomyALGraph.lean`, `Lightlike/Canonical/HolonomyAnalytic.lean`, `Lightlike/Canonical/HolonomyALOrder.lean` (in progress).
+`Lightlike/Canonical/HolonomyGraph.lean`, `Lightlike/Canonical/HolonomyALGraph.lean`, `Lightlike/Canonical/HolonomyAnalytic.lean`, `Lightlike/Canonical/HolonomyALOrder.lean`,
+`Lightlike/Canonical/HolonomyCommon.lean`.
 
 ## Source read
 
@@ -40,6 +41,8 @@ footnote 17) and p. 35 (the common graph `α₃` of two graphs). Printed page nu
 | `ALGraph`: edges embedded on `[t₀, t₁)` and `(t₀, t₁]`, two edges meeting only at end points | footnote 13, p. 27 (quoted above) | Same. |
 | `ALEdge.hol`, `ALGraph.IE`, `ALGraph.IE_restrict`: the holonomy along an edge, the ordered product of the holonomies of its pieces | eqs. (4.36)-(4.37), p. 33 | Same: `A(e₂ ∘ e₁) = A(e₂) A(e₁)` for the pieces. |
 | `ALGraph.pieceGraph`: the analytic pieces of all edges form a graph with `C¹` edges | — | Tool (the bridge to the rows above). |
+| `ALEdge.comp`, `ALEdge.hol_comp`: the composite `e₂ ∘ e₁` of two closed-piecewise analytic edges, `e₁` ending where `e₂` starts, and `A(e₂ ∘ e₁) = A(e₂) A(e₁)` | eq. (4.37), p. 33 | Same; the composite runs along `e₁`, then along `e₂` translated to start at `t₁(e₁)`, and its pieces are those of `e₁` followed by those of `e₂`. |
+| `ALEdge.hol_mem_specialUnitaryGroup`, `ALGraph.IE_mem`: for `su(2)`-valued connections the holonomy along an edge is in `SU(2)`, so `I_E` takes values in `SU(2)ⁿ` | p. 33, after (4.36): "Thus, `A(e) ∈ G`"; eq. (4.16), p. 28 | Same, for `G = SU(2)`. |
 | `ALGraph.Conn`, `ALGraph.Gauge`: `A_α` and `G_α` | p. 28: `A_α` "the set of `g` valued 1-forms `A_e` defined on each edge"; `g_α` "a map `g_α : x_α → G` from all points `x_α` on `α`" | Representation (line (3)): the 1-form continuous on each analytic piece, the gauge transformation `C¹` along each piece. |
 | `ALGraph.TrivialAtVertices`: `G⁰_α`, the identity at the end points of the edges only | footnote 13, p. 27: "The end points of an edge are called vertices"; p. 28, after (4.15): `G⁰_α` "all local gauge transformations `g_α` which are identity on the vertices of `α`" | Same: the corners `τ_j`, `0 < j < k`, are interior points of an edge, not vertices. |
 | `ALGraph.IE_actCoeff`, `ALGraph.IE_actCoeff_of_trivial`: `I_E(M^γ)_e = γ(t(e))⁻¹ I_E(M)_e γ(s(e))`; constant on `G⁰_α`-orbits | eqs. (4.14)-(4.17), p. 28 | Same (the values at the corners cancel). |
@@ -54,8 +57,16 @@ footnote 17) and p. 35 (the common graph `α₃` of two graphs). Printed page nu
 | `ALEdge.rev`, `ALEdge.hol_rev`: `A(e⁻¹) = A(e)⁻¹` | eq. (4.37), p. 33: "`e⁻¹` is obtained from `e` by simply reversing the orientation" | Same. |
 | `ALGraph.Le`, `ALGraph.le_refl`: `α ≤ α'` | p. 27: "A graph `α′` will be said to be larger than another graph `α` (or contain `α`), `α ≥ α′`, if every edge `e` of `α` can be written as `e = e′₁ ∘ … ∘ e′_k` for some edges `e′₁, …, e′_k` of `α′`"; p. 28: "Let us choose an arbitrary but fixed orientation of each edge of `α`" | Representation: `e = e′₁ ∘ ⋯ ∘ e′_K` read as a subdivision of the parameter interval of `e` into parts on which `e = e′_l ∘ φ_l`, `φ_l` continuous and monotone onto the parameter interval of `e′_l`, with `e′_l` in either orientation. |
 | `ALGraph.hol_of_le`: for `α ≤ α'` the holonomy along each edge of `α` is the ordered product of holonomies along edges of `α′` or their inverses | p. 35: functions cylindrical with respect to `α` are cylindrical with respect to every larger graph | Same content, at the level of holonomies. |
+| `ALGraph.directed`, `ALGraph.common`, `ALGraph.le_common_left`, `ALGraph.le_common_right`: a graph `α₃` with `α₁ ≤ α₃` and `α₂ ≤ α₃` | p. 35: "we can introduce a third graph `α3` which contains all the edges and vertices of `α1` and `α2`"; p. 27: "larger than another graph `α` (or contain `α`)" | Same, in the order `ALGraph.Le` (the representation line above). |
+| `ALGraph.vertices_subset_of_le`: for `α ≤ α′` the vertices of `α` are vertices of `α′` | p. 35 (quoted above): "contains all the edges and vertices" | Same. |
+| `ALGraph.exists_common_hol`: the holonomies along the edges of `α₁` and of `α₂` are ordered products of holonomies along edges of `α₃` or their inverses | p. 35: "regard the two functions as cylindrical with respect to `α3`" | Same content, at the level of holonomies. |
+| `ALGraph.cutPoints`, `ALGraph.CutData.segment_in_piece`, `ALGraph.CutData.injOn_segment`, `ALGraph.seg_share`, `ALGraph.seg_classify`, `image_Ioo_subset`, `exists_reparam` | — | Tool for `α₃`: the edges are cut at finitely many points (end points and midpoints of the pieces, boundary points of the meeting sets, `Edge.meetFrontier_finite`); each segment of `α₂` meets `α₁` only at its end points or has the open part of a segment of `α₁` (`Edge.meet_dichotomy`), and two such segments differ by a continuous monotone or antitone reparametrisation. |
 
 ## Trust checks
+
+* `lineGraph_incomparable`: the straight one-edge graphs on `[0, 2] e₀` and `[1, 3] e₀` overlap on `[1, 2] e₀`; neither
+  is below the other (each has a vertex the other lacks, `ALGraph.vertices_subset_of_le`), and `ALGraph.directed` gives
+  them a common refinement.
 
 * `lGraph_IE_surjective`: the one-edge graph on the `L`-shaped edge (two analytic pieces, a corner at `e₀`) satisfies the
   hypotheses of a graph of Ashtekar–Lewandowski, and every element of `SU(2)` is the holonomy of a connection along it.
@@ -70,4 +81,4 @@ footnote 17) and p. 35 (the common graph `α₃` of two graphs). Printed page nu
 
 ## Open (the rest of G2-006)
 
-* graphs and the order `α ≤ α′` (p. 27, footnote 13), and the common graph `α₃` of two graphs (p. 35).
+* None.

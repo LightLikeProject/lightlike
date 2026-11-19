@@ -80,6 +80,21 @@ L. Tubaro, M. Zanella, *An introduction to Malliavin calculus*, arXiv:2502.07941
   `(4n)!/(4ⁿ (2n)!) = (4n - 1)!!`. Skinner states no explicit bound; `quartic_expansion`'s bound implies (2.20)
   (`tendsto_quartic_div`, Ties.lean: `(Z(g) - S_{N+1}(g))/g^N → 0` as `g → 0⁺`). Difference, kind representation: the
   small parameter is `g = ħλ` at `m = ħ = 1` (by `φ = √ħ x` the integral is `√ħ` times the one with coupling `ħλ`).
+* `quarticZ_nevanlinna` (ZeroDim/QuarticComplex.lean): for every `R > 0`, `Z(λ) = ∫ e^{-λφ⁴ - φ²/2} dφ` is analytic
+  in `C_R = {Re λ⁻¹ > 1/R}` and `|Z(λ) - Σ_{n ≤ N} a_n λⁿ| ≤ 16 √(2π) 32^N N! |λ|^{N+1}` for `λ ∈ C_R`, with
+  `a_n = (-1)ⁿ √(2π) (4n - 1)!!/n!`. Compared with V. Rivasseau, Z. Wang, *Loop vertex expansion for Φ^{2k} theory in
+  zero dimension*, arXiv:1003.1037 (read): Theorem IV.1, p. 17, says that the partition function with potential `λφ^{2k}` is Borel
+  summable of order `k - 1`, with the analytic region `D_{k-1}` and "the argument for analyticity and Taylor bounds
+  the same as above" (the `φ⁶` proof, (III-38)-(III-42), p. 9, with `Z(λ) = ∫ dφ e^{-λφ⁶ - φ²/2}` unnormalised);
+  Theorem III.2 (Nevanlinna–Le Roy), p. 9, needs `f` analytic in `C_R^k = {Re λ^{-1/k} > R^{-1}}` and
+  `|R_N f| ≤ A B^N Γ(kN + 1) |λ|^{N+1}` uniformly there, `R_N f = f - Σ_{n ≤ N} a_n λⁿ` ((III-34), (III-35)). At
+  `k = 2` (order `1`) this is the statement here: analyticity in `D_1 = {Re λ > 0}` (`differentiableOn_quarticZ`),
+  which contains `C_R`, and the remainder bound for `Re λ ≥ 0` (`norm_quarticZ_sub_le`). The proof bounds
+  `|e^{-tλφ⁴}| ≤ 1` for `Re λ ≥ 0` directly (`norm_cexpNegRem_le`) instead of the source's Cauchy–Schwarz and scaling
+  steps, which are needed only beyond the half-plane. Difference, kind representation: "analytic" is complex
+  differentiability on the open set (`DifferentiableOn ℂ`), and `C_R` is written with Lean's `λ⁻¹` (`0⁻¹ = 0`, so
+  `0 ∉ C_R`). The conclusion of Theorem IV.1, the Borel summability itself, needs Nevanlinna's theorem, which is
+  not formalised.
 * `sum_inv_aut` (ZeroDim/Graphs.lean): `Σ_Γ 1/|Aut Γ| = (4m - 1)!!/(24^m m!)` over the vacuum graphs with `m`
   four-valent vertices. Difference, kind representation: a graph is a fixed-point-free involution on the fixed
   corollas `Fin m × Fin 4` and the relabellings are the wreath product `S₄ ≀ S_m` acting by conjugation, instead of
