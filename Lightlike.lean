@@ -399,6 +399,7 @@ import Lightlike.Lorentz.StarBound
 import Lightlike.Lorentz.Tests
 import Lightlike.Lorentz.WeightedComp
 import Lightlike.NCG.Bimodule
+import Lightlike.NCG.Chirality
 import Lightlike.NCG.Classification
 import Lightlike.NCG.ComplexSplitting
 import Lightlike.NCG.ComplexSummands
@@ -414,6 +415,7 @@ import Lightlike.NCG.QuaternionMatrix
 import Lightlike.NCG.QuaternionSummands
 import Lightlike.NCG.RealForm
 import Lightlike.NCG.RealSummands
+import Lightlike.NCG.TableOne
 import Lightlike.NCG.TensorForm
 import Lightlike.NCG.TestsBimodule
 import Lightlike.NCG.TestsClassification

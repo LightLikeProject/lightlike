@@ -74,6 +74,18 @@ Partial systems of matrix units, without `∑ U = 1`, combine over sums of index
 mixed algebra is unitarily equivalent to the model of the multiplicity matrix over the irreducible representations that
 occur {1} [24].
 
+For a complex-linear triple over `⊕ Mₙᵢ(ℂ)` and an orientable grading `γ = ∑_p π(x_p) J π(y_p) J`, `γ` acts on each
+multiplicity space `Vᵢⱼ` as the scalar `cᵢⱼ = ∑_p (x_p)ᵢ₀₀ conj((y_p)ⱼ₀₀)`, the same at every diagonal corner; on a
+nonzero vertex `cᵢⱼ = ±1` and `cⱼᵢ = cᵢⱼ`, and `Tr(γ π(E^i_αα) J π(E^j_ββ) J) = cᵢⱼ rᵢⱼ`, the intersection form of the
+complex case {1} [25].
+
+A grading of a real triple is a grading of its complexification, and an orientable one
+`γ = ∑_p π(x_p) J π(y_p) J` stays orientable with `X_p = φ(x_p)`, `Y_p = φ(y_p)`. For a mixed algebra the signed
+multiplicities `μ_kl = c_kl r_kl` of the complexified model are symmetric, and satisfy the sign conditions of
+Krajewski's Table 1: `μ_{iαj} μ_{iᾱj} ≥ 0` for a complex summand `i` against a real or quaternionic `j`, and
+`μ_{iαjβ} μ_{iᾱjβ̄} ≥ 0` for two complex summands; the intersection form `Tr(γ π(p) J π(q) J)` of minimal projections
+is every entry of Table 1: `μ`, `∑_α μ`, `2μ`, `∑_{αβ} μ`, `2 ∑_α μ` and `4μ` {1} [26].
+
 ## Lean References
 
 1. Lightlike/NCG/FiniteSpectralTriple.lean - `NCG.FiniteSpectralTriple`, `NCG.FiniteSpectralTriple.comm`,
@@ -155,6 +167,19 @@ occur {1} [24].
     `NCG.sum_partialMixed`, `NCG.unitsMixed`, `NCG.dMixed`, `NCG.phiMixedFun`, `NCG.phiMixed`,
     `NCG.unitsMixed_hom_phiMixed`, `NCG.pi_ne_zero_of_ne`, `NCG.span_psi_le`, `NCG.mixedComplexification`,
     `NCG.neZero_dMixed`, `NCG.exists_unitary_mixed`
+25. Lightlike/NCG/Chirality.lean - `NCG.unit_mul_mul_unit`, `NCG.lU_pi_lU`, `NCG.rU_rightOp_rU`, `NCG.IsOrientable`,
+    `NCG.chiScalar`, `NCG.grading_lU`, `NCG.grading_rU`, `NCG.grading_smul_of_mem_Vsub`, `NCG.lU_pi_lU'`,
+    `NCG.rU_rightOp_rU'`, `NCG.chiScalarAt`, `NCG.grading_smul_of_corner`, `NCG.chiScalarAt_eq`,
+    `NCG.chiScalar_mul_self`, `NCG.conj_chiScalar`, `NCG.chiScalar_eq_one_or`, `NCG.chiScalar_symm`, `NCG.projC`,
+    `NCG.corner`, `NCG.corner_comp`, `NCG.projC_idem`, `NCG.trace_grading_projC`, `NCG.trace_grading_sum`
+26. Lightlike/NCG/TableOne.lean - `NCG.IsOrientableA`, `NCG.grading_comm_of_mem_span`, `NCG.Complexification.grading`,
+    `NCG.Complexification.isOrientable`, `NCG.chiScalarAt_conj`, `NCG.Xm`, `NCG.Rm`, `NCG.muSigned`,
+    `NCG.exists_ne_zero_of_multiplicity`, `NCG.muSigned_mul_nonneg_of`, `NCG.idxH_zero`, `NCG.table1_complex_complex`,
+    `NCG.table1_complex_real`, `NCG.table1_complex_quat`, `NCG.muSigned_symm`, `NCG.table1_real_complex`,
+    `NCG.table1_quat_complex`, `NCG.trace_grading_of_phi`, `NCG.pR`, `NCG.phiMixed_pR`, `NCG.pH`, `NCG.eH`, `NCG.phiH_pH`,
+    `NCG.phiMixed_pH`, `NCG.interForm`, `NCG.interForm_real_real`, `NCG.interForm_quat_quat`, `NCG.interForm_real_quat`,
+    `NCG.pC`, `NCG.BlocksOf`, `NCG.phiMixed_pC`, `NCG.interForm_complex_real`, `NCG.interForm_complex_complex`,
+    `NCG.interForm_complex_quat`, `NCG.interForm_real_complex`, `NCG.interForm_quat_complex`
 
 ## References
 

@@ -153,9 +153,16 @@ Where each Krajewski clause stands:
   `ψ±(Y) = ½(ψ(Y) ∓ i ψ(iY))` of the restriction `ψ`, which need no unit. The three unit
   systems multiply to `0` across factors and their block units add to `π(1) = 1`, so together they are one system of
   matrix units over the sum of the three index types.
-* §3.3, p. 14, Table 1 (a symmetric integer matrix over the irreducible representations, the signs `μ_{iαj} μ_{iᾱj} ≥ 0`,
-  and the factors 2 and 4 relating it to the intersection form): open. It needs `J Q₊ J`, the right-action projection,
-  and the exchange by `J` of the fundamental and conjugate blocks of a complex summand.
+* §3.3, p. 13, the chirality (`Chirality.lean`): for an orientable grading `γ = ∑_p π(x_p) J π(y_p) J` (Krajewski's
+  "`χ = ∑_p π(x^p) J π(y^p) J⁻¹`") of a complex-linear triple, `γ` is the scalar `cᵢⱼ = ∑_p (x_p)ᵢ₀₀ conj((y_p)ⱼ₀₀)` on each
+  `Vᵢⱼ`, the same at every diagonal corner, `±1` on a nonzero vertex, and `cⱼᵢ = cᵢⱼ` (proved).
+* §3.3, p. 14, Table 1, the sign conditions (`TableOne.lean`): gradings and orientability pass to the complexification;
+  for a mixed algebra the signed multiplicities `μ_kl = Re(c_kl) r_kl` are symmetric and satisfy
+  `μ_{iαj} μ_{iᾱj} ≥ 0` (complex `i` against real or quaternionic `j`, and transposed) and `μ_{iαjβ} μ_{iᾱjβ̄} ≥ 0`
+  (proved; on a quaternionic block `ι(q)₁₁ = conj ι(q)₀₀` and the scalar does not depend on the corner).
+* §3.3, p. 14, Table 1, the intersection form `∩ᵢⱼ = Tr(χ π(pᵢ) J π(pⱼ) J⁻¹)` (the entries `μ`, `∑_α μ`, `2μ`, `4μ`):
+  proved (`trace_grading_projC`, `trace_grading_sum`, `trace_grading_of_phi`, `interForm_*`); it is the trace of `χ π(pᵢ) J π(pⱼ) J` over the model, `∑_kl c_kl r_kl rk(φ(pᵢ)_k) rk(φ(pⱼ)_l)`, with rank `1`
+  for a minimal projection of a real or complex summand and `2` for a quaternionic one.
 
 ## FST4: the Dirac operator `D = Δ + J Δ J` (Krajewski §3.4, p. 15)
 
