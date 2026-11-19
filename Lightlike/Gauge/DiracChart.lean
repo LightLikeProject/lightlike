@@ -1,4 +1,5 @@
 import Lightlike.Gauge.DiracAlgo
+import Lightlike.Gauge.DiracTangent
 import Mathlib.LinearAlgebra.Dual.Lemmas
 
 /-!
@@ -19,7 +20,10 @@ of the surface: the pointwise `hcover` statement does not depend on the chart.
 * `Sel.Admissible`, `Stage.Consistent`, `Stage.consistency_translate_symm`;
 * `Stage.chiFun_zero_iff`, `Stage.chiFun_zero_iff_of_admissible`, `Stage.zeroSet_next_inter`: chart independence;
 * `exists_mulVec_add_eq_zero_iff`, `Stage.consistent_iff_leftNull`, `Stage.chiFun_zero_iff_leftNull`: Wipf's left
-  null-eigenvector form.
+  null-eigenvector form;
+* `exists_coeff_of_ker`, `Stage.consistent_iff_of_zeroSet_eq`, `zeroSet_stages_eq`: for a first-order bracket
+  `br f g x = B x (df x) (dg x)` (the canonical Poisson bracket has this form) and regular stages, consistency depends only on
+  the conormal space, so two admissible selection rules give the same constraint surface at every stage.
 -/
 
 namespace Lightlike.Gauge
@@ -141,5 +145,96 @@ theorem Stage.chiFun_zero_iff_leftNull (br : (E → ℝ) → (E → ℝ) → E �
     (∀ j, S.chiFun br φ H σ j x = 0) ↔
       ∀ w : Fin S.n → ℝ, (∀ a, ∑ i, w i * br (S.Φ i) (φ a) x = 0) → ∑ i, w i * br (S.Φ i) H x = 0 :=
   (S.chiFun_zero_iff br φ H hσ).trans (S.consistent_iff_leftNull br φ H x)
+
+section WholeSequence
+
+variable [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
+
+/-- **A functional vanishing on the common kernel is a combination**: if `η v = 0` whenever every `ξᵢ v = 0`, then
+`η = ∑ᵢ cᵢ ξᵢ`. -/
+lemma exists_coeff_of_ker {n : ℕ} {ξ : Fin n → E →L[ℝ] ℝ} {η : E →L[ℝ] ℝ} (h : ∀ v, (∀ i, ξ i v = 0) → η v = 0) :
+    ∃ c : Fin n → ℝ, η = ∑ i, c i • ξ i := by
+  have hk : ⨅ i, LinearMap.ker (ξ i : E →ₗ[ℝ] ℝ) ≤ LinearMap.ker (η : E →ₗ[ℝ] ℝ) := by
+    intro v hv
+    simp only [Submodule.mem_iInf, LinearMap.mem_ker, ContinuousLinearMap.coe_coe] at hv ⊢
+    exact h v hv
+  obtain ⟨c, hc⟩ := (Submodule.mem_span_range_iff_exists_fun ℝ).1 (mem_span_of_iInf_ker_le_ker hk)
+  refine ⟨c, ?_⟩
+  ext v
+  have := congrArg (fun f : E →ₗ[ℝ] ℝ => f v) hc
+  simpa [LinearMap.sum_apply, ContinuousLinearMap.sum_apply] using this.symm
+
+/-- **Consistency depends only on the conormal space**: for a first-order bracket `br f g x = B x (df x) (dg x)` (as the
+canonical Poisson bracket), two regular stages with the same zero set have the same consistency condition at its points. -/
+theorem Stage.consistent_iff_of_zeroSet_eq (br : (E → ℝ) → (E → ℝ) → E → ℝ) (φ : Fin M → E → ℝ) (H : E → ℝ)
+    (B : E → (E →L[ℝ] ℝ) →ₗ[ℝ] (E →L[ℝ] ℝ) → ℝ) (hB : ∀ f g x, br f g x = B x (fderiv ℝ f x) (fderiv ℝ g x))
+    (S S' : Stage E) (hZ : zeroSet S.Φ = zeroSet S'.Φ) {x : E} (hx : x ∈ zeroSet S.Φ)
+    (hS : ∀ i, HasStrictFDerivAt (S.Φ i) (fderiv ℝ (S.Φ i) x) x)
+    (hS' : ∀ j, HasStrictFDerivAt (S'.Φ j) (fderiv ℝ (S'.Φ j) x) x)
+    (hind : LinearIndependent ℝ fun i => fderiv ℝ (S.Φ i) x)
+    (hind' : LinearIndependent ℝ fun j => fderiv ℝ (S'.Φ j) x) :
+    S.Consistent br φ H x ↔ S'.Consistent br φ H x := by
+  have hx' : x ∈ zeroSet S'.Φ := hZ ▸ hx
+  have hker : ∀ v, (∀ i, fderiv ℝ (S.Φ i) x v = 0) ↔ ∀ j, fderiv ℝ (S'.Φ j) x v = 0 := fun v => by
+    rw [← mem_tangentCone_zeroSet_iff hS hind hx v, ← mem_tangentCone_zeroSet_iff hS' hind' hx' v]
+    show v ∈ tangentConeAt ℝ (zeroSet S.Φ) x ↔ v ∈ tangentConeAt ℝ (zeroSet S'.Φ) x
+    rw [hZ]
+  let L : (Fin M → ℝ) → (E →L[ℝ] ℝ) →ₗ[ℝ] ℝ := fun u =>
+    (LinearMap.proj (fderiv ℝ H x)).comp (B x) + ∑ a, u a • (LinearMap.proj (fderiv ℝ (φ a) x)).comp (B x)
+  have hL : ∀ (T : Stage E) (u : Fin M → ℝ) (i : Fin T.n),
+      br (T.Φ i) H x + ∑ a, br (T.Φ i) (φ a) x * u a = L u (fderiv ℝ (T.Φ i) x) := fun T u i => by
+    simp only [L, hB, LinearMap.add_apply, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.comp_apply,
+      LinearMap.proj_apply, smul_eq_mul, mul_comm]
+  have htransfer : ∀ (T T' : Stage E),
+      (∀ v, (∀ i, fderiv ℝ (T.Φ i) x v = 0) → ∀ j, fderiv ℝ (T'.Φ j) x v = 0) →
+        T.Consistent br φ H x → T'.Consistent br φ H x := fun T T' hk ⟨u, hu⟩ => by
+    refine ⟨u, fun j => ?_⟩
+    obtain ⟨c, hc⟩ := exists_coeff_of_ker (ξ := fun i => fderiv ℝ (T.Φ i) x) fun v hv => hk v hv j
+    rw [hL, hc, map_sum]
+    exact Finset.sum_eq_zero fun i _ => by rw [map_smul, ← hL, hu i, smul_zero]
+  exact ⟨htransfer S S' fun v hv => (hker v).mp hv, htransfer S' S fun v hv => (hker v).mpr hv⟩
+
+/-- **The constraint surfaces do not depend on the charts** (Wipf's Section 3.3, with the null vectors on the whole
+surface): for a first-order bracket and two selection rules admissible on their stages, with regular, strictly
+differentiable stages, every stage of the algorithm has the same zero set. -/
+theorem zeroSet_stages_eq (br : (E → ℝ) → (E → ℝ) → E → ℝ) (φ : Fin M → E → ℝ) (H : E → ℝ)
+    (B : E → (E →L[ℝ] ℝ) →ₗ[ℝ] (E →L[ℝ] ℝ) → ℝ) (hB : ∀ f g x, br f g x = B x (fderiv ℝ f x) (fderiv ℝ g x))
+    (sel sel' : ∀ S : Stage E, Sel S M) (S₀ : Stage E)
+    (hreg : ∀ k, IsRegularStage (stages br φ H sel S₀ k).Φ) (hreg' : ∀ k, IsRegularStage (stages br φ H sel' S₀ k).Φ)
+    (hdiff : ∀ k, ∀ x ∈ zeroSet (stages br φ H sel S₀ k).Φ, ∀ i,
+      HasStrictFDerivAt ((stages br φ H sel S₀ k).Φ i) (fderiv ℝ ((stages br φ H sel S₀ k).Φ i) x) x)
+    (hdiff' : ∀ k, ∀ x ∈ zeroSet (stages br φ H sel' S₀ k).Φ, ∀ i,
+      HasStrictFDerivAt ((stages br φ H sel' S₀ k).Φ i) (fderiv ℝ ((stages br φ H sel' S₀ k).Φ i) x) x)
+    (hadm : ∀ k, ∀ x ∈ zeroSet (stages br φ H sel S₀ k).Φ, (sel (stages br φ H sel S₀ k)).Admissible br φ x)
+    (hadm' : ∀ k, ∀ x ∈ zeroSet (stages br φ H sel' S₀ k).Φ, (sel' (stages br φ H sel' S₀ k)).Admissible br φ x) :
+    ∀ k, zeroSet (stages br φ H sel S₀ k).Φ = zeroSet (stages br φ H sel' S₀ k).Φ := by
+  intro k
+  induction k with
+  | zero => rfl
+  | succ k ih =>
+    show zeroSet (appendStage (stages br φ H sel S₀ k).Φ
+        ((stages br φ H sel S₀ k).chiFun br φ H (sel (stages br φ H sel S₀ k)))) =
+      zeroSet (appendStage (stages br φ H sel' S₀ k).Φ
+        ((stages br φ H sel' S₀ k).chiFun br φ H (sel' (stages br φ H sel' S₀ k))))
+    rw [zeroSet_appendStage, zeroSet_appendStage]
+    ext x
+    simp only [Set.mem_inter_iff]
+    constructor
+    · rintro ⟨hx, hχ⟩
+      have hx' : x ∈ zeroSet (stages br φ H sel' S₀ k).Φ := ih ▸ hx
+      refine ⟨hx', ?_⟩
+      have hc := ((stages br φ H sel S₀ k).chiFun_zero_iff br φ H (hadm k x hx)).mp hχ
+      have hc' := ((stages br φ H sel S₀ k).consistent_iff_of_zeroSet_eq br φ H B hB _ ih hx (hdiff k x hx)
+        (hdiff' k x hx') (hreg k x hx) (hreg' k x hx')).mp hc
+      exact ((stages br φ H sel' S₀ k).chiFun_zero_iff br φ H (hadm' k x hx')).mpr hc'
+    · rintro ⟨hx', hχ⟩
+      have hx : x ∈ zeroSet (stages br φ H sel S₀ k).Φ := ih.symm ▸ hx'
+      refine ⟨hx, ?_⟩
+      have hc' := ((stages br φ H sel' S₀ k).chiFun_zero_iff br φ H (hadm' k x hx')).mp hχ
+      have hc := ((stages br φ H sel S₀ k).consistent_iff_of_zeroSet_eq br φ H B hB _ ih hx (hdiff k x hx)
+        (hdiff' k x hx') (hreg k x hx) (hreg' k x hx')).mpr hc'
+      exact ((stages br φ H sel S₀ k).chiFun_zero_iff br φ H (hadm k x hx)).mpr hc
+
+end WholeSequence
 
 end Lightlike.Gauge

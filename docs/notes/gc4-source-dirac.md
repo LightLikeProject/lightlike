@@ -76,8 +76,13 @@ same condition (`Stage.chiFun_zero_iff_of_admissible`), and on a set where two s
 from them have the same zero set (`Stage.zeroSet_next_inter`): the next constraint set, and so the pointwise `hcover`
 statement at one stage, does not depend on the chart.
 
-Open, the concrete stop for the whole sequence: two charts give different secondary constraint functions `χ_σ`, `χ_σ'` with the
-same zero set near the point; the next stage's consistency matrix uses their brackets `{χ, φ_a}`, `{χ, H}`, which agree on the
-surface only up to multiples of the constraints. Comparing them needs the Leibniz rule of the bracket (`{f g, φ} = f {g, φ} +
-g {f, φ}`) and a smooth invertible matrix with `χ_σ' = A χ_σ`; the abstract bracket `br` of `DiracAlgo` has no Leibniz rule,
-so the stage-by-stage comparison is stated for one stage.
+The whole sequence (`zeroSet_stages_eq`): for a first-order bracket, `br f g x = B x (df x) (dg x)` with `B x` linear in the
+first argument (the canonical Poisson bracket that Wipf uses has this form; it is a representation of his bracket, not a
+restriction), regular and strictly differentiable stages, and two selection rules each admissible on the zero sets of its
+own stages, every stage has the same zero set. The argument: for a regular stage the tangent cone of the zero set is the
+common kernel of the differentials (`DiracTangent.mem_tangentCone_zeroSet_iff`), which depends only on the set; so two
+stages with the same zero set have the same conormal space `span{dSᵢ(x)}` (`exists_coeff_of_ker`), and the consistency
+condition `∃ u, B(dSᵢ, dH + ∑ u_a dφ_a) = 0` depends only on that space (`Stage.consistent_iff_of_zeroSet_eq`); the one-stage
+lemma then carries the equality of the zero sets from each stage to the next. A plain Leibniz rule on the abstract bracket is
+not enough: two charts give `χ_σ' = A χ_σ + N S` only on the surface, not as functions, so the next brackets cannot be
+expanded; the first-order form avoids this because a bracket at a point of the surface sees only differentials there.
