@@ -257,6 +257,7 @@ import Lightlike.GR.Polarization
 import Lightlike.GR.ColourOrderedFeynman
 import Lightlike.GR.FeynmanFactorization
 import Lightlike.GR.FeynmanRecursion
+import Lightlike.GR.FeynmanWard
 import Lightlike.GR.ThreePointAmplitude
 import Lightlike.GR.Einstein
 import Lightlike.GR.AdSInversion
