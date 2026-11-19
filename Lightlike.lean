@@ -746,6 +746,7 @@ import Lightlike.Spacetime.EHManifold.ManifoldVariation
 import Lightlike.Spacetime.EHManifold.Perturbation
 import Lightlike.Spacetime.EHManifold.PerturbationAlgebra
 import Lightlike.Spacetime.EHManifold.PerturbationExt
+import Lightlike.Spacetime.EHManifold.PieceVariation
 import Lightlike.Spacetime.EHManifold.Retraction
 import Lightlike.Spacetime.EHManifold.SmallT
 import Lightlike.Spacetime.EHManifold.TensorVariation
