@@ -276,6 +276,7 @@ import Lightlike.GR.ParkeTaylorBCFW
 import Lightlike.GR.Polarization
 import Lightlike.GR.ColourOrderedFeynman
 import Lightlike.GR.FeynmanFactorization
+import Lightlike.GR.FeynmanRecursion
 import Lightlike.GR.ThreePointAmplitude
 import Lightlike.GR.PenroseTransform
 import Lightlike.GR.WeylSpinor

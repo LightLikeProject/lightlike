@@ -61,6 +61,28 @@ to 1e−13 for n = 4, 5, 6.
 3. Convention: `bgAmplitude` does not read the momentum of the last gluon; its open vertex leg carries `−(p_1 + ⋯ + p_{n−1})`, which
    is `p_n` under momentum conservation (assumed wherever it is used).
 
+## The recursion (3.7) (`FeynmanRecursion.lean`)
+
+Source read: p. 36, "Thus, in most applications, one assumes — or, much preferably, proves — that B_n = 0. This is most often
+justified by demonstrating that Â_n(z) → 0 for z → ∞. (3.6) If (3.6) holds, we say that the shift (3.1) is valid (or good), and in
+that case the n-point on-shell amplitude is completely determined in terms of lower-point on-shell amplitudes as (3.7)"; p. 37, "In
+pure Yang-Mills theory, an argument [17] based on the background field method establishes the following large-z behavior …" (3.11)
+(quoted from [17], not derived in the source).
+
+* `eq_sum_div_sub_of_residues`: a function holomorphic off a finite set, with simple poles there and limit `0` at infinity, is the sum
+  of its pole parts (removable singularities, `Complex.tendsto_limUnder_of_differentiable_on_punctured_nhds_of_isLittleO`,
+  `Complex.analyticAt_of_differentiable_on_punctured_nhds_of_continuousAt`, then Liouville, `Differentiable.apply_eq_of_tendsto_cocompact`);
+  at `z = 0` this is (3.4) with `B_n = 0`.
+* `channelTerm`: `Σ_h A_L(−P^{−h}) A_R(P^h)`. `bgAmplitude_eq_sum_channels`: (3.7), `A_n = Σ_{I ∈ C} (1/P_I²) Σ_h Â_L(z_I) Â_R(z_I)`,
+  for a holomorphic shift under which the channels `C` have `P̂_I² = P_I² + z s_I` (`s_I ≠ 0`) with distinct poles and the other
+  channels nonvanishing propagators.
+
+Differences:
+4. Representation: `Â_n(z) → 0` at infinity ((3.6)) is a hypothesis of `bgAmplitude_eq_sum_channels`; the source states (3.7) under
+   it (p. 36, "If (3.6) holds … in that case"), and for Yang-Mills quotes the falloff (3.11) from [17] (p. 37).
+5. Representation: the shift is any holomorphic family with (3.2)–(3.3) on the channels `C` (the BCFW shift (3.8) is one); on-shell
+   momenta, momentum conservation and transverse polarizations are hypotheses at the poles (for (3.8) they are (A), (B), p. 35).
+
 ## Not done (follow-ups)
 
 * The Ward identity for n ≥ 5 (for every n it is the conservation of the off-shell current of the recursion; Berends-Giele 1988, not
