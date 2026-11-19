@@ -1546,6 +1546,7 @@ import Lightlike.Gauge.DiracBridge
 import Lightlike.Gauge.DiracAlgo
 import Lightlike.Gauge.MinorExists
 import Lightlike.Gauge.DiracChart
+import Lightlike.Gauge.DiracGlue
 import Lightlike.Gauge.DiracLocal
 import Lightlike.Gauge.DiracPoisson
 import Lightlike.Gauge.ReducedForm
