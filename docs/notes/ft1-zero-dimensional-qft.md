@@ -72,8 +72,14 @@ L. Tubaro, M. Zanella, *An introduction to Malliavin calculus*, arXiv:2502.07941
   (`∫ x^{2n} e^{-x²/2} dx = √(2π) (2n - 1)!!`) by the substitution `x = √(aħ) y` (`integral_pow_mul_gauss_scaled`).
 * `quartic_expansion`: for `g ≥ 0`, `|∫ e^{-x²/2 - g x⁴/24} dx - √(2π) Σ_{m<M} (-g/24)^m (4m - 1)!!/m!| ≤
   √(2π) (g/24)^M (4M - 1)!!/M!`. Borinsky treats the integral formally (Def. 3.1.1) and does not state this analytic
-  bound; it is the milestone's "done when" (the expansion of the integral). Comparison with a source for the
-  analytic statement: pending.
+  bound; it is the milestone's "done when" (the expansion of the integral). Compared with D. Skinner, *Advanced
+  Quantum Field Theory*, lecture notes (University of Cambridge), Chapter 2 (read 19 November 2026): (2.26)-(2.28),
+  pp. 19-20, give `Z(m², λ) = ∫ dφ e^{-(m²φ²/2 + λφ⁴/4!)/ħ}` the asymptotic series
+  `(√(2πħ)/m) Σ_n (-ħλ/m⁴)ⁿ (4n)!/((4!)ⁿ n! 4ⁿ (2n)!)` in the sense of (2.20), p. 17 (the error after the terms up to
+  `n = N` is `o(ħ^N)`); at `m = ħ = 1`, `λ = g`, this is the series of `quartic_expansion`, since
+  `(4n)!/(4ⁿ (2n)!) = (4n - 1)!!`. Skinner states no explicit bound; `quartic_expansion`'s bound implies (2.20)
+  (`tendsto_quartic_div`, Ties.lean: `(Z(g) - S_{N+1}(g))/g^N → 0` as `g → 0⁺`). Difference, kind representation: the
+  small parameter is `g = ħλ` at `m = ħ = 1` (by `φ = √ħ x` the integral is `√ħ` times the one with coupling `ħλ`).
 * `sum_inv_aut` (ZeroDim/Graphs.lean): `Σ_Γ 1/|Aut Γ| = (4m - 1)!!/(24^m m!)` over the vacuum graphs with `m`
   four-valent vertices. Difference, kind representation: a graph is a fixed-point-free involution on the fixed
   corollas `Fin m × Fin 4` and the relabellings are the wreath product `S₄ ≀ S_m` acting by conjugation, instead of
@@ -98,6 +104,13 @@ L. Tubaro, M. Zanella, *An introduction to Malliavin calculus*, arXiv:2502.07941
   representation: the family is given as the coordinates `x_{l_k}` of `multivariateGaussian 0 S`; every centred jointly
   Gaussian vector has this law with `S` its covariance (positive semidefinite).
 
+* `dfact_eq_integral`, `coeff_formalZ_eq_integral`, `coeff_formalIntegral_eq_formalZ` (ZeroDim/Ties.lean): the
+  double factorial `(n - 1)!!` of `formalZ` (`0` for odd `n`) is `∫ xⁿ dγ` for the standard Gaussian measure `γ`
+  (from `integral_pow_mul_gauss`, and by symmetry for odd `n`), so the coefficient of `Xⁿ Yᵏ` in `formalZ μ` is
+  `(∫ xⁿ dγ)/k! · [xⁿ] Vᵏ`, the `xⁿ`-term of `∫ dγ V(x)ᵏ/k!` (Borinsky p. 116); and Borinsky's formal integral
+  (Definition 3.1.1, eq. (3.1.2), p. 22) with `a = 1` and `V = Σ_d μ_d x^d/d!` has the `ħ^K` coefficient
+  `Σ_{m ≤ 2K} [X^{2(K+m)} Y^m] formalZ μ`, the coefficients with `n/2 - k = K` (no difference: both sums run over
+  `m ≤ 2K`, the range of `formalIntegral`).
 * `vacuumSeries_eq_exp` (ZeroDim/Connected.lean): `Z = exp(W)` in `ℚ[[x]]`, where `Z = Σ a_n xⁿ/(24ⁿ n!)` and
   `W = Σ c_n xⁿ/(24ⁿ n!)`, `a_n`, `c_n` the numbers of pairings and of connected pairings of `n` four-valent
   vertices; `derivative_vacuumSeries`: `Z' = W' Z`. With `coeff_vacuumSeries` and `coeff_connectedSeries`

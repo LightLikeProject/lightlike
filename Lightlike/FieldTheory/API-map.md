@@ -30,7 +30,9 @@ The Feynman expansion of a Gaussian integral on `ℝⁿ`: for a homogeneous poly
 
 Every vertex of a vacuum graph lies in exactly one connected component; splitting it off gives `a_{n+1} = Σ_k C(n, k) c_{k+1} a_{n-k}` for the numbers `a_n` of pairings and `c_n` of connected pairings of `n` vertices, so the series `Z = Σ a_n xⁿ/(24ⁿ n!)` and `W = Σ c_n xⁿ/(24ⁿ n!)` satisfy `Z' = W' Z`, `Z = exp(W)` and `log Z = W` [25] [26] {2}. The coefficients of `Z` and `W` are the sums of `1/|Aut Γ|` over all and over the connected vacuum graphs with `n` vertices, so this is the exponential formula `Σ_Γ x^{|V_Γ|}/|Aut Γ| = exp(Σ_{Γ connected} x^{|V_Γ|}/|Aut Γ|)` for the quartic theory; at two vertices the connected graphs have total symmetry factor `1/12` and the disconnected one `1/128` [26] {2}.
 
-**Missing.** The error bound of the quartic expansion is not stated in Borinsky, who treats the integral formally. The formal integral is compared with Borinsky's Definition 3.1.1 and eq. (3.1.8) {2}, the graphs with Borinsky §2.1 and §2.3 {2}, the exponential formula with Theorem 2.4.1 {2}, and Wick's theorem with Tubaro–Zanella's Theorem 2.19 {3}, the Feynman expansion with Polyak's eq. (18) {4} (labelled contractions of a polynomial potential) and Proposition 2.17 {4} (graphs with `1/|Aut Γ|` for a general polynomial potential, with the `1/k!` normalisation); the Gaussian densities and their normalisation with Rasmussen–Williams's eq. (A.4) {5} and Tubaro–Zanella's Definition 2.1 {3}, and the Gaussian integration by parts and the moment recursion with Tubaro–Zanella's Proposition 5.5, eq. (22), and its proof {3}.
+The formal partition function is tied to the Gaussian integrals and to the formal integral: its double factorials are the moments `∫ xⁿ dγ` of the standard Gaussian measure, so each coefficient is `(∫ xⁿ dγ)/k! · [xⁿ] Vᵏ`, and Borinsky's formal integral with `a = 1` is the partition function read along `n = 2(K + m)`, `k = m`; the explicit bound of the quartic expansion gives the asymptotic expansion of the quartic integral, the error after `N + 1` terms being `o(g^N)` as `g → 0⁺` [27] {2} {6}.
+
+**Missing.** The explicit error bound of the quartic expansion is not stated in the sources read: Borinsky treats the integral formally, and Skinner states the asymptotic expansion (2.28) in the sense of (2.20) {6}, which the bound implies [27]. The formal integral is compared with Borinsky's Definition 3.1.1 and eq. (3.1.8) {2}, the graphs with Borinsky §2.1 and §2.3 {2}, the exponential formula with Theorem 2.4.1 {2}, and Wick's theorem with Tubaro–Zanella's Theorem 2.19 {3}, the Feynman expansion with Polyak's eq. (18) {4} (labelled contractions of a polynomial potential) and Proposition 2.17 {4} (graphs with `1/|Aut Γ|` for a general polynomial potential, with the `1/k!` normalisation); the Gaussian densities and their normalisation with Rasmussen–Williams's eq. (A.4) {5} and Tubaro–Zanella's Definition 2.1 {3}, and the Gaussian integration by parts and the moment recursion with Tubaro–Zanella's Proposition 5.5, eq. (22), and its proof {3}.
 
 ## Lean References
 
@@ -84,6 +86,8 @@ Every vertex of a vacuum graph lies in exactly one connected component; splittin
    `FieldTheory.coeff_vacuumSeries`, `FieldTheory.coeff_connectedSeries`, `FieldTheory.logOf_vacuumSeries`,
    `FieldTheory.coeff_logOf_vacuumSeries`, `FieldTheory.numConnected_two`, `FieldTheory.sum_inv_aut_connected_two`
 
+27. Lightlike/FieldTheory/ZeroDim/Ties.lean - `FieldTheory.dfact_eq_integral`, `FieldTheory.coeff_formalZ_eq_integral`,
+   `FieldTheory.coeff_formalIntegral_eq_formalZ`, `FieldTheory.tendsto_quartic_div`
 ## References
 
 1. Mathlib, `Mathlib/Probability/Distributions/Gaussian/Multivariate.lean` (`multivariateGaussian`, `stdGaussian`) and `Fernique.lean` (`IsGaussian.memLp_id`).
@@ -91,3 +95,4 @@ Every vertex of a vacuum graph lies in exactly one connected component; splittin
 3. L. Tubaro, M. Zanella, An introduction to Malliavin calculus, arXiv:2502.07941v1, Definition 2.1, p. 4; Theorem 2.19 (Isserlis formula), p. 9; eqs. (20), (21), pp. 18-19; Proposition 5.5 (eq. (22)), p. 19, and its proof, p. 20.
 4. M. Polyak, Feynman diagrams for pedestrians and mathematicians, arXiv:math/0406251v1, §2.3 (Theorem 2.8, p. 5), §2.6 (eq. (18), p. 7) and §2.8 (Proposition 2.17, p. 9).
 5. C. E. Rasmussen, C. K. I. Williams, Gaussian Processes for Machine Learning, MIT Press (2006), Appendix A, §A.2, eq. (A.4), p. 200, and the sampling of `N(m, K)` as `m + L u` with `K = L Lᵀ`, p. 201.
+6. D. Skinner, Advanced Quantum Field Theory, lecture notes, University of Cambridge, Chapter 2, QFT in zero dimensions (www.damtp.cam.ac.uk/user/dbs26/AQFT/chap2.pdf), eq. (2.20), p. 17, and eqs. (2.26)-(2.28), pp. 19-20.
