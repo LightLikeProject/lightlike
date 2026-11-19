@@ -76,7 +76,8 @@ occur {1} [24].
 
 For a complex-linear triple over `⊕ Mₙᵢ(ℂ)` and an orientable grading `γ = ∑_p π(x_p) J π(y_p) J`, `γ` acts on each
 multiplicity space `Vᵢⱼ` as the scalar `cᵢⱼ = ∑_p (x_p)ᵢ₀₀ conj((y_p)ⱼ₀₀)`, the same at every diagonal corner; on a
-nonzero vertex `cᵢⱼ = ±1` and `cⱼᵢ = cᵢⱼ` {1} [25].
+nonzero vertex `cᵢⱼ = ±1` and `cⱼᵢ = cᵢⱼ`, and `Tr(γ π(E^i_αα) J π(E^j_ββ) J) = cᵢⱼ rᵢⱼ`, the intersection form of the
+complex case {1} [25].
 
 A grading of a real triple is a grading of its complexification, and an orientable one
 `γ = ∑_p π(x_p) J π(y_p) J` stays orientable with `X_p = φ(x_p)`, `Y_p = φ(y_p)`. For a mixed algebra the signed
@@ -168,7 +169,8 @@ Krajewski's Table 1: `μ_{iαj} μ_{iᾱj} ≥ 0` for a complex summand `i` agai
 25. Lightlike/NCG/Chirality.lean - `NCG.unit_mul_mul_unit`, `NCG.lU_pi_lU`, `NCG.rU_rightOp_rU`, `NCG.IsOrientable`,
     `NCG.chiScalar`, `NCG.grading_lU`, `NCG.grading_rU`, `NCG.grading_smul_of_mem_Vsub`, `NCG.lU_pi_lU'`,
     `NCG.rU_rightOp_rU'`, `NCG.chiScalarAt`, `NCG.grading_smul_of_corner`, `NCG.chiScalarAt_eq`,
-    `NCG.chiScalar_mul_self`, `NCG.conj_chiScalar`, `NCG.chiScalar_eq_one_or`, `NCG.chiScalar_symm`
+    `NCG.chiScalar_mul_self`, `NCG.conj_chiScalar`, `NCG.chiScalar_eq_one_or`, `NCG.chiScalar_symm`, `NCG.projC`,
+    `NCG.corner`, `NCG.corner_comp`, `NCG.projC_idem`, `NCG.trace_grading_projC`
 26. Lightlike/NCG/TableOne.lean - `NCG.IsOrientableA`, `NCG.grading_comm_of_mem_span`, `NCG.Complexification.grading`,
     `NCG.Complexification.isOrientable`, `NCG.chiScalarAt_conj`, `NCG.Xm`, `NCG.Rm`, `NCG.muSigned`,
     `NCG.exists_ne_zero_of_multiplicity`, `NCG.muSigned_mul_nonneg_of`, `NCG.idxH_zero`, `NCG.table1_complex_complex`,

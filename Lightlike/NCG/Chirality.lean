@@ -1,5 +1,6 @@
 import Lightlike.NCG.Uniqueness
 import Lightlike.NCG.RealSummands
+import Mathlib.LinearAlgebra.Trace
 
 /-!
 # The chirality of an orientable finite spectral triple
@@ -18,7 +19,9 @@ is `conj(yⱼ₀₀)` times `J π(E₀₀) J`.
 * `lU_pi_lU'`, `rU_rightOp_rU'`, `chiScalarAt`, `grading_smul_of_corner`, `chiScalarAt_eq`: the same scalar at every diagonal
   corner;
 * `chiScalar_mul_self`, `conj_chiScalar`, `chiScalar_eq_one_or`, `chiScalar_symm`: `cᵢⱼ = ±1` and `cⱼᵢ = cᵢⱼ` on nonzero
-  vertices.
+  vertices;
+* `projC`, `corner`, `corner_comp`, `projC_idem`, `trace_grading_projC`: `Tr(γ π(E^i_αα) J π(E^j_ββ) J) = cᵢⱼ rᵢⱼ`, the
+  intersection form in the complex case.
 -/
 
 open scoped InnerProductSpace
@@ -195,6 +198,47 @@ theorem chiScalar_symm (hℂ : IsComplexLinear T) (G : Grading T R) {m : ℕ} {x
   rw [grading_smul_of_mem_Vsub R hℂ G hG hv, LinearMap.map_smulₛₗ, grading_smul_of_mem_Vsub R hℂ G hG hJv,
     conj_chiScalar R hℂ G hG hv hv0] at h
   exact smul_left_injective ℂ hJ0 h
+
+/-- The corner projection `π(E^i_αα) J π(E^j_ββ) J`. -/
+def projC (i j : ι) (α : Fin (n i)) (β : Fin (n j)) : H →ₗ[ℂ] H := lU T i α α ∘ₗ rU R j β β
+
+/-- `π(E^i_{αγ}) J π(E^j_{βδ}) J`. -/
+def corner (i j : ι) (α γ : Fin (n i)) (β δ : Fin (n j)) : H →ₗ[ℂ] H := lU T i α γ ∘ₗ rU R j β δ
+
+/-- `corner(α γ, β δ) ∘ corner(γ' ε, δ' ζ) = δ_{γγ'} δ_{δδ'} corner(α ε, β ζ)`. -/
+lemma corner_comp (i j : ι) (α γ ε : Fin (n i)) (β δ ζ : Fin (n j)) :
+    corner R i j α γ β δ ∘ₗ corner R i j γ ε δ ζ = corner R i j α ε β ζ := by
+  ext v
+  simp only [corner, LinearMap.comp_apply]
+  rw [← lU_rU R i j γ ε β δ, lU_lU, if_pos rfl, rU_rU, if_pos rfl]
+
+/-- The corner projection is idempotent. -/
+lemma projC_idem (i j : ι) (α : Fin (n i)) (β : Fin (n j)) : IsIdempotentElem (projC R i j α β) := by
+  show projC R i j α β ∘ₗ projC R i j α β = projC R i j α β
+  exact corner_comp R i j α α α β β β
+
+/-- **The trace of a corner of the chirality is `c r`** (Krajewski, Section 3.3, p. 14, in the complex case:
+"`∩ᵢⱼ = Tr[χ π(pᵢ) J π(pⱼ) J⁻¹] = sign(μᵢⱼ) Tr[pᵢ ⊗ I_{|μᵢⱼ|} ⊗ pⱼ] = μᵢⱼ`"): at the corner `(0, 0)` the projection has
+range `Vᵢⱼ` and `γ` is `cᵢⱼ` there; another corner is conjugate to it by `corner(α 0, β 0)` and `corner(0 α, 0 β)`. -/
+theorem trace_grading_projC (hℂ : IsComplexLinear T) (G : Grading T R) {m : ℕ} {x y : Fin m → MatSum n}
+    (hG : IsOrientable R G x y) (i j : ι) (α : Fin (n i)) (β : Fin (n j)) :
+    LinearMap.trace ℂ H ((G.γ : H →ₗ[ℂ] H) ∘ₗ projC R i j α β) = chiScalar x y i j * multiplicity R i j := by
+  have h0 : (G.γ : H →ₗ[ℂ] H) ∘ₗ projC R i j 0 0 = chiScalar x y i j • projC R i j 0 0 := by
+    ext v
+    exact grading_smul_of_mem_Vsub R hℂ G hG ⟨v, rfl⟩
+  have htr0 : LinearMap.trace ℂ H ((G.γ : H →ₗ[ℂ] H) ∘ₗ projC R i j 0 0) = chiScalar x y i j * multiplicity R i j := by
+    rw [h0, map_smul, (LinearMap.IsIdempotentElem.isProj_range _ (projC_idem R i j 0 0)).trace, smul_eq_mul]
+    rfl
+  have hγA : (G.γ : H →ₗ[ℂ] H) ∘ₗ corner R i j α 0 β 0 = corner R i j α 0 β 0 ∘ₗ (G.γ : H →ₗ[ℂ] H) := by
+    ext v
+    simp only [corner, LinearMap.comp_apply, ContinuousLinearMap.coe_coe, grading_lU, grading_rU]
+  have hP : projC R i j α β = corner R i j α 0 β 0 ∘ₗ projC R i j 0 0 ∘ₗ corner R i j 0 α 0 β := by
+    show corner R i j α α β β = corner R i j α 0 β 0 ∘ₗ (corner R i j 0 0 0 0 ∘ₗ corner R i j 0 α 0 β)
+    rw [corner_comp, corner_comp]
+  have hBA : corner R i j 0 α 0 β ∘ₗ corner R i j α 0 β 0 = projC R i j 0 0 := corner_comp R i j 0 α 0 0 β 0
+  rw [hP, ← LinearMap.comp_assoc, hγA, LinearMap.comp_assoc, LinearMap.trace_comp_comm', LinearMap.comp_assoc,
+    LinearMap.comp_assoc, hBA, show projC R i j 0 0 ∘ₗ projC R i j 0 0 = projC R i j 0 0 from projC_idem R i j 0 0]
+  exact htr0
 
 end
 
