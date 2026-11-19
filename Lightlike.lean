@@ -879,6 +879,7 @@ import Lightlike.Spacetime.CausalLadder.TestsStrong
 import Lightlike.Spacetime.CausalLadder.CausalOpen
 import Lightlike.Spacetime.CausalLadder.CausalPastLimsup
 import Lightlike.Spacetime.CausalLadder.CausalPastLiminf
+import Lightlike.Spacetime.CausalLadder.StablyCausalSimple
 import Lightlike.Spacetime.CausalLadder.TimeFunctionAssembly
 import Lightlike.Spacetime.CausalLadder.ChartLine
 import Lightlike.Spacetime.CausalLadder.GlobHypSimple
@@ -940,6 +941,8 @@ import Lightlike.Spacetime.EinsteinEquations
 import Lightlike.Spacetime.NondegMetric
 import Lightlike.Spacetime.VolumeMeasure
 import Lightlike.Spacetime.CausalLadder.FullSupportMeasure
+import Lightlike.Spacetime.CausalLadder.NullBoundary
+import Lightlike.Spacetime.CausalLadder.NullBoundaryManifold
 import Lightlike.Spacetime.NondegOpen
 import Lightlike.Spacetime.ChartAgreement
 import Lightlike.Spacetime.ChartConnection
