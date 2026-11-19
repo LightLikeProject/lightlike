@@ -1095,6 +1095,9 @@ references:
     cite: "G. Teschl, Mathematical Methods in Quantum Mechanics, With Applications to Schrödinger Operators, Graduate Studies in Mathematics 99, American Mathematical Society (2009)"
     title: "Mathematical Methods in Quantum Mechanics"
     isbn: "9780821846605"
+    fulltext: https://www.mat.univie.ac.at/~gerald/ftp/book-schroe/schroe.pdf
+    edition: "the author's online edition of GSM 99 (AMS 2009), page numbers as printed"
+    sha256: 8dc8de0b58aa0a3fedfe594a345f9b5875322e5526ea581cb640a98d55b82818
 
 canonical:
   pl-topology: [lickorish-1999, moise-1977]
