@@ -435,7 +435,9 @@ import Lightlike.PL.TestsPolygon
 import Lightlike.PL.TestsK33
 import Lightlike.Poincare.ConeMeasure
 import Lightlike.Poincare.GeneratorCurves
+import Lightlike.Poincare.GeneratorL2
 import Lightlike.Poincare.InducedGeneric
+import Lightlike.Poincare.InducedL2
 import Lightlike.Poincare.InducedMassive
 import Lightlike.Poincare.InducedUnitary
 import Lightlike.Poincare.LiftDerivative
@@ -454,6 +456,7 @@ import Lightlike.Poincare.PauliLubanskiMassive
 import Lightlike.Poincare.PauliLubanskiRest
 import Lightlike.Poincare.RestSpin
 import Lightlike.Poincare.RestStabiliser
+import Lightlike.Poincare.ShellChart
 import Lightlike.Poincare.ShellMeasureFinite
 import Lightlike.Poincare.StandardMomenta
 import Lightlike.Poincare.WignerRotation
