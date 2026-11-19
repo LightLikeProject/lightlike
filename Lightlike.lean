@@ -403,6 +403,7 @@ import Lightlike.NCG.KrajewskiModel
 import Lightlike.NCG.MatrixUnits
 import Lightlike.NCG.QuaternionComplexify
 import Lightlike.NCG.QuaternionMatrix
+import Lightlike.NCG.QuaternionSummands
 import Lightlike.NCG.RealForm
 import Lightlike.NCG.RealSummands
 import Lightlike.NCG.TensorForm

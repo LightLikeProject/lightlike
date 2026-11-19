@@ -26,3 +26,18 @@
   review: kernel-checked
   note: "Compared with Krajewski, arXiv:hep-th/9701081, Section 3.1, p. 10 (read): 'all our formulae remain valid, provided the indices i and j label irreducible representations of A'. Here the irreducible representations are given by a complexification (σ, φ) of the triple; the order-zero and first-order conditions pass from π(A) to its complex span, and the uniqueness theorem for complex summands applies to σ. The complexification is an input; for A = ⊕ Mₙᵢ(ℝ) it is constructed in RealSummands.lean."
   since: unreleased
+
+- id: LL-XXXX-i
+  title: A real finite spectral triple over a sum of quaternionic matrix algebras Mₙᵢ(ℍ) is unitarily equivalent to the model of the multiplicity matrix of its complexification, with π acting through the fundamental representations on ℂ^{2nᵢ}
+  area: NCG
+  file: Lightlike/NCG/QuaternionSummands.lean
+  decls: [Lightlike.NCG.exists_unitary_quatSummands, Lightlike.NCG.quatComplexification, Lightlike.NCG.unitsH, Lightlike.NCG.unitsH_hom_phiH, Lightlike.NCG.phiH, Lightlike.NCG.UH]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: krajewski-1998, location: "Section 3.1", check: "irreducible representation"}
+      - {ref: krajewski-1998, location: "Section 3.2", check: "charge conjugation"}
+  review: kernel-checked
+  note: "Compared with Krajewski, arXiv:hep-th/9701081, Section 3.1, p. 10 (read): 'Mₙ(ℝ) and Mₙ(ℍ) have only one irreducible representation, the fundamental one ... Hᵢⱼ is isomorphic to ℂⁿⁱ ⊗ ℂᵐⁱʲ ⊗ ℂⁿʲ, where nᵢ is the dimension of the irreducible representation i', which for Mₙ(ℍ) is 2n. Here A = ⊕ Mₙᵢ(ℍ): with ρ_αβ(q) = π(E_αβ(q)) and the identification ℍ ⊗_ℝ ℂ ≅ M₂(ℂ), q ↦ [[a + b i, c + d i], [-c + d i, a - b i]], the operators (ρ_αβ)_ℂ(E_st) are matrix units of ⊕ M₂ₙᵢ(ℂ) on H, and φ(a)_{(αs)(βt)} = ι(a_αβ)_st gives π = σ ∘ φ. Mixed algebras and the sign conditions of Table 1, p. 14 are not covered."
+  since: unreleased
