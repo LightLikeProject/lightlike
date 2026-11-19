@@ -198,6 +198,7 @@ import Lightlike.Canonical.HamiltonianPm
 import Lightlike.Canonical.HamiltonianWEq
 import Lightlike.Canonical.Hypersurface
 import Lightlike.Canonical.HypersurfaceBridge
+import Lightlike.Canonical.InitialData
 import Lightlike.Canonical.Foliation
 import Lightlike.Canonical.FoliationSmooth
 import Lightlike.Canonical.TestsFoliation

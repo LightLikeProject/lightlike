@@ -36,6 +36,15 @@ plus the shift, the induced metric vanishes on the normal, and the extrinsic cur
 Levi-Civita connection [16]; the gradient of a smooth function is a smooth vector field, so the unit normal is smooth
 and these hold without a smoothness hypothesis [18] {2}. In Minkowski space the time coordinate gives lapse one and the Euclidean induced metric [17].
 
+Two exact solutions give initial data that satisfy the constraints [19]. The slice `t = 0` of Schwarzschild in
+Schwarzschild coordinates carries the induced metric `diag((1 − 2M/r)⁻¹, r², r² sin²θ)` and zero momentum, since the
+shift vanishes and the slice is static; its Ricci tensor is not zero but its scalar curvature is, so both constraints
+hold {3}. The slice of spatially flat FLRW carries `a(t)² δ_ij` and the momentum `−2a'(t) δ^{ij}` of its extrinsic
+curvature; the Hamiltonian constraint with the density of the comoving fluid holds exactly when the first Friedmann
+equation does, and the momentum constraint holds {3} {4}; for a slice of spatial curvature `k`, with metric
+`(a S)² δ_ij`, `S = 1/(1 + k|x|²/4)`, the scalar curvature is `6k/a²` and the constraint holds exactly when
+`(a'/a)² = 8πGρ/3 − k/a² + Λ/3`, the cosmological constant entering as a fluid with `w = −1` [19] {4}.
+
 A grid computation in dimension two (`scripts/adm_algebra_check.py`) supports the three brackets; with the kinetic
 coefficient `1/2` of dimension three, used in dimension two, the bracket of two Hamiltonian constraints differs from
 the momentum constraint of the structure function.
@@ -65,6 +74,10 @@ the momentum constraint of the structure function.
 17. Lightlike/Canonical/TestsFoliation.lean - `Lightlike.Canonical.isTimeFunction_minkowski`, `Lightlike.Canonical.spatialMetric_minkowski`
 18. Lightlike/Canonical/FoliationSmooth.lean - `Lightlike.Canonical.contMDiffAt_timeGrad`, `Lightlike.Canonical.smoothNear_unitNormal`,
     `Lightlike.Canonical.isUnitNormal_of_timeFunction`, `Lightlike.Canonical.extrinsicCurvature_symm_of_timeFunction`
+19. Lightlike/Canonical/InitialData.lean - `Lightlike.Canonical.schSlice_hamiltonianConstraint`, `Lightlike.Canonical.schSlice_momentumConstraint`,
+    `Lightlike.Canonical.flrw_hamiltonian_iff`, `Lightlike.Canonical.flrw_momentumConstraint`,
+    `Lightlike.Canonical.scalarCurvature_flrwSliceK`, `Lightlike.Canonical.flrwK_hamiltonian_iff_Lambda`,
+    `Lightlike.Canonical.flrwK_momentumConstraint`
 
 ## References
 
@@ -72,3 +85,7 @@ the momentum constraint of the structure function.
    R. Arnowitt, S. Deser and C. W. Misner, *The dynamics of general relativity*, equations (3.14a), (3.14b).
 2. E. Gourgoulhon, *3+1 Formalism and Bases of Numerical Relativity*, arXiv:gr-qc/0703035, equations (2.43),
    (2.68)-(2.70), (3.1)-(3.10), (4.27)-(4.32).
+3. E. Gourgoulhon, *3+1 Formalism and Bases of Numerical Relativity*, arXiv:gr-qc/0703035, equations (4.19), (4.22),
+   (4.104), (4.108), (7.16), (7.17).
+4. J. C. Aurrekoetxea, K. Clough and E. A. Lim, *Cosmology using numerical relativity*, arXiv:2409.01939, equations (3),
+   (23), (25), (26).
