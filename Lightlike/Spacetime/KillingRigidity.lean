@@ -16,10 +16,14 @@ For a metric of any signature on a manifold modelled on `Fin n → ℝ` and a sm
 * `rigVec_chartCovector`: `θ` and `∂θ` vanish at a chart point iff `X` and `∇X` vanish there;
 * `killing_eq_zero_of_eq_zero`: **Killing rigidity**: on a connected manifold, a smooth Killing field with `X(p₀) = 0`
   and `∇X(p₀) = 0` vanishes everywhere (the coordinate rigidity `rigVec_eq_zero_of_isPreconnected` in a ball of each
-  chart, and the set where `X` and `∇X` vanish is open and closed);
+  chart: the set where `X` and `∇X` vanish contains a chart ball around each of its points and around each point of its
+  closure, so on a connected manifold it is everything);
 * `killingFieldSpace`, `finrank_killingFieldSpace_le`: the smooth Killing fields form a real vector space, of finite
   dimension at most `n (n + 1) / 2` on a connected nonempty manifold: `X ↦ (g(X, ∂_b), g(∇_{∂_a} X, ∂_b))` at a point is
   linear and injective (rigidity) into `ℝⁿ` times the antisymmetric matrices.
+
+The isometry-group form of G1-024 (homogeneity and isotropy through the Killing algebra) is the next step and is not
+part of this file.
 
 ## References
 
