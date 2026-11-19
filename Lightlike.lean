@@ -730,6 +730,7 @@ import Lightlike.Spacetime.EinsteinTwoDim
 import Lightlike.Spacetime.Lorentzian
 import Lightlike.Spacetime.Minkowski
 import Lightlike.Spacetime.RiemannSymmetry
+import Lightlike.Spacetime.EHManifold.ActionPieces
 import Lightlike.Spacetime.EHManifold.BallCritical
 import Lightlike.Spacetime.EHManifold.BallCriticalConverse
 import Lightlike.Spacetime.EHManifold.BallVariation
