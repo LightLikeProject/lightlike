@@ -364,6 +364,7 @@ tasks:
     file: "Tasks/GE2/T_GE2_P11.lean"
     decl: "Lightlike.Causal.isStablyCausal_of_isCausallySimple"
     routes: ["Construct a time function by Hawking's averaging of volumes of futures, using closedness of `J±`."]
+    lock: "7f3818d52455ebb3"
     labels: ["proof-task", "area: geometry", "size: L", "research-level"]
   - id: "T-GE2-P12"
     kind: "proof"

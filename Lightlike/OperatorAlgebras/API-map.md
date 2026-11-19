@@ -60,6 +60,8 @@ On `L²(0, 1)`, a vector lies in the domain of the adjoint of `-i d/dx` (on the 
 
 The plane waves `e^{i(θ + 2πn)x}`, `n ∈ ℤ`, lie in the domain of `P_θ` and are orthonormal eigenvectors with eigenvalue `θ + 2πn`; an eigenvector of `P_θ` with eigenvalue `μ ∈ ℂ` has the continuous representative `y(0) e^{iμx}`, so `μ = θ + 2πn` and the eigenspaces are one-dimensional; off `θ + 2πℤ` the resolvent equation is solved explicitly, so the spectrum of `P_θ`, in Physlib's sense, is `θ + 2πℤ` and equals the point spectrum {5}, [69]. `θ` is in the spectrum of `P_θ` and `θ + π` is not [70].
 
+A Weyl system of a symplectic vector space `(V, ω)` is a map `W` into a unital star algebra with `W(0) = 1`, `W(-φ) = W(φ)*` and `W(φ) W(ψ) = e^{-iω(φ,ψ)/2} W(φ + ψ)`; its elements are unitary and linearly independent, the independence by induction on the number of terms with the conjugations `W(ψ) W(χ) W(-ψ) = e^{-iω(ψ,χ)} W(χ)` [71]. The operators `(W(φ)F)(ψ) = e^{iω(φ,ψ)/2} F(φ + ψ)` on `ℓ²(V)`, or on any Hilbert space with a Hilbert basis indexed by `V`, form a Weyl system, and the closed star subalgebra they generate is the CCR algebra, a C*-algebra {6} [71]. The Weyl unitaries of a representation of the CCR over a complex inner product space form a Weyl system of `σ = Im⟪·,·⟫` [71]. In the CCR algebra of `ℝ²` with `ω((a, b), (c, d)) = ad - bc` the elements `W(e₁)` and `W(e₂)` do not commute [72].
+
 ## Lean References
 
 1. Lightlike/OperatorAlgebras/UnitaryGroup.lean - `OperatorAlgebras.UnitaryGroup`,
@@ -239,6 +241,15 @@ The plane waves `e^{i(θ + 2πn)x}`, `n ∈ ℤ`, lie in the domain of `P_θ` an
     `OperatorAlgebras.spectrum_momentumTheta`, `OperatorAlgebras.pointSpectrum_momentumTheta`
 70. Lightlike/OperatorAlgebras/TestsMomentumSpectrum.lean - `OperatorAlgebras.theta_mem_spectrum`,
     `OperatorAlgebras.theta_add_pi_not_mem_spectrum`
+71. Lightlike/OperatorAlgebras/WeylAlgebra.lean - `OperatorAlgebras.IsSymplecticForm`, `OperatorAlgebras.IsWeylSystem`,
+    `OperatorAlgebras.IsWeylSystem.mem_unitary`, `OperatorAlgebras.IsWeylSystem.linearIndependent`,
+    `OperatorAlgebras.weylOp`, `OperatorAlgebras.isWeylSystem_weylOp`, `OperatorAlgebras.ccrAlgebra`,
+    `OperatorAlgebras.ccrW`, `OperatorAlgebras.isWeylSystem_ccrW`, `OperatorAlgebras.symplecticForm`,
+    `OperatorAlgebras.CCRRep.isWeylSystem`
+72. Lightlike/OperatorAlgebras/TestsWeylAlgebra.lean - `OperatorAlgebras.IsWeylSystem.mul_twist`,
+    `OperatorAlgebras.IsWeylSystem.mul_ne_mul`, `OperatorAlgebras.not_isSymplecticForm_zero`,
+    `OperatorAlgebras.weylOp_ell2Basis_apply`, `OperatorAlgebras.ccrW_mul_ne` (the CCR algebra of `ℝ²` is not
+    commutative)
 
 ## References
 
@@ -253,3 +264,6 @@ The plane waves `e^{i(θ + 2πn)x}`, `n ∈ ℤ`, lie in the domain of `P_θ` an
    (github.com/physicslib/physicslib4, Apache-2.0).
 5. G. Bonneau, J. Faraut and G. Valent, *Self-adjoint extensions of operators and the teaching of quantum
    mechanics*, arXiv:quant-ph/0103153, Appendix A.3 and Section 5.3, eqs. (14) and (15).
+6. C. Bär, N. Ginoux and F. Pfäffle, *Wave Equations on Lorentzian Manifolds and Quantization*, ESI Lectures in
+   Mathematics and Physics, European Mathematical Society, 2007, arXiv:0806.1036, Section 4.2 (Definition 4.2.1,
+   Example 4.2.2, Proposition 4.2.3), pp. 116-122.

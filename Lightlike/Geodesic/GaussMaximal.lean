@@ -251,4 +251,19 @@ theorem exists_expMap_along_gauss (hg : Lightlike.IsCoordMetric g U) {γ w : ℝ
         (fderiv ℝ (Φ 1) y₀ ζ).1
     rw [e0]
 
+/-- **The domain of `exp` is star shaped** (Kunzinger–Steinbauer, Proposition 2.2.3, last part):
+if the geodesic with initial velocity `v` is defined on an open set containing `[0, 1]`, so is
+the geodesic with initial velocity `t • v` for every `t ∈ [0, 1]`, and it reaches `γ t` at
+time `1`. -/
+theorem IsGeodesicOn.exists_scale_unit {γ w : ℝ → Fin n → ℝ} {I : Set ℝ} (hI : IsOpen I)
+    (h01 : Icc (0 : ℝ) 1 ⊆ I) (hgeo : IsGeodesicOn g γ w I) {t : ℝ} (ht : t ∈ Icc (0 : ℝ) 1) :
+    ∃ (I' : Set ℝ) (γ' w' : ℝ → Fin n → ℝ), IsOpen I' ∧ Icc (0 : ℝ) 1 ⊆ I' ∧
+      IsGeodesicOn g γ' w' I' ∧ γ' 0 = γ 0 ∧ w' 0 = t • w 0 ∧ γ' 1 = γ t := by
+  refine ⟨(fun s => t * s) ⁻¹' I, fun s => γ (t * s), fun s => t • w (t * s),
+    hI.preimage (continuous_const.mul continuous_id), fun s hs => h01 ⟨?_, ?_⟩, hgeo.scale t,
+    by simp, by simp, by simp⟩
+  · exact mul_nonneg ht.1 hs.1
+  · calc t * s ≤ 1 * 1 := mul_le_mul ht.2 hs.2 hs.1 zero_le_one
+      _ = 1 := one_mul 1
+
 end Lightlike.Geodesic

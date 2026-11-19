@@ -96,6 +96,7 @@ CHECKS = [
     ("scripts/spinfoam/bing_house_check.py", False),
     ("scripts/spinfoam/gauge_manifold_check.py", False),
     ("scripts/spinfoam/forcechain.py", True),
+    ("scripts/spinfoam/forcing_cocycle_check.py", False),
     ("scripts/spinfoam/gauge_cutoff_limit.py", True),
     ("scripts/spinfoam/robust_check.py", False),
     ("scripts/spinfoam/robust_counterexample_verify.py", False),

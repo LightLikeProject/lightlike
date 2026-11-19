@@ -2437,3 +2437,135 @@
   review: kernel-checked
   note: "For P_theta = -i d/dx on D_theta = {psi in D_max(0, 1) : psi(1) = e^{i theta} psi(0)}: the plane waves e^{i(theta + 2 pi n)x}, n in Z, lie in D_theta, are eigenvectors with eigenvalue theta + 2 pi n and are orthonormal; every eigenvalue is of this form and every eigenvector is a multiple of the plane wave; the spectrum in Physlib's sense (LinearPMap.spectrum: z is in the resolvent set iff P_theta - z is a bijection of the domain onto L^2(0, 1) with continuous inverse) is theta + 2 pi Z and equals the point spectrum. The resolvent equation is solved explicitly off theta + 2 pi Z. Compared with Bonneau-Faraut-Valent, Section 5.3, p. 8, eq. (15) and the sentence before it ('the spectra are purely discrete') (read). Differences, kind convention, to be approved by a maintainer: hbar = 1, L = 1, and the eigenvalue 2 pi hbar nu / L, nu = n + theta / 2 pi, is written theta + 2 pi n."
   since: unreleased
+- id: LL-0186
+  title: Under the Einstein equations the physical and the geometric forms of the null, weak, strong and dominant energy conditions are equivalent
+  area: Spacetime
+  file: Lightlike/Spacetime/EnergyConditionsField.lean
+  decls: [Lightlike.LorentzianMetric.nullECField_iff_ricci, Lightlike.LorentzianMetric.weakECField_iff_einstein, Lightlike.LorentzianMetric.strongECField_iff_ricci, Lightlike.LorentzianMetric.dominantECField_iff_einstein]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: curiel-2014, location: "§2.1", check: "geometric"}
+  review: kernel-checked
+  note: "For a Lorentzian metric g on a four-manifold, a connection cov and a field T of bilinear forms with G = kappa T (the Einstein equations with Lambda = 0, kappa > 0): T satisfies the null condition everywhere iff Ric(k,k) >= 0 for every null k; the weak condition iff G(xi,xi) >= 0 for every timelike xi; the strong condition iff Ric(xi,xi) >= 0 for every timelike xi (via the trace R = -kappa tr_g T); the dominant condition iff G(xi,xi) >= 0 and the vector G^a_n xi^n is causal for timelike xi, and G(xi,eta) >= 0 for co-oriented timelike xi, eta. A cosmological constant moves into the source (einsteinEq_iff_absorb). Also on the manifold: the perfect-fluid field with a unit timelike velocity field satisfies the four conditions iff the effective forms hold at every point, dust with rho >= 0 satisfies all four, a constant Klein-Gordon field with negative potential violates the weak one, the electromagnetic field satisfies the null one. Compared with E. Curiel, A Primer on Energy Conditions (arXiv 1405.0403), section 2, p. 5 ('the physical formulation is logically equivalent to the geometric formulation if the Einstein field equation is assumed to hold') and the geometric and physical forms of the table of section 2.1, p. 6. Non-vacuity: Minkowski space with T = 0. Limits: the fields need not be smooth; the geometric forms on a boundaryless manifold modelled on a finite-dimensional space. See docs/notes/ge14-energy-conditions.md."
+  since: unreleased
+- id: LL-0187
+  title: The electromagnetic field satisfies the null, weak, strong and dominant energy conditions
+  area: Spacetime
+  file: Lightlike/Spacetime/EnergyConditionsEM.lean
+  decls: [Lightlike.em_weakEC, Lightlike.em_dominantEC, Lightlike.em_strongEC_dim, Lightlike.em_strongEC_of_eq]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: kontou-sanders-2020, location: "§2.3", check: "Maxwell"}
+  review: kernel-checked
+  note: "For an antisymmetric field strength F on a Lorentzian vector space (signature -+...+) and its stress-energy T_ab = F_ac F_b^c - (1/4) F_cd F^cd g_ab: T(v, v) >= 0 for every timelike v (in a Lorentz frame with e_0 = v/|v| the energy density is (1/2) sum_i F_0i^2 + (1/4) sum_ij F_ij^2); the Poynting bound sum_i T(e_0, e_i)^2 <= T(e_0, e_0)^2 (from |A E|^2 <= |A|^2 |E|^2 / 2 for the antisymmetric spatial part A) gives the dominant condition (T(xi, xi) >= 0 and the vector T^a_n xi^n causal for timelike xi, T(xi, eta) >= 0 for co-oriented timelike xi, eta); the strong condition (T - tr_g T/(n - 2) g)(v, v) >= 0 holds in every dimension n >= 3 (in four dimensions T is traceless and the four-dimensional StrongEC is the weak one); all in any dimension; the null condition is em_nullEC. Every unit timelike vector is the time vector of a Lorentz frame (exists_frame_of_timelike, a boost). Compared with E.-A. Kontou and K. Sanders, Energy conditions in general relativity and quantum field theory (arXiv 2003.01815), section 2.3, pp. 13-15: the stress tensor (15) with m = 0 is ours (no Gaussian factor), the energy density (36), the trace (37)-(38), and Table 2: Maxwell satisfies NEC, WEC, DEC and SEC. Limits: pointwise on a vector space. See docs/notes/ge14-energy-conditions.md."
+  since: unreleased
+- id: LL-0188
+  title: The Hamiltonian and momentum constraints of a non-null hypersurface follow from the contracted Gauss and Codazzi relations
+  area: Spacetime
+  file: Lightlike/Spacetime/HypersurfaceConstraints.lean
+  decls: [Lightlike.curvatureAt_linear, Lightlike.ricciAt_frame, Lightlike.scalarCurvatureAt_frame, Lightlike.hamiltonian_constraint, Lightlike.momentum_constraint]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: gourgoulhon-2007, location: "Section 2.5", check: "Gauss"}
+  review: kernel-checked
+  note: "For a level-set hypersurface with unit normal n (g(n, n) = eps = plus or minus one) of a metric of any signature with its Levi-Civita connection, and tangent fields E_a (a < d, d + 1 the dimension) with g(E_a, E_b) = eta_a delta_ab at x0: 2 G(n, n) = -eps sum_ab eta_a eta_b g(R^D(E_b, E_a) E_a, E_b) + K^2 - K_ab K^ab (hamiltonian_constraint) and G(n, E_c) = sum_a eta_a ((D_{E_a} K)(E_c, E_a) - (D_{E_c} K)(E_a, E_a)) (momentum_constraint), G the Einstein tensor, K(v, w) = g(nabla_v n, w), R^D the curvature of the tangential connection, D K its covariant derivative. Read: Gourgoulhon gr-qc/0703035, scalar Gauss (2.95) and contracted Codazzi (2.103) (Section 2.5), giving the constraints (4.19) R + K^2 - K_ij K^ij = 16 pi E and (4.22) D_j K^j_i - D_i K = 8 pi p_i under Einstein's equations (eps = -1; his K is minus ours, which leaves (4.19) unchanged and matches (4.22) with p_i = -T(n, e_i)). The ADM form of the same constraints in coordinates is Lightlike/Canonical/ADM.lean (the ADM constraint densities); here they are derived from the four-dimensional curvature. Traces are taken in the orthonormal basis (n, E_a), with the curvature linear in each slot (curvatureAt_linear) and the Ricci and scalar curvatures as frame sums (ricciAt_frame, scalarCurvatureAt_frame)."
+  since: unreleased
+- id: LL-0189
+  title: The Kruskal-Szekeres spacetime is inextendible (maximality of the Kruskal extension, smooth metrics)
+  area: GR
+  file: Lightlike/GR/KruskalMaximal.lean
+  decls: [Lightlike.kruskal_isInextendible]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: sbierski-2016, location: "Abstract", check: "manifestly inextendible"}
+  review: kernel-checked
+  note: "The Kruskal manifold, the set X^2 - T^2 > -1 times the sphere with the Kruskal metric of mass M > 0, has no extension: no smooth isometric open embedding into a proper subset of a connected Hausdorff Lorentzian manifold of the same dimension with a smooth metric. Proof: a normal chart at a boundary point of the image gives a geodesic of the target that leaves the image; lifted to the Kruskal manifold it is a geodesic on a finite interval, which either has a limit in the manifold (bounds from the constants of motion and Gronwall's inequality) or approaches r = 0, where the Kretschmann scalar 48 M^2 / r^6 is unbounded. Difference from the source (weaker): the source's abstract states inextendibility with twice continuously differentiable metrics and its theorem is inextendibility with continuous metrics; here only extensions with smooth metrics are excluded."
+  since: unreleased
+- id: LL-0190
+  title: The Raychaudhuri identity and geodesic focusing for a vector field on a manifold
+  area: Spacetime
+  file: Lightlike/Spacetime/RaychaudhuriManifold.lean
+  decls: [Lightlike.raychaudhuri_manifold, Lightlike.raychaudhuri_leviCivita, Lightlike.raychaudhuri_focusing_manifold_at, Lightlike.raychaudhuri_focusing_manifold]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: kar-sengupta-2007, location: "eq. (12)", check: "Raychaudhuri"}
+      - {ref: kar-sengupta-2007, location: "eq. (16)", check: "convergence"}
+  review: kernel-checked
+  note: "On a manifold modelled on R^n with a metric of any signature and its Levi-Civita connection (main's leviCivita g, or any torsion-free metric connection that is locally smooth), for a smooth vector field V with nabla_V V = 0 near x and the expansion Theta = tr(u -> nabla_u V): V(Theta) = -tr((nabla V)^2) - Ric(V, V) at x (raychaudhuri_manifold, raychaudhuri_leviCivita), Kar and SenGupta's identity behind (12), with no normalisation of V; the proof reads the identity in the chart at x (the components of nabla_u V are covD, the trace and Ric are the coordinate ones) and applies raychaudhuri_coord. For a Lorentzian metric and V unit (g(V, V) = -1) and geodesic near x, rotation-free at x (g(nabla_u V, w) = g(nabla_w V, u), Kar and SenGupta's omega = 0) with Ric(V, V) >= 0: V(Theta) <= -Theta^2/(n-1) (raychaudhuri_focusing_manifold_at), and along an integral curve gamma of V on [0, L) with these hypotheses along gamma and Theta(gamma(0)) < 0, L <= (n-1)/|Theta(gamma(0))| (raychaudhuri_focusing_manifold): the paragraph after their (16), convergence as the bound on the parameter interval on which Theta stays finite. Limits: the null version (their (17)) is not here."
+  since: unreleased
+- id: LL-0191
+  title: The comoving congruence of FLRW has expansion 3 a'/a and obeys Raychaudhuri's equation, and de Sitter's does not focus
+  area: Cosmology
+  file: Lightlike/Cosmology/Raychaudhuri.lean
+  decls: [Lightlike.Cosmology.flrw_comoving_covDeriv, Lightlike.Cosmology.flrw_comoving_geodesic, Lightlike.Cosmology.flrw_comoving_expansion, Lightlike.Cosmology.flrw_raychaudhuri, Lightlike.Cosmology.minkowski_comoving_expansion, Lightlike.Cosmology.deSitter_no_focusing]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: kar-sengupta-2007, location: "eq. (12)", check: "Raychaudhuri"}
+      - {ref: kar-sengupta-2007, location: "eq. (16)", check: "convergence"}
+  review: kernel-checked
+  note: "Kar and SenGupta's (12), d theta/d lambda + theta^2/3 + sigma^2 - omega^2 = -R_ab v^a v^b for a timelike geodesic congruence, and (16), convergence if R_ab v^a v^b + sigma^2 - omega^2 >= 0. In coordinates on the FLRW chart: the comoving field u = d_t has nabla_j u^i = H delta^i_j on spatial indices and 0 otherwise (no shear, no rotation), is geodesic, and has expansion theta = 3 a'/a; along it d theta/dt + theta^2/3 = -R_00. Minkowski (a = 1, k = 0): theta = 0. de Sitter (a = e^{Ht}, k = 0): theta = 3H constant while R_00 = -3H^2 < 0, so the convergence condition fails and the congruence does not focus (the GE3 checks). Focusing: if theta' <= -theta^2/m on [0, L) and theta(0) < 0 then L <= m/|theta(0)| (the lemma Lightlike.focusing, Spacetime/RiccatiFocusing.lean). Limits: coordinates and constant fields; the Raychaudhuri equation for a general geodesic congruence on a manifold and the exponential map are not here."
+  since: unreleased
+- id: LL-0192
+  title: Raychaudhuri's equation for a geodesic field in coordinates, with the split into expansion, shear and rotation
+  area: Spacetime
+  file: Lightlike/Spacetime/RaychaudhuriCoord.lean
+  decls: [Lightlike.covD, Lightlike.expansion, Lightlike.shear, Lightlike.rotation, Lightlike.raychaudhuri_coord, Lightlike.raychaudhuri_equation]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: kar-sengupta-2007, location: "eq. (12)", check: "Raychaudhuri"}
+  review: kernel-checked
+  note: "For a coordinate metric g on an open U of R^n and a smooth field v with v^c nabla_c v^d = 0 on U (nabla_b v^a = d_b v^a + Gamma^a_bc v^c): v^c d_c Theta = -(nabla_b v^a)(nabla_a v^b) - R_{sigma nu} v^sigma v^nu, Theta = nabla_a v^a, in the library's ricci convention, with no normalisation of v (raychaudhuri_coord; the index computation raychaudhuri_algebra is fable1's). At a point where g(v, v) = -1, with L = g (nabla v), the shear sigma = (L + L^T)/2 - (Theta/(n-1)) (g + v_flat v_flat) and the rotation omega = (L - L^T)/2, norms taken with g^{-1}: v(Theta) = -Theta^2/(n-1) - |sigma|^2 + |omega|^2 - R(v, v) (raychaudhuri_equation, trace_sq_split), Kar and SenGupta's (12) for n = 4 (their (1) for the split). Limits: coordinates; the congruence on a manifold and the null version are not here (focusing: the next entry)."
+  since: unreleased
+- id: LL-0193
+  title: Convergence and focusing of a unit timelike geodesic congruence in coordinates
+  area: Spacetime
+  file: Lightlike/Spacetime/RaychaudhuriFocusing.lean
+  decls: [Lightlike.covD_orthogonal, Lightlike.raychaudhuri_convergence, Lightlike.shear_normSq_nonneg, Lightlike.raychaudhuri_focusing_at, Lightlike.raychaudhuri_focusing]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: kar-sengupta-2007, location: "eq. (16)", check: "convergence"}
+  review: kernel-checked
+  note: "For a coordinate metric g on an open U of R^n and a smooth geodesic field v with g(v, v) = -1 on U, along an integral curve gamma of v (gamma' = v(gamma)) in U on [0, L) with Theta(gamma(0)) < 0: if R(v, v) + sigma^2 - omega^2 >= 0 along gamma, then L <= (n-1)/|Theta(gamma(0))| (raychaudhuri_convergence, Kar and SenGupta's (16), any signature); for a Lorentzian coordinate metric (IsLorentzianCoordMetric) sigma^2 >= 0 (shear_normSq_nonneg: g(v, nabla_b v) = 0 from the unit norm, covD_orthogonal, makes sigma spatial, and the orthogonal complement of a timelike vector is spacelike), so a rotation-free field (omega = 0) with R(v, v) >= 0 along gamma obeys the same bound (raychaudhuri_focusing, the paragraph after their (16): zero rotation and R_ab v^a v^b >= 0 lead to geodesic focusing). Their convergence (Theta -> -infinity at a finite parameter, via the Sturm comparison for Theta = 3F'/F) is stated as the bound on the interval on which Theta stays finite along gamma (Riccati argument, Lightlike.focusing). Limits: coordinates; the congruence on a manifold and the null version are not here."
+  since: unreleased
+- id: LL-0194
+  title: The elements of a Weyl system of a symplectic vector space are unitary and linearly independent
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/WeylAlgebra.lean
+  decls: [Lightlike.OperatorAlgebras.IsWeylSystem.mem_unitary, Lightlike.OperatorAlgebras.IsWeylSystem.linearIndependent]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: bgp-2007, location: "Proposition 4.2.3, p. 117", check: "Weyl system"}
+  review: kernel-checked
+  note: "Compared with Bar-Ginoux-Pfaffle, Definition 4.2.1, p. 116 and Proposition 4.2.3 (1), (4), pp. 117-119 (read). A Weyl system is a map W from a real symplectic vector space into a unital star algebra over C with W(0) = 1, W(-phi) = W(phi)* and the Weyl relation."
+  since: unreleased
+- id: LL-0195
+  title: The CCR algebra of a symplectic vector space, the C*-algebra generated by the Weyl operators on l2(V), with its Weyl system; the Weyl unitaries of a representation of the CCR form a Weyl system
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/WeylAlgebra.lean
+  decls: [Lightlike.OperatorAlgebras.ccrAlgebra, Lightlike.OperatorAlgebras.isWeylSystem_ccrW, Lightlike.OperatorAlgebras.isWeylSystem_weylOp, Lightlike.OperatorAlgebras.CCRRep.isWeylSystem]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: bgp-2007, location: "Example 4.2.2, p. 116", check: "Weyl system"}
+  review: kernel-checked
+  note: "Compared with Bar-Ginoux-Pfaffle, Example 4.2.2, pp. 116-117 (read): CCR(V, omega) is the C*-subalgebra of L(l2(V)) generated by (W(phi)F)(psi) = exp(i omega(phi, psi)/2) F(phi + psi); here l2(V) is any Hilbert space with a Hilbert basis indexed by V. Uniqueness up to *-isomorphism (Theorem 4.2.9) is not stated."
+  since: unreleased
