@@ -249,6 +249,8 @@ import Lightlike.FourD.Orientation
 import Lightlike.FourD.Pachner
 import Lightlike.FourD.Tests
 import Lightlike.GR.ComplexMinkowski
+import Lightlike.GR.WeylSpinor
+import Lightlike.GR.ZeroRestMass
 import Lightlike.GR.Einstein
 import Lightlike.GR.AdSInversion
 import Lightlike.GR.AdSPoincare
