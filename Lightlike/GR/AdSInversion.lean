@@ -11,8 +11,8 @@ import Lightlike.Spacetime.RiemannSymmetry
 space `ℝ^{1,2}`, which multiplies the Minkowski metric by `1/(x²)²` (`inversion_conformal_boundary`): a conformal
 transformation of the boundary. Translations in `(t, x)` are isometries too (`adsTranslation_isometry`). The special conformal transformations are the conjugates of translations by the inversion (the source's (2.2)):
 `specialConformal b = inversion ∘ (· + b) ∘ inversion` is an isometry of the Poincaré patch (`adsSpecialConformal_isometry`) and acts conformally on the
-boundary `ℝ^{1,2}` with the factor `1/((x²)² (x'²)²)`, `x' = x/x² + b` (`specialConformal3_conformal`). That `inversion ∘ (· + b) ∘ inversion` has the explicit
-form `(x + b x²)/(1 + 2 b·x + b² x²)` of (2.2) is not formalized.
+boundary `ℝ^{1,2}` with the factor `1/((x²)² (x'²)²)`, `x' = x/x² + b` (`specialConformal3_conformal`). The explicit form `(x + b x²)/(1 + 2 b·x + b² x²)` of (2.2) is proved
+(`specialConformal_eq`, `specialConformal3_eq`).
 
 Gap row GE7 (the conformal action of the isometry group on the boundary, beyond dilations). Source read (pdftotext):
 Aharony-Gubser-Maldacena-Ooguri-Oz, arXiv:hep-th/9905111, section 2 (printed p. 31, eqs. (2.1)-(2.2)): conformal transformations are those
@@ -280,5 +280,37 @@ theorem specialConformal3_conformal (b : Fin 3 → ℝ) {y : Fin 3 → ℝ} (hq 
   rw [pullback_congr_at (g := minkBoundary) (ψ := inversion3) (y := y) (hT (inversion3 y))]
   rw [inversion_conformal_boundary hq]
   simp [smul_smul]
+
+/-- **The explicit form of the special conformal transformation** (AGMOO (2.2)):
+`x ↦ (x + b x²)/(1 + 2 b·x + b² x²)` wherever `x² ≠ 0` and the denominator is nonzero; here
+`b·x = -b₀x₀ + b₁x₁ + b₂x₂ + b₃x₃` and `x² = qf x`. -/
+theorem specialConformal_eq (b y : Fin 4 → ℝ) (hq : qf y ≠ 0)
+    (hd : 1 + 2 * (-(b 0 * y 0) + b 1 * y 1 + b 2 * y 2 + b 3 * y 3) + qf b * qf y ≠ 0) (μ : Fin 4) :
+    specialConformal b y μ =
+      (y μ + b μ * qf y) / (1 + 2 * (-(b 0 * y 0) + b 1 * y 1 + b 2 * y 2 + b 3 * y 3) + qf b * qf y) := by
+  have hqw : qf (inversion y + b) =
+      (1 + 2 * (-(b 0 * y 0) + b 1 * y 1 + b 2 * y 2 + b 3 * y 3) + qf b * qf y) / qf y := by
+    simp only [qf, inversion_apply, Pi.add_apply] at hq ⊢
+    field_simp
+    ring
+  unfold specialConformal
+  rw [inversion_apply, hqw]
+  simp only [Pi.add_apply, inversion_apply]
+  field_simp
+
+/-- **The explicit form on the boundary `ℝ^{1,2}`.** -/
+theorem specialConformal3_eq (b y : Fin 3 → ℝ) (hq : qf3 y ≠ 0)
+    (hd : 1 + 2 * (-(b 0 * y 0) + b 1 * y 1 + b 2 * y 2) + qf3 b * qf3 y ≠ 0) (μ : Fin 3) :
+    specialConformal3 b y μ =
+      (y μ + b μ * qf3 y) / (1 + 2 * (-(b 0 * y 0) + b 1 * y 1 + b 2 * y 2) + qf3 b * qf3 y) := by
+  have hqw : qf3 (inversion3 y + b) =
+      (1 + 2 * (-(b 0 * y 0) + b 1 * y 1 + b 2 * y 2) + qf3 b * qf3 y) / qf3 y := by
+    simp only [qf3, inversion3_apply, Pi.add_apply] at hq ⊢
+    field_simp
+    ring
+  unfold specialConformal3
+  rw [inversion3_apply, hqw]
+  simp only [Pi.add_apply, inversion3_apply]
+  field_simp
 
 end Lightlike
