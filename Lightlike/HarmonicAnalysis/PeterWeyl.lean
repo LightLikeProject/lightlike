@@ -5,7 +5,7 @@ import Lightlike.HarmonicAnalysis.PeterWeylSeparation
 
 For a compact Hausdorff group `G`, the span of the matrix coefficients of continuous finite-dimensional
 unitary representations is dense in `C(G, ℂ)` in the sup norm (`peterWeyl_dense_continuous`) and, for a
-regular Haar measure, in `L²(G, μ)` (`peterWeyl_dense_L2`).
+Haar measure, in `L²(G, μ)` (`peterWeyl_dense_L2`).
 
 ## References
 
@@ -26,9 +26,9 @@ a compact Hausdorff group are dense in `C(G, ℂ)`. -/
 theorem peterWeyl_dense_continuous : Dense (matrixCoeffSpan G : Set C(G, ℂ)) :=
   dense_matrixCoeffSpan_of_separates fun _ _ hgh => exists_matrixCoeff_ne hgh
 
-/-- **Peter–Weyl, `L²` form.** For a regular Haar measure the classes of the matrix coefficients are dense in
+/-- **Peter–Weyl, `L²` form.** For a Haar measure the classes of the matrix coefficients are dense in
 `L²(G, μ)`. -/
-theorem peterWeyl_dense_L2 (μ : Measure G) [μ.IsHaarMeasure] [μ.Regular] :
+theorem peterWeyl_dense_L2 (μ : Measure G) [μ.IsHaarMeasure] :
     Dense (((matrixCoeffSpan G).map (ContinuousMap.toLp (E := ℂ) 2 μ ℂ).toLinearMap :
       Submodule ℂ (Lp ℂ 2 μ)) : Set (Lp ℂ 2 μ)) := by
   have hd : DenseRange (ContinuousMap.toLp (E := ℂ) 2 μ ℂ) :=

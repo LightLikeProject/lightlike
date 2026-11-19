@@ -3,7 +3,7 @@ import Lightlike.HarmonicAnalysis.PeterWeylComplete
 /-!
 # The Peter–Weyl theorem: a Hilbert basis of `L²(G)` from irreducible matrix coefficients
 
-For a compact Hausdorff group `G` with a regular Haar probability measure `μ`, the functions
+For a compact Hausdorff group `G` with a Haar probability measure `μ`, the functions
 `√(dim π) · π_{ij}`, where `π` runs over the equivalence classes of irreducible continuous finite-dimensional
 unitary representations (with a chosen representative) and `i, j` over the indices of the representative,
 form a Hilbert basis of `L²(G, μ)` (`peterWeyl_hilbertBasis`). Equivalently, `L²(G)` is the Hilbert direct sum
@@ -24,7 +24,7 @@ noncomputable section
 
 variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G]
   [T2Space G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsHaarMeasure]
-  [IsProbabilityMeasure μ] [μ.Regular]
+  [IsProbabilityMeasure μ]
 
 /-- **Peter–Weyl theorem (Hilbert basis form).** The normalised matrix coefficients of the irreducible
 unitary representations form a Hilbert basis of `L²(G, μ)`. -/
