@@ -16,8 +16,8 @@ vector at `P` given by `m` times these generators in the frame `L(P)` (`W(P) = �
 
 **Difference from the source (kind: weaker).** The Pauli–Lubanski vector at `P` is taken in its little-group form
 `W(P) = Λ(L(P)) (0, m J)` (Bekaert–Boulanger §5.2: the quartic Casimir is evaluated in the rest frame), with the
-generators `J` derived from `U` at `P`; the identity `W^μ = ½ ε^{μνρσ} M_{νρ} P_σ` for the full generators (including
-the boosts and the orbital parts, which cancel) is not formalised.
+generators `J` derived from `U` at `P`. The identity `W^μ = ½ ε^{μνρσ} M_{νρ} P_σ` for the full generators (including
+the boosts and the orbital parts, which cancel) is in `Lightlike/Poincare/PauliLubanskiGenerators.lean`.
 
 ## References
 

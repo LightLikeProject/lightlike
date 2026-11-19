@@ -1,6 +1,6 @@
 # T-HA6: the Pauli–Lubanski operator of the induced representations — attempts
 
-19 November 2026. The statement wanted: the operator identities `W² = −m² s(s+1)` on the massive and `W = h P` on the
+The statement wanted: the operator identities `W² = −m² s(s+1)` on the massive and `W = h P` on the
 massless induced representations, with `W^μ = ½ ε^{μνρσ} M_{νρ} P_σ` built from the generators `M_{νρ}` obtained as
 derivatives of the representation `U` on smooth wave functions (Bekaert–Boulanger, arXiv:hep-th/0611263v2, §5.2,
 equation (54), page 39; §3.2–3.3, pages 12–15).
@@ -24,7 +24,7 @@ equation (54), page 39; §3.2–3.3, pages 12–15).
   both variables. That needs a differentiable structure on the mass shell and the light cone; here they are subtypes
   of `Matrix (Fin 2) (Fin 2) ℂ` without a manifold structure, and Mathlib has none for them.
 
-## Attempt 2: the generators at a general momentum, directly (explored, not compiled)
+## Attempt 2: the generators at a general momentum, directly (massless: stopped; massive: see below)
 
 * Massless: the standard lift `coneLift` (`Lightlike/Poincare/LightCone.lean`) is `[[a, 0], [β̄/(2a), 1/a]]` with
   `a = √(P₀₀/2)` where `P₀₀ > 0`, and a different formula where `P₀₀ = 0`; near `P₀₀ = 0` the entry `1/a` is unbounded.
@@ -50,7 +50,31 @@ derivatives at `P` exist for every wave function, with no differentiable structu
 `W(P)` in its little-group form (`W(P) = Λ(L(P)) W(standard momentum)`), `W² = −m² s(s+1)` and `W = h P` hold at every
 momentum (`pauliLubanski_sq`, and the three massless derivatives).
 
-What remains: the identity `W^μ = ½ ε^{μνρσ} M_{νρ} P_σ` for the full set of generators `M_{νρ}` (boosts and the orbital
-parts, which cancel in the contraction). Those generators move the momentum, so they need derivatives of `ψ` and of
-the section: in the massless case every global section is discontinuous (attempt 2), in the massive case through a
-parametrization `p ↦ (√(m² + |p|²), p)` of the mass shell, which has not been carried out.
+What remained after the transport: the identity `W^μ = ½ ε^{μνρσ} M_{νρ} P_σ` for the full set of generators
+`M_{νρ}` (boosts and the orbital parts, which cancel in the contraction). It is done in the massive case (next
+section); in the massless case the obstruction of attempt 2 stands.
+
+## Attempt 2, massive case: the full generators (compiled)
+
+`Lightlike/Poincare/PauliLubanskiAlgebra.lean`, `GeneratorCurves.lean`, `LiftDerivative.lean`, `LorentzCurves.lean`,
+`PauliLubanskiCasimir.lean`, `PauliLubanskiGenerators.lean`.
+
+* Generators. A wave function `ψ` is taken differentiable at `P` in the chart of the mass shell by the spatial
+  momentum (`ChartSmoothAt`). Along every curve `γ` in `SL(2,ℂ)` through `1` with velocity `X`, the derivative of
+  `t ↦ (U(γ(t)) ψ)(P)` at `0` is `dSpin(w_X) ψ(P) + dφ(−(X P + P Xᴴ))`, with the Wigner velocity
+  `w_X = L(P)⁻¹ X L(P) + L(P)⁻¹ dL(P)[−(X P + P Xᴴ)]` (`hasDerivAt_inducedAct_curve`); the derivative of the standard
+  lift is `hasDerivAt_stdLiftMat`. The value depends on the curve only through `X` and is real-linear in `X`.
+* The Lorentz generators `M_{νρ}` are fixed by their action on momenta, `(M_{νρ} p)^α = δ^α_ν p_ρ − δ^α_ρ p_ν`
+  (`lorGen_act`); each is the velocity of a curve in `SL(2,ℂ)` (`exists_lorCurve`).
+* The combination `½ ε^{μνρσ} p_σ M_{νρ}` (`ε^{0123} = 1`) is the matrix `X^μ_P` of `plGen` (`plComb_eq`), and
+  `X^μ_P P + P (X^μ_P)ᴴ = 0` (`plGen_fix`): the orbital part and the derivative of the lift drop out, and `W^μ` acts at
+  `P` by `dSpin(L(P)⁻¹ X^μ_P L(P))` (`plComb_genVal`, `hasDerivAt_pauliLubanski`).
+* The square. The tensor `Σ_μ η_{μμ} X^μ_P ⊗ X^μ_P` is `(p²/4)` times the Fierz tensor `2 δ_{ad} δ_{bc} − δ_{ab} δ_{cd}`
+  (`plGen_fierz`), which is invariant under conjugation, and the Casimir `Σ_μ η_{μμ} dSpin(Y^μ)²` depends only on this
+  tensor (`casimir_eq_of_tensor`). So the square at `P` is the rest-frame one: with the Hermitian operators `i W^μ`,
+  `W_μ W^μ = −m² s(s+1)` at every momentum (`pauliLubanski_sq_generators`).
+
+Remaining differences (kind: weaker): the generators are pointwise derivatives on wave functions differentiable in
+the chart, not the Stone generators on `L²`; `P_σ` acts by multiplication to the left of `M_{νρ}` (the two orders
+agree by the antisymmetry of `ε`, not formalised); the square is the product of the matrices by which `W^μ` acts at
+`P`.
