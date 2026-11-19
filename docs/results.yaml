@@ -3516,3 +3516,16 @@
   review: kernel-checked
   note: "For the Levi-Civita connection of a smooth metric of any signature on a manifold modelled on R^n, the coordinate field d_k of a chart is a Killing field (g(nabla_v X, w) + g(v, nabla_w X) = 0, equivalently L_X g = 0) at every point of the chart domain when the coordinate components of the metric do not depend on x^k (from g_{nu lambda} Gamma^nu_{mu k} + g_{mu nu} Gamma^nu_{lambda k} = d_k g_{mu lambda}). Compared with Carroll's lecture notes (gr-qc/9712019), p. 140 after eq. (5.40) (independence of the components of one coordinate gives a symmetry; for the metric a Killing field, (5.41)-(5.42)): match. Limits: manifolds modelled on R^n without boundary."
   since: unreleased
+- id: LL-0265
+  title: In a C*-algebra with a Weyl system of a symplectic vector space the Weyl elements are at distance 2 from each other, ‖W(φ) - W(ψ)‖ = 2 for φ ≠ ψ, and the algebra is not separable unless the space is zero
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/WeylAlgebra.lean
+  decls: [Lightlike.OperatorAlgebras.IsWeylSystem.mem_spectrum, Lightlike.OperatorAlgebras.IsWeylSystem.norm_sub, Lightlike.OperatorAlgebras.IsWeylSystem.not_separableSpace, Lightlike.OperatorAlgebras.ccrAlgebra_not_separableSpace]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: bgp-2007, location: "Proposition 4.2.3, p. 117", check: "Proposition 4.2.3"}
+  review: kernel-checked
+  note: "Compared with Bär-Ginoux-Pfäffle, arXiv:0806.1036, Proposition 4.2.3 (2), (3), pp. 117-118 (read): ‖W(φ) - W(ψ)‖ = 2 for φ ≠ ψ, and the algebra A of a Weyl system (A, W) is not separable unless V = {0}; here A is any nontrivial C*-algebra, and the CCR algebra of Example 4.2.2 is the case ccrAlgebra_not_separableSpace."
+  since: unreleased
