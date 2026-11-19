@@ -2,7 +2,8 @@
 
 Lean files: `Lightlike/ODE/GlobalLipschitz.lean`, `Lightlike/Canonical/Holonomy.lean`,
 `Lightlike/Canonical/HolonomyPaths.lean`, `Lightlike/Canonical/HolonomyGauge.lean`,
-`Lightlike/Canonical/HolonomyGraph.lean`, `Lightlike/Canonical/HolonomyALGraph.lean`, `Lightlike/Canonical/HolonomyAnalytic.lean`, `Lightlike/Canonical/HolonomyALOrder.lean` (in progress).
+`Lightlike/Canonical/HolonomyGraph.lean`, `Lightlike/Canonical/HolonomyALGraph.lean`, `Lightlike/Canonical/HolonomyAnalytic.lean`, `Lightlike/Canonical/HolonomyALOrder.lean`,
+`Lightlike/Canonical/HolonomyCommon.lean`.
 
 ## Source read
 
@@ -54,6 +55,10 @@ footnote 17) and p. 35 (the common graph `α₃` of two graphs). Printed page nu
 | `ALEdge.rev`, `ALEdge.hol_rev`: `A(e⁻¹) = A(e)⁻¹` | eq. (4.37), p. 33: "`e⁻¹` is obtained from `e` by simply reversing the orientation" | Same. |
 | `ALGraph.Le`, `ALGraph.le_refl`: `α ≤ α'` | p. 27: "A graph `α′` will be said to be larger than another graph `α` (or contain `α`), `α ≥ α′`, if every edge `e` of `α` can be written as `e = e′₁ ∘ … ∘ e′_k` for some edges `e′₁, …, e′_k` of `α′`"; p. 28: "Let us choose an arbitrary but fixed orientation of each edge of `α`" | Representation: `e = e′₁ ∘ ⋯ ∘ e′_K` read as a subdivision of the parameter interval of `e` into parts on which `e = e′_l ∘ φ_l`, `φ_l` continuous and monotone onto the parameter interval of `e′_l`, with `e′_l` in either orientation. |
 | `ALGraph.hol_of_le`: for `α ≤ α'` the holonomy along each edge of `α` is the ordered product of holonomies along edges of `α′` or their inverses | p. 35: functions cylindrical with respect to `α` are cylindrical with respect to every larger graph | Same content, at the level of holonomies. |
+| `ALGraph.directed`, `ALGraph.common`, `ALGraph.le_common_left`, `ALGraph.le_common_right`: a graph `α₃` with `α₁ ≤ α₃` and `α₂ ≤ α₃` | p. 35: "we can introduce a third graph `α3` which contains all the edges and vertices of `α1` and `α2`"; p. 27: "larger than another graph `α` (or contain `α`)" | Same, in the order `ALGraph.Le` (the representation line above). |
+| `ALGraph.vertices_subset_of_le`: for `α ≤ α′` the vertices of `α` are vertices of `α′` | p. 35 (quoted above): "contains all the edges and vertices" | Same. |
+| `ALGraph.exists_common_hol`: the holonomies along the edges of `α₁` and of `α₂` are ordered products of holonomies along edges of `α₃` or their inverses | p. 35: "regard the two functions as cylindrical with respect to `α3`" | Same content, at the level of holonomies. |
+| `ALGraph.cutPoints`, `ALGraph.CutData.segment_in_piece`, `ALGraph.CutData.injOn_segment`, `ALGraph.seg_share`, `ALGraph.seg_classify`, `image_Ioo_subset`, `exists_reparam` | — | Tool for `α₃`: the edges are cut at finitely many points (end points and midpoints of the pieces, boundary points of the meeting sets, `Edge.meetFrontier_finite`); each segment of `α₂` meets `α₁` only at its end points or has the open part of a segment of `α₁` (`Edge.meet_dichotomy`), and two such segments differ by a continuous monotone or antitone reparametrisation. |
 
 ## Trust checks
 
@@ -70,4 +75,4 @@ footnote 17) and p. 35 (the common graph `α₃` of two graphs). Printed page nu
 
 ## Open (the rest of G2-006)
 
-* graphs and the order `α ≤ α′` (p. 27, footnote 13), and the common graph `α₃` of two graphs (p. 35).
+* None.
