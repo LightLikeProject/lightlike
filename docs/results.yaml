@@ -2742,3 +2742,42 @@
   review: kernel-checked
   note: "Compared with Landsman, arXiv:math-ph/9807030, Theorem 2.12.9 and its proof (p. 46, read): the reduction of C_0(X) to C of the one-point compactification. A state of C_0(X) is a positive linear functional with supremum 1 over the [0, 1]-valued functions (Definition 2.8.6, p. 36: positive with norm 1; for a positive functional the norm is this supremum); the extension is Proposition 2.8.7, p. 37; it extends to the state F -> omega(F - F(infinity)) + F(infinity), a pure state to a pure one, and the point at infinity is excluded since a state is nonzero."
   since: unreleased
+- id: LL-0209
+  title: Couplings and the 1-Wasserstein distance of Borel probability measures on a compact metric space, with the easy half of Kantorovich-Rubinstein duality
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/Wasserstein.lean
+  decls: [Lightlike.OperatorAlgebras.Transport.couplings, Lightlike.OperatorAlgebras.Transport.prod_mem_couplings, Lightlike.OperatorAlgebras.Transport.wasserstein1, Lightlike.OperatorAlgebras.Transport.integral_sub_le_of_mem_couplings, Lightlike.OperatorAlgebras.Transport.integral_sub_le_wasserstein1, Lightlike.OperatorAlgebras.Transport.wasserstein1_dirac]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: huang-wang-wu-meng-2026, location: "Section 3.2.1", check: "Kantorovich"}
+  review: kernel-checked
+  note: "Compared with Huang, Wang, Wu, Meng, arXiv:2610.21070, Section 3.2.1, p. 5 (read): Pi(nu, eta) the probability couplings, W_1 the infimum of the cost of d, and the easy direction of (KR) for unit Lipschitz u. The equality (KR) is the next entry."
+  since: unreleased
+- id: LL-0210
+  title: Monge-Kantorovich duality with an optimal coupling for a continuous cost on a compact metric space
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/MongeKantorovich.lean
+  decls: [Lightlike.OperatorAlgebras.Transport.omega, Lightlike.OperatorAlgebras.Transport.integral_le_omega, Lightlike.OperatorAlgebras.Transport.exists_linear_le_omega, Lightlike.OperatorAlgebras.Transport.exists_coupling_eq_omega, Lightlike.OperatorAlgebras.Transport.dualValues, Lightlike.OperatorAlgebras.Transport.exists_optimal_coupling, Lightlike.OperatorAlgebras.Transport.integral_optimal_eq_sSup]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: huang-wang-wu-meng-2026, location: "Section 8.1", check: "strong duality"}
+  review: kernel-checked
+  note: "Compared with Huang, Wang, Wu, Meng, arXiv:2610.21070, Section 8.1, (8.1), p. 46 (read): the finite transport problem, min over couplings of the cost equals max over a_i + b_j <= d(x_i, x_j) of the dual value, with a minimum attained. Here the duality is for every continuous cost on a compact metric space, with an optimal coupling; the proof goes through the Hahn-Banach theorem and the Riesz-Markov-Kakutani theorem."
+  since: unreleased
+- id: LL-0211
+  title: Kantorovich-Rubinstein duality on a compact metric space, the 1-Wasserstein distance as the supremum over 1-Lipschitz tests, with an optimal coupling
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/KantorovichRubinstein.lean
+  decls: [Lightlike.OperatorAlgebras.Transport.ctrans, Lightlike.OperatorAlgebras.Transport.lipschitzWith_ctrans, Lightlike.OperatorAlgebras.Transport.le_ctrans, Lightlike.OperatorAlgebras.Transport.ctrans_le_neg, Lightlike.OperatorAlgebras.Transport.exists_optimal_coupling_dist, Lightlike.OperatorAlgebras.Transport.wasserstein1_eq_sSup]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: huang-wang-wu-meng-2026, location: "Section 3.2.1", check: "Kantorovich"}
+  review: kernel-checked
+  note: "Compared with Huang, Wang, Wu, Meng, arXiv:2610.21070, Section 3.2.1, p. 5, (KR) (read): on a compact metric space, for Borel probability measures, inf over couplings of the integral of d equals sup over unit Lipschitz u of the pairing with nu - eta; Section 3.7 (1), p. 16: the minimum distance-cost coupling; Section 8.1, (8.2), p. 46: the c-transform u_i = min_j (d(x_i, x_j) - b_j), applied here on the space instead of on a finite net."
+  since: unreleased

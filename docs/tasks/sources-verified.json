@@ -2812,6 +2812,26 @@
   "citations": 2945,
   "citations_via": "OpenAlex"
  },
+ "huang-wang-wu-meng-2026": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Exact Endpoint Asymptotics and Almost-Sure Limits for Uniform Empirical Measures in Two Dimensions",
+  "locations": {
+   "Section 3.2.1": {
+    "verified": true,
+    "snippet": "3.2.1. The Kantorovich–Rubinstein duality input. For probability measures ν, η on Q, let Π(ν, η) be the set of probability couplings with these marginals, and define",
+    "why": null
+   },
+   "Section 8.1": {
+    "verified": true,
+    "snippet": "8.1. Compact-space KR: finite-grid strong duality and its limit. Let (M, d) be compact and ν, η be Borel probability measures. Fix δ > 0 and a finite δ-net {x1 , . . . , xm }. Break ties by the smallest index and take t",
+    "why": null
+   }
+  },
+  "citations": 0,
+  "citations_via": "OpenAlex"
+ },
  "huggett-tod-1994": {
   "checked": "2026-11-08",
   "exists": true,

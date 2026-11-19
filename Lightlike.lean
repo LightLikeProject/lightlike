@@ -454,6 +454,12 @@ import Lightlike.OperatorAlgebras.FermiFockGeneral
 import Lightlike.OperatorAlgebras.TestsBoundedGroup
 import Lightlike.OperatorAlgebras.TestsCARUnique
 import Lightlike.OperatorAlgebras.TestsFiniteKMS
+import Lightlike.OperatorAlgebras.Wasserstein
+import Lightlike.OperatorAlgebras.TestsWasserstein
+import Lightlike.OperatorAlgebras.MongeKantorovich
+import Lightlike.OperatorAlgebras.TestsMongeKantorovich
+import Lightlike.OperatorAlgebras.KantorovichRubinstein
+import Lightlike.OperatorAlgebras.TestsKantorovichRubinstein
 import Lightlike.OperatorAlgebras.PureStates
 import Lightlike.OperatorAlgebras.PureStatesC0
 import Lightlike.OperatorAlgebras.TestsPureStates

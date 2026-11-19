@@ -23,6 +23,13 @@ antilinear part [3]. A representation of the Weyl relations is a family of unita
 `W f ∘ W g = exp (-i Im ⟪f, g⟫ / 2) W (f + g)`, and a Fock representation has a cyclic unit vector with the
 vacuum expectation `exp (-‖f‖² / 4)` [3]. Shale's criterion says that a Bogoliubov transformation is
 implemented by a unitary of the Fock representation exactly when its antilinear part is Hilbert–Schmidt {2}.
+Necessity goes through the determinant bound from the uncertainty matrix [54], the Gaussian average of the Weyl
+unitaries over finitely many modes [55] and the matrix of the quadratic form `f ↦ ‖T f‖²` on finitely many modes
+[56]; sufficiency goes
+through the norm continuity of the Weyl unitaries [57], the vacuum projection of finitely many modes [58] and the
+bound `det ≤ exp (tr - n)` [59]. The parity `f ↦ -f` is implemented in every Fock representation [60], a one-mode squeezing is implemented
+[61], and the same squeezing on every mode of `ℓ²` has an antilinear part that is not Hilbert–Schmidt and is not
+implemented [64].
 In one mode the squeezing has `|α|² - |β|² = 1` and the dilation `f ↦ 2 f` is not symplectic [4]. A map with `‖B f‖ = c ‖f‖`, `c > 0`, is not Hilbert–Schmidt when a Hilbert basis is infinite [4]. On `L²(ℝ)` translation `ψ(x + t)` is a strongly continuous unitary group [5], and its generator is `-i d/dx` on `C²` functions with compact support, not `+i d/dx` [6]. On `L²(0, 1)` the operator `-i d/dx` on the `C²` functions supported inside `(0, 1)` is given by its graph [7]. The deficiency spaces of an operator are the kernels of the adjoint minus `±i`, and a self-adjoint operator has none [8]. The
 Fock space itself is not built here, and a Fock representation is characterized by its vacuum. The
 unbounded spectral theorem is not in Mathlib; it is ported from physicslib4: every self-adjoint operator has a unique
@@ -74,6 +81,12 @@ In a Fock representation, a contraction `p` of `h` has a second quantization `Γ
 For a Hamiltonian given by a Hilbert basis and real eigenvalues `λₙ` with `∑ e^{-βλₙ} < ∞` (every `H` with a trace-class `e^{-βH}` has this form {4}), the Gibbs state `ω(A) = ∑ e^{-βλₙ} ⟪bₙ, A bₙ⟫ / Z` is a state invariant under `τᵗ(A) = e^{itH} A e^{-itH}`, and the double series `F_{A,B}(z) = ∑ₘₙ e^{-βλₘ} ⟪bₘ, A bₙ⟫ ⟪bₙ, B bₘ⟫ e^{iz(λₙ - λₘ)} / Z`, dominated on the strip `0 ≤ Im z ≤ β` by `|⟪bₘ, A bₙ⟫| |⟪bₙ, B bₘ⟫| (e^{-βλₘ} + e^{-βλₙ})`, is bounded and continuous there, analytic inside, with `F(t) = ω(A τᵗ(B))` and `F(t + iβ) = ω(τᵗ(B) A)`: the KMS condition {9} [89]. The oscillator `λₙ = n` is an example for every `β > 0`, and at `β = 0` the partition sum diverges [90].
 
 The states of `C(X)` for a compact Hausdorff `X` are the positive linear functionals with `ω 1 = 1`, and the pure ones are the extreme points of this convex set. A pure state is multiplicative: for `0 ≤ g ≤ 1` it splits as `ω(g) ω(· g)/ω(g) + ω(1 - g) ω(· (1 - g))/ω(1 - g)`, so `ω(f g) = ω(f) ω(g)`; a multiplicative state is continuous, its kernel is a closed maximal ideal, so it is the evaluation at a point; and every evaluation is pure {11} [92]. On `C(Bool)` the average of the two evaluations is a mixed state [93]. For a locally compact Hausdorff `X`, a state of `C₀(X)` (positive, of norm one) extends to the state `F ↦ ω(F - F(∞)) + F(∞)` of `C(X̃)` on the one-point compactification, a pure one to a pure one, so the pure states of `C₀(X)` are again the evaluations at the points of `X` [94].
+
+On a compact metric space the couplings of two probability measures are the probability measures on the product with these marginals, the product measure among them, and `W₁` is the infimum of the transport costs `∫ d dπ`; for every coupling and `1`-Lipschitz `u`, `∫ u dμ - ∫ u dν ≤ ∫ d dπ`, the easy half of Kantorovich-Rubinstein duality, and `W₁(δₓ, δ_y) = d(x, y)` {12} [95]. The diagonal coupling gives `W₁(μ, μ) = 0` [96].
+
+For a continuous cost `h` on the product of a compact metric space with itself there is an optimal coupling, and its cost is `sup {∫ f dμ + ∫ g dν | f(x) + g(y) ≤ h(x, y)}` over continuous `f`, `g` {12} [97]; the proof goes through the Hahn-Banach theorem for the sublinear functional `ω(k) = inf {∫ f dμ + ∫ g dν | k ≤ f ⊕ g}` and the Riesz-Markov-Kakutani theorem. For a separable cost `a(x) + b(y)` the dual value is `∫ a dμ + ∫ b dν` [98].
+
+Kantorovich-Rubinstein duality: on a compact metric space `W₁(μ, ν) = sup {∫ u dμ - ∫ u dν | u 1-Lipschitz}`, and the infimum defining `W₁` is attained {12} [99]; the `c`-transform `u(x) = inf_y (d(x, y) - g(y))` of a dual pair `(f, g)` is `1`-Lipschitz with `f ≤ u ≤ -g` [99]. For Dirac measures the supremum is `d(x, y)`, and `2`-Lipschitz tests exceed `W₁` [100].
 
 ## Lean References
 
@@ -327,6 +340,24 @@ The states of `C(X)` for a compact Hausdorff `X` are the positive linear functio
     `OperatorAlgebras.PureStates.ext`, `OperatorAlgebras.PureStates.ext_mem_states`, `OperatorAlgebras.PureStates.isPure_ext`,
     `OperatorAlgebras.PureStates.evalAt₀`, `OperatorAlgebras.PureStates.isPure₀_evalAt₀`,
     `OperatorAlgebras.PureStates.isPure₀_iff_exists_eval`
+95. Lightlike/OperatorAlgebras/Wasserstein.lean - `OperatorAlgebras.Transport.couplings`,
+    `OperatorAlgebras.Transport.prod_mem_couplings`, `OperatorAlgebras.Transport.wasserstein1`,
+    `OperatorAlgebras.Transport.integral_sub_le_of_mem_couplings`, `OperatorAlgebras.Transport.integral_sub_le_wasserstein1`,
+    `OperatorAlgebras.Transport.wasserstein1_le`, `OperatorAlgebras.Transport.wasserstein1_dirac`
+96. Lightlike/OperatorAlgebras/TestsWasserstein.lean - `OperatorAlgebras.Transport.diag_mem_couplings`,
+    `OperatorAlgebras.Transport.wasserstein1_self`, `OperatorAlgebras.Transport.wasserstein1_dirac_pos`
+97. Lightlike/OperatorAlgebras/MongeKantorovich.lean - `OperatorAlgebras.Transport.omega`,
+    `OperatorAlgebras.Transport.integral_le_omega`, `OperatorAlgebras.Transport.exists_linear_le_omega`,
+    `OperatorAlgebras.Transport.exists_coupling_eq_omega`, `OperatorAlgebras.Transport.dualValues`,
+    `OperatorAlgebras.Transport.exists_optimal_coupling`, `OperatorAlgebras.Transport.integral_optimal_eq_sSup`
+98. Lightlike/OperatorAlgebras/TestsMongeKantorovich.lean - `OperatorAlgebras.Transport.sepCost`,
+    `OperatorAlgebras.Transport.integral_sepCost`, `OperatorAlgebras.Transport.sSup_dualValues_sepCost`
+99. Lightlike/OperatorAlgebras/KantorovichRubinstein.lean - `OperatorAlgebras.Transport.ctrans`,
+    `OperatorAlgebras.Transport.lipschitzWith_ctrans`, `OperatorAlgebras.Transport.le_ctrans`,
+    `OperatorAlgebras.Transport.ctrans_le_neg`, `OperatorAlgebras.Transport.exists_optimal_coupling_dist`,
+    `OperatorAlgebras.Transport.wasserstein1_eq_sSup`
+100. Lightlike/OperatorAlgebras/TestsKantorovichRubinstein.lean - `OperatorAlgebras.Transport.sSup_dirac`,
+    `OperatorAlgebras.Transport.two_lipschitz_exceeds`, `OperatorAlgebras.Transport.ctrans_zero`
 
 ## References
 
@@ -357,3 +388,6 @@ The states of `C(X)` for a compact Hausdorff `X` are the positive linear functio
    arXiv:1803.04993, Sections 4.1 and 4.2.
 11. N. P. Landsman, *Lecture Notes on C*-Algebras, Hilbert C*-modules, and Quantum Mechanics*, 1998,
    arXiv:math-ph/9807030, Section 2.12: Definition 2.12.1, Proposition 2.12.8 and Theorem 2.12.9.
+12. W. Huang, R. Wang, Y. Wu and D. Meng, *Exact endpoint asymptotics and almost-sure limits for uniform empirical
+   measures in two dimensions*, arXiv:2610.21070, Section 3.2.1 and Section 8.1 (Kantorovich-Rubinstein duality on a
+   compact metric space).

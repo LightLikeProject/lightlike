@@ -1083,6 +1083,10 @@ references:
     cite: "N. P. Landsman, Lecture Notes on C*-Algebras, Hilbert C*-modules, and Quantum Mechanics (1998), arXiv:math-ph/9807030"
     title: "Lecture notes on C*-algebras, Hilbert C*-modules, and quantum mechanics"
     arxiv: "math-ph/9807030"
+  huang-wang-wu-meng-2026:
+    cite: "W. Huang, R. Wang, Y. Wu, D. Meng, Exact Endpoint Asymptotics and Almost-Sure Limits for Uniform Empirical Measures in Two Dimensions (2026), arXiv:2610.21070"
+    title: "Exact Endpoint Asymptotics and Almost-Sure Limits for Uniform Empirical Measures in Two Dimensions"
+    arxiv: "2610.21070"
 
 canonical:
   pl-topology: [lickorish-1999, moise-1977]
