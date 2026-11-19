@@ -179,6 +179,10 @@ The Gram matrix of the vectors `W f Ω` of a Fock representation is a function o
     `OperatorAlgebras.isHilbertSchmidt_id_betaPart`, `OperatorAlgebras.implements_neg`
 49. Lightlike/OperatorAlgebras/TestsShaleSqueeze.lean - `OperatorAlgebras.Bogoliubov.squeeze`,
     `OperatorAlgebras.Bogoliubov.squeeze_betaPart`, `OperatorAlgebras.implements_squeeze`
+50. Lightlike/OperatorAlgebras/TestsShaleInfinite.lean - `OperatorAlgebras.Bogoliubov.squeezeConj`,
+    `OperatorAlgebras.Bogoliubov.squeezeConj_norm_betaPart_sq`, `OperatorAlgebras.squeezeEllTwo`,
+    `OperatorAlgebras.not_isHilbertSchmidt_squeezeEllTwo`, `OperatorAlgebras.not_implements_squeezeEllTwo`
+    (the wrong-input control: a squeezing of infinitely many modes is not implemented)
 
 ## References
 
