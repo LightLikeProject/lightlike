@@ -22,8 +22,9 @@ inside `O`.
   for `T` when `e` is.
 * `Causal.causalFutureIn`, `Causal.chronFutureIn`: `J⁺(x; O)`, `I⁺(x; O)`, curves inside `O`.
 * `IsTimeBall.mem_causalFutureIn_iff`, `IsTimeBall.mem_chronFutureIn_iff`,
-  `IsTimeBall.mem_horismosIn_iff`: Chruściel's (2.4.7) for the time ball, the third line for
-  `J⁺(p; O) \ I⁺(p; O)`.
+  `IsTimeBall.mem_horismosIn_iff`, `IsTimeBall.mem_frontier_causalFutureIn_iff`: Chruściel's
+  (2.4.7) for the time ball; the third line both for `J⁺(p; O) \ I⁺(p; O)` and for the boundary
+  `J̇⁺(p; O)`.
 * `IsTimeBall.coord_of_curve`: a curve of `↥U` in the time ball, in normal coordinates.
 * `IsTimeBall.causal_cone_of_isFutureCausalCurve`, `IsTimeBall.chron_cone_of_isFutureTimelikeCurve`:
   the `J⁺` and `I⁺` lines of (2.4.7), "⇒", for the curves of `↥U`.
@@ -502,6 +503,130 @@ theorem mem_horismosIn_iff (hL : IsLorentzianCoordMetric g U)
     exact lt_irrefl _ hlt
   · rintro ⟨hσ, hx⟩
     exact ⟨⟨hσ.le, hx⟩, fun ⟨hlt, _⟩ => (lt_irrefl _ (hσ ▸ hlt))⟩
+
+/-- **Chruściel, Proposition 2.4.5, the `J̇⁺` line of (2.4.7)**: for `q` in the time ball
+`O = φ (ball 0 r)`, `q` lies on the boundary of `J⁺(p; O)` iff `σ_p(q) = 0` and `x⁰(q) ≥ 0`. The
+interior of `J⁺(p; O)` is the open cone `σ_p < 0 < x⁰`: at a point with `σ_p = 0` the points
+`φ (v - s e)`, `s > 0` small, leave the closed cone. -/
+theorem mem_frontier_causalFutureIn_iff (hL : IsLorentzianCoordMetric g U)
+    (T : Causal.TimeOrientation (openMetric U g hL)) (h : IsTimeBall g U p ρ φ e r N)
+    (hTN : ∀ x : U, ∀ v ∈ ball (0 : Fin n → ℝ) r, x.1 = φ v → matForm (g x.1) (N v) (T.X x) < 0)
+    {x₀ : U} (hx₀ : x₀.1 = p) {q : U} (hq : q.1 ∈ φ '' ball (0 : Fin n → ℝ) r) :
+    q ∈ frontier (Causal.causalFutureIn T x₀ {y : U | y.1 ∈ φ '' ball (0 : Fin n → ℝ) r}) ↔
+      pairing g p (φ.symm q.1) (φ.symm q.1) = 0 ∧ 0 ≤ -pairing g p e (φ.symm q.1) := by
+  set O' : Set U := {y : U | y.1 ∈ φ '' ball (0 : Fin n → ℝ) r} with hO'
+  set S := Causal.causalFutureIn T x₀ O' with hSdef
+  have hg := hL.1
+  have hp : p ∈ (U : Set (Fin n → ℝ)) := hx₀ ▸ x₀.2
+  have himg : IsOpen (φ '' ball (0 : Fin n → ℝ) r) :=
+    φ.isOpen_image_of_subset_source isOpen_ball fun w hw => h.mem_source hw
+  have hO'open : IsOpen O' := himg.preimage continuous_subtype_val
+  have htgt : ∀ y ∈ O', y.1 ∈ φ.target := by
+    rintro y ⟨w, hw, hφw⟩; rw [← hφw]; exact φ.map_source (h.mem_source hw)
+  have hψ : ContinuousOn (fun y : U => φ.symm y.1) O' :=
+    φ.continuousOn_symm.comp continuous_subtype_val.continuousOn fun y hy => htgt y hy
+  have hpc : Continuous fun w : Fin n → ℝ => pairing g p w w := by
+    have : (fun w : Fin n → ℝ => pairing g p w w) = fun w => matForm (g p) w w :=
+      funext fun w => pairing_eq_matForm g p w w
+    rw [this]; exact (matForm (g p)).continuous.clm_apply continuous_id
+  have hec : Continuous fun w : Fin n → ℝ => -pairing g p e w := by
+    have : (fun w : Fin n → ℝ => -pairing g p e w) = fun w => -(matForm (g p) e w) :=
+      funext fun w => by rw [pairing_eq_matForm]
+    rw [this]; exact (matForm (g p) e).continuous.neg
+  set fσ : U → ℝ := fun y => pairing g p (φ.symm y.1) (φ.symm y.1) with hfσ
+  set fx : U → ℝ := fun y => -pairing g p e (φ.symm y.1) with hfx
+  have hfσc : ContinuousOn fσ O' := hpc.comp_continuousOn hψ
+  have hfxc : ContinuousOn fx O' := hec.comp_continuousOn hψ
+  have hSO : S ⊆ O' := by
+    rintro y ⟨γ, a, b, hab, -, -, hb, hin⟩; rw [← hb]; exact hin b ⟨hab, le_rfl⟩
+  have hS : ∀ y ∈ S, fσ y ≤ 0 ∧ 0 ≤ fx y := fun y hy =>
+    (h.mem_causalFutureIn_iff hL T hTN hx₀ (hSO hy)).1 hy
+  have hqO : q ∈ O' := hq
+  -- the closure lies in the closed cone
+  have hcl : q ∈ closure S → fσ q ≤ 0 ∧ 0 ≤ fx q := by
+    intro hqc
+    have h1 := ((hfσc q hqO).mono hSO).mem_closure_image hqc
+    have h2 := ((hfxc q hqO).mono hSO).mem_closure_image hqc
+    exact ⟨closure_minimal (by rintro _ ⟨y, hy, rfl⟩; exact (hS y hy).1) isClosed_Iic h1,
+      closure_minimal (by rintro _ ⟨y, hy, rfl⟩; exact (hS y hy).2) isClosed_Ici h2⟩
+  -- the interior is the open cone
+  have hint : q ∈ interior S ↔ fσ q < 0 ∧ 0 < fx q := by
+    constructor
+    · intro hqi
+      by_contra hcon
+      obtain ⟨w, hw, hφw⟩ := hq
+      have hsw : φ.symm q.1 = w := by rw [← hφw]; exact φ.left_inv (h.mem_source hw)
+      obtain ⟨hσ0, hx0⟩ := hS q (interior_subset hqi)
+      simp only [hfσ, hfx, hsw] at hσ0 hx0 hcon
+      have hnhds : Subtype.val '' S ∈ 𝓝 q.1 := by
+        rw [← (U.isOpen.isOpenEmbedding_subtypeVal).map_nhds_eq]
+        exact image_mem_map (mem_interior_iff_mem_nhds.1 hqi)
+      have hB : φ ⁻¹' (Subtype.val '' S) ∈ 𝓝 w := by
+        have hcont : ContinuousAt φ w :=
+          h.chart.contDiffOn.continuousOn.continuousAt (φ.open_source.mem_nhds (h.mem_source hw))
+        exact hcont.preimage_mem_nhds (by rw [hφw]; exact hnhds)
+      have hballw : ball (0 : Fin n → ℝ) r ∈ 𝓝 w := isOpen_ball.mem_nhds hw
+      have htend : Filter.Tendsto (fun s : ℝ => w - s • e) (𝓝[>] 0) (𝓝 w) := by
+        have : Filter.Tendsto (fun s : ℝ => w - s • e) (𝓝 0) (𝓝 (w - (0 : ℝ) • e)) :=
+          (continuous_const.sub (continuous_id.smul continuous_const)).tendsto 0
+        rw [zero_smul, sub_zero] at this
+        exact this.mono_left nhdsWithin_le_nhds
+      have he := h.timelike_zero
+      have hsymB : matForm (g p) w e = matForm (g p) e w := by
+        rw [← pairing_eq_matForm, ← pairing_eq_matForm, pairing_comm hg hp]
+      have hexp : ∀ s : ℝ, pairing g p (w - s • e) (w - s • e) =
+          pairing g p w w - 2 * s * pairing g p e w + s ^ 2 * pairing g p e e := fun s => by
+        simp only [pairing_eq_matForm, map_sub, map_smul, _root_.sub_apply, _root_.smul_apply,
+          smul_eq_mul]
+        linear_combination (-s) * hsymB
+      have hxexp : ∀ s : ℝ, -pairing g p e (w - s • e) = -pairing g p e w + s * pairing g p e e :=
+        fun s => by
+          simp only [pairing_eq_matForm, map_sub, map_smul, smul_eq_mul]
+          ring
+      have hδ : ∃ δ : ℝ, 0 < δ ∧ ∀ s ∈ Ioo (0 : ℝ) δ,
+          ¬ (pairing g p (w - s • e) (w - s • e) ≤ 0 ∧ 0 ≤ -pairing g p e (w - s • e)) := by
+        by_cases hx0' : -pairing g p e w = 0
+        · refine ⟨1, one_pos, fun s hs ⟨_, h2⟩ => ?_⟩
+          rw [hxexp, hx0'] at h2
+          nlinarith [mul_neg_of_pos_of_neg hs.1 he]
+        · have hxpos : 0 < -pairing g p e w := lt_of_le_of_ne hx0 (Ne.symm hx0')
+          have hσw : pairing g p w w = 0 :=
+            le_antisymm hσ0 (not_lt.1 fun hlt => hcon ⟨hlt, hxpos⟩)
+          have hY : 0 < -pairing g p e e := by linarith
+          refine ⟨(-pairing g p e w) / (-pairing g p e e), div_pos hxpos hY,
+            fun s hs ⟨h1, _⟩ => ?_⟩
+          rw [hexp, hσw] at h1
+          have hsY : s * (-pairing g p e e) < -pairing g p e w := by
+            have := hs.2; rwa [lt_div_iff₀ hY] at this
+          nlinarith [mul_lt_mul_of_pos_left hsY hs.1, mul_pos hs.1 hxpos]
+      obtain ⟨δ, hδpos, hδ⟩ := hδ
+      have hev : ∀ᶠ s in 𝓝[>] (0 : ℝ), w - s • e ∈ φ ⁻¹' (Subtype.val '' S) ∧
+          w - s • e ∈ ball (0 : Fin n → ℝ) r ∧ s ∈ Ioo 0 δ :=
+        (htend.eventually hB).and ((htend.eventually hballw).and (Ioo_mem_nhdsGT hδpos))
+      obtain ⟨s, ⟨y, hyS, hyv⟩, hsb, hsI⟩ := hev.exists
+      have hy := hS y hyS
+      have hsy : φ.symm y.1 = w - s • e := by rw [hyv]; exact φ.left_inv (h.mem_source hsb)
+      simp only [hfσ, hfx, hsy] at hy
+      exact hδ s hsI hy
+    · rintro ⟨h1, h2⟩
+      have hW : IsOpen ((O' ∩ fσ ⁻¹' Iio 0) ∩ (O' ∩ fx ⁻¹' Ioi 0)) :=
+        (hfσc.isOpen_inter_preimage hO'open isOpen_Iio).inter
+          (hfxc.isOpen_inter_preimage hO'open isOpen_Ioi)
+      refine mem_interior.2 ⟨_, ?_, hW, ⟨hqO, h1⟩, ⟨hqO, h2⟩⟩
+      rintro y ⟨⟨hyO, hy1⟩, ⟨-, hy2⟩⟩
+      exact (h.mem_causalFutureIn_iff hL T hTN hx₀ hyO).2 ⟨le_of_lt hy1, le_of_lt hy2⟩
+  show q ∈ closure S \ interior S ↔ _
+  rw [Set.mem_sdiff, hint]
+  constructor
+  · rintro ⟨hc, hni⟩
+    obtain ⟨h1, h2⟩ := hcl hc
+    refine ⟨le_antisymm h1 (not_lt.1 fun hlt => hni ⟨hlt, lt_of_le_of_ne h2 fun h0 => ?_⟩), h2⟩
+    have h0' := h.eq_zero_of_cone hL hp h1 (by simp only [hfx] at h0; linarith)
+    simp only [h0', pairing_zero_right] at hlt
+    exact lt_irrefl _ hlt
+  · rintro ⟨h1, h2⟩
+    exact ⟨subset_closure ((h.mem_causalFutureIn_iff hL T hTN hx₀ hq).2 ⟨h1.le, h2⟩),
+      fun ⟨hlt, _⟩ => lt_irrefl _ (h1 ▸ hlt)⟩
 
 end IsTimeBall
 
