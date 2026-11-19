@@ -321,6 +321,7 @@ import Lightlike.HarmonicAnalysis.SU2Complete
 import Lightlike.HarmonicAnalysis.SU2ConjClasses
 import Lightlike.HarmonicAnalysis.SU2Conjugacy
 import Lightlike.HarmonicAnalysis.SU2PeterWeyl
+import Lightlike.HarmonicAnalysis.Unitarisable
 import Lightlike.HarmonicAnalysis.WeylIntegrationSU2
 import Lightlike.HarmonicAnalysis.SchurOrthogonality
 import Lightlike.GR.SAdSVacuum
