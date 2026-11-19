@@ -37,3 +37,48 @@ The paper does not state, for the Maxwell field, which conditions hold; p. 5 say
 
 ## Differences
 Curiel works on a spacetime with a time orientation; ours is pointwise on a Lorentzian vector space and "co-oriented" is the pointwise notion above.
+
+## Stage 2: stress-energy fields on a manifold and the geometric forms (`EnergyConditionsField.lean`)
+* `NullECField`, `WeakECField`, `StrongECField`, `DominantECField`: the stage-1 conditions at every point of a Lorentzian 4-manifold. Curiel's
+  conditions in §2.1 are pointwise ("pointilliste": "those ... that constrain behavior at individual points", p. 5), so a field satisfies one
+  iff it does at every point: no difference.
+* The perfect fluid, dust, Klein–Gordon and electromagnetic fields are the stage-1 forms at every point; the effective forms for a fluid with a
+  unit timelike velocity field follow pointwise. The constant Klein–Gordon field with a negative potential value violates the weak condition:
+  the same open comparison as in stage 1 (no read source states it).
+* Geometric forms. Curiel, §2, p. 5: "In every case, the physical formulation is logically equivalent to the geometric formulation if the
+  Einstein field equation is assumed to hold." Table of §2.1, p. 6, geometric column: NEC "for any null vector k^a, R_mn k^m k^n ≥ 0"; WEC
+  "for any timelike vector ξ^a, G_mn ξ^m ξ^n ≥ 0"; SEC "for any timelike vector ξ^a, R_mn ξ^m ξ^n ≥ 0"; DEC "1. for any timelike vector
+  ξ^a, G_mn ξ^m ξ^n ≥ 0, and G^a_n ξ^n is causal 2. for any two co-oriented timelike vectors ξ^a and η^a, G_mn ξ^m η^n ≥ 0".
+  Ours: `nullECField_iff_ricci`, `weakECField_iff_einstein`, `strongECField_iff_ricci`, `dominantECField_iff_einstein` under `G = κ T`, `κ > 0`
+  (`EinsteinEq` with `Λ = 0`); `G^a_n ξ^n` is written as the vector `w` with `g(w, ·) = G(ξ, ·)` (index raising); the strong form uses the
+  trace `R = −κ tr_g T` (`scalarCurvatureAt_of_einsteinEq`, dimension four). Curiel does not print the field equation in the pages read
+  (p. 2 note 1: `T_ab` is "the stress-energy tensor picked out in a spacetime model by the Einstein field equation"; conventions of Malament,
+  not read), so a general coupling `κ > 0` and the absorption of a cosmological constant into the source (`einsteinEq_iff_absorb`) are no
+  difference from a stated form.
+* Non-vacuity: Minkowski space with the flat connection solves `G = κ · 0` (`minkowski_einsteinEq_zero`), and the strong form gives
+  `Ric(ξ, ξ) ≥ 0` there (`minkowski_ricci_nonneg`). A non-vacuum check (closed de Sitter or Friedmann dust through the equivalence) waits for
+  regge/co30-sphere on main.
+* Differences: none found for stage 2.
+
+## Physlib (check before you build, found late)
+Physlib has `Physlib/Cosmology/FLRW/EnergyConditions.lean`: `CosmicFluid.NullEnergyCondition`, `WeakEnergyCondition`, `StrongEnergyCondition`,
+`DominantEnergyCondition`, defined by their effective forms in `ρ` and `p` with `c` explicit (no tensor). Ours are the tensor conditions; the effective forms
+for a perfect fluid are theorems here, and `EnergyConditionsPhyslib.lean` proves that they are exactly Physlib's conditions at `c = 1`
+(`fluid_*_iff_physlib`). No duplicated definition: Physlib's conditions are the right-hand sides of our theorems.
+
+## Stage 3: the electromagnetic field, and the Klein–Gordon violation sourced (`EnergyConditionsEM.lean`, 19 November 2026 ~00:40)
+Source read: E.-A. Kontou and K. Sanders, *Energy conditions in general relativity and quantum field theory*, arXiv 2003.01815, §2.3
+"Examples and counter-examples of pointwise energy conditions", pp. 13-15, and Table 2 (p. 15).
+* Maxwell field: stress tensor (15) `T_ab = F_ac F_b^c − ¼ g_ab F^cd F_cd` (`m = 0`): our `emT` exactly. Energy density in an orthonormal
+  frame (36): `T(t, t) = ¼ Σ_μν (F_μν)²` (with the `F_0i` terms counted twice): our `emT_frame_00`. "Thus the WEC holds ... one may show
+  that the DEC also holds"; trace (37) zero for `n = 4`; (38) and "the SEC is satisfied for n > 2". Table 2: Maxwell/Proca: NEC, WEC, DEC,
+  SEC all hold. Ours, all in every dimension: `em_weakEC`, `em_dominantEC` (the Poynting bound from `|A E|² ≤ ½|A|²|E|²` for the
+  antisymmetric spatial part, `antisymm_op_bound`), `em_strongEC_dim` (`n ≥ 3`, with `tr_g T = (1 − n/4) F²`: KS (37)-(38)), and
+  `em_strongEC_of_eq` for the four-dimensional `StrongEC`; `em_nullEC` (stage 1). No difference.
+* The two stage-1 open comparisons are now closed:
+  - EM weak and dominant conditions: stated by Kontou–Sanders (above), now proved.
+  - Klein–Gordon with negative potential: (35) `T_ab = ∇_aφ ∇_bφ − ½ g_ab((∇φ)² + V(φ))`, "When V ≤ 0, on the other hand, the SEC holds,
+    but the WEC can be violated when V ≢ 0"; Table 2: modified Klein–Gordon (ξ = 0, V ≤ 0): WEC and DEC fail. Our
+    `scalar_negative_potential_violates_weak` (a point with `dφ = 0` and `V < 0`) is an instance. **Representation**: Kontou–Sanders' potential
+    enters as `½ V` (their (35)), ours as `V` (`scalarT = dφ ⊗ dφ − (½ |dφ|² + V) g`, Carroll (1.112) with `V = ½ m² φ²`): `V_ours = ½ V_KS`,
+    same sign, so the statement is the same.

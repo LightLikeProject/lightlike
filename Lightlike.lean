@@ -930,6 +930,9 @@ import Lightlike.Spacetime.BianchiSecond
 import Lightlike.Spacetime.ContractedBianchi
 import Lightlike.Spacetime.DivergenceFree
 import Lightlike.Spacetime.EnergyConditions
+import Lightlike.Spacetime.EnergyConditionsField
+import Lightlike.Spacetime.EnergyConditionsPhyslib
+import Lightlike.Spacetime.EnergyConditionsEM
 import Lightlike.Spacetime.OpenCoordMetric
 import Lightlike.Spacetime.LeviCivitaSmooth
 import Lightlike.Spacetime.RicciContinuous
@@ -960,6 +963,7 @@ import Lightlike.Spacetime.KillingAlgebra
 import Lightlike.Spacetime.IsometryKilling
 import Lightlike.Spacetime.PoincareKilling
 import Lightlike.Spacetime.Hypersurface
+import Lightlike.Spacetime.HypersurfaceConstraints
 import Lightlike.Spacetime.VariationDet
 import Lightlike.Spacetime.VariationChristoffel
 import Lightlike.Spacetime.PalatiniAlgebra
