@@ -1,0 +1,49 @@
+# The exponential map (gap row G1-006): source read, and how the library compares
+
+Files: `Lightlike/Geodesic/` (`ExpSmooth`, `ExpDiffeo`, `Tests`), and
+`Lightlike/ODE/FlowBoxSmooth.lean` for the regularity of the geodesic flow.
+
+## Source (read at the locations given)
+
+M. Kunzinger and R. Steinbauer, *Riemannian Geometry*, lecture notes, University of Vienna, Fall
+term 2020, version of 11 December 2025 (PDF on R. Steinbauer's teaching page). The notes treat
+semi-Riemannian manifolds ("SRMF") and follow O'Neill, *Semi-Riemannian Geometry*; O'Neill's book
+itself, which the gap row names, was not opened.
+- 2.1.13 Definition, page 37: `exp_p : D_p → M`, `exp_p(v) = c_v(1)`, with `D_p` the set of `v`
+  whose geodesic `c_v` is defined at least on `[0, 1]`.
+- 2.1.14 Theorem, pages 38–39: "Let `p` be a point in a SRMF `M`. Then there exist neighbourhoods
+  `Ũ` of `0` in `T_pM` and `U` of `p` in `M` such that the exponential map `exp_p : Ũ → U` is a
+  diffeomorphism." Proof: smoothness near `0` from the smoothness of `(w, s) ↦ c_w(s)` and the
+  rescaling `c_{tv}(s) = c_v(ts)` (2.1.12); `T_0 exp_p = id` (2.1.14); inverse function theorem.
+- Page 39: `U` is a normal neighbourhood of `p` if `Ũ` is star shaped.
+- 2.1.15 Proposition (radial geodesics), page 39; 2.1.21 Theorem (Gauss lemma), page 43;
+  2.2.7 Theorem (existence of convex sets), in Section 2.2: read, not formalised yet.
+
+## What the library proves
+
+- `Lightlike.ODE.IsFlowBox.contDiffOn_uncurry`, `contDiffOn_uncurry_infty`: every flow box of a
+  `C^{k+1}` (smooth) field has a `C^{k+1}` (smooth) flow on its whole domain. This is the
+  smoothness of the geodesic flow used in the proof of 2.1.14.
+- `Lightlike.Geodesic.exists_expMap_smooth`: for a coordinate metric `g` on an open `U ⊆ ℝⁿ`
+  (`IsCoordMetric`, any signature) and `x ∈ U`, a smooth map `E` on a ball about `0` with
+  `E 0 = x`, derivative the identity at `0`, and `E v` the endpoint at time `1` of a geodesic from
+  `x` with initial velocity `v`.
+- `Lightlike.Geodesic.exists_expMap_diffeo`: Theorem 2.1.14, with `Ũ` a ball (star shaped, so
+  the image is a normal neighbourhood): an open partial homeomorphism with source the ball,
+  smooth with smooth inverse, equal to the exponential map there.
+- `Lightlike.Geodesic.Tests.exists_expMap_diffeo_ads`: the hypotheses hold for anti-de Sitter
+  space in the Poincaré patch (Lorentzian signature).
+
+## Differences from the source (none accepted)
+
+- representation: a coordinate metric on an open subset of `ℝⁿ` (the library's `IsCoordMetric`),
+  not a semi-Riemannian manifold; tangent spaces are `ℝⁿ`.
+- representation: the exponential map is not defined as a function on the maximal domain `D_p`;
+  the theorem gives a map on a ball with the defining property `E v = c_v(1)` (a geodesic from
+  `x` with initial velocity `v`, defined on `(-1, 2)`, reaching `E v` at time `1`). Geodesics with
+  given initial data are unique (`IsGeodesicOn.eventuallyEq`), so this determines `E`.
+
+## Still open in the row
+
+Radial geodesics (2.1.15), the Gauss lemma (2.1.21), convex neighbourhoods (2.2.7) and causally
+convex neighbourhoods.
