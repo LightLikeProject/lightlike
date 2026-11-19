@@ -20,11 +20,14 @@ chart at `x₀`, at the point `φ⁻¹ y`:
 * `satisfiesEinstein_iff_chart_proved`: the Einstein equations of `Connection.lean` hold iff the coordinate
   vacuum equations hold in every chart.
 
-**Differences from the tasks.** `scalarCurvatureAt_coord` is the statement of the task `T-GE1-P5` and
-`satisfiesEinstein_iff_chart_proved` that of `T-GE1-P6`, each with the added hypothesis
-`[IsManifold 𝓘(ℝ, Fin n → ℝ) 2 M]` (needed by `curvatureAt_apply_proved`); the tasks stay open. The comparison
-of the definitions with Carroll, *Spacetime and Geometry*, ch. 3, and Wald, *General Relativity*, is pending: the
-sources were not read at the cited locations.
+**Former tasks `T-GE1-P5` and `T-GE1-P6`, closed by `scalarCurvatureAt_coord` and `satisfiesEinstein_iff_chart_proved`.** Differences from the
+task statements (approved on 18 November 2026, updated for the metrics of any signature of GE11): (1) the model is `Fin n → ℝ` with no boundary instead
+of any `ModelWithCorners` (this matches the source, where manifolds are charts onto open subsets of `ℝⁿ`), with a locally smooth connection and no
+Hausdorff hypothesis; the tasks also assume `[IsManifold I 2 M]` (needed by `curvatureAt_apply_proved`), so that is not a difference. The definitions were
+compared with Carroll, *Lecture Notes on General Relativity* (1997), eq. (3.67) (the coordinate Riemann tensor), (3.90) (Ricci) and (3.92) (scalar
+curvature) (read at those locations): in Carroll the coordinate expressions are the definitions, and the statements here say that the intrinsic
+definitions of `Connection.lean` agree with them in every chart (kind: representation); the Einstein equations are in his chapter 4, not read for this
+comparison. The comparison with Wald, *General Relativity*, is pending: the source was not read at the cited locations.
 -/
 
 open Bundle Manifold Set VectorField NormedSpace FiberBundle Filter

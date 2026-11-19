@@ -1284,6 +1284,11 @@
     "snippet": "(2.34) where “diag” means a diagonal matrix with the given elements. If n is the dimension of the manifold, s is the number of +1’s in the canonical form, and t is the number of −1’s, then s − t is the signature of the m",
     "why": null
    },
+   "eq. (3.21)": {
+    "verified": true,
+    "snippet": "(3.21) 2 This is one of the most important formulas in this subject; commit it to memory. Of course, we have only proved that if a metric-compatible and torsion-free connection exists, it must be of the form (3.21); you",
+    "why": null
+   },
    "eq. (3.79)": {
     "verified": true,
     "snippet": "(3.79) With a little more work, which we leave to your imagination, we can see that the sum of cyclic permutations of the last three indices vanishes: Rρσµν + Rρµνσ + Rρνσµ = 0 . (3.80) This last property is equivalent t",
@@ -1292,6 +1297,21 @@
    "eq. (3.80)": {
     "verified": true,
     "snippet": "(3.80) This last property is equivalent to the vanishing of the antisymmetric part of the last three indices: Rρ[σµν] = 0 . (3.81) All of these properties have been derived in a special coordinate system, but they are al",
+    "why": null
+   },
+   "eq. (3.88)": {
+    "verified": true,
+    "snippet": "(3.88) This is known as the Bianchi identity. (Notice that for a general connection there would be additional terms involving the torsion tensor.) It is closely related to the Jacobi identity, since (as you can show) it",
+    "why": null
+   },
+   "eq. (3.91)": {
+    "verified": true,
+    "snippet": "(3.91) as a consequence of the various symmetries of the Riemann tensor. Using the metric, we can take a further contraction to form the Ricci scalar: R = Rµ µ = g µν Rµν . (3.92) An especially useful form of the Bianchi",
+    "why": null
+   },
+   "eq. (3.96)": {
+    "verified": true,
+    "snippet": "(3.96) 3 CURVATURE 82 The Einstein tensor, which is symmetric due to the symmetry of the Ricci tensor and the metric, will be of great importance in general relativity. The Ricci tensor and the Ricci scalar contain infor",
     "why": null
    },
    "eq. (4.53)": {

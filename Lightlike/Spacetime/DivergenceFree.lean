@@ -14,11 +14,11 @@ Proof. (1) In a chart the covariant derivative of a bilinear field is given by t
 `g^{στ} DG_{στν} = 0` is `einstein_div_coord` (`ContractedBianchi.lean`), proved from the coordinate second Bianchi
 identity, not from `T-GE1-P7`.
 
-**Differences from the task `T-GE1-P8`** (which stays open): the task is for any model space `E` and any
-`ModelWithCorners` `I`; this theorem is for a manifold modelled on `Fin n → ℝ` (`𝓘(ℝ, Fin n → ℝ)`, no boundary), with
-`[IsManifold 𝓘(ℝ, Fin n → ℝ) 2 M]` added, and a locally smooth connection (no Hausdorff hypothesis). The comparison of the statement
-with Carroll, *Lecture Notes on General Relativity* (1997), ch. 3, is pending: the source was not read at the cited
-location.
+**Former task `T-GE1-P8`, closed by `einstein_divergence_free_proved`.** Differences from the task statement (approved on 18 November 2026,
+updated for the metrics of any signature of GE11): (1) the model is `Fin n → ℝ` with no boundary instead of any model space and `ModelWithCorners` (this
+matches the source, where manifolds are charts onto open subsets of `ℝⁿ`), with a locally smooth connection and no Hausdorff hypothesis; the task also
+assumes `[IsManifold I 2 M]`, so that is not a difference; (2) representation: Carroll, *Lecture Notes on General Relativity* (1997), ch. 3, eqs. (3.94)
+and (3.96) (read at those locations), derives `∇^μ G_{μν} = 0` by contracting the Bianchi identity (3.87) twice, the proof here is a coordinate computation.
 -/
 
 open Bundle Manifold Set VectorField NormedSpace FiberBundle Filter

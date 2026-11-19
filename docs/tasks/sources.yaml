@@ -1240,6 +1240,10 @@ milestones:
     class: sourced
     refs:
       - {ref: carroll-1997, location: "Chapter 3", check: "Curvature"}
+  GE11:
+    class: sourced
+    refs:
+      - {ref: carroll-1997, location: "Chapter 3", check: "Curvature"}
   GE2:
     class: sourced
     refs:
