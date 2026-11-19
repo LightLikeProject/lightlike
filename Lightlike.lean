@@ -1010,6 +1010,8 @@ import Lightlike.Gauge.Constraints
 import Lightlike.Gauge.ConstraintsAPI
 import Lightlike.Gauge.DiracAlgebra
 import Lightlike.Gauge.DiracJacobi
+import Lightlike.Gauge.GaugeFlow
+import Lightlike.Gauge.FaddeevPopov
 import Lightlike.Gauge.DiracAlgorithm
 import Lightlike.Gauge.ReducedForm
 import Lightlike.Gauge.MatrixInverse
