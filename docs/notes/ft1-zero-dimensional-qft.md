@@ -21,7 +21,51 @@ arXiv:1807.02046v1, read with pdftotext on 19 November 2026 (printed page number
   formal integral as a sum over graphs weighted by `1/|Aut Γ|`), p. 23; the expansion (3.1.8), whose `ħ²`
   coefficient contains `35 λ₄² a⁴ / 384 = (1/128 + 1/16 + 1/48) λ₄² a⁴`, p. 24.
 
+C. E. Rasmussen, C. K. I. Williams, *Gaussian Processes for Machine Learning*, MIT Press (2006), Appendix A, read
+with pdftotext on 19 November 2026 (printed page numbers):
+
+* §A.2, eq. (A.4): the multivariate Gaussian density `p(x|m, Σ) = (2π)^{-D/2} |Σ|^{-1/2} exp(-½ (x - m)ᵀ Σ⁻¹ (x - m))`,
+  `Σ` symmetric positive definite, p. 200; samples of `N(m, K)` as `x = m + L u` with `u ∼ N(0, I)` and `K = L Lᵀ`,
+  p. 201.
+
+L. Tubaro, M. Zanella, *An introduction to Malliavin calculus*, arXiv:2502.07941v1, read with pdftotext on 19 November
+2026 (printed page numbers):
+
+* Definition 2.1: the Gaussian measure on `ℝ` with density `(2πσ²)^{-1/2} e^{-(x - µ)²/(2σ²)}`, p. 4.
+* Eq. (20) `E[W(h) W(k)] = ⟨h, k⟩_H`, p. 18; eq. (21) `D W(h) = h` and Definition 5.3 (`DF = Σ ∂_i p(W(h₁), …,
+  W(h_m)) h_i` for a polynomial `F = p(W(h₁), …, W(h_m))`), p. 19; Proposition 5.5, eq. (22),
+  `E[⟨DF, h⟩_H] = E[W(h) F]`, p. 19; its proof uses, from Isserlis' formula,
+  `E[∏_{i=1}^{n+1} W(h_i)] = Σ_{j=1}^{n} E[W(h_j) W(h_{n+1})] E[∏_{i≠j} W(h_i)]`, p. 20.
+
 ## Formal statements and how they compare (MEASURED unless tagged)
+
+* `pi_gaussianReal_eq_withDensity`, `integral_stdGaussian` (Gaussian/Density.lean): the standard Gaussian measure on
+  `ℝⁿ` (Mathlib's product of `gaussianReal 0 1`, and `stdGaussian` on `EuclideanSpace ℝ ι`) is Lebesgue measure with
+  density `(2π)^{-n/2} exp(-½ ‖x‖²)`, the product of the densities of Tubaro–Zanella's Definition 2.1 with `µ = 0`,
+  `σ = 1`, and (A.4) with `m = 0`, `Σ = I`. Difference, kind representation: `(2π)^{-n/2}` is written
+  `((√(2π))⁻¹)ⁿ`.
+* `integral_multivariateGaussian`, `multivariateGaussian_eq_withDensity` (Gaussian/Integral.lean, Measure.lean): for
+  positive definite `S`, Mathlib's `multivariateGaussian 0 S`, the image of the standard Gaussian under `√S` (the
+  sampling `x = m + L u` of p. 201 with the symmetric square root `L = √S`, `L Lᵀ = S`), has density
+  `(2π)^{-n/2} (det S)^{-1/2} exp(-½ xᵀ S⁻¹ x)`, which is (A.4) with `m = 0`, `Σ = S`. Differences, kind
+  representation: the measure is centred (the mean `m` is a translation); `(2π)^{-D/2} |Σ|^{-1/2}` is written
+  `((√(2π))⁻¹)ⁿ / √(det S)`. `integral_exp_neg_half_quad`, `∫ exp(-½ xᵀ A x) dx = (√(2π))ⁿ / √(det A)` for positive
+  definite `A`, is the normalisation of (A.4) (the density has integral `1`) with `Σ = A⁻¹`.
+* `integral_dmono` (Gaussian/Moments.lean) and `integral_weight_mul_lineDeriv` (Gaussian/Ibp.lean): Gaussian
+  integration by parts. In finite dimension, for `x ∼ N(0, S)` take `H = ℝⁿ` with `⟨h, k⟩_H = hᵀ S k` and
+  `W(h) = hᵀ x`, so that (20) holds; for `F = p(x)` Definition 5.3 gives `⟨DF, h⟩_H = ∇p(x)ᵀ S h`, and with `h = S⁻¹ e_j` (22)
+  reads `E[∂_j p(x)] = E[(S⁻¹ x)_j p(x)]`, which is `integral_dmono` for the monomials `p`.
+  `integral_weight_mul_lineDeriv` is the same identity before normalisation, `∫ w_A ∂_j g = ∫ (A x)_j w_A g` with
+  `w_A(x) = exp(-½ xᵀ A x)`, for symmetric `A` and every `g` with a derivative along `e_j` and the three integrability
+  conditions. Differences, kind representation: finite dimension, with `H` and `W` as above (Tubaro–Zanella take `H`
+  infinite-dimensional; the identity and its proof through Isserlis' formula are the same for `H = ℝⁿ`); the identity
+  is stated for the unnormalised weight against Lebesgue measure (the normalising constant cancels); the class of `g`
+  contains the polynomials of (22).
+* `moment_cons` (Gaussian/Moments.lean): `E[x_i x_{l₀} ⋯ x_{l_{k-1}}] = Σ_m S_{i l_m} E[∏_{p≠m} x_{l_p}]`, the
+  recursion in the proof of Proposition 5.5 (p. 20), there taken from Isserlis' formula and here derived from the
+  integration by parts (`integral_dmono` and `S S⁻¹ = 1`). Difference, kind representation: the distinguished factor
+  is the first one (`i :: l`) instead of the last (`W(h_{n+1})`), and for coordinates
+  `E[W(h_j) W(h_{n+1})] = S_{i l_m}`.
 
 * `wick_one_variable` (ZeroDim/Quartic.lean): `∫ dx/√(2πħ) e^{-x²/(2aħ)} x^{2n} = √a (aħ)^n (2n - 1)!!` for
   `a, ħ > 0`, exactly the p. 22 identity (no difference); from `integral_pow_mul_gauss`
