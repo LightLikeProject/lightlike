@@ -195,10 +195,13 @@ The library proves these steps by a different route for 1-3 (next section).
 ## Maximality: the proof
 
 `kruskal_isInextendible` (Lightlike/GR/KruskalMaximal.lean): the Kruskal manifold has no extension to a connected
-Hausdorff Lorentzian manifold with a smooth metric (`IsInextendible`, the smooth case `k = ∞` of Sbierski's
-Definition 2.15). The proof follows the outline of Sbierski, Section 1.3 (read): a geodesic of an extension that
-leaves the Kruskal manifold would be a geodesic of the Kruskal manifold on a finite interval that neither has a
-limit nor runs into the curvature singularity.
+Hausdorff Lorentzian manifold with a smooth metric (`IsInextendible`: Sbierski's Definition 2.15 with a smooth
+metric on the target in place of a `C^k` metric, `k ∈ ℕ`). Source statement (Sbierski's abstract, read): the
+maximal analytic Schwarzschild spacetime "is manifestly inextendible as a Lorentzian manifold with a twice
+continuously differentiable metric". Method: his Section 1.3 iv) and Section 3 (a `C²`-extension has geodesics
+that leave the original manifold) and Section 1.2 (a curve leaving the manifold leaves through `r = 0` or through
+infinity): a geodesic of an extension that leaves the Kruskal manifold would be a geodesic of the Kruskal manifold
+on a finite interval that neither has a limit nor runs into the curvature singularity.
 
 * Everything is done in the global chart `(T, x)`, with `X = log |x|`, without Christoffel symbols:
   Noether's formula `(Σ K^k p_k)' = Σ (K^k)' p_k + ½ Σ K^k ∂_k g(w, w)`
@@ -221,8 +224,9 @@ limit nor runs into the curvature singularity.
 * A boundary point of the image has a normal chart (the exponential map of the coordinate metric,
   `exists_isNormalChart`), whose radial geodesics reach the image: `kruskal_isInextendible`.
 
-Difference from the source (kind: weaker): Sbierski's theorem is `C⁰`-inextendibility (continuous metrics); the
-statement proved here is inextendibility with smooth metrics, the classical statement recalled in his Section 1.3.
+Difference from the source (kind: weaker): the theorem excludes extensions with smooth metrics. The statement of
+the source's abstract is `C²`-inextendibility and its theorem is `C⁰`-inextendibility; both are stronger and are
+not formalized (the library has no Lorentzian metrics of finite regularity).
 
 ## The event horizon
 

@@ -13,9 +13,15 @@ open and not everything, the target is connected). A normal chart at `p` (`exist
 neighbourhood of `p`, which contains a point `q` of the image; the radial geodesic from `p` to `q`, reversed,
 starts in the image and leaves it, which `IsLorentzianExtension.false_of_geodesic_kruskal` excludes.
 
-The argument follows the outline in J. Sbierski, arXiv:1507.00601, Section 1.3: every inextendible geodesic of
-the Kruskal manifold is complete or runs into the curvature singularity. Here the statement is smooth
-(`C^∞`) inextendibility; the `C⁰`-inextendibility proved in that paper is stronger and is not formalized.
+Source: J. Sbierski, arXiv:1507.00601v2. Its abstract states that the maximal analytic Schwarzschild spacetime
+"is manifestly inextendible as a Lorentzian manifold with a twice continuously differentiable metric"; the method
+is the one of its Section 1.3 iv) and Section 3 (for `C²`-extensions one finds geodesics that leave the original
+manifold), with the curvature singularity for the geodesics that are not complete (Section 1.2: a curve leaving
+the manifold leaves through `r = 0` or through infinity).
+
+**Not claimed.** The theorem here excludes extensions with *smooth* metrics only, the metrics of this library.
+Inextendibility with `C²` metrics (the statement of the source's abstract) and with continuous metrics (the
+source's theorem, `C⁰`-inextendibility) are stronger and are not formalized.
 -/
 
 open Matrix Real Set Filter Topology Manifold TopologicalSpace Metric
@@ -37,7 +43,9 @@ lemma kruskalC_nonempty : (kruskalC).Nonempty := by
   · show -1 < sC ![0, 1, 0, 0]
     simp [sC, rhoSq]
 
-/-- **The Kruskal–Szekeres spacetime is inextendible** (maximality of the Kruskal extension). -/
+/-- **The Kruskal–Szekeres spacetime is inextendible** (maximality of the Kruskal extension): it has no
+extension to a connected Hausdorff Lorentzian manifold with a smooth metric. `C²`- and `C⁰`-inextendibility
+(J. Sbierski, arXiv:1507.00601) are stronger and not claimed. -/
 theorem kruskal_isInextendible (hM : 0 < M) : IsInextendible (kruskalManifoldMetric M hM) := by
   intro M' _ _ _ _ g' ι hext
   haveI := hext.connected

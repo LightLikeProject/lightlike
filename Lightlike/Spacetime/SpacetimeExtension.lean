@@ -15,7 +15,8 @@ exists a `Cᵏ`-extension of `(M, g)`. Otherwise, `(M, g)` is called `Cᵏ`-inex
 * `IsInextendible g`: no Hausdorff extension exists (in a given universe).
 
 **Differences from the source.**
-* The definition is the source's Definition 2.15 with `k = ∞`: the metrics of the library are smooth.
+* The definition is the source's Definition 2.15 with a smooth metric on the target in place of a `C^k` metric
+  (the source has `k ∈ ℕ`): the metrics of the library are smooth.
 * (kind: weaker, for theorems stated with it) Inextendibility among smooth metrics is implied by the source's
   `C⁰`-inextendibility (and by `Cᵏ`-inextendibility for every `k`), and is less than it: a manifold can be
   inextendible with smooth metrics and extendible with continuous ones (the source's Section 1.1). So a theorem

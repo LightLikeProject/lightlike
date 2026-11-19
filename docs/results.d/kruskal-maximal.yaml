@@ -1,0 +1,13 @@
+- id: LL-XXXX
+  title: The Kruskal-Szekeres spacetime is inextendible (maximality of the Kruskal extension, smooth metrics)
+  area: GR
+  file: Lightlike/GR/KruskalMaximal.lean
+  decls: [Lightlike.kruskal_isInextendible]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: sbierski-2016, location: "Abstract", check: "manifestly inextendible"}
+  review: kernel-checked
+  note: "The Kruskal manifold, the set X^2 - T^2 > -1 times the sphere with the Kruskal metric of mass M > 0, has no extension: no smooth isometric open embedding into a proper subset of a connected Hausdorff Lorentzian manifold of the same dimension with a smooth metric. Proof: a normal chart at a boundary point of the image gives a geodesic of the target that leaves the image; lifted to the Kruskal manifold it is a geodesic on a finite interval, which either has a limit in the manifold (bounds from the constants of motion and Gronwall's inequality) or approaches r = 0, where the Kretschmann scalar 48 M^2 / r^6 is unbounded. Difference from the source (weaker): the source's abstract states inextendibility with twice continuously differentiable metrics and its theorem is inextendibility with continuous metrics; here only extensions with smooth metrics are excluded."
+  since: unreleased

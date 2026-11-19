@@ -1031,6 +1031,10 @@ references:
     cite: "P. Hartman, Ordinary Differential Equations, Wiley (1964); SIAM reprint (2002)"
     title: "Ordinary Differential Equations"
     doi: 10.1137/1.9780898719222
+  sbierski-2016:
+    cite: "J. Sbierski, The C^0-inextendibility of the Schwarzschild spacetime and the spacelike diameter in Lorentzian geometry, arXiv:1507.00601v2 (2016)"
+    title: "The C^0-inextendibility of the Schwarzschild spacetime and the spacelike diameter in Lorentzian geometry"
+    arxiv: "1507.00601"
 
 canonical:
   pl-topology: [lickorish-1999, moise-1977]
