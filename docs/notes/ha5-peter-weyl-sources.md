@@ -119,3 +119,22 @@ difference of statement): every element is conjugate to a diagonal one, the two 
 dense. The general Weyl integration formula for compact connected Lie groups (maximal tori, Weyl group) is not
 started: no source for it has been read. Mathlib (pinned tree): root systems and their Weyl groups exist
 (`Mathlib/LinearAlgebra/RootSystem/`), but there is nothing on maximal tori of compact Lie groups.
+
+Formalised on `fable2/ha5-weyl` (`SU2Conjugacy.lean`, `WeylIntegrationSU2.lean`), compared with the pages read:
+
+| Formal statement (Lean) | Source location (Teleman) | Match |
+| --- | --- | --- |
+| `exists_conj_torus`, `exists_conj_torusExp_Icc`, `su2_eq_of_isClassFunction`: every `g ∈ SU(2)` is conjugate to `diag(e^{iθ}, e^{-iθ})` with `θ ∈ [0, π]`, and a class function is a function of the half-trace | Lecture 20, §(20.3), Proposition 20.4, p. 48 | weaker: the source states a homeomorphism of the space of conjugacy classes with `[−1, 1]`; we state that the half-trace determines the value of every class function (surjectivity onto `[−1, 1]` and the topology of the quotient are not stated) |
+| `weyl_integration_formula_su2`: for a continuous class function `f`, `∫ f dμ = (1/π) ∫₀^{2π} f(diag(e^{iθ}, e^{-iθ})) sin² θ dθ`, `μ` a Haar probability measure | Lecture 20, Theorem 20.9, p. 49 | match (the third expression of the theorem). Convention: the source's `dg` is the Euclidean volume of the unit sphere normalised to 1; ours is any Haar probability measure (the same measure, by uniqueness). The form with `½ (1/2π) |Δ(φ)|²` is not stated separately |
+| `su2Spin_character_torusExp_mul_sin`: `χ_n(diag(e^{iθ}, e^{-iθ})) · sin θ = sin((n+1)θ)`; `su2Spin_character_torusExp`: `χ_n` on the torus is `∑ e^{i(n−2k)θ}`; `su2Spin_character_eq_U`: `χ_n(g) = U_n(½ tr g)` | Lecture 21, Theorem 21.1, p. 50 (`χ_n = zⁿ + zⁿ⁻² + … + z⁻ⁿ = (zⁿ⁺¹ − z⁻ⁿ⁻¹)/(z − z⁻¹)`) | match for the character formula (representation: the representation is `Lightlike.SU2.spinRep n`, the source's `Symⁿ ℂ²`; the quotient form is stated multiplied by `sin θ`). The Chebyshev form is not in the source. Not formalised from Theorem 21.1: that these are all the irreducible representations |
+
+Proof route (differs from the source, which integrates over slices of the 3-sphere): conjugacy to the torus;
+Schur orthogonality gives `∫ χ_n dμ = δ_{n0}`; `(1/π) ∫₀^{2π} U_n(cos θ) sin² θ dθ = δ_{n0}`; the `U_n` span
+`ℝ[X]`; Weierstrass approximation on `[−1, 1]`.
+
+On `fable2/ha5-su2complete` the two statements left weaker above are proved in full:
+
+| Formal statement (Lean) | Source location (Teleman) | Match |
+| --- | --- | --- |
+| `su2_conjClasses_homeomorph` (`SU2ConjClasses.lean`): the half-trace induces a homeomorphism from the quotient of `SU(2)` by conjugation (quotient topology) onto `[−1, 1]`; `su2_isConj_iff`: conjugate iff equal half-trace | Lecture 20, Proposition 20.4, p. 48 | match (representation: the space of conjugacy classes is `Quotient (IsConj.setoid SU2)`) |
+| `su2_irreducible_classification` (`SU2Complete.lean`): every irreducible continuous unitary matrix representation of `SU(2)` is equivalent to `su2Spin n` for some `n`, and has dimension `n + 1` | Lecture 21, Theorem 21.1, p. 50 ("this is the complete list of irreducibles") | match (representation: unitary matrix representations; the source's statement is for continuous finite-dimensional representations, which are unitarisable, a step we do not formalise) |

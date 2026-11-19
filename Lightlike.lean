@@ -242,7 +242,10 @@ import Lightlike.HarmonicAnalysis.PeterWeylSU2
 import Lightlike.HarmonicAnalysis.PeterWeylSeparation
 import Lightlike.HarmonicAnalysis.PeterWeylTests
 import Lightlike.HarmonicAnalysis.RepresentationBridge
+import Lightlike.HarmonicAnalysis.SU2Complete
+import Lightlike.HarmonicAnalysis.SU2ConjClasses
 import Lightlike.HarmonicAnalysis.SU2Conjugacy
+import Lightlike.HarmonicAnalysis.WeylIntegrationSU2
 import Lightlike.HarmonicAnalysis.SchurOrthogonality
 import Lightlike.Lorentz.Cartan
 import Lightlike.Lorentz.Continuity
