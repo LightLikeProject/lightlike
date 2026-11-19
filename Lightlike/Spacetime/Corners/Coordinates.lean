@@ -10,12 +10,14 @@ public import Lightlike.Spacetime.Coordinates
 # Connecting manifold-level Lorentzian metrics to coordinate metrics
 
 `NondegMetric.coordMetricW g x₀ y = (g(∂ᵢ, ∂ⱼ))ᵢⱼ` is the matrix of components of a smooth
-Lorentzian metric `g` on a manifold `M` (modelled on `ℝⁿ`, no boundary) in the chart at `x₀`,
-evaluated at the chart point `y`.
+metric `g` on a manifold `M` modelled with corners on `ℝⁿ` in the chart at `x₀`, evaluated at the chart point `y`.
 
-Main result: `NondegMetric.isCoordMetric_coordMetric` - on the chart's target (an open set
-containing the image of `x₀`), these components form an `IsCoordMetric`: symmetric, invertible,
-with `C^∞` entries. Hence every coordinate curvature statement in `Curvature.lean` /
+Main results: `NondegMetric.isCoordMetricW_coordMetric` - on the chart's target (relatively open in `range I`, containing
+the image of `x₀`) these components form an `IsCoordMetricW`, for any model with corners; for a boundaryless model,
+`NondegMetric.isCoordMetric_coordMetricW` - on the open chart target they form an `IsCoordMetric`: symmetric,
+invertible, with `C^∞` entries. Signature: `LorentzianMetric.coordMetric_congr_etaW` (for a Lorentzian metric the
+coordinate matrix is congruent to `η` on the chart target, any model with corners) and
+`LorentzianMetric.isLorentzianCoordMetric_coordMetricW` (an `IsLorentzianCoordMetric`, boundaryless model). Hence every coordinate curvature statement in `Curvature.lean` /
 `Einstein.lean` applies to the coordinate expression of any smooth Lorentzian metric.
 
 Proof ingredients (all from Mathlib):
@@ -27,8 +29,8 @@ Proof ingredients (all from Mathlib):
 * `ContMDiffOn.clm_bundle_apply₂` (a smooth bilinear-form section applied to smooth sections is
   smooth), `contMDiffOn_localFrame_baseSet`, `contMDiffOn_extChartAt_symm`.
 
-Not covered: Lorentzian *signature* of the coordinate matrix (true by Sylvester's law, not needed
-for `IsCoordMetric`), and manifolds with boundary.
+The open-set forms `IsCoordMetric` and `IsLorentzianCoordMetric` need a boundaryless model (`[I.Boundaryless]`); with
+boundary or corners the relatively open form `IsCoordMetricW` is the one available.
 
 **References.** R. M. Wald, *General Relativity* (University of Chicago Press, 1984), ch. 3 (curvature); S. M. Carroll, *Spacetime and Geometry* (Addison-Wesley, 2004), ch. 3 (curvature). The coordinate formulas for the Christoffel symbols and the Riemann, Ricci and scalar curvatures follow these texts' conventions.
 
@@ -151,5 +153,45 @@ theorem NondegMetric.isCoordMetricW_coordMetric (g : NondegMetric I M) (x₀ : M
   symm y _ := g.coordMetric_transposeW x₀ y
   isUnit_det _ hy := g.coordMetric_isUnit_detW x₀ hy
   smooth i j := g.coordMetric_smoothW x₀ i j
+
+/-- **The link.** For any smooth Lorentzian metric `g` on `M` and any `x₀ : M`, the coordinate
+components `g.coordMetricW x₀` form an `IsCoordMetric` (symmetric, invertible, `C^∞`) on the open
+chart target, which contains the chart image of `x₀`. So the coordinate curvature predicates
+(`IsFlatOn`, `IsVacuumSolution`) are meaningful for every manifold-level Lorentzian metric. -/
+theorem NondegMetric.isCoordMetric_coordMetricW [I.Boundaryless] (g : NondegMetric I M)
+    (x₀ : M) : IsCoordMetric (g.coordMetricW x₀) (extChartAt I x₀).target where
+  isOpen := isOpen_extChartAt_target x₀
+  symm y _ := g.coordMetric_transposeW x₀ y
+  isUnit_det _ hy := g.coordMetric_isUnit_detW x₀ hy
+  smooth i j := g.coordMetric_smoothW x₀ i j
+
+/-- **Signature.** On the chart target the coordinate matrix is congruent to `η`:
+`g(∂ᵢ,∂ⱼ) = (Pᵀ η P)ᵢⱼ`, where `P` is the change of basis from a Lorentz frame to the coordinate
+basis. -/
+theorem LorentzianMetric.coordMetric_congr_etaW (g : LorentzianMetric I M n)
+    (x₀ : M) {y : Fin n → ℝ} (hy : y ∈ (extChartAt I x₀).target) :
+    ∃ P : Matrix (Fin n) (Fin n) ℝ, IsUnit P.det ∧ g.coordMetricW x₀ y = Pᵀ * eta n * P := by
+  set p := (extChartAt I x₀).symm y
+  have hp := symm_mem_chartTriv_baseSetW x₀ hy
+  obtain ⟨e, he⟩ := g.lorentzian p
+  set f := coordBasisW x₀ hp
+  refine ⟨e.toMatrix f, Matrix.isUnit_det_of_right_inverse (e.toMatrix_mul_toMatrix_flip f), ?_⟩
+  ext i j
+  rw [g.coordMetric_eqW x₀ hy, IsLorentzianForm.apply_eq_sum e he]
+  simp only [Matrix.mul_apply, Matrix.transpose_apply, eta, Matrix.diagonal_apply,
+    Module.Basis.toMatrix_apply, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, ite_true]
+  exact Finset.sum_congr rfl fun k _ => by ring
+
+/-- The coordinate components of a smooth Lorentzian metric have Lorentzian signature on the chart
+target. -/
+theorem LorentzianMetric.isLorentzianCoordMetric_coordMetricW [I.Boundaryless]
+    (g : LorentzianMetric I M n) (x₀ : M) :
+    IsLorentzianCoordMetric (g.coordMetricW x₀) (extChartAt I x₀).target :=
+  ⟨g.isCoordMetric_coordMetricW x₀, fun _ hy => g.coordMetric_congr_etaW x₀ hy⟩
+
+/-- For a Lorentzian metric the general coordinate matrix is the Lorentzian one (the same expression: `ofLorentzian` is the
+underlying metric). Kept under this name for the files that cite it. -/
+theorem NondegMetric.ofLorentzian_coordMetricW (g : LorentzianMetric I M n) (x₀ : M) :
+    (NondegMetric.ofLorentzian g).coordMetricW x₀ = g.coordMetricW x₀ := rfl
 
 end Lightlike

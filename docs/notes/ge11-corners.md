@@ -65,3 +65,14 @@ GE11 had left out because no file built on the layer used it. Its supporting dec
 `BianchiSecond.lean`) and `fderivWithin_range_self` to `Corners/LieDerivation.lean`. `T-GE1-P8` stays open (the model
 space is `Fin n → ℝ`, not any `E`).
 
+## The second Bianchi identity, the coordinate signature and the vacuum criterion in the Corners layer (20 November 2026)
+
+Also left out by the closure: `Corners/BianchiSecond.lean` carries the branch's general `BianchiSecond.lean`
+(`bianchi_second_provedW` and its lemmas; `mdiffAt_of_smoothNearW` moves there from `Corners/ChartTensor.lean`);
+`Corners/Coordinates.lean` gains `NondegMetric.isCoordMetric_coordMetricW` and
+`LorentzianMetric.isLorentzianCoordMetric_coordMetricW` (boundaryless model), `LorentzianMetric.coordMetric_congr_etaW`
+(any model with corners) and `NondegMetric.ofLorentzian_coordMetricW`; `Corners/ChartAgreement.lean` gains
+`satisfiesEinstein_iff_chart_provedW` (any nondegenerate metric, so not the Lorentzian case `κ = 0` of
+`einsteinEq_iff_chartW`). The global smoothness form of the connection (`contMDiffAt_cov_of_global`) stays out: it needs a
+Hausdorff hypothesis the Corners layer does not make. `T-GE1-P6` and `T-GE1-P7` stay open.
+
