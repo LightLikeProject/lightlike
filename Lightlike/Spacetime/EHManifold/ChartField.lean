@@ -70,9 +70,9 @@ lemma formTriv_ofChartFun (x₁ : M) (ρ : M → ℝ) (S : Matrix (Fin n) (Fin n
   have hy' := mem_formTriv_baseSet x₁ hy
   have h := (formTriv n x₁).continuousLinearMapAt_symmL (R := ℝ) hy' (ρ y • matForm S)
   have h3 := Trivialization.continuousLinearMapAt_apply_of_mem (R := ℝ)
-    (trivializationAt ((Fin n → ℝ) →L[ℝ] (Fin n → ℝ) →L[ℝ] ℝ)
-      (fun x : M => TangentSpace 𝓘(ℝ, Fin n → ℝ) x →L[ℝ] TangentSpace 𝓘(ℝ, Fin n → ℝ) x →L[ℝ] ℝ) x₁)
-    hy' (ofChartFun x₁ ρ S y)
+    (F := (Fin n → ℝ) →L[ℝ] (Fin n → ℝ) →L[ℝ] ℝ)
+    (E := fun x : M => TangentSpace 𝓘(ℝ, Fin n → ℝ) x →L[ℝ] TangentSpace 𝓘(ℝ, Fin n → ℝ) x →L[ℝ] ℝ)
+    (formTriv n x₁) hy' (ofChartFun x₁ ρ S y)
   exact h3.symm.trans h
 
 /-- `ofChartFun` on two tangent vectors given by their components. -/
