@@ -108,7 +108,20 @@ differentiable and admissible at the points of their zero sets in `U_α` (`Dirac
   `{S_i, H} + ∑_a {S_i, φ_a} u_a = 0` of each chart containing the point is solvable (`DiracAtlas.final_consistent`).
   Wipf states the termination without proof (Section 3.3, p. 17); here it comes with the bound `dim E + 1`.
 
-Against `hcover`: a single global selection is the one-chart atlas. The atlas only asks for charts that cover the primary
-surface. Building the charts from Wipf's constant-rank hypothesis is not done here: `exists_selection_near` gives an
-admissible block near `x₀` for one stage, and a chart needs one for every stage of its own rule.
+Against `hcover`: a single global selection is the one-chart atlas (`DiracAtlas.ofSelection`). The charts come from Wipf's
+own hypothesis (`DiracAtlas.ofConstantRank`). At each point `x₀` of the primary surface the algorithm runs with blocks
+chosen at `x₀` (`selAt`: a nonzero minor of maximal size of the consistency matrix at `x₀`). `ConstantRankAt` holds at `x₀`
+for the stages `k ≤ K` when:
+* the constraint functions are continuous at `x₀`;
+* if `x₀` lies on the `k`-th surface, the bracket entries are continuous at `x₀`, and the rank on the surface near `x₀` is
+  the rank at `x₀` (Wipf, p. 17: "we assume that the rank of `C` is constant on `Γ_c`");
+* the stage is regular and strictly differentiable near `x₀`.
+Then the chosen block is admissible near `x₀` at the points of the surface (`selAt_admissible`). At a stage that `x₀` has
+left, continuity keeps the chart off that surface. So the chart's domain, a finite intersection over `k ≤ K`, is a
+neighbourhood of `x₀` (`chartSet_mem_nhds`). With `K ≥ dim E + 1`, `final_consistent_of_constantRank` gives three things:
+* the glued surfaces stop changing at `N = dim E + 1`;
+* at every point of `Γ_N` the consistency system of every chart containing it is solvable;
+* by `DiracAtlas.surface_eq`, the glued surfaces do not depend on the atlas.
+The stage bound `K` is needed because a chart's domain must be a finite intersection of neighbourhoods. `K = dim E + 2`
+covers the termination at `dim E + 1`.
 

@@ -1,4 +1,5 @@
 import Lightlike.Gauge.DiracChart
+import Lightlike.Gauge.DiracLocal
 
 /-!
 # Gluing the local charts of the Dirac algorithm
@@ -18,8 +19,11 @@ rule admissible on its own open set, and the local surfaces are glued.
   surface, and satisfy the chart-free recursion `Γₖ₊₁ = {x ∈ Γₖ | the consistency system of every chart at x is solvable}`;
 * `DiracAtlas.chart_pause`, `DiracAtlas.chart_stable`: a step that leaves a chart's surface unchanged is final, so every
   chart stops changing by the stage `dim E + 1`;
-* `DiracAtlas.ofSelection`, `DiracAtlas.surface_ofSelection`: a single selection rule admissible on every stage is the
-  one-chart atlas;
+* `DiracAtlas.ofSelection`, `DiracAtlas.surface_ofSelection`, `DiracAtlas.surface_eq`: a single selection rule admissible
+  on every stage is the one-chart atlas, and the glued surfaces do not depend on the atlas;
+* `Stage.consMat`, `selAt`, `selAt_admissible`, `ConstantRankAt`, `chartSet`, `chartSet_mem_nhds`,
+  `DiracAtlas.ofConstantRank`, `final_consistent_of_constantRank`: the atlas from Wipf's constant-rank hypothesis, one chart
+  at every point of the primary surface with the blocks chosen at that point;
 * `DiracAtlas.final_consistent`: for any atlas the glued surfaces stop changing by the stage `dim E + 1`, and at every
   point of the final surface the consistency conditions `{S_i, H} + ∑_a {S_i, φ_a} u_a = 0` of each chart are solvable
   (Wipf, Section 3.3, pp. 16-17), with no single global selection.
@@ -364,6 +368,162 @@ theorem surface_ofSelection (K : ℕ) (sel : ∀ S : Stage E, Sel S M)
   ext x
   simp [surface, ofSelection]
 
+/-- **The glued surfaces do not depend on the atlas**: two atlases of the same algorithm have the same glued surfaces. -/
+theorem surface_eq (𝒜 𝒜' : DiracAtlas br φ H S₀ A K) (B : E → (E →L[ℝ] ℝ) →ₗ[ℝ] (E →L[ℝ] ℝ) → ℝ)
+    (hB : ∀ f g x, br f g x = B x (fderiv ℝ f x) (fderiv ℝ g x)) {k : ℕ} (hk : k ≤ K + 1) :
+    𝒜.surface k = 𝒜'.surface k := by
+  have key : ∀ 𝒜₁ 𝒜₂ : DiracAtlas br φ H S₀ A K, 𝒜₁.surface k ⊆ 𝒜₂.surface k := fun 𝒜₁ 𝒜₂ x hx => by
+    obtain ⟨α, hxα, hα⟩ := Set.mem_iUnion.mp hx
+    have hx0 : x ∈ zeroSet S₀.Φ := zeroSet_anti (fun j => (stages br φ H (𝒜₁.sel α) S₀ j).n)
+      (fun j => (stages br φ H (𝒜₁.sel α) S₀ j).Φ) (fun j => Nat.le_add_right _ _)
+      (fun j i => appendStage_castLE (stages br φ H (𝒜₁.sel α) S₀ j).Φ
+        ((stages br φ H (𝒜₁.sel α) S₀ j).chiFun br φ H (𝒜₁.sel α (stages br φ H (𝒜₁.sel α) S₀ j))) i)
+      (Nat.zero_le k) hxα
+    obtain ⟨β, hβ⟩ := Set.mem_iUnion.mp (𝒜₂.cover hx0)
+    have hV : IsOpen (𝒜₁.U α ∩ 𝒜₂.U β) := (𝒜₁.isOpen α).inter (𝒜₂.isOpen β)
+    have heq := zeroSet_stages_inter_eq br φ H B hB (𝒜₁.sel α) (𝒜₂.sel β) S₀ hV k
+      (fun j hj y hy => 𝒜₁.reg α j (by omega) y ⟨hy.1, hy.2.1⟩)
+      (fun j hj y hy => 𝒜₂.reg β j (by omega) y ⟨hy.1, hy.2.2⟩)
+      (fun j hj y hy => 𝒜₁.diff α j (by omega) y ⟨hy.1, hy.2.1⟩)
+      (fun j hj y hy => 𝒜₂.diff β j (by omega) y ⟨hy.1, hy.2.2⟩)
+      (fun j hj y hy => 𝒜₁.adm α j (by omega) y ⟨hy.1, hy.2.1⟩)
+      (fun j hj y hy => 𝒜₂.adm β j (by omega) y ⟨hy.1, hy.2.2⟩) k le_rfl
+    have : x ∈ zeroSet (stages br φ H (𝒜₁.sel α) S₀ k).Φ ∩ (𝒜₁.U α ∩ 𝒜₂.U β) := ⟨hxα, hα, hβ⟩
+    rw [heq] at this
+    exact Set.mem_iUnion.mpr ⟨β, this.1, hβ⟩
+  exact (key 𝒜 𝒜').antisymm (key 𝒜' 𝒜)
+
 end DiracAtlas
+
+section ConstantRank
+
+open Matrix
+
+/-- The consistency matrix `({S_i, φ_a}(x))` of a stage. -/
+def Stage.consMat (br : (E → ℝ) → (E → ℝ) → E → ℝ) (φ : Fin M → E → ℝ) (S : Stage E) (x : E) :
+    Matrix (Fin S.n) (Fin M) ℝ :=
+  Matrix.of fun i a => br (S.Φ i) (φ a) x
+
+/-- **The selection adapted to `x₀`**: the rows and columns of a nonzero minor of maximal size of the consistency matrix
+at `x₀` (`exists_isUnit_det_submatrix`). -/
+noncomputable def selAt (br : (E → ℝ) → (E → ℝ) → E → ℝ) (φ : Fin M → E → ℝ) (x₀ : E) (S : Stage E) : Sel S M :=
+  Sel.ofMinor (exists_isUnit_det_submatrix (S.consMat br φ x₀)).choose
+    (exists_isUnit_det_submatrix (S.consMat br φ x₀)).choose_spec.choose
+    (exists_isUnit_det_submatrix (S.consMat br φ x₀)).choose_spec.choose_spec.1
+    (exists_isUnit_det_submatrix (S.consMat br φ x₀)).choose_spec.choose_spec.2.1
+
+set_option maxHeartbeats 1000000 in
+/-- **The selection adapted to `x₀` is admissible near `x₀`** at the points of a set `Z` where the rank of the consistency
+matrix is the rank at `x₀`, if its entries are continuous at `x₀` (the constant-rank hypothesis on the surface `Z`). -/
+theorem selAt_admissible (br : (E → ℝ) → (E → ℝ) → E → ℝ) (φ : Fin M → E → ℝ) (S : Stage E) {x₀ : E} (Z : Set E)
+    (hcont : ∀ i a, ContinuousAt (fun x => br (S.Φ i) (φ a) x) x₀)
+    (hrank : ∀ᶠ x in 𝓝 x₀, x ∈ Z → (S.consMat br φ x).rank = (S.consMat br φ x₀).rank) :
+    ∀ᶠ x in 𝓝 x₀, x ∈ Z → (selAt br φ x₀ S).Admissible br φ x := by
+  obtain ⟨hR, hC, hunit⟩ := (exists_isUnit_det_submatrix (S.consMat br φ x₀)).choose_spec.choose_spec
+  have hB : ∀ x, (S.consCm br φ (selAt br φ x₀ S) x).toBlocks₁₁ =
+      (S.consMat br φ x).submatrix (exists_isUnit_det_submatrix (S.consMat br φ x₀)).choose
+        (exists_isUnit_det_submatrix (S.consMat br φ x₀)).choose_spec.choose := fun x =>
+    (Sel.ofMinor_block _ _ hR hC br φ x).trans (Matrix.ext fun _ _ => rfl)
+  have hinv : ∀ᶠ x in 𝓝 x₀, IsUnit (S.consCm br φ (selAt br φ x₀ S) x).toBlocks₁₁.det := by
+    refine eventually_isUnit_det (B := fun x => (S.consCm br φ (selAt br φ x₀ S) x).toBlocks₁₁) (fun i j => ?_) ?_
+    · simp only [hB, Matrix.submatrix_apply]
+      exact hcont _ _
+    · show IsUnit (S.consCm br φ (selAt br φ x₀ S) x₀).toBlocks₁₁.det
+      rw [hB]
+      exact hunit
+  filter_upwards [hinv, hrank] with x hx hxr hxZ
+  refine ⟨hx, ?_⟩
+  have hrk : (S.consCm br φ (selAt br φ x₀ S) x).rank = (S.consMat br φ x₀).rank := by
+    rw [Stage.consCm_eq_reindex, Matrix.rank_reindex]
+    exact hxr hxZ
+  have hle0 : (S.consCm br φ (selAt br φ x₀ S) x).rank ≤ Fintype.card (Fin (selAt br φ x₀ S).r) := by
+    rw [hrk, Fintype.card_fin]
+    exact le_rfl
+  have hfb := fromBlocks_toBlocks (S.consCm br φ (selAt br φ x₀ S) x)
+  exact schur_eq_zero_of_rank_le_block (S.consCm br φ (selAt br φ x₀ S) x).toBlocks₁₁
+    (S.consCm br φ (selAt br φ x₀ S) x).toBlocks₁₂ (S.consCm br φ (selAt br φ x₀ S) x).toBlocks₂₁
+    (S.consCm br φ (selAt br φ x₀ S) x).toBlocks₂₂ hx (by rw [hfb]; exact hle0)
+
+/-- **Wipf's constant-rank hypothesis at `x₀`, up to the stage `K`**, for the algorithm run with the blocks chosen at `x₀`:
+at every stage `k ≤ K` the constraint functions are continuous at `x₀`, and if `x₀` lies on the `k`-th surface, the
+entries of the consistency matrix are continuous at `x₀`, its rank on the surface near `x₀` is the rank at `x₀`
+(Wipf, Section 3.3, p. 17: "we assume that the rank of `C` is constant"), and the stage is regular and strictly
+differentiable at the points of the surface near `x₀`. -/
+def ConstantRankAt (br : (E → ℝ) → (E → ℝ) → E → ℝ) (φ : Fin M → E → ℝ) (H : E → ℝ) (S₀ : Stage E) (K : ℕ)
+    (x₀ : E) : Prop :=
+  ∀ k ≤ K, (∀ i, ContinuousAt ((stages br φ H (selAt br φ x₀) S₀ k).Φ i) x₀) ∧
+    (x₀ ∈ zeroSet (stages br φ H (selAt br φ x₀) S₀ k).Φ →
+      (∀ i a, ContinuousAt (fun x => br ((stages br φ H (selAt br φ x₀) S₀ k).Φ i) (φ a) x) x₀) ∧
+      (∀ᶠ x in 𝓝 x₀, x ∈ zeroSet (stages br φ H (selAt br φ x₀) S₀ k).Φ →
+        ((stages br φ H (selAt br φ x₀) S₀ k).consMat br φ x).rank =
+          ((stages br φ H (selAt br φ x₀) S₀ k).consMat br φ x₀).rank) ∧
+      (∀ᶠ x in 𝓝 x₀, x ∈ zeroSet (stages br φ H (selAt br φ x₀) S₀ k).Φ →
+        (LinearIndependent ℝ fun i => fderiv ℝ ((stages br φ H (selAt br φ x₀) S₀ k).Φ i) x) ∧
+          ∀ i, HasStrictFDerivAt ((stages br φ H (selAt br φ x₀) S₀ k).Φ i)
+            (fderiv ℝ ((stages br φ H (selAt br φ x₀) S₀ k).Φ i) x) x))
+
+/-- The points near `x₀` where the chart at `x₀` works at every stage `k ≤ K`. -/
+def chartSet (br : (E → ℝ) → (E → ℝ) → E → ℝ) (φ : Fin M → E → ℝ) (H : E → ℝ) (S₀ : Stage E) (K : ℕ) (x₀ : E) :
+    Set E :=
+  {x | ∀ k ≤ K, x ∈ zeroSet (stages br φ H (selAt br φ x₀) S₀ k).Φ →
+    (selAt br φ x₀ (stages br φ H (selAt br φ x₀) S₀ k)).Admissible br φ x ∧
+      (LinearIndependent ℝ fun i => fderiv ℝ ((stages br φ H (selAt br φ x₀) S₀ k).Φ i) x) ∧
+        ∀ i, HasStrictFDerivAt ((stages br φ H (selAt br φ x₀) S₀ k).Φ i)
+          (fderiv ℝ ((stages br φ H (selAt br φ x₀) S₀ k).Φ i) x) x}
+
+/-- **The chart at `x₀` is a neighbourhood of `x₀`** under the constant-rank hypothesis at `x₀`. -/
+theorem chartSet_mem_nhds {br : (E → ℝ) → (E → ℝ) → E → ℝ} {φ : Fin M → E → ℝ} {H : E → ℝ} {S₀ : Stage E} {K : ℕ}
+    {x₀ : E} (h : ConstantRankAt br φ H S₀ K x₀) : chartSet br φ H S₀ K x₀ ∈ 𝓝 x₀ := by
+  have hk : ∀ k ∈ Set.Iic K, ∀ᶠ x in 𝓝 x₀, x ∈ zeroSet (stages br φ H (selAt br φ x₀) S₀ k).Φ →
+      (selAt br φ x₀ (stages br φ H (selAt br φ x₀) S₀ k)).Admissible br φ x ∧
+        (LinearIndependent ℝ fun i => fderiv ℝ ((stages br φ H (selAt br φ x₀) S₀ k).Φ i) x) ∧
+          ∀ i, HasStrictFDerivAt ((stages br φ H (selAt br φ x₀) S₀ k).Φ i)
+            (fderiv ℝ ((stages br φ H (selAt br φ x₀) S₀ k).Φ i) x) x := fun k hk => by
+    obtain ⟨hΦ, hsurf⟩ := h k hk
+    by_cases hx₀ : x₀ ∈ zeroSet (stages br φ H (selAt br φ x₀) S₀ k).Φ
+    · obtain ⟨hcont, hrank, hreg⟩ := hsurf hx₀
+      filter_upwards [selAt_admissible br φ _ _ hcont hrank, hreg] with x hadm hrd hxZ
+      exact ⟨hadm hxZ, hrd hxZ⟩
+    · obtain ⟨i, hi⟩ : ∃ i, (stages br φ H (selAt br φ x₀) S₀ k).Φ i x₀ ≠ 0 := by
+        by_contra hall
+        push_neg at hall
+        exact hx₀ hall
+      filter_upwards [(hΦ i).eventually_ne hi] with x hx hxZ
+      exact absurd (hxZ i) hx
+  have := (Filter.eventually_all_finite (Set.finite_Iic K)).mpr hk
+  filter_upwards [this] with x hx k hkK
+  exact hx k (Set.mem_Iic.mpr hkK)
+
+/-- **The atlas from the constant-rank hypothesis**: one chart at every point `x₀` of the primary surface, with the blocks
+chosen at `x₀` and the interior of `chartSet` as its domain. -/
+noncomputable def DiracAtlas.ofConstantRank (br : (E → ℝ) → (E → ℝ) → E → ℝ) (φ : Fin M → E → ℝ) (H : E → ℝ)
+    (S₀ : Stage E) (K : ℕ) (h : ∀ x₀ ∈ zeroSet S₀.Φ, ConstantRankAt br φ H S₀ K x₀) :
+    DiracAtlas br φ H S₀ (zeroSet S₀.Φ) K where
+  U x₀ := interior (chartSet br φ H S₀ K x₀.1)
+  isOpen _ := isOpen_interior
+  sel x₀ := selAt br φ x₀.1
+  reg x₀ k hk x hx := ((interior_subset hx.2 : x ∈ chartSet br φ H S₀ K x₀.1) k hk hx.1).2.1
+  diff x₀ k hk x hx := ((interior_subset hx.2 : x ∈ chartSet br φ H S₀ K x₀.1) k hk hx.1).2.2
+  adm x₀ k hk x hx := ((interior_subset hx.2 : x ∈ chartSet br φ H S₀ K x₀.1) k hk hx.1).1
+  cover x₀ hx₀ := Set.mem_iUnion.mpr ⟨⟨x₀, hx₀⟩, mem_interior_iff_mem_nhds.mpr (chartSet_mem_nhds (h x₀ hx₀))⟩
+
+/-- **The Dirac algorithm under Wipf's constant-rank hypothesis** (Section 3.3, pp. 16-17), with no global selection: if
+the constant-rank hypothesis holds at every point of the primary surface up to a stage `K ≥ dim E + 1`, the glued
+surfaces of the charts with blocks chosen pointwise stop changing at `N = dim E + 1`, and at every point `x` of `Γ_N` the
+consistency conditions `{S_i, H} + ∑_a {S_i, φ_a} u_a = 0` of every chart containing `x` are solvable. The glued
+surfaces do not depend on the atlas (`DiracAtlas.surface_eq`). -/
+theorem final_consistent_of_constantRank (br : (E → ℝ) → (E → ℝ) → E → ℝ) (φ : Fin M → E → ℝ) (H : E → ℝ)
+    (S₀ : Stage E) (B : E → (E →L[ℝ] ℝ) →ₗ[ℝ] (E →L[ℝ] ℝ) → ℝ)
+    (hB : ∀ f g x, br f g x = B x (fderiv ℝ f x) (fderiv ℝ g x)) {K : ℕ} (hK : Module.finrank ℝ E + 1 ≤ K)
+    (h : ∀ x₀ ∈ zeroSet S₀.Φ, ConstantRankAt br φ H S₀ K x₀) :
+    (∀ k, Module.finrank ℝ E + 1 ≤ k → k ≤ K + 1 → (DiracAtlas.ofConstantRank br φ H S₀ K h).surface k =
+      (DiracAtlas.ofConstantRank br φ H S₀ K h).surface (Module.finrank ℝ E + 1)) ∧
+      ∀ x ∈ (DiracAtlas.ofConstantRank br φ H S₀ K h).surface (Module.finrank ℝ E + 1),
+        ∀ x₀ (hx₀ : x₀ ∈ zeroSet S₀.Φ), x ∈ interior (chartSet br φ H S₀ K x₀) →
+          (stages br φ H (selAt br φ x₀) S₀ (Module.finrank ℝ E + 1)).Consistent br φ H x := by
+  obtain ⟨h1, h2⟩ := (DiracAtlas.ofConstantRank br φ H S₀ K h).final_consistent B hB hK
+  exact ⟨h1, fun x hx x₀ hx₀ hxU => h2 x hx ⟨x₀, hx₀⟩ hxU⟩
+
+end ConstantRank
 
 end Lightlike.Gauge
