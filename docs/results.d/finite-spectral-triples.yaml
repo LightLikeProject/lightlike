@@ -1,8 +1,8 @@
 - id: LL-XXXX-g
-  title: A real finite spectral triple over a sum of real matrix algebras Mₙᵢ(ℝ) is unitarily equivalent to the model of its multiplicity matrix, with π acting through the fundamental representations; more generally, any real finite spectral triple with a complexification is
+  title: A real finite spectral triple over a sum of real matrix algebras Mₙᵢ(ℝ) is unitarily equivalent to the model of its multiplicity matrix, with π acting through the fundamental representations
   area: NCG
   file: Lightlike/NCG/RealSummands.lean
-  decls: [Lightlike.NCG.exists_unitary_realSummands, Lightlike.NCG.realComplexification, Lightlike.NCG.sigmaR, Lightlike.NCG.sigmaR_injective, Lightlike.NCG.phiR, Lightlike.NCG.Complexification, Lightlike.NCG.Complexification.realStructure, Lightlike.NCG.Complexification.exists_unitary, Lightlike.NCG.commJ_span, Lightlike.NCG.MatrixUnits.hom, Lightlike.NCG.MatrixUnits.hom_injective_of_block]
+  decls: [Lightlike.NCG.exists_unitary_realSummands, Lightlike.NCG.realComplexification, Lightlike.NCG.sigmaR, Lightlike.NCG.sigmaR_injective, Lightlike.NCG.phiR]
   status: proven
   tier: established
   source:
@@ -11,4 +11,18 @@
       - {ref: krajewski-1998, location: "Section 3.2", check: "charge conjugation"}
   review: kernel-checked
   note: "Compared with Krajewski, arXiv:hep-th/9701081, Section 2, p. 2 (A = ⊕ Mₙᵢ(K), K = ℝ, ℂ, ℍ) and Section 3.1, p. 10 (read): 'Mₙ(ℝ) and Mₙ(ℍ) have only one irreducible representation, the fundamental one ... all our formulae remain valid, provided the indices i and j label irreducible representations of A'. Here A = ⊕ Mₙᵢ(ℝ): π extends to the complex-linear σ(x) = π(Re x) + i π(Im x) of ⊕ Mₙᵢ(ℂ), J is a real structure for it, and the uniqueness theorem for complex summands gives the unitary. Mₙ(ℍ) summands, Mₙ(ℂ) summands acting real-linearly, mixed algebras and the sign conditions of Table 1, p. 14 are not covered."
+  since: unreleased
+
+- id: LL-XXXX-h
+  title: A real finite spectral triple with a complexification, a faithful complex-linear representation σ of a sum of complex matrix algebras with π = σ ∘ φ and σ in the complex span of π, is unitarily equivalent to the model of the multiplicity matrix of its complexification
+  area: NCG
+  file: Lightlike/NCG/Complexification.lean
+  decls: [Lightlike.NCG.Complexification, Lightlike.NCG.Complexification.triple, Lightlike.NCG.Complexification.realStructure, Lightlike.NCG.Complexification.isComplexLinear, Lightlike.NCG.Complexification.exists_unitary, Lightlike.NCG.commJ_span]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: krajewski-1998, location: "Section 3.1", check: "irreducible representation"}
+  review: kernel-checked
+  note: "Compared with Krajewski, arXiv:hep-th/9701081, Section 3.1, p. 10 (read): 'all our formulae remain valid, provided the indices i and j label irreducible representations of A'. Here the irreducible representations are given by a complexification (σ, φ) of the triple; the order-zero and first-order conditions pass from π(A) to its complex span, and the uniqueness theorem for complex summands applies to σ. The complexification is an input; for A = ⊕ Mₙᵢ(ℝ) it is constructed in RealSummands.lean."
   since: unreleased
