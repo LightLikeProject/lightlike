@@ -24,7 +24,9 @@ lemma pd_add_of_differentiableAt {f₁ f₂ : (Fin n → ℝ) → ℝ} {x : Fin 
     (h₁ : DifferentiableAt ℝ f₁ x) (h₂ : DifferentiableAt ℝ f₂ x) (k : Fin n) :
     pd k (fun y => f₁ y + f₂ y) x = pd k f₁ x + pd k f₂ x := by
   unfold pd
-  rw [(h₁.hasFDerivAt.add h₂.hasFDerivAt).fderiv]
+  have h := (h₁.hasFDerivAt.add h₂.hasFDerivAt).fderiv
+  show (fderiv ℝ (f₁ + f₂) x) (Pi.single k 1) = _
+  rw [h]
   rfl
 
 variable (g h₁ h₂ : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ)
@@ -35,12 +37,12 @@ include hh₁ hh₂ in
 theorem dChristoffel_add (i j k : Fin n) (y : Fin n → ℝ) :
     dChristoffel g (fun z => h₁ z + h₂ z) i j k y =
       dChristoffel g h₁ i j k y + dChristoffel g h₂ i j k y := by
-  have hp : ∀ a b c, pd a (fun z => (h₁ z + h₂ z) b c) y =
+  have hp : ∀ a b c, pd a (fun z => h₁ z b c + h₂ z b c) y =
       pd a (fun z => h₁ z b c) y + pd a (fun z => h₂ z b c) y := fun a b c =>
     pd_add_of_differentiableAt ((hh₁ b c).differentiable (by simp)).differentiableAt
       ((hh₂ b c).differentiable (by simp)).differentiableAt a
   unfold dChristoffel
-  simp only [hp, Matrix.mul_add, Matrix.add_mul, Matrix.add_apply]
+  simp only [Matrix.mul_add, Matrix.add_mul, Matrix.add_apply, hp]
   rw [← mul_add, ← Finset.sum_add_distrib]
   congr 1
   refine Finset.sum_congr rfl fun l _ => ?_

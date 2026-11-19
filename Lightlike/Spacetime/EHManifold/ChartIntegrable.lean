@@ -26,7 +26,7 @@ variable {n : ℕ} {M : Type*} [TopologicalSpace M] [ChartedSpace (Fin n → ℝ
 /-- A compact set inside one chart domain has finite volume. -/
 theorem NondegMetric.volumeMeasure_lt_top_of_isCompact (x₀ : M) {T : Set M} (hT : IsCompact T)
     (hT0 : T ⊆ (extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).source) :
-    NondegMetric.volumeMeasure g T < ∞ := by
+    NondegMetric.volumeMeasure g T < ⊤ := by
   have hTc : IsCompact (extChartAt 𝓘(ℝ, Fin n → ℝ) x₀ '' T) :=
     hT.image_of_continuousOn ((continuousOn_extChartAt x₀).mono hT0)
   have hsub : extChartAt 𝓘(ℝ, Fin n → ℝ) x₀ '' T ⊆ (extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).target := by
