@@ -57,9 +57,21 @@ All in `Lightlike/FieldTheory/ZeroDim/`.
   `D(Γ) = k(Γ) Γ` is a derivation of the product, `D X = (D X_c) X`, and uniqueness of the solution). It was replaced
   by the direct count because the derivation route needs the commutativity and associativity of the product on
   classes as separate theorems, while the count needs only the cut-and-glue bijection.
+* Chapter 7, p. 117, `W = ħ log Z` for a general potential with a source, attempt 2 (19 November 2026; the first
+  attempt is the four-valent vacuum case read through the vertex count, in the zero-dimensional field theory note).
+  Route: (a) the generating function `gen w a = Σ_{n,k} (Σ_c a(c) w(c)) X^n Y^k` of a formal sum of graphs under a
+  multiplicative weight is multiplicative, so `X = e^{X_c}` gives `gen w X = Σ_m (gen w X_c)^m/m!` coefficientwise
+  (GraphEval.lean); (b) the half-edges are distributed over the vertices: `Σ_{f : Fin n → Fin k} ∏_v m_v |f⁻¹ v| =
+  n! [x^n] ∏_v Σ_d m_v(d) x^d/d!`, by induction on `n` through the derivative (MapsEGF.lean); with the number
+  `(n - 1)!!` of fixed-point-free involutions this is the sum of the Feynman weights `∏_v μ(deg v)` over the leg-free
+  labelled graphs (GraphRules.lean); (c) the formal partition function with a source, `formalZ`, as the coefficients
+  `(n - 1)!! [x^n] (Σ_d μ_d x^d/d!)^k / k!` of `X^n Y^k ~ ħ^{n/2 - k}` (`μ_1 = j`, `μ_d = λ_d`), is the sum over the
+  leg-free graphs with `1/|Aut Γ|` (Proposition 3.1.1 with a source) and is `Σ_m (W/ħ)^m/m!` with `W/ħ` the sum over
+  the connected ones. Not stated: Borinsky's shift by `x₀(j)` on p. 116 (the tree part and the `F`-term), which is a
+  further identity, and the logarithm of the bivariate series (the log form is read through `log = exp⁻¹`).
 
 ## Open
 
-* The statement of Chapter 7, p. 117, `W = ħ log Z` for a general potential with a source, needs the Feynman rules as
-  a map from the algebra of graphs to the coefficients of the integral (combining `expXc_eq_X` with the graph form of
-  the Feynman expansion); not started.
+* Borinsky's shift by `x₀(j)` (p. 116: `Z = e^{(-x₀²/2 + V(x₀) + x₀ j)/ħ} F[...]`, the tree part times the `F`-term,
+  with `x₀ = V'(x₀) + j`) and the Legendre transform to the effective action (p. 117) are further identities; not
+  started.
