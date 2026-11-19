@@ -79,6 +79,8 @@ The divergence theorem on a manifold: for a metric of any signature, its Levi-Ci
 
 The conformally related metric `e^{2ψ} g` of a coordinate metric has the Christoffel symbols `Γᵃ_{bc} + δᵃ_c ∂_b ψ + δᵃ_b ∂_c ψ - g_{bc} gᵃᵈ ∂_d ψ`, and the Riemann tensor of any metric whose Christoffel symbols differ from those of `g` by a tensor `C` is that of `g` plus the derivative and quadratic terms in `C` [62].
 
+Anti-de Sitter space is conformal to half of the Einstein static universe: with `r = tan θ`, the global metric `-(1 + r²) dτ² + (1 + r²)⁻¹ dr² + r² dΩ²` is `cos⁻² θ (-dτ² + dθ² + sin² θ dΩ²)` for `0 ≤ θ < π/2`, and the conformal boundary `θ = π/2`, where `cos θ` vanishes, carries the timelike metric `-dτ² + dΩ²` [63].
+
 ## Lean References
 
 1. Lightlike/Spacetime/Curvature.lean - `IsCoordMetric`, `christoffel`, `riemann`, `ricci`,
@@ -156,6 +158,7 @@ The conformally related metric `e^{2ψ} g` of a coordinate metric has the Christ
 60. Lightlike/Spacetime/RaychaudhuriNullManifold.lean - `screenProj`, `nullRotation_chart_eq_zero`, `raychaudhuri_null_focusing_manifold_at`, `raychaudhuri_null_focusing_manifold`: null geodesic focusing on a manifold.
 61. Lightlike/Spacetime/KillingMinkowski.lean - `eq_affine_of_skew_deriv`, `killing_eq_affField`, `finrank_skewEta`, `finrank_killingFields`: every `C²` Killing field of Minkowski space is affine with an η-skew linear part, and the Killing fields form a space of dimension `n (n + 1) / 2`.
 62. Lightlike/Spacetime/ConformalCoord.lean - `conformalMetric`, `christoffel_conformal`, `christoffel_conformal_eventually`, `conformalC`, `riemann_of_christoffel_add`, `ricci_of_christoffel_add`, `pd_metric_eq_christoffel`, `sum_conformalC_trace`: the conformal change of a coordinate metric.
+63. Lightlike/Spacetime/AdSCompactification.lean - `ads_eq_conformal_esu`, `bijOn_tan_ads`, `cos_eq_zero_ads_boundary`, `ads_boundary_metric`: anti-de Sitter space is conformal to half of the Einstein static universe, with a timelike conformal boundary.
 
 ## References
 

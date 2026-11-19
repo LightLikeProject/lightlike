@@ -1093,6 +1093,7 @@ import Lightlike.Spacetime.LieMetric
 import Lightlike.Spacetime.KillingAlgebra
 import Lightlike.Spacetime.IsometryKilling
 import Lightlike.Spacetime.PoincareKilling
+import Lightlike.Spacetime.AdSCompactification
 import Lightlike.Spacetime.KillingMinkowski
 import Lightlike.Spacetime.Hypersurface
 import Lightlike.Spacetime.HypersurfaceConstraints
