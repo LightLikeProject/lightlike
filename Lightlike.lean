@@ -1366,6 +1366,11 @@ import Lightlike.GFT.DualLink
 import Lightlike.GFT.DualSurface
 import Lightlike.GFT.DualVertexSets
 import Lightlike.GFT.PseudoComplex
+import Lightlike.Gauge.LieConnection.ChartCalculus
+import Lightlike.Gauge.LieConnection.ChartGauge
+import Lightlike.Gauge.LieConnection.LieGroup
+import Lightlike.Gauge.LieConnection.LieGroupChart
+import Lightlike.Gauge.LieConnection.LieGroupGauge
 import Lightlike.Gauge.Constraints
 import Lightlike.Gauge.ConstraintsAPI
 import Lightlike.Gauge.DiracAlgebra
