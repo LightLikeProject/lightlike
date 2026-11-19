@@ -68,6 +68,14 @@ path of co-triads satisfies the linearised compatibility, so this holds for the 
 whole triad phase space `∫ E δA = γ ∫ E δK`, and for a symmetric `K` (the Gauss constraint) the Ashtekar–Barbero
 potential `∫ E δA` is `γ/2` times the ADM potential `∫ π δh` plus the exact term `γ δ∫ √h K` [30] {5}.
 
+A connection in a local trivialisation, matrix-valued components `A_a(x)` on the chart, has along every `C¹` path a
+parallel transport `U' = −A_a(e) ė^a U`, `U(t₁) = 1`, which exists on every interval and is unique (by the global
+existence theorem for Lipschitz right-hand sides of `Lightlike/ODE/GlobalLipschitz.lean`); the holonomy `A(e)` along an
+edge is its end value, and for an `su(2)` connection it lies in `SU(2)` [31] {5}. It is unchanged under orientation-preserving
+reparametrisation, the reversed path has the inverse holonomy, and for piecewise `C¹` paths (lists of edges) the
+holonomy of a composite is the product, `A(e₂ ∘ e₁) = A(e₂) A(e₁)` [32] {5}. Under a gauge transformation
+`A ↦ g⁻¹ A g + g⁻¹ dg` the holonomy changes only at the end points, `A(e) ↦ g(e(t₂))⁻¹ A(e) g(e(t₁))` [33] {5}.
+
 A grid computation in dimension two (`scripts/adm_algebra_check.py`) supports the three brackets; with the kinetic
 coefficient `1/2` of dimension three, used in dimension two, the bracket of two Hamiltonian constraints differs from
 the momentum constraint of the structure function.
@@ -125,6 +133,13 @@ the momentum constraint of the structure function.
 30. Lightlike/Canonical/AshtekarSymplectic.lean - `Lightlike.Canonical.triad_potential`,
     `Lightlike.Canonical.integral_E_dAbConn_eq_triadK`, `Lightlike.Canonical.integral_E_dAbConn`,
     `Lightlike.Canonical.triad_potential_needs_symm`
+31. Lightlike/Canonical/Holonomy.lean - `Lightlike.Canonical.transport`, `Lightlike.Canonical.holonomy`,
+    `Lightlike.Canonical.transport_trans`, `Lightlike.Canonical.holonomy_mem_specialUnitaryGroup`,
+    `Lightlike.Canonical.holonomy_u1Conn`
+32. Lightlike/Canonical/HolonomyPaths.lean - `Lightlike.Canonical.holonomy_comp_reparam`,
+    `Lightlike.Canonical.holonomy_revPath`, `Lightlike.Canonical.PwPath.hol_trans`, `Lightlike.Canonical.PwPath.hol_rev`
+33. Lightlike/Canonical/HolonomyGauge.lean - `Lightlike.Canonical.gaugeConn`, `Lightlike.Canonical.holonomy_gaugeConn`,
+    `Lightlike.Canonical.holonomy_pureGauge`
 
 ## References
 
@@ -137,6 +152,6 @@ the momentum constraint of the structure function.
 4. J. C. Aurrekoetxea, K. Clough and E. A. Lim, *Cosmology using numerical relativity*, arXiv:2409.01939, equations (3),
    (23), (25), (26).
 5. A. Ashtekar and J. Lewandowski, *Background independent quantum gravity: a status report*, arXiv:gr-qc/0404018,
-   equations (2.6), (2.16)-(2.21), (2.23).
+   equations (2.6), (2.16)-(2.21), (2.23), (4.35)-(4.37).
 6. S. Holst, *Barbero's Hamiltonian derived from a generalized Hilbert-Palatini action*, arXiv:gr-qc/9511026,
    equations (1), (3)-(6).
