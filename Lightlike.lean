@@ -1300,6 +1300,7 @@ import Lightlike.Gauge.Connection.BundleConnection
 import Lightlike.Gauge.Connection.GaugeCovariance
 import Lightlike.Gauge.Connection.Local
 import Lightlike.Gauge.Connection.Principal
+import Lightlike.Gauge.Connection.PrincipalAdjoint
 import Lightlike.Gauge.Connection.PrincipalAssociated
 import Lightlike.Gauge.Connection.PrincipalConnection
 import Lightlike.Gauge.Connection.PrincipalCurvature
