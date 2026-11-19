@@ -8,13 +8,13 @@ Dereziński (arXiv:math-ph/0511030, read), Section 5.3, p. 20: the fermionic Foc
 `a*(w)Ψ = √(n+1) w ⊗ₐ Ψ`. In `Γₐ(ℂⁿ)` the vectors `a*(e_{i₁}) ⋯ a*(e_{iₚ}) Ω`, `i₁ < ⋯ < iₚ`, are orthonormal, which on the exterior
 algebra is the inner product `fockInner` making the ordered products `∏_{xⱼ = 1} eⱼ` orthonormal.
 
-* `fockInner n u w`: the inner product of `Λ(ℂⁿ)` in the configuration coordinates of `fockEquiv`, so `fockEquiv` is unitary
-  (`fockInner_fockEquiv`);
+* `fockInner n u w`: the inner product of `Λ(ℂⁿ)` in the configuration coordinates of `jwFockEquiv`, so `jwFockEquiv` is unitary
+  (`fockInner_jwFockEquiv`);
 * `fockInner_creation`, `fockInner_annihilation`: `a*(eⱼ)` and `a(eⱼ*)` are mutually adjoint;
 * `fockInner_unique`: it is the only sesquilinear form on `Λ(ℂⁿ)` with `⟪1, 1⟫ = 1` for which `a*(eⱼ)` and `a(eⱼ*)` are mutually
   adjoint: the Fock inner product is determined by the vacuum and the CAR;
 * `fock_irreducible`: Theorem 28 (p. 29) for `Z = ℂⁿ`, the Fock representation is irreducible: a subspace invariant under all
-  `a*(eⱼ)` and `a(eⱼ*)` is `0` or `Λ(ℂⁿ)` (from the irreducibility of the Jordan-Wigner representation through `fockEquiv`).
+  `a*(eⱼ)` and `a(eⱼ*)` is `0` or `Λ(ℂⁿ)` (from the irreducibility of the Jordan-Wigner representation through `jwFockEquiv`).
 -/
 
 namespace Lightlike.OperatorAlgebras
@@ -111,11 +111,11 @@ lemma fockVec_eq_cWord : ∀ (n : ℕ) (x : Fin n → Fin 2),
     · rfl
     · rw [one_mul]; rfl
 
-/-- The configuration coordinates `Λ(ℂⁿ) ≃ ℂ^{Fin n → Fin 2}` (the inverse of `fockEquiv`), as a Euclidean space. -/
+/-- The configuration coordinates `Λ(ℂⁿ) ≃ ℂ^{Fin n → Fin 2}` (the inverse of `jwFockEquiv`), as a Euclidean space. -/
 noncomputable def fockCoord (n : ℕ) : ExteriorAlgebra ℂ (Fin n → ℂ) ≃ₗ[ℂ] EuclideanSpace ℂ (Fin n → Fin 2) :=
-  (fockEquiv n).symm.trans (WithLp.linearEquiv 2 ℂ ((Fin n → Fin 2) → ℂ)).symm
+  (jwFockEquiv n).symm.trans (WithLp.linearEquiv 2 ℂ ((Fin n → Fin 2) → ℂ)).symm
 
-lemma fockCoord_fockEquiv (n : ℕ) (p : (Fin n → Fin 2) → ℂ) : fockCoord n (fockEquiv n p) = WithLp.toLp 2 p := by
+lemma fockCoord_jwFockEquiv (n : ℕ) (p : (Fin n → Fin 2) → ℂ) : fockCoord n (jwFockEquiv n p) = WithLp.toLp 2 p := by
   simp [fockCoord, WithLp.coe_symm_linearEquiv]
 
 /-- **The Fock inner product** on `Λ(ℂⁿ)`: `⟪u, w⟫ = ∑ₓ conj(uₓ) wₓ` in the configuration coordinates. -/
@@ -127,15 +127,15 @@ noncomputable def fockInner (n : ℕ) : ExteriorAlgebra ℂ (Fin n → ℂ) →�
 lemma fockInner_apply (n : ℕ) (u w : ExteriorAlgebra ℂ (Fin n → ℂ)) :
     fockInner n u w = inner ℂ (fockCoord n u) (fockCoord n w) := rfl
 
-/-- `fockEquiv` is unitary: `⟪U p, U q⟫ = ∑ₓ conj(pₓ) qₓ`. -/
-lemma fockInner_fockEquiv (n : ℕ) (p q : (Fin n → Fin 2) → ℂ) :
-    fockInner n (fockEquiv n p) (fockEquiv n q) = q ⬝ᵥ star p := by
-  rw [fockInner_apply, fockCoord_fockEquiv, fockCoord_fockEquiv, EuclideanSpace.inner_eq_star_dotProduct]
+/-- `jwFockEquiv` is unitary: `⟪U p, U q⟫ = ∑ₓ conj(pₓ) qₓ`. -/
+lemma fockInner_jwFockEquiv (n : ℕ) (p q : (Fin n → Fin 2) → ℂ) :
+    fockInner n (jwFockEquiv n p) (jwFockEquiv n q) = q ⬝ᵥ star p := by
+  rw [fockInner_apply, fockCoord_jwFockEquiv, fockCoord_jwFockEquiv, EuclideanSpace.inner_eq_star_dotProduct]
 
 /-- **The configuration vectors are orthonormal** for the Fock inner product. -/
 lemma fockInner_fockVec (n : ℕ) (x y : Fin n → Fin 2) :
     fockInner n (fockVec n x) (fockVec n y) = if x = y then 1 else 0 := by
-  rw [← fockMap_single, ← fockMap_single, ← fockEquiv_apply, ← fockEquiv_apply, fockInner_fockEquiv]
+  rw [← jwFockMap_single, ← jwFockMap_single, ← jwFockEquiv_apply, ← jwFockEquiv_apply, fockInner_jwFockEquiv]
   by_cases h : x = y
   · subst h; simp [dotProduct, Pi.single_apply]
   · rw [if_neg h, dotProduct, Finset.sum_eq_zero]
@@ -151,19 +151,19 @@ lemma inner_toLp_mulVec {κ : Type*} [Fintype κ] (C : Matrix κ κ ℂ) (p q : 
   rw [dotProduct_comm, ← dotProduct_mulVec, dotProduct_comm]
 
 lemma fockCoord_creation (n : ℕ) (j : Fin n) (u : ExteriorAlgebra ℂ (Fin n → ℂ)) :
-    fockCoord n (ι ℂ (stdVecC n j) * u) = WithLp.toLp 2 (carCreation (jordanWigner n) j *ᵥ (fockEquiv n).symm u) := by
-  conv_lhs => rw [← (fockEquiv n).apply_symm_apply u, ← creation_apply, ← fockEquiv_carCreation]
-  rw [fockCoord_fockEquiv]
+    fockCoord n (ι ℂ (stdVecC n j) * u) = WithLp.toLp 2 (carCreation (jordanWigner n) j *ᵥ (jwFockEquiv n).symm u) := by
+  conv_lhs => rw [← (jwFockEquiv n).apply_symm_apply u, ← creation_apply, ← jwFockEquiv_carCreation]
+  rw [fockCoord_jwFockEquiv]
 
 lemma fockCoord_annihilation (n : ℕ) (j : Fin n) (u : ExteriorAlgebra ℂ (Fin n → ℂ)) :
     fockCoord n (CliffordAlgebra.contractLeft (coordFun n j) u) =
-      WithLp.toLp 2 (carAnnihilation (jordanWigner n) j *ᵥ (fockEquiv n).symm u) := by
-  conv_lhs => rw [← (fockEquiv n).apply_symm_apply u, ← annihilation_apply, ← fockEquiv_carAnnihilation]
-  rw [fockCoord_fockEquiv]
+      WithLp.toLp 2 (carAnnihilation (jordanWigner n) j *ᵥ (jwFockEquiv n).symm u) := by
+  conv_lhs => rw [← (jwFockEquiv n).apply_symm_apply u, ← annihilation_apply, ← jwFockEquiv_carAnnihilation]
+  rw [fockCoord_jwFockEquiv]
 
-lemma fockCoord_eq (n : ℕ) (u : ExteriorAlgebra ℂ (Fin n → ℂ)) : fockCoord n u = WithLp.toLp 2 ((fockEquiv n).symm u) := by
-  conv_lhs => rw [← (fockEquiv n).apply_symm_apply u]
-  rw [fockCoord_fockEquiv]
+lemma fockCoord_eq (n : ℕ) (u : ExteriorAlgebra ℂ (Fin n → ℂ)) : fockCoord n u = WithLp.toLp 2 ((jwFockEquiv n).symm u) := by
+  conv_lhs => rw [← (jwFockEquiv n).apply_symm_apply u]
+  rw [fockCoord_jwFockEquiv]
 
 /-- **`a*(eⱼ)` is the adjoint of `a(eⱼ*)`** for the Fock inner product. -/
 theorem fockInner_creation (n : ℕ) (j : Fin n) (u w : ExteriorAlgebra ℂ (Fin n → ℂ)) :
@@ -190,10 +190,10 @@ theorem fockInner_unique (n : ℕ) (B : ExteriorAlgebra ℂ (Fin n → ℂ) →�
       sesq_cWord B (isCARPairs_fock n) (fun j p q => hca j p q) (fun j p q => hac j p q)
         (fun j => annihilation_one _) (fun j => annihilation_one _), h1]
   refine LinearMap.ext₂ fun u w => ?_
-  rw [← (fockEquiv n).apply_symm_apply u, ← (fockEquiv n).apply_symm_apply w]
-  generalize (fockEquiv n).symm u = p
-  generalize (fockEquiv n).symm w = q
-  rw [fockInner_fockEquiv, fockEquiv_apply, fockEquiv_apply, fockMap, Fintype.linearCombination_apply,
+  rw [← (jwFockEquiv n).apply_symm_apply u, ← (jwFockEquiv n).apply_symm_apply w]
+  generalize (jwFockEquiv n).symm u = p
+  generalize (jwFockEquiv n).symm w = q
+  rw [fockInner_jwFockEquiv, jwFockEquiv_apply, jwFockEquiv_apply, jwFockMap, Fintype.linearCombination_apply,
     Fintype.linearCombination_apply]
   simp only [map_sum, map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, map_smul, hB, smul_eq_mul,
     mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]
@@ -201,9 +201,9 @@ theorem fockInner_unique (n : ℕ) (B : ExteriorAlgebra ℂ (Fin n → ℂ) →�
 
 open ExteriorAlgebra Matrix
 
-lemma fockCoord_symm_toLp (n : ℕ) (p : (Fin n → Fin 2) → ℂ) : (fockCoord n).symm (WithLp.toLp 2 p) = fockEquiv n p := by
+lemma fockCoord_symm_toLp (n : ℕ) (p : (Fin n → Fin 2) → ℂ) : (fockCoord n).symm (WithLp.toLp 2 p) = jwFockEquiv n p := by
   apply (fockCoord n).injective
-  rw [LinearEquiv.apply_symm_apply, fockCoord_fockEquiv]
+  rw [LinearEquiv.apply_symm_apply, fockCoord_jwFockEquiv]
 
 /-- **Dereziński, Theorem 28, for `Z = ℂⁿ`: the Fock representation is irreducible.** A subspace of `Λ(ℂⁿ)` invariant under every
 `a*(eⱼ)` and `a(eⱼ*)` (equivalently, under every field operator `φ(y) = a*(w) + a(w)`) is `0` or `Λ(ℂⁿ)`. -/
@@ -215,13 +215,13 @@ theorem fock_irreducible (n : ℕ) (W : Submodule ℂ (ExteriorAlgebra ℂ (Fin 
   have hC : ∀ j, ∀ e ∈ W', Matrix.toEuclideanCLM (𝕜 := ℂ) (carCreation (jordanWigner n) j) e ∈ W' := by
     intro j e he
     rw [hmem] at he ⊢
-    rw [← WithLp.toLp_ofLp (p := 2) e, toEuclideanCLM_toLp, fockCoord_symm_toLp, fockEquiv_carCreation, creation_apply,
+    rw [← WithLp.toLp_ofLp (p := 2) e, toEuclideanCLM_toLp, fockCoord_symm_toLp, jwFockEquiv_carCreation, creation_apply,
       ← fockCoord_symm_toLp, WithLp.toLp_ofLp]
     exact hc j _ he
   have hA : ∀ j, ∀ e ∈ W', Matrix.toEuclideanCLM (𝕜 := ℂ) (carAnnihilation (jordanWigner n) j) e ∈ W' := by
     intro j e he
     rw [hmem] at he ⊢
-    rw [← WithLp.toLp_ofLp (p := 2) e, toEuclideanCLM_toLp, fockCoord_symm_toLp, fockEquiv_carAnnihilation, annihilation_apply,
+    rw [← WithLp.toLp_ofLp (p := 2) e, toEuclideanCLM_toLp, fockCoord_symm_toLp, jwFockEquiv_carAnnihilation, annihilation_apply,
       ← fockCoord_symm_toLp, WithLp.toLp_ofLp]
     exact ha j _ he
   have hinv : ∀ b, ∀ e ∈ W', Matrix.toEuclideanCLM (𝕜 := ℂ) (jordanWigner n b) e ∈ W' := by

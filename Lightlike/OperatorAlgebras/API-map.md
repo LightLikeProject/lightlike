@@ -242,8 +242,8 @@ A representation of the CAR over `ℝᵐ` is a family of self-adjoint operators 
     `OperatorAlgebras.carAnnihilation_carCreation`, `OperatorAlgebras.carAnnihilation_jordanWigner_vacuum`
 71. Lightlike/OperatorAlgebras/FermionFock.lean - `OperatorAlgebras.creation`, `OperatorAlgebras.annihilation`,
     `OperatorAlgebras.annihilation_creation_anticomm`, `OperatorAlgebras.annihilation_one`
-72. Lightlike/OperatorAlgebras/FockJW.lean - `OperatorAlgebras.fockEquiv`, `OperatorAlgebras.fockEquiv_vacuum`,
-    `OperatorAlgebras.fockEquiv_carCreation`, `OperatorAlgebras.fockEquiv_carAnnihilation`
+72. Lightlike/OperatorAlgebras/FockJW.lean - `OperatorAlgebras.jwFockEquiv`, `OperatorAlgebras.jwFockEquiv_vacuum`,
+    `OperatorAlgebras.jwFockEquiv_carCreation`, `OperatorAlgebras.jwFockEquiv_carAnnihilation`
 73. Lightlike/OperatorAlgebras/CARUnique.lean - `OperatorAlgebras.IsCAROn`, `OperatorAlgebras.carVacuum`,
     `OperatorAlgebras.car_unitarily_equivalent_jordanWigner`, `OperatorAlgebras.isIrreducibleCAR_iff`,
     `OperatorAlgebras.car_irreducible_unitarily_equivalent`, `OperatorAlgebras.car_odd_unitarily_equivalent`,
