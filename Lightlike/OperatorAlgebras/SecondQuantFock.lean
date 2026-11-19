@@ -33,7 +33,9 @@ variable {ι : Type*} [LinearOrder ι]
 
 /-- **The statistics** of the particles: bosons (the symmetric Fock space) or fermions (the antisymmetric one). -/
 inductive Statistics
+  /-- Bosons: the symmetric Fock space. -/
   | boson
+  /-- Fermions: the antisymmetric Fock space. -/
   | fermion
 
 /-- The character of the permutation group for the statistics: `1` for bosons, `sgn σ` for fermions. -/

@@ -31,7 +31,22 @@ For the embedding of the `n`-particle fermionic Fock space `Γₙ` (the closed s
   for sorted tuples;
 * `factorial_sqrt_identity`, `embFun_creW_strictMono`, `embFun_creW`, `embL_creW`: the core identity
   `Eₙ₊₁ a*(w) = √(n+1) A (w ⊗ Eₙ ·)`;
-* `norm_embCLM_le`, `dGammaFock`, `norm_dGammaFock_le`: `dΓₙ₊₁(h) = Eₙ₊₁* (∑ⱼ hⱼ) Eₙ₊₁` and `‖dΓₙ₊₁(h)‖ ≤ (n + 1) ‖h‖`.
+* `slotEquiv_symm_apply`, `slotOp_apply_eq`, `slotOp_permL`, `dGammaTensor_permL`, `dGammaTensor_antisym`: `∑ⱼ hⱼ`
+  commutes with the slot permutations and with `A`;
+* `exists_perm_of_image_eq`, `embFun_single_self`, `embFun_single_eq_zero`, `inner_embL_single`, `adjoint_embCLM_apply`,
+  `adjoint_embCLM_apply_of_card`, `adjoint_embCLM_apply_image`, `sqrt_sign_sq`, `embCLM_adjoint_apply`,
+  `adjoint_embCLM_embCLM`, `adjoint_embCLM_antisym`: `Eₙ*` in coordinates, `Eₙ Eₙ* = A`, `Eₙ* Eₙ = 1` on the `n`-particle
+  vectors and `Eₙ* A = Eₙ*`;
+* `norm_embCLM_le`, `dGammaFock`, `norm_dGammaFock_le`: `dΓₙ₊₁(h) = Eₙ₊₁* (∑ⱼ hⱼ) Eₙ₊₁` and `‖dΓₙ₊₁(h)‖ ≤ (n + 1) ‖h‖`;
+* `creWCoeff_apply_of_card`, `dGammaFock_apply_of_card`, `dGammaFock_creW`, `dGammaFock_zero_creW`:
+  `[dΓ(h), a*(w)] = a*(hw)` on every particle sector;
+* `adjoint_conj`, `adjoint_slotMap`, `coordL_uncoordL`, `adjoint_slotC`, `adjoint_slotOp`, `adjoint_dGammaTensor`,
+  `adjoint_dGammaFock`: `dΓ(h)* = dΓ(h*)`;
+* `creL2`, `creL2_apply`, `annL2`, `apply_eq_inner_single`, `single_apply_of_card`, `inner_eq_zero_of_card`,
+  `annL2_apply_of_card`, `annL2_dGammaFock`, `annL2_dGammaFock_zero`: `[dΓ(h), a(w)] = -a(h* w)` on every particle sector;
+* `uncoordL_coordL`, `slotOp_slotOp`, `slotOp_sub`, `clm_ext_single`, `slotOp_apply_of_fiber`, `slotOp_single_apply`,
+  `slotOp_slotOp_single_apply`, `slotOp_comm`, `dGammaTensor_comm`, `dGammaFock_dGammaFock`, `dGammaFock_comm`:
+  different slots commute and `[dΓ(h), dΓ(h')] = dΓ([h, h'])`.
 -/
 
 namespace Lightlike.OperatorAlgebras.SecondQuantWedge

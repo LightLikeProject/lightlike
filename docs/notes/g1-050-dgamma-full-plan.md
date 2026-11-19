@@ -48,3 +48,30 @@ coordinate side: (D4a) the antisymmetrizer `A Φ (f) = (n!)⁻¹ ∑_σ sign σ 
 (D4d) the core coefficient identity `Eₙ₊₁ a*(w) = √(n+1) A C_w Eₙ` (`FermiFockGeneral.creW` against the signs of the
 enumerations); then `[dΓ(h), a*(w)] = √(n+1) Eₙ₊₁* A C_{hw} Eₙ = a*(hw)`, `[dΓ(h), a(w)] = -a(h* w)` by adjoints, and
 `[dΓ(h₁), dΓ(h₂)] = dΓ([h₁, h₂])` from `[∑ⱼ h₁ⱼ, ∑ⱼ h₂ⱼ] = ∑ⱼ [h₁, h₂]ⱼ` on the tensor side.
+
+Status: D4 is built. `SecondQuantWedge.lean`, on `FermiFockGeneral`'s `ℓ²(Finset ι)`: the sign of a cons tuple
+(`tupleSign_cons`, from the inversion product), the core identity `embL_creW`, `Eₙ Eₙ* = A` (`embCLM_adjoint_apply`),
+`Eₙ* Eₙ = 1` on the `n`-particle vectors (`adjoint_embCLM_embCLM`), `dΓ(h)* = dΓ(h*)` (`adjoint_dGammaFock`), different slots
+commute (`slotOp_comm`, checked on the basis vectors `clm_ext_single`), and on every particle sector `dGammaFock_creW`,
+`dGammaFock_zero_creW`, `annL2_dGammaFock`, `annL2_dGammaFock_zero`, `dGammaFock_comm`.
+
+The source's own form (`SecondQuantFock.lean`). Dereziński defines `Γⁿ_{s/a}(Z) = Θⁿ_{s/a} ⊗ⁿZ` with
+`Θⁿ_{s/a} = (n!)⁻¹ ∑_σ χ(σ) Θ(σ)` (Section 5.3, p. 20), `a*(w)Ψ = √(n+1) Θ_{s/a}(w ⊗ Ψ)` on `Γⁿ_{s/a}` and
+`a(w) = a*(w)*` (Section 5.7, p. 22). In coordinates `Θ(σ)` is `P_σ Φ (f) = Φ(f ∘ σ)`, since `Θ(σ) e_f = e_{f ∘ σ⁻¹}`.
+`theta` is an orthogonal projection (`theta_theta`, `adjoint_theta`); `creF = √(n+1) Θₙ₊₁ (w ⊗ Θₙ ·)` agrees with the
+source's `a*(w)` on `Γⁿ` (`creF_of_theta`), and `annF = creF*` maps into `Γⁿ` (`theta_annF`). Because `∑ⱼ hⱼ`
+commutes with every `P_σ`, Theorem 18 (4), (2) and Theorem 13 (1) are identities of bounded operators between
+consecutive tensor powers, for bosons and fermions alike (`dGammaT_creF`, `dGammaT_annF`, `dGammaT_comm`). In the
+bosonic case `a*(w)` is unbounded on `Γ_s(Z)`, but it is bounded from `Γⁿ_s` to `Γⁿ⁺¹_s` (norm at most `√(n+1) ‖w‖`).
+So the identities on the finite-particle space `⊕ₙ^alg Γⁿ` are exactly these sector-wise ones. The fermionic case agrees
+with `ℓ²(Finset ι)`: `embCLM_creW` and `embCLM_dGammaFock` carry `FermiFockGeneral`'s `a*(w)` and `dGammaFock` to `creF`
+and `dGammaT`.
+
+Differences against Theorem 18 (2), (4) and Theorem 13 (1):
+* representation: `⊗ⁿZ` is `ℓ²(Fin n → ι)` for a Hilbert basis `(bᵢ)_{i ∈ ι}` of `Z`, with `ι` linearly ordered (every
+  Hilbert space has a Hilbert basis, and every index set carries a linear order). The order is used only to compare with
+  `ℓ²(Finset ι)`.
+* representation: the operators are bounded maps between consecutive tensor powers, and the identities are stated
+  sector by sector, not for the closures on `Γ_fin`. `dΓ(h)` keeps the particle number and `a*(w)`, `a(w)` shift it by
+  one, so on the algebraic direct sum `Γ_fin` the source's identities are the sums of the sector identities.
+
