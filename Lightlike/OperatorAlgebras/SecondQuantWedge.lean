@@ -750,6 +750,145 @@ theorem embL_creW (w : Z) (ψ : FermiL2 ι) :
 
 end Core
 
+section EmbAdjoint
+
+variable {n : ℕ}
+
+/-- Two injective tuples with the same image differ by a permutation. -/
+lemma exists_perm_of_image_eq {f g : Fin n → ι} (hf : Function.Injective f) (hg : Function.Injective g)
+    (h : Finset.univ.image g = Finset.univ.image f) : ∃ σ : Equiv.Perm (Fin n), f ∘ σ = g := by
+  have hr : Set.range g = Set.range f := by
+    have := congrArg (fun s : Finset ι => (s : Set ι)) h
+    simpa only [Finset.coe_image, Finset.coe_univ, Set.image_univ] using this
+  let τ : Fin n → Fin n := fun i => (Equiv.ofInjective f hf).symm ⟨g i, by rw [← hr]; exact ⟨i, rfl⟩⟩
+  have hτ : ∀ i, f (τ i) = g i := fun i => Equiv.apply_ofInjective_symm hf _
+  have hτi : Function.Injective τ := fun i j h => hg (by rw [← hτ i, ← hτ j, h])
+  exact ⟨Equiv.ofBijective τ (Finite.injective_iff_bijective.mp hτi), funext fun i => hτ i⟩
+
+/-- The coefficient of `Eₙ e_{image f}` at `f`. -/
+lemma embFun_single_self {f : Fin n → ι} (hf : Function.Injective f) :
+    embFun n (lp.single (E := fun _ : Finset ι => ℂ) 2 (Finset.univ.image f) (1 : ℂ)) f =
+      ((Real.sqrt n.factorial : ℝ)⁻¹ : ℂ) * ((tupleSign f : ℤ) : ℂ) := by
+  rw [embFun, if_pos hf, lp.single_apply_self, mul_one]
+
+/-- `Eₙ e_T` vanishes off the enumerations of `T`. -/
+lemma embFun_single_eq_zero {T : Finset ι} {g : Fin n → ι}
+    (hg : ¬ (Function.Injective g ∧ Finset.univ.image g = T)) : embFun n (lp.single (E := fun _ : Finset ι => ℂ) 2 T (1 : ℂ)) g = 0 := by
+  unfold embFun
+  split_ifs with hinj
+  · rw [lp.single_apply_ne _ _ _ (fun h => hg ⟨hinj, h⟩), mul_zero]
+  · rfl
+
+/-- **The inner product against `Eₙ e_{image f}`**: `⟪Eₙ e_{image f}, Φ⟫ = (n!)^{-1/2} sign f ∑_σ sign σ Φ(f ∘ σ)`. -/
+lemma inner_embL_single {f : Fin n → ι} (hf : Function.Injective f) (Φ : lp (fun _ : Fin n → ι => ℂ) 2) :
+    inner ℂ (embL n (lp.single (E := fun _ : Finset ι => ℂ) 2 (Finset.univ.image f) (1 : ℂ))) Φ =
+      ((Real.sqrt n.factorial : ℝ)⁻¹ : ℂ) * ((tupleSign f : ℤ) : ℂ) *
+        ∑ σ : Equiv.Perm (Fin n), ((Equiv.Perm.sign σ : ℤ) : ℂ) * Φ (f ∘ σ) := by
+  set e := lp.single (E := fun _ : Finset ι => ℂ) 2 (Finset.univ.image f) (1 : ℂ) with he
+  have hinjσ : Function.Injective (fun σ : Equiv.Perm (Fin n) => f ∘ ⇑σ) := fun σ τ h =>
+    Equiv.ext fun i => hf (congrFun h i)
+  rw [lp.inner_eq_tsum, tsum_eq_sum (s := Finset.univ.image (fun σ : Equiv.Perm (Fin n) => f ∘ ⇑σ)),
+    Finset.sum_image (fun σ _ τ _ h => hinjσ h), Finset.mul_sum]
+  · refine Finset.sum_congr rfl fun σ _ => ?_
+    rw [embL_apply, embFun_comp, he, embFun_single_self hf, RCLike.inner_apply']
+    simp only [map_mul, map_intCast, Complex.conj_ofReal, map_inv₀]
+    ring
+  · intro g hg
+    have h0 : embFun n e g = 0 := by
+      refine embFun_single_eq_zero fun ⟨hginj, himg⟩ => hg ?_
+      obtain ⟨σ, hσ⟩ := exists_perm_of_image_eq hf hginj himg
+      exact Finset.mem_image.mpr ⟨σ, Finset.mem_univ _, hσ⟩
+    rw [embL_apply, h0, inner_zero_left]
+
+/-- **The coefficients of `Eₙ*`**: `(Eₙ* Φ)(T) = ⟪Eₙ e_T, Φ⟫`. -/
+lemma adjoint_embCLM_apply (Φ : lp (fun _ : Fin n → ι => ℂ) 2) (T : Finset ι) :
+    ContinuousLinearMap.adjoint (embCLM n) Φ T = inner ℂ (embL n (lp.single (E := fun _ : Finset ι => ℂ) 2 T (1 : ℂ))) Φ := by
+  have h := lp.inner_single_left (𝕜 := ℂ) T (1 : ℂ) (ContinuousLinearMap.adjoint (embCLM n) Φ)
+  rw [ContinuousLinearMap.adjoint_inner_right, RCLike.inner_apply', map_one, one_mul] at h
+  exact h.symm
+
+/-- **`Eₙ*` takes values in the `n`-particle vectors.** -/
+lemma adjoint_embCLM_apply_of_card (Φ : lp (fun _ : Fin n → ι => ℂ) 2) {T : Finset ι} (hT : T.card ≠ n) :
+    ContinuousLinearMap.adjoint (embCLM n) Φ T = 0 := by
+  rw [adjoint_embCLM_apply]
+  have : embL n (lp.single (E := fun _ : Finset ι => ℂ) 2 T (1 : ℂ)) = 0 := by
+    ext g
+    rw [embL_apply, embFun_single_eq_zero fun ⟨hginj, himg⟩ => hT (by
+      rw [← himg, Finset.card_image_of_injective _ hginj, Finset.card_univ, Fintype.card_fin])]
+    rfl
+  rw [this, inner_zero_left]
+
+/-- The coefficients of `Eₙ*` at the image of an injective tuple. -/
+lemma adjoint_embCLM_apply_image (Φ : lp (fun _ : Fin n → ι => ℂ) 2) {f : Fin n → ι} (hf : Function.Injective f) :
+    ContinuousLinearMap.adjoint (embCLM n) Φ (Finset.univ.image f) =
+      ((Real.sqrt n.factorial : ℝ)⁻¹ : ℂ) * ((tupleSign f : ℤ) : ℂ) *
+        ∑ σ : Equiv.Perm (Fin n), ((Equiv.Perm.sign σ : ℤ) : ℂ) * Φ (f ∘ σ) := by
+  rw [adjoint_embCLM_apply, inner_embL_single hf]
+
+/-- `((n!)^{-1/2})² = (n!)⁻¹` and `sign² = 1`. -/
+lemma sqrt_sign_sq (f : Fin n → ι) :
+    (((Real.sqrt n.factorial : ℝ)⁻¹ : ℂ) * ((tupleSign f : ℤ) : ℂ)) *
+      (((Real.sqrt n.factorial : ℝ)⁻¹ : ℂ) * ((tupleSign f : ℤ) : ℂ)) = (n.factorial : ℂ)⁻¹ := by
+  have hs : ((tupleSign f : ℤ) : ℂ) * ((tupleSign f : ℤ) : ℂ) = 1 := by
+    rcases Int.units_eq_one_or (tupleSign f) with h | h <;> simp [h]
+  have hr : ((Real.sqrt n.factorial : ℝ)⁻¹ : ℂ) * ((Real.sqrt n.factorial : ℝ)⁻¹ : ℂ) = (n.factorial : ℂ)⁻¹ := by
+    rw [← mul_inv, ← Complex.ofReal_mul, Real.mul_self_sqrt (Nat.cast_nonneg _), Complex.ofReal_natCast]
+  linear_combination ((Real.sqrt n.factorial : ℝ)⁻¹ : ℂ) * ((Real.sqrt n.factorial : ℝ)⁻¹ : ℂ) * hs + hr
+
+/-- **`Eₙ Eₙ* = A`.** -/
+theorem embCLM_adjoint_apply (Φ : lp (fun _ : Fin n → ι => ℂ) 2) :
+    embCLM n (ContinuousLinearMap.adjoint (embCLM n) Φ) = antisym n Φ := by
+  ext f
+  show embL n _ f = _
+  by_cases hf : Function.Injective f
+  · rw [embL_apply, embFun, if_pos hf, adjoint_embCLM_apply_image Φ hf, antisym_apply, ← mul_assoc,
+      sqrt_sign_sq]
+  · rw [embL_apply, embFun, if_neg hf, antisym_apply_of_not_injective _ hf]
+
+/-- **`Eₙ* Eₙ = 1` on the `n`-particle vectors.** -/
+theorem adjoint_embCLM_embCLM (ψ : lp (fun _ : Finset ι => ℂ) 2) (hψ : ∀ S : Finset ι, S.card ≠ n → ψ S = 0) :
+    ContinuousLinearMap.adjoint (embCLM n) (embCLM n ψ) = ψ := by
+  ext T
+  by_cases hT : T.card = n
+  · obtain ⟨⟨f, hf, rfl⟩⟩ : Nonempty (Enum n T) := by
+      rw [← Fintype.card_pos_iff, card_enum n T hT]
+      exact Nat.factorial_pos n
+    rw [adjoint_embCLM_apply_image _ hf]
+    have hterm : ∀ σ : Equiv.Perm (Fin n), ((Equiv.Perm.sign σ : ℤ) : ℂ) * embCLM n ψ (f ∘ σ) =
+        embL n ψ f := fun σ => by
+      show _ * embL n ψ (f ∘ σ) = _
+      rw [embL_apply, embFun_comp, ← mul_assoc, sign_mul_self, one_mul, embL_apply]
+    simp only [hterm, Finset.sum_const, Finset.card_univ, Fintype.card_perm, Fintype.card_fin, nsmul_eq_mul,
+      embL_apply, embFun, if_pos hf]
+    have hn : (n.factorial : ℂ) ≠ 0 := by exact_mod_cast Nat.factorial_ne_zero n
+    calc ((Real.sqrt n.factorial : ℝ)⁻¹ : ℂ) * ((tupleSign f : ℤ) : ℂ) *
+          (n.factorial * (((Real.sqrt n.factorial : ℝ)⁻¹ : ℂ) * ((tupleSign f : ℤ) : ℂ) *
+            ψ (Finset.univ.image f)))
+        = ((((Real.sqrt n.factorial : ℝ)⁻¹ : ℂ) * ((tupleSign f : ℤ) : ℂ)) *
+            (((Real.sqrt n.factorial : ℝ)⁻¹ : ℂ) * ((tupleSign f : ℤ) : ℂ))) * n.factorial *
+              ψ (Finset.univ.image f) := by ring
+      _ = ψ (Finset.univ.image f) := by rw [sqrt_sign_sq, inv_mul_cancel₀ hn, one_mul]
+  · rw [adjoint_embCLM_apply_of_card _ hT, hψ T hT]
+
+/-- **`Eₙ* A = Eₙ*`.** -/
+theorem adjoint_embCLM_antisym (Φ : lp (fun _ : Fin n → ι => ℂ) 2) :
+    ContinuousLinearMap.adjoint (embCLM n) (antisym n Φ) = ContinuousLinearMap.adjoint (embCLM n) Φ := by
+  ext T
+  by_cases hT : T.card = n
+  · obtain ⟨⟨f, hf, rfl⟩⟩ : Nonempty (Enum n T) := by
+      rw [← Fintype.card_pos_iff, card_enum n T hT]
+      exact Nat.factorial_pos n
+    rw [adjoint_embCLM_apply_image _ hf, adjoint_embCLM_apply_image _ hf]
+    congr 1
+    have hterm : ∀ σ : Equiv.Perm (Fin n), ((Equiv.Perm.sign σ : ℤ) : ℂ) * antisym n Φ (f ∘ σ) = antisym n Φ f :=
+      fun σ => by rw [antisym_comp, ← mul_assoc, sign_mul_self, one_mul]
+    simp only [hterm, Finset.sum_const, Finset.card_univ, Fintype.card_perm, Fintype.card_fin, nsmul_eq_mul]
+    have hn : (n.factorial : ℂ) ≠ 0 := by exact_mod_cast Nat.factorial_ne_zero n
+    rw [antisym_apply, ← mul_assoc, mul_inv_cancel₀ hn, one_mul]
+  · rw [adjoint_embCLM_apply_of_card _ hT, adjoint_embCLM_apply_of_card _ hT]
+
+end EmbAdjoint
+
 section Gamma
 
 variable {Z : Type*} [NormedAddCommGroup Z] [InnerProductSpace ℂ Z] [CompleteSpace Z] (b : HilbertBasis ι ℂ Z)
