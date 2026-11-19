@@ -213,8 +213,9 @@ theorem transportM_gaugeCoeff {M γ γ' : ℝ → Matrix (Fin 2) (Fin 2) ℂ} {s
 
 /-! ### Graphs, their connections and gauge transformations -/
 
-/-- A **graph** (Ashtekar–Lewandowski, p. 27, footnote 13): finitely many edges, each an embedded interval or an embedded
-circle with a marked point (injective on `[t₀, t₁)` and on `(t₀, t₁]`), two edges meeting only at end points. -/
+/-- A **graph with `C¹` edges**: finitely many `C¹` edges, each injective on `[t₀, t₁)` and on `(t₀, t₁]`, two edges
+meeting only at end points. This is the tool for the analytic pieces of the edges of a graph of Ashtekar–Lewandowski
+(`ALGraph.pieceGraph` in `Lightlike/Canonical/HolonomyALGraph.lean`), whose edges are closed-piecewise analytic. -/
 structure Graph where
   /-- The number of edges. -/
   m : ℕ
