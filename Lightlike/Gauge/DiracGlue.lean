@@ -18,6 +18,8 @@ rule admissible on its own open set, and the local surfaces are glued.
   surface, and satisfy the chart-free recursion `Γₖ₊₁ = {x ∈ Γₖ | the consistency system of every chart at x is solvable}`;
 * `DiracAtlas.chart_pause`, `DiracAtlas.chart_stable`: a step that leaves a chart's surface unchanged is final, so every
   chart stops changing by the stage `dim E + 1`;
+* `DiracAtlas.ofSelection`, `DiracAtlas.surface_ofSelection`: a single selection rule admissible on every stage is the
+  one-chart atlas;
 * `DiracAtlas.final_consistent`: for any atlas the glued surfaces stop changing by the stage `dim E + 1`, and at every
   point of the final surface the consistency conditions `{S_i, H} + ∑_a {S_i, φ_a} u_a = 0` of each chart are solvable
   (Wipf, Section 3.3, pp. 16-17), with no single global selection.
@@ -324,6 +326,30 @@ theorem final_consistent (𝒜 : DiracAtlas br φ H S₀ A)
     exact hx
   rw [𝒜.surface_succ B hB] at h1
   exact h1.2 α hxα
+
+/-- **The one-chart atlas** of a single selection rule admissible on the whole zero set of every stage (the situation of
+`final_consistent_of_cover`). -/
+def ofSelection (sel : ∀ S : Stage E, Sel S M) (hreg : ∀ k, IsRegularStage (stages br φ H sel S₀ k).Φ)
+    (hdiff : ∀ k, ∀ x ∈ zeroSet (stages br φ H sel S₀ k).Φ, ∀ i,
+      HasStrictFDerivAt ((stages br φ H sel S₀ k).Φ i) (fderiv ℝ ((stages br φ H sel S₀ k).Φ i) x) x)
+    (hadm : ∀ k, ∀ x ∈ zeroSet (stages br φ H sel S₀ k).Φ, (sel (stages br φ H sel S₀ k)).Admissible br φ x) :
+    DiracAtlas br φ H S₀ Unit where
+  U _ := Set.univ
+  isOpen _ := isOpen_univ
+  sel _ := sel
+  reg _ k x hx := hreg k x hx.1
+  diff _ k x hx := hdiff k x hx.1
+  adm _ k x hx := hadm k x hx.1
+  cover _ _ := Set.mem_iUnion.mpr ⟨(), Set.mem_univ _⟩
+
+/-- The glued surfaces of the one-chart atlas are the zero sets of the stages. -/
+theorem surface_ofSelection (sel : ∀ S : Stage E, Sel S M) (hreg : ∀ k, IsRegularStage (stages br φ H sel S₀ k).Φ)
+    (hdiff : ∀ k, ∀ x ∈ zeroSet (stages br φ H sel S₀ k).Φ, ∀ i,
+      HasStrictFDerivAt ((stages br φ H sel S₀ k).Φ i) (fderiv ℝ ((stages br φ H sel S₀ k).Φ i) x) x)
+    (hadm : ∀ k, ∀ x ∈ zeroSet (stages br φ H sel S₀ k).Φ, (sel (stages br φ H sel S₀ k)).Admissible br φ x) (k : ℕ) :
+    (ofSelection sel hreg hdiff hadm).surface k = zeroSet (stages br φ H sel S₀ k).Φ := by
+  ext x
+  simp [surface, ofSelection]
 
 end DiracAtlas
 
