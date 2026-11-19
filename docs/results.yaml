@@ -2489,3 +2489,57 @@
   review: kernel-checked
   note: "The Kruskal manifold, the set X^2 - T^2 > -1 times the sphere with the Kruskal metric of mass M > 0, has no extension: no smooth isometric open embedding into a proper subset of a connected Hausdorff Lorentzian manifold of the same dimension with a smooth metric. Proof: a normal chart at a boundary point of the image gives a geodesic of the target that leaves the image; lifted to the Kruskal manifold it is a geodesic on a finite interval, which either has a limit in the manifold (bounds from the constants of motion and Gronwall's inequality) or approaches r = 0, where the Kretschmann scalar 48 M^2 / r^6 is unbounded. Difference from the source (weaker): the source's abstract states inextendibility with twice continuously differentiable metrics and its theorem is inextendibility with continuous metrics; here only extensions with smooth metrics are excluded."
   since: unreleased
+- id: LL-0190
+  title: The Raychaudhuri identity and geodesic focusing for a vector field on a manifold
+  area: Spacetime
+  file: Lightlike/Spacetime/RaychaudhuriManifold.lean
+  decls: [Lightlike.raychaudhuri_manifold, Lightlike.raychaudhuri_leviCivita, Lightlike.raychaudhuri_focusing_manifold_at, Lightlike.raychaudhuri_focusing_manifold]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: kar-sengupta-2007, location: "eq. (12)", check: "Raychaudhuri"}
+      - {ref: kar-sengupta-2007, location: "eq. (16)", check: "convergence"}
+  review: kernel-checked
+  note: "On a manifold modelled on R^n with a metric of any signature and its Levi-Civita connection (main's leviCivita g, or any torsion-free metric connection that is locally smooth), for a smooth vector field V with nabla_V V = 0 near x and the expansion Theta = tr(u -> nabla_u V): V(Theta) = -tr((nabla V)^2) - Ric(V, V) at x (raychaudhuri_manifold, raychaudhuri_leviCivita), Kar and SenGupta's identity behind (12), with no normalisation of V; the proof reads the identity in the chart at x (the components of nabla_u V are covD, the trace and Ric are the coordinate ones) and applies raychaudhuri_coord. For a Lorentzian metric and V unit (g(V, V) = -1) and geodesic near x, rotation-free at x (g(nabla_u V, w) = g(nabla_w V, u), Kar and SenGupta's omega = 0) with Ric(V, V) >= 0: V(Theta) <= -Theta^2/(n-1) (raychaudhuri_focusing_manifold_at), and along an integral curve gamma of V on [0, L) with these hypotheses along gamma and Theta(gamma(0)) < 0, L <= (n-1)/|Theta(gamma(0))| (raychaudhuri_focusing_manifold): the paragraph after their (16), convergence as the bound on the parameter interval on which Theta stays finite. Limits: the null version (their (17)) is not here."
+  since: unreleased
+- id: LL-0191
+  title: The comoving congruence of FLRW has expansion 3 a'/a and obeys Raychaudhuri's equation, and de Sitter's does not focus
+  area: Cosmology
+  file: Lightlike/Cosmology/Raychaudhuri.lean
+  decls: [Lightlike.Cosmology.flrw_comoving_covDeriv, Lightlike.Cosmology.flrw_comoving_geodesic, Lightlike.Cosmology.flrw_comoving_expansion, Lightlike.Cosmology.flrw_raychaudhuri, Lightlike.Cosmology.minkowski_comoving_expansion, Lightlike.Cosmology.deSitter_no_focusing]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: kar-sengupta-2007, location: "eq. (12)", check: "Raychaudhuri"}
+      - {ref: kar-sengupta-2007, location: "eq. (16)", check: "convergence"}
+  review: kernel-checked
+  note: "Kar and SenGupta's (12), d theta/d lambda + theta^2/3 + sigma^2 - omega^2 = -R_ab v^a v^b for a timelike geodesic congruence, and (16), convergence if R_ab v^a v^b + sigma^2 - omega^2 >= 0. In coordinates on the FLRW chart: the comoving field u = d_t has nabla_j u^i = H delta^i_j on spatial indices and 0 otherwise (no shear, no rotation), is geodesic, and has expansion theta = 3 a'/a; along it d theta/dt + theta^2/3 = -R_00. Minkowski (a = 1, k = 0): theta = 0. de Sitter (a = e^{Ht}, k = 0): theta = 3H constant while R_00 = -3H^2 < 0, so the convergence condition fails and the congruence does not focus (the GE3 checks). Focusing: if theta' <= -theta^2/m on [0, L) and theta(0) < 0 then L <= m/|theta(0)| (the lemma Lightlike.focusing, Spacetime/RiccatiFocusing.lean). Limits: coordinates and constant fields; the Raychaudhuri equation for a general geodesic congruence on a manifold and the exponential map are not here."
+  since: unreleased
+- id: LL-0192
+  title: Raychaudhuri's equation for a geodesic field in coordinates, with the split into expansion, shear and rotation
+  area: Spacetime
+  file: Lightlike/Spacetime/RaychaudhuriCoord.lean
+  decls: [Lightlike.covD, Lightlike.expansion, Lightlike.shear, Lightlike.rotation, Lightlike.raychaudhuri_coord, Lightlike.raychaudhuri_equation]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: kar-sengupta-2007, location: "eq. (12)", check: "Raychaudhuri"}
+  review: kernel-checked
+  note: "For a coordinate metric g on an open U of R^n and a smooth field v with v^c nabla_c v^d = 0 on U (nabla_b v^a = d_b v^a + Gamma^a_bc v^c): v^c d_c Theta = -(nabla_b v^a)(nabla_a v^b) - R_{sigma nu} v^sigma v^nu, Theta = nabla_a v^a, in the library's ricci convention, with no normalisation of v (raychaudhuri_coord; the index computation raychaudhuri_algebra is fable1's). At a point where g(v, v) = -1, with L = g (nabla v), the shear sigma = (L + L^T)/2 - (Theta/(n-1)) (g + v_flat v_flat) and the rotation omega = (L - L^T)/2, norms taken with g^{-1}: v(Theta) = -Theta^2/(n-1) - |sigma|^2 + |omega|^2 - R(v, v) (raychaudhuri_equation, trace_sq_split), Kar and SenGupta's (12) for n = 4 (their (1) for the split). Limits: coordinates; the congruence on a manifold and the null version are not here (focusing: the next entry)."
+  since: unreleased
+- id: LL-0193
+  title: Convergence and focusing of a unit timelike geodesic congruence in coordinates
+  area: Spacetime
+  file: Lightlike/Spacetime/RaychaudhuriFocusing.lean
+  decls: [Lightlike.covD_orthogonal, Lightlike.raychaudhuri_convergence, Lightlike.shear_normSq_nonneg, Lightlike.raychaudhuri_focusing_at, Lightlike.raychaudhuri_focusing]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: kar-sengupta-2007, location: "eq. (16)", check: "convergence"}
+  review: kernel-checked
+  note: "For a coordinate metric g on an open U of R^n and a smooth geodesic field v with g(v, v) = -1 on U, along an integral curve gamma of v (gamma' = v(gamma)) in U on [0, L) with Theta(gamma(0)) < 0: if R(v, v) + sigma^2 - omega^2 >= 0 along gamma, then L <= (n-1)/|Theta(gamma(0))| (raychaudhuri_convergence, Kar and SenGupta's (16), any signature); for a Lorentzian coordinate metric (IsLorentzianCoordMetric) sigma^2 >= 0 (shear_normSq_nonneg: g(v, nabla_b v) = 0 from the unit norm, covD_orthogonal, makes sigma spatial, and the orthogonal complement of a timelike vector is spacelike), so a rotation-free field (omega = 0) with R(v, v) >= 0 along gamma obeys the same bound (raychaudhuri_focusing, the paragraph after their (16): zero rotation and R_ab v^a v^b >= 0 lead to geodesic focusing). Their convergence (Theta -> -infinity at a finite parameter, via the Sturm comparison for Theta = 3F'/F) is stated as the bound on the interval on which Theta stays finite along gamma (Riccati argument, Lightlike.focusing). Limits: coordinates; the congruence on a manifold and the null version are not here."
+  since: unreleased

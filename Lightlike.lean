@@ -240,6 +240,7 @@ import Lightlike.CausalSets.Sprinkling
 import Lightlike.CausalSets.TestsCausalSets
 import Lightlike.Cosmology.FLRW
 import Lightlike.Cosmology.FLRWPhyslib
+import Lightlike.Cosmology.Raychaudhuri
 import Lightlike.FourD.Boundary
 import Lightlike.FourD.Complex
 import Lightlike.FourD.Orientation
@@ -949,6 +950,12 @@ import Lightlike.Spacetime.Causal.TimeOrientation
 import Lightlike.Spacetime.ChartChange
 import Lightlike.Spacetime.BianchiSecond
 import Lightlike.Spacetime.ContractedBianchi
+import Lightlike.Spacetime.RaychaudhuriAlgebra
+import Lightlike.Spacetime.RaychaudhuriCoord
+import Lightlike.Spacetime.RaychaudhuriFocusing
+import Lightlike.Spacetime.RaychaudhuriManifold
+import Lightlike.Spacetime.RaychaudhuriShear
+import Lightlike.Spacetime.RaychaudhuriSplit
 import Lightlike.Spacetime.CurveBounds
 import Lightlike.Spacetime.DivergenceFree
 import Lightlike.Spacetime.ExtensionChart
@@ -961,6 +968,7 @@ import Lightlike.Spacetime.EnergyConditionsPhyslib
 import Lightlike.Spacetime.EnergyConditionsEM
 import Lightlike.Spacetime.OpenCoordMetric
 import Lightlike.Spacetime.LeviCivitaSmooth
+import Lightlike.Spacetime.RiccatiFocusing
 import Lightlike.Spacetime.RicciContinuous
 import Lightlike.Spacetime.SchwarzschildManifold
 import Lightlike.Spacetime.CoordKilling
