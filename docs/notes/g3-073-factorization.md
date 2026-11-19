@@ -20,6 +20,10 @@ H. Elvang, Y. Huang, *Scattering Amplitudes*, §3.1–3.2:
   only simple poles. To see this, consider the Feynman diagrams: the only places we can get poles is from the shifted propagators
   1/P̂_I²"; Cauchy's theorem `A_n = −Σ Res_{z=z_I} Â_n(z)/z + B_n` (3.4); "at a z_I-pole the propagator 1/P̂_I² goes on-shell. In that
   limit, the shifted amplitude factorizes into two on-shell parts, Â_L and Â_R" (3.5).
+* p. 23: the anti-MHV three-point amplitude `A₃[1⁺2⁺3⁻] = [12]³/([23][31])` (2.78) (rendered page checked).
+* p. 37: Exercise 3.2 (the large-`z` falloff of (3.9) under a `[−,−⟩` shift), Exercise 3.3 ("Consider the action of a [1, 2⟩-shift of
+  (3.9). Identify the simple pole. Calculate the residue of Â_n(z)/z at this pole"); pp. 38–39: the single surviving diagram (3.13), (3.18),
+  the three-point amplitude with analytic continuation `|−p⟩ = −|p⟩`, `|−p] = +|p]` (3.14)–(3.15), and the product (3.19)–(3.21).
 * p. 36: "Thus, in most applications, one assumes — or, much preferably, proves — that B_n = 0. This is most often justified by
   demonstrating that Â_n(z) → 0 for z → ∞ (3.6). If (3.6) holds, we say that the shift (3.1) is valid (or good)"; the recursion
   (3.7); the BCFW shift `|î] = |i] + z|j]`, `|ĵ⟩ = |j⟩ − z|i⟩` (3.8).
@@ -32,13 +36,22 @@ H. Elvang, Y. Huang, *Scattering Amplitudes*, §3.1–3.2:
 * `residue`, `eval_div_nodal` (partial fractions), `tendsto_residue` (the residue is `lim (z − z_I) Â(z)`), `tendsto_cocompact_zero`
   (`Â → 0` at infinity: (3.6)), `eval_zero_eq_neg_sum_residues`: (3.4) with `B_n = 0`, `Â(0) = −Σ_I Res_{z_I} Â(z)/z`.
 * `recursion_of_factorization`: (3.7), given the factorization (3.5) of the residues as a hypothesis.
+* The MHV sector (Exercises 3.2–3.3, (3.13)–(3.21)): `ptShift` (the `[1,2⟩`-shifted Parke-Taylor amplitude), `ptShift_eq`
+  (`Â(z) = ⟨12⟩⁴/(⟨12⟩⟨2̂3⟩⟨34⟩⋯⟨n1⟩)`, only `⟨2̂3⟩ = ⟨23⟩ − z⟨13⟩` shifted), `ptShift_rational`, `degree_ptShift_numerator` (`P/Q` with one
+  simple pole, `deg P < deg Q`), `ptShift_channel` (`P̂₂₃² = ⟨2̂3⟩[23]`: the pole is where `P̂₂₃` goes on shell), `ptShift_onshell`
+  (`|2̂⟩ ∝ |3⟩` at the pole), `antiMHV3` ((2.78)), `ptShift_factorization` (the residue of `Â(z)/z` is
+  `−Â_{n−1}(1̂⁻,P̂⁻,4⁺,…,n⁺) Â₃(−P̂⁺,2̂⁻,3⁺)/P₂₃²` for every choice of spinors `|P̂]`, `⟨P̂|` of the on-shell `P̂₂₃`, (3.5)). Index
+  lemmas: `cycDen_four`, `cycDen_three`, `finRotate_succ_succ_succ`, `finRotate_small`, `finRotate_succ_succ_succ_ne_one`.
 
 ## Differences
 
 1. Representation: `Â` is a rational function `P/Q`, `Q = Π (z − z_I)` with distinct `z_I` (simple poles), `deg P < deg Q`; this
-   encodes the analytic structure of p. 35 and `B_n = 0`, i.e. (3.6), which the source states as an input ("one assumes — or, much
-   preferably, proves"); `tendsto_cocompact_zero` proves (3.6) from it.
-2. Hypotheses where the source argues from Feynman diagrams: the tree-level analytic structure (rational, simple poles, p. 35, "To see
-   this, consider the Feynman diagrams") and the factorization (3.5) of the residues are stated, not derived; the library has no
-   Yang-Mills Feynman rules. For the MHV sector the shifted Parke-Taylor amplitude can be checked directly (Elvang-Huang Exercise 3.2–3.3,
-   p. 37), which is the Parke-Taylor-by-BCFW item.
+   encodes `B_n = 0`, i.e. (3.6), which the source states as an input (p. 36: "one assumes — or, much preferably, proves — that
+   B_n = 0"); `tendsto_cocompact_zero` proves (3.6) from it.
+2. Weaker (general helicity sectors): the source argues the tree-level analytic structure (rational, simple poles, p. 35: "To see
+   this, consider the Feynman diagrams") and the factorization (3.5) from the Yang-Mills Feynman diagrams. Attempts recorded:
+   (a) a Feynman-diagram derivation: stopped, the library has no Yang-Mills Feynman rules; (b) the MHV sector: done, for the
+   Parke-Taylor amplitude the shifted `Â(z)` is shown to be `P/Q` with a single simple pole where `P̂₂₃` is on shell, and its residue
+   factorizes as (3.5) (`ptShift_*`). Colour-ordered tree amplitudes of other helicity sectors are not defined in the library (no
+   definition of a non-MHV tree amplitude), so for them the analytic structure and (3.5) remain hypotheses of
+   `recursion_of_factorization`.

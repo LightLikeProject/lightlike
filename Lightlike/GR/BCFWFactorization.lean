@@ -14,12 +14,22 @@ import Lightlike.GR.ColourOrdered
   (`tendsto_residue`), it tends to `0` at infinity (`tendsto_cocompact_zero`), and for `z_I ≠ 0`,
   `Â(0) = −Σ_I Res_{z = z_I} Â(z)/z` (`eval_zero_eq_neg_sum_residues`). With the factorization of the
   residues (3.5) as a hypothesis this is the recursion (3.7) (`recursion_of_factorization`).
+* **The MHV sector, proved** (Elvang-Huang Exercises 3.2–3.3, p. 37, and (3.13)–(3.21), pp. 37–39): under the
+  `[1, 2⟩` shift the Parke-Taylor amplitude `Â(z)` (`ptShift`, gluons `1, 2` are `0, 1` here) is
+  `⟨12⟩⁴/(⟨12⟩⟨2̂3⟩⟨34⟩ ⋯ ⟨n1⟩)` with only `⟨2̂3⟩ = ⟨23⟩ − z⟨13⟩` shifted (`ptShift_eq`), so it is `P/Q` with
+  a single simple pole and `deg P < deg Q` (`ptShift_rational`, `degree_ptShift_numerator`); the pole is where
+  the channel momentum `P̂₂₃ = p̂₂ + p₃` goes on shell, `P̂₂₃² = ⟨2̂3⟩[23]` (`ptShift_channel`), with
+  `|2̂⟩ ∝ |3⟩` there (`ptShift_onshell`); and the residue of `Â(z)/z` factorizes as (3.5),
+  `−Â_{n−1}(1̂⁻, P̂⁻, 4⁺, …, n⁺) Â₃(−P̂⁺, 2̂⁻, 3⁺)/P₂₃²`, for every choice of the spinors of the on-shell `P̂`
+  (`ptShift_factorization`, with the anti-MHV three-point amplitude `antiMHV3`, (2.78)). Colour-ordered trees
+  of other helicity sectors are not defined in the library, so for them (3.5) stays a hypothesis.
 
 ## References
 
 * H. Elvang, Y. Huang, *Scattering Amplitudes*, arXiv:1308.1697, §3.1, pp. 34–36: the shifts (3.1), the
   properties (A)–(C), (3.2)–(3.3), Cauchy's theorem (3.4), the factorization of residues (3.5), the
-  large-`z` condition (3.6) and the recursion (3.7); §3.2, p. 36, the BCFW shift (3.8).
+  large-`z` condition (3.6) and the recursion (3.7); §3.2, p. 36, the BCFW shift (3.8); pp. 37–39, Exercises
+  3.2–3.3 and the MHV computation (3.13)–(3.21); the anti-MHV three-point amplitude (2.78), p. 23.
 -/
 
 open Matrix Polynomial
@@ -208,5 +218,230 @@ theorem recursion_of_factorization {P : ℂ[X]} (hv : Set.InjOn v s) (hdeg : P.d
     Finset.sum_neg_distrib, neg_neg]
 
 end Residues
+
+/-! ## The MHV sector -/
+
+lemma finRotate_small {m : ℕ} (k : Fin (m + 4)) (hk : (k : ℕ) < 3) :
+    ((finRotate (m + 4) k : Fin (m + 4)) : ℕ) = k + 1 := by
+  rw [coe_finRotate]
+  split_ifs with h
+  · have := congrArg Fin.val h; simp [Fin.val_last] at this; omega
+  · rfl
+
+/-- Splitting the cyclic denominator of `m + 4` gluons at the first three brackets. -/
+lemma cycDen_four {m : ℕ} (s : Fin (m + 4) → Fin 2 → ℂ) :
+    cycDen s = angleBr (s 0) (s 1) * angleBr (s 1) (s 2) * angleBr (s 2) (s 3) *
+      ∏ k : Fin (m + 1), angleBr (s k.succ.succ.succ) (s (finRotate (m + 4) k.succ.succ.succ)) := by
+  unfold cycDen
+  rw [Fin.prod_univ_succ, Fin.prod_univ_succ, Fin.prod_univ_succ]
+  have h1 : 1 % (m + 4) = 1 := Nat.mod_eq_of_lt (by omega)
+  have h2 : 2 % (m + 4) = 2 := Nat.mod_eq_of_lt (by omega)
+  have h3 : 3 % (m + 4) = 3 := Nat.mod_eq_of_lt (by omega)
+  have r0 : finRotate (m + 4) 0 = 1 := Fin.ext (by rw [finRotate_small 0 (by simp)]; simp [h1])
+  have r1 : finRotate (m + 4) 1 = 2 := Fin.ext (by rw [finRotate_small 1 (by simp [h1])]; simp [h1, h2])
+  have r2 : finRotate (m + 4) 2 = 3 := Fin.ext (by rw [finRotate_small 2 (by simp [h2])]; simp [h2, h3])
+  simp only [Fin.succ_zero_eq_one, Fin.succ_one_eq_two, r0, r1, r2]
+  ring_nf
+
+/-- Splitting the cyclic denominator of `m + 3` gluons at the first two brackets. -/
+lemma cycDen_three {m : ℕ} (s : Fin (m + 3) → Fin 2 → ℂ) :
+    cycDen s = angleBr (s 0) (s 1) * angleBr (s 1) (s 2) *
+      ∏ k : Fin (m + 1), angleBr (s k.succ.succ) (s (finRotate (m + 3) k.succ.succ)) := by
+  unfold cycDen
+  rw [Fin.prod_univ_succ, Fin.prod_univ_succ]
+  have h1 : 1 % (m + 3) = 1 := Nat.mod_eq_of_lt (by omega)
+  have h2 : 2 % (m + 3) = 2 := Nat.mod_eq_of_lt (by omega)
+  have r0 : finRotate (m + 3) 0 = 1 := by
+    apply Fin.ext; rw [coe_finRotate]; split_ifs with h
+    · have := congrArg Fin.val h; simp [Fin.val_last] at this
+    · simp [h1]
+  have r1 : finRotate (m + 3) 1 = 2 := by
+    apply Fin.ext; rw [coe_finRotate]; split_ifs with h
+    · have := congrArg Fin.val h; simp [Fin.val_last, h1] at this
+    · simp [h1, h2]
+  simp only [Fin.succ_zero_eq_one, r0, r1]
+  ring
+
+/-- The rotation commutes with the shift of the last `m + 1` indices. -/
+lemma finRotate_succ_succ_succ {m : ℕ} (k : Fin (m + 1)) (s : Fin (m + 4) → Fin 2 → ℂ)
+    (b : Fin 2 → ℂ) :
+    (Fin.cons (s 0) (Fin.cons b (fun k : Fin (m + 1) => s k.succ.succ.succ)) :
+      Fin (m + 3) → Fin 2 → ℂ) (finRotate (m + 3) k.succ.succ) =
+      s (finRotate (m + 4) k.succ.succ.succ) := by
+  by_cases hk : k = Fin.last m
+  · subst hk
+    have h1 : finRotate (m + 3) (Fin.last m).succ.succ = 0 := by
+      rw [show (Fin.last m).succ.succ = Fin.last (m + 2) from by ext; simp, finRotate_last]
+    have h2 : finRotate (m + 4) (Fin.last m).succ.succ.succ = 0 := by
+      rw [show (Fin.last m).succ.succ.succ = Fin.last (m + 3) from by ext; simp, finRotate_last]
+    rw [h1, h2]; rfl
+  · have hk' : (k : ℕ) < m := by
+      have := k.isLt; rcases Nat.lt_or_ge (k : ℕ) m with h | h
+      · exact h
+      · exact absurd (Fin.ext (by simp [Fin.val_last]; omega)) hk
+    set k' : Fin (m + 1) := ⟨k + 1, by omega⟩
+    have h1 : finRotate (m + 3) k.succ.succ = k'.succ.succ := by
+      apply Fin.ext; rw [coe_finRotate]; split_ifs with h
+      · have := congrArg Fin.val h; simp [Fin.val_last] at this; omega
+      · simp [k']
+    have h2 : finRotate (m + 4) k.succ.succ.succ = k'.succ.succ.succ := by
+      apply Fin.ext; rw [coe_finRotate]; split_ifs with h
+      · have := congrArg Fin.val h; simp [Fin.val_last] at this; omega
+      · simp [k']
+    rw [h1, h2]; rfl
+
+lemma finRotate_succ_succ_succ_ne_one {m : ℕ} (k : Fin (m + 1)) :
+    finRotate (m + 4) k.succ.succ.succ ≠ 1 := by
+  intro h
+  have := congrArg Fin.val h
+  rw [coe_finRotate] at this
+  split_ifs at this <;> simp at this
+
+lemma angleBr_smul_right' (t : ℂ) (a b : Fin 2 → ℂ) : angleBr a (t • b) = t * angleBr a b := by
+  simp only [angleBr_eq, Pi.smul_apply, smul_eq_mul]; ring
+
+lemma angleBr_smul_left' (t : ℂ) (a b : Fin 2 → ℂ) : angleBr (t • a) b = t * angleBr a b := by
+  simp only [angleBr_eq, Pi.smul_apply, smul_eq_mul]; ring
+
+/-! ## The MHV sector: the shifted Parke-Taylor amplitude (Elvang-Huang Exercises 3.2–3.3, (3.13)–(3.21)) -/
+
+section MHV
+
+variable {m : ℕ} (l lt : Fin (m + 4) → Fin 2 → ℂ)
+
+/-- The Parke-Taylor amplitude `A_n[1⁻ 2⁻ 3⁺ ⋯ n⁺]` under the `[1, 2⟩` shift (gluons `0, 1` here):
+`Â(z)`. -/
+def ptShift (z : ℂ) : ℂ :=
+  parkeTaylor (bcfwAngle lt 0 1 z 0) (bcfwAngle lt 0 1 z 1) (bcfwAngle lt 0 1 z)
+
+/-- The brackets `⟨34⟩ ⋯ ⟨n1⟩` of the cyclic denominator after `⟨23⟩` (gluons `3, …, n−1, 0` here). -/
+def restProd : ℂ :=
+  ∏ k : Fin (m + 1), angleBr (lt k.succ.succ.succ) (lt (finRotate (m + 4) k.succ.succ.succ))
+
+/-- **The shifted Parke-Taylor amplitude**: only `⟨2̂3⟩ = ⟨23⟩ − z⟨13⟩` depends on `z` (gluons `1, 2, 0`
+here: `⟨1̂2⟩ = ⟨12⟩ − z⟨02⟩`). -/
+theorem ptShift_eq (z : ℂ) :
+    ptShift lt z = angleBr (lt 0) (lt 1) ^ 4 / (angleBr (lt 0) (lt 1) *
+      (angleBr (lt 1) (lt 2) - z * angleBr (lt 0) (lt 2)) * angleBr (lt 2) (lt 3) * restProd lt) := by
+  have e : ∀ k, k ≠ 1 → bcfwAngle lt 0 1 z k = lt k := fun k hk => Function.update_of_ne hk _ _
+  have e1 : bcfwAngle lt 0 1 z 1 = lt 1 - z • lt 0 := Function.update_self _ _ _
+  have v1 : ((1 : Fin (m + 4)) : ℕ) = 1 := by simp
+  have v2 : ((2 : Fin (m + 4)) : ℕ) = 2 := by simp
+  have v3 : ((3 : Fin (m + 4)) : ℕ) = 3 := by simp
+  have n0 : (0 : Fin (m + 4)) ≠ 1 := zero_ne_one
+  have n2 : (2 : Fin (m + 4)) ≠ 1 := fun h => by have := congrArg Fin.val h; omega
+  have n3 : (3 : Fin (m + 4)) ≠ 1 := fun h => by have := congrArg Fin.val h; omega
+  have nk : ∀ k : Fin (m + 1), (k.succ.succ.succ : Fin (m + 4)) ≠ 1 := fun k h => by
+    have := congrArg Fin.val h; simp at this
+  have hp : ∏ k : Fin (m + 1), angleBr (bcfwAngle lt 0 1 z k.succ.succ.succ)
+      (bcfwAngle lt 0 1 z (finRotate (m + 4) k.succ.succ.succ)) = restProd lt :=
+    Finset.prod_congr rfl fun k _ => by rw [e _ (nk k), e _ (finRotate_succ_succ_succ_ne_one k)]
+  unfold ptShift parkeTaylor
+  rw [cycDen_four, hp, e1, e 0 n0, e 2 n2, e 3 n3]
+  have h01 : angleBr (lt 0) (lt 1 - z • lt 0) = angleBr (lt 0) (lt 1) := by
+    simp only [angleBr_eq, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]; ring
+  have h12 : angleBr (lt 1 - z • lt 0) (lt 2) = angleBr (lt 1) (lt 2) - z * angleBr (lt 0) (lt 2) := by
+    simp only [angleBr_eq, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]; ring
+  rw [h01, h12]
+
+/-- **`Â(z)` is `P/Q` with a single simple pole** at `z* = ⟨12⟩/⟨02⟩` and `deg P < deg Q`
+(Elvang-Huang Exercises 3.2–3.3: it falls off as `1/z`). -/
+theorem ptShift_rational (h01 : angleBr (lt 0) (lt 1) ≠ 0) (h02 : angleBr (lt 0) (lt 2) ≠ 0)
+    (h23 : angleBr (lt 2) (lt 3) ≠ 0) (hR : restProd lt ≠ 0) {z : ℂ}
+    (hz : z ≠ angleBr (lt 1) (lt 2) / angleBr (lt 0) (lt 2)) :
+    ptShift lt z = (Polynomial.C (-(angleBr (lt 0) (lt 1) ^ 3 /
+        (angleBr (lt 0) (lt 2) * angleBr (lt 2) (lt 3) * restProd lt)))).eval z /
+      (Lagrange.nodal (Finset.univ : Finset Unit)
+        (fun _ => angleBr (lt 1) (lt 2) / angleBr (lt 0) (lt 2))).eval z := by
+  have hd : angleBr (lt 1) (lt 2) - z * angleBr (lt 0) (lt 2) ≠ 0 := by
+    intro h; apply hz; field_simp; linear_combination -h
+  rw [ptShift_eq, Lagrange.eval_nodal, Polynomial.eval_C]
+  simp only [Finset.univ_unique, Finset.prod_singleton]
+  rw [show z - angleBr (lt 1) (lt 2) / angleBr (lt 0) (lt 2) =
+      -(angleBr (lt 1) (lt 2) - z * angleBr (lt 0) (lt 2)) / angleBr (lt 0) (lt 2) by
+    field_simp; ring]
+  field_simp
+
+lemma degree_ptShift_numerator :
+    (Polynomial.C (-(angleBr (lt 0) (lt 1) ^ 3 /
+        (angleBr (lt 0) (lt 2) * angleBr (lt 2) (lt 3) * restProd lt)))).degree <
+      (Finset.univ : Finset Unit).card := by
+  simpa using (Polynomial.degree_C_le).trans_lt (by norm_num : (0 : WithBot ℕ) < 1)
+
+/-- **The pole is where the channel momentum `P̂₂₃ = p̂₂ + p₃` goes on shell**:
+`P̂² = ⟨2̂3⟩[23]` (gluons `1, 2` here). -/
+theorem ptShift_channel (z : ℂ) :
+    mdot (nullMom (l 1) (bcfwAngle lt 0 1 z 1) + nullMom (l 2) (lt 2))
+        (nullMom (l 1) (bcfwAngle lt 0 1 z 1) + nullMom (l 2) (lt 2)) =
+      (angleBr (lt 1) (lt 2) - z * angleBr (lt 0) (lt 2)) * squareBr (l 1) (l 2) := by
+  have hm : ∀ p q : Fin 4 → ℂ, mdot (p + q) (p + q) = mdot p p + 2 * mdot p q + mdot q q := by
+    intro p q; simp only [mdot, Pi.add_apply]; ring
+  rw [hm, mdot_nullMom_self, mdot_nullMom_self, ← angleBr_mul_squareBr]
+  have e1 : bcfwAngle lt 0 1 z 1 = lt 1 - z • lt 0 := Function.update_self _ _ _
+  rw [e1]
+  simp only [angleBr_eq, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]
+  ring
+
+/-- **At the pole the shifted angle spinor is proportional**: `|1̂⟩ = (⟨01⟩/⟨02⟩) |2⟩` (Schouten), so the
+on-shell channel momentum is `P̂ = −(c|1] + |2])⟨2|`. -/
+theorem ptShift_onshell (h02 : angleBr (lt 0) (lt 2) ≠ 0) :
+    bcfwAngle lt 0 1 (angleBr (lt 1) (lt 2) / angleBr (lt 0) (lt 2)) 1 =
+      (angleBr (lt 0) (lt 1) / angleBr (lt 0) (lt 2)) • lt 2 := by
+  rw [show bcfwAngle lt 0 1 _ 1 = _ from Function.update_self _ _ _]
+  funext a
+  simp only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul]
+  field_simp
+  simp only [angleBr_eq]
+  fin_cases a <;> simp <;> ring
+
+/-- The anti-MHV three-point amplitude `A₃[a⁺ b⁺ c⁻] = [ab]³/([bc][ca])` (Elvang-Huang (2.78)). -/
+def antiMHV3 (la lb lc : Fin 2 → ℂ) : ℂ := squareBr la lb ^ 3 / (squareBr lb lc * squareBr lc la)
+
+/-- **The residue factorizes** (Elvang-Huang (3.5), (3.18)–(3.21)): for any spinors `|P̂]`, `⟨P̂|` of the
+on-shell channel momentum `P̂₂₃ = −(c|2] + |3])⟨3|` at the pole (gluons `1, 2` here), the residue of
+`Â(z)/z` at `z*` is `−Â_{n−1}(1̂⁻, P̂⁻, 4⁺, …, n⁺) Â₃(−P̂⁺, 2̂⁻, 3⁺) / P₂₃²`. -/
+theorem ptShift_factorization (h01 : angleBr (lt 0) (lt 1) ≠ 0) (h02 : angleBr (lt 0) (lt 2) ≠ 0)
+    (h12 : angleBr (lt 1) (lt 2) ≠ 0) (h23 : angleBr (lt 2) (lt 3) ≠ 0) (hR : restProd lt ≠ 0)
+    (hs12 : squareBr (l 1) (l 2) ≠ 0) {lP ltP : Fin 2 → ℂ}
+    (hP : vecMulVec lP ltP =
+      vecMulVec ((angleBr (lt 0) (lt 1) / angleBr (lt 0) (lt 2)) • l 1 + l 2) (lt 2))
+    (hP0 : vecMulVec lP ltP ≠ 0) :
+    -(angleBr (lt 0) (lt 1) ^ 3 / (angleBr (lt 0) (lt 2) * angleBr (lt 2) (lt 3) * restProd lt)) /
+        (angleBr (lt 1) (lt 2) / angleBr (lt 0) (lt 2)) =
+      -(parkeTaylor (lt 0) ltP
+          (Fin.cons (lt 0) (Fin.cons ltP (fun k : Fin (m + 1) => lt k.succ.succ.succ)) :
+            Fin (m + 3) → Fin 2 → ℂ) *
+        antiMHV3 (l 2) lP (l 1)) /
+        (angleBr (lt 1) (lt 2) * squareBr (l 1) (l 2)) := by
+  obtain ⟨t, ht, hl, hlt⟩ := exists_littleGroup_of_eq hP.symm (by rw [← hP]; exact hP0)
+  set c := angleBr (lt 0) (lt 1) / angleBr (lt 0) (lt 2) with hc
+  -- the denominator of the `(n−1)`-point amplitude
+  have hden : cycDen (Fin.cons (lt 0) (Fin.cons ltP (fun k : Fin (m + 1) => lt k.succ.succ.succ)) :
+      Fin (m + 3) → Fin 2 → ℂ) = angleBr (lt 0) ltP * angleBr ltP (lt 3) * restProd lt := by
+    rw [cycDen_three]
+    have i2 : (2 : Fin (m + 3)) = (0 : Fin (m + 1)).succ.succ := by
+      apply Fin.ext; simp
+    have v3 : ((3 : Fin (m + 4)) : ℕ) = 3 := by simp
+    have i3 : ((0 : Fin (m + 1)).succ.succ.succ : Fin (m + 4)) = 3 := by
+      rw [Fin.ext_iff, Fin.val_succ, Fin.val_succ, Fin.val_succ, Fin.val_zero, v3]
+    rw [i2]
+    simp only [Fin.cons_zero, Fin.cons_one, Fin.cons_succ, i3]
+    unfold restProd
+    congr 1
+    exact Finset.prod_congr rfl fun k _ => by rw [finRotate_succ_succ_succ k lt ltP]
+  subst hl hlt
+  have hs1 : squareBr (l 2) (t⁻¹ • (c • l 1 + l 2)) = t⁻¹ * c * squareBr (l 2) (l 1) := by
+    simp only [squareBr_eq, Pi.smul_apply, Pi.add_apply, smul_eq_mul]; ring
+  have hs2 : squareBr (t⁻¹ • (c • l 1 + l 2)) (l 1) = t⁻¹ * squareBr (l 2) (l 1) := by
+    simp only [squareBr_eq, Pi.smul_apply, Pi.add_apply, smul_eq_mul]; ring
+  have hq : squareBr (l 2) (l 1) = -squareBr (l 1) (l 2) := squareBr_antisymm _ _
+  have hc0 : c ≠ 0 := div_ne_zero h01 h02
+  unfold parkeTaylor antiMHV3
+  rw [hden, angleBr_smul_right', angleBr_smul_left', hs1, hs2, hq]
+  rw [hc]
+  field_simp
+
+end MHV
+
 
 end Lightlike.SpinorHelicity
