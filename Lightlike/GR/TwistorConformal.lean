@@ -355,4 +355,48 @@ theorem isSU22_and_fixesInfinity_iff (T : Matrix (Fin 2 ⊕ Fin 2) (Fin 2 ⊕ Fi
   · rintro ⟨h1, h2⟩; exact eq_poincareTwistor_of h1 h2
   · rintro ⟨L, a, ha, rfl⟩; exact poincareTwistor_isSU22 L ha
 
+/-! ### Trust checks: the stabilizer is a proper subgroup
+
+The dilatation `(μ, λ) ↦ (t μ, t⁻¹ λ)`, `t` real, lies in SU(2, 2) (it is the conformal
+transformation `X ↦ t² X`), but does not fix the infinity twistor unless `t² = 1`. -/
+
+/-- The dilatation by a real `t ≠ 0`. -/
+def twistorDilatation (t : ℝ) : Matrix (Fin 2 ⊕ Fin 2) (Fin 2 ⊕ Fin 2) ℂ :=
+  fromBlocks ((t : ℂ) • 1) 0 0 ((t : ℂ)⁻¹ • 1)
+
+theorem twistorDilatation_isSU22 {t : ℝ} (ht : t ≠ 0) : IsSU22 (twistorDilatation t) := by
+  have htC : (t : ℂ) ≠ 0 := by exact_mod_cast ht
+  have hst : star (t : ℂ) = t := Complex.conj_ofReal t
+  refine ⟨?_, ?_⟩
+  · rw [twistorDilatation, conjTranspose_herm_mul]
+    have h1 : star ((t : ℂ)⁻¹) = (t : ℂ)⁻¹ := by rw [star_inv₀, hst]
+    have hP : ((t : ℂ) • (1 : Matrix (Fin 2) (Fin 2) ℂ))ᴴ * ((t : ℂ)⁻¹ • 1) = 1 := by
+      rw [conjTranspose_smul, conjTranspose_one, hst, smul_mul_smul_comm, Matrix.one_mul,
+        mul_inv_cancel₀ htC, one_smul]
+    have hS : ((t : ℂ)⁻¹ • (1 : Matrix (Fin 2) (Fin 2) ℂ))ᴴ * ((t : ℂ) • 1) = 1 := by
+      rw [conjTranspose_smul, conjTranspose_one, h1, smul_mul_smul_comm, Matrix.one_mul,
+        inv_mul_cancel₀ htC, one_smul]
+    rw [hP, hS, conjTranspose_zero, Matrix.mul_zero, Matrix.zero_mul, smul_zero, sub_self,
+      twistorHerm]
+  · rw [twistorDilatation, det_fromBlocks_zero₂₁, det_smul, det_smul, det_one]
+    simp only [mul_one, ← mul_pow, mul_inv_cancel₀ htC, one_pow]
+
+theorem twistorDilatation_not_fixesInfinity {t : ℝ} (ht : t ≠ 0) (ht1 : t ^ 2 ≠ 1) :
+    ¬ FixesInfinity (twistorDilatation t) := by
+  intro h
+  have := h (Pi.single (Sum.inr 0) 1) (Pi.single (Sum.inr 1) 1)
+  have htC : (t : ℂ) ≠ 0 := by exact_mod_cast ht
+  simp [infinityForm, twistorDilatation] at this
+  apply ht1
+  have h3 : (t : ℂ) ^ 2 = 1 := by
+    field_simp at this
+    first
+      | linear_combination this
+      | linear_combination -this
+  exact_mod_cast h3
+
+/-- `T(1, 0)` is the identity. -/
+theorem poincareTwistor_one : poincareTwistor 1 0 = 1 := by
+  simp [poincareTwistor, fromBlocks_one]
+
 end Lightlike
