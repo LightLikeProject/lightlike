@@ -54,8 +54,7 @@ What stops it here, concretely:
   theorem for one self-adjoint operator, not the joint version for `ℝ⁴`; above, `E` is constructed by hand for the
   induced representations only;
 * Mackey's imprimitivity theorem (a system of imprimitivity based on a transitive orbit is induced from the little
-  group): not in the library;
-* irreducibility of the massless induced representations (the massive ones are irreducible, see below).
+  group): not in the library.
 
 The massless representations of helicity `n/2` act on `L²(ν)` of the forward light cone, for every invariant
 measure `ν` (`ConeL2.lean`). The standard lift of the cone is discontinuous on the half-line `P₀₀ = 0` (no continuous
@@ -63,7 +62,14 @@ global section exists), so the helicity factor is only measurable; that half-lin
 s-finite `ν` (`ConeNull.lean`, `measure_alphaC_eq_zero`: such a `ν` has the null sets of the image of the Haar
 measure, and `{A : A₀₀ = 0}` is Haar-null because its right translates by the rotations `u_θ`, `0 ≤ θ < π`, are
 pairwise disjoint), and the representations are strongly continuous when `ν` is finite on compacts
-(`ConeContinuity.lean`, `continuous_poincareCone`).
+(`ConeContinuity.lean`, `continuous_poincareCone`). They are irreducible for every invariant σ-finite `ν`
+(`IrreducibleMassless.lean`, `irreducible_massless`, `commutant_eq_scalar_cone`): the commutant of the translations
+of the cone is the multiplications by measurable functions (`CommutantCone.lean`), the helicity factor is
+unimodular, so such a function is invariant, and invariant functions are almost everywhere constant. The source's
+measure `δ(p²) Θ(p⁰) d⁴p`, which is `d³p / (2|p|)` in the chart `p ↦ (|p|, p)` (`coneSourceMeasure`), is half the image
+of the Lebesgue measure under the light-cone coordinates `(w, t) ↦ [[|w|² e^{-t}, w], [w̄, e^t]]`, hence invariant
+(`ConeSourceMeasure.lean`, `measurePreserving_coneSourceMeasure`), and the massless representations on
+`L²(d³p / 2|p|)` are irreducible (`irreducible_massless_coneSourceMeasure`).
 
 ## Toward the Wigner classification
 
@@ -72,8 +78,8 @@ Heidelberg): Chapter IV, §2, p. 126 (the orbits of `SL(2,ℂ)` on `ℝ⁴` and 
 `(m, 0, 0, 0)`, `m > 0`, with little group `SU(2)`, and of `(1, 1, 0, 0)`, with the double cover of `ISO(2)`, give
 the positive-energy representations of physical interest); Chapter V, §4, Definitions 4.1, 4.2, Proposition 4.4
 (systems of imprimitivity), pp. 139–140; §5, Theorem 5.1 (Stone's theorem for `ℝⁿ` in multiplication form),
-Definition 5.5, Lemma 5.6, pp. 146–147; §6, Assumption 6.1, Theorem 6.2 (Mackey), Theorem 6.4 (the irreducible
-unitary representations of `ISO(2)`), pp. 148–149; §7, Lemma 7.1, Proposition 7.2 (ergodicity and concentration on
+Definition 5.5, Lemma 5.6, pp. 146–147; §6, Assumption 6.1 and Theorem 6.2 (Mackey), p. 149, Theorem 6.4 (the
+irreducible unitary representations of `ISO(2)`), p. 150; §7, Lemma 7.1, Proposition 7.2 (ergodicity and concentration on
 one orbit), pp. 150–151; Appendix VI.1 (the spectral theorem for `ℝ`), pp. 152–153.
 
 Scope: the orbit `p = 0` (whose representations are those of `SL(2,ℂ)` itself, Bekaert–Boulanger §3.2, Remark,

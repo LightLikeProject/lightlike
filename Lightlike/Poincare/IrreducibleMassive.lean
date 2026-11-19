@@ -26,7 +26,7 @@ closed subspace invariant under both is `0` or everything (`irreducible_massive`
 
 * E. Freitag, *Unitary representations of the Poincaré group, Wigner classification* (lecture notes, Heidelberg),
   Chapter V, §6, Theorem 6.2 (Mackey: the representation induced from an irreducible representation of the little
-  group is irreducible), page 148.
+  group is irreducible), page 149.
 -/
 
 open MeasureTheory Matrix Lightlike.Lorentz Lightlike.SU2 Filter Topology
