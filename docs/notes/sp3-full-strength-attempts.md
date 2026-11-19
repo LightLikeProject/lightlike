@@ -77,6 +77,59 @@ theorem (docstring mention only), Fejer kernel, modified Bessel `I_1` (only `Com
 asymptotics), inverse Laplace transform. All absent; the first three were bypassed by the explicit kernel
 above, `I_1` by the series/Wallis route.
 
+## Attempt D (Lean): the pole-free smoothing route (replaces item 3, the contour functional)
+
+Why the contour route was dropped: the Dirichlet integral / Cauchy-Fourier pair for `1/(beta + it)`
+on the real line and a residue formula for a pole on a segment are not in the pinned Mathlib (grep:
+`Dirichlet`, `sinc` integral, `residue`). Replacement, all proved in Lean:
+
+* smoothed step `psi(y) = (1/N) int_{u<y} e^{beta u} kappa(u) du`, `kappa(u) = (2b sinc(bu))^4`
+  (`Psi.lean`); `int g(t)/(beta+it) e^{-ity} dt = int_0^infty e^{-beta s} kappa(y+s) ds` by Fubini and
+  `1/(beta+it) = int_0^infty e^{-(beta+it)s} ds` (`Smoothing.lean`, `fourier_inv_eq`, `smooth_representation`):
+  no inversion theorem and no pole;
+* `N psi(Delta - x) = e^{beta Delta} e^{-beta x} Psi(x - Delta)`; difference of two smoothed counting
+  functions `<= e^{beta Delta} 16 b^4 M/(N beta)` when the Laplace transforms differ by `<= M` on `|t| <= 4b`
+  (`Difference.lean`);
+* comparison of a measure with its smoothing at `beta = sqrt(a/Delta)`: pointwise error bound for `psi`
+  (first-order term in `beta` cancels by `int u kappa = 0`; `Psi.lean`, `Compare.lean`), outer region by
+  Markov against `e^{-beta x}`, inner region by unit windows against the local bound with the tangent-line
+  bound `2 sqrt(a(Delta-k)) <= 2 sqrt(a Delta) - beta k` (`Inner.lean`, `Assembly.lean`, `Tangent.lean`,
+  `WindowWeights.lean`, `CompareAsymp.lean`); size `Delta^{-3/4} e^{2 sqrt(a Delta)}`, MZ's order;
+* distribution function of the crossing measure `rho_0(-inf,x] = sum (ax)^m/(m!)^2 = I_0(2 sqrt(ax))`
+  (`Rho0Cdf.lean`, `BesselI0.lean`), local bound for `rho_0` (`Rho0Local.lean`), effective Laplace method for
+  `I_0` with relative error `O(1/s)` (`LaplaceEff.lean`: comparison with the Gaussian,
+  `1 - cos >= 2 theta^2/pi^2`, `theta^2/2 - (1-cos) <= theta^4/2`);
+* assembly `cardy_counting` (`CardyCounting.lean`): `|sigma(-inf,Delta] - I_0(2 sqrt(a Delta))| <= K Delta^{-3/4}
+  e^{2 sqrt(a Delta)}`; with `besselI0_eff` this is MZ (1.8) with the relative error `O(Delta^{-1/2})`.
+
+## Comparison of `cardy_mz` with the source (read 19 November 2026, arXiv:1904.06359v1, pdftotext)
+
+Locations (printed page numbers of v1): the Theorem with eq. (1.8), p. 7; modular invariance (2.2), its
+integral form (2.3) and the density of states (2.4), p. 8; the crossing kernel (2.6) and its Laplace
+transform (2.7), p. 9; the proof, (5.1) = (1.8) restated, p. 15, the estimates (5.8)-(5.17), pp. 17-19,
+and the remainder (5.18)-(5.19), pp. 19-20.
+
+* (1.8): `F(Δ) = ∫₀^Δ dΔ' ρ(Δ') = (1/2π) (3/(cΔ))^{1/4} e^{2π√(cΔ/3)} [1 + O(Δ^{-1/2})]`, `Δ → ∞`, for a positive
+  `ρ` with `Z(β) = ∫₀^∞ dΔ e^{-β(Δ - c/12)} ρ(Δ)` modular invariant, `Z(β) = Z(4π²/β)` (for `Re β > 0`, (2.2)),
+  and `Z(β) = e^{π²c/(3β)}(1 + O(e^{-Δ₁/β}))`, `Δ₁ > 0`, as `|β| → 0` with `Re β > 0`.
+* `cardy_mz` (CardyRelative.lean): `|F(Δ) · √(4π√(aΔ)) e^{-2√(aΔ)} - 1| ≤ K Δ^{-1/2}` for `Δ ≥ Δ₁`, with
+  `F(Δ) = σ(-∞, Δ - v]`, `v = c/12`, `a = 4π²v = π²c/3`. Since `2√(aΔ) = 2π√(cΔ/3)` and
+  `√(4π√(aΔ)) = 2π(cΔ/3)^{1/4}`, this is (1.8) with an explicit constant in the `O`.
+* Hypotheses (`SpectralHyp` + `hmodC`): `Z(β)` finite for `β > 0`; `Z(z) = Z(4π²/z)` for `Re z > 0` (= (2.2));
+  `|Z(β) - e^{a/β}| ≤ C e^{(a-g)/β}` for real `0 < β < β₀` (= the high-temperature form with `g = Δ₁`, but only
+  on the real axis); the real modular invariance field is implied by (2.2).
+* Difference (kind representation; reported to the maintainers 19 Nov, decision pending): `σ` is a positive
+  measure in the shifted variable `x = Δ - c/12` instead of the density `ρ(Δ) = Σ_O δ(Δ - Δ_O)` of (2.4);
+  `F(Δ) = σ(-∞, Δ - v]`; the main term is written `√(4π√(aΔ)) e^{-2√(aΔ)} = 2π(cΔ/3)^{1/4} e^{-2π√(cΔ/3)}`.
+* Not a difference: assuming the high-temperature form only for real `β → 0⁺` is a weaker hypothesis than MZ's
+  (complex `β`, `|β| → 0`), so the formal theorem is stronger; named in the docstring.
+* `cardy_counting` (CardyCounting.lean) is the step of Section 5: `F_σ - F_{ρ₀} = O(x^{-3/4} e^{2√(a x)})` with the
+  crossing kernel `ρ₀` of (2.6) (atom at `x = 0`, density `√(a/x) I₁(2√(a x))`; `laplaceC_rho0` = (2.7)), and
+  `F_{ρ₀}(x) = I₀(2√(a x))` (`rho0_real_Iic`). MZ bound the remainder (5.19) with the contour functional; route D
+  replaces it by the pole-free smoothing above.
+* Non-vacuity: `σ = δ_{-v} + ρ₀` (CardyExample.lean) satisfies all hypotheses; its counting function is
+  `1 + I₀(2√(a x))` exactly (`exampleSpectrum_real_Iic`, trust check).
+
 ## Difference of kind to name if only part lands
 
 Without the full (1.8): "no error estimate and hypotheses of the real-axis type" would be a
