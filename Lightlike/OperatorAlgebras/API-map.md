@@ -423,7 +423,8 @@ The Schatten sum `‖K‖_p^p` is the supremum of `∑ₖ |⟪ψₖ, K ϕₖ⟫|
     `OperatorAlgebras.SecondQuantWedge.permEquiv`, `OperatorAlgebras.SecondQuantWedge.permEquiv_apply`, `OperatorAlgebras.SecondQuantWedge.permL`, `OperatorAlgebras.SecondQuantWedge.permL_apply`, `OperatorAlgebras.SecondQuantWedge.antisym`, `OperatorAlgebras.SecondQuantWedge.antisym_apply`,
     `OperatorAlgebras.SecondQuantWedge.embFun_comp`, `OperatorAlgebras.SecondQuantWedge.antisym_embL`,
     `OperatorAlgebras.SecondQuantWedge.tensorFun`, `OperatorAlgebras.SecondQuantWedge.hasSum_norm_tensorFun`, `OperatorAlgebras.SecondQuantWedge.hasSum_norm_sq_lp`, `OperatorAlgebras.SecondQuantWedge.memℓp_tensorFun`,
-    `OperatorAlgebras.SecondQuantWedge.creTL`, `OperatorAlgebras.SecondQuantWedge.creTL_apply`, `OperatorAlgebras.SecondQuantWedge.norm_creTL`, `OperatorAlgebras.SecondQuantWedge.creT`, `OperatorAlgebras.SecondQuantWedge.creT_apply`, `OperatorAlgebras.SecondQuantWedge.slotOp_zero_creT`
+    `OperatorAlgebras.SecondQuantWedge.creTL`, `OperatorAlgebras.SecondQuantWedge.creTL_apply`, `OperatorAlgebras.SecondQuantWedge.norm_creTL`, `OperatorAlgebras.SecondQuantWedge.creT`, `OperatorAlgebras.SecondQuantWedge.creT_apply`, `OperatorAlgebras.SecondQuantWedge.slotOp_zero_creT`,
+    `OperatorAlgebras.SecondQuantWedge.removeNth_succ_eq`, `OperatorAlgebras.SecondQuantWedge.slotOp_succ_creT`, `OperatorAlgebras.SecondQuantWedge.dGammaTensor_creT`, `OperatorAlgebras.SecondQuantWedge.dGammaTensor_zero_creT`
 
 ## References
 

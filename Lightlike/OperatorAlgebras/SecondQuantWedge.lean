@@ -21,6 +21,8 @@ For the embedding of the `n`-particle fermionic Fock space `Γₙ` (the closed s
 * `tensorFun`, `hasSum_norm_tensorFun`: `c ⊗ Φ` in coordinates, `‖c ⊗ Φ‖² = ‖c‖² ‖Φ‖²`;
 * `hasSum_norm_sq_lp`, `memℓp_tensorFun`, `creTL`, `creTL_apply`, `norm_creTL`, `creT`, `creT_apply`, `slotOp_zero_creT`:
   creation `Φ ↦ w ⊗ Φ` on the tensor power, and `h` on slot `0` of `w ⊗ Φ` is `(h w) ⊗ Φ`;
+* `removeNth_succ_eq`, `slotOp_succ_creT`, `dGammaTensor_creT`, `dGammaTensor_zero_creT`: `(∑ⱼ hⱼ)(w ⊗ Φ) =
+  (h w) ⊗ Φ + w ⊗ (∑ⱼ hⱼ) Φ`, the commutator before antisymmetrization;
 * `norm_embCLM_le`, `dGammaFock`, `norm_dGammaFock_le`: `dΓₙ₊₁(h) = Eₙ₊₁* (∑ⱼ hⱼ) Eₙ₊₁` and `‖dΓₙ₊₁(h)‖ ≤ (n + 1) ‖h‖`.
 -/
 
@@ -398,6 +400,72 @@ lemma slotOp_zero_creT (h : Z →L[ℂ] Z) (w : Z) (Φ : lp (fun _ : Fin n → �
     (f 0) = _
   rw [hfib, map_smul, LinearIsometryEquiv.symm_apply_apply, map_smul, map_smul, lp.coeFn_smul, Pi.smul_apply,
     smul_eq_mul, mul_comm]
+
+/-- `removeNth (j + 1) g = cons (g 0) (removeNth j (tail g))`. -/
+lemma removeNth_succ_eq {m : ℕ} (j : Fin (m + 1)) (g : Fin (m + 2) → ι) :
+    Fin.removeNth j.succ g = Fin.cons (g 0) (Fin.removeNth j (Fin.tail g)) := by
+  set p := Fin.removeNth j.succ g with hp
+  have key : g = Fin.insertNth j.succ (g j.succ) p := (Fin.insertNth_self_removeNth j.succ g).symm
+  rw [← Fin.cons_self_tail p, Fin.insertNth_succ_cons] at key
+  have h0 : g 0 = p 0 := by rw [key]; rfl
+  have ht : Fin.tail g = Fin.insertNth j (g j.succ) (Fin.tail p) := by
+    conv_lhs => rw [key]
+    exact Fin.tail_cons _ _
+  rw [ht, Fin.removeNth_insertNth, h0, Fin.cons_self_tail]
+
+/-- **`h` on slot `j + 1` of `w ⊗ Φ` is `w ⊗ (h on slot j of Φ)`.** -/
+lemma slotOp_succ_creT {m : ℕ} (j : Fin (m + 1)) (h : Z →L[ℂ] Z) (w : Z) (Φ : lp (fun _ : Fin (m + 1) → ι => ℂ) 2) :
+    SecondQuantSlot.slotOp b j.succ h (creT b w Φ) = creT b w (SecondQuantSlot.slotOp b j h Φ) := by
+  ext f
+  set e := SecondQuantSlot.slotEquiv (ι := ι) (n := m + 1) j.succ
+  set e' := SecondQuantSlot.slotEquiv (ι := ι) (n := m) j
+  have he : ∀ g : Fin (m + 2) → ι, e g = (Fin.removeNth j.succ g, g j.succ) := fun g => by
+    simp [e, SecondQuantSlot.slotEquiv, Fin.insertNthEquiv]
+  have he' : ∀ g : Fin (m + 1) → ι, e' g = (Fin.removeNth j g, g j) := fun g => by
+    simp [e', SecondQuantSlot.slotEquiv, Fin.insertNthEquiv]
+  have hesymm : ∀ (p : Fin (m + 1) → ι) (k : ι), e.symm (p, k) = Fin.insertNth j.succ k p := fun p k => by
+    apply e.injective
+    rw [Equiv.apply_symm_apply, he, Fin.removeNth_insertNth, Fin.insertNth_apply_same]
+  have he'symm : ∀ (q : Fin m → ι) (k : ι), e'.symm (q, k) = Fin.insertNth j k q := fun q k => by
+    apply e'.injective
+    rw [Equiv.apply_symm_apply, he', Fin.removeNth_insertNth, Fin.insertNth_apply_same]
+  have hfib : ∀ p : Fin (m + 1) → ι, SecondQuantSlot.fiber ((SecondQuantSlot.reindexL e).symm (creT b w Φ)) p =
+      b.repr w (p 0) • SecondQuantSlot.fiber ((SecondQuantSlot.reindexL e').symm Φ) (Fin.tail p) := fun p => by
+    ext k
+    show (creT b w Φ) (e.symm (p, k)) = (b.repr w (p 0) • SecondQuantSlot.fiber
+      ((SecondQuantSlot.reindexL e').symm Φ) (Fin.tail p)) k
+    rw [hesymm, creT_apply, lp.coeFn_smul, Pi.smul_apply, smul_eq_mul]
+    conv_lhs => rw [← Fin.cons_self_tail p, Fin.insertNth_succ_cons, Fin.cons_zero, Fin.tail_cons]
+    show _ = b.repr w (p 0) * Φ (e'.symm (Fin.tail p, k))
+    rw [he'symm]
+  show (SecondQuantSlot.slotC b h ((SecondQuantSlot.reindexL e).symm (creT b w Φ))) (e f) =
+    creT b w (SecondQuantSlot.slotOp b j h Φ) f
+  rw [he f, creT_apply]
+  show b.repr ((SecondQuantSlot.slotMap h (SecondQuantSlot.uncoordL b
+      ((SecondQuantSlot.reindexL e).symm (creT b w Φ)))) (Fin.removeNth j.succ f)) (f j.succ) =
+    b.repr w (f 0) * (SecondQuantSlot.slotC b h ((SecondQuantSlot.reindexL e').symm Φ)) (e' (Fin.tail f))
+  rw [SecondQuantSlot.slotMap_apply, he' (Fin.tail f)]
+  show b.repr (h (b.repr.symm (SecondQuantSlot.fiber ((SecondQuantSlot.reindexL e).symm (creT b w Φ))
+      (Fin.removeNth j.succ f)))) (f j.succ) =
+    b.repr w (f 0) * b.repr (h (b.repr.symm (SecondQuantSlot.fiber ((SecondQuantSlot.reindexL e').symm Φ)
+      (Fin.removeNth j (Fin.tail f))))) (Fin.tail f j)
+  rw [hfib, removeNth_succ_eq, Fin.cons_zero, Fin.tail_cons, map_smul, map_smul, map_smul, lp.coeFn_smul,
+    Pi.smul_apply, smul_eq_mul]
+  rfl
+
+/-- **The commutator on the tensor power**: `(∑ⱼ hⱼ)(w ⊗ Φ) = (h w) ⊗ Φ + w ⊗ (∑ⱼ hⱼ) Φ`, i.e.
+`[dΓ(h), a*(w)] = a*(h w)` before antisymmetrization (Dereziński, Section 5.2 and Theorem 18 (4), p. 22). -/
+theorem dGammaTensor_creT {m : ℕ} (h : Z →L[ℂ] Z) (w : Z) (Φ : lp (fun _ : Fin (m + 1) → ι => ℂ) 2) :
+    SecondQuantSlot.dGammaTensor b (m + 1) h (creT b w Φ) =
+      creT b (h w) Φ + creT b w (SecondQuantSlot.dGammaTensor b m h Φ) := by
+  rw [SecondQuantSlot.dGammaTensor, Fin.sum_univ_succ, ContinuousLinearMap.add_apply, ContinuousLinearMap.sum_apply,
+    slotOp_zero_creT, SecondQuantSlot.dGammaTensor, ContinuousLinearMap.sum_apply, map_sum]
+  simp only [slotOp_succ_creT]
+
+/-- On one particle `(∑ⱼ hⱼ)(w ⊗ Φ) = (h w) ⊗ Φ`. -/
+theorem dGammaTensor_zero_creT (h : Z →L[ℂ] Z) (w : Z) (Φ : lp (fun _ : Fin 0 → ι => ℂ) 2) :
+    SecondQuantSlot.dGammaTensor b 0 h (creT b w Φ) = creT b (h w) Φ := by
+  rw [SecondQuantSlot.dGammaTensor, Fin.sum_univ_succ, Fin.sum_univ_zero, add_zero, slotOp_zero_creT]
 
 end TensorCre
 
