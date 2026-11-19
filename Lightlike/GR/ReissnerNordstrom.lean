@@ -16,17 +16,23 @@ equations, `MaxwellCoord.lean`). The horizons are the roots `r± = M ± √(M² 
 `rnF_rplus`, `rnF_rminus`); in the extremal case `M² = q² + p²` they coincide at `r = M`, `Δ = (1 − M/r)²`, and the
 horizon is degenerate: `Δ(M) = Δ'(M) = 0` (`rn_extremal`), its surface gravity `Δ'(r₊)/2 = (r₊ − r₋)/(2r₊²)` vanishes
 (`rn_surfaceGravity`). Trust checks: `q = p = 0` is Schwarzschild with `F = 0`; with `q² + p² ≠ 0` the metric is not
-a vacuum solution (`rn_not_vacuum`).
+a vacuum solution (`rn_not_vacuum`); the chart domain is nonempty (`rnU_nonempty`).
 
-Gap row G3-056 (partial row "BPS bounds and extremal black holes (Reissner–Nordström as m = |Q|)"): the supersymmetric
-BPS bound itself (the supergravity statement that `M ≥ |Q|` is a Bogomolny bound saturated by the extremal solution) is
-**out of scope** here: only the classical extremal Reissner–Nordström solution is formalized.
+The classical extremality bound (Carroll, pp. 202–206): `Δ` has a zero at some `r > 0`, a horizon, iff `0 < M` and
+`q² + p² ≤ M²`, i.e. `M ≥ |Q|` with `|Q| = √(q² + p²)` (`rn_horizon_iff`, `rn_horizon_iff_sqrt`); below the bound `Δ > 0`
+everywhere (`rnF_pos_of_lt`); the bound is saturated exactly by the degenerate horizon (`rn_degenerate_iff`). The BPS
+bound `2m ≥ |Z|` of the `N = 2` supersymmetry algebra is `Lightlike/GR/BPSBound.lean`.
+
+Gap row G3-056 (partial row "BPS bounds and extremal black holes (Reissner–Nordström as m = |Q|)"). Not proved: that
+the extremal Reissner–Nordström black hole is a BPS state of `N = 2` supergravity, i.e. that its mass and charge are the
+`m` and `|Z|` of the asymptotic supersymmetry algebra (Gibbons–Hull); see `docs/notes/g3-056-reissner-nordstrom.md`.
 
 Source read (pdftotext): S. M. Carroll, *Lecture Notes on General Relativity*, arXiv:gr-qc/9712019, chapter 7: the
 electromagnetic stress-energy `T_μν = (1/4π)(F_μρ F_ν^ρ − ¼ g_μν F_ρσ F^ρσ)` (7.107), the spherically symmetric
 field strength (7.108), the Einstein–Maxwell equations (7.109), p. 201; the metric (7.110)–(7.111), the field
 (7.112), the horizons `r± = GM ± √(G²M² − G(p² + q²))` (7.113), p. 202; the extremal case "GM² = p² + q² ... The
-extremal black holes have Δ(r) = 0 at a single radius, r = GM", p. 206; Einstein's equation `R_μν − ½ R g_μν =
+extremal black holes have Δ(r) = 0 at a single radius, r = GM", p. 206; the three cases "GM² < p² + q²" (Δ always positive,
+a naked singularity), p. 202, "GM² > p² + q²" (two horizons), p. 204, "GM² = p² + q²", p. 206; Einstein's equation `R_μν − ½ R g_μν =
 8πG T_μν` (4.52), p. 112. Differences: the units `G = 1` (representation); Regge's `emT` omits the Gaussian factor
 `1/4π` (so `G = 8π T = 2 emT`); the Maxwell equations in their coordinate form (`MaxwellCoord.lean`, representation).
 -/
@@ -422,6 +428,84 @@ theorem rn_extremal_nonneg {M Q2 : ℝ} (h : M ^ 2 = Q2) {r : ℝ} (hr : r ≠ 0
     linarith
   positivity
 
+/-- **No horizon below the bound** (Carroll, Case One, p. 202): for `M² < Q²` the function `Δ` is
+positive at every `r ≠ 0`, so the singularity at `r = 0` is not hidden by a horizon. -/
+theorem rnF_pos_of_lt {M Q2 : ℝ} (h : M ^ 2 < Q2) {r : ℝ} (hr : r ≠ 0) : 0 < rnF M Q2 r := by
+  have e : r ^ 2 * rnF M Q2 r = (r - M) ^ 2 + (Q2 - M ^ 2) := by
+    unfold rnF; field_simp; ring
+  have h2 : 0 < r ^ 2 := by positivity
+  have h3 : 0 < (r - M) ^ 2 + (Q2 - M ^ 2) := by nlinarith [sq_nonneg (r - M)]
+  rw [← e] at h3
+  exact pos_of_mul_pos_right h3 h2.le
+
+/-- **The classical extremality bound** (Carroll, pp. 202–206, Cases One–Three): `Δ` vanishes at some
+`r > 0`, i.e. there is a horizon, iff `0 < M` and `Q² ≤ M²`, where `Q² = q² + p²`. -/
+theorem rn_horizon_iff (M : ℝ) {Q2 : ℝ} (hQ : 0 ≤ Q2) :
+    (∃ r, 0 < r ∧ rnF M Q2 r = 0) ↔ 0 < M ∧ Q2 ≤ M ^ 2 := by
+  constructor
+  · rintro ⟨r, hr, h0⟩
+    have e : r ^ 2 - 2 * M * r + Q2 = r ^ 2 * rnF M Q2 r := by
+      unfold rnF; field_simp
+    rw [h0, mul_zero] at e
+    refine ⟨?_, by nlinarith [sq_nonneg (r - M)]⟩
+    by_contra hM
+    have hM' : M ≤ 0 := not_lt.1 hM
+    nlinarith [mul_nonneg (neg_nonneg.2 hM') hr.le, mul_pos hr hr]
+  · rintro ⟨hM, h⟩
+    have hpos : 0 < rnRplus M Q2 := by unfold rnRplus; positivity
+    exact ⟨rnRplus M Q2, hpos, rnF_rplus h hpos.ne'⟩
+
+/-- **The bound as `M ≥ |Q|`**, `|Q| = √(q² + p²)`: the Reissner–Nordström solution has a horizon iff
+`0 < M` and `√(q² + p²) ≤ M`. -/
+theorem rn_horizon_iff_sqrt (M q p : ℝ) :
+    (∃ r, 0 < r ∧ rnF M (q ^ 2 + p ^ 2) r = 0) ↔ 0 < M ∧ √(q ^ 2 + p ^ 2) ≤ M := by
+  rw [rn_horizon_iff M (by positivity)]
+  constructor
+  · rintro ⟨hM, h⟩
+    exact ⟨hM, Real.sqrt_le_iff.2 ⟨hM.le, h⟩⟩
+  · rintro ⟨hM, h⟩
+    exact ⟨hM, (Real.sqrt_le_iff.1 h).2⟩
+
+/-- **The bound is saturated exactly by the degenerate horizon**: `Δ` and `Δ'` vanish together at some
+`r > 0` iff `0 < M` and `M² = Q²`; the double zero is then `r = M` (`rn_extremal`). -/
+theorem rn_degenerate_iff (M Q2 : ℝ) :
+    (∃ r, 0 < r ∧ rnF M Q2 r = 0 ∧ rnF1 M Q2 r = 0) ↔ 0 < M ∧ M ^ 2 = Q2 := by
+  constructor
+  · rintro ⟨r, hr, h0, h1⟩
+    have e0 : r ^ 2 - 2 * M * r + Q2 = r ^ 2 * rnF M Q2 r := by
+      unfold rnF; field_simp
+    have e1 : 2 * M * r - 2 * Q2 = r ^ 3 * rnF1 M Q2 r := by
+      unfold rnF1; field_simp
+    rw [h0, mul_zero] at e0
+    rw [h1, mul_zero] at e1
+    have hQ : Q2 = M * r := by linarith
+    have hrM : r = M := by
+      have h' : r * (r - M) = 0 := by nlinarith
+      rcases mul_eq_zero.1 h' with h'' | h''
+      · exact absurd h'' hr.ne'
+      · linarith
+    exact ⟨by rw [← hrM]; exact hr, by rw [hQ, hrM]; ring⟩
+  · rintro ⟨hM, h⟩
+    obtain ⟨-, -, -, h0, h1⟩ := rn_extremal hM h
+    exact ⟨M, hM, h0, h1⟩
+
+/-- The domain of the chart is nonempty for `Q² ≥ 0`: the point `t = 0`, `r = 2|M| + Q² + 1`,
+`θ = π/2`, `φ = 0` lies in it. -/
+theorem rnU_nonempty (M : ℝ) {Q2 : ℝ} (hQ : 0 ≤ Q2) : (rnU M Q2).Nonempty := by
+  set r : ℝ := 2 * |M| + Q2 + 1 with hr
+  have hr0 : 0 < r := by positivity
+  refine ⟨![0, r, π / 2, 0], ?_⟩
+  refine ⟨by simpa using hr0, ?_, by simpa using Real.pi_pos, by simp; linarith [Real.pi_pos]⟩
+  simp only [Matrix.cons_val_one, Matrix.cons_val_zero]
+  have e : r ^ 2 * rnF M Q2 r = r * (r - 2 * M) + Q2 := by
+    unfold rnF; field_simp
+  have h1 : 0 < r * (r - 2 * M) + Q2 := by
+    have : 0 < r - 2 * M := by have := le_abs_self M; linarith
+    positivity
+  intro h0
+  rw [h0, mul_zero] at e
+  linarith
+
 /-- **The surface gravity `Δ'(r₊)/2 = (r₊ − r₋)/(2r₊²)`**, zero exactly in the extremal case (`rn_extremal`).
 Supporting lemma, not compared with a source. -/
 theorem rn_surfaceGravity {M Q2 : ℝ} (h : Q2 ≤ M ^ 2) (hr : rnRplus M Q2 ≠ 0) :
@@ -450,10 +534,10 @@ theorem rn_schwarzschild (M : ℝ) (y : Fin 4 → ℝ) :
 
 /-- **Wrong-model control**: with `q² + p² ≠ 0` the Reissner–Nordström metric is not a vacuum solution
 (`R_θθ = Q²/r² ≠ 0`). -/
-theorem rn_not_vacuum (M q p : ℝ) (hQ : q ^ 2 + p ^ 2 ≠ 0) (hne : (rnU M (q ^ 2 + p ^ 2)).Nonempty) :
+theorem rn_not_vacuum (M q p : ℝ) (hQ : q ^ 2 + p ^ 2 ≠ 0) :
     ¬ IsVacuumSolution 0 (rnMetric M (q ^ 2 + p ^ 2)) (rnU M (q ^ 2 + p ^ 2)) := by
   intro h
-  obtain ⟨y, hy⟩ := hne
+  obtain ⟨y, hy⟩ := rnU_nonempty M (Q2 := q ^ 2 + p ^ 2) (by positivity)
   have hr : y 1 ≠ 0 := hy.1.ne'
   have := h.2 y hy 2 2
   rw [einsteinTensor_rn _ _ hy] at this

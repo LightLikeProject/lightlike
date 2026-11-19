@@ -205,6 +205,7 @@ import Lightlike.GR.KruskalMetric
 import Lightlike.GR.EuclideanSchwarzschild
 import Lightlike.GR.Schwarzschild
 import Lightlike.GR.ReissnerNordstrom
+import Lightlike.GR.BPSBound
 import Lightlike.GR.SAdSVacuum
 import Lightlike.GR.StaticSphericalJet
 import Lightlike.GR.StaticSphericalRicci
