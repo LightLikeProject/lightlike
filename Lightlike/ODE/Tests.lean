@@ -1,5 +1,6 @@
 import Lightlike.ODE.Frobenius
 import Lightlike.ODE.HigherVariational
+import Lightlike.ODE.CommutingRectangle
 import Mathlib.Analysis.SpecialFunctions.Exp
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 import Mathlib.Analysis.Complex.ExponentialBounds
@@ -126,5 +127,19 @@ theorem exists_solution_variational_fst (k : ℕ) (t₀ x₀ : ℝ) :
   obtain ⟨δ, φ, hδ, -, -, -, h4⟩ := exists_solution_contDiffOn_variational k
     (f := fun p : ℝ × ℝ => p.1) (t₀ := t₀) (x₀ := x₀) contDiffAt_fst
   exact ⟨δ, φ, hδ, h4⟩
+
+/-- **Non-vacuity of `hasDerivAt_of_lieBracket_eq_zero_rectangle`**: two constant fields `v`, `w`
+and `β τ σ = x + τ v + σ w`, for a time `T` of any size. -/
+theorem hasDerivAt_rectangle_const {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    (v w x : E) (T σ₀ : ℝ) {τ : ℝ} (hτ : τ ∈ Icc 0 T) :
+    HasDerivAt (fun σ : ℝ => x + τ • v + σ • w) w σ₀ := by
+  refine hasDerivAt_of_lieBracket_eq_zero_rectangle (V := fun _ => v) (W := fun _ => w)
+    (β := fun τ σ => x + τ • v + σ • w) (U := univ) (T := T) isOpen_univ contDiffOn_const
+    (fun _ _ => differentiableAt_const w) (fun y _ => by simp [lieBracket])
+    (Eventually.of_forall fun σ t _ => ⟨?_, mem_univ _⟩) ?_ hτ
+  · have h1 := (((hasDerivAt_id t).smul_const v).const_add x).add_const (σ • w)
+    simpa using h1.hasDerivWithinAt
+  · have h1 := ((hasDerivAt_id σ₀).smul_const w).const_add (x + (0 : ℝ) • v)
+    simpa using h1
 
 end Lightlike.ODE.Tests

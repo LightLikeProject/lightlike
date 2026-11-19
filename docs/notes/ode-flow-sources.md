@@ -1,6 +1,6 @@
 # ODE flows, commuting flows and Frobenius: sources read, and how the library compares
 
-Files: `Lightlike/ODE/` (`Gronwall`, `FlowDeriv`, `LocalFlow`, `FlowJoint`, `CommutingFlows`, `CommutingConverse`,
+Files: `Lightlike/ODE/` (`Gronwall`, `FlowDeriv`, `LocalFlow`, `FlowJoint`, `CommutingFlows`, `CommutingConverse`, `CommutingRectangle`,
 `CommutingFrame`, `InvolutiveFrame`, `Frobenius`, `FrobeniusChart`, `FlowContDiff`,
 `HigherVariational`, `Tests`).
 
@@ -80,12 +80,21 @@ The converses are in `Lightlike.ODE.CommutingConverse`:
 `IsFlowBox.lieBracket_eq_zero_of_flow_comm` ((3) ⇒ (1)). So the three assertions of the corollary
 are equivalent in flow boxes.
 
-Differences from Michor, Corollary 3.15:
-- weaker: local form (flow boxes: small times, initial points near `x₀`), not "wherever one side
-  is defined along the rectangle" of times. No attempt at the non-local form is on record yet;
-  it needs the derivative of the flow in the initial point along a trajectory of arbitrary
-  length, and `IsFlowBox` has the short-time condition `K T ≤ 1/2`.
-- representation: `C¹` fields on an open subset of a Banach space, not smooth fields on a manifold.
+The non-local form is `Lightlike.ODE.hasDerivAt_of_lieBracket_eq_zero_rectangle` (and `…_neg` for
+negative times of `V`), in `Lightlike.ODE.CommutingRectangle`: if `[V, W] = 0` on an open set `U`
+and `β(τ, σ)` solves `∂_τ β = V(β)` in `U` for `τ ∈ [0, T]` and all `σ` near `σ₀`, with
+`∂_σ β(0, σ₀) = W(β(0, σ₀))`, then `∂_σ β(τ, σ₀) = W(β(τ, σ₀))` for all `τ ∈ [0, T]`, with no
+smallness condition on `T`. With `β(τ, σ) = Fl^V_τ(Fl^W_σ x)` this says that the composition is an
+integral curve of `W` in `σ` wherever it is defined along the rectangle, which is Michor's
+condition "one side is defined even along `[0, t] × [0, s]`".
+
+Differences from Michor, Corollary 3.15 (representation only):
+- representation: `C¹` fields on an open subset of a Banach space, not smooth fields on a manifold;
+- representation: there is no global flow `Fl` in the library, so (3) is stated for a map `β`
+  with the defining properties of `Fl^V_τ ∘ Fl^W_σ` and concludes that `σ ↦ β(τ, σ)` is an
+  integral curve of `W` (which, by uniqueness of integral curves, is the equality with
+  `Fl^W_σ(Fl^V_τ x)`); the converses (3) ⇒ (2) ⇒ (1) are stated in flow boxes, which is where the
+  derivative at `t = 0` or `s = 0` is taken.
 
 ### (c) Frobenius
 
