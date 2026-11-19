@@ -24,9 +24,9 @@ The disjoint union of labelled graphs is compatible with relabelling, so it is d
 
 **The exponential formula `X = e^{X_c}`** holds coefficientwise in the algebra of all graphs (any vertex degrees, legs allowed) {2}: the components of a labelled graph are its closed connected vertex sets and their number is a class invariant [15]; cutting a graph at a component and gluing it back is a bijection with the pairs (connected graph, rest) [16]; double counting the pairs (graph, component) gives `X_c^m(c) = [c has m components] · m! · #labelled copies/(n! k!)`, and so `e^{X_c} = X` [17].
 
-The Feynman expansion of a Gaussian integral on `ℝⁿ`: for a homogeneous polynomial `V` of degree `d` with coefficient tensor `c` and a positive semidefinite covariance `S`, `E_S[V^m]` is the sum over the labellings of the `m` vertices and the full Wick contractions of their `md` legs of `∏_v c_(i_v) ∏_(pairs) S`; it vanishes when `md` is odd [18] {4}. The same holds for a general polynomial potential `U = Σ_κ V_κ` with homogeneous parts of degrees `d κ`: `E_S[U^m]` is the sum over the types of the `m` vertices, their labellings and the full Wick contractions of all the legs [19] {4}.
+The Feynman expansion of a Gaussian integral on `ℝⁿ`: for a homogeneous polynomial `V` of degree `d` with coefficient tensor `c` and a positive semidefinite covariance `S`, `E_S[V^m]` is the sum over the labellings of the `m` vertices and the full Wick contractions of their `md` legs of `∏_v c_(i_v) ∏_(pairs) S`; it vanishes when `md` is odd [18] {4}. The same holds for a general polynomial potential `U = Σ_κ V_κ` with homogeneous parts of degrees `d κ`: `E_S[U^m]` is the sum over the types of the `m` vertices, their labellings and the full Wick contractions of all the legs [19] {4}. As a sum over Feynman graphs: for a symmetric coefficient tensor, `E_S[(V/d!)^m]/m!` is the sum over the orbits of the leg pairings under `S_d ≀ S_m` of the graph weight divided by the order of the stabilizer, `|Aut Γ|` [20] {4}.
 
-**Missing.** The error bound of the quartic expansion is not stated in Borinsky, who treats the integral formally. The formal integral is compared with Borinsky's Definition 3.1.1 and eq. (3.1.8) {2}, the graphs with Borinsky §2.1 and §2.3 {2}, and Wick's theorem with Tubaro–Zanella's Theorem 2.19 {3}, the Feynman expansion with Polyak's eq. (18) {4} (labelled contractions of a polynomial potential; the graph form with `1/|Aut Γ|`, Proposition 2.17, is open); the Gaussian measure and its integrals are not yet compared with a source.
+**Missing.** The error bound of the quartic expansion is not stated in Borinsky, who treats the integral formally. The formal integral is compared with Borinsky's Definition 3.1.1 and eq. (3.1.8) {2}, the graphs with Borinsky §2.1 and §2.3 {2}, and Wick's theorem with Tubaro–Zanella's Theorem 2.19 {3}, the Feynman expansion with Polyak's eq. (18) {4} (labelled contractions of a polynomial potential) and Proposition 2.17 {4} (graphs with `1/|Aut Γ|` for one vertex degree, with the `1/k!` normalisation of the potential); the Gaussian measure and its integrals are not yet compared with a source.
 
 ## Lean References
 
@@ -61,6 +61,9 @@ The Feynman expansion of a Gaussian integral on `ℝⁿ`: for a homogeneous poly
    `FieldTheory.moment_ofFn_eq_pairSum_of_posSemidef`, `FieldTheory.integral_homogPoly_pow`, `FieldTheory.integral_homogPoly_pow_of_odd`
 19. Lightlike/FieldTheory/Gaussian/FeynmanPoly.lean - `FieldTheory.polyPot`, `FieldTheory.legLabelsSigma`, `FieldTheory.polyPot_pow`,
    `FieldTheory.integral_polyPot_pow`
+20. Lightlike/FieldTheory/Gaussian/FeynmanGraphs.lean - `FieldTheory.edgeWeight`, `FieldTheory.edges`, `FieldTheory.pairSum_eq_sum_involutions`,
+   `FieldTheory.pairSum_legLabels`, `FieldTheory.LegPairing`, `FieldTheory.legPerm`, `FieldTheory.card_legPerm`, `FieldTheory.sum_eq_sum_orbits`,
+   `FieldTheory.graphWeight`, `FieldTheory.graphWeight_smul`, `FieldTheory.integral_homogPoly_pow_graphs`
 
 ## References
 
