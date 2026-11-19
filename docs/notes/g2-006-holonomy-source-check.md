@@ -1,6 +1,7 @@
 # G2-006: paths, holonomy and gauge action (source check)
 
-Lean files: `Lightlike/ODE/GlobalLipschitz.lean`, `Lightlike/Canonical/Holonomy.lean` (in progress).
+Lean files: `Lightlike/ODE/GlobalLipschitz.lean`, `Lightlike/Canonical/Holonomy.lean`,
+`Lightlike/Canonical/HolonomyPaths.lean` (in progress).
 
 ## Source read
 
@@ -17,6 +18,11 @@ footnote 17) and p. 35 (the common graph `α₃` of two graphs). Printed page nu
 | `transport_trans`: `U(u, s) = U(u, t) U(t, s)` | eq. (4.35) (the parallel transport from `e(t₁)` to `e(t)`) | Supporting result. |
 | `holonomy`: `A(e) = U(t₂, t₁)` | eq. (4.36), p. 33 | Same. The edges are `C¹` on `ℝ`, where AL use closed-piecewise analytic edges. Representation: footnote 17, p. 33: "These assumptions can be relaxed and one can work with just smooth structures". |
 | `holonomy_mem_specialUnitaryGroup`: for `su(2)`-valued `A`, `A(e) ∈ SU(2)` (`transport_conjTranspose_mul_self`: unitary for `u(n)`; `transport_det_two`: `det = 1` for traceless `A` in dimension two) | p. 33, after (4.36): "Thus, `A(e) ∈ G`" | Same for `G = SU(2)`. |
+| `holonomy_comp_reparam`: `A(e ∘ φ) = A(e)` for `C¹` `φ` monotone on the parameter interval | p. 33, after (4.36): `A(e)` "is unchanged under orientation-preserving re-parameterizations of `e`" | Same, for `C¹` reparametrisations that are monotone (not necessarily strictly). |
+| `transport_isUnit`, `Edge.isUnit_hol`: the transport is invertible | p. 33: `A(e) ∈ G` | Supporting result (a left inverse solves `Y' = Y A_a ė^a`). |
+| `holonomy_revPath`, `Edge.hol_rev`, `PwPath.hol_rev`: `A(e⁻¹) = A(e)⁻¹` | eq. (4.37), p. 33, with "`e⁻¹` is obtained from `e` by simply reversing the orientation" | Same; for a piecewise path `p⁻¹` reverses the pieces and their order. |
+| `Edge`, `PwPath`, `PwPath.hol`, `PwPath.hol_trans`, `PwPath.hol_comp₂`: `A(e₂ ∘ e₁) = A(e₂) A(e₁)` | eq. (4.37), p. 33 | Same, for piecewise `C¹` paths (lists of `C¹` edges, each starting where the previous one ends), the class closed under composition; AL's edges are closed-piecewise analytic (footnote 17), the representation line above. |
+| `Edge.hol_split`: splitting an edge does not change its holonomy | p. 33: "introducing suitable new vertices on `e`" (before (4.39)) | Supporting result: the holonomy of a piecewise path does not depend on the subdivision of a `C¹` piece. |
 
 ## Trust checks
 
@@ -25,7 +31,5 @@ footnote 17) and p. 35 (the common graph `α₃` of two graphs). Printed page nu
 
 ## Open (the rest of G2-006)
 
-* (4.37), p. 33: `A(e₂ ∘ e₁) = A(e₂) A(e₁)` for piecewise `C¹` paths, `A(e⁻¹) = A(e)⁻¹`, invariance under
-  orientation-preserving reparametrisation;
 * the gauge action (4.14), p. 28, on holonomies, and the maps `I_E`, `I_V` of (4.16)-(4.17);
 * graphs and the order `α ≤ α′` (p. 27, footnote 13), and the common graph `α₃` of two graphs (p. 35).
