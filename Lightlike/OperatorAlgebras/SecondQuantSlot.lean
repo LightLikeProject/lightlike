@@ -17,7 +17,7 @@ bounded operator on `ℓ²(M, Z)` of norm at most `‖h‖`; `ℓ²(M, Z)` is `Z
 
 open scoped InnerProductSpace ENNReal
 
-namespace Lightlike.OperatorAlgebras
+namespace Lightlike.OperatorAlgebras.SecondQuantSlot
 
 variable {M : Type*} {Z : Type*} [NormedAddCommGroup Z] [InnerProductSpace ℂ Z]
 
@@ -233,4 +233,4 @@ theorem norm_dGammaTensor_le (n : ℕ) (h : Z →L[ℂ] Z) : ‖dGammaTensor b n
         Finset.sum_le_sum fun j _ => norm_slotOp_le b j h
     _ = (n + 1) * ‖h‖ := by simp
 
-end Lightlike.OperatorAlgebras
+end Lightlike.OperatorAlgebras.SecondQuantSlot

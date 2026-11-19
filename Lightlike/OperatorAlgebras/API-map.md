@@ -411,10 +411,10 @@ The Schatten sum `‖K‖_p^p` is the supremum of `∑ₖ |⟪ψₖ, K ϕₖ⟫|
 114. Lightlike/OperatorAlgebras/SecondQuantRank.lean - `OperatorAlgebras.SecondQuantFinite.IsFieldAlgebra`, `OperatorAlgebras.SecondQuantFinite.rankOp`, `OperatorAlgebras.SecondQuantFinite.rankOpAdj`, `OperatorAlgebras.SecondQuantFinite.dGammaRank`,
     `OperatorAlgebras.SecondQuantFinite.dGammaRank_commutator_creation`, `OperatorAlgebras.SecondQuantFinite.dGammaRank_commutator_annihilation`, `OperatorAlgebras.SecondQuantFinite.compLeft`, `OperatorAlgebras.SecondQuantFinite.rankOp_comp`,
     `OperatorAlgebras.SecondQuantFinite.dGammaRank_commutator`
-115. Lightlike/OperatorAlgebras/SecondQuantSlot.lean - `OperatorAlgebras.slotMap`, `OperatorAlgebras.norm_slotMap_le`,
-    `OperatorAlgebras.coordL`, `OperatorAlgebras.uncoordL`, `OperatorAlgebras.slotC`, `OperatorAlgebras.norm_slotC_le`,
-    `OperatorAlgebras.slotEquiv`, `OperatorAlgebras.slotOp`, `OperatorAlgebras.norm_slotOp_le`, `OperatorAlgebras.dGammaTensor`,
-    `OperatorAlgebras.norm_dGammaTensor_le`
+115. Lightlike/OperatorAlgebras/SecondQuantSlot.lean - `OperatorAlgebras.SecondQuantSlot.slotMap`, `OperatorAlgebras.SecondQuantSlot.norm_slotMap_le`,
+    `OperatorAlgebras.SecondQuantSlot.coordL`, `OperatorAlgebras.SecondQuantSlot.uncoordL`, `OperatorAlgebras.SecondQuantSlot.slotC`, `OperatorAlgebras.SecondQuantSlot.norm_slotC_le`,
+    `OperatorAlgebras.SecondQuantSlot.slotEquiv`, `OperatorAlgebras.SecondQuantSlot.slotOp`, `OperatorAlgebras.SecondQuantSlot.norm_slotOp_le`, `OperatorAlgebras.SecondQuantSlot.dGammaTensor`,
+    `OperatorAlgebras.SecondQuantSlot.norm_dGammaTensor_le`
 
 ## References
 
