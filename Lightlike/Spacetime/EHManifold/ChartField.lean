@@ -49,13 +49,14 @@ lemma formTriv_apply (x₁ : M) {y : M} (hy : y ∈ (chartTriv n x₁).baseSet)
     exact ⟨hy, mem_univ _⟩
   rw [hom_trivializationAt_apply]
   simp only [ContinuousLinearMap.inCoordinates, ContinuousLinearMap.comp_apply]
-  have h2 := Trivialization.coe_linearMapAt_of_mem (R := ℝ)
+  have h3 := Trivialization.continuousLinearMapAt_apply_of_mem (R := ℝ)
     (trivializationAt ((Fin n → ℝ) →L[ℝ] ℝ)
       (fun x : M => TangentSpace 𝓘(ℝ, Fin n → ℝ) x →L[ℝ] ℝ) x₁) hb
-  rw [h2]
-  simp only [hom_trivializationAt_apply, ContinuousLinearMap.inCoordinates,
-    ContinuousLinearMap.comp_apply]
-  simp
+    (B ((chartTriv n x₁).symmL ℝ y a))
+  refine (congrArg (fun ℓ : (Fin n → ℝ) →L[ℝ] ℝ => ℓ b) h3).trans ?_
+  show (ContinuousLinearMap.inCoordinates (Fin n → ℝ) (TangentSpace 𝓘(ℝ, Fin n → ℝ)) ℝ
+    (Bundle.Trivial M ℝ) x₁ y x₁ y (B ((chartTriv n x₁).symmL ℝ y a))) b = _
+  simp [ContinuousLinearMap.inCoordinates]
 
 /-- The bilinear form at `y` with components `ρ(y) S` in the chart at `x₁` (zero outside the chart domain). -/
 def ofChartFun (x₁ : M) (ρ : M → ℝ) (S : Matrix (Fin n) (Fin n) ℝ) (y : M) :
@@ -68,8 +69,8 @@ lemma formTriv_ofChartFun (x₁ : M) (ρ : M → ℝ) (S : Matrix (Fin n) (Fin n
     ((formTriv n x₁) ⟨y, ofChartFun x₁ ρ S y⟩).2 = ρ y • matForm S := by
   have hy' := mem_formTriv_baseSet x₁ hy
   have h := (formTriv n x₁).continuousLinearMapAt_symmL (R := ℝ) hy' (ρ y • matForm S)
-  rw [Trivialization.continuousLinearMapAt_apply_of_mem (R := ℝ) (e := formTriv n x₁) (hb := hy')] at h
-  exact h
+  exact (Trivialization.continuousLinearMapAt_apply_of_mem (R := ℝ) (formTriv n x₁) hy'
+    (ofChartFun x₁ ρ S y)).symm.trans h
 
 /-- `ofChartFun` on two tangent vectors given by their components. -/
 lemma ofChartFun_apply (x₁ : M) (ρ : M → ℝ) (S : Matrix (Fin n) (Fin n) ℝ) {y : M}
