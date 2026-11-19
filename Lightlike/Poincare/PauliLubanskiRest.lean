@@ -17,6 +17,11 @@ generators are derived from the representation at the rest momentum only, the re
 as the definition of `W` there, and the boost terms (which cancel by antisymmetry at the rest momentum) and the
 Pauli–Lubanski operator at other momenta are not formalised.
 
+**Attempts recorded** (`docs/notes/ha6-pauli-lubanski-attempts.md`): (1) generators at the standard momentum, this
+file; (2) a direct computation at a general momentum, stopped by the discontinuity of the massless standard lift
+near `P₀₀ = 0` (no continuous global section exists) and, in the massive case, by the length of the computation of
+the derivative of the standard lift along the orbit.
+
 ## References
 
 * X. Bekaert, N. Boulanger, *The unitary representations of the Poincaré group in any spacetime dimension*,
