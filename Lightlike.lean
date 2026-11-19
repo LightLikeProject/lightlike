@@ -244,6 +244,9 @@ import Lightlike.GR.KruskalFunction
 import Lightlike.GR.KruskalMetric
 import Lightlike.GR.EuclideanSchwarzschild
 import Lightlike.GR.Schwarzschild
+import Lightlike.GR.SAdSVacuum
+import Lightlike.GR.StaticSphericalJet
+import Lightlike.GR.StaticSphericalRicci
 import Lightlike.Lorentz.Cartan
 import Lightlike.Lorentz.Continuity
 import Lightlike.Lorentz.Density
