@@ -2410,3 +2410,17 @@
   review: kernel-checked
   note: "On Matrix n n C with tau^{-i beta}(B) = e^{beta H} B e^{-beta H}: a matrix rho of trace 1 satisfies tr(rho A B) = tr(rho tau^{-i beta}(B) A) for all A, B (the beta-KMS condition, eq. (2.24)) iff rho = e^{-beta H} / tr e^{-beta H}. Compared with Jaksic-Ogata-Pautrat-Pillet, Section 2.9, eq. (2.24) and Proposition 2.20, p. 53 (read). The statement is more general than the source's: H is any matrix with tr e^{-beta H} != 0 (the source takes H self-adjoint, where this holds), and rho is only required to have trace 1 (the source's states are positive)."
   since: unreleased
+- id: LL-0184
+  title: The self-adjoint extensions of the momentum operator on the unit interval are the operators with the boundary condition psi(1) = e^{i theta} psi(0)
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/MomentumTheta.lean
+  decls: [Lightlike.OperatorAlgebras.selfAdjoint_extensions_momentumZero, Lightlike.OperatorAlgebras.momentumZero_eq_closure, Lightlike.OperatorAlgebras.momentumTheta_isSelfAdjoint]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: bonneau-faraut-valent-2001, location: "eq. (14), p. 8", check: "self-adjoint extensions"}
+      - {ref: bonneau-faraut-valent-2001, location: "Appendix A.3, p. 19", check: "finite interval"}
+  review: kernel-checked
+  note: "For the momentum P = -i d/dx on L^2(0, 1): the domain of the adjoint is D_max, the functions absolutely continuous on [0, 1] with derivative in L^2 (mem_adjoint_iff_ac, in MomentumBoundary.lean); the closed operator P is the adjoint on D_0 = {psi in D_max : psi(0) = psi(1) = 0} and equals the closure of -i d/dx on the C^2 functions supported inside (0, 1) (momentumZero_eq_closure); a self-adjoint operator B extends P iff B = P_theta, the adjoint on D_theta = {psi in D_max : psi(1) = e^{i theta} psi(0)}, for some real theta. Compared with Bonneau-Faraut-Valent, Section 5.3, eq. (14), p. 8, and Appendix A.3, p. 19 (read). Differences, kind convention, to be approved by a maintainer: (a) the interval is [0, 1] (L = 1); (b) theta ranges over the reals instead of [0, 2 pi] (the same operators)."
+  since: unreleased

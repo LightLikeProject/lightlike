@@ -949,6 +949,10 @@ references:
     cite: "V. Moretti, Mathematical foundations of quantum mechanics: an advanced short course, Int. J. Geom. Methods Mod. Phys. 13 (2016) 1630011"
     title: "Mathematical Foundations of Quantum Mechanics: An Advanced Short Course"
     arxiv: "1508.06951"
+  bonneau-faraut-valent-2001:
+    cite: "G. Bonneau, J. Faraut and G. Valent, Self-adjoint extensions of operators and the teaching of quantum mechanics, Am. J. Phys. 69 (2001) 322"
+    title: "Self-adjoint extensions of operators and the teaching of quantum mechanics"
+    arxiv: quant-ph/0103153
   nielsen-petz-2005:
     cite: "M. A. Nielsen and D. Petz, A simple proof of the strong subadditivity inequality, Quantum Inf. Comput. 5 (2005) 507-513"
     title: "A simple proof of the strong subadditivity inequality"
