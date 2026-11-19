@@ -261,6 +261,12 @@ import Lightlike.OperatorAlgebras.FockReduction
 import Lightlike.OperatorAlgebras.HilbertSchmidtBasis
 import Lightlike.OperatorAlgebras.ShaleAlgebra
 import Lightlike.OperatorAlgebras.ShaleHilbertSchmidt
+import Lightlike.OperatorAlgebras.ShaleDeterminant
+import Lightlike.OperatorAlgebras.FockVacuumAverage
+import Lightlike.OperatorAlgebras.ShaleNecessity
+import Lightlike.OperatorAlgebras.FockContinuity
+import Lightlike.OperatorAlgebras.VacuumProjection
+import Lightlike.OperatorAlgebras.ShaleSufficiency
 import Lightlike.OperatorAlgebras.FockUnique
 import Lightlike.OperatorAlgebras.GeneratorTranslation
 import Lightlike.OperatorAlgebras.GramUnitary
@@ -293,6 +299,8 @@ import Lightlike.OperatorAlgebras.TestsFock
 import Lightlike.OperatorAlgebras.TestsFockExists
 import Lightlike.OperatorAlgebras.TestsFockIrreducible
 import Lightlike.OperatorAlgebras.TestsFockReduction
+import Lightlike.OperatorAlgebras.TestsShale
+import Lightlike.OperatorAlgebras.TestsShaleSqueeze
 import Lightlike.OperatorAlgebras.TestsMomentumDeficiency
 import Lightlike.OperatorAlgebras.TestsMomentumSmooth
 import Lightlike.OperatorAlgebras.TestsResolvent
