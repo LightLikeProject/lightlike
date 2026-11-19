@@ -250,6 +250,9 @@ import Lightlike.Lorentz.Tests
 import Lightlike.Lorentz.WeightedComp
 import Lightlike.OperatorAlgebras.BoundedGroup
 import Lightlike.OperatorAlgebras.Deficiency
+import Lightlike.OperatorAlgebras.FiniteGNS
+import Lightlike.OperatorAlgebras.FiniteGNSUnique
+import Lightlike.OperatorAlgebras.FiniteKMS
 import Lightlike.OperatorAlgebras.FockExists
 import Lightlike.OperatorAlgebras.FockIrreducible
 import Lightlike.OperatorAlgebras.FockKernel
