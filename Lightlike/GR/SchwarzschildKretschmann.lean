@@ -11,8 +11,9 @@ the components `R^a_{bab} = κ_{ab} g_{bb}` with `κ_{tr} = κ_{θφ} = 2M/r³` 
 `R_{abcd} R^{abcd} = 48 M² / r⁶`.
 
 **Difference from the source (kind: the source is in error).** S. M. Carroll, *Lecture Notes on General
-Relativity*, arXiv:gr-qc/9712019, eq. (7.30) (printed page 172, read) states
-`R^{μνρσ} R_{μνρσ} = 12 G²M²/r⁶`. The computation here gives `48 M²/r⁶` (`G = 1`): the six index pairs contribute
+Relativity*, arXiv:gr-qc/9712019v1 (3 December 1997), eq. (7.30) (printed page 172, read) prints
+`R^{μνρσ} R_{μνρσ} = 12 G²M²/r⁶`, with `G` and `M` (not `2GM` or a Schwarzschild radius; `12 (2GM)²/r⁶` would be
+correct). The computation here gives `48 M²/r⁶` (`G = 1`): the six index pairs contribute
 `4 (2M/r³)² · 2 + 4 (M/r³)² · 4 = 48 M²/r⁶`; `12 M²/r⁶` is the sum `Σ_{a<b} κ_{ab}²` without the factor `4` from the
 symmetries of the Riemann tensor. The conclusion drawn in the source, that the invariant diverges as `r → 0`, is
 unaffected.

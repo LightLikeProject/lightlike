@@ -95,4 +95,22 @@ Maximality, state of the attempts:
   does not run into `r = 0` is complete; with that, the standard argument (a boundary point of an extension is
   reached by a geodesic of finite affine length) closes maximality. Not in the library: geodesics of the Kruskal
   metric beyond the radial null ones, affine completeness, and the notion of an extension of a Lorentzian manifold.
-* Attempt 2: not started.
+* Attempt 2 (19 November 2026): maximality stated for the chart, "no coordinate metric on a larger connected open
+  set restricts to the Kruskal metric under an isometric chart embedding". This statement is FALSE, so the attempt
+  fails for a concrete reason: the chart domain `kruskalU` has `0 < θ < π`, it omits the rotation axis `θ = 0, π` of
+  every two-sphere. The Kruskal manifold is `{X² - T² > -1} × S²`, and `kruskalU` is a proper open subset of it;
+  a second chart with a rotated polar axis extends it. Every geodesic that crosses the axis leaves the chart at a
+  finite affine parameter without any singularity. So maximality cannot be stated or proved at the level of one
+  coordinate chart; it needs the Kruskal manifold with its `S²` factor (two charts at least, or the product
+  structure), which the library does not have: the manifold of the exterior in
+  Lightlike/Spacetime/SchwarzschildManifold.lean is also an open subset of `ℝ⁴` in one chart.
+  What attempt 2 produced and is true: the notion `IsCoordGeodesic`, the ingoing radial null rays as geodesics with
+  affine parameter `-r` in Eddington-Finkelstein coordinates, and the divergence of the Kretschmann scalar at the
+  finite affine parameter `r₀` along them (Lightlike/GR/EFNullGeodesic.lean): the extension is geodesically
+  incomplete at `r = 0`, the "finite distance" condition of the source (page 171).
+* What a full proof needs, in order: (1) the Kruskal manifold `{X² - T² > -1} × S²` as a Lorentzian manifold;
+  (2) the notion of an extension (an isometric open embedding into a connected Lorentzian manifold that is not
+  onto); (3) existence of geodesics in the extension through a boundary point (Picard-Lindelöf for the geodesic
+  equation); (4) the classification of the geodesics of the Kruskal manifold by the constants of motion `E`, `L`:
+  each inextendible one is complete or has `r → 0` at a finite affine parameter; (5) the curvature argument of
+  attempt 1. Steps (1)-(4) are new infrastructure.

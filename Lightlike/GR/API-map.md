@@ -36,6 +36,8 @@ exact solutions, such as Kerr and de Sitter, are not yet formalized. [TODO]
 7. Lightlike/GR/KruskalKretschmann.lean - `kretschmann_congr_on`, `kretschmann_ef`, `kretschmann_kruskal`
    (`48 M²/r⁶` on the whole Kruskal domain), `kretschmann_kruskal_unbounded`, `not_tendsto_of_isometric_chart`
    (no extension through the singularity `r = 0`)
+8. Lightlike/GR/EFNullGeodesic.lean - `IsCoordGeodesic`, `ef_ingoing_isCoordGeodesic`, `ef_ingoing_null`,
+   `tendsto_kretschmann_ef_ingoing` (the singularity is reached at finite affine parameter)
 
 ## References
 
