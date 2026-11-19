@@ -19,6 +19,12 @@ For `m > 0` the forward mass shell `MassShellH m = {P | P > 0, det P = m²}` is 
 This is the algebraic core of the induced massive representations: for a unitary representation `D` of `SU(2)`,
 `(U(A) ψ)(P) = D(W(A, A⁻¹ • P)) ψ(A⁻¹ • P)` is a representation because of the cocycle identity.
 
+**Difference from the source (kind: representation).** Bekaert–Boulanger write the standard boost, the little
+group and the Wigner rotation for `Λ ∈ SO(D−1,1)↑` acting on `ℝ^{D−1,1}` (§3.1, equations (10)–(13); §3.2); here
+they are stated for the universal cover `SL(2,ℂ) ≅ Spin(3,1)` acting on Hermitian `2 × 2` momenta, which is how
+§1.1 (page 3) says the representations are meant ("a single (or double) valued representation of `SO(D−1,1)↑` is
+meant to be a genuine representation of `Spin(D−1,1)`"). The `SO(3,1)↑` form is not derived from this file.
+
 ## References
 
 * X. Bekaert, N. Boulanger, *The unitary representations of the Poincaré group in any spacetime dimension*,
