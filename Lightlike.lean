@@ -803,6 +803,7 @@ import Lightlike.Spacetime.LieMetric
 import Lightlike.Spacetime.KillingAlgebra
 import Lightlike.Spacetime.PoincareKilling
 import Lightlike.Spacetime.Hypersurface
+import Lightlike.Spacetime.HypersurfaceConstraints
 import Lightlike.Spacetime.VariationDet
 import Lightlike.Spacetime.VariationChristoffel
 import Lightlike.Spacetime.PalatiniAlgebra
