@@ -2157,6 +2157,11 @@
     "snippet": "(2.96) This means that the helicity structure uniquely fixes the 3-particle amplitude up to an overall constant! This may remind you of a closely related fact, namely that in a conformal field theory, the 3-point correla",
     "why": null
    },
+   "eq. (3.11)": {
+    "verified": true,
+    "snippet": "(3.11) Ân (z) ∼ z3 z z z If i and j are non-adjacent, one gains an extra power 1/z in each case. Thus any one of the three types of shifts [−, −i, [−, +i, [+, +i give valid recursion relations for gluon tree amplitudes.",
+    "why": null
+   },
    "eq. (3.3)": {
     "verified": true,
     "snippet": "(3.3) zI 2PI · RI As a result of (A) and (B), we can consider our amplitude An in terms of the shifted momenta p̂µi instead of the original momenta pµi . In particular, it is useful to study the shifted amplitude as a fu",
