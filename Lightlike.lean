@@ -258,9 +258,14 @@ import Lightlike.Lorentz.StarBound
 import Lightlike.Lorentz.Tests
 import Lightlike.Lorentz.WeightedComp
 import Lightlike.OperatorAlgebras.BoundedGroup
+import Lightlike.OperatorAlgebras.CARUnique
 import Lightlike.OperatorAlgebras.Deficiency
+import Lightlike.OperatorAlgebras.FermionFock
+import Lightlike.OperatorAlgebras.FiniteCAR
 import Lightlike.OperatorAlgebras.FockExists
+import Lightlike.OperatorAlgebras.FockInner
 import Lightlike.OperatorAlgebras.FockIrreducible
+import Lightlike.OperatorAlgebras.FockJW
 import Lightlike.OperatorAlgebras.FockKernel
 import Lightlike.OperatorAlgebras.FockReduction
 import Lightlike.OperatorAlgebras.HilbertSchmidtBasis
@@ -306,6 +311,7 @@ import Lightlike.OperatorAlgebras.StoneCore
 import Lightlike.OperatorAlgebras.StoneGenerator
 import Lightlike.OperatorAlgebras.StoneUnique
 import Lightlike.OperatorAlgebras.TestsBoundedGroup
+import Lightlike.OperatorAlgebras.TestsCARUnique
 import Lightlike.OperatorAlgebras.TestsFock
 import Lightlike.OperatorAlgebras.TestsFockExists
 import Lightlike.OperatorAlgebras.TestsFockIrreducible

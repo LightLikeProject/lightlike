@@ -59,6 +59,7 @@ For a Hilbert basis `{eᵢ}`, `∑ᵢ |⟪eᵢ, y⟫|² = ‖y‖²` (Parseval),
 On `L²(0, 1)`, a vector lies in the domain of the adjoint of `-i d/dx` (on the `C²` test functions) iff it is a primitive `c + ∫₀ˣ g` with `g ∈ L²`, equivalently iff it agrees almost everywhere with an absolutely continuous function whose derivative is in `L²`, and then the adjoint is `-i g` [64], [65]. Its continuous representative has boundary values `y(0)`, `y(1)`, and integration by parts for absolutely continuous functions gives the boundary form `⟪A† y, z⟫ - ⟪y, A† z⟫ = i (conj y(1) z(1) - conj y(0) z(0))`; the affine functions give every pair of boundary values [65]. The closure of the momentum is the adjoint on the vectors with zero boundary values, the restriction `P_θ` of the adjoint to `y(1) = e^{iθ} y(0)` is self-adjoint, and every self-adjoint extension of the momentum is a `P_θ` {5}, [66]. The constant `1` lies in the periodic domain and not in the antiperiodic one, so `P_0 ≠ P_π`, and the closure is not self-adjoint [67].
 
 The plane waves `e^{i(θ + 2πn)x}`, `n ∈ ℤ`, lie in the domain of `P_θ` and are orthonormal eigenvectors with eigenvalue `θ + 2πn`; an eigenvector of `P_θ` with eigenvalue `μ ∈ ℂ` has the continuous representative `y(0) e^{iμx}`, so `μ = θ + 2πn` and the eigenspaces are one-dimensional; off `θ + 2πℤ` the resolvent equation is solved explicitly, so the spectrum of `P_θ`, in Physlib's sense, is `θ + 2πℤ` and equals the point spectrum {5}, [68]. `θ` is in the spectrum of `P_θ` and `θ + π` is not [69].
+A representation of the CAR over `ℝᵐ` is a family of self-adjoint operators with `φ a φ b + φ b φ a = 2 δ_ab`; the Pauli matrices are one over `ℝ³`, the tensor product construction joins two, and the Jordan-Wigner operators `σ₃ ⊗ ⋯ ⊗ σ₃ ⊗ σ₁,₂ ⊗ 1 ⊗ ⋯ ⊗ 1` are one over `ℝ²ⁿ`, whose annihilation operators `aⱼ = (φ_{2j} + i φ_{2j+1}) / 2` satisfy `aᵢ aⱼ* + aⱼ* aᵢ = δᵢⱼ` and kill the empty configuration [70]. On the exterior algebra, left multiplication `a*(v)` and contraction `a(d)` satisfy the CAR with the vacuum `1` [71], and `|x⟩ ↦ ∏_{xⱼ = 1} eⱼ` is a linear isomorphism `⊗ⁿℂ² ≅ Λ(ℂⁿ)` that intertwines the Jordan-Wigner creation and annihilation operators with these [72]. The Fock inner product on `Λ(ℂⁿ)`, for which the configuration vectors are orthonormal, is the only sesquilinear form with `⟪1, 1⟫ = 1` for which `a*(eⱼ)` and `a(eⱼ*)` are mutually adjoint, and the Fock representation on it is irreducible [74]. Every representation over `ℝ²ⁿ` is unitarily equivalent to the Jordan-Wigner one tensored with the identity of its vacuum space `K = ⋂ⱼ ker aⱼ`, it is irreducible iff `K` is one-dimensional, two irreducible ones are unitarily equivalent, and over `ℝ²ⁿ⁺¹` the last generator becomes `Iₙ ⊗ T` for a self-adjoint unitary `T` of `K` {6}; the proof uses the ordered creation words `c₀^{x₀} ⋯ c_{n-1}^{x_{n-1}}` on `K`, their orthonormality and the resolution of the identity `∑ₓ cWord x · a₀c₀ ⋯ · aWord x = 1` [73].
 
 ## Lean References
 
@@ -235,6 +236,20 @@ The plane waves `e^{i(θ + 2πn)x}`, `n ∈ ℤ`, lie in the domain of `P_θ` an
     `OperatorAlgebras.spectrum_momentumTheta`, `OperatorAlgebras.pointSpectrum_momentumTheta`
 69. Lightlike/OperatorAlgebras/TestsMomentumSpectrum.lean - `OperatorAlgebras.theta_mem_spectrum`,
     `OperatorAlgebras.theta_add_pi_not_mem_spectrum`
+70. Lightlike/OperatorAlgebras/FiniteCAR.lean - `OperatorAlgebras.IsCARRep`, `OperatorAlgebras.isCARRep_pauli`,
+    `OperatorAlgebras.IsCARRep.tensor`, `OperatorAlgebras.jordanWigner`, `OperatorAlgebras.isCARRep_jordanWigner`,
+    `OperatorAlgebras.carAnnihilation`, `OperatorAlgebras.carCreation`,
+    `OperatorAlgebras.carAnnihilation_carCreation`, `OperatorAlgebras.carAnnihilation_jordanWigner_vacuum`
+71. Lightlike/OperatorAlgebras/FermionFock.lean - `OperatorAlgebras.creation`, `OperatorAlgebras.annihilation`,
+    `OperatorAlgebras.annihilation_creation_anticomm`, `OperatorAlgebras.annihilation_one`
+72. Lightlike/OperatorAlgebras/FockJW.lean - `OperatorAlgebras.fockEquiv`, `OperatorAlgebras.fockEquiv_vacuum`,
+    `OperatorAlgebras.fockEquiv_carCreation`, `OperatorAlgebras.fockEquiv_carAnnihilation`
+73. Lightlike/OperatorAlgebras/CARUnique.lean - `OperatorAlgebras.IsCAROn`, `OperatorAlgebras.carVacuum`,
+    `OperatorAlgebras.car_unitarily_equivalent_jordanWigner`, `OperatorAlgebras.isIrreducibleCAR_iff`,
+    `OperatorAlgebras.car_irreducible_unitarily_equivalent`, `OperatorAlgebras.car_odd_unitarily_equivalent`,
+    `OperatorAlgebras.isIrreducibleCAR_jordanWigner`
+74. Lightlike/OperatorAlgebras/FockInner.lean - `OperatorAlgebras.fockInner`, `OperatorAlgebras.fockInner_fockVec`,
+    `OperatorAlgebras.fockInner_creation`, `OperatorAlgebras.fockInner_unique`, `OperatorAlgebras.fock_irreducible`
 
 ## References
 
@@ -249,3 +264,6 @@ The plane waves `e^{i(θ + 2πn)x}`, `n ∈ ℤ`, lie in the domain of `P_θ` an
    (github.com/physicslib/physicslib4, Apache-2.0).
 5. G. Bonneau, J. Faraut and G. Valent, *Self-adjoint extensions of operators and the teaching of quantum
    mechanics*, arXiv:quant-ph/0103153, Appendix A.3 and Section 5.3, eqs. (14) and (15).
+6. J. Dereziński, *Introduction to representations of the canonical commutation and anticommutation
+   relations*, in *Large Coulomb Systems*, Lecture Notes in Physics 695, Springer, 2006, Theorem 10 and
+   Corollary 2.

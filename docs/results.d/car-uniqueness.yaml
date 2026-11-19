@@ -1,0 +1,26 @@
+- id: LL-XXXX-a
+  title: Every representation of the CAR over R^{2n} is unitarily equivalent to the Jordan-Wigner representation tensored with the identity of a Hilbert space K, and it is irreducible iff K is one-dimensional; over R^{2n+1} the last generator becomes I_n tensored with a self-adjoint unitary of K
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/CARUnique.lean
+  decls: [Lightlike.OperatorAlgebras.car_unitarily_equivalent_jordanWigner, Lightlike.OperatorAlgebras.isIrreducibleCAR_iff, Lightlike.OperatorAlgebras.car_odd_unitarily_equivalent]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: derezinski-2006, location: "Theorem 10, p. 17", check: "Theorem 10"}
+  review: kernel-checked
+  note: "Compared with Derezinski, Theorem 10, p. 17, and the definitions of Section 4.1, pp. 14-15 (read). The tensor product of C^2 x ... x C^2 with K is represented as L^2(configurations; K) (PiLp 2), on which B x 1_K acts by (B x 1) f x = sum_y B x y f y (tensorOne) and I_n x T by sum_y I_n x y T (f y) (tensorOp); K is given explicitly, the vacuum space (the joint kernel of the annihilation operators a_j = (phi_{2j} + i phi_{2j+1})/2), which is closed, so a Hilbert space when H is; H may be any complex inner product space, with symmetric phi_b (self-adjoint on a Hilbert space, isCAROn_iff); indices are 0-based. Irreducibility is the definition of p. 15, and 'irreducible iff K = C' is proved for H nonzero: as printed, the source's equivalence fails at H = {0}, which is irreducible by the p. 15 definition while K = {0}. In part 2, K_+ + K_- with 1 + (-1) is represented by K with the self-adjoint unitary T, whose eigenspaces ker(T - 1) and ker(T + 1) are orthogonal and span K (involution_decomposition)."
+  since: unreleased
+- id: LL-XXXX-b
+  title: Two irreducible representations of the CAR over R^{2n} on nonzero Hilbert spaces are unitarily equivalent
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/CARUnique.lean
+  decls: [Lightlike.OperatorAlgebras.car_irreducible_unitarily_equivalent]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: derezinski-2006, location: "Corollary 2, p. 17", check: "Corollary 2"}
+  review: kernel-checked
+  note: "Compared with Derezinski, Corollary 2, p. 17 (read): a representation over a 2n-dimensional real Hilbert space Y is the family phi_i = phi(y_i) on an orthonormal basis y_1, ..., y_2n (the source's identification, p. 14), i.e. a representation over R^{2n}; stated for nonzero spaces, as in LL-XXXX-a."
+  since: unreleased

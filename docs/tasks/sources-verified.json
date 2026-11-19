@@ -1558,6 +1558,15 @@
   "citations": 38,
   "citations_via": "Semantic Scholar"
  },
+ "derezinski-2006": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Introduction to representations of the canonical commutation and anticommutation relations",
+  "locations": {},
+  "citations": 73,
+  "citations_via": "Semantic Scholar"
+ },
  "di-francesco-ginsparg-zinn-justin-1995": {
   "checked": "2026-11-08",
   "exists": true,
