@@ -433,6 +433,7 @@ import Lightlike.PL.TestsPachner
 import Lightlike.PL.TestsNewman
 import Lightlike.PL.TestsPolygon
 import Lightlike.PL.TestsK33
+import Lightlike.Poincare.ConeMeasure
 import Lightlike.Poincare.InducedGeneric
 import Lightlike.Poincare.InducedMassive
 import Lightlike.Poincare.InducedUnitary
