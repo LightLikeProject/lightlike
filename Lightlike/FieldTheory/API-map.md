@@ -28,7 +28,9 @@ The Feynman expansion of a Gaussian integral on `ℝⁿ`: for a homogeneous poly
 
 **The Feynman rules with a source**: a weight on graph classes that is multiplicative under disjoint union turns `X = e^{X_c}` into `Σ_Γ w(Γ)/|Aut Γ| = exp(Σ_γ w(γ)/|Aut γ|)` for the generating functions graded by half-edges and vertices [22]. With the vertex weights `μ_d` (`μ_1 = j`, `μ_d = λ_d`) on the leg-free graphs, distributing the half-edges over the vertices [23] and pairing them gives the formal partition function with a source, `Z(ħ, j) = Σ_Γ ∏_v μ_{deg v}/|Aut Γ|`, and `Z = exp(W/ħ)` with `W/ħ` the sum over the connected graphs [24] {2}.
 
-**Missing.** The error bound of the quartic expansion is not stated in Borinsky, who treats the integral formally. The formal integral is compared with Borinsky's Definition 3.1.1 and eq. (3.1.8) {2}, the graphs with Borinsky §2.1 and §2.3 {2}, and Wick's theorem with Tubaro–Zanella's Theorem 2.19 {3}, the Feynman expansion with Polyak's eq. (18) {4} (labelled contractions of a polynomial potential) and Proposition 2.17 {4} (graphs with `1/|Aut Γ|` for a general polynomial potential, with the `1/k!` normalisation); the Gaussian measure and its integrals are not yet compared with a source.
+Every vertex of a vacuum graph lies in exactly one connected component; splitting it off gives `a_{n+1} = Σ_k C(n, k) c_{k+1} a_{n-k}` for the numbers `a_n` of pairings and `c_n` of connected pairings of `n` vertices, so the series `Z = Σ a_n xⁿ/(24ⁿ n!)` and `W = Σ c_n xⁿ/(24ⁿ n!)` satisfy `Z' = W' Z`, `Z = exp(W)` and `log Z = W` [25] [26] {2}. The coefficients of `Z` and `W` are the sums of `1/|Aut Γ|` over all and over the connected vacuum graphs with `n` vertices, so this is the exponential formula `Σ_Γ x^{|V_Γ|}/|Aut Γ| = exp(Σ_{Γ connected} x^{|V_Γ|}/|Aut Γ|)` for the quartic theory; at two vertices the connected graphs have total symmetry factor `1/12` and the disconnected one `1/128` [26] {2}.
+
+**Missing.** The error bound of the quartic expansion is not stated in Borinsky, who treats the integral formally. The formal integral is compared with Borinsky's Definition 3.1.1 and eq. (3.1.8) {2}, the graphs with Borinsky §2.1 and §2.3 {2}, the exponential formula with Theorem 2.4.1 {2}, and Wick's theorem with Tubaro–Zanella's Theorem 2.19 {3}, the Feynman expansion with Polyak's eq. (18) {4} (labelled contractions of a polynomial potential) and Proposition 2.17 {4} (graphs with `1/|Aut Γ|` for a general polynomial potential, with the `1/k!` normalisation); the Gaussian measure and its integrals are not yet compared with a source.
 
 ## Lean References
 
@@ -74,6 +76,13 @@ The Feynman expansion of a Gaussian integral on `ℝⁿ`: for a homogeneous poly
 23. Lightlike/FieldTheory/ZeroDim/MapsEGF.lean - `FieldTheory.GraphAlg.derivative_prod_univ`, `FieldTheory.GraphAlg.egf`, `FieldTheory.GraphAlg.sum_maps_prod_fiber`
 24. Lightlike/FieldTheory/ZeroDim/GraphRules.lean - `FieldTheory.GraphAlg.fweight`, `FieldTheory.GraphAlg.isMultWeight_fwC`, `FieldTheory.GraphAlg.sum_fweight`,
    `FieldTheory.GraphAlg.formalZ`, `FieldTheory.GraphAlg.gen_X_eq_formalZ`, `FieldTheory.GraphAlg.coeff_formalZ_eq_exp`
+25. Lightlike/FieldTheory/ZeroDim/Connected.lean - `FieldTheory.Closed`, `FieldTheory.ConnOn`, `FieldTheory.pairOn`, `FieldTheory.connPairOn`,
+   `FieldTheory.existsUnique_component`, `FieldTheory.card_pairOn_eq_sum`, `FieldTheory.numPairings`, `FieldTheory.numConnected`,
+   `FieldTheory.numPairings_succ`, `FieldTheory.vacuumSeries`, `FieldTheory.connectedSeries`, `FieldTheory.derivative_vacuumSeries`,
+   `FieldTheory.vacuumSeries_eq_exp`
+26. Lightlike/FieldTheory/ZeroDim/ConnectedGraphs.lean - `FieldTheory.ConnPairing`, `FieldTheory.connOn_smul`, `FieldTheory.sum_inv_aut_connected`,
+   `FieldTheory.coeff_vacuumSeries`, `FieldTheory.coeff_connectedSeries`, `FieldTheory.logOf_vacuumSeries`,
+   `FieldTheory.coeff_logOf_vacuumSeries`, `FieldTheory.numConnected_two`, `FieldTheory.sum_inv_aut_connected_two`
 
 ## References
 
