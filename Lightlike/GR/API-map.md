@@ -43,6 +43,8 @@ exact solutions, such as Kerr and de Sitter, are not yet formalized. [TODO]
    Kruskal-Szekeres spacetime as a Lorentzian manifold)
 10. Lightlike/GR/KruskalSpherical.lean - `kruskalSph`, `jac_kruskalSph`, `pullback_kruskalC_sph` (the metric of
     the global chart pulls back to the Kruskal metric), `isChartChange_kruskalSph`
+11. Lightlike/GR/KruskalManifoldCurvature.lean - `exists_kruskalSph_eq`, `ricci_kruskalC_eq_zero`,
+    `kruskalC_isVacuumSolution` (vacuum equations on the whole Kruskal manifold), `kretschmann_kruskalC`
 
 ## References
 

@@ -198,6 +198,7 @@ import Lightlike.GR.KruskalFunction
 import Lightlike.GR.KruskalExterior
 import Lightlike.GR.KruskalKretschmann
 import Lightlike.GR.KruskalManifold
+import Lightlike.GR.KruskalManifoldCurvature
 import Lightlike.GR.KruskalMetric
 import Lightlike.GR.KruskalPenrose
 import Lightlike.GR.KruskalRegions

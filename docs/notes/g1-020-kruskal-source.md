@@ -114,3 +114,19 @@ Maximality, state of the attempts:
   equation); (4) the classification of the geodesics of the Kruskal manifold by the constants of motion `E`, `L`:
   each inextendible one is complete or has `r → 0` at a finite affine parameter; (5) the curvature argument of
   attempt 1. Steps (1)-(4) are new infrastructure.
+
+## The Kruskal manifold in one chart (stream Fable-1, 19 November 2026)
+
+Step (1) of the plan for maximality, done without a sphere bundle: `ℝ × S²` is `ℝ³ ∖ {0}` by `(X, n) ↦ e^X n`, so
+the Kruskal manifold `{X² - T² > -1} × S²` is the open subset `{x ≠ 0, (log |x|)² - T² > -1}` of `ℝ⁴`.
+
+* Lightlike/GR/KruskalManifold.lean: the metric `-h dT² + ((h - r²)/|x|⁴)(x·dx)² + (r²/|x|²)|dx|²` is a smooth
+  Lorentzian coordinate metric there (explicit frame); `kruskalManifoldMetric` is the Lorentzian metric on the
+  manifold.
+* Lightlike/GR/KruskalSpherical.lean: the chart `(T, X, θ, φ)` maps into it by a chart change, and the metric pulls
+  back to the Kruskal metric of the source's form (7.80).
+* Lightlike/GR/KruskalManifoldCurvature.lean: vacuum equations and the Kretschmann scalar `48 M²/r⁶` on the whole
+  manifold (the rotation axis by continuity).
+
+This global chart is the library's own; no source is cited for it. Remaining for maximality: (2) the notion of an
+extension, (3) geodesics through a boundary point of an extension, (4) the classification of the geodesics.
