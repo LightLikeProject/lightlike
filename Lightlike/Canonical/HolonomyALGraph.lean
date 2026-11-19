@@ -85,6 +85,16 @@ lemma piece_inter {j j' : Fin E.k} (hjj : j ≠ j') {s : ℝ} (hs : s ∈ Icc (E
 def hol {n : ℕ} (A : MatConn n) : Matrix (Fin n) (Fin n) ℂ :=
   (List.ofFn fun j => (E.piece j).hol A).reverse.prod
 
+/-- **The holonomy along an edge is in `SU(2)`** for an `su(2)`-valued connection (Ashtekar–Lewandowski, p. 33, after
+(4.36): "`A(e) ∈ G`"): each piece contributes an element of `SU(2)`. -/
+theorem hol_mem_specialUnitaryGroup {A : MatConn 2} (hA : ∀ a, Continuous fun x => A x a)
+    (hAH : ∀ x a, (A x a)ᴴ = -A x a) (htr : ∀ x a, (A x a).trace = 0) :
+    E.hol A ∈ specialUnitaryGroup (Fin 2) ℂ := by
+  refine Submonoid.list_prod_mem _ fun x hx => ?_
+  rw [List.mem_reverse] at hx
+  obtain ⟨j, rfl⟩ := (List.mem_ofFn' _ _).1 hx
+  exact holonomy_mem_specialUnitaryGroup hA hAH htr (E.piece j).smooth (E.piece_lt j).le
+
 end ALEdge
 
 /-- A **graph of Ashtekar–Lewandowski** (footnote 13, p. 27): finitely many edges, each embedded on `[t₀, t₁)` and on
@@ -482,6 +492,11 @@ lemma partialHol_mem (M : α.Conn) (i : Fin α.m) (σ : Fin ((α.edge i).k + 1))
   rw [List.mem_reverse] at hx
   obtain ⟨j, rfl⟩ := (List.mem_ofFn' _ _).1 (List.mem_of_mem_take hx)
   exact α.pieceIE_mem M _
+
+/-- **`I_E` takes values in `SU(2)ⁿ`** (Ashtekar–Lewandowski (4.16), p. 28): the holonomy of a connection on the graph
+along each edge is in `SU(2)`. -/
+theorem IE_mem (M : α.Conn) (i : Fin α.m) : α.IE M i ∈ specialUnitaryGroup (Fin 2) ℂ :=
+  α.partialHol_last M i ▸ α.partialHol_mem M i (Fin.last _)
 
 end ALGraph
 
