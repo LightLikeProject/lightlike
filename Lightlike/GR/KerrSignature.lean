@@ -1,13 +1,13 @@
 import Lightlike.GR.Kerr
 
 /-!
-# The Lorentzian signature of the Kerr metric outside the horizon
+# The Lorentzian signature of the Kerr metric, outside and inside the horizon
 
 For `M > 0` on `r > 0`, `Δ > 0`, `0 < θ < π` the Kerr metric is congruent to `η = diag(-1, 1, 1, 1)`:
 completing the square in the `(t, φ)` block,
 `g_tt dt² + 2 g_tφ dt dφ + g_φφ dφ² = -N² dt² + g_φφ (dφ + (g_tφ/g_φφ) dt)²`, `N² = (g_tφ² - g_tt g_φφ)/g_φφ = Δ sin²θ/g_φφ`
-(`kerr_isLorentzian_ext`). Inside the horizon (`Δ < 0`) the roles of `t` and `r` swap and a permutation is needed:
-not done here.
+(`kerr_isLorentzian_ext`). Inside the horizon (`Δ < 0`) the roles of `t` and `r` swap: `g_rr < 0` and the
+`(t, φ)` block is positive definite, congruent to `η` after a permutation (`kerr_isLorentzian_int`, no hypothesis on `M`).
 
 Gap row GE6, supporting file. Source comparison: not read (Visser 0706.0622 states the metric only).
 -/
@@ -96,6 +96,96 @@ theorem kerr_isLorentzian_ext (hM : 0 < M) : IsLorentzianCoordMetric (kerrMetric
       ring
     rw [this]; positivity
   obtain ⟨P, hP, hE⟩ := block_congruent _ _ _ _ _ g33 g11 g22 hN
+  refine ⟨P, hP, ?_⟩
+  rw [← hE]
+  ext i j
+  fin_cases i <;> fin_cases j <;> simp [kerrMetric]
+
+/-! ## Inside the horizon -/
+
+/-- The interior domain `r > 0`, `Δ < 0`, `0 < θ < π`. -/
+def kerrUint : Set (Fin 4 → ℝ) := {y | 0 < y 1 ∧ kerrD M a y < 0 ∧ 0 < y 2 ∧ y 2 < π}
+
+lemma isOpen_kerrUint : IsOpen (kerrUint M a) := by
+  refine (isOpen_lt (continuous_const : Continuous fun _ : Fin 4 → ℝ => (0 : ℝ)) (continuous_apply 1)).inter
+    ((isOpen_lt (by unfold kerrD; fun_prop : Continuous fun y : Fin 4 → ℝ => kerrD M a y)
+      (continuous_const : Continuous fun _ : Fin 4 → ℝ => (0 : ℝ))).inter
+      ((isOpen_lt continuous_const (continuous_apply 2)).inter
+        (isOpen_lt (continuous_apply 2) continuous_const)))
+
+lemma kerrUint_sub : kerrUint M a ⊆ kerrU M a :=
+  fun _ hy => ⟨hy.1, hy.2.1.ne, hy.2.2.1, hy.2.2.2⟩
+
+/-- **Completing the square inside the horizon**: `g_rr < 0` (`r` is timelike) and the `(t, φ)` block is
+positive definite. -/
+theorem block_congruent_int (g00 g03 g33 g11 g22 : ℝ) (h00 : 0 < g00) (h11 : g11 < 0) (h22 : 0 < g22)
+    (hN : 0 < g00 * g33 - g03 ^ 2) :
+    ∃ P : Matrix (Fin 4) (Fin 4) ℝ, IsUnit P.det ∧
+      !![g00, 0, 0, g03; 0, g11, 0, 0; 0, 0, g22, 0; g03, 0, 0, g33] = Pᵀ * eta 4 * P := by
+  set K := √((g00 * g33 - g03 ^ 2) / g00) with hK
+  have hKpos : 0 < K := Real.sqrt_pos.2 (div_pos hN h00)
+  have hK2 : K * K = (g00 * g33 - g03 ^ 2) / g00 := Real.mul_self_sqrt (div_pos hN h00).le
+  have h00s : 0 < √g00 := Real.sqrt_pos.2 h00
+  have h00q : √g00 * √g00 = g00 := Real.mul_self_sqrt h00.le
+  have h11s : 0 < √(-g11) := Real.sqrt_pos.2 (by linarith)
+  have h11q : √(-g11) * √(-g11) = -g11 := Real.mul_self_sqrt (by linarith)
+  have h22s : 0 < √g22 := Real.sqrt_pos.2 h22
+  have h22q : √g22 * √g22 = g22 := Real.mul_self_sqrt h22.le
+  have hne : √g00 ≠ 0 := h00s.ne'
+  refine ⟨!![0, √(-g11), 0, 0; √g00, 0, 0, g03 / √g00; 0, 0, √g22, 0; 0, 0, 0, K], ?_, ?_⟩
+  · have hdet : (!![0, √(-g11), 0, 0; √g00, 0, 0, g03 / √g00; 0, 0, √g22, 0; 0, 0, 0, K] :
+        Matrix (Fin 4) (Fin 4) ℝ).det = -(√(-g11) * √g00 * √g22 * K) := by
+      simp [Matrix.det_succ_row_zero, Fin.sum_univ_succ, Fin.succAbove]
+      ring
+    rw [hdet]
+    exact (neg_ne_zero.2 (mul_pos (mul_pos (mul_pos h11s h00s) h22s) hKpos).ne').isUnit
+  · ext i j
+    fin_cases i <;> fin_cases j <;>
+      simp [Matrix.mul_apply, Fin.sum_univ_four, eta, etaDiag, Matrix.diagonal_apply] <;>
+      first
+      | linarith [h11q]
+      | linarith [h22q]
+      | linarith [h00q]
+      | (field_simp; nlinarith [hK2, h00q])
+      | (rw [hK2, div_mul_div_comm, h00q]; field_simp; ring)
+      | field_simp
+
+/-- **Kerr has Lorentzian signature inside the horizon** too (`r` is timelike there). -/
+theorem kerr_isLorentzian_int : IsLorentzianCoordMetric (kerrMetric M a) (kerrUint M a) := by
+  refine ⟨⟨isOpen_kerrUint M a, fun y hy => (isCoordMetric_kerr M a).symm y (kerrUint_sub M a hy),
+    fun y hy => (isCoordMetric_kerr M a).isUnit_det y (kerrUint_sub M a hy),
+    fun i j => ((isCoordMetric_kerr M a).smooth i j).mono (kerrUint_sub M a)⟩, fun y hy => ?_⟩
+  obtain ⟨hr, hD, hθ, hθ'⟩ := hy
+  have hS : 0 < kerrS a y := kerrS_pos a hr
+  have hs : 0 < sin (y 2) := sin_pos_of_pos_of_lt_pi hθ hθ'
+  have hS2 : kerrS a y = y 1 ^ 2 + a ^ 2 * cos (y 2) ^ 2 := rfl
+  have hD2 : kerrD M a y = y 1 ^ 2 - 2 * M * y 1 + a ^ 2 := rfl
+  have hc := sin_sq_add_cos_sq (y 2)
+  have g00 : 0 < kerrMetric M a y 0 0 := by
+    simp only [kerrMetric]
+    simp
+    have : 0 < 2 * M * y 1 - kerrS a y := by
+      rw [hS2]; rw [hD2] at hD
+      nlinarith [sq_nonneg (a * sin (y 2)), hc]
+    have h := div_pos this hS
+    have e : -(1 - 2 * M * y 1 / kerrS a y) = (2 * M * y 1 - kerrS a y) / kerrS a y := by
+      field_simp
+      ring
+    rw [hS2] at e h ⊢
+    linarith
+  have g11 : kerrMetric M a y 1 1 < 0 := by
+    simp [kerrMetric]; exact div_neg_of_pos_of_neg hS hD
+  have g22 : 0 < kerrMetric M a y 2 2 := by simp [kerrMetric]; exact hS
+  have hN : 0 < kerrMetric M a y 0 0 * kerrMetric M a y 3 3 - kerrMetric M a y 0 3 ^ 2 := by
+    have : kerrMetric M a y 0 0 * kerrMetric M a y 3 3 - kerrMetric M a y 0 3 ^ 2 =
+        -(kerrD M a y * sin (y 2) ^ 2) := by
+      simp only [kerrMetric]
+      simp
+      field_simp
+      rw [hS2, hD2, show cos (y 2) ^ 2 = 1 - sin (y 2) ^ 2 by linarith]
+      ring
+    rw [this]; nlinarith [sq_pos_of_pos hs]
+  obtain ⟨P, hP, hE⟩ := block_congruent_int _ _ _ _ _ g00 g11 g22 hN
   refine ⟨P, hP, ?_⟩
   rw [← hE]
   ext i j

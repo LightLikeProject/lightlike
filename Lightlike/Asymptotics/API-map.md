@@ -91,7 +91,13 @@ Trust checks are in [6], [7], [9], [11], [13], [15], [17], [19], [21], [23], [25
 
 The Morse lemma with parameters: a smooth function of a variable and a parameter with a critical point at the origin for every parameter near a base value and a nondegenerate Hessian at the base value is, in coordinates that depend smoothly on the parameter, its value at the origin plus half the Hessian of the base value; the coordinate change is a local diffeomorphism. The proof is Hadamard's lemma with a smooth parameter, which makes the remainder a smooth family of self-adjoint endomorphisms equal to the identity at the base point, followed by a smooth square root of such endomorphisms near the identity from the inverse function theorem; composing with Sylvester's law gives the diagonal form with signs, and the number of negative signs is the index of the Hessian; the function x cubed at the origin has no such chart [38].
 
+A positive measure on the half line whose Laplace transform grows like `e^{a/β}` in the logarithmic sense, `β log L(β) → a > 0` as `β → 0⁺`, has a counting function with `log F(X) / (2 √(a X)) → 1`: a logarithmic Tauberian theorem of Ingham type, the growth behind the Cardy formula [41] {3}. The upper bound is the saddle estimate `F(X) ≤ e^{β X} L(β)`, from the window estimates of the Laplace transform [39] {3}. For the lower bound the Laplace transform is split into three windows around the saddle `x = a / β²`; the outer two are bounded by the Laplace transform at slightly different `β`, so the middle window carries at least half of `L(β)` [40] {3}. The theorem is weaker than Ingham's, which gives the asymptotics of `F` itself; Ingham's theorem with the power correction is open.
+
+Karamata's Tauberian theorem for a regularly varying Laplace transform is proved: if `L(β) ~ β^{-α} ℓ(1/β)` as `β → 0⁺` with `α > 0` and `ℓ` slowly varying (eventually positive, `ℓ(c t)/ℓ(t) → 1` for every `c > 0`), then the counting function `F(t)` satisfies `F(t) / (t^α ℓ(t)) → 1/Γ(α+1)` [42]. The proof scales the Laplace transform [42], evaluates polynomials in `exp(-x/t)` against the measure [43], extends to continuous functions by Weierstrass approximation, with limit functional `∫ e^{-x} k(e^{-x}) x^{α-1}/Γ(α) dx` [44], and sandwiches the indicator of the interval from `0` to `t` between two continuous ramp functions [45], whose limit values tend to `1/Γ(α+1)` [46]. Lebesgue measure (`α = 1`, `ℓ = 1`) returns the exact value `1`. The comparison of the statement with the literature is pending: no source was opened at a cited location.
+
 A positive measure on the half line whose Laplace transform grows like `e^{a/β}` in the logarithmic sense, `β log L(β) → a > 0` as `β → 0⁺`, has a counting function with `log F(X) / (2 √(a X)) → 1`: a logarithmic Tauberian theorem of Ingham type, the growth behind the Cardy formula [41] {3}. The upper bound is the saddle estimate `F(X) ≤ e^{β X} L(β)`, from the window estimates of the Laplace transform [39] {3}. For the lower bound the Laplace transform is split into three windows around the saddle `x = a / β²`; the outer two are bounded by the Laplace transform at slightly different `β`, so the middle window carries at least half of `L(β)` [40] {3}. The theorem is weaker than Ingham's, which gives the asymptotics of `F` itself; Karamata's theorem and Ingham's theorem with the power correction are open.
+
+Under the hypotheses of Mukhametzhanov and Zhiboedov (a positive spectrum whose partition function is invariant under `β ↦ 4π²/β` for `Re β > 0` and is `e^{a/β}(1 + O(e^{-g/β}))` at high temperature), the integrated spectral density has the Cardy asymptotics `F(Δ) = (1/2π)(3/(cΔ))^{1/4} e^{2π√(cΔ/3)} (1 + O(Δ^{-1/2}))` [47] {3}. The intermediate form compares the counting function with `I₀(2√(aΔ))` up to `O(Δ^{-3/4} e^{2√(aΔ)})` [48]; it rests on a pole-free smoothing of the step function, whose Fourier representation needs no inversion theorem [52], and on a comparison of a measure with its smoothing by unit windows against the local bound [53]. The distribution function of the crossing measure is `I₀(2√(ax))` [51], and `I₀` has an effective asymptotic expansion with relative error `O(1/s)` [50]. The spectrum `δ_{-v} + ρ₀` satisfies the hypotheses [49].
 
 ## Lean References
 
@@ -257,6 +263,19 @@ A positive measure on the half line whose Laplace transform grows like `e^{a/β}
 40. Lightlike/Asymptotics/Tauberian/Lower.lean - `Tauberian.counting_lower`
 41. Lightlike/Asymptotics/Tauberian/Ingham.lean - `Tauberian.laplace_bounds`, `Tauberian.log_counting_le`,
     `Tauberian.lower_eventually`, `Tauberian.ingham_log`
+42. Lightlike/Asymptotics/Tauberian/Scaling.lean - `Tauberian.SlowlyVarying`, `Tauberian.tendsto_scaled_laplace`
+43. Lightlike/Asymptotics/Tauberian/PolyIntegral.lean - `Tauberian.integral_poly_eq_sum`, `Tauberian.tendsto_poly_integral`
+44. Lightlike/Asymptotics/Tauberian/Functional.lean - `Tauberian.Phi`, `Tauberian.Lam`, `Tauberian.tendsto_lam`
+45. Lightlike/Asymptotics/Tauberian/Ramp.lean - `Tauberian.rampUp`, `Tauberian.rampDown`, `Tauberian.mul_rampUp_eq_one`
+46. Lightlike/Asymptotics/Tauberian/Karamata.lean - `Tauberian.counting_le_integral_rampUp`, `Tauberian.integral_rampDown_le_counting`, `Tauberian.karamata`
+47. Lightlike/Asymptotics/Tauberian/CardyRelative.lean - `Tauberian.cardy_relative`, `Tauberian.cardy_mz`
+48. Lightlike/Asymptotics/Tauberian/CardyCounting.lean - `Tauberian.cardy_counting`, `Tauberian.integral_exp_rho0`
+49. Lightlike/Asymptotics/Tauberian/CardyExample.lean - `Tauberian.exampleSpectrum`, `Tauberian.exampleSpectrum_hyp`,
+    `Tauberian.exampleSpectrum_modC`
+50. Lightlike/Asymptotics/Tauberian/LaplaceEff.lean - `Tauberian.laplace_cos_eff`, `Tauberian.besselI0_eff`
+51. Lightlike/Asymptotics/Tauberian/Rho0Cdf.lean - `Tauberian.rho0_real_Iic`
+52. Lightlike/Asymptotics/Tauberian/Smoothing.lean - `Tauberian.fourier_inv_eq`, `Tauberian.smooth_representation`
+53. Lightlike/Asymptotics/Tauberian/Assembly.lean - `Tauberian.comparison_le`
 
 ## References
 

@@ -43,6 +43,7 @@ import Tasks.OP.T_OP1_P4
 import Tasks.OP.T_OP1_P5
 import Tasks.OP.T_OP1_P6
 import Tasks.OP.T_OP1_P7
+import Tasks.OP.T_OP1_P8
 import Tasks.OP.T_OP2_P1
 import Tasks.OP.T_OP2_P2
 import Tasks.OP.T_OP2_P3

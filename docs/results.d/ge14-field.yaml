@@ -1,0 +1,13 @@
+- id: LL-XXXX-m
+  title: Under the Einstein equations the physical and the geometric forms of the null, weak, strong and dominant energy conditions are equivalent
+  area: Spacetime
+  file: Lightlike/Spacetime/EnergyConditionsField.lean
+  decls: [Lightlike.LorentzianMetric.nullECField_iff_ricci, Lightlike.LorentzianMetric.weakECField_iff_einstein, Lightlike.LorentzianMetric.strongECField_iff_ricci, Lightlike.LorentzianMetric.dominantECField_iff_einstein]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: curiel-2014, location: "§2.1", check: "geometric"}
+  review: kernel-checked
+  note: "For a Lorentzian metric g on a four-manifold, a connection cov and a field T of bilinear forms with G = kappa T (the Einstein equations with Lambda = 0, kappa > 0): T satisfies the null condition everywhere iff Ric(k,k) >= 0 for every null k; the weak condition iff G(xi,xi) >= 0 for every timelike xi; the strong condition iff Ric(xi,xi) >= 0 for every timelike xi (via the trace R = -kappa tr_g T); the dominant condition iff G(xi,xi) >= 0 and the vector G^a_n xi^n is causal for timelike xi, and G(xi,eta) >= 0 for co-oriented timelike xi, eta. A cosmological constant moves into the source (einsteinEq_iff_absorb). Also on the manifold: the perfect-fluid field with a unit timelike velocity field satisfies the four conditions iff the effective forms hold at every point, dust with rho >= 0 satisfies all four, a constant Klein-Gordon field with negative potential violates the weak one, the electromagnetic field satisfies the null one. Compared with E. Curiel, A Primer on Energy Conditions (arXiv 1405.0403), section 2, p. 5 ('the physical formulation is logically equivalent to the geometric formulation if the Einstein field equation is assumed to hold') and the geometric and physical forms of the table of section 2.1, p. 6. Non-vacuity: Minkowski space with T = 0. Limits: the fields need not be smooth; the geometric forms on a boundaryless manifold modelled on a finite-dimensional space. See docs/notes/ge14-energy-conditions.md."
+  since: unreleased

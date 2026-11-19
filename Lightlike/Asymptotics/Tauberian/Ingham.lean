@@ -160,7 +160,13 @@ lemma lower_eventually {a : ℝ} (ha : 0 < a)
   linarith
 
 /-- **The logarithmic Ingham Tauberian theorem.** If `β log L(β) → a > 0` as `β → 0⁺`, then
-`log F X / (2 √(a X)) → 1` as `X → ∞`. -/
+`log F X / (2 √(a X)) → 1` as `X → ∞`.
+
+Why only the logarithm: the asymptotics of `F X` itself does not follow from a hypothesis on the Laplace
+transform along the real axis, not even from `L(β) ~ C β^b e^{a/β}`. Bringmann–Jennings-Shaffer–Mahlburg
+(arXiv:1910.03036), Section 3.2, give an increasing example with these real-axis asymptotics whose
+partial sums violate the conclusion; Ingham's theorem (their Theorem 4.1) needs in addition a bound for
+complex `β` in the sectors `|Im β| ≤ Δ Re β`. The logarithmic form needs only the real axis. -/
 theorem ingham_log {a : ℝ} (ha : 0 < a)
     (hL : Tendsto (fun β : ℝ => β * Real.log (laplace ρ β)) (𝓝[>] 0) (𝓝 a)) :
     Tendsto (fun X : ℝ => Real.log (counting ρ X) / (2 * Real.sqrt (a * X))) atTop (𝓝 1) := by
