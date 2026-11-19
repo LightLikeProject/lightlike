@@ -1,7 +1,7 @@
 import Lightlike.Spacetime.RaychaudhuriCoord
 import Lightlike.Spacetime.RaychaudhuriShear
 import Lightlike.Spacetime.OpenCoordMetric
-import Lightlike.Cosmology.Raychaudhuri
+import Lightlike.Spacetime.RiccatiFocusing
 
 /-!
 # Focusing of a timelike geodesic congruence in coordinates (G1-009)
@@ -16,7 +16,7 @@ converges if `R_ab vᵃ vᵇ + σ² - ω² ≥ 0`, and for a rotation-free (hype
   the shear term is nonnegative (`shear_normSq_nonneg`), since `g(v, ∇_b v) = 0` (`covD_orthogonal`) makes `σ` spatial.
 
 The bound says the expansion cannot stay finite along `γ` beyond the parameter `(n-1)/|Θ(γ(0))|`; the Riccati argument
-is `Cosmology.focusing`.
+is `focusing` (`RiccatiFocusing.lean`).
 -/
 
 open Filter Topology Set Matrix
@@ -111,12 +111,12 @@ include hv hgeo hnorm
 
 omit hgeo hnorm in
 /-- The expansion along an integral curve: if `v(Θ) ≤ -Θ²/m` along an integral curve `γ` of `v` in `U` on `[0, L)`, with
-`Θ(γ(0)) < 0`, then `L ≤ m/|Θ(γ(0))|` (`Cosmology.focusing`). -/
+`Θ(γ(0)) < 0`, then `L ≤ m/|Θ(γ(0))|` (`focusing`). -/
 theorem focusing_along (hg : IsCoordMetric g U) {m L : ℝ} (hm : 0 < m) {γ : ℝ → Fin n → ℝ}
     (hγU : ∀ s ∈ Ico 0 L, γ s ∈ U) (hγ : ∀ s ∈ Ico 0 L, HasDerivAt γ (v (γ s)) s)
     (hle : ∀ s ∈ Ico 0 L, ∑ c, v (γ s) c * pd c (expansion g v) (γ s) ≤ -(expansion g v (γ s)) ^ 2 / m)
     (h0 : expansion g v (γ 0) < 0) : L ≤ m / |expansion g v (γ 0)| := by
-  refine Cosmology.focusing (Θ := fun s => expansion g v (γ s))
+  refine focusing (Θ := fun s => expansion g v (γ s))
     (Θ' := fun s => ∑ c, v (γ s) c * pd c (expansion g v) (γ s)) hm ?_ hle h0
   intro s hs
   have hd : DifferentiableAt ℝ (expansion g v) (γ s) := by

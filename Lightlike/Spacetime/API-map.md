@@ -69,7 +69,9 @@ A metric is a critical point of the Einstein-Hilbert action with a cosmological 
 In Minkowski space, an observer who travels out and back along two straight segments ages less
 than one who stays at rest [6].
 
-Raychaudhuri's equation in coordinates: for a smooth field `v` geodesic on an open set of a coordinate metric, with `∇_b vᵃ = ∂_b vᵃ + Γᵃ_{bc} vᶜ` and the expansion `Θ = ∇ₐ vᵃ`, `v(Θ) = -(∇_b vᵃ)(∇ₐ vᵇ) - R_{σν} vᵠ vᵛ`; where `g(v, v) = -1`, splitting `∇v` into expansion, shear `σ` and rotation `ω` gives `v(Θ) = -Θ²/(n-1) - σ² + ω² - R(v, v)` [43] [44] [45]. For a unit geodesic field (`g(v, v) = -1` on the open set), along an integral curve for parameters `0 ≤ s < L` that starts converging, `R(v, v) + σ² - ω² ≥ 0` gives `L ≤ (n-1)/|Θ(0)|`; for a Lorentzian metric the shear term is nonnegative, so a rotation-free congruence with `R(v, v) ≥ 0` focuses [46] [47]. The equation for a congruence on a manifold and its null version are not yet formalized. [TODO]
+The focusing lemma for the Riccati inequality: a function on `0 ≤ s < L` with `Θ' ≤ -Θ²/m` (`m > 0`) and `Θ(0) < 0` has `L ≤ m/|Θ(0)|`, the analytic step of geodesic focusing from Raychaudhuri's equation [43].
+
+Raychaudhuri's equation in coordinates: for a smooth field `v` geodesic on an open set of a coordinate metric, with `∇_b vᵃ = ∂_b vᵃ + Γᵃ_{bc} vᶜ` and the expansion `Θ = ∇ₐ vᵃ`, `v(Θ) = -(∇_b vᵃ)(∇ₐ vᵇ) - R_{σν} vᵠ vᵛ`; where `g(v, v) = -1`, splitting `∇v` into expansion, shear `σ` and rotation `ω` gives `v(Θ) = -Θ²/(n-1) - σ² + ω² - R(v, v)` [44] [45] [46]. For a unit geodesic field (`g(v, v) = -1` on the open set), along an integral curve for parameters `0 ≤ s < L` that starts converging, `R(v, v) + σ² - ω² ≥ 0` gives `L ≤ (n-1)/|Θ(0)|`; for a Lorentzian metric the shear term is nonnegative, so a rotation-free congruence with `R(v, v) ≥ 0` focuses [47] [48]. The equation for a congruence on a manifold and its null version are not yet formalized. [TODO]
 
 ## Lean References
 
@@ -135,11 +137,12 @@ Raychaudhuri's equation in coordinates: for a smooth field `v` geodesic on an op
 40. Lightlike/Spacetime/EinsteinTwoDim.lean - `ricci_two_dim`, `einsteinUp_two_dim`, `isEHCritical_two_dim`: in two dimensions the Ricci tensor is half the scalar curvature times the metric, the Einstein tensor vanishes, and every smooth nondegenerate metric is a critical point of the Einstein-Hilbert action without cosmological term.
 41. Lightlike/Spacetime/CoordKilling.lean - `coordField_killing`: a coordinate field along which the metric components are constant is a Killing field (`IsKillingAt`) of the Levi-Civita connection.
 42. Lightlike/Spacetime/SchwarzschildKilling.lean - `schwarzschild_killing`: the time translation `∂_t` is a Killing field of exterior Schwarzschild.
-43. Lightlike/Spacetime/RaychaudhuriAlgebra.lean - `Raychaudhuri.raychaudhuri_algebra`: the index computation of the Raychaudhuri identity (fable1).
-44. Lightlike/Spacetime/RaychaudhuriCoord.lean - `covD`, `expansion`, `covDMat`, `shear`, `rotation`, `pd_covD`, `raychaudhuri_coord`, `raychaudhuri_equation`: Raychaudhuri's identity and equation for a geodesic field in coordinates.
-45. Lightlike/Spacetime/RaychaudhuriSplit.lean - `Raychaudhuri.normSqG`, `Raychaudhuri.trace_sq_split`: the trace of the square of the derivative of a geodesic field splits into expansion, shear and rotation.
-46. Lightlike/Spacetime/RaychaudhuriFocusing.lean - `covD_orthogonal`, `IsLorentzianCoordMetric.orthogonal_nonneg`, `focusing_along`, `raychaudhuri_convergence`, `shear_normSq_nonneg`, `raychaudhuri_focusing_at`, `raychaudhuri_focusing`: convergence and focusing of a unit timelike geodesic field along its integral curves.
-47. Lightlike/Spacetime/RaychaudhuriShear.lean - `Raychaudhuri.trace_mul_nonneg`, `Raychaudhuri.normSqG_nonneg`, `Raychaudhuri.spacelike_complement`, `Raychaudhuri.orthogonal_nonneg_of_lorentzian`: the square of a spatial symmetric tensor is nonnegative.
+43. Lightlike/Spacetime/RiccatiFocusing.lean - `focusing`: the focusing lemma for the Riccati inequality.
+44. Lightlike/Spacetime/RaychaudhuriAlgebra.lean - `Raychaudhuri.raychaudhuri_algebra`: the index computation of the Raychaudhuri identity (fable1).
+45. Lightlike/Spacetime/RaychaudhuriCoord.lean - `covD`, `expansion`, `covDMat`, `shear`, `rotation`, `pd_covD`, `raychaudhuri_coord`, `raychaudhuri_equation`: Raychaudhuri's identity and equation for a geodesic field in coordinates.
+46. Lightlike/Spacetime/RaychaudhuriSplit.lean - `Raychaudhuri.normSqG`, `Raychaudhuri.trace_sq_split`: the trace of the square of the derivative of a geodesic field splits into expansion, shear and rotation.
+47. Lightlike/Spacetime/RaychaudhuriFocusing.lean - `covD_orthogonal`, `IsLorentzianCoordMetric.orthogonal_nonneg`, `focusing_along`, `raychaudhuri_convergence`, `shear_normSq_nonneg`, `raychaudhuri_focusing_at`, `raychaudhuri_focusing`: convergence and focusing of a unit timelike geodesic field along its integral curves.
+48. Lightlike/Spacetime/RaychaudhuriShear.lean - `Raychaudhuri.trace_mul_nonneg`, `Raychaudhuri.normSqG_nonneg`, `Raychaudhuri.spacelike_complement`, `Raychaudhuri.orthogonal_nonneg_of_lorentzian`: the square of a spatial symmetric tensor is nonnegative.
 
 ## References
 

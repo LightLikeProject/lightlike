@@ -2747,6 +2747,26 @@
   "citations": 77,
   "citations_via": "Semantic Scholar"
  },
+ "kar-sengupta-2007": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "The Raychaudhuri equations: a brief review",
+  "locations": {
+   "eq. (12)": {
+    "verified": true,
+    "snippet": "(12) dλ 3 10 dσab 2 1 \u0010 \u0011 = − Θσab − σac σ cb − ωac ω cb + hab σ 2 − ω 2 dλ 3 3 1 +Ccbad v c v d + R̃ab (13) 2 dωab 2 = − Θωab − 2σ c[b ωa]c (14) dλ 3 where σ 2 = σab σ ab , ω 2 = ωab ω ab , Ccbad is the Weyl tensor and",
+    "why": null
+   },
+   "eq. (16)": {
+    "verified": true,
+    "snippet": "(16) Thus, rotation defies convergence, while shear assists it. The equation for the evolution of the rotation ωab , has a trivial solution ωab = 0. The criterion for convergence then becomes particularly simple for such",
+    "why": null
+   }
+  },
+  "citations": 187,
+  "citations_via": "Semantic Scholar"
+ },
  "kazarian-lando-2007": {
   "checked": "2026-11-08",
   "exists": true,
