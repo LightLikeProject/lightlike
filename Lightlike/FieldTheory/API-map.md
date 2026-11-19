@@ -20,6 +20,8 @@ Graphs with legs on a half-edge type `π : H → V` are the involutions of `H` (
 
 A labelled graph with half-edges `Fin n` and vertices `Fin k` is an attachment map with an involution of the half-edges; the pairs of bijections `S_n × S_k` act by relabelling, isomorphic graphs are the same orbit and the automorphisms are the stabilizer, so `1/|Aut Γ| = |orbit Γ|/(n! k!)` [13] {2}.
 
+The disjoint union of labelled graphs is compatible with relabelling, so it is defined on isomorphism classes; the formal sums of classes of all sizes carry the disjoint-union product (finite in each grade of half-edges and vertices), and `X = Σ_Γ Γ/|Aut Γ|`, its connected part `X_c` and `e^{X_c}` are defined there [14] {2}.
+
 **Missing.** The error bound of the quartic expansion is not stated in Borinsky, who treats the integral formally. The formal integral is compared with Borinsky's Definition 3.1.1 and eq. (3.1.8) {2}, the graphs with Borinsky §2.1 and §2.3 {2}, and Wick's theorem with Tubaro–Zanella's Theorem 2.19 {3}; the Gaussian measure and its integrals are not yet compared with a source.
 
 ## Lean References
@@ -43,6 +45,8 @@ A labelled graph with half-edges `Fin n` and vertices `Fin k` is an attachment m
    `FieldTheory.HalfEdge.existsUnique_componentOn`, `FieldTheory.HalfEdge.card_invOn_eq_sum`
 13. Lightlike/FieldTheory/ZeroDim/GraphIso.lean - `FieldTheory.GraphAlg.LGraph`, `FieldTheory.GraphAlg.IsIso`, `FieldTheory.GraphAlg.isIso_iff_smul`,
    `FieldTheory.GraphAlg.mem_aut_iff`, `FieldTheory.GraphAlg.card_orbit_mul_card_aut`, `FieldTheory.GraphAlg.inv_card_aut`
+14. Lightlike/FieldTheory/ZeroDim/GraphAlgebra.lean - `FieldTheory.GraphAlg.union`, `FieldTheory.GraphAlg.union_smul`, `FieldTheory.GraphAlg.unionC`,
+   `FieldTheory.GraphAlg.GAlg`, `FieldTheory.GraphAlg.mul`, `FieldTheory.GraphAlg.X`, `FieldTheory.GraphAlg.Xc`, `FieldTheory.GraphAlg.expXc`
 
 ## References
 
