@@ -1,4 +1,5 @@
 import Lightlike.ODE.Frobenius
+import Lightlike.ODE.FlowContDiff
 import Mathlib.Analysis.SpecialFunctions.Exp
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 import Mathlib.Analysis.Complex.ExponentialBounds
@@ -13,6 +14,8 @@ import Mathlib.Analysis.Complex.ExponentialBounds
   (`fderiv_exp_flow_ne_id`).
 * Constant fields satisfy the hypotheses of the commuting-flows theorem and of the Frobenius
   theorem (`exists_flows_commute_const`, `exists_integral_manifold_const`).
+* The time-dependent field `f (t, x) = t` satisfies the hypothesis of the `C^k` theorem
+  (`exists_solution_contDiffOn_fst`).
 -/
 
 open Set Metric Filter Topology VectorField
@@ -98,5 +101,17 @@ theorem exists_integral_manifold_const :
     (x₀ := 0) (fun _ => contDiffAt_const)
     (linearIndependent_unique_iff.2 (by simp))
     (Eventually.of_forall fun y i j => by simp [lieBracket])
+
+/-- **Non-vacuity of `exists_solution_contDiffOn`**: the time-dependent field `f (t, x) = t` on
+`ℝ`, which is `C^{k+1}` for every `k`. -/
+theorem exists_solution_contDiffOn_fst (k : ℕ) (t₀ x₀ : ℝ) :
+    ∃ (δ : ℝ) (φ : ℝ → ℝ → ℝ → ℝ), 0 < δ ∧
+      (∀ s ∈ Ioo (t₀ - δ) (t₀ + δ), ∀ x ∈ ball x₀ δ, φ s s x = x ∧
+        ∀ t ∈ Ioo (t₀ - δ) (t₀ + δ), HasDerivAt (fun t => φ t s x) t t) ∧
+      ContDiffOn ℝ ((k : WithTop ℕ∞) + 1) (fun q : ℝ × ℝ × ℝ => φ q.1 q.2.1 q.2.2)
+        (Ioo (t₀ - δ) (t₀ + δ) ×ˢ Ioo (t₀ - δ) (t₀ + δ) ×ˢ ball x₀ δ) := by
+  obtain ⟨δ, φ, hδ, h1, h2, -⟩ := exists_solution_contDiffOn k
+    (f := fun p : ℝ × ℝ => p.1) (t₀ := t₀) (x₀ := x₀) contDiffAt_fst
+  exact ⟨δ, φ, hδ, h1, h2⟩
 
 end Lightlike.ODE.Tests
