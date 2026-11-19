@@ -793,6 +793,40 @@ expect("sources fulltext planted: pages without printed numbers fail a page, nam
 expect("sources fulltext: the page is split off the location", src.split_page("Theorem 6.6, p. 136") == ("Theorem 6.6", (136, 136))
        and src.split_page("eq. (2.10), pp. 50-51") == ("eq. (2.10)", (50, 51)) and src.split_page("Section 4") == ("Section 4", None))
 
+
+# A scanned book's text layer: OCR reads the label word with confused letters, m as two or three
+# of its strokes (MEASURED in Loomis-Sternberg's scan: 'Theorelll' 34 times, 'TheoreIn', 'TheoreDl',
+# 'TheorelD', 'TheorelU', 'LeDlDla', 'Lelllllla'), so the statement on p. 4 is planted as OCR gives it.
+def _ocr(word, num=" 1.2"):
+    return [p.replace("Theorem 1.2 (Planted", word + num + " (Planted") for p in _bp]
+
+
+_ocr_ok = ("Theorelll", "TheoreIn", "TheoreDl", "TheorelD", "TheoreD1", "TheorelU", "Theorern", "Thcorem", "The0rem",
+           "THEOREIN")
+expect("sources fulltext planted (OCR): the label word read with OCR's letter confusions (m as two or three strokes; "
+       "e as c; o as 0) passes on the page where it is stated: " + ", ".join(_ocr_ok),
+       all(_bkl("Theorem 1.2, p. 4", ["compact"], pages=_ocr(w))[0::3] == (True, 4) for w in _ocr_ok))
+expect("sources fulltext planted (OCR): a lemma read with l as 1, I or |, m as strokes passes ('LeDlDla', "
+       "'Lelllllla', '1emrna', 'Iemma', '|emma')",
+       all(src.check_fulltext_location(["x\n" + w + " 3.1. Let K be compact.\n"], "Lemma 3.1", ["compact"], None)[0]
+           for w in ("LeDlDla", "Lelllllla", "1emrna", "Iemma", "|emma")))
+expect("sources fulltext control (OCR): a misspelling OCR does not make fails ('Theoram', 'Theoren' (m as one "
+       "stroke), 'Tbeorem', 'Theorellll' (four strokes), 'Theo rem')",
+       not any(_bkl("Theorem 1.2, p. 4", ["compact"], pages=_ocr(w))[0]
+               for w in ("Theoram", "Theoren", "Tbeorem", "Theorellll", "Theo rem")))
+expect("sources fulltext planted (OCR): a stroke read as 1 is never the number's first digit ('TheoreD11.2' is not "
+       "Theorem 1.2); control: 'TheoreD1 1.2' is",
+       not _bkl("Theorem 1.2, p. 4", ["compact"], pages=_ocr("TheoreD1", "1.2"))[0]
+       and _bkl("Theorem 1.2, p. 4", ["compact"], pages=_ocr("TheoreD1"))[0])
+expect("sources fulltext control (OCR): the cited occurrence is still not the statement",
+       _bkl("Theorem 1.2, p. 7", ["compact"], pages=_ocr("Theorelll"))[2] == "stated on printed p. 4, not p. 7")
+# A full stop the OCR put after the word (MEASURED in the same scan: 'Theorem. 3.1.' five times).
+expect("sources fulltext planted (OCR): a full stop after the label word passes ('Theorem. 1.2', 'Theorelll. 1.2'); "
+       "control: two full stops fail, 'Theorem. 11.2' is not Theorem 1.2",
+       all(_bkl("Theorem 1.2, p. 4", ["compact"], pages=_ocr(w))[0::3] == (True, 4) for w in ("Theorem.", "Theorelll."))
+       and not _bkl("Theorem 1.2, p. 4", ["compact"], pages=_ocr("Theorem.."))[0]
+       and not _bkl("Theorem 1.2, p. 4", ["compact"], pages=_ocr("Theorem.", " 11.2"))[0])
+
 # verify and check end to end, offline: the PDF is already in the cache under its URL, the
 # publisher record and the citations are stubbed, and any other network call fails the test.
 _bt = pathlib.Path(tempfile.mkdtemp())
