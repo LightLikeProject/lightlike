@@ -12,7 +12,9 @@ Borinsky's formal integral, the zero-dimensional field theory as a formal power 
 
 The vacuum graphs with `m` four-valent vertices are the orbits of the pairings of their half-edges under the permutations that keep the vertices (the wreath product `S₄ ≀ S_m`, of order `24^m m!`), the symmetry factor of a graph is the inverse of the order of its stabilizer, its automorphism group, and the symmetry factors sum to `(4m - 1)!!/(24^m m!)`, by the class formula [8] {2}; for two vertices the sum is `35/384` and for one vertex `1/8`.
 
-**Missing.** Wick's theorem as an explicit sum over all pairings of the positions (here the recursion and the cases of two and four points) and the asymptotic expansion of the quartic integral are open [TODO]. The formal integral is compared with Borinsky's Definition 3.1.1 and eq. (3.1.8) {2}; the other statements are not yet compared with a source.
+Wick's theorem: the moment `E[x_{l₀} ⋯ x_{l_{n-1}}]` of the centred Gaussian measure with positive definite covariance `S` is the sum, over the full Wick contractions of the `n` positions (Physlib's `WickContraction` with `IsFull`), of the products `∏ S_{l_p l_q}` over the contracted pairs; both sides satisfy Isserlis' recursion [9] {3}.
+
+**Missing.** Wick's theorem for a degenerate (positive semidefinite) covariance and the asymptotic expansion of the quartic integral are open [TODO]. The formal integral is compared with Borinsky's Definition 3.1.1 and eq. (3.1.8) {2}, the graphs with Borinsky §2.1 and §2.3 {2}, and Wick's theorem with Tubaro–Zanella's Theorem 2.19 {3}, where it holds for every centred jointly Gaussian family; the Gaussian measure and its integrals are not yet compared with a source.
 
 ## Lean References
 
@@ -25,8 +27,11 @@ The vacuum graphs with `m` four-valent vertices are the orbits of the pairings o
 7. Lightlike/FieldTheory/ZeroDim/FormalIntegral.lean - `FieldTheory.formalIntegral`, `FieldTheory.formalIntegral_quartic_two`
 8. Lightlike/FieldTheory/ZeroDim/Graphs.lean - `FieldTheory.vertexPerm`, `FieldTheory.Pairing`, `FieldTheory.sum_inv_card_stabilizer`,
    `FieldTheory.sum_inv_aut`, `FieldTheory.sum_inv_aut_two`, `FieldTheory.sum_inv_aut_one`
+9. Lightlike/FieldTheory/Gaussian/Wick.lean - `FieldTheory.pairWeight`, `FieldTheory.pairSum`, `FieldTheory.pairSum_succ_succ`,
+   `FieldTheory.moment_ofFn_eq_pairSum`, `FieldTheory.moment_eq_pairSum`
 
 ## References
 
 1. Mathlib, `Mathlib/Probability/Distributions/Gaussian/Multivariate.lean` (`multivariateGaussian`, `stdGaussian`) and `Fernique.lean` (`IsGaussian.memLp_id`).
 2. M. Borinsky, Graphs in perturbation theory: Algebraic structure and asymptotics, PhD thesis, Humboldt-Universität zu Berlin (2018), arXiv:1807.02046, §2.1 (Definitions 2.1.6, 2.1.7, p. 11), §2.3 (Proposition 2.3.1, p. 15) and §3.1 (Definition 3.1.1, eq. (3.1.2), p. 22; Proposition 3.1.1, p. 23; eq. (3.1.8), p. 24).
+3. L. Tubaro, M. Zanella, An introduction to Malliavin calculus, arXiv:2502.07941v1, Theorem 2.19 (Isserlis formula), p. 9.
