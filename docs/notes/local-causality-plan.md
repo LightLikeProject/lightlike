@@ -25,6 +25,8 @@ In normal coordinates `v(s) = φ⁻¹(γ(s))` of a future causal curve from `p` 
 
 * [x] `exists_uniform_cone_estimate`, `norm_sub_le_of_ae_cone`, `IsTimeBall.exists_cone_estimate` (compact set of the ball).
 * [x] `IsTimeBall.causal_cone` (the `J⁺` line, "⇒") in normal coordinates; it also gives `x⁰ > 0` for `b > a` in the proof.
-* [ ] the `I⁺` line (strict inequality for timelike curves), the "⇐" directions (radial geodesics).
-* [ ] existence of time balls for small `r`.
-* [ ] bridge to the manifold relations `chronFuture`/`causalFuture` (`Spacetime/OpenCoordMetric.lean`), tests.
+* [x] the `I⁺` line, "⇒": `IsTimeBall.chron_cone` (`σ_p < 0`, `x⁰ > 0` for timelike curves, `a < b`).
+* [ ] the "⇐" directions (radial geodesics: `t ↦ φ(t v)` is causal / timelike for `σ_p(v) ≤ 0` / `< 0`, `x⁰ ≥ 0`).
+* [x] existence of time balls: `exists_isTimeBall`; `IsTimeBall.mono`; `IsTimeBall.exists_future` (`N` future for `T` after shrinking).
+* [x] bridge for the curves of the manifold `↥U` (`openMetric`, a time orientation): `IsTimeBall.causal_cone_of_isFutureCausalCurve`, `IsTimeBall.chron_cone_of_isFutureTimelikeCurve` (`LocalCausalityManifold.lean`), for the relations `J⁺(p; O)`, `I⁺(p; O)` of curves inside the ball; trust check (Minkowski time ball).
+* [ ] a general manifold (charts) rather than an open set of `ℝⁿ`; the "⇐" directions; the `J̇⁺` line.

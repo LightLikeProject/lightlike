@@ -530,4 +530,13 @@ theorem chron_cone (hL : IsLorentzianCoordMetric g U) (h : IsTimeBall g U p ρ �
 
 end IsTimeBall
 
+/-! ### Trust check: time balls exist in Minkowski space
+
+For `η` on `ℝ⁴` and the timelike `e = ∂₀` at the origin. -/
+
+example : ∃ (ρ : ℝ) (φ : OpenPartialHomeomorph (Fin 4 → ℝ) (Fin 4 → ℝ)) (r : ℝ)
+    (N : (Fin 4 → ℝ) → Fin 4 → ℝ), IsTimeBall (fun _ => eta 4) Set.univ 0 ρ φ (Pi.single 0 1) r N :=
+  exists_isTimeBall (isCoordMetric_const (eta_transpose 4) (eta_isUnit_det 4)) (Set.mem_univ _)
+    (by simp [pairing, eta_apply, etaDiag, Pi.single_apply])
+
 end Lightlike.Geodesic
