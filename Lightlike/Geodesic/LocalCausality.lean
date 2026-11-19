@@ -16,6 +16,7 @@ lemma and the cone inequality `IsLorentzianForm.two_mul_le_of_spacelike`) and `f
 * `exists_uniform_cone_estimate`, `norm_sub_le_of_ae_cone`: a cone estimate, uniform on a compact
   set, and its integral along a Lipschitz curve.
 * `IsTimeBall.exists_cone_estimate`: `‖w‖ ≤ C x⁰(w)` for causal `Dφ(u) w`, `u` in a compact set.
+* `exists_isTimeBall`: time balls exist at every point, for every timelike `e`.
 * `IsTimeBall.causal_cone`: the `J⁺` line of (2.4.7), "⇒", in normal coordinates.
 
 Source read (pdftotext): P. T. Chruściel, *Elements of causality theory*, arXiv:1110.6706v1, section 2.4,
@@ -123,6 +124,118 @@ theorem norm_sub_le_of_ae_cone {E : Type*} [NormedAddCommGroup E] [NormedSpace �
   simp only [_root_.smul_apply, smul_eq_mul] at h
   rw [mul_sub]
   linarith
+
+/-- The derivative of the inverse of a normal chart inverts the derivative of the chart. -/
+lemma IsNormalChart.fderiv_symm_apply {g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ} {U : Set (Fin n → ℝ)}
+    {p : Fin n → ℝ} {ρ : ℝ} {φ : OpenPartialHomeomorph (Fin n → ℝ) (Fin n → ℝ)}
+    (h : IsNormalChart g U p ρ φ) {v : Fin n → ℝ} (hv : v ∈ ball (0 : Fin n → ℝ) ρ) (w : Fin n → ℝ) :
+    fderiv ℝ φ.symm (φ v) (fderiv ℝ φ v w) = w := by
+  have hsrc : v ∈ φ.source := by rw [h.source_eq]; exact hv
+  have hφ : HasFDerivAt φ (fderiv ℝ φ v) v :=
+    ((h.contDiffOn.contDiffAt (φ.open_source.mem_nhds hsrc)).differentiableAt (by simp)).hasFDerivAt
+  have hψ : HasFDerivAt φ.symm (fderiv ℝ φ.symm (φ v)) (φ v) :=
+    ((h.contDiffOn_symm.contDiffAt (φ.open_target.mem_nhds (φ.map_source hsrc))).differentiableAt
+      (by simp)).hasFDerivAt
+  have c1 : HasFDerivAt (φ.symm ∘ φ) ((fderiv ℝ φ.symm (φ v)).comp (fderiv ℝ φ v)) v := hψ.comp v hφ
+  have hev : (φ.symm ∘ φ) =ᶠ[𝓝 v] id := φ.eventually_left_inverse hsrc
+  have h3 := (hasFDerivAt_id (𝕜 := ℝ) v).unique (c1.congr_of_eventuallyEq hev.symm)
+  have h4 := congrArg (fun L : (Fin n → ℝ) →L[ℝ] (Fin n → ℝ) => L w) h3
+  simpa using h4.symm
+
+/-- **Time balls exist** (the set `O` of Chruściel's Proposition 2.4.5): for `p ∈ U` and a timelike
+`e` at `p` there are a normal chart `φ` at `p`, a radius `r > 0` and a field `N`, the gradient of
+`-x⁰`, with `IsTimeBall g U p ρ φ e r N`. Here `N v = g(φ v)⁻¹ (Dφ(v)⁻¹)ᵀ g_p e`, `N 0 = e`, and `N`
+stays timelike near `0` by continuity. -/
+theorem exists_isTimeBall {g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ} {U : Set (Fin n → ℝ)}
+    (hg : IsCoordMetric g U) {p e : Fin n → ℝ} (hp : p ∈ U) (he : pairing g p e e < 0) :
+    ∃ (ρ : ℝ) (φ : OpenPartialHomeomorph (Fin n → ℝ) (Fin n → ℝ)) (r : ℝ)
+      (N : (Fin n → ℝ) → Fin n → ℝ), IsTimeBall g U p ρ φ e r N := by
+  obtain ⟨ρ, φ, hφ⟩ := exists_isNormalChart hg hp
+  have hρ := hφ.pos
+  have hsrc : ∀ v ∈ ball (0 : Fin n → ℝ) ρ, v ∈ φ.source := fun v hv => by
+    rw [hφ.source_eq]; exact hv
+  have hmapU : ∀ v ∈ ball (0 : Fin n → ℝ) ρ, φ v ∈ U := fun v hv =>
+    hφ.target_subset (φ.map_source (hsrc v hv))
+  set L : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ := fun v =>
+    LinearMap.toMatrix' ((fderiv ℝ φ.symm (φ v) : (Fin n → ℝ) →L[ℝ] (Fin n → ℝ)) :
+      (Fin n → ℝ) →ₗ[ℝ] (Fin n → ℝ)) with hLdef
+  set N : (Fin n → ℝ) → Fin n → ℝ := fun v => (g (φ v))⁻¹ *ᵥ ((L v)ᵀ *ᵥ (g p *ᵥ e)) with hNdef
+  -- `N v` represents `w ↦ g_p (e, w)` through the chart
+  have hdual : ∀ v ∈ ball (0 : Fin n → ℝ) ρ, ∀ w,
+      pairing g (φ v) (N v) (fderiv ℝ φ v w) = pairing g p e w := by
+    intro v hv w
+    have hy := hmapU v hv
+    have hLw : L v *ᵥ (fderiv ℝ φ v w) = w := by
+      simp only [hLdef]
+      rw [LinearMap.toMatrix'_mulVec]
+      exact hφ.fderiv_symm_apply hv w
+    rw [pairing_eq_dotProduct, pairing_eq_dotProduct]
+    calc ((g (φ v))⁻¹ *ᵥ ((L v)ᵀ *ᵥ (g p *ᵥ e))) ⬝ᵥ (g (φ v) *ᵥ fderiv ℝ φ v w)
+        = (((g (φ v))⁻¹ *ᵥ ((L v)ᵀ *ᵥ (g p *ᵥ e))) ᵥ* g (φ v)) ⬝ᵥ fderiv ℝ φ v w :=
+          dotProduct_mulVec _ _ _
+      _ = (g (φ v) *ᵥ ((g (φ v))⁻¹ *ᵥ ((L v)ᵀ *ᵥ (g p *ᵥ e)))) ⬝ᵥ fderiv ℝ φ v w := by
+          rw [← mulVec_transpose, hg.symm _ hy]
+      _ = ((L v)ᵀ *ᵥ (g p *ᵥ e)) ⬝ᵥ fderiv ℝ φ v w := by
+          rw [mulVec_mulVec, mul_nonsing_inv _ (hg.isUnit_det _ hy), one_mulVec]
+      _ = ((g p *ᵥ e) ᵥ* L v) ⬝ᵥ fderiv ℝ φ v w := by rw [mulVec_transpose]
+      _ = (g p *ᵥ e) ⬝ᵥ (L v *ᵥ fderiv ℝ φ v w) := (dotProduct_mulVec _ _ _).symm
+      _ = (g p *ᵥ e) ⬝ᵥ w := by rw [hLw]
+      _ = (e ᵥ* g p) ⬝ᵥ w := by rw [← mulVec_transpose, hg.symm _ hp]
+      _ = e ⬝ᵥ (g p *ᵥ w) := (dotProduct_mulVec _ _ _).symm
+  -- `N 0 = e`
+  have hD0 : fderiv ℝ φ.symm (φ 0) = ContinuousLinearMap.id ℝ (Fin n → ℝ) := by
+    ext1 w
+    have := hφ.fderiv_symm_apply (mem_ball_self hρ) w
+    rwa [hφ.hasFDerivAt_zero.fderiv, ContinuousLinearMap.id_apply] at this
+  have hN0 : N 0 = e := by
+    have hL0 : L 0 = 1 := by
+      simp only [hLdef, hD0, ContinuousLinearMap.coe_id]
+      exact LinearMap.toMatrix'_id
+    simp only [hNdef]
+    rw [hL0, transpose_one, one_mulVec, hφ.map_zero, mulVec_mulVec,
+      nonsing_inv_mul _ (hg.isUnit_det _ hp), one_mulVec]
+  -- continuity of `N`
+  have hφc : ContinuousOn φ (ball 0 ρ) := hφ.source_eq ▸ hφ.contDiffOn.continuousOn
+  have hDc : ContinuousOn (fun v => fderiv ℝ φ.symm (φ v)) (ball 0 ρ) :=
+    (hφ.contDiffOn_symm.continuousOn_fderiv_of_isOpen φ.open_target (by simp)).comp hφc
+      (fun v hv => φ.map_source (hsrc v hv))
+  have hLc : ContinuousOn L (ball 0 ρ) := by
+    refine continuousOn_pi.2 fun i => continuousOn_pi.2 fun j => ?_
+    have h1 : ContinuousOn (fun v => fderiv ℝ φ.symm (φ v) (Pi.single j 1) i)
+        (ball 0 ρ) := (continuous_apply i).comp_continuousOn (hDc.clm_apply continuousOn_const)
+    refine h1.congr fun v _ => ?_
+    simp only [hLdef]
+    rw [LinearMap.toMatrix'_apply]
+    rfl
+  have hGc : ContinuousOn (fun v => g (φ v)) (ball 0 ρ) :=
+    continuousOn_pi.2 fun i => continuousOn_pi.2 fun j =>
+      (hg.smooth i j).continuousOn.comp hφc fun v hv => hmapU v hv
+  have hNc : ContinuousOn N (ball 0 ρ) := by
+    have hG' := (continuousOn_iff_continuous_domRestrict).1 hGc
+    have hL' := (continuousOn_iff_continuous_domRestrict).1 hLc
+    rw [continuousOn_iff_continuous_domRestrict]
+    have hdet : ∀ v : ball (0 : Fin n → ℝ) ρ, (g (φ v)).det ≠ 0 := fun v =>
+      (hg.isUnit_det _ (hmapU v v.2)).ne_zero
+    have hinv : Continuous fun v : ball (0 : Fin n → ℝ) ρ => (g (φ v))⁻¹ := by
+      simp only [Matrix.inv_def, Ring.inverse_eq_inv']
+      exact (hG'.matrix_det.inv₀ hdet).smul hG'.matrix_adjugate
+    exact hinv.matrix_mulVec (hL'.matrix_transpose.matrix_mulVec continuous_const)
+  -- `N` is timelike near `0`
+  have hfc : ContinuousOn (fun v => pairing g (φ v) (N v) (N v)) (ball 0 ρ) := by
+    simp only [pairing]
+    refine continuousOn_finsetSum _ fun i _ => continuousOn_finsetSum _ fun j _ => ?_
+    exact ((continuous_apply i).comp_continuousOn hNc).mul
+      (((continuous_apply j).comp_continuousOn ((continuous_apply i).comp_continuousOn hGc)).mul
+        ((continuous_apply j).comp_continuousOn hNc))
+  have hf0 : ContinuousAt (fun v => pairing g (φ v) (N v) (N v)) 0 :=
+    hfc.continuousAt (isOpen_ball.mem_nhds (mem_ball_self hρ))
+  have hlt : (fun v => pairing g (φ v) (N v) (N v)) 0 < 0 := by
+    simp only [hN0, hφ.map_zero]; exact he
+  obtain ⟨ε, hε, hball⟩ := Metric.eventually_nhds_iff_ball.1 (hf0.eventually (gt_mem_nhds hlt))
+  refine ⟨ρ, φ, min ε ρ, N, ⟨hφ, lt_min hε hρ, min_le_right _ _, he, ?_, ?_, ?_⟩⟩
+  · exact fun v hv w => hdual v (ball_subset_ball (min_le_right _ _) hv) w
+  · exact fun v hv => hball v (ball_subset_ball (min_le_left _ _) hv)
+  · exact hNc.mono (ball_subset_ball (min_le_right _ _))
 
 namespace IsTimeBall
 
