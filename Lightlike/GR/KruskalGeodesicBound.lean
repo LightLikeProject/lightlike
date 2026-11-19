@@ -245,4 +245,157 @@ theorem kruskalC_radius_bounded (hM : 0 < M) {b : ℝ} (hgeo : IsGeodesicOn (kru
   have := (abs_le.1 h).2
   linarith
 
+/-- **The velocity of a geodesic on a finite interval is bounded**, if the radius is bounded below; so is
+`X = log |x|`. -/
+theorem kruskalC_velocity_bounded (hM : 0 < M) {b : ℝ}
+    (hgeo : IsGeodesicOn (kruskalCMetric M) c w (Ico 0 b))
+    (hc : ∀ t ∈ Ico 0 b, c t ∈ kruskalC) {r0 : ℝ} (hr0 : 0 < r0)
+    (hr : ∀ t ∈ Ico 0 b, r0 ≤ krC M (c t)) :
+    ∃ C BX : ℝ, 0 ≤ C ∧ (∀ t ∈ Ico 0 b, ‖w t‖ ≤ C) ∧
+      ∀ t ∈ Ico 0 b, |1 / 2 * log (rhoSq (c t))| ≤ BX := by
+  by_cases hb : 0 < b
+  swap
+  · exact ⟨0, 0, le_rfl, fun t ht => absurd (ht.1.trans_lt ht.2) hb,
+      fun t ht => absurd (ht.1.trans_lt ht.2) hb⟩
+  obtain ⟨R, hR⟩ := kruskalC_radius_bounded hM hgeo hc hr0 hr
+  obtain ⟨κ, L2, A, hcon⟩ := kruskalC_constants hM hgeo hc
+  have h0I : (0 : ℝ) ∈ Ico 0 b := ⟨le_rfl, hb⟩
+  have hRpos : 0 < R := hr0.trans_le ((hr 0 h0I).trans (hR 0 h0I))
+  set hmin := kh M R with hhmin
+  have hmin0 : 0 < hmin := kh_pos M hM hRpos
+  have hrt : ∀ t ∈ Ico 0 b, 0 < krC M (c t) := fun t ht => hr0.trans_le (hr t ht)
+  have hht : ∀ t ∈ Ico 0 b, hmin ≤ kh M (krC M (c t)) := fun t ht => kh_anti hM (hrt t ht) (hR t ht)
+  set P := |κ| + |L2| / r0 ^ 2 with hP
+  have hP0 : 0 ≤ P := by positivity
+  set Ξm := kh M r0 * (1 / r0 + 1 / (2 * M)) * (P / hmin) + 2 * |L2| / r0 ^ 3 with hΞm
+  have hkr0 : 0 < kh M r0 := kh_pos M hM hr0
+  have hΞm0 : 0 ≤ Ξm := by positivity
+  set K := 1 / hmin + 4 * M ^ 2 / r0 * Ξm with hK
+  -- the angular velocity
+  have hom : ∀ t ∈ Ico 0 b, kOm (c t) (w t) = L2 / krC M (c t) ^ 4 := fun t ht => by
+    have := (hcon t ht).2.1
+    have h4 : krC M (c t) ^ 4 ≠ 0 := pow_ne_zero 4 (hrt t ht).ne'
+    rw [eq_div_iff h4]
+    linarith
+  have habsom : ∀ t ∈ Ico 0 b, |kOm (c t) (w t)| ≤ |L2| / r0 ^ 4 := fun t ht => by
+    rw [hom t ht, abs_div, abs_of_pos (pow_pos (hrt t ht) 4)]
+    exact div_le_div_of_nonneg_left (abs_nonneg _) (by positivity)
+      (pow_le_pow_left₀ hr0.le (hr t ht) 4)
+  -- the common factor is bounded
+  have hΞ : ∀ t ∈ Ico 0 b, |kXi M (c t) (w t)| ≤ Ξm := fun t ht => by
+    obtain ⟨h1, h2, -⟩ := hcon t ht
+    have hrp := hrt t ht
+    have hh : 0 < kh M (krC M (c t)) := kh_pos M hM hrp
+    have hD : kXd (c t) (w t) ^ 2 - w t 0 ^ 2 =
+        (κ - L2 / krC M (c t) ^ 2) / kh M (krC M (c t)) := by
+      rw [eq_div_iff hh.ne', ← h1, hom t ht]
+      field_simp
+      ring
+    have e2 : |κ - L2 / krC M (c t) ^ 2| ≤ P := by
+      refine (abs_sub _ _).trans (add_le_add le_rfl ?_)
+      rw [abs_div, abs_of_pos (by positivity : (0 : ℝ) < krC M (c t) ^ 2)]
+      exact div_le_div_of_nonneg_left (abs_nonneg _) (by positivity)
+        (pow_le_pow_left₀ hr0.le (hr t ht) 2)
+    have hDb : |kXd (c t) (w t) ^ 2 - w t 0 ^ 2| ≤ P / hmin := by
+      rw [hD, abs_div, abs_of_pos hh]
+      exact div_le_div₀ hP0 e2 hmin0 (hht t ht)
+    have hro : |2 * krC M (c t) * kOm (c t) (w t)| ≤ 2 * |L2| / r0 ^ 3 := by
+      have : 2 * krC M (c t) * kOm (c t) (w t) = 2 * L2 / krC M (c t) ^ 3 := by
+        rw [hom t ht]; field_simp
+      rw [this, abs_div, abs_mul, abs_of_pos (pow_pos hrp 3), abs_of_pos (by norm_num : (0 : ℝ) < 2)]
+      exact div_le_div_of_nonneg_left (by positivity) (by positivity)
+        (pow_le_pow_left₀ hr0.le (hr t ht) 3)
+    unfold kXi
+    refine (abs_add_le _ _).trans (add_le_add ?_ hro)
+    rw [abs_mul]
+    exact mul_le_mul (abs_dkh_le hM hr0 (hr t ht)) hDb (abs_nonneg _) (by positivity)
+  have hα : ∀ t ∈ Ico 0 b, |1 / kh M (krC M (c t))| ≤ K := fun t ht => by
+    have hh : 0 < kh M (krC M (c t)) := kh_pos M hM (hrt t ht)
+    rw [abs_of_pos (by positivity)]
+    have : 1 / kh M (krC M (c t)) ≤ 1 / hmin := div_le_div_of_nonneg_left zero_le_one hmin0 (hht t ht)
+    have h2 : 0 ≤ 4 * M ^ 2 / r0 * Ξm := by positivity
+    rw [hK]; linarith
+  have hβ : ∀ t ∈ Ico 0 b, |dkG M (krC M (c t)) * kXi M (c t) (w t)| ≤ K := fun t ht => by
+    rw [abs_mul]
+    have := mul_le_mul (abs_dkG_le hM hr0 (hr t ht)) (hΞ t ht) (abs_nonneg _) (by positivity)
+    have h2 : 0 ≤ 1 / hmin := by positivity
+    rw [hK]; linarith
+  -- Grönwall for `(T, h T')` and `(X, h X')`
+  have hT := fun t (ht : t ∈ Ico 0 b) => abs_le_of_linear_system_Ico
+    (u := fun s => c s 0) (p := fun s => kh M (krC M (c s)) * w s 0)
+    (α := fun s => 1 / kh M (krC M (c s))) (β := fun s => dkG M (krC M (c s)) * kXi M (c s) (w s))
+    (fun s hs => by
+      have hh : kh M (krC M (c s)) ≠ 0 := (kh_pos M hM (hrt s hs)).ne'
+      refine (hasDerivAt_pi.1 (hgeo.pos s hs) 0).congr_deriv ?_
+      field_simp)
+    (fun s hs => (kruskalC_hasDerivAt_pT hM hgeo hs (hc s hs)).congr_deriv (by ring)) hα hβ ht
+  have hX := fun t (ht : t ∈ Ico 0 b) => abs_le_of_linear_system_Ico
+    (u := fun s => 1 / 2 * log (rhoSq (c s))) (p := fun s => kh M (krC M (c s)) * kXd (c s) (w s))
+    (α := fun s => 1 / kh M (krC M (c s))) (β := fun s => dkG M (krC M (c s)) * kXi M (c s) (w s))
+    (fun s hs => by
+      have hh : kh M (krC M (c s)) ≠ 0 := (kh_pos M hM (hrt s hs)).ne'
+      refine (kruskalC_hasDerivAt_X hgeo hs (hc s hs)).congr_deriv ?_
+      field_simp)
+    (fun s hs => (kruskalC_hasDerivAt_pX hM hgeo hs (hc s hs)).congr_deriv (by ring)) hα hβ ht
+  set BT := (|c 0 0| + |kh M (krC M (c 0)) * w 0 0|) * exp (K * b) with hBT
+  set BX := (|1 / 2 * log (rhoSq (c 0))| + |kh M (krC M (c 0)) * kXd (c 0) (w 0)|) * exp (K * b) with hBX
+  have hBT0 : 0 ≤ BT := by positivity
+  have hBX0 : 0 ≤ BX := by positivity
+  have hTd : ∀ t ∈ Ico 0 b, |w t 0| ≤ BT / hmin := fun t ht => by
+    have hh : 0 < kh M (krC M (c t)) := kh_pos M hM (hrt t ht)
+    have h1 := (hT t ht).2
+    rw [abs_mul, abs_of_pos hh] at h1
+    rw [le_div_iff₀ hmin0]
+    calc |w t 0| * hmin ≤ |w t 0| * kh M (krC M (c t)) :=
+          mul_le_mul_of_nonneg_left (hht t ht) (abs_nonneg _)
+      _ ≤ BT := by rw [mul_comm]; exact h1
+  have hXd : ∀ t ∈ Ico 0 b, |kXd (c t) (w t)| ≤ BX / hmin := fun t ht => by
+    have hh : 0 < kh M (krC M (c t)) := kh_pos M hM (hrt t ht)
+    have h1 := (hX t ht).2
+    rw [abs_mul, abs_of_pos hh] at h1
+    rw [le_div_iff₀ hmin0]
+    calc |kXd (c t) (w t)| * hmin ≤ |kXd (c t) (w t)| * kh M (krC M (c t)) :=
+          mul_le_mul_of_nonneg_left (hht t ht) (abs_nonneg _)
+      _ ≤ BX := by rw [mul_comm]; exact h1
+  -- the space part of the velocity
+  set W2 := exp (2 * BX) * (|L2| / r0 ^ 4 + (BX / hmin) ^ 2) with hW2
+  have hW20 : 0 ≤ W2 := by positivity
+  have hsp : ∀ t ∈ Ico 0 b, xdot (w t) (w t) ≤ W2 := fun t ht => by
+    have hρ : 0 < rhoSq (c t) := (hc t ht).1
+    have e1 : xdot (w t) (w t) = rhoSq (c t) * (kOm (c t) (w t) + kXd (c t) (w t) ^ 2) := by
+      simp only [kOm]
+      field_simp
+      ring
+    have e2 : rhoSq (c t) ≤ exp (2 * BX) := by
+      have h1 := (abs_le.1 (hX t ht).1).2
+      calc rhoSq (c t) = exp (2 * (1 / 2 * log (rhoSq (c t)))) := by
+            rw [show 2 * (1 / 2 * log (rhoSq (c t))) = log (rhoSq (c t)) by ring, exp_log hρ]
+        _ ≤ exp (2 * BX) := Real.exp_le_exp.2 (by linarith)
+    have e3 : kOm (c t) (w t) + kXd (c t) (w t) ^ 2 ≤ |L2| / r0 ^ 4 + (BX / hmin) ^ 2 := by
+      refine add_le_add ((le_abs_self _).trans (habsom t ht)) ?_
+      rw [← sq_abs]
+      exact pow_le_pow_left₀ (abs_nonneg _) (hXd t ht) 2
+    rw [e1, hW2]
+    calc rhoSq (c t) * (kOm (c t) (w t) + kXd (c t) (w t) ^ 2)
+        ≤ rhoSq (c t) * (|L2| / r0 ^ 4 + (BX / hmin) ^ 2) := mul_le_mul_of_nonneg_left e3 hρ.le
+      _ ≤ exp (2 * BX) * (|L2| / r0 ^ 4 + (BX / hmin) ^ 2) :=
+          mul_le_mul_of_nonneg_right e2 (by positivity)
+  refine ⟨BT / hmin + √W2, BX, by positivity, fun t ht => ?_, fun t ht => (hX t ht).1⟩
+  have hC0 : 0 ≤ BT / hmin + √W2 := by positivity
+  rw [pi_norm_le_iff_of_nonneg hC0]
+  intro i
+  rw [Real.norm_eq_abs]
+  have hsq : ∀ j : Fin 4, w t j ^ 2 ≤ xdot (w t) (w t) → |w t j| ≤ BT / hmin + √W2 := fun j hj => by
+    have : |w t j| ≤ √W2 := Real.abs_le_sqrt (hj.trans (hsp t ht))
+    have h2 : 0 ≤ BT / hmin := by positivity
+    linarith
+  fin_cases i
+  · have := hTd t ht
+    have h2 : 0 ≤ √W2 := Real.sqrt_nonneg _
+    show |w t 0| ≤ _
+    linarith
+  · exact hsq 1 (by simp only [xdot]; nlinarith [sq_nonneg (w t 2), sq_nonneg (w t 3)])
+  · exact hsq 2 (by simp only [xdot]; nlinarith [sq_nonneg (w t 1), sq_nonneg (w t 3)])
+  · exact hsq 3 (by simp only [xdot]; nlinarith [sq_nonneg (w t 1), sq_nonneg (w t 2)])
+
 end Lightlike
