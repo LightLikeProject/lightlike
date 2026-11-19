@@ -46,6 +46,12 @@ that is involutive on an invariant set).
 - representation: "generate `M`-dimensional manifolds" is stated as: through each point of the
   surface near `x₀` there is a parametrised surface `t ↦ f (t, x)` in `Γ_c` whose derivative is
   injective with range the span of the `X_a`. The source does not define the term further.
+  Why this is representation and not weaker: the source's own reading of the statement is local.
+  The proof on page 30 says the Frobenius condition means that the fields "are integrable
+  (through each point in Γc there is a surface, the gauge orbit, to wich the Xa are tangent)".
+  That is a surface through each point to which the `X_a` are tangent, which is what
+  `exists_gauge_orbit` gives; neither the theorem nor its proof states that the orbit is a
+  maximal leaf or an immersed submanifold globally.
 
 The library's `IsFirstClass` (brackets vanish on the surface) is not used: Wipf's (5.22) with
 structure functions is the hypothesis, as in the source.
