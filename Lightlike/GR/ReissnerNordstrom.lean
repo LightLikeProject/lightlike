@@ -1,6 +1,7 @@
 import Lightlike.GR.SAdSVacuum
 import Lightlike.Spacetime.MaxwellCoord
 import Lightlike.Spacetime.EnergyConditions
+import Lightlike.Spacetime.OpenCoordMetric
 
 /-!
 # The Reissner–Nordström solution of the Einstein–Maxwell equations
@@ -37,38 +38,28 @@ noncomputable section
 
 namespace Lightlike
 
-/-! ## A matrix as a continuous bilinear form on the coordinate tangent space -/
+/-! ## Regge's `emT` on the coordinate tangent space, through the library's `matForm` -/
 
-/-- The continuous bilinear form `(v, w) ↦ vᵀ A w` of a matrix `A`. -/
-def coordBil {n : ℕ} (A : Matrix (Fin n) (Fin n) ℝ) : (Fin n → ℝ) →L[ℝ] (Fin n → ℝ) →L[ℝ] ℝ :=
-  LinearMap.toContinuousLinearMap
-    ((LinearMap.toContinuousLinearMap : ((Fin n → ℝ) →ₗ[ℝ] ℝ) ≃ₗ[ℝ] ((Fin n → ℝ) →L[ℝ] ℝ)).toLinearMap ∘ₗ
-      Matrix.toBilin' A)
-
-lemma coordBil_apply {n : ℕ} (A : Matrix (Fin n) (Fin n) ℝ) (v w : Fin n → ℝ) :
-    coordBil A v w = v ⬝ᵥ (A *ᵥ w) := by
-  simp [coordBil, Matrix.toBilin'_apply']
-
-lemma coordBil_toBilinForm {n : ℕ} (A : Matrix (Fin n) (Fin n) ℝ) :
-    (coordBil A).toBilinForm = Matrix.toBilin' A := by
+lemma matForm_toBilinForm {n : ℕ} (A : Matrix (Fin n) (Fin n) ℝ) :
+    (matForm A).toBilinForm = Matrix.toBilin' A := by
   ext v w
-  simp [ContinuousLinearMap.toBilinForm, coordBil_apply, Matrix.toBilin'_apply']
+  simp [ContinuousLinearMap.toBilinForm, matForm_eq_dotProduct, Matrix.toBilin'_apply']
 
-lemma coordBil_nondegenerate {n : ℕ} {A : Matrix (Fin n) (Fin n) ℝ} (h : A.det ≠ 0) :
-    (coordBil A).toBilinForm.Nondegenerate := by
-  rw [coordBil_toBilinForm]
+lemma matForm_nondegenerate {n : ℕ} {A : Matrix (Fin n) (Fin n) ℝ} (h : A.det ≠ 0) :
+    (matForm A).toBilinForm.Nondegenerate := by
+  rw [matForm_toBilinForm]
   exact LinearMap.BilinForm.nondegenerate_toBilin'_iff_det_ne_zero.2 h
 
 /-- **Regge's `emA` in coordinates**: `A v = G⁻¹ Fᵀ v` for a symmetric invertible `G`. -/
 theorem emA_coord {n : ℕ} {G F : Matrix (Fin n) (Fin n) ℝ} (hG : Gᵀ = G) (hdet : G.det ≠ 0)
     (v : Fin n → ℝ) :
-    emA (coordBil G) (coordBil_nondegenerate hdet) (Matrix.toBilin' F) v = (G⁻¹ * Fᵀ) *ᵥ v := by
+    emA (matForm G) (matForm_nondegenerate hdet) (Matrix.toBilin' F) v = (G⁻¹ * Fᵀ) *ᵥ v := by
   have hu : IsUnit G.det := isUnit_iff_ne_zero.2 hdet
   unfold emA
-  show ((coordBil G).toBilinForm.toDual (coordBil_nondegenerate hdet)).symm (Matrix.toBilin' F v) = _
+  show ((matForm G).toBilinForm.toDual (matForm_nondegenerate hdet)).symm (Matrix.toBilin' F v) = _
   rw [LinearEquiv.symm_apply_eq]
   refine LinearMap.ext fun w => ?_
-  rw [LinearMap.BilinForm.toDual_def, coordBil_toBilinForm, Matrix.toBilin'_apply', Matrix.toBilin'_apply',
+  rw [LinearMap.BilinForm.toDual_def, matForm_toBilinForm, Matrix.toBilin'_apply', Matrix.toBilin'_apply',
     Matrix.dotProduct_mulVec, Matrix.dotProduct_mulVec]
   congr 1
   rw [← Matrix.mulVec_transpose, ← Matrix.mulVec_transpose, hG, Matrix.mulVec_mulVec, ← Matrix.mul_assoc,
@@ -76,9 +67,9 @@ theorem emA_coord {n : ℕ} {G F : Matrix (Fin n) (Fin n) ℝ} (hG : Gᵀ = G) (
 
 /-- **Regge's `emF2` in coordinates**: `F_ab F^ab = −tr((G⁻¹Fᵀ)²)`. -/
 theorem emF2_coord {n : ℕ} {G F : Matrix (Fin n) (Fin n) ℝ} (hG : Gᵀ = G) (hdet : G.det ≠ 0) :
-    emF2 (coordBil G) (coordBil_nondegenerate hdet) (Matrix.toBilin' F) =
+    emF2 (matForm G) (matForm_nondegenerate hdet) (Matrix.toBilin' F) =
       -Matrix.trace ((G⁻¹ * Fᵀ) * (G⁻¹ * Fᵀ)) := by
-  have h : emA (coordBil G) (coordBil_nondegenerate hdet) (Matrix.toBilin' F) = Matrix.toLin' (G⁻¹ * Fᵀ) :=
+  have h : emA (matForm G) (matForm_nondegenerate hdet) (Matrix.toBilin' F) = Matrix.toLin' (G⁻¹ * Fᵀ) :=
     LinearMap.ext fun v => by rw [emA_coord hG hdet, Matrix.toLin'_apply]
   unfold emF2
   rw [h, ← Matrix.toLin'_mul, LinearMap.trace_eq_matrix_trace ℝ (Pi.basisFun ℝ (Fin n)),
@@ -87,11 +78,11 @@ theorem emF2_coord {n : ℕ} {G F : Matrix (Fin n) (Fin n) ℝ} (hG : Gᵀ = G) 
 /-- **Regge's `emT` in coordinates.** -/
 theorem emT_coord {n : ℕ} {G F : Matrix (Fin n) (Fin n) ℝ} (hG : Gᵀ = G) (hdet : G.det ≠ 0)
     (v w : Fin n → ℝ) :
-    emT (coordBil G) (coordBil_nondegenerate hdet) (Matrix.toBilin' F) v w =
+    emT (matForm G) (matForm_nondegenerate hdet) (Matrix.toBilin' F) v w =
       ((G⁻¹ * Fᵀ) *ᵥ v) ⬝ᵥ (G *ᵥ ((G⁻¹ * Fᵀ) *ᵥ w)) -
         (1 / 4) * (-Matrix.trace ((G⁻¹ * Fᵀ) * (G⁻¹ * Fᵀ))) * (v ⬝ᵥ (G *ᵥ w)) := by
   unfold emT
-  rw [coordBil_apply, coordBil_apply, emA_coord hG hdet, emA_coord hG hdet, emF2_coord hG hdet]
+  rw [matForm_eq_dotProduct, matForm_eq_dotProduct, emA_coord hG hdet, emA_coord hG hdet, emF2_coord hG hdet]
 
 /-! ## The Reissner–Nordström metric and its Ricci tensor -/
 
@@ -251,7 +242,7 @@ lemma rn_A (M q p : ℝ) {y : Fin 4 → ℝ} (hy : y ∈ rnU M (q ^ 2 + p ^ 2)) 
 (Carroll (4.52), (7.107), `G = 1`), with Regge's `emT` of the field `rnField q p`, for `Q² = q² + p²`. -/
 theorem rn_einstein (M q p : ℝ) {y : Fin 4 → ℝ} (hy : y ∈ rnU M (q ^ 2 + p ^ 2)) (σ ν : Fin 4) :
     einsteinTensor (rnMetric M (q ^ 2 + p ^ 2)) σ ν y =
-      2 * emT (coordBil (rnMetric M (q ^ 2 + p ^ 2) y)) (coordBil_nondegenerate (det_ssMetric_ne hy))
+      2 * emT (matForm (rnMetric M (q ^ 2 + p ^ 2) y)) (matForm_nondegenerate (det_ssMetric_ne hy))
         (Matrix.toBilin' (rnField q p y)) (Pi.single σ 1) (Pi.single ν 1) := by
   have hr : y 1 ≠ 0 := hy.1.ne'
   have hf : rnF M (q ^ 2 + p ^ 2) (y 1) ≠ 0 := hy.2.1
