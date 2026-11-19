@@ -3380,6 +3380,31 @@
   "citations": 443,
   "citations_via": "OpenAlex"
  },
+ "moretti-2016": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Mathematical Foundations of Quantum Mechanics: An Advanced Short Course",
+  "locations": {
+   "Proposition 97": {
+    "verified": true,
+    "snippet": "Proposition 97. Let H a complex Hilbert space, B1 (H) satisfy the following prop- erties. (a) If T ∈ B1 (H) and N ⊂ H is any Hilbertian basis, then (65) holds and thus X ||T ||1 := hz||T |zi z∈N is well defined. (b) B1 (",
+    "why": null
+   },
+   "Theorem 142": {
+    "verified": true,
+    "snippet": "Theorem 142 (Stone theorem). Let R ∋ t 7→ Ut ∈ B(H) be a strongly contin- uous one-parameter unitary group in the complex Hilbert space H. The following facts hold. (a) There exists a unique selfadjoint operator, called",
+    "why": null
+   },
+   "Theorem 142, p. 83": {
+    "verified": true,
+    "snippet": "Theorem 142 (Stone theorem). Let R ∋ t 7→ Ut ∈ B(H) be a strongly contin- uous one-parameter unitary group in the complex Hilbert space H. The following facts hold. (a) There exists a unique selfadjoint operator, called",
+    "why": null
+   }
+  },
+  "citations": 9,
+  "citations_via": "OpenAlex"
+ },
  "mukhametzhanov-zhiboedov-2019": {
   "checked": "2026-11-18",
   "exists": true,
