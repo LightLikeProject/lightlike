@@ -12,7 +12,7 @@ Lean: `Lightlike/FieldTheory/Forest/` (API map in that folder).
 - R. Gurau, V. Rivasseau, A. Sfondrini, *Renormalization: an advanced overview*, arXiv:1401.5003: Theorem 6.1
   (the forest formula), eq. (6.1), p. 107, with `X^F_ii = 1` and `X^F_ij(w_F)` the infimum of the `w_l` on the path
   of `F` from `i` to `j`, `0` if there is none; its proof by iterated Taylor interpolation, pp. 107-109.
-- V. Rivasseau, Z. Wang, *How to resum Feynman graphs*, arXiv:1003.1037: Theorem II.1, eq. (II-1), p. 2, with the
+- V. Rivasseau, Z. Wang, *Loop vertex expansion for Φ^{2k} theory in zero dimension*, arXiv:1003.1037: Theorem II.1, eq. (II-1), p. 2, with the
   statement that the symmetric matrix `X^F` (`X_ii = 1`, `X_ij = x^F_ij`) is positive, and the reason given: for any
   ordering of the parameters it is a convex combination (II-4) of block matrices of ones (Definition II.1, (II-2)),
   pp. 2-3.

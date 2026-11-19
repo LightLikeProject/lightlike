@@ -58,7 +58,7 @@ formula for the loop vertex expansion are not formalised here. The comparison wi
 
 1. A. Abdesselam, V. Rivasseau, Trees, forests and jungles: a botanical garden for cluster expansions,
    arXiv:hep-th/9409094, Theorem II.1 and the definition of `h^F_{ij}`, p. 3; Theorem III.1, eq. (III.2), p. 13.
-2. V. Rivasseau, Z. Wang, How to resum Feynman graphs, arXiv:1003.1037, Theorem II.1 and eqs. (II-2)-(II-4),
+2. V. Rivasseau, Z. Wang, Loop vertex expansion for Φ^{2k} theory in zero dimension, arXiv:1003.1037, Theorem II.1 and eqs. (II-2)-(II-4),
    pp. 2-3.
 3. R. Gurau, V. Rivasseau, A. Sfondrini, Renormalization: an advanced overview, arXiv:1401.5003, Theorem 6.1,
    eq. (6.1), p. 107, and its proof, pp. 107-109.

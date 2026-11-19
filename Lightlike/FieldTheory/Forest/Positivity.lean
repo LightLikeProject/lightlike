@@ -4,11 +4,11 @@ import Mathlib.LinearAlgebra.Matrix.PosDef
 /-!
 # Positivity of the forest matrix
 
-Rivasseau–Wang (*How to resum Feynman graphs*, arXiv:1003.1037, Theorem II.1, pp. 2-3): the symmetric `n × n`
-matrix `X^F(w)` with `X_ii = 1` and `X_ij = x^F_ij(w)` is positive for parameters in `[0, 1]`. The source writes it as
-a convex combination `∑_k (w_{k-1} - w_k) X^{F,k}` of block matrices of ones (eq. (II-4)); here the same decomposition
-in integral form, `X_ij = ∫_0^1 1[i, j joined by the links with w ≥ t] dt` (`le_ultra_iff`), each block matrix being
-positive (`sum_block_nonneg`).
+Rivasseau–Wang (*Loop vertex expansion for Φ^{2k} theory in zero dimension*, arXiv:1003.1037, Theorem II.1,
+pp. 2-3): the symmetric `n × n` matrix `X^F(w)` with `X_ii = 1` and `X_ij = x^F_ij(w)` is positive for parameters in
+`[0, 1]`. The source writes it as a convex combination `∑_k (w_{k-1} - w_k) X^{F,k}` of block matrices of ones
+(eq. (II-4)); here the same decomposition in integral form, `X_ij = ∫_0^1 1[i, j joined by the links with w ≥ t] dt`
+(`le_ultra_iff`), each block matrix being positive (`sum_block_nonneg`).
 
 ## Main results
 
