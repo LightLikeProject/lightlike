@@ -2,6 +2,7 @@ import Lightlike.Geodesic.LocalCausality
 import Lightlike.Spacetime.CausalLadder.PerturbTimelike
 import Lightlike.Spacetime.CausalLadder.ChartLipschitz
 import Lightlike.Spacetime.OpenCoordMetric
+import Lightlike.Spacetime.Causal.CurveMargin
 
 /-!
 # Local causality for causal curves of the manifold
@@ -244,6 +245,171 @@ theorem chron_cone_of_isFutureTimelikeCurve (hL : IsLorentzianCoordMetric g U)
   have hvt := hmem t (Ioo_subset_Icc_self hmt)
   refine ⟨v', hv', ?_, h.pairing_N_neg hL T hTN hvt.1 hvt.2 hu.1.le hu.2⟩
   rw [hvt.2, pairing_eq_matForm]; exact hu.1
+
+/-! ### The converse: radial curves -/
+
+lemma smul_mem_ball' {v : Fin n → ℝ} (hv : v ∈ ball (0 : Fin n → ℝ) r) {t : ℝ}
+    (ht : t ∈ Icc (0 : ℝ) 1) : t • v ∈ ball (0 : Fin n → ℝ) r := by
+  rw [mem_ball_zero_iff, norm_smul, Real.norm_eq_abs, abs_of_nonneg ht.1]
+  calc t * ‖v‖ ≤ 1 * ‖v‖ := mul_le_mul_of_nonneg_right ht.2 (norm_nonneg _)
+    _ = ‖v‖ := one_mul _
+    _ < r := mem_ball_zero_iff.1 hv
+
+/-- The radial curve `t ↦ φ (t v)` of the time ball, with `t` clamped to `[0, 1]`, as a curve of
+`↥U`. -/
+def radial (h : IsTimeBall g U p ρ φ e r N) {v : Fin n → ℝ} (hv : v ∈ ball (0 : Fin n → ℝ) r) :
+    ℝ → U := fun t =>
+  ⟨φ ((projIcc (0 : ℝ) 1 zero_le_one t : ℝ) • v),
+    h.map_mem (smul_mem_ball' hv (projIcc (0 : ℝ) 1 zero_le_one t).2)⟩
+
+lemma radial_apply (h : IsTimeBall g U p ρ φ e r N) {v : Fin n → ℝ}
+    (hv : v ∈ ball (0 : Fin n → ℝ) r) {t : ℝ} (ht : t ∈ Icc (0 : ℝ) 1) :
+    (h.radial hv t).1 = φ (t • v) := by
+  simp only [radial, projIcc_of_mem _ ht]
+
+set_option backward.isDefEq.respectTransparency false in
+lemma radial_contMDiffOn (h : IsTimeBall g U p ρ φ e r N) {v : Fin n → ℝ}
+    (hv : v ∈ ball (0 : Fin n → ℝ) r) :
+    ContMDiffOn 𝓘(ℝ, ℝ) 𝓘(ℝ, Fin n → ℝ) ∞ (h.radial hv) (Icc 0 1) := by
+  intro t ht
+  rw [← ContMDiffWithinAt.subtypeVal_comp_iff, contMDiffWithinAt_iff_contDiffWithinAt]
+  have hsrc : t • v ∈ φ.source := h.mem_source (smul_mem_ball' hv ht)
+  have h1 : ContDiffAt ℝ ∞ (fun s : ℝ => φ (s • v)) t :=
+    (h.chart.contDiffOn.contDiffAt (φ.open_source.mem_nhds hsrc)).comp t
+      (contDiffAt_id.smul contDiffAt_const)
+  exact h1.contDiffWithinAt.congr (fun y hy => h.radial_apply hv hy) (h.radial_apply hv ht)
+
+set_option backward.isDefEq.respectTransparency false in
+lemma velocity_radial (h : IsTimeBall g U p ρ φ e r N) {v : Fin n → ℝ}
+    (hv : v ∈ ball (0 : Fin n → ℝ) r) {t : ℝ} (ht : t ∈ Icc (0 : ℝ) 1) :
+    Causal.velocity 𝓘(ℝ, Fin n → ℝ) (h.radial hv) (Icc 0 1) t = fderiv ℝ φ (t • v) v := by
+  have hmd : MDifferentiableWithinAt 𝓘(ℝ, ℝ) 𝓘(ℝ, Fin n → ℝ) (h.radial hv) (Icc 0 1) t :=
+    ((h.radial_contMDiffOn hv) t ht).mdifferentiableWithinAt (by simp)
+  have hsrc : h.radial hv t ∈ (extChartAt 𝓘(ℝ, Fin n → ℝ) (h.radial hv t)).source := by
+    simp [TopologicalSpace.Opens.chartAt_eq, chartAt_self_eq,
+      OpenPartialHomeomorph.subtypeRestr_source]
+  have h1 := Causal.hasDerivWithinAt_chart_comp (h.radial hv t) hmd hsrc
+  have hchart : (extChartAt 𝓘(ℝ, Fin n → ℝ) (h.radial hv t)) ∘ h.radial hv =
+      fun s => (h.radial hv s).1 := funext fun s => opens_extChartAt_apply U _ _
+  rw [hchart] at h1
+  have hbase : h.radial hv t ∈ (Causal.tTriv 𝓘(ℝ, Fin n → ℝ) U (h.radial hv t)).baseSet := by
+    simp [TopologicalSpace.Opens.chartAt_eq, chartAt_self_eq,
+      OpenPartialHomeomorph.subtypeRestr_source]
+  have htriv : ((Causal.tTriv 𝓘(ℝ, Fin n → ℝ) U (h.radial hv t))
+      ⟨h.radial hv t, Causal.velocity 𝓘(ℝ, Fin n → ℝ) (h.radial hv) (Icc 0 1) t⟩).2 =
+      Causal.velocity 𝓘(ℝ, Fin n → ℝ) (h.radial hv) (Icc 0 1) t := by
+    rw [← Trivialization.continuousLinearMapAt_apply_of_mem (R := ℝ) _ hbase,
+      opens_continuousLinearMapAt]
+    rfl
+  rw [htriv] at h1
+  have hφd := h.hasFDerivAt (smul_mem_ball' hv ht)
+  have hs : HasDerivAt (fun s : ℝ => s • v) v t := by
+    simpa using (hasDerivAt_id t).smul_const v
+  have h2 : HasDerivWithinAt (fun s => (h.radial hv s).1) (fderiv ℝ φ (t • v) v) (Icc 0 1) t :=
+    ((hφd.comp_hasDerivAt t hs).hasDerivWithinAt).congr (fun y hy => h.radial_apply hv hy)
+      (h.radial_apply hv ht)
+  exact (uniqueDiffOn_Icc zero_lt_one t ht).eq_deriv _ h1 h2
+
+/-- **The Gauss lemma along a radial curve**: `g(φ(t v))(Dφ(t v) v, Dφ(t v) v) = g_p(v, v)`. -/
+lemma pairing_radial (hL : IsLorentzianCoordMetric g U) (h : IsTimeBall g U p ρ φ e r N)
+    {v : Fin n → ℝ} (hv : v ∈ ball (0 : Fin n → ℝ) r) {t : ℝ} (ht : t ∈ Icc (0 : ℝ) 1) :
+    pairing g (φ (t • v)) (fderiv ℝ φ (t • v) v) (fderiv ℝ φ (t • v) v) = pairing g p v v := by
+  rcases ht.1.eq_or_lt with h0 | hpos
+  · rw [← h0, zero_smul, h.chart.hasFDerivAt_zero.fderiv, h.chart.map_zero]
+    rfl
+  · have hg := IsNormalChart.gauss hL.1 h.chart (h.mem_ball (smul_mem_ball' hv ht)) v
+    rw [map_smul, pairing_smul_left, pairing_smul_left] at hg
+    exact mul_left_cancel₀ hpos.ne' hg
+
+/-- The velocity of the radial curve: `g(γ̇, γ̇) = σ_p(v)`, and `γ̇` is future directed for `T`
+when `σ_p(v) ≤ 0 < x⁰(v)`. -/
+lemma radial_velocity_props (hL : IsLorentzianCoordMetric g U)
+    (T : Causal.TimeOrientation (openMetric U g hL)) (h : IsTimeBall g U p ρ φ e r N)
+    (hTN : ∀ x : U, ∀ v ∈ ball (0 : Fin n → ℝ) r, x.1 = φ v → matForm (g x.1) (N v) (T.X x) < 0)
+    {v : Fin n → ℝ} (hv : v ∈ ball (0 : Fin n → ℝ) r) (hσ : pairing g p v v ≤ 0)
+    (hx : 0 < -pairing g p e v) {t : ℝ} (ht : t ∈ Icc (0 : ℝ) 1) :
+    matForm (g (h.radial hv t).1) (fderiv ℝ φ (t • v) v) (fderiv ℝ φ (t • v) v) = pairing g p v v ∧
+      fderiv ℝ φ (t • v) v ≠ 0 ∧
+      matForm (g (h.radial hv t).1) (fderiv ℝ φ (t • v) v) (T.X (h.radial hv t)) < 0 := by
+  have hball := smul_mem_ball' hv ht
+  have hy := h.radial_apply hv ht
+  have hyU : φ (t • v) ∈ (U : Set (Fin n → ℝ)) := hy ▸ (h.radial hv t).2
+  have hσt := h.pairing_radial hL hv ht
+  have hNt : pairing g (φ (t • v)) (N (t • v)) (fderiv ℝ φ (t • v) v) < 0 := by
+    rw [h.dual _ hball v]; linarith
+  have hLf := isLorentzianForm_matForm hL hyU
+  refine ⟨by rw [hy, ← pairing_eq_matForm]; exact hσt, fun h0 => ?_, ?_⟩
+  · rw [h0, pairing_zero_right] at hNt
+    exact lt_irrefl _ hNt
+  · set X0 : Fin n → ℝ := T.X (h.radial hv t) with hX0
+    have hXX : matForm (g (h.radial hv t).1) X0 X0 < 0 := T.timelike (h.radial hv t)
+    have hNX : matForm (g (h.radial hv t).1) (N (t • v)) X0 < 0 := hTN (h.radial hv t) (t • v) hball hy
+    rw [hy] at hXX hNX ⊢
+    have hNN : matForm (g (φ (t • v))) (N (t • v)) (N (t • v)) < 0 := by
+      rw [← pairing_eq_matForm]; exact h.timelike _ hball
+    have huu : matForm (g (φ (t • v))) (fderiv ℝ φ (t • v) v) (fderiv ℝ φ (t • v) v) ≤ 0 := by
+      rw [← pairing_eq_matForm, hσt]; exact hσ
+    have huN : matForm (g (φ (t • v))) (fderiv ℝ φ (t • v) v) (N (t • v)) < 0 := by
+      rw [← pairing_eq_matForm, pairing_comm hL.1 hyU]; exact hNt
+    have hXN : matForm (g (φ (t • v))) X0 (N (t • v)) < 0 := by
+      rw [← pairing_eq_matForm, pairing_comm hL.1 hyU, pairing_eq_matForm]; exact hNX
+    exact hLf.neg_of_causal_timelike hNN huu hXX huN hXN
+
+/-- **The converse for `J⁺`** (Chruściel, (2.4.7), "⇐"): if `σ_p(v) ≤ 0` and `x⁰(v) ≥ 0`, the point
+`φ v` is reached from `p` by a future causal curve inside the time ball (the radial curve, or the
+constant curve for `v = 0`). -/
+theorem exists_causal_of_cone (hL : IsLorentzianCoordMetric g U)
+    (T : Causal.TimeOrientation (openMetric U g hL)) (h : IsTimeBall g U p ρ φ e r N)
+    (hTN : ∀ x : U, ∀ v ∈ ball (0 : Fin n → ℝ) r, x.1 = φ v → matForm (g x.1) (N v) (T.X x) < 0)
+    {x₀ : U} (hx₀ : x₀.1 = p) {v : Fin n → ℝ} (hv : v ∈ ball (0 : Fin n → ℝ) r)
+    (hσ : pairing g p v v ≤ 0) (hx : 0 ≤ -pairing g p e v) :
+    ∃ (γ : ℝ → U) (a b : ℝ), a ≤ b ∧ Causal.IsFutureCausalCurve T γ (Icc a b) ∧ γ a = x₀ ∧
+      (γ b).1 = φ v ∧ ∀ t ∈ Icc a b, (γ t).1 ∈ φ '' ball (0 : Fin n → ℝ) r := by
+  by_cases hv0 : v = 0
+  · refine ⟨fun _ => x₀, 0, 0, le_rfl, Causal.isCurveWith_const _ x₀ 0, rfl, ?_, ?_⟩
+    · rw [hx₀, hv0, h.chart.map_zero]
+    · intro t _; exact ⟨0, mem_ball_self h.pos, by rw [h.chart.map_zero, hx₀]⟩
+  have hp : p ∈ (U : Set (Fin n → ℝ)) := hx₀ ▸ x₀.2
+  have hxpos : 0 < -pairing g p e v := by
+    refine lt_of_le_of_ne hx fun h0 => hv0 ?_
+    refine (isLorentzianForm_matForm hL hp).eq_zero_of_orthogonal_timelike (X := e) ?_ ?_ ?_
+    · rw [← pairing_eq_matForm]; exact h.timelike_zero
+    · rw [← pairing_eq_matForm, pairing_comm hL.1 hp]; linarith
+    · rw [← pairing_eq_matForm]; exact hσ
+  have hsm := h.radial_contMDiffOn hv
+  refine ⟨h.radial hv, 0, 1, zero_le_one, ⟨ordConnected_Icc,
+    Causal.isLocallyLipschitzOn_of_contMDiffOn zero_lt_one (hsm.of_le (by simp)), ?_⟩, ?_, ?_, ?_⟩
+  · filter_upwards [ae_restrict_mem measurableSet_Icc] with t ht
+    refine ⟨(hsm t ht).mdifferentiableWithinAt (by simp), ?_⟩
+    obtain ⟨h1, h2, h3⟩ := h.radial_velocity_props hL T hTN hv hσ hxpos ht
+    rw [h.velocity_radial hv ht]
+    exact ⟨h2, h1.trans_le hσ, h3⟩
+  · refine Subtype.ext ?_
+    rw [h.radial_apply hv ⟨le_rfl, zero_le_one⟩, zero_smul, h.chart.map_zero]
+    exact hx₀.symm
+  · rw [h.radial_apply hv ⟨zero_le_one, le_rfl⟩, one_smul]
+  · intro t ht; exact ⟨t • v, smul_mem_ball' hv ht, (h.radial_apply hv ht).symm⟩
+
+/-- **The converse for `I⁺`** (Chruściel, (2.4.7), "⇐"): if `σ_p(v) < 0` and `x⁰(v) > 0`, the point
+`φ v` is reached from `p` by a future timelike curve inside the time ball (the radial curve). -/
+theorem exists_timelike_of_cone (hL : IsLorentzianCoordMetric g U)
+    (T : Causal.TimeOrientation (openMetric U g hL)) (h : IsTimeBall g U p ρ φ e r N)
+    (hTN : ∀ x : U, ∀ v ∈ ball (0 : Fin n → ℝ) r, x.1 = φ v → matForm (g x.1) (N v) (T.X x) < 0)
+    {x₀ : U} (hx₀ : x₀.1 = p) {v : Fin n → ℝ} (hv : v ∈ ball (0 : Fin n → ℝ) r)
+    (hσ : pairing g p v v < 0) (hx : 0 < -pairing g p e v) :
+    ∃ (γ : ℝ → U) (a b : ℝ), a < b ∧ Causal.IsFutureTimelikeCurve T γ (Icc a b) ∧ γ a = x₀ ∧
+      (γ b).1 = φ v ∧ ∀ t ∈ Icc a b, (γ t).1 ∈ φ '' ball (0 : Fin n → ℝ) r := by
+  have hsm := h.radial_contMDiffOn hv
+  refine ⟨h.radial hv, 0, 1, zero_lt_one, Causal.isFutureTimelikeCurve_of_contMDiffOn T zero_lt_one
+    (hsm.of_le (by simp)) fun t ht => ?_, ?_, ?_, ?_⟩
+  · obtain ⟨h1, -, h3⟩ := h.radial_velocity_props hL T hTN hv hσ.le hx ht
+    rw [h.velocity_radial hv ht]
+    exact ⟨h1.trans_lt hσ, h3⟩
+  · refine Subtype.ext ?_
+    rw [h.radial_apply hv ⟨le_rfl, zero_le_one⟩, zero_smul, h.chart.map_zero]
+    exact hx₀.symm
+  · rw [h.radial_apply hv ⟨zero_le_one, le_rfl⟩, one_smul]
+  · intro t ht; exact ⟨t • v, smul_mem_ball' hv ht, (h.radial_apply hv ht).symm⟩
 
 end IsTimeBall
 
