@@ -130,3 +130,23 @@ the Kruskal manifold `{X² - T² > -1} × S²` is the open subset `{x ≠ 0, (lo
 
 This global chart is the library's own; no source is cited for it. Remaining for maximality: (2) the notion of an
 extension, (3) geodesics through a boundary point of an extension, (4) the classification of the geodesics.
+
+## The notion of extension (stream Fable-1, 19 November 2026)
+
+Source read (pdftotext of the arXiv PDF): J. Sbierski, *The C⁰-inextendibility of the Schwarzschild spacetime and
+the spacelike diameter in Lorentzian geometry*, arXiv:1507.00601v2 (25 April 2016): page 1 (the definition of
+`Cᵏ`-inextendible in the introduction), Section 2.3, Definition 2.15 and Remark 2.16 (page 11), Lemma 2.17
+(page 12), Section 1.1 (page 3) and item iv) of Section 1.3 ("timelike geodesic completeness implies, in a
+straightforward way, the `C²`-inextendibility of the Lorentzian manifold").
+The abstract states: "The maximal analytic Schwarzschild spacetime is manifestly inextendible as a Lorentzian
+manifold with a twice continuously differentiable metric."
+
+Lightlike/Spacetime/SpacetimeExtension.lean: `IsLorentzianExtension`, `IsInextendible` (Definition 2.15, for smooth
+metrics; differences recorded in the file header: smooth instead of `Cᵏ` (weaker), open embedding and an explicit
+Hausdorff hypothesis (representation)). Remark 2.16 (3) of the source: a local notion of extension is not adequate
+(Minkowski space would be locally extendible), so the target statement is the global one,
+`IsInextendible (kruskalManifoldMetric M hM)`.
+
+Not yet proved. The bridge still missing between `IsLorentzianExtension` and the chart statements: in a chart of
+the extension around a boundary point, the embedding is a chart change on an open subset of the Kruskal manifold,
+so `not_tendsto_of_isometric_chart` applies to sequences with `r → 0`; the other sequences need the geodesics.

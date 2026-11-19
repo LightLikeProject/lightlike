@@ -738,6 +738,7 @@ import Lightlike.Spacetime.SchwarzschildManifold
 import Lightlike.Spacetime.ChartTensor
 import Lightlike.Spacetime.EinsteinEquations
 import Lightlike.Spacetime.NondegMetric
+import Lightlike.Spacetime.SpacetimeExtension
 import Lightlike.Spacetime.VolumeMeasure
 import Lightlike.Spacetime.CausalLadder.FullSupportMeasure
 import Lightlike.Spacetime.NondegOpen
