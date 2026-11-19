@@ -10,7 +10,8 @@ coordinates `quatCoord M = ((M₀₀ + M₁₁)/2, i(M₁₁ - M₀₀)/2, (M₀
 
 * `quatBasis`, `quatCoord`, `quat_decomp`, `quatCoord_quatToMat`, `quat_eq_sum`;
 * `complexify`, `complexify_quatToMat`: `ρ_ℂ ∘ ι = ρ`;
-* `quatCoord_add`, `quatCoord_smul`, `complexifyL`, `complexify_mul`: `ρ_ℂ` is complex-linear and multiplicative.
+* `quatCoord_add`, `quatCoord_smul`, `complexifyL`, `complexify_mul`: `ρ_ℂ` is complex-linear and multiplicative;
+* `complexify_mul_of`, `complexify_sum`: the bimodule form `ρ₁_ℂ(M) ρ₂_ℂ(N) = ρ₃_ℂ(MN)` and linearity in the coefficients.
 -/
 
 open Matrix
@@ -95,5 +96,27 @@ theorem complexify_mul (ρ : ℍ[ℝ] →ₐ[ℝ] (H →L[ℂ] H)) (M N : Matrix
   rw [complexify, complexify, Finset.sum_mul_sum]
   refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_
   simp only [AlgHom.toLinearMap_apply, map_mul, smul_mul_smul_comm]
+
+/-- **The bimodule form**: if `ρ₁(p) ρ₂(q) = ρ₃(pq)` for all quaternions, then `ρ₁_ℂ(M) ρ₂_ℂ(N) = ρ₃_ℂ(MN)`. For
+`ρ₁ = π ∘ E_αβ`, `ρ₂ = π ∘ E_βγ`, `ρ₃ = π ∘ E_αγ` this gives the matrix units of `M₂ₙ(ℂ)` from a representation of
+`Mₙ(ℍ)`. -/
+theorem complexify_mul_of (ρ₁ ρ₂ ρ₃ : ℍ[ℝ] →ₗ[ℝ] (H →L[ℂ] H)) (h : ∀ p q, ρ₁ p * ρ₂ q = ρ₃ (p * q))
+    (M N : Matrix (Fin 2) (Fin 2) ℂ) : complexify ρ₁ M * complexify ρ₂ N = complexify ρ₃ (M * N) := by
+  have hMN : M * N = ∑ k, ∑ l, (quatCoord M k * quatCoord N l) • quatToMat (quatBasis k * quatBasis l) := by
+    conv_lhs => rw [quat_decomp M, quat_decomp N]
+    rw [Finset.sum_mul_sum]
+    refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_
+    rw [smul_mul_smul_comm, map_mul]
+  rw [show complexify ρ₃ (M * N) = complexifyL ρ₃ (M * N) from rfl, hMN, map_sum]
+  simp only [map_sum, map_smul, complexifyL_apply, complexify_quatToMat]
+  rw [complexify, complexify, Finset.sum_mul_sum]
+  refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_
+  rw [smul_mul_smul_comm, h]
+
+/-- **`ρ_ℂ` is linear in the coefficients**: `ρ_ℂ(∑ⱼ cⱼ ι(qⱼ)) = ∑ⱼ cⱼ ρ(qⱼ)`. -/
+lemma complexify_sum {κ : Type*} [Fintype κ] (ρ : ℍ[ℝ] →ₗ[ℝ] (H →L[ℂ] H)) (c : κ → ℂ) (q : κ → ℍ[ℝ]) :
+    complexify ρ (∑ j, c j • quatToMat (q j)) = ∑ j, c j • ρ (q j) := by
+  rw [show complexify ρ (∑ j, c j • quatToMat (q j)) = complexifyL ρ (∑ j, c j • quatToMat (q j)) from rfl, map_sum]
+  simp only [map_smul, complexifyL_apply, complexify_quatToMat]
 
 end Lightlike.NCG

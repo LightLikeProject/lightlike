@@ -49,6 +49,14 @@ representation of `M₂(ℂ)` that agrees with it on `ℍ` [15]. For a complex s
 it is antilinear, and `J Q± J = (1 ± i J π(i·1) J)/2` are the corresponding parts for the right action, commuting with
 `π(A)` {1} [16].
 
+A complexification of a triple over a real algebra `A` is a faithful complex-linear `*`-representation `σ` of
+`⊕ M_dₖ(ℂ)` with a real `*`-homomorphism `φ : A → ⊕ M_dₖ(ℂ)`, `π = σ ∘ φ` and every `σ(x)` a complex combination of
+the `π(a)`: then `σ`, `D` and `J` form a complex-linear real finite spectral triple, and `H` is unitarily equivalent to the
+model of its multiplicity matrix, by a unitary taking `π(a)` to the model's action of `φ(a)` and `J` to the model's `J`
+{1} [17]. A complex-linear triple over `⊕ Mₙᵢ(ℂ)` is its own complexification [18]. For `A = ⊕ Mₙᵢ(ℝ)`,
+`σ(x) = π(Re x) + i π(Im x)` is one [19]. A system of matrix units on `H` defines a complex `*`-representation of
+`⊕ M_dₖ(ℂ)`, faithful when every block unit is nonzero [20].
+
 ## Lean References
 
 1. Lightlike/NCG/FiniteSpectralTriple.lean - `NCG.FiniteSpectralTriple`, `NCG.FiniteSpectralTriple.comm`,
@@ -84,11 +92,25 @@ it is antilinear, and `J Q± J = (1 ± i J π(i·1) J)/2` are the corresponding 
     `NCG.qJ`, `NCG.qK`, `NCG.single_eq_quat`
 15. Lightlike/NCG/QuaternionComplexify.lean - `NCG.quatBasis`, `NCG.quatCoord`, `NCG.quat_decomp`,
     `NCG.quatCoord_quatToMat`, `NCG.quat_eq_sum`, `NCG.complexify`, `NCG.complexify_quatToMat`, `NCG.quatCoord_add`,
-    `NCG.quatCoord_smul`, `NCG.complexifyL`, `NCG.complexify_mul`
+    `NCG.quatCoord_smul`, `NCG.complexifyL`, `NCG.complexify_mul`, `NCG.complexify_mul_of`, `NCG.complexify_sum`
 16. Lightlike/NCG/ComplexSplitting.lean - `NCG.Qp`, `NCG.Qm`, `NCG.Qp_add_Qm`, `NCG.pi_u_sq`, `NCG.pi_u_Qp`, `NCG.pi_u_Qm`,
     `NCG.pi_comm_Qp`, `NCG.pi_comm_Qm`, `NCG.smul_eq_re_add_im`, `NCG.Qp_pi_smul`, `NCG.Qm_pi_smul`, `NCG.QpR`, `NCG.QmR`,
     `NCG.J_Qp_J`, `NCG.J_Qm_J`, `NCG.QpR_add_QmR`, `NCG.pi_comm_QpR`, `NCG.pi_comm_QmR`, `NCG.Qp_comm_QpR`,
     `NCG.Qp_comm_QmR`
+17. Lightlike/NCG/Complexification.lean - `NCG.commJ_span`, `NCG.commL`, `NCG.commL_apply`, `NCG.Complexification`,
+    `NCG.Complexification.σℝ`, `NCG.Complexification.σℝ_apply`, `NCG.Complexification.triple`,
+    `NCG.Complexification.isComplexLinear`, `NCG.Complexification.realStructure`, `NCG.Complexification.exists_unitary`
+18. Lightlike/NCG/TestsComplexification.lean - `NCG.TestsComplexification.piC`,
+    `NCG.TestsComplexification.selfComplexification`, `NCG.TestsComplexification.exists_unitary_self`
+19. Lightlike/NCG/RealSummands.lean - `NCG.MatSumR`, `NCG.reM`, `NCG.imM`, `NCG.ofRealM`, `NCG.reM_mul`, `NCG.imM_mul`,
+    `NCG.reM_star`, `NCG.imM_star`, `NCG.phiR`, `NCG.pi_rsmul`, `NCG.sigmaR`, `NCG.sigmaR_apply`, `NCG.sigmaR_phiR`,
+    `NCG.unitR`, `NCG.unitC`, `NCG.phiR_unitR`, `NCG.unitC_mul_mul_unitC`, `NCG.sigmaR_injective`,
+    `NCG.realComplexification`, `NCG.exists_unitary_realSummands`
+20. Lightlike/NCG/MatrixUnits.lean - `NCG.MatrixUnits`, `NCG.MatrixUnits.toFun`, `NCG.MatrixUnits.U_mul_toFun`,
+    `NCG.MatrixUnits.toFun_mul_U`, `NCG.MatrixUnits.toFun_mul`, `NCG.MatrixUnits.toFun_star`, `NCG.MatrixUnits.hom`,
+    `NCG.MatrixUnits.hom_apply`, `NCG.MatrixUnits.U_mul_hom_mul_U`, `NCG.MatrixUnits.hom_injective`,
+    `NCG.MatrixUnits.U_diag_eq`, `NCG.MatrixUnits.U_ne_zero`, `NCG.MatrixUnits.hom_injective_of_block`,
+    `NCG.MatrixUnits.hom_mem`
 
 ## References
 

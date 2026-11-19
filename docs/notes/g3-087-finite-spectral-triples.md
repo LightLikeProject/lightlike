@@ -132,6 +132,19 @@ Where each Krajewski clause stands:
   (`QuaternionComplexify.lean`). Open: assembling the matrix units of all summands' irreducible representations on `H`
   and running the tensor-form argument over them, which gives `H_{(iα)(jβ)} ≅ ℂ^{nᵢ} ⊗ ℂ^{r} ⊗ ℂ^{nⱼ}` with `nᵢ` the
   dimension of the irreducible representation (`2n` for `Mₙ(ℍ)`).
+* The assembly (`Complexification.lean`): a complexification of a triple over a real algebra `A` is a faithful
+  complex-linear `*`-representation `σ` of `⊕ M_dₖ(ℂ)` with a real `*`-homomorphism `φ : A → ⊕ M_dₖ(ℂ)`, `π = σ ∘ φ` and
+  every `σ(x)` a complex combination of the `π(a)`. The order-zero and first-order conditions pass to `σ` (`commJ_span`),
+  and `Complexification.exists_unitary` gives the unitary onto the model of the complexified multiplicity matrix,
+  intertwining `π` with the model's action of `φ(A)` and `J` with the model's `J`. So each summand type reduces to
+  constructing `σ`. `MatrixUnits.lean` builds `σ` from a system of matrix units on `H`, faithful when every block unit is
+  nonzero.
+* `Mₙ(ℝ)` (`RealSummands.lean`): `σ(x) = π(Re x) + i π(Im x)`, faithful by `E₀α x Eβ₀ = x_αβ E₀₀`;
+  `exists_unitary_realSummands` is the classification for `A = ⊕ Mₙᵢ(ℝ)` (proved).
+* `Mₙ(ℍ)` (open, next): the units `U_{(αs)(βt)} = ∑ₖ quatCoord(E_st)ₖ π(E_αβ(bₖ))` of `M₂ₙ(ℂ)`. Their relations follow
+  from `complexify_mul` in the bimodule form `ρ₁(p) ρ₂(q) = ρ₃(pq)`, and the block unit is `π(1ᵢ) ≠ 0`.
+* `Mₙ(ℂ)` (open, next): the units `Q₊ π(E_αβ)` (fundamental) and `Q₋ π(E_αβ)` (conjugate), with
+  `φ(a) = (a, ā)`, over the blocks whose unit `Q± π(1ᵢ)` is nonzero.
 * §3.3, p. 14, Table 1 (a symmetric integer matrix over the irreducible representations, the signs `μ_{iαj} μ_{iᾱj} ≥ 0`,
   and the factors 2 and 4 relating it to the intersection form): open. It needs `J Q₊ J`, the right-action projection,
   and the exchange by `J` of the fundamental and conjugate blocks of a complex summand.
