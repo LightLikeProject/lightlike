@@ -1,5 +1,6 @@
 import Mathlib.Analysis.Normed.Algebra.MatrixExponential
 import Mathlib.LinearAlgebra.Matrix.Trace
+import Lightlike.OperatorAlgebras.FiniteKMS
 import Mathlib.Analysis.SpecialFunctions.Exponential
 
 /-!
@@ -12,6 +13,9 @@ functions `F(z) = Tr (e^{-H} b σ_z(a))` take the values `ω(b σ_s(a))` on the 
 equations (4.46) and (4.47)). The modular operator of the vector `Ψ = ρ^{1/2}` in the Hilbert–Schmidt space is
 `Δ(y) = ρ y ρ⁻¹` and `S(y) = ρ^{-1/2} y† ρ^{1/2}` is the antilinear involution with `S (a Ψ) = a† Ψ` and `Δ = S† S`
 (Section 4.1, equations (4.4) and (4.11)).
+
+The KMS condition itself is `Lightlike.OperatorAlgebras.IsKMS` of `FiniteKMS.lean`; `isKMS_boltz` shows that the modular
+state satisfies it at inverse temperature `1`, and `not_isKMS_of_ne` that a non-Gibbs qubit state does not.
 -/
 
 open NormedSpace Matrix
@@ -179,57 +183,53 @@ theorem omega_flow (H a : Matrix (Fin n) (Fin n) ℂ) (z : ℂ) : omega H (flow 
     _ = trace (boltz H (-1) * a) := by
         rw [hc, ← Matrix.mul_assoc, h, Matrix.one_mul]
 
-/-- `ρ` is `(H, β)`-KMS: `Tr (ρ b σ_{s - i β}(a)) = Tr (ρ σ_s(a) b)` for the flow `σ_z(a) = e^{-i z H} a e^{i z H}`. -/
-def IsKMS (ρ H : Matrix (Fin n) (Fin n) ℂ) (β : ℂ) : Prop :=
-  ∀ a b : Matrix (Fin n) (Fin n) ℂ, ∀ s : ℂ,
-    trace (ρ * (b * flow H (s - Complex.I * β) a)) = trace (ρ * (flow H s a * b))
-
-lemma boltz_smul (H : Matrix (Fin n) (Fin n) ℂ) (β w : ℂ) : boltz (β • H) w = boltz H (β * w) := by
-  unfold boltz; rw [smul_smul, mul_comm]
-
-lemma flow_smul (H a : Matrix (Fin n) (Fin n) ℂ) (β z : ℂ) : flow (β • H) z a = flow H (β * z) a := by
-  unfold flow
-  rw [boltz_smul, boltz_smul, show β * (-(Complex.I * z)) = -(Complex.I * (β * z)) by ring,
-    show β * (Complex.I * z) = Complex.I * (β * z) by ring]
-
-/-- **The Gibbs state is KMS at its own temperature**: `ρ = e^{-β H}` is `(H, β)`-KMS (for `β ≠ 0`). -/
-theorem isKMS_gibbs (H : Matrix (Fin n) (Fin n) ℂ) {β : ℂ} (hβ : β ≠ 0) :
-    IsKMS (boltz (β • H) (-1)) H β := by
-  intro a b s
-  have := kms (β • H) a b (s / β)
-  unfold omega at this
-  rw [flow_smul, flow_smul] at this
-  have h1 : β * (s / β - Complex.I) = s - Complex.I * β := by field_simp
-  have h2 : β * (s / β) = s := by field_simp
-  rw [h1, h2] at this
-  exact this
+/-- **The modular-flow KMS relation in the form of `FiniteKMS.lean`**: the state `Tr (e^{-H} ·)` satisfies
+`IsKMS H (e^{-H}) 1`, i.e. `tr(ρ A B) = tr(ρ τ^{-i}(B) A)`; this is `kms` at `s = 0` (Witten (4.47)). -/
+theorem isKMS_boltz (H : Matrix (Fin n) (Fin n) ℂ) : IsKMS H (boltz H (-1)) 1 := by
+  intro A B
+  have hk := kms H A B 0
+  have c1 : -(Complex.I * (0 - Complex.I)) = (-1 : ℂ) := by
+    have := Complex.I_sq; linear_combination this
+  have c2 : Complex.I * (0 - Complex.I) = (1 : ℂ) := by
+    have := Complex.I_sq; linear_combination -this
+  unfold omega flow at hk
+  rw [c1, c2, mul_zero, neg_zero, boltz_zero, Matrix.one_mul, Matrix.mul_one] at hk
+  have hE : imagEvol H 1 B = boltz H 1 * B * boltz H (-1) := by
+    unfold imagEvol boltz
+    simp [neg_smul]
+  have hρ : boltz H (-1) * boltz H 1 = 1 := boltz_neg_mul H 1
+  have hρ' : boltz H 1 * boltz H (-1) = 1 := by simpa using boltz_mul_neg H 1
+  have L : (boltz H (-1) * (B * (boltz H (-1) * A * boltz H 1))).trace = (B * (boltz H (-1) * A)).trace := by
+    rw [show boltz H (-1) * (B * (boltz H (-1) * A * boltz H 1)) =
+        (boltz H (-1) * (B * (boltz H (-1) * A))) * boltz H 1 by simp only [Matrix.mul_assoc],
+      Matrix.trace_mul_comm, ← Matrix.mul_assoc, hρ', Matrix.one_mul]
+  have R : (boltz H (-1) * (boltz H 1 * B * boltz H (-1) * A)).trace = (B * (boltz H (-1) * A)).trace := by
+    rw [show boltz H (-1) * (boltz H 1 * B * boltz H (-1) * A) =
+        (boltz H (-1) * boltz H 1) * (B * (boltz H (-1) * A)) by simp only [Matrix.mul_assoc], hρ, Matrix.one_mul]
+  rw [hE, ← hk, L, R]
 
 /-- The Hamiltonian of a qubit with energy splitting `E`. -/
-def qubitH (E : ℂ) : Matrix (Fin 2) (Fin 2) ℂ := Matrix.diagonal ![0, E]
+def qubitHam (E : ℂ) : Matrix (Fin 2) (Fin 2) ℂ := Matrix.diagonal ![0, E]
 
-lemma boltz_qubit (E w : ℂ) : boltz (qubitH E) w = Matrix.diagonal ![1, Complex.exp (w * E)] := by
-  unfold boltz qubitH
+lemma boltz_qubit (E w : ℂ) : boltz (qubitHam E) w = Matrix.diagonal ![1, Complex.exp (w * E)] := by
+  unfold boltz qubitHam
   rw [← Matrix.diagonal_smul, Matrix.exp_diagonal]
   congr 1
   funext i
   fin_cases i <;> simp [← Complex.exp_eq_exp_ℂ]
 
-/-- **A non-Gibbs state fails the KMS condition**: for the diagonal state `ρ = diag (p, q)` and the qubit
-Hamiltonian `diag (0, E)`, KMS at inverse temperature `β` forces `p = q e^{β E}`, the Gibbs weights. -/
-theorem not_isKMS_of_ne (E β p q : ℂ) (h : p ≠ q * Complex.exp (β * E)) :
-    ¬ IsKMS (Matrix.diagonal ![p, q]) (qubitH E) β := by
+/-- **A non-Gibbs state fails the KMS condition** (of `FiniteKMS.lean`): for the diagonal state `ρ = diag (p, q)` and the
+qubit Hamiltonian `diag (0, E)`, `β`-KMS forces `p = q e^{β E}`, the Gibbs weights. -/
+theorem not_isKMS_of_ne (E : ℂ) (β : ℝ) (p q : ℂ) (h : p ≠ q * Complex.exp (β * E)) :
+    ¬ IsKMS (qubitHam E) (Matrix.diagonal ![p, q]) β := by
   intro hK
-  have := hK (Matrix.single 0 1 1) (Matrix.single 1 0 1) 0
-  have e1 : -(Complex.I * (0 - Complex.I * β)) = -β := by
-    have := Complex.I_sq; linear_combination β * this
-  have e2 : Complex.I * (0 - Complex.I * β) = β := by
-    have := Complex.I_sq; linear_combination (-β) * this
-  simp only [flow, boltz_qubit, mul_zero, zero_mul, zero_sub, neg_zero, Complex.exp_zero] at this
-  simp [Matrix.trace, Matrix.mul_apply, Fin.sum_univ_two, Matrix.diagonal_apply, Matrix.single_apply] at this
-  have e3 : -(Complex.I * (Complex.I * β) * E) = β * E := by
-    have := Complex.I_sq; linear_combination (-(β * E)) * this
-  rw [e3] at this
-  exact h this.symm
+  have hk := hK (Matrix.single 0 1 1) (Matrix.single 1 0 1)
+  have hb : exp ((β : ℂ) • qubitHam E) = Matrix.diagonal ![1, Complex.exp (β * E)] := boltz_qubit E β
+  have hb' : exp (-((β : ℂ) • qubitHam E)) = Matrix.diagonal ![1, Complex.exp (-β * E)] := by
+    rw [← neg_smul]; exact boltz_qubit E (-β)
+  simp only [imagEvol, hb, hb'] at hk
+  simp [Matrix.trace, Matrix.mul_apply, Fin.sum_univ_two, Matrix.diagonal_apply, Matrix.single_apply] at hk
+  exact h (by linear_combination hk)
 
 end Lightlike.OperatorAlgebras
 
