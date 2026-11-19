@@ -4,10 +4,12 @@ import Mathlib.Analysis.InnerProductSpace.l2Space
 /-!
 # Von Neumann's theorem with the deficiency indices as Hilbert dimensions
 
-The deficiency spaces of a closed symmetric operator are closed (), hence Hilbert spaces with Hilbert bases.
-Bonneau, Faraut and Valent, arXiv:quant-ph/0103153, Section 4, Theorem 1, cases (ii) and (iii), with  read as "the deficiency spaces have
-Hilbert bases indexed by the same set":  has a self-adjoint extension iff this holds (). The invariance of the
-Hilbert dimension (two Hilbert bases of one space have index sets of the same cardinality) is not needed for the statement and not proved here.
+The deficiency spaces of a closed symmetric operator are closed (`deficiencySpace_eq_orthogonal`), hence Hilbert spaces
+with Hilbert bases. Bonneau, Faraut and Valent, arXiv:quant-ph/0103153, Section 4, Theorem 1, cases (ii) and (iii), with
+`n₊ = n₋` read as "the deficiency spaces have Hilbert bases indexed by the same set": `A` has a self-adjoint extension iff
+this holds (`exists_selfAdjoint_ext_iff`). For finite-dimensional deficiency spaces this is the source's literal form,
+`n₊ = n₋` as dimensions (`exists_selfAdjoint_ext_iff_finrank`). The invariance of the Hilbert dimension (two Hilbert bases
+of one space have index sets of the same cardinality) is not needed for the statement and not proved here.
 -/
 
 open scoped InnerProductSpace LinearPMap
@@ -67,5 +69,19 @@ theorem exists_selfAdjoint_ext_iff (hA : ClosedSymm A) :
     exact ⟨w, bp, hilbertBasis_of_selfAdjoint_ext hA hAB hB bp⟩
   · rintro ⟨ι, bp, ⟨bm⟩⟩
     exact exists_selfAdjoint_ext_of_hilbertBasis hA bp bm (Equiv.refl ι)
+
+/-- **Von Neumann's theorem with finite deficiency indices** (Bonneau, Faraut and Valent, arXiv:quant-ph/0103153,
+Section 4, Theorem 1, in its literal form for finite indices): if `N_i` and `N_{-i}` are finite-dimensional, a closed
+symmetric densely defined `A` has a self-adjoint extension iff `n₊ = dim N_i` equals `n₋ = dim N_{-i}`. -/
+theorem exists_selfAdjoint_ext_iff_finrank (hA : ClosedSymm A) [FiniteDimensional ℂ (deficiencySpace A Complex.I)]
+    [FiniteDimensional ℂ (deficiencySpace A (-Complex.I))] :
+    (∃ B : H →ₗ.[ℂ] H, A ≤ B ∧ IsSelfAdjoint B) ↔
+      Module.finrank ℂ (deficiencySpace A Complex.I) = Module.finrank ℂ (deficiencySpace A (-Complex.I)) := by
+  constructor
+  · rintro ⟨B, hAB, hB⟩
+    exact (unitaryOfExt hA hAB hB).toLinearEquiv.finrank_eq
+  · intro hn
+    exact exists_selfAdjoint_ext_of_hilbertBasis hA (stdOrthonormalBasis ℂ (deficiencySpace A Complex.I)).toHilbertBasis
+      (stdOrthonormalBasis ℂ (deficiencySpace A (-Complex.I))).toHilbertBasis (finCongr hn)
 
 end Lightlike.OperatorAlgebras
