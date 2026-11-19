@@ -104,7 +104,7 @@ Maximality, state of the attempts:
   coordinate chart; it needs the Kruskal manifold with its `S²` factor (two charts at least, or the product
   structure), which the library does not have: the manifold of the exterior in
   Lightlike/Spacetime/SchwarzschildManifold.lean is also an open subset of `ℝ⁴` in one chart.
-  What attempt 2 produced and is true: the notion `IsCoordGeodesic`, the ingoing radial null rays as geodesics with
+  What attempt 2 produced and is true: the ingoing radial null rays as geodesics with
   affine parameter `-r` in Eddington-Finkelstein coordinates, and the divergence of the Kretschmann scalar at the
   finite affine parameter `r₀` along them (Lightlike/GR/EFNullGeodesic.lean): the extension is geodesically
   incomplete at `r = 0`, the "finite distance" condition of the source (page 171).

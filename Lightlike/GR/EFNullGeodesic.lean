@@ -1,4 +1,5 @@
 import Lightlike.GR.KruskalKretschmann
+import Lightlike.Regge.Geodesic.Equation
 
 /-!
 # Ingoing radial null geodesics reach the singularity at finite affine parameter
@@ -8,10 +9,9 @@ printed page 171: a point where a curvature scalar goes to infinity is regarded 
 also check that the point is not 'infinitely far away'; that is, that it can be reached by travelling a finite
 distance along a curve".
 
-* `IsCoordGeodesic`: a curve in a chart with velocity `v` and acceleration `a` satisfying the geodesic equation
-  `a^i + Γ^i_{jk} v^j v^k = 0`.
+* Geodesics in a chart are `Lightlike.Geodesic.IsGeodesicOn g γ w I` (`γ' = w`, `w' = -Γ(γ)(w, w)` on `I`).
 * In ingoing Eddington–Finkelstein coordinates `(v, r, θ, φ)` the curve `λ ↦ (v₀, r₀ - λ, θ₀, φ₀)` is a geodesic
-  (`ef_ingoing_isCoordGeodesic`) with null velocity (`ef_ingoing_null`): `-r` is an affine parameter of the
+  (`ef_ingoing_isGeodesicOn`) with null velocity (`ef_ingoing_null`): `-r` is an affine parameter of the
   ingoing radial null rays.
 * It stays in the chart for `λ < r₀` and the Kretschmann scalar along it tends to infinity as `λ → r₀`
   (`tendsto_kretschmann_ef_ingoing`): the singularity `r = 0` is reached at the finite affine parameter `r₀`.
@@ -24,13 +24,6 @@ open Matrix Real Set Filter Topology
 noncomputable section
 
 namespace Lightlike
-
-/-- **A geodesic in a chart** on the parameter set `s`: a curve `γ` with velocity `v` and acceleration `a` such
-that `a^i + Σ_{jk} Γ^i_{jk}(γ) v^j v^k = 0`. -/
-def IsCoordGeodesic {n : ℕ} (g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ) (γ : ℝ → Fin n → ℝ)
-    (s : Set ℝ) : Prop :=
-  ∃ v a : ℝ → Fin n → ℝ, (∀ t ∈ s, HasDerivAt γ (v t) t) ∧ (∀ t ∈ s, HasDerivAt v (a t) t) ∧
-    ∀ t ∈ s, ∀ i, a t i + ∑ j, ∑ k, christoffel g i j k (γ t) * v t j * v t k = 0
 
 variable (M : ℝ)
 
@@ -47,18 +40,23 @@ lemma christoffel_ef_rr (i : Fin 4) (y : Fin 4 → ℝ) : christoffel (efMetric 
 def efIngoing (v₀ r₀ θ₀ φ₀ : ℝ) (t : ℝ) : Fin 4 → ℝ := ![v₀, r₀ - t, θ₀, φ₀]
 
 /-- **The ingoing radial null rays are geodesics, affinely parametrized by `-r`.** -/
-theorem ef_ingoing_isCoordGeodesic (v₀ r₀ θ₀ φ₀ : ℝ) :
-    IsCoordGeodesic (efMetric M) (efIngoing v₀ r₀ θ₀ φ₀) univ := by
-  refine ⟨fun _ => ![0, -1, 0, 0], fun _ => 0, fun t _ => ?_, fun t _ => hasDerivAt_const t _,
-    fun t _ i => ?_⟩
-  · rw [hasDerivAt_pi]
+theorem ef_ingoing_isGeodesicOn (v₀ r₀ θ₀ φ₀ : ℝ) :
+    Lightlike.Geodesic.IsGeodesicOn (efMetric M) (efIngoing v₀ r₀ θ₀ φ₀) (fun _ => ![0, -1, 0, 0])
+      univ where
+  pos := fun t _ => by
+    rw [hasDerivAt_pi]
     intro i
     fin_cases i
     · exact hasDerivAt_const t v₀
     · exact (hasDerivAt_id' t).const_sub r₀
     · exact hasDerivAt_const t θ₀
     · exact hasDerivAt_const t φ₀
-  · simp [Fin.sum_univ_four, christoffel_ef_rr]
+  vel := fun t _ => by
+    have h0 : Lightlike.Geodesic.accel (efMetric M) (efIngoing v₀ r₀ θ₀ φ₀ t) ![0, -1, 0, 0] = 0 := by
+      funext i
+      simp [Lightlike.Geodesic.accel, Fin.sum_univ_four, christoffel_ef_rr]
+    rw [h0]
+    exact hasDerivAt_const t _
 
 /-- The velocity of an ingoing radial ray is null. -/
 theorem ef_ingoing_null (y : Fin 4 → ℝ) :
