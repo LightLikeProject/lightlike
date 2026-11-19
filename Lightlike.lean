@@ -735,14 +735,12 @@ import Lightlike.Spacetime.EHManifold.BallCritical
 import Lightlike.Spacetime.EHManifold.BallCriticalConverse
 import Lightlike.Spacetime.EHManifold.BallVariation
 import Lightlike.Spacetime.EHManifold.ChartAction
-import Lightlike.Spacetime.EHManifold.ChartField
 import Lightlike.Spacetime.EHManifold.ChartIntegrable
 import Lightlike.Spacetime.EHManifold.ChartVariation
 import Lightlike.Spacetime.EHManifold.CompactVariation
 import Lightlike.Spacetime.EHManifold.Contraction
 import Lightlike.Spacetime.EHManifold.CoverVariation
 import Lightlike.Spacetime.EHManifold.EinsteinForm
-import Lightlike.Spacetime.EHManifold.EinsteinIntrinsic
 import Lightlike.Spacetime.EHManifold.FluxLinear
 import Lightlike.Spacetime.EHManifold.FluxLocal
 import Lightlike.Spacetime.EHManifold.IntegrandLinear
@@ -751,9 +749,7 @@ import Lightlike.Spacetime.EHManifold.IntrinsicIntegrand
 import Lightlike.Spacetime.EHManifold.IntrinsicVariation
 import Lightlike.Spacetime.EHManifold.Locality
 import Lightlike.Spacetime.EHManifold.ManifoldCritical
-import Lightlike.Spacetime.EHManifold.ManifoldStationary
 import Lightlike.Spacetime.EHManifold.ManifoldVariation
-import Lightlike.Spacetime.EHManifold.MatterCoupling
 import Lightlike.Spacetime.EHManifold.Perturbation
 import Lightlike.Spacetime.EHManifold.PerturbationAlgebra
 import Lightlike.Spacetime.EHManifold.PerturbationExt
