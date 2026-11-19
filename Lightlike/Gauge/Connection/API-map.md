@@ -35,7 +35,9 @@ maps are `C^n` (`n ≥ 3`) and the potentials are `C^m` one-forms with `m + 1 �
 `Hom(TP, g)`, so smooth data give a smooth form [12]. Its kernel is a connection in the sense of horizontal subspaces:
 with the projection `π : P → M`, the vertical subspaces `V_p = ker dπ_p` (the fundamental vectors) and the horizontal
 subspaces `H_p = ker ω_p` are complementary, `ω` represents the vertical projection, the horizontal distribution is
-invariant, `H_{p·k} = dR_k(H_p)`, and the horizontal part of a `C^m` vector field is `C^m` [13].
+invariant, `H_{p·k} = dR_k(H_p)`, and the horizontal part of a `C^m` vector field is `C^m` [13]. Over an open cover of
+a normed space, the local curvatures (62) of potentials satisfying (38) obey the transition formula (63), `F_j =
+Ad_{g_ij} F_i` on the overlaps [14].
 
 ## Lean References
 
@@ -78,8 +80,10 @@ invariant, `H_{p·k} = dR_k(H_p)`, and the horizontal part of a `C^m` vector fie
    `Gauge.PrincipalCocycle.vertProj`, `Gauge.PrincipalCocycle.vertProj_mem_vertical`,
    `Gauge.PrincipalCocycle.sub_vertProj_mem_horizontal`, `Gauge.PrincipalCocycle.horizontal_act`,
    `Gauge.PrincipalCocycle.contMDiffAt_fundamental`, `Gauge.PrincipalCocycle.contMDiffAt_horizontalPart`
+14. Lightlike/Gauge/Connection/PrincipalCurvature.lean - `Gauge.lieCurvature_congr`, `Gauge.chart_form`,
+   `Gauge.PrincipalCocycle.lieCurvature_transition`
 
 ## References
 
 1. G. Svetlichny, Preparation for Gauge Theory, arXiv:math-ph/9902027 (1999), §4.6 pp. 26-31 (connections as horizontal subspaces, pp. 26-27 and 29; eqs. (34)-(38), Theorem 10)
-   and pp. 40-43 (eqs. (60), (62)-(64)).
+   and pp. 40-43 (eqs. (60), (62)-(64); the transition formula (63) and the adjoint bundle, p. 42).

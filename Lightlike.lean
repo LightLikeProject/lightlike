@@ -1417,6 +1417,7 @@ import Lightlike.Gauge.Connection.GaugeCovariance
 import Lightlike.Gauge.Connection.Local
 import Lightlike.Gauge.Connection.Principal
 import Lightlike.Gauge.Connection.PrincipalConnection
+import Lightlike.Gauge.Connection.PrincipalCurvature
 import Lightlike.Gauge.Connection.PrincipalGlue
 import Lightlike.Gauge.Connection.PrincipalHorizontal
 import Lightlike.Gauge.Connection.PrincipalSmooth
