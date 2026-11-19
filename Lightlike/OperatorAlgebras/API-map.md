@@ -367,8 +367,8 @@ A compact symmetric operator `T` on a real or complex Hilbert space has a Hilber
 102. Lightlike/OperatorAlgebras/Spectral/TestsCompact.lean - `OperatorAlgebras.CompactSpectral.not_finiteDimensional_eigenspace_id`,
     `OperatorAlgebras.CompactSpectral.not_isCompactOperator_id`,
     `OperatorAlgebras.CompactSpectral.exists_hilbertBasis_eigenvectors_of_finiteDimensional`,
-    `OperatorAlgebras.CompactSpectral.invDiag_zero_mem_spectrum_not_hasEigenvalue` (`0` is in the spectrum of
-    `diag(1/(n+1))` and is not an eigenvalue)
+    `OperatorAlgebras.CompactSpectral.invDiag_zero_mem_spectrum_not_hasEigenvalue` (0 is in the spectrum of
+    diag(1/(n+1)) and is not an eigenvalue)
 103. Lightlike/OperatorAlgebras/Spectral/HilbertSchmidtCompact.lean - `OperatorAlgebras.CompactSpectral.isCompactOperator_of_isHilbertSchmidt`
 
 ## References
