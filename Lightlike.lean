@@ -229,6 +229,8 @@ import Lightlike.GR.Einstein
 import Lightlike.GR.AdSInversion
 import Lightlike.GR.AdSPoincare
 import Lightlike.GR.EddingtonFinkelstein
+import Lightlike.GR.AdSConformal
+import Lightlike.GR.ConformalMinkowski
 import Lightlike.GR.EuclideanCigar
 import Lightlike.GR.EuclideanCone
 import Lightlike.GR.Kerr
