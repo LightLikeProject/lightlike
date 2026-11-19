@@ -687,6 +687,7 @@ import Lightlike.Poincare.RestSpin
 import Lightlike.Poincare.RestStabiliser
 import Lightlike.Poincare.ShellChart
 import Lightlike.Poincare.ShellMeasureFinite
+import Lightlike.Poincare.ShellSourceMeasure
 import Lightlike.Poincare.StandardMomenta
 import Lightlike.Poincare.WignerRotation
 import Lightlike.PonzanoRegge.Amplitude

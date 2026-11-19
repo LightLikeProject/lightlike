@@ -40,7 +40,8 @@ Momenta are Hermitian matrices `p⁰ + p·σ`, acted on by `SL(2,ℂ)` through `
 Differences from the source (kind: representation): the group is presented through its double cover
 `ℝ⁴ ⋊ SL(2,ℂ)` (half-integer spin is a representation of the cover only, as in the source); the sign convention is
 `(+,−,−,−)`, so the source's `e^{−i q·a}` is `e^{i p·a}` here; the measure is any invariant measure finite on
-compacts (the source's `δ(p² + m²) Θ(p⁰) dᴰp` is one of them; uniqueness up to a scalar is not stated).
+compacts (the source's `δ(p² + m²) Θ(p⁰) dᴰp` is one of them, `sourceMeasure` below; uniqueness up to a scalar is not
+stated).
 
 ## Not formalised: the Wigner classification
 
@@ -91,7 +92,12 @@ Theorem 6.2 for the massive orbit):
   transport to `SL(2,ℂ)` is almost everywhere invariant under left translations and hence almost everywhere constant
   (ergodicity of the left regular action), and right translation by `SU(2)` with Schur's lemma makes it a scalar.
 
-The source's measure `δ(p² − m²) Θ(p⁰) d⁴p`, which is `d³p / (2ω_p)` in the chart `p ↦ (ω_p, p)`, is not defined here;
-the irreducibility theorem applies to it once its invariance is proved. Remaining for
-the converse (every irreducible positive-energy representation is induced): the SNAG theorem for `ℝ⁴` and Mackey's
+* **the source's measure** (`ShellSourceMeasure.lean`): `δ(p² − m²) Θ(p⁰) d⁴p`, which is `d³p / (2ω_p)` in the chart
+  `p ↦ (ω_p, p)` (`sourceMeasure`), is half the image of the Lebesgue measure of `ℂ × ℝ` under the light-cone
+  coordinates `(w, t) ↦ [[(m² + |w|²) e^{-t}, w], [w̄, e^t]]` (`sourceMeasure_eq`); upper triangular matrices and the
+  Weyl element act on these coordinates by Lebesgue-preserving maps and generate `SL(2,ℂ)` (Bruhat decomposition),
+  so `d³p / (2ω_p)` is invariant (`measurePreserving_shellAct_sourceMeasure`) and the massive representations on
+  `L²(d³p / 2ω_p)` are irreducible (`irreducible_massive_sourceMeasure`, `commutant_eq_scalar_sourceMeasure`).
+
+Remaining for the converse (every irreducible positive-energy representation is induced): the SNAG theorem for `ℝ⁴` and Mackey's
 imprimitivity theorem, and the representations of the `ISO(2)` cover including the continuous-spin series.
