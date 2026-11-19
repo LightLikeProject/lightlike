@@ -34,7 +34,8 @@ level sets: the lapse, the unit normal, the shift of a time vector, the induced 
 [16] {2}; the lapse is positive, the normal is a unit normal of the leaves, the time vector is the lapse times the normal
 plus the shift, the induced metric vanishes on the normal, and the extrinsic curvature is symmetric for the
 Levi-Civita connection [16]; the gradient of a smooth function is a smooth vector field, so the unit normal is smooth
-and these hold without a smoothness hypothesis [18] {2}. In a chart whose first coordinate is the time function, the
+and these hold without a smoothness hypothesis [18] {2}. On vectors tangent to the leaves the extrinsic curvature is minus
+half the Lie derivative of the metric along the normal [21] {2}. In a chart whose first coordinate is the time function, the
 coordinate components of the metric are `g₀₀ = −N² + β_kβ^k`, `g₀ᵢ = βᵢ` and `gᵢⱼ = γᵢⱼ`, so the spatial block of the
 coordinate metric on a slice, the chart data `h` of the constraints, is the induced metric of the leaf [19] {2}; in
 Minkowski space it is the Euclidean metric [20]. With the coordinate components of the extrinsic curvature the slice also
@@ -77,9 +78,10 @@ the momentum constraint of the structure function.
 20. Lightlike/Canonical/TestsFoliationChart.lean - `Lightlike.Canonical.admSliceMetric_minkowski`,
     `Lightlike.Canonical.admSliceMomentum_minkowski`
 
+21. Lightlike/Canonical/FoliationLie.lean - `Lightlike.Canonical.extrinsicCurvature_eq_neg_half_lieDeriv`
 ## References
 
 1. T. Thiemann, *Modern Canonical Quantum General Relativity*, Cambridge University Press, 2007, chapter 1;
    R. Arnowitt, S. Deser and C. W. Misner, *The dynamics of general relativity*, equations (3.14a), (3.14b).
 2. E. Gourgoulhon, *3+1 Formalism and Bases of Numerical Relativity*, arXiv:gr-qc/0703035, equations (2.43),
-   (2.68)-(2.70), (3.1)-(3.10), (4.27)-(4.32), (4.43)-(4.47), (4.108).
+   (2.68)-(2.70), (3.1)-(3.10), (3.27), (4.27)-(4.32), (4.43)-(4.47), (4.108).

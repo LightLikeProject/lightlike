@@ -42,6 +42,13 @@ the unit normal are smooth (`smoothNear_unitNormal`), and `isUnitNormal_of_timeF
 | `admSliceMetric`: the spatial block of the coordinate metric on `x⁰ = t` | eq. (4.47), p. 58 (the block form of `g_{αβ}`) | `admSliceMetric_eq_spatialMetric`: it is the induced metric of the leaf `τ = t`. |
 | `admSliceMomentum`: `π^{ij} = √det h (K h^{ij} − K^{ij})` from the coordinate components `K_ij = K(∂ᵢ, ∂ⱼ)` | eq. (4.108), p. 67 (`π^{ij} = √γ (K γ^{ij} − K^{ij})`) | Same formula; `admSliceMomentum_symm`: symmetric for the Levi-Civita connection. |
 
+## The extrinsic curvature as a Lie derivative
+
+`FoliationLie.lean`, `extrinsicCurvature_eq_neg_half_lieDeriv`: for the Levi-Civita connection and fields `V, W` tangent
+to the leaf at `x`, `K(V, W) = −½ (ℒ_n g)(V, W)` at `x`. Source: Gourgoulhon Sec. 3.3.5, eq. (3.27), p. 45,
+`K = −½ ℒ_n γ`. Representation: the statement uses the Lie derivative of the metric `g` (`Lightlike.lieDerivMetric`),
+which equals that of `γ = g + n♭ ⊗ n♭` on vectors tangent at `x`, since `n♭` vanishes there.
+
 ## Trust checks
 
 Minkowski space with `τ = x⁰`: `∇τ = −e₀`, `N = 1`, `n = e₀`, `γ` the Euclidean metric of the spatial coordinates
@@ -51,6 +58,5 @@ momentum is `0` (`admSliceMomentum_minkowski`).
 
 ## Not done here
 
-* the relation `K = −½ ℒ_n γ` between the extrinsic curvature and the Lie derivative of the induced metric;
 * the passage from the Einstein equations on the spacetime to the constraints on the slice data (Gourgoulhon
   Sec. 4.2, eqs. (4.19), (4.22), through the Gauss and Codazzi relations of `Lightlike/Spacetime/Hypersurface.lean`).
