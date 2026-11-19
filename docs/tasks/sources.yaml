@@ -1051,6 +1051,10 @@ references:
     cite: "P. Hartman, Ordinary Differential Equations, Wiley (1964); SIAM reprint (2002)"
     title: "Ordinary Differential Equations"
     doi: 10.1137/1.9780898719222
+  huang-wang-wu-meng-2026:
+    cite: "W. Huang, R. Wang, Y. Wu, D. Meng, Exact Endpoint Asymptotics and Almost-Sure Limits for Uniform Empirical Measures in Two Dimensions (2026), arXiv:2610.21070"
+    title: "Exact Endpoint Asymptotics and Almost-Sure Limits for Uniform Empirical Measures in Two Dimensions"
+    arxiv: "2610.21070"
 
 canonical:
   pl-topology: [lickorish-1999, moise-1977]

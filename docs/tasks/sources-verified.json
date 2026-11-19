@@ -2234,6 +2234,21 @@
   "citations": 491,
   "citations_via": "OpenAlex"
  },
+ "grumiller-kummer-vassilevich-2002": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Dilaton Gravity in Two Dimensions",
+  "locations": {
+   "eq. (1.50)": {
+    "verified": true,
+    "snippet": "(1.50) Mγ Also the torsion simplifies to a volume form 1 T a = Tµν a dxµ ∧ dxν , Tµν a = (Dµ eν )a − (Dν eµ )a , (1.51) 2 with (Dµ )a b = ∂µ δ a b + ωµ ǫa b . (1.52) The Hodge dual of T a here is a diffeomorphism scalar:",
+    "why": null
+   }
+  },
+  "citations": 540,
+  "citations_via": "Semantic Scholar"
+ },
  "gurau-2008": {
   "checked": "2026-11-08",
   "exists": true,
@@ -2695,6 +2710,21 @@
    }
   },
   "citations": 2945,
+  "citations_via": "OpenAlex"
+ },
+ "huang-wang-wu-meng-2026": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Exact Endpoint Asymptotics and Almost-Sure Limits for Uniform Empirical Measures in Two Dimensions",
+  "locations": {
+   "Section 3.2.1": {
+    "verified": true,
+    "snippet": "3.2.1. The Kantorovich–Rubinstein duality input. For probability measures ν, η on Q, let Π(ν, η) be the set of probability couplings with these marginals, and define",
+    "why": null
+   }
+  },
+  "citations": 0,
   "citations_via": "OpenAlex"
  },
  "huggett-tod-1994": {
@@ -4499,21 +4529,6 @@
    }
   },
   "citations": 520,
-  "citations_via": "Semantic Scholar"
- },
- "grumiller-kummer-vassilevich-2002": {
-  "checked": "2026-11-19",
-  "exists": true,
-  "via": "arXiv API",
-  "fetched_title": "Dilaton Gravity in Two Dimensions",
-  "locations": {
-   "eq. (1.50)": {
-    "verified": true,
-    "snippet": "(1.50) Mγ Also the torsion simplifies to a volume form 1 T a = Tµν a dxµ ∧ dxν , Tµν a = (Dµ eν )a − (Dν eµ )a , (1.51) 2 with (Dµ )a b = ∂µ δ a b + ωµ ǫa b . (1.52) The Hodge dual of T a here is a diffeomorphism scalar:",
-    "why": null
-   }
-  },
-  "citations": 540,
   "citations_via": "Semantic Scholar"
  }
 }

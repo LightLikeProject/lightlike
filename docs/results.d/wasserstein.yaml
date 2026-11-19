@@ -1,0 +1,13 @@
+- id: LL-XXXX-a
+  title: Couplings and the 1-Wasserstein distance of Borel probability measures on a compact metric space, with the easy half of Kantorovich-Rubinstein duality
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/Wasserstein.lean
+  decls: [Lightlike.OperatorAlgebras.Transport.couplings, Lightlike.OperatorAlgebras.Transport.prod_mem_couplings, Lightlike.OperatorAlgebras.Transport.wasserstein1, Lightlike.OperatorAlgebras.Transport.integral_sub_le_of_mem_couplings, Lightlike.OperatorAlgebras.Transport.integral_sub_le_wasserstein1, Lightlike.OperatorAlgebras.Transport.wasserstein1_dirac]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: huang-wang-wu-meng-2026, location: "Section 3.2.1", check: "Kantorovich"}
+  review: kernel-checked
+  note: "Compared with Huang, Wang, Wu, Meng, arXiv:2610.21070, Section 3.2.1, p. 5 (read): Pi(nu, eta) the probability couplings, W_1 the infimum of the cost of d, and the easy direction of (KR) for unit Lipschitz u. The equality (KR) is the next entry."
+  since: unreleased

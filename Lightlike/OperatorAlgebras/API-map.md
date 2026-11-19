@@ -60,6 +60,8 @@ On `L²(0, 1)`, a vector lies in the domain of the adjoint of `-i d/dx` (on the 
 
 The plane waves `e^{i(θ + 2πn)x}`, `n ∈ ℤ`, lie in the domain of `P_θ` and are orthonormal eigenvectors with eigenvalue `θ + 2πn`; an eigenvector of `P_θ` with eigenvalue `μ ∈ ℂ` has the continuous representative `y(0) e^{iμx}`, so `μ = θ + 2πn` and the eigenspaces are one-dimensional; off `θ + 2πℤ` the resolvent equation is solved explicitly, so the spectrum of `P_θ`, in Physlib's sense, is `θ + 2πℤ` and equals the point spectrum {5}, [69]. `θ` is in the spectrum of `P_θ` and `θ + π` is not [70].
 
+On a compact metric space the couplings of two probability measures are the probability measures on the product with these marginals, the product measure among them, and `W₁` is the infimum of the transport costs `∫ d dπ`; for every coupling and `1`-Lipschitz `u`, `∫ u dμ - ∫ u dν ≤ ∫ d dπ`, the easy half of Kantorovich-Rubinstein duality, and `W₁(δₓ, δ_y) = d(x, y)` {6} [71]. The diagonal coupling gives `W₁(μ, μ) = 0` [72].
+
 ## Lean References
 
 1. Lightlike/OperatorAlgebras/UnitaryGroup.lean - `OperatorAlgebras.UnitaryGroup`,
@@ -239,6 +241,12 @@ The plane waves `e^{i(θ + 2πn)x}`, `n ∈ ℤ`, lie in the domain of `P_θ` an
     `OperatorAlgebras.spectrum_momentumTheta`, `OperatorAlgebras.pointSpectrum_momentumTheta`
 70. Lightlike/OperatorAlgebras/TestsMomentumSpectrum.lean - `OperatorAlgebras.theta_mem_spectrum`,
     `OperatorAlgebras.theta_add_pi_not_mem_spectrum`
+71. Lightlike/OperatorAlgebras/Wasserstein.lean - `OperatorAlgebras.Transport.couplings`,
+    `OperatorAlgebras.Transport.prod_mem_couplings`, `OperatorAlgebras.Transport.wasserstein1`,
+    `OperatorAlgebras.Transport.integral_sub_le_of_mem_couplings`, `OperatorAlgebras.Transport.integral_sub_le_wasserstein1`,
+    `OperatorAlgebras.Transport.wasserstein1_le`, `OperatorAlgebras.Transport.wasserstein1_dirac`
+72. Lightlike/OperatorAlgebras/TestsWasserstein.lean - `OperatorAlgebras.Transport.diag_mem_couplings`,
+    `OperatorAlgebras.Transport.wasserstein1_self`, `OperatorAlgebras.Transport.wasserstein1_dirac_pos`
 
 ## References
 
@@ -253,3 +261,6 @@ The plane waves `e^{i(θ + 2πn)x}`, `n ∈ ℤ`, lie in the domain of `P_θ` an
    (github.com/physicslib/physicslib4, Apache-2.0).
 5. G. Bonneau, J. Faraut and G. Valent, *Self-adjoint extensions of operators and the teaching of quantum
    mechanics*, arXiv:quant-ph/0103153, Appendix A.3 and Section 5.3, eqs. (14) and (15).
+6. W. Huang, R. Wang, Y. Wu and D. Meng, *Exact endpoint asymptotics and almost-sure limits for uniform empirical
+   measures in two dimensions*, arXiv:2610.21070, Section 3.2.1 and Section 8.1 (Kantorovich-Rubinstein duality on a
+   compact metric space).
