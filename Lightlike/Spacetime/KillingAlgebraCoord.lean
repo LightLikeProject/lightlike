@@ -30,7 +30,10 @@ The bridge between the two coordinate forms of Killing's equation used in the li
   for two Killing fields;
 * `contDiffOn_bracketCo`, `killing_bracketCo`, `rigVec_eq_sum_of_covCo`, `lieBracket_eq_sum_of_data`: on a connected
   open set, `[Y, Z] = Σₑ cₑ Yₑ` for Killing fields once the value and the covariant derivative of `[Y, Z]♭` at one point
-  are the combination `Σₑ cₑ` of those of the `Yₑ`.
+  are the combination `Σₑ cₑ` of those of the `Yₑ`;
+* `covVec`, `bracketCo_eq_covVec`, `covVec_bracketCo`, `covVec_of_eqOn_add`, `bracketCo_leibniz`: in coordinates with
+  `g(p) = c · 1`, the data `(Y(p), ∇Y(p))` of the bracket is `(Yᵈ ∇_d Z - Zᵈ ∇_d Y, [∇Y, ∇Z] + Riem(Y, Z))`, and the
+  coordinate bracket satisfies the Leibniz (Jacobi) identity.
 -/
 
 open Matrix Filter Set
@@ -633,5 +636,113 @@ theorem lieBracket_eq_sum_of_data {ι : Type*} [Fintype ι] (hg : IsCoordMetric 
   rw [lieBracket_apply_eq_bracketCo (hdiff Y hY) (hdiff Z hZ), hr]
 
 end Assembly
+
+section Normalized
+
+variable {g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ} {U : Set (Fin n → ℝ)} {Y Z : (Fin n → ℝ) → Fin n → ℝ}
+  {y : Fin n → ℝ}
+
+/-- The covariant derivative `∇_a Wᵈ = ∂_a Wᵈ + Γᵈ_{ac} Wᶜ` of a vector field in coordinates. -/
+def covVec (g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ) (W : (Fin n → ℝ) → Fin n → ℝ) (a d : Fin n)
+    (y : Fin n → ℝ) : ℝ :=
+  pd a (fun z => W z d) y + ∑ c, christoffel g d a c y * W y c
+
+/-- **The bracket through the covariant derivative** (no torsion): `[Y, Z]ᵇ = Yᵈ ∇_d Zᵇ - Zᵈ ∇_d Yᵇ`. -/
+theorem bracketCo_eq_covVec (hgs : ∀ z a b, g z a b = g z b a) (y : Fin n → ℝ) (b : Fin n) :
+    bracketCo Y Z y b = ∑ d, (Y y d * covVec g Z d b y - Z y d * covVec g Y d b y) := by
+  unfold bracketCo covVec
+  have hΓ : ∀ (V W : (Fin n → ℝ) → Fin n → ℝ), ∑ d, V y d * ∑ c, christoffel g b d c y * W y c =
+      ∑ d, W y d * ∑ c, christoffel g b d c y * V y c := by
+    intro V W
+    simp only [Finset.mul_sum]
+    rw [Finset.sum_comm]
+    exact Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun w _ => by
+      rw [christoffel_symm g hgs b w x y]; ring
+  simp only [mul_add, Finset.sum_sub_distrib, Finset.sum_add_distrib]
+  rw [hΓ Y Z]
+  ring
+
+theorem lowerVec_of_eq_smul_one {c : ℝ} (hcp : g y = c • (1 : Matrix (Fin n) (Fin n) ℝ))
+    (W : (Fin n → ℝ) → Fin n → ℝ) (b : Fin n) : lowerVec g W y b = c * W y b := by
+  unfold lowerVec
+  rw [hcp]
+  simp [Matrix.one_apply]
+
+theorem covCo_lowerVec_of_eq_smul_one {c : ℝ} (hgs : ∀ z a b, g z a b = g z b a) (hdet : (g y).det ≠ 0)
+    (hgd : ∀ a b, DifferentiableAt ℝ (fun z => g z a b) y) {W : (Fin n → ℝ) → Fin n → ℝ}
+    (hW : ∀ c, DifferentiableAt ℝ (fun z => W z c) y) (hcp : g y = c • (1 : Matrix (Fin n) (Fin n) ℝ))
+    (a b : Fin n) : covCo g (lowerVec g W) a b y = c * covVec g W a b y := by
+  rw [covCo_lowerVec hgs hdet hgd hW a b, hcp]
+  simp [Matrix.one_apply, covVec]
+
+/-- **The covariant derivative of the bracket of two Killing fields, in coordinates orthonormal at the point up to
+scale** (`g(y) = c · 1`): `∇_a [Y, Z]ᵇ = ∇_a Yᵈ ∇_d Zᵇ - ∇_a Zᵈ ∇_d Yᵇ + Yᵈ Rᵉ_{adb} Zᵉ - Zᵈ Rᵉ_{adb} Yᵉ`. -/
+theorem covVec_bracketCo {c : ℝ} (hg : IsCoordMetric g U) (hgs : ∀ z a b, g z a b = g z b a)
+    (hY : ∀ c, ContDiffOn ℝ ∞ (fun z => Y z c) U) (hZ : ∀ c, ContDiffOn ℝ ∞ (fun z => Z z c) U)
+    (hKY : ∀ z ∈ U, ∀ a b, covCo g (lowerVec g Y) a b z + covCo g (lowerVec g Y) b a z = 0)
+    (hKZ : ∀ z ∈ U, ∀ a b, covCo g (lowerVec g Z) a b z + covCo g (lowerVec g Z) b a z = 0) (hy : y ∈ U)
+    (hcp : g y = c • (1 : Matrix (Fin n) (Fin n) ℝ)) (hc : c ≠ 0) (a b : Fin n) :
+    covVec g (bracketCo Y Z) a b y =
+      ∑ d, (covVec g Y a d y * covVec g Z d b y - covVec g Z a d y * covVec g Y d b y) +
+      ∑ d, ∑ e, (Y y d * riemann g e a d b y * Z y e - Z y d * riemann g e a d b y * Y y e) := by
+  have hdet := (hg.isUnit_det y hy).ne_zero
+  have hgd : ∀ a b, DifferentiableAt ℝ (fun z => g z a b) y := fun a b =>
+    differentiableAt_of_contDiffOn (hg.smooth a b) hg.isOpen hy
+  have dd : ∀ (V : (Fin n → ℝ) → Fin n → ℝ), (∀ c, ContDiffOn ℝ ∞ (fun z => V z c) U) →
+      ∀ c, DifferentiableAt ℝ (fun z => V z c) y := fun V hV c => differentiableAt_of_contDiffOn (hV c) hg.isOpen hy
+  have h := covCo_lowerVec_bracketCo hg hgs hY hZ hKY hKZ hy a b
+  have e : ∀ (W : (Fin n → ℝ) → Fin n → ℝ) a d,
+      pd a (fun z => W z d) y + ∑ c, christoffel g d a c y * W y c = covVec g W a d y := fun _ _ _ => rfl
+  simp only [e, covCo_lowerVec_of_eq_smul_one hgs hdet hgd (dd _ (contDiffOn_bracketCo hg.isOpen hY hZ)) hcp,
+    covCo_lowerVec_of_eq_smul_one hgs hdet hgd (dd Y hY) hcp, covCo_lowerVec_of_eq_smul_one hgs hdet hgd (dd Z hZ) hcp,
+    lowerVec_of_eq_smul_one hcp] at h
+  apply mul_left_cancel₀ hc
+  rw [h, mul_add, Finset.mul_sum, Finset.mul_sum]
+  congr 1
+  · exact Finset.sum_congr rfl fun d _ => by ring
+  · exact Finset.sum_congr rfl fun d _ => by
+      rw [Finset.mul_sum]; exact Finset.sum_congr rfl fun e _ => by ring
+
+/-- `∇_a` at a point only sees the field near the point, additively. -/
+theorem covVec_of_eqOn_add (hU : IsOpen U) (hy : y ∈ U) {V W₁ W₂ : (Fin n → ℝ) → Fin n → ℝ}
+    (hW₁ : ∀ c, DifferentiableAt ℝ (fun z => W₁ z c) y) (hW₂ : ∀ c, DifferentiableAt ℝ (fun z => W₂ z c) y)
+    (h : ∀ z ∈ U, V z = W₁ z + W₂ z) (a d : Fin n) :
+    covVec g V a d y = covVec g W₁ a d y + covVec g W₂ a d y := by
+  unfold covVec
+  have hev : (fun z => V z d) =ᶠ[𝓝 y] fun z => W₁ z d + W₂ z d :=
+    Filter.mem_of_superset (hU.mem_nhds hy) fun z hz => by simp [h z hz]
+  rw [(pd_eventuallyEq hev a).eq_of_nhds, pd_add (f₁ := fun z => W₁ z d) (f₂ := fun z => W₂ z d) (hW₁ d) (hW₂ d) a,
+    h y hy]
+  simp only [Pi.add_apply, mul_add, Finset.sum_add_distrib]
+  ring
+
+/-- **The Leibniz (Jacobi) identity for the coordinate bracket** on an open set, from Mathlib's
+`VectorField.leibniz_identity_lieBracket`: `[X, [Y, Z]] = [[X, Y], Z] + [Y, [X, Z]]`. -/
+theorem bracketCo_leibniz (hU : IsOpen U) {X : (Fin n → ℝ) → Fin n → ℝ}
+    (hX : ∀ c, ContDiffOn ℝ ∞ (fun z => X z c) U) (hY : ∀ c, ContDiffOn ℝ ∞ (fun z => Y z c) U)
+    (hZ : ∀ c, ContDiffOn ℝ ∞ (fun z => Z z c) U) (hy : y ∈ U) :
+    bracketCo X (bracketCo Y Z) y = bracketCo (bracketCo X Y) Z y + bracketCo Y (bracketCo X Z) y := by
+  have hca : ∀ V : (Fin n → ℝ) → Fin n → ℝ, (∀ c, ContDiffOn ℝ ∞ (fun z => V z c) U) → ContDiffAt ℝ ∞ V y :=
+    fun V hV => contDiffAt_pi.2 fun c => (hV c).contDiffAt (hU.mem_nhds hy)
+  have hda : ∀ V : (Fin n → ℝ) → Fin n → ℝ, (∀ c, ContDiffOn ℝ ∞ (fun z => V z c) U) → ∀ w ∈ U,
+      DifferentiableAt ℝ V w := fun V hV w hw =>
+    differentiableAt_pi.2 fun c => differentiableAt_of_contDiffOn (hV c) hU hw
+  have hev : ∀ V W : (Fin n → ℝ) → Fin n → ℝ, (∀ c, ContDiffOn ℝ ∞ (fun z => V z c) U) →
+      (∀ c, ContDiffOn ℝ ∞ (fun z => W z c) U) → VectorField.lieBracket ℝ V W =ᶠ[𝓝 y] bracketCo V W :=
+    fun V W hV hW => Filter.mem_of_superset (hU.mem_nhds hy) fun w hw =>
+      funext fun c => lieBracket_apply_eq_bracketCo (hda V hV w hw) (hda W hW w hw) c
+  have hJ := VectorField.leibniz_identity_lieBracket (𝕜 := ℝ) (n := ∞) (by simp) (hca X hX) (hca Y hY) (hca Z hZ)
+  have hB := fun V W hV hW => contDiffOn_bracketCo (Y := V) (Z := W) hU hV hW
+  rw [Filter.EventuallyEq.rfl.lieBracket_vectorField_eq (hev Y Z hY hZ),
+    (hev X Y hX hY).lieBracket_vectorField_eq Filter.EventuallyEq.rfl,
+    Filter.EventuallyEq.rfl.lieBracket_vectorField_eq (hev X Z hX hZ)] at hJ
+  funext c
+  have := congrFun hJ c
+  rw [Pi.add_apply, lieBracket_apply_eq_bracketCo (hda X hX y hy) (hda _ (hB Y Z hY hZ) y hy),
+    lieBracket_apply_eq_bracketCo (hda _ (hB X Y hX hY) y hy) (hda Z hZ y hy),
+    lieBracket_apply_eq_bracketCo (hda Y hY y hy) (hda _ (hB X Z hX hZ) y hy)] at this
+  rw [Pi.add_apply, this]
+
+end Normalized
 
 end Lightlike
