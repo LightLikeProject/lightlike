@@ -10,7 +10,8 @@ fix `q` (`shellAct_rest`), and their Wigner rotation at `q` is `u` itself (`wign
 representation acts on the states of momentum `q` by the spin representation `D` of the little group:
 `(U(u) ψ)(q) = D(u) ψ(q)` (`inducedAct_rest`). For `D = Lightlike.SU2.spinRep n` these states form the spin-`n/2`
 representation, whose Casimir is `(n/2)(n/2 + 1)` (`Lightlike.Spin4.casimir_eq`): the little-group content of
-`W² = −m² s(s+1)` (the Pauli–Lubanski operator of the induced representation itself is not formalised here).
+`W² = −m² s(s+1)`, whose operator form for the induced representation is `pauliLubanski_sq_generators`
+(`Lightlike/Poincare/PauliLubanskiGenerators.lean`).
 
 ## References
 
