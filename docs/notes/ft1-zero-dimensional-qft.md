@@ -167,5 +167,11 @@ TODO there. Tau Ceti: not checked.
 
 * Trust checks in Lean: `sum_inv_aut_two` (the graphs with two vertices have total symmetry factor `35/384`) and
   `sum_inv_aut_one` (`1/8`, the figure-eight).
-* The order-`g²` trust check identifies the three graphs by their symmetry factors only numerically
-  (`1/128 + 1/16 + 1/48 = 35/384`); computing the three orbits and their stabilizers in Lean is open.
+* The order-`g²` graphs: done (`vacuum_graphs_two`, ZeroDim/Graphs.lean). The orbits of the pairings of two
+  four-valent vertices are exactly the two figure-eights (`figEights`), the dumbbell (`dumbbell`) and the melon
+  (`melon`): they are distinct, having `0`, `4` and `8` half-edges on edges between the vertices (`crossCount`, kept by
+  the relabellings, `crossCount_smul`); their stabilizers have orders `128`, `16`, `48`
+  (`card_stabilizer_figEights`, `card_stabilizer_dumbbell`, `card_stabilizer_melon`, computed in the coordinates
+  `S₂ × (S₄)²` of `vertexPerm 2`, `card_stabilizer_two`); and there is no other orbit, since `1/128 + 1/16 + 1/48`
+  is already the total `35/384` of `sum_inv_aut_two` and every orbit contributes a positive term. These are
+  Borinsky's three terms of (3.1.8), p. 24 (`1/128 + 1/16 + 1/48`).

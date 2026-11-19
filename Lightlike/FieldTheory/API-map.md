@@ -10,7 +10,7 @@ Mathlib defines the multivariate Gaussian measure by its covariance, as the imag
 
 Borinsky's formal integral, the zero-dimensional field theory as a formal power series in `ħ`, has the coefficient `35λ²/384` at order `ħ²` for the quartic potential `λx⁴/4!`, the sum `1/128 + 1/16 + 1/48` of the symmetry factors of the three vacuum graphs; a wrong factor for the sunset graph is shown to fail [7] {2}.
 
-The vacuum graphs with `m` four-valent vertices are the orbits of the pairings of their half-edges under the permutations that keep the vertices (the wreath product `S₄ ≀ S_m`, of order `24^m m!`), the symmetry factor of a graph is the inverse of the order of its stabilizer, its automorphism group, and the symmetry factors sum to `(4m - 1)!!/(24^m m!)`, by the class formula [8] {2}; for two vertices the sum is `35/384` and for one vertex `1/8`.
+The vacuum graphs with `m` four-valent vertices are the orbits of the pairings of their half-edges under the permutations that keep the vertices (the wreath product `S₄ ≀ S_m`, of order `24^m m!`), the symmetry factor of a graph is the inverse of the order of its stabilizer, its automorphism group, and the symmetry factors sum to `(4m - 1)!!/(24^m m!)`, by the class formula [8] {2}; for two vertices the sum is `35/384` and for one vertex `1/8`. The graphs with two vertices are exactly the two figure-eights, the dumbbell and the melon, with `|Aut Γ| = 128, 16, 48` (`1/128 + 1/16 + 1/48 = 35/384`, Borinsky's (3.1.8)) [8] {2}.
 
 Wick's theorem: the moment `E[x_{l₀} ⋯ x_{l_{n-1}}]` of the centred Gaussian measure with positive definite covariance `S` is the sum, over the full Wick contractions of the `n` positions (Physlib's `WickContraction` with `IsFull`), of the products `∏ S_{l_p l_q}` over the contracted pairs; both sides satisfy Isserlis' recursion [9] {3}. The same holds for every positive semidefinite covariance, through the square root `√S` of Mathlib's definition of the Gaussian measure, multilinearity, and the factorisation of the sum over index maps along the pairs [11] {3}.
 
@@ -44,7 +44,10 @@ The formal partition function is tied to the Gaussian integrals and to the forma
 6. Lightlike/FieldTheory/Gaussian/Moments.lean - `FieldTheory.integrable_mono`, `FieldTheory.integral_dmono`, `FieldTheory.moment_cons`, `FieldTheory.moment_odd`, `FieldTheory.moment_two`, `FieldTheory.moment_four`
 7. Lightlike/FieldTheory/ZeroDim/FormalIntegral.lean - `FieldTheory.formalIntegral`, `FieldTheory.formalIntegral_quartic_two`
 8. Lightlike/FieldTheory/ZeroDim/Graphs.lean - `FieldTheory.vertexPerm`, `FieldTheory.Pairing`, `FieldTheory.sum_inv_card_stabilizer`,
-   `FieldTheory.sum_inv_aut`, `FieldTheory.sum_inv_aut_two`, `FieldTheory.sum_inv_aut_one`
+   `FieldTheory.sum_inv_aut`, `FieldTheory.sum_inv_aut_two`, `FieldTheory.sum_inv_aut_one`,
+   `FieldTheory.crossCount_smul`, `FieldTheory.figEights`, `FieldTheory.dumbbell`, `FieldTheory.melon`,
+   `FieldTheory.card_stabilizer_figEights`, `FieldTheory.card_stabilizer_dumbbell`, `FieldTheory.card_stabilizer_melon`,
+   `FieldTheory.vacuum_graphs_two`
 9. Lightlike/FieldTheory/Gaussian/Wick.lean - `FieldTheory.pairWeight`, `FieldTheory.pairSum`, `FieldTheory.pairSum_succ_succ`,
    `FieldTheory.moment_ofFn_eq_pairSum`, `FieldTheory.moment_eq_pairSum`
 10. Lightlike/FieldTheory/ZeroDim/Quartic.lean - `FieldTheory.integral_pow_mul_gauss`, `FieldTheory.integral_pow_mul_gauss_scaled`,
