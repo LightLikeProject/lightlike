@@ -403,7 +403,7 @@ theorem volumeMeasure_minkowski {A : Set (Fin n → ℝ)} (hA : MeasurableSet A)
   rw [volumeMeasure_chart (minkowskiMetric n) 0 hA hsrc, extChartAt_model_space_eq_id]
   have hd : ∀ y, volDensity (minkowskiMetric n) (0 : Fin n → ℝ) y = 1 := fun y => by
     unfold volDensity NondegMetric.volDensity
-    rw [NondegMetric.ofLorentzian_coordMetric, minkowski_coordMetric, eta, Matrix.det_diagonal, Finset.abs_prod]
+    rw [minkowski_coordMetric, eta, Matrix.det_diagonal, Finset.abs_prod]
     have : ∀ i : Fin n, |etaDiag i| = 1 := fun i => by unfold etaDiag; split_ifs <;> simp
     simp [this]
   simp [hd]

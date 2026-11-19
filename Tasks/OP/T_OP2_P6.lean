@@ -1,4 +1,4 @@
-import Lightlike.OperatorAlgebras.Weyl
+import Lightlike.OperatorAlgebras.ShaleNecessity
 
 /-!
 # Task T-OP2-P6
@@ -43,6 +43,6 @@ theorem shale_necessity {h : Type u} [NormedAddCommGroup h] [InnerProductSpace â
     {K : Type*} [NormedAddCommGroup K] [InnerProductSpace â„‚ K] [CompleteSpace K]
     (R : FockRep h K) (T : Bogoliubov h) (hT : Implements R.toCCRRep T) :
     IsHilbertSchmidt T.betaPart := by
-  sorry
+  exact shale_necessity_of_implements R T hT
 
 end Lightlike.OperatorAlgebras

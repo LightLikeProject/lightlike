@@ -29,6 +29,13 @@ the unit `π`-gradient [4], the terms without derivatives of the lapses cancel i
 coefficient is `−2 ∇_σ π^{bσ}` [12], by index algebra of the Christoffel symbols [9] and of the derivative of the unit
 `π`-gradient [10] [11], and the momentum constraint in ADM form [8] closes the argument [13] {1}. On a hypersurface, a manifold without a global chart, the constraints are the sums over the atlas pieces of the chart integrals of tensor and density fields given by chart components with their change laws, and the bracket is the Gateaux derivative along chart families [14]; on `ℝᵈ` with constant chart families they are the chart constraints [15]; the three brackets on the hypersurface are open tasks (T-CA1-P4 to P6). [TODO]
 
+A time function of a spacetime, a smooth function with a timelike gradient, gives without charts the ADM data of its
+level sets: the lapse, the unit normal, the shift of a time vector, the induced metric and the extrinsic curvature
+[16] {2}; the lapse is positive, the normal is a unit normal of the leaves, the time vector is the lapse times the normal
+plus the shift, the induced metric vanishes on the normal, and the extrinsic curvature is symmetric for the
+Levi-Civita connection [16]; the gradient of a smooth function is a smooth vector field, so the unit normal is smooth
+and these hold without a smoothness hypothesis [18] {2}. In Minkowski space the time coordinate gives lapse one and the Euclidean induced metric [17].
+
 A grid computation in dimension two (`scripts/adm_algebra_check.py`) supports the three brackets; with the kinetic
 coefficient `1/2` of dimension three, used in dimension two, the bracket of two Hamiltonian constraints differs from
 the momentum constraint of the structure function.
@@ -52,8 +59,16 @@ the momentum constraint of the structure function.
 13. Lightlike/Canonical/HamiltonianHHBracket.lean - `Lightlike.Canonical.bracket_hamiltonian_hamiltonian_of_smooth`
 14. Lightlike/Canonical/Hypersurface.lean - `Lightlike.Canonical.momentumConstraintM`, `Lightlike.Canonical.hamiltonianConstraintM`, `Lightlike.Canonical.admBracketM`
 15. Lightlike/Canonical/HypersurfaceBridge.lean - `Lightlike.Canonical.constraintM_bridge_global`
+16. Lightlike/Canonical/Foliation.lean - `Lightlike.Canonical.lapse`, `Lightlike.Canonical.unitNormal`, `Lightlike.Canonical.shift`,
+    `Lightlike.Canonical.spatialMetric`, `Lightlike.Canonical.extrinsicCurvature`, `Lightlike.Canonical.isUnitNormal`,
+    `Lightlike.Canonical.g_time_time`, `Lightlike.Canonical.extrinsicCurvature_symm`
+17. Lightlike/Canonical/TestsFoliation.lean - `Lightlike.Canonical.isTimeFunction_minkowski`, `Lightlike.Canonical.spatialMetric_minkowski`
+18. Lightlike/Canonical/FoliationSmooth.lean - `Lightlike.Canonical.contMDiffAt_timeGrad`, `Lightlike.Canonical.smoothNear_unitNormal`,
+    `Lightlike.Canonical.isUnitNormal_of_timeFunction`, `Lightlike.Canonical.extrinsicCurvature_symm_of_timeFunction`
 
 ## References
 
 1. T. Thiemann, *Modern Canonical Quantum General Relativity*, Cambridge University Press, 2007, chapter 1;
    R. Arnowitt, S. Deser and C. W. Misner, *The dynamics of general relativity*, equations (3.14a), (3.14b).
+2. E. Gourgoulhon, *3+1 Formalism and Bases of Numerical Relativity*, arXiv:gr-qc/0703035, equations (2.43),
+   (2.68)-(2.70), (3.1)-(3.10), (4.27)-(4.32).

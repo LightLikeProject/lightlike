@@ -148,7 +148,7 @@ theorem mlieBracket_coordField (x₀ : M) (i j : Fin n) {y : Fin n → ℝ}
   exact (hA.inverse_apply_eq.1 h0).trans (map_zero _)
 
 /-- `g(∂ₐ, ∂_b)` is the coordinate component. -/
-theorem g_coordField (g : LorentzianMetric 𝓘(ℝ, Fin n → ℝ) M n) (x₀ : M) (a b : Fin n) {y : Fin n → ℝ}
+theorem g_coordField (g : NondegMetric 𝓘(ℝ, Fin n → ℝ) M) (x₀ : M) (a b : Fin n) {y : Fin n → ℝ}
     (hy : y ∈ (extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).target) :
     g.g ((extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).symm y) (coordField x₀ a ((extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).symm y))
       (coordField x₀ b ((extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).symm y)) = g.coordMetric x₀ y a b := by
@@ -156,7 +156,7 @@ theorem g_coordField (g : LorentzianMetric 𝓘(ℝ, Fin n → ℝ) M n) (x₀ :
 
 /-- The derivative of the pairing of coordinate fields is the partial derivative of the coordinate metric. -/
 theorem mvfderiv_gpair_coordField [IsManifold 𝓘(ℝ, Fin n → ℝ) 2 M]
-    (g : LorentzianMetric 𝓘(ℝ, Fin n → ℝ) M n) (x₀ : M) (a b c : Fin n) {y : Fin n → ℝ}
+    (g : NondegMetric 𝓘(ℝ, Fin n → ℝ) M) (x₀ : M) (a b c : Fin n) {y : Fin n → ℝ}
     (hy : y ∈ (extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).target) :
     mvfderiv 𝓘(ℝ, Fin n → ℝ) (gpair g (coordField x₀ a) (coordField x₀ b))
         ((extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).symm y)
@@ -177,7 +177,7 @@ theorem mvfderiv_gpair_coordField [IsManifold 𝓘(ℝ, Fin n → ℝ) 2 M]
   exact h1
 
 /-- A tangent vector over the chart domain is determined by its pairings with the coordinate fields. -/
-theorem eq_of_g_coordField (g : LorentzianMetric 𝓘(ℝ, Fin n → ℝ) M n) (x₀ : M) {y : Fin n → ℝ}
+theorem eq_of_g_coordField (g : NondegMetric 𝓘(ℝ, Fin n → ℝ) M) (x₀ : M) {y : Fin n → ℝ}
     (hy : y ∈ (extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).target)
     {v w : TangentSpace 𝓘(ℝ, Fin n → ℝ) ((extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).symm y)}
     (h : ∀ l, g.g _ v (coordField x₀ l ((extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).symm y)) =
@@ -194,7 +194,7 @@ theorem eq_of_g_coordField (g : LorentzianMetric 𝓘(ℝ, Fin n → ℝ) M n) (
 
 /-- **The Christoffel form of the Levi-Civita connection in a chart**: `∇_{∂ᵢ} ∂ⱼ = Γᵏᵢⱼ ∂ₖ`. -/
 theorem leviCivita_coordField [IsManifold 𝓘(ℝ, Fin n → ℝ) 2 M]
-    (g : LorentzianMetric 𝓘(ℝ, Fin n → ℝ) M n) (x₀ : M) {y : Fin n → ℝ}
+    (g : NondegMetric 𝓘(ℝ, Fin n → ℝ) M) (x₀ : M) {y : Fin n → ℝ}
     (hy : y ∈ (extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).target) (i j : Fin n) :
     leviCivita g (coordField x₀ j) ((extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).symm y)
         (coordField x₀ i ((extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).symm y)) =

@@ -807,7 +807,8 @@ def cmd_check(root=ROOT):
     for path, text in outputs(tasks, ms, root).items():
         f = root / path
         if not f.exists() or f.read_text() != text:
-            problems.append(f"{path} is stale: run `python3 scripts/tasks.py generate`")
+            problems.append(f"{path} is stale (expected on a branch: the maintainers regenerate it after "
+                            "merging; see scripts/generated.py)")
     files = {str(p.relative_to(root)): p.read_text() for p in sorted((root / "Tasks").rglob("*.lean"))}
     problems += check_task_files(files, tasks)
     lib = [root / "Lightlike.lean", *sorted((root / "Lightlike").rglob("*.lean"))]

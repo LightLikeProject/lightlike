@@ -53,8 +53,8 @@ theorem IsCoordMetric.contDiffOn_einsteinTensor (hg : IsCoordMetric g U) (μ ν 
 end Coord
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
   {M : Type*} [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M]
-  [T2Space M] [IsManifold 𝓘(ℝ, E) 2 M] [CompleteSpace E]
-variable (cov : Connection 𝓘(ℝ, E) M) [CovariantDerivative.ContMDiffCovariantDerivative cov ∞] (x₀ : M)
+  [IsManifold 𝓘(ℝ, E) 2 M] [CompleteSpace E]
+variable (cov : Connection 𝓘(ℝ, E) M) [LocallySmoothConnection cov] (x₀ : M)
 
 /-- A bilinear form field with components `B̂ y : E →L E →L ℝ` in the trivialization at `x₀`. -/
 def bilOf (B : M → E →L[ℝ] E →L[ℝ] ℝ) (y : M) (u v : TangentSpace 𝓘(ℝ, E) y) : ℝ :=
@@ -109,8 +109,8 @@ theorem differentiableAt_sum_smul {F V : Type*} [NormedAddCommGroup F] [NormedSp
 section Einstein
 set_option synthInstance.maxHeartbeats 400000
 variable {n : ℕ} {M : Type*} [TopologicalSpace M] [ChartedSpace (Fin n → ℝ) M]
-  [IsManifold 𝓘(ℝ, Fin n → ℝ) ∞ M] [T2Space M] [IsManifold 𝓘(ℝ, Fin n → ℝ) 2 M]
-  (g : LorentzianMetric 𝓘(ℝ, Fin n → ℝ) M n)
+  [IsManifold 𝓘(ℝ, Fin n → ℝ) ∞ M] [IsManifold 𝓘(ℝ, Fin n → ℝ) 2 M]
+  (g : NondegMetric 𝓘(ℝ, Fin n → ℝ) M)
 
 /-- The components of the Einstein tensor of the coordinate metric, as a bilinear form on `ℝⁿ`. -/
 def einsteinComp (x₀ : M) (y' : Fin n → ℝ) : (Fin n → ℝ) →L[ℝ] (Fin n → ℝ) →L[ℝ] ℝ :=
@@ -148,7 +148,7 @@ theorem mdiffAt_BE {x₀ x : M} (hx : x ∈ (extChartAt 𝓘(ℝ, Fin n → ℝ)
   have hφ : MDifferentiableAt 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ, Fin n → ℝ) (extChartAt 𝓘(ℝ, Fin n → ℝ) x₀) x :=
     mdifferentiableAt_extChartAt (by simpa using hx)
   exact (hd.mdifferentiableAt).comp x hφ
-variable (cov : Connection 𝓘(ℝ, Fin n → ℝ) M) [CovariantDerivative.ContMDiffCovariantDerivative cov ∞]
+variable (cov : Connection 𝓘(ℝ, Fin n → ℝ) M) [LocallySmoothConnection cov]
 
 /-- **`einsteinField` equals the bilinear form with components `BE`** on the trivialization domain. -/
 theorem einsteinField_eq_bilOf (x₀ : M) (h : cov.IsLeviCivita g) {y : M}

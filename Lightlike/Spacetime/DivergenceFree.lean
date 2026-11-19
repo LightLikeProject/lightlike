@@ -16,7 +16,7 @@ identity, not from `T-GE1-P7`.
 
 **Differences from the task `T-GE1-P8`** (which stays open): the task is for any model space `E` and any
 `ModelWithCorners` `I`; this theorem is for a manifold modelled on `Fin n → ℝ` (`𝓘(ℝ, Fin n → ℝ)`, no boundary), with
-`[T2Space M]` and `[IsManifold 𝓘(ℝ, Fin n → ℝ) 2 M]` added, and a `C^∞` connection. The comparison of the statement
+`[IsManifold 𝓘(ℝ, Fin n → ℝ) 2 M]` added, and a locally smooth connection (no Hausdorff hypothesis). The comparison of the statement
 with Carroll, *Lecture Notes on General Relativity* (1997), ch. 3, is pending: the source was not read at the cited
 location.
 -/
@@ -26,9 +26,9 @@ open scoped Manifold ContDiff Topology
 noncomputable section
 namespace Lightlike
 variable {n : ℕ} {M : Type*} [TopologicalSpace M] [ChartedSpace (Fin n → ℝ) M] [IsManifold 𝓘(ℝ, Fin n → ℝ) ∞ M]
-  [T2Space M] [IsManifold 𝓘(ℝ, Fin n → ℝ) 2 M]
-  (g : LorentzianMetric 𝓘(ℝ, Fin n → ℝ) M n)
-  (cov : Connection 𝓘(ℝ, Fin n → ℝ) M) [CovariantDerivative.ContMDiffCovariantDerivative cov ∞]
+  [IsManifold 𝓘(ℝ, Fin n → ℝ) 2 M]
+  (g : NondegMetric 𝓘(ℝ, Fin n → ℝ) M)
+  (cov : Connection 𝓘(ℝ, Fin n → ℝ) M) [LocallySmoothConnection cov]
 
 section Lin
 variable (x₀ : M) (h : cov.IsLeviCivita g) {x : M} (hx : x ∈ (tTriv (E := Fin n → ℝ) x₀).baseSet)

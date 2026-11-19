@@ -15,7 +15,7 @@ linearity and antisymmetry of the curvature in its first slots turns the remaini
 into `R([X,Y], Z)`.
 
 **Differences from the task `T-GE1-P7`** (which stays open): the task is for any `ModelWithCorners`, with
-`IsLeviCivita`, and no Hausdorff hypothesis; this theorem assumes no boundary, `T2Space M`, a smooth connection, and
+`IsLeviCivita`, and no Hausdorff hypothesis; this theorem assumes no boundary, a locally smooth connection (`LocallySmoothConnection`, no Hausdorff hypothesis), and
 only `cov.torsion = 0`. The comparison with Wald, *General Relativity*, eq. (3.2.13), is pending: the source was not
 read at the cited location.
 -/
@@ -28,8 +28,8 @@ noncomputable section
 namespace Lightlike
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
   {M : Type*} [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M]
-  [T2Space M] [IsManifold 𝓘(ℝ, E) 2 M] [CompleteSpace E]
-variable (cov : Connection 𝓘(ℝ, E) M) [CovariantDerivative.ContMDiffCovariantDerivative cov ∞]
+  [IsManifold 𝓘(ℝ, E) 2 M] [CompleteSpace E]
+variable (cov : Connection 𝓘(ℝ, E) M) [LocallySmoothConnection cov]
 
 /-- `D_V U = ∇_V U` as a field. -/
 def dd (V U : Π y : M, TangentSpace 𝓘(ℝ, E) y) : Π y : M, TangentSpace 𝓘(ℝ, E) y :=

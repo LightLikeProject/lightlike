@@ -1,4 +1,5 @@
 import Lightlike.Spacetime.Causal.MinkowskiCausal
+import Lightlike.Spacetime.CausalLadder.LocalLift
 
 /-!
 # Task T-GE2-P5
@@ -54,12 +55,23 @@ namespace Lightlike.Causal
 
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
   {H : Type*} [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
-  {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I ∞ M]
+  {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I ∞ M] [BoundarylessManifold I M]
   {n : ℕ} {g : LorentzianMetric I M n} (T : TimeOrientation g)
 
-/-- **Push-up, first form: y ∈ I⁺(x), z ∈ J⁺(y) imply z ∈ I⁺(x).** -/
+/-- **Push-up, first form: y ∈ I⁺(x), z ∈ J⁺(y) imply z ∈ I⁺(x).**
+
+Matches the source (Hawking–Ellis: space-time has no boundary); the hypothesis `BoundarylessManifold I M`
+was added to the statement, approved by the maintainers, 18 November 2026. -/
 theorem chronFuture_causalFuture_trans {x y z : M} (hxy : y ∈ chronFuture T x)
     (hyz : z ∈ causalFuture T y) : z ∈ chronFuture T x := by
-  sorry
+  have hopen : ∀ (T' : TimeOrientation g) (w : M), IsOpen (chronFuture T' w) := by
+    intro T' w
+    rw [isOpen_iff_mem_nhds]
+    rintro y' ⟨γ, a, b, hab, hγ, rfl, rfl⟩
+    obtain ⟨U, hU, hreach⟩ := exists_nhds_reach T' hab hγ
+    filter_upwards [hU] with z' hz
+    obtain ⟨G, e, hae, hG, hG1, hG2⟩ := hreach z' hz
+    exact ⟨G, a, e, hae, hG, hG1, hG2⟩
+  exact chronFuture_causalFuture_trans_of_isOpen T (hopen T) hxy hyz
 
 end Lightlike.Causal
