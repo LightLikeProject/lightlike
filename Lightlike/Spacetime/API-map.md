@@ -95,6 +95,8 @@ The first variation of the Christoffel symbols is a tensor: `δΓⁱ_{jk} = ½ g
 
 Minkowski space is conformal to the region `0 < χ`, `|η| + χ < π` of the Einstein static universe: with `t = sin η / ω` and `r = sin χ / ω`, `ω = (cos η + cos χ)/2`, the metric `-dt² + dr² + r² dΩ²` is `ω⁻² (-dη² + dχ² + sin² χ dΩ²)`, and `(η, χ) ↦ (t, r)` maps that region bijectively onto `r > 0` [87]. On the closed region the conformal factor vanishes exactly on the boundary `|η| + χ = π`, conformal infinity [87].
 
+Anti-de Sitter space is conformal to half of the Einstein static universe: with `r = tan θ`, the global metric `-(1 + r²) dτ² + (1 + r²)⁻¹ dr² + r² dΩ²` is `cos⁻² θ (-dτ² + dθ² + sin² θ dΩ²)` for `0 ≤ θ < π/2`, and the conformal boundary `θ = π/2`, where `cos θ` vanishes, carries the timelike metric `-dτ² + dΩ²` [102].
+
 ## Lean References
 
 1. Lightlike/Spacetime/Curvature.lean - `IsCoordMetric`, `christoffel`, `riemann`, `ricci`,
@@ -211,6 +213,7 @@ Minkowski space is conformal to the region `0 < χ`, `|η| + χ < π` of the Ein
 99. Lightlike/Spacetime/Corners/EinsteinChart.lean - `einsteinEq_iff_chartW`: the Einstein equations with a source are the coordinate equations in every chart, for any model with corners.
 100. Lightlike/Spacetime/FLRWSphereEinstein.lean - `flrwSphere_einsteinEq_leviCivita_iff_friedmann`, `flrwFluid`: the Einstein equations with the comoving perfect fluid on the interval times the 3-sphere are Friedmann's equations with curvature one.
 101. Lightlike/Spacetime/Corners/Bridge.lean - `NondegMetric.coordMetricW_eq_coordMetric`, `mfderivWithin_range_modelWithCornersSelf`, `chartTrivW_eq_chartTriv`, `tTrivW_eq_tTriv`, `coordFieldW_eq_coordField`, `hatW_eq_hat`, `mfderiv_extChartAt_symm_eqW_bridge`: the Corners layer agrees with the boundaryless chart layer for the model `𝓘(ℝ, Fin n → ℝ)`.
+102. Lightlike/Spacetime/AdSCompactification.lean - `ads_eq_conformal_esu`, `bijOn_tan_ads`, `cos_eq_zero_ads_boundary`, `ads_boundary_metric`: anti-de Sitter space is conformal to half of the Einstein static universe, with a timelike conformal boundary.
 
 ## References
 
