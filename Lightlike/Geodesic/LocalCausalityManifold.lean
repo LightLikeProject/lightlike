@@ -11,7 +11,7 @@ import Lightlike.Spacetime.Causal.TimeReversal
 On the manifold `↥U`, an open set of `ℝⁿ` with the Lorentzian metric `openMetric U g hL` and a
 time orientation `T`, let `O = φ (ball 0 r)` be a time ball at `p` (`IsTimeBall`: normal
 coordinates `v = φ⁻¹ q`, the time function `x⁰ = -g_p(e, v)` with timelike gradient) whose field
-`N` is future directed for `T` (`IsTimeBall.exists_future`). With `σ_p(q) = g_p(v, v)`, for `q ∈ O`:
+`e` is future directed for `T` at `p` (then `N` is on all of `O`, `IsTimeBall.future_of_center`). With `σ_p(q) = g_p(v, v)`, for `q ∈ O`:
 `q ∈ I⁺(p; O)` iff `σ_p < 0 < x⁰`, `q ∈ J⁺(p; O)` iff `σ_p ≤ 0 ≤ x⁰`, `q` is on the boundary of
 `J⁺(p; O)` iff `σ_p = 0 ≤ x⁰`, and the same for pasts with `x⁰ ≤ 0`. Here `J⁺(p; O)` and
 `I⁺(p; O)` are reached by curves inside `O` (`Causal.causalFutureIn`, `Causal.chronFutureIn`).
@@ -22,17 +22,16 @@ Differences from the source (Chruściel, Proposition 2.4.5): the spacetime is an
 `ℝⁿ` with a smooth Lorentzian coordinate metric, not a general `C²` spacetime; `σ_p` and `x⁰` are
 written in normal coordinates of an arbitrary basis, `σ_p(v) = g_p(v, v)` and `x⁰ = -g_p(e, ·)`
 for a timelike `e` at `p`, which is Chruściel's `η_μν x^μ x^ν` and `x⁰` in orthonormal normal
-coordinates with `e = ∂₀`; "`∇x⁰` timelike on `O`" is `IsTimeBall.timelike`, and the time
-orientation of `O` is that of `-∇x⁰` (the hypothesis `hTN`, given by `IsTimeBall.exists_future`
-after shrinking). The proof does not use Chruściel's perturbed metrics (pp. 22–23): it uses the
+coordinates with `e = ∂₀`; "`∇x⁰` timelike on `O`" is `IsTimeBall.timelike`, and "`e` future
+directed at `p`" is the time orientation of Chruściel's normal coordinates ((2.2.10), p. 8). The proof does not use Chruściel's perturbed metrics (pp. 22–23): it uses the
 Gauss lemma and the cone inequality (`docs/notes/local-causality-plan.md`).
 
 ## Main results
 
 * `exists_lipschitzOnWith_comp_of_contDiffOn`: a `C¹` map of a Lipschitz curve is Lipschitz on a
   compact interval.
-* `IsTimeBall.mono`, `IsTimeBall.exists_future`: shrinking a time ball makes `N` future directed
-  for `T` when `e` is.
+* `IsTimeBall.mono`: a time ball of smaller radius; `IsTimeBall.future_of_center`: `N` is future
+  directed on the whole ball when `e` is at `p`.
 * `Causal.causalFutureIn`, `Causal.chronFutureIn`, `Causal.causalPastIn`, `Causal.chronPastIn`:
   `J±(x; O)`, `I±(x; O)`, curves inside `O`; `Causal.causalFutureIn_reverse`,
   `Causal.chronFutureIn_reverse`: reversing the time orientation exchanges futures and pasts.
@@ -185,13 +184,14 @@ theorem continuous_timeOrientation_coord (hL : IsLorentzianCoordMetric g U)
   rw [heq] at hX
   exact hX.continuousAt
 
-/-- **The field `N` of a small time ball is future directed**: if `e` is future directed at `p`
-for the time orientation `T`, then on a smaller ball `g(N, X) < 0`. -/
-theorem exists_future (hL : IsLorentzianCoordMetric g U)
+/-- **The field `N` of a time ball is future directed** on the whole ball if `e` is future directed
+at `p`: `g(N, X)` is continuous on the connected ball and never zero (two timelike vectors are not
+orthogonal), and negative at the centre, where `N 0` pairs like `e`. In Chruściel's normal
+coordinates (Proposition 2.2.3, (2.2.10), p. 8) `∂₀` is future directed at `p`, so `e = ∂₀` is. -/
+theorem future_of_center (hL : IsLorentzianCoordMetric g U)
     (T : Causal.TimeOrientation (openMetric U g hL)) (h : IsTimeBall g U p ρ φ e r N) (x₀ : U)
     (hx₀ : x₀.1 = p) (he : matForm (g p) e (T.X x₀) < 0) :
-    ∃ r', 0 < r' ∧ r' ≤ r ∧ ∀ x : U, ∀ v ∈ ball (0 : Fin n → ℝ) r', x.1 = φ v →
-      matForm (g x.1) (N v) (T.X x) < 0 := by
+    ∀ x : U, ∀ v ∈ ball (0 : Fin n → ℝ) r, x.1 = φ v → matForm (g x.1) (N v) (T.X x) < 0 := by
   set S : Set (Fin n → ℝ) := ball 0 r with hS
   set X' : U → Fin n → ℝ := fun x => T.X x with hX'
   have hφS : ContinuousOn φ S :=
@@ -217,17 +217,33 @@ theorem exists_future (hL : IsLorentzianCoordMetric g U)
     rw [hGeq]
     simp only [hF0, h.chart.map_zero]
     rw [hd]; exact he
-  obtain ⟨ε, hε, hball⟩ := Metric.eventually_nhds_iff.1
-    (hGcont.continuousAt.eventually (gt_mem_nhds hG0))
-  refine ⟨min ε r, lt_min hε h.pos, min_le_right _ _, fun x v hv hxv => ?_⟩
-  have hvS : v ∈ S := ball_subset_ball (min_le_right _ _) hv
-  have hdist : Dist.dist (⟨v, hvS⟩ : S) ⟨0, h0S⟩ < ε := by
-    rw [Subtype.dist_eq]; exact lt_of_lt_of_le (Metric.mem_ball.1 hv) (min_le_left _ _)
+  have : PreconnectedSpace S :=
+    isPreconnected_iff_preconnectedSpace.1 (convex_ball (0 : Fin n → ℝ) r).isPreconnected
+  have hne : ∀ v : S, G v ≠ 0 := by
+    intro v h0
+    rw [hGeq] at h0
+    have hyU : φ v ∈ (U : Set (Fin n → ℝ)) := h.map_mem v.2
+    have hLf := isLorentzianForm_matForm hL hyU
+    have hXX : matForm (g (φ v)) (X' (F v)) (X' (F v)) < 0 := T.timelike (F v)
+    have hNN : matForm (g (φ v)) (N v) (N v) < 0 := by
+      rw [← pairing_eq_matForm]; exact h.timelike v v.2
+    have hXN : matForm (g (φ v)) (X' (F v)) (N v) = 0 := by
+      rw [← pairing_eq_matForm, pairing_comm hL.1 hyU, pairing_eq_matForm]; exact h0
+    have hX0 := hLf.eq_zero_of_orthogonal_timelike hNN hXN hXX.le
+    rw [hX0] at hXX
+    simp at hXX
+  intro x v hv hxv
+  have hvS : v ∈ S := hv
   have hFx : F ⟨v, hvS⟩ = x := Subtype.ext hxv.symm
-  have := hball hdist
-  rw [hGeq, hFx] at this
+  have hlt : G ⟨v, hvS⟩ < 0 := by
+    by_contra hge
+    have hsub := isPreconnected_univ.intermediate_value (mem_univ (⟨0, h0S⟩ : S))
+      (mem_univ (⟨v, hvS⟩ : S)) hGcont.continuousOn
+    obtain ⟨w, -, hw⟩ := hsub ⟨hG0.le, not_lt.1 hge⟩
+    exact hne w hw
+  rw [hGeq, hFx] at hlt
   rw [hxv]
-  exact this
+  exact hlt
 
 set_option backward.isDefEq.respectTransparency false in
 /-- **A curve of `↥U` in normal coordinates.** A curve of `↥U` on `[a, b]` with velocity in `P`,
@@ -520,10 +536,11 @@ lemma eq_zero_of_cone (hL : IsLorentzianCoordMetric g U) (h : IsTimeBall g U p �
 `O = φ (ball 0 r)`, `q ∈ J⁺(p; O)` iff `σ_p(q) ≤ 0` and `x⁰(q) ≥ 0`. -/
 theorem mem_causalFutureIn_iff (hL : IsLorentzianCoordMetric g U)
     (T : Causal.TimeOrientation (openMetric U g hL)) (h : IsTimeBall g U p ρ φ e r N)
-    (hTN : ∀ x : U, ∀ v ∈ ball (0 : Fin n → ℝ) r, x.1 = φ v → matForm (g x.1) (N v) (T.X x) < 0)
-    {x₀ : U} (hx₀ : x₀.1 = p) {q : U} (hq : q.1 ∈ φ '' ball (0 : Fin n → ℝ) r) :
+    {x₀ : U} (hx₀ : x₀.1 = p) (he : matForm (g p) e (T.X x₀) < 0) {q : U}
+    (hq : q.1 ∈ φ '' ball (0 : Fin n → ℝ) r) :
     q ∈ Causal.causalFutureIn T x₀ {y : U | y.1 ∈ φ '' ball (0 : Fin n → ℝ) r} ↔
       pairing g p (φ.symm q.1) (φ.symm q.1) ≤ 0 ∧ 0 ≤ -pairing g p e (φ.symm q.1) := by
+  have hTN := h.future_of_center hL T x₀ hx₀ he
   constructor
   · rintro ⟨γ, a, b, hab, hγ, ha, hb, hin⟩
     have := h.causal_cone_of_isFutureCausalCurve hL T hTN hab hγ (by rw [ha, hx₀]) hin
@@ -539,10 +556,11 @@ theorem mem_causalFutureIn_iff (hL : IsLorentzianCoordMetric g U)
 `q ∈ I⁺(p; O)` iff `σ_p(q) < 0` and `x⁰(q) > 0`. -/
 theorem mem_chronFutureIn_iff (hL : IsLorentzianCoordMetric g U)
     (T : Causal.TimeOrientation (openMetric U g hL)) (h : IsTimeBall g U p ρ φ e r N)
-    (hTN : ∀ x : U, ∀ v ∈ ball (0 : Fin n → ℝ) r, x.1 = φ v → matForm (g x.1) (N v) (T.X x) < 0)
-    {x₀ : U} (hx₀ : x₀.1 = p) {q : U} (hq : q.1 ∈ φ '' ball (0 : Fin n → ℝ) r) :
+    {x₀ : U} (hx₀ : x₀.1 = p) (he : matForm (g p) e (T.X x₀) < 0) {q : U}
+    (hq : q.1 ∈ φ '' ball (0 : Fin n → ℝ) r) :
     q ∈ Causal.chronFutureIn T x₀ {y : U | y.1 ∈ φ '' ball (0 : Fin n → ℝ) r} ↔
       pairing g p (φ.symm q.1) (φ.symm q.1) < 0 ∧ 0 < -pairing g p e (φ.symm q.1) := by
+  have hTN := h.future_of_center hL T x₀ hx₀ he
   constructor
   · rintro ⟨γ, a, b, hab, hγ, ha, hb, hin⟩
     have := h.chron_cone_of_isFutureTimelikeCurve hL T hTN hab hγ (by rw [ha, hx₀]) hin
@@ -558,13 +576,13 @@ theorem mem_chronFutureIn_iff (hL : IsLorentzianCoordMetric g U)
 `σ_p(q) = 0` and `x⁰(q) ≥ 0`: the null cone of `p`. -/
 theorem mem_horismosIn_iff (hL : IsLorentzianCoordMetric g U)
     (T : Causal.TimeOrientation (openMetric U g hL)) (h : IsTimeBall g U p ρ φ e r N)
-    (hTN : ∀ x : U, ∀ v ∈ ball (0 : Fin n → ℝ) r, x.1 = φ v → matForm (g x.1) (N v) (T.X x) < 0)
-    {x₀ : U} (hx₀ : x₀.1 = p) {q : U} (hq : q.1 ∈ φ '' ball (0 : Fin n → ℝ) r) :
+    {x₀ : U} (hx₀ : x₀.1 = p) (he : matForm (g p) e (T.X x₀) < 0) {q : U}
+    (hq : q.1 ∈ φ '' ball (0 : Fin n → ℝ) r) :
     q ∈ Causal.causalFutureIn T x₀ {y : U | y.1 ∈ φ '' ball (0 : Fin n → ℝ) r} \
         Causal.chronFutureIn T x₀ {y : U | y.1 ∈ φ '' ball (0 : Fin n → ℝ) r} ↔
       pairing g p (φ.symm q.1) (φ.symm q.1) = 0 ∧ 0 ≤ -pairing g p e (φ.symm q.1) := by
   have hp : p ∈ (U : Set (Fin n → ℝ)) := hx₀ ▸ x₀.2
-  rw [Set.mem_sdiff, h.mem_causalFutureIn_iff hL T hTN hx₀ hq, h.mem_chronFutureIn_iff hL T hTN hx₀ hq]
+  rw [Set.mem_sdiff, h.mem_causalFutureIn_iff hL T hx₀ he hq, h.mem_chronFutureIn_iff hL T hx₀ he hq]
   constructor
   · rintro ⟨⟨hσ, hx⟩, hnot⟩
     refine ⟨le_antisymm hσ (not_lt.1 fun hlt => hnot ⟨hlt, lt_of_le_of_ne hx fun h0 => ?_⟩), hx⟩
@@ -580,8 +598,8 @@ interior of `J⁺(p; O)` is the open cone `σ_p < 0 < x⁰`: at a point with `σ
 `φ (v - s e)`, `s > 0` small, leave the closed cone. -/
 theorem mem_frontier_causalFutureIn_iff (hL : IsLorentzianCoordMetric g U)
     (T : Causal.TimeOrientation (openMetric U g hL)) (h : IsTimeBall g U p ρ φ e r N)
-    (hTN : ∀ x : U, ∀ v ∈ ball (0 : Fin n → ℝ) r, x.1 = φ v → matForm (g x.1) (N v) (T.X x) < 0)
-    {x₀ : U} (hx₀ : x₀.1 = p) {q : U} (hq : q.1 ∈ φ '' ball (0 : Fin n → ℝ) r) :
+    {x₀ : U} (hx₀ : x₀.1 = p) (he : matForm (g p) e (T.X x₀) < 0) {q : U}
+    (hq : q.1 ∈ φ '' ball (0 : Fin n → ℝ) r) :
     q ∈ frontier (Causal.causalFutureIn T x₀ {y : U | y.1 ∈ φ '' ball (0 : Fin n → ℝ) r}) ↔
       pairing g p (φ.symm q.1) (φ.symm q.1) = 0 ∧ 0 ≤ -pairing g p e (φ.symm q.1) := by
   set O' : Set U := {y : U | y.1 ∈ φ '' ball (0 : Fin n → ℝ) r} with hO'
@@ -610,7 +628,7 @@ theorem mem_frontier_causalFutureIn_iff (hL : IsLorentzianCoordMetric g U)
   have hSO : S ⊆ O' := by
     rintro y ⟨γ, a, b, hab, -, -, hb, hin⟩; rw [← hb]; exact hin b ⟨hab, le_rfl⟩
   have hS : ∀ y ∈ S, fσ y ≤ 0 ∧ 0 ≤ fx y := fun y hy =>
-    (h.mem_causalFutureIn_iff hL T hTN hx₀ (hSO hy)).1 hy
+    (h.mem_causalFutureIn_iff hL T hx₀ he (hSO hy)).1 hy
   have hqO : q ∈ O' := hq
   -- the closure lies in the closed cone
   have hcl : q ∈ closure S → fσ q ≤ 0 ∧ 0 ≤ fx q := by
@@ -684,7 +702,7 @@ theorem mem_frontier_causalFutureIn_iff (hL : IsLorentzianCoordMetric g U)
           (hfxc.isOpen_inter_preimage hO'open isOpen_Ioi)
       refine mem_interior.2 ⟨_, ?_, hW, ⟨hqO, h1⟩, ⟨hqO, h2⟩⟩
       rintro y ⟨⟨hyO, hy1⟩, ⟨-, hy2⟩⟩
-      exact (h.mem_causalFutureIn_iff hL T hTN hx₀ hyO).2 ⟨le_of_lt hy1, le_of_lt hy2⟩
+      exact (h.mem_causalFutureIn_iff hL T hx₀ he hyO).2 ⟨le_of_lt hy1, le_of_lt hy2⟩
   show q ∈ closure S \ interior S ↔ _
   rw [Set.mem_sdiff, hint]
   constructor
@@ -695,7 +713,7 @@ theorem mem_frontier_causalFutureIn_iff (hL : IsLorentzianCoordMetric g U)
     simp only [h0', pairing_zero_right] at hlt
     exact lt_irrefl _ hlt
   · rintro ⟨h1, h2⟩
-    exact ⟨subset_closure ((h.mem_causalFutureIn_iff hL T hTN hx₀ hq).2 ⟨h1.le, h2⟩),
+    exact ⟨subset_closure ((h.mem_causalFutureIn_iff hL T hx₀ he hq).2 ⟨h1.le, h2⟩),
       fun ⟨hlt, _⟩ => lt_irrefl _ (h1 ▸ hlt)⟩
 
 /-! ### The pasts -/
@@ -713,17 +731,13 @@ lemma neg (h : IsTimeBall g U p ρ φ e r N) : IsTimeBall g U p ρ φ (-e) r (fu
   timelike v hv := by simpa [pairing] using h.timelike v hv
   continuousOn := h.continuousOn.neg
 
-/-- The future-directedness hypothesis for the reversed orientation and `-N`. -/
-lemma hTN_reverse (hL : IsLorentzianCoordMetric g U)
-    (T : Causal.TimeOrientation (openMetric U g hL))
-    (hTN : ∀ x : U, ∀ v ∈ ball (0 : Fin n → ℝ) r, x.1 = φ v → matForm (g x.1) (N v) (T.X x) < 0) :
-    ∀ x : U, ∀ v ∈ ball (0 : Fin n → ℝ) r, x.1 = φ v →
-      matForm (g x.1) ((fun v => -N v) v) (T.reverse.X x) < 0 := fun x v hv hxv => by
-  have hX : ∀ j, (T.reverse.X x : Fin n → ℝ) j = -(T.X x : Fin n → ℝ) j := fun j => rfl
-  have := hTN x v hv hxv
-  erw [matForm_apply] at this ⊢
+/-- `-e` is future directed for the reversed orientation if `e` is for `T`. -/
+lemma he_reverse (hL : IsLorentzianCoordMetric g U) (T : Causal.TimeOrientation (openMetric U g hL))
+    {x₀ : U} (he : matForm (g p) e (T.X x₀) < 0) : matForm (g p) (-e) (T.reverse.X x₀) < 0 := by
+  have hX : ∀ j, (T.reverse.X x₀ : Fin n → ℝ) j = -(T.X x₀ : Fin n → ℝ) j := fun j => rfl
+  erw [matForm_apply] at he ⊢
   simp only [hX, Pi.neg_apply, neg_mul, mul_neg, neg_neg]
-  exact this
+  exact he
 
 lemma neg_pairing_neg (w : Fin n → ℝ) : -pairing g p (-e) w = -(-pairing g p e w) := by
   simp [pairing]
@@ -732,34 +746,34 @@ lemma neg_pairing_neg (w : Fin n → ℝ) : -pairing g p (-e) w = -(-pairing g p
 `x⁰(q) ≤ 0`. -/
 theorem mem_causalPastIn_iff (hL : IsLorentzianCoordMetric g U)
     (T : Causal.TimeOrientation (openMetric U g hL)) (h : IsTimeBall g U p ρ φ e r N)
-    (hTN : ∀ x : U, ∀ v ∈ ball (0 : Fin n → ℝ) r, x.1 = φ v → matForm (g x.1) (N v) (T.X x) < 0)
-    {x₀ : U} (hx₀ : x₀.1 = p) {q : U} (hq : q.1 ∈ φ '' ball (0 : Fin n → ℝ) r) :
+    {x₀ : U} (hx₀ : x₀.1 = p) (he : matForm (g p) e (T.X x₀) < 0) {q : U}
+    (hq : q.1 ∈ φ '' ball (0 : Fin n → ℝ) r) :
     q ∈ Causal.causalPastIn T x₀ {y : U | y.1 ∈ φ '' ball (0 : Fin n → ℝ) r} ↔
       pairing g p (φ.symm q.1) (φ.symm q.1) ≤ 0 ∧ -pairing g p e (φ.symm q.1) ≤ 0 := by
   rw [← Causal.causalFutureIn_reverse,
-    h.neg.mem_causalFutureIn_iff hL T.reverse (hTN_reverse hL T hTN) hx₀ hq, neg_pairing_neg]
+    h.neg.mem_causalFutureIn_iff hL T.reverse hx₀ (he_reverse hL T he) hq, neg_pairing_neg]
   constructor <;> rintro ⟨h1, h2⟩ <;> exact ⟨h1, by linarith⟩
 
 /-- **The `I⁻` line**: `q ∈ I⁻(p; O)` iff `σ_p(q) < 0` and `x⁰(q) < 0`. -/
 theorem mem_chronPastIn_iff (hL : IsLorentzianCoordMetric g U)
     (T : Causal.TimeOrientation (openMetric U g hL)) (h : IsTimeBall g U p ρ φ e r N)
-    (hTN : ∀ x : U, ∀ v ∈ ball (0 : Fin n → ℝ) r, x.1 = φ v → matForm (g x.1) (N v) (T.X x) < 0)
-    {x₀ : U} (hx₀ : x₀.1 = p) {q : U} (hq : q.1 ∈ φ '' ball (0 : Fin n → ℝ) r) :
+    {x₀ : U} (hx₀ : x₀.1 = p) (he : matForm (g p) e (T.X x₀) < 0) {q : U}
+    (hq : q.1 ∈ φ '' ball (0 : Fin n → ℝ) r) :
     q ∈ Causal.chronPastIn T x₀ {y : U | y.1 ∈ φ '' ball (0 : Fin n → ℝ) r} ↔
       pairing g p (φ.symm q.1) (φ.symm q.1) < 0 ∧ -pairing g p e (φ.symm q.1) < 0 := by
   rw [← Causal.chronFutureIn_reverse,
-    h.neg.mem_chronFutureIn_iff hL T.reverse (hTN_reverse hL T hTN) hx₀ hq, neg_pairing_neg]
+    h.neg.mem_chronFutureIn_iff hL T.reverse hx₀ (he_reverse hL T he) hq, neg_pairing_neg]
   constructor <;> rintro ⟨h1, h2⟩ <;> exact ⟨h1, by linarith⟩
 
 /-- **The `J̇⁻` line**: `q` lies on the boundary of `J⁻(p; O)` iff `σ_p(q) = 0` and `x⁰(q) ≤ 0`. -/
 theorem mem_frontier_causalPastIn_iff (hL : IsLorentzianCoordMetric g U)
     (T : Causal.TimeOrientation (openMetric U g hL)) (h : IsTimeBall g U p ρ φ e r N)
-    (hTN : ∀ x : U, ∀ v ∈ ball (0 : Fin n → ℝ) r, x.1 = φ v → matForm (g x.1) (N v) (T.X x) < 0)
-    {x₀ : U} (hx₀ : x₀.1 = p) {q : U} (hq : q.1 ∈ φ '' ball (0 : Fin n → ℝ) r) :
+    {x₀ : U} (hx₀ : x₀.1 = p) (he : matForm (g p) e (T.X x₀) < 0) {q : U}
+    (hq : q.1 ∈ φ '' ball (0 : Fin n → ℝ) r) :
     q ∈ frontier (Causal.causalPastIn T x₀ {y : U | y.1 ∈ φ '' ball (0 : Fin n → ℝ) r}) ↔
       pairing g p (φ.symm q.1) (φ.symm q.1) = 0 ∧ -pairing g p e (φ.symm q.1) ≤ 0 := by
   rw [← Causal.causalFutureIn_reverse,
-    h.neg.mem_frontier_causalFutureIn_iff hL T.reverse (hTN_reverse hL T hTN) hx₀ hq,
+    h.neg.mem_frontier_causalFutureIn_iff hL T.reverse hx₀ (he_reverse hL T he) hq,
     neg_pairing_neg]
   constructor <;> rintro ⟨h1, h2⟩ <;> exact ⟨h1, by linarith⟩
 

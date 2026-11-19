@@ -27,7 +27,7 @@ In normal coordinates `v(s) = φ⁻¹(γ(s))` of a future causal curve from `p` 
 * [x] `IsTimeBall.causal_cone` (the `J⁺` line, "⇒") in normal coordinates; it also gives `x⁰ > 0` for `b > a` in the proof.
 * [x] the `I⁺` line, "⇒": `IsTimeBall.chron_cone` (`σ_p < 0`, `x⁰ > 0` for timelike curves, `a < b`).
 * [ ] the "⇐" directions (radial geodesics: `t ↦ φ(t v)` is causal / timelike for `σ_p(v) ≤ 0` / `< 0`, `x⁰ ≥ 0`).
-* [x] existence of time balls: `exists_isTimeBall`; `IsTimeBall.mono`; `IsTimeBall.exists_future` (`N` future for `T` after shrinking).
+* [x] existence of time balls: `exists_isTimeBall`; `IsTimeBall.mono`; `IsTimeBall.future_of_center` (`N` future for `T` on the whole ball when `e` is future at `p`: connectedness, two timelike vectors are not orthogonal).
 * [x] bridge for the curves of the manifold `↥U` (`openMetric`, a time orientation): `IsTimeBall.causal_cone_of_isFutureCausalCurve`, `IsTimeBall.chron_cone_of_isFutureTimelikeCurve` (`LocalCausalityManifold.lean`), for the relations `J⁺(p; O)`, `I⁺(p; O)` of curves inside the ball; trust check (Minkowski time ball).
 * [x] the "⇐" directions: `exists_causal_of_cone`, `exists_timelike_of_cone` (radial curves); the iff theorems
   `mem_causalFutureIn_iff`, `mem_chronFutureIn_iff`; the `J̇⁺` line as the boundary, `mem_frontier_causalFutureIn_iff`
@@ -37,9 +37,12 @@ In normal coordinates `v(s) = φ⁻¹(γ(s))` of a future causal curve from `p` 
 
 ## Differences from the source (representation)
 
-1. The spacetime is an open set `U ⊂ ℝⁿ` with a smooth Lorentzian coordinate metric (`openMetric`) and a time orientation, not a
-   general `C²` spacetime; `O = φ(ball 0 r)` for a normal chart `φ` at `p`.
-2. `σ_p(v) = g_p(v, v)` and `x⁰ = -g_p(e, v)` in normal coordinates of an arbitrary basis, `e` timelike at `p`: Chruściel's
-   `η_μν x^μ x^ν` and `x⁰` in orthonormal normal coordinates with `e = ∂₀`. "`∇x⁰` timelike on `O`" is `IsTimeBall.timelike`; the
-   time orientation of `O` is that of `-∇x⁰` (hypothesis `hTN`, provided by `IsTimeBall.exists_future`).
-3. The curves are the library's causal curves (locally Lipschitz; timelike with a margin, approved 17 Nov 2026).
+1. The spacetime is an open set `U ⊂ ℝⁿ` with a Lorentzian coordinate metric (`openMetric`) and a time orientation; `O = φ(ball 0 r)`
+   for a normal chart `φ` at `p`. Everything in Proposition 2.4.5 lives in `O`, a coordinate patch, curves included.
+2. Smooth metric (the library has only smooth metrics); the source allows `C²` (Proposition 2.4.5: "(M, g)_{C²}", p. 20).
+3. `σ_p(v) = g_p(v, v)` and `x⁰ = -g_p(e, v)` in normal coordinates of an arbitrary basis, `e` timelike at `p`: Chruściel's
+   `η_μν x^μ x^ν` (2.4.6) and `x⁰` in orthonormal normal coordinates with `e = ∂₀`. "`∇x⁰` timelike on `O`" is `IsTimeBall.timelike`.
+   The hypothesis "`e` future directed at `p`" (`he`) is the time orientation of Chruściel's normal coordinates: Proposition 2.2.3,
+   (2.2.10), p. 8, "∇σ_p is timelike future directed on {σ_p < 0, x⁰ > 0}", so `∂₀` is future at `p`; then `-∇x⁰` is future on all
+   of `O` (`IsTimeBall.future_of_center`), no shrinking. (Definition 2.2.7, p. 13, elementary regions, is not used by Prop. 2.4.5.)
+4. The curves are the library's causal curves (locally Lipschitz; timelike with a margin, approved 17 Nov 2026).
