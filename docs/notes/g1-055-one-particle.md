@@ -54,9 +54,7 @@ What stops it here, concretely:
   induced representations only;
 * Mackey's imprimitivity theorem (a system of imprimitivity based on a transitive orbit is induced from the little
   group): not in the library;
-* irreducibility of the induced representations: it needs the commutant of the translations on
-  `L²(μ; ℂ^{n+1})` to be the multiplication operators by bounded matrix functions of the momentum, which is not
-  formalised.
+* irreducibility of the massless induced representations (the massive ones are irreducible, see below).
 
 The massless representations on `L²` of the light cone are not built here: the standard lift of the cone is not
 continuous (no continuous global section exists), so the multiplier is a measurable field of unitaries and the
@@ -84,9 +82,16 @@ Theorem 6.2 for the massive orbit):
   (`CommutantTranslations.lean`, Fourier inversion and Fubini) and with every momentum projection `E(S)`
   (`CommutantPVM.lean`, smooth approximations of open sets and the `π`-`λ` theorem);
 * such an operator is the multiplication by a strongly measurable field of matrices
-  (`CommutantDecomposition.lean`, `exists_matField_of_commute_transl`).
+  (`CommutantDecomposition.lean`, `exists_matField_of_commute_transl`);
+* **irreducibility of the massive representations** (`IrreducibleMassive.lean`): for every `SL(2,ℂ)`-invariant
+  σ-finite measure `μ` on the shell, every bounded operator commuting with all `T(a)` and `U(A)` is a scalar
+  (`commutant_eq_scalar`), and every closed subspace invariant under them is `0` or everything
+  (`irreducible_massive`). Every such `μ` has the null sets of the image of the Haar measure
+  (`measure_mul_haar_univ`: `μ(S) · haar(SL(2,ℂ)) = shellMeasure(S) · μ(shell)`); the matrix field is covariant, its
+  transport to `SL(2,ℂ)` is almost everywhere invariant under left translations and hence almost everywhere constant
+  (ergodicity of the left regular action), and right translation by `SU(2)` with Schur's lemma makes it a scalar.
 
-Remaining for irreducibility: Lorentz covariance of the field, its almost-everywhere constancy (Fubini over
-`SL(2,ℂ)`, with the invariant measure the image of the Haar measure), and Schur's lemma for `SU(2)`. Remaining for
+The source's measure `δ(p² − m²) Θ(p⁰) d⁴p`, which is `d³p / (2ω_p)` in the chart `p ↦ (ω_p, p)`, is not defined here;
+the irreducibility theorem applies to it once its invariance is proved. Remaining for
 the converse (every irreducible positive-energy representation is induced): the SNAG theorem for `ℝ⁴` and Mackey's
 imprimitivity theorem, and the representations of the `ISO(2)` cover including the continuous-spin series.

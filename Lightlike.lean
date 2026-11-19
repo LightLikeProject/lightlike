@@ -662,6 +662,7 @@ import Lightlike.Poincare.InducedGeneric
 import Lightlike.Poincare.InducedL2
 import Lightlike.Poincare.InducedMassive
 import Lightlike.Poincare.InducedUnitary
+import Lightlike.Poincare.IrreducibleMassive
 import Lightlike.Poincare.LiftDerivative
 import Lightlike.Poincare.LightCone
 import Lightlike.Poincare.LightConeUnitary
