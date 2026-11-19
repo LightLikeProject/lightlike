@@ -517,6 +517,10 @@ import Lightlike.OperatorAlgebras.StoneVN
 import Lightlike.OperatorAlgebras.QuasiFree
 import Lightlike.OperatorAlgebras.QuasiFreeWick
 import Lightlike.OperatorAlgebras.SecondQuantization
+import Lightlike.OperatorAlgebras.SecondQuantFinite
+import Lightlike.OperatorAlgebras.SecondQuantLadder
+import Lightlike.OperatorAlgebras.SecondQuantRank
+import Lightlike.OperatorAlgebras.SecondQuantSlot
 import Lightlike.OperatorAlgebras.FermiFockGeneral
 import Lightlike.OperatorAlgebras.TestsBoundedGroup
 import Lightlike.OperatorAlgebras.TestsCARUnique
@@ -548,6 +552,7 @@ import Lightlike.OperatorAlgebras.TestsStoneVN
 import Lightlike.OperatorAlgebras.TestsQuasiFree
 import Lightlike.OperatorAlgebras.TestsFermiFock
 import Lightlike.OperatorAlgebras.TestsSecondQuantization
+import Lightlike.OperatorAlgebras.TestsSecondQuantFinite
 import Lightlike.OperatorAlgebras.TestsTranslationCore
 import Lightlike.OperatorAlgebras.TestsUnitaryGroup
 import Lightlike.OperatorAlgebras.TestsWeyl

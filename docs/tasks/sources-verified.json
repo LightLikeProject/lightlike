@@ -1759,6 +1759,11 @@
     "snippet": "Theorem 13. 1) Let h, h1 , h2 ∈ B(Z), p1 ∈ B(Z, Z1 ), p2 ∈ B(Z1 , Z2 ), kpi k ≤ 1. We then have Γ (eih ) = exp(dΓ (ih)), (35) Γ (p2 )Γ (p1 ) = Γ (p2 p1 ), [dΓ (h1 ), dΓ (h2 )] = dΓ ([h1 , h2 ]). fin 2) Let Φ, Ψ ∈ ⊗ Z, h",
     "why": null
    },
+   "Theorem 18, p. 22": {
+    "verified": true,
+    "snippet": "Theorem 18. Let p, h ∈ B(Z) and w ∈ Z. Then 1) Γ (p)a(w) = a(p∗−1 w)Γ (p), 2) [dΓ (h), a(w)] = −a(h∗ w), 3) Γ (p)a∗ (w) = a∗ (pw)Γ (p), 4) [dΓ (h), a∗ (w)] = a∗ (hw). The exponential law for creation/annihilation operato",
+    "why": null
+   },
    "Theorem 24, p. 27": {
     "verified": true,
     "snippet": "Theorem 24 (Shale Theorem). 1) Let r ∈ Sp(Y). Then the following conditions are equivalent: a) There exists U ∈ U (Γs (Z)) such that U W (y)U ∗ = W (ry), y ∈ Y. (45) b) r ∈ Sp2 (Y). 2) If the above conditions are satisfi",

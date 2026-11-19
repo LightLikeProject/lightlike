@@ -3417,3 +3417,32 @@
   review: kernel-checked
   note: "Compared with Krajewski, arXiv:hep-th/9701081, Section 3.1, p. 10 (read): 'Mₙ(ℂ) has two inequivalent irreducible representations, the fundamental one and its complex conjugate. However, all our formulae remain valid, provided the indices i and j label irreducible representations of A'. Here A = ⊕ Mₙᵢ(ℂ) with a real-linear π: Q± = (1 ∓ i π(i·1))/2 split H into the parts where π is complex-linear (fundamental) and antilinear (conjugate); the units Q± π(E^i_αβ) of the blocks (i, ±) that occur (Q± π(1ᵢ) ≠ 0) and φ(a) = (aᵢ, āᵢ) give the complexification. The index set of the model is the set of representations (i, ±) that occur. Mixed algebras and the sign conditions of Table 1, p. 14 are not covered."
   since: unreleased
+- id: LL-0258
+  title: The commutators of second quantization for finitely many modes, [dΓ(h₁), dΓ(h₂)] = dΓ([h₁, h₂]), [dΓ(h), a*(w)] = a*(hw) and [dΓ(h), a(w)] = -a(h* w), for the CAR and the CCR alike
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/SecondQuantFinite.lean
+  decls: [Lightlike.OperatorAlgebras.SecondQuantFinite.IsModeAlgebra, Lightlike.OperatorAlgebras.SecondQuantFinite.isModeAlgebra_car, Lightlike.OperatorAlgebras.SecondQuantFinite.isModeAlgebra_ccr, Lightlike.OperatorAlgebras.SecondQuantFinite.commutator_number, Lightlike.OperatorAlgebras.SecondQuantFinite.dGamma, Lightlike.OperatorAlgebras.SecondQuantFinite.dGamma_commutator_creation, Lightlike.OperatorAlgebras.SecondQuantFinite.dGamma_commutator_annihilation, Lightlike.OperatorAlgebras.SecondQuantFinite.dGamma_commutator]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: derezinski-2006, location: "Theorem 13, p. 19", check: "Theorem 13"}
+      - {ref: derezinski-2006, location: "Theorem 18, p. 22", check: "Theorem 18"}
+  review: kernel-checked
+  note: "Compared with Dereziński, arXiv:math-ph/0511030, Theorem 13 (1), p. 19 ([dΓ(h1), dΓ(h2)] = dΓ([h1, h2])) and Theorem 18 (2), (4), p. 22 ([dΓ(h), a(w)] = -a(h* w), [dΓ(h), a*(w)] = a*(hw)) (read). Here Z = ℂⁿ and dΓ(h) = ∑ h_ij a_i* a_j in any algebra over ℂ whose a_i, a_i* satisfy the CAR or the CCR."
+  since: unreleased
+
+- id: LL-0259
+  title: The commutators of second quantization for finite-rank one-particle operators on any inner product space, dΓ(∑ₖ |uₖ⟩⟨vₖ|) = ∑ₖ a*(uₖ) a(vₖ), with [dΓ(h), a*(w)] = a*(hw), [dΓ(h), a(w)] = -a(h* w) and [dΓ(h₁), dΓ(h₂)] = dΓ([h₁, h₂]), for the CAR and the CCR alike
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/SecondQuantRank.lean
+  decls: [Lightlike.OperatorAlgebras.SecondQuantFinite.IsFieldAlgebra, Lightlike.OperatorAlgebras.SecondQuantFinite.rankOp, Lightlike.OperatorAlgebras.SecondQuantFinite.dGammaRank, Lightlike.OperatorAlgebras.SecondQuantFinite.dGammaRank_commutator_creation, Lightlike.OperatorAlgebras.SecondQuantFinite.dGammaRank_commutator_annihilation, Lightlike.OperatorAlgebras.SecondQuantFinite.rankOp_comp, Lightlike.OperatorAlgebras.SecondQuantFinite.dGammaRank_commutator]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: derezinski-2006, location: "Theorem 13, p. 19", check: "Theorem 13"}
+      - {ref: derezinski-2006, location: "Theorem 18, p. 22", check: "Theorem 18"}
+  review: kernel-checked
+  note: "Compared with Dereziński, arXiv:math-ph/0511030, Theorem 13 (1), p. 19 and Theorem 18 (2), (4), p. 22 (read). Here Z is any complex inner product space, a* is linear and a antilinear on Z with the CAR or the CCR in an algebra over ℂ, and h = ∑ₖ |uₖ⟩⟨vₖ| has finite rank, where the source allows every h ∈ B(Z)."
+  since: unreleased
