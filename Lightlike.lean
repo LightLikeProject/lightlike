@@ -444,6 +444,7 @@ import Lightlike.Poincare.LittleGroupsH
 import Lightlike.Poincare.MassCasimir
 import Lightlike.Poincare.MasslessGenerators
 import Lightlike.Poincare.Orbits
+import Lightlike.Poincare.PauliLubanskiAlgebra
 import Lightlike.Poincare.PauliLubanskiMassive
 import Lightlike.Poincare.PauliLubanskiRest
 import Lightlike.Poincare.RestSpin
