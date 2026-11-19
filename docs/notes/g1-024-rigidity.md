@@ -72,7 +72,7 @@ Differences:
    `covCo2_killing` at `p`: `[P_a, P_b](p) = 0` (no translation part, `β = 0`), `∇[R_ab, P_m](p) = 0` (since
    `∇∇R(p) = Riem · R(p) = 0`; no rotation part, `λ = 0`), and `∇[P_a, P_b](p)` is the curvature at `p`; Jacobi
    (`[R, [P, P]]`) makes that curvature isotropic, `[P_m, P_n] = -k R_mn` in the convention of `SpaceForm.S`.
-   Done for (b)/(c) so far (`KillingAlgebraCoord.lean`): `eq_sum_of_rigVec_eq_sum`, `pd_eq_of_killing`,
+   Proved for (b) and part of (c) (`KillingAlgebraCoord.lean`): `eq_sum_of_rigVec_eq_sum`, `pd_eq_of_killing`,
    `rigVec_eq_sum_of_data`, `lowerVec_bracketCo` (`[Y, Z]_b = Yᵈ ∇_d Z_b - Zᵈ ∇_d Y_b`), `pd_lowerVec_bracketCo` (its
    derivative for Killing fields through (13.8)). Remaining route for (c):
    - the normalization at `p` in coordinates: `P_m(p) = e_m`, `covCo (lowerVec g P_m) (p) = 0`, `R_ab(p) = 0`,
