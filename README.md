@@ -44,13 +44,23 @@ since, largely by AI coding agents working under human direction.
 
 ## Quick start
 
-1. Build the library (see [Building](#building-and-using-lightlike)), or open it in a browser with
-   [GitHub Codespaces](CONTRIBUTING.md#your-first-proof-task), with no local build.
-2. Pick an issue labelled [**ready**](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aopen+label%3Aready): everything the task needs is done.
-3. Comment `claiming` on the issue, or `attempting` for a proof task.
-4. Change the Lean files and run `lake build` (and `lake build Tasks` for a file in `Tasks/`).
-5. Open a pull request with the line `Task: T-…`. It is merged when the CI hard rules pass
-   ([CONTRIBUTING.md](CONTRIBUTING.md)).
+**Review a statement (no Lean needed).** Pick an entry of [docs/RESULTS.md](docs/RESULTS.md) and
+compare its statement with the source it cites: conventions, hypotheses, quantifier ranges and edge
+cases (see [Review](#review)). Open an [issue](https://github.com/LightlikeProject/lightlike/issues/new)
+with the entry's ID (`LL-…`), the place in the source, and what differs. The
+[main results](docs/RESULTS.md#main-results) are good first picks.
+
+**Run your agent on a proof task.** A proof task is one lemma whose statement is fixed (the
+[ready proof tasks](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aopen+label%3Aready+label%3Aproof-task)).
+Point your coding agent at [AGENTS.md](AGENTS.md) and one task: it sets up Lean, replaces the
+`sorry` and opens a pull request with the line `Task: T-…`, and CI checks it. For example, with
+Claude Code in a clone of this repository:
+
+```sh
+claude "Read AGENTS.md and follow it. Prove the proof task T-GE2-P1 in Tasks/GE2/T_GE2_P1.lean, changing only the proof, and open a pull request with the line 'Task: T-GE2-P1'."
+```
+
+To build the library yourself, see [Building and using Lightlike](#building-and-using-lightlike).
 
 ## What Lightlike is
 
