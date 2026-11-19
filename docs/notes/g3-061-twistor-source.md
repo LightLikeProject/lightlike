@@ -20,7 +20,7 @@ T. Adamo, *Lectures on twistor theory*, arXiv:1712.02196:
 
 ## How each Lean statement matches
 
-* `spinorMat` = (1.12); `spinorEquiv` (M_C ≅ M₂(ℂ)) and `tensorEquiv` (ℂ² ⊗ ℂ² ≅ M₂(ℂ), `a ⊗ b ↦ a bᵀ`): the identification behind (1.2).
+* `spinorMat` = (1.12); `spinorEquiv` (M_C ≅ M₂(ℂ)) and `spinorTensorEquiv` (ℂ² ⊗ ℂ² ≅ M₂(ℂ), `a ⊗ b ↦ a bᵀ`): the identification behind (1.2).
 * `qC_eq_two_det` = (1.3) with the source's signature (+, −, −, −) (CONVENTION: the library's η is (−, +, +, +), i.e. −qC).
 * `qC_eq_zero_iff`, `qC_eq_zero_iff_tmul` = (1.4) (both directions).
 * `isHermitian_spinorMat_iff` = (1.13) (the real slice).
