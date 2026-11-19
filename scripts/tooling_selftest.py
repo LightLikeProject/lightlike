@@ -773,6 +773,12 @@ expect("sources fulltext planted (OCR): a stroke read as 1 is never the number's
        and _bkl("Theorem 1.2, p. 4", ["compact"], pages=_ocr("TheoreD1"))[0])
 expect("sources fulltext control (OCR): the cited occurrence is still not the statement",
        _bkl("Theorem 1.2, p. 7", ["compact"], pages=_ocr("Theorelll"))[2] == "stated on printed p. 4, not p. 7")
+# A full stop the OCR put after the word (MEASURED in the same scan: 'Theorem. 3.1.' five times).
+expect("sources fulltext planted (OCR): a full stop after the label word passes ('Theorem. 1.2', 'Theorelll. 1.2'); "
+       "control: two full stops fail, 'Theorem. 11.2' is not Theorem 1.2",
+       all(_bkl("Theorem 1.2, p. 4", ["compact"], pages=_ocr(w))[0::3] == (True, 4) for w in ("Theorem.", "Theorelll."))
+       and not _bkl("Theorem 1.2, p. 4", ["compact"], pages=_ocr("Theorem.."))[0]
+       and not _bkl("Theorem 1.2, p. 4", ["compact"], pages=_ocr("Theorem.", " 11.2"))[0])
 
 # verify and check end to end, offline: the PDF is already in the cache under its URL, the
 # publisher record and the citations are stubbed, and any other network call fails the test.

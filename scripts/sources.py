@@ -25,11 +25,11 @@ no printed numbers). The file is fetched once into the cache, and its hashes go 
 Its locations are checked in it page by page: the label must occur where the result is stated,
 not where it is cited (a theorem-like label at the start of a line followed by "." or "(", its
 word allowed the letters OCR confuses in a scanned book's text layer: m as two or three of its
-strokes ('Theorelll', 'TheoreDl'); l, i, 1 and |; o and 0; e and c; an equation number set apart
-at the end of a line, a section heading at the start of a line), with
-one of the check words near it; a page given as "p. 136" or "pp. 136-137" must be the printed
-page of that occurrence. The printed page is the PDF page minus the offset that the page numbers
-in the headers and footers agree on.
+strokes ('Theorelll', 'TheoreDl'); l, i, 1 and |; o and 0; e and c; a full stop after it
+('Theorem. 3.1.'); an equation number set apart at the end of a line, a section heading at the
+start of a line), with one of the check words near it; a page given as "p. 136" or "pp. 136-137"
+must be the printed page of that occurrence. The printed page is the PDF page minus the offset
+that the page numbers in the headers and footers agree on.
 """
 import argparse
 import collections
@@ -298,16 +298,17 @@ def ocr_word(word):
 def defining_pattern(label):
     """A regex for where a label is stated rather than cited, in page-layout text: a theorem-like
     label at the start of a line followed by '.' or '(' ('Theorem 6.6 (Stone).', 'Lemma 6.12.'),
-    its word allowed OCR's letter confusions (ocr_word), an equation number set apart at the end
-    of a line, a section heading at the start of a line."""
+    its word allowed OCR's letter confusions (ocr_word) and a full stop after it, an equation
+    number set apart at the end of a line, a section heading at the start of a line."""
     m = re.match(r"\s*(?:eqs?\.?|equations?)\s*\(?([0-9A-Za-z.]+)\)?", label, re.I)
     if m:
         return r"(?m)[ \t]{2,}\(\s*" + re.escape(m.group(1)) + r"\s*\)[ \t]*$"
     for lab in LABELS:
         m = re.match(r"\s*" + lab + r"s?\.?\s+([0-9A-Z][0-9A-Z.]*[0-9A-Za-z]?)", label, re.I)
         if m and lab not in ("Section", "Chapter", "Appendix"):
-            # (?<!\d): a stroke read as 1 is never the number's own first digit ('TheoreD13.1')
-            return (r"(?mi)^[ \t]*" + ocr_word(lab) + r"[ \t]*(?<!\d)" + re.escape(m.group(1).rstrip("."))
+            # (?<!\d): a stroke read as 1 is never the number's own first digit ('TheoreD13.1');
+            # \.?: a full stop the OCR put after the word ('Theorem. 3.1.')
+            return (r"(?mi)^[ \t]*" + ocr_word(lab) + r"\.?[ \t]*(?<!\d)" + re.escape(m.group(1).rstrip("."))
                     + r"[ \t]*(?:\.(?!\d)|\()")
     return location_pattern(label)
 
