@@ -936,6 +936,8 @@ import Lightlike.Spin4.Tests
 import Lightlike.Spin4.Vertex
 import Lightlike.Spin4.VertexTests
 import Lightlike.SpinFoam.Box
+import Lightlike.SpinFoam.ForcingBlocking
+import Lightlike.SpinFoam.ForcingInverse
 import Lightlike.SpinFoam.Move33
 import Lightlike.SpinFoam.MoveBlocks
 import Lightlike.SpinFoam.Move24
