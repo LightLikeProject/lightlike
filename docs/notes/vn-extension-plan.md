@@ -8,9 +8,9 @@ arXiv:quant-ph/0103153, Section 4, Theorem 1 (von Neumann 1929): for a closed sy
 infinitely many self-adjoint extensions, parametrised by a unitary `n × n` matrix; (iii) `n₊ ≠ n₋`: no self-adjoint extension. Section 5.3,
 eqs (14)-(15): the momentum on `[0, L]` has deficiency indices `(1, 1)` and the extensions `P_θ` with `ψ(L) = e^{iθ} ψ(0)`.
 
-Done (`VonNeumann.lean`, branch `opalg/vn-ext`): case (i) as an equivalence, `isSelfAdjoint_iff_deficiency_bot` (closed symmetric `A`, at `z = ± i`),
-with the closed-range and lower-bound lemmas for closed symmetric operators. Earlier on main: the deficiency spaces of `-i d/dx` on `L²(0, 1)`
-(`T-OP1-P5`).
+Done (`VonNeumann.lean`): case (i) as an equivalence, `isSelfAdjoint_iff_deficiency_bot` (closed symmetric `A`, at `z = ± i`),
+with the closed-range and lower-bound lemmas for closed symmetric operators. The deficiency spaces of `-i d/dx` on `L²(0, 1)` are in
+`MomentumDeficiency.lean` (`T-OP1-P5`).
 
 Next bricks (estimates): (1) von Neumann's decomposition `D(A†) = D(A) ⊕ N₊ ⊕ N₋` for closed symmetric `A` (not stated in the source read: our own
 lemma, marked so); (2) for a unitary `U : N₊ → N₋`, the extension `A_U` on `D(A) + (1 + U) N₊` is self-adjoint (case (ii), existence; the domain
