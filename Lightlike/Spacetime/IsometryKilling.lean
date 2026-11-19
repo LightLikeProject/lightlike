@@ -8,7 +8,8 @@ Carroll (gr-qc/9712019, eqs. (5.39)-(5.41)): "If a one-parameter family of isome
 then `V` is known as a Killing vector field", `£_V g = 0`. In coordinates on a real Banach space `E`, with the metric a
 field of bilinear forms `G : E → E →L E →L ℝ`: for a `C²` map `Φ(s, y)` with `Φ(0, ·) = id` whose maps `Φ(s, ·)` preserve
 `G` at `p` (`G(Φ(s, p))(D_yΦ u, D_yΦ w) = G(p)(u, w)` for `s` near `0`), the generator `X(y) = ∂_sΦ(0, y)` satisfies
-Killing's equation at `p`: `DG(p)(X p)(u, w) + G(p)(DX(p) u, w) + G(p)(u, DX(p) w) = 0` (`killing_of_isometry_family`).
+Killing's equation at `p`: `DG(p)(X p)(u, w) + G(p)(DX(p) u, w) + G(p)(u, DX(p) w) = 0` (`killing_of_isometry_family`),
+and on every set where the maps preserve `G` (`killing_of_isometry_family_on`).
 The proof differentiates the isometry condition at `s = 0`; the derivative of `D_yΦ(s, p)` in `s` is `DX(p)` by the symmetry
 of the second derivative of `Φ`.
 -/
@@ -83,5 +84,18 @@ theorem killing_of_isometry_family (G : E → E →L[ℝ] E →L[ℝ] ℝ) {Φ :
   simp only [hu, hw, map_zero, add_zero, add_apply] at heq
   rw [hp, hsymm (1, 0) (0, u), hsymm (1, 0) (0, w)] at heq
   linarith
+
+set_option maxSynthPendingDepth 3 in
+/-- **On an open set**: if the maps `Φ(s, ·)` preserve `G` at every point of a set `U` for `s` near `0`, the generator satisfies
+Killing's equation on `U` (Carroll's (5.41), `£_V g = 0`, in coordinates). -/
+theorem killing_of_isometry_family_on (G : E → E →L[ℝ] E →L[ℝ] ℝ) {Φ : ℝ × E → E} {U : Set E}
+    (hΦ : ∀ p ∈ U, ContDiffAt ℝ 2 Φ (0, p)) (h0 : ∀ y, Φ (0, y) = y)
+    (hiso : ∀ p ∈ U, ∀ᶠ s in 𝓝 (0 : ℝ), ∀ u w : E,
+      G (Φ (s, p)) (fderiv ℝ Φ (s, p) (0, u)) (fderiv ℝ Φ (s, p) (0, w)) = G p u w)
+    (hG : ∀ p ∈ U, DifferentiableAt ℝ G p) :
+    ∀ p ∈ U, ∀ u w : E, fderiv ℝ G p (fderiv ℝ Φ (0, p) (1, 0)) u w +
+        G p (fderiv ℝ (fun y => fderiv ℝ Φ (0, y) (1, 0)) p u) w +
+        G p u (fderiv ℝ (fun y => fderiv ℝ Φ (0, y) (1, 0)) p w) = 0 := fun p hp u w =>
+  killing_of_isometry_family G (hΦ p hp) h0 (hiso p hp) (hG p hp) u w
 
 end Lightlike
