@@ -1,6 +1,6 @@
 # ODE flows, commuting flows and Frobenius: sources read, and how the library compares
 
-Files: `Lightlike/ODE/` (`Gronwall`, `FlowDeriv`, `LocalFlow`, `FlowJoint`, `CommutingFlows`,
+Files: `Lightlike/ODE/` (`Gronwall`, `FlowDeriv`, `LocalFlow`, `FlowJoint`, `CommutingFlows`, `CommutingConverse`,
 `CommutingFrame`, `InvolutiveFrame`, `Frobenius`, `FrobeniusChart`, `FlowContDiff`,
 `HigherVariational`, `Tests`).
 
@@ -74,10 +74,17 @@ Differences from Teschl, Theorem 2.10 (representation only; none accepted):
 `Lightlike.ODE.IsFlowBox.fderiv_flow_apply_eq_of_lieBracket_eq_zero` (Michor 3.15, (1) ⇒ (2)),
 `IsFlowBox.flow_comm` and `Lightlike.ODE.exists_flows_commute` (Michor 3.15, (1) ⇒ (3)).
 
+The converses are in `Lightlike.ODE.CommutingConverse`:
+`IsFlowBox.fderiv_flow_apply_eq_of_flow_comm` ((3) ⇒ (2)),
+`IsFlowBox.lieBracket_eq_zero_of_fderiv_flow_apply_eq` ((2) ⇒ (1)) and
+`IsFlowBox.lieBracket_eq_zero_of_flow_comm` ((3) ⇒ (1)). So the three assertions of the corollary
+are equivalent in flow boxes.
+
 Differences from Michor, Corollary 3.15:
-- weaker: only the direction from `[X, Y] = 0` to the flows; the converses are not proved;
-- weaker: local form (small times, initial points near `x₀`), not "wherever one side is defined
-  along the rectangle";
+- weaker: local form (flow boxes: small times, initial points near `x₀`), not "wherever one side
+  is defined along the rectangle" of times. No attempt at the non-local form is on record yet;
+  it needs the derivative of the flow in the initial point along a trajectory of arbitrary
+  length, and `IsFlowBox` has the short-time condition `K T ≤ 1/2`.
 - representation: `C¹` fields on an open subset of a Banach space, not smooth fields on a manifold.
 
 ### (c) Frobenius
