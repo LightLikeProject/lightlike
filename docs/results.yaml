@@ -2663,3 +2663,16 @@
   review: kernel-checked
   note: "Compared with Derezinski, Theorem 39 (2), p. 39 (read): abs_symp_le_two_mul is the printed bound with the constant 2; abs_symp_le has the constant 1."
   since: unreleased
+- id: LL-0203
+  title: The Fock representation of the CAR over a complex Hilbert space, y = (w, w̄) ↦ a*(w) + a(w), is an irreducible representation of the CAR over Re(Z ⊕ Z̄)
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/FermiFockGeneral.lean
+  decls: [Lightlike.OperatorAlgebras.fockField_anticomm, Lightlike.OperatorAlgebras.isSelfAdjoint_fockField, Lightlike.OperatorAlgebras.fockField_irreducible]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: derezinski-2006, location: "Theorem 28, p. 29", check: "Theorem 28"}
+  review: kernel-checked
+  note: "Compared with Derezinski, Section 7.1, p. 29 and Section 5.3, p. 20 (read). The antisymmetric Fock space of Z is represented as a Hilbert space with a Hilbert basis indexed by the finite subsets of ι, for a Hilbert basis (e_i) of Z indexed by a linearly ordered ι (the basis vector of a finite set S stands for the normalized wedge product of the e_i, i in S, in increasing order; l^2(Finset ι) is one such space); the identification with the antisymmetric tensors is not built. Y = Re(Z + conj Z) with (z, conj z) α (w, conj w) = Re<z, w> is written as Z with the real scalar product Re<.,.>."
+  since: unreleased

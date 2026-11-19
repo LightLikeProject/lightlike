@@ -447,6 +447,7 @@ import Lightlike.OperatorAlgebras.StoneGenerator
 import Lightlike.OperatorAlgebras.StoneUnique
 import Lightlike.OperatorAlgebras.StoneVN
 import Lightlike.OperatorAlgebras.QuasiFree
+import Lightlike.OperatorAlgebras.FermiFockGeneral
 import Lightlike.OperatorAlgebras.TestsBoundedGroup
 import Lightlike.OperatorAlgebras.TestsCARUnique
 import Lightlike.OperatorAlgebras.TestsFiniteKMS
@@ -464,6 +465,7 @@ import Lightlike.OperatorAlgebras.TestsMomentumTheta
 import Lightlike.OperatorAlgebras.TestsResolvent
 import Lightlike.OperatorAlgebras.TestsStoneVN
 import Lightlike.OperatorAlgebras.TestsQuasiFree
+import Lightlike.OperatorAlgebras.TestsFermiFock
 import Lightlike.OperatorAlgebras.TestsTranslationCore
 import Lightlike.OperatorAlgebras.TestsUnitaryGroup
 import Lightlike.OperatorAlgebras.TestsWeyl

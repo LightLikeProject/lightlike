@@ -1649,6 +1649,11 @@
     "snippet": "Theorem 10. 1) Let (φ1 , φ2 , . . . , φ2n ) be a representation of the CAR over R2n in a Hilbert space H. Then there exists a Hilbert space K and a unitary operator U : ⊗ n C2 ⊗ K → H such that \u0010 \u0011 (j) U Ij−1 σ1 ⊗ 1K = φ",
     "why": null
    },
+   "Theorem 28, p. 29": {
+    "verified": true,
+    "snippet": "Theorem 28. Y ∋ y 7→ φ(y) ∈ Bh (Γa (Z)) (52) is an irreducible representation of the CAR over the space (Y, α). (52) is called the Fock representation of the CAR. Let w1 , . . . , wm be an orthonormal basis of the comple",
+    "why": null
+   },
    "Theorem 37, p. 38": {
     "verified": true,
     "snippet": "Theorem 37. A quasi-free representation is regular. Therefore, in a quasi-free representation we can define the corresponding field operators, denoted φ(y). If m is an integer, we say that σ is a pairing of {1, . . . , 2",
