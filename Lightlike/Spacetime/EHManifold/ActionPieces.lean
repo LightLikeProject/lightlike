@@ -47,7 +47,7 @@ theorem ehAction_biUnion (g : NondegMetric 𝓘(ℝ, Fin n → ℝ) M) (Λ : ℝ
     (hT0 : ∀ i ∈ s, T i ⊆ (extChartAt 𝓘(ℝ, Fin n → ℝ) (x i)).source) (hAT : ∀ i ∈ s, A i ⊆ T i) :
     ehAction g Λ (⋃ i ∈ s, A i) = ∑ i ∈ s, ehAction g Λ (A i) := by
   unfold ehAction
-  exact integral_finset_biUnion s hA hd fun i hi =>
+  exact integral_biUnion_finset s hA hd fun i hi =>
     NondegMetric.integrableOn_of_continuousOn g (x i) (hT i hi) (hT0 i hi)
       ((continuousOn_ehLagrangian g Λ (x i)).mono (hT0 i hi)) (hAT i hi)
 
