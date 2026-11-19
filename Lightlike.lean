@@ -1520,3 +1520,5 @@ import Lightlike.Tests.Constraints
 import Lightlike.Tests.DiracAlgorithm
 import Lightlike.Tests.ReducedForm
 import Lightlike.GFT.Euler
+import Lightlike.Spacetime.ConformalKilling
+import Lightlike.Spacetime.ConformalKillingField

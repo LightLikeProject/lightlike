@@ -3143,3 +3143,30 @@
   review: kernel-checked
   note: "For a measurable region D of a manifold with a metric of any signature, with a nowhere null C2 boundary (defining functions u with du != 0 and du(#du) != 0), and a smooth symmetric perturbation h vanishing outside a compact K and on the boundary: in the graph charts of the divergence theorem for the boundary vector field V(h) = div h# - grad tr h, the Einstein-Hilbert action of D n K minus the Gibbons-Hawking-York term of g + t h has first variation -int_{D n K} <G + Lambda g, h>_g dvol_g."
   since: unreleased
+- id: LL-0239
+  title: The conformal Killing fields of a flat metric in dimension at least three are the translations, conformal linear maps and special conformal fields
+  area: Spacetime
+  file: Lightlike/Spacetime/ConformalKilling.lean
+  decls: [Lightlike.Flat.IsConformalKillingAt, Lightlike.Flat.isConformalKillingAt_of_killing, Lightlike.Flat.isConformalKillingAt_dilation, Lightlike.Flat.isConformalKillingAt_special, Lightlike.Flat.conformalKilling_classification]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: gourgoulhon-2007, location: "eq. (B.8)", check: "conformal Killing"}
+  review: kernel-checked
+  note: "On a real vector space with a constant symmetric bilinear form B (a flat metric of any signature), X is conformal Killing at y with factor sigma when B(DX u, w) + B(u, DX w) = 2 sigma B(u, w), the vanishing of the conformal Killing operator of Gourgoulhon's (B.1), (B.8) with sigma = div X / n. Killing fields (sigma = 0), the homothety y (sigma = 1) and the special conformal fields B(y, y) b - 2 B(b, y) y (sigma = -2 B(b, y)) are conformal Killing, and conformal Killing fields form a vector space. In dimension at least 3 every C^3 field conformal Killing at every point is c + A y + specialConformal B b y with A conformal (B(Au, w) + B(u, Aw) = 2 sigma(0) B(u, w)) (conformalKilling_classification): the (n + 1)(n + 2)/2 conformal Killing fields, Gourgoulhon's 'maximum dimension of ker L is 10' for n = 3 (Appendix B.1.3). Proof: the second derivative of X is fixed by D sigma, and the symmetry of the third derivative forces D^2 sigma = 0 for n >= 3 (in an orthogonal basis of B)."
+  since: unreleased
+
+- id: LL-0240
+  title: On a manifold a Killing field is a conformal Killing field, and conformal Killing fields form a vector space
+  area: Spacetime
+  file: Lightlike/Spacetime/ConformalKillingField.lean
+  decls: [Lightlike.IsConformalKillingAt, Lightlike.isConformalKillingAt_of_isKillingAt, Lightlike.isConformalKillingAt_add, Lightlike.isConformalKillingAt_const_smul]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: gourgoulhon-2007, location: "eq. (B.8)", check: "conformal Killing"}
+  review: kernel-checked
+  note: "For a metric g of any signature on a manifold, X is conformal Killing at x with factor sigma when the Lie derivative of g along X is 2 sigma g at x on all fields differentiable at x (lieDerivMetric, LieMetric.lean): Gourgoulhon's (B.8), every Killing vector is a conformal Killing vector (for the Levi-Civita connection, sigma = 0), and conformal Killing fields at x form a vector space (the factors add). Limits: the bridge to the flat-space statements of ConformalKilling.lean in a flat chart is not stated."
+  since: unreleased
