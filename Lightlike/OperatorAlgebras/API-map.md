@@ -87,6 +87,11 @@ On a compact metric space the couplings of two probability measures are the prob
 For a continuous cost `h` on the product of a compact metric space with itself there is an optimal coupling, and its cost is `sup {∫ f dμ + ∫ g dν | f(x) + g(y) ≤ h(x, y)}` over continuous `f`, `g` {12} [97]; the proof goes through the Hahn-Banach theorem for the sublinear functional `ω(k) = inf {∫ f dμ + ∫ g dν | k ≤ f ⊕ g}` and the Riesz-Markov-Kakutani theorem. For a separable cost `a(x) + b(y)` the dual value is `∫ a dμ + ∫ b dν` [98].
 
 Kantorovich-Rubinstein duality: on a compact metric space `W₁(μ, ν) = sup {∫ u dμ - ∫ u dν | u 1-Lipschitz}`, and the infimum defining `W₁` is attained {12} [99]; the `c`-transform `u(x) = inf_y (d(x, y) - g(y))` of a dual pair `(f, g)` is `1`-Lipschitz with `f ≤ u ≤ -g` [99]. For Dirac measures the supremum is `d(x, y)`, and `2`-Lipschitz tests exceed `W₁` [100].
+A compact symmetric operator `T` on a real or complex Hilbert space has a Hilbert basis of eigenvectors with real eigenvalues, assembled from Hilbert bases of the eigenspaces, whose sum is dense, and `T x = ∑ᵢ μᵢ ⟪bᵢ, x⟫ bᵢ` in it; only finitely many eigenvalues have `‖μ‖ ≥ ε`, since unit eigenvectors to distinct eigenvalues are orthonormal and their images are then `ε` apart inside a compact set, so the eigenvalues and the spectrum are countable [101]. The identity of `ℓ²(ℕ)` is symmetric, not compact, and has an infinite-dimensional eigenspace, and `0` is in the spectrum of the compact self-adjoint `diag(1/(n+1))` without being an eigenvalue [102]. A Hilbert-Schmidt operator is the norm limit of its finite sections `x ↦ ∑_{i ∈ F} ⟪bᵢ, x⟫ K bᵢ` and so is compact [103].
+
+A compact operator `K` has a canonical form `K x = ∑ⱼ sⱼ ⟪φⱼ, x⟫ φ'ⱼ`, `K* x = ∑ⱼ sⱼ ⟪φ'ⱼ, x⟫ φⱼ` with orthonormal `φ`, `φ'` and positive singular values `sⱼ`: from a Hilbert basis of eigenvectors of the compact symmetric `K*K`, `sⱼ = √μⱼ` on the eigenvalues `μⱼ > 0` and `φ'ⱼ = sⱼ⁻¹ K φⱼ`; only finitely many `sⱼ` exceed any `ε > 0`, and `‖K‖` is the largest of them. For `μ ≠ 0` the `μ`-eigenspace of `K*K` is spanned by the `φⱼ` with `sⱼ² = μ` and has dimension `#{j | sⱼ² = μ}`, and likewise for `KK*` with the `φ'ⱼ` [104]. The zero operator has no singular values and a nonzero operator has one [105].
+
+The Schatten sum `‖K‖_p^p` is the supremum of `∑ₖ |⟪ψₖ, K ϕₖ⟫|^p` over pairs of finite orthonormal families; for every canonical form and `p ≥ 1` it equals `∑ⱼ sⱼ^p`, by Hölder with the weights `|⟪φⱼ, ϕₖ⟫|²` and Cauchy-Schwarz twice on one side and the orthonormal families of the canonical form on the other, and it bounds `‖K‖^p` and is unchanged by the adjoint [106]. For a compact `K` the square sum `∑ᵢ ‖K bᵢ‖²` in every Hilbert basis is `‖K‖₂²`, so the Hilbert-Schmidt operators are the compact ones with `‖K‖₂ < ∞` [107]; the trace norm of a product of two Hilbert-Schmidt operators is at most the product of their Hilbert-Schmidt norms, `|K|` acts on an eigenvector of `K*K` with eigenvalue `μ` by `√μ`, and the trace-class operators are the compact ones with `‖K‖₁ < ∞` [108]. The Schatten norms satisfy the triangle inequality (Minkowski on the finite sums), are homogeneous and definite, pass to norm limits, and a Cauchy sequence of compact operators converges in them [109]. The diagonal operator `diag(1/(n+1))` is in `J₂` and not in `J₁` [110].
 
 ## Lean References
 
@@ -358,6 +363,42 @@ Kantorovich-Rubinstein duality: on a compact metric space `W₁(μ, ν) = sup {�
     `OperatorAlgebras.Transport.wasserstein1_eq_sSup`
 100. Lightlike/OperatorAlgebras/TestsKantorovichRubinstein.lean - `OperatorAlgebras.Transport.sSup_dirac`,
     `OperatorAlgebras.Transport.two_lipschitz_exceeds`, `OperatorAlgebras.Transport.ctrans_zero`
+101. Lightlike/OperatorAlgebras/Spectral/Compact.lean - `OperatorAlgebras.CompactSpectral.exists_hilbertBasis_eigenvectors`,
+    `OperatorAlgebras.CompactSpectral.hasSum_eigen`, `OperatorAlgebras.CompactSpectral.finite_eigenvalues_ge`,
+    `OperatorAlgebras.CompactSpectral.countable_eigenvalues`, `OperatorAlgebras.CompactSpectral.countable_spectrum`,
+    `OperatorAlgebras.CompactSpectral.hasEigenvalue_of_mem_spectrum`,
+    `OperatorAlgebras.CompactSpectral.finiteDimensional_eigenspace`
+102. Lightlike/OperatorAlgebras/Spectral/TestsCompact.lean - `OperatorAlgebras.CompactSpectral.not_finiteDimensional_eigenspace_id`,
+    `OperatorAlgebras.CompactSpectral.not_isCompactOperator_id`,
+    `OperatorAlgebras.CompactSpectral.exists_hilbertBasis_eigenvectors_of_finiteDimensional`,
+    `OperatorAlgebras.CompactSpectral.invDiag_zero_mem_spectrum_not_hasEigenvalue` (0 is in the spectrum of
+    diag(1/(n+1)) and is not an eigenvalue)
+103. Lightlike/OperatorAlgebras/Spectral/HilbertSchmidtCompact.lean - `OperatorAlgebras.CompactSpectral.isCompactOperator_of_isHilbertSchmidt`
+104. Lightlike/OperatorAlgebras/Spectral/CanonicalForm.lean - `OperatorAlgebras.CompactSpectral.IsCanonicalForm`, `OperatorAlgebras.CompactSpectral.isCanonicalForm_of_eigenbasis`,
+    `OperatorAlgebras.CompactSpectral.exists_isCanonicalForm`,
+    `OperatorAlgebras.CompactSpectral.isCompactOperator_adjoint_comp`, `OperatorAlgebras.CompactSpectral.isSymmetric_adjoint_comp`,
+    `OperatorAlgebras.CompactSpectral.IsCanonicalForm.le_opNorm`, `OperatorAlgebras.CompactSpectral.IsCanonicalForm.opNorm_le`,
+    `OperatorAlgebras.CompactSpectral.IsCanonicalForm.exists_eq_opNorm`, `OperatorAlgebras.CompactSpectral.IsCanonicalForm.toAdjoint`,
+    `OperatorAlgebras.CompactSpectral.IsCanonicalForm.finite_sq_eq`, `OperatorAlgebras.CompactSpectral.IsCanonicalForm.eigenspace_adjoint_comp`,
+    `OperatorAlgebras.CompactSpectral.IsCanonicalForm.finrank_eigenspace_adjoint_comp`,
+    `OperatorAlgebras.CompactSpectral.IsCanonicalForm.eigenspace_comp_adjoint`,
+    `OperatorAlgebras.CompactSpectral.hasSum_norm_sq_of_orthonormal`
+105. Lightlike/OperatorAlgebras/Spectral/TestsCanonicalForm.lean - `OperatorAlgebras.CompactSpectral.isEmpty_of_canonical_zero`,
+    `OperatorAlgebras.CompactSpectral.nonempty_of_canonical_ne_zero`
+106. Lightlike/OperatorAlgebras/Spectral/Schatten.lean - `OperatorAlgebras.CompactSpectral.schattenSum`,
+    `OperatorAlgebras.CompactSpectral.schattenSum_eq_tsum`, `OperatorAlgebras.CompactSpectral.schattenSum_le_tsum`,
+    `OperatorAlgebras.CompactSpectral.tsum_le_schattenSum`, `OperatorAlgebras.CompactSpectral.schatten_core`,
+    `OperatorAlgebras.CompactSpectral.norm_rpow_le_schattenSum`, `OperatorAlgebras.CompactSpectral.schattenSum_adjoint`
+107. Lightlike/OperatorAlgebras/Spectral/SchattenHS.lean - `OperatorAlgebras.CompactSpectral.tsum_norm_sq_apply_eq`,
+    `OperatorAlgebras.CompactSpectral.schattenSum_two_eq_tsum_norm_sq`, `OperatorAlgebras.CompactSpectral.isHilbertSchmidt_iff`
+108. Lightlike/OperatorAlgebras/Spectral/SchattenTrace.lean - `OperatorAlgebras.CompactSpectral.schattenSum_one_mul_le`,
+    `OperatorAlgebras.CompactSpectral.abs_apply_of_adjoint_apply_apply`, `OperatorAlgebras.CompactSpectral.isTraceClass_iff`
+109. Lightlike/OperatorAlgebras/Spectral/SchattenBanach.lean - `OperatorAlgebras.CompactSpectral.schattenNorm`,
+    `OperatorAlgebras.CompactSpectral.schattenNorm_add_le`, `OperatorAlgebras.CompactSpectral.schattenSum_smul`,
+    `OperatorAlgebras.CompactSpectral.schattenNorm_eq_zero_iff`, `OperatorAlgebras.CompactSpectral.schattenSum_le_of_tendsto`,
+    `OperatorAlgebras.CompactSpectral.exists_tendsto_schattenNorm`
+110. Lightlike/OperatorAlgebras/Spectral/TestsSchatten.lean - `OperatorAlgebras.CompactSpectral.schattenSum_two_invDiag_lt_top`,
+    `OperatorAlgebras.CompactSpectral.schattenSum_one_invDiag_eq_top` (diag(1/(n+1)) is in J₂ and not in J₁)
 
 ## References
 
@@ -368,7 +409,7 @@ Kantorovich-Rubinstein duality: on a compact metric space `W₁(μ, ν) = sup {�
    Soc. 103 (1962) 149.
 3. Math 7334 lecture notes, Georgia Tech (Spring 2017), Section 4: The Theorem of Hille and Yosida concerning semi-groups, Theorem 1.9, https://loss.math.gatech.edu/17SPRINGTEA/7334/NOTES/section4hilleyosida.pdf.
 4. G. Teschl, *Mathematical Methods in Quantum Mechanics*, Graduate Studies in Mathematics 99, American Mathematical
-   Society, 2009 (online edition), Theorem 3.7 (spectral theorem). The Lean files are ported from physicslib4
+   Society, 2009 (online edition), Theorem 3.7 (spectral theorem) and Theorem 6.6 (compact self-adjoint operators). The Lean files are ported from physicslib4
    (github.com/physicslib/physicslib4, Apache-2.0).
 5. G. Bonneau, J. Faraut and G. Valent, *Self-adjoint extensions of operators and the teaching of quantum
    mechanics*, arXiv:quant-ph/0103153, Appendix A.3 and Section 5.3, eqs. (14) and (15).

@@ -18,10 +18,17 @@ boundary) and the chart at `x₀`:
 * `curvatureAt_apply_proved`: hence `Connection.curvatureAt` (defined with extensions of tangent vectors) equals
   that expression for any smooth fields with the given values, so it does not depend on the extensions.
 
-**Limits.** Manifolds without boundary modelled on a finite-dimensional space, Hausdorff, and a connection that is
-smooth for sections smooth on the whole manifold (the local smoothness of `contMDiffAt_cov` uses a bump function).
-The statement of the task `T-GE1-P2` is for any `ModelWithCorners` without the Hausdorff hypothesis; this file
-proves the boundaryless Hausdorff case.
+**Former task `T-GE1-P2`, closed by `curvatureAt_apply_proved`.** Differences from the task statement (approved on 18 November 2026, updated
+for GE11): no boundary and a finite-dimensional model space `E` (`ModelWithCorners` `𝓘(ℝ, E)`) instead of any `ModelWithCorners` (this matches
+the source, where manifolds are charts onto open subsets of `ℝⁿ`), with a locally smooth connection and no Hausdorff hypothesis (the earlier
+`[T2Space M]` convention is gone); the task also assumes `[IsManifold I 2 M]`, so that is not a difference. No metric occurs, so there is no
+restriction on the signature. The general statement (any `ModelWithCorners`) is the milestone GE11. The definition `R(X, Y) Z = ∇_X ∇_Y Z - ∇_Y ∇_X Z - ∇_{[X,Y]} Z` and
+its sign are those of Carroll, *Lecture Notes on General Relativity* (1997), eq. (3.71) (read at that location, where it is given as the Riemann
+tensor viewed as a map of three vector fields, in the coordinate form (3.67)).
+
+**Limits.** Manifolds without boundary modelled on a finite-dimensional space, with a locally smooth connection
+(`LocallySmoothConnection`, `ChartCovariant.lean`) and no Hausdorff hypothesis. The statement of the task `T-GE1-P2` is for any
+`ModelWithCorners`; this file proves the boundaryless case.
 -/
 
 open Bundle Manifold Set VectorField NormedSpace FiberBundle Filter

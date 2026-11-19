@@ -26,6 +26,11 @@ replaced by `g`, which only needs that `g` is symmetric and non-degenerate:
 differentiable at the point, so uniqueness is on differentiable fields. No smoothness of the connection is
 proved here.
 
+**Source.** The statement was compared with Carroll, *Lecture Notes on General Relativity* (1997), ch. 3, eqs. (3.17)-(3.21)
+(read at those locations): Carroll shows that a torsion-free metric-compatible connection is unique, by deriving the
+coordinate formula (3.21), and asserts existence by the transformation law; here existence and uniqueness are proved without
+coordinates, uniqueness on vector fields differentiable at the point (kind: representation).
+
 **References.** B. O'Neill, *Semi-Riemannian Geometry* (Academic Press, 1983), Theorem 3.11 (the fundamental
 theorem); Mathlib's `CovariantDerivative.leviCivitaConnection` (Riemannian case).
 -/
