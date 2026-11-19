@@ -1132,6 +1132,17 @@ import Lightlike.Gauge.FlowDeriv
 import Lightlike.Gauge.KernelSpan
 import Lightlike.Gauge.FaddeevPopov
 import Lightlike.Gauge.DiracAlgorithm
+import Lightlike.Gauge.DiracNonlinear
+import Lightlike.Gauge.DiracRegular
+import Lightlike.Gauge.DiracSchur
+import Lightlike.Gauge.DiracStage
+import Lightlike.Gauge.DiracWire
+import Lightlike.Gauge.DiracTangent
+import Lightlike.Gauge.DiracBridge
+import Lightlike.Gauge.DiracAlgo
+import Lightlike.Gauge.MinorExists
+import Lightlike.Gauge.DiracLocal
+import Lightlike.Gauge.DiracPoisson
 import Lightlike.Gauge.ReducedForm
 import Lightlike.Gauge.MatrixInverse
 import Lightlike.Gauge.Orbits.GaugeOrbits
