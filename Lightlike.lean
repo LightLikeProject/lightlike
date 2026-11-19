@@ -312,6 +312,7 @@ import Lightlike.HarmonicAnalysis.PeterWeylHilbert
 import Lightlike.HarmonicAnalysis.PeterWeylHilbertSchmidt
 import Lightlike.HarmonicAnalysis.PeterWeylIsotypic
 import Lightlike.HarmonicAnalysis.PeterWeylReal
+import Lightlike.HarmonicAnalysis.PeterWeylRight
 import Lightlike.HarmonicAnalysis.PeterWeylSU2
 import Lightlike.HarmonicAnalysis.PeterWeylSeparation
 import Lightlike.HarmonicAnalysis.PeterWeylTests
