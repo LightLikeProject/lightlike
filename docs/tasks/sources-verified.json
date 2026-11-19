@@ -3055,6 +3055,11 @@
     "verified": true,
     "snippet": "3.3 The chirality The chirality χ commutes with π(A) and J π(A)J −1 , and is hermitian, so that it can be written as a block diagonal matrix, χ = ⊕ Ini ⊗ χij ⊗ Inj .",
     "why": null
+   },
+   "Section 3.4": {
+    "verified": true,
+    "snippet": "3.4 The Dirac operator As we have already pointed out, a first order operator D on a (A, B)-bimodule M is an operator that satisfies D(xψy) = xD(ψy) + D(xψ)y − xD(ψ)y, for any ψ ∈ M, x ∈ A a",
+    "why": null
    }
   },
   "citations": 165,
@@ -3707,6 +3712,11 @@
    "Lemma 2": {
     "verified": true,
     "snippet": "Lemma 2. The Hilbert subspace Hij has the following form: Hij = Cni ⊗ Crij ⊗ Cnj where rij are some integers, rij ≥ 0. We take Hij = 0 iff rij = 0. An element a acts on Hij from the left as ai ⊗ 1 ⊗ 1 and from the right",
+    "why": null
+   },
+   "Lemma 6": {
+    "verified": true,
+    "snippet": "Lemma 6. The Dirac operator component Dij,kl vanishes unless i = k or j = l. In either of these cases D must commute with the corresponding action of the A or A0 , respectively. Proof: Let us rewrite the condition (2) fo",
     "why": null
    }
   },
