@@ -4410,6 +4410,24 @@
   "via": "Open Library",
   "fetched_title": "Mathematical Methods in Quantum Mechanics With Applications to Schrödinger Operators",
   "locations": {
+   "Lemma 6.10, p. 140": {
+    "verified": true,
+    "snippet": "Lemma 6.10. A compact operator K is Hilbert–Schmidt if and only if X kKψn k2 < ∞ (6.16) n for some orthonorma",
+    "why": null,
+    "page": 140
+   },
+   "Lemma 6.12, p. 141": {
+    "verified": true,
+    "snippet": "Lemma 6.12. The spaces Jp (H) together with the norm k.kp are Banach spaces. Moreover,   \u0010 X \u00111/p  kKkp",
+    "why": null,
+    "page": 141
+   },
+   "Lemma 6.13, p. 142": {
+    "verified": true,
+    "snippet": "Lemma 6.13. An operator is trace class if and only if it can be written as the product of two Hilbert–Schmidt operators, K = K1 K2 , and in this case",
+    "why": null,
+    "page": 142
+   },
    "Theorem 6.6, p. 136": {
     "verified": true,
     "snippet": "Theorem 6.6 (Spectral theorem for compact operators). Suppose the op- erator K is self-adjoint and compact. Then the spectrum of K consists of an at most countable number of eigenvalues which can only cluster at 0. Moreo",
