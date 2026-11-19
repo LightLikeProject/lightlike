@@ -17,7 +17,8 @@ The conformal compactification is read through twistor space: a point `x` gives 
 (`exists_twistorLine_eq`), so `M_ℂ` is the affine chart of the Grassmannian of 2-planes of `ℂ⁴` (planes meeting `I`
 are the points at infinity). Two lines meet iff their points are null separated (`twistorLine_inf_ne_bot_iff`). The
 Plücker coordinates `X^{AB} = Z₁^A Z₂^B − Z₂^A Z₁^B` of a 2-plane satisfy the Klein-quadric relation
-`X⁰¹X²³ − X⁰²X¹³ + X⁰³X¹² = 0` (`plucker_klein`).
+`X⁰¹X²³ − X⁰²X¹³ + X⁰³X¹² = 0` (`plucker_klein`), and conversely every nonzero skew `X` on the Klein quadric is a
+decomposable bivector `Z₁ ∧ Z₂` (`klein_decomposable`).
 
 Gap row G3-061. Source read (pdftotext): T. Adamo, *Lectures on twistor theory*, arXiv:1712.02196: section 1.2
 "2-spinors in Minkowski space", eqs. (1.2)–(1.4), p. 5 (the spinor matrix, `η_ab v^a v^b = 2 det(v^{αα̇})`, null iff
@@ -367,6 +368,42 @@ theorem plucker_klein (Z₁ Z₂ : Fin 4 → ℂ) :
       plucker Z₁ Z₂ 0 3 * plucker Z₁ Z₂ 1 2 = 0 := by
   unfold plucker
   ring
+
+/-- The Plücker relation for a skew `4 × 4` matrix with vanishing Pfaffian:
+`X_ab X_AB = X_aA X_bB − X_bA X_aB` for all indices. -/
+theorem plucker_identity (X : Fin 4 → Fin 4 → ℂ) (hskew : ∀ A B, X B A = -X A B)
+    (hPf : X 0 1 * X 2 3 - X 0 2 * X 1 3 + X 0 3 * X 1 2 = 0) (a b A B : Fin 4) :
+    X a b * X A B = X a A * X b B - X b A * X a B := by
+  have d : ∀ i, X i i = 0 := fun i => by have := hskew i i; linear_combination this / 2
+  have h10 := hskew 0 1
+  have h20 := hskew 0 2
+  have h30 := hskew 0 3
+  have h21 := hskew 1 2
+  have h31 := hskew 1 3
+  have h32 := hskew 2 3
+  have d0 := d 0
+  have d1 := d 1
+  have d2 := d 2
+  have d3 := d 3
+  fin_cases a <;> fin_cases b <;> fin_cases A <;> fin_cases B <;>
+    simp only [Fin.zero_eta, Fin.mk_one, Fin.reduceFinMk, h10, h20, h30, h21, h31, h32, d0, d1, d2, d3] <;>
+    first | linear_combination hPf | linear_combination -hPf | ring
+
+/-- **Every nonzero point of the Klein quadric is a decomposable bivector** (the converse of `plucker_klein`): a
+nonzero skew `X` with vanishing Pfaffian is `Z₁ ∧ Z₂`, with `Z₁` the row `a` divided by `X_ab` and `Z₂` the row `b`, for
+any nonzero entry `X_ab`. So the Klein quadric is the image of the Plücker map of 2-planes of `ℂ⁴`. -/
+theorem klein_decomposable (X : Fin 4 → Fin 4 → ℂ) (hskew : ∀ A B, X B A = -X A B)
+    (hPf : X 0 1 * X 2 3 - X 0 2 * X 1 3 + X 0 3 * X 1 2 = 0) (hX : X ≠ 0) :
+    ∃ Z₁ Z₂ : Fin 4 → ℂ, ∀ A B, X A B = plucker Z₁ Z₂ A B := by
+  obtain ⟨a, b, hab⟩ : ∃ a b, X a b ≠ 0 := by
+    by_contra h
+    push_neg at h
+    exact hX (funext fun a => funext fun b => h a b)
+  refine ⟨fun A => X a A / X a b, fun B => X b B, fun A B => ?_⟩
+  have key := plucker_identity X hskew hPf a b A B
+  unfold plucker
+  field_simp
+  linear_combination key
 
 /-- **The bi-twistor of a point** (Adamo (2.25)): for the twistor line of `x` spanned by `λ = (1, 0)` and `λ = (0, 1)`,
 `X²³ = 1` (the infinity twistor pairing `I_{AB} X^{AB} = ⟨λ₁λ₂⟩`, (2.29)) and `X⁰¹ = det x^{αα̇} = qC x / 2` (the entry

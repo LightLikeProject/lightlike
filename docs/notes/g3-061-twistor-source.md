@@ -35,7 +35,8 @@ T. Adamo, *Lectures on twistor theory*, arXiv:1712.02196:
 
 ## Not done
 
-* The converse of `plucker_klein` (every point of the Klein quadric is a decomposable bivector) and the identification of the compactification with the
-  Klein quadric as a variety (only the Plücker relation and the chart are formalized); the conformal structure on the compactification; Mathlib's
+* The identification of the compactification with the Klein quadric as a variety (proved: the Plücker relation `plucker_klein` and its converse
+  `klein_decomposable`, every nonzero point of the quadric is a decomposable bivector; the chart `exists_twistorLine_eq`); the conformal structure on
+  the compactification; Mathlib's
   `Module.Grassmannian` (quotient convention) is not used: we work with 2-dimensional submodules.
 * The conformal group SU(2, 2) / SL(4, ℂ) action (next row G3-064).
