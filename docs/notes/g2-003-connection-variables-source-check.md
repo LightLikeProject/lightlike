@@ -1,6 +1,7 @@
 # G2-003: connection and triad variables (source check)
 
-Lean files: `Lightlike/Canonical/Triad.lean`, `Lightlike/Canonical/SpinConnection.lean`.
+Lean files: `Lightlike/Canonical/Triad.lean`, `Lightlike/Canonical/SpinConnection.lean`, `Lightlike/Canonical/Tetrad.lean`,
+`Lightlike/Canonical/Holst.lean`.
 
 ## Sources read
 
@@ -22,3 +23,16 @@ Lean files: `Lightlike/Canonical/Triad.lean`, `Lightlike/Canonical/SpinConnectio
 | `gaussConstraint`: `G_i = ∂_a E^a_i + ε_ijk A^j_a E^a_k` | eq. (2.23), p. 17: `G_i = D_a P^a_i = ∂_a P^a_i + ε_ij^k A^j_a P^a_k` | Same up to the constant factor `kγ` (`E = kγ P`). |
 | `gauss_spinConn`: `∂_a E^a_i + ε_ijk Γ^j_a E^a_k = 0` | the compatibility of `Γ` with the triad (2.17), p. 16 | The statement is a consequence the source uses but does not number. |
 | `gaussK_eq_zero_iff`: the `K` part `ε_ijk K^j_a E^a_k` vanishes iff `K_ab = K_ba` | — | Supporting lemma; not stated in the sources read. |
+| `tetradConn`: `ω_μ = e (∂_μ e⁻¹ + Γ_μ e⁻¹)`, i.e. `ω_μ^I_J = e^I_ν ∇_μ e^ν_J` | Holst eq. (3), p. 2 (`A_α^{IJ} = e^{βI} ∇_α e_β^J`, the solution of the connection equation) | Same (`∇` from `Lightlike.christoffel g`). |
+| `gaugeCurv`: `F_μν = ∂_μ ω_ν − ∂_ν ω_μ + [ω_μ, ω_ν]` | Holst p. 1 (`F_αβ^{IJ}` the curvature of `A_α^{IJ}`); Ashtekar–Lewandowski eq. (2.2), p. 10 (`Ω := dω + ω ∧ ω`) | Same in components. |
+| `gaugeCurv_tetradConn`: `F(ω(e)) = e R e⁻¹` | Holst, text before eq. (4), p. 2 (with (3), `F` becomes the Riemann tensor) | Same. |
+| `holstDensity γ`: `½ det e · e^α_I e^β_J (F^{IJ} − (1/γ) ½ ε^{IJ}_{KL} F^{KL})` | Holst eq. (1), p. 1, with `α = β⁻¹` (p. 2) and `β = γ`; Ashtekar–Lewandowski eq. (2.6), p. 11 | Same with `α = 1/γ` and `16πG = 1`-type normalization `½` of Holst (1). |
+| `holstStar_tetradConn`: the dual term vanishes on `ω(e)` | Holst eq. (4), p. 2 (`= ε^{αβγδ} R_{αβγδ} = 0` since `R_{[αβγ]δ} = 0`) | Same; the Bianchi identity is `IsCoordMetric.bianchi_first`. |
+| `palatini_tetradConn`, `holstDensity_tetradConn`: on `ω(e)`, `holstDensity = ½ det e R(g)` | Holst, p. 2 ("(1) differ from the case α = 0 ... by at most a canonical transformation"); Ashtekar–Lewandowski p. 11 (the Holst term does not change the equations of motion) | Same content: on the solution of the connection equation the Holst action is the Palatini (Einstein–Hilbert) action. |
+
+## Trust checks
+
+* `spinConn_one`: the flat triad has zero spin connection; `gauss_abConn_antisymm_violates`: an antisymmetric `K`
+  violates the Gauss constraint.
+* `holstStar_rotation`: the Holst dual term of the constant connection `ω_0 = L₁₂`, `ω_1 = L₁₃` is `4` (so the vanishing
+  on `ω(e)` is not trivial).
