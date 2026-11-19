@@ -1455,6 +1455,7 @@ import Lightlike.FieldTheory.ZeroDim.GraphSplit
 import Lightlike.FieldTheory.ZeroDim.Graphs
 import Lightlike.FieldTheory.ZeroDim.MapsEGF
 import Lightlike.FieldTheory.ZeroDim.Quartic
+import Lightlike.FieldTheory.ZeroDim.QuarticComplex
 import Lightlike.FieldTheory.ZeroDim.Ties
 import Lightlike.GFT.Bubble
 import Lightlike.GFT.ColoredGraph

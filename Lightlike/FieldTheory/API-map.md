@@ -32,7 +32,9 @@ Every vertex of a vacuum graph lies in exactly one connected component; splittin
 
 The formal partition function is tied to the Gaussian integrals and to the formal integral: its double factorials are the moments `∫ xⁿ dγ` of the standard Gaussian measure, so each coefficient is `(∫ xⁿ dγ)/k! · [xⁿ] Vᵏ`, and Borinsky's formal integral with `a = 1` is the partition function read along `n = 2(K + m)`, `k = m`; the explicit bound of the quartic expansion gives the asymptotic expansion of the quartic integral, the error after `N + 1` terms being `o(g^N)` as `g → 0⁺` [27] {2} {6}.
 
-**Missing.** The explicit error bound of the quartic expansion is not stated in the sources read: Borinsky treats the integral formally, and Skinner states the asymptotic expansion (2.28) in the sense of (2.20) {6}, which the bound implies [27]. The formal integral is compared with Borinsky's Definition 3.1.1 and eq. (3.1.8) {2}, the graphs with Borinsky §2.1 and §2.3 {2}, the exponential formula with Theorem 2.4.1 {2}, and Wick's theorem with Tubaro–Zanella's Theorem 2.19 {3}, the Feynman expansion with Polyak's eq. (18) {4} (labelled contractions of a polynomial potential) and Proposition 2.17 {4} (graphs with `1/|Aut Γ|` for a general polynomial potential, with the `1/k!` normalisation); the Gaussian densities and their normalisation with Rasmussen–Williams's eq. (A.4) {5} and Tubaro–Zanella's Definition 2.1 {3}, and the Gaussian integration by parts and the moment recursion with Tubaro–Zanella's Proposition 5.5, eq. (22), and its proof {3}.
+For complex coupling, the quartic partition function `Z(λ) = ∫ e^{-λφ⁴ - φ²/2} dφ` is analytic in the half-plane `Re λ > 0`, and for `Re λ ≥ 0` its Taylor remainder after the terms up to `λ^N` is at most `√(2π) (4N + 3)!!/(N + 1)! |λ|^{N+1}`, from the Taylor bound `|e^{-z} - Σ_{m<M} (-z)^m/m!| ≤ |z|^M/M!` for `Re z ≥ 0`. So `Z` satisfies the hypotheses of Nevanlinna's theorem (Rivasseau–Wang, Theorem III.2 with `k = 1`) in every disk `C_R = {Re λ⁻¹ > 1/R}`, with the constants `A = 16 √(2π)` and `B = 32`; this is Rivasseau–Wang's Theorem IV.1 with `k = 2` up to Nevanlinna's theorem itself [28] {7}.
+
+**Missing.** The explicit error bound of the quartic expansion is not stated in the sources read: Borinsky treats the integral formally, and Skinner states the asymptotic expansion (2.28) in the sense of (2.20) {6}, which the bound implies [27]. The formal integral is compared with Borinsky's Definition 3.1.1 and eq. (3.1.8) {2}, the graphs with Borinsky §2.1 and §2.3 {2}, the exponential formula with Theorem 2.4.1 {2}, and Wick's theorem with Tubaro–Zanella's Theorem 2.19 {3}, the Feynman expansion with Polyak's eq. (18) {4} (labelled contractions of a polynomial potential) and Proposition 2.17 {4} (graphs with `1/|Aut Γ|` for a general polynomial potential, with the `1/k!` normalisation); the Gaussian densities and their normalisation with Rasmussen–Williams's eq. (A.4) {5} and Tubaro–Zanella's Definition 2.1 {3}, and the Gaussian integration by parts and the moment recursion with Tubaro–Zanella's Proposition 5.5, eq. (22), and its proof {3}. Nevanlinna's theorem, which turns [28] into the Borel summability of `Z` (Rivasseau–Wang, Theorem IV.1 with `k = 2`), is not formalised.
 
 ## Lean References
 
@@ -91,6 +93,9 @@ The formal partition function is tied to the Gaussian integrals and to the forma
 
 27. Lightlike/FieldTheory/ZeroDim/Ties.lean - `FieldTheory.dfact_eq_integral`, `FieldTheory.coeff_formalZ_eq_integral`,
    `FieldTheory.coeff_formalIntegral_eq_formalZ`, `FieldTheory.tendsto_quartic_div`
+28. Lightlike/FieldTheory/ZeroDim/QuarticComplex.lean - `FieldTheory.cexpNegRem`, `FieldTheory.norm_cexpNegRem_le`,
+   `FieldTheory.quarticZ`, `FieldTheory.quarticCoeff`, `FieldTheory.differentiableOn_quarticZ`,
+   `FieldTheory.norm_quarticZ_sub_le`, `FieldTheory.diskC`, `FieldTheory.quarticZ_nevanlinna`
 ## References
 
 1. Mathlib, `Mathlib/Probability/Distributions/Gaussian/Multivariate.lean` (`multivariateGaussian`, `stdGaussian`) and `Fernique.lean` (`IsGaussian.memLp_id`).
@@ -99,3 +104,4 @@ The formal partition function is tied to the Gaussian integrals and to the forma
 4. M. Polyak, Feynman diagrams for pedestrians and mathematicians, arXiv:math/0406251v1, §2.3 (Theorem 2.8, p. 5), §2.6 (eq. (18), p. 7) and §2.8 (Proposition 2.17, p. 9).
 5. C. E. Rasmussen, C. K. I. Williams, Gaussian Processes for Machine Learning, MIT Press (2006), Appendix A, §A.2, eq. (A.4), p. 200, and the sampling of `N(m, K)` as `m + L u` with `K = L Lᵀ`, p. 201.
 6. D. Skinner, Advanced Quantum Field Theory, lecture notes, University of Cambridge, Chapter 2, QFT in zero dimensions (www.damtp.cam.ac.uk/user/dbs26/AQFT/chap2.pdf), eq. (2.20), p. 17, and eqs. (2.26)-(2.28), pp. 19-20.
+7. V. Rivasseau, Z. Wang, How to resum Feynman graphs, arXiv:1003.1037, Theorem III.2 (Nevanlinna–Le Roy) and eqs. (III-34)-(III-35), p. 9; eq. (III-38), p. 9; Theorem IV.1, p. 17.
