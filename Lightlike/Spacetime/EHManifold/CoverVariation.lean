@@ -122,4 +122,76 @@ theorem hasDerivAt_ehAction_smulFun (h : SymBilinField 𝓘(ℝ, Fin n → ℝ) 
     (NondegMetric.integrableOn_of_continuousOn (g.perturb (h.smulFun ρ hρ) t) (x k) (hT k) (hT0 k)
       ((continuousOn_ehLagrangian (g.perturb (h.smulFun ρ hρ) t) Λ (x k)).mono (hT0 k)) (hAT k))).symm
 
+include hK hball hT hT0 hTball hA hAT hAd hAK in
+/-- **The first variation of the Einstein–Hilbert action for a perturbation with compact support**, given
+a cover of the support by small chart balls with a subordinate family of functions summing to `1`. -/
+theorem eh_first_variation_of_cover (h : SymBilinField 𝓘(ℝ, Fin n → ℝ) M)
+    (hsupp : ∀ p, p ∉ K → h.h p = 0) (ρ : ℕ → M → ℝ)
+    (hρ : ∀ i, ContMDiff 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ) ∞ (ρ i))
+    (hρ1 : ∀ p ∈ K, ∑ i ∈ Finset.range N, ρ i p = 1) (hρT : ∀ i, K ∩ tsupport (ρ i) ⊆ T i) :
+    HasDerivAt (fun t : ℝ => ehAction (g.perturb h t) Λ K)
+      (-∫ p in K, ehIntegrand g h Λ p ∂(NondegMetric.volumeMeasure g)) 0 := by
+  have hP := hasDerivAt_ehAction_pieces g hK Λ N x c φ hball T A hT hT0 hTball hA hAT hAd hAK h hsupp
+  have hzero : ∀ i p, p ∉ K → (h.smulFun (ρ i) (hρ i)).h p = 0 := fun i p hp =>
+    h.smulFun_eq_zero_of_field (ρ i) (hρ i) (hsupp p hp)
+  -- the chart components of `h` are the sum of those of the `ρ i h`
+  have hH : ∀ k y, h.coordCompR (x k) (φ k) y =
+      ∑ i ∈ Finset.range N, (h.smulFun (ρ i) (hρ i)).coordCompR (x k) (φ k) y := by
+    intro k y
+    show h.coordComp (x k) (ballRetract (φ k) y) =
+      ∑ i ∈ Finset.range N, (h.smulFun (ρ i) (hρ i)).coordComp (x k) (ballRetract (φ k) y)
+    simp only [SymBilinField.coordComp_smulFun]
+    rw [← Finset.sum_smul]
+    by_cases hp : (extChartAt 𝓘(ℝ, Fin n → ℝ) (x k)).symm (ballRetract (φ k) y) ∈ K
+    · rw [hρ1 _ hp, one_smul]
+    · have h0 : h.coordComp (x k) (ballRetract (φ k) y) = 0 := by
+        ext a b
+        simp only [SymBilinField.coordComp, hsupp _ hp, ContinuousLinearMap.zero_apply,
+          Matrix.zero_apply]
+      rw [h0, smul_zero]
+  have hA1 : ∀ k, pieceVar g h (x k) (φ k) Λ (T k) (A k) =
+      ∑ i ∈ Finset.range N, pieceVar g (h.smulFun (ρ i) (hρ i)) (x k) (φ k) Λ (T k) (A k) := fun k =>
+    pieceVar_sum g (x k) (φ k) (hball k) (Finset.range N) h (fun i => h.smulFun (ρ i) (hρ i)) (hH k) Λ
+      (hT k) (hT0 k) (A k)
+  have hB : ∀ i, ∑ k ∈ Finset.range N,
+        pieceVar g (h.smulFun (ρ i) (hρ i)) (x k) (φ k) Λ (T k) (A k) =
+      -∫ p in K ∩ tsupport (ρ i), ehIntegrand g (h.smulFun (ρ i) (hρ i)) Λ p
+        ∂(NondegMetric.volumeMeasure g) := fun i =>
+    (hasDerivAt_ehAction_pieces g hK Λ N x c φ hball T A hT hT0 hTball hA hAT hAd hAK
+      (h.smulFun (ρ i) (hρ i)) (hzero i)).unique
+    (hasDerivAt_ehAction_smulFun g hK Λ N x c φ hball T A hT hT0 hTball hA hAT hAd hAK h hsupp
+      (ρ i) (hρ i) i (hρT i))
+  have hC : ∀ i, ∫ p in K ∩ tsupport (ρ i), ehIntegrand g (h.smulFun (ρ i) (hρ i)) Λ p
+        ∂(NondegMetric.volumeMeasure g) =
+      ∫ p in K, ρ i p * ehIntegrand g h Λ p ∂(NondegMetric.volumeMeasure g) := by
+    intro i
+    rw [← setIntegral_eq_of_subset_of_forall_diff_eq_zero hK.measurableSet inter_subset_left
+      (fun p hp => ehIntegrand_eq_zero g (h.smulFun (ρ i) (hρ i)) Λ
+        (h.smulFun_eq_zero_of_fun (ρ i) (hρ i)
+          (image_eq_zero_of_notMem_tsupport fun hS => hp.2 ⟨hp.1, hS⟩)))]
+    exact setIntegral_congr_fun hK.measurableSet fun p _ => ehIntegrand_smulFun g h (ρ i) (hρ i) Λ p
+  have hint : ∀ i ∈ Finset.range N, IntegrableOn (fun p => ρ i p * ehIntegrand g h Λ p) K
+      (NondegMetric.volumeMeasure g) := by
+    intro i _
+    have h1 : IntegrableOn (fun p => ρ i p * ehIntegrand g h Λ p) (⋃ k ∈ Finset.range N, A k)
+        (NondegMetric.volumeMeasure g) :=
+      integrableOn_finset_iUnion.2 fun k _ =>
+        NondegMetric.integrableOn_of_continuousOn g (x k) (hT k) (hT0 k)
+          ((hρ i).continuous.continuousOn.mul ((continuousOn_ehIntegrand g h Λ (x k)).mono (hT0 k)))
+          (hAT k)
+    rwa [← hAK] at h1
+  have hD : ∑ i ∈ Finset.range N, ∫ p in K, ρ i p * ehIntegrand g h Λ p
+        ∂(NondegMetric.volumeMeasure g) =
+      ∫ p in K, ehIntegrand g h Λ p ∂(NondegMetric.volumeMeasure g) := by
+    rw [← integral_finsetSum _ hint]
+    refine setIntegral_congr_fun hK.measurableSet fun p hp => ?_
+    show ∑ i ∈ Finset.range N, ρ i p * ehIntegrand g h Λ p = ehIntegrand g h Λ p
+    rw [← Finset.sum_mul, hρ1 p hp, one_mul]
+  have hfinal : ∑ k ∈ Finset.range N, pieceVar g h (x k) (φ k) Λ (T k) (A k) =
+      -∫ p in K, ehIntegrand g h Λ p ∂(NondegMetric.volumeMeasure g) := by
+    rw [Finset.sum_congr rfl fun k _ => hA1 k, Finset.sum_comm, Finset.sum_congr rfl fun i _ => hB i,
+      Finset.sum_neg_distrib, Finset.sum_congr rfl fun i _ => hC i, hD]
+  rw [hfinal] at hP
+  exact hP
+
 end Lightlike
