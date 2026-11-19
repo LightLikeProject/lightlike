@@ -50,9 +50,13 @@ one of the induced representations, labelled by the orbit and an irreducible rep
 What stops it here, concretely:
 
 * the SNAG theorem (a strongly continuous unitary representation of `ℝ⁴` is `∫ e^{i p·a} dE(p)` for a
-  projection-valued measure `E` on `ℝ⁴`): the library has Stone's theorem for one-parameter groups and the spectral
-  theorem for one self-adjoint operator, not the joint version for `ℝ⁴`; above, `E` is constructed by hand for the
-  induced representations only;
+  projection-valued measure `E` on `ℝ⁴`; Freitag, Chapter V, §5, Theorem 5.1): the library has Stone's theorem
+  (`Lightlike/OperatorAlgebras/Spectral/Stone/`) and the spectral measure of one unbounded self-adjoint operator
+  (`Lightlike/OperatorAlgebras/Spectral/Unbounded/FunctionalCalculus.lean`, `spectralMeasure`). Missing: that the
+  spectral measures of the generators of commuting one-parameter groups commute; the product of four commuting
+  projection-valued measures on `ℝ⁴` (its extension from rectangles to Borel sets); and the formula
+  `T(a) = ∫ e^{i p·a} dE(p)` for that product. Above, `E` is constructed by hand for the induced representations
+  only;
 * Mackey's imprimitivity theorem (a system of imprimitivity based on a transitive orbit is induced from the little
   group): not in the library.
 
