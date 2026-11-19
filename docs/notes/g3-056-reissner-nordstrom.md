@@ -2,7 +2,7 @@
 
 Lean: `Lightlike/GR/ReissnerNordstrom.lean`, `Lightlike/Spacetime/MaxwellCoord.lean` (coordinate Maxwell equations), Regge's
 electromagnetic stress-energy `emT` (`Lightlike/Spacetime/EnergyConditions.lean`, branch regge/ge14-em) evaluated on the coordinate
-tangent space (`coordBil`, `emA_coord`, `emF2_coord`, `emT_coord`).
+tangent space (the library's `matForm`, `emA_coord`, `emF2_coord`, `emT_coord`).
 
 ## Source read (pdftotext of the arXiv PDF)
 
