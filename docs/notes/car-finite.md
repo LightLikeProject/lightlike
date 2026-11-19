@@ -25,4 +25,8 @@ space); Section 7.1, pp. 29-30 (creation and annihilation operators on the fermi
 | Corollary 2, p. 17: two irreducible representations over an even-dimensional `Y` are unitarily equivalent | `car_irreducible_unitarily_equivalent` | (representation) a representation over a `2n`-dimensional `Y` is the family `φᵢ = φ(yᵢ)` on an orthonormal basis `y₁, …, y₂ₙ` (the source's identification, p. 14), i.e. a representation over `ℝ²ⁿ`; (convention) for nonzero spaces, as in Theorem 10 |
 | Theorem 28, p. 29: the Fock representation is irreducible | `fock_irreducible`: a subspace of `Λ(ℂⁿ)` invariant under every `a*(eⱼ)` and `a(eⱼ*)` is `0` or `Λ(ℂⁿ)` (`FockInner`) | (weaker) for `Z = ℂⁿ` only, the finite-dimensional scope of this row; invariance under the field operators `φ(y) = a*(w) + a(w)` is the same as under all `a*(eⱼ)`, `a(eⱼ*)`, since `a(w) = (φ(w) + iφ(iw))/2` (p. 30); proof: `fockEquiv` carries the subspace to a closed subspace invariant under the Jordan-Wigner operators |
 
-Not stated (open): infinite-dimensional `Z` (Theorem 28 in general, the Fock space as a completion).
+Row text (gap list, G3-158): "CAR algebra, Fock space for fermions, Clifford/Jordan–Wigner". The row is not restricted to finite
+dimensions, and Dereziński states Theorem 28 for any Hilbert space `Z`, so `fock_irreducible` (for `Z = ℂⁿ`) is recorded as weaker.
+
+Not stated (open): infinite-dimensional `Z` (Theorem 28 in general, the Fock space as a completion); the CAR algebra as an abstract
+C*-algebra (in finite dimensions it is `M_{2ⁿ}(ℂ)` by Theorem 10, not formalized as such). The row stays partial.

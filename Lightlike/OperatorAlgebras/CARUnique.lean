@@ -442,7 +442,7 @@ def IsIrreducibleCAR {m : ℕ} (φ : Fin m → (E →L[ℂ] E)) : Prop :=
   ∀ W : Submodule ℂ E, IsClosed (W : Set E) → (∀ b, ∀ w ∈ W, φ b w ∈ W) → W = ⊥ ∨ W = ⊤
 
 /-- **The vacuum space** `K = ⋂ⱼ ker aⱼ`. -/
-def carVacuum {n : ℕ} (φ : Fin (2 * n) → (E →L[ℂ] E)) : Submodule ℂ E :=
+noncomputable def carVacuum {n : ℕ} (φ : Fin (2 * n) → (E →L[ℂ] E)) : Submodule ℂ E :=
   ⨅ j, LinearMap.ker ((carAnnihilation φ j : E →L[ℂ] E) : E →ₗ[ℂ] E)
 
 lemma mem_carVacuum {n : ℕ} {φ : Fin (2 * n) → (E →L[ℂ] E)} {v : E} :
