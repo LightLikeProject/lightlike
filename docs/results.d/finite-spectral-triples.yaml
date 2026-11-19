@@ -87,15 +87,15 @@
   since: unreleased
 
 - id: LL-XXXX-m
-  title: The signed multiplicity matrix of an orientable real finite spectral triple over a mixed algebra is symmetric and satisfies the sign conditions of Krajewski's Table 1
+  title: The signed multiplicity matrix of an orientable real finite spectral triple over a mixed algebra is symmetric, satisfies the sign conditions of Krajewski's Table 1, and gives the intersection form of minimal projections as in Table 1
   area: NCG
   file: Lightlike/NCG/TableOne.lean
-  decls: [Lightlike.NCG.IsOrientableA, Lightlike.NCG.Complexification.grading, Lightlike.NCG.Complexification.isOrientable, Lightlike.NCG.muSigned, Lightlike.NCG.muSigned_symm, Lightlike.NCG.table1_complex_complex, Lightlike.NCG.table1_complex_real, Lightlike.NCG.table1_complex_quat, Lightlike.NCG.table1_real_complex, Lightlike.NCG.table1_quat_complex]
+  decls: [Lightlike.NCG.IsOrientableA, Lightlike.NCG.Complexification.grading, Lightlike.NCG.Complexification.isOrientable, Lightlike.NCG.muSigned, Lightlike.NCG.muSigned_symm, Lightlike.NCG.table1_complex_complex, Lightlike.NCG.table1_complex_real, Lightlike.NCG.table1_complex_quat, Lightlike.NCG.table1_real_complex, Lightlike.NCG.table1_quat_complex, Lightlike.NCG.interForm, Lightlike.NCG.interForm_real_real, Lightlike.NCG.interForm_real_complex, Lightlike.NCG.interForm_real_quat, Lightlike.NCG.interForm_complex_real, Lightlike.NCG.interForm_complex_complex, Lightlike.NCG.interForm_complex_quat, Lightlike.NCG.interForm_quat_complex, Lightlike.NCG.interForm_quat_quat]
   status: proven
   tier: established
   source:
     refs:
       - {ref: krajewski-1998, location: "Section 3.3", check: "chirality"}
   review: kernel-checked
-  note: "Compared with Krajewski, arXiv:hep-th/9701081, Section 3.3, p. 14 and Table 1 (read): 'In the real case, it is still given by a symmetric matrix with entries in Z whose indices label irreducibles representations of A. However, it is no longer the intersection form and the signs of its entries satisfy additional requirements that are summarized ... in table 1': μ_{iαj} μ_{iᾱj} ≥ 0 and μ_{iαjβ} μ_{iᾱjβ̄} ≥ 0. Here μ_kl = Re(c_kl) r_kl on the complexified model of a mixed algebra ⊕ Mₙ(ℝ) × ⊕ Mₙ(ℂ) × ⊕ Mₙ(ℍ) with an orientable grading; the conditions are stated for both representations of a complex summand that occur. The relation of μ to the intersection form (the entries ∩ᵢⱼ of Table 1) is not covered."
+  note: "Compared with Krajewski, arXiv:hep-th/9701081, Section 3.3, p. 14 and Table 1 (read): 'In the real case, it is still given by a symmetric matrix with entries in Z whose indices label irreducibles representations of A. However, it is no longer the intersection form and the signs of its entries satisfy additional requirements that are summarized ... in table 1': μ_{iαj} μ_{iᾱj} ≥ 0 and μ_{iαjβ} μ_{iᾱjβ̄} ≥ 0. Here μ_kl = Re(c_kl) r_kl on the complexified model of a mixed algebra ⊕ Mₙ(ℝ) × ⊕ Mₙ(ℂ) × ⊕ Mₙ(ℍ) with an orientable grading; the conditions are stated for both representations of a complex summand that occur. The intersection form ∩ᵢⱼ = Tr(χ π(pᵢ) J π(pⱼ) J⁻¹) of minimal projections pᵢ, pⱼ is every entry of Table 1: μ, Σ_α μ, 2μ (real against real, complex, quaternionic), Σ_αβ μ, 2 Σ_α μ (complex against complex, quaternionic) and 4μ (quaternionic against quaternionic), where μ_kl = c_kl r_kl with c_kl the scalar of the chirality on the vertex."
   since: unreleased

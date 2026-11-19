@@ -161,7 +161,7 @@ Where each Krajewski clause stands:
   `μ_{iαj} μ_{iᾱj} ≥ 0` (complex `i` against real or quaternionic `j`, and transposed) and `μ_{iαjβ} μ_{iᾱjβ̄} ≥ 0`
   (proved; on a quaternionic block `ι(q)₁₁ = conj ι(q)₀₀` and the scalar does not depend on the corner).
 * §3.3, p. 14, Table 1, the intersection form `∩ᵢⱼ = Tr(χ π(pᵢ) J π(pⱼ) J⁻¹)` (the entries `μ`, `∑_α μ`, `2μ`, `4μ`):
-  open; it is the trace of `χ π(pᵢ) J π(pⱼ) J` over the model, `∑_kl c_kl r_kl rk(φ(pᵢ)_k) rk(φ(pⱼ)_l)`, with rank `1`
+  proved (`trace_grading_projC`, `trace_grading_sum`, `trace_grading_of_phi`, `interForm_*`); it is the trace of `χ π(pᵢ) J π(pⱼ) J` over the model, `∑_kl c_kl r_kl rk(φ(pᵢ)_k) rk(φ(pⱼ)_l)`, with rank `1`
   for a minimal projection of a real or complex summand and `2` for a quaternionic one.
 
 ## FST4: the Dirac operator `D = Δ + J Δ J` (Krajewski §3.4, p. 15)

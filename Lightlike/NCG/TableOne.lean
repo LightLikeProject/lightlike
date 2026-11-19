@@ -23,8 +23,9 @@ vertex, and the signed multiplicities `μ_kl = c_kl r_kl` satisfy Table 1's sign
 * `table1_complex_complex`, `table1_complex_real`, `table1_complex_quat`, `muSigned_symm`, `table1_real_complex`,
   `table1_quat_complex`: Table 1's sign conditions;
 * `trace_grading_of_phi`, `pR`, `phiMixed_pR`, `pH`, `eH`, `phiH_pH`, `phiMixed_pH`, `interForm`,
-  `interForm_real_real`, `interForm_quat_quat`, `interForm_real_quat`: the intersection form `Tr(γ π(p) J π(q) J)` of
-  minimal projections, `μ`, `4μ` and `2μ` (Table 1).
+  `interForm_real_real`, `interForm_quat_quat`, `interForm_real_quat`, `pC`, `BlocksOf`, `phiMixed_pC`,
+  `interForm_complex_real`, `interForm_complex_complex`, `interForm_complex_quat`, `interForm_real_complex`,
+  `interForm_quat_complex`: the intersection form `Tr(γ π(p) J π(q) J)` of minimal projections, every entry of Table 1.
 -/
 
 namespace Lightlike.NCG
@@ -280,6 +281,136 @@ theorem interForm_real_quat (hG : IsOrientableA R' G x y) (i : ι₁) (j : ι₃
     (fun _ : Fin 2 => (Sum.inr (Sum.inr j) : ι₁ ⊕ (BlocksP (psi₂ T') ⊕ ι₃))) (eH j)
     (by rw [Fintype.sum_unique]; exact phiMixed_pR i) (phiMixed_pH j)
   rw [h, Fintype.sum_unique]
+  simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
+  push_cast
+  ring
+
+/-- The minimal projection `E^i_{00}` of a complex summand. -/
+def pC (i : ι₂) : MatSumMixed n₁ n₂ n₃ := (0, Pi.single i (Matrix.single 0 0 1), 0)
+
+/-- The representations of the complex summand `i` that occur. -/
+abbrev BlocksOf (i : ι₂) := {p : BlocksP (psi₂ T') // p.1.1 = i}
+
+/-- **`φ(pC i)` is the sum of `E₀₀` over the representations of `i` that occur.** -/
+lemma phiMixed_pC (i : ι₂) :
+    phiMixed T' (pC i) = ∑ p : BlocksOf (T' := T') i,
+      unit (Sum.elim n₁ (dMixed T')) (Sum.inr (Sum.inl p.1)) 0 0 := by
+  funext q
+  rw [Finset.sum_apply]
+  rcases q with k | p' | j
+  · show phiR (0 : MatSumR n₁) k = _
+    simp only [unit]
+    refine Eq.trans ?_ (Finset.sum_eq_zero fun t _ => Pi.single_eq_of_ne
+      (show (Sum.inl k : ι₁ ⊕ (BlocksP (psi₂ T') ⊕ ι₃)) ≠ Sum.inr (Sum.inl t.1) from Sum.inl_ne_inr) _).symm
+    rw [map_zero]
+    rfl
+  · show phiPAll (Pi.single i (Matrix.single 0 0 1) : MatSum n₂) p'.1 = _
+    simp only [unit]
+    by_cases hp : p'.1.1 = i
+    · rw [Finset.sum_eq_single ⟨p', hp⟩ (fun t _ ht => Pi.single_eq_of_ne
+        (show (Sum.inr (Sum.inl p') : ι₁ ⊕ (BlocksP (psi₂ T') ⊕ ι₃)) ≠ Sum.inr (Sum.inl t.1) from
+          fun h => ht (Subtype.ext (Sum.inl_injective (Sum.inr_injective h)).symm)) _)
+        (fun h => absurd (Finset.mem_univ _) h)]
+      refine Eq.trans ?_ (Pi.single_eq_same (M := fun q => Matrix (Fin (Sum.elim n₁ (dMixed T') q))
+        (Fin (Sum.elim n₁ (dMixed T') q)) ℂ) (Sum.inr (Sum.inl p')) (Matrix.single 0 0 1)).symm
+      obtain ⟨⟨i', b⟩, hb⟩ := p'
+      simp only at hp
+      subst hp
+      show phiPAll (Pi.single i' (Matrix.single 0 0 1) : MatSum n₂) (i', b) = Matrix.single (0 : Fin (n₂ i')) 0 1
+      by_cases hb' : b = true
+      · simp [phiPAll, hb']
+      · ext a c
+        simp [phiPAll, hb', Matrix.single_apply]
+    · refine Eq.trans ?_ (Finset.sum_eq_zero fun t _ => Pi.single_eq_of_ne
+        (show (Sum.inr (Sum.inl p') : ι₁ ⊕ (BlocksP (psi₂ T') ⊕ ι₃)) ≠ Sum.inr (Sum.inl t.1) from
+          fun h => hp ((congrArg (fun z : BlocksP (psi₂ T') => z.1.1) (Sum.inl_injective (Sum.inr_injective h))).trans t.2)) _).symm
+      show phiPAll (Pi.single i (Matrix.single 0 0 1) : MatSum n₂) p'.1 = (0 : Matrix (Fin (n₂ p'.1.1)) (Fin (n₂ p'.1.1)) ℂ)
+      rw [phiPAll, Pi.single_eq_of_ne hp]
+      split_ifs <;> simp
+  · show phiH (0 : MatSumH n₃) j = _
+    simp only [unit]
+    refine Eq.trans ?_ (Finset.sum_eq_zero fun t _ => Pi.single_eq_of_ne
+      (show (Sum.inr (Sum.inr j) : ι₁ ⊕ (BlocksP (psi₂ T') ⊕ ι₃)) ≠ Sum.inr (Sum.inl t.1) from
+        fun h => Sum.inr_ne_inl (Sum.inr_injective h)) _).symm
+    rw [map_zero]
+    rfl
+
+/-- **Table 1, complex against real** (Krajewski, Section 3.3, p. 14: `∩ᵢⱼ = ∑_α μ_{iαj}`). -/
+theorem interForm_complex_real (hG : IsOrientableA R' G x y) (i : ι₂) (j : ι₁) :
+    interForm R' G (pC i) (pR j) = ∑ p : BlocksOf (T' := T') i,
+      chiScalar (Xm (T' := T') x) (Xm (T' := T') y) (.inr (.inl p.1)) (.inl j) *
+        (multiplicity (Rm R') (.inr (.inl p.1)) (.inl j) : ℂ) := by
+  have h : interForm R' G (pC i) (pR j) = ∑ p : BlocksOf (T' := T') i, ∑ _u : Unit,
+      chiScalar (Xm (T' := T') x) (Xm (T' := T') y) (.inr (.inl p.1)) (.inl j) *
+        (multiplicity (Rm R') (.inr (.inl p.1)) (.inl j) : ℂ) :=
+    trace_grading_of_phi R' (mixedComplexification T') G hG (pC i) (pR j)
+      (fun p : BlocksOf (T' := T') i => (Sum.inr (Sum.inl p.1) : ι₁ ⊕ (BlocksP (psi₂ T') ⊕ ι₃)))
+      (fun p => (0 : Fin (n₂ p.1.1.1)))
+      (fun _ : Unit => (Sum.inl j : ι₁ ⊕ (BlocksP (psi₂ T') ⊕ ι₃))) (fun _ => (0 : Fin (n₁ j)))
+      (phiMixed_pC i) (by rw [Fintype.sum_unique]; exact phiMixed_pR j)
+  rw [h]
+  simp only [Fintype.sum_unique]
+
+/-- **Table 1, complex against complex** (Krajewski, Section 3.3, p. 14: `∩ᵢⱼ = ∑_{αβ} μ_{iαjβ}`). -/
+theorem interForm_complex_complex (hG : IsOrientableA R' G x y) (i j : ι₂) :
+    interForm R' G (pC i) (pC j) = ∑ p : BlocksOf (T' := T') i, ∑ q : BlocksOf (T' := T') j,
+      chiScalar (Xm (T' := T') x) (Xm (T' := T') y) (.inr (.inl p.1)) (.inr (.inl q.1)) *
+        (multiplicity (Rm R') (.inr (.inl p.1)) (.inr (.inl q.1)) : ℂ) :=
+  trace_grading_of_phi R' (mixedComplexification T') G hG (pC i) (pC j)
+    (fun p : BlocksOf (T' := T') i => (Sum.inr (Sum.inl p.1) : ι₁ ⊕ (BlocksP (psi₂ T') ⊕ ι₃)))
+    (fun p => (0 : Fin (n₂ p.1.1.1)))
+    (fun q : BlocksOf (T' := T') j => (Sum.inr (Sum.inl q.1) : ι₁ ⊕ (BlocksP (psi₂ T') ⊕ ι₃)))
+    (fun q => (0 : Fin (n₂ q.1.1.1)))
+    (phiMixed_pC i) (phiMixed_pC j)
+
+/-- **Table 1, complex against quaternionic** (Krajewski, Section 3.3, p. 14: `∩ᵢⱼ = 2 ∑_α μ_{iαj}`). -/
+theorem interForm_complex_quat (hG : IsOrientableA R' G x y) (i : ι₂) (j : ι₃) :
+    interForm R' G (pC i) (pH j) = 2 * ∑ p : BlocksOf (T' := T') i,
+      chiScalar (Xm (T' := T') x) (Xm (T' := T') y) (.inr (.inl p.1)) (.inr (.inr j)) *
+        (multiplicity (Rm R') (.inr (.inl p.1)) (.inr (.inr j)) : ℂ) := by
+  have h : interForm R' G (pC i) (pH j) = ∑ p : BlocksOf (T' := T') i, ∑ _u : Fin 2,
+      chiScalar (Xm (T' := T') x) (Xm (T' := T') y) (.inr (.inl p.1)) (.inr (.inr j)) *
+        (multiplicity (Rm R') (.inr (.inl p.1)) (.inr (.inr j)) : ℂ) :=
+    trace_grading_of_phi R' (mixedComplexification T') G hG (pC i) (pH j)
+      (fun p : BlocksOf (T' := T') i => (Sum.inr (Sum.inl p.1) : ι₁ ⊕ (BlocksP (psi₂ T') ⊕ ι₃)))
+      (fun p => (0 : Fin (n₂ p.1.1.1)))
+      (fun _ : Fin 2 => (Sum.inr (Sum.inr j) : ι₁ ⊕ (BlocksP (psi₂ T') ⊕ ι₃))) (eH j)
+      (phiMixed_pC i) (phiMixed_pH j)
+  rw [h, Finset.mul_sum]
+  refine Finset.sum_congr rfl fun p _ => ?_
+  simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
+  push_cast
+  ring
+
+/-- **Table 1, real against complex** (Krajewski, Section 3.3, p. 14: `∩ᵢⱼ = ∑_α μ_{ijα}`). -/
+theorem interForm_real_complex (hG : IsOrientableA R' G x y) (i : ι₁) (j : ι₂) :
+    interForm R' G (pR i) (pC j) = ∑ q : BlocksOf (T' := T') j,
+      chiScalar (Xm (T' := T') x) (Xm (T' := T') y) (.inl i) (.inr (.inl q.1)) *
+        (multiplicity (Rm R') (.inl i) (.inr (.inl q.1)) : ℂ) := by
+  have h : interForm R' G (pR i) (pC j) = ∑ _t : Unit, ∑ q : BlocksOf (T' := T') j,
+      chiScalar (Xm (T' := T') x) (Xm (T' := T') y) (.inl i) (.inr (.inl q.1)) *
+        (multiplicity (Rm R') (.inl i) (.inr (.inl q.1)) : ℂ) :=
+    trace_grading_of_phi R' (mixedComplexification T') G hG (pR i) (pC j)
+      (fun _ : Unit => (Sum.inl i : ι₁ ⊕ (BlocksP (psi₂ T') ⊕ ι₃))) (fun _ => (0 : Fin (n₁ i)))
+      (fun q : BlocksOf (T' := T') j => (Sum.inr (Sum.inl q.1) : ι₁ ⊕ (BlocksP (psi₂ T') ⊕ ι₃)))
+      (fun q => (0 : Fin (n₂ q.1.1.1)))
+      (by rw [Fintype.sum_unique]; exact phiMixed_pR i) (phiMixed_pC j)
+  rw [h, Fintype.sum_unique]
+
+/-- **Table 1, quaternionic against complex** (Krajewski, Section 3.3, p. 14: `∩ᵢⱼ = 2 ∑_α μ_{ijα}`). -/
+theorem interForm_quat_complex (hG : IsOrientableA R' G x y) (i : ι₃) (j : ι₂) :
+    interForm R' G (pH i) (pC j) = 2 * ∑ q : BlocksOf (T' := T') j,
+      chiScalar (Xm (T' := T') x) (Xm (T' := T') y) (.inr (.inr i)) (.inr (.inl q.1)) *
+        (multiplicity (Rm R') (.inr (.inr i)) (.inr (.inl q.1)) : ℂ) := by
+  have h : interForm R' G (pH i) (pC j) = ∑ _t : Fin 2, ∑ q : BlocksOf (T' := T') j,
+      chiScalar (Xm (T' := T') x) (Xm (T' := T') y) (.inr (.inr i)) (.inr (.inl q.1)) *
+        (multiplicity (Rm R') (.inr (.inr i)) (.inr (.inl q.1)) : ℂ) :=
+    trace_grading_of_phi R' (mixedComplexification T') G hG (pH i) (pC j)
+      (fun _ : Fin 2 => (Sum.inr (Sum.inr i) : ι₁ ⊕ (BlocksP (psi₂ T') ⊕ ι₃))) (eH i)
+      (fun q : BlocksOf (T' := T') j => (Sum.inr (Sum.inl q.1) : ι₁ ⊕ (BlocksP (psi₂ T') ⊕ ι₃)))
+      (fun q => (0 : Fin (n₂ q.1.1.1)))
+      (phiMixed_pH i) (phiMixed_pC j)
+  rw [h]
   simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
   push_cast
   ring

@@ -84,7 +84,7 @@ A grading of a real triple is a grading of its complexification, and an orientab
 multiplicities `μ_kl = c_kl r_kl` of the complexified model are symmetric, and satisfy the sign conditions of
 Krajewski's Table 1: `μ_{iαj} μ_{iᾱj} ≥ 0` for a complex summand `i` against a real or quaternionic `j`, and
 `μ_{iαjβ} μ_{iᾱjβ̄} ≥ 0` for two complex summands; the intersection form `Tr(γ π(p) J π(q) J)` of minimal projections
-is `μ`, `2μ` and `4μ` between real and quaternionic summands {1} [26].
+is every entry of Table 1: `μ`, `∑_α μ`, `2μ`, `∑_{αβ} μ`, `2 ∑_α μ` and `4μ` {1} [26].
 
 ## Lean References
 
@@ -177,7 +177,9 @@ is `μ`, `2μ` and `4μ` between real and quaternionic summands {1} [26].
     `NCG.exists_ne_zero_of_multiplicity`, `NCG.muSigned_mul_nonneg_of`, `NCG.idxH_zero`, `NCG.table1_complex_complex`,
     `NCG.table1_complex_real`, `NCG.table1_complex_quat`, `NCG.muSigned_symm`, `NCG.table1_real_complex`,
     `NCG.table1_quat_complex`, `NCG.trace_grading_of_phi`, `NCG.pR`, `NCG.phiMixed_pR`, `NCG.pH`, `NCG.eH`, `NCG.phiH_pH`,
-    `NCG.phiMixed_pH`, `NCG.interForm`, `NCG.interForm_real_real`, `NCG.interForm_quat_quat`, `NCG.interForm_real_quat`
+    `NCG.phiMixed_pH`, `NCG.interForm`, `NCG.interForm_real_real`, `NCG.interForm_quat_quat`, `NCG.interForm_real_quat`,
+    `NCG.pC`, `NCG.BlocksOf`, `NCG.phiMixed_pC`, `NCG.interForm_complex_real`, `NCG.interForm_complex_complex`,
+    `NCG.interForm_complex_quat`, `NCG.interForm_real_complex`, `NCG.interForm_quat_complex`
 
 ## References
 
