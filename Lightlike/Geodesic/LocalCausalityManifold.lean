@@ -19,7 +19,9 @@ inside `O`.
   compact interval.
 * `IsTimeBall.mono`, `IsTimeBall.exists_future`: shrinking a time ball makes `N` future directed
   for `T` when `e` is.
-* `IsTimeBall.causal_cone_of_isFutureCausalCurve`: the bridge.
+* `IsTimeBall.coord_of_curve`: a curve of `↥U` in the time ball, in normal coordinates.
+* `IsTimeBall.causal_cone_of_isFutureCausalCurve`, `IsTimeBall.chron_cone_of_isFutureTimelikeCurve`:
+  the `J⁺` and `I⁺` lines of (2.4.7), "⇒", for the curves of `↥U`.
 
 ## References
 
@@ -131,18 +133,18 @@ theorem exists_future (hL : IsLorentzianCoordMetric g U)
   exact this
 
 set_option backward.isDefEq.respectTransparency false in
-/-- **Local causality for the causal curves of `↥U`** (Chruściel, Proposition 2.4.5, the `J⁺(p; O)`
-line of (2.4.7), "⇒"). Let `T` be a time orientation of `openMetric U g hL`, and let the field `N`
-of a time ball at `p` be future directed for `T`. A future causal curve `γ` of `↥U` on `[a, b]`
-from `p` which stays in the time ball ends at a point `q` with `σ_p(q) = g_p(v, v) ≤ 0` and
-`x⁰(q) = -g_p(e, v) ≥ 0`, `v = φ⁻¹ q`. -/
-theorem causal_cone_of_isFutureCausalCurve (hL : IsLorentzianCoordMetric g U)
-    (T : Causal.TimeOrientation (openMetric U g hL)) (h : IsTimeBall g U p ρ φ e r N)
-    (hTN : ∀ x : U, ∀ v ∈ ball (0 : Fin n → ℝ) r, x.1 = φ v → matForm (g x.1) (N v) (T.X x) < 0)
-    {γ : ℝ → U} {a b : ℝ} (hab : a ≤ b) (hγ : Causal.IsFutureCausalCurve T γ (Icc a b))
-    (ha : (γ a).1 = p) (hin : ∀ t ∈ Icc a b, (γ t).1 ∈ φ '' ball (0 : Fin n → ℝ) r) :
-    pairing g p (φ.symm (γ b).1) (φ.symm (γ b).1) ≤ 0 ∧ 0 ≤ -pairing g p e (φ.symm (γ b).1) := by
-  -- the curve in coordinates
+/-- **A curve of `↥U` in normal coordinates.** A curve of `↥U` on `[a, b]` with velocity in `P`,
+from `p` and inside a time ball, is in normal coordinates `v = φ⁻¹ ∘ γ` a Lipschitz curve in the
+ball from `0`, with `φ (v t) = γ t`, whose velocity `v'` satisfies `P (γ t) (Dφ(v t) v')` almost
+everywhere. -/
+theorem coord_of_curve (h : IsTimeBall g U p ρ φ e r N) {P : ∀ x : U, TangentSpace 𝓘(ℝ, Fin n → ℝ) x → Prop}
+    {γ : ℝ → U} {a b : ℝ} (hγ : Causal.IsCurveWith P γ (Icc a b)) (ha : (γ a).1 = p)
+    (hin : ∀ t ∈ Icc a b, (γ t).1 ∈ φ '' ball (0 : Fin n → ℝ) r) :
+    (∃ K, LipschitzOnWith K (fun t => φ.symm (γ t).1) (Icc a b)) ∧
+      (∀ t ∈ Icc a b, φ.symm (γ t).1 ∈ ball (0 : Fin n → ℝ) r ∧ φ (φ.symm (γ t).1) = (γ t).1) ∧
+      φ.symm (γ a).1 = 0 ∧
+      ∀ᵐ t, t ∈ Ioo a b → ∃ v' : Fin n → ℝ, HasDerivAt (fun t => φ.symm (γ t).1) v' t ∧
+        P (γ t) (fderiv ℝ φ (φ.symm (γ t).1) v') := by
   set c : ℝ → Fin n → ℝ := fun t => (γ t).1 with hcdef
   set v : ℝ → Fin n → ℝ := fun t => φ.symm (c t) with hvdef
   have hsrc0 : ∀ q : U, q ∈ (extChartAt 𝓘(ℝ, Fin n → ℝ) (γ a)).source := fun q => by
@@ -164,45 +166,84 @@ theorem causal_cone_of_isFutureCausalCurve (hL : IsLorentzianCoordMetric g U)
     have h0 : (0 : Fin n → ℝ) ∈ φ.source := h.mem_source (mem_ball_self h.pos)
     simp only [hvdef, hcdef, ha, ← h.chart.map_zero]
     exact φ.left_inv h0
-  -- Lipschitz in coordinates
-  obtain ⟨K, hcK⟩ := Causal.exists_lipschitzOnWith_chart_comp hγ.lipschitz (γ a) fun t _ => hsrc0 (γ t)
+  obtain ⟨K, hcK⟩ := Causal.exists_lipschitzOnWith_chart_comp hγ.lipschitz (γ a)
+    fun t _ => hsrc0 (γ t)
   rw [hchart] at hcK
   obtain ⟨K', hvK⟩ := exists_lipschitzOnWith_comp_of_contDiffOn φ.open_target
     (h.chart.contDiffOn_symm.of_le (by simp)) hcK hctgt
-  have hvK' : LipschitzOnWith K' v (Icc a b) := hvK
-  -- the velocity in coordinates
+  refine ⟨⟨K', hvK⟩, hvmem, hv0, ?_⟩
   have hvel := Causal.ae_hasDerivAt_chart (γ a) hγ fun t _ => hsrc0 (γ t)
   rw [hchart] at hvel
-  refine h.causal_cone hL hab hvK' (fun t ht => (hvmem t ht).1) hv0 ?_
   filter_upwards [hvel] with t ht hmt
   obtain ⟨u₀, hu, hcu⟩ := ht hmt
   obtain ⟨u, rfl⟩ : ∃ u : Fin n → ℝ, u = u₀ := ⟨u₀, rfl⟩
-  have htI := Ioo_subset_Icc_self hmt
   have hbase : γ t ∈ (Causal.tTriv 𝓘(ℝ, Fin n → ℝ) U (γ a)).baseSet := by
-    simp [TopologicalSpace.Opens.chartAt_eq, chartAt_self_eq, OpenPartialHomeomorph.subtypeRestr_source]
+    simp [TopologicalSpace.Opens.chartAt_eq, chartAt_self_eq,
+      OpenPartialHomeomorph.subtypeRestr_source]
   have htriv : ((Causal.tTriv 𝓘(ℝ, Fin n → ℝ) U (γ a)) ⟨γ t, u⟩).2 = u := by
     rw [← Trivialization.continuousLinearMapAt_apply_of_mem (R := ℝ) _ hbase,
       opens_continuousLinearMapAt]
     rfl
   rw [htriv] at hcu
-  -- the chain rule through `φ⁻¹`
-  have hvt := hvmem t htI
+  have hvt := hvmem t (Ioo_subset_Icc_self hmt)
   obtain ⟨D, hD, hDφ, -⟩ := h.exists_fderiv_symm hvt.1
   rw [hvt.2] at hD
-  have hderiv : HasDerivAt v (D u) t := hD.comp_hasDerivAt t hcu
-  have hX : fderiv ℝ φ (v t) (D u) = u := hDφ u
-  refine ⟨D u, hderiv, ?_, ?_⟩
-  · rw [hX, hvt.2, pairing_eq_matForm]; exact hu.2.1
-  · rw [hX, hvt.2, pairing_eq_matForm]
-    have hy : c t ∈ (U : Set (Fin n → ℝ)) := (γ t).2
-    have hLf := isLorentzianForm_matForm hL hy
-    have hNN : matForm (g (c t)) (N (v t)) (N (v t)) < 0 := by
-      rw [← pairing_eq_matForm, ← hvt.2]; exact h.timelike _ hvt.1
-    have hXX : matForm (g (c t)) (T.X (γ t)) (T.X (γ t)) < 0 := T.timelike (γ t)
-    have hNX : matForm (g (c t)) (N (v t)) (T.X (γ t)) < 0 := hTN (γ t) (v t) hvt.1 hvt.2.symm
-    have key := hLf.neg_of_causal_timelike hXX hu.2.1 hNN hu.2.2 hNX
-    rw [← pairing_eq_matForm, pairing_comm hL.1 hy, pairing_eq_matForm]
-    exact key
+  refine ⟨D u, hD.comp_hasDerivAt t hcu, ?_⟩
+  show P (γ t) (fderiv ℝ φ (v t) (D u))
+  rw [hDφ u]
+  exact hu
+
+/-- A future directed vector for `T` pairs negatively with the field `N` of the time ball. -/
+lemma pairing_N_neg (hL : IsLorentzianCoordMetric g U) (T : Causal.TimeOrientation (openMetric U g hL))
+    (h : IsTimeBall g U p ρ φ e r N)
+    (hTN : ∀ x : U, ∀ v ∈ ball (0 : Fin n → ℝ) r, x.1 = φ v → matForm (g x.1) (N v) (T.X x) < 0)
+    {x : U} {v : Fin n → ℝ} (hv : v ∈ ball (0 : Fin n → ℝ) r) (hxv : φ v = x.1) {u : Fin n → ℝ}
+    (hu : matForm (g x.1) u u ≤ 0) (hux : matForm (g x.1) u (T.X x) < 0) :
+    pairing g (φ v) (N v) u < 0 := by
+  have hy : x.1 ∈ (U : Set (Fin n → ℝ)) := x.2
+  have hLf := isLorentzianForm_matForm hL hy
+  have hNN : matForm (g x.1) (N v) (N v) < 0 := by
+    rw [← pairing_eq_matForm, ← hxv]; exact h.timelike _ hv
+  have hNX := hTN x v hv hxv.symm
+  have key := hLf.neg_of_causal_timelike (T.timelike x) hu hNN hux hNX
+  rw [hxv, pairing_comm hL.1 hy, pairing_eq_matForm]
+  exact key
+
+/-- **Local causality for the causal curves of `↥U`** (Chruściel, Proposition 2.4.5, the `J⁺(p; O)`
+line of (2.4.7), "⇒"). Let `T` be a time orientation of `openMetric U g hL`, and let the field `N`
+of a time ball at `p` be future directed for `T`. A future causal curve `γ` of `↥U` on `[a, b]`
+from `p` which stays in the time ball ends at a point `q` with `σ_p(q) = g_p(v, v) ≤ 0` and
+`x⁰(q) = -g_p(e, v) ≥ 0`, `v = φ⁻¹ q`. -/
+theorem causal_cone_of_isFutureCausalCurve (hL : IsLorentzianCoordMetric g U)
+    (T : Causal.TimeOrientation (openMetric U g hL)) (h : IsTimeBall g U p ρ φ e r N)
+    (hTN : ∀ x : U, ∀ v ∈ ball (0 : Fin n → ℝ) r, x.1 = φ v → matForm (g x.1) (N v) (T.X x) < 0)
+    {γ : ℝ → U} {a b : ℝ} (hab : a ≤ b) (hγ : Causal.IsFutureCausalCurve T γ (Icc a b))
+    (ha : (γ a).1 = p) (hin : ∀ t ∈ Icc a b, (γ t).1 ∈ φ '' ball (0 : Fin n → ℝ) r) :
+    pairing g p (φ.symm (γ b).1) (φ.symm (γ b).1) ≤ 0 ∧ 0 ≤ -pairing g p e (φ.symm (γ b).1) := by
+  obtain ⟨⟨K, hK⟩, hmem, h0, hd⟩ := h.coord_of_curve hγ ha hin
+  refine h.causal_cone hL hab hK (fun t ht => (hmem t ht).1) h0 ?_
+  filter_upwards [hd] with t ht hmt
+  obtain ⟨v', hv', hu⟩ := ht hmt
+  have hvt := hmem t (Ioo_subset_Icc_self hmt)
+  refine ⟨v', hv', ?_, h.pairing_N_neg hL T hTN hvt.1 hvt.2 hu.2.1 hu.2.2⟩
+  rw [hvt.2, pairing_eq_matForm]; exact hu.2.1
+
+/-- **Local causality for the timelike curves of `↥U`** (Chruściel, Proposition 2.4.5, the
+`I⁺(p; O)` line of (2.4.7), "⇒"): with the hypotheses of `causal_cone_of_isFutureCausalCurve`, a
+future timelike curve on `[a, b]`, `a < b`, ends at a point with `σ_p < 0` and `x⁰ > 0`. -/
+theorem chron_cone_of_isFutureTimelikeCurve (hL : IsLorentzianCoordMetric g U)
+    (T : Causal.TimeOrientation (openMetric U g hL)) (h : IsTimeBall g U p ρ φ e r N)
+    (hTN : ∀ x : U, ∀ v ∈ ball (0 : Fin n → ℝ) r, x.1 = φ v → matForm (g x.1) (N v) (T.X x) < 0)
+    {γ : ℝ → U} {a b : ℝ} (hab : a < b) (hγ : Causal.IsFutureTimelikeCurve T γ (Icc a b))
+    (ha : (γ a).1 = p) (hin : ∀ t ∈ Icc a b, (γ t).1 ∈ φ '' ball (0 : Fin n → ℝ) r) :
+    pairing g p (φ.symm (γ b).1) (φ.symm (γ b).1) < 0 ∧ 0 < -pairing g p e (φ.symm (γ b).1) := by
+  obtain ⟨⟨K, hK⟩, hmem, h0, hd⟩ := h.coord_of_curve hγ.1 ha hin
+  refine h.chron_cone hL hab hK (fun t ht => (hmem t ht).1) h0 ?_
+  filter_upwards [hd] with t ht hmt
+  obtain ⟨v', hv', hu⟩ := ht hmt
+  have hvt := hmem t (Ioo_subset_Icc_self hmt)
+  refine ⟨v', hv', ?_, h.pairing_N_neg hL T hTN hvt.1 hvt.2 hu.1.le hu.2⟩
+  rw [hvt.2, pairing_eq_matForm]; exact hu.1
 
 end IsTimeBall
 
