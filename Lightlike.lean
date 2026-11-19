@@ -761,6 +761,7 @@ import Lightlike.Spacetime.EHManifold.PieceVariation
 import Lightlike.Spacetime.EHManifold.Retraction
 import Lightlike.Spacetime.EHManifold.SmallT
 import Lightlike.Spacetime.EHManifold.TensorVariation
+import Lightlike.Spacetime.EHManifold.Tests
 import Lightlike.Spin4.Burnside
 import Lightlike.Spin4.CGBridge
 import Lightlike.Spin4.ClebschGordan
