@@ -58,7 +58,10 @@ existence theorem for Lipschitz right-hand sides of `Lightlike/ODE/GlobalLipschi
 edge is its end value, and for an `su(2)` connection it lies in `SU(2)` [26] {3}. It is unchanged under orientation-preserving
 reparametrisation, the reversed path has the inverse holonomy, and for piecewise `C¹` paths (lists of edges) the
 holonomy of a composite is the product, `A(e₂ ∘ e₁) = A(e₂) A(e₁)` [27] {3}. Under a gauge transformation
-`A ↦ g⁻¹ A g + g⁻¹ dg` the holonomy changes only at the end points, `A(e) ↦ g(e(t₂))⁻¹ A(e) g(e(t₁))` [28] {3}.
+`A ↦ g⁻¹ A g + g⁻¹ dg` the holonomy changes only at the end points, `A(e) ↦ g(e(t₂))⁻¹ A(e) g(e(t₁))` [28] {3}. On a graph,
+with connections and gauge transformations along its edges, the holonomies of the edges and the values at the vertices
+identify the connections modulo the gauge transformations that are the identity at the vertices with `SU(2)ⁿ`, and the
+gauge transformations modulo those with `SU(2)^m` [29] {3}.
 
 A grid computation in dimension two (`scripts/adm_algebra_check.py`) supports the three brackets; with the kinetic
 coefficient `1/2` of dimension three, used in dimension two, the bracket of two Hamiltonian constraints differs from
@@ -113,6 +116,9 @@ the momentum constraint of the structure function.
     `Lightlike.Canonical.holonomy_revPath`, `Lightlike.Canonical.PwPath.hol_trans`, `Lightlike.Canonical.PwPath.hol_rev`
 28. Lightlike/Canonical/HolonomyGauge.lean - `Lightlike.Canonical.gaugeConn`, `Lightlike.Canonical.holonomy_gaugeConn`,
     `Lightlike.Canonical.holonomy_pureGauge`
+29. Lightlike/Canonical/HolonomyGraph.lean - `Lightlike.Canonical.Graph`, `Lightlike.Canonical.Graph.IE_injective_mod`,
+    `Lightlike.Canonical.Graph.IE_surjective`, `Lightlike.Canonical.Graph.IV_eq_iff`, `Lightlike.Canonical.Graph.IV_surjective`,
+    `Lightlike.Canonical.su2_exp_form`
 
 ## References
 
@@ -121,6 +127,6 @@ the momentum constraint of the structure function.
 2. E. Gourgoulhon, *3+1 Formalism and Bases of Numerical Relativity*, arXiv:gr-qc/0703035, equations (2.43),
    (2.68)-(2.70), (3.1)-(3.10), (4.27)-(4.32).
 3. A. Ashtekar and J. Lewandowski, *Background independent quantum gravity: a status report*, arXiv:gr-qc/0404018,
-   equations (2.6), (2.16)-(2.21), (2.23), (4.35)-(4.37).
+   equations (2.6), (2.16)-(2.21), (2.23), (4.14)-(4.17), (4.35)-(4.37).
 4. S. Holst, *Barbero's Hamiltonian derived from a generalized Hilbert-Palatini action*, arXiv:gr-qc/9511026,
    equations (1), (3)-(6).
