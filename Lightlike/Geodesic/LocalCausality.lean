@@ -4,8 +4,19 @@ import Lightlike.Geodesic.ConeTrap
 /-!
 # Local causality in a time ball (Chruściel, Proposition 2.4.5)
 
-Work in progress (causal stream, from fable3's plan): the uniform cone estimate on a compact set of
-parameters (`exists_uniform_cone_estimate`).
+In a time ball (`IsTimeBall`: a normal chart `φ` at `p` with a timelike gradient `-N` of the time
+function `x⁰ = -g_p(e, φ⁻¹ ·)`), a future causal curve from `p` stays in `σ_p ≤ 0`, `x⁰ ≥ 0`, where
+`σ_p = g_p(v, v)` in normal coordinates `v` (`IsTimeBall.causal_cone`). The method (no perturbed
+metrics): along the curve `f = σ_p` and `h = x⁰` satisfy `f' h ≤ f h'` where `f > 0` (the Gauss
+lemma and the cone inequality `IsLorentzianForm.two_mul_le_of_spacelike`) and `f' ≤ 0` where
+`f ≤ 0`, and `f ≤ C h²` by a uniform cone estimate; `nonpos_of_cone_inequality` concludes.
+
+## Main results
+
+* `exists_uniform_cone_estimate`, `norm_sub_le_of_ae_cone`: a cone estimate, uniform on a compact
+  set, and its integral along a Lipschitz curve.
+* `IsTimeBall.exists_cone_estimate`: `‖w‖ ≤ C x⁰(w)` for causal `Dφ(u) w`, `u` in a compact set.
+* `IsTimeBall.causal_cone`: the `J⁺` line of (2.4.7), "⇒", in normal coordinates.
 
 Source read (pdftotext): P. T. Chruściel, *Elements of causality theory*, arXiv:1110.6706v1, section 2.4,
 Proposition 2.4.5 and (2.4.6)–(2.4.7), p. 20; Lemma 2.4.8, p. 21; Lemma 2.4.9, p. 22. See
@@ -13,6 +24,7 @@ Proposition 2.4.5 and (2.4.6)–(2.4.7), p. 20; Lemma 2.4.8, p. 21; Lemma 2.4.9,
 -/
 
 open Set Metric Filter Topology Matrix MeasureTheory
+open scoped ContDiff
 
 noncomputable section
 
@@ -20,33 +32,27 @@ namespace Lightlike.Geodesic
 
 variable {n : ℕ}
 
-/-- **A uniform cone estimate.** Let `A u` be a family of matrices, continuous in `u` on a compact set `K`, and `ℓ` a
-linear functional which is positive on every nonzero vector `w` with `wᵀ A(u) w ≤ 0` and `ℓ w ≥ 0`, for every `u ∈ K`.
-Then there is `C` with `‖w‖ ≤ C ℓ(w)` for all such `w` and `u`. -/
+/-- **A uniform cone estimate.** Let `Q u w` be continuous in `(u, w)` on `K × ℝⁿ`, `K` compact, and
+homogeneous of degree two in `w`, and let `ℓ` be a linear functional which is positive on every nonzero
+`w` with `Q u w ≤ 0` and `ℓ w ≥ 0`, for every `u ∈ K`. Then there is `C` with `‖w‖ ≤ C ℓ(w)` for all
+such `w` and `u`. -/
 theorem exists_uniform_cone_estimate {K : Set (Fin n → ℝ)} (hK : IsCompact K)
-    {A : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ} (hA : ∀ i j, ContinuousOn (fun u => A u i j) K)
-    (ℓ : (Fin n → ℝ) →L[ℝ] ℝ)
-    (hpos : ∀ u ∈ K, ∀ w : Fin n → ℝ, w ≠ 0 → w ⬝ᵥ (A u *ᵥ w) ≤ 0 → 0 ≤ ℓ w → 0 < ℓ w) :
-    ∃ C : ℝ, 0 < C ∧ ∀ u ∈ K, ∀ w : Fin n → ℝ, w ⬝ᵥ (A u *ᵥ w) ≤ 0 → 0 ≤ ℓ w → ‖w‖ ≤ C * ℓ w := by
-  set Q : (Fin n → ℝ) × (Fin n → ℝ) → ℝ := fun p => p.2 ⬝ᵥ (A p.1 *ᵥ p.2) with hQ
-  have hQc : ContinuousOn Q (K ×ˢ univ) := by
-    have h1 : ∀ i j, ContinuousOn (fun p : (Fin n → ℝ) × (Fin n → ℝ) => A p.1 i j) (K ×ˢ univ) :=
-      fun i j => (hA i j).comp continuousOn_fst (fun p hp => hp.1)
-    simp only [hQ, dotProduct, mulVec]
-    refine continuousOn_finsetSum _ fun i _ => ?_
-    refine (continuous_apply i |>.comp continuous_snd).continuousOn.mul ?_
-    refine continuousOn_finsetSum _ fun j _ => ?_
-    exact (h1 i j).mul (continuous_apply j |>.comp continuous_snd).continuousOn
+    {Q : (Fin n → ℝ) → (Fin n → ℝ) → ℝ}
+    (hQc : ContinuousOn (fun q : (Fin n → ℝ) × (Fin n → ℝ) => Q q.1 q.2) (K ×ˢ univ))
+    (hhom : ∀ u ∈ K, ∀ c : ℝ, 0 < c → ∀ w, Q u (c • w) = c ^ 2 * Q u w)
+    (ℓ : (Fin n → ℝ) →L[ℝ] ℝ) (hpos : ∀ u ∈ K, ∀ w : Fin n → ℝ, w ≠ 0 → Q u w ≤ 0 → 0 ≤ ℓ w → 0 < ℓ w) :
+    ∃ C : ℝ, 0 < C ∧ ∀ u ∈ K, ∀ w : Fin n → ℝ, Q u w ≤ 0 → 0 ≤ ℓ w → ‖w‖ ≤ C * ℓ w := by
+  set Q' : (Fin n → ℝ) × (Fin n → ℝ) → ℝ := fun q => Q q.1 q.2 with hQ
   set S : Set ((Fin n → ℝ) × (Fin n → ℝ)) :=
-    (K ×ˢ sphere (0 : Fin n → ℝ) 1) ∩ (Q ⁻¹' Iic 0 ∩ (fun p => ℓ p.2) ⁻¹' Ici 0) with hS
+    (K ×ˢ sphere (0 : Fin n → ℝ) 1) ∩ (Q' ⁻¹' Iic 0 ∩ (fun p => ℓ p.2) ⁻¹' Ici 0) with hS
   have hcomp0 : IsCompact (K ×ˢ sphere (0 : Fin n → ℝ) 1) := hK.prod (isCompact_sphere 0 1)
   have hcl : IsClosed S := by
-    have hQc' : ContinuousOn Q (K ×ˢ sphere (0 : Fin n → ℝ) 1) :=
+    have hQc' : ContinuousOn Q' (K ×ˢ sphere (0 : Fin n → ℝ) 1) :=
       hQc.mono (prod_mono subset_rfl (subset_univ _))
     have h1 := hQc'.preimage_isClosed_of_isClosed hcomp0.isClosed (isClosed_Iic (a := (0 : ℝ)))
     have h2 : IsClosed ((fun p : (Fin n → ℝ) × (Fin n → ℝ) => ℓ p.2) ⁻¹' Ici 0) :=
       isClosed_Ici.preimage (ℓ.continuous.comp continuous_snd)
-    have : S = ((K ×ˢ sphere (0 : Fin n → ℝ) 1) ∩ Q ⁻¹' Iic 0) ∩
+    have : S = ((K ×ˢ sphere (0 : Fin n → ℝ) 1) ∩ Q' ⁻¹' Iic 0) ∩
         (fun p : (Fin n → ℝ) × (Fin n → ℝ) => ℓ p.2) ⁻¹' Ici 0 := by
       rw [hS, inter_assoc]
     rw [this]
@@ -67,8 +73,8 @@ theorem exists_uniform_cone_estimate {K : Set (Fin n → ℝ)} (hK : IsCompact K
     have hmem : (u, w1) ∈ S := by
       refine ⟨⟨hu, ?_⟩, ?_, ?_⟩
       · rw [mem_sphere_zero_iff_norm, hw1, norm_smul, norm_inv, norm_norm, inv_mul_cancel₀ hwn.ne']
-      · show w1 ⬝ᵥ (A u *ᵥ w1) ≤ 0
-        rw [hw1, mulVec_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul, smul_eq_mul, ← mul_assoc]
+      · show Q u w1 ≤ 0
+        rw [hw1, hhom u hu _ (inv_pos.2 hwn)]
         exact mul_nonpos_of_nonneg_of_nonpos (by positivity) hw
       · show 0 ≤ ℓ w1
         rw [hw1, map_smul, smul_eq_mul]
@@ -86,46 +92,236 @@ theorem exists_uniform_cone_estimate {K : Set (Fin n → ℝ)} (hK : IsCompact K
     apply hne
     refine ⟨(u, ‖w‖⁻¹ • w), ⟨hu, ?_⟩, ?_, ?_⟩
     · rw [mem_sphere_zero_iff_norm, norm_smul, norm_inv, norm_norm, inv_mul_cancel₀ hwn.ne']
-    · show (‖w‖⁻¹ • w) ⬝ᵥ (A u *ᵥ (‖w‖⁻¹ • w)) ≤ 0
-      rw [mulVec_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul, smul_eq_mul, ← mul_assoc]
+    · show Q u (‖w‖⁻¹ • w) ≤ 0
+      rw [hhom u hu _ (inv_pos.2 hwn)]
       exact mul_nonpos_of_nonneg_of_nonpos (by positivity) hw
     · show 0 ≤ ℓ (‖w‖⁻¹ • w)
       rw [map_smul, smul_eq_mul]
       positivity
 
-/-- **A Lipschitz function with almost everywhere positive derivative increases strictly** from its initial value:
-`G t > G a` for `t ∈ (a, b]`. -/
-theorem lt_of_ae_deriv_pos {G : ℝ → ℝ} {a b : ℝ} {K : NNReal} (hG : LipschitzOnWith K G (Icc a b))
-    (hd : ∀ᵐ t, t ∈ Ioo a b → ∃ G' : ℝ, HasDerivAt G G' t ∧ 0 < G') {t : ℝ} (ht : t ∈ Ioc a b) :
-    G a < G t := by
-  have hmono : ∀ s ∈ Icc a b, ∀ s' ∈ Icc a b, s ≤ s' → G s ≤ G s' := by
-    intro s hs s' hs' hss
-    have hsub : Icc s s' ⊆ Icc a b := Icc_subset_Icc hs.1 hs'.2
-    have := Lightlike.Causal.sub_le_sub_of_ae_deriv_le (f := fun _ => (0 : ℝ)) (h := G) hss
-      ((LipschitzWith.const (α := ℝ) (0 : ℝ)).lipschitzOnWith) (hG.mono hsub) (by
-        filter_upwards [hd] with u hu hum
-        obtain ⟨G', hG', hpos⟩ := hu ⟨lt_of_le_of_lt hs.1 hum.1, lt_of_lt_of_le hum.2 hs'.2⟩
-        exact ⟨differentiableAt_const _, hG'.differentiableAt, by rw [deriv_const, hG'.deriv]; exact hpos.le⟩)
-    simpa using this
-  have hat : a ≤ t := ht.1.le
-  refine lt_of_le_of_ne (hmono a ⟨le_rfl, hat.trans ht.2⟩ t ⟨hat, ht.2⟩ hat) fun heq => ?_
-  -- `G` is constant on `[a, t]`
-  have hconst : ∀ s ∈ Icc a t, G s = G a := fun s hs =>
-    le_antisymm (heq ▸ hmono s ⟨hs.1, hs.2.trans ht.2⟩ t ⟨hat, ht.2⟩ hs.2)
-      (hmono a ⟨le_rfl, hat.trans ht.2⟩ s ⟨hs.1, hs.2.trans ht.2⟩ hs.1)
-  have hpos : (volume (Ioo a t)) ≠ 0 := by
-    rw [Real.volume_Ioo]; simp [ht.1]
-  have hae : ∀ᵐ s ∂(volume.restrict (Ioo a t)), s ∈ Ioo a t ∧ ∃ G' : ℝ, HasDerivAt G G' s ∧ 0 < G' := by
-    filter_upwards [ae_restrict_mem measurableSet_Ioo, ae_restrict_of_ae hd] with s hsm hs
-    exact ⟨hsm, hs ⟨hsm.1, lt_of_lt_of_le hsm.2 ht.2⟩⟩
-  have hne : (volume.restrict (Ioo a t)) ≠ 0 := by
-    rw [Ne, Measure.restrict_eq_zero]; exact hpos
-  have : (ae (volume.restrict (Ioo a t))).NeBot := ae_neBot.2 hne
-  obtain ⟨s, hsm, G', hG', hG'pos⟩ := hae.exists
-  have hev : G =ᶠ[𝓝 s] fun _ => G a := by
-    filter_upwards [Ioo_mem_nhds hsm.1 hsm.2] with u hu
-    exact hconst u (Ioo_subset_Icc_self hu)
-  have h0 : HasDerivAt G 0 s := (hasDerivAt_const s (G a)).congr_of_eventuallyEq hev
-  exact hG'pos.ne' (hG'.unique h0)
+/-- **Integrating a cone estimate along a Lipschitz curve**: if almost everywhere `‖F'‖ ≤ C ℓ(F')`,
+then `‖F b - F a‖ ≤ C (ℓ (F b) - ℓ (F a))`. -/
+theorem norm_sub_le_of_ae_cone {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {F : ℝ → E}
+    {a b : ℝ} {K : NNReal} (hab : a ≤ b) (hF : LipschitzOnWith K F (Icc a b)) (ℓ : E →L[ℝ] ℝ) {C : ℝ}
+    (hd : ∀ᵐ t, t ∈ Ioo a b → ∃ F' : E, HasDerivAt F F' t ∧ ‖F'‖ ≤ C * ℓ F') :
+    ‖F b - F a‖ ≤ C * (ℓ (F b) - ℓ (F a)) := by
+  obtain ⟨φ, hφ1, hφx⟩ := exists_dual_vector'' ℝ (F b - F a)
+  have h := Lightlike.Causal.sub_le_sub_of_ae_deriv_le (f := fun t => φ (F t))
+    (h := fun t => (C • ℓ) (F t)) hab (φ.lipschitzWith.comp_lipschitzOnWith hF)
+    ((C • ℓ).lipschitzWith.comp_lipschitzOnWith hF) (by
+      filter_upwards [hd] with t ht hmem
+      obtain ⟨F', hF', hle⟩ := ht hmem
+      have h1 : HasDerivAt (fun t => φ (F t)) (φ F') t := φ.hasFDerivAt.comp_hasDerivAt t hF'
+      have h2 : HasDerivAt (fun t => (C • ℓ) (F t)) ((C • ℓ) F') t :=
+        (C • ℓ).hasFDerivAt.comp_hasDerivAt t hF'
+      refine ⟨h1.differentiableAt, h2.differentiableAt, ?_⟩
+      rw [h1.deriv, h2.deriv]
+      have : φ F' ≤ ‖F'‖ := (le_abs_self _).trans ((φ.le_opNorm F').trans (by nlinarith [norm_nonneg F']))
+      simpa using this.trans hle)
+  rw [map_sub] at hφx
+  replace hφx : φ (F b) - φ (F a) = ‖F b - F a‖ := by exact_mod_cast hφx
+  simp only [_root_.smul_apply, smul_eq_mul] at h
+  rw [mul_sub]
+  linarith
+
+namespace IsTimeBall
+
+variable {g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ} {U : Set (Fin n → ℝ)} {p e : Fin n → ℝ} {ρ r : ℝ}
+  {φ : OpenPartialHomeomorph (Fin n → ℝ) (Fin n → ℝ)} {N : (Fin n → ℝ) → Fin n → ℝ}
+
+/-- **A uniform cone estimate in a time ball.** On a compact subset `K` of the ball there is `C`
+with `‖w‖ ≤ C x⁰(w)`, `x⁰(w) = -g_p(e, w)`, for every `w` such that `Dφ(u) w` is causal at `φ u`
+and `x⁰(w) ≥ 0`. -/
+theorem exists_cone_estimate (hL : IsLorentzianCoordMetric g U) (h : IsTimeBall g U p ρ φ e r N)
+    {K : Set (Fin n → ℝ)} (hK : IsCompact K) (hKr : K ⊆ ball 0 r) :
+    ∃ C : ℝ, 0 < C ∧ ∀ u ∈ K, ∀ w : Fin n → ℝ,
+      pairing g (φ u) (fderiv ℝ φ u w) (fderiv ℝ φ u w) ≤ 0 →
+      0 ≤ -pairing g p e w → ‖w‖ ≤ C * (-pairing g p e w) := by
+  have hball : ∀ u ∈ K, u ∈ ball (0 : Fin n → ℝ) ρ := fun u hu => h.mem_ball (hKr hu)
+  have hcd : ContDiffOn ℝ ∞ φ (ball 0 ρ) := h.chart.source_eq ▸ h.chart.contDiffOn
+  have hfd : ContinuousOn (fun u => fderiv ℝ φ u) (ball (0 : Fin n → ℝ) ρ) :=
+    hcd.continuousOn_fderiv_of_isOpen isOpen_ball (by simp)
+  have hmapU : ∀ u ∈ ball (0 : Fin n → ℝ) ρ, φ u ∈ U := fun u hu =>
+    h.chart.target_subset (φ.map_source (by rw [h.chart.source_eq]; exact hu))
+  have hD : ContinuousOn (fun q : (Fin n → ℝ) × (Fin n → ℝ) => fderiv ℝ φ q.1 q.2) (K ×ˢ univ) :=
+    (hfd.comp continuousOn_fst fun q hq => hball q.1 hq.1).clm_apply continuousOn_snd
+  have hG : ∀ i j, ContinuousOn (fun q : (Fin n → ℝ) × (Fin n → ℝ) => g (φ q.1) i j) (K ×ˢ univ) :=
+    fun i j => ((hL.1.smooth i j).continuousOn.comp hcd.continuousOn fun u hu => hmapU u hu).comp
+      continuousOn_fst fun q hq => hball q.1 hq.1
+  have hQc : ContinuousOn (fun q : (Fin n → ℝ) × (Fin n → ℝ) =>
+      pairing g (φ q.1) (fderiv ℝ φ q.1 q.2) (fderiv ℝ φ q.1 q.2)) (K ×ˢ univ) := by
+    simp only [pairing]
+    refine continuousOn_finsetSum _ fun i _ => continuousOn_finsetSum _ fun j _ => ?_
+    exact ((continuous_apply i).comp_continuousOn hD).mul
+      ((hG i j).mul ((continuous_apply j).comp_continuousOn hD))
+  have hhom : ∀ u ∈ K, ∀ c : ℝ, 0 < c → ∀ w,
+      pairing g (φ u) (fderiv ℝ φ u (c • w)) (fderiv ℝ φ u (c • w)) =
+        c ^ 2 * pairing g (φ u) (fderiv ℝ φ u w) (fderiv ℝ φ u w) := by
+    intro u _ c _ w
+    simp only [map_smul, pairing, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
+    refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
+    ring
+  set ℓ : (Fin n → ℝ) →L[ℝ] ℝ := -(matForm (g p) e) with hℓdef
+  have hℓ : ∀ w, ℓ w = -pairing g p e w := fun w => by
+    rw [hℓdef, _root_.neg_apply, pairing_eq_matForm]
+  have hpos : ∀ u ∈ K, ∀ w : Fin n → ℝ, w ≠ 0 →
+      pairing g (φ u) (fderiv ℝ φ u w) (fderiv ℝ φ u w) ≤ 0 → 0 ≤ ℓ w → 0 < ℓ w := by
+    intro u hu w hw hQ hl
+    rw [hℓ] at hl ⊢
+    refine lt_of_le_of_ne hl fun h0 => hw ?_
+    have hur := hKr hu
+    have hy := h.map_mem hur
+    have hdual := h.dual u hur w
+    have hX : fderiv ℝ φ u w = 0 := by
+      refine (isLorentzianForm_matForm hL hy).eq_zero_of_orthogonal_timelike (X := N u) ?_ ?_ ?_
+      · rw [← pairing_eq_matForm]; exact h.timelike u hur
+      · rw [← pairing_eq_matForm, pairing_comm hL.1 hy, hdual]; linarith
+      · rw [← pairing_eq_matForm]; exact hQ
+    obtain ⟨D, -, -, hDφ⟩ := h.exists_fderiv_symm hur
+    rw [← hDφ w, hX, map_zero]
+  obtain ⟨C, hC, hest⟩ := exists_uniform_cone_estimate hK hQc hhom ℓ hpos
+  exact ⟨C, hC, fun u hu w hQ hl => by rw [← hℓ] at hl ⊢; exact hest u hu w hQ hl⟩
+
+/-- **Local causality in a time ball, the causal future** (Chruściel, Proposition 2.4.5, the `J⁺`
+line of (2.4.7), "⇒"). Let `v` be a Lipschitz curve in the ball of a time ball, in normal
+coordinates, from `v a = 0` (the point `p`), such that `φ ∘ v` has future causal velocity:
+`Dφ(v) v'` is causal with `g(N, Dφ(v) v') < 0` almost everywhere. Then the end point satisfies
+`σ_p = g_p(v, v) ≤ 0` and `x⁰ = -g_p(e, v) ≥ 0`. -/
+theorem causal_cone (hL : IsLorentzianCoordMetric g U) (h : IsTimeBall g U p ρ φ e r N)
+    {v : ℝ → Fin n → ℝ} {a b : ℝ} {K : NNReal} (hab : a ≤ b) (hv : LipschitzOnWith K v (Icc a b))
+    (hmem : ∀ t ∈ Icc a b, v t ∈ ball (0 : Fin n → ℝ) r) (ha : v a = 0)
+    (hd : ∀ᵐ t, t ∈ Ioo a b → ∃ v' : Fin n → ℝ, HasDerivAt v v' t ∧
+      pairing g (φ (v t)) (fderiv ℝ φ (v t) v') (fderiv ℝ φ (v t) v') ≤ 0 ∧
+      pairing g (φ (v t)) (N (v t)) (fderiv ℝ φ (v t) v') < 0) :
+    pairing g p (v b) (v b) ≤ 0 ∧ 0 ≤ -pairing g p e (v b) := by
+  rcases hab.eq_or_lt with rfl | hab'
+  · rw [ha]; simp [pairing]
+  have hg := hL.1
+  have hp : p ∈ U := by
+    have := h.map_mem (v := 0) (mem_ball_self h.pos); rwa [h.chart.map_zero] at this
+  set B := matForm (g p) with hB
+  have hpB : ∀ x y, pairing g p x y = B x y := fun x y => pairing_eq_matForm g p x y
+  have hBsymm : ∀ x y, B x y = B y x := fun x y => by rw [← hpB, ← hpB, pairing_comm hg hp]
+  set ℓ : (Fin n → ℝ) →L[ℝ] ℝ := -(B e) with hℓdef
+  have hℓ : ∀ w, ℓ w = -pairing g p e w := fun w => by
+    rw [hℓdef, _root_.neg_apply, hpB]
+  -- the cone estimate on the image of the curve
+  have hKc : IsCompact (v '' Icc a b) := isCompact_Icc.image_of_continuousOn hv.continuousOn
+  obtain ⟨C₁, hC₁, hest⟩ := h.exists_cone_estimate hL hKc (by rintro _ ⟨t, ht, rfl⟩; exact hmem t ht)
+  have hvel : ∀ᵐ t, t ∈ Ioo a b → ∃ v' : Fin n → ℝ, HasDerivAt v v' t ∧ 0 < ℓ v' ∧
+      ‖v'‖ ≤ C₁ * ℓ v' ∧ pairing g (φ (v t)) (fderiv ℝ φ (v t) v') (fderiv ℝ φ (v t) v') ≤ 0 ∧
+      pairing g (φ (v t)) (N (v t)) (fderiv ℝ φ (v t) v') < 0 := by
+    filter_upwards [hd] with t ht hmt
+    obtain ⟨v', hv', hc, hf⟩ := ht hmt
+    have htr := hmem t (Ioo_subset_Icc_self hmt)
+    have hl : 0 < ℓ v' := by rw [hℓ, ← h.dual _ htr v']; linarith
+    refine ⟨v', hv', hl, ?_, hc, hf⟩
+    rw [hℓ] at hl ⊢
+    exact hest _ ⟨t, Ioo_subset_Icc_self hmt, rfl⟩ v' hc hl.le
+  -- `x⁰` increases strictly from `0`
+  have hpos : ∀ t ∈ Ioc a b, 0 < ℓ (v t) := by
+    intro t ht
+    have hsub : Icc a t ⊆ Icc a b := Icc_subset_Icc_right ht.2
+    have := (Lightlike.Causal.functional_increasing_of_ae_pos ht.1 (hv.mono hsub) ℓ (by
+      filter_upwards [hvel] with s hs hsm
+      obtain ⟨v', hv', hl, -⟩ := hs ⟨hsm.1, lt_of_lt_of_le hsm.2 ht.2⟩
+      rw [hv'.deriv]; exact hl)).2
+    rwa [ha, map_zero] at this
+  -- the cone bound `σ ≤ C (x⁰)²`
+  have hnorm : ∀ t ∈ Icc a b, ‖v t‖ ≤ C₁ * ℓ (v t) := by
+    intro t ht
+    have hsub : Icc a t ⊆ Icc a b := Icc_subset_Icc_right ht.2
+    have := norm_sub_le_of_ae_cone ht.1 (hv.mono hsub) ℓ (by
+      filter_upwards [hvel] with s hs hsm
+      obtain ⟨v', hv', -, hle, -⟩ := hs ⟨hsm.1, lt_of_lt_of_le hsm.2 ht.2⟩
+      exact ⟨v', hv', hle⟩)
+    rwa [ha, sub_zero, map_zero, sub_zero] at this
+  have hfC : ∀ t ∈ Icc a b, B (v t) (v t) ≤ (‖B‖ * C₁ ^ 2) * ℓ (v t) ^ 2 := by
+    intro t ht
+    have h1 := B.le_opNorm₂ (v t) (v t)
+    rw [Real.norm_eq_abs] at h1
+    have h3 : ‖v t‖ ^ 2 ≤ (C₁ * ℓ (v t)) ^ 2 := pow_le_pow_left₀ (norm_nonneg _) (hnorm t ht) 2
+    calc B (v t) (v t) ≤ ‖B‖ * ‖v t‖ ^ 2 := by nlinarith [le_abs_self (B (v t) (v t)), norm_nonneg B]
+      _ ≤ ‖B‖ * (C₁ * ℓ (v t)) ^ 2 := mul_le_mul_of_nonneg_left h3 (norm_nonneg B)
+      _ = (‖B‖ * C₁ ^ 2) * ℓ (v t) ^ 2 := by ring
+  -- Lipschitz bounds
+  have hbound : ∀ t ∈ Icc a b, ‖v t‖ ≤ r := fun t ht => (mem_ball_zero_iff.1 (hmem t ht)).le
+  have hfL : LipschitzOnWith (2 * ‖B‖₊ * ⟨r, h.pos.le⟩ * K) (fun t => B (v t) (v t)) (Icc a b) := by
+    refine LipschitzOnWith.of_dist_le_mul fun s hs t ht => ?_
+    have hst : ‖v s - v t‖ ≤ (K : ℝ) * Dist.dist s t := by
+      rw [← dist_eq_norm]; exact hv.dist_le_mul s hs t ht
+    have hsplit : B (v s) (v s) - B (v t) (v t) = B (v s - v t) (v s) + B (v t) (v s - v t) := by
+      simp only [map_sub, _root_.sub_apply]; ring
+    rw [Real.dist_eq, hsplit]
+    have e1 := B.le_opNorm₂ (v s - v t) (v s)
+    have e2 := B.le_opNorm₂ (v t) (v s - v t)
+    rw [Real.norm_eq_abs] at e1 e2
+    have hr1 := hbound s hs
+    have hr2 := hbound t ht
+    have hB0 := norm_nonneg B
+    have hd0 := norm_nonneg (v s - v t)
+    push_cast
+    calc |B (v s - v t) (v s) + B (v t) (v s - v t)|
+        ≤ |B (v s - v t) (v s)| + |B (v t) (v s - v t)| := abs_add_le _ _
+      _ ≤ ‖B‖ * ‖v s - v t‖ * ‖v s‖ + ‖B‖ * ‖v t‖ * ‖v s - v t‖ := add_le_add e1 e2
+      _ ≤ ‖B‖ * ‖v s - v t‖ * r + ‖B‖ * r * ‖v s - v t‖ := by gcongr
+      _ = 2 * ‖B‖ * r * ‖v s - v t‖ := by ring
+      _ ≤ 2 * ‖B‖ * r * ((K : ℝ) * Dist.dist s t) := by
+          have : 0 ≤ 2 * ‖B‖ * r := by have := h.pos; positivity
+          exact mul_le_mul_of_nonneg_left hst this
+      _ = 2 * ‖B‖ * r * (K : ℝ) * Dist.dist s t := by ring
+  have hx0L : LipschitzOnWith (‖ℓ‖₊ * K) (fun t => ℓ (v t)) (Icc a b) :=
+    ℓ.lipschitzWith.comp_lipschitzOnWith hv
+  -- the differential inequalities
+  have hderiv : ∀ᵐ t, t ∈ Ioo a b → DifferentiableAt ℝ (fun t => B (v t) (v t)) t ∧
+      DifferentiableAt ℝ (fun t => ℓ (v t)) t ∧ 0 ≤ deriv (fun t => ℓ (v t)) t ∧
+      (0 < B (v t) (v t) → deriv (fun t => B (v t) (v t)) t * ℓ (v t) ≤
+        B (v t) (v t) * deriv (fun t => ℓ (v t)) t) ∧
+      (B (v t) (v t) ≤ 0 → deriv (fun t => B (v t) (v t)) t ≤ 0) := by
+    filter_upwards [hvel] with t ht hmt
+    obtain ⟨v', hv', hl, -, hc, hfut⟩ := ht hmt
+    have htr := hmem t (Ioo_subset_Icc_self hmt)
+    have hx0' : HasDerivAt (fun t => ℓ (v t)) (ℓ v') t := ℓ.hasFDerivAt.comp_hasDerivAt t hv'
+    have hc' : HasDerivAt (fun s => B (v s)) (B v') t := B.hasFDerivAt.comp_hasDerivAt t hv'
+    have hf' : HasDerivAt (fun t => B (v t) (v t)) (B v' (v t) + B (v t) v') t := hc'.clm_apply hv'
+    have hf'' : deriv (fun t => B (v t) (v t)) t = 2 * B (v t) v' := by
+      rw [hf'.deriv, hBsymm v' (v t)]; ring
+    have hy : φ (v t) ∈ U := h.map_mem htr
+    have hLf := isLorentzianForm_matForm hL hy
+    have hq : ∀ x z, pairing g (φ (v t)) x z = matForm (g (φ (v t))) x z := fun x z =>
+      pairing_eq_matForm g _ x z
+    have gPX : matForm (g (φ (v t))) (fderiv ℝ φ (v t) (v t)) (fderiv ℝ φ (v t) v') = B (v t) v' := by
+      rw [← hq, ← hpB]; exact IsNormalChart.gauss hg h.chart (h.mem_ball htr) v'
+    have gPP : matForm (g (φ (v t))) (fderiv ℝ φ (v t) (v t)) (fderiv ℝ φ (v t) (v t)) =
+        B (v t) (v t) := by
+      rw [← hq, ← hpB]; exact IsNormalChart.gauss hg h.chart (h.mem_ball htr) (v t)
+    have gNP : matForm (g (φ (v t))) (fderiv ℝ φ (v t) (v t)) (N (v t)) = -ℓ (v t) := by
+      rw [← hq, pairing_comm hg hy, h.dual _ htr, hℓ, neg_neg]
+    have gNX : matForm (g (φ (v t))) (fderiv ℝ φ (v t) v') (N (v t)) = -ℓ v' := by
+      rw [← hq, pairing_comm hg hy, h.dual _ htr, hℓ, neg_neg]
+    have hNN : matForm (g (φ (v t))) (N (v t)) (N (v t)) < 0 := by
+      rw [← hq]; exact h.timelike _ htr
+    have hXX : matForm (g (φ (v t))) (fderiv ℝ φ (v t) v') (fderiv ℝ φ (v t) v') ≤ 0 := by
+      rw [← hq]; exact hc
+    have hx0pos : 0 < ℓ (v t) := hpos t ⟨hmt.1, hmt.2.le⟩
+    refine ⟨hf'.differentiableAt, hx0'.differentiableAt, by rw [hx0'.deriv]; exact hl.le,
+      fun hft => ?_, fun hft => ?_⟩
+    · have key := hLf.two_mul_le_of_spacelike hNN hXX (by rw [gNX]; linarith) (by rw [gNP]; linarith)
+        (by rw [gPP]; exact hft.le)
+      rw [gNP, gPX, gPP, gNX, neg_neg, neg_neg] at key
+      rw [hf'', hx0'.deriv]
+      nlinarith [key]
+    · have key := hLf.nonpos_of_futureCausal hNN (by rw [gPP]; exact hft) hXX (by rw [gNP]; linarith)
+        (by rw [gNX]; linarith)
+      rw [gPX] at key
+      rw [hf'']
+      linarith
+  have hfb := nonpos_of_cone_inequality (f := fun t => B (v t) (v t)) (h := fun t => ℓ (v t)) hab'
+    hfL hx0L (by simp only [ha, map_zero]) hpos (by positivity) hfC hderiv
+  refine ⟨by rw [hpB]; exact hfb, ?_⟩
+  rw [← hℓ]
+  exact (hpos b ⟨hab', le_rfl⟩).le
+
+end IsTimeBall
 
 end Lightlike.Geodesic

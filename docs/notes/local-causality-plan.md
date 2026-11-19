@@ -23,8 +23,8 @@ In normal coordinates `v(s) = φ⁻¹(γ(s))` of a future causal curve from `p` 
 
 ## Steps
 
-* [ ] `exists_uniform_cone_estimate` (coordinate, compact ball).
-* [ ] `coordinate_local_causality` (the `J⁺` line, "⇒") in normal coordinates.
+* [x] `exists_uniform_cone_estimate`, `norm_sub_le_of_ae_cone`, `IsTimeBall.exists_cone_estimate` (compact set of the ball).
+* [x] `IsTimeBall.causal_cone` (the `J⁺` line, "⇒") in normal coordinates; it also gives `x⁰ > 0` for `b > a` in the proof.
 * [ ] the `I⁺` line (strict inequality for timelike curves), the "⇐" directions (radial geodesics).
 * [ ] existence of time balls for small `r`.
 * [ ] bridge to the manifold relations `chronFuture`/`causalFuture` (`Spacetime/OpenCoordMetric.lean`), tests.
