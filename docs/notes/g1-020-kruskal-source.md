@@ -167,3 +167,25 @@ such a sequence cannot converge in a Lorentzian manifold; the standard proof tak
 through `p` and uses that every geodesic of the Kruskal manifold is complete or runs into `r = 0`
 (Sbierski, Section 1.3 iv)). Missing in the library: existence of geodesics through a point (Picard-Lindelöf for
 the geodesic equation in a chart) and the analysis of the Kruskal geodesics with the constants of motion.
+
+## Toward the geodesics (stream Fable-1, 19 November 2026)
+
+Proved so far, for the second half of maximality:
+* Lightlike/Spacetime/GeodesicChartChange.lean: geodesics are chart-independent (`IsGeodesicOn.map_chartChange`).
+* Lightlike/Spacetime/GeodesicMomentum.lean: the momentum of a cyclic coordinate is conserved
+  (`IsGeodesicOn.hasDerivAt_momentum`).
+* Lightlike/GR/EFConstants.lean: in Eddington-Finkelstein coordinates the energy `p = -(1 - 2M/r) v' + r'` and the
+  axial angular momentum are constant, and `r'² = p² + (1 - 2M/r)(κ - r² (θ'² + sin²θ φ'²))` with `κ = g(w, w)`
+  (constant by `IsGeodesicOn.hasDerivAt_speed`).
+
+Plan for "a geodesic of the Kruskal manifold defined on `[0, b)`, `b < ∞`, with `r` bounded below has a limit in
+the manifold as `t → b`" (with it and the existence of geodesics through a point, from the stream that builds the
+exponential map, inextendibility follows as in Sbierski, Section 1.3 iv)):
+1. the total angular momentum `L² = r⁴ (θ'² + sin²θ φ'²)` is constant (the angular Christoffel symbols of the
+   Eddington-Finkelstein metric, or the rotations as chart changes of the global chart);
+2. then `|r'|` is bounded on the interval by the radial equation, so `r` is bounded above and below;
+3. the null Kruskal coordinates satisfy `|V U'|, |U V'| ≤ C` (from `κ` and the energy), which bounds `U'`, `V'` away
+   from the bifurcation sphere `U = V = 0`; at the bifurcation sphere a separate argument is needed (the geodesic
+   equation in the Kruskal chart, whose Christoffel symbols are not yet computed);
+4. bounded velocity gives a Cauchy curve, hence a limit, which lies in the manifold because `r` is bounded below.
+Steps 1-4 are not done.

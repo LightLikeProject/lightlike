@@ -64,4 +64,13 @@ theorem ef_hasDerivAt_angular {γ w : ℝ → Fin 4 → ℝ} {I : Set ℝ}
   refine h1.congr_of_eventuallyEq (Filter.Eventually.of_forall fun s => ?_)
   simp [efMetric, Fin.sum_univ_four]
 
+/-- **The radial equation.** With the energy `p = -(1 - 2M/r) v' + r'` and `κ = g(w, w)`:
+`r'² = p² + (1 - 2M/r) (κ - r² (θ'² + sin² θ φ'²))`, at every point of the chart, the horizon included. -/
+theorem ef_radial_identity (y w : Fin 4 → ℝ) :
+    w 1 ^ 2 = (-(1 - 2 * M / y 1) * w 0 + w 1) ^ 2 +
+      (1 - 2 * M / y 1) * (Lightlike.Geodesic.normSq (efMetric M) y w -
+        y 1 ^ 2 * (w 2 ^ 2 + sin (y 2) ^ 2 * w 3 ^ 2)) := by
+  simp [Lightlike.Geodesic.normSq, efMetric, dotProduct, mulVec, Fin.sum_univ_four]
+  ring
+
 end Lightlike
