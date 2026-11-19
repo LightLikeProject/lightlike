@@ -35,7 +35,7 @@ runs over every position of the second negative gluon (`eq_parkeTaylor_of_bcfw_m
 
 ## Differences
 
-1. Representation (as for the adjacent case, approved for #454): a family of MHV amplitudes is a function of the angle spinors in
+1. Representation (as for the adjacent case of `ParkeTaylorBCFW.lean`): a family of MHV amplitudes is a function of the angle spinors in
    colour order, with the three-point seeds and the single-diagram recursions as hypotheses. The recursions encode the validity of
    the shifts (`B_n = 0`): `[−,−⟩` for the adjacent case, the adjacent `[−,+⟩` here, both `1/z` in (3.11), which the source quotes
    from [17] and does not derive (p. 37). The theorem is conditional on that falloff in the same way as the adjacent one.
