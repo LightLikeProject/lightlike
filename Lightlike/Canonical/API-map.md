@@ -34,7 +34,12 @@ level sets: the lapse, the unit normal, the shift of a time vector, the induced 
 [16] {2}; the lapse is positive, the normal is a unit normal of the leaves, the time vector is the lapse times the normal
 plus the shift, the induced metric vanishes on the normal, and the extrinsic curvature is symmetric for the
 Levi-Civita connection [16]; the gradient of a smooth function is a smooth vector field, so the unit normal is smooth
-and these hold without a smoothness hypothesis [18] {2}. In Minkowski space the time coordinate gives lapse one and the Euclidean induced metric [17].
+and these hold without a smoothness hypothesis [18] {2}. In a chart whose first coordinate is the time function, the
+coordinate components of the metric are `g₀₀ = −N² + β_kβ^k`, `g₀ᵢ = βᵢ` and `gᵢⱼ = γᵢⱼ`, so the spatial block of the
+coordinate metric on a slice, the chart data `h` of the constraints, is the induced metric of the leaf [19] {2}; in
+Minkowski space it is the Euclidean metric [20]. With the coordinate components of the extrinsic curvature the slice also
+carries the momentum `π^{ij} = √det h (K h^{ij} − K^{ij})`, symmetric for the Levi-Civita connection [19] {2}; it
+vanishes on the slices of Minkowski space [20]. In Minkowski space the time coordinate gives lapse one and the Euclidean induced metric [17].
 
 A grid computation in dimension two (`scripts/adm_algebra_check.py`) supports the three brackets; with the kinetic
 coefficient `1/2` of dimension three, used in dimension two, the bracket of two Hamiltonian constraints differs from
@@ -65,10 +70,16 @@ the momentum constraint of the structure function.
 17. Lightlike/Canonical/TestsFoliation.lean - `Lightlike.Canonical.isTimeFunction_minkowski`, `Lightlike.Canonical.spatialMetric_minkowski`
 18. Lightlike/Canonical/FoliationSmooth.lean - `Lightlike.Canonical.contMDiffAt_timeGrad`, `Lightlike.Canonical.smoothNear_unitNormal`,
     `Lightlike.Canonical.isUnitNormal_of_timeFunction`, `Lightlike.Canonical.extrinsicCurvature_symm_of_timeFunction`
+19. Lightlike/Canonical/FoliationChart.lean - `Lightlike.Canonical.IsAdaptedChart`, `Lightlike.Canonical.coordMetric_adapted_00`,
+    `Lightlike.Canonical.coordMetric_adapted_0i`, `Lightlike.Canonical.coordMetric_adapted_ij`, `Lightlike.Canonical.admSliceMetric`,
+    `Lightlike.Canonical.admSliceMetric_eq_spatialMetric`, `Lightlike.Canonical.admSliceMomentum`,
+    `Lightlike.Canonical.admSliceMomentum_symm`
+20. Lightlike/Canonical/TestsFoliationChart.lean - `Lightlike.Canonical.admSliceMetric_minkowski`,
+    `Lightlike.Canonical.admSliceMomentum_minkowski`
 
 ## References
 
 1. T. Thiemann, *Modern Canonical Quantum General Relativity*, Cambridge University Press, 2007, chapter 1;
    R. Arnowitt, S. Deser and C. W. Misner, *The dynamics of general relativity*, equations (3.14a), (3.14b).
 2. E. Gourgoulhon, *3+1 Formalism and Bases of Numerical Relativity*, arXiv:gr-qc/0703035, equations (2.43),
-   (2.68)-(2.70), (3.1)-(3.10), (4.27)-(4.32).
+   (2.68)-(2.70), (3.1)-(3.10), (4.27)-(4.32), (4.43)-(4.47), (4.108).
