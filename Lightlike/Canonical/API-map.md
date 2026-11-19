@@ -64,7 +64,8 @@ identify the connections modulo the gauge transformations that are the identity 
 gauge transformations modulo those with `SU(2)^m` [29] {3}. The same holds for the graphs of Ashtekar–Lewandowski, whose
 edges are closed-piecewise analytic: the holonomy along an edge is the product along its analytic pieces, which form a
 graph with `C¹` edges, and the gauge transformations that are the identity at the vertices need not be at the corners
-[30] {3}.
+[30] {3}. Two regular analytic arcs (analytic, with nonzero velocity) that meet at points
+accumulating at a point share a segment there, so they meet in finitely many pieces [31] {3}.
 
 A grid computation in dimension two (`scripts/adm_algebra_check.py`) supports the three brackets; with the kinetic
 coefficient `1/2` of dimension three, used in dimension two, the bracket of two Hamiltonian constraints differs from
@@ -126,6 +127,8 @@ the momentum constraint of the structure function.
     `Lightlike.Canonical.ALGraph.IE_injective_mod`, `Lightlike.Canonical.ALGraph.IE_surjective`,
     `Lightlike.Canonical.ALGraph.IV_eq_iff`, `Lightlike.Canonical.ALGraph.IV_surjective`,
     `Lightlike.Canonical.lGraph_IE_surjective`
+31. Lightlike/Canonical/HolonomyAnalytic.lean - `Lightlike.Canonical.eventually_eq_comp_of_tendsto`,
+    `Lightlike.Canonical.Edge.meetFrontier_finite`
 
 ## References
 

@@ -212,6 +212,7 @@ import Lightlike.Canonical.HolonomyPaths
 import Lightlike.Canonical.HolonomyGauge
 import Lightlike.Canonical.HolonomyGraph
 import Lightlike.Canonical.HolonomyALGraph
+import Lightlike.Canonical.HolonomyAnalytic
 import Lightlike.Canonical.TestsFoliation
 import Lightlike.Canonical.HamiltonianBracket
 import Lightlike.Canonical.HamiltonianHHBracket
