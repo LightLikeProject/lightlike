@@ -71,6 +71,8 @@ On a compact metric space the couplings of two probability measures are the prob
 
 For a continuous cost `h` on the product of a compact metric space with itself there is an optimal coupling, and its cost is `sup {∫ f dμ + ∫ g dν | f(x) + g(y) ≤ h(x, y)}` over continuous `f`, `g` {6} [73]; the proof goes through the Hahn-Banach theorem for the sublinear functional `ω(k) = inf {∫ f dμ + ∫ g dν | k ≤ f ⊕ g}` and the Riesz-Markov-Kakutani theorem. For a separable cost `a(x) + b(y)` the dual value is `∫ a dμ + ∫ b dν` [74].
 
+Kantorovich-Rubinstein duality: on a compact metric space `W₁(μ, ν) = sup {∫ u dμ - ∫ u dν | u 1-Lipschitz}`, and the infimum defining `W₁` is attained {6} [75]; the `c`-transform `u(x) = inf_y (d(x, y) - g(y))` of a dual pair `(f, g)` is `1`-Lipschitz with `f ≤ u ≤ -g` [75]. For Dirac measures the supremum is `d(x, y)`, and `2`-Lipschitz tests exceed `W₁` [76].
+
 ## Lean References
 
 1. Lightlike/OperatorAlgebras/UnitaryGroup.lean - `OperatorAlgebras.UnitaryGroup`,
@@ -262,6 +264,12 @@ For a continuous cost `h` on the product of a compact metric space with itself t
     `OperatorAlgebras.Transport.exists_optimal_coupling`, `OperatorAlgebras.Transport.integral_optimal_eq_sSup`
 74. Lightlike/OperatorAlgebras/TestsMongeKantorovich.lean - `OperatorAlgebras.Transport.sepCost`,
     `OperatorAlgebras.Transport.integral_sepCost`, `OperatorAlgebras.Transport.sSup_dualValues_sepCost`
+75. Lightlike/OperatorAlgebras/KantorovichRubinstein.lean - `OperatorAlgebras.Transport.ctrans`,
+    `OperatorAlgebras.Transport.lipschitzWith_ctrans`, `OperatorAlgebras.Transport.le_ctrans`,
+    `OperatorAlgebras.Transport.ctrans_le_neg`, `OperatorAlgebras.Transport.exists_optimal_coupling_dist`,
+    `OperatorAlgebras.Transport.wasserstein1_eq_sSup`
+76. Lightlike/OperatorAlgebras/TestsKantorovichRubinstein.lean - `OperatorAlgebras.Transport.sSup_dirac`,
+    `OperatorAlgebras.Transport.two_lipschitz_exceeds`, `OperatorAlgebras.Transport.ctrans_zero`
 
 ## References
 

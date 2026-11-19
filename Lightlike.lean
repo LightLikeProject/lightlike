@@ -389,6 +389,8 @@ import Lightlike.OperatorAlgebras.Wasserstein
 import Lightlike.OperatorAlgebras.TestsWasserstein
 import Lightlike.OperatorAlgebras.MongeKantorovich
 import Lightlike.OperatorAlgebras.TestsMongeKantorovich
+import Lightlike.OperatorAlgebras.KantorovichRubinstein
+import Lightlike.OperatorAlgebras.TestsKantorovichRubinstein
 import Lightlike.OperatorAlgebras.TestsFock
 import Lightlike.OperatorAlgebras.TestsFockExists
 import Lightlike.OperatorAlgebras.TestsFockIrreducible

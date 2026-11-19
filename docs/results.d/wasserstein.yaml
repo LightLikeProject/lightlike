@@ -24,3 +24,16 @@
   review: kernel-checked
   note: "Compared with Huang, Wang, Wu, Meng, arXiv:2610.21070, Section 8.1, (8.1), p. 46 (read): the finite transport problem, min over couplings of the cost equals max over a_i + b_j <= d(x_i, x_j) of the dual value, with a minimum attained. Here the duality is for every continuous cost on a compact metric space, with an optimal coupling; the proof goes through the Hahn-Banach theorem and the Riesz-Markov-Kakutani theorem."
   since: unreleased
+- id: LL-XXXX-c
+  title: Kantorovich-Rubinstein duality on a compact metric space, the 1-Wasserstein distance as the supremum over 1-Lipschitz tests, with an optimal coupling
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/KantorovichRubinstein.lean
+  decls: [Lightlike.OperatorAlgebras.Transport.ctrans, Lightlike.OperatorAlgebras.Transport.lipschitzWith_ctrans, Lightlike.OperatorAlgebras.Transport.le_ctrans, Lightlike.OperatorAlgebras.Transport.ctrans_le_neg, Lightlike.OperatorAlgebras.Transport.exists_optimal_coupling_dist, Lightlike.OperatorAlgebras.Transport.wasserstein1_eq_sSup]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: huang-wang-wu-meng-2026, location: "Section 3.2.1", check: "Kantorovich"}
+  review: kernel-checked
+  note: "Compared with Huang, Wang, Wu, Meng, arXiv:2610.21070, Section 3.2.1, p. 5, (KR) (read): on a compact metric space, for Borel probability measures, inf over couplings of the integral of d equals sup over unit Lipschitz u of the pairing with nu - eta; Section 3.7 (1), p. 16: the minimum distance-cost coupling; Section 8.1, (8.2), p. 46: the c-transform u_i = min_j (d(x_i, x_j) - b_j), applied here on the space instead of on a finite net."
+  since: unreleased
