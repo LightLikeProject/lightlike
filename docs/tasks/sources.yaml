@@ -1075,6 +1075,10 @@ references:
     cite: "J. Sbierski, The C^0-inextendibility of the Schwarzschild spacetime and the spacelike diameter in Lorentzian geometry, arXiv:1507.00601v2 (2016)"
     title: "The C^0-inextendibility of the Schwarzschild spacetime and the spacelike diameter in Lorentzian geometry"
     arxiv: "1507.00601"
+  panangaden-2021:
+    cite: "J. Panangaden, Energy Full Counting Statistics and Return to Equilibrium, master's thesis, McGill University (2021), arXiv:2110.01678"
+    title: "Energy Full Counting Statistics and Return to Equilibrium"
+    arxiv: "2110.01678"
 
 canonical:
   pl-topology: [lickorish-1999, moise-1977]

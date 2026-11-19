@@ -71,6 +71,8 @@ For a complex Hilbert space `Z` with a Hilbert basis indexed by a linearly order
 
 In a Fock representation, a contraction `p` of `h` has a second quantization `Γ(p)`, the contraction with `Γ(p) W(f) Ω = exp((‖p f‖² - ‖f‖²)/4) W(p f) Ω`, from the positive semidefinite kernel `exp(⟪f, g⟫/2) - exp(⟪p f, p g⟫/2)` (Schur's product theorem); it is functorial, `Γ(p)* = Γ(p*)`, unitary iff `p` is, and for a unitary `U` the unique implementer of `U` with `Γ(U) Ω = Ω`, every implementer being a phase times `Γ(U)`; a strongly continuous unitary group `U(t)` gives the strongly continuous group `Γ(U(t))`, whose generator is `dΓ` [87] {7}; `Γ(0)` is the vacuum projection [88].
 
+For a Hamiltonian given by a Hilbert basis and real eigenvalues `λₙ` with `∑ e^{-βλₙ} < ∞` (every `H` with a trace-class `e^{-βH}` has this form {4}), the Gibbs state `ω(A) = ∑ e^{-βλₙ} ⟪bₙ, A bₙ⟫ / Z` is a state invariant under `τᵗ(A) = e^{itH} A e^{-itH}`, and the double series `F_{A,B}(z) = ∑ₘₙ e^{-βλₘ} ⟪bₘ, A bₙ⟫ ⟪bₙ, B bₘ⟫ e^{iz(λₙ - λₘ)} / Z`, dominated on the strip `0 ≤ Im z ≤ β` by `|⟪bₘ, A bₙ⟫| |⟪bₙ, B bₘ⟫| (e^{-βλₘ} + e^{-βλₙ})`, is bounded and continuous there, analytic inside, with `F(t) = ω(A τᵗ(B))` and `F(t + iβ) = ω(τᵗ(B) A)`: the KMS condition {9} [89]. The oscillator `λₙ = n` is an example for every `β > 0`, and at `β = 0` the partition sum diverges [90].
+
 ## Lean References
 
 1. Lightlike/OperatorAlgebras/UnitaryGroup.lean - `OperatorAlgebras.UnitaryGroup`,
@@ -300,6 +302,16 @@ In a Fock representation, a contraction `p` of `h` has a second quantization `Γ
     `OperatorAlgebras.FockRep.secondQuantGroup`, `OperatorAlgebras.FockRep.dGamma`
 88. Lightlike/OperatorAlgebras/TestsSecondQuantization.lean - `OperatorAlgebras.FockRep.secondQuant_trans_symm`,
     `OperatorAlgebras.FockRep.gamma_zero`
+89. Lightlike/OperatorAlgebras/GibbsKMS.lean - `OperatorAlgebras.GibbsKMS.diag`, `OperatorAlgebras.GibbsKMS.domain`,
+    `OperatorAlgebras.GibbsKMS.hamiltonian`, `OperatorAlgebras.GibbsKMS.inner_basis_hamiltonian`, `OperatorAlgebras.GibbsKMS.evol`,
+    `OperatorAlgebras.GibbsKMS.dyn`, `OperatorAlgebras.GibbsKMS.inner_dyn`, `OperatorAlgebras.GibbsKMS.gibbs`,
+    `OperatorAlgebras.GibbsKMS.gibbs_one`, `OperatorAlgebras.GibbsKMS.gibbs_star_mul_self_nonneg`,
+    `OperatorAlgebras.GibbsKMS.gibbs_dyn`, `OperatorAlgebras.GibbsKMS.kmsFun`, `OperatorAlgebras.GibbsKMS.continuousOn_kmsFun`,
+    `OperatorAlgebras.GibbsKMS.differentiableOn_kmsFun`, `OperatorAlgebras.GibbsKMS.norm_kmsFun_le`,
+    `OperatorAlgebras.GibbsKMS.kmsFun_ofReal`, `OperatorAlgebras.GibbsKMS.kmsFun_add_I_mul`
+90. Lightlike/OperatorAlgebras/TestsGibbsKMS.lean - `OperatorAlgebras.GibbsKMS.summable_exp_neg_mul_nat`,
+    `OperatorAlgebras.GibbsKMS.oscillator_isKMS`, `OperatorAlgebras.GibbsKMS.not_summable_exp_zero` (the wrong input
+    `β = 0`)
 
 ## References
 
@@ -324,3 +336,5 @@ In a Fock representation, a contraction `p` of `h` has a second quantization `Γ
    and 39 (quasi-free states; Theorem 39 (1) in the corrected form `½(η + iω)`).
 8. M. Faulhuber, *Time-Frequency Analysis*, lecture notes, 2022, Section 7.3.1 (von Neumann's proof of the
    Stone-von Neumann theorem).
+9. J. Panangaden, *Energy Full Counting Statistics and Return to Equilibrium*, master's thesis, McGill University,
+   2021, arXiv:2110.01678, Section 5.2: Proposition 5.4, Remark 5.1, Definition 5.8 and Proposition 5.9.

@@ -2702,3 +2702,17 @@
   review: kernel-checked
   note: "Compared with Derezinski, Section 6.4, Theorem 24, p. 27 (read), for a unitary r of Z (p = r, c = d = 0 in (46), so U_r^j = Gamma(r)); the general r in Sp_2(Y) is Shale's theorem, in the repository's Shale files. Uniqueness up to a phase from the triviality of the commutant of the Fock representation (commutant_scalar)."
   since: unreleased
+- id: LL-0206
+  title: The Gibbs state of a Hamiltonian with trace-class e^{-beta H} in infinite dimension is a state invariant under the dynamics and satisfies the KMS condition in strip form, with F(t) = omega(A tau_t(B)) and F(t + i beta) = omega(tau_t(B) A)
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/GibbsKMS.lean
+  decls: [Lightlike.OperatorAlgebras.GibbsKMS.hamiltonian, Lightlike.OperatorAlgebras.GibbsKMS.gibbs, Lightlike.OperatorAlgebras.GibbsKMS.gibbs_one, Lightlike.OperatorAlgebras.GibbsKMS.gibbs_star_mul_self_nonneg, Lightlike.OperatorAlgebras.GibbsKMS.gibbs_dyn, Lightlike.OperatorAlgebras.GibbsKMS.kmsFun, Lightlike.OperatorAlgebras.GibbsKMS.continuousOn_kmsFun, Lightlike.OperatorAlgebras.GibbsKMS.differentiableOn_kmsFun, Lightlike.OperatorAlgebras.GibbsKMS.norm_kmsFun_le, Lightlike.OperatorAlgebras.GibbsKMS.kmsFun_ofReal, Lightlike.OperatorAlgebras.GibbsKMS.kmsFun_add_I_mul]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: panangaden-2021, location: "Proposition 5.9", check: "KMS"}
+      - {ref: panangaden-2021, location: "Proposition 5.4", check: "Gibbs"}
+  review: kernel-checked
+  note: "Compared with Panangaden, arXiv:2110.01678, Proposition 5.4 (p. 43, Gibbs implies KMS whenever the Gibbs state exists), Remark 5.1, Definition 5.8 (p. 46) and Proposition 5.9 (p. 47) (read). H is the self-adjoint operator of a Hilbert basis b and real eigenvalues ev with sum of e^{-beta ev_n} finite, on its natural domain; every H with trace-class e^{-beta H} has this form (e^{-beta H} is compact and self-adjoint; Teschl, Theorem 6.6). The Gibbs state is the trace of e^{-beta H} A in the eigenbasis over Z; e^{itH} is the diagonal unitary diag(e^{it ev_n})."
+  since: unreleased
