@@ -79,6 +79,8 @@ The conformally related metric `e^{2ψ} g` of a coordinate metric has the Christ
 
 The gradient `ℓ` of a function has covariant derivative the Hessian, so `∇_ℓ ℓ = ½ grad (ℓ · ℓ)`: where the level sets are null hypersurfaces, `ℓ` is geodesic, and `ℓ' = e^ρ ℓ` satisfies `∇_{ℓ'} ℓ' = ⟨dρ, ℓ'⟩ ℓ'`, the null generators with a non-affine normalization, in coordinates [65]. On a manifold, the gradient `♯du` of a smooth function is a smooth vector field with these components in every chart, and if the level sets of `u` are null near a point, it is geodesic there for the Levi-Civita connection, and `ℓ' = f ♯du` satisfies `∇_{ℓ'} ℓ' = ⟨df, ♯du⟩ ℓ'` [66].
 
+The source of the Einstein equations is conserved: if `G + Λ g = κ T` with `κ ≠ 0` for the Levi-Civita connection, the divergence of `T` vanishes, since the Einstein tensor is divergence free and the metric is parallel [69].
+
 The divergence theorem on a manifold: for a metric of any signature, its Levi-Civita connection, a smooth vector field `X` vanishing outside a compact set and a measurable domain `D` given near every point of its closure by a defining function (`D = {u ≥ 0}`, `du ≠ 0` where `u = 0`), `∫_D div X d vol_g` is the flux of `X` through the boundary of `D`, written with a partition of unity subordinate to charts and graph charts of the boundary in each chart; a density `f · dV_g` is the case of the field `f X` [57]. In a chart, `√|g| ∇ₐXᵃ = ∂ⱼ(√|g| Xʲ)`, and the theorem in `ℝⁿ⁺¹` needs its hypothesis only on the support of the field [56] [57].
 
 ## Lean References
@@ -164,6 +166,7 @@ The divergence theorem on a manifold: for a metric of any signature, its Levi-Ci
 66. Lightlike/Spacetime/NullHypersurface.lean - `gradField`, `hv_gradField`, `g_gradField`, `contMDiff_gradField`, `gradField_geodesic_of_null`, `smul_gradField_of_null`: null hypersurfaces are ruled by null geodesics.
 67. Lightlike/Spacetime/ConformalRicci.lean - `covC`, `ricci_of_christoffel_add_cov`, `confCAt`, `sum_confCAt_quadratic`, `hessC`, `boxC`, `covC_conformalC`, `hessC_symm`, `ricci_conformal`, `scalarCurvature_conformal`: the Ricci tensor and scalar curvature of a conformally related metric.
 68. Lightlike/Spacetime/ConformalWeyl.lean - `riemann_of_christoffel_add_cov`, `riemann_conformal`, `riemannLow`, `riemannLow_conformal`, `weyl`, `weylUp`, `weyl_conformal`, `weylUp_conformal`: the Weyl tensor is conformally invariant.
+69. Lightlike/Spacetime/StressEnergyConservation.lean - `divBilinAt_eq_zero_of_einsteinEq`, `covDerivBilinAt_metric`, `covDerivBilinAt_linear`, `mdiffAt_einstein_pair`: conservation of the source of the Einstein equations.
 
 ## References
 
