@@ -365,9 +365,12 @@ import Lightlike.Lorentz.StarBound
 import Lightlike.Lorentz.Tests
 import Lightlike.Lorentz.WeightedComp
 import Lightlike.NCG.Bimodule
+import Lightlike.NCG.Classification
 import Lightlike.NCG.FiniteSpectralTriple
+import Lightlike.NCG.KrajewskiModel
 import Lightlike.NCG.TensorForm
 import Lightlike.NCG.TestsBimodule
+import Lightlike.NCG.TestsClassification
 import Lightlike.NCG.TestsTwoPoint
 import Lightlike.ODE.CommutingConverse
 import Lightlike.ODE.CommutingFlows

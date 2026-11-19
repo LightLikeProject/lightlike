@@ -3046,14 +3046,14 @@
     "snippet": "it is known that the spin structure on a riemannian manifold can be extended to noncommutative geometry using the notion of a spectral triple for finite geometries the corresponding finite spectral tr",
     "why": null
    },
-   "Section 3.1": {
-    "verified": true,
-    "snippet": "3.1 The representation We first assume that the algebra is made of complex matrices with a complex representation, i.e. a representation linear over the complex numbers, and then, we extend our results to the real ca",
-    "why": null
-   },
    "Section 3.2": {
     "verified": true,
     "snippet": "3.2 The charge conjugation Given a (A, A)-bimodule H with matrix m, it is natural to ask whether it corresponds to a real structure (that is, we can pass from one representation to the other by means of a charge conj",
+    "why": null
+   },
+   "Section 3.3": {
+    "verified": true,
+    "snippet": "3.3 The chirality The chirality χ commutes with π(A) and J π(A)J −1 , and is hermitian, so that it can be written as a block diagonal matrix, χ = ⊕ Ini ⊗ χij ⊗ Inj .",
     "why": null
    }
   },
