@@ -22,7 +22,9 @@ theorem FockRep.inner_field_field_vacuum (R : FockRep h K) (f g : h) :
       R.toCCRRep.field g ⟨R.Ω, R.isQuasiFree_vacuum.mem_domain g⟩⟫_ℂ = (1 / 2 : ℂ) * ⟪f, g⟫_ℂ := by
   rw [R.isQuasiFree_vacuum.inner_field_field]
   apply Complex.ext
-  · simp [symp, innerₗ]; rfl
+  · simp [symp, innerₗ]
+    rw [show (innerₛₗ ℝ) f g = (⟪f, g⟫_ℂ).re from rfl]
+    ring
   · simp [symp, innerₗ] <;> ring
 
 /-- The sharp bound of Theorem 39 (2) is attained by the Fock vacuum: `σ(f, i f) = ‖f‖²`. -/
