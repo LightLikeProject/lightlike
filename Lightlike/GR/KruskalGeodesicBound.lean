@@ -1,5 +1,6 @@
 import Lightlike.GR.KruskalGeodesic
-import Mathlib.Analysis.ODE.Gronwall
+import Lightlike.GR.KruskalRegions
+import Lightlike.Spacetime.CurveBounds
 
 /-!
 # Geodesics of the Kruskal manifold: constants of motion and the radial equation
@@ -112,5 +113,73 @@ theorem kruskalC_hasDerivAt_kQ (hM : 0 < M) (hgeo : IsGeodesicOn (kruskalCMetric
     exact Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun l _ => by ring
   rw [hfun]
   exact h1
+
+/-! ### Pointwise algebra -/
+
+lemma dkG_eq_kh_div (hM : 0 < M) {r : ℝ} (hr : 0 < r) : dkG M r = kh M r / (8 * M) := by
+  simp only [dkG, kh]
+  field_simp
+  ring
+
+lemma kh_mul_kF (hM : 0 < M) {r : ℝ} (hr : 0 < r) : kh M r * kF M r = 16 * M ^ 2 * (1 - 2 * M / r) := by
+  have he : exp (-(r / (2 * M))) * exp (r / (2 * M)) = 1 := by
+    rw [← Real.exp_add]; simp
+  have : kh M r * kF M r = 32 * M ^ 3 / r * (r / (2 * M) - 1) * (exp (-(r / (2 * M))) * exp (r / (2 * M))) := by
+    simp only [kh, kF]; ring
+  rw [this, he]
+  field_simp
+  ring
+
+/-- **The radial equation of the Kruskal geodesics**, pointwise:
+`r'² = A²/(16M²) + (1 - 2M/r)(κ - L²/r²)`. -/
+lemma radial_sq (hM : 0 < M) {r T X Td Xd om κ L2 A : ℝ} (hr : 0 < r)
+    (h1 : kh M r * (Xd ^ 2 - Td ^ 2) + r ^ 2 * om = κ) (h2 : r ^ 4 * om = L2)
+    (h3 : T * (kh M r * Xd) - X * (kh M r * Td) = A) (h4 : X ^ 2 - T ^ 2 = kF M r) :
+    (dkG M r * (2 * X * Xd - 2 * T * Td)) ^ 2 =
+      A ^ 2 / (16 * M ^ 2) + (1 - 2 * M / r) * (κ - L2 / r ^ 2) := by
+  have hom : r ^ 2 * om = L2 / r ^ 2 := by
+    rw [← h2]; field_simp
+  have e1 : (dkG M r * (2 * X * Xd - 2 * T * Td)) ^ 2 =
+      1 / (16 * M ^ 2) * ((T * (kh M r * Xd) - X * (kh M r * Td)) ^ 2 +
+        kh M r * (X ^ 2 - T ^ 2) * (kh M r * (Xd ^ 2 - Td ^ 2))) := by
+    rw [dkG_eq_kh_div hM hr]
+    field_simp
+    ring
+  have h1' : kh M r * (Xd ^ 2 - Td ^ 2) = κ - L2 / r ^ 2 := by linarith
+  rw [e1, h3, h4, kh_mul_kF hM hr, h1']
+  field_simp
+
+/-! ### Bounds of the coefficients on `r₀ ≤ r ≤ R` -/
+
+lemma kh_anti (hM : 0 < M) {r R : ℝ} (hr : 0 < r) (hrR : r ≤ R) : kh M R ≤ kh M r := by
+  unfold kh
+  have h1 : 32 * M ^ 3 / R ≤ 32 * M ^ 3 / r := div_le_div_of_nonneg_left (by positivity) hr hrR
+  have h2 : exp (-(R / (2 * M))) ≤ exp (-(r / (2 * M))) := by
+    apply Real.exp_le_exp.2
+    have : r / (2 * M) ≤ R / (2 * M) := div_le_div_of_nonneg_right hrR (by positivity)
+    linarith
+  exact mul_le_mul h1 h2 (exp_pos _).le (by positivity)
+
+lemma abs_dkG_le (hM : 0 < M) {r0 r : ℝ} (hr0 : 0 < r0) (hr : r0 ≤ r) : |dkG M r| ≤ 4 * M ^ 2 / r0 := by
+  have hr' : 0 < r := hr0.trans_le hr
+  have hpos : 0 ≤ dkG M r := by unfold dkG; positivity
+  rw [abs_of_nonneg hpos]
+  unfold dkG
+  have h1 : exp (-(r / (2 * M))) ≤ 1 := Real.exp_le_one_iff.2 (by
+    have : 0 ≤ r / (2 * M) := by positivity
+    linarith)
+  calc 4 * M ^ 2 * exp (-(r / (2 * M))) / r ≤ 4 * M ^ 2 * 1 / r := by gcongr
+    _ ≤ 4 * M ^ 2 / r0 := by
+        rw [mul_one]
+        exact div_le_div_of_nonneg_left (by positivity) hr0 hr
+
+lemma abs_dkh_le (hM : 0 < M) {r0 r : ℝ} (hr0 : 0 < r0) (hr : r0 ≤ r) :
+    |dkh M r| ≤ kh M r0 * (1 / r0 + 1 / (2 * M)) := by
+  have hr' : 0 < r := hr0.trans_le hr
+  have hh : 0 < kh M r := kh_pos M hM hr'
+  unfold dkh
+  rw [abs_neg, abs_of_nonneg (by positivity)]
+  have h1 : 1 / r ≤ 1 / r0 := div_le_div_of_nonneg_left zero_le_one hr0 hr
+  exact mul_le_mul (kh_anti hM hr0 hr) (by linarith) (by positivity) (kh_pos M hM hr0).le
 
 end Lightlike
