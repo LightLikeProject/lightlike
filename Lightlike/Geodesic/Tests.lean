@@ -1,5 +1,6 @@
 import Lightlike.Geodesic.Gauss
 import Lightlike.Geodesic.Convex
+import Lightlike.Geodesic.GaussMaximal
 import Lightlike.GR.AdSPoincare
 
 /-!
@@ -60,5 +61,18 @@ theorem exists_convex_neighbourhood_ads {L : ℝ} (hL : L ≠ 0) {x : Fin 4 → 
 /-- **Known value for `sqDist`**: it is the square of the distance on the line. -/
 theorem sqDist_fin_one (x q : Fin 1 → ℝ) : sqDist x q = (q 0 - x 0) ^ 2 := by
   simp [sqDist]
+
+/-- **Non-vacuity of `exists_expMap_along_gauss`**: through every point of the domain of a
+coordinate metric there is a geodesic that satisfies its hypotheses (defined on an open set
+containing `[0, 1]`, with values in `U` on `[0, 1]`). -/
+theorem exists_geodesic_on_unit_interval {n : ℕ} {g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ}
+    {U : Set (Fin n → ℝ)} (hg : Lightlike.IsCoordMetric g U) {x : Fin n → ℝ} (hx : x ∈ U) :
+    ∃ γ w : ℝ → Fin n → ℝ, Icc (0 : ℝ) 1 ⊆ Ioo (-1 : ℝ) 2 ∧
+      IsGeodesicOn g γ w (Ioo (-1) 2) ∧ ∀ t ∈ Icc (0 : ℝ) 1, γ t ∈ U := by
+  obtain ⟨ρ, φ, h⟩ := exists_isNormalChart hg hx
+  obtain ⟨γ, w, -, -, -, hgeo, hφ⟩ := h.geodesic 0 (mem_ball_self h.pos)
+  refine ⟨γ, w, fun t ht => ⟨by linarith [ht.1], by linarith [ht.2]⟩, hgeo, fun t ht => ?_⟩
+  rw [hφ t ⟨by linarith [ht.1], ht.2⟩, smul_zero, h.map_zero]
+  exact hx
 
 end Lightlike.Geodesic.Tests

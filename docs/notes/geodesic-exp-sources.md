@@ -1,7 +1,8 @@
 # The exponential map (gap row G1-006): source read, and how the library compares
 
 Files: `Lightlike/Geodesic/` (`ExpSmooth`, `ExpDiffeo`, `Radial`, `GaussAux`, `Gauss`,
-`ExpJoint`, `TwoPoint`, `Convex`, `Tests`), and
+`ExpJoint`, `TwoPoint`, `Convex`, `Variation`, `GaussMaximal`, `Tests`), `Lightlike/ODE/FlowAlong.lean`,
+`Lightlike/ODE/FlowVariational.lean`, and
 `Lightlike/ODE/FlowBoxSmooth.lean` for the regularity of the geodesic flow.
 
 ## Source (read at the locations given)
@@ -63,6 +64,17 @@ itself, which the gap row names, was not opened.
   coordinates: its second derivative along a geodesic is `2∑ w_i² − 2∑ (q_i − x_i) Γ^i(w, w) ≥ 0`
   near `x` (`IsGeodesicOn.convexOn_sqDist`), so the form (2.2.9) is replaced by the bound on the
   Christoffel symbols, and the maximum argument by convexity on `[0, 1]`.
+- `Lightlike.ODE.exists_flow_along` (file `ODE/FlowAlong`): for a smooth field on an open set and
+  an integral curve `c` on `[0, T]`, solutions starting near `c(0)` exist on an open interval
+  containing `[0, T]` and depend smoothly on time and initial point. For the geodesic field this
+  is Proposition 2.2.3 (the domain of `exp` is open) together with the smoothness of `exp` on it.
+  `Lightlike.ODE.hasDerivAt_fderiv_flow_of_contDiffOn` (file `ODE/FlowVariational`) is the
+  variational equation for such a flow.
+- `Lightlike.Geodesic.hasDerivAt_pairing_variation` (file `Variation`): the first variation
+  identity `d/dt g(∂_t F, ∂_s F) = ½ ∂_s g(∂_t F, ∂_t F)` for a family of geodesics.
+- `Lightlike.Geodesic.exists_expMap_along_gauss` (file `GaussMaximal`): the Gauss lemma at any
+  vector of the domain of `exp` (Theorem 2.1.21 as stated, `x ∈ D_p`), not only in a normal
+  neighbourhood.
 - `Lightlike.Geodesic.Tests.exists_expMap_diffeo_ads`: the hypotheses hold for anti-de Sitter
   space in the Poincaré patch (Lorentzian signature).
 
@@ -75,11 +87,13 @@ itself, which the gap row names, was not opened.
   `x` with initial velocity `v`, defined on `(-1, 2)`, reaching `E v` at time `1`). Geodesics with
   given initial data are unique (`IsGeodesicOn.eventuallyEq`), so this determines `E`.
 
-- weaker (Gauss lemma only): the source's point `x` ranges over the maximal domain `D_p` of
-  `exp_p`; here `v` ranges over the ball on which `exp` is the normal chart, because the library
-  has no exponential map outside it. No attempt at the larger domain is on record.
+- representation (Gauss lemma on the domain of `exp`): `exists_expMap_along_gauss` takes a
+  geodesic `γ` defined on an open set containing `[0, 1]` with values in `U` on `[0, 1]` (so
+  `v = γ'(0)` is in the source's `D_p`, with the geodesic inside the chart), gives a smooth `E`
+  near `v` with `E(u)` the endpoint of the geodesic with velocity `u`, and proves the Gauss lemma
+  at `v`. The source states it for a map `exp_p` on `D_p`; the library has no such global map.
 
 ## Still open in the row
 
-Causally convex neighbourhoods; the Gauss lemma on the maximal domain of `exp`; Theorem 2.2.6 in
-its global form.
+Causally convex neighbourhoods; Theorem 2.2.6 in its global form; the star-shapedness part of
+Proposition 2.2.3.

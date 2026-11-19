@@ -69,4 +69,51 @@ theorem hasDerivAt_pairing_variation (hg : Lightlike.IsCoordMetric g U)
   rw [halg, hNeq]
   ring
 
+/-- The derivative of the squared speed along a line of velocities:
+`d/ds|₀ g x (v + s w, v + s w) = 2 g x (v, w)`. -/
+theorem hasDerivAt_normSq_line (hg : Lightlike.IsCoordMetric g U) {x : Fin n → ℝ} (hx : x ∈ U)
+    (v w : Fin n → ℝ) :
+    HasDerivAt (fun s : ℝ => normSq g x (v + s • w)) (2 * pairing g x v w) 0 := by
+  have hdiffx : ∀ i j, DifferentiableAt ℝ (fun y => g y i j) x := fun i j =>
+    ((hg.smooth i j).contDiffAt (hg.isOpen.mem_nhds hx)).differentiableAt (by simp)
+  have h3 : HasDerivAt (fun s : ℝ => v + s • w) w 0 := by
+    have h0 := ((hasDerivAt_id (0 : ℝ)).smul_const w).const_add v
+    rw [one_smul] at h0
+    exact h0
+  have hNx := hasDerivAt_pairing (g := g) (γ := fun _ : ℝ => x) (a := fun s : ℝ => v + s • w)
+    (b := fun s : ℝ => v + s • w) (s := 0) hdiffx (hasDerivAt_const (0 : ℝ) x) h3 h3
+  have hfun : (fun s : ℝ => normSq g x (v + s • w)) =
+      fun s => ∑ i, ∑ j, (v + s • w) i * (g x i j * (v + s • w) j) := by
+    funext s
+    rw [← pairing_self]; rfl
+  rw [hfun]
+  refine hNx.congr_deriv ?_
+  have h7 : ∀ i j, w i * (g x i j * (v + (0 : ℝ) • w) j) +
+      (v + (0 : ℝ) • w) i * ((∑ k, (0 : Fin n → ℝ) k *
+        Lightlike.pd k (fun y => g y i j) x) * (v + (0 : ℝ) • w) j + g x i j * w j) =
+      w i * (g x i j * v j) + v i * (g x i j * w j) := fun i j => by
+    simp
+  simp only [h7, Finset.sum_add_distrib]
+  have h8 : ∑ i, ∑ j, w i * (g x i j * v j) = pairing g x w v := rfl
+  have h9 : ∑ i, ∑ j, v i * (g x i j * w j) = pairing g x v w := rfl
+  rw [h8, h9, pairing_comm hg hx w v]
+  ring
+
+/-- The first component of the derivative of the geodesic vector field is the velocity
+component: `(D geodField (p) X).1 = X.2`. -/
+theorem fderiv_geodField_fst (hg : Lightlike.IsCoordMetric g U)
+    {p : (Fin n → ℝ) × (Fin n → ℝ)} (hp : p.1 ∈ U) (X : (Fin n → ℝ) × (Fin n → ℝ)) :
+    (fderiv ℝ (geodField g) p X).1 = X.2 := by
+  have hG : DifferentiableAt ℝ (geodField g) p :=
+    ((contDiffOn_geodField hg).contDiffAt ((hg.isOpen.prod isOpen_univ).mem_nhds
+      (mk_mem_prod hp (mem_univ _)))).differentiableAt (by simp)
+  have h1 : HasFDerivAt (fun q : (Fin n → ℝ) × (Fin n → ℝ) => (geodField g q).1)
+      ((ContinuousLinearMap.fst ℝ (Fin n → ℝ) (Fin n → ℝ)).comp (fderiv ℝ (geodField g) p)) p :=
+    hasFDerivAt_fst.comp p hG.hasFDerivAt
+  have h2 : HasFDerivAt (fun q : (Fin n → ℝ) × (Fin n → ℝ) => (geodField g q).1)
+      (ContinuousLinearMap.snd ℝ (Fin n → ℝ) (Fin n → ℝ)) p := hasFDerivAt_snd
+  have h3 := congrArg (fun L : (Fin n → ℝ) × (Fin n → ℝ) →L[ℝ] (Fin n → ℝ) => L X)
+    (h1.unique h2)
+  simpa using h3
+
 end Lightlike.Geodesic

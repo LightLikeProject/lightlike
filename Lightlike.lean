@@ -250,6 +250,7 @@ import Lightlike.ODE.FlowBoxSmooth
 import Lightlike.ODE.FlowContDiff
 import Lightlike.ODE.FlowDeriv
 import Lightlike.ODE.FlowJoint
+import Lightlike.ODE.FlowVariational
 import Lightlike.ODE.Frobenius
 import Lightlike.ODE.FrobeniusChart
 import Lightlike.ODE.Gronwall
@@ -973,6 +974,7 @@ import Lightlike.Geodesic.ExpJoint
 import Lightlike.Geodesic.ExpSmooth
 import Lightlike.Geodesic.Gauss
 import Lightlike.Geodesic.GaussAux
+import Lightlike.Geodesic.GaussMaximal
 import Lightlike.Geodesic.Radial
 import Lightlike.Geodesic.Tests
 import Lightlike.Geodesic.TwoPoint
