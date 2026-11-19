@@ -29,13 +29,28 @@ the unit normal are smooth (`smoothNear_unitNormal`), and `isUnitNormal_of_timeF
 `extrinsicCurvature_symm_of_timeFunction` hold without a smoothness hypothesis. This is Gourgoulhon's construction of
 `n` from the smooth scalar field `t` (Sec. 3.3.1, eqs. (3.4)-(3.5), p. 41).
 
+## Adapted coordinates
+
+`FoliationChart.lean`: a chart whose first coordinate is `τ` (`IsAdaptedChart`, Gourgoulhon Sec. 4.2.1, the coordinates
+`(t, xⁱ)`, p. 54) has `dτ(∂_a) = δ_{a0}`, and with the shift of the time vector `∂₀`:
+
+| Lean | Source, location | Match |
+|---|---|---|
+| `coordMetric_adapted_00`: `g₀₀ = −N² + g(β, β)` | eq. (4.43), p. 57 | Same. |
+| `g_time_tangent`, `coordMetric_adapted_0i`: `g₀ᵢ = g(β, ∂ᵢ)` | eqs. (4.44)–(4.45), p. 57 | Same (`g(β, ∂ᵢ) = βᵢ`). |
+| `coordMetric_adapted_ij`: `gᵢⱼ = γ(∂ᵢ, ∂ⱼ)` | eq. (4.46), p. 58 | Same. |
+| `admSliceMetric`: the spatial block of the coordinate metric on `x⁰ = t` | eq. (4.47), p. 58 (the block form of `g_{αβ}`) | `admSliceMetric_eq_spatialMetric`: it is the induced metric of the leaf `τ = t`. |
+| `admSliceMomentum`: `π^{ij} = √det h (K h^{ij} − K^{ij})` from the coordinate components `K_ij = K(∂ᵢ, ∂ⱼ)` | eq. (4.108), p. 67 (`π^{ij} = √γ (K γ^{ij} − K^{ij})`) | Same formula; `admSliceMomentum_symm`: symmetric for the Levi-Civita connection. |
+
 ## Trust checks
 
 Minkowski space with `τ = x⁰`: `∇τ = −e₀`, `N = 1`, `n = e₀`, `γ` the Euclidean metric of the spatial coordinates
-(`TestsFoliation.lean`); `τ = x¹` (spacelike gradient) is not a time function.
+(`TestsFoliation.lean`); `τ = x¹` (spacelike gradient) is not a time function. The identity chart of Minkowski space is
+adapted to `τ = x⁰`, its slice metric is `δ_ij` (`admSliceMetric_minkowski`) and, for the flat connection, its slice
+momentum is `0` (`admSliceMomentum_minkowski`).
 
-## Open (the rest of G2-001)
+## Not done here
 
-* the chart form of the data in coordinates adapted to the foliation (Gourgoulhon Sec. 4.2.3, p. 57: `g_00 = −N² + β_i β^i`,
-  `g_0i = β_i`, `g_ij = γ_ij`) and the map to the chart data `(h, π)` of `Lightlike/Canonical/ADM.lean`;
-* the relation `K = −½ ℒ_n γ` and the momentum `π^{ij} = √γ (K γ^{ij} − K^{ij})` (eq. (4.108)).
+* the relation `K = −½ ℒ_n γ` between the extrinsic curvature and the Lie derivative of the induced metric;
+* the passage from the Einstein equations on the spacetime to the constraints on the slice data (Gourgoulhon
+  Sec. 4.2, eqs. (4.19), (4.22), through the Gauss and Codazzi relations of `Lightlike/Spacetime/Hypersurface.lean`).

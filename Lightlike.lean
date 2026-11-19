@@ -201,6 +201,8 @@ import Lightlike.Canonical.HypersurfaceBridge
 import Lightlike.Canonical.InitialData
 import Lightlike.Canonical.Foliation
 import Lightlike.Canonical.FoliationSmooth
+import Lightlike.Canonical.FoliationChart
+import Lightlike.Canonical.TestsFoliationChart
 import Lightlike.Canonical.TestsFoliation
 import Lightlike.Canonical.HamiltonianBracket
 import Lightlike.Canonical.HamiltonianHHBracket
