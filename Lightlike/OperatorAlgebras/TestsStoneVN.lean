@@ -29,11 +29,6 @@ example : Module.finrank ℂ (vnRange (fockRepOf h).toCCRRep) = 1 := by
       (Submodule.span_le.mpr (by rintro _ ⟨f, rfl⟩; exact hW f ψ hψW)) hWc
 
 /-- Every representation on the Fock space is a Hilbert sum of Fock representations. -/
-example (R : CCRRep h (FockSpace h)) :
-    ∃ (ι : Type _) (g : ι → FockSpace h), (∀ i, vnProj R (g i) = g i ∧ ‖g i‖ = 1) ∧
-      IsHilbertSum ℂ (fun i => orbitSpan R (g i)) (fun i => (orbitSpan R (g i)).subtypeₗᵢ) ∧
-      ∀ i, ∃ S : FockRep h (orbitSpan R (g i)),
-        S.toCCRRep = R.restrict (orbitSpan R (g i)) (orbitSpan_invariant R (g i)) :=
-  stone_von_neumann R
+example (R : CCRRep h (FockSpace h)) := stone_von_neumann R
 
 end Lightlike.OperatorAlgebras
