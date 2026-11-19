@@ -23,6 +23,78 @@ variable {n : ℕ} {M : Type*} [TopologicalSpace M] [ChartedSpace (Fin n → ℝ
   [IsManifold 𝓘(ℝ, Fin n → ℝ) 2 M]
 variable (cov : Connection 𝓘(ℝ, Fin n → ℝ) M)
 
+
+/-- The projection onto the screen of `V` and an auxiliary null `N`: `π u = u + g(N, u) V + g(V, u) N`. -/
+def screenProj (g : NondegMetric 𝓘(ℝ, Fin n → ℝ) M) (V : Π p : M, TangentSpace 𝓘(ℝ, Fin n → ℝ) p) {x : M}
+    (N u : TangentSpace 𝓘(ℝ, Fin n → ℝ) x) : TangentSpace 𝓘(ℝ, Fin n → ℝ) x :=
+  u + g.g x N u • V x + g.g x (V x) u • N
+
+omit [IsManifold 𝓘(ℝ, Fin n → ℝ) 2 M] in
+/-- The entries of a matrix as pairings with the coordinate vectors. -/
+theorem matrix_apply_eq_dot (A : Matrix (Fin n) (Fin n) ℝ) (a b : Fin n) :
+    A a b = Pi.single a (1 : ℝ) ⬝ᵥ (A *ᵥ Pi.single b 1) := by
+  simp [Matrix.mulVec, dotProduct, Pi.single_apply]
+
+/-- **Zero screen rotation in the chart**: if `g(∇_{π u} V, π w) = g(∇_{π w} V, π u)` for all `u, w` at `x`, the coordinate
+null rotation `ω̂` vanishes at `φ(x)` (for the components of `N`). -/
+theorem nullRotation_chart_eq_zero (g : NondegMetric 𝓘(ℝ, Fin n → ℝ) M) (h : cov.IsLeviCivita g)
+    {V : Π p : M, TangentSpace 𝓘(ℝ, Fin n → ℝ) p} {x : M}
+    (hV : MDifferentiableAt 𝓘(ℝ, Fin n → ℝ) (𝓘(ℝ, Fin n → ℝ).prod 𝓘(ℝ, Fin n → ℝ))
+      (fun q : M => (⟨q, V q⟩ : TangentBundle 𝓘(ℝ, Fin n → ℝ) M)) x)
+    {N : TangentSpace 𝓘(ℝ, Fin n → ℝ) x}
+    (hscr : ∀ u w : TangentSpace 𝓘(ℝ, Fin n → ℝ) x, g.g x (cov V x (screenProj g V N u)) (screenProj g V N w) =
+      g.g x (cov V x (screenProj g V N w)) (screenProj g V N u)) :
+    nullRotation (g.coordMetric x) (chartComp x V) (extChartAt 𝓘(ℝ, Fin n → ℝ) x x) (hv x x N) = 0 := by
+  have hxs : x ∈ (extChartAt 𝓘(ℝ, Fin n → ℝ) x).source := mem_extChartAt_source x
+  have hx0 : (extChartAt 𝓘(ℝ, Fin n → ℝ) x).symm (extChartAt 𝓘(ℝ, Fin n → ℝ) x x) = x :=
+    (extChartAt 𝓘(ℝ, Fin n → ℝ) x).left_inv hxs
+  have hb := mem_baseSet_of_mem_source x hxs
+  set G := g.coordMetric x (extChartAt 𝓘(ℝ, Fin n → ℝ) x x) with hGdef
+  have hG : Gᵀ = G := g.coordMetric_transpose x _
+  have hGu : IsUnit G.det := g.coordMetric_isUnit_det x ((extChartAt 𝓘(ℝ, Fin n → ℝ) x).map_source hxs)
+  set k := chartComp x V (extChartAt 𝓘(ℝ, Fin n → ℝ) x x) with hk
+  set Nc := hv x x N with hNc
+  have hvx : hv x x (V x) = k := by simp only [hk, chartComp, hx0]; rfl
+  set P := nullProj (g.coordMetric x) (chartComp x V) (extChartAt 𝓘(ℝ, Fin n → ℝ) x x) Nc with hPdef
+  set M := covDMat (g.coordMetric x) (chartComp x V) (extChartAt 𝓘(ℝ, Fin n → ℝ) x x) with hMdef
+  have hPe : P = 1 + Matrix.vecMulVec k (G *ᵥ Nc) + Matrix.vecMulVec Nc (G *ᵥ k) := by
+    simp only [hPdef, nullProj]; exact Raychaudhuri.inv_mul_nullScreen hGu
+  -- the components of `π u`
+  have hπ : ∀ u, hv x x (screenProj g V N u) = P *ᵥ hv x x u := by
+    intro u
+    unfold screenProj
+    rw [hv_add x hb, hv_add x hb, hv_smul' x hb, hv_smul' x hb, hvx, g_hv' x g hxs N u, g_hv' x g hxs (V x) u, hvx,
+      ← hGdef, hPe, Matrix.add_mulVec, Matrix.add_mulVec, Matrix.one_mulVec, Matrix.vecMulVec_mulVec,
+      Matrix.vecMulVec_mulVec, op_smul_eq_smul, op_smul_eq_smul, dotProduct_comm (G *ᵥ Nc),
+      dotProduct_comm (G *ᵥ k), Raychaudhuri.dot_G_comm hG (hv x x u) Nc, Raychaudhuri.dot_G_comm hG (hv x x u) k]
+  have hcov : ∀ u, hv x x (cov V x u) = M *ᵥ hv x x u := fun u => hv_cov_eq' x cov g h hxs hV u
+  -- `g P = Pᵀ g`
+  have hGP : G * P = Pᵀ * G := by
+    have hh : G * P = Raychaudhuri.nullScreen G k Nc := by
+      simp only [hPdef, nullProj]
+      rw [← hGdef, ← hk, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hGu, Matrix.one_mul]
+    rw [hh]
+    have : (G * P)ᵀ = G * P := by rw [hh]; exact Raychaudhuri.nullScreen_transpose hG
+    rw [Matrix.transpose_mul, hG, hh] at this
+    exact this.symm
+  have hent : ∀ a b, (G * nullB (g.coordMetric x) (chartComp x V) (extChartAt 𝓘(ℝ, Fin n → ℝ) x x) Nc) a b =
+      g.g x (cov V x (screenProj g V N ((tTriv (E := Fin n → ℝ) x).symmL ℝ x (Pi.single b 1))))
+        (screenProj g V N ((tTriv (E := Fin n → ℝ) x).symmL ℝ x (Pi.single a 1))) := by
+    intro a b
+    rw [g_hv' x g hxs, ← hGdef, hcov, hπ, hπ, hv_symmL x hb, hv_symmL x hb,
+      matrix_apply_eq_dot (G * nullB (g.coordMetric x) (chartComp x V) (extChartAt 𝓘(ℝ, Fin n → ℝ) x x) Nc) a b]
+    show Pi.single a 1 ⬝ᵥ ((G * (P * M * P)) *ᵥ Pi.single b 1) = _
+    rw [show G * (P * M * P) = Pᵀ * G * (M * P) by rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, hGP]; simp only [Matrix.mul_assoc],
+      ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose, Matrix.transpose_mul, hG,
+      Matrix.transpose_transpose, ← Matrix.mulVec_mulVec, Raychaudhuri.dot_G_comm hG]
+    rw [← Matrix.mulVec_mulVec, dotProduct_comm, Raychaudhuri.dot_G_comm hG]
+  unfold nullRotation
+  have hsym : (G * nullB (g.coordMetric x) (chartComp x V) (extChartAt 𝓘(ℝ, Fin n → ℝ) x x) Nc)ᵀ =
+      G * nullB (g.coordMetric x) (chartComp x V) (extChartAt 𝓘(ℝ, Fin n → ℝ) x x) Nc := by
+    ext a b
+    rw [Matrix.transpose_apply, hent, hent, hscr]
+  rw [hsym, sub_self, smul_zero]
+
 /-- **The null focusing inequality on a manifold** (Kar–SenGupta, after (17)): for a Lorentzian metric, its Levi-Civita
 connection and a smooth null (`g(V, V) = 0` near `x`) geodesic vector field that is rotation-free at `x`, with
 `Ric(V, V) ≥ 0` at `x` and an auxiliary null `N ∈ T_x M` with `g(V, N) = -1`: `V(Θ) ≤ -Θ²/(n-2)` at `x`. -/
@@ -31,8 +103,10 @@ theorem raychaudhuri_null_focusing_manifold_at (gL : LorentzianMetric 𝓘(ℝ, 
     (hV : ContMDiff 𝓘(ℝ, Fin n → ℝ) (𝓘(ℝ, Fin n → ℝ).prod 𝓘(ℝ, Fin n → ℝ)) ∞
       (fun q : M => (⟨q, V q⟩ : TangentBundle 𝓘(ℝ, Fin n → ℝ) M)))
     {x : M} (hgeo : ∀ᶠ q in 𝓝 x, cov V q (V q) = 0) (hnorm : ∀ᶠ q in 𝓝 x, gL.g q (V q) (V q) = 0) (hn : 2 < n)
-    (hN : ∃ N : TangentSpace 𝓘(ℝ, Fin n → ℝ) x, gL.g x N N = 0 ∧ gL.g x (V x) N = -1)
-    (hrot : ∀ u w : TangentSpace 𝓘(ℝ, Fin n → ℝ) x, gL.g x (cov V x u) w = gL.g x (cov V x w) u)
+    (hN : ∃ N : TangentSpace 𝓘(ℝ, Fin n → ℝ) x, gL.g x N N = 0 ∧ gL.g x (V x) N = -1 ∧
+      ∀ u w : TangentSpace 𝓘(ℝ, Fin n → ℝ) x, gL.g x (cov V x (screenProj gL.toNondegMetric V N u))
+        (screenProj gL.toNondegMetric V N w) =
+        gL.g x (cov V x (screenProj gL.toNondegMetric V N w)) (screenProj gL.toNondegMetric V N u))
     (hR : 0 ≤ cov.ricciAt x (V x) (V x)) :
     expansionDeriv cov V x ≤ -(expansionM cov V x) ^ 2 / (n - 2) := by
   set g := gL.toNondegMetric
@@ -76,17 +150,17 @@ theorem raychaudhuri_null_focusing_manifold_at (gL : LorentzianMetric 𝓘(ℝ, 
     exact hq.1.2
   have hvx : hv x x (V x) = chartComp x V (extChartAt 𝓘(ℝ, Fin n → ℝ) x x) := by
     simp only [chartComp, hx0]; rfl
-  have hω := rotation_chart_eq_zero cov g h (hmd x) hrot
   have hRc : 0 ≤ ∑ s, ∑ t, ricci (g.coordMetric x) s t (extChartAt 𝓘(ℝ, Fin n → ℝ) x x) *
       chartComp x V (extChartAt 𝓘(ℝ, Fin n → ℝ) x x) s * chartComp x V (extChartAt 𝓘(ℝ, Fin n → ℝ) x x) t := by
     rw [← hvx, ← ricciAt_hv' x cov g h hxs (V x)]; exact hR
   have hNc : ∃ N' : Fin n → ℝ, N' ⬝ᵥ (g.coordMetric x (extChartAt 𝓘(ℝ, Fin n → ℝ) x x) *ᵥ N') = 0 ∧
-      chartComp x V (extChartAt 𝓘(ℝ, Fin n → ℝ) x x) ⬝ᵥ (g.coordMetric x (extChartAt 𝓘(ℝ, Fin n → ℝ) x x) *ᵥ N') = -1 := by
-    obtain ⟨N, hNN, hkN⟩ := hN
-    refine ⟨hv x x N, ?_, ?_⟩
+      chartComp x V (extChartAt 𝓘(ℝ, Fin n → ℝ) x x) ⬝ᵥ (g.coordMetric x (extChartAt 𝓘(ℝ, Fin n → ℝ) x x) *ᵥ N') = -1 ∧
+      nullRotation (g.coordMetric x) (chartComp x V) (extChartAt 𝓘(ℝ, Fin n → ℝ) x x) N' = 0 := by
+    obtain ⟨N, hNN, hkN, hscr⟩ := hN
+    refine ⟨hv x x N, ?_, ?_, nullRotation_chart_eq_zero cov g h (hmd x) hscr⟩
     · rw [← g_hv' x g hxs]; exact hNN
     · rw [← hvx, ← g_hv' x g hxs]; exact hkN
-  have key := raychaudhuri_null_focusing_at hgL hvU hgeoU hnormU hy0U hn hNc hω hRc
+  have key := raychaudhuri_null_focusing_at hgL hvU hgeoU hnormU hy0U hn hNc hRc
   unfold expansionDeriv
   rw [mfderiv_expansionM cov g h hV x, expansionM_eq cov g h hV x hxs]
   exact key
@@ -103,9 +177,10 @@ theorem raychaudhuri_null_focusing_manifold (gL : LorentzianMetric 𝓘(ℝ, Fin
     (hγ : ∀ s ∈ Ico 0 L, HasMFDerivAt 𝓘(ℝ, ℝ) 𝓘(ℝ, Fin n → ℝ) γ s ((1 : ℝ →L[ℝ] ℝ).smulRight (V (γ s))))
     (hgeo : ∀ s ∈ Ico 0 L, ∀ᶠ q in 𝓝 (γ s), cov V q (V q) = 0)
     (hnorm : ∀ s ∈ Ico 0 L, ∀ᶠ q in 𝓝 (γ s), gL.g q (V q) (V q) = 0)
-    (hN : ∀ s ∈ Ico 0 L, ∃ N : TangentSpace 𝓘(ℝ, Fin n → ℝ) (γ s), gL.g (γ s) N N = 0 ∧ gL.g (γ s) (V (γ s)) N = -1)
-    (hrot : ∀ s ∈ Ico 0 L, ∀ u w : TangentSpace 𝓘(ℝ, Fin n → ℝ) (γ s),
-      gL.g (γ s) (cov V (γ s) u) w = gL.g (γ s) (cov V (γ s) w) u)
+    (hN : ∀ s ∈ Ico 0 L, ∃ N : TangentSpace 𝓘(ℝ, Fin n → ℝ) (γ s), gL.g (γ s) N N = 0 ∧ gL.g (γ s) (V (γ s)) N = -1 ∧
+      ∀ u w : TangentSpace 𝓘(ℝ, Fin n → ℝ) (γ s), gL.g (γ s) (cov V (γ s) (screenProj gL.toNondegMetric V N u))
+        (screenProj gL.toNondegMetric V N w) =
+        gL.g (γ s) (cov V (γ s) (screenProj gL.toNondegMetric V N w)) (screenProj gL.toNondegMetric V N u))
     (hR : ∀ s ∈ Ico 0 L, 0 ≤ cov.ricciAt (γ s) (V (γ s)) (V (γ s)))
     (h0 : expansionM cov V (γ 0) < 0) : L ≤ (n - 2) / |expansionM cov V (γ 0)| := by
   have hm : (0 : ℝ) < n - 2 := by
@@ -122,6 +197,6 @@ theorem raychaudhuri_null_focusing_manifold (gL : LorentzianMetric 𝓘(ℝ, Fin
     rw [ContinuousLinearMap.comp_apply, ContinuousLinearMap.smulRight_apply, map_smul]
     rfl
   · intro s hs
-    exact raychaudhuri_null_focusing_manifold_at cov gL h hV (hgeo s hs) (hnorm s hs) hn (hN s hs) (hrot s hs) (hR s hs)
+    exact raychaudhuri_null_focusing_manifold_at cov gL h hV (hgeo s hs) (hnorm s hs) hn (hN s hs) (hR s hs)
 
 end Lightlike

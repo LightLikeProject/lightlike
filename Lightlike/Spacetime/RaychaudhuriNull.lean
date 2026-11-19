@@ -11,9 +11,9 @@ null vector `N` (`kᵃNₐ = -1`) and the transverse metric `h_ab = g_ab + k_a N
 `R_ab kᵃ kᵇ ≥ 0`. Here, in coordinates on an open `U ⊆ ℝⁿ`, for a smooth null geodesic field `k` on `U`:
 
 * `raychaudhuri_null_equation`: `k(Θ) = -Θ²/(n-2) - σ̂² + ω̂² - R(k, k)`, with `Θ̂ = tr B̂ = Θ` the expansion;
-* `raychaudhuri_null_focusing_at`, `raychaudhuri_null_focusing`: for a Lorentzian metric, `σ̂² ≥ 0`, and a rotation-free
-  field with `R(k, k) ≥ 0` has `k(Θ) ≤ -Θ²/(n-2)`; along an integral curve on `[0, L)` with `Θ(γ(0)) < 0`,
-  `L ≤ (n-2)/|Θ(γ(0))|`.
+* `raychaudhuri_null_focusing_at`, `raychaudhuri_null_focusing`: for a Lorentzian metric, `σ̂² ≥ 0`, and with `ω̂ = 0` and
+  `R(k, k) ≥ 0`, `k(Θ) ≤ -Θ²/(n-2)`; along an integral curve on `[0, L)` with `Θ(γ(0)) < 0`, `L ≤ (n-2)/|Θ(γ(0))|`;
+  a rotation-free field (`g ∇k` symmetric, e.g. hypersurface-orthogonal) has `ω̂ = 0` (`nullRotation_eq_zero`).
 -/
 
 open Filter Topology Set Matrix
@@ -227,35 +227,35 @@ variable (hgL : IsLorentzianCoordMetric g U) (hv : ∀ a, ContDiffOn ℝ ∞ (fu
   (hgeo : ∀ y ∈ U, ∀ d, ∑ c, v y c * covD g v d c y = 0) (hnull : ∀ y ∈ U, v y ⬝ᵥ (g y *ᵥ v y) = 0)
 include hgL hv hgeo hnull
 
-/-- **Null focusing inequality** (Kar–SenGupta, after (17)): for a null geodesic field of a Lorentzian coordinate metric,
-rotation-free at `x`, with `R(k, k) ≥ 0` at `x` and an auxiliary null `N` (`g(k, N) = -1`): `k(Θ) ≤ -Θ²/(n-2)`. -/
+/-- **Null focusing inequality** (Kar–SenGupta, after (17)): for a null geodesic field of a Lorentzian coordinate metric with
+`R(k, k) ≥ 0` at `x` and an auxiliary null `N` (`g(k, N) = -1`) for which the screen rotation vanishes (`ω̂ = 0`):
+`k(Θ) ≤ -Θ²/(n-2)`. A rotation-free field has `ω̂ = 0` for every `N` (`nullRotation_eq_zero`). -/
 theorem raychaudhuri_null_focusing_at {x : Fin n → ℝ} (hx : x ∈ U) (hn : 2 < n)
-    (hN : ∃ N : Fin n → ℝ, N ⬝ᵥ (g x *ᵥ N) = 0 ∧ v x ⬝ᵥ (g x *ᵥ N) = -1) (hω : rotation g v x = 0)
+    (hN : ∃ N : Fin n → ℝ, N ⬝ᵥ (g x *ᵥ N) = 0 ∧ v x ⬝ᵥ (g x *ᵥ N) = -1 ∧ nullRotation g v x N = 0)
     (hR : 0 ≤ ∑ s, ∑ t, ricci g s t x * v x s * v x t) :
     ∑ c, v x c * pd c (expansion g v) x ≤ -(expansion g v x) ^ 2 / (n - 2) := by
-  obtain ⟨N, hNN, hkN⟩ := hN
-  rw [raychaudhuri_null_equation hgL.1 hv hgeo hnull hx hNN hkN hn,
-    nullRotation_eq_zero (hgL.1.symm x hx) (hgL.1.isUnit_det x hx) hω]
+  obtain ⟨N, hNN, hkN, hω⟩ := hN
+  rw [raychaudhuri_null_equation hgL.1 hv hgeo hnull hx hNN hkN hn, hω]
   have hσ := nullShear_normSq_nonneg hgL hx (hnull x hx) hNN hkN (v := v)
   have h0 : Raychaudhuri.normSqG (g x) 0 = 0 := by simp [Raychaudhuri.normSqG]
   rw [h0]
   linarith
 
 /-- **Null geodesic focusing** (Kar–SenGupta, after (17): the null convergence condition `R_ab kᵃ kᵇ ≥ 0`): along an
-integral curve `γ` on `[0, L)` in `U` of a null geodesic field of a Lorentzian coordinate metric (`n ≥ 3`), rotation-free
-with `R(k, k) ≥ 0` and an auxiliary null vector along `γ`, that starts converging (`Θ(γ(0)) < 0`):
+integral curve `γ` on `[0, L)` in `U` of a null geodesic field of a Lorentzian coordinate metric (`n ≥ 3`), with
+`R(k, k) ≥ 0` and an auxiliary null vector with `ω̂ = 0` along `γ`, that starts converging (`Θ(γ(0)) < 0`):
 `L ≤ (n-2)/|Θ(γ(0))|`. -/
 theorem raychaudhuri_null_focusing (hn : 2 < n) {γ : ℝ → Fin n → ℝ} {L : ℝ} (hγU : ∀ s ∈ Ico 0 L, γ s ∈ U)
     (hγ : ∀ s ∈ Ico 0 L, HasDerivAt γ (v (γ s)) s)
-    (hN : ∀ s ∈ Ico 0 L, ∃ N : Fin n → ℝ, N ⬝ᵥ (g (γ s) *ᵥ N) = 0 ∧ v (γ s) ⬝ᵥ (g (γ s) *ᵥ N) = -1)
-    (hω : ∀ s ∈ Ico 0 L, rotation g v (γ s) = 0)
+    (hN : ∀ s ∈ Ico 0 L, ∃ N : Fin n → ℝ, N ⬝ᵥ (g (γ s) *ᵥ N) = 0 ∧ v (γ s) ⬝ᵥ (g (γ s) *ᵥ N) = -1 ∧
+      nullRotation g v (γ s) N = 0)
     (hR : ∀ s ∈ Ico 0 L, 0 ≤ ∑ a, ∑ b, ricci g a b (γ s) * v (γ s) a * v (γ s) b)
     (h0 : expansion g v (γ 0) < 0) : L ≤ (n - 2) / |expansion g v (γ 0)| := by
   have hm : (0 : ℝ) < n - 2 := by
     have : (2 : ℝ) < n := by exact_mod_cast hn
     linarith
   exact focusing_along hv hgL.1 hm hγU hγ
-    (fun s hs => raychaudhuri_null_focusing_at hgL hv hgeo hnull (hγU s hs) hn (hN s hs) (hω s hs) (hR s hs)) h0
+    (fun s hs => raychaudhuri_null_focusing_at hgL hv hgeo hnull (hγU s hs) hn (hN s hs) (hR s hs)) h0
 
 end
 
