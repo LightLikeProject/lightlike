@@ -36,6 +36,13 @@ plus the shift, the induced metric vanishes on the normal, and the extrinsic cur
 Levi-Civita connection [16]; the gradient of a smooth function is a smooth vector field, so the unit normal is smooth
 and these hold without a smoothness hypothesis [18] {2}. In Minkowski space the time coordinate gives lapse one and the Euclidean induced metric [17].
 
+In the connection variables of loop quantum gravity a co-triad `e` of the spatial metric gives the densitized triad
+`E = |det e| e⁻¹`, the triad form `K^i_a` of the extrinsic curvature and the spin connection `Γ^i_a` of the co-triad,
+built from the Christoffel symbols of the metric [19] {3} {4}. The spin connection is compatible with the triad
+(`de + ε Γ ∧ e = 0`), the Ashtekar–Barbero connection is `A = Γ + γK`, and the Gauss constraint
+`∂_a E^a_i + ε_ijk A^j_a E^a_k` vanishes on the variables of ADM data, its extrinsic-curvature part exactly because the
+extrinsic curvature is symmetric [20] {3}.
+
 A grid computation in dimension two (`scripts/adm_algebra_check.py`) supports the three brackets; with the kinetic
 coefficient `1/2` of dimension three, used in dimension two, the bracket of two Hamiltonian constraints differs from
 the momentum constraint of the structure function.
@@ -66,9 +73,18 @@ the momentum constraint of the structure function.
 18. Lightlike/Canonical/FoliationSmooth.lean - `Lightlike.Canonical.contMDiffAt_timeGrad`, `Lightlike.Canonical.smoothNear_unitNormal`,
     `Lightlike.Canonical.isUnitNormal_of_timeFunction`, `Lightlike.Canonical.extrinsicCurvature_symm_of_timeFunction`
 
+19. Lightlike/Canonical/Triad.lean - `Lightlike.Canonical.IsCoTriad`, `Lightlike.Canonical.densTriad`, `Lightlike.Canonical.triadK`,
+    `Lightlike.Canonical.gaussK_eq_zero_iff`
+20. Lightlike/Canonical/SpinConnection.lean - `Lightlike.Canonical.spinConn`, `Lightlike.Canonical.spin_compat`,
+    `Lightlike.Canonical.abConn`, `Lightlike.Canonical.gaussConstraint`, `Lightlike.Canonical.gauss_spinConn`,
+    `Lightlike.Canonical.gauss_abConn`, `Lightlike.Canonical.gauss_abConn_antisymm_violates`
 ## References
 
 1. T. Thiemann, *Modern Canonical Quantum General Relativity*, Cambridge University Press, 2007, chapter 1;
    R. Arnowitt, S. Deser and C. W. Misner, *The dynamics of general relativity*, equations (3.14a), (3.14b).
 2. E. Gourgoulhon, *3+1 Formalism and Bases of Numerical Relativity*, arXiv:gr-qc/0703035, equations (2.43),
    (2.68)-(2.70), (3.1)-(3.10), (4.27)-(4.32).
+3. A. Ashtekar and J. Lewandowski, *Background independent quantum gravity: a status report*, arXiv:gr-qc/0404018,
+   equations (2.16)-(2.18), (2.20)-(2.21), (2.23).
+4. S. Holst, *Barbero's Hamiltonian derived from a generalized Hilbert-Palatini action*, arXiv:gr-qc/9511026,
+   equation (6).
