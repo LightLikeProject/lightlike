@@ -69,15 +69,17 @@ lemma littleGroup_massive_col {m : ℝ} (hm : m ≠ 0) {Λ : LorentzGroup 3}
   · simp only [hμ, if_true] at h2 ⊢
     exact (mul_left_inj' hm).1 (by simpa using h2)
   · simp only [hμ, if_false] at h2 ⊢
-    exact h2.resolve_right hm
+    exact (mul_eq_zero.1 h2).resolve_right hm
 
 /-- The defining relation `Λᵀ η Λ = η` on the entry `(a, b)`. -/
 lemma lorentz_entry_rel (Λ : LorentzGroup 3) (a b : Fin 1 ⊕ Fin 3) :
-    ∑ μ, Λ.1 μ a * (Sum.elim (fun _ => (1 : ℝ)) (fun _ => (-1 : ℝ)) μ) * Λ.1 μ b = minkowskiMatrix a b := by
+    ∑ μ, Λ.1 μ a * minkowskiMatrix μ μ * Λ.1 μ b = minkowskiMatrix a b := by
   have h := (mem_iff_transpose_mul_minkowskiMatrix_mul_self Λ.1).1 Λ.2
   have h2 := congrFun (congrFun h a) b
-  rw [minkowskiMatrix.as_diagonal] at h2 ⊢
-  simpa [Matrix.mul_apply, Matrix.mul_diagonal] using h2
+  simp only [Matrix.mul_apply, Matrix.transpose_apply] at h2
+  rw [← h2]
+  refine Finset.sum_congr rfl fun x _ => ?_
+  rw [Finset.sum_eq_single x (fun y _ hy => by rw [minkowskiMatrix.off_diag_zero hy]; ring) (by simp)]
 
 /-- All entries of an element of the little group of the rest momentum have modulus at most one. -/
 lemma littleGroup_massive_entry_bound {m : ℝ} (hm : m ≠ 0) {Λ : LorentzGroup 3}
@@ -90,12 +92,14 @@ lemma littleGroup_massive_entry_bound {m : ℝ} (hm : m ≠ 0) {Λ : LorentzGrou
     · simp [hc]
   · have hrow : Λ.1 (Sum.inl 0) (Sum.inr j) = 0 := by
       have := lorentz_entry_rel Λ (Sum.inl 0) (Sum.inr j)
-      simp [Fintype.sum_sum_type, hc, Fin.sum_univ_three, minkowskiMatrix.as_diagonal] at this
+      have h0 : minkowskiMatrix (Sum.inl (0 : Fin 1)) (Sum.inr j) = (0 : ℝ) :=
+        minkowskiMatrix.off_diag_zero (by simp)
+      simp [Fintype.sum_sum_type, hc, Fin.sum_univ_three, minkowskiMatrix.inl_0_inl_0, h0] at this
       simpa using this
     have hsq : ∑ i : Fin 3, Λ.1 (Sum.inr i) (Sum.inr j) ^ 2 = 1 := by
       have := lorentz_entry_rel Λ (Sum.inr j) (Sum.inr j)
-      simp [Fintype.sum_sum_type, hrow, minkowskiMatrix.as_diagonal] at this
-      nlinarith [this]
+      simp [Fintype.sum_sum_type, hrow, minkowskiMatrix.inr_i_inr_i] at this
+      simpa [sq] using this
     rcases a with ⟨a0⟩ | i
     · fin_cases a0; simp [hrow]
     · have hle : Λ.1 (Sum.inr i) (Sum.inr j) ^ 2 ≤ 1 := by
@@ -116,11 +120,15 @@ theorem isCompact_littleGroup_massive {m : ℝ} (hm : m ≠ 0) :
     rw [this]
     exact isClosed_singleton.preimage hcont
   have hK : IsCompact {M : Matrix (Fin 1 ⊕ Fin 3) (Fin 1 ⊕ Fin 3) ℝ | ∀ a b, M a b ∈ Set.Icc (-1 : ℝ) 1} := by
-    have : IsCompact (Set.univ.pi fun a : Fin 1 ⊕ Fin 3 => Set.univ.pi fun b : Fin 1 ⊕ Fin 3 => Set.Icc (-1 : ℝ) 1) :=
+    have h1 : IsCompact (Set.univ.pi fun a : Fin 1 ⊕ Fin 3 => Set.univ.pi fun b : Fin 1 ⊕ Fin 3 =>
+        Set.Icc (-1 : ℝ) 1 : Set (Matrix (Fin 1 ⊕ Fin 3) (Fin 1 ⊕ Fin 3) ℝ)) :=
       isCompact_univ_pi fun a => isCompact_univ_pi fun b => isCompact_Icc
-    convert this using 1
-    ext M
-    simp [Set.mem_pi]
+    have h2 : {M : Matrix (Fin 1 ⊕ Fin 3) (Fin 1 ⊕ Fin 3) ℝ | ∀ a b, M a b ∈ Set.Icc (-1 : ℝ) 1} =
+        (Set.univ.pi fun a : Fin 1 ⊕ Fin 3 => Set.univ.pi fun b : Fin 1 ⊕ Fin 3 =>
+          Set.Icc (-1 : ℝ) 1 : Set (Matrix (Fin 1 ⊕ Fin 3) (Fin 1 ⊕ Fin 3) ℝ)) := by
+      ext M
+      exact ⟨fun h a _ b _ => h a b, fun h a b => h a (Set.mem_univ _) b (Set.mem_univ _)⟩
+    rw [h2]; exact h1
   rw [LorentzGroup.isClosedEmbedding_val.isInducing.isCompact_iff]
   refine hK.of_isClosed_subset (LorentzGroup.isClosedEmbedding_val.isClosedMap _ hclosed) ?_
   rintro _ ⟨Λ, hΛ, rfl⟩ a b
