@@ -23,8 +23,10 @@ its pages relate to the printed book>`; `edition` is required with `fulltext`. O
 file is noticed) and `page_offset: N` (PDF page minus printed page, for a file whose pages carry
 no printed numbers). The file is fetched once into the cache, and its hashes go into the record.
 Its locations are checked in it page by page: the label must occur where the result is stated,
-not where it is cited (a theorem-like label at the start of a line followed by "." or "(", an
-equation number set apart at the end of a line, a section heading at the start of a line), with
+not where it is cited (a theorem-like label at the start of a line followed by "." or "(", its
+word allowed the letters OCR confuses in a scanned book's text layer: m as two or three of its
+strokes ('Theorelll', 'TheoreDl'); l, i, 1 and |; o and 0; e and c; an equation number set apart
+at the end of a line, a section heading at the start of a line), with
 one of the check words near it; a page given as "p. 136" or "pp. 136-137" must be the printed
 page of that occurrence. The printed page is the PDF page minus the offset that the page numbers
 in the headers and footers agree on.
@@ -280,17 +282,33 @@ def split_page(loc):
     return loc[:m.start()].strip(), (a, int(m.group(2) or a))
 
 
+# The letters OCR confuses in a scanned book's text layer: m read as two or three of its strokes
+# (each l, I, 1, |, D, U, n or r: 'Theorelll', 'TheoreDl', 'TheoreIn', 'TheorelU', 'LeDlDla' and
+# 'Lelllllla' for Theorem and Lemma in Loomis-Sternberg's scan, where 63 of 195 Theorem and 22 of
+# 74 Lemma statement lines are read so); l, i, 1 and | for one another; o and 0; e and c. Any
+# other letter must be the label's own (the match ignores case).
+OCR_LETTER = {"m": r"(?:m|[il1|dunr]{2,3})", "l": "[il1|]", "i": "[il1|]", "o": "[o0]", "e": "[ec]", "c": "[ce]"}
+
+
+def ocr_word(word):
+    """A regex for a label word as the text layer of a scanned book may give it (OCR_LETTER)."""
+    return "".join(OCR_LETTER.get(ch.lower(), re.escape(ch)) for ch in word)
+
+
 def defining_pattern(label):
     """A regex for where a label is stated rather than cited, in page-layout text: a theorem-like
     label at the start of a line followed by '.' or '(' ('Theorem 6.6 (Stone).', 'Lemma 6.12.'),
-    an equation number set apart at the end of a line, a section heading at the start of a line."""
+    its word allowed OCR's letter confusions (ocr_word), an equation number set apart at the end
+    of a line, a section heading at the start of a line."""
     m = re.match(r"\s*(?:eqs?\.?|equations?)\s*\(?([0-9A-Za-z.]+)\)?", label, re.I)
     if m:
         return r"(?m)[ \t]{2,}\(\s*" + re.escape(m.group(1)) + r"\s*\)[ \t]*$"
     for lab in LABELS:
         m = re.match(r"\s*" + lab + r"s?\.?\s+([0-9A-Z][0-9A-Z.]*[0-9A-Za-z]?)", label, re.I)
         if m and lab not in ("Section", "Chapter", "Appendix"):
-            return r"(?mi)^[ \t]*" + lab + r"[ \t]*" + re.escape(m.group(1).rstrip(".")) + r"[ \t]*(?:\.(?!\d)|\()"
+            # (?<!\d): a stroke read as 1 is never the number's own first digit ('TheoreD13.1')
+            return (r"(?mi)^[ \t]*" + ocr_word(lab) + r"[ \t]*(?<!\d)" + re.escape(m.group(1).rstrip("."))
+                    + r"[ \t]*(?:\.(?!\d)|\()")
     return location_pattern(label)
 
 
