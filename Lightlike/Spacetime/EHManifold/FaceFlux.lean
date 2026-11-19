@@ -43,6 +43,44 @@ lemma sum_sum_ite_right (i : Fin n) (F : Fin n → Fin n → ℝ) :
     ∑ σ, ∑ ν, (if ν = i then F σ ν else 0) = ∑ σ, F σ i :=
   Finset.sum_congr rfl fun σ _ => by simp
 
+/-- **The variation of the Christoffel symbols at a point of a face on which the perturbation vanishes**:
+only the normal derivative `∂_i h` enters. -/
+theorem dChristoffel_of_vanishing_on_face (g h : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ)
+    (x : Fin n → ℝ) (i : Fin n) (hx0 : h x = 0)
+    (htan : ∀ σ a b, σ ≠ i → pd σ (fun z => h z a b) x = 0) (ρ σ ν : Fin n) :
+    dChristoffel g h ρ σ ν x =
+      (1 / 2) * ((if σ = i then ∑ l, (g x)⁻¹ ρ l * pd i (fun z => h z l ν) x else 0) +
+        (if ν = i then ∑ l, (g x)⁻¹ ρ l * pd i (fun z => h z l σ) x else 0) -
+        (g x)⁻¹ ρ i * pd i (fun z => h z σ ν) x) := by
+  have hpd : ∀ τ a b, pd τ (fun z => h z a b) x =
+      if τ = i then pd i (fun z => h z a b) x else 0 := by
+    intro τ a b
+    by_cases hτ : τ = i
+    · rw [if_pos hτ, hτ]
+    · rw [if_neg hτ, htan τ a b hτ]
+  unfold dChristoffel
+  rw [hx0]
+  simp only [Matrix.mul_zero, Matrix.zero_mul, Matrix.zero_apply, neg_zero, zero_mul, zero_add]
+  congr 1
+  rw [hpd σ, hpd ν]
+  have h3 : ∀ l, (g x)⁻¹ ρ l * ((if σ = i then pd i (fun z => h z l ν) x else 0) +
+        (if ν = i then pd i (fun z => h z l σ) x else 0) - pd l (fun z => h z σ ν) x) =
+      (if σ = i then (g x)⁻¹ ρ l * pd i (fun z => h z l ν) x else 0) +
+        (if ν = i then (g x)⁻¹ ρ l * pd i (fun z => h z l σ) x else 0) -
+        (if l = i then (g x)⁻¹ ρ l * pd i (fun z => h z σ ν) x else 0) := by
+    intro l
+    rw [hpd l σ ν]
+    by_cases hσ : σ = i <;> by_cases hν : ν = i <;> by_cases hl : l = i <;>
+      simp only [hσ, hν, hl, if_true, if_false] <;> ring
+  have h4 : ∀ c : Fin n → ℝ, ∀ P : Prop, ∀ [Decidable P],
+      ∑ l, (if P then c l else 0) = if P then ∑ l, c l else 0 := by
+    intro c P _
+    by_cases hP : P
+    · simp only [hP, if_true]
+    · simp only [hP, if_false, Finset.sum_const_zero]
+  simp only [hpd, h3, Finset.sum_add_distrib, Finset.sum_sub_distrib, h4,
+    Finset.sum_ite_eq', Finset.mem_univ, if_true]
+
 /-- **The Palatini vector at a point of a face on which the perturbation vanishes.** -/
 theorem Wvec_of_vanishing_on_face (g h : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ) (x : Fin n → ℝ)
     (i : Fin n) (hx0 : h x = 0)
@@ -66,15 +104,7 @@ theorem Wvec_of_vanishing_on_face (g h : (Fin n → ℝ) → Matrix (Fin n) (Fin
       (1 / 2) * ((if σ = i then ∑ l, G ρ l * D l ν else 0) +
         (if ν = i then ∑ l, G ρ l * D l σ else 0) - G ρ i * D σ ν) := by
     intro ρ σ ν
-    unfold dChristoffel
-    simp only [hx0, Matrix.mul_zero, Matrix.zero_mul, Matrix.zero_apply, neg_zero, zero_mul, zero_add,
-      hpd, ← hG]
-    congr 1
-    have h3 : ∑ l, G ρ l * (if l = i then D σ ν else 0) = G ρ i * D σ ν := by
-      simp
-    by_cases hσ : σ = i <;> by_cases hν : ν = i <;>
-      simp only [hσ, hν, if_true, if_false, mul_add, mul_sub, mul_zero, add_zero, zero_add,
-        Finset.sum_add_distrib, Finset.sum_sub_distrib, h3]
+    rw [dChristoffel_of_vanishing_on_face g h x i hx0 htan, hG, hD]
   obtain ⟨u, hu⟩ : ∃ u : Fin n → ℝ, u = fun ν => ∑ l, G i l * D l ν := ⟨_, rfl⟩
   obtain ⟨T, hT⟩ : ∃ T : ℝ, T = ∑ σ, ∑ ν, G σ ν * D σ ν := ⟨_, rfl⟩
   have hA : ∑ σ, ∑ ν, G σ ν * dChristoffel g h i σ ν x =
@@ -128,8 +158,9 @@ theorem Wvec_of_vanishing_on_face (g h : (Fin n → ℝ) → Matrix (Fin n) (Fin
     unfold Wvec
     rw [← hG, hA, hB]
     ring
+  have hDapp : ∀ σ ν, pd i (fun z => h z σ ν) x = D σ ν := fun σ ν => by rw [hD]
   rw [hW, ← hG]
-  show _ = ∑ σ, ∑ ν, (G i σ * G i ν - G i i * G σ ν) * D σ ν
+  simp only [hDapp]
   have e8 : ∑ σ, ∑ ν, (G i σ * G i ν - G i i * G σ ν) * D σ ν =
       ∑ σ, ∑ ν, G i σ * G i ν * D σ ν - G i i * T := by
     rw [hT, Finset.mul_sum, ← Finset.sum_sub_distrib]
