@@ -90,7 +90,6 @@ omit hr hrb
 variable [SecondCountableTopology M] [T2Space M] [IsManifold 𝓘(ℝ, Fin n → ℝ) 2 M]
   [MeasurableSpace M] [BorelSpace M]
 
-omit p in
 /-- **The first variation of the Einstein–Hilbert action on a manifold**, for a perturbation of the metric
 by a symmetric tensor field with compact support. -/
 theorem eh_first_variation_manifold_compact (g : NondegMetric 𝓘(ℝ, Fin n → ℝ) M)
@@ -118,7 +117,7 @@ theorem eh_first_variation_manifold_compact (g : NondegMetric 𝓘(ℝ, Fin n �
     intro q hq
     obtain ⟨p, hp, hqU⟩ := mem_iUnion₂.1 (htK hq)
     obtain ⟨k, hk, hkp⟩ := List.getElem_of_mem (Finset.mem_toList.2 hp)
-    refine ⟨k, hN ▸ hk, ?_⟩
+    refine ⟨k, by rw [hN]; exact hk, ?_⟩
     have hxk : x k = p := by
       rw [hx]
       show t.toList.getD k p₀ = p
@@ -224,6 +223,6 @@ theorem eh_first_variation_manifold_compact (g : NondegMetric 𝓘(ℝ, Fin n �
     (fun k => (image_mono inter_subset_right).trans
       (image_coverC_subset (x k) (hr0 (x k)) (hrball (x k))))
     (fun k => MeasurableSet.disjointed hFm k) hAT (disjoint_disjointed F) hAK h hsupp
-    (fun i => f i) (fun i => (f i).contMDiff) hρ1 hρT
+    (fun i q => f i q) (fun i => (f i).contMDiff) hρ1 hρT
 
 end Lightlike

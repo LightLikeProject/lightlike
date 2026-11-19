@@ -107,12 +107,16 @@ theorem hasDerivAt_ehAction_smulFun (h : SymBilinField 𝓘(ℝ, Fin n → ℝ) 
     rw [hAK, iUnion₂_inter]
   have hd1 : Set.Pairwise (↑(Finset.range N)) (Function.onFun Disjoint fun k => A k ∩ tsupport ρ) :=
     fun i _ j _ hij => (hAd hij).mono inter_subset_left inter_subset_left
-  have e1 := ehAction_biUnion (g.perturb (h.smulFun ρ hρ) t) Λ (Finset.range N)
-    (fun k => A k ∩ tsupport ρ) T x (fun k _ => (hA k).inter hS) hd1 (fun k _ => hT k)
-    (fun k _ => hT0 k) (fun k _ => inter_subset_left.trans (hAT k))
-  have e0 := ehAction_biUnion (g.perturb (h.smulFun ρ hρ) t) Λ (Finset.range N) A T x
-    (fun k _ => hA k) (fun i _ j _ hij => hAd hij) (fun k _ => hT k) (fun k _ => hT0 k)
-    (fun k _ => hAT k)
+  have e1 : ehAction (g.perturb (h.smulFun ρ hρ) t) Λ (⋃ k ∈ Finset.range N, (A k ∩ tsupport ρ)) =
+      ∑ k ∈ Finset.range N, ehAction (g.perturb (h.smulFun ρ hρ) t) Λ (A k ∩ tsupport ρ) :=
+    ehAction_biUnion (g.perturb (h.smulFun ρ hρ) t) Λ (Finset.range N)
+      (fun k => A k ∩ tsupport ρ) T x (fun k _ => (hA k).inter hS) hd1 (fun k _ => hT k)
+      (fun k _ => hT0 k) (fun k _ => inter_subset_left.trans (hAT k))
+  have e0 : ehAction (g.perturb (h.smulFun ρ hρ) t) Λ (⋃ k ∈ Finset.range N, A k) =
+      ∑ k ∈ Finset.range N, ehAction (g.perturb (h.smulFun ρ hρ) t) Λ (A k) :=
+    ehAction_biUnion (g.perturb (h.smulFun ρ hρ) t) Λ (Finset.range N) A T x
+      (fun k _ => hA k) (fun i _ j _ hij => hAd hij) (fun k _ => hT k) (fun k _ => hT0 k)
+      (fun k _ => hAT k)
   rw [hKi, e1, ← Finset.sum_add_distrib]
   nth_rewrite 1 [hAK]
   rw [e0]
