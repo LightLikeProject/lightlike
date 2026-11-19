@@ -16,5 +16,9 @@ for each `y`, p. 10); Section 9.1, pp. 38-39 (eq. (70), quasi-free vectors; Theo
 | Theorem 39 (1), p. 39: `y₁(η + 2iω)y₂ = (Ψ|φ(y₁)φ(y₂)Ψ)` | `CCRRep.IsQuasiFree.inner_field_field`: `(φ(y₁)Ψ|φ(y₂)Ψ) = ½(η(y₁,y₂) + iσ(y₁,y₂))`; `norm_field_sq`: `‖φ(y)Ψ‖² = ½ η(y,y)` | (representation) `(Ψ|φ(y₁)φ(y₂)Ψ)` is read as `(φ(y₁)Ψ|φ(y₂)Ψ)`, equal to it whenever `φ(y₂)Ψ ∈ Dom φ(y₁)` since `φ(y₁)` is symmetric. Source error: the printed `η + 2iω` does not follow from (70); the expansion of `exp(-¼ t²yηy)` to second order gives `(Ψ|φ(y)²Ψ) = ½ yηy` (not `yηy` as in the proof), and the commutation relation gives the imaginary part `½ y₁ωy₂`; check: the Fock vacuum is quasi-free with `η = Re⟪·,·⟫` (`FockRep.isQuasiFree_vacuum`) and its two-point function is `½⟪f, g⟫` (`FockRep.inner_field_field_vacuum`, `TestsQuasiFree`) |
 | Theorem 39 (2), p. 39: `|y₁ωy₂| ≤ 2 |y₁ηy₁|^{1/2} |y₂ηy₂|^{1/2}` | `CCRRep.IsQuasiFree.abs_symp_le_two_mul` (as printed), from `abs_symp_le`: `|σ(y₁,y₂)| ≤ η(y₁,y₁)^{1/2} η(y₂,y₂)^{1/2}` | matches; the constant `1` of `abs_symp_le` is sharp (the Fock vacuum with `y₂ = i y₁`) |
 
-Not stated (open): Theorem 38 (Wick's theorem in the operator form: `Ψ ∈ Dom(φ(y₁)⋯φ(yₙ))` and the pairing formula for
-`(Ψ|φ(y₁)⋯φ(yₙ)Ψ)`, and the converse).
+Helper, no source statement claimed: `QuasiFreeWick` proves Wick's formula in generating-function form. The n-point function
+`CCRRep.npoint` is `(-i)ⁿ ∂₀ ⋯ ∂ₙ₋₁` at `0` of `t ↦ (Ψ|W(t₀y₀) ⋯ W(tₙ₋₁yₙ₋₁)Ψ)`. For a quasi-free `Ψ` it is the sum over
+pairings of the two-point functions `½(η + iσ)` (`npoint_eq_haf`, `npoint_two`), and it vanishes for odd `n`.
+
+Not stated (open): Theorem 38 (Wick's theorem in the operator form: `Ψ ∈ Dom(φ(y₁)⋯φ(yₙ))`, the identification of
+`npoint` with `(Ψ|φ(y₁)⋯φ(yₙ)Ψ)`, and the converse).

@@ -315,6 +315,7 @@ import Lightlike.OperatorAlgebras.StoneGenerator
 import Lightlike.OperatorAlgebras.StoneUnique
 import Lightlike.OperatorAlgebras.StoneVN
 import Lightlike.OperatorAlgebras.QuasiFree
+import Lightlike.OperatorAlgebras.QuasiFreeWick
 import Lightlike.OperatorAlgebras.FermiFockGeneral
 import Lightlike.OperatorAlgebras.TestsBoundedGroup
 import Lightlike.OperatorAlgebras.TestsCARUnique
