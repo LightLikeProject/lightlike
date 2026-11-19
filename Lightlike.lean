@@ -750,6 +750,7 @@ import Lightlike.Spacetime.EHManifold.IntrinsicIntegrand
 import Lightlike.Spacetime.EHManifold.IntrinsicVariation
 import Lightlike.Spacetime.EHManifold.Locality
 import Lightlike.Spacetime.EHManifold.ManifoldCritical
+import Lightlike.Spacetime.EHManifold.ManifoldStationary
 import Lightlike.Spacetime.EHManifold.ManifoldVariation
 import Lightlike.Spacetime.EHManifold.Perturbation
 import Lightlike.Spacetime.EHManifold.PerturbationAlgebra
