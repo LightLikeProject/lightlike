@@ -734,6 +734,7 @@ import Lightlike.Spacetime.EHManifold.ActionPieces
 import Lightlike.Spacetime.EHManifold.BallCritical
 import Lightlike.Spacetime.EHManifold.BallCriticalConverse
 import Lightlike.Spacetime.EHManifold.BallVariation
+import Lightlike.Spacetime.EHManifold.BoxDirichlet
 import Lightlike.Spacetime.EHManifold.BoxVariation
 import Lightlike.Spacetime.EHManifold.ChartAction
 import Lightlike.Spacetime.EHManifold.ChartField
