@@ -79,6 +79,7 @@ instance (mult d : K → ℕ) : MulAction (TPerm mult d) (TPairing mult d) where
   one_smul _ := by apply Subtype.ext; rfl
   mul_smul _ _ _ := by apply Subtype.ext; rfl
 
+/-- **The order of the type-graded wreath product**: `|Π_κ S_{d κ} ≀ S_{mult κ}| = ∏_κ (d κ!)^{mult κ} (mult κ)!`. -/
 lemma card_tperm {mult d : K → ℕ} (hd : ∀ κ, 0 < d κ) :
     Nat.card (TPerm mult d) = ∏ κ, (d κ).factorial ^ mult κ * (mult κ).factorial := by
   rw [Nat.card_pi]
