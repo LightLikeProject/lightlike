@@ -65,7 +65,7 @@ A representation of the CAR over `ℝᵐ` is a family of self-adjoint operators 
 
 For a finite-dimensional `h`, the Weyl unitaries are jointly strongly continuous [78]. The Gaussian average `P = ∫ e^{-‖z‖²/4} W z dz` satisfies `P W f P = (2π)^d e^{-‖f‖²/4} P` (von Neumann's identity, from the Gaussian kernel integral [79]), so `P₀ = (2π)^{-d} P` is an orthogonal projection, nonzero on a nonzero space by Fourier inversion, and a unit vector of its range has the Fock vacuum expectation [80]. Hence every representation of the Weyl relations of `h` is the Hilbert sum of Fock representations over an orthonormal basis of the range of `P₀`, it is irreducible iff that range is one-dimensional, and an irreducible one is unitarily equivalent to the Fock representation: the Stone-von Neumann theorem {8} [81].
 
-A map `y ↦ W y` into the unitaries with the Weyl relations is regular as soon as it has a cyclic quasi-free vector `Ψ`, `⟪Ψ, W y Ψ⟫ = exp(-η(y, y)/4)` [82]; then `Ψ` lies in the domain of every field operator `φ(y)`, the generator of `t ↦ W(t y)`, with `⟪φ(y₁)Ψ, φ(y₂)Ψ⟫ = ½(η(y₁, y₂) + i σ(y₁, y₂))` and `|σ(y₁, y₂)| ≤ η(y₁, y₁)^{1/2} η(y₂, y₂)^{1/2}` {9}; the Fock vacuum is quasi-free with `η = Re⟪·,·⟫` [83].
+A map `y ↦ W y` into the unitaries with the Weyl relations is regular as soon as it has a cyclic quasi-free vector `Ψ`, `⟪Ψ, W y Ψ⟫ = exp(-η(y, y)/4)` [82]; then `Ψ` lies in the domain of every field operator `φ(y)`, the generator of `t ↦ W(t y)`, with `⟪φ(y₁)Ψ, φ(y₂)Ψ⟫ = ½(η(y₁, y₂) + i σ(y₁, y₂))` and `|σ(y₁, y₂)| ≤ η(y₁, y₁)^{1/2} η(y₂, y₂)^{1/2}` {9}; the Fock vacuum is quasi-free with `η = Re⟪·,·⟫` [83]. For a quasi-free vector the generating function `t ↦ ⟪Ψ, W(t₀y₀) ⋯ W(tₙ₋₁yₙ₋₁) Ψ⟫` is the exponential of a quadratic form, and its n-point functions, `(-i)ⁿ` times the mixed derivative at `0`, are the sums over pairings of the two-point functions (Wick's formula in generating-function form, from Isserlis' formula for `exp` of a quadratic form) [86].
 
 For a complex Hilbert space `Z` with a Hilbert basis indexed by a linearly ordered `ι`, a Hilbert space with a Hilbert basis `B` indexed by the finite subsets of `ι` is the fermionic Fock space: the creation operators `a*(eⱼ) B S = ±B (S ∪ {j})` and their adjoints satisfy the CAR, `a*(w) = ∑ⱼ ⟪eⱼ, w⟫ a*(eⱼ)` has norm at most `‖w‖`, and the field operators `φ(w) = a*(w) + a(w)` are self-adjoint with `φ(w) φ(w') + φ(w') φ(w) = 2 Re⟪w, w'⟫` and form an irreducible representation [84] {10}; the annihilation operators kill the vacuum and the model `ℓ²(Finset ι)` is checked in [85].
 
@@ -289,6 +289,9 @@ For a complex Hilbert space `Z` with a Hilbert basis indexed by a linearly order
     `OperatorAlgebras.fermiAnn_fermiCre_anticomm`, `OperatorAlgebras.creW`, `OperatorAlgebras.annW_creW_anticomm`,
     `OperatorAlgebras.fockField`, `OperatorAlgebras.fockField_anticomm`, `OperatorAlgebras.fockField_irreducible`
 85. Lightlike/OperatorAlgebras/TestsFermiFock.lean - `OperatorAlgebras.fermiAnn_vacuum`
+86. Lightlike/OperatorAlgebras/QuasiFreeWick.lean - `OperatorAlgebras.mixedDeriv`, `OperatorAlgebras.haf`,
+    `OperatorAlgebras.mixedDeriv_exp_quad`, `OperatorAlgebras.CCRRep.npoint`, `OperatorAlgebras.CCRRep.IsQuasiFree.genFun_eq`,
+    `OperatorAlgebras.CCRRep.IsQuasiFree.npoint_two`, `OperatorAlgebras.CCRRep.IsQuasiFree.npoint_eq_haf`
 
 ## References
 
