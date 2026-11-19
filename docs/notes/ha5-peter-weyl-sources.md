@@ -1,0 +1,164 @@
+# T-HA5 Peter–Weyl: source check and proof route
+
+Status of this note: written on the branch `spinfoam/ha5-peterweyl`, 18 November 2026.
+
+## What was checked against a source
+
+Primary text read (opened and read, 18 November 2026): T. Tao, "The Peter–Weyl theorem, and non-abelian Fourier
+analysis on compact groups", blog post of 23 January 2011,
+https://terrytao.wordpress.com/2011/01/23/the-peter-weyl-theorem-and-non-abelian-fourier-analysis-on-compact-groups/
+(§1 "Proof of the Peter–Weyl theorem": Lemma 2 (Schur), Corollaries 3–5, Propositions 6–8, Theorem 1; §2). The
+page text was read up to character 100000 of 139891; §2 beyond that point was not read. Hypotheses there: `G`
+compact Hausdorff, Haar probability measure; second countability is not assumed.
+
+| Formal statement (Lean) | Source location (Tao) | Match |
+| --- | --- | --- |
+| `schur_zero_or_equivalent` (intertwiner between irreducible unitary matrix representations is `0` or an isomorphism) | Lemma 2 | match; Tao's proof is by the spectral theorem for `T*T`, ours by kernel and range of `T` being invariant (finite dimension) |
+| `schur_scalar` (an endomorphism commuting with an irreducible representation is a scalar) | Lemma 2 / Corollary 4 | match (finite-dimensional case, algebraic closedness of `ℂ`) |
+| `schur_orthogonality_eq` (`∫ ρ_{ij} conj ρ_{lk} = δ_{il} δ_{jk}/dim`) | Corollary 5 (`(1/dim) tr(T) I = ∫ ρ(g) T ρ(g)* dμ`) and the computation in Proposition 8 | match, entrywise form |
+| `schur_orthogonality_ne` | Corollary 3 (subrepresentations of different isomorphism classes are orthogonal), Proposition 8 | match, entrywise form |
+| proof route of `exists_matrixCoeff_ne` (compact self-adjoint convolution operator, finite-dimensional invariant eigenspaces, approximate identity) | Proposition 7 | same strategy; Tao argues by the orthogonal complement of the isotypic components, ours produces matrix coefficients that separate points, then Stone–Weierstrass |
+| Hilbert basis of `L²(G)` from the coefficients of irreducible representations (to do) | Proposition 7 (`L²(G) = ⊕ L²(G)_ξ`), Proposition 8 (`dim(V_ξ)^{1/2} ι_ξ` unitary) | formalised as `peterWeyl_hilbertBasis` and `peterWeyl_isHilbertSum`; see the table under "Additions" below |
+
+Tao does not state the density of the matrix coefficients in `C(G)`; that statement is checked against
+MathWorld / Bröcker–tom Dieck as below.
+
+Source read: the MathWorld article "Peter–Weyl Theorem" (https://mathworld.wolfram.com/Peter-WeylTheorem.html),
+which lists Bröcker–tom Dieck, *Representations of compact Lie groups* (Springer GTM 98, 1985), Chapter III,
+"Representative Functions" (https://rd.springer.com/chapter/10.1007/978-3-662-12918-0_3) among its references. The
+chapter's abstract and the MathWorld statement were read; the text of the book chapter (theorem and equation
+numbers) was **not** read.
+
+| Formal statement (Lean) | Source statement | Match |
+| --- | --- | --- |
+| `peterWeyl_dense_continuous`: the span of the matrix coefficients of finite-dimensional continuous unitary representations is dense in `C(G, ℂ)` in the sup norm, `G` compact Hausdorff | MathWorld, Theorem part 1: for compact `G`, the representative functions are dense in the continuous functions in the supremum norm | representation: the source takes all continuous representations on `ℂⁿ` (the span is the same for compact groups by Weyl's unitary trick, which we do not use); our set is smaller, so the Lean statement implies the source statement. The source says Lie group, we assume a compact Hausdorff group (as the milestone text) |
+| `peterWeyl_dense_L2`: the classes of the coefficients are dense in `L²(G, μ)`, `μ` a regular Haar measure | MathWorld part 2: dense in `L²(G)` for a Haar measure | convention: the Lean statement carries `[μ.Regular]` (Mathlib's `IsHaarMeasure` does not give regularity in the non-second-countable case) |
+
+Checked against Tao's post after this was written: see "Additions" below. Still not checked against a
+source: the character form as stated on MathWorld (part 3).
+The MathWorld page does not state the Hilbert-space decomposition; the book chapter has to be read for it.
+
+## Proof route (not in the source)
+
+The source proof goes through the compact self-adjoint convolution operator. In Lean:
+
+1. `MatrixCoefficient.lean`: the span of the matrix coefficients is a star subalgebra (Kronecker product,
+   conjugate, trivial representation); Stone–Weierstrass reduces density to separation of points.
+2. `ConvolutionOperator.lean`, `KernelOperator.lean`, `KernelAdjoint.lean`, `ConvolutionSelfAdjoint.lean`: the
+   operators `T_k` with continuous kernel on `L²`, compact by Arzelà–Ascoli; the adjoint formula
+   `(T_k)* = T_{k†}` by Stone–Weierstrass on `G × G` (no Fubini, so no second countability).
+3. `LeftTranslation.lean`, `ConvolutionEigen.lean`, `InvariantRep.lean`: `K_φ` commutes with left translations,
+   its eigenspaces for nonzero eigenvalues are finite-dimensional, left invariant, consist of continuous
+   functions, and carry a unitary matrix representation.
+4. `ApproxIdentity.lean`, `PeterWeylSeparation.lean`: approximate identities and the spectral theorem for
+   compact self-adjoint operators (Mathlib) give separation of points.
+5. `PeterWeyl.lean`: the two density statements.
+
+## Additions on `fable2/ha5-peterweyl` (18 November 2026, stream fable2)
+
+Tao's post was read again on 18 November 2026 (characters 0 to 100000 of 139891; the rest of §2 not read).
+Statements read there: "Throughout these notes, G is a fixed compact group" (topological groups Hausdorff,
+normalised Haar measure); Theorem 1 (the regular representation on `L²(G)` is the direct sum of the irreducible
+representations `ρ_ξ`, each with multiplicity `dim V_ξ`); Proposition 7 (`L²(G) = ⊕_ξ L²(G)_ξ`, where
+`L²(G)_ξ` is spanned by the functions `g ↦ ⟨v, ρ_ξ(g) w⟩`); Proposition 8 (`dim(V_ξ)^{1/2} ι_ξ` is unitary
+`HS(V_ξ) → L²(G)_ξ`, with `ι_ξ(T)(g) = ⟨T, ρ_ξ(g)*⟩_HS`); and, in §2, that the characters `χ_ξ` form an
+orthonormal basis of the class functions `L²(G)^G`.
+
+| Formal statement (Lean) | Source location (Tao) | Match |
+| --- | --- | --- |
+| `peterWeyl_isHilbertSum`: `L²(G, μ)` is the Hilbert sum (`IsHilbertSum`) of the subspaces `isotypic μ π`, `π` a class of irreducible unitary matrix representations | Proposition 7 | match. Representation: `isotypic μ π` is the span of the entries `g ↦ ρ(g)_{ij}` of a representative, Tao's `L²(G)_ξ` the span of `g ↦ ⟨v, ρ_ξ(g) w⟩`; the same space (entries are the case of basis vectors, and `isotypic_eq_span_of_mem` shows independence of the representative). Our statement needs `[μ.Regular]` (convention, as for `peterWeyl_dense_L2`) |
+| `finrank_isotypic`: `dim isotypic μ π = (dim π)²` | Proposition 8 (`L²(G)_ξ ≅ HS(V_ξ)`) | weaker in form: the source gives a unitary `HS(V_ξ) → L²(G)_ξ`; we state the dimension and, in `peterWeyl_hilbertBasis`, that the functions `√(dim π) ρ_{ij}` are an orthonormal basis (the images of the matrix units under `√dim · ι_ξ`, up to the index convention). The map `ι_ξ` itself is not defined |
+| `peterWeyl_hilbertBasis`: the functions `√(dim π) · π_{ij}` form a Hilbert basis of `L²(G, μ)` | Propositions 7 and 8 together | representation: basis form of "`L² = ⊕ L²(G)_ξ` and `√dim ι_ξ` unitary" |
+| `character_orthogonality_eq`, `character_orthogonality_ne`: `∫ χ_ρ conj χ_σ = 1` or `0` | §2 (characters orthonormal in `L²(G)^G`), from Corollary 5 by taking traces | match for the orthonormality; the statement that the characters span the class functions is not formalised |
+
+Checks (not source statements): `circle_hilbertBasis`, `circle_irreducible_classification` (U(1));
+`su2_character_orthogonality`, `su2_schur_orthogonality` (SU(2), using `Lightlike.SU2.spinRep`);
+`not_forall_memLp_two_of_measure_univ_eq_top`, `not_memLp_two_of_unique` (infinite Haar measure, e.g. `ℝ`).
+
+Mathlib (pinned v4.35.0 tree, grep on 18 November 2026): no Peter–Weyl theorem and no Schur orthogonality for
+compact groups; `Mathlib/RepresentationTheory/Character.lean` has `char_orthonormal` for finite groups only.
+Reused: Stone–Weierstrass (`ContinuousMap.starSubalgebra_topologicalClosure_eq_top_of_separatesPoints`), the
+spectral theorem for compact self-adjoint operators, `ContinuousMap.toLp_denseRange`, `HilbertBasis.mk`,
+`IsHilbertSum.mkInternal`, `Module.End.exists_eigenvalue`. Aligned with: `Representation.IsIrreducible`
+(`UnitaryMatrixRep.isIrreducible_iff_toRepresentation`); Mathlib's `fourierBasis` on `AddCircle` is the same
+statement as `circle_hilbertBasis` on a different model of the circle. Not read: Bröcker–tom Dieck, Chapter III
+(no access to the text; no theorem numbers from it are cited).
+
+On `fable2/ha5-followup`: `exists_isotypic_isometry` is Tao's Proposition 8 (read, see above): the map
+`T ↦ √(dim ρ) tr(T ρ(·))` is a linear isometric isomorphism onto the isotypic component. Representation: the
+Hilbert–Schmidt space `HS(V_ξ)` is `EuclideanSpace ℂ (ι × ι)` (matrix entries with the Frobenius inner product),
+and Tao's `ι_ξ(T)(g) = ⟨T, ρ_ξ(g)*⟩_HS` is written as `tr(T ρ(g)) = ∑ i j, T (i, j) ρ(g) j i`. Equivariance of
+the map under `G × G` is not stated. `real_not_forall_memLp_two`, `real_character_not_memLp_two`: the check for
+`ℝ` (no source statement).
+
+On `fable2/ha5-next`: `classFunctions_hilbertBasis` (the irreducible characters form a Hilbert basis of the class
+functions) was compared with Tao's post, §2 "Nonabelian Fourier analysis", the unnumbered passage after Remark 9
+(read 18 November 2026): a class function is an `f ∈ L²(G)` with `f(g x g⁻¹) = f(x)`; its Fourier coefficients
+are conjugation invariant, hence scalar by Corollary 5 (cited there as "Lemma 5"), and "the `χ_ξ` form an
+orthonormal basis" of `L²(G)^G`, with `χ_ξ(g) = tr ρ_ξ(g)`. Match. Representation: class functions are the
+classes fixed by the conjugation operators `conjTr μ s` on `L²`; the Fourier coefficient is the matrix of inner
+products `⟪ρ_ij, f⟫`. Also on this branch the hypothesis `[μ.Regular]` is removed from every statement
+(Mathlib's `instRegularOfIsHaarMeasureOfCompactSpace`), and `exists_isotypic_isometry_equivariant` states the
+equivariance of Proposition 8 for left translations (Theorem 1).
+
+## Weyl integration formula for SU(2) (gap row G3-150, started 18 November 2026)
+
+Source read (18 November 2026, PDF text of pages 47 to 51): C. Teleman, *Representation Theory*, lecture notes,
+"CT, Lent 2005" (as printed on the first page), https://math.berkeley.edu/~teleman/math/RepThry.pdf.
+
+| Statement in the source | Location | Content as read |
+| --- | --- | --- |
+| conjugacy classes of SU(2) | Lecture 20, §(20.3), Proposition 20.4, p. 48 | the normalised trace `½ Tr` is a homeomorphism from the set of conjugacy classes of SU(2) onto `[−1, 1]`; matrices in SU(2) are conjugate iff their eigenvalues `{z, z⁻¹}` agree up to order |
+| Weyl integration formula | Lecture 20, §(20.7), Theorem 20.9, p. 49 | for a continuous class function `f` on SU(2): `∫_{SU(2)} f(g) dg = ½ · (1/2π) ∫₀^{2π} f(φ) |Δ(φ)|² dφ = (1/π) ∫₀^{2π} f(φ) sin² φ dφ`, with `dg` of total volume 1, `Δ(φ) = e^{iφ} − e^{−iφ}`, and `f(φ)` the value of `f` at `diag(e^{iφ}, e^{−iφ})` |
+| characters of the irreducible representations | Lecture 21, Theorem 21.1, p. 50 | the character of `Symⁿ ℂ²` is `zⁿ + zⁿ⁻² + … + z⁻ⁿ = (zⁿ⁺¹ − z⁻ⁿ⁻¹)/(z − z⁻¹)`, of norm 1; these are all the irreducible representations |
+
+The source proves Theorem 20.9 geometrically (SU(2) as the unit sphere of the quaternions, slices of constant
+latitude have volume `C sin² φ dφ`). The formalisation is planned by a different route (proof route, not a
+difference of statement): every element is conjugate to a diagonal one, the two sides agree on the characters
+`χ_n` (Schur orthogonality on the left, a trigonometric integral on the right), and polynomials in `cos φ` are
+dense. The general Weyl integration formula for compact connected Lie groups (maximal tori, Weyl group) is not
+started: no source for it has been read. Mathlib (pinned tree): root systems and their Weyl groups exist
+(`Mathlib/LinearAlgebra/RootSystem/`), but there is nothing on maximal tori of compact Lie groups.
+
+Formalised on `fable2/ha5-weyl` (`SU2Conjugacy.lean`, `WeylIntegrationSU2.lean`), compared with the pages read:
+
+| Formal statement (Lean) | Source location (Teleman) | Match |
+| --- | --- | --- |
+| `exists_conj_torus`, `exists_conj_torusExp_Icc`, `su2_eq_of_isClassFunction`: every `g ∈ SU(2)` is conjugate to `diag(e^{iθ}, e^{-iθ})` with `θ ∈ [0, π]`, and a class function is a function of the half-trace | Lecture 20, §(20.3), Proposition 20.4, p. 48 | weaker: the source states a homeomorphism of the space of conjugacy classes with `[−1, 1]`; we state that the half-trace determines the value of every class function (surjectivity onto `[−1, 1]` and the topology of the quotient are not stated) |
+| `weyl_integration_formula_su2`: for a continuous class function `f`, `∫ f dμ = (1/π) ∫₀^{2π} f(diag(e^{iθ}, e^{-iθ})) sin² θ dθ`, `μ` a Haar probability measure | Lecture 20, Theorem 20.9, p. 49 | match (the third expression of the theorem). Convention: the source's `dg` is the Euclidean volume of the unit sphere normalised to 1; ours is any Haar probability measure (the same measure, by uniqueness). The form with `½ (1/2π) |Δ(φ)|²` is not stated separately |
+| `su2Spin_character_torusExp_mul_sin`: `χ_n(diag(e^{iθ}, e^{-iθ})) · sin θ = sin((n+1)θ)`; `su2Spin_character_torusExp`: `χ_n` on the torus is `∑ e^{i(n−2k)θ}`; `su2Spin_character_eq_U`: `χ_n(g) = U_n(½ tr g)` | Lecture 21, Theorem 21.1, p. 50 (`χ_n = zⁿ + zⁿ⁻² + … + z⁻ⁿ = (zⁿ⁺¹ − z⁻ⁿ⁻¹)/(z − z⁻¹)`) | match for the character formula (representation: the representation is `Lightlike.SU2.spinRep n`, the source's `Symⁿ ℂ²`; the quotient form is stated multiplied by `sin θ`). The Chebyshev form is not in the source. Not formalised from Theorem 21.1: that these are all the irreducible representations |
+
+Proof route (differs from the source, which integrates over slices of the 3-sphere): conjugacy to the torus;
+Schur orthogonality gives `∫ χ_n dμ = δ_{n0}`; `(1/π) ∫₀^{2π} U_n(cos θ) sin² θ dθ = δ_{n0}`; the `U_n` span
+`ℝ[X]`; Weierstrass approximation on `[−1, 1]`.
+
+On `fable2/ha5-su2complete` the two statements left weaker above are proved in full:
+
+| Formal statement (Lean) | Source location (Teleman) | Match |
+| --- | --- | --- |
+| `su2_conjClasses_homeomorph` (`SU2ConjClasses.lean`): the half-trace induces a homeomorphism from the quotient of `SU(2)` by conjugation (quotient topology) onto `[−1, 1]`; `su2_isConj_iff`: conjugate iff equal half-trace | Lecture 20, Proposition 20.4, p. 48 | match (representation: the space of conjugacy classes is `Quotient (IsConj.setoid SU2)`) |
+| `su2_irreducible_classification` (`SU2Complete.lean`): every irreducible continuous unitary matrix representation of `SU(2)` is equivalent to `su2Spin n` for some `n`, and has dimension `n + 1` | Lecture 21, Theorem 21.1, p. 50 ("this is the complete list of irreducibles") | match (representation: unitary matrix representations; the source's statement is for continuous finite-dimensional representations, which are unitarisable, a step we do not formalise) |
+| `exists_invariant_inner_product`, `exists_unitary_conj` (`Unitarisable.lean`): for a compact group with its Haar probability measure, every continuous finite-dimensional matrix representation `ρ` has the invariant positive definite form `⟨u, v⟩' = ∫ ⟨ρ(g) u, ρ(g) v⟩ dμ(g)` and is conjugate, `T ρ T⁻¹`, to a continuous unitary matrix representation | Lecture 3, Theorem 3.10 and Remark 3.11, p. 7 (Weyl's unitary trick by averaging, with the Haar measure for compact groups); Lecture 19, Proposition 19.4, p. 44 ("Every finite-dimensional representation of a compact group is unitarisable") | match (representation: matrix representations with continuous entries) |
+| `su2_irreducible_classification_continuous` (`Unitarisable.lean`): every continuous irreducible matrix representation of `SU(2)`, unitary or not, is equivalent to `spinRep n` for some `n`, and has dimension `n + 1` | Lecture 21, Theorem 21.1, p. 50, with Proposition 19.4, p. 44 | match (representation: matrix representations); this lifts the unitarisability step of the row above |
+
+## Weyl integration beyond SU(2): what was read, and why it is not started (18 November 2026)
+
+Read in the same notes (Teleman, Lecture 23, pp. 55 to 56): Theorem 23.11 (Weyl integration for U(N)): for a
+class function `f` on `U(N)`, `∫_{U(N)} f(u) du = (1/N!) (1/(2π)^N) ∫₀^{2π} ⋯ ∫₀^{2π} f(φ₁, …, φ_N) |Δ(z)|² dφ₁ ⋯ dφ_N`,
+with `f(φ₁, …, φ_N) = f(diag[z₁, …, z_N])`, `z_p = e^{iφ_p}`. The notes state it without proof ("We shall not
+prove Proposition 23.9 here; … it reduces to the following integration formula, whose proof, however, is now
+more difficult"), and Theorem 23.8 (the Schur functions are the irreducible characters of U(N)) is derived from
+it. So this source gives no proof to follow for `N > 2`, and the route used for SU(2) (the characters are
+known polynomials in the half-trace, so both sides can be compared on them) is not available: for U(N) the
+character formula is itself a consequence of the integration formula.
+
+No source with a proof of the general formula (compact connected Lie group `G`, maximal torus `T`, Weyl group
+`W`: `∫_G f = (1/|W|) ∫_T f(t) |Δ(t)|² dt`) has been read. Mathlib (pinned tree) has abstract root systems and
+their Weyl groups (`Mathlib/LinearAlgebra/RootSystem/`), but no maximal tori of compact Lie groups, no
+conjugacy of maximal tori, no `N(T)/T`, and no change of variables for `G/T × T → G`. The general statement is
+therefore open in the gap row G3-150, with nothing formalised and nothing cited.
+
+`su2_hilbertBasis` (`SU2PeterWeyl.lean`, branch `fable2/ha5-idle`): the functions `√(n+1) Dⁿ_ij` form a Hilbert
+basis of `L²(SU(2), μ)`. Sources read: Tao §1, Propositions 7 and 8 (the general decomposition and the
+normalisation `dim^{1/2}`), and Teleman, Lecture 21, Theorem 21.1, p. 50 (the list of irreducible
+representations). Neither text states the SU(2) basis as one sentence; the Lean statement is their combination.

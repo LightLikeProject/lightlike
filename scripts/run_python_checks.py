@@ -96,6 +96,7 @@ CHECKS = [
     ("scripts/spinfoam/bing_house_check.py", False),
     ("scripts/spinfoam/gauge_manifold_check.py", False),
     ("scripts/spinfoam/forcechain.py", True),
+    ("scripts/spinfoam/forcing_cocycle_check.py", False),
     ("scripts/spinfoam/gauge_cutoff_limit.py", True),
     ("scripts/spinfoam/robust_check.py", False),
     ("scripts/spinfoam/robust_counterexample_verify.py", False),
@@ -107,7 +108,7 @@ CHECKS = [
 # Scripts that are not cross-checks (tools, the gate itself)
 NOT_CHECKS = {"scripts/ci_check.py", "scripts/prune_docs.py", "scripts/gate.py", "scripts/sixj_support.py", "scripts/tooling_selftest.py",
               "scripts/run_python_checks.py", "scripts/api_map.py",
-              "scripts/leansrc.py", "scripts/proof_task_check.py", "scripts/tasks.py",
+              "scripts/leansrc.py", "scripts/proof_task_check.py", "scripts/comparator_run.py", "scripts/tasks.py",
               "scripts/sources.py", "scripts/doc_refs_check.py", "scripts/leak_check.py", "scripts/generated.py",
               "scripts/regge/regge3d_convergence.py",  # a library of the regge3d_* checks (dihedral); its demo has no verdict
               "scripts/regge/gen_chart_change.py",  # generator of Lightlike/Regge/Conv3/ChartChangeClasses.lean
