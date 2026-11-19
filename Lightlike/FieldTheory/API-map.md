@@ -16,6 +16,8 @@ Wick's theorem: the moment `E[x_{l₀} ⋯ x_{l_{n-1}}]` of the centred Gaussian
 
 The one-variable Wick identity `∫ dx/√(2πħ) e^{-x²/(2aħ)} x^{2n} = √a (aħ)^n (2n - 1)!!` holds for `a, ħ > 0`, and the series `√(2π) Σ_{m<M} (-g/24)^m (4m - 1)!!/m!` approximates `∫ e^{-x²/2 - g x⁴/24} dx` for `g ≥ 0` with an error at most the size of the next term, by the alternating Taylor bound for `e^{-t}` [10] {2}.
 
+Graphs with legs on a half-edge type `π : H → V` are the involutions of `H` (edges are 2-cycles, legs are fixed points); every vertex lies in exactly one closed connected vertex set, and splitting off the component of a vertex gives `#graphs(R) = Σ_{v₀ ∈ S ⊆ R} #connected(S) · #graphs(R \ S)` [12] {2}.
+
 **Missing.** The error bound of the quartic expansion is not stated in Borinsky, who treats the integral formally. The formal integral is compared with Borinsky's Definition 3.1.1 and eq. (3.1.8) {2}, the graphs with Borinsky §2.1 and §2.3 {2}, and Wick's theorem with Tubaro–Zanella's Theorem 2.19 {3}; the Gaussian measure and its integrals are not yet compared with a source.
 
 ## Lean References
@@ -35,9 +37,11 @@ The one-variable Wick identity `∫ dx/√(2πħ) e^{-x²/(2aħ)} x^{2n} = √a 
    `FieldTheory.wick_one_variable`, `FieldTheory.abs_exp_neg_sub_sum_le`, `FieldTheory.quartic_expansion`
 11. Lightlike/FieldTheory/Gaussian/WickSemidef.lean - `FieldTheory.moment_eq_sum_sqrt`, `FieldTheory.sum_prod_delta`,
    `FieldTheory.moment_eq_pairSum_of_posSemidef`
+12. Lightlike/FieldTheory/ZeroDim/Components.lean - `FieldTheory.HalfEdge.invOn`, `FieldTheory.HalfEdge.connInvOn`,
+   `FieldTheory.HalfEdge.existsUnique_componentOn`, `FieldTheory.HalfEdge.card_invOn_eq_sum`
 
 ## References
 
 1. Mathlib, `Mathlib/Probability/Distributions/Gaussian/Multivariate.lean` (`multivariateGaussian`, `stdGaussian`) and `Fernique.lean` (`IsGaussian.memLp_id`).
-2. M. Borinsky, Graphs in perturbation theory: Algebraic structure and asymptotics, PhD thesis, Humboldt-Universität zu Berlin (2018), arXiv:1807.02046, §2.1 (Definitions 2.1.6, 2.1.7, p. 11), §2.3 (Proposition 2.3.1, p. 15) and §3.1 (Definition 3.1.1, eq. (3.1.2), p. 22; Proposition 3.1.1, p. 23; eq. (3.1.8), p. 24).
+2. M. Borinsky, Graphs in perturbation theory: Algebraic structure and asymptotics, PhD thesis, Humboldt-Universität zu Berlin (2018), arXiv:1807.02046, §2.1 (Definitions 2.1.1, 2.1.2, p. 10; Definitions 2.1.6, 2.1.7, p. 11), §2.3 (Proposition 2.3.1, p. 15), §2.4.2 (eqs. (2.4.5)-(2.4.7) and Theorem 2.4.1, pp. 17-18) and §3.1 (Definition 3.1.1, eq. (3.1.2), p. 22; Proposition 3.1.1, p. 23; eq. (3.1.8), p. 24).
 3. L. Tubaro, M. Zanella, An introduction to Malliavin calculus, arXiv:2502.07941v1, Theorem 2.19 (Isserlis formula), p. 9.
