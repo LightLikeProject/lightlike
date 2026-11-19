@@ -7,7 +7,9 @@ public import Lightlike.Poincare.LightCone
 
 For every `SL(2,ℂ)`-invariant measure `μ` on the forward light cone (for instance `d³p / |p|`), the massless induced
 representation of helicity `n/2` preserves `∫ |ψ|² dμ` (`lintegral_normSq_helicityAct_of_invariant`): the helicity
-character has modulus one. Only the invariance of `μ` is used.
+character has modulus one. Only the invariance of `μ` is used. The rotation by `θ` about the momentum acts on the
+states by `e^{i(n/2)θ}` (`helicityChar_coneRot`): helicity `h = n/2`, the little-group content of `W = h P` (the
+check of T-HA6; the Pauli–Lubanski operator of the induced representation itself is not formalised here).
 
 ## References
 
@@ -60,5 +62,33 @@ theorem lintegral_normSq_helicityAct_of_invariant (μ : Measure LightCone)
   exact (show MeasurePreserving (fun P : LightCone => A⁻¹ • P) μ μ from
       ⟨(continuous_smul_lightCone A⁻¹).measurable, hμ A⁻¹⟩).lintegral_comp_emb
     (coneActEquiv A⁻¹).measurableEmbedding (fun P => ENNReal.ofReal (‖ψ P‖ ^ 2))
+
+
+/-! ## Helicity: rotations about the momentum act by `e^{ihθ}` -/
+
+/-- The rotation `diag(e^{iθ/2}, e^{−iθ/2})` about the momentum `(1, 0, 0, 1)`, an element of the little group. -/
+def coneRot (θ : ℝ) : SL2C :=
+  ⟨!![Complex.exp (Complex.I * (θ / 2)), 0; 0, Complex.exp (-(Complex.I * (θ / 2)))], by
+    rw [Matrix.det_fin_two_of, ← Complex.exp_add]; simp⟩
+
+lemma coneRot_mem (θ : ℝ) : coneRot θ ∈ MulAction.stabilizer SL2C coneBase := by
+  rw [MulAction.mem_stabilizer_iff]
+  apply Subtype.ext
+  show actP (coneRot θ) masslessH = masslessH
+  refine (actP_massless_eq_iff _).2 ⟨by simp [coneRot], ?_⟩
+  simp only [coneRot, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.empty_val',
+    Matrix.cons_val_fin_one]
+  rw [Complex.norm_exp]
+  simp
+
+/-- **Helicity.** The helicity character of `n` sends the rotation by `θ` about the momentum to `e^{i(n/2)θ}`:
+the states have helicity `h = n/2`, the content of `W = h P` at the standard momentum. -/
+theorem helicityChar_coneRot (n : ℤ) (θ : ℝ) :
+    helicityChar n ⟨coneRot θ, coneRot_mem θ⟩ = Complex.exp (Complex.I * (n / 2 * θ)) • LinearMap.id := by
+  simp only [helicityChar, MonoidHom.coe_mk, OneHom.coe_mk, coneRot, Matrix.of_apply, Matrix.cons_val',
+    Matrix.cons_val_zero, Matrix.empty_val', Matrix.cons_val_fin_one]
+  rw [← Complex.exp_int_mul]
+  congr 2
+  ring
 
 end Lightlike.Poincare
