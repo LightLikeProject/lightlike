@@ -215,6 +215,7 @@ import Lightlike.Canonical.HolonomyGraph
 import Lightlike.Canonical.HolonomyALGraph
 import Lightlike.Canonical.HolonomyAnalytic
 import Lightlike.Canonical.HolonomyALOrder
+import Lightlike.Canonical.HolonomyCommon
 import Lightlike.Canonical.FoliationLie
 import Lightlike.Canonical.FoliationSpacelike
 import Lightlike.Canonical.FoliationChart

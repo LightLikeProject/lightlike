@@ -84,7 +84,9 @@ graph with `C¹` edges, and the gauge transformations that are the identity at t
 accumulating at a point share a segment there, so they meet in finitely many pieces [36] {5}. The holonomy along an edge, the unique transport in the sense of
 right derivatives, does not depend on the subdivision of the edge into analytic pieces and is unchanged under
 orientation-preserving reparametrisation; a graph refines another when each edge of the latter is a composite of edges of
-the former, and then each holonomy of the coarser graph is a product of holonomies of the finer one [37] {5}.
+the former, and then each holonomy of the coarser graph is a product of holonomies of the finer one [37] {5}. Any two
+graphs have a common refinement, which contains their vertices: their edges are cut at finitely many points, and each
+segment of one graph meets the other only at its end points or is a segment of it, up to reparametrisation [38] {5}.
 
 A grid computation in dimension two (`scripts/adm_algebra_check.py`) supports the three brackets; with the kinetic
 coefficient `1/2` of dimension three, used in dimension two, the bracket of two Hamiltonian constraints differs from
@@ -161,6 +163,9 @@ the momentum constraint of the structure function.
     `Lightlike.Canonical.Edge.meetFrontier_finite`
 37. Lightlike/Canonical/HolonomyALOrder.lean - `Lightlike.Canonical.ALGraph.Le`, `Lightlike.Canonical.ALGraph.hol_of_le`,
     `Lightlike.Canonical.ALEdge.hol_eq_of_eqOn`, `Lightlike.Canonical.ALEdge.isRightTransport_comp`
+38. Lightlike/Canonical/HolonomyCommon.lean - `Lightlike.Canonical.ALGraph.common`, `Lightlike.Canonical.ALGraph.directed`,
+    `Lightlike.Canonical.ALGraph.le_common_left`, `Lightlike.Canonical.ALGraph.le_common_right`,
+    `Lightlike.Canonical.ALGraph.seg_classify`, `Lightlike.Canonical.ALGraph.exists_common_hol`
 
 ## References
 
