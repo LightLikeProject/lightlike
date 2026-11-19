@@ -1051,6 +1051,10 @@ references:
     cite: "P. Hartman, Ordinary Differential Equations, Wiley (1964); SIAM reprint (2002)"
     title: "Ordinary Differential Equations"
     doi: 10.1137/1.9780898719222
+  landsman-1998:
+    cite: "N. P. Landsman, Lecture Notes on C*-Algebras, Hilbert C*-modules, and Quantum Mechanics (1998), arXiv:math-ph/9807030"
+    title: "Lecture notes on C*-algebras, Hilbert C*-modules, and quantum mechanics"
+    arxiv: "math-ph/9807030"
 
 canonical:
   pl-topology: [lickorish-1999, moise-1977]

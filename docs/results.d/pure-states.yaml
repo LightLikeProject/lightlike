@@ -1,0 +1,26 @@
+- id: LL-XXXX-a
+  title: The pure states of C(X) for a compact Hausdorff space X are exactly the evaluations at points, and exactly the multiplicative states
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/PureStates.lean
+  decls: [Lightlike.OperatorAlgebras.PureStates.states, Lightlike.OperatorAlgebras.PureStates.IsPure, Lightlike.OperatorAlgebras.PureStates.mul_of_isPure, Lightlike.OperatorAlgebras.PureStates.exists_eq_eval_of_mul, Lightlike.OperatorAlgebras.PureStates.isPure_evalAt, Lightlike.OperatorAlgebras.PureStates.isPure_iff_exists_eval, Lightlike.OperatorAlgebras.PureStates.isPure_iff_mul]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: landsman-1998, location: "Theorem 2.12.9", check: "pure state"}
+  review: kernel-checked
+  note: "Compared with Landsman, arXiv:math-ph/9807030, Definition 2.8.1 (p. 35, states), Definition 2.12.1 (p. 44), Proposition 2.12.8 and Theorem 2.12.9 with its proof (p. 46) (read). Stated for compact X (the source reduces C_0(X) to this case); a state is a linear functional on C(X, C) that is nonnegative on pointwise nonnegative functions with value 1 at 1 (in C(X) the positive elements are the pointwise nonnegative functions); the homeomorphism of Theorem 2.12.9 is Mathlib's WeakDual.CharacterSpace.homeoEval once pure states are the characters."
+  since: unreleased
+- id: LL-XXXX-b
+  title: The pure states of C_0(X) for a locally compact Hausdorff space X are exactly the evaluations at points
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/PureStatesC0.lean
+  decls: [Lightlike.OperatorAlgebras.PureStates.states₀, Lightlike.OperatorAlgebras.PureStates.IsPure₀, Lightlike.OperatorAlgebras.PureStates.ext_mem_states, Lightlike.OperatorAlgebras.PureStates.isPure_ext, Lightlike.OperatorAlgebras.PureStates.isPure₀_evalAt₀, Lightlike.OperatorAlgebras.PureStates.isPure₀_iff_exists_eval]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: landsman-1998, location: "Theorem 2.12.9", check: "pure state"}
+  review: kernel-checked
+  note: "Compared with Landsman, arXiv:math-ph/9807030, Theorem 2.12.9 and its proof (p. 46, read): the reduction of C_0(X) to C of the one-point compactification. A state of C_0(X) is a positive linear functional with supremum 1 over the [0, 1]-valued functions (Definition 2.8.6, p. 36: positive with norm 1; for a positive functional the norm is this supremum); the extension is Proposition 2.8.7, p. 37; it extends to the state F -> omega(F - F(infinity)) + F(infinity), a pure state to a pure one, and the point at infinity is excluded since a state is nonzero."
+  since: unreleased

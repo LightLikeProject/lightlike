@@ -60,6 +60,8 @@ On `L²(0, 1)`, a vector lies in the domain of the adjoint of `-i d/dx` (on the 
 
 The plane waves `e^{i(θ + 2πn)x}`, `n ∈ ℤ`, lie in the domain of `P_θ` and are orthonormal eigenvectors with eigenvalue `θ + 2πn`; an eigenvector of `P_θ` with eigenvalue `μ ∈ ℂ` has the continuous representative `y(0) e^{iμx}`, so `μ = θ + 2πn` and the eigenspaces are one-dimensional; off `θ + 2πℤ` the resolvent equation is solved explicitly, so the spectrum of `P_θ`, in Physlib's sense, is `θ + 2πℤ` and equals the point spectrum {5}, [69]. `θ` is in the spectrum of `P_θ` and `θ + π` is not [70].
 
+The states of `C(X)` for a compact Hausdorff `X` are the positive linear functionals with `ω 1 = 1`, and the pure ones are the extreme points of this convex set. A pure state is multiplicative: for `0 ≤ g ≤ 1` it splits as `ω(g) ω(· g)/ω(g) + ω(1 - g) ω(· (1 - g))/ω(1 - g)`, so `ω(f g) = ω(f) ω(g)`; a multiplicative state is continuous, its kernel is a closed maximal ideal, so it is the evaluation at a point; and every evaluation is pure {6} [71]. On `C(Bool)` the average of the two evaluations is a mixed state [72]. For a locally compact Hausdorff `X`, a state of `C₀(X)` (positive, of norm one) extends to the state `F ↦ ω(F - F(∞)) + F(∞)` of `C(X̃)` on the one-point compactification, a pure one to a pure one, so the pure states of `C₀(X)` are again the evaluations at the points of `X` [73].
+
 ## Lean References
 
 1. Lightlike/OperatorAlgebras/UnitaryGroup.lean - `OperatorAlgebras.UnitaryGroup`,
@@ -239,6 +241,16 @@ The plane waves `e^{i(θ + 2πn)x}`, `n ∈ ℤ`, lie in the domain of `P_θ` an
     `OperatorAlgebras.spectrum_momentumTheta`, `OperatorAlgebras.pointSpectrum_momentumTheta`
 70. Lightlike/OperatorAlgebras/TestsMomentumSpectrum.lean - `OperatorAlgebras.theta_mem_spectrum`,
     `OperatorAlgebras.theta_add_pi_not_mem_spectrum`
+71. Lightlike/OperatorAlgebras/PureStates.lean - `OperatorAlgebras.PureStates.states`, `OperatorAlgebras.PureStates.IsPure`,
+    `OperatorAlgebras.PureStates.mul_of_isPure`, `OperatorAlgebras.PureStates.exists_eq_eval_of_mul`,
+    `OperatorAlgebras.PureStates.isPure_evalAt`, `OperatorAlgebras.PureStates.isPure_iff_exists_eval`,
+    `OperatorAlgebras.PureStates.isPure_iff_mul`
+72. Lightlike/OperatorAlgebras/TestsPureStates.lean - `OperatorAlgebras.PureStates.isPure_evalAt_true`,
+    `OperatorAlgebras.PureStates.not_isPure_half` (a mixed state of `C(Bool)`)
+73. Lightlike/OperatorAlgebras/PureStatesC0.lean - `OperatorAlgebras.PureStates.states₀`, `OperatorAlgebras.PureStates.IsPure₀`,
+    `OperatorAlgebras.PureStates.ext`, `OperatorAlgebras.PureStates.ext_mem_states`, `OperatorAlgebras.PureStates.isPure_ext`,
+    `OperatorAlgebras.PureStates.evalAt₀`, `OperatorAlgebras.PureStates.isPure₀_evalAt₀`,
+    `OperatorAlgebras.PureStates.isPure₀_iff_exists_eval`
 
 ## References
 
@@ -253,3 +265,5 @@ The plane waves `e^{i(θ + 2πn)x}`, `n ∈ ℤ`, lie in the domain of `P_θ` an
    (github.com/physicslib/physicslib4, Apache-2.0).
 5. G. Bonneau, J. Faraut and G. Valent, *Self-adjoint extensions of operators and the teaching of quantum
    mechanics*, arXiv:quant-ph/0103153, Appendix A.3 and Section 5.3, eqs. (14) and (15).
+6. N. P. Landsman, *Lecture Notes on C*-Algebras, Hilbert C*-modules, and Quantum Mechanics*, 1998,
+   arXiv:math-ph/9807030, Section 2.12: Definition 2.12.1, Proposition 2.12.8 and Theorem 2.12.9.
