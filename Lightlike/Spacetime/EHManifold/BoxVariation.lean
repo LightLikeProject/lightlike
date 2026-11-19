@@ -72,8 +72,11 @@ theorem eh_variation_box (a b : Fin (n + 1) → ℝ) (hle : a ≤ b) (Λ : ℝ) 
       (-∫ x in Icc a b, √|(g x).det| * ∑ α, ∑ β, h x α β * einsteinUp g Λ x α β) +
         ∫ x in Icc a b, ehFluxDiv g h x := by
     rw [← integral_neg]
-    have e := integral_add (hbulk.continuousOn.integrableOn_compact hT)
-      (hdivc.continuousOn.integrableOn_compact hT)
+    have i1 : IntegrableOn (fun x => -√|(g x).det| * ∑ α, ∑ β, h x α β * einsteinUp g Λ x α β)
+        (Icc a b) volume := hbulk.continuousOn.integrableOn_compact hT
+    have i2 : IntegrableOn (ehFluxDiv g h) (Icc a b) volume :=
+      hdivc.continuousOn.integrableOn_compact hT
+    have e := integral_add i1 i2
     rw [← e]
     refine integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)
     show _ = -(√|(g x).det| * ∑ α, ∑ β, h x α β * einsteinUp g Λ x α β) + ehFluxDiv g h x
@@ -93,7 +96,7 @@ theorem eh_variation_box (a b : Fin (n + 1) → ℝ) (hle : a ≤ b) (Λ : ℝ) 
       (by
         have : (fun x => ∑ i, fderiv ℝ (ehFlux g h i) x (Pi.single i 1)) = ehFluxDiv g h := rfl
         rw [this]
-        exact hdivc.continuousOn.integrableOn_compact hT)
+        exact (hdivc.continuousOn.integrableOn_compact hT : IntegrableOn (ehFluxDiv g h) (Icc a b) volume))
     exact key
   rw [hsplit, hdiv] at hmain
   exact hmain
