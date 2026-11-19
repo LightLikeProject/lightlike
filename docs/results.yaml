@@ -3560,3 +3560,31 @@
   review: kernel-checked
   note: "Compared with Elvang–Huang §3.2, (3.11), p. 37, the remark on the non-adjacent case, p. 39 ('Try your own hands on the proof for the non-adjacent case'), and the cyclic property, p. 25, stated just before (2.82) (read). Conditional on the BCFW large-z falloff (3.11), taken as a hypothesis: the single-diagram recursions of the family (IsBCFWFamilyMHV) encode the validity of the adjacent [−,+⟩ shift, whose 1/z falloff the source quotes from [17] and does not derive. Representation: the negative gluons at 0 and j, other positions by cyclic relabelling (p. 25, property 1)."
   since: unreleased
+- id: LL-0268
+  title: The Brydges–Kennedy Taylor forest formula, H(1) as the sum over forests F of the integrals over the unit cube of F of the F-th partial derivative of H at X^F(h), for smooth H from R^{P_n} to a Banach space
+  area: FieldTheory
+  file: Lightlike/FieldTheory/Forest/Formula.lean
+  decls: [Lightlike.FieldTheory.Forest.forest_formula_restrict, Lightlike.FieldTheory.Forest.forest_formula, Lightlike.FieldTheory.Forest.forestPoint_eq_path_inf]
+  status: proven
+  tier: established
+  main: true
+  source:
+    refs:
+      - {ref: abdesselam-rivasseau-1994, location: "Theorem III.1", check: "forest"}
+      - {ref: gurau-rivasseau-sfondrini-2014, location: "Theorem 6.1", check: "forest"}
+  review: kernel-checked
+  note: "Compared with Abdesselam and Rivasseau, arXiv:hep-th/9409094, Theorem III.1, eq. (III.2), p. 13, and the definition of h^F_l on p. 3 (read): for H in the space of smooth functions from R^{P_n} to a Banach space V, H(1) is the sum over the forests F of the integrals over the h_l in the unit interval, l in F, of the product over l in F of the partial derivatives in x_l of H at X^F(h), whose entry at the link l is the infimum of the h along the unique path of F joining the ends of l, and 0 if there is none. forest_formula_restrict is this statement for H : (Link n -> R) -> V with ContDiff R infinity H and V a real Banach space; forest_formula states it with the integral over the whole cube of R^{P_n} of the same integrand, a function of the h_l, l in F, only. Differences from the cited theorem, all representation, with the meaning unchanged: the points 1, ..., n are Fin n and P_n is Link n, the unordered pairs s(a, b) with a /= b; X^F(h)_l is defined by the ultrametric of F (the largest h_m, m in F, such that the ends of l are joined by the links of F with parameter at least h_m, 0 if none), which for h >= 0, in particular on the unit cube, is the infimum along the path of F and 0 if there is no path (forestPoint_eq_path_inf, forestPoint_of_not_linked); the integral over the unit cube of F is the integral over F -> R for the product of the uniform measures on the unit interval, h extended by 0 off F, which does not change X^F(h) (forestPoint_congr); the product of the partial derivatives is the iterated Frechet partial derivative pdF along the coordinate vectors, independent of the order (pd_comm, pdF_insert). Proof: not the source's (the algebraic formula (II.1) for polynomials and density in S, pp. 13-14), but the iterated Taylor interpolation of Gurau, Rivasseau and Sfondrini, arXiv:1401.5003, Theorem 6.1, eq. (6.1), p. 107, and its proof, pp. 107-109 (read), as an induction on the number of links in which the new link is the one with the smallest parameter (T_succ, interp_insert_update); ties have measure zero (cube_eq_null)."
+  since: unreleased
+- id: LL-0269
+  title: The forest matrix, with 1 on the diagonal and the infimum of the parameters along the paths of F off it, is positive semidefinite for parameters at most 1
+  area: FieldTheory
+  file: Lightlike/FieldTheory/Forest/Positivity.lean
+  decls: [Lightlike.FieldTheory.Forest.forestMatrix, Lightlike.FieldTheory.Forest.posSemidef_forestMatrix]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: rivasseau-wang-2010, location: "Theorem II.1", check: "positive"}
+  review: kernel-checked
+  note: "Compared with Rivasseau and Wang, arXiv:1003.1037, Theorem II.1, eq. (II-1), p. 2, and the convex combination (II-4) of block matrices of ones, pp. 2-3 (read): the symmetric n x n matrix X^F with X_ii = 1 and X_ij the infimum of the parameters w on the path of the forest F from i to j (0 if there is none) is positive. posSemidef_forestMatrix: for any finite set of links F and parameters with w_l <= 1 on F, forestMatrix F w (1 on the diagonal, the ultrametric of F off it, equal to the path infimum for w >= 0 by forestPoint_eq_path_inf and forestMatrix_eq_forestPoint) is Matrix.PosSemidef. Difference, representation, with the meaning unchanged: positive is Matrix.PosSemidef (symmetric with x^T X x >= 0); the matrix can be singular (one link with parameter 1 gives the 2 x 2 matrix of ones), so the source's positive is positive semidefinite. Not a difference: the statement holds for any finite set of links and needs only w_l <= 1 on F, which contains the source's case of a forest with parameters in the unit interval. Proof: the integral form of (II-4): for t in (0, 1], t <= X_ij exactly when i and j are joined by the links with w >= t (le_ultra_iff), so X is the integral over t of the block matrices of ones of those clusters, each positive (sum_block_nonneg)."
+  since: unreleased

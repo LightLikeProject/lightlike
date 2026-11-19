@@ -14,6 +14,21 @@
   "citations": 73,
   "citations_via": "Semantic Scholar"
  },
+ "abdesselam-rivasseau-1994": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Trees, forests and jungles: a botanical garden for cluster expansions",
+  "locations": {
+   "Theorem III.1": {
+    "verified": true,
+    "snippet": "Theorem III.1 (The Brydges-Kennedy Taylor forest formula) \u0012Y Z 1 \u0013\u0012\u0010Y \u0013 X ∂ \u0011 XFBK (h) \u0001 H(1l) = dhl H . (III.2) 0 ∂xl F u−forest l∈F l∈F Here XFBK (h) is the vector (xl )l∈Pn of IRPn defined by xl = hF l (h), which is t",
+    "why": null
+   }
+  },
+  "citations": 162,
+  "citations_via": "Semantic Scholar"
+ },
  "adamo-2018": {
   "checked": "2026-11-19",
   "exists": true,
@@ -2624,6 +2639,21 @@
   "citations": 302,
   "citations_via": "Semantic Scholar"
  },
+ "gurau-rivasseau-sfondrini-2014": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Renormalization: an advanced overview",
+  "locations": {
+   "Theorem 6.1": {
+    "verified": true,
+    "snippet": "Theorem 6.1 (The Forest Formula) XZ f (1) = dwF ∂F f [X F (wF )] (6.1) F where • The sum over F is over forests over n labeled vertices i = 1, · · · , n, in- cluding the empty forest with no edge. Such forests are exactl",
+    "why": null
+   }
+  },
+  "citations": 36,
+  "citations_via": "Semantic Scholar"
+ },
  "gurau-ryan-2012": {
   "checked": "2026-11-08",
   "exists": true,
@@ -4374,6 +4404,21 @@
   },
   "citations": 171,
   "citations_via": "Semantic Scholar"
+ },
+ "rivasseau-wang-2010": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Loop Vertex Expansion for Phi^2k Theory in Zero Dimension",
+  "locations": {
+   "Theorem II.1": {
+    "verified": true,
+    "snippet": "Theorem II.1. X\u0002 Y Z 1 \u0003 Y ∂` ]f · [X F ({w`0 })] \u0001 f (1, . . . , 1) = dw` [ (II-1) F `∈F 0 `∈F where • the sum over F is over forests over the n vertices, including the empty one, • xF 0 ` ({w`0 }) is the infimum of the",
+    "why": null
+   }
+  },
+  "citations": 79,
+  "citations_via": "OpenAlex"
  },
  "roberts-1999": {
   "checked": "2026-11-10",
