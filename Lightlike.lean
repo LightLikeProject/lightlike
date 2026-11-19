@@ -254,6 +254,7 @@ import Lightlike.FourD.Pachner
 import Lightlike.FourD.Tests
 import Lightlike.Geometry.ProjectiveSpace
 import Lightlike.GR.ComplexMinkowski
+import Lightlike.GR.PenroseTransform
 import Lightlike.GR.WeylSpinor
 import Lightlike.GR.ZeroRestMass
 import Lightlike.GR.TwistorConformal
