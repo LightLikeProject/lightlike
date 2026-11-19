@@ -23,7 +23,9 @@ the Schwarzschild exterior, which is region I {3} [4]; its Penrose diagram {3} [
 the Schwarzschild metric is `48 M²/r⁶` [6] (the value printed in {3}, eq. (7.30), is `12 G²M²/r⁶`), also in
 Eddington-Finkelstein and Kruskal coordinates, where it is unbounded near `r = 0` [7]; ingoing radial null
 geodesics reach `r = 0` at a finite affine parameter [8], and the energy, the axial angular momentum and the
-radial equation hold along all geodesics of the Eddington-Finkelstein chart [13]. The whole Kruskal manifold
+radial equation hold along all geodesics of the Eddington-Finkelstein chart [13]. In the global chart
+of the Kruskal manifold the equations of motion of the geodesics are derived from Noether's formula [14], and
+the boost charge, the squared angular momentum and `g(w, w)` are constant along them [15]. The whole Kruskal manifold
 `{X² - T² > -1} × S²` is given in one global chart as a Lorentzian manifold [9], of which `(T, X, θ, φ)` is a
 chart [10]; it solves the vacuum equations [11], and in every extension of it, in the sense of {4}, a sequence
 approaching the singularity has no limit [12]. Maximality of the extension is not yet formalized. [TODO]
@@ -57,6 +59,10 @@ approaching the singularity has no limit [12]. Maximality of the extension is no
     `IsLorentzianExtension.not_tendsto_kruskal`
 13. Lightlike/GR/EFConstants.lean - `pd_eq_zero_of_invariant`, `ef_hasDerivAt_energy`, `ef_hasDerivAt_angular`,
     `ef_radial_identity`
+14. Lightlike/GR/KruskalGeodesic.lean - `hasDerivAt_kG`, `hasDerivAt_kh`, `kQ`, `contraction_kruskalC`,
+    `kruskalC_hasDerivAt_pT`, `kruskalC_hasDerivAt_pX`, `kruskalC_hasDerivAt_angular`
+15. Lightlike/GR/KruskalGeodesicBound.lean - `kruskalC_hasDerivAt_r`, `kruskalC_hasDerivAt_boost`,
+    `kruskalC_hasDerivAt_L2`, `kruskalC_hasDerivAt_kQ`
 
 ## References
 
