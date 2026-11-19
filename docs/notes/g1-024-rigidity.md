@@ -58,3 +58,14 @@ Differences:
    `isometric_spaceForm` to the covector form of the rigidity (`covCo_lowerVec_add`). Checked numerically before
    writing: Jacobi forces the rotation part of `[J, P]` to vanish, and the translation part of `[P, P]` is removed by
    `P' = P - (β/2) J`.
+   Working plan for the next pieces (coordinates on a ball of `Fin 3 → ℝ`, the setting of `isometric_spaceForm`):
+   (a) `L_{[Y,Z]} T = L_Y (L_Z T) - L_Z (L_Y T)` for the coordinate Lie derivative
+       `(L_Y T)_{ab} = Yᶜ ∂_c T_{ab} + ∂_a Yˡ T_{lb} + T_{al} ∂_b Yˡ` of a field of bilinear forms (second derivatives
+       cancel by `pd_pd_comm`), so brackets of Killing fields are Killing;
+   (b) with the normalization at `p` (`P_m(p)` a frame, `R_ab(p) = 0`, `∇R_ab(p)` the so(3) generators), the six values
+       `rigVec (lowerVec g Y_e) p` span the Killing data at `p` (value and antisymmetric derivative), so for every
+       Killing field `Z` there are constants with `rigVec (lowerVec g Z) p = Σ cₑ rigVec (lowerVec g Y_e) p`, and
+       `eq_of_rigVec_eq` gives `Z = Σ cₑ Y_e` on the ball: S1 and S2 together;
+   (c) the constants of `[Y_i, Y_j]` from their data at `p` (`[R,R]`: so(3); `[R,P]`: translation part from
+       `∇R(p)`; the rest unknown), Jacobi on the constants, the equivariance computation, the change of complement, and
+       `hS` for `S k`; then `isometric_spaceForm`.
