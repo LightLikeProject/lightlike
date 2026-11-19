@@ -102,3 +102,22 @@ Differences from Carroll that remain: (a) the family `g_t`, its Levi-Civita conn
 measurability of the integrand are hypotheses (data), not constructed from a tensor field `h` on `M`;
 (b) the perturbation is supported in one small coordinate ball; (c) the right side is in chart components,
 not `∫ (G^{μν} + Λ g^{μν}) h_{μν} d vol_g`; (d) no "critical if and only if `G + Λ g = 0`" on the manifold.
+
+## Status after the tensor-field form (19 November 2026)
+
+All files of `Lightlike/Spacetime/EHManifold/` compile, with no `sorry`.
+
+* `eh_first_variation_manifold` (`TensorVariation.lean`): for a metric `g` and a smooth symmetric bilinear
+  field `h` (`SymBilinField`) that vanishes outside a compact `K` inside one chart domain, with chart image in
+  a small coordinate ball, `d/dt ehAction (g.perturb h t) Λ K = −∫ √|g| (R^{αβ} − ½ R g^{αβ} + Λ g^{αβ}) h_{αβ}`
+  at `t = 0`. Here `ehAction g Λ K = ∫_K (R − 2Λ) d vol_g` with the Levi-Civita connection of `g`
+  (`leviCivita g`), and `g.perturb h t = g + t h` (a metric for small `t`:
+  `NondegMetric.exists_addSmul_nondegenerate`, `SmallT.lean`). The family, its connections and the
+  measurability are no longer hypotheses.
+* `isEHCriticalOnBall_iff` (`BallCriticalConverse.lean`): a coordinate metric on a ball is critical for all
+  perturbations supported in the smaller ball if and only if the symmetric part of
+  `R^{αβ} − ½ R g^{αβ} + Λ g^{αβ}` vanishes on the smaller ball (Carroll (4.67) with `Λ`, in coordinates).
+
+Differences from Carroll (4.54) to (4.67) that remain: (b) the perturbation is supported in one small
+coordinate ball; (c) the right side is in chart components; (d) the "critical if and only if" is proved for
+coordinate metrics on a ball, not yet stated for the manifold action `ehAction`.
