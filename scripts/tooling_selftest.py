@@ -672,6 +672,53 @@ expect("changed-file selection planted: a module no slow check imports selects n
 expect("changed-file selection: the runner, requirements.txt and ci.yml run everything",
        all(_sel(f) == _slow | _quick for f in ("scripts/run_python_checks.py", "requirements.txt", ".github/workflows/ci.yml")))
 
+# comparator_run.py: which task files are judged, and against which challenge
+import comparator_run as cr  # noqa: E402
+with tempfile.TemporaryDirectory() as _d:
+    _r = pathlib.Path(_d)
+    _g = lambda *a: subprocess.run(["git", "-C", str(_r), "-c", "user.name=t", "-c", "user.email=t@x", *a],
+                                   check=True, capture_output=True, text=True).stdout.strip()
+    _g("init", "-q", "-b", "main")
+    (_r / "Tasks").mkdir(); (_r / "docs/tasks").mkdir(parents=True)
+    _t = lambda n, k="proof": f'  - id: "T-{n}"\n    kind: "{k}"\n    file: "Tasks/{n}.lean"\n    decl: "Lightlike.{n}"\n'
+    (_r / "docs/tasks/tasks.yaml").write_text("tasks:\n" + _t("A") + _t("B") + _t("C") + _t("D") + _t("M", "milestone"))
+    for n in "ABCM":
+        (_r / f"Tasks/{n}.lean").write_text(f"theorem {n} : True := by\n  sorry\n")
+    (_r / "Tasks/D.lean").write_text("theorem D : True := trivial\n")
+    _g("add", "-A"); _g("commit", "-q", "-m", "lock"); _lock = _g("rev-parse", "HEAD")
+    (_r / "Tasks/A.lean").write_text("theorem A : True := by\n  trivial\n")
+    (_r / "Tasks/B.lean").write_text("theorem B : True := by\n  sorry -- still open\n")
+    (_r / "Tasks/M.lean").write_text("theorem M : True := trivial\n")
+    (_r / "Tasks/D.lean").write_text("theorem D : True := trivial -- edited\n")
+    (_r / "Tasks/E.lean").write_text("theorem E : True := trivial\n")
+    _g("add", "-A"); _g("commit", "-q", "-m", "proofs"); _head = _g("rev-parse", "HEAD")
+    _ch, _left = cr.select(_lock, _head, root=_r)
+    _why = dict(_left)
+    _src = ("namespace A\nnamespace B\ndef f : Nat := 0\nprotected abbrev g := 1\nprivate def h := 2\nend B\n"
+            "-- def c := 3\n/- def d := 4 -/\nstructure S where\n  x : Nat\nend A\ndef _root_.top := 5\n"
+            "theorem t : True := by sorry\n")
+    expect("comparator definitions: namespaces, protected, private, comments, _root_",
+           cr.definition_names(_src) == ["A.B.f", "A.B.g", "A.S", "top"])
+    expect("comparator definitions: none declared gives an empty list (flag off)",
+           cr.definition_names("theorem t : True := by sorry\n") == [])
+    expect("comparator definitions: the configuration carries them (flag on) and defaults to none",
+           cr.config("T", defs=["A.f"])["definition_names"] == ["A.f"] and cr.config("T")["definition_names"] == [])
+    expect("comparator: a newly proved task file is judged, the challenge is the locked file with its sorry",
+           [c[0] for c in _ch] == ["Tasks/A.lean"] and cr.has_sorry(_ch[0][2]) and not cr.has_sorry(_ch[0][3])
+           and _ch[0][1] == "Lightlike.A")
+    expect("comparator planted: a task file that still has sorry is not judged", _why.get("Tasks/B.lean") == "still has sorry")
+    expect("comparator planted: a non-proof task and an unlisted file are not judged",
+           "Tasks/M.lean" in _why and "Tasks/E.lean" in _why)
+    expect("comparator planted: a file whose first version had no sorry has no challenge and is not judged",
+           "Tasks/D.lean" in _why and "nothing to compare" in _why["Tasks/D.lean"])
+    expect("comparator: an unchanged file is not judged without --all",
+           "Tasks/C.lean" not in _why and "Tasks/C.lean" not in [c[0] for c in _ch])
+    expect("comparator: --all judges every proved task file",
+           [c[0] for c in cr.select(None, _head, root=_r, everything=True)[0]] == ["Tasks/A.lean"])
+    expect("comparator: the config names the standard three axioms and the declaration",
+           cr.config("Lightlike.A")["permitted_axioms"] == ["propext", "Quot.sound", "Classical.choice"]
+           and cr.config("Lightlike.A")["theorem_names"] == ["Lightlike.A"])
+
 # Shared slots of the Python checks (LL_CHECK_SLOTS): at most n scripts at a time over all runs
 import tempfile as _tf, os
 _sd = os.path.join(_tf.mkdtemp(), "slots")
@@ -688,6 +735,146 @@ except subprocess.TimeoutExpired:
 expect("check slots planted: a third taker waits while both slots are held by live processes", _waited)
 open(os.path.join(_s1, "pid"), "w").write("999999")
 expect("check slots: a slot whose owner process is gone is taken over", rp.take_slot(_sd, 2) == _s1)
+
+# Book locations in a full text (sources.py, `fulltext:` with `edition:`): the label where the
+# result is stated, not where it is cited, and the stated page its printed page. A planted book
+# of 12 PDF pages: two unnumbered front pages, then printed pages 1-10 (offset 2); Theorem 1.2 is
+# stated on printed p. 4 and cited on p. 7, equation (1.5) set on p. 5 and cited on p. 8.
+import contextlib, hashlib, io, json as _json  # noqa: E402
+import sources as src  # noqa: E402
+
+
+def _bk_pages(numbered=True):
+    pages = ["A Planted Book on Compact Operators\n\n   by A. Author\n", "Contents\n  1. Operators   3\n"]
+    for n in range(1, 11):
+        body = [f"   {'Some filler text about operators.':<60}"] * 3
+        if n == 4:
+            body += ["Theorem 1.2 (Planted spectral theorem). Let K be compact. Then K has a basis."]
+        if n == 5:
+            body += ["          (Kx, y) = (x, K*y)                                  (1.5)"]
+        if n == 7:
+            body += ["   As Theorem 1.2 shows, every compact K has a basis of eigenvectors."]
+        if n == 8:
+            body += ["   We use (1.5) here, and a compact operator again."]
+        head = f"{n}          1. Operators" if numbered and n % 2 == 0 else f"1. Operators          {n}"
+        pages.append("\n".join([head if numbered else "1. Operators", ""] + body + [""]))
+    return pages
+
+
+_bp = _bk_pages()
+_off, _how = src.page_offset(_bp)
+expect("sources fulltext: the page offset is the one the printed page numbers agree on (the contents page's '3' "
+       "is outvoted)", _off == 2 and "10 of 11" in _how)
+
+
+def _bkl(loc, kws=(), pages=_bp, off=_off, why=_how):
+    return src.check_fulltext_location(pages, loc, list(kws), off, why)
+
+
+_r = _bkl("Theorem 1.2, p. 7", ["compact"])
+expect("sources fulltext planted: a theorem cited on the stated page, stated on another, fails naming the printed "
+       "page where it is stated", not _r[0] and _r[2] == "stated on printed p. 4, not p. 7")
+expect("sources fulltext planted: the arXiv rule (the label anywhere) would have accepted that location",
+       src.check_location("\n".join(_bp[8:]), "Theorem 1.2", ["compact"])[0])
+expect("sources fulltext control: the theorem on the page where it is stated passes, with that printed page",
+       _bkl("Theorem 1.2, p. 4", ["compact"])[0::3] == (True, 4)
+       and _bkl("Theorem 1.2, pp. 3-4")[0] and _bkl("Theorem 1.2")[0::3] == (True, 4))
+expect("sources fulltext planted: the label stated without a check word near it fails",
+       _bkl("Theorem 1.2, p. 4", ["Hilbert-Schmidt"])[2] == "label not found where it is stated with a check word near it")
+expect("sources fulltext planted: an equation cited on the stated page fails; control: the page where it is set passes",
+       _bkl("eq. (1.5), p. 8")[2] == "stated on printed p. 5, not p. 8" and _bkl("eq. (1.5), p. 5")[0::3] == (True, 5))
+_bu = _bk_pages(numbered=False)
+_uo = src.page_offset(_bu)
+expect("sources fulltext planted: pages without printed numbers fail a page, naming page_offset; control: "
+       "page_offset in sources.yaml",
+       _uo[0] is None and not _bkl("Theorem 1.2, p. 4", pages=_bu, off=None, why=_uo[1])[0]
+       and "page_offset" in _bkl("Theorem 1.2, p. 4", pages=_bu, off=None, why=_uo[1])[2]
+       and _bkl("Theorem 1.2, p. 4", pages=_bu, off=2)[0])
+expect("sources fulltext: the page is split off the location", src.split_page("Theorem 6.6, p. 136") == ("Theorem 6.6", (136, 136))
+       and src.split_page("eq. (2.10), pp. 50-51") == ("eq. (2.10)", (50, 51)) and src.split_page("Section 4") == ("Section 4", None))
+
+# verify and check end to end, offline: the PDF is already in the cache under its URL, the
+# publisher record and the citations are stubbed, and any other network call fails the test.
+_bt = pathlib.Path(tempfile.mkdtemp())
+_bdata = b"%PDF-1.4 planted book"
+_burl = "https://example.org/planted-book.pdf"
+_bpdf = _bt / "cache" / ("url-" + hashlib.sha256(_burl.encode()).hexdigest()[:20] + ".pdf")
+_bpdf.parent.mkdir()
+_bpdf.write_bytes(_bdata)
+_bpdf.with_suffix(".pages.txt").write_text("\f".join(_bp) + "\f")
+(_bt / "docs/tasks").mkdir(parents=True)
+_bsaved = {k: getattr(src, k) for k in ("get", "openlibrary", "citations", "arxiv_meta", "location_uses", "CACHE",
+                                         "SOURCES", "VERIFIED", "ROOT")}
+_bnet = []
+
+
+def _bk_run(ref, cmd):
+    (_bt / "docs/tasks/sources.yaml").write_text(_json.dumps({"references": {"planted-book": ref}, "milestones": {
+        "B1": {"class": "sourced", "refs": [{"ref": "planted-book", "location": "Theorem 1.2, p. 4", "check": "compact"},
+                                            {"ref": "planted-book", "location": "Theorem 1.2, p. 7", "check": "compact"}]}}}))
+    out = io.StringIO()
+    with contextlib.redirect_stdout(out):
+        rc = src.cmd_verify({"planted-book"}) if cmd == "verify" else src.cmd_check()
+    return rc, out.getvalue(), _json.loads(src.VERIFIED.read_text()).get("planted-book") if src.VERIFIED.exists() else None
+
+
+try:
+    src.get = lambda url, *a, **k: _bnet.append(url)
+    src.openlibrary = lambda isbn: {"title": "A Planted Book on Compact Operators", "authors": [], "year": "2009"}
+    src.citations = lambda ref: (None, "stub")
+    src.arxiv_meta = lambda ids: {}
+    src.CACHE, src.ROOT = _bt / "cache", _bt
+    src.SOURCES, src.VERIFIED = _bt / "docs/tasks/sources.yaml", _bt / "docs/tasks/sources-verified.json"
+    src.location_uses = _bsaved["location_uses"]
+    _bref = {"cite": "A. Author, A Planted Book (2009)", "title": "A Planted Book on Compact Operators", "isbn": "9780000000000",
+             "fulltext": _burl, "edition": "the author's online edition of the printed book"}
+    _rc, _o, _rec = _bk_run({**_bref, "sha256": hashlib.sha256(_bdata).hexdigest()}, "verify")
+    _locs = _rec["locations"]
+    expect("sources verify control: the cached full text is used, its hashes recorded, the stated page verified with its "
+           "printed page; planted: the cited page is not",
+           _rc == 0 and not _bnet and _rec["fulltext"]["sha256"] == hashlib.sha256(_bdata).hexdigest()
+           and _rec["fulltext"]["md5"] == hashlib.md5(_bdata).hexdigest() and _rec["fulltext"]["page_offset"] == 2
+           and _locs["Theorem 1.2, p. 4"]["verified"] and _locs["Theorem 1.2, p. 4"]["page"] == 4
+           and not _locs["Theorem 1.2, p. 7"]["verified"] and _locs["Theorem 1.2, p. 7"]["why"] == "stated on printed p. 4, not p. 7")
+    _rc2, _o2, _ = _bk_run({**_bref, "sha256": hashlib.sha256(_bdata).hexdigest()}, "check")
+    expect("sources check: the planted cited page is reported as not verified, the stated page is not",
+           _rc2 == 1 and "location 'Theorem 1.2, p. 7' in planted-book not verified" in _o2
+           and "'Theorem 1.2, p. 4'" not in _o2 and "full text" not in _o2)
+    _rc3, _o3, _ = _bk_run({**_bref, "sha256": "0" * 64}, "check")
+    expect("sources check planted: a pinned sha256 other than the verified file's asks for verify again",
+           _rc3 == 1 and "the full text in sources-verified.json is not the one sources.yaml names" in _o3)
+    _rc4, _o4, _rec4 = _bk_run({**_bref, "sha256": "0" * 64}, "verify")
+    expect("sources verify planted: a fetched file whose sha256 is not the pinned one fails verify, every location unverified",
+           _rc4 == 1 and "is not sources.yaml's " + "0" * 64 in _o4 and "FAIL planted-book" in _o4
+           and not any(v["verified"] for v in _rec4["locations"].values()))
+    _rc5, _o5, _rec5 = _bk_run({k: v for k, v in _bref.items() if k != "edition"}, "verify")
+    _rc6, _o6, _ = _bk_run({k: v for k, v in _bref.items() if k != "edition"}, "check")
+    expect("sources planted: fulltext without edition fails verify (nothing fetched) and check",
+           _rc5 == 1 and not _bnet and "fulltext needs edition" in _rec5["fulltext"]["why"]
+           and _rc6 == 1 and "planted-book: fulltext needs edition" in _o6)
+    _rc7, _o7, _ = _bk_run({k: v for k, v in _bref.items() if k != "fulltext"}, "check")
+    expect("sources check planted: edition without fulltext is refused", "planted-book: edition belongs to a fulltext" in _o7)
+finally:
+    for _k, _v in _bsaved.items():
+        setattr(src, _k, _v)
+
+# The same check on a real book, only with LIGHTLIKE_NET=1 (it downloads 1.5 MB): G. Teschl,
+# Mathematical Methods in Quantum Mechanics, the author's online edition of GSM 99 (AMS 2009).
+if os.environ.get("LIGHTLIKE_NET") == "1":
+    _tr = {"title": "Mathematical Methods in Quantum Mechanics", "edition": "online edition of GSM 99 (AMS 2009)",
+           "fulltext": "https://www.mat.univie.ac.at/~gerald/ftp/book-schroe/schroe.pdf",
+           "sha256": "8dc8de0b58aa0a3fedfe594a345f9b5875322e5526ea581cb640a98d55b82818"}
+    _tft, _tpages = src.fulltext_record(_tr, pathlib.Path(tempfile.mkdtemp()))
+    _tl = lambda loc, kws=(): src.check_fulltext_location(_tpages or [], loc, list(kws), _tft["page_offset"], _tft["pages_from"])
+    expect("sources fulltext network: Teschl's PDF has the pinned sha256 and md5, printed page = PDF page - 12",
+           _tft["why"] is None and _tft["md5"] == "e7b3488759cfa229d2d145b96eb9828b" and _tft["page_offset"] == 12)
+    expect("sources fulltext network: Theorem 6.6 p. 136, Theorem 6.7 p. 137 and Lemma 6.12 p. 141 pass",
+           _tl("Theorem 6.6, p. 136", ["compact"])[0::3] == (True, 136) and _tl("Theorem 6.7, p. 137")[0]
+           and _tl("Lemma 6.12, p. 141")[0])
+    expect("sources fulltext network planted: Theorem 6.6 at p. 137 fails, naming p. 136",
+           _tl("Theorem 6.6, p. 137", ["compact"])[2] == "stated on printed p. 136, not p. 137")
+else:
+    print("skip sources fulltext network (LIGHTLIKE_NET=1 runs it)")
 
 print("selftest:", "OK" if not fails else f"FAILED ({len(fails)})")
 sys.exit(1 if fails else 0)

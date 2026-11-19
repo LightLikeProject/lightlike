@@ -1628,6 +1628,61 @@
   "citations": 38,
   "citations_via": "Semantic Scholar"
  },
+ "derezinski-2006": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Introduction to representations of the canonical commutation and anticommutation relations",
+  "locations": {
+   "Corollary 1, p. 12": {
+    "verified": true,
+    "snippet": "Corollary 1. Suppose that Y is a finite dimensional symplectic space. Let Y ∋ y 7→ W π1 (y) ∈ U (H) and Y ∋ y 7→ W π2 (y) ∈ U (H) be two regular irreducible representations of the CCR. Then they are unitarily equivalent.",
+    "why": null
+   },
+   "Corollary 2, p. 17": {
+    "verified": true,
+    "snippet": "Corollary 2. Suppose that Y is an even dimensional real Hilbert space. Let Y ∋ y 7→ φπ1 (y) ∈ Bh (H) and Y ∋ y 7→ φπ2 (y) ∈ Bh (H) be two irreducible representations of the CAR. Then they are unitarily equivalent. 4.3 Fe",
+    "why": null
+   },
+   "Theorem 10, p. 17": {
+    "verified": true,
+    "snippet": "Theorem 10. 1) Let (φ1 , φ2 , . . . , φ2n ) be a representation of the CAR over R2n in a Hilbert space H. Then there exists a Hilbert space K and a unitary operator U : ⊗ n C2 ⊗ K → H such that \u0010 \u0011 (j) U Ij−1 σ1 ⊗ 1K = φ",
+    "why": null
+   },
+   "Theorem 13, p. 19": {
+    "verified": true,
+    "snippet": "Theorem 13. 1) Let h, h1 , h2 ∈ B(Z), p1 ∈ B(Z, Z1 ), p2 ∈ B(Z1 , Z2 ), kpi k ≤ 1. We then have Γ (eih ) = exp(dΓ (ih)), (35) Γ (p2 )Γ (p1 ) = Γ (p2 p1 ), [dΓ (h1 ), dΓ (h2 )] = dΓ ([h1 , h2 ]). fin 2) Let Φ, Ψ ∈ ⊗ Z, h",
+    "why": null
+   },
+   "Theorem 24, p. 27": {
+    "verified": true,
+    "snippet": "Theorem 24 (Shale Theorem). 1) Let r ∈ Sp(Y). Then the following conditions are equivalent: a) There exists U ∈ U (Γs (Z)) such that U W (y)U ∗ = W (ry), y ∈ Y. (45) b) r ∈ Sp2 (Y). 2) If the above conditions are satisfi",
+    "why": null
+   },
+   "Theorem 28, p. 29": {
+    "verified": true,
+    "snippet": "Theorem 28. Y ∋ y 7→ φ(y) ∈ Bh (Γa (Z)) (52) is an irreducible representation of the CAR over the space (Y, α). (52) is called the Fock representation of the CAR. Let w1 , . . . , wm be an orthonormal basis of the comple",
+    "why": null
+   },
+   "Theorem 37, p. 38": {
+    "verified": true,
+    "snippet": "Theorem 37. A quasi-free representation is regular. Therefore, in a quasi-free representation we can define the corresponding field operators, denoted φ(y). If m is an integer, we say that σ is a pairing of {1, . . . , 2",
+    "why": null
+   },
+   "Theorem 39, p. 39": {
+    "verified": true,
+    "snippet": "Theorem 39. Suppose that Ψ is a quasi-free vector with η satisfying (70). Then 1) y1 (η + 2i ω)y2 = (Ψ |φ(y1 )φ(y2 )Ψ ); 2) |y1 ωy2 | ≤ 2|y1 ηy1 |1/2 |y2 ηy2 |1/2 , y1 , y2 ∈ Y. Proof. Note that (Ψ |φ(y)2 Ψ ) = yηy. This",
+    "why": null
+   },
+   "Theorem 4, p. 12": {
+    "verified": true,
+    "snippet": "Theorem 4 (The Stone–von Neumann theorem). Suppose that (Y, ω) is a finite dimensional symplectic space and (18) a regular representation of the CCR. Suppose that we fix an identification of Y with X # ⊕ X . Then, there",
+    "why": null
+   }
+  },
+  "citations": 73,
+  "citations_via": "Semantic Scholar"
+ },
  "di-francesco-ginsparg-zinn-justin-1995": {
   "checked": "2026-11-08",
   "exists": true,
@@ -2001,6 +2056,26 @@
   "citations": 182,
   "citations_via": "OpenAlex"
  },
+ "faulhuber-2022": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Time-Frequency Analysis (Lecture Notes)",
+  "locations": {
+   "Theorem 7.32, p. 90": {
+    "verified": true,
+    "snippet": "Theorem 7.32 (Stone-von Neumann). Every irreducible representation of H is equivalent to exactly one of the following representations: (i) χa,b (x, ω, τ ) = e2πi(a·x+b·ω) acting on C, for some (a, b) ∈ R2d , or (ii) ρκ f",
+    "why": null
+   },
+   "Theorems 7.32 and 7.35, pp. 90-94": {
+    "verified": true,
+    "snippet": "Theorem 7.32 (Stone-von Neumann). Every irreducible representation of H is equivalent to exactly one of the following representations: (i) χa,b (x, ω, τ ) = e2πi(a·x+b·ω) acting on C, for some (a, b) ∈ R2d , or (ii) ρκ f",
+    "why": null
+   }
+  },
+  "citations": 2,
+  "citations_via": "OpenAlex"
+ },
  "finster-2010": {
   "checked": "2026-11-08",
   "exists": true,
@@ -2258,6 +2333,21 @@
   },
   "citations": 491,
   "citations_via": "OpenAlex"
+ },
+ "grumiller-kummer-vassilevich-2002": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Dilaton Gravity in Two Dimensions",
+  "locations": {
+   "eq. (1.50)": {
+    "verified": true,
+    "snippet": "(1.50) Mγ Also the torsion simplifies to a volume form 1 T a = Tµν a dxµ ∧ dxν , Tµν a = (Dµ eν )a − (Dν eµ )a , (1.51) 2 with (Dµ )a b = ∂µ δ a b + ωµ ǫa b . (1.52) The Hodge dual of T a here is a diffeomorphism scalar:",
+    "why": null
+   }
+  },
+  "citations": 540,
+  "citations_via": "Semantic Scholar"
  },
  "gurau-2008": {
   "checked": "2026-11-08",
@@ -2722,6 +2812,26 @@
   "citations": 2945,
   "citations_via": "OpenAlex"
  },
+ "huang-wang-wu-meng-2026": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Exact Endpoint Asymptotics and Almost-Sure Limits for Uniform Empirical Measures in Two Dimensions",
+  "locations": {
+   "Section 3.2.1": {
+    "verified": true,
+    "snippet": "3.2.1. The Kantorovich–Rubinstein duality input. For probability measures ν, η on Q, let Π(ν, η) be the set of probability couplings with these marginals, and define",
+    "why": null
+   },
+   "Section 8.1": {
+    "verified": true,
+    "snippet": "8.1. Compact-space KR: finite-grid strong duality and its limit. Let (M, d) be compact and ν, η be Borel probability measures. Fix δ > 0 and a finite δ-net {x1 , . . . , xm }. Break ties by the smallest index and take t",
+    "why": null
+   }
+  },
+  "citations": 0,
+  "citations_via": "OpenAlex"
+ },
  "huggett-tod-1994": {
   "checked": "2026-11-08",
   "exists": true,
@@ -2881,6 +2991,11 @@
    "eq. (16)": {
     "verified": true,
     "snippet": "(16) Thus, rotation defies convergence, while shear assists it. The equation for the evolution of the rotation ωab , has a trivial solution ωab = 0. The criterion for convergence then becomes particularly simple for such",
+    "why": null
+   },
+   "eq. (17)": {
+    "verified": true,
+    "snippet": "(17) dλ 2 where the hatted quantitites are the expansion, rotation and shear for the null geodesic 13 congruence. The focusing theorem for null geodesic congruences follows in the same way as for timelike congruences, wi",
     "why": null
    }
   },
@@ -3079,6 +3194,21 @@
   },
   "citations": 40,
   "citations_via": "OpenAlex"
+ },
+ "landsman-1998": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Lecture notes on C*-algebras, Hilbert C*-modules, and quantum mechanics",
+  "locations": {
+   "Theorem 2.12.9": {
+    "verified": true,
+    "snippet": "Theorem 2.12.9 The pure state space of the commutative C ∗ -algebra C0 (X) (equipped with the relative w∗ -topology) is homeomorphic to X. In view of Proposition 2.4.3 and Theorems 2.4.1 and 2.4.8, we merely need to esta",
+    "why": null
+   }
+  },
+  "citations": 63,
+  "citations_via": "Semantic Scholar"
  },
  "last-penrose-2017": {
   "checked": "2026-11-08",
@@ -3661,6 +3791,26 @@
   "fetched_title": "The Swampland: Introduction and Review",
   "locations": {},
   "citations": 1334,
+  "citations_via": "OpenAlex"
+ },
+ "panangaden-2021": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Energy Full Counting Statistics and Return to Equilibrium",
+  "locations": {
+   "Proposition 5.4": {
+    "verified": true,
+    "snippet": "Proposition 5.4. Let H be a finite dimensional Hilbert space. The state ω ∈ B(H)∗ is a Gibbs state at inverse temperature β if and only if ω(Aτ iβ (B)) = ω(BA) for all A, B ∈ B(H). This condition is called the KMS condit",
+    "why": null
+   },
+   "Proposition 5.9": {
+    "verified": true,
+    "snippet": "Proposition 5.9. Let (A, τ ) be a C ∗ -dynamical system and ω a state. Define Dβ = {z ∈ C ∶ 0 < Im(z) < β}. If ω is a (β, τ )-KMS state, then for any A, B ∈ A there exists a complex-valued function FA,B which is bounded",
+    "why": null
+   }
+  },
+  "citations": 0,
   "citations_via": "OpenAlex"
  },
  "paschke-sitarz-1998": {
@@ -4574,21 +4724,6 @@
    }
   },
   "citations": 520,
-  "citations_via": "Semantic Scholar"
- },
- "grumiller-kummer-vassilevich-2002": {
-  "checked": "2026-11-19",
-  "exists": true,
-  "via": "arXiv API",
-  "fetched_title": "Dilaton Gravity in Two Dimensions",
-  "locations": {
-   "eq. (1.50)": {
-    "verified": true,
-    "snippet": "(1.50) Mγ Also the torsion simplifies to a volume form 1 T a = Tµν a dxµ ∧ dxν , Tµν a = (Dµ eν )a − (Dν eµ )a , (1.51) 2 with (Dµ )a b = ∂µ δ a b + ωµ ǫa b . (1.52) The Hodge dual of T a here is a diffeomorphism scalar:",
-    "why": null
-   }
-  },
-  "citations": 540,
   "citations_via": "Semantic Scholar"
  }
 }
