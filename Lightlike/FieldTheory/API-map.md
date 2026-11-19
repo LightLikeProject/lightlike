@@ -22,6 +22,8 @@ A labelled graph with half-edges `Fin n` and vertices `Fin k` is an attachment m
 
 The disjoint union of labelled graphs is compatible with relabelling, so it is defined on isomorphism classes; the formal sums of classes of all sizes carry the disjoint-union product (finite in each grade of half-edges and vertices), and `X = Σ_Γ Γ/|Aut Γ|`, its connected part `X_c` and `e^{X_c}` are defined there [14] {2}.
 
+**The exponential formula `X = e^{X_c}`** holds coefficientwise in the algebra of all graphs (any vertex degrees, legs allowed) {2}: the components of a labelled graph are its closed connected vertex sets and their number is a class invariant [15]; cutting a graph at a component and gluing it back is a bijection with the pairs (connected graph, rest) [16]; double counting the pairs (graph, component) gives `X_c^m(c) = [c has m components] · m! · #labelled copies/(n! k!)`, and so `e^{X_c} = X` [17].
+
 **Missing.** The error bound of the quartic expansion is not stated in Borinsky, who treats the integral formally. The formal integral is compared with Borinsky's Definition 3.1.1 and eq. (3.1.8) {2}, the graphs with Borinsky §2.1 and §2.3 {2}, and Wick's theorem with Tubaro–Zanella's Theorem 2.19 {3}; the Gaussian measure and its integrals are not yet compared with a source.
 
 ## Lean References
@@ -47,6 +49,12 @@ The disjoint union of labelled graphs is compatible with relabelling, so it is d
    `FieldTheory.GraphAlg.mem_aut_iff`, `FieldTheory.GraphAlg.card_orbit_mul_card_aut`, `FieldTheory.GraphAlg.inv_card_aut`
 14. Lightlike/FieldTheory/ZeroDim/GraphAlgebra.lean - `FieldTheory.GraphAlg.union`, `FieldTheory.GraphAlg.union_smul`, `FieldTheory.GraphAlg.unionC`,
    `FieldTheory.GraphAlg.GAlg`, `FieldTheory.GraphAlg.mul`, `FieldTheory.GraphAlg.X`, `FieldTheory.GraphAlg.Xc`, `FieldTheory.GraphAlg.expXc`
+15. Lightlike/FieldTheory/ZeroDim/GraphComp.lean - `FieldTheory.GraphAlg.comps`, `FieldTheory.GraphAlg.ncomp`, `FieldTheory.GraphAlg.existsUnique_comp`,
+   `FieldTheory.GraphAlg.comps_smul`, `FieldTheory.GraphAlg.ncomp_smul`
+16. Lightlike/FieldTheory/ZeroDim/GraphSplit.lean - `FieldTheory.GraphAlg.restrictL`, `FieldTheory.GraphAlg.glue`, `FieldTheory.GraphAlg.glue_restrictL`,
+   `FieldTheory.GraphAlg.anyClass_glue`, `FieldTheory.GraphAlg.comps_glue`
+17. Lightlike/FieldTheory/ZeroDim/GraphExp.lean - `FieldTheory.GraphAlg.X_eq_lab`, `FieldTheory.GraphAlg.card_split`, `FieldTheory.GraphAlg.card_mul_ncomp`,
+   `FieldTheory.GraphAlg.pow_Xc_eq`, `FieldTheory.GraphAlg.expXc_eq_X`
 
 ## References
 
