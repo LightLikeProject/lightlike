@@ -976,6 +976,7 @@ import Lightlike.Geodesic.ExpSmooth
 import Lightlike.Geodesic.Gauss
 import Lightlike.Geodesic.GaussAux
 import Lightlike.Geodesic.GaussMaximal
+import Lightlike.Geodesic.GlobalTwoPoint
 import Lightlike.Geodesic.Radial
 import Lightlike.Geodesic.Tests
 import Lightlike.Geodesic.TwoPoint
