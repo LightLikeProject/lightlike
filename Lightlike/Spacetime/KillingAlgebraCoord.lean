@@ -480,4 +480,21 @@ theorem eq_sum_of_lowerVec_eq_sum {ι : Type*} [Fintype ι] {g : (Fin n → ℝ)
     exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
   exact (Matrix.mulVec_injective_iff_isUnit.2 hu) h'
 
+/-- **Raising the covariant derivative**: `∂_a Yᵈ + Γᵈ_{ac} Yᶜ = gᵈᵇ ∇_a θ_b` for `θ = Y♭`. -/
+theorem pd_add_christoffel_eq_raise {g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ} {Y : (Fin n → ℝ) → Fin n → ℝ}
+    {y : Fin n → ℝ} (hgs : ∀ z a b, g z a b = g z b a) (hdet : (g y).det ≠ 0)
+    (hgd : ∀ a b, DifferentiableAt ℝ (fun z => g z a b) y) (hY : ∀ c, DifferentiableAt ℝ (fun z => Y z c) y)
+    (a d : Fin n) :
+    pd a (fun z => Y z d) y + ∑ c, christoffel g d a c y * Y y c =
+      ∑ b, (g y)⁻¹ d b * covCo g (lowerVec g Y) a b y := by
+  simp only [covCo_lowerVec hgs hdet hgd hY, Finset.mul_sum]
+  rw [Finset.sum_comm]
+  have hinv : ∀ l, ∑ b, (g y)⁻¹ d b * g y b l = (1 : Matrix (Fin n) (Fin n) ℝ) d l := fun l => by
+    rw [← Matrix.nonsing_inv_mul _ (Ne.isUnit hdet), Matrix.mul_apply]
+  have e : ∀ l, ∑ b, (g y)⁻¹ d b * (g y b l * (pd a (fun z => Y z l) y + ∑ c, christoffel g l a c y * Y y c)) =
+      (1 : Matrix (Fin n) (Fin n) ℝ) d l * (pd a (fun z => Y z l) y + ∑ c, christoffel g l a c y * Y y c) := fun l => by
+    rw [← hinv l, Finset.sum_mul]
+    exact Finset.sum_congr rfl fun _ _ => by ring
+  simp only [e, Matrix.one_apply, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, ite_true]
+
 end Lightlike
