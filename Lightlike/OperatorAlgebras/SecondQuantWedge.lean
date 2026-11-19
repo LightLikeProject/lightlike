@@ -1120,6 +1120,159 @@ theorem annL2_dGammaFock_zero (h : Z →L[ℂ] Z) (w : Z) (φ : FermiL2 ι) (hφ
   · rw [annL2_apply_of_card b w _ (m := 0) (fun T hT => dGammaFock_apply_of_card b 0 h φ hT) hS,
       annL2_apply_of_card b _ φ (m := 0) hφ hS]
 
+/-- The coordinates are injective: `uncoordL (coordL ψ) = ψ`. -/
+lemma uncoordL_coordL {M : Type*} (ψ : lp (fun _ : M => Z) 2) :
+    SecondQuantSlot.uncoordL b (SecondQuantSlot.coordL b ψ) = ψ := by
+  refine lp.ext (funext fun m => ?_)
+  show b.repr.symm (SecondQuantSlot.fiber (SecondQuantSlot.coordL b ψ) m) = ψ m
+  have : SecondQuantSlot.fiber (SecondQuantSlot.coordL b ψ) m = b.repr (ψ m) := by
+    ext k
+    rfl
+  rw [this, LinearIsometryEquiv.symm_apply_apply]
+
+/-- **`hⱼ h'ⱼ = (h h')ⱼ`.** -/
+lemma slotOp_slotOp {m : ℕ} (j : Fin (m + 1)) (h h' : Z →L[ℂ] Z) (Φ : lp (fun _ : Fin (m + 1) → ι => ℂ) 2) :
+    SecondQuantSlot.slotOp b j h (SecondQuantSlot.slotOp b j h' Φ) = SecondQuantSlot.slotOp b j (h ∘L h') Φ := by
+  simp only [SecondQuantSlot.slotOp, SecondQuantSlot.slotC, ContinuousLinearMap.comp_apply,
+    LinearIsometry.coe_toContinuousLinearMap, LinearIsometryEquiv.coe_toLinearIsometry,
+    LinearIsometryEquiv.symm_apply_apply, uncoordL_coordL]
+  rfl
+
+/-- **`(h - h')ⱼ = hⱼ - h'ⱼ`.** -/
+lemma slotOp_sub {m : ℕ} (j : Fin (m + 1)) (h h' : Z →L[ℂ] Z) (Φ : lp (fun _ : Fin (m + 1) → ι => ℂ) 2) :
+    SecondQuantSlot.slotOp b j (h - h') Φ = SecondQuantSlot.slotOp b j h Φ - SecondQuantSlot.slotOp b j h' Φ := by
+  simp only [SecondQuantSlot.slotOp, SecondQuantSlot.slotC, ContinuousLinearMap.comp_apply,
+    LinearIsometry.coe_toContinuousLinearMap, LinearIsometryEquiv.coe_toLinearIsometry]
+  have hs : ∀ x : lp (fun _ : Fin m → ι => Z) 2,
+      SecondQuantSlot.slotMap (h - h') x = SecondQuantSlot.slotMap h x - SecondQuantSlot.slotMap h' x := fun x =>
+    lp.ext (funext fun m => by
+      simp only [SecondQuantSlot.slotMap_apply, lp.coeFn_sub, Pi.sub_apply, ContinuousLinearMap.sub_apply])
+  rw [hs, map_sub, map_sub]
+
+/-- **Bounded operators on `ℓ²` agreeing on the basis vectors are equal.** -/
+lemma clm_ext_single {α β : Type*} [DecidableEq α] (X Y : lp (fun _ : α => ℂ) 2 →L[ℂ] lp (fun _ : β => ℂ) 2)
+    (h : ∀ a, X (lp.single 2 a (1 : ℂ)) = Y (lp.single 2 a (1 : ℂ))) : X = Y := by
+  ext1 Φ
+  have hs := lp.hasSum_single (E := fun _ : α => ℂ) (p := 2) (by norm_num) Φ
+  have hX := X.hasSum hs
+  have hY := Y.hasSum hs
+  have he : (fun a => X (lp.single 2 a (Φ a))) = fun a => Y (lp.single 2 a (Φ a)) := funext fun a => by
+    have e : lp.single (E := fun _ : α => ℂ) 2 a (Φ a) = Φ a • lp.single 2 a (1 : ℂ) := by
+      rw [← lp.single_smul, smul_eq_mul, mul_one]
+    rw [e, map_smul, map_smul, h]
+  rw [he] at hX
+  exact hX.unique hY
+
+/-- **`h` on slot `j`, when the slot-`j` fibre is a multiple of a basis vector.** -/
+lemma slotOp_apply_of_fiber {m : ℕ} (j : Fin (m + 1)) (h : Z →L[ℂ] Z) (X : lp (fun _ : Fin (m + 1) → ι => ℂ) 2)
+    (g : Fin (m + 1) → ι) (c : ℂ) (i₀ : ι) (hX : ∀ i, X (Function.update g j i) = if i = i₀ then c else 0) :
+    SecondQuantSlot.slotOp b j h X g = c * b.repr (h (b i₀)) (g j) := by
+  rw [slotOp_apply_eq]
+  have hfib : SecondQuantSlot.fiber ((SecondQuantSlot.reindexL (SecondQuantSlot.slotEquiv j)).symm X)
+      (Fin.removeNth j g) = c • lp.single 2 i₀ (1 : ℂ) := by
+    ext i
+    show X ((SecondQuantSlot.slotEquiv j).symm (Fin.removeNth j g, i)) = _
+    rw [slotEquiv_symm_apply, Fin.insertNth_removeNth, hX, lp.coeFn_smul, Pi.smul_apply, lp.single_apply,
+      Pi.single_apply, smul_eq_mul]
+    split_ifs <;> simp
+  rw [hfib, map_smul, HilbertBasis.repr_symm_single, map_smul, map_smul, lp.coeFn_smul, Pi.smul_apply, smul_eq_mul]
+
+/-- **`h` on slot `k` of a basis vector**: `(hₖ e_f)(g) = [g = f off k] ⟨b_{g k}, h b_{f k}⟩`. -/
+lemma slotOp_single_apply {m : ℕ} (k : Fin (m + 1)) (h : Z →L[ℂ] Z) (f g : Fin (m + 1) → ι) :
+    SecondQuantSlot.slotOp b k h (lp.single 2 f (1 : ℂ)) g =
+      if ∀ l, l ≠ k → g l = f l then b.repr (h (b (f k))) (g k) else 0 := by
+  split_ifs with hc
+  · rw [slotOp_apply_of_fiber b k h _ g 1 (f k), one_mul]
+    intro i
+    rw [lp.single_apply, Pi.single_apply]
+    have : Function.update g k i = f ↔ i = f k := by
+      constructor
+      · rintro rfl; simp
+      · rintro rfl
+        funext l
+        by_cases hl : l = k
+        · subst hl; simp
+        · rw [Function.update_of_ne hl, hc l hl]
+    simp only [this]
+  · rw [slotOp_apply_of_fiber b k h _ g 0 (f k), zero_mul]
+    intro i
+    rw [lp.single_apply, Pi.single_apply, if_neg, ite_self]
+    rintro hu
+    push_neg at hc
+    obtain ⟨l, hl, hne⟩ := hc
+    exact hne (by rw [← hu, Function.update_of_ne hl])
+
+/-- **Two slots on a basis vector**: for `j ≠ k`, `(hⱼ h'ₖ e_f)(g) = [g = f off j, k] ⟨b_{g j}, h b_{f j}⟩ ⟨b_{g k}, h' b_{f k}⟩`. -/
+lemma slotOp_slotOp_single_apply {m : ℕ} {j k : Fin (m + 1)} (hjk : j ≠ k) (h h' : Z →L[ℂ] Z)
+    (f g : Fin (m + 1) → ι) :
+    SecondQuantSlot.slotOp b j h (SecondQuantSlot.slotOp b k h' (lp.single 2 f (1 : ℂ))) g =
+      if ∀ l, l ≠ j → l ≠ k → g l = f l then b.repr (h (b (f j))) (g j) * b.repr (h' (b (f k))) (g k) else 0 := by
+  set c : ℂ := if ∀ l, l ≠ j → l ≠ k → g l = f l then b.repr (h' (b (f k))) (g k) else 0 with hcdef
+  rw [slotOp_apply_of_fiber b j h _ g c (f j)]
+  · rw [hcdef]
+    split_ifs <;> ring
+  · intro i
+    rw [slotOp_single_apply, Function.update_of_ne hjk.symm]
+    have : (∀ l, l ≠ k → Function.update g j i l = f l) ↔ i = f j ∧ ∀ l, l ≠ j → l ≠ k → g l = f l := by
+      constructor
+      · intro hu
+        refine ⟨by simpa using hu j hjk, fun l hlj hlk => ?_⟩
+        rw [← Function.update_of_ne hlj i g]
+        exact hu l hlk
+      · rintro ⟨rfl, hg⟩ l hlk
+        by_cases hlj : l = j
+        · subst hlj; simp
+        · rw [Function.update_of_ne hlj]; exact hg l hlj hlk
+    simp only [this, hcdef]
+    by_cases hi : i = f j <;> by_cases hg : ∀ l, l ≠ j → l ≠ k → g l = f l <;> simp [hi, hg]
+
+/-- **Different slots commute**: `hⱼ h'ₖ = h'ₖ hⱼ` for `j ≠ k`. -/
+theorem slotOp_comm {m : ℕ} {j k : Fin (m + 1)} (hjk : j ≠ k) (h h' : Z →L[ℂ] Z) :
+    SecondQuantSlot.slotOp b j h ∘L SecondQuantSlot.slotOp b k h' =
+      SecondQuantSlot.slotOp b k h' ∘L SecondQuantSlot.slotOp b j h := by
+  refine clm_ext_single _ _ fun f => ?_
+  ext g
+  rw [ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply, slotOp_slotOp_single_apply b hjk,
+    slotOp_slotOp_single_apply b hjk.symm]
+  have : (∀ l, l ≠ j → l ≠ k → g l = f l) ↔ ∀ l, l ≠ k → l ≠ j → g l = f l :=
+    ⟨fun H l hk hj => H l hj hk, fun H l hj hk => H l hk hj⟩
+  simp only [this]
+  split_ifs <;> ring
+
+/-- **`[∑ⱼ hⱼ, ∑ⱼ h'ⱼ] = ∑ⱼ [h, h']ⱼ`.** -/
+theorem dGammaTensor_comm (m : ℕ) (h h' : Z →L[ℂ] Z) (Φ : lp (fun _ : Fin (m + 1) → ι => ℂ) 2) :
+    SecondQuantSlot.dGammaTensor b m h (SecondQuantSlot.dGammaTensor b m h' Φ) -
+        SecondQuantSlot.dGammaTensor b m h' (SecondQuantSlot.dGammaTensor b m h Φ) =
+      SecondQuantSlot.dGammaTensor b m (h ∘L h' - h' ∘L h) Φ := by
+  simp only [SecondQuantSlot.dGammaTensor, ContinuousLinearMap.sum_apply, map_sum]
+  rw [Finset.sum_comm (f := fun x i => SecondQuantSlot.slotOp b i h' (SecondQuantSlot.slotOp b x h Φ)),
+    ← Finset.sum_sub_distrib]
+  refine Finset.sum_congr rfl fun j _ => ?_
+  rw [← Finset.sum_sub_distrib, Finset.sum_eq_single j]
+  · rw [slotOp_slotOp, slotOp_slotOp, slotOp_sub]
+  · intro k _ hkj
+    have := congrArg (fun T => T Φ) (slotOp_comm b hkj h h')
+    simp only [ContinuousLinearMap.comp_apply] at this
+    rw [this, sub_self]
+  · intro hj; exact absurd (Finset.mem_univ j) hj
+
+/-- `dΓ(h) dΓ(h') = E* (∑ⱼ hⱼ)(∑ⱼ h'ⱼ) E`. -/
+lemma dGammaFock_dGammaFock (n : ℕ) (h h' : Z →L[ℂ] Z) (ψ : FermiL2 ι) :
+    dGammaFock b n h (dGammaFock b n h' ψ) = ContinuousLinearMap.adjoint (embCLM (n + 1))
+      (SecondQuantSlot.dGammaTensor b n h (SecondQuantSlot.dGammaTensor b n h' (embCLM (n + 1) ψ))) := by
+  show ContinuousLinearMap.adjoint (embCLM (n + 1)) (SecondQuantSlot.dGammaTensor b n h (embCLM (n + 1)
+    (ContinuousLinearMap.adjoint (embCLM (n + 1)) (SecondQuantSlot.dGammaTensor b n h' (embCLM (n + 1) ψ))))) = _
+  rw [embCLM_adjoint_apply, ← dGammaTensor_antisym]
+  have hA : antisym (n + 1) (embCLM (n + 1) ψ) = embCLM (n + 1) ψ := antisym_embL ψ
+  rw [hA]
+
+/-- **`[dΓ(h), dΓ(h')] = dΓ([h, h'])`** on every particle sector. -/
+theorem dGammaFock_comm (n : ℕ) (h h' : Z →L[ℂ] Z) (ψ : FermiL2 ι) :
+    dGammaFock b n h (dGammaFock b n h' ψ) - dGammaFock b n h' (dGammaFock b n h ψ) =
+      dGammaFock b n (h ∘L h' - h' ∘L h) ψ := by
+  rw [dGammaFock_dGammaFock, dGammaFock_dGammaFock, ← map_sub, dGammaTensor_comm]
+  rfl
+
 end Gamma
 
 end Lightlike.OperatorAlgebras.SecondQuantWedge
