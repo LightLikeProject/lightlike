@@ -69,8 +69,9 @@ jobs:
 
       # lean=true when a pull request changes a Lean or build file (*.lean, lakefile,
       # lake-manifest.json, lean-toolchain), or a file the build job's checks read besides Lean
-      # files: docs/results.yaml and the API maps (DocCheck), ci_check.py, api_map.py, the deprecation
-      # baseline, the task plan (the headers of the proof-task files), and this workflow.
+      # files: the results registry (docs/results.yaml, docs/results.d/) and the API maps
+      # (DocCheck), ci_check.py, api_map.py, the deprecation baseline, the task plan (the headers
+      # of the proof-task files), and this workflow.
       # python=true when it changes scripts/, requirements.txt or this workflow.
       - name: Decide which jobs the change needs [ci-only]
         id: diff
@@ -84,7 +85,7 @@ jobs:
           changed="$RUNNER_TEMP/changed.txt"
           git diff --name-only HEAD^1 HEAD > "$changed"
           lean_re='\.lean$|^lakefile\.(lean|toml)$|^lake-manifest\.json$|^lean-toolchain$'
-          lean_re+='|^docs/results\.yaml$|(^|/)API-map\.md$'
+          lean_re+='|^docs/results\.yaml$|^docs/results\.d/|(^|/)API-map\.md$'
           lean_re+='|^scripts/(ci_check\.py|api_map\.py|deprecation_baseline\.txt)$'
           lean_re+='|^docs/tasks/(decomposition\.yaml|milestones\.md|sources\.yaml|sources-verified\.json)$'
           lean_re+='|^\.github/workflows/ci\.yml$'
@@ -110,7 +111,11 @@ jobs:
       run:
         shell: bash
     steps:
+      # Depth 2: on a pull request the checkout is the merge commit, and the generated-files check
+      # compares it with its first parent, the base branch.
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
 
       # The Python checks run on 3.12 with the versions pinned in requirements.txt (ubuntu-latest
       # is Ubuntu 26.04, which has no Python 3.9).
@@ -126,6 +131,12 @@ jobs:
       # Locally the gate needs the pinned packages of requirements.txt installed already.
       - name: Install the pinned Python packages [ci-only]
         run: python3 -m pip install --quiet -r requirements.txt
+
+      # A pull request does not change generated files (docs/RESULTS.md, the task board, Tasks.lean,
+      # the generated counts in README.md, ROADMAP.md and CHANGELOG.md): the maintainers regenerate
+      # them after merging, in one commit per batch, which an integration branch carries.
+      - name: Generated files are not changed by the pull request [hard rule]
+        run: python3 -I scripts/generated.py check
 
       - name: Check the API maps and the results registry [advisory]
         continue-on-error: true
