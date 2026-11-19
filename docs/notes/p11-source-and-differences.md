@@ -33,7 +33,7 @@ The earlier lock stated the theorem over an arbitrary normed model `E` with a `M
 2. *Stable causality*: ours is the existence of a time function (`IsStablyCausal`, with the docstring noting Hawking's equivalence with causality surviving a widening of the
    light cones); the source's is the widening of the cones. The equivalence (Hawking 1969) is not formalized.
 3. *Setting*: a smooth Lorentzian manifold modelled on `ℝⁿ` (`Fin n → ℝ`) with a time orientation and the Borel σ-algebra, against closed cone structures (a more general setting). The model
-   restriction is the one the statement of the task now carries (approved by the integrator for the maintainers, 18 November 2026): the volume measure of Hawking's function needs charts into `ℝⁿ`.
+   restriction is the one the statement of the task now carries (approved by the maintainers, 18 November 2026): the volume measure of Hawking's function needs charts into `ℝⁿ`.
 4. *Method*: the source's proof goes through K-causality; ours through Hawking's time function `x ↦ μ(J⁻(x))` (the hint of the task). The statement is the same.
 
 Hawking-Ellis, ch. 6 (Proposition 6.4.? and Hawking's time function): not read at a location.

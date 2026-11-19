@@ -59,7 +59,7 @@ variable {n : ℕ} {M : Type*} [TopologicalSpace M] [ChartedSpace (Fin n → ℝ
 (`Fin n → ℝ`, with the model `𝓘(ℝ, Fin n → ℝ)`, hence without boundary), the setting of Hawking–Ellis'
 space-time: the volume measure used by Hawking's time function exists only for such charts (representation
 difference from the earlier lock, which was stated over an arbitrary normed model with corners; approved
-by the integrator for the maintainers, 18 November 2026). The source's manifolds have charts into open subsets
+by the maintainers, 18 November 2026). The source's manifolds have charts into open subsets
 of `ℝⁿ⁺¹` (Minguzzi, arXiv:1709.06494, section 1.3, p. 10); see `docs/notes/p11-source-and-differences.md`. -/
 theorem isStablyCausal_of_isCausallySimple [T2Space M] [SecondCountableTopology M]
     (h : IsCausallySimple T) : IsStablyCausal T := by
