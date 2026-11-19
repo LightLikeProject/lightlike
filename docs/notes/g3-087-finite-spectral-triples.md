@@ -147,9 +147,10 @@ Where each Krajewski clause stands:
 * `Mₙ(ℂ)` acting real-linearly (`ComplexSummands.lean`): the units `Q± π(E^i_αβ)` over the blocks `(i, ±)` with
   `Q± π(1ᵢ) ≠ 0` (zero blocks carry zero units, so `σ ∘ φ = π` still holds), `φ(a) = (aᵢ, āᵢ)`;
   `exists_unitary_complexSummands`.
-* Mixed algebras `A = ⊕ Mₙ(ℝ) × ⊕ Mₙ(ℂ) × ⊕ Mₙ(ℍ)` (open, next): each construction uses only multiplicativity, `*` and
+* Mixed algebras `A = ⊕ Mₙ(ℝ) × ⊕ Mₙ(ℂ) × ⊕ Mₙ(ℍ)` (`MixedSummands.lean`, `exists_unitary_mixed`, proved): each construction uses only multiplicativity, `*` and
   linearity of `π`, so it applies to `π` restricted to one factor, a non-unital `*`-homomorphism with block unit
-  `π(1_factor)`; for the complex factor `u = i · 1_ℂ` has `u² = -1_ℂ`, so `Q± = (π(1_ℂ) ∓ i π(u))/2`. The three unit
+  `π(1_factor)`; for the complex factor the units are `ψ±(E^i_αβ)` with the complex-linear and antilinear parts
+  `ψ±(Y) = ½(ψ(Y) ∓ i ψ(iY))` of the restriction `ψ`, which need no unit. The three unit
   systems multiply to `0` across factors and their block units add to `π(1) = 1`, so together they are one system of
   matrix units over the sum of the three index types.
 * §3.3, p. 14, Table 1 (a symmetric integer matrix over the irreducible representations, the signs `μ_{iαj} μ_{iᾱj} ≥ 0`,

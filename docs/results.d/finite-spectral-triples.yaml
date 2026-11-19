@@ -56,3 +56,18 @@
   review: kernel-checked
   note: "Compared with Krajewski, arXiv:hep-th/9701081, Section 3.1, p. 10 (read): 'Mₙ(ℂ) has two inequivalent irreducible representations, the fundamental one and its complex conjugate. However, all our formulae remain valid, provided the indices i and j label irreducible representations of A'. Here A = ⊕ Mₙᵢ(ℂ) with a real-linear π: Q± = (1 ∓ i π(i·1))/2 split H into the parts where π is complex-linear (fundamental) and antilinear (conjugate); the units Q± π(E^i_αβ) of the blocks (i, ±) that occur (Q± π(1ᵢ) ≠ 0) and φ(a) = (aᵢ, āᵢ) give the complexification. The index set of the model is the set of representations (i, ±) that occur. Mixed algebras and the sign conditions of Table 1, p. 14 are not covered."
   since: unreleased
+
+- id: LL-XXXX-k
+  title: A real finite spectral triple over a mixed algebra ⊕ Mₙ(ℝ) × ⊕ Mₙ(ℂ) × ⊕ Mₙ(ℍ) is unitarily equivalent to the model of the multiplicity matrix over the irreducible representations that occur
+  area: NCG
+  file: Lightlike/NCG/MixedSummands.lean
+  decls: [Lightlike.NCG.exists_unitary_mixed, Lightlike.NCG.mixedComplexification, Lightlike.NCG.unitsMixed, Lightlike.NCG.unitsMixed_hom_phiMixed, Lightlike.NCG.phiMixed, Lightlike.NCG.psiPart, Lightlike.NCG.psiPart_mul, Lightlike.NCG.partialR, Lightlike.NCG.partialC]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: krajewski-1998, location: "Section 3.1", check: "irreducible representation"}
+      - {ref: krajewski-1998, location: "Section 3.2", check: "charge conjugation"}
+  review: kernel-checked
+  note: "Compared with Krajewski, arXiv:hep-th/9701081, Section 2, p. 2 (A = ⊕ Mₙᵢ(K), K = ℝ, ℂ, ℍ) and Section 3.1, p. 10 (read): 'Mₙ(ℝ) and Mₙ(ℍ) have only one irreducible representation, the fundamental one, whereas Mₙ(ℂ) has two inequivalent irreducible representations, the fundamental one and its complex conjugate. However, all our formulae remain valid, provided the indices i and j label irreducible representations of A'. Here A = ⊕ Mₙ(ℝ) × ⊕ Mₙ(ℂ) × ⊕ Mₙ(ℍ) with a real-linear π: the restrictions of π to the three factors give units ψ₁(E^i_αβ), ψ±(E^i_αβ) (ψ±(Y) = ½(ψ₂(Y) ∓ i ψ₂(iY)), over the representations (i, ±) that occur) and the quaternionic units of M₂ₙ(ℂ); together they are one system of matrix units, and the uniqueness theorem for complex summands gives the unitary onto the model indexed by the irreducible representations that occur. The sign conditions of Table 1, p. 14 (the S⁰-real structure and the intersection form) are not covered."
+  since: unreleased
