@@ -153,6 +153,7 @@ import Lightlike.Canonical.HypersurfaceBridge
 import Lightlike.Canonical.Foliation
 import Lightlike.Canonical.FoliationSmooth
 import Lightlike.Canonical.FoliationLie
+import Lightlike.Canonical.FoliationSpacelike
 import Lightlike.Canonical.FoliationChart
 import Lightlike.Canonical.TestsFoliationChart
 import Lightlike.Canonical.TestsFoliation

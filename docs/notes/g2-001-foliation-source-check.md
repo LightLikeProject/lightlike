@@ -49,6 +49,11 @@ to the leaf at `x`, `K(V, W) = −½ (ℒ_n g)(V, W)` at `x`. Source: Gourgoulho
 `K = −½ ℒ_n γ`. Representation: the statement uses the Lie derivative of the metric `g` (`Lightlike.lieDerivMetric`),
 which equals that of `γ = g + n♭ ⊗ n♭` on vectors tangent at `x`, since `n♭` vanishes there.
 
+## The leaves are spacelike
+
+`FoliationSpacelike.lean`, `spatialMetric_pos`: for a Lorentzian metric, `γ(w, w) > 0` for nonzero `w` tangent to a leaf.
+Gourgoulhon assumes the leaves spacelike (Sec. 3.2.2, p. 40); here it follows from the timelike gradient.
+
 ## Trust checks
 
 Minkowski space with `τ = x⁰`: `∇τ = −e₀`, `N = 1`, `n = e₀`, `γ` the Euclidean metric of the spatial coordinates
