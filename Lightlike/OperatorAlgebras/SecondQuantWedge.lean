@@ -14,6 +14,8 @@ For the embedding of the `n`-particle fermionic Fock space `Γₙ` (the closed s
 `f` enumerating `S`, where the sign of `f` is that of the permutation sorting it (Mathlib's `Tuple.sort`).
 
 * `tupleSign`, `sort_comp_perm`, `tupleSign_comp`: `sign(f ∘ τ) = sign τ · sign f` for injective `f`;
+* `sign_eq_signAux`, `tupleSign_eq_prod`, `tupleSign_cons`: the sign is the inversion product, and
+  `sign (cons a p) = ∏ᵢ (-1)^{[p i ≤ a]} · sign p`;
 * `Enum`, `enumEquiv`, `card_enum`: an `n`-element set has `n!` enumerations by injective tuples;
 * `embFun`, `hasSum_fiber`, `hasSum_norm_embFun`, `embL`, `norm_sq_embL`, `norm_embL_le`, `norm_embL_of_support`, `embCLM`:
   the embedding `Eₙ ψ (f) = (n!)^{-1/2} sign(f) ψ(image f)`, a contraction, isometric on the `n`-particle vectors;
@@ -51,6 +53,35 @@ lemma sort_comp_perm {n : ℕ} {f : Fin n → ι} (hf : Function.Injective f) (�
 lemma tupleSign_comp {n : ℕ} {f : Fin n → ι} (hf : Function.Injective f) (τ : Equiv.Perm (Fin n)) :
     tupleSign (f ∘ τ) = Equiv.Perm.sign τ * tupleSign f := by
   rw [tupleSign, sort_comp_perm hf, map_mul, Equiv.Perm.sign_inv, tupleSign]
+
+/-- `sign = signAux` on permutations of `Fin n` (both are multiplicative and `-1` on transpositions). -/
+lemma sign_eq_signAux {n : ℕ} (σ : Equiv.Perm (Fin n)) : Equiv.Perm.sign σ = Equiv.Perm.signAux σ := by
+  induction σ using Equiv.Perm.swap_induction_on with
+  | one => simp
+  | swap_mul f x y hxy ih =>
+    rw [Equiv.Perm.sign_mul, Equiv.Perm.signAux_mul, ih, Equiv.Perm.sign_swap hxy, Equiv.Perm.signAux_swap hxy]
+
+/-- **The sign of an injective tuple is its inversion product**: `sign f = ∏_{j < i} (-1)^{[f i ≤ f j]}`. -/
+lemma tupleSign_eq_prod {n : ℕ} {f : Fin n → ι} (hf : Function.Injective f) :
+    tupleSign f = ∏ i, ∏ j, if j < i then (if f i ≤ f j then -1 else 1) else 1 := by
+  have hq : StrictMono (f ∘ Tuple.sort f) :=
+    (Tuple.monotone_sort f).strictMono_of_injective (hf.comp (Tuple.sort f).injective)
+  have hle : ∀ a b : Fin n, (Tuple.sort f)⁻¹ a ≤ (Tuple.sort f)⁻¹ b ↔ f a ≤ f b := fun a b => by
+    rw [← hq.le_iff_le]
+    simp [Function.comp_apply, Equiv.Perm.inv_def, Equiv.apply_symm_apply]
+  rw [tupleSign, ← Equiv.Perm.sign_inv, sign_eq_signAux, Equiv.Perm.signAux]
+  simp only [hle]
+  rw [show Equiv.Perm.finPairsLT n = Finset.univ.filter (fun x : Σ _ : Fin n, Fin n => x.2 < x.1) by
+    ext x; simp [Equiv.Perm.mem_finPairsLT], Finset.prod_filter, ← Finset.univ_sigma_univ, Finset.prod_sigma]
+
+/-- **The sign of `cons a p`**: `sign (cons a p) = ∏ᵢ (-1)^{[p i ≤ a]} · sign p`. -/
+lemma tupleSign_cons {n : ℕ} (a : ι) (p : Fin n → ι) (hinj : Function.Injective (Fin.cons a p : Fin (n + 1) → ι)) :
+    tupleSign (Fin.cons a p : Fin (n + 1) → ι) = (∏ i, if p i ≤ a then -1 else 1) * tupleSign p := by
+  have hp : Function.Injective p := fun i j h => Fin.succ_injective _ (hinj (by simpa using h))
+  rw [tupleSign_eq_prod hinj, tupleSign_eq_prod hp, Fin.prod_univ_succ]
+  simp only [Fin.prod_univ_succ, Fin.cons_zero, Fin.cons_succ, Fin.not_lt_zero, if_false, Finset.prod_const_one,
+    one_mul, Fin.succ_pos, if_true, Fin.succ_lt_succ_iff]
+  rw [Finset.prod_mul_distrib]
 
 /-- The injective tuples enumerating a finite set `S`. -/
 def Enum (n : ℕ) (S : Finset ι) := {f : Fin n → ι // Function.Injective f ∧ Finset.univ.image f = S}
