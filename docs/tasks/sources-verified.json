@@ -259,6 +259,26 @@
   "citations": 1661,
   "citations_via": "Semantic Scholar"
  },
+ "atiyah-dunajski-mason-2017": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Twistor theory at fifty: from contour integrals to twistor strings",
+  "locations": {
+   "eq. (1.1)": {
+    "verified": true,
+    "snippet": "(1.1) Γ⊂CP1 This is the most elementary of Penrose’s series of twistor integral formulae for massless fields [175]. The closed contour Γ ⊂ CP1 encloses some poles of a meromorphic function f . Differentiating (1.1) under",
+    "why": null
+   },
+   "eq. (2.7)": {
+    "verified": true,
+    "snippet": "(2.7) Z 1 2 x − iy ct − z Z3 where xµ = (ct, x, y, z) are coordinates of a point in Minkowski space. If two points in Minkowski space are incident with the same twistor, then they are connected by a null line. Let Σ(Z, Z",
+    "why": null
+   }
+  },
+  "citations": 108,
+  "citations_via": "OpenAlex"
+ },
  "austing-wheater-2001": {
   "checked": "2026-11-08",
   "exists": true,
@@ -4709,6 +4729,31 @@
    }
   },
   "citations": 138,
+  "citations_via": "Semantic Scholar"
+ },
+ "wolf-2010": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "A First Course on Twistors, Integrability and Gluon Scattering Amplitudes",
+  "locations": {
+   "eq. (2.1)": {
+    "verified": true,
+    "snippet": "(2.1) 2πi C where C is a closed curve in U+ ∩ U− ⊂ CP 1 .4 Since the measure dλα̇ λα̇ is of homogeneity 2, the function f should be of homogeneity −2 as only then is the integral well-defined. Put differently, only if f",
+    "why": null
+   },
+   "eq. (2.3)": {
+    "verified": true,
+    "snippet": "(2.3) 2πi C solves the equation ∂ αα̇1 φα̇1 ···α̇2h = 0 . (2.4) Again, in order to have a well-defined integral, the integrand should have total homogeneity zero, which is equivalent to requiring f to be of homogeneity −",
+    "why": null
+   },
+   "eq. (2.5)": {
+    "verified": true,
+    "snippet": "(2.5) 2πi C ∂z ∂z 2h such that f is of homogeneity 2h − 2. Hence, ∂ α1 α̇ φα1 ···α2h = 0 . (2.6) These contour integral formulæ provide the advertised Penrose transform [6, 7]. Sometimes, one refers to this transform as",
+    "why": null
+   }
+  },
+  "citations": 46,
   "citations_via": "Semantic Scholar"
  },
  "zwiebach-1993": {

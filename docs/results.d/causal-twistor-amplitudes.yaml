@@ -1,0 +1,176 @@
+- id: LL-XXXX-a
+  title: The null cone of complexified Minkowski space is the set of rank-one spinor matrices; a point is a twistor line, determined by the point, every line off the plane at infinity is one, and two lines meet iff their points are null separated; the Plücker coordinates of a line lie on the Klein quadric and every point of the quadric is a line
+  area: GR
+  file: Lightlike/GR/ComplexMinkowski.lean
+  decls: [Lightlike.qC_eq_zero_iff, Lightlike.qC_eq_zero_iff_tmul, Lightlike.isHermitian_spinorMat_iff, Lightlike.twistorLine_injective, Lightlike.exists_twistorLine_eq, Lightlike.twistorLine_inf_ne_bot_iff, Lightlike.plucker_klein, Lightlike.klein_decomposable]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: adamo-2018, location: "eq. (1.4)", check: "null vector"}
+      - {ref: adamo-2018, location: "eq. (1.23)", check: "twistor correspondence"}
+      - {ref: adamo-2018, location: "eq. (1.28)", check: "null separated"}
+  review: kernel-checked
+  note: "Compared with Adamo, §1.2–1.4, (1.2)–(1.4), p. 5, (1.12)–(1.13), p. 7, (1.21)–(1.28), pp. 9–10, and §2.3, (2.24)–(2.29) and footnote 2, pp. 19–21 (read). Conventions: Adamo's signature (+,−,−,−), the library's (−,+,+,+). Limits: the conformal structure of the compactification and the Klein quadric as a complex submanifold of P(C^6) are not in this file."
+  since: unreleased
+- id: LL-XXXX-b
+  title: The twistor Hermitian form has signature (2,2); the twistor line of a point is null iff the point is real; the stabilizer of the infinity twistor in SU(2,2) is the Poincaré group SL(2,C) ⋉ {Hermitian translations}
+  area: GR
+  file: Lightlike/GR/TwistorConformal.lean
+  decls: [Lightlike.twistorNorm_inc_eq_zero_iff, Lightlike.twistorLine_null_iff, Lightlike.isSU22_and_fixesInfinity_iff]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: adamo-2018, location: "eq. (2.5)", check: "inner product"}
+      - {ref: adamo-2018, location: "eq. (2.29)", check: "infinity twistor"}
+      - {ref: atiyah-dunajski-mason-2017, location: "eq. (2.7)", check: "incidence relation"}
+  review: kernel-checked
+  note: "Compared with Adamo, (2.2), p. 13, (2.5)–(2.7), p. 14, (2.21)–(2.29), pp. 18–21 (read); also read: Atiyah–Dunajski–Mason §2.1, p. 7, and Bette arXiv:hep-th/0402150 §3, pp. 11–16 (Bette not in the source registry). Differences: the incidence relation is Adamo's (1.23) without the factor i of (2.2), the form carries the i; the stabilizer equality is proved in matrix form, the sources define the Poincaré subgroup by its block form without stating the equality; 'real point ⇒ null line' is (2.7), the converse is added."
+  since: unreleased
+- id: LL-XXXX-c
+  title: Projective twistor space CP^3 splits by the sign of the (++−−) form into PT+, PN, PT−, each nonempty; the line of a point lies in PN iff the point is real
+  area: GR
+  file: Lightlike/GR/TwistorSpace.lean
+  decls: [Lightlike.penroseHerm_signature, Lightlike.penroseNorm_incidence_eq_zero_iff, Lightlike.cp3_partition, Lightlike.mk_incidencePenrose_mem]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: adamo-2018, location: "eq. (2.5)", check: "inner product"}
+      - {ref: atiyah-dunajski-mason-2017, location: "eq. (2.7)", check: "incidence relation"}
+  review: kernel-checked
+  note: "Compared with Adamo (2.2), p. 13, and (2.5)–(2.7), p. 14 (read), and with Atiyah–Dunajski–Mason arXiv:1704.07464 §2.1, (2.7), p. 7 (read). Differences: ADM's matrix x^{AA'} is the transpose of Adamo's (1.12); PT± and PN are defined on all of CP^3 (ADM: PN inside PT)."
+  since: unreleased
+- id: LL-XXXX-d
+  title: Lines of CP^3 (2-planes of C^4) are in bijection with the points of the Klein quadric; the lines meeting the line at infinity are exactly the complement of the affine chart of complexified Minkowski space, X^23 = I_AB X^AB = 0
+  area: GR
+  file: Lightlike/GR/TwistorKlein.lean
+  decls: [Lightlike.kleinEquiv, Lightlike.compl_range_twistorLine, Lightlike.twistorLine_affine_chart]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: adamo-2018, location: "eq. (2.29)", check: "infinity twistor"}
+  review: kernel-checked
+  note: "Compared with Adamo §1.4, p. 9, and §2.3, (2.25)–(2.29) and footnote 2, pp. 19–21 (read). Representation: lines of CP^3 as 2-planes of C^4, the line at infinity as the plane λ = 0, the quadric in P(C^6) in the coordinates (X^01, …, X^23). Limits: kleinEquiv is a bijection of sets; the quadric is not given a complex-submanifold structure."
+  since: unreleased
+- id: LL-XXXX-e
+  title: A bispinor 2-form is ε F̃ + ε̄ F with symmetric SD and ASD parts (a linear equivalence), and Maxwell's equations hold iff the parts satisfy the spin-1 zero-rest-mass equations
+  area: GR
+  file: Lightlike/GR/ZeroRestMass.lean
+  decls: [Lightlike.Spinor.maxwell_decomposition, Lightlike.Spinor.maxwellEquiv, Lightlike.Spinor.maxwell_iff_zrm_D, Lightlike.Spinor.maxwell_iff_zrm]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: adamo-2018, location: "eq. (3.4)", check: "field strength"}
+      - {ref: adamo-2018, location: "eq. (3.11)", check: "negative helicity"}
+  review: kernel-checked
+  note: "Compared with Adamo (1.5)–(1.7), p. 6, and (3.1)–(3.11), pp. 23–25 (read; pp. 23 and 25 from the rendered PDF). Convention: with (1.5)–(1.7) the parts of (3.3) are minus the parts for which (3.4) holds (every component ratio −1); Lean follows (3.4). Representation: raised indices written out with ε; fields on an open set of C^4 in the coordinates x^{αα̇}."
+  since: unreleased
+- id: LL-XXXX-f
+  title: Zero-rest-mass fields of every helicity; the components of a C² z.r.m. field solve the wave equation; the momentum eigenstates p_{α1}⋯p_{α2|h|} e^{ik·x} are z.r.m. fields
+  area: GR
+  file: Lightlike/GR/ZeroRestMass.lean
+  decls: [Lightlike.Spinor.IsZrmNeg, Lightlike.Spinor.IsZrmPos, Lightlike.Spinor.IsZrmNeg.box_eq_zero, Lightlike.Spinor.IsZrmPos.box_eq_zero, Lightlike.Spinor.planeWave_isZrmNeg, Lightlike.Spinor.planeWave_isZrmPos, Lightlike.Spinor.planeWave_isZrmScalar]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: adamo-2018, location: "eq. (3.15)", check: "helicity"}
+  review: kernel-checked
+  note: "Compared with Adamo (3.15), p. 25, and the exercise 'momentum eigenstates', item 3, p. 32 (read). The wave-equation theorem is added (not stated in the source); C² is its hypothesis (Mathlib has holomorphic ⇒ C^∞ in one variable only)."
+  since: unreleased
+- id: LL-XXXX-g
+  title: Tensors with the symmetries of a Weyl tensor are exactly ε ε Ψ̃ + ε̄ ε̄ Ψ with Ψ, Ψ̃ totally symmetric (the Weyl spinor decomposition)
+  area: GR
+  file: Lightlike/GR/WeylSpinor.lean
+  decls: [Lightlike.Spinor.weyl_eq_weylOf, Lightlike.Spinor.weylOf_isWeyl, Lightlike.Spinor.weylEquiv]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: adamo-2018, location: "eq. (3.12)", check: "Riemann"}
+  review: kernel-checked
+  note: "Compared with Adamo (3.12), p. 25 (read, rendered PDF). Misprint corrected: the second term is printed ε_{αβ}ε_{γδ}Ψ_{αβγδ}; Lean uses ε_{α̇β̇}ε_{γ̇δ̇}Ψ_{αβγδ}. Scope: the Weyl term of (3.12); the Φ and R terms are not claimed."
+  since: unreleased
+- id: LL-XXXX-h
+  title: The Penrose transform by contour integrals is a zero-rest-mass field of helicity −(n+1)/2, 0 and (n+1)/2 (differentiation under the integral sign), and for twistor functions of homogeneity 2h−2 it does not depend on the section of the line; the elementary solution 2πi/det x
+  area: GR
+  file: Lightlike/GR/PenroseTransform.lean
+  decls: [Lightlike.Spinor.hasFDerivAt_circleIntegral_twistorPt, Lightlike.Spinor.penroseNeg_isZrmNeg, Lightlike.Spinor.penroseScalar_isZrmScalar, Lightlike.Spinor.penrosePos_isZrmPos, Lightlike.Spinor.penroseNeg_rescale, Lightlike.Spinor.penroseScalar_rescale, Lightlike.Spinor.penrosePos_rescale, Lightlike.Spinor.penroseScalar_elementary]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: adamo-2018, location: "eq. (3.30)", check: "incidence relations"}
+      - {ref: adamo-2018, location: "eq. (3.39)", check: "Penrose transform"}
+      - {ref: adamo-2018, location: "eq. (3.40)", check: "integral formula"}
+      - {ref: atiyah-dunajski-mason-2017, location: "eq. (1.1)", check: "Bateman"}
+      - {ref: wolf-2010, location: "eq. (2.1)", check: "contour integral"}
+      - {ref: wolf-2010, location: "eq. (2.3)", check: "positive helicity"}
+      - {ref: wolf-2010, location: "eq. (2.5)", check: "negative helicity"}
+  review: kernel-checked
+  note: "Compared with Adamo (3.15), p. 25, (3.26)–(3.30), pp. 27–28, (3.39)–(3.42), p. 30 (read), with Atiyah–Dunajski–Mason arXiv:1704.07464 (1.1)–(1.2), p. 3, §2.3, pp. 8–9 (read) and Wolf arXiv:1001.3871 §2.1, (2.1)–(2.2), p. 11, (2.3)–(2.6) and Exercise 2.1, p. 12 (read, rendered page). Representation: the contour is a circle in a parameter z with a section λ(z) of the line; twistor functions on (μ, λ) ∈ C²×C²; holomorphic is C¹ (h ≤ 0) or analytic (h > 0) on an open set containing the twistor points of the contour. Convention: Wolf's twistor has the opposite chirality (Wolf's h is −h here) and Wolf's −1/(2πi) is omitted. Limits: the Dolbeault isomorphism (3.39) and the converse are not claimed."
+  since: unreleased
+- id: LL-XXXX-i
+  title: A complex momentum is null iff its bispinor is −λλ̃ᵀ, the factorization is unique up to little-group scaling; ⟨pq⟩[pq] = 2p·q, s_ij = ⟨ij⟩[ji], and the Schouten identities
+  area: GR
+  file: Lightlike/GR/SpinorHelicity.lean
+  decls: [Lightlike.SpinorHelicity.det_momBispinor, Lightlike.SpinorHelicity.mdot_self_eq_zero_iff, Lightlike.SpinorHelicity.exists_littleGroup_of_eq, Lightlike.SpinorHelicity.nullMom_littleGroup, Lightlike.SpinorHelicity.angleBr_mul_squareBr, Lightlike.SpinorHelicity.mandelstam_nullMom, Lightlike.SpinorHelicity.schouten_angleBr, Lightlike.SpinorHelicity.schouten_squareBr]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: elvang-huang-2013, location: "eq. (2.16)", check: "spinor indices"}
+      - {ref: elvang-huang-2013, location: "eq. (2.24)", check: "important relation"}
+      - {ref: elvang-huang-2013, location: "eq. (2.48)", check: "Schouten"}
+      - {ref: elvang-huang-2013, location: "eq. (2.92)", check: "scaling"}
+  review: kernel-checked
+  note: "Compared with Elvang–Huang Appendix A, (A.1)–(A.12), p. 244, §2.1–2.2, pp. 9–11, (2.22)–(2.24), p. 12, (2.39), p. 15, (2.46)–(2.48), p. 16, (2.92), p. 27 (read); conventions checked numerically before the Lean statements. Representation: complex momenta; spinors with lower indices, λ_a = |p]_a, λ̃_ȧ = ⟨p|_ȧ; brackets as functions of the spinors."
+  since: unreleased
+- id: LL-XXXX-j
+  title: Three-particle special kinematics (all angle or all square brackets vanish), and three-point amplitudes fixed by little-group scaling, x_12 = h_3 − h_1 − h_2, with the mass-dimension selection between angle and square brackets
+  area: GR
+  file: Lightlike/GR/ThreePointAmplitude.lean
+  decls: [Lightlike.SpinorHelicity.conserved3_iff, Lightlike.SpinorHelicity.special_kinematics, Lightlike.SpinorHelicity.angleAnsatz_weights_iff, Lightlike.SpinorHelicity.three_point_dimension, Lightlike.SpinorHelicity.three_point_selection]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: elvang-huang-2013, location: "eq. (2.56)", check: "lightlike vectors"}
+      - {ref: elvang-huang-2013, location: "eq. (2.96)", check: "readily solved"}
+  review: kernel-checked
+  note: "Compared with Elvang–Huang p. 18 ((2.56) and the argument after it) and pp. 27–29, (2.92)–(2.99) (read). Representation: helicities as H_i = 2h_i ∈ Z; amplitudes as the monomial Ansätze (2.94); the physical input 'the three-point amplitude has mass dimension 1' (p. 29) is a stated hypothesis of three_point_selection."
+  since: unreleased
+- id: LL-XXXX-k
+  title: The Parke–Taylor colour-ordered MHV amplitudes are cyclic, reflect with (−1)^n, satisfy the U(1) decoupling identity for every n and the five-point Kleiss–Kuijf relation, have little-group weights t^{−2h}, and at four points equal [34]^4/([12][23][34][41]) under momentum conservation
+  area: GR
+  file: Lightlike/GR/ColourOrdered.lean
+  decls: [Lightlike.SpinorHelicity.parkeTaylor_rotate, Lightlike.SpinorHelicity.parkeTaylor_rev, Lightlike.SpinorHelicity.eikonal_sum, Lightlike.SpinorHelicity.parkeTaylor_U1_decoupling, Lightlike.SpinorHelicity.parkeTaylor_littleGroup_plus, Lightlike.SpinorHelicity.parkeTaylor_littleGroup_minus, Lightlike.SpinorHelicity.parkeTaylor_KK5, Lightlike.SpinorHelicity.parkeTaylor_four_eq_square]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: elvang-huang-2013, location: "eq. (2.80)", check: "Parke-Taylor"}
+      - {ref: elvang-huang-2013, location: "eq. (2.82)", check: "decoupling"}
+      - {ref: elvang-huang-2013, location: "eq. (2.85)", check: "Kleiss-Kuijf"}
+  review: kernel-checked
+  note: "Compared with Elvang–Huang §2.5, (2.79)–(2.81), p. 24, the properties and (2.82)–(2.85), p. 25 (read). Representation: gluons in colour order as Fin n → angle spinors; identities for nonvanishing brackets; the Parke–Taylor expression is the MHV sector (2.80), taken as a formula."
+  since: unreleased
+- id: LL-XXXX-l
+  title: The U(N) colour algebra in the normalisation Tr TᵃTᵇ = δᵃᵇ — completeness (Fierz) for U(N) and SU(N), the structure constants as traces of commutators, products of two structure constants as single traces, and the Jacobi identity
+  area: GR
+  file: Lightlike/GR/ColourAlgebra.lean
+  decls: [Lightlike.Colour.expand_generators, Lightlike.Colour.fierz, Lightlike.Colour.fierz_su, Lightlike.Colour.commutator_eq_structureConst, Lightlike.Colour.i_mul_eq_trace_sub, Lightlike.Colour.structureConst_mul_sum, Lightlike.Colour.jacobi_colour]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: elvang-huang-2013, location: "eq. (2.66)", check: "Jacobi identity"}
+      - {ref: elvang-huang-2013, location: "eq. (2.67)", check: "traces of the generators"}
+      - {ref: elvang-huang-2013, location: "eq. (2.68)", check: "completeness relation"}
+  review: kernel-checked
+  note: "Compared with Elvang–Huang §2.5, p. 21 (the normalisation) and (2.65)–(2.71), p. 22 (read). (2.69)'s ∝ is made exact (factor −1). Scope: the trace basis (2.71) is stated (traceBasisAmplitude); its derivation from the Yang–Mills Feynman rules is not in the library."
+  since: unreleased
