@@ -211,6 +211,8 @@ import Lightlike.Canonical.AshtekarSymplectic
 import Lightlike.Canonical.Holonomy
 import Lightlike.Canonical.HolonomyPaths
 import Lightlike.Canonical.HolonomyGauge
+import Lightlike.Canonical.HolonomyGraph
+import Lightlike.Canonical.HolonomyALGraph
 import Lightlike.Canonical.FoliationLie
 import Lightlike.Canonical.FoliationSpacelike
 import Lightlike.Canonical.FoliationChart
