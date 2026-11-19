@@ -157,6 +157,27 @@ potentials on trivializations covering `M` that satisfy (38) on every overlap ar
 derivative (`exists_covariantDerivative_of_local`), unique on the sections differentiable at the point
 (`covariantDerivative_eq_of_local`).
 
+## Connections as horizontal distributions (Svetlichny §4.6, pp. 26-29)
+
+Source, read: the vertical subspace `V_p E = ker dπ` of a bundle (pp. 26-27); a connection is a smooth choice of
+`H_p E ⊂ T_p E` complementary to `V_p E`, smooth meaning that `π^h X` is `C^∞` for every `C^∞` vector field `X`
+(p. 27); on a principal bundle `V_p P ≃ g` by `L ↦ L_p = d/dt p · exp(tL)`, the vertical projection is represented by
+the connection form `ω_p` (eq. (34)), and the connection is invariant if `H_{p·g} = dR_g(H_p)` (p. 29).
+
+`PrincipalHorizontal.lean`, on the glued `P` with `ω = connForm`: `proj` is `π` (`proj_act`: `π(p · k) = π(p)`);
+`vertical p = ker dπ_p` and `horizontal p = ker ω_p` are complementary (`isCompl_vertical_horizontal`: their
+intersection is `0` in a trivialization, since `ω_(x,h)(0, w) = Ad_{h⁻¹} dR_{h⁻¹} w`, and `v = d(p ·)_1 (ω_p v) +
+(v - d(p ·)_1 (ω_p v))`); `V_p` is the set of fundamental vectors (`mem_vertical_iff`); `vertProj p = d(p ·)_1 ∘ ω_p`
+is the vertical projection (`vertProj_mem_vertical`, `sub_vertProj_mem_horizontal`); `H_{p·k} = dR_k(H_p)`
+(`horizontal_act`, from (35) and `R_{k⁻¹} ∘ R_k = id`); and for `C^n` data (`n ≥ 3`, `m + 1 ≤ n`) the vertical and
+horizontal parts of a `C^m` vector field are `C^m` (`contMDiffAt_horizontalPart`, through the smoothness of the
+fundamental vector fields, `contMDiffAt_fundamental`, from Mathlib's `ContMDiffAt.mfderiv` and
+`ContMDiffAt.clm_apply_of_inCoordinates`). Differences, kind representation: the fundamental vector of `L` is
+`d(p ·)_1 L`, the velocity at `1` of `k ↦ p · k` along `L`, instead of the velocity of `t ↦ p · exp(tL)` (Mathlib has no
+exponential map of a Lie group; the two agree because `exp` has derivative `id` at `0`); the horizontal subspace is
+given as the kernel of `ω`, which is how the source passes from the distribution to the form; smoothness is `C^m`
+for `C^n` data with `m + 1 ≤ n` (smooth data give `C^∞`).
+
 ## Reuse
 
 Mathlib: `IsPicardLindelof`, `IsPicardLindelof.exists_eq_forall_mem_Icc_hasDerivWithinAt₀`, `ContDiffBump`,
