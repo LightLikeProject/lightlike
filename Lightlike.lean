@@ -1209,6 +1209,8 @@ import Lightlike.FieldTheory.Gaussian.Tests
 import Lightlike.FieldTheory.Gaussian.Wick
 import Lightlike.FieldTheory.Gaussian.WickSemidef
 import Lightlike.FieldTheory.ZeroDim.Components
+import Lightlike.FieldTheory.ZeroDim.Connected
+import Lightlike.FieldTheory.ZeroDim.ConnectedGraphs
 import Lightlike.FieldTheory.ZeroDim.FormalIntegral
 import Lightlike.FieldTheory.ZeroDim.GraphAlgebra
 import Lightlike.FieldTheory.ZeroDim.GraphComp
