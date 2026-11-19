@@ -78,8 +78,8 @@ Heidelberg): Chapter IV, §2, p. 126 (the orbits of `SL(2,ℂ)` on `ℝ⁴` and 
 `(m, 0, 0, 0)`, `m > 0`, with little group `SU(2)`, and of `(1, 1, 0, 0)`, with the double cover of `ISO(2)`, give
 the positive-energy representations of physical interest); Chapter V, §4, Definitions 4.1, 4.2, Proposition 4.4
 (systems of imprimitivity), pp. 139–140; §5, Theorem 5.1 (Stone's theorem for `ℝⁿ` in multiplication form),
-Definition 5.5, Lemma 5.6, pp. 146–147; §6, Assumption 6.1, Theorem 6.2 (Mackey), Theorem 6.4 (the irreducible
-unitary representations of `ISO(2)`), pp. 148–149; §7, Lemma 7.1, Proposition 7.2 (ergodicity and concentration on
+Definition 5.5, Lemma 5.6, pp. 146–147; §6, Assumption 6.1 and Theorem 6.2 (Mackey), p. 149, Theorem 6.4 (the
+irreducible unitary representations of `ISO(2)`), p. 150; §7, Lemma 7.1, Proposition 7.2 (ergodicity and concentration on
 one orbit), pp. 150–151; Appendix VI.1 (the spectral theorem for `ℝ`), pp. 152–153.
 
 Scope: the orbit `p = 0` (whose representations are those of `SL(2,ℂ)` itself, Bekaert–Boulanger §3.2, Remark,

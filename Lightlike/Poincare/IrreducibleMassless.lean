@@ -15,7 +15,7 @@ has the null sets of the image of the Haar measure (`absolutelyContinuous_coneHa
 ## References
 
 * E. Freitag, *Unitary representations of the Poincaré group, Wigner classification* (lecture notes, Heidelberg),
-  Chapter V, §6, Theorem 6.2, page 148.
+  Chapter V, §6, Theorem 6.2, page 149.
 -/
 
 open MeasureTheory Matrix Lightlike.Lorentz Filter Topology
