@@ -23,6 +23,13 @@ antilinear part [3]. A representation of the Weyl relations is a family of unita
 `W f ∘ W g = exp (-i Im ⟪f, g⟫ / 2) W (f + g)`, and a Fock representation has a cyclic unit vector with the
 vacuum expectation `exp (-‖f‖² / 4)` [3]. Shale's criterion says that a Bogoliubov transformation is
 implemented by a unitary of the Fock representation exactly when its antilinear part is Hilbert–Schmidt {2}.
+Necessity goes through the determinant bound from the uncertainty matrix [54], the Gaussian average of the Weyl
+unitaries over finitely many modes [55] and the matrix of the quadratic form `f ↦ ‖T f‖²` on finitely many modes
+[56]; sufficiency goes
+through the norm continuity of the Weyl unitaries [57], the vacuum projection of finitely many modes [58] and the
+bound `det ≤ exp (tr - n)` [59]. The parity `f ↦ -f` is implemented in every Fock representation [60], a one-mode squeezing is implemented
+[61], and the same squeezing on every mode of `ℓ²` has an antilinear part that is not Hilbert–Schmidt and is not
+implemented [64].
 In one mode the squeezing has `|α|² - |β|² = 1` and the dilation `f ↦ 2 f` is not symplectic [4]. A map with `‖B f‖ = c ‖f‖`, `c > 0`, is not Hilbert–Schmidt when a Hilbert basis is infinite [4]. On `L²(ℝ)` translation `ψ(x + t)` is a strongly continuous unitary group [5], and its generator is `-i d/dx` on `C²` functions with compact support, not `+i d/dx` [6]. On `L²(0, 1)` the operator `-i d/dx` on the `C²` functions supported inside `(0, 1)` is given by its graph [7]. The deficiency spaces of an operator are the kernels of the adjoint minus `±i`, and a self-adjoint operator has none [8]. The
 Fock space itself is not built here, and a Fock representation is characterized by its vacuum. The
 unbounded spectral theorem is not in Mathlib; it is ported from physicslib4: every self-adjoint operator has a unique
@@ -61,6 +68,8 @@ On `L²(0, 1)`, a vector lies in the domain of the adjoint of `-i d/dx` (on the 
 The plane waves `e^{i(θ + 2πn)x}`, `n ∈ ℤ`, lie in the domain of `P_θ` and are orthonormal eigenvectors with eigenvalue `θ + 2πn`; an eigenvector of `P_θ` with eigenvalue `μ ∈ ℂ` has the continuous representative `y(0) e^{iμx}`, so `μ = θ + 2πn` and the eigenspaces are one-dimensional; off `θ + 2πℤ` the resolvent equation is solved explicitly, so the spectrum of `P_θ`, in Physlib's sense, is `θ + 2πℤ` and equals the point spectrum {5}, [69]. `θ` is in the spectrum of `P_θ` and `θ + π` is not [70].
 
 On a compact metric space the couplings of two probability measures are the probability measures on the product with these marginals, the product measure among them, and `W₁` is the infimum of the transport costs `∫ d dπ`; for every coupling and `1`-Lipschitz `u`, `∫ u dμ - ∫ u dν ≤ ∫ d dπ`, the easy half of Kantorovich-Rubinstein duality, and `W₁(δₓ, δ_y) = d(x, y)` {6} [71]. The diagonal coupling gives `W₁(μ, μ) = 0` [72].
+
+For a continuous cost `h` on the product of a compact metric space with itself there is an optimal coupling, and its cost is `sup {∫ f dμ + ∫ g dν | f(x) + g(y) ≤ h(x, y)}` over continuous `f`, `g` {6} [73]; the proof goes through the Hahn-Banach theorem for the sublinear functional `ω(k) = inf {∫ f dμ + ∫ g dν | k ≤ f ⊕ g}` and the Riesz-Markov-Kakutani theorem. For a separable cost `a(x) + b(y)` the dual value is `∫ a dμ + ∫ b dν` [74].
 
 ## Lean References
 
@@ -247,6 +256,12 @@ On a compact metric space the couplings of two probability measures are the prob
     `OperatorAlgebras.Transport.wasserstein1_le`, `OperatorAlgebras.Transport.wasserstein1_dirac`
 72. Lightlike/OperatorAlgebras/TestsWasserstein.lean - `OperatorAlgebras.Transport.diag_mem_couplings`,
     `OperatorAlgebras.Transport.wasserstein1_self`, `OperatorAlgebras.Transport.wasserstein1_dirac_pos`
+73. Lightlike/OperatorAlgebras/MongeKantorovich.lean - `OperatorAlgebras.Transport.omega`,
+    `OperatorAlgebras.Transport.integral_le_omega`, `OperatorAlgebras.Transport.exists_linear_le_omega`,
+    `OperatorAlgebras.Transport.exists_coupling_eq_omega`, `OperatorAlgebras.Transport.dualValues`,
+    `OperatorAlgebras.Transport.exists_optimal_coupling`, `OperatorAlgebras.Transport.integral_optimal_eq_sSup`
+74. Lightlike/OperatorAlgebras/TestsMongeKantorovich.lean - `OperatorAlgebras.Transport.sepCost`,
+    `OperatorAlgebras.Transport.integral_sepCost`, `OperatorAlgebras.Transport.sSup_dualValues_sepCost`
 
 ## References
 

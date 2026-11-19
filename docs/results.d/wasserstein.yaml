@@ -11,3 +11,16 @@
   review: kernel-checked
   note: "Compared with Huang, Wang, Wu, Meng, arXiv:2610.21070, Section 3.2.1, p. 5 (read): Pi(nu, eta) the probability couplings, W_1 the infimum of the cost of d, and the easy direction of (KR) for unit Lipschitz u. The equality (KR) is the next entry."
   since: unreleased
+- id: LL-XXXX-b
+  title: Monge-Kantorovich duality with an optimal coupling for a continuous cost on a compact metric space
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/MongeKantorovich.lean
+  decls: [Lightlike.OperatorAlgebras.Transport.omega, Lightlike.OperatorAlgebras.Transport.integral_le_omega, Lightlike.OperatorAlgebras.Transport.exists_linear_le_omega, Lightlike.OperatorAlgebras.Transport.exists_coupling_eq_omega, Lightlike.OperatorAlgebras.Transport.dualValues, Lightlike.OperatorAlgebras.Transport.exists_optimal_coupling, Lightlike.OperatorAlgebras.Transport.integral_optimal_eq_sSup]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: huang-wang-wu-meng-2026, location: "Section 8.1", check: "strong duality"}
+  review: kernel-checked
+  note: "Compared with Huang, Wang, Wu, Meng, arXiv:2610.21070, Section 8.1, (8.1), p. 46 (read): the finite transport problem, min over couplings of the cost equals max over a_i + b_j <= d(x_i, x_j) of the dual value, with a minimum attained. Here the duality is for every continuous cost on a compact metric space, with an optimal coupling; the proof goes through the Hahn-Banach theorem and the Riesz-Markov-Kakutani theorem."
+  since: unreleased
