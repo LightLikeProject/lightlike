@@ -14,7 +14,7 @@ This is the map `exp : D → M` of the source, in a chart.
 * `zero_mem_expDomain`, `expMap_zero`: the zero section lies in the domain, and `exp_p 0 = p`.
 * `smul_mem_expDomain`, `expMap_smul`: the domain is star shaped in the velocity, and
   `exp_p (t v) = c_v (t)`.
-* `isOpen_expDomain`, `contDiffOn_expMap`: the domain is open and `exp` is smooth on it.
+* `isOpen_expDomain`, `contDiffOn_expMap`: the domain is an open set and `exp` is smooth on it.
 * `gauss_expMap`: the Gauss lemma on the whole domain.
 
 ## References
