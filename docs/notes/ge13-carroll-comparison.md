@@ -11,6 +11,11 @@ Source read: S. M. Carroll, *Lecture Notes on General Relativity* (1997), arXiv 
   does not prove that the flow consists of isometries (not attempted): comparison with Carroll: statement of the Killing equation matches, the flow characterisation is not covered.
 * The Poincare example (affine fields with skew linear part): Carroll counts `n(n+1)/2` independent Killing vectors for maximally symmetric spaces (p. 140, around (5.4x)); we prove that
   the skew affine fields are Killing and close under the bracket, not that they are all of them.
+  Update (18 November 2026 ~23:40, `KillingMinkowski.lean`): now also proved that they are all of them and the count. Carroll pp. 140-141, eq. (5.44): "a maximally
+  symmetric space is one which possesses the largest possible number of Killing vectors, which on an n-dimensional manifold is n(n + 1)/2. We will not prove this
+  statement"; for `ℝⁿ`, `n + n(n − 1)/2 = n(n + 1)/2` (translations and rotations); "the same kind of counting argument applies to ... Minkowski space".
+  `killing_eq_affField`: every `C²` Killing field of Minkowski space is `y ↦ A y + c` with `A` `η`-skew; `finrank_killingFields`: the Killing fields form a space of
+  dimension `n(n + 1)/2`. No difference: Carroll states the count for Minkowski space by analogy, we prove it (for `C²` fields, which includes his smooth ones).
 
 ## Gauss and Codazzi (GE13): source E. Gourgoulhon, *3+1 Formalism and Bases of Numerical Relativity*, arXiv gr-qc/0703035 (pdf text read)
 * Extrinsic curvature `K(u, v) = −u · ∇_v n`, eq. (2.43), p. 24 of the pdf numbering used; Gauss relation `γ γ γ γ ⁴R^ρ_{σμν} = R^γ_{δαβ} + K^γ_α K_{δβ} − K^γ_β K_{αδ}`,
