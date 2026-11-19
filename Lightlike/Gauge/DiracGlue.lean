@@ -70,24 +70,26 @@ on the zero sets of their stages inside an open set `V`, with the stages regular
 stage has the same zero set inside `V`. -/
 theorem zeroSet_stages_inter_eq (br : (E → ℝ) → (E → ℝ) → E → ℝ) (φ : Fin M → E → ℝ) (H : E → ℝ)
     (B : E → (E →L[ℝ] ℝ) →ₗ[ℝ] (E →L[ℝ] ℝ) → ℝ) (hB : ∀ f g x, br f g x = B x (fderiv ℝ f x) (fderiv ℝ g x))
-    (sel sel' : ∀ S : Stage E, Sel S M) (S₀ : Stage E) {V : Set E} (hVo : IsOpen V)
-    (hreg : ∀ k, ∀ x ∈ zeroSet (stages br φ H sel S₀ k).Φ ∩ V,
+    (sel sel' : ∀ S : Stage E, Sel S M) (S₀ : Stage E) {V : Set E} (hVo : IsOpen V) (m : ℕ)
+    (hreg : ∀ k < m, ∀ x ∈ zeroSet (stages br φ H sel S₀ k).Φ ∩ V,
       LinearIndependent ℝ fun i => fderiv ℝ ((stages br φ H sel S₀ k).Φ i) x)
-    (hreg' : ∀ k, ∀ x ∈ zeroSet (stages br φ H sel' S₀ k).Φ ∩ V,
+    (hreg' : ∀ k < m, ∀ x ∈ zeroSet (stages br φ H sel' S₀ k).Φ ∩ V,
       LinearIndependent ℝ fun i => fderiv ℝ ((stages br φ H sel' S₀ k).Φ i) x)
-    (hdiff : ∀ k, ∀ x ∈ zeroSet (stages br φ H sel S₀ k).Φ ∩ V, ∀ i,
+    (hdiff : ∀ k < m, ∀ x ∈ zeroSet (stages br φ H sel S₀ k).Φ ∩ V, ∀ i,
       HasStrictFDerivAt ((stages br φ H sel S₀ k).Φ i) (fderiv ℝ ((stages br φ H sel S₀ k).Φ i) x) x)
-    (hdiff' : ∀ k, ∀ x ∈ zeroSet (stages br φ H sel' S₀ k).Φ ∩ V, ∀ i,
+    (hdiff' : ∀ k < m, ∀ x ∈ zeroSet (stages br φ H sel' S₀ k).Φ ∩ V, ∀ i,
       HasStrictFDerivAt ((stages br φ H sel' S₀ k).Φ i) (fderiv ℝ ((stages br φ H sel' S₀ k).Φ i) x) x)
-    (hadm : ∀ k, ∀ x ∈ zeroSet (stages br φ H sel S₀ k).Φ ∩ V,
+    (hadm : ∀ k < m, ∀ x ∈ zeroSet (stages br φ H sel S₀ k).Φ ∩ V,
       (sel (stages br φ H sel S₀ k)).Admissible br φ x)
-    (hadm' : ∀ k, ∀ x ∈ zeroSet (stages br φ H sel' S₀ k).Φ ∩ V,
+    (hadm' : ∀ k < m, ∀ x ∈ zeroSet (stages br φ H sel' S₀ k).Φ ∩ V,
       (sel' (stages br φ H sel' S₀ k)).Admissible br φ x) :
-    ∀ k, zeroSet (stages br φ H sel S₀ k).Φ ∩ V = zeroSet (stages br φ H sel' S₀ k).Φ ∩ V := by
-  intro k
+    ∀ k ≤ m, zeroSet (stages br φ H sel S₀ k).Φ ∩ V = zeroSet (stages br φ H sel' S₀ k).Φ ∩ V := by
+  intro k hkm
   induction k with
   | zero => rfl
   | succ k ih =>
+    have hk : k < m := by omega
+    have ih := ih (by omega)
     show zeroSet (appendStage (stages br φ H sel S₀ k).Φ
         ((stages br φ H sel S₀ k).chiFun br φ H (sel (stages br φ H sel S₀ k)))) ∩ V =
       zeroSet (appendStage (stages br φ H sel' S₀ k).Φ
@@ -104,14 +106,14 @@ theorem zeroSet_stages_inter_eq (br : (E → ℝ) → (E → ℝ) → E → ℝ)
           rw [ih] at this
           exact this.1
         exact ⟨hx', (stages br φ H sel S₀ k).consistent_iff_of_zeroSet_inter_eq br φ H B hB _
-          (hVo.mem_nhds hxV) ih hx (hdiff k x ⟨hx, hxV⟩) (hdiff' k x ⟨hx', hxV⟩) (hreg k x ⟨hx, hxV⟩)
-          (hreg' k x ⟨hx', hxV⟩)⟩
+          (hVo.mem_nhds hxV) ih hx (hdiff k hk x ⟨hx, hxV⟩) (hdiff' k hk x ⟨hx', hxV⟩) (hreg k hk x ⟨hx, hxV⟩)
+          (hreg' k hk x ⟨hx', hxV⟩)⟩
     constructor
     · rintro ⟨⟨hx, hχ⟩, hxV⟩
       obtain ⟨hx', hc⟩ := hiff hxV hx
       refine ⟨⟨hx', ?_⟩, hxV⟩
-      have h1 := ((stages br φ H sel S₀ k).chiFun_zero_iff br φ H (hadm k x ⟨hx, hxV⟩)).mp hχ
-      exact ((stages br φ H sel' S₀ k).chiFun_zero_iff br φ H (hadm' k x ⟨hx', hxV⟩)).mpr (hc.mp h1)
+      have h1 := ((stages br φ H sel S₀ k).chiFun_zero_iff br φ H (hadm k hk x ⟨hx, hxV⟩)).mp hχ
+      exact ((stages br φ H sel' S₀ k).chiFun_zero_iff br φ H (hadm' k hk x ⟨hx', hxV⟩)).mpr (hc.mp h1)
     · rintro ⟨⟨hx', hχ⟩, hxV⟩
       have hx : x ∈ zeroSet (stages br φ H sel S₀ k).Φ := by
         have : x ∈ zeroSet (stages br φ H sel' S₀ k).Φ ∩ V := ⟨hx', hxV⟩
@@ -119,8 +121,8 @@ theorem zeroSet_stages_inter_eq (br : (E → ℝ) → (E → ℝ) → E → ℝ)
         exact this.1
       obtain ⟨-, hc⟩ := hiff hxV hx
       refine ⟨⟨hx, ?_⟩, hxV⟩
-      have h1 := ((stages br φ H sel' S₀ k).chiFun_zero_iff br φ H (hadm' k x ⟨hx', hxV⟩)).mp hχ
-      exact ((stages br φ H sel S₀ k).chiFun_zero_iff br φ H (hadm k x ⟨hx, hxV⟩)).mpr (hc.mpr h1)
+      have h1 := ((stages br φ H sel' S₀ k).chiFun_zero_iff br φ H (hadm' k hk x ⟨hx', hxV⟩)).mp hχ
+      exact ((stages br φ H sel S₀ k).chiFun_zero_iff br φ H (hadm k hk x ⟨hx, hxV⟩)).mpr (hc.mpr h1)
 
 /-- **The zero sets of the stages decrease.** -/
 theorem zeroSet_anti (n : ℕ → ℕ) (Φ : ∀ k, Fin (n k) → E → ℝ) (hmono : ∀ k, n k ≤ n (k + 1))
@@ -133,11 +135,11 @@ theorem zeroSet_anti (n : ℕ → ℕ) (Φ : ∀ k, Fin (n k) → E → ℝ) (hm
     rw [← hext k' i]
     exact hx _
 
-/-- **An atlas for the Dirac algorithm**: open sets `U α` covering the primary surface, each with its own selection rule,
-whose stages are regular, strictly differentiable and admissible at the points of their zero sets inside `U α` (what the
-constant-rank hypothesis gives near each point, `DiracLocal.exists_selection_near`). -/
+/-- **An atlas for the Dirac algorithm up to the stage `K`**: open sets `U α` covering the primary surface, each with its
+own selection rule, whose stages `k ≤ K` are regular, strictly differentiable and admissible at the points of their zero
+sets inside `U α` (what the constant-rank hypothesis gives near each point, `DiracAtlas.ofConstantRank`). -/
 structure DiracAtlas (br : (E → ℝ) → (E → ℝ) → E → ℝ) (φ : Fin M → E → ℝ) (H : E → ℝ) (S₀ : Stage E)
-    (A : Type*) where
+    (A : Type*) (K : ℕ) where
   /-- The chart domains. -/
   U : A → Set E
   /-- The chart domains are open. -/
@@ -145,38 +147,41 @@ structure DiracAtlas (br : (E → ℝ) → (E → ℝ) → E → ℝ) (φ : Fin 
   /-- The selection rule of each chart. -/
   sel : A → ∀ S : Stage E, Sel S M
   /-- The stages of each chart are regular inside its domain. -/
-  reg : ∀ α k, ∀ x ∈ zeroSet (stages br φ H (sel α) S₀ k).Φ ∩ U α,
+  reg : ∀ α, ∀ k ≤ K, ∀ x ∈ zeroSet (stages br φ H (sel α) S₀ k).Φ ∩ U α,
     LinearIndependent ℝ fun i => fderiv ℝ ((stages br φ H (sel α) S₀ k).Φ i) x
   /-- The stages of each chart are strictly differentiable inside its domain. -/
-  diff : ∀ α k, ∀ x ∈ zeroSet (stages br φ H (sel α) S₀ k).Φ ∩ U α, ∀ i,
+  diff : ∀ α, ∀ k ≤ K, ∀ x ∈ zeroSet (stages br φ H (sel α) S₀ k).Φ ∩ U α, ∀ i,
     HasStrictFDerivAt ((stages br φ H (sel α) S₀ k).Φ i) (fderiv ℝ ((stages br φ H (sel α) S₀ k).Φ i) x) x
   /-- The selected blocks of each chart are admissible inside its domain. -/
-  adm : ∀ α k, ∀ x ∈ zeroSet (stages br φ H (sel α) S₀ k).Φ ∩ U α,
+  adm : ∀ α, ∀ k ≤ K, ∀ x ∈ zeroSet (stages br φ H (sel α) S₀ k).Φ ∩ U α,
     (sel α (stages br φ H (sel α) S₀ k)).Admissible br φ x
   /-- The chart domains cover the primary surface. -/
   cover : zeroSet S₀.Φ ⊆ ⋃ α, U α
 
 namespace DiracAtlas
 
-variable {br : (E → ℝ) → (E → ℝ) → E → ℝ} {φ : Fin M → E → ℝ} {H : E → ℝ} {S₀ : Stage E} {A : Type*}
+variable {br : (E → ℝ) → (E → ℝ) → E → ℝ} {φ : Fin M → E → ℝ} {H : E → ℝ} {S₀ : Stage E} {A : Type*} {K : ℕ}
 
 /-- **The glued surfaces** `Γₖ = ⋃_α (Γₖ^α ∩ U_α)`. -/
-def surface (𝒜 : DiracAtlas br φ H S₀ A) (k : ℕ) : Set E :=
+def surface (𝒜 : DiracAtlas br φ H S₀ A K) (k : ℕ) : Set E :=
   ⋃ α, zeroSet (stages br φ H (𝒜.sel α) S₀ k).Φ ∩ 𝒜.U α
 
 /-- **The glued surface agrees with every chart**: `Γₖ ∩ U_α = Γₖ^α ∩ U_α`. -/
-theorem surface_inter (𝒜 : DiracAtlas br φ H S₀ A) (B : E → (E →L[ℝ] ℝ) →ₗ[ℝ] (E →L[ℝ] ℝ) → ℝ)
-    (hB : ∀ f g x, br f g x = B x (fderiv ℝ f x) (fderiv ℝ g x)) (α : A) (k : ℕ) :
+theorem surface_inter (𝒜 : DiracAtlas br φ H S₀ A K) (B : E → (E →L[ℝ] ℝ) →ₗ[ℝ] (E →L[ℝ] ℝ) → ℝ)
+    (hB : ∀ f g x, br f g x = B x (fderiv ℝ f x) (fderiv ℝ g x)) (α : A) {k : ℕ} (hk : k ≤ K + 1) :
     𝒜.surface k ∩ 𝒜.U α = zeroSet (stages br φ H (𝒜.sel α) S₀ k).Φ ∩ 𝒜.U α := by
   ext x
   constructor
   · rintro ⟨hx, hxα⟩
     obtain ⟨β, hxβ, hβ⟩ := Set.mem_iUnion.mp hx
     have hV : IsOpen (𝒜.U β ∩ 𝒜.U α) := (𝒜.isOpen β).inter (𝒜.isOpen α)
-    have heq := zeroSet_stages_inter_eq br φ H B hB (𝒜.sel β) (𝒜.sel α) S₀ hV
-      (fun k x hx => 𝒜.reg β k x ⟨hx.1, hx.2.1⟩) (fun k x hx => 𝒜.reg α k x ⟨hx.1, hx.2.2⟩)
-      (fun k x hx => 𝒜.diff β k x ⟨hx.1, hx.2.1⟩) (fun k x hx => 𝒜.diff α k x ⟨hx.1, hx.2.2⟩)
-      (fun k x hx => 𝒜.adm β k x ⟨hx.1, hx.2.1⟩) (fun k x hx => 𝒜.adm α k x ⟨hx.1, hx.2.2⟩) k
+    have heq := zeroSet_stages_inter_eq br φ H B hB (𝒜.sel β) (𝒜.sel α) S₀ hV k
+      (fun j hj x hx => 𝒜.reg β j (by omega) x ⟨hx.1, hx.2.1⟩)
+      (fun j hj x hx => 𝒜.reg α j (by omega) x ⟨hx.1, hx.2.2⟩)
+      (fun j hj x hx => 𝒜.diff β j (by omega) x ⟨hx.1, hx.2.1⟩)
+      (fun j hj x hx => 𝒜.diff α j (by omega) x ⟨hx.1, hx.2.2⟩)
+      (fun j hj x hx => 𝒜.adm β j (by omega) x ⟨hx.1, hx.2.1⟩)
+      (fun j hj x hx => 𝒜.adm α j (by omega) x ⟨hx.1, hx.2.2⟩) k le_rfl
     have : x ∈ zeroSet (stages br φ H (𝒜.sel β) S₀ k).Φ ∩ (𝒜.U β ∩ 𝒜.U α) := ⟨hxβ, hβ, hxα⟩
     rw [heq] at this
     exact ⟨this.1, hxα⟩
@@ -184,7 +189,7 @@ theorem surface_inter (𝒜 : DiracAtlas br φ H S₀ A) (B : E → (E →L[ℝ]
     exact ⟨Set.mem_iUnion.mpr ⟨α, hx, hxα⟩, hxα⟩
 
 /-- **The glued surfaces start at the primary surface.** -/
-theorem surface_zero (𝒜 : DiracAtlas br φ H S₀ A) : 𝒜.surface 0 = zeroSet S₀.Φ := by
+theorem surface_zero (𝒜 : DiracAtlas br φ H S₀ A K) : 𝒜.surface 0 = zeroSet S₀.Φ := by
   ext x
   constructor
   · intro hx
@@ -196,7 +201,7 @@ theorem surface_zero (𝒜 : DiracAtlas br φ H S₀ A) : 𝒜.surface 0 = zeroS
 
 /-- **One step in one chart**: the next surface of a chart is the set of points of its surface at which its consistency
 system is solvable. -/
-theorem chart_succ (𝒜 : DiracAtlas br φ H S₀ A) (α : A) (k : ℕ) :
+theorem chart_succ (𝒜 : DiracAtlas br φ H S₀ A K) (α : A) {k : ℕ} (hk : k ≤ K) :
     zeroSet (stages br φ H (𝒜.sel α) S₀ (k + 1)).Φ ∩ 𝒜.U α =
       {x | x ∈ zeroSet (stages br φ H (𝒜.sel α) S₀ k).Φ ∩ 𝒜.U α ∧
         (stages br φ H (𝒜.sel α) S₀ k).Consistent br φ H x} := by
@@ -206,17 +211,19 @@ theorem chart_succ (𝒜 : DiracAtlas br φ H S₀ A) (α : A) (k : ℕ) :
   rw [zeroSet_appendStage]
   constructor
   · rintro ⟨⟨hx, hχ⟩, hxα⟩
-    exact ⟨⟨hx, hxα⟩, ((stages br φ H (𝒜.sel α) S₀ k).chiFun_zero_iff br φ H (𝒜.adm α k x ⟨hx, hxα⟩)).mp hχ⟩
+    exact ⟨⟨hx, hxα⟩,
+      ((stages br φ H (𝒜.sel α) S₀ k).chiFun_zero_iff br φ H (𝒜.adm α k hk x ⟨hx, hxα⟩)).mp hχ⟩
   · rintro ⟨⟨hx, hxα⟩, hc⟩
-    exact ⟨⟨hx, ((stages br φ H (𝒜.sel α) S₀ k).chiFun_zero_iff br φ H (𝒜.adm α k x ⟨hx, hxα⟩)).mpr hc⟩, hxα⟩
+    exact ⟨⟨hx, ((stages br φ H (𝒜.sel α) S₀ k).chiFun_zero_iff br φ H (𝒜.adm α k hk x ⟨hx, hxα⟩)).mpr hc⟩,
+      hxα⟩
 
 /-- **The chart-free recursion**: `Γₖ₊₁` is the set of points of `Γₖ` at which the consistency system of every chart
 containing the point is solvable. -/
-theorem surface_succ (𝒜 : DiracAtlas br φ H S₀ A) (B : E → (E →L[ℝ] ℝ) →ₗ[ℝ] (E →L[ℝ] ℝ) → ℝ)
-    (hB : ∀ f g x, br f g x = B x (fderiv ℝ f x) (fderiv ℝ g x)) (k : ℕ) :
+theorem surface_succ (𝒜 : DiracAtlas br φ H S₀ A K) (B : E → (E →L[ℝ] ℝ) →ₗ[ℝ] (E →L[ℝ] ℝ) → ℝ)
+    (hB : ∀ f g x, br f g x = B x (fderiv ℝ f x) (fderiv ℝ g x)) {k : ℕ} (hk : k ≤ K) :
     𝒜.surface (k + 1) =
       {x | x ∈ 𝒜.surface k ∧ ∀ α, x ∈ 𝒜.U α → (stages br φ H (𝒜.sel α) S₀ k).Consistent br φ H x} := by
-  have hstep := 𝒜.chart_succ (k := k)
+  have hstep := fun α => 𝒜.chart_succ α hk
   ext x
   constructor
   · intro hx
@@ -224,7 +231,7 @@ theorem surface_succ (𝒜 : DiracAtlas br φ H S₀ A) (B : E → (E →L[ℝ] 
     rw [hstep β] at hxβ
     refine ⟨Set.mem_iUnion.mpr ⟨β, hxβ.1⟩, fun α hxα => ?_⟩
     have h1 : x ∈ 𝒜.surface (k + 1) ∩ 𝒜.U α := ⟨hx, hxα⟩
-    rw [𝒜.surface_inter B hB α (k + 1), hstep α] at h1
+    rw [𝒜.surface_inter B hB α (by omega), hstep α] at h1
     exact h1.2
   · rintro ⟨hx, hc⟩
     obtain ⟨α, hxα⟩ := Set.mem_iUnion.mp hx
@@ -232,30 +239,30 @@ theorem surface_succ (𝒜 : DiracAtlas br φ H S₀ A) (B : E → (E →L[ℝ] 
     rw [hstep α]
     exact ⟨hxα, hc α hxα.2⟩
 
-/-- **A pause is final**: if the surface of a chart does not change at one step, it never changes again (its consistency
-condition depends only on the surface, `Stage.consistent_iff_of_zeroSet_inter_eq`). -/
-theorem chart_pause (𝒜 : DiracAtlas br φ H S₀ A) (B : E → (E →L[ℝ] ℝ) →ₗ[ℝ] (E →L[ℝ] ℝ) → ℝ)
-    (hB : ∀ f g x, br f g x = B x (fderiv ℝ f x) (fderiv ℝ g x)) (α : A) {k : ℕ}
+/-- **A pause is final**: if the surface of a chart does not change at one step, it does not change at the next either
+(its consistency condition depends only on the surface, `Stage.consistent_iff_of_zeroSet_inter_eq`). -/
+theorem chart_pause (𝒜 : DiracAtlas br φ H S₀ A K) (B : E → (E →L[ℝ] ℝ) →ₗ[ℝ] (E →L[ℝ] ℝ) → ℝ)
+    (hB : ∀ f g x, br f g x = B x (fderiv ℝ f x) (fderiv ℝ g x)) (α : A) {k : ℕ} (hk1 : k + 1 ≤ K)
     (hk : zeroSet (stages br φ H (𝒜.sel α) S₀ (k + 1)).Φ ∩ 𝒜.U α = zeroSet (stages br φ H (𝒜.sel α) S₀ k).Φ ∩ 𝒜.U α) :
     zeroSet (stages br φ H (𝒜.sel α) S₀ (k + 2)).Φ ∩ 𝒜.U α =
       zeroSet (stages br φ H (𝒜.sel α) S₀ (k + 1)).Φ ∩ 𝒜.U α := by
-  rw [𝒜.chart_succ α (k + 1)]
+  rw [𝒜.chart_succ α hk1]
   ext x
   refine ⟨fun hx => hx.1, fun hx => ⟨hx, ?_⟩⟩
   have hxk : x ∈ zeroSet (stages br φ H (𝒜.sel α) S₀ k).Φ ∩ 𝒜.U α := hk ▸ hx
   have hck : (stages br φ H (𝒜.sel α) S₀ k).Consistent br φ H x := by
     have := hx
-    rw [𝒜.chart_succ α k] at this
+    rw [𝒜.chart_succ α (by omega : k ≤ K)] at this
     exact this.2
   exact ((stages br φ H (𝒜.sel α) S₀ (k + 1)).consistent_iff_of_zeroSet_inter_eq br φ H B hB _
-    ((𝒜.isOpen α).mem_nhds hx.2) hk hx.1 (𝒜.diff α (k + 1) x hx) (𝒜.diff α k x hxk) (𝒜.reg α (k + 1) x hx)
-    (𝒜.reg α k x hxk)).mpr hck
+    ((𝒜.isOpen α).mem_nhds hx.2) hk hx.1 (𝒜.diff α (k + 1) hk1 x hx) (𝒜.diff α k (by omega) x hxk)
+    (𝒜.reg α (k + 1) hk1 x hx) (𝒜.reg α k (by omega) x hxk)).mpr hck
 
 /-- **Every chart stops changing by the stage `dim E + 1`**: a step that changes the surface adds constraints, and a
 regular stage with a point has at most `dim E` of them. -/
-theorem chart_stable (𝒜 : DiracAtlas br φ H S₀ A) (B : E → (E →L[ℝ] ℝ) →ₗ[ℝ] (E →L[ℝ] ℝ) → ℝ)
-    (hB : ∀ f g x, br f g x = B x (fderiv ℝ f x) (fderiv ℝ g x)) (α : A) :
-    ∀ k, Module.finrank ℝ E + 1 ≤ k → zeroSet (stages br φ H (𝒜.sel α) S₀ k).Φ ∩ 𝒜.U α =
+theorem chart_stable (𝒜 : DiracAtlas br φ H S₀ A K) (B : E → (E →L[ℝ] ℝ) →ₗ[ℝ] (E →L[ℝ] ℝ) → ℝ)
+    (hB : ∀ f g x, br f g x = B x (fderiv ℝ f x) (fderiv ℝ g x)) (hK : Module.finrank ℝ E + 1 ≤ K) (α : A) :
+    ∀ k, Module.finrank ℝ E + 1 ≤ k → k ≤ K + 1 → zeroSet (stages br φ H (𝒜.sel α) S₀ k).Φ ∩ 𝒜.U α =
       zeroSet (stages br φ H (𝒜.sel α) S₀ (Module.finrank ℝ E + 1)).Φ ∩ 𝒜.U α := by
   set N := Module.finrank ℝ E + 1 with hNdef
   set Z : ℕ → Set E := fun k => zeroSet (stages br φ H (𝒜.sel α) S₀ k).Φ ∩ 𝒜.U α with hZ
@@ -267,19 +274,21 @@ theorem chart_stable (𝒜 : DiracAtlas br φ H S₀ A) (B : E → (E →L[ℝ] 
       ((stages br φ H (𝒜.sel α) S₀ k).chiFun br φ H (𝒜.sel α (stages br φ H (𝒜.sel α) S₀ k))) i
   have hanti : ∀ {k k'}, k ≤ k' → Z k' ⊆ Z k := fun hk x hx =>
     ⟨zeroSet_anti n (fun k => (stages br φ H (𝒜.sel α) S₀ k).Φ) hmono hext hk hx.1, hx.2⟩
-  intro k hk
+  intro k hk hkK
   by_cases hp : ∃ j < N, Z (j + 1) = Z j
   · obtain ⟨j, hjN, hj⟩ := hp
-    have hall : ∀ m, j ≤ m → Z (m + 1) = Z m := fun m hm => by
+    have hall : ∀ m, j ≤ m → m ≤ K → Z (m + 1) = Z m := by
+      intro m hm
       induction m, hm using Nat.le_induction with
-      | base => exact hj
-      | succ m hm ih => exact 𝒜.chart_pause B hB α ih
-    have hconst : ∀ m, j ≤ m → Z m = Z j := fun m hm => by
+      | base => exact fun _ => hj
+      | succ m hm ih => exact fun h => 𝒜.chart_pause B hB α h (ih (by omega))
+    have hconst : ∀ m, j ≤ m → m ≤ K + 1 → Z m = Z j := by
+      intro m hm
       induction m, hm using Nat.le_induction with
-      | base => rfl
-      | succ m hm ih => rw [hall m hm, ih]
+      | base => exact fun _ => rfl
+      | succ m hm ih => exact fun h => by rw [hall m hm (by omega), ih (by omega)]
     show Z k = Z N
-    rw [hconst k (by omega), hconst N hjN.le]
+    rw [hconst k (by omega) hkK, hconst N hjN.le (by omega)]
   · push_neg at hp
     have hcount : ∀ j, j ≤ N → j ≤ n j := fun j hj => by
       induction j with
@@ -298,7 +307,7 @@ theorem chart_stable (𝒜 : DiracAtlas br φ H S₀ A) (B : E → (E →L[ℝ] 
     have hempty : Z N = ∅ := by
       by_contra hne
       obtain ⟨x, hx⟩ := Set.nonempty_iff_ne_empty.mpr hne
-      have h1 := LinearIndependent.fintype_card_le_finrank (𝒜.reg α N x hx)
+      have h1 := LinearIndependent.fintype_card_le_finrank (𝒜.reg α N hK x hx)
       have h2 : Module.finrank ℝ (E →L[ℝ] ℝ) = Module.finrank ℝ E := by
         rw [← LinearEquiv.finrank_eq (LinearMap.toContinuousLinearMap (𝕜 := ℝ) (E := E) (F' := ℝ))]
         exact Subspace.dual_finrank_eq
@@ -310,44 +319,48 @@ theorem chart_stable (𝒜 : DiracAtlas br φ H S₀ A) (B : E → (E →L[ℝ] 
     exact Set.subset_empty_iff.mp (hempty ▸ hanti hk)
 
 /-- **The Dirac algorithm in an atlas** (Wipf, Section 3.3, pp. 16-17, with the constant-rank blocks chosen chart by
-chart): the glued surfaces stop changing by the stage `dim E + 1`, and at every point of the final surface the
-consistency conditions `{S_i, H} + ∑_a {S_i, φ_a} u_a = 0` of every chart containing the point are solvable. -/
-theorem final_consistent (𝒜 : DiracAtlas br φ H S₀ A)
-    (B : E → (E →L[ℝ] ℝ) →ₗ[ℝ] (E →L[ℝ] ℝ) → ℝ) (hB : ∀ f g x, br f g x = B x (fderiv ℝ f x) (fderiv ℝ g x)) :
-    (∀ k, Module.finrank ℝ E + 1 ≤ k → 𝒜.surface k = 𝒜.surface (Module.finrank ℝ E + 1)) ∧
+chart): with the charts valid up to a stage `K ≥ dim E + 1`, the glued surfaces stop changing at the stage
+`N = dim E + 1` (`Γₖ = Γ_N` for `N ≤ k ≤ K + 1`), and at every point of `Γ_N` the consistency conditions
+`{S_i, H} + ∑_a {S_i, φ_a} u_a = 0` of every chart containing the point are solvable. -/
+theorem final_consistent (𝒜 : DiracAtlas br φ H S₀ A K)
+    (B : E → (E →L[ℝ] ℝ) →ₗ[ℝ] (E →L[ℝ] ℝ) → ℝ) (hB : ∀ f g x, br f g x = B x (fderiv ℝ f x) (fderiv ℝ g x))
+    (hK : Module.finrank ℝ E + 1 ≤ K) :
+    (∀ k, Module.finrank ℝ E + 1 ≤ k → k ≤ K + 1 → 𝒜.surface k = 𝒜.surface (Module.finrank ℝ E + 1)) ∧
       ∀ x ∈ 𝒜.surface (Module.finrank ℝ E + 1), ∀ α, x ∈ 𝒜.U α →
         (stages br φ H (𝒜.sel α) S₀ (Module.finrank ℝ E + 1)).Consistent br φ H x := by
-  have hstab : ∀ k, Module.finrank ℝ E + 1 ≤ k → 𝒜.surface k = 𝒜.surface (Module.finrank ℝ E + 1) := fun k hk => by
+  have hstab : ∀ k, Module.finrank ℝ E + 1 ≤ k → k ≤ K + 1 →
+      𝒜.surface k = 𝒜.surface (Module.finrank ℝ E + 1) := fun k hk hkK => by
     simp only [surface]
-    exact Set.iUnion_congr fun α => 𝒜.chart_stable B hB α k hk
+    exact Set.iUnion_congr fun α => 𝒜.chart_stable B hB hK α k hk hkK
   refine ⟨hstab, fun x hx α hxα => ?_⟩
   have h1 : x ∈ 𝒜.surface (Module.finrank ℝ E + 1 + 1) := by
-    rw [hstab _ (by omega)]
+    rw [hstab _ (by omega) (by omega)]
     exact hx
-  rw [𝒜.surface_succ B hB] at h1
+  rw [𝒜.surface_succ B hB hK] at h1
   exact h1.2 α hxα
 
 /-- **The one-chart atlas** of a single selection rule admissible on the whole zero set of every stage (the situation of
 `final_consistent_of_cover`). -/
-def ofSelection (sel : ∀ S : Stage E, Sel S M) (hreg : ∀ k, IsRegularStage (stages br φ H sel S₀ k).Φ)
+def ofSelection (K : ℕ) (sel : ∀ S : Stage E, Sel S M) (hreg : ∀ k, IsRegularStage (stages br φ H sel S₀ k).Φ)
     (hdiff : ∀ k, ∀ x ∈ zeroSet (stages br φ H sel S₀ k).Φ, ∀ i,
       HasStrictFDerivAt ((stages br φ H sel S₀ k).Φ i) (fderiv ℝ ((stages br φ H sel S₀ k).Φ i) x) x)
     (hadm : ∀ k, ∀ x ∈ zeroSet (stages br φ H sel S₀ k).Φ, (sel (stages br φ H sel S₀ k)).Admissible br φ x) :
-    DiracAtlas br φ H S₀ Unit where
+    DiracAtlas br φ H S₀ Unit K where
   U _ := Set.univ
   isOpen _ := isOpen_univ
   sel _ := sel
-  reg _ k x hx := hreg k x hx.1
-  diff _ k x hx := hdiff k x hx.1
-  adm _ k x hx := hadm k x hx.1
+  reg _ k _ x hx := hreg k x hx.1
+  diff _ k _ x hx := hdiff k x hx.1
+  adm _ k _ x hx := hadm k x hx.1
   cover _ _ := Set.mem_iUnion.mpr ⟨(), Set.mem_univ _⟩
 
 /-- The glued surfaces of the one-chart atlas are the zero sets of the stages. -/
-theorem surface_ofSelection (sel : ∀ S : Stage E, Sel S M) (hreg : ∀ k, IsRegularStage (stages br φ H sel S₀ k).Φ)
+theorem surface_ofSelection (K : ℕ) (sel : ∀ S : Stage E, Sel S M)
+    (hreg : ∀ k, IsRegularStage (stages br φ H sel S₀ k).Φ)
     (hdiff : ∀ k, ∀ x ∈ zeroSet (stages br φ H sel S₀ k).Φ, ∀ i,
       HasStrictFDerivAt ((stages br φ H sel S₀ k).Φ i) (fderiv ℝ ((stages br φ H sel S₀ k).Φ i) x) x)
     (hadm : ∀ k, ∀ x ∈ zeroSet (stages br φ H sel S₀ k).Φ, (sel (stages br φ H sel S₀ k)).Admissible br φ x) (k : ℕ) :
-    (ofSelection sel hreg hdiff hadm).surface k = zeroSet (stages br φ H sel S₀ k).Φ := by
+    (ofSelection K sel hreg hdiff hadm).surface k = zeroSet (stages br φ H sel S₀ k).Φ := by
   ext x
   simp [surface, ofSelection]
 
