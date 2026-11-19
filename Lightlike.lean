@@ -252,6 +252,9 @@ import Lightlike.GR.ComplexMinkowski
 import Lightlike.GR.SpinorHelicity
 import Lightlike.GR.ColourOrdered
 import Lightlike.GR.ThreePointAmplitude
+import Lightlike.GR.PenroseTransform
+import Lightlike.GR.WeylSpinor
+import Lightlike.GR.ZeroRestMass
 import Lightlike.GR.Einstein
 import Lightlike.GR.AdSInversion
 import Lightlike.GR.AdSPoincare
