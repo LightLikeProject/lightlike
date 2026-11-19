@@ -31,6 +31,12 @@ multiplicity matrix is `r`, and symmetric signs `sᵢⱼ = ±1` give a grading {
 multiplicities are `r₀₀ = 1` and `r₀₁ = 0`, a non-symmetric matrix is the multiplicity matrix of no real structure, and
 on `ℂ ⊕ ℂ` every first-order `D` has `E₀₀ D E₁₁ = 0` [8].
 
+An antiunitary involution of a finite-dimensional complex inner product space has an orthonormal basis of fixed vectors,
+an orthonormal basis of its real form [9]. For `A = ⊕ Mₙᵢ(ℂ)` represented complex-linearly, every real structure is
+unitarily equivalent to the model of its multiplicity matrix, by a unitary that intertwines `π` and `J`: the
+coordinates `⟪bᵢⱼ ρ, π(Eᵢ,0α) J π(Eⱼ,0β) J x⟫` in orthonormal bases of the multiplicity spaces with `J bᵢⱼ ρ = bⱼᵢ ρ` {1}
+[10]. The model is complex-linear, and its two-point instance is an example [11].
+
 ## Lean References
 
 1. Lightlike/NCG/FiniteSpectralTriple.lean - `NCG.FiniteSpectralTriple`, `NCG.FiniteSpectralTriple.comm`,
@@ -51,6 +57,13 @@ on `ℂ ⊕ ℂ` every first-order `D` has `E₀₀ D E₁₁ = 0` [8].
 8. Lightlike/NCG/TestsClassification.lean - `NCG.TestsClassification.twoPointR`,
    `NCG.TestsClassification.krajewski_twoPoint_diag`, `NCG.TestsClassification.krajewski_twoPoint_off`,
    `NCG.TestsClassification.not_multiplicity_eq_of_not_symm`, `NCG.TestsClassification.twoPoint_link_eq_zero`
+9. Lightlike/NCG/RealForm.lean - `NCG.fixedSub`, `NCG.inner_re_of_mem_fixedSub`, `NCG.fixed_add_I_mul_fixed`,
+   `NCG.fixed_inter_I_fixed`, `NCG.finrank_fixedSub`, `NCG.exists_orthonormalBasis_fixed`
+10. Lightlike/NCG/Uniqueness.lean - `NCG.inner_lU_left`, `NCG.inner_rU_left`, `NCG.sum_inner_coord`,
+    `NCG.J_mem_Vsub`, `NCG.coordU`, `NCG.coordIso`, `NCG.coordU_pi`, `NCG.coordU_J`, `NCG.exists_compatible_bases`,
+    `NCG.coordIso_surjective`, `NCG.exists_unitary_krajewski`
+11. Lightlike/NCG/TestsUniqueness.lean - `NCG.TestsUniqueness.isComplexLinear_krajewski`,
+    `NCG.TestsUniqueness.twoPoint_unique`
 
 ## References
 
