@@ -417,6 +417,7 @@ import Lightlike.OperatorAlgebras.GramUnitary
 import Lightlike.OperatorAlgebras.MomentumAdjoint
 import Lightlike.OperatorAlgebras.MomentumBoundary
 import Lightlike.OperatorAlgebras.GNSCyclic
+import Lightlike.OperatorAlgebras.ModularFinite
 import Lightlike.OperatorAlgebras.MomentumDeficiency
 import Lightlike.OperatorAlgebras.MomentumInterval
 import Lightlike.OperatorAlgebras.MomentumMollify
