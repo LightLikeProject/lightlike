@@ -78,5 +78,22 @@ Both orders of `M_{νρ}` and `P_σ` agree (`hasDerivAt_pauliLubanski_MP`: the c
 vanish in the contraction with `ε`), and since `W^μ` acts as multiplication by the matrix function `plMat`, the
 operator square `W_μ W^μ` is the pointwise matrix product (`pauliLubanski_sq_operator`).
 
-Remaining difference (kind: weaker): the generators are pointwise derivatives on wave functions differentiable in the
-chart, not the Stone generators on `L²`.
+## The Stone generators on `L²` (compiled)
+
+`Lightlike/Poincare/InducedL2.lean`, `ShellChart.lean`, `GeneratorL2.lean`, `PauliLubanskiL2.lean`,
+`PauliLubanskiStone.lean`.
+
+* For every `SL(2,ℂ)`-invariant measure `μ` on the mass shell, `U(A)` acts on `L²(μ; ℂ^{n+1})` as a unitary
+  (`inducedL2E`: composition with the measure-preserving action, then multiplication by the continuous field of spin
+  matrices), with `U(AB) = U(A) U(B)` (`inducedL2_mul`). The curves of the Lorentz generators are one-parameter
+  subgroups (`lorCurve_add`), so `t ↦ U(γ_{νρ}(t))` is a one-parameter unitary group
+  (`isOneParameterUnitaryGroup_lorGroupL2`).
+* For a chart test function `ψ = φ ∘ q` (`φ` continuously differentiable with compact support), `μ` finite on
+  compacts, the difference quotients converge in `L²` to the pointwise generator (`tendsto_diffQuot_L2`: dominated
+  convergence; the derivative at every time is a unitary matrix times the generator, which is continuous with
+  compact support, and the mean value theorem bounds the quotients off a compact set). So `ψ` is in the domain of the
+  Stone generator and `A_{νρ} ψ = (1/i) M_{νρ} ψ` (`generator_lorGroupL2`).
+* `p_σ ψ` is again a test function (`ChartTest.mulP`), and `½ ε^{μνρσ} A_{νρ} (p_σ ψ) = (1/i) plMat ψ` in `L²`
+  (`pauliLubanski_stone`).
+
+The operators act on the chart test functions; that is the domain on which the identity is stated.

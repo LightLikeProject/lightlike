@@ -11,11 +11,12 @@ generators at the rest momentum `q = m · 1` are derivatives of the representati
 the angle `2θ`) and the rest-frame Pauli–Lubanski vector `W = (0, m J)` (signature `(+,−,−,−)`), the square is
 `W² = −m² Σ J_a² = −m² s(s+1)` with `s = n/2` (`pauliLubanski_sq_rest`).
 
-**Difference from the source (kind: weaker).** Bekaert–Boulanger evaluate the quartic Casimir of a massive
-representation in the rest frame (§5.2, equation (54), page 39 of v2) as an operator identity; here the rotation
-generators are derived from the representation at the rest momentum only, the rest-frame form `W = (0, m J)` is used
-as the definition of `W` there, and the boost terms (which cancel by antisymmetry at the rest momentum) and the
-Pauli–Lubanski operator at other momenta are not formalised.
+Bekaert–Boulanger evaluate the quartic Casimir of a massive representation in the rest frame (§5.2, equation (54),
+page 39 of v2) as an operator identity. This file is the rest-frame step: the rotation generators are derived from the
+representation at the rest momentum, with `W = (0, m J)` there. The full identity, with the boosts and the orbital
+parts, at every momentum and for the Stone generators on `L²`, is `pauliLubanski_sq_generators`
+(`Lightlike/Poincare/PauliLubanskiGenerators.lean`) and `pauliLubanski_stone`
+(`Lightlike/Poincare/PauliLubanskiStone.lean`).
 
 **Attempts recorded** (`docs/notes/ha6-pauli-lubanski-attempts.md`): (1) generators at the standard momentum, this
 file; (2) a direct computation at a general momentum: in the massless case stopped by the discontinuity of the

@@ -21,11 +21,13 @@ For the Lorentz generators `M_{νρ}` (`lorGen`, fixed by their action on moment
 `W^μ ψ(P) = dSpin(L(P)⁻¹ X^μ_P L(P)) ψ(P)` (`plComb_genVal`, `hasDerivAt_pauliLubanski`). With the Hermitian
 operators `i W^μ`, the Fierz identity gives `W_μ W^μ = −m² s(s+1)` at every momentum (`pauliLubanski_sq_generators`).
 
-**Difference from the source (kind: weaker).** The generators `M_{νρ}` are the pointwise derivatives
-`d/dt (U(γ(t)) ψ)(P)` along curves with velocity `M_{νρ}` on wave functions differentiable at `P` in the chart of the
-mass shell, not the Stone generators of the unitary one-parameter groups on `L²`.
+The generators `M_{νρ}` here are the pointwise derivatives `d/dt (U(γ(t)) ψ)(P)` along curves with velocity
+`M_{νρ}`, on wave functions differentiable at `P` in the chart of the mass shell. On the chart test functions they are
+the Stone generators of the one-parameter unitary groups `t ↦ U(γ_{νρ}(t))` on `L²` (up to the factor `1/i`), and the
+identity holds for the Stone generators (`Lightlike/Poincare/PauliLubanskiStone.lean`, `pauliLubanski_stone`).
 
-**Difference from the source (kind: representation).** Both orders of `M_{νρ}` and `P_σ` are covered: `p_σ` to the
+**Difference from the source (kind: representation).** The operators act on the chart test functions (`φ ∘ q` with
+`φ` continuously differentiable with compact support). Both orders of `M_{νρ}` and `P_σ` are covered: `p_σ` to the
 left (`hasDerivAt_pauliLubanski`) and `M_{νρ}` applied to `p_σ ψ` (`hasDerivAt_pauliLubanski_MP`); they agree because
 the commutator terms vanish in the contraction with `ε`. `W^μ` has no orbital part: it acts as multiplication by the
 matrix function `plMat`, so the operator square `W_μ W^μ` is the pointwise matrix product

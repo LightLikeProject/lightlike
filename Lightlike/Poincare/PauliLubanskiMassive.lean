@@ -14,10 +14,11 @@ induced representation at `P` (`hasDerivAt_inducedAct_littleGen`): `dSpin n (X_a
 vector at `P` given by `m` times these generators in the frame `L(P)` (`W(P) = Λ(L(P)) (0, m J)`), its square is
 `W²(P) = −m² s(s+1)` at every momentum `P` (`pauliLubanski_sq`).
 
-**Difference from the source (kind: weaker).** The Pauli–Lubanski vector at `P` is taken in its little-group form
-`W(P) = Λ(L(P)) (0, m J)` (Bekaert–Boulanger §5.2: the quartic Casimir is evaluated in the rest frame), with the
-generators `J` derived from `U` at `P`. The identity `W^μ = ½ ε^{μνρσ} M_{νρ} P_σ` for the full generators (including
-the boosts and the orbital parts, which cancel) is in `Lightlike/Poincare/PauliLubanskiGenerators.lean`.
+This file takes the Pauli–Lubanski vector at `P` in its little-group form `W(P) = Λ(L(P)) (0, m J)`
+(Bekaert–Boulanger §5.2: the quartic Casimir is evaluated in the rest frame), with the generators `J` derived from `U`
+at `P`. The identity `W^μ = ½ ε^{μνρσ} M_{νρ} P_σ` for the full generators (including the boosts and the orbital
+parts, which cancel) is in `Lightlike/Poincare/PauliLubanskiGenerators.lean`, and for the Stone generators on `L²` in
+`Lightlike/Poincare/PauliLubanskiStone.lean`.
 
 ## References
 
