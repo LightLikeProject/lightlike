@@ -195,6 +195,7 @@ import Lightlike.GR.AdSPoincare
 import Lightlike.GR.EddingtonFinkelstein
 import Lightlike.GR.AdSConformal
 import Lightlike.GR.ConformalMinkowski
+import Lightlike.GR.ConformalPoincare
 import Lightlike.GR.EuclideanCigar
 import Lightlike.GR.EuclideanCone
 import Lightlike.GR.KruskalFunction
