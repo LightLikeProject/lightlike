@@ -1,7 +1,8 @@
 # ODE flows, commuting flows and Frobenius: sources read, and how the library compares
 
 Files: `Lightlike/ODE/` (`Gronwall`, `FlowDeriv`, `LocalFlow`, `FlowJoint`, `CommutingFlows`,
-`CommutingFrame`, `InvolutiveFrame`, `Frobenius`, `FrobeniusChart`, `Tests`).
+`CommutingFrame`, `InvolutiveFrame`, `Frobenius`, `FrobeniusChart`, `FlowContDiff`,
+`HigherVariational`, `Tests`).
 
 ## Sources (read at the locations given)
 
@@ -45,15 +46,28 @@ For an autonomous field `V`, `C¹` at `x₀`, on a real Banach space: there is a
 (Teschl (2.49)), `(t, x) ↦ D_xΦ_t` is continuous, and `(t, x) ↦ Φ t x` is differentiable in both
 variables at once.
 
-Differences from Teschl, Theorem 2.10 (none accepted; all for the owner):
-- weaker: the field is autonomous; the source's is time-dependent (the source reduces to the
-  autonomous case by adding `t` to the variables, which is not done here);
-- weaker: `k = 1` only; the source has `C^k`, `k ≥ 1`;
-- weaker: the regularity proved is differentiability in `(t, x)` with `D_xΦ` continuous; the
-  statement "`φ ∈ C¹(I × B)`" as `ContDiffOn` on the product, and the dependence on the initial
-  time `s`, are not stated;
-- representation: a real Banach space instead of `ℝⁿ`; the local flow is given by a flow box
-  (`IsFlowBox`) with the short-time condition `K T ≤ 1/2`, where `K` bounds `‖DV‖`.
+`Lightlike.ODE.exists_solution_contDiffOn` (file `FlowContDiff`) is Theorem 2.10 itself: for
+`f : ℝ × E → E` of class `C^{k+1}` at `(t₀, x₀)` there are `δ > 0` and `φ` with `φ(s, s, x) = x`,
+`∂_t φ = f(t, φ)`, and `φ`, `∂_t φ` of class `C^{k+1}` on `I × I × B`, `I = (t₀ − δ, t₀ + δ)`,
+`B = B(x₀, δ)`. Proof as in the source: reduction to the autonomous case by adding `t` to the
+variables, the case `k = 1` by Grönwall, and induction on `k` through the pair `(Φ, D_xΦ)`
+(`exists_isFlowBox_contDiffOn`, `prolong`).
+
+`Lightlike.ODE.exists_solution_contDiffOn_variational` (file `HigherVariational`) adds the last
+sentence of the theorem: for every `j ≤ k`, `∂/∂t D^j φ = D^j (f(t, φ))` on `I × I × B`, where
+`D^j` is the iterated Fréchet derivative in `(t, s, x)` (all partial derivatives of order `j` at
+once); this is (2.51), and it contains the commutation of `∂/∂t` with the derivatives of order
+`j`. It rests on `fderiv_iteratedFDeriv_apply_comm`, proved by induction on the order from the
+symmetry of the second derivative (the pinned Mathlib has no symmetry of iterated derivatives of
+higher order).
+
+Differences from Teschl, Theorem 2.10 (representation only; none accepted):
+- representation: a real Banach space instead of `ℝⁿ`; `f` is `C^k` at the point `(t₀, x₀)`
+  (so near it) instead of on a given open set `U`; the source's `k ≥ 1` is `k + 1` here;
+- representation: "`D_k φ` satisfies the higher order variational equation obtained from (2.51)
+  by applying the chain rule" is stated as (2.51) itself for the iterated Fréchet derivative,
+  without expanding `D^j (f(t, φ))` by the chain rule; "this equation is linear in `D_k φ`" is a
+  remark about that expansion and is not a separate statement here.
 
 ### (b) Commuting flows
 
