@@ -12,7 +12,10 @@ and the rotations vanish at `p` with `∇R_ab(p)` the generator `so3Gen a b` of 
   identity (Schur's lemma, by eight instances of the equivariance);
 * `sum_S_inl_inl`, `sum_S_inl_inr`, `sum_S_inr_inl`, `sum_S_inr_inr`: the combinations `Σₑ S k i j e f(e)`;
 * `frameVal`, `frameCov`, `frame_val_S`, `frame_cov_S`: the data at `p` of the normalized family, and its bracket data
-  against `SpaceForm.S k` when the curvature at `p` is isotropic.
+  against `SpaceForm.S k` when the curvature at `p` is isotropic;
+* `NormalizedKillingFrame`, `NormalizedKillingFrame.metric_eq`: a family of Killing fields normalized at `p` (the
+  metric at `p` is then `g₀₀(p) · 1`); `NormalizedKillingFrame.lieBracket_eq_S`: its brackets are
+  `[Yᵢ, Yⱼ] = Σₑ S k i j e Yₑ` on a connected open set once `Rⁿ_{amb} - Rᵐ_{anb} = -k (so3Gen m n)_{ab}` at `p`.
 -/
 
 open Set Filter
@@ -145,4 +148,104 @@ theorem frame_cov_S (k : ℝ) (Rm : Fin 3 → Fin 3 → Fin 3 → Fin 3 → ℝ)
   · rw [sum_S_inr_inr]
     simp only [frameVal, frameCov, Pi.zero_apply, zero_mul, mul_zero, sub_self, Finset.sum_const_zero, add_zero]
     exact so3Gen_comm a₁ a₂ c₁ c₂ a b
+
+/-- **A family of Killing fields normalized at `p`**, indexed like the Killing algebra of the space form: on an open
+set `U` of coordinates, `g` is a metric, the fields are smooth and Killing (`∇_a θ_b + ∇_b θ_a = 0` for `θ = Y♭`), and
+their data at `p` is `(Yᵢ(p), ∇Yᵢ(p)) = (frameVal i, frameCov i)`: transvections `Pₘ(p) = eₘ`, `∇Pₘ(p) = 0`, and
+rotations `R_ab(p) = 0`, `∇R_ab(p) = so3Gen a b`. -/
+structure NormalizedKillingFrame (g : (Fin 3 → ℝ) → Matrix (Fin 3) (Fin 3) ℝ) (U : Set (Fin 3 → ℝ))
+    (Y : Idx → (Fin 3 → ℝ) → Fin 3 → ℝ) (p : Fin 3 → ℝ) : Prop where
+  metric : IsCoordMetric g U
+  symm : ∀ z a b, g z a b = g z b a
+  mem : p ∈ U
+  smooth : ∀ i c, ContDiffOn ℝ ∞ (fun z => Y i z c) U
+  killing : ∀ i, ∀ z ∈ U, ∀ a b, covCo g (lowerVec g (Y i)) a b z + covCo g (lowerVec g (Y i)) b a z = 0
+  val : ∀ i, Y i p = frameVal i
+  cov : ∀ i a d, covVec g (Y i) a d p = frameCov i a d
+
+namespace NormalizedKillingFrame
+
+variable {g : (Fin 3 → ℝ) → Matrix (Fin 3) (Fin 3) ℝ} {U : Set (Fin 3 → ℝ)} {Y : Idx → (Fin 3 → ℝ) → Fin 3 → ℝ}
+  {p : Fin 3 → ℝ}
+
+theorem diff (h : NormalizedKillingFrame g U Y p) {V : (Fin 3 → ℝ) → Fin 3 → ℝ}
+    (hV : ∀ c, ContDiffOn ℝ ∞ (fun z => V z c) U) (c : Fin 3) : DifferentiableAt ℝ (fun z => V z c) p :=
+  differentiableAt_of_contDiffOn (hV c) h.metric.isOpen h.mem
+
+theorem metric_diff (h : NormalizedKillingFrame g U Y p) (a b : Fin 3) :
+    DifferentiableAt ℝ (fun z => g z a b) p :=
+  differentiableAt_of_contDiffOn (h.metric.smooth a b) h.metric.isOpen h.mem
+
+/-- **The rotations make the metric at `p` a multiple of the identity**: `g(p) = g₀₀(p) · 1` (Killing's equation for
+`R_ab` at `p` says `g(p)` is skew for each generator). -/
+theorem metric_eq (h : NormalizedKillingFrame g U Y p) : g p = g p 0 0 • (1 : Matrix (Fin 3) (Fin 3) ℝ) := by
+  have hdet := (h.metric.isUnit_det p h.mem).ne_zero
+  have hc : ∀ a b d b', covCo g (lowerVec g (Y (.inr (a, b)))) d b' p =
+      g p b' b * (if d = a then 1 else 0) - g p b' a * (if d = b then 1 else 0) := by
+    intro a b d b'
+    rw [covCo_lowerVec h.symm hdet h.metric_diff (h.diff (h.smooth _)) d b']
+    have e : ∀ l, pd d (fun z => Y (.inr (a, b)) z l) p + ∑ c, christoffel g l d c p * Y (.inr (a, b)) p c =
+        so3Gen a b d l := fun l => h.cov (.inr (a, b)) d l
+    simp only [e, so3Gen, mul_sub, Finset.sum_sub_distrib]
+    simp only [mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, ite_true]
+  have off : ∀ a b, a ≠ b → g p a b = 0 := fun a b hab => by
+    have := h.killing (.inr (a, b)) p h.mem a a
+    rw [hc] at this
+    simp [hab] at this
+    linarith [h.symm p a b]
+  have dia : ∀ a b, a ≠ b → g p a a = g p b b := fun a b hab => by
+    have := h.killing (.inr (a, b)) p h.mem a b
+    rw [hc, hc] at this
+    simp [hab, Ne.symm hab] at this
+    linarith
+  ext i j
+  fin_cases i <;> fin_cases j <;> simp <;> first | exact off _ _ (by decide) | exact dia _ _ (by decide)
+
+theorem metric_ne_zero (h : NormalizedKillingFrame g U Y p) : g p 0 0 ≠ 0 := by
+  have hdet := (h.metric.isUnit_det p h.mem).ne_zero
+  rw [h.metric_eq, Matrix.det_smul, Matrix.det_one, mul_one, Fintype.card_fin] at hdet
+  exact pow_ne_zero_iff (by norm_num) |>.1 hdet
+
+/-- The value at `p` of the bracket of two smooth fields with given data at `p`. -/
+theorem bracket_val (h : NormalizedKillingFrame g U Y p) {V W : (Fin 3 → ℝ) → Fin 3 → ℝ}
+    {vV vW : Fin 3 → ℝ} {AV AW : Fin 3 → Fin 3 → ℝ} (hvV : V p = vV) (hvW : W p = vW)
+    (hAV : ∀ a d, covVec g V a d p = AV a d) (hAW : ∀ a d, covVec g W a d p = AW a d) (b : Fin 3) :
+    bracketCo V W p b = ∑ d, (vV d * AW d b - vW d * AV d b) := by
+  rw [bracketCo_eq_covVec h.symm]
+  simp only [hvV, hvW, hAV, hAW]
+
+/-- The covariant derivative at `p` of the bracket of two smooth Killing fields with given data at `p`. -/
+theorem bracket_cov (h : NormalizedKillingFrame g U Y p) {V W : (Fin 3 → ℝ) → Fin 3 → ℝ}
+    (hV : ∀ c, ContDiffOn ℝ ∞ (fun z => V z c) U) (hW : ∀ c, ContDiffOn ℝ ∞ (fun z => W z c) U)
+    (hKV : ∀ z ∈ U, ∀ a b, covCo g (lowerVec g V) a b z + covCo g (lowerVec g V) b a z = 0)
+    (hKW : ∀ z ∈ U, ∀ a b, covCo g (lowerVec g W) a b z + covCo g (lowerVec g W) b a z = 0)
+    {vV vW : Fin 3 → ℝ} {AV AW : Fin 3 → Fin 3 → ℝ} (hvV : V p = vV) (hvW : W p = vW)
+    (hAV : ∀ a d, covVec g V a d p = AV a d) (hAW : ∀ a d, covVec g W a d p = AW a d) (a b : Fin 3) :
+    covVec g (bracketCo V W) a b p =
+      ∑ d, (AV a d * AW d b - AW a d * AV d b) +
+        ∑ d, ∑ e, (vV d * riemann g e a d b p * vW e - vW d * riemann g e a d b p * vV e) := by
+  rw [covVec_bracketCo h.metric h.symm hV hW hKV hKW h.mem h.metric_eq h.metric_ne_zero]
+  simp only [hvV, hvW, hAV, hAW]
+
+/-- **The brackets of a normalized family are those of the space form** once the curvature at `p` is isotropic:
+`[Yᵢ, Yⱼ] = Σₑ S k i j e Yₑ` on a connected `U`. -/
+theorem lieBracket_eq_S (h : NormalizedKillingFrame g U Y p) (hU : IsPreconnected U) (k : ℝ)
+    (hiso : ∀ m n a b, riemann g n a m b p - riemann g m a n b p = -k * so3Gen m n a b) (i j : Idx) :
+    ∀ w ∈ U, VectorField.lieBracket ℝ (Y i) (Y j) w = ∑ e, S k i j e • Y e w := by
+  have hdet := (h.metric.isUnit_det p h.mem).ne_zero
+  have hcp := h.metric_eq
+  refine lieBracket_eq_sum_of_data h.metric h.symm hU Y (h.smooth i) (h.smooth j) h.smooth (h.killing i)
+    (h.killing j) h.killing h.mem (S k i j) (fun b => ?_) (fun a b => ?_)
+  · rw [lowerVec_of_eq_smul_one hcp, h.bracket_val (h.val i) (h.val j) (h.cov i) (h.cov j), frame_val_S k,
+      Finset.mul_sum]
+    exact Finset.sum_congr rfl fun e _ => by rw [lowerVec_of_eq_smul_one hcp, h.val e]; ring
+  · rw [covCo_lowerVec_of_eq_smul_one h.symm hdet h.metric_diff
+      (h.diff (contDiffOn_bracketCo h.metric.isOpen (h.smooth i) (h.smooth j))) hcp,
+      h.bracket_cov (h.smooth i) (h.smooth j) (h.killing i) (h.killing j) (h.val i) (h.val j) (h.cov i) (h.cov j),
+      frame_cov_S k (fun e a d b => riemann g e a d b p) hiso, Finset.mul_sum]
+    exact Finset.sum_congr rfl fun e _ => by
+      rw [covCo_lowerVec_of_eq_smul_one h.symm hdet h.metric_diff (h.diff (h.smooth e)) hcp, h.cov e]; ring
+
+end NormalizedKillingFrame
+
 end Lightlike
