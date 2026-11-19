@@ -1,4 +1,5 @@
 import Lightlike.Spacetime.CurvatureSymmetries
+import Lightlike.Spacetime.EinsteinEquations
 import Lightlike.Spacetime.EHManifold.ManifoldStationary
 
 /-!
@@ -158,5 +159,32 @@ theorem isEHStationary_iff_einstein (g : NondegMetric 𝓘(ℝ, Fin n → ℝ) M
     exact h1
   · intro h x₁ y hy
     exact (einsteinUp_symm_eq_zero_iff g Λ x₁ hy).2 fun u v => h _ u v
+
+/-- **Stationary points of the Einstein–Hilbert action satisfy the Einstein equations** in the sense of
+`NondegMetric.SatisfiesEinstein`, for the Levi-Civita connection, and conversely. -/
+theorem isEHStationary_iff_satisfiesEinstein (g : NondegMetric 𝓘(ℝ, Fin n → ℝ) M) (Λ : ℝ) :
+    IsEHStationary g Λ ↔ g.SatisfiesEinstein (leviCivita g) Λ := by
+  rw [isEHStationary_iff_einstein]
+  constructor
+  · intro h
+    exact ⟨isLeviCivita_leviCivita g, fun x v w => h x v w⟩
+  · intro h x v w
+    exact h.2 x v w
+
+/-- **The sign of the cosmological constant.** In dimension `n ≠ 2`, the stationary points of the action
+`∫ (R - 2Λ) d vol` are the metrics with `Ric = (2Λ / (n - 2)) g`: a positive `Λ` gives positive Ricci
+curvature in the direction of positive `g`. -/
+theorem isEHStationary_iff_ricci (g : NondegMetric 𝓘(ℝ, Fin n → ℝ) M) (Λ : ℝ) (hn : (n : ℝ) ≠ 2) :
+    IsEHStationary g Λ ↔ ∀ (x : M) (v w : TangentSpace 𝓘(ℝ, Fin n → ℝ) x),
+      (leviCivita g).ricciAt x v w = 2 * Λ / (n - 2) * g.g x v w := by
+  have hfin : (Module.finrank ℝ (Fin n → ℝ) : ℝ) = n := by
+    rw [Module.finrank_fin_fun]
+  rw [isEHStationary_iff_satisfiesEinstein,
+    satisfiesEinstein_iff_ricci g (leviCivita g) Λ (by rw [hfin]; exact hn), hfin]
+  constructor
+  · intro h
+    exact h.2
+  · intro h
+    exact ⟨isLeviCivita_leviCivita g, h⟩
 
 end Lightlike
