@@ -86,7 +86,8 @@ the modules it changes and the modules that import them.
    no list of theorems to keep.
 4. Nothing outside an `Exploratory/` folder imports a module inside one.
 5. Every definition, and every declaration named in an API map or in `docs/results.yaml`, has a
-   docstring (`scripts/DocCheck.lean`).
+   docstring (`scripts/DocCheck.lean`). Each name such an entry lists must be a declaration: a
+   bound variable such as `η` fails the check too.
 6. The literature sources of the catalog check out (`scripts/sources.py check`).
 7. No local path, private e-mail address, token or key in a tracked file (`scripts/leak_check.py`).
 8. No change to a generated file: `docs/RESULTS.md`, the task board (`docs/tasks/README.md`,

@@ -37,6 +37,11 @@ unitarily equivalent to the model of its multiplicity matrix, by a unitary that 
 coordinates `⟪bᵢⱼ ρ, π(Eᵢ,0α) J π(Eⱼ,0β) J x⟫` in orthonormal bases of the multiplicity spaces with `J bᵢⱼ ρ = bⱼᵢ ρ` {1}
 [10]. The model is complex-linear, and its two-point instance is an example [11].
 
+For a central partition and a chirality that is a scalar on each vertex `Hᵢⱼ`, the blocks `Eᵢⱼ D Eₖₗ` with `i ≠ k`
+commute with the right action and those with `j ≠ l` with the left action, the diagonal blocks vanish, and
+`D = Δ + J Δ J` with `Δ = ∑_{i ≠ k} Eᵢⱼ D Eₖₗ` hermitian, commuting with `J π(A) J` and anticommuting with the chirality;
+such a `Δ` is unique {2} {1} [12]. With `D = 0`, `Δ = 0` [13].
+
 ## Lean References
 
 1. Lightlike/NCG/FiniteSpectralTriple.lean - `NCG.FiniteSpectralTriple`, `NCG.FiniteSpectralTriple.comm`,
@@ -64,10 +69,14 @@ coordinates `⟪bᵢⱼ ρ, π(Eᵢ,0α) J π(Eⱼ,0β) J x⟫` in orthonormal b
     `NCG.coordIso_surjective`, `NCG.exists_unitary_krajewski`
 11. Lightlike/NCG/TestsUniqueness.lean - `NCG.TestsUniqueness.isComplexLinear_krajewski`,
     `NCG.TestsUniqueness.twoPoint_unique`
+12. Lightlike/NCG/DiracDecomposition.lean - `NCG.proj_D_proj_rightOp`, `NCG.proj_D_proj_pi`, `NCG.proj_D_proj_diag`,
+    `NCG.Delta`, `NCG.D_eq_Delta_add`, `NCG.Delta_rightOp`, `NCG.Delta_gamma`, `NCG.Delta_symm`, `NCG.Delta_unique`
+13. Lightlike/NCG/TestsDiracDecomposition.lean - `NCG.TestsDiracDecomposition.Delta_of_D_eq_zero`,
+    `NCG.TestsDiracDecomposition.twoPoint_Delta`
 
 ## References
 
 1. T. Krajewski, *Classification of finite spectral triples*, J. Geom. Phys. 28 (1998) 1-30, arXiv:hep-th/9701081,
-   Sections 2, 3.1, 3.2 and 3.3.
+   Sections 2, 3.1, 3.2, 3.3 and 3.4.
 2. M. Paschke and A. Sitarz, *Discrete spectral triples and their symmetries*, arXiv:q-alg/9612029, Section 2,
    Lemmas 1-4 and 6.

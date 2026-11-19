@@ -302,8 +302,9 @@ theorem chart_defining_function (x₀ : M) {D : Set M} {y : Fin (n + 1) → ℝ}
 
 /-- **The divergence theorem for one chart piece**: for `Y` supported in a compact subset of the chart domain at `x₀` and
 a domain `D` with regular boundary (by defining functions), `∫_D div Y d vol_g` is the flux of `√|g| Y` through the
-boundary of the chart image of `D`, written in graph charts with a partition of unity. -/
-theorem exists_chart_flux (cov : Connection 𝓘(ℝ, Fin (n + 1) → ℝ) M) (g : NondegMetric 𝓘(ℝ, Fin (n + 1) → ℝ) M)
+boundary of the chart image of `D`, written in graph charts with a partition of unity., with open sets `U b ⊇ tsupport (ρ b)` on which
+the chart image of `D` is the graph region. -/
+theorem exists_chart_flux_open (cov : Connection 𝓘(ℝ, Fin (n + 1) → ℝ) M) (g : NondegMetric 𝓘(ℝ, Fin (n + 1) → ℝ) M)
     (h : cov.IsLeviCivita g) {Y : Π p : M, TangentSpace 𝓘(ℝ, Fin (n + 1) → ℝ) p}
     (hY : ContMDiff 𝓘(ℝ, Fin (n + 1) → ℝ) (𝓘(ℝ, Fin (n + 1) → ℝ).prod 𝓘(ℝ, Fin (n + 1) → ℝ)) ∞
       (fun q : M => (⟨q, Y q⟩ : TangentBundle 𝓘(ℝ, Fin (n + 1) → ℝ) M)))
@@ -312,9 +313,10 @@ theorem exists_chart_flux (cov : Connection 𝓘(ℝ, Fin (n + 1) → ℝ) M) (g
     (hreg : ∀ p ∈ closure D, ∃ u : M → ℝ, ContMDiffAt 𝓘(ℝ, Fin (n + 1) → ℝ) 𝓘(ℝ, ℝ) 2 u p ∧
       (u p = 0 → mfderiv 𝓘(ℝ, Fin (n + 1) → ℝ) 𝓘(ℝ, ℝ) u p ≠ 0) ∧ ∀ᶠ q in 𝓝 p, (q ∈ D ↔ 0 ≤ u q)) :
     ∃ (κ : Type) (_ : Fintype κ) (ρ : κ → (Fin (n + 1) → ℝ) → ℝ) (σ : κ → SignType)
-      (γ : κ → (Fin n → ℝ) → ℝ) (i : κ → Fin (n + 1)),
+      (γ : κ → (Fin n → ℝ) → ℝ) (i : κ → Fin (n + 1)) (U : κ → Set (Fin (n + 1) → ℝ)),
       (∀ b, ContDiff ℝ ∞ (ρ b)) ∧ (∀ b y, 0 ≤ ρ b y) ∧ (∀ b, ContDiff ℝ 2 (γ b)) ∧
-      (∀ b y, y ∈ tsupport (ρ b) →
+      (∀ b, IsOpen (U b)) ∧ (∀ b, tsupport (ρ b) ⊆ U b) ∧
+      (∀ b y, y ∈ U b →
         (y ∈ extChartAt 𝓘(ℝ, Fin (n + 1) → ℝ) x₀ '' (D ∩ (extChartAt 𝓘(ℝ, Fin (n + 1) → ℝ) x₀).source) ↔
           y ∈ graphRegion (σ b) (γ b) (i b))) ∧
       ∫ p in D, expansionM cov Y p ∂(NondegMetric.volumeMeasure g) =
@@ -336,8 +338,8 @@ theorem exists_chart_flux (cov : Connection 𝓘(ℝ, Fin (n + 1) → ℝ) M) (g
     · rw [divField, ite_eq_right_iff.2 (fun h' => absurd h' ht)]
   have hFs : ∀ j, tsupport (divField g x₀ Y j) ⊆ φ '' S := fun j =>
     closure_minimal (fun y hy => by_contra fun h' => hy (hF0 j y h')) hC.isClosed
-  obtain ⟨κ, hκ, ρ, σ, γ, i, hρ, hρ0, hγ, hDE, -, hint⟩ :=
-    exists_graph_atlas_integral_divergence_of_defining_function_loc (φ '' (D ∩ φ.source)) hDm (divField g x₀ Y)
+  obtain ⟨κ, hκ, ρ, σ, γ, i, U, hρ, hρ0, hγ, hUo, hsU, hDE, -, hint⟩ :=
+    exists_graph_atlas_integral_divergence_of_defining_function_loc_open (φ '' (D ∩ φ.source)) hDm (divField g x₀ Y)
       (fun j => (contDiff_divField g x₀ hY hS hSs hYS j).of_le (by simp))
       (fun j => HasCompactSupport.intro hC (hF0 j)) (by
         rintro y hy ⟨j, hj⟩
@@ -352,8 +354,31 @@ theorem exists_chart_flux (cov : Connection 𝓘(ℝ, Fin (n + 1) → ℝ) M) (g
           exact hq.1
         obtain ⟨u, hu, hdu, hDu⟩ := hreg _ hpD
         exact ⟨u ∘ φ.symm, chart_defining_function x₀ hyt hu hdu hDu⟩)
-  refine ⟨κ, hκ, ρ, σ, γ, i, hρ, hρ0, hγ, hDE, ?_⟩
+  refine ⟨κ, hκ, ρ, σ, γ, i, U, hρ, hρ0, hγ, hUo, hsU, hDE, ?_⟩
   rw [integral_expansionM_chart cov g h hY x₀ hS hSs hYS hD, hint]
+
+
+/-- **The divergence theorem for one chart piece**: for `Y` supported in a compact subset of the chart domain at `x₀` and
+a domain `D` with regular boundary (by defining functions), `∫_D div Y d vol_g` is the flux of `√|g| Y` through the
+boundary of the chart image of `D`, written in graph charts with a partition of unity. -/
+theorem exists_chart_flux (cov : Connection 𝓘(ℝ, Fin (n + 1) → ℝ) M) (g : NondegMetric 𝓘(ℝ, Fin (n + 1) → ℝ) M)
+    (h : cov.IsLeviCivita g) {Y : Π p : M, TangentSpace 𝓘(ℝ, Fin (n + 1) → ℝ) p}
+    (hY : ContMDiff 𝓘(ℝ, Fin (n + 1) → ℝ) (𝓘(ℝ, Fin (n + 1) → ℝ).prod 𝓘(ℝ, Fin (n + 1) → ℝ)) ∞
+      (fun q : M => (⟨q, Y q⟩ : TangentBundle 𝓘(ℝ, Fin (n + 1) → ℝ) M)))
+    (x₀ : M) {S : Set M} (hS : IsCompact S) (hSs : S ⊆ (extChartAt 𝓘(ℝ, Fin (n + 1) → ℝ) x₀).source)
+    (hYS : ∀ p ∉ S, Y p = 0) {D : Set M} (hD : MeasurableSet D)
+    (hreg : ∀ p ∈ closure D, ∃ u : M → ℝ, ContMDiffAt 𝓘(ℝ, Fin (n + 1) → ℝ) 𝓘(ℝ, ℝ) 2 u p ∧
+      (u p = 0 → mfderiv 𝓘(ℝ, Fin (n + 1) → ℝ) 𝓘(ℝ, ℝ) u p ≠ 0) ∧ ∀ᶠ q in 𝓝 p, (q ∈ D ↔ 0 ≤ u q)) :
+    ∃ (κ : Type) (_ : Fintype κ) (ρ : κ → (Fin (n + 1) → ℝ) → ℝ) (σ : κ → SignType)
+      (γ : κ → (Fin n → ℝ) → ℝ) (i : κ → Fin (n + 1)),
+      (∀ b, ContDiff ℝ ∞ (ρ b)) ∧ (∀ b y, 0 ≤ ρ b y) ∧ (∀ b, ContDiff ℝ 2 (γ b)) ∧
+      (∀ b y, y ∈ tsupport (ρ b) →
+        (y ∈ extChartAt 𝓘(ℝ, Fin (n + 1) → ℝ) x₀ '' (D ∩ (extChartAt 𝓘(ℝ, Fin (n + 1) → ℝ) x₀).source) ↔
+          y ∈ graphRegion (σ b) (γ b) (i b))) ∧
+      ∫ p in D, expansionM cov Y p ∂(NondegMetric.volumeMeasure g) =
+        -∑ b, (σ b : ℝ) * graphFlux (γ b) (i b) (fun j y => ρ b y * divField g x₀ Y j y) := by
+  obtain ⟨κ, hκ, ρ, σ, γ, i, U, hρ, hρ0, hγ, -, hsU, hDE, hint⟩ := exists_chart_flux_open cov g h hY x₀ hS hSs hYS hD hreg
+  exact ⟨κ, hκ, ρ, σ, γ, i, hρ, hρ0, hγ, fun b y hy => hDE b y (hsU b hy), hint⟩
 
 end ChartFlux
 
@@ -406,8 +431,9 @@ for a metric `g` of any signature on a manifold modelled on `ℝⁿ⁺¹`, its L
 vanishing outside a compact set `K`, and a measurable domain `D` with regular boundary (near every point of its closure
 `D = {u ≥ 0}` with `u` of class `C²` and `du ≠ 0` where `u = 0`): `∫_D div X d vol_g` is the flux of `X` through the
 boundary of `D`, written with a partition of unity `ψ_a` subordinate to charts and, in each chart, graph charts of the
-boundary with cut-offs `ρ_{ab}` (the flux of `√|g| ψ_a X` out of the graph region, `graphFlux`). -/
-theorem divergence_theorem_manifold (g : NondegMetric 𝓘(ℝ, Fin (n + 1) → ℝ) M)
+boundary with cut-offs `ρ_{ab}` (the flux of `√|g| ψ_a X` out of the graph region, `graphFlux`).
+In the graph charts, the region description holds on open sets `U a b ⊇ tsupport (ρ a b)`. -/
+theorem divergence_theorem_manifold_open (g : NondegMetric 𝓘(ℝ, Fin (n + 1) → ℝ) M)
     {X : Π p : M, TangentSpace 𝓘(ℝ, Fin (n + 1) → ℝ) p}
     (hX : ContMDiff 𝓘(ℝ, Fin (n + 1) → ℝ) (𝓘(ℝ, Fin (n + 1) → ℝ).prod 𝓘(ℝ, Fin (n + 1) → ℝ)) ∞
       (fun q : M => (⟨q, X q⟩ : TangentBundle 𝓘(ℝ, Fin (n + 1) → ℝ) M)))
@@ -416,11 +442,12 @@ theorem divergence_theorem_manifold (g : NondegMetric 𝓘(ℝ, Fin (n + 1) → 
       (u p = 0 → mfderiv 𝓘(ℝ, Fin (n + 1) → ℝ) 𝓘(ℝ, ℝ) u p ≠ 0) ∧ ∀ᶠ q in 𝓝 p, (q ∈ D ↔ 0 ≤ u q)) :
     ∃ (ι : Type u) (_ : Fintype ι) (c : ι → M) (ψ : ι → M → ℝ) (κ : ι → Type) (_ : ∀ a, Fintype (κ a))
       (ρ : ∀ a, κ a → (Fin (n + 1) → ℝ) → ℝ) (σ : ∀ a, κ a → SignType) (γ : ∀ a, κ a → (Fin n → ℝ) → ℝ)
-      (i : ∀ a, κ a → Fin (n + 1)),
+      (i : ∀ a, κ a → Fin (n + 1)) (U : ∀ a, κ a → Set (Fin (n + 1) → ℝ)),
       (∀ a, ContMDiff 𝓘(ℝ, Fin (n + 1) → ℝ) 𝓘(ℝ, ℝ) ∞ (ψ a)) ∧
       (∀ a, tsupport (ψ a) ⊆ (extChartAt 𝓘(ℝ, Fin (n + 1) → ℝ) (c a)).source) ∧ (∀ p ∈ K, ∑ a, ψ a p = 1) ∧
       (∀ a b, ContDiff ℝ ∞ (ρ a b)) ∧ (∀ a b, ContDiff ℝ 2 (γ a b)) ∧
-      (∀ a b y, y ∈ tsupport (ρ a b) →
+      (∀ a b, IsOpen (U a b)) ∧ (∀ a b, tsupport (ρ a b) ⊆ U a b) ∧
+      (∀ a b y, y ∈ U a b →
         (y ∈ extChartAt 𝓘(ℝ, Fin (n + 1) → ℝ) (c a) '' (D ∩ (extChartAt 𝓘(ℝ, Fin (n + 1) → ℝ) (c a)).source) ↔
           y ∈ graphRegion (σ a b) (γ a b) (i a b))) ∧
       ∫ p in D, expansionM (leviCivita g) X p ∂(NondegMetric.volumeMeasure g) =
@@ -455,10 +482,10 @@ theorem divergence_theorem_manifold (g : NondegMetric 𝓘(ℝ, Fin (n + 1) → 
     · have : p ∉ tsupport (f a) := fun h' => hp ⟨h', hpK⟩
       rw [image_eq_zero_of_notMem_tsupport this, zero_smul]
     · rw [hXK p hpK, smul_zero]
-  have hflux := fun a => exists_chart_flux (leviCivita g) g hLC (hYsm a) a.1 (hS a) (hSs a) (hYS a) hD hreg
-  choose κ hκ ρ σ γ i hρ hρ0 hγ hDE hint using hflux
-  refine ⟨{x // x ∈ t}, inferInstance, fun a => a.1, fun a => f a, κ, hκ, ρ, σ, γ, i, hψ, hf, hsum, hρ, hγ,
-    hDE, ?_⟩
+  have hflux := fun a => exists_chart_flux_open (leviCivita g) g hLC (hYsm a) a.1 (hS a) (hSs a) (hYS a) hD hreg
+  choose κ hκ ρ σ γ i U hρ hρ0 hγ hUo hsU hDE hint using hflux
+  refine ⟨{x // x ∈ t}, inferInstance, fun a => a.1, fun a => f a, κ, hκ, ρ, σ, γ, i, U, hψ, hf, hsum, hρ, hγ,
+    hUo, hsU, hDE, ?_⟩
   -- the divergence of `X` is the sum of those of the pieces
   have hXsum : (fun p => ∑ a, f a p • X p) = X := by
     funext p
@@ -486,6 +513,36 @@ theorem divergence_theorem_manifold (g : NondegMetric 𝓘(ℝ, Fin (n + 1) → 
   rw [show (fun p => expansionM (leviCivita g) X p) = fun p => ∑ a, expansionM (leviCivita g) (fun q => f a q • X q) p
     from funext hdiv, integral_finsetSum _ fun a _ => hintg a, ← Finset.sum_neg_distrib]
   exact Finset.sum_congr rfl fun a _ => hint a
+
+/-- **The divergence theorem on a manifold** (Loomis–Sternberg, Theorem 6.1, with the volume density of a metric, (6.6)):
+for a metric `g` of any signature on a manifold modelled on `ℝⁿ⁺¹`, its Levi-Civita connection, a smooth vector field `X`
+vanishing outside a compact set `K`, and a measurable domain `D` with regular boundary (near every point of its closure
+`D = {u ≥ 0}` with `u` of class `C²` and `du ≠ 0` where `u = 0`): `∫_D div X d vol_g` is the flux of `X` through the
+boundary of `D`, written with a partition of unity `ψ_a` subordinate to charts and, in each chart, graph charts of the
+boundary with cut-offs `ρ_{ab}` (the flux of `√|g| ψ_a X` out of the graph region, `graphFlux`). -/
+theorem divergence_theorem_manifold (g : NondegMetric 𝓘(ℝ, Fin (n + 1) → ℝ) M)
+    {X : Π p : M, TangentSpace 𝓘(ℝ, Fin (n + 1) → ℝ) p}
+    (hX : ContMDiff 𝓘(ℝ, Fin (n + 1) → ℝ) (𝓘(ℝ, Fin (n + 1) → ℝ).prod 𝓘(ℝ, Fin (n + 1) → ℝ)) ∞
+      (fun q : M => (⟨q, X q⟩ : TangentBundle 𝓘(ℝ, Fin (n + 1) → ℝ) M)))
+    {K : Set M} (hK : IsCompact K) (hXK : ∀ p ∉ K, X p = 0) {D : Set M} (hD : MeasurableSet D)
+    (hreg : ∀ p ∈ closure D, ∃ u : M → ℝ, ContMDiffAt 𝓘(ℝ, Fin (n + 1) → ℝ) 𝓘(ℝ, ℝ) 2 u p ∧
+      (u p = 0 → mfderiv 𝓘(ℝ, Fin (n + 1) → ℝ) 𝓘(ℝ, ℝ) u p ≠ 0) ∧ ∀ᶠ q in 𝓝 p, (q ∈ D ↔ 0 ≤ u q)) :
+    ∃ (ι : Type u) (_ : Fintype ι) (c : ι → M) (ψ : ι → M → ℝ) (κ : ι → Type) (_ : ∀ a, Fintype (κ a))
+      (ρ : ∀ a, κ a → (Fin (n + 1) → ℝ) → ℝ) (σ : ∀ a, κ a → SignType) (γ : ∀ a, κ a → (Fin n → ℝ) → ℝ)
+      (i : ∀ a, κ a → Fin (n + 1)),
+      (∀ a, ContMDiff 𝓘(ℝ, Fin (n + 1) → ℝ) 𝓘(ℝ, ℝ) ∞ (ψ a)) ∧
+      (∀ a, tsupport (ψ a) ⊆ (extChartAt 𝓘(ℝ, Fin (n + 1) → ℝ) (c a)).source) ∧ (∀ p ∈ K, ∑ a, ψ a p = 1) ∧
+      (∀ a b, ContDiff ℝ ∞ (ρ a b)) ∧ (∀ a b, ContDiff ℝ 2 (γ a b)) ∧
+      (∀ a b y, y ∈ tsupport (ρ a b) →
+        (y ∈ extChartAt 𝓘(ℝ, Fin (n + 1) → ℝ) (c a) '' (D ∩ (extChartAt 𝓘(ℝ, Fin (n + 1) → ℝ) (c a)).source) ↔
+          y ∈ graphRegion (σ a b) (γ a b) (i a b))) ∧
+      ∫ p in D, expansionM (leviCivita g) X p ∂(NondegMetric.volumeMeasure g) =
+        -∑ a, ∑ b, (σ a b : ℝ) * graphFlux (γ a b) (i a b)
+          (fun j y => ρ a b y * divField g (c a) (fun p => ψ a p • X p) j y) := by
+  obtain ⟨ι, hι, c, ψ, κ, hκ, ρ, σ, γ, i, U, hψ, hψs, hsum, hρ, hγ, -, hsU, hDE, hint⟩ :=
+    divergence_theorem_manifold_open g hX hK hXK hD hreg
+  exact ⟨ι, hι, c, ψ, κ, hκ, ρ, σ, γ, i, hψ, hψs, hsum, hρ, hγ, fun a b y hy => hDE a b y (hsU a b hy), hint⟩
+
 
 /-- **The divergence theorem for a density** `ρ = f · dV_g` (Loomis–Sternberg, (6.6), p. 424: every density is `f dV` for
 the volume density `dV` of a metric): `div⟨X, f dV_g⟩ = div_g(f X) dV_g`, so `∫_D div⟨X, ρ⟩` is `∫_D div_g(f X) d vol_g`, the

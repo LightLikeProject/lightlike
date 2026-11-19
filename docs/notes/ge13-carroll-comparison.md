@@ -37,4 +37,32 @@ Source read: S. M. Carroll, *Lecture Notes on General Relativity* (1997), arXiv 
 * So the timelike-hypersurface case (`ε = +1`) is compared and matches; the earlier "pending" for `ε = +1` is closed by this source. Caveat: the bars in the pdf extraction were reconstructed from context.
 
 ## Not checked
-The sphere and FLRW slice trust checks are not included yet.
+Nothing of GE13 is left unchecked: both trust checks of the milestone (the sphere and a constant-time slice of FLRW) are
+compared below.
+
+## GE13 trust check: the sphere in a Euclidean space (`SphereHypersurface.lean`, 18 November 2026 ~23:55)
+Source read: Gourgoulhon, gr-qc/0703035, Section 2.3, Example 3, pp. 27-28: the sphere of radius `R` in `ℝ³`, induced metric (2.52),
+"ΣR = 2/R², R_ij = γ_ij/R², R^i_jkl = (δ^i_k γ_jl − δ^i_l γ_jk)/R²" (2.53), outward normal (2.54), `K_ij = −γ_ij/R` (2.58), `K = −2/R` (2.59).
+Ours: in any finite-dimensional inner product space with the flat metric and the flat connection (proved Levi-Civita and smooth), the
+spheres are the level sets of `‖y‖²` with unit normal `y/‖y‖` (`isUnitNormal_sphere`); `secondFF_sphere`: `K(v, w) = ⟪v, w⟫/r` on tangent
+vectors; `gaussCurv_sphere`: `g(R^D(X, Y)Z, W) = (⟪Y, Z⟫⟪X, W⟫ − ⟪X, Z⟫⟪Y, W⟫)/r²` (from the Gauss relation, the ambient curvature being zero);
+`scalarCurv_sphere`: in `ℝ³` the trace over an orthonormal tangent frame is `2/r²`.
+Comparison: the Riemann tensor and the scalar curvature agree with (2.53). `K` has the opposite sign of (2.58): the sign convention of the
+extrinsic curvature (ours `K(v, w) = g(∇_v n, w)`, Gourgoulhon's (2.43) `K(u, v) = −u · ∇_v n`), the convention already recorded for GE13 above.
+As for the whole of GE13 the leaf has no manifold structure, so "scalar curvature" is the trace of the curvature `R^D` of the tangential
+connection over an orthonormal tangent frame (the GE13 difference about the leaves, recorded above; no new difference).
+
+## GE13: the unit normal is no longer an assumption (`HypersurfaceNormal.lean`, 19 November 2026 ~00:20)
+`exists_isUnitNormal`: for `φ` smooth near `x₀` whose gradient at `x₀` is not null, `n = |g(∇φ, ∇φ)|^{-1/2} ∇φ` with `ε` the sign of
+`g(∇φ, ∇φ)(x₀)` satisfies `IsUnitNormal` (the gradient `∇φ = Σ (G⁻¹)ᵢⱼ dφ(eⱼ) eᵢ` in the frame of the trivialization at `x₀` is smooth,
+`smoothNear_gradField`, and `g(∇φ, ·) = dφ`, `gradField_spec`). This removes the "existence of the unit normal is a hypothesis" part of
+the GE13 difference about the leaves; the leaves still have no manifold structure (that part stays).
+
+## GE13 trust check: a constant-time slice of FLRW (`FLRWSlice.lean`, 19 November 2026 ~01:00)
+Source read: Gourgoulhon, gr-qc/0703035, §3.3.5, eq. (3.24), p. 45: `L_m γ = −2N K` (with `m = N n`, (3.26) `L_n γ = N⁻¹ L_m γ`).
+Ours: on `flrwOpen hI k` with `g = −dt² + a(t)² dx²/(1 + k|x|²/4)²`, the slices `t = const` are the level sets of `cosmicTime` with unit
+normal `∂_t`, `ε = −1` (`isUnitNormal_flrwSlice`); for the Levi-Civita connection `K(v, w) = (ȧ/a)(g(v, w) + v⁰w⁰)`
+(`secondFF_flrwSlice`), i.e. `K = (ȧ/a) h` with `h = g + n♭ ⊗ n♭`, and `K = (ȧ/a) g` on tangent vectors (`secondFF_flrwSlice_tangent`).
+Comparison: in these coordinates the lapse is `N = 1`, the shift zero and `γ_ij = a² γ^(k)_ij`, so (3.24) gives `K = −½ ∂_t γ = −(ȧ/a) γ`;
+ours is `+(ȧ/a) h`: the sign convention of the extrinsic curvature recorded for GE13 (ours `K(v, w) = g(∇_v n, w)`, Gourgoulhon (2.43)
+`K(u, v) = −u · ∇_v n`). No new difference; the milestone check "a constant-time slice of FLRW has K = (ȧ/a) h" holds in our convention.

@@ -33,7 +33,7 @@ implemented [64].
 In one mode the squeezing has `|α|² - |β|² = 1` and the dilation `f ↦ 2 f` is not symplectic [4]. A map with `‖B f‖ = c ‖f‖`, `c > 0`, is not Hilbert–Schmidt when a Hilbert basis is infinite [4]. On `L²(ℝ)` translation `ψ(x + t)` is a strongly continuous unitary group [5], and its generator is `-i d/dx` on `C²` functions with compact support, not `+i d/dx` [6]. On `L²(0, 1)` the operator `-i d/dx` on the `C²` functions supported inside `(0, 1)` is given by its graph [7]. The deficiency spaces of an operator are the kernels of the adjoint minus `±i`, and a self-adjoint operator has none [8]. The
 Fock space itself is not built here, and a Fock representation is characterized by its vacuum. The
 unbounded spectral theorem is not in Mathlib; it is ported from physicslib4: every self-adjoint operator has a unique
-projection-valued measure [102] on the Borel sets of `ℝ` whose spectral integral of `λ` is the operator {4} [62]; the group `e^{itA}` of a self-adjoint operator is a `UnitaryGroup` whose generator is `A` [63]. On a matrix algebra the modular flow of the faithful state `Tr (e^{-H} ·)` is `a ↦ e^{-izH} a e^{izH}` and the state is KMS at inverse temperature `1` for it {10} [91]; the flow is a multiplicative one-parameter group that leaves the state invariant [91]; the Tomita operator `S` is an antilinear involution with `S (a ρ^{1/2}) = a† ρ^{1/2}` and the modular operator `Δ y = ρ y ρ⁻¹` satisfies `Δ = S† S` {10} [91]; the modular state is KMS at inverse temperature `1` in the sense of the KMS condition of finite quantum systems, and a diagonal qubit state that is not Gibbs fails that condition [91]. Stone's theorem and Shale's criterion are [TODO] here.
+projection-valued measure [112] on the Borel sets of `ℝ` whose spectral integral of `λ` is the operator {4} [62]; the group `e^{itA}` of a self-adjoint operator is a `UnitaryGroup` whose generator is `A` [63]. On a matrix algebra the modular flow of the faithful state `Tr (e^{-H} ·)` is `a ↦ e^{-izH} a e^{izH}` and the state is KMS at inverse temperature `1` for it {10} [91]; the flow is a multiplicative one-parameter group that leaves the state invariant [91]; the Tomita operator `S` is an antilinear involution with `S (a ρ^{1/2}) = a† ρ^{1/2}` and the modular operator `Δ y = ρ y ρ⁻¹` satisfies `Δ = S† S` {10} [91]; the modular state is KMS at inverse temperature `1` in the sense of the KMS condition of finite quantum systems, and a diagonal qubit state that is not Gibbs fails that condition [91]. Stone's theorem and Shale's criterion are [TODO] here.
 
 The graph of `-i d/dx` on the `C_c^∞(0, 1)` functions is the image of the smooth test functions under the same pair map, and lies inside the `C²` graph [11]. It contains a nonzero vector, a bump function supported in `(0, 1)` [12]. Mollification by a normed bump function maps a `C²` test function to a `C_c^∞` one, with the derivative of the mollified function the mollified derivative, and converges uniformly with its derivative, so the two graphs have the same closure [13].
 
@@ -57,7 +57,7 @@ For a self-adjoint `A`, the approximating unitaries `exp (i t A_n)` have a stron
 
 The Gram matrix of the vectors `W f Ω` of a Fock representation is a function of `f` and `g` alone, by the Weyl relations and the vacuum expectation, so the map `c ↦ ∑ c f W f Ω` has the same norm for two Fock representations; it extends to a unitary that maps the vacuum to the vacuum and intertwines the Weyl unitaries, which is the uniqueness of the Fock representation [14]. The Gram function is Hermitian and normalized, and over the zero Hilbert space there is a Fock representation to which the uniqueness applies [15].
 
-A strongly continuous contraction semigroup on a Banach space has a generator, the limit of the difference quotients on the vectors where it exists, a partially defined linear map [101]. A densely defined operator `A` with `λ - A` bounded below by `λ` and surjective for every `λ > 0` is the generator of a contraction semigroup (the generation direction of the Hille–Yosida theorem) [42] {3}: the resolvent `R(λ) = (λ - A)⁻¹` has norm at most `λ⁻¹`, the Yosida approximants `λ² R(λ) - λ` give contractions `exp (t (λ² R(λ) - λ))` that converge, by a Cauchy estimate and the density of the domain, to a semigroup whose generator contains `A`, and a dissipative generator with `λ - A` surjective equals `A`. Checks: the trivial semigroup is a contraction semigroup, the theorem applies to `A = 0`, and `A = id` fails the lower bound at `λ = 1` [43]. The converse holds as well, so the two form the equivalence of the Hille–Yosida theorem for contraction semigroups [44] {3}: the orbits `t ↦ S t x` are continuous for all times `t ≥ 0` by the semigroup law and continuity at `0` [45], the averages `t⁻¹ ∫₀ᵗ S s x ds` lie in the domain of the generator and converge to `x`, which makes the domain dense [45], the resolvent `∫₀^∞ e^{-λ t} S t y dt` is a Bochner integral that lies in the domain with `(λ - A) R(λ) y = y` [46], and `norm_dissip` gives the lower bound [44].
+A strongly continuous contraction semigroup on a Banach space has a generator, the limit of the difference quotients on the vectors where it exists, a partially defined linear map [111]. A densely defined operator `A` with `λ - A` bounded below by `λ` and surjective for every `λ > 0` is the generator of a contraction semigroup (the generation direction of the Hille–Yosida theorem) [42] {3}: the resolvent `R(λ) = (λ - A)⁻¹` has norm at most `λ⁻¹`, the Yosida approximants `λ² R(λ) - λ` give contractions `exp (t (λ² R(λ) - λ))` that converge, by a Cauchy estimate and the density of the domain, to a semigroup whose generator contains `A`, and a dissipative generator with `λ - A` surjective equals `A`. Checks: the trivial semigroup is a contraction semigroup, the theorem applies to `A = 0`, and `A = id` fails the lower bound at `λ = 1` [43]. The converse holds as well, so the two form the equivalence of the Hille–Yosida theorem for contraction semigroups [44] {3}: the orbits `t ↦ S t x` are continuous for all times `t ≥ 0` by the semigroup law and continuity at `0` [45], the averages `t⁻¹ ∫₀ᵗ S s x ds` lie in the domain of the generator and converge to `x`, which makes the domain dense [45], the resolvent `∫₀^∞ e^{-λ t} S t y dt` is a Bochner integral that lies in the domain with `(λ - A) R(λ) y = y` [46], and `norm_dissip` gives the lower bound [44].
 
 A bounded operator on a complex Hilbert space is trace class when the diagonal sum `∑ ⟪eᵢ, |T| eᵢ⟫` converges in a Hilbert basis, and the trace and the trace norm do not depend on the basis [47]. The Hilbert-Schmidt operators, those with `∑ ‖S eᵢ‖² < ∞` in one basis, are two-sided ideal elements, and the diagonal sums of `R S` and `S R` for Hilbert-Schmidt `R`, `S` agree (cyclicity of the trace) [48]; a product of two Hilbert-Schmidt operators is trace class [49]. The trace pairing `A ↦ Tr (A ·)` is an isometry of the bounded operators into the dual of the trace class [50], and every continuous functional on the trace class is a trace pairing, so the dual of the trace class is the bounded operators [51]. The trace of the rank-one operator on `ℂ` is `1`, and every operator on a finite-dimensional space is trace class; the identity of an infinite-dimensional Hilbert space is not Hilbert-Schmidt [52]. The diagonal operator with eigenvalues `1 / (n + 1)` on `ℓ²(ℕ)` is Hilbert-Schmidt and not trace class [53]. This layer is ported from Physlib with attribution; the duality between the compact operators and the trace class is not covered.
 
@@ -87,6 +87,11 @@ On a compact metric space the couplings of two probability measures are the prob
 For a continuous cost `h` on the product of a compact metric space with itself there is an optimal coupling, and its cost is `sup {∫ f dμ + ∫ g dν | f(x) + g(y) ≤ h(x, y)}` over continuous `f`, `g` {12} [97]; the proof goes through the Hahn-Banach theorem for the sublinear functional `ω(k) = inf {∫ f dμ + ∫ g dν | k ≤ f ⊕ g}` and the Riesz-Markov-Kakutani theorem. For a separable cost `a(x) + b(y)` the dual value is `∫ a dμ + ∫ b dν` [98].
 
 Kantorovich-Rubinstein duality: on a compact metric space `W₁(μ, ν) = sup {∫ u dμ - ∫ u dν | u 1-Lipschitz}`, and the infimum defining `W₁` is attained {12} [99]; the `c`-transform `u(x) = inf_y (d(x, y) - g(y))` of a dual pair `(f, g)` is `1`-Lipschitz with `f ≤ u ≤ -g` [99]. For Dirac measures the supremum is `d(x, y)`, and `2`-Lipschitz tests exceed `W₁` [100].
+A compact symmetric operator `T` on a real or complex Hilbert space has a Hilbert basis of eigenvectors with real eigenvalues, assembled from Hilbert bases of the eigenspaces, whose sum is dense, and `T x = ∑ᵢ μᵢ ⟪bᵢ, x⟫ bᵢ` in it; only finitely many eigenvalues have `‖μ‖ ≥ ε`, since unit eigenvectors to distinct eigenvalues are orthonormal and their images are then `ε` apart inside a compact set, so the eigenvalues and the spectrum are countable [101]. The identity of `ℓ²(ℕ)` is symmetric, not compact, and has an infinite-dimensional eigenspace, and `0` is in the spectrum of the compact self-adjoint `diag(1/(n+1))` without being an eigenvalue [102]. A Hilbert-Schmidt operator is the norm limit of its finite sections `x ↦ ∑_{i ∈ F} ⟪bᵢ, x⟫ K bᵢ` and so is compact [103].
+
+A compact operator `K` has a canonical form `K x = ∑ⱼ sⱼ ⟪φⱼ, x⟫ φ'ⱼ`, `K* x = ∑ⱼ sⱼ ⟪φ'ⱼ, x⟫ φⱼ` with orthonormal `φ`, `φ'` and positive singular values `sⱼ`: from a Hilbert basis of eigenvectors of the compact symmetric `K*K`, `sⱼ = √μⱼ` on the eigenvalues `μⱼ > 0` and `φ'ⱼ = sⱼ⁻¹ K φⱼ`; only finitely many `sⱼ` exceed any `ε > 0`, and `‖K‖` is the largest of them. For `μ ≠ 0` the `μ`-eigenspace of `K*K` is spanned by the `φⱼ` with `sⱼ² = μ` and has dimension `#{j | sⱼ² = μ}`, and likewise for `KK*` with the `φ'ⱼ` [104]. The zero operator has no singular values and a nonzero operator has one [105].
+
+The Schatten sum `‖K‖_p^p` is the supremum of `∑ₖ |⟪ψₖ, K ϕₖ⟫|^p` over pairs of finite orthonormal families; for every canonical form and `p ≥ 1` it equals `∑ⱼ sⱼ^p`, by Hölder with the weights `|⟪φⱼ, ϕₖ⟫|²` and Cauchy-Schwarz twice on one side and the orthonormal families of the canonical form on the other, and it bounds `‖K‖^p` and is unchanged by the adjoint [106]. For a compact `K` the square sum `∑ᵢ ‖K bᵢ‖²` in every Hilbert basis is `‖K‖₂²`, so the Hilbert-Schmidt operators are the compact ones with `‖K‖₂ < ∞` [107]; the trace norm of a product of two Hilbert-Schmidt operators is at most the product of their Hilbert-Schmidt norms, `|K|` acts on an eigenvector of `K*K` with eigenvalue `μ` by `√μ`, and the trace-class operators are the compact ones with `‖K‖₁ < ∞` [108]. The Schatten norms satisfy the triangle inequality (Minkowski on the finite sums), are homogeneous and definite, pass to norm limits, and a Cauchy sequence of compact operators converges in them [109]. The diagonal operator `diag(1/(n+1))` is in `J₂` and not in `J₁` [110].
 
 ## Lean References
 
@@ -356,9 +361,45 @@ Kantorovich-Rubinstein duality: on a compact metric space `W₁(μ, ν) = sup {�
     `OperatorAlgebras.Transport.wasserstein1_eq_sSup`
 100. Lightlike/OperatorAlgebras/TestsKantorovichRubinstein.lean - `OperatorAlgebras.Transport.sSup_dirac`,
     `OperatorAlgebras.Transport.two_lipschitz_exceeds`, `OperatorAlgebras.Transport.ctrans_zero`
-101. Lightlike/OperatorAlgebras/Semigroup/Defs.lean - `OperatorAlgebras.ContractionSemigroup`,
+101. Lightlike/OperatorAlgebras/Spectral/Compact.lean - `OperatorAlgebras.CompactSpectral.exists_hilbertBasis_eigenvectors`,
+    `OperatorAlgebras.CompactSpectral.hasSum_eigen`, `OperatorAlgebras.CompactSpectral.finite_eigenvalues_ge`,
+    `OperatorAlgebras.CompactSpectral.countable_eigenvalues`, `OperatorAlgebras.CompactSpectral.countable_spectrum`,
+    `OperatorAlgebras.CompactSpectral.hasEigenvalue_of_mem_spectrum`,
+    `OperatorAlgebras.CompactSpectral.finiteDimensional_eigenspace`
+102. Lightlike/OperatorAlgebras/Spectral/TestsCompact.lean - `OperatorAlgebras.CompactSpectral.not_finiteDimensional_eigenspace_id`,
+    `OperatorAlgebras.CompactSpectral.not_isCompactOperator_id`,
+    `OperatorAlgebras.CompactSpectral.exists_hilbertBasis_eigenvectors_of_finiteDimensional`,
+    `OperatorAlgebras.CompactSpectral.invDiag_zero_mem_spectrum_not_hasEigenvalue` (0 is in the spectrum of
+    diag(1/(n+1)) and is not an eigenvalue)
+103. Lightlike/OperatorAlgebras/Spectral/HilbertSchmidtCompact.lean - `OperatorAlgebras.CompactSpectral.isCompactOperator_of_isHilbertSchmidt`
+104. Lightlike/OperatorAlgebras/Spectral/CanonicalForm.lean - `OperatorAlgebras.CompactSpectral.IsCanonicalForm`, `OperatorAlgebras.CompactSpectral.isCanonicalForm_of_eigenbasis`,
+    `OperatorAlgebras.CompactSpectral.exists_isCanonicalForm`,
+    `OperatorAlgebras.CompactSpectral.isCompactOperator_adjoint_comp`, `OperatorAlgebras.CompactSpectral.isSymmetric_adjoint_comp`,
+    `OperatorAlgebras.CompactSpectral.IsCanonicalForm.le_opNorm`, `OperatorAlgebras.CompactSpectral.IsCanonicalForm.opNorm_le`,
+    `OperatorAlgebras.CompactSpectral.IsCanonicalForm.exists_eq_opNorm`, `OperatorAlgebras.CompactSpectral.IsCanonicalForm.toAdjoint`,
+    `OperatorAlgebras.CompactSpectral.IsCanonicalForm.finite_sq_eq`, `OperatorAlgebras.CompactSpectral.IsCanonicalForm.eigenspace_adjoint_comp`,
+    `OperatorAlgebras.CompactSpectral.IsCanonicalForm.finrank_eigenspace_adjoint_comp`,
+    `OperatorAlgebras.CompactSpectral.IsCanonicalForm.eigenspace_comp_adjoint`,
+    `OperatorAlgebras.CompactSpectral.hasSum_norm_sq_of_orthonormal`
+105. Lightlike/OperatorAlgebras/Spectral/TestsCanonicalForm.lean - `OperatorAlgebras.CompactSpectral.isEmpty_of_canonical_zero`,
+    `OperatorAlgebras.CompactSpectral.nonempty_of_canonical_ne_zero`
+106. Lightlike/OperatorAlgebras/Spectral/Schatten.lean - `OperatorAlgebras.CompactSpectral.schattenSum`,
+    `OperatorAlgebras.CompactSpectral.schattenSum_eq_tsum`, `OperatorAlgebras.CompactSpectral.schattenSum_le_tsum`,
+    `OperatorAlgebras.CompactSpectral.tsum_le_schattenSum`, `OperatorAlgebras.CompactSpectral.schatten_core`,
+    `OperatorAlgebras.CompactSpectral.norm_rpow_le_schattenSum`, `OperatorAlgebras.CompactSpectral.schattenSum_adjoint`
+107. Lightlike/OperatorAlgebras/Spectral/SchattenHS.lean - `OperatorAlgebras.CompactSpectral.tsum_norm_sq_apply_eq`,
+    `OperatorAlgebras.CompactSpectral.schattenSum_two_eq_tsum_norm_sq`, `OperatorAlgebras.CompactSpectral.isHilbertSchmidt_iff`
+108. Lightlike/OperatorAlgebras/Spectral/SchattenTrace.lean - `OperatorAlgebras.CompactSpectral.schattenSum_one_mul_le`,
+    `OperatorAlgebras.CompactSpectral.abs_apply_of_adjoint_apply_apply`, `OperatorAlgebras.CompactSpectral.isTraceClass_iff`
+109. Lightlike/OperatorAlgebras/Spectral/SchattenBanach.lean - `OperatorAlgebras.CompactSpectral.schattenNorm`,
+    `OperatorAlgebras.CompactSpectral.schattenNorm_add_le`, `OperatorAlgebras.CompactSpectral.schattenSum_smul`,
+    `OperatorAlgebras.CompactSpectral.schattenNorm_eq_zero_iff`, `OperatorAlgebras.CompactSpectral.schattenSum_le_of_tendsto`,
+    `OperatorAlgebras.CompactSpectral.exists_tendsto_schattenNorm`
+110. Lightlike/OperatorAlgebras/Spectral/TestsSchatten.lean - `OperatorAlgebras.CompactSpectral.schattenSum_two_invDiag_lt_top`,
+    `OperatorAlgebras.CompactSpectral.schattenSum_one_invDiag_eq_top` (diag(1/(n+1)) is in J₂ and not in J₁)
+111. Lightlike/OperatorAlgebras/Semigroup/Defs.lean - `OperatorAlgebras.ContractionSemigroup`,
     `OperatorAlgebras.ContractionSemigroup.generator`
-102. Lightlike/OperatorAlgebras/Spectral/ProjectionValuedMeasure.lean - `OperatorAlgebras.Spectral.ProjectionValuedMeasure`
+112. Lightlike/OperatorAlgebras/Spectral/ProjectionValuedMeasure.lean - `OperatorAlgebras.Spectral.ProjectionValuedMeasure`
 
 ## References
 
@@ -369,7 +410,7 @@ Kantorovich-Rubinstein duality: on a compact metric space `W₁(μ, ν) = sup {�
    Soc. 103 (1962) 149.
 3. Math 7334 lecture notes, Georgia Tech (Spring 2017), Section 4: The Theorem of Hille and Yosida concerning semi-groups, Theorem 1.9, https://loss.math.gatech.edu/17SPRINGTEA/7334/NOTES/section4hilleyosida.pdf.
 4. G. Teschl, *Mathematical Methods in Quantum Mechanics*, Graduate Studies in Mathematics 99, American Mathematical
-   Society, 2009 (online edition), Theorem 3.7 (spectral theorem). The Lean files are ported from physicslib4
+   Society, 2009 (online edition), Theorem 3.7 (spectral theorem) and Theorem 6.6 (compact self-adjoint operators). The Lean files are ported from physicslib4
    (github.com/physicslib/physicslib4, Apache-2.0).
 5. G. Bonneau, J. Faraut and G. Valent, *Self-adjoint extensions of operators and the teaching of quantum
    mechanics*, arXiv:quant-ph/0103153, Appendix A.3 and Section 5.3, eqs. (14) and (15).

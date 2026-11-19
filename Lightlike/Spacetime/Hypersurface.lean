@@ -21,7 +21,8 @@ A field `X` is tangent (`IsTangentNear φ X x₀`) when `dφ (X) = 0` near `x₀
 **Limits.** The leaves are not given a manifold structure, so the "induced metric" and the intrinsic Levi-Civita curvature of
 a leaf are not objects here: `D` is the tangential part of `∇` on tangent fields, and `gaussCurv` is its curvature (`D` is
 torsion free and compatible with the restriction of `g` on tangent fields; that it is *the* Levi-Civita connection of the
-leaf is not stated). The existence of a unit normal for a function `φ` with `dφ ≠ 0` and non-null gradient is a hypothesis.
+leaf is not stated). The unit normal is a hypothesis here; `exists_isUnitNormal` (`HypersurfaceNormal.lean`) constructs it for a function `φ` whose
+gradient at `x₀` is not null.
 The trust checks of the milestone (the sphere in `ℝ³`, a slice of FLRW) are not in this file. Manifolds as in
 `CurvatureSymmetries.lean` (no boundary, `T2Space`, smooth connection).
 -/

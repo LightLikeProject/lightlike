@@ -15,10 +15,15 @@ under the same hypotheses as `curvatureAt_apply_proved` (`ChartCurvature.lean`):
 * `riemannLowerAt_pair_symm`: `g(R(X,Y)Z, W) = g(R(Z,W)X, Y)` for the Levi-Civita connection;
 * `ricciAt_symm_proved`: the Ricci tensor is symmetric (trace with the inverse Gram matrix, `coord_eq_sum`).
 
-**Differences from the tasks `T-GE1-P3` and `T-GE1-P4`** (which stay open): the tasks are for any `ModelWithCorners` with
-`IsLeviCivita`, with no Hausdorff hypothesis; these theorems assume no boundary, a locally smooth connection (`LocallySmoothConnection`, no Hausdorff hypothesis) and take
-torsion freeness and metric compatibility as two hypotheses. The comparison with Wald, *General Relativity*, Section 3.2
-is pending: the source was not read at the cited location.
+**Former tasks `T-GE1-P3` and `T-GE1-P4`, closed by `bianchi_first_proved`, `riemannLowerAt_pair_symm` and `ricciAt_symm_proved`.**
+Differences from the task statements (approved on 18 November 2026, updated for the metrics of any signature of GE11): (1) no boundary and a
+finite-dimensional model space `E` (`ModelWithCorners` `𝓘(ℝ, E)`) instead of any `ModelWithCorners` (this matches the source, where manifolds are charts
+onto open subsets of `ℝⁿ`), with a locally smooth connection (`LocallySmoothConnection`) and no Hausdorff hypothesis; (2) representation: torsion freeness
+and metric compatibility are two hypotheses instead of `IsLeviCivita`. The statements were compared with Carroll, *Lecture Notes on General Relativity*
+(1997), eqs. (3.78)-(3.81) (antisymmetry, pair symmetry and the first Bianchi identity of `R_{ρσμν}` for the Christoffel connection), (3.90) and (3.91)
+(the Ricci tensor `R_{μν} = R^λ{}_{μλν}` and its symmetry) (read at those locations); Carroll states them in coordinates, here they are the intrinsic
+statements for `curvatureAt` (kind: representation). The comparison with Wald, *General Relativity*, Section 3.2 is pending: the source was not read at
+the cited location.
 -/
 
 open Bundle Manifold Set VectorField NormedSpace FiberBundle Filter

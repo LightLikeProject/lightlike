@@ -157,6 +157,64 @@ potentials on trivializations covering `M` that satisfy (38) on every overlap ar
 derivative (`exists_covariantDerivative_of_local`), unique on the sections differentiable at the point
 (`covariantDerivative_eq_of_local`).
 
+## Connections as horizontal distributions (Svetlichny §4.6, pp. 26-29)
+
+Source, read: the vertical subspace `V_p E = ker dπ` of a bundle (pp. 26-27); a connection is a smooth choice of
+`H_p E ⊂ T_p E` complementary to `V_p E`, smooth meaning that `π^h X` is `C^∞` for every `C^∞` vector field `X`
+(p. 27); on a principal bundle `V_p P ≃ g` by `L ↦ L_p = d/dt p · exp(tL)`, the vertical projection is represented by
+the connection form `ω_p` (eq. (34)), and the connection is invariant if `H_{p·g} = dR_g(H_p)` (p. 29).
+
+`PrincipalHorizontal.lean`, on the glued `P` with `ω = connForm`: `proj` is `π` (`proj_act`: `π(p · k) = π(p)`);
+`vertical p = ker dπ_p` and `horizontal p = ker ω_p` are complementary (`isCompl_vertical_horizontal`: their
+intersection is `0` in a trivialization, since `ω_(x,h)(0, w) = Ad_{h⁻¹} dR_{h⁻¹} w`, and `v = d(p ·)_1 (ω_p v) +
+(v - d(p ·)_1 (ω_p v))`); `V_p` is the set of fundamental vectors (`mem_vertical_iff`); `vertProj p = d(p ·)_1 ∘ ω_p`
+is the vertical projection (`vertProj_mem_vertical`, `sub_vertProj_mem_horizontal`); `H_{p·k} = dR_k(H_p)`
+(`horizontal_act`, from (35) and `R_{k⁻¹} ∘ R_k = id`); and for `C^n` data (`n ≥ 3`, `m + 1 ≤ n`) the vertical and
+horizontal parts of a `C^m` vector field are `C^m` (`contMDiffAt_horizontalPart`, through the smoothness of the
+fundamental vector fields, `contMDiffAt_fundamental`, from Mathlib's `ContMDiffAt.mfderiv` and
+`ContMDiffAt.clm_apply_of_inCoordinates`). Differences, kind representation: the fundamental vector of `L` is
+`d(p ·)_1 L`, the velocity at `1` of `k ↦ p · k` along `L`, instead of the velocity of `t ↦ p · exp(tL)` (Mathlib has no
+exponential map of a Lie group; the two agree because `exp` has derivative `id` at `0`); the horizontal subspace is
+given as the kernel of `ω`, which is how the source passes from the distribution to the form; smoothness is `C^m`
+for `C^n` data with `m + 1 ≤ n` (smooth data give `C^∞`).
+
+## Curvature of the glued connection (Svetlichny §4.9, p. 42)
+
+Source, read: the curvature of an invariant connection is given by its local potentials, `F_U = dA_U + [A_U, A_U]`
+(eq. (62)), a `g`-valued 2-form on the trivializing set `U`; on overlaps `F_V = g_VU F_U g_VU⁻¹` (eq. (63)), the
+transition map of the adjoint bundle `P ×_Ad g`, so that `F` is a `P ×_Ad g`-valued 2-form on the base (p. 42). The
+source defines no curvature form on the total space.
+
+`PrincipalCurvature.lean`: for the glued bundle over an open cover of a normed space `F` and potentials satisfying
+(38) (`IsCompatible`), the local curvatures `lieCurvature (A i)` satisfy (63) at every point of every overlap
+(`lieCurvature_transition`): the `C³` transition map is written near the point as `g = g(x₀) · φ⁻¹(γ)` in the chart
+at the identity (`chart_form`), `A_j` agrees near the point with `Ad_{g_ij} A_i - dg_ij g_ij⁻¹`, the curvature only
+depends on the germ (`lieCurvature_congr`), and the covariance (64) (`lieCurvature_lieGaugeTransform`) gives
+`F_j = Ad_{g_ij} F_i`. Difference, kind representation: the base is a normed space with an open cover, the local form
+in which (62)-(64) are stated (as for `curvature` and `lieCurvature`). The reading of `F` as a `P ×_Ad g`-valued
+2-form needs the associated bundle, the next item.
+
+## Associated bundles and the induced connection (Svetlichny pp. 22, 31)
+
+Source, read: for a left action `ρ` of `G` on `F`, `P ×_ρ F` is the orbit space of `P × F` under
+`(p, f) ↦ (p · g⁻¹, g · f)`, and by Theorem 7 it is the bundle with fibre `F`, group action `ρ` and the cocycle of
+`P` (p. 22). An invariant connection `ω` on `P` induces a connection on `P ×_ρ F` (the image of `H_p × {0}`), and for
+a representation `ρ`, with `r` the induced representation of `g`, the horizontal subspace at `(x, f)` in a
+trivialization consists of the `(ξ, -r(A(x)(ξ)) f)`, so the connection is linear with vertical projection
+`π^v_(x,f)(ξ, y) = y + r(A(x)(ξ)) f` (eq. (39), p. 31).
+
+`PrincipalAssociated.lean`: for the glued bundle with a cover of `M` and a `C³` representation
+`ρ : G →* (V →L V)` on a normed space `V`, `assocCore` is the vector bundle with the transition maps `ρ(g_ij)`
+(`assocCore_isContMDiff`: `C^n` for `C^n` data); `lieRep ρ = dρ_1` satisfies `r(Ad_g X) = ρ(g) r(X) ρ(g)⁻¹`
+(`lieRep_adjointE`) and `r(dR_{k⁻¹} Y) ρ(k) = dρ_k Y` (`lieRep_rightTrivial`); with these, (38) for the `A_i` gives
+the vector-bundle form of (38) for `r ∘ A_i` and the coordinate changes `ρ(g_ij)`, and Theorem 10 for the vector
+bundle (`BundleConnection.lean`) gives a covariant derivative whose representative over `U_i` is `d + r(A_i)`, the
+linear connection of (39) (`exists_assocCov`), unique on the sections differentiable at the point (`assocCov_unique`).
+Differences, kind representation: `P ×_ρ V` is built from the cocycle `ρ(g_ij)` (Theorem 7's description) rather
+than as the orbit space of `P × V`; `ρ` is a `C³` representation by continuous linear maps of a normed space (the
+case of (39)); the induced connection is given by its trivialization form (39), which is how the source computes it
+from the image of `H_p × {0}`, and is a covariant derivative in Mathlib's sense, unique on differentiable sections.
+
 ## Reuse
 
 Mathlib: `IsPicardLindelof`, `IsPicardLindelof.exists_eq_forall_mem_Icc_hasDerivWithinAt₀`, `ContDiffBump`,
