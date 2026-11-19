@@ -48,13 +48,13 @@ theorem continuousOn_ehIntegrand (g : NondegMetric 𝓘(ℝ, Fin n → ℝ) M)
       (extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).target := by
     intro α β
     unfold ricciUp
-    exact continuousOn_finset_sum _ fun a _ => continuousOn_finset_sum _ fun b _ =>
+    exact continuousOn_finsetSum _ fun a _ => continuousOn_finsetSum _ fun b _ =>
       ((hinv α a).mul (hric a b)).mul (hinv b β)
   have hF : ContinuousOn (fun y => ∑ α, ∑ β, h.coordComp x₀ y α β *
       (ricciUp (g.coordMetric x₀) y α β -
         (1 / 2) * scalarCurvature (g.coordMetric x₀) y * (g.coordMetric x₀ y)⁻¹ α β +
         Λ * (g.coordMetric x₀ y)⁻¹ α β)) (extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).target :=
-    continuousOn_finset_sum _ fun α _ => continuousOn_finset_sum _ fun β _ =>
+    continuousOn_finsetSum _ fun α _ => continuousOn_finsetSum _ fun β _ =>
       ((h.coordComp_smooth x₀ α β).continuousOn).mul
         (((hup α β).sub ((continuousOn_const.mul hR).mul (hinv α β))).add
           (continuousOn_const.mul (hinv α β)))

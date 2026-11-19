@@ -17,6 +17,8 @@ noncomputable section
 
 namespace Lightlike
 
+set_option synthInstance.maxHeartbeats 400000
+
 variable {n : ℕ} {M : Type*} [TopologicalSpace M] [ChartedSpace (Fin n → ℝ) M]
   [IsManifold 𝓘(ℝ, Fin n → ℝ) ∞ M]
 
@@ -44,12 +46,14 @@ lemma SymBilinField.coordComp_smulFun (χ : M → ℝ) (hχ : ContMDiff 𝓘(ℝ
 lemma SymBilinField.smulFun_eq_zero_of_fun (χ : M → ℝ)
     (hχ : ContMDiff 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ) ∞ χ) (h : SymBilinField 𝓘(ℝ, Fin n → ℝ) M) {x : M}
     (hx : χ x = 0) : (h.smulFun χ hχ).h x = 0 := by
-  rw [SymBilinField.smulFun_h, hx, zero_smul]
+  rw [SymBilinField.smulFun_h, hx]
+  exact zero_smul ℝ _
 
 /-- `χ h` vanishes where `h` vanishes. -/
 lemma SymBilinField.smulFun_eq_zero_of_field (χ : M → ℝ)
     (hχ : ContMDiff 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ) ∞ χ) (h : SymBilinField 𝓘(ℝ, Fin n → ℝ) M) {x : M}
     (hx : h.h x = 0) : (h.smulFun χ hχ).h x = 0 := by
-  rw [SymBilinField.smulFun_h, hx, smul_zero]
+  rw [SymBilinField.smulFun_h, hx]
+  exact smul_zero _
 
 end Lightlike
