@@ -131,6 +131,8 @@ than one who stays at rest [6].
 39. Lightlike/Spacetime/VariationCritical.lean - `einsteinUp`, `IsEHCritical`, `contDiff_ricci`, `contDiff_scalarCurvature`, `isEHCritical_iff`: a smooth nondegenerate metric is a critical point of the Einstein-Hilbert action, for perturbations of compact support, if and only if it satisfies the vacuum Einstein equations with a cosmological constant.
 
 40. Lightlike/Spacetime/EinsteinTwoDim.lean - `ricci_two_dim`, `einsteinUp_two_dim`, `isEHCritical_two_dim`: in two dimensions the Ricci tensor is half the scalar curvature times the metric, the Einstein tensor vanishes, and every smooth nondegenerate metric is a critical point of the Einstein-Hilbert action without cosmological term.
+41. Lightlike/Spacetime/CoordKilling.lean - `coordField_killing`: a coordinate field along which the metric components are constant is a Killing field (`IsKillingAt`) of the Levi-Civita connection.
+42. Lightlike/Spacetime/SchwarzschildKilling.lean - `schwarzschild_killing`: the time translation `∂_t` is a Killing field of exterior Schwarzschild.
 
 ## References
 
