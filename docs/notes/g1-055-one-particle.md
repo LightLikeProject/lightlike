@@ -57,9 +57,13 @@ What stops it here, concretely:
   group): not in the library;
 * irreducibility of the massless induced representations (the massive ones are irreducible, see below).
 
-The massless representations on `L²` of the light cone are not built here: the standard lift of the cone is not
-continuous (no continuous global section exists), so the multiplier is a measurable field of unitaries and the
-construction of `mulL2` (which uses a continuous field) does not apply as it stands.
+The massless representations of helicity `n/2` act on `L²(ν)` of the forward light cone, for every invariant
+measure `ν` (`ConeL2.lean`). The standard lift of the cone is discontinuous on the half-line `P₀₀ = 0` (no continuous
+global section exists), so the helicity factor is only measurable; that half-line is null for every invariant
+s-finite `ν` (`ConeNull.lean`, `measure_alphaC_eq_zero`: such a `ν` has the null sets of the image of the Haar
+measure, and `{A : A₀₀ = 0}` is Haar-null because its right translates by the rotations `u_θ`, `0 ≤ θ < π`, are
+pairwise disjoint), and the representations are strongly continuous when `ν` is finite on compacts
+(`ConeContinuity.lean`, `continuous_poincareCone`).
 
 ## Toward the Wigner classification
 

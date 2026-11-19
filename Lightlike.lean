@@ -759,8 +759,10 @@ import Lightlike.PL.TestsK33
 import Lightlike.Poincare.CommutantDecomposition
 import Lightlike.Poincare.CommutantPVM
 import Lightlike.Poincare.CommutantTranslations
+import Lightlike.Poincare.ConeContinuity
 import Lightlike.Poincare.ConeL2
 import Lightlike.Poincare.ConeMeasure
+import Lightlike.Poincare.ConeNull
 import Lightlike.Poincare.GeneratorCurves
 import Lightlike.Poincare.GeneratorL2
 import Lightlike.Poincare.Imprimitivity
