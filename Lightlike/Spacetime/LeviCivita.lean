@@ -46,11 +46,11 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
   {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I ∞ M] {n : ℕ}
 
 /-- The function `y ↦ g(Y y, Z y)`. -/
-def gpair (g : LorentzianMetric I M n) (Y Z : Π x : M, TangentSpace I x) : M → ℝ :=
+def gpair (g : NondegMetric I M) (Y Z : Π x : M, TangentSpace I x) : M → ℝ :=
   fun y => g.g y (Y y) (Z y)
 
 /-- The pairing `y ↦ g(Y y, Z y)` of two vector fields differentiable at `x` is differentiable at `x`. -/
-theorem mdiffAt_gpair (g : LorentzianMetric I M n) {Y Z : Π x : M, TangentSpace I x} {x : M}
+theorem mdiffAt_gpair (g : NondegMetric I M) {Y Z : Π x : M, TangentSpace I x} {x : M}
     (hY : MDiffAt (T% Y) x) (hZ : MDiffAt (T% Z) x) : MDiffAt (gpair g Y Z) x := by
   have hg : MDiffAt (fun y => TotalSpace.mk' (E →L[ℝ] E →L[ℝ] ℝ)
       (E := fun y : M => TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ) y (g.g y)) x :=
@@ -60,7 +60,7 @@ theorem mdiffAt_gpair (g : LorentzianMetric I M n) {Y Z : Π x : M, TangentSpace
   simp only [mdifferentiableAt_totalSpace] at this
   exact this.2
 
-variable (g : LorentzianMetric I M n)
+variable (g : NondegMetric I M)
 
 /-- `g(f Y, Z) = f g(Y, Z)` as functions. -/
 theorem gpair_smul_left (f : M → ℝ) (Y Z : Π x : M, TangentSpace I x) :
@@ -211,14 +211,14 @@ theorem koszulHom_apply {X Y Z : Π x : M, TangentSpace I x} {x : M}
 
 /-- The musical isomorphism `T*_x → T_x` of a Lorentzian metric (the inverse of `v ↦ g(v, ·)`). -/
 def sharp (x : M) (φ : TangentSpace I x →L[ℝ] ℝ) : TangentSpace I x :=
-  ((g.g x).toBilinForm.toDual (IsLorentzianForm.bilinForm_nondegenerate (g.lorentzian x))).symm
+  ((g.g x).toBilinForm.toDual (g.bilinForm_nondegenerate x)).symm
     φ.toLinearMap
 
 /-- `g(♯φ, v) = φ(v)`. -/
 theorem g_sharp (x : M) (φ : TangentSpace I x →L[ℝ] ℝ) (v : TangentSpace I x) :
     g.g x (sharp g x φ) v = φ v :=
   LinearMap.BilinForm.apply_toDual_symm_apply (B := (g.g x).toBilinForm) (v := v)
-    (hB := IsLorentzianForm.bilinForm_nondegenerate (g.lorentzian x)) (f := φ.toLinearMap)
+    (hB := g.bilinForm_nondegenerate x) (f := φ.toLinearMap)
 
 /-- `♯` is additive. -/
 theorem sharp_add (x : M) (φ ψ : TangentSpace I x →L[ℝ] ℝ) :
@@ -376,7 +376,7 @@ theorem leviCivita_unique {cov cov' : Connection I M} (h : cov.IsLeviCivita g) (
   rw [koszul_of_isLeviCivita g h hX hY hZ, koszul_of_isLeviCivita g h' hX hY hZ]
 
 /-- **Existence and uniqueness of the Levi-Civita connection of a Lorentzian metric** . -/
-theorem leviCivita_exists_unique_proved (g : LorentzianMetric I M n) :
+theorem leviCivita_exists_unique_proved (g : NondegMetric I M) :
     (∃ cov : Connection I M, cov.IsLeviCivita g) ∧
       ∀ cov cov' : Connection I M, cov.IsLeviCivita g → cov'.IsLeviCivita g →
         ∀ (Y : Π x : M, TangentSpace I x) (x : M), MDiffAt (T% Y) x → cov Y x = cov' Y x :=

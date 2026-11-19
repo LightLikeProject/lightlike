@@ -16,7 +16,7 @@ under the same hypotheses as `curvatureAt_apply_proved` (`ChartCurvature.lean`):
 * `ricciAt_symm_proved`: the Ricci tensor is symmetric (trace with the inverse Gram matrix, `coord_eq_sum`).
 
 **Differences from the tasks `T-GE1-P3` and `T-GE1-P4`** (which stay open): the tasks are for any `ModelWithCorners` with
-`IsLeviCivita`, with no Hausdorff hypothesis; these theorems assume no boundary, `T2Space M`, a smooth connection and take
+`IsLeviCivita`, with no Hausdorff hypothesis; these theorems assume no boundary, a locally smooth connection (`LocallySmoothConnection`, no Hausdorff hypothesis) and take
 torsion freeness and metric compatibility as two hypotheses. The comparison with Wald, *General Relativity*, Section 3.2
 is pending: the source was not read at the cited location.
 -/
@@ -30,8 +30,8 @@ namespace Lightlike
 
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
   {M : Type*} [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M]
-  [T2Space M] [IsManifold 𝓘(ℝ, E) 2 M] [CompleteSpace E]
-variable (cov : Connection 𝓘(ℝ, E) M) [CovariantDerivative.ContMDiffCovariantDerivative cov ∞]
+  [IsManifold 𝓘(ℝ, E) 2 M] [CompleteSpace E]
+variable (cov : Connection 𝓘(ℝ, E) M) [LocallySmoothConnection cov]
 
 /-- Smooth near a point. -/
 def SmoothNear (X : Π y : M, TangentSpace 𝓘(ℝ, E) y) (x : M) : Prop :=
@@ -149,7 +149,7 @@ theorem bianchi_first_proved (hT : cov.torsion = 0) (x : M) (X₀ Y₀ Z₀ : Ta
   rw [← j]
   abel
 
-variable {n : ℕ} (g : LorentzianMetric 𝓘(ℝ, E) M n)
+variable {n : ℕ} (g : NondegMetric 𝓘(ℝ, E) M)
 
 /-- Metric compatibility in terms of `mvfderiv`. -/
 theorem compat_mv (hC : cov.IsMetricCompatible g) {A B V : Π y : M, TangentSpace 𝓘(ℝ, E) y} {y : M}
@@ -328,10 +328,10 @@ def metricGram : Matrix (Fin (Module.finrank ℝ E)) (Fin (Module.finrank ℝ E)
 /-- The basis of the tangent space. -/
 def tb : Module.Basis (Fin (Module.finrank ℝ E)) ℝ (TangentSpace 𝓘(ℝ, E) x) := Module.finBasis ℝ E
 
-/-- The Gram matrix of a Lorentzian metric in a basis is invertible. -/
+/-- The Gram matrix of a metric in a basis is invertible. -/
 theorem metricGram_isUnit : IsUnit (metricGram g x).det := by
   have h := (LinearMap.BilinForm.nondegenerate_iff_det_ne_zero (tb x)).mp
-    (g.lorentzian x).bilinForm_nondegenerate
+    (g.bilinForm_nondegenerate x)
   have hmat : LinearMap.BilinForm.toMatrix (tb x) (g.g x).toBilinForm = metricGram g x := by
     ext i j
     rw [LinearMap.BilinForm.toMatrix_apply]

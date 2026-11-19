@@ -2221,3 +2221,135 @@
   review: kernel-checked
   note: "For two Fock representations R on K1 and S on K2 (complete) of the same complex inner product space, the unitary fockUnitary R S from K1 onto K2 maps the vacuum to the vacuum and intertwines the Weyl unitaries. The map W(f) Omega to W(f) Omega' is well defined and norm preserving on the dense span of these vectors and extends to a unitary. The representation difference of the existence of a Fock representation is approved by the maintainers (18 November 2026). The comparison with the cited source is pending: the registry location is the chapter, and the statement was not read there."
   since: 0.3.0
+- id: LL-0170
+  title: The Morse lemma with parameters, with its diagonal normal form (a generalisation of Milnor's Morse lemma)
+  area: Asymptotics
+  file: Lightlike/Asymptotics/MorseLemma.lean
+  decls: [Lightlike.Morse.morse_lemma_with_parameters, Lightlike.Morse.morse_coordinates, Lightlike.Morse.morse_diagonal, Lightlike.Morse.not_hasDiagonalMorseChart_cube]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: milnor-1963, location: "Chapter: PART I. NON-DEGENERATE SMOOTH FUNCTIONS ON A MANIFOLD|10.1515/9781400881802-002"}
+  review: kernel-checked
+  note: "A smooth function f of a variable x in a finite-dimensional real normed space E and a parameter l, with a critical point at x = 0 for every l near l0 and a nondegenerate Hessian at (0, l0), is f(0, l) plus the sum of w_i y_i^2, w_i = plus or minus one, in coordinates (y, l) that are a smooth local diffeomorphism of (x, l) near (0, l0). The number of negative signs is the Morse index (the largest dimension of a subspace on which the Hessian is negative definite). The function x^3 at 0 has no such chart. The parametric form generalises Milnor's Morse lemma; comparison with the book at that location is pending. Limits: f is smooth on the whole of E times F; the critical point is at x = 0; the index is not shown to equal the number of negative eigenvalues for an inner product."
+  since: unreleased
+- id: LL-0171
+  title: The Lie derivative of a metric along a vector field equals the symmetrised covariant derivative of the field for the Levi-Civita connection, so Killing fields are those with vanishing Lie derivative
+  area: Spacetime
+  file: Lightlike/Spacetime/LieMetric.lean
+  decls: [Lightlike.lieDerivMetric_eq_of_isLeviCivita, Lightlike.isKillingAt_iff_lieDerivMetric_eq_zero]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "Chapter 3"}
+  review: kernel-checked
+  note: "For a metric g of any signature and a torsion-free connection compatible with g, X(g(V, W)) - g([X, V], W) - g(V, [X, W]) = g(nabla_V X, W) + g(V, nabla_W X) at every point where the fields are differentiable; hence the pointwise Killing equation holds at x iff the Lie derivative of g along X vanishes on all fields differentiable at x. Limits: pointwise statement only, no flows or isometries; not the Lie derivative of general tensors; the comparison with the source (Killing equation and Lie derivative in the lecture notes) is pending, and the location is the chapter, not an equation."
+  since: unreleased
+- id: LL-0172
+  title: The bracket of two Killing fields of a metric of any signature is a Killing field
+  area: Spacetime
+  file: Lightlike/Spacetime/KillingAlgebra.lean
+  decls: [Lightlike.IsKillingNear.lieBracket, Lightlike.lieDerivMetric_lieBracket]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "Chapter 3"}
+  review: kernel-checked
+  note: "If X and Y are smooth near x and the Lie derivative of g along each vanishes near x on all fields smooth near x, then so does the Lie derivative along the bracket [X, Y], by the Jacobi identity and [X, Y] f = X (Y f) - Y (X f). Limits: pointwise statement; the comparison with the source is pending and the location is the chapter."
+  since: unreleased
+- id: LL-0173
+  title: In Minkowski space the affine fields with skew linear part are Killing, the dilation is not, and affine fields close under the bracket with the Poincare relations
+  area: Spacetime
+  file: Lightlike/Spacetime/PoincareKilling.lean
+  decls: [Lightlike.affField_killing_iff, Lightlike.not_isKillingAt_dilation, Lightlike.mlieBracket_affField, Lightlike.skew_comm_skew]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "Chapter 3"}
+  review: kernel-checked
+  note: "On R^n with the Minkowski metric and the flat connection, the field y -> A y + c satisfies the Killing equation at every point iff A is skew for the metric; the dilation y -> y does not (n at least 1); [A y + c, B y + d] = (B A - A B) y + (B c - A d); the commutator of two skew endomorphisms is skew. Limits: not proved that these are all the Killing fields (the count n(n+1)/2); the 2-sphere check is not included; comparison with the source is pending."
+  since: unreleased
+- id: LL-0174
+  title: The second fundamental form of the level sets of a function is symmetric, and the Gauss and Codazzi relations hold for a non-null hypersurface
+  area: Spacetime
+  file: Lightlike/Spacetime/Hypersurface.lean
+  decls: [Lightlike.Hypersurface.secondFF_symm_fields, Lightlike.Hypersurface.gauss_relation, Lightlike.Hypersurface.codazzi_relation]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "Chapter 3"}
+  review: kernel-checked
+  note: "For a smooth function phi with a unit normal field n (g(n, n) = eps = plus or minus one, the kernel of d phi equal to the orthogonal of n), tangent fields X, Y, Z, W near a point and a metric compatible connection, g(R(X, Y) Z, W) equals the same expression for the tangential connection D plus the term minus eps (K(Y, Z) K(X, W) - K(X, Z) K(Y, W)) with K(v, w) = g(nabla_v n, w); for the Levi-Civita connection K is symmetric on tangent fields and g(R(X, Y) Z, n) = -((D_X K)(Y, Z) - (D_Y K)(X, Z)). Limits: the leaves are not given a manifold structure, so the intrinsic curvature of a leaf is that of the tangential connection D; existence of the unit normal is a hypothesis; the sphere and FLRW trust checks are not included; comparison with the source is pending and the location is the chapter."
+  since: unreleased
+- id: LL-0175
+  title: The first variation of the Einstein-Hilbert density at a point is the Einstein tensor plus a divergence (the Palatini identity in coordinates)
+  area: Spacetime
+  file: Lightlike/Spacetime/PalatiniCoord.lean
+  decls: [Lightlike.palatini_coord, Lightlike.hasDerivAt_lagrangian]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "Chapter 4"}
+  review: kernel-checked
+  note: "For smooth symmetric g and h on R^n and a point x with det g(x) nonzero, the coordinate Ricci tensor of g + t h varies by the linearised Ricci tensor; with W^rho = g^{sigma nu} delta Gamma^rho_{sigma nu} - g^{rho sigma} delta Gamma^kappa_{kappa sigma}, sqrt|g| g^{sigma nu} delta R_{sigma nu} equals the divergence of sqrt|g| W^rho; and d/dt of sqrt|g_t| (R(g_t) - 2 Lambda) at t = 0 is minus sqrt|g| (R^{ab} - R g^{ab}/2 + Lambda g^{ab}) h_{ab} plus that divergence. Limits: pointwise statement in coordinates; the integral over a compact region (the divergence integrates to zero), the differentiation under the integral sign and the manifold statement are later stages; comparison with the source is pending and the location is the chapter."
+  since: unreleased
+- id: LL-0176
+  title: The first variation of the Einstein-Hilbert action on a compact region is the Einstein tensor plus the cosmological term contracted with the perturbation, without a boundary term
+  area: Spacetime
+  file: Lightlike/Spacetime/VariationIntegral.lean
+  decls: [Lightlike.eh_first_variation, Lightlike.contDiffAt_lagDensity]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "Chapter 4"}
+  review: kernel-checked
+  note: "For a smooth metric g on R^n with nonzero determinant everywhere, a smooth symmetric perturbation h supported in a compact set T and Lambda real, d/dt of the integral over T of sqrt|det g_t| (R(g_t) - 2 Lambda), g_t = g + t h, at t = 0 is minus the integral over T of sqrt|det g| (R^{ab} - R g^{ab}/2 + Lambda g^{ab}) h_{ab}. Limits: coordinates on R^n; the vacuum Einstein equations as critical points (fundamental lemma), the manifold statement and the trust checks (two dimensions, sign of Lambda) are later stages; comparison with the source is pending and the location is the chapter."
+  since: unreleased
+- id: LL-0177
+  title: A smooth nondegenerate metric is a critical point of the Einstein-Hilbert action with a cosmological constant for perturbations of compact support exactly when it satisfies the vacuum Einstein equations
+  area: Spacetime
+  file: Lightlike/Spacetime/VariationCritical.lean
+  decls: [Lightlike.isEHCritical_iff]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "Chapter 4"}
+  review: kernel-checked
+  note: "For a smooth metric g on R^n of any signature with nonzero determinant everywhere and a real Lambda: the first variation of the integral of sqrt|det g| (R - 2 Lambda) vanishes for every smooth symmetric perturbation of compact support (over any compact region containing the support) iff R^{ab} - R g^{ab}/2 + Lambda g^{ab} is antisymmetric in (a, b), that is (it is symmetric) iff it vanishes. Limits: coordinates on R^n; the manifold statement and the trust checks (two dimensions, sign of Lambda) are later stages; comparison with the source is pending and the location is the chapter."
+  since: unreleased
+- id: LL-0178
+  title: In two dimensions the Einstein tensor of a smooth nondegenerate metric vanishes, so every metric is a critical point of the Einstein-Hilbert action without cosmological term
+  area: Spacetime
+  file: Lightlike/Spacetime/EinsteinTwoDim.lean
+  decls: [Lightlike.ricci_two_dim, Lightlike.isEHCritical_two_dim]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "Chapter 4"}
+  review: kernel-checked
+  note: "For a smooth metric on R^2 with nonzero determinant, the coordinate Ricci tensor is one half of the scalar curvature times the metric, so R^{ab} - R g^{ab}/2 = 0 and the first variation of the Einstein-Hilbert action vanishes for every perturbation of compact support (trust check of the Gauss-Bonnet theorem). Limits: coordinates on R^2; the integral invariance over a closed surface is not proved; comparison with the source is pending and the location is the chapter."
+  since: unreleased
+
+- id: LL-0179
+  title: A coordinate field along which the metric components are constant is a Killing field; the time translation of exterior Schwarzschild is a Killing field
+  area: Spacetime
+  file: Lightlike/Spacetime/SchwarzschildKilling.lean
+  decls: [Lightlike.coordField_killing, Lightlike.schwarzschild_killing]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (5.40)", check: "independent"}
+      - {ref: carroll-1997, location: "eq. (7.41)", check: "Killing"}
+  review: kernel-checked
+  note: "For the Levi-Civita connection of a smooth metric of any signature on a manifold modelled on R^n, the coordinate field d_k of a chart is a Killing field (g(nabla_v X, w) + g(v, nabla_w X) = 0, equivalently L_X g = 0) at every point of the chart domain when the coordinate components of the metric do not depend on x^k (from g_{nu lambda} Gamma^nu_{mu k} + g_{mu nu} Gamma^nu_{lambda k} = d_k g_{mu lambda}). For exterior Schwarzschild (r > 2M, 0 < theta < pi) the components do not depend on t, so d_t is a Killing field. Compared with Carroll's lecture notes (gr-qc/9712019), p. 140 after eq. (5.40) (independence of the components of one coordinate gives a symmetry; for the metric a Killing field, (5.41)-(5.42)) and ch. 7, pp. 173-174, eq. (7.41) (the timelike Killing vector K = d_t of Schwarzschild): match. Limits: the rotation Killing fields of Schwarzschild are not covered."
+  since: unreleased

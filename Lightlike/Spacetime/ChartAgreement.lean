@@ -21,7 +21,7 @@ chart at `x₀`, at the point `φ⁻¹ y`:
   vacuum equations hold in every chart.
 
 **Differences from the tasks.** `scalarCurvatureAt_coord` is the statement of the task `T-GE1-P5` and
-`satisfiesEinstein_iff_chart_proved` that of `T-GE1-P6`, each with the added hypotheses `[T2Space M]` and
+`satisfiesEinstein_iff_chart_proved` that of `T-GE1-P6`, each with the added hypothesis
 `[IsManifold 𝓘(ℝ, Fin n → ℝ) 2 M]` (needed by `curvatureAt_apply_proved`); the tasks stay open. The comparison
 of the definitions with Carroll, *Spacetime and Geometry*, ch. 3, and Wald, *General Relativity*, is pending: the
 sources were not read at the cited locations.
@@ -36,7 +36,7 @@ namespace Lightlike
 section General
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
   {M : Type*} [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M]
-  {n : ℕ} (g : LorentzianMetric 𝓘(ℝ, E) M n) (x : M)
+  {n : ℕ} (g : NondegMetric 𝓘(ℝ, E) M) (x : M)
 variable {ι : Type*} [Fintype ι] [DecidableEq ι]
 
 /-- The Gram matrix of `g` in a basis. -/
@@ -46,7 +46,7 @@ def gramB (b : Module.Basis ι ℝ (TangentSpace 𝓘(ℝ, E) x)) : Matrix ι ι
 /-- The Gram matrix of a Lorentzian metric in a basis is invertible. -/
 theorem gramB_isUnit (b : Module.Basis ι ℝ (TangentSpace 𝓘(ℝ, E) x)) : IsUnit (gramB g x b).det := by
   have h := (LinearMap.BilinForm.nondegenerate_iff_det_ne_zero b).mp
-    (g.lorentzian x).bilinForm_nondegenerate
+    (g.bilinForm_nondegenerate x)
   have hmat : LinearMap.BilinForm.toMatrix b (g.g x).toBilinForm = gramB g x b := by
     ext i j
     rw [LinearMap.BilinForm.toMatrix_apply]
@@ -112,8 +112,8 @@ theorem trace_raise (B : TangentSpace 𝓘(ℝ, E) x →ₗ[ℝ] TangentSpace �
 end General
 
 variable {n : ℕ} {M : Type*} [TopologicalSpace M] [ChartedSpace (Fin n → ℝ) M] [IsManifold 𝓘(ℝ, Fin n → ℝ) ∞ M]
-  [T2Space M] [IsManifold 𝓘(ℝ, Fin n → ℝ) 2 M]
-variable (cov : Connection 𝓘(ℝ, Fin n → ℝ) M) [CovariantDerivative.ContMDiffCovariantDerivative cov ∞] (x₀ : M)
+  [IsManifold 𝓘(ℝ, Fin n → ℝ) 2 M]
+variable (cov : Connection 𝓘(ℝ, Fin n → ℝ) M) [LocallySmoothConnection cov] (x₀ : M)
 
 /-- The components of the curvature at any point of the chart domain. -/
 theorem hv_curvatureAt {p : M} (hp : p ∈ (tTriv (E := Fin n → ℝ) x₀).baseSet)
@@ -127,10 +127,10 @@ theorem hv_curvatureAt {p : M} (hp : p ∈ (tTriv (E := Fin n → ℝ) x₀).bas
   simp only [FiberBundle.extend_apply_self]
   exact h2
 
-omit [CovariantDerivative.ContMDiffCovariantDerivative cov ∞] in
+omit [LocallySmoothConnection cov] in
 /-- The Christoffel tensor in the components of the trivialization is the Christoffel symbol of the coordinate
 metric, for the Levi-Civita connection. -/
-theorem gamHat_coord (g : LorentzianMetric 𝓘(ℝ, Fin n → ℝ) M n) (h : cov.IsLeviCivita g)
+theorem gamHat_coord (g : NondegMetric 𝓘(ℝ, Fin n → ℝ) M) (h : cov.IsLeviCivita g)
     {z : M} (hz : z ∈ (tTriv (E := Fin n → ℝ) x₀).baseSet) (i j : Fin n) :
     gamHat cov x₀ z (Pi.single j 1) (Pi.single i 1) =
       ∑ k, christoffel (g.coordMetric x₀) k i j (extChartAt 𝓘(ℝ, Fin n → ℝ) x₀ z) • (Pi.single k 1 : Fin n → ℝ) := by
@@ -185,7 +185,7 @@ theorem mvfderiv_gamHat_apply {p : M} (hp : p ∈ (tTriv (E := Fin n → ℝ) x�
   rw [e2, e1]
 
 /-- The derivative of `Γ̂` along `∂_μ` in the chart is `Σ_k ∂_μ Γᵏ_{νσ} e_k`. -/
-theorem mvfderiv_gamHat_coord (g : LorentzianMetric 𝓘(ℝ, Fin n → ℝ) M n) (h : cov.IsLeviCivita g)
+theorem mvfderiv_gamHat_coord (g : NondegMetric 𝓘(ℝ, Fin n → ℝ) M) (h : cov.IsLeviCivita g)
     {y : Fin n → ℝ} (hy : y ∈ (extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).target) (μ ν σ : Fin n) :
     (mvfderiv 𝓘(ℝ, Fin n → ℝ) (gamHat cov x₀) ((extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).symm y)
       (coordField x₀ μ ((extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).symm y))) (Pi.single σ 1) (Pi.single ν 1) =
@@ -237,7 +237,7 @@ theorem symmL_eq_coordField (x₀ : M) {p : M} (hp : p ∈ (tTriv (E := Fin n �
   exact ((show _ = coordBasis x₀ hp k from rfl).trans (coordBasis_apply x₀ hp k)).symm
 
 /-- **The curvature in a chart is the coordinate Riemann tensor**: for the Levi-Civita connection, the `ρ`-component of the components of `R(∂_μ, ∂_ν) ∂_σ` at `φ⁻¹ y` is `riemann (g.coordMetric x₀) ρ σ μ ν y`. -/
-theorem riemann_coord_comp (g : LorentzianMetric 𝓘(ℝ, Fin n → ℝ) M n) (h : cov.IsLeviCivita g)
+theorem riemann_coord_comp (g : NondegMetric 𝓘(ℝ, Fin n → ℝ) M) (h : cov.IsLeviCivita g)
     {y : Fin n → ℝ} (hy : y ∈ (extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).target) (μ ν σ ρ : Fin n) :
     (hv x₀ ((extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).symm y)
       (cov.curvatureAt ((extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).symm y)
@@ -339,7 +339,7 @@ theorem ricciAt_eq_trace {p : M} (hp : p ∈ (tTriv (E := Fin n → ℝ) x₀).b
   rw [LinearMap.comp_assoc, hid, LinearMap.comp_id]
 
 /-- **The Ricci tensor in a chart is the coordinate Ricci tensor**: `Ric(∂_ν, ∂_ζ) = ricci (g.coordMetric x₀) ζ ν y`. -/
-theorem ricciAt_coord (g : LorentzianMetric 𝓘(ℝ, Fin n → ℝ) M n) (h : cov.IsLeviCivita g)
+theorem ricciAt_coord (g : NondegMetric 𝓘(ℝ, Fin n → ℝ) M) (h : cov.IsLeviCivita g)
     {y : Fin n → ℝ} (hy : y ∈ (extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).target) (ν ζ : Fin n) :
     cov.ricciAt ((extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).symm y)
       (coordField x₀ ν ((extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).symm y))
@@ -396,7 +396,7 @@ def RicB {p : M} (hp : p ∈ (tTriv (E := Fin n → ℝ) x₀).baseSet) :
       rw [ricciAt_eq_trace cov x₀ hp, ricciAt_eq_trace cov x₀ hp, hv_smul' x₀ hp, RhatFst_smul_right, map_smul])
 
 /-- **The scalar curvature of a Levi-Civita connection is the coordinate scalar curvature** in a chart. -/
-theorem scalarCurvatureAt_coord (g : LorentzianMetric 𝓘(ℝ, Fin n → ℝ) M n) (h : cov.IsLeviCivita g)
+theorem scalarCurvatureAt_coord (g : NondegMetric 𝓘(ℝ, Fin n → ℝ) M) (h : cov.IsLeviCivita g)
     {y : Fin n → ℝ} (hy : y ∈ (extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).target) :
     cov.scalarCurvatureAt g ((extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).symm y) =
       scalarCurvature (g.coordMetric x₀) y := by
@@ -425,7 +425,7 @@ theorem scalarCurvatureAt_coord (g : LorentzianMetric 𝓘(ℝ, Fin n → ℝ) M
   rw [hr, this]
 
 /-- **The Einstein equations on a manifold are the coordinate Einstein equations in every chart.** -/
-theorem satisfiesEinstein_iff_chart_proved (g : LorentzianMetric 𝓘(ℝ, Fin n → ℝ) M n)
+theorem satisfiesEinstein_iff_chart_proved (g : NondegMetric 𝓘(ℝ, Fin n → ℝ) M)
     (h : cov.IsLeviCivita g) (Λ : ℝ) :
     g.SatisfiesEinstein cov Λ ↔
       ∀ x₀ : M, IsVacuumSolution Λ (g.coordMetric x₀) (extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).target := by

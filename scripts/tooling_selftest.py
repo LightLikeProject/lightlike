@@ -50,6 +50,12 @@ with tempfile.TemporaryDirectory() as d:
     (tmp / "Lightlike" / "Tests" / "T.lean").write_text("example := foo\nexample := Lightlike.bar\n")
     expect("untested results control: a use qualified by the namespace, `Lightlike.bar`, counts",
            ci_check.check_test_coverage(tmp) == [])
+    (tmp / "docs" / "results.d").mkdir()
+    (tmp / "docs" / "results.d" / "new.yaml").write_text("- id: LL-XXXX\n  decls: [Lightlike.baz]\n")
+    w = ci_check.check_test_coverage(tmp)
+    expect("untested results planted: a new entry in docs/results.d is covered too",
+           len(w) == 1 and "Lightlike.baz" in w[0])
+    (tmp / "docs" / "results.d" / "new.yaml").unlink()
     (tmp / "Lightlike" / "Tests" / "T.lean").write_text("example := foo\nexample := h.bar\n")
     expect("untested results planted: dot notation `h.bar` is not counted as a use of `bar`",
            len(ci_check.check_test_coverage(tmp)) == 1)
@@ -65,7 +71,33 @@ with tempfile.TemporaryDirectory() as d:
     expect("exploratory planted: a core module importing Exploratory/ through another module fails",
            len(ci_check.check_exploratory_imports(tmp)) == 2)
 
+with tempfile.TemporaryDirectory() as d:
+    tmp = pathlib.Path(d)
+    mini(tmp)
+    bl = tmp / "base.txt"
+    expect("constructs control (flag off): a clean tree passes", ci_check.scan_constructs(tmp, bl) == [])
+    kinds = ["elab x : term => pure x", "macro_rules | `(a) => `(b)", "syntax \"a\" : term",
+             "initialize r : IO.Ref Nat <- IO.mkRef 0", "run_cmd pure ()", "unsafe def u := 0",
+             "opaque o : Nat"]
+    for k in kinds:
+        (tmp / "Lightlike" / "A.lean").write_text("theorem foo : True := trivial\n" + k + "\n")
+        expect("constructs planted (flag on): `" + k.split()[0] + "` is reported",
+               len(ci_check.scan_constructs(tmp, bl)) == 1)
+    (tmp / "Lightlike" / "A.lean").write_text("-- unsafe opaque x\n/- syntax a -/\ntheorem foo : \"unsafe\" = \"unsafe\" := rfl\n")
+    expect("constructs control: comments and strings are ignored", ci_check.scan_constructs(tmp, bl) == [])
+    (tmp / "Lightlike" / "A.lean").write_text("local syntax \"a\" : term\n")
+    bl.write_text("Lightlike/A.lean syntax 1\n")
+    expect("constructs control: a baselined use passes", ci_check.scan_constructs(tmp, bl) == [])
+    (tmp / "Lightlike" / "A.lean").write_text("theorem foo : True := trivial\n")
+    expect("constructs planted: a baseline line whose use is gone must be lowered",
+           len(ci_check.scan_constructs(tmp, bl)) == 1)
+    expect("constructs: the real baseline matches the real tree",
+           ci_check.scan_constructs() == [])
+
 import api_map  # noqa: E402
+import generated  # noqa: E402
+expect("generated files: the guard tells generated from hand-written parts, and its planted changes fail",
+       generated.selftest() == 0)
 _root = pathlib.Path(__file__).resolve().parent.parent
 expect("review control: kernel-checked needs no reference; a human review with its issue URL passes",
        api_map.review_errors("x", "kernel-checked", None, _root) == []
@@ -601,6 +633,12 @@ with tempfile.TemporaryDirectory() as d:
     (tmp / "Lightlike" / "B" / "C.lean").write_text("/-! `foo` is not proven yet. -/\n")
     expect("doc refs planted: a claim that the proven theorem `foo` is not proven is reported",
            len(drc.check_claims(tmp, _f)) == 1)
+    (tmp / "docs" / "results.d").mkdir()
+    (tmp / "docs" / "results.d" / "new.yaml").write_text(
+        (tmp / "docs" / "results.yaml").read_text().replace("LL-0001", "LL-XXXX"))
+    (tmp / "docs" / "results.yaml").write_text("[]\n")
+    expect("doc refs planted: the claim is reported when the result is a new entry in docs/results.d",
+           len(drc.check_claims(tmp, _f)) == 1)
 
 # Leak check: local paths, other e-mail addresses, token-like strings and secrets files fail;
 # noreply and project addresses, version pins and the dev container's user pass. The planted
@@ -633,6 +671,23 @@ expect("changed-file selection planted: a module no slow check imports selects n
        _sel("scripts/regge/regge3d_core.py") & _slow == set())
 expect("changed-file selection: the runner, requirements.txt and ci.yml run everything",
        all(_sel(f) == _slow | _quick for f in ("scripts/run_python_checks.py", "requirements.txt", ".github/workflows/ci.yml")))
+
+# Shared slots of the Python checks (LL_CHECK_SLOTS): at most n scripts at a time over all runs
+import tempfile as _tf, os
+_sd = os.path.join(_tf.mkdtemp(), "slots")
+_s1 = rp.take_slot(_sd, 2); _s2 = rp.take_slot(_sd, 2)
+expect("check slots: two slots are two different directories, owned by this process",
+       _s1 != _s2 and open(os.path.join(_s1, "pid")).read() == str(os.getpid()))
+try:
+    subprocess.run([sys.executable, "-I", "-c",
+                    f"import sys; sys.path.insert(0, {str(HERE)!r}); import run_python_checks as r; r.take_slot({_sd!r}, 2)"],
+                   capture_output=True, text=True, timeout=5)
+    _waited = False
+except subprocess.TimeoutExpired:
+    _waited = True
+expect("check slots planted: a third taker waits while both slots are held by live processes", _waited)
+open(os.path.join(_s1, "pid"), "w").write("999999")
+expect("check slots: a slot whose owner process is gone is taken over", rp.take_slot(_sd, 2) == _s1)
 
 print("selftest:", "OK" if not fails else f"FAILED ({len(fails)})")
 sys.exit(1 if fails else 0)
