@@ -45,6 +45,9 @@ exact solutions, such as Kerr and de Sitter, are not yet formalized. [TODO]
     the global chart pulls back to the Kruskal metric), `isChartChange_kruskalSph`
 11. Lightlike/GR/KruskalManifoldCurvature.lean - `exists_kruskalSph_eq`, `ricci_kruskalC_eq_zero`,
     `kruskalC_isVacuumSolution` (vacuum equations on the whole Kruskal manifold), `kretschmann_kruskalC`
+12. Lightlike/GR/KruskalExtension.lean - `kretschmann_kruskalC_unbounded`, `not_tendsto_of_isometric_kruskal`,
+    `IsLorentzianExtension.not_tendsto_kruskal` (in every extension of the Kruskal manifold a sequence approaching
+    the singularity has no limit)
 
 ## References
 

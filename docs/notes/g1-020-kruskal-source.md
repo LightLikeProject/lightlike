@@ -150,3 +150,20 @@ Hausdorff hypothesis (representation)). Remark 2.16 (3) of the source: a local n
 Not yet proved. The bridge still missing between `IsLorentzianExtension` and the chart statements: in a chart of
 the extension around a boundary point, the embedding is a chart change on an open subset of the Kruskal manifold,
 so `not_tendsto_of_isometric_chart` applies to sequences with `r → 0`; the other sequences need the geodesics.
+
+## The curvature half of maximality at the level of manifolds (stream Fable-1, 19 November 2026)
+
+* Lightlike/Spacetime/ExtensionChart.lean: for a smooth isometric map `ι` of an open subset `U` of `ℝⁿ` (with a
+  Lorentzian coordinate metric) into a Lorentzian manifold, and a chart of the target at a point `p`, the map
+  `ψ = chart ∘ ι` is a chart change on its open domain and the coordinate metric of the target pulls back to the
+  metric of `U` (`pullback_coordMetric_extChartMap`, `isChartChange_extChartMap`).
+* Lightlike/GR/KruskalExtension.lean: `IsLorentzianExtension.not_tendsto_kruskal`: in every extension of the Kruskal
+  manifold (Sbierski's Definition 2.15, smooth metrics), a sequence of points with `X² - T² → -1` has no limit.
+
+What is still missing for `IsInextendible (kruskalManifoldMetric M hM)`: a boundary point `p` of the image in an
+extension is the limit of a sequence `ι z_k`; by the theorem above `X² - T²` stays away from `-1` along it, so
+`z_k` leaves every compact subset of the Kruskal manifold with `r` bounded below. To exclude this one needs that
+such a sequence cannot converge in a Lorentzian manifold; the standard proof takes a geodesic of the extension
+through `p` and uses that every geodesic of the Kruskal manifold is complete or runs into `r = 0`
+(Sbierski, Section 1.3 iv)). Missing in the library: existence of geodesics through a point (Picard-Lindelöf for
+the geodesic equation in a chart) and the analysis of the Kruskal geodesics with the constants of motion.
