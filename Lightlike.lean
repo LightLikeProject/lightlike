@@ -443,6 +443,7 @@ import Lightlike.Poincare.LittleGroupsH
 import Lightlike.Poincare.MassCasimir
 import Lightlike.Poincare.Orbits
 import Lightlike.Poincare.RestStabiliser
+import Lightlike.Poincare.ShellMeasureFinite
 import Lightlike.Poincare.StandardMomenta
 import Lightlike.Poincare.WignerRotation
 import Lightlike.PonzanoRegge.Amplitude
