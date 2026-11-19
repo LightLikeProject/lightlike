@@ -56,6 +56,8 @@ A bounded operator on a complex Hilbert space is trace class when the diagonal s
 
 For a Hilbert basis `{eᵢ}`, `∑ᵢ |⟪eᵢ, y⟫|² = ‖y‖²` (Parseval), the Hilbert-Schmidt square sum `∑ᵢ ‖S eᵢ‖²` of a bounded `S` in one basis equals that of `S⋆` in a second basis, and so it converges in every Hilbert basis to the same sum once it converges in one [39]. A Bogoliubov transformation is `T f = α f + β f` with `α` complex-linear and `β` antilinear, and the symplectic condition gives `‖α e‖² - ‖β e‖² = ‖e‖²` and `4 ‖β e‖² = ‖T e‖² + ‖T (i e)‖² - 2 ‖e‖²`; `α` is a bounded operator with `α†α - 1` positive and `‖√(α†α - 1) e‖² = ‖β e‖²` [40]. Hence the antilinear part is Hilbert-Schmidt as soon as `∑ᵢ ‖β bᵢ‖²` converges in one Hilbert basis, and in particular when the finite sums `∑_{i ∈ s} (‖T bᵢ‖² + ‖T (i bᵢ)‖² - 2)` are bounded, the quantity that the vacuum projections onto finitely many modes control in the necessity part of Shale's criterion [41].
 
+A compact symmetric operator `T` on a real or complex Hilbert space has a Hilbert basis of eigenvectors with real eigenvalues, assembled from Hilbert bases of the eigenspaces, whose sum is dense, and `T x = ∑ᵢ μᵢ ⟪bᵢ, x⟫ bᵢ` in it; only finitely many eigenvalues have `‖μ‖ ≥ ε`, since unit eigenvectors to distinct eigenvalues are orthonormal and their images are then `ε` apart inside a compact set, so the eigenvalues and the spectrum are countable [65]. The identity of `ℓ²(ℕ)` is symmetric, not compact, and has an infinite-dimensional eigenspace [66].
+
 ## Lean References
 
 1. Lightlike/OperatorAlgebras/UnitaryGroup.lean - `OperatorAlgebras.UnitaryGroup`,
@@ -220,6 +222,14 @@ For a Hilbert basis `{eᵢ}`, `∑ᵢ |⟪eᵢ, y⟫|² = ‖y‖²` (Parseval),
     `OperatorAlgebras.Bogoliubov.squeezeConj_norm_betaPart_sq`, `OperatorAlgebras.squeezeEllTwo`,
     `OperatorAlgebras.not_isHilbertSchmidt_squeezeEllTwo`, `OperatorAlgebras.not_implements_squeezeEllTwo`
     (the wrong-input control: a squeezing of infinitely many modes is not implemented)
+65. Lightlike/OperatorAlgebras/Spectral/Compact.lean - `OperatorAlgebras.CompactSpectral.exists_hilbertBasis_eigenvectors`,
+    `OperatorAlgebras.CompactSpectral.hasSum_eigen`, `OperatorAlgebras.CompactSpectral.finite_eigenvalues_ge`,
+    `OperatorAlgebras.CompactSpectral.countable_eigenvalues`, `OperatorAlgebras.CompactSpectral.countable_spectrum`,
+    `OperatorAlgebras.CompactSpectral.hasEigenvalue_of_mem_spectrum`,
+    `OperatorAlgebras.CompactSpectral.finiteDimensional_eigenspace`
+66. Lightlike/OperatorAlgebras/Spectral/TestsCompact.lean - `OperatorAlgebras.CompactSpectral.not_finiteDimensional_eigenspace_id`,
+    `OperatorAlgebras.CompactSpectral.not_isCompactOperator_id`,
+    `OperatorAlgebras.CompactSpectral.exists_hilbertBasis_eigenvectors_of_finiteDimensional`
 
 ## References
 
@@ -230,5 +240,5 @@ For a Hilbert basis `{eᵢ}`, `∑ᵢ |⟪eᵢ, y⟫|² = ‖y‖²` (Parseval),
    Soc. 103 (1962) 149.
 3. Math 7334 lecture notes, Georgia Tech (Spring 2017), Section 4: The Theorem of Hille and Yosida concerning semi-groups, Theorem 1.9, https://loss.math.gatech.edu/17SPRINGTEA/7334/NOTES/section4hilleyosida.pdf.
 4. G. Teschl, *Mathematical Methods in Quantum Mechanics*, Graduate Studies in Mathematics 99, American Mathematical
-   Society, 2009 (online edition), Theorem 3.7 (spectral theorem). The Lean files are ported from physicslib4
+   Society, 2009 (online edition), Theorem 3.7 (spectral theorem) and Theorem 6.6 (compact self-adjoint operators). The Lean files are ported from physicslib4
    (github.com/physicslib/physicslib4, Apache-2.0).

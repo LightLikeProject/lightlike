@@ -1031,6 +1031,10 @@ references:
     cite: "P. Hartman, Ordinary Differential Equations, Wiley (1964); SIAM reprint (2002)"
     title: "Ordinary Differential Equations"
     doi: 10.1137/1.9780898719222
+  teschl-2009:
+    cite: "G. Teschl, Mathematical Methods in Quantum Mechanics, With Applications to Schrödinger Operators, Graduate Studies in Mathematics 99, American Mathematical Society (2009)"
+    title: "Mathematical Methods in Quantum Mechanics"
+    isbn: "9780821846605"
 
 canonical:
   pl-topology: [lickorish-1999, moise-1977]

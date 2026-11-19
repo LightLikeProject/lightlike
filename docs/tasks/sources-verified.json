@@ -4059,6 +4059,21 @@
   "citations": 352,
   "citations_via": "Semantic Scholar"
  },
+ "teschl-2009": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "Open Library",
+  "fetched_title": "Mathematical Methods in Quantum Mechanics With Applications to Schrödinger Operators",
+  "locations": {
+   "Theorem 6.6, p. 136": {
+    "verified": false,
+    "snippet": null,
+    "why": "no arXiv full text"
+   }
+  },
+  "citations": null,
+  "citations_via": "unavailable"
+ },
  "thiemann-1998": {
   "checked": "2026-11-08",
   "exists": true,
