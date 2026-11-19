@@ -27,7 +27,10 @@ The bridge between the two coordinate forms of Killing's equation used in the li
 * `lieBracket_apply_eq_bracketCo`: `bracketCo` is Mathlib's `VectorField.lieBracket` in components;
 * `eq_sum_of_lowerVec_eq_sum`, `pd_add_christoffel_eq_raise`: raising, `∇_a Yᵈ = gᵈᵇ ∇_a θ_b`;
 * `covCo_lowerVec_bracketCo`: `∇_a [Y, Z]_b = (∇_a Yᵈ) ∇_d Z_b - (∇_a Zᵈ) ∇_d Y_b + Yᵈ Rᵉ_{adb} Z_e - Zᵈ Rᵉ_{adb} Y_e`
-  for two Killing fields.
+  for two Killing fields;
+* `contDiffOn_bracketCo`, `killing_bracketCo`, `rigVec_eq_sum_of_covCo`, `lieBracket_eq_sum_of_data`: on a connected
+  open set, `[Y, Z] = Σₑ cₑ Yₑ` for Killing fields once the value and the covariant derivative of `[Y, Z]♭` at one point
+  are the combination `Σₑ cₑ` of those of the `Yₑ`.
 -/
 
 open Matrix Filter Set
@@ -554,5 +557,81 @@ theorem covCo_lowerVec_bracketCo (hg : IsCoordMetric g U) (hgs : ∀ z a b, g z 
   ring
 
 end BracketCov
+
+section Assembly
+
+variable {g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ} {U : Set (Fin n → ℝ)} {Y Z : (Fin n → ℝ) → Fin n → ℝ}
+
+theorem contDiffOn_bracketCo (hU : IsOpen U) (hY : ∀ c, ContDiffOn ℝ ∞ (fun z => Y z c) U)
+    (hZ : ∀ c, ContDiffOn ℝ ∞ (fun z => Z z c) U) (c : Fin n) :
+    ContDiffOn ℝ ∞ (fun z => bracketCo Y Z z c) U := by
+  unfold bracketCo
+  exact ContDiffOn.sum fun d _ => ((hY d).mul (contDiffOn_pd (hZ c) hU d)).sub ((hZ d).mul (contDiffOn_pd (hY c) hU d))
+
+/-- **The bracket of two Killing fields is Killing**, in the covector form of Killing's equation. -/
+theorem killing_bracketCo (hg : IsCoordMetric g U) (hgs : ∀ z a b, g z a b = g z b a)
+    (hY : ∀ c, ContDiffOn ℝ ∞ (fun z => Y z c) U) (hZ : ∀ c, ContDiffOn ℝ ∞ (fun z => Z z c) U)
+    (hKY : ∀ z ∈ U, ∀ a b, covCo g (lowerVec g Y) a b z + covCo g (lowerVec g Y) b a z = 0)
+    (hKZ : ∀ z ∈ U, ∀ a b, covCo g (lowerVec g Z) a b z + covCo g (lowerVec g Z) b a z = 0) :
+    ∀ z ∈ U, ∀ a b, covCo g (lowerVec g (bracketCo Y Z)) a b z + covCo g (lowerVec g (bracketCo Y Z)) b a z = 0 := by
+  have hl : ∀ (W : (Fin n → ℝ) → Fin n → ℝ), (∀ c, ContDiffOn ℝ ∞ (fun z => W z c) U) → ∀ w ∈ U, ∀ a b,
+      lieCo g W w a b = covCo g (lowerVec g W) a b w + covCo g (lowerVec g W) b a w := fun W hW w hw a b =>
+    lieCo_lowerVec hgs (hg.isUnit_det w hw).ne_zero
+      (fun a b => differentiableAt_of_contDiffOn (hg.smooth a b) hg.isOpen hw)
+      (fun c => differentiableAt_of_contDiffOn (hW c) hg.isOpen hw) a b
+  have hk : ∀ (W : (Fin n → ℝ) → Fin n → ℝ), (∀ c, ContDiffOn ℝ ∞ (fun z => W z c) U) →
+      (∀ z ∈ U, ∀ a b, covCo g (lowerVec g W) a b z + covCo g (lowerVec g W) b a z = 0) →
+      ∀ z ∈ U, lieCo g W z = 0 := fun W hW hK z hz => by
+    ext a b; rw [hl W hW z hz a b]; exact hK z hz a b
+  intro z hz a b
+  rw [← hl _ (contDiffOn_bracketCo hg.isOpen hY hZ) z hz a b]
+  exact lieCo_bracketCo_eq_zero hg.isOpen hg.smooth hY hZ hz (hk Y hY hKY) (hk Z hZ hKZ) a b
+
+/-- The data of a Killing covector at a point as its value and its covariant derivative there. -/
+theorem rigVec_eq_sum_of_covCo {ι : Type*} [Fintype ι] (hgs : ∀ z a b, g z a b = g z b a)
+    {θ : (Fin n → ℝ) → Fin n → ℝ} {z : Fin n → ℝ} (θs : ι → (Fin n → ℝ) → Fin n → ℝ)
+    (hK : ∀ a b, covCo g θ a b z + covCo g θ b a z = 0)
+    (hKs : ∀ e a b, covCo g (θs e) a b z + covCo g (θs e) b a z = 0) (c : ι → ℝ)
+    (h0 : ∀ k, θ z k = ∑ e, c e * θs e z k)
+    (h1 : ∀ a b, covCo g θ a b z = ∑ e, c e * covCo g (θs e) a b z) :
+    rigVec θ z = ∑ e, c e • rigVec (θs e) z := by
+  have hd : ∀ (φ : (Fin n → ℝ) → Fin n → ℝ) a b,
+      pd a (fun w => φ w b) z - pd b (fun w => φ w a) z = covCo g φ a b z - covCo g φ b a z := by
+    intro φ a b
+    unfold covCo
+    rw [Finset.sum_congr rfl fun c _ => by rw [christoffel_symm g hgs c a b z]]
+    ring
+  refine rigVec_eq_sum_of_data hgs θs hK hKs c h0 fun a b => ?_
+  rw [hd θ a b, h1, h1, ← Finset.sum_sub_distrib]
+  exact Finset.sum_congr rfl fun e _ => by rw [hd (θs e) a b]; ring
+
+/-- **The bracket of two Killing fields from its data at one point**: on a connected open set, if the value and the
+covariant derivative at `p` of the lowered bracket `[Y, Z]♭` are the combination `Σₑ cₑ` of those of a Killing family
+`Yₑ`, then `[Y, Z] = Σₑ cₑ Yₑ` (Mathlib's `VectorField.lieBracket`) on the whole set. -/
+theorem lieBracket_eq_sum_of_data {ι : Type*} [Fintype ι] (hg : IsCoordMetric g U)
+    (hgs : ∀ z a b, g z a b = g z b a) (hU : IsPreconnected U) (Ys : ι → (Fin n → ℝ) → Fin n → ℝ)
+    (hY : ∀ c, ContDiffOn ℝ ∞ (fun z => Y z c) U) (hZ : ∀ c, ContDiffOn ℝ ∞ (fun z => Z z c) U)
+    (hYs : ∀ e c, ContDiffOn ℝ ∞ (fun z => Ys e z c) U)
+    (hKY : ∀ z ∈ U, ∀ a b, covCo g (lowerVec g Y) a b z + covCo g (lowerVec g Y) b a z = 0)
+    (hKZ : ∀ z ∈ U, ∀ a b, covCo g (lowerVec g Z) a b z + covCo g (lowerVec g Z) b a z = 0)
+    (hKs : ∀ e, ∀ z ∈ U, ∀ a b, covCo g (lowerVec g (Ys e)) a b z + covCo g (lowerVec g (Ys e)) b a z = 0)
+    {p : Fin n → ℝ} (hp : p ∈ U) (c : ι → ℝ)
+    (h0 : ∀ b, lowerVec g (bracketCo Y Z) p b = ∑ e, c e * lowerVec g (Ys e) p b)
+    (h1 : ∀ a b, covCo g (lowerVec g (bracketCo Y Z)) a b p = ∑ e, c e * covCo g (lowerVec g (Ys e)) a b p) :
+    ∀ w ∈ U, VectorField.lieBracket ℝ Y Z w = ∑ e, c e • Ys e w := by
+  have hB := contDiffOn_bracketCo hg.isOpen hY hZ
+  have hKB := killing_bracketCo hg hgs hY hZ hKY hKZ
+  have hlow := eq_sum_of_rigVec_eq_sum hg hgs hU (θ := lowerVec g (bracketCo Y Z)) (fun e => lowerVec g (Ys e))
+    (contDiffOn_lowerVec hg hB) (fun e => contDiffOn_lowerVec hg (hYs e)) hKB hKs hp c
+    (rigVec_eq_sum_of_covCo hgs _ (hKB p hp) (fun e => hKs e p hp) c h0 h1)
+  intro w hw
+  have hdiff : ∀ (V : (Fin n → ℝ) → Fin n → ℝ), (∀ c, ContDiffOn ℝ ∞ (fun z => V z c) U) →
+      DifferentiableAt ℝ V w := fun V hV =>
+    differentiableAt_pi.2 fun c => differentiableAt_of_contDiffOn (hV c) hg.isOpen hw
+  have hr := eq_sum_of_lowerVec_eq_sum Ys c (hg.isUnit_det w hw).ne_zero (hlow w hw)
+  funext k
+  rw [lieBracket_apply_eq_bracketCo (hdiff Y hY) (hdiff Z hZ), hr]
+
+end Assembly
 
 end Lightlike
