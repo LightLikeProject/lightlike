@@ -1749,6 +1749,16 @@
     "snippet": "Corollary 2. Suppose that Y is an even dimensional real Hilbert space. Let Y ∋ y 7→ φπ1 (y) ∈ Bh (H) and Y ∋ y 7→ φπ2 (y) ∈ Bh (H) be two irreducible representations of the CAR. Then they are unitarily equivalent. 4.3 Fe",
     "why": null
    },
+   "Section 5.3, p. 20": {
+    "verified": true,
+    "snippet": "5.3 Symmetric and antisymmetric Fock spaces Let S n ∋ σ 7→ Θ(σ) ∈ U (⊗n Z) be the natural representation of the permuta- tion group S n given by Θ(σ)z1 ⊗ · · · ⊗ zn := zσ−1 (1) ⊗ · · · ⊗ zσ−1 (n) .",
+    "why": null
+   },
+   "Section 5.7, p. 22": {
+    "verified": true,
+    "snippet": "5.7 Creation and annihilation operators Let Z be a Hilbert space and w ∈ Z. We consider the bosonic/fermionic Fock space Γs/a (Z). fin Let w ∈ Z. We define two",
+    "why": null
+   },
    "Theorem 10, p. 17": {
     "verified": true,
     "snippet": "Theorem 10. 1) Let (φ1 , φ2 , . . . , φ2n ) be a representation of the CAR over R2n in a Hilbert space H. Then there exists a Hilbert space K and a unitary operator U : ⊗ n C2 ⊗ K → H such that \u0010 \u0011 (j) U Ij−1 σ1 ⊗ 1K = φ",

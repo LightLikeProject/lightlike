@@ -3529,3 +3529,19 @@
   review: kernel-checked
   note: "Compared with Bär-Ginoux-Pfäffle, arXiv:0806.1036, Proposition 4.2.3 (2), (3), pp. 117-118 (read): ‖W(φ) - W(ψ)‖ = 2 for φ ≠ ψ, and the algebra A of a Weyl system (A, W) is not separable unless V = {0}; here A is any nontrivial C*-algebra, and the CCR algebra of Example 4.2.2 is the case ccrAlgebra_not_separableSpace."
   since: unreleased
+- id: LL-0266
+  title: Second quantization of bounded operators on the bosonic and fermionic Fock spaces of any Hilbert space, [dΓ(h), a*(w)] = a*(hw), [dΓ(h), a(w)] = -a(h* w) and [dΓ(h₁), dΓ(h₂)] = dΓ([h₁, h₂]) for every h, h₁, h₂ ∈ B(Z)
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/SecondQuantFock.lean
+  decls: [Lightlike.OperatorAlgebras.SecondQuantFock.Statistics, Lightlike.OperatorAlgebras.SecondQuantFock.theta, Lightlike.OperatorAlgebras.SecondQuantFock.theta_theta, Lightlike.OperatorAlgebras.SecondQuantFock.adjoint_theta, Lightlike.OperatorAlgebras.SecondQuantFock.dGammaT, Lightlike.OperatorAlgebras.SecondQuantFock.dGammaT_theta, Lightlike.OperatorAlgebras.SecondQuantFock.adjoint_dGammaT, Lightlike.OperatorAlgebras.SecondQuantFock.creF, Lightlike.OperatorAlgebras.SecondQuantFock.annF, Lightlike.OperatorAlgebras.SecondQuantFock.creF_of_theta, Lightlike.OperatorAlgebras.SecondQuantFock.theta_creF, Lightlike.OperatorAlgebras.SecondQuantFock.theta_annF, Lightlike.OperatorAlgebras.SecondQuantFock.dGammaT_creF, Lightlike.OperatorAlgebras.SecondQuantFock.dGammaT_annF, Lightlike.OperatorAlgebras.SecondQuantFock.dGammaT_comm, Lightlike.OperatorAlgebras.SecondQuantFock.embCLM_creW, Lightlike.OperatorAlgebras.SecondQuantFock.embCLM_dGammaFock]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: derezinski-2006, location: "Theorem 18, p. 22", check: "Theorem 18"}
+      - {ref: derezinski-2006, location: "Theorem 13, p. 19", check: "Theorem 13"}
+      - {ref: derezinski-2006, location: "Section 5.3, p. 20", check: "Symmetric and antisymmetric Fock spaces"}
+      - {ref: derezinski-2006, location: "Section 5.7, p. 22", check: "Creation and annihilation operators"}
+  review: kernel-checked
+  note: "Compared with Dereziński, arXiv:math-ph/0511030, Theorem 18 (2), (4), p. 22 ([dΓ(h), a(w)] = -a(h* w), [dΓ(h), a*(w)] = a*(hw), in the bosonic and the fermionic case) and Theorem 13 (1), p. 19 ([dΓ(h₁), dΓ(h₂)] = dΓ([h₁, h₂])), with Γⁿ_{s/a}(Z) = Θⁿ_{s/a} ⊗ⁿZ (Section 5.3, p. 20), dΓₙ(h) = ∑ⱼ 1 ⊗ ⋯ ⊗ h ⊗ ⋯ ⊗ 1 (Section 5.2, p. 19), a*(w)Ψ = √(n+1) Θ_{s/a}(w ⊗ Ψ) and a(w) = a*(w)* (Section 5.7, p. 22) (read). Here ⊗ⁿZ is the coordinate tensor power ℓ²(Fin n → ι) of a Hilbert basis of Z, and the identities hold between consecutive tensor powers, sector by sector."
+  since: unreleased
