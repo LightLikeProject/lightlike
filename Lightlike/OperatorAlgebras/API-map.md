@@ -216,6 +216,10 @@ For a Hilbert basis `{eᵢ}`, `∑ᵢ |⟪eᵢ, y⟫|² = ‖y‖²` (Parseval),
     `OperatorAlgebras.Spectral.ProjectionValuedMeasure`
 63. Lightlike/OperatorAlgebras/Spectral/StoneBridge.lean - `OperatorAlgebras.Spectral.Stone.generator_eq`,
     `OperatorAlgebras.Spectral.Stone.spectralGroup`, `OperatorAlgebras.Spectral.Stone.spectralGroup_generator`
+64. Lightlike/OperatorAlgebras/TestsShaleInfinite.lean - `OperatorAlgebras.Bogoliubov.squeezeConj`,
+    `OperatorAlgebras.Bogoliubov.squeezeConj_norm_betaPart_sq`, `OperatorAlgebras.squeezeEllTwo`,
+    `OperatorAlgebras.not_isHilbertSchmidt_squeezeEllTwo`, `OperatorAlgebras.not_implements_squeezeEllTwo`
+    (the wrong-input control: a squeezing of infinitely many modes is not implemented)
 
 ## References
 

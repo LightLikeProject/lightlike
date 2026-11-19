@@ -352,6 +352,7 @@ import Lightlike.OperatorAlgebras.TestsFockExists
 import Lightlike.OperatorAlgebras.TestsFockIrreducible
 import Lightlike.OperatorAlgebras.TestsFockReduction
 import Lightlike.OperatorAlgebras.TestsShale
+import Lightlike.OperatorAlgebras.TestsShaleInfinite
 import Lightlike.OperatorAlgebras.TestsShaleSqueeze
 import Lightlike.OperatorAlgebras.TestsMomentumDeficiency
 import Lightlike.OperatorAlgebras.TestsMomentumSmooth
