@@ -17,7 +17,8 @@ theorem fermiAnn_vacuum (j : ι) : fermiAnn B j (B ∅) = 0 := by
   rw [repr_fermiAnn_apply, map_zero]
   split_ifs
   · rfl
-  · simp [lp.single_apply, Pi.single_apply, Finset.insert_ne_empty]
+  · rw [HilbertBasis.repr_self]
+    simp [lp.single_apply, Pi.single_apply, Finset.insert_ne_empty]
 
 /-- The creation operator of one mode on the vacuum gives the one-particle vector. -/
 example (j : ι) : fermiCre B j (B ∅) = B {j} := by
