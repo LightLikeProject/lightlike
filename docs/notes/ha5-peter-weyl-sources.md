@@ -119,3 +119,46 @@ difference of statement): every element is conjugate to a diagonal one, the two 
 dense. The general Weyl integration formula for compact connected Lie groups (maximal tori, Weyl group) is not
 started: no source for it has been read. Mathlib (pinned tree): root systems and their Weyl groups exist
 (`Mathlib/LinearAlgebra/RootSystem/`), but there is nothing on maximal tori of compact Lie groups.
+
+Formalised on `fable2/ha5-weyl` (`SU2Conjugacy.lean`, `WeylIntegrationSU2.lean`), compared with the pages read:
+
+| Formal statement (Lean) | Source location (Teleman) | Match |
+| --- | --- | --- |
+| `exists_conj_torus`, `exists_conj_torusExp_Icc`, `su2_eq_of_isClassFunction`: every `g ∈ SU(2)` is conjugate to `diag(e^{iθ}, e^{-iθ})` with `θ ∈ [0, π]`, and a class function is a function of the half-trace | Lecture 20, §(20.3), Proposition 20.4, p. 48 | weaker: the source states a homeomorphism of the space of conjugacy classes with `[−1, 1]`; we state that the half-trace determines the value of every class function (surjectivity onto `[−1, 1]` and the topology of the quotient are not stated) |
+| `weyl_integration_formula_su2`: for a continuous class function `f`, `∫ f dμ = (1/π) ∫₀^{2π} f(diag(e^{iθ}, e^{-iθ})) sin² θ dθ`, `μ` a Haar probability measure | Lecture 20, Theorem 20.9, p. 49 | match (the third expression of the theorem). Convention: the source's `dg` is the Euclidean volume of the unit sphere normalised to 1; ours is any Haar probability measure (the same measure, by uniqueness). The form with `½ (1/2π) |Δ(φ)|²` is not stated separately |
+| `su2Spin_character_torusExp_mul_sin`: `χ_n(diag(e^{iθ}, e^{-iθ})) · sin θ = sin((n+1)θ)`; `su2Spin_character_torusExp`: `χ_n` on the torus is `∑ e^{i(n−2k)θ}`; `su2Spin_character_eq_U`: `χ_n(g) = U_n(½ tr g)` | Lecture 21, Theorem 21.1, p. 50 (`χ_n = zⁿ + zⁿ⁻² + … + z⁻ⁿ = (zⁿ⁺¹ − z⁻ⁿ⁻¹)/(z − z⁻¹)`) | match for the character formula (representation: the representation is `Lightlike.SU2.spinRep n`, the source's `Symⁿ ℂ²`; the quotient form is stated multiplied by `sin θ`). The Chebyshev form is not in the source. Not formalised from Theorem 21.1: that these are all the irreducible representations |
+
+Proof route (differs from the source, which integrates over slices of the 3-sphere): conjugacy to the torus;
+Schur orthogonality gives `∫ χ_n dμ = δ_{n0}`; `(1/π) ∫₀^{2π} U_n(cos θ) sin² θ dθ = δ_{n0}`; the `U_n` span
+`ℝ[X]`; Weierstrass approximation on `[−1, 1]`.
+
+On `fable2/ha5-su2complete` the two statements left weaker above are proved in full:
+
+| Formal statement (Lean) | Source location (Teleman) | Match |
+| --- | --- | --- |
+| `su2_conjClasses_homeomorph` (`SU2ConjClasses.lean`): the half-trace induces a homeomorphism from the quotient of `SU(2)` by conjugation (quotient topology) onto `[−1, 1]`; `su2_isConj_iff`: conjugate iff equal half-trace | Lecture 20, Proposition 20.4, p. 48 | match (representation: the space of conjugacy classes is `Quotient (IsConj.setoid SU2)`) |
+| `su2_irreducible_classification` (`SU2Complete.lean`): every irreducible continuous unitary matrix representation of `SU(2)` is equivalent to `su2Spin n` for some `n`, and has dimension `n + 1` | Lecture 21, Theorem 21.1, p. 50 ("this is the complete list of irreducibles") | match (representation: unitary matrix representations; the source's statement is for continuous finite-dimensional representations, which are unitarisable, a step we do not formalise) |
+| `exists_invariant_inner_product`, `exists_unitary_conj` (`Unitarisable.lean`): for a compact group with its Haar probability measure, every continuous finite-dimensional matrix representation `ρ` has the invariant positive definite form `⟨u, v⟩' = ∫ ⟨ρ(g) u, ρ(g) v⟩ dμ(g)` and is conjugate, `T ρ T⁻¹`, to a continuous unitary matrix representation | Lecture 3, Theorem 3.10 and Remark 3.11, p. 7 (Weyl's unitary trick by averaging, with the Haar measure for compact groups); Lecture 19, Proposition 19.4, p. 44 ("Every finite-dimensional representation of a compact group is unitarisable") | match (representation: matrix representations with continuous entries) |
+| `su2_irreducible_classification_continuous` (`Unitarisable.lean`): every continuous irreducible matrix representation of `SU(2)`, unitary or not, is equivalent to `spinRep n` for some `n`, and has dimension `n + 1` | Lecture 21, Theorem 21.1, p. 50, with Proposition 19.4, p. 44 | match (representation: matrix representations); this lifts the unitarisability step of the row above |
+
+## Weyl integration beyond SU(2): what was read, and why it is not started (18 November 2026)
+
+Read in the same notes (Teleman, Lecture 23, pp. 55 to 56): Theorem 23.11 (Weyl integration for U(N)): for a
+class function `f` on `U(N)`, `∫_{U(N)} f(u) du = (1/N!) (1/(2π)^N) ∫₀^{2π} ⋯ ∫₀^{2π} f(φ₁, …, φ_N) |Δ(z)|² dφ₁ ⋯ dφ_N`,
+with `f(φ₁, …, φ_N) = f(diag[z₁, …, z_N])`, `z_p = e^{iφ_p}`. The notes state it without proof ("We shall not
+prove Proposition 23.9 here; … it reduces to the following integration formula, whose proof, however, is now
+more difficult"), and Theorem 23.8 (the Schur functions are the irreducible characters of U(N)) is derived from
+it. So this source gives no proof to follow for `N > 2`, and the route used for SU(2) (the characters are
+known polynomials in the half-trace, so both sides can be compared on them) is not available: for U(N) the
+character formula is itself a consequence of the integration formula.
+
+No source with a proof of the general formula (compact connected Lie group `G`, maximal torus `T`, Weyl group
+`W`: `∫_G f = (1/|W|) ∫_T f(t) |Δ(t)|² dt`) has been read. Mathlib (pinned tree) has abstract root systems and
+their Weyl groups (`Mathlib/LinearAlgebra/RootSystem/`), but no maximal tori of compact Lie groups, no
+conjugacy of maximal tori, no `N(T)/T`, and no change of variables for `G/T × T → G`. The general statement is
+therefore open in the gap row G3-150, with nothing formalised and nothing cited.
+
+`su2_hilbertBasis` (`SU2PeterWeyl.lean`, branch `fable2/ha5-idle`): the functions `√(n+1) Dⁿ_ij` form a Hilbert
+basis of `L²(SU(2), μ)`. Sources read: Tao §1, Propositions 7 and 8 (the general decomposition and the
+normalisation `dim^{1/2}`), and Teleman, Lecture 21, Theorem 21.1, p. 50 (the list of irreducible
+representations). Neither text states the SU(2) basis as one sentence; the Lean statement is their combination.

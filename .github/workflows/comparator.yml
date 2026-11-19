@@ -1,0 +1,104 @@
+# `lake comparator` on the proof tasks that main has just proved (scripts/comparator_run.py).
+#
+# For each task file a push to main changed and that no longer contains `sorry`, the challenge is the
+# file as first committed (the locked statement) and the solution is the file now. The comparator
+# establishes that both prove the same statement, that only propext, Classical.choice and Quot.sound
+# are used, and that the kernel accepts the proof; the weekly run adds the external kernels
+# (`--paranoid`: leanchecker-paranoid, lean4lean, nanoda, con-leche, con-ron). It extends the
+# statement-unchanged check of a pull request (scripts/proof_task_check.py) and the axiom audit.
+#
+# It never runs on a pull request and never blocks anything: it is not a required check, the job is
+# continue-on-error, and nothing needs it. When it runs: after a push to main, weekly (Sunday
+# 03:00 UTC, every proved task, paranoid) and on demand (Actions -> Comparator -> Run workflow), and
+# like CI only on demand while the repository is private. The comparator needs bubblewrap, which is
+# Linux only, so this runs on GitHub's runners and not on a Mac.
+name: Comparator
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "0 3 * * 0"
+  workflow_dispatch:
+    inputs:
+      all:
+        description: "Judge every proved task file, not only those the last push changed"
+        type: boolean
+        default: false
+      paranoid:
+        description: "Also run the external kernels"
+        type: boolean
+        default: false
+
+concurrency:
+  group: comparator-${{ github.sha }}-${{ github.event_name }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  comparator:
+    if: ${{ github.event_name == 'workflow_dispatch' || !github.event.repository.private }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    continue-on-error: true
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install the pinned PyYAML
+        run: python3 -m pip install --quiet "$(grep -i '^pyyaml' requirements.txt)"
+
+      # The installer script is pinned to the commit of elan v4.4.0, so that a later change to it is not run here.
+      - name: Install elan (toolchain from lean-toolchain)
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/leanprover/elan/3cc76985a1becb3c03cd65c1c5007e6f186ae474/elan-init.sh \
+            | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+
+      # bubblewrap sandboxes the untrusted project; Ubuntu 24.04 restricts unprivileged user
+      # namespaces by default, which bwrap needs, so lift that for this job's VM.
+      - name: Install bubblewrap and allow user namespaces
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq bubblewrap
+          sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0 || true
+          bwrap --ro-bind / / true && echo "bwrap works"
+
+      - name: Restore dependency cache (Mathlib, Physlib builds)
+        uses: actions/cache/restore@v6
+        with:
+          path: .lake/packages
+          key: lake-packages-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}
+
+      - name: Restore the library build of main
+        uses: actions/cache/restore@v6
+        with:
+          path: .lake/build
+          key: lightlike-build-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-${{ github.sha }}
+          restore-keys: lightlike-build-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-
+
+      - name: Prebuilt Mathlib and the library
+        run: |
+          lake exe cache get || true
+          lake build Lightlike Tasks
+
+      - name: Judge the proved task files
+        env:
+          BEFORE: ${{ github.event.before }}
+          ALL: ${{ github.event_name == 'schedule' || inputs.all }}
+          PARANOID: ${{ github.event_name == 'schedule' || inputs.paranoid }}
+        run: |
+          args=(--after "$GITHUB_SHA")
+          if [ "$ALL" = true ]; then args+=(--all); else args+=(--before "${BEFORE:-$GITHUB_SHA^}"); fi
+          [ "$PARANOID" = true ] && args+=(--paranoid)
+          python3 scripts/comparator_run.py "${args[@]}"

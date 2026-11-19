@@ -83,3 +83,65 @@ calls).
 
 Differences that remain against Dyer–Hinterbichler (4.2) to (4.4): the region is a coordinate box; the
 perturbation vanishes on the whole coordinate hyperplanes carrying the faces; `g^{ii} ≠ 0` (no null faces).
+
+## Next step: a divergence theorem for a domain with regular boundary (source read, 19 November 2026)
+
+L. H. Loomis, S. Sternberg, *Advanced Calculus* (revised edition; the PDF on S. Sternberg's page at
+Harvard), chapter 10 "The integral calculus on manifolds", section 6 "The divergence theorem".
+
+* Definition, p. 419: "`D` is a domain with regular boundary if for every `x ∈ M` there is a chart `(U, α)`
+  about `x` … such that one of the following three possibilities holds: (i) `U ∩ D = ∅`; (ii) `U ⊂ D`;
+  (iii) `α(U ∩ D) = α(U) ∩ {v ∈ ℝⁿ : vⁿ ≥ 0}`."
+* Theorem 6.1 (The divergence theorem), p. 421: for a domain `D` with regular boundary, a density `ρ` (of
+  the class `P` of the chapter) and a smooth vector field `X`, `∫_D div⟨X, ρ⟩ = ∫_{∂D} ε_X ρ_X` (6.3), where
+  `ε_X = ±1, 0` according to whether `X` points out of `D`, is tangent, or points into `D`.
+* Proof, pp. 422 to 423: a partition of unity subordinate to an atlas of charts of the three types reduces
+  to `supp ρ ⊂ U` for one chart; case (i) is trivial; case (ii) is an iterated integral over a large box
+  (the function vanishes outside `α(U)`); case (iii) is the same on a half-space, with one boundary term.
+
+This is the route planned for the Lean statement on `ℝⁿ`: charts flattening the boundary, a partition of
+unity, and Mathlib's divergence theorem for boxes in cases (ii) and (iii). Nothing of it is formalised yet.
+
+## Attempt 3 (19 November 2026): a general conormal and the region bounded by a graph
+
+Files `ConormalAlg.lean`, `ConormalGHY.lean`, `GHYGraph.lean`, tests `TestsGHYGraph.lean`.
+
+| Formal statement (Lean) | Source (Dyer–Hinterbichler, section 4, p. 20) | Match |
+| --- | --- | --- |
+| `ghyDensityOf g ν ∂ν x = 2 √|g| h^{αβ} (∂_α ν_β − Γ^μ_{αβ} ν_μ)`, `h^{αβ} = g^{αβ} − N^α N^β / N²`, `N^α = g^{αβ} ν_β`, for a boundary `{u = 0}` with `ν = du` | the density `2 √|h| K` of (4.1) | representation: written with the conormal `du` of a defining function and the coordinate volume of adapted coordinates with unit Jacobian (`√|h| = √|g| |N|`, `K = h^{αβ} ∇_α ν_β / |N|`); no unit normal, no induced metric on the boundary manifold |
+| `ghyDensityOf_single` (test): for `ν = e_i`, `∂ν = 0` it is `ghyDensity` of attempt 1 | — | consistency |
+| `conormal_flux`, `conormal_hup` (`ConormalAlg.lean`), `ghySlopeOf_eq_neg_flux`: at a boundary point where `h = 0` and `∂_τ h_{ab} = ν_τ k_{ab}`, the slope of the density of `g + t h` is `−√|g| W^ρ ν_ρ` | (4.2) to (4.4): the variation of the boundary term cancels the normal-derivative term of the bulk variation | same, pointwise, for any conormal |
+| `pd_of_vanishing_on_graph` (`GHYGraph.lean`): a function vanishing on a `C²` graph has `∂_τ H = ν_τ ∂_i H` there | "`δg_{μν} = 0` on the boundary" is used in this way | supporting |
+| **`eh_ghy_variation_graph`**: for `h` smooth with support in a compact `T`, vanishing on the graph of `γ ∈ C²`, on the region `E` above (`σ = 1`) or below (`σ = −1`) the graph, `d/dt|₀ [∫_{E∩T} √|g_t| (R_t − 2Λ) − σ ∫_S 2√|h_t| K_t dy] = −∫_{E∩T} √|g| h_{ab} E^{ab}` | (4.1) with (4.4) | see below |
+
+Differences of `eh_ghy_variation_graph` from the source:
+
+* weaker: the region is bounded by one global `C²` graph in `ℝⁿ⁺¹` (a coordinate patch), not a general region
+  of a manifold with smooth boundary. With `exists_graphRegion_of_defining_function` and the partition of
+  unity of `ge15-divergence.md` the step to a domain with regular boundary remains to be written.
+* hypothesis: the boundary is nowhere null (`N² ≠ 0`), as in the source (space-like or time-like boundary).
+* representation: the boundary integral is over a compact set `S ⊆ ℝⁿ` of graph parameters that contains
+  the projection of the support of `h`; outside it the integrand does not depend on `t`.
+* convention: the sign `−σ` is the orientation (`du` is the inward conormal of the region above the graph);
+  no factor `1/16πG`.
+* stronger: no coordinate box, no coordinate hyperplane (the restrictions of attempts 1 and 2 are removed).
+
+### A domain covered by graph charts (`GHYDomain.lean`)
+
+**`eh_ghy_variation_cover`**: for a measurable `D ⊆ ℝⁿ⁺¹` with a finite atlas of graph charts and cut-off
+functions `ρ_a` (as in `integral_divergence_of_graph_cover`), `∑_a ρ_a = 1` near the points of `D ∩ T`, and
+`h` vanishing on each graph near the support of `ρ_a`:
+`d/dt|₀ [∫_{D∩T} √|g_t| (R_t − 2Λ) − ∑_a σ_a ∫_{S_a} ρ_a 2√|h_t| K_t dy] = −∫_{D∩T} √|g| h_{ab} E^{ab}`.
+The sum is the boundary term `∫_{∂D} 2√|h| K` of (4.1) in the graph charts with the partition of unity.
+Supporting: `pd_of_eventually_vanishing_on_graph`, `ghyGraph_add_smul`, `eh_variation_region`.
+
+**`eh_ghy_variation_regular`** (`GHYRegular.lean`, with `exists_graph_atlas` of `GraphAtlas.lean`): if every
+point of the closure of `D` has a neighbourhood `U` in which `D` is the region above or below a `C²` graph or
+all of `U`, and in the first two cases the graph is nowhere null in `U` and `h` vanishes on it in `U`, then
+such an atlas and partition exist and the same formula holds. The hypotheses of `eh_ghy_variation_cover` on
+`h` and on the graphs are needed only for the boundary charts (`σ_a ≠ 0`) and on the supports of the `ρ_a`.
+
+Differences from the source: weaker: `ℝⁿ⁺¹`, not a manifold. representation: the boundary is given locally by
+graphs (from defining functions by `exists_graphRegion_of_defining_function`), the boundary term is the sum
+over the graph charts with a partition of unity; no unit normal and no surface measure. hypothesis: the
+boundary is nowhere null, as in the source. convention: sign of the outward orientation, no `1/16πG`.

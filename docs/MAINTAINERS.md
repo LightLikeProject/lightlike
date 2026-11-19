@@ -37,7 +37,9 @@ see [CONTRIBUTING.md](../CONTRIBUTING.md).
   after an issue.
 - **Sources.** `python3 scripts/sources.py verify` looks up every reference at its publisher and
   writes `docs/tasks/sources-verified.json`, which the offline CI check reads; `verify` needs
-  Poppler's `pdftotext`.
+  Poppler's `pdftotext`. A book whose PDF is online (`fulltext:` with `edition:`) has its
+  locations and printed pages checked in that file; `LIGHTLIKE_NET=1 python3 -I
+  scripts/tooling_selftest.py` also runs that check on a real book.
 - **Upgrading Mathlib or Physlib.** On its own branch: bump the pins, run the gate, and fix what
   breaks. The risk is concentrated in the files that import `PhyslibAlpha` directly
   (`grep -rl 'import PhyslibAlpha' Lightlike`) and in names deprecated at the new version.
