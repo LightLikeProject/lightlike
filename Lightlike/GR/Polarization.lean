@@ -174,4 +174,36 @@ theorem completeness_eps (l lt lq ltq : Fin 2 → ℂ) (h1 : angleBr ltq lt ≠ 
     (2 * (B * B⁻¹) * (m1 μ * m2 ν + m2 μ * m1 ν)) * hA + (2 * (m1 μ * m2 ν + m2 μ * m1 ν)) * hB +
     2 * key' - (2 * (P μ * Q ν + Q μ * P ν)) * hAB2
 
+/-- **The completeness relation contracted with a vector** `u`:
+`u = −(u·ε₋) ε₊ − (u·ε₊) ε₋ + ((u·q) p + (u·p) q)/(p·q)` for `p = −|p]⟨p|`, `q = −|q]⟨q|`. -/
+theorem completeness_vec (l lt lq ltq : Fin 2 → ℂ) (h1 : angleBr ltq lt ≠ 0)
+    (h2 : squareBr lq l ≠ 0) (u : Fin 4 → ℂ) :
+    u = -(mdot u (epsMinus l lt lq)) • epsPlus l lt ltq - mdot u (epsPlus l lt ltq) • epsMinus l lt lq +
+      (1 / mdot (nullMom l lt) (nullMom lq ltq)) •
+        (mdot u (nullMom lq ltq) • nullMom l lt + mdot u (nullMom l lt) • nullMom lq ltq) := by
+  funext ν
+  have c0 := completeness_eps l lt lq ltq h1 h2 0 ν
+  have c1 := completeness_eps l lt lq ltq h1 h2 1 ν
+  have c2 := completeness_eps l lt lq ltq h1 h2 2 ν
+  have c3 := completeness_eps l lt lq ltq h1 h2 3 ν
+  generalize mdot (nullMom l lt) (nullMom lq ltq) = D at c0 c1 c2 c3 ⊢
+  simp only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, mdot]
+  fin_cases ν <;> simp at c0 c1 c2 c3 ⊢ <;>
+    linear_combination (-u 0) * c0 + u 1 * c1 + u 2 * c2 + u 3 * c3
+
+/-- The spinors of `−p` (Elvang-Huang (3.14)–(3.15)): `|−p⟩ = −|p⟩`, `|−p] = |p]`. -/
+lemma nullMom_neg_right (l lt : Fin 2 → ℂ) : nullMom l (-lt) = -nullMom l lt := by
+  rw [nullMom_eq_momOf, nullMom_eq_momOf, ← momOf_smul, ← momOf_smul]
+  funext μ
+  fin_cases μ <;> simp [momOf, vecMulVec_apply] <;> ring
+
+lemma epsPlus_neg_right (l lt ltq : Fin 2 → ℂ) : epsPlus l (-lt) ltq = -epsPlus l lt ltq := by
+  funext μ
+  have : angleBr ltq (-lt) = -angleBr ltq lt := by simp [angleBr_eq]; ring
+  fin_cases μ <;> simp [epsPlus, momOf, vecMulVec_apply, this, div_neg] <;> ring
+
+lemma epsMinus_neg_right (l lt lq : Fin 2 → ℂ) : epsMinus l (-lt) lq = -epsMinus l lt lq := by
+  funext μ
+  fin_cases μ <;> simp [epsMinus, momOf, vecMulVec_apply] <;> ring
+
 end Lightlike.SpinorHelicity

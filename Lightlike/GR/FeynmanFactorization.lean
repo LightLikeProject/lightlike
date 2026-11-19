@@ -581,4 +581,143 @@ theorem bgAmplitude_split (m : ℕ) (p e : ℕ → Fin 4 → ℂ) {i j : ℕ} (h
   simp only [zero_smul, add_zero, zero_mul, update_collapse] at hlin
   exact hlin
 
+/-! ### The residue on the pole: completeness and the Ward identity -/
+
+lemma bgVertexSum_shift (T : ℕ → ℕ → Fin 4 → ℂ) (p : ℕ → Fin 4 → ℂ) (k a b : ℕ) :
+    bgVertexSum (fun c d => T (c + k) (d + k)) (fun t => p (t + k)) a b = bgVertexSum T p (a + k) (b + k) := by
+  unfold bgVertexSum
+  congr 1
+  · rw [← Finset.sum_Ico_add']
+    refine Finset.sum_congr rfl fun c hc => ?_
+    dsimp only
+    rw [momRange_shift, momRange_shift, show c + 1 + k = c + k + 1 by omega]
+  · rw [← Finset.sum_Ico_add']
+    refine Finset.sum_congr rfl fun c hc => ?_
+    rw [show c + k + 1 = c + 1 + k by omega, ← Finset.sum_Ico_add']
+    refine Finset.sum_congr rfl fun d hd => ?_
+    dsimp only
+    rw [show c + 1 + k = c + k + 1 by omega, show d + 1 + k = d + k + 1 by omega]
+
+/-- The momenta of the left amplitude of the channel `{i, …, j}`: the gluons `i, …, j`, then a gluon of momentum
+`P'` (`= −P`). -/
+def leftMom (p : ℕ → Fin 4 → ℂ) (i j : ℕ) (P' : Fin 4 → ℂ) : ℕ → Fin 4 → ℂ :=
+  fun t => if t ≤ j - i then p (t + i) else P'
+
+/-- The polarizations of the left amplitude: those of `i, …, j`, then `ε`. -/
+def leftPol (e : ℕ → Fin 4 → ℂ) (i j : ℕ) (ε : Fin 4 → ℂ) : ℕ → Fin 4 → ℂ :=
+  fun t => if t ≤ j - i then e (t + i) else ε
+
+/-- **The left amplitude is the amputated current of the channel**: `A_L(…, ε) = ε · V_I`. -/
+theorem bgAmplitude_left (p e : ℕ → Fin 4 → ℂ) {i j : ℕ} (hij : i < j) (P' ε : Fin 4 → ℂ) :
+    bgAmplitude (j - i - 1) (leftMom p i j P') (leftPol e i j ε) =
+      mdot ε (bgVertexSum (bgCurrent p e) p i j) := by
+  rw [bgAmplitude, show j - i - 1 + 2 = j - i + 1 by omega, show j - i - 1 + 1 = j - i by omega]
+  simp only [leftPol, show ¬ (j - i + 1 ≤ j - i) by omega, ↓reduceIte]
+  congr 1
+  have key : bgVertexSum (bgCurrent (leftMom p i j P') (leftPol e i j ε)) (leftMom p i j P') 0 (j - i) =
+      bgVertexSum (fun c d => bgCurrent p e (c + i) (d + i)) (fun t => p (t + i)) 0 (j - i) := by
+    refine bgVertexSum_congr' (fun t _ ht => by simp [leftMom, ht]) fun c d _ h2 h3 _ => ?_
+    rw [← bgCurrent_shift p e i (d - c) c d rfl]
+    exact bgCurrent_congr (d - c) c d rfl h2 fun t _ ht => ⟨by simp [leftMom, show t ≤ j - i by omega],
+      by simp [leftPol, show t ≤ j - i by omega]⟩
+  rw [key, bgVertexSum_shift, Nat.zero_add, Nat.sub_add_cancel hij.le]
+
+/-- **The residue of the planar amplitude on the pole of the channel `{i, …, j}` factorizes** (Elvang-Huang (3.5)):
+on the pole, `P = p_i + ⋯ + p_j = −|P]⟨P|` null, the merged amplitude with the amputated current `V_I` as the
+polarization of the merged gluon is `Σ_h A_L(…, −P^{−h}) A_R(P^h, …)`, with the polarization vectors (2.49) of
+reference `q` and the spinors `|−P⟩ = −|P⟩`, `|−P] = |P]` of `−P` ((3.14)–(3.15)). The inputs are the Ward
+identities (Elvang-Huang p. 17) of the left amplitude at its gluon `−P` and of the merged amplitude at the merged
+gluon. -/
+theorem residue_factorization (m : ℕ) (p e : ℕ → Fin 4 → ℂ) {i j : ℕ} (hij : i < j) (hj : j ≤ m + 1)
+    (hk : j - i ≤ m) (lP ltP lq ltq : Fin 2 → ℂ) (hP : momRange p i j = nullMom lP ltP)
+    (hq1 : angleBr ltq ltP ≠ 0) (hq2 : squareBr lq lP ≠ 0)
+    (hnull : ∀ t ≤ m + 2, mdot (p t) (p t) = 0) (hcons : momRange p 0 (m + 2) = 0)
+    (htr : ∀ t ≤ m + 2, mdot (e t) (p t) = 0)
+    (hWL : WardIdentity (j - i - 1) (j - i + 1)) (hWR : WardIdentity (m - (j - i)) i) :
+    bgAmplitude (m - (j - i)) (collapse p i j (momRange p i j))
+        (collapse e i j (bgVertexSum (bgCurrent p e) p i j)) =
+      bgAmplitude (j - i - 1) (leftMom p i j (-momRange p i j)) (leftPol e i j (epsMinus lP (-ltP) lq)) *
+          bgAmplitude (m - (j - i)) (collapse p i j (momRange p i j)) (collapse e i j (epsPlus lP ltP ltq)) +
+        bgAmplitude (j - i - 1) (leftMom p i j (-momRange p i j)) (leftPol e i j (epsPlus lP (-ltP) ltq)) *
+          bgAmplitude (m - (j - i)) (collapse p i j (momRange p i j)) (collapse e i j (epsMinus lP ltP lq)) := by
+  set P := momRange p i j with hPdef
+  set V := bgVertexSum (bgCurrent p e) p i j with hV
+  set AR : (Fin 4 → ℂ) → ℂ := fun u => bgAmplitude (m - (j - i)) (collapse p i j P) (collapse e i j u)
+    with hAR
+  have hlin : ∀ (x y : ℂ) (v w : Fin 4 → ℂ), AR (x • v + y • w) = x * AR v + y * AR w := by
+    intro x y v w
+    simp only [hAR]
+    have := bgAmplitude_lin (m - (j - i)) (collapse p i j P) (collapse e i j 0) (i := i) (by omega) x y v w
+    simpa only [update_collapse] using this
+  have hPP : mdot P P = 0 := by rw [hP]; exact mdot_nullMom_self lP ltP
+  -- the Ward identity of the merged amplitude at the merged gluon: `A_R(P) = 0`
+  have hWR' : AR P = 0 := by
+    have := hWR (collapse p i j P) (collapse e i j 0)
+      (fun t ht => by
+        rcases lt_trichotomy t i with h | rfl | h
+        · rw [collapse_of_lt p _ h]; exact hnull t (by omega)
+        · rw [collapse_self]; exact hPP
+        · rw [collapse_of_gt p _ h]; exact hnull _ (by omega))
+      (by rw [hPdef, momRange_collapse p hij.le (Nat.zero_le i) (by omega),
+            show m - (j - i) + 2 + (j - i) = m + 2 by omega]; exact hcons)
+      (fun t ht hti => by
+        rcases lt_or_gt_of_ne hti with h | h
+        · rw [collapse_of_lt p _ h, collapse_of_lt e _ h]; exact htr t (by omega)
+        · rw [collapse_of_gt p _ h, collapse_of_gt e _ h]; exact htr _ (by omega))
+    simpa only [hAR, update_collapse, collapse_self] using this
+  -- the Ward identity of the left amplitude at the gluon `−P`: `V · P = 0`
+  have hWL' : mdot V P = 0 := by
+    have := hWL (leftMom p i j (-P)) (leftPol e i j (-P))
+      (fun t ht => by
+        by_cases h : t ≤ j - i
+        · simp only [leftMom, h, ↓reduceIte]; exact hnull _ (by omega)
+        · simp only [leftMom, h, ↓reduceIte, mdot_neg_left, mdot_neg_right, neg_neg]; exact hPP)
+      (by
+        rw [show j - i - 1 + 2 = j - i + 1 by omega, momRange, Finset.sum_Ico_succ_top (by omega)]
+        have h1 : ∑ t ∈ Finset.Ico 0 (j - i + 1), leftMom p i j (-P) t =
+            ∑ t ∈ Finset.Ico 0 (j - i + 1), p (t + i) :=
+          Finset.sum_congr rfl fun t ht => by
+            simp [leftMom, show t ≤ j - i by have := Finset.mem_Ico.1 ht; omega]
+        have h2 : ∑ t ∈ Finset.Ico 0 (j - i + 1), leftMom p i j (-P) t = P := by
+          rw [h1, Finset.sum_Ico_add' (fun t => p t) 0 (j - i + 1) i, Nat.zero_add,
+            show j - i + 1 + i = j + 1 by omega, hPdef, momRange]
+        rw [h2]
+        simp [leftMom])
+      (fun t ht hti => by
+        have ht' : t ≤ j - i := by omega
+        simp only [leftMom, leftPol, ht', ↓reduceIte]; exact htr _ (by omega))
+    have hupd : Function.update (leftPol e i j (-P)) (j - i + 1) (leftMom p i j (-P) (j - i + 1)) =
+        leftPol e i j (-P) := by
+      funext t
+      by_cases h : t = j - i + 1
+      · subst h; simp [leftMom, leftPol]
+      · rw [Function.update_of_ne h]
+    rw [hupd, bgAmplitude_left p e hij] at this
+    rw [mdot_comm]
+    simpa using this
+  -- completeness
+  have hc := completeness_vec lP ltP lq ltq hq1 hq2 V
+  rw [← hP] at hc
+  set ep := epsPlus lP ltP ltq
+  set em := epsMinus lP ltP lq
+  set Q := nullMom lq ltq
+  have hdecomp : V = ((-(mdot V em)) • ep + (-(mdot V ep)) • em) +
+      ((1 / mdot P Q * mdot V Q) • P + (1 / mdot P Q * mdot V P) • Q) := by
+    conv_lhs => rw [hc]
+    funext μ
+    simp only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]
+    ring
+  have hAV : AR V = -(mdot V em) * AR ep - mdot V ep * AR em := by
+    conv_lhs => rw [hdecomp]
+    rw [show ((-(mdot V em)) • ep + (-(mdot V ep)) • em) +
+        ((1 / mdot P Q * mdot V Q) • P + (1 / mdot P Q * mdot V P) • Q) =
+        (1 : ℂ) • ((-(mdot V em)) • ep + (-(mdot V ep)) • em) +
+        (1 : ℂ) • ((1 / mdot P Q * mdot V Q) • P + (1 / mdot P Q * mdot V P) • Q) by simp,
+      hlin, hlin, hlin, hWR', hWL']
+    ring
+  change AR V = _ * AR ep + _ * AR em
+  rw [hAV, bgAmplitude_left p e hij, bgAmplitude_left p e hij, epsMinus_neg_right, epsPlus_neg_right,
+    mdot_neg_left, mdot_neg_left, mdot_comm (em) V, mdot_comm ep V]
+  ring
+
 end Lightlike.SpinorHelicity
