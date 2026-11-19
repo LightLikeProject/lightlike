@@ -1,0 +1,13 @@
+- id: LL-XXXX
+  title: A coordinate field along which the metric components are constant is a Killing field
+  area: Spacetime
+  file: Lightlike/Spacetime/CoordKilling.lean
+  decls: [Lightlike.coordField_killing]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (5.40)", check: "independent"}
+  review: kernel-checked
+  note: "For the Levi-Civita connection of a smooth metric of any signature on a manifold modelled on R^n, the coordinate field d_k of a chart is a Killing field (g(nabla_v X, w) + g(v, nabla_w X) = 0, equivalently L_X g = 0) at every point of the chart domain when the coordinate components of the metric do not depend on x^k (from g_{nu lambda} Gamma^nu_{mu k} + g_{mu nu} Gamma^nu_{lambda k} = d_k g_{mu lambda}). Compared with Carroll's lecture notes (gr-qc/9712019), p. 140 after eq. (5.40) (independence of the components of one coordinate gives a symmetry; for the metric a Killing field, (5.41)-(5.42)): match. Limits: manifolds modelled on R^n without boundary."
+  since: unreleased
