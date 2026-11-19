@@ -4005,6 +4005,21 @@
   "citations": 3710,
   "citations_via": "Semantic Scholar"
  },
+ "sbierski-2016": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "The $C^0$-inextendibility of the Schwarzschild spacetime and the spacelike diameter in Lorentzian Geometry",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "the maximal analytic schwarzschild spacetime is manifestly inextendible as a lorentzian manifold with a twice continuously differentiable metric in this paper we prove the stronger statement that it i",
+    "why": null
+   }
+  },
+  "citations": 122,
+  "citations_via": "Semantic Scholar"
+ },
  "schottenloher-2008": {
   "checked": "2026-11-08",
   "exists": true,
