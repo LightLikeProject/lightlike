@@ -25,7 +25,8 @@ vacuum expectation `exp (-‖f‖² / 4)` [3]. Shale's criterion says that a Bog
 implemented by a unitary of the Fock representation exactly when its antilinear part is Hilbert–Schmidt {2}.
 In one mode the squeezing has `|α|² - |β|² = 1` and the dilation `f ↦ 2 f` is not symplectic [4]. A map with `‖B f‖ = c ‖f‖`, `c > 0`, is not Hilbert–Schmidt when a Hilbert basis is infinite [4]. On `L²(ℝ)` translation `ψ(x + t)` is a strongly continuous unitary group [5], and its generator is `-i d/dx` on `C²` functions with compact support, not `+i d/dx` [6]. On `L²(0, 1)` the operator `-i d/dx` on the `C²` functions supported inside `(0, 1)` is given by its graph [7]. The deficiency spaces of an operator are the kernels of the adjoint minus `±i`, and a self-adjoint operator has none [8]. The
 Fock space itself is not built here, and a Fock representation is characterized by its vacuum. The
-unbounded spectral theorem is not in Mathlib. Stone's theorem and Shale's criterion are [TODO] here.
+unbounded spectral theorem is not in Mathlib; it is ported from physicslib4: every self-adjoint operator has a unique
+projection-valued measure on the Borel sets of `ℝ` whose spectral integral of `λ` is the operator {4} [62]. Stone's theorem and Shale's criterion are [TODO] here.
 
 The graph of `-i d/dx` on the `C_c^∞(0, 1)` functions is the image of the smooth test functions under the same pair map, and lies inside the `C²` graph [11]. It contains a nonzero vector, a bump function supported in `(0, 1)` [12]. Mollification by a normed bump function maps a `C²` test function to a `C_c^∞` one, with the derivative of the mollified function the mollified derivative, and converges uniformly with its derivative, so the two graphs have the same closure [13].
 
@@ -211,6 +212,8 @@ For a Hilbert basis `{eᵢ}`, `∑ᵢ |⟪eᵢ, y⟫|² = ‖y‖²` (Parseval),
     `OperatorAlgebras.isHilbertSchmidt_id_betaPart`, `OperatorAlgebras.implements_neg`
 61. Lightlike/OperatorAlgebras/TestsShaleSqueeze.lean - `OperatorAlgebras.Bogoliubov.squeeze`,
     `OperatorAlgebras.Bogoliubov.squeeze_betaPart`, `OperatorAlgebras.implements_squeeze`
+62. Lightlike/OperatorAlgebras/Spectral/Unbounded/Cayley.lean - `OperatorAlgebras.Spectral.Unbounded.existsUnique_spectralMeasure_unbounded`,
+    `OperatorAlgebras.Spectral.ProjectionValuedMeasure`
 
 ## References
 
@@ -220,3 +223,6 @@ For a Hilbert basis `{eᵢ}`, `∑ᵢ |⟪eᵢ, y⟫|² = ‖y‖²` (Parseval),
    Springer, 1997, Chapter 5, after D. Shale, *Linear symmetries of free boson fields*, Trans. Amer. Math.
    Soc. 103 (1962) 149.
 3. Math 7334 lecture notes, Georgia Tech (Spring 2017), Section 4: The Theorem of Hille and Yosida concerning semi-groups, Theorem 1.9, https://loss.math.gatech.edu/17SPRINGTEA/7334/NOTES/section4hilleyosida.pdf.
+4. G. Teschl, *Mathematical Methods in Quantum Mechanics*, Graduate Studies in Mathematics 99, American Mathematical
+   Society, 2009 (online edition), Theorem 3.7 (spectral theorem). The Lean files are ported from physicslib4
+   (github.com/physicslib/physicslib4, Apache-2.0).
