@@ -206,6 +206,7 @@ import Lightlike.Canonical.Tetrad
 import Lightlike.Canonical.Holst
 import Lightlike.Canonical.AshtekarCanonical
 import Lightlike.Canonical.SpinVariation
+import Lightlike.Canonical.AshtekarSymplectic
 import Lightlike.Canonical.TestsFoliation
 import Lightlike.Canonical.HamiltonianBracket
 import Lightlike.Canonical.HamiltonianHHBracket

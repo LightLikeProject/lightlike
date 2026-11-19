@@ -48,7 +48,9 @@ vanishes by the first Bianchi identity and the Palatini term is `det e · R`, so
 Einstein–Hilbert density for every `γ` [22] {3} {4}; the dual term of a constant rotation connection is not zero [22]. The densitized triad contracted with the variation of
 the spin connection is a divergence, so `∫ E δΓ = 0` and the functional derivative of `∫ Γ E` is `Γ`, the fact behind
 the canonical transformation to the Ashtekar–Barbero variables [23] {4}; the derivative of the spin connection along a
-path of co-triads satisfies the linearised compatibility, so this holds for the actual variation of `Γ` [24].
+path of co-triads satisfies the linearised compatibility, so this holds for the actual variation of `Γ` [24]. With
+it, for a symmetric `K` (the Gauss constraint), the Ashtekar–Barbero potential `∫ E δA` is `γ/2` times the ADM potential
+`∫ π δh` plus the exact term `γ δ∫ √h K` [25] {3}.
 
 A grid computation in dimension two (`scripts/adm_algebra_check.py`) supports the three brackets; with the kinetic
 coefficient `1/2` of dimension three, used in dimension two, the bracket of two Hamiltonian constraints differs from
@@ -93,6 +95,9 @@ the momentum constraint of the structure function.
 23. Lightlike/Canonical/AshtekarCanonical.lean - `Lightlike.Canonical.E_dSpin_eq_div`, `Lightlike.Canonical.integral_E_dSpin_eq_zero`
 24. Lightlike/Canonical/SpinVariation.lean - `Lightlike.Canonical.linCompat_dSpin`,
     `Lightlike.Canonical.integral_E_deriv_spinConn_eq_zero`
+25. Lightlike/Canonical/AshtekarSymplectic.lean - `Lightlike.Canonical.triad_potential`,
+    `Lightlike.Canonical.integral_E_dAbConn`
+
 ## References
 
 1. T. Thiemann, *Modern Canonical Quantum General Relativity*, Cambridge University Press, 2007, chapter 1;
@@ -100,6 +105,6 @@ the momentum constraint of the structure function.
 2. E. Gourgoulhon, *3+1 Formalism and Bases of Numerical Relativity*, arXiv:gr-qc/0703035, equations (2.43),
    (2.68)-(2.70), (3.1)-(3.10), (4.27)-(4.32).
 3. A. Ashtekar and J. Lewandowski, *Background independent quantum gravity: a status report*, arXiv:gr-qc/0404018,
-   equations (2.6), (2.16)-(2.18), (2.20)-(2.21), (2.23).
+   equations (2.6), (2.16)-(2.21), (2.23).
 4. S. Holst, *Barbero's Hamiltonian derived from a generalized Hilbert-Palatini action*, arXiv:gr-qc/9511026,
    equations (1), (3)-(6).
