@@ -3170,6 +3170,21 @@
   "citations": 40,
   "citations_via": "OpenAlex"
  },
+ "landsman-1998": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Lecture notes on C*-algebras, Hilbert C*-modules, and quantum mechanics",
+  "locations": {
+   "Theorem 2.12.9": {
+    "verified": true,
+    "snippet": "Theorem 2.12.9 The pure state space of the commutative C ∗ -algebra C0 (X) (equipped with the relative w∗ -topology) is homeomorphic to X. In view of Proposition 2.4.3 and Theorems 2.4.1 and 2.4.8, we merely need to esta",
+    "why": null
+   }
+  },
+  "citations": 63,
+  "citations_via": "Semantic Scholar"
+ },
  "last-penrose-2017": {
   "checked": "2026-11-08",
   "exists": true,

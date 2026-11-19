@@ -73,6 +73,8 @@ In a Fock representation, a contraction `p` of `h` has a second quantization `Γ
 
 For a Hamiltonian given by a Hilbert basis and real eigenvalues `λₙ` with `∑ e^{-βλₙ} < ∞` (every `H` with a trace-class `e^{-βH}` has this form {4}), the Gibbs state `ω(A) = ∑ e^{-βλₙ} ⟪bₙ, A bₙ⟫ / Z` is a state invariant under `τᵗ(A) = e^{itH} A e^{-itH}`, and the double series `F_{A,B}(z) = ∑ₘₙ e^{-βλₘ} ⟪bₘ, A bₙ⟫ ⟪bₙ, B bₘ⟫ e^{iz(λₙ - λₘ)} / Z`, dominated on the strip `0 ≤ Im z ≤ β` by `|⟪bₘ, A bₙ⟫| |⟪bₙ, B bₘ⟫| (e^{-βλₘ} + e^{-βλₙ})`, is bounded and continuous there, analytic inside, with `F(t) = ω(A τᵗ(B))` and `F(t + iβ) = ω(τᵗ(B) A)`: the KMS condition {9} [89]. The oscillator `λₙ = n` is an example for every `β > 0`, and at `β = 0` the partition sum diverges [90].
 
+The states of `C(X)` for a compact Hausdorff `X` are the positive linear functionals with `ω 1 = 1`, and the pure ones are the extreme points of this convex set. A pure state is multiplicative: for `0 ≤ g ≤ 1` it splits as `ω(g) ω(· g)/ω(g) + ω(1 - g) ω(· (1 - g))/ω(1 - g)`, so `ω(f g) = ω(f) ω(g)`; a multiplicative state is continuous, its kernel is a closed maximal ideal, so it is the evaluation at a point; and every evaluation is pure {11} [92]. On `C(Bool)` the average of the two evaluations is a mixed state [93]. For a locally compact Hausdorff `X`, a state of `C₀(X)` (positive, of norm one) extends to the state `F ↦ ω(F - F(∞)) + F(∞)` of `C(X̃)` on the one-point compactification, a pure one to a pure one, so the pure states of `C₀(X)` are again the evaluations at the points of `X` [94].
+
 ## Lean References
 
 1. Lightlike/OperatorAlgebras/UnitaryGroup.lean - `OperatorAlgebras.UnitaryGroup`,
@@ -315,6 +317,16 @@ For a Hamiltonian given by a Hilbert basis and real eigenvalues `λₙ` with `�
 91. Lightlike/OperatorAlgebras/ModularFinite.lean - `OperatorAlgebras.kms`, `OperatorAlgebras.inner_tomita`,
     `OperatorAlgebras.omega_flow`, `OperatorAlgebras.flow_add`, `OperatorAlgebras.flow_mul`,
     `OperatorAlgebras.isKMS_boltz`, `OperatorAlgebras.not_isKMS_of_ne`
+92. Lightlike/OperatorAlgebras/PureStates.lean - `OperatorAlgebras.PureStates.states`, `OperatorAlgebras.PureStates.IsPure`,
+    `OperatorAlgebras.PureStates.mul_of_isPure`, `OperatorAlgebras.PureStates.exists_eq_eval_of_mul`,
+    `OperatorAlgebras.PureStates.isPure_evalAt`, `OperatorAlgebras.PureStates.isPure_iff_exists_eval`,
+    `OperatorAlgebras.PureStates.isPure_iff_mul`
+93. Lightlike/OperatorAlgebras/TestsPureStates.lean - `OperatorAlgebras.PureStates.isPure_evalAt_true`,
+    `OperatorAlgebras.PureStates.not_isPure_half` (a mixed state of `C(Bool)`)
+94. Lightlike/OperatorAlgebras/PureStatesC0.lean - `OperatorAlgebras.PureStates.states₀`, `OperatorAlgebras.PureStates.IsPure₀`,
+    `OperatorAlgebras.PureStates.ext`, `OperatorAlgebras.PureStates.ext_mem_states`, `OperatorAlgebras.PureStates.isPure_ext`,
+    `OperatorAlgebras.PureStates.evalAt₀`, `OperatorAlgebras.PureStates.isPure₀_evalAt₀`,
+    `OperatorAlgebras.PureStates.isPure₀_iff_exists_eval`
 
 ## References
 
@@ -343,3 +355,5 @@ For a Hamiltonian given by a Hilbert basis and real eigenvalues `λₙ` with `�
    2021, arXiv:2110.01678, Section 5.2: Proposition 5.4, Remark 5.1, Definition 5.8 and Proposition 5.9.
 10. E. Witten, *Notes on some entanglement properties of quantum field theory*, Rev. Mod. Phys. 90 (2018) 045003,
    arXiv:1803.04993, Sections 4.1 and 4.2.
+11. N. P. Landsman, *Lecture Notes on C*-Algebras, Hilbert C*-modules, and Quantum Mechanics*, 1998,
+   arXiv:math-ph/9807030, Section 2.12: Definition 2.12.1, Proposition 2.12.8 and Theorem 2.12.9.

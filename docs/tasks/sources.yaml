@@ -1079,6 +1079,10 @@ references:
     cite: "J. Panangaden, Energy Full Counting Statistics and Return to Equilibrium, master's thesis, McGill University (2021), arXiv:2110.01678"
     title: "Energy Full Counting Statistics and Return to Equilibrium"
     arxiv: "2110.01678"
+  landsman-1998:
+    cite: "N. P. Landsman, Lecture Notes on C*-Algebras, Hilbert C*-modules, and Quantum Mechanics (1998), arXiv:math-ph/9807030"
+    title: "Lecture notes on C*-algebras, Hilbert C*-modules, and quantum mechanics"
+    arxiv: "math-ph/9807030"
 
 canonical:
   pl-topology: [lickorish-1999, moise-1977]

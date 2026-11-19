@@ -454,6 +454,9 @@ import Lightlike.OperatorAlgebras.FermiFockGeneral
 import Lightlike.OperatorAlgebras.TestsBoundedGroup
 import Lightlike.OperatorAlgebras.TestsCARUnique
 import Lightlike.OperatorAlgebras.TestsFiniteKMS
+import Lightlike.OperatorAlgebras.PureStates
+import Lightlike.OperatorAlgebras.PureStatesC0
+import Lightlike.OperatorAlgebras.TestsPureStates
 import Lightlike.OperatorAlgebras.GibbsKMS
 import Lightlike.OperatorAlgebras.TestsGibbsKMS
 import Lightlike.OperatorAlgebras.TestsFock
