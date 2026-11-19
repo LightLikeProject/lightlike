@@ -490,6 +490,8 @@ import Lightlike.OperatorAlgebras.VonNeumannClassify
 import Lightlike.OperatorAlgebras.VonNeumannDim
 import Lightlike.OperatorAlgebras.TestsVonNeumann
 import Lightlike.OperatorAlgebras.EntropyBell
+import Lightlike.OperatorAlgebras.WeylAlgebra
+import Lightlike.OperatorAlgebras.TestsWeylAlgebra
 import Lightlike.Oscillatory.Flat
 import Lightlike.Oscillatory.GaussFourier
 import Lightlike.Oscillatory.GaussFourierTests

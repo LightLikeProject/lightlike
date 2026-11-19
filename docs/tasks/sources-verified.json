@@ -824,19 +824,29 @@
   "citations_via": "Semantic Scholar"
  },
  "bgp-2007": {
-  "checked": "2026-11-08",
+  "checked": "2026-11-19",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "Wave Equations on Lorentzian Manifolds and Quantization",
   "locations": {
+   "Example 4.2.2, p. 116": {
+    "verified": true,
+    "snippet": "Example 4.2.2. We construct a Weyl system for an arbitrary symplectic vector space (V, ω ). Let H = L2 (V, C) be the Hilbert space of square-integrable complex-valued func- tions on V with respect to the counting measure",
+    "why": null
+   },
+   "Proposition 4.2.3, p. 117": {
+    "verified": true,
+    "snippet": "Proposition 4.2.3. Let (A,W ) be a Weyl system of a symplectic vector space (V, ω ). Then (1) W (ϕ ) is unitary for each ϕ ∈ V , (2) kW (ϕ ) − W (ψ )k = 2 for all ϕ , ψ ∈ V , ϕ 6= ψ , (3) The algebra A is not separable u",
+    "why": null
+   },
    "§3.4": {
     "verified": true,
     "snippet": "3.4 Green’s operators . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 88 3.5 Non-globally hyperbolic manifolds . . . . . . . . . . . . . . . . . . . . . 92 4 Quantization",
     "why": null
    }
   },
-  "citations": 492,
-  "citations_via": "Semantic Scholar"
+  "citations": 542,
+  "citations_via": "OpenAlex"
  },
  "bgv-1992": {
   "checked": "2026-11-07",
