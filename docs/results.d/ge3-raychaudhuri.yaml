@@ -1,0 +1,14 @@
+- id: LL-XXXX-x
+  title: The comoving congruence of FLRW has expansion 3 a'/a and obeys Raychaudhuri's equation, and de Sitter's does not focus
+  area: Cosmology
+  file: Lightlike/Cosmology/Raychaudhuri.lean
+  decls: [Lightlike.Cosmology.flrw_comoving_covDeriv, Lightlike.Cosmology.flrw_comoving_geodesic, Lightlike.Cosmology.flrw_comoving_expansion, Lightlike.Cosmology.flrw_raychaudhuri, Lightlike.Cosmology.minkowski_comoving_expansion, Lightlike.Cosmology.deSitter_no_focusing]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: kar-sengupta-2007, location: "eq. (12)", check: "Raychaudhuri"}
+      - {ref: kar-sengupta-2007, location: "eq. (16)", check: "convergence"}
+  review: kernel-checked
+  note: "Kar and SenGupta's (12), d theta/d lambda + theta^2/3 + sigma^2 - omega^2 = -R_ab v^a v^b for a timelike geodesic congruence, and (16), convergence if R_ab v^a v^b + sigma^2 - omega^2 >= 0. In coordinates on the FLRW chart: the comoving field u = d_t has nabla_j u^i = H delta^i_j on spatial indices and 0 otherwise (no shear, no rotation), is geodesic, and has expansion theta = 3 a'/a; along it d theta/dt + theta^2/3 = -R_00. Minkowski (a = 1, k = 0): theta = 0. de Sitter (a = e^{Ht}, k = 0): theta = 3H constant while R_00 = -3H^2 < 0, so the convergence condition fails and the congruence does not focus (the GE3 checks). Focusing: if theta' <= -theta^2/m on [0, L) and theta(0) < 0 then L <= m/|theta(0)| (the lemma Lightlike.focusing, Spacetime/RiccatiFocusing.lean). Limits: coordinates and constant fields; the Raychaudhuri equation for a general geodesic congruence on a manifold and the exponential map are not here."
+  since: unreleased

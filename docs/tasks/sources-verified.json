@@ -1199,7 +1199,7 @@
   "citations_via": "Semantic Scholar"
  },
  "carroll-1997": {
-  "checked": "2026-11-18",
+  "checked": "2026-11-19",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "Lecture Notes on General Relativity",
@@ -1254,6 +1254,11 @@
     "snippet": "(4.72) This is known as the Weak Energy Condition, or WEC. It seems like a fairly reasonable requirement, and many of the important theorems about solutions to general relativity (such as the singularity theorems of Hawk",
     "why": null
    },
+   "eq. (5.40)": {
+    "verified": true,
+    "snippet": "(5.40) 5 MORE GEOMETRY 140 By (5.25), one implication of a symmetry is that, if T is symmetric under some one-parameter family of diffeomorphisms, we can always find a coordinate system in which the components of T are a",
+    "why": null
+   },
    "eq. (6.54)": {
     "verified": true,
     "snippet": "(6.54) Therefore we can drop the bars over hµν , as long as we are in this gauge. 6 WEAK FIELDS AND GRAVITATIONAL RADIATION 152 One nice feature of the transverse traceless gauge is that if you are given the components o",
@@ -1262,6 +1267,11 @@
    "eq. (7.29)": {
     "verified": true,
     "snippet": "(7.29) r r This is true for any spherically symmetric vacuum solution to Einstein’s equations; M func- tions as a parameter, which we happen to know can be interpreted as the conventional 7 THE SCHWARZSCHILD SOLUTION AND",
+    "why": null
+   },
+   "eq. (7.41)": {
+    "verified": true,
+    "snippet": "(7.41) r The Killing vector whose conserved quantity is the magnitude of the angular momentum is L = ∂φ , or \u0010 \u0011 Lµ = 0, 0, 0, r 2 sin2 θ . (7.42) Since (7.40) implies that sin θ = 1 along the geodesics of interest to us",
     "why": null
    },
    "eq. (8.36)": {
@@ -2735,6 +2745,26 @@
    }
   },
   "citations": 77,
+  "citations_via": "Semantic Scholar"
+ },
+ "kar-sengupta-2007": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "The Raychaudhuri equations: a brief review",
+  "locations": {
+   "eq. (12)": {
+    "verified": true,
+    "snippet": "(12) dλ 3 10 dσab 2 1 \u0010 \u0011 = − Θσab − σac σ cb − ωac ω cb + hab σ 2 − ω 2 dλ 3 3 1 +Ccbad v c v d + R̃ab (13) 2 dωab 2 = − Θωab − 2σ c[b ωa]c (14) dλ 3 where σ 2 = σab σ ab , ω 2 = ωab ω ab , Ccbad is the Weyl tensor and",
+    "why": null
+   },
+   "eq. (16)": {
+    "verified": true,
+    "snippet": "(16) Thus, rotation defies convergence, while shear assists it. The equation for the evolution of the rotation ωab , has a trivial solution ωab = 0. The criterion for convergence then becomes particularly simple for such",
+    "why": null
+   }
+  },
+  "citations": 187,
   "citations_via": "Semantic Scholar"
  },
  "kazarian-lando-2007": {

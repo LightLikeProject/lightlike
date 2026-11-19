@@ -1,0 +1,14 @@
+- id: LL-XXXX-w
+  title: The Raychaudhuri identity and geodesic focusing for a vector field on a manifold
+  area: Spacetime
+  file: Lightlike/Spacetime/RaychaudhuriManifold.lean
+  decls: [Lightlike.raychaudhuri_manifold, Lightlike.raychaudhuri_leviCivita, Lightlike.raychaudhuri_focusing_manifold_at, Lightlike.raychaudhuri_focusing_manifold]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: kar-sengupta-2007, location: "eq. (12)", check: "Raychaudhuri"}
+      - {ref: kar-sengupta-2007, location: "eq. (16)", check: "convergence"}
+  review: kernel-checked
+  note: "On a manifold modelled on R^n with a metric of any signature and its Levi-Civita connection (main's leviCivita g, or any torsion-free metric connection that is locally smooth), for a smooth vector field V with nabla_V V = 0 near x and the expansion Theta = tr(u -> nabla_u V): V(Theta) = -tr((nabla V)^2) - Ric(V, V) at x (raychaudhuri_manifold, raychaudhuri_leviCivita), Kar and SenGupta's identity behind (12), with no normalisation of V; the proof reads the identity in the chart at x (the components of nabla_u V are covD, the trace and Ric are the coordinate ones) and applies raychaudhuri_coord. For a Lorentzian metric and V unit (g(V, V) = -1) and geodesic near x, rotation-free at x (g(nabla_u V, w) = g(nabla_w V, u), Kar and SenGupta's omega = 0) with Ric(V, V) >= 0: V(Theta) <= -Theta^2/(n-1) (raychaudhuri_focusing_manifold_at), and along an integral curve gamma of V on [0, L) with these hypotheses along gamma and Theta(gamma(0)) < 0, L <= (n-1)/|Theta(gamma(0))| (raychaudhuri_focusing_manifold): the paragraph after their (16), convergence as the bound on the parameter interval on which Theta stays finite. Limits: the null version (their (17)) is not here."
+  since: unreleased

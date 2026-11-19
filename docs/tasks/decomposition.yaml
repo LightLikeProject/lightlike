@@ -180,6 +180,46 @@ tasks:
     difficulty: research-level
     routes:
       - "Implementability by the unitary built from the Bogoliubov coefficients (Shale 1962; Bratteli–Robinson 2, Chapter 5); the converse by the number operator and the vacuum's image."
+  - id: T-OP2-P4
+    milestone: OP2
+    kind: proof
+    title: "Every nonzero vector of a Fock representation is cyclic for the Weyl unitaries (the Fock representation is irreducible)"
+    file: Tasks/OP/T_OP2_P4.lean
+    decl: Lightlike.OperatorAlgebras.fockRep_cyclic_of_ne_zero
+    size: L
+    difficulty: research-level
+    routes:
+      - "The closed span of `W f ψ` is invariant, so its projection commutes with every `W f`; the projection onto the vacuum is a limit of Gaussian averages of the Weyl unitaries (over the span of finitely many vectors), which shows that the commutant is trivial."
+  - id: T-OP2-P5
+    milestone: OP2
+    kind: proof
+    title: "A Bogoliubov transformation is implemented in a Fock representation iff there is a vector with Gaussian characteristic function exp(-|T f|^2/4)"
+    file: Tasks/OP/T_OP2_P5.lean
+    decl: Lightlike.OperatorAlgebras.implements_iff_exists_gaussian_vector
+    size: M
+    difficulty: advanced
+    routes:
+      - "`⇒`: `Ψ = U⁻¹ Ω` has `⟪Ψ, W f Ψ⟫ = ⟪Ω, W (T f) Ω⟫`. `⇐`: the vectors `W (T f) Ω` and `W f Ψ` have the same Gram matrix (the transformation preserves the symplectic form), `Ψ` is cyclic by irreducibility, and the Gram unitary (`exists_unitary_of_gram_eq`) intertwines."
+  - id: T-OP2-P6
+    milestone: OP2
+    kind: proof
+    title: "Shale's criterion, necessity: an implementable Bogoliubov transformation has Hilbert-Schmidt antilinear part"
+    file: Tasks/OP/T_OP2_P6.lean
+    decl: Lightlike.OperatorAlgebras.shale_necessity
+    size: L
+    difficulty: research-level
+    routes:
+      - "By `T-OP2-P5` there is `Ψ` with `⟪Ψ, W f Ψ⟫ = exp (-‖T f‖² / 4)`. The overlap `|⟪Ω, Ψ⟫|²` is the limit over finite-dimensional subspaces of the Gaussian averages of `W f`, which is `∏ (1 + ‖β eᵢ‖²)⁻¹` for a Hilbert basis `eᵢ`; it is positive, so `∑ ‖β eᵢ‖² < ∞`."
+  - id: T-OP2-P7
+    milestone: OP2
+    kind: proof
+    title: "Shale's criterion, sufficiency: a Bogoliubov transformation with Hilbert-Schmidt antilinear part is implementable"
+    file: Tasks/OP/T_OP2_P7.lean
+    decl: Lightlike.OperatorAlgebras.shale_sufficiency
+    size: L
+    difficulty: research-level
+    routes:
+      - "Build the squeezed vector `Ψ` (a vector with `⟪Ψ, W f Ψ⟫ = exp (-‖T f‖² / 4)`) as a limit of finite-mode squeezed vectors, whose Cauchy estimate is `∑ ‖β eᵢ‖² < ∞`; then `T-OP2-P5` gives the unitary."
   - id: T-OP1-P4
     milestone: OP1
     kind: proof
@@ -213,6 +253,37 @@ tasks:
     routes:
       - "Mollification: for f in C²_c(0,1), f * ρ_ε is C_c^∞(0,1) for small ε, and f * ρ_ε → f and (f * ρ_ε)' = f' * ρ_ε → f' in L²(0,1), so every graph point of the C² operator is a limit of graph points of the C_c^∞ operator; the other inclusion is monotonicity (momentumGraphSmooth_le). Needs: convolution with a mollifier commutes with the derivative and converges in L² (Mathlib: ContDiffBump, convolution approximation of the identity)."
 
+  - id: T-SP3-P1
+    milestone: SP3
+    kind: proof
+    title: "A logarithmic Tauberian theorem of Ingham type: if β log L(β) → a > 0 then log ρ[0, X] / (2 √(a X)) → 1"
+    file: Tasks/SP/T_SP3_P1.lean
+    decl: Lightlike.Tauberian.ingham_logarithmic
+    size: M
+    difficulty: intermediate
+    routes:
+      - "Upper bound ρ[0, X] ≤ e^{βX} L(β) with β = √(a/X). Lower bound: split L(β) into three windows around the saddle x = a/β²; the outer two are at most L(β)/4 each by comparing with the Laplace transform at β(1 + η/2) and β/(1 + η/2), so the middle window, at most e^{-βXl} ρ[0, Xh], carries at least half of L(β)."
+  - id: T-OP1-P7
+    milestone: OP1
+    kind: proof
+    title: "The Hille–Yosida generation theorem for contraction semigroups on a Banach space"
+    file: Tasks/OP/T_OP1_P7.lean
+    decl: Lightlike.OperatorAlgebras.hilleYosida_contraction_generation
+    size: L
+    difficulty: intermediate
+    routes:
+      - "Yosida approximation: with R(λ) = (λ - A)⁻¹, the bounded operators Y_λ = λ² R(λ) - λ give contractions exp(t Y_λ); a Cauchy estimate and the density of dom A show that exp(t Y_λ) converges strongly to a semigroup S(t), uniformly on compact time intervals; the difference quotients of S converge to A x on dom A (mean value inequality for exp(t Y_λ)), so the generator contains A, and a dissipative generator with λ - A surjective is A."
+
+  - id: T-OP1-P8
+    milestone: OP1
+    kind: proof
+    title: "The spectral theorem for unbounded self-adjoint operators: a unique projection-valued measure with A equal to the spectral integral of the identity"
+    file: Tasks/OP/T_OP1_P8.lean
+    decl: Lightlike.OperatorAlgebras.spectral_theorem
+    size: XL
+    difficulty: research-level
+    routes:
+      - "Teschl, Mathematical Methods in Quantum Mechanics, Theorem 3.7 (resolvent, Herglotz functions, Stieltjes inversion), or the Cayley transform, the continuous functional calculus of the unitary and the Riesz–Markov theorem, transported to the real line."
   - id: T-SF10-P1
     milestone: SF10
     kind: proof
@@ -665,6 +736,17 @@ tasks:
 # Upstream tasks: finished results that belong in Mathlib (general mathematics) or Physlib
 # (general physics), with the rework each needs. Exclusive, like definition
 # tasks; `target` gives the label `upstream: <library>`.
+  - id: T-OP6-P1
+    milestone: OP6
+    kind: proof
+    title: "The dual of the compact operators is the trace class: every continuous functional on the compact operators is a trace pairing with a unique trace-class operator of the same norm"
+    file: Tasks/OP/T_OP6_P1.lean
+    decl: Lightlike.OperatorAlgebras.TraceClass.compact_dual_eq_traceClass
+    size: L
+    difficulty: advanced
+    routes:
+      - "Finite-rank operators are dense in the compact ones; a functional on them gives a bounded sesquilinear form on rank-one operators (`TraceClass.sesquilinearFormOfFunctional`), hence a bounded operator by Riesz, and its polar decomposition shows it is trace class with `‖T‖₁ = ‖f‖` (Reed-Simon I, Theorem VI.26)."
+
 upstream:
   - id: T-UP-1
     target: Mathlib
