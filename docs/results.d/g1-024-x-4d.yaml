@@ -1,0 +1,13 @@
+- id: LL-XXXX-h
+  title: A metric with a Killing algebra of the space-form type, isotropic along a worldline, has the FLRW form b(t) dt^2 + a(t) delta/(1 + k|x|^2/4)^2 in the orbit chart
+  area: Spacetime
+  file: Lightlike/Spacetime/KillingOrbitFLRW.lean
+  decls: [Lightlike.flrw_of_killing_algebra, Lightlike.orbit_time_data, Lightlike.pairing_zero_of_isotropy]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (8.1)", check: "maximally symmetric"}
+  review: kernel-checked
+  note: "G1-024 in four dimensions (route (A)). For a C^1 family of fields Y near c(t0), indexed like the Killing algebra of the space form of curvature k (translations P_m, rotations R_ab), Killing for a symmetric G near c(t0), with the brackets S_k there, and with the rotations vanishing along a differentiable curve c: in the chart Phi(t, xi) = exp(T sum xi_e Y_e)(c t), G(d_t, d_t) = G(c t)(c' t, c' t), G(d_t, d_zeta) = 0 and G(d_zeta, d_zeta') = a(t) delta/(1 + k|x|^2/4)^2 (o_2 xi)(Do_2 zeta, Do_2 zeta') with a(t) = G(c t)(P_0, P_0) and o_2 the orbit chart of the space form; at xi = 0, d_t Phi = c' t, d_zeta Phi = T sum zeta_e Y_e(c t), Do_2 = T id on the translation directions. Cross terms: the rotations fix c' (they vanish along c), so G(c', P_m) = 0 at c t, and along the orbits G(J_{c'}, Y) solves a homogeneous linear equation. Limits: the Killing algebra and its structure constants are hypotheses (not derived from an isometry group; two attempts recorded in docs/notes/co1-carroll-comparison.md: the group route needs Myers-Steenrod and the Lie group exponential, the infinitesimal route needs the rigidity of Killing fields and a real Schur lemma for so(3), none in Mathlib or Physlib); t is not normalised (b(t) for Carroll's -1)."
+  since: unreleased

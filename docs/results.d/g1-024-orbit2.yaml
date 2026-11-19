@@ -1,0 +1,13 @@
+- id: LL-XXXX-g
+  title: A 3-metric with a Killing algebra of the space-form type, isotropic at a point, is locally a constant multiple of the space form of curvature k
+  area: Spacetime
+  file: Lightlike/Spacetime/KillingOrbitChart.lean
+  decls: [Lightlike.isometric_spaceForm, Lightlike.orbit_comparison, Lightlike.gram_of_isotropy, Lightlike.SpaceForm.lieBracket_X, Lightlike.SpaceForm.killing_P, Lightlike.SpaceForm.killing_R]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (8.1)", check: "maximally symmetric"}
+  review: kernel-checked
+  note: "Route (A) to the abstract form of G1-024. On R^3 the curved translations P_m = (1 - k|x|^2/4) e_m + (k/2) x_m x and the rotations R_ab are Killing for the space form delta/(1 + k|x|^2/4)^2 with explicit structure constants S_k ([P_m, P_n] = -k R_mn, [R_ab, P_m] = delta_mb P_a - delta_ma P_b, so(3)). For a C^1 family of fields Y near a point p of a Banach space, indexed like this algebra, Killing for a symmetric G near p, with brackets S_k near p and with the rotations vanishing at p, the orbit maps o(xi) = exp(T sum xi_e Y_e)(p) and o_2(xi) = exp(T sum xi_e P_e)(0) satisfy G(o xi)(Do zeta, Do zeta') = c * delta/(1 + k|x|^2/4)^2 (o_2 xi)(Do_2 zeta, Do_2 zeta') near 0, c = G(p)(P_0(p), P_0(p)); at 0, Do_2 is T times the identity on the translation directions. Proof: along the orbits, (Gram matrix, G(J, Y), G(J', Y), G(J, J')) of the flow derivative J solves a linear equation in the structure constants alone (orbit_comparison, on fable3/ode-flow's differentiable flow). Limits: the Killing algebra and its structure constants are hypotheses (not derived from an isometry group); the four-dimensional assembly of the slices is not proved."
+  since: unreleased

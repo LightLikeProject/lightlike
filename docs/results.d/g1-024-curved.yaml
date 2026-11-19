@@ -1,0 +1,13 @@
+- id: LL-XXXX-f
+  title: A metric on R^4 with the spatial rotations and the translations of a maximally symmetric 3-space of curvature k as Killing fields has the FLRW form
+  area: Spacetime
+  file: Lightlike/Spacetime/HomogeneousIsotropicCurved.lean
+  decls: [Lightlike.ray_relation, Lightlike.curved_flrw_of_killing]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (8.1)", check: "maximally symmetric"}
+  review: kernel-checked
+  note: "Curved slices, the curved case of LL-XXXX-a (curved_flrw_of_killing): for every k, if the three spatial rotations and the curved translations P_m = (1 - k|x|^2/4) d_m + (k/2) x_m (x . d) are Killing on D_k = {1 + k|x|^2/4 > 0}, then on D_k g_{0k} = 0, g_{ij} = a(t) delta_{ij}/(1 + k|x|^2/4)^2 and g_{00} = b(t), with a and b functions of the time alone (isotropy at (t, 0), and the Killing equation integrated along rays from (t, 0), ray_relation). Limits: the Killing fields are given in the isotropic chart; the classification of three-dimensional maximally symmetric spaces and the statement for isometry groups are not here."
+  since: unreleased
