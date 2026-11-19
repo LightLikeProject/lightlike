@@ -394,6 +394,7 @@ import Lightlike.Lorentz.StarBound
 import Lightlike.Lorentz.Tests
 import Lightlike.Lorentz.WeightedComp
 import Lightlike.NCG.Bimodule
+import Lightlike.NCG.Chirality
 import Lightlike.NCG.Classification
 import Lightlike.NCG.ComplexSplitting
 import Lightlike.NCG.ComplexSummands

@@ -74,6 +74,10 @@ Partial systems of matrix units, without `∑ U = 1`, combine over sums of index
 mixed algebra is unitarily equivalent to the model of the multiplicity matrix over the irreducible representations that
 occur {1} [24].
 
+For a complex-linear triple over `⊕ Mₙᵢ(ℂ)` and an orientable grading `γ = ∑_p π(x_p) J π(y_p) J`, `γ` acts on each
+multiplicity space `Vᵢⱼ` as the scalar `cᵢⱼ = ∑_p (x_p)ᵢ₀₀ conj((y_p)ⱼ₀₀)`, the same at every diagonal corner; on a
+nonzero vertex `cᵢⱼ = ±1` and `cⱼᵢ = cᵢⱼ` {1} [25].
+
 ## Lean References
 
 1. Lightlike/NCG/FiniteSpectralTriple.lean - `NCG.FiniteSpectralTriple`, `NCG.FiniteSpectralTriple.comm`,
@@ -155,6 +159,10 @@ occur {1} [24].
     `NCG.sum_partialMixed`, `NCG.unitsMixed`, `NCG.dMixed`, `NCG.phiMixedFun`, `NCG.phiMixed`,
     `NCG.unitsMixed_hom_phiMixed`, `NCG.pi_ne_zero_of_ne`, `NCG.span_psi_le`, `NCG.mixedComplexification`,
     `NCG.neZero_dMixed`, `NCG.exists_unitary_mixed`
+25. Lightlike/NCG/Chirality.lean - `NCG.unit_mul_mul_unit`, `NCG.lU_pi_lU`, `NCG.rU_rightOp_rU`, `NCG.IsOrientable`,
+    `NCG.chiScalar`, `NCG.grading_lU`, `NCG.grading_rU`, `NCG.grading_smul_of_mem_Vsub`, `NCG.lU_pi_lU'`,
+    `NCG.rU_rightOp_rU'`, `NCG.chiScalarAt`, `NCG.grading_smul_of_corner`, `NCG.chiScalarAt_eq`,
+    `NCG.chiScalar_mul_self`, `NCG.conj_chiScalar`, `NCG.chiScalar_eq_one_or`, `NCG.chiScalar_symm`
 
 ## References
 
