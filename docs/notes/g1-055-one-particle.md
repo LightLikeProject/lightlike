@@ -61,7 +61,7 @@ The massless representations on `L²` of the light cone are not built here: the 
 continuous (no continuous global section exists), so the multiplier is a measurable field of unitaries and the
 construction of `mulL2` (which uses a continuous field) does not apply as it stands.
 
-## Toward the Wigner classification (in progress)
+## Toward the Wigner classification
 
 Source read: E. Freitag, *Unitary representations of the Poincaré group, Wigner classification* (lecture notes,
 Heidelberg): Chapter IV, §2, p. 126 (the orbits of `SL(2,ℂ)` on `ℝ⁴` and their little groups; only the orbits of
@@ -75,8 +75,8 @@ one orbit), pp. 150–151; Appendix VI.1 (the spectral theorem for `ℝ`), pp. 1
 Scope: the orbit `p = 0` (whose representations are those of `SL(2,ℂ)` itself, Bekaert–Boulanger §3.2, Remark,
 PDF page 13: "the zero-momentum representations are essentially UIRs of the little group") is not part of this row.
 
-Formalised so far on the way to the irreducibility of the induced representations (the first half of Freitag's
-Theorem 6.2 for the massive orbit):
+Formalised for the irreducibility of the induced representations (the first half of Freitag's Theorem 6.2 for the
+massive orbit):
 
 * the canonical system of imprimitivity (`Imprimitivity.lean`, `isSystemOfImprimitivity_inducedL2`);
 * an operator commuting with the translations commutes with every Schwartz function of the momentum
