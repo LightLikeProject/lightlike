@@ -2901,3 +2901,98 @@
   review: kernel-checked
   note: "Compared with Teschl, Section 6.2, Theorem 6.6, p. 136 (read, online edition). Stated for a compact symmetric operator on a real or complex Hilbert space. The expansion (6.5), K = sum over the spectrum of lambda P_K({lambda}), is stated in a Hilbert basis of eigenvectors; grouping the basis vectors by eigenvalue gives the projections P_K({lambda}). The spectrum is stated as countable, its nonzero points as eigenvalues (read literally, 'the spectrum consists of eigenvalues' fails at 0: diag(1/(n+1)) on l2(N) is compact and self-adjoint with 0 in its spectrum and 0 not an eigenvalue, invDiag_zero_mem_spectrum_not_hasEigenvalue), and the eigenvalues of norm at least epsilon as finitely many. Hilbert-Schmidt operators are compact (Teschl, Section 6.3, p. 139), isCompactOperator_of_isHilbertSchmidt."
   since: unreleased
+- id: LL-0221
+  title: A metric on R^4 with the spatial translations and rotations as Killing fields has the flat FLRW form
+  area: Spacetime
+  file: Lightlike/Spacetime/HomogeneousIsotropic.lean
+  decls: [Lightlike.lieDerivMetric_affField_basis, Lightlike.flat_flrw_of_killing]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (8.1)", check: "maximally symmetric"}
+  review: kernel-checked
+  note: "For a smooth metric g of any signature on R^4 whose Lie derivative vanishes along the three spatial translations and the three spatial rotations (checked on the coordinate basis fields), g_{0k} = 0, g_{ij} = a(t) delta_{ij} and g_{00} = b(t), with a and b functions of the time alone: the flat FLRW form with lapse b and scale factor a. Limits: only the flat case (k = 0); the curved cases (Killing fields of S^3 and H^3, classification of three-dimensional maximally symmetric spaces), the converse (the FLRW metric has these Killing fields) and the statement for isometry groups acting (not only infinitesimally) are follow-up tasks; the comparison with the source is pending and the location is the chapter."
+  since: unreleased
+
+- id: LL-0222
+  title: The age of an expanding universe with the strong energy condition is at most the Hubble time, and the density diverges as the scale factor tends to zero
+  area: Cosmology
+  file: Lightlike/Cosmology/BigBang.lean
+  decls: [Lightlike.Cosmology.bigBang_age_le, Lightlike.Cosmology.bigBang_density_tendsto_atTop, Lightlike.Cosmology.bigBang_age_lt_of_pos_density, Lightlike.Cosmology.bigBang_density_tendsto_atTop_of_pos]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (8.35)", check: "Big Bang"}
+  review: kernel-checked
+  note: "For a positive scale factor a on an open interval (t1, t2) with Friedmann's second equation with zero cosmological constant, the strong energy condition (rho + 3p at least zero) and a'(t0) > 0 at a time t0 in the interval: t0 - t1 is at most a(t0)/a'(t0); and for Friedmann's first equation with k at least zero and zero cosmological constant, if a tends to zero as t decreases to t1 then rho tends to infinity. With Carroll's hypotheses rho > 0 and p >= 0 the age is strictly less than a(t0)/a'(t0) (bigBang_age_lt_of_pos_density), and for every k, if rho(t0) > 0 and a tends to zero then rho tends to infinity, since rho(t) a(t)^2 >= rho(t0) a(t0)^2 for t <= t0 (bigBang_density_tendsto_atTop_of_pos); the Milne universe a = t, k = -1, rho = 0 shows that the positivity of the density is needed (milne_friedmann). Limits: real-variable statements; that the interval is maximal (so that a tends to zero at its left end) is not proved. Compared with Carroll's lecture notes, p. 224 (after eq. (8.41); 'by (8.35) we must have a'' < 0') and p. 225; see docs/notes/co1-carroll-comparison.md."
+  since: unreleased
+- id: LL-0223
+  title: A metric on R^4 with the spatial rotations and the translations of a maximally symmetric 3-space of curvature k as Killing fields has the FLRW form
+  area: Spacetime
+  file: Lightlike/Spacetime/HomogeneousIsotropicCurved.lean
+  decls: [Lightlike.ray_relation, Lightlike.curved_flrw_of_killing]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (8.1)", check: "maximally symmetric"}
+  review: kernel-checked
+  note: "Curved slices, the curved case of LL-0221 (curved_flrw_of_killing): for every k, if the three spatial rotations and the curved translations P_m = (1 - k|x|^2/4) d_m + (k/2) x_m (x . d) are Killing on D_k = {1 + k|x|^2/4 > 0}, then on D_k g_{0k} = 0, g_{ij} = a(t) delta_{ij}/(1 + k|x|^2/4)^2 and g_{00} = b(t), with a and b functions of the time alone (isotropy at (t, 0), and the Killing equation integrated along rays from (t, 0), ray_relation). Limits: the Killing fields are given in the isotropic chart; the classification of three-dimensional maximally symmetric spaces and the statement for isometry groups are not here."
+  since: unreleased
+- id: LL-0224
+  title: A 3-metric with a Killing algebra of the space-form type, isotropic at a point, is locally a constant multiple of the space form of curvature k
+  area: Spacetime
+  file: Lightlike/Spacetime/KillingOrbitChart.lean
+  decls: [Lightlike.isometric_spaceForm, Lightlike.orbit_comparison, Lightlike.gram_of_isotropy, Lightlike.SpaceForm.lieBracket_X, Lightlike.SpaceForm.killing_P, Lightlike.SpaceForm.killing_R]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (8.1)", check: "maximally symmetric"}
+  review: kernel-checked
+  note: "Route (A) to the abstract form of G1-024. On R^3 the curved translations P_m = (1 - k|x|^2/4) e_m + (k/2) x_m x and the rotations R_ab are Killing for the space form delta/(1 + k|x|^2/4)^2 with explicit structure constants S_k ([P_m, P_n] = -k R_mn, [R_ab, P_m] = delta_mb P_a - delta_ma P_b, so(3)). For a C^1 family of fields Y near a point p of a Banach space, indexed like this algebra, Killing for a symmetric G near p, with brackets S_k near p and with the rotations vanishing at p, the orbit maps o(xi) = exp(T sum xi_e Y_e)(p) and o_2(xi) = exp(T sum xi_e P_e)(0) satisfy G(o xi)(Do zeta, Do zeta') = c * delta/(1 + k|x|^2/4)^2 (o_2 xi)(Do_2 zeta, Do_2 zeta') near 0, c = G(p)(P_0(p), P_0(p)); at 0, Do_2 is T times the identity on the translation directions. Proof: along the orbits, (Gram matrix, G(J, Y), G(J', Y), G(J, J')) of the flow derivative J solves a linear equation in the structure constants alone (orbit_comparison, on fable3/ode-flow's differentiable flow). Limits: the Killing algebra and its structure constants are hypotheses (not derived from an isometry group); the four-dimensional assembly of the slices is not proved."
+  since: unreleased
+- id: LL-0225
+  title: A metric with a Killing algebra of the space-form type, isotropic along a worldline, has the FLRW form b(t) dt^2 + a(t) delta/(1 + k|x|^2/4)^2 in the orbit chart
+  area: Spacetime
+  file: Lightlike/Spacetime/KillingOrbitFLRW.lean
+  decls: [Lightlike.flrw_of_killing_algebra, Lightlike.orbit_time_data, Lightlike.pairing_zero_of_isotropy]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (8.1)", check: "maximally symmetric"}
+  review: kernel-checked
+  note: "G1-024 in four dimensions (route (A)). For a C^1 family of fields Y near c(t0), indexed like the Killing algebra of the space form of curvature k (translations P_m, rotations R_ab), Killing for a symmetric G near c(t0), with the brackets S_k there, and with the rotations vanishing along a differentiable curve c: in the chart Phi(t, xi) = exp(T sum xi_e Y_e)(c t), G(d_t, d_t) = G(c t)(c' t, c' t), G(d_t, d_zeta) = 0 and G(d_zeta, d_zeta') = a(t) delta/(1 + k|x|^2/4)^2 (o_2 xi)(Do_2 zeta, Do_2 zeta') with a(t) = G(c t)(P_0, P_0) and o_2 the orbit chart of the space form; at xi = 0, d_t Phi = c' t, d_zeta Phi = T sum zeta_e Y_e(c t), Do_2 = T id on the translation directions. Cross terms: the rotations fix c' (they vanish along c), so G(c', P_m) = 0 at c t, and along the orbits G(J_{c'}, Y) solves a homogeneous linear equation. Limits: the Killing algebra and its structure constants are hypotheses (not derived from an isometry group; two attempts recorded in docs/notes/co1-carroll-comparison.md: the group route needs Myers-Steenrod and the Lie group exponential, the infinitesimal route needs the rigidity of Killing fields and a real Schur lemma for so(3), none in Mathlib or Physlib); t is not normalised (b(t) for Carroll's -1)."
+  since: unreleased
+- id: LL-0226
+  title: With the strong energy condition and p <= rho the big bang singularity of an expanding FLRW universe is at a = 0, and p <= rho cannot be dropped
+  area: Cosmology
+  file: Lightlike/Cosmology/BigBangSingularity.lean
+  decls: [Lightlike.Cosmology.friedmann_834, Lightlike.Cosmology.bigBang_singularity, Lightlike.Cosmology.onePlusSqrt_friedmann, Lightlike.Cosmology.onePlusSqrt_not_dominant]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (8.35)", check: "Big Bang"}
+      - {ref: carroll-1997, location: "eq. (8.36)", check: "Friedmann"}
+  review: kernel-checked
+  note: "For a C^2 scale factor a > 0 on (t1, t2) solving both Friedmann equations with Lambda = 0, rho + 3p >= 0 and p <= rho, expanding at t0: either a -> 0 as t decreases to t1, or a', a'', rho and p are bounded on (t1, t0] (bigBang_singularity), so a singularity at the left end of the interval is at a = 0. Proof: ((a'^2 + k) a^4)' = 2 a' a^3 (a a'' + 2(a'^2 + k)) = 8 pi G a' a^5 (rho - p) >= 0 (Carroll's (8.34), a''/a + 2(a'/a)^2 + 2k/a^2 = 4 pi G (rho - p), which combines (8.35) and (8.36)), so rho a^6 stays bounded in the past while a >= L > 0. The hypothesis p <= rho is needed: a = 1 + sqrt t on (0, infinity), k = 0, solves both equations with rho > 0, p > 0, a' > 0, a'' < 0, and a' -> infinity as t -> 0 while a -> 1 (onePlusSqrt_friedmann); hence p > rho somewhere (onePlusSqrt_not_dominant). Carroll's 'we necessarily reach a singularity at a = 0' (p. 224) under rho > 0, p >= 0 alone fails for this a."
+  since: unreleased
+
+- id: LL-0227
+  title: For the equation of state p = w rho with constant w > -1/3 the big bang singularity of an expanding FLRW universe is at a = 0
+  area: Cosmology
+  file: Lightlike/Cosmology/BigBangEOS.lean
+  decls: [Lightlike.Cosmology.bigBang_singularity_of_eos]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (8.35)", check: "Big Bang"}
+      - {ref: carroll-1997, location: "eq. (8.36)", check: "Friedmann"}
+  review: kernel-checked
+  note: "Carroll's setting (8.21)-(8.23), p = w rho with constant w (w >= 0 at p. 224), for every w > -1/3: for a C^2 scale factor a > 0 on (t1, t2) solving both Friedmann equations with Lambda = 0, rho >= 0, p = w rho, expanding at t0, either a -> 0 as t decreases to t1 or a', a'', rho, p are bounded on (t1, t0]. Proof: (a'^2 + k) a^{1+3w} is constant (its derivative a' a^{3w} (2 a a'' + (1 + 3w)(a'^2 + k)) vanishes by (8.35), (8.36)), i.e. rho a^{3(1+w)} is constant as in (8.23). Reading (a) of p. 224, any rho > 0, p >= 0, is false (onePlusSqrt_friedmann, LL-0226); reading (b), this setting, is proved here."
+  since: unreleased
