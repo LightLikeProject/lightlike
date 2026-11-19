@@ -129,9 +129,10 @@ Where each Krajewski clause stands:
 * §3.1, p. 10, "`Mₙ(ℝ)` and `Mₙ(ℍ)` have only one irreducible representation ... `Mₙ(ℂ)` has two ... the fundamental one
   and its complex conjugate": the split of a complex summand into its fundamental and conjugate parts is proved
   (`ComplexSplitting.lean`). The complex matrix units of a quaternionic summand are proved in the single-summand form
-  (`QuaternionComplexify.lean`). Open: assembling the matrix units of all summands' irreducible representations on `H`
-  and running the tensor-form argument over them, which gives `H_{(iα)(jβ)} ≅ ℂ^{nᵢ} ⊗ ℂ^{r} ⊗ ℂ^{nⱼ}` with `nᵢ` the
-  dimension of the irreducible representation (`2n` for `Mₙ(ℍ)`).
+  (`QuaternionComplexify.lean`). Assembling the matrix units of all summands' irreducible representations on `H` and
+  running the tensor-form argument over them gives `H_{(iα)(jβ)} ≅ ℂ^{nᵢ} ⊗ ℂ^{r} ⊗ ℂ^{nⱼ}`, with `nᵢ` the dimension of the
+  irreducible representation (`2n` for `Mₙ(ℍ)`). It is proved for each summand type and for mixed algebras in the items
+  below.
 * The assembly (`Complexification.lean`): a complexification of a triple over a real algebra `A` is a faithful
   complex-linear `*`-representation `σ` of `⊕ M_dₖ(ℂ)` with a real `*`-homomorphism `φ : A → ⊕ M_dₖ(ℂ)`, `π = σ ∘ φ` and
   every `σ(x)` a complex combination of the `π(a)`. The order-zero and first-order conditions pass to `σ` (`commJ_span`),
