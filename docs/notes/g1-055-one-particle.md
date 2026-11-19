@@ -54,8 +54,7 @@ What stops it here, concretely:
   theorem for one self-adjoint operator, not the joint version for `ℝ⁴`; above, `E` is constructed by hand for the
   induced representations only;
 * Mackey's imprimitivity theorem (a system of imprimitivity based on a transitive orbit is induced from the little
-  group): not in the library;
-* irreducibility of the massless induced representations (the massive ones are irreducible, see below).
+  group): not in the library.
 
 The massless representations of helicity `n/2` act on `L²(ν)` of the forward light cone, for every invariant
 measure `ν` (`ConeL2.lean`). The standard lift of the cone is discontinuous on the half-line `P₀₀ = 0` (no continuous
@@ -63,7 +62,14 @@ global section exists), so the helicity factor is only measurable; that half-lin
 s-finite `ν` (`ConeNull.lean`, `measure_alphaC_eq_zero`: such a `ν` has the null sets of the image of the Haar
 measure, and `{A : A₀₀ = 0}` is Haar-null because its right translates by the rotations `u_θ`, `0 ≤ θ < π`, are
 pairwise disjoint), and the representations are strongly continuous when `ν` is finite on compacts
-(`ConeContinuity.lean`, `continuous_poincareCone`).
+(`ConeContinuity.lean`, `continuous_poincareCone`). They are irreducible for every invariant σ-finite `ν`
+(`IrreducibleMassless.lean`, `irreducible_massless`, `commutant_eq_scalar_cone`): the commutant of the translations
+of the cone is the multiplications by measurable functions (`CommutantCone.lean`), the helicity factor is
+unimodular, so such a function is invariant, and invariant functions are almost everywhere constant. The source's
+measure `δ(p²) Θ(p⁰) d⁴p`, which is `d³p / (2|p|)` in the chart `p ↦ (|p|, p)` (`coneSourceMeasure`), is half the image
+of the Lebesgue measure under the light-cone coordinates `(w, t) ↦ [[|w|² e^{-t}, w], [w̄, e^t]]`, hence invariant
+(`ConeSourceMeasure.lean`, `measurePreserving_coneSourceMeasure`), and the massless representations on
+`L²(d³p / 2|p|)` are irreducible (`irreducible_massless_coneSourceMeasure`).
 
 ## Toward the Wigner classification
 
