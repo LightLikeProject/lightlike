@@ -114,6 +114,60 @@ bound. This needs (i) the vacuum projection `P_F` of finitely many modes as the 
 against a positive quadratic form on `V_F`, and (iii) the determinant bound `det ((1 + P_F)/2) ≥ 1 + tr (P_F - 1)/4`
 on `J`-invariant spectral subspaces (continuous spectrum by interval approximation). No shortcut found.
 
+## Necessity: the route that closes it (Fable-1, 18 November 2026)
+
+The three missing steps are replaced as follows; the files are Lightlike/OperatorAlgebras/ShaleDeterminant.lean,
+Lightlike/OperatorAlgebras/FockVacuumAverage.lean and Lightlike/OperatorAlgebras/ShaleNecessity.lean.
+
+(i) The vacuum projection `P_F` is not built as an operator. Only the inequality
+`(2π)ⁿ |⟪Ω, Φ⟫|² ≤ Re ∫ exp (-‖f_x‖²/4) ⟪Φ, W f_x Φ⟫ dx` is needed, and it is proved on the dense set of finite
+combinations `Φ = ∑ cⱼ W gⱼ Ω`: there the integral is a product of one-dimensional Gaussian integrals
+(Mathlib's `GaussianFourier.integral_cexp_neg_mul_sum_add`) and equals `(2π)ⁿ ‖Φ'‖²` with
+`Φ' = ∑ cⱼ λⱼ W gⱼ' Ω`, `gⱼ'` the part of `gⱼ` orthogonal to the modes, `λⱼ = e(gⱼ)/e(gⱼ')`; and
+`⟪Ω, Φ'⟫ = ⟪Ω, Φ⟫`, so Cauchy-Schwarz gives the bound. Dominated convergence extends it to every `Φ`. No
+self-adjointness, idempotence, Fubini or strong measurability of `x ↦ W f_x` is used.
+
+(ii) `integral_exp_neg_half_quad` (the field-theory Gaussian integral, on main), transported from
+`EuclideanSpace ℝ ι` to `ι → ℝ`.
+
+(iii) The determinant bound holds for every finite orthonormal family, with no spectral subspaces: the open point
+above is closed. In the real basis `eₖ, i eₖ` the matrix `A` of `f ↦ ‖T f‖²` satisfies: `A + i Ω` is the complex
+Gram matrix of the vectors `T eₖ, T (i eₖ)` (real part `A`, imaginary part the symplectic form, which `T`
+preserves), so `A + i Ω ≥ 0` and, by transposition, `A - i Ω ≥ 0`. Conjugating with `U = [[1, i], [1, -i]]`:
+`U (1 + A) Uᴴ = [[E, B], [Bᴴ, D]]`, `U (A + i Ω) Uᴴ = [[E, B], [Bᴴ, D - 4]]`,
+`U (A + i Ω)ᵀ Uᴴ = [[E - 4, B], [Bᴴ, D]]`. Hence `E - 4 ≥ 0` and the Schur complement `D - 4 - Bᴴ E⁻¹ B ≥ 0`, and
+`4ⁿ det (1 + A) = det E · det (D - Bᴴ E⁻¹ B) ≥ 4ⁿ (1 + tr (E - 4)/4) · 4ⁿ`, with `tr (E - 4) = tr A - 2n`. This is
+`det ((1 + A)/2) ≥ 1 + tr (A - 1)/4`, the inequality checked numerically above. The counterexample `(0.3, 0.3, 100)`
+does not satisfy `A ± i Ω ≥ 0`.
+
+## Sufficiency: the route that closes it, without a polar decomposition (Fable-1, 18 November 2026)
+
+The files are Lightlike/OperatorAlgebras/FockContinuity.lean, Lightlike/OperatorAlgebras/VacuumProjection.lean and
+Lightlike/OperatorAlgebras/ShaleSufficiency.lean. The brick plan below
+(polar decomposition, finite-mode squeezed vectors, a Cauchy estimate in the Hilbert-Schmidt tail) is not used.
+
+The argument of the section "why the polar-free route fails" shows that a vector must be produced inside `K`.
+It is produced as a vacuum of the twisted representation `W_T f = W (T f)` on `K`, not as a squeezed vector:
+
+1. `f ↦ W f ψ` is norm continuous in a Fock representation (`FockRep.continuous_W`; on coherent vectors by the
+   Gram function, then by density). `CCRRep` asks for continuity along real lines only.
+2. For a strongly continuous representation and a finite orthonormal family `e`, the Bochner integral
+   `P ψ = (2π)⁻ⁿ ∫ exp (-‖f_x‖²/4) W f_x ψ dx` (`vacAvg`) is symmetric and satisfies
+   `P W f P = exp (-‖f‖²/4) P` for `f` in the span of the modes (the Weyl relation, Fubini, the shear
+   `(x, u) ↦ (x, u - x)` and one Gaussian integral, the same one as in the necessity part). So `P` is an
+   orthogonal projection, `P ψ = ψ` iff `⟪ψ, W f ψ⟫ = exp (-‖f‖²/4) ‖ψ‖²` on the span of the modes, and the
+   range decreases when modes are added.
+3. In the twisted representation, `‖P_s Ω‖² = ⟪Ω, P_s Ω⟫ = det ((1 + A_s)/2)^(-1/2)` for the modes `bₖ`, `k ∈ s`,
+   of a Hilbert basis (the Gaussian integral of the necessity part), and `det M ≤ exp (tr M - 2n)` gives
+   `det ((1 + A_s)/2) ≤ exp (2 ∑_{k ∈ s} ‖β bₖ‖²)`. With the Hilbert-Schmidt hypothesis,
+   `‖P_s Ω‖² ≥ exp (-∑ₖ ‖β bₖ‖²) > 0` uniformly in `s`. The two halves of the criterion use the two opposite
+   bounds of the same determinant: necessity `det ≥ 1 + (1/4) tr (A - 1)`, sufficiency `det ≤ exp (tr (A - 1)/2)`.
+4. `‖P_s Ω - P_t Ω‖² = ‖P_s Ω‖² - ‖P_t Ω‖²` for `s ⊆ t`, so the net `P_s Ω` is Cauchy; its limit `Ω'` is nonzero
+   and fixed by every `P_s` (`exists_fixed_of_decreasing_projections`).
+5. `⟪Ω', W (T f) Ω'⟫ = exp (-‖f‖²/4) ‖Ω'‖²` on the span of the basis, hence everywhere by step 1. So
+   `(K, W_T, Ω'/‖Ω'‖)` is a Fock representation (cyclic by `fockRep_cyclic`), and the unitary of the uniqueness
+   theorem `fockUnitary_spec` between `(K, W, Ω)` and it satisfies `U W f = W (T f) U`.
+
 ## Sufficiency (`⇐`): route (start 16:30)
 
 Goal: `IsHilbertSchmidt β` gives `Ψ` with `⟪Ψ, W f Ψ⟫ = exp (-q f/4)`; then `implements_of_gaussian_vector` (P5).

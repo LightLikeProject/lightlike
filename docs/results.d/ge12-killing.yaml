@@ -1,0 +1,13 @@
+- id: LL-XXXX-n
+  title: The Killing fields of Minkowski space are the Poincare fields and form a space of dimension n(n+1)/2
+  area: Spacetime
+  file: Lightlike/Spacetime/KillingMinkowski.lean
+  decls: [Lightlike.killing_eq_affField, Lightlike.finrank_killingFields]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (5.44)", check: "Killing"}
+  review: kernel-checked
+  note: "Every C^2 vector field X on R^n that is a Killing field of the Minkowski metric at every point (the derivative of X is eta-skew, Killing's equation for the flat connection) is affine, X(y) = A y + c with A eta-skew; conversely these are Killing (affField_killing_iff). The pairs (A, c) form a space of dimension n(n-1)/2 + n = n(n+1)/2 (the eta-skew endomorphisms correspond to the antisymmetric matrices by lowering an index), so the Killing fields form a real vector space of dimension n(n+1)/2. Proof of the classification: the second derivative of X is symmetric in its first two slots and eta-skew in its last two, hence zero. Compared with Carroll's lecture notes (gr-qc/9712019), pp. 140-141: the largest possible number of Killing vectors on an n-dimensional manifold is n(n+1)/2, eq. (5.44) n + n(n-1)/2 = n(n+1)/2 for the translations and rotations of R^n, 'the same kind of counting argument applies to ... Minkowski space'; Carroll does not prove that these are all the Killing vectors. Limits: Killing fields are C^2 fields with Killing's equation; flows and isometries are not treated."
+  since: unreleased
