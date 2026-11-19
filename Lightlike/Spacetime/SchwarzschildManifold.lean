@@ -13,7 +13,7 @@ components of the existing coordinate metric `schMetric M` (`Lightlike/GR/Schwar
 * `schwarzschild_coordMetric` (**the bridge**): in every chart of the manifold the coordinate components of
   `schwarzschildMetric M hM` are `schMetric M`;
 * `schwarzschild_satisfiesEinstein`: for the Levi-Civita connection of `schwarzschildMetric M hM` the vacuum Einstein
-  equations hold (`Connection.lean`, `LorentzianMetric.SatisfiesEinstein` with `Λ = 0`);
+  equations hold (`Connection.lean`, `NondegMetric.SatisfiesEinstein` with `Λ = 0`);
 * `schwarzschild_ricci_eq_zero`: its Ricci tensor vanishes.
 
 Proof. The Einstein equations on a manifold are the coordinate vacuum equations in every chart
@@ -146,10 +146,10 @@ theorem schwarzschild_exists_vacuum_connection :
         CovariantDerivative.ContMDiffCovariantDerivative cov ∞ ∧
         (schwarzschildMetric M hM).SatisfiesEinstein cov 0 ∧
         ∀ (x : schOpen M hM) (v w : TangentSpace 𝓘(ℝ, Fin 4 → ℝ) x), cov.ricciAt x v w = 0 := by
-  have hLC : (leviCivita (schwarzschildMetric M hM)).IsLeviCivita (schwarzschildMetric M hM) :=
-    ⟨leviCivita_torsion _, leviCivita_compat _⟩
-  haveI := contMDiffCovariantDerivative_leviCivita (schwarzschildMetric M hM)
-  exact ⟨leviCivita (schwarzschildMetric M hM), hLC, this,
-    schwarzschild_satisfiesEinstein M hM _ hLC, schwarzschild_ricci_eq_zero M hM _ hLC⟩
+  let gN : NondegMetric 𝓘(ℝ, Fin 4 → ℝ) (schOpen M hM) := (schwarzschildMetric M hM).toNondegMetric
+  have hLC : (leviCivita gN).IsLeviCivita gN := ⟨leviCivita_torsion gN, leviCivita_compat gN⟩
+  haveI := contMDiffCovariantDerivative_leviCivita gN
+  exact ⟨leviCivita gN, hLC, this, schwarzschild_satisfiesEinstein M hM _ hLC,
+    schwarzschild_ricci_eq_zero M hM _ hLC⟩
 
 end Lightlike

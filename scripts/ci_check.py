@@ -9,8 +9,9 @@
    `lake exe mk_all --lib Lightlike` adds the missing imports.
 4. Deprecations (needs --build-log): a warning, never a failure, for deprecation warnings in the
    build log beyond the counts per file recorded in `scripts/deprecation_baseline.txt`.
-5. Test coverage: a warning, never a failure, for every declaration of a result in
-   `docs/results.yaml` that no Tests/ directory file and no `*Tests.lean` file mentions.
+5. Test coverage: a warning, never a failure, for every declaration of a result in the registry
+   (`docs/results.yaml`, `docs/results.d/`) that no Tests/ directory file and no `*Tests.lean` file
+   mentions.
 6. Exploratory imports: no Lean module outside an `Exploratory/` folder imports, directly or
    through other modules, a module inside one. Exempt are the build roots that only collect
    modules (`Lightlike.lean` and `Exploratory.lean` files).
@@ -19,7 +20,11 @@
    the listed number of uses until they are bounded; the list may only shrink, so a listed count
    that no longer matches the file also fails. The list is empty before v0.2.0.
 
-Checks 1-3, 6 and 7 are hard rules (CONTRIBUTING.md); 4 and 5 only print warnings. The axioms of
+8. Constructs: no `elab`, `elab_rules`, `macro_rules`, `syntax`, `initialize`, `run_cmd`, `unsafe` or
+   `opaque` (comments and strings ignored) under Lightlike/, except the counts per file listed in
+   `scripts/constructs_baseline.txt` (`path construct count`); the list may only shrink.
+
+Checks 1-3, 6, 7 and 8 are hard rules (CONTRIBUTING.md); 4 and 5 only print warnings. The axioms of
 every declaration are checked by `scripts/AxiomAudit.lean`.
 
 Usage (local):
@@ -87,6 +92,50 @@ def scan_sources() -> list[str]:
                 line = code.count("\n", 0, m.start()) + 1
                 errors.append(f"{f.relative_to(ROOT)}:{line}: forbidden `{name}`")
     print(f"[source] scanned {len(files)} files: {len(errors)} forbidden tokens")
+    return errors
+
+_DECL = r"^[ \t]*(?:@\[[^\]]*\][ \t]*)?(?:(?:local|scoped|private|protected|noncomputable)[ \t]+)*"
+CONSTRUCTS = [
+    (re.compile(_DECL + r"(?:elab|elab_rules)\b", re.M), "elab"),
+    (re.compile(_DECL + r"macro_rules\b", re.M), "macro_rules"),
+    (re.compile(_DECL + r"syntax\b", re.M), "syntax"),
+    (re.compile(r"^[ \t]*(?:builtin_)?initialize\b", re.M), "initialize"),
+    (re.compile(r"^[ \t]*run_(?:cmd|meta|elab)\b", re.M), "run_cmd"),
+    (re.compile(r"\bunsafe\b"), "unsafe"),
+    (re.compile(_DECL + r"opaque\b", re.M), "opaque"),
+]
+CONSTRUCTS_BASELINE = ROOT / "scripts" / "constructs_baseline.txt"
+
+
+def scan_constructs(root: pathlib.Path = ROOT, baseline_path: pathlib.Path = CONSTRUCTS_BASELINE
+                    ) -> list[str]:
+    """Check 8: no new syntax, elaborator, initializer, `run_cmd`, `unsafe` or `opaque` outside the baseline."""
+    found: dict[tuple[str, str], int] = {}
+    for f in sorted((root / "Lightlike").rglob("*.lean")) + [root / "Lightlike.lean"]:
+        if not f.exists():
+            continue
+        code = strip_comments(f.read_text(encoding="utf-8"))
+        for pat, name in CONSTRUCTS:
+            n = len(pat.findall(code))
+            if n:
+                found[(str(f.relative_to(root)), name)] = n
+    allowed: dict[tuple[str, str], int] = {}
+    if baseline_path.exists():
+        for line in baseline_path.read_text(encoding="utf-8").splitlines():
+            t = line.split("#")[0].split()
+            if len(t) == 3:
+                allowed[(t[0], t[1])] = int(t[2])
+    errors = []
+    for key in sorted(set(found) | set(allowed)):
+        have, ok = found.get(key, 0), allowed.get(key, 0)
+        if have > ok:
+            errors.append(f"{key[0]}: {have} uses of `{key[1]}` (allowed {ok}); "
+                          "these constructs change the language or run code at elaboration")
+        elif have < ok:
+            errors.append(f"{key[0]}: {have} uses of `{key[1]}`, baseline says {ok}; "
+                          f"lower its line in {baseline_path.name}")
+    print(f"[constructs] {sum(found.values())} uses in {len(found)} (file, construct) pairs "
+          f"(baseline {sum(allowed.values())})")
     return errors
 
 
@@ -195,15 +244,16 @@ def is_test_file(rel: str) -> bool:
 
 
 def check_test_coverage(root: pathlib.Path = ROOT) -> list[str]:
-    """Warnings: declarations of results in docs/results.yaml mentioned by no test file.
+    """Warnings: declarations of results in the registry (docs/results.yaml and the new entries in
+    docs/results.d/) mentioned by no test file.
     Matching is by the last component of the name, as a whole word, in comment-stripped code, bare
     or qualified by a suffix of its namespace (`C.name`, `B.C.name` for `A.B.C.name`). A use after
     any other dot, as in dot notation `h.name`, is not counted: a regex cannot tell it from an
     unrelated declaration with the same last component."""
-    registry = root / "docs" / "results.yaml"
-    names = [n.strip() for line in re.findall(r"^\s*decls:\s*\[([^\]]*)\]",
-                                              registry.read_text(encoding="utf-8"), re.M)
-             for n in line.split(",") if n.strip()] if registry.exists() else []
+    files = [root / "docs" / "results.yaml", *sorted((root / "docs" / "results.d").glob("*.yaml"))]
+    text = "\n".join(f.read_text(encoding="utf-8") for f in files if f.is_file())
+    names = [n.strip() for line in re.findall(r"^\s*decls:\s*\[([^\]]*)\]", text, re.M)
+             for n in line.split(",") if n.strip()]
     tests = {str(f.relative_to(root)): strip_comments(f.read_text(encoding="utf-8"))
              for f in (root / "Lightlike").rglob("*.lean")
              if is_test_file(str(f.relative_to(root)))}
@@ -257,6 +307,7 @@ def main() -> int:
     errors += check_reachability()
     errors += check_exploratory_imports()
     errors += check_heartbeats()
+    errors += scan_constructs()
     for w in check_test_coverage()[:None if args.list_untested else 0]:
         print("WARN not mentioned by any test file:", w)
     if args.build_log:

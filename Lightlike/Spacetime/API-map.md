@@ -47,6 +47,8 @@ The volume measure of a Lorentzian metric on a manifold is the pushforward of `�
 
 The coordinate components and the volume measure are defined for a smooth symmetric nondegenerate bilinear field on the tangent bundle, a metric of any signature, of which a Lorentzian metric and a smooth Riemannian metric of Mathlib are the two cases; the coordinate matrix of a Riemannian metric is positive definite [25]. On an open subset of Euclidean space, a coordinate metric of any signature is a metric of the open subset with the same components in every chart, and the volume of a measurable set is the integral of the square root of the absolute value of the determinant over its image [26].
 
+A Lorentzian metric extends this structure, and the Levi-Civita connection, the curvature symmetries, the second Bianchi identity, the divergence of the Einstein tensor and the Einstein equations are stated and proved for it, so they hold for every metric of every signature [7].
+
 The curvature of a manifold-level metric as a tensor field is defined in `Connection.lean` [7]: a connection is Mathlib's
 covariant derivative on the tangent bundle; the Riemann curvature is `R(X, Y) Z = ∇_X ∇_Y Z - ∇_Y ∇_X Z - ∇_{[X,Y]} Z`
 (the sign convention of a Mathlib proposal, <https://github.com/leanprover-community/mathlib4/pull/45069>), the Ricci tensor is its trace over the first slot, the scalar
@@ -56,10 +58,18 @@ uniqueness of the Levi-Civita connection, the independence of the curvature from
 agreement with the coordinate curvature of [1] in every chart are stated as proof tasks `T-GE1-P2` to `T-GE1-P8` (including the second and contracted Bianchi identities and Minkowski space as a solution)
 (`Tasks/GE/`), with open proofs, except the last: on `ℝⁿ` the flat connection `∇_v Y = DY(v)` is a torsion-free connection compatible with the Minkowski metric with zero curvature, so Minkowski space satisfies the Einstein equations with `Λ = 0` [8]. [TODO]
 
+The Lie derivative of the metric along a vector field, `(L_X g)(V, W) = X(g(V, W)) - g([X, V], W) - g(V, [X, W])`, equals `g(∇_V X, W) + g(V, ∇_W X)` for the Levi-Civita connection (metric compatibility and vanishing torsion), so a field is a Killing field, `g(∇_v X, w) + g(v, ∇_w X) = 0`, exactly when `L_X g = 0` [27]. The bracket of two Killing fields is Killing, so the Killing fields form a Lie algebra [28]. In Minkowski space the affine fields `y -> A y + c` with `A` skew for the metric are Killing, the dilation is not, and their brackets are again of this form with the Poincare relations [29].
+
+For a non-null hypersurface given as a level set of a function, with unit normal `n`, the extrinsic curvature `K(v, w) = g(∇_v n, w)` is symmetric on tangent vectors, the Levi-Civita connection splits on tangent fields as `∇_Y Z = D_Y Z - ε K(Y, Z) n`, and the tangential and normal components of the curvature are the Gauss relation `g(R(X, Y) Z, W) = g(R^D(X, Y) Z, W) - ε (K(Y, Z) K(X, W) - K(X, Z) K(Y, W))` and the Codazzi relation `g(R(X, Y) Z, n) = -((D_X K)(Y, Z) - (D_Y K)(X, Z))` [30].
+
+The first variation of the Einstein-Hilbert density in coordinates: for a smooth metric `g` and a smooth symmetric perturbation `h` on `R^n`, the metric `g + t h` has volume density with derivative `1/2 sqrt(|g|) g^{ab} h_{ab}` [31], Christoffel symbols with the derivative `delta Gamma` [32], and curvature with first variation given by the linearised Riemann tensor [35] [36]; the contraction `g^{sigma nu} delta R_{sigma nu}` times the volume density is the divergence of `sqrt(|g|) W^rho` with `W^rho = g^{sigma nu} delta Gamma^rho_{sigma nu} - g^{rho sigma} delta Gamma^kappa_{kappa sigma}` (the Palatini identity [33] [34] [37]), so that the density `sqrt(|g|) (R - 2 Lambda)` has the first variation `-sqrt(|g|) (R^{ab} - R g^{ab}/2 + Lambda g^{ab}) h_{ab}` plus a divergence [37]. The divergence of a compactly supported field integrates to zero and the density is differentiable under the integral over a compact region, so the first variation of the integral over a compact region containing the support of the perturbation is `-∫ sqrt(|g|) (R^{ab} - R g^{ab}/2 + Lambda g^{ab}) h_{ab}`, with no boundary term [38]. That the critical points are the vacuum Einstein equations and the statement on a manifold are not yet proved. [TODO]
+
+A metric is a critical point of the Einstein-Hilbert action with a cosmological term, for every smooth symmetric perturbation of compact support, exactly when it satisfies the vacuum Einstein equations with that cosmological constant, by the first variation and the fundamental lemma of the calculus of variations [39]. In two dimensions the Einstein tensor vanishes identically, so every metric is critical for the action without cosmological term [40].
+
 In Minkowski space, an observer who travels out and back along two straight segments ages less
 than one who stays at rest [6].
 
-The null, weak, strong and dominant energy conditions are stated pointwise for a symmetric bilinear form on a Lorentzian vector space; dust with non-negative density satisfies all four, a positive cosmological constant violates the strong one, and a scalar field with negative potential at a point of vanishing gradient violates the weak one [27].
+The null, weak, strong and dominant energy conditions are stated pointwise for a symmetric bilinear form on a Lorentzian vector space; dust with non-negative density satisfies all four, a positive cosmological constant violates the strong one, and a scalar field with negative potential at a point of vanishing gradient violates the weak one [41].
 
 ## Lean References
 
@@ -102,7 +112,28 @@ The null, weak, strong and dominant energy conditions are stated pointwise for a
 24. Lightlike/Spacetime/VolumeMeasure.lean - `volumeMeasure`, `volumeMeasure_chart`, `volumeMeasure_minkowski`: the volume measure of a Lorentzian metric, its chart formula and the Minkowski trust check.
 25. Lightlike/Spacetime/NondegMetric.lean - `NondegMetric`, `NondegMetric.coordMetric`, `NondegMetric.ofRiemannian_coordMetric_posDef`: smooth symmetric nondegenerate bilinear fields on a manifold, the Lorentzian and the Riemannian metrics as cases, and the coordinate components with their tensor properties.
 26. Lightlike/Spacetime/NondegOpen.lean - `openNondeg`, `openNondeg_coordMetric`, `openNondeg_volumeMeasure`: a coordinate metric of any signature on an open subset of Euclidean space as a metric of the open subset, the coordinate components in every chart, and its volume measure.
-27. Lightlike/Spacetime/EnergyConditions.lean - `NullEC`, `WeakEC`, `StrongEC`, `DominantEC`, `dust_energyConditions`, `cosmo_energyConditions`, `scalar_negative_potential_violates_weak`: the pointwise energy conditions of a stress-energy tensor on a Lorentzian vector space and their trust checks.
+
+27. Lightlike/Spacetime/LieMetric.lean - `lieDerivMetric`, `IsKillingAt`, `lieDerivMetric_symm`, `lieDerivMetric_zero`, `lieDerivMetric_eq_of_isLeviCivita`, `isKillingAt_iff_lieDerivMetric_eq_zero`: the Lie derivative of a metric of any signature along a vector field, and for the Levi-Civita connection its equality with the symmetrised covariant derivative of the field, so that the Killing equation says the Lie derivative of the metric vanishes.
+
+28. Lightlike/Spacetime/KillingAlgebra.lean - `IsKillingNear`, `mlieBracket_jacobi`, `lieDerivMetric_lieBracket`, `IsKillingNear.lieBracket`: the bracket of two Killing fields of a metric of any signature is Killing (the Jacobi identity and the bracket formula for derivatives of functions).
+29. Lightlike/Spacetime/PoincareKilling.lean - `affField`, `affField_killing_iff`, `not_isKillingAt_dilation`, `mlieBracket_affField`, `skew_comm_skew`: in Minkowski space the affine fields with skew linear part are Killing, the dilation is not, and the affine fields close under the bracket with the Poincare relations.
+
+30. Lightlike/Spacetime/Hypersurface.lean - `Hypersurface.IsUnitNormal`, `Hypersurface.IsTangentNear`, `Hypersurface.secondFF`, `Hypersurface.lieBracket_isTangentNear`, `Hypersurface.secondFF_symm_fields`, `Hypersurface.exists_tangent_extension`, `Hypersurface.Dfield`, `Hypersurface.gaussCurv`, `Hypersurface.covK`, `Hypersurface.gauss_relation`, `Hypersurface.codazzi_relation`: the unit normal and second fundamental form of the level sets of a function, its symmetry, and the Gauss and Codazzi relations.
+
+31. Lightlike/Spacetime/VariationDet.lean - `hasDerivAt_det_add_smul`, `hasDerivAt_sqrt_abs_det_add_smul`, `hasDerivAt_inv_add_smul`, `fderiv_inv_entry`: Jacobi's formula for the determinant, the variation of the volume density and the derivative of the matrix inverse.
+32. Lightlike/Spacetime/VariationChristoffel.lean - `hasDerivAt_christoffel_add_smul`: the variation of the Christoffel symbols of the perturbed metric.
+33. Lightlike/Spacetime/PalatiniAlgebra.lean - `palatini_alg_nd`, `palatini_dd`: the algebra of the Palatini identity, finite sums only.
+34. Lightlike/Spacetime/VariationInverse.lean - `pd_inv_eq`, `pd_sqrt_abs_det`, `hasDerivAt_det_path`, `hasDerivAt_sqrt_abs`: the derivatives of the inverse metric and of the volume density in coordinates.
+35. Lightlike/Spacetime/VariationExchange.lean - `hasDerivAt_fderiv_exchange`, `contDiffAt_christoffel_family`, `dChristoffel`, `hasDerivAt_pd_christoffel`: exchange of the variation and a partial derivative.
+36. Lightlike/Spacetime/VariationRiemann.lean - `hasDerivAt_riemann`, `dRicci`, `hasDerivAt_ricci`, `hasDerivAt_scalarCurvature`: the first variation of the Riemann, Ricci and scalar curvature in coordinates.
+37. Lightlike/Spacetime/PalatiniCoord.lean - `Wvec`, `palatini_coord`, `ricciUp`, `hasDerivAt_lagrangian`: the Palatini identity in coordinates and the first variation of the Einstein-Hilbert density at a point.
+
+38. Lightlike/Spacetime/VariationIntegral.lean - `lagDensity`, `contDiffAt_lagDensity`, `hasDerivAt_integral_family`, `integral_pd_eq_zero`, `contDiff_flux`, `eh_first_variation`: the Einstein-Hilbert density is smooth in the perturbation parameter and the point, and the first variation of its integral over a compact region containing the support of the perturbation is the Einstein tensor plus cosmological term contracted with the perturbation.
+
+39. Lightlike/Spacetime/VariationCritical.lean - `einsteinUp`, `IsEHCritical`, `contDiff_ricci`, `contDiff_scalarCurvature`, `isEHCritical_iff`: a smooth nondegenerate metric is a critical point of the Einstein-Hilbert action, for perturbations of compact support, if and only if it satisfies the vacuum Einstein equations with a cosmological constant.
+
+40. Lightlike/Spacetime/EinsteinTwoDim.lean - `ricci_two_dim`, `einsteinUp_two_dim`, `isEHCritical_two_dim`: in two dimensions the Ricci tensor is half the scalar curvature times the metric, the Einstein tensor vanishes, and every smooth nondegenerate metric is a critical point of the Einstein-Hilbert action without cosmological term.
+41. Lightlike/Spacetime/EnergyConditions.lean - `NullEC`, `WeakEC`, `StrongEC`, `DominantEC`, `dust_energyConditions`, `cosmo_energyConditions`, `scalar_negative_potential_violates_weak`: the pointwise energy conditions of a stress-energy tensor on a Lorentzian vector space and their trust checks.
 
 ## References
 

@@ -167,7 +167,7 @@ theorem openMetric_coordMetric (U : Opens (Fin n → ℝ)) (g : (Fin n → ℝ) 
     (hy : y ∈ (extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).target) :
     (openMetric U g hg).coordMetric x₀ y = g y := by
   ext i j
-  rw [LorentzianMetric.coordMetric_eq _ x₀ hy, coordBasis_apply, coordBasis_apply, opens_symmL]
+  rw [NondegMetric.coordMetric_eq _ x₀ hy, coordBasis_apply, coordBasis_apply, opens_symmL]
   show matForm (g ((extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).symm y : U).1) (Pi.single i 1) (Pi.single j 1) = g y i j
   rw [matForm_single, opens_extChartAt_symm U x₀ hy]
 end Lightlike

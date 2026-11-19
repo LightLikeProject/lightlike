@@ -32,7 +32,7 @@ namespace Lightlike.OperatorAlgebras
 /-- **The cyclic-vector reduction of Shale's criterion**: a Bogoliubov transformation `T` is implemented by a unitary
 of a Fock representation iff there is a vector `Ψ` with `⟪Ψ, W f Ψ⟫ = exp (-‖T f‖² / 4)` for all `f`.
 
-This is a step of the library's proof of Shale's criterion (`T-OP2-P3`, source as there), stated for the cyclic vacuum characterization `FockRep`; it is not claimed to match a statement of another source. -/
+This is the library's own reduction of the question whether a Bogoliubov transformation is implemented to the existence of a vector with Gaussian characteristic function; it is not a statement of a source and is not attributed to one. -/
 theorem implements_iff_exists_gaussian_vector {h : Type u} [NormedAddCommGroup h] [InnerProductSpace ℂ h]
     {K : Type*} [NormedAddCommGroup K] [InnerProductSpace ℂ K] [CompleteSpace K]
     (R : FockRep h K) (T : Bogoliubov h) :

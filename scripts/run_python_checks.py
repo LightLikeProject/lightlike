@@ -108,7 +108,7 @@ CHECKS = [
 NOT_CHECKS = {"scripts/ci_check.py", "scripts/prune_docs.py", "scripts/gate.py", "scripts/sixj_support.py", "scripts/tooling_selftest.py",
               "scripts/run_python_checks.py", "scripts/api_map.py",
               "scripts/leansrc.py", "scripts/proof_task_check.py", "scripts/tasks.py",
-              "scripts/sources.py", "scripts/doc_refs_check.py", "scripts/leak_check.py",
+              "scripts/sources.py", "scripts/doc_refs_check.py", "scripts/leak_check.py", "scripts/generated.py",
               "scripts/regge/regge3d_convergence.py",  # a library of the regge3d_* checks (dihedral); its demo has no verdict
               "scripts/regge/gen_chart_change.py",  # generator of Lightlike/Regge/Conv3/ChartChangeClasses.lean
               "scripts/regge/gen_sv_sigma.py",  # generator of Lightlike/Regge/Linear3/SaintVenantSigma0..5.lean
@@ -254,11 +254,61 @@ def select(changed: set) -> tuple:
                  + (f": {', '.join(touched)}" if touched else ""))
 
 
+def _alive(pid: int) -> bool:
+    try:
+        os.kill(pid, 0)
+        return True
+    except ProcessLookupError:
+        return False
+    except PermissionError:
+        return True
+
+
+def take_slot(root: str, n: int) -> str:
+    """Wait for one of n slot directories under `root` (mkdir is atomic) and return its path. A slot
+    whose owner process is gone is taken over. Several runs on one machine share the slots, so that
+    together they run at most n scripts at a time, whatever --jobs each was given."""
+    os.makedirs(root, exist_ok=True)
+    while True:
+        for i in range(n):
+            d = os.path.join(root, f"slot{i}")
+            try:
+                os.mkdir(d)
+            except FileExistsError:
+                try:
+                    owner = int(pathlib.Path(d, "pid").read_text())
+                except (OSError, ValueError):
+                    owner = None
+                if owner is not None and not _alive(owner):
+                    pathlib.Path(d, "pid").unlink(missing_ok=True)
+                    try:
+                        os.rmdir(d)
+                    except OSError:
+                        pass
+                continue
+            pathlib.Path(d, "pid").write_text(str(os.getpid()))
+            return d
+        time.sleep(2)
+
+
 def run_one(c: str) -> tuple:
-    t = time.time()
-    r = subprocess.run([sys.executable, "-I", str(ROOT / c)], capture_output=True, text=True,
-                       cwd=ROOT)
-    return c, r, time.time() - t
+    """Runs one script. With LL_CHECK_SLOTS=<dir> (and LL_CHECK_SLOTS_N, default 6) it first takes a slot
+    shared by every run that sets the same directory; the local gates do, so that nine of them do not
+    run 36 scripts at once next to the Lean builds."""
+    root = os.environ.get("LL_CHECK_SLOTS")
+    slot = take_slot(root, max(1, int(os.environ.get("LL_CHECK_SLOTS_N", "6")))) if root else None
+    try:
+        t = time.time()
+        r = subprocess.run([sys.executable, "-I", str(ROOT / c)], capture_output=True, text=True,
+                           cwd=ROOT)
+        return c, r, time.time() - t
+    finally:
+        if slot:
+            pathlib.Path(slot, "pid").unlink(missing_ok=True)
+            try:
+                os.rmdir(slot)
+            except OSError:
+                pass
 
 
 def main() -> int:

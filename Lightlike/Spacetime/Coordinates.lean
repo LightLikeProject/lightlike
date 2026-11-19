@@ -1,15 +1,16 @@
 module
 
 public import Lightlike.Spacetime.Curvature
+public import Lightlike.Spacetime.NondegMetricBase
 
 /-!
 # Connecting manifold-level Lorentzian metrics to coordinate metrics
 
-`LorentzianMetric.coordMetric g x₀ y = (g(∂ᵢ, ∂ⱼ))ᵢⱼ` is the matrix of components of a smooth
+`NondegMetric.coordMetric g x₀ y = (g(∂ᵢ, ∂ⱼ))ᵢⱼ` is the matrix of components of a smooth
 Lorentzian metric `g` on a manifold `M` (modelled on `ℝⁿ`, no boundary) in the chart at `x₀`,
 evaluated at the chart point `y`.
 
-Main result: `LorentzianMetric.isCoordMetric_coordMetric` - on the chart's target (an open set
+Main result: `NondegMetric.isCoordMetric_coordMetric` - on the chart's target (an open set
 containing the image of `x₀`), these components form an `IsCoordMetric`: symmetric, invertible,
 with `C^∞` entries. Hence every coordinate curvature statement in `Curvature.lean` /
 `Einstein.lean` applies to the coordinate expression of any smooth Lorentzian metric.
@@ -73,32 +74,32 @@ lemma coordBasis_apply (x₀ : M) {p : M} (hp : p ∈ (chartTriv n x₀).baseSet
   simp [coordBasis, Trivialization.linearEquivAt_symm_apply, Trivialization.symmL_apply _ hp]
 
 /-- On the chart target, the coordinate components are `g(∂ᵢ, ∂ⱼ)` in the coordinate basis. -/
-lemma LorentzianMetric.coordMetric_eq (g : LorentzianMetric 𝓘(ℝ, Fin n → ℝ) M n) (x₀ : M)
+lemma NondegMetric.coordMetric_eq (g : NondegMetric 𝓘(ℝ, Fin n → ℝ) M) (x₀ : M)
     {y : Fin n → ℝ} (hy : y ∈ (extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).target) (i j : Fin n) :
     g.coordMetric x₀ y i j =
       g.g _ (coordBasis x₀ (symm_mem_chartTriv_baseSet x₀ hy) i)
         (coordBasis x₀ (symm_mem_chartTriv_baseSet x₀ hy) j) := by
   rw [coordBasis_apply, coordBasis_apply]
-  simp only [LorentzianMetric.coordMetric]
+  simp only [NondegMetric.coordMetric]
   rw [mfderiv_extChartAt_symm_eq x₀ hy]
   rfl
 
 /-- The coordinate matrix is symmetric (everywhere). -/
-theorem LorentzianMetric.coordMetric_transpose (g : LorentzianMetric 𝓘(ℝ, Fin n → ℝ) M n)
+theorem NondegMetric.coordMetric_transpose (g : NondegMetric 𝓘(ℝ, Fin n → ℝ) M)
     (x₀ : M) (y : Fin n → ℝ) : (g.coordMetric x₀ y)ᵀ = g.coordMetric x₀ y := by
   ext i j
-  simp only [Matrix.transpose_apply, LorentzianMetric.coordMetric]
+  simp only [Matrix.transpose_apply, NondegMetric.coordMetric]
   exact g.symm _ _ _
 
 /-- The coordinate matrix is invertible on the chart target: it is the Gram matrix of the
 nondegenerate form `g_p` in the coordinate basis of `T_p M`. -/
-theorem LorentzianMetric.coordMetric_isUnit_det (g : LorentzianMetric 𝓘(ℝ, Fin n → ℝ) M n)
+theorem NondegMetric.coordMetric_isUnit_det (g : NondegMetric 𝓘(ℝ, Fin n → ℝ) M)
     (x₀ : M) {y : Fin n → ℝ} (hy : y ∈ (extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).target) :
     IsUnit (g.coordMetric x₀ y).det := by
   set p := (extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).symm y
   have hp := symm_mem_chartTriv_baseSet x₀ hy
   have hdet := (LinearMap.BilinForm.nondegenerate_iff_det_ne_zero (coordBasis x₀ hp)).mp
-    (g.lorentzian p).bilinForm_nondegenerate
+    (g.bilinForm_nondegenerate p)
   have hmat : LinearMap.BilinForm.toMatrix (coordBasis x₀ hp) (g.g p).toBilinForm =
       g.coordMetric x₀ y := by
     ext i j
@@ -108,7 +109,7 @@ theorem LorentzianMetric.coordMetric_isUnit_det (g : LorentzianMetric 𝓘(ℝ, 
   exact hdet.isUnit
 
 /-- The coordinate components are `C^∞` on the chart target. -/
-theorem LorentzianMetric.coordMetric_smooth (g : LorentzianMetric 𝓘(ℝ, Fin n → ℝ) M n)
+theorem NondegMetric.coordMetric_smooth (g : NondegMetric 𝓘(ℝ, Fin n → ℝ) M)
     (x₀ : M) (i j : Fin n) :
     ContDiffOn ℝ ∞ (fun y => g.coordMetric x₀ y i j) (extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).target := by
   set e := chartTriv n x₀
@@ -139,7 +140,7 @@ theorem LorentzianMetric.coordMetric_smooth (g : LorentzianMetric 𝓘(ℝ, Fin 
 components `g.coordMetric x₀` form an `IsCoordMetric` (symmetric, invertible, `C^∞`) on the open
 chart target, which contains the chart image of `x₀`. So the coordinate curvature predicates
 (`IsFlatOn`, `IsVacuumSolution`) are meaningful for every manifold-level Lorentzian metric. -/
-theorem LorentzianMetric.isCoordMetric_coordMetric (g : LorentzianMetric 𝓘(ℝ, Fin n → ℝ) M n)
+theorem NondegMetric.isCoordMetric_coordMetric (g : NondegMetric 𝓘(ℝ, Fin n → ℝ) M)
     (x₀ : M) : IsCoordMetric (g.coordMetric x₀) (extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).target where
   isOpen := isOpen_extChartAt_target x₀
   symm y _ := g.coordMetric_transpose x₀ y
@@ -175,5 +176,11 @@ omit [IsManifold 𝓘(ℝ, Fin n → ℝ) ∞ M] in
 lemma mem_chart_target (x₀ : M) :
     extChartAt 𝓘(ℝ, Fin n → ℝ) x₀ x₀ ∈ (extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).target :=
   mem_extChartAt_target x₀
+
+
+/-- For a Lorentzian metric the general coordinate matrix is the Lorentzian one (the same expression: `ofLorentzian` is the
+underlying metric). Kept under this name for the files that cite it. -/
+theorem NondegMetric.ofLorentzian_coordMetric (g : LorentzianMetric 𝓘(ℝ, Fin n → ℝ) M n) (x₀ : M) :
+    (NondegMetric.ofLorentzian g).coordMetric x₀ = g.coordMetric x₀ := rfl
 
 end Lightlike

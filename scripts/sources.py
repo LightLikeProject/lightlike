@@ -34,6 +34,9 @@ from pathlib import Path
 import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "scripts"))
+import api_map  # noqa: E402
+
 SOURCES = ROOT / "docs/tasks/sources.yaml"
 VERIFIED = ROOT / "docs/tasks/sources-verified.json"
 UA = "lightlike-source-check/0.1 (https://github.com/LightlikeProject/lightlike)"
@@ -330,7 +333,7 @@ def location_uses():
             if r.get("location"):
                 uses.setdefault(r["ref"], {}).setdefault(r["location"], set()).update(
                     [r["check"]] if r.get("check") else [])
-    for e in yaml.safe_load((ROOT / "docs/results.yaml").read_text()) or []:
+    for e in api_map.load(ROOT):
         for r in (e.get("source") or {}).get("refs", []) if isinstance(e.get("source"), dict) else []:
             if r.get("location"):
                 uses.setdefault(r["ref"], {}).setdefault(r["location"], set()).update(
@@ -366,7 +369,7 @@ def cmd_check():
                 errs.append(f"milestone {mid}: reference {r.get('ref')} needs a location")
             elif not ((ver.get(r.get("ref")) or {}).get("locations", {}).get(r["location"]) or {}).get("verified"):
                 errs.append(f"milestone {mid}: location {r['location']!r} in {r.get('ref')} not verified")
-    results = yaml.safe_load((ROOT / "docs/results.yaml").read_text()) or []
+    results = api_map.load(ROOT)
     for e in results:
         src, rid = e.get("source"), e.get("id")
         if src in ("structural", "exploratory"):
