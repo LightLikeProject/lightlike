@@ -199,6 +199,7 @@ import Lightlike.FourD.Orientation
 import Lightlike.FourD.Pachner
 import Lightlike.FourD.Tests
 import Lightlike.GR.Einstein
+import Lightlike.GR.AdSInversion
 import Lightlike.GR.AdSPoincare
 import Lightlike.GR.EddingtonFinkelstein
 import Lightlike.GR.EuclideanCigar
