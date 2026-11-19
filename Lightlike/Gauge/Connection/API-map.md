@@ -32,7 +32,10 @@ satisfying (38) define, through the local forms (36), a connection form on the t
 representative in every trivialization is the given one; it is invariant (35), reproduces the Lie algebra on vertical
 vectors (34), and is the only form with these representatives (Theorem 10, p. 31) [11]. When `G` and the transition
 maps are `C^n` (`n ≥ 3`) and the potentials are `C^m` one-forms with `m + 1 ≤ n`, the form is a `C^m` section of
-`Hom(TP, g)`, so smooth data give a smooth form [12].
+`Hom(TP, g)`, so smooth data give a smooth form [12]. Its kernel is a connection in the sense of horizontal subspaces:
+with the projection `π : P → M`, the vertical subspaces `V_p = ker dπ_p` (the fundamental vectors) and the horizontal
+subspaces `H_p = ker ω_p` are complementary, `ω` represents the vertical projection, the horizontal distribution is
+invariant, `H_{p·k} = dR_k(H_p)`, and the horizontal part of a `C^m` vector field is `C^m` [13].
 
 ## Lean References
 
@@ -69,8 +72,14 @@ maps are `C^n` (`n ≥ 3`) and the potentials are `C^m` one-forms with `m + 1 �
    `Gauge.PrincipalCocycle.contMDiffAt_rightTrivial_coord`, `Gauge.PrincipalCocycle.contMDiffAt_adjointE_inv`,
    `Gauge.PrincipalCocycle.contMDiffAt_localForm_coord`, `Gauge.PrincipalCocycle.connForm_eq_of_mem`,
    `Gauge.PrincipalCocycle.connForm_contMDiffAt`, `Gauge.PrincipalCocycle.contMDiff_connForm`
+13. Lightlike/Gauge/Connection/PrincipalHorizontal.lean - `Gauge.PrincipalCocycle.proj`,
+   `Gauge.PrincipalCocycle.proj_act`, `Gauge.PrincipalCocycle.vertical`, `Gauge.PrincipalCocycle.horizontal`,
+   `Gauge.PrincipalCocycle.isCompl_vertical_horizontal`, `Gauge.PrincipalCocycle.mem_vertical_iff`,
+   `Gauge.PrincipalCocycle.vertProj`, `Gauge.PrincipalCocycle.vertProj_mem_vertical`,
+   `Gauge.PrincipalCocycle.sub_vertProj_mem_horizontal`, `Gauge.PrincipalCocycle.horizontal_act`,
+   `Gauge.PrincipalCocycle.contMDiffAt_fundamental`, `Gauge.PrincipalCocycle.contMDiffAt_horizontalPart`
 
 ## References
 
-1. G. Svetlichny, Preparation for Gauge Theory, arXiv:math-ph/9902027 (1999), §4.6 pp. 29-31 (eqs. (34)-(38), Theorem 10)
+1. G. Svetlichny, Preparation for Gauge Theory, arXiv:math-ph/9902027 (1999), §4.6 pp. 26-31 (connections as horizontal subspaces, pp. 26-27 and 29; eqs. (34)-(38), Theorem 10)
    and pp. 40-43 (eqs. (60), (62)-(64)).
