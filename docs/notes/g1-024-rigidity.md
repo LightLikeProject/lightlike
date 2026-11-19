@@ -43,4 +43,11 @@ Differences:
    Difference: representation, a manifold modelled on `Fin n → ℝ` without boundary, metric of any signature, the
    vanishing form (two Killing fields agreeing with their covariant derivatives at a point: the difference, by
    linearity, not stated separately).
-3. The bound (14.4) and the Killing algebra of the model type (G1-024's isometry-group form).
+3. (done) The bound (14.4), p. 338: `finrank_killingFieldSpace_le`, the smooth Killing fields of the Levi-Civita
+   connection on a connected nonempty manifold form a finite-dimensional real vector space of dimension at most
+   `n (n + 1) / 2`. The map `X ↦ (g(X, ∂_b), g(∇_{∂_a} X, ∂_b))` at a point is linear (the connection is additive and
+   homogeneous on differentiable fields), lands in `ℝⁿ` times the antisymmetric `n × n` matrices (Killing's equation),
+   and is injective (rigidity), as in the source's count.
+   Difference: representation, "independent Killing vectors" as the finite rank of the vector space of smooth Killing
+   fields (the source's linear independence with constant coefficients).
+4. The Killing algebra of the model type (G1-024's isometry-group form).

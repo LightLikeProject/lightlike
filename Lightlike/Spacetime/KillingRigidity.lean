@@ -2,6 +2,7 @@ import Lightlike.Spacetime.KillingRigidityCoord
 import Lightlike.Spacetime.ChartConnection
 import Lightlike.Spacetime.CurvatureSymmetries
 import Lightlike.Spacetime.LieMetric
+import Lightlike.Spacetime.KillingMinkowski
 
 /-!
 # Killing rigidity on a manifold (G1-024)
@@ -15,14 +16,18 @@ For a metric of any signature on a manifold modelled on `Fin n → ℝ` and a sm
 * `rigVec_chartCovector`: `θ` and `∂θ` vanish at a chart point iff `X` and `∇X` vanish there;
 * `killing_eq_zero_of_eq_zero`: **Killing rigidity**: on a connected manifold, a smooth Killing field with `X(p₀) = 0`
   and `∇X(p₀) = 0` vanishes everywhere (the coordinate rigidity `rigVec_eq_zero_of_isPreconnected` in a ball of each
-  chart, and the set where `X` and `∇X` vanish is open and closed).
+  chart, and the set where `X` and `∇X` vanish is open and closed);
+* `killingFieldSpace`, `finrank_killingFieldSpace_le`: the smooth Killing fields form a real vector space, of finite
+  dimension at most `n (n + 1) / 2` on a connected nonempty manifold: `X ↦ (g(X, ∂_b), g(∇_{∂_a} X, ∂_b))` at a point is
+  linear and injective (rigidity) into `ℝⁿ` times the antisymmetric matrices.
 
 ## References
 
 * M. Blau, *Lecture Notes on General Relativity* (version of 15 November 2026,
   http://www.blau.itp.unibe.ch/newlecturesGR.pdf), section 14.1, the statement after (14.2), p. 337: "a Killing vector
   field `K^μ(x)` is completely and uniquely determined everywhere by the values of `K_μ(x₀)` and `∇_μ K_ν(x₀)` at a
-  single point `x₀`".
+  single point `x₀`"; eq. (14.4), p. 338: "an n-dimensional space(-time) can have at most `n(n+1)/2` independent Killing
+  vectors".
 -/
 
 open Bundle Manifold Set Filter
@@ -193,5 +198,94 @@ theorem killing_eq_zero_of_eq_zero [PreconnectedSpace M]
   intro p
   have : p ∈ Z := hZu ▸ mem_univ p
   exact this.1
+
+/-- **The Killing fields** of the Levi-Civita connection: the smooth vector fields `X` with `g(∇_v X, w) + g(v, ∇_w X) = 0`
+everywhere, a real vector space. -/
+def killingFieldSpace : Submodule ℝ (Π p : M, TangentSpace 𝓘(ℝ, Fin n → ℝ) p) where
+  carrier := {X | ContMDiff 𝓘(ℝ, Fin n → ℝ) (𝓘(ℝ, Fin n → ℝ).prod 𝓘(ℝ, Fin n → ℝ)) ∞
+      (fun q : M => (⟨q, X q⟩ : TangentBundle 𝓘(ℝ, Fin n → ℝ) M)) ∧ ∀ p, IsKillingAt (leviCivita g) g X p}
+  add_mem' := by
+    rintro X Y ⟨hX, hKX⟩ ⟨hY, hKY⟩
+    refine ⟨hX.add_section hY, fun p v w => ?_⟩
+    have hcov := (leviCivita g).isCovariantDerivativeOn (s := Set.univ)
+    rw [hcov.add ((hX p).mdifferentiableAt (by simp)) ((hY p).mdifferentiableAt (by simp))]
+    simp only [add_apply, map_add]
+    linarith [hKX p v w, hKY p v w]
+  zero_mem' := by
+    refine ⟨contMDiff_zeroSection _ _, fun p v w => ?_⟩
+    have hcov := (leviCivita g).isCovariantDerivativeOn (s := Set.univ)
+    rw [hcov.zero]
+    simp
+  smul_mem' := by
+    rintro c X ⟨hX, hKX⟩
+    refine ⟨hX.const_smul_section, fun p v w => ?_⟩
+    have hcov := (leviCivita g).isCovariantDerivativeOn (s := Set.univ)
+    rw [hcov.smul_const c ((hX p).mdifferentiableAt (by simp))]
+    simp only [smul_apply, map_smul, smul_eq_mul]
+    rw [← mul_add, hKX p v w, mul_zero]
+
+/-- **At most `n (n + 1) / 2` independent Killing fields** (Blau (14.4)): on a connected nonempty manifold the Killing
+fields form a finite-dimensional space of dimension at most `n (n + 1) / 2`. -/
+theorem finrank_killingFieldSpace_le [PreconnectedSpace M] [Nonempty M] :
+    Module.Finite ℝ (killingFieldSpace g) ∧ Module.finrank ℝ (killingFieldSpace g) ≤ n * (n + 1) / 2 := by
+  obtain ⟨p₀⟩ := ‹Nonempty M›
+  set ψ := extChartAt 𝓘(ℝ, Fin n → ℝ) p₀ with hψ
+  have hy₀ : ψ p₀ ∈ ψ.target := mem_extChartAt_target p₀
+  have hp₀ : ψ.symm (ψ p₀) = p₀ := ψ.left_inv (mem_extChartAt_source p₀)
+  have hcov := (leviCivita g).isCovariantDerivativeOn (s := Set.univ)
+  -- the value and the covariant derivative at `p₀`, paired with the coordinate fields
+  let Φ : killingFieldSpace g →ₗ[ℝ] (Fin n → ℝ) × antisymmMatrices n :=
+    { toFun := fun K => (fun b => g.g p₀ (K.1 p₀) (coordField p₀ b p₀),
+        ⟨Matrix.of fun a b => g.g p₀ (leviCivita g K.1 p₀ (coordField p₀ a p₀)) (coordField p₀ b p₀), by
+          intro a b
+          have := K.2.2 p₀ (coordField p₀ a p₀) (coordField p₀ b p₀)
+          rw [g.symm p₀ (coordField p₀ a p₀)] at this
+          simp only [Matrix.of_apply]
+          linarith⟩)
+      map_add' := fun K L => by
+        ext b
+        · simp
+        · simp only [Submodule.coe_add, Matrix.of_apply, Prod.snd_add, Submodule.coe_add, Matrix.add_apply]
+          rw [hcov.add ((K.2.1 p₀).mdifferentiableAt (by simp)) ((L.2.1 p₀).mdifferentiableAt (by simp))]
+          simp
+      map_smul' := fun c K => by
+        ext b
+        · simp
+        · simp only [SetLike.val_smul, Matrix.of_apply, Prod.smul_snd, Matrix.smul_apply,
+            RingHom.id_apply]
+          rw [hcov.smul_const c ((K.2.1 p₀).mdifferentiableAt (by simp))]
+          simp }
+  have hinj : Function.Injective Φ := by
+    rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
+    intro K hK
+    have h1 : ∀ b, g.g p₀ (K.1 p₀) (coordField p₀ b p₀) = 0 := fun b => congrFun (congrArg Prod.fst hK) b
+    have h2 : ∀ a b, g.g p₀ (leviCivita g K.1 p₀ (coordField p₀ a p₀)) (coordField p₀ b p₀) = 0 := fun a b =>
+      congrFun (congrFun (congrArg (fun x => (x.2 : Matrix (Fin n) (Fin n) ℝ)) hK) a) b
+    have hX0 : K.1 p₀ = 0 := by
+      have := eq_of_g_coordField g p₀ hy₀ (v := K.1 (ψ.symm (ψ p₀))) (w := 0) fun l => by
+        rw [map_zero, zero_apply]
+        rw [hp₀]; exact h1 l
+      rwa [hp₀] at this
+    have hC0 : leviCivita g K.1 p₀ = 0 := by
+      have hp := symm_mem_chartTriv_baseSet p₀ hy₀
+      have h2' : ∀ a b, g.g (ψ.symm (ψ p₀)) (leviCivita g K.1 (ψ.symm (ψ p₀)) (coordField p₀ a (ψ.symm (ψ p₀))))
+          (coordField p₀ b (ψ.symm (ψ p₀))) = 0 := fun a b => by rw [hp₀]; exact h2 a b
+      have hq : leviCivita g K.1 (ψ.symm (ψ p₀)) = 0 := by
+        apply ContinuousLinearMap.coe_injective
+        refine (coordBasis p₀ hp).ext fun a => ?_
+        simp only [ContinuousLinearMap.coe_coe, ContinuousLinearMap.toLinearMap_zero, LinearMap.zero_apply]
+        rw [← coordField_apply p₀ a hy₀]
+        exact eq_of_g_coordField g p₀ hy₀ (w := 0) fun l => by rw [map_zero, zero_apply]; exact h2' a l
+      rwa [hp₀] at hq
+    exact Subtype.ext (funext (killing_eq_zero_of_eq_zero g K.2.1 K.2.2 hX0 hC0))
+  have hfin : Module.Finite ℝ (killingFieldSpace g) := Module.Finite.of_injective Φ hinj
+  refine ⟨hfin, (LinearMap.finrank_le_finrank_of_injective hinj).trans ?_⟩
+  have := Module.Free.of_divisionRing ℝ (antisymmMatrices n)
+  rw [Module.finrank_prod, Module.finrank_fin_fun, finrank_antisymmMatrices]
+  rcases n with _ | m
+  · simp
+  · have h2 : (m + 1) * (m + 1 + 1) = (m + 1) * m + 2 * (m + 1) := by ring
+    simp only [Nat.add_sub_cancel]
+    rw [h2, Nat.add_mul_div_left _ _ (by norm_num : 0 < 2), add_comm]
 
 end Lightlike
