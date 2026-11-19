@@ -198,6 +198,7 @@ import Lightlike.GR.EuclideanCone
 import Lightlike.GR.KruskalFunction
 import Lightlike.GR.KruskalExtension
 import Lightlike.GR.KruskalExterior
+import Lightlike.GR.KruskalGeodesic
 import Lightlike.GR.KruskalKretschmann
 import Lightlike.GR.KruskalManifold
 import Lightlike.GR.KruskalManifoldCurvature
