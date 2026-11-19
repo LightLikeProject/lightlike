@@ -1002,6 +1002,7 @@ import Lightlike.Spacetime.Causal.TestsMinkowski
 import Lightlike.Spacetime.Causal.TimeOrientation
 import Lightlike.Spacetime.ChartChange
 import Lightlike.Spacetime.BianchiSecond
+import Lightlike.Spacetime.ConformalCoord
 import Lightlike.Spacetime.ContractedBianchi
 import Lightlike.Spacetime.NullHypersurface
 import Lightlike.Spacetime.NullHypersurfaceCoord
