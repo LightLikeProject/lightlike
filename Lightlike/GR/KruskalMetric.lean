@@ -14,7 +14,10 @@ It is a coordinate metric on all of `X² - T² > -1` (`isCoordMetric_kruskal`), 
 `T = (e^{v/4M} - F(r) e^{-v/4M})/2`, `X = (e^{v/4M} + F(r) e^{-v/4M})/2` (`kruskalChange`) pulls the
 Kruskal metric back to the EF metric (`pullback_kruskal_ef`).
 
-Gap row G1-020. Comparison with Kruskal (1960), Szekeres (1960) and Carroll, ch. 5: pending.
+Gap row G1-020. Compared with S. M. Carroll, *Lecture Notes on General Relativity*, arXiv:gr-qc/9712019, chapter 7,
+eqs. (7.80)-(7.84): `ds² = (32 G³M³/r) e^{-r/2GM} (-dv² + du²) + r² dΩ²`, `(u² - v²) = (r/2GM - 1) e^{r/2GM}`, the region
+`v² < u² + 1`, the horizon `v = ±u` (Carroll's `(v, u)` are our `(T, X)`, `G = 1`); see `docs/notes/g1-020-kruskal-source.md`.
+Kruskal (1960), Szekeres (1960): not read.
 -/
 
 open Matrix Real

@@ -253,6 +253,27 @@ tasks:
     routes:
       - "Mollification: for f in C²_c(0,1), f * ρ_ε is C_c^∞(0,1) for small ε, and f * ρ_ε → f and (f * ρ_ε)' = f' * ρ_ε → f' in L²(0,1), so every graph point of the C² operator is a limit of graph points of the C_c^∞ operator; the other inclusion is monotonicity (momentumGraphSmooth_le). Needs: convolution with a mollifier commutes with the derivative and converges in L² (Mathlib: ContDiffBump, convolution approximation of the identity)."
 
+  - id: T-SP3-P1
+    milestone: SP3
+    kind: proof
+    title: "A logarithmic Tauberian theorem of Ingham type: if β log L(β) → a > 0 then log ρ[0, X] / (2 √(a X)) → 1"
+    file: Tasks/SP/T_SP3_P1.lean
+    decl: Lightlike.Tauberian.ingham_logarithmic
+    size: M
+    difficulty: intermediate
+    routes:
+      - "Upper bound ρ[0, X] ≤ e^{βX} L(β) with β = √(a/X). Lower bound: split L(β) into three windows around the saddle x = a/β²; the outer two are at most L(β)/4 each by comparing with the Laplace transform at β(1 + η/2) and β/(1 + η/2), so the middle window, at most e^{-βXl} ρ[0, Xh], carries at least half of L(β)."
+  - id: T-OP1-P7
+    milestone: OP1
+    kind: proof
+    title: "The Hille–Yosida generation theorem for contraction semigroups on a Banach space"
+    file: Tasks/OP/T_OP1_P7.lean
+    decl: Lightlike.OperatorAlgebras.hilleYosida_contraction_generation
+    size: L
+    difficulty: intermediate
+    routes:
+      - "Yosida approximation: with R(λ) = (λ - A)⁻¹, the bounded operators Y_λ = λ² R(λ) - λ give contractions exp(t Y_λ); a Cauchy estimate and the density of dom A show that exp(t Y_λ) converges strongly to a semigroup S(t), uniformly on compact time intervals; the difference quotients of S converge to A x on dom A (mean value inequality for exp(t Y_λ)), so the generator contains A, and a dissipative generator with λ - A surjective is A."
+
   - id: T-SF10-P1
     milestone: SF10
     kind: proof
@@ -705,6 +726,17 @@ tasks:
 # Upstream tasks: finished results that belong in Mathlib (general mathematics) or Physlib
 # (general physics), with the rework each needs. Exclusive, like definition
 # tasks; `target` gives the label `upstream: <library>`.
+  - id: T-OP6-P1
+    milestone: OP6
+    kind: proof
+    title: "The dual of the compact operators is the trace class: every continuous functional on the compact operators is a trace pairing with a unique trace-class operator of the same norm"
+    file: Tasks/OP/T_OP6_P1.lean
+    decl: Lightlike.OperatorAlgebras.TraceClass.compact_dual_eq_traceClass
+    size: L
+    difficulty: advanced
+    routes:
+      - "Finite-rank operators are dense in the compact ones; a functional on them gives a bounded sesquilinear form on rank-one operators (`TraceClass.sesquilinearFormOfFunctional`), hence a bounded operator by Riesz, and its polar decomposition shows it is trace class with `‖T‖₁ = ‖f‖` (Reed-Simon I, Theorem VI.26)."
+
 upstream:
   - id: T-UP-1
     target: Mathlib
