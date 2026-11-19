@@ -182,4 +182,67 @@ lemma abs_dkh_le (hM : 0 < M) {r0 r : ℝ} (hr0 : 0 < r0) (hr : r0 ≤ r) :
   have h1 : 1 / r ≤ 1 / r0 := div_le_div_of_nonneg_left zero_le_one hr0 hr
   exact mul_le_mul (kh_anti hM hr0 hr) (by linarith) (by positivity) (kh_pos M hM hr0).le
 
+/-! ### Geodesics on `[0, b)` -/
+
+lemma sC_eq_kF (hM : 0 < M) {z : Fin 4 → ℝ} (hz : z ∈ kruskalC) :
+    (1 / 2 * log (rhoSq z)) ^ 2 - z 0 ^ 2 = kF M (krC M z) :=
+  (kF_kG M hM hz.2).symm
+
+/-- The constants of motion on `[0, b)`. -/
+lemma kruskalC_constants (hM : 0 < M) {b : ℝ} (hgeo : IsGeodesicOn (kruskalCMetric M) c w (Ico 0 b))
+    (hc : ∀ t ∈ Ico 0 b, c t ∈ kruskalC) :
+    ∃ κ L2 A : ℝ, ∀ t ∈ Ico 0 b,
+      kh M (krC M (c t)) * (kXd (c t) (w t) ^ 2 - w t 0 ^ 2) + krC M (c t) ^ 2 * kOm (c t) (w t) = κ ∧
+      krC M (c t) ^ 4 * kOm (c t) (w t) = L2 ∧
+      c t 0 * (kh M (krC M (c t)) * kXd (c t) (w t)) -
+        1 / 2 * log (rhoSq (c t)) * (kh M (krC M (c t)) * w t 0) = A := by
+  refine ⟨kQ M (c 0) (w 0), kL2 M (c 0) (w 0), c 0 0 * (kh M (krC M (c 0)) * kXd (c 0) (w 0)) -
+    1 / 2 * log (rhoSq (c 0)) * (kh M (krC M (c 0)) * w 0 0), fun t ht => ⟨?_, ?_, ?_⟩⟩
+  · rw [← kQ_eq (c t) (w t) (hc t ht).1.ne']
+    exact eq_zero_of_hasDerivAt_zero_Ico (f := fun s => kQ M (c s) (w s))
+      (fun s hs => kruskalC_hasDerivAt_kQ hM hgeo hs (hc s hs)) ht
+  · exact eq_zero_of_hasDerivAt_zero_Ico (f := fun s => kL2 M (c s) (w s))
+      (fun s hs => kruskalC_hasDerivAt_L2 hM hgeo hs (hc s hs)) ht
+  · exact eq_zero_of_hasDerivAt_zero_Ico
+      (f := fun s => c s 0 * (kh M (krC M (c s)) * kXd (c s) (w s)) -
+        1 / 2 * log (rhoSq (c s)) * (kh M (krC M (c s)) * w s 0))
+      (fun s hs => kruskalC_hasDerivAt_boost hM hgeo hs (hc s hs)) ht
+
+/-- **The radius of a geodesic on a finite interval is bounded above**, if it is bounded below. -/
+theorem kruskalC_radius_bounded (hM : 0 < M) {b : ℝ} (hgeo : IsGeodesicOn (kruskalCMetric M) c w (Ico 0 b))
+    (hc : ∀ t ∈ Ico 0 b, c t ∈ kruskalC) {r0 : ℝ} (hr0 : 0 < r0)
+    (hr : ∀ t ∈ Ico 0 b, r0 ≤ krC M (c t)) : ∃ R : ℝ, ∀ t ∈ Ico 0 b, krC M (c t) ≤ R := by
+  obtain ⟨κ, L2, A, hcon⟩ := kruskalC_constants hM hgeo hc
+  set B := A ^ 2 / (16 * M ^ 2) + (1 + 2 * M / r0) * (|κ| + |L2| / r0 ^ 2) with hB
+  have hbound : ∀ t ∈ Ico 0 b, |dkG M (krC M (c t)) *
+      (2 * (1 / 2 * log (rhoSq (c t))) * kXd (c t) (w t) - 2 * c t 0 * w t 0)| ≤ √B := by
+    intro t ht
+    obtain ⟨h1, h2, h3⟩ := hcon t ht
+    have hrt : 0 < krC M (c t) := hr0.trans_le (hr t ht)
+    apply Real.abs_le_sqrt
+    rw [radial_sq hM hrt h1 h2 h3 (sC_eq_kF hM (hc t ht))]
+    have e1 : |1 - 2 * M / krC M (c t)| ≤ 1 + 2 * M / r0 := by
+      have h0 : 0 ≤ 2 * M / krC M (c t) := by positivity
+      have h4 : 2 * M / krC M (c t) ≤ 2 * M / r0 :=
+        div_le_div_of_nonneg_left (by positivity) hr0 (hr t ht)
+      rw [abs_le]
+      constructor <;> linarith
+    have e2 : |κ - L2 / krC M (c t) ^ 2| ≤ |κ| + |L2| / r0 ^ 2 := by
+      refine (abs_sub _ _).trans (add_le_add le_rfl ?_)
+      rw [abs_div, abs_of_pos (by positivity : (0 : ℝ) < krC M (c t) ^ 2)]
+      exact div_le_div_of_nonneg_left (abs_nonneg _) (by positivity)
+        (pow_le_pow_left₀ hr0.le (hr t ht) 2)
+    have e3 : (1 - 2 * M / krC M (c t)) * (κ - L2 / krC M (c t) ^ 2) ≤
+        (1 + 2 * M / r0) * (|κ| + |L2| / r0 ^ 2) := by
+      refine (le_abs_self _).trans ?_
+      rw [abs_mul]
+      exact mul_le_mul e1 e2 (abs_nonneg _) (by positivity)
+    rw [hB]
+    linarith
+  refine ⟨krC M (c 0) + √B * b, fun t ht => ?_⟩
+  have h := abs_sub_le_of_hasDerivAt_Ico (f := fun s => krC M (c s))
+    (fun s hs => kruskalC_hasDerivAt_r hM hgeo hs (hc s hs)) hbound ht
+  have := (abs_le.1 h).2
+  linarith
+
 end Lightlike
