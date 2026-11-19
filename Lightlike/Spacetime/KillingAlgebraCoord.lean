@@ -20,7 +20,8 @@ The bridge between the two coordinate forms of Killing's equation used in the li
 * `eq_sum_of_rigVec_eq_sum`: on a connected open set, a Killing covector whose value and first derivatives at a point
   are a combination of those of other Killing covectors is that combination (rigidity and linearity);
 * `pd_eq_of_killing`, `rigVec_eq_sum_of_data`: at a point the first derivatives of a Killing covector are its
-  antisymmetric part plus `Γᶜ_{ab} θ_c`, so the data `(θ, ½ (∂_a θ_b - ∂_b θ_a))` at the point determines `rigVec`.
+  antisymmetric part plus `Γᶜ_{ab} θ_c`, so the data `(θ, ½ (∂_a θ_b - ∂_b θ_a))` at the point determines `rigVec`;
+* `lowerVec_bracketCo`: the lowered bracket `[Y, Z]_b = Yᵈ ∇_d Z_b - Zᵈ ∇_d Y_b`.
 -/
 
 open Matrix Filter Set
@@ -347,5 +348,39 @@ theorem rigVec_eq_sum_of_data {ι : Type*} [Fintype ι] (hgs : ∀ z a b, g z a 
     · exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 end Data
+
+section LowerBracket
+
+variable {g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ} {Y Z : (Fin n → ℝ) → Fin n → ℝ} {y : Fin n → ℝ}
+
+/-- **The lowered bracket**: `[Y, Z]_b = Yᵈ ∇_d Z_b - Zᵈ ∇_d Y_b` (the connection is torsion free). -/
+theorem lowerVec_bracketCo (hgs : ∀ z a b, g z a b = g z b a) (hdet : (g y).det ≠ 0)
+    (hgd : ∀ a b, DifferentiableAt ℝ (fun z => g z a b) y) (hY : ∀ c, DifferentiableAt ℝ (fun z => Y z c) y)
+    (hZ : ∀ c, DifferentiableAt ℝ (fun z => Z z c) y) (b : Fin n) :
+    lowerVec g (bracketCo Y Z) y b =
+      ∑ d, (Y y d * covCo g (lowerVec g Z) d b y - Z y d * covCo g (lowerVec g Y) d b y) := by
+  simp only [covCo_lowerVec hgs hdet hgd hY, covCo_lowerVec hgs hdet hgd hZ]
+  unfold lowerVec bracketCo
+  have hΓ : ∀ l i j, christoffel g l i j y = christoffel g l j i y := fun l i j => christoffel_symm g hgs l i j y
+  simp only [mul_add, Finset.mul_sum, mul_sub, Finset.sum_sub_distrib, Finset.sum_add_distrib]
+  have sw3 : ∀ f : Fin n → Fin n → Fin n → ℝ, ∑ x, ∑ w, ∑ v, f x w v = ∑ v, ∑ w, ∑ x, f x w v := fun f => by
+    calc ∑ x, ∑ w, ∑ v, f x w v = ∑ w, ∑ x, ∑ v, f x w v := Finset.sum_comm
+      _ = ∑ w, ∑ v, ∑ x, f x w v := Finset.sum_congr rfl fun w _ => Finset.sum_comm
+      _ = ∑ v, ∑ w, ∑ x, f x w v := Finset.sum_comm
+  have e1 : ∑ d, ∑ l, ∑ c, Y y d * (g y b l * (christoffel g l d c y * Z y c)) =
+      ∑ d, ∑ l, ∑ c, Z y d * (g y b l * (christoffel g l d c y * Y y c)) := by
+    rw [sw3]
+    exact Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun d _ => by
+      rw [hΓ l d c]; ring
+  have e2 : ∑ c, ∑ d, g y b c * (Y y d * pd d (fun z => Z z c) y) = ∑ d, ∑ l, Y y d * (g y b l * pd d (fun z => Z z l) y) := by
+    rw [Finset.sum_comm]
+    exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
+  have e3 : ∑ c, ∑ d, g y b c * (Z y d * pd d (fun z => Y z c) y) = ∑ d, ∑ l, Z y d * (g y b l * pd d (fun z => Y z l) y) := by
+    rw [Finset.sum_comm]
+    exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
+  rw [e1, e2, e3]
+  ring
+
+end LowerBracket
 
 end Lightlike
