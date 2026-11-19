@@ -410,6 +410,7 @@ import Lightlike.NCG.QuaternionMatrix
 import Lightlike.NCG.QuaternionSummands
 import Lightlike.NCG.RealForm
 import Lightlike.NCG.RealSummands
+import Lightlike.NCG.TableOne
 import Lightlike.NCG.TensorForm
 import Lightlike.NCG.TestsBimodule
 import Lightlike.NCG.TestsClassification

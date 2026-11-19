@@ -71,3 +71,31 @@
   review: kernel-checked
   note: "Compared with Krajewski, arXiv:hep-th/9701081, Section 2, p. 2 (A = ⊕ Mₙᵢ(K), K = ℝ, ℂ, ℍ) and Section 3.1, p. 10 (read): 'Mₙ(ℝ) and Mₙ(ℍ) have only one irreducible representation, the fundamental one, whereas Mₙ(ℂ) has two inequivalent irreducible representations, the fundamental one and its complex conjugate. However, all our formulae remain valid, provided the indices i and j label irreducible representations of A'. Here A = ⊕ Mₙ(ℝ) × ⊕ Mₙ(ℂ) × ⊕ Mₙ(ℍ) with a real-linear π: the restrictions of π to the three factors give units ψ₁(E^i_αβ), ψ±(E^i_αβ) (ψ±(Y) = ½(ψ₂(Y) ∓ i ψ₂(iY)), over the representations (i, ±) that occur) and the quaternionic units of M₂ₙ(ℂ); together they are one system of matrix units, and the uniqueness theorem for complex summands gives the unitary onto the model indexed by the irreducible representations that occur. The sign conditions of Table 1, p. 14 (the S⁰-real structure and the intersection form) are not covered."
   since: unreleased
+
+- id: LL-XXXX-l
+  title: The chirality of an orientable finite spectral triple over a sum of complex matrix algebras is a sign on each vertex, symmetric under the charge conjugation
+  area: NCG
+  file: Lightlike/NCG/Chirality.lean
+  decls: [Lightlike.NCG.IsOrientable, Lightlike.NCG.chiScalar, Lightlike.NCG.grading_smul_of_mem_Vsub, Lightlike.NCG.chiScalarAt_eq, Lightlike.NCG.chiScalar_eq_one_or, Lightlike.NCG.chiScalar_symm]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: krajewski-1998, location: "Section 3.3", check: "chirality"}
+  review: kernel-checked
+  note: "Compared with Krajewski, arXiv:hep-th/9701081, Section 3.3, p. 13 (read): 'Since χ = Σ_p π(x^p) J π(y^p) J⁻¹, with x^p, y^p ∈ A, χᵢⱼ is scalar matrix. Furthermore χᵢⱼ = ±1 as follows from χ² = 1. We also have [χ, J] = 0 so that χᵢⱼ = χⱼᵢ.' Here for a complex-linear triple over ⊕ Mₙᵢ(ℂ) and an orientable grading γ = Σ_p π(x_p) J π(y_p) J: γ acts on the multiplicity space Vᵢⱼ as cᵢⱼ = Σ_p (x_p)ᵢ₀₀ conj((y_p)ⱼ₀₀), cᵢⱼ = ±1 on a nonzero vertex and cⱼᵢ = cᵢⱼ."
+  since: unreleased
+
+- id: LL-XXXX-m
+  title: The signed multiplicity matrix of an orientable real finite spectral triple over a mixed algebra is symmetric and satisfies the sign conditions of Krajewski's Table 1
+  area: NCG
+  file: Lightlike/NCG/TableOne.lean
+  decls: [Lightlike.NCG.IsOrientableA, Lightlike.NCG.Complexification.grading, Lightlike.NCG.Complexification.isOrientable, Lightlike.NCG.muSigned, Lightlike.NCG.muSigned_symm, Lightlike.NCG.table1_complex_complex, Lightlike.NCG.table1_complex_real, Lightlike.NCG.table1_complex_quat, Lightlike.NCG.table1_real_complex, Lightlike.NCG.table1_quat_complex]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: krajewski-1998, location: "Section 3.3", check: "chirality"}
+  review: kernel-checked
+  note: "Compared with Krajewski, arXiv:hep-th/9701081, Section 3.3, p. 14 and Table 1 (read): 'In the real case, it is still given by a symmetric matrix with entries in Z whose indices label irreducibles representations of A. However, it is no longer the intersection form and the signs of its entries satisfy additional requirements that are summarized ... in table 1': μ_{iαj} μ_{iᾱj} ≥ 0 and μ_{iαjβ} μ_{iᾱjβ̄} ≥ 0. Here μ_kl = Re(c_kl) r_kl on the complexified model of a mixed algebra ⊕ Mₙ(ℝ) × ⊕ Mₙ(ℂ) × ⊕ Mₙ(ℍ) with an orientable grading; the conditions are stated for both representations of a complex summand that occur. The relation of μ to the intersection form (the entries ∩ᵢⱼ of Table 1) is not covered."
+  since: unreleased

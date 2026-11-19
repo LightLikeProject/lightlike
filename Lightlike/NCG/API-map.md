@@ -78,6 +78,12 @@ For a complex-linear triple over `⊕ Mₙᵢ(ℂ)` and an orientable grading `�
 multiplicity space `Vᵢⱼ` as the scalar `cᵢⱼ = ∑_p (x_p)ᵢ₀₀ conj((y_p)ⱼ₀₀)`, the same at every diagonal corner; on a
 nonzero vertex `cᵢⱼ = ±1` and `cⱼᵢ = cᵢⱼ` {1} [25].
 
+A grading of a real triple is a grading of its complexification, and an orientable one
+`γ = ∑_p π(x_p) J π(y_p) J` stays orientable with `X_p = φ(x_p)`, `Y_p = φ(y_p)`. For a mixed algebra the signed
+multiplicities `μ_kl = c_kl r_kl` of the complexified model are symmetric, and satisfy the sign conditions of
+Krajewski's Table 1: `μ_{iαj} μ_{iᾱj} ≥ 0` for a complex summand `i` against a real or quaternionic `j`, and
+`μ_{iαjβ} μ_{iᾱjβ̄} ≥ 0` for two complex summands {1} [26].
+
 ## Lean References
 
 1. Lightlike/NCG/FiniteSpectralTriple.lean - `NCG.FiniteSpectralTriple`, `NCG.FiniteSpectralTriple.comm`,
@@ -163,6 +169,11 @@ nonzero vertex `cᵢⱼ = ±1` and `cⱼᵢ = cᵢⱼ` {1} [25].
     `NCG.chiScalar`, `NCG.grading_lU`, `NCG.grading_rU`, `NCG.grading_smul_of_mem_Vsub`, `NCG.lU_pi_lU'`,
     `NCG.rU_rightOp_rU'`, `NCG.chiScalarAt`, `NCG.grading_smul_of_corner`, `NCG.chiScalarAt_eq`,
     `NCG.chiScalar_mul_self`, `NCG.conj_chiScalar`, `NCG.chiScalar_eq_one_or`, `NCG.chiScalar_symm`
+26. Lightlike/NCG/TableOne.lean - `NCG.IsOrientableA`, `NCG.grading_comm_of_mem_span`, `NCG.Complexification.grading`,
+    `NCG.Complexification.isOrientable`, `NCG.chiScalarAt_conj`, `NCG.Xm`, `NCG.Rm`, `NCG.muSigned`,
+    `NCG.exists_ne_zero_of_multiplicity`, `NCG.muSigned_mul_nonneg_of`, `NCG.idxH_zero`, `NCG.table1_complex_complex`,
+    `NCG.table1_complex_real`, `NCG.table1_complex_quat`, `NCG.muSigned_symm`, `NCG.table1_real_complex`,
+    `NCG.table1_quat_complex`
 
 ## References
 
