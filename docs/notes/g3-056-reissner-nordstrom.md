@@ -31,5 +31,4 @@ S. M. Carroll, *Lecture Notes on General Relativity*, arXiv:gr-qc/9712019, chapt
 ## Out of scope (named in the docstring)
 
 The supersymmetric BPS bound (the row's "BPS bounds": `M ≥ |Q|` as a Bogomolny bound in N = 2 supergravity, saturated by the extremal solution)
-is not formalized; only the classical extremal Reissner–Nordström solution. Not proved: that `r = M` is an event horizon (causal structure), that
-uniqueness.
+is not formalized; only the classical extremal Reissner–Nordström solution. Not proved: that `r = M` is an event horizon (causal structure), uniqueness.
