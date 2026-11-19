@@ -2344,18 +2344,17 @@
   since: unreleased
 
 - id: LL-0179
-  title: A coordinate field along which the metric components are constant is a Killing field; the time translation of exterior Schwarzschild is a Killing field
+  title: The time translation of exterior Schwarzschild is a Killing field
   area: Spacetime
   file: Lightlike/Spacetime/SchwarzschildKilling.lean
-  decls: [Lightlike.coordField_killing, Lightlike.schwarzschild_killing]
+  decls: [Lightlike.schwarzschild_killing]
   status: proven
   tier: established
   source:
     refs:
-      - {ref: carroll-1997, location: "eq. (5.40)", check: "independent"}
       - {ref: carroll-1997, location: "eq. (7.41)", check: "Killing"}
   review: kernel-checked
-  note: "For the Levi-Civita connection of a smooth metric of any signature on a manifold modelled on R^n, the coordinate field d_k of a chart is a Killing field (g(nabla_v X, w) + g(v, nabla_w X) = 0, equivalently L_X g = 0) at every point of the chart domain when the coordinate components of the metric do not depend on x^k (from g_{nu lambda} Gamma^nu_{mu k} + g_{mu nu} Gamma^nu_{lambda k} = d_k g_{mu lambda}). For exterior Schwarzschild (r > 2M, 0 < theta < pi) the components do not depend on t, so d_t is a Killing field. Compared with Carroll's lecture notes (gr-qc/9712019), p. 140 after eq. (5.40) (independence of the components of one coordinate gives a symmetry; for the metric a Killing field, (5.41)-(5.42)) and ch. 7, pp. 173-174, eq. (7.41) (the timelike Killing vector K = d_t of Schwarzschild): match. Limits: the rotation Killing fields of Schwarzschild are not covered."
+  note: "For exterior Schwarzschild (r > 2M, 0 < theta < pi) and the Levi-Civita connection of its metric, the coordinate field d_t of every chart is a Killing field (g(nabla_v X, w) + g(v, nabla_w X) = 0, equivalently L_X g = 0) at every point of the chart domain: the coordinate components of the metric do not depend on t, so the criterion for coordinate fields (coordField_killing, CoordKilling.lean) applies. Compared with Carroll's lecture notes (gr-qc/9712019), ch. 7, pp. 173-174, eq. (7.41) (the timelike Killing vector K = d_t of Schwarzschild): match. Limits: the rotation Killing fields of Schwarzschild are not covered."
   since: unreleased
 
 - id: LL-0180
@@ -2388,14 +2387,14 @@
   title: The Cardy asymptotics of the integrated spectral density with relative error O(Δ^{-1/2}) from modular invariance (Mukhametzhanov–Zhiboedov)
   area: Asymptotics
   file: Lightlike/Asymptotics/Tauberian/CardyRelative.lean
-  decls: [Lightlike.Tauberian.cardy_mz, Lightlike.Tauberian.cardy_counting]
+  decls: [Lightlike.Tauberian.cardy_mz]
   status: proven
   tier: established
   source:
     refs:
       - {ref: mukhametzhanov-zhiboedov-2019, location: "eq. (1.8)"}
   review: kernel-checked
-  note: "For a positive measure σ (the spectrum in the variable x = Δ - c/12, v = c/12) whose Laplace transform Z(β) = ∫ e^{-βx} dσ is finite for β > 0, invariant under z ↦ 4π²/z for Re z > 0 (MZ (2.2)), and satisfies |Z(β) - e^{a/β}| ≤ C e^{(a-g)/β} for real 0 < β < β₀ (a = 4π² v = π² c/3, g > 0), the integrated density F(Δ) = σ(-∞, Δ - v] satisfies |F(Δ) · 2π (cΔ/3)^{1/4} e^{-2π√(cΔ/3)} - 1| ≤ K Δ^{-1/2} for large Δ (cardy_mz), i.e. MZ (1.8). cardy_counting is the intermediate form |σ(-∞, x] - I₀(2√(a x))| ≤ K x^{-3/4} e^{2√(a x)}, I₀(s) = (1/π) ∫₀^π e^{s cos θ} dθ. Compared with the source at eq. (1.8) and (2.2)-(2.4) (read 19 November 2026). Representation difference (reported to the maintainers, decision pending): a positive measure in the shifted variable instead of the density ρ(Δ) = Σ δ(Δ - Δ_O). The high-temperature hypothesis is assumed only for real β (MZ: |β| → 0 with Re β > 0), which is a weaker hypothesis. Route: MZ's Sections 3-5 with a pole-free smoothing in place of the contour functional (docs/notes/sp3-full-strength-attempts.md, attempt D). Non-vacuity: σ = δ_{-v} + ρ₀ (CardyExample.lean)."
+  note: "For a positive measure σ (the spectrum in the variable x = Δ - c/12, v = c/12) whose Laplace transform Z(β) = ∫ e^{-βx} dσ is finite for β > 0, invariant under z ↦ 4π²/z for Re z > 0 (MZ (2.2)), and satisfies |Z(β) - e^{a/β}| ≤ C e^{(a-g)/β} for real 0 < β < β₀ (a = 4π² v = π² c/3, g > 0), the integrated density F(Δ) = σ(-∞, Δ - v] satisfies |F(Δ) · 2π (cΔ/3)^{1/4} e^{-2π√(cΔ/3)} - 1| ≤ K Δ^{-1/2} for large Δ (cardy_mz), i.e. MZ (1.8). cardy_counting (CardyCounting.lean) is the intermediate form |σ(-∞, x] - I₀(2√(a x))| ≤ K x^{-3/4} e^{2√(a x)}, I₀(s) = (1/π) ∫₀^π e^{s cos θ} dθ. Compared with the source at eq. (1.8) and (2.2)-(2.4) (read 19 November 2026). Representation difference (reported to the maintainers, decision pending): a positive measure in the shifted variable instead of the density ρ(Δ) = Σ δ(Δ - Δ_O). The high-temperature hypothesis is assumed only for real β (MZ: |β| → 0 with Re β > 0), which is a weaker hypothesis. Route: MZ's Sections 3-5 with a pole-free smoothing in place of the contour functional (docs/notes/sp3-full-strength-attempts.md, attempt D). Non-vacuity: σ = δ_{-v} + ρ₀ (CardyExample.lean)."
   since: unreleased
 - id: LL-0183
   title: For a finite quantum system with Hamiltonian H, a state is KMS at inverse temperature beta iff it is the Gibbs state e^{-beta H} / tr e^{-beta H}
@@ -3503,4 +3502,17 @@
       - {ref: krajewski-1998, location: "Section 3.3", check: "chirality"}
   review: kernel-checked
   note: "Compared with Krajewski, arXiv:hep-th/9701081, Section 3.3, p. 14 and Table 1 (read): 'In the real case, it is still given by a symmetric matrix with entries in Z whose indices label irreducibles representations of A. However, it is no longer the intersection form and the signs of its entries satisfy additional requirements that are summarized ... in table 1': μ_{iαj} μ_{iᾱj} ≥ 0 and μ_{iαjβ} μ_{iᾱjβ̄} ≥ 0. Here μ_kl = Re(c_kl) r_kl on the complexified model of a mixed algebra ⊕ Mₙ(ℝ) × ⊕ Mₙ(ℂ) × ⊕ Mₙ(ℍ) with an orientable grading; the conditions are stated for both representations of a complex summand that occur. The intersection form ∩ᵢⱼ = Tr(χ π(pᵢ) J π(pⱼ) J⁻¹) of minimal projections pᵢ, pⱼ is every entry of Table 1: μ, Σ_α μ, 2μ (real against real, complex, quaternionic), Σ_αβ μ, 2 Σ_α μ (complex against complex, quaternionic) and 4μ (quaternionic against quaternionic), where μ_kl = c_kl r_kl with c_kl the scalar of the chirality on the vertex."
+  since: unreleased
+- id: LL-0264
+  title: A coordinate field along which the metric components are constant is a Killing field
+  area: Spacetime
+  file: Lightlike/Spacetime/CoordKilling.lean
+  decls: [Lightlike.coordField_killing]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (5.40)", check: "independent"}
+  review: kernel-checked
+  note: "For the Levi-Civita connection of a smooth metric of any signature on a manifold modelled on R^n, the coordinate field d_k of a chart is a Killing field (g(nabla_v X, w) + g(v, nabla_w X) = 0, equivalently L_X g = 0) at every point of the chart domain when the coordinate components of the metric do not depend on x^k (from g_{nu lambda} Gamma^nu_{mu k} + g_{mu nu} Gamma^nu_{lambda k} = d_k g_{mu lambda}). Compared with Carroll's lecture notes (gr-qc/9712019), p. 140 after eq. (5.40) (independence of the components of one coordinate gives a symmetry; for the metric a Killing field, (5.41)-(5.42)): match. Limits: manifolds modelled on R^n without boundary."
   since: unreleased

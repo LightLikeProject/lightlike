@@ -47,7 +47,7 @@ The Einstein equations with a source are the coordinate equations in every chart
 A Lorentzian coordinate metric on an open subset of `ℝⁿ` is a Lorentzian metric on that open subset as a manifold, with the same components in every chart [20]; exterior Schwarzschild on the manifold layer satisfies the vacuum Einstein equations and has vanishing Ricci tensor [21]; the Levi-Civita connection of a Lorentzian metric is a smooth covariant derivative [22].
 The volume measure of a Lorentzian metric on a manifold is the pushforward of `√|det g| dx` in each chart, and for a set in a chart domain it is given by the integral over its chart image in any chart [24].
 
-The coordinate components and the volume measure are defined for a smooth symmetric nondegenerate bilinear field on the tangent bundle, a metric of any signature, of which a Lorentzian metric and a smooth Riemannian metric of Mathlib are the two cases; the coordinate matrix of a Riemannian metric is positive definite [25]. On an open subset of Euclidean space, a coordinate metric of any signature is a metric of the open subset with the same components in every chart, and the volume of a measurable set is the integral of the square root of the absolute value of the determinant over its image [26].
+The coordinate components [1] and the volume measure are defined for a smooth symmetric nondegenerate bilinear field on the tangent bundle, a metric of any signature, of which a Lorentzian metric and a smooth Riemannian metric of Mathlib are the two cases [4]; the coordinate matrix of a Riemannian metric is positive definite [25]. On an open subset of Euclidean space, a coordinate metric of any signature is a metric of the open subset with the same components in every chart, and the volume of a measurable set is the integral of the square root of the absolute value of the determinant over its image [26].
 
 The Friedmann equations on a product of an open interval and the 3-sphere: the metric is the pullback of a bilinear form by a smooth embedding [93] (the round metric of the sphere is the case of the inclusion [94]); in the stereographic charts the round metric is conformal to the Euclidean one [95], the product model is moved to four coordinates [96], the FLRW metric is Lorentzian there [97] with the coordinate FLRW components [98], and the Einstein equations with a source reduce to the chart equations [99], hence to Friedmann's equations [100].
 
@@ -100,12 +100,12 @@ Anti-de Sitter space is conformal to half of the Einstein static universe: with 
 ## Lean References
 
 1. Lightlike/Spacetime/Curvature.lean - `IsCoordMetric`, `christoffel`, `riemann`, `ricci`,
-   `scalarCurvature`, `minkowski_flat`
+   `scalarCurvature`, `minkowski_flat`, `NondegMetric.coordMetric`
 2. Lightlike/Spacetime/RiemannSymmetry.lean - `IsCoordMetric.riemannLower_pair_symm`,
    `IsCoordMetric.bianchi_first`
 3. Lightlike/Spacetime/ChartChange.lean - `riemann_pullback`, `ricci_pullback`,
    `scalarCurvature_pullback`, `isVacuumSolution_pullback`
-4. Lightlike/Spacetime/Lorentzian.lean - `LorentzianMetric`
+4. Lightlike/Spacetime/Lorentzian.lean - `LorentzianMetric`, `NondegMetric`
 5. Lightlike/Spacetime/Coordinates.lean - `LorentzianMetric.isLorentzianCoordMetric_coordMetric`
 6. Lightlike/Spacetime/Minkowski.lean - `twin_paradox`
 7. Lightlike/Spacetime/Connection.lean - `Connection`, `Connection.curvatureAt`, `Connection.riemannLowerAt`,
@@ -136,7 +136,7 @@ Anti-de Sitter space is conformal to half of the Einstein static universe: with 
 22. Lightlike/Spacetime/LeviCivitaSmooth.lean - `contMDiffCovariantDerivative_leviCivita`: the Levi-Civita connection of a Lorentzian metric is smooth.
 23. Lightlike/Spacetime/EinsteinEquations.lean - `satisfiesEinstein_iff_ricci`, `satisfiesEinstein_zero_iff_ricci_eq_zero`: the vacuum Einstein equations with a cosmological constant are Ricci proportional to the metric, and Ricci-flat for no cosmological constant.
 24. Lightlike/Spacetime/VolumeMeasure.lean - `volumeMeasure`, `volumeMeasure_chart`, `volumeMeasure_minkowski`: the volume measure of a Lorentzian metric, its chart formula and the Minkowski trust check.
-25. Lightlike/Spacetime/NondegMetric.lean - `NondegMetric`, `NondegMetric.coordMetric`, `NondegMetric.ofRiemannian_coordMetric_posDef`: smooth symmetric nondegenerate bilinear fields on a manifold, the Lorentzian and the Riemannian metrics as cases, and the coordinate components with their tensor properties.
+25. Lightlike/Spacetime/NondegMetric.lean - `NondegMetric.ofRiemannian_coordMetric_posDef`, `NondegMetric.ofRiemannian_abs_det`: for a smooth Riemannian metric the coordinate matrix is positive definite on the chart target, and its determinant equals its absolute value.
 26. Lightlike/Spacetime/NondegOpen.lean - `openNondeg`, `openNondeg_coordMetric`, `openNondeg_volumeMeasure`: a coordinate metric of any signature on an open subset of Euclidean space as a metric of the open subset, the coordinate components in every chart, and its volume measure.
 27. Lightlike/Spacetime/LieMetric.lean - `lieDerivMetric`, `IsKillingAt`, `lieDerivMetric_symm`, `lieDerivMetric_zero`, `lieDerivMetric_eq_of_isLeviCivita`, `isKillingAt_iff_lieDerivMetric_eq_zero`: the Lie derivative of a metric of any signature along a vector field, and for the Levi-Civita connection its equality with the symmetrised covariant derivative of the field, so that the Killing equation says the Lie derivative of the metric vanishes.
 28. Lightlike/Spacetime/KillingAlgebra.lean - `IsKillingNear`, `mlieBracket_jacobi`, `lieDerivMetric_lieBracket`, `IsKillingNear.lieBracket`: the bracket of two Killing fields of a metric of any signature is Killing (the Jacobi identity and the bracket formula for derivatives of functions).
@@ -152,7 +152,7 @@ Anti-de Sitter space is conformal to half of the Einstein static universe: with 
 38. Lightlike/Spacetime/VariationIntegral.lean - `lagDensity`, `contDiffAt_lagDensity`, `hasDerivAt_integral_family`, `integral_pd_eq_zero`, `contDiff_flux`, `eh_first_variation`: the Einstein-Hilbert density is smooth in the perturbation parameter and the point, and the first variation of its integral over a compact region containing the support of the perturbation is the Einstein tensor plus cosmological term contracted with the perturbation.
 39. Lightlike/Spacetime/VariationCritical.lean - `einsteinUp`, `IsEHCritical`, `contDiff_ricci`, `contDiff_scalarCurvature`, `isEHCritical_iff`: a smooth nondegenerate metric is a critical point of the Einstein-Hilbert action, for perturbations of compact support, if and only if it satisfies the vacuum Einstein equations with a cosmological constant.
 40. Lightlike/Spacetime/EinsteinTwoDim.lean - `ricci_two_dim`, `einsteinUp_two_dim`, `isEHCritical_two_dim`: in two dimensions the Ricci tensor is half the scalar curvature times the metric, the Einstein tensor vanishes, and every smooth nondegenerate metric is a critical point of the Einstein-Hilbert action without cosmological term.
-41. Lightlike/Spacetime/CoordKilling.lean - `coordField_killing`: a coordinate field along which the metric components are constant is a Killing field (`IsKillingAt`) of the Levi-Civita connection.
+41. Lightlike/Spacetime/CoordKilling.lean - `coordField_killing`: a coordinate field along which the metric components are constant is a Killing field of the Levi-Civita connection.
 42. Lightlike/Spacetime/SchwarzschildKilling.lean - `schwarzschild_killing`: the time translation `∂_t` is a Killing field of exterior Schwarzschild.
 43. Lightlike/Spacetime/EnergyConditions.lean - `NullEC`, `WeakEC`, `StrongEC`, `DominantEC`, `dust_energyConditions`, `cosmo_energyConditions`, `scalar_negative_potential_violates_weak`: the pointwise energy conditions of a stress-energy tensor on a Lorentzian vector space and their trust checks.
 44. Lightlike/Spacetime/IsometryKilling.lean - `fderiv_apply_inr_of_id`, `killing_of_isometry_family`, `killing_of_isometry_family_on`: the generator of a one-parameter family of isometries is a Killing field, in coordinates.
