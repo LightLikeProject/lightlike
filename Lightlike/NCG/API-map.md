@@ -175,7 +175,7 @@ Krajewski's Table 1: `μ_{iαj} μ_{iᾱj} ≥ 0` for a complex summand `i` agai
     `NCG.Complexification.isOrientable`, `NCG.chiScalarAt_conj`, `NCG.Xm`, `NCG.Rm`, `NCG.muSigned`,
     `NCG.exists_ne_zero_of_multiplicity`, `NCG.muSigned_mul_nonneg_of`, `NCG.idxH_zero`, `NCG.table1_complex_complex`,
     `NCG.table1_complex_real`, `NCG.table1_complex_quat`, `NCG.muSigned_symm`, `NCG.table1_real_complex`,
-    `NCG.table1_quat_complex`
+    `NCG.table1_quat_complex`, `NCG.trace_grading_of_phi`, `NCG.pR`, `NCG.phiMixed_pR`
 
 ## References
 

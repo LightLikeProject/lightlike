@@ -21,7 +21,8 @@ vertex, and the signed multiplicities `μ_kl = c_kl r_kl` satisfy Table 1's sign
 * `Xm`, `Rm`, `muSigned`, `exists_ne_zero_of_multiplicity`, `muSigned_mul_nonneg_of`, `idxH_zero`: the signed
   multiplicities of a mixed algebra;
 * `table1_complex_complex`, `table1_complex_real`, `table1_complex_quat`, `muSigned_symm`, `table1_real_complex`,
-  `table1_quat_complex`: Table 1's sign conditions.
+  `table1_quat_complex`: Table 1's sign conditions;
+* `trace_grading_of_phi`, `pR`, `phiMixed_pR`: the intersection form through the complexification.
 -/
 
 namespace Lightlike.NCG
@@ -71,6 +72,28 @@ lemma chiScalarAt_conj {n : ι → ℕ} {m : ℕ} (X Y : Fin m → MatSum n) {k 
     chiScalarAt X Y k' l' α' β' = starRingEnd ℂ (chiScalarAt X Y k l α β) := by
   simp only [chiScalarAt, hX, hY, map_sum, map_mul]
 
+/-- **The intersection form through a complexification**: if `φ(p)` and `φ(q)` are sums of diagonal corners, then
+`Tr(γ π(p) J π(q) J) = ∑_t ∑_u c_{k_t l_u} r_{k_t l_u}` on the complexified model. -/
+theorem trace_grading_of_phi [∀ i, NeZero (d i)] (C : Complexification T d) (G : Grading T R) {m : ℕ}
+    {x y : Fin m → A} (hG : IsOrientableA R G x y) (p q : A) {s s' : Type*} [Fintype s] [Fintype s'] (k : s → ι)
+    (α : ∀ t, Fin (d (k t))) (l : s' → ι) (β : ∀ u, Fin (d (l u)))
+    (hp : C.φ p = ∑ t, unit d (k t) (α t) (α t)) (hq : C.φ q = ∑ u, unit d (l u) (β u) (β u)) :
+    LinearMap.trace ℂ H ((G.γ : H →ₗ[ℂ] H) * (T.π p : H →ₗ[ℂ] H) * rightOp R q) =
+      ∑ t, ∑ u, chiScalar (fun r => C.φ (x r)) (fun r => C.φ (y r)) (k t) (l u) *
+        multiplicity (C.realStructure R) (k t) (l u) := by
+  have h1 : (T.π p : H →ₗ[ℂ] H) = ∑ t, lU C.triple (k t) (α t) (α t) := by
+    ext v
+    simp only [LinearMap.sum_apply, lU, ContinuousLinearMap.coe_coe]
+    rw [C.pi_eq, hp, map_sum, ContinuousLinearMap.sum_apply]
+    rfl
+  have h2 : rightOp R q = ∑ u, rU (C.realStructure R) (l u) (β u) (β u) := by
+    ext v
+    simp only [LinearMap.sum_apply, rU, rightOp_apply]
+    rw [C.pi_eq, hq, map_sum, ContinuousLinearMap.sum_apply, map_sum]
+    rfl
+  rw [h1, h2]
+  exact trace_grading_sum (C.realStructure R) C.isComplexLinear (C.grading R G) (C.isOrientable R G hG) k α l β
+
 section Mixed
 
 variable {ι₁ ι₂ ι₃ : Type*} [Fintype ι₁] [DecidableEq ι₁] [Fintype ι₂] [DecidableEq ι₂] [Fintype ι₃]
@@ -114,6 +137,43 @@ lemma muSigned_mul_nonneg_of (hG : IsOrientableA R' G x y) {k k' l l' : ι₁ �
   have : 0 ≤ (chiScalar (Xm x) (Xm y) k l).re * (chiScalar (Xm x) (Xm y) k l).re := mul_self_nonneg _
   have hm : (0 : ℝ) ≤ multiplicity (Rm R') k l * multiplicity (Rm R') k' l' := by positivity
   nlinarith
+
+/-- The minimal projection `E^i_{00}` of a real summand. -/
+def pR (i : ι₁) : MatSumMixed n₁ n₂ n₃ := (Pi.single i (Matrix.single 0 0 1), 0, 0)
+
+/-- **`φ(E^i_{00}) = E^{(i)}_{00}`** for a real summand. -/
+lemma phiMixed_pR (i : ι₁) :
+    phiMixed T' (pR i) = unit (Sum.elim n₁ (dMixed T')) (Sum.inl i) 0 0 := by
+  funext q
+  rcases q with k | p | j
+  · show phiR (Pi.single i (Matrix.single 0 0 1) : MatSumR n₁) k = _
+    simp only [unit]
+    by_cases hk : k = i
+    · subst hk
+      rw [Pi.single_eq_same]
+      show ((Pi.single k (Matrix.single 0 0 1) : MatSumR n₁) k).map (↑) = (Matrix.single (0 : Fin (n₁ k)) 0 (1 : ℂ))
+      rw [Pi.single_eq_same]
+      ext a b
+      by_cases ha : (0 : Fin (n₁ k)) = a <;> by_cases hb : (0 : Fin (n₁ k)) = b <;>
+        simp [Matrix.single_apply, ha, hb] <;> split_ifs <;> simp
+    · rw [Pi.single_eq_of_ne (show (Sum.inl k : ι₁ ⊕ (BlocksP (psi₂ T') ⊕ ι₃)) ≠ Sum.inl i from
+        fun h => hk (Sum.inl_injective h))]
+      ext a b
+      simp [phiR_apply, ofRealM, Pi.single_eq_of_ne hk]
+      rfl
+  · show phiPAll (0 : MatSum n₂) p.1 = _
+    simp only [unit]
+    rw [Pi.single_eq_of_ne (show (Sum.inr (Sum.inl p) : ι₁ ⊕ (BlocksP (psi₂ T') ⊕ ι₃)) ≠ Sum.inl i from
+      Sum.inr_ne_inl)]
+    ext a b
+    simp [phiPAll]
+    rfl
+  · show phiH (0 : MatSumH n₃) j = _
+    simp only [unit]
+    rw [Pi.single_eq_of_ne (show (Sum.inr (Sum.inr j) : ι₁ ⊕ (BlocksP (psi₂ T') ⊕ ι₃)) ≠ Sum.inl i from
+      Sum.inr_ne_inl)]
+    rw [map_zero]
+    rfl
 
 variable (x y)
 
