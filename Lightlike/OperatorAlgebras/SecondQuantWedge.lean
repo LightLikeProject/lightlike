@@ -1,5 +1,9 @@
 import Mathlib.Data.Fin.Tuple.Sort
 import Mathlib.GroupTheory.Perm.Sign
+import Mathlib.Analysis.Normed.Lp.lpSpace
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Lightlike.OperatorAlgebras.SecondQuantSlot
+import Mathlib.Analysis.InnerProductSpace.Adjoint
 
 /-!
 # The sign of an injective tuple
@@ -10,7 +14,10 @@ For the embedding of the `n`-particle fermionic Fock space `Γₙ` (the closed s
 `f` enumerating `S`, where the sign of `f` is that of the permutation sorting it (Mathlib's `Tuple.sort`).
 
 * `tupleSign`, `sort_comp_perm`, `tupleSign_comp`: `sign(f ∘ τ) = sign τ · sign f` for injective `f`;
-* `Enum`, `enumEquiv`, `card_enum`: an `n`-element set has `n!` enumerations by injective tuples.
+* `Enum`, `enumEquiv`, `card_enum`: an `n`-element set has `n!` enumerations by injective tuples;
+* `embFun`, `hasSum_fiber`, `hasSum_norm_embFun`, `embL`, `norm_sq_embL`, `norm_embL_le`, `norm_embL_of_support`, `embCLM`:
+  the embedding `Eₙ ψ (f) = (n!)^{-1/2} sign(f) ψ(image f)`, a contraction, isometric on the `n`-particle vectors;
+* `norm_embCLM_le`, `dGammaFock`, `norm_dGammaFock_le`: `dΓₙ₊₁(h) = Eₙ₊₁* (∑ⱼ hⱼ) Eₙ₊₁` and `‖dΓₙ₊₁(h)‖ ≤ (n + 1) ‖h‖`.
 -/
 
 namespace Lightlike.OperatorAlgebras.SecondQuantWedge
@@ -77,5 +84,180 @@ theorem card_enum (n : ℕ) (S : Finset ι) (hS : S.card = n) : Fintype.card (En
   classical
   rw [Fintype.card_congr (enumEquiv n S hS), Fintype.card_equiv (Fintype.equivOfCardEq (by simp [hS])),
     Fintype.card_fin]
+
+section Embedding
+
+variable {n : ℕ}
+
+/-- **The coefficients of the embedding** `Γₙ → ℓ²(Fin n → ι)`: `(n!)^{-1/2} sign(f) ψ(image f)` on injective tuples. -/
+noncomputable def embFun (n : ℕ) (ψ : Finset ι → ℂ) (f : Fin n → ι) : ℂ :=
+  if Function.Injective f then ((Real.sqrt n.factorial : ℝ)⁻¹ : ℂ) * ((tupleSign f : ℤ) : ℂ) * ψ (Finset.univ.image f)
+  else 0
+
+/-- `|sign| = 1`. -/
+lemma norm_tupleSign (f : Fin n → ι) : ‖((tupleSign f : ℤ) : ℂ)‖ = 1 := by
+  rcases Int.units_eq_one_or (tupleSign f) with h | h <;> simp [h]
+
+/-- `‖embFun ψ f‖² = ‖ψ(image f)‖² / n!` on injective tuples. -/
+lemma norm_embFun_sq (ψ : Finset ι → ℂ) (f : Fin n → ι) :
+    ‖embFun n ψ f‖ ^ 2 = if Function.Injective f then ‖ψ (Finset.univ.image f)‖ ^ 2 / n.factorial else 0 := by
+  unfold embFun
+  split_ifs
+  · rw [norm_mul, norm_mul, norm_tupleSign, mul_one, mul_pow, norm_inv, Complex.norm_real, Real.norm_eq_abs,
+      abs_of_nonneg (Real.sqrt_nonneg _), inv_pow, Real.sq_sqrt (by positivity)]
+    ring
+  · simp
+
+/-- The tuples with image `S`. -/
+abbrev Fiber (n : ℕ) (S : Finset ι) := {f : Fin n → ι // Finset.univ.image f = S}
+
+/-- A fiber is finite. -/
+instance (S : Finset ι) : Finite (Fiber n S) := by
+  refine Finite.of_injective (fun f : Fiber n S => fun i : Fin n =>
+    (⟨f.1 i, (Finset.ext_iff.mp f.2 (f.1 i)).mp (Finset.mem_image_of_mem f.1 (Finset.mem_univ i))⟩ : S)) fun f g h => ?_
+  apply Subtype.ext
+  funext i
+  exact congrArg Subtype.val (congrFun h i)
+
+/-- A tuple of `n` entries whose image has `n` elements is injective. -/
+lemma injective_of_card_image {f : Fin n → ι} (h : (Finset.univ.image f).card = n) : Function.Injective f := by
+  have hinj := Finset.card_image_iff.mp (by rw [h, Finset.card_univ, Fintype.card_fin])
+  exact fun a b hab => hinj (Finset.mem_coe.mpr (Finset.mem_univ a)) (Finset.mem_coe.mpr (Finset.mem_univ b)) hab
+
+/-- **The fiber sum**: over the tuples with image `S`, `∑ ‖embFun ψ f‖² = ‖ψ S‖²` if `|S| = n`, and `0` otherwise. -/
+lemma hasSum_fiber (ψ : Finset ι → ℂ) (S : Finset ι) :
+    HasSum (fun f : Fiber n S => ‖embFun n ψ f.1‖ ^ 2) (if S.card = n then ‖ψ S‖ ^ 2 else 0) := by
+  have := Fintype.ofFinite (Fiber n S)
+  convert hasSum_fintype (fun f : Fiber n S => ‖embFun n ψ f.1‖ ^ 2) using 1
+  simp only [norm_embFun_sq]
+  split_ifs with hS
+  · have hinj : ∀ f : Fiber n S, Function.Injective f.1 := fun f => injective_of_card_image (by rw [f.2, hS])
+    simp only [hinj, if_true]
+    rw [Finset.sum_congr rfl fun f _ => by rw [f.2]]
+    rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
+    have hcard : Fintype.card (Fiber n S) = n.factorial := by
+      rw [← card_enum n S hS]
+      exact Fintype.card_congr ⟨fun f => ⟨f.1, hinj f, f.2⟩, fun f => ⟨f.1, f.2.2⟩, fun _ => rfl, fun _ => rfl⟩
+    rw [hcard]
+    field_simp
+  · refine (Finset.sum_eq_zero fun f _ => ?_).symm
+    rw [if_neg]
+    intro hf
+    apply hS
+    rw [← f.2, Finset.card_image_of_injective _ hf, Finset.card_univ, Fintype.card_fin]
+
+/-- **`‖Eₙ ψ‖² = ∑_{|S| = n} ‖ψ S‖²`**: the sum over all tuples, arranged by their images. -/
+theorem hasSum_norm_embFun (ψ : Finset ι → ℂ) (hψ : Summable fun S => ‖ψ S‖ ^ 2) :
+    HasSum (fun f : Fin n → ι => ‖embFun n ψ f‖ ^ 2) (∑' S : Finset ι, if S.card = n then ‖ψ S‖ ^ 2 else 0) := by
+  set g : Finset ι → ℝ := fun S => if S.card = n then ‖ψ S‖ ^ 2 else 0 with hg_def
+  have hg : Summable g := hψ.of_nonneg_of_le (fun S => by simp only [hg_def]; split_ifs <;> positivity)
+    (fun S => by simp only [hg_def]; split_ifs <;> [exact le_rfl; positivity])
+  let e := Equiv.sigmaFiberEquiv (fun f : Fin n → ι => Finset.univ.image f)
+  rw [← e.hasSum_iff]
+  have hfib : ∀ S, HasSum (fun c : Fiber n S => ‖embFun n ψ (e ⟨S, c⟩)‖ ^ 2) (g S) := fun S => hasSum_fiber ψ S
+  refine HasSum.sigma_of_hasSum hg.hasSum hfib ?_
+  exact (summable_sigma_of_nonneg (fun _ => sq_nonneg _)).mpr
+    ⟨fun S => (hfib S).summable, hg.congr fun S => ((hfib S).tsum_eq).symm⟩
+
+/-- The squares of an `ℓ²` vector are summable. -/
+lemma summable_sq_of_lp (ψ : lp (fun _ : Finset ι => ℂ) 2) : Summable fun S => ‖ψ S‖ ^ 2 := by
+  have h := (lp.memℓp ψ).summable (by norm_num : 0 < (2 : ENNReal).toReal)
+  simpa [Real.rpow_two] using h
+
+/-- **`Eₙ ψ` is square-summable.** -/
+lemma memℓp_embFun (ψ : lp (fun _ : Finset ι => ℂ) 2) : Memℓp (embFun n ψ) 2 := by
+  refine memℓp_gen ?_
+  simpa [Real.rpow_two] using (hasSum_norm_embFun (n := n) ψ (summable_sq_of_lp ψ)).summable
+
+variable (n) in
+/-- **The embedding `Eₙ : ℓ²(Finset ι) → ℓ²(Fin n → ι)`**, a linear map. -/
+noncomputable def embL : lp (fun _ : Finset ι => ℂ) 2 →ₗ[ℂ] lp (fun _ : Fin n → ι => ℂ) 2 where
+  toFun ψ := ⟨embFun n ψ, memℓp_embFun ψ⟩
+  map_add' ψ φ := by
+    apply Subtype.ext
+    funext f
+    show embFun n (ψ + φ : lp _ 2) f = embFun n ψ f + embFun n φ f
+    unfold embFun
+    split_ifs <;> simp [lp.coeFn_add] <;> ring
+  map_smul' c ψ := by
+    apply Subtype.ext
+    funext f
+    show embFun n (c • ψ : lp _ 2) f = c * embFun n ψ f
+    unfold embFun
+    split_ifs <;> simp [lp.coeFn_smul] <;> ring
+
+/-- The coefficients of `Eₙ ψ`. -/
+lemma embL_apply (ψ : lp (fun _ : Finset ι => ℂ) 2) (f : Fin n → ι) : embL n ψ f = embFun n ψ f := rfl
+
+/-- **`‖Eₙ ψ‖² = ∑_{|S| = n} ‖ψ S‖²`.** -/
+lemma norm_sq_embL (ψ : lp (fun _ : Finset ι => ℂ) 2) :
+    ‖embL n ψ‖ ^ 2 = ∑' S : Finset ι, if S.card = n then ‖ψ S‖ ^ 2 else 0 := by
+  have h := lp.hasSum_norm (by norm_num : 0 < (2 : ENNReal).toReal) (embL n ψ)
+  simp only [ENNReal.toReal_ofNat, Real.rpow_two] at h
+  exact h.unique (hasSum_norm_embFun ψ (summable_sq_of_lp ψ))
+
+/-- `‖ψ‖² = ∑_S ‖ψ S‖²`. -/
+lemma norm_sq_lp (ψ : lp (fun _ : Finset ι => ℂ) 2) : ‖ψ‖ ^ 2 = ∑' S, ‖ψ S‖ ^ 2 := by
+  have h := lp.hasSum_norm (by norm_num : 0 < (2 : ENNReal).toReal) ψ
+  simp only [ENNReal.toReal_ofNat, Real.rpow_two] at h
+  exact h.tsum_eq.symm
+
+/-- **`‖Eₙ ψ‖ ≤ ‖ψ‖`.** -/
+lemma norm_embL_le (ψ : lp (fun _ : Finset ι => ℂ) 2) : ‖embL n ψ‖ ≤ ‖ψ‖ := by
+  have h : ‖embL n ψ‖ ^ 2 ≤ ‖ψ‖ ^ 2 := by
+    rw [norm_sq_embL, norm_sq_lp]
+    refine Summable.tsum_le_tsum (fun S => ?_) ?_ (summable_sq_of_lp ψ)
+    · split_ifs <;> [exact le_rfl; positivity]
+    · exact (summable_sq_of_lp ψ).of_nonneg_of_le (fun S => by split_ifs <;> positivity)
+        (fun S => by split_ifs <;> [exact le_rfl; positivity])
+  exact (pow_le_pow_iff_left₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).mp h
+
+/-- **`Eₙ` is isometric on the `n`-particle vectors.** -/
+lemma norm_embL_of_support (ψ : lp (fun _ : Finset ι => ℂ) 2) (hψ : ∀ S : Finset ι, S.card ≠ n → ψ S = 0) :
+    ‖embL n ψ‖ = ‖ψ‖ := by
+  have h : ‖embL n ψ‖ ^ 2 = ‖ψ‖ ^ 2 := by
+    rw [norm_sq_embL, norm_sq_lp]
+    refine tsum_congr fun S => ?_
+    split_ifs with hS
+    · rfl
+    · rw [hψ S hS, norm_zero]; ring
+  exact (pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).mp h
+
+variable (n) in
+/-- **`Eₙ` as a contraction.** -/
+noncomputable def embCLM : lp (fun _ : Finset ι => ℂ) 2 →L[ℂ] lp (fun _ : Fin n → ι => ℂ) 2 :=
+  (embL n).mkContinuous 1 fun ψ => by simpa using norm_embL_le ψ
+
+end Embedding
+
+section Gamma
+
+variable {Z : Type*} [NormedAddCommGroup Z] [InnerProductSpace ℂ Z] [CompleteSpace Z] (b : HilbertBasis ι ℂ Z)
+
+/-- `‖Eₙ‖ ≤ 1`. -/
+lemma norm_embCLM_le (n : ℕ) : ‖embCLM (ι := ι) n‖ ≤ 1 :=
+  LinearMap.mkContinuous_norm_le _ zero_le_one _
+
+/-- **`dΓₙ₊₁(h)` on the fermionic Fock space**: `Eₙ₊₁* (∑ⱼ hⱼ) Eₙ₊₁`, with `∑ⱼ hⱼ` acting on the coordinate tensor power
+`ℓ²(Fin (n+1) → ι)` (J. Dereziński, arXiv:math-ph/0511030, Section 5.2: `dΓₙ(h) = ∑ⱼ 1 ⊗ ⋯ ⊗ h ⊗ ⋯ ⊗ 1`, restricted to the
+antisymmetric subspace). -/
+noncomputable def dGammaFock (n : ℕ) (h : Z →L[ℂ] Z) :
+    lp (fun _ : Finset ι => ℂ) 2 →L[ℂ] lp (fun _ : Finset ι => ℂ) 2 :=
+  ContinuousLinearMap.adjoint (embCLM (n + 1)) ∘L SecondQuantSlot.dGammaTensor b n h ∘L embCLM (n + 1)
+
+/-- **`‖dΓₙ₊₁(h)‖ ≤ (n + 1) ‖h‖`.** -/
+theorem norm_dGammaFock_le (n : ℕ) (h : Z →L[ℂ] Z) : ‖dGammaFock b n h‖ ≤ (n + 1) * ‖h‖ := by
+  refine (ContinuousLinearMap.opNorm_comp_le _ _).trans ?_
+  refine (mul_le_mul_of_nonneg_left (ContinuousLinearMap.opNorm_comp_le _ _) (norm_nonneg _)).trans ?_
+  rw [LinearIsometryEquiv.norm_map, ← mul_assoc]
+  calc ‖embCLM (ι := ι) (n + 1)‖ * ‖SecondQuantSlot.dGammaTensor b n h‖ * ‖embCLM (ι := ι) (n + 1)‖
+      ≤ 1 * ((n + 1) * ‖h‖) * 1 := by
+        gcongr
+        · exact norm_embCLM_le _
+        · exact SecondQuantSlot.norm_dGammaTensor_le b n h
+        · exact norm_embCLM_le _
+    _ = (n + 1) * ‖h‖ := by ring
+
+end Gamma
 
 end Lightlike.OperatorAlgebras.SecondQuantWedge
