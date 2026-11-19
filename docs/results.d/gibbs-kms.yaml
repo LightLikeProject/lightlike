@@ -1,0 +1,14 @@
+- id: LL-XXXX-a
+  title: The Gibbs state of a Hamiltonian with trace-class e^{-beta H} in infinite dimension is a state invariant under the dynamics and satisfies the KMS condition in strip form, with F(t) = omega(A tau_t(B)) and F(t + i beta) = omega(tau_t(B) A)
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/GibbsKMS.lean
+  decls: [Lightlike.OperatorAlgebras.GibbsKMS.hamiltonian, Lightlike.OperatorAlgebras.GibbsKMS.gibbs, Lightlike.OperatorAlgebras.GibbsKMS.gibbs_one, Lightlike.OperatorAlgebras.GibbsKMS.gibbs_star_mul_self_nonneg, Lightlike.OperatorAlgebras.GibbsKMS.gibbs_dyn, Lightlike.OperatorAlgebras.GibbsKMS.kmsFun, Lightlike.OperatorAlgebras.GibbsKMS.continuousOn_kmsFun, Lightlike.OperatorAlgebras.GibbsKMS.differentiableOn_kmsFun, Lightlike.OperatorAlgebras.GibbsKMS.norm_kmsFun_le, Lightlike.OperatorAlgebras.GibbsKMS.kmsFun_ofReal, Lightlike.OperatorAlgebras.GibbsKMS.kmsFun_add_I_mul]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: panangaden-2021, location: "Proposition 5.9", check: "KMS"}
+      - {ref: panangaden-2021, location: "Proposition 5.4", check: "Gibbs"}
+  review: kernel-checked
+  note: "Compared with Panangaden, arXiv:2110.01678, Proposition 5.4 (p. 43, Gibbs implies KMS whenever the Gibbs state exists), Remark 5.1, Definition 5.8 (p. 46) and Proposition 5.9 (p. 47) (read). H is the self-adjoint operator of a Hilbert basis b and real eigenvalues ev with sum of e^{-beta ev_n} finite, on its natural domain; every H with trace-class e^{-beta H} has this form (e^{-beta H} is compact and self-adjoint; Teschl, Theorem 6.6). The Gibbs state is the trace of e^{-beta H} A in the eigenbasis over Z; e^{itH} is the diagonal unitary diag(e^{it ev_n})."
+  since: unreleased

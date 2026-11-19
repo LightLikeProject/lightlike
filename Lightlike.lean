@@ -385,6 +385,8 @@ import Lightlike.OperatorAlgebras.StoneGenerator
 import Lightlike.OperatorAlgebras.StoneUnique
 import Lightlike.OperatorAlgebras.TestsBoundedGroup
 import Lightlike.OperatorAlgebras.TestsFiniteKMS
+import Lightlike.OperatorAlgebras.GibbsKMS
+import Lightlike.OperatorAlgebras.TestsGibbsKMS
 import Lightlike.OperatorAlgebras.TestsFock
 import Lightlike.OperatorAlgebras.TestsFockExists
 import Lightlike.OperatorAlgebras.TestsFockIrreducible

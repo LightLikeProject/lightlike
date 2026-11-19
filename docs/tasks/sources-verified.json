@@ -2234,6 +2234,21 @@
   "citations": 491,
   "citations_via": "OpenAlex"
  },
+ "grumiller-kummer-vassilevich-2002": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Dilaton Gravity in Two Dimensions",
+  "locations": {
+   "eq. (1.50)": {
+    "verified": true,
+    "snippet": "(1.50) Mγ Also the torsion simplifies to a volume form 1 T a = Tµν a dxµ ∧ dxν , Tµν a = (Dµ eν )a − (Dν eµ )a , (1.51) 2 with (Dµ )a b = ∂µ δ a b + ωµ ǫa b . (1.52) The Hodge dual of T a here is a diffeomorphism scalar:",
+    "why": null
+   }
+  },
+  "citations": 540,
+  "citations_via": "Semantic Scholar"
+ },
  "gurau-2008": {
   "checked": "2026-11-08",
   "exists": true,
@@ -3603,6 +3618,26 @@
   "citations": 1334,
   "citations_via": "OpenAlex"
  },
+ "panangaden-2021": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Energy Full Counting Statistics and Return to Equilibrium",
+  "locations": {
+   "Proposition 5.4": {
+    "verified": true,
+    "snippet": "Proposition 5.4. Let H be a finite dimensional Hilbert space. The state ω ∈ B(H)∗ is a Gibbs state at inverse temperature β if and only if ω(Aτ iβ (B)) = ω(BA) for all A, B ∈ B(H). This condition is called the KMS condit",
+    "why": null
+   },
+   "Proposition 5.9": {
+    "verified": true,
+    "snippet": "Proposition 5.9. Let (A, τ ) be a C ∗ -dynamical system and ω a state. Define Dβ = {z ∈ C ∶ 0 < Im(z) < β}. If ω is a (β, τ )-KMS state, then for any A, B ∈ A there exists a complex-valued function FA,B which is bounded",
+    "why": null
+   }
+  },
+  "citations": 0,
+  "citations_via": "OpenAlex"
+ },
  "paschke-sitarz-1998": {
   "checked": "2026-11-08",
   "exists": true,
@@ -4499,21 +4534,6 @@
    }
   },
   "citations": 520,
-  "citations_via": "Semantic Scholar"
- },
- "grumiller-kummer-vassilevich-2002": {
-  "checked": "2026-11-19",
-  "exists": true,
-  "via": "arXiv API",
-  "fetched_title": "Dilaton Gravity in Two Dimensions",
-  "locations": {
-   "eq. (1.50)": {
-    "verified": true,
-    "snippet": "(1.50) Mγ Also the torsion simplifies to a volume form 1 T a = Tµν a dxµ ∧ dxν , Tµν a = (Dµ eν )a − (Dν eµ )a , (1.51) 2 with (Dµ )a b = ∂µ δ a b + ωµ ǫa b . (1.52) The Hodge dual of T a here is a diffeomorphism scalar:",
-    "why": null
-   }
-  },
-  "citations": 540,
   "citations_via": "Semantic Scholar"
  }
 }

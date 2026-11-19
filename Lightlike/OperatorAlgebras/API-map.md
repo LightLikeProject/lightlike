@@ -60,6 +60,8 @@ On `L²(0, 1)`, a vector lies in the domain of the adjoint of `-i d/dx` (on the 
 
 The plane waves `e^{i(θ + 2πn)x}`, `n ∈ ℤ`, lie in the domain of `P_θ` and are orthonormal eigenvectors with eigenvalue `θ + 2πn`; an eigenvector of `P_θ` with eigenvalue `μ ∈ ℂ` has the continuous representative `y(0) e^{iμx}`, so `μ = θ + 2πn` and the eigenspaces are one-dimensional; off `θ + 2πℤ` the resolvent equation is solved explicitly, so the spectrum of `P_θ`, in Physlib's sense, is `θ + 2πℤ` and equals the point spectrum {5}, [69]. `θ` is in the spectrum of `P_θ` and `θ + π` is not [70].
 
+For a Hamiltonian given by a Hilbert basis and real eigenvalues `λₙ` with `∑ e^{-βλₙ} < ∞` (every `H` with a trace-class `e^{-βH}` has this form {4}), the Gibbs state `ω(A) = ∑ e^{-βλₙ} ⟪bₙ, A bₙ⟫ / Z` is a state invariant under `τᵗ(A) = e^{itH} A e^{-itH}`, and the double series `F_{A,B}(z) = ∑ₘₙ e^{-βλₘ} ⟪bₘ, A bₙ⟫ ⟪bₙ, B bₘ⟫ e^{iz(λₙ - λₘ)} / Z`, dominated on the strip `0 ≤ Im z ≤ β` by `|⟪bₘ, A bₙ⟫| |⟪bₙ, B bₘ⟫| (e^{-βλₘ} + e^{-βλₙ})`, is bounded and continuous there, analytic inside, with `F(t) = ω(A τᵗ(B))` and `F(t + iβ) = ω(τᵗ(B) A)`: the KMS condition {6} [71]. The oscillator `λₙ = n` is an example for every `β > 0`, and at `β = 0` the partition sum diverges [72].
+
 ## Lean References
 
 1. Lightlike/OperatorAlgebras/UnitaryGroup.lean - `OperatorAlgebras.UnitaryGroup`,
@@ -239,6 +241,16 @@ The plane waves `e^{i(θ + 2πn)x}`, `n ∈ ℤ`, lie in the domain of `P_θ` an
     `OperatorAlgebras.spectrum_momentumTheta`, `OperatorAlgebras.pointSpectrum_momentumTheta`
 70. Lightlike/OperatorAlgebras/TestsMomentumSpectrum.lean - `OperatorAlgebras.theta_mem_spectrum`,
     `OperatorAlgebras.theta_add_pi_not_mem_spectrum`
+71. Lightlike/OperatorAlgebras/GibbsKMS.lean - `OperatorAlgebras.GibbsKMS.diag`, `OperatorAlgebras.GibbsKMS.domain`,
+    `OperatorAlgebras.GibbsKMS.hamiltonian`, `OperatorAlgebras.GibbsKMS.inner_basis_hamiltonian`, `OperatorAlgebras.GibbsKMS.evol`,
+    `OperatorAlgebras.GibbsKMS.dyn`, `OperatorAlgebras.GibbsKMS.inner_dyn`, `OperatorAlgebras.GibbsKMS.gibbs`,
+    `OperatorAlgebras.GibbsKMS.gibbs_one`, `OperatorAlgebras.GibbsKMS.gibbs_star_mul_self_nonneg`,
+    `OperatorAlgebras.GibbsKMS.gibbs_dyn`, `OperatorAlgebras.GibbsKMS.kmsFun`, `OperatorAlgebras.GibbsKMS.continuousOn_kmsFun`,
+    `OperatorAlgebras.GibbsKMS.differentiableOn_kmsFun`, `OperatorAlgebras.GibbsKMS.norm_kmsFun_le`,
+    `OperatorAlgebras.GibbsKMS.kmsFun_ofReal`, `OperatorAlgebras.GibbsKMS.kmsFun_add_I_mul`
+72. Lightlike/OperatorAlgebras/TestsGibbsKMS.lean - `OperatorAlgebras.GibbsKMS.summable_exp_neg_mul_nat`,
+    `OperatorAlgebras.GibbsKMS.oscillator_isKMS`, `OperatorAlgebras.GibbsKMS.not_summable_exp_zero` (the wrong input
+    `β = 0`)
 
 ## References
 
@@ -253,3 +265,5 @@ The plane waves `e^{i(θ + 2πn)x}`, `n ∈ ℤ`, lie in the domain of `P_θ` an
    (github.com/physicslib/physicslib4, Apache-2.0).
 5. G. Bonneau, J. Faraut and G. Valent, *Self-adjoint extensions of operators and the teaching of quantum
    mechanics*, arXiv:quant-ph/0103153, Appendix A.3 and Section 5.3, eqs. (14) and (15).
+6. J. Panangaden, *Energy Full Counting Statistics and Return to Equilibrium*, master's thesis, McGill University,
+   2021, arXiv:2110.01678, Section 5.2: Proposition 5.4, Remark 5.1, Definition 5.8 and Proposition 5.9.
