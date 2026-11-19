@@ -43,6 +43,6 @@ In normal coordinates `v(s) = φ⁻¹(γ(s))` of a future causal curve from `p` 
 3. `σ_p(v) = g_p(v, v)` and `x⁰ = -g_p(e, v)` in normal coordinates of an arbitrary basis, `e` timelike at `p`: Chruściel's
    `η_μν x^μ x^ν` (2.4.6) and `x⁰` in orthonormal normal coordinates with `e = ∂₀`. "`∇x⁰` timelike on `O`" is `IsTimeBall.timelike`.
    The hypothesis "`e` future directed at `p`" (`he`) is the time orientation of Chruściel's normal coordinates: Proposition 2.2.3,
-   (2.2.10), p. 8, "∇σ_p is timelike future directed on {σ_p < 0, x⁰ > 0}", so `∂₀` is future at `p`; then `-∇x⁰` is future on all
+   (2.2.10), p. 8: `∇σ_p` is timelike and future directed on `{q | σ_p(q) < 0, x⁰(q) > 0}`, so `∂₀` is future at `p`; then `-∇x⁰` is future on all
    of `O` (`IsTimeBall.future_of_center`), no shrinking. (Definition 2.2.7, p. 13, elementary regions, is not used by Prop. 2.4.5.)
 4. The curves are the library's causal curves (locally Lipschitz; timelike with a margin, approved 17 Nov 2026).
