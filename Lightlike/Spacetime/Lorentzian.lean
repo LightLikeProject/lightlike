@@ -116,35 +116,39 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
   {H : Type*} [TopologicalSpace H] (I : ModelWithCorners ℝ E H)
   (M : Type*) [TopologicalSpace M] [ChartedSpace H M] [IsManifold I ∞ M]
 
-/-- A smooth **Lorentzian metric** of dimension `n` on a smooth manifold `M` modelled on `I`:
-a smooth section `g` of the bundle of bilinear forms on the tangent bundle, Lorentzian at each
-point.
-
-This mirrors Mathlib's `Bundle.ContMDiffRiemannianMetric` (same `inner`-style field and the same
-smoothness condition, stated with `TotalSpace.mk'` in the hom-bundle `T*M ⊗ T*M`), with positive
-definiteness replaced by Lorentzian signature. Symmetry and nondegeneracy are *consequences*
-(`IsLorentzianForm.symm`, `IsLorentzianForm.nondegenerate`), not extra fields. -/
-structure LorentzianMetric (n : ℕ) where
+/-- A **smooth symmetric nondegenerate bilinear field** on the tangent bundle: a pseudo-Riemannian metric of any
+signature, the common generalisation of `LorentzianMetric` and Mathlib's `ContMDiffRiemannianMetric`. -/
+structure NondegMetric where
   /-- The metric tensor at each point. -/
   g (x : M) : TangentSpace I x →L[ℝ] TangentSpace I x →L[ℝ] ℝ
-  /-- Pointwise Lorentzian signature. -/
-  lorentzian (x : M) : IsLorentzianForm n (g x)
+  /-- Symmetry. -/
+  symm (x : M) (v w : TangentSpace I x) : g x v w = g x w v
+  /-- Nondegeneracy. -/
+  nondegenerate (x : M) (v : TangentSpace I x) (h : ∀ w, g x v w = 0) : v = 0
   /-- Smoothness of `x ↦ gₓ` as a section of the bundle `T*M ⊗ T*M`. -/
   contMDiff : ContMDiff I (I.prod 𝓘(ℝ, E →L[ℝ] E →L[ℝ] ℝ)) ∞
     (fun x ↦ TotalSpace.mk' (E →L[ℝ] E →L[ℝ] ℝ)
       (E := fun x : M ↦ TangentSpace I x →L[ℝ] TangentSpace I x →L[ℝ] ℝ) x (g x))
+
+/-- A smooth **Lorentzian metric** of dimension `n` on a smooth manifold `M` modelled on `I`:
+a smooth symmetric nondegenerate bilinear field (`NondegMetric`) that is Lorentzian at each point.
+
+This mirrors Mathlib's `Bundle.ContMDiffRiemannianMetric` (same `inner`-style field and the same
+smoothness condition, stated with `TotalSpace.mk'` in the hom-bundle `T*M ⊗ T*M`), with positive
+definiteness replaced by Lorentzian signature. Symmetry and nondegeneracy are *consequences*
+(`IsLorentzianForm.symm`, `IsLorentzianForm.nondegenerate`): they are fields of the underlying
+`NondegMetric`, filled by default from the Lorentzian signature. -/
+structure LorentzianMetric (n : ℕ) extends NondegMetric I M where
+  /-- Pointwise Lorentzian signature. -/
+  lorentzian (x : M) : IsLorentzianForm n (g x)
+  symm x v w := (lorentzian x).symm v w
+  nondegenerate x v hv := (lorentzian x).nondegenerate v hv
 
 variable {I M}
 
 namespace LorentzianMetric
 
 variable {n : ℕ} (g : LorentzianMetric I M n)
-
-lemma symm (x : M) (v w : TangentSpace I x) : g.g x v w = g.g x w v :=
-  (g.lorentzian x).symm v w
-
-lemma nondegenerate (x : M) (v : TangentSpace I x) (hv : ∀ w, g.g x v w = 0) : v = 0 :=
-  (g.lorentzian x).nondegenerate v hv
 
 /-- A tangent vector is **timelike** if `g(v,v) < 0`. -/
 def IsTimelike {x : M} (v : TangentSpace I x) : Prop := g.g x v v < 0

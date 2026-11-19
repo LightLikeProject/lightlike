@@ -1,4 +1,4 @@
-import Lightlike.Spacetime.Causal.MinkowskiCausal
+import Lightlike.Spacetime.CausalLadder.StablyCausalSimple
 
 /-!
 # Task T-GE2-P11
@@ -52,14 +52,20 @@ open scoped Manifold ContDiff
 
 namespace Lightlike.Causal
 
-variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
-  {H : Type*} [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
-  {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I ∞ M]
-  {n : ℕ} {g : LorentzianMetric I M n} (T : TimeOrientation g)
+variable {n : ℕ} {M : Type*} [TopologicalSpace M] [ChartedSpace (Fin n → ℝ) M]
+  [IsManifold 𝓘(ℝ, Fin n → ℝ) ∞ M] {g : LorentzianMetric 𝓘(ℝ, Fin n → ℝ) M n} (T : TimeOrientation g)
 
-/-- **Causal simplicity implies stable causality.** -/
+/-- **Causal simplicity implies stable causality.** The statement is over manifolds modelled on `ℝⁿ`
+(`Fin n → ℝ`, with the model `𝓘(ℝ, Fin n → ℝ)`, hence without boundary), the setting of Hawking–Ellis'
+space-time: the volume measure used by Hawking's time function exists only for such charts (representation
+difference from the earlier lock, which was stated over an arbitrary normed model with corners; approved
+by the maintainers, 18 November 2026). The source's manifolds have charts into open subsets
+of `ℝⁿ⁺¹` (Minguzzi, arXiv:1709.06494, section 1.3, p. 10); see `docs/notes/p11-source-and-differences.md`. -/
 theorem isStablyCausal_of_isCausallySimple [T2Space M] [SecondCountableTopology M]
     (h : IsCausallySimple T) : IsStablyCausal T := by
-  sorry
+  letI : MeasurableSpace M := borel M
+  haveI : BorelSpace M := ⟨rfl⟩
+  haveI : IsManifold 𝓘(ℝ, Fin n → ℝ) 2 M := IsManifold.of_le (n := ∞) (by norm_num)
+  exact isStablyCausal_of_isCausallySimple_euclid T h
 
 end Lightlike.Causal

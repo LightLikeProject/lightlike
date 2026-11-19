@@ -18,8 +18,13 @@ origin (`pullback_cig_euc`), Ricci-flat everywhere including the origin (`ricci_
 Euclidean Schwarzschild closes smoothly at `r = 2M` iff `τ` has period `8πM`
 (`cigChange_periodic`).
 
-Gap row G1-058. The comparison with Gibbons–Hawking (1977) and Carroll, *Spacetime and Geometry*,
-ch. 9, is pending: not read at a location.
+Gap row G1-058.
+Compared with I. Kuntz, G. Paci, O. Zanusso, *Euclidean actions and static black hole
+entropy in teleparallel theories*, arXiv:2410.04510, Appendix A, eqs. (A1)–(A6), pp. 20–21 (read: the Euclidean section
+(A2), the near-horizon form (A5), the period `τ ∼ τ + 8πm`, `β_H = 8πm` as the inverse Hawking temperature, the conical
+singularity for `β ≠ β_H` and its curvature integral (A6)) and D. Harlow, *Jerusalem Lectures on Black Holes and Quantum
+Information*, arXiv:1409.1231, section 4.8, eqs. (4.42)–(4.44), p. 43 (read: the smooth period); see
+`docs/notes/g1-058-euclidean-schwarzschild-source.md`. Gibbons–Hawking (1977) and Carroll's book: not read.
 -/
 
 open Matrix Real

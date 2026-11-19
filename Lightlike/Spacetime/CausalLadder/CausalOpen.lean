@@ -29,7 +29,7 @@ every `a ∈ O`. -/
 theorem exists_open_subset_causalPast [BoundarylessManifold I M] (y : M) {U : Set M}
     (hU : U ∈ 𝓝 y) :
     ∃ O : Set M, IsOpen O ∧ O.Nonempty ∧ O ⊆ U ∧ ∀ a ∈ O, y ∈ causalFuture T a := by
-  obtain ⟨V, r₀, ε, hr₀, hε, hbt, hline⟩ := exists_line_scale T y
+  obtain ⟨V, r₀, ε, -, hr₀, hε, hbt, hline⟩ := exists_line_scale T y
   set φ := extChartAt I y with hφ
   have hysrc : y ∈ φ.source := mem_extChartAt_source y
   have hpre : φ.symm ⁻¹' U ∈ 𝓝 (φ y) := by

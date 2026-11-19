@@ -14,7 +14,7 @@ which is how curvature is computed in every GR textbook:
 * `christoffel`, `riemann`, `ricci`, `scalarCurvature` are the standard coordinate formulas
   (Carroll, *Spacetime and Geometry*, eqs. 3.27, 3.67, 3.89, 3.91), with partial derivatives
   given by Mathlib's Fréchet derivative `fderiv`.
-* `LorentzianMetric.coordMetric g x₀` extracts the coordinate components of a manifold-level
+* `NondegMetric.coordMetric g x₀` extracts the coordinate components of a manifold-level
   `LorentzianMetric` in the preferred chart of `M` at `x₀`.
 
 **What is *not* proved here:** that these coordinate expressions transform as tensors under a change
@@ -154,7 +154,7 @@ variable {M : Type*} [TopologicalSpace M] [ChartedSpace (Fin n → ℝ) M]
 at `x₀`, where `∂ᵢ` is the coordinate vector field: the image of the standard basis vector `eᵢ`
 under the derivative of the inverse chart. Defined for all `y : ℝⁿ`; meaningful on the chart's
 target. -/
-def LorentzianMetric.coordMetric (g : LorentzianMetric 𝓘(ℝ, Fin n → ℝ) M n) (x₀ : M)
+def NondegMetric.coordMetric (g : NondegMetric 𝓘(ℝ, Fin n → ℝ) M) (x₀ : M)
     (y : Fin n → ℝ) : Matrix (Fin n) (Fin n) ℝ :=
   fun i j =>
     g.g ((extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).symm y)

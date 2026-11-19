@@ -2,7 +2,7 @@ import Lightlike.Spacetime.ChartAgreement
 /-!
 # The Levi-Civita connection of a Lorentzian metric is smooth
 
-`contMDiffCovariantDerivative_leviCivita`: for a Hausdorff `C²` manifold modelled on `Fin n → ℝ`, `leviCivita g`
+`contMDiffCovariantDerivative_leviCivita`: for a `C²` manifold modelled on `Fin n → ℝ`, `leviCivita g`
 (`LeviCivita.lean`) is a `C^∞` covariant derivative in Mathlib's sense (`ContMDiffCovariantDerivative`).
 
 Proof. For a vector field `σ` smooth near `p`, the section `∇σ` of the bundle of endomorphisms is smooth at `p` iff its
@@ -12,7 +12,7 @@ components in the trivialization at `p` are (`contMDiffAt_clm_of_apply_infty`). 
 `Γ̂` is the Christoffel symbol of the coordinate metric (`gamHat_coord`, which does not need smoothness of the connection)
 and the coordinate metric is smooth (`contMDiffAt_gamHat_leviCivita`).
 
-**Limits.** Manifolds modelled on `Fin n → ℝ` without boundary, Hausdorff and `C²`. Mathlib's definition of a smooth
+**Limits.** Manifolds modelled on `Fin n → ℝ` without boundary and `C²`; no Hausdorff hypothesis (the local smoothness `contMDiffAt_leviCivita` is proved in a chart). Mathlib's definition of a smooth
 covariant derivative is used unchanged.
 -/
 
@@ -21,7 +21,7 @@ open scoped Manifold ContDiff Topology
 noncomputable section
 namespace Lightlike
 variable {n : ℕ} {M : Type*} [TopologicalSpace M] [ChartedSpace (Fin n → ℝ) M] [IsManifold 𝓘(ℝ, Fin n → ℝ) ∞ M]
-  [IsManifold 𝓘(ℝ, Fin n → ℝ) 2 M] [T2Space M]
+  [IsManifold 𝓘(ℝ, Fin n → ℝ) 2 M]
 variable (p : M)
 
 /-- The derivative of the chart at `p` maps `e⁻¹ a` to `a`. -/
@@ -85,7 +85,7 @@ theorem contMDiffAt_mvfderiv_cfield (s : M → F)
   rw [this, mfderiv_chart_symmL p hyb]
   rfl
 
-variable (g : LorentzianMetric 𝓘(ℝ, Fin n → ℝ) M n)
+variable (g : NondegMetric 𝓘(ℝ, Fin n → ℝ) M)
 
 /-- **The Christoffel tensor of the Levi-Civita connection applied to a smooth vector is smooth.** -/
 theorem contMDiffAt_gamHat_leviCivita (v : M → Fin n → ℝ) (hv : ContMDiffAt 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ, Fin n → ℝ) ∞ v p) (a : Fin n → ℝ) :
@@ -170,7 +170,7 @@ theorem contMDiffAt_leviCivita {σ : Π y : M, TangentSpace 𝓘(ℝ, Fin n → 
   rw [hcl, this, hv_symmL p hyb a]
   rfl
 
-/-- **The Levi-Civita connection of a Lorentzian metric is smooth** (a manifold modelled on `ℝⁿ`, Hausdorff, `C²`). -/
+/-- **The Levi-Civita connection of a Lorentzian metric is smooth** (a manifold modelled on `ℝⁿ`, `C²`; no Hausdorff hypothesis). -/
 theorem contMDiffCovariantDerivative_leviCivita :
     CovariantDerivative.ContMDiffCovariantDerivative (leviCivita g) ∞ where
   contMDiff := ⟨fun {σ} hσ => fun p _ => by
@@ -179,4 +179,9 @@ theorem contMDiffCovariantDerivative_leviCivita :
     filter_upwards with y
     have := hσ y (mem_univ y)
     exact (this.contMDiffAt Filter.univ_mem).of_le (by simp)⟩
+
+/-- **The Levi-Civita connection is locally smooth** on any `C²` manifold (no Hausdorff hypothesis). -/
+instance (g : NondegMetric 𝓘(ℝ, Fin n → ℝ) M) : LocallySmoothConnection (leviCivita g) :=
+  ⟨fun {σ x} hσ => contMDiffAt_leviCivita x g hσ⟩
+
 end Lightlike

@@ -26,11 +26,21 @@ namespace Lightlike
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
   {M : Type*} [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M]
 
+/-- **A locally smooth connection**: `cov σ` is smooth at `x` whenever `σ` is smooth near `x`. This is the local form of Mathlib's
+`ContMDiffCovariantDerivative cov ∞` (stated for sections smooth on the whole manifold); the two agree on a Hausdorff manifold
+(`contMDiffAt_cov_of_global`), but only the local form is used below, so that no Hausdorff hypothesis is needed. -/
+class LocallySmoothConnection (cov : Connection 𝓘(ℝ, E) M) : Prop where
+  contMDiffAt : ∀ {σ : Π y : M, TangentSpace 𝓘(ℝ, E) y} {x : M},
+    (∀ᶠ y in 𝓝 x, ContMDiffAt 𝓘(ℝ, E) (𝓘(ℝ, E).prod 𝓘(ℝ, E)) ∞
+      (fun q : M => (⟨q, σ q⟩ : TangentBundle 𝓘(ℝ, E) M)) y) →
+    ContMDiffAt 𝓘(ℝ, E) (𝓘(ℝ, E).prod 𝓘(ℝ, E →L[ℝ] E)) ∞
+      (fun y => (⟨y, cov σ y⟩ : TotalSpace (E →L[ℝ] E) (fun y : M => TangentSpace 𝓘(ℝ, E) y →L[ℝ] TangentSpace 𝓘(ℝ, E) y))) x
+
 section
 variable [T2Space M]
 
 /-- **Local smoothness of a smooth connection.** If the vector field `σ` is smooth near `x`, a connection that is smooth (in Mathlib's sense, for sections smooth on the whole manifold) has `y ↦ cov σ y` smooth at `x`. The proof cuts `σ` off with a smooth bump function, which needs the manifold to be Hausdorff. -/
-theorem contMDiffAt_cov (cov : Connection 𝓘(ℝ, E) M)
+theorem contMDiffAt_cov_of_global (cov : Connection 𝓘(ℝ, E) M)
     [CovariantDerivative.ContMDiffCovariantDerivative cov ∞]
     {σ : Π y : M, TangentSpace 𝓘(ℝ, E) y} {x : M}
     (hσ : ∀ᶠ y in 𝓝 x, ContMDiffAt 𝓘(ℝ, E) (𝓘(ℝ, E).prod 𝓘(ℝ, E)) ∞
@@ -66,7 +76,22 @@ theorem contMDiffAt_cov (cov : Connection 𝓘(ℝ, E) M)
       Filter.univ_mem (by filter_upwards [hy1] with q hq; simp [σ', hq])
     simp [this]
   exact ((h1 x (mem_univ x)).contMDiffAt Filter.univ_mem).congr_of_eventuallyEq heq
+
+/-- On a Hausdorff manifold a smooth connection in Mathlib's sense is locally smooth. -/
+instance (cov : Connection 𝓘(ℝ, E) M) [CovariantDerivative.ContMDiffCovariantDerivative cov ∞] :
+    LocallySmoothConnection cov :=
+  ⟨fun hσ => contMDiffAt_cov_of_global cov hσ⟩
+
 end
+
+/-- **Local smoothness of a locally smooth connection.** -/
+theorem contMDiffAt_cov (cov : Connection 𝓘(ℝ, E) M) [LocallySmoothConnection cov]
+    {σ : Π y : M, TangentSpace 𝓘(ℝ, E) y} {x : M}
+    (hσ : ∀ᶠ y in 𝓝 x, ContMDiffAt 𝓘(ℝ, E) (𝓘(ℝ, E).prod 𝓘(ℝ, E)) ∞
+      (fun q : M => (⟨q, σ q⟩ : TangentBundle 𝓘(ℝ, E) M)) y) :
+    ContMDiffAt 𝓘(ℝ, E) (𝓘(ℝ, E).prod 𝓘(ℝ, E →L[ℝ] E)) ∞
+      (fun y => (⟨y, cov σ y⟩ : TotalSpace (E →L[ℝ] E) (fun y : M => TangentSpace 𝓘(ℝ, E) y →L[ℝ] TangentSpace 𝓘(ℝ, E) y))) x :=
+  LocallySmoothConnection.contMDiffAt hσ
 
 /-- The tangent trivialization at `x₀`. -/
 abbrev tTriv (x₀ : M) : Trivialization E (TotalSpace.proj : TotalSpace E (TangentSpace 𝓘(ℝ, E) : M → Type _) → M) :=
