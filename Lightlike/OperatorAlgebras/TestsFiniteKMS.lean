@@ -1,4 +1,5 @@
 import Lightlike.OperatorAlgebras.FiniteKMS
+import Mathlib.Analysis.SpecialFunctions.Exponential
 
 /-!
 # Checks for the finite-dimensional KMS condition

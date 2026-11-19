@@ -1,6 +1,7 @@
 import Lightlike.OperatorAlgebras.FiniteKMS
 import Mathlib.Analysis.Matrix.Spectrum
 import Mathlib.Analysis.Matrix.PosDef
+import Mathlib.Analysis.SpecialFunctions.Exponential
 
 /-!
 # Modular theory of a faithful state on a matrix algebra
@@ -19,6 +20,7 @@ Here `log ρ` and `ρ^{±1/2}` are built from the spectral decomposition (`logPo
 -/
 
 open Matrix NormedSpace
+open scoped ComplexOrder
 
 namespace Lightlike.OperatorAlgebras
 
