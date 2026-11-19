@@ -207,6 +207,7 @@ import Lightlike.Canonical.Holst
 import Lightlike.Canonical.AshtekarCanonical
 import Lightlike.Canonical.SpinVariation
 import Lightlike.Canonical.AshtekarSymplectic
+import Lightlike.Canonical.Holonomy
 import Lightlike.Canonical.TestsFoliation
 import Lightlike.Canonical.HamiltonianBracket
 import Lightlike.Canonical.HamiltonianHHBracket
@@ -330,6 +331,7 @@ import Lightlike.ODE.FlowVariational
 import Lightlike.ODE.Frobenius
 import Lightlike.ODE.FrobeniusChart
 import Lightlike.ODE.Gronwall
+import Lightlike.ODE.GlobalLipschitz
 import Lightlike.ODE.HigherVariational
 import Lightlike.ODE.InvolutiveFrame
 import Lightlike.ODE.LocalFlow
