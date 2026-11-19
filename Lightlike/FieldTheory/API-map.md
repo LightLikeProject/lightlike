@@ -26,6 +26,8 @@ The disjoint union of labelled graphs is compatible with relabelling, so it is d
 
 The Feynman expansion of a Gaussian integral on `ℝⁿ`: for a homogeneous polynomial `V` of degree `d` with coefficient tensor `c` and a positive semidefinite covariance `S`, `E_S[V^m]` is the sum over the labellings of the `m` vertices and the full Wick contractions of their `md` legs of `∏_v c_(i_v) ∏_(pairs) S`; it vanishes when `md` is odd [18] {4}. The same holds for a general polynomial potential `U = Σ_κ V_κ` with homogeneous parts of degrees `d κ`: `E_S[U^m]` is the sum over the types of the `m` vertices, their labellings and the full Wick contractions of all the legs [19] {4}. As a sum over Feynman graphs: for a symmetric coefficient tensor, `E_S[(V/d!)^m]/m!` is the sum over the orbits of the leg pairings under `S_d ≀ S_m` of the graph weight divided by the order of the stabilizer, `|Aut Γ|` [20] {4}. For a general polynomial `U = Σ_κ V_κ/d_κ!` (vertices of several types and degrees), `E_S[U^m]/m!` is the sum over the multiplicities of the vertex types and the Feynman graphs with these vertices of the graph weight over `|Aut Γ|`, by the multinomial theorem [21] {4}.
 
+**The Feynman rules with a source**: a weight on graph classes that is multiplicative under disjoint union turns `X = e^{X_c}` into `Σ_Γ w(Γ)/|Aut Γ| = exp(Σ_γ w(γ)/|Aut γ|)` for the generating functions graded by half-edges and vertices [22]. With the vertex weights `μ_d` (`μ_1 = j`, `μ_d = λ_d`) on the leg-free graphs, distributing the half-edges over the vertices [23] and pairing them gives the formal partition function with a source, `Z(ħ, j) = Σ_Γ ∏_v μ_{deg v}/|Aut Γ|`, and `Z = exp(W/ħ)` with `W/ħ` the sum over the connected graphs [24] {2}.
+
 **Missing.** The error bound of the quartic expansion is not stated in Borinsky, who treats the integral formally. The formal integral is compared with Borinsky's Definition 3.1.1 and eq. (3.1.8) {2}, the graphs with Borinsky §2.1 and §2.3 {2}, and Wick's theorem with Tubaro–Zanella's Theorem 2.19 {3}, the Feynman expansion with Polyak's eq. (18) {4} (labelled contractions of a polynomial potential) and Proposition 2.17 {4} (graphs with `1/|Aut Γ|` for a general polynomial potential, with the `1/k!` normalisation); the Gaussian measure and its integrals are not yet compared with a source.
 
 ## Lean References
@@ -67,10 +69,15 @@ The Feynman expansion of a Gaussian integral on `ℝⁿ`: for a homogeneous poly
 21. Lightlike/FieldTheory/Gaussian/FeynmanGraphsPoly.lean - `FieldTheory.pairSum_comp_equiv`, `FieldTheory.TPairing`, `FieldTheory.TPerm`,
    `FieldTheory.card_tperm`, `FieldTheory.tgraphWeight`, `FieldTheory.tgraphWeight_smul`, `FieldTheory.integral_prod_pow_graphs`,
    `FieldTheory.integral_polyPot_pow_graphs`
+22. Lightlike/FieldTheory/ZeroDim/GraphEval.lean - `FieldTheory.GraphAlg.IsMultWeight`, `FieldTheory.GraphAlg.gen`, `FieldTheory.GraphAlg.gen_mul`,
+   `FieldTheory.GraphAlg.gen_pow`, `FieldTheory.GraphAlg.coeff_gen_X`
+23. Lightlike/FieldTheory/ZeroDim/MapsEGF.lean - `FieldTheory.GraphAlg.derivative_prod_univ`, `FieldTheory.GraphAlg.egf`, `FieldTheory.GraphAlg.sum_maps_prod_fiber`
+24. Lightlike/FieldTheory/ZeroDim/GraphRules.lean - `FieldTheory.GraphAlg.fweight`, `FieldTheory.GraphAlg.isMultWeight_fwC`, `FieldTheory.GraphAlg.sum_fweight`,
+   `FieldTheory.GraphAlg.formalZ`, `FieldTheory.GraphAlg.gen_X_eq_formalZ`, `FieldTheory.GraphAlg.coeff_formalZ_eq_exp`
 
 ## References
 
 1. Mathlib, `Mathlib/Probability/Distributions/Gaussian/Multivariate.lean` (`multivariateGaussian`, `stdGaussian`) and `Fernique.lean` (`IsGaussian.memLp_id`).
-2. M. Borinsky, Graphs in perturbation theory: Algebraic structure and asymptotics, PhD thesis, Humboldt-Universität zu Berlin (2018), arXiv:1807.02046, §2.1 (Definitions 2.1.1, 2.1.2, p. 10; Definitions 2.1.6, 2.1.7, p. 11), §2.3 (Proposition 2.3.1, p. 15), §2.4.2 (eqs. (2.4.5)-(2.4.7) and Theorem 2.4.1, pp. 17-18) and §3.1 (Definition 3.1.1, eq. (3.1.2), p. 22; Proposition 3.1.1, p. 23; eq. (3.1.8), p. 24).
+2. M. Borinsky, Graphs in perturbation theory: Algebraic structure and asymptotics, PhD thesis, Humboldt-Universität zu Berlin (2018), arXiv:1807.02046, §2.1 (Definitions 2.1.1, 2.1.2, p. 10; Definitions 2.1.6, 2.1.7, p. 11), §2.3 (Proposition 2.3.1, p. 15), §2.4.2 (eqs. (2.4.5)-(2.4.7) and Theorem 2.4.1, pp. 17-18), §3.1 (Definition 3.1.1, eq. (3.1.2), p. 22; Proposition 3.1.1, p. 23; eq. (3.1.8), p. 24) and Chapter 7 (§7.1, pp. 116-117).
 3. L. Tubaro, M. Zanella, An introduction to Malliavin calculus, arXiv:2502.07941v1, Theorem 2.19 (Isserlis formula), p. 9.
 4. M. Polyak, Feynman diagrams for pedestrians and mathematicians, arXiv:math/0406251v1, §2.3 (Theorem 2.8, p. 5), §2.6 (eq. (18), p. 7) and §2.8 (Proposition 2.17, p. 9).

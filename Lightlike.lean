@@ -1106,10 +1106,13 @@ import Lightlike.FieldTheory.ZeroDim.Components
 import Lightlike.FieldTheory.ZeroDim.FormalIntegral
 import Lightlike.FieldTheory.ZeroDim.GraphAlgebra
 import Lightlike.FieldTheory.ZeroDim.GraphComp
+import Lightlike.FieldTheory.ZeroDim.GraphEval
 import Lightlike.FieldTheory.ZeroDim.GraphExp
 import Lightlike.FieldTheory.ZeroDim.GraphIso
+import Lightlike.FieldTheory.ZeroDim.GraphRules
 import Lightlike.FieldTheory.ZeroDim.GraphSplit
 import Lightlike.FieldTheory.ZeroDim.Graphs
+import Lightlike.FieldTheory.ZeroDim.MapsEGF
 import Lightlike.FieldTheory.ZeroDim.Quartic
 import Lightlike.GFT.Bubble
 import Lightlike.GFT.ColoredGraph
