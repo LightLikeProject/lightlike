@@ -42,6 +42,13 @@ commute with the right action and those with `j ≠ l` with the left action, the
 `D = Δ + J Δ J` with `Δ = ∑_{i ≠ k} Eᵢⱼ D Eₖₗ` hermitian, commuting with `J π(A) J` and anticommuting with the chirality;
 such a `Δ` is unique {2} {1} [12]. With `D = 0`, `Δ = 0` [13].
 
+For real summands: `q ↦ [[a + b i, c + d i], [-c + d i, a - b i]]` is an injective real `*`-homomorphism `ℍ → M₂(ℂ)`
+whose complex span contains the matrix units [14], so a real-linear representation of `ℍ` extends to a complex-linear
+representation of `M₂(ℂ)` that agrees with it on `ℍ` [15]. For a complex summand acting real-linearly,
+`Q± = (1 ∓ i π(i·1))/2` split `H` into the fundamental part, where `π` is complex-linear, and the conjugate part, where
+it is antilinear, and `J Q± J = (1 ± i J π(i·1) J)/2` are the corresponding parts for the right action, commuting with
+`π(A)` {1} [16].
+
 ## Lean References
 
 1. Lightlike/NCG/FiniteSpectralTriple.lean - `NCG.FiniteSpectralTriple`, `NCG.FiniteSpectralTriple.comm`,
@@ -73,6 +80,15 @@ such a `Δ` is unique {2} {1} [12]. With `D = 0`, `Δ = 0` [13].
     `NCG.Delta`, `NCG.D_eq_Delta_add`, `NCG.Delta_rightOp`, `NCG.Delta_gamma`, `NCG.Delta_symm`, `NCG.Delta_unique`
 13. Lightlike/NCG/TestsDiracDecomposition.lean - `NCG.TestsDiracDecomposition.Delta_of_D_eq_zero`,
     `NCG.TestsDiracDecomposition.twoPoint_Delta`
+14. Lightlike/NCG/QuaternionMatrix.lean - `NCG.quatToMat`, `NCG.quatToMat_apply`, `NCG.quatToMat_injective`, `NCG.qI`,
+    `NCG.qJ`, `NCG.qK`, `NCG.single_eq_quat`
+15. Lightlike/NCG/QuaternionComplexify.lean - `NCG.quatBasis`, `NCG.quatCoord`, `NCG.quat_decomp`,
+    `NCG.quatCoord_quatToMat`, `NCG.quat_eq_sum`, `NCG.complexify`, `NCG.complexify_quatToMat`, `NCG.quatCoord_add`,
+    `NCG.quatCoord_smul`, `NCG.complexifyL`, `NCG.complexify_mul`
+16. Lightlike/NCG/ComplexSplitting.lean - `NCG.Qp`, `NCG.Qm`, `NCG.Qp_add_Qm`, `NCG.pi_u_sq`, `NCG.pi_u_Qp`, `NCG.pi_u_Qm`,
+    `NCG.pi_comm_Qp`, `NCG.pi_comm_Qm`, `NCG.smul_eq_re_add_im`, `NCG.Qp_pi_smul`, `NCG.Qm_pi_smul`, `NCG.QpR`, `NCG.QmR`,
+    `NCG.J_Qp_J`, `NCG.J_Qm_J`, `NCG.QpR_add_QmR`, `NCG.pi_comm_QpR`, `NCG.pi_comm_QmR`, `NCG.Qp_comm_QpR`,
+    `NCG.Qp_comm_QmR`
 
 ## References
 

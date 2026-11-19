@@ -395,9 +395,12 @@ import Lightlike.Lorentz.Tests
 import Lightlike.Lorentz.WeightedComp
 import Lightlike.NCG.Bimodule
 import Lightlike.NCG.Classification
+import Lightlike.NCG.ComplexSplitting
 import Lightlike.NCG.DiracDecomposition
 import Lightlike.NCG.FiniteSpectralTriple
 import Lightlike.NCG.KrajewskiModel
+import Lightlike.NCG.QuaternionComplexify
+import Lightlike.NCG.QuaternionMatrix
 import Lightlike.NCG.RealForm
 import Lightlike.NCG.TensorForm
 import Lightlike.NCG.TestsBimodule
