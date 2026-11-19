@@ -21,6 +21,14 @@ the locations below in the arXiv PDF (printed page numbers, equal to the PDF pag
 | `spatialProj`, `spatialMetric`: `γ = g + n♭ ⊗ n♭`, `γ(n, ·) = 0`, `γ = g` on tangent vectors | eqs. (2.68), (2.69), p. 30 (and the text after them) | Same. |
 | `extrinsicCurvature`: `K(u, v) = −g(P u, ∇_{P v} n)`; vanishes on `n`; symmetric | eq. (2.43), p. 24 (`K(u, v) = −u · ∇_v n` on tangent vectors), eq. (2.70), p. 30 (extension by the projector), and the self-adjointness of the Weingarten map, Sec. 2.3.4, p. 23 | Same; the symmetry is `Hypersurface.secondFF_symm_fields` and needs the unit normal to be smooth near the point. |
 
+## Smoothness of the normal
+
+`FoliationSmooth.lean` (manifolds modelled on `ℝⁿ`): the gradient of a smooth `τ` is a smooth vector field
+(`contMDiffAt_timeGrad`: in the chart at a point its components are `g^{ab} ∂_b τ`), so for a time function the lapse and
+the unit normal are smooth (`smoothNear_unitNormal`), and `isUnitNormal_of_timeFunction` and
+`extrinsicCurvature_symm_of_timeFunction` hold without a smoothness hypothesis. This is Gourgoulhon's construction of
+`n` from the smooth scalar field `t` (Sec. 3.3.1, eqs. (3.4)-(3.5), p. 41).
+
 ## Trust checks
 
 Minkowski space with `τ = x⁰`: `∇τ = −e₀`, `N = 1`, `n = e₀`, `γ` the Euclidean metric of the spatial coordinates
@@ -28,7 +36,6 @@ Minkowski space with `τ = x⁰`: `∇τ = −e₀`, `N = 1`, `n = e₀`, `γ` t
 
 ## Open (the rest of G2-001)
 
-* the smoothness of the unit normal (now a hypothesis of `isUnitNormal` and `extrinsicCurvature_symm`);
 * the chart form of the data in coordinates adapted to the foliation (Gourgoulhon Sec. 4.2.3, p. 57: `g_00 = −N² + β_i β^i`,
   `g_0i = β_i`, `g_ij = γ_ij`) and the map to the chart data `(h, π)` of `Lightlike/Canonical/ADM.lean`;
 * the relation `K = −½ ℒ_n γ` and the momentum `π^{ij} = √γ (K γ^{ij} − K^{ij})` (eq. (4.108)).

@@ -33,7 +33,8 @@ A time function of a spacetime, a smooth function with a timelike gradient, give
 level sets: the lapse, the unit normal, the shift of a time vector, the induced metric and the extrinsic curvature
 [16] {2}; the lapse is positive, the normal is a unit normal of the leaves, the time vector is the lapse times the normal
 plus the shift, the induced metric vanishes on the normal, and the extrinsic curvature is symmetric for the
-Levi-Civita connection [16]. In Minkowski space the time coordinate gives lapse one and the Euclidean induced metric [17].
+Levi-Civita connection [16]; the gradient of a smooth function is a smooth vector field, so the unit normal is smooth
+and these hold without a smoothness hypothesis [18] {2}. In Minkowski space the time coordinate gives lapse one and the Euclidean induced metric [17].
 
 A grid computation in dimension two (`scripts/adm_algebra_check.py`) supports the three brackets; with the kinetic
 coefficient `1/2` of dimension three, used in dimension two, the bracket of two Hamiltonian constraints differs from
@@ -62,6 +63,8 @@ the momentum constraint of the structure function.
     `Lightlike.Canonical.spatialMetric`, `Lightlike.Canonical.extrinsicCurvature`, `Lightlike.Canonical.isUnitNormal`,
     `Lightlike.Canonical.g_time_time`, `Lightlike.Canonical.extrinsicCurvature_symm`
 17. Lightlike/Canonical/TestsFoliation.lean - `Lightlike.Canonical.isTimeFunction_minkowski`, `Lightlike.Canonical.spatialMetric_minkowski`
+18. Lightlike/Canonical/FoliationSmooth.lean - `Lightlike.Canonical.contMDiffAt_timeGrad`, `Lightlike.Canonical.smoothNear_unitNormal`,
+    `Lightlike.Canonical.isUnitNormal_of_timeFunction`, `Lightlike.Canonical.extrinsicCurvature_symm_of_timeFunction`
 
 ## References
 
