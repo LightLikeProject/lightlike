@@ -1102,6 +1102,18 @@ references:
     cite: "E. Dyer and K. Hinterbichler, Boundary Terms, Variational Principles and Higher Derivative Modified Gravity, arXiv:0809.4033"
     title: "Boundary Terms, Variational Principles and Higher Derivative Modified Gravity"
     arxiv: "0809.4033"
+  abdesselam-rivasseau-1994:
+    cite: "A. Abdesselam, V. Rivasseau, Trees, forests and jungles: a botanical garden for cluster expansions (1994)"
+    title: "Trees, forests and jungles: a botanical garden for cluster expansions"
+    arxiv: hep-th/9409094
+  rivasseau-wang-2010:
+    cite: "V. Rivasseau, Z. Wang, Loop Vertex Expansion for Phi^2k Theory in Zero Dimension (2010)"
+    title: "Loop Vertex Expansion for Phi^2k Theory in Zero Dimension"
+    arxiv: "1003.1037"
+  gurau-rivasseau-sfondrini-2014:
+    cite: "R. Gurau, V. Rivasseau, A. Sfondrini, Renormalization: an advanced overview (2014)"
+    title: "Renormalization: an advanced overview"
+    arxiv: "1401.5003"
 
 canonical:
   pl-topology: [lickorish-1999, moise-1977]
