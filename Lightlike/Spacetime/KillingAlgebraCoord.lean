@@ -462,4 +462,22 @@ theorem lieBracket_apply_eq_bracketCo {V W : (Fin n → ℝ) → Fin n → ℝ} 
     simp
   simp only [Pi.sub_apply, hcomp W hW, hcomp V hV, fderiv_eq_sum_pd, bracketCo, Finset.sum_sub_distrib]
 
+/-- **Raising**: if the lowered covector of `V` is the combination `Σₑ cₑ` of the lowered covectors of `Yₑ` at a point
+where `g` is invertible, then `V = Σₑ cₑ Yₑ` there. -/
+theorem eq_sum_of_lowerVec_eq_sum {ι : Type*} [Fintype ι] {g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ}
+    {V : (Fin n → ℝ) → Fin n → ℝ} (Ys : ι → (Fin n → ℝ) → Fin n → ℝ) (c : ι → ℝ) {y : Fin n → ℝ}
+    (hdet : (g y).det ≠ 0) (h : lowerVec g V y = ∑ e, c e • lowerVec g (Ys e) y) :
+    V y = ∑ e, c e • Ys e y := by
+  have hu : IsUnit (g y) := (Matrix.isUnit_iff_isUnit_det _).2 (Ne.isUnit hdet)
+  have hl : ∀ W : Fin n → ℝ, (fun b => ∑ c, g y b c * W c) = g y *ᵥ W := fun W => by
+    funext b; simp [Matrix.mulVec, dotProduct]
+  have h' : g y *ᵥ V y = g y *ᵥ ∑ e, c e • Ys e y := by
+    rw [Matrix.mulVec_sum]
+    simp only [← hl]
+    rw [← show lowerVec g V y = fun b => ∑ c, g y b c * V y c from rfl, h]
+    funext b
+    simp only [lowerVec, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
+    exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
+  exact (Matrix.mulVec_injective_iff_isUnit.2 hu) h'
+
 end Lightlike
