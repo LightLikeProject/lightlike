@@ -1,5 +1,5 @@
 import Lightlike.ODE.Frobenius
-import Lightlike.ODE.FlowContDiff
+import Lightlike.ODE.HigherVariational
 import Mathlib.Analysis.SpecialFunctions.Exp
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 import Mathlib.Analysis.Complex.ExponentialBounds
@@ -113,5 +113,18 @@ theorem exists_solution_contDiffOn_fst (k : ℕ) (t₀ x₀ : ℝ) :
   obtain ⟨δ, φ, hδ, h1, h2, -⟩ := exists_solution_contDiffOn k
     (f := fun p : ℝ × ℝ => p.1) (t₀ := t₀) (x₀ := x₀) contDiffAt_fst
   exact ⟨δ, φ, hδ, h1, h2⟩
+
+/-- **Non-vacuity of `exists_solution_contDiffOn_variational`**: for the field `f (t, x) = t`
+there is a solution whose derivatives of every order `j ≤ k` satisfy the higher order variational
+equation. -/
+theorem exists_solution_variational_fst (k : ℕ) (t₀ x₀ : ℝ) :
+    ∃ (δ : ℝ) (φ : ℝ → ℝ → ℝ → ℝ), 0 < δ ∧
+      ∀ j ≤ k, ∀ q ∈ Ioo (t₀ - δ) (t₀ + δ) ×ˢ Ioo (t₀ - δ) (t₀ + δ) ×ˢ ball x₀ δ,
+        fderiv ℝ (iteratedFDeriv ℝ j (fun q : ℝ × ℝ × ℝ => φ q.1 q.2.1 q.2.2)) q
+            ((1 : ℝ), (0 : ℝ), (0 : ℝ)) =
+          iteratedFDeriv ℝ j (fun q : ℝ × ℝ × ℝ => q.1) q := by
+  obtain ⟨δ, φ, hδ, -, -, -, h4⟩ := exists_solution_contDiffOn_variational k
+    (f := fun p : ℝ × ℝ => p.1) (t₀ := t₀) (x₀ := x₀) contDiffAt_fst
+  exact ⟨δ, φ, hδ, h4⟩
 
 end Lightlike.ODE.Tests

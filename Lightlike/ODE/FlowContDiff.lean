@@ -25,9 +25,9 @@ derivative.
 * `teschl-2012`: G. Teschl, *Ordinary Differential Equations and Dynamical Systems*, Theorem 2.10
   and its proof, pages 46–47 of the author's version. Differences from the source: a real Banach
   space instead of `ℝⁿ`; `f` is assumed `C^k` at the point `(t₀, x₀)` (hence near it) instead of
-  on an open set `U`; the last sentence of the theorem (the partial derivatives of order `k`
-  satisfy the higher variational equations, and commute) is not stated beyond the first
-  variational equation (`IsFlowBox.hasDerivWithinAt_fderiv_flow`).
+  on an open set `U`. The last sentence of the theorem (the higher order variational
+  equations) is `Lightlike.ODE.exists_solution_contDiffOn_variational` in
+  `Lightlike.ODE.HigherVariational`.
 -/
 
 open Set Metric Filter Topology

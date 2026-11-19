@@ -1,7 +1,8 @@
 # ODE flows, commuting flows and Frobenius: sources read, and how the library compares
 
 Files: `Lightlike/ODE/` (`Gronwall`, `FlowDeriv`, `LocalFlow`, `FlowJoint`, `CommutingFlows`,
-`CommutingFrame`, `InvolutiveFrame`, `Frobenius`, `FrobeniusChart`, `FlowContDiff`, `Tests`).
+`CommutingFrame`, `InvolutiveFrame`, `Frobenius`, `FrobeniusChart`, `FlowContDiff`,
+`HigherVariational`, `Tests`).
 
 ## Sources (read at the locations given)
 
@@ -52,13 +53,21 @@ variables at once.
 variables, the case `k = 1` by Grönwall, and induction on `k` through the pair `(Φ, D_xΦ)`
 (`exists_isFlowBox_contDiffOn`, `prolong`).
 
-Differences from Teschl, Theorem 2.10 (none accepted; all for the owner):
-- weaker: the last sentence of the theorem, that the partial derivatives of order `k` satisfy the
-  higher order variational equations obtained from (2.51) and that the corresponding higher
-  derivatives commute, is stated only for the first variational equation (2.49)
-  (`IsFlowBox.hasDerivWithinAt_fderiv_flow`). No attempt at the higher equations is on record yet.
+`Lightlike.ODE.exists_solution_contDiffOn_variational` (file `HigherVariational`) adds the last
+sentence of the theorem: for every `j ≤ k`, `∂/∂t D^j φ = D^j (f(t, φ))` on `I × I × B`, where
+`D^j` is the iterated Fréchet derivative in `(t, s, x)` (all partial derivatives of order `j` at
+once); this is (2.51), and it contains the commutation of `∂/∂t` with the derivatives of order
+`j`. It rests on `fderiv_iteratedFDeriv_apply_comm`, proved by induction on the order from the
+symmetry of the second derivative (the pinned Mathlib has no symmetry of iterated derivatives of
+higher order).
+
+Differences from Teschl, Theorem 2.10 (representation only; none accepted):
 - representation: a real Banach space instead of `ℝⁿ`; `f` is `C^k` at the point `(t₀, x₀)`
-  (so near it) instead of on a given open set `U`; the source's `k ≥ 1` is `k + 1` here.
+  (so near it) instead of on a given open set `U`; the source's `k ≥ 1` is `k + 1` here;
+- representation: "`D_k φ` satisfies the higher order variational equation obtained from (2.51)
+  by applying the chain rule" is stated as (2.51) itself for the iterated Fréchet derivative,
+  without expanding `D^j (f(t, φ))` by the chain rule; "this equation is linear in `D_k φ`" is a
+  remark about that expansion and is not a separate statement here.
 
 ### (b) Commuting flows
 

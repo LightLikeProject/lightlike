@@ -249,6 +249,7 @@ import Lightlike.ODE.FlowJoint
 import Lightlike.ODE.Frobenius
 import Lightlike.ODE.FrobeniusChart
 import Lightlike.ODE.Gronwall
+import Lightlike.ODE.HigherVariational
 import Lightlike.ODE.InvolutiveFrame
 import Lightlike.ODE.LocalFlow
 import Lightlike.ODE.Tests
