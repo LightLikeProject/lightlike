@@ -24,6 +24,10 @@ references:
     cite: "J. Milnor, Morse Theory, Annals of Mathematics Studies 51, Princeton University Press (1963)"
     title: "Morse Theory. (AM-51)"
     doi: 10.1515/9781400881802
+  benedetti-2019:
+    cite: "R. Benedetti, Lectures on Differential Topology (2019)"
+    title: "Lectures on Differential Topology"
+    arxiv: "1907.10297"
   reed-simon-1972:
     cite: "M. Reed and B. Simon, Methods of Modern Mathematical Physics I: Functional Analysis, Academic Press (1972)"
     title: "Methods of modern mathematical physics"

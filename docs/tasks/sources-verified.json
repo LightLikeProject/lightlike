@@ -693,6 +693,21 @@
   "citations": 212,
   "citations_via": "Semantic Scholar"
  },
+ "benedetti-2019": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Lectures on Differential Topology",
+  "locations": {
+   "Theorem 1.13": {
+    "verified": true,
+    "snippet": "Theorem 1.13. (Morse Lemma) Let 0 be a non degenerate critical point of index 0 ≤ λ ≤ n of f ∈ C ∞ (U, R), f (0) = 0. Then there is a local diffeomorphism x = φ(u), 0 = φ(0), such that ψ := φ−1 is defined on some U\u000f and",
+    "why": null
+   }
+  },
+  "citations": 10,
+  "citations_via": "Semantic Scholar"
+ },
  "benedetti-ziegler-2011": {
   "checked": "2026-11-08",
   "exists": true,
