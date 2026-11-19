@@ -22,6 +22,7 @@ variable (M : ℝ)
 /-- The derivative of `kG` at `s > -1` is `4M² e^{-r/2M}/r`, `r = kG s`. -/
 def dkG (r : ℝ) : ℝ := 4 * M ^ 2 * exp (-(r / (2 * M))) / r
 
+/-- The derivative of `kG`, the inverse of `kF`, at `s > -1` is `dkG M (kG M s)`. -/
 lemma hasDerivAt_kG (hM : 0 < M) {s : ℝ} (hs : -1 < s) : HasDerivAt (kG M) (dkG M (kG M s)) s := by
   set r := kG M s with hrdef
   have hr : 0 < r := kG_pos M hM hs
@@ -49,6 +50,7 @@ lemma hasDerivAt_kG (hM : 0 < M) {s : ℝ} (hs : -1 < s) : HasDerivAt (kG M) (dk
 /-- The derivative of `kh`. -/
 def dkh (r : ℝ) : ℝ := -(kh M r * (1 / r + 1 / (2 * M)))
 
+/-- The derivative of `kh` at `r > 0` is `dkh M r = -kh(r) (1/r + 1/(2M))`. -/
 lemma hasDerivAt_kh (hM : 0 < M) {r : ℝ} (hr : 0 < r) : HasDerivAt (kh M) (dkh M r) r := by
   have h1 : HasDerivAt (fun r : ℝ => 32 * M ^ 3 / r) (-(32 * M ^ 3) / r ^ 2) r := by
     have := (hasDerivAt_const r (32 * M ^ 3)).fun_div (hasDerivAt_id' r) hr.ne'
