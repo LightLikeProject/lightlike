@@ -198,6 +198,9 @@ import Lightlike.Canonical.HamiltonianPm
 import Lightlike.Canonical.HamiltonianWEq
 import Lightlike.Canonical.Hypersurface
 import Lightlike.Canonical.HypersurfaceBridge
+import Lightlike.Canonical.Foliation
+import Lightlike.Canonical.FoliationSmooth
+import Lightlike.Canonical.TestsFoliation
 import Lightlike.Canonical.HamiltonianBracket
 import Lightlike.Canonical.HamiltonianHHBracket
 import Lightlike.Canonical.HamiltonianDeriv
