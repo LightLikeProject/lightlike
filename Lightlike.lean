@@ -1055,6 +1055,7 @@ import Lightlike.Spacetime.KillingAlgebra
 import Lightlike.Spacetime.IsometryKilling
 import Lightlike.Spacetime.PoincareKilling
 import Lightlike.Spacetime.KillingMinkowski
+import Lightlike.Spacetime.MinkowskiCompactification
 import Lightlike.Spacetime.Hypersurface
 import Lightlike.Spacetime.HypersurfaceConstraints
 import Lightlike.Spacetime.VariationDet
