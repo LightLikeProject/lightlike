@@ -244,6 +244,7 @@ import Lightlike.Lorentz.WeightedComp
 import Lightlike.ODE.CommutingConverse
 import Lightlike.ODE.CommutingFlows
 import Lightlike.ODE.CommutingFrame
+import Lightlike.ODE.CommutingRectangle
 import Lightlike.ODE.FlowContDiff
 import Lightlike.ODE.FlowDeriv
 import Lightlike.ODE.FlowJoint
