@@ -35,3 +35,29 @@ Reused and aligned: Physlib's `LadderSystem ℂ V d` (`PhyslibAlpha.Mathematics.
 `dGamma_commutator`, on `Module.End ℂ V` with `Fin d` modes). It has no CAR, so `IsModeAlgebra` is kept;
 `SecondQuantLadder.lean` aligns the two: `isModeAlgebra_ladderSystem` (a ladder system is a mode algebra with `ε = 1`)
 and `dGamma_ladderSystem` (`dΓ(x) = L.toGlHomLinear x`). Mathlib has no second quantization or Fock space.
+
+## Attempts at the full statement (any Hilbert space `Z`, `h ∈ B(Z)`)
+
+Attempt 1, basis-free algebra (`SecondQuantRank.lean`, built). `Z` is any complex inner product space, `a*` linear and
+`a` antilinear on `Z` with `a(w) a*(v) = ⟪w, v⟫ + ε a*(v) a(w)` and the (anti)commutation of the `a*` and of the `a`
+(`IsFieldAlgebra`). For finite-rank `h = ∑ₖ |uₖ⟩⟨vₖ|`, `dΓ(h) = ∑ₖ a*(uₖ) a(vₖ)` and Theorem 18 (2), (4) and Theorem 13 (1)
+hold (`dGammaRank_commutator_creation`, `dGammaRank_commutator_annihilation`, `dGammaRank_commutator`, with
+`rankOp_comp`: the product of the two finite-rank operators). This removes the restriction `Z = ℂⁿ`. It stops at
+`h` of infinite rank: `dΓ(h)` is then an infinite sum with no limit in an abstract algebra, and no normed completion
+helps, because `dΓ(1) = N` has the eigenvalue `n` on the `n`-particle space for every `n ≤ dim Z`, so it is unbounded
+and lies in no normed algebra containing the field operators.
+
+Attempt 2, the Fock space in coordinates (`FermiFockGeneral.lean`'s `Γ = ℓ²(Finset ι)` for a Hilbert basis `(eᵢ)` of
+`Z`, `B S` the wedge of the `eᵢ`, `i ∈ S`). The coefficient formula `(dΓ(h)ψ)(T) = ∑_{i ∈ T} ∑_{j ∉ T∖{i}} hᵢⱼ s(i, j, T)
+ψ(T∖{i} ∪ {j})` (`hᵢⱼ = ⟪eᵢ, h eⱼ⟫`, `s` the sign of the reordering) converges for every `ψ ∈ ℓ²`, since the rows
+of a bounded `h` are in `ℓ²`, and is bounded by `|T| ‖h‖ ‖ψ‖`. The commutator needs `dΓ(h)` as an operator on a domain
+invariant under `a*(w)`. The algebraic span of the `B S` is not invariant: `a*(w) B ∅` has the coefficients `⟪eⱼ, w⟫`
+on all `{j}`, infinitely many nonzero for a general `w`. The natural domain is the finite-particle space `⊕ₙ Γₙ` with
+`Γₙ` the closed span of the `B S`, `|S| = n`, and this needs `‖dΓ(h) ψ‖ ≤ n ‖h‖ ‖ψ‖` on `Γₙ`. That is where this attempt
+stops. Summing `|(dΓ(h)ψ)(T)|²` over `|T| = n` with Cauchy-Schwarz meets, for fixed `S`, infinitely many `(T, i, j)`
+with `T∖{i} ∪ {j} = S`. The estimate closes only with the weights `∑ⱼ |hᵢⱼ|²` summable over `i`, which gives
+`‖dΓₙ(h)‖ ≤ n ‖h‖_HS` for Hilbert-Schmidt `h`. The bound `n ‖h‖` for a general bounded `h` comes from
+`dΓₙ(h) = ∑ⱼ 1 ⊗ ⋯ ⊗ h ⊗ ⋯ ⊗ 1` on the Hilbert tensor power `Z^{⊗n}`, each term of norm `‖h‖`, and Mathlib has no
+completed Hilbert-space tensor product.
+
+Result: the line is "weaker: `h` of finite rank" (attempt 1), in place of "weaker: `Z = ℂⁿ`".
