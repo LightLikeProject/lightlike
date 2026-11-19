@@ -50,4 +50,39 @@ Differences:
    and is injective (rigidity), as in the source's count.
    Difference: representation, "independent Killing vectors" as the finite rank of the vector space of smooth Killing
    fields (the source's linear independence with constant coefficients).
-4. The Killing algebra of the model type (G1-024's isometry-group form).
+4. The isometry-group form, stage 1 (slices; scope agreed 19 November 2026): six linearly independent Killing fields
+   of a 3-metric with isotropy at a point have the space-form structure constants after a change of complement.
+   S1 closure (dimension at most 6 and the bracket of Killing fields), S2 evaluation at the point through
+   `pd_pd_killing` and rigidity, S3 Jacobi, so(3)-equivariance and the change of complement. First piece (done):
+   `KillingAlgebraCoord.lean`, the bridge from the Lie-derivative form of Killing's equation used by
+   `isometric_spaceForm` to the covector form of the rigidity (`covCo_lowerVec_add`). Checked numerically before
+   writing: Jacobi forces the rotation part of `[J, P]` to vanish, and the translation part of `[P, P]` is removed by
+   `P' = P - (β/2) J`.
+   Working plan for the next pieces (coordinates on a ball of `Fin 3 → ℝ`, the setting of `isometric_spaceForm`):
+   (a) (done: `lieCo_bracketCo`, `lieCo_bracketCo_eq_zero`) `L_{[Y,Z]} T = L_Y (L_Z T) - L_Z (L_Y T)` for the coordinate
+       Lie derivative
+       `(L_Y T)_{ab} = Yᶜ ∂_c T_{ab} + ∂_a Yˡ T_{lb} + T_{al} ∂_b Yˡ` of a field of bilinear forms (second derivatives
+       cancel by `pd_pd_comm`), so brackets of Killing fields are Killing;
+   (b) with the normalization at `p` (`P_m(p)` a frame, `R_ab(p) = 0`, `∇R_ab(p)` the so(3) generators), the six values
+       `rigVec (lowerVec g Y_e) p` span the Killing data at `p` (value and antisymmetric derivative), so for every
+       Killing field `Z` there are constants with `rigVec (lowerVec g Z) p = Σ cₑ rigVec (lowerVec g Y_e) p`, and
+       `eq_of_rigVec_eq` gives `Z = Σ cₑ Y_e` on the ball: S1 and S2 together;
+   Refinement (19 November 2026, 21:15): normalise the translations as transvections at `p` (`P_m(p) = e_m`,
+   `∇P_m(p) = 0`; any frame of Killing fields can be brought to this by subtracting rotations). Then, by
+   `covCo2_killing` at `p`: `[P_a, P_b](p) = 0` (no translation part, `β = 0`), `∇[R_ab, P_m](p) = 0` (since
+   `∇∇R(p) = Riem · R(p) = 0`; no rotation part, `λ = 0`), and `∇[P_a, P_b](p)` is the curvature at `p`; Jacobi
+   (`[R, [P, P]]`) makes that curvature isotropic, `[P_m, P_n] = -k R_mn` in the convention of `SpaceForm.S`.
+   Proved for (b) and part of (c) (`KillingAlgebraCoord.lean`): `eq_sum_of_rigVec_eq_sum`, `pd_eq_of_killing`,
+   `rigVec_eq_sum_of_data`, `lowerVec_bracketCo` (`[Y, Z]_b = Yᵈ ∇_d Z_b - Zᵈ ∇_d Y_b`), `pd_lowerVec_bracketCo` (its
+   derivative for Killing fields through (13.8)). Remaining route for (c):
+   - the normalization at `p` in coordinates: `P_m(p) = e_m`, `covCo (lowerVec g P_m) (p) = 0`, `R_ab(p) = 0`,
+     `∂_d R_ab^l (p) = δ_da δ_lb - δ_db δ_la`, `R_ab = -R_ba`; `g(p) = c δ` from the skewness of the three generators
+     (the 3 × 3 Schur computation);
+   - the data at `p` of `[R, R]`, `[R, P]`, `[P, P]` from `lowerVec_bracketCo` and `pd_lowerVec_bracketCo`, against the
+     data of the `S k` combinations (`rigVec_eq_sum_of_data`), the curvature at `p` entering `[P, P]`;
+   - isotropy of the curvature at `p` from Jacobi (`bracketCo` is `VectorField.lieBracket` in components, and Mathlib's
+     `VectorField.leibniz_identity_lieBracket` gives Jacobi), giving `[P_m, P_n] = -k R_mn`;
+   - `hS` on the ball by `eq_sum_of_rigVec_eq_sum` and raising, then `isometric_spaceForm`.
+   (c) the constants of `[Y_i, Y_j]` from their data at `p` (`[R,R]`: so(3); `[R,P]`: translation part from
+       `∇R(p)`; the rest unknown), Jacobi on the constants, the equivariance computation, the change of complement, and
+       `hS` for `S k`; then `isometric_spaceForm`.
