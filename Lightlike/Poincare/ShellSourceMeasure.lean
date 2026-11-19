@@ -22,7 +22,7 @@ one-particle representations on `L²(d³p / 2ω_p)` are irreducible (`irreducibl
   arXiv:hep-th/0611263v2, §3.2, Remarks (page 11 of v2): the invariant scalar product
   `∫ dᴰp δ(p² + m²) Θ(p⁰) Σ_σ Ψ*_{p,σ} Φ_{p,σ}` (signature `(−,+,+,+)`).
 * E. Freitag, *Unitary representations of the Poincaré group, Wigner classification* (lecture notes, Heidelberg),
-  Chapter V, §6, Theorem 6.2, page 148.
+  Chapter V, §6, Theorem 6.2, page 149.
 -/
 
 open MeasureTheory Matrix Lightlike.Lorentz Filter Topology

@@ -295,6 +295,15 @@ def ocr_word(word):
     return "".join(OCR_LETTER.get(ch.lower(), re.escape(ch)) for ch in word)
 
 
+# A label cited at the start of a line looks like a statement ('... a useful corollary of' then
+# 'Proposition 5.1.' on the next line). In Loomis-Sternberg's scan 12 of the 366 statement-line
+# matches (3.3%) are such citations, and a location one page after a statement verifies for 3 of
+# the 366 (0.8%): one is a second statement with the same label (the book restarts its numbering),
+# two are wrapped citations. So a location can verify on a page that only cites the label.
+# Requiring the line before to end a sentence or be blank would remove the 12 but lose 24 real
+# statements (after 'Thus,', 'Then,', an equation or a running head), so the pattern does not
+# require it; a stop-word rule fitted on this one scan is not used either (no second scan to
+# test it on).
 def defining_pattern(label):
     """A regex for where a label is stated rather than cited, in page-layout text: a theorem-like
     label at the start of a line followed by '.' or '(' ('Theorem 6.6 (Stone).', 'Lemma 6.12.'),

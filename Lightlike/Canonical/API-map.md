@@ -80,7 +80,11 @@ identify the connections modulo the gauge transformations that are the identity 
 gauge transformations modulo those with `SU(2)^m` [34] {5}. The same holds for the graphs of Ashtekar–Lewandowski, whose
 edges are closed-piecewise analytic: the holonomy along an edge is the product along its analytic pieces, which form a
 graph with `C¹` edges, and the gauge transformations that are the identity at the vertices need not be at the corners
-[35] {5}.
+[35] {5}. Two regular analytic arcs (analytic, with nonzero velocity) that meet at points
+accumulating at a point share a segment there, so they meet in finitely many pieces [36] {5}. The holonomy along an edge, the unique transport in the sense of
+right derivatives, does not depend on the subdivision of the edge into analytic pieces and is unchanged under
+orientation-preserving reparametrisation; a graph refines another when each edge of the latter is a composite of edges of
+the former, and then each holonomy of the coarser graph is a product of holonomies of the finer one [37] {5}.
 
 A grid computation in dimension two (`scripts/adm_algebra_check.py`) supports the three brackets; with the kinetic
 coefficient `1/2` of dimension three, used in dimension two, the bracket of two Hamiltonian constraints differs from
@@ -153,6 +157,10 @@ the momentum constraint of the structure function.
     `Lightlike.Canonical.ALGraph.IE_injective_mod`, `Lightlike.Canonical.ALGraph.IE_surjective`,
     `Lightlike.Canonical.ALGraph.IV_eq_iff`, `Lightlike.Canonical.ALGraph.IV_surjective`,
     `Lightlike.Canonical.lGraph_IE_surjective`
+36. Lightlike/Canonical/HolonomyAnalytic.lean - `Lightlike.Canonical.eventually_eq_comp_of_tendsto`,
+    `Lightlike.Canonical.Edge.meetFrontier_finite`
+37. Lightlike/Canonical/HolonomyALOrder.lean - `Lightlike.Canonical.ALGraph.Le`, `Lightlike.Canonical.ALGraph.hol_of_le`,
+    `Lightlike.Canonical.ALEdge.hol_eq_of_eqOn`, `Lightlike.Canonical.ALEdge.isRightTransport_comp`
 
 ## References
 
