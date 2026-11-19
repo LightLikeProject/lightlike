@@ -14,7 +14,9 @@ The vacuum graphs with `m` four-valent vertices are the orbits of the pairings o
 
 Wick's theorem: the moment `E[x_{l₀} ⋯ x_{l_{n-1}}]` of the centred Gaussian measure with positive definite covariance `S` is the sum, over the full Wick contractions of the `n` positions (Physlib's `WickContraction` with `IsFull`), of the products `∏ S_{l_p l_q}` over the contracted pairs; both sides satisfy Isserlis' recursion [9] {3}.
 
-**Missing.** Wick's theorem for a degenerate (positive semidefinite) covariance and the asymptotic expansion of the quartic integral are open [TODO]. The formal integral is compared with Borinsky's Definition 3.1.1 and eq. (3.1.8) {2}, the graphs with Borinsky §2.1 and §2.3 {2}, and Wick's theorem with Tubaro–Zanella's Theorem 2.19 {3}, where it holds for every centred jointly Gaussian family; the Gaussian measure and its integrals are not yet compared with a source.
+The one-variable Wick identity `∫ dx/√(2πħ) e^{-x²/(2aħ)} x^{2n} = √a (aħ)^n (2n - 1)!!` holds for `a, ħ > 0`, and the series `√(2π) Σ_{m<M} (-g/24)^m (4m - 1)!!/m!` approximates `∫ e^{-x²/2 - g x⁴/24} dx` for `g ≥ 0` with an error at most the size of the next term, by the alternating Taylor bound for `e^{-t}` [10] {2}.
+
+**Missing.** Wick's theorem for a degenerate (positive semidefinite) covariance is open [TODO]; the error bound of the quartic expansion is not stated in Borinsky, who treats the integral formally. The formal integral is compared with Borinsky's Definition 3.1.1 and eq. (3.1.8) {2}, the graphs with Borinsky §2.1 and §2.3 {2}, and Wick's theorem with Tubaro–Zanella's Theorem 2.19 {3}, where it holds for every centred jointly Gaussian family; the Gaussian measure and its integrals are not yet compared with a source.
 
 ## Lean References
 
@@ -29,6 +31,8 @@ Wick's theorem: the moment `E[x_{l₀} ⋯ x_{l_{n-1}}]` of the centred Gaussian
    `FieldTheory.sum_inv_aut`, `FieldTheory.sum_inv_aut_two`, `FieldTheory.sum_inv_aut_one`
 9. Lightlike/FieldTheory/Gaussian/Wick.lean - `FieldTheory.pairWeight`, `FieldTheory.pairSum`, `FieldTheory.pairSum_succ_succ`,
    `FieldTheory.moment_ofFn_eq_pairSum`, `FieldTheory.moment_eq_pairSum`
+10. Lightlike/FieldTheory/ZeroDim/Quartic.lean - `FieldTheory.integral_pow_mul_gauss`, `FieldTheory.integral_pow_mul_gauss_scaled`,
+   `FieldTheory.wick_one_variable`, `FieldTheory.abs_exp_neg_sub_sum_le`, `FieldTheory.quartic_expansion`
 
 ## References
 

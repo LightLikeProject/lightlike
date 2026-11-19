@@ -939,6 +939,7 @@ import Lightlike.FieldTheory.Gaussian.Tests
 import Lightlike.FieldTheory.Gaussian.Wick
 import Lightlike.FieldTheory.ZeroDim.FormalIntegral
 import Lightlike.FieldTheory.ZeroDim.Graphs
+import Lightlike.FieldTheory.ZeroDim.Quartic
 import Lightlike.GFT.Bubble
 import Lightlike.GFT.ColoredGraph
 import Lightlike.GFT.Dual
