@@ -917,6 +917,59 @@ theorem norm_dGammaFock_le (n : ℕ) (h : Z →L[ℂ] Z) : ‖dGammaFock b n h�
         · exact norm_embCLM_le _
     _ = (n + 1) * ‖h‖ := by ring
 
+/-- **`a*(w)` raises the particle number by one.** -/
+lemma creWCoeff_apply_of_card (w : Z) (ψ : FermiL2 ι) {m : ℕ} (hψ : ∀ S : Finset ι, S.card ≠ m → ψ S = 0)
+    {T : Finset ι} (hT : T.card ≠ m + 1) : creWCoeff b w ψ T = 0 := by
+  rw [creWCoeff_apply]
+  refine Finset.sum_eq_zero fun j hj => ?_
+  have hpos := Finset.card_pos.mpr ⟨j, hj⟩
+  rw [creFun, if_pos hj, hψ _ (by rw [Finset.card_erase_of_mem hj]; omega), mul_zero, mul_zero]
+
+/-- **`dΓ(h)` keeps the particle number**: `dΓₙ₊₁(h)` takes values in the `(n+1)`-particle vectors. -/
+lemma dGammaFock_apply_of_card (n : ℕ) (h : Z →L[ℂ] Z) (ψ : FermiL2 ι) {S : Finset ι} (hS : S.card ≠ n + 1) :
+    dGammaFock b n h ψ S = 0 :=
+  adjoint_embCLM_apply_of_card _ hS
+
+/-- **The commutator `[dΓ(h), a*(w)] = a*(hw)` on the `(n+1)`-particle vectors**:
+`dΓₙ₊₂(h) a*(w) ψ = a*(hw) ψ + a*(w) dΓₙ₊₁(h) ψ`. -/
+theorem dGammaFock_creW (n : ℕ) (h : Z →L[ℂ] Z) (w : Z) (ψ : FermiL2 ι)
+    (hψ : ∀ S : Finset ι, S.card ≠ n + 1 → ψ S = 0) :
+    dGammaFock b (n + 1) h (creWCoeff b w ψ) = creWCoeff b (h w) ψ + creWCoeff b w (dGammaFock b n h ψ) := by
+  set c : ℂ := (Real.sqrt (((n + 1 : ℕ) : ℝ) + 1) : ℂ) with hcdef
+  have hc : ∀ (w' : Z) (φ : FermiL2 ι), embCLM (n + 2) (creWCoeff b w' φ) =
+      c • antisym (n + 2) (creT b w' (embCLM (n + 1) φ)) := fun w' φ => embL_creW b w' φ
+  have hY : antisym (n + 1) (SecondQuantSlot.dGammaTensor b n h (embCLM (n + 1) ψ)) =
+      SecondQuantSlot.dGammaTensor b n h (embCLM (n + 1) ψ) := by
+    rw [← dGammaTensor_antisym]
+    exact congrArg (fun Φ => SecondQuantSlot.dGammaTensor b n h Φ) (antisym_embL (n := n + 1) ψ)
+  have h2 : embCLM (n + 2) (creWCoeff b w (dGammaFock b n h ψ)) =
+      c • antisym (n + 2) (creT b w (SecondQuantSlot.dGammaTensor b n h (embCLM (n + 1) ψ))) := by
+    rw [hc, show dGammaFock b n h ψ = ContinuousLinearMap.adjoint (embCLM (n + 1))
+      (SecondQuantSlot.dGammaTensor b n h (embCLM (n + 1) ψ)) from rfl, embCLM_adjoint_apply, hY]
+  calc dGammaFock b (n + 1) h (creWCoeff b w ψ)
+      = ContinuousLinearMap.adjoint (embCLM (n + 2))
+          (SecondQuantSlot.dGammaTensor b (n + 1) h (embCLM (n + 2) (creWCoeff b w ψ))) := rfl
+    _ = ContinuousLinearMap.adjoint (embCLM (n + 2))
+          (embCLM (n + 2) (creWCoeff b (h w) ψ) + embCLM (n + 2) (creWCoeff b w (dGammaFock b n h ψ))) := by
+        rw [hc, hc, h2, map_smul, dGammaTensor_antisym, dGammaTensor_creT, map_add, smul_add]
+    _ = _ := by
+        rw [map_add, adjoint_embCLM_embCLM _ fun S hS => creWCoeff_apply_of_card b (h w) ψ hψ hS,
+          adjoint_embCLM_embCLM _ fun S hS => creWCoeff_apply_of_card b w _
+            (fun S' hS' => dGammaFock_apply_of_card b n h ψ hS') hS]
+
+/-- **`[dΓ(h), a*(w)] = a*(hw)` on the vacuum sector**: `dΓ₁(h) a*(w) ψ = a*(hw) ψ` for `ψ` supported on `∅`. -/
+theorem dGammaFock_zero_creW (h : Z →L[ℂ] Z) (w : Z) (ψ : FermiL2 ι) (hψ : ∀ S : Finset ι, S.card ≠ 0 → ψ S = 0) :
+    dGammaFock b 0 h (creWCoeff b w ψ) = creWCoeff b (h w) ψ := by
+  set c : ℂ := (Real.sqrt (((0 : ℕ) : ℝ) + 1) : ℂ) with hcdef
+  have hc : ∀ (w' : Z) (φ : FermiL2 ι), embCLM 1 (creWCoeff b w' φ) =
+      c • antisym 1 (creT b w' (embCLM 0 φ)) := fun w' φ => embL_creW (n := 0) b w' φ
+  calc dGammaFock b 0 h (creWCoeff b w ψ)
+      = ContinuousLinearMap.adjoint (embCLM 1)
+          (SecondQuantSlot.dGammaTensor b 0 h (embCLM 1 (creWCoeff b w ψ))) := rfl
+    _ = ContinuousLinearMap.adjoint (embCLM 1) (embCLM 1 (creWCoeff b (h w) ψ)) := by
+        rw [hc, hc, map_smul, dGammaTensor_antisym, dGammaTensor_zero_creT]
+    _ = _ := adjoint_embCLM_embCLM _ fun S hS => creWCoeff_apply_of_card b (h w) ψ hψ hS
+
 end Gamma
 
 end Lightlike.OperatorAlgebras.SecondQuantWedge
