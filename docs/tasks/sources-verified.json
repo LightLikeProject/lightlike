@@ -1284,6 +1284,11 @@
     "snippet": "(2.34) where “diag” means a diagonal matrix with the given elements. If n is the dimension of the manifold, s is the number of +1’s in the canonical form, and t is the number of −1’s, then s − t is the signature of the m",
     "why": null
    },
+   "eq. (3.21)": {
+    "verified": true,
+    "snippet": "(3.21) 2 This is one of the most important formulas in this subject; commit it to memory. Of course, we have only proved that if a metric-compatible and torsion-free connection exists, it must be of the form (3.21); you",
+    "why": null
+   },
    "eq. (3.79)": {
     "verified": true,
     "snippet": "(3.79) With a little more work, which we leave to your imagination, we can see that the sum of cyclic permutations of the last three indices vanishes: Rρσµν + Rρµνσ + Rρνσµ = 0 . (3.80) This last property is equivalent t",
@@ -1294,9 +1299,39 @@
     "snippet": "(3.80) This last property is equivalent to the vanishing of the antisymmetric part of the last three indices: Rρ[σµν] = 0 . (3.81) All of these properties have been derived in a special coordinate system, but they are al",
     "why": null
    },
+   "eq. (3.88)": {
+    "verified": true,
+    "snippet": "(3.88) This is known as the Bianchi identity. (Notice that for a general connection there would be additional terms involving the torsion tensor.) It is closely related to the Jacobi identity, since (as you can show) it",
+    "why": null
+   },
+   "eq. (3.91)": {
+    "verified": true,
+    "snippet": "(3.91) as a consequence of the various symmetries of the Riemann tensor. Using the metric, we can take a further contraction to form the Ricci scalar: R = Rµ µ = g µν Rµν . (3.92) An especially useful form of the Bianchi",
+    "why": null
+   },
+   "eq. (3.96)": {
+    "verified": true,
+    "snippet": "(3.96) 3 CURVATURE 82 The Einstein tensor, which is symmetric due to the symmetry of the Ricci tensor and the metric, will be of great importance in general relativity. The Ricci tensor and the Ricci scalar contain infor",
+    "why": null
+   },
    "eq. (4.53)": {
     "verified": true,
     "snippet": "(4.53) can be very difficult to solve. The most popular sort of simplifying assumption is that the metric has a significant degree of symmetry, and we will talk later on about how symmetries of the metric make life easie",
+    "why": null
+   },
+   "eq. (4.60)": {
+    "verified": true,
+    "snippet": "(4.60) You can check this yourself. Therefore, the contribution of the first term in (4.56) to δS can be written Z h i √ (δS)1 = dn x −g g µν ∇λ (δΓλνµ ) − ∇ν (δΓλλµ ) Z h i √ = dn x −g ∇σ g µσ (δΓλλµ ) − g µν (δΓσµν ) ,",
+    "why": null
+   },
+   "eq. (4.66)": {
+    "verified": true,
+    "snippet": "(4.66) 2 This should vanish for arbitrary variations, so we are led to Einstein’s equations in vacuum: 1 δS 1 √ = Rµν − Rgµν = 0 . (4.67) −g δg µν 2 The fact that this simple action leads to the same vacuum field equatio",
+    "why": null
+   },
+   "eq. (4.67)": {
+    "verified": true,
+    "snippet": "(4.67) −g δg µν 2 The fact that this simple action leads to the same vacuum field equations as we had previously arrived at by more informal arguments certainly reassures us that we are doing something right. What we wou",
     "why": null
    },
    "eq. (4.72)": {
@@ -1307,6 +1342,21 @@
    "eq. (5.40)": {
     "verified": true,
     "snippet": "(5.40) 5 MORE GEOMETRY 140 By (5.25), one implication of a symmetry is that, if T is symmetric under some one-parameter family of diffeomorphisms, we can always find a coordinate system in which the components of T are a",
+    "why": null
+   },
+   "eq. (5.42)": {
+    "verified": true,
+    "snippet": "(5.42) This last version is Killing’s equation. If a spacetime has a Killing vector, then we know we can find a coordinate system in which the metric is independent of one of the coordinates. By far the most useful fact",
+    "why": null
+   },
+   "eq. (5.44)": {
+    "verified": true,
+    "snippet": "(5.44) 2 2 independent Killing vectors. The same kind of counting argument applies to maximally symmetric spaces with curvature (such as spheres) or a non-Euclidean signature (such as Minkowski space), although the detai",
+    "why": null
+   },
+   "eq. (5.46)": {
+    "verified": true,
+    "snippet": "(5.46) You can check for yourself that this actually does solve Killing’s equation. Note that in n ≥ 2 dimensions, there can be more Killing vectors than dimensions. This is because a set of Killing vector fields can be",
     "why": null
    },
    "eq. (6.54)": {
@@ -1327,36 +1377,6 @@
    "eq. (8.36)": {
     "verified": true,
     "snippet": "(8.36) a 3 a Together these are known as the Friedmann equations, and metrics of the form (8.7) which obey these equations define Friedmann-Robertson-Walker (FRW) universes. There is a bunch of terminology which is assoc",
-    "why": null
-   },
-   "eq. (4.60)": {
-    "verified": true,
-    "snippet": "(4.60) You can check this yourself. Therefore, the contribution of the first term in (4.56) to δS can be written Z h i √ (δS)1 = dn x −g g µν ∇λ (δΓλνµ ) − ∇ν (δΓλλµ ) Z h i √ = dn x −g ∇σ g µσ (δΓλλµ ) − g µν (δΓσµν ) ,",
-    "why": null
-   },
-   "eq. (4.66)": {
-    "verified": true,
-    "snippet": "(4.66) 2 This should vanish for arbitrary variations, so we are led to Einstein’s equations in vacuum: 1 δS 1 √ = Rµν − Rgµν = 0 . (4.67) −g δg µν 2 The fact that this simple action leads to the same vacuum field equatio",
-    "why": null
-   },
-   "eq. (4.67)": {
-    "verified": true,
-    "snippet": "(4.67) −g δg µν 2 The fact that this simple action leads to the same vacuum field equations as we had previously arrived at by more informal arguments certainly reassures us that we are doing something right. What we wou",
-    "why": null
-   },
-   "eq. (5.42)": {
-    "verified": true,
-    "snippet": "(5.42) This last version is Killing’s equation. If a spacetime has a Killing vector, then we know we can find a coordinate system in which the metric is independent of one of the coordinates. By far the most useful fact",
-    "why": null
-   },
-   "eq. (5.44)": {
-    "verified": true,
-    "snippet": "(5.44) 2 2 independent Killing vectors. The same kind of counting argument applies to maximally symmetric spaces with curvature (such as spheres) or a non-Euclidean signature (such as Minkowski space), although the detai",
-    "why": null
-   },
-   "eq. (5.46)": {
-    "verified": true,
-    "snippet": "(5.46) You can check for yourself that this actually does solve Killing’s equation. Note that in n ≥ 2 dimensions, there can be more Killing vectors than dimensions. This is because a set of Killing vector fields can be",
     "why": null
    }
   },

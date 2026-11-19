@@ -1,0 +1,69 @@
+- id: LL-XXXX-k
+  title: Einstein's equations for an FLRW spacetime with a perfect fluid, on the manifold layer, are equivalent to Friedmann's two equations
+  area: Spacetime
+  file: Lightlike/Spacetime/FLRWManifold.lean
+  decls: [Lightlike.Cosmology.flrwManifoldMetric_coordMetric, Lightlike.Cosmology.flrwManifold_einstein_iff_friedmann]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (8.36)", check: "Friedmann"}
+  review: kernel-checked
+  note: "The manifold form of LL-0133, through flrwManifoldMetric_coordMetric (in every chart the components of the manifold metric are the coordinate FLRW metric flrwMetric of LL-0133). The manifold is the chart domain t in I, 1 + k|x|^2/4 > 0 of the isotropic coordinates, an open subset of R^4 (for k > 0 it misses one point of the 3-sphere), not I x Sigma for a complete space of constant curvature. For the Levi-Civita connection of the metric (smooth, as proved for every Lorentzian metric) and the perfect fluid at rest in the chart, G + Lambda g = 8 pi G T holds iff Friedmann's first and second equations hold at every t in I. The comparison with the cited source is pending, as for LL-0133."
+  since: unreleased
+
+- id: LL-XXXX-l
+  title: A metric of any signature has a unique Levi-Civita connection on differentiable vector fields
+  area: Spacetime
+  file: Lightlike/Spacetime/LeviCivita.lean
+  decls: [Lightlike.leviCivita_exists_unique_proved]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (3.21)", check: "Christoffel"}
+  review: kernel-checked
+  note: "There is a torsion-free metric-compatible connection of a smooth nondegenerate metric of any signature (NondegMetric) on a smooth manifold (any model with corners; defined by the Koszul formula) and any two such connections agree on vector fields differentiable at the point. Carroll shows uniqueness from the coordinate formula (3.21) and asserts existence by the transformation law; here both are proved without coordinates. Compared with Carroll eqs. (3.17) to (3.21), read at those locations. The differences approved on 18 November 2026 (Lorentzian metrics only, Hausdorff manifolds) were removed by GE11 (metrics of any signature, no Hausdorff hypothesis)."
+  since: unreleased
+
+- id: LL-XXXX-m
+  title: The curvature of a Levi-Civita connection has the symmetries of the Riemann tensor and the Ricci tensor is symmetric
+  area: Spacetime
+  file: Lightlike/Spacetime/CurvatureSymmetries.lean
+  decls: [Lightlike.bianchi_first_proved, Lightlike.riemannLowerAt_pair_symm, Lightlike.ricciAt_symm_proved]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (3.91)", check: "Ricci"}
+  review: kernel-checked
+  note: "For the curvature R(X,Y)Z = nabla_X nabla_Y Z - nabla_Y nabla_X Z - nabla_[X,Y] Z of a torsion-free metric-compatible connection (the intrinsic form of Carroll's eq. (3.71), read at that location): the first Bianchi identity (torsion freeness only), the pair symmetry g(R(X,Y)Z,W) = g(R(Z,W)X,Y) and the symmetry of the Ricci tensor. Carroll states them in coordinates, eqs. (3.78) to (3.81) and (3.91) (read at those locations); the statements here are the intrinsic ones (representation). Setting: a smooth metric of any signature, a locally smooth connection, no Hausdorff hypothesis (GE11 removed the differences approved on 18 November 2026, Lorentzian metrics only and Hausdorff manifolds); no boundary and a finite-dimensional model space, as in the source. The comparison with Wald is pending: not read."
+  since: unreleased
+
+- id: LL-XXXX-n
+  title: The second Bianchi identity for a torsion-free connection
+  area: Spacetime
+  file: Lightlike/Spacetime/BianchiSecond.lean
+  decls: [Lightlike.bianchi_second_proved]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (3.88)", check: "Bianchi"}
+  review: kernel-checked
+  note: "For a smooth torsion-free connection, (nabla_X R)(Y,Z)W + (nabla_Y R)(Z,X)W + (nabla_Z R)(X,Y)W = 0. Carroll proves nabla_[lambda R_{rho sigma]mu nu} = 0 for the Christoffel connection, eqs. (3.87) and (3.88) (read at those locations), and remarks that a general connection has torsion terms; here the cyclic sum is over the derivative slot and the two vector slots, the same identity for the Christoffel connection by the pair symmetry (representation), and only torsion freeness is assumed (more general; no metric occurs). Setting: a locally smooth connection with no Hausdorff hypothesis (GE11 removed the Hausdorff convention approved on 18 November 2026); no boundary and a finite-dimensional model space, as in the source. The comparison with Wald is pending: not read."
+  since: unreleased
+
+- id: LL-XXXX-o
+  title: The Einstein tensor of a Levi-Civita connection is divergence free
+  area: Spacetime
+  file: Lightlike/Spacetime/DivergenceFree.lean
+  decls: [Lightlike.einstein_divergence_free_proved]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (3.96)", check: "Bianchi"}
+  review: kernel-checked
+  note: "For the Levi-Civita connection of a smooth metric of any signature on a C^2 manifold modelled on R^n without boundary (locally smooth connection, no Hausdorff hypothesis), the divergence g^{ij} (nabla_i G)(e_j, w) of the Einstein tensor G = Ric - (S/2) g vanishes. Carroll, eqs. (3.94) to (3.96) (read at those locations), derives nabla^mu G_{mu nu} = 0 by contracting the Bianchi identity twice; the proof here is a coordinate computation (representation). GE11 removed the differences approved on 18 November 2026 (Lorentzian metrics only, Hausdorff manifolds); the model is Fin n -> R without boundary, as in the source."
+  since: unreleased

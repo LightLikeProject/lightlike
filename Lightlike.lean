@@ -1038,6 +1038,10 @@ import Lightlike.Spacetime.CausalLadder.FullSupportMeasure
 import Lightlike.Spacetime.CausalLadder.NullBoundary
 import Lightlike.Spacetime.CausalLadder.NullBoundaryManifold
 import Lightlike.Spacetime.NondegOpen
+import Lightlike.Spacetime.EinsteinChart
+import Lightlike.Spacetime.OpenEinstein
+import Lightlike.Spacetime.FLRWManifold
+import Lightlike.Spacetime.FLRWSlice
 import Lightlike.Spacetime.ChartAgreement
 import Lightlike.Spacetime.ChartConnection
 import Lightlike.Spacetime.ChartCovariant
