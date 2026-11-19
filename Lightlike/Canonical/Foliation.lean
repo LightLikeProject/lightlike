@@ -22,8 +22,8 @@ sense of `Hypersurface.IsUnitNormal` (given its smoothness), the shift is tangen
 symmetric on tangent vectors for the Levi-Civita connection.
 
 **Source (read at the cited locations).** E. Gourgoulhon, *3+1 Formalism and Bases of Numerical Relativity*,
-arXiv:gr-qc/0703035: eq. (2.43) (p. 24), eqs. (2.68)–(2.70) (pp. 30-31), Sec. 3.2.2 eqs. (3.1)–(3.3) (p. 41), Sec. 3.3.1
-eqs. (3.4)–(3.8) (pp. 41-42), Sec. 4.2 eqs. (4.28)–(4.32) (p. 56).
+arXiv:gr-qc/0703035: eq. (2.43) (p. 24), eqs. (2.68)–(2.70) (pp. 30-31), Sec. 3.2.2 eqs. (3.1)–(3.3) (p. 40), Sec. 3.3.1
+eqs. (3.4)–(3.7) (p. 41), Sec. 3.3.2 eqs. (3.8), (3.10) (p. 42), Sec. 2.3.4 (p. 23), Sec. 4.2 eqs. (4.28)–(4.32) (p. 56).
 
 **Limits.** The leaves are not given a manifold structure (as in `Hypersurface.lean`), so `γ` and `K` are bilinear forms on
 `T_xM` that vanish on the normal, Gourgoulhon's "four-dimensional point of view" (p. 30). The smoothness of the unit normal
@@ -137,7 +137,7 @@ theorem dTime_unitNormal (h : IsTimeFunction g τ) (x : M) :
   field_simp
   linear_combination h2
 
-/-- **The normal evolution vector carries the leaves to the next ones**: `dτ(m) = 1`. -/
+/-- **The normal evolution vector carries the leaves to the next ones**: `dτ(m) = 1` (Gourgoulhon (3.10)). -/
 theorem dTime_normalEvolution (h : IsTimeFunction g τ) (x : M) :
     dTime τ x (normalEvolution g τ x) = 1 := by
   simp only [normalEvolution, map_smul, smul_eq_mul, dTime_unitNormal h]
@@ -167,7 +167,7 @@ theorem isUnitNormal (h : IsTimeFunction g τ) {x₀ : M} (hs : SmoothNear (unit
 
 /-! ### The shift -/
 
-/-- **The shift is tangent to the leaves** (Gourgoulhon (4.30)): if `dτ(T) = 1` then `dτ(β) = 0`. -/
+/-- **The shift is tangent to the leaves** (Gourgoulhon (4.29), (4.30)): if `dτ(T) = 1` then `dτ(β) = 0`. -/
 theorem dTime_shift (h : IsTimeFunction g τ) {T : Π x : M, TangentSpace 𝓘(ℝ, E) x} {x : M}
     (hT : dTime τ x (T x) = 1) :
     dTime τ x (shift g τ T x) = 0 := by
@@ -252,7 +252,7 @@ theorem extrinsicCurvature_unitNormal_right (h : IsTimeFunction g τ) (cov : Con
   simp [extrinsicCurvature, Hypersurface.secondFF, spatialProj_unitNormal h x]
 
 /-- **The extrinsic curvature is symmetric** for the Levi-Civita connection (Gourgoulhon, the Weingarten map is
-self-adjoint, Sec. 2.3; here through `Hypersurface.secondFF_symm_fields`), given that the unit normal is smooth near
+self-adjoint, Sec. 2.3.4, p. 23; here through `Hypersurface.secondFF_symm_fields`), given that the unit normal is smooth near
 the point. -/
 theorem extrinsicCurvature_symm (h : IsTimeFunction g τ) {cov : Connection 𝓘(ℝ, E) M} (hc : cov.IsLeviCivita g)
     {x₀ : M} (hs : SmoothNear (unitNormal g τ) x₀) (u v : TangentSpace 𝓘(ℝ, E) x₀) :

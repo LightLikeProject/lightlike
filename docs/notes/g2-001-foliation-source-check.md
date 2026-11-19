@@ -1,0 +1,34 @@
+# G2-001: the ADM data of a foliation, chart-free (source check)
+
+Lean files: `Lightlike/Canonical/Foliation.lean`, `Lightlike/Canonical/TestsFoliation.lean`.
+
+## Source read
+
+E. Gourgoulhon, *3+1 Formalism and Bases of Numerical Relativity*, arXiv:gr-qc/0703035 (lecture notes, 2007), read at
+the locations below in the arXiv PDF (printed page numbers, equal to the PDF pages).
+
+## Statements and the locations they rest on
+
+| Lean | Source, location | Match |
+|---|---|---|
+| `IsTimeFunction g τ`: `τ` smooth with a timelike gradient | Sec. 3.2.2, eqs. (3.1)–(3.3), p. 40: a smooth regular scalar field whose level surfaces are spacelike and cover `M` | Same data; "regular" and "spacelike leaves" are both implied by a timelike gradient, and the leaves `{τ = t}` cover `M` for any function. |
+| `timeGrad`, `lapse`: `N = (−g(∇τ, ∇τ))^{−1/2}` | eq. (3.5), p. 41 | Same. |
+| `unitNormal`: `n = −N ∇τ`; `g_unitNormal_self`: `n · n = −1` | eq. (3.4), p. 41, and the sentence after (3.5) | Same. |
+| `lapse_pos`: `N > 0` | eq. (3.6), p. 41 | Same. |
+| `g_unitNormal`: `n♭ = −N dτ` | eq. (3.7), p. 41 | Same. |
+| `normalEvolution`: `m = N n`; `dTime_normalEvolution`: `dτ(m) = 1` | eqs. (3.8) and (3.10), Sec. 3.3.2, p. 42 | Same: `⟨dt, m⟩ = 1`. |
+| `shift`: `β = T − m` for a time vector `T` with `dτ(T) = 1`; `dTime_shift` (tangent), `time_eq_lapse_normal_add_shift` (`T = N n + β`), `g_time_time` (`T · T = −N² + β · β`) | Sec. 4.2, eqs. (4.27)–(4.32), pp. 55-56 | Same, with `T = ∂_t` of coordinates adapted to the foliation; here `T` is any vector field with `dτ(T) = 1`, which is what (4.27) asks of `∂_t`. |
+| `spatialProj`, `spatialMetric`: `γ = g + n♭ ⊗ n♭`, `γ(n, ·) = 0`, `γ = g` on tangent vectors | eqs. (2.68), (2.69), p. 30 (and the text after them) | Same. |
+| `extrinsicCurvature`: `K(u, v) = −g(P u, ∇_{P v} n)`; vanishes on `n`; symmetric | eq. (2.43), p. 24 (`K(u, v) = −u · ∇_v n` on tangent vectors), eq. (2.70), p. 30 (extension by the projector), and the self-adjointness of the Weingarten map, Sec. 2.3.4, p. 23 | Same; the symmetry is `Hypersurface.secondFF_symm_fields` and needs the unit normal to be smooth near the point. |
+
+## Trust checks
+
+Minkowski space with `τ = x⁰`: `∇τ = −e₀`, `N = 1`, `n = e₀`, `γ` the Euclidean metric of the spatial coordinates
+(`TestsFoliation.lean`); `τ = x¹` (spacelike gradient) is not a time function.
+
+## Open (the rest of G2-001)
+
+* the smoothness of the unit normal (now a hypothesis of `isUnitNormal` and `extrinsicCurvature_symm`);
+* the chart form of the data in coordinates adapted to the foliation (Gourgoulhon Sec. 4.2.3, p. 57: `g_00 = −N² + β_i β^i`,
+  `g_0i = β_i`, `g_ij = γ_ij`) and the map to the chart data `(h, π)` of `Lightlike/Canonical/ADM.lean`;
+* the relation `K = −½ ℒ_n γ` and the momentum `π^{ij} = √γ (K γ^{ij} − K^{ij})` (eq. (4.108)).
