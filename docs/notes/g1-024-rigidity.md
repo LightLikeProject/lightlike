@@ -72,6 +72,17 @@ Differences:
    `covCo2_killing` at `p`: `[P_a, P_b](p) = 0` (no translation part, `β = 0`), `∇[R_ab, P_m](p) = 0` (since
    `∇∇R(p) = Riem · R(p) = 0`; no rotation part, `λ = 0`), and `∇[P_a, P_b](p)` is the curvature at `p`; Jacobi
    (`[R, [P, P]]`) makes that curvature isotropic, `[P_m, P_n] = -k R_mn` in the convention of `SpaceForm.S`.
+   Done for (b)/(c) so far (`KillingAlgebraCoord.lean`): `eq_sum_of_rigVec_eq_sum`, `pd_eq_of_killing`,
+   `rigVec_eq_sum_of_data`, `lowerVec_bracketCo` (`[Y, Z]_b = Yᵈ ∇_d Z_b - Zᵈ ∇_d Y_b`), `pd_lowerVec_bracketCo` (its
+   derivative for Killing fields through (13.8)). Remaining route for (c):
+   - the normalization at `p` in coordinates: `P_m(p) = e_m`, `covCo (lowerVec g P_m) (p) = 0`, `R_ab(p) = 0`,
+     `∂_d R_ab^l (p) = δ_da δ_lb - δ_db δ_la`, `R_ab = -R_ba`; `g(p) = c δ` from the skewness of the three generators
+     (the 3 × 3 Schur computation);
+   - the data at `p` of `[R, R]`, `[R, P]`, `[P, P]` from `lowerVec_bracketCo` and `pd_lowerVec_bracketCo`, against the
+     data of the `S k` combinations (`rigVec_eq_sum_of_data`), the curvature at `p` entering `[P, P]`;
+   - isotropy of the curvature at `p` from Jacobi (`bracketCo` is `VectorField.lieBracket` in components, and Mathlib's
+     `VectorField.leibniz_identity_lieBracket` gives Jacobi), giving `[P_m, P_n] = -k R_mn`;
+   - `hS` on the ball by `eq_sum_of_rigVec_eq_sum` and raising, then `isometric_spaceForm`.
    (c) the constants of `[Y_i, Y_j]` from their data at `p` (`[R,R]`: so(3); `[R,P]`: translation part from
        `∇R(p)`; the rest unknown), Jacobi on the constants, the equivariance computation, the change of complement, and
        `hS` for `S k`; then `isometric_spaceForm`.
