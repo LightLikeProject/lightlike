@@ -49,8 +49,11 @@ lemma formTriv_apply (x₁ : M) {y : M} (hy : y ∈ (chartTriv n x₁).baseSet)
     exact ⟨hy, mem_univ _⟩
   rw [hom_trivializationAt_apply]
   simp only [ContinuousLinearMap.inCoordinates, ContinuousLinearMap.comp_apply]
-  simp only [Trivialization.continuousLinearMapAt_apply_of_mem (hb := hb), hom_trivializationAt_apply,
-    Trivialization.coe_linearMapAt_of_mem _ hb, ContinuousLinearMap.inCoordinates,
+  have h2 := Trivialization.coe_linearMapAt_of_mem (R := ℝ)
+    (trivializationAt ((Fin n → ℝ) →L[ℝ] ℝ)
+      (fun x : M => TangentSpace 𝓘(ℝ, Fin n → ℝ) x →L[ℝ] ℝ) x₁) hb
+  rw [h2]
+  simp only [hom_trivializationAt_apply, ContinuousLinearMap.inCoordinates,
     ContinuousLinearMap.comp_apply]
   simp
 
@@ -64,8 +67,9 @@ lemma formTriv_ofChartFun (x₁ : M) (ρ : M → ℝ) (S : Matrix (Fin n) (Fin n
     (hy : y ∈ (chartTriv n x₁).baseSet) :
     ((formTriv n x₁) ⟨y, ofChartFun x₁ ρ S y⟩).2 = ρ y • matForm S := by
   have hy' := mem_formTriv_baseSet x₁ hy
-  rw [← Trivialization.continuousLinearMapAt_apply_of_mem (R := ℝ) (hb := hy')]
-  exact (formTriv n x₁).continuousLinearMapAt_symmL hy' _
+  have h := (formTriv n x₁).continuousLinearMapAt_symmL (R := ℝ) hy' (ρ y • matForm S)
+  rw [Trivialization.continuousLinearMapAt_apply_of_mem (R := ℝ) (e := formTriv n x₁) (hb := hy')] at h
+  exact h
 
 /-- `ofChartFun` on two tangent vectors given by their components. -/
 lemma ofChartFun_apply (x₁ : M) (ρ : M → ℝ) (S : Matrix (Fin n) (Fin n) ℝ) {y : M}
@@ -79,7 +83,10 @@ lemma ofChartFun_apply (x₁ : M) (ρ : M → ℝ) (S : Matrix (Fin n) (Fin n) �
 /-- `ofChartFun` vanishes where `ρ` does. -/
 lemma ofChartFun_eq_zero (x₁ : M) (ρ : M → ℝ) (S : Matrix (Fin n) (Fin n) ℝ) {y : M}
     (hy : ρ y = 0) : ofChartFun x₁ ρ S y = 0 := by
-  have h0 : ρ y • matForm S = 0 := by rw [hy]; exact zero_smul ℝ (matForm S)
+  have h0 : ρ y • matForm S = 0 := by
+    rw [hy]
+    ext a b
+    simp
   unfold ofChartFun
   rw [h0]
   exact map_zero _
@@ -138,8 +145,8 @@ lemma contMDiff_ofChartFun (x₁ : M) (ρ : M → ℝ) (hρ : ContMDiff 𝓘(ℝ
         (fun x : M => TangentSpace 𝓘(ℝ, Fin n → ℝ) x →L[ℝ] TangentSpace 𝓘(ℝ, Fin n → ℝ) x →L[ℝ] ℝ) x₀
     refine hzs.congr_of_eventuallyEq ?_
     filter_upwards [(isClosed_tsupport ρ).isOpen_compl.mem_nhds hx'] with y hy
-    show TotalSpace.mk' _ y (ofChartFun x₁ ρ S y) = TotalSpace.mk' _ y 0
-    rw [ofChartFun_eq_zero x₁ ρ S (image_eq_zero_of_notMem_tsupport hy)]
+    have h0 := ofChartFun_eq_zero x₁ ρ S (image_eq_zero_of_notMem_tsupport hy)
+    simp only [h0]
 
 /-- **A symmetric tensor field with components `ρ S` in the chart at `x₁`.** -/
 def SymBilinField.ofChart (x₁ : M) (ρ : M → ℝ) (hρ : ContMDiff 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ) ∞ ρ)
