@@ -41,6 +41,8 @@ exact solutions, such as Kerr and de Sitter, are not yet formalized. [TODO]
 9. Lightlike/GR/KruskalManifold.lean - `kruskalC`, `kruskalCMetric` (the Kruskal metric in one global chart of
    `{X² - T² > -1} × S²`), `kruskalC_isLorentzian`, `kruskalCOpen`, `kruskalManifoldMetric` (the
    Kruskal-Szekeres spacetime as a Lorentzian manifold)
+10. Lightlike/GR/KruskalSpherical.lean - `kruskalSph`, `jac_kruskalSph`, `pullback_kruskalC_sph` (the metric of
+    the global chart pulls back to the Kruskal metric), `isChartChange_kruskalSph`
 
 ## References
 

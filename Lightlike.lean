@@ -201,6 +201,7 @@ import Lightlike.GR.KruskalManifold
 import Lightlike.GR.KruskalMetric
 import Lightlike.GR.KruskalPenrose
 import Lightlike.GR.KruskalRegions
+import Lightlike.GR.KruskalSpherical
 import Lightlike.GR.SchwarzschildKretschmann
 import Lightlike.GR.EuclideanSchwarzschild
 import Lightlike.GR.Schwarzschild
