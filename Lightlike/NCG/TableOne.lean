@@ -22,7 +22,9 @@ vertex, and the signed multiplicities `μ_kl = c_kl r_kl` satisfy Table 1's sign
   multiplicities of a mixed algebra;
 * `table1_complex_complex`, `table1_complex_real`, `table1_complex_quat`, `muSigned_symm`, `table1_real_complex`,
   `table1_quat_complex`: Table 1's sign conditions;
-* `trace_grading_of_phi`, `pR`, `phiMixed_pR`: the intersection form through the complexification.
+* `trace_grading_of_phi`, `pR`, `phiMixed_pR`, `pH`, `eH`, `phiH_pH`, `phiMixed_pH`, `interForm`,
+  `interForm_real_real`, `interForm_quat_quat`, `interForm_real_quat`: the intersection form `Tr(γ π(p) J π(q) J)` of
+  minimal projections, `μ`, `4μ` and `2μ` (Table 1).
 -/
 
 namespace Lightlike.NCG
@@ -174,6 +176,113 @@ lemma phiMixed_pR (i : ι₁) :
       Sum.inr_ne_inl)]
     rw [map_zero]
     rfl
+
+/-- The minimal projection `E^i_{00}(1)` of a quaternionic summand. -/
+def pH (i : ι₃) : MatSumMixed n₁ n₂ n₃ := (0, 0, Pi.single i (Matrix.single 0 0 1))
+
+/-- The two corners `(0, 0)` and `(0, 1)` of `ℂ²ⁿ`. -/
+def eH (i : ι₃) (t : Fin 2) : Fin (n₃ i * 2) := finProdFinEquiv (0, t)
+
+/-- **`φ(E^i_{00}(1)) = E_{(0,0)(0,0)} + E_{(0,1)(0,1)}`** on the quaternionic block: a minimal projection of `Mₙ(ℍ)` has
+rank `2` in `ℂ²ⁿ`. -/
+lemma phiH_pH (i : ι₃) :
+    (phiH (Pi.single i (Matrix.single 0 0 1) : MatSumH n₃)) i = ∑ t, Matrix.single (eH i t) (eH i t) (1 : ℂ) := by
+  ext x y
+  obtain ⟨⟨a, s⟩, rfl⟩ := finProdFinEquiv.surjective x
+  obtain ⟨⟨b, u⟩, rfl⟩ := finProdFinEquiv.surjective y
+  rw [phiH_apply, phiHFun_apply, Pi.single_eq_same, Matrix.sum_apply]
+  simp only [idxH, Equiv.symm_apply_apply, eH, Matrix.single_apply, finProdFinEquiv.injective.eq_iff, Prod.mk.injEq]
+  rw [Fin.sum_univ_two]
+  by_cases ha : a = 0
+  · subst ha
+    by_cases hb : b = 0
+    · subst hb
+      fin_cases s <;> fin_cases u <;> simp [quatToMat_apply, Complex.ext_iff]
+    · have hb' : ¬ (0 : Fin (n₃ i)) = b := fun h => hb h.symm
+      simp [hb']
+  · have ha' : ¬ (0 : Fin (n₃ i)) = a := fun h => ha h.symm
+    simp [ha']
+
+/-- **`φ(pH i)` is the sum of the two corners** of the quaternionic block. -/
+lemma phiMixed_pH (i : ι₃) :
+    phiMixed T' (pH i) = ∑ t, unit (Sum.elim n₁ (dMixed T')) (Sum.inr (Sum.inr i)) (eH i t) (eH i t) := by
+  funext q
+  rw [Finset.sum_apply]
+  rcases q with k | p | j
+  · show phiR (0 : MatSumR n₁) k = _
+    simp only [unit]
+    refine Eq.trans ?_ (Finset.sum_eq_zero fun t _ => Pi.single_eq_of_ne
+      (show (Sum.inl k : ι₁ ⊕ (BlocksP (psi₂ T') ⊕ ι₃)) ≠ Sum.inr (Sum.inr i) from Sum.inl_ne_inr) _).symm
+    rw [map_zero]
+    rfl
+  · show phiPAll (0 : MatSum n₂) p.1 = _
+    simp only [unit]
+    refine Eq.trans ?_ (Finset.sum_eq_zero fun t _ => Pi.single_eq_of_ne
+      (show (Sum.inr (Sum.inl p) : ι₁ ⊕ (BlocksP (psi₂ T') ⊕ ι₃)) ≠ Sum.inr (Sum.inr i) from
+        fun h => Sum.inl_ne_inr (Sum.inr_injective h)) _).symm
+    exact phiPAll_zero _
+  · show phiH (Pi.single i (Matrix.single 0 0 1) : MatSumH n₃) j = _
+    simp only [unit]
+    by_cases hj : j = i
+    · subst hj
+      exact (phiH_pH j).trans (Finset.sum_congr rfl fun t _ =>
+        (Pi.single_eq_same (M := fun q => Matrix (Fin (Sum.elim n₁ (dMixed T') q)) (Fin (Sum.elim n₁ (dMixed T') q)) ℂ)
+          (Sum.inr (Sum.inr j)) (Matrix.single (eH j t) (eH j t) 1)).symm)
+    · refine Eq.trans ?_ (Finset.sum_eq_zero fun t _ => Pi.single_eq_of_ne
+        (show (Sum.inr (Sum.inr j) : ι₁ ⊕ (BlocksP (psi₂ T') ⊕ ι₃)) ≠ Sum.inr (Sum.inr i) from
+          fun h => hj (Sum.inr_injective (Sum.inr_injective h))) _).symm
+      show phiH (Pi.single i (Matrix.single 0 0 1) : MatSumH n₃) j = (0 : Matrix (Fin (n₃ j * 2)) (Fin (n₃ j * 2)) ℂ)
+      ext a b
+      rw [phiH_apply, phiHFun_apply, Pi.single_eq_of_ne hj]
+      simp
+
+/-- The intersection form `∩(p, q) = Tr(γ π(p) J π(q) J)`. -/
+def interForm (p q : MatSumMixed n₁ n₂ n₃) : ℂ :=
+  LinearMap.trace ℂ H ((G.γ : H →ₗ[ℂ] H) * (T'.π p : H →ₗ[ℂ] H) * rightOp R' q)
+
+/-- **Table 1, real against real** (Krajewski, Section 3.3, p. 14: `∩ᵢⱼ = μᵢⱼ`). -/
+theorem interForm_real_real (hG : IsOrientableA R' G x y) (i j : ι₁) :
+    interForm R' G (pR i) (pR j) =
+      chiScalar (Xm (T' := T') x) (Xm (T' := T') y) (.inl i) (.inl j) * multiplicity (Rm R') (.inl i) (.inl j) := by
+  have h : interForm R' G (pR i) (pR j) = ∑ _t : Unit, ∑ _u : Unit, chiScalar (Xm (T' := T') x) (Xm (T' := T') y)
+      (Sum.inl i) (Sum.inl j) * (multiplicity (Rm R') (Sum.inl i) (Sum.inl j) : ℂ) :=
+    trace_grading_of_phi R' (mixedComplexification T') G hG (pR i) (pR j)
+    (fun _ : Unit => (Sum.inl i : ι₁ ⊕ (BlocksP (psi₂ T') ⊕ ι₃))) (fun _ => (0 : Fin (n₁ i)))
+    (fun _ : Unit => (Sum.inl j : ι₁ ⊕ (BlocksP (psi₂ T') ⊕ ι₃))) (fun _ => (0 : Fin (n₁ j)))
+    (by rw [Fintype.sum_unique]; exact phiMixed_pR i) (by rw [Fintype.sum_unique]; exact phiMixed_pR j)
+  rw [h, Fintype.sum_unique, Fintype.sum_unique]
+
+/-- **Table 1, quaternionic against quaternionic** (Krajewski, Section 3.3, p. 14: `∩ᵢⱼ = 4 μᵢⱼ`). -/
+theorem interForm_quat_quat (hG : IsOrientableA R' G x y) (i j : ι₃) :
+    interForm R' G (pH i) (pH j) =
+      4 * (chiScalar (Xm (T' := T') x) (Xm (T' := T') y) (.inr (.inr i)) (.inr (.inr j)) *
+        multiplicity (Rm R') (.inr (.inr i)) (.inr (.inr j))) := by
+  have h : interForm R' G (pH i) (pH j) = ∑ _t : Fin 2, ∑ _u : Fin 2, chiScalar (Xm (T' := T') x) (Xm (T' := T') y)
+      (Sum.inr (Sum.inr i)) (Sum.inr (Sum.inr j)) *
+        (multiplicity (Rm R') (Sum.inr (Sum.inr i)) (Sum.inr (Sum.inr j)) : ℂ) :=
+    trace_grading_of_phi R' (mixedComplexification T') G hG (pH i) (pH j)
+    (fun _ : Fin 2 => (Sum.inr (Sum.inr i) : ι₁ ⊕ (BlocksP (psi₂ T') ⊕ ι₃))) (eH i)
+    (fun _ : Fin 2 => (Sum.inr (Sum.inr j) : ι₁ ⊕ (BlocksP (psi₂ T') ⊕ ι₃))) (eH j)
+    (phiMixed_pH i) (phiMixed_pH j)
+  rw [h]
+  simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
+  push_cast
+  ring
+
+/-- **Table 1, real against quaternionic** (Krajewski, Section 3.3, p. 14: `∩ᵢⱼ = 2 μᵢⱼ`). -/
+theorem interForm_real_quat (hG : IsOrientableA R' G x y) (i : ι₁) (j : ι₃) :
+    interForm R' G (pR i) (pH j) =
+      2 * (chiScalar (Xm (T' := T') x) (Xm (T' := T') y) (.inl i) (.inr (.inr j)) * multiplicity (Rm R') (.inl i) (.inr (.inr j))) := by
+  have h : interForm R' G (pR i) (pH j) = ∑ _t : Unit, ∑ _u : Fin 2, chiScalar (Xm (T' := T') x) (Xm (T' := T') y)
+      (Sum.inl i) (Sum.inr (Sum.inr j)) * (multiplicity (Rm R') (Sum.inl i) (Sum.inr (Sum.inr j)) : ℂ) :=
+    trace_grading_of_phi R' (mixedComplexification T') G hG (pR i) (pH j)
+    (fun _ : Unit => (Sum.inl i : ι₁ ⊕ (BlocksP (psi₂ T') ⊕ ι₃))) (fun _ => (0 : Fin (n₁ i)))
+    (fun _ : Fin 2 => (Sum.inr (Sum.inr j) : ι₁ ⊕ (BlocksP (psi₂ T') ⊕ ι₃))) (eH j)
+    (by rw [Fintype.sum_unique]; exact phiMixed_pR i) (phiMixed_pH j)
+  rw [h, Fintype.sum_unique]
+  simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
+  push_cast
+  ring
 
 variable (x y)
 

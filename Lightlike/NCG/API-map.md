@@ -83,7 +83,8 @@ A grading of a real triple is a grading of its complexification, and an orientab
 `γ = ∑_p π(x_p) J π(y_p) J` stays orientable with `X_p = φ(x_p)`, `Y_p = φ(y_p)`. For a mixed algebra the signed
 multiplicities `μ_kl = c_kl r_kl` of the complexified model are symmetric, and satisfy the sign conditions of
 Krajewski's Table 1: `μ_{iαj} μ_{iᾱj} ≥ 0` for a complex summand `i` against a real or quaternionic `j`, and
-`μ_{iαjβ} μ_{iᾱjβ̄} ≥ 0` for two complex summands {1} [26].
+`μ_{iαjβ} μ_{iᾱjβ̄} ≥ 0` for two complex summands; the intersection form `Tr(γ π(p) J π(q) J)` of minimal projections
+is `μ`, `2μ` and `4μ` between real and quaternionic summands {1} [26].
 
 ## Lean References
 
@@ -175,7 +176,8 @@ Krajewski's Table 1: `μ_{iαj} μ_{iᾱj} ≥ 0` for a complex summand `i` agai
     `NCG.Complexification.isOrientable`, `NCG.chiScalarAt_conj`, `NCG.Xm`, `NCG.Rm`, `NCG.muSigned`,
     `NCG.exists_ne_zero_of_multiplicity`, `NCG.muSigned_mul_nonneg_of`, `NCG.idxH_zero`, `NCG.table1_complex_complex`,
     `NCG.table1_complex_real`, `NCG.table1_complex_quat`, `NCG.muSigned_symm`, `NCG.table1_real_complex`,
-    `NCG.table1_quat_complex`, `NCG.trace_grading_of_phi`, `NCG.pR`, `NCG.phiMixed_pR`
+    `NCG.table1_quat_complex`, `NCG.trace_grading_of_phi`, `NCG.pR`, `NCG.phiMixed_pR`, `NCG.pH`, `NCG.eH`, `NCG.phiH_pH`,
+    `NCG.phiMixed_pH`, `NCG.interForm`, `NCG.interForm_real_real`, `NCG.interForm_quat_quat`, `NCG.interForm_real_quat`
 
 ## References
 
