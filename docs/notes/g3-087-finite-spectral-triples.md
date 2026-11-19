@@ -112,6 +112,43 @@ and the sign relation between `J` and `j` that gives Table 1's conditions.
 So the uniqueness and the model are stated for complex summands (`A = ⊕ Mₙᵢ(ℂ)` acting complex-linearly). Both
 attempts above stop at a missing piece of algebra, not at length.
 
+Attempt 3, the two missing pieces of attempt 1, built. New compared with attempts 1 and 2:
+* `QuaternionMatrix.lean`: `quatToMat : ℍ →⋆ₐ[ℝ] M₂(ℂ)`, `q ↦ [[a + b i, c + d i], [-c + d i, a - b i]]`, injective,
+  with the four matrix units as explicit complex combinations of `ι(1), ι(i), ι(j), ι(k)` (`single_eq_quat`). This is the
+  `*`-isomorphism `ℍ ⊗_ℝ ℂ ≅ M₂(ℂ)` where attempt 1 stopped.
+* `QuaternionComplexify.lean`: the coordinates `quatCoord M` of `M ∈ M₂(ℂ)` in that basis (`quat_decomp`), and for a
+  real-linear `ρ : ℍ → End(H)` its complexification `ρ_ℂ(M) = ∑ₖ quatCoord M k • ρ(bₖ)`, with `ρ_ℂ ∘ ι = ρ`, complex-linear
+  (`complexifyL`) and multiplicative for multiplicative `ρ` (`complexify_mul`). A quaternionic `π` thus gives a complex
+  representation of `M₂(ℂ)`, and so complex matrix units on `H`.
+* `ComplexSplitting.lean`: for a complex summand acting real-linearly, `Q± = (1 ∓ i π(i·1))/2` are complementary
+  idempotents commuting with `π(A)`, `π(i·1) = ±i` on `Q± H`, `π` complex-linear on `Q₊ H` (`Qp_pi_smul`) and antilinear
+  on `Q₋ H` (`Qm_pi_smul`). This is `Mₙ(ℂ) ⊗_ℝ ℂ ≅ Mₙ(ℂ) ⊕ Mₙ(ℂ)` in representation form, the second stop of attempt 1.
+
+Where each Krajewski clause stands:
+* §2, p. 2, `A = ⊕ Mₙᵢ(K)` with `K = ℝ, ℂ, ℍ` and a real-linear `π`: the definitions and FST2a cover it (proved).
+* §3.1, p. 10, "`Mₙ(ℝ)` and `Mₙ(ℍ)` have only one irreducible representation ... `Mₙ(ℂ)` has two ... the fundamental one
+  and its complex conjugate": the split of a complex summand into its fundamental and conjugate parts is proved
+  (`ComplexSplitting.lean`). The complex matrix units of a quaternionic summand are proved in the single-summand form
+  (`QuaternionComplexify.lean`). Open: assembling the matrix units of all summands' irreducible representations on `H`
+  and running the tensor-form argument over them, which gives `H_{(iα)(jβ)} ≅ ℂ^{nᵢ} ⊗ ℂ^{r} ⊗ ℂ^{nⱼ}` with `nᵢ` the
+  dimension of the irreducible representation (`2n` for `Mₙ(ℍ)`).
+* The assembly (`Complexification.lean`): a complexification of a triple over a real algebra `A` is a faithful
+  complex-linear `*`-representation `σ` of `⊕ M_dₖ(ℂ)` with a real `*`-homomorphism `φ : A → ⊕ M_dₖ(ℂ)`, `π = σ ∘ φ` and
+  every `σ(x)` a complex combination of the `π(a)`. The order-zero and first-order conditions pass to `σ` (`commJ_span`),
+  and `Complexification.exists_unitary` gives the unitary onto the model of the complexified multiplicity matrix,
+  intertwining `π` with the model's action of `φ(A)` and `J` with the model's `J`. So each summand type reduces to
+  constructing `σ`. `MatrixUnits.lean` builds `σ` from a system of matrix units on `H`, faithful when every block unit is
+  nonzero.
+* `Mₙ(ℝ)` (`RealSummands.lean`): `σ(x) = π(Re x) + i π(Im x)`, faithful by `E₀α x Eβ₀ = x_αβ E₀₀`;
+  `exists_unitary_realSummands` is the classification for `A = ⊕ Mₙᵢ(ℝ)` (proved).
+* `Mₙ(ℍ)` (open, next): the units `U_{(αs)(βt)} = ∑ₖ quatCoord(E_st)ₖ π(E_αβ(bₖ))` of `M₂ₙ(ℂ)`. Their relations follow
+  from `complexify_mul` in the bimodule form `ρ₁(p) ρ₂(q) = ρ₃(pq)`, and the block unit is `π(1ᵢ) ≠ 0`.
+* `Mₙ(ℂ)` (open, next): the units `Q₊ π(E_αβ)` (fundamental) and `Q₋ π(E_αβ)` (conjugate), with
+  `φ(a) = (a, ā)`, over the blocks whose unit `Q± π(1ᵢ)` is nonzero.
+* §3.3, p. 14, Table 1 (a symmetric integer matrix over the irreducible representations, the signs `μ_{iαj} μ_{iᾱj} ≥ 0`,
+  and the factors 2 and 4 relating it to the intersection form): open. It needs `J Q₊ J`, the right-action projection,
+  and the exchange by `J` of the fundamental and conjugate blocks of a complex summand.
+
 ## FST4: the Dirac operator `D = Δ + J Δ J` (Krajewski §3.4, p. 15)
 
 Read: Krajewski §3.4, p. 14 (first-order operators, `L_L(M) + L_R(M) ⊂ L_1(M)`) and p. 15 (`D = D_L + D_R` with
