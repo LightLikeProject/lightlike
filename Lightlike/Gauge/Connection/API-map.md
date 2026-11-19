@@ -37,7 +37,10 @@ with the projection `π : P → M`, the vertical subspaces `V_p = ker dπ_p` (th
 subspaces `H_p = ker ω_p` are complementary, `ω` represents the vertical projection, the horizontal distribution is
 invariant, `H_{p·k} = dR_k(H_p)`, and the horizontal part of a `C^m` vector field is `C^m` [13]. Over an open cover of
 a normed space, the local curvatures (62) of potentials satisfying (38) obey the transition formula (63), `F_j =
-Ad_{g_ij} F_i` on the overlaps [14].
+Ad_{g_ij} F_i` on the overlaps [14]. For a representation `ρ` of `G` on a normed space `V`, the associated vector
+bundle `P ×_ρ V` is the bundle with transition maps `ρ(g_ij)`, and potentials satisfying (38) induce on it a covariant
+derivative whose representative in each trivialization is `d + r(A_i)`, `r = dρ_1` (eq. (39)), unique on
+differentiable sections [15].
 
 ## Lean References
 
@@ -82,8 +85,13 @@ Ad_{g_ij} F_i` on the overlaps [14].
    `Gauge.PrincipalCocycle.contMDiffAt_fundamental`, `Gauge.PrincipalCocycle.contMDiffAt_horizontalPart`
 14. Lightlike/Gauge/Connection/PrincipalCurvature.lean - `Gauge.lieCurvature_congr`, `Gauge.chart_form`,
    `Gauge.PrincipalCocycle.lieCurvature_transition`
+15. Lightlike/Gauge/Connection/PrincipalAssociated.lean - `Gauge.PrincipalCocycle.assocCore`,
+   `Gauge.PrincipalCocycle.assocCore_isContMDiff`, `Gauge.PrincipalCocycle.lieRep`,
+   `Gauge.PrincipalCocycle.lieRep_adjointE`, `Gauge.PrincipalCocycle.lieRep_rightTrivial`,
+   `Gauge.PrincipalCocycle.exists_assocCov`, `Gauge.PrincipalCocycle.assocCov_unique`
 
 ## References
 
-1. G. Svetlichny, Preparation for Gauge Theory, arXiv:math-ph/9902027 (1999), §4.6 pp. 26-31 (connections as horizontal subspaces, pp. 26-27 and 29; eqs. (34)-(38), Theorem 10)
+1. G. Svetlichny, Preparation for Gauge Theory, arXiv:math-ph/9902027 (1999), §4.5, Theorem 7 (associated bundles), p. 22; §4.6 pp. 26-31 (connections as horizontal subspaces, pp. 26-27 and 29;
+   eqs. (34)-(38), Theorem 10; the induced connection on an associated bundle and eq. (39), p. 31)
    and pp. 40-43 (eqs. (60), (62)-(64); the transition formula (63) and the adjoint bundle, p. 42).

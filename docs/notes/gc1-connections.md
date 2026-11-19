@@ -194,6 +194,27 @@ depends on the germ (`lieCurvature_congr`), and the covariance (64) (`lieCurvatu
 in which (62)-(64) are stated (as for `curvature` and `lieCurvature`). The reading of `F` as a `P ×_Ad g`-valued
 2-form needs the associated bundle, the next item.
 
+## Associated bundles and the induced connection (Svetlichny pp. 22, 31)
+
+Source, read: for a left action `ρ` of `G` on `F`, `P ×_ρ F` is the orbit space of `P × F` under
+`(p, f) ↦ (p · g⁻¹, g · f)`, and by Theorem 7 it is the bundle with fibre `F`, group action `ρ` and the cocycle of
+`P` (p. 22). An invariant connection `ω` on `P` induces a connection on `P ×_ρ F` (the image of `H_p × {0}`), and for
+a representation `ρ`, with `r` the induced representation of `g`, the horizontal subspace at `(x, f)` in a
+trivialization consists of the `(ξ, -r(A(x)(ξ)) f)`, so the connection is linear with vertical projection
+`π^v_(x,f)(ξ, y) = y + r(A(x)(ξ)) f` (eq. (39), p. 31).
+
+`PrincipalAssociated.lean`: for the glued bundle with a cover of `M` and a `C³` representation
+`ρ : G →* (V →L V)` on a normed space `V`, `assocCore` is the vector bundle with the transition maps `ρ(g_ij)`
+(`assocCore_isContMDiff`: `C^n` for `C^n` data); `lieRep ρ = dρ_1` satisfies `r(Ad_g X) = ρ(g) r(X) ρ(g)⁻¹`
+(`lieRep_adjointE`) and `r(dR_{k⁻¹} Y) ρ(k) = dρ_k Y` (`lieRep_rightTrivial`); with these, (38) for the `A_i` gives
+the vector-bundle form of (38) for `r ∘ A_i` and the coordinate changes `ρ(g_ij)`, and Theorem 10 for the vector
+bundle (`BundleConnection.lean`) gives a covariant derivative whose representative over `U_i` is `d + r(A_i)`, the
+linear connection of (39) (`exists_assocCov`), unique on the sections differentiable at the point (`assocCov_unique`).
+Differences, kind representation: `P ×_ρ V` is built from the cocycle `ρ(g_ij)` (Theorem 7's description) rather
+than as the orbit space of `P × V`; `ρ` is a `C³` representation by continuous linear maps of a normed space (the
+case of (39)); the induced connection is given by its trivialization form (39), which is how the source computes it
+from the image of `H_p × {0}`, and is a covariant derivative in Mathlib's sense, unique on differentiable sections.
+
 ## Reuse
 
 Mathlib: `IsPicardLindelof`, `IsPicardLindelof.exists_eq_forall_mem_Icc_hasDerivWithinAt₀`, `ContDiffBump`,
