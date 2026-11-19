@@ -24,7 +24,9 @@ The disjoint union of labelled graphs is compatible with relabelling, so it is d
 
 **The exponential formula `X = e^{X_c}`** holds coefficientwise in the algebra of all graphs (any vertex degrees, legs allowed) {2}: the components of a labelled graph are its closed connected vertex sets and their number is a class invariant [15]; cutting a graph at a component and gluing it back is a bijection with the pairs (connected graph, rest) [16]; double counting the pairs (graph, component) gives `X_c^m(c) = [c has m components] · m! · #labelled copies/(n! k!)`, and so `e^{X_c} = X` [17].
 
-**Missing.** The error bound of the quartic expansion is not stated in Borinsky, who treats the integral formally. The formal integral is compared with Borinsky's Definition 3.1.1 and eq. (3.1.8) {2}, the graphs with Borinsky §2.1 and §2.3 {2}, and Wick's theorem with Tubaro–Zanella's Theorem 2.19 {3}; the Gaussian measure and its integrals are not yet compared with a source.
+The Feynman expansion of a Gaussian integral on `ℝⁿ`: for a homogeneous polynomial `V` of degree `d` with coefficient tensor `c` and a positive semidefinite covariance `S`, `E_S[V^m]` is the sum over the labellings of the `m` vertices and the full Wick contractions of their `md` legs of `∏_v c_(i_v) ∏_(pairs) S`; it vanishes when `md` is odd [18] {4}.
+
+**Missing.** The error bound of the quartic expansion is not stated in Borinsky, who treats the integral formally. The formal integral is compared with Borinsky's Definition 3.1.1 and eq. (3.1.8) {2}, the graphs with Borinsky §2.1 and §2.3 {2}, and Wick's theorem with Tubaro–Zanella's Theorem 2.19 {3}, the Feynman expansion with Polyak's eq. (18) {4} (labelled contractions of a homogeneous potential; the graph form with `1/|Aut Γ|`, Proposition 2.17, is open); the Gaussian measure and its integrals are not yet compared with a source.
 
 ## Lean References
 
@@ -55,9 +57,12 @@ The disjoint union of labelled graphs is compatible with relabelling, so it is d
    `FieldTheory.GraphAlg.anyClass_glue`, `FieldTheory.GraphAlg.comps_glue`
 17. Lightlike/FieldTheory/ZeroDim/GraphExp.lean - `FieldTheory.GraphAlg.X_eq_lab`, `FieldTheory.GraphAlg.card_split`, `FieldTheory.GraphAlg.card_mul_ncomp`,
    `FieldTheory.GraphAlg.pow_Xc_eq`, `FieldTheory.GraphAlg.expXc_eq_X`
+18. Lightlike/FieldTheory/Gaussian/FeynmanExpansion.lean - `FieldTheory.homogPoly`, `FieldTheory.legLabels`, `FieldTheory.homogPoly_pow`,
+   `FieldTheory.moment_ofFn_eq_pairSum_of_posSemidef`, `FieldTheory.integral_homogPoly_pow`, `FieldTheory.integral_homogPoly_pow_of_odd`
 
 ## References
 
 1. Mathlib, `Mathlib/Probability/Distributions/Gaussian/Multivariate.lean` (`multivariateGaussian`, `stdGaussian`) and `Fernique.lean` (`IsGaussian.memLp_id`).
 2. M. Borinsky, Graphs in perturbation theory: Algebraic structure and asymptotics, PhD thesis, Humboldt-Universität zu Berlin (2018), arXiv:1807.02046, §2.1 (Definitions 2.1.1, 2.1.2, p. 10; Definitions 2.1.6, 2.1.7, p. 11), §2.3 (Proposition 2.3.1, p. 15), §2.4.2 (eqs. (2.4.5)-(2.4.7) and Theorem 2.4.1, pp. 17-18) and §3.1 (Definition 3.1.1, eq. (3.1.2), p. 22; Proposition 3.1.1, p. 23; eq. (3.1.8), p. 24).
 3. L. Tubaro, M. Zanella, An introduction to Malliavin calculus, arXiv:2502.07941v1, Theorem 2.19 (Isserlis formula), p. 9.
+4. M. Polyak, Feynman diagrams for pedestrians and mathematicians, arXiv:math/0406251v1, §2.3 (Theorem 2.8, p. 5), §2.6 (eq. (18), p. 7) and §2.8 (Proposition 2.17, p. 9).
