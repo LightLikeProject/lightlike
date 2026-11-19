@@ -35,6 +35,12 @@ Differences:
 ## Plan
 
 1. (done) Uniqueness in coordinates, above.
-2. On a manifold: Killing fields in charts satisfy the coordinate Killing equation; a Killing field on a connected manifold
-   vanishing with its covariant derivative at one point vanishes.
+2. (done) On a manifold (`Lightlike/Spacetime/KillingRigidity.lean`): `killing_eq_zero_of_eq_zero`, a smooth Killing
+   field of the Levi-Civita connection on a connected manifold with `X(p₀) = 0` and `∇X(p₀) = 0` vanishes everywhere.
+   In the chart at any point, `θ_b = g(X, ∂_b)` satisfies Killing's equation (`covCo_chartCovector`: `∇_a θ_b =
+   g(∇_{∂_a} X, ∂_b)`), the coordinate rigidity holds in a ball of the chart, and the set where `X` and `∇X` vanish is
+   open and closed (closedness also from the ball: a point in its closure has a ball meeting it).
+   Difference: representation, a manifold modelled on `Fin n → ℝ` without boundary, metric of any signature, the
+   vanishing form (two Killing fields agreeing with their covariant derivatives at a point: the difference, by
+   linearity, not stated separately).
 3. The bound (14.4) and the Killing algebra of the model type (G1-024's isometry-group form).

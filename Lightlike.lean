@@ -1094,6 +1094,7 @@ import Lightlike.Spacetime.KillingAlgebra
 import Lightlike.Spacetime.IsometryKilling
 import Lightlike.Spacetime.PoincareKilling
 import Lightlike.Spacetime.KillingMinkowski
+import Lightlike.Spacetime.KillingRigidity
 import Lightlike.Spacetime.KillingRigidityCoord
 import Lightlike.Spacetime.LinearODEZero
 import Lightlike.Spacetime.Hypersurface
