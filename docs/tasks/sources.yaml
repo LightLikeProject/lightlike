@@ -965,6 +965,10 @@ references:
     cite: "G. Bonneau, J. Faraut and G. Valent, Self-adjoint extensions of operators and the teaching of quantum mechanics, Am. J. Phys. 69 (2001) 322"
     title: "Self-adjoint extensions of operators and the teaching of quantum mechanics"
     arxiv: quant-ph/0103153
+  derezinski-2006:
+    cite: "J. Dereziński, Introduction to representations of the canonical commutation and anticommutation relations, in Large Coulomb Systems, Lecture Notes in Physics 695, Springer (2006) 63-143"
+    title: "Introduction to Representations of the Canonical Commutation and Anticommutation Relations"
+    arxiv: "math-ph/0511030"
   nielsen-petz-2005:
     cite: "M. A. Nielsen and D. Petz, A simple proof of the strong subadditivity inequality, Quantum Inf. Comput. 5 (2005) 507-513"
     title: "A simple proof of the strong subadditivity inequality"

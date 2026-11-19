@@ -1628,6 +1628,26 @@
   "citations": 38,
   "citations_via": "Semantic Scholar"
  },
+ "derezinski-2006": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Introduction to representations of the canonical commutation and anticommutation relations",
+  "locations": {
+   "Corollary 2, p. 17": {
+    "verified": true,
+    "snippet": "Corollary 2. Suppose that Y is an even dimensional real Hilbert space. Let Y ∋ y 7→ φπ1 (y) ∈ Bh (H) and Y ∋ y 7→ φπ2 (y) ∈ Bh (H) be two irreducible representations of the CAR. Then they are unitarily equivalent. 4.3 Fe",
+    "why": null
+   },
+   "Theorem 10, p. 17": {
+    "verified": true,
+    "snippet": "Theorem 10. 1) Let (φ1 , φ2 , . . . , φ2n ) be a representation of the CAR over R2n in a Hilbert space H. Then there exists a Hilbert space K and a unitary operator U : ⊗ n C2 ⊗ K → H such that \u0010 \u0011 (j) U Ij−1 σ1 ⊗ 1K = φ",
+    "why": null
+   }
+  },
+  "citations": 73,
+  "citations_via": "Semantic Scholar"
+ },
  "di-francesco-ginsparg-zinn-justin-1995": {
   "checked": "2026-11-08",
   "exists": true,

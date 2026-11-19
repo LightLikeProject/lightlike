@@ -61,6 +61,7 @@ On `L²(0, 1)`, a vector lies in the domain of the adjoint of `-i d/dx` (on the 
 The plane waves `e^{i(θ + 2πn)x}`, `n ∈ ℤ`, lie in the domain of `P_θ` and are orthonormal eigenvectors with eigenvalue `θ + 2πn`; an eigenvector of `P_θ` with eigenvalue `μ ∈ ℂ` has the continuous representative `y(0) e^{iμx}`, so `μ = θ + 2πn` and the eigenspaces are one-dimensional; off `θ + 2πℤ` the resolvent equation is solved explicitly, so the spectrum of `P_θ`, in Physlib's sense, is `θ + 2πℤ` and equals the point spectrum {5}, [69]. `θ` is in the spectrum of `P_θ` and `θ + π` is not [70].
 
 A Weyl system of a symplectic vector space `(V, ω)` is a map `W` into a unital star algebra with `W(0) = 1`, `W(-φ) = W(φ)*` and `W(φ) W(ψ) = e^{-iω(φ,ψ)/2} W(φ + ψ)`; its elements are unitary and linearly independent, the independence by induction on the number of terms with the conjugations `W(ψ) W(χ) W(-ψ) = e^{-iω(ψ,χ)} W(χ)` [71]. The operators `(W(φ)F)(ψ) = e^{iω(φ,ψ)/2} F(φ + ψ)` on `ℓ²(V)`, or on any Hilbert space with a Hilbert basis indexed by `V`, form a Weyl system, and the closed star subalgebra they generate is the CCR algebra, a C*-algebra {6} [71]. The Weyl unitaries of a representation of the CCR over a complex inner product space form a Weyl system of `σ = Im⟪·,·⟫` [71]. In the CCR algebra of `ℝ²` with `ω((a, b), (c, d)) = ad - bc` the elements `W(e₁)` and `W(e₂)` do not commute [72].
+A representation of the CAR over `ℝᵐ` is a family of self-adjoint operators with `φ a φ b + φ b φ a = 2 δ_ab`; the Pauli matrices are one over `ℝ³`, the tensor product construction joins two, and the Jordan-Wigner operators `σ₃ ⊗ ⋯ ⊗ σ₃ ⊗ σ₁,₂ ⊗ 1 ⊗ ⋯ ⊗ 1` are one over `ℝ²ⁿ`, whose annihilation operators `aⱼ = (φ_{2j} + i φ_{2j+1}) / 2` satisfy `aᵢ aⱼ* + aⱼ* aᵢ = δᵢⱼ` and kill the empty configuration [73]. On the exterior algebra, left multiplication `a*(v)` and contraction `a(d)` satisfy the CAR with the vacuum `1` [74], and `|x⟩ ↦ ∏_{xⱼ = 1} eⱼ` is a linear isomorphism `⊗ⁿℂ² ≅ Λ(ℂⁿ)` that intertwines the Jordan-Wigner creation and annihilation operators with these [75]. The Fock inner product on `Λ(ℂⁿ)`, for which the configuration vectors are orthonormal, is the only sesquilinear form with `⟪1, 1⟫ = 1` for which `a*(eⱼ)` and `a(eⱼ*)` are mutually adjoint, and the Fock representation on it is irreducible [77]. Every representation over `ℝ²ⁿ` is unitarily equivalent to the Jordan-Wigner one tensored with the identity of its vacuum space `K = ⋂ⱼ ker aⱼ`, it is irreducible iff `K` is one-dimensional, two irreducible ones are unitarily equivalent, and over `ℝ²ⁿ⁺¹` the last generator becomes `Iₙ ⊗ T` for a self-adjoint unitary `T` of `K` {7}; the proof uses the ordered creation words `c₀^{x₀} ⋯ c_{n-1}^{x_{n-1}}` on `K`, their orthonormality and the resolution of the identity `∑ₓ cWord x · a₀c₀ ⋯ · aWord x = 1` [76].
 
 ## Lean References
 
@@ -250,6 +251,20 @@ A Weyl system of a symplectic vector space `(V, ω)` is a map `W` into a unital 
     `OperatorAlgebras.IsWeylSystem.mul_ne_mul`, `OperatorAlgebras.not_isSymplecticForm_zero`,
     `OperatorAlgebras.weylOp_ell2Basis_apply`, `OperatorAlgebras.ccrW_mul_ne` (the CCR algebra of `ℝ²` is not
     commutative)
+73. Lightlike/OperatorAlgebras/FiniteCAR.lean - `OperatorAlgebras.IsCARRep`, `OperatorAlgebras.isCARRep_pauli`,
+    `OperatorAlgebras.IsCARRep.tensor`, `OperatorAlgebras.jordanWigner`, `OperatorAlgebras.isCARRep_jordanWigner`,
+    `OperatorAlgebras.carAnnihilation`, `OperatorAlgebras.carCreation`,
+    `OperatorAlgebras.carAnnihilation_carCreation`, `OperatorAlgebras.carAnnihilation_jordanWigner_vacuum`
+74. Lightlike/OperatorAlgebras/FermionFock.lean - `OperatorAlgebras.creation`, `OperatorAlgebras.annihilation`,
+    `OperatorAlgebras.annihilation_creation_anticomm`, `OperatorAlgebras.annihilation_one`
+75. Lightlike/OperatorAlgebras/FockJW.lean - `OperatorAlgebras.jwFockEquiv`, `OperatorAlgebras.jwFockEquiv_vacuum`,
+    `OperatorAlgebras.jwFockEquiv_carCreation`, `OperatorAlgebras.jwFockEquiv_carAnnihilation`
+76. Lightlike/OperatorAlgebras/CARUnique.lean - `OperatorAlgebras.IsCAROn`, `OperatorAlgebras.carVacuum`,
+    `OperatorAlgebras.car_unitarily_equivalent_jordanWigner`, `OperatorAlgebras.isIrreducibleCAR_iff`,
+    `OperatorAlgebras.car_irreducible_unitarily_equivalent`, `OperatorAlgebras.car_odd_unitarily_equivalent`,
+    `OperatorAlgebras.isIrreducibleCAR_jordanWigner`
+77. Lightlike/OperatorAlgebras/FockInner.lean - `OperatorAlgebras.fockInner`, `OperatorAlgebras.fockInner_fockVec`,
+    `OperatorAlgebras.fockInner_creation`, `OperatorAlgebras.fockInner_unique`, `OperatorAlgebras.fock_irreducible`
 
 ## References
 
@@ -267,3 +282,6 @@ A Weyl system of a symplectic vector space `(V, ω)` is a map `W` into a unital 
 6. C. Bär, N. Ginoux and F. Pfäffle, *Wave Equations on Lorentzian Manifolds and Quantization*, ESI Lectures in
    Mathematics and Physics, European Mathematical Society, 2007, arXiv:0806.1036, Section 4.2 (Definition 4.2.1,
    Example 4.2.2, Proposition 4.2.3), pp. 116-122.
+7. J. Dereziński, *Introduction to representations of the canonical commutation and anticommutation
+   relations*, in *Large Coulomb Systems*, Lecture Notes in Physics 695, Springer, 2006, Theorem 10 and
+   Corollary 2.
