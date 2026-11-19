@@ -67,9 +67,48 @@ off-diagonal vertex `H₀₁` is zero.
   a grading; and the multiplicity matrix of this triple is `r` (`Vᵢⱼ` is spanned by the basis vectors at
   `(i, j, ρ, 0, 0)`). So a matrix is the multiplicity matrix of a real structure exactly when it is symmetric.
 
-Not yet stated (the next pieces): uniqueness of the real structure up to unitary equivalence (Krajewski §3.2, p. 13,
-"the charge conjugation is unique up to unitary equivalence"), the Dirac operators on the links beyond Lemma 6
-(§3.4, p. 17), and Krajewski's real summands `Mₙ(ℝ)`, `Mₙ(ℍ)` in the tensor form and the model.
+Not yet stated (the next pieces): the Dirac operators on the links beyond Lemma 6 (§3.4, p. 17), and Krajewski's real
+summands `Mₙ(ℝ)`, `Mₙ(ℍ)` in the tensor form and the model.
 
 Tests (`TestsClassification.lean`): the two-point data have `r₀₀ = 1`, `r₀₁ = 0`; a non-symmetric matrix is the
 multiplicity matrix of no real structure; on `ℂ ⊕ ℂ` every first-order `D` has `E₀₀ D E₁₁ = 0`.
+
+## FST3c: uniqueness up to unitary equivalence (Krajewski §3.2, p. 13)
+
+* `exists_orthonormalBasis_fixed` (`RealForm.lean`): an antiunitary involution has an orthonormal basis of fixed vectors
+  (`V = V_ℝ ⊕ i V_ℝ`, `dim_ℝ V_ℝ = dim_ℂ V`, the inner product is real on `V_ℝ`). This is the source's choice of a basis
+  with `Lᵢᵢ ψᵖ = ψᵖ` after removing the phases.
+* `exists_compatible_bases`: orthonormal bases `bᵢⱼ` of the multiplicity spaces `Vᵢⱼ` with `J bᵢⱼ ρ = bⱼᵢ ρ` (for `i ≠ j`
+  one side is chosen freely and the other is its `J`-transport; for `i = j` the fixed basis).
+* `coordIso`, `coordIso_surjective`, `exists_unitary_krajewski`: the coordinates `⟪bᵢⱼ ρ, π(Eᵢ,0α) J π(Eⱼ,0β) J x⟫` are a
+  unitary `H ≃ ⊕ᵢⱼ ℂʳⁱʲ ⊗ ℂⁿⁱ ⊗ ℂⁿʲ` with `U π(a) = π_model(a) U` and `U J = J_model U`: every complex-linear real structure
+  is unitarily equivalent to `krajewskiReal` of its multiplicity matrix.
+
+## Real summands `Mₙ(ℝ)`, `Mₙ(ℍ)` (Krajewski §2, p. 2; §3.1, p. 10; Table 1, p. 14): two attempts
+
+The definitions (`FiniteSpectralTriple`, `RealStructure`, `Grading`) and FST2a (`Bimodule.lean`: Lemmas 1, 3, 4, 6) take
+a real `*`-algebra and a real-linear `π`, so they cover real summands. The tensor form, the model and uniqueness are
+stated for `⊕ Mₙᵢ(ℂ)` acting complex-linearly.
+
+Attempt 1, complexification. A real-linear `π` extends to `A_ℂ = A ⊗_ℝ ℂ` by `π_ℂ(a ⊗ c) = c π(a)`. The order-zero and
+first-order conditions carry over, since `J π_ℂ(∑ aₖ ⊗ cₖ) J = ∑ c̄ₖ J π(aₖ) J`. For `Mₙ(ℝ)`, `Mₙ(ℝ) ⊗ ℂ = Mₙ(ℂ)`, and
+the complex results apply with the same `H` and `J`. The attempt stops at the other two summand types:
+* `Mₙ(ℍ) ⊗_ℝ ℂ ≅ M₂ₙ(ℂ)` needs a `*`-isomorphism `ℍ ⊗_ℝ ℂ ≃ M₂(ℂ)`. Mathlib has the quaternion algebra but not this
+  isomorphism.
+* `Mₙ(ℂ)` as a real algebra has `Mₙ(ℂ) ⊗_ℝ ℂ ≅ Mₙ(ℂ) ⊕ Mₙ(ℂ)` (`z ⊗ w ↦ (z w, z̄ w)`): the fundamental and the conjugate
+  representation. The summands of `A_ℂ` are then not indexed by those of `A`, and `J` pairs the fundamental block of one
+  summand with the conjugate block of another. Stating the result on `A`'s index set needs the bookkeeping of
+  Krajewski's Table 1 (`μ_{iαj}`, `μ_{iᾱj}`). Neither the `*`-isomorphism nor the transport of multiplicity matrices is
+  constructed.
+
+Attempt 2, real matrix units. `Mₙ(ℝ)` and `Mₙ(ℍ)` contain the real matrix units `E_{αβ}`, and the tensor-form
+argument of `TensorForm.lean` uses only their relations and `∑ E_{αα} = Pᵢ`. It needs complex linearity only for the
+left-action formula, and that formula holds for real coefficients. This gives `Hᵢⱼ ≅ (Fin nᵢ → Fin nⱼ → Vᵢⱼ)` with
+`Vᵢⱼ = E₀₀ H E₀₀` as before. The attempt stops at the multiplicity space. For a quaternionic summand,
+`E₀₀ Mₙ(ℍ) E₀₀ = ℍ` still acts on `Vᵢⱼ`, so `Vᵢⱼ` is an `ℍ`-module (or an `ℍ ⊗ ℍᵒᵖ`-module for two quaternionic
+summands). Its complex dimension alone no longer fixes the bimodule. The missing step is the classification of these
+modules together with `J`: a basis `(v, j v)` for an antilinear `j` with `j² = -1`, the analogue of `RealForm.lean`,
+and the sign relation between `J` and `j` that gives Table 1's conditions.
+
+So the uniqueness and the model are stated for complex summands (`A = ⊕ Mₙᵢ(ℂ)` acting complex-linearly). Both
+attempts above stop at a missing piece of algebra, not at length.
