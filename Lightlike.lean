@@ -733,6 +733,7 @@ import Lightlike.Spacetime.Causal.TimeOrientation
 import Lightlike.Spacetime.ChartChange
 import Lightlike.Spacetime.BianchiSecond
 import Lightlike.Spacetime.ContractedBianchi
+import Lightlike.Spacetime.CurveBounds
 import Lightlike.Spacetime.DivergenceFree
 import Lightlike.Spacetime.ExtensionChart
 import Lightlike.Spacetime.GeodesicChartChange
