@@ -1,6 +1,6 @@
 # The exponential map (gap row G1-006): source read, and how the library compares
 
-Files: `Lightlike/Geodesic/` (`ExpSmooth`, `ExpDiffeo`, `Tests`), and
+Files: `Lightlike/Geodesic/` (`ExpSmooth`, `ExpDiffeo`, `Radial`, `Tests`), and
 `Lightlike/ODE/FlowBoxSmooth.lean` for the regularity of the geodesic flow.
 
 ## Source (read at the locations given)
@@ -16,8 +16,11 @@ itself, which the gap row names, was not opened.
   diffeomorphism." Proof: smoothness near `0` from the smoothness of `(w, s) ↦ c_w(s)` and the
   rescaling `c_{tv}(s) = c_v(ts)` (2.1.12); `T_0 exp_p = id` (2.1.14); inverse function theorem.
 - Page 39: `U` is a normal neighbourhood of `p` if `Ũ` is star shaped.
-- 2.1.15 Proposition (radial geodesics), page 39; 2.1.21 Theorem (Gauss lemma), page 43;
-  2.2.7 Theorem (existence of convex sets), in Section 2.2: read, not formalised yet.
+- 2.1.15 Proposition (radial geodesics), page 39: "Let `U` be a normal neighbourhood of `p`.
+  Then for each `q ∈ U` there exists a unique geodesic `σ : [0, 1] → U` from `p` to `q` ...
+  Moreover we have `σ'(0) = exp_p⁻¹(q) ∈ Ũ`."
+- 2.1.21 Theorem (Gauss lemma), page 43; 2.2.7 Theorem (existence of convex sets), in
+  Section 2.2: read, not formalised yet.
 
 ## What the library proves
 
@@ -31,6 +34,11 @@ itself, which the gap row names, was not opened.
 - `Lightlike.Geodesic.exists_expMap_diffeo`: Theorem 2.1.14, with `Ũ` a ball (star shaped, so
   the image is a normal neighbourhood): an open partial homeomorphism with source the ball,
   smooth with smooth inverse, equal to the exponential map there.
+- `Lightlike.Geodesic.exists_normal_neighbourhood` (file `Radial`): Proposition 2.1.15. In the
+  normal neighbourhood `φ(B(0, ρ))`, `t ↦ φ(t v)` is a geodesic from `x` to `φ(v)` with initial
+  velocity `v` (this is (2.1.13), `exp_p(tv) = c_v(t)`), and every geodesic `τ` on `[0, 1]` from
+  `x` inside the neighbourhood is `t ↦ φ(t τ'(0))`, with `τ'(0) = φ⁻¹(τ(1))`. It rests on
+  `IsGeodesicOn.eqOn_Icc`: geodesics in `U` with the same initial data agree on intervals.
 - `Lightlike.Geodesic.Tests.exists_expMap_diffeo_ads`: the hypotheses hold for anti-de Sitter
   space in the Poincaré patch (Lorentzian signature).
 
@@ -45,5 +53,4 @@ itself, which the gap row names, was not opened.
 
 ## Still open in the row
 
-Radial geodesics (2.1.15), the Gauss lemma (2.1.21), convex neighbourhoods (2.2.7) and causally
-convex neighbourhoods.
+The Gauss lemma (2.1.21), convex neighbourhoods (2.2.7) and causally convex neighbourhoods.

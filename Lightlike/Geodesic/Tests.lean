@@ -23,9 +23,10 @@ theorem exists_expMap_diffeo_ads {L : ℝ} (hL : L ≠ 0) {x : Fin 4 → ℝ} (h
     ∃ (ρ : ℝ) (φ : OpenPartialHomeomorph (Fin 4 → ℝ) (Fin 4 → ℝ)), 0 < ρ ∧
       φ.source = ball 0 ρ ∧ φ 0 = x ∧ ContDiffOn ℝ ∞ φ φ.source ∧
       ContDiffOn ℝ ∞ φ.symm φ.target ∧
-      HasFDerivAt φ (ContinuousLinearMap.id ℝ (Fin 4 → ℝ)) 0 ∧
+      HasFDerivAt φ (ContinuousLinearMap.id ℝ (Fin 4 → ℝ)) 0 ∧ φ.target ⊆ Lightlike.adsU ∧
       ∀ v ∈ ball (0 : Fin 4 → ℝ) ρ, ∃ γ w : ℝ → Fin 4 → ℝ, γ 0 = x ∧ w 0 = v ∧ γ 1 = φ v ∧
-        IsGeodesicOn (Lightlike.adsMetric L) γ w (Ioo (-1) 2) :=
+        IsGeodesicOn (Lightlike.adsMetric L) γ w (Ioo (-1) 2) ∧
+        ∀ t ∈ Icc (0 : ℝ) 1, γ t = φ (t • v) :=
   exists_expMap_diffeo (Lightlike.isCoordMetric_ads L hL) hx
 
 end Lightlike.Geodesic.Tests
