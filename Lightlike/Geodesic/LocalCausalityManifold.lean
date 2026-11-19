@@ -20,6 +20,10 @@ inside `O`.
   compact interval.
 * `IsTimeBall.mono`, `IsTimeBall.exists_future`: shrinking a time ball makes `N` future directed
   for `T` when `e` is.
+* `Causal.causalFutureIn`, `Causal.chronFutureIn`: `J⁺(x; O)`, `I⁺(x; O)`, curves inside `O`.
+* `IsTimeBall.mem_causalFutureIn_iff`, `IsTimeBall.mem_chronFutureIn_iff`,
+  `IsTimeBall.mem_horismosIn_iff`: Chruściel's (2.4.7) for the time ball, the third line for
+  `J⁺(p; O) \ I⁺(p; O)`.
 * `IsTimeBall.coord_of_curve`: a curve of `↥U` in the time ball, in normal coordinates.
 * `IsTimeBall.causal_cone_of_isFutureCausalCurve`, `IsTimeBall.chron_cone_of_isFutureTimelikeCurve`:
   the `J⁺` and `I⁺` lines of (2.4.7), "⇒", for the curves of `↥U`.
@@ -34,6 +38,27 @@ open Set Metric Filter Topology Matrix MeasureTheory Manifold Bundle
 open scoped ContDiff
 
 noncomputable section
+
+namespace Lightlike.Causal
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  {H : Type*} [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
+  {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I ∞ M]
+  {k : ℕ} {g' : LorentzianMetric I M k} (T : TimeOrientation g')
+
+/-- The **causal future of `x` relative to `O`**, `J⁺(x; O)` (Chruściel, Section 2.4): the points
+reached from `x` by a future causal curve that stays in `O`. -/
+def causalFutureIn (x : M) (O : Set M) : Set M :=
+  {y | ∃ (γ : ℝ → M) (a b : ℝ), a ≤ b ∧ IsFutureCausalCurve T γ (Icc a b) ∧ γ a = x ∧ γ b = y ∧
+    ∀ t ∈ Icc a b, γ t ∈ O}
+
+/-- The **chronological future of `x` relative to `O`**, `I⁺(x; O)`: the points reached from `x` by
+a future timelike curve of positive parameter length that stays in `O`. -/
+def chronFutureIn (x : M) (O : Set M) : Set M :=
+  {y | ∃ (γ : ℝ → M) (a b : ℝ), a < b ∧ IsFutureTimelikeCurve T γ (Icc a b) ∧ γ a = x ∧ γ b = y ∧
+    ∀ t ∈ Icc a b, γ t ∈ O}
+
+end Lightlike.Causal
 
 namespace Lightlike.Geodesic
 
@@ -410,6 +435,73 @@ theorem exists_timelike_of_cone (hL : IsLorentzianCoordMetric g U)
     exact hx₀.symm
   · rw [h.radial_apply hv ⟨zero_le_one, le_rfl⟩, one_smul]
   · intro t ht; exact ⟨t • v, smul_mem_ball' hv ht, (h.radial_apply hv ht).symm⟩
+
+/-- `σ_p(v) ≤ 0` and `x⁰(v) = 0` only at `v = 0`. -/
+lemma eq_zero_of_cone (hL : IsLorentzianCoordMetric g U) (h : IsTimeBall g U p ρ φ e r N)
+    (hp : p ∈ (U : Set (Fin n → ℝ))) {v : Fin n → ℝ} (hσ : pairing g p v v ≤ 0)
+    (hx : pairing g p e v = 0) : v = 0 :=
+  (isLorentzianForm_matForm hL hp).eq_zero_of_orthogonal_timelike (X := e)
+    (by rw [← pairing_eq_matForm]; exact h.timelike_zero)
+    (by rw [← pairing_eq_matForm, pairing_comm hL.1 hp]; exact hx)
+    (by rw [← pairing_eq_matForm]; exact hσ)
+
+/-- **Chruściel, Proposition 2.4.5, the `J⁺` line of (2.4.7)**: for `q = φ v` in the time ball
+`O = φ (ball 0 r)`, `q ∈ J⁺(p; O)` iff `σ_p(q) ≤ 0` and `x⁰(q) ≥ 0`. -/
+theorem mem_causalFutureIn_iff (hL : IsLorentzianCoordMetric g U)
+    (T : Causal.TimeOrientation (openMetric U g hL)) (h : IsTimeBall g U p ρ φ e r N)
+    (hTN : ∀ x : U, ∀ v ∈ ball (0 : Fin n → ℝ) r, x.1 = φ v → matForm (g x.1) (N v) (T.X x) < 0)
+    {x₀ : U} (hx₀ : x₀.1 = p) {q : U} (hq : q.1 ∈ φ '' ball (0 : Fin n → ℝ) r) :
+    q ∈ Causal.causalFutureIn T x₀ {y : U | y.1 ∈ φ '' ball (0 : Fin n → ℝ) r} ↔
+      pairing g p (φ.symm q.1) (φ.symm q.1) ≤ 0 ∧ 0 ≤ -pairing g p e (φ.symm q.1) := by
+  constructor
+  · rintro ⟨γ, a, b, hab, hγ, ha, hb, hin⟩
+    have := h.causal_cone_of_isFutureCausalCurve hL T hTN hab hγ (by rw [ha, hx₀]) hin
+    rwa [hb] at this
+  · rintro ⟨hσ, hx⟩
+    obtain ⟨w, hw, hφw⟩ := hq
+    have hsw : φ.symm q.1 = w := by rw [← hφw]; exact φ.left_inv (h.mem_source hw)
+    rw [hsw] at hσ hx
+    obtain ⟨γ, a, b, hab, hγ, ha, hb, hin⟩ := h.exists_causal_of_cone hL T hTN hx₀ hw hσ hx
+    exact ⟨γ, a, b, hab, hγ, ha, Subtype.ext (hb.trans hφw), hin⟩
+
+/-- **Chruściel, Proposition 2.4.5, the `I⁺` line of (2.4.7)**: for `q = φ v` in the time ball,
+`q ∈ I⁺(p; O)` iff `σ_p(q) < 0` and `x⁰(q) > 0`. -/
+theorem mem_chronFutureIn_iff (hL : IsLorentzianCoordMetric g U)
+    (T : Causal.TimeOrientation (openMetric U g hL)) (h : IsTimeBall g U p ρ φ e r N)
+    (hTN : ∀ x : U, ∀ v ∈ ball (0 : Fin n → ℝ) r, x.1 = φ v → matForm (g x.1) (N v) (T.X x) < 0)
+    {x₀ : U} (hx₀ : x₀.1 = p) {q : U} (hq : q.1 ∈ φ '' ball (0 : Fin n → ℝ) r) :
+    q ∈ Causal.chronFutureIn T x₀ {y : U | y.1 ∈ φ '' ball (0 : Fin n → ℝ) r} ↔
+      pairing g p (φ.symm q.1) (φ.symm q.1) < 0 ∧ 0 < -pairing g p e (φ.symm q.1) := by
+  constructor
+  · rintro ⟨γ, a, b, hab, hγ, ha, hb, hin⟩
+    have := h.chron_cone_of_isFutureTimelikeCurve hL T hTN hab hγ (by rw [ha, hx₀]) hin
+    rwa [hb] at this
+  · rintro ⟨hσ, hx⟩
+    obtain ⟨w, hw, hφw⟩ := hq
+    have hsw : φ.symm q.1 = w := by rw [← hφw]; exact φ.left_inv (h.mem_source hw)
+    rw [hsw] at hσ hx
+    obtain ⟨γ, a, b, hab, hγ, ha, hb, hin⟩ := h.exists_timelike_of_cone hL T hTN hx₀ hw hσ hx
+    exact ⟨γ, a, b, hab, hγ, ha, Subtype.ext (hb.trans hφw), hin⟩
+
+/-- **The horismos of a time ball**: for `q` in the time ball, `q ∈ J⁺(p; O) \ I⁺(p; O)` iff
+`σ_p(q) = 0` and `x⁰(q) ≥ 0`: the null cone of `p`. -/
+theorem mem_horismosIn_iff (hL : IsLorentzianCoordMetric g U)
+    (T : Causal.TimeOrientation (openMetric U g hL)) (h : IsTimeBall g U p ρ φ e r N)
+    (hTN : ∀ x : U, ∀ v ∈ ball (0 : Fin n → ℝ) r, x.1 = φ v → matForm (g x.1) (N v) (T.X x) < 0)
+    {x₀ : U} (hx₀ : x₀.1 = p) {q : U} (hq : q.1 ∈ φ '' ball (0 : Fin n → ℝ) r) :
+    q ∈ Causal.causalFutureIn T x₀ {y : U | y.1 ∈ φ '' ball (0 : Fin n → ℝ) r} \
+        Causal.chronFutureIn T x₀ {y : U | y.1 ∈ φ '' ball (0 : Fin n → ℝ) r} ↔
+      pairing g p (φ.symm q.1) (φ.symm q.1) = 0 ∧ 0 ≤ -pairing g p e (φ.symm q.1) := by
+  have hp : p ∈ (U : Set (Fin n → ℝ)) := hx₀ ▸ x₀.2
+  rw [mem_sdiff, h.mem_causalFutureIn_iff hL T hTN hx₀ hq, h.mem_chronFutureIn_iff hL T hTN hx₀ hq]
+  constructor
+  · rintro ⟨⟨hσ, hx⟩, hnot⟩
+    refine ⟨le_antisymm hσ (not_lt.1 fun hlt => hnot ⟨hlt, lt_of_le_of_ne hx fun h0 => ?_⟩), hx⟩
+    have h0' := h.eq_zero_of_cone hL hp hσ (by linarith)
+    rw [h0', pairing_zero_right] at hlt
+    exact lt_irrefl _ hlt
+  · rintro ⟨hσ, hx⟩
+    exact ⟨⟨hσ.le, hx⟩, fun ⟨hlt, _⟩ => (lt_irrefl _ (hσ ▸ hlt))⟩
 
 end IsTimeBall
 
