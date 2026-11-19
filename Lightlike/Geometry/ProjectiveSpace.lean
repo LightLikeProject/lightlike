@@ -13,7 +13,7 @@ complex (analytic) manifold modelled on `ℂⁿ` (`isManifold`): `CP 1` and `CP 
 
 ## Main results
 
-* `isOpenMap_proj`: the projection `{v ≠ 0} → ℙ` is open (`π⁻¹(π O) = ⋃_c c • O`).
+* `isOpenMap_proj`: the projection `{v ≠ 0} → ℙ` is an open map (`π⁻¹(π O) = ⋃_c c • O`).
 * `isOpen_chartSet`, `continuousOn_chartFun`, `continuous_chartInv`, `chart`: the charts.
 * `instChartedSpace`, `isManifold`: the complex manifold `ℙⁿ(ℂ)`.
 * `instT2Space`, `instCompactSpace`: `ℙⁿ(ℂ)` is Hausdorff (`projectorOf_injective`) and compact.
