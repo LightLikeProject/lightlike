@@ -156,6 +156,17 @@ def last_name(decl: str) -> str:
     return decl.rsplit(".", 1)[-1]
 
 
+# An inline code span: a run of backticks, its text, and a run of the same length (CommonMark).
+CODE_SPAN_RE = re.compile(r"(?<!`)(`+)(?!`)(.+?)(?<!`)\1(?!`)", re.S)
+
+
+def without_code(text: str) -> str:
+    """The text with each inline code span blanked, so that math such as `[0,1]^F` or `{0}` is not read as a
+    citation. Spans are paired within a paragraph: a span may wrap onto the next line but never crosses a blank
+    line."""
+    return "\n\n".join(CODE_SPAN_RE.sub(" ", p) for p in re.split(r"\n[ \t]*\n", text))
+
+
 def in_file(decl: str, src: str) -> bool:
     """Text check: the declaration's last name component occurs as a word in the file."""
     return re.search(r"(?<![\w'])" + re.escape(last_name(decl)) + r"(?![\w'])", src) is not None
@@ -171,7 +182,8 @@ def lint_map(root: Path, path: Path) -> tuple[list[str], list[tuple[str, str]]]:
         errs.append("raw markdown link")
     if not body:
         return [f"{rel}: {e}" for e in errs], names
-    abstract, content = body[SECTIONS[0]], body[SECTIONS[1]]
+    # citations are read from the prose only: brackets and braces inside code spans are math or code
+    abstract, content = without_code(body[SECTIONS[0]]), without_code(body[SECTIONS[1]])
     if re.search(r"\[\d|\{\d", abstract):
         errs.append("the abstract must not cite")
     if re.search(r"\[\d+\s*[,;–-]", content):

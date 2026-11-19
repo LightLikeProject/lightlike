@@ -107,6 +107,33 @@ expect("review planted: a human review without an issue URL, an unknown or retir
            [("human-reviewed", None), ("human-reviewed", "docs/x.md"), ("peer-reviewed", "y"),
             ("agent-reviewed", "docs/x.md"), ("kernel-checked", "docs/x.md")]))
 
+
+def _map_errs(abstract, content):
+    """lint_map's errors for a one-entry API map with this abstract and content (citing [1] and {1})."""
+    with tempfile.TemporaryDirectory() as d:
+        r = pathlib.Path(d); (r / "Lightlike").mkdir()
+        (r / "Lightlike" / "A.lean").write_text("theorem foo : True := trivial\n")
+        (r / "Lightlike" / "API-map.md").write_text(
+            f"# Area\n## Abstract (Alpha)\n{abstract}\n## Content (Alpha)\n{content}\n"
+            "## Lean References\n1. Lightlike/A.lean - `foo`\n## References\n1. A. Author, A book.\n")
+        return [e.split(": ", 1)[1] for e in api_map.lint_map(r, r / "Lightlike" / "API-map.md")[0]]
+
+
+_math = "the integral `∫_{[0,1]^F} f` over\n`[0,1]^{P_n}`, the set `{0}` and `v[2]`"
+expect("API map citations control: brackets and braces in code spans are math, not citations, in the abstract and "
+       "the content (a span may wrap onto the next line)",
+       _map_errs(f"A forest formula: {_math}.", f"It holds [1] {{1}}: {_math}.") == [])
+expect("API map citations planted: a real [1, 2] in the content and a [1] in the abstract still fail beside a code span",
+       _map_errs(f"It cites [1] beside {_math}.", f"It holds [1] and [1, 2] {{1}}: {_math}.")
+       == ["the abstract must not cite", "each Lean citation needs its own brackets: [1] [2], not [1, 2]"])
+expect("API map citations planted: a citation only inside a code span does not count, so its reference is never cited",
+       _map_errs("A formula.", "It holds `[1]` {1}.") == ["Lean reference 1 is never cited"])
+expect("API map citations planted: an unmatched backtick does not hide what follows it, and a span does not cross a "
+       "blank line",
+       _map_errs("A formula.", "It holds [1] ` [1, 2] {1}.") == ["each Lean citation needs its own brackets: [1] [2], not [1, 2]"]
+       and _map_errs("A formula.", "It holds [1] `x\n\n[1, 2]` {1}.")
+       == ["each Lean citation needs its own brackets: [1] [2], not [1, 2]"])
+
 log = "warning: Lightlike/Lorentz/Density.lean:5:2: `x` has been deprecated, use `y` instead\n"
 expect("deprecations control: warning within baseline passes",
        ci_check.check_deprecations(log, {"Lightlike/Lorentz/Density.lean": 1}) == [])
