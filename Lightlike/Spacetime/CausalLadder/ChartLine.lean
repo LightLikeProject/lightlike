@@ -186,7 +186,7 @@ inside the chart target, such that for every `s > 0` with `‖s V‖ < r₀ / 2`
 of the ball with `‖b - a - s V‖ < s ε` are joined by a future causal curve: the point
 `(extChartAt I p).symm b` lies in the causal future of `(extChartAt I p).symm a`. -/
 theorem exists_line_scale [BoundarylessManifold I M] (p : M) :
-    ∃ (V : E) (r₀ ε : ℝ), 0 < r₀ ∧ 0 < ε ∧
+    ∃ (V : E) (r₀ ε : ℝ), V ≠ 0 ∧ 0 < r₀ ∧ 0 < ε ∧
       Metric.ball (extChartAt I p p) r₀ ⊆ (extChartAt I p).target ∧
       ∀ s : ℝ, 0 < s → ‖s • V‖ < r₀ / 2 →
         ∀ a ∈ Metric.ball (extChartAt I p p) r₀, ∀ b ∈ Metric.ball (extChartAt I p p) r₀,
@@ -205,7 +205,17 @@ theorem exists_line_scale [BoundarylessManifold I M] (p : M) :
     exact hcont.preimage_mem_nhds (by rwa [(extChartAt I p).left_inv (mem_extChartAt_source p)])
   obtain ⟨r₀, hr₀, hball⟩ := Metric.mem_nhds_iff.1
     (inter_mem hpre (target_mem_nhds_of_boundaryless (I := I) p))
-  refine ⟨V, r₀, ε, hr₀, hε, fun e he => (hball he).2, ?_⟩
+  have hV0 : V ≠ 0 := by
+    intro h0
+    have h1 : T.X p = 0 := by
+      rw [← hUV, h0]
+      have := (tTriv I M p).linearEquivAt_symm_apply (R := ℝ) p hp (0 : E)
+      rw [show localField (I := I) p (0 : E) p = (tTriv I M p).symm p 0 from rfl, ← this]
+      exact map_zero _
+    have := T.timelike p
+    rw [h1] at this
+    simp at this
+  refine ⟨V, r₀, ε, hV0, hr₀, hε, fun e he => (hball he).2, ?_⟩
   intro s hspos hsV a ha b hb hab
   set w : E := b - a with hw
   -- the segment from `a` to `b` stays in the ball
@@ -254,7 +264,7 @@ theorem exists_line_between [BoundarylessManifold I M] (p : M) :
       ∃ ε > 0, ∀ a ∈ Metric.ball (extChartAt I p p) r₀, ∀ b ∈ Metric.ball (extChartAt I p p) r₀,
         ‖b - a - s • V‖ < s * ε →
           (extChartAt I p).symm b ∈ causalFuture T ((extChartAt I p).symm a) := by
-  obtain ⟨V, r₀, ε, hr₀, hε, -, h⟩ := exists_line_scale T p
+  obtain ⟨V, r₀, ε, -, hr₀, hε, -, h⟩ := exists_line_scale T p
   set s : ℝ := r₀ / (4 * (‖V‖ + 1)) with hs
   have hspos : 0 < s := by positivity
   have hsV : ‖s • V‖ < r₀ / 2 := by

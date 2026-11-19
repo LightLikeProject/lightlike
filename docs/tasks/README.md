@@ -273,10 +273,10 @@ Done-when texts and trust checks: [milestones.md](milestones.md#operator-algebra
 |---|---|---|---|---|---|
 | [`T-OP2`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-OP2%22) | CCR and CAR algebras: Weyl algebra, Fock space, quasi-free states, Bogoliubov transformations | bratteli-robinson-1997 | L | advanced | OP1 |
 | [`T-OP3`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-OP3%22) | States, the KMS condition and modular theory: Tomita–Takesaki in finite dimensions, standard subspaces … | bratteli-robinson-1987, bratteli-robinson-1997, witten-2018 | M | intermediate | OP1 |
-| [`T-OP1`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-OP1%22) | Unbounded self-adjoint operators: adjoints, essential self-adjointness, deficiency indices, Stone's theorem | hall-2013 | L | advanced |  |
+| [`T-OP1`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-OP1%22) | Unbounded self-adjoint operators: adjoints, essential self-adjointness, deficiency indices, Stone's theorem | hall-2013, moretti-2016 | L | advanced |  |
 | [`T-OP5`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-OP5%22) | Finite-dimensional quantum mechanics: unitary evolution, Schrödinger equation, Born rule | hall-2013 | M | intermediate |  |
 | [`T-OP4`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-OP4%22) | Entropy: von Neumann and relative entropy, subadditivity, strong subadditivity (Lieb–Ruskai 1973) | nielsen-petz-2005 | L | advanced |  |
-| [`T-OP6`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-OP6%22) | Trace-class and Hilbert–Schmidt operators: the Schatten ideals `S¹` and `S²`, the trace, duality with the … | reed-simon-1972 | L | advanced |  |
+| [`T-OP6`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-OP6%22) | Trace-class and Hilbert–Schmidt operators: the Schatten ideals `S¹` and `S²`, the trace, duality with the … | reed-simon-1972, moretti-2016 | L | advanced |  |
 
 ### Oscillatory and saddle-point asymptotics
 

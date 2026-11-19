@@ -950,6 +950,7 @@ upstream:
 # statement is fixed: the proof-task check rejects pull requests that change it. Keep this section
 # last; `lock` rewrites it.
 locked:
+  T-GE2-P11: "7f3818d52455ebb3"
   T-QU1-P1: "e1f8fee660e6bb70"
   T-QU1-P2: "48d6183e645a58f7"
   T-QU1-P3: "f6a02ca2e41a673e"

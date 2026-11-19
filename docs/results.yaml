@@ -2140,8 +2140,9 @@
     refs:
       - {ref: hall-2013, location: "Chapter: Unbounded Self-Adjoint Operators|10.1007/978-1-4614-7116-5_9"}
       - {ref: hall-2013, location: "Chapter: The Spectral Theorem for Unbounded Self-Adjoint Operators|10.1007/978-1-4614-7116-5_10"}
+      - {ref: moretti-2016, location: "Theorem 142, p. 83", check: "Stone"}
   review: kernel-checked
-  note: "For a strongly continuous one-parameter group of unitaries U(t) on a complex Hilbert space, the generator A psi = -i d/dt U(t) psi at t = 0, on the vectors where the derivative exists, is self-adjoint: A is contained in its adjoint and its adjoint in A. This is one direction of Stone's theorem; the converse, that every self-adjoint operator generates such a group, is the task T-OP1-P2. The comparison with the cited source is pending: the registry locations are the chapters, and the statement was not read there. Difference to be approved by a maintainer: the sign convention U(t) = exp(itA) is the library's."
+  note: "For a strongly continuous one-parameter group of unitaries U(t) on a complex Hilbert space, the generator A psi = -i d/dt U(t) psi at t = 0, on the vectors where the derivative exists, is self-adjoint: A is contained in its adjoint and its adjoint in A. This is one direction of Stone's theorem; the converse, that every self-adjoint operator generates such a group, is the task T-OP1-P2. Compared with Moretti, Theorem 142, p. 83 (read): (a) there is a unique self-adjoint generator A with U(t) = exp(-itA), (b) A psi = i lim (U(t) - 1) psi / t on the vectors where the limit exists; also with Teschl, Mathematical Methods in Quantum Mechanics (AMS online edition), Theorems 5.1 and 5.2, pp. 123-124 (read). The Hall chapters are cited but were not read. Difference to be approved by a maintainer (convention): the library's generator is -i d/dt U(t) at 0, with U(t) = exp(itA), the negative of Moretti's (U(t) = exp(-itA))."
   since: 0.3.0
 - id: LL-0164
   title: Two strongly continuous one-parameter unitary groups with the same generator are equal
@@ -2153,8 +2154,9 @@
   source:
     refs:
       - {ref: hall-2013, location: "Chapter: The Spectral Theorem for Unbounded Self-Adjoint Operators|10.1007/978-1-4614-7116-5_10"}
+      - {ref: moretti-2016, location: "Theorem 142, p. 83", check: "Stone"}
   review: kernel-checked
-  note: "On a complex Hilbert space, a strongly continuous one-parameter unitary group is determined by its generator: if U and V have the same generator then U(t) = V(t) for all t. This is the uniqueness part of Stone's theorem. The comparison with the cited source is pending: the registry location is the chapter, and the statement was not read there. Difference to be approved by a maintainer: the library's sign convention U(t) = exp(itA) for the generator."
+  note: "On a complex Hilbert space, a strongly continuous one-parameter unitary group is determined by its generator: if U and V have the same generator then U(t) = V(t) for all t. This is the uniqueness part of Stone's theorem. Compared with Moretti, Theorem 142, p. 83 (read): (a) there is a unique self-adjoint generator A with U(t) = exp(-itA), (b) A psi = i lim (U(t) - 1) psi / t on the vectors where the limit exists; also with Teschl, Mathematical Methods in Quantum Mechanics (AMS online edition), Theorems 5.1 and 5.2, pp. 123-124 (read). The Hall chapters are cited but were not read. Difference to be approved by a maintainer (convention): the library's generator is -i d/dt U(t) at 0, with U(t) = exp(itA), the negative of Moretti's (U(t) = exp(-itA))."
   since: 0.3.0
 - id: LL-0165
   title: Smooth compactly supported functions approximate every vector in the domain of the generator of translations on the line
@@ -2231,8 +2233,9 @@
   source:
     refs:
       - {ref: milnor-1963, location: "Chapter: PART I. NON-DEGENERATE SMOOTH FUNCTIONS ON A MANIFOLD|10.1515/9781400881802-002"}
+      - {ref: benedetti-2019, location: "Theorem 1.13", check: "Morse Lemma"}
   review: kernel-checked
-  note: "A smooth function f of a variable x in a finite-dimensional real normed space E and a parameter l, with a critical point at x = 0 for every l near l0 and a nondegenerate Hessian at (0, l0), is f(0, l) plus the sum of w_i y_i^2, w_i = plus or minus one, in coordinates (y, l) that are a smooth local diffeomorphism of (x, l) near (0, l0). The number of negative signs is the Morse index (the largest dimension of a subspace on which the Hessian is negative definite). The function x^3 at 0 has no such chart. The parametric form generalises Milnor's Morse lemma; comparison with the book at that location is pending. Limits: f is smooth on the whole of E times F; the critical point is at x = 0; the index is not shown to equal the number of negative eigenvalues for an inner product."
+  note: "A smooth function f of a variable x in a finite-dimensional real normed space E and a parameter l, with a critical point at x = 0 for every l near l0 and a nondegenerate Hessian at (0, l0), is f(0, l) plus the sum of w_i y_i^2, w_i = plus or minus one, in coordinates (y, l) that are a smooth local diffeomorphism of (x, l) near (0, l0). The number of negative signs is the Morse index (the largest dimension of a subspace on which the Hessian is negative definite). The function x^3 at 0 has no such chart. The parametric form generalises the Morse lemma as stated in Benedetti, Lectures on Differential Topology (arXiv:1907.10297), Theorem 1.13, p. 34 (read): a nondegenerate critical point 0 of index lambda of f with f(0) = 0 has a local diffeomorphism x = phi(u), phi(0) = 0, with f(phi(u)) = u^t I_{n,lambda} u; at a fixed parameter ours is that statement, with the index the number of negative signs. Milnor's book (the same lemma, Part I) was not opened. Limits: f is smooth on the whole of E times F; the critical point is at x = 0; the index is not shown to equal the number of negative eigenvalues for an inner product."
   since: unreleased
 - id: LL-0171
   title: The Lie derivative of a metric along a vector field equals the symmetrised covariant derivative of the field for the Levi-Civita connection, so Killing fields are those with vanishing Lie derivative
@@ -2243,9 +2246,9 @@
   tier: established
   source:
     refs:
-      - {ref: carroll-1997, location: "Chapter 3"}
+      - {ref: carroll-1997, location: "eq. (5.42)", check: "Killing"}
   review: kernel-checked
-  note: "For a metric g of any signature and a torsion-free connection compatible with g, X(g(V, W)) - g([X, V], W) - g(V, [X, W]) = g(nabla_V X, W) + g(V, nabla_W X) at every point where the fields are differentiable; hence the pointwise Killing equation holds at x iff the Lie derivative of g along X vanishes on all fields differentiable at x. Limits: pointwise statement only, no flows or isometries; not the Lie derivative of general tensors; the comparison with the source (Killing equation and Lie derivative in the lecture notes) is pending, and the location is the chapter, not an equation."
+  note: "For a metric g of any signature and a torsion-free connection compatible with g, X(g(V, W)) - g([X, V], W) - g(V, [X, W]) = g(nabla_V X, W) + g(V, nabla_W X) at every point where the fields are differentiable; hence the pointwise Killing equation holds at x iff the Lie derivative of g along X vanishes on all fields differentiable at x. Limits: pointwise statement only, no flows or isometries; not the Lie derivative of general tensors; the flow characterisation of Killing fields (Carroll (5.39)-(5.40)) is not covered. Compared with Carroll's lecture notes (gr-qc/9712019), eq. (5.33), p. 138 (the Lie derivative of the metric is 2 nabla_(mu V_nu)) and eqs. (5.41)-(5.42), p. 140 (Killing's equation): match; ours is pointwise, for the Levi-Civita connection of a metric of any signature."
   since: unreleased
 - id: LL-0172
   title: The bracket of two Killing fields of a metric of any signature is a Killing field
@@ -2256,9 +2259,9 @@
   tier: established
   source:
     refs:
-      - {ref: carroll-1997, location: "Chapter 3"}
+      - {ref: carroll-1997, location: "eq. (5.46)", check: "commutator"}
   review: kernel-checked
-  note: "If X and Y are smooth near x and the Lie derivative of g along each vanishes near x on all fields smooth near x, then so does the Lie derivative along the bracket [X, Y], by the Jacobi identity and [X, Y] f = X (Y f) - Y (X f). Limits: pointwise statement; the comparison with the source is pending and the location is the chapter."
+  note: "If X and Y are smooth near x and the Lie derivative of g along each vanishes near x on all fields smooth near x, then so does the Lie derivative along the bracket [X, Y], by the Jacobi identity and [X, Y] f = X (Y f) - Y (X f). Compared with Carroll's lecture notes, p. 141 (after eq. (5.46)): 'the commutator of two Killing vector fields is a Killing vector field' (stated, left as an exercise): match. Limits: local statement (Killing near x)."
   since: unreleased
 - id: LL-0173
   title: In Minkowski space the affine fields with skew linear part are Killing, the dilation is not, and affine fields close under the bracket with the Poincare relations
@@ -2269,9 +2272,9 @@
   tier: established
   source:
     refs:
-      - {ref: carroll-1997, location: "Chapter 3"}
+      - {ref: carroll-1997, location: "eq. (5.44)", check: "Killing"}
   review: kernel-checked
-  note: "On R^n with the Minkowski metric and the flat connection, the field y -> A y + c satisfies the Killing equation at every point iff A is skew for the metric; the dilation y -> y does not (n at least 1); [A y + c, B y + d] = (B A - A B) y + (B c - A d); the commutator of two skew endomorphisms is skew. Limits: not proved that these are all the Killing fields (the count n(n+1)/2); the 2-sphere check is not included; comparison with the source is pending."
+  note: "On R^n with the Minkowski metric and the flat connection, the field y -> A y + c satisfies the Killing equation at every point iff A is skew for the metric; the dilation y -> y does not (n at least 1); [A y + c, B y + d] = (B A - A B) y + (B c - A d); the commutator of two skew endomorphisms is skew. Compared with Carroll's lecture notes, pp. 140-141, eq. (5.44): n translations and n(n-1)/2 rotations, n(n+1)/2 independent Killing vectors of R^n, 'the same kind of counting argument applies to ... Minkowski space': the translations and the eta-skew (Lorentz) fields are Killing here, the dilation is not: match. Limits: that these are all the Killing fields and the count n(n+1)/2 are proved in KillingMinkowski.lean (regge/ge12-killing, not yet on main); the 2-sphere check is not included."
   since: unreleased
 - id: LL-0174
   title: The second fundamental form of the level sets of a function is symmetric, and the Gauss and Codazzi relations hold for a non-null hypersurface
@@ -2282,9 +2285,10 @@
   tier: established
   source:
     refs:
-      - {ref: carroll-1997, location: "Chapter 3"}
+      - {ref: gourgoulhon-2007, location: "eq. (2.92)", check: "Gauss"}
+      - {ref: gourgoulhon-2007, location: "eq. (2.101)", check: "Codazzi"}
   review: kernel-checked
-  note: "For a smooth function phi with a unit normal field n (g(n, n) = eps = plus or minus one, the kernel of d phi equal to the orthogonal of n), tangent fields X, Y, Z, W near a point and a metric compatible connection, g(R(X, Y) Z, W) equals the same expression for the tangential connection D plus the term minus eps (K(Y, Z) K(X, W) - K(X, Z) K(Y, W)) with K(v, w) = g(nabla_v n, w); for the Levi-Civita connection K is symmetric on tangent fields and g(R(X, Y) Z, n) = -((D_X K)(Y, Z) - (D_Y K)(X, Z)). Limits: the leaves are not given a manifold structure, so the intrinsic curvature of a leaf is that of the tangential connection D; existence of the unit normal is a hypothesis; the sphere and FLRW trust checks are not included; comparison with the source is pending and the location is the chapter."
+  note: "For a smooth function phi with a unit normal field n (g(n, n) = eps = plus or minus one, the kernel of d phi equal to the orthogonal of n), tangent fields X, Y, Z, W near a point and a metric compatible connection, g(R(X, Y) Z, W) equals the same expression for the tangential connection D plus the term minus eps (K(Y, Z) K(X, W) - K(X, Z) K(Y, W)) with K(v, w) = g(nabla_v n, w); for the Levi-Civita connection K is symmetric on tangent fields and g(R(X, Y) Z, n) = -((D_X K)(Y, Z) - (D_Y K)(X, Z)). Limits: the leaves are not given a manifold structure, so the intrinsic curvature of a leaf is that of the tangential connection D; existence of the unit normal is a hypothesis; the sphere and FLRW trust checks are not included; compared with Gourgoulhon, 3+1 Formalism (gr-qc/0703035), eq. (2.43), p. 24 (extrinsic curvature), the Gauss relation (2.92), p. 35, and the Codazzi relation (2.101), p. 36: match, with two differences: convention, the sign of the extrinsic curvature (ours K(v, w) = g(nabla_v n, w), Gourgoulhon's (2.43) K(u, v) = -u . nabla_v n; the quadratic Gauss term does not depend on it); Gourgoulhon treats spacelike hypersurfaces (eps = -1), ours every non-null one (eps = +1 or -1; the timelike case compared with M. Ammann's Lorentzian geometry notes, Thm. 2.3.7 and 2.3.11, pp. 70-72, read, not a registered source). See docs/notes/ge13-carroll-comparison.md."
   since: unreleased
 - id: LL-0175
   title: The first variation of the Einstein-Hilbert density at a point is the Einstein tensor plus a divergence (the Palatini identity in coordinates)
@@ -2295,9 +2299,9 @@
   tier: established
   source:
     refs:
-      - {ref: carroll-1997, location: "Chapter 4"}
+      - {ref: carroll-1997, location: "eq. (4.60)", check: "check this yourself"}
   review: kernel-checked
-  note: "For smooth symmetric g and h on R^n and a point x with det g(x) nonzero, the coordinate Ricci tensor of g + t h varies by the linearised Ricci tensor; with W^rho = g^{sigma nu} delta Gamma^rho_{sigma nu} - g^{rho sigma} delta Gamma^kappa_{kappa sigma}, sqrt|g| g^{sigma nu} delta R_{sigma nu} equals the divergence of sqrt|g| W^rho; and d/dt of sqrt|g_t| (R(g_t) - 2 Lambda) at t = 0 is minus sqrt|g| (R^{ab} - R g^{ab}/2 + Lambda g^{ab}) h_{ab} plus that divergence. Limits: pointwise statement in coordinates; the integral over a compact region (the divergence integrates to zero), the differentiation under the integral sign and the manifold statement are later stages; comparison with the source is pending and the location is the chapter."
+  note: "For smooth symmetric g and h on R^n and a point x with det g(x) nonzero, the coordinate Ricci tensor of g + t h varies by the linearised Ricci tensor; with W^rho = g^{sigma nu} delta Gamma^rho_{sigma nu} - g^{rho sigma} delta Gamma^kappa_{kappa sigma}, sqrt|g| g^{sigma nu} delta R_{sigma nu} equals the divergence of sqrt|g| W^rho; and d/dt of sqrt|g_t| (R(g_t) - 2 Lambda) at t = 0 is minus sqrt|g| (R^{ab} - R g^{ab}/2 + Lambda g^{ab}) h_{ab} plus that divergence. Limits: pointwise statement in coordinates; the integral over a compact region (the divergence integrates to zero), the differentiation under the integral sign and the manifold statement are later stages; compared with Carroll's lecture notes, eqs. (4.56) and (4.60), p. 115 (the variation of the action in three terms and the Palatini identity delta R^rho_{mu lambda nu} = nabla_lambda delta Gamma^rho_{nu mu} - nabla_nu delta Gamma^rho_{lambda mu}): ours is this identity contracted with g^{mu nu}, in coordinates (representation), and the metric is perturbed as g + t h instead of varying the inverse metric delta g^{mu nu} = -g^{mu alpha} g^{nu beta} h_{alpha beta} (representation)."
   since: unreleased
 - id: LL-0176
   title: The first variation of the Einstein-Hilbert action on a compact region is the Einstein tensor plus the cosmological term contracted with the perturbation, without a boundary term
@@ -2308,9 +2312,9 @@
   tier: established
   source:
     refs:
-      - {ref: carroll-1997, location: "Chapter 4"}
+      - {ref: carroll-1997, location: "eq. (4.66)", check: "arbitrary variations"}
   review: kernel-checked
-  note: "For a smooth metric g on R^n with nonzero determinant everywhere, a smooth symmetric perturbation h supported in a compact set T and Lambda real, d/dt of the integral over T of sqrt|det g_t| (R(g_t) - 2 Lambda), g_t = g + t h, at t = 0 is minus the integral over T of sqrt|det g| (R^{ab} - R g^{ab}/2 + Lambda g^{ab}) h_{ab}. Limits: coordinates on R^n; the vacuum Einstein equations as critical points (fundamental lemma), the manifold statement and the trust checks (two dimensions, sign of Lambda) are later stages; comparison with the source is pending and the location is the chapter."
+  note: "For a smooth metric g on R^n with nonzero determinant everywhere, a smooth symmetric perturbation h supported in a compact set T and Lambda real, d/dt of the integral over T of sqrt|det g_t| (R(g_t) - 2 Lambda), g_t = g + t h, at t = 0 is minus the integral over T of sqrt|det g| (R^{ab} - R g^{ab}/2 + Lambda g^{ab}) h_{ab}. Limits: coordinates on R^n; the vacuum Einstein equations as critical points (fundamental lemma), the manifold statement and the trust checks (two dimensions, sign of Lambda) are later stages; compared with Carroll's lecture notes, eqs. (4.54)-(4.55), p. 114 (the action), (4.61), p. 115 (the divergence term drops by Stokes for variations vanishing at infinity), (4.63)-(4.66), p. 116, and (4.73), p. 118 (the cosmological term): match, with the representation differences of LL-0175 (g + t h instead of delta g^{mu nu}, hence the minus sign) and a perturbation of compact support for Carroll's variation vanishing at infinity."
   since: unreleased
 - id: LL-0177
   title: A smooth nondegenerate metric is a critical point of the Einstein-Hilbert action with a cosmological constant for perturbations of compact support exactly when it satisfies the vacuum Einstein equations
@@ -2321,9 +2325,9 @@
   tier: established
   source:
     refs:
-      - {ref: carroll-1997, location: "Chapter 4"}
+      - {ref: carroll-1997, location: "eq. (4.67)", check: "vacuum"}
   review: kernel-checked
-  note: "For a smooth metric g on R^n of any signature with nonzero determinant everywhere and a real Lambda: the first variation of the integral of sqrt|det g| (R - 2 Lambda) vanishes for every smooth symmetric perturbation of compact support (over any compact region containing the support) iff R^{ab} - R g^{ab}/2 + Lambda g^{ab} is antisymmetric in (a, b), that is (it is symmetric) iff it vanishes. Limits: coordinates on R^n; the manifold statement and the trust checks (two dimensions, sign of Lambda) are later stages; comparison with the source is pending and the location is the chapter."
+  note: "For a smooth metric g on R^n of any signature with nonzero determinant everywhere and a real Lambda: the first variation of the integral of sqrt|det g| (R - 2 Lambda) vanishes for every smooth symmetric perturbation of compact support (over any compact region containing the support) iff R^{ab} - R g^{ab}/2 + Lambda g^{ab} is antisymmetric in (a, b), that is (it is symmetric) iff it vanishes. Limits: coordinates on R^n; the manifold statement and the trust checks (two dimensions, sign of Lambda) are later stages; compared with Carroll's lecture notes, eqs. (4.66)-(4.67), p. 116 ('this should vanish for arbitrary variations, so we are led to Einstein's equations in vacuum') and (4.73), p. 118: match; Carroll's step 'for arbitrary variations' is the fundamental lemma of the calculus of variations, proved here."
   since: unreleased
 - id: LL-0178
   title: In two dimensions the Einstein tensor of a smooth nondegenerate metric vanishes, so every metric is a critical point of the Einstein-Hilbert action without cosmological term
@@ -2334,9 +2338,9 @@
   tier: established
   source:
     refs:
-      - {ref: carroll-1997, location: "Chapter 4"}
+      - {ref: grumiller-kummer-vassilevich-2002, location: "eq. (1.50)", check: "divergence"}
   review: kernel-checked
-  note: "For a smooth metric on R^2 with nonzero determinant, the coordinate Ricci tensor is one half of the scalar curvature times the metric, so R^{ab} - R g^{ab}/2 = 0 and the first variation of the Einstein-Hilbert action vanishes for every perturbation of compact support (trust check of the Gauss-Bonnet theorem). Limits: coordinates on R^2; the integral invariance over a closed surface is not proved; comparison with the source is pending and the location is the chapter."
+  note: "For a smooth metric on R^2 with nonzero determinant, the coordinate Ricci tensor is one half of the scalar curvature times the metric, so R^{ab} - R g^{ab}/2 = 0 and the first variation of the Einstein-Hilbert action vanishes for every perturbation of compact support (trust check of the Gauss-Bonnet theorem). Compared with D. Grumiller, W. Kummer and D. V. Vassilevich, Dilaton gravity in two dimensions (hep-th/0204253), section 1.2.2 (Two dimensions), eqs. (1.48)-(1.50), pp. 16-17 of the pdf: in D = 2 the curvature has one independent component, the Ricci scalar, and the Hilbert-Einstein action in two dimensions is a total divergence (Gauss-Bonnet, (1.50)): match (a total divergence has zero variation for perturbations of compact support). Limits: coordinates on R^2; the integral (1.50) over a closed surface is not proved."
   since: unreleased
 
 - id: LL-0179
@@ -2392,4 +2396,414 @@
       - {ref: mukhametzhanov-zhiboedov-2019, location: "eq. (1.8)"}
   review: kernel-checked
   note: "For a positive measure σ (the spectrum in the variable x = Δ - c/12, v = c/12) whose Laplace transform Z(β) = ∫ e^{-βx} dσ is finite for β > 0, invariant under z ↦ 4π²/z for Re z > 0 (MZ (2.2)), and satisfies |Z(β) - e^{a/β}| ≤ C e^{(a-g)/β} for real 0 < β < β₀ (a = 4π² v = π² c/3, g > 0), the integrated density F(Δ) = σ(-∞, Δ - v] satisfies |F(Δ) · 2π (cΔ/3)^{1/4} e^{-2π√(cΔ/3)} - 1| ≤ K Δ^{-1/2} for large Δ (cardy_mz), i.e. MZ (1.8). cardy_counting is the intermediate form |σ(-∞, x] - I₀(2√(a x))| ≤ K x^{-3/4} e^{2√(a x)}, I₀(s) = (1/π) ∫₀^π e^{s cos θ} dθ. Compared with the source at eq. (1.8) and (2.2)-(2.4) (read 19 November 2026). Representation difference (reported to the maintainers, decision pending): a positive measure in the shifted variable instead of the density ρ(Δ) = Σ δ(Δ - Δ_O). The high-temperature hypothesis is assumed only for real β (MZ: |β| → 0 with Re β > 0), which is a weaker hypothesis. Route: MZ's Sections 3-5 with a pole-free smoothing in place of the contour functional (docs/notes/sp3-full-strength-attempts.md, attempt D). Non-vacuity: σ = δ_{-v} + ρ₀ (CardyExample.lean)."
+  since: unreleased
+- id: LL-0183
+  title: For a finite quantum system with Hamiltonian H, a state is KMS at inverse temperature beta iff it is the Gibbs state e^{-beta H} / tr e^{-beta H}
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/FiniteKMS.lean
+  decls: [Lightlike.OperatorAlgebras.isKMS_iff_eq_gibbs, Lightlike.OperatorAlgebras.isKMS_gibbs]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: jaksic-ogata-pautrat-pillet-2012, location: "Proposition 2.20, p. 53", check: "KMS"}
+  review: kernel-checked
+  note: "On Matrix n n C with tau^{-i beta}(B) = e^{beta H} B e^{-beta H}: a matrix rho of trace 1 satisfies tr(rho A B) = tr(rho tau^{-i beta}(B) A) for all A, B (the beta-KMS condition, eq. (2.24)) iff rho = e^{-beta H} / tr e^{-beta H}. Compared with Jaksic-Ogata-Pautrat-Pillet, Section 2.9, eq. (2.24) and Proposition 2.20, p. 53 (read). The statement is more general than the source's: H is any matrix with tr e^{-beta H} != 0 (the source takes H self-adjoint, where this holds), and rho is only required to have trace 1 (the source's states are positive)."
+  since: unreleased
+- id: LL-0184
+  title: The self-adjoint extensions of the momentum operator on the unit interval are the operators with the boundary condition psi(1) = e^{i theta} psi(0)
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/MomentumTheta.lean
+  decls: [Lightlike.OperatorAlgebras.selfAdjoint_extensions_momentumZero, Lightlike.OperatorAlgebras.momentumZero_eq_closure, Lightlike.OperatorAlgebras.momentumTheta_isSelfAdjoint]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: bonneau-faraut-valent-2001, location: "eq. (14), p. 8", check: "self-adjoint extensions"}
+      - {ref: bonneau-faraut-valent-2001, location: "Appendix A.3, p. 19", check: "finite interval"}
+  review: kernel-checked
+  note: "For the momentum P = -i d/dx on L^2(0, 1): the domain of the adjoint is D_max, the functions absolutely continuous on [0, 1] with derivative in L^2 (mem_adjoint_iff_ac, in MomentumBoundary.lean); the closed operator P is the adjoint on D_0 = {psi in D_max : psi(0) = psi(1) = 0} and equals the closure of -i d/dx on the C^2 functions supported inside (0, 1) (momentumZero_eq_closure); a self-adjoint operator B extends P iff B = P_theta, the adjoint on D_theta = {psi in D_max : psi(1) = e^{i theta} psi(0)}, for some real theta. Compared with Bonneau-Faraut-Valent, Section 5.3, eq. (14), p. 8, and Appendix A.3, p. 19 (read). Differences, kind convention, to be approved by a maintainer: (a) the interval is [0, 1] (L = 1); (b) theta ranges over the reals instead of [0, 2 pi] (the same operators)."
+  since: unreleased
+- id: LL-0185
+  title: The self-adjoint extension of the momentum on the unit interval with the boundary condition psi(1) = e^{i theta} psi(0) has the purely discrete spectrum theta + 2 pi Z, with the orthonormal eigenfunctions e^{i(theta + 2 pi n)x}
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/MomentumSpectrum.lean
+  decls: [Lightlike.OperatorAlgebras.spectrum_momentumTheta, Lightlike.OperatorAlgebras.pointSpectrum_momentumTheta, Lightlike.OperatorAlgebras.momentumTheta_planeWave, Lightlike.OperatorAlgebras.orthonormal_planeWave, Lightlike.OperatorAlgebras.eigenvalue_momentumTheta, Lightlike.OperatorAlgebras.eigenvector_momentumTheta]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: bonneau-faraut-valent-2001, location: "eq. (15), p. 8", check: "eigenfunctions"}
+  review: kernel-checked
+  note: "For P_theta = -i d/dx on D_theta = {psi in D_max(0, 1) : psi(1) = e^{i theta} psi(0)}: the plane waves e^{i(theta + 2 pi n)x}, n in Z, lie in D_theta, are eigenvectors with eigenvalue theta + 2 pi n and are orthonormal; every eigenvalue is of this form and every eigenvector is a multiple of the plane wave; the spectrum in Physlib's sense (LinearPMap.spectrum: z is in the resolvent set iff P_theta - z is a bijection of the domain onto L^2(0, 1) with continuous inverse) is theta + 2 pi Z and equals the point spectrum. The resolvent equation is solved explicitly off theta + 2 pi Z. Compared with Bonneau-Faraut-Valent, Section 5.3, p. 8, eq. (15) and the sentence before it ('the spectra are purely discrete') (read). Differences, kind convention, to be approved by a maintainer: hbar = 1, L = 1, and the eigenvalue 2 pi hbar nu / L, nu = n + theta / 2 pi, is written theta + 2 pi n."
+  since: unreleased
+- id: LL-0186
+  title: Under the Einstein equations the physical and the geometric forms of the null, weak, strong and dominant energy conditions are equivalent
+  area: Spacetime
+  file: Lightlike/Spacetime/EnergyConditionsField.lean
+  decls: [Lightlike.LorentzianMetric.nullECField_iff_ricci, Lightlike.LorentzianMetric.weakECField_iff_einstein, Lightlike.LorentzianMetric.strongECField_iff_ricci, Lightlike.LorentzianMetric.dominantECField_iff_einstein]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: curiel-2014, location: "§2.1", check: "geometric"}
+  review: kernel-checked
+  note: "For a Lorentzian metric g on a four-manifold, a connection cov and a field T of bilinear forms with G = kappa T (the Einstein equations with Lambda = 0, kappa > 0): T satisfies the null condition everywhere iff Ric(k,k) >= 0 for every null k; the weak condition iff G(xi,xi) >= 0 for every timelike xi; the strong condition iff Ric(xi,xi) >= 0 for every timelike xi (via the trace R = -kappa tr_g T); the dominant condition iff G(xi,xi) >= 0 and the vector G^a_n xi^n is causal for timelike xi, and G(xi,eta) >= 0 for co-oriented timelike xi, eta. A cosmological constant moves into the source (einsteinEq_iff_absorb). Also on the manifold: the perfect-fluid field with a unit timelike velocity field satisfies the four conditions iff the effective forms hold at every point, dust with rho >= 0 satisfies all four, a constant Klein-Gordon field with negative potential violates the weak one, the electromagnetic field satisfies the null one. Compared with E. Curiel, A Primer on Energy Conditions (arXiv 1405.0403), section 2, p. 5 ('the physical formulation is logically equivalent to the geometric formulation if the Einstein field equation is assumed to hold') and the geometric and physical forms of the table of section 2.1, p. 6. Non-vacuity: Minkowski space with T = 0. Limits: the fields need not be smooth; the geometric forms on a boundaryless manifold modelled on a finite-dimensional space. See docs/notes/ge14-energy-conditions.md."
+  since: unreleased
+- id: LL-0187
+  title: The electromagnetic field satisfies the null, weak, strong and dominant energy conditions
+  area: Spacetime
+  file: Lightlike/Spacetime/EnergyConditionsEM.lean
+  decls: [Lightlike.em_weakEC, Lightlike.em_dominantEC, Lightlike.em_strongEC_dim, Lightlike.em_strongEC_of_eq]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: kontou-sanders-2020, location: "§2.3", check: "Maxwell"}
+  review: kernel-checked
+  note: "For an antisymmetric field strength F on a Lorentzian vector space (signature -+...+) and its stress-energy T_ab = F_ac F_b^c - (1/4) F_cd F^cd g_ab: T(v, v) >= 0 for every timelike v (in a Lorentz frame with e_0 = v/|v| the energy density is (1/2) sum_i F_0i^2 + (1/4) sum_ij F_ij^2); the Poynting bound sum_i T(e_0, e_i)^2 <= T(e_0, e_0)^2 (from |A E|^2 <= |A|^2 |E|^2 / 2 for the antisymmetric spatial part A) gives the dominant condition (T(xi, xi) >= 0 and the vector T^a_n xi^n causal for timelike xi, T(xi, eta) >= 0 for co-oriented timelike xi, eta); the strong condition (T - tr_g T/(n - 2) g)(v, v) >= 0 holds in every dimension n >= 3 (in four dimensions T is traceless and the four-dimensional StrongEC is the weak one); all in any dimension; the null condition is em_nullEC. Every unit timelike vector is the time vector of a Lorentz frame (exists_frame_of_timelike, a boost). Compared with E.-A. Kontou and K. Sanders, Energy conditions in general relativity and quantum field theory (arXiv 2003.01815), section 2.3, pp. 13-15: the stress tensor (15) with m = 0 is ours (no Gaussian factor), the energy density (36), the trace (37)-(38), and Table 2: Maxwell satisfies NEC, WEC, DEC and SEC. Limits: pointwise on a vector space. See docs/notes/ge14-energy-conditions.md."
+  since: unreleased
+- id: LL-0188
+  title: The Hamiltonian and momentum constraints of a non-null hypersurface follow from the contracted Gauss and Codazzi relations
+  area: Spacetime
+  file: Lightlike/Spacetime/HypersurfaceConstraints.lean
+  decls: [Lightlike.curvatureAt_linear, Lightlike.ricciAt_frame, Lightlike.scalarCurvatureAt_frame, Lightlike.hamiltonian_constraint, Lightlike.momentum_constraint]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: gourgoulhon-2007, location: "Section 2.5", check: "Gauss"}
+  review: kernel-checked
+  note: "For a level-set hypersurface with unit normal n (g(n, n) = eps = plus or minus one) of a metric of any signature with its Levi-Civita connection, and tangent fields E_a (a < d, d + 1 the dimension) with g(E_a, E_b) = eta_a delta_ab at x0: 2 G(n, n) = -eps sum_ab eta_a eta_b g(R^D(E_b, E_a) E_a, E_b) + K^2 - K_ab K^ab (hamiltonian_constraint) and G(n, E_c) = sum_a eta_a ((D_{E_a} K)(E_c, E_a) - (D_{E_c} K)(E_a, E_a)) (momentum_constraint), G the Einstein tensor, K(v, w) = g(nabla_v n, w), R^D the curvature of the tangential connection, D K its covariant derivative. Read: Gourgoulhon gr-qc/0703035, scalar Gauss (2.95) and contracted Codazzi (2.103) (Section 2.5), giving the constraints (4.19) R + K^2 - K_ij K^ij = 16 pi E and (4.22) D_j K^j_i - D_i K = 8 pi p_i under Einstein's equations (eps = -1; his K is minus ours, which leaves (4.19) unchanged and matches (4.22) with p_i = -T(n, e_i)). The ADM form of the same constraints in coordinates is Lightlike/Canonical/ADM.lean (the ADM constraint densities); here they are derived from the four-dimensional curvature. Traces are taken in the orthonormal basis (n, E_a), with the curvature linear in each slot (curvatureAt_linear) and the Ricci and scalar curvatures as frame sums (ricciAt_frame, scalarCurvatureAt_frame)."
+  since: unreleased
+- id: LL-0189
+  title: The Kruskal-Szekeres spacetime is inextendible (maximality of the Kruskal extension, smooth metrics)
+  area: GR
+  file: Lightlike/GR/KruskalMaximal.lean
+  decls: [Lightlike.kruskal_isInextendible]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: sbierski-2016, location: "Abstract", check: "manifestly inextendible"}
+  review: kernel-checked
+  note: "The Kruskal manifold, the set X^2 - T^2 > -1 times the sphere with the Kruskal metric of mass M > 0, has no extension: no smooth isometric open embedding into a proper subset of a connected Hausdorff Lorentzian manifold of the same dimension with a smooth metric. Proof: a normal chart at a boundary point of the image gives a geodesic of the target that leaves the image; lifted to the Kruskal manifold it is a geodesic on a finite interval, which either has a limit in the manifold (bounds from the constants of motion and Gronwall's inequality) or approaches r = 0, where the Kretschmann scalar 48 M^2 / r^6 is unbounded. Difference from the source (weaker): the source's abstract states inextendibility with twice continuously differentiable metrics and its theorem is inextendibility with continuous metrics; here only extensions with smooth metrics are excluded."
+  since: unreleased
+- id: LL-0190
+  title: The Raychaudhuri identity and geodesic focusing for a vector field on a manifold
+  area: Spacetime
+  file: Lightlike/Spacetime/RaychaudhuriManifold.lean
+  decls: [Lightlike.raychaudhuri_manifold, Lightlike.raychaudhuri_leviCivita, Lightlike.raychaudhuri_focusing_manifold_at, Lightlike.raychaudhuri_focusing_manifold]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: kar-sengupta-2007, location: "eq. (12)", check: "Raychaudhuri"}
+      - {ref: kar-sengupta-2007, location: "eq. (16)", check: "convergence"}
+  review: kernel-checked
+  note: "On a manifold modelled on R^n with a metric of any signature and its Levi-Civita connection (main's leviCivita g, or any torsion-free metric connection that is locally smooth), for a smooth vector field V with nabla_V V = 0 near x and the expansion Theta = tr(u -> nabla_u V): V(Theta) = -tr((nabla V)^2) - Ric(V, V) at x (raychaudhuri_manifold, raychaudhuri_leviCivita), Kar and SenGupta's identity behind (12), with no normalisation of V; the proof reads the identity in the chart at x (the components of nabla_u V are covD, the trace and Ric are the coordinate ones) and applies raychaudhuri_coord. For a Lorentzian metric and V unit (g(V, V) = -1) and geodesic near x, rotation-free at x (g(nabla_u V, w) = g(nabla_w V, u), Kar and SenGupta's omega = 0) with Ric(V, V) >= 0: V(Theta) <= -Theta^2/(n-1) (raychaudhuri_focusing_manifold_at), and along an integral curve gamma of V on [0, L) with these hypotheses along gamma and Theta(gamma(0)) < 0, L <= (n-1)/|Theta(gamma(0))| (raychaudhuri_focusing_manifold): the paragraph after their (16), convergence as the bound on the parameter interval on which Theta stays finite. Limits: the null version (their (17)) is not here."
+  since: unreleased
+- id: LL-0191
+  title: The comoving congruence of FLRW has expansion 3 a'/a and obeys Raychaudhuri's equation, and de Sitter's does not focus
+  area: Cosmology
+  file: Lightlike/Cosmology/Raychaudhuri.lean
+  decls: [Lightlike.Cosmology.flrw_comoving_covDeriv, Lightlike.Cosmology.flrw_comoving_geodesic, Lightlike.Cosmology.flrw_comoving_expansion, Lightlike.Cosmology.flrw_raychaudhuri, Lightlike.Cosmology.minkowski_comoving_expansion, Lightlike.Cosmology.deSitter_no_focusing]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: kar-sengupta-2007, location: "eq. (12)", check: "Raychaudhuri"}
+      - {ref: kar-sengupta-2007, location: "eq. (16)", check: "convergence"}
+  review: kernel-checked
+  note: "Kar and SenGupta's (12), d theta/d lambda + theta^2/3 + sigma^2 - omega^2 = -R_ab v^a v^b for a timelike geodesic congruence, and (16), convergence if R_ab v^a v^b + sigma^2 - omega^2 >= 0. In coordinates on the FLRW chart: the comoving field u = d_t has nabla_j u^i = H delta^i_j on spatial indices and 0 otherwise (no shear, no rotation), is geodesic, and has expansion theta = 3 a'/a; along it d theta/dt + theta^2/3 = -R_00. Minkowski (a = 1, k = 0): theta = 0. de Sitter (a = e^{Ht}, k = 0): theta = 3H constant while R_00 = -3H^2 < 0, so the convergence condition fails and the congruence does not focus (the GE3 checks). Focusing: if theta' <= -theta^2/m on [0, L) and theta(0) < 0 then L <= m/|theta(0)| (the lemma Lightlike.focusing, Spacetime/RiccatiFocusing.lean). Limits: coordinates and constant fields; the Raychaudhuri equation for a general geodesic congruence on a manifold and the exponential map are not here."
+  since: unreleased
+- id: LL-0192
+  title: Raychaudhuri's equation for a geodesic field in coordinates, with the split into expansion, shear and rotation
+  area: Spacetime
+  file: Lightlike/Spacetime/RaychaudhuriCoord.lean
+  decls: [Lightlike.covD, Lightlike.expansion, Lightlike.shear, Lightlike.rotation, Lightlike.raychaudhuri_coord, Lightlike.raychaudhuri_equation]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: kar-sengupta-2007, location: "eq. (12)", check: "Raychaudhuri"}
+  review: kernel-checked
+  note: "For a coordinate metric g on an open U of R^n and a smooth field v with v^c nabla_c v^d = 0 on U (nabla_b v^a = d_b v^a + Gamma^a_bc v^c): v^c d_c Theta = -(nabla_b v^a)(nabla_a v^b) - R_{sigma nu} v^sigma v^nu, Theta = nabla_a v^a, in the library's ricci convention, with no normalisation of v (raychaudhuri_coord; the index computation raychaudhuri_algebra is fable1's). At a point where g(v, v) = -1, with L = g (nabla v), the shear sigma = (L + L^T)/2 - (Theta/(n-1)) (g + v_flat v_flat) and the rotation omega = (L - L^T)/2, norms taken with g^{-1}: v(Theta) = -Theta^2/(n-1) - |sigma|^2 + |omega|^2 - R(v, v) (raychaudhuri_equation, trace_sq_split), Kar and SenGupta's (12) for n = 4 (their (1) for the split). Limits: coordinates; the congruence on a manifold and the null version are not here (focusing: the next entry)."
+  since: unreleased
+- id: LL-0193
+  title: Convergence and focusing of a unit timelike geodesic congruence in coordinates
+  area: Spacetime
+  file: Lightlike/Spacetime/RaychaudhuriFocusing.lean
+  decls: [Lightlike.covD_orthogonal, Lightlike.raychaudhuri_convergence, Lightlike.shear_normSq_nonneg, Lightlike.raychaudhuri_focusing_at, Lightlike.raychaudhuri_focusing]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: kar-sengupta-2007, location: "eq. (16)", check: "convergence"}
+  review: kernel-checked
+  note: "For a coordinate metric g on an open U of R^n and a smooth geodesic field v with g(v, v) = -1 on U, along an integral curve gamma of v (gamma' = v(gamma)) in U on [0, L) with Theta(gamma(0)) < 0: if R(v, v) + sigma^2 - omega^2 >= 0 along gamma, then L <= (n-1)/|Theta(gamma(0))| (raychaudhuri_convergence, Kar and SenGupta's (16), any signature); for a Lorentzian coordinate metric (IsLorentzianCoordMetric) sigma^2 >= 0 (shear_normSq_nonneg: g(v, nabla_b v) = 0 from the unit norm, covD_orthogonal, makes sigma spatial, and the orthogonal complement of a timelike vector is spacelike), so a rotation-free field (omega = 0) with R(v, v) >= 0 along gamma obeys the same bound (raychaudhuri_focusing, the paragraph after their (16): zero rotation and R_ab v^a v^b >= 0 lead to geodesic focusing). Their convergence (Theta -> -infinity at a finite parameter, via the Sturm comparison for Theta = 3F'/F) is stated as the bound on the interval on which Theta stays finite along gamma (Riccati argument, Lightlike.focusing). Limits: coordinates; the congruence on a manifold and the null version are not here."
+  since: unreleased
+- id: LL-0194
+  title: The elements of a Weyl system of a symplectic vector space are unitary and linearly independent
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/WeylAlgebra.lean
+  decls: [Lightlike.OperatorAlgebras.IsWeylSystem.mem_unitary, Lightlike.OperatorAlgebras.IsWeylSystem.linearIndependent]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: bgp-2007, location: "Proposition 4.2.3, p. 117", check: "Weyl system"}
+  review: kernel-checked
+  note: "Compared with Bar-Ginoux-Pfaffle, Definition 4.2.1, p. 116 and Proposition 4.2.3 (1), (4), pp. 117-119 (read). A Weyl system is a map W from a real symplectic vector space into a unital star algebra over C with W(0) = 1, W(-phi) = W(phi)* and the Weyl relation."
+  since: unreleased
+- id: LL-0195
+  title: The CCR algebra of a symplectic vector space, the C*-algebra generated by the Weyl operators on l2(V), with its Weyl system; the Weyl unitaries of a representation of the CCR form a Weyl system
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/WeylAlgebra.lean
+  decls: [Lightlike.OperatorAlgebras.ccrAlgebra, Lightlike.OperatorAlgebras.isWeylSystem_ccrW, Lightlike.OperatorAlgebras.isWeylSystem_weylOp, Lightlike.OperatorAlgebras.CCRRep.isWeylSystem]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: bgp-2007, location: "Example 4.2.2, p. 116", check: "Weyl system"}
+  review: kernel-checked
+  note: "Compared with Bar-Ginoux-Pfaffle, Example 4.2.2, pp. 116-117 (read): CCR(V, omega) is the C*-subalgebra of L(l2(V)) generated by (W(phi)F)(psi) = exp(i omega(phi, psi)/2) F(phi + psi); here l2(V) is any Hilbert space with a Hilbert basis indexed by V. Uniqueness up to *-isomorphism (Theorem 4.2.9) is not stated."
+  since: unreleased
+- id: LL-0196
+  title: Every representation of the CAR over R^{2n} is unitarily equivalent to the Jordan-Wigner representation tensored with the identity of a Hilbert space K, and it is irreducible iff K is one-dimensional; over R^{2n+1} the last generator becomes I_n tensored with a self-adjoint unitary of K
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/CARUnique.lean
+  decls: [Lightlike.OperatorAlgebras.car_unitarily_equivalent_jordanWigner, Lightlike.OperatorAlgebras.isIrreducibleCAR_iff, Lightlike.OperatorAlgebras.car_odd_unitarily_equivalent]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: derezinski-2006, location: "Theorem 10, p. 17", check: "Theorem 10"}
+  review: kernel-checked
+  note: "Compared with Derezinski, Theorem 10, p. 17, and the definitions of Section 4.1, pp. 14-15 (read). The tensor product of C^2 x ... x C^2 with K is represented as L^2(configurations; K) (PiLp 2), on which B x 1_K acts by (B x 1) f x = sum_y B x y f y (tensorOne) and I_n x T by sum_y I_n x y T (f y) (tensorOp); K is given explicitly, the vacuum space (the joint kernel of the annihilation operators a_j = (phi_{2j} + i phi_{2j+1})/2), which is closed, so a Hilbert space when H is; H may be any complex inner product space, with symmetric phi_b (self-adjoint on a Hilbert space, isCAROn_iff); indices are 0-based. Irreducibility is the definition of p. 15, and 'irreducible iff K = C' is proved for H nonzero: as printed, the source's equivalence fails at H = {0}, which is irreducible by the p. 15 definition while K = {0}. In part 2, K_+ + K_- with 1 + (-1) is represented by K with the self-adjoint unitary T, whose eigenspaces ker(T - 1) and ker(T + 1) are orthogonal and span K (involution_decomposition)."
+  since: unreleased
+- id: LL-0197
+  title: Two irreducible representations of the CAR over R^{2n} on nonzero Hilbert spaces are unitarily equivalent
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/CARUnique.lean
+  decls: [Lightlike.OperatorAlgebras.car_irreducible_unitarily_equivalent]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: derezinski-2006, location: "Corollary 2, p. 17", check: "Corollary 2"}
+  review: kernel-checked
+  note: "Compared with Derezinski, Corollary 2, p. 17 (read): a representation over a 2n-dimensional real Hilbert space Y is the family phi_i = phi(y_i) on an orthonormal basis y_1, ..., y_2n (the source's identification, p. 14), i.e. a representation over R^{2n}; stated for nonzero spaces, as in LL-0196."
+  since: unreleased
+- id: LL-0198
+  title: The Stone-von Neumann theorem - a regular representation of the Weyl relations of a finite-dimensional symplectic space is a Hilbert sum of copies of the Fock (Schrodinger) representation, and it is irreducible iff the multiplicity space is one-dimensional
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/StoneVN.lean
+  decls: [Lightlike.OperatorAlgebras.stone_von_neumann, Lightlike.OperatorAlgebras.isIrreducible_iff_finrank_vnRange]
+  status: proven
+  tier: established
+  main: true
+  source:
+    refs:
+      - {ref: derezinski-2006, location: "Theorem 4, p. 12", check: "Stone"}
+      - {ref: faulhuber-2022, location: "Theorems 7.32 and 7.35, pp. 90-94", check: "Stone-von Neumann"}
+  review: kernel-checked
+  note: "Compared with Derezinski, Theorem 4, p. 12 (statement) and Faulhuber, Section 7.3.1, pp. 90-94 (von Neumann's proof), read. The symplectic space is a finite-dimensional complex inner product space h with sigma = Im<.,.> (the repository's CCRRep, regular by definition); the reference representation is the repository's Fock representation fockRepOf h (cyclic vacuum with <Omega, W f Omega> = exp(-|f|^2/4)), not the Schrodinger representation on L^2(X), to which it is unitarily equivalent by the Bargmann transform (not formalized); L^2(X) tensor K is the Hilbert sum over an orthonormal basis of the range of the Gaussian projection P0 = (2 pi)^{-d} int exp(-|z|^2/4) W z dz of the closed invariant subspaces generated by the basis vectors, each a Fock representation. 'Irreducible iff K = C' is proved for nonzero spaces (as printed it fails for H = {0}, irreducible by the p. 10 definition)."
+  since: unreleased
+- id: LL-0199
+  title: An irreducible regular representation of the Weyl relations of a finite-dimensional symplectic space on a nonzero Hilbert space is unitarily equivalent to the Fock representation
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/StoneVN.lean
+  decls: [Lightlike.OperatorAlgebras.stone_von_neumann_irreducible]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: derezinski-2006, location: "Corollary 1, p. 12", check: "Corollary 1"}
+      - {ref: faulhuber-2022, location: "Theorem 7.32, p. 90", check: "Stone-von Neumann"}
+  review: kernel-checked
+  note: "Compared with Derezinski, Corollary 1, p. 12, and Faulhuber, Theorem 7.32, pp. 90-94 (read): with the same representation of the symplectic space and of the reference representation as LL-0198, for nonzero spaces."
+  since: unreleased
+- id: LL-0200
+  title: A representation of the Weyl relations with a cyclic quasi-free vector is regular
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/QuasiFree.lean
+  decls: [Lightlike.OperatorAlgebras.WeylSystem.continuous_line_of_quasiFree, Lightlike.OperatorAlgebras.WeylSystem.toCCRRep]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: derezinski-2006, location: "Theorem 37, p. 38", check: "quasi-free"}
+  review: kernel-checked
+  note: "Compared with Derezinski, Section 9.1, p. 38 and Section 3.1, pp. 9-10 (read). The symplectic space is a complex inner product space h with sigma = Im<.,.>; a quasi-free vector satisfies <Psi, W y Psi> = exp(-eta(y, y)/4) for a symmetric real bilinear form eta (the source's quadratic form y eta y)."
+  since: unreleased
+- id: LL-0201
+  title: A quasi-free vector lies in the domain of every field operator, with two-point function (phi(y1) Psi | phi(y2) Psi) = (eta(y1, y2) + i sigma(y1, y2))/2
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/QuasiFree.lean
+  decls: [Lightlike.OperatorAlgebras.CCRRep.IsQuasiFree.mem_domain, Lightlike.OperatorAlgebras.CCRRep.IsQuasiFree.inner_field_field]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: derezinski-2006, location: "Theorem 39, p. 39", check: "quasi-free"}
+  review: kernel-checked
+  note: "Compared with Derezinski, Theorem 39 (1), p. 39 (read). The field operator phi(y) is the generator of t -> W(t y) = exp(i t phi(y)); (Psi | phi(y1) phi(y2) Psi) is read as (phi(y1) Psi | phi(y2) Psi); eta is the symmetric real bilinear form of (70) and sigma = Im<.,.> is the source's omega. The corrected formula (eta + i sigma)/2 is stated. Source error: as printed, Theorem 39 (1) reads y1 (eta + 2 i omega) y2; the second-order expansion of (70) gives (eta + i omega)/2, which the Fock vacuum (eta = Re<.,.>, two-point function <f, g>/2, FockRep.inner_field_field_vacuum) confirms."
+  since: unreleased
+- id: LL-0202
+  title: For a quasi-free vector, |sigma(y1, y2)| <= eta(y1, y1)^(1/2) eta(y2, y2)^(1/2)
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/QuasiFree.lean
+  decls: [Lightlike.OperatorAlgebras.CCRRep.IsQuasiFree.abs_symp_le, Lightlike.OperatorAlgebras.CCRRep.IsQuasiFree.abs_symp_le_two_mul]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: derezinski-2006, location: "Theorem 39, p. 39", check: "quasi-free"}
+  review: kernel-checked
+  note: "Compared with Derezinski, Theorem 39 (2), p. 39 (read): abs_symp_le_two_mul is the printed bound with the constant 2; abs_symp_le has the constant 1."
+  since: unreleased
+- id: LL-0203
+  title: The Fock representation of the CAR over a complex Hilbert space, y = (w, w̄) ↦ a*(w) + a(w), is an irreducible representation of the CAR over Re(Z ⊕ Z̄)
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/FermiFockGeneral.lean
+  decls: [Lightlike.OperatorAlgebras.fockField_anticomm, Lightlike.OperatorAlgebras.isSelfAdjoint_fockField, Lightlike.OperatorAlgebras.fockField_irreducible]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: derezinski-2006, location: "Theorem 28, p. 29", check: "Theorem 28"}
+  review: kernel-checked
+  note: "Compared with Derezinski, Section 7.1, p. 29 and Section 5.3, p. 20 (read). The antisymmetric Fock space of Z is represented as a Hilbert space with a Hilbert basis indexed by the finite subsets of ι, for a Hilbert basis (e_i) of Z indexed by a linearly ordered ι (the basis vector of a finite set S stands for the normalized wedge product of the e_i, i in S, in increasing order; l^2(Finset ι) is one such space); the identification with the antisymmetric tensors is not built. Y = Re(Z + conj Z) with (z, conj z) α (w, conj w) = Re<z, w> is written as Z with the real scalar product Re<.,.>."
+  since: unreleased
+- id: LL-0204
+  title: The second quantization of a contraction p of the one-particle space is a contraction of the Fock space with Gamma(p) e(f) = e(p f) on the exponential vectors, functorial (Gamma(q) Gamma(p) = Gamma(q p)), with Gamma(p)* = Gamma(p*), unitary iff p is, and bounded only if |p| <= 1
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/SecondQuantization.lean
+  decls: [Lightlike.OperatorAlgebras.FockRep.gamma, Lightlike.OperatorAlgebras.FockRep.gamma_W_Ω, Lightlike.OperatorAlgebras.FockRep.norm_gamma_le, Lightlike.OperatorAlgebras.FockRep.gamma_comp, Lightlike.OperatorAlgebras.FockRep.adjoint_gamma, Lightlike.OperatorAlgebras.FockRep.gamma_mem_unitary_iff, Lightlike.OperatorAlgebras.FockRep.norm_le_one_of_gamma]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: derezinski-2006, location: "Theorem 13, p. 19", check: "Theorem 13"}
+  review: kernel-checked
+  note: "Compared with Derezinski, Section 5.2, Theorem 13, p. 19 and Section 5.5, p. 21 (read). The Fock space is the repository's Fock representation (a cyclic vacuum with <Omega, W f Omega> = exp(-|f|^2/4)), the symmetric Fock space of Section 5.5; Gamma(p) is characterized by Gamma(p) W(f) Omega = exp((|p f|^2 - |f|^2)/4) W(p f) Omega, i.e. Gamma(p) e(f) = e(p f) on the exponential vectors e(f) = exp(|f|^2/4) W(f) Omega, not by p tensor n on the n-particle spaces (not built). Boundedness: a bounded operator with this action exists iff |p| <= 1."
+  since: unreleased
+- id: LL-0205
+  title: A unitary U of the one-particle space is implemented in the Fock representation by Gamma(U), Gamma(U) W(f) Gamma(U)* = W(U f), unique up to a phase, and Gamma(U) is the implementer with (Omega | V Omega) > 0
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/SecondQuantization.lean
+  decls: [Lightlike.OperatorAlgebras.FockRep.secondQuant_conj, Lightlike.OperatorAlgebras.FockRep.eq_smul_secondQuant, Lightlike.OperatorAlgebras.FockRep.eq_secondQuant_of_pos]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: derezinski-2006, location: "Theorem 24, p. 27", check: "Shale"}
+  review: kernel-checked
+  note: "Compared with Derezinski, Section 6.4, Theorem 24, p. 27 (read), for a unitary r of Z (p = r, c = d = 0 in (46), so U_r^j = Gamma(r)); the general r in Sp_2(Y) is Shale's theorem, in the repository's Shale files. Uniqueness up to a phase from the triviality of the commutant of the Fock representation (commutant_scalar)."
+  since: unreleased
+- id: LL-0206
+  title: The Gibbs state of a Hamiltonian with trace-class e^{-beta H} in infinite dimension is a state invariant under the dynamics and satisfies the KMS condition in strip form, with F(t) = omega(A tau_t(B)) and F(t + i beta) = omega(tau_t(B) A)
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/GibbsKMS.lean
+  decls: [Lightlike.OperatorAlgebras.GibbsKMS.hamiltonian, Lightlike.OperatorAlgebras.GibbsKMS.gibbs, Lightlike.OperatorAlgebras.GibbsKMS.gibbs_one, Lightlike.OperatorAlgebras.GibbsKMS.gibbs_star_mul_self_nonneg, Lightlike.OperatorAlgebras.GibbsKMS.gibbs_dyn, Lightlike.OperatorAlgebras.GibbsKMS.kmsFun, Lightlike.OperatorAlgebras.GibbsKMS.continuousOn_kmsFun, Lightlike.OperatorAlgebras.GibbsKMS.differentiableOn_kmsFun, Lightlike.OperatorAlgebras.GibbsKMS.norm_kmsFun_le, Lightlike.OperatorAlgebras.GibbsKMS.kmsFun_ofReal, Lightlike.OperatorAlgebras.GibbsKMS.kmsFun_add_I_mul]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: panangaden-2021, location: "Proposition 5.9", check: "KMS"}
+      - {ref: panangaden-2021, location: "Proposition 5.4", check: "Gibbs"}
+  review: kernel-checked
+  note: "Compared with Panangaden, arXiv:2110.01678, Proposition 5.4 (p. 43, Gibbs implies KMS whenever the Gibbs state exists), Remark 5.1, Definition 5.8 (p. 46) and Proposition 5.9 (p. 47) (read). H is the self-adjoint operator of a Hilbert basis b and real eigenvalues ev with sum of e^{-beta ev_n} finite, on its natural domain; every H with trace-class e^{-beta H} has this form (e^{-beta H} is compact and self-adjoint; Teschl, Theorem 6.6). The Gibbs state is the trace of e^{-beta H} A in the eigenbasis over Z; e^{itH} is the diagonal unitary diag(e^{it ev_n})."
+  since: unreleased
+- id: LL-0207
+  title: The pure states of C(X) for a compact Hausdorff space X are exactly the evaluations at points, and exactly the multiplicative states
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/PureStates.lean
+  decls: [Lightlike.OperatorAlgebras.PureStates.states, Lightlike.OperatorAlgebras.PureStates.IsPure, Lightlike.OperatorAlgebras.PureStates.mul_of_isPure, Lightlike.OperatorAlgebras.PureStates.exists_eq_eval_of_mul, Lightlike.OperatorAlgebras.PureStates.isPure_evalAt, Lightlike.OperatorAlgebras.PureStates.isPure_iff_exists_eval, Lightlike.OperatorAlgebras.PureStates.isPure_iff_mul]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: landsman-1998, location: "Theorem 2.12.9", check: "pure state"}
+  review: kernel-checked
+  note: "Compared with Landsman, arXiv:math-ph/9807030, Definition 2.8.1 (p. 35, states), Definition 2.12.1 (p. 44), Proposition 2.12.8 and Theorem 2.12.9 with its proof (p. 46) (read). Stated for compact X (the source reduces C_0(X) to this case); a state is a linear functional on C(X, C) that is nonnegative on pointwise nonnegative functions with value 1 at 1 (in C(X) the positive elements are the pointwise nonnegative functions); the homeomorphism of Theorem 2.12.9 is Mathlib's WeakDual.CharacterSpace.homeoEval once pure states are the characters."
+  since: unreleased
+- id: LL-0208
+  title: The pure states of C_0(X) for a locally compact Hausdorff space X are exactly the evaluations at points
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/PureStatesC0.lean
+  decls: [Lightlike.OperatorAlgebras.PureStates.states₀, Lightlike.OperatorAlgebras.PureStates.IsPure₀, Lightlike.OperatorAlgebras.PureStates.ext_mem_states, Lightlike.OperatorAlgebras.PureStates.isPure_ext, Lightlike.OperatorAlgebras.PureStates.isPure₀_evalAt₀, Lightlike.OperatorAlgebras.PureStates.isPure₀_iff_exists_eval]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: landsman-1998, location: "Theorem 2.12.9", check: "pure state"}
+  review: kernel-checked
+  note: "Compared with Landsman, arXiv:math-ph/9807030, Theorem 2.12.9 and its proof (p. 46, read): the reduction of C_0(X) to C of the one-point compactification. A state of C_0(X) is a positive linear functional with supremum 1 over the [0, 1]-valued functions (Definition 2.8.6, p. 36: positive with norm 1; for a positive functional the norm is this supremum); the extension is Proposition 2.8.7, p. 37; it extends to the state F -> omega(F - F(infinity)) + F(infinity), a pure state to a pure one, and the point at infinity is excluded since a state is nonzero."
+  since: unreleased
+- id: LL-0209
+  title: Couplings and the 1-Wasserstein distance of Borel probability measures on a compact metric space, with the easy half of Kantorovich-Rubinstein duality
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/Wasserstein.lean
+  decls: [Lightlike.OperatorAlgebras.Transport.couplings, Lightlike.OperatorAlgebras.Transport.prod_mem_couplings, Lightlike.OperatorAlgebras.Transport.wasserstein1, Lightlike.OperatorAlgebras.Transport.integral_sub_le_of_mem_couplings, Lightlike.OperatorAlgebras.Transport.integral_sub_le_wasserstein1, Lightlike.OperatorAlgebras.Transport.wasserstein1_dirac]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: huang-wang-wu-meng-2026, location: "Section 3.2.1", check: "Kantorovich"}
+  review: kernel-checked
+  note: "Compared with Huang, Wang, Wu, Meng, arXiv:2610.21070, Section 3.2.1, p. 5 (read): Pi(nu, eta) the probability couplings, W_1 the infimum of the cost of d, and the easy direction of (KR) for unit Lipschitz u. The equality (KR) is the next entry."
+  since: unreleased
+- id: LL-0210
+  title: Monge-Kantorovich duality with an optimal coupling for a continuous cost on a compact metric space
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/MongeKantorovich.lean
+  decls: [Lightlike.OperatorAlgebras.Transport.omega, Lightlike.OperatorAlgebras.Transport.integral_le_omega, Lightlike.OperatorAlgebras.Transport.exists_linear_le_omega, Lightlike.OperatorAlgebras.Transport.exists_coupling_eq_omega, Lightlike.OperatorAlgebras.Transport.dualValues, Lightlike.OperatorAlgebras.Transport.exists_optimal_coupling, Lightlike.OperatorAlgebras.Transport.integral_optimal_eq_sSup]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: huang-wang-wu-meng-2026, location: "Section 8.1", check: "strong duality"}
+  review: kernel-checked
+  note: "Compared with Huang, Wang, Wu, Meng, arXiv:2610.21070, Section 8.1, (8.1), p. 46 (read): the finite transport problem, min over couplings of the cost equals max over a_i + b_j <= d(x_i, x_j) of the dual value, with a minimum attained. Here the duality is for every continuous cost on a compact metric space, with an optimal coupling; the proof goes through the Hahn-Banach theorem and the Riesz-Markov-Kakutani theorem."
+  since: unreleased
+- id: LL-0211
+  title: Kantorovich-Rubinstein duality on a compact metric space, the 1-Wasserstein distance as the supremum over 1-Lipschitz tests, with an optimal coupling
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/KantorovichRubinstein.lean
+  decls: [Lightlike.OperatorAlgebras.Transport.ctrans, Lightlike.OperatorAlgebras.Transport.lipschitzWith_ctrans, Lightlike.OperatorAlgebras.Transport.le_ctrans, Lightlike.OperatorAlgebras.Transport.ctrans_le_neg, Lightlike.OperatorAlgebras.Transport.exists_optimal_coupling_dist, Lightlike.OperatorAlgebras.Transport.wasserstein1_eq_sSup]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: huang-wang-wu-meng-2026, location: "Section 3.2.1", check: "Kantorovich"}
+  review: kernel-checked
+  note: "Compared with Huang, Wang, Wu, Meng, arXiv:2610.21070, Section 3.2.1, p. 5, (KR) (read): on a compact metric space, for Borel probability measures, inf over couplings of the integral of d equals sup over unit Lipschitz u of the pairing with nu - eta; Section 3.7 (1), p. 16: the minimum distance-cost coupling; Section 8.1, (8.2), p. 46: the c-transform u_i = min_j (d(x_i, x_j) - b_j), applied here on the space instead of on a finite net."
+  since: unreleased
+- id: LL-0212
+  title: Raychaudhuri's equation and focusing for a null geodesic congruence, in coordinates and on a manifold
+  area: Spacetime
+  file: Lightlike/Spacetime/RaychaudhuriNull.lean
+  decls: [Lightlike.raychaudhuri_null_equation, Lightlike.nullShear_normSq_nonneg, Lightlike.nullRotation_eq_zero, Lightlike.raychaudhuri_null_focusing_at, Lightlike.raychaudhuri_null_focusing]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: kar-sengupta-2007, location: "eq. (17)", check: "null"}
+  review: kernel-checked
+  note: "Kar and SenGupta, Section D, (17): for a null geodesic congruence k with an auxiliary null N, k.N = -1, the transverse metric h = g + k N + N k and the projected derivative, d(Theta^)/d lambda + Theta^2/2 + sigma^2 - omega^2 = -R_ab k^a k^b in dimension four, and focusing under the null convergence condition. Here, for a coordinate metric on an open U of R^n (n >= 3) and a smooth field k with g(k, k) = 0 and nabla_k k = 0 on U, at a point with g(N, N) = 0 and g(k, N) = -1: k(Theta) = -Theta^2/(n-2) - sigma^2 + omega^2 - R(k, k) (raychaudhuri_null_equation), with B^ = P (nabla k) P, P = g^{-1} h, Theta = tr B^ the expansion, sigma^ = sym(g B^) - (Theta/(n-2)) h, omega^ = antisym(g B^) (the split over the idempotent screen projector of trace n - 2, trace_sq_split_proj; tr B^ = tr(nabla k) and tr(B^2) = tr((nabla k)^2) since (nabla k) k = 0 and k_a nabla_b k^a = 0). For a Lorentzian coordinate metric sigma^2 >= 0 (sigma^ kills the unit timelike (k + N)/sqrt 2), and with omega^ = 0 and R(k, k) >= 0: k(Theta) <= -Theta^2/(n-2) and, along an integral curve on [0, L) with an auxiliary null vector with omega^ = 0 at each point and Theta(gamma(0)) < 0, L <= (n-2)/|Theta(gamma(0))| (raychaudhuri_null_focusing); a rotation-free field (g nabla k symmetric, e.g. hypersurface-orthogonal) has omega^ = 0 for every N (nullRotation_eq_zero). The same on a manifold for a Lorentzian metric with its Levi-Civita connection, with omega^ = 0 stated intrinsically as g(nabla_{pi u} V, pi w) = g(nabla_{pi w} V, pi u) for the screen projection pi u = u + g(N, u) V + g(V, u) N, read in the chart (nullRotation_chart_eq_zero, raychaudhuri_null_focusing_manifold_at, raychaudhuri_null_focusing_manifold in RaychaudhuriNullManifold.lean). Limits: the auxiliary null vector is a hypothesis, as in the source."
+  since: unreleased
+- id: LL-0213
+  title: The Killing fields of Minkowski space are the Poincare fields and form a space of dimension n(n+1)/2
+  area: Spacetime
+  file: Lightlike/Spacetime/KillingMinkowski.lean
+  decls: [Lightlike.killing_eq_affField, Lightlike.finrank_killingFields]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (5.44)", check: "Killing"}
+  review: kernel-checked
+  note: "Every C^2 vector field X on R^n that is a Killing field of the Minkowski metric at every point (the derivative of X is eta-skew, Killing's equation for the flat connection) is affine, X(y) = A y + c with A eta-skew; conversely these are Killing (affField_killing_iff). The pairs (A, c) form a space of dimension n(n-1)/2 + n = n(n+1)/2 (the eta-skew endomorphisms correspond to the antisymmetric matrices by lowering an index), so the Killing fields form a real vector space of dimension n(n+1)/2. Proof of the classification: the second derivative of X is symmetric in its first two slots and eta-skew in its last two, hence zero. Compared with Carroll's lecture notes (gr-qc/9712019), pp. 140-141: the largest possible number of Killing vectors on an n-dimensional manifold is n(n+1)/2, eq. (5.44) n + n(n-1)/2 = n(n+1)/2 for the translations and rotations of R^n, 'the same kind of counting argument applies to ... Minkowski space'; Carroll does not prove that these are all the Killing vectors. Limits: Killing fields are C^2 fields with Killing's equation; flows and isometries are not treated."
   since: unreleased
