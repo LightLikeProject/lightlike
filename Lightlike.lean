@@ -1047,6 +1047,8 @@ import Lightlike.Spacetime.ChartChange
 import Lightlike.Spacetime.BianchiSecond
 import Lightlike.Spacetime.ConformalCoord
 import Lightlike.Spacetime.ContractedBianchi
+import Lightlike.Spacetime.NullHypersurface
+import Lightlike.Spacetime.NullHypersurfaceCoord
 import Lightlike.Spacetime.RaychaudhuriAlgebra
 import Lightlike.Spacetime.RaychaudhuriCoord
 import Lightlike.Spacetime.RaychaudhuriFocusing
