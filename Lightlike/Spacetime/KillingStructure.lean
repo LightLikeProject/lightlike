@@ -1,0 +1,148 @@
+import Lightlike.Spacetime.KillingAlgebraCoord
+import Lightlike.Spacetime.SpaceFormKilling
+
+/-!
+# The structure constants of a maximally symmetric 3-metric (G1-024, stage 1)
+
+In coordinates on an open set of `ℝ³`, a family of Killing fields indexed like the Killing algebra of the space form
+(`SpaceForm.Idx`) is *normalized at `p`* when the translations `Pₘ` are transvections with `Pₘ(p) = eₘ`, `∇Pₘ(p) = 0`,
+and the rotations vanish at `p` with `∇R_ab(p)` the generator `so3Gen a b` of `so(3)`.
+
+* `so3Gen`, `so3_equivariant_eq_smul`: an `so(3)`-equivariant map of antisymmetric `3 × 3` arrays is a multiple of the
+  identity (Schur's lemma, by eight instances of the equivariance);
+* `sum_S_inl_inl`, `sum_S_inl_inr`, `sum_S_inr_inl`, `sum_S_inr_inr`: the combinations `Σₑ S k i j e f(e)`;
+* `frameVal`, `frameCov`, `frame_val_S`, `frame_cov_S`: the data at `p` of the normalized family, and its bracket data
+  against `SpaceForm.S k` when the curvature at `p` is isotropic.
+-/
+
+open Set Filter
+open scoped ContDiff Topology
+
+namespace Lightlike
+
+open SpaceForm
+
+/-- The generator of `so(3)` in the plane `(a, b)`: `(so3Gen a b)_{dl} = δ_da δ_lb - δ_db δ_la`. -/
+def so3Gen (a b d l : Fin 3) : ℝ :=
+  (if d = a then 1 else 0) * (if l = b then 1 else 0) - (if d = b then 1 else 0) * (if l = a then 1 else 0)
+
+/-- **Schur's lemma for `so(3)`**: a map `M` of antisymmetric arrays, antisymmetric in each pair, that commutes with the
+action of the generators (`hJ`) is a multiple of the identity, `M m n a b = M 0 1 0 1 · (so3Gen m n)_{ab}`. -/
+theorem so3_equivariant_eq_smul (M : Fin 3 → Fin 3 → Fin 3 → Fin 3 → ℝ)
+    (hMa : ∀ m n a b, M n m a b = -M m n a b) (hMb : ∀ m n a b, M m n b a = -M m n a b)
+    (hJ : ∀ a b m n a' b', ∑ d, (so3Gen a b a' d * M m n d b' - M m n a' d * so3Gen a b d b') =
+      -(∑ d, so3Gen a b m d * M d n a' b') - ∑ d, so3Gen a b n d * M m d a' b') :
+    ∀ m n a b, M m n a b = M 0 1 0 1 * so3Gen m n a b := by
+  have n1 : ∀ a b, M 1 0 a b = -M 0 1 a b := fun a b => hMa 0 1 a b
+  have n2 : ∀ a b, M 2 0 a b = -M 0 2 a b := fun a b => hMa 0 2 a b
+  have n3 : ∀ a b, M 2 1 a b = -M 1 2 a b := fun a b => hMa 1 2 a b
+  have d0 : ∀ i a b, M i i a b = 0 := fun i a b => by linarith [hMa i i a b]
+  have e1 : ∀ m n, M m n 1 0 = -M m n 0 1 := fun m n => hMb m n 0 1
+  have e2 : ∀ m n, M m n 2 0 = -M m n 0 2 := fun m n => hMb m n 0 2
+  have e3 : ∀ m n, M m n 2 1 = -M m n 1 2 := fun m n => hMb m n 1 2
+  have z0 : ∀ m n i, M m n i i = 0 := fun m n i => by linarith [hMb m n i i]
+  have f1 := hJ 0 1 0 1 1 2
+  have f2 := hJ 0 1 0 1 0 2
+  have f3 := hJ 0 1 1 2 0 1
+  have f4 := hJ 1 2 0 1 0 2
+  have f5 := hJ 0 2 0 2 0 1
+  have f6 := hJ 0 1 0 2 0 1
+  have f7 := hJ 0 2 0 1 0 2
+  have f8 := hJ 0 2 0 1 1 2
+  simp [so3Gen, n3, d0, e1, e3, z0] at f1 f2 f3 f4 f5 f6 f7 f8
+  intro m n a b
+  fin_cases m <;> fin_cases n <;> fin_cases a <;> fin_cases b <;>
+    simp [so3Gen, n1, n2, n3, d0, e1, e2, e3, z0] <;> linarith
+
+theorem sum_ind_mul (f : Idx → ℝ) (e₀ : Idx) : ∑ e, ind e e₀ * f e = f e₀ := by
+  rw [Finset.sum_eq_single e₀ (fun e _ he => by simp [ind, he]) (by simp)]
+  simp [ind]
+
+theorem sum_S_inl_inl (k : ℝ) (f : Idx → ℝ) (m n : Fin 3) :
+    ∑ e, S k (.inl m) (.inl n) e * f e = -k * f (.inr (m, n)) := by
+  simp only [S, mul_assoc, ← Finset.mul_sum, sum_ind_mul]
+
+theorem sum_S_inl_inr (k : ℝ) (f : Idx → ℝ) (m : Fin 3) (ab : Fin 3 × Fin 3) :
+    ∑ e, S k (.inl m) (.inr ab) e * f e =
+      (if m = ab.1 then f (.inl ab.2) else 0) - (if m = ab.2 then f (.inl ab.1) else 0) := by
+  simp only [S, sub_mul, Finset.sum_sub_distrib]
+  split_ifs <;> simp only [sum_ind_mul, zero_mul, Finset.sum_const_zero]
+
+theorem sum_S_inr_inl (k : ℝ) (f : Idx → ℝ) (ab : Fin 3 × Fin 3) (m : Fin 3) :
+    ∑ e, S k (.inr ab) (.inl m) e * f e =
+      (if m = ab.2 then f (.inl ab.1) else 0) - (if m = ab.1 then f (.inl ab.2) else 0) := by
+  simp only [S, sub_mul, Finset.sum_sub_distrib]
+  split_ifs <;> simp only [sum_ind_mul, zero_mul, Finset.sum_const_zero]
+
+theorem sum_S_inr_inr (k : ℝ) (f : Idx → ℝ) (ab cd : Fin 3 × Fin 3) :
+    ∑ e, S k (.inr ab) (.inr cd) e * f e =
+      -((if ab.1 = cd.2 then f (.inr (cd.1, ab.2)) else 0) - (if ab.1 = cd.1 then f (.inr (cd.2, ab.2)) else 0) -
+        (if ab.2 = cd.2 then f (.inr (cd.1, ab.1)) else 0) + (if ab.2 = cd.1 then f (.inr (cd.2, ab.1)) else 0)) := by
+  simp only [S, neg_mul, Finset.sum_neg_distrib, sub_mul, add_mul, Finset.sum_sub_distrib, Finset.sum_add_distrib]
+  split_ifs <;> simp only [sum_ind_mul, zero_mul, Finset.sum_const_zero]
+
+/-- The integer generator, for deciding identities of `so3Gen`. -/
+def so3GenZ (a b d l : Fin 3) : ℤ :=
+  (if d = a then 1 else 0) * (if l = b then 1 else 0) - (if d = b then 1 else 0) * (if l = a then 1 else 0)
+
+theorem so3Gen_eq_cast (a b d l : Fin 3) : so3Gen a b d l = (so3GenZ a b d l : ℝ) := by
+  unfold so3Gen so3GenZ; push_cast; rfl
+
+theorem so3GenZ_comm : ∀ a₁ a₂ c₁ c₂ a b : Fin 3,
+    so3GenZ a₁ a₂ a 0 * so3GenZ c₁ c₂ 0 b - so3GenZ c₁ c₂ a 0 * so3GenZ a₁ a₂ 0 b +
+        (so3GenZ a₁ a₂ a 1 * so3GenZ c₁ c₂ 1 b - so3GenZ c₁ c₂ a 1 * so3GenZ a₁ a₂ 1 b) +
+        (so3GenZ a₁ a₂ a 2 * so3GenZ c₁ c₂ 2 b - so3GenZ c₁ c₂ a 2 * so3GenZ a₁ a₂ 2 b) =
+      -((if a₁ = c₂ then so3GenZ c₁ a₂ a b else 0) - (if a₁ = c₁ then so3GenZ c₂ a₂ a b else 0) -
+        (if a₂ = c₂ then so3GenZ c₁ a₁ a b else 0) + (if a₂ = c₁ then so3GenZ c₂ a₁ a b else 0)) := by
+  unfold so3GenZ; decide
+
+/-- **The commutator of two generators of `so(3)`**, in the convention of `SpaceForm.S`:
+`[so3Gen a₁ a₂, so3Gen c₁ c₂] = -(δ_{a₁c₂} so3Gen c₁ a₂ - δ_{a₁c₁} so3Gen c₂ a₂ - δ_{a₂c₂} so3Gen c₁ a₁ + δ_{a₂c₁} so3Gen c₂ a₁)`. -/
+theorem so3Gen_comm (a₁ a₂ c₁ c₂ a b : Fin 3) :
+    ∑ d, (so3Gen a₁ a₂ a d * so3Gen c₁ c₂ d b - so3Gen c₁ c₂ a d * so3Gen a₁ a₂ d b) =
+      -((if a₁ = c₂ then so3Gen c₁ a₂ a b else 0) - (if a₁ = c₁ then so3Gen c₂ a₂ a b else 0) -
+        (if a₂ = c₂ then so3Gen c₁ a₁ a b else 0) + (if a₂ = c₁ then so3Gen c₂ a₁ a b else 0)) := by
+  have h := congrArg (Int.cast : ℤ → ℝ) (so3GenZ_comm a₁ a₂ c₁ c₂ a b)
+  push_cast [apply_ite (Int.cast : ℤ → ℝ)] at h
+  simp only [Fin.sum_univ_three, so3Gen_eq_cast]
+  rw [h]
+
+/-- The value at `p` of the normalized family: `Pₘ(p) = eₘ`, `R_ab(p) = 0`. -/
+def frameVal : Idx → Fin 3 → ℝ
+  | .inl m => Pi.single m 1
+  | .inr _ => 0
+
+/-- The covariant derivative at `p` of the normalized family: `∇Pₘ(p) = 0`, `∇R_ab(p) = so3Gen a b`. -/
+def frameCov : Idx → Fin 3 → Fin 3 → ℝ
+  | .inl _ => fun _ _ => 0
+  | .inr ab => so3Gen ab.1 ab.2
+
+/-- **The bracket values of the normalized data are those of `S k`**: `Yᵢᵈ ∇_d Yⱼᵇ - Yⱼᵈ ∇_d Yᵢᵇ = Σₑ S k i j e Yₑᵇ` at
+`p`. -/
+theorem frame_val_S (k : ℝ) (i j : Idx) (b : Fin 3) :
+    ∑ d, (frameVal i d * frameCov j d b - frameVal j d * frameCov i d b) = ∑ e, S k i j e * frameVal e b := by
+  rcases i with m | ⟨a, a'⟩ <;> rcases j with n | ⟨c, c'⟩
+  · rw [sum_S_inl_inl]; simp [frameVal, frameCov]
+  · rw [sum_S_inl_inr]; simp [frameVal, frameCov, Pi.single_apply, so3Gen]; split_ifs <;> simp_all
+  · rw [sum_S_inr_inl]; simp [frameVal, frameCov, Pi.single_apply, so3Gen]; split_ifs <;> simp_all
+  · rw [sum_S_inr_inr]; simp [frameVal, frameCov]
+
+/-- **The bracket derivatives of the normalized data are those of `S k`** when the curvature at `p` is isotropic,
+`Rⁿ_{amb} - Rᵐ_{anb} = -k (so3Gen m n)_{ab}`: `[∇Yᵢ, ∇Yⱼ] + Riem(Yᵢ, Yⱼ) = Σₑ S k i j e ∇Yₑ` at `p`. -/
+theorem frame_cov_S (k : ℝ) (Rm : Fin 3 → Fin 3 → Fin 3 → Fin 3 → ℝ)
+    (hiso : ∀ m n a b, Rm n a m b - Rm m a n b = -k * so3Gen m n a b) (i j : Idx) (a b : Fin 3) :
+    ∑ d, (frameCov i a d * frameCov j d b - frameCov j a d * frameCov i d b) +
+        ∑ d, ∑ e, (frameVal i d * Rm e a d b * frameVal j e - frameVal j d * Rm e a d b * frameVal i e) =
+      ∑ e, S k i j e * frameCov e a b := by
+  rcases i with m | ⟨a₁, a₂⟩ <;> rcases j with n | ⟨c₁, c₂⟩
+  · rw [sum_S_inl_inl]
+    simp only [frameVal, frameCov, Pi.single_apply, mul_ite, ite_mul, mul_one, one_mul, mul_zero, zero_mul,
+      sub_self, Finset.sum_const_zero, zero_add]
+    rw [← hiso m n a b]
+    simp
+  · rw [sum_S_inl_inr]; simp [frameVal, frameCov]
+  · rw [sum_S_inr_inl]; simp [frameVal, frameCov]
+  · rw [sum_S_inr_inr]
+    simp only [frameVal, frameCov, Pi.zero_apply, zero_mul, mul_zero, sub_self, Finset.sum_const_zero, add_zero]
+    exact so3Gen_comm a₁ a₂ c₁ c₂ a b
+end Lightlike
