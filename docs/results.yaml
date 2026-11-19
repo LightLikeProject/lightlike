@@ -3567,7 +3567,6 @@
   decls: [Lightlike.FieldTheory.Forest.forest_formula_restrict, Lightlike.FieldTheory.Forest.forest_formula, Lightlike.FieldTheory.Forest.forestPoint_eq_path_inf]
   status: proven
   tier: established
-  main: true
   source:
     refs:
       - {ref: abdesselam-rivasseau-1994, location: "Theorem III.1", check: "forest"}
