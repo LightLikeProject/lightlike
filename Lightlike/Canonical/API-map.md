@@ -45,7 +45,9 @@ extrinsic curvature is symmetric [20] {3}. In four dimensions the spin connectio
 of the Christoffel connection by the frame, and its curvature is the Riemann tensor in the frame [21] {4}. The Holst
 action density adds to the Palatini term the dual term weighted by `1/γ`; on the tetrad connection the dual term
 vanishes by the first Bianchi identity and the Palatini term is `det e · R`, so the Holst density is the
-Einstein–Hilbert density for every `γ` [22] {3} {4}; the dual term of a constant rotation connection is not zero [22].
+Einstein–Hilbert density for every `γ` [22] {3} {4}; the dual term of a constant rotation connection is not zero [22]. The densitized triad contracted with the variation of
+the spin connection is a divergence, so `∫ E δΓ = 0` and the functional derivative of `∫ Γ E` is `Γ`, the fact behind
+the canonical transformation to the Ashtekar–Barbero variables [23] {4}.
 
 A grid computation in dimension two (`scripts/adm_algebra_check.py`) supports the three brackets; with the kinetic
 coefficient `1/2` of dimension three, used in dimension two, the bracket of two Hamiltonian constraints differs from
@@ -87,6 +89,7 @@ the momentum constraint of the structure function.
 22. Lightlike/Canonical/Holst.lean - `Lightlike.Canonical.holstDensity`, `Lightlike.Canonical.holstStar_tetradConn`,
     `Lightlike.Canonical.palatini_tetradConn`, `Lightlike.Canonical.holstDensity_tetradConn`,
     `Lightlike.Canonical.holstStar_rotation`
+23. Lightlike/Canonical/AshtekarCanonical.lean - `Lightlike.Canonical.E_dSpin_eq_div`, `Lightlike.Canonical.integral_E_dSpin_eq_zero`
 ## References
 
 1. T. Thiemann, *Modern Canonical Quantum General Relativity*, Cambridge University Press, 2007, chapter 1;
@@ -96,4 +99,4 @@ the momentum constraint of the structure function.
 3. A. Ashtekar and J. Lewandowski, *Background independent quantum gravity: a status report*, arXiv:gr-qc/0404018,
    equations (2.6), (2.16)-(2.18), (2.20)-(2.21), (2.23).
 4. S. Holst, *Barbero's Hamiltonian derived from a generalized Hilbert-Palatini action*, arXiv:gr-qc/9511026,
-   equations (1), (3), (4), (6).
+   equations (1), (3)-(6).
