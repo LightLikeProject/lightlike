@@ -3,6 +3,7 @@ import Lightlike.Spacetime.CausalLadder.PerturbTimelike
 import Lightlike.Spacetime.CausalLadder.ChartLipschitz
 import Lightlike.Spacetime.OpenCoordMetric
 import Lightlike.Spacetime.Causal.CurveMargin
+import Lightlike.Spacetime.Causal.TimeReversal
 
 /-!
 # Local causality for causal curves of the manifold
@@ -20,7 +21,11 @@ inside `O`.
   compact interval.
 * `IsTimeBall.mono`, `IsTimeBall.exists_future`: shrinking a time ball makes `N` future directed
   for `T` when `e` is.
-* `Causal.causalFutureIn`, `Causal.chronFutureIn`: `J⁺(x; O)`, `I⁺(x; O)`, curves inside `O`.
+* `Causal.causalFutureIn`, `Causal.chronFutureIn`, `Causal.causalPastIn`, `Causal.chronPastIn`:
+  `J±(x; O)`, `I±(x; O)`, curves inside `O`; `Causal.causalFutureIn_reverse`,
+  `Causal.chronFutureIn_reverse`: reversing the time orientation exchanges futures and pasts.
+* `IsTimeBall.mem_causalPastIn_iff`, `IsTimeBall.mem_chronPastIn_iff`,
+  `IsTimeBall.mem_frontier_causalPastIn_iff`: the analogues for pasts.
 * `IsTimeBall.mem_causalFutureIn_iff`, `IsTimeBall.mem_chronFutureIn_iff`,
   `IsTimeBall.mem_horismosIn_iff`, `IsTimeBall.mem_frontier_causalFutureIn_iff`: Chruściel's
   (2.4.7) for the time ball; the third line both for `J⁺(p; O) \ I⁺(p; O)` and for the boundary
@@ -58,6 +63,59 @@ a future timelike curve of positive parameter length that stays in `O`. -/
 def chronFutureIn (x : M) (O : Set M) : Set M :=
   {y | ∃ (γ : ℝ → M) (a b : ℝ), a < b ∧ IsFutureTimelikeCurve T γ (Icc a b) ∧ γ a = x ∧ γ b = y ∧
     ∀ t ∈ Icc a b, γ t ∈ O}
+
+/-- The **causal past of `x` relative to `O`**, `J⁻(x; O)`: the points `y` with `x ∈ J⁺(y; O)`. -/
+def causalPastIn (x : M) (O : Set M) : Set M := {y | x ∈ causalFutureIn T y O}
+
+/-- The **chronological past of `x` relative to `O`**, `I⁻(x; O)`. -/
+def chronPastIn (x : M) (O : Set M) : Set M := {y | x ∈ chronFutureIn T y O}
+
+/-- A future causal curve inside `O` for the reversed orientation, run backwards, is one for `T`. -/
+theorem causalFutureIn_reverse_subset {x y : M} {O : Set M}
+    (h : y ∈ causalFutureIn T.reverse x O) : x ∈ causalFutureIn T y O := by
+  obtain ⟨γ, a, b, hab, hγ, ha, hb, hin⟩ := h
+  rcases hab.lt_or_eq with hlt | heq
+  · have hr := (IsCurveWith.reflectNeg hγ hlt).mono_velocity fun x v hv =>
+      (T.isFutureCausal_reverse_neg v).1 hv
+    exact ⟨fun t => γ (-t), -b, -a, by linarith, hr, by simp [hb], by simp [ha],
+      fun t ht => hin (-t) ⟨by linarith [ht.2], by linarith [ht.1]⟩⟩
+  · have hxO : x ∈ O := by rw [← ha]; exact hin a ⟨le_rfl, hab⟩
+    have hxy : x = y := by rw [← ha, ← hb, heq]
+    rw [← hxy]
+    exact ⟨fun _ => x, 0, 0, le_rfl, isCurveWith_const _ x 0, rfl, rfl, fun _ _ => hxO⟩
+
+/-- **`J⁺(x; O)` for the reversed orientation is `J⁻(x; O)`.** -/
+theorem causalFutureIn_reverse (x : M) (O : Set M) :
+    causalFutureIn T.reverse x O = causalPastIn T x O := by
+  ext y
+  constructor
+  · exact fun h => causalFutureIn_reverse_subset T h
+  · intro h
+    have := causalFutureIn_reverse_subset T.reverse (x := y) (y := x) (O := O)
+    rw [TimeOrientation.reverse_reverse] at this
+    exact this h
+
+/-- A future timelike curve inside `O` for the reversed orientation, run backwards, is one for
+`T`. -/
+theorem chronFutureIn_reverse_subset {x y : M} {O : Set M}
+    (h : y ∈ chronFutureIn T.reverse x O) : x ∈ chronFutureIn T y O := by
+  obtain ⟨γ, a, b, hab, hγ, ha, hb, hin⟩ := h
+  obtain ⟨ε, hε, hm⟩ := hγ.2 a b hab subset_rfl
+  have hr := (IsCurveWith.reflectNeg hm hab).mono_velocity fun x v hv =>
+    (T.isFutureTimelikeWith_reverse_neg v).1 hv
+  exact ⟨fun t => γ (-t), -b, -a, by linarith, isFutureTimelikeCurve_of_margin T hε hr,
+    by simp [hb], by simp [ha], fun t ht => hin (-t) ⟨by linarith [ht.2], by linarith [ht.1]⟩⟩
+
+/-- **`I⁺(x; O)` for the reversed orientation is `I⁻(x; O)`.** -/
+theorem chronFutureIn_reverse (x : M) (O : Set M) :
+    chronFutureIn T.reverse x O = chronPastIn T x O := by
+  ext y
+  constructor
+  · exact fun h => chronFutureIn_reverse_subset T h
+  · intro h
+    have := chronFutureIn_reverse_subset T.reverse (x := y) (y := x) (O := O)
+    rw [TimeOrientation.reverse_reverse] at this
+    exact this h
 
 end Lightlike.Causal
 
@@ -627,6 +685,71 @@ theorem mem_frontier_causalFutureIn_iff (hL : IsLorentzianCoordMetric g U)
   · rintro ⟨h1, h2⟩
     exact ⟨subset_closure ((h.mem_causalFutureIn_iff hL T hTN hx₀ hq).2 ⟨h1.le, h2⟩),
       fun ⟨hlt, _⟩ => lt_irrefl _ (h1 ▸ hlt)⟩
+
+/-! ### The pasts -/
+
+/-- The time ball of `-e`: the field is `-N`. -/
+lemma neg (h : IsTimeBall g U p ρ φ e r N) : IsTimeBall g U p ρ φ (-e) r (fun v => -N v) where
+  chart := h.chart
+  pos := h.pos
+  le := h.le
+  timelike_zero := by simpa [pairing] using h.timelike_zero
+  dual v hv w := by
+    have := h.dual v hv w
+    simp only [pairing, Pi.neg_apply, neg_mul, Finset.sum_neg_distrib] at this ⊢
+    rw [this]
+  timelike v hv := by simpa [pairing] using h.timelike v hv
+  continuousOn := h.continuousOn.neg
+
+/-- The future-directedness hypothesis for the reversed orientation and `-N`. -/
+lemma hTN_reverse (hL : IsLorentzianCoordMetric g U)
+    (T : Causal.TimeOrientation (openMetric U g hL))
+    (hTN : ∀ x : U, ∀ v ∈ ball (0 : Fin n → ℝ) r, x.1 = φ v → matForm (g x.1) (N v) (T.X x) < 0) :
+    ∀ x : U, ∀ v ∈ ball (0 : Fin n → ℝ) r, x.1 = φ v →
+      matForm (g x.1) ((fun v => -N v) v) (T.reverse.X x) < 0 := fun x v hv hxv => by
+  have hX : ∀ j, (T.reverse.X x : Fin n → ℝ) j = -(T.X x : Fin n → ℝ) j := fun j => rfl
+  have := hTN x v hv hxv
+  erw [matForm_apply] at this ⊢
+  simp only [hX, Pi.neg_apply, neg_mul, mul_neg, neg_neg]
+  exact this
+
+lemma neg_pairing_neg (w : Fin n → ℝ) : -pairing g p (-e) w = -(-pairing g p e w) := by
+  simp [pairing]
+
+/-- **The `J⁻` line** ("the obvious analogue for pasts"): `q ∈ J⁻(p; O)` iff `σ_p(q) ≤ 0` and
+`x⁰(q) ≤ 0`. -/
+theorem mem_causalPastIn_iff (hL : IsLorentzianCoordMetric g U)
+    (T : Causal.TimeOrientation (openMetric U g hL)) (h : IsTimeBall g U p ρ φ e r N)
+    (hTN : ∀ x : U, ∀ v ∈ ball (0 : Fin n → ℝ) r, x.1 = φ v → matForm (g x.1) (N v) (T.X x) < 0)
+    {x₀ : U} (hx₀ : x₀.1 = p) {q : U} (hq : q.1 ∈ φ '' ball (0 : Fin n → ℝ) r) :
+    q ∈ Causal.causalPastIn T x₀ {y : U | y.1 ∈ φ '' ball (0 : Fin n → ℝ) r} ↔
+      pairing g p (φ.symm q.1) (φ.symm q.1) ≤ 0 ∧ -pairing g p e (φ.symm q.1) ≤ 0 := by
+  rw [← Causal.causalFutureIn_reverse,
+    h.neg.mem_causalFutureIn_iff hL T.reverse (hTN_reverse hL T hTN) hx₀ hq, neg_pairing_neg]
+  constructor <;> rintro ⟨h1, h2⟩ <;> exact ⟨h1, by linarith⟩
+
+/-- **The `I⁻` line**: `q ∈ I⁻(p; O)` iff `σ_p(q) < 0` and `x⁰(q) < 0`. -/
+theorem mem_chronPastIn_iff (hL : IsLorentzianCoordMetric g U)
+    (T : Causal.TimeOrientation (openMetric U g hL)) (h : IsTimeBall g U p ρ φ e r N)
+    (hTN : ∀ x : U, ∀ v ∈ ball (0 : Fin n → ℝ) r, x.1 = φ v → matForm (g x.1) (N v) (T.X x) < 0)
+    {x₀ : U} (hx₀ : x₀.1 = p) {q : U} (hq : q.1 ∈ φ '' ball (0 : Fin n → ℝ) r) :
+    q ∈ Causal.chronPastIn T x₀ {y : U | y.1 ∈ φ '' ball (0 : Fin n → ℝ) r} ↔
+      pairing g p (φ.symm q.1) (φ.symm q.1) < 0 ∧ -pairing g p e (φ.symm q.1) < 0 := by
+  rw [← Causal.chronFutureIn_reverse,
+    h.neg.mem_chronFutureIn_iff hL T.reverse (hTN_reverse hL T hTN) hx₀ hq, neg_pairing_neg]
+  constructor <;> rintro ⟨h1, h2⟩ <;> exact ⟨h1, by linarith⟩
+
+/-- **The `J̇⁻` line**: `q` lies on the boundary of `J⁻(p; O)` iff `σ_p(q) = 0` and `x⁰(q) ≤ 0`. -/
+theorem mem_frontier_causalPastIn_iff (hL : IsLorentzianCoordMetric g U)
+    (T : Causal.TimeOrientation (openMetric U g hL)) (h : IsTimeBall g U p ρ φ e r N)
+    (hTN : ∀ x : U, ∀ v ∈ ball (0 : Fin n → ℝ) r, x.1 = φ v → matForm (g x.1) (N v) (T.X x) < 0)
+    {x₀ : U} (hx₀ : x₀.1 = p) {q : U} (hq : q.1 ∈ φ '' ball (0 : Fin n → ℝ) r) :
+    q ∈ frontier (Causal.causalPastIn T x₀ {y : U | y.1 ∈ φ '' ball (0 : Fin n → ℝ) r}) ↔
+      pairing g p (φ.symm q.1) (φ.symm q.1) = 0 ∧ -pairing g p e (φ.symm q.1) ≤ 0 := by
+  rw [← Causal.causalFutureIn_reverse,
+    h.neg.mem_frontier_causalFutureIn_iff hL T.reverse (hTN_reverse hL T hTN) hx₀ hq,
+    neg_pairing_neg]
+  constructor <;> rintro ⟨h1, h2⟩ <;> exact ⟨h1, by linarith⟩
 
 end IsTimeBall
 
