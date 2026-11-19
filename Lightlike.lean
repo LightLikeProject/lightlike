@@ -809,6 +809,9 @@ import Lightlike.Poincare.RestStabiliser
 import Lightlike.Poincare.ShellChart
 import Lightlike.Poincare.ShellMeasureFinite
 import Lightlike.Poincare.ShellSourceMeasure
+import Lightlike.Poincare.SnagCommute
+import Lightlike.Poincare.SnagGelfand
+import Lightlike.Poincare.SnagJoint
 import Lightlike.Poincare.StandardMomenta
 import Lightlike.Poincare.WignerRotation
 import Lightlike.PonzanoRegge.Amplitude
