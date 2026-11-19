@@ -18,7 +18,9 @@ The bridge between the two coordinate forms of Killing's equation used in the li
 * `lieCo_bracketCo_eq_zero`: the bracket of two Killing fields is Killing, so the Killing fields on an open set are
   closed under the bracket;
 * `eq_sum_of_rigVec_eq_sum`: on a connected open set, a Killing covector whose value and first derivatives at a point
-  are a combination of those of other Killing covectors is that combination (rigidity and linearity).
+  are a combination of those of other Killing covectors is that combination (rigidity and linearity);
+* `pd_eq_of_killing`, `rigVec_eq_sum_of_data`: at a point the first derivatives of a Killing covector are its
+  antisymmetric part plus `Γᶜ_{ab} θ_c`, so the data `(θ, ½ (∂_a θ_b - ∂_b θ_a))` at the point determines `rigVec`.
 -/
 
 open Matrix Filter Set
@@ -302,5 +304,48 @@ theorem eq_sum_of_rigVec_eq_sum (hg : IsCoordMetric g U) (hgs : ∀ z a b, g z a
   simp [hθ', Finset.sum_apply]
 
 end Combination
+
+section Data
+
+variable {g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ} {θ : (Fin n → ℝ) → Fin n → ℝ} {z : Fin n → ℝ}
+
+/-- **The first derivatives of a Killing covector at a point are its antisymmetric part plus a value term**:
+`∂_a θ_b = ½ (∂_a θ_b - ∂_b θ_a) + Γᶜ_{ab} θ_c` when `∇_a θ_b + ∇_b θ_a = 0` (and `Γ` is symmetric). -/
+theorem pd_eq_of_killing (hgs : ∀ z a b, g z a b = g z b a)
+    (hK : ∀ a b, covCo g θ a b z + covCo g θ b a z = 0) (a b : Fin n) :
+    pd a (fun w => θ w b) z =
+      (pd a (fun w => θ w b) z - pd b (fun w => θ w a) z) / 2 + ∑ c, christoffel g c a b z * θ z c := by
+  have h := hK a b
+  unfold covCo at h
+  have hs : ∑ c, christoffel g c b a z * θ z c = ∑ c, christoffel g c a b z * θ z c :=
+    Finset.sum_congr rfl fun c _ => by rw [christoffel_symm g hgs c b a z]
+  rw [hs] at h
+  linarith
+
+/-- The data `(θ(z), ½ (∂_a θ_b - ∂_b θ_a)(z))` of a Killing covector determines `rigVec θ z`, linearly: if the data
+of `θ` is the combination `Σₑ cₑ` of the data of Killing covectors `θₑ`, so is `rigVec`. -/
+theorem rigVec_eq_sum_of_data {ι : Type*} [Fintype ι] (hgs : ∀ z a b, g z a b = g z b a)
+    (θs : ι → (Fin n → ℝ) → Fin n → ℝ) (hK : ∀ a b, covCo g θ a b z + covCo g θ b a z = 0)
+    (hKs : ∀ e a b, covCo g (θs e) a b z + covCo g (θs e) b a z = 0) (c : ι → ℝ)
+    (h0 : ∀ k, θ z k = ∑ e, c e * θs e z k)
+    (h1 : ∀ a b, pd a (fun w => θ w b) z - pd b (fun w => θ w a) z =
+      ∑ e, c e * (pd a (fun w => θs e w b) z - pd b (fun w => θs e w a) z)) :
+    rigVec θ z = ∑ e, c e • rigVec (θs e) z := by
+  funext i
+  rcases i with k | ⟨a, k⟩
+  · simp [rigVec, Finset.sum_apply, h0]
+  · simp only [rigVec, Sum.elim_inr, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]
+    rw [pd_eq_of_killing hgs hK a k, h1]
+    have hr : ∀ e, c e * pd a (fun w => θs e w k) z = c e * ((pd a (fun w => θs e w k) z -
+        pd k (fun w => θs e w a) z) / 2 + ∑ l, christoffel g l a k z * θs e z l) := fun e => by
+      conv_lhs => rw [pd_eq_of_killing hgs (hKs e) a k]
+    rw [Finset.sum_congr rfl fun e _ => hr e]
+    simp only [h0, mul_add, Finset.sum_add_distrib, Finset.sum_div, Finset.mul_sum]
+    rw [Finset.sum_comm (s := Finset.univ) (t := Finset.univ) (f := fun l e => christoffel g l a k z * (c e * θs e z l))]
+    congr 1
+    · exact Finset.sum_congr rfl fun e _ => by ring
+    · exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
+
+end Data
 
 end Lightlike

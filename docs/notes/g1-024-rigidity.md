@@ -67,6 +67,11 @@ Differences:
        `rigVec (lowerVec g Y_e) p` span the Killing data at `p` (value and antisymmetric derivative), so for every
        Killing field `Z` there are constants with `rigVec (lowerVec g Z) p = Σ cₑ rigVec (lowerVec g Y_e) p`, and
        `eq_of_rigVec_eq` gives `Z = Σ cₑ Y_e` on the ball: S1 and S2 together;
+   Refinement (19 November 2026, 21:15): normalise the translations as transvections at `p` (`P_m(p) = e_m`,
+   `∇P_m(p) = 0`; any frame of Killing fields can be brought to this by subtracting rotations). Then, by
+   `covCo2_killing` at `p`: `[P_a, P_b](p) = 0` (no translation part, `β = 0`), `∇[R_ab, P_m](p) = 0` (since
+   `∇∇R(p) = Riem · R(p) = 0`; no rotation part, `λ = 0`), and `∇[P_a, P_b](p)` is the curvature at `p`; Jacobi
+   (`[R, [P, P]]`) makes that curvature isotropic, `[P_m, P_n] = -k R_mn` in the convention of `SpaceForm.S`.
    (c) the constants of `[Y_i, Y_j]` from their data at `p` (`[R,R]`: so(3); `[R,P]`: translation part from
        `∇R(p)`; the rest unknown), Jacobi on the constants, the equivariance computation, the change of complement, and
        `hS` for `S k`; then `isometric_spaceForm`.
