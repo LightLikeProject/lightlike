@@ -37,49 +37,63 @@ def imM (x : MatSum n) : MatSumR n := fun i => (x i).map Complex.im
 /-- A real matrix as a complex one. -/
 def ofRealM (a : MatSumR n) : MatSum n := fun i => (a i).map (↑)
 
+/-- The real part is additive. -/
 lemma reM_add (x y : MatSum n) : reM (x + y) = reM x + reM y := by
   funext i; ext α β; simp [reM]
 
+/-- The imaginary part is additive. -/
 lemma imM_add (x y : MatSum n) : imM (x + y) = imM x + imM y := by
   funext i; ext α β; simp [imM]
 
+/-- `Re(xy) = Re x Re y - Im x Im y`. -/
 lemma reM_mul (x y : MatSum n) : reM (x * y) = reM x * reM y - imM x * imM y := by
   funext i; ext α β
   simp [reM, imM, Matrix.mul_apply, Complex.re_sum, Finset.sum_sub_distrib]
 
+/-- `Im(xy) = Re x Im y + Im x Re y`. -/
 lemma imM_mul (x y : MatSum n) : imM (x * y) = reM x * imM y + imM x * reM y := by
   funext i; ext α β
   simp [reM, imM, Matrix.mul_apply, Complex.im_sum, Finset.sum_add_distrib]
 
+/-- `Re(x*) = (Re x)*`. -/
 lemma reM_star (x : MatSum n) : reM (star x) = star (reM x) := by
   funext i; ext α β; simp [reM, Matrix.star_apply]
 
+/-- `Im(x*) = -(Im x)*`. -/
 lemma imM_star (x : MatSum n) : imM (star x) = -star (imM x) := by
   funext i; ext α β; simp [imM, Matrix.star_apply]
 
+/-- `Re 1 = 1`. -/
 lemma reM_one : reM (1 : MatSum n) = 1 := by
   funext i; ext α β; simp [reM, Matrix.one_apply, apply_ite]
 
+/-- `Im 1 = 0`. -/
 lemma imM_one : imM (1 : MatSum n) = 0 := by
   funext i; ext α β; simp [imM, Matrix.one_apply, apply_ite]
 
+/-- `Re 0 = 0`. -/
 lemma reM_zero : reM (0 : MatSum n) = 0 := by
   funext i; ext α β; simp [reM]
 
+/-- `Im 0 = 0`. -/
 lemma imM_zero : imM (0 : MatSum n) = 0 := by
   funext i; ext α β; simp [imM]
 
+/-- `Re(c 1) = (Re c) 1`. -/
 lemma reM_smul_one (c : ℂ) : reM (c • (1 : MatSum n)) = c.re • 1 := by
   funext i; ext α β
   by_cases h : α = β <;> simp [reM, Matrix.one_apply, h]
 
+/-- `Im(c 1) = (Im c) 1`. -/
 lemma imM_smul_one (c : ℂ) : imM (c • (1 : MatSum n)) = c.im • 1 := by
   funext i; ext α β
   by_cases h : α = β <;> simp [imM, Matrix.one_apply, h]
 
+/-- The real part of a real matrix is itself. -/
 lemma reM_ofRealM (a : MatSumR n) : reM (ofRealM a) = a := by
   funext i; ext α β; simp [reM, ofRealM]
 
+/-- The imaginary part of a real matrix is `0`. -/
 lemma imM_ofRealM (a : MatSumR n) : imM (ofRealM a) = 0 := by
   funext i; ext α β; simp [imM, ofRealM]
 
@@ -95,6 +109,7 @@ def phiR : MatSumR n →⋆ₐ[ℝ] MatSum n where
     by_cases h : α = β <;> simp [ofRealM, Algebra.algebraMap_eq_smul_one, Matrix.one_apply, h]
   map_star' a := by funext i; ext α β; simp [ofRealM, Matrix.star_apply]
 
+/-- `phiR` is `ofRealM`. -/
 lemma phiR_apply (a : MatSumR n) : phiR a = ofRealM a := rfl
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDimensional ℂ H] [CompleteSpace H]
@@ -124,6 +139,7 @@ def sigmaR : MatSum n →⋆ₐ[ℂ] (H →L[ℂ] H) where
     simp only [reM_star, imM_star, map_neg, map_star, star_add, star_smul, Complex.star_def, Complex.conj_I,
       smul_neg, neg_smul]
 
+/-- `σ(x) = π(Re x) + i π(Im x)`. -/
 lemma sigmaR_apply (x : MatSum n) : sigmaR T x = T.π (reM x) + Complex.I • T.π (imM x) := rfl
 
 /-- **`σ ∘ φ = π`.** -/
@@ -136,6 +152,7 @@ def unitR (i : ι) (α β : Fin (n i)) : MatSumR n := Pi.single i (Matrix.single
 /-- The complex matrix unit `E^i_{αβ}`. -/
 def unitC (i : ι) (α β : Fin (n i)) : MatSum n := Pi.single i (Matrix.single α β 1)
 
+/-- The inclusion maps the real matrix units to the complex ones. -/
 lemma phiR_unitR (i : ι) (α β : Fin (n i)) : phiR (unitR i α β) = unitC i α β := by
   funext k
   by_cases hk : k = i

@@ -66,22 +66,27 @@ lemma toFun_mul_U (k : ι) (x y : Fin (d k)) (Z : MatSum d) :
   · intro h
     exact absurd (Finset.mem_univ k) h
 
+/-- `σ` is additive. -/
 lemma toFun_add (Y Z : MatSum d) : M.toFun (Y + Z) = M.toFun Y + M.toFun Z := by
   simp only [toFun, Pi.add_apply, Matrix.add_apply, add_smul, Finset.sum_add_distrib]
 
+/-- `σ` is complex-linear. -/
 lemma toFun_smul (c : ℂ) (Y : MatSum d) : M.toFun (c • Y) = c • M.toFun Y := by
   simp only [toFun, Pi.smul_apply, Matrix.smul_apply, smul_eq_mul, mul_smul, Finset.smul_sum]
 
+/-- `σ(1) = 1`. -/
 lemma toFun_one : M.toFun 1 = 1 := by
   simp only [toFun, Pi.one_apply, Matrix.one_apply, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq,
     Finset.mem_univ, if_true, M.sum_U]
 
+/-- `σ` is multiplicative. -/
 lemma toFun_mul (Y Z : MatSum d) : M.toFun (Y * Z) = M.toFun Y * M.toFun Z := by
   conv_rhs => rw [toFun]
   simp only [Finset.sum_mul, smul_mul_assoc, U_mul_toFun, Finset.smul_sum, smul_smul]
   simp only [toFun, Pi.mul_apply, Matrix.mul_apply, Finset.sum_smul]
   exact Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun x _ => Finset.sum_comm
 
+/-- `σ(Y*) = σ(Y)*`. -/
 lemma toFun_star (Y : MatSum d) : M.toFun (star Y) = star (M.toFun Y) := by
   simp only [toFun, star_sum, star_smul, M.star_U, Pi.star_apply, Matrix.star_apply]
   exact Finset.sum_congr rfl fun k _ => Finset.sum_comm
@@ -98,6 +103,7 @@ def hom : MatSum d →⋆ₐ[ℂ] (H →L[ℂ] H) where
     exact (M.toFun_smul c 1).trans (by rw [M.toFun_one])
   map_star' := M.toFun_star
 
+/-- `σ(Y) = ∑ₖ ∑ₓ ∑_y Y k x y U k x y`. -/
 lemma hom_apply (Y : MatSum d) : M.hom Y = ∑ k, ∑ x, ∑ y, Y k x y • M.U k x y := rfl
 
 /-- `U k x x σ(Y) U k y x = Y k x y U k x x`. -/

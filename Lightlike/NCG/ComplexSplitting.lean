@@ -29,11 +29,13 @@ def Qp (u : A) : H →L[ℂ] H := (1 / 2 : ℂ) • (1 - Complex.I • T.π u)
 /-- `Q₋ = (1 + i π(u))/2`, the conjugate part. -/
 def Qm (u : A) : H →L[ℂ] H := (1 / 2 : ℂ) • (1 + Complex.I • T.π u)
 
+/-- `Q₊ + Q₋ = 1`. -/
 lemma Qp_add_Qm (u : A) : Qp T u + Qm T u = 1 := by
   simp only [Qp, Qm, ← smul_add]
   rw [sub_add_add_cancel, ← two_smul ℂ (1 : H →L[ℂ] H), smul_smul]
   norm_num
 
+/-- `π(u)² = -1` for `u² = -1`. -/
 lemma pi_u_sq (hu : u * u = -1) : T.π u * T.π u = -1 := by
   rw [← map_mul, hu, map_neg, map_one]
 
@@ -128,6 +130,7 @@ lemma J_Qm_J (u : A) (x : H) : R.J (Qm T u (R.J x)) = QmR T R u x := by
     rightOp_apply, Complex.conj_I, map_div₀, map_one, map_ofNat]
   module
 
+/-- `J Q₊ J + J Q₋ J = 1`. -/
 lemma QpR_add_QmR (u : A) : QpR T R u + QmR T R u = 1 := by
   simp only [QpR, QmR, ← smul_add]
   rw [add_add_sub_cancel, ← two_smul ℂ (1 : H →ₗ[ℂ] H), smul_smul]
@@ -138,6 +141,7 @@ lemma pi_comm_QpR (u a : A) (x : H) : T.π a (QpR T R u x) = QpR T R u (T.π a x
   simp only [QpR, LinearMap.smul_apply, LinearMap.add_apply, Module.End.one_apply, map_smul, map_add,
     rightOp_apply, R.order_zero a u x]
 
+/-- `J Q₋ J` commutes with `π(A)` (the order-zero condition). -/
 lemma pi_comm_QmR (u a : A) (x : H) : T.π a (QmR T R u x) = QmR T R u (T.π a x) := by
   simp only [QmR, LinearMap.smul_apply, LinearMap.sub_apply, Module.End.one_apply, map_smul, map_sub,
     rightOp_apply, R.order_zero a u x]
@@ -147,6 +151,7 @@ lemma Qp_comm_QpR (u v : A) (x : H) : Qp T u (QpR T R v x) = QpR T R v (Qp T u x
   simp only [Qp, ContinuousLinearMap.smul_apply, ContinuousLinearMap.sub_apply, ContinuousLinearMap.one_apply,
     map_smul, map_sub, pi_comm_QpR T R v u x]
 
+/-- `Q₊` commutes with `J Q₋ J`. -/
 lemma Qp_comm_QmR (u v : A) (x : H) : Qp T u (QmR T R v x) = QmR T R v (Qp T u x) := by
   simp only [Qp, ContinuousLinearMap.smul_apply, ContinuousLinearMap.sub_apply, ContinuousLinearMap.one_apply,
     map_smul, map_sub, pi_comm_QmR T R v u x]

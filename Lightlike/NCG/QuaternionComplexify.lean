@@ -63,10 +63,12 @@ lemma complexify_quatToMat (ρ : ℍ[ℝ] →ₗ[ℝ] (H →L[ℂ] H)) (q : ℍ[
   rw [hk]
   exact (RCLike.real_smul_eq_coe_smul (K := ℂ) _ _).symm
 
+/-- The coordinates are additive. -/
 lemma quatCoord_add (M N : Matrix (Fin 2) (Fin 2) ℂ) : quatCoord (M + N) = quatCoord M + quatCoord N := by
   ext k
   fin_cases k <;> simp [quatCoord] <;> ring
 
+/-- The coordinates are complex-linear. -/
 lemma quatCoord_smul (c : ℂ) (M : Matrix (Fin 2) (Fin 2) ℂ) : quatCoord (c • M) = c • quatCoord M := by
   ext k
   fin_cases k <;> simp [quatCoord] <;> ring
@@ -79,6 +81,7 @@ noncomputable def complexifyL (ρ : ℍ[ℝ] →ₗ[ℝ] (H →L[ℂ] H)) : Matr
   map_smul' c M := by
     simp only [complexify, quatCoord_smul, Pi.smul_apply, smul_eq_mul, mul_smul, Finset.smul_sum, RingHom.id_apply]
 
+/-- `complexifyL ρ` is `complexify ρ`. -/
 lemma complexifyL_apply (ρ : ℍ[ℝ] →ₗ[ℝ] (H →L[ℂ] H)) (M : Matrix (Fin 2) (Fin 2) ℂ) :
     complexifyL ρ M = complexify ρ M := rfl
 

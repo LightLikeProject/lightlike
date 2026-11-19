@@ -45,6 +45,7 @@ noncomputable def quatToMat : ℍ[ℝ] →⋆ₐ[ℝ] Matrix (Fin 2) (Fin 2) ℂ
     ext i j
     fin_cases i <;> fin_cases j <;> simp [Complex.ext_iff, Matrix.star_eq_conjTranspose]
 
+/-- The matrix of `a + b i + c j + d k`. -/
 lemma quatToMat_apply (q : ℍ[ℝ]) :
     quatToMat q = !![⟨q.re, q.imI⟩, ⟨q.imJ, q.imK⟩; ⟨-q.imJ, q.imK⟩, ⟨q.re, -q.imI⟩] := rfl
 

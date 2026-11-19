@@ -58,6 +58,7 @@ def commL (D : H →L[ℂ] H) : (H →L[ℂ] H) →ₗ[ℂ] (H →L[ℂ] H) wher
   map_smul' c X := by
     simp only [FiniteSpectralTriple.comm, mul_smul_comm, smul_mul_assoc, smul_sub, RingHom.id_apply]
 
+/-- `commL D X = [D, X]`. -/
 lemma commL_apply (D X : H →L[ℂ] H) : commL D X = FiniteSpectralTriple.comm D X := rfl
 
 variable {ι : Type*} [Fintype ι] [DecidableEq ι]
@@ -84,6 +85,7 @@ variable {d : ι → ℕ}
 def Complexification.σℝ (C : Complexification T d) : MatSum d →⋆ₐ[ℝ] (H →L[ℂ] H) :=
   { (C.σ.toAlgHom : MatSum d →ₐ[ℂ] (H →L[ℂ] H)).restrictScalars ℝ with map_star' := C.σ.map_star' }
 
+/-- `σℝ` is `σ`. -/
 lemma Complexification.σℝ_apply (C : Complexification T d) (x : MatSum d) : C.σℝ x = C.σ x := rfl
 
 /-- **The complexified triple** `(⊕ M_dₖ(ℂ), H, D)`. -/
