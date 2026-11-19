@@ -10,7 +10,13 @@ The bridge between the two coordinate forms of Killing's equation used in the li
 * `covCo_lowerVec`: `∇_a θ_b = g_{bl} (∂_a Yˡ + Γˡ_{ac} Yᶜ)`, the lowered covariant derivative of `Y`;
 * `covCo_lowerVec_add`: `∇_a θ_b + ∇_b θ_a = Yᶜ ∂_c g_{ab} + ∂_a Yˡ g_{lb} + g_{al} ∂_b Yˡ`, the Lie derivative
   `(L_Y g)_{ab}` in coordinates (the form of the Killing hypotheses of `isometric_spaceForm` and
-  `flrw_of_killing_algebra` on coordinate vectors), so the rigidity of `KillingRigidityCoord.lean` applies to those fields.
+  `flrw_of_killing_algebra` on coordinate vectors), so the rigidity of `KillingRigidityCoord.lean` applies to those fields;
+* `lieCo`, `bracketCo`: the coordinate Lie derivative `(L_Y T)_{ab} = Yᶜ ∂_c T_{ab} + ∂_a Yˡ T_{lb} + T_{al} ∂_b Yˡ` of a
+  field of bilinear forms and the bracket `[Y, Z]ᶜ = Yᵈ ∂_d Zᶜ - Zᵈ ∂_d Yᶜ` (`lieCo_lowerVec`: `L_Y g` is the covector
+  form of Killing's equation);
+* `lieCo_bracketCo`: `L_{[Y,Z]} T = L_Y (L_Z T) - L_Z (L_Y T)` for smooth fields;
+* `lieCo_bracketCo_eq_zero`: the bracket of two Killing fields is Killing, so the Killing fields on an open set are
+  closed under the bracket.
 -/
 
 open Matrix Filter Set
@@ -137,6 +143,112 @@ theorem pd_lieCo (c a b : Fin n) :
       ((dpZ a m).mul (dT m b)) ((dT a m).mul (dpZ b m)) c,
       pd_mul (f₁ := fun z => pd a (fun w => Z w m) z) (f₂ := fun z => T z m b) (dpZ a m) (dT m b) c,
       pd_mul (f₁ := fun z => T z a m) (f₂ := fun z => pd b (fun w => Z w m) z) (dT a m) (dpZ b m) c]
+
+include hU hY hZ hy in
+/-- `∂_a [Y, Z]ˡ`, expanded. -/
+theorem pd_bracketCo (a l : Fin n) :
+    pd a (fun z => bracketCo Y Z z l) y =
+      ∑ d, (pd a (fun z => Y z d) y * pd d (fun z => Z z l) y + Y y d * pd a (fun z => pd d (fun w => Z w l) z) y -
+        (pd a (fun z => Z z d) y * pd d (fun z => Y z l) y + Z y d * pd a (fun z => pd d (fun w => Y w l) z) y)) := by
+  have dY : ∀ m, DifferentiableAt ℝ (fun z => Y z m) y := fun m => differentiableAt_of_contDiffOn (hY m) hU hy
+  have dZ : ∀ m, DifferentiableAt ℝ (fun z => Z z m) y := fun m => differentiableAt_of_contDiffOn (hZ m) hU hy
+  have dpY := fun k m => differentiableAt_pd_field hU hY hy k m
+  have dpZ := fun k m => differentiableAt_pd_field hU hZ hy k m
+  unfold bracketCo
+  rw [pd_sum Finset.univ (f := fun d z => Y z d * pd d (fun w => Z w l) z - Z z d * pd d (fun w => Y w l) z)
+    (fun d _ => ((dY d).mul (dpZ d l)).sub ((dZ d).mul (dpY d l))) a]
+  refine Finset.sum_congr rfl fun d _ => ?_
+  rw [pd_sub (f₁ := fun z => Y z d * pd d (fun w => Z w l) z) (f₂ := fun z => Z z d * pd d (fun w => Y w l) z)
+    ((dY d).mul (dpZ d l)) ((dZ d).mul (dpY d l)) a,
+    pd_mul (f₁ := fun z => Y z d) (f₂ := fun z => pd d (fun w => Z w l) z) (dY d) (dpZ d l) a,
+    pd_mul (f₁ := fun z => Z z d) (f₂ := fun z => pd d (fun w => Y w l) z) (dZ d) (dpY d l) a]
+
+include hU hT hY hZ hy in
+/-- **The Lie derivative of the bracket is the commutator of Lie derivatives**: `L_{[Y,Z]} T = L_Y (L_Z T) - L_Z (L_Y T)`
+for a field of bilinear forms in coordinates. -/
+theorem lieCo_bracketCo (a b : Fin n) :
+    lieCo T (bracketCo Y Z) y a b = lieCo (lieCo T Z) Y y a b - lieCo (lieCo T Y) Z y a b := by
+  have hcT : ∀ k m i j, pd k (fun z => pd m (fun w => T w i j) z) y = pd m (fun z => pd k (fun w => T w i j) z) y :=
+    fun k m i j => pd_pd_comm (hT i j) hU hy k m
+  have hcY : ∀ k m l, pd k (fun z => pd m (fun w => Y w l) z) y = pd m (fun z => pd k (fun w => Y w l) z) y :=
+    fun k m l => pd_pd_comm (hY l) hU hy k m
+  have hcZ : ∀ k m l, pd k (fun z => pd m (fun w => Z w l) z) y = pd m (fun z => pd k (fun w => Z w l) z) y :=
+    fun k m l => pd_pd_comm (hZ l) hU hy k m
+  have e1 : lieCo T (bracketCo Y Z) y a b = ∑ c, bracketCo Y Z y c * pd c (fun z => T z a b) y +
+      ∑ l, (pd a (fun z => bracketCo Y Z z l) y * T y l b + T y a l * pd b (fun z => bracketCo Y Z z l) y) := rfl
+  have e2 : lieCo (lieCo T Z) Y y a b = ∑ c, Y y c * pd c (fun z => lieCo T Z z a b) y +
+      ∑ l, (pd a (fun z => Y z l) y * lieCo T Z y l b + lieCo T Z y a l * pd b (fun z => Y z l) y) := rfl
+  have e3 : lieCo (lieCo T Y) Z y a b = ∑ c, Z y c * pd c (fun z => lieCo T Y z a b) y +
+      ∑ l, (pd a (fun z => Z z l) y * lieCo T Y y l b + lieCo T Y y a l * pd b (fun z => Z z l) y) := rfl
+  rw [e1, e2, e3]
+  simp only [pd_lieCo hU hT hZ hy, pd_lieCo hU hT hY hy, pd_bracketCo hU hY hZ hy]
+  simp only [lieCo, bracketCo]
+  simp only [Finset.mul_sum, Finset.sum_mul, mul_add, add_mul, mul_sub, sub_mul, Finset.sum_add_distrib,
+    Finset.sum_sub_distrib]
+  have sw : ∀ (f g : Fin n → Fin n → ℝ), (∀ x i, f x i = g i x) → ∑ x, ∑ i, f x i = ∑ x, ∑ i, g x i :=
+    fun f g h => by rw [Finset.sum_comm]; exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun x _ => h x i
+  -- terms of `L_{[Y,Z]} T` against terms of `L_Y L_Z T` and `L_Z L_Y T`
+  have hA1 : ∑ x, ∑ i, Y y x * (pd x (fun z ↦ Z z i) y * pd i (fun z ↦ T z a b) y) =
+      ∑ x, ∑ i, Y y i * pd i (fun z ↦ Z z x) y * pd x (fun z ↦ T z a b) y := sw _ _ fun x i => by ring
+  have hB1 : ∑ x, ∑ i, Z y x * (pd x (fun z ↦ Y z i) y * pd i (fun z ↦ T z a b) y) =
+      ∑ x, ∑ i, Z y i * pd i (fun z ↦ Y z x) y * pd x (fun z ↦ T z a b) y := sw _ _ fun x i => by ring
+  have hA2 : ∑ x, ∑ i, Y y x * (Z y i * pd x (fun z ↦ pd i (fun z ↦ T z a b) z) y) =
+      ∑ x, ∑ i, Z y x * (Y y i * pd x (fun z ↦ pd i (fun z ↦ T z a b) z) y) :=
+    sw _ _ fun x i => by rw [hcT x i a b]; ring
+  have hA3 : ∑ x, ∑ i, Y y x * (pd x (fun z ↦ pd a (fun w ↦ Z w i) z) y * T y i b) =
+      ∑ x, ∑ i, Y y i * pd a (fun z ↦ pd i (fun z ↦ Z z x) z) y * T y x b :=
+    sw _ _ fun x i => by rw [hcZ x a i]; ring
+  have hB3 : ∑ x, ∑ i, Z y x * (pd x (fun z ↦ pd a (fun w ↦ Y w i) z) y * T y i b) =
+      ∑ x, ∑ i, Z y i * pd a (fun z ↦ pd i (fun z ↦ Y z x) z) y * T y x b :=
+    sw _ _ fun x i => by rw [hcY x a i]; ring
+  have hA4 : ∑ x, ∑ i, Y y x * (pd a (fun w ↦ Z w i) y * pd x (fun z ↦ T z i b) y) =
+      ∑ x, ∑ i, pd a (fun z ↦ Z z x) y * (Y y i * pd i (fun z ↦ T z x b) y) := sw _ _ fun x i => by ring
+  have hB4 : ∑ x, ∑ i, Z y x * (pd a (fun w ↦ Y w i) y * pd x (fun z ↦ T z i b) y) =
+      ∑ x, ∑ i, pd a (fun z ↦ Y z x) y * (Z y i * pd i (fun z ↦ T z x b) y) := sw _ _ fun x i => by ring
+  have hA5 : ∑ x, ∑ i, Y y x * (pd x (fun z ↦ T z a i) y * pd b (fun w ↦ Z w i) y) =
+      ∑ x, ∑ i, Y y i * pd i (fun z ↦ T z a x) y * pd b (fun z ↦ Z z x) y := sw _ _ fun x i => by ring
+  have hB5 : ∑ x, ∑ i, Z y x * (pd x (fun z ↦ T z a i) y * pd b (fun w ↦ Y w i) y) =
+      ∑ x, ∑ i, Z y i * pd i (fun z ↦ T z a x) y * pd b (fun z ↦ Y z x) y := sw _ _ fun x i => by ring
+  have hA6 : ∑ x, ∑ i, Y y x * (T y a i * pd x (fun z ↦ pd b (fun w ↦ Z w i) z) y) =
+      ∑ x, ∑ i, T y a x * (Y y i * pd b (fun z ↦ pd i (fun z ↦ Z z x) z) y) :=
+    sw _ _ fun x i => by rw [hcZ x b i]; ring
+  have hB6 : ∑ x, ∑ i, Z y x * (T y a i * pd x (fun z ↦ pd b (fun w ↦ Y w i) z) y) =
+      ∑ x, ∑ i, T y a x * (Z y i * pd b (fun z ↦ pd i (fun z ↦ Y z x) z) y) :=
+    sw _ _ fun x i => by rw [hcY x b i]; ring
+  have hA8 : ∑ x, ∑ i, pd a (fun z ↦ Y z x) y * (pd x (fun z ↦ Z z i) y * T y i b) =
+      ∑ x, ∑ i, pd a (fun z ↦ Y z i) y * pd i (fun z ↦ Z z x) y * T y x b := sw _ _ fun x i => by ring
+  have hB8 : ∑ x, ∑ i, pd a (fun z ↦ Z z x) y * (pd x (fun z ↦ Y z i) y * T y i b) =
+      ∑ x, ∑ i, pd a (fun z ↦ Z z i) y * pd i (fun z ↦ Y z x) y * T y x b := sw _ _ fun x i => by ring
+  have hA9 : ∑ x, ∑ i, pd a (fun z ↦ Y z x) y * (T y x i * pd b (fun z ↦ Z z i) y) =
+      ∑ x, ∑ i, pd a (fun z ↦ Y z i) y * T y i x * pd b (fun z ↦ Z z x) y := sw _ _ fun x i => by ring
+  have hB9 : ∑ x, ∑ i, pd a (fun z ↦ Z z x) y * (T y x i * pd b (fun z ↦ Y z i) y) =
+      ∑ x, ∑ i, pd a (fun z ↦ Z z i) y * T y i x * pd b (fun z ↦ Y z x) y := sw _ _ fun x i => by ring
+  have hA12 : ∑ x, ∑ i, T y a i * pd x (fun z ↦ Z z i) y * pd b (fun z ↦ Y z x) y =
+      ∑ x, ∑ i, T y a x * (pd b (fun z ↦ Y z i) y * pd i (fun z ↦ Z z x) y) := sw _ _ fun x i => by ring
+  have hB12 : ∑ x, ∑ i, T y a i * pd x (fun z ↦ Y z i) y * pd b (fun z ↦ Z z x) y =
+      ∑ x, ∑ i, T y a x * (pd b (fun z ↦ Z z i) y * pd i (fun z ↦ Y z x) y) := sw _ _ fun x i => by ring
+  linarith
+
+include hU hT hY hZ hy in
+/-- **The bracket of two Killing fields is Killing**, in coordinates: if `L_Y T = 0` and `L_Z T = 0` on `U`, then
+`L_{[Y,Z]} T = 0` at every point of `U`. -/
+theorem lieCo_bracketCo_eq_zero (hYk : ∀ z ∈ U, lieCo T Y z = 0) (hZk : ∀ z ∈ U, lieCo T Z z = 0) (a b : Fin n) :
+    lieCo T (bracketCo Y Z) y a b = 0 := by
+  rw [lieCo_bracketCo hU hT hY hZ hy]
+  have h0 : ∀ (W : (Fin n → ℝ) → Fin n → ℝ), (∀ z ∈ U, lieCo T W z = 0) → ∀ V : (Fin n → ℝ) → Fin n → ℝ,
+      lieCo (lieCo T W) V y a b = 0 := by
+    intro W hW V
+    have hev : ∀ i j, ∀ᶠ z in 𝓝 y, lieCo T W z i j = 0 := fun i j =>
+      Filter.mem_of_superset (hU.mem_nhds hy) fun z hz => by
+        show lieCo T W z i j = 0
+        rw [hW z hz]; rfl
+    simp only [lieCo]
+    have hpd : ∀ c i j, pd c (fun z => lieCo T W z i j) y = 0 := fun c i j =>
+      pd_eq_zero_of_eventually_eq_zero (hev i j) c
+    have hpt : ∀ i j, lieCo T W y i j = 0 := fun i j => by rw [hW y hy]; rfl
+    simp only [lieCo] at hpd hpt
+    simp [hpd, hpt]
+  rw [h0 Z hZk Y, h0 Y hYk Z, sub_zero]
 
 end Bracket
 

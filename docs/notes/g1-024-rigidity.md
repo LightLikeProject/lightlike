@@ -59,7 +59,8 @@ Differences:
    writing: Jacobi forces the rotation part of `[J, P]` to vanish, and the translation part of `[P, P]` is removed by
    `P' = P - (β/2) J`.
    Working plan for the next pieces (coordinates on a ball of `Fin 3 → ℝ`, the setting of `isometric_spaceForm`):
-   (a) `L_{[Y,Z]} T = L_Y (L_Z T) - L_Z (L_Y T)` for the coordinate Lie derivative
+   (a) (done: `lieCo_bracketCo`, `lieCo_bracketCo_eq_zero`) `L_{[Y,Z]} T = L_Y (L_Z T) - L_Z (L_Y T)` for the coordinate
+       Lie derivative
        `(L_Y T)_{ab} = Yᶜ ∂_c T_{ab} + ∂_a Yˡ T_{lb} + T_{al} ∂_b Yˡ` of a field of bilinear forms (second derivatives
        cancel by `pd_pd_comm`), so brackets of Killing fields are Killing;
    (b) with the normalization at `p` (`P_m(p)` a frame, `R_ab(p) = 0`, `∇R_ab(p)` the so(3) generators), the six values
