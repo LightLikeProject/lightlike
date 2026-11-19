@@ -1,4 +1,5 @@
 import Lightlike.Poincare.SnagGelfand
+import Mathlib.MeasureTheory.Measure.CharacteristicFunction.Basic
 
 /-!
 # The joint spectral measure of a unitary representation of `ℝⁿ` (SNAG)
@@ -9,13 +10,19 @@ For a strongly continuous unitary representation `T` of the additive group `ℝ�
 commute (`cayley_commute_of_commute`); the joint projection-valued measure of the `C_k` on their joint spectrum
 (`jointPVM`), pushed forward by the inverse Cayley map coordinatewise, is `P`. Its `k`-th marginal is the spectral
 measure of `A_k` (by the uniqueness in the spectral theorem, `eq_cayleyPVM_of_pmapIntegral_eq`), so
-`T(t e_k) = e^{itA_k} = ∫ e^{itp_k} dP(p)`, and the product over `k` gives the formula.
+`T(t e_k) = e^{itA_k} = ∫ e^{itp_k} dP(p)`, and the product over `k` gives the formula. The measure is unique
+(`jointSpectralMeasure_unique`: the scalar measures `⟨ψ, P(·)ψ⟩` are determined by their characteristic functions).
 
 ## References
 
 * E. Freitag, *Unitary representations of the Poincaré group, Wigner classification* (lecture notes, Heidelberg),
-  Chapter V, §5, Theorem 5.1 (Stone's theorem for `ℝⁿ`), page 146, and Definition 5.5 (projection-valued measures),
-  page 147.
+  Chapter V, §5, Theorem 5.1 (Stone's theorem for `ℝⁿ`, as a unitary equivalence with a multiplication
+  representation), page 146; Remark 5.3 (the operators `S(φ)` depend only on the representation), Remark 5.4 and
+  Definition 5.5 (projection-valued measures), page 147.
+
+Difference from the source (representation): Theorem 5.1 is stated in the projection-valued-measure form of Remarks
+5.3, 5.4 and Definition 5.5, not as a unitary equivalence with a multiplication representation. Uniqueness, the
+content of Remark 5.3, is `jointSpectralMeasure_unique`.
 -/
 
 open scoped InnerProductSpace IsMulCommutative
@@ -163,6 +170,45 @@ theorem exists_jointSpectralMeasure {T : (Fin n → ℝ) → (H ≃ₗᵢ[ℂ] H
   intro ψ
   have h := hs Finset.univ ψ
   rwa [Finset.univ_sum_single] at h
+
+/-! ## Uniqueness -/
+
+/-- **Uniqueness of the joint spectral measure**: two projection-valued measures on `ℝⁿ` with the same integrals
+of the characters `p ↦ e^{i⟨a, p⟩}` are equal (their scalar measures have the same characteristic functions). -/
+theorem jointSpectralMeasure_unique {P P' : ProjectionValuedMeasure (Fin n → ℝ) H}
+    (h : ∀ a : Fin n → ℝ, P.integral (fun p => Complex.exp (Complex.I * ((∑ k, a k * p k : ℝ) : ℂ))) =
+      P'.integral (fun p => Complex.exp (Complex.I * ((∑ k, a k * p k : ℝ) : ℂ)))) : P = P' := by
+  -- the scalar measures agree
+  have hassoc : ∀ ψ : H, P.assoc ψ = P'.assoc ψ := by
+    intro ψ
+    refine Measure.ext_of_charFunDual (funext fun L => ?_)
+    set a : Fin n → ℝ := fun k => L (Pi.single k 1)
+    have hL : ∀ v : Fin n → ℝ, Complex.exp ((L v : ℂ) * Complex.I) =
+        Complex.exp (Complex.I * ((∑ k, a k * v k : ℝ) : ℂ)) := by
+      intro v
+      have hv : L v = ∑ k, a k * v k := by
+        conv_lhs => rw [← Finset.univ_sum_single v]
+        rw [map_sum]
+        refine Finset.sum_congr rfl fun k _ => ?_
+        rw [show (Pi.single k (v k) : Fin n → ℝ) = v k • Pi.single k 1 by
+          rw [← Pi.single_smul, smul_eq_mul, mul_one], map_smul, smul_eq_mul, mul_comm]
+      rw [hv, mul_comm]
+    rw [charFunDual_apply, charFunDual_apply]
+    simp_rw [hL]
+    rw [← ProjectionValuedMeasure.inner_integral _ (expCoord_mem_bddMeasurable a Finset.univ),
+      ← ProjectionValuedMeasure.inner_integral _ (expCoord_mem_bddMeasurable a Finset.univ), h a]
+  refine ProjectionValuedMeasure.ext fun S => ?_
+  by_cases hS : MeasurableSet S
+  · have hb := (indicator_one_mem_bddMeasurable_iff (X := Fin n → ℝ)).2 hS
+    have hq : ∀ ψ : H, ⟪(P S - P' S) ψ, ψ⟫_ℂ = 0 := by
+      intro ψ
+      rw [_root_.sub_apply, inner_sub_left, ← inner_conj_symm, ← inner_conj_symm (P' S ψ),
+        ← ProjectionValuedMeasure.integral_indicator _ hS, ← ProjectionValuedMeasure.integral_indicator _ hS,
+        ProjectionValuedMeasure.inner_integral _ hb, ProjectionValuedMeasure.inner_integral _ hb, hassoc, sub_self]
+    have h0 := (inner_map_self_eq_zero ((P S - P' S : H →L[ℂ] H) : H →ₗ[ℂ] H)).1 hq
+    exact sub_eq_zero.1 (ContinuousLinearMap.coe_injective h0)
+  · rw [ProjectionValuedMeasure.apply_of_not_measurableSet _ hS,
+      ProjectionValuedMeasure.apply_of_not_measurableSet _ hS]
 
 end
 
