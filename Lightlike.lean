@@ -146,6 +146,7 @@ import Lightlike.Canonical.HamiltonianPm
 import Lightlike.Canonical.HamiltonianWEq
 import Lightlike.Canonical.Hypersurface
 import Lightlike.Canonical.HypersurfaceBridge
+import Lightlike.Canonical.InitialData
 import Lightlike.Canonical.HamiltonianBracket
 import Lightlike.Canonical.HamiltonianHHBracket
 import Lightlike.Canonical.HamiltonianDeriv

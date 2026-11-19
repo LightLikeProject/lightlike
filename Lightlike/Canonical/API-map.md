@@ -29,6 +29,13 @@ the unit `π`-gradient [4], the terms without derivatives of the lapses cancel i
 coefficient is `−2 ∇_σ π^{bσ}` [12], by index algebra of the Christoffel symbols [9] and of the derivative of the unit
 `π`-gradient [10] [11], and the momentum constraint in ADM form [8] closes the argument [13] {1}. On a hypersurface, a manifold without a global chart, the constraints are the sums over the atlas pieces of the chart integrals of tensor and density fields given by chart components with their change laws, and the bracket is the Gateaux derivative along chart families [14]; on `ℝᵈ` with constant chart families they are the chart constraints [15]; the three brackets on the hypersurface are open tasks (T-CA1-P4 to P6). [TODO]
 
+Two exact solutions give initial data that satisfy the constraints [16]. The slice `t = 0` of Schwarzschild in
+Schwarzschild coordinates carries the induced metric `diag((1 − 2M/r)⁻¹, r², r² sin²θ)` and zero momentum, since the
+shift vanishes and the slice is static; its Ricci tensor is not zero but its scalar curvature is, so both constraints
+hold {2}. The slice of spatially flat FLRW carries `a(t)² δ_ij` and the momentum `−2a'(t) δ^{ij}` of its extrinsic
+curvature; the Hamiltonian constraint with the density of the comoving fluid holds exactly when the first Friedmann
+equation does, and the momentum constraint holds {2} {3}.
+
 A grid computation in dimension two (`scripts/adm_algebra_check.py`) supports the three brackets; with the kinetic
 coefficient `1/2` of dimension three, used in dimension two, the bracket of two Hamiltonian constraints differs from
 the momentum constraint of the structure function.
@@ -52,8 +59,14 @@ the momentum constraint of the structure function.
 13. Lightlike/Canonical/HamiltonianHHBracket.lean - `Lightlike.Canonical.bracket_hamiltonian_hamiltonian_of_smooth`
 14. Lightlike/Canonical/Hypersurface.lean - `Lightlike.Canonical.momentumConstraintM`, `Lightlike.Canonical.hamiltonianConstraintM`, `Lightlike.Canonical.admBracketM`
 15. Lightlike/Canonical/HypersurfaceBridge.lean - `Lightlike.Canonical.constraintM_bridge_global`
+16. Lightlike/Canonical/InitialData.lean - `Lightlike.Canonical.schSlice_hamiltonianConstraint`, `Lightlike.Canonical.schSlice_momentumConstraint`,
+    `Lightlike.Canonical.flrw_hamiltonian_iff`, `Lightlike.Canonical.flrw_momentumConstraint`
 
 ## References
 
 1. T. Thiemann, *Modern Canonical Quantum General Relativity*, Cambridge University Press, 2007, chapter 1;
    R. Arnowitt, S. Deser and C. W. Misner, *The dynamics of general relativity*, equations (3.14a), (3.14b).
+2. E. Gourgoulhon, *3+1 Formalism and Bases of Numerical Relativity*, arXiv:gr-qc/0703035, equations (4.19), (4.22),
+   (4.104), (4.108), (7.16), (7.17).
+3. J. C. Aurrekoetxea, K. Clough and E. A. Lim, *Cosmology using numerical relativity*, arXiv:2409.01939, equations (3),
+   (23), (25), (26).
