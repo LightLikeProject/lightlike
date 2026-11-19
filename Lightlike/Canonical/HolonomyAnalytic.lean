@@ -171,4 +171,55 @@ theorem meetFrontier_finite {e f : Edge} (he : e.IsAnalytic) (hf : f.IsAnalytic)
 
 end Edge
 
+
+namespace Edge
+
+/-- **The meeting set between two cut points.** For regular analytic `e`, `f`, on an open interval `(a, b) ⊆ [t₀, t₁]`
+that contains no boundary point of the meeting set, `e` either avoids the image of `f` or lies in it on all of `[a, b]`. -/
+theorem meet_dichotomy {e f : Edge} {a b : ℝ} (hab : a < b) (hsub : Icc a b ⊆ Icc e.t₀ e.t₁)
+    (hfr : ∀ s ∈ Ioo a b, s ∉ meetFrontier e f) :
+    (∀ s ∈ Ioo a b, e.path s ∉ f.path '' Icc f.t₀ f.t₁) ∨ (∀ s ∈ Icc a b, e.path s ∈ f.path '' Icc f.t₀ f.t₁) := by
+  set F := f.path '' Icc f.t₀ f.t₁ with hF
+  have hFc : IsClosed F := (isCompact_Icc.image f.smooth.continuous).isClosed
+  have hec : Continuous e.path := e.smooth.continuous
+  classical
+  set χ : ℝ → Bool := fun s => decide (e.path s ∈ F) with hχ
+  have hloc : ContinuousOn χ (Ioo a b) := by
+    intro s hs
+    refine tendsto_nhds_of_eventually_eq ?_
+    have hs' : s ∈ Icc e.t₀ e.t₁ := hsub (Ioo_subset_Icc_self hs)
+    have hnhds : Ioo a b ∈ 𝓝 s := isOpen_Ioo.mem_nhds hs
+    by_cases hin : e.path s ∈ F
+    · have hev : ∀ᶠ s' in 𝓝[Icc e.t₀ e.t₁] s, e.path s' ∈ F := by
+        by_contra hcon
+        exact hfr s hs ⟨hs', hin, hcon⟩
+      have hev' : ∀ᶠ s' in 𝓝 s, e.path s' ∈ F := by
+        have hI : Icc e.t₀ e.t₁ ∈ 𝓝 s := Filter.mem_of_superset hnhds (Ioo_subset_Icc_self.trans hsub)
+        rwa [nhdsWithin_eq_nhds.2 hI] at hev
+      filter_upwards [nhdsWithin_le_nhds hev'] with s' hs'
+      simp [hχ, hs', hin]
+    · have hev' : ∀ᶠ s' in 𝓝 s, e.path s' ∉ F :=
+        hec.continuousAt.preimage_mem_nhds (hFc.isOpen_compl.mem_nhds hin)
+      filter_upwards [nhdsWithin_le_nhds hev'] with s' hs'
+      simp [hχ, hs', hin]
+  have hconst : ∀ s ∈ Ioo a b, ∀ s' ∈ Ioo a b, χ s = χ s' := fun s hs s' hs' =>
+    isPreconnected_Ioo.constant hloc hs hs'
+  set m := (a + b) / 2 with hm
+  have hmI : m ∈ Ioo a b := ⟨by linarith, by linarith⟩
+  by_cases hmF : e.path m ∈ F
+  · right
+    have hall : ∀ s ∈ Ioo a b, e.path s ∈ F := fun s hs => by
+      have := hconst s hs m hmI
+      simpa [hχ, hmF] using this
+    have hcl : closure (Ioo a b) ⊆ e.path ⁻¹' F :=
+      closure_minimal hall (hFc.preimage hec)
+    rw [closure_Ioo hab.ne] at hcl
+    exact fun s hs => hcl hs
+  · left
+    intro s hs hsF
+    have := hconst s hs m hmI
+    simp [hχ, hsF, hmF] at this
+
+end Edge
+
 end Lightlike.Canonical
