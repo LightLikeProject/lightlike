@@ -259,6 +259,7 @@ import Lightlike.FourD.Tests
 import Lightlike.Geometry.ProjectiveSpace
 import Lightlike.GR.ComplexMinkowski
 import Lightlike.GR.SpinorHelicity
+import Lightlike.GR.ThreePointAmplitude
 import Lightlike.GR.PenroseTransform
 import Lightlike.GR.WeylSpinor
 import Lightlike.GR.ZeroRestMass
