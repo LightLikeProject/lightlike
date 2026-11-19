@@ -654,6 +654,7 @@ import Lightlike.Poincare.ConeL2
 import Lightlike.Poincare.ConeMeasure
 import Lightlike.Poincare.GeneratorCurves
 import Lightlike.Poincare.GeneratorL2
+import Lightlike.Poincare.Imprimitivity
 import Lightlike.Poincare.InducedGeneric
 import Lightlike.Poincare.InducedL2
 import Lightlike.Poincare.InducedMassive
