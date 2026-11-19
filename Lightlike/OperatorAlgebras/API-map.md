@@ -78,6 +78,8 @@ For a complex Hilbert space `Z` with a Hilbert basis indexed by a linearly order
 
 In a Fock representation, a contraction `p` of `h` has a second quantization `Γ(p)`, the contraction with `Γ(p) W(f) Ω = exp((‖p f‖² - ‖f‖²)/4) W(p f) Ω`, from the positive semidefinite kernel `exp(⟪f, g⟫/2) - exp(⟪p f, p g⟫/2)` (Schur's product theorem); it is functorial, `Γ(p)* = Γ(p*)`, unitary iff `p` is, and for a unitary `U` the unique implementer of `U` with `Γ(U) Ω = Ω`, every implementer being a phase times `Γ(U)`; a strongly continuous unitary group `U(t)` gives the strongly continuous group `Γ(U(t))`, whose generator is `dΓ` [87] {7}; `Γ(0)` is the vacuum projection [88].
 
+For finitely many modes, `dΓ(h) = ∑ᵢⱼ hᵢⱼ aᵢ* aⱼ` in any algebra whose `aᵢ`, `aᵢ*` satisfy the CAR or the CCR has `[dΓ(h), a*(w)] = a*(hw)`, `[dΓ(h), a(w)] = -a(h* w)` and `[dΓ(h₁), dΓ(h₂)] = dΓ([h₁, h₂])` [111, 112], and Physlib's bosonic ladder systems are such algebras [113]. The same commutators hold for a finite-rank `h = ∑ₖ |uₖ⟩⟨vₖ|` on any inner product space, with `dΓ(h) = ∑ₖ a*(uₖ) a(vₖ)` [114]. On the coordinate tensor power `ℓ²(Fin n → ι)` of a Hilbert space with a Hilbert basis indexed by `ι`, `h` acting on one slot has norm at most `‖h‖`, and `dΓₙ(h) = ∑ⱼ 1 ⊗ ⋯ ⊗ h ⊗ ⋯ ⊗ 1` has norm at most `n ‖h‖` [115].
+
 For a Hamiltonian given by a Hilbert basis and real eigenvalues `λₙ` with `∑ e^{-βλₙ} < ∞` (every `H` with a trace-class `e^{-βH}` has this form {4}), the Gibbs state `ω(A) = ∑ e^{-βλₙ} ⟪bₙ, A bₙ⟫ / Z` is a state invariant under `τᵗ(A) = e^{itH} A e^{-itH}`, and the double series `F_{A,B}(z) = ∑ₘₙ e^{-βλₘ} ⟪bₘ, A bₙ⟫ ⟪bₙ, B bₘ⟫ e^{iz(λₙ - λₘ)} / Z`, dominated on the strip `0 ≤ Im z ≤ β` by `|⟪bₘ, A bₙ⟫| |⟪bₙ, B bₘ⟫| (e^{-βλₘ} + e^{-βλₙ})`, is bounded and continuous there, analytic inside, with `F(t) = ω(A τᵗ(B))` and `F(t + iβ) = ω(τᵗ(B) A)`: the KMS condition {9} [89]. The oscillator `λₙ = n` is an example for every `β > 0`, and at `β = 0` the partition sum diverges [90].
 
 The states of `C(X)` for a compact Hausdorff `X` are the positive linear functionals with `ω 1 = 1`, and the pure ones are the extreme points of this convex set. A pure state is multiplicative: for `0 ≤ g ≤ 1` it splits as `ω(g) ω(· g)/ω(g) + ω(1 - g) ω(· (1 - g))/ω(1 - g)`, so `ω(f g) = ω(f) ω(g)`; a multiplicative state is continuous, its kernel is a closed maximal ideal, so it is the evaluation at a point; and every evaluation is pure {11} [92]. On `C(Bool)` the average of the two evaluations is a mixed state [93]. For a locally compact Hausdorff `X`, a state of `C₀(X)` (positive, of norm one) extends to the state `F ↦ ω(F - F(∞)) + F(∞)` of `C(X̃)` on the one-point compactification, a pure one to a pure one, so the pure states of `C₀(X)` are again the evaluations at the points of `X` [94].
@@ -399,6 +401,20 @@ The Schatten sum `‖K‖_p^p` is the supremum of `∑ₖ |⟪ψₖ, K ϕₖ⟫|
     `OperatorAlgebras.CompactSpectral.exists_tendsto_schattenNorm`
 110. Lightlike/OperatorAlgebras/Spectral/TestsSchatten.lean - `OperatorAlgebras.CompactSpectral.schattenSum_two_invDiag_lt_top`,
     `OperatorAlgebras.CompactSpectral.schattenSum_one_invDiag_eq_top` (diag(1/(n+1)) is in J₂ and not in J₁)
+111. Lightlike/OperatorAlgebras/SecondQuantFinite.lean - `OperatorAlgebras.SecondQuantFinite.IsModeAlgebra`, `OperatorAlgebras.SecondQuantFinite.isModeAlgebra_car`,
+    `OperatorAlgebras.SecondQuantFinite.isModeAlgebra_ccr`, `OperatorAlgebras.SecondQuantFinite.IsModeAlgebra.four`, `OperatorAlgebras.SecondQuantFinite.commutator_number`, `OperatorAlgebras.SecondQuantFinite.dGamma`,
+    `OperatorAlgebras.SecondQuantFinite.dGamma_sub`, `OperatorAlgebras.SecondQuantFinite.dGamma_mul`, `OperatorAlgebras.SecondQuantFinite.commutator_dGamma`, `OperatorAlgebras.SecondQuantFinite.dGamma_commutator_creation`,
+    `OperatorAlgebras.SecondQuantFinite.dGamma_commutator_annihilation`, `OperatorAlgebras.SecondQuantFinite.dGamma_commutator`
+112. Lightlike/OperatorAlgebras/TestsSecondQuantFinite.lean - `OperatorAlgebras.SecondQuantFinite.annOne`, `OperatorAlgebras.SecondQuantFinite.creOne`, `OperatorAlgebras.SecondQuantFinite.isModeAlgebra_oneMode`,
+    `OperatorAlgebras.SecondQuantFinite.dGamma_oneMode`, `OperatorAlgebras.SecondQuantFinite.not_isModeAlgebra_oneMode_boson`
+113. Lightlike/OperatorAlgebras/SecondQuantLadder.lean - `OperatorAlgebras.SecondQuantFinite.isModeAlgebra_ladderSystem`, `OperatorAlgebras.SecondQuantFinite.dGamma_ladderSystem`
+114. Lightlike/OperatorAlgebras/SecondQuantRank.lean - `OperatorAlgebras.SecondQuantFinite.IsFieldAlgebra`, `OperatorAlgebras.SecondQuantFinite.rankOp`, `OperatorAlgebras.SecondQuantFinite.rankOpAdj`, `OperatorAlgebras.SecondQuantFinite.dGammaRank`,
+    `OperatorAlgebras.SecondQuantFinite.dGammaRank_commutator_creation`, `OperatorAlgebras.SecondQuantFinite.dGammaRank_commutator_annihilation`, `OperatorAlgebras.SecondQuantFinite.compLeft`, `OperatorAlgebras.SecondQuantFinite.rankOp_comp`,
+    `OperatorAlgebras.SecondQuantFinite.dGammaRank_commutator`
+115. Lightlike/OperatorAlgebras/SecondQuantSlot.lean - `OperatorAlgebras.slotMap`, `OperatorAlgebras.norm_slotMap_le`,
+    `OperatorAlgebras.coordL`, `OperatorAlgebras.uncoordL`, `OperatorAlgebras.slotC`, `OperatorAlgebras.norm_slotC_le`,
+    `OperatorAlgebras.slotEquiv`, `OperatorAlgebras.slotOp`, `OperatorAlgebras.norm_slotOp_le`, `OperatorAlgebras.dGammaTensor`,
+    `OperatorAlgebras.norm_dGammaTensor_le`
 
 ## References
 
@@ -419,7 +435,7 @@ The Schatten sum `‖K‖_p^p` is the supremum of `∑ₖ |⟪ψₖ, K ϕₖ⟫|
 7. J. Dereziński, *Introduction to representations of the canonical commutation and anticommutation
    relations*, in *Large Coulomb Systems*, Lecture Notes in Physics 695, Springer, 2006, arXiv:math-ph/0511030:
    Theorem 4 and Corollary 1 (Stone-von Neumann), Theorem 10 and Corollary 2 (the CAR over `ℝ²ⁿ`), Sections 5.2,
-   5.3, 5.5, 6.4 and 7.1, Theorems 13, 24 and 28 (Fock spaces and second quantization), Section 9.1, Theorems 37
+   5.3, 5.5, 6.4 and 7.1, Theorems 13, 18, 24 and 28 (Fock spaces and second quantization), Section 9.1, Theorems 37
    and 39 (quasi-free states; Theorem 39 (1) in the corrected form `½(η + iω)`).
 8. M. Faulhuber, *Time-Frequency Analysis*, lecture notes, 2022, Section 7.3.1 (von Neumann's proof of the
    Stone-von Neumann theorem).
