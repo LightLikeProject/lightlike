@@ -2097,14 +2097,29 @@
     "snippet": "(2.96) This means that the helicity structure uniquely fixes the 3-particle amplitude up to an overall constant! This may remind you of a closely related fact, namely that in a conformal field theory, the 3-point correla",
     "why": null
    },
+   "eq. (3.3)": {
+    "verified": true,
+    "snippet": "(3.3) zI 2PI · RI As a result of (A) and (B), we can consider our amplitude An in terms of the shifted momenta p̂µi instead of the original momenta pµi . In particular, it is useful to study the shifted amplitude as a fu",
+    "why": null
+   },
    "eq. (3.30)": {
     "verified": true,
     "snippet": "(3.30) where A4 is your friend the Parke-Taylor amplitude and the Mandelstam variable is s12 = −(p1 + p2 )2 . When you are done, look up ref. [20] to see how difficult it is to do this calculation with Feynman diagrams.",
     "why": null
+   },
+   "eq. (3.4)": {
+    "verified": true,
+    "snippet": "(3.4) zI z where Bn is the residue of the pole at z = ∞. By taking z → 1/w it is easily seen that Bn is the O(z 0 ) term in the z → ∞ expansion of An . Now, then, so what? Well, at a zI -pole the propagator 1/P̂I2 goes o",
+    "why": null
+   },
+   "eq. (3.8)": {
+    "verified": true,
+    "snippet": "(3.8) No other spinors are shifted. We call this a [i, ji-shift. Note that [îk] and hĵki are linear in z for k 6= i, j while hîĵi = hiji, [îĵ] = [ij], hîki = hiki, and [ĵk] = [jk] remain unshifted. I Exercise 3.1",
+    "why": null
    }
   },
-  "citations": 736,
-  "citations_via": "OpenAlex"
+  "citations": 456,
+  "citations_via": "Semantic Scholar"
  },
  "engle-pereira-2009": {
   "checked": "2026-11-16",
