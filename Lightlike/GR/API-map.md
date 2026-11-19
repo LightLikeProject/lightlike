@@ -30,7 +30,7 @@ has a limit in the manifold [15]. Hence a geodesic of an extension that starts i
 does not leave it [16]. The Kruskal-Szekeres spacetime is inextendible: it has no extension to a connected Hausdorff
 Lorentzian manifold with a smooth metric {4} [17]. A point of the Kruskal chart reaches the infinity of region I
 along a future-directed causal curve exactly when `T < X`, and the boundary `T = X` of that set is the event
-horizon {3} [18]. The whole Kruskal manifold
+horizon {3} [18]. The coordinate field `∂_T` is a time orientation of the Kruskal manifold [19]. The whole Kruskal manifold
 `{X² - T² > -1} × S²` is given in one global chart as a Lorentzian manifold [9], of which `(T, X, θ, φ)` is a
 chart [10]; it solves the vacuum equations [11], and in every extension of it, in the sense of {4}, a sequence
 approaching the singularity has no limit [12].
@@ -73,6 +73,7 @@ approaching the singularity has no limit [12].
 17. Lightlike/GR/KruskalMaximal.lean - `kruskal_isInextendible`
 18. Lightlike/GR/KruskalHorizon.lean - `ReachesKruskalInfinity`, `reachesKruskalInfinity_iff`,
     `frontier_kruskal_past_of_infinity`
+19. Lightlike/GR/KruskalOrientation.lean - `kruskalOrientation`, `kruskal_timeOrientable`
 
 ## References
 
