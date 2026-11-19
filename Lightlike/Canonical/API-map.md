@@ -47,7 +47,8 @@ action density adds to the Palatini term the dual term weighted by `1/γ`; on th
 vanishes by the first Bianchi identity and the Palatini term is `det e · R`, so the Holst density is the
 Einstein–Hilbert density for every `γ` [22] {3} {4}; the dual term of a constant rotation connection is not zero [22]. The densitized triad contracted with the variation of
 the spin connection is a divergence, so `∫ E δΓ = 0` and the functional derivative of `∫ Γ E` is `Γ`, the fact behind
-the canonical transformation to the Ashtekar–Barbero variables [23] {4}.
+the canonical transformation to the Ashtekar–Barbero variables [23] {4}; the derivative of the spin connection along a
+path of co-triads satisfies the linearised compatibility, so this holds for the actual variation of `Γ` [24].
 
 A grid computation in dimension two (`scripts/adm_algebra_check.py`) supports the three brackets; with the kinetic
 coefficient `1/2` of dimension three, used in dimension two, the bracket of two Hamiltonian constraints differs from
@@ -90,6 +91,8 @@ the momentum constraint of the structure function.
     `Lightlike.Canonical.palatini_tetradConn`, `Lightlike.Canonical.holstDensity_tetradConn`,
     `Lightlike.Canonical.holstStar_rotation`
 23. Lightlike/Canonical/AshtekarCanonical.lean - `Lightlike.Canonical.E_dSpin_eq_div`, `Lightlike.Canonical.integral_E_dSpin_eq_zero`
+24. Lightlike/Canonical/SpinVariation.lean - `Lightlike.Canonical.linCompat_dSpin`,
+    `Lightlike.Canonical.integral_E_deriv_spinConn_eq_zero`
 ## References
 
 1. T. Thiemann, *Modern Canonical Quantum General Relativity*, Cambridge University Press, 2007, chapter 1;
