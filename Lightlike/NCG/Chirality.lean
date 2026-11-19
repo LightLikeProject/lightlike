@@ -21,7 +21,8 @@ is `conj(yⱼ₀₀)` times `J π(E₀₀) J`.
 * `chiScalar_mul_self`, `conj_chiScalar`, `chiScalar_eq_one_or`, `chiScalar_symm`: `cᵢⱼ = ±1` and `cⱼᵢ = cᵢⱼ` on nonzero
   vertices;
 * `projC`, `corner`, `corner_comp`, `projC_idem`, `trace_grading_projC`: `Tr(γ π(E^i_αα) J π(E^j_ββ) J) = cᵢⱼ rᵢⱼ`, the
-  intersection form in the complex case.
+  intersection form in the complex case;
+* `trace_grading_sum`: the trace over sums of diagonal corners.
 -/
 
 open scoped InnerProductSpace
@@ -239,6 +240,22 @@ theorem trace_grading_projC (hℂ : IsComplexLinear T) (G : Grading T R) {m : �
   rw [hP, ← LinearMap.comp_assoc, hγA, LinearMap.comp_assoc, LinearMap.trace_comp_comm', LinearMap.comp_assoc,
     LinearMap.comp_assoc, hBA, show projC R i j 0 0 ∘ₗ projC R i j 0 0 = projC R i j 0 0 from projC_idem R i j 0 0]
   exact htr0
+
+/-- **The trace over sums of corners**: `Tr(γ (∑_t π(E^{k_t}_{α_t α_t})) (∑_u J π(E^{l_u}_{β_u β_u}) J)) =
+∑_t ∑_u c_{k_t l_u} r_{k_t l_u}`. -/
+theorem trace_grading_sum (hℂ : IsComplexLinear T) (G : Grading T R) {m : ℕ} {x y : Fin m → MatSum n}
+    (hG : IsOrientable R G x y) {s s' : Type*} [Fintype s] [Fintype s'] (k : s → ι) (α : ∀ t, Fin (n (k t)))
+    (l : s' → ι) (β : ∀ u, Fin (n (l u))) :
+    LinearMap.trace ℂ H ((G.γ : H →ₗ[ℂ] H) * (∑ t, lU T (k t) (α t) (α t)) * (∑ u, rU R (l u) (β u) (β u))) =
+      ∑ t, ∑ u, chiScalar x y (k t) (l u) * multiplicity R (k t) (l u) := by
+  have hexp : (G.γ : H →ₗ[ℂ] H) * (∑ t, lU T (k t) (α t) (α t)) * (∑ u, rU R (l u) (β u) (β u)) =
+      ∑ t, ∑ u, (G.γ : H →ₗ[ℂ] H) * (lU T (k t) (α t) (α t) * rU R (l u) (β u) (β u)) := by
+    simp only [Finset.mul_sum, Finset.sum_mul, mul_assoc]
+    exact Finset.sum_comm
+  rw [hexp, map_sum]
+  refine Finset.sum_congr rfl fun t _ => ?_
+  rw [map_sum]
+  exact Finset.sum_congr rfl fun u _ => trace_grading_projC R hℂ G hG (k t) (l u) (α t) (β u)
 
 end
 

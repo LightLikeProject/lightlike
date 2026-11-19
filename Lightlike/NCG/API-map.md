@@ -170,7 +170,7 @@ Krajewski's Table 1: `μ_{iαj} μ_{iᾱj} ≥ 0` for a complex summand `i` agai
     `NCG.chiScalar`, `NCG.grading_lU`, `NCG.grading_rU`, `NCG.grading_smul_of_mem_Vsub`, `NCG.lU_pi_lU'`,
     `NCG.rU_rightOp_rU'`, `NCG.chiScalarAt`, `NCG.grading_smul_of_corner`, `NCG.chiScalarAt_eq`,
     `NCG.chiScalar_mul_self`, `NCG.conj_chiScalar`, `NCG.chiScalar_eq_one_or`, `NCG.chiScalar_symm`, `NCG.projC`,
-    `NCG.corner`, `NCG.corner_comp`, `NCG.projC_idem`, `NCG.trace_grading_projC`
+    `NCG.corner`, `NCG.corner_comp`, `NCG.projC_idem`, `NCG.trace_grading_projC`, `NCG.trace_grading_sum`
 26. Lightlike/NCG/TableOne.lean - `NCG.IsOrientableA`, `NCG.grading_comm_of_mem_span`, `NCG.Complexification.grading`,
     `NCG.Complexification.isOrientable`, `NCG.chiScalarAt_conj`, `NCG.Xm`, `NCG.Rm`, `NCG.muSigned`,
     `NCG.exists_ne_zero_of_multiplicity`, `NCG.muSigned_mul_nonneg_of`, `NCG.idxH_zero`, `NCG.table1_complex_complex`,
