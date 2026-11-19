@@ -19,6 +19,8 @@ For the embedding of the `n`-particle fermionic Fock space `Γₙ` (the closed s
   the embedding `Eₙ ψ (f) = (n!)^{-1/2} sign(f) ψ(image f)`, a contraction, isometric on the `n`-particle vectors;
 * `permEquiv`, `permL`, `antisym`, `antisym_apply`, `embFun_comp`, `antisym_embL`: the antisymmetrizer, and `A Eₙ = Eₙ`;
 * `tensorFun`, `hasSum_norm_tensorFun`: `c ⊗ Φ` in coordinates, `‖c ⊗ Φ‖² = ‖c‖² ‖Φ‖²`;
+* `hasSum_norm_sq_lp`, `memℓp_tensorFun`, `creTL`, `creTL_apply`, `norm_creTL`, `creT`, `creT_apply`, `slotOp_zero_creT`:
+  creation `Φ ↦ w ⊗ Φ` on the tensor power, and `h` on slot `0` of `w ⊗ Φ` is `(h w) ⊗ Φ`;
 * `norm_embCLM_le`, `dGammaFock`, `norm_dGammaFock_le`: `dΓₙ₊₁(h) = Eₙ₊₁* (∑ⱼ hⱼ) Eₙ₊₁` and `‖dΓₙ₊₁(h)‖ ≤ (n + 1) ‖h‖`.
 -/
 
@@ -321,6 +323,83 @@ lemma hasSum_norm_tensorFun {c : ι → ℂ} {Φ : (Fin n → ι) → ℂ} {s t 
   · simpa only [Real.norm_eq_abs, abs_pow, abs_norm] using hΦ.summable
 
 end Tensor
+
+section TensorCre
+
+variable {Z : Type*} [NormedAddCommGroup Z] [InnerProductSpace ℂ Z] [CompleteSpace Z] (b : HilbertBasis ι ℂ Z)
+variable {n : ℕ}
+
+/-- `‖Φ‖²` as a sum of squares. -/
+lemma hasSum_norm_sq_lp {α : Type*} (Φ : lp (fun _ : α => ℂ) 2) : HasSum (fun a => ‖Φ a‖ ^ 2) (‖Φ‖ ^ 2) := by
+  have h := lp.hasSum_norm (by norm_num : 0 < (2 : ENNReal).toReal) Φ
+  simpa only [ENNReal.toReal_ofNat, Real.rpow_two] using h
+
+/-- `w ⊗ Φ` is square-summable. -/
+lemma memℓp_tensorFun (w : Z) (Φ : lp (fun _ : Fin n → ι => ℂ) 2) : Memℓp (tensorFun (b.repr w) Φ) 2 := by
+  refine memℓp_gen ?_
+  simpa only [ENNReal.toReal_ofNat, Real.rpow_two] using
+    (hasSum_norm_tensorFun (SecondQuantSlot.hasSum_repr_sq b w) (hasSum_norm_sq_lp Φ)).summable
+
+/-- **Creation on the tensor power**, `Φ ↦ w ⊗ Φ`, a linear map. -/
+noncomputable def creTL (w : Z) : lp (fun _ : Fin n → ι => ℂ) 2 →ₗ[ℂ] lp (fun _ : Fin (n + 1) → ι => ℂ) 2 where
+  toFun Φ := ⟨tensorFun (b.repr w) Φ, memℓp_tensorFun b w Φ⟩
+  map_add' Φ Ψ := by
+    apply Subtype.ext
+    funext f
+    show tensorFun (b.repr w) (Φ + Ψ : lp _ 2) f = tensorFun (b.repr w) Φ f + tensorFun (b.repr w) Ψ f
+    simp [tensorFun, lp.coeFn_add, mul_add]
+  map_smul' c Φ := by
+    apply Subtype.ext
+    funext f
+    show tensorFun (b.repr w) (c • Φ : lp _ 2) f = c * tensorFun (b.repr w) Φ f
+    simp [tensorFun, lp.coeFn_smul]
+    ring
+
+/-- The coefficients of `w ⊗ Φ`. -/
+lemma creTL_apply (w : Z) (Φ : lp (fun _ : Fin n → ι => ℂ) 2) (f : Fin (n + 1) → ι) :
+    creTL b w Φ f = b.repr w (f 0) * Φ (Fin.tail f) := rfl
+
+/-- **`‖w ⊗ Φ‖ = ‖w‖ ‖Φ‖`.** -/
+lemma norm_creTL (w : Z) (Φ : lp (fun _ : Fin n → ι => ℂ) 2) : ‖creTL b w Φ‖ = ‖w‖ * ‖Φ‖ := by
+  have h1 := hasSum_norm_sq_lp (creTL b w Φ)
+  have h2 := hasSum_norm_tensorFun (SecondQuantSlot.hasSum_repr_sq b w) (hasSum_norm_sq_lp Φ)
+  have h : ‖creTL b w Φ‖ ^ 2 = (‖w‖ * ‖Φ‖) ^ 2 := by rw [mul_pow]; exact h1.unique h2
+  exact (pow_left_inj₀ (norm_nonneg _) (by positivity) two_ne_zero).mp h
+
+/-- **Creation on the tensor power** as a bounded operator of norm `≤ ‖w‖`. -/
+noncomputable def creT (w : Z) : lp (fun _ : Fin n → ι => ℂ) 2 →L[ℂ] lp (fun _ : Fin (n + 1) → ι => ℂ) 2 :=
+  (creTL b w).mkContinuous ‖w‖ fun Φ => (norm_creTL b w Φ).le
+
+/-- The coefficients of `creT`. -/
+lemma creT_apply (w : Z) (Φ : lp (fun _ : Fin n → ι => ℂ) 2) (f : Fin (n + 1) → ι) :
+    creT b w Φ f = b.repr w (f 0) * Φ (Fin.tail f) := rfl
+
+/-- **`h` on slot `0` of `w ⊗ Φ` is `(h w) ⊗ Φ`.** -/
+lemma slotOp_zero_creT (h : Z →L[ℂ] Z) (w : Z) (Φ : lp (fun _ : Fin n → ι => ℂ) 2) :
+    SecondQuantSlot.slotOp b 0 h (creT b w Φ) = creT b (h w) Φ := by
+  ext f
+  set e := SecondQuantSlot.slotEquiv (ι := ι) (n := n) 0
+  have he : ∀ g : Fin (n + 1) → ι, e g = (Fin.tail g, g 0) := fun g => by
+    simp [e, SecondQuantSlot.slotEquiv, Fin.insertNthEquiv, Fin.removeNth_zero]
+  have hesymm : ∀ (m : Fin n → ι) (k : ι), e.symm (m, k) = Fin.cons k m := fun m k => by
+    apply e.injective
+    rw [Equiv.apply_symm_apply, he, Fin.tail_cons, Fin.cons_zero]
+  have hfib : ∀ m : Fin n → ι, SecondQuantSlot.fiber
+      ((SecondQuantSlot.reindexL e).symm (creT b w Φ)) m = Φ m • b.repr w := fun m => by
+    ext k
+    show (creT b w Φ) (e.symm (m, k)) = (Φ m • b.repr w) k
+    rw [hesymm, creT_apply, Fin.cons_zero, Fin.tail_cons, lp.coeFn_smul, Pi.smul_apply, smul_eq_mul, mul_comm]
+  show (SecondQuantSlot.slotC b h ((SecondQuantSlot.reindexL e).symm (creT b w Φ))) (e f) = creT b (h w) Φ f
+  rw [he f, creT_apply]
+  show b.repr ((SecondQuantSlot.slotMap h (SecondQuantSlot.uncoordL b
+      ((SecondQuantSlot.reindexL e).symm (creT b w Φ)))) (Fin.tail f)) (f 0) = _
+  rw [SecondQuantSlot.slotMap_apply]
+  show b.repr (h (b.repr.symm (SecondQuantSlot.fiber ((SecondQuantSlot.reindexL e).symm (creT b w Φ)) (Fin.tail f))))
+    (f 0) = _
+  rw [hfib, map_smul, LinearIsometryEquiv.symm_apply_apply, map_smul, map_smul, lp.coeFn_smul, Pi.smul_apply,
+    smul_eq_mul, mul_comm]
+
+end TensorCre
 
 section Gamma
 
