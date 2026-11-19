@@ -49,8 +49,7 @@ lemma formTriv_apply (x₁ : M) {y : M} (hy : y ∈ (chartTriv n x₁).baseSet)
     exact ⟨hy, mem_univ _⟩
   rw [hom_trivializationAt_apply]
   simp only [ContinuousLinearMap.inCoordinates, ContinuousLinearMap.comp_apply,
-    Trivialization.continuousLinearMapAt_apply, Trivialization.coe_linearMapAt_of_mem _ hb,
-    hom_trivializationAt_apply]
+    Trivialization.continuousLinearMapAt_apply_of_mem _ hb, hom_trivializationAt_apply]
   simp
 
 /-- **A symmetric tensor field with components `ρ S` in the chart at `x₁`.** -/

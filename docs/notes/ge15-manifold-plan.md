@@ -156,3 +156,18 @@ derivative (`eh_first_variation_of_cover`).
 
 Open: the converse "stationary implies Einstein's equation" for the manifold action. It needs test tensor
 fields `ψ (E_ab + E_ba)` built from chart data as smooth sections.
+
+## Catalogue draft (for the integrator; `docs/results.yaml` is not edited by this stream)
+
+To be used only once the files compile and the gate is green.
+
+* LL-XXXX-h. **First variation of the Einstein–Hilbert action on a manifold.**
+  `Lightlike.eh_first_variation_manifold_compact` (`Lightlike/Spacetime/EHManifold/CompactVariation.lean`).
+  For a pseudo-Riemannian metric `g` on a smooth manifold and a smooth symmetric tensor field `h` vanishing
+  outside a compact set `K`: `d/dt|₀ ∫_K (R(g + t h) − 2Λ) d vol_{g + t h} = −∫_K ⟨G + Λ g, h⟩_g d vol_g`.
+  Source: Carroll, gr-qc/9712019, ch. 4, (4.66), p. 116 (read). Differences: convention (metric varied, not
+  its inverse); representation (action over a compact set containing the support); `Λ` added; any signature.
+* LL-XXXX-i. **Stationary points of the Einstein–Hilbert action are the solutions of Einstein's equation.**
+  `Lightlike.isEHStationary_iff` (`Lightlike/Spacetime/EHManifold/ManifoldStationary.lean`).
+  Source: Carroll, ibid., (4.67), p. 116 (read). Difference: representation (Einstein's equation is stated in
+  the components of every chart, as the vanishing of the symmetric part of `R^{αβ} − ½ R g^{αβ} + Λ g^{αβ}`).

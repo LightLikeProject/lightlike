@@ -75,8 +75,11 @@ lemma contMDiff_chartExtend (hη : ContDiff ℝ ∞ η) :
   refine contMDiff_of_locally_contMDiffOn fun p => ?_
   by_cases hp : p ∈ (extChartAt 𝓘(ℝ, Fin n → ℝ) x₁).source
   · refine ⟨_, isOpen_extChartAt_source x₁, hp, ?_⟩
-    exact (hη.contMDiff.comp_contMDiffOn (contMDiffOn_extChartAt (x := x₁))).congr
-      fun q hq => chartExtend_of_mem x₁ hq
+    have hc : ContMDiffOn 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ, Fin n → ℝ) ∞ (extChartAt 𝓘(ℝ, Fin n → ℝ) x₁)
+        (extChartAt 𝓘(ℝ, Fin n → ℝ) x₁).source := by
+      rw [extChartAt_source]
+      exact contMDiffOn_extChartAt
+    exact (hη.contMDiff.comp_contMDiffOn hc).congr fun q hq => chartExtend_of_mem x₁ hq
   · refine ⟨((extChartAt 𝓘(ℝ, Fin n → ℝ) x₁).symm '' tsupport η)ᶜ,
       (isCompact_symm_image_tsupport x₁ hηc hηs).isClosed.isOpen_compl,
       fun h => hp (symm_image_tsupport_subset_source x₁ hηs h), ?_⟩
