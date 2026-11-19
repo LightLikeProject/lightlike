@@ -137,3 +137,22 @@ Both sides of the first statement are intrinsic; charts appear only in the hypot
 Open: (c) a perturbation with arbitrary compact support. First step done: `eh_variation_piece`
 (`PieceVariation.lean`), the variation of the density over a measurable piece with the divergence of the
 flux (`ehFluxDiv`) kept. Still needed: chart independence of the flux divergence, and a partition of unity.
+
+## Status after the compact-support form (19 November 2026)
+
+| Formal statement (Lean) | Source (Carroll, gr-qc/9712019, ch. 4) | Match |
+| --- | --- | --- |
+| `eh_first_variation_manifold_compact` (`CompactVariation.lean`): for a metric `g` of any signature on `M` and a smooth symmetric tensor field `h` vanishing outside a compact set `K`, `d/dt ehAction (g + t h) Λ K = −∫_K ⟨G + Λ g, h⟩_g d vol_g` at `t = 0` | (4.66), p. 116: `δS = ∫ dⁿx √−g [R_{μν} − ½ R g_{μν}] δg^{μν}` | match. Convention: the metric is varied, not its inverse (`δg^{μν} = −g^{μα} g^{νβ} δg_{αβ}`), hence the sign. Representation: the action is the integral over a compact set `K` containing the support of the perturbation (the action over all of `M` need not converge); `Λ` is added |
+| `eh_first_variation_manifold_eq_zero` (`ManifoldCritical.lean`), `isEHCriticalOnBall_iff` (`BallCriticalConverse.lean`) | (4.67), p. 116: stationary points of the action are the solutions of Einstein's equation | weaker. On the manifold only "Einstein's equation implies stationary", for perturbations in one small coordinate ball; the equivalence is proved for coordinate metrics on a ball |
+
+How the compact-support form is proved (no chart independence of the Palatini flux is used): `K` is cut
+into finitely many disjoint measurable pieces, each in a small coordinate ball; over a piece the derivative
+of the action is the chart integral of the Einstein term plus the divergence of the flux
+(`hasDerivAt_ehAction_piece`, `pieceVar`); this formula is additive in `h` (`pieceVar_sum`,
+`ehFluxDiv_sum`); `h = ∑ ρ_i h` for a smooth partition of unity (Mathlib's
+`SmoothPartitionOfUnity.exists_isSubordinate`); and for each `ρ_i h`, supported in one small ball, the
+formula equals `−∫ ⟨G + Λ g, ρ_i h⟩` by `eh_first_variation_manifold_intrinsic` and the uniqueness of the
+derivative (`eh_first_variation_of_cover`).
+
+Open: the converse "stationary implies Einstein's equation" for the manifold action. It needs test tensor
+fields `ψ (E_ab + E_ba)` built from chart data as smooth sections.

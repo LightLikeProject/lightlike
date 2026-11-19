@@ -89,7 +89,7 @@ theorem pieceVar_sum {ι : Type*} (s : Finset ι) (h : SymBilinField 𝓘(ℝ, F
       ((volume.restrict (extChartAt 𝓘(ℝ, Fin n → ℝ) x₀ '' A)).restrict
         (extChartAt 𝓘(ℝ, Fin n → ℝ) x₀ '' T)) := fun i _ =>
     ((continuous_pieceIntegrand g x₀ φ hball (hs i) Λ).continuousOn.integrableOn_compact
-      hTc).mono_measure (Measure.restrict_mono le_rfl Measure.restrict_le_self)
+      hTc).mono_measure Measure.restrict_le_self
   simp only [pieceVar_eq]
   rw [← integral_finsetSum s hint]
   exact integral_congr_ae (Filter.Eventually.of_forall hpt)

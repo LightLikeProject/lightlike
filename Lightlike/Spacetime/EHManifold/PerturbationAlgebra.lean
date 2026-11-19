@@ -46,14 +46,19 @@ lemma SymBilinField.coordComp_smulFun (χ : M → ℝ) (hχ : ContMDiff 𝓘(ℝ
 lemma SymBilinField.smulFun_eq_zero_of_fun (χ : M → ℝ)
     (hχ : ContMDiff 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ) ∞ χ) (h : SymBilinField 𝓘(ℝ, Fin n → ℝ) M) {x : M}
     (hx : χ x = 0) : (h.smulFun χ hχ).h x = 0 := by
-  rw [SymBilinField.smulFun_h, hx]
-  exact zero_smul ℝ (h.h x)
+  refine ContinuousLinearMap.ext fun v => ContinuousLinearMap.ext fun w => ?_
+  show χ x * h.h x v w = 0
+  rw [hx, zero_mul]
 
 /-- `χ h` vanishes where `h` vanishes. -/
 lemma SymBilinField.smulFun_eq_zero_of_field (χ : M → ℝ)
     (hχ : ContMDiff 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ) ∞ χ) (h : SymBilinField 𝓘(ℝ, Fin n → ℝ) M) {x : M}
     (hx : h.h x = 0) : (h.smulFun χ hχ).h x = 0 := by
-  rw [SymBilinField.smulFun_h, hx]
-  exact smul_zero (χ x)
+  refine ContinuousLinearMap.ext fun v => ContinuousLinearMap.ext fun w => ?_
+  have h0 : h.h x v w = 0 := by
+    rw [hx]
+    rfl
+  show χ x * h.h x v w = 0
+  rw [h0, mul_zero]
 
 end Lightlike
