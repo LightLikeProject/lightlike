@@ -32,6 +32,8 @@ noncomputable instance : InnerProductSpace ℂ (GNSMat ν) := ν.toMatrixInnerPr
 
 instance : FiniteDimensional ℂ (GNSMat ν) := inferInstanceAs (FiniteDimensional ℂ (Matrix n n ℂ))
 
+instance : CompleteSpace (GNSMat ν) := FiniteDimensional.complete ℂ (GNSMat ν)
+
 /-- The identification of `Matrix n n ℂ` with the GNS space. -/
 def toGNS : Matrix n n ℂ ≃ₗ[ℂ] GNSMat ν := LinearEquiv.refl ℂ _
 
