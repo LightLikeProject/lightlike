@@ -75,6 +75,8 @@ Raychaudhuri's equation in coordinates: for a smooth field `v` geodesic on an op
 
 The null, weak, strong and dominant energy conditions are stated pointwise for a symmetric bilinear form on a Lorentzian vector space; dust with non-negative density satisfies all four, a positive cosmological constant violates the strong one, and a scalar field with negative potential at a point of vanishing gradient violates the weak one [43]. On a Lorentzian 4-manifold the four conditions hold for a stress-energy field at every point; for a perfect fluid they take the effective forms, and under the Einstein equations they are equivalent to the geometric forms on the Ricci and Einstein tensors [45]. For a perfect fluid the tensor conditions are Physlib's effective conditions on a cosmic fluid at c = 1 [46]. The electromagnetic field satisfies the weak, dominant and strong conditions, through a Lorentz frame started by any unit timelike vector [48].
 
+The conformally related metric `e^{2ψ} g` of a coordinate metric has the Christoffel symbols `Γᵃ_{bc} + δᵃ_c ∂_b ψ + δᵃ_b ∂_c ψ - g_{bc} gᵃᵈ ∂_d ψ`, and the Riemann tensor of any metric whose Christoffel symbols differ from those of `g` by a tensor `C` is that of `g` plus the derivative and quadratic terms in `C` [56].
+
 ## Lean References
 
 1. Lightlike/Spacetime/Curvature.lean - `IsCoordMetric`, `christoffel`, `riemann`, `ricci`,
@@ -145,6 +147,7 @@ The null, weak, strong and dominant energy conditions are stated pointwise for a
 53. Lightlike/Spacetime/RaychaudhuriFocusing.lean - `covD_orthogonal`, `IsLorentzianCoordMetric.orthogonal_nonneg`, `focusing_along`, `raychaudhuri_convergence`, `shear_normSq_nonneg`, `raychaudhuri_focusing_at`, `raychaudhuri_focusing`: convergence and focusing of a unit timelike geodesic field along its integral curves.
 54. Lightlike/Spacetime/RaychaudhuriShear.lean - `Raychaudhuri.trace_mul_nonneg`, `Raychaudhuri.normSqG_nonneg`, `Raychaudhuri.spacelike_complement`, `Raychaudhuri.orthogonal_nonneg_of_lorentzian`: the square of a spatial symmetric tensor is nonnegative.
 55. Lightlike/Spacetime/RaychaudhuriManifold.lean - `chartComp`, `hv_cov_eq`, `trace_eq_of_hv`, `ricciAt_hv`, `g_hv`, `rotation_chart_eq_zero`, `expansionM`, `expansionDeriv`, `mfderiv_expansionM`, `raychaudhuri_manifold`, `raychaudhuri_leviCivita`, `raychaudhuri_focusing_manifold_at`, `raychaudhuri_focusing_manifold`: the Raychaudhuri identity and geodesic focusing for a vector field on a manifold.
+56. Lightlike/Spacetime/ConformalCoord.lean - `conformalMetric`, `christoffel_conformal`, `christoffel_conformal_eventually`, `conformalC`, `riemann_of_christoffel_add`, `pd_metric_eq_christoffel`, `sum_conformalC_trace`: the conformal change of a coordinate metric.
 
 ## References
 
