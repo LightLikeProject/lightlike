@@ -20,12 +20,17 @@ For the embedding of the `n`-particle fermionic Fock space `Γₙ` (the closed s
 * `Enum`, `enumEquiv`, `card_enum`: an `n`-element set has `n!` enumerations by injective tuples;
 * `embFun`, `hasSum_fiber`, `hasSum_norm_embFun`, `embL`, `norm_sq_embL`, `norm_embL_le`, `norm_embL_of_support`, `embCLM`:
   the embedding `Eₙ ψ (f) = (n!)^{-1/2} sign(f) ψ(image f)`, a contraction, isometric on the `n`-particle vectors;
-* `permEquiv`, `permL`, `antisym`, `antisym_apply`, `embFun_comp`, `antisym_embL`: the antisymmetrizer, and `A Eₙ = Eₙ`;
+* `permEquiv`, `permL`, `antisym`, `antisym_apply`, `embFun_comp`, `antisym_embL`, `sign_mul_self`, `antisym_comp`,
+  `antisym_apply_of_not_injective`, `sum_perm_apply_zero`: the antisymmetrizer, `A Eₙ = Eₙ`, `A Φ` antisymmetric;
 * `tensorFun`, `hasSum_norm_tensorFun`: `c ⊗ Φ` in coordinates, `‖c ⊗ Φ‖² = ‖c‖² ‖Φ‖²`;
 * `hasSum_norm_sq_lp`, `memℓp_tensorFun`, `creTL`, `creTL_apply`, `norm_creTL`, `creT`, `creT_apply`, `slotOp_zero_creT`:
   creation `Φ ↦ w ⊗ Φ` on the tensor power, and `h` on slot `0` of `w ⊗ Φ` is `(h w) ⊗ Φ`;
 * `removeNth_succ_eq`, `slotOp_succ_creT`, `dGammaTensor_creT`, `dGammaTensor_zero_creT`: `(∑ⱼ hⱼ)(w ⊗ Φ) =
   (h w) ⊗ Φ + w ⊗ (∑ⱼ hⱼ) Φ`, the commutator before antisymmetrization;
+* `tupleSign_of_strictMono`, `prod_succ_lt_zero`, `prod_comp_le_zero`, `fermiSign_strictMono`, `image_tail_comp`: counting
+  for sorted tuples;
+* `factorial_sqrt_identity`, `embFun_creW_strictMono`, `embFun_creW`, `embL_creW`: the core identity
+  `Eₙ₊₁ a*(w) = √(n+1) A (w ⊗ Eₙ ·)`;
 * `norm_embCLM_le`, `dGammaFock`, `norm_dGammaFock_le`: `dΓₙ₊₁(h) = Eₙ₊₁* (∑ⱼ hⱼ) Eₙ₊₁` and `‖dΓₙ₊₁(h)‖ ≤ (n + 1) ‖h‖`.
 -/
 
@@ -606,6 +611,94 @@ theorem dGammaTensor_zero_creT (h : Z →L[ℂ] Z) (w : Z) (Φ : lp (fun _ : Fin
   rw [SecondQuantSlot.dGammaTensor, Fin.sum_univ_succ, Fin.sum_univ_zero, add_zero, slotOp_zero_creT]
 
 end TensorCre
+
+section Core
+
+variable {Z : Type*} [NormedAddCommGroup Z] [InnerProductSpace ℂ Z] [CompleteSpace Z] (b : HilbertBasis ι ℂ Z)
+variable {n : ℕ}
+
+/-- The normalisation `((n+1)!)^{-1/2} = √(n+1) n! / ((n+1)! √(n!))`. -/
+lemma factorial_sqrt_identity (n : ℕ) :
+    ((Real.sqrt (n + 1).factorial)⁻¹ : ℝ) =
+      Real.sqrt (n + 1) * ((n + 1).factorial : ℝ)⁻¹ * n.factorial * (Real.sqrt n.factorial)⁻¹ := by
+  have h1 : (0 : ℝ) < n + 1 := by positivity
+  have h2 : (0 : ℝ) < n.factorial := by exact_mod_cast Nat.factorial_pos n
+  have ha := Real.sq_sqrt h1.le
+  have hc := Real.sq_sqrt h2.le
+  have ha0 : 0 < Real.sqrt (n + 1) := Real.sqrt_pos.mpr h1
+  have hc0 : 0 < Real.sqrt n.factorial := Real.sqrt_pos.mpr h2
+  have e1 : (Real.sqrt (n + 1))⁻¹ = Real.sqrt (n + 1) * ((n : ℝ) + 1)⁻¹ := by
+    rw [← div_eq_mul_inv, Real.sqrt_div_self', one_div]
+  rw [Nat.factorial_succ, Nat.cast_mul, Nat.cast_succ, Real.sqrt_mul h1.le, mul_inv, e1]
+  field_simp
+
+/-- **The core identity on sorted tuples**: `Eₙ₊₁ (a*(w) ψ)(f) = √(n+1) (A (w ⊗ Eₙ ψ))(f)` for strictly increasing `f`. -/
+lemma embFun_creW_strictMono (w : Z) (ψ : FermiL2 ι) {f : Fin (n + 1) → ι} (hf : StrictMono f) :
+    embFun (n + 1) (creWCoeff b w ψ) f =
+      (Real.sqrt (n + 1) : ℂ) * antisym (n + 1) (creT b w (embL n ψ)) f := by
+  have hinj := hf.injective
+  set T := Finset.univ.image f with hT
+  set F : Fin (n + 1) → ℂ := fun k => (-1 : ℂ) ^ (k : ℕ) * (b.repr w (f k) * ψ (T.erase (f k))) with hF
+  have hL : embFun (n + 1) (creWCoeff b w ψ) f = ((Real.sqrt (n + 1).factorial)⁻¹ : ℝ) * ∑ k, F k := by
+    rw [embFun, if_pos hinj, tupleSign_of_strictMono hf, creWCoeff_apply, ← hT,
+      Finset.sum_image (fun i _ j _ h => hinj h)]
+    simp only [Units.val_one, Int.cast_one, mul_one, Complex.ofReal_inv]
+    congr 1
+    refine Finset.sum_congr rfl fun k _ => ?_
+    rw [creFun, if_pos (Finset.mem_image_of_mem f (Finset.mem_univ k)), hF, fermiSign_strictMono hf]
+    ring
+  have hs : ∀ σ : Equiv.Perm (Fin (n + 1)), ((Equiv.Perm.sign σ : ℤ) : ℂ) *
+      ((tupleSign (Fin.tail (f ∘ σ)) : ℤ) : ℂ) = (-1 : ℂ) ^ ((σ 0 : Fin (n + 1)) : ℕ) := fun σ => by
+    have hinjσ : Function.Injective (f ∘ σ) := hinj.comp σ.injective
+    have hcons : (Fin.cons ((f ∘ σ) 0) (Fin.tail (f ∘ σ)) : Fin (n + 1) → ι) = f ∘ σ := Fin.cons_self_tail _
+    have hc := tupleSign_cons ((f ∘ σ) 0) (Fin.tail (f ∘ σ)) (by rw [hcons]; exact hinjσ)
+    rw [hcons, tupleSign_comp hinj σ, tupleSign_of_strictMono hf, mul_one] at hc
+    have hprod : (∏ i : Fin n, if Fin.tail (f ∘ σ) i ≤ (f ∘ σ) 0 then (-1 : ℤˣ) else 1) =
+        (-1) ^ ((σ 0 : Fin (n + 1)) : ℕ) := prod_comp_le_zero hf σ
+    rw [hprod] at hc
+    rw [hc]
+    have ht : ((tupleSign (Fin.tail (f ∘ σ)) : ℤ) : ℂ) * ((tupleSign (Fin.tail (f ∘ σ)) : ℤ) : ℂ) = 1 := by
+      rcases Int.units_eq_one_or (tupleSign (Fin.tail (f ∘ σ))) with h | h <;> simp [h]
+    push_cast
+    linear_combination ((-1 : ℂ) ^ ((σ 0 : Fin (n + 1)) : ℕ)) * ht
+  have hR : antisym (n + 1) (creT b w (embL n ψ)) f =
+      ((n + 1).factorial : ℂ)⁻¹ * (((Real.sqrt n.factorial)⁻¹ : ℝ) * ∑ σ : Equiv.Perm (Fin (n + 1)), F (σ 0)) := by
+    rw [antisym_apply]
+    congr 1
+    rw [Finset.mul_sum]
+    refine Finset.sum_congr rfl fun σ _ => ?_
+    have htinj : Function.Injective (Fin.tail (f ∘ σ)) := fun i j h =>
+      Fin.succ_injective _ ((hinj.comp σ.injective) h)
+    rw [creT_apply, embL_apply, embFun, if_pos htinj, image_tail_comp hinj σ]
+    simp only [Function.comp_apply, hF, Complex.ofReal_inv]
+    linear_combination (((Real.sqrt n.factorial : ℝ) : ℂ)⁻¹ * b.repr w (f (σ 0)) * ψ (T.erase (f (σ 0)))) * hs σ
+  rw [hL, hR, sum_perm_apply_zero]
+  have key : (((Real.sqrt (n + 1).factorial)⁻¹ : ℝ) : ℂ) = ((Real.sqrt (n + 1) * ((n + 1).factorial : ℝ)⁻¹ *
+      n.factorial * (Real.sqrt n.factorial)⁻¹ : ℝ) : ℂ) := by rw [factorial_sqrt_identity n]
+  rw [key]
+  push_cast
+  ring
+
+/-- **The core identity** (D4d): `Eₙ₊₁ (a*(w) ψ) = √(n+1) A (w ⊗ Eₙ ψ)` coefficientwise. -/
+theorem embFun_creW (w : Z) (ψ : FermiL2 ι) (f : Fin (n + 1) → ι) :
+    embFun (n + 1) (creWCoeff b w ψ) f =
+      (Real.sqrt (n + 1) : ℂ) * antisym (n + 1) (creT b w (embL n ψ)) f := by
+  by_cases hf : Function.Injective f
+  · have hg : StrictMono (f ∘ Tuple.sort f) :=
+      (Tuple.monotone_sort f).strictMono_of_injective (hf.comp (Tuple.sort f).injective)
+    have hfg : f = (f ∘ Tuple.sort f) ∘ ⇑(Tuple.sort f)⁻¹ := by
+      funext x; simp [Equiv.Perm.inv_def]
+    rw [hfg, embFun_comp, antisym_comp, embFun_creW_strictMono b w ψ hg]
+    ring
+  · rw [embFun, if_neg hf, antisym_apply_of_not_injective _ hf, mul_zero]
+
+/-- **`Eₙ₊₁ a*(w) = √(n+1) A C_w Eₙ`** on `ℓ²(Finset ι)`. -/
+theorem embL_creW (w : Z) (ψ : FermiL2 ι) :
+    embL (n + 1) (creWCoeff b w ψ) = (Real.sqrt (n + 1) : ℂ) • antisym (n + 1) (creT b w (embL n ψ)) := by
+  ext f
+  rw [embL_apply, embFun_creW, lp.coeFn_smul, Pi.smul_apply, smul_eq_mul]
+
+end Core
 
 section Gamma
 

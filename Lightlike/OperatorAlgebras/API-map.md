@@ -424,7 +424,10 @@ The Schatten sum `‖K‖_p^p` is the supremum of `∑ₖ |⟪ψₖ, K ϕₖ⟫|
     `OperatorAlgebras.SecondQuantWedge.embFun_comp`, `OperatorAlgebras.SecondQuantWedge.antisym_embL`,
     `OperatorAlgebras.SecondQuantWedge.tensorFun`, `OperatorAlgebras.SecondQuantWedge.hasSum_norm_tensorFun`, `OperatorAlgebras.SecondQuantWedge.hasSum_norm_sq_lp`, `OperatorAlgebras.SecondQuantWedge.memℓp_tensorFun`,
     `OperatorAlgebras.SecondQuantWedge.creTL`, `OperatorAlgebras.SecondQuantWedge.creTL_apply`, `OperatorAlgebras.SecondQuantWedge.norm_creTL`, `OperatorAlgebras.SecondQuantWedge.creT`, `OperatorAlgebras.SecondQuantWedge.creT_apply`, `OperatorAlgebras.SecondQuantWedge.slotOp_zero_creT`,
-    `OperatorAlgebras.SecondQuantWedge.removeNth_succ_eq`, `OperatorAlgebras.SecondQuantWedge.slotOp_succ_creT`, `OperatorAlgebras.SecondQuantWedge.dGammaTensor_creT`, `OperatorAlgebras.SecondQuantWedge.dGammaTensor_zero_creT`
+    `OperatorAlgebras.SecondQuantWedge.removeNth_succ_eq`, `OperatorAlgebras.SecondQuantWedge.slotOp_succ_creT`, `OperatorAlgebras.SecondQuantWedge.dGammaTensor_creT`, `OperatorAlgebras.SecondQuantWedge.dGammaTensor_zero_creT`,
+    `OperatorAlgebras.SecondQuantWedge.sign_eq_signAux`, `OperatorAlgebras.SecondQuantWedge.tupleSign_eq_prod`, `OperatorAlgebras.SecondQuantWedge.tupleSign_cons`, `OperatorAlgebras.SecondQuantWedge.sign_mul_self`, `OperatorAlgebras.SecondQuantWedge.antisym_comp`, `OperatorAlgebras.SecondQuantWedge.antisym_apply_of_not_injective`,
+    `OperatorAlgebras.SecondQuantWedge.sum_perm_apply_zero`, `OperatorAlgebras.SecondQuantWedge.tupleSign_of_strictMono`, `OperatorAlgebras.SecondQuantWedge.prod_succ_lt_zero`, `OperatorAlgebras.SecondQuantWedge.prod_comp_le_zero`, `OperatorAlgebras.SecondQuantWedge.fermiSign_strictMono`, `OperatorAlgebras.SecondQuantWedge.image_tail_comp`,
+    `OperatorAlgebras.SecondQuantWedge.factorial_sqrt_identity`, `OperatorAlgebras.SecondQuantWedge.embFun_creW_strictMono`, `OperatorAlgebras.SecondQuantWedge.embFun_creW`, `OperatorAlgebras.SecondQuantWedge.embL_creW`
 
 ## References
 
