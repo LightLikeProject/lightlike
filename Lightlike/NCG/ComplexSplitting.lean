@@ -10,6 +10,7 @@ unitary, and `Q₊ = (1 - i π(u))/2`, `Q₋ = (1 + i π(u))/2` are complementar
 `π(u) = i` on `Q₊ H` and `π(u) = -i` on `Q₋ H`. This is `Mₙ(ℂ) ⊗_ℝ ℂ ≅ Mₙ(ℂ) ⊕ Mₙ(ℂ)` in representation form.
 
 * `Qp`, `Qm`, `Qp_add_Qm`, `pi_u_Qp`, `pi_u_Qm`, `pi_comm_Qp`, `pi_comm_Qm`;
+* `Qp_mul_Qp`, `Qm_mul_Qm`, `Qp_mul_Qm`, `Qm_mul_Qp`, `star_Qp`, `star_Qm`: complementary orthogonal projections;
 * `Qp_pi_smul`, `Qm_pi_smul`: `π` is complex-linear on the fundamental part and antilinear on the conjugate part;
 * `QpR`, `QmR`, `J_Qp_J`, `J_Qm_J`, `QpR_add_QmR`, `pi_comm_QpR`, `pi_comm_QmR`, `Qp_comm_QpR`, `Qp_comm_QmR`: the parts
   for the right action, `J Q± J = (1 ± i J π(u) J)/2`, commuting with `π(A)` and with `Q₊`.
@@ -58,6 +59,41 @@ lemma pi_comm_Qp (hc : ∀ a, u * a = a * u) (a : A) : T.π a * Qp T u = Qp T u 
 /-- `π(a)` commutes with `Q₋` for central `u`. -/
 lemma pi_comm_Qm (hc : ∀ a, u * a = a * u) (a : A) : T.π a * Qm T u = Qm T u * T.π a := by
   simp only [Qm, mul_smul_comm, smul_mul_assoc, mul_add, add_mul, mul_one, one_mul, ← map_mul, hc a]
+
+/-- **`Q₊` is idempotent.** -/
+lemma Qp_mul_Qp (hu : u * u = -1) : Qp T u * Qp T u = Qp T u := by
+  simp only [Qp, smul_mul_smul_comm, sub_mul, mul_sub, one_mul, mul_one, smul_mul_assoc, mul_smul_comm, smul_smul,
+    pi_u_sq T hu, Complex.I_mul_I]
+  match_scalars <;> (try ring_nf) <;> (try simp only [Complex.I_sq]) <;> norm_num
+
+/-- **`Q₋` is idempotent.** -/
+lemma Qm_mul_Qm (hu : u * u = -1) : Qm T u * Qm T u = Qm T u := by
+  simp only [Qm, smul_mul_smul_comm, add_mul, mul_add, one_mul, mul_one, smul_mul_assoc, mul_smul_comm, smul_smul,
+    pi_u_sq T hu, Complex.I_mul_I]
+  match_scalars <;> (try ring_nf) <;> (try simp only [Complex.I_sq]) <;> norm_num
+
+/-- **`Q₊ Q₋ = 0`.** -/
+lemma Qp_mul_Qm (hu : u * u = -1) : Qp T u * Qm T u = 0 := by
+  simp only [Qp, Qm, smul_mul_smul_comm, sub_mul, mul_add, one_mul, mul_one, smul_mul_assoc, mul_smul_comm, smul_smul,
+    pi_u_sq T hu, Complex.I_mul_I]
+  match_scalars <;> (try ring_nf) <;> (try simp only [Complex.I_sq]) <;> norm_num
+
+/-- **`Q₋ Q₊ = 0`.** -/
+lemma Qm_mul_Qp (hu : u * u = -1) : Qm T u * Qp T u = 0 := by
+  simp only [Qp, Qm, smul_mul_smul_comm, add_mul, mul_sub, one_mul, mul_one, smul_mul_assoc, mul_smul_comm, smul_smul,
+    pi_u_sq T hu, Complex.I_mul_I]
+  match_scalars <;> (try ring_nf) <;> (try simp only [Complex.I_sq]) <;> norm_num
+
+/-- **`Q₊` is self-adjoint** for `u* = -u`. -/
+lemma star_Qp (hs : star u = -u) : star (Qp T u) = Qp T u := by
+  simp only [Qp, star_smul, star_sub, star_one, ← map_star, hs, map_neg, Complex.star_def, Complex.conj_I,
+    map_div₀, map_one, map_ofNat, smul_neg, neg_smul, sub_neg_eq_add]
+  module
+
+/-- **`Q₋` is self-adjoint** for `u* = -u`. -/
+lemma star_Qm (hs : star u = -u) : star (Qm T u) = Qm T u := by
+  simp only [Qm, star_smul, star_add, star_one, ← map_star, hs, map_neg, Complex.star_def, Complex.conj_I,
+    map_div₀, map_one, map_ofNat, smul_neg, neg_smul, neg_neg]
 
 section ComplexAlgebra
 
