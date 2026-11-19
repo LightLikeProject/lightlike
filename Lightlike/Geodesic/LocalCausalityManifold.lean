@@ -6,14 +6,26 @@ import Lightlike.Spacetime.Causal.CurveMargin
 import Lightlike.Spacetime.Causal.TimeReversal
 
 /-!
-# Local causality for causal curves of the manifold
+# Local causality: Chruściel's Proposition 2.4.5 for a time ball
 
-The bridge from `IsTimeBall.causal_cone` (normal coordinates) to the causal curves of the manifold
-`↥U`, an open set of `ℝⁿ` with the Lorentzian metric `openMetric U g hL` and a time orientation `T`:
-a future causal curve of `↥U` from `p` which stays in a time ball, whose field `N` is future
-directed for `T`, ends in `σ_p ≤ 0`, `x⁰ ≥ 0` (`IsTimeBall.causal_cone_of_isFutureCausalCurve`).
-This is the `J⁺(p; O)` line of Chruściel's (2.4.7), "⇒", for the relation `J⁺(p; O)` of curves
-inside `O`.
+On the manifold `↥U`, an open set of `ℝⁿ` with the Lorentzian metric `openMetric U g hL` and a
+time orientation `T`, let `O = φ (ball 0 r)` be a time ball at `p` (`IsTimeBall`: normal
+coordinates `v = φ⁻¹ q`, the time function `x⁰ = -g_p(e, v)` with timelike gradient) whose field
+`N` is future directed for `T` (`IsTimeBall.exists_future`). With `σ_p(q) = g_p(v, v)`, for `q ∈ O`:
+`q ∈ I⁺(p; O)` iff `σ_p < 0 < x⁰`, `q ∈ J⁺(p; O)` iff `σ_p ≤ 0 ≤ x⁰`, `q` is on the boundary of
+`J⁺(p; O)` iff `σ_p = 0 ≤ x⁰`, and the same for pasts with `x⁰ ≤ 0`. Here `J⁺(p; O)` and
+`I⁺(p; O)` are reached by curves inside `O` (`Causal.causalFutureIn`, `Causal.chronFutureIn`).
+"⇒" comes from `IsTimeBall.causal_cone` and `IsTimeBall.chron_cone` (normal coordinates), "⇐"
+from the radial curves `t ↦ φ (t v)`.
+
+Differences from the source (Chruściel, Proposition 2.4.5): the spacetime is an open set of
+`ℝⁿ` with a smooth Lorentzian coordinate metric, not a general `C²` spacetime; `σ_p` and `x⁰` are
+written in normal coordinates of an arbitrary basis, `σ_p(v) = g_p(v, v)` and `x⁰ = -g_p(e, ·)`
+for a timelike `e` at `p`, which is Chruściel's `η_μν x^μ x^ν` and `x⁰` in orthonormal normal
+coordinates with `e = ∂₀`; "`∇x⁰` timelike on `O`" is `IsTimeBall.timelike`, and the time
+orientation of `O` is that of `-∇x⁰` (the hypothesis `hTN`, given by `IsTimeBall.exists_future`
+after shrinking). The proof does not use Chruściel's perturbed metrics (pp. 22–23): it uses the
+Gauss lemma and the cone inequality (`docs/notes/local-causality-plan.md`).
 
 ## Main results
 

@@ -29,4 +29,17 @@ In normal coordinates `v(s) = φ⁻¹(γ(s))` of a future causal curve from `p` 
 * [ ] the "⇐" directions (radial geodesics: `t ↦ φ(t v)` is causal / timelike for `σ_p(v) ≤ 0` / `< 0`, `x⁰ ≥ 0`).
 * [x] existence of time balls: `exists_isTimeBall`; `IsTimeBall.mono`; `IsTimeBall.exists_future` (`N` future for `T` after shrinking).
 * [x] bridge for the curves of the manifold `↥U` (`openMetric`, a time orientation): `IsTimeBall.causal_cone_of_isFutureCausalCurve`, `IsTimeBall.chron_cone_of_isFutureTimelikeCurve` (`LocalCausalityManifold.lean`), for the relations `J⁺(p; O)`, `I⁺(p; O)` of curves inside the ball; trust check (Minkowski time ball).
-* [ ] a general manifold (charts) rather than an open set of `ℝⁿ`; the "⇐" directions; the `J̇⁺` line.
+* [x] the "⇐" directions: `exists_causal_of_cone`, `exists_timelike_of_cone` (radial curves); the iff theorems
+  `mem_causalFutureIn_iff`, `mem_chronFutureIn_iff`; the `J̇⁺` line as the boundary, `mem_frontier_causalFutureIn_iff`
+  (and `mem_horismosIn_iff` for `J⁺ \ I⁺`); the pasts by reversing `T` and `e`: `mem_causalPastIn_iff`, `mem_chronPastIn_iff`,
+  `mem_frontier_causalPastIn_iff`.
+* [ ] a general manifold (charts) rather than an open set of `ℝⁿ` (representation).
+
+## Differences from the source (representation)
+
+1. The spacetime is an open set `U ⊂ ℝⁿ` with a smooth Lorentzian coordinate metric (`openMetric`) and a time orientation, not a
+   general `C²` spacetime; `O = φ(ball 0 r)` for a normal chart `φ` at `p`.
+2. `σ_p(v) = g_p(v, v)` and `x⁰ = -g_p(e, v)` in normal coordinates of an arbitrary basis, `e` timelike at `p`: Chruściel's
+   `η_μν x^μ x^ν` and `x⁰` in orthonormal normal coordinates with `e = ∂₀`. "`∇x⁰` timelike on `O`" is `IsTimeBall.timelike`; the
+   time orientation of `O` is that of `-∇x⁰` (hypothesis `hTN`, provided by `IsTimeBall.exists_future`).
+3. The curves are the library's causal curves (locally Lipschitz; timelike with a margin, approved 17 Nov 2026).
