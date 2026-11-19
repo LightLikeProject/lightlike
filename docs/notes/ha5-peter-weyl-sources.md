@@ -138,3 +138,25 @@ On `fable2/ha5-su2complete` the two statements left weaker above are proved in f
 | --- | --- | --- |
 | `su2_conjClasses_homeomorph` (`SU2ConjClasses.lean`): the half-trace induces a homeomorphism from the quotient of `SU(2)` by conjugation (quotient topology) onto `[−1, 1]`; `su2_isConj_iff`: conjugate iff equal half-trace | Lecture 20, Proposition 20.4, p. 48 | match (representation: the space of conjugacy classes is `Quotient (IsConj.setoid SU2)`) |
 | `su2_irreducible_classification` (`SU2Complete.lean`): every irreducible continuous unitary matrix representation of `SU(2)` is equivalent to `su2Spin n` for some `n`, and has dimension `n + 1` | Lecture 21, Theorem 21.1, p. 50 ("this is the complete list of irreducibles") | match (representation: unitary matrix representations; the source's statement is for continuous finite-dimensional representations, which are unitarisable, a step we do not formalise) |
+
+## Weyl integration beyond SU(2): what was read, and why it is not started (18 November 2026)
+
+Read in the same notes (Teleman, Lecture 23, pp. 55 to 56): Theorem 23.11 (Weyl integration for U(N)): for a
+class function `f` on `U(N)`, `∫_{U(N)} f(u) du = (1/N!) (1/(2π)^N) ∫₀^{2π} ⋯ ∫₀^{2π} f(φ₁, …, φ_N) |Δ(z)|² dφ₁ ⋯ dφ_N`,
+with `f(φ₁, …, φ_N) = f(diag[z₁, …, z_N])`, `z_p = e^{iφ_p}`. The notes state it without proof ("We shall not
+prove Proposition 23.9 here; … it reduces to the following integration formula, whose proof, however, is now
+more difficult"), and Theorem 23.8 (the Schur functions are the irreducible characters of U(N)) is derived from
+it. So this source gives no proof to follow for `N > 2`, and the route used for SU(2) (the characters are
+known polynomials in the half-trace, so both sides can be compared on them) is not available: for U(N) the
+character formula is itself a consequence of the integration formula.
+
+No source with a proof of the general formula (compact connected Lie group `G`, maximal torus `T`, Weyl group
+`W`: `∫_G f = (1/|W|) ∫_T f(t) |Δ(t)|² dt`) has been read. Mathlib (pinned tree) has abstract root systems and
+their Weyl groups (`Mathlib/LinearAlgebra/RootSystem/`), but no maximal tori of compact Lie groups, no
+conjugacy of maximal tori, no `N(T)/T`, and no change of variables for `G/T × T → G`. The general statement is
+therefore open in the gap row G3-150, with nothing formalised and nothing cited.
+
+`su2_hilbertBasis` (`SU2PeterWeyl.lean`, branch `fable2/ha5-idle`): the functions `√(n+1) Dⁿ_ij` form a Hilbert
+basis of `L²(SU(2), μ)`. Sources read: Tao §1, Propositions 7 and 8 (the general decomposition and the
+normalisation `dim^{1/2}`), and Teleman, Lecture 21, Theorem 21.1, p. 50 (the list of irreducible
+representations). Neither text states the SU(2) basis as one sentence; the Lean statement is their combination.
