@@ -4,7 +4,7 @@ proven in Lightlike/Asymptotics/SaddleAssembly.lean (`racahSumAsymptotics`):
     sqrt(sqrt(vol2(l))) * exp(-D(l)) * racahSum(lambda j)  -  cos(S_Regge(l) + pi/4) / (sqrt(12 pi) (2 pi)^2)  ->  0,
 
 with l_e = lambda j_e + 1/2, D = prefactorRate (Saddle.lean), S_Regge = sum_e l_e theta_e (exterior
-dihedral angles) and racahSum the exact alternating sum of Assembly.lean (Python integers).
+dihedral angles) and racahSum the exact alternating sum of Lightlike/Asymptotics/Assembly.lean (Python integers).
 An independent check of the constant and the phase in the Lean statement: if either were wrong, the
 statement would be false, and the controls below show that the check would notice.
 
@@ -26,7 +26,7 @@ mp.dps = 60
 
 
 def racah_sum(J):
-    """racahSum of Assembly.lean at integer spins J = (J0..J5), exactly."""
+    """racahSum of Lightlike/Asymptotics/Assembly.lean at integer spins J = (J0..J5), exactly."""
     face = [J[0] + J[1] + J[2], J[0] + J[4] + J[5], J[3] + J[1] + J[5], J[3] + J[4] + J[2]]
     quad = [J[0] + J[1] + J[3] + J[4], J[1] + J[2] + J[4] + J[5], J[2] + J[0] + J[5] + J[3]]
     s = Fraction(0)

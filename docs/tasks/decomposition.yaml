@@ -274,6 +274,16 @@ tasks:
     routes:
       - "Yosida approximation: with R(λ) = (λ - A)⁻¹, the bounded operators Y_λ = λ² R(λ) - λ give contractions exp(t Y_λ); a Cauchy estimate and the density of dom A show that exp(t Y_λ) converges strongly to a semigroup S(t), uniformly on compact time intervals; the difference quotients of S converge to A x on dom A (mean value inequality for exp(t Y_λ)), so the generator contains A, and a dissipative generator with λ - A surjective is A."
 
+  - id: T-OP1-P8
+    milestone: OP1
+    kind: proof
+    title: "The spectral theorem for unbounded self-adjoint operators: a unique projection-valued measure with A equal to the spectral integral of the identity"
+    file: Tasks/OP/T_OP1_P8.lean
+    decl: Lightlike.OperatorAlgebras.spectral_theorem
+    size: XL
+    difficulty: research-level
+    routes:
+      - "Teschl, Mathematical Methods in Quantum Mechanics, Theorem 3.7 (resolvent, Herglotz functions, Stieltjes inversion), or the Cayley transform, the continuous functional calculus of the unitary and the Riesz–Markov theorem, transported to the real line."
   - id: T-SF10-P1
     milestone: SF10
     kind: proof
