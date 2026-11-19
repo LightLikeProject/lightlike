@@ -57,6 +57,11 @@ model of its multiplicity matrix, by a unitary taking `π(a)` to the model's act
 `σ(x) = π(Re x) + i π(Im x)` is one [19]. A system of matrix units on `H` defines a complex `*`-representation of
 `⊕ M_dₖ(ℂ)`, faithful when every block unit is nonzero [20].
 
+For `A = ⊕ Mₙᵢ(ℍ)`, the operators `U_{(αs)(βt)} = (ρ_αβ)_ℂ(E_st)`, with `ρ_αβ(q) = π(E_αβ(q))`, are a system of matrix
+units of `⊕ M₂ₙᵢ(ℂ)` on `H` with block units `π(1ᵢ)`, and with `φ(a)_{(αs)(βt)} = ι(a_αβ)_st` they form a
+complexification: a real finite spectral triple over `⊕ Mₙᵢ(ℍ)` is unitarily equivalent to the model
+`⊕ ℂ^{2nᵢ} ⊗ ℂ^{rᵢⱼ} ⊗ ℂ^{2nⱼ}` {1} [21].
+
 ## Lean References
 
 1. Lightlike/NCG/FiniteSpectralTriple.lean - `NCG.FiniteSpectralTriple`, `NCG.FiniteSpectralTriple.comm`,
@@ -92,7 +97,8 @@ model of its multiplicity matrix, by a unitary taking `π(a)` to the model's act
     `NCG.qJ`, `NCG.qK`, `NCG.single_eq_quat`
 15. Lightlike/NCG/QuaternionComplexify.lean - `NCG.quatBasis`, `NCG.quatCoord`, `NCG.quat_decomp`,
     `NCG.quatCoord_quatToMat`, `NCG.quat_eq_sum`, `NCG.complexify`, `NCG.complexify_quatToMat`, `NCG.quatCoord_add`,
-    `NCG.quatCoord_smul`, `NCG.complexifyL`, `NCG.complexify_mul`, `NCG.complexify_mul_of`, `NCG.complexify_sum`
+    `NCG.quatCoord_smul`, `NCG.complexifyL`, `NCG.complexify_mul`, `NCG.complexify_mul_of`, `NCG.complexify_sum`,
+    `NCG.complexify_zero`, `NCG.complexify_zero_left`, `NCG.star_complexify`
 16. Lightlike/NCG/ComplexSplitting.lean - `NCG.Qp`, `NCG.Qm`, `NCG.Qp_add_Qm`, `NCG.pi_u_sq`, `NCG.pi_u_Qp`, `NCG.pi_u_Qm`,
     `NCG.pi_comm_Qp`, `NCG.pi_comm_Qm`, `NCG.smul_eq_re_add_im`, `NCG.Qp_pi_smul`, `NCG.Qm_pi_smul`, `NCG.QpR`, `NCG.QmR`,
     `NCG.J_Qp_J`, `NCG.J_Qm_J`, `NCG.QpR_add_QmR`, `NCG.pi_comm_QpR`, `NCG.pi_comm_QmR`, `NCG.Qp_comm_QpR`,
@@ -111,6 +117,11 @@ model of its multiplicity matrix, by a unitary taking `π(a)` to the model's act
     `NCG.MatrixUnits.hom_apply`, `NCG.MatrixUnits.U_mul_hom_mul_U`, `NCG.MatrixUnits.hom_injective`,
     `NCG.MatrixUnits.U_diag_eq`, `NCG.MatrixUnits.U_ne_zero`, `NCG.MatrixUnits.hom_injective_of_block`,
     `NCG.MatrixUnits.hom_mem`
+21. Lightlike/NCG/QuaternionSummands.lean - `NCG.MatSumH`, `NCG.unitH`, `NCG.unitH_mul_same`, `NCG.unitH_mul_ne`,
+    `NCG.star_unitH`, `NCG.unitHL`, `NCG.rhoH`, `NCG.rhoH_apply`, `NCG.idxH`, `NCG.UH`, `NCG.UH_mul_same`, `NCG.UH_mul_ne`,
+    `NCG.star_UH`, `NCG.sum_unitH_block`, `NCG.eq_sum_unitH`, `NCG.phiHFun`, `NCG.phiHFun_apply`, `NCG.phiH`,
+    `NCG.phiH_apply`, `NCG.complexify_entries`, `NCG.sum_UH`, `NCG.unitsH`, `NCG.unitsH_hom_phiH`, `NCG.UH_mem_span`,
+    `NCG.pi_single_one_ne_zero`, `NCG.quatComplexification`, `NCG.exists_unitary_quatSummands`
 
 ## References
 

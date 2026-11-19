@@ -11,7 +11,8 @@ coordinates `quatCoord M = ((M₀₀ + M₁₁)/2, i(M₁₁ - M₀₀)/2, (M₀
 * `quatBasis`, `quatCoord`, `quat_decomp`, `quatCoord_quatToMat`, `quat_eq_sum`;
 * `complexify`, `complexify_quatToMat`: `ρ_ℂ ∘ ι = ρ`;
 * `quatCoord_add`, `quatCoord_smul`, `complexifyL`, `complexify_mul`: `ρ_ℂ` is complex-linear and multiplicative;
-* `complexify_mul_of`, `complexify_sum`: the bimodule form `ρ₁_ℂ(M) ρ₂_ℂ(N) = ρ₃_ℂ(MN)` and linearity in the coefficients.
+* `complexify_mul_of`, `complexify_sum`: the bimodule form `ρ₁_ℂ(M) ρ₂_ℂ(N) = ρ₃_ℂ(MN)` and linearity in the coefficients;
+* `complexify_zero`, `complexify_zero_left`, `star_complexify`: zero and adjoints.
 -/
 
 open Matrix
@@ -121,5 +122,21 @@ lemma complexify_sum {κ : Type*} [Fintype κ] (ρ : ℍ[ℝ] →ₗ[ℝ] (H →
     complexify ρ (∑ j, c j • quatToMat (q j)) = ∑ j, c j • ρ (q j) := by
   rw [show complexify ρ (∑ j, c j • quatToMat (q j)) = complexifyL ρ (∑ j, c j • quatToMat (q j)) from rfl, map_sum]
   simp only [map_smul, complexifyL_apply, complexify_quatToMat]
+
+/-- `ρ_ℂ(0) = 0`. -/
+lemma complexify_zero (ρ : ℍ[ℝ] →ₗ[ℝ] (H →L[ℂ] H)) : complexify ρ 0 = 0 := map_zero (complexifyL ρ)
+
+/-- The complexification of the zero map is `0`. -/
+lemma complexify_zero_left (M : Matrix (Fin 2) (Fin 2) ℂ) : complexify (0 : ℍ[ℝ] →ₗ[ℝ] (H →L[ℂ] H)) M = 0 := by
+  simp only [complexify, LinearMap.zero_apply, smul_zero, Finset.sum_const_zero]
+
+/-- **The adjoint of `ρ_ℂ(M)`**: if `ρ(q)* = ρ'(q̄)`, then `ρ_ℂ(M)* = ρ'_ℂ(M*)`, since `ι(q̄) = ι(q)*`. -/
+lemma star_complexify [CompleteSpace H] (ρ ρ' : ℍ[ℝ] →ₗ[ℝ] (H →L[ℂ] H)) (h : ∀ q, star (ρ q) = ρ' (star q))
+    (M : Matrix (Fin 2) (Fin 2) ℂ) : star (complexify ρ M) = complexify ρ' (star M) := by
+  conv_rhs => rw [quat_decomp M]
+  rw [star_sum]
+  simp only [star_smul, ← map_star quatToMat]
+  rw [complexify_sum, complexify, star_sum]
+  simp only [star_smul, h]
 
 end Lightlike.NCG
