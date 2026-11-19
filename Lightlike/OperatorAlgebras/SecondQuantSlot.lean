@@ -21,18 +21,22 @@ namespace Lightlike.OperatorAlgebras.SecondQuantSlot
 
 variable {M : Type*} {Z : Type*} [NormedAddCommGroup Z] [InnerProductSpace ℂ Z]
 
+/-- `0 < 2` in `ℝ≥0∞`, as a real number. -/
 lemma two_toReal_pos : 0 < (2 : ℝ≥0∞).toReal := by norm_num
 
+/-- `‖h(z)‖² ≤ ‖h‖² ‖z‖²` for each slot vector. -/
 lemma norm_comp_rpow_le (h : Z →L[ℂ] Z) (z : Z) :
     ‖h z‖ ^ (2 : ℝ≥0∞).toReal ≤ ‖h‖ ^ (2 : ℝ≥0∞).toReal * ‖z‖ ^ (2 : ℝ≥0∞).toReal := by
   rw [← Real.mul_rpow (norm_nonneg _) (norm_nonneg _)]
   exact Real.rpow_le_rpow (norm_nonneg _) (h.le_opNorm _) two_toReal_pos.le
 
+/-- Applying `h` slotwise keeps the squared norms summable. -/
 lemma summable_comp (h : Z →L[ℂ] Z) (ψ : lp (fun _ : M => Z) 2) :
     Summable fun m => ‖h (ψ m)‖ ^ (2 : ℝ≥0∞).toReal := by
   have hs : Summable fun m => ‖ψ m‖ ^ (2 : ℝ≥0∞).toReal := (lp.memℓp ψ).summable two_toReal_pos
   exact (hs.mul_left _).of_nonneg_of_le (fun m => by positivity) fun m => norm_comp_rpow_le h (ψ m)
 
+/-- Applying `h` slotwise stays in `ℓ²`. -/
 lemma memℓp_comp (h : Z →L[ℂ] Z) (ψ : lp (fun _ : M => Z) 2) : Memℓp (fun m => h (ψ m)) 2 :=
   memℓp_gen (summable_comp h ψ)
 
@@ -58,6 +62,7 @@ noncomputable def slotMap (h : Z →L[ℂ] Z) : lp (fun _ : M => Z) 2 →L[ℂ] 
             rw [tsum_mul_left, lp.norm_rpow_eq_tsum two_toReal_pos]
         _ = (‖h‖ * ‖ψ‖) ^ (2 : ℝ≥0∞).toReal := (Real.mul_rpow (norm_nonneg _) (norm_nonneg _)).symm
 
+/-- `h` acting on each component. -/
 lemma slotMap_apply (h : Z →L[ℂ] Z) (ψ : lp (fun _ : M => Z) 2) (m : M) : slotMap h ψ m = h (ψ m) := rfl
 
 /-- **`‖h ⊗ 1‖ ≤ ‖h‖`.** -/
@@ -91,6 +96,7 @@ lemma hasSum_coordFun_sq (ψ : lp (fun _ : M => Z) 2) :
   simp only [coordFun, (hfib _).tsum_eq]
   exact hout.tsum_eq.symm
 
+/-- The coordinates of an `ℓ²` vector are in `ℓ²`. -/
 lemma memℓp_coordFun (ψ : lp (fun _ : M => Z) 2) : Memℓp (coordFun b ψ) 2 :=
   memℓp_gen (by simpa only [ENNReal.toReal_ofNat, Real.rpow_two] using (hasSum_coordFun_sq b ψ).summable)
 
@@ -112,9 +118,11 @@ noncomputable def coordL : lp (fun _ : M => Z) 2 →ₗᵢ[ℂ] lp (fun _ : M ×
       h1.trans (hasSum_coordFun_sq b ψ).tsum_eq
     exact (pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).1 h2
 
+/-- The squared norms of an `ℓ²` vector are summable. -/
 lemma summable_sq (c : lp (fun _ : M × ι => ℂ) 2) : Summable fun p => ‖c p‖ ^ 2 := by
   simpa only [ENNReal.toReal_ofNat, Real.rpow_two] using (lp.memℓp c).summable two_toReal_pos
 
+/-- The fibres of an `ℓ²` vector are square-summable. -/
 lemma summable_fiber (c : lp (fun _ : M × ι => ℂ) 2) (m : M) : Summable fun k => ‖c (m, k)‖ ^ 2 :=
   ((summable_prod_of_nonneg fun p => sq_nonneg _).1 (summable_sq c)).1 m
 
@@ -122,6 +130,7 @@ lemma summable_fiber (c : lp (fun _ : M × ι => ℂ) 2) (m : M) : Summable fun 
 noncomputable def fiber (c : lp (fun _ : M × ι => ℂ) 2) (m : M) : lp (fun _ : ι => ℂ) 2 :=
   ⟨fun k => c (m, k), memℓp_gen (by simpa only [ENNReal.toReal_ofNat, Real.rpow_two] using summable_fiber c m)⟩
 
+/-- The squared norm of a fibre. -/
 lemma norm_fiber_sq (c : lp (fun _ : M × ι => ℂ) 2) (m : M) : ‖fiber c m‖ ^ 2 = ∑' k, ‖c (m, k)‖ ^ 2 := by
   have := lp.norm_rpow_eq_tsum two_toReal_pos (fiber c m)
   simp only [ENNReal.toReal_ofNat, Real.rpow_two] at this
@@ -130,6 +139,7 @@ lemma norm_fiber_sq (c : lp (fun _ : M × ι => ℂ) 2) (m : M) : ‖fiber c m�
 /-- `c ↦ (m ↦ ∑ₖ c (m, k) bₖ)`. -/
 noncomputable def uncoordFun (c : lp (fun _ : M × ι => ℂ) 2) (m : M) : Z := b.repr.symm (fiber c m)
 
+/-- The squared norm of the vector assembled from coordinates. -/
 lemma hasSum_uncoordFun_sq (c : lp (fun _ : M × ι => ℂ) 2) :
     HasSum (fun m => ‖uncoordFun b c m‖ ^ 2) (‖c‖ ^ 2) := by
   have hn : ∀ m, ‖uncoordFun b c m‖ ^ 2 = ∑' k, ‖c (m, k)‖ ^ 2 := fun m => by
@@ -177,6 +187,7 @@ theorem norm_slotC_le (h : Z →L[ℂ] Z) : ‖(slotC b h : lp (fun _ : M × ι 
     (norm_nonneg _)).trans (by rw [mul_one])
 
 omit [CompleteSpace Z] in
+/-- Reindexing by an equivalence keeps square-summability. -/
 lemma summable_reindex {α β : Type*} (e : α ≃ β) (f : lp (fun _ : β => ℂ) 2) :
     Summable fun a => ‖f (e a)‖ ^ (2 : ℝ≥0∞).toReal :=
   (e.summable_iff (f := fun b => ‖f b‖ ^ (2 : ℝ≥0∞).toReal)).2 ((lp.memℓp f).summable two_toReal_pos)
@@ -212,6 +223,7 @@ noncomputable def slotOp (j : Fin (n + 1)) (h : Z →L[ℂ] Z) :
   (reindexL (slotEquiv j)).toLinearIsometry.toContinuousLinearMap ∘L slotC b h ∘L
     (reindexL (slotEquiv j)).symm.toLinearIsometry.toContinuousLinearMap
 
+/-- **`h` on one slot has norm at most `‖h‖`.** -/
 theorem norm_slotOp_le (j : Fin (n + 1)) (h : Z →L[ℂ] Z) : ‖slotOp b j h‖ ≤ ‖h‖ := by
   refine (ContinuousLinearMap.opNorm_comp_le _ _).trans ?_
   refine (mul_le_mul (LinearIsometry.norm_toContinuousLinearMap_le _) (ContinuousLinearMap.opNorm_comp_le _ _)
