@@ -51,6 +51,8 @@ theorem cycDen_rotate {n : ℕ} (s : Fin n → Fin 2 → ℂ) : cycDen (s ∘ fi
   unfold cycDen
   exact Equiv.prod_comp (finRotate n) (fun k => angleBr (s k) (s (finRotate n k)))
 
+/-- **Cyclicity** of the Parke-Taylor amplitude (Elvang-Huang p. 25, property 1): relabelling the gluons by a cyclic rotation
+leaves it unchanged. -/
 theorem parkeTaylor_rotate {n : ℕ} (ti tj : Fin 2 → ℂ) (s : Fin n → Fin 2 → ℂ) :
     parkeTaylor ti tj (s ∘ finRotate n) = parkeTaylor ti tj s := by
   rw [parkeTaylor, parkeTaylor, cycDen_rotate]
@@ -124,6 +126,8 @@ theorem cycDen_rev {n : ℕ} (s : Fin n → Fin 2 → ℂ) : cycDen (s ∘ Fin.r
     _ = (-1) ^ n * ∏ m, angleBr (s m) (s (finRotate n m)) := by
         rw [Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]
 
+/-- **Reflection** of the Parke-Taylor amplitude (Elvang-Huang p. 25, property 2): reversing the colour order
+multiplies it by `(−1)^n`. -/
 theorem parkeTaylor_rev {n : ℕ} (ti tj : Fin 2 → ℂ) (s : Fin n → Fin 2 → ℂ) :
     parkeTaylor ti tj (s ∘ Fin.rev) = (-1) ^ n * parkeTaylor ti tj s := by
   have h : ((-1 : ℂ) ^ n)⁻¹ = (-1) ^ n := by rw [← inv_pow, inv_neg, inv_one]
@@ -258,6 +262,8 @@ theorem parkeTaylor_littleGroup_plus {n : ℕ} (s : Fin n → Fin 2 → ℂ) (i 
     cycDen_update_smul, _root_.zpow_neg, zpow_two, div_eq_mul_inv, mul_inv, div_eq_mul_inv, pow_two]
   ring
 
+/-- **The little-group weight of a negative-helicity gluon** of the Parke-Taylor amplitude (Elvang-Huang (2.93)):
+rescaling `|i⟩ → t|i⟩` multiplies it by `t²`. -/
 theorem parkeTaylor_littleGroup_minus {n : ℕ} (s : Fin n → Fin 2 → ℂ) (i j : Fin n) (hij : i ≠ j)
     {t : ℂ} (ht : t ≠ 0) :
     parkeTaylor ((Function.update s i (t • s i)) i) ((Function.update s i (t • s i)) j)

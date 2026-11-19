@@ -15,7 +15,7 @@
   "citations_via": "Semantic Scholar"
  },
  "adamo-2018": {
-  "checked": "2026-11-08",
+  "checked": "2026-11-19",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "Lectures on twistor theory",
@@ -24,10 +24,65 @@
     "verified": true,
     "snippet": "(1.23) These equations are known as the incidence relations – they are the root of everything that is interesting about twistor theory. In more formal treatments of twistor theory, this relationship is often presented in",
     "why": null
+   },
+   "eq. (1.28)": {
+    "verified": true,
+    "snippet": "(1.28) for some λ̃α̇ . But this means that x, y ∈ MC are null separated! So we discover that lines in twistor space intersect if and only if their corresponding points in MC are null separated. The point Z ∈ PT is descri",
+    "why": null
+   },
+   "eq. (1.4)": {
+    "verified": true,
+    "snippet": "(1.4) for some spinors aα , ãα̇ . The converse is also obviously true: any matrix of the form aα ãα̇ has vanishing determinant, and hence its corresponding vector is null. 1 This isomorphism is easy to see if you are f",
+    "why": null
+   },
+   "eq. (2.29)": {
+    "verified": true,
+    "snippet": "(2.29) 2 0 \u000fαβ It is easy to see that hλ1 λ2 i αβ IAB X AB = \u000f \u000fαβ = hλ1 λ2 i , 2 so the line element (2.28) with this infinity twistor is indeed the complexified Minkowski metric. This infinity twistor also makes sense",
+    "why": null
+   },
+   "eq. (2.5)": {
+    "verified": true,
+    "snippet": "(2.5) Using the anti-symmetry of the spinor inner products, we see that (2.5) has signature (+2, −2) when viewed non-projectively (that is, as an inner product on C4 ). Since Lorent– zian-real Weyl spinors are valued in",
+    "why": null
+   },
+   "eq. (3.11)": {
+    "verified": true,
+    "snippet": "(3.11) These equations are the spin-1 zero-rest-mass (z.r.m.) equations: they constitute the free field equations for Maxwell fields, formulated in terms of the SD/ASD components of the field strength. A similar story ho",
+    "why": null
+   },
+   "eq. (3.12)": {
+    "verified": true,
+    "snippet": "(3.12) 12 with Ψ e α̇β̇ γ̇ δ̇ and Ψαβγδ totally symmetric, encoding the SD and ASD portions of the Weyl curvature; Φαβ γ̇ δ̇ encoding the trace-free Ricci curvature; and R the Ricci scalar. The vacuum Einstein equations",
+    "why": null
+   },
+   "eq. (3.15)": {
+    "verified": true,
+    "snippet": "(3.15) h < 0 φα1 ···α2|h| , ∂ α1 β̇ φα1 ···α2|h| = 0 . As desired, this gives a representation of free fields in terms of their linearized SD or ASD field strengths. From now on, when we refer to free fields of a given h",
+    "why": null
+   },
+   "eq. (3.30)": {
+    "verified": true,
+    "snippet": "(3.30) X ∂µα̇ X ∂µα̇ X using the incidence relations. Clearly, the first term in the parentheses vanishes, since λα λα = 0. So if our twistor representative f is holomorphic (i.e., does not depend on the complex conjugat",
+    "why": null
+   },
+   "eq. (3.39)": {
+    "verified": true,
+    "snippet": "(3.39) for h any integer or half-integer. Given a cohomology class on twistor space, the corre- sponding z.r.m. field on space-time can be constructed by means of an integral formula. The negative helicity case we have a",
+    "why": null
+   },
+   "eq. (3.4)": {
+    "verified": true,
+    "snippet": "(3.4) It is easy to see why we have chosen the names ‘self-dual’ and ‘anti-self-dual’ for the two non-trivial portions of the field strength. Recall that we can always form the dual field strength in standard notation by",
+    "why": null
+   },
+   "eq. (3.40)": {
+    "verified": true,
+    "snippet": "(3.40) X Z h=0 φ(x) = hλ dλi ∧ f |X , (3.41) X ∂ ∂ Z h>0 φ̃α̇1 ···α̇2h (x) = hλ dλi ∧ α̇ · · · α̇ f . (3.42) X ∂µ 1 ∂µ 2h X You can readily check that the h ≥ 0 integral formulae obey the z.r.m. equations by using holomo",
+    "why": null
    }
   },
-  "citations": 89,
-  "citations_via": "Semantic Scholar"
+  "citations": 117,
+  "citations_via": "OpenAlex"
  },
  "adj-1997": {
   "checked": "2026-11-08",
@@ -258,6 +313,26 @@
   },
   "citations": 1661,
   "citations_via": "Semantic Scholar"
+ },
+ "atiyah-dunajski-mason-2017": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Twistor theory at fifty: from contour integrals to twistor strings",
+  "locations": {
+   "eq. (1.1)": {
+    "verified": true,
+    "snippet": "(1.1) Γ⊂CP1 This is the most elementary of Penrose’s series of twistor integral formulae for massless fields [175]. The closed contour Γ ⊂ CP1 encloses some poles of a meromorphic function f . Differentiating (1.1) under",
+    "why": null
+   },
+   "eq. (2.7)": {
+    "verified": true,
+    "snippet": "(2.7) Z 1 2 x − iy ct − z Z3 where xµ = (ct, x, y, z) are coordinates of a point in Minkowski space. If two points in Minkowski space are incident with the same twistor, then they are connected by a null line. Let Σ(Z, Z",
+    "why": null
+   }
+  },
+  "citations": 108,
+  "citations_via": "OpenAlex"
  },
  "austing-wheater-2001": {
   "checked": "2026-11-08",
@@ -2002,19 +2077,79 @@
   "citations_via": "Semantic Scholar"
  },
  "elvang-huang-2013": {
-  "checked": "2026-11-08",
+  "checked": "2026-11-19",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "Scattering Amplitudes",
   "locations": {
+   "eq. (2.16)": {
+    "verified": true,
+    "snippet": "(2.16) The relations (2.16) may look new but they should not shock you. After all, it is taught in some algebra classes that if a 2 × 2 matrix has vanishing determinant, it can be written as a product of two 2-component",
+    "why": null
+   },
+   "eq. (2.24)": {
+    "verified": true,
+    "snippet": "(2.24) In amplitudes with momenta p1 , p2 , . . . we use the short-hand notation |1i = |p1 i etc. Applying (2.24) to our Yukawa example above, we find that (2.19) gives 1 1 1 gh12i × × (rest) = gh12i × × (rest) = g × (re",
+    "why": null
+   },
+   "eq. (2.48)": {
+    "verified": true,
+    "snippet": "(2.48) A similar Schouten identity holds for the square spinors: [ri][jk] + [rj][ki] + [rk][ij] = 0. I Exercise 2.9 [12][34] 2 Show that A5 (f − f¯− φφφ) = g 3 [13][14][23][24] + (3 ↔ 5) + (4 ↔ 5) in Yukawa theory (2.18)",
+    "why": null
+   },
+   "eq. (2.56)": {
+    "verified": true,
+    "snippet": "(2.56) so either h12i or [12] must vanish. Suppose h12i is non-vanishing; then by (2.38) and the massless Weyl equation we have h12i[23] = h1|(p1 + p3 )|3] = 0. So [23] = 0. Similarly, [13] = 0. This means that 1. a non-",
+    "why": null
+   },
+   "eq. (2.66)": {
+    "verified": true,
+    "snippet": "(2.66) So there are only two independent color-structures for the tree-level 4-gluon amplitude. Let us now see this in terms of traces of the generators T a . Note that if˜abc = Tr(T a T b T c ) − Tr(T b T a T c ) . (2.6",
+    "why": null
+   },
+   "eq. (2.67)": {
+    "verified": true,
+    "snippet": "(2.67) The products of generator-traces in the amplitudes can be Fierz’ed using the completeness relation 1 (T a )i j (T a )k l = δi l δk j − δi j δk l . (2.68) N For example, for the 4-gluon s-channel diagram we have f˜",
+    "why": null
+   },
+   "eq. (2.68)": {
+    "verified": true,
+    "snippet": "(2.68) N For example, for the 4-gluon s-channel diagram we have f˜a1 a2 b f˜b a3 a4 (2.69) ∝ Tr T a1 T a2 T a3 T a4 − Tr T a1 T a2 T a4 T a3 − Tr T a1 T a3 T a4 T a2 + Tr T a1 T a4 T a3 T a2 . \u0001 \u0001 \u0001 \u0001 Here we have also u",
+    "why": null
+   },
+   "eq. (2.80)": {
+    "verified": true,
+    "snippet": "(2.80) h12ih23i · · · hn1i We prove this formula in Section 3. The number of Feynman diagrams that generically con- tribute to an n-gluon tree amplitude is9 n= 3 4 5 6 7 ... #diagrams = 1 3 10 38 154 ... A fun little tri",
+    "why": null
+   },
+   "eq. (2.82)": {
+    "verified": true,
+    "snippet": "(2.82) The vanishing of this sum of n − 1 color-ordered amplitudes is also called the photon decou- pling identity. It follows from taking one of the generators T a proportional to the identity matrix. I Exercise 2.26 Us",
+    "why": null
+   },
+   "eq. (2.85)": {
+    "verified": true,
+    "snippet": "(2.85) Show then that (2.85) together with the U (1) decoupling relation implies that (2.84) . 25 2 Spinor helicity formalism 2.5 Yang-Mills theory, QCD, and color-ordering The Kleiss-Kuijf relations combine with the oth",
+    "why": null
+   },
+   "eq. (2.92)": {
+    "verified": true,
+    "snippet": "(2.92) This is called little group scaling. Recall that the little group is the group of transformations that leave the momentum of an on-shell particle invariant. For a massless particle, we can go to a frame where pµ =",
+    "why": null
+   },
+   "eq. (2.96)": {
+    "verified": true,
+    "snippet": "(2.96) This means that the helicity structure uniquely fixes the 3-particle amplitude up to an overall constant! This may remind you of a closely related fact, namely that in a conformal field theory, the 3-point correla",
+    "why": null
+   },
    "eq. (3.30)": {
     "verified": true,
     "snippet": "(3.30) where A4 is your friend the Parke-Taylor amplitude and the Mandelstam variable is s12 = −(p1 + p2 )2 . When you are done, look up ref. [20] to see how difficult it is to do this calculation with Feynman diagrams.",
     "why": null
    }
   },
-  "citations": 450,
-  "citations_via": "Semantic Scholar"
+  "citations": 736,
+  "citations_via": "OpenAlex"
  },
  "engle-pereira-2009": {
   "checked": "2026-11-16",
@@ -4839,6 +4974,31 @@
    }
   },
   "citations": 138,
+  "citations_via": "Semantic Scholar"
+ },
+ "wolf-2010": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "A First Course on Twistors, Integrability and Gluon Scattering Amplitudes",
+  "locations": {
+   "eq. (2.1)": {
+    "verified": true,
+    "snippet": "(2.1) 2πi C where C is a closed curve in U+ ∩ U− ⊂ CP 1 .4 Since the measure dλα̇ λα̇ is of homogeneity 2, the function f should be of homogeneity −2 as only then is the integral well-defined. Put differently, only if f",
+    "why": null
+   },
+   "eq. (2.3)": {
+    "verified": true,
+    "snippet": "(2.3) 2πi C solves the equation ∂ αα̇1 φα̇1 ···α̇2h = 0 . (2.4) Again, in order to have a well-defined integral, the integrand should have total homogeneity zero, which is equivalent to requiring f to be of homogeneity −",
+    "why": null
+   },
+   "eq. (2.5)": {
+    "verified": true,
+    "snippet": "(2.5) 2πi C ∂z ∂z 2h such that f is of homogeneity 2h − 2. Hence, ∂ α1 α̇ φα1 ···α2h = 0 . (2.6) These contour integral formulæ provide the advertised Penrose transform [6, 7]. Sometimes, one refers to this transform as",
+    "why": null
+   }
+  },
+  "citations": 46,
   "citations_via": "Semantic Scholar"
  },
  "zwiebach-1993": {
