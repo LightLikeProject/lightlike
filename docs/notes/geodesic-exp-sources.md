@@ -101,6 +101,8 @@ itself, which the gap row names, was not opened.
 
 ## Still open in the row
 
-Local causality (the reading of "causally convex neighbourhoods" fixed by the integrator:
-Chruściel, *Elements of causality theory*, Propositions 2.4.5 and 2.4.7); Theorem 2.2.6 in its
+Local causality, which is how "causally convex neighbourhoods" is read here (Chruściel,
+*Elements of causality theory*, arXiv:1110.6706, Propositions 2.4.5 and 2.4.7, pages 20–21;
+arbitrarily small causally convex neighbourhoods in the absolute sense are the strong causality
+condition, page 40 there, an assumption and not a theorem); Theorem 2.2.6 in its
 global form.
