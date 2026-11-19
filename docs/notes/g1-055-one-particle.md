@@ -61,3 +61,32 @@ What stops it here, concretely:
 The massless representations on `L²` of the light cone are not built here: the standard lift of the cone is not
 continuous (no continuous global section exists), so the multiplier is a measurable field of unitaries and the
 construction of `mulL2` (which uses a continuous field) does not apply as it stands.
+
+## Toward the Wigner classification (in progress)
+
+Source read: E. Freitag, *Unitary representations of the Poincaré group, Wigner classification* (lecture notes,
+Heidelberg): Chapter IV, §2, p. 126 (the orbits of `SL(2,ℂ)` on `ℝ⁴` and their little groups; only the orbits of
+`(m, 0, 0, 0)`, `m > 0`, with little group `SU(2)`, and of `(1, 1, 0, 0)`, with the double cover of `ISO(2)`, give
+the positive-energy representations of physical interest); Chapter V, §4, Definitions 4.1, 4.2, Proposition 4.4
+(systems of imprimitivity), pp. 139–140; §5, Theorem 5.1 (Stone's theorem for `ℝⁿ` in multiplication form),
+Definition 5.5, Lemma 5.6, pp. 146–147; §6, Assumption 6.1, Theorem 6.2 (Mackey), Theorem 6.4 (the irreducible
+unitary representations of `ISO(2)`), pp. 148–149; §7, Lemma 7.1, Proposition 7.2 (ergodicity and concentration on
+one orbit), pp. 150–151; Appendix VI.1 (the spectral theorem for `ℝ`), pp. 152–153.
+
+Scope: the orbit `p = 0` (whose representations are those of `SL(2,ℂ)` itself, Bekaert–Boulanger §3.2, Remark,
+PDF page 13: "the zero-momentum representations are essentially UIRs of the little group") is not part of this row.
+
+Formalised so far on the way to the irreducibility of the induced representations (the first half of Freitag's
+Theorem 6.2 for the massive orbit):
+
+* the canonical system of imprimitivity (`Imprimitivity.lean`, `isSystemOfImprimitivity_inducedL2`);
+* an operator commuting with the translations commutes with every Schwartz function of the momentum
+  (`CommutantTranslations.lean`, Fourier inversion and Fubini) and with every momentum projection `E(S)`
+  (`CommutantPVM.lean`, smooth approximations of open sets and the `π`-`λ` theorem);
+* such an operator is the multiplication by a strongly measurable field of matrices
+  (`CommutantDecomposition.lean`, `exists_matField_of_commute_transl`).
+
+Remaining for irreducibility: Lorentz covariance of the field, its almost-everywhere constancy (Fubini over
+`SL(2,ℂ)`, with the invariant measure the image of the Haar measure), and Schur's lemma for `SU(2)`. Remaining for
+the converse (every irreducible positive-energy representation is induced): the SNAG theorem for `ℝ⁴` and Mackey's
+imprimitivity theorem, and the representations of the `ISO(2)` cover including the continuous-spin series.
