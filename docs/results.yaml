@@ -2874,3 +2874,17 @@
   review: kernel-checked
   note: "Compared with Krajewski, arXiv:hep-th/9701081, Section 3.2, p. 13 (read): if the matrix of multiplicities is symmetric, the charge conjugation is unique up to unitary equivalence and acts as J (e_a ⊗ ψ ⊗ e_b) = e_b ⊗ ψ̄ ⊗ e_a; the orthonormal basis with L_ii ψ = ψ is exists_orthonormalBasis_fixed. Here A = ⊕ M_(n_i)(C) represented complex-linearly; the unitary intertwines π and J with the model krajewskiReal of the multiplicity matrix."
   since: unreleased
+- id: LL-0219
+  title: The Dirac operator of a real finite spectral triple is D = Δ + J Δ J with Δ hermitian, commuting with the right action and anticommuting with the chirality, and Δ is unique
+  area: NCG
+  file: Lightlike/NCG/DiracDecomposition.lean
+  decls: [Lightlike.NCG.proj_D_proj_rightOp, Lightlike.NCG.proj_D_proj_pi, Lightlike.NCG.Delta, Lightlike.NCG.D_eq_Delta_add, Lightlike.NCG.Delta_rightOp, Lightlike.NCG.Delta_gamma, Lightlike.NCG.Delta_symm, Lightlike.NCG.Delta_unique]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: krajewski-1998, location: "Section 3.4", check: "Dirac operator"}
+      - {ref: paschke-sitarz-1998, location: "Lemma 6", check: "Lemma 6"}
+  review: kernel-checked
+  note: "Compared with Krajewski, arXiv:hep-th/9701081, Section 3.4, p. 15 (read): D = D_L + D_R with [D_L, π(A)] = [D_R, J π(A) J⁻¹] = 0, unique since D anticommutes with χ, D_L = J D_R J⁻¹, so D = Δ + J Δ J⁻¹ with Δ hermitian, commuting with J π(A) J⁻¹ and anticommuting with χ; and Paschke-Sitarz, arXiv:q-alg/9612029, Lemma 6, p. 5 (the second half). The chirality is assumed scalar on each vertex H_ij, which Paschke-Sitarz Lemma 3 (p. 3) derives from the Hochschild-cycle axiom."
+  since: unreleased

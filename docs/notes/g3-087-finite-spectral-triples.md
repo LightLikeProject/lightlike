@@ -67,8 +67,7 @@ off-diagonal vertex `H₀₁` is zero.
   a grading; and the multiplicity matrix of this triple is `r` (`Vᵢⱼ` is spanned by the basis vectors at
   `(i, j, ρ, 0, 0)`). So a matrix is the multiplicity matrix of a real structure exactly when it is symmetric.
 
-Not yet stated (the next pieces): the Dirac operators on the links beyond Lemma 6 (§3.4, p. 17), and Krajewski's real
-summands `Mₙ(ℝ)`, `Mₙ(ℍ)` in the tensor form and the model.
+Not yet stated: Krajewski's real summands `Mₙ(ℝ)`, `Mₙ(ℍ)` in the tensor form and the model (see below).
 
 Tests (`TestsClassification.lean`): the two-point data have `r₀₀ = 1`, `r₀₁ = 0`; a non-symmetric matrix is the
 multiplicity matrix of no real structure; on `ℂ ⊕ ℂ` every first-order `D` has `E₀₀ D E₁₁ = 0`.
@@ -112,3 +111,18 @@ and the sign relation between `J` and `j` that gives Table 1's conditions.
 
 So the uniqueness and the model are stated for complex summands (`A = ⊕ Mₙᵢ(ℂ)` acting complex-linearly). Both
 attempts above stop at a missing piece of algebra, not at length.
+
+## FST4: the Dirac operator `D = Δ + J Δ J` (Krajewski §3.4, p. 15)
+
+Read: Krajewski §3.4, p. 14 (first-order operators, `L_L(M) + L_R(M) ⊂ L_1(M)`) and p. 15 (`D = D_L + D_R` with
+`[D_L, π(A)] = [D_R, J π(A) J⁻¹] = 0`; unique since `D` anticommutes with `χ`; `D_L = J D_R J⁻¹`; `D = Δ + J Δ J⁻¹` with `Δ`
+hermitian, commuting with `J π(A) J⁻¹` and anticommuting with `χ`); Conclusion, p. 17. Paschke-Sitarz Lemma 6, p. 5,
+second half.
+
+* `proj_D_proj_rightOp` (`i ≠ k`), `proj_D_proj_pi` (`j ≠ l`): Lemma 6, second half.
+* `proj_D_proj_diag`: the diagonal blocks `Eᵢⱼ D Eᵢⱼ` vanish for a chirality that is a scalar on `Hᵢⱼ`.
+* `Delta = ∑_{i ≠ k} Eᵢⱼ D Eₖₗ`, `D_eq_Delta_add`, `Delta_rightOp`, `Delta_gamma`, `Delta_symm`, `Delta_unique`.
+
+The chirality is assumed to be a scalar on each vertex (`hγ`). Paschke-Sitarz, Lemma 3, p. 3 (read), second half,
+derives this from the axiom that `γ` is the image of a Hochschild cycle: "Γᵢⱼ must be proportional to the identity
+matrix, so it leaves only the possibility for +1 or −1". So every triple satisfying the source's axioms satisfies `hγ`.
