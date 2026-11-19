@@ -121,3 +121,19 @@ All files of `Lightlike/Spacetime/EHManifold/` compile, with no `sorry`.
 Differences from Carroll (4.54) to (4.67) that remain: (b) the perturbation is supported in one small
 coordinate ball; (c) the right side is in chart components; (d) the "critical if and only if" is proved for
 coordinate metrics on a ball, not yet stated for the manifold action `ehAction`.
+
+## Status after the intrinsic form (19 November 2026)
+
+| Formal statement (Lean) | Source (Carroll, gr-qc/9712019, ch. 4) | Match |
+| --- | --- | --- |
+| `eh_first_variation_manifold_intrinsic` (`IntrinsicVariation.lean`): for a metric `g` on `M` and a smooth symmetric tensor field `h` vanishing outside a compact `K` inside a small coordinate ball of one chart, `d/dt ehAction (g + t h) Λ K = −∫_K ⟨G + Λ g, h⟩_g d vol_g` at `t = 0` | (4.66), p. 116: `δS = ∫ dⁿx √−g [R_{μν} − ½ R g_{μν}] δg^{μν}` | weaker. Convention: the metric is varied, not its inverse (`δg^{μν} = −g^{μα} g^{νβ} δg_{αβ}`), hence the sign; `Λ` is added; any signature. Weaker: the perturbation is supported in one small coordinate ball, not in an arbitrary compact set |
+| `eh_first_variation_manifold_eq_zero` (`ManifoldCritical.lean`), `isEHCriticalOnBall_iff` (`BallCriticalConverse.lean`) | (4.67), p. 116: stationary points of the action are the solutions of Einstein's equation | weaker. On the manifold only "Einstein's equation implies stationary" (for the perturbations above); the equivalence is proved for coordinate metrics on a ball |
+
+`ehAction g Λ K = ∫_K (R − 2Λ) d vol_g` (Levi-Civita connection and volume measure of `g`);
+`ehIntegrand g h Λ p = ⟨G + Λ g, h⟩_g (p)` is the contraction with the inverse metric, defined with
+`formContract` (basis independent: `formContract_basis_indep`) and the Einstein form `einsteinBilin`.
+Both sides of the first statement are intrinsic; charts appear only in the hypothesis on the support.
+
+Open: (c) a perturbation with arbitrary compact support. First step done: `eh_variation_piece`
+(`PieceVariation.lean`), the variation of the density over a measurable piece with the divergence of the
+flux (`ehFluxDiv`) kept. Still needed: chart independence of the flux divergence, and a partition of unity.
