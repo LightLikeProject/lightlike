@@ -274,6 +274,7 @@ import Lightlike.GR.KruskalManifold
 import Lightlike.GR.KruskalManifoldCurvature
 import Lightlike.GR.KruskalMaximal
 import Lightlike.GR.KruskalMetric
+import Lightlike.GR.KruskalOrientation
 import Lightlike.GR.KruskalPenrose
 import Lightlike.GR.KruskalRegions
 import Lightlike.GR.KruskalSpherical
