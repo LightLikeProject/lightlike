@@ -67,6 +67,8 @@ A map `y ↦ W y` into the unitaries with the Weyl relations is regular as soon 
 
 For a complex Hilbert space `Z` with a Hilbert basis indexed by a linearly ordered `ι`, a Hilbert space with a Hilbert basis `B` indexed by the finite subsets of `ι` is the fermionic Fock space: the creation operators `a*(eⱼ) B S = ±B (S ∪ {j})` and their adjoints satisfy the CAR, `a*(w) = ∑ⱼ ⟪eⱼ, w⟫ a*(eⱼ)` has norm at most `‖w‖`, and the field operators `φ(w) = a*(w) + a(w)` are self-adjoint with `φ(w) φ(w') + φ(w') φ(w) = 2 Re⟪w, w'⟫` and form an irreducible representation [81] {9}; the annihilation operators kill the vacuum and the model `ℓ²(Finset ι)` is checked in [82].
 
+In a Fock representation, a contraction `p` of `h` has a second quantization `Γ(p)`, the contraction with `Γ(p) W(f) Ω = exp((‖p f‖² - ‖f‖²)/4) W(p f) Ω`, from the positive semidefinite kernel `exp(⟪f, g⟫/2) - exp(⟪p f, p g⟫/2)` (Schur's product theorem); it is functorial, `Γ(p)* = Γ(p*)`, unitary iff `p` is, and for a unitary `U` the unique implementer of `U` with `Γ(U) Ω = Ω`, every implementer being a phase times `Γ(U)`; a strongly continuous unitary group `U(t)` gives the strongly continuous group `Γ(U(t))`, whose generator is `dΓ` [84] {10}; `Γ(0)` is the vacuum projection [85].
+
 ## Lean References
 
 1. Lightlike/OperatorAlgebras/UnitaryGroup.lean - `OperatorAlgebras.UnitaryGroup`,
@@ -277,6 +279,12 @@ For a complex Hilbert space `Z` with a Hilbert basis indexed by a linearly order
 83. Lightlike/OperatorAlgebras/QuasiFreeWick.lean - `OperatorAlgebras.mixedDeriv`, `OperatorAlgebras.haf`,
     `OperatorAlgebras.mixedDeriv_exp_quad`, `OperatorAlgebras.CCRRep.npoint`, `OperatorAlgebras.CCRRep.IsQuasiFree.genFun_eq`,
     `OperatorAlgebras.CCRRep.IsQuasiFree.npoint_two`, `OperatorAlgebras.CCRRep.IsQuasiFree.npoint_eq_haf`
+84. Lightlike/OperatorAlgebras/SecondQuantization.lean - `OperatorAlgebras.FockRep.gamma`, `OperatorAlgebras.FockRep.gamma_W_Ω`,
+    `OperatorAlgebras.FockRep.gamma_comp`, `OperatorAlgebras.FockRep.adjoint_gamma`, `OperatorAlgebras.FockRep.gamma_mem_unitary_iff`,
+    `OperatorAlgebras.FockRep.secondQuant`, `OperatorAlgebras.FockRep.eq_smul_secondQuant`, `OperatorAlgebras.posSemidef_kernel`,
+    `OperatorAlgebras.FockRep.secondQuantGroup`, `OperatorAlgebras.FockRep.dGamma`
+85. Lightlike/OperatorAlgebras/TestsSecondQuantization.lean - `OperatorAlgebras.FockRep.secondQuant_trans_symm`,
+    `OperatorAlgebras.FockRep.gamma_zero`
 
 ## References
 
@@ -301,3 +309,5 @@ For a complex Hilbert space `Z` with a Hilbert basis indexed by a linearly order
    relations*, Section 9.1, Theorems 37 and 39 (Theorem 39 (1) in the corrected form `½(η + iω)`).
 9. J. Dereziński, *Introduction to representations of the canonical commutation and anticommutation
    relations*, Sections 5.3 and 7.1, Theorem 28.
+10. J. Dereziński, *Introduction to representations of the canonical commutation and anticommutation
+   relations*, Sections 5.2, 5.5 and 6.4, Theorems 13 and 24.

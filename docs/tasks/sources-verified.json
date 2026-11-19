@@ -1579,6 +1579,16 @@
     "snippet": "Theorem 10. 1) Let (φ1 , φ2 , . . . , φ2n ) be a representation of the CAR over R2n in a Hilbert space H. Then there exists a Hilbert space K and a unitary operator U : ⊗ n C2 ⊗ K → H such that \u0010 \u0011 (j) U Ij−1 σ1 ⊗ 1K = φ",
     "why": null
    },
+   "Theorem 13, p. 19": {
+    "verified": true,
+    "snippet": "Theorem 13. 1) Let h, h1 , h2 ∈ B(Z), p1 ∈ B(Z, Z1 ), p2 ∈ B(Z1 , Z2 ), kpi k ≤ 1. We then have Γ (eih ) = exp(dΓ (ih)), (35) Γ (p2 )Γ (p1 ) = Γ (p2 p1 ), [dΓ (h1 ), dΓ (h2 )] = dΓ ([h1 , h2 ]). fin 2) Let Φ, Ψ ∈ ⊗ Z, h",
+    "why": null
+   },
+   "Theorem 24, p. 27": {
+    "verified": true,
+    "snippet": "Theorem 24 (Shale Theorem). 1) Let r ∈ Sp(Y). Then the following conditions are equivalent: a) There exists U ∈ U (Γs (Z)) such that U W (y)U ∗ = W (ry), y ∈ Y. (45) b) r ∈ Sp2 (Y). 2) If the above conditions are satisfi",
+    "why": null
+   },
    "Theorem 28, p. 29": {
     "verified": true,
     "snippet": "Theorem 28. Y ∋ y 7→ φ(y) ∈ Bh (Γa (Z)) (52) is an irreducible representation of the CAR over the space (Y, α). (52) is called the Fock representation of the CAR. Let w1 , . . . , wm be an orthonormal basis of the comple",
