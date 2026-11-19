@@ -1,0 +1,14 @@
+- id: LL-XXXX
+  title: The Parke–Taylor formula ⟨ij⟩⁴/(⟨12⟩⋯⟨n1⟩) for any positions i ≠ j of the two negative-helicity gluons by BCFW recursion, conditional on the BCFW large-z falloff (3.11), taken as a hypothesis
+  area: GR
+  file: Lightlike/GR/ParkeTaylorAll.lean
+  decls: [Lightlike.SpinorHelicity.IsBCFWFamilyMHV, Lightlike.SpinorHelicity.parkeTaylor_bcfw_far, Lightlike.SpinorHelicity.eq_parkeTaylor_of_bcfw_mhv, Lightlike.SpinorHelicity.eq_parkeTaylor_of_bcfw_mhv']
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: elvang-huang-2013, location: "eq. (3.11)", check: "background field"}
+      - {ref: elvang-huang-2013, location: "eq. (2.82)", check: "Cyclic"}
+  review: kernel-checked
+  note: "Compared with Elvang–Huang §3.2, (3.11), p. 37, the remark on the non-adjacent case, p. 39 ('Try your own hands on the proof for the non-adjacent case'), and the cyclic property, p. 25, stated just before (2.82) (read). Conditional on the BCFW large-z falloff (3.11), taken as a hypothesis: the single-diagram recursions of the family (IsBCFWFamilyMHV) encode the validity of the adjacent [−,+⟩ shift, whose 1/z falloff the source quotes from [17] and does not derive. Representation: the negative gluons at 0 and j, other positions by cyclic relabelling (p. 25, property 1)."
+  since: unreleased
