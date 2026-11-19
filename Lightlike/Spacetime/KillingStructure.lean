@@ -1,5 +1,5 @@
 import Lightlike.Spacetime.KillingAlgebraCoord
-import Lightlike.Spacetime.SpaceFormKilling
+import Lightlike.Spacetime.KillingOrbitChart
 
 /-!
 # The structure constants of a maximally symmetric 3-metric (G1-024, stage 1)
@@ -19,7 +19,12 @@ and the rotations vanish at `p` with `∇R_ab(p)` the generator `so3Gen a b` of 
 * `NormalizedKillingFrame.isotropic`: that isotropy holds for some `k`, from the Leibniz identity
   `[R_ab, [Pₘ, Pₙ]] = [[R_ab, Pₘ], Pₙ] + [Pₘ, [R_ab, Pₙ]]` read through the data at `p` and Schur's lemma;
   `NormalizedKillingFrame.exists_lieBracket_eq_S`: so a normalized family has the brackets of the space form of some
-  curvature `k`.
+  curvature `k`;
+* `bilBasis`, `coordBil`, `coordBil_apply`, `hasFDerivAt_coordBil`, `fderiv_coordBil_apply`, `coordBil_lie`: the bilinear
+  form of a coordinate metric, and Killing's equation in the form of `isometric_spaceForm` as the coordinate Lie
+  derivative;
+* `NormalizedKillingFrame.isometric`: on a ball around `p`, the metric is, in orbit charts, `g₀₀(p)` times the space
+  form of some curvature `k` (`isometric_spaceForm`).
 -/
 
 open Set Filter
@@ -327,6 +332,105 @@ theorem exists_lieBracket_eq_S (h : NormalizedKillingFrame g U Y p) (hU : IsPrec
     ∃ k : ℝ, ∀ i j, ∀ w ∈ U, VectorField.lieBracket ℝ (Y i) (Y j) w = ∑ e, S k i j e • Y e w := by
   obtain ⟨k, hk⟩ := h.isotropic
   exact ⟨k, h.lieBracket_eq_S hU k hk⟩
+
+end NormalizedKillingFrame
+
+
+section Bilinear
+
+/-- The basis bilinear form `(u, w) ↦ u_a w_b` on `ℝ³`. -/
+noncomputable def bilBasis (a b : Fin 3) : (Fin 3 → ℝ) →L[ℝ] (Fin 3 → ℝ) →L[ℝ] ℝ :=
+  (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin 3 => ℝ) a).smulRight
+    (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin 3 => ℝ) b)
+
+@[simp] theorem bilBasis_apply (a b : Fin 3) (u w : Fin 3 → ℝ) : bilBasis a b u w = u a * w b := by
+  simp [bilBasis]
+
+/-- The bilinear form `G(y)(u, w) = Σ_{ab} g_{ab}(y) u_a w_b` of a coordinate metric on `ℝ³`. -/
+noncomputable def coordBil (g : (Fin 3 → ℝ) → Matrix (Fin 3) (Fin 3) ℝ) (y : Fin 3 → ℝ) :
+    (Fin 3 → ℝ) →L[ℝ] (Fin 3 → ℝ) →L[ℝ] ℝ :=
+  ∑ a, ∑ b, g y a b • bilBasis a b
+
+theorem coordBil_apply (g : (Fin 3 → ℝ) → Matrix (Fin 3) (Fin 3) ℝ) (y u w : Fin 3 → ℝ) :
+    coordBil g y u w = ∑ a, ∑ b, g y a b * u a * w b := by
+  simp only [coordBil, sum_apply, smul_apply, bilBasis_apply, smul_eq_mul]
+  exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring
+
+set_option maxSynthPendingDepth 3 in
+theorem hasFDerivAt_coordBil {g : (Fin 3 → ℝ) → Matrix (Fin 3) (Fin 3) ℝ} {y : Fin 3 → ℝ}
+    (hgd : ∀ a b, DifferentiableAt ℝ (fun z => g z a b) y) :
+    HasFDerivAt (coordBil g) (∑ a, ∑ b, (fderiv ℝ (fun z => g z a b) y).smulRight (bilBasis a b)) y := by
+  have : coordBil g = fun z => ∑ a, ∑ b, g z a b • bilBasis a b := rfl
+  rw [this]
+  exact HasFDerivAt.fun_sum fun a _ => HasFDerivAt.fun_sum fun b _ => (hgd a b).hasFDerivAt.smul_const (bilBasis a b)
+
+theorem fderiv_coordBil_apply {g : (Fin 3 → ℝ) → Matrix (Fin 3) (Fin 3) ℝ} {y : Fin 3 → ℝ}
+    (hgd : ∀ a b, DifferentiableAt ℝ (fun z => g z a b) y) (v u w : Fin 3 → ℝ) :
+    fderiv ℝ (coordBil g) y v u w = ∑ a, ∑ b, (∑ c, v c * pd c (fun z => g z a b) y) * u a * w b := by
+  rw [(hasFDerivAt_coordBil hgd).fderiv]
+  simp only [sum_apply, ContinuousLinearMap.smulRight_apply, smul_apply,
+    bilBasis_apply, smul_eq_mul, fderiv_eq_sum_pd]
+  exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring
+
+/-- **Killing's equation in the form of `isometric_spaceForm` is the coordinate Lie derivative**:
+`DG(y)(Y)(u, w) + G(y)(DY u, w) + G(y)(u, DY w) = Σ_{ab} u_a w_b (L_Y g)_{ab}`. -/
+theorem coordBil_lie {g : (Fin 3 → ℝ) → Matrix (Fin 3) (Fin 3) ℝ} {y : Fin 3 → ℝ} {Y : (Fin 3 → ℝ) → Fin 3 → ℝ}
+    (hgd : ∀ a b, DifferentiableAt ℝ (fun z => g z a b) y) (hY : DifferentiableAt ℝ Y y) (u w : Fin 3 → ℝ) :
+    fderiv ℝ (coordBil g) y (Y y) u w + coordBil g y (fderiv ℝ Y y u) w + coordBil g y u (fderiv ℝ Y y w) =
+      ∑ a, ∑ b, u a * w b * lieCo g Y y a b := by
+  have hcomp : ∀ v l, fderiv ℝ Y y v l = ∑ a, v a * pd a (fun z => Y z l) y := fun v l => by
+    rw [fderiv_pi (fun i => (differentiableAt_pi.1 hY) i)]
+    simp [fderiv_eq_sum_pd]
+  rw [fderiv_coordBil_apply hgd, coordBil_apply, coordBil_apply]
+  simp only [hcomp, lieCo, Fin.sum_univ_three]
+  ring
+
+end Bilinear
+
+namespace NormalizedKillingFrame
+
+variable {g : (Fin 3 → ℝ) → Matrix (Fin 3) (Fin 3) ℝ} {Y : Idx → (Fin 3 → ℝ) → Fin 3 → ℝ} {p : Fin 3 → ℝ}
+
+/-- **G1-024, stage 1: a metric on a ball of `ℝ³` with a Killing family normalized at the centre is, in orbit charts,
+a constant multiple of the space form of some curvature `k`.** The family has the brackets `S k`
+(`exists_lieBracket_eq_S`), so `isometric_spaceForm` applies: for some `T > 0` the orbit maps
+`o ξ = exp(T Σ ξₑ Yₑ)(p)` and `o₂ ξ = exp(T Σ ξₑ Xₑ)(0)` satisfy
+`G(o ξ)(Do ζ, Do ζ') = g₀₀(p) · δ/(1 + k|x|²/4)²(o₂ ξ)(Do₂ ζ, Do₂ ζ')` near `ξ = 0`. -/
+theorem isometric {ρ : ℝ} (h : NormalizedKillingFrame g (Metric.ball p ρ) Y p) (hρ : 0 < ρ) :
+    ∃ (k T ε : ℝ) (o : (Idx → ℝ) → (Fin 3 → ℝ)) (o₂ : (Idx → ℝ) → (Fin 3 → ℝ)), 0 < T ∧ 0 < ε ∧ o 0 = p ∧
+      o₂ 0 = 0 ∧ (∀ ξ ∈ Metric.ball (0 : Idx → ℝ) ε, DifferentiableAt ℝ o ξ ∧ DifferentiableAt ℝ o₂ ξ) ∧
+      (∀ ζ, fderiv ℝ o 0 ζ = T • ∑ e, ζ e • Y e p) ∧
+      (∀ ζ, fderiv ℝ o₂ 0 ζ = T • ∑ e, ζ e • SpaceForm.X k e 0) ∧
+      ∀ ξ ∈ Metric.ball (0 : Idx → ℝ) ε, ∀ ζ ζ',
+        coordBil g (o ξ) (fderiv ℝ o ξ ζ) (fderiv ℝ o ξ ζ') =
+          g p 0 0 * SpaceForm.metric k (o₂ ξ) (fderiv ℝ o₂ ξ ζ) (fderiv ℝ o₂ ξ ζ') := by
+  obtain ⟨k, hS⟩ := h.exists_lieBracket_eq_S (convex_ball p ρ).isPreconnected
+  have hO := h.metric.isOpen
+  have hgd : ∀ y ∈ Metric.ball p ρ, ∀ a b, DifferentiableAt ℝ (fun z => g z a b) y := fun y hy a b =>
+    differentiableAt_of_contDiffOn (h.metric.smooth a b) hO hy
+  have hYd : ∀ i, ∀ y ∈ Metric.ball p ρ, DifferentiableAt ℝ (Y i) y := fun i y hy =>
+    differentiableAt_pi.2 fun c => differentiableAt_of_contDiffOn (h.smooth i c) hO hy
+  have hYc : ∀ i, ContDiffAt ℝ 1 (Y i) p := fun i =>
+    (contDiffAt_pi.2 fun c => (h.smooth i c).contDiffAt (hO.mem_nhds h.mem)).of_le (by simp)
+  have hGd : ∀ y ∈ Metric.ball p ρ, DifferentiableAt ℝ (coordBil g) y := fun y hy =>
+    (hasFDerivAt_coordBil (hgd y hy)).differentiableAt
+  have hK : ∀ i, ∀ y ∈ Metric.ball p ρ, ∀ u w : Fin 3 → ℝ,
+      fderiv ℝ (coordBil g) y (Y i y) u w + coordBil g y (fderiv ℝ (Y i) y u) w +
+        coordBil g y u (fderiv ℝ (Y i) y w) = 0 := fun i y hy u w => by
+    rw [coordBil_lie (hgd y hy) (hYd i y hy)]
+    refine Finset.sum_eq_zero fun a _ => Finset.sum_eq_zero fun b _ => ?_
+    rw [lieCo_lowerVec h.symm (h.metric.isUnit_det y hy).ne_zero (hgd y hy)
+      (fun c => differentiableAt_of_contDiffOn (h.smooth i c) hO hy), h.killing i y hy a b, mul_zero]
+  have hsym : ∀ y ∈ Metric.ball p ρ, ∀ u w : Fin 3 → ℝ, coordBil g y u w = coordBil g y w u := fun y _ u w => by
+    rw [coordBil_apply, coordBil_apply, Finset.sum_comm]
+    exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by rw [h.symm y b a]; ring
+  have hiso : ∀ a b : Fin 3, Y (.inr (a, b)) p = 0 := fun a b => by rw [h.val]; rfl
+  obtain ⟨T, ε, o, o₂, hT, hε, ho, ho₂, hd, hD, hD₂, hG⟩ :=
+    isometric_spaceForm k (coordBil g) Y p hρ hYc hYd hGd hK hS hsym hiso
+  have h00 : coordBil g p (Y (.inl 0) p) (Y (.inl 0) p) = g p 0 0 := by
+    rw [h.val, coordBil_apply]
+    simp [frameVal, Pi.single_apply]
+  exact ⟨k, T, ε, o, o₂, hT, hε, ho, ho₂, hd, hD, hD₂, fun ξ hξ ζ ζ' => by rw [hG ξ hξ ζ ζ', h00]⟩
 
 end NormalizedKillingFrame
 
