@@ -28,4 +28,7 @@ Differences:
   which the source treats as "well-behaved" after (7.87), is left out, as polar coordinates degenerate there); the
   sphere factor `dΩ²` enters through `q = dΩ²(w, w)`, a statement about the radial part and the warping by `r²`.
 
-Next: conformal infinity (the boundary `|η| + χ = π`, where `ω = 0`), and the AdS boundary.
+* `compOmega_eq_zero_iff`: conformal infinity, p. 196: on the closed region `0 ≤ χ`, `|η| + χ ≤ π` the conformal factor
+  `ω` vanishes exactly on the boundary `|η| + χ = π`, where the physical metric `ω⁻² ds̄²` is not defined.
+
+Next: the embedding including the axis (Cartesian or ambient form), and the AdS boundary.
