@@ -83,3 +83,10 @@ spectral theorem for compact self-adjoint operators, `ContinuousMap.toLp_denseRa
 (`UnitaryMatrixRep.isIrreducible_iff_toRepresentation`); Mathlib's `fourierBasis` on `AddCircle` is the same
 statement as `circle_hilbertBasis` on a different model of the circle. Not read: Bröcker–tom Dieck, Chapter III
 (no access to the text; no theorem numbers from it are cited).
+
+On `fable2/ha5-followup`: `exists_isotypic_isometry` is Tao's Proposition 8 (read, see above): the map
+`T ↦ √(dim ρ) tr(T ρ(·))` is a linear isometric isomorphism onto the isotypic component. Representation: the
+Hilbert–Schmidt space `HS(V_ξ)` is `EuclideanSpace ℂ (ι × ι)` (matrix entries with the Frobenius inner product),
+and Tao's `ι_ξ(T)(g) = ⟨T, ρ_ξ(g)*⟩_HS` is written as `tr(T ρ(g)) = ∑ i j, T (i, j) ρ(g) j i`. Equivariance of
+the map under `G × G` is not stated. `real_not_forall_memLp_two`, `real_character_not_memLp_two`: the check for
+`ℝ` (no source statement).

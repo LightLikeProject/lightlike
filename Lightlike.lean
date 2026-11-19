@@ -233,7 +233,9 @@ import Lightlike.HarmonicAnalysis.PeterWeylChecks
 import Lightlike.HarmonicAnalysis.PeterWeylCircle
 import Lightlike.HarmonicAnalysis.PeterWeylComplete
 import Lightlike.HarmonicAnalysis.PeterWeylHilbert
+import Lightlike.HarmonicAnalysis.PeterWeylHilbertSchmidt
 import Lightlike.HarmonicAnalysis.PeterWeylIsotypic
+import Lightlike.HarmonicAnalysis.PeterWeylReal
 import Lightlike.HarmonicAnalysis.PeterWeylSU2
 import Lightlike.HarmonicAnalysis.PeterWeylSeparation
 import Lightlike.HarmonicAnalysis.RepresentationBridge
