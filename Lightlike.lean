@@ -191,6 +191,7 @@ import Lightlike.FourD.Tests
 import Lightlike.GR.Einstein
 import Lightlike.GR.AdSPoincare
 import Lightlike.GR.EddingtonFinkelstein
+import Lightlike.GR.EFConstants
 import Lightlike.GR.EFNullGeodesic
 import Lightlike.GR.EuclideanCigar
 import Lightlike.GR.EuclideanCone
@@ -733,6 +734,7 @@ import Lightlike.Spacetime.ContractedBianchi
 import Lightlike.Spacetime.DivergenceFree
 import Lightlike.Spacetime.ExtensionChart
 import Lightlike.Spacetime.GeodesicChartChange
+import Lightlike.Spacetime.GeodesicMomentum
 import Lightlike.Spacetime.Kretschmann
 import Lightlike.Spacetime.OpenCoordMetric
 import Lightlike.Spacetime.LeviCivitaSmooth

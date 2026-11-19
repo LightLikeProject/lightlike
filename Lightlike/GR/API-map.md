@@ -48,6 +48,8 @@ exact solutions, such as Kerr and de Sitter, are not yet formalized. [TODO]
 12. Lightlike/GR/KruskalExtension.lean - `kretschmann_kruskalC_unbounded`, `not_tendsto_of_isometric_kruskal`,
     `IsLorentzianExtension.not_tendsto_kruskal` (in every extension of the Kruskal manifold a sequence approaching
     the singularity has no limit)
+13. Lightlike/GR/EFConstants.lean - `pd_eq_zero_of_invariant`, `ef_hasDerivAt_energy`, `ef_hasDerivAt_angular`
+    (energy and axial angular momentum are constant along geodesics in Eddington-Finkelstein coordinates)
 
 ## References
 
