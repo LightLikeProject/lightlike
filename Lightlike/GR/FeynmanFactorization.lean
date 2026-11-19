@@ -630,6 +630,24 @@ theorem bgAmplitude_left (p e : ℕ → Fin 4 → ℂ) {i j : ℕ} (hij : i < j)
       by simp [leftPol, show t ≤ j - i by omega]⟩
   rw [key, bgVertexSum_shift, Nat.zero_add, Nat.sub_add_cancel hij.le]
 
+/-- The propagators of the merged amplitude are propagators of the channels other than `[i, j]`. -/
+lemma mdot_momRange_collapse_ne (m : ℕ) (p : ℕ → Fin 4 → ℂ) {i j : ℕ} (hij : i < j) (hj : j ≤ m + 1)
+    (hk : j - i ≤ m)
+    (hother : ∀ c d, c < d → d ≤ m + 1 → ¬ (c = 0 ∧ d = m + 1) → ¬ (c = i ∧ d = j) →
+      mdot (momRange p c d) (momRange p c d) ≠ 0) :
+    ∀ c d, c < d → d ≤ m - (j - i) + 1 → ¬ (c = 0 ∧ d = m - (j - i) + 1) →
+      mdot (momRange (collapse p i j (momRange p i j)) c d)
+        (momRange (collapse p i j (momRange p i j)) c d) ≠ 0 := by
+  intro c d h1 h2 h3
+  rcases lt_or_ge d i with hd | hd
+  · rw [momRange_collapse_left _ _ hd]
+    exact hother c d h1 (by omega) (by omega) (by omega)
+  rcases lt_or_ge i c with hc | hc
+  · rw [momRange_collapse_right _ _ hc]
+    exact hother _ _ (by omega) (by omega) (by omega) (by omega)
+  · rw [momRange_collapse _ hij.le hc hd]
+    exact hother _ _ (by omega) (by omega) (by omega) (by omega)
+
 /-- **The residue of the planar amplitude on the pole of the channel `{i, …, j}` factorizes** (Elvang-Huang (3.5)):
 on the pole, `P = p_i + ⋯ + p_j = −|P]⟨P|` null, the merged amplitude with the amputated current `V_I` as the
 polarization of the merged gluon is `Σ_h A_L(…, −P^{−h}) A_R(P^h, …)`, with the polarization vectors (2.49) of
@@ -641,6 +659,8 @@ theorem residue_factorization (m : ℕ) (p e : ℕ → Fin 4 → ℂ) {i j : ℕ
     (hq1 : angleBr ltq ltP ≠ 0) (hq2 : squareBr lq lP ≠ 0)
     (hnull : ∀ t ≤ m + 2, mdot (p t) (p t) = 0) (hcons : momRange p 0 (m + 2) = 0)
     (htr : ∀ t ≤ m + 2, mdot (e t) (p t) = 0)
+    (hother : ∀ c d, c < d → d ≤ m + 1 → ¬ (c = 0 ∧ d = m + 1) → ¬ (c = i ∧ d = j) →
+      mdot (momRange p c d) (momRange p c d) ≠ 0)
     (hWL : WardIdentity (j - i - 1) (j - i + 1)) (hWR : WardIdentity (m - (j - i)) i) :
     bgAmplitude (m - (j - i)) (collapse p i j (momRange p i j))
         (collapse e i j (bgVertexSum (bgCurrent p e) p i j)) =
@@ -668,6 +688,7 @@ theorem residue_factorization (m : ℕ) (p e : ℕ → Fin 4 → ℂ) {i j : ℕ
         · rw [collapse_of_gt p _ h]; exact hnull _ (by omega))
       (by rw [hPdef, momRange_collapse p hij.le (Nat.zero_le i) (by omega),
             show m - (j - i) + 2 + (j - i) = m + 2 by omega]; exact hcons)
+      (by rw [hPdef]; exact mdot_momRange_collapse_ne m p hij hj hk hother)
       (fun t ht hti => by
         rcases lt_or_gt_of_ne hti with h | h
         · rw [collapse_of_lt p _ h, collapse_of_lt e _ h]; exact htr t (by omega)
@@ -691,6 +712,12 @@ theorem residue_factorization (m : ℕ) (p e : ℕ → Fin 4 → ℂ) {i j : ℕ
             show j - i + 1 + i = j + 1 by omega, hPdef, momRange]
         rw [h2]
         simp [leftMom])
+      (fun c d h1 h2 h3 => by
+        have hm : momRange (leftMom p i j (-P)) c d = momRange p (c + i) (d + i) := by
+          rw [← momRange_shift]
+          exact momRange_congr fun t _ ht => by simp [leftMom, show t ≤ j - i by omega]
+        rw [hm]
+        exact hother _ _ (by omega) (by omega) (by omega) (by omega))
       (fun t ht hti => by
         have ht' : t ≤ j - i := by omega
         simp only [leftMom, leftPol, ht', ↓reduceIte]; exact htr _ (by omega))
@@ -998,16 +1025,8 @@ theorem tendsto_residue_channel (m : ℕ) (p e : ℂ → ℕ → Fin 4 → ℂ) 
     · simp only [collapse_of_lt _ _ h]; exact he t
     · simp only [collapse_self]; exact hV
     · simp only [collapse_of_gt _ _ h]; exact he _
-  have hR : ContinuousAt R z₀ := by
-    refine continuousAt_bgAmplitude (m - (j - i)) hp' he' fun c d h1 h2 h3 => ?_
-    rcases lt_or_ge d i with hd | hd
-    · rw [momRange_collapse_left _ _ hd]
-      exact hother c d h1 (by omega) (by omega) (by omega)
-    rcases lt_or_ge i c with hc | hc
-    · rw [momRange_collapse_right _ _ hc]
-      exact hother _ _ (by omega) (by omega) (by omega) (by omega)
-    · rw [momRange_collapse _ hij.le hc hd]
-      exact hother _ _ (by omega) (by omega) (by omega) (by omega)
+  have hR : ContinuousAt R z₀ :=
+    continuousAt_bgAmplitude (m - (j - i)) hp' he' (mdot_momRange_collapse_ne m (p z₀) hij hj hk hother)
   have hlim : Tendsto (fun z => (z - z₀) * N z + R z / s) (𝓝 z₀) (𝓝 (R z₀ / s)) := by
     have hc : ContinuousAt (fun z => (z - z₀) * N z + R z / s) z₀ :=
       ((continuousAt_id.sub (continuousAt_const (y := z₀))).mul hN).add (hR.div_const s)
@@ -1056,7 +1075,7 @@ theorem residue_shift_factorization (m : ℕ) (p e : ℂ → ℕ → Fin 4 → �
   have h1 := tendsto_residue_channel m p e hij hj hk hs hp he hpole' hother
   have h2 : Tendsto (fun z : ℂ => z⁻¹) (𝓝[≠] zI) (𝓝 zI⁻¹) :=
     ((continuousAt_inv₀ hzI0).tendsto).mono_left nhdsWithin_le_nhds
-  rw [← residue_factorization m (p zI) (e zI) hij hj hk lP ltP lq ltq hP hq1 hq2 hnull hcons htr hWL hWR]
+  rw [← residue_factorization m (p zI) (e zI) hij hj hk lP ltP lq ltq hP hq1 hq2 hnull hcons htr hother hWL hWR]
   have h3 := h1.mul h2
   have heq : ∀ R : ℂ, R / s * zI⁻¹ = -(1 / P2) * R := by
     intro R

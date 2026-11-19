@@ -33,8 +33,10 @@ to 1e−13 for n = 4, 5, 6.
   intervals of consecutive gluons: the current of `a, …, b` is `1/P²` times the sum over the splittings `[a,c][c+1,b]` (three-gluon
   vertex) and `[a,c][c+1,d][d+1,b]` (four-gluon vertex). `bgAmplitude m`: `A_{m+3}[1 ⋯ n]`, the last polarization dotted into the
   amputated current of the others.
-* `bgAmplitude_three`: (2.72). `WardIdentity m j`: "p_μ A^μ_n = 0" at the leg `j`, for null momenta with `Σ p = 0` and transverse
-  polarizations of the other legs. `ward_three`: proved for three gluons at each leg.
+* `bgAmplitude_three`: (2.72). `bgAmplitude_four`: the `s`-, `t`-channel and contact diagrams. `WardIdentity m j`: "p_μ A^μ_n = 0" at
+  the leg `j`, for null momenta with `Σ p = 0`, nonvanishing propagators, and transverse polarizations of the other legs.
+  `ward_three`, `ward_four`: proved for three and for four gluons at each leg (the four-gluon certificates are Gröbner-basis
+  reductions of `s t A₄(ε_j → p_j)` over the Minkowski products, remainder 0; generator `.agent/zrm-gen/ward4.py`).
 * `bgAmplitude_split` (`FeynmanFactorization.lean`): `A_n = A_n^{(no I)} + (1/P²) A_R(V_I)` for every planar channel `I = {i, …, j}`
   with the last gluon outside (every planar channel or its complement is of this form): `bgCurrentO` replaces the current of `I`,
   `bgCurrentO_collapse` (strong induction on the recursion, via `bgVertexSum_collapse`) shows that the diagrams through `I` are the
@@ -50,7 +52,10 @@ to 1e−13 for n = 4, 5, 6.
 
 1. Representation: the Ward identity `p_μ A^μ_n = 0` is a hypothesis (`WardIdentity`, for the left amplitude at its gluon `−P` and for
    the merged amplitude at the merged gluon). The source states it as an input (p. 17, "as encoded in the familiar Ward identity").
-   It is proved for n = 3 at each leg (`ward_three`).
+   It is proved for n = 3 and n = 4 at each leg (`ward_three`, `ward_four`). `WardIdentity` asks for nonvanishing propagators: where
+   one vanishes the planar sum has a pole, Lean's `1/0 = 0` drops its diagrams, and the identity fails (checked numerically at four
+   points with `s₁₂ = 0`, `s₂₃ ≠ 0`: `|A₄(ε₄ → p₄)| ≈ 3.5`); the factorization theorems assume the propagators of the channels other
+   than `I` nonzero, which gives this condition for both subamplitudes.
 2. Representation: the planar diagram sum of p. 22 is represented by the recursion of the currents over intervals of consecutive gluons;
    the library has no enumeration of planar tree diagrams to compare it with.
 3. Convention: `bgAmplitude` does not read the momentum of the last gluon; its open vertex leg carries `−(p_1 + ⋯ + p_{n−1})`, which
@@ -58,7 +63,7 @@ to 1e−13 for n = 4, 5, 6.
 
 ## Not done (follow-ups)
 
-* The Ward identity for n ≥ 4 (for every n it is the conservation of the off-shell current of the recursion; Berends-Giele 1988, not
+* The Ward identity for n ≥ 5 (for every n it is the conservation of the off-shell current of the recursion; Berends-Giele 1988, not
   read here).
 * That `Â_n(z)` is a rational function of `z` (needed to feed `BCFWFactorization.recursion_of_factorization`, whose input is
   `Â = P/Q` with `deg P < deg Q`); here the analytic structure is holomorphy away from the propagator zeros and simple poles.

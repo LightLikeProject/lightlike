@@ -16,8 +16,9 @@ dotted into the amputated current of the other gluons (`bgAmplitude`).
 
 * `bgCurrent_of_lt`: the recursion.
 * `bgAmplitude_three`: the three-gluon amplitude is the vertex rule (Elvang-Huang (2.72)).
-* `WardIdentity`, `ward_three`: the on-shell Ward identity `p_μ A^μ = 0` (Elvang-Huang p. 17), and its proof for three
-  gluons at each leg.
+* `bgAmplitude_four`: the four-gluon amplitude (the `s`- and `t`-channel diagrams and the contact diagram).
+* `WardIdentity`, `ward_three`, `ward_four`: the on-shell Ward identity `p_μ A^μ = 0` (Elvang-Huang p. 17), and its proof
+  for three and for four gluons at each leg.
 
 ## References
 
@@ -162,16 +163,18 @@ theorem bgAmplitude_three (p e : ℕ → Fin 4 → ℂ) :
   ring
 
 /-- **The on-shell Ward identity** `p_μ A^μ_n = 0` (Elvang-Huang p. 17, after (2.50)) for `n = m + 3` gluons at the
-leg `j`: for null momenta with `Σ p = 0` and transverse polarizations of the other legs, replacing the polarization
-of the leg `j` by its momentum gives zero. Elvang-Huang state it as an input ("as encoded in the familiar Ward
-identity"); it is a hypothesis of the factorization theorems. -/
+leg `j`: for null momenta with `Σ p = 0`, nonvanishing propagators, and transverse polarizations of the other legs,
+replacing the polarization of the leg `j` by its momentum gives zero. Elvang-Huang state it as an input ("as encoded
+in the familiar Ward identity"); it is a hypothesis of the factorization theorems. (The propagators must be nonzero:
+where one vanishes, the planar sum has a pole, and the value `1/0 = 0` drops its diagrams.) -/
 def WardIdentity (m j : ℕ) : Prop :=
   ∀ p e : ℕ → Fin 4 → ℂ, (∀ t ≤ m + 2, mdot (p t) (p t) = 0) → momRange p 0 (m + 2) = 0 →
+    (∀ c d, c < d → d ≤ m + 1 → ¬ (c = 0 ∧ d = m + 1) → mdot (momRange p c d) (momRange p c d) ≠ 0) →
     (∀ t ≤ m + 2, t ≠ j → mdot (e t) (p t) = 0) → bgAmplitude m p (Function.update e j (p j)) = 0
 
 /-- **The Ward identity for three gluons**, at each leg. -/
 theorem ward_three {j : ℕ} (hj : j ≤ 2) : WardIdentity 0 j := by
-  intro p e hnull hcons htr
+  intro p e hnull hcons _ htr
   have h0 := hnull 0 (by omega)
   have h1 := hnull 1 (by omega)
   have hp2 : p 2 = -(p 0 + p 1) := by
@@ -205,5 +208,496 @@ theorem ward_three {j : ℕ} (hj : j ≤ 2) : WardIdentity 0 j := by
     linear_combination (norm := (simp only [mdot, Pi.add_apply, Pi.neg_apply]; ring))
       (-((Real.sqrt 2 : ℝ) : ℂ)) * ((mdot (e 0) (e 1) / 2) * (h1 - h0 - h2) +
         (mdot (e 1) (p 0) + mdot (e 1) (p 1)) * he0)
+
+/-- The four-gluon amplitude: the `s`- and `t`-channel diagrams and the contact diagram. -/
+theorem bgAmplitude_four (p e : ℕ → Fin 4 → ℂ) :
+    bgAmplitude 1 p e = mdot (e 3)
+      (vertex3 (e 0) (p 0) ((1 / mdot (p 1 + p 2) (p 1 + p 2)) • vertex3 (e 1) (p 1) (e 2) (p 2)) (p 1 + p 2) +
+        vertex3 ((1 / mdot (p 0 + p 1) (p 0 + p 1)) • vertex3 (e 0) (p 0) (e 1) (p 1)) (p 0 + p 1) (e 2) (p 2) +
+        vertex4 (e 0) (e 1) (e 2)) := by
+  have m01 : momRange p 0 1 = p 0 + p 1 := by simp [momRange, Finset.sum_range_succ]
+  have m12 : momRange p 1 2 = p 1 + p 2 := by
+    rw [momRange, Finset.sum_Ico_succ_top (by norm_num), Finset.sum_Ico_succ_top (by norm_num),
+      Finset.Ico_self, Finset.sum_empty, zero_add]
+  have m00 : momRange p 0 0 = p 0 := by simp [momRange]
+  have m22 : momRange p 2 2 = p 2 := by simp [momRange]
+  have j01 : bgCurrent p e 0 1 = (1 / mdot (p 0 + p 1) (p 0 + p 1)) • vertex3 (e 0) (p 0) (e 1) (p 1) := by
+    rw [bgCurrent_of_lt p e (by norm_num : 0 < 1), m01]
+    simp [bgVertexSum, momRange]
+  have j12 : bgCurrent p e 1 2 = (1 / mdot (p 1 + p 2) (p 1 + p 2)) • vertex3 (e 1) (p 1) (e 2) (p 2) := by
+    rw [bgCurrent_of_lt p e (by norm_num : 1 < 2), m12]
+    simp [bgVertexSum, momRange]
+  rw [bgAmplitude]
+  congr 1
+  simp only [bgVertexSum, show (0 : ℕ) + 1 + 1 = 2 from rfl]
+  rw [Finset.sum_Ico_succ_top (by norm_num : 0 ≤ 1), Finset.sum_Ico_succ_top (by norm_num : 0 ≤ 0),
+    Finset.Ico_self, Finset.sum_empty, zero_add, Finset.sum_Ico_succ_top (by norm_num : 0 ≤ 1),
+    Finset.sum_Ico_succ_top (by norm_num : 0 ≤ 0), Finset.Ico_self, Finset.sum_empty, zero_add]
+  simp only [show (1 : ℕ) + 1 = 2 from rfl, Finset.Ico_self,
+    Finset.sum_empty, add_zero, bgCurrent_self, j01, j12, m00, m01, m12, m22]
+  simp
+
+/-- **The Ward identity for four gluons**, at each leg. -/
+theorem ward_four {j : ℕ} (hj : j ≤ 3) : WardIdentity 1 j := by
+  intro p e hnull hcons hprop htr
+  have hcons' : p 0 + p 1 + p 2 + p 3 = 0 := by simpa [momRange, Finset.sum_range_succ] using hcons
+  have hp3 : p 3 = -(p 0 + p 1 + p 2) := (add_eq_zero_iff_neg_eq.1 hcons').symm
+  have m01 : momRange p 0 1 = p 0 + p 1 := by simp [momRange, Finset.sum_range_succ]
+  have m12 : momRange p 1 2 = p 1 + p 2 := by
+    rw [momRange, Finset.sum_Ico_succ_top (by norm_num), Finset.sum_Ico_succ_top (by norm_num),
+      Finset.Ico_self, Finset.sum_empty, zero_add]
+  have hs := hprop 0 1 (by norm_num) (by norm_num) (by norm_num)
+  have ht := hprop 1 2 (by norm_num) (by norm_num) (by norm_num)
+  rw [m01] at hs
+  rw [m12] at ht
+  have h0 := hnull 0 (by norm_num)
+  have h1 := hnull 1 (by norm_num)
+  have h2 := hnull 2 (by norm_num)
+  have h3 := hnull 3 (by norm_num)
+  rw [hp3] at h3
+  have hr : ((Real.sqrt 2 : ℝ) : ℂ) ^ 2 = 2 := sqrt_two_sq_complex
+  interval_cases j
+  · have he1 := htr 1 (by norm_num) (by norm_num)
+    have he2 := htr 2 (by norm_num) (by norm_num)
+    have he3 := htr 3 (by norm_num) (by norm_num)
+    rw [hp3] at he3
+    rw [bgAmplitude_four, Function.update_self,
+      Function.update_of_ne (by norm_num : (1 : ℕ) ≠ 0), Function.update_of_ne (by norm_num : (2 : ℕ) ≠ 0), Function.update_of_ne (by norm_num : (3 : ℕ) ≠ 0)]
+    generalize hsi : 1 / mdot (p 0 + p 1) (p 0 + p 1) = si
+    generalize hti : 1 / mdot (p 1 + p 2) (p 1 + p 2) = ti
+    have hsi' : mdot (p 0 + p 1) (p 0 + p 1) * si = 1 := by rw [← hsi]; field_simp
+    have hti' : mdot (p 1 + p 2) (p 1 + p 2) * ti = 1 := by rw [← hti]; field_simp
+    refine (mul_eq_zero.1 ?_).resolve_left (mul_ne_zero hs ht)
+    linear_combination (norm := (simp only [vertex3, vertex4, mdot_add_left, mdot_add_right,
+        mdot_smul_left, mdot_smul_right, mdot_neg_left, mdot_neg_right,
+        mdot_comm (e 3) (e 1), mdot_comm (e 3) (e 2),
+        mdot_comm (p 0) (e 1), mdot_comm (p 0) (e 2),
+        mdot_comm (p 1) (p 0),
+        mdot_comm (p 2) (p 0), mdot_comm (p 2) (p 1)]; ring))
+      (mdot (p 0 + p 1) (p 0 + p 1) *
+          mdot (e 3) (vertex3 (p 0) (p 0) (vertex3 (e 1) (p 1) (e 2) (p 2)) (p 1 + p 2))) * hti' +
+        (mdot (p 1 + p 2) (p 1 + p 2) *
+          mdot (e 3) (vertex3 (vertex3 (p 0) (p 0) (e 1) (p 1)) (p 0 + p 1) (e 2) (p 2))) * hsi' +
+        (mdot (e 1) (e 3)*mdot (e 2) (p 0)*mdot (p 1) (p 1)
+          + mdot (e 1) (e 3)*mdot (e 2) (p 0)*mdot (p 2) (p 2)
+          + 2*mdot (e 1) (e 3)*mdot (e 2) (p 0)*mdot (p 1) (p 2)
+          + mdot (e 1) (e 2)*mdot (e 3) (p 1)*mdot (p 0) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 1) (p 1)*mdot (e 2) (e 3)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 1) (p 1)*mdot (e 2) (p 1)*mdot (e 3) (p 0)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 1) (p 1)*mdot (e 2) (p 2)*mdot (e 3) (p 0)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 1) (p 2)*mdot (e 2) (e 3)*mdot (p 0) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 1) (e 2)*mdot (e 3) (p 0)*mdot (p 1) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 1) (e 2)*mdot (e 3) (p 0)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 1) (e 3)*mdot (e 2) (p 1)*mdot (p 0) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 1) (e 3)*mdot (e 2) (p 2)*mdot (p 0) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2) * h0
+        + (mdot (e 1) (e 3)*mdot (e 2) (p 0)*mdot (p 1) (p 1)
+          + mdot (e 1) (e 3)*mdot (e 2) (p 0)*mdot (p 2) (p 2)
+          + 2*mdot (e 1) (e 3)*mdot (e 2) (p 0)*mdot (p 0) (p 1)
+          + 2*mdot (e 1) (e 3)*mdot (e 2) (p 0)*mdot (p 1) (p 2)
+          + mdot (e 1) (e 2)*mdot (e 3) (p 1)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 1) (e 2)*mdot (e 3) (p 1)*mdot (p 0) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 1) (p 1)*mdot (e 2) (e 3)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 1) (p 2)*mdot (e 2) (e 3)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 1) (p 2)*mdot (e 2) (e 3)*mdot (p 0) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 1) (e 2)*mdot (e 3) (p 0)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 1) (e 2)*mdot (e 3) (p 0)*mdot (p 1) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 1) (e 2)*mdot (e 3) (p 0)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 1) (e 3)*mdot (e 2) (p 0)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 1) (e 3)*mdot (e 2) (p 1)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 1) (e 3)*mdot (e 2) (p 1)*mdot (p 0) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 1) (e 3)*mdot (e 2) (p 2)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 1) (e 3)*mdot (e 2) (p 2)*mdot (p 0) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 1) (p 1)*mdot (e 2) (e 3)*mdot (p 0) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 1) (p 1)*mdot (e 2) (p 0)*mdot (e 3) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + 2*mdot (e 1) (p 1)*mdot (e 2) (p 1)*mdot (e 3) (p 0)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + 2*mdot (e 1) (p 1)*mdot (e 2) (p 2)*mdot (e 3) (p 0)*((Real.sqrt 2 : ℝ) : ℂ)^2) * h1
+        + (2*mdot (e 1) (e 3)*mdot (e 2) (p 0)*mdot (p 0) (p 1)
+          + mdot (e 1) (e 2)*mdot (e 3) (p 0)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 1) (p 1)*mdot (e 2) (e 3)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 1) (p 1)*mdot (e 2) (p 1)*mdot (e 3) (p 0)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 1) (p 1)*mdot (e 2) (p 2)*mdot (e 3) (p 0)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 1) (e 3)*mdot (e 2) (p 0)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 1) (p 1)*mdot (e 2) (e 3)*mdot (p 0) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 1) (p 1)*mdot (e 2) (p 0)*mdot (e 3) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2) * h2
+        + (mdot (e 1) (e 2)*mdot (e 3) (p 1)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 1) (p 2)*mdot (e 2) (e 3)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 1) (e 3)*mdot (e 2) (p 1)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 1) (e 3)*mdot (e 2) (p 2)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 1) (p 1)*mdot (e 2) (e 3)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2) * h3
+        + (2*mdot (e 2) (e 3)*mdot (p 1) (p 2)^2*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 2*mdot (e 2) (p 0)*mdot (e 3) (p 1)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + 2*mdot (e 2) (e 3)*mdot (p 0) (p 1)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + 2*mdot (e 2) (p 1)*mdot (e 3) (p 0)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + 2*mdot (e 2) (p 1)*mdot (e 3) (p 0)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + 2*mdot (e 2) (p 2)*mdot (e 3) (p 0)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + 2*mdot (e 2) (p 2)*mdot (e 3) (p 0)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2) * he1
+        + (-2*mdot (e 1) (e 3)*mdot (e 2) (p 0)*mdot (p 0) (p 1)*mdot (p 1) (p 2)) * hr
+  · have he0 := htr 0 (by norm_num) (by norm_num)
+    have he2 := htr 2 (by norm_num) (by norm_num)
+    have he3 := htr 3 (by norm_num) (by norm_num)
+    rw [hp3] at he3
+    rw [bgAmplitude_four, Function.update_self,
+      Function.update_of_ne (by norm_num : (0 : ℕ) ≠ 1), Function.update_of_ne (by norm_num : (2 : ℕ) ≠ 1), Function.update_of_ne (by norm_num : (3 : ℕ) ≠ 1)]
+    generalize hsi : 1 / mdot (p 0 + p 1) (p 0 + p 1) = si
+    generalize hti : 1 / mdot (p 1 + p 2) (p 1 + p 2) = ti
+    have hsi' : mdot (p 0 + p 1) (p 0 + p 1) * si = 1 := by rw [← hsi]; field_simp
+    have hti' : mdot (p 1 + p 2) (p 1 + p 2) * ti = 1 := by rw [← hti]; field_simp
+    refine (mul_eq_zero.1 ?_).resolve_left (mul_ne_zero hs ht)
+    linear_combination (norm := (simp only [vertex3, vertex4, mdot_add_left, mdot_add_right,
+        mdot_smul_left, mdot_smul_right, mdot_neg_left, mdot_neg_right,
+        mdot_comm (e 3) (e 0), mdot_comm (e 3) (e 2),
+        mdot_comm (p 0) (e 2),
+        mdot_comm (p 1) (e 2), mdot_comm (p 1) (p 0),
+        mdot_comm (p 2) (p 0), mdot_comm (p 2) (p 1)]; ring))
+      (mdot (p 0 + p 1) (p 0 + p 1) *
+          mdot (e 3) (vertex3 (e 0) (p 0) (vertex3 (p 1) (p 1) (e 2) (p 2)) (p 1 + p 2))) * hti' +
+        (mdot (p 1 + p 2) (p 1 + p 2) *
+          mdot (e 3) (vertex3 (vertex3 (e 0) (p 0) (p 1) (p 1)) (p 0 + p 1) (e 2) (p 2))) * hsi' +
+        (mdot (e 0) (e 2)*mdot (e 3) (p 1)*mdot (p 1) (p 1)
+          + mdot (e 0) (e 2)*mdot (e 3) (p 1)*mdot (p 2) (p 2)
+          + 2*mdot (e 0) (e 2)*mdot (e 3) (p 1)*mdot (p 1) (p 2)
+          + mdot (e 0) (e 2)*mdot (e 3) (p 0)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 3)*mdot (e 2) (p 2)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 3)*mdot (e 2) (p 2)*mdot (p 1) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (p 2)*mdot (e 2) (e 3)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (e 3)*mdot (e 2) (p 0)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (e 3)*mdot (e 2) (p 1)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 1)*mdot (e 2) (p 2)*mdot (e 3) (p 0)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 1)*mdot (e 2) (p 2)*mdot (e 3) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 2)*mdot (e 2) (p 2)*mdot (e 3) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2) * h0
+        + (mdot (e 0) (e 2)*mdot (e 3) (p 1)*mdot (p 1) (p 1)
+          + mdot (e 0) (e 2)*mdot (e 3) (p 1)*mdot (p 2) (p 2)
+          + 2*mdot (e 0) (e 2)*mdot (e 3) (p 1)*mdot (p 0) (p 1)
+          + 2*mdot (e 0) (e 2)*mdot (e 3) (p 1)*mdot (p 1) (p 2)
+          + mdot (e 0) (e 3)*mdot (e 2) (p 0)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 3)*mdot (e 2) (p 0)*mdot (p 1) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 3)*mdot (e 2) (p 0)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 3)*mdot (e 2) (p 0)*mdot (p 2) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 3)*mdot (e 2) (p 1)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 3)*mdot (e 2) (p 1)*mdot (p 1) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 3)*mdot (e 2) (p 1)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 3)*mdot (e 2) (p 1)*mdot (p 2) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 3)*mdot (e 2) (p 2)*mdot (p 2) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (p 1)*mdot (e 2) (e 3)*mdot (p 0) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (p 1)*mdot (e 2) (e 3)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (e 2)*mdot (e 3) (p 0)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (e 2)*mdot (e 3) (p 0)*mdot (p 1) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (e 2)*mdot (e 3) (p 0)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (e 2)*mdot (e 3) (p 0)*mdot (p 2) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (e 2)*mdot (e 3) (p 1)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (e 2)*mdot (e 3) (p 1)*mdot (p 1) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (e 2)*mdot (e 3) (p 1)*mdot (p 2) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 2)*mdot (e 2) (e 3)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 2)*mdot (e 2) (e 3)*mdot (p 1) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 2)*mdot (e 2) (e 3)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 2)*mdot (e 2) (e 3)*mdot (p 2) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 2)*mdot (e 2) (p 2)*mdot (e 3) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 2*mdot (e 0) (e 2)*mdot (e 3) (p 1)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 2*mdot (e 0) (p 1)*mdot (e 2) (p 2)*mdot (e 3) (p 0)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 2*mdot (e 0) (p 1)*mdot (e 2) (p 2)*mdot (e 3) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + 2*mdot (e 0) (e 3)*mdot (e 2) (p 2)*mdot (p 1) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + 2*mdot (e 0) (e 3)*mdot (e 2) (p 2)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + 4*mdot (e 0) (e 3)*mdot (e 2) (p 2)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2) * h1
+        + (2*mdot (e 0) (e 2)*mdot (e 3) (p 1)*mdot (p 0) (p 1)
+          + mdot (e 0) (e 3)*mdot (e 2) (p 0)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 3)*mdot (e 2) (p 1)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 3)*mdot (e 2) (p 2)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (p 1)*mdot (e 2) (e 3)*mdot (p 0) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (e 2)*mdot (e 3) (p 0)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (e 2)*mdot (e 3) (p 1)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 1)*mdot (e 2) (p 2)*mdot (e 3) (p 0)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 1)*mdot (e 2) (p 2)*mdot (e 3) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 2)*mdot (e 2) (e 3)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2) * h2
+        + (mdot (e 0) (p 1)*mdot (e 2) (e 3)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2) * h3
+        + (2*mdot (e 0) (e 3)*mdot (p 0) (p 1)^2*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 2*mdot (e 0) (p 1)*mdot (e 3) (p 0)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 2*mdot (e 0) (p 1)*mdot (e 3) (p 0)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 2*mdot (e 0) (p 1)*mdot (e 3) (p 1)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 2*mdot (e 0) (p 1)*mdot (e 3) (p 1)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 2*mdot (e 0) (p 2)*mdot (e 3) (p 1)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + 2*mdot (e 0) (e 3)*mdot (p 0) (p 1)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2) * he2
+        + (-2*mdot (e 0) (e 2)*mdot (e 3) (p 1)*mdot (p 0) (p 1)*mdot (p 1) (p 2)) * hr
+  · have he0 := htr 0 (by norm_num) (by norm_num)
+    have he1 := htr 1 (by norm_num) (by norm_num)
+    have he3 := htr 3 (by norm_num) (by norm_num)
+    rw [hp3] at he3
+    rw [bgAmplitude_four, Function.update_self,
+      Function.update_of_ne (by norm_num : (0 : ℕ) ≠ 2), Function.update_of_ne (by norm_num : (1 : ℕ) ≠ 2), Function.update_of_ne (by norm_num : (3 : ℕ) ≠ 2)]
+    generalize hsi : 1 / mdot (p 0 + p 1) (p 0 + p 1) = si
+    generalize hti : 1 / mdot (p 1 + p 2) (p 1 + p 2) = ti
+    have hsi' : mdot (p 0 + p 1) (p 0 + p 1) * si = 1 := by rw [← hsi]; field_simp
+    have hti' : mdot (p 1 + p 2) (p 1 + p 2) * ti = 1 := by rw [← hti]; field_simp
+    refine (mul_eq_zero.1 ?_).resolve_left (mul_ne_zero hs ht)
+    linear_combination (norm := (simp only [vertex3, vertex4, mdot_add_left, mdot_add_right,
+        mdot_smul_left, mdot_smul_right, mdot_neg_left, mdot_neg_right,
+        mdot_comm (e 3) (e 0), mdot_comm (e 3) (e 1),
+        mdot_comm (p 1) (p 0),
+        mdot_comm (p 2) (p 0), mdot_comm (p 2) (p 1)]; ring))
+      (mdot (p 0 + p 1) (p 0 + p 1) *
+          mdot (e 3) (vertex3 (e 0) (p 0) (vertex3 (e 1) (p 1) (p 2) (p 2)) (p 1 + p 2))) * hti' +
+        (mdot (p 1 + p 2) (p 1 + p 2) *
+          mdot (e 3) (vertex3 (vertex3 (e 0) (p 0) (e 1) (p 1)) (p 0 + p 1) (p 2) (p 2))) * hsi' +
+        (mdot (e 0) (p 2)*mdot (e 1) (e 3)*mdot (p 1) (p 1)
+          + mdot (e 0) (p 2)*mdot (e 1) (e 3)*mdot (p 2) (p 2)
+          + 2*mdot (e 0) (p 2)*mdot (e 1) (e 3)*mdot (p 1) (p 2)
+          + mdot (e 0) (e 3)*mdot (e 1) (p 0)*mdot (p 2) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 3)*mdot (e 1) (p 1)*mdot (p 2) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (p 1)*mdot (e 1) (p 2)*mdot (e 3) (p 0)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (p 1)*mdot (e 1) (p 2)*mdot (e 3) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (p 1)*mdot (e 1) (p 2)*mdot (e 3) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (p 2)*mdot (e 1) (p 2)*mdot (e 3) (p 0)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (p 2)*mdot (e 1) (p 2)*mdot (e 3) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (p 2)*mdot (e 1) (p 2)*mdot (e 3) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (e 1)*mdot (e 3) (p 0)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (e 1)*mdot (e 3) (p 0)*mdot (p 2) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (e 1)*mdot (e 3) (p 1)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (e 1)*mdot (e 3) (p 2)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (e 3)*mdot (e 1) (p 2)*mdot (p 0) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (e 3)*mdot (e 1) (p 2)*mdot (p 1) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (e 3)*mdot (e 1) (p 2)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 1)*mdot (e 1) (e 3)*mdot (p 2) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 2)*mdot (e 1) (e 3)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 2)*mdot (e 1) (e 3)*mdot (p 2) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2) * h0
+        + (mdot (e 0) (p 2)*mdot (e 1) (e 3)*mdot (p 1) (p 1)
+          + mdot (e 0) (p 2)*mdot (e 1) (e 3)*mdot (p 2) (p 2)
+          + 2*mdot (e 0) (p 2)*mdot (e 1) (e 3)*mdot (p 0) (p 1)
+          + 2*mdot (e 0) (p 2)*mdot (e 1) (e 3)*mdot (p 1) (p 2)
+          + mdot (e 0) (e 1)*mdot (e 3) (p 1)*mdot (p 0) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 1)*mdot (e 3) (p 2)*mdot (p 0) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 3)*mdot (e 1) (p 0)*mdot (p 0) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 3)*mdot (e 1) (p 0)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 3)*mdot (e 1) (p 1)*mdot (p 0) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 3)*mdot (e 1) (p 1)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (p 2)*mdot (e 1) (p 2)*mdot (e 3) (p 0)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (p 2)*mdot (e 1) (p 2)*mdot (e 3) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (p 2)*mdot (e 1) (p 2)*mdot (e 3) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (e 1)*mdot (e 3) (p 1)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (e 1)*mdot (e 3) (p 2)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (e 3)*mdot (e 1) (p 2)*mdot (p 0) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (e 3)*mdot (e 1) (p 2)*mdot (p 1) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (e 3)*mdot (e 1) (p 2)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 1)*mdot (e 1) (e 3)*mdot (p 0) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 1)*mdot (e 1) (e 3)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 2)*mdot (e 1) (e 3)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 2)*mdot (e 1) (e 3)*mdot (p 2) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 2)*mdot (e 1) (p 0)*mdot (e 3) (p 0)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 2)*mdot (e 1) (p 0)*mdot (e 3) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 2)*mdot (e 1) (p 0)*mdot (e 3) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 2)*mdot (e 1) (p 1)*mdot (e 3) (p 0)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 2)*mdot (e 1) (p 1)*mdot (e 3) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 2)*mdot (e 1) (p 1)*mdot (e 3) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 2*mdot (e 0) (e 1)*mdot (e 3) (p 0)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 2*mdot (e 0) (e 1)*mdot (e 3) (p 0)*mdot (p 2) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 2*mdot (e 0) (e 3)*mdot (e 1) (p 2)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 2*mdot (e 0) (p 1)*mdot (e 1) (e 3)*mdot (p 2) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + 2*mdot (e 0) (e 3)*mdot (e 1) (p 0)*mdot (p 2) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + 2*mdot (e 0) (e 3)*mdot (e 1) (p 1)*mdot (p 2) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + 2*mdot (e 0) (p 1)*mdot (e 1) (p 2)*mdot (e 3) (p 0)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + 2*mdot (e 0) (p 1)*mdot (e 1) (p 2)*mdot (e 3) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + 2*mdot (e 0) (p 1)*mdot (e 1) (p 2)*mdot (e 3) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2) * h1
+        + (2*mdot (e 0) (p 2)*mdot (e 1) (e 3)*mdot (p 0) (p 1)
+          + mdot (e 0) (e 1)*mdot (e 3) (p 1)*mdot (p 0) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 1)*mdot (e 3) (p 2)*mdot (p 0) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 3)*mdot (e 1) (p 0)*mdot (p 0) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 3)*mdot (e 1) (p 0)*mdot (p 2) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 3)*mdot (e 1) (p 1)*mdot (p 0) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 3)*mdot (e 1) (p 1)*mdot (p 2) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 3)*mdot (e 1) (p 2)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (p 1)*mdot (e 1) (p 2)*mdot (e 3) (p 0)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (p 1)*mdot (e 1) (p 2)*mdot (e 3) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (p 1)*mdot (e 1) (p 2)*mdot (e 3) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (e 1)*mdot (e 3) (p 0)*mdot (p 2) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (e 1)*mdot (e 3) (p 1)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (e 1)*mdot (e 3) (p 2)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 1)*mdot (e 1) (e 3)*mdot (p 0) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 1)*mdot (e 1) (e 3)*mdot (p 2) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 2)*mdot (e 1) (p 0)*mdot (e 3) (p 0)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 2)*mdot (e 1) (p 0)*mdot (e 3) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 2)*mdot (e 1) (p 0)*mdot (e 3) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 2)*mdot (e 1) (p 1)*mdot (e 3) (p 0)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 2)*mdot (e 1) (p 1)*mdot (e 3) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 2)*mdot (e 1) (p 1)*mdot (e 3) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 3*mdot (e 0) (e 1)*mdot (e 3) (p 0)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 2*mdot (e 0) (e 1)*mdot (e 3) (p 0)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 2*mdot (e 0) (p 1)*mdot (e 1) (e 3)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 2*mdot (e 0) (p 1)*mdot (e 1) (e 3)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 2*mdot (e 0) (p 2)*mdot (e 1) (e 3)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + 2*mdot (e 0) (e 3)*mdot (e 1) (p 0)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + 2*mdot (e 0) (e 3)*mdot (e 1) (p 0)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + 2*mdot (e 0) (e 3)*mdot (e 1) (p 1)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + 2*mdot (e 0) (e 3)*mdot (e 1) (p 1)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2) * h2
+        + (mdot (e 0) (e 1)*mdot (e 3) (p 1)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 1)*mdot (e 3) (p 2)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 3)*mdot (e 1) (p 0)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 3)*mdot (e 1) (p 1)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (e 3)*mdot (e 1) (p 2)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 1)*mdot (e 1) (e 3)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2) * h3
+        + (-2*mdot (e 0) (p 2)*mdot (e 3) (p 0)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 2*mdot (e 0) (p 2)*mdot (e 3) (p 1)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 2*mdot (e 0) (p 2)*mdot (e 3) (p 2)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2) * he1
+        + (2*mdot (e 0) (e 1)*mdot (p 1) (p 2)^2*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 2*mdot (e 0) (p 1)*mdot (e 1) (p 2)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 2*mdot (e 0) (p 1)*mdot (e 1) (p 2)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 2*mdot (e 0) (p 2)*mdot (e 1) (p 2)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + 2*mdot (e 0) (e 1)*mdot (p 0) (p 1)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + 2*mdot (e 0) (p 2)*mdot (e 1) (p 0)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2) * he3
+        + (-2*mdot (e 0) (p 2)*mdot (e 1) (e 3)*mdot (p 0) (p 1)*mdot (p 1) (p 2)) * hr
+  · have he0 := htr 0 (by norm_num) (by norm_num)
+    have he1 := htr 1 (by norm_num) (by norm_num)
+    have he2 := htr 2 (by norm_num) (by norm_num)
+    rw [bgAmplitude_four, Function.update_self,
+      Function.update_of_ne (by norm_num : (0 : ℕ) ≠ 3), Function.update_of_ne (by norm_num : (1 : ℕ) ≠ 3), Function.update_of_ne (by norm_num : (2 : ℕ) ≠ 3), hp3]
+    generalize hsi : 1 / mdot (p 0 + p 1) (p 0 + p 1) = si
+    generalize hti : 1 / mdot (p 1 + p 2) (p 1 + p 2) = ti
+    have hsi' : mdot (p 0 + p 1) (p 0 + p 1) * si = 1 := by rw [← hsi]; field_simp
+    have hti' : mdot (p 1 + p 2) (p 1 + p 2) * ti = 1 := by rw [← hti]; field_simp
+    refine (mul_eq_zero.1 ?_).resolve_left (mul_ne_zero hs ht)
+    linear_combination (norm := (simp only [vertex3, vertex4, mdot_add_left, mdot_add_right,
+        mdot_smul_left, mdot_smul_right, mdot_neg_left, mdot_neg_right,
+        mdot_comm (p 0) (e 0), mdot_comm (p 0) (e 1), mdot_comm (p 0) (e 2),
+        mdot_comm (p 1) (e 0), mdot_comm (p 1) (e 1),
+        mdot_comm (p 1) (e 2), mdot_comm (p 1) (p 0),
+        mdot_comm (p 2) (e 0), mdot_comm (p 2) (e 1), mdot_comm (p 2) (e 2),
+        mdot_comm (p 2) (p 0), mdot_comm (p 2) (p 1)]; ring))
+      (mdot (p 0 + p 1) (p 0 + p 1) *
+          mdot (-(p 0 + p 1 + p 2)) (vertex3 (e 0) (p 0) (vertex3 (e 1) (p 1) (e 2) (p 2)) (p 1 + p 2))) * hti' +
+        (mdot (p 1 + p 2) (p 1 + p 2) *
+          mdot (-(p 0 + p 1 + p 2)) (vertex3 (vertex3 (e 0) (p 0) (e 1) (p 1)) (p 0 + p 1) (e 2) (p 2))) * hsi' +
+        (-mdot (e 0) (e 2)*mdot (e 1) (p 0)*mdot (p 1) (p 1)
+          - mdot (e 0) (e 2)*mdot (e 1) (p 0)*mdot (p 2) (p 2)
+          - mdot (e 0) (e 2)*mdot (e 1) (p 1)*mdot (p 1) (p 1)
+          - mdot (e 0) (e 2)*mdot (e 1) (p 1)*mdot (p 2) (p 2)
+          - mdot (e 0) (e 2)*mdot (e 1) (p 2)*mdot (p 1) (p 1)
+          - mdot (e 0) (e 2)*mdot (e 1) (p 2)*mdot (p 2) (p 2)
+          - 2*mdot (e 0) (e 2)*mdot (e 1) (p 0)*mdot (p 1) (p 2)
+          - 2*mdot (e 0) (e 2)*mdot (e 1) (p 1)*mdot (p 1) (p 2)
+          - 2*mdot (e 0) (e 2)*mdot (e 1) (p 2)*mdot (p 1) (p 2)
+          + mdot (e 0) (e 1)*mdot (e 2) (p 0)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 1)*mdot (e 2) (p 1)*mdot (p 0) (p 0)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 1)*mdot (e 2) (p 1)*mdot (p 0) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 1)*mdot (e 2) (p 1)*mdot (p 2) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 1)*mdot (e 2) (p 2)*mdot (p 0) (p 0)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 1)*mdot (e 2) (p 2)*mdot (p 0) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 1)*mdot (e 2) (p 2)*mdot (p 2) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 2)*mdot (e 1) (p 0)*mdot (p 1) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 2)*mdot (e 1) (p 0)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 2)*mdot (e 1) (p 0)*mdot (p 2) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 2)*mdot (e 1) (p 1)*mdot (p 1) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 2)*mdot (e 1) (p 1)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 2)*mdot (e 1) (p 1)*mdot (p 2) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (p 0)*mdot (e 1) (e 2)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (p 0)*mdot (e 1) (e 2)*mdot (p 1) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (p 0)*mdot (e 1) (e 2)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (p 0)*mdot (e 1) (p 2)*mdot (e 2) (p 0)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (e 2)*mdot (e 1) (p 2)*mdot (p 0) (p 0)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (e 2)*mdot (e 1) (p 2)*mdot (p 0) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (e 2)*mdot (e 1) (p 2)*mdot (p 1) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 0)*mdot (e 1) (p 0)*mdot (e 2) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 0)*mdot (e 1) (p 0)*mdot (e 2) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 0)*mdot (e 1) (p 1)*mdot (e 2) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 0)*mdot (e 1) (p 1)*mdot (e 2) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 1)*mdot (e 1) (e 2)*mdot (p 0) (p 0)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 1)*mdot (e 1) (e 2)*mdot (p 0) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 1)*mdot (e 1) (e 2)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 1)*mdot (e 1) (e 2)*mdot (p 2) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 2*mdot (e 0) (e 2)*mdot (e 1) (p 2)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 2*mdot (e 0) (p 1)*mdot (e 1) (e 2)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 2*mdot (e 0) (p 1)*mdot (e 1) (e 2)*mdot (p 1) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + 2*mdot (e 0) (e 1)*mdot (e 2) (p 1)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + 2*mdot (e 0) (e 1)*mdot (e 2) (p 1)*mdot (p 1) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + 2*mdot (e 0) (e 1)*mdot (e 2) (p 1)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + 2*mdot (e 0) (e 1)*mdot (e 2) (p 2)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + 2*mdot (e 0) (e 1)*mdot (e 2) (p 2)*mdot (p 1) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + 2*mdot (e 0) (e 1)*mdot (e 2) (p 2)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2) * h0
+        + (-mdot (e 0) (e 2)*mdot (e 1) (p 0)*mdot (p 1) (p 1)
+          - mdot (e 0) (e 2)*mdot (e 1) (p 0)*mdot (p 2) (p 2)
+          - mdot (e 0) (e 2)*mdot (e 1) (p 1)*mdot (p 1) (p 1)
+          - mdot (e 0) (e 2)*mdot (e 1) (p 1)*mdot (p 2) (p 2)
+          - mdot (e 0) (e 2)*mdot (e 1) (p 2)*mdot (p 1) (p 1)
+          - mdot (e 0) (e 2)*mdot (e 1) (p 2)*mdot (p 2) (p 2)
+          - 2*mdot (e 0) (e 2)*mdot (e 1) (p 0)*mdot (p 0) (p 1)
+          - 2*mdot (e 0) (e 2)*mdot (e 1) (p 0)*mdot (p 1) (p 2)
+          - 2*mdot (e 0) (e 2)*mdot (e 1) (p 1)*mdot (p 0) (p 1)
+          - 2*mdot (e 0) (e 2)*mdot (e 1) (p 1)*mdot (p 1) (p 2)
+          - 2*mdot (e 0) (e 2)*mdot (e 1) (p 2)*mdot (p 0) (p 1)
+          - 2*mdot (e 0) (e 2)*mdot (e 1) (p 2)*mdot (p 1) (p 2)
+          + mdot (e 0) (e 1)*mdot (e 2) (p 1)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 1)*mdot (e 2) (p 1)*mdot (p 0) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 1)*mdot (e 2) (p 2)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 1)*mdot (e 2) (p 2)*mdot (p 0) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 2)*mdot (e 1) (p 0)*mdot (p 0) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 2)*mdot (e 1) (p 0)*mdot (p 1) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 2)*mdot (e 1) (p 0)*mdot (p 2) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 2)*mdot (e 1) (p 1)*mdot (p 0) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 2)*mdot (e 1) (p 1)*mdot (p 1) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 2)*mdot (e 1) (p 1)*mdot (p 2) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (p 0)*mdot (e 1) (e 2)*mdot (p 1) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (p 0)*mdot (e 1) (e 2)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (p 0)*mdot (e 1) (p 2)*mdot (e 2) (p 0)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (e 1)*mdot (e 2) (p 0)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (e 1)*mdot (e 2) (p 0)*mdot (p 0) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (e 1)*mdot (e 2) (p 0)*mdot (p 1) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (e 1)*mdot (e 2) (p 0)*mdot (p 2) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (e 2)*mdot (e 1) (p 2)*mdot (p 0) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 0)*mdot (e 1) (p 0)*mdot (e 2) (p 0)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 0)*mdot (e 1) (p 1)*mdot (e 2) (p 0)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 1)*mdot (e 1) (e 2)*mdot (p 1) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 1)*mdot (e 1) (e 2)*mdot (p 2) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 2*mdot (e 0) (e 1)*mdot (e 2) (p 0)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 2*mdot (e 0) (p 0)*mdot (e 1) (p 0)*mdot (e 2) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 2*mdot (e 0) (p 0)*mdot (e 1) (p 0)*mdot (e 2) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 2*mdot (e 0) (p 0)*mdot (e 1) (p 1)*mdot (e 2) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 2*mdot (e 0) (p 0)*mdot (e 1) (p 1)*mdot (e 2) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 2*mdot (e 0) (p 1)*mdot (e 1) (e 2)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 2*mdot (e 0) (p 1)*mdot (e 1) (e 2)*mdot (p 0) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 2*mdot (e 0) (p 1)*mdot (e 1) (e 2)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + 2*mdot (e 0) (e 2)*mdot (e 1) (p 0)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + 2*mdot (e 0) (e 2)*mdot (e 1) (p 0)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + 2*mdot (e 0) (e 2)*mdot (e 1) (p 1)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + 2*mdot (e 0) (e 2)*mdot (e 1) (p 1)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + 3*mdot (e 0) (p 0)*mdot (e 1) (e 2)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2) * h1
+        + (-2*mdot (e 0) (e 2)*mdot (e 1) (p 0)*mdot (p 0) (p 1)
+          - 2*mdot (e 0) (e 2)*mdot (e 1) (p 1)*mdot (p 0) (p 1)
+          - 2*mdot (e 0) (e 2)*mdot (e 1) (p 2)*mdot (p 0) (p 1)
+          + mdot (e 0) (e 2)*mdot (e 1) (p 0)*mdot (p 0) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 2)*mdot (e 1) (p 1)*mdot (p 0) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 2)*mdot (e 1) (p 2)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (e 1)*mdot (e 2) (p 0)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (e 1)*mdot (e 2) (p 0)*mdot (p 0) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 0)*mdot (e 1) (p 0)*mdot (e 2) (p 0)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 0)*mdot (e 1) (p 0)*mdot (e 2) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 0)*mdot (e 1) (p 0)*mdot (e 2) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 0)*mdot (e 1) (p 1)*mdot (e 2) (p 0)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 0)*mdot (e 1) (p 1)*mdot (e 2) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 0)*mdot (e 1) (p 1)*mdot (e 2) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 1)*mdot (e 1) (e 2)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 1)*mdot (e 1) (e 2)*mdot (p 0) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + 2*mdot (e 0) (e 2)*mdot (e 1) (p 0)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + 2*mdot (e 0) (e 2)*mdot (e 1) (p 1)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2) * h2
+        + (mdot (e 0) (e 1)*mdot (e 2) (p 1)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 1)*mdot (e 2) (p 2)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 2)*mdot (e 1) (p 0)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + mdot (e 0) (e 2)*mdot (e 1) (p 1)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (e 1)*mdot (e 2) (p 0)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (e 2)*mdot (e 1) (p 2)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 1)*mdot (e 1) (e 2)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - mdot (e 0) (p 1)*mdot (e 1) (e 2)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2) * h3
+        + (2*mdot (e 1) (e 2)*mdot (p 0) (p 1)^2*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 2*mdot (e 1) (p 0)*mdot (e 2) (p 0)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 2*mdot (e 1) (p 0)*mdot (e 2) (p 1)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 2*mdot (e 1) (p 0)*mdot (e 2) (p 1)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 2*mdot (e 1) (p 0)*mdot (e 2) (p 2)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 2*mdot (e 1) (p 0)*mdot (e 2) (p 2)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 2*mdot (e 1) (p 1)*mdot (e 2) (p 0)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 2*mdot (e 1) (p 1)*mdot (e 2) (p 1)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 2*mdot (e 1) (p 1)*mdot (e 2) (p 1)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 2*mdot (e 1) (p 1)*mdot (e 2) (p 2)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          - 2*mdot (e 1) (p 1)*mdot (e 2) (p 2)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + 2*mdot (e 1) (e 2)*mdot (p 0) (p 1)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2
+          + 2*mdot (e 1) (p 2)*mdot (e 2) (p 0)*mdot (p 0) (p 1)*((Real.sqrt 2 : ℝ) : ℂ)^2) * he0
+        + (-4*mdot (e 0) (e 2)*mdot (p 0) (p 1)*mdot (p 1) (p 2)
+          + 2*mdot (e 0) (e 2)*mdot (p 0) (p 1)*mdot (p 1) (p 2)*((Real.sqrt 2 : ℝ) : ℂ)^2) * he1
+        + (2*mdot (e 0) (e 2)*mdot (e 1) (p 0)*mdot (p 0) (p 1)*mdot (p 1) (p 2)
+          + 2*mdot (e 0) (e 2)*mdot (e 1) (p 2)*mdot (p 0) (p 1)*mdot (p 1) (p 2)) * hr
 
 end Lightlike.SpinorHelicity
