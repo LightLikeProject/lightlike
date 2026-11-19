@@ -27,7 +27,7 @@ equivalence holds with Physlib's equations on the right [2]. The statement on a 
 The comoving observers of FLRW form a geodesic congruence without shear or rotation whose expansion is `Θ = 3ȧ/a`, and
 along it Raychaudhuri's equation `dΘ/dt + Θ²/3 = -R₀₀` holds; in Minkowski space the expansion vanishes, and in de Sitter
 space it is the constant `3H` while `R₀₀ = -3H² < 0`, so the convergence condition fails and the congruence does not focus.
-If the expansion obeys `Θ' ≤ -Θ²/m` and starts negative, it reaches `-∞` within affine time `m/|Θ(0)|` (focusing) [3].
+If the expansion obeys `Θ' ≤ -Θ²/m` and starts negative, it reaches `-∞` within affine time `m/|Θ(0)|` (focusing; the lemma is in the spacetime geometry API) [3].
 Raychaudhuri's equation for a general geodesic congruence on a manifold is not yet formalized. [TODO]
 
 ## Lean References
@@ -40,7 +40,7 @@ Raychaudhuri's equation for a general geodesic congruence on a manifold is not y
 2. Lightlike/Cosmology/FLRWPhyslib.lean - `Cosmology.onTime`, `Cosmology.timeDeriv_onTime`,
    `Cosmology.firstOrderFriedmann_onTime_iff`, `Cosmology.secondOrderFriedmann_onTime_iff`,
    `Cosmology.flrw_einstein_iff_physlib_friedmann`
-3. Lightlike/Cosmology/Raychaudhuri.lean - `Cosmology.focusing`, `Cosmology.covConst`, `Cosmology.expansionConst`,
+3. Lightlike/Cosmology/Raychaudhuri.lean - `Cosmology.covConst`, `Cosmology.expansionConst`,
    `Cosmology.flrw_comoving_covDeriv`, `Cosmology.flrw_comoving_geodesic`, `Cosmology.flrw_comoving_expansion`,
    `Cosmology.flrw_raychaudhuri`, `Cosmology.minkowski_comoving_expansion`, `Cosmology.deSitter_no_focusing`
 

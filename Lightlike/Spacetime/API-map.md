@@ -69,6 +69,8 @@ A metric is a critical point of the Einstein-Hilbert action with a cosmological 
 In Minkowski space, an observer who travels out and back along two straight segments ages less
 than one who stays at rest [6].
 
+The focusing lemma for the Riccati inequality: a function on `0 ≤ s < L` with `Θ' ≤ -Θ²/m` (`m > 0`) and `Θ(0) < 0` has `L ≤ m/|Θ(0)|`, the analytic step of geodesic focusing from Raychaudhuri's equation [43].
+
 ## Lean References
 
 1. Lightlike/Spacetime/Curvature.lean - `IsCoordMetric`, `christoffel`, `riemann`, `ricci`,
@@ -133,6 +135,7 @@ than one who stays at rest [6].
 40. Lightlike/Spacetime/EinsteinTwoDim.lean - `ricci_two_dim`, `einsteinUp_two_dim`, `isEHCritical_two_dim`: in two dimensions the Ricci tensor is half the scalar curvature times the metric, the Einstein tensor vanishes, and every smooth nondegenerate metric is a critical point of the Einstein-Hilbert action without cosmological term.
 41. Lightlike/Spacetime/CoordKilling.lean - `coordField_killing`: a coordinate field along which the metric components are constant is a Killing field (`IsKillingAt`) of the Levi-Civita connection.
 42. Lightlike/Spacetime/SchwarzschildKilling.lean - `schwarzschild_killing`: the time translation `∂_t` is a Killing field of exterior Schwarzschild.
+43. Lightlike/Spacetime/RiccatiFocusing.lean - `focusing`: the focusing lemma for the Riccati inequality.
 
 ## References
 
