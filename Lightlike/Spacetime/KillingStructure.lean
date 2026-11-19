@@ -15,7 +15,11 @@ and the rotations vanish at `p` with `∇R_ab(p)` the generator `so3Gen a b` of 
   against `SpaceForm.S k` when the curvature at `p` is isotropic;
 * `NormalizedKillingFrame`, `NormalizedKillingFrame.metric_eq`: a family of Killing fields normalized at `p` (the
   metric at `p` is then `g₀₀(p) · 1`); `NormalizedKillingFrame.lieBracket_eq_S`: its brackets are
-  `[Yᵢ, Yⱼ] = Σₑ S k i j e Yₑ` on a connected open set once `Rⁿ_{amb} - Rᵐ_{anb} = -k (so3Gen m n)_{ab}` at `p`.
+  `[Yᵢ, Yⱼ] = Σₑ S k i j e Yₑ` on a connected open set once `Rⁿ_{amb} - Rᵐ_{anb} = -k (so3Gen m n)_{ab}` at `p`;
+* `NormalizedKillingFrame.isotropic`: that isotropy holds for some `k`, from the Leibniz identity
+  `[R_ab, [Pₘ, Pₙ]] = [[R_ab, Pₘ], Pₙ] + [Pₘ, [R_ab, Pₙ]]` read through the data at `p` and Schur's lemma;
+  `NormalizedKillingFrame.exists_lieBracket_eq_S`: so a normalized family has the brackets of the space form of some
+  curvature `k`.
 -/
 
 open Set Filter
@@ -109,6 +113,14 @@ theorem so3Gen_comm (a₁ a₂ c₁ c₂ a b : Fin 3) :
   push_cast [apply_ite (Int.cast : ℤ → ℝ)] at h
   simp only [Fin.sum_univ_three, so3Gen_eq_cast]
   rw [h]
+
+theorem sum_single_one_mul (i : Fin 3) (F : Fin 3 → ℝ) :
+    ∑ e, (Pi.single i 1 : Fin 3 → ℝ) e * F e = F i := by
+  simp [Pi.single_apply]
+
+theorem sum_mul_single_one (i : Fin 3) (F : Fin 3 → ℝ) :
+    ∑ e, F e * (Pi.single i 1 : Fin 3 → ℝ) e = F i := by
+  simp [Pi.single_apply]
 
 /-- The value at `p` of the normalized family: `Pₘ(p) = eₘ`, `R_ab(p) = 0`. -/
 def frameVal : Idx → Fin 3 → ℝ
@@ -245,6 +257,76 @@ theorem lieBracket_eq_S (h : NormalizedKillingFrame g U Y p) (hU : IsPreconnecte
       frame_cov_S k (fun e a d b => riemann g e a d b p) hiso, Finset.mul_sum]
     exact Finset.sum_congr rfl fun e _ => by
       rw [covCo_lowerVec_of_eq_smul_one h.symm hdet h.metric_diff (h.diff (h.smooth e)) hcp, h.cov e]; ring
+
+
+/-- **The curvature at `p` of a normalized family is isotropic**: `Rⁿ_{amb} - Rᵐ_{anb} = -k (so3Gen m n)_{ab}` for some
+`k`. The Leibniz identity `[R_ab, [Pₘ, Pₙ]] = [[R_ab, Pₘ], Pₙ] + [Pₘ, [R_ab, Pₙ]]`, read through the data at `p`, says
+the map `(m, n) ↦ ∇[Pₘ, Pₙ](p)` commutes with `so(3)`; Schur's lemma (`so3_equivariant_eq_smul`) does the rest. -/
+theorem isotropic (h : NormalizedKillingFrame g U Y p) :
+    ∃ k : ℝ, ∀ m n a b, riemann g n a m b p - riemann g m a n b p = -k * so3Gen m n a b := by
+  set M : Fin 3 → Fin 3 → Fin 3 → Fin 3 → ℝ := fun m n a b => riemann g n a m b p - riemann g m a n b p with hM
+  have hdet := (h.metric.isUnit_det p h.mem).ne_zero
+  have hs := h.smooth
+  have hk := h.killing
+  have hO := h.metric.isOpen
+  have sB : ∀ V W : (Fin 3 → ℝ) → Fin 3 → ℝ, (∀ c, ContDiffOn ℝ ∞ (fun z => V z c) U) →
+      (∀ c, ContDiffOn ℝ ∞ (fun z => W z c) U) → ∀ c, ContDiffOn ℝ ∞ (fun z => bracketCo V W z c) U :=
+    fun V W hV hW => contDiffOn_bracketCo hO hV hW
+  have kB : ∀ V W : (Fin 3 → ℝ) → Fin 3 → ℝ, (∀ c, ContDiffOn ℝ ∞ (fun z => V z c) U) →
+      (∀ c, ContDiffOn ℝ ∞ (fun z => W z c) U) →
+      (∀ z ∈ U, ∀ a b, covCo g (lowerVec g V) a b z + covCo g (lowerVec g V) b a z = 0) →
+      (∀ z ∈ U, ∀ a b, covCo g (lowerVec g W) a b z + covCo g (lowerVec g W) b a z = 0) →
+      ∀ z ∈ U, ∀ a b, covCo g (lowerVec g (bracketCo V W)) a b z + covCo g (lowerVec g (bracketCo V W)) b a z = 0 :=
+    fun V W hV hW hKV hKW => killing_bracketCo h.metric h.symm hV hW hKV hKW
+  have Qv : ∀ m n, bracketCo (Y (.inl m)) (Y (.inl n)) p = 0 := fun m n => funext fun b => by
+    rw [h.bracket_val (h.val _) (h.val _) (h.cov _) (h.cov _)]; simp [frameVal, frameCov]
+  have Qc : ∀ m n a b, covVec g (bracketCo (Y (.inl m)) (Y (.inl n))) a b p = M m n a b := fun m n a b => by
+    rw [h.bracket_cov (hs _) (hs _) (hk _) (hk _) (h.val _) (h.val _) (h.cov _) (h.cov _)]
+    simp [frameVal, frameCov, Pi.single_apply, hM]
+  have Wv : ∀ a b m, bracketCo (Y (.inr (a, b))) (Y (.inl m)) p = fun l => -so3Gen a b m l :=
+    fun a b m => funext fun l => by
+      rw [h.bracket_val (h.val _) (h.val _) (h.cov _) (h.cov _)]; simp [frameVal, frameCov, Pi.single_apply]
+  have Wc : ∀ a b m a' b', covVec g (bracketCo (Y (.inr (a, b))) (Y (.inl m))) a' b' p = 0 := fun a b m a' b' => by
+    rw [h.bracket_cov (hs _) (hs _) (hk _) (hk _) (h.val _) (h.val _) (h.cov _) (h.cov _)]; simp [frameVal, frameCov]
+  have hMb : ∀ m n a b, M m n b a = -M m n a b := fun m n a b => by
+    have := kB _ _ (hs (.inl m)) (hs (.inl n)) (hk _) (hk _) p h.mem a b
+    rw [covCo_lowerVec_of_eq_smul_one h.symm hdet h.metric_diff (h.diff (sB _ _ (hs _) (hs _))) h.metric_eq,
+      covCo_lowerVec_of_eq_smul_one h.symm hdet h.metric_diff (h.diff (sB _ _ (hs _) (hs _))) h.metric_eq,
+      Qc, Qc, ← mul_add] at this
+    rcases mul_eq_zero.1 this with h0 | h0
+    · exact absurd h0 h.metric_ne_zero
+    · linarith
+  have hJ : ∀ a b m n a' b', ∑ d, (so3Gen a b a' d * M m n d b' - M m n a' d * so3Gen a b d b') =
+      -(∑ d, so3Gen a b m d * M d n a' b') - ∑ d, so3Gen a b n d * M m d a' b' := by
+    intro a b m n a' b'
+    have sQ := sB _ _ (hs (.inl m)) (hs (.inl n))
+    have kQ := kB _ _ (hs (.inl m)) (hs (.inl n)) (hk _) (hk _)
+    have sW := sB _ _ (hs (.inr (a, b))) (hs (.inl m))
+    have kW := kB _ _ (hs (.inr (a, b))) (hs (.inl m)) (hk _) (hk _)
+    have sW' := sB _ _ (hs (.inr (a, b))) (hs (.inl n))
+    have kW' := kB _ _ (hs (.inr (a, b))) (hs (.inl n)) (hk _) (hk _)
+    have hL := covVec_of_eqOn_add (g := g) hO h.mem (h.diff (sB _ _ sW (hs (.inl n))))
+      (h.diff (sB _ _ (hs (.inl m)) sW'))
+      (fun z hz => bracketCo_leibniz hO (hs (.inr (a, b))) (hs (.inl m)) (hs (.inl n)) hz) a' b'
+    rw [h.bracket_cov (hs (.inr (a, b))) sQ (hk _) kQ (h.val _) (Qv m n) (h.cov _) (Qc m n),
+      h.bracket_cov sW (hs (.inl n)) kW (hk _) (Wv a b m) (h.val _) (Wc a b m) (h.cov _),
+      h.bracket_cov (hs (.inl m)) sW' (hk _) kW' (h.val _) (Wv a b n) (h.cov _) (Wc a b n)] at hL
+    simp only [frameVal, frameCov, Pi.zero_apply, zero_mul, mul_zero, sub_self,
+      Finset.sum_const_zero, add_zero, zero_add, Finset.sum_sub_distrib, mul_assoc, ← Finset.mul_sum,
+      sum_single_one_mul, sum_mul_single_one] at hL
+    simp only [hM, Fin.sum_univ_three] at hL ⊢
+    linear_combination hL
+  obtain hS := so3_equivariant_eq_smul M (fun m n a b => by simp only [hM]; ring) hMb hJ
+  exact ⟨-M 0 1 0 1, fun m n a b => by rw [neg_neg]; exact hS m n a b⟩
+
+
+/-- **G1-024, stage 1: the structure constants of a maximally symmetric 3-metric.** A family of Killing fields of a
+metric on a connected open set of `ℝ³`, normalized at a point `p` like the Killing algebra of a space form, has the
+brackets of the space form of some curvature `k`: `[Yᵢ, Yⱼ] = Σₑ S k i j e Yₑ` on `U`. -/
+theorem exists_lieBracket_eq_S (h : NormalizedKillingFrame g U Y p) (hU : IsPreconnected U) :
+    ∃ k : ℝ, ∀ i j, ∀ w ∈ U, VectorField.lieBracket ℝ (Y i) (Y j) w = ∑ e, S k i j e • Y e w := by
+  obtain ⟨k, hk⟩ := h.isotropic
+  exact ⟨k, h.lieBracket_eq_S hU k hk⟩
 
 end NormalizedKillingFrame
 

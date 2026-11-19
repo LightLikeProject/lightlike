@@ -83,6 +83,16 @@ Differences:
    - isotropy of the curvature at `p` from Jacobi (`bracketCo` is `VectorField.lieBracket` in components, and Mathlib's
      `VectorField.leibniz_identity_lieBracket` gives Jacobi), giving `[P_m, P_n] = -k R_mn`;
    - `hS` on the ball by `eq_sum_of_rigVec_eq_sum` and raising, then `isometric_spaceForm`.
+   Proved for (c) (`KillingAlgebraCoord.lean`, `KillingStructure.lean`): with `g(p) = c · 1` the data of a bracket at
+   `p` is `(Yᵈ ∇_d Z - Zᵈ ∇_d Y, [∇Y, ∇Z] + Riem(Y, Z))` (`covVec_bracketCo`); `lieBracket_eq_sum_of_data` turns data
+   at `p` into brackets on the connected set; for a family normalized at `p` (`NormalizedKillingFrame`) the rotations
+   force `g(p) = g₀₀(p) · 1` (`metric_eq`), the Leibniz identity `[R_ab, [Pₘ, Pₙ]] = [[R_ab, Pₘ], Pₙ] + [Pₘ, [R_ab, Pₙ]]`
+   (`bracketCo_leibniz`, from Mathlib's `VectorField.leibniz_identity_lieBracket`) read through the data at `p` makes
+   `(m, n) ↦ ∇[Pₘ, Pₙ](p)` commute with `so(3)`, Schur's lemma (`so3_equivariant_eq_smul`, eight instances of the
+   equivariance; the 729 cases of the `so(3)` commutator are decided over `ℤ`) makes the curvature at `p` isotropic
+   (`isotropic`), and the family has the brackets `S k` (`exists_lieBracket_eq_S`). Remaining for stage 1: the bilinear
+   form `G` of the coordinate metric and the Lie-derivative form of Killing's equation, to feed
+   `isometric_spaceForm` on a ball.
    (c) the constants of `[Y_i, Y_j]` from their data at `p` (`[R,R]`: so(3); `[R,P]`: translation part from
        `∇R(p)`; the rest unknown), Jacobi on the constants, the equivariance computation, the change of complement, and
        `hS` for `S k`; then `isometric_spaceForm`.
