@@ -1099,6 +1099,8 @@ import Lightlike.Gauge.FaddeevPopov
 import Lightlike.Gauge.DiracAlgorithm
 import Lightlike.Gauge.ReducedForm
 import Lightlike.Gauge.MatrixInverse
+import Lightlike.Gauge.Orbits.GaugeOrbits
+import Lightlike.Gauge.Orbits.Tests
 import Lightlike.Gauge.PoissonJacobi
 import Lightlike.Tests.ADM
 import Lightlike.Tests.ADMBracket
