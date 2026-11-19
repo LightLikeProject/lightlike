@@ -75,6 +75,8 @@ Raychaudhuri's equation in coordinates: for a smooth field `v` geodesic on an op
 
 The null, weak, strong and dominant energy conditions are stated pointwise for a symmetric bilinear form on a Lorentzian vector space; dust with non-negative density satisfies all four, a positive cosmological constant violates the strong one, and a scalar field with negative potential at a point of vanishing gradient violates the weak one [43].
 
+The divergence theorem on a manifold: for a metric of any signature, its Levi-Civita connection, a smooth vector field `X` vanishing outside a compact set and a measurable domain `D` given near every point of its closure by a defining function (`D = {u ≥ 0}`, `du ≠ 0` where `u = 0`), `∫_D div X d vol_g` is the flux of `X` through the boundary of `D`, written with a partition of unity subordinate to charts and graph charts of the boundary in each chart; a density `f · dV_g` is the case of the field `f X` [53]. In a chart, `√|g| ∇ₐXᵃ = ∂ⱼ(√|g| Xʲ)`, and the theorem in `ℝⁿ⁺¹` needs its hypothesis only on the support of the field [52] [53].
+
 ## Lean References
 
 1. Lightlike/Spacetime/Curvature.lean - `IsCoordMetric`, `christoffel`, `riemann`, `ricci`,
@@ -141,6 +143,8 @@ The null, weak, strong and dominant energy conditions are stated pointwise for a
 49. Lightlike/Spacetime/RaychaudhuriFocusing.lean - `covD_orthogonal`, `IsLorentzianCoordMetric.orthogonal_nonneg`, `focusing_along`, `raychaudhuri_convergence`, `shear_normSq_nonneg`, `raychaudhuri_focusing_at`, `raychaudhuri_focusing`: convergence and focusing of a unit timelike geodesic field along its integral curves.
 50. Lightlike/Spacetime/RaychaudhuriShear.lean - `Raychaudhuri.trace_mul_nonneg`, `Raychaudhuri.normSqG_nonneg`, `Raychaudhuri.spacelike_complement`, `Raychaudhuri.orthogonal_nonneg_of_lorentzian`: the square of a spatial symmetric tensor is nonnegative.
 51. Lightlike/Spacetime/RaychaudhuriManifold.lean - `chartComp`, `hv_cov_eq`, `trace_eq_of_hv`, `ricciAt_hv`, `g_hv`, `rotation_chart_eq_zero`, `expansionM`, `expansionDeriv`, `mfderiv_expansionM`, `raychaudhuri_manifold`, `raychaudhuri_leviCivita`, `raychaudhuri_focusing_manifold_at`, `raychaudhuri_focusing_manifold`: the Raychaudhuri identity and geodesic focusing for a vector field on a manifold.
+52. Lightlike/Spacetime/EHManifold/LocalDivergence.lean - `exists_graph_atlas_integral_divergence_loc`, `exists_graph_atlas_integral_divergence_of_defining_function_loc`: the divergence theorem in ℝⁿ⁺¹ with the hypothesis on the support of the field.
+53. Lightlike/Spacetime/EHManifold/ManifoldDivergence.lean - `sqrt_det_mul_expansion`, `divField`, `contDiff_divField`, `integral_expansionM_chart`, `chart_defining_function`, `exists_chart_flux`, `expansionM_sum`, `divergence_theorem_manifold`, `divergence_theorem_manifold_density`: the divergence theorem on a manifold.
 
 ## References
 

@@ -931,6 +931,8 @@ import Lightlike.Spacetime.EHManifold.CompactVariation
 import Lightlike.Spacetime.EHManifold.Contraction
 import Lightlike.Spacetime.EHManifold.CoverVariation
 import Lightlike.Spacetime.EHManifold.DefiningFunction
+import Lightlike.Spacetime.EHManifold.LocalDivergence
+import Lightlike.Spacetime.EHManifold.ManifoldDivergence
 import Lightlike.Spacetime.EHManifold.DomainDivergence
 import Lightlike.Spacetime.EHManifold.EinsteinForm
 import Lightlike.Spacetime.EHManifold.EinsteinIntrinsic
