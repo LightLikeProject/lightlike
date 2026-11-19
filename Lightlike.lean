@@ -964,6 +964,8 @@ import Lightlike.Gauge.GaugeFlow
 import Lightlike.Gauge.KernelSpan
 import Lightlike.Gauge.LinearODE
 import Lightlike.Gauge.MatrixInverse
+import Lightlike.Gauge.Orbits.GaugeOrbits
+import Lightlike.Gauge.Orbits.Tests
 import Lightlike.Gauge.PoissonJacobi
 import Lightlike.Tests.ADM
 import Lightlike.Tests.Constraints
