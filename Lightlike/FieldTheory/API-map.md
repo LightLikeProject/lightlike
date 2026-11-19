@@ -12,11 +12,11 @@ Borinsky's formal integral, the zero-dimensional field theory as a formal power 
 
 The vacuum graphs with `m` four-valent vertices are the orbits of the pairings of their half-edges under the permutations that keep the vertices (the wreath product `S₄ ≀ S_m`, of order `24^m m!`), the symmetry factor of a graph is the inverse of the order of its stabilizer, its automorphism group, and the symmetry factors sum to `(4m - 1)!!/(24^m m!)`, by the class formula [8] {2}; for two vertices the sum is `35/384` and for one vertex `1/8`.
 
-Wick's theorem: the moment `E[x_{l₀} ⋯ x_{l_{n-1}}]` of the centred Gaussian measure with positive definite covariance `S` is the sum, over the full Wick contractions of the `n` positions (Physlib's `WickContraction` with `IsFull`), of the products `∏ S_{l_p l_q}` over the contracted pairs; both sides satisfy Isserlis' recursion [9] {3}.
+Wick's theorem: the moment `E[x_{l₀} ⋯ x_{l_{n-1}}]` of the centred Gaussian measure with positive definite covariance `S` is the sum, over the full Wick contractions of the `n` positions (Physlib's `WickContraction` with `IsFull`), of the products `∏ S_{l_p l_q}` over the contracted pairs; both sides satisfy Isserlis' recursion [9] {3}. The same holds for every positive semidefinite covariance, through the square root `√S` of Mathlib's definition of the Gaussian measure, multilinearity, and the factorisation of the sum over index maps along the pairs [11] {3}.
 
 The one-variable Wick identity `∫ dx/√(2πħ) e^{-x²/(2aħ)} x^{2n} = √a (aħ)^n (2n - 1)!!` holds for `a, ħ > 0`, and the series `√(2π) Σ_{m<M} (-g/24)^m (4m - 1)!!/m!` approximates `∫ e^{-x²/2 - g x⁴/24} dx` for `g ≥ 0` with an error at most the size of the next term, by the alternating Taylor bound for `e^{-t}` [10] {2}.
 
-**Missing.** Wick's theorem for a degenerate (positive semidefinite) covariance is open [TODO]; the error bound of the quartic expansion is not stated in Borinsky, who treats the integral formally. The formal integral is compared with Borinsky's Definition 3.1.1 and eq. (3.1.8) {2}, the graphs with Borinsky §2.1 and §2.3 {2}, and Wick's theorem with Tubaro–Zanella's Theorem 2.19 {3}, where it holds for every centred jointly Gaussian family; the Gaussian measure and its integrals are not yet compared with a source.
+**Missing.** The error bound of the quartic expansion is not stated in Borinsky, who treats the integral formally. The formal integral is compared with Borinsky's Definition 3.1.1 and eq. (3.1.8) {2}, the graphs with Borinsky §2.1 and §2.3 {2}, and Wick's theorem with Tubaro–Zanella's Theorem 2.19 {3}; the Gaussian measure and its integrals are not yet compared with a source.
 
 ## Lean References
 
@@ -33,6 +33,8 @@ The one-variable Wick identity `∫ dx/√(2πħ) e^{-x²/(2aħ)} x^{2n} = √a 
    `FieldTheory.moment_ofFn_eq_pairSum`, `FieldTheory.moment_eq_pairSum`
 10. Lightlike/FieldTheory/ZeroDim/Quartic.lean - `FieldTheory.integral_pow_mul_gauss`, `FieldTheory.integral_pow_mul_gauss_scaled`,
    `FieldTheory.wick_one_variable`, `FieldTheory.abs_exp_neg_sub_sum_le`, `FieldTheory.quartic_expansion`
+11. Lightlike/FieldTheory/Gaussian/WickSemidef.lean - `FieldTheory.moment_eq_sum_sqrt`, `FieldTheory.sum_prod_delta`,
+   `FieldTheory.moment_eq_pairSum_of_posSemidef`
 
 ## References
 
