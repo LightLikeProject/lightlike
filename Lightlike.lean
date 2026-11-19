@@ -1069,6 +1069,8 @@ import Lightlike.Spacetime.EHManifold.ChartField
 import Lightlike.Spacetime.EHManifold.ChartIntegrable
 import Lightlike.Spacetime.EHManifold.ChartVariation
 import Lightlike.Spacetime.EHManifold.CompactVariation
+import Lightlike.Spacetime.EHManifold.ConormalAlg
+import Lightlike.Spacetime.EHManifold.ConormalGHY
 import Lightlike.Spacetime.EHManifold.Contraction
 import Lightlike.Spacetime.EHManifold.CoverVariation
 import Lightlike.Spacetime.EHManifold.DefiningFunction
@@ -1097,8 +1099,12 @@ import Lightlike.Spacetime.EHManifold.GraphDivergence
 import Lightlike.Spacetime.EHManifold.HalfSpaceDivergence
 import Lightlike.Spacetime.EHManifold.GHYBox
 import Lightlike.Spacetime.EHManifold.GHYBoxVariation
+import Lightlike.Spacetime.EHManifold.GHYDomain
+import Lightlike.Spacetime.EHManifold.GHYGraph
+import Lightlike.Spacetime.EHManifold.GHYRegular
 import Lightlike.Spacetime.EHManifold.GibbonsHawkingYork
 import Lightlike.Spacetime.EHManifold.InducedFace
+import Lightlike.Spacetime.EHManifold.GraphAtlas
 import Lightlike.Spacetime.EHManifold.IntegrandLinear
 import Lightlike.Spacetime.EHManifold.IntrinsicAction
 import Lightlike.Spacetime.EHManifold.IntrinsicIntegrand
@@ -1126,6 +1132,7 @@ import Lightlike.Spacetime.EHManifold.TestField
 import Lightlike.Spacetime.EHManifold.Tests
 import Lightlike.Spacetime.EHManifold.TestsDefiningFunction
 import Lightlike.Spacetime.EHManifold.TestsDivergence
+import Lightlike.Spacetime.EHManifold.TestsGHYGraph
 import Lightlike.Spacetime.EHManifold.TestsFR
 import Lightlike.Spacetime.EHManifold.TestsFRHessian
 import Lightlike.Spacetime.EHManifold.TestsMatter
