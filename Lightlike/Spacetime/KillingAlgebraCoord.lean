@@ -21,7 +21,9 @@ The bridge between the two coordinate forms of Killing's equation used in the li
   are a combination of those of other Killing covectors is that combination (rigidity and linearity);
 * `pd_eq_of_killing`, `rigVec_eq_sum_of_data`: at a point the first derivatives of a Killing covector are its
   antisymmetric part plus `Γᶜ_{ab} θ_c`, so the data `(θ, ½ (∂_a θ_b - ∂_b θ_a))` at the point determines `rigVec`;
-* `lowerVec_bracketCo`: the lowered bracket `[Y, Z]_b = Yᵈ ∇_d Z_b - Zᵈ ∇_d Y_b`.
+* `lowerVec_bracketCo`: the lowered bracket `[Y, Z]_b = Yᵈ ∇_d Z_b - Zᵈ ∇_d Y_b`; `pd_covCo_eq`,
+  `pd_lowerVec_bracketCo`: its first derivatives for two Killing fields, through Blau (13.8) (`covCo2_killing`): the
+  data of the bracket at a point is given by the data of the two fields and the curvature there.
 -/
 
 open Matrix Filter Set
@@ -382,5 +384,70 @@ theorem lowerVec_bracketCo (hgs : ∀ z a b, g z a b = g z b a) (hdet : (g y).de
   ring
 
 end LowerBracket
+
+/-- `∂_a (∇_d φ_b) = ∇_a ∇_d φ_b + Γᶜ_{ad} ∇_c φ_b + Γᶜ_{ab} ∇_d φ_c` (the definition of `covCo2`, rearranged). -/
+theorem pd_covCo_eq (g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ) (φ : (Fin n → ℝ) → Fin n → ℝ) (a d b : Fin n)
+    (y : Fin n → ℝ) :
+    pd a (fun z => covCo g φ d b z) y = covCo2 g φ a d b y + ∑ c, christoffel g c a d y * covCo g φ c b y +
+      ∑ c, christoffel g c a b y * covCo g φ d c y := by
+  unfold covCo2; ring
+
+section BracketData
+
+variable {g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ} {U : Set (Fin n → ℝ)} {Y Z : (Fin n → ℝ) → Fin n → ℝ}
+  {y : Fin n → ℝ}
+
+theorem contDiffOn_lowerVec (hg : IsCoordMetric g U) (hY : ∀ c, ContDiffOn ℝ ∞ (fun z => Y z c) U) (b : Fin n) :
+    ContDiffOn ℝ ∞ (fun z => lowerVec g Y z b) U :=
+  ContDiffOn.sum fun c _ => (hg.smooth b c).mul (hY c)
+
+/-- **The derivative of the lowered bracket of two Killing fields**: at a point of `U`,
+`∂_a [Y, Z]_b = ∂_a Yᵈ ∇_d Z_b + Yᵈ (Rᵉ_{adb} Z_e + Γᶜ_{ad} ∇_c Z_b + Γᶜ_{ab} ∇_d Z_c) - (Y ↔ Z)`. -/
+theorem pd_lowerVec_bracketCo (hg : IsCoordMetric g U) (hgs : ∀ z a b, g z a b = g z b a)
+    (hY : ∀ c, ContDiffOn ℝ ∞ (fun z => Y z c) U) (hZ : ∀ c, ContDiffOn ℝ ∞ (fun z => Z z c) U)
+    (hKY : ∀ z ∈ U, ∀ a b, covCo g (lowerVec g Y) a b z + covCo g (lowerVec g Y) b a z = 0)
+    (hKZ : ∀ z ∈ U, ∀ a b, covCo g (lowerVec g Z) a b z + covCo g (lowerVec g Z) b a z = 0) (hy : y ∈ U)
+    (a b : Fin n) :
+    pd a (fun z => lowerVec g (bracketCo Y Z) z b) y =
+      ∑ d, (pd a (fun z => Y z d) y * covCo g (lowerVec g Z) d b y +
+          Y y d * (∑ e, riemann g e a d b y * lowerVec g Z y e +
+            ∑ c, christoffel g c a d y * covCo g (lowerVec g Z) c b y +
+            ∑ c, christoffel g c a b y * covCo g (lowerVec g Z) d c y) -
+        (pd a (fun z => Z z d) y * covCo g (lowerVec g Y) d b y +
+          Z y d * (∑ e, riemann g e a d b y * lowerVec g Y y e +
+            ∑ c, christoffel g c a d y * covCo g (lowerVec g Y) c b y +
+            ∑ c, christoffel g c a b y * covCo g (lowerVec g Y) d c y))) := by
+  have hev : (fun z => lowerVec g (bracketCo Y Z) z b) =ᶠ[𝓝 y]
+      fun z => ∑ d, (Y z d * covCo g (lowerVec g Z) d b z - Z z d * covCo g (lowerVec g Y) d b z) := by
+    filter_upwards [hg.isOpen.mem_nhds hy] with z hz
+    exact lowerVec_bracketCo hgs (hg.isUnit_det z hz).ne_zero
+      (fun a b => differentiableAt_of_contDiffOn (hg.smooth a b) hg.isOpen hz)
+      (fun c => differentiableAt_of_contDiffOn (hY c) hg.isOpen hz)
+      (fun c => differentiableAt_of_contDiffOn (hZ c) hg.isOpen hz) b
+  rw [(pd_eventuallyEq hev a).eq_of_nhds]
+  have hθY := contDiffOn_lowerVec hg hY
+  have hθZ := contDiffOn_lowerVec hg hZ
+  have dY : ∀ d, DifferentiableAt ℝ (fun z => Y z d) y := fun d => differentiableAt_of_contDiffOn (hY d) hg.isOpen hy
+  have dZ : ∀ d, DifferentiableAt ℝ (fun z => Z z d) y := fun d => differentiableAt_of_contDiffOn (hZ d) hg.isOpen hy
+  have dcov : ∀ (θ : (Fin n → ℝ) → Fin n → ℝ), (∀ c, ContDiffOn ℝ ∞ (fun z => θ z c) U) →
+      ∀ d b, DifferentiableAt ℝ (fun z => covCo g θ d b z) y := fun θ hθ d b =>
+    (differentiableAt_of_contDiffOn (contDiffOn_pd (hθ b) hg.isOpen d) hg.isOpen hy).sub
+      (DifferentiableAt.fun_sum fun c _ =>
+        (differentiableAt_of_contDiffOn (contDiffOn_christoffel hg c d b) hg.isOpen hy).mul
+          (differentiableAt_of_contDiffOn (hθ c) hg.isOpen hy))
+  have hKY' : ∀ᶠ z in 𝓝 y, ∀ a b, covCo g (lowerVec g Y) a b z + covCo g (lowerVec g Y) b a z = 0 :=
+    Filter.mem_of_superset (hg.isOpen.mem_nhds hy) fun z hz => hKY z hz
+  have hKZ' : ∀ᶠ z in 𝓝 y, ∀ a b, covCo g (lowerVec g Z) a b z + covCo g (lowerVec g Z) b a z = 0 :=
+    Filter.mem_of_superset (hg.isOpen.mem_nhds hy) fun z hz => hKZ z hz
+  rw [pd_sum Finset.univ (f := fun d z => Y z d * covCo g (lowerVec g Z) d b z - Z z d * covCo g (lowerVec g Y) d b z)
+    (fun d _ => ((dY d).mul (dcov _ hθZ d b)).sub ((dZ d).mul (dcov _ hθY d b))) a]
+  refine Finset.sum_congr rfl fun d _ => ?_
+  rw [pd_sub (f₁ := fun z => Y z d * covCo g (lowerVec g Z) d b z) (f₂ := fun z => Z z d * covCo g (lowerVec g Y) d b z)
+      ((dY d).mul (dcov _ hθZ d b)) ((dZ d).mul (dcov _ hθY d b)) a,
+    pd_mul (f₁ := fun z => Y z d) (f₂ := fun z => covCo g (lowerVec g Z) d b z) (dY d) (dcov _ hθZ d b) a,
+    pd_mul (f₁ := fun z => Z z d) (f₂ := fun z => covCo g (lowerVec g Y) d b z) (dZ d) (dcov _ hθY d b) a,
+    pd_covCo_eq, pd_covCo_eq, covCo2_killing hg hgs hθZ hy hKZ', covCo2_killing hg hgs hθY hy hKY']
+
+end BracketData
 
 end Lightlike
