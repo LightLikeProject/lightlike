@@ -65,6 +65,8 @@ For a finite-dimensional `h`, the Weyl unitaries are jointly strongly continuous
 
 A map `y ↦ W y` into the unitaries with the Weyl relations is regular as soon as it has a cyclic quasi-free vector `Ψ`, `⟪Ψ, W y Ψ⟫ = exp(-η(y, y)/4)` [79]; then `Ψ` lies in the domain of every field operator `φ(y)`, the generator of `t ↦ W(t y)`, with `⟪φ(y₁)Ψ, φ(y₂)Ψ⟫ = ½(η(y₁, y₂) + i σ(y₁, y₂))` and `|σ(y₁, y₂)| ≤ η(y₁, y₁)^{1/2} η(y₂, y₂)^{1/2}` {8}; the Fock vacuum is quasi-free with `η = Re⟪·,·⟫` [80].
 
+For a complex Hilbert space `Z` with a Hilbert basis indexed by a linearly ordered `ι`, a Hilbert space with a Hilbert basis `B` indexed by the finite subsets of `ι` is the fermionic Fock space: the creation operators `a*(eⱼ) B S = ±B (S ∪ {j})` and their adjoints satisfy the CAR, `a*(w) = ∑ⱼ ⟪eⱼ, w⟫ a*(eⱼ)` has norm at most `‖w‖`, and the field operators `φ(w) = a*(w) + a(w)` are self-adjoint with `φ(w) φ(w') + φ(w') φ(w) = 2 Re⟪w, w'⟫` and form an irreducible representation [81] {9}; the annihilation operators kill the vacuum and the model `ℓ²(Finset ι)` is checked in [82].
+
 ## Lean References
 
 1. Lightlike/OperatorAlgebras/UnitaryGroup.lean - `OperatorAlgebras.UnitaryGroup`,
@@ -268,6 +270,10 @@ A map `y ↦ W y` into the unitaries with the Weyl relations is regular as soon 
     `OperatorAlgebras.CCRRep.IsQuasiFree.inner_field_field`, `OperatorAlgebras.CCRRep.IsQuasiFree.abs_symp_le`,
     `OperatorAlgebras.FockRep.isQuasiFree_vacuum`
 80. Lightlike/OperatorAlgebras/TestsQuasiFree.lean - `OperatorAlgebras.FockRep.inner_field_field_vacuum`
+81. Lightlike/OperatorAlgebras/FermiFockGeneral.lean - `OperatorAlgebras.fermiCre`, `OperatorAlgebras.fermiAnn`,
+    `OperatorAlgebras.fermiAnn_fermiCre_anticomm`, `OperatorAlgebras.creW`, `OperatorAlgebras.annW_creW_anticomm`,
+    `OperatorAlgebras.fockField`, `OperatorAlgebras.fockField_anticomm`, `OperatorAlgebras.fockField_irreducible`
+82. Lightlike/OperatorAlgebras/TestsFermiFock.lean - `OperatorAlgebras.fermiAnn_vacuum`
 
 ## References
 
@@ -290,3 +296,5 @@ A map `y ↦ W y` into the unitaries with the Weyl relations is regular as soon 
    Section 7.3.1 (von Neumann's proof).
 8. J. Dereziński, *Introduction to representations of the canonical commutation and anticommutation
    relations*, Section 9.1, Theorems 37 and 39 (Theorem 39 (1) in the corrected form `½(η + iω)`).
+9. J. Dereziński, *Introduction to representations of the canonical commutation and anticommutation
+   relations*, Sections 5.3 and 7.1, Theorem 28.
