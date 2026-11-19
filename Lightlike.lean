@@ -928,6 +928,8 @@ import Lightlike.Spacetime.EHManifold.ActionPieces
 import Lightlike.Spacetime.EHManifold.BallCritical
 import Lightlike.Spacetime.EHManifold.BallCriticalConverse
 import Lightlike.Spacetime.EHManifold.BallVariation
+import Lightlike.Spacetime.EHManifold.BoxDirichlet
+import Lightlike.Spacetime.EHManifold.BoxVariation
 import Lightlike.Spacetime.EHManifold.ChartAction
 import Lightlike.Spacetime.EHManifold.ChartField
 import Lightlike.Spacetime.EHManifold.ChartIntegrable
@@ -937,8 +939,13 @@ import Lightlike.Spacetime.EHManifold.Contraction
 import Lightlike.Spacetime.EHManifold.CoverVariation
 import Lightlike.Spacetime.EHManifold.EinsteinForm
 import Lightlike.Spacetime.EHManifold.EinsteinIntrinsic
+import Lightlike.Spacetime.EHManifold.FaceFlux
 import Lightlike.Spacetime.EHManifold.FluxLinear
 import Lightlike.Spacetime.EHManifold.FluxLocal
+import Lightlike.Spacetime.EHManifold.GHYBox
+import Lightlike.Spacetime.EHManifold.GHYBoxVariation
+import Lightlike.Spacetime.EHManifold.GibbonsHawkingYork
+import Lightlike.Spacetime.EHManifold.InducedFace
 import Lightlike.Spacetime.EHManifold.IntegrandLinear
 import Lightlike.Spacetime.EHManifold.IntrinsicAction
 import Lightlike.Spacetime.EHManifold.IntrinsicIntegrand
