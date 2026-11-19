@@ -1,6 +1,6 @@
 # T-HA6 Wigner classification of the Poincaré group: reuse check and plan
 
-18 November 2026, branch `spinfoam/ha6-poincare` (from main 473d1011). Written before any Lean for HA6.
+18 November 2026. Written before any Lean for HA6.
 
 ## HA4 already exists (so HA6's dependency is met)
 
@@ -46,7 +46,7 @@ spacetime dimensions, the square of the Pauli–Lubanski vector acting on a mass
 skimmed. Weinberg Chapter 2 §2.5 (pp. 62–66) and Wigner, Ann. Math. 40 (1939) 149: searched for an openable copy on
 18 November 2026, none found (no legal PDF of Weinberg Vol. 1; Wigner 1939 is behind JSTOR). NOT read. Bekaert–Boulanger §3.1
 reproduces Weinberg's construction (their eqs (10)–(13) are Weinberg's (2.5.x) with the same `L(p)`, `W(Λ,p)`, `N(p)`), and
-§3.2 quotes Wigner on the null-vector stabiliser. A copy of Weinberg Chapter 2 or of Wigner 1939 supplied by the owner would
+§3.2 quotes Wigner on the null-vector stabiliser. A copy of Weinberg Chapter 2 or of Wigner 1939 supplied by the maintainers would
 close this item.
 
 Convention difference to record in any statement: Bekaert–Boulanger use signature `(−,+,+,+)` (so `p² = −m²` for a massive
@@ -68,15 +68,15 @@ checked against `PhyslibAlpha/Relativity/MinkowskiMatrix.lean`).
    part acts trivially), `W = h P`.
 4. **Casimir `W²`.** Pauli–Lubanski vector on the induced representations, `W² = −m² s(s+1)`.
 5. **Classification (lockable statement).** Every irreducible unitary positive-energy representation is one of these. This
-   is the deep part (Mackey machine); in the plan it is last and needs a precise statement agreed with the owner before work
-   starts: a *weaker* version needs two recorded full-proof attempts (owner's 17:10 rule).
+   is the deep part (Mackey machine); in the plan it is last and needs a precise statement agreed with the maintainers before work
+   starts: a *weaker* version needs two recorded full-proof attempts (the maintainers' rule of 18 November 2026).
 
 ## Not started
 
 No Lean has been written for HA6. Next: reuse check of Tau Ceti and physicslib4, then stage 1 (definitions of the orbits and little groups
 against `PoincareGroup`/`LorentzGroup` of Physlib).
 
-## Stage 5 sources read (18 November 2026; owner's decision: Wigner 1939 and Mackey 1952 are historical references only)
+## Stage 5 sources read (18 November 2026; decided by the maintainers: Wigner 1939 and Mackey 1952 are historical references only)
 
 Downloaded to scratch directories and extracted with `pdftotext`; read:
 
@@ -102,5 +102,5 @@ Downloaded to scratch directories and extracted with `pdftotext`; read:
 * **Bekaert–Boulanger** hep-th/0611263v2 (13 June 2021): read as recorded above (§3.1, §3.2, §5.2, §5.4); §3.3 "Classification"
   (page of v2 around 13–14, `pdftotext` line 598 onwards) to be read before the stage 5 statement is locked.
 
-Scope (owner): the restricted Poincaré group only (no parity, no time reversal, no extended group). Gaps (i) ergodic measure of a
+Scope (decided by the maintainers): the restricted Poincaré group only (no parity, no time reversal, no extended group). Gaps (i) ergodic measure of a
 regular action is concentrated on one orbit and (ii) the Lorentz action on momentum space is regular are to be proved in Lean.
