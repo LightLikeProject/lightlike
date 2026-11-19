@@ -43,7 +43,7 @@ NOT proved (open, no attempt completed):
 * **The four regions I-IV and the exterior map `(t, r) ↦ (v, u)`** (7.78)-(7.79) (we use the chart change from ingoing EF instead).
 * **The Penrose diagram** (conformal compactification of the Kruskal manifold: Penrose-Carter): this is GE7, only done for Minkowski space and AdS.
 
-## Parts closed after the metric (stream Fable-1, 19 November 2026)
+## Parts closed after the metric
 
 Source read for these: Carroll, arXiv:gr-qc/9712019, chapter 7, printed pages 186-190 (eqs. (7.75)-(7.85), the Kruskal
 diagram, the four regions and the text on regions II-IV) and pages 197-198 (eqs. (7.103)-(7.105), the Penrose diagram
@@ -71,7 +71,7 @@ Differences from the source in these files:
 Still open: maximality (inextendibility) of the extension; the event horizon as the boundary of the past of future
 null infinity on the manifold; conformal infinity as added points.
 
-## The curvature singularity (stream Fable-1, 19 November 2026)
+## The curvature singularity
 
 Source read: Carroll, arXiv:gr-qc/9712019, chapter 7, printed pages 171-172 (curvature scalars as the test for a
 singularity; eq. (7.30)).
@@ -95,7 +95,7 @@ Maximality, state of the attempts:
   does not run into `r = 0` is complete; with that, the standard argument (a boundary point of an extension is
   reached by a geodesic of finite affine length) closes maximality. Not in the library: geodesics of the Kruskal
   metric beyond the radial null ones, affine completeness, and the notion of an extension of a Lorentzian manifold.
-* Attempt 2 (19 November 2026): maximality stated for the chart, "no coordinate metric on a larger connected open
+* Attempt 2: maximality stated for the chart, "no coordinate metric on a larger connected open
   set restricts to the Kruskal metric under an isometric chart embedding". This statement is FALSE, so the attempt
   fails for a concrete reason: the chart domain `kruskalU` has `0 < θ < π`, it omits the rotation axis `θ = 0, π` of
   every two-sphere. The Kruskal manifold is `{X² - T² > -1} × S²`, and `kruskalU` is a proper open subset of it;
@@ -115,7 +115,7 @@ Maximality, state of the attempts:
   each inextendible one is complete or has `r → 0` at a finite affine parameter; (5) the curvature argument of
   attempt 1. Steps (1)-(4) are new infrastructure.
 
-## The Kruskal manifold in one chart (stream Fable-1, 19 November 2026)
+## The Kruskal manifold in one chart
 
 Step (1) of the plan for maximality, done without a sphere bundle: `ℝ × S²` is `ℝ³ ∖ {0}` by `(X, n) ↦ e^X n`, so
 the Kruskal manifold `{X² - T² > -1} × S²` is the open subset `{x ≠ 0, (log |x|)² - T² > -1}` of `ℝ⁴`.
@@ -131,7 +131,7 @@ the Kruskal manifold `{X² - T² > -1} × S²` is the open subset `{x ≠ 0, (lo
 This global chart is the library's own; no source is cited for it. Remaining for maximality: (2) the notion of an
 extension, (3) geodesics through a boundary point of an extension, (4) the classification of the geodesics.
 
-## The notion of extension (stream Fable-1, 19 November 2026)
+## The notion of extension
 
 Source read (pdftotext of the arXiv PDF): J. Sbierski, *The C⁰-inextendibility of the Schwarzschild spacetime and
 the spacelike diameter in Lorentzian geometry*, arXiv:1507.00601v2 (25 April 2016): page 1 (the definition of
@@ -151,7 +151,7 @@ Not yet proved. The bridge still missing between `IsLorentzianExtension` and the
 the extension around a boundary point, the embedding is a chart change on an open subset of the Kruskal manifold,
 so `not_tendsto_of_isometric_chart` applies to sequences with `r → 0`; the other sequences need the geodesics.
 
-## The curvature half of maximality at the level of manifolds (stream Fable-1, 19 November 2026)
+## The curvature half of maximality at the level of manifolds
 
 * Lightlike/Spacetime/ExtensionChart.lean: for a smooth isometric map `ι` of an open subset `U` of `ℝⁿ` (with a
   Lorentzian coordinate metric) into a Lorentzian manifold, and a chart of the target at a point `p`, the map
@@ -168,7 +168,7 @@ through `p` and uses that every geodesic of the Kruskal manifold is complete or 
 (Sbierski, Section 1.3 iv)). Missing in the library: existence of geodesics through a point (Picard-Lindelöf for
 the geodesic equation in a chart) and the analysis of the Kruskal geodesics with the constants of motion.
 
-## Toward the geodesics (stream Fable-1, 19 November 2026)
+## Toward the geodesics
 
 Proved so far, for the second half of maximality:
 * Lightlike/Spacetime/GeodesicChartChange.lean: geodesics are chart-independent (`IsGeodesicOn.map_chartChange`).
@@ -179,8 +179,8 @@ Proved so far, for the second half of maximality:
   (constant by `IsGeodesicOn.hasDerivAt_speed`).
 
 Plan for "a geodesic of the Kruskal manifold defined on `[0, b)`, `b < ∞`, with `r` bounded below has a limit in
-the manifold as `t → b`" (with it and the existence of geodesics through a point, from the stream that builds the
-exponential map, inextendibility follows as in Sbierski, Section 1.3 iv)):
+the manifold as `t → b`" (with it and the existence of geodesics through a point (the exponential map of a coordinate
+metric), inextendibility follows as in Sbierski, Section 1.3 iv)):
 1. the total angular momentum `L² = r⁴ (θ'² + sin²θ φ'²)` is constant (the angular Christoffel symbols of the
    Eddington-Finkelstein metric, or the rotations as chart changes of the global chart);
 2. then `|r'|` is bounded on the interval by the radial equation, so `r` is bounded above and below;
