@@ -74,7 +74,9 @@ section); in the massless case the obstruction of attempt 2 stands.
   tensor (`casimir_eq_of_tensor`). So the square at `P` is the rest-frame one: with the Hermitian operators `i W^μ`,
   `W_μ W^μ = −m² s(s+1)` at every momentum (`pauliLubanski_sq_generators`).
 
-Remaining differences (kind: weaker): the generators are pointwise derivatives on wave functions differentiable in
-the chart, not the Stone generators on `L²`; `P_σ` acts by multiplication to the left of `M_{νρ}` (the two orders
-agree by the antisymmetry of `ε`, not formalised); the square is the product of the matrices by which `W^μ` acts at
-`P`.
+Both orders of `M_{νρ}` and `P_σ` agree (`hasDerivAt_pauliLubanski_MP`: the commutator terms `(d p_σ)(M_{νρ} p)`
+vanish in the contraction with `ε`), and since `W^μ` acts as multiplication by the matrix function `plMat`, the
+operator square `W_μ W^μ` is the pointwise matrix product (`pauliLubanski_sq_operator`).
+
+Remaining difference (kind: weaker): the generators are pointwise derivatives on wave functions differentiable in the
+chart, not the Stone generators on `L²`.
