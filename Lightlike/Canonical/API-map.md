@@ -52,6 +52,13 @@ equation does, and the momentum constraint holds {3} {4}; for a slice of spatial
 `(a S)² δ_ij`, `S = 1/(1 + k|x|²/4)`, the scalar curvature is `6k/a²` and the constraint holds exactly when
 `(a'/a)² = 8πGρ/3 − k/a² + Λ/3`, the cosmological constant entering as a fluid with `w = −1` [19] {4}.
 
+In the connection variables of loop quantum gravity a co-triad `e` of the spatial metric gives the densitized triad
+`E = |det e| e⁻¹`, the triad form `K^i_a` of the extrinsic curvature and the spin connection `Γ^i_a` of the co-triad,
+built from the Christoffel symbols of the metric [24] {5} {6}. The spin connection is compatible with the triad
+(`de + ε Γ ∧ e = 0`), the Ashtekar–Barbero connection is `A = Γ + γK`, and the Gauss constraint
+`∂_a E^a_i + ε_ijk A^j_a E^a_k` vanishes on the variables of ADM data, its extrinsic-curvature part exactly because the
+extrinsic curvature is symmetric [25] {5}.
+
 A grid computation in dimension two (`scripts/adm_algebra_check.py`) supports the three brackets; with the kinetic
 coefficient `1/2` of dimension three, used in dimension two, the bracket of two Hamiltonian constraints differs from
 the momentum constraint of the structure function.
@@ -93,6 +100,11 @@ the momentum constraint of the structure function.
     `Lightlike.Canonical.admSliceMomentum_minkowski`
 22. Lightlike/Canonical/FoliationLie.lean - `Lightlike.Canonical.extrinsicCurvature_eq_neg_half_lieDeriv`
 23. Lightlike/Canonical/FoliationSpacelike.lean - `Lightlike.Canonical.spatialMetric_pos`
+24. Lightlike/Canonical/Triad.lean - `Lightlike.Canonical.IsCoTriad`, `Lightlike.Canonical.densTriad`, `Lightlike.Canonical.triadK`,
+    `Lightlike.Canonical.gaussK_eq_zero_iff`
+25. Lightlike/Canonical/SpinConnection.lean - `Lightlike.Canonical.spinConn`, `Lightlike.Canonical.spin_compat`,
+    `Lightlike.Canonical.abConn`, `Lightlike.Canonical.gaussConstraint`, `Lightlike.Canonical.gauss_spinConn`,
+    `Lightlike.Canonical.gauss_abConn`, `Lightlike.Canonical.gauss_abConn_antisymm_violates`
 
 ## References
 
@@ -104,3 +116,7 @@ the momentum constraint of the structure function.
    (4.104), (4.108), (7.16), (7.17).
 4. J. C. Aurrekoetxea, K. Clough and E. A. Lim, *Cosmology using numerical relativity*, arXiv:2409.01939, equations (3),
    (23), (25), (26).
+5. A. Ashtekar and J. Lewandowski, *Background independent quantum gravity: a status report*, arXiv:gr-qc/0404018,
+   equations (2.16)-(2.18), (2.20)-(2.21), (2.23).
+6. S. Holst, *Barbero's Hamiltonian derived from a generalized Hilbert-Palatini action*, arXiv:gr-qc/9511026,
+   equation (6).

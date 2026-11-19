@@ -201,6 +201,8 @@ import Lightlike.Canonical.HypersurfaceBridge
 import Lightlike.Canonical.InitialData
 import Lightlike.Canonical.Foliation
 import Lightlike.Canonical.FoliationSmooth
+import Lightlike.Canonical.Triad
+import Lightlike.Canonical.SpinConnection
 import Lightlike.Canonical.FoliationLie
 import Lightlike.Canonical.FoliationSpacelike
 import Lightlike.Canonical.FoliationChart
