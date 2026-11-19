@@ -195,9 +195,11 @@ import Lightlike.GR.EuclideanCigar
 import Lightlike.GR.EuclideanCone
 import Lightlike.GR.KruskalFunction
 import Lightlike.GR.KruskalExterior
+import Lightlike.GR.KruskalKretschmann
 import Lightlike.GR.KruskalMetric
 import Lightlike.GR.KruskalPenrose
 import Lightlike.GR.KruskalRegions
+import Lightlike.GR.SchwarzschildKretschmann
 import Lightlike.GR.EuclideanSchwarzschild
 import Lightlike.GR.Schwarzschild
 import Lightlike.Lorentz.Cartan

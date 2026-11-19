@@ -31,6 +31,11 @@ exact solutions, such as Kerr and de Sitter, are not yet formalized. [TODO]
 5. Lightlike/GR/KruskalPenrose.lean - `penroseMap`, `penroseU`, `bijOn_penroseMap` (the Penrose diagram of the
    Kruskal extension), `tan_mul_tan_eq_one_of_abs_add`, `penroseMap_horizon_iff`,
    `pullback_kruskal_penroseInv`, `penrose_conformalFactor_pos`
+6. Lightlike/GR/SchwarzschildKretschmann.lean - `schRiem`, `riemann_sch` (the Riemann tensor of the Schwarzschild
+   metric), `kretschmann_sch` (`R_{abcd} R^{abcd} = 48 M²/r⁶`)
+7. Lightlike/GR/KruskalKretschmann.lean - `kretschmann_congr_on`, `kretschmann_ef`, `kretschmann_kruskal`
+   (`48 M²/r⁶` on the whole Kruskal domain), `kretschmann_kruskal_unbounded`, `not_tendsto_of_isometric_chart`
+   (no extension through the singularity `r = 0`)
 
 ## References
 

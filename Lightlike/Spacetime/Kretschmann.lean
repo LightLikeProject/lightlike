@@ -51,6 +51,36 @@ lemma kretschmann_eq_sum (g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ) (x
   simp only [kretschmann, Matrix.trace, Matrix.diag_apply, Matrix.mul_apply, transpose_apply,
     kroneckerMap_apply]
 
+/-- **The Kretschmann scalar of a metric that is diagonal at `x`**:
+`K = Σ_{c,d} g^{cc} g^{dd} Σ_{a,b} g_{aa} g^{bb} (R^a_{bcd})²`. -/
+lemma kretschmann_diagonal (g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ) (x : Fin n → ℝ) {D Di : Fin n → ℝ}
+    (hD : g x = diagonal D) (hDi : (g x)⁻¹ = diagonal Di) :
+    kretschmann g x = ∑ q : Fin n × Fin n, Di q.1 * Di q.2 *
+      ∑ a, ∑ b, D a * Di b * riemann g a b q.1 q.2 x ^ 2 := by
+  have hT : ∀ p q : Fin n × Fin n, kretMat g x p q =
+      ∑ a, ∑ b, D a * riemann g a b p.1 p.2 x * Di b * riemann g a b q.1 q.2 x := by
+    intro p q
+    have hX : g x * riemMat g p.1 p.2 x * (g x)⁻¹ =
+        Matrix.of fun a b => D a * riemann g a b p.1 p.2 x * Di b := by
+      ext a b
+      rw [hDi, hD, Matrix.mul_diagonal, Matrix.diagonal_mul]
+      rfl
+    simp only [kretMat, hX, Matrix.trace, Matrix.diag_apply, Matrix.mul_apply, transpose_apply,
+      Matrix.of_apply, riemMat]
+  rw [kretschmann_eq_sum]
+  refine Finset.sum_congr rfl fun q _ => ?_
+  rw [Finset.sum_eq_single q]
+  · rw [hDi, Matrix.diagonal_apply_eq, Matrix.diagonal_apply_eq, hT]
+    congr 1
+    exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring
+  · intro p _ hp
+    rw [hDi]
+    by_cases h1 : p.1 = q.1
+    · have h2 : p.2 ≠ q.2 := fun h2 => hp (Prod.ext h1 h2)
+      rw [Matrix.diagonal_apply_ne _ h2, mul_zero, zero_mul]
+    · rw [Matrix.diagonal_apply_ne _ h1, zero_mul, zero_mul]
+  · intro h; exact absurd (Finset.mem_univ q) h
+
 section Pullback
 
 variable {g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ} {U V : Set (Fin n → ℝ)}

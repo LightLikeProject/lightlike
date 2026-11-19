@@ -70,3 +70,29 @@ Differences from the source in these files:
 
 Still open: maximality (inextendibility) of the extension; the event horizon as the boundary of the past of future
 null infinity on the manifold; conformal infinity as added points.
+
+## The curvature singularity (stream Fable-1, 19 November 2026)
+
+Source read: Carroll, arXiv:gr-qc/9712019, chapter 7, printed pages 171-172 (curvature scalars as the test for a
+singularity; eq. (7.30)).
+
+* Lightlike/Spacetime/Kretschmann.lean: `K = R_{abcd} R^{abcd}` for a coordinate metric, chart independence
+  (`kretschmann_pullback`), continuity.
+* Lightlike/GR/SchwarzschildKretschmann.lean: all components of the Riemann tensor of Schwarzschild (`riemann_sch`),
+  and `K = 48 M²/r⁶` (`kretschmann_sch`).
+* Lightlike/GR/KruskalKretschmann.lean: `K = 48 M²/r⁶` in Eddington-Finkelstein coordinates across the horizon and
+  on the whole Kruskal domain; `K` is unbounded near `X² - T² = -1`; for every coordinate metric and every chart
+  change of the Kruskal domain into its domain that is an isometry, a sequence with `r → 0` has no limit in the
+  target (`not_tendsto_of_isometric_chart`).
+
+Difference from the source (kind: the source is in error): (7.30) prints `12 G²M²/r⁶`; the computation gives
+`48 M²/r⁶`. The conclusion of the source (the invariant diverges at `r = 0`) is unaffected.
+
+Maximality, state of the attempts:
+* Attempt 1 (this section): curvature blow-up excludes every extension through `r = 0`. It does not give
+  maximality: an extension could add points elsewhere (at the ends `r → ∞` of the two exteriors, or along the
+  horizons at infinite `T`, `X`). Concrete missing step: every inextendible geodesic of the Kruskal manifold that
+  does not run into `r = 0` is complete; with that, the standard argument (a boundary point of an extension is
+  reached by a geodesic of finite affine length) closes maximality. Not in the library: geodesics of the Kruskal
+  metric beyond the radial null ones, affine completeness, and the notion of an extension of a Lorentzian manifold.
+* Attempt 2: not started.
