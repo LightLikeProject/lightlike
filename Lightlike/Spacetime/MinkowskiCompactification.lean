@@ -16,14 +16,17 @@ is conformal to the region `0 < χ`, `|η| + χ < π` of the Einstein static uni
   satisfy `A² - B² = ω⁻²`;
 * `minkowski_eq_conformal_esu`: the Minkowski metric on the image of a tangent vector `a ∂_η + b ∂_χ + w` (`w` tangent to
   the sphere, `q = dΩ²(w, w)`) is `ω⁻² (-a² + b² + sin² χ q)`;
-* `bijOn_comp`: `(η, χ) ↦ (t, r)` maps `compRegion` bijectively onto the half-plane `r > 0`.
+* `bijOn_comp`: `(η, χ) ↦ (t, r)` maps `compRegion` bijectively onto the half-plane `r > 0`;
+* `compOmega_eq_zero_iff`: on the closed region the conformal factor vanishes exactly on the boundary `|η| + χ = π`,
+  conformal infinity (null infinity `η ± χ = ±π` with the points `η = ±π`, `χ = 0` and `η = 0`, `χ = π`).
 
 ## References
 
 * S. M. Carroll, *Lecture Notes on General Relativity*, arXiv gr-qc/9712019, chapter 7, eqs. (7.86)–(7.102),
   pp. 192–195: the null coordinates (7.88), `U = arctan u`, `V = arctan v` (7.91) with the ranges (7.92), the metric
   (7.97), `η = U + V`, `χ = U - V` (7.98) with the ranges (7.99), and `ds² = ω⁻² (-dη² + dχ² + sin² χ dΩ²)` (7.100),
-  `ω = cos U cos V = ½ (cos η + cos χ)` (7.101), the Einstein static universe (7.102).
+  `ω = cos U cos V = ½ (cos η + cos χ)` (7.101), the Einstein static universe (7.102); p. 196, the boundaries of the
+  region, "conformal infinity".
 -/
 
 noncomputable section
@@ -193,5 +196,34 @@ theorem bijOn_comp :
     rw [compT_eq_tan_add (by linarith) hreg, compR_eq_tan_sub (by linarith) hreg,
       show (U + V + (U - V)) / 2 = U by ring, show (U + V - (U - V)) / 2 = V by ring, tan_arctan, tan_arctan]
     exact Prod.ext (by simp only; ring) (by simp only; ring)
+
+/-- **Conformal infinity**: on the closed region `0 ≤ χ`, `|η| + χ ≤ π`, the conformal factor `ω` vanishes exactly on the
+boundary `|η| + χ = π` (null infinity `η ± χ = ±π`, Carroll p. 196). -/
+theorem compOmega_eq_zero_iff {η χ : ℝ} (hχ : 0 ≤ χ) (h : |η| + χ ≤ π) :
+    compOmega η χ = 0 ↔ |η| + χ = π := by
+  rw [compOmega_eq_cos_mul_cos, mul_eq_zero]
+  have h1 := neg_abs_le η
+  have h2 := le_abs_self η
+  constructor
+  · rintro (hc | hc)
+    · -- `cos ((η + χ)/2) = 0` with `(η + χ)/2 ∈ [-π/2, π/2]`
+      have hle : (η + χ) / 2 ≤ π / 2 := by linarith
+      have hge : -(π / 2) ≤ (η + χ) / 2 := by linarith [pi_pos]
+      rcases lt_or_eq_of_le hle with hlt | heq
+      · rcases lt_or_eq_of_le hge with hgt | heq'
+        · exact absurd hc (cos_pos_of_mem_Ioo ⟨hgt, hlt⟩).ne'
+        · rcases abs_cases η with ⟨ha, _⟩ | ⟨ha, _⟩ <;> linarith
+      · rcases abs_cases η with ⟨ha, _⟩ | ⟨ha, _⟩ <;> linarith
+    · have hle : (η - χ) / 2 ≤ π / 2 := by linarith [pi_pos]
+      have hge : -(π / 2) ≤ (η - χ) / 2 := by linarith
+      rcases lt_or_eq_of_le hge with hgt | heq
+      · rcases lt_or_eq_of_le hle with hlt | heq'
+        · exact absurd hc (cos_pos_of_mem_Ioo ⟨hgt, hlt⟩).ne'
+        · rcases abs_cases η with ⟨ha, _⟩ | ⟨ha, _⟩ <;> linarith
+      · rcases abs_cases η with ⟨ha, _⟩ | ⟨ha, _⟩ <;> linarith
+  · intro hb
+    rcases abs_cases η with ⟨ha, hη⟩ | ⟨ha, hη⟩
+    · left; rw [show (η + χ) / 2 = π / 2 by rw [ha] at hb; linarith, cos_pi_div_two]
+    · right; rw [show (η - χ) / 2 = -(π / 2) by rw [ha] at hb; linarith, cos_neg, cos_pi_div_two]
 
 end Lightlike
