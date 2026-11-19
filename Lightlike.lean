@@ -1092,6 +1092,7 @@ import Lightlike.DynamicalTriangulations.Tests3
 import Lightlike.FieldTheory.Gaussian.Density
 import Lightlike.FieldTheory.Gaussian.FeynmanExpansion
 import Lightlike.FieldTheory.Gaussian.FeynmanGraphs
+import Lightlike.FieldTheory.Gaussian.FeynmanGraphsPoly
 import Lightlike.FieldTheory.Gaussian.FeynmanPoly
 import Lightlike.FieldTheory.Gaussian.Ibp
 import Lightlike.FieldTheory.Gaussian.Integral
