@@ -160,6 +160,14 @@ references:
     cite: "S. M. Carroll, Lecture Notes on General Relativity (1997)"
     title: "Lecture Notes on General Relativity"
     arxiv: gr-qc/9712019
+  curiel-2014:
+    cite: "E. Curiel, A Primer on Energy Conditions (2014), in Towards a Theory of Spacetime Theories, Einstein Studies 13 (2017)"
+    title: "A Primer on Energy Conditions"
+    arxiv: "1405.0403"
+  kontou-sanders-2020:
+    cite: "E.-A. Kontou and K. Sanders, Energy conditions in general relativity and quantum field theory, Class. Quantum Grav. 37 (2020) 193001"
+    title: "Energy conditions in general relativity and quantum field theory"
+    arxiv: "2003.01815"
   cky-1997:
     cite: "L. Crane, L. H. Kauffman and D. N. Yetter, State-sum invariants of 4-manifolds, J. Knot Theory Ramifications 6 (1997) 177-234"
     title: "State-Sum Invariants of 4-Manifolds I"
