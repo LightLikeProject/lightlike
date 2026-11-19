@@ -32,9 +32,13 @@ structure IsCARRep {ι : Type*} [Fintype ι] [DecidableEq ι] {m : ℕ} (φ : Fi
   selfAdjoint : ∀ a, (φ a)ᴴ = φ a
   anticomm : ∀ a b, φ a * φ b + φ b * φ a = if a = b then (2 : ℂ) • (1 : Matrix ι ι ℂ) else 0
 
-/-- The Pauli matrices. -/
+/-- The Pauli matrix `σ₁`. -/
 def pauli1 : Matrix (Fin 2) (Fin 2) ℂ := !![0, 1; 1, 0]
+
+/-- The Pauli matrix `σ₂`. -/
 def pauli2 : Matrix (Fin 2) (Fin 2) ℂ := !![0, -Complex.I; Complex.I, 0]
+
+/-- The Pauli matrix `σ₃`. -/
 def pauli3 : Matrix (Fin 2) (Fin 2) ℂ := !![1, 0; 0, -1]
 
 /-- `(σ₁, σ₂, σ₃)`. -/
