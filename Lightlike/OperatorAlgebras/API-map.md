@@ -26,7 +26,7 @@ implemented by a unitary of the Fock representation exactly when its antilinear 
 In one mode the squeezing has `|α|² - |β|² = 1` and the dilation `f ↦ 2 f` is not symplectic [4]. A map with `‖B f‖ = c ‖f‖`, `c > 0`, is not Hilbert–Schmidt when a Hilbert basis is infinite [4]. On `L²(ℝ)` translation `ψ(x + t)` is a strongly continuous unitary group [5], and its generator is `-i d/dx` on `C²` functions with compact support, not `+i d/dx` [6]. On `L²(0, 1)` the operator `-i d/dx` on the `C²` functions supported inside `(0, 1)` is given by its graph [7]. The deficiency spaces of an operator are the kernels of the adjoint minus `±i`, and a self-adjoint operator has none [8]. The
 Fock space itself is not built here, and a Fock representation is characterized by its vacuum. The
 unbounded spectral theorem is not in Mathlib; it is ported from physicslib4: every self-adjoint operator has a unique
-projection-valued measure on the Borel sets of `ℝ` whose spectral integral of `λ` is the operator {4} [62]; the group `e^{itA}` of a self-adjoint operator is a `UnitaryGroup` whose generator is `A` [63]. On a matrix algebra the modular flow of the faithful state `Tr (e^{-H} ·)` is `a ↦ e^{-izH} a e^{izH}` and the state is KMS at inverse temperature `1` for it {5} [64]; the flow is a multiplicative one-parameter group that leaves the state invariant [64]; the Tomita operator `S` is an antilinear involution with `S (a ρ^{1/2}) = a† ρ^{1/2}` and the modular operator `Δ y = ρ y ρ⁻¹` satisfies `Δ = S† S` {5} [64]; the Gibbs state of a Hamiltonian is KMS at its own temperature, and a diagonal qubit state that is not Gibbs fails the condition [64]. Stone's theorem and Shale's criterion are [TODO] here.
+projection-valued measure on the Borel sets of `ℝ` whose spectral integral of `λ` is the operator {4} [62]; the group `e^{itA}` of a self-adjoint operator is a `UnitaryGroup` whose generator is `A` [63]. On a matrix algebra the modular flow of the faithful state `Tr (e^{-H} ·)` is `a ↦ e^{-izH} a e^{izH}` and the state is KMS at inverse temperature `1` for it {6} [71]; the flow is a multiplicative one-parameter group that leaves the state invariant [71]; the Tomita operator `S` is an antilinear involution with `S (a ρ^{1/2}) = a† ρ^{1/2}` and the modular operator `Δ y = ρ y ρ⁻¹` satisfies `Δ = S† S` {6} [71]; the Gibbs state of a Hamiltonian is KMS at its own temperature, and a diagonal qubit state that is not Gibbs fails the condition [71]. Stone's theorem and Shale's criterion are [TODO] here.
 
 The graph of `-i d/dx` on the `C_c^∞(0, 1)` functions is the image of the smooth test functions under the same pair map, and lies inside the `C²` graph [11]. It contains a nonzero vector, a bump function supported in `(0, 1)` [12]. Mollification by a normed bump function maps a `C²` test function to a `C_c^∞` one, with the derivative of the mollified function the mollified derivative, and converges uniformly with its derivative, so the two graphs have the same closure [13].
 
@@ -55,6 +55,10 @@ A strongly continuous contraction semigroup on a Banach space has a generator, t
 A bounded operator on a complex Hilbert space is trace class when the diagonal sum `∑ ⟪eᵢ, |T| eᵢ⟫` converges in a Hilbert basis, and the trace and the trace norm do not depend on the basis [47]. The Hilbert-Schmidt operators, those with `∑ ‖S eᵢ‖² < ∞` in one basis, are two-sided ideal elements, and the diagonal sums of `R S` and `S R` for Hilbert-Schmidt `R`, `S` agree (cyclicity of the trace) [48]; a product of two Hilbert-Schmidt operators is trace class [49]. The trace pairing `A ↦ Tr (A ·)` is an isometry of the bounded operators into the dual of the trace class [50], and every continuous functional on the trace class is a trace pairing, so the dual of the trace class is the bounded operators [51]. The trace of the rank-one operator on `ℂ` is `1`, and every operator on a finite-dimensional space is trace class; the identity of an infinite-dimensional Hilbert space is not Hilbert-Schmidt [52]. The diagonal operator with eigenvalues `1 / (n + 1)` on `ℓ²(ℕ)` is Hilbert-Schmidt and not trace class [53]. This layer is ported from Physlib with attribution; the duality between the compact operators and the trace class is not covered.
 
 For a Hilbert basis `{eᵢ}`, `∑ᵢ |⟪eᵢ, y⟫|² = ‖y‖²` (Parseval), the Hilbert-Schmidt square sum `∑ᵢ ‖S eᵢ‖²` of a bounded `S` in one basis equals that of `S⋆` in a second basis, and so it converges in every Hilbert basis to the same sum once it converges in one [39]. A Bogoliubov transformation is `T f = α f + β f` with `α` complex-linear and `β` antilinear, and the symplectic condition gives `‖α e‖² - ‖β e‖² = ‖e‖²` and `4 ‖β e‖² = ‖T e‖² + ‖T (i e)‖² - 2 ‖e‖²`; `α` is a bounded operator with `α†α - 1` positive and `‖√(α†α - 1) e‖² = ‖β e‖²` [40]. Hence the antilinear part is Hilbert-Schmidt as soon as `∑ᵢ ‖β bᵢ‖²` converges in one Hilbert basis, and in particular when the finite sums `∑_{i ∈ s} (‖T bᵢ‖² + ‖T (i bᵢ)‖² - 2)` are bounded, the quantity that the vacuum projections onto finitely many modes control in the necessity part of Shale's criterion [41].
+
+On `L²(0, 1)`, a vector lies in the domain of the adjoint of `-i d/dx` (on the `C²` test functions) iff it is a primitive `c + ∫₀ˣ g` with `g ∈ L²`, equivalently iff it agrees almost everywhere with an absolutely continuous function whose derivative is in `L²`, and then the adjoint is `-i g` [65], [66]. Its continuous representative has boundary values `y(0)`, `y(1)`, and integration by parts for absolutely continuous functions gives the boundary form `⟪A† y, z⟫ - ⟪y, A† z⟫ = i (conj y(1) z(1) - conj y(0) z(0))`; the affine functions give every pair of boundary values [66]. The closure of the momentum is the adjoint on the vectors with zero boundary values, the restriction `P_θ` of the adjoint to `y(1) = e^{iθ} y(0)` is self-adjoint, and every self-adjoint extension of the momentum is a `P_θ` {5}, [67]. The constant `1` lies in the periodic domain and not in the antiperiodic one, so `P_0 ≠ P_π`, and the closure is not self-adjoint [68].
+
+The plane waves `e^{i(θ + 2πn)x}`, `n ∈ ℤ`, lie in the domain of `P_θ` and are orthonormal eigenvectors with eigenvalue `θ + 2πn`; an eigenvector of `P_θ` with eigenvalue `μ ∈ ℂ` has the continuous representative `y(0) e^{iμx}`, so `μ = θ + 2πn` and the eigenspaces are one-dimensional; off `θ + 2πℤ` the resolvent equation is solved explicitly, so the spectrum of `P_θ`, in Physlib's sense, is `θ + 2πℤ` and equals the point spectrum {5}, [69]. `θ` is in the spectrum of `P_θ` and `θ + π` is not [70].
 
 ## Lean References
 
@@ -216,8 +220,27 @@ For a Hilbert basis `{eᵢ}`, `∑ᵢ |⟪eᵢ, y⟫|² = ‖y‖²` (Parseval),
     `OperatorAlgebras.Spectral.ProjectionValuedMeasure`
 63. Lightlike/OperatorAlgebras/Spectral/StoneBridge.lean - `OperatorAlgebras.Spectral.Stone.generator_eq`,
     `OperatorAlgebras.Spectral.Stone.spectralGroup`, `OperatorAlgebras.Spectral.Stone.spectralGroup_generator`
+64. Lightlike/OperatorAlgebras/TestsShaleInfinite.lean - `OperatorAlgebras.Bogoliubov.squeezeConj`,
+    `OperatorAlgebras.Bogoliubov.squeezeConj_norm_betaPart_sq`, `OperatorAlgebras.squeezeEllTwo`,
+    `OperatorAlgebras.not_isHilbertSchmidt_squeezeEllTwo`, `OperatorAlgebras.not_implements_squeezeEllTwo`
+    (the wrong-input control: a squeezing of infinitely many modes is not implemented)
+65. Lightlike/OperatorAlgebras/MomentumAdjoint.lean - `OperatorAlgebras.adjoint_eq_primitive`,
+    `OperatorAlgebras.mem_adjoint_of_primitive`, `OperatorAlgebras.mem_adjoint_iff_primitive`
+66. Lightlike/OperatorAlgebras/MomentumBoundary.lean - `OperatorAlgebras.integral_conj_mul_add_eq`,
+    `OperatorAlgebras.boundary_form_momentum`, `OperatorAlgebras.bv_linVec`, `OperatorAlgebras.mem_adjoint_iff_ac`
+67. Lightlike/OperatorAlgebras/MomentumTheta.lean - `OperatorAlgebras.momentumZero_eq_closure`, `OperatorAlgebras.momentumTheta`,
+    `OperatorAlgebras.momentumTheta_isSelfAdjoint`, `OperatorAlgebras.eq_momentumTheta_of_selfAdjoint`,
+    `OperatorAlgebras.selfAdjoint_extensions_momentumZero`
+68. Lightlike/OperatorAlgebras/TestsMomentumTheta.lean - `OperatorAlgebras.momentumTheta_zero_ne_pi`,
+    `OperatorAlgebras.closure_ne_momentumTheta`
+69. Lightlike/OperatorAlgebras/MomentumSpectrum.lean - `OperatorAlgebras.momentumTheta_planeWave`,
+    `OperatorAlgebras.orthonormal_planeWave`, `OperatorAlgebras.eigenvalue_momentumTheta`,
+    `OperatorAlgebras.eigenvector_momentumTheta`, `OperatorAlgebras.exists_momentumTheta_sub_eq`,
+    `OperatorAlgebras.spectrum_momentumTheta`, `OperatorAlgebras.pointSpectrum_momentumTheta`
+70. Lightlike/OperatorAlgebras/TestsMomentumSpectrum.lean - `OperatorAlgebras.theta_mem_spectrum`,
+    `OperatorAlgebras.theta_add_pi_not_mem_spectrum`
 
-64. Lightlike/OperatorAlgebras/ModularFinite.lean - `OperatorAlgebras.kms`, `OperatorAlgebras.inner_tomita`,
+71. Lightlike/OperatorAlgebras/ModularFinite.lean - `OperatorAlgebras.kms`, `OperatorAlgebras.inner_tomita`,
     `OperatorAlgebras.omega_flow`, `OperatorAlgebras.flow_add`, `OperatorAlgebras.flow_mul`,
     `OperatorAlgebras.isKMS_gibbs`, `OperatorAlgebras.not_isKMS_of_ne`
 
@@ -232,5 +255,7 @@ For a Hilbert basis `{eᵢ}`, `∑ᵢ |⟪eᵢ, y⟫|² = ‖y‖²` (Parseval),
 4. G. Teschl, *Mathematical Methods in Quantum Mechanics*, Graduate Studies in Mathematics 99, American Mathematical
    Society, 2009 (online edition), Theorem 3.7 (spectral theorem). The Lean files are ported from physicslib4
    (github.com/physicslib/physicslib4, Apache-2.0).
-5. E. Witten, *Notes on some entanglement properties of quantum field theory*, Rev. Mod. Phys. 90 (2018) 045003,
+5. G. Bonneau, J. Faraut and G. Valent, *Self-adjoint extensions of operators and the teaching of quantum
+   mechanics*, arXiv:quant-ph/0103153, Appendix A.3 and Section 5.3, eqs. (14) and (15).
+6. E. Witten, *Notes on some entanglement properties of quantum field theory*, Rev. Mod. Phys. 90 (2018) 045003,
    arXiv:1803.04993, Sections 4.1 and 4.2.
