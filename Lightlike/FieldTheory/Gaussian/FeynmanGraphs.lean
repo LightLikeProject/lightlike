@@ -200,6 +200,7 @@ noncomputable def legPermEquiv (hd : 0 < d) :
         ∃ π : Equiv.Perm (Fin m), ∀ v a, (Equiv.prodShear p.1 p.2 (v, a)).1 = π v)) v ⟨0, hd⟩).symm
     exact Prod.ext hπ (funext fun v => Equiv.ext fun a => rfl)
 
+/-- **The order of the wreath product**: `|S_d ≀ S_m| = (d!)^m m!` for `d > 0`. -/
 lemma card_legPerm (hd : 0 < d) : Nat.card (legPerm m d) = d.factorial ^ m * m.factorial := by
   rw [Nat.card_congr (legPermEquiv hd), Nat.card_prod, Nat.card_fun, Nat.card_perm, Nat.card_perm]
   simp [mul_comm]
