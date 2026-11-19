@@ -14,6 +14,8 @@ The chronological future is contained in the causal future, a point lies in its 
 
 The push-up lemmas (a point of the chronological future of `x` followed by a causal curve stays in it) follow from the openness of the chronological futures and a local push-up property, by connectedness along the causal curve, and the second form by time reversal [20]. In a manifold without boundary the local push-up property follows from the openness of the chronological future: a causal curve in a small chart ball is lifted to a timelike curve with the same end by a displacement along a timelike vector proportional to the increase of the time function of the chart, and the lift starts in the open set that contains the start of the causal curve [21].
 
+Future-inextendible causal curves with a limit point have a future-inextendible causal limit curve through it: near every point a uniform step gives, from any limit point of a subsequence, a unit arc of chart displacement bounded below (a curve that stays in a closed chart box has an endpoint, so inextendible curves leave it, and the one-chart limit-curve theorem applies to the exit arcs); the arcs are glued along a diagonal subsequence into a curve on the half-line of non-negative parameters, and a curve of such arcs cannot converge, because only finitely many charts are used near a putative endpoint [19].
+
 ## Lean References
 
 1. Lightlike/Spacetime/Causal/TimeOrientation.lean - `Causal.TimeOrientation`
@@ -37,6 +39,7 @@ The push-up lemmas (a point of the chronological future of `x` followed by a cau
 19. Lightlike/Spacetime/Causal/CauchyAssembly.lean - `Causal.PerturbFuture`, `Causal.IsCauchySurface.domainDep_eq_univ_of_perturb`
 20. Lightlike/Spacetime/Causal/PushUp.lean - `Causal.chronFuture_causalFuture_trans_of`, `Causal.causalFuture_chronFuture_trans_of`, `Causal.chronFuture_neg_iff`: the push-up lemmas from the openness of the chronological futures and a local push-up property, and time reversal.
 21. Lightlike/Spacetime/CausalLadder/LocalLift.lean - `Causal.localPushUp_of_isOpen`, `Causal.chronFuture_causalFuture_trans_of_isOpen`, `Causal.causalFuture_chronFuture_trans_of_isOpen`: the local push-up property from the openness of the chronological futures, in a manifold without boundary, and the two push-up lemmas from the openness alone.
+22. Lightlike/Spacetime/CausalLadder/LimitCurveStep.lean - `Causal.limit_curve_step`, `Causal.exists_inextendible_limit_curve_of_step`, `Causal.exists_glued_limit_curve_of_step`, `Causal.not_tendsto_of_unit_arcs`: the uniform step, the glued curve and the absence of an endpoint, and the limit-curve theorem for future-inextendible causal curves.
 
 ## References
 
