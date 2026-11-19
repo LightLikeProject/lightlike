@@ -191,6 +191,7 @@ theorem jwFockEquiv_carCreation (n : ℕ) (j : Fin n) (w : (Fin n → Fin 2) →
   rw [mulVec_smul, map_smul, map_smul, map_smul, jwFockEquiv_apply, jwFockEquiv_apply, jwFockMap_carCreation, jwFockMap_single,
     creation_apply]
 
+/-- The Jordan-Wigner vacuum (the empty configuration) goes to the vacuum `1` of the exterior algebra. -/
 lemma jwFockEquiv_vacuum (n : ℕ) : jwFockEquiv n (jwVacuum n) = 1 := by
   rw [jwFockEquiv_apply, jwVacuum, jwFockMap_single, fockVec_zero]
 

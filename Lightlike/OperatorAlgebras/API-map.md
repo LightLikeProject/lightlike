@@ -300,14 +300,9 @@ In a Fock representation, a contraction `p` of `h` has a second quantization `Γ
 5. G. Bonneau, J. Faraut and G. Valent, *Self-adjoint extensions of operators and the teaching of quantum
    mechanics*, arXiv:quant-ph/0103153, Appendix A.3 and Section 5.3, eqs. (14) and (15).
 6. J. Dereziński, *Introduction to representations of the canonical commutation and anticommutation
-   relations*, in *Large Coulomb Systems*, Lecture Notes in Physics 695, Springer, 2006, Theorem 10 and
-   Corollary 2.
-7. J. Dereziński, *Introduction to representations of the canonical commutation and anticommutation
-   relations*, Theorem 4 and Corollary 1; M. Faulhuber, *Time-Frequency Analysis*, lecture notes, 2022,
-   Section 7.3.1 (von Neumann's proof).
-8. J. Dereziński, *Introduction to representations of the canonical commutation and anticommutation
-   relations*, Section 9.1, Theorems 37 and 39 (Theorem 39 (1) in the corrected form `½(η + iω)`).
-9. J. Dereziński, *Introduction to representations of the canonical commutation and anticommutation
-   relations*, Sections 5.3 and 7.1, Theorem 28.
-10. J. Dereziński, *Introduction to representations of the canonical commutation and anticommutation
-   relations*, Sections 5.2, 5.5 and 6.4, Theorems 13 and 24.
+   relations*, in *Large Coulomb Systems*, Lecture Notes in Physics 695, Springer, 2006, arXiv:math-ph/0511030:
+   Theorem 4 and Corollary 1 (Stone-von Neumann), Theorem 10 and Corollary 2 (the CAR over `ℝ²ⁿ`), Sections 5.2,
+   5.3, 5.5, 6.4 and 7.1, Theorems 13, 24 and 28 (Fock spaces and second quantization), Section 9.1, Theorems 37
+   and 39 (quasi-free states; Theorem 39 (1) in the corrected form `½(η + iω)`).
+7. M. Faulhuber, *Time-Frequency Analysis*, lecture notes, 2022, Section 7.3.1 (von Neumann's proof of the
+   Stone-von Neumann theorem).
