@@ -794,6 +794,7 @@ import Lightlike.Spacetime.ContractedBianchi
 import Lightlike.Spacetime.RaychaudhuriAlgebra
 import Lightlike.Spacetime.RaychaudhuriCoord
 import Lightlike.Spacetime.RaychaudhuriFocusing
+import Lightlike.Spacetime.RaychaudhuriManifold
 import Lightlike.Spacetime.RaychaudhuriShear
 import Lightlike.Spacetime.RaychaudhuriSplit
 import Lightlike.Spacetime.DivergenceFree
