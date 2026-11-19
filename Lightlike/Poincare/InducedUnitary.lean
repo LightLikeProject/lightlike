@@ -8,7 +8,9 @@ public import Lightlike.Poincare.InducedMassive
 The mass shell `MassShell m` (`m > 0`) is the orbit of the rest momentum `m · 1` under `SL(2,ℂ)`. The image of the
 Haar measure of `SL(2,ℂ)` under the orbit map `g ↦ g • (m · 1)` is an `SL(2,ℂ)`-invariant measure on the mass shell
 (`shellMeasure`, `shellMeasure_map_shellAct`): invariance is the left invariance of the Haar measure. For a unitary
-representation `D` of `SU(2)` the induced action preserves `∫ ‖ψ(P)‖² dμ(P)` (`lintegral_normSq_inducedAct`), and so do
+representation `D` of `SU(2)` and *every* `SL(2,ℂ)`-invariant measure `μ` on the mass shell, the induced action
+preserves `∫ ‖ψ(P)‖² dμ(P)` (`lintegral_normSq_inducedAct_of_invariant`; the image of the Haar measure is one such
+measure, `lintegral_normSq_inducedAct`, and the measure `d^D p δ(p² + m²) θ(p⁰)` of the source is another), and so do
 the translations (`lintegral_normSq_transAct`, for real pairings): the induced representations are unitary.
 
 ## References
@@ -99,14 +101,26 @@ lemma normSqV_unitary_mulVec {ι : Type} [Fintype ι] [DecidableEq ι] (U : Matr
     rw [normSqV_eq, normSqV_eq, h]
   exact_mod_cast h1
 
-/-- **Unitarity of the induced massive action** for the invariant measure. -/
+/-- **Unitarity of the induced massive action, for every invariant measure.** If `μ` is a measure on the mass shell
+invariant under `SL(2,ℂ)`, the induced action preserves `∫ ‖ψ‖² dμ`. Only the invariance of `μ` is used, so this
+applies to any Lorentz-invariant measure on the mass shell, for instance `d³p / p⁰` or `d⁴p δ(p² − m²) θ(p⁰)`. -/
+theorem lintegral_normSq_inducedAct_of_invariant {m : ℝ} (hm : 0 < m) (μ : Measure (MassShell m))
+    (hμ : ∀ A : SL2C, Measure.map (shellAct A) μ = μ) {ι : Type} [Fintype ι] [DecidableEq ι]
+    (D : Lightlike.SU2 →* Matrix.unitaryGroup ι ℂ) (A : SL2C) (ψ : MassShell m → ι → ℂ) :
+    ∫⁻ P, ENNReal.ofReal (normSqV (inducedAct hm D A ψ P)) ∂μ =
+      ∫⁻ P, ENNReal.ofReal (normSqV (ψ P)) ∂μ := by
+  simp only [inducedAct, normSqV_unitary_mulVec]
+  exact (show MeasurePreserving (shellAct A⁻¹) μ μ from
+      ⟨(continuous_shellAct A⁻¹).measurable, hμ A⁻¹⟩).lintegral_comp_emb
+    (shellActEquiv A⁻¹).measurableEmbedding (fun P => ENNReal.ofReal (normSqV (ψ P)))
+
+/-- **Unitarity of the induced massive action** for the image of the Haar measure (an instance of
+`lintegral_normSq_inducedAct_of_invariant`). -/
 theorem lintegral_normSq_inducedAct {m : ℝ} (hm : 0 < m) {ι : Type} [Fintype ι] [DecidableEq ι]
     (D : Lightlike.SU2 →* Matrix.unitaryGroup ι ℂ) (A : SL2C) (ψ : MassShell m → ι → ℂ) :
     ∫⁻ P, ENNReal.ofReal (normSqV (inducedAct hm D A ψ P)) ∂shellMeasure hm =
-      ∫⁻ P, ENNReal.ofReal (normSqV (ψ P)) ∂shellMeasure hm := by
-  simp only [inducedAct, normSqV_unitary_mulVec]
-  exact (measurePreserving_shellAct hm A⁻¹).lintegral_comp_emb (shellActEquiv A⁻¹).measurableEmbedding
-    (fun P => ENNReal.ofReal (normSqV (ψ P)))
+      ∫⁻ P, ENNReal.ofReal (normSqV (ψ P)) ∂shellMeasure hm :=
+  lintegral_normSq_inducedAct_of_invariant hm (shellMeasure hm) (shellMeasure_map_shellAct hm) D A ψ
 
 /-- The translations preserve the squared norm when the pairing is real (`X` Hermitian). -/
 theorem normSqV_transAct {m : ℝ} {ι : Type} [Fintype ι] (X : Matrix (Fin 2) (Fin 2) ℂ)
