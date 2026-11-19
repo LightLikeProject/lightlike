@@ -264,6 +264,8 @@ import Lightlike.GR.KruskalFunction
 import Lightlike.GR.KruskalMetric
 import Lightlike.GR.EuclideanSchwarzschild
 import Lightlike.GR.Schwarzschild
+import Lightlike.GR.ReissnerNordstrom
+import Lightlike.GR.BPSBound
 import Lightlike.HarmonicAnalysis.ApproxIdentity
 import Lightlike.HarmonicAnalysis.CharacterOrthogonality
 import Lightlike.HarmonicAnalysis.ConvolutionEigen
@@ -954,6 +956,7 @@ import Lightlike.Spacetime.ChartCurvature
 import Lightlike.Spacetime.Connection
 import Lightlike.Spacetime.Coordinates
 import Lightlike.Spacetime.Curvature
+import Lightlike.Spacetime.MaxwellCoord
 import Lightlike.Spacetime.CurvatureSymmetries
 import Lightlike.Spacetime.FlatConnection
 import Lightlike.Spacetime.LieDerivation
