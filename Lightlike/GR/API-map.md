@@ -38,6 +38,9 @@ exact solutions, such as Kerr and de Sitter, are not yet formalized. [TODO]
    (no extension through the singularity `r = 0`)
 8. Lightlike/GR/EFNullGeodesic.lean - `IsCoordGeodesic`, `ef_ingoing_isCoordGeodesic`, `ef_ingoing_null`,
    `tendsto_kretschmann_ef_ingoing` (the singularity is reached at finite affine parameter)
+9. Lightlike/GR/KruskalManifold.lean - `kruskalC`, `kruskalCMetric` (the Kruskal metric in one global chart of
+   `{X² - T² > -1} × S²`), `kruskalC_isLorentzian`, `kruskalCOpen`, `kruskalManifoldMetric` (the
+   Kruskal-Szekeres spacetime as a Lorentzian manifold)
 
 ## References
 
