@@ -12,7 +12,7 @@ Proposition 2.4.5 and (2.4.6)–(2.4.7), p. 20; Lemma 2.4.8, p. 21; Lemma 2.4.9,
 `docs/notes/local-causality-plan.md`.
 -/
 
-open Set Metric Filter Topology Matrix
+open Set Metric Filter Topology Matrix MeasureTheory
 
 noncomputable section
 
@@ -33,9 +33,9 @@ theorem exists_uniform_cone_estimate {K : Set (Fin n → ℝ)} (hK : IsCompact K
     have h1 : ∀ i j, ContinuousOn (fun p : (Fin n → ℝ) × (Fin n → ℝ) => A p.1 i j) (K ×ˢ univ) :=
       fun i j => (hA i j).comp continuousOn_fst (fun p hp => hp.1)
     simp only [hQ, dotProduct, mulVec]
-    refine continuousOn_finset_sum _ fun i _ => ?_
+    refine continuousOn_finsetSum _ fun i _ => ?_
     refine (continuous_apply i |>.comp continuous_snd).continuousOn.mul ?_
-    refine continuousOn_finset_sum _ fun j _ => ?_
+    refine continuousOn_finsetSum _ fun j _ => ?_
     exact (h1 i j).mul (continuous_apply j |>.comp continuous_snd).continuousOn
   set S : Set ((Fin n → ℝ) × (Fin n → ℝ)) :=
     (K ×ˢ sphere (0 : Fin n → ℝ) 1) ∩ (Q ⁻¹' Iic 0 ∩ (fun p => ℓ p.2) ⁻¹' Ici 0) with hS
@@ -92,5 +92,40 @@ theorem exists_uniform_cone_estimate {K : Set (Fin n → ℝ)} (hK : IsCompact K
     · show 0 ≤ ℓ (‖w‖⁻¹ • w)
       rw [map_smul, smul_eq_mul]
       positivity
+
+/-- **A Lipschitz function with almost everywhere positive derivative increases strictly** from its initial value:
+`G t > G a` for `t ∈ (a, b]`. -/
+theorem lt_of_ae_deriv_pos {G : ℝ → ℝ} {a b : ℝ} {K : NNReal} (hG : LipschitzOnWith K G (Icc a b))
+    (hd : ∀ᵐ t, t ∈ Ioo a b → ∃ G' : ℝ, HasDerivAt G G' t ∧ 0 < G') {t : ℝ} (ht : t ∈ Ioc a b) :
+    G a < G t := by
+  have hmono : ∀ s ∈ Icc a b, ∀ s' ∈ Icc a b, s ≤ s' → G s ≤ G s' := by
+    intro s hs s' hs' hss
+    have hsub : Icc s s' ⊆ Icc a b := Icc_subset_Icc hs.1 hs'.2
+    have := Lightlike.Causal.sub_le_sub_of_ae_deriv_le (f := fun _ => (0 : ℝ)) (h := G) hss
+      ((LipschitzWith.const (α := ℝ) (0 : ℝ)).lipschitzOnWith) (hG.mono hsub) (by
+        filter_upwards [hd] with u hu hum
+        obtain ⟨G', hG', hpos⟩ := hu ⟨lt_of_le_of_lt hs.1 hum.1, lt_of_lt_of_le hum.2 hs'.2⟩
+        exact ⟨differentiableAt_const _, hG'.differentiableAt, by rw [deriv_const, hG'.deriv]; exact hpos.le⟩)
+    simpa using this
+  have hat : a ≤ t := ht.1.le
+  refine lt_of_le_of_ne (hmono a ⟨le_rfl, hat.trans ht.2⟩ t ⟨hat, ht.2⟩ hat) fun heq => ?_
+  -- `G` is constant on `[a, t]`
+  have hconst : ∀ s ∈ Icc a t, G s = G a := fun s hs =>
+    le_antisymm (heq ▸ hmono s ⟨hs.1, hs.2.trans ht.2⟩ t ⟨hat, ht.2⟩ hs.2)
+      (hmono a ⟨le_rfl, hat.trans ht.2⟩ s ⟨hs.1, hs.2.trans ht.2⟩ hs.1)
+  have hpos : (volume (Ioo a t)) ≠ 0 := by
+    rw [Real.volume_Ioo]; simp [ht.1]
+  have hae : ∀ᵐ s ∂(volume.restrict (Ioo a t)), s ∈ Ioo a t ∧ ∃ G' : ℝ, HasDerivAt G G' s ∧ 0 < G' := by
+    filter_upwards [ae_restrict_mem measurableSet_Ioo, ae_restrict_of_ae hd] with s hsm hs
+    exact ⟨hsm, hs ⟨hsm.1, lt_of_lt_of_le hsm.2 ht.2⟩⟩
+  have hne : (volume.restrict (Ioo a t)) ≠ 0 := by
+    rw [Ne, Measure.restrict_eq_zero]; exact hpos
+  have : (ae (volume.restrict (Ioo a t))).NeBot := ae_neBot.2 hne
+  obtain ⟨s, hsm, G', hG', hG'pos⟩ := hae.exists
+  have hev : G =ᶠ[𝓝 s] fun _ => G a := by
+    filter_upwards [Ioo_mem_nhds hsm.1 hsm.2] with u hu
+    exact hconst u (Ioo_subset_Icc_self hu)
+  have h0 : HasDerivAt G 0 s := (hasDerivAt_const s (G a)).congr_of_eventuallyEq hev
+  exact hG'pos.ne' (hG'.unique h0)
 
 end Lightlike.Geodesic
