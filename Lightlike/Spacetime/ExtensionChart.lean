@@ -11,8 +11,8 @@ a smooth map into a manifold `M'`, and `p` a point of `M'`. In the chart of `M'`
 
 `ψ y = (chart at p) (ι y)` (`extChartMap`), defined on `W = {y ∈ U : ι y ∈ chart domain}` (`extChartDom`).
 
-* `isOpen_extChartDom`, `extChartMap_mem_target`, `contDiffOn_extChartMap`: `W` is open, `ψ` maps it into the
-  chart target and is smooth on it.
+* `isOpen_extChartDom`, `extChartMap_mem_target`, `contDiffOn_extChartMap`: the three properties of `ψ` on `W`
+  that a chart change needs (its domain, its range in the chart target, its smoothness).
 * `mfderiv_eq_symm_fderiv`: `dι = d(φ_p⁻¹) ∘ dψ`.
 * `pullback_coordMetric_extChartMap`: if `ι` is isometric from `(U, g)` (a Lorentzian coordinate metric, as the
   manifold `openMetric U g`) into `(M', g')`, the coordinate metric of `g'` in the chart at `p` pulls back to `g`
