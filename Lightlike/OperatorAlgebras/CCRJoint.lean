@@ -39,7 +39,7 @@ lemma CCRRep.W_add_apply (R : CCRRep h K) (f g : h) (ψ : K) :
     R.W (f + g) ψ = Complex.exp (Complex.I * (symp h f g / 2 : ℝ)) • R.W f (R.W g ψ) := by
   rw [R.weyl, smul_smul, ← Complex.exp_add, add_neg_cancel, Complex.exp_zero, one_smul]
 
-lemma continuous_symp : Continuous fun p : h × h => symp h p.1 p.2 := by
+lemma continuous_symp_pair : Continuous fun p : h × h => symp h p.1 p.2 := by
   unfold symp
   fun_prop
 
@@ -59,7 +59,7 @@ lemma CCRRep.continuous_sum (R : CCRRep h K) : ∀ {m : ℕ} (f : Fin m → h) (
         (Complex.continuous_ofReal.comp (continuous_apply i.succ)).smul continuous_const
     have hphase : Continuous fun t : Fin (m + 1) → ℝ =>
         Complex.exp (Complex.I * (symp h ((t 0 : ℂ) • f 0) (∑ i : Fin m, (t i.succ : ℂ) • f i.succ) / 2 : ℝ)) := by
-      have := continuous_symp.comp (hline.prodMk hsum)
+      have := continuous_symp_pair.comp (hline.prodMk hsum)
       exact Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp (this.div_const 2)))
     have hW : Continuous fun t : Fin (m + 1) → ℝ =>
         R.W ((t 0 : ℂ) • f 0) (R.W (∑ i : Fin m, (t i.succ : ℂ) • f i.succ) ψ) :=

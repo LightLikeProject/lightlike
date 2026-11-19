@@ -169,8 +169,8 @@ theorem gaussAvg_W_gaussAvg (R : CCRRep h K) (f : h) (y : K) :
       simp only [hF, Function.uncurry_def]
       have hW : Continuous fun p : h × h => R.W p.2 y := (R.continuous_W y).comp continuous_snd
       have hs : Continuous fun p : h × h => symp h f (p.2 - (p.1 + f)) + symp h p.1 (f + (p.2 - (p.1 + f))) :=
-        (continuous_symp.comp (continuous_const.prodMk (continuous_snd.sub (continuous_fst.add continuous_const)))).add
-          (continuous_symp.comp (continuous_fst.prodMk (continuous_const.add
+        (continuous_symp_pair.comp (continuous_const.prodMk (continuous_snd.sub (continuous_fst.add continuous_const)))).add
+          (continuous_symp_pair.comp (continuous_fst.prodMk (continuous_const.add
             (continuous_snd.sub (continuous_fst.add continuous_const)))))
       refine ((((Complex.continuous_ofReal.comp (continuous_gaussW.comp continuous_fst)).mul
         (Complex.continuous_ofReal.comp (continuous_gaussW.comp (continuous_snd.sub
