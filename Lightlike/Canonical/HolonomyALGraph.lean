@@ -97,6 +97,144 @@ theorem hol_mem_specialUnitaryGroup {A : MatConn 2} (hA : ∀ a, Continuous fun 
 
 end ALEdge
 
+namespace ALEdge
+
+variable (E₁ E₂ : ALEdge)
+
+/-- The subdivision of the composite `e₂ ∘ e₁`: that of `e₁`, then that of `e₂` translated to start at `t₁(e₁)`. -/
+def compτ (σ : Fin (E₁.k + E₂.k + 1)) : ℝ :=
+  if h : σ.val ≤ E₁.k then E₁.τ ⟨σ.val, by omega⟩ else E₂.τ ⟨σ.val - E₁.k, by omega⟩ - E₂.t₀ + E₁.t₁
+
+variable {E₁ E₂}
+
+/-- The subdivision of the composite up to `t₁(e₁)` is that of `e₁`. -/
+lemma compτ_le {σ : Fin (E₁.k + E₂.k + 1)} (h : σ.val ≤ E₁.k) : compτ E₁ E₂ σ = E₁.τ ⟨σ.val, by omega⟩ := by
+  simp [compτ, h]
+
+/-- The subdivision of the composite from `t₁(e₁)` on is that of `e₂`, translated. -/
+lemma compτ_ge {σ : Fin (E₁.k + E₂.k + 1)} (h : E₁.k ≤ σ.val) :
+    compτ E₁ E₂ σ = E₂.τ ⟨σ.val - E₁.k, by omega⟩ - E₂.t₀ + E₁.t₁ := by
+  rcases eq_or_lt_of_le h with h' | h'
+  · rw [compτ_le h'.ge]
+    have e1 : (⟨σ.val, by omega⟩ : Fin (E₁.k + 1)) = Fin.last _ := Fin.ext (by simp; omega)
+    have e2 : (⟨σ.val - E₁.k, by omega⟩ : Fin (E₂.k + 1)) = 0 := Fin.ext (by simp; omega)
+    rw [e1, e2]
+    show E₁.t₁ = E₂.t₀ - E₂.t₀ + E₁.t₁
+    ring
+  · simp [compτ, not_le.2 h']
+
+variable (E₁ E₂)
+
+/-- The arcs of the composite: those of `e₁`, then those of `e₂` translated. -/
+def compArc (j : Fin (E₁.k + E₂.k)) : ℝ → Fin 3 → ℝ :=
+  if h : j.val < E₁.k then E₁.arc ⟨j.val, h⟩ else fun t => E₂.arc ⟨j.val - E₁.k, by omega⟩ (t + (E₂.t₀ - E₁.t₁))
+
+/-- The **composite** `e₂ ∘ e₁` of two edges with `e₁` ending where `e₂` starts: `e₁` on its parameter interval, then
+`e₂` translated to start at `t₁(e₁)`. -/
+def comp (h : E₁.path E₁.t₁ = E₂.path E₂.t₀) : ALEdge where
+  path t := if t ≤ E₁.t₁ then E₁.path t else E₂.path (t + (E₂.t₀ - E₁.t₁))
+  k := E₁.k + E₂.k
+  k_pos := Nat.add_pos_left E₁.k_pos _
+  τ := compτ E₁ E₂
+  τ_mono := Fin.strictMono_iff_lt_succ.2 fun i => by
+    by_cases hi : i.val < E₁.k
+    · rw [compτ_le (by simp; omega), compτ_le (by simp; omega)]
+      exact E₁.τ_mono (Fin.lt_def.2 (by simp))
+    · rw [compτ_ge (by simp; omega), compτ_ge (by simp; omega)]
+      have := E₂.τ_mono (show (⟨i.castSucc.val - E₁.k, by simp; omega⟩ : Fin (E₂.k + 1)) <
+        ⟨i.succ.val - E₁.k, by simp; omega⟩ from Fin.lt_def.2 (by simp; omega))
+      linarith
+  arc := compArc E₁ E₂
+  arc_smooth j := by
+    unfold compArc
+    split_ifs
+    · exact E₁.arc_smooth _
+    · exact (E₂.arc_smooth _).comp (contDiff_id.add contDiff_const)
+  arc_analytic j t ht := by
+    unfold compArc
+    split_ifs with hj
+    · rw [compτ_le (by simp; omega), compτ_le (by simp; omega)] at ht
+      exact E₁.arc_analytic ⟨j.val, hj⟩ t ht
+    · rw [compτ_ge (by simp; omega), compτ_ge (by simp; omega)] at ht
+      set j' : Fin E₂.k := ⟨j.val - E₁.k, by omega⟩
+      have hc : (⟨j.castSucc.val - E₁.k, by simp; omega⟩ : Fin (E₂.k + 1)) = j'.castSucc := Fin.ext (by simp [j'])
+      have hs : (⟨j.succ.val - E₁.k, by simp; omega⟩ : Fin (E₂.k + 1)) = j'.succ := Fin.ext (by simp [j']; omega)
+      rw [hc, hs] at ht
+      obtain ⟨ha, hd⟩ := E₂.arc_analytic j' (t + (E₂.t₀ - E₁.t₁)) ⟨by linarith [ht.1], by linarith [ht.2]⟩
+      refine ⟨ha.comp_of_eq (analyticAt_id.add analyticAt_const) rfl, ?_⟩
+      rw [deriv_comp_add_const]
+      exact hd
+  arc_eq j t ht := by
+    show (if t ≤ E₁.t₁ then E₁.path t else E₂.path (t + (E₂.t₀ - E₁.t₁))) = compArc E₁ E₂ j t
+    by_cases hj : j.val < E₁.k
+    · rw [compτ_le (by simp; omega), compτ_le (by simp; omega)] at ht
+      have : E₁.τ ⟨j.succ.val, by simp; omega⟩ ≤ E₁.t₁ := E₁.τ_mono.monotone (Fin.le_last _)
+      rw [ite_eq_left (ht.2.trans this)]
+      unfold compArc
+      rw [dite_eq_left hj]
+      exact E₁.arc_eq ⟨j.val, hj⟩ ht
+    · rw [compτ_ge (by simp; omega), compτ_ge (by simp; omega)] at ht
+      unfold compArc
+      rw [dite_eq_right hj]
+      set j' : Fin E₂.k := ⟨j.val - E₁.k, by omega⟩
+      have hc : (⟨j.castSucc.val - E₁.k, by simp; omega⟩ : Fin (E₂.k + 1)) = j'.castSucc := Fin.ext (by simp [j'])
+      have hs : (⟨j.succ.val - E₁.k, by simp; omega⟩ : Fin (E₂.k + 1)) = j'.succ := Fin.ext (by simp [j']; omega)
+      rw [hc, hs] at ht
+      by_cases h1 : t ≤ E₁.t₁
+      · rw [ite_eq_left h1]
+        have h0 : E₂.t₀ ≤ E₂.τ j'.castSucc := E₂.τ_mono.monotone (Fin.zero_le _)
+        have hτ : E₂.τ j'.castSucc = E₂.t₀ := le_antisymm (by linarith [ht.1]) h0
+        have ht1 : t = E₁.t₁ := le_antisymm h1 (by linarith [ht.1])
+        rw [ht1, h, show E₁.t₁ + (E₂.t₀ - E₁.t₁) = E₂.t₀ by ring]
+        exact E₂.arc_eq j' ⟨hτ.le, hτ ▸ (E₂.τ_mono (Fin.castSucc_lt_succ (i := j'))).le⟩
+      · rw [ite_eq_right h1]
+        exact E₂.arc_eq j' ⟨by linarith [ht.1], by linarith [ht.2]⟩
+
+variable {E₁ E₂}
+
+/-- The composite starts where `e₁` starts. -/
+lemma comp_t₀ (h : E₁.path E₁.t₁ = E₂.path E₂.t₀) : (E₁.comp E₂ h).t₀ = E₁.t₀ := by
+  show compτ E₁ E₂ 0 = E₁.τ 0
+  rw [compτ_le (by simp)]; rfl
+
+/-- **The holonomy of a composite is the product** (Ashtekar–Lewandowski (4.37): `A(e₂ ∘ e₁) = A(e₂) A(e₁)`). -/
+theorem hol_comp {n : ℕ} {A : MatConn n} (hA : ∀ a, Continuous fun x => A x a)
+    (h : E₁.path E₁.t₁ = E₂.path E₂.t₀) : (E₁.comp E₂ h).hol A = E₂.hol A * E₁.hol A := by
+  show (List.ofFn (n := E₁.k + E₂.k) fun j => ((E₁.comp E₂ h).piece j).hol A).reverse.prod = _
+  rw [List.ofFn_add, List.reverse_append, List.prod_append]
+  congr 2
+  · refine congrArg List.reverse (congrArg List.ofFn (funext fun i => ?_))
+    have hi : ¬ (i.natAdd E₁.k).val < E₁.k := by simp
+    show holonomy A (compArc E₁ E₂ (i.natAdd E₁.k)) (compτ E₁ E₂ (i.natAdd E₁.k).castSucc)
+      (compτ E₁ E₂ (i.natAdd E₁.k).succ) = holonomy A (E₂.arc i) (E₂.τ i.castSucc) (E₂.τ i.succ)
+    rw [compτ_ge (by simp), compτ_ge (by simp; omega)]
+    have hc : (⟨(i.natAdd E₁.k).castSucc.val - E₁.k, by simp⟩ : Fin (E₂.k + 1)) = i.castSucc :=
+      Fin.ext (by simp)
+    have hs : (⟨(i.natAdd E₁.k).succ.val - E₁.k, by simp; omega⟩ : Fin (E₂.k + 1)) = i.succ :=
+      Fin.ext (by simp; omega)
+    have harc : compArc E₁ E₂ (i.natAdd E₁.k) = E₂.arc i ∘ fun t => t + (E₂.t₀ - E₁.t₁) := by
+      unfold compArc
+      rw [dite_eq_right hi]
+      have : (⟨(i.natAdd E₁.k).val - E₁.k, by simp⟩ : Fin E₂.k) = i := Fin.ext (by simp)
+      rw [this]; rfl
+    rw [hc, hs, harc, holonomy_comp_reparam (φ := fun t => t + (E₂.t₀ - E₁.t₁)) hA (E₂.arc_smooth i)
+      (contDiff_id.add contDiff_const) (by linarith [E₂.τ_mono (Fin.castSucc_lt_succ (i := i))])
+      (fun x _ y _ hxy => by show x + _ ≤ y + _; linarith)]
+    congr 1 <;> ring
+  · refine congrArg List.reverse (congrArg List.ofFn (funext fun i => ?_))
+    have hi : (i.castLE (Nat.le_add_right E₁.k E₂.k)).val < E₁.k := by simp
+    show holonomy A (compArc E₁ E₂ (i.castLE _)) (compτ E₁ E₂ (i.castLE _).castSucc)
+      (compτ E₁ E₂ (i.castLE _).succ) = holonomy A (E₁.arc i) (E₁.τ i.castSucc) (E₁.τ i.succ)
+    rw [compτ_le (by simp), compτ_le (by simp)]
+    have harc : compArc E₁ E₂ (i.castLE (Nat.le_add_right E₁.k E₂.k)) = E₁.arc i := by
+      unfold compArc
+      rw [dite_eq_left hi]
+      rfl
+    rw [harc]
+    rfl
+
+end ALEdge
+
 /-- A **graph of Ashtekar–Lewandowski** (footnote 13, p. 27): finitely many edges, each embedded on `[t₀, t₁)` and on
 `(t₀, t₁]` (an embedded interval, or an embedded circle with a marked point), two edges meeting only at end points. -/
 structure ALGraph where
