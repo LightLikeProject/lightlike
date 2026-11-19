@@ -53,7 +53,13 @@ The first step, the joint spectral measure of the translations (the SNAG theorem
 `jointSpectralMeasure_unique`; Freitag, Chapter V, §5, Theorem 5.1, p. 146, in the projection-valued-measure form of
 Remarks 5.3, 5.4 and Definition 5.5, p. 147). The proof takes the Stone generators of the axis subgroups, their
 commuting Cayley transforms (`SnagCommute.lean`), and the joint spectral measure of these through Gelfand duality
-(`SnagGelfand.lean`). What stops the rest, concretely:
+(`SnagGelfand.lean`). The second step is formalised as well (`Lightlike/Poincare/OneOrbit.lean`): for a
+strongly continuous unitary representation `V(a, A)` of `ℝ⁴ ⋊ SL(2,ℂ)` (`IsPoincareRep`) the momentum measure is
+covariant (`covariant_jointSpectralMeasure`, `SnagCovariance.lean`); for an irreducible `V` the projection of an
+invariant Borel set of momenta is `0` or `1` (`momPVM_invariant_eq_zero_or_one`; Freitag, Lemma 7.1, p. 150); and
+under positive energy (the closed forward cone carries the momentum measure) the measure sits on one orbit: a mass
+shell `p² = m²`, `m > 0`, the light cone, or `{0}` (`exists_orbit`; Proposition 7.2, p. 151). What stops the rest,
+concretely:
 
 * Mackey's imprimitivity theorem (a system of imprimitivity based on a transitive orbit is induced from the little
   group): not in the library.
