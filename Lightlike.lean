@@ -967,6 +967,7 @@ import Lightlike.Gauge.DiracAlgorithm
 import Lightlike.Gauge.MatrixInverse
 import Lightlike.Gauge.PoissonJacobi
 import Lightlike.Geodesic.ExpDiffeo
+import Lightlike.Geodesic.ExpJoint
 import Lightlike.Geodesic.ExpSmooth
 import Lightlike.Geodesic.Gauss
 import Lightlike.Geodesic.GaussAux
