@@ -86,3 +86,29 @@ condition `∃ u, B(dSᵢ, dH + ∑ u_a dφ_a) = 0` depends only on that space (
 lemma then carries the equality of the zero sets from each stage to the next. A plain Leibniz rule on the abstract bracket is
 not enough: two charts give `χ_σ' = A χ_σ + N S` only on the surface, not as functions, so the next brackets cannot be
 expanded; the first-order form avoids this because a bracket at a point of the surface sees only differentials there.
+
+## Gluing the charts (`DiracGlue`)
+
+`final_consistent_of_cover` needs one selection rule admissible on the whole zero set of every stage (`hcover`). Constant
+rank gives an admissible block only near each point (`DiracLocal.exists_selection_near`). `DiracGlue` runs the algorithm in an
+atlas: open sets `U_α` covering the primary surface, each with its own selection rule, whose stages are regular, strictly
+differentiable and admissible at the points of their zero sets in `U_α` (`DiracAtlas`).
+
+* Overlaps: for the first-order bracket, consistency at `x` depends only on the zero set near `x`
+  (`Stage.consistent_iff_of_zeroSet_inter_eq`, via Mathlib's `tangentConeAt_inter_nhds`). So two charts give the same zero
+  sets on `U_α ∩ U_β` at every stage (`zeroSet_stages_inter_eq`, the local form of `zeroSet_stages_eq`).
+* Glued surfaces: `Γₖ = ⋃_α (Γₖ^α ∩ U_α)` satisfies `Γₖ ∩ U_α = Γₖ^α ∩ U_α` (`DiracAtlas.surface_inter`) and `Γ₀` is the
+  primary surface (`surface_zero`). It obeys the chart-free recursion `Γₖ₊₁ = {x ∈ Γₖ | the consistency system of every chart
+  containing x is solvable}` (`surface_succ`).
+* Termination without finiteness: if a step leaves a chart's surface unchanged, every later step does too (`chart_pause`).
+  The consistency condition depends only on the surface, and the surface already passed it. A step that changes the
+  surface adds constraint functions, and a regular stage with a point has at most `dim E` of them. So every chart is
+  stable from the stage `dim E + 1` on (`chart_stable`), uniformly in the chart. For any atlas, finite or not, the glued
+  surfaces are stable from `dim E + 1` on. At every point of the final surface, the consistency system
+  `{S_i, H} + ∑_a {S_i, φ_a} u_a = 0` of each chart containing the point is solvable (`DiracAtlas.final_consistent`).
+  Wipf states the termination without proof (Section 3.3, p. 17); here it comes with the bound `dim E + 1`.
+
+Against `hcover`: a single global selection is the one-chart atlas. The atlas only asks for charts that cover the primary
+surface. Building the charts from Wipf's constant-rank hypothesis is not done here: `exists_selection_near` gives an
+admissible block near `x₀` for one stage, and a chart needs one for every stage of its own rule.
+
