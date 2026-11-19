@@ -192,7 +192,16 @@ at the identity (`chart_form`), `A_j` agrees near the point with `Ad_{g_ij} A_i 
 depends on the germ (`lieCurvature_congr`), and the covariance (64) (`lieCurvature_lieGaugeTransform`) gives
 `F_j = Ad_{g_ij} F_i`. Difference, kind representation: the base is a normed space with an open cover, the local form
 in which (62)-(64) are stated (as for `curvature` and `lieCurvature`). The reading of `F` as a `P ×_Ad g`-valued
-2-form needs the associated bundle, the next item.
+2-form is in `PrincipalAdjoint.lean`: with the adjoint representation `adRep` the associated bundle is
+`P ×_Ad g` (`adjointBundle`), and `curvatureForm` (at `x`, the local curvature in the preferred trivialization) has the
+representative `F_i(x)` in the trivialization over every `U_i ∋ x` (`localTriv_curvatureForm`, from (63)), and is
+antisymmetric (`curvatureForm_antisymm`). For its regularity as a bundle map: the bracket is the continuous bilinear
+map `K - Kᵀ`, `K` the mixed second derivative of the chart multiplication (`lieBrCLM`, `lieBr_eq_lieBrCLM`, from
+`lieBr_eq_chart`), so `F_i(x) = DA_i(x) - DA_i(x)ᵀ + ⁅A_i(x) ·, A_i(x) ·⁆` is a bilinear-map-valued function
+(`curvBilin`, `curvBilin_apply`), `C^m` on `U_i` for `C^{m+1}` potentials (`contDiffOn_curvBilin`), and the curvature
+form is `C^m` in every trivialization of `P ×_Ad g` (`contDiffOn_curvatureForm`). Difference, kind representation:
+the base is a normed space with an open cover, as for (62)-(64); regularity is stated in the trivializations of
+`P ×_Ad g` over the `U_i` (the base tangent bundle is trivial), which is the chart criterion for sections.
 
 ## Associated bundles and the induced connection (Svetlichny pp. 22, 31)
 

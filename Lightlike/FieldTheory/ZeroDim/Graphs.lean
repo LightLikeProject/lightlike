@@ -175,4 +175,134 @@ theorem sum_inv_aut_one [Fintype (Quotient (orbitRel (vertexPerm 1) (Pairing 1))
   rw [sum_inv_aut]
   norm_num [Nat.doubleFactorial, Nat.factorial]
 
+/-! ## The three vacuum graphs with two vertices -/
+
+/-- Points in one orbit have stabilizers of the same order. -/
+lemma card_stabilizer_eq_of_rel {G X : Type*} [Group G] [MulAction G X] {x y : X} (h : orbitRel G X x y) :
+    Nat.card (stabilizer G x) = Nat.card (stabilizer G y) := by
+  obtain ⟨g, rfl⟩ := h
+  rw [stabilizer_smul_eq_stabilizer_map_conj]
+  exact Subgroup.card_map_of_injective (MulAut.conj g).injective
+
+/-- The number of half-edges paired with a half-edge at another vertex. -/
+def crossCount {m : ℕ} (p : Pairing m) : ℕ := (Finset.univ.filter fun h => (p.1 h).1 ≠ h.1).card
+
+/-- The relabellings keep the number of half-edges on edges between different vertices. -/
+lemma crossCount_smul {m : ℕ} (g : vertexPerm m) (p : Pairing m) : crossCount (g • p) = crossCount p := by
+  obtain ⟨π, hπ⟩ := g.2
+  have hg : ∀ x, (g.1 x).1 = π x.1 := fun x => hπ x.1 x.2
+  have key : ∀ a, (((g • p).1 a).1 ≠ a.1 ↔ (p.1 (g.1.symm a)).1 ≠ (g.1.symm a).1) := fun a => by
+    change (g.1 (p.1 (g.1.symm a))).1 ≠ a.1 ↔ _
+    conv_lhs => rw [show a.1 = (g.1 (g.1.symm a)).1 by rw [Equiv.apply_symm_apply]]
+    rw [hg, hg, π.injective.ne_iff]
+  unfold crossCount
+  refine Finset.card_bij' (fun a _ => g.1.symm a) (fun a _ => g.1 a) ?_ ?_ ?_ ?_
+  · intro a ha
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at ha ⊢
+    exact (key a).1 ha
+  · intro a ha
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at ha ⊢
+    rw [key, Equiv.symm_apply_apply]
+    exact ha
+  · intro a _; exact Equiv.apply_symm_apply _ a
+  · intro a _; exact Equiv.symm_apply_apply _ a
+
+/-- The pairing of the four half-edges at a vertex into two loops: `0 ↔ 1`, `2 ↔ 3`. -/
+def loopPair : Fin 4 → Fin 4 := ![1, 0, 3, 2]
+
+/-- **The two figure-eights**: two loops at each vertex. -/
+def figEights : Pairing 2 := ⟨fun h => (h.1, loopPair h.2), by unfold Function.Involutive; decide, by decide⟩
+
+/-- **The dumbbell**: a loop at each vertex (half-edges `0 ↔ 1`) and two edges between the vertices (half-edges `2`,
+`3`). -/
+def dumbbell : Pairing 2 :=
+  ⟨fun h => if h.2 = 0 ∨ h.2 = 1 then (h.1, loopPair h.2) else (Equiv.swap 0 1 h.1, h.2),
+    by unfold Function.Involutive; decide, by decide⟩
+
+/-- **The melon (sunset)**: four edges between the two vertices. -/
+def melon : Pairing 2 := ⟨fun h => (Equiv.swap 0 1 h.1, h.2), by unfold Function.Involutive; decide, by decide⟩
+
+/-- The stabilizer of a pairing of two vertices, in the coordinates `S₂ × (S₄)²` of `vertexPerm 2`. -/
+lemma card_stabilizer_two (p : Pairing 2) :
+    Nat.card (stabilizer (vertexPerm 2) p) =
+      (Finset.univ.filter fun q : Equiv.Perm (Fin 2) × (Fin 2 → Equiv.Perm (Fin 4)) =>
+        ∀ h, Equiv.prodShear q.1 q.2 (p.1 h) = p.1 (Equiv.prodShear q.1 q.2 h)).card := by
+  classical
+  rw [← Fintype.card_subtype, ← Nat.card_eq_fintype_card]
+  refine (Nat.card_congr (((vertexPermEquiv 2).symm.subtypeEquiv fun q => ?_))).symm
+  rw [mem_stabilizer_iff]
+  constructor
+  · intro hq
+    apply Subtype.ext
+    funext h
+    have := hq ((Equiv.prodShear q.1 q.2).symm h)
+    rw [Equiv.apply_symm_apply] at this
+    change Equiv.prodShear q.1 q.2 (p.1 ((Equiv.prodShear q.1 q.2).symm h)) = p.1 h
+    exact this
+  · intro hq h
+    have := congrFun (congrArg Subtype.val hq) (Equiv.prodShear q.1 q.2 h)
+    change Equiv.prodShear q.1 q.2 (p.1 ((Equiv.prodShear q.1 q.2).symm (Equiv.prodShear q.1 q.2 h))) =
+      p.1 (Equiv.prodShear q.1 q.2 h) at this
+    rwa [Equiv.symm_apply_apply] at this
+
+set_option maxRecDepth 20000 in
+/-- `|Aut| = 128` for the two figure-eights. -/
+lemma card_stabilizer_figEights : Nat.card (stabilizer (vertexPerm 2) figEights) = 128 := by
+  rw [card_stabilizer_two]; decide
+
+set_option maxRecDepth 20000 in
+/-- `|Aut| = 16` for the dumbbell. -/
+lemma card_stabilizer_dumbbell : Nat.card (stabilizer (vertexPerm 2) dumbbell) = 16 := by
+  rw [card_stabilizer_two]; decide
+
+set_option maxRecDepth 20000 in
+/-- `|Aut| = 48` for the melon. -/
+lemma card_stabilizer_melon : Nat.card (stabilizer (vertexPerm 2) melon) = 48 := by
+  rw [card_stabilizer_two]; decide
+
+/-- The class of a pairing of two vertices, a vacuum graph with two vertices. -/
+abbrev graphTwo (p : Pairing 2) : Quotient (orbitRel (vertexPerm 2) (Pairing 2)) := Quotient.mk _ p
+
+/-- **The vacuum graphs with two four-valent vertices** are exactly the two figure-eights, the dumbbell and the melon,
+with `|Aut Γ| = 128, 16, 48` (`1/128 + 1/16 + 1/48 = 35/384`, Borinsky (3.1.8), p. 24): the three are distinct orbits
+(they have `0`, `4`, `8` half-edges on edges between the vertices), and there is no other orbit, since their symmetry
+factors already add up to the total `35/384` of `sum_inv_aut_two`. -/
+theorem vacuum_graphs_two [Fintype (Quotient (orbitRel (vertexPerm 2) (Pairing 2)))] :
+    (∀ Γ : Quotient (orbitRel (vertexPerm 2) (Pairing 2)),
+      Γ = graphTwo figEights ∨ Γ = graphTwo dumbbell ∨ Γ = graphTwo melon) ∧
+    graphTwo figEights ≠ graphTwo dumbbell ∧ graphTwo figEights ≠ graphTwo melon ∧
+      graphTwo dumbbell ≠ graphTwo melon := by
+  classical
+  have hc : ∀ p q : Pairing 2, graphTwo p = graphTwo q → crossCount p = crossCount q := by
+    intro p q h
+    obtain ⟨g, hg⟩ := Quotient.exact h
+    rw [← hg, crossCount_smul]
+  have h1 : graphTwo figEights ≠ graphTwo dumbbell := fun h => absurd (hc _ _ h) (by decide)
+  have h2 : graphTwo figEights ≠ graphTwo melon := fun h => absurd (hc _ _ h) (by decide)
+  have h3 : graphTwo dumbbell ≠ graphTwo melon := fun h => absurd (hc _ _ h) (by decide)
+  set f : Quotient (orbitRel (vertexPerm 2) (Pairing 2)) → ℚ := fun Γ => 1 / Nat.card (stabilizer (vertexPerm 2) Γ.out)
+  have hout : ∀ p : Pairing 2, Nat.card (stabilizer (vertexPerm 2) (graphTwo p).out) =
+      Nat.card (stabilizer (vertexPerm 2) p) := fun p => card_stabilizer_eq_of_rel (Quotient.mk_out p)
+  have hS : ∑ Γ ∈ ({graphTwo figEights, graphTwo dumbbell, graphTwo melon} :
+      Finset (Quotient (orbitRel (vertexPerm 2) (Pairing 2)))), f Γ = 35 / 384 := by
+    rw [Finset.sum_insert (by simp [h1, h2]), Finset.sum_insert (by simp [h3]), Finset.sum_singleton]
+    simp only [f, hout, card_stabilizer_figEights, card_stabilizer_dumbbell, card_stabilizer_melon]
+    norm_num
+  have hpos : ∀ Γ, 0 < f Γ := fun Γ => by
+    have : 0 < Nat.card (stabilizer (vertexPerm 2) Γ.out) := Nat.card_pos
+    simp only [f]
+    exact one_div_pos.2 (by exact_mod_cast this)
+  have htot : ∑ Γ, f Γ = 35 / 384 := sum_inv_aut_two
+  set S : Finset (Quotient (orbitRel (vertexPerm 2) (Pairing 2))) := {graphTwo figEights, graphTwo dumbbell, graphTwo melon}
+  have hsplit := Finset.sum_sdiff (Finset.subset_univ S) (f := f)
+  rw [htot, hS, add_eq_right] at hsplit
+  have hemp : Finset.univ \ S = ∅ := by
+    by_contra hne
+    obtain ⟨Γ, hΓ⟩ := Finset.nonempty_iff_ne_empty.2 hne
+    have := (Finset.sum_eq_zero_iff_of_nonneg fun x _ => (hpos x).le).1 hsplit Γ hΓ
+    exact (hpos Γ).ne' this
+  refine ⟨fun Γ => ?_, h1, h2, h3⟩
+  have hΓ : Γ ∈ S := Finset.sdiff_eq_empty_iff_subset.1 hemp (Finset.mem_univ Γ)
+  simpa [S] using hΓ
+
 end Lightlike.FieldTheory

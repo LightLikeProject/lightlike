@@ -40,7 +40,9 @@ a normed space, the local curvatures (62) of potentials satisfying (38) obey the
 Ad_{g_ij} F_i` on the overlaps [14]. For a representation `ρ` of `G` on a normed space `V`, the associated vector
 bundle `P ×_ρ V` is the bundle with transition maps `ρ(g_ij)`, and potentials satisfying (38) induce on it a covariant
 derivative whose representative in each trivialization is `d + r(A_i)`, `r = dρ_1` (eq. (39)), unique on
-differentiable sections [15].
+differentiable sections [15]. With the adjoint representation, by (63) the local curvatures are the representatives of
+one antisymmetric 2-form with values in the adjoint bundle `P ×_Ad g`; the bracket is a continuous bilinear map, and
+for `C^{m+1}` potentials the form is `C^m` in every trivialization [16].
 
 ## Lean References
 
@@ -89,6 +91,13 @@ differentiable sections [15].
    `Gauge.PrincipalCocycle.assocCore_isContMDiff`, `Gauge.PrincipalCocycle.lieRep`,
    `Gauge.PrincipalCocycle.lieRep_adjointE`, `Gauge.PrincipalCocycle.lieRep_rightTrivial`,
    `Gauge.PrincipalCocycle.exists_assocCov`, `Gauge.PrincipalCocycle.assocCov_unique`
+16. Lightlike/Gauge/Connection/PrincipalAdjoint.lean - `Gauge.PrincipalCocycle.adRep`,
+   `Gauge.PrincipalCocycle.continuous_adRep`, `Gauge.PrincipalCocycle.adjointBundle`,
+   `Gauge.PrincipalCocycle.curvatureForm`, `Gauge.PrincipalCocycle.localTriv_curvatureForm`,
+   `Gauge.PrincipalCocycle.curvatureForm_antisymm`, `Gauge.PrincipalCocycle.chartMixed`,
+   `Gauge.PrincipalCocycle.lieBrCLM`, `Gauge.PrincipalCocycle.lieBr_eq_lieBrCLM`, `Gauge.PrincipalCocycle.curvBilin`,
+   `Gauge.PrincipalCocycle.curvBilin_apply`, `Gauge.PrincipalCocycle.contDiffOn_curvBilin`,
+   `Gauge.PrincipalCocycle.contDiffOn_curvatureForm`
 
 ## References
 
