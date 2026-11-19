@@ -65,7 +65,10 @@ gauge transformations modulo those with `SU(2)^m` [29] {3}. The same holds for t
 edges are closed-piecewise analytic: the holonomy along an edge is the product along its analytic pieces, which form a
 graph with `C¹` edges, and the gauge transformations that are the identity at the vertices need not be at the corners
 [30] {3}. Two regular analytic arcs (analytic, with nonzero velocity) that meet at points
-accumulating at a point share a segment there, so they meet in finitely many pieces [31] {3}.
+accumulating at a point share a segment there, so they meet in finitely many pieces [31] {3}. The holonomy along an edge, the unique transport in the sense of
+right derivatives, does not depend on the subdivision of the edge into analytic pieces and is unchanged under
+orientation-preserving reparametrisation; a graph refines another when each edge of the latter is a composite of edges of
+the former, and then each holonomy of the coarser graph is a product of holonomies of the finer one [32] {3}.
 
 A grid computation in dimension two (`scripts/adm_algebra_check.py`) supports the three brackets; with the kinetic
 coefficient `1/2` of dimension three, used in dimension two, the bracket of two Hamiltonian constraints differs from
@@ -129,6 +132,8 @@ the momentum constraint of the structure function.
     `Lightlike.Canonical.lGraph_IE_surjective`
 31. Lightlike/Canonical/HolonomyAnalytic.lean - `Lightlike.Canonical.eventually_eq_comp_of_tendsto`,
     `Lightlike.Canonical.Edge.meetFrontier_finite`
+32. Lightlike/Canonical/HolonomyALOrder.lean - `Lightlike.Canonical.ALGraph.Le`, `Lightlike.Canonical.ALGraph.hol_of_le`,
+    `Lightlike.Canonical.ALEdge.hol_eq_of_eqOn`, `Lightlike.Canonical.ALEdge.isRightTransport_comp`
 
 ## References
 

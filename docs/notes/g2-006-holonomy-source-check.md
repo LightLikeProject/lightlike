@@ -2,7 +2,7 @@
 
 Lean files: `Lightlike/ODE/GlobalLipschitz.lean`, `Lightlike/Canonical/Holonomy.lean`,
 `Lightlike/Canonical/HolonomyPaths.lean`, `Lightlike/Canonical/HolonomyGauge.lean`,
-`Lightlike/Canonical/HolonomyGraph.lean`, `Lightlike/Canonical/HolonomyALGraph.lean`, `Lightlike/Canonical/HolonomyAnalytic.lean` (in progress).
+`Lightlike/Canonical/HolonomyGraph.lean`, `Lightlike/Canonical/HolonomyALGraph.lean`, `Lightlike/Canonical/HolonomyAnalytic.lean`, `Lightlike/Canonical/HolonomyALOrder.lean` (in progress).
 
 ## Source read
 
@@ -48,6 +48,12 @@ footnote 17) and p. 35 (the common graph `α₃` of two graphs). Printed page nu
 | `Edge.IsAnalytic`: an edge analytic at every parameter, with nonzero velocity (the arcs of `ALEdge`) | footnote 17, p. 33, and footnote 13, p. 27 (quoted above) | As for `ALEdge`. |
 | `eventually_eq_comp_of_tendsto`: two analytic arcs meeting at points accumulating at `(s₀, t₀)`, `f'(t₀) ≠ 0`, satisfy `e = f ∘ φ` near `s₀`, `φ` analytic | — | Tool for the common graph (the identity theorem after the analytic local inverse of a coordinate of `f`). |
 | `Edge.meetFrontier_finite`: two regular analytic arcs meet in finitely many pieces | p. 35: "we can introduce a third graph `α3` which contains all the edges and vertices of `α1` and `α2`" | Tool: the step behind the common graph, for the analytic arcs of the edges. |
+| `IsRightTransport`, `IsRightTransport.unique`, `ALEdge.exists_isRightTransport`: the transport along an edge, by right derivatives, unique, ending at the holonomy | eqs. (4.35)-(4.36), p. 33 | Same; along a closed-piecewise analytic edge the velocity has one-sided limits at the corners. |
+| `ALEdge.hol_eq_of_eqOn`: the holonomy along an edge does not depend on its subdivision | p. 33, before (4.39): "(This can be achieved simply by introducing suitable new vertices on `e`.)" | Supporting result. |
+| `ALEdge.isRightTransport_comp`, `ALEdge.rightDeriv_of_comp`: invariance under orientation-preserving reparametrisation | p. 33, after (4.36): `A(e)` "is unchanged under orientation-preserving re-parameterizations of `e`" | Same, for continuous monotone reparametrisations between edges (their right derivatives exist automatically). |
+| `ALEdge.rev`, `ALEdge.hol_rev`: `A(e⁻¹) = A(e)⁻¹` | eq. (4.37), p. 33: "`e⁻¹` is obtained from `e` by simply reversing the orientation" | Same. |
+| `ALGraph.Le`, `ALGraph.le_refl`: `α ≤ α'` | p. 27: "A graph `α′` will be said to be larger than another graph `α` (or contain `α`), `α ≥ α′`, if every edge `e` of `α` can be written as `e = e′₁ ∘ … ∘ e′_k` for some edges `e′₁, …, e′_k` of `α′`"; p. 28: "Let us choose an arbitrary but fixed orientation of each edge of `α`" | Representation: `e = e′₁ ∘ ⋯ ∘ e′_K` read as a subdivision of the parameter interval of `e` into parts on which `e = e′_l ∘ φ_l`, `φ_l` continuous and monotone onto the parameter interval of `e′_l`, with `e′_l` in either orientation. |
+| `ALGraph.hol_of_le`: for `α ≤ α'` the holonomy along each edge of `α` is the ordered product of holonomies along edges of `α′` or their inverses | p. 35: functions cylindrical with respect to `α` are cylindrical with respect to every larger graph | Same content, at the level of holonomies. |
 
 ## Trust checks
 
