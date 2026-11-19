@@ -346,6 +346,11 @@ import Lightlike.OperatorAlgebras.Spectral.HilbertSchmidtCompact
 import Lightlike.OperatorAlgebras.Spectral.TestsCompact
 import Lightlike.OperatorAlgebras.Spectral.CanonicalForm
 import Lightlike.OperatorAlgebras.Spectral.TestsCanonicalForm
+import Lightlike.OperatorAlgebras.Spectral.Schatten
+import Lightlike.OperatorAlgebras.Spectral.SchattenHS
+import Lightlike.OperatorAlgebras.Spectral.SchattenTrace
+import Lightlike.OperatorAlgebras.Spectral.SchattenBanach
+import Lightlike.OperatorAlgebras.Spectral.TestsSchatten
 import Lightlike.OperatorAlgebras.Semigroup.CauchyEstimate
 import Lightlike.OperatorAlgebras.Semigroup.Construct
 import Lightlike.OperatorAlgebras.Semigroup.Continuity

@@ -1,0 +1,52 @@
+- id: LL-XXXX-c
+  title: The Schatten p-norms of a compact operator, the supremum formula (6.23) equal to the sum of the p-th powers of the singular values, so independent of the canonical form, with norm and adjoint bounds
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/Spectral/Schatten.lean
+  decls: [Lightlike.OperatorAlgebras.CompactSpectral.schattenSum, Lightlike.OperatorAlgebras.CompactSpectral.schattenSum_eq_tsum, Lightlike.OperatorAlgebras.CompactSpectral.schattenSum_le_tsum, Lightlike.OperatorAlgebras.CompactSpectral.tsum_le_schattenSum, Lightlike.OperatorAlgebras.CompactSpectral.norm_rpow_le_schattenSum, Lightlike.OperatorAlgebras.CompactSpectral.schattenSum_adjoint]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: teschl-2009, location: "Lemma 6.12, p. 141", check: "Schatten"}
+  review: kernel-checked
+  note: "Compared with Teschl, Section 6.3, (6.19)-(6.23) and Lemma 6.12, pp. 141-142 (read, online edition). schattenSum p K is the supremum (6.23) to the power p, over pairs of finite orthonormal families; for every canonical form and p >= 1 it equals the sum of s_j^p (6.19), so that sum does not depend on the canonical form. (6.21) and (6.22) are stated for schattenSum."
+  since: unreleased
+- id: LL-XXXX-d
+  title: J_2 is the Hilbert-Schmidt class, the square sum over any Hilbert basis equals the sum of the squared singular values (Lemma 6.10)
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/Spectral/SchattenHS.lean
+  decls: [Lightlike.OperatorAlgebras.CompactSpectral.tsum_norm_sq_apply_eq, Lightlike.OperatorAlgebras.CompactSpectral.schattenSum_two_eq_tsum_norm_sq, Lightlike.OperatorAlgebras.CompactSpectral.isHilbertSchmidt_iff]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: teschl-2009, location: "Lemma 6.10, p. 140", check: "Hilbert"}
+  review: kernel-checked
+  note: "Compared with Teschl, Section 6.3, Lemma 6.10, (6.14)-(6.17), p. 140, and p. 142 (read, online edition). The repository's Hilbert-Schmidt class (square sum finite in one Hilbert basis) is J_2: compact with finite schattenSum 2."
+  since: unreleased
+- id: LL-XXXX-e
+  title: J_1 is the trace class, and the trace norm of a product of two Hilbert-Schmidt operators is at most the product of their Hilbert-Schmidt norms (Lemma 6.13, (6.24))
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/Spectral/SchattenTrace.lean
+  decls: [Lightlike.OperatorAlgebras.CompactSpectral.schattenSum_one_mul_le, Lightlike.OperatorAlgebras.CompactSpectral.isTraceClass_iff, Lightlike.OperatorAlgebras.CompactSpectral.abs_apply_of_adjoint_apply_apply]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: teschl-2009, location: "Lemma 6.13, p. 142", check: "trace class"}
+  review: kernel-checked
+  note: "Compared with Teschl, Section 6.3, p. 142 and Lemma 6.13, (6.24), pp. 142-143 (read, online edition). The repository's trace class (diagonal sums of |K| finite in one Hilbert basis) is J_1: compact with finite schattenSum 1; (6.24) is stated with the Hilbert-Schmidt norm of K_1* (equal to that of K_1)."
+  since: unreleased
+- id: LL-XXXX-f
+  title: The Schatten norms satisfy the triangle inequality, are homogeneous and definite, lower semicontinuous under norm limits, and complete (Lemma 6.12)
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/Spectral/SchattenBanach.lean
+  decls: [Lightlike.OperatorAlgebras.CompactSpectral.schattenNorm, Lightlike.OperatorAlgebras.CompactSpectral.schattenNorm_add_le, Lightlike.OperatorAlgebras.CompactSpectral.schattenSum_smul, Lightlike.OperatorAlgebras.CompactSpectral.schattenNorm_eq_zero_iff, Lightlike.OperatorAlgebras.CompactSpectral.schattenSum_le_of_tendsto, Lightlike.OperatorAlgebras.CompactSpectral.exists_tendsto_schattenNorm]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: teschl-2009, location: "Lemma 6.12, p. 141", check: "Banach"}
+  review: kernel-checked
+  note: "Compared with Teschl, Section 6.3, Lemma 6.12, pp. 141-142 (read, online edition). 'J_p(H) with the norm is a Banach space' is stated as the norm properties (triangle inequality, homogeneity, definiteness) and completeness of the Cauchy sequences of compact operators with finite norm; no normed-space instance on J_p is built."
+  since: unreleased

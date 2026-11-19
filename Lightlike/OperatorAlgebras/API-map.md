@@ -60,6 +60,8 @@ A compact symmetric operator `T` on a real or complex Hilbert space has a Hilber
 
 A compact operator `K` has a canonical form `K x = ∑ⱼ sⱼ ⟪φⱼ, x⟫ φ'ⱼ`, `K* x = ∑ⱼ sⱼ ⟪φ'ⱼ, x⟫ φⱼ` with orthonormal `φ`, `φ'` and positive singular values `sⱼ`: from a Hilbert basis of eigenvectors of the compact symmetric `K*K`, `sⱼ = √μⱼ` on the eigenvalues `μⱼ > 0` and `φ'ⱼ = sⱼ⁻¹ K φⱼ`; only finitely many `sⱼ` exceed any `ε > 0`, and `‖K‖` is their least upper bound [68]. The zero operator has no singular values and a nonzero operator has one [69].
 
+The Schatten sum `‖K‖_p^p` is the supremum of `∑ₖ |⟪ψₖ, K ϕₖ⟫|^p` over pairs of finite orthonormal families; for every canonical form and `p ≥ 1` it equals `∑ⱼ sⱼ^p`, by Hölder with the weights `|⟪φⱼ, ϕₖ⟫|²` and Cauchy-Schwarz twice on one side and the orthonormal families of the canonical form on the other, and it bounds `‖K‖^p` and is unchanged by the adjoint [70]. For a compact `K` the square sum `∑ᵢ ‖K bᵢ‖²` in every Hilbert basis is `‖K‖₂²`, so the Hilbert-Schmidt operators are the compact ones with `‖K‖₂ < ∞` [71]; the trace norm of a product of two Hilbert-Schmidt operators is at most the product of their Hilbert-Schmidt norms, `|K|` acts on an eigenvector of `K*K` with eigenvalue `μ` by `√μ`, and the trace-class operators are the compact ones with `‖K‖₁ < ∞` [72]. The Schatten norms satisfy the triangle inequality (Minkowski on the finite sums), are homogeneous and definite, pass to norm limits, and a Cauchy sequence of compact operators converges in them [73]. The diagonal operator `diag(1/(n+1))` is in `J₂` and not in `J₁` [74].
+
 ## Lean References
 
 1. Lightlike/OperatorAlgebras/UnitaryGroup.lean - `OperatorAlgebras.UnitaryGroup`,
@@ -242,6 +244,20 @@ A compact operator `K` has a canonical form `K x = ∑ⱼ sⱼ ⟪φⱼ, x⟫ φ
     `OperatorAlgebras.CompactSpectral.hasSum_norm_sq_of_orthonormal`
 69. Lightlike/OperatorAlgebras/Spectral/TestsCanonicalForm.lean - `OperatorAlgebras.CompactSpectral.isEmpty_of_canonical_zero`,
     `OperatorAlgebras.CompactSpectral.nonempty_of_canonical_ne_zero`
+70. Lightlike/OperatorAlgebras/Spectral/Schatten.lean - `OperatorAlgebras.CompactSpectral.schattenSum`,
+    `OperatorAlgebras.CompactSpectral.schattenSum_eq_tsum`, `OperatorAlgebras.CompactSpectral.schattenSum_le_tsum`,
+    `OperatorAlgebras.CompactSpectral.tsum_le_schattenSum`, `OperatorAlgebras.CompactSpectral.schatten_core`,
+    `OperatorAlgebras.CompactSpectral.norm_rpow_le_schattenSum`, `OperatorAlgebras.CompactSpectral.schattenSum_adjoint`
+71. Lightlike/OperatorAlgebras/Spectral/SchattenHS.lean - `OperatorAlgebras.CompactSpectral.tsum_norm_sq_apply_eq`,
+    `OperatorAlgebras.CompactSpectral.schattenSum_two_eq_tsum_norm_sq`, `OperatorAlgebras.CompactSpectral.isHilbertSchmidt_iff`
+72. Lightlike/OperatorAlgebras/Spectral/SchattenTrace.lean - `OperatorAlgebras.CompactSpectral.schattenSum_one_mul_le`,
+    `OperatorAlgebras.CompactSpectral.abs_apply_of_adjoint_apply_apply`, `OperatorAlgebras.CompactSpectral.isTraceClass_iff`
+73. Lightlike/OperatorAlgebras/Spectral/SchattenBanach.lean - `OperatorAlgebras.CompactSpectral.schattenNorm`,
+    `OperatorAlgebras.CompactSpectral.schattenNorm_add_le`, `OperatorAlgebras.CompactSpectral.schattenSum_smul`,
+    `OperatorAlgebras.CompactSpectral.schattenNorm_eq_zero_iff`, `OperatorAlgebras.CompactSpectral.schattenSum_le_of_tendsto`,
+    `OperatorAlgebras.CompactSpectral.exists_tendsto_schattenNorm`
+74. Lightlike/OperatorAlgebras/Spectral/TestsSchatten.lean - `OperatorAlgebras.CompactSpectral.schattenSum_two_invDiag_lt_top`,
+    `OperatorAlgebras.CompactSpectral.schattenSum_one_invDiag_eq_top` (`diag(1/(n+1))` is in `J₂` and not in `J₁`)
 
 ## References
 
