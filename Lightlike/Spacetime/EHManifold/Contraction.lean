@@ -48,7 +48,9 @@ theorem formContract_basis_indep (b c : Module.Basis (Fin n) ℝ V) (g A B : Lin
   have hA := LinearMap.BilinForm.toMatrix_mul_basis_toMatrix (b := b) c A
   have hB := LinearMap.BilinForm.toMatrix_mul_basis_toMatrix (b := b) c B
   unfold formContract
-  rw [← hg, ← hA, ← hB, Matrix.mul_inv_rev, Matrix.mul_inv_rev, conj_cancel h1 h2,
-    Matrix.trace_mul_comm, ← Matrix.mul_assoc, h2, Matrix.one_mul]
+  have ht : ∀ X : Matrix (Fin n) (Fin n) ℝ,
+      ((b.toMatrix c)⁻¹ * X * b.toMatrix c).trace = X.trace := fun X => by
+    rw [Matrix.trace_mul_comm, ← Matrix.mul_assoc, h2, Matrix.one_mul]
+  rw [← hg, ← hA, ← hB, Matrix.mul_inv_rev, Matrix.mul_inv_rev, conj_cancel h1 h2, ht]
 
 end Lightlike
