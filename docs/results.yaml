@@ -2140,8 +2140,9 @@
     refs:
       - {ref: hall-2013, location: "Chapter: Unbounded Self-Adjoint Operators|10.1007/978-1-4614-7116-5_9"}
       - {ref: hall-2013, location: "Chapter: The Spectral Theorem for Unbounded Self-Adjoint Operators|10.1007/978-1-4614-7116-5_10"}
+      - {ref: moretti-2016, location: "Theorem 142, p. 83", check: "Stone"}
   review: kernel-checked
-  note: "For a strongly continuous one-parameter group of unitaries U(t) on a complex Hilbert space, the generator A psi = -i d/dt U(t) psi at t = 0, on the vectors where the derivative exists, is self-adjoint: A is contained in its adjoint and its adjoint in A. This is one direction of Stone's theorem; the converse, that every self-adjoint operator generates such a group, is the task T-OP1-P2. The comparison with the cited source is pending: the registry locations are the chapters, and the statement was not read there. Difference to be approved by a maintainer: the sign convention U(t) = exp(itA) is the library's."
+  note: "For a strongly continuous one-parameter group of unitaries U(t) on a complex Hilbert space, the generator A psi = -i d/dt U(t) psi at t = 0, on the vectors where the derivative exists, is self-adjoint: A is contained in its adjoint and its adjoint in A. This is one direction of Stone's theorem; the converse, that every self-adjoint operator generates such a group, is the task T-OP1-P2. Compared with Moretti, Theorem 142, p. 83 (read): (a) there is a unique self-adjoint generator A with U(t) = exp(-itA), (b) A psi = i lim (U(t) - 1) psi / t on the vectors where the limit exists; also with Teschl, Mathematical Methods in Quantum Mechanics (AMS online edition), Theorems 5.1 and 5.2, pp. 123-124 (read). The Hall chapters are cited but were not read. Difference to be approved by a maintainer (convention): the library's generator is -i d/dt U(t) at 0, with U(t) = exp(itA), the negative of Moretti's (U(t) = exp(-itA))."
   since: 0.3.0
 - id: LL-0164
   title: Two strongly continuous one-parameter unitary groups with the same generator are equal
@@ -2153,8 +2154,9 @@
   source:
     refs:
       - {ref: hall-2013, location: "Chapter: The Spectral Theorem for Unbounded Self-Adjoint Operators|10.1007/978-1-4614-7116-5_10"}
+      - {ref: moretti-2016, location: "Theorem 142, p. 83", check: "Stone"}
   review: kernel-checked
-  note: "On a complex Hilbert space, a strongly continuous one-parameter unitary group is determined by its generator: if U and V have the same generator then U(t) = V(t) for all t. This is the uniqueness part of Stone's theorem. The comparison with the cited source is pending: the registry location is the chapter, and the statement was not read there. Difference to be approved by a maintainer: the library's sign convention U(t) = exp(itA) for the generator."
+  note: "On a complex Hilbert space, a strongly continuous one-parameter unitary group is determined by its generator: if U and V have the same generator then U(t) = V(t) for all t. This is the uniqueness part of Stone's theorem. Compared with Moretti, Theorem 142, p. 83 (read): (a) there is a unique self-adjoint generator A with U(t) = exp(-itA), (b) A psi = i lim (U(t) - 1) psi / t on the vectors where the limit exists; also with Teschl, Mathematical Methods in Quantum Mechanics (AMS online edition), Theorems 5.1 and 5.2, pp. 123-124 (read). The Hall chapters are cited but were not read. Difference to be approved by a maintainer (convention): the library's generator is -i d/dt U(t) at 0, with U(t) = exp(itA), the negative of Moretti's (U(t) = exp(-itA))."
   since: 0.3.0
 - id: LL-0165
   title: Smooth compactly supported functions approximate every vector in the domain of the generator of translations on the line

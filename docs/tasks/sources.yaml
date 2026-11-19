@@ -933,6 +933,10 @@ references:
     cite: "B. C. Hall, Quantum Theory for Mathematicians, Graduate Texts in Mathematics 267, Springer (2013)"
     title: "Quantum Theory for Mathematicians"
     doi: 10.1007/978-1-4614-7116-5
+  moretti-2016:
+    cite: "V. Moretti, Mathematical foundations of quantum mechanics: an advanced short course, Int. J. Geom. Methods Mod. Phys. 13 (2016) 1630011"
+    title: "Mathematical Foundations of Quantum Mechanics: An Advanced Short Course"
+    arxiv: "1508.06951"
   nielsen-petz-2005:
     cite: "M. A. Nielsen and D. Petz, A simple proof of the strong subadditivity inequality, Quantum Inf. Comput. 5 (2005) 507-513"
     title: "A simple proof of the strong subadditivity inequality"
@@ -1092,6 +1096,7 @@ milestones:
     class: sourced
     refs:
       - {ref: reed-simon-1972, location: "Chapter: Bounded Operators|10.1016/b978-0-12-585001-8.50012-x"}
+      - {ref: moretti-2016, location: "Proposition 97", check: "trace class"}
   SP3:
     class: sourced
     refs:
@@ -1685,6 +1690,7 @@ milestones:
     refs:
       - {ref: hall-2013, location: "Chapter: Unbounded Self-Adjoint Operators|10.1007/978-1-4614-7116-5_9"}
       - {ref: hall-2013, location: "Chapter: The Spectral Theorem for Unbounded Self-Adjoint Operators|10.1007/978-1-4614-7116-5_10"}
+      - {ref: moretti-2016, location: "Theorem 142", check: "Stone"}
   OP2:
     class: sourced
     refs:
