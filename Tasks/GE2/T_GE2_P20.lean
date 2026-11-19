@@ -1,4 +1,5 @@
 import Lightlike.Spacetime.Causal.CausalCurve
+import Lightlike.Spacetime.CausalLadder.LimitCurveStep
 
 /-!
 # Task T-GE2-P20
@@ -54,6 +55,6 @@ theorem exists_inextendible_limit_curve [T2Space M] [SecondCountableTopology M]
         ∀ q : M, ¬ Tendsto (fun t : r => σ t) atTop (𝓝 q)) ∧ p ∈ σ '' r ∧
       ∃ φ : ℕ → ℕ, StrictMono φ ∧ ∀ q ∈ σ '' r, ∀ U ∈ 𝓝 q, ∀ᶠ k in atTop,
         ∃ t ∈ s (φ k), γ (φ k) t ∈ U := by
-  sorry
+  exact exists_inextendible_limit_curve_of_step T γ s hγ p hp
 
 end Lightlike.Causal

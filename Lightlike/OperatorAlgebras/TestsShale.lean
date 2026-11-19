@@ -9,8 +9,8 @@ import Lightlike.OperatorAlgebras.TestsFockReduction
 * Non-vacuity of the sufficiency part: the parity transformation `f ↦ -f` is complex-linear, so its antilinear
   part vanishes and the criterion gives a unitary `U` with `U W f = W (-f) U` (`implements_neg`).
 
-Not checked here: a transformation whose antilinear part is not Hilbert-Schmidt (an infinite squeezing), which
-the criterion says is not implemented.
+A transformation whose antilinear part is not Hilbert-Schmidt (a squeezing of infinitely many modes), which the
+criterion says is not implemented, is in Lightlike/OperatorAlgebras/TestsShaleInfinite.lean.
 -/
 
 open scoped InnerProductSpace
