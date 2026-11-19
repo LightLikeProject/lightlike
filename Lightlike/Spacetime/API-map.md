@@ -147,7 +147,7 @@ The conformally related metric `e^{2ψ} g` of a coordinate metric has the Christ
 53. Lightlike/Spacetime/RaychaudhuriFocusing.lean - `covD_orthogonal`, `IsLorentzianCoordMetric.orthogonal_nonneg`, `focusing_along`, `raychaudhuri_convergence`, `shear_normSq_nonneg`, `raychaudhuri_focusing_at`, `raychaudhuri_focusing`: convergence and focusing of a unit timelike geodesic field along its integral curves.
 54. Lightlike/Spacetime/RaychaudhuriShear.lean - `Raychaudhuri.trace_mul_nonneg`, `Raychaudhuri.normSqG_nonneg`, `Raychaudhuri.spacelike_complement`, `Raychaudhuri.orthogonal_nonneg_of_lorentzian`: the square of a spatial symmetric tensor is nonnegative.
 55. Lightlike/Spacetime/RaychaudhuriManifold.lean - `chartComp`, `hv_cov_eq`, `trace_eq_of_hv`, `ricciAt_hv`, `g_hv`, `rotation_chart_eq_zero`, `expansionM`, `expansionDeriv`, `mfderiv_expansionM`, `raychaudhuri_manifold`, `raychaudhuri_leviCivita`, `raychaudhuri_focusing_manifold_at`, `raychaudhuri_focusing_manifold`: the Raychaudhuri identity and geodesic focusing for a vector field on a manifold.
-56. Lightlike/Spacetime/ConformalCoord.lean - `conformalMetric`, `christoffel_conformal`, `christoffel_conformal_eventually`, `conformalC`, `riemann_of_christoffel_add`, `pd_metric_eq_christoffel`, `sum_conformalC_trace`: the conformal change of a coordinate metric.
+56. Lightlike/Spacetime/ConformalCoord.lean - `conformalMetric`, `christoffel_conformal`, `christoffel_conformal_eventually`, `conformalC`, `riemann_of_christoffel_add`, `ricci_of_christoffel_add`, `pd_metric_eq_christoffel`, `sum_conformalC_trace`: the conformal change of a coordinate metric.
 
 ## References
 

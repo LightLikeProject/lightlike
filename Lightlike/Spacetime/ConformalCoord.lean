@@ -6,17 +6,7 @@ import Lightlike.Spacetime.EHManifold.Locality
 # Conformal change of a coordinate metric (G1-016)
 
 For a coordinate metric `g` and a function `ψ`, the conformally related metric `g̃ = e^{2ψ} g` has the Christoffel symbols
-`Γ̃ᵃ_{bc} = Γᵃ_{bc} + δᵃ_c ∂_b ψ + δᵃ_b ∂_c ψ - g_{bc} gᵃᵈ ∂_d ψ` (`christoffel_conformal`; near every point of the
-domain of a coordinate metric, `christoffel_conformal_eventually`). For any metric whose Christoffel symbols are
-`Γ + C` near a point, the Riemann tensor is that of `g` plus `∂C - ∂C + (Γ + C) C + C Γ - (Γ + C) C - C Γ`
-(`riemann_of_christoffel_add`). Also: the coordinate Christoffel symbols are metric compatible
-(`pd_metric_eq_christoffel`) and the trace of the conformal difference tensor is `n ∂ψ` (`sum_conformalC_trace`).
-
-## References
-
-* E. Gourgoulhon, *3+1 Formalism and Bases of Numerical Relativity*, arXiv:gr-qc/0703035, section 6.2.4,
-  eqs. (6.30), (6.31), (6.33), pp. 88–89: the difference `C = Γ - Γ̃` of the connections of `γ = Ψ⁴ γ̃` and `γ̃` is
-  `Cᵏ_{ij} = 2 (δᵏ_i D̃_j ln Ψ + δᵏ_j D̃_i ln Ψ - D̃ᵏ ln Ψ γ̃_{ij})`, which is `christoffel_conformal` with `e^{2ψ} = Ψ⁴`.
+`Γ̃ᵃ_{bc} = Γᵃ_{bc} + δᵃ_c ∂_b ψ + δᵃ_b ∂_c ψ - g_{bc} gᵃᵈ ∂_d ψ` (`christoffel_conformal`).
 -/
 
 open Matrix
@@ -159,6 +149,20 @@ theorem sum_conformalC_trace (hdet : (g x).det ≠ 0) (hsym : ∀ a b, g x a b =
   simp only [Finset.sum_sub_distrib, Finset.sum_add_distrib, Matrix.one_apply, mul_ite, mul_one, mul_zero,
     Finset.sum_ite_eq', Finset.mem_univ, ite_true, hone]
   simp
+
+/-- **The Ricci tensor of a connection shifted by a difference tensor** (the contraction of
+`riemann_of_christoffel_add`): `R̃_{σν} = R_{σν} + ∂_ρ Cᵖ_{νσ} - ∂_ν Cᵖ_{ρσ} + (Γ + C)ᵖ_{ρl} Cˡ_{νσ} + Cᵖ_{ρl} Γˡ_{νσ}
+- (Γ + C)ᵖ_{νl} Cˡ_{ρσ} - Cᵖ_{νl} Γˡ_{ρσ}`. -/
+theorem ricci_of_christoffel_add {g g' : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ}
+    (C : Fin n → Fin n → Fin n → (Fin n → ℝ) → ℝ)
+    (hC : ∀ᶠ y in nhds x, ∀ a b c, christoffel g' a b c y = christoffel g a b c y + C a b c y)
+    (hΓd : ∀ a b c, DifferentiableAt ℝ (christoffel g a b c) x) (hCd : ∀ a b c, DifferentiableAt ℝ (C a b c) x)
+    (σ ν : Fin n) :
+    ricci g' σ ν x = ricci g σ ν x + ∑ ρ, (pd ρ (C ρ ν σ) x - pd ν (C ρ ρ σ) x) +
+      ∑ ρ, ∑ l, ((christoffel g ρ ρ l x + C ρ ρ l x) * C l ν σ x + C ρ ρ l x * christoffel g l ν σ x -
+        ((christoffel g ρ ν l x + C ρ ν l x) * C l ρ σ x + C ρ ν l x * christoffel g l ρ σ x)) := by
+  unfold ricci
+  simp only [riemann_of_christoffel_add C hC hΓd hCd, Finset.sum_add_distrib]
 
 end
 
