@@ -1,4 +1,5 @@
 import Lightlike.Spacetime.BianchiSecond
+import Lightlike.Spacetime.Corners.BianchiSecond
 import Lightlike.Spacetime.ChartAgreement
 import Lightlike.Spacetime.Corners.ChartAgreement
 import Lightlike.Spacetime.RiemannSymmetry
@@ -64,10 +65,6 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimension
   {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I ∞ M]
   [IsManifold I 2 M] [CompleteSpace E]
 variable (cov : Connection I M) [LocallySmoothConnectionW cov] (x₀ : M)
-
-/-- A field smooth near `x` is differentiable at `x`. -/
-theorem mdiffAt_of_smoothNearW {V : Π y : M, TangentSpace I y} {x : M} (hV : SmoothNearW V x) :
-    MDiffAt (T% V) x := hV.self_of_nhds.mdifferentiableAt (by simp)
 
 /-- A bilinear form field with components `B̂ y : E →L E →L ℝ` in the trivialization at `x₀`. -/
 def bilOfW (B : M → E →L[ℝ] E →L[ℝ] ℝ) (y : M) (u v : TangentSpace I y) : ℝ :=
