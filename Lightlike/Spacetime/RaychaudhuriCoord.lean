@@ -32,6 +32,23 @@ def covD (g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ) (v : (Fin n → �
 def expansion (g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ) (v : (Fin n → ℝ) → Fin n → ℝ) (y : Fin n → ℝ) : ℝ :=
   ∑ a, covD g v a a y
 
+/-- The matrix `Mᵃ_b = ∇_b vᵃ` at `x`. -/
+def covDMat (g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ) (v : (Fin n → ℝ) → Fin n → ℝ) (x : Fin n → ℝ) :
+    Matrix (Fin n) (Fin n) ℝ :=
+  Matrix.of fun a b => covD g v a b x
+
+/-- The shear `σ_ab = ½(∇_b v_a + ∇_a v_b) - Θ h_ab/(n-1)`, `h = g + v♭ ⊗ v♭` (Kar–SenGupta (1)), indices lowered with
+`g`: the matrix `L = g M` has entries `L_ab = ∇_b v_a`. -/
+def shear (g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ) (v : (Fin n → ℝ) → Fin n → ℝ) (x : Fin n → ℝ) :
+    Matrix (Fin n) (Fin n) ℝ :=
+  (1 / 2 : ℝ) • (g x * covDMat g v x + (g x * covDMat g v x)ᵀ) -
+    (expansion g v x / ((n : ℝ) - 1)) • (g x + Matrix.vecMulVec (g x *ᵥ v x) (g x *ᵥ v x))
+
+/-- The rotation `ω_ab = ½(∇_b v_a - ∇_a v_b)` (Kar–SenGupta (1)). -/
+def rotation (g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ) (v : (Fin n → ℝ) → Fin n → ℝ) (x : Fin n → ℝ) :
+    Matrix (Fin n) (Fin n) ℝ :=
+  (1 / 2 : ℝ) • (g x * covDMat g v x - (g x * covDMat g v x)ᵀ)
+
 section
 
 variable {v : (Fin n → ℝ) → Fin n → ℝ} (hg : IsCoordMetric g U) (hv : ∀ a, ContDiffOn ℝ ∞ (fun y => v y a) U)
@@ -108,18 +125,14 @@ theorem raychaudhuri_coord (hgeo : ∀ y ∈ U, ∀ d, ∑ c, v y c * covD g v d
   simp only [hcov, hRic]
 
 /-- **Raychaudhuri's equation in coordinates** (Kar–SenGupta (12), any dimension `n ≥ 2`): for a field geodesic on `U` with
-`g(v, v) = -1` at `x`, `v(Θ) = -Θ²/(n-1) - |σ|² + |ω|² - R_{σν} vᵠ vᵛ`, with `M = (∇_b vᵃ)`, `L = g M`, the shear
-`σ = (L + Lᵀ)/2 - (Θ/(n-1)) h` (`h = g + v♭ v♭`) and the rotation `ω = (L - Lᵀ)/2`, norms with `g⁻¹`. -/
+`g(v, v) = -1` at `x`, `v(Θ) = -Θ²/(n-1) - σ² + ω² - R_{σν} vᵠ vᵛ`, with `σ² = σ_ab σ^ab` and `ω² = ω_ab ω^ab`
+(`Raychaudhuri.normSqG`, indices raised with `g⁻¹`). -/
 theorem raychaudhuri_equation (hgeo : ∀ y ∈ U, ∀ d, ∑ c, v y c * covD g v d c y = 0) {x : Fin n → ℝ} (hx : x ∈ U)
     (hnorm : v x ⬝ᵥ (g x *ᵥ v x) = -1) (hn : 1 < n) :
     ∑ c, v x c * pd c (expansion g v) x =
-      -(expansion g v x) ^ 2 / (n - 1) -
-        Raychaudhuri.normSqG (g x) ((1 / 2 : ℝ) • (g x * Matrix.of (fun a b => covD g v a b x) +
-          (g x * Matrix.of (fun a b => covD g v a b x))ᵀ) - (expansion g v x / (n - 1)) •
-            (g x + Matrix.vecMulVec (g x *ᵥ v x) (g x *ᵥ v x))) +
-        Raychaudhuri.normSqG (g x) ((1 / 2 : ℝ) • (g x * Matrix.of (fun a b => covD g v a b x) -
-          (g x * Matrix.of (fun a b => covD g v a b x))ᵀ)) -
-        ∑ s, ∑ t, ricci g s t x * v x s * v x t := by
+      -(expansion g v x) ^ 2 / (n - 1) - Raychaudhuri.normSqG (g x) (shear g v x) +
+        Raychaudhuri.normSqG (g x) (rotation g v x) - ∑ s, ∑ t, ricci g s t x * v x s * v x t := by
+  unfold shear rotation covDMat
   set M : Matrix (Fin n) (Fin n) ℝ := Matrix.of fun a b => covD g v a b x
   have hMu : M *ᵥ v x = 0 := by
     funext d; simp only [Matrix.mulVec, dotProduct, M, Matrix.of_apply, Pi.zero_apply]

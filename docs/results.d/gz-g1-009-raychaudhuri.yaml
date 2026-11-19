@@ -1,13 +1,26 @@
-- id: LL-XXXX-z
+- id: LL-XXXX-y
   title: Raychaudhuri's equation for a geodesic field in coordinates, with the split into expansion, shear and rotation
   area: Spacetime
   file: Lightlike/Spacetime/RaychaudhuriCoord.lean
-  decls: [Lightlike.covD, Lightlike.expansion, Lightlike.raychaudhuri_coord, Lightlike.raychaudhuri_equation]
+  decls: [Lightlike.covD, Lightlike.expansion, Lightlike.shear, Lightlike.rotation, Lightlike.raychaudhuri_coord, Lightlike.raychaudhuri_equation]
   status: proven
   tier: established
   source:
     refs:
       - {ref: kar-sengupta-2007, location: "eq. (12)", check: "Raychaudhuri"}
   review: kernel-checked
-  note: "For a coordinate metric g on an open U of R^n and a smooth field v with v^c nabla_c v^d = 0 on U (nabla_b v^a = d_b v^a + Gamma^a_bc v^c): v^c d_c Theta = -(nabla_b v^a)(nabla_a v^b) - R_{sigma nu} v^sigma v^nu, Theta = nabla_a v^a, in the library's ricci convention, with no normalisation of v (raychaudhuri_coord; the index computation raychaudhuri_algebra is fable1's). At a point where g(v, v) = -1, with L = g (nabla v), the shear sigma = (L + L^T)/2 - (Theta/(n-1)) (g + v_flat v_flat) and the rotation omega = (L - L^T)/2, norms taken with g^{-1}: v(Theta) = -Theta^2/(n-1) - |sigma|^2 + |omega|^2 - R(v, v) (raychaudhuri_equation, trace_sq_split), Kar and SenGupta's (12) for n = 4 (their (1) for the split). Limits: coordinates; the congruence on a manifold, the null version, and focusing under the energy condition (|sigma|^2 >= 0 needs the Lorentzian signature) are not here."
+  note: "For a coordinate metric g on an open U of R^n and a smooth field v with v^c nabla_c v^d = 0 on U (nabla_b v^a = d_b v^a + Gamma^a_bc v^c): v^c d_c Theta = -(nabla_b v^a)(nabla_a v^b) - R_{sigma nu} v^sigma v^nu, Theta = nabla_a v^a, in the library's ricci convention, with no normalisation of v (raychaudhuri_coord; the index computation raychaudhuri_algebra is fable1's). At a point where g(v, v) = -1, with L = g (nabla v), the shear sigma = (L + L^T)/2 - (Theta/(n-1)) (g + v_flat v_flat) and the rotation omega = (L - L^T)/2, norms taken with g^{-1}: v(Theta) = -Theta^2/(n-1) - |sigma|^2 + |omega|^2 - R(v, v) (raychaudhuri_equation, trace_sq_split), Kar and SenGupta's (12) for n = 4 (their (1) for the split). Limits: coordinates; the congruence on a manifold and the null version are not here (focusing: the next entry)."
+  since: unreleased
+- id: LL-XXXX-z
+  title: Convergence and focusing of a unit timelike geodesic congruence in coordinates
+  area: Spacetime
+  file: Lightlike/Spacetime/RaychaudhuriFocusing.lean
+  decls: [Lightlike.covD_orthogonal, Lightlike.raychaudhuri_convergence, Lightlike.shear_normSq_nonneg, Lightlike.raychaudhuri_focusing_at, Lightlike.raychaudhuri_focusing]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: kar-sengupta-2007, location: "eq. (16)", check: "convergence"}
+  review: kernel-checked
+  note: "For a coordinate metric g on an open U of R^n and a smooth geodesic field v with g(v, v) = -1 on U, along an integral curve gamma of v (gamma' = v(gamma)) in U on [0, L) with Theta(gamma(0)) < 0: if R(v, v) + sigma^2 - omega^2 >= 0 along gamma, then L <= (n-1)/|Theta(gamma(0))| (raychaudhuri_convergence, Kar and SenGupta's (16), any signature); for a Lorentzian coordinate metric (IsLorentzianCoordMetric) sigma^2 >= 0 (shear_normSq_nonneg: g(v, nabla_b v) = 0 from the unit norm, covD_orthogonal, makes sigma spatial, and the orthogonal complement of a timelike vector is spacelike), so a rotation-free field (omega = 0) with R(v, v) >= 0 along gamma obeys the same bound (raychaudhuri_focusing, the paragraph after their (16): zero rotation and R_ab v^a v^b >= 0 lead to geodesic focusing). Their convergence (Theta -> -infinity at a finite parameter, via the Sturm comparison for Theta = 3F'/F) is stated as the bound on the interval on which Theta stays finite along gamma (Riccati argument, Cosmology.focusing). Limits: coordinates; the congruence on a manifold and the null version are not here."
   since: unreleased
