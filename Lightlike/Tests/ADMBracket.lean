@@ -52,7 +52,7 @@ theorem bracket_momentum_momentum_ne_zero :
     subst hk
     have h1 : Lightlike.pd (0 : Fin 1) (fun y => η y 0) y = b y + y 0 * Lightlike.pd (0 : Fin 1) (fun y => ξ y 0) y := by
       have := Lightlike.pd_mul (f₁ := fun y : Fin 1 → ℝ => y 0) (f₂ := fun y => b y)
-        (hcoord.differentiable (by simp) y) (b.contDiff.differentiable (by simp) y) 0
+        (hcoord.differentiable (by simp) y) ((b.contDiff (n := 1)).differentiable (by simp) y) 0
       simpa [η, ξ, hp y] using this
     simp only [lieBracket, Fin.sum_univ_one, h1]
     simp only [ξ, η]
@@ -60,7 +60,7 @@ theorem bracket_momentum_momentum_ne_zero :
   have hζ : (fun y k => lieBracket ξ η y k) = fun y _ => b y ^ 2 := funext fun y => funext fun k => hl y k
   rw [hζ]
   have hζs : SmoothVec (fun y (_ : Fin 1) => b y ^ 2) := fun _ => b.contDiff.pow 2
-  have hζc : ∀ k : Fin 1, HasCompactSupport (fun y => b y ^ 2) := fun _ => b.hasCompactSupport.pow_left 2
+  have hζc : ∀ k : Fin 1, HasCompactSupport (fun y => b y ^ 2) := fun _ => (b.hasCompactSupport.comp_left (g := fun t : ℝ => t ^ 2) (by simp) : HasCompactSupport (fun y => b y ^ 2))
   rw [momentumConstraint_eq_adm_of_smooth hζs hζc hh hpos hπ (fun x => by ext i j; simp [π])]
   have hdiv : ∀ y : Fin 1 → ℝ, momentumDivergence h π 0 y = 1 := fun y => by
     have hc : ∀ k l : Fin 1, Lightlike.christoffel h 0 k l y = 0 := by
@@ -72,7 +72,7 @@ theorem bracket_momentum_momentum_ne_zero :
   rw [hint, integral_const_mul]
   have hb2 : 0 < ∫ x, b x ^ 2 := by
     refine Continuous.integral_pos_of_hasCompactSupport_nonneg_nonzero (x := 0) (b.continuous.pow 2)
-      (b.hasCompactSupport.pow_left 2) (fun x => sq_nonneg _) ?_
+      ((b.hasCompactSupport.comp_left (g := fun t : ℝ => t ^ 2) (by simp) : HasCompactSupport (fun y => b y ^ 2))) (fun x => sq_nonneg _) ?_
     rw [b.one_of_mem_closedBall (x := 0) (by simp [b])]; norm_num
   nlinarith
 
