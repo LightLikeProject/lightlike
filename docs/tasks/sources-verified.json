@@ -1957,6 +1957,21 @@
   "citations": 67,
   "citations_via": "Semantic Scholar"
  },
+ "dyer-hinterbichler-2008": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Boundary Terms, Variational Principles and Higher Derivative Modified Gravity",
+  "locations": {
+   "eq. (4.4)": {
+    "verified": true,
+    "snippet": "(4.4) V 2 We now have the boundary variation vanishing without any restriction on the normal derivatives. However, if this is the only property we desire, the 20 choice of 2K for the boundary term is not unique. We are f",
+    "why": null
+   }
+  },
+  "citations": 228,
+  "citations_via": "OpenAlex"
+ },
  "edmonds-1957": {
   "checked": "2026-11-08",
   "exists": true,

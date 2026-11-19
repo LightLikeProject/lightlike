@@ -1098,6 +1098,10 @@ references:
     fulltext: https://www.mat.univie.ac.at/~gerald/ftp/book-schroe/schroe.pdf
     edition: "the author's online edition of GSM 99 (AMS 2009), page numbers as printed"
     sha256: 8dc8de0b58aa0a3fedfe594a345f9b5875322e5526ea581cb640a98d55b82818
+  dyer-hinterbichler-2008:
+    cite: "E. Dyer and K. Hinterbichler, Boundary Terms, Variational Principles and Higher Derivative Modified Gravity, arXiv:0809.4033"
+    title: "Boundary Terms, Variational Principles and Higher Derivative Modified Gravity"
+    arxiv: "0809.4033"
 
 canonical:
   pl-topology: [lickorish-1999, moise-1977]
