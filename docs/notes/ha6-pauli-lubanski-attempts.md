@@ -37,4 +37,20 @@ equation (54), page 39; §3.2–3.3, pages 12–15).
   `ε`-contraction, where the orbital terms cancel. The derivative of `L` along the orbit and the contraction were
   set up on paper only; the computation is long and was not completed.
 
-Status: the operator identities at general momenta are open; the standard-momentum content is formalised.
+## Transport to every momentum (compiled)
+
+`Lightlike/Poincare/PauliLubanskiMassive.lean`, end of `Lightlike/Poincare/MasslessGenerators.lean`.
+
+The little group of a momentum `P` is `L(P) H L(P)⁻¹` (`H` the little group of the standard momentum, `L` the
+standard lift), and by the group law of `U` its elements act on the states of momentum `P` exactly as `H` acts at the
+standard momentum: `(U(L(P) u L(P)⁻¹) ψ)(P) = D(u) ψ(P)` (`inducedAct_conj`) and
+`(U(L(P) A L(P)⁻¹) ψ)(P) = (A₀₀)ⁿ ψ(P)` (`helicityAct_conj`). The curves `θ ↦ L(P) R(θ) L(P)⁻¹` fix `P`, so their
+derivatives at `P` exist for every wave function, with no differentiable structure and no continuity of `L`
+(`hasDerivAt_inducedAct_littleGen`, `hasDerivAt_helicityAct_rot_at`, `hasDerivAt_helicityAct_trans_at`). Hence, with
+`W(P)` in its little-group form (`W(P) = Λ(L(P)) W(standard momentum)`), `W² = −m² s(s+1)` and `W = h P` hold at every
+momentum (`pauliLubanski_sq`, and the three massless derivatives).
+
+What remains: the identity `W^μ = ½ ε^{μνρσ} M_{νρ} P_σ` for the full set of generators `M_{νρ}` (boosts and the orbital
+parts, which cancel in the contraction). Those generators move the momentum, so they need derivatives of `ψ` and of
+the section: in the massless case every global section is discontinuous (attempt 2), in the massive case through a
+parametrization `p ↦ (√(m² + |p|²), p)` of the mass shell, which has not been carried out.
