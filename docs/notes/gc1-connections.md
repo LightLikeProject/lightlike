@@ -178,6 +178,22 @@ exponential map of a Lie group; the two agree because `exp` has derivative `id` 
 given as the kernel of `ω`, which is how the source passes from the distribution to the form; smoothness is `C^m`
 for `C^n` data with `m + 1 ≤ n` (smooth data give `C^∞`).
 
+## Curvature of the glued connection (Svetlichny §4.9, p. 42)
+
+Source, read: the curvature of an invariant connection is given by its local potentials, `F_U = dA_U + [A_U, A_U]`
+(eq. (62)), a `g`-valued 2-form on the trivializing set `U`; on overlaps `F_V = g_VU F_U g_VU⁻¹` (eq. (63)), the
+transition map of the adjoint bundle `P ×_Ad g`, so that `F` is a `P ×_Ad g`-valued 2-form on the base (p. 42). The
+source defines no curvature form on the total space.
+
+`PrincipalCurvature.lean`: for the glued bundle over an open cover of a normed space `F` and potentials satisfying
+(38) (`IsCompatible`), the local curvatures `lieCurvature (A i)` satisfy (63) at every point of every overlap
+(`lieCurvature_transition`): the `C³` transition map is written near the point as `g = g(x₀) · φ⁻¹(γ)` in the chart
+at the identity (`chart_form`), `A_j` agrees near the point with `Ad_{g_ij} A_i - dg_ij g_ij⁻¹`, the curvature only
+depends on the germ (`lieCurvature_congr`), and the covariance (64) (`lieCurvature_lieGaugeTransform`) gives
+`F_j = Ad_{g_ij} F_i`. Difference, kind representation: the base is a normed space with an open cover, the local form
+in which (62)-(64) are stated (as for `curvature` and `lieCurvature`). The reading of `F` as a `P ×_Ad g`-valued
+2-form needs the associated bundle, the next item.
+
 ## Reuse
 
 Mathlib: `IsPicardLindelof`, `IsPicardLindelof.exists_eq_forall_mem_Icc_hasDerivWithinAt₀`, `ContDiffBump`,
