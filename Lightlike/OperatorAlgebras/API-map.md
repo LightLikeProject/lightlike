@@ -58,6 +58,8 @@ For a Hilbert basis `{eᵢ}`, `∑ᵢ |⟪eᵢ, y⟫|² = ‖y‖²` (Parseval),
 
 On `L²(0, 1)`, a vector lies in the domain of the adjoint of `-i d/dx` (on the `C²` test functions) iff it is a primitive `c + ∫₀ˣ g` with `g ∈ L²`, equivalently iff it agrees almost everywhere with an absolutely continuous function whose derivative is in `L²`, and then the adjoint is `-i g` [64], [65]. Its continuous representative has boundary values `y(0)`, `y(1)`, and integration by parts for absolutely continuous functions gives the boundary form `⟪A† y, z⟫ - ⟪y, A† z⟫ = i (conj y(1) z(1) - conj y(0) z(0))`; the affine functions give every pair of boundary values [65]. The closure of the momentum is the adjoint on the vectors with zero boundary values, the restriction `P_θ` of the adjoint to `y(1) = e^{iθ} y(0)` is self-adjoint, and every self-adjoint extension of the momentum is a `P_θ` {5}, [66]. The constant `1` lies in the periodic domain and not in the antiperiodic one, so `P_0 ≠ P_π`, and the closure is not self-adjoint [67].
 
+The plane waves `e^{i(θ + 2πn)x}`, `n ∈ ℤ`, lie in the domain of `P_θ` and are orthonormal eigenvectors with eigenvalue `θ + 2πn`; an eigenvector of `P_θ` with eigenvalue `μ ∈ ℂ` has the continuous representative `y(0) e^{iμx}`, so `μ = θ + 2πn` and the eigenspaces are one-dimensional; off `θ + 2πℤ` the resolvent equation is solved explicitly, so the spectrum of `P_θ`, in Physlib's sense, is `θ + 2πℤ` and equals the point spectrum {5}, [68]. `θ` is in the spectrum of `P_θ` and `θ + π` is not [69].
+
 ## Lean References
 
 1. Lightlike/OperatorAlgebras/UnitaryGroup.lean - `OperatorAlgebras.UnitaryGroup`,
@@ -227,6 +229,12 @@ On `L²(0, 1)`, a vector lies in the domain of the adjoint of `-i d/dx` (on the 
     `OperatorAlgebras.selfAdjoint_extensions_momentumZero`
 67. Lightlike/OperatorAlgebras/TestsMomentumTheta.lean - `OperatorAlgebras.momentumTheta_zero_ne_pi`,
     `OperatorAlgebras.closure_ne_momentumTheta`
+68. Lightlike/OperatorAlgebras/MomentumSpectrum.lean - `OperatorAlgebras.momentumTheta_planeWave`,
+    `OperatorAlgebras.orthonormal_planeWave`, `OperatorAlgebras.eigenvalue_momentumTheta`,
+    `OperatorAlgebras.eigenvector_momentumTheta`, `OperatorAlgebras.exists_momentumTheta_sub_eq`,
+    `OperatorAlgebras.spectrum_momentumTheta`, `OperatorAlgebras.pointSpectrum_momentumTheta`
+69. Lightlike/OperatorAlgebras/TestsMomentumSpectrum.lean - `OperatorAlgebras.theta_mem_spectrum`,
+    `OperatorAlgebras.theta_add_pi_not_mem_spectrum`
 
 ## References
 
@@ -240,4 +248,4 @@ On `L²(0, 1)`, a vector lies in the domain of the adjoint of `-i d/dx` (on the 
    Society, 2009 (online edition), Theorem 3.7 (spectral theorem). The Lean files are ported from physicslib4
    (github.com/physicslib/physicslib4, Apache-2.0).
 5. G. Bonneau, J. Faraut and G. Valent, *Self-adjoint extensions of operators and the teaching of quantum
-   mechanics*, arXiv:quant-ph/0103153, Appendix A.3 and Section 5.3, eq. (14).
+   mechanics*, arXiv:quant-ph/0103153, Appendix A.3 and Section 5.3, eqs. (14) and (15).

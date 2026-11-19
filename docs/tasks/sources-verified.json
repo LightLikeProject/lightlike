@@ -948,6 +948,11 @@
     "verified": true,
     "snippet": "(14) Moreover, the spectra are purely discrete. Using the boundary condition (14), the eigenval- ues and eigenfunctions are easily shown to be  2π~ θ  Pθ φn (x, θ) = νφn (x, θ), ν =n+ , n = 0, ±1, ±2, . . .   L 2π 1",
     "why": null
+   },
+   "eq. (15), p. 8": {
+    "verified": true,
+    "snippet": "(15)  φn (x, θ) = √ exp 2iπν , (φm , φn ) = δmn .   L L As the phase θ appears in the eigenfunctions any measurement of the momentum of a given system should, in general, depend on it. To display this, let us go back",
+    "why": null
    }
   },
   "citations": 271,
