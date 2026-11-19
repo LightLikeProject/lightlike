@@ -2424,3 +2424,16 @@
   review: kernel-checked
   note: "For the momentum P = -i d/dx on L^2(0, 1): the domain of the adjoint is D_max, the functions absolutely continuous on [0, 1] with derivative in L^2 (mem_adjoint_iff_ac, in MomentumBoundary.lean); the closed operator P is the adjoint on D_0 = {psi in D_max : psi(0) = psi(1) = 0} and equals the closure of -i d/dx on the C^2 functions supported inside (0, 1) (momentumZero_eq_closure); a self-adjoint operator B extends P iff B = P_theta, the adjoint on D_theta = {psi in D_max : psi(1) = e^{i theta} psi(0)}, for some real theta. Compared with Bonneau-Faraut-Valent, Section 5.3, eq. (14), p. 8, and Appendix A.3, p. 19 (read). Differences, kind convention, to be approved by a maintainer: (a) the interval is [0, 1] (L = 1); (b) theta ranges over the reals instead of [0, 2 pi] (the same operators)."
   since: unreleased
+- id: LL-0185
+  title: The self-adjoint extension of the momentum on the unit interval with the boundary condition psi(1) = e^{i theta} psi(0) has the purely discrete spectrum theta + 2 pi Z, with the orthonormal eigenfunctions e^{i(theta + 2 pi n)x}
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/MomentumSpectrum.lean
+  decls: [Lightlike.OperatorAlgebras.spectrum_momentumTheta, Lightlike.OperatorAlgebras.pointSpectrum_momentumTheta, Lightlike.OperatorAlgebras.momentumTheta_planeWave, Lightlike.OperatorAlgebras.orthonormal_planeWave, Lightlike.OperatorAlgebras.eigenvalue_momentumTheta, Lightlike.OperatorAlgebras.eigenvector_momentumTheta]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: bonneau-faraut-valent-2001, location: "eq. (15), p. 8", check: "eigenfunctions"}
+  review: kernel-checked
+  note: "For P_theta = -i d/dx on D_theta = {psi in D_max(0, 1) : psi(1) = e^{i theta} psi(0)}: the plane waves e^{i(theta + 2 pi n)x}, n in Z, lie in D_theta, are eigenvectors with eigenvalue theta + 2 pi n and are orthonormal; every eigenvalue is of this form and every eigenvector is a multiple of the plane wave; the spectrum in Physlib's sense (LinearPMap.spectrum: z is in the resolvent set iff P_theta - z is a bijection of the domain onto L^2(0, 1) with continuous inverse) is theta + 2 pi Z and equals the point spectrum. The resolvent equation is solved explicitly off theta + 2 pi Z. Compared with Bonneau-Faraut-Valent, Section 5.3, p. 8, eq. (15) and the sentence before it ('the spectra are purely discrete') (read). Differences, kind convention, to be approved by a maintainer: hbar = 1, L = 1, and the eigenvalue 2 pi hbar nu / L, nu = n + theta / 2 pi, is written theta + 2 pi n."
+  since: unreleased
