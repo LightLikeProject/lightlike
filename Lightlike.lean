@@ -452,6 +452,7 @@ import Lightlike.Poincare.Orbits
 import Lightlike.Poincare.PauliLubanskiAlgebra
 import Lightlike.Poincare.PauliLubanskiCasimir
 import Lightlike.Poincare.PauliLubanskiGenerators
+import Lightlike.Poincare.PauliLubanskiL2
 import Lightlike.Poincare.PauliLubanskiMassive
 import Lightlike.Poincare.PauliLubanskiRest
 import Lightlike.Poincare.RestSpin
