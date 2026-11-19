@@ -748,6 +748,7 @@ import Lightlike.Spacetime.EHManifold.EinsteinIntrinsic
 import Lightlike.Spacetime.EHManifold.FaceFlux
 import Lightlike.Spacetime.EHManifold.FluxLinear
 import Lightlike.Spacetime.EHManifold.FluxLocal
+import Lightlike.Spacetime.EHManifold.GHYBox
 import Lightlike.Spacetime.EHManifold.GibbonsHawkingYork
 import Lightlike.Spacetime.EHManifold.IntegrandLinear
 import Lightlike.Spacetime.EHManifold.IntrinsicAction
