@@ -204,6 +204,7 @@ import Lightlike.GR.KruskalFunction
 import Lightlike.GR.KruskalMetric
 import Lightlike.GR.EuclideanSchwarzschild
 import Lightlike.GR.Schwarzschild
+import Lightlike.GR.ReissnerNordstrom
 import Lightlike.GR.SAdSVacuum
 import Lightlike.GR.StaticSphericalJet
 import Lightlike.GR.StaticSphericalRicci
@@ -752,6 +753,7 @@ import Lightlike.Spacetime.ChartCurvature
 import Lightlike.Spacetime.Connection
 import Lightlike.Spacetime.Coordinates
 import Lightlike.Spacetime.Curvature
+import Lightlike.Spacetime.MaxwellCoord
 import Lightlike.Spacetime.CurvatureSymmetries
 import Lightlike.Spacetime.FlatConnection
 import Lightlike.Spacetime.LieDerivation
