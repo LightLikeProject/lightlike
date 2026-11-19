@@ -16,7 +16,9 @@ The bridge between the two coordinate forms of Killing's equation used in the li
   form of Killing's equation);
 * `lieCo_bracketCo`: `L_{[Y,Z]} T = L_Y (L_Z T) - L_Z (L_Y T)` for smooth fields;
 * `lieCo_bracketCo_eq_zero`: the bracket of two Killing fields is Killing, so the Killing fields on an open set are
-  closed under the bracket.
+  closed under the bracket;
+* `eq_sum_of_rigVec_eq_sum`: on a connected open set, a Killing covector whose value and first derivatives at a point
+  are a combination of those of other Killing covectors is that combination (rigidity and linearity).
 -/
 
 open Matrix Filter Set
@@ -251,5 +253,54 @@ theorem lieCo_bracketCo_eq_zero (hYk : ∀ z ∈ U, lieCo T Y z = 0) (hZk : ∀ 
   rw [h0 Z hZk Y, h0 Y hYk Z, sub_zero]
 
 end Bracket
+
+section Combination
+
+variable {g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ} {U : Set (Fin n → ℝ)} {ι : Type*} [Fintype ι]
+
+/-- **A Killing covector whose data at a point is a combination of the data of others is that combination**: on a
+connected open set, if `(θ, ∂θ)(z) = Σₑ cₑ (θₑ, ∂θₑ)(z)` for Killing covectors, then `θ = Σₑ cₑ θₑ`. -/
+theorem eq_sum_of_rigVec_eq_sum (hg : IsCoordMetric g U) (hgs : ∀ z a b, g z a b = g z b a) (hU : IsPreconnected U)
+    {θ : (Fin n → ℝ) → Fin n → ℝ} (θs : ι → (Fin n → ℝ) → Fin n → ℝ)
+    (hθ : ∀ c, ContDiffOn ℝ ∞ (fun z => θ z c) U) (hθs : ∀ e c, ContDiffOn ℝ ∞ (fun z => θs e z c) U)
+    (hK : ∀ z ∈ U, ∀ a b, covCo g θ a b z + covCo g θ b a z = 0)
+    (hKs : ∀ e, ∀ z ∈ U, ∀ a b, covCo g (θs e) a b z + covCo g (θs e) b a z = 0) {z : Fin n → ℝ} (hz : z ∈ U)
+    (c : ι → ℝ) (h : rigVec θ z = ∑ e, c e • rigVec (θs e) z) :
+    ∀ w ∈ U, θ w = ∑ e, c e • θs e w := by
+  set θ' : (Fin n → ℝ) → Fin n → ℝ := fun y k => ∑ e, c e * θs e y k with hθ'
+  have hθ'd : ∀ k, ContDiffOn ℝ ∞ (fun z => θ' z k) U := fun k =>
+    ContDiffOn.sum fun e _ => contDiffOn_const.mul (hθs e k)
+  have hd : ∀ e, ∀ y ∈ U, ∀ k, DifferentiableAt ℝ (fun z => θs e z k) y := fun e y hy k =>
+    differentiableAt_of_contDiffOn (hθs e k) hg.isOpen hy
+  have hpd : ∀ y ∈ U, ∀ a k, pd a (fun w => θ' w k) y = ∑ e, c e * pd a (fun w => θs e w k) y := by
+    intro y hy a k
+    rw [hθ', pd_sum Finset.univ (f := fun e w => c e * θs e w k) (fun e _ => (hd e y hy k).const_mul _) a]
+    exact Finset.sum_congr rfl fun e _ => pd_const_mul _ (hd e y hy k) a
+  have hcov : ∀ y ∈ U, ∀ a b, covCo g θ' a b y = ∑ e, c e * covCo g (θs e) a b y := by
+    intro y hy a b
+    unfold covCo
+    rw [hpd y hy a b]
+    simp only [hθ', mul_sub, Finset.mul_sum, Finset.sum_sub_distrib]
+    rw [Finset.sum_comm (s := Finset.univ) (t := Finset.univ)]
+    congr 1
+    exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
+  have hK' : ∀ y ∈ U, ∀ a b, covCo g θ' a b y + covCo g θ' b a y = 0 := by
+    intro y hy a b
+    rw [hcov y hy, hcov y hy, ← Finset.sum_add_distrib]
+    exact Finset.sum_eq_zero fun e _ => by rw [← mul_add, hKs e y hy a b, mul_zero]
+  have h' : rigVec θ z = rigVec θ' z := by
+    rw [h]
+    funext i
+    rcases i with k | ⟨a, k⟩
+    · simp [rigVec, hθ', Finset.sum_apply]
+    · simp only [rigVec, Sum.elim_inr, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]
+      rw [hpd z hz a k]
+  have := eq_of_rigVec_eq hg hgs hθ hθ'd hU hK hK' hz h'
+  intro w hw
+  rw [this w hw]
+  funext k
+  simp [hθ', Finset.sum_apply]
+
+end Combination
 
 end Lightlike
