@@ -17,6 +17,7 @@ For the embedding of the `n`-particle fermionic Fock space `Γₙ` (the closed s
 * `Enum`, `enumEquiv`, `card_enum`: an `n`-element set has `n!` enumerations by injective tuples;
 * `embFun`, `hasSum_fiber`, `hasSum_norm_embFun`, `embL`, `norm_sq_embL`, `norm_embL_le`, `norm_embL_of_support`, `embCLM`:
   the embedding `Eₙ ψ (f) = (n!)^{-1/2} sign(f) ψ(image f)`, a contraction, isometric on the `n`-particle vectors;
+* `permEquiv`, `permL`, `antisym`, `antisym_apply`, `embFun_comp`, `antisym_embL`: the antisymmetrizer, and `A Eₙ = Eₙ`;
 * `norm_embCLM_le`, `dGammaFock`, `norm_dGammaFock_le`: `dΓₙ₊₁(h) = Eₙ₊₁* (∑ⱼ hⱼ) Eₙ₊₁` and `‖dΓₙ₊₁(h)‖ ≤ (n + 1) ‖h‖`.
 -/
 
@@ -229,6 +230,70 @@ noncomputable def embCLM : lp (fun _ : Finset ι => ℂ) 2 →L[ℂ] lp (fun _ :
   (embL n).mkContinuous 1 fun ψ => by simpa using norm_embL_le ψ
 
 end Embedding
+
+section Antisym
+
+variable {n : ℕ}
+
+/-- `f ↦ f ∘ σ` on tuples. -/
+def permEquiv (σ : Equiv.Perm (Fin n)) : (Fin n → ι) ≃ (Fin n → ι) := σ.symm.arrowCongr (Equiv.refl ι)
+
+lemma permEquiv_apply (σ : Equiv.Perm (Fin n)) (f : Fin n → ι) : permEquiv σ f = f ∘ σ := by
+  funext i; simp [permEquiv, Equiv.arrowCongr_apply]
+
+/-- **The permutation of the slots**, `P_σ Φ (f) = Φ(f ∘ σ)`, an isometry. -/
+noncomputable def permL (σ : Equiv.Perm (Fin n)) :
+    lp (fun _ : Fin n → ι => ℂ) 2 →L[ℂ] lp (fun _ : Fin n → ι => ℂ) 2 :=
+  (SecondQuantSlot.reindexL (permEquiv (ι := ι) σ)).toLinearIsometry.toContinuousLinearMap
+
+lemma permL_apply (σ : Equiv.Perm (Fin n)) (Φ : lp (fun _ : Fin n → ι => ℂ) 2) (f : Fin n → ι) :
+    permL σ Φ f = Φ (f ∘ σ) := by
+  show Φ (permEquiv σ f) = _
+  rw [permEquiv_apply]
+
+variable (n) in
+/-- **The antisymmetrizer** `A = (n!)⁻¹ ∑_σ sign σ P_σ` on `ℓ²(Fin n → ι)`. -/
+noncomputable def antisym : lp (fun _ : Fin n → ι => ℂ) 2 →L[ℂ] lp (fun _ : Fin n → ι => ℂ) 2 :=
+  ((n.factorial : ℂ)⁻¹) • ∑ σ : Equiv.Perm (Fin n), ((Equiv.Perm.sign σ : ℤ) : ℂ) • permL (ι := ι) σ
+
+/-- `A Φ (f) = (n!)⁻¹ ∑_σ sign σ Φ(f ∘ σ)`. -/
+lemma antisym_apply (Φ : lp (fun _ : Fin n → ι => ℂ) 2) (f : Fin n → ι) :
+    antisym n Φ f = (n.factorial : ℂ)⁻¹ * ∑ σ : Equiv.Perm (Fin n), ((Equiv.Perm.sign σ : ℤ) : ℂ) * Φ (f ∘ σ) := by
+  simp only [antisym, ContinuousLinearMap.smul_apply, ContinuousLinearMap.sum_apply, lp.coeFn_smul, Pi.smul_apply,
+    smul_eq_mul, permL_apply]
+  rw [lp.coeFn_sum] <;> simp [Finset.sum_apply, lp.coeFn_smul, permL_apply]
+
+/-- **`Eₙ ψ` is antisymmetric**: `Eₙ ψ (f ∘ σ) = sign σ · Eₙ ψ (f)`. -/
+lemma embFun_comp (ψ : Finset ι → ℂ) (f : Fin n → ι) (σ : Equiv.Perm (Fin n)) :
+    embFun n ψ (f ∘ σ) = ((Equiv.Perm.sign σ : ℤ) : ℂ) * embFun n ψ f := by
+  unfold embFun
+  by_cases hf : Function.Injective f
+  · have hfσ : Function.Injective (f ∘ σ) := hf.comp σ.injective
+    rw [if_pos hfσ, if_pos hf, tupleSign_comp hf σ]
+    have himg : Finset.univ.image (f ∘ σ) = Finset.univ.image f := by
+      ext x; simp only [Finset.mem_image, Finset.mem_univ, true_and, Function.comp_apply]
+      exact ⟨fun ⟨i, hi⟩ => ⟨σ i, hi⟩, fun ⟨i, hi⟩ => ⟨σ.symm i, by simp [hi]⟩⟩
+    rw [himg]
+    push_cast
+    ring
+  · have hfσ : ¬ Function.Injective (f ∘ σ) := fun h => hf (by
+      have := h.comp σ.symm.injective
+      simpa [Function.comp_def] using this)
+    rw [if_neg hfσ, if_neg hf, mul_zero]
+
+/-- **`A Eₙ = Eₙ`**: the embedded vectors are antisymmetric. -/
+lemma antisym_embL (ψ : lp (fun _ : Finset ι => ℂ) 2) : antisym n (embL n ψ) = embL n ψ := by
+  ext f
+  rw [antisym_apply]
+  simp only [embL_apply, embFun_comp]
+  have hsq : ∀ σ : Equiv.Perm (Fin n), ((Equiv.Perm.sign σ : ℤ) : ℂ) * ((Equiv.Perm.sign σ : ℤ) : ℂ) = 1 := fun σ => by
+    rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp [h]
+  simp only [← mul_assoc, hsq, one_mul, Finset.sum_const, Finset.card_univ, Fintype.card_perm, Fintype.card_fin,
+    nsmul_eq_mul]
+  field_simp
+  exact mul_div_cancel_left₀ _ (by exact_mod_cast Nat.factorial_ne_zero n)
+
+end Antisym
 
 section Gamma
 
