@@ -1,7 +1,7 @@
 # G2-006: paths, holonomy and gauge action (source check)
 
 Lean files: `Lightlike/ODE/GlobalLipschitz.lean`, `Lightlike/Canonical/Holonomy.lean`,
-`Lightlike/Canonical/HolonomyPaths.lean` (in progress).
+`Lightlike/Canonical/HolonomyPaths.lean`, `Lightlike/Canonical/HolonomyGauge.lean` (in progress).
 
 ## Source read
 
@@ -23,13 +23,19 @@ footnote 17) and p. 35 (the common graph `α₃` of two graphs). Printed page nu
 | `holonomy_revPath`, `Edge.hol_rev`, `PwPath.hol_rev`: `A(e⁻¹) = A(e)⁻¹` | eq. (4.37), p. 33, with "`e⁻¹` is obtained from `e` by simply reversing the orientation" | Same; for a piecewise path `p⁻¹` reverses the pieces and their order. |
 | `Edge`, `PwPath`, `PwPath.hol`, `PwPath.hol_trans`, `PwPath.hol_comp₂`: `A(e₂ ∘ e₁) = A(e₂) A(e₁)` | eq. (4.37), p. 33 | Same, for piecewise `C¹` paths (lists of `C¹` edges, each starting where the previous one ends), the class closed under composition; AL's edges are closed-piecewise analytic (footnote 17), the representation line above. |
 | `Edge.hol_split`: splitting an edge does not change its holonomy | p. 33: "introducing suitable new vertices on `e`" (before (4.39)) | Supporting result: the holonomy of a piecewise path does not depend on the subdivision of a `C¹` piece. |
+| `gaugeConn`: `A^g_a = g⁻¹ A_a g + g⁻¹ ∂_a g` for `C¹` `g` with unitary values (`g⁻¹ = gᴴ`) | eq. (4.14), p. 28: `A_α ↦ g_α⁻¹ A_α g_α + g_α⁻¹ d_α g_α` | Same on the chart; `G` unitary, as `SU(2)`. |
+| `holonomy_gaugeConn`: `A^g(e) = g(e(t₂))⁻¹ A(e) g(e(t₁))`; `holonomy_gaugeConn_of_endpoints`: unchanged when `g = 1` at the end points | eq. (4.14) with (4.15)-(4.16), p. 28: the holonomies identify `Ā_α = A_α / G⁰_α`, `G⁰_α` the gauge transformations that are the identity at the vertices | Same content (the transformation law of `A(e)` is used, not displayed, in the source; cf. (4.18), p. 29, `(U_1, …) ↦ (g⁻¹ U_1 g, …)` for loops). |
+| `holonomy_zero`: the zero connection has holonomy `1` | eq. (4.35) | Supporting result. |
 
 ## Trust checks
 
+* `holonomy_pureGauge`: the pure gauge connection `g⁻¹ dg` has holonomy `g(e(t₂))⁻¹ g(e(t₁))`, which depends only on the
+  end points.
 * `holonomy_u1Conn`: the constant `u(1)` connection `A₀ = i` along `e(t) = t e₀` has holonomy `exp(−iπ) = −1` over
   `[0, π]`.
 
 ## Open (the rest of G2-006)
 
-* the gauge action (4.14), p. 28, on holonomies, and the maps `I_E`, `I_V` of (4.16)-(4.17);
+* the maps `I_E`, `I_V` of (4.16)-(4.17) on the connections and gauge transformations of a graph (edge-wise, as on
+  p. 28), and that `I_E` is one-to-one on `A_α / G⁰_α` onto `Gⁿ`;
 * graphs and the order `α ≤ α′` (p. 27, footnote 13), and the common graph `α₃` of two graphs (p. 35).

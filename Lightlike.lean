@@ -209,6 +209,7 @@ import Lightlike.Canonical.SpinVariation
 import Lightlike.Canonical.AshtekarSymplectic
 import Lightlike.Canonical.Holonomy
 import Lightlike.Canonical.HolonomyPaths
+import Lightlike.Canonical.HolonomyGauge
 import Lightlike.Canonical.TestsFoliation
 import Lightlike.Canonical.HamiltonianBracket
 import Lightlike.Canonical.HamiltonianHHBracket

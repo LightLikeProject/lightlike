@@ -57,7 +57,8 @@ parallel transport `U' = −A_a(e) ė^a U`, `U(t₁) = 1`, which exists on every
 existence theorem for Lipschitz right-hand sides of `Lightlike/ODE/GlobalLipschitz.lean`); the holonomy `A(e)` along an
 edge is its end value, and for an `su(2)` connection it lies in `SU(2)` [26] {3}. It is unchanged under orientation-preserving
 reparametrisation, the reversed path has the inverse holonomy, and for piecewise `C¹` paths (lists of edges) the
-holonomy of a composite is the product, `A(e₂ ∘ e₁) = A(e₂) A(e₁)` [27] {3}.
+holonomy of a composite is the product, `A(e₂ ∘ e₁) = A(e₂) A(e₁)` [27] {3}. Under a gauge transformation
+`A ↦ g⁻¹ A g + g⁻¹ dg` the holonomy changes only at the end points, `A(e) ↦ g(e(t₂))⁻¹ A(e) g(e(t₁))` [28] {3}.
 
 A grid computation in dimension two (`scripts/adm_algebra_check.py`) supports the three brackets; with the kinetic
 coefficient `1/2` of dimension three, used in dimension two, the bracket of two Hamiltonian constraints differs from
@@ -110,6 +111,8 @@ the momentum constraint of the structure function.
     `Lightlike.Canonical.holonomy_u1Conn`
 27. Lightlike/Canonical/HolonomyPaths.lean - `Lightlike.Canonical.holonomy_comp_reparam`,
     `Lightlike.Canonical.holonomy_revPath`, `Lightlike.Canonical.PwPath.hol_trans`, `Lightlike.Canonical.PwPath.hol_rev`
+28. Lightlike/Canonical/HolonomyGauge.lean - `Lightlike.Canonical.gaugeConn`, `Lightlike.Canonical.holonomy_gaugeConn`,
+    `Lightlike.Canonical.holonomy_pureGauge`
 
 ## References
 
