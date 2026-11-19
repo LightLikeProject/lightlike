@@ -936,6 +936,7 @@ import Lightlike.FieldTheory.Gaussian.Measure
 import Lightlike.FieldTheory.Gaussian.Moments
 import Lightlike.FieldTheory.Gaussian.Mono
 import Lightlike.FieldTheory.Gaussian.Tests
+import Lightlike.FieldTheory.ZeroDim.FormalIntegral
 import Lightlike.GFT.Bubble
 import Lightlike.GFT.ColoredGraph
 import Lightlike.GFT.Dual
