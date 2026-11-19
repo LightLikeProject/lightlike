@@ -77,7 +77,7 @@ The null, weak, strong and dominant energy conditions are stated pointwise for a
 
 The divergence theorem on a manifold: for a metric of any signature, its Levi-Civita connection, a smooth vector field `X` vanishing outside a compact set and a measurable domain `D` given near every point of its closure by a defining function (`D = {u ≥ 0}`, `du ≠ 0` where `u = 0`), `∫_D div X d vol_g` is the flux of `X` through the boundary of `D`, written with a partition of unity subordinate to charts and graph charts of the boundary in each chart; a density `f · dV_g` is the case of the field `f X` [57]. In a chart, `√|g| ∇ₐXᵃ = ∂ⱼ(√|g| Xʲ)`, and the theorem in `ℝⁿ⁺¹` needs its hypothesis only on the support of the field [56] [57].
 
-Minkowski space is conformal to the region `0 < χ`, `|η| + χ < π` of the Einstein static universe: with `t = sin η / ω` and `r = sin χ / ω`, `ω = (cos η + cos χ)/2`, the metric `-dt² + dr² + r² dΩ²` is `ω⁻² (-dη² + dχ² + sin² χ dΩ²)`, and `(η, χ) ↦ (t, r)` maps that region bijectively onto `r > 0` [62].
+Minkowski space is conformal to the region `0 < χ`, `|η| + χ < π` of the Einstein static universe: with `t = sin η / ω` and `r = sin χ / ω`, `ω = (cos η + cos χ)/2`, the metric `-dt² + dr² + r² dΩ²` is `ω⁻² (-dη² + dχ² + sin² χ dΩ²)`, and `(η, χ) ↦ (t, r)` maps that region bijectively onto `r > 0` [62]. On the closed region the conformal factor vanishes exactly on the boundary `|η| + χ = π`, conformal infinity [62].
 
 ## Lean References
 
@@ -155,7 +155,7 @@ Minkowski space is conformal to the region `0 < χ`, `|η| + χ < π` of the Ein
 59. Lightlike/Spacetime/RaychaudhuriNull.lean - `covD_orthogonal_of_const`, `nullProj`, `nullB`, `nullShear`, `nullRotation`, `raychaudhuri_null_equation`, `nullShear_normSq_nonneg`, `nullRotation_eq_zero`, `raychaudhuri_null_focusing_at`, `raychaudhuri_null_focusing`: Raychaudhuri's equation and focusing for a null geodesic field in coordinates.
 60. Lightlike/Spacetime/RaychaudhuriNullManifold.lean - `screenProj`, `nullRotation_chart_eq_zero`, `raychaudhuri_null_focusing_manifold_at`, `raychaudhuri_null_focusing_manifold`: null geodesic focusing on a manifold.
 61. Lightlike/Spacetime/KillingMinkowski.lean - `eq_affine_of_skew_deriv`, `killing_eq_affField`, `finrank_skewEta`, `finrank_killingFields`: every `C²` Killing field of Minkowski space is affine with an η-skew linear part, and the Killing fields form a space of dimension `n (n + 1) / 2`.
-62. Lightlike/Spacetime/MinkowskiCompactification.lean - `compT`, `compR`, `compOmega`, `compRegion`, `compOmega_pos`, `hasDerivAt_compT_eta`, `sq_sub_sq_compDeriv`, `minkowski_eq_conformal_esu`, `bijOn_comp`: Minkowski space is conformal to a region of the Einstein static universe.
+62. Lightlike/Spacetime/MinkowskiCompactification.lean - `compT`, `compR`, `compOmega`, `compRegion`, `compOmega_pos`, `hasDerivAt_compT_eta`, `sq_sub_sq_compDeriv`, `minkowski_eq_conformal_esu`, `bijOn_comp`, `compOmega_eq_zero_iff`: Minkowski space is conformal to a region of the Einstein static universe.
 
 ## References
 
