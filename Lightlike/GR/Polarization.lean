@@ -17,7 +17,8 @@ Elvang-Huang (2.49)–(2.50) and Exercise 2.10(c): for a null momentum `p = −|
 ## References
 
 * H. Elvang, Y. Huang, *Scattering Amplitudes*, arXiv:1308.1697, §2.4: (2.49), p. 16, (2.50) and the
-  discussion of the reference spinor and the Ward identity, p. 17; Exercise 2.10, p. 17.
+  discussion of the reference spinor and the Ward identity, p. 17; Exercise 2.10, p. 17; the analytic
+  continuation `|−p⟩ = −|p⟩`, `|−p] = |p]` (3.15), p. 38.
 -/
 
 open Matrix Complex
@@ -191,7 +192,7 @@ theorem completeness_vec (l lt lq ltq : Fin 2 → ℂ) (h1 : angleBr ltq lt ≠ 
   fin_cases ν <;> simp at c0 c1 c2 c3 ⊢ <;>
     linear_combination (-u 0) * c0 + u 1 * c1 + u 2 * c2 + u 3 * c3
 
-/-- The spinors of `−p` (Elvang-Huang (3.14)–(3.15)): `|−p⟩ = −|p⟩`, `|−p] = |p]`. -/
+/-- The spinors of `−p` (the analytic continuation of Elvang-Huang (3.15), p. 38): `|−p⟩ = −|p⟩`, `|−p] = |p]`. -/
 lemma nullMom_neg_right (l lt : Fin 2 → ℂ) : nullMom l (-lt) = -nullMom l lt := by
   rw [nullMom_eq_momOf, nullMom_eq_momOf, ← momOf_smul, ← momOf_smul]
   funext μ

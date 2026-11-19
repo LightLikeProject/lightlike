@@ -7,18 +7,26 @@ For the colour-ordered gluon amplitudes of `ColourOrderedFeynman.lean` (the plan
 Elvang-Huang p. 22) and a planar channel `I = {i, …, j}` with momentum `P = p_i + ⋯ + p_j`:
 
 * `bgAmplitude_split`: **the amplitude is affine in the propagator `1/P²`**,
-  `A_n = A_n^{(no I)} + (1/P²) A_R(V_I)`, where `A_n^{(no I)}` is the planar sum without the diagrams of the
-  channel `I`, `V_I` is the amputated current of the gluons in `I`, and `A_R(v)` is the amplitude of the other gluons
-  and one merged gluon of momentum `P` and polarization `v` (every planar diagram contains the propagator of `I` at
-  most once, and the diagrams that contain it are the diagrams of the merged amplitude);
-* `residue_factorization`: **on the pole** (`P² = 0`), with the Ward identity of the two lower-point amplitudes as
+  `A_n = A_n^{(no I)} + (1/P²) A_R(V_I)`, where `A_n^{(no I)}` (`bgAmplitudeO … 0`) is the planar sum without the
+  diagrams of the channel `I`, `V_I` is the amputated current of the gluons in `I`, and `A_R(v)` is the amplitude of
+  the other gluons and one merged gluon of momentum `P` and polarization `v` (every planar diagram contains the
+  propagator of `I` at most once, and the diagrams that contain it are the diagrams of the merged amplitude;
+  `bgCurrentO_collapse`, by strong induction on the recursion);
+* `residue_factorization`: **on the pole** (`P² = 0`), with the Ward identities of the two lower-point amplitudes as
   the input that Elvang-Huang state (p. 17), the completeness relation of the polarization vectors turns
-  `A_R(V_I)` into `Σ_h A_L(…, −P^{−h}) A_R(P^h, …)`, the factorization (3.5).
+  `A_R(V_I)` into `Σ_h A_L(…, −P^{−h}) A_R(P^h, …)`;
+* the analytic structure (Elvang-Huang p. 35): the currents and amplitudes are holomorphic in the kinematics where no
+  propagator vanishes (`differentiableAt_bgCurrent`, `differentiableAt_bgAmplitude`; continuity:
+  `continuousAt_bgAmplitude`), and at a zero of one channel propagator the pole is simple, with residue the merged
+  amplitude (`tendsto_residue_channel`);
+* `residue_shift_factorization`: **Elvang-Huang (3.5)**, for every shift with `P̂_I²(z) = P_I² + z s` ((3.2)–(3.3)):
+  `Res_{z = z_I} Â_n(z)/z = −(1/P_I²) Σ_h Â_L(…, −P̂^{−h}) Â_R(P̂^h, …)`.
 
 ## References
 
-* H. Elvang, Y. Huang, *Scattering Amplitudes*, arXiv:1308.1697: the colour-ordered Feynman rules, p. 22; the Ward
-  identity, p. 17; the factorization of the residues (3.5), p. 35; the spinors of `−p` (3.14)–(3.15), p. 38.
+* H. Elvang, Y. Huang, *Scattering Amplitudes*, arXiv:1308.1697: the Ward identity, p. 17; the colour-ordered
+  Feynman rules, p. 22; the analytic structure, (3.2)–(3.5), p. 35; the analytic continuation of the spinors of
+  `−p`, (3.15), p. 38.
 -/
 
 open Matrix Complex
@@ -625,7 +633,7 @@ theorem bgAmplitude_left (p e : ℕ → Fin 4 → ℂ) {i j : ℕ} (hij : i < j)
 /-- **The residue of the planar amplitude on the pole of the channel `{i, …, j}` factorizes** (Elvang-Huang (3.5)):
 on the pole, `P = p_i + ⋯ + p_j = −|P]⟨P|` null, the merged amplitude with the amputated current `V_I` as the
 polarization of the merged gluon is `Σ_h A_L(…, −P^{−h}) A_R(P^h, …)`, with the polarization vectors (2.49) of
-reference `q` and the spinors `|−P⟩ = −|P⟩`, `|−P] = |P]` of `−P` ((3.14)–(3.15)). The inputs are the Ward
+reference `q` and the spinors `|−P⟩ = −|P⟩`, `|−P] = |P]` of `−P` ((3.15)). The inputs are the Ward
 identities (Elvang-Huang p. 17) of the left amplitude at its gluon `−P` and of the merged amplitude at the merged
 gluon. -/
 theorem residue_factorization (m : ℕ) (p e : ℕ → Fin 4 → ℂ) {i j : ℕ} (hij : i < j) (hj : j ≤ m + 1)
@@ -718,6 +726,347 @@ theorem residue_factorization (m : ℕ) (p e : ℕ → Fin 4 → ℂ) {i j : ℕ
   change AR V = _ * AR ep + _ * AR em
   rw [hAV, bgAmplitude_left p e hij, bgAmplitude_left p e hij, epsMinus_neg_right, epsPlus_neg_right,
     mdot_neg_left, mdot_neg_left, mdot_comm (em) V, mdot_comm ep V]
+  ring
+
+/-! ### The analytic structure: continuity away from the propagator poles -/
+
+section Continuity
+
+variable {X : Type*} [TopologicalSpace X] {x₀ : X}
+
+lemma continuousAt_sum_fun {ι E : Type*} [AddCommMonoid E] [TopologicalSpace E] [ContinuousAdd E]
+    (s : Finset ι) {F : ι → X → E} (h : ∀ c ∈ s, ContinuousAt (F c) x₀) :
+    ContinuousAt (fun x => ∑ c ∈ s, F c x) x₀ :=
+  tendsto_finsetSum s h
+
+lemma continuousAt_mdot {f g : X → Fin 4 → ℂ} (hf : ContinuousAt f x₀) (hg : ContinuousAt g x₀) :
+    ContinuousAt (fun x => mdot (f x) (g x)) x₀ := by
+  have h1 : ∀ μ, ContinuousAt (fun x => f x μ) x₀ := fun μ => (continuous_apply μ).continuousAt.comp hf
+  have h2 : ∀ μ, ContinuousAt (fun x => g x μ) x₀ := fun μ => (continuous_apply μ).continuousAt.comp hg
+  simp only [mdot]
+  exact ((((h1 0).neg.mul (h2 0)).add ((h1 1).mul (h2 1))).add ((h1 2).mul (h2 2))).add
+    ((h1 3).mul (h2 3))
+
+lemma continuousAt_vertex3 {a pa b pb : X → Fin 4 → ℂ} (ha : ContinuousAt a x₀) (hpa : ContinuousAt pa x₀)
+    (hb : ContinuousAt b x₀) (hpb : ContinuousAt pb x₀) :
+    ContinuousAt (fun x => vertex3 (a x) (pa x) (b x) (pb x)) x₀ := by
+  simp only [vertex3]
+  exact ((((continuousAt_mdot ha hb).smul hpa).add ((continuousAt_mdot ha hpb).smul hb)).add
+    ((continuousAt_mdot hb (hpa.add hpb).neg).smul ha)).const_smul (-((Real.sqrt 2 : ℝ) : ℂ))
+
+lemma continuousAt_vertex4 {a b c : X → Fin 4 → ℂ} (ha : ContinuousAt a x₀) (hb : ContinuousAt b x₀)
+    (hc : ContinuousAt c x₀) : ContinuousAt (fun x => vertex4 (a x) (b x) (c x)) x₀ :=
+  (continuousAt_mdot ha hc).smul hb
+
+lemma continuousAt_momRange {p : X → ℕ → Fin 4 → ℂ} (hp : ∀ t, ContinuousAt (fun x => p x t) x₀) (a b : ℕ) :
+    ContinuousAt (fun x => momRange (p x) a b) x₀ :=
+  continuousAt_sum_fun _ fun t _ => hp t
+
+lemma continuousAt_bgVertexSum {T : X → ℕ → ℕ → Fin 4 → ℂ} {p : X → ℕ → Fin 4 → ℂ} {a b : ℕ}
+    (hp : ∀ t, ContinuousAt (fun x => p x t) x₀)
+    (hT : ∀ c d, a ≤ c → c ≤ d → d ≤ b → d - c < b - a → ContinuousAt (fun x => T x c d) x₀) :
+    ContinuousAt (fun x => bgVertexSum (T x) (p x) a b) x₀ := by
+  unfold bgVertexSum
+  refine (continuousAt_sum_fun _ fun c hc => ?_).add (continuousAt_sum_fun _ fun c hc =>
+    continuousAt_sum_fun _ fun d hd => ?_)
+  · have hc := Finset.mem_Ico.1 hc
+    exact continuousAt_vertex3 (hT a c le_rfl hc.1 (by omega) (by omega)) (continuousAt_momRange hp a c)
+      (hT (c + 1) b (by omega) (by omega) le_rfl (by omega)) (continuousAt_momRange hp (c + 1) b)
+  · have hc := Finset.mem_Ico.1 hc
+    have hd := Finset.mem_Ico.1 hd
+    exact continuousAt_vertex4 (hT a c le_rfl hc.1 (by omega) (by omega))
+      (hT (c + 1) d (by omega) (by omega) (by omega) (by omega)) (hT (d + 1) b (by omega) (by omega) le_rfl (by omega))
+
+/-- **The currents are continuous where their propagators do not vanish.** -/
+theorem continuousAt_bgCurrent {p e : X → ℕ → Fin 4 → ℂ} (hp : ∀ t, ContinuousAt (fun x => p x t) x₀)
+    (he : ∀ t, ContinuousAt (fun x => e x t) x₀) :
+    ∀ n a b, b - a = n → a ≤ b →
+      (∀ c d, a ≤ c → c < d → d ≤ b → mdot (momRange (p x₀) c d) (momRange (p x₀) c d) ≠ 0) →
+      ContinuousAt (fun x => bgCurrent (p x) (e x) a b) x₀ := by
+  intro n
+  induction n using Nat.strong_induction_on with
+  | _ n ih =>
+    intro a b hn hab hprop
+    rcases Nat.eq_or_lt_of_le hab with rfl | hlt
+    · simpa using he a
+    · simp only [bgCurrent_of_lt _ _ hlt]
+      refine (continuousAt_const.div (continuousAt_mdot (continuousAt_momRange hp a b)
+        (continuousAt_momRange hp a b)) (hprop a b le_rfl hlt le_rfl)).smul ?_
+      exact continuousAt_bgVertexSum hp fun c d h1 h2 h3 h4 => ih (d - c) (by omega) c d rfl h2
+        fun c' d' h1' h2' h3' => hprop c' d' (by omega) h2' (by omega)
+
+/-- **The currents without the channel `[i, j]` are continuous where their other propagators do not vanish.** -/
+theorem continuousAt_bgCurrentO {p e : X → ℕ → Fin 4 → ℂ} (hp : ∀ t, ContinuousAt (fun x => p x t) x₀)
+    (he : ∀ t, ContinuousAt (fun x => e x t) x₀) (i j : ℕ) (v : Fin 4 → ℂ) :
+    ∀ n a b, b - a = n → a ≤ b →
+      (∀ c d, a ≤ c → c < d → d ≤ b → ¬ (c = i ∧ d = j) →
+        mdot (momRange (p x₀) c d) (momRange (p x₀) c d) ≠ 0) →
+      ContinuousAt (fun x => bgCurrentO (p x) (e x) i j v a b) x₀ := by
+  intro n
+  induction n using Nat.strong_induction_on with
+  | _ n ih =>
+    intro a b hn hab hprop
+    by_cases h : a = i ∧ b = j
+    · obtain ⟨rfl, rfl⟩ := h
+      simp only [bgCurrentO_override]
+      exact continuousAt_const
+    rcases Nat.eq_or_lt_of_le hab with rfl | hlt
+    · simp only [bgCurrentO_self _ _ v h]
+      exact he a
+    · simp only [bgCurrentO_of_lt _ _ v hlt h]
+      refine (continuousAt_const.div (continuousAt_mdot (continuousAt_momRange hp a b)
+        (continuousAt_momRange hp a b)) (hprop a b le_rfl hlt le_rfl h)).smul ?_
+      exact continuousAt_bgVertexSum hp fun c d h1 h2 h3 h4 => ih (d - c) (by omega) c d rfl h2
+        fun c' d' h1' h2' h3' h4' => hprop c' d' (by omega) h2' (by omega) h4'
+
+/-- **The amplitude is continuous where its propagators do not vanish.** -/
+theorem continuousAt_bgAmplitude (m : ℕ) {p e : X → ℕ → Fin 4 → ℂ}
+    (hp : ∀ t, ContinuousAt (fun x => p x t) x₀) (he : ∀ t, ContinuousAt (fun x => e x t) x₀)
+    (hprop : ∀ c d, c < d → d ≤ m + 1 → ¬ (c = 0 ∧ d = m + 1) →
+      mdot (momRange (p x₀) c d) (momRange (p x₀) c d) ≠ 0) :
+    ContinuousAt (fun x => bgAmplitude m (p x) (e x)) x₀ := by
+  simp only [bgAmplitude]
+  exact continuousAt_mdot (he (m + 2)) (continuousAt_bgVertexSum hp fun c d h1 h2 h3 h4 =>
+    continuousAt_bgCurrent hp he (d - c) c d rfl h2 fun c' d' h1' h2' h3' =>
+      hprop c' d' h2' (by omega) (by omega))
+
+theorem continuousAt_bgAmplitudeO (m : ℕ) {p e : X → ℕ → Fin 4 → ℂ}
+    (hp : ∀ t, ContinuousAt (fun x => p x t) x₀) (he : ∀ t, ContinuousAt (fun x => e x t) x₀)
+    (i j : ℕ) (v : Fin 4 → ℂ)
+    (hprop : ∀ c d, c < d → d ≤ m + 1 → ¬ (c = 0 ∧ d = m + 1) → ¬ (c = i ∧ d = j) →
+      mdot (momRange (p x₀) c d) (momRange (p x₀) c d) ≠ 0) :
+    ContinuousAt (fun x => bgAmplitudeO m (p x) (e x) i j v) x₀ := by
+  simp only [bgAmplitudeO]
+  exact continuousAt_mdot (he (m + 2)) (continuousAt_bgVertexSum hp fun c d h1 h2 h3 h4 =>
+    continuousAt_bgCurrentO hp he i j v (d - c) c d rfl h2 fun c' d' h1' h2' h3' h4' =>
+      hprop c' d' h2' (by omega) (by omega) h4')
+
+end Continuity
+
+section Holomorphy
+
+variable {x₀ : ℂ}
+
+lemma differentiableAt_sum_fun {ι : Type*} (s : Finset ι) {F : ι → ℂ → Fin 4 → ℂ}
+    (h : ∀ c ∈ s, DifferentiableAt ℂ (F c) x₀) : DifferentiableAt ℂ (fun x => ∑ c ∈ s, F c x) x₀ :=
+  DifferentiableAt.fun_sum h
+
+lemma differentiableAt_mdot {f g : ℂ → Fin 4 → ℂ} (hf : DifferentiableAt ℂ f x₀) (hg : DifferentiableAt ℂ g x₀) :
+    DifferentiableAt ℂ (fun x => mdot (f x) (g x)) x₀ := by
+  have h1 : ∀ μ, DifferentiableAt ℂ (fun x => f x μ) x₀ := fun μ => differentiableAt_pi.1 hf μ
+  have h2 : ∀ μ, DifferentiableAt ℂ (fun x => g x μ) x₀ := fun μ => differentiableAt_pi.1 hg μ
+  simp only [mdot]
+  exact ((((h1 0).neg.mul (h2 0)).add ((h1 1).mul (h2 1))).add ((h1 2).mul (h2 2))).add
+    ((h1 3).mul (h2 3))
+
+lemma differentiableAt_vertex3 {a pa b pb : ℂ → Fin 4 → ℂ} (ha : DifferentiableAt ℂ a x₀) (hpa : DifferentiableAt ℂ pa x₀)
+    (hb : DifferentiableAt ℂ b x₀) (hpb : DifferentiableAt ℂ pb x₀) :
+    DifferentiableAt ℂ (fun x => vertex3 (a x) (pa x) (b x) (pb x)) x₀ := by
+  simp only [vertex3]
+  exact ((((differentiableAt_mdot ha hb).smul hpa).add ((differentiableAt_mdot ha hpb).smul hb)).add
+    ((differentiableAt_mdot hb (hpa.add hpb).neg).smul ha)).const_smul (-((Real.sqrt 2 : ℝ) : ℂ))
+
+lemma differentiableAt_vertex4 {a b c : ℂ → Fin 4 → ℂ} (ha : DifferentiableAt ℂ a x₀) (hb : DifferentiableAt ℂ b x₀)
+    (hc : DifferentiableAt ℂ c x₀) : DifferentiableAt ℂ (fun x => vertex4 (a x) (b x) (c x)) x₀ :=
+  (differentiableAt_mdot ha hc).smul hb
+
+lemma differentiableAt_momRange {p : ℂ → ℕ → Fin 4 → ℂ} (hp : ∀ t, DifferentiableAt ℂ (fun x => p x t) x₀) (a b : ℕ) :
+    DifferentiableAt ℂ (fun x => momRange (p x) a b) x₀ :=
+  differentiableAt_sum_fun _ fun t _ => hp t
+
+lemma differentiableAt_bgVertexSum {T : ℂ → ℕ → ℕ → Fin 4 → ℂ} {p : ℂ → ℕ → Fin 4 → ℂ} {a b : ℕ}
+    (hp : ∀ t, DifferentiableAt ℂ (fun x => p x t) x₀)
+    (hT : ∀ c d, a ≤ c → c ≤ d → d ≤ b → d - c < b - a → DifferentiableAt ℂ (fun x => T x c d) x₀) :
+    DifferentiableAt ℂ (fun x => bgVertexSum (T x) (p x) a b) x₀ := by
+  unfold bgVertexSum
+  refine (differentiableAt_sum_fun _ fun c hc => ?_).add (differentiableAt_sum_fun _ fun c hc =>
+    differentiableAt_sum_fun _ fun d hd => ?_)
+  · have hc := Finset.mem_Ico.1 hc
+    exact differentiableAt_vertex3 (hT a c le_rfl hc.1 (by omega) (by omega)) (differentiableAt_momRange hp a c)
+      (hT (c + 1) b (by omega) (by omega) le_rfl (by omega)) (differentiableAt_momRange hp (c + 1) b)
+  · have hc := Finset.mem_Ico.1 hc
+    have hd := Finset.mem_Ico.1 hd
+    exact differentiableAt_vertex4 (hT a c le_rfl hc.1 (by omega) (by omega))
+      (hT (c + 1) d (by omega) (by omega) (by omega) (by omega)) (hT (d + 1) b (by omega) (by omega) le_rfl (by omega))
+
+/-- **The currents are holomorphic where their propagators do not vanish** (Elvang-Huang p. 35: no branch
+cuts; the only singularities come from the propagators). -/
+theorem differentiableAt_bgCurrent {p e : ℂ → ℕ → Fin 4 → ℂ} (hp : ∀ t, DifferentiableAt ℂ (fun x => p x t) x₀)
+    (he : ∀ t, DifferentiableAt ℂ (fun x => e x t) x₀) :
+    ∀ n a b, b - a = n → a ≤ b →
+      (∀ c d, a ≤ c → c < d → d ≤ b → mdot (momRange (p x₀) c d) (momRange (p x₀) c d) ≠ 0) →
+      DifferentiableAt ℂ (fun x => bgCurrent (p x) (e x) a b) x₀ := by
+  intro n
+  induction n using Nat.strong_induction_on with
+  | _ n ih =>
+    intro a b hn hab hprop
+    rcases Nat.eq_or_lt_of_le hab with rfl | hlt
+    · simpa using he a
+    · simp only [bgCurrent_of_lt _ _ hlt]
+      refine ((differentiableAt_const (1 : ℂ)).div (differentiableAt_mdot (differentiableAt_momRange hp a b)
+        (differentiableAt_momRange hp a b)) (hprop a b le_rfl hlt le_rfl)).smul ?_
+      exact differentiableAt_bgVertexSum hp fun c d h1 h2 h3 h4 => ih (d - c) (by omega) c d rfl h2
+        fun c' d' h1' h2' h3' => hprop c' d' (by omega) h2' (by omega)
+
+/-- The currents without the channel `[i, j]` are holomorphic where their other propagators do not vanish. -/
+theorem differentiableAt_bgCurrentO {p e : ℂ → ℕ → Fin 4 → ℂ} (hp : ∀ t, DifferentiableAt ℂ (fun x => p x t) x₀)
+    (he : ∀ t, DifferentiableAt ℂ (fun x => e x t) x₀) (i j : ℕ) (v : Fin 4 → ℂ) :
+    ∀ n a b, b - a = n → a ≤ b →
+      (∀ c d, a ≤ c → c < d → d ≤ b → ¬ (c = i ∧ d = j) →
+        mdot (momRange (p x₀) c d) (momRange (p x₀) c d) ≠ 0) →
+      DifferentiableAt ℂ (fun x => bgCurrentO (p x) (e x) i j v a b) x₀ := by
+  intro n
+  induction n using Nat.strong_induction_on with
+  | _ n ih =>
+    intro a b hn hab hprop
+    by_cases h : a = i ∧ b = j
+    · obtain ⟨rfl, rfl⟩ := h
+      simp only [bgCurrentO_override]
+      exact differentiableAt_const _
+    rcases Nat.eq_or_lt_of_le hab with rfl | hlt
+    · simp only [bgCurrentO_self _ _ v h]
+      exact he a
+    · simp only [bgCurrentO_of_lt _ _ v hlt h]
+      refine ((differentiableAt_const (1 : ℂ)).div (differentiableAt_mdot (differentiableAt_momRange hp a b)
+        (differentiableAt_momRange hp a b)) (hprop a b le_rfl hlt le_rfl h)).smul ?_
+      exact differentiableAt_bgVertexSum hp fun c d h1 h2 h3 h4 => ih (d - c) (by omega) c d rfl h2
+        fun c' d' h1' h2' h3' h4' => hprop c' d' (by omega) h2' (by omega) h4'
+
+/-- **The amplitude is holomorphic where its propagators do not vanish** (Elvang-Huang p. 35). -/
+theorem differentiableAt_bgAmplitude (m : ℕ) {p e : ℂ → ℕ → Fin 4 → ℂ}
+    (hp : ∀ t, DifferentiableAt ℂ (fun x => p x t) x₀) (he : ∀ t, DifferentiableAt ℂ (fun x => e x t) x₀)
+    (hprop : ∀ c d, c < d → d ≤ m + 1 → ¬ (c = 0 ∧ d = m + 1) →
+      mdot (momRange (p x₀) c d) (momRange (p x₀) c d) ≠ 0) :
+    DifferentiableAt ℂ (fun x => bgAmplitude m (p x) (e x)) x₀ := by
+  simp only [bgAmplitude]
+  exact differentiableAt_mdot (he (m + 2)) (differentiableAt_bgVertexSum hp fun c d h1 h2 h3 h4 =>
+    differentiableAt_bgCurrent hp he (d - c) c d rfl h2 fun c' d' h1' h2' h3' =>
+      hprop c' d' h2' (by omega) (by omega))
+
+theorem differentiableAt_bgAmplitudeO (m : ℕ) {p e : ℂ → ℕ → Fin 4 → ℂ}
+    (hp : ∀ t, DifferentiableAt ℂ (fun x => p x t) x₀) (he : ∀ t, DifferentiableAt ℂ (fun x => e x t) x₀)
+    (i j : ℕ) (v : Fin 4 → ℂ)
+    (hprop : ∀ c d, c < d → d ≤ m + 1 → ¬ (c = 0 ∧ d = m + 1) → ¬ (c = i ∧ d = j) →
+      mdot (momRange (p x₀) c d) (momRange (p x₀) c d) ≠ 0) :
+    DifferentiableAt ℂ (fun x => bgAmplitudeO m (p x) (e x) i j v) x₀ := by
+  simp only [bgAmplitudeO]
+  exact differentiableAt_mdot (he (m + 2)) (differentiableAt_bgVertexSum hp fun c d h1 h2 h3 h4 =>
+    differentiableAt_bgCurrentO hp he i j v (d - c) c d rfl h2 fun c' d' h1' h2' h3' h4' =>
+      hprop c' d' h2' (by omega) (by omega) h4')
+
+end Holomorphy
+
+/-! ### The simple pole of a channel and its residue -/
+
+open Filter Topology
+
+/-- **The pole of the channel `{i, …, j}` is simple, with the merged amplitude as its residue**: along a one-parameter
+family of kinematics on which `P̂_I²(z) = s (z − z₀)` (`s ≠ 0`) and the other propagators do not vanish at `z₀`,
+`(z − z₀) Â_n(z) → A_R(V_I)(z₀)/s` as `z → z₀`. -/
+theorem tendsto_residue_channel (m : ℕ) (p e : ℂ → ℕ → Fin 4 → ℂ) {i j : ℕ} (hij : i < j) (hj : j ≤ m + 1)
+    (hk : j - i ≤ m) {z₀ s : ℂ} (hs : s ≠ 0)
+    (hp : ∀ t, ContinuousAt (fun z => p z t) z₀) (he : ∀ t, ContinuousAt (fun z => e z t) z₀)
+    (hpole : ∀ z, mdot (momRange (p z) i j) (momRange (p z) i j) = s * (z - z₀))
+    (hother : ∀ c d, c < d → d ≤ m + 1 → ¬ (c = 0 ∧ d = m + 1) → ¬ (c = i ∧ d = j) →
+      mdot (momRange (p z₀) c d) (momRange (p z₀) c d) ≠ 0) :
+    Tendsto (fun z => (z - z₀) * bgAmplitude m (p z) (e z)) (𝓝[≠] z₀)
+      (𝓝 (bgAmplitude (m - (j - i)) (collapse (p z₀) i j (momRange (p z₀) i j))
+        (collapse (e z₀) i j (bgVertexSum (bgCurrent (p z₀) (e z₀)) (p z₀) i j)) / s)) := by
+  set R : ℂ → ℂ := fun z => bgAmplitude (m - (j - i)) (collapse (p z) i j (momRange (p z) i j))
+    (collapse (e z) i j (bgVertexSum (bgCurrent (p z) (e z)) (p z) i j)) with hRdef
+  set N : ℂ → ℂ := fun z => bgAmplitudeO m (p z) (e z) i j 0 with hNdef
+  have hsplit : ∀ z, z ≠ z₀ → (z - z₀) * bgAmplitude m (p z) (e z) = (z - z₀) * N z + R z / s := by
+    intro z hz
+    have hz' : z - z₀ ≠ 0 := sub_ne_zero.2 hz
+    rw [bgAmplitude_split m (p z) (e z) hij hj hk, hpole z]
+    simp only [hNdef, hRdef]
+    field_simp
+  have hN : ContinuousAt N z₀ := continuousAt_bgAmplitudeO m hp he i j 0 hother
+  have hV : ContinuousAt (fun z => bgVertexSum (bgCurrent (p z) (e z)) (p z) i j) z₀ :=
+    continuousAt_bgVertexSum hp fun c d h1 h2 h3 h4 => continuousAt_bgCurrent hp he (d - c) c d rfl h2
+      fun c' d' h1' h2' h3' => hother c' d' h2' (by omega) (by omega) (by omega)
+  have hp' : ∀ t, ContinuousAt (fun z => collapse (p z) i j (momRange (p z) i j) t) z₀ := by
+    intro t
+    rcases lt_trichotomy t i with h | rfl | h
+    · simp only [collapse_of_lt _ _ h]; exact hp t
+    · simp only [collapse_self]; exact continuousAt_momRange hp t j
+    · simp only [collapse_of_gt _ _ h]; exact hp _
+  have he' : ∀ t, ContinuousAt (fun z => collapse (e z) i j
+      (bgVertexSum (bgCurrent (p z) (e z)) (p z) i j) t) z₀ := by
+    intro t
+    rcases lt_trichotomy t i with h | rfl | h
+    · simp only [collapse_of_lt _ _ h]; exact he t
+    · simp only [collapse_self]; exact hV
+    · simp only [collapse_of_gt _ _ h]; exact he _
+  have hR : ContinuousAt R z₀ := by
+    refine continuousAt_bgAmplitude (m - (j - i)) hp' he' fun c d h1 h2 h3 => ?_
+    rcases lt_or_ge d i with hd | hd
+    · rw [momRange_collapse_left _ _ hd]
+      exact hother c d h1 (by omega) (by omega) (by omega)
+    rcases lt_or_ge i c with hc | hc
+    · rw [momRange_collapse_right _ _ hc]
+      exact hother _ _ (by omega) (by omega) (by omega) (by omega)
+    · rw [momRange_collapse _ hij.le hc hd]
+      exact hother _ _ (by omega) (by omega) (by omega) (by omega)
+  have hlim : Tendsto (fun z => (z - z₀) * N z + R z / s) (𝓝 z₀) (𝓝 (R z₀ / s)) := by
+    have hc : ContinuousAt (fun z => (z - z₀) * N z + R z / s) z₀ :=
+      ((continuousAt_id.sub (continuousAt_const (y := z₀))).mul hN).add (hR.div_const s)
+    simpa using hc.tendsto
+  refine (hlim.mono_left nhdsWithin_le_nhds).congr' ?_
+  filter_upwards [self_mem_nhdsWithin] with z hz
+  exact (hsplit z hz).symm
+
+/-- **Elvang-Huang (3.5)**: for a shift of the kinematics on which the channel momentum squared is linear,
+`P̂_I²(z) = P_I² + z s` ((3.2), `s = 2 P_I · R_I ≠ 0`), with the pole at `z_I`, `P_I² + z_I s = 0` ((3.3)), and the other
+propagators nonvanishing at `z_I`, the residue of `Â_n(z)/z` at `z_I` is
+`−(1/P_I²) Σ_h Â_L(…, −P̂^{−h}) Â_R(P̂^h, …)` at `z = z_I`, given the Ward identities of the two subamplitudes
+(Elvang-Huang p. 17) and transverse polarizations at `z_I`. -/
+theorem residue_shift_factorization (m : ℕ) (p e : ℂ → ℕ → Fin 4 → ℂ) {i j : ℕ} (hij : i < j)
+    (hj : j ≤ m + 1) (hk : j - i ≤ m) {zI s : ℂ} (hs : s ≠ 0)
+    (hP0 : mdot (momRange (p 0) i j) (momRange (p 0) i j) ≠ 0)
+    (hpole : ∀ z, mdot (momRange (p z) i j) (momRange (p z) i j) =
+      mdot (momRange (p 0) i j) (momRange (p 0) i j) + z * s)
+    (hzI : mdot (momRange (p 0) i j) (momRange (p 0) i j) + zI * s = 0)
+    (hp : ∀ t, ContinuousAt (fun z => p z t) zI) (he : ∀ t, ContinuousAt (fun z => e z t) zI)
+    (hother : ∀ c d, c < d → d ≤ m + 1 → ¬ (c = 0 ∧ d = m + 1) → ¬ (c = i ∧ d = j) →
+      mdot (momRange (p zI) c d) (momRange (p zI) c d) ≠ 0)
+    (lP ltP lq ltq : Fin 2 → ℂ) (hP : momRange (p zI) i j = nullMom lP ltP)
+    (hq1 : angleBr ltq ltP ≠ 0) (hq2 : squareBr lq lP ≠ 0)
+    (hnull : ∀ t ≤ m + 2, mdot (p zI t) (p zI t) = 0) (hcons : momRange (p zI) 0 (m + 2) = 0)
+    (htr : ∀ t ≤ m + 2, mdot (e zI t) (p zI t) = 0)
+    (hWL : WardIdentity (j - i - 1) (j - i + 1)) (hWR : WardIdentity (m - (j - i)) i) :
+    Tendsto (fun z => (z - zI) * (bgAmplitude m (p z) (e z) / z)) (𝓝[≠] zI)
+      (𝓝 (-(1 / mdot (momRange (p 0) i j) (momRange (p 0) i j)) *
+        (bgAmplitude (j - i - 1) (leftMom (p zI) i j (-momRange (p zI) i j))
+            (leftPol (e zI) i j (epsMinus lP (-ltP) lq)) *
+          bgAmplitude (m - (j - i)) (collapse (p zI) i j (momRange (p zI) i j))
+            (collapse (e zI) i j (epsPlus lP ltP ltq)) +
+        bgAmplitude (j - i - 1) (leftMom (p zI) i j (-momRange (p zI) i j))
+            (leftPol (e zI) i j (epsPlus lP (-ltP) ltq)) *
+          bgAmplitude (m - (j - i)) (collapse (p zI) i j (momRange (p zI) i j))
+            (collapse (e zI) i j (epsMinus lP ltP lq))))) := by
+  set P2 := mdot (momRange (p 0) i j) (momRange (p 0) i j) with hP2
+  have hzI0 : zI ≠ 0 := by
+    rintro rfl
+    exact hP0 (by simpa using hzI)
+  have hpole' : ∀ z, mdot (momRange (p z) i j) (momRange (p z) i j) = s * (z - zI) := by
+    intro z
+    rw [hpole z]
+    linear_combination hzI
+  have h1 := tendsto_residue_channel m p e hij hj hk hs hp he hpole' hother
+  have h2 : Tendsto (fun z : ℂ => z⁻¹) (𝓝[≠] zI) (𝓝 zI⁻¹) :=
+    ((continuousAt_inv₀ hzI0).tendsto).mono_left nhdsWithin_le_nhds
+  rw [← residue_factorization m (p zI) (e zI) hij hj hk lP ltP lq ltq hP hq1 hq2 hnull hcons htr hWL hWR]
+  have h3 := h1.mul h2
+  have heq : ∀ R : ℂ, R / s * zI⁻¹ = -(1 / P2) * R := by
+    intro R
+    have hsz : s * zI = -P2 := by linear_combination hzI
+    have hP2' : P2 ≠ 0 := hP0
+    field_simp
+    linear_combination R * hsz
+  rw [heq] at h3
+  refine h3.congr fun z => ?_
+  simp only [div_eq_mul_inv]
   ring
 
 end Lightlike.SpinorHelicity
