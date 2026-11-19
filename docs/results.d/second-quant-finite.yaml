@@ -26,3 +26,4 @@
       - {ref: derezinski-2006, location: "Theorem 18, p. 22", check: "Theorem 18"}
   review: kernel-checked
   note: "Compared with Dereziński, arXiv:math-ph/0511030, Theorem 13 (1), p. 19 and Theorem 18 (2), (4), p. 22 (read). Here Z is any complex inner product space, a* is linear and a antilinear on Z with the CAR or the CCR in an algebra over ℂ, and h = ∑ₖ |uₖ⟩⟨vₖ| has finite rank, where the source allows every h ∈ B(Z)."
+  since: unreleased
