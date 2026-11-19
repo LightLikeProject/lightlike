@@ -2,7 +2,7 @@
   title: The spectral theorem for compact self-adjoint operators, a Hilbert basis of eigenvectors with real eigenvalues, the expansion K x = sum of mu_i <b_i, x> b_i, and countably many eigenvalues that can only cluster at 0
   area: OperatorAlgebras
   file: Lightlike/OperatorAlgebras/Spectral/Compact.lean
-  decls: [Lightlike.OperatorAlgebras.CompactSpectral.exists_hilbertBasis_eigenvectors, Lightlike.OperatorAlgebras.CompactSpectral.hasSum_eigen, Lightlike.OperatorAlgebras.CompactSpectral.finite_eigenvalues_ge, Lightlike.OperatorAlgebras.CompactSpectral.countable_eigenvalues, Lightlike.OperatorAlgebras.CompactSpectral.countable_spectrum, Lightlike.OperatorAlgebras.CompactSpectral.hasEigenvalue_of_mem_spectrum, Lightlike.OperatorAlgebras.CompactSpectral.finiteDimensional_eigenspace, Lightlike.OperatorAlgebras.CompactSpectral.isCompactOperator_of_isHilbertSchmidt]
+  decls: [Lightlike.OperatorAlgebras.CompactSpectral.exists_hilbertBasis_eigenvectors, Lightlike.OperatorAlgebras.CompactSpectral.hasSum_eigen, Lightlike.OperatorAlgebras.CompactSpectral.finite_eigenvalues_ge, Lightlike.OperatorAlgebras.CompactSpectral.countable_eigenvalues, Lightlike.OperatorAlgebras.CompactSpectral.countable_spectrum, Lightlike.OperatorAlgebras.CompactSpectral.hasEigenvalue_of_mem_spectrum, Lightlike.OperatorAlgebras.CompactSpectral.finiteDimensional_eigenspace]
   status: proven
   tier: established
   source:
