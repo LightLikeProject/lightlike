@@ -1,0 +1,240 @@
+import Lightlike.Gauge.DiracAlgo
+import Lightlike.Gauge.DiracTangent
+import Mathlib.LinearAlgebra.Dual.Lemmas
+
+/-!
+# The secondary constraints do not depend on the selected block
+
+A. Wipf, *Hamilton's Formalism for Systems with Constraints*, arXiv:hep-th/9312078, Section 3.3 (read), p. 16: "In this case
+`u` is not fixed and 3.24 is only solvable if `h_m w^m_a ≈ 0` for all left null-eigenvectors `w_a` of `C`", and p. 17: "For
+every left null-eigenvector `w^j_a` of the rectangular matrix `C_jm = {φ_j, φ_m}` the conditions `w^j_a {φ_j, H} ≈ 0` are
+fulfilled ... we assume that the rank of `C` is constant on `Γ_c`."
+
+`DiracAlgo.stages` computes the secondary constraints `χ = h₂ - D B⁻¹ h₁` from a selected invertible block `B` of the
+consistency matrix (a chart). At a point where a selection is admissible (its block invertible, its Schur complement zero,
+which constant rank gives), `χ = 0` is equivalent to the solvability of the full consistency system
+`{S_i, H} + ∑_a {S_i, φ_a} u_a = 0`, which does not mention the selection, and that is equivalent to Wipf's condition
+`w · h = 0` for every left null vector `w` of `C`. So two admissible selections give the same next constraint set near a point
+of the surface: the pointwise `hcover` statement does not depend on the chart.
+
+* `Sel.Admissible`, `Stage.Consistent`, `Stage.consistency_translate_symm`;
+* `Stage.chiFun_zero_iff`, `Stage.chiFun_zero_iff_of_admissible`, `Stage.zeroSet_next_inter`: chart independence;
+* `exists_mulVec_add_eq_zero_iff`, `Stage.consistent_iff_leftNull`, `Stage.chiFun_zero_iff_leftNull`: Wipf's left
+  null-eigenvector form;
+* `exists_coeff_of_ker`, `Stage.consistent_iff_of_zeroSet_eq`, `zeroSet_stages_eq`: for a first-order bracket
+  `br f g x = B x (df x) (dg x)` (the canonical Poisson bracket has this form) and regular stages, consistency depends only on
+  the conormal space, so two admissible selection rules give the same constraint surface at every stage.
+-/
+
+namespace Lightlike.Gauge
+
+open Matrix
+
+variable {E : Type*} {M : ℕ}
+
+/-- **An admissible selection at `x`**: its block is invertible and its Schur complement vanishes (the local form of
+constant rank, `DiracSchur.schur_eq_zero_of_rank_le_block`). -/
+def Sel.Admissible (br : (E → ℝ) → (E → ℝ) → E → ℝ) (φ : Fin M → E → ℝ) {S : Stage E} (σ : Sel S M) (x : E) : Prop :=
+  IsUnit (S.consCm br φ σ x).toBlocks₁₁.det ∧
+    (S.consCm br φ σ x).toBlocks₂₂ =
+      (S.consCm br φ σ x).toBlocks₂₁ * (S.consCm br φ σ x).toBlocks₁₁⁻¹ * (S.consCm br φ σ x).toBlocks₁₂
+
+/-- **The consistency condition at `x`**, without a selection: `{S_i, H} + ∑_a {S_i, φ_a} u_a = 0` is solvable. -/
+def Stage.Consistent (br : (E → ℝ) → (E → ℝ) → E → ℝ) (φ : Fin M → E → ℝ) (H : E → ℝ) (S : Stage E) (x : E) : Prop :=
+  ∃ u : Fin M → ℝ, ∀ i : Fin S.n, br (S.Φ i) H x + ∑ a, br (S.Φ i) (φ a) x * u a = 0
+
+/-- The consistency system in any selected splitting follows from the selection-free one. -/
+theorem Stage.consistency_translate_symm (br : (E → ℝ) → (E → ℝ) → E → ℝ) (φ : Fin M → E → ℝ) (H : E → ℝ)
+    (S : Stage E) (σ : Sel S M) (x : E) (h : S.Consistent br φ H x) :
+    ∃ u' : Fin σ.r ⊕ Fin σ.l → ℝ, S.consCm br φ σ x *ᵥ u' + S.consH br H σ x = 0 := by
+  obtain ⟨u, hu⟩ := h
+  refine ⟨u ∘ σ.eC.symm, ?_⟩
+  funext i
+  have h1 := hu (σ.eR.symm i)
+  simp only [Pi.add_apply, Matrix.mulVec, dotProduct, Stage.consCm, Stage.consH, Matrix.of_apply, Pi.zero_apply,
+    Function.comp_apply]
+  rw [Equiv.sum_comp σ.eC.symm (fun a => br (S.Φ (σ.eR.symm i)) (φ a) x * u a)]
+  linarith
+
+/-- **The secondary constraints vanish exactly where the consistency system is solvable**, for an admissible selection. -/
+theorem Stage.chiFun_zero_iff (br : (E → ℝ) → (E → ℝ) → E → ℝ) (φ : Fin M → E → ℝ) (H : E → ℝ) (S : Stage E)
+    {σ : Sel S M} {x : E} (hσ : σ.Admissible br φ x) :
+    (∀ j, S.chiFun br φ H σ j x = 0) ↔ S.Consistent br φ H x := by
+  have key := exists_multiplier_iff_chi (S.consCm br φ σ) (S.consH br H σ) hσ.1 hσ.2
+  constructor
+  · intro h
+    obtain ⟨u', hu'⟩ := key.mpr (funext h)
+    exact S.consistency_translate br φ H σ x u' hu'
+  · intro h j
+    exact congrFun (key.mp (S.consistency_translate_symm br φ H σ x h)) j
+
+/-- **Chart independence**: two selections admissible at `x` give the same condition `χ(x) = 0`. -/
+theorem Stage.chiFun_zero_iff_of_admissible (br : (E → ℝ) → (E → ℝ) → E → ℝ) (φ : Fin M → E → ℝ) (H : E → ℝ)
+    (S : Stage E) {σ σ' : Sel S M} {x : E} (hσ : σ.Admissible br φ x) (hσ' : σ'.Admissible br φ x) :
+    (∀ j, S.chiFun br φ H σ j x = 0) ↔ ∀ j, S.chiFun br φ H σ' j x = 0 :=
+  (S.chiFun_zero_iff br φ H hσ).trans (S.chiFun_zero_iff br φ H hσ').symm
+
+/-- **The next constraint set does not depend on the chart**: on a set where two selections are admissible, the next stages
+built from them have the same zero set. -/
+theorem Stage.zeroSet_next_inter [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
+    (br : (E → ℝ) → (E → ℝ) → E → ℝ) (φ : Fin M → E → ℝ) (H : E → ℝ) (S : Stage E)
+    {σ σ' : Sel S M} {U : Set E} (hσ : ∀ x ∈ U, σ.Admissible br φ x) (hσ' : ∀ x ∈ U, σ'.Admissible br φ x) :
+    zeroSet (S.next br φ H σ).Φ ∩ U = zeroSet (S.next br φ H σ').Φ ∩ U := by
+  ext x
+  show x ∈ zeroSet (appendStage S.Φ (S.chiFun br φ H σ)) ∩ U ↔ x ∈ zeroSet (appendStage S.Φ (S.chiFun br φ H σ')) ∩ U
+  rw [zeroSet_appendStage, zeroSet_appendStage]
+  simp only [Set.mem_inter_iff]
+  constructor
+  · rintro ⟨⟨hS, hχ⟩, hU⟩
+    exact ⟨⟨hS, (S.chiFun_zero_iff_of_admissible br φ H (hσ x hU) (hσ' x hU)).mp hχ⟩, hU⟩
+  · rintro ⟨⟨hS, hχ⟩, hU⟩
+    exact ⟨⟨hS, (S.chiFun_zero_iff_of_admissible br φ H (hσ x hU) (hσ' x hU)).mpr hχ⟩, hU⟩
+
+/-- **The Fredholm alternative**: `C u + h = 0` is solvable iff `w · h = 0` for every left null vector `w` of `C`. -/
+theorem exists_mulVec_add_eq_zero_iff {n m : ℕ} (C : Matrix (Fin n) (Fin m) ℝ) (h : Fin n → ℝ) :
+    (∃ u, C *ᵥ u + h = 0) ↔ ∀ w : Fin n → ℝ, w ᵥ* C = 0 → w ⬝ᵥ h = 0 := by
+  constructor
+  · rintro ⟨u, hu⟩ w hw
+    rw [eq_neg_of_add_eq_zero_right hu, dotProduct_neg, Matrix.dotProduct_mulVec, hw, zero_dotProduct, neg_zero]
+  · intro hw
+    have hmem : -h ∈ LinearMap.range (Matrix.mulVecLin C) := by
+      refine (Subspace.forall_mem_dualAnnihilator_apply_eq_zero_iff _ (-h)).mp fun f hf => ?_
+      set w : Fin n → ℝ := fun i => f (Pi.single i 1) with hw'
+      have hfw : ∀ v, f v = w ⬝ᵥ v := fun v => by
+        conv_lhs => rw [← Finset.univ_sum_single v]
+        rw [map_sum]
+        simp only [dotProduct, hw']
+        refine Finset.sum_congr rfl fun i _ => ?_
+        rw [show Pi.single i (v i) = v i • Pi.single i (1 : ℝ) by
+          ext j; by_cases hij : j = i <;> simp [Pi.single_apply, hij], map_smul, smul_eq_mul, mul_comm]
+      have hwC : w ᵥ* C = 0 := by
+        funext a
+        have h0 := (Submodule.mem_dualAnnihilator f).mp hf (C *ᵥ Pi.single a 1) ⟨Pi.single a 1, rfl⟩
+        rw [hfw, Matrix.dotProduct_mulVec] at h0
+        simpa [dotProduct_single] using h0
+      rw [hfw, dotProduct_neg, hw w hwC, neg_zero]
+    obtain ⟨u, hu⟩ := hmem
+    refine ⟨u, ?_⟩
+    rw [Matrix.mulVecLin_apply] at hu
+    rw [hu, neg_add_cancel]
+
+/-- **Wipf's form of the consistency condition**: the system is solvable iff `∑_i w_i {S_i, H} = 0` for every left null vector
+`w` of `C_ia = {S_i, φ_a}`. -/
+theorem Stage.consistent_iff_leftNull (br : (E → ℝ) → (E → ℝ) → E → ℝ) (φ : Fin M → E → ℝ) (H : E → ℝ) (S : Stage E)
+    (x : E) : S.Consistent br φ H x ↔
+      ∀ w : Fin S.n → ℝ, (∀ a, ∑ i, w i * br (S.Φ i) (φ a) x = 0) → ∑ i, w i * br (S.Φ i) H x = 0 := by
+  have h := exists_mulVec_add_eq_zero_iff (Matrix.of fun i a => br (S.Φ i) (φ a) x) (fun i => br (S.Φ i) H x)
+  constructor
+  · rintro ⟨u, hu⟩ w hw
+    refine (h.mp ⟨u, funext fun i => ?_⟩) w (funext fun a => ?_)
+    · simp only [Pi.add_apply, Matrix.mulVec, dotProduct, Matrix.of_apply, Pi.zero_apply]
+      linarith [hu i]
+    · simpa [Matrix.vecMul, dotProduct] using hw a
+  · intro hw
+    obtain ⟨u, hu⟩ := h.mpr fun w hwC => by
+      simpa [dotProduct] using hw w fun a => by simpa [Matrix.vecMul, dotProduct] using congrFun hwC a
+    refine ⟨u, fun i => ?_⟩
+    have := congrFun hu i
+    simp only [Pi.add_apply, Matrix.mulVec, dotProduct, Matrix.of_apply, Pi.zero_apply] at this
+    linarith
+
+/-- **The secondary constraints are Wipf's** (Section 3.3, p. 16): for an admissible selection, `χ(x) = 0` iff
+`w · h(x) = 0` for every left null vector `w` of `C(x)`. -/
+theorem Stage.chiFun_zero_iff_leftNull (br : (E → ℝ) → (E → ℝ) → E → ℝ) (φ : Fin M → E → ℝ) (H : E → ℝ)
+    (S : Stage E) {σ : Sel S M} {x : E} (hσ : σ.Admissible br φ x) :
+    (∀ j, S.chiFun br φ H σ j x = 0) ↔
+      ∀ w : Fin S.n → ℝ, (∀ a, ∑ i, w i * br (S.Φ i) (φ a) x = 0) → ∑ i, w i * br (S.Φ i) H x = 0 :=
+  (S.chiFun_zero_iff br φ H hσ).trans (S.consistent_iff_leftNull br φ H x)
+
+section WholeSequence
+
+variable [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
+
+/-- **A functional vanishing on the common kernel is a combination**: if `η v = 0` whenever every `ξᵢ v = 0`, then
+`η = ∑ᵢ cᵢ ξᵢ`. -/
+lemma exists_coeff_of_ker {n : ℕ} {ξ : Fin n → E →L[ℝ] ℝ} {η : E →L[ℝ] ℝ} (h : ∀ v, (∀ i, ξ i v = 0) → η v = 0) :
+    ∃ c : Fin n → ℝ, η = ∑ i, c i • ξ i := by
+  have hk : ⨅ i, LinearMap.ker (ξ i : E →ₗ[ℝ] ℝ) ≤ LinearMap.ker (η : E →ₗ[ℝ] ℝ) := by
+    intro v hv
+    simp only [Submodule.mem_iInf, LinearMap.mem_ker, ContinuousLinearMap.coe_coe] at hv ⊢
+    exact h v hv
+  obtain ⟨c, hc⟩ := (Submodule.mem_span_range_iff_exists_fun ℝ).1 (mem_span_of_iInf_ker_le_ker hk)
+  refine ⟨c, ?_⟩
+  ext v
+  have := congrArg (fun f : E →ₗ[ℝ] ℝ => f v) hc
+  simpa [LinearMap.sum_apply, ContinuousLinearMap.sum_apply] using this.symm
+
+/-- **Consistency depends only on the conormal space**: for a first-order bracket `br f g x = B x (df x) (dg x)` (as the
+canonical Poisson bracket), two regular stages with the same zero set have the same consistency condition at its points. -/
+theorem Stage.consistent_iff_of_zeroSet_eq (br : (E → ℝ) → (E → ℝ) → E → ℝ) (φ : Fin M → E → ℝ) (H : E → ℝ)
+    (B : E → (E →L[ℝ] ℝ) →ₗ[ℝ] (E →L[ℝ] ℝ) → ℝ) (hB : ∀ f g x, br f g x = B x (fderiv ℝ f x) (fderiv ℝ g x))
+    (S S' : Stage E) (hZ : zeroSet S.Φ = zeroSet S'.Φ) {x : E} (hx : x ∈ zeroSet S.Φ)
+    (hS : ∀ i, HasStrictFDerivAt (S.Φ i) (fderiv ℝ (S.Φ i) x) x)
+    (hS' : ∀ j, HasStrictFDerivAt (S'.Φ j) (fderiv ℝ (S'.Φ j) x) x)
+    (hind : LinearIndependent ℝ fun i => fderiv ℝ (S.Φ i) x)
+    (hind' : LinearIndependent ℝ fun j => fderiv ℝ (S'.Φ j) x) :
+    S.Consistent br φ H x ↔ S'.Consistent br φ H x := by
+  have hx' : x ∈ zeroSet S'.Φ := hZ ▸ hx
+  have hker : ∀ v, (∀ i, fderiv ℝ (S.Φ i) x v = 0) ↔ ∀ j, fderiv ℝ (S'.Φ j) x v = 0 := fun v => by
+    rw [← mem_tangentCone_zeroSet_iff hS hind hx v, ← mem_tangentCone_zeroSet_iff hS' hind' hx' v]
+    show v ∈ tangentConeAt ℝ (zeroSet S.Φ) x ↔ v ∈ tangentConeAt ℝ (zeroSet S'.Φ) x
+    rw [hZ]
+  let L : (Fin M → ℝ) → (E →L[ℝ] ℝ) →ₗ[ℝ] ℝ := fun u =>
+    (LinearMap.proj (fderiv ℝ H x)).comp (B x) + ∑ a, u a • (LinearMap.proj (fderiv ℝ (φ a) x)).comp (B x)
+  have hL : ∀ (T : Stage E) (u : Fin M → ℝ) (i : Fin T.n),
+      br (T.Φ i) H x + ∑ a, br (T.Φ i) (φ a) x * u a = L u (fderiv ℝ (T.Φ i) x) := fun T u i => by
+    simp only [L, hB, LinearMap.add_apply, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.comp_apply,
+      LinearMap.proj_apply, smul_eq_mul, mul_comm]
+  have htransfer : ∀ (T T' : Stage E),
+      (∀ v, (∀ i, fderiv ℝ (T.Φ i) x v = 0) → ∀ j, fderiv ℝ (T'.Φ j) x v = 0) →
+        T.Consistent br φ H x → T'.Consistent br φ H x := fun T T' hk ⟨u, hu⟩ => by
+    refine ⟨u, fun j => ?_⟩
+    obtain ⟨c, hc⟩ := exists_coeff_of_ker (ξ := fun i => fderiv ℝ (T.Φ i) x) fun v hv => hk v hv j
+    rw [hL, hc, map_sum]
+    exact Finset.sum_eq_zero fun i _ => by rw [map_smul, ← hL, hu i, smul_zero]
+  exact ⟨htransfer S S' fun v hv => (hker v).mp hv, htransfer S' S fun v hv => (hker v).mpr hv⟩
+
+/-- **The constraint surfaces do not depend on the charts** (Wipf's Section 3.3, with the null vectors on the whole
+surface): for a first-order bracket and two selection rules admissible on their stages, with regular, strictly
+differentiable stages, every stage of the algorithm has the same zero set. -/
+theorem zeroSet_stages_eq (br : (E → ℝ) → (E → ℝ) → E → ℝ) (φ : Fin M → E → ℝ) (H : E → ℝ)
+    (B : E → (E →L[ℝ] ℝ) →ₗ[ℝ] (E →L[ℝ] ℝ) → ℝ) (hB : ∀ f g x, br f g x = B x (fderiv ℝ f x) (fderiv ℝ g x))
+    (sel sel' : ∀ S : Stage E, Sel S M) (S₀ : Stage E)
+    (hreg : ∀ k, IsRegularStage (stages br φ H sel S₀ k).Φ) (hreg' : ∀ k, IsRegularStage (stages br φ H sel' S₀ k).Φ)
+    (hdiff : ∀ k, ∀ x ∈ zeroSet (stages br φ H sel S₀ k).Φ, ∀ i,
+      HasStrictFDerivAt ((stages br φ H sel S₀ k).Φ i) (fderiv ℝ ((stages br φ H sel S₀ k).Φ i) x) x)
+    (hdiff' : ∀ k, ∀ x ∈ zeroSet (stages br φ H sel' S₀ k).Φ, ∀ i,
+      HasStrictFDerivAt ((stages br φ H sel' S₀ k).Φ i) (fderiv ℝ ((stages br φ H sel' S₀ k).Φ i) x) x)
+    (hadm : ∀ k, ∀ x ∈ zeroSet (stages br φ H sel S₀ k).Φ, (sel (stages br φ H sel S₀ k)).Admissible br φ x)
+    (hadm' : ∀ k, ∀ x ∈ zeroSet (stages br φ H sel' S₀ k).Φ, (sel' (stages br φ H sel' S₀ k)).Admissible br φ x) :
+    ∀ k, zeroSet (stages br φ H sel S₀ k).Φ = zeroSet (stages br φ H sel' S₀ k).Φ := by
+  intro k
+  induction k with
+  | zero => rfl
+  | succ k ih =>
+    show zeroSet (appendStage (stages br φ H sel S₀ k).Φ
+        ((stages br φ H sel S₀ k).chiFun br φ H (sel (stages br φ H sel S₀ k)))) =
+      zeroSet (appendStage (stages br φ H sel' S₀ k).Φ
+        ((stages br φ H sel' S₀ k).chiFun br φ H (sel' (stages br φ H sel' S₀ k))))
+    rw [zeroSet_appendStage, zeroSet_appendStage]
+    ext x
+    simp only [Set.mem_inter_iff]
+    constructor
+    · rintro ⟨hx, hχ⟩
+      have hx' : x ∈ zeroSet (stages br φ H sel' S₀ k).Φ := ih ▸ hx
+      refine ⟨hx', ?_⟩
+      have hc := ((stages br φ H sel S₀ k).chiFun_zero_iff br φ H (hadm k x hx)).mp hχ
+      have hc' := ((stages br φ H sel S₀ k).consistent_iff_of_zeroSet_eq br φ H B hB _ ih hx (hdiff k x hx)
+        (hdiff' k x hx') (hreg k x hx) (hreg' k x hx')).mp hc
+      exact ((stages br φ H sel' S₀ k).chiFun_zero_iff br φ H (hadm' k x hx')).mpr hc'
+    · rintro ⟨hx', hχ⟩
+      have hx : x ∈ zeroSet (stages br φ H sel S₀ k).Φ := ih.symm ▸ hx'
+      refine ⟨hx, ?_⟩
+      have hc' := ((stages br φ H sel' S₀ k).chiFun_zero_iff br φ H (hadm' k x hx')).mp hχ
+      have hc := ((stages br φ H sel S₀ k).consistent_iff_of_zeroSet_eq br φ H B hB _ ih hx (hdiff k x hx)
+        (hdiff' k x hx') (hreg k x hx) (hreg' k x hx')).mpr hc'
+      exact ((stages br φ H sel S₀ k).chiFun_zero_iff br φ H (hadm k x hx)).mpr hc
+
+end WholeSequence
+
+end Lightlike.Gauge

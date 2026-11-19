@@ -58,3 +58,31 @@ the compatibility of the resulting stage tuples on overlaps, which is not formal
 entries continuous at `x₀` and constant rank near `x₀`, a selection built from the rows and columns of a nonzero minor at `x₀`
 (`MinorExists`) has an invertible block and a vanishing Schur complement on a neighbourhood of `x₀`. This is the pointwise form of the
 constant-rank hypothesis (the representation difference named above); the global cover is not formalised.
+
+## Chart independence of the secondary constraints (`DiracChart`)
+
+Source location, read in the arXiv PDF of hep-th/9312078 (sha256 `675b7cdda758b2d9…5819`), Section 3.3: p. 16, case ii),
+"In this case `u` is not fixed and 3.24 is only solvable if `h_m w^m_a ≈ 0` for all left null-eigenvectors `w_a` of `C`. Either
+these equations are fulfilled or they lead to a certain number `K₁` of new constraints" (3.26); p. 17, "For every left
+null-eigenvector `w^j_a` of the rectangular matrix `C_jm = {φ_j, φ_m}` the conditions `w^j_a {φ_j, H} ≈ 0` are fulfilled", and
+"we assume that the rank of `C` is constant on `Γ_c`". The source's condition uses all left null vectors and no chart.
+
+Proved (`Lightlike/Gauge/DiracChart.lean`): for a selection admissible at `x` (`Sel.Admissible`: the block invertible and the
+Schur complement zero, which is what constant rank gives, `DiracLocal.exists_selection_near`), the secondary constraints of the
+selection vanish at `x` iff the selection-free consistency system `{S_i, H} + ∑_a {S_i, φ_a} u_a = 0` is solvable
+(`Stage.chiFun_zero_iff`), iff `∑_i w_i {S_i, H}(x) = 0` for every left null vector `w` of `C(x)` (`Stage.chiFun_zero_iff_leftNull`,
+Wipf's form, through the Fredholm alternative `exists_mulVec_add_eq_zero_iff`). Hence two selections admissible at `x` give the
+same condition (`Stage.chiFun_zero_iff_of_admissible`), and on a set where two selections are admissible the next stages built
+from them have the same zero set (`Stage.zeroSet_next_inter`): the next constraint set, and so the pointwise `hcover`
+statement at one stage, does not depend on the chart.
+
+The whole sequence (`zeroSet_stages_eq`): for a first-order bracket, `br f g x = B x (df x) (dg x)` with `B x` linear in the
+first argument (the canonical Poisson bracket that Wipf uses has this form; it is a representation of his bracket, not a
+restriction), regular and strictly differentiable stages, and two selection rules each admissible on the zero sets of its
+own stages, every stage has the same zero set. The argument: for a regular stage the tangent cone of the zero set is the
+common kernel of the differentials (`DiracTangent.mem_tangentCone_zeroSet_iff`), which depends only on the set; so two
+stages with the same zero set have the same conormal space `span{dSᵢ(x)}` (`exists_coeff_of_ker`), and the consistency
+condition `∃ u, B(dSᵢ, dH + ∑ u_a dφ_a) = 0` depends only on that space (`Stage.consistent_iff_of_zeroSet_eq`); the one-stage
+lemma then carries the equality of the zero sets from each stage to the next. A plain Leibniz rule on the abstract bracket is
+not enough: two charts give `χ_σ' = A χ_σ + N S` only on the surface, not as functions, so the next brackets cannot be
+expanded; the first-order form avoids this because a bracket at a point of the surface sees only differentials there.

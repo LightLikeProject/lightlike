@@ -701,6 +701,14 @@ references:
     cite: "Tim Adamo, Lectures on twistor theory, PoS Modave2017 003, 2018"
     title: "Lectures on twistor theory"
     arxiv: "1712.02196"
+  atiyah-dunajski-mason-2017:
+    cite: "Michael Atiyah, Maciej Dunajski and Lionel Mason, Twistor theory at fifty: from contour integrals to twistor strings, arXiv:1704.07464 (2017)"
+    title: "Twistor theory at fifty: from contour integrals to twistor strings"
+    arxiv: "1704.07464"
+  wolf-2010:
+    cite: "Martin Wolf, A First Course on Twistors, Integrability and Gluon Scattering Amplitudes, arXiv:1001.3871 (2010)"
+    title: "A First Course on Twistors, Integrability and Gluon Scattering Amplitudes"
+    arxiv: "1001.3871"
   bcfw-2005:
     cite: "Ruth Britto, Freddy Cachazo, Bo Feng and Edward Witten, Direct Proof Of Tree-Level Recursion Relation In Yang-Mills Theory, Phys.Rev.Lett.94:181602,2005"
     title: "Direct Proof Of Tree-Level Recursion Relation In Yang-Mills Theory"

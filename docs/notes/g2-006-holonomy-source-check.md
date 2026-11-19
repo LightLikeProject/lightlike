@@ -1,7 +1,8 @@
 # G2-006: paths, holonomy and gauge action (source check)
 
 Lean files: `Lightlike/ODE/GlobalLipschitz.lean`, `Lightlike/Canonical/Holonomy.lean`,
-`Lightlike/Canonical/HolonomyPaths.lean`, `Lightlike/Canonical/HolonomyGauge.lean` (in progress).
+`Lightlike/Canonical/HolonomyPaths.lean`, `Lightlike/Canonical/HolonomyGauge.lean`,
+`Lightlike/Canonical/HolonomyGraph.lean`, `Lightlike/Canonical/HolonomyALGraph.lean` (in progress).
 
 ## Source read
 
@@ -26,8 +27,32 @@ footnote 17) and p. 35 (the common graph `α₃` of two graphs). Printed page nu
 | `gaugeConn`: `A^g_a = g⁻¹ A_a g + g⁻¹ ∂_a g` for `C¹` `g` with unitary values (`g⁻¹ = gᴴ`) | eq. (4.14), p. 28: `A_α ↦ g_α⁻¹ A_α g_α + g_α⁻¹ d_α g_α` | Same on the chart; `G` unitary, as `SU(2)`. |
 | `holonomy_gaugeConn`: `A^g(e) = g(e(t₂))⁻¹ A(e) g(e(t₁))`; `holonomy_gaugeConn_of_endpoints`: unchanged when `g = 1` at the end points | eq. (4.14) with (4.15)-(4.16), p. 28: the holonomies identify `Ā_α = A_α / G⁰_α`, `G⁰_α` the gauge transformations that are the identity at the vertices | Same content (the transformation law of `A(e)` is used, not displayed, in the source; cf. (4.18), p. 29, `(U_1, …) ↦ (g⁻¹ U_1 g, …)` for loops). |
 | `holonomy_zero`: the zero connection has holonomy `1` | eq. (4.35) | Supporting result. |
+| `transportM`, `exists_transportM`, `transportM_unique`, `transportM_trans`, `transportM_mem_specialUnitaryGroup`: the transport equation `U' = −M(t) U` for a coefficient continuous on the edge | eq. (4.35), p. 33, with `M(t) = A_a(e(t)) ė^a(t)` | Supporting generalisation: `transport` is `transportM` of `A_a(e(t)) ė^a(t)`. |
+| `Graph`: finitely many edges, each embedded on `[t₀, t₁)` and on `(t₀, t₁]` (an embedded interval or a circle with a marked point), two edges meeting only at end points | p. 27, footnote 13; p. 28, footnote 15: "For simplicity, in the main body of the paper we will discuss the case where every edge of `α` has two vertices" | Tool: the same statement for graphs with `C¹` edges, used for the analytic pieces of the edges of `ALGraph` (next rows). |
+| `Graph.Conn`, `Graph.restrict`: a connection on the graph, an `su(2)`-valued 1-form along each edge (its component in the edge parameter) | p. 28: "A `G` connection `A_α` on a graph `α` is the set of `g` valued 1-forms `A_e` defined on each edge `e` of `α`"; "for concreteness" pull-backs of smooth 1-forms on `M`, "not essential in this section" | Tool: the same statement for graphs with `C¹` edges, used for the analytic pieces of the edges of `ALGraph` (next rows). |
+| `Graph.Gauge`, `Graph.Gauge.TrivialAtVertices`, `Graph.actCoeff`: `G_α`, `G⁰_α` and the action (4.14) | p. 28: "A gauge transformation `g_α` in `G_α` is a map `g_α : x_α → G` from all points `x_α` on `α`", eq. (4.14), and `G⁰_α` "all local gauge transformations `g_α` which are identity on the vertices" | Tool: the same statement for graphs with `C¹` edges, used for the analytic pieces of the edges of `ALGraph` (next rows). |
+| `Graph.IE`, `Graph.IE_mem`, `Graph.IE_restrict` | eq. (4.16), p. 28: `I_E(Ā_α) = (Ā_α(e_1), …, Ā_α(e_n))` | Tool: the same statement for graphs with `C¹` edges, used for the analytic pieces of the edges of `ALGraph` (next rows). |
+| `Graph.IE_actCoeff`, `Graph.transportM_actCoeff_of_trivial`: `I_E(M^γ)_e = I_V(γ)(t(e))⁻¹ I_E(M)_e I_V(γ)(s(e))`; constant on `G⁰_α`-orbits | eqs. (4.14)-(4.17), p. 28 | Tool: the same statement for graphs with `C¹` edges, used for the analytic pieces of the edges of `ALGraph` (next rows). |
+| `Graph.IE_injective_mod`, `Graph.IE_surjective`: `I_E` is one-to-one on `A_α / G⁰_α` and onto `SU(2)ⁿ` | p. 28: "natural 1-1 maps between `Ā_α` and `Gⁿ`" (4.16) | Tool: the same statement for graphs with `C¹` edges, used for the analytic pieces of the edges of `ALGraph` (next rows). |
+| `Graph.IV`, `Graph.IV_eq_iff`, `Graph.IV_surjective`: `I_V` is one-to-one on `G_α / G⁰_α` and onto `SU(2)^m` | eq. (4.17), p. 28 | Tool: the same statement for graphs with `C¹` edges, used for the analytic pieces of the edges of `ALGraph` (next rows). |
+| `su2_exp_form`, `transportM_const_exp`, `exists_su2_coeff`, `transportM_gaugeCoeff` | — | Supporting results: `h = cos θ · 1 + sin θ · K`, the transport of a constant `su(2)` coefficient, gauge covariance along one edge. |
+| `ALEdge`: a path with a subdivision `τ₀ < ⋯ < τ_k` of `[t₀, t₁]` such that on each `[τ_{j−1}, τ_j]` it agrees with an analytic arc of nonzero velocity | footnote 17, p. 33: "for each edge `e : [tn, t1] → M`, the interval `[tn, t1]` admits a covering by closed intervals `[tn, tn−1], … [t2, t1]` such that the image of each of these closed intervals in `M` is analytic" | Same, reading "embedded" (footnote 13) as an immersion that is a homeomorphism onto its image, so each analytic piece has a nonzero velocity; the arc of a piece is given as a `C¹` map on `ℝ` agreeing with the edge on the piece. |
+| `ALGraph`: edges embedded on `[t₀, t₁)` and `(t₀, t₁]`, two edges meeting only at end points | footnote 13, p. 27 (quoted above) | Same. |
+| `ALEdge.hol`, `ALGraph.IE`, `ALGraph.IE_restrict`: the holonomy along an edge, the ordered product of the holonomies of its pieces | eqs. (4.36)-(4.37), p. 33 | Same: `A(e₂ ∘ e₁) = A(e₂) A(e₁)` for the pieces. |
+| `ALGraph.pieceGraph`: the analytic pieces of all edges form a graph with `C¹` edges | — | Tool (the bridge to the rows above). |
+| `ALGraph.Conn`, `ALGraph.Gauge`: `A_α` and `G_α` | p. 28: `A_α` "the set of `g` valued 1-forms `A_e` defined on each edge"; `g_α` "a map `g_α : x_α → G` from all points `x_α` on `α`" | Representation (line (3)): the 1-form continuous on each analytic piece, the gauge transformation `C¹` along each piece. |
+| `ALGraph.TrivialAtVertices`: `G⁰_α`, the identity at the end points of the edges only | footnote 13, p. 27: "The end points of an edge are called vertices"; p. 28, after (4.15): `G⁰_α` "all local gauge transformations `g_α` which are identity on the vertices of `α`" | Same: the corners `τ_j`, `0 < j < k`, are interior points of an edge, not vertices. |
+| `ALGraph.IE_actCoeff`, `ALGraph.IE_actCoeff_of_trivial`: `I_E(M^γ)_e = γ(t(e))⁻¹ I_E(M)_e γ(s(e))`; constant on `G⁰_α`-orbits | eqs. (4.14)-(4.17), p. 28 | Same (the values at the corners cancel). |
+| `ALGraph.IE_injective_mod`, `ALGraph.IE_surjective`: `I_E` one-to-one on `A_α / G⁰_α` and onto `SU(2)ⁿ` | p. 28: "natural 1-1 maps between `Ā_α` and `Gⁿ`" (4.16) | Same, for `G = SU(2)`. |
+| `ALGraph.IV`, `ALGraph.IV_eq_iff`, `ALGraph.IV_surjective`: `I_V` one-to-one on `G_α / G⁰_α` and onto `SU(2)^m` | eq. (4.17), p. 28 | Same, for `G = SU(2)`. |
 
 ## Trust checks
+
+* `lGraph_IE_surjective`: the one-edge graph on the `L`-shaped edge (two analytic pieces, a corner at `e₀`) satisfies the
+  hypotheses of a graph of Ashtekar–Lewandowski, and every element of `SU(2)` is the holonomy of a connection along it.
+
+* `segmentGraph_IE_surjective`: the one-edge graph `t e₀`, `t ∈ [0, 1]`, satisfies the hypotheses of a graph, and every
+  element of `SU(2)` is the holonomy of a connection on it.
 
 * `holonomy_pureGauge`: the pure gauge connection `g⁻¹ dg` has holonomy `g(e(t₂))⁻¹ g(e(t₁))`, which depends only on the
   end points.
@@ -36,6 +61,4 @@ footnote 17) and p. 35 (the common graph `α₃` of two graphs). Printed page nu
 
 ## Open (the rest of G2-006)
 
-* the maps `I_E`, `I_V` of (4.16)-(4.17) on the connections and gauge transformations of a graph (edge-wise, as on
-  p. 28), and that `I_E` is one-to-one on `A_α / G⁰_α` onto `Gⁿ`;
 * graphs and the order `α ≤ α′` (p. 27, footnote 13), and the common graph `α₃` of two graphs (p. 35).
