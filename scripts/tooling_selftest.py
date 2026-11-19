@@ -672,6 +672,53 @@ expect("changed-file selection planted: a module no slow check imports selects n
 expect("changed-file selection: the runner, requirements.txt and ci.yml run everything",
        all(_sel(f) == _slow | _quick for f in ("scripts/run_python_checks.py", "requirements.txt", ".github/workflows/ci.yml")))
 
+# comparator_run.py: which task files are judged, and against which challenge
+import comparator_run as cr  # noqa: E402
+with tempfile.TemporaryDirectory() as _d:
+    _r = pathlib.Path(_d)
+    _g = lambda *a: subprocess.run(["git", "-C", str(_r), "-c", "user.name=t", "-c", "user.email=t@x", *a],
+                                   check=True, capture_output=True, text=True).stdout.strip()
+    _g("init", "-q", "-b", "main")
+    (_r / "Tasks").mkdir(); (_r / "docs/tasks").mkdir(parents=True)
+    _t = lambda n, k="proof": f'  - id: "T-{n}"\n    kind: "{k}"\n    file: "Tasks/{n}.lean"\n    decl: "Lightlike.{n}"\n'
+    (_r / "docs/tasks/tasks.yaml").write_text("tasks:\n" + _t("A") + _t("B") + _t("C") + _t("D") + _t("M", "milestone"))
+    for n in "ABCM":
+        (_r / f"Tasks/{n}.lean").write_text(f"theorem {n} : True := by\n  sorry\n")
+    (_r / "Tasks/D.lean").write_text("theorem D : True := trivial\n")
+    _g("add", "-A"); _g("commit", "-q", "-m", "lock"); _lock = _g("rev-parse", "HEAD")
+    (_r / "Tasks/A.lean").write_text("theorem A : True := by\n  trivial\n")
+    (_r / "Tasks/B.lean").write_text("theorem B : True := by\n  sorry -- still open\n")
+    (_r / "Tasks/M.lean").write_text("theorem M : True := trivial\n")
+    (_r / "Tasks/D.lean").write_text("theorem D : True := trivial -- edited\n")
+    (_r / "Tasks/E.lean").write_text("theorem E : True := trivial\n")
+    _g("add", "-A"); _g("commit", "-q", "-m", "proofs"); _head = _g("rev-parse", "HEAD")
+    _ch, _left = cr.select(_lock, _head, root=_r)
+    _why = dict(_left)
+    _src = ("namespace A\nnamespace B\ndef f : Nat := 0\nprotected abbrev g := 1\nprivate def h := 2\nend B\n"
+            "-- def c := 3\n/- def d := 4 -/\nstructure S where\n  x : Nat\nend A\ndef _root_.top := 5\n"
+            "theorem t : True := by sorry\n")
+    expect("comparator definitions: namespaces, protected, private, comments, _root_",
+           cr.definition_names(_src) == ["A.B.f", "A.B.g", "A.S", "top"])
+    expect("comparator definitions: none declared gives an empty list (flag off)",
+           cr.definition_names("theorem t : True := by sorry\n") == [])
+    expect("comparator definitions: the configuration carries them (flag on) and defaults to none",
+           cr.config("T", defs=["A.f"])["definition_names"] == ["A.f"] and cr.config("T")["definition_names"] == [])
+    expect("comparator: a newly proved task file is judged, the challenge is the locked file with its sorry",
+           [c[0] for c in _ch] == ["Tasks/A.lean"] and cr.has_sorry(_ch[0][2]) and not cr.has_sorry(_ch[0][3])
+           and _ch[0][1] == "Lightlike.A")
+    expect("comparator planted: a task file that still has sorry is not judged", _why.get("Tasks/B.lean") == "still has sorry")
+    expect("comparator planted: a non-proof task and an unlisted file are not judged",
+           "Tasks/M.lean" in _why and "Tasks/E.lean" in _why)
+    expect("comparator planted: a file whose first version had no sorry has no challenge and is not judged",
+           "Tasks/D.lean" in _why and "nothing to compare" in _why["Tasks/D.lean"])
+    expect("comparator: an unchanged file is not judged without --all",
+           "Tasks/C.lean" not in _why and "Tasks/C.lean" not in [c[0] for c in _ch])
+    expect("comparator: --all judges every proved task file",
+           [c[0] for c in cr.select(None, _head, root=_r, everything=True)[0]] == ["Tasks/A.lean"])
+    expect("comparator: the config names the standard three axioms and the declaration",
+           cr.config("Lightlike.A")["permitted_axioms"] == ["propext", "Quot.sound", "Classical.choice"]
+           and cr.config("Lightlike.A")["theorem_names"] == ["Lightlike.A"])
+
 # Shared slots of the Python checks (LL_CHECK_SLOTS): at most n scripts at a time over all runs
 import tempfile as _tf, os
 _sd = os.path.join(_tf.mkdtemp(), "slots")
