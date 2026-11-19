@@ -378,6 +378,8 @@ import Lightlike.Lorentz.SpinVectors
 import Lightlike.Lorentz.StarBound
 import Lightlike.Lorentz.Tests
 import Lightlike.Lorentz.WeightedComp
+import Lightlike.NCG.FiniteSpectralTriple
+import Lightlike.NCG.TestsTwoPoint
 import Lightlike.ODE.CommutingConverse
 import Lightlike.ODE.CommutingFlows
 import Lightlike.ODE.CommutingFrame
