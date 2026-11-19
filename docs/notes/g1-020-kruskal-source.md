@@ -34,8 +34,9 @@ Not read: Kruskal (1960), Szekeres (1960), MTW section 31.5, Wald section 6.4.
 Proved in Lean: Eddington-Finkelstein chart across the horizon (vacuum, `ef_isVacuumSolution`), the Kruskal-Szekeres metric on `X² - T² > -1` (vacuum, Lorentzian,
 `kruskal_isVacuumSolution`, `kruskal_isLorentzian`), the chart change from EF, the reflection symmetry.
 
-NOT proved (open, no attempt completed):
-* **Maximality (inextendibility)** of the Kruskal extension: needs the notion of an extension of a Lorentzian manifold and a curvature-blow-up or geodesic-completeness argument
+Status when this section was written (maximality is now proved, see "Maximality: the proof" below; the other
+items: see "Parts closed after the metric"):
+* **Maximality (inextendibility)** of the Kruskal extension: needed the notion of an extension of a Lorentzian manifold and a curvature-blow-up or geodesic-completeness argument
   (the Kretschmann scalar `48 M²/r⁶` diverges at `r = 0`); none of this is in the library. The same missing infrastructure blocks the non-extension routes of G1-058
   (Riemannian length/distance, holonomy, Killing fields on manifolds).
 * **Null curves `v = ±u + const`** (Carroll (7.82)) and the statement of the event horizon as `v = ±u` (7.83): the horizon as a null hypersurface and the event horizon as the
@@ -160,7 +161,8 @@ so `not_tendsto_of_isometric_chart` applies to sequences with `r → 0`; the oth
 * Lightlike/GR/KruskalExtension.lean: `IsLorentzianExtension.not_tendsto_kruskal`: in every extension of the Kruskal
   manifold (Sbierski's Definition 2.15, smooth metrics), a sequence of points with `X² - T² → -1` has no limit.
 
-What is still missing for `IsInextendible (kruskalManifoldMetric M hM)`: a boundary point `p` of the image in an
+What was missing at this stage for `IsInextendible (kruskalManifoldMetric M hM)` (now proved, see "Maximality: the
+proof" below): a boundary point `p` of the image in an
 extension is the limit of a sequence `ι z_k`; by the theorem above `X² - T²` stays away from `-1` along it, so
 `z_k` leaves every compact subset of the Kruskal manifold with `r` bounded below. To exclude this one needs that
 such a sequence cannot converge in a Lorentzian manifold; the standard proof takes a geodesic of the extension
@@ -170,7 +172,7 @@ the geodesic equation in a chart) and the analysis of the Kruskal geodesics with
 
 ## Toward the geodesics
 
-Proved so far, for the second half of maximality:
+Tools in this library for the second half of maximality:
 * Lightlike/Spacetime/GeodesicChartChange.lean: geodesics are chart-independent (`IsGeodesicOn.map_chartChange`).
 * Lightlike/Spacetime/GeodesicMomentum.lean: the momentum of a cyclic coordinate is conserved
   (`IsGeodesicOn.hasDerivAt_momentum`).
@@ -188,4 +190,47 @@ metric), inextendibility follows as in Sbierski, Section 1.3 iv)):
    from the bifurcation sphere `U = V = 0`; at the bifurcation sphere a separate argument is needed (the geodesic
    equation in the Kruskal chart, whose Christoffel symbols are not yet computed);
 4. bounded velocity gives a Cauchy curve, hence a limit, which lies in the manifold because `r` is bounded below.
-Steps 1-4 are not done.
+The library proves these steps by a different route for 1-3 (next section).
+
+## Maximality: the proof
+
+`kruskal_isInextendible` (Lightlike/GR/KruskalMaximal.lean): the Kruskal manifold has no extension to a connected
+Hausdorff Lorentzian manifold with a smooth metric (`IsInextendible`, the smooth case `k = ∞` of Sbierski's
+Definition 2.15). The proof follows the outline of Sbierski, Section 1.3 (read): a geodesic of an extension that
+leaves the Kruskal manifold would be a geodesic of the Kruskal manifold on a finite interval that neither has a
+limit nor runs into the curvature singularity.
+
+* Everything is done in the global chart `(T, x)`, with `X = log |x|`, without Christoffel symbols:
+  Noether's formula `(Σ K^k p_k)' = Σ (K^k)' p_k + ½ Σ K^k ∂_k g(w, w)`
+  (`IsGeodesicOn.hasDerivAt_noether`, Lightlike/Spacetime/GeodesicMomentum.lean) and the derivative of the
+  quadratic form of the metric along a line (`contraction_kruskalC`, Lightlike/GR/KruskalGeodesic.lean) give the
+  equations of motion `(h T')' = T G'(s) Ξ`, `(h X')' = X G'(s) Ξ` and the conservation of the angular momentum
+  about every axis.
+* Constants of motion (Lightlike/GR/KruskalGeodesicBound.lean): `κ = g(w, w)`, the squared angular momentum
+  `L² = r⁴ ω`, the boost charge `A = h (T X' - X T')`; the radial equation
+  `r'² = A²/(16M²) + (1 - 2M/r)(κ - L²/r²)` (`radial_sq`).
+* On a finite interval `[0, b)` with `r ≥ r₀ > 0`: `r` is bounded above (`kruskalC_radius_bounded`); the factor
+  `Ξ = h'(r)(X'² - T'²) + 2 r ω` is bounded because `X'² - T'²` is fixed by the constants, so `(T, h T')` and
+  `(X, h X')` solve linear systems with bounded coefficients and Grönwall's inequality bounds them
+  (`kruskalC_velocity_bounded`); no separate argument at the bifurcation sphere is needed. A curve with bounded
+  velocity has a limit, which lies in the manifold (`exists_tendsto_kruskalC_geodesic`).
+* In an extension (Lightlike/GR/KruskalInextendible.lean): a geodesic of the target in a chart that starts in the
+  image is lifted to the Kruskal manifold up to its first exit time (`IsGeodesicOn.lift_chartChange`, by local
+  existence and uniqueness of geodesics); the lift has a limit, or it approaches `r = 0`, and both are excluded
+  (`IsLorentzianExtension.false_of_geodesic_kruskal`).
+* A boundary point of the image has a normal chart (the exponential map of the coordinate metric,
+  `exists_isNormalChart`), whose radial geodesics reach the image: `kruskal_isInextendible`.
+
+Difference from the source (kind: weaker): Sbierski's theorem is `C⁰`-inextendibility (continuous metrics); the
+statement proved here is inextendibility with smooth metrics, the classical statement recalled in his Section 1.3.
+
+## The event horizon
+
+Lightlike/GR/KruskalHorizon.lean, in the Kruskal chart `(T, X, θ, φ)` with the time orientation `∂_T`: a point
+reaches the infinity of region I if a future-directed causal curve starts at it along which `r → ∞` with `X > 0`
+in the end (`ReachesKruskalInfinity`); this holds iff `T < X` (`reachesKruskalInfinity_iff`), and the boundary of
+`T < X` is `T = X` (`frontier_kruskal_past_of_infinity`), Carroll's event horizon `v = u` of (7.83).
+
+Difference from the source (kind: representation): the conformal boundary `𝓘⁺` is not formalized; "the causal past
+of `𝓘⁺`" is rendered as the set of points from which a differentiable future-directed causal curve escapes to
+`r = ∞` in the exterior `X > 0`, in the chart `(T, X, θ, φ)` (which omits the rotation axis).

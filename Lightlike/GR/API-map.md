@@ -27,10 +27,13 @@ radial equation hold along all geodesics of the Eddington-Finkelstein chart [13]
 of the Kruskal manifold the equations of motion of the geodesics are derived from Noether's formula [14], and
 the boost charge, the squared angular momentum and `g(w, w)` are constant along them [15]. A geodesic on a finite interval whose radius is bounded below
 has a limit in the manifold [15]. Hence a geodesic of an extension that starts in the Kruskal manifold
-does not leave it [16]. The whole Kruskal manifold
+does not leave it [16]. The Kruskal-Szekeres spacetime is inextendible: it has no extension to a connected Hausdorff
+Lorentzian manifold with a smooth metric {4} [17]. A point of the Kruskal chart reaches the infinity of region I
+along a future-directed causal curve exactly when `T < X`, and the boundary `T = X` of that set is the event
+horizon {3} [18]. The whole Kruskal manifold
 `{X² - T² > -1} × S²` is given in one global chart as a Lorentzian manifold [9], of which `(T, X, θ, φ)` is a
 chart [10]; it solves the vacuum equations [11], and in every extension of it, in the sense of {4}, a sequence
-approaching the singularity has no limit [12]. Maximality of the extension is not yet formalized. [TODO]
+approaching the singularity has no limit [12].
 
 ## Lean References
 
@@ -67,6 +70,9 @@ approaching the singularity has no limit [12]. Maximality of the extension is no
     `kruskalC_hasDerivAt_L2`, `kruskalC_hasDerivAt_kQ`, `radial_sq`, `kruskalC_radius_bounded`,
     `kruskalC_velocity_bounded`, `exists_tendsto_kruskalC_geodesic`
 16. Lightlike/GR/KruskalInextendible.lean - `IsLorentzianExtension.false_of_geodesic_kruskal`
+17. Lightlike/GR/KruskalMaximal.lean - `kruskal_isInextendible`
+18. Lightlike/GR/KruskalHorizon.lean - `ReachesKruskalInfinity`, `reachesKruskalInfinity_iff`,
+    `frontier_kruskal_past_of_infinity`
 
 ## References
 

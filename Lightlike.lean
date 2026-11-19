@@ -201,10 +201,12 @@ import Lightlike.GR.KruskalExtension
 import Lightlike.GR.KruskalExterior
 import Lightlike.GR.KruskalGeodesic
 import Lightlike.GR.KruskalGeodesicBound
+import Lightlike.GR.KruskalHorizon
 import Lightlike.GR.KruskalInextendible
 import Lightlike.GR.KruskalKretschmann
 import Lightlike.GR.KruskalManifold
 import Lightlike.GR.KruskalManifoldCurvature
+import Lightlike.GR.KruskalMaximal
 import Lightlike.GR.KruskalMetric
 import Lightlike.GR.KruskalPenrose
 import Lightlike.GR.KruskalRegions

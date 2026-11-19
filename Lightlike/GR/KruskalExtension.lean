@@ -14,7 +14,7 @@ is continuous there and equals `48 M²/r⁶` along the sequence.
 
 So the boundary of the Kruskal manifold in any extension contains no limit of points approaching the
 singularity. This is the curvature half of maximality; the other half (points escaping to infinity at bounded
-`r` have no limit either) needs the geodesics and is not proved.
+`r` have no limit either) uses the geodesics; the full statement is `kruskal_isInextendible`.
 -/
 
 open Matrix Real Set Filter Topology Manifold TopologicalSpace

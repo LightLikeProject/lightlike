@@ -101,7 +101,7 @@ theorem IsLorentzianExtension.false_of_geodesic_kruskal [T2Space M'] (hM : 0 < M
   -- the lift
   set c : ℝ → Fin 4 → ℝ := fun s => if h : σ s ∈ A then (hlift (σ s) h).choose else 0 with hc
   have hcspec : ∀ s ∈ O, c s ∈ Dom ∧ ψ (c s) = σ s := fun s hs => by
-    have : c s = (hlift (σ s) hs.2).choose := dif_pos hs.2
+    have : c s = (hlift (σ s) hs.2).choose := dite_eq_left hs.2
     rw [this]
     exact (hlift (σ s) hs.2).choose_spec
   have hσO : IsGeodesicOn (g'.coordMetric p) σ wσ O :=
@@ -127,7 +127,7 @@ theorem IsLorentzianExtension.false_of_geodesic_kruskal [T2Space M'] (hM : 0 < M
       rw [tendsto_subtype_rng]
       refine hzlim.congr' ?_
       filter_upwards [hI] with s hs
-      simp only [hcS, dif_pos (hcK s hs)]
+      simp only [hcS, dite_eq_left (hcK s hs)]
     have e1 : Tendsto (fun s => ι (cS s)) (𝓝[<] b) (𝓝 (ι ⟨z, hz⟩)) :=
       (hext.isOpenEmbedding.continuous.tendsto _).comp hcSlim
     have e2 : Tendsto (fun s => ι (cS s)) (𝓝[<] b) (𝓝 (e.symm (σ b))) := by
@@ -138,12 +138,12 @@ theorem IsLorentzianExtension.false_of_geodesic_kruskal [T2Space M'] (hM : 0 < M
           exact ⟨hs.1, hs.2.le.trans hbN.1.2⟩⟩
       refine (hcw.tendsto.comp ht).congr' ?_
       filter_upwards [hI] with s hs
-      simp only [Function.comp, hcS, dif_pos (hcK s hs)]
+      simp only [Function.comp, hcS, dite_eq_left (hcK s hs)]
       exact (hιc s hs (hcK s hs)).symm
     have h3 := tendsto_nhds_unique e1 e2
     exact hbN.2 ⟨hσU b hbN.1, ⟨_, h3⟩⟩
   · -- the radius is not bounded below: a sequence approaches the singularity
-    push_neg at hbd
+    push Not at hbd
     choose s hsI hsr using fun k : ℕ => hbd (1 / ((k : ℝ) + 1)) (by positivity)
     obtain ⟨sstar, hsstar, φ, hφ, hφlim⟩ := isCompact_Icc.tendsto_subseq
       (fun k => (⟨(hsI k).1, (hsI k).2.le.trans hbN.1.2⟩ : s k ∈ Icc (0 : ℝ) 1))
