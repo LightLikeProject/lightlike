@@ -23,7 +23,8 @@ The bridge between the two coordinate forms of Killing's equation used in the li
   antisymmetric part plus `Γᶜ_{ab} θ_c`, so the data `(θ, ½ (∂_a θ_b - ∂_b θ_a))` at the point determines `rigVec`;
 * `lowerVec_bracketCo`: the lowered bracket `[Y, Z]_b = Yᵈ ∇_d Z_b - Zᵈ ∇_d Y_b`; `pd_covCo_eq`,
   `pd_lowerVec_bracketCo`: its first derivatives for two Killing fields, through Blau (13.8) (`covCo2_killing`): the
-  data of the bracket at a point is given by the data of the two fields and the curvature there.
+  data of the bracket at a point is given by the data of the two fields and the curvature there;
+* `lieBracket_apply_eq_bracketCo`: `bracketCo` is Mathlib's `VectorField.lieBracket` in components.
 -/
 
 open Matrix Filter Set
@@ -449,5 +450,16 @@ theorem pd_lowerVec_bracketCo (hg : IsCoordMetric g U) (hgs : ∀ z a b, g z a b
     pd_covCo_eq, pd_covCo_eq, covCo2_killing hg hgs hθZ hy hKZ', covCo2_killing hg hgs hθY hy hKY']
 
 end BracketData
+
+/-- **The coordinate bracket is Mathlib's Lie bracket of vector fields** on `Fin n → ℝ`, in components. -/
+theorem lieBracket_apply_eq_bracketCo {V W : (Fin n → ℝ) → Fin n → ℝ} {y : Fin n → ℝ}
+    (hV : DifferentiableAt ℝ V y) (hW : DifferentiableAt ℝ W y) (c : Fin n) :
+    VectorField.lieBracket ℝ V W y c = bracketCo V W y c := by
+  rw [VectorField.lieBracket_eq]
+  have hcomp : ∀ (U : (Fin n → ℝ) → Fin n → ℝ), DifferentiableAt ℝ U y → ∀ v,
+      fderiv ℝ U y v c = fderiv ℝ (fun z => U z c) y v := fun U hU v => by
+    rw [fderiv_pi (fun i => (differentiableAt_pi.1 hU) i)] at *
+    simp
+  simp only [Pi.sub_apply, hcomp W hW, hcomp V hV, fderiv_eq_sum_pd, bracketCo, Finset.sum_sub_distrib]
 
 end Lightlike
