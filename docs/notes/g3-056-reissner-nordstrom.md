@@ -32,8 +32,8 @@ S. M. Carroll, *Lecture Notes on General Relativity*, arXiv:gr-qc/9712019, chapt
 
 * Row G3-056 names "ST10; F–VP Ch. 11". Strominger–Vafa, arXiv:hep-th/9601029v2, read (pdftotext): §1 p. 1 "BPS saturated states - i.e.
   extremal black holes ... preserve only 1/4 of the N = 4 supersymmetry"; §2 pp. 2–3, the extremal 5D Reissner–Nordström metric (2.8),
-  "annihilated by one quarter of the supersymmetries". It states no inequality. Freedman–Van Proeyen, *Supergravity*, Ch. 11: a book,
-  **not read** (not accessible here); nothing below is compared with it.
+  "annihilated by one quarter of the supersymmetries". It states no inequality. Freedman–Van Proeyen, *Supergravity*: **not read**; nothing
+  below is compared with it.
 * Carroll gr-qc/9712019 (read): the three cases "GM² < p² + q²: Δ always positive (never zero)", a naked singularity, p. 202;
   "GM² > p² + q²", two horizons, p. 204; "GM² = p² + q²", the extremal hole, p. 206. This is the classical bound `M ≥ |Q|` for a horizon.
 * Kallosh–Linde–Ortín–Peet–Van Proeyen, *Supersymmetry as a cosmic censor*, arXiv:hep-th/9205027 (read, pdftotext), §2: the bounds of the
