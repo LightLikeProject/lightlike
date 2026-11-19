@@ -2781,3 +2781,16 @@
   review: kernel-checked
   note: "Compared with Huang, Wang, Wu, Meng, arXiv:2610.21070, Section 3.2.1, p. 5, (KR) (read): on a compact metric space, for Borel probability measures, inf over couplings of the integral of d equals sup over unit Lipschitz u of the pairing with nu - eta; Section 3.7 (1), p. 16: the minimum distance-cost coupling; Section 8.1, (8.2), p. 46: the c-transform u_i = min_j (d(x_i, x_j) - b_j), applied here on the space instead of on a finite net."
   since: unreleased
+- id: LL-0212
+  title: Raychaudhuri's equation and focusing for a null geodesic congruence, in coordinates and on a manifold
+  area: Spacetime
+  file: Lightlike/Spacetime/RaychaudhuriNull.lean
+  decls: [Lightlike.raychaudhuri_null_equation, Lightlike.nullShear_normSq_nonneg, Lightlike.nullRotation_eq_zero, Lightlike.raychaudhuri_null_focusing_at, Lightlike.raychaudhuri_null_focusing]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: kar-sengupta-2007, location: "eq. (17)", check: "null"}
+  review: kernel-checked
+  note: "Kar and SenGupta, Section D, (17): for a null geodesic congruence k with an auxiliary null N, k.N = -1, the transverse metric h = g + k N + N k and the projected derivative, d(Theta^)/d lambda + Theta^2/2 + sigma^2 - omega^2 = -R_ab k^a k^b in dimension four, and focusing under the null convergence condition. Here, for a coordinate metric on an open U of R^n (n >= 3) and a smooth field k with g(k, k) = 0 and nabla_k k = 0 on U, at a point with g(N, N) = 0 and g(k, N) = -1: k(Theta) = -Theta^2/(n-2) - sigma^2 + omega^2 - R(k, k) (raychaudhuri_null_equation), with B^ = P (nabla k) P, P = g^{-1} h, Theta = tr B^ the expansion, sigma^ = sym(g B^) - (Theta/(n-2)) h, omega^ = antisym(g B^) (the split over the idempotent screen projector of trace n - 2, trace_sq_split_proj; tr B^ = tr(nabla k) and tr(B^2) = tr((nabla k)^2) since (nabla k) k = 0 and k_a nabla_b k^a = 0). For a Lorentzian coordinate metric sigma^2 >= 0 (sigma^ kills the unit timelike (k + N)/sqrt 2), and with omega^ = 0 and R(k, k) >= 0: k(Theta) <= -Theta^2/(n-2) and, along an integral curve on [0, L) with an auxiliary null vector with omega^ = 0 at each point and Theta(gamma(0)) < 0, L <= (n-2)/|Theta(gamma(0))| (raychaudhuri_null_focusing); a rotation-free field (g nabla k symmetric, e.g. hypersurface-orthogonal) has omega^ = 0 for every N (nullRotation_eq_zero). The same on a manifold for a Lorentzian metric with its Levi-Civita connection, with omega^ = 0 stated intrinsically as g(nabla_{pi u} V, pi w) = g(nabla_{pi w} V, pi u) for the screen projection pi u = u + g(N, u) V + g(V, u) N, read in the chart (nullRotation_chart_eq_zero, raychaudhuri_null_focusing_manifold_at, raychaudhuri_null_focusing_manifold in RaychaudhuriNullManifold.lean). Limits: the auxiliary null vector is a hypothesis, as in the source."
+  since: unreleased

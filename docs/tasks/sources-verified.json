@@ -2992,6 +2992,11 @@
     "verified": true,
     "snippet": "(16) Thus, rotation defies convergence, while shear assists it. The equation for the evolution of the rotation ωab , has a trivial solution ωab = 0. The criterion for convergence then becomes particularly simple for such",
     "why": null
+   },
+   "eq. (17)": {
+    "verified": true,
+    "snippet": "(17) dλ 2 where the hatted quantitites are the expansion, rotation and shear for the null geodesic 13 congruence. The focusing theorem for null geodesic congruences follows in the same way as for timelike congruences, wi",
+    "why": null
    }
   },
   "citations": 187,
