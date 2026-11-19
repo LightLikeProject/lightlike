@@ -493,7 +493,7 @@ theorem mem_horismosIn_iff (hL : IsLorentzianCoordMetric g U)
         Causal.chronFutureIn T x₀ {y : U | y.1 ∈ φ '' ball (0 : Fin n → ℝ) r} ↔
       pairing g p (φ.symm q.1) (φ.symm q.1) = 0 ∧ 0 ≤ -pairing g p e (φ.symm q.1) := by
   have hp : p ∈ (U : Set (Fin n → ℝ)) := hx₀ ▸ x₀.2
-  rw [mem_sdiff, h.mem_causalFutureIn_iff hL T hTN hx₀ hq, h.mem_chronFutureIn_iff hL T hTN hx₀ hq]
+  rw [Set.mem_sdiff, h.mem_causalFutureIn_iff hL T hTN hx₀ hq, h.mem_chronFutureIn_iff hL T hTN hx₀ hq]
   constructor
   · rintro ⟨⟨hσ, hx⟩, hnot⟩
     refine ⟨le_antisymm hσ (not_lt.1 fun hlt => hnot ⟨hlt, lt_of_le_of_ne hx fun h0 => ?_⟩), hx⟩
