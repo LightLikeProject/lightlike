@@ -38,6 +38,14 @@ Twistor functions are functions of `(μ, λ) ∈ ℂ² × ℂ²` (non-projective
   formula (1.1), p. 3 ("the most elementary of Penrose's series of twistor integral formulae for
   massless fields"), and its twistor reading, §2.3, pp. 8–9 (`f` homogeneous of degree `-2` restricted
   to the line `L_p` and integrated along a contour `Γ ⊂ L_p`).
+* M. Wolf, *A First Course on Twistors, Integrability and Gluon Scattering Amplitudes*,
+  arXiv:1001.3871v2, §2.1: the contour formulae (2.1)–(2.2) (`h = 0`), p. 11, and (2.3)–(2.6) (`h ≠ 0`),
+  p. 12; Exercise 2.1, p. 12 (`f = 1/(z¹z²)` gives the elementary solution, `penroseScalar_elementary`).
+
+Convention (against Wolf): Wolf's twistor `(z^α, λ_α̇)`, `z^α = x^{αβ̇} λ_β̇`, has the chirality opposite
+to Adamo's `(μ^{α̇}, λ_α)`; exchanging dotted and undotted indices, Wolf's (2.3) is `penroseNeg` and
+(2.5) is `penrosePos`, and Wolf's helicity `h` is `-h` here (helicity as Adamo (3.15)); the homogeneities
+agree, `-2h - 2 = 2(-h) - 2`. Wolf's normalisation `-1/(2πi)` is omitted.
 -/
 
 open MeasureTheory Metric Set Filter Topology
@@ -223,13 +231,14 @@ end Differentiation
 
 /-! ## The transform -/
 
-/-- **The Penrose transform, helicity `-(n + 1)/2`** (Adamo (3.40)), along the section `λ(z)` over
+/-- **The Penrose transform, helicity `-(n + 1)/2`** (Adamo (3.40); the contour form is Wolf (2.3),
+with the chirality exchanged and without `-1/(2πi)`), along the section `λ(z)` over
 `C(c, R)`: `φ_{α₁⋯α_{n+1}}(x) = ∮ ⟨λ dλ⟩ λ_{α₁} ⋯ λ_{α_{n+1}} f(μ(x, λ), λ)`. -/
 def penroseNeg (n : ℕ) (F : TwistorPair → ℂ) (l : ℂ → Fin 2 → ℂ) (c : ℂ) (R : ℝ) :
     (Fin (n + 1) → Fin 2) → SpinorCoord → ℂ := fun i x =>
   ∮ z in C(c, R), (angle (l z) (deriv l z) * ∏ k, l z (i k)) * F (twistorPt l x z)
 
-/-- **The Penrose transform, helicity `0`** (Adamo (3.41); ADM (1.1)):
+/-- **The Penrose transform, helicity `0`** (Adamo (3.41); ADM (1.1); Wolf (2.1)):
 `φ(x) = ∮ ⟨λ dλ⟩ f(μ(x, λ), λ)`. -/
 def penroseScalar (F : TwistorPair → ℂ) (l : ℂ → Fin 2 → ℂ) (c : ℂ) (R : ℝ) (x : SpinorCoord) : ℂ :=
   ∮ z in C(c, R), angle (l z) (deriv l z) * F (twistorPt l x z)
@@ -485,7 +494,8 @@ lemma muVec_cons {n : ℕ} (a : Fin 2) (i : Fin n → Fin 2) :
   funext k
   refine Fin.cases ?_ (fun k => ?_) k <;> simp
 
-/-- **The Penrose transform, helicity `(n + 1)/2`** (Adamo (3.42)):
+/-- **The Penrose transform, helicity `(n + 1)/2`** (Adamo (3.42); the contour form is Wolf (2.5), with
+the chirality exchanged and without `-1/(2πi)`):
 `φ̃_{α̇₁⋯α̇_{n+1}}(x) = ∮ ⟨λ dλ⟩ ∂^{n+1} f/∂μ^{α̇₁} ⋯ ∂μ^{α̇_{n+1}} (μ(x, λ), λ)`. -/
 def penrosePos (n : ℕ) (F : TwistorPair → ℂ) (l : ℂ → Fin 2 → ℂ) (c : ℂ) (R : ℝ) :
     (Fin (n + 1) → Fin 2) → SpinorCoord → ℂ := fun j x =>
@@ -612,5 +622,152 @@ theorem penrosePos_rescale {n : ℕ} {F : TwistorPair → ℂ}
   refine circleIntegral.integral_congr hR fun z hz => ?_
   rw [penrosePos_integrand_rescale hF (hs z hz) (hsd z hz) (hld z hz),
     show (2 + (((n : ℤ) - 1) - ((n : ℤ) + 1))) = 0 by ring, zpow_zero, one_mul]
+
+/-! ## The elementary solution (Wolf, Exercise 2.1) -/
+
+/-- The section `λ(z) = (1, z)` of the line (the affine coordinate `λ = Z³/Z²` of ADM §2.3). -/
+def affineSection (z : ℂ) : Fin 2 → ℂ := ![1, z]
+
+lemma affineSection_eq : affineSection = fun z => ![1, 0] + z • ![0, 1] := by
+  funext z
+  ext i
+  fin_cases i <;> simp [affineSection]
+
+lemma hasDerivAt_affineSection (z : ℂ) : HasDerivAt affineSection ![0, 1] z := by
+  rw [affineSection_eq]
+  simpa using ((hasDerivAt_id z).smul_const (![0, 1] : Fin 2 → ℂ)).const_add (![1, 0] : Fin 2 → ℂ)
+
+lemma contDiff_affineSection : ContDiff ℂ 1 affineSection := by
+  rw [affineSection_eq]
+  exact contDiff_const.add (contDiff_id.smul contDiff_const)
+
+lemma angle_affineSection (z : ℂ) : angle (affineSection z) (deriv affineSection z) = -1 := by
+  rw [(hasDerivAt_affineSection z).deriv]
+  simp [angle, affineSection, Fin.sum_univ_two]
+
+lemma twistorPt_affineSection (x : SpinorCoord) (z : ℂ) :
+    twistorPt affineSection x z = (![x 0 0 + x 1 0 * z, x 0 1 + x 1 1 * z], ![1, z]) := by
+  simp only [twistorPt, affineSection]
+  ext k <;> fin_cases k <;> simp [incid, Fin.sum_univ_two]
+
+lemma neg_inv_mul_eq_partialFraction (a b c d z : ℂ) (h1 : a + b * z ≠ 0) (h2 : c + d * z ≠ 0)
+    (h3 : a * d - c * b ≠ 0) (hb : b ≠ 0) :
+    -1 * ((a + b * z) * (c + d * z))⁻¹ =
+      (a * d - c * b)⁻¹ * ((z - -(a / b))⁻¹ - d * (c + d * z)⁻¹) := by
+  have e : (z - -(a / b))⁻¹ = b * (a + b * z)⁻¹ := by
+    rw [show z - -(a / b) = (a + b * z) / b by field_simp; ring, inv_div, div_eq_mul_inv]
+  rw [e, mul_inv]
+  have hP := mul_inv_cancel₀ h1
+  have hQ := mul_inv_cancel₀ h2
+  have hD := mul_inv_cancel₀ h3
+  linear_combination ((a + b * z)⁻¹ * (c + d * z)⁻¹) * hD +
+    (b * (a * d - c * b)⁻¹ * (a + b * z)⁻¹) * hQ - (d * (a * d - c * b)⁻¹ * (c + d * z)⁻¹) * hP
+
+/-- **The elementary solution of the wave equation** (Wolf, Exercise 2.1, p. 12): the twistor
+function `f = 1/(μ⁰ μ¹)`, homogeneous of degree `-2`, along `λ = (1, z)` on a circle `|z| = R` that
+separates the two poles, gives `2πi / det x`. -/
+theorem penroseScalar_elementary {R : ℝ} (hR : 0 < R) {x : SpinorCoord}
+    (h1 : ‖x 0 0‖ < R * ‖x 1 0‖) (h2 : R * ‖x 1 1‖ < ‖x 0 1‖) :
+    penroseScalar (fun p => (p.1 0 * p.1 1)⁻¹) affineSection 0 R x =
+      2 * Real.pi * Complex.I / (x 0 0 * x 1 1 - x 0 1 * x 1 0) := by
+  set a := x 0 0 with hA
+  set b := x 1 0 with hB
+  set c' := x 0 1 with hC
+  set d := x 1 1 with hD
+  have hb : b ≠ 0 := by
+    rintro hb0
+    rw [hb0, norm_zero, mul_zero] at h1
+    exact absurd h1 (not_lt.2 (norm_nonneg _))
+  have hc' : 0 < ‖c'‖ := (mul_nonneg hR.le (norm_nonneg d)).trans_lt h2
+  have hdet : a * d - c' * b ≠ 0 := by
+    intro h0
+    have heq : ‖a‖ * ‖d‖ = ‖c'‖ * ‖b‖ := by rw [← norm_mul, ← norm_mul, sub_eq_zero.1 h0]
+    have hbpos : 0 < ‖b‖ := norm_pos_iff.2 hb
+    have : ‖a‖ * ‖d‖ < ‖c'‖ * ‖b‖ := by
+      rcases (norm_nonneg d).eq_or_lt with hd0 | hd0
+      · rw [← hd0, mul_zero]; exact mul_pos hc' hbpos
+      · calc ‖a‖ * ‖d‖ < R * ‖b‖ * ‖d‖ := mul_lt_mul_of_pos_right h1 hd0
+          _ = ‖b‖ * (R * ‖d‖) := by ring
+          _ < ‖b‖ * ‖c'‖ := mul_lt_mul_of_pos_left h2 hbpos
+          _ = ‖c'‖ * ‖b‖ := mul_comm _ _
+    exact this.ne heq
+  have hz1 : ∀ z ∈ sphere (0 : ℂ) R, a + b * z ≠ 0 := by
+    intro z hz h0
+    have hzR : ‖z‖ = R := by simpa using hz
+    have : ‖a‖ = ‖b‖ * R := by rw [eq_neg_of_add_eq_zero_left h0, norm_neg, norm_mul, hzR]
+    linarith [mul_comm R ‖b‖]
+  have hz2 : ∀ z ∈ closedBall (0 : ℂ) R, c' + d * z ≠ 0 := by
+    intro z hz h0
+    have hzR : ‖z‖ ≤ R := by simpa using hz
+    have : ‖c'‖ = ‖d‖ * ‖z‖ := by rw [eq_neg_of_add_eq_zero_left h0, norm_neg, norm_mul]
+    nlinarith [norm_nonneg d, norm_nonneg z]
+  -- partial fractions on the circle
+  have hpf : ∀ z ∈ sphere (0 : ℂ) R,
+      angle (affineSection z) (deriv affineSection z) *
+          (fun p : TwistorPair => (p.1 0 * p.1 1)⁻¹) (twistorPt affineSection x z) =
+        (a * d - c' * b)⁻¹ * ((z - -(a / b))⁻¹ - d * (c' + d * z)⁻¹) := by
+    intro z hz
+    have e1 := hz1 z hz
+    have e2 := hz2 z (sphere_subset_closedBall hz)
+    rw [angle_affineSection, twistorPt_affineSection]
+    simp only [Matrix.cons_val_zero, Matrix.cons_val_one, ← hA, ← hB, ← hC, ← hD]
+    exact neg_inv_mul_eq_partialFraction a b c' d z e1 e2 hdet hb
+  have hint1 : CircleIntegrable (fun z => (z - -(a / b))⁻¹) 0 R := by
+    refine ContinuousOn.circleIntegrable' ?_
+    refine (continuousOn_id.sub continuousOn_const).inv₀ fun z hz => ?_
+    rw [abs_of_pos hR] at hz
+    have h := hz1 z hz
+    have hba : b * (a / b) = a := by field_simp
+    intro h0
+    apply h
+    simp only [Pi.sub_apply, id] at h0
+    have hz' : z = -(a / b) := by linear_combination h0
+    rw [hz', mul_neg, hba]
+    ring
+  have hd2 : DifferentiableOn ℂ (fun z => d * (c' + d * z)⁻¹) (closedBall 0 R) :=
+    (differentiableOn_const _).mul ((differentiableOn_const _).add
+      ((differentiableOn_const _).mul differentiableOn_id) |>.inv fun z hz => hz2 z hz)
+  have hint2 : CircleIntegrable (fun z => d * (c' + d * z)⁻¹) 0 R :=
+    (hd2.continuousOn.mono (by rw [abs_of_pos hR]; exact sphere_subset_closedBall)).circleIntegrable'
+  have hres1 : ∮ z in C(0, R), (z - -(a / b))⁻¹ = 2 * Real.pi * Complex.I := by
+    refine circleIntegral.integral_sub_inv_of_mem_ball ?_
+    rw [mem_ball_zero_iff, norm_neg, norm_div]
+    rw [div_lt_iff₀ (norm_pos_iff.2 hb)]
+    linarith [mul_comm R ‖b‖]
+  have hres2 : ∮ z in C(0, R), d * (c' + d * z)⁻¹ = 0 :=
+    DiffContOnCl.circleIntegral_eq_zero hR.le
+      (DifferentiableOn.diffContOnCl (by rw [closure_ball 0 hR.ne']; exact hd2))
+  rw [penroseScalar, circleIntegral.integral_congr hR.le hpf, circleIntegral.integral_const_mul,
+    circleIntegral.integral_sub hint1 hint2, hres1, hres2]
+  field_simp
+  ring
+
+/-- The elementary solution solves the wave equation where the circle separates the poles (an
+instance of `penroseScalar_isZrmScalar`). -/
+theorem penroseScalar_elementary_isZrmScalar {R : ℝ} (hR : 0 < R) :
+    IsZrmScalar {x : SpinorCoord | ‖x 0 0‖ < R * ‖x 1 0‖ ∧ R * ‖x 1 1‖ < ‖x 0 1‖}
+      (penroseScalar (fun p => (p.1 0 * p.1 1)⁻¹) affineSection 0 R) := by
+  refine penroseScalar_isZrmScalar (W := {p : TwistorPair | p.1 0 * p.1 1 ≠ 0})
+    (isOpen_ne_fun (by fun_prop) continuous_const) ?_ contDiff_affineSection 0 R
+    ((isOpen_lt (f := fun x : SpinorCoord => ‖x 0 0‖) (g := fun x => R * ‖x 1 0‖) (by fun_prop)
+      (by fun_prop)).inter (isOpen_lt (f := fun x : SpinorCoord => R * ‖x 1 1‖)
+        (g := fun x => ‖x 0 1‖) (by fun_prop) (by fun_prop))) ?_
+  · exact (contDiff_id.contDiffOn.inv fun p hp => hp).comp (by fun_prop : ContDiff ℂ 2
+      (fun p : TwistorPair => p.1 0 * p.1 1)).contDiffOn fun p hp => hp
+  · intro x hx z hz
+    rw [abs_of_pos hR] at hz
+    have hzR : ‖z‖ = R := by simpa using hz
+    rw [twistorPt_affineSection]
+    show _ * _ ≠ 0
+    simp only [Matrix.cons_val_zero, Matrix.cons_val_one]
+    refine mul_ne_zero ?_ ?_
+    · intro h0
+      have : ‖x 0 0‖ = ‖x 1 0‖ * R := by
+        rw [eq_neg_of_add_eq_zero_left h0, norm_neg, norm_mul, hzR]
+      linarith [hx.1, mul_comm R ‖x 1 0‖]
+    · intro h0
+      have : ‖x 0 1‖ = ‖x 1 1‖ * R := by
+        rw [eq_neg_of_add_eq_zero_left h0, norm_neg, norm_mul, hzR]
+      linarith [hx.2, mul_comm R ‖x 1 1‖]
 
 end Lightlike.Spinor
