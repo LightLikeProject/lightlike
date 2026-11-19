@@ -1566,6 +1566,7 @@ import Lightlike.Spacetime.Corners.ChartConnection
 import Lightlike.Spacetime.Corners.ChartCovariant
 import Lightlike.Spacetime.Corners.ChartCurvature
 import Lightlike.Spacetime.Corners.ChartTensor
+import Lightlike.Spacetime.Corners.DivergenceFree
 import Lightlike.Spacetime.Corners.Coordinates
 import Lightlike.Spacetime.Corners.Curvature
 import Lightlike.Spacetime.Corners.CurvatureSymmetries

@@ -54,3 +54,14 @@ What moved (source file: declarations, with the new name where it changed):
 * `EinsteinEquations.lean` (1): `NondegMetric.EinsteinEq` → `NondegMetric.EinsteinEqW`.
 * `LeviCivitaSmooth.lean` (5, and the `LocallySmoothConnectionW` instance for `leviCivita`): `mfderiv_chart_symmL` → `mfderiv_chart_symmLW`, `mvfderiv_chart_fixed` → `mvfderiv_chart_fixedW`, `contMDiffAt_mvfderiv_cfield` → `contMDiffAt_mvfderiv_cfieldW`, `contMDiffAt_gamHat_leviCivita` → `contMDiffAt_gamHat_leviCivitaW`, `contMDiffAt_leviCivita` → `contMDiffAt_leviCivitaW`.
 * `LieDerivation.lean` (6): `dirDeriv` → `dirDerivW`, `chartField` → `chartFieldW`, `mfderiv_of_eventuallyEq_chart` (new), `mfderiv_eq_chart` → `mfderiv_eq_chartW`, `mpullback_chart` → `mpullback_chartW`, `mfderiv_mlieBracket` → `mfderiv_mlieBracketW`.
+
+## The divergence-free Einstein tensor in the Corners layer (20 November 2026)
+
+`Corners/DivergenceFree.lean` carries the branch's general version of `DivergenceFree.lean`
+(`einstein_divergence_free_provedW`, any `ModelWithCorners ℝ (Fin n → ℝ) H`), which the closure computed for CO30 and
+GE11 had left out because no file built on the layer used it. Its supporting declarations are added to
+`Corners/ChartTensor.lean` (`bilOfW`, `covDerivBilinAt_bilOfW`, `einsteinCompW`, `BEW`, `covDerivBilinAt_einsteinW`,
+`IsCoordMetricW.contDiffOn_einsteinTensorW`, `differentiableWithinAt_sum_smul`, `mdiffAt_of_smoothNearW` from
+`BianchiSecond.lean`) and `fderivWithin_range_self` to `Corners/LieDerivation.lean`. `T-GE1-P8` stays open (the model
+space is `Fin n → ℝ`, not any `E`).
+
