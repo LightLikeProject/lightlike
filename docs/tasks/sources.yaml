@@ -2016,6 +2016,10 @@ milestones:
     class: sourced
     refs:
       - {ref: baumann-2009, location: "eq. (A.140)", check: "Klein-Gordon"}
+  CO30:
+    class: sourced
+    refs:
+      - {ref: carroll-1997, location: "eq. (8.36)", check: "Friedmann"}
   DS1:
     class: sourced
     refs:

@@ -1,0 +1,13 @@
+- id: LL-XXXX-c
+  title: Einstein's equations for the Robertson-Walker metric with spatial curvature one on an open interval times the 3-sphere, with a comoving perfect fluid, are equivalent to Friedmann's two equations
+  area: Spacetime
+  file: Lightlike/Spacetime/FLRWSphereEinstein.lean
+  decls: [Lightlike.flrwSphere_einsteinEq_leviCivita_iff_friedmann, Lightlike.closedDeSitter_einsteinEq, Lightlike.closedDeSitter_wrong_sign]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (8.36)", check: "Friedmann"}
+  review: kernel-checked
+  note: "For a smooth positive on an open J of the reals, the metric -dt² + a(t)² h on the manifold J × S³, with h the round metric of the unit 3-sphere (Mathlib's manifold structure), is a Lorentzian metric; for its Levi-Civita connection and the perfect fluid (ρ + p) u u + p g with u = ∂_t, ρ and p functions of t, G + Λ g = 8πG T holds iff Friedmann's first and second equations with spatial curvature k = 1 hold at every t in J (units c = 1). The proof is chartwise: in Mathlib's stereographic charts the round metric is |du|²/(1+|u|²/4)², so the coordinate metric is the coordinate FLRW metric with k = 1 on the whole chart target (all of R³ for the sphere factor), and the coordinate theorem flrw_einstein_iff_friedmann applies. Trust checks: closed de Sitter space (a = cosh(Ht)/H, rho = p = 0, Lambda = 3H^2) is a solution (closedDeSitter_einsteinEq) and is not a solution with the opposite sign Lambda = -3H^2 (closedDeSitter_wrong_sign). Limits: the fluid is comoving with ρ, p depending on t only, by assumption; J is an open subset of the reals. Compared with Carroll ch. 8 at (8.3), (8.7), (8.17), (8.29), (8.35) and (8.36), see docs/notes/co30-carroll-comparison.md."
+  since: unreleased
