@@ -1,4 +1,5 @@
 import Lightlike.OperatorAlgebras.VonNeumannExt
+import Physlib.QuantumMechanics.Operators.Unbounded
 
 /-!
 # Every self-adjoint extension is an `A_U`
@@ -16,20 +17,10 @@ namespace Lightlike.OperatorAlgebras
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
   {A : H →ₗ.[ℂ] H}
 
-/-- **The adjoint reverses inclusions**: `S ≤ T` (`S` densely defined) gives `T† ≤ S†`. -/
-lemma adjoint_antitone {S T : H →ₗ.[ℂ] H} (hS : Dense (S.domain : Set H)) (hST : S ≤ T) : T† ≤ S† := by
-  have hT : Dense (T.domain : Set H) := hS.mono hST.1
-  have key : ∀ y : (T†).domain, ∀ x : S.domain, ⟪(T† y : H), (x : H)⟫_ℂ = ⟪(y : H), (S x : H)⟫_ℂ := by
-    intro y x
-    rw [LinearPMap.adjoint_isFormalAdjoint hT y ⟨(x : H), hST.1 x.2⟩, (hST.2 (x := x) (y := ⟨(x : H), hST.1 x.2⟩) rfl).symm]
-  refine ⟨fun y hy => LinearPMap.mem_adjoint_domain_of_exists y ⟨_, key ⟨y, hy⟩⟩, fun y z hyz => ?_⟩
-  refine (LinearPMap.adjoint_apply_eq hS z (x₀ := (T† y : H)) fun x => ?_).symm
-  rw [← hyz]; exact key y x
-
 variable {B : H →ₗ.[ℂ] H}
 
 lemma le_adjoint_of_selfAdjoint_ext (hA : ClosedSymm A) (hAB : A ≤ B) (hB : IsSelfAdjoint B) : B ≤ A† := by
-  have h := adjoint_antitone hA.dense hAB
+  have h := LinearPMap.adjoint_antitone (Or.inl hA.dense) hAB
   have hBB : B† = B := hB
   rwa [hBB] at h
 
@@ -192,7 +183,7 @@ theorem eq_extU_of_selfAdjoint (hA : ClosedSymm A) (hAB : A ≤ B) (hB : IsSelfA
     · rw [extU_apply]
       exact (hBA.2 (x := w) (y := ⟨(v : H), (Submodule.mem_inf.mp v.2).2⟩) hvw.symm).symm
   have hge : B ≤ extU A U := by
-    have h := adjoint_antitone (dense_extU_domain hA) hle
+    have h := LinearPMap.adjoint_antitone (Or.inl (dense_extU_domain hA)) hle
     have h1 : B† = B := hB
     have h2 : (extU A U)† = extU A U := extU_isSelfAdjoint hA
     rwa [h1, h2] at h
