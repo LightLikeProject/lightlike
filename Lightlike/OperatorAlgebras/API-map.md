@@ -23,10 +23,17 @@ antilinear part [3]. A representation of the Weyl relations is a family of unita
 `W f ∘ W g = exp (-i Im ⟪f, g⟫ / 2) W (f + g)`, and a Fock representation has a cyclic unit vector with the
 vacuum expectation `exp (-‖f‖² / 4)` [3]. Shale's criterion says that a Bogoliubov transformation is
 implemented by a unitary of the Fock representation exactly when its antilinear part is Hilbert–Schmidt {2}.
+Necessity goes through the determinant bound from the uncertainty matrix [54], the Gaussian average of the Weyl
+unitaries over finitely many modes [55] and the matrix of the quadratic form `f ↦ ‖T f‖²` on finitely many modes
+[56]; sufficiency goes
+through the norm continuity of the Weyl unitaries [57], the vacuum projection of finitely many modes [58] and the
+bound `det ≤ exp (tr - n)` [59]. The parity `f ↦ -f` is implemented in every Fock representation [60], a one-mode squeezing is implemented
+[61], and the same squeezing on every mode of `ℓ²` has an antilinear part that is not Hilbert–Schmidt and is not
+implemented [64].
 In one mode the squeezing has `|α|² - |β|² = 1` and the dilation `f ↦ 2 f` is not symplectic [4]. A map with `‖B f‖ = c ‖f‖`, `c > 0`, is not Hilbert–Schmidt when a Hilbert basis is infinite [4]. On `L²(ℝ)` translation `ψ(x + t)` is a strongly continuous unitary group [5], and its generator is `-i d/dx` on `C²` functions with compact support, not `+i d/dx` [6]. On `L²(0, 1)` the operator `-i d/dx` on the `C²` functions supported inside `(0, 1)` is given by its graph [7]. The deficiency spaces of an operator are the kernels of the adjoint minus `±i`, and a self-adjoint operator has none [8]. The
 Fock space itself is not built here, and a Fock representation is characterized by its vacuum. The
 unbounded spectral theorem is not in Mathlib; it is ported from physicslib4: every self-adjoint operator has a unique
-projection-valued measure on the Borel sets of `ℝ` whose spectral integral of `λ` is the operator {4} [62]; the group `e^{itA}` of a self-adjoint operator is a `UnitaryGroup` whose generator is `A` [63]. Stone's theorem and Shale's criterion are [TODO] here.
+projection-valued measure on the Borel sets of `ℝ` whose spectral integral of `λ` is the operator {4} [62]; the group `e^{itA}` of a self-adjoint operator is a `UnitaryGroup` whose generator is `A` [63]. On a matrix algebra the modular flow of the faithful state `Tr (e^{-H} ·)` is `a ↦ e^{-izH} a e^{izH}` and the state is KMS at inverse temperature `1` for it {10} [91]; the flow is a multiplicative one-parameter group that leaves the state invariant [91]; the Tomita operator `S` is an antilinear involution with `S (a ρ^{1/2}) = a† ρ^{1/2}` and the modular operator `Δ y = ρ y ρ⁻¹` satisfies `Δ = S† S` {10} [91]; the modular state is KMS at inverse temperature `1` in the sense of the KMS condition of finite quantum systems, and a diagonal qubit state that is not Gibbs fails that condition [91]. Stone's theorem and Shale's criterion are [TODO] here.
 
 The graph of `-i d/dx` on the `C_c^∞(0, 1)` functions is the image of the smooth test functions under the same pair map, and lies inside the `C²` graph [11]. It contains a nonzero vector, a bump function supported in `(0, 1)` [12]. Mollification by a normed bump function maps a `C²` test function to a `C_c^∞` one, with the derivative of the mollified function the mollified derivative, and converges uniformly with its derivative, so the two graphs have the same closure [13].
 
@@ -56,7 +63,31 @@ A bounded operator on a complex Hilbert space is trace class when the diagonal s
 
 For a Hilbert basis `{eᵢ}`, `∑ᵢ |⟪eᵢ, y⟫|² = ‖y‖²` (Parseval), the Hilbert-Schmidt square sum `∑ᵢ ‖S eᵢ‖²` of a bounded `S` in one basis equals that of `S⋆` in a second basis, and so it converges in every Hilbert basis to the same sum once it converges in one [39]. A Bogoliubov transformation is `T f = α f + β f` with `α` complex-linear and `β` antilinear, and the symplectic condition gives `‖α e‖² - ‖β e‖² = ‖e‖²` and `4 ‖β e‖² = ‖T e‖² + ‖T (i e)‖² - 2 ‖e‖²`; `α` is a bounded operator with `α†α - 1` positive and `‖√(α†α - 1) e‖² = ‖β e‖²` [40]. Hence the antilinear part is Hilbert-Schmidt as soon as `∑ᵢ ‖β bᵢ‖²` converges in one Hilbert basis, and in particular when the finite sums `∑_{i ∈ s} (‖T bᵢ‖² + ‖T (i bᵢ)‖² - 2)` are bounded, the quantity that the vacuum projections onto finitely many modes control in the necessity part of Shale's criterion [41].
 
-A compact symmetric operator `T` on a real or complex Hilbert space has a Hilbert basis of eigenvectors with real eigenvalues, assembled from Hilbert bases of the eigenspaces, whose sum is dense, and `T x = ∑ᵢ μᵢ ⟪bᵢ, x⟫ bᵢ` in it; only finitely many eigenvalues have `‖μ‖ ≥ ε`, since unit eigenvectors to distinct eigenvalues are orthonormal and their images are then `ε` apart inside a compact set, so the eigenvalues and the spectrum are countable [65]. The identity of `ℓ²(ℕ)` is symmetric, not compact, and has an infinite-dimensional eigenspace, and `0` is in the spectrum of the compact self-adjoint `diag(1/(n+1))` without being an eigenvalue [66]. A Hilbert-Schmidt operator is the norm limit of its finite sections `x ↦ ∑_{i ∈ F} ⟪bᵢ, x⟫ K bᵢ` and so is compact [67].
+On `L²(0, 1)`, a vector lies in the domain of the adjoint of `-i d/dx` (on the `C²` test functions) iff it is a primitive `c + ∫₀ˣ g` with `g ∈ L²`, equivalently iff it agrees almost everywhere with an absolutely continuous function whose derivative is in `L²`, and then the adjoint is `-i g` [65], [66]. Its continuous representative has boundary values `y(0)`, `y(1)`, and integration by parts for absolutely continuous functions gives the boundary form `⟪A† y, z⟫ - ⟪y, A† z⟫ = i (conj y(1) z(1) - conj y(0) z(0))`; the affine functions give every pair of boundary values [66]. The closure of the momentum is the adjoint on the vectors with zero boundary values, the restriction `P_θ` of the adjoint to `y(1) = e^{iθ} y(0)` is self-adjoint, and every self-adjoint extension of the momentum is a `P_θ` {5}, [67]. The constant `1` lies in the periodic domain and not in the antiperiodic one, so `P_0 ≠ P_π`, and the closure is not self-adjoint [68].
+
+The plane waves `e^{i(θ + 2πn)x}`, `n ∈ ℤ`, lie in the domain of `P_θ` and are orthonormal eigenvectors with eigenvalue `θ + 2πn`; an eigenvector of `P_θ` with eigenvalue `μ ∈ ℂ` has the continuous representative `y(0) e^{iμx}`, so `μ = θ + 2πn` and the eigenspaces are one-dimensional; off `θ + 2πℤ` the resolvent equation is solved explicitly, so the spectrum of `P_θ`, in Physlib's sense, is `θ + 2πℤ` and equals the point spectrum {5}, [69]. `θ` is in the spectrum of `P_θ` and `θ + π` is not [70].
+
+A Weyl system of a symplectic vector space `(V, ω)` is a map `W` into a unital star algebra with `W(0) = 1`, `W(-φ) = W(φ)*` and `W(φ) W(ψ) = e^{-iω(φ,ψ)/2} W(φ + ψ)`; its elements are unitary and linearly independent, the independence by induction on the number of terms with the conjugations `W(ψ) W(χ) W(-ψ) = e^{-iω(ψ,χ)} W(χ)` [71]. The operators `(W(φ)F)(ψ) = e^{iω(φ,ψ)/2} F(φ + ψ)` on `ℓ²(V)`, or on any Hilbert space with a Hilbert basis indexed by `V`, form a Weyl system, and the closed star subalgebra they generate is the CCR algebra, a C*-algebra {6} [71]. The Weyl unitaries of a representation of the CCR over a complex inner product space form a Weyl system of `σ = Im⟪·,·⟫` [71]. In the CCR algebra of `ℝ²` with `ω((a, b), (c, d)) = ad - bc` the elements `W(e₁)` and `W(e₂)` do not commute [72].
+A representation of the CAR over `ℝᵐ` is a family of self-adjoint operators with `φ a φ b + φ b φ a = 2 δ_ab`; the Pauli matrices are one over `ℝ³`, the tensor product construction joins two, and the Jordan-Wigner operators `σ₃ ⊗ ⋯ ⊗ σ₃ ⊗ σ₁,₂ ⊗ 1 ⊗ ⋯ ⊗ 1` are one over `ℝ²ⁿ`, whose annihilation operators `aⱼ = (φ_{2j} + i φ_{2j+1}) / 2` satisfy `aᵢ aⱼ* + aⱼ* aᵢ = δᵢⱼ` and kill the empty configuration [73]. On the exterior algebra, left multiplication `a*(v)` and contraction `a(d)` satisfy the CAR with the vacuum `1` [74], and `|x⟩ ↦ ∏_{xⱼ = 1} eⱼ` is a linear isomorphism `⊗ⁿℂ² ≅ Λ(ℂⁿ)` that intertwines the Jordan-Wigner creation and annihilation operators with these [75]. The Fock inner product on `Λ(ℂⁿ)`, for which the configuration vectors are orthonormal, is the only sesquilinear form with `⟪1, 1⟫ = 1` for which `a*(eⱼ)` and `a(eⱼ*)` are mutually adjoint, and the Fock representation on it is irreducible [77]. Every representation over `ℝ²ⁿ` is unitarily equivalent to the Jordan-Wigner one tensored with the identity of its vacuum space `K = ⋂ⱼ ker aⱼ`, it is irreducible iff `K` is one-dimensional, two irreducible ones are unitarily equivalent, and over `ℝ²ⁿ⁺¹` the last generator becomes `Iₙ ⊗ T` for a self-adjoint unitary `T` of `K` {7}; the proof uses the ordered creation words `c₀^{x₀} ⋯ c_{n-1}^{x_{n-1}}` on `K`, their orthonormality and the resolution of the identity `∑ₓ cWord x · a₀c₀ ⋯ · aWord x = 1` [76].
+
+For a finite-dimensional `h`, the Weyl unitaries are jointly strongly continuous [78]. The Gaussian average `P = ∫ e^{-‖z‖²/4} W z dz` satisfies `P W f P = (2π)^d e^{-‖f‖²/4} P` (von Neumann's identity, from the Gaussian kernel integral [79]), so `P₀ = (2π)^{-d} P` is an orthogonal projection, nonzero on a nonzero space by Fourier inversion, and a unit vector of its range has the Fock vacuum expectation [80]. Hence every representation of the Weyl relations of `h` is the Hilbert sum of Fock representations over an orthonormal basis of the range of `P₀`, it is irreducible iff that range is one-dimensional, and an irreducible one is unitarily equivalent to the Fock representation: the Stone-von Neumann theorem {7} {8} [81].
+
+A map `y ↦ W y` into the unitaries with the Weyl relations is regular as soon as it has a cyclic quasi-free vector `Ψ`, `⟪Ψ, W y Ψ⟫ = exp(-η(y, y)/4)` [82]; then `Ψ` lies in the domain of every field operator `φ(y)`, the generator of `t ↦ W(t y)`, with `⟪φ(y₁)Ψ, φ(y₂)Ψ⟫ = ½(η(y₁, y₂) + i σ(y₁, y₂))` and `|σ(y₁, y₂)| ≤ η(y₁, y₁)^{1/2} η(y₂, y₂)^{1/2}` {7}; the Fock vacuum is quasi-free with `η = Re⟪·,·⟫` [83]. For a quasi-free vector the generating function `t ↦ ⟪Ψ, W(t₀y₀) ⋯ W(tₙ₋₁yₙ₋₁) Ψ⟫` is the exponential of a quadratic form, and its n-point functions, `(-i)ⁿ` times the mixed derivative at `0`, are the sums over pairings of the two-point functions (Wick's formula in generating-function form, from Isserlis' formula for `exp` of a quadratic form) [86].
+
+For a complex Hilbert space `Z` with a Hilbert basis indexed by a linearly ordered `ι`, a Hilbert space with a Hilbert basis `B` indexed by the finite subsets of `ι` is the fermionic Fock space: the creation operators `a*(eⱼ) B S = ±B (S ∪ {j})` and their adjoints satisfy the CAR, `a*(w) = ∑ⱼ ⟪eⱼ, w⟫ a*(eⱼ)` has norm at most `‖w‖`, and the field operators `φ(w) = a*(w) + a(w)` are self-adjoint with `φ(w) φ(w') + φ(w') φ(w) = 2 Re⟪w, w'⟫` and form an irreducible representation [84] {7}; the annihilation operators kill the vacuum and the model `ℓ²(Finset ι)` is checked in [85].
+
+In a Fock representation, a contraction `p` of `h` has a second quantization `Γ(p)`, the contraction with `Γ(p) W(f) Ω = exp((‖p f‖² - ‖f‖²)/4) W(p f) Ω`, from the positive semidefinite kernel `exp(⟪f, g⟫/2) - exp(⟪p f, p g⟫/2)` (Schur's product theorem); it is functorial, `Γ(p)* = Γ(p*)`, unitary iff `p` is, and for a unitary `U` the unique implementer of `U` with `Γ(U) Ω = Ω`, every implementer being a phase times `Γ(U)`; a strongly continuous unitary group `U(t)` gives the strongly continuous group `Γ(U(t))`, whose generator is `dΓ` [87] {7}; `Γ(0)` is the vacuum projection [88].
+
+For a Hamiltonian given by a Hilbert basis and real eigenvalues `λₙ` with `∑ e^{-βλₙ} < ∞` (every `H` with a trace-class `e^{-βH}` has this form {4}), the Gibbs state `ω(A) = ∑ e^{-βλₙ} ⟪bₙ, A bₙ⟫ / Z` is a state invariant under `τᵗ(A) = e^{itH} A e^{-itH}`, and the double series `F_{A,B}(z) = ∑ₘₙ e^{-βλₘ} ⟪bₘ, A bₙ⟫ ⟪bₙ, B bₘ⟫ e^{iz(λₙ - λₘ)} / Z`, dominated on the strip `0 ≤ Im z ≤ β` by `|⟪bₘ, A bₙ⟫| |⟪bₙ, B bₘ⟫| (e^{-βλₘ} + e^{-βλₙ})`, is bounded and continuous there, analytic inside, with `F(t) = ω(A τᵗ(B))` and `F(t + iβ) = ω(τᵗ(B) A)`: the KMS condition {9} [89]. The oscillator `λₙ = n` is an example for every `β > 0`, and at `β = 0` the partition sum diverges [90].
+
+The states of `C(X)` for a compact Hausdorff `X` are the positive linear functionals with `ω 1 = 1`, and the pure ones are the extreme points of this convex set. A pure state is multiplicative: for `0 ≤ g ≤ 1` it splits as `ω(g) ω(· g)/ω(g) + ω(1 - g) ω(· (1 - g))/ω(1 - g)`, so `ω(f g) = ω(f) ω(g)`; a multiplicative state is continuous, its kernel is a closed maximal ideal, so it is the evaluation at a point; and every evaluation is pure {11} [92]. On `C(Bool)` the average of the two evaluations is a mixed state [93]. For a locally compact Hausdorff `X`, a state of `C₀(X)` (positive, of norm one) extends to the state `F ↦ ω(F - F(∞)) + F(∞)` of `C(X̃)` on the one-point compactification, a pure one to a pure one, so the pure states of `C₀(X)` are again the evaluations at the points of `X` [94].
+
+On a compact metric space the couplings of two probability measures are the probability measures on the product with these marginals, the product measure among them, and `W₁` is the infimum of the transport costs `∫ d dπ`; for every coupling and `1`-Lipschitz `u`, `∫ u dμ - ∫ u dν ≤ ∫ d dπ`, the easy half of Kantorovich-Rubinstein duality, and `W₁(δₓ, δ_y) = d(x, y)` {12} [95]. The diagonal coupling gives `W₁(μ, μ) = 0` [96].
+
+For a continuous cost `h` on the product of a compact metric space with itself there is an optimal coupling, and its cost is `sup {∫ f dμ + ∫ g dν | f(x) + g(y) ≤ h(x, y)}` over continuous `f`, `g` {12} [97]; the proof goes through the Hahn-Banach theorem for the sublinear functional `ω(k) = inf {∫ f dμ + ∫ g dν | k ≤ f ⊕ g}` and the Riesz-Markov-Kakutani theorem. For a separable cost `a(x) + b(y)` the dual value is `∫ a dμ + ∫ b dν` [98].
+
+Kantorovich-Rubinstein duality: on a compact metric space `W₁(μ, ν) = sup {∫ u dμ - ∫ u dν | u 1-Lipschitz}`, and the infimum defining `W₁` is attained {12} [99]; the `c`-transform `u(x) = inf_y (d(x, y) - g(y))` of a dual pair `(f, g)` is `1`-Lipschitz with `f ≤ u ≤ -g` [99]. For Dirac measures the supremum is `d(x, y)`, and `2`-Lipschitz tests exceed `W₁` [100].
+A compact symmetric operator `T` on a real or complex Hilbert space has a Hilbert basis of eigenvectors with real eigenvalues, assembled from Hilbert bases of the eigenspaces, whose sum is dense, and `T x = ∑ᵢ μᵢ ⟪bᵢ, x⟫ bᵢ` in it; only finitely many eigenvalues have `‖μ‖ ≥ ε`, since unit eigenvectors to distinct eigenvalues are orthonormal and their images are then `ε` apart inside a compact set, so the eigenvalues and the spectrum are countable [101]. The identity of `ℓ²(ℕ)` is symmetric, not compact, and has an infinite-dimensional eigenspace, and `0` is in the spectrum of the compact self-adjoint `diag(1/(n+1))` without being an eigenvalue [102]. A Hilbert-Schmidt operator is the norm limit of its finite sections `x ↦ ∑_{i ∈ F} ⟪bᵢ, x⟫ K bᵢ` and so is compact [103].
 
 ## Lean References
 
@@ -222,17 +253,123 @@ A compact symmetric operator `T` on a real or complex Hilbert space has a Hilber
     `OperatorAlgebras.Bogoliubov.squeezeConj_norm_betaPart_sq`, `OperatorAlgebras.squeezeEllTwo`,
     `OperatorAlgebras.not_isHilbertSchmidt_squeezeEllTwo`, `OperatorAlgebras.not_implements_squeezeEllTwo`
     (the wrong-input control: a squeezing of infinitely many modes is not implemented)
-65. Lightlike/OperatorAlgebras/Spectral/Compact.lean - `OperatorAlgebras.CompactSpectral.exists_hilbertBasis_eigenvectors`,
+65. Lightlike/OperatorAlgebras/MomentumAdjoint.lean - `OperatorAlgebras.adjoint_eq_primitive`,
+    `OperatorAlgebras.mem_adjoint_of_primitive`, `OperatorAlgebras.mem_adjoint_iff_primitive`
+66. Lightlike/OperatorAlgebras/MomentumBoundary.lean - `OperatorAlgebras.integral_conj_mul_add_eq`,
+    `OperatorAlgebras.boundary_form_momentum`, `OperatorAlgebras.bv_linVec`, `OperatorAlgebras.mem_adjoint_iff_ac`
+67. Lightlike/OperatorAlgebras/MomentumTheta.lean - `OperatorAlgebras.momentumZero_eq_closure`, `OperatorAlgebras.momentumTheta`,
+    `OperatorAlgebras.momentumTheta_isSelfAdjoint`, `OperatorAlgebras.eq_momentumTheta_of_selfAdjoint`,
+    `OperatorAlgebras.selfAdjoint_extensions_momentumZero`
+68. Lightlike/OperatorAlgebras/TestsMomentumTheta.lean - `OperatorAlgebras.momentumTheta_zero_ne_pi`,
+    `OperatorAlgebras.closure_ne_momentumTheta`
+69. Lightlike/OperatorAlgebras/MomentumSpectrum.lean - `OperatorAlgebras.momentumTheta_planeWave`,
+    `OperatorAlgebras.orthonormal_planeWave`, `OperatorAlgebras.eigenvalue_momentumTheta`,
+    `OperatorAlgebras.eigenvector_momentumTheta`, `OperatorAlgebras.exists_momentumTheta_sub_eq`,
+    `OperatorAlgebras.spectrum_momentumTheta`, `OperatorAlgebras.pointSpectrum_momentumTheta`
+70. Lightlike/OperatorAlgebras/TestsMomentumSpectrum.lean - `OperatorAlgebras.theta_mem_spectrum`,
+    `OperatorAlgebras.theta_add_pi_not_mem_spectrum`
+71. Lightlike/OperatorAlgebras/WeylAlgebra.lean - `OperatorAlgebras.IsSymplecticForm`, `OperatorAlgebras.IsWeylSystem`,
+    `OperatorAlgebras.IsWeylSystem.mem_unitary`, `OperatorAlgebras.IsWeylSystem.linearIndependent`,
+    `OperatorAlgebras.weylOp`, `OperatorAlgebras.isWeylSystem_weylOp`, `OperatorAlgebras.ccrAlgebra`,
+    `OperatorAlgebras.ccrW`, `OperatorAlgebras.isWeylSystem_ccrW`, `OperatorAlgebras.symplecticForm`,
+    `OperatorAlgebras.CCRRep.isWeylSystem`
+72. Lightlike/OperatorAlgebras/TestsWeylAlgebra.lean - `OperatorAlgebras.IsWeylSystem.mul_twist`,
+    `OperatorAlgebras.IsWeylSystem.mul_ne_mul`, `OperatorAlgebras.not_isSymplecticForm_zero`,
+    `OperatorAlgebras.weylOp_ell2Basis_apply`, `OperatorAlgebras.ccrW_mul_ne` (the CCR algebra of `ℝ²` is not
+    commutative)
+73. Lightlike/OperatorAlgebras/FiniteCAR.lean - `OperatorAlgebras.IsCARRep`, `OperatorAlgebras.isCARRep_pauli`,
+    `OperatorAlgebras.IsCARRep.tensor`, `OperatorAlgebras.jordanWigner`, `OperatorAlgebras.isCARRep_jordanWigner`,
+    `OperatorAlgebras.carAnnihilation`, `OperatorAlgebras.carCreation`,
+    `OperatorAlgebras.carAnnihilation_carCreation`, `OperatorAlgebras.carAnnihilation_jordanWigner_vacuum`
+74. Lightlike/OperatorAlgebras/FermionFock.lean - `OperatorAlgebras.creation`, `OperatorAlgebras.annihilation`,
+    `OperatorAlgebras.annihilation_creation_anticomm`, `OperatorAlgebras.annihilation_one`
+75. Lightlike/OperatorAlgebras/FockJW.lean - `OperatorAlgebras.jwFockEquiv`, `OperatorAlgebras.jwFockEquiv_vacuum`,
+    `OperatorAlgebras.jwFockEquiv_carCreation`, `OperatorAlgebras.jwFockEquiv_carAnnihilation`
+76. Lightlike/OperatorAlgebras/CARUnique.lean - `OperatorAlgebras.IsCAROn`, `OperatorAlgebras.carVacuum`,
+    `OperatorAlgebras.car_unitarily_equivalent_jordanWigner`, `OperatorAlgebras.isIrreducibleCAR_iff`,
+    `OperatorAlgebras.car_irreducible_unitarily_equivalent`, `OperatorAlgebras.car_odd_unitarily_equivalent`,
+    `OperatorAlgebras.isIrreducibleCAR_jordanWigner`
+77. Lightlike/OperatorAlgebras/FockInner.lean - `OperatorAlgebras.fockInner`, `OperatorAlgebras.fockInner_fockVec`,
+    `OperatorAlgebras.fockInner_creation`, `OperatorAlgebras.fockInner_unique`, `OperatorAlgebras.fock_irreducible`
+78. Lightlike/OperatorAlgebras/CCRJoint.lean - `OperatorAlgebras.CCRRep.continuous_W`,
+    `OperatorAlgebras.continuous_apply_of_isometries`
+79. Lightlike/OperatorAlgebras/GaussKernel.lean - `OperatorAlgebras.integral_gauss_kernel`,
+    `OperatorAlgebras.symp_eq_real_inner`
+80. Lightlike/OperatorAlgebras/GaussAvg.lean - `OperatorAlgebras.gaussAvg`, `OperatorAlgebras.gaussAvg_W_gaussAvg`,
+    `OperatorAlgebras.exists_gaussAvg_ne_zero`
+81. Lightlike/OperatorAlgebras/StoneVN.lean - `OperatorAlgebras.vnProj`, `OperatorAlgebras.inner_W_of_vnProj`,
+    `OperatorAlgebras.stone_von_neumann`, `OperatorAlgebras.isIrreducible_iff_finrank_vnRange`,
+    `OperatorAlgebras.stone_von_neumann_irreducible`
+82. Lightlike/OperatorAlgebras/QuasiFree.lean - `OperatorAlgebras.WeylSystem.continuous_line_of_quasiFree`,
+    `OperatorAlgebras.CCRRep.IsQuasiFree`, `OperatorAlgebras.CCRRep.field`, `OperatorAlgebras.CCRRep.IsQuasiFree.mem_domain`,
+    `OperatorAlgebras.CCRRep.IsQuasiFree.inner_field_field`, `OperatorAlgebras.CCRRep.IsQuasiFree.abs_symp_le`,
+    `OperatorAlgebras.FockRep.isQuasiFree_vacuum`
+83. Lightlike/OperatorAlgebras/TestsQuasiFree.lean - `OperatorAlgebras.FockRep.inner_field_field_vacuum`
+84. Lightlike/OperatorAlgebras/FermiFockGeneral.lean - `OperatorAlgebras.fermiCre`, `OperatorAlgebras.fermiAnn`,
+    `OperatorAlgebras.fermiAnn_fermiCre_anticomm`, `OperatorAlgebras.creW`, `OperatorAlgebras.annW_creW_anticomm`,
+    `OperatorAlgebras.fockField`, `OperatorAlgebras.fockField_anticomm`, `OperatorAlgebras.fockField_irreducible`
+85. Lightlike/OperatorAlgebras/TestsFermiFock.lean - `OperatorAlgebras.fermiAnn_vacuum`
+86. Lightlike/OperatorAlgebras/QuasiFreeWick.lean - `OperatorAlgebras.mixedDeriv`, `OperatorAlgebras.haf`,
+    `OperatorAlgebras.mixedDeriv_exp_quad`, `OperatorAlgebras.CCRRep.npoint`, `OperatorAlgebras.CCRRep.IsQuasiFree.genFun_eq`,
+    `OperatorAlgebras.CCRRep.IsQuasiFree.npoint_two`, `OperatorAlgebras.CCRRep.IsQuasiFree.npoint_eq_haf`
+87. Lightlike/OperatorAlgebras/SecondQuantization.lean - `OperatorAlgebras.FockRep.gamma`, `OperatorAlgebras.FockRep.gamma_W_Ω`,
+    `OperatorAlgebras.FockRep.gamma_comp`, `OperatorAlgebras.FockRep.adjoint_gamma`, `OperatorAlgebras.FockRep.gamma_mem_unitary_iff`,
+    `OperatorAlgebras.FockRep.secondQuant`, `OperatorAlgebras.FockRep.eq_smul_secondQuant`, `OperatorAlgebras.posSemidef_kernel`,
+    `OperatorAlgebras.FockRep.secondQuantGroup`, `OperatorAlgebras.FockRep.dGamma`
+88. Lightlike/OperatorAlgebras/TestsSecondQuantization.lean - `OperatorAlgebras.FockRep.secondQuant_trans_symm`,
+    `OperatorAlgebras.FockRep.gamma_zero`
+89. Lightlike/OperatorAlgebras/GibbsKMS.lean - `OperatorAlgebras.GibbsKMS.diag`, `OperatorAlgebras.GibbsKMS.domain`,
+    `OperatorAlgebras.GibbsKMS.hamiltonian`, `OperatorAlgebras.GibbsKMS.inner_basis_hamiltonian`, `OperatorAlgebras.GibbsKMS.evol`,
+    `OperatorAlgebras.GibbsKMS.dyn`, `OperatorAlgebras.GibbsKMS.inner_dyn`, `OperatorAlgebras.GibbsKMS.gibbs`,
+    `OperatorAlgebras.GibbsKMS.gibbs_one`, `OperatorAlgebras.GibbsKMS.gibbs_star_mul_self_nonneg`,
+    `OperatorAlgebras.GibbsKMS.gibbs_dyn`, `OperatorAlgebras.GibbsKMS.kmsFun`, `OperatorAlgebras.GibbsKMS.continuousOn_kmsFun`,
+    `OperatorAlgebras.GibbsKMS.differentiableOn_kmsFun`, `OperatorAlgebras.GibbsKMS.norm_kmsFun_le`,
+    `OperatorAlgebras.GibbsKMS.kmsFun_ofReal`, `OperatorAlgebras.GibbsKMS.kmsFun_add_I_mul`
+90. Lightlike/OperatorAlgebras/TestsGibbsKMS.lean - `OperatorAlgebras.GibbsKMS.summable_exp_neg_mul_nat`,
+    `OperatorAlgebras.GibbsKMS.oscillator_isKMS`, `OperatorAlgebras.GibbsKMS.not_summable_exp_zero` (the wrong input
+    `β = 0`)
+91. Lightlike/OperatorAlgebras/ModularFinite.lean - `OperatorAlgebras.kms`, `OperatorAlgebras.inner_tomita`,
+    `OperatorAlgebras.omega_flow`, `OperatorAlgebras.flow_add`, `OperatorAlgebras.flow_mul`,
+    `OperatorAlgebras.isKMS_boltz`, `OperatorAlgebras.not_isKMS_of_ne`
+92. Lightlike/OperatorAlgebras/PureStates.lean - `OperatorAlgebras.PureStates.states`, `OperatorAlgebras.PureStates.IsPure`,
+    `OperatorAlgebras.PureStates.mul_of_isPure`, `OperatorAlgebras.PureStates.exists_eq_eval_of_mul`,
+    `OperatorAlgebras.PureStates.isPure_evalAt`, `OperatorAlgebras.PureStates.isPure_iff_exists_eval`,
+    `OperatorAlgebras.PureStates.isPure_iff_mul`
+93. Lightlike/OperatorAlgebras/TestsPureStates.lean - `OperatorAlgebras.PureStates.isPure_evalAt_true`,
+    `OperatorAlgebras.PureStates.not_isPure_half` (a mixed state of `C(Bool)`)
+94. Lightlike/OperatorAlgebras/PureStatesC0.lean - `OperatorAlgebras.PureStates.states₀`, `OperatorAlgebras.PureStates.IsPure₀`,
+    `OperatorAlgebras.PureStates.ext`, `OperatorAlgebras.PureStates.ext_mem_states`, `OperatorAlgebras.PureStates.isPure_ext`,
+    `OperatorAlgebras.PureStates.evalAt₀`, `OperatorAlgebras.PureStates.isPure₀_evalAt₀`,
+    `OperatorAlgebras.PureStates.isPure₀_iff_exists_eval`
+95. Lightlike/OperatorAlgebras/Wasserstein.lean - `OperatorAlgebras.Transport.couplings`,
+    `OperatorAlgebras.Transport.prod_mem_couplings`, `OperatorAlgebras.Transport.wasserstein1`,
+    `OperatorAlgebras.Transport.integral_sub_le_of_mem_couplings`, `OperatorAlgebras.Transport.integral_sub_le_wasserstein1`,
+    `OperatorAlgebras.Transport.wasserstein1_le`, `OperatorAlgebras.Transport.wasserstein1_dirac`
+96. Lightlike/OperatorAlgebras/TestsWasserstein.lean - `OperatorAlgebras.Transport.diag_mem_couplings`,
+    `OperatorAlgebras.Transport.wasserstein1_self`, `OperatorAlgebras.Transport.wasserstein1_dirac_pos`
+97. Lightlike/OperatorAlgebras/MongeKantorovich.lean - `OperatorAlgebras.Transport.omega`,
+    `OperatorAlgebras.Transport.integral_le_omega`, `OperatorAlgebras.Transport.exists_linear_le_omega`,
+    `OperatorAlgebras.Transport.exists_coupling_eq_omega`, `OperatorAlgebras.Transport.dualValues`,
+    `OperatorAlgebras.Transport.exists_optimal_coupling`, `OperatorAlgebras.Transport.integral_optimal_eq_sSup`
+98. Lightlike/OperatorAlgebras/TestsMongeKantorovich.lean - `OperatorAlgebras.Transport.sepCost`,
+    `OperatorAlgebras.Transport.integral_sepCost`, `OperatorAlgebras.Transport.sSup_dualValues_sepCost`
+99. Lightlike/OperatorAlgebras/KantorovichRubinstein.lean - `OperatorAlgebras.Transport.ctrans`,
+    `OperatorAlgebras.Transport.lipschitzWith_ctrans`, `OperatorAlgebras.Transport.le_ctrans`,
+    `OperatorAlgebras.Transport.ctrans_le_neg`, `OperatorAlgebras.Transport.exists_optimal_coupling_dist`,
+    `OperatorAlgebras.Transport.wasserstein1_eq_sSup`
+100. Lightlike/OperatorAlgebras/TestsKantorovichRubinstein.lean - `OperatorAlgebras.Transport.sSup_dirac`,
+    `OperatorAlgebras.Transport.two_lipschitz_exceeds`, `OperatorAlgebras.Transport.ctrans_zero`
+101. Lightlike/OperatorAlgebras/Spectral/Compact.lean - `OperatorAlgebras.CompactSpectral.exists_hilbertBasis_eigenvectors`,
     `OperatorAlgebras.CompactSpectral.hasSum_eigen`, `OperatorAlgebras.CompactSpectral.finite_eigenvalues_ge`,
     `OperatorAlgebras.CompactSpectral.countable_eigenvalues`, `OperatorAlgebras.CompactSpectral.countable_spectrum`,
     `OperatorAlgebras.CompactSpectral.hasEigenvalue_of_mem_spectrum`,
     `OperatorAlgebras.CompactSpectral.finiteDimensional_eigenspace`
-66. Lightlike/OperatorAlgebras/Spectral/TestsCompact.lean - `OperatorAlgebras.CompactSpectral.not_finiteDimensional_eigenspace_id`,
+102. Lightlike/OperatorAlgebras/Spectral/TestsCompact.lean - `OperatorAlgebras.CompactSpectral.not_finiteDimensional_eigenspace_id`,
     `OperatorAlgebras.CompactSpectral.not_isCompactOperator_id`,
     `OperatorAlgebras.CompactSpectral.exists_hilbertBasis_eigenvectors_of_finiteDimensional`,
     `OperatorAlgebras.CompactSpectral.invDiag_zero_mem_spectrum_not_hasEigenvalue` (`0` is in the spectrum of
     `diag(1/(n+1))` and is not an eigenvalue)
-67. Lightlike/OperatorAlgebras/Spectral/HilbertSchmidtCompact.lean - `OperatorAlgebras.CompactSpectral.isCompactOperator_of_isHilbertSchmidt`
+103. Lightlike/OperatorAlgebras/Spectral/HilbertSchmidtCompact.lean - `OperatorAlgebras.CompactSpectral.isCompactOperator_of_isHilbertSchmidt`
 
 ## References
 
@@ -245,3 +382,24 @@ A compact symmetric operator `T` on a real or complex Hilbert space has a Hilber
 4. G. Teschl, *Mathematical Methods in Quantum Mechanics*, Graduate Studies in Mathematics 99, American Mathematical
    Society, 2009 (online edition), Theorem 3.7 (spectral theorem) and Theorem 6.6 (compact self-adjoint operators). The Lean files are ported from physicslib4
    (github.com/physicslib/physicslib4, Apache-2.0).
+5. G. Bonneau, J. Faraut and G. Valent, *Self-adjoint extensions of operators and the teaching of quantum
+   mechanics*, arXiv:quant-ph/0103153, Appendix A.3 and Section 5.3, eqs. (14) and (15).
+6. C. Bär, N. Ginoux and F. Pfäffle, *Wave Equations on Lorentzian Manifolds and Quantization*, ESI Lectures in
+   Mathematics and Physics, European Mathematical Society, 2007, arXiv:0806.1036, Section 4.2 (Definition 4.2.1,
+   Example 4.2.2, Proposition 4.2.3), pp. 116-122.
+7. J. Dereziński, *Introduction to representations of the canonical commutation and anticommutation
+   relations*, in *Large Coulomb Systems*, Lecture Notes in Physics 695, Springer, 2006, arXiv:math-ph/0511030:
+   Theorem 4 and Corollary 1 (Stone-von Neumann), Theorem 10 and Corollary 2 (the CAR over `ℝ²ⁿ`), Sections 5.2,
+   5.3, 5.5, 6.4 and 7.1, Theorems 13, 24 and 28 (Fock spaces and second quantization), Section 9.1, Theorems 37
+   and 39 (quasi-free states; Theorem 39 (1) in the corrected form `½(η + iω)`).
+8. M. Faulhuber, *Time-Frequency Analysis*, lecture notes, 2022, Section 7.3.1 (von Neumann's proof of the
+   Stone-von Neumann theorem).
+9. J. Panangaden, *Energy Full Counting Statistics and Return to Equilibrium*, master's thesis, McGill University,
+   2021, arXiv:2110.01678, Section 5.2: Proposition 5.4, Remark 5.1, Definition 5.8 and Proposition 5.9.
+10. E. Witten, *Notes on some entanglement properties of quantum field theory*, Rev. Mod. Phys. 90 (2018) 045003,
+   arXiv:1803.04993, Sections 4.1 and 4.2.
+11. N. P. Landsman, *Lecture Notes on C*-Algebras, Hilbert C*-modules, and Quantum Mechanics*, 1998,
+   arXiv:math-ph/9807030, Section 2.12: Definition 2.12.1, Proposition 2.12.8 and Theorem 2.12.9.
+12. W. Huang, R. Wang, Y. Wu and D. Meng, *Exact endpoint asymptotics and almost-sure limits for uniform empirical
+   measures in two dimensions*, arXiv:2610.21070, Section 3.2.1 and Section 8.1 (Kantorovich-Rubinstein duality on a
+   compact metric space).

@@ -693,6 +693,21 @@
   "citations": 212,
   "citations_via": "Semantic Scholar"
  },
+ "benedetti-2019": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Lectures on Differential Topology",
+  "locations": {
+   "Theorem 1.13": {
+    "verified": true,
+    "snippet": "Theorem 1.13. (Morse Lemma) Let 0 be a non degenerate critical point of index 0 ≤ λ ≤ n of f ∈ C ∞ (U, R), f (0) = 0. Then there is a local diffeomorphism x = φ(u), 0 = φ(0), such that ψ := φ−1 is defined on some U\u000f and",
+    "why": null
+   }
+  },
+  "citations": 10,
+  "citations_via": "Semantic Scholar"
+ },
  "benedetti-ziegler-2011": {
   "checked": "2026-11-08",
   "exists": true,
@@ -809,19 +824,29 @@
   "citations_via": "Semantic Scholar"
  },
  "bgp-2007": {
-  "checked": "2026-11-08",
+  "checked": "2026-11-19",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "Wave Equations on Lorentzian Manifolds and Quantization",
   "locations": {
+   "Example 4.2.2, p. 116": {
+    "verified": true,
+    "snippet": "Example 4.2.2. We construct a Weyl system for an arbitrary symplectic vector space (V, ω ). Let H = L2 (V, C) be the Hilbert space of square-integrable complex-valued func- tions on V with respect to the counting measure",
+    "why": null
+   },
+   "Proposition 4.2.3, p. 117": {
+    "verified": true,
+    "snippet": "Proposition 4.2.3. Let (A,W ) be a Weyl system of a symplectic vector space (V, ω ). Then (1) W (ϕ ) is unitary for each ϕ ∈ V , (2) kW (ϕ ) − W (ψ )k = 2 for all ϕ , ψ ∈ V , ϕ 6= ψ , (3) The algebra A is not separable u",
+    "why": null
+   },
    "§3.4": {
     "verified": true,
     "snippet": "3.4 Green’s operators . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 88 3.5 Non-globally hyperbolic manifolds . . . . . . . . . . . . . . . . . . . . . 92 4 Quantization",
     "why": null
    }
   },
-  "citations": 492,
-  "citations_via": "Semantic Scholar"
+  "citations": 542,
+  "citations_via": "OpenAlex"
  },
  "bgv-1992": {
   "checked": "2026-11-07",
@@ -931,6 +956,31 @@
    }
   },
   "citations": 365,
+  "citations_via": "Semantic Scholar"
+ },
+ "bonneau-faraut-valent-2001": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Self-adjoint extensions of operators and the teaching of quantum mechanics",
+  "locations": {
+   "Appendix A.3, p. 19": {
+    "verified": true,
+    "snippet": "A.3 The operator P on a finite interval The Hilbert space is now H = L2 (0, L) and we take P = −i~D, D0 (P ) = {ψ ∈ Dmax (0, L), ψ(0) = ψ(L) = 0}. The symmetry of P on D0 (P ) follows",
+    "why": null
+   },
+   "eq. (14), p. 8": {
+    "verified": true,
+    "snippet": "(14) Moreover, the spectra are purely discrete. Using the boundary condition (14), the eigenval- ues and eigenfunctions are easily shown to be  2π~ θ  Pθ φn (x, θ) = νφn (x, θ), ν =n+ , n = 0, ±1, ±2, . . .   L 2π 1",
+    "why": null
+   },
+   "eq. (15), p. 8": {
+    "verified": true,
+    "snippet": "(15)  φn (x, θ) = √ exp 2iπν , (φm , φn ) = δmn .   L L As the phase θ appears in the eigenfunctions any measurement of the momentum of a given system should, in general, depend on it. To display this, let us go back",
+    "why": null
+   }
+  },
+  "citations": 271,
   "citations_via": "Semantic Scholar"
  },
  "bonzom-gurau-riello-rivasseau-2011": {
@@ -1278,6 +1328,36 @@
     "verified": true,
     "snippet": "(8.36) a 3 a Together these are known as the Friedmann equations, and metrics of the form (8.7) which obey these equations define Friedmann-Robertson-Walker (FRW) universes. There is a bunch of terminology which is assoc",
     "why": null
+   },
+   "eq. (4.60)": {
+    "verified": true,
+    "snippet": "(4.60) You can check this yourself. Therefore, the contribution of the first term in (4.56) to δS can be written Z h i √ (δS)1 = dn x −g g µν ∇λ (δΓλνµ ) − ∇ν (δΓλλµ ) Z h i √ = dn x −g ∇σ g µσ (δΓλλµ ) − g µν (δΓσµν ) ,",
+    "why": null
+   },
+   "eq. (4.66)": {
+    "verified": true,
+    "snippet": "(4.66) 2 This should vanish for arbitrary variations, so we are led to Einstein’s equations in vacuum: 1 δS 1 √ = Rµν − Rgµν = 0 . (4.67) −g δg µν 2 The fact that this simple action leads to the same vacuum field equatio",
+    "why": null
+   },
+   "eq. (4.67)": {
+    "verified": true,
+    "snippet": "(4.67) −g δg µν 2 The fact that this simple action leads to the same vacuum field equations as we had previously arrived at by more informal arguments certainly reassures us that we are doing something right. What we wou",
+    "why": null
+   },
+   "eq. (5.42)": {
+    "verified": true,
+    "snippet": "(5.42) This last version is Killing’s equation. If a spacetime has a Killing vector, then we know we can find a coordinate system in which the metric is independent of one of the coordinates. By far the most useful fact",
+    "why": null
+   },
+   "eq. (5.44)": {
+    "verified": true,
+    "snippet": "(5.44) 2 2 independent Killing vectors. The same kind of counting argument applies to maximally symmetric spaces with curvature (such as spheres) or a non-Euclidean signature (such as Minkowski space), although the detai",
+    "why": null
+   },
+   "eq. (5.46)": {
+    "verified": true,
+    "snippet": "(5.46) You can check for yourself that this actually does solve Killing’s equation. Note that in n ≥ 2 dimensions, there can be more Killing vectors than dimensions. This is because a set of Killing vector fields can be",
+    "why": null
    }
   },
   "citations": 427,
@@ -1483,6 +1563,21 @@
   "citations": 844,
   "citations_via": "Semantic Scholar"
  },
+ "curiel-2014": {
+  "checked": "2026-11-18",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "A Primer on Energy Conditions",
+  "locations": {
+   "§2.1": {
+    "verified": true,
+    "snippet": "2.1 Pointilliste Energy Conditions null energy condition (NEC) geometric for any null vector k a , Rmn k m k n ≥ 0 physical for any null vector k a , Tmn k m k n ≥ 0 effective for each µ̂, ρ + pµ̂ ≥",
+    "why": null
+   }
+  },
+  "citations": 327,
+  "citations_via": "OpenAlex"
+ },
  "defelice-tsujikawa-2010": {
   "checked": "2026-11-17",
   "exists": true,
@@ -1531,6 +1626,61 @@
    }
   },
   "citations": 38,
+  "citations_via": "Semantic Scholar"
+ },
+ "derezinski-2006": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Introduction to representations of the canonical commutation and anticommutation relations",
+  "locations": {
+   "Corollary 1, p. 12": {
+    "verified": true,
+    "snippet": "Corollary 1. Suppose that Y is a finite dimensional symplectic space. Let Y ∋ y 7→ W π1 (y) ∈ U (H) and Y ∋ y 7→ W π2 (y) ∈ U (H) be two regular irreducible representations of the CCR. Then they are unitarily equivalent.",
+    "why": null
+   },
+   "Corollary 2, p. 17": {
+    "verified": true,
+    "snippet": "Corollary 2. Suppose that Y is an even dimensional real Hilbert space. Let Y ∋ y 7→ φπ1 (y) ∈ Bh (H) and Y ∋ y 7→ φπ2 (y) ∈ Bh (H) be two irreducible representations of the CAR. Then they are unitarily equivalent. 4.3 Fe",
+    "why": null
+   },
+   "Theorem 10, p. 17": {
+    "verified": true,
+    "snippet": "Theorem 10. 1) Let (φ1 , φ2 , . . . , φ2n ) be a representation of the CAR over R2n in a Hilbert space H. Then there exists a Hilbert space K and a unitary operator U : ⊗ n C2 ⊗ K → H such that \u0010 \u0011 (j) U Ij−1 σ1 ⊗ 1K = φ",
+    "why": null
+   },
+   "Theorem 13, p. 19": {
+    "verified": true,
+    "snippet": "Theorem 13. 1) Let h, h1 , h2 ∈ B(Z), p1 ∈ B(Z, Z1 ), p2 ∈ B(Z1 , Z2 ), kpi k ≤ 1. We then have Γ (eih ) = exp(dΓ (ih)), (35) Γ (p2 )Γ (p1 ) = Γ (p2 p1 ), [dΓ (h1 ), dΓ (h2 )] = dΓ ([h1 , h2 ]). fin 2) Let Φ, Ψ ∈ ⊗ Z, h",
+    "why": null
+   },
+   "Theorem 24, p. 27": {
+    "verified": true,
+    "snippet": "Theorem 24 (Shale Theorem). 1) Let r ∈ Sp(Y). Then the following conditions are equivalent: a) There exists U ∈ U (Γs (Z)) such that U W (y)U ∗ = W (ry), y ∈ Y. (45) b) r ∈ Sp2 (Y). 2) If the above conditions are satisfi",
+    "why": null
+   },
+   "Theorem 28, p. 29": {
+    "verified": true,
+    "snippet": "Theorem 28. Y ∋ y 7→ φ(y) ∈ Bh (Γa (Z)) (52) is an irreducible representation of the CAR over the space (Y, α). (52) is called the Fock representation of the CAR. Let w1 , . . . , wm be an orthonormal basis of the comple",
+    "why": null
+   },
+   "Theorem 37, p. 38": {
+    "verified": true,
+    "snippet": "Theorem 37. A quasi-free representation is regular. Therefore, in a quasi-free representation we can define the corresponding field operators, denoted φ(y). If m is an integer, we say that σ is a pairing of {1, . . . , 2",
+    "why": null
+   },
+   "Theorem 39, p. 39": {
+    "verified": true,
+    "snippet": "Theorem 39. Suppose that Ψ is a quasi-free vector with η satisfying (70). Then 1) y1 (η + 2i ω)y2 = (Ψ |φ(y1 )φ(y2 )Ψ ); 2) |y1 ωy2 | ≤ 2|y1 ηy1 |1/2 |y2 ηy2 |1/2 , y1 , y2 ∈ Y. Proof. Note that (Ψ |φ(y)2 Ψ ) = yηy. This",
+    "why": null
+   },
+   "Theorem 4, p. 12": {
+    "verified": true,
+    "snippet": "Theorem 4 (The Stone–von Neumann theorem). Suppose that (Y, ω) is a finite dimensional symplectic space and (18) a regular representation of the CCR. Suppose that we fix an identification of Y with X # ⊕ X . Then, there",
+    "why": null
+   }
+  },
+  "citations": 73,
   "citations_via": "Semantic Scholar"
  },
  "di-francesco-ginsparg-zinn-justin-1995": {
@@ -1906,6 +2056,26 @@
   "citations": 182,
   "citations_via": "OpenAlex"
  },
+ "faulhuber-2022": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Time-Frequency Analysis (Lecture Notes)",
+  "locations": {
+   "Theorem 7.32, p. 90": {
+    "verified": true,
+    "snippet": "Theorem 7.32 (Stone-von Neumann). Every irreducible representation of H is equivalent to exactly one of the following representations: (i) χa,b (x, ω, τ ) = e2πi(a·x+b·ω) acting on C, for some (a, b) ∈ R2d , or (ii) ρκ f",
+    "why": null
+   },
+   "Theorems 7.32 and 7.35, pp. 90-94": {
+    "verified": true,
+    "snippet": "Theorem 7.32 (Stone-von Neumann). Every irreducible representation of H is equivalent to exactly one of the following representations: (i) χa,b (x, ω, τ ) = e2πi(a·x+b·ω) acting on C, for some (a, b) ∈ R2d , or (ii) ρκ f",
+    "why": null
+   }
+  },
+  "citations": 2,
+  "citations_via": "OpenAlex"
+ },
  "finster-2010": {
   "checked": "2026-11-08",
   "exists": true,
@@ -2125,7 +2295,7 @@
   "citations_via": "OpenAlex"
  },
  "gourgoulhon-2007": {
-  "checked": "2026-11-18",
+  "checked": "2026-11-19",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "3+1 Formalism and Bases of Numerical Relativity",
@@ -2133,6 +2303,16 @@
    "Section 2.5": {
     "verified": true,
     "snippet": "2.5 Gauss-Codazzi relations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 34 2.5.1 Gauss relation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 34 2.5.2 Codazzi relatio",
+    "why": null
+   },
+   "eq. (2.101)": {
+    "verified": true,
+    "snippet": "(2.101) This is the Codazzi relation, also called Codazzi-Mainardi relation in the mathematical litterature [52]. Remark : Thanks to the symmetries of the Riemann tensor (cf. Sec. 2.2.3), changing the index contracted wi",
+    "why": null
+   },
+   "eq. (2.92)": {
+    "verified": true,
+    "snippet": "(2.92) This is the Gauss relation. If we contract the Gauss relation on the indices γ and α and use γ µα γ αρ = γ µρ = δµρ + nµnρ , we obtain an expression that lets appear the Ricci tensors 4R and R associated with g an",
     "why": null
    }
   },
@@ -2153,6 +2333,21 @@
   },
   "citations": 491,
   "citations_via": "OpenAlex"
+ },
+ "grumiller-kummer-vassilevich-2002": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Dilaton Gravity in Two Dimensions",
+  "locations": {
+   "eq. (1.50)": {
+    "verified": true,
+    "snippet": "(1.50) Mγ Also the torsion simplifies to a volume form 1 T a = Tµν a dxµ ∧ dxν , Tµν a = (Dµ eν )a − (Dν eµ )a , (1.51) 2 with (Dµ )a b = ∂µ δ a b + ωµ ǫa b . (1.52) The Hodge dual of T a here is a diffeomorphism scalar:",
+    "why": null
+   }
+  },
+  "citations": 540,
+  "citations_via": "Semantic Scholar"
  },
  "gurau-2008": {
   "checked": "2026-11-08",
@@ -2617,6 +2812,26 @@
   "citations": 2945,
   "citations_via": "OpenAlex"
  },
+ "huang-wang-wu-meng-2026": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Exact Endpoint Asymptotics and Almost-Sure Limits for Uniform Empirical Measures in Two Dimensions",
+  "locations": {
+   "Section 3.2.1": {
+    "verified": true,
+    "snippet": "3.2.1. The Kantorovich–Rubinstein duality input. For probability measures ν, η on Q, let Π(ν, η) be the set of probability couplings with these marginals, and define",
+    "why": null
+   },
+   "Section 8.1": {
+    "verified": true,
+    "snippet": "8.1. Compact-space KR: finite-grid strong duality and its limit. Let (M, d) be compact and ν, η be Borel probability measures. Fix δ > 0 and a finite δ-net {x1 , . . . , xm }. Break ties by the smallest index and take t",
+    "why": null
+   }
+  },
+  "citations": 0,
+  "citations_via": "OpenAlex"
+ },
  "huggett-tod-1994": {
   "checked": "2026-11-08",
   "exists": true,
@@ -2670,6 +2885,21 @@
    }
   },
   "citations": 82,
+  "citations_via": "Semantic Scholar"
+ },
+ "jaksic-ogata-pautrat-pillet-2012": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Entropic Fluctuations in Quantum Statistical Mechanics. An Introduction",
+  "locations": {
+   "Proposition 2.20, p. 53": {
+    "verified": true,
+    "snippet": "Proposition 2.20 ρ is a β-KMS state iff ρ = ρβ . Proof. It remains to show that if ρ is β-KMS, then ρ = ρβ . Setting X = ρeβH and A = eβH C in the KMS condition tr(ρeβH Be−βH A) = tr(ρAB), yields tr(XBC) = tr(XCB) for al",
+    "why": null
+   }
+  },
+  "citations": 121,
   "citations_via": "Semantic Scholar"
  },
  "janson-2011": {
@@ -2745,6 +2975,31 @@
    }
   },
   "citations": 77,
+  "citations_via": "Semantic Scholar"
+ },
+ "kar-sengupta-2007": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "The Raychaudhuri equations: a brief review",
+  "locations": {
+   "eq. (12)": {
+    "verified": true,
+    "snippet": "(12) dλ 3 10 dσab 2 1 \u0010 \u0011 = − Θσab − σac σ cb − ωac ω cb + hab σ 2 − ω 2 dλ 3 3 1 +Ccbad v c v d + R̃ab (13) 2 dωab 2 = − Θωab − 2σ c[b ωa]c (14) dλ 3 where σ 2 = σab σ ab , ω 2 = ωab ω ab , Ccbad is the Weyl tensor and",
+    "why": null
+   },
+   "eq. (16)": {
+    "verified": true,
+    "snippet": "(16) Thus, rotation defies convergence, while shear assists it. The equation for the evolution of the rotation ωab , has a trivial solution ωab = 0. The criterion for convergence then becomes particularly simple for such",
+    "why": null
+   },
+   "eq. (17)": {
+    "verified": true,
+    "snippet": "(17) dλ 2 where the hatted quantitites are the expansion, rotation and shear for the null geodesic 13 congruence. The focusing theorem for null geodesic congruences follows in the same way as for timelike congruences, wi",
+    "why": null
+   }
+  },
+  "citations": 187,
   "citations_via": "Semantic Scholar"
  },
  "kazarian-lando-2007": {
@@ -2865,6 +3120,21 @@
   "citations": 522,
   "citations_via": "OpenAlex"
  },
+ "kontou-sanders-2020": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Energy conditions in general relativity and quantum field theory",
+  "locations": {
+   "§2.3": {
+    "verified": true,
+    "snippet": "2.3 Examples and counter-examples of pointwise energy conditions Here we discuss matter models that obey or violate the main pointwise energy conditions introduced in Section 2.1. A summary of examples and counter-exa",
+    "why": null
+   }
+  },
+  "citations": 247,
+  "citations_via": "Semantic Scholar"
+ },
  "krajewski-1998": {
   "checked": "2026-11-08",
   "exists": true,
@@ -2924,6 +3194,21 @@
   },
   "citations": 40,
   "citations_via": "OpenAlex"
+ },
+ "landsman-1998": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Lecture notes on C*-algebras, Hilbert C*-modules, and quantum mechanics",
+  "locations": {
+   "Theorem 2.12.9": {
+    "verified": true,
+    "snippet": "Theorem 2.12.9 The pure state space of the commutative C ∗ -algebra C0 (X) (equipped with the relative w∗ -topology) is homeomorphic to X. In view of Proposition 2.4.3 and Theorems 2.4.1 and 2.4.8, we merely need to esta",
+    "why": null
+   }
+  },
+  "citations": 63,
+  "citations_via": "Semantic Scholar"
  },
  "last-penrose-2017": {
   "checked": "2026-11-08",
@@ -3325,6 +3610,31 @@
   "citations": 443,
   "citations_via": "OpenAlex"
  },
+ "moretti-2016": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Mathematical Foundations of Quantum Mechanics: An Advanced Short Course",
+  "locations": {
+   "Proposition 97": {
+    "verified": true,
+    "snippet": "Proposition 97. Let H a complex Hilbert space, B1 (H) satisfy the following prop- erties. (a) If T ∈ B1 (H) and N ⊂ H is any Hilbertian basis, then (65) holds and thus X ||T ||1 := hz||T |zi z∈N is well defined. (b) B1 (",
+    "why": null
+   },
+   "Theorem 142": {
+    "verified": true,
+    "snippet": "Theorem 142 (Stone theorem). Let R ∋ t 7→ Ut ∈ B(H) be a strongly contin- uous one-parameter unitary group in the complex Hilbert space H. The following facts hold. (a) There exists a unique selfadjoint operator, called",
+    "why": null
+   },
+   "Theorem 142, p. 83": {
+    "verified": true,
+    "snippet": "Theorem 142 (Stone theorem). Let R ∋ t 7→ Ut ∈ B(H) be a strongly contin- uous one-parameter unitary group in the complex Hilbert space H. The following facts hold. (a) There exists a unique selfadjoint operator, called",
+    "why": null
+   }
+  },
+  "citations": 9,
+  "citations_via": "OpenAlex"
+ },
  "mukhametzhanov-zhiboedov-2019": {
   "checked": "2026-11-18",
   "exists": true,
@@ -3481,6 +3791,26 @@
   "fetched_title": "The Swampland: Introduction and Review",
   "locations": {},
   "citations": 1334,
+  "citations_via": "OpenAlex"
+ },
+ "panangaden-2021": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Energy Full Counting Statistics and Return to Equilibrium",
+  "locations": {
+   "Proposition 5.4": {
+    "verified": true,
+    "snippet": "Proposition 5.4. Let H be a finite dimensional Hilbert space. The state ω ∈ B(H)∗ is a Gibbs state at inverse temperature β if and only if ω(Aτ iβ (B)) = ω(BA) for all A, B ∈ B(H). This condition is called the KMS condit",
+    "why": null
+   },
+   "Proposition 5.9": {
+    "verified": true,
+    "snippet": "Proposition 5.9. Let (A, τ ) be a C ∗ -dynamical system and ω a state. Define Dβ = {z ∈ C ∶ 0 < Im(z) < β}. If ω is a (β, τ )-KMS state, then for any A, B ∈ A there exists a complex-valued function FA,B which is bounded",
+    "why": null
+   }
+  },
+  "citations": 0,
   "citations_via": "OpenAlex"
  },
  "paschke-sitarz-1998": {
@@ -3853,6 +4183,21 @@
    }
   },
   "citations": 3710,
+  "citations_via": "Semantic Scholar"
+ },
+ "sbierski-2016": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "The $C^0$-inextendibility of the Schwarzschild spacetime and the spacelike diameter in Lorentzian Geometry",
+  "locations": {
+   "Abstract": {
+    "verified": true,
+    "snippet": "the maximal analytic schwarzschild spacetime is manifestly inextendible as a lorentzian manifold with a twice continuously differentiable metric in this paper we prove the stronger statement that it i",
+    "why": null
+   }
+  },
+  "citations": 122,
   "citations_via": "Semantic Scholar"
  },
  "schottenloher-2008": {

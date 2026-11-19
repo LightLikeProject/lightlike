@@ -15,9 +15,24 @@ to a record whose title matches the one recorded in sources.yaml. A location (fo
 "Theorem 5.9" or "eq. (2.10)") is verified when it appears in the arXiv full text with one of
 the reference's keywords near it; locations in books without an arXiv version stay unverified
 and are reported as such. Citation counts come from OpenAlex (DOI) or Semantic Scholar (arXiv).
+
+A book with a full text online (for example the author's online edition) names it in
+sources.yaml with `fulltext: <URL of the PDF>` and `edition: <which edition that file is and how
+its pages relate to the printed book>`; `edition` is required with `fulltext`. Optional:
+`sha256: <hash of the PDF>` (verify fails when the fetched file differs, so a changed upstream
+file is noticed) and `page_offset: N` (PDF page minus printed page, for a file whose pages carry
+no printed numbers). The file is fetched once into the cache, and its hashes go into the record.
+Its locations are checked in it page by page: the label must occur where the result is stated,
+not where it is cited (a theorem-like label at the start of a line followed by "." or "(", an
+equation number set apart at the end of a line, a section heading at the start of a line), with
+one of the check words near it; a page given as "p. 136" or "pp. 136-137" must be the printed
+page of that occurrence. The printed page is the PDF page minus the offset that the page numbers
+in the headers and footers agree on.
 """
 import argparse
+import collections
 import datetime
+import hashlib
 import json
 import re
 import subprocess
@@ -41,6 +56,7 @@ SOURCES = ROOT / "docs/tasks/sources.yaml"
 VERIFIED = ROOT / "docs/tasks/sources-verified.json"
 UA = "lightlike-source-check/0.1 (https://github.com/LightlikeProject/lightlike)"
 ATOM = "{http://www.w3.org/2005/Atom}"
+CACHE = Path(tempfile.gettempdir()) / "lightlike-sources"
 LABELS = ("Theorem", "Lemma", "Proposition", "Corollary", "Definition", "Conjecture", "Example",
           "Remark", "Section", "Chapter", "Appendix", "Table", "Figure")
 
@@ -191,11 +207,163 @@ def check_location(text, loc, keywords):
     return False, None
 
 
+def fetch_pdf(url, cache):
+    """The path of the PDF at `url`, fetched once into the cache (keyed by the URL), or None."""
+    p = cache / ("url-" + hashlib.sha256(url.encode()).hexdigest()[:20] + ".pdf")
+    if not p.exists():
+        data = get(url)
+        if not data:
+            return None
+        part = p.with_suffix(".part")
+        part.write_bytes(data)
+        part.replace(p)
+    return p
+
+
+def pdf_pages(p):
+    """The text of a PDF page by page, in page layout (pdftotext ends every page with a form feed);
+    [] when pdftotext is missing or finds no text."""
+    t = p.with_suffix(".pages.txt")
+    if not t.exists():
+        try:
+            r = subprocess.run(["pdftotext", "-layout", str(p), "-"], check=False, capture_output=True)
+        except FileNotFoundError:
+            return []
+        text = r.stdout.decode(errors="ignore")
+        if r.returncode or not text.strip():
+            return []
+        t.write_text(text)
+    pages = t.read_text(errors="ignore").split("\f")
+    return pages[:-1] if len(pages) > 1 and not pages[-1].strip() else pages
+
+
+def printed_numbers(page):
+    """The page numbers printed in a page's header or footer: an integer alone on the page's first
+    or last non-empty line, or set apart by a gap at its start or end."""
+    lines = [x for x in page.split("\n") if x.strip()]
+    out = set()
+    for x in lines[:1] + lines[-1:]:
+        m = (re.fullmatch(r"\s*(\d{1,4})\s*", x) or re.match(r"\s*(\d{1,4})\s{2,}\S", x)
+             or re.search(r"\S\s{2,}(\d{1,4})\s*$", x))
+        if m:
+            out.add(int(m.group(1)))
+    return out
+
+
+def page_offset(pages):
+    """(offset, how): the PDF page minus the printed page that most numbered pages agree on, or
+    (None, why) when no page shows a number or fewer than 5 pages, or only half of them, agree."""
+    count, shown = collections.Counter(), 0
+    for i, page in enumerate(pages, 1):
+        nums = printed_numbers(page)
+        shown += bool(nums)
+        count.update(i - n for n in nums)
+    if not count:
+        return None, "no printed page numbers: set page_offset in sources.yaml"
+    off, k = count.most_common(1)[0]
+    if k < 5 or 2 * k <= shown:
+        return None, (f"the printed page numbers do not agree ({k} of {shown} numbered pages give offset {off}): "
+                      "set page_offset in sources.yaml")
+    return off, f"printed page numbers ({k} of {shown} numbered pages)"
+
+
+PAGE_RE = re.compile(r"[,;]?\s*\b(?:pp?\.|pages?)\s*(\d+)(?:\s*[-–]\s*(\d+))?\s*$", re.I)
+
+
+def split_page(loc):
+    """'Theorem 6.6, p. 136' -> ('Theorem 6.6', (136, 136)), 'pp. 136-137' -> (136, 137); a
+    location without a page -> (loc, None)."""
+    m = PAGE_RE.search(loc)
+    if not m:
+        return loc.strip(), None
+    a = int(m.group(1))
+    return loc[:m.start()].strip(), (a, int(m.group(2) or a))
+
+
+def defining_pattern(label):
+    """A regex for where a label is stated rather than cited, in page-layout text: a theorem-like
+    label at the start of a line followed by '.' or '(' ('Theorem 6.6 (Stone).', 'Lemma 6.12.'),
+    an equation number set apart at the end of a line, a section heading at the start of a line."""
+    m = re.match(r"\s*(?:eqs?\.?|equations?)\s*\(?([0-9A-Za-z.]+)\)?", label, re.I)
+    if m:
+        return r"(?m)[ \t]{2,}\(\s*" + re.escape(m.group(1)) + r"\s*\)[ \t]*$"
+    for lab in LABELS:
+        m = re.match(r"\s*" + lab + r"s?\.?\s+([0-9A-Z][0-9A-Z.]*[0-9A-Za-z]?)", label, re.I)
+        if m and lab not in ("Section", "Chapter", "Appendix"):
+            return r"(?mi)^[ \t]*" + lab + r"[ \t]*" + re.escape(m.group(1).rstrip(".")) + r"[ \t]*(?:\.(?!\d)|\()"
+    return location_pattern(label)
+
+
+def check_fulltext_location(pages, loc, keywords, offset, offset_why=None):
+    """(verified, snippet, why, printed page) for a location in a full text given page by page: the
+    label where it is stated, a check word near it, and the stated page its printed page."""
+    label, want = split_page(loc)
+    pat = defining_pattern(label)
+    if not pat:
+        return False, None, "label not understood", None
+    kws = [norm(k) for k in keywords or []]
+    found = []
+    for i, page in enumerate(pages):
+        nxt = pages[i + 1] if i + 1 < len(pages) else ""
+        for m in re.finditer(pat, page):
+            end = m.end() + 1500
+            window = norm(page[max(0, m.start() - 300): end] + "\n" + nxt[:max(0, end - len(page))])
+            if not kws or any(k in window for k in kws):
+                found.append((i + 1, " ".join(page[m.start(): m.start() + 220].split())))
+    if not found:
+        return False, None, "label not found where it is stated" + (" with a check word near it" if kws else ""), None
+    if want is None:
+        return True, found[0][1], None, (found[0][0] - offset if offset is not None else None)
+    if offset is None:
+        return False, found[0][1], offset_why or "no page offset", None
+    for pdf, snip in found:
+        if want[0] <= pdf - offset <= want[1]:
+            return True, snip, None, pdf - offset
+    at = ", ".join(f"p. {pdf - offset}" for pdf, _ in found)
+    stated = f"p. {want[0]}" if want[0] == want[1] else f"pp. {want[0]}-{want[1]}"
+    return False, found[0][1], f"stated on printed {at}, not {stated}", None
+
+
+def fulltext_record(r, cache):
+    """The `fulltext` part of a reference's verified record, and the full text's pages (None when
+    they cannot be used: no edition, not fetched, a sha256 other than the pinned one, not a PDF,
+    no text, or the title not on its first pages)."""
+    ft = {"url": r["fulltext"], "edition": r.get("edition"), "sha256": None, "md5": None, "bytes": None,
+          "page_offset": None, "pages_from": None, "why": None}
+    if not r.get("edition"):
+        ft["why"] = "fulltext needs edition (which edition the file is)"
+        return ft, None
+    p = fetch_pdf(r["fulltext"], cache)
+    if not p:
+        ft["why"] = "full text not found"
+        return ft, None
+    data = p.read_bytes()
+    ft.update(sha256=hashlib.sha256(data).hexdigest(), md5=hashlib.md5(data, usedforsecurity=False).hexdigest(),
+              bytes=len(data))
+    pinned = str(r.get("sha256") or "").lower()
+    if pinned and pinned != ft["sha256"]:
+        ft["why"] = (f"the fetched file's sha256 {ft['sha256']} is not sources.yaml's {pinned}: the file changed "
+                     "(check its edition and pages, then update sha256)")
+        return ft, None
+    pages = pdf_pages(p) if data.startswith(b"%PDF-") else None
+    if not pages:
+        ft["why"] = "no text in the full text (not a PDF, a scan, or pdftotext missing)"
+        return ft, None
+    if not title_ok(r["title"], " ".join(pages[:15])):
+        ft["why"] = "the title is not on the first pages of the full text"
+        return ft, None
+    if r.get("page_offset") is not None:
+        ft["page_offset"], ft["pages_from"] = int(r["page_offset"]), "page_offset in sources.yaml"
+    else:
+        ft["page_offset"], ft["pages_from"] = page_offset(pages)
+    return ft, pages
+
+
 LABEL_RE = re.compile(r"\b(" + "|".join(LABELS[:8]) + r")\s+([0-9]+(?:\.[0-9]+)*)")
 
 
 def cmd_find(aid, words, limit=12):
-    cache = Path(tempfile.gettempdir()) / "lightlike-sources"
+    cache = CACHE
     cache.mkdir(exist_ok=True)
     meta = arxiv_meta([aid]).get(aid)
     print("title:", meta and meta["title"])
@@ -221,7 +389,7 @@ HEAD_RE = re.compile(r"(?m)^\s{0,8}((?:[0-9]+(?:\.[0-9]+){0,2}|[IVX]+|[A-H])\.?)
 
 def cmd_sections(aid):
     """Print the numbered headings of an arXiv paper, to choose a section as a location."""
-    cache = Path(tempfile.gettempdir()) / "lightlike-sources"
+    cache = CACHE
     cache.mkdir(exist_ok=True)
     text = fulltext(aid, cache) or ""
     seen, out = set(), []
@@ -278,9 +446,10 @@ def cmd_verify(keys):
     todo = {k: v for k, v in refs.items() if not keys or k in keys}
     meta = arxiv_meta([r["arxiv"] for r in todo.values() if r.get("arxiv")])
     today = datetime.date.today().isoformat()
-    cache = Path(tempfile.gettempdir()) / "lightlike-sources"
+    cache = CACHE
     cache.mkdir(exist_ok=True)
     locs = location_uses()
+    bad = []
     for k, r in todo.items():
         rec = {"checked": today, "exists": False, "via": None, "fetched_title": None, "locations": {}}
         got = None
@@ -296,7 +465,15 @@ def cmd_verify(keys):
         rec["citations"], rec["citations_via"] = citations(r)
         if rec["citations"] is None and old.get(k, {}).get("citations") is not None:  # rate-limited: keep the last count
             rec["citations"], rec["citations_via"] = old[k]["citations"], old[k].get("citations_via")
-        text = fulltext(r["arxiv"], cache) if r.get("arxiv") and rec["exists"] else None
+        text = fulltext(r["arxiv"], cache) if r.get("arxiv") and rec["exists"] and not r.get("fulltext") else None
+        pages = None
+        if r.get("fulltext"):  # the named edition's PDF: its locations are checked there, with pages
+            if rec["exists"]:
+                rec["fulltext"], pages = fulltext_record(r, cache)
+            else:
+                rec["fulltext"] = {"url": r["fulltext"], "why": "the reference itself is not verified"}
+            if rec["fulltext"]["why"]:
+                bad.append(f"{k}: {rec['fulltext']['why']}")
         for loc in sorted(locs.get(k, {})):
             if "|" in loc:  # "Chapter 7|10.1007/...-8_7": a chapter with its own DOI
                 cdoi = loc.split("|", 1)[1].strip()
@@ -313,16 +490,29 @@ def cmd_verify(keys):
                 rec["locations"][loc] = {"verified": ok, "snippet": ab[:200] or None,
                                          "why": None if ok else ("no abstract" if not ab else "check word not in abstract")}
                 continue
+            if r.get("fulltext"):
+                ft = rec["fulltext"]
+                if pages is None:
+                    ok, snip, why, page = False, None, ft["why"], None
+                else:
+                    ok, snip, why, page = check_fulltext_location(pages, loc, sorted(locs[k][loc]) or r.get("keywords"),
+                                                                  ft["page_offset"], ft["pages_from"])
+                rec["locations"][loc] = {"verified": ok, "snippet": snip, "why": why, "page": page}
+                continue
             ok, snip = check_location(text, loc, sorted(locs[k][loc]) or r.get("keywords"))
             rec["locations"][loc] = {"verified": ok, "snippet": snip,
                                      "why": None if ok else ("no arXiv full text" if not text else "label not found")}
         old[k] = rec
-        print(f"{'ok ' if rec['exists'] else 'FAIL'} {k}: {rec['via']}: {rec['fetched_title']!s:.90}  "
+        good = rec["exists"] and not (rec.get("fulltext") or {}).get("why")
+        print(f"{'ok ' if good else 'FAIL'} {k}: {rec['via']}: {rec['fetched_title']!s:.90}  "
               f"loc {sum(v['verified'] for v in rec['locations'].values())}/{len(rec['locations'])}  cites {rec['citations']}")
     # Re-read before writing, so that a concurrent run's results for other keys are kept.
     now = json.loads(VERIFIED.read_text()) if VERIFIED.exists() else {}
     now.update({k: old[k] for k in todo})
     VERIFIED.write_text(json.dumps(dict(sorted(now.items())), indent=1, ensure_ascii=False) + "\n")
+    for b in bad:
+        print("error: full text of", b)
+    return 1 if bad else 0
 
 
 def location_uses():
@@ -353,6 +543,20 @@ def cmd_check():
             errs.append(f"{k}: needs an arXiv ID, DOI or ISBN to be verifiable")
         if not (ver.get(k) or {}).get("exists"):
             errs.append(f"{k}: not verified (run `python3 scripts/sources.py verify {k}`)")
+        for f in ("edition", "sha256", "page_offset"):
+            if r.get(f) is not None and not r.get("fulltext"):
+                errs.append(f"{k}: {f} belongs to a fulltext")
+        if r.get("fulltext"):
+            ft = (ver.get(k) or {}).get("fulltext") or {}
+            if not r.get("edition"):
+                errs.append(f"{k}: fulltext needs edition (which edition the file is, and how its pages relate "
+                            "to the printed book)")
+            elif (ft.get("url") != r["fulltext"] or (r.get("sha256") and str(r["sha256"]).lower() != ft.get("sha256"))
+                  or (r.get("page_offset") is not None and ft.get("page_offset") != int(r["page_offset"]))):
+                errs.append(f"{k}: the full text in sources-verified.json is not the one sources.yaml names "
+                            f"(run `python3 scripts/sources.py verify {k}`)")
+            elif ft.get("why"):
+                errs.append(f"{k}: full text: {ft['why']}")
     for area, keys in (data.get("canonical") or {}).items():
         for k in keys:
             if k not in refs:
@@ -415,8 +619,7 @@ def main():
         cmd_chapters(*a.keys)
         return 0
     if a.cmd == "verify":
-        cmd_verify(set(a.keys))
-        return 0
+        return cmd_verify(set(a.keys))
     return cmd_check()
 
 

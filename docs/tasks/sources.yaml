@@ -6,6 +6,10 @@
 #   A ref has a `location`: "Theorem 5.9", "eq. (4.27)", "Section 9", or, for a book chapter
 #   with its own DOI, "Chapter: <chapter title>|<chapter DOI>". `check` is a word that must
 #   appear near the label in the arXiv full text.
+# A book with a PDF online names it with `fulltext: <URL>` and `edition: <which edition the file
+#   is>` (required with fulltext), optionally `sha256: <the file's hash>` and `page_offset: N`.
+#   Its locations are checked in that file, a page ("Theorem 6.6, p. 136") against the printed
+#   page numbers; see scripts/sources.py.
 #
 # `python3 scripts/sources.py verify` fetches every reference and location and writes
 # sources-verified.json; `python3 scripts/sources.py check` checks this file offline.
@@ -24,6 +28,10 @@ references:
     cite: "J. Milnor, Morse Theory, Annals of Mathematics Studies 51, Princeton University Press (1963)"
     title: "Morse Theory. (AM-51)"
     doi: 10.1515/9781400881802
+  benedetti-2019:
+    cite: "R. Benedetti, Lectures on Differential Topology (2019)"
+    title: "Lectures on Differential Topology"
+    arxiv: "1907.10297"
   reed-simon-1972:
     cite: "M. Reed and B. Simon, Methods of Modern Mathematical Physics I: Functional Analysis, Academic Press (1972)"
     title: "Methods of modern mathematical physics"
@@ -160,6 +168,18 @@ references:
     cite: "S. M. Carroll, Lecture Notes on General Relativity (1997)"
     title: "Lecture Notes on General Relativity"
     arxiv: gr-qc/9712019
+  grumiller-kummer-vassilevich-2002:
+    cite: "D. Grumiller, W. Kummer and D. V. Vassilevich, Dilaton gravity in two dimensions, Phys. Rept. 369 (2002) 327-430"
+    title: "Dilaton gravity in two dimensions"
+    arxiv: hep-th/0204253
+  curiel-2014:
+    cite: "E. Curiel, A Primer on Energy Conditions (2014), in Towards a Theory of Spacetime Theories, Einstein Studies 13 (2017)"
+    title: "A Primer on Energy Conditions"
+    arxiv: "1405.0403"
+  kontou-sanders-2020:
+    cite: "E.-A. Kontou and K. Sanders, Energy conditions in general relativity and quantum field theory, Class. Quantum Grav. 37 (2020) 193001"
+    title: "Energy conditions in general relativity and quantum field theory"
+    arxiv: "2003.01815"
   cky-1997:
     cite: "L. Crane, L. H. Kauffman and D. N. Yetter, State-sum invariants of 4-manifolds, J. Knot Theory Ramifications 6 (1997) 177-234"
     title: "State-Sum Invariants of 4-Manifolds I"
@@ -813,6 +833,10 @@ references:
     cite: "Bergfinnur Durhuus and Thordur Jonsson, Remarks on the entropy of 3-manifolds, Nucl.Phys. B445 (1995) 182-192"
     title: "Remarks on the entropy of 3-manifolds"
     arxiv: "hep-th/9410110"
+  kar-sengupta-2007:
+    cite: "S. Kar and S. SenGupta, The Raychaudhuri equations: a brief review, Pramana 69 (2007) 49"
+    title: "The Raychaudhuri equations: a brief review"
+    arxiv: "gr-qc/0611123"
   benedetti-ziegler-2011:
     cite: "Bruno Benedetti and Günter M. Ziegler, On locally constructible spheres and balls, Acta Mat.206:205-243,2011"
     title: "On locally constructible spheres and balls"
@@ -933,6 +957,26 @@ references:
     cite: "B. C. Hall, Quantum Theory for Mathematicians, Graduate Texts in Mathematics 267, Springer (2013)"
     title: "Quantum Theory for Mathematicians"
     doi: 10.1007/978-1-4614-7116-5
+  jaksic-ogata-pautrat-pillet-2012:
+    cite: "V. Jakšić, Y. Ogata, Y. Pautrat and C.-A. Pillet, Entropic fluctuations in quantum statistical mechanics. An introduction, in Quantum Theory from Small to Large Scales, Les Houches Summer School 95, Oxford University Press (2012)"
+    title: "Entropic Fluctuations in Quantum Statistical Mechanics. An Introduction"
+    arxiv: "1106.3786"
+  moretti-2016:
+    cite: "V. Moretti, Mathematical foundations of quantum mechanics: an advanced short course, Int. J. Geom. Methods Mod. Phys. 13 (2016) 1630011"
+    title: "Mathematical Foundations of Quantum Mechanics: An Advanced Short Course"
+    arxiv: "1508.06951"
+  bonneau-faraut-valent-2001:
+    cite: "G. Bonneau, J. Faraut and G. Valent, Self-adjoint extensions of operators and the teaching of quantum mechanics, Am. J. Phys. 69 (2001) 322"
+    title: "Self-adjoint extensions of operators and the teaching of quantum mechanics"
+    arxiv: quant-ph/0103153
+  derezinski-2006:
+    cite: "J. Dereziński, Introduction to representations of the canonical commutation and anticommutation relations, in Large Coulomb Systems, Lecture Notes in Physics 695, Springer (2006) 63-143"
+    title: "Introduction to Representations of the Canonical Commutation and Anticommutation Relations"
+    arxiv: "math-ph/0511030"
+  faulhuber-2022:
+    cite: "M. Faulhuber, Time-Frequency Analysis, lecture notes, University of Vienna (2022), arXiv:2204.01596"
+    title: "Time-Frequency Analysis (Lecture Notes)"
+    arxiv: "2204.01596"
   nielsen-petz-2005:
     cite: "M. A. Nielsen and D. Petz, A simple proof of the strong subadditivity inequality, Quantum Inf. Comput. 5 (2005) 507-513"
     title: "A simple proof of the strong subadditivity inequality"
@@ -1031,6 +1075,22 @@ references:
     cite: "P. Hartman, Ordinary Differential Equations, Wiley (1964); SIAM reprint (2002)"
     title: "Ordinary Differential Equations"
     doi: 10.1137/1.9780898719222
+  sbierski-2016:
+    cite: "J. Sbierski, The C^0-inextendibility of the Schwarzschild spacetime and the spacelike diameter in Lorentzian geometry, arXiv:1507.00601v2 (2016)"
+    title: "The C^0-inextendibility of the Schwarzschild spacetime and the spacelike diameter in Lorentzian geometry"
+    arxiv: "1507.00601"
+  panangaden-2021:
+    cite: "J. Panangaden, Energy Full Counting Statistics and Return to Equilibrium, master's thesis, McGill University (2021), arXiv:2110.01678"
+    title: "Energy Full Counting Statistics and Return to Equilibrium"
+    arxiv: "2110.01678"
+  landsman-1998:
+    cite: "N. P. Landsman, Lecture Notes on C*-Algebras, Hilbert C*-modules, and Quantum Mechanics (1998), arXiv:math-ph/9807030"
+    title: "Lecture notes on C*-algebras, Hilbert C*-modules, and quantum mechanics"
+    arxiv: "math-ph/9807030"
+  huang-wang-wu-meng-2026:
+    cite: "W. Huang, R. Wang, Y. Wu, D. Meng, Exact Endpoint Asymptotics and Almost-Sure Limits for Uniform Empirical Measures in Two Dimensions (2026), arXiv:2610.21070"
+    title: "Exact Endpoint Asymptotics and Almost-Sure Limits for Uniform Empirical Measures in Two Dimensions"
+    arxiv: "2610.21070"
   teschl-2009:
     cite: "G. Teschl, Mathematical Methods in Quantum Mechanics, With Applications to Schrödinger Operators, Graduate Studies in Mathematics 99, American Mathematical Society (2009)"
     title: "Mathematical Methods in Quantum Mechanics"
@@ -1096,6 +1156,7 @@ milestones:
     class: sourced
     refs:
       - {ref: reed-simon-1972, location: "Chapter: Bounded Operators|10.1016/b978-0-12-585001-8.50012-x"}
+      - {ref: moretti-2016, location: "Proposition 97", check: "trace class"}
   SP3:
     class: sourced
     refs:
@@ -1689,6 +1750,7 @@ milestones:
     refs:
       - {ref: hall-2013, location: "Chapter: Unbounded Self-Adjoint Operators|10.1007/978-1-4614-7116-5_9"}
       - {ref: hall-2013, location: "Chapter: The Spectral Theorem for Unbounded Self-Adjoint Operators|10.1007/978-1-4614-7116-5_10"}
+      - {ref: moretti-2016, location: "Theorem 142", check: "Stone"}
   OP2:
     class: sourced
     refs:
