@@ -1,0 +1,13 @@
+- id: LL-XXXX-p
+  title: The boundary terms of the first variation of the Einstein–Hilbert action with the Gibbons–Hawking–York term cancel on a region of a manifold
+  area: Spacetime
+  file: Lightlike/Spacetime/EHManifold/GHYManifold.lean
+  decls: [Lightlike.eh_ghy_variation_manifold]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: dyer-hinterbichler-2008, location: "eq. (4.4)", check: "boundary variation"}
+  review: kernel-checked
+  note: "For a measurable region D of a manifold with a metric of any signature, with a nowhere null C2 boundary (defining functions u with du != 0 and du(#du) != 0), and a smooth symmetric perturbation h vanishing outside a compact K and on the boundary: in the graph charts of the divergence theorem for the boundary vector field V(h) = div h# - grad tr h, the Einstein-Hilbert action of D n K minus the Gibbons-Hawking-York term of g + t h has first variation -int_{D n K} <G + Lambda g, h>_g dvol_g."
+  since: unreleased

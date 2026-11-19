@@ -1091,6 +1091,10 @@ references:
     cite: "W. Huang, R. Wang, Y. Wu, D. Meng, Exact Endpoint Asymptotics and Almost-Sure Limits for Uniform Empirical Measures in Two Dimensions (2026), arXiv:2610.21070"
     title: "Exact Endpoint Asymptotics and Almost-Sure Limits for Uniform Empirical Measures in Two Dimensions"
     arxiv: "2610.21070"
+  dyer-hinterbichler-2008:
+    cite: "E. Dyer and K. Hinterbichler, Boundary Terms, Variational Principles and Higher Derivative Modified Gravity, arXiv:0809.4033"
+    title: "Boundary Terms, Variational Principles and Higher Derivative Modified Gravity"
+    arxiv: "0809.4033"
 
 canonical:
   pl-topology: [lickorish-1999, moise-1977]

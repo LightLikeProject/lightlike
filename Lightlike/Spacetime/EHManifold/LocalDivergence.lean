@@ -18,16 +18,18 @@ namespace Lightlike
 variable {n : ℕ}
 
 /-- `exists_graph_atlas_integral_divergence` with the graph hypothesis only at the points of the closure of `D` in the
-support of `F`. -/
-theorem exists_graph_atlas_integral_divergence_loc (D : Set (Fin (n + 1) → ℝ)) (hD : MeasurableSet D)
+support of `F`., with open sets
+`U a ⊇ tsupport (ρ a)` on which `D` is the graph region. -/
+theorem exists_graph_atlas_integral_divergence_loc_open (D : Set (Fin (n + 1) → ℝ)) (hD : MeasurableSet D)
     (F : Fin (n + 1) → (Fin (n + 1) → ℝ) → ℝ) (hF : ∀ j, ContDiff ℝ 1 (F j))
     (hc : ∀ j, HasCompactSupport (F j))
     (hloc : ∀ x ∈ closure D, (∃ j, x ∈ tsupport (F j)) → ∃ U ∈ 𝓝 x, ∃ (σ : SignType) (γ : (Fin n → ℝ) → ℝ) (i : Fin (n + 1)),
       ContDiff ℝ 2 γ ∧ ∀ y ∈ U, (y ∈ D ↔ y ∈ graphRegion σ γ i)) :
     ∃ (ι : Type) (_ : Fintype ι) (ρ : ι → (Fin (n + 1) → ℝ) → ℝ) (σ : ι → SignType)
-      (γ : ι → (Fin n → ℝ) → ℝ) (i : ι → Fin (n + 1)),
+      (γ : ι → (Fin n → ℝ) → ℝ) (i : ι → Fin (n + 1)) (U : ι → Set (Fin (n + 1) → ℝ)),
       (∀ a, ContDiff ℝ ∞ (ρ a)) ∧ (∀ a y, 0 ≤ ρ a y) ∧ (∀ a, ContDiff ℝ 2 (γ a)) ∧
-      (∀ a x, x ∈ tsupport (ρ a) → (x ∈ D ↔ x ∈ graphRegion (σ a) (γ a) (i a))) ∧
+      (∀ a, IsOpen (U a)) ∧ (∀ a, tsupport (ρ a) ⊆ U a) ∧
+      (∀ a x, x ∈ U a → (x ∈ D ↔ x ∈ graphRegion (σ a) (γ a) (i a))) ∧
       (∀ y ∈ closure D, (∃ j, y ∈ tsupport (F j)) → ∑ a, ρ a y = 1) ∧
       ∫ x in D, ∑ j, pd j (F j) x =
         -∑ a, (σ a : ℝ) * graphFlux (γ a) (i a) (fun j y => ρ a y * F j y) := by
@@ -87,9 +89,13 @@ theorem exists_graph_atlas_integral_divergence_loc (D : Set (Fin (n + 1) → ℝ
     have h1 : x ∈ V (some a) := hf (some a) hx
     rw [hVsome] at h1
     exact hUD a.1 (hmemD a) (hmemK a) x (interior_subset h1)
+  have hUo : ∀ a : {x // x ∈ t}, tsupport (f (some a)) ⊆ interior (U a.1) := fun a x hx => by
+    have h1 : x ∈ V (some a) := hf (some a) hx
+    rwa [hVsome] at h1
   refine ⟨{x // x ∈ t}, inferInstance, fun a y => f (some a) y, fun a => σ a.1, fun a => γ a.1,
-    fun a => i a.1, fun a => contMDiff_iff_contDiff.1 (f (some a)).contMDiff,
-    fun a y => f.nonneg (some a) y, fun a => hγ a.1 (hmemD a) (hmemK a), hDE, ?_, ?_⟩
+    fun a => i a.1, fun a => interior (U a.1), fun a => contMDiff_iff_contDiff.1 (f (some a)).contMDiff,
+    fun a y => f.nonneg (some a) y, fun a => hγ a.1 (hmemD a) (hmemK a), fun a => isOpen_interior, hUo,
+    fun a x hx => hUD a.1 (hmemD a) (hmemK a) x (interior_subset hx), ?_, ?_⟩
   · rintro y hy ⟨j, hj⟩
     refine hsum1 y ?_ (hnone y hy)
     rw [hKdef]
@@ -111,6 +117,56 @@ theorem exists_graph_atlas_integral_divergence_loc (D : Set (Fin (n + 1) → ℝ
         exact mem_iUnion.2 ⟨j, subset_tsupport _ hne⟩
       simp [hFj]
 
+/-- `exists_graph_atlas_integral_divergence` with the graph hypothesis only at the points of the closure of `D` in the
+support of `F`. -/
+theorem exists_graph_atlas_integral_divergence_loc (D : Set (Fin (n + 1) → ℝ)) (hD : MeasurableSet D)
+    (F : Fin (n + 1) → (Fin (n + 1) → ℝ) → ℝ) (hF : ∀ j, ContDiff ℝ 1 (F j))
+    (hc : ∀ j, HasCompactSupport (F j))
+    (hloc : ∀ x ∈ closure D, (∃ j, x ∈ tsupport (F j)) → ∃ U ∈ 𝓝 x, ∃ (σ : SignType) (γ : (Fin n → ℝ) → ℝ) (i : Fin (n + 1)),
+      ContDiff ℝ 2 γ ∧ ∀ y ∈ U, (y ∈ D ↔ y ∈ graphRegion σ γ i)) :
+    ∃ (ι : Type) (_ : Fintype ι) (ρ : ι → (Fin (n + 1) → ℝ) → ℝ) (σ : ι → SignType)
+      (γ : ι → (Fin n → ℝ) → ℝ) (i : ι → Fin (n + 1)),
+      (∀ a, ContDiff ℝ ∞ (ρ a)) ∧ (∀ a y, 0 ≤ ρ a y) ∧ (∀ a, ContDiff ℝ 2 (γ a)) ∧
+      (∀ a x, x ∈ tsupport (ρ a) → (x ∈ D ↔ x ∈ graphRegion (σ a) (γ a) (i a))) ∧
+      (∀ y ∈ closure D, (∃ j, y ∈ tsupport (F j)) → ∑ a, ρ a y = 1) ∧
+      ∫ x in D, ∑ j, pd j (F j) x =
+        -∑ a, (σ a : ℝ) * graphFlux (γ a) (i a) (fun j y => ρ a y * F j y) := by
+  obtain ⟨ι, hι, ρ, σ, γ, i, U, hρ, hρ0, hγ, -, hsU, hUD, hsum, hint⟩ :=
+    exists_graph_atlas_integral_divergence_loc_open D hD F hF hc hloc
+  exact ⟨ι, hι, ρ, σ, γ, i, hρ, hρ0, hγ, fun a x hx => hUD a x (hsU a hx), hsum, hint⟩
+
+/-- `exists_graph_atlas_integral_divergence_of_defining_function` with the hypothesis only at the points of the closure
+of `D` in the support of `F`., with open sets
+`U a ⊇ tsupport (ρ a)` on which `D` is the graph region. -/
+theorem exists_graph_atlas_integral_divergence_of_defining_function_loc_open (D : Set (Fin (n + 1) → ℝ))
+    (hD : MeasurableSet D) (F : Fin (n + 1) → (Fin (n + 1) → ℝ) → ℝ) (hF : ∀ j, ContDiff ℝ 1 (F j))
+    (hc : ∀ j, HasCompactSupport (F j))
+    (hreg : ∀ x ∈ closure D, (∃ j, x ∈ tsupport (F j)) → ∃ u : (Fin (n + 1) → ℝ) → ℝ, ContDiffAt ℝ 2 u x ∧
+      (u x = 0 → fderiv ℝ u x ≠ 0) ∧ ∀ᶠ y in 𝓝 x, (y ∈ D ↔ 0 ≤ u y)) :
+    ∃ (ι : Type) (_ : Fintype ι) (ρ : ι → (Fin (n + 1) → ℝ) → ℝ) (σ : ι → SignType)
+      (γ : ι → (Fin n → ℝ) → ℝ) (i : ι → Fin (n + 1)) (U : ι → Set (Fin (n + 1) → ℝ)),
+      (∀ a, ContDiff ℝ ∞ (ρ a)) ∧ (∀ a y, 0 ≤ ρ a y) ∧ (∀ a, ContDiff ℝ 2 (γ a)) ∧
+      (∀ a, IsOpen (U a)) ∧ (∀ a, tsupport (ρ a) ⊆ U a) ∧
+      (∀ a x, x ∈ U a → (x ∈ D ↔ x ∈ graphRegion (σ a) (γ a) (i a))) ∧
+      (∀ y ∈ closure D, (∃ j, y ∈ tsupport (F j)) → ∑ a, ρ a y = 1) ∧
+      ∫ x in D, ∑ j, pd j (F j) x =
+        -∑ a, (σ a : ℝ) * graphFlux (γ a) (i a) (fun j y => ρ a y * F j y) := by
+  refine exists_graph_atlas_integral_divergence_loc_open D hD F hF hc fun x hx hxF => ?_
+  obtain ⟨u, hu, hdu, hDu⟩ := hreg x hx hxF
+  rcases lt_trichotomy (u x) 0 with hneg | hzero | hpos
+  · -- impossible: no point of `D` near `x`
+    exfalso
+    have hev : ∀ᶠ y in 𝓝 x, y ∉ D := by
+      filter_upwards [hDu, hu.continuousAt.eventually (gt_mem_nhds hneg)] with y hy1 hy2 hyD
+      exact absurd (hy1.1 hyD) (not_le.2 hy2)
+    obtain ⟨y, hyD, hyn⟩ := ((mem_closure_iff_frequently.1 hx).and_eventually hev).exists
+    exact hyn hyD
+  · exact exists_graphRegion_of_defining_function D x u hu hzero (hdu hzero) hDu
+  · refine ⟨{y | (y ∈ D ↔ 0 ≤ u y) ∧ 0 < u y},
+      hDu.and (hu.continuousAt.eventually (lt_mem_nhds hpos)), SignType.zero, fun _ => 0, 0,
+      contDiff_const, fun y hy => ⟨fun _ => Set.mem_univ y, fun _ => hy.1.2 hy.2.le⟩⟩
+
+
 /-- `exists_graph_atlas_integral_divergence_of_defining_function` with the hypothesis only at the points of the closure
 of `D` in the support of `F`. -/
 theorem exists_graph_atlas_integral_divergence_of_defining_function_loc (D : Set (Fin (n + 1) → ℝ))
@@ -125,19 +181,8 @@ theorem exists_graph_atlas_integral_divergence_of_defining_function_loc (D : Set
       (∀ y ∈ closure D, (∃ j, y ∈ tsupport (F j)) → ∑ a, ρ a y = 1) ∧
       ∫ x in D, ∑ j, pd j (F j) x =
         -∑ a, (σ a : ℝ) * graphFlux (γ a) (i a) (fun j y => ρ a y * F j y) := by
-  refine exists_graph_atlas_integral_divergence_loc D hD F hF hc fun x hx hxF => ?_
-  obtain ⟨u, hu, hdu, hDu⟩ := hreg x hx hxF
-  rcases lt_trichotomy (u x) 0 with hneg | hzero | hpos
-  · -- impossible: no point of `D` near `x`
-    exfalso
-    have hev : ∀ᶠ y in 𝓝 x, y ∉ D := by
-      filter_upwards [hDu, hu.continuousAt.eventually (gt_mem_nhds hneg)] with y hy1 hy2 hyD
-      exact absurd (hy1.1 hyD) (not_le.2 hy2)
-    obtain ⟨y, hyD, hyn⟩ := ((mem_closure_iff_frequently.1 hx).and_eventually hev).exists
-    exact hyn hyD
-  · exact exists_graphRegion_of_defining_function D x u hu hzero (hdu hzero) hDu
-  · refine ⟨{y | (y ∈ D ↔ 0 ≤ u y) ∧ 0 < u y},
-      hDu.and (hu.continuousAt.eventually (lt_mem_nhds hpos)), SignType.zero, fun _ => 0, 0,
-      contDiff_const, fun y hy => ⟨fun _ => Set.mem_univ y, fun _ => hy.1.2 hy.2.le⟩⟩
+  obtain ⟨ι, hι, ρ, σ, γ, i, U, hρ, hρ0, hγ, -, hsU, hUD, hsum, hint⟩ :=
+    exists_graph_atlas_integral_divergence_of_defining_function_loc_open D hD F hF hc hreg
+  exact ⟨ι, hι, ρ, σ, γ, i, hρ, hρ0, hγ, fun a x hx => hUD a x (hsU a hx), hsum, hint⟩
 
 end Lightlike
