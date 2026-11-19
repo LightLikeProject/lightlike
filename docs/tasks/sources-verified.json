@@ -4415,6 +4415,12 @@
     "snippet": "Theorem 6.6 (Spectral theorem for compact operators). Suppose the op- erator K is self-adjoint and compact. Then the spectrum of K consists of an at most countable number of eigenvalues which can only cluster at 0. Moreo",
     "why": null,
     "page": 136
+   },
+   "Theorem 6.7, p. 137": {
+    "verified": true,
+    "snippet": "Theorem 6.7 (Canonical form of compact operators). Let K be compact. There exist orthonormal sets {φ̂j }, {φj } and positive numbers sj = sj (K) such that X X K= sj hφ",
+    "why": null,
+    "page": 137
    }
   },
   "citations": null,
