@@ -141,10 +141,17 @@ Where each Krajewski clause stands:
   nonzero.
 * `Mₙ(ℝ)` (`RealSummands.lean`): `σ(x) = π(Re x) + i π(Im x)`, faithful by `E₀α x Eβ₀ = x_αβ E₀₀`;
   `exists_unitary_realSummands` is the classification for `A = ⊕ Mₙᵢ(ℝ)` (proved).
-* `Mₙ(ℍ)` (open, next): the units `U_{(αs)(βt)} = ∑ₖ quatCoord(E_st)ₖ π(E_αβ(bₖ))` of `M₂ₙ(ℂ)`. Their relations follow
-  from `complexify_mul` in the bimodule form `ρ₁(p) ρ₂(q) = ρ₃(pq)`, and the block unit is `π(1ᵢ) ≠ 0`.
-* `Mₙ(ℂ)` (open, next): the units `Q₊ π(E_αβ)` (fundamental) and `Q₋ π(E_αβ)` (conjugate), with
-  `φ(a) = (a, ā)`, over the blocks whose unit `Q± π(1ᵢ)` is nonzero.
+* `Mₙ(ℍ)` (`QuaternionSummands.lean`): the units `U_{(αs)(βt)} = (ρ_αβ)_ℂ(E_st)` of `M₂ₙ(ℂ)`, `ρ_αβ(q) = π(E_αβ(q))`, with
+  relations from `complexify_mul_of` in the bimodule form and block units `π(1ᵢ) ≠ 0`; `φ(a)_{(αs)(βt)} = ι(a_αβ)_st`;
+  `exists_unitary_quatSummands` (proved).
+* `Mₙ(ℂ)` acting real-linearly (`ComplexSummands.lean`): the units `Q± π(E^i_αβ)` over the blocks `(i, ±)` with
+  `Q± π(1ᵢ) ≠ 0` (zero blocks carry zero units, so `σ ∘ φ = π` still holds), `φ(a) = (aᵢ, āᵢ)`;
+  `exists_unitary_complexSummands`.
+* Mixed algebras `A = ⊕ Mₙ(ℝ) × ⊕ Mₙ(ℂ) × ⊕ Mₙ(ℍ)` (open, next): each construction uses only multiplicativity, `*` and
+  linearity of `π`, so it applies to `π` restricted to one factor, a non-unital `*`-homomorphism with block unit
+  `π(1_factor)`; for the complex factor `u = i · 1_ℂ` has `u² = -1_ℂ`, so `Q± = (π(1_ℂ) ∓ i π(u))/2`. The three unit
+  systems multiply to `0` across factors and their block units add to `π(1) = 1`, so together they are one system of
+  matrix units over the sum of the three index types.
 * §3.3, p. 14, Table 1 (a symmetric integer matrix over the irreducible representations, the signs `μ_{iαj} μ_{iᾱj} ≥ 0`,
   and the factors 2 and 4 relating it to the intersection form): open. It needs `J Q₊ J`, the right-action projection,
   and the exchange by `J` of the fundamental and conjugate blocks of a complex summand.

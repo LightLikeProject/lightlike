@@ -401,6 +401,7 @@ import Lightlike.Lorentz.WeightedComp
 import Lightlike.NCG.Bimodule
 import Lightlike.NCG.Classification
 import Lightlike.NCG.ComplexSplitting
+import Lightlike.NCG.ComplexSummands
 import Lightlike.NCG.Complexification
 import Lightlike.NCG.DiracDecomposition
 import Lightlike.NCG.FiniteSpectralTriple

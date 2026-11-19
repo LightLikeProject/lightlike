@@ -62,6 +62,11 @@ units of `⊕ M₂ₙᵢ(ℂ)` on `H` with block units `π(1ᵢ)`, and with `φ(
 complexification: a real finite spectral triple over `⊕ Mₙᵢ(ℍ)` is unitarily equivalent to the model
 `⊕ ℂ^{2nᵢ} ⊗ ℂ^{rᵢⱼ} ⊗ ℂ^{2nⱼ}` {1} [21].
 
+For `A = ⊕ Mₙᵢ(ℂ)` acting real-linearly, `Q± = (1 ∓ i π(i·1))/2` are complementary orthogonal projections commuting with
+`π`, the operators `Q± π(E^i_{αβ})` of the blocks `(i, ±)` with `Q± π(1ᵢ) ≠ 0` are a system of matrix units, and with
+`φ(a) = (aᵢ, āᵢ)` they form a complexification: such a triple is unitarily equivalent to the model of the multiplicity
+matrix over the fundamental and conjugate representations that occur {1} [22].
+
 ## Lean References
 
 1. Lightlike/NCG/FiniteSpectralTriple.lean - `NCG.FiniteSpectralTriple`, `NCG.FiniteSpectralTriple.comm`,
@@ -102,7 +107,7 @@ complexification: a real finite spectral triple over `⊕ Mₙᵢ(ℍ)` is unita
 16. Lightlike/NCG/ComplexSplitting.lean - `NCG.Qp`, `NCG.Qm`, `NCG.Qp_add_Qm`, `NCG.pi_u_sq`, `NCG.pi_u_Qp`, `NCG.pi_u_Qm`,
     `NCG.pi_comm_Qp`, `NCG.pi_comm_Qm`, `NCG.smul_eq_re_add_im`, `NCG.Qp_pi_smul`, `NCG.Qm_pi_smul`, `NCG.QpR`, `NCG.QmR`,
     `NCG.J_Qp_J`, `NCG.J_Qm_J`, `NCG.QpR_add_QmR`, `NCG.pi_comm_QpR`, `NCG.pi_comm_QmR`, `NCG.Qp_comm_QpR`,
-    `NCG.Qp_comm_QmR`
+    `NCG.Qp_comm_QmR`, `NCG.Qp_mul_Qp`, `NCG.Qm_mul_Qm`, `NCG.Qp_mul_Qm`, `NCG.Qm_mul_Qp`, `NCG.star_Qp`, `NCG.star_Qm`
 17. Lightlike/NCG/Complexification.lean - `NCG.commJ_span`, `NCG.commL`, `NCG.commL_apply`, `NCG.Complexification`,
     `NCG.Complexification.σℝ`, `NCG.Complexification.σℝ_apply`, `NCG.Complexification.triple`,
     `NCG.Complexification.isComplexLinear`, `NCG.Complexification.realStructure`, `NCG.Complexification.exists_unitary`
@@ -122,6 +127,12 @@ complexification: a real finite spectral triple over `⊕ Mₙᵢ(ℍ)` is unita
     `NCG.star_UH`, `NCG.sum_unitH_block`, `NCG.eq_sum_unitH`, `NCG.phiHFun`, `NCG.phiHFun_apply`, `NCG.phiH`,
     `NCG.phiH_apply`, `NCG.complexify_entries`, `NCG.sum_UH`, `NCG.unitsH`, `NCG.unitsH_hom_phiH`, `NCG.UH_mem_span`,
     `NCG.pi_single_one_ne_zero`, `NCG.quatComplexification`, `NCG.exists_unitary_quatSummands`
+22. Lightlike/NCG/ComplexSummands.lean - `NCG.uC`, `NCG.uC_mul`, `NCG.star_uC`, `NCG.uC_comm`, `NCG.unitC_mul_same`,
+    `NCG.unitC_mul_ne`, `NCG.star_unitC`, `NCG.sum_unitC_block`, `NCG.Qb`, `NCG.Qb_mul_Qb`, `NCG.Qb_mul_Qb_ne`, `NCG.star_Qb`,
+    `NCG.pi_comm_Qb`, `NCG.Qb_true_add_false`, `NCG.Blocks`, `NCG.UC`, `NCG.Qb_pi_mul_Qb_pi`, `NCG.Qb_pi_mem_span`,
+    `NCG.blockC`, `NCG.sum_UC`, `NCG.sum_blocks`, `NCG.UC_zero`, `NCG.unitsC`, `NCG.sum_smul_unitC`, `NCG.phiCAll`,
+    `NCG.phiCFun`, `NCG.phiC`, `NCG.phiC_apply`, `NCG.Qb_true_pi_smul`, `NCG.Qb_false_pi_smul`, `NCG.GC`, `NCG.GC_zero`,
+    `NCG.unitsC_hom_phiC`, `NCG.complexComplexification`, `NCG.exists_unitary_complexSummands`
 
 ## References
 
