@@ -69,6 +69,8 @@ A metric is a critical point of the Einstein-Hilbert action with a cosmological 
 In Minkowski space, an observer who travels out and back along two straight segments ages less
 than one who stays at rest [6].
 
+Raychaudhuri's equation in coordinates: for a smooth field `v` geodesic on an open set of a coordinate metric, with `∇_b vᵃ = ∂_b vᵃ + Γᵃ_{bc} vᶜ` and the expansion `Θ = ∇ₐ vᵃ`, `v(Θ) = -(∇_b vᵃ)(∇ₐ vᵇ) - R_{σν} vᵠ vᵛ`; where `g(v, v) = -1`, splitting `∇v` into expansion, shear `σ` and rotation `ω` gives `v(Θ) = -Θ²/(n-1) - |σ|² + |ω|² - R(v, v)` [43] [44] [45]. The equation for a congruence on a manifold, its null version and the focusing theorem under the energy condition are not yet formalized. [TODO]
+
 ## Lean References
 
 1. Lightlike/Spacetime/Curvature.lean - `IsCoordMetric`, `christoffel`, `riemann`, `ricci`,
@@ -133,6 +135,9 @@ than one who stays at rest [6].
 40. Lightlike/Spacetime/EinsteinTwoDim.lean - `ricci_two_dim`, `einsteinUp_two_dim`, `isEHCritical_two_dim`: in two dimensions the Ricci tensor is half the scalar curvature times the metric, the Einstein tensor vanishes, and every smooth nondegenerate metric is a critical point of the Einstein-Hilbert action without cosmological term.
 41. Lightlike/Spacetime/CoordKilling.lean - `coordField_killing`: a coordinate field along which the metric components are constant is a Killing field (`IsKillingAt`) of the Levi-Civita connection.
 42. Lightlike/Spacetime/SchwarzschildKilling.lean - `schwarzschild_killing`: the time translation `∂_t` is a Killing field of exterior Schwarzschild.
+43. Lightlike/Spacetime/RaychaudhuriAlgebra.lean - `Raychaudhuri.raychaudhuri_algebra`: the index computation of the Raychaudhuri identity (fable1).
+44. Lightlike/Spacetime/RaychaudhuriCoord.lean - `covD`, `expansion`, `pd_covD`, `raychaudhuri_coord`, `raychaudhuri_equation`: Raychaudhuri's identity and equation for a geodesic field in coordinates.
+45. Lightlike/Spacetime/RaychaudhuriSplit.lean - `Raychaudhuri.normSqG`, `Raychaudhuri.trace_sq_split`: the trace of the square of the derivative of a geodesic field splits into expansion, shear and rotation.
 
 ## References
 
