@@ -6,6 +6,10 @@
 #   A ref has a `location`: "Theorem 5.9", "eq. (4.27)", "Section 9", or, for a book chapter
 #   with its own DOI, "Chapter: <chapter title>|<chapter DOI>". `check` is a word that must
 #   appear near the label in the arXiv full text.
+# A book with a PDF online names it with `fulltext: <URL>` and `edition: <which edition the file
+#   is>` (required with fulltext), optionally `sha256: <the file's hash>` and `page_offset: N`.
+#   Its locations are checked in that file, a page ("Theorem 6.6, p. 136") against the printed
+#   page numbers; see scripts/sources.py.
 #
 # `python3 scripts/sources.py verify` fetches every reference and location and writes
 # sources-verified.json; `python3 scripts/sources.py check` checks this file offline.
