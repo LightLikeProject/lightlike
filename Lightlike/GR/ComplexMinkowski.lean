@@ -6,7 +6,7 @@ import Physlib.Relativity.PauliMatrices.Basic
 
 Complexified Minkowski space `M_ℂ = ℂ⁴` is identified with `2 × 2` complex matrices, `ℂ²⊗ℂ²`, by the spinor map
 `x ↦ x^{αα̇} = (1/√2) [[x⁰ + x³, x¹ − i x²], [x¹ + i x², x⁰ − x³]]` (`spinorMat`, a linear equivalence `spinorEquiv`;
-`tensorEquiv : ℂ² ⊗ ℂ² ≃ M₂(ℂ)` sends `a ⊗ b` to the outer product `a bᵀ`). The Minkowski form is twice the
+`spinorTensorEquiv : ℂ² ⊗ ℂ² ≃ M₂(ℂ)` sends `a ⊗ b` to the outer product `a bᵀ`). The Minkowski form is twice the
 determinant (`qC_eq_two_det`), so the null cone `qC x = 0` is the set of matrices of rank at most one, the outer
 products `a bᵀ` of two spinors (`qC_eq_zero_iff`), i.e. the pure tensors (`qC_eq_zero_iff_tmul`). Real Minkowski space
 is the set of Hermitian matrices (`isHermitian_spinorMat_iff`).
@@ -51,11 +51,11 @@ def spinorMat (x : Fin 4 → ℂ) : Matrix (Fin 2) (Fin 2) ℂ :=
 def spinorInv (m : Matrix (Fin 2) (Fin 2) ℂ) : Fin 4 → ℂ :=
   ((Real.sqrt 2 : ℂ)⁻¹) • ![m 0 0 + m 1 1, m 0 1 + m 1 0, I * (m 0 1 - m 1 0), m 0 0 - m 1 1]
 
-lemma sqrt2_ne : (Real.sqrt 2 : ℂ) ≠ 0 := by
+private lemma sqrt2_ne : (Real.sqrt 2 : ℂ) ≠ 0 := by
   have : (0 : ℝ) < Real.sqrt 2 := Real.sqrt_pos.2 (by norm_num)
   exact_mod_cast this.ne'
 
-lemma sqrt2_sq : (Real.sqrt 2 : ℂ) ^ 2 = 2 := by
+private lemma sqrt2_sq : (Real.sqrt 2 : ℂ) ^ 2 = 2 := by
   have : (Real.sqrt 2) ^ 2 = 2 := Real.sq_sqrt (by norm_num)
   exact_mod_cast this
 
@@ -136,11 +136,11 @@ theorem qC_eq_zero_iff (x : Fin 4 → ℂ) :
   exact det_eq_zero_iff_vecMulVec _
 
 /-- **`ℂ² ⊗ ℂ² ≅ M₂(ℂ)`**, sending `a ⊗ b` to the outer product `a bᵀ` (`tensorEquiv_tmul`). -/
-def tensorEquiv : (Fin 2 → ℂ) ⊗[ℂ] (Fin 2 → ℂ) ≃ₗ[ℂ] Matrix (Fin 2) (Fin 2) ℂ :=
+def spinorTensorEquiv : (Fin 2 → ℂ) ⊗[ℂ] (Fin 2 → ℂ) ≃ₗ[ℂ] Matrix (Fin 2) (Fin 2) ℂ :=
   ((Pi.basisFun ℂ (Fin 2)).tensorProduct (Pi.basisFun ℂ (Fin 2))).equivFun ≪≫ₗ
     LinearEquiv.curry ℂ ℂ (Fin 2) (Fin 2)
 
-lemma tensorEquiv_tmul (a b : Fin 2 → ℂ) : tensorEquiv (a ⊗ₜ b) = vecMulVec a b := by
+lemma tensorEquiv_tmul (a b : Fin 2 → ℂ) : spinorTensorEquiv (a ⊗ₜ b) = vecMulVec a b := by
   ext i j
   change ((Pi.basisFun ℂ (Fin 2)).tensorProduct (Pi.basisFun ℂ (Fin 2))).equivFun (a ⊗ₜ b) (i, j) =
     vecMulVec a b i j
@@ -149,7 +149,7 @@ lemma tensorEquiv_tmul (a b : Fin 2 → ℂ) : tensorEquiv (a ⊗ₜ b) = vecMul
 
 /-- **`M_ℂ ≅ ℂ² ⊗ ℂ²`, with the null cone as the pure tensors.** -/
 theorem qC_eq_zero_iff_tmul (x : Fin 4 → ℂ) :
-    qC x = 0 ↔ ∃ a b : Fin 2 → ℂ, tensorEquiv.symm (spinorEquiv x) = a ⊗ₜ b := by
+    qC x = 0 ↔ ∃ a b : Fin 2 → ℂ, spinorTensorEquiv.symm (spinorEquiv x) = a ⊗ₜ b := by
   rw [qC_eq_zero_iff]
   constructor
   · rintro ⟨a, b, h⟩
