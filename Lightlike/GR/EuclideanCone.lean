@@ -10,7 +10,14 @@ to `β/(4M)` as `σ → 0` (`tendsto_cone_ratio`). A smooth tip needs the ratio 
 plane, so a period other than `8πM` leaves a conical singularity (`cone_ratio_eq_two_pi_iff`), and the
 inverse of the smooth period is the Hawking temperature `1/(8πM)` (`hawkingTemperature`).
 
-Gap row G1-058, follow-ups (a) and (b). Comparison with Gibbons–Hawking (1977) pending.
+Gap row G1-058, follow-ups (a) and (b).
+Compared with I. Kuntz, G. Paci, O. Zanusso, *Euclidean actions and static black hole
+entropy in teleparallel theories*, arXiv:2410.04510, Appendix A, eqs. (A1)–(A6), pp. 20–21 (read: the Euclidean section
+(A2), the near-horizon form (A5), the period `τ ∼ τ + 8πm`, `β_H = 8πm` as the inverse Hawking temperature, the conical
+singularity for `β ≠ β_H` and its curvature integral (A6)) and D. Harlow, *Jerusalem Lectures on Black Holes and Quantum
+Information*, arXiv:1409.1231, section 4.8, eqs. (4.42)–(4.44), p. 43 (read: the smooth period); see
+`docs/notes/g1-058-euclidean-schwarzschild-source.md`. Gibbons–Hawking (1977) and Carroll's book: not read.
+Not proved: the curvature integral (A6) and that no smooth extension exists for `β ≠ 8πM` (open parts of the row).
 -/
 
 open Real Filter Topology intervalIntegral Set
