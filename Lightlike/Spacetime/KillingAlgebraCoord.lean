@@ -24,7 +24,10 @@ The bridge between the two coordinate forms of Killing's equation used in the li
 * `lowerVec_bracketCo`: the lowered bracket `[Y, Z]_b = Yᵈ ∇_d Z_b - Zᵈ ∇_d Y_b`; `pd_covCo_eq`,
   `pd_lowerVec_bracketCo`: its first derivatives for two Killing fields, through Blau (13.8) (`covCo2_killing`): the
   data of the bracket at a point is given by the data of the two fields and the curvature there;
-* `lieBracket_apply_eq_bracketCo`: `bracketCo` is Mathlib's `VectorField.lieBracket` in components.
+* `lieBracket_apply_eq_bracketCo`: `bracketCo` is Mathlib's `VectorField.lieBracket` in components;
+* `eq_sum_of_lowerVec_eq_sum`, `pd_add_christoffel_eq_raise`: raising, `∇_a Yᵈ = gᵈᵇ ∇_a θ_b`;
+* `covCo_lowerVec_bracketCo`: `∇_a [Y, Z]_b = (∇_a Yᵈ) ∇_d Z_b - (∇_a Zᵈ) ∇_d Y_b + Yᵈ Rᵉ_{adb} Z_e - Zᵈ Rᵉ_{adb} Y_e`
+  for two Killing fields.
 -/
 
 open Matrix Filter Set
@@ -496,5 +499,60 @@ theorem pd_add_christoffel_eq_raise {g : (Fin n → ℝ) → Matrix (Fin n) (Fin
     rw [← hinv l, Finset.sum_mul]
     exact Finset.sum_congr rfl fun _ _ => by ring
   simp only [e, Matrix.one_apply, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, ite_true]
+
+section BracketCov
+
+variable {g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ} {U : Set (Fin n → ℝ)} {Y Z : (Fin n → ℝ) → Fin n → ℝ}
+  {y : Fin n → ℝ}
+
+/-- **The covariant derivative of the lowered bracket of two Killing fields** at a point of `U`:
+`∇_a [Y, Z]_b = (∇_a Yᵈ) ∇_d Z_b - (∇_a Zᵈ) ∇_d Y_b + Yᵈ Rᵉ_{adb} Z_e - Zᵈ Rᵉ_{adb} Y_e`, with
+`∇_a Yᵈ = ∂_a Yᵈ + Γᵈ_{ac} Yᶜ`: the data of the bracket at a point is the bracket of the data, with the curvature. -/
+theorem covCo_lowerVec_bracketCo (hg : IsCoordMetric g U) (hgs : ∀ z a b, g z a b = g z b a)
+    (hY : ∀ c, ContDiffOn ℝ ∞ (fun z => Y z c) U) (hZ : ∀ c, ContDiffOn ℝ ∞ (fun z => Z z c) U)
+    (hKY : ∀ z ∈ U, ∀ a b, covCo g (lowerVec g Y) a b z + covCo g (lowerVec g Y) b a z = 0)
+    (hKZ : ∀ z ∈ U, ∀ a b, covCo g (lowerVec g Z) a b z + covCo g (lowerVec g Z) b a z = 0) (hy : y ∈ U)
+    (a b : Fin n) :
+    covCo g (lowerVec g (bracketCo Y Z)) a b y =
+      ∑ d, ((pd a (fun z => Y z d) y + ∑ c, christoffel g d a c y * Y y c) * covCo g (lowerVec g Z) d b y -
+        (pd a (fun z => Z z d) y + ∑ c, christoffel g d a c y * Z y c) * covCo g (lowerVec g Y) d b y) +
+      ∑ d, ∑ e, (Y y d * riemann g e a d b y * lowerVec g Z y e - Z y d * riemann g e a d b y * lowerVec g Y y e) := by
+  have hdet := (hg.isUnit_det y hy).ne_zero
+  have hgd : ∀ a b, DifferentiableAt ℝ (fun z => g z a b) y := fun a b =>
+    differentiableAt_of_contDiffOn (hg.smooth a b) hg.isOpen hy
+  have hval : ∀ c, lowerVec g (bracketCo Y Z) y c =
+      ∑ d, (Y y d * covCo g (lowerVec g Z) d c y - Z y d * covCo g (lowerVec g Y) d c y) := fun c =>
+    lowerVec_bracketCo hgs hdet hgd (fun c => differentiableAt_of_contDiffOn (hY c) hg.isOpen hy)
+      (fun c => differentiableAt_of_contDiffOn (hZ c) hg.isOpen hy) c
+  rw [show covCo g (lowerVec g (bracketCo Y Z)) a b y =
+      pd a (fun z => lowerVec g (bracketCo Y Z) z b) y -
+        ∑ c, christoffel g c a b y * lowerVec g (bracketCo Y Z) y c from rfl,
+    pd_lowerVec_bracketCo hg hgs hY hZ hKY hKZ hy a b]
+  simp only [hval]
+  have sw : ∀ (W : (Fin n → ℝ) → Fin n → ℝ) (θ : (Fin n → ℝ) → Fin n → ℝ),
+      ∑ d, W y d * ∑ c, christoffel g c a d y * covCo g θ c b y =
+        ∑ d, (∑ c, christoffel g d a c y * W y c) * covCo g θ d b y := fun W θ => by
+    simp only [Finset.mul_sum, Finset.sum_mul]
+    rw [Finset.sum_comm]
+    exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
+  have sw2 : ∀ (W : (Fin n → ℝ) → Fin n → ℝ) (θ : (Fin n → ℝ) → Fin n → ℝ),
+      ∑ c, christoffel g c a b y * ∑ d, W y d * covCo g θ d c y =
+        ∑ d, W y d * ∑ c, christoffel g c a b y * covCo g θ d c y := fun W θ => by
+    simp only [Finset.mul_sum]
+    rw [Finset.sum_comm]
+    exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
+  have hsplit : ∀ c, christoffel g c a b y * ∑ d, (Y y d * covCo g (lowerVec g Z) d c y -
+      Z y d * covCo g (lowerVec g Y) d c y) = christoffel g c a b y * ∑ d, Y y d * covCo g (lowerVec g Z) d c y -
+      christoffel g c a b y * ∑ d, Z y d * covCo g (lowerVec g Y) d c y := fun c => by
+    rw [Finset.sum_sub_distrib, mul_sub]
+  rw [Finset.sum_congr rfl fun c _ => hsplit c]
+  have hR : ∀ (W : (Fin n → ℝ) → Fin n → ℝ) (θ : (Fin n → ℝ) → Fin n → ℝ),
+      ∑ d, W y d * ∑ e, riemann g e a d b y * θ y e = ∑ d, ∑ e, W y d * riemann g e a d b y * θ y e := fun W θ => by
+    simp only [Finset.mul_sum, mul_assoc]
+  simp only [mul_add, Finset.sum_add_distrib, add_mul, Finset.sum_sub_distrib, hR, sw]
+  rw [sw2 Y, sw2 Z]
+  ring
+
+end BracketCov
 
 end Lightlike
