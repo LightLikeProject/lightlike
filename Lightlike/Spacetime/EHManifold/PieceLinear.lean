@@ -58,12 +58,12 @@ lemma continuous_pieceIntegrand (h : SymBilinField 𝓘(ℝ, Fin n → ℝ) M) (
     Real.continuous_sqrt.comp (continuous_abs.comp hGc.matrix_det)
   have hE : Continuous (fun y => ∑ α, ∑ β, h.coordCompR x₀ φ y α β *
       einsteinUp (g.coordMetricR x₀ φ) Λ y α β) :=
-    continuous_finset_sum _ fun α _ => continuous_finset_sum _ fun β _ =>
+    continuous_finsetSum _ fun α _ => continuous_finsetSum _ fun β _ =>
       (hH α β).continuous.mul
         (contDiff_einsteinUp (g.coordMetricR x₀ φ) hG hdet (g.coordMetricR_symm x₀ φ) Λ α β).continuous
   have hF : Continuous (ehFluxDiv (g.coordMetricR x₀ φ) (h.coordCompR x₀ φ)) := by
     unfold ehFluxDiv
-    exact continuous_finset_sum _ fun ρ _ =>
+    exact continuous_finsetSum _ fun ρ _ =>
       (contDiff_pd (contDiff_flux (g.coordMetricR x₀ φ) (h.coordCompR x₀ φ) hG hH hdet ρ) ρ).continuous
   unfold pieceIntegrand
   exact (hsq.neg.mul hE).add hF
@@ -91,7 +91,7 @@ theorem pieceVar_sum {ι : Type*} (s : Finset ι) (h : SymBilinField 𝓘(ℝ, F
     ((continuous_pieceIntegrand g x₀ φ hball (hs i) Λ).continuousOn.integrableOn_compact
       hTc).mono_measure (Measure.restrict_mono le_rfl Measure.restrict_le_self)
   simp only [pieceVar_eq]
-  rw [← integral_finset_sum s hint]
+  rw [← integral_finsetSum s hint]
   exact integral_congr_ae (Filter.Eventually.of_forall hpt)
 
 end Lightlike

@@ -69,9 +69,9 @@ lemma exists_nhds_det_add_smul_ne_zero (G H : (Fin n → ℝ) → Matrix (Fin n)
     exact h1.add (continuousAt_fst.mul h2)
   have hF : ContinuousAt (fun q : ℝ × (Fin n → ℝ) => (G q.2 + q.1 • H q.2).det) ((0 : ℝ), y₀) := by
     simp only [Matrix.det_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]
-    refine tendsto_finset_sum _ fun σ _ => ?_
+    refine tendsto_finsetSum _ fun σ _ => ?_
     refine ContinuousAt.const_smul (c := Equiv.Perm.sign σ) ?_
-    exact tendsto_finset_prod _ fun i _ => hentry (σ i) i
+    exact tendsto_finsetProd _ fun i _ => hentry (σ i) i
   have hne' : (G ((0 : ℝ), y₀).2 + ((0 : ℝ), y₀).1 • H ((0 : ℝ), y₀).2).det ≠ 0 := by
     show (G y₀ + (0 : ℝ) • H y₀).det ≠ 0
     rw [zero_smul, add_zero]
