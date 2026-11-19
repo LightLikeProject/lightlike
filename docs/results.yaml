@@ -2243,9 +2243,9 @@
   tier: established
   source:
     refs:
-      - {ref: carroll-1997, location: "Chapter 3"}
+      - {ref: carroll-1997, location: "eq. (5.42)", check: "Killing"}
   review: kernel-checked
-  note: "For a metric g of any signature and a torsion-free connection compatible with g, X(g(V, W)) - g([X, V], W) - g(V, [X, W]) = g(nabla_V X, W) + g(V, nabla_W X) at every point where the fields are differentiable; hence the pointwise Killing equation holds at x iff the Lie derivative of g along X vanishes on all fields differentiable at x. Limits: pointwise statement only, no flows or isometries; not the Lie derivative of general tensors; the comparison with the source (Killing equation and Lie derivative in the lecture notes) is pending, and the location is the chapter, not an equation."
+  note: "For a metric g of any signature and a torsion-free connection compatible with g, X(g(V, W)) - g([X, V], W) - g(V, [X, W]) = g(nabla_V X, W) + g(V, nabla_W X) at every point where the fields are differentiable; hence the pointwise Killing equation holds at x iff the Lie derivative of g along X vanishes on all fields differentiable at x. Limits: pointwise statement only, no flows or isometries; not the Lie derivative of general tensors; the flow characterisation of Killing fields (Carroll (5.39)-(5.40)) is not covered. Compared with Carroll's lecture notes (gr-qc/9712019), eq. (5.33), p. 138 (the Lie derivative of the metric is 2 nabla_(mu V_nu)) and eqs. (5.41)-(5.42), p. 140 (Killing's equation): match; ours is pointwise, for the Levi-Civita connection of a metric of any signature."
   since: unreleased
 - id: LL-0172
   title: The bracket of two Killing fields of a metric of any signature is a Killing field
@@ -2256,9 +2256,9 @@
   tier: established
   source:
     refs:
-      - {ref: carroll-1997, location: "Chapter 3"}
+      - {ref: carroll-1997, location: "eq. (5.46)", check: "commutator"}
   review: kernel-checked
-  note: "If X and Y are smooth near x and the Lie derivative of g along each vanishes near x on all fields smooth near x, then so does the Lie derivative along the bracket [X, Y], by the Jacobi identity and [X, Y] f = X (Y f) - Y (X f). Limits: pointwise statement; the comparison with the source is pending and the location is the chapter."
+  note: "If X and Y are smooth near x and the Lie derivative of g along each vanishes near x on all fields smooth near x, then so does the Lie derivative along the bracket [X, Y], by the Jacobi identity and [X, Y] f = X (Y f) - Y (X f). Compared with Carroll's lecture notes, p. 141 (after eq. (5.46)): 'the commutator of two Killing vector fields is a Killing vector field' (stated, left as an exercise): match. Limits: local statement (Killing near x)."
   since: unreleased
 - id: LL-0173
   title: In Minkowski space the affine fields with skew linear part are Killing, the dilation is not, and affine fields close under the bracket with the Poincare relations
@@ -2269,9 +2269,9 @@
   tier: established
   source:
     refs:
-      - {ref: carroll-1997, location: "Chapter 3"}
+      - {ref: carroll-1997, location: "eq. (5.44)", check: "Killing"}
   review: kernel-checked
-  note: "On R^n with the Minkowski metric and the flat connection, the field y -> A y + c satisfies the Killing equation at every point iff A is skew for the metric; the dilation y -> y does not (n at least 1); [A y + c, B y + d] = (B A - A B) y + (B c - A d); the commutator of two skew endomorphisms is skew. Limits: not proved that these are all the Killing fields (the count n(n+1)/2); the 2-sphere check is not included; comparison with the source is pending."
+  note: "On R^n with the Minkowski metric and the flat connection, the field y -> A y + c satisfies the Killing equation at every point iff A is skew for the metric; the dilation y -> y does not (n at least 1); [A y + c, B y + d] = (B A - A B) y + (B c - A d); the commutator of two skew endomorphisms is skew. Compared with Carroll's lecture notes, pp. 140-141, eq. (5.44): n translations and n(n-1)/2 rotations, n(n+1)/2 independent Killing vectors of R^n, 'the same kind of counting argument applies to ... Minkowski space': the translations and the eta-skew (Lorentz) fields are Killing here, the dilation is not: match. Limits: that these are all the Killing fields and the count n(n+1)/2 are proved in KillingMinkowski.lean (regge/ge12-killing, not yet on main); the 2-sphere check is not included."
   since: unreleased
 - id: LL-0174
   title: The second fundamental form of the level sets of a function is symmetric, and the Gauss and Codazzi relations hold for a non-null hypersurface
@@ -2282,9 +2282,10 @@
   tier: established
   source:
     refs:
-      - {ref: carroll-1997, location: "Chapter 3"}
+      - {ref: gourgoulhon-2007, location: "eq. (2.92)", check: "Gauss"}
+      - {ref: gourgoulhon-2007, location: "eq. (2.101)", check: "Codazzi"}
   review: kernel-checked
-  note: "For a smooth function phi with a unit normal field n (g(n, n) = eps = plus or minus one, the kernel of d phi equal to the orthogonal of n), tangent fields X, Y, Z, W near a point and a metric compatible connection, g(R(X, Y) Z, W) equals the same expression for the tangential connection D plus the term minus eps (K(Y, Z) K(X, W) - K(X, Z) K(Y, W)) with K(v, w) = g(nabla_v n, w); for the Levi-Civita connection K is symmetric on tangent fields and g(R(X, Y) Z, n) = -((D_X K)(Y, Z) - (D_Y K)(X, Z)). Limits: the leaves are not given a manifold structure, so the intrinsic curvature of a leaf is that of the tangential connection D; existence of the unit normal is a hypothesis; the sphere and FLRW trust checks are not included; comparison with the source is pending and the location is the chapter."
+  note: "For a smooth function phi with a unit normal field n (g(n, n) = eps = plus or minus one, the kernel of d phi equal to the orthogonal of n), tangent fields X, Y, Z, W near a point and a metric compatible connection, g(R(X, Y) Z, W) equals the same expression for the tangential connection D plus the term minus eps (K(Y, Z) K(X, W) - K(X, Z) K(Y, W)) with K(v, w) = g(nabla_v n, w); for the Levi-Civita connection K is symmetric on tangent fields and g(R(X, Y) Z, n) = -((D_X K)(Y, Z) - (D_Y K)(X, Z)). Limits: the leaves are not given a manifold structure, so the intrinsic curvature of a leaf is that of the tangential connection D; existence of the unit normal is a hypothesis; the sphere and FLRW trust checks are not included; compared with Gourgoulhon, 3+1 Formalism (gr-qc/0703035), eq. (2.43), p. 24 (extrinsic curvature), the Gauss relation (2.92), p. 35, and the Codazzi relation (2.101), p. 36: match, with two differences: convention, the sign of the extrinsic curvature (ours K(v, w) = g(nabla_v n, w), Gourgoulhon's (2.43) K(u, v) = -u . nabla_v n; the quadratic Gauss term does not depend on it); Gourgoulhon treats spacelike hypersurfaces (eps = -1), ours every non-null one (eps = +1 or -1; the timelike case compared with M. Ammann's Lorentzian geometry notes, Thm. 2.3.7 and 2.3.11, pp. 70-72, read, not a registered source). See docs/notes/ge13-carroll-comparison.md."
   since: unreleased
 - id: LL-0175
   title: The first variation of the Einstein-Hilbert density at a point is the Einstein tensor plus a divergence (the Palatini identity in coordinates)
@@ -2295,9 +2296,9 @@
   tier: established
   source:
     refs:
-      - {ref: carroll-1997, location: "Chapter 4"}
+      - {ref: carroll-1997, location: "eq. (4.60)", check: "check this yourself"}
   review: kernel-checked
-  note: "For smooth symmetric g and h on R^n and a point x with det g(x) nonzero, the coordinate Ricci tensor of g + t h varies by the linearised Ricci tensor; with W^rho = g^{sigma nu} delta Gamma^rho_{sigma nu} - g^{rho sigma} delta Gamma^kappa_{kappa sigma}, sqrt|g| g^{sigma nu} delta R_{sigma nu} equals the divergence of sqrt|g| W^rho; and d/dt of sqrt|g_t| (R(g_t) - 2 Lambda) at t = 0 is minus sqrt|g| (R^{ab} - R g^{ab}/2 + Lambda g^{ab}) h_{ab} plus that divergence. Limits: pointwise statement in coordinates; the integral over a compact region (the divergence integrates to zero), the differentiation under the integral sign and the manifold statement are later stages; comparison with the source is pending and the location is the chapter."
+  note: "For smooth symmetric g and h on R^n and a point x with det g(x) nonzero, the coordinate Ricci tensor of g + t h varies by the linearised Ricci tensor; with W^rho = g^{sigma nu} delta Gamma^rho_{sigma nu} - g^{rho sigma} delta Gamma^kappa_{kappa sigma}, sqrt|g| g^{sigma nu} delta R_{sigma nu} equals the divergence of sqrt|g| W^rho; and d/dt of sqrt|g_t| (R(g_t) - 2 Lambda) at t = 0 is minus sqrt|g| (R^{ab} - R g^{ab}/2 + Lambda g^{ab}) h_{ab} plus that divergence. Limits: pointwise statement in coordinates; the integral over a compact region (the divergence integrates to zero), the differentiation under the integral sign and the manifold statement are later stages; compared with Carroll's lecture notes, eqs. (4.56) and (4.60), p. 115 (the variation of the action in three terms and the Palatini identity delta R^rho_{mu lambda nu} = nabla_lambda delta Gamma^rho_{nu mu} - nabla_nu delta Gamma^rho_{lambda mu}): ours is this identity contracted with g^{mu nu}, in coordinates (representation), and the metric is perturbed as g + t h instead of varying the inverse metric delta g^{mu nu} = -g^{mu alpha} g^{nu beta} h_{alpha beta} (representation)."
   since: unreleased
 - id: LL-0176
   title: The first variation of the Einstein-Hilbert action on a compact region is the Einstein tensor plus the cosmological term contracted with the perturbation, without a boundary term
@@ -2308,9 +2309,9 @@
   tier: established
   source:
     refs:
-      - {ref: carroll-1997, location: "Chapter 4"}
+      - {ref: carroll-1997, location: "eq. (4.66)", check: "arbitrary variations"}
   review: kernel-checked
-  note: "For a smooth metric g on R^n with nonzero determinant everywhere, a smooth symmetric perturbation h supported in a compact set T and Lambda real, d/dt of the integral over T of sqrt|det g_t| (R(g_t) - 2 Lambda), g_t = g + t h, at t = 0 is minus the integral over T of sqrt|det g| (R^{ab} - R g^{ab}/2 + Lambda g^{ab}) h_{ab}. Limits: coordinates on R^n; the vacuum Einstein equations as critical points (fundamental lemma), the manifold statement and the trust checks (two dimensions, sign of Lambda) are later stages; comparison with the source is pending and the location is the chapter."
+  note: "For a smooth metric g on R^n with nonzero determinant everywhere, a smooth symmetric perturbation h supported in a compact set T and Lambda real, d/dt of the integral over T of sqrt|det g_t| (R(g_t) - 2 Lambda), g_t = g + t h, at t = 0 is minus the integral over T of sqrt|det g| (R^{ab} - R g^{ab}/2 + Lambda g^{ab}) h_{ab}. Limits: coordinates on R^n; the vacuum Einstein equations as critical points (fundamental lemma), the manifold statement and the trust checks (two dimensions, sign of Lambda) are later stages; compared with Carroll's lecture notes, eqs. (4.54)-(4.55), p. 114 (the action), (4.61), p. 115 (the divergence term drops by Stokes for variations vanishing at infinity), (4.63)-(4.66), p. 116, and (4.73), p. 118 (the cosmological term): match, with the representation differences of LL-0175 (g + t h instead of delta g^{mu nu}, hence the minus sign) and a perturbation of compact support for Carroll's variation vanishing at infinity."
   since: unreleased
 - id: LL-0177
   title: A smooth nondegenerate metric is a critical point of the Einstein-Hilbert action with a cosmological constant for perturbations of compact support exactly when it satisfies the vacuum Einstein equations
@@ -2321,9 +2322,9 @@
   tier: established
   source:
     refs:
-      - {ref: carroll-1997, location: "Chapter 4"}
+      - {ref: carroll-1997, location: "eq. (4.67)", check: "vacuum"}
   review: kernel-checked
-  note: "For a smooth metric g on R^n of any signature with nonzero determinant everywhere and a real Lambda: the first variation of the integral of sqrt|det g| (R - 2 Lambda) vanishes for every smooth symmetric perturbation of compact support (over any compact region containing the support) iff R^{ab} - R g^{ab}/2 + Lambda g^{ab} is antisymmetric in (a, b), that is (it is symmetric) iff it vanishes. Limits: coordinates on R^n; the manifold statement and the trust checks (two dimensions, sign of Lambda) are later stages; comparison with the source is pending and the location is the chapter."
+  note: "For a smooth metric g on R^n of any signature with nonzero determinant everywhere and a real Lambda: the first variation of the integral of sqrt|det g| (R - 2 Lambda) vanishes for every smooth symmetric perturbation of compact support (over any compact region containing the support) iff R^{ab} - R g^{ab}/2 + Lambda g^{ab} is antisymmetric in (a, b), that is (it is symmetric) iff it vanishes. Limits: coordinates on R^n; the manifold statement and the trust checks (two dimensions, sign of Lambda) are later stages; compared with Carroll's lecture notes, eqs. (4.66)-(4.67), p. 116 ('this should vanish for arbitrary variations, so we are led to Einstein's equations in vacuum') and (4.73), p. 118: match; Carroll's step 'for arbitrary variations' is the fundamental lemma of the calculus of variations, proved here."
   since: unreleased
 - id: LL-0178
   title: In two dimensions the Einstein tensor of a smooth nondegenerate metric vanishes, so every metric is a critical point of the Einstein-Hilbert action without cosmological term
@@ -2334,9 +2335,9 @@
   tier: established
   source:
     refs:
-      - {ref: carroll-1997, location: "Chapter 4"}
+      - {ref: grumiller-kummer-vassilevich-2002, location: "eq. (1.50)", check: "divergence"}
   review: kernel-checked
-  note: "For a smooth metric on R^2 with nonzero determinant, the coordinate Ricci tensor is one half of the scalar curvature times the metric, so R^{ab} - R g^{ab}/2 = 0 and the first variation of the Einstein-Hilbert action vanishes for every perturbation of compact support (trust check of the Gauss-Bonnet theorem). Limits: coordinates on R^2; the integral invariance over a closed surface is not proved; comparison with the source is pending and the location is the chapter."
+  note: "For a smooth metric on R^2 with nonzero determinant, the coordinate Ricci tensor is one half of the scalar curvature times the metric, so R^{ab} - R g^{ab}/2 = 0 and the first variation of the Einstein-Hilbert action vanishes for every perturbation of compact support (trust check of the Gauss-Bonnet theorem). Compared with D. Grumiller, W. Kummer and D. V. Vassilevich, Dilaton gravity in two dimensions (hep-th/0204253), section 1.2.2 (Two dimensions), eqs. (1.48)-(1.50), pp. 16-17 of the pdf: in D = 2 the curvature has one independent component, the Ricci scalar, and the Hilbert-Einstein action in two dimensions is a total divergence (Gauss-Bonnet, (1.50)): match (a total divergence has zero variation for perturbations of compact support). Limits: coordinates on R^2; the integral (1.50) over a closed surface is not proved."
   since: unreleased
 
 - id: LL-0179
