@@ -329,6 +329,53 @@ lemma antisym_embL (ψ : lp (fun _ : Finset ι => ℂ) 2) : antisym n (embL n ψ
   field_simp
   exact mul_div_cancel_left₀ _ (by exact_mod_cast Nat.factorial_ne_zero n)
 
+/-- `sign σ ² = 1` in `ℂ`. -/
+lemma sign_mul_self (σ : Equiv.Perm (Fin n)) :
+    ((Equiv.Perm.sign σ : ℤ) : ℂ) * ((Equiv.Perm.sign σ : ℤ) : ℂ) = 1 := by
+  rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp [h]
+
+/-- **`A Φ` is antisymmetric**: `A Φ (f ∘ τ) = sign τ · A Φ (f)`. -/
+lemma antisym_comp (Φ : lp (fun _ : Fin n → ι => ℂ) 2) (f : Fin n → ι) (τ : Equiv.Perm (Fin n)) :
+    antisym n Φ (f ∘ τ) = ((Equiv.Perm.sign τ : ℤ) : ℂ) * antisym n Φ f := by
+  have key : ∑ σ : Equiv.Perm (Fin n), ((Equiv.Perm.sign σ : ℤ) : ℂ) * Φ ((f ∘ τ) ∘ σ) =
+      ((Equiv.Perm.sign τ : ℤ) : ℂ) * ∑ σ : Equiv.Perm (Fin n), ((Equiv.Perm.sign σ : ℤ) : ℂ) * Φ (f ∘ σ) := by
+    rw [Finset.mul_sum, ← Equiv.sum_comp (Equiv.mulLeft τ⁻¹)]
+    refine Finset.sum_congr rfl fun ρ _ => ?_
+    have hcomp : (f ∘ ⇑τ) ∘ ⇑(τ⁻¹ * ρ) = f ∘ ⇑ρ := by
+      funext x; simp [Equiv.Perm.mul_apply]
+    simp only [Equiv.coe_mulLeft, Equiv.Perm.sign_mul, Equiv.Perm.sign_inv, Units.val_mul, Int.cast_mul]
+    simp only [hcomp, mul_assoc]
+  rw [antisym_apply, antisym_apply, key]
+  ring
+
+/-- **`A Φ` vanishes on non-injective tuples.** -/
+lemma antisym_apply_of_not_injective (Φ : lp (fun _ : Fin n → ι => ℂ) 2) {f : Fin n → ι}
+    (hf : ¬ Function.Injective f) : antisym n Φ f = 0 := by
+  obtain ⟨i, j, hij, hne⟩ : ∃ i j, f i = f j ∧ i ≠ j := by
+    by_contra h
+    push_neg at h
+    exact hf fun i j hij => by_contra fun hne => hne (h i j hij)
+  have hf' : f ∘ Equiv.swap i j = f := by
+    funext x
+    by_cases hx : x = i
+    · subst hx; simp [Equiv.swap_apply_left, hij]
+    · by_cases hy : x = j
+      · subst hy; simp [Equiv.swap_apply_right, hij]
+      · simp [Equiv.swap_apply_of_ne_of_ne hx hy]
+  have h := antisym_comp Φ f (Equiv.swap i j)
+  rw [hf', Equiv.Perm.sign_swap hne] at h
+  have h2 : (2 : ℂ) * antisym n Φ f = 0 := by
+    have : antisym n Φ f = -antisym n Φ f := by simpa using h
+    linear_combination this
+  simpa using h2
+
+/-- **Summing over the permutations by their value at `0`**: `∑_σ F(σ 0) = n! ∑_k F k`. -/
+lemma sum_perm_apply_zero {m : ℕ} (F : Fin (m + 1) → ℂ) :
+    ∑ σ : Equiv.Perm (Fin (m + 1)), F (σ 0) = m.factorial * ∑ k, F k := by
+  rw [← Equiv.sum_comp Equiv.Perm.decomposeFin.symm, Fintype.sum_prod_type]
+  simp only [Equiv.Perm.decomposeFin_symm_apply_zero, Finset.sum_const, Finset.card_univ, Fintype.card_perm,
+    Fintype.card_fin, nsmul_eq_mul, Finset.mul_sum]
+
 end Antisym
 
 section Tensor
