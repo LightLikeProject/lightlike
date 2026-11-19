@@ -26,3 +26,13 @@ Simplification found while drafting D1: on ℓ²(Fin n → ι) each slot operato
 inequality alone. The antisymmetrizer is needed only to transport ∑ⱼ hⱼ to FermiFockGeneral's Γₙ along the isometric
 embedding Eₙ : Γₙ → ℓ²(Fin n → ι) (dΓₙ(h) = Eₙ* (∑ⱼ hⱼ) Eₙ, still ≤ n ‖h‖), and the commutators need Eₙ₊₁ a*(w) Eₙ*
 in the same model (D4).
+
+Status: D1 and D3 are built (`SecondQuantSlot.lean`: `slotMap`, `slotOp`, `dGammaTensor`, `norm_dGammaTensor_le`).
+
+D2, design. For `ι` linearly ordered (as in `FermiFockGeneral`) and `f : Fin n → ι` injective, Mathlib's `Tuple.sort f` is the
+permutation `σ` with `f ∘ σ` monotone, so `f ∘ σ` is the increasing enumeration of `image f`; the sign of `f` is
+`sign (Tuple.sort f)`. The embedding is `Eₙ ψ f = (n!)^{-1/2} sign(f) ψ(image f)` for injective `f` and `0` otherwise. It is
+isometric on `Γₙ` because every `n`-element `S` is the image of exactly `n!` injective `f` (the bijections `Fin n ≃ S`), all
+with `|sign| = 1`. Pieces: (D2a) `sign` of an injective tuple and its behaviour under a permutation of `Fin n`
+(`sign (f ∘ τ) = sign τ · sign f`); (D2b) the fibre count `#{f injective | image f = S} = n!`; (D2c) `Eₙ` as a linear isometry
+from the `n`-particle part of `ℓ²(Finset ι)` into `ℓ²(Fin n → ι)`, using the fibre count for the `HasSum` of `‖Eₙ ψ‖²`.
