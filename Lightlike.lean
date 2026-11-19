@@ -193,6 +193,7 @@ import Lightlike.FourD.Complex
 import Lightlike.FourD.Orientation
 import Lightlike.FourD.Pachner
 import Lightlike.FourD.Tests
+import Lightlike.Geometry.ProjectiveSpace
 import Lightlike.GR.ComplexMinkowski
 import Lightlike.GR.TwistorConformal
 import Lightlike.GR.TwistorSpace
