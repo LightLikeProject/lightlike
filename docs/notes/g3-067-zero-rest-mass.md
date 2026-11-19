@@ -42,7 +42,7 @@ ZeroRestMass.lean:
 
 WeylSpinor.lean:
 * `IsWeyl` (pair antisymmetry, pair exchange, cyclic identity, trace-free with `η^{ac} ↔ ε^{αγ}ε^{α̇γ̇}`),
-  `weyl_eq_weylOf`, `weylASD_symm`, `weylSD_symm`, `weylOf_isWeyl`, `weylParts_weylOf`, `weylEquiv`: the Weyl part of (3.12)
+  `weyl_eq_weylOf`, `weylASD_symm`, `weylSD_symm`, `weylOf_isWeyl`, `weylParts_weylOf`, `weylEquiv`: the Weyl term of (3.12)
   as an equivalence between Weyl tensors and pairs of totally symmetric 4-spinors.
 
 The finite linear identities (`maxwell_iff_zrm_D`, `weyl_eq_weylOf`, `weylASD_symm`, `weylSD_symm`, `wave_algebra`) are
@@ -54,12 +54,14 @@ proved by `linear_combination` certificates found by exact linear solves (sympy 
 1. Sign: with (1.5)–(1.7), (3.3)'s parts are `−asdPart F`, `−sdPart F` and the right side of (3.2) is `−F` (checked
    numerically on random symmetric spinors: every component ratio is −1); (3.2)–(3.3) and (3.4) disagree by an overall
    sign. The Lean parts are the ones for which (3.4) holds. The z.r.m. equations are linear and do not see the sign.
-2. Misprint: (3.12)'s second term is printed `ε_{αβ} ε_{γδ} Ψ_{αβγδ}` (undotted indices repeated, no dotted ones); Lean
-   uses `ε_{α̇β̇} ε_{γ̇δ̇} Ψ_{αβγδ}`.
-3. Scope: the Weyl part of (3.12) only (the `Φ_{αβγ̇δ̇}` and `R` terms are absent).
+2. Misprint: (3.12)'s second term is printed `ε_{αβ} ε_{γδ} Ψ_{αβγδ}` (undotted lower indices repeated, no dotted ones,
+   so it has no well-formed reading); the corrected form, used in Lean, is `ε_{α̇β̇} ε_{γ̇δ̇} Ψ_{αβγδ}`, the only reading with
+   the free indices of `R_{abcd}`.
+3. Scope: this covers the Weyl term of (3.12); the `Φ_{αβγ̇δ̇}` and `R` terms are not claimed.
 4. Representation: the raised indices of (3.15) and (3.10)–(3.11) are written out with `ε` (`ε^{αβ}` is the matrix
    (1.5) by (1.6)); fields are families `φ i`, `i : Fin (n + 1) → Fin 2`, on an open `U ⊆ ℂ⁴` in the coordinates `x^{αα̇}`;
-   regularity is a hypothesis of the theorems that need it (`C²` for the wave equation, differentiability for Maxwell).
+   regularity is a hypothesis of the theorems that need it (differentiability for Maxwell; `C²` for the added
+   wave-equation theorem, which the source does not state).
 
 ## Found while reading (not formalized)
 
