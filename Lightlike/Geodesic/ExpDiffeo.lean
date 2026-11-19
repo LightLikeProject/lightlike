@@ -36,7 +36,7 @@ Theorem 2.1.14, for a coordinate metric of any signature).
 For `x ∈ U` there are `ρ > 0` and an open partial homeomorphism `φ` of `ℝⁿ` with source the ball
 of radius `ρ` about `0`, smooth with smooth inverse, with `φ 0 = x` and derivative the identity at
 `0`, such that every `v` in the ball is the initial velocity of a geodesic from `x`, defined on
-`(-1, 2)`, which reaches `φ v` at time `1` and is `t ↦ φ (t • v)` on `[0, 1]` (the radial
+`(-1, 2)`, which reaches `φ v` at time `1` and is `t ↦ φ (t • v)` on `[-1, 1]` (the radial
 geodesic to `φ v`). So `φ` is `exp_x` on the ball, and its target is a normal neighbourhood of
 `x`.
 
@@ -49,7 +49,7 @@ theorem exists_expMap_diffeo (hg : Lightlike.IsCoordMetric g U) {x : Fin n → �
       ContDiffOn ℝ ∞ φ.symm φ.target ∧
       HasFDerivAt φ (ContinuousLinearMap.id ℝ (Fin n → ℝ)) 0 ∧ φ.target ⊆ U ∧
       ∀ v ∈ ball (0 : Fin n → ℝ) ρ, ∃ γ w : ℝ → Fin n → ℝ, γ 0 = x ∧ w 0 = v ∧ γ 1 = φ v ∧
-        IsGeodesicOn g γ w (Ioo (-1) 2) ∧ ∀ t ∈ Icc (0 : ℝ) 1, γ t = φ (t • v) := by
+        IsGeodesicOn g γ w (Ioo (-1) 2) ∧ ∀ t ∈ Icc (-1 : ℝ) 1, γ t = φ (t • v) := by
   obtain ⟨ρ₀, E, hρ₀, hE0, hEs, hEd, hEU, hEg⟩ := exists_expMap_smooth hg hx
   have hEat : ContDiffAt ℝ ∞ E 0 := hEs.contDiffAt (ball_mem_nhds 0 hρ₀)
   have hEd' : HasFDerivAt E

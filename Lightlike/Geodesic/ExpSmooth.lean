@@ -91,7 +91,7 @@ theorem hasFDerivAt_geodField_zero (hg : Lightlike.IsCoordMetric g U) {x : Fin n
 For `x ∈ U` there are `ρ > 0` and a map `E`, smooth on the ball of radius `ρ` about `0`, with
 `E 0 = x` and derivative the identity at `0`, such that every `v` in that ball is the initial
 velocity of a geodesic `γ` from `x`, defined on `(-1, 2)`, which reaches `E v` at time `1`; and
-`γ t = E (t • v)` for `t ∈ [0, 1]`, which is `exp_p (t v) = c_v (t)`, equation (2.1.13) of the
+`γ t = E (t • v)` for `t ∈ [-1, 1]`, which is `exp_p (t v) = c_v (t)`, equation (2.1.13) of the
 source. -/
 theorem exists_expMap_smooth (hg : Lightlike.IsCoordMetric g U) {x : Fin n → ℝ} (hx : x ∈ U) :
     ∃ (ρ : ℝ) (E : (Fin n → ℝ) → (Fin n → ℝ)), 0 < ρ ∧ E 0 = x ∧
@@ -99,7 +99,7 @@ theorem exists_expMap_smooth (hg : Lightlike.IsCoordMetric g U) {x : Fin n → �
       HasFDerivAt E (ContinuousLinearMap.id ℝ (Fin n → ℝ)) 0 ∧
       (∀ v ∈ ball (0 : Fin n → ℝ) ρ, E v ∈ U) ∧
       ∀ v ∈ ball (0 : Fin n → ℝ) ρ, ∃ γ w : ℝ → Fin n → ℝ, γ 0 = x ∧ w 0 = v ∧ γ 1 = E v ∧
-        IsGeodesicOn g γ w (Ioo (-1) 2) ∧ ∀ t ∈ Icc (0 : ℝ) 1, γ t = E (t • v) := by
+        IsGeodesicOn g γ w (Ioo (-1) 2) ∧ ∀ t ∈ Icc (-1 : ℝ) 1, γ t = E (t • v) := by
   set p₀ : (Fin n → ℝ) × (Fin n → ℝ) := (x, 0) with hp₀
   have hopen : IsOpen (U ×ˢ (univ : Set (Fin n → ℝ))) := hg.isOpen.prod isOpen_univ
   obtain ⟨aU, haU, hballU⟩ := Metric.isOpen_iff.mp hopen p₀ (mk_mem_prod hx (mem_univ _))
@@ -136,12 +136,17 @@ theorem exists_expMap_smooth (hg : Lightlike.IsCoordMetric g U) {x : Fin n → �
       inv_mul_lt_iff₀ hs0]
     exact hv
   -- homogeneity of the geodesic flow: `Ψ τ (x, c u) = (γ (c τ), c ω (c τ))` for `0 ≤ c ≤ 1`
-  have hhom : ∀ u : Fin n → ℝ, (x, u) ∈ ball p₀ r → ∀ c ∈ Icc (0 : ℝ) 1, ∀ τ ∈ Icc (-T) T,
+  have hhom : ∀ u : Fin n → ℝ, (x, u) ∈ ball p₀ r → ∀ c ∈ Icc (-1 : ℝ) 1, ∀ τ ∈ Icc (-T) T,
       Ψ τ (x, c • u) = ((Ψ (c * τ) (x, u)).1, c • (Ψ (c * τ) (x, u)).2) := by
     intro u hu c hc τ hτ
+    have hc1 : |c| ≤ 1 := abs_le.2 hc
     have hcI : ∀ τ ∈ Icc (-T) T, c * τ ∈ Icc (-T) T := by
       intro τ hτ
-      constructor <;> nlinarith [hc.1, hc.2, hτ.1, hτ.2, hT]
+      have h1 : |c * τ| ≤ T := by
+        rw [abs_mul]
+        calc |c| * |τ| ≤ 1 * T := mul_le_mul hc1 (abs_le.2 hτ) (abs_nonneg _) zero_le_one
+          _ = T := one_mul T
+      exact abs_le.1 h1
     have hgeo : IsGeodesicOn g (fun t => (Ψ t (x, u)).1) (fun t => (Ψ t (x, u)).2)
         (Icc (-T) T) :=
       isGeodesicOn_of_phase fun t ht => h.hasDerivAt _ hu t ht
@@ -155,8 +160,8 @@ theorem exists_expMap_smooth (hg : Lightlike.IsCoordMetric g U) {x : Fin n → �
       rw [mem_ball, Prod.dist_eq]
       refine max_lt (by simpa [hp₀] using h.r_pos) ?_
       show Dist.dist (c • u) (0 : Fin n → ℝ) < r
-      rw [dist_zero_right, norm_smul, Real.norm_eq_abs, abs_of_nonneg hc.1]
-      nlinarith [norm_nonneg u, hc.2]
+      rw [dist_zero_right, norm_smul, Real.norm_eq_abs]
+      nlinarith [norm_nonneg u, abs_nonneg c]
     have hβ : ∀ τ ∈ Icc (-T) T, HasDerivWithinAt
         (fun τ => ((Ψ (c * τ) (x, u)).1, c • (Ψ (c * τ) (x, u)).2))
         (geodField g ((Ψ (c * τ) (x, u)).1, c • (Ψ (c * τ) (x, u)).2)) (Icc (-T) T) τ :=
@@ -171,8 +176,8 @@ theorem exists_expMap_smooth (hg : Lightlike.IsCoordMetric g U) {x : Fin n → �
       rw [mem_ball, Prod.dist_eq]
       refine max_lt h1.1 ?_
       show Dist.dist (c • (Ψ (c * τ) (x, u)).2) (0 : Fin n → ℝ) < a
-      rw [dist_zero_right, norm_smul, Real.norm_eq_abs, abs_of_nonneg hc.1]
-      nlinarith [norm_nonneg (Ψ (c * τ) (x, u)).2, hc.2]
+      rw [dist_zero_right, norm_smul, Real.norm_eq_abs]
+      nlinarith [norm_nonneg (Ψ (c * τ) (x, u)).2, abs_nonneg c]
     have h0 : (fun τ => Ψ τ (x, c • u)) 0 =
         (fun τ => ((Ψ (c * τ) (x, u)).1, c • (Ψ (c * τ) (x, u)).2)) 0 := by
       simp only [mul_zero, h.flow_zero _ hu, h.flow_zero _ hcu]

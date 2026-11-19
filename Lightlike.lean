@@ -968,6 +968,8 @@ import Lightlike.Gauge.MatrixInverse
 import Lightlike.Gauge.PoissonJacobi
 import Lightlike.Geodesic.ExpDiffeo
 import Lightlike.Geodesic.ExpSmooth
+import Lightlike.Geodesic.Gauss
+import Lightlike.Geodesic.GaussAux
 import Lightlike.Geodesic.Radial
 import Lightlike.Geodesic.Tests
 import Lightlike.Tests.ADM

@@ -78,7 +78,7 @@ theorem exists_normal_neighbourhood (hg : Lightlike.IsCoordMetric g U) {x : Fin 
       ContDiffOn ℝ ∞ φ.symm φ.target ∧
       HasFDerivAt φ (ContinuousLinearMap.id ℝ (Fin n → ℝ)) 0 ∧ φ.target ⊆ U ∧
       (∀ v ∈ ball (0 : Fin n → ℝ) ρ, ∃ γ w : ℝ → Fin n → ℝ, γ 0 = x ∧ w 0 = v ∧ γ 1 = φ v ∧
-        IsGeodesicOn g γ w (Ioo (-1) 2) ∧ ∀ t ∈ Icc (0 : ℝ) 1, γ t = φ (t • v)) ∧
+        IsGeodesicOn g γ w (Ioo (-1) 2) ∧ ∀ t ∈ Icc (-1 : ℝ) 1, γ t = φ (t • v)) ∧
       ∀ (τ ν : ℝ → Fin n → ℝ) (I : Set ℝ), IsOpen I → Icc (0 : ℝ) 1 ⊆ I →
         IsGeodesicOn g τ ν I → τ 0 = x → (∀ t ∈ Icc (0 : ℝ) 1, τ t ∈ φ.target) →
         ν 0 ∈ ball (0 : Fin n → ℝ) ρ ∧ (∀ t ∈ Icc (0 : ℝ) 1, τ t = φ (t • ν 0)) ∧
@@ -106,7 +106,7 @@ theorem exists_normal_neighbourhood (hg : Lightlike.IsCoordMetric g U) {x : Fin 
     have heq := IsGeodesicOn.eqOn_Icc hg hpre isOpen_Ioo hsub
       (fun u hu => ⟨by linarith [hu.1], by linarith [hu.2]⟩) hsc hγ hUc
       (by simp [hτ0, hγ0]) (by simp [hw0, hw₀]) t ht
-    rw [← hγφ t ht]
+    rw [← hγφ t ⟨by linarith [ht.1], ht.2⟩]
     exact heq.1
   have hτc : ContinuousOn τ (Icc (0 : ℝ) 1) := fun t ht =>
     ((hτ.pos t (h01 ht)).continuousAt).continuousWithinAt
