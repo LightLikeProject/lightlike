@@ -3,6 +3,7 @@ import Mathlib.GroupTheory.Perm.Sign
 import Mathlib.Analysis.Normed.Lp.lpSpace
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Lightlike.OperatorAlgebras.SecondQuantSlot
+import Lightlike.OperatorAlgebras.FermiFockGeneral
 import Mathlib.Analysis.InnerProductSpace.Adjoint
 
 /-!
@@ -377,6 +378,65 @@ lemma sum_perm_apply_zero {m : ℕ} (F : Fin (m + 1) → ℂ) :
     Fintype.card_fin, nsmul_eq_mul, Finset.mul_sum]
 
 end Antisym
+
+section Counting
+
+/-- A strictly increasing tuple has sign `1`. -/
+lemma tupleSign_of_strictMono {m : ℕ} {g : Fin m → ι} (hg : StrictMono g) : tupleSign g = 1 := by
+  rw [tupleSign, (Tuple.sort_eq_refl_iff_monotone).mpr hg.monotone]
+  exact Equiv.Perm.sign_one
+
+/-- **`∏ᵢ (-1)^{[σ(i+1) < σ 0]} = (-1)^{σ 0}`.** -/
+lemma prod_succ_lt_zero {m : ℕ} (σ : Equiv.Perm (Fin (m + 1))) :
+    (∏ i : Fin m, if σ i.succ < σ 0 then (-1 : ℤˣ) else 1) = (-1) ^ ((σ 0 : Fin (m + 1)) : ℕ) := by
+  set G : Fin (m + 1) → ℤˣ := fun j => if j < σ 0 then -1 else 1 with hG
+  have h1 : ∏ i : Fin (m + 1), G (σ i) = ∏ j, G j := Equiv.prod_comp σ G
+  rw [Fin.prod_univ_succ] at h1
+  simp only [hG, lt_irrefl, if_false, one_mul] at h1
+  rw [h1, Finset.prod_ite, Finset.prod_const, Finset.prod_const_one, mul_one]
+  congr 1
+  rw [show Finset.univ.filter (fun j : Fin (m + 1) => j < σ 0) = Finset.Iio (σ 0) by ext; simp, Fin.card_Iio]
+
+/-- For a strictly increasing `f`, `∏ᵢ (-1)^{[f(σ(i+1)) ≤ f(σ 0)]} = (-1)^{σ 0}`. -/
+lemma prod_comp_le_zero {m : ℕ} {f : Fin (m + 1) → ι} (hf : StrictMono f) (σ : Equiv.Perm (Fin (m + 1))) :
+    (∏ i : Fin m, if (f ∘ σ) i.succ ≤ f (σ 0) then (-1 : ℤˣ) else 1) = (-1) ^ ((σ 0 : Fin (m + 1)) : ℕ) := by
+  rw [← prod_succ_lt_zero σ]
+  refine Finset.prod_congr rfl fun i _ => ?_
+  have hne : σ i.succ ≠ σ 0 := fun h => Fin.succ_ne_zero i (σ.injective h)
+  have : (f ∘ σ) i.succ ≤ f (σ 0) ↔ σ i.succ < σ 0 := by
+    rw [Function.comp_apply, hf.le_iff_le]
+    exact ⟨fun h => lt_of_le_of_ne h hne, le_of_lt⟩
+  simp only [this]
+
+/-- For a strictly increasing `f`, the fermion sign of `f k` in the image of `f` is `(-1)^k`. -/
+lemma fermiSign_strictMono {m : ℕ} {f : Fin m → ι} (hf : StrictMono f) (k : Fin m) :
+    fermiSign ((Finset.univ.image f).erase (f k)) (f k) = (-1) ^ (k : ℕ) := by
+  rw [fermiSign]
+  congr 1
+  have : ((Finset.univ.image f).erase (f k)).filter (· < f k) = (Finset.Iio k).image f := by
+    ext x
+    simp only [Finset.mem_filter, Finset.mem_erase, Finset.mem_image, Finset.mem_univ, true_and, Finset.mem_Iio]
+    constructor
+    · rintro ⟨⟨-, j, rfl⟩, hj⟩
+      exact ⟨j, hf.lt_iff_lt.mp hj, rfl⟩
+    · rintro ⟨j, hj, rfl⟩
+      exact ⟨⟨(hf.injective.ne (ne_of_lt hj)), j, rfl⟩, hf hj⟩
+  rw [this, Finset.card_image_of_injective _ hf.injective, Fin.card_Iio]
+
+/-- The image of `tail (f ∘ σ)` is the image of `f` without `f (σ 0)`. -/
+lemma image_tail_comp {m : ℕ} {f : Fin (m + 1) → ι} (hf : Function.Injective f) (σ : Equiv.Perm (Fin (m + 1))) :
+    Finset.univ.image (Fin.tail (f ∘ σ)) = (Finset.univ.image f).erase (f (σ 0)) := by
+  ext x
+  simp only [Finset.mem_image, Finset.mem_univ, true_and, Finset.mem_erase, Fin.tail, Function.comp_apply]
+  constructor
+  · rintro ⟨i, rfl⟩
+    exact ⟨fun h => Fin.succ_ne_zero i (σ.injective (hf h)), σ i.succ, rfl⟩
+  · rintro ⟨hx, j, rfl⟩
+    have hj : σ.symm j ≠ 0 := fun h => hx (by rw [← h, Equiv.apply_symm_apply])
+    obtain ⟨i, hi⟩ := Fin.exists_succ_eq.mpr hj
+    exact ⟨i, by rw [hi, Equiv.apply_symm_apply]⟩
+
+end Counting
 
 section Tensor
 
