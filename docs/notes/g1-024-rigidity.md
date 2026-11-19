@@ -50,4 +50,11 @@ Differences:
    and is injective (rigidity), as in the source's count.
    Difference: representation, "independent Killing vectors" as the finite rank of the vector space of smooth Killing
    fields (the source's linear independence with constant coefficients).
-4. The Killing algebra of the model type (G1-024's isometry-group form).
+4. The isometry-group form, stage 1 (slices; scope agreed 19 November 2026): six linearly independent Killing fields
+   of a 3-metric with isotropy at a point have the space-form structure constants after a change of complement.
+   S1 closure (dimension at most 6 and the bracket of Killing fields), S2 evaluation at the point through
+   `pd_pd_killing` and rigidity, S3 Jacobi, so(3)-equivariance and the change of complement. First piece (done):
+   `KillingAlgebraCoord.lean`, the bridge from the Lie-derivative form of Killing's equation used by
+   `isometric_spaceForm` to the covector form of the rigidity (`covCo_lowerVec_add`). Checked numerically before
+   writing: Jacobi forces the rotation part of `[J, P]` to vanish, and the translation part of `[P, P]` is removed by
+   `P' = P - (β/2) J`.
