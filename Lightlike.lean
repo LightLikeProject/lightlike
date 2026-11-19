@@ -245,6 +245,7 @@ import Lightlike.ODE.CommutingConverse
 import Lightlike.ODE.CommutingFlows
 import Lightlike.ODE.CommutingFrame
 import Lightlike.ODE.CommutingRectangle
+import Lightlike.ODE.FlowAlong
 import Lightlike.ODE.FlowBoxSmooth
 import Lightlike.ODE.FlowContDiff
 import Lightlike.ODE.FlowDeriv
@@ -975,6 +976,7 @@ import Lightlike.Geodesic.GaussAux
 import Lightlike.Geodesic.Radial
 import Lightlike.Geodesic.Tests
 import Lightlike.Geodesic.TwoPoint
+import Lightlike.Geodesic.Variation
 import Lightlike.Tests.ADM
 import Lightlike.Tests.Constraints
 import Lightlike.Tests.DiracAlgorithm
