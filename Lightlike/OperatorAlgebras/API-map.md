@@ -371,8 +371,8 @@ The Schatten sum `‖K‖_p^p` is the supremum of `∑ₖ |⟪ψₖ, K ϕₖ⟫|
 102. Lightlike/OperatorAlgebras/Spectral/TestsCompact.lean - `OperatorAlgebras.CompactSpectral.not_finiteDimensional_eigenspace_id`,
     `OperatorAlgebras.CompactSpectral.not_isCompactOperator_id`,
     `OperatorAlgebras.CompactSpectral.exists_hilbertBasis_eigenvectors_of_finiteDimensional`,
-    `OperatorAlgebras.CompactSpectral.invDiag_zero_mem_spectrum_not_hasEigenvalue` (`0` is in the spectrum of
-    `diag(1/(n+1))` and is not an eigenvalue)
+    `OperatorAlgebras.CompactSpectral.invDiag_zero_mem_spectrum_not_hasEigenvalue` (0 is in the spectrum of
+    diag(1/(n+1)) and is not an eigenvalue)
 103. Lightlike/OperatorAlgebras/Spectral/HilbertSchmidtCompact.lean - `OperatorAlgebras.CompactSpectral.isCompactOperator_of_isHilbertSchmidt`
 104. Lightlike/OperatorAlgebras/Spectral/CanonicalForm.lean - `OperatorAlgebras.CompactSpectral.IsCanonicalForm`, `OperatorAlgebras.CompactSpectral.isCanonicalForm_of_eigenbasis`,
     `OperatorAlgebras.CompactSpectral.exists_isCanonicalForm`,
