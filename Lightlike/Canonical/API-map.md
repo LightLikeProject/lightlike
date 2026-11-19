@@ -74,7 +74,13 @@ existence theorem for Lipschitz right-hand sides of `Lightlike/ODE/GlobalLipschi
 edge is its end value, and for an `su(2)` connection it lies in `SU(2)` [31] {5}. It is unchanged under orientation-preserving
 reparametrisation, the reversed path has the inverse holonomy, and for piecewise `C¹` paths (lists of edges) the
 holonomy of a composite is the product, `A(e₂ ∘ e₁) = A(e₂) A(e₁)` [32] {5}. Under a gauge transformation
-`A ↦ g⁻¹ A g + g⁻¹ dg` the holonomy changes only at the end points, `A(e) ↦ g(e(t₂))⁻¹ A(e) g(e(t₁))` [33] {5}.
+`A ↦ g⁻¹ A g + g⁻¹ dg` the holonomy changes only at the end points, `A(e) ↦ g(e(t₂))⁻¹ A(e) g(e(t₁))` [33] {5}. On a graph
+with `C¹` edges, with connections and gauge transformations along its edges, the holonomies of the edges and the values at the vertices
+identify the connections modulo the gauge transformations that are the identity at the vertices with `SU(2)ⁿ`, and the
+gauge transformations modulo those with `SU(2)^m` [34] {5}. The same holds for the graphs of Ashtekar–Lewandowski, whose
+edges are closed-piecewise analytic: the holonomy along an edge is the product along its analytic pieces, which form a
+graph with `C¹` edges, and the gauge transformations that are the identity at the vertices need not be at the corners
+[35] {5}.
 
 A grid computation in dimension two (`scripts/adm_algebra_check.py`) supports the three brackets; with the kinetic
 coefficient `1/2` of dimension three, used in dimension two, the bracket of two Hamiltonian constraints differs from
@@ -140,6 +146,13 @@ the momentum constraint of the structure function.
     `Lightlike.Canonical.holonomy_revPath`, `Lightlike.Canonical.PwPath.hol_trans`, `Lightlike.Canonical.PwPath.hol_rev`
 33. Lightlike/Canonical/HolonomyGauge.lean - `Lightlike.Canonical.gaugeConn`, `Lightlike.Canonical.holonomy_gaugeConn`,
     `Lightlike.Canonical.holonomy_pureGauge`
+34. Lightlike/Canonical/HolonomyGraph.lean - `Lightlike.Canonical.Graph`, `Lightlike.Canonical.Graph.IE_injective_mod`,
+    `Lightlike.Canonical.Graph.IE_surjective`, `Lightlike.Canonical.Graph.IV_eq_iff`, `Lightlike.Canonical.Graph.IV_surjective`,
+    `Lightlike.Canonical.su2_exp_form`
+35. Lightlike/Canonical/HolonomyALGraph.lean - `Lightlike.Canonical.ALEdge`, `Lightlike.Canonical.ALGraph`,
+    `Lightlike.Canonical.ALGraph.IE_injective_mod`, `Lightlike.Canonical.ALGraph.IE_surjective`,
+    `Lightlike.Canonical.ALGraph.IV_eq_iff`, `Lightlike.Canonical.ALGraph.IV_surjective`,
+    `Lightlike.Canonical.lGraph_IE_surjective`
 
 ## References
 
@@ -152,6 +165,6 @@ the momentum constraint of the structure function.
 4. J. C. Aurrekoetxea, K. Clough and E. A. Lim, *Cosmology using numerical relativity*, arXiv:2409.01939, equations (3),
    (23), (25), (26).
 5. A. Ashtekar and J. Lewandowski, *Background independent quantum gravity: a status report*, arXiv:gr-qc/0404018,
-   equations (2.6), (2.16)-(2.21), (2.23), (4.35)-(4.37).
+   equations (2.6), (2.16)-(2.21), (2.23), (4.14)-(4.17), (4.35)-(4.37).
 6. S. Holst, *Barbero's Hamiltonian derived from a generalized Hilbert-Palatini action*, arXiv:gr-qc/9511026,
    equations (1), (3)-(6).

@@ -3183,3 +3183,324 @@
   review: kernel-checked
   note: "For a smooth positive on an open J of the reals, the metric -dt² + a(t)² h on the manifold J × S³, with h the round metric of the unit 3-sphere (Mathlib's manifold structure), is a Lorentzian metric; for its Levi-Civita connection and the perfect fluid (ρ + p) u u + p g with u = ∂_t, ρ and p functions of t, G + Λ g = 8πG T holds iff Friedmann's first and second equations with spatial curvature k = 1 hold at every t in J (units c = 1). The proof is chartwise: in Mathlib's stereographic charts the round metric is |du|²/(1+|u|²/4)², so the coordinate metric is the coordinate FLRW metric with k = 1 on the whole chart target (all of R³ for the sphere factor), and the coordinate theorem flrw_einstein_iff_friedmann applies. Trust checks: closed de Sitter space (a = cosh(Ht)/H, rho = p = 0, Lambda = 3H^2) is a solution (closedDeSitter_einsteinEq) and is not a solution with the opposite sign Lambda = -3H^2 (closedDeSitter_wrong_sign). Limits: the fluid is comoving with ρ, p depending on t only, by assumption; J is an open subset of the reals. Compared with Carroll ch. 8 at (8.3), (8.7), (8.17), (8.29), (8.35) and (8.36), see docs/notes/co30-carroll-comparison.md."
   since: unreleased
+- id: LL-0242
+  title: The null cone of complexified Minkowski space is the set of rank-one spinor matrices; a point is a twistor line, determined by the point, every line off the plane at infinity is one, and two lines meet iff their points are null separated; the Plücker coordinates of a line lie on the Klein quadric and every point of the quadric is a line
+  area: GR
+  file: Lightlike/GR/ComplexMinkowski.lean
+  decls: [Lightlike.qC_eq_zero_iff, Lightlike.qC_eq_zero_iff_tmul, Lightlike.isHermitian_spinorMat_iff, Lightlike.twistorLine_injective, Lightlike.exists_twistorLine_eq, Lightlike.twistorLine_inf_ne_bot_iff, Lightlike.plucker_klein, Lightlike.klein_decomposable]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: adamo-2018, location: "eq. (1.4)", check: "null vector"}
+      - {ref: adamo-2018, location: "eq. (1.23)", check: "twistor correspondence"}
+      - {ref: adamo-2018, location: "eq. (1.28)", check: "null separated"}
+  review: kernel-checked
+  note: "Compared with Adamo, §1.2–1.4, (1.2)–(1.4), p. 5, (1.12)–(1.13), p. 7, (1.21)–(1.28), pp. 9–10, and §2.3, (2.24)–(2.29) and footnote 2, pp. 19–21 (read). Conventions: Adamo's signature (+,−,−,−), the library's (−,+,+,+). Limits: the conformal structure of the compactification and the Klein quadric as a complex submanifold of P(C^6) are not in this file."
+  since: unreleased
+- id: LL-0243
+  title: The twistor Hermitian form has signature (2,2); the twistor line of a point is null iff the point is real; the stabilizer of the infinity twistor in SU(2,2) is the Poincaré group SL(2,C) ⋉ {Hermitian translations}
+  area: GR
+  file: Lightlike/GR/TwistorConformal.lean
+  decls: [Lightlike.twistorNorm_inc_eq_zero_iff, Lightlike.twistorLine_null_iff, Lightlike.isSU22_and_fixesInfinity_iff]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: adamo-2018, location: "eq. (2.5)", check: "inner product"}
+      - {ref: adamo-2018, location: "eq. (2.29)", check: "infinity twistor"}
+      - {ref: atiyah-dunajski-mason-2017, location: "eq. (2.7)", check: "incidence relation"}
+  review: kernel-checked
+  note: "Compared with Adamo, (2.2), p. 13, (2.5)–(2.7), p. 14, (2.21)–(2.29), pp. 18–21 (read); also read: Atiyah–Dunajski–Mason §2.1, p. 7, and Bette arXiv:hep-th/0402150 §3, pp. 11–16 (Bette not in the source registry). Differences: the incidence relation is Adamo's (1.23) without the factor i of (2.2), the form carries the i; the stabilizer equality is proved in matrix form, the sources define the Poincaré subgroup by its block form without stating the equality; 'real point ⇒ null line' is (2.7), the converse is added."
+  since: unreleased
+- id: LL-0244
+  title: Projective twistor space CP^3 splits by the sign of the (++−−) form into PT+, PN, PT−, each nonempty; the line of a point lies in PN iff the point is real
+  area: GR
+  file: Lightlike/GR/TwistorSpace.lean
+  decls: [Lightlike.penroseHerm_signature, Lightlike.penroseNorm_incidence_eq_zero_iff, Lightlike.cp3_partition, Lightlike.mk_incidencePenrose_mem]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: adamo-2018, location: "eq. (2.5)", check: "inner product"}
+      - {ref: atiyah-dunajski-mason-2017, location: "eq. (2.7)", check: "incidence relation"}
+  review: kernel-checked
+  note: "Compared with Adamo (2.2), p. 13, and (2.5)–(2.7), p. 14 (read), and with Atiyah–Dunajski–Mason arXiv:1704.07464 §2.1, (2.7), p. 7 (read). Differences: ADM's matrix x^{AA'} is the transpose of Adamo's (1.12); PT± and PN are defined on all of CP^3 (ADM: PN inside PT)."
+  since: unreleased
+- id: LL-0245
+  title: Lines of CP^3 (2-planes of C^4) are in bijection with the points of the Klein quadric; the lines meeting the line at infinity are exactly the complement of the affine chart of complexified Minkowski space, X^23 = I_AB X^AB = 0
+  area: GR
+  file: Lightlike/GR/TwistorKlein.lean
+  decls: [Lightlike.kleinEquiv, Lightlike.compl_range_twistorLine, Lightlike.twistorLine_affine_chart]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: adamo-2018, location: "eq. (2.29)", check: "infinity twistor"}
+  review: kernel-checked
+  note: "Compared with Adamo §1.4, p. 9, and §2.3, (2.25)–(2.29) and footnote 2, pp. 19–21 (read). Representation: lines of CP^3 as 2-planes of C^4, the line at infinity as the plane λ = 0, the quadric in P(C^6) in the coordinates (X^01, …, X^23). Limits: kleinEquiv is a bijection of sets; the quadric is not given a complex-submanifold structure."
+  since: unreleased
+- id: LL-0246
+  title: A bispinor 2-form is ε F̃ + ε̄ F with symmetric SD and ASD parts (a linear equivalence), and Maxwell's equations hold iff the parts satisfy the spin-1 zero-rest-mass equations
+  area: GR
+  file: Lightlike/GR/ZeroRestMass.lean
+  decls: [Lightlike.Spinor.maxwell_decomposition, Lightlike.Spinor.maxwellEquiv, Lightlike.Spinor.maxwell_iff_zrm_D, Lightlike.Spinor.maxwell_iff_zrm]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: adamo-2018, location: "eq. (3.4)", check: "field strength"}
+      - {ref: adamo-2018, location: "eq. (3.11)", check: "negative helicity"}
+  review: kernel-checked
+  note: "Compared with Adamo (1.5)–(1.7), p. 6, and (3.1)–(3.11), pp. 23–25 (read; pp. 23 and 25 from the rendered PDF). Convention: with (1.5)–(1.7) the parts of (3.3) are minus the parts for which (3.4) holds (every component ratio −1); Lean follows (3.4). Representation: raised indices written out with ε; fields on an open set of C^4 in the coordinates x^{αα̇}."
+  since: unreleased
+- id: LL-0247
+  title: Zero-rest-mass fields of every helicity; the components of a C² z.r.m. field solve the wave equation; the momentum eigenstates p_{α1}⋯p_{α2|h|} e^{ik·x} are z.r.m. fields
+  area: GR
+  file: Lightlike/GR/ZeroRestMass.lean
+  decls: [Lightlike.Spinor.IsZrmNeg, Lightlike.Spinor.IsZrmPos, Lightlike.Spinor.IsZrmNeg.box_eq_zero, Lightlike.Spinor.IsZrmPos.box_eq_zero, Lightlike.Spinor.planeWave_isZrmNeg, Lightlike.Spinor.planeWave_isZrmPos, Lightlike.Spinor.planeWave_isZrmScalar]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: adamo-2018, location: "eq. (3.15)", check: "helicity"}
+  review: kernel-checked
+  note: "Compared with Adamo (3.15), p. 25, and the exercise 'momentum eigenstates', item 3, p. 32 (read). The wave-equation theorem is added (not stated in the source); C² is its hypothesis (Mathlib has holomorphic ⇒ C^∞ in one variable only)."
+  since: unreleased
+- id: LL-0248
+  title: Tensors with the symmetries of a Weyl tensor are exactly ε ε Ψ̃ + ε̄ ε̄ Ψ with Ψ, Ψ̃ totally symmetric (the Weyl spinor decomposition)
+  area: GR
+  file: Lightlike/GR/WeylSpinor.lean
+  decls: [Lightlike.Spinor.weyl_eq_weylOf, Lightlike.Spinor.weylOf_isWeyl, Lightlike.Spinor.weylEquiv]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: adamo-2018, location: "eq. (3.12)", check: "Riemann"}
+  review: kernel-checked
+  note: "Compared with Adamo (3.12), p. 25 (read, rendered PDF). Misprint corrected: the second term is printed ε_{αβ}ε_{γδ}Ψ_{αβγδ}; Lean uses ε_{α̇β̇}ε_{γ̇δ̇}Ψ_{αβγδ}. Scope: the Weyl term of (3.12); the Φ and R terms are not claimed."
+  since: unreleased
+- id: LL-0249
+  title: The Penrose transform by contour integrals is a zero-rest-mass field of helicity −(n+1)/2, 0 and (n+1)/2 (differentiation under the integral sign), and for twistor functions of homogeneity 2h−2 it does not depend on the section of the line; the elementary solution 2πi/det x
+  area: GR
+  file: Lightlike/GR/PenroseTransform.lean
+  decls: [Lightlike.Spinor.hasFDerivAt_circleIntegral_twistorPt, Lightlike.Spinor.penroseNeg_isZrmNeg, Lightlike.Spinor.penroseScalar_isZrmScalar, Lightlike.Spinor.penrosePos_isZrmPos, Lightlike.Spinor.penroseNeg_rescale, Lightlike.Spinor.penroseScalar_rescale, Lightlike.Spinor.penrosePos_rescale, Lightlike.Spinor.penroseScalar_elementary]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: adamo-2018, location: "eq. (3.30)", check: "incidence relations"}
+      - {ref: adamo-2018, location: "eq. (3.39)", check: "Penrose transform"}
+      - {ref: adamo-2018, location: "eq. (3.40)", check: "integral formula"}
+      - {ref: atiyah-dunajski-mason-2017, location: "eq. (1.1)", check: "Bateman"}
+      - {ref: wolf-2010, location: "eq. (2.1)", check: "contour integral"}
+      - {ref: wolf-2010, location: "eq. (2.3)", check: "positive helicity"}
+      - {ref: wolf-2010, location: "eq. (2.5)", check: "negative helicity"}
+  review: kernel-checked
+  note: "Compared with Adamo (3.15), p. 25, (3.26)–(3.30), pp. 27–28, (3.39)–(3.42), p. 30 (read), with Atiyah–Dunajski–Mason arXiv:1704.07464 (1.1)–(1.2), p. 3, §2.3, pp. 8–9 (read) and Wolf arXiv:1001.3871 §2.1, (2.1)–(2.2), p. 11, (2.3)–(2.6) and Exercise 2.1, p. 12 (read, rendered page). Representation: the contour is a circle in a parameter z with a section λ(z) of the line; twistor functions on (μ, λ) ∈ C²×C²; holomorphic is C¹ (h ≤ 0) or analytic (h > 0) on an open set containing the twistor points of the contour. Convention: Wolf's twistor has the opposite chirality (Wolf's h is −h here) and Wolf's −1/(2πi) is omitted. Limits: the Dolbeault isomorphism (3.39) and the converse are not claimed."
+  since: unreleased
+- id: LL-0250
+  title: A complex momentum is null iff its bispinor is −λλ̃ᵀ, the factorization is unique up to little-group scaling; ⟨pq⟩[pq] = 2p·q, s_ij = ⟨ij⟩[ji], and the Schouten identities
+  area: GR
+  file: Lightlike/GR/SpinorHelicity.lean
+  decls: [Lightlike.SpinorHelicity.det_momBispinor, Lightlike.SpinorHelicity.mdot_self_eq_zero_iff, Lightlike.SpinorHelicity.exists_littleGroup_of_eq, Lightlike.SpinorHelicity.nullMom_littleGroup, Lightlike.SpinorHelicity.angleBr_mul_squareBr, Lightlike.SpinorHelicity.mandelstam_nullMom, Lightlike.SpinorHelicity.schouten_angleBr, Lightlike.SpinorHelicity.schouten_squareBr]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: elvang-huang-2013, location: "eq. (2.16)", check: "spinor indices"}
+      - {ref: elvang-huang-2013, location: "eq. (2.24)", check: "important relation"}
+      - {ref: elvang-huang-2013, location: "eq. (2.48)", check: "Schouten"}
+      - {ref: elvang-huang-2013, location: "eq. (2.92)", check: "scaling"}
+  review: kernel-checked
+  note: "Compared with Elvang–Huang Appendix A, (A.1)–(A.12), p. 244, §2.1–2.2, pp. 9–11, (2.22)–(2.24), p. 12, (2.39), p. 15, (2.46)–(2.48), p. 16, (2.92), p. 27 (read); conventions checked numerically before the Lean statements. Representation: complex momenta; spinors with lower indices, λ_a = |p]_a, λ̃_ȧ = ⟨p|_ȧ; brackets as functions of the spinors."
+  since: unreleased
+- id: LL-0251
+  title: Three-particle special kinematics (all angle or all square brackets vanish), and three-point amplitudes fixed by little-group scaling, x_12 = h_3 − h_1 − h_2, with the mass-dimension selection between angle and square brackets
+  area: GR
+  file: Lightlike/GR/ThreePointAmplitude.lean
+  decls: [Lightlike.SpinorHelicity.conserved3_iff, Lightlike.SpinorHelicity.special_kinematics, Lightlike.SpinorHelicity.angleAnsatz_weights_iff, Lightlike.SpinorHelicity.three_point_dimension, Lightlike.SpinorHelicity.three_point_selection]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: elvang-huang-2013, location: "eq. (2.56)", check: "lightlike vectors"}
+      - {ref: elvang-huang-2013, location: "eq. (2.96)", check: "readily solved"}
+  review: kernel-checked
+  note: "Compared with Elvang–Huang p. 18 ((2.56) and the argument after it) and pp. 27–29, (2.92)–(2.99) (read). Representation: helicities as H_i = 2h_i ∈ Z; amplitudes as the monomial Ansätze (2.94); the physical input 'the three-point amplitude has mass dimension 1' (p. 29) is a stated hypothesis of three_point_selection."
+  since: unreleased
+- id: LL-0252
+  title: The Parke–Taylor colour-ordered MHV amplitudes are cyclic, reflect with (−1)^n, satisfy the U(1) decoupling identity for every n and the five-point Kleiss–Kuijf relation, have little-group weights t^{−2h}, and at four points equal [34]^4/([12][23][34][41]) under momentum conservation
+  area: GR
+  file: Lightlike/GR/ColourOrdered.lean
+  decls: [Lightlike.SpinorHelicity.parkeTaylor_rotate, Lightlike.SpinorHelicity.parkeTaylor_rev, Lightlike.SpinorHelicity.eikonal_sum, Lightlike.SpinorHelicity.parkeTaylor_U1_decoupling, Lightlike.SpinorHelicity.parkeTaylor_littleGroup_plus, Lightlike.SpinorHelicity.parkeTaylor_littleGroup_minus, Lightlike.SpinorHelicity.parkeTaylor_KK5, Lightlike.SpinorHelicity.parkeTaylor_four_eq_square]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: elvang-huang-2013, location: "eq. (2.80)", check: "Parke-Taylor"}
+      - {ref: elvang-huang-2013, location: "eq. (2.82)", check: "decoupling"}
+      - {ref: elvang-huang-2013, location: "eq. (2.85)", check: "Kleiss-Kuijf"}
+  review: kernel-checked
+  note: "Compared with Elvang–Huang §2.5, (2.79)–(2.81), p. 24, the properties and (2.82)–(2.85), p. 25 (read). Representation: gluons in colour order as Fin n → angle spinors; identities for nonvanishing brackets; the Parke–Taylor expression is the MHV sector (2.80), taken as a formula."
+  since: unreleased
+- id: LL-0253
+  title: The U(N) colour algebra in the normalisation Tr TᵃTᵇ = δᵃᵇ — completeness (Fierz) for U(N) and SU(N), the structure constants as traces of commutators, products of two structure constants as single traces, and the Jacobi identity
+  area: GR
+  file: Lightlike/GR/ColourAlgebra.lean
+  decls: [Lightlike.Colour.expand_generators, Lightlike.Colour.fierz, Lightlike.Colour.fierz_su, Lightlike.Colour.commutator_eq_structureConst, Lightlike.Colour.i_mul_eq_trace_sub, Lightlike.Colour.structureConst_mul_sum, Lightlike.Colour.jacobi_colour]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: elvang-huang-2013, location: "eq. (2.66)", check: "Jacobi identity"}
+      - {ref: elvang-huang-2013, location: "eq. (2.67)", check: "traces of the generators"}
+      - {ref: elvang-huang-2013, location: "eq. (2.68)", check: "completeness relation"}
+  review: kernel-checked
+  note: "Compared with Elvang–Huang §2.5, p. 21 (the normalisation) and (2.65)–(2.71), p. 22 (read). (2.69)'s ∝ is made exact (factor −1). Scope: the trace basis (2.71) is stated (traceBasisAmplitude); its derivation from the Yang–Mills Feynman rules is not in the library."
+  since: unreleased
+- id: LL-0254
+  title: A real finite spectral triple over a sum of real matrix algebras Mₙᵢ(ℝ) is unitarily equivalent to the model of its multiplicity matrix, with π acting through the fundamental representations
+  area: NCG
+  file: Lightlike/NCG/RealSummands.lean
+  decls: [Lightlike.NCG.exists_unitary_realSummands, Lightlike.NCG.realComplexification, Lightlike.NCG.sigmaR, Lightlike.NCG.sigmaR_injective, Lightlike.NCG.phiR]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: krajewski-1998, location: "Section 3.1", check: "irreducible representation"}
+      - {ref: krajewski-1998, location: "Section 3.2", check: "charge conjugation"}
+  review: kernel-checked
+  note: "Compared with Krajewski, arXiv:hep-th/9701081, Section 2, p. 2 (A = ⊕ Mₙᵢ(K), K = ℝ, ℂ, ℍ) and Section 3.1, p. 10 (read): 'Mₙ(ℝ) and Mₙ(ℍ) have only one irreducible representation, the fundamental one ... all our formulae remain valid, provided the indices i and j label irreducible representations of A'. Here A = ⊕ Mₙᵢ(ℝ): π extends to the complex-linear σ(x) = π(Re x) + i π(Im x) of ⊕ Mₙᵢ(ℂ), J is a real structure for it, and the uniqueness theorem for complex summands gives the unitary. Mₙ(ℍ) summands, Mₙ(ℂ) summands acting real-linearly, mixed algebras and the sign conditions of Table 1, p. 14 are not covered."
+  since: unreleased
+
+- id: LL-0255
+  title: A real finite spectral triple with a complexification, a faithful complex-linear representation σ of a sum of complex matrix algebras with π = σ ∘ φ and σ in the complex span of π, is unitarily equivalent to the model of the multiplicity matrix of its complexification
+  area: NCG
+  file: Lightlike/NCG/Complexification.lean
+  decls: [Lightlike.NCG.Complexification, Lightlike.NCG.Complexification.triple, Lightlike.NCG.Complexification.realStructure, Lightlike.NCG.Complexification.isComplexLinear, Lightlike.NCG.Complexification.exists_unitary, Lightlike.NCG.commJ_span]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: krajewski-1998, location: "Section 3.1", check: "irreducible representation"}
+  review: kernel-checked
+  note: "Compared with Krajewski, arXiv:hep-th/9701081, Section 3.1, p. 10 (read): 'all our formulae remain valid, provided the indices i and j label irreducible representations of A'. Here the irreducible representations are given by a complexification (σ, φ) of the triple; the order-zero and first-order conditions pass from π(A) to its complex span, and the uniqueness theorem for complex summands applies to σ. The complexification is an input; for A = ⊕ Mₙᵢ(ℝ) it is constructed in RealSummands.lean."
+  since: unreleased
+
+- id: LL-0256
+  title: A real finite spectral triple over a sum of quaternionic matrix algebras Mₙᵢ(ℍ) is unitarily equivalent to the model of the multiplicity matrix of its complexification, with π acting through the fundamental representations on ℂ^{2nᵢ}
+  area: NCG
+  file: Lightlike/NCG/QuaternionSummands.lean
+  decls: [Lightlike.NCG.exists_unitary_quatSummands, Lightlike.NCG.quatComplexification, Lightlike.NCG.unitsH, Lightlike.NCG.unitsH_hom_phiH, Lightlike.NCG.phiH, Lightlike.NCG.UH]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: krajewski-1998, location: "Section 3.1", check: "irreducible representation"}
+      - {ref: krajewski-1998, location: "Section 3.2", check: "charge conjugation"}
+  review: kernel-checked
+  note: "Compared with Krajewski, arXiv:hep-th/9701081, Section 3.1, p. 10 (read): 'Mₙ(ℝ) and Mₙ(ℍ) have only one irreducible representation, the fundamental one ... Hᵢⱼ is isomorphic to ℂⁿⁱ ⊗ ℂᵐⁱʲ ⊗ ℂⁿʲ, where nᵢ is the dimension of the irreducible representation i', which for Mₙ(ℍ) is 2n. Here A = ⊕ Mₙᵢ(ℍ): with ρ_αβ(q) = π(E_αβ(q)) and the identification ℍ ⊗_ℝ ℂ ≅ M₂(ℂ), q ↦ [[a + b i, c + d i], [-c + d i, a - b i]], the operators (ρ_αβ)_ℂ(E_st) are matrix units of ⊕ M₂ₙᵢ(ℂ) on H, and φ(a)_{(αs)(βt)} = ι(a_αβ)_st gives π = σ ∘ φ. Mixed algebras and the sign conditions of Table 1, p. 14 are not covered."
+  since: unreleased
+
+- id: LL-0257
+  title: A real finite spectral triple over a sum of complex matrix algebras Mₙᵢ(ℂ) acting real-linearly is unitarily equivalent to the model of the multiplicity matrix over the fundamental and conjugate representations that occur
+  area: NCG
+  file: Lightlike/NCG/ComplexSummands.lean
+  decls: [Lightlike.NCG.exists_unitary_complexSummands, Lightlike.NCG.complexComplexification, Lightlike.NCG.unitsC, Lightlike.NCG.unitsC_hom_phiC, Lightlike.NCG.phiC, Lightlike.NCG.Blocks, Lightlike.NCG.UC]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: krajewski-1998, location: "Section 3.1", check: "irreducible representation"}
+      - {ref: krajewski-1998, location: "Section 3.2", check: "charge conjugation"}
+  review: kernel-checked
+  note: "Compared with Krajewski, arXiv:hep-th/9701081, Section 3.1, p. 10 (read): 'Mₙ(ℂ) has two inequivalent irreducible representations, the fundamental one and its complex conjugate. However, all our formulae remain valid, provided the indices i and j label irreducible representations of A'. Here A = ⊕ Mₙᵢ(ℂ) with a real-linear π: Q± = (1 ∓ i π(i·1))/2 split H into the parts where π is complex-linear (fundamental) and antilinear (conjugate); the units Q± π(E^i_αβ) of the blocks (i, ±) that occur (Q± π(1ᵢ) ≠ 0) and φ(a) = (aᵢ, āᵢ) give the complexification. The index set of the model is the set of representations (i, ±) that occur. Mixed algebras and the sign conditions of Table 1, p. 14 are not covered."
+  since: unreleased
+- id: LL-0258
+  title: The commutators of second quantization for finitely many modes, [dΓ(h₁), dΓ(h₂)] = dΓ([h₁, h₂]), [dΓ(h), a*(w)] = a*(hw) and [dΓ(h), a(w)] = -a(h* w), for the CAR and the CCR alike
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/SecondQuantFinite.lean
+  decls: [Lightlike.OperatorAlgebras.SecondQuantFinite.IsModeAlgebra, Lightlike.OperatorAlgebras.SecondQuantFinite.isModeAlgebra_car, Lightlike.OperatorAlgebras.SecondQuantFinite.isModeAlgebra_ccr, Lightlike.OperatorAlgebras.SecondQuantFinite.commutator_number, Lightlike.OperatorAlgebras.SecondQuantFinite.dGamma, Lightlike.OperatorAlgebras.SecondQuantFinite.dGamma_commutator_creation, Lightlike.OperatorAlgebras.SecondQuantFinite.dGamma_commutator_annihilation, Lightlike.OperatorAlgebras.SecondQuantFinite.dGamma_commutator]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: derezinski-2006, location: "Theorem 13, p. 19", check: "Theorem 13"}
+      - {ref: derezinski-2006, location: "Theorem 18, p. 22", check: "Theorem 18"}
+  review: kernel-checked
+  note: "Compared with Dereziński, arXiv:math-ph/0511030, Theorem 13 (1), p. 19 ([dΓ(h1), dΓ(h2)] = dΓ([h1, h2])) and Theorem 18 (2), (4), p. 22 ([dΓ(h), a(w)] = -a(h* w), [dΓ(h), a*(w)] = a*(hw)) (read). Here Z = ℂⁿ and dΓ(h) = ∑ h_ij a_i* a_j in any algebra over ℂ whose a_i, a_i* satisfy the CAR or the CCR."
+  since: unreleased
+
+- id: LL-0259
+  title: The commutators of second quantization for finite-rank one-particle operators on any inner product space, dΓ(∑ₖ |uₖ⟩⟨vₖ|) = ∑ₖ a*(uₖ) a(vₖ), with [dΓ(h), a*(w)] = a*(hw), [dΓ(h), a(w)] = -a(h* w) and [dΓ(h₁), dΓ(h₂)] = dΓ([h₁, h₂]), for the CAR and the CCR alike
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/SecondQuantRank.lean
+  decls: [Lightlike.OperatorAlgebras.SecondQuantFinite.IsFieldAlgebra, Lightlike.OperatorAlgebras.SecondQuantFinite.rankOp, Lightlike.OperatorAlgebras.SecondQuantFinite.dGammaRank, Lightlike.OperatorAlgebras.SecondQuantFinite.dGammaRank_commutator_creation, Lightlike.OperatorAlgebras.SecondQuantFinite.dGammaRank_commutator_annihilation, Lightlike.OperatorAlgebras.SecondQuantFinite.rankOp_comp, Lightlike.OperatorAlgebras.SecondQuantFinite.dGammaRank_commutator]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: derezinski-2006, location: "Theorem 13, p. 19", check: "Theorem 13"}
+      - {ref: derezinski-2006, location: "Theorem 18, p. 22", check: "Theorem 18"}
+  review: kernel-checked
+  note: "Compared with Dereziński, arXiv:math-ph/0511030, Theorem 13 (1), p. 19 and Theorem 18 (2), (4), p. 22 (read). Here Z is any complex inner product space, a* is linear and a antilinear on Z with the CAR or the CCR in an algebra over ℂ, and h = ∑ₖ |uₖ⟩⟨vₖ| has finite rank, where the source allows every h ∈ B(Z)."
+  since: unreleased
+
+- id: LL-0260
+  title: A real finite spectral triple over a mixed algebra ⊕ Mₙ(ℝ) × ⊕ Mₙ(ℂ) × ⊕ Mₙ(ℍ) is unitarily equivalent to the model of the multiplicity matrix over the irreducible representations that occur
+  area: NCG
+  file: Lightlike/NCG/MixedSummands.lean
+  decls: [Lightlike.NCG.exists_unitary_mixed, Lightlike.NCG.mixedComplexification, Lightlike.NCG.unitsMixed, Lightlike.NCG.unitsMixed_hom_phiMixed, Lightlike.NCG.phiMixed, Lightlike.NCG.psiPart, Lightlike.NCG.psiPart_mul, Lightlike.NCG.partialR, Lightlike.NCG.partialC]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: krajewski-1998, location: "Section 3.1", check: "irreducible representation"}
+      - {ref: krajewski-1998, location: "Section 3.2", check: "charge conjugation"}
+  review: kernel-checked
+  note: "Compared with Krajewski, arXiv:hep-th/9701081, Section 2, p. 2 (A = ⊕ Mₙᵢ(K), K = ℝ, ℂ, ℍ) and Section 3.1, p. 10 (read): 'Mₙ(ℝ) and Mₙ(ℍ) have only one irreducible representation, the fundamental one, whereas Mₙ(ℂ) has two inequivalent irreducible representations, the fundamental one and its complex conjugate. However, all our formulae remain valid, provided the indices i and j label irreducible representations of A'. Here A = ⊕ Mₙ(ℝ) × ⊕ Mₙ(ℂ) × ⊕ Mₙ(ℍ) with a real-linear π: the restrictions of π to the three factors give units ψ₁(E^i_αβ), ψ±(E^i_αβ) (ψ±(Y) = ½(ψ₂(Y) ∓ i ψ₂(iY)), over the representations (i, ±) that occur) and the quaternionic units of M₂ₙ(ℂ); together they are one system of matrix units, and the uniqueness theorem for complex summands gives the unitary onto the model indexed by the irreducible representations that occur. The sign conditions of Table 1, p. 14 (the S⁰-real structure and the intersection form) are not covered."
+  since: unreleased
+- id: LL-0261
+  title: The BCFW shift preserves momentum conservation and on-shellness and makes channel momenta squared linear in z; a rational function with simple poles vanishing at infinity has Â(0) = −Σ Res Â(z)/z, and with factorized residues this is the on-shell recursion; for the shifted Parke–Taylor amplitude the single residue factorizes into lower-point amplitudes
+  area: GR
+  file: Lightlike/GR/BCFWFactorization.lean
+  decls: [Lightlike.SpinorHelicity.conserved_bcfw, Lightlike.SpinorHelicity.mdot_momSum_bcfw, Lightlike.SpinorHelicity.mdot_momSum_bcfw_eq, Lightlike.SpinorHelicity.eval_div_nodal, Lightlike.SpinorHelicity.tendsto_residue, Lightlike.SpinorHelicity.tendsto_cocompact_zero, Lightlike.SpinorHelicity.eval_zero_eq_neg_sum_residues, Lightlike.SpinorHelicity.recursion_of_factorization, Lightlike.SpinorHelicity.ptShift_eq, Lightlike.SpinorHelicity.ptShift_rational, Lightlike.SpinorHelicity.ptShift_channel, Lightlike.SpinorHelicity.ptShift_onshell, Lightlike.SpinorHelicity.ptShift_factorization]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: elvang-huang-2013, location: "eq. (3.3)", check: "property (ii)"}
+      - {ref: elvang-huang-2013, location: "eq. (3.4)", check: "Cauchy"}
+      - {ref: elvang-huang-2013, location: "eq. (3.8)", check: "chosen momenta"}
+  review: kernel-checked
+  note: "Compared with Elvang–Huang §3.1–3.2, (3.1)–(3.8), pp. 34–36, (2.78), p. 23, and Exercises 3.2–3.3 with (3.13)–(3.21), pp. 37–39 (read). Representation: Â is rational P/Q with simple poles and deg P < deg Q, encoding (3.6), which the source states as an input (p. 36). Limits: in the MHV sector the analytic structure and the factorization (3.5) of the residue are proved (ptShift_*); for the other helicity sectors they are argued in the source from the Yang–Mills Feynman diagrams and enter recursion_of_factorization as hypotheses."
+  since: unreleased
+
+- id: LL-0262
+  title: The chirality of an orientable finite spectral triple over a sum of complex matrix algebras is a sign on each vertex, symmetric under the charge conjugation
+  area: NCG
+  file: Lightlike/NCG/Chirality.lean
+  decls: [Lightlike.NCG.IsOrientable, Lightlike.NCG.chiScalar, Lightlike.NCG.grading_smul_of_mem_Vsub, Lightlike.NCG.chiScalarAt_eq, Lightlike.NCG.chiScalar_eq_one_or, Lightlike.NCG.chiScalar_symm]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: krajewski-1998, location: "Section 3.3", check: "chirality"}
+  review: kernel-checked
+  note: "Compared with Krajewski, arXiv:hep-th/9701081, Section 3.3, p. 13 (read): 'Since χ = Σ_p π(x^p) J π(y^p) J⁻¹, with x^p, y^p ∈ A, χᵢⱼ is scalar matrix. Furthermore χᵢⱼ = ±1 as follows from χ² = 1. We also have [χ, J] = 0 so that χᵢⱼ = χⱼᵢ.' Here for a complex-linear triple over ⊕ Mₙᵢ(ℂ) and an orientable grading γ = Σ_p π(x_p) J π(y_p) J: γ acts on the multiplicity space Vᵢⱼ as cᵢⱼ = Σ_p (x_p)ᵢ₀₀ conj((y_p)ⱼ₀₀), cᵢⱼ = ±1 on a nonzero vertex and cⱼᵢ = cᵢⱼ."
+  since: unreleased
+
+- id: LL-0263
+  title: The signed multiplicity matrix of an orientable real finite spectral triple over a mixed algebra is symmetric, satisfies the sign conditions of Krajewski's Table 1, and gives the intersection form of minimal projections as in Table 1
+  area: NCG
+  file: Lightlike/NCG/TableOne.lean
+  decls: [Lightlike.NCG.IsOrientableA, Lightlike.NCG.Complexification.grading, Lightlike.NCG.Complexification.isOrientable, Lightlike.NCG.muSigned, Lightlike.NCG.muSigned_symm, Lightlike.NCG.table1_complex_complex, Lightlike.NCG.table1_complex_real, Lightlike.NCG.table1_complex_quat, Lightlike.NCG.table1_real_complex, Lightlike.NCG.table1_quat_complex, Lightlike.NCG.interForm, Lightlike.NCG.interForm_real_real, Lightlike.NCG.interForm_real_complex, Lightlike.NCG.interForm_real_quat, Lightlike.NCG.interForm_complex_real, Lightlike.NCG.interForm_complex_complex, Lightlike.NCG.interForm_complex_quat, Lightlike.NCG.interForm_quat_complex, Lightlike.NCG.interForm_quat_quat]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: krajewski-1998, location: "Section 3.3", check: "chirality"}
+  review: kernel-checked
+  note: "Compared with Krajewski, arXiv:hep-th/9701081, Section 3.3, p. 14 and Table 1 (read): 'In the real case, it is still given by a symmetric matrix with entries in Z whose indices label irreducibles representations of A. However, it is no longer the intersection form and the signs of its entries satisfy additional requirements that are summarized ... in table 1': μ_{iαj} μ_{iᾱj} ≥ 0 and μ_{iαjβ} μ_{iᾱjβ̄} ≥ 0. Here μ_kl = Re(c_kl) r_kl on the complexified model of a mixed algebra ⊕ Mₙ(ℝ) × ⊕ Mₙ(ℂ) × ⊕ Mₙ(ℍ) with an orientable grading; the conditions are stated for both representations of a complex summand that occur. The intersection form ∩ᵢⱼ = Tr(χ π(pᵢ) J π(pⱼ) J⁻¹) of minimal projections pᵢ, pⱼ is every entry of Table 1: μ, Σ_α μ, 2μ (real against real, complex, quaternionic), Σ_αβ μ, 2 Σ_α μ (complex against complex, quaternionic) and 4μ (quaternionic against quaternionic), where μ_kl = c_kl r_kl with c_kl the scalar of the chirality on the vertex."
+  since: unreleased
