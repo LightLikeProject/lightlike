@@ -383,6 +383,7 @@ import Lightlike.ODE.LocalFlow
 import Lightlike.ODE.Tests
 import Lightlike.OperatorAlgebras.BoundedGroup
 import Lightlike.OperatorAlgebras.CARUnique
+import Lightlike.OperatorAlgebras.CCRJoint
 import Lightlike.OperatorAlgebras.Deficiency
 import Lightlike.OperatorAlgebras.FermionFock
 import Lightlike.OperatorAlgebras.FiniteCAR
@@ -396,6 +397,8 @@ import Lightlike.OperatorAlgebras.FockExists
 import Lightlike.OperatorAlgebras.FockInner
 import Lightlike.OperatorAlgebras.FockIrreducible
 import Lightlike.OperatorAlgebras.FockJW
+import Lightlike.OperatorAlgebras.GaussAvg
+import Lightlike.OperatorAlgebras.GaussKernel
 import Lightlike.OperatorAlgebras.FockKernel
 import Lightlike.OperatorAlgebras.FockReduction
 import Lightlike.OperatorAlgebras.HilbertSchmidtBasis
@@ -442,6 +445,7 @@ import Lightlike.OperatorAlgebras.Semigroup.Yosida
 import Lightlike.OperatorAlgebras.StoneCore
 import Lightlike.OperatorAlgebras.StoneGenerator
 import Lightlike.OperatorAlgebras.StoneUnique
+import Lightlike.OperatorAlgebras.StoneVN
 import Lightlike.OperatorAlgebras.TestsBoundedGroup
 import Lightlike.OperatorAlgebras.TestsCARUnique
 import Lightlike.OperatorAlgebras.TestsFiniteKMS
@@ -457,6 +461,7 @@ import Lightlike.OperatorAlgebras.TestsMomentumSmooth
 import Lightlike.OperatorAlgebras.TestsMomentumSpectrum
 import Lightlike.OperatorAlgebras.TestsMomentumTheta
 import Lightlike.OperatorAlgebras.TestsResolvent
+import Lightlike.OperatorAlgebras.TestsStoneVN
 import Lightlike.OperatorAlgebras.TestsTranslationCore
 import Lightlike.OperatorAlgebras.TestsUnitaryGroup
 import Lightlike.OperatorAlgebras.TestsWeyl

@@ -1634,6 +1634,11 @@
   "via": "arXiv API",
   "fetched_title": "Introduction to representations of the canonical commutation and anticommutation relations",
   "locations": {
+   "Corollary 1, p. 12": {
+    "verified": true,
+    "snippet": "Corollary 1. Suppose that Y is a finite dimensional symplectic space. Let Y ∋ y 7→ W π1 (y) ∈ U (H) and Y ∋ y 7→ W π2 (y) ∈ U (H) be two regular irreducible representations of the CCR. Then they are unitarily equivalent.",
+    "why": null
+   },
    "Corollary 2, p. 17": {
     "verified": true,
     "snippet": "Corollary 2. Suppose that Y is an even dimensional real Hilbert space. Let Y ∋ y 7→ φπ1 (y) ∈ Bh (H) and Y ∋ y 7→ φπ2 (y) ∈ Bh (H) be two irreducible representations of the CAR. Then they are unitarily equivalent. 4.3 Fe",
@@ -1642,6 +1647,11 @@
    "Theorem 10, p. 17": {
     "verified": true,
     "snippet": "Theorem 10. 1) Let (φ1 , φ2 , . . . , φ2n ) be a representation of the CAR over R2n in a Hilbert space H. Then there exists a Hilbert space K and a unitary operator U : ⊗ n C2 ⊗ K → H such that \u0010 \u0011 (j) U Ij−1 σ1 ⊗ 1K = φ",
+    "why": null
+   },
+   "Theorem 4, p. 12": {
+    "verified": true,
+    "snippet": "Theorem 4 (The Stone–von Neumann theorem). Suppose that (Y, ω) is a finite dimensional symplectic space and (18) a regular representation of the CCR. Suppose that we fix an identification of Y with X # ⊕ X . Then, there",
     "why": null
    }
   },
@@ -2019,6 +2029,26 @@
    }
   },
   "citations": 182,
+  "citations_via": "OpenAlex"
+ },
+ "faulhuber-2022": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Time-Frequency Analysis (Lecture Notes)",
+  "locations": {
+   "Theorem 7.32, p. 90": {
+    "verified": true,
+    "snippet": "Theorem 7.32 (Stone-von Neumann). Every irreducible representation of H is equivalent to exactly one of the following representations: (i) χa,b (x, ω, τ ) = e2πi(a·x+b·ω) acting on C, for some (a, b) ∈ R2d , or (ii) ρκ f",
+    "why": null
+   },
+   "Theorems 7.32 and 7.35, pp. 90-94": {
+    "verified": true,
+    "snippet": "Theorem 7.32 (Stone-von Neumann). Every irreducible representation of H is equivalent to exactly one of the following representations: (i) χa,b (x, ω, τ ) = e2πi(a·x+b·ω) acting on C, for some (a, b) ∈ R2d , or (ii) ρκ f",
+    "why": null
+   }
+  },
+  "citations": 2,
   "citations_via": "OpenAlex"
  },
  "finster-2010": {
