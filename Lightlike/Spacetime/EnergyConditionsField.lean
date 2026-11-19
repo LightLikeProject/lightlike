@@ -197,9 +197,9 @@ namespace LorentzianMetric
 
 /-- **A cosmological constant moved into the source**: `G + Λ g = κ T` iff `G = κ (T − (Λ/κ) g)`, for `κ ≠ 0`. -/
 theorem einsteinEq_iff_absorb (hκ : κ ≠ 0) :
-    g.EinsteinEq cov Λ κ (fun x v w => T x v w) ↔
-      g.EinsteinEq cov 0 κ (fun x v w => (T x + cosmoT (g.g x) (Λ / κ)) v w) := by
-  unfold EinsteinEq
+    g.toNondegMetric.EinsteinEq cov Λ κ (fun x v w => T x v w) ↔
+      g.toNondegMetric.EinsteinEq cov 0 κ (fun x v w => (T x + cosmoT (g.g x) (Λ / κ)) v w) := by
+  unfold NondegMetric.EinsteinEq
   refine and_congr_right fun _ => forall_congr' fun x => forall_congr' fun v => forall_congr' fun w => ?_
   simp only [cosmoT, add_apply, smul_apply, smul_eq_mul, zero_mul, add_zero]
   constructor <;> intro h
@@ -207,7 +207,7 @@ theorem einsteinEq_iff_absorb (hκ : κ ≠ 0) :
   · rw [h, mul_add]; field_simp; ring
 
 /-- Under `G = κ T`, `Ric = κ T + (R/2) g` pointwise. -/
-theorem ricciAt_of_einsteinEq (h : g.EinsteinEq cov 0 κ (fun x v w => T x v w)) (x : M)
+theorem ricciAt_of_einsteinEq (h : g.toNondegMetric.EinsteinEq cov 0 κ (fun x v w => T x v w)) (x : M)
     (v w : TangentSpace 𝓘(ℝ, E) x) :
     cov.ricciAt x v w = κ * T x v w + cov.scalarCurvatureAt g x / 2 * g.g x v w := by
   have := h.2 x v w
@@ -215,10 +215,10 @@ theorem ricciAt_of_einsteinEq (h : g.EinsteinEq cov 0 κ (fun x v w => T x v w))
   linarith
 
 /-- **The trace of the Einstein equations**: under `G = κ T` in dimension four, `R = −κ tr_g T`. -/
-theorem scalarCurvatureAt_of_einsteinEq [T2Space M] (h : g.EinsteinEq cov 0 κ (fun x v w => T x v w)) (x : M) :
+theorem scalarCurvatureAt_of_einsteinEq [T2Space M] (h : g.toNondegMetric.EinsteinEq cov 0 κ (fun x v w => T x v w)) (x : M) :
     cov.scalarCurvatureAt g x = -κ * traceG (g.g x) (T x) (g.lorentzian x).bilinForm_nondegenerate := by
   set b := tb (E := E) x
-  set Gm := metricGram g x
+  set Gm := metricGram g.toNondegMetric x
   have hsym : Gm.transpose = Gm := by ext i j; exact g.symm x _ _
   have hinvT : (Gm⁻¹).transpose = Gm⁻¹ := by rw [Matrix.transpose_nonsing_inv, hsym]
   have htr : traceG (g.g x) (T x) (g.lorentzian x).bilinForm_nondegenerate =
@@ -229,7 +229,7 @@ theorem scalarCurvatureAt_of_einsteinEq [T2Space M] (h : g.EinsteinEq cov 0 κ (
     simp only [Matrix.transpose_apply] at this
     rw [← this]; rfl
   have hGG : ∑ i, ∑ j, Gm⁻¹ i j * g.g x (b i) (b j) = 4 := by
-    have hG : Gm⁻¹ * Gm = 1 := Matrix.nonsing_inv_mul _ (metricGram_isUnit g x)
+    have hG : Gm⁻¹ * Gm = 1 := Matrix.nonsing_inv_mul _ (metricGram_isUnit g.toNondegMetric x)
     have h1 : ∀ i, ∑ j, Gm⁻¹ i j * g.g x (b i) (b j) = (Gm⁻¹ * Gm) i i := by
       intro i
       rw [Matrix.mul_apply]
@@ -260,7 +260,7 @@ include hκ
 
 /-- **The null energy condition, geometric form** (Curiel, p. 6): under `G = κ T` with `κ > 0`, the null condition for
 `T` is `Ric(k, k) ≥ 0` for every null `k`. -/
-theorem nullECField_iff_ricci (h : g.EinsteinEq cov 0 κ (fun x v w => T x v w)) :
+theorem nullECField_iff_ricci (h : g.toNondegMetric.EinsteinEq cov 0 κ (fun x v w => T x v w)) :
     g.NullECField T ↔ ∀ x (k : TangentSpace 𝓘(ℝ, E) x), g.g x k k = 0 → 0 ≤ cov.ricciAt x k k := by
   refine forall_congr' fun x => forall_congr' fun k => imp_congr_right fun hk => ?_
   rw [ricciAt_of_einsteinEq h x, hk, mul_zero, add_zero]
@@ -268,7 +268,7 @@ theorem nullECField_iff_ricci (h : g.EinsteinEq cov 0 κ (fun x v w => T x v w))
 
 /-- **The weak energy condition, geometric form** (Curiel, p. 6): under `G = κ T` with `κ > 0`, the weak condition for
 `T` is `G(ξ, ξ) ≥ 0` for every timelike `ξ`. -/
-theorem weakECField_iff_einstein (h : g.EinsteinEq cov 0 κ (fun x v w => T x v w)) :
+theorem weakECField_iff_einstein (h : g.toNondegMetric.EinsteinEq cov 0 κ (fun x v w => T x v w)) :
     g.WeakECField T ↔ ∀ x (ξ : TangentSpace 𝓘(ℝ, E) x), g.g x ξ ξ < 0 → 0 ≤ cov.einsteinField g x ξ ξ := by
   refine forall_congr' fun x => forall_congr' fun ξ => imp_congr_right fun _ => ?_
   have := h.2 x ξ ξ
@@ -278,7 +278,7 @@ theorem weakECField_iff_einstein (h : g.EinsteinEq cov 0 κ (fun x v w => T x v 
 
 /-- **The strong energy condition, geometric form** (Curiel, p. 6): under `G = κ T` with `κ > 0` in dimension four, the
 strong condition for `T` is `Ric(ξ, ξ) ≥ 0` for every timelike `ξ` (the timelike convergence condition). -/
-theorem strongECField_iff_ricci [T2Space M] (h : g.EinsteinEq cov 0 κ (fun x v w => T x v w)) :
+theorem strongECField_iff_ricci [T2Space M] (h : g.toNondegMetric.EinsteinEq cov 0 κ (fun x v w => T x v w)) :
     g.StrongECField T ↔ ∀ x (ξ : TangentSpace 𝓘(ℝ, E) x), g.g x ξ ξ < 0 → 0 ≤ cov.ricciAt x ξ ξ := by
   refine forall_congr' fun x => forall_congr' fun ξ => imp_congr_right fun _ => ?_
   rw [ricciAt_of_einsteinEq h x, scalarCurvatureAt_of_einsteinEq h x]
@@ -290,7 +290,7 @@ theorem strongECField_iff_ricci [T2Space M] (h : g.EinsteinEq cov 0 κ (fun x v 
 /-- **The dominant energy condition, geometric form** (Curiel, p. 6): under `G = κ T` with `κ > 0`, the dominant condition
 for `T` is: for timelike `ξ`, `G(ξ, ξ) ≥ 0` and the vector `G^a_n ξ^n` (the `w` with `g(w, ·) = G(ξ, ·)`) is causal; for
 co-oriented timelike `ξ, η`, `G(ξ, η) ≥ 0`. -/
-theorem dominantECField_iff_einstein (h : g.EinsteinEq cov 0 κ (fun x v w => T x v w)) :
+theorem dominantECField_iff_einstein (h : g.toNondegMetric.EinsteinEq cov 0 κ (fun x v w => T x v w)) :
     g.DominantECField T ↔ ∀ x : M,
       (∀ ξ : TangentSpace 𝓘(ℝ, E) x, g.g x ξ ξ < 0 → 0 ≤ cov.einsteinField g x ξ ξ ∧
         ∃ w : TangentSpace 𝓘(ℝ, E) x, (∀ v, g.g x w v = cov.einsteinField g x ξ v) ∧ g.g x w w ≤ 0) ∧
@@ -337,9 +337,9 @@ end LorentzianMetric
 
 /-- **Minkowski space with no source solves `G = κ T`** (non-vacuity of the geometric forms): the flat connection, `T = 0`. -/
 theorem minkowski_einsteinEq_zero (κ : ℝ) :
-    (minkowskiMetric 4).EinsteinEq (flatConnection (Fin 4 → ℝ)) 0 κ
+    (minkowskiMetric 4).toNondegMetric.EinsteinEq (flatConnection (Fin 4 → ℝ)) 0 κ
       (fun x v w => (0 : TangentSpace 𝓘(ℝ, Fin 4 → ℝ) x →L[ℝ] TangentSpace 𝓘(ℝ, Fin 4 → ℝ) x →L[ℝ] ℝ) v w) := by
-  have h := (satisfiesEinstein_iff_einsteinEq_zero (minkowskiMetric 4) (flatConnection (Fin 4 → ℝ)) 0).1
+  have h := (satisfiesEinstein_iff_einsteinEq_zero (minkowskiMetric 4).toNondegMetric (flatConnection (Fin 4 → ℝ)) 0).1
     (minkowski_satisfiesEinstein_flat 4)
   refine ⟨h.1, fun x v w => ?_⟩
   have := h.2 x v w
