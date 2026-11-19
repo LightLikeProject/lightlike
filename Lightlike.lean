@@ -261,6 +261,7 @@ import Lightlike.FourD.Orientation
 import Lightlike.FourD.Pachner
 import Lightlike.FourD.Tests
 import Lightlike.Geometry.ProjectiveSpace
+import Lightlike.GR.ColourAlgebra
 import Lightlike.GR.ComplexMinkowski
 import Lightlike.GR.SpinorHelicity
 import Lightlike.GR.ColourOrdered
