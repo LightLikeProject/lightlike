@@ -89,6 +89,8 @@ For a continuous cost `h` on the product of a compact metric space with itself t
 Kantorovich-Rubinstein duality: on a compact metric space `W₁(μ, ν) = sup {∫ u dμ - ∫ u dν | u 1-Lipschitz}`, and the infimum defining `W₁` is attained {12} [99]; the `c`-transform `u(x) = inf_y (d(x, y) - g(y))` of a dual pair `(f, g)` is `1`-Lipschitz with `f ≤ u ≤ -g` [99]. For Dirac measures the supremum is `d(x, y)`, and `2`-Lipschitz tests exceed `W₁` [100].
 A compact symmetric operator `T` on a real or complex Hilbert space has a Hilbert basis of eigenvectors with real eigenvalues, assembled from Hilbert bases of the eigenspaces, whose sum is dense, and `T x = ∑ᵢ μᵢ ⟪bᵢ, x⟫ bᵢ` in it; only finitely many eigenvalues have `‖μ‖ ≥ ε`, since unit eigenvectors to distinct eigenvalues are orthonormal and their images are then `ε` apart inside a compact set, so the eigenvalues and the spectrum are countable [101]. The identity of `ℓ²(ℕ)` is symmetric, not compact, and has an infinite-dimensional eigenspace, and `0` is in the spectrum of the compact self-adjoint `diag(1/(n+1))` without being an eigenvalue [102]. A Hilbert-Schmidt operator is the norm limit of its finite sections `x ↦ ∑_{i ∈ F} ⟪bᵢ, x⟫ K bᵢ` and so is compact [103].
 
+A compact operator `K` has a canonical form `K x = ∑ⱼ sⱼ ⟪φⱼ, x⟫ φ'ⱼ`, `K* x = ∑ⱼ sⱼ ⟪φ'ⱼ, x⟫ φⱼ` with orthonormal `φ`, `φ'` and positive singular values `sⱼ`: from a Hilbert basis of eigenvectors of the compact symmetric `K*K`, `sⱼ = √μⱼ` on the eigenvalues `μⱼ > 0` and `φ'ⱼ = sⱼ⁻¹ K φⱼ`; only finitely many `sⱼ` exceed any `ε > 0`, and `‖K‖` is the largest of them. For `μ ≠ 0` the `μ`-eigenspace of `K*K` is spanned by the `φⱼ` with `sⱼ² = μ` and has dimension `#{j | sⱼ² = μ}`, and likewise for `KK*` with the `φ'ⱼ` [104]. The zero operator has no singular values and a nonzero operator has one [105].
+
 ## Lean References
 
 1. Lightlike/OperatorAlgebras/UnitaryGroup.lean - `OperatorAlgebras.UnitaryGroup`,
@@ -370,6 +372,17 @@ A compact symmetric operator `T` on a real or complex Hilbert space has a Hilber
     `OperatorAlgebras.CompactSpectral.invDiag_zero_mem_spectrum_not_hasEigenvalue` (0 is in the spectrum of
     diag(1/(n+1)) and is not an eigenvalue)
 103. Lightlike/OperatorAlgebras/Spectral/HilbertSchmidtCompact.lean - `OperatorAlgebras.CompactSpectral.isCompactOperator_of_isHilbertSchmidt`
+104. Lightlike/OperatorAlgebras/Spectral/CanonicalForm.lean - `OperatorAlgebras.CompactSpectral.IsCanonicalForm`, `OperatorAlgebras.CompactSpectral.isCanonicalForm_of_eigenbasis`,
+    `OperatorAlgebras.CompactSpectral.exists_isCanonicalForm`,
+    `OperatorAlgebras.CompactSpectral.isCompactOperator_adjoint_comp`, `OperatorAlgebras.CompactSpectral.isSymmetric_adjoint_comp`,
+    `OperatorAlgebras.CompactSpectral.IsCanonicalForm.le_opNorm`, `OperatorAlgebras.CompactSpectral.IsCanonicalForm.opNorm_le`,
+    `OperatorAlgebras.CompactSpectral.IsCanonicalForm.exists_eq_opNorm`, `OperatorAlgebras.CompactSpectral.IsCanonicalForm.toAdjoint`,
+    `OperatorAlgebras.CompactSpectral.IsCanonicalForm.finite_sq_eq`, `OperatorAlgebras.CompactSpectral.IsCanonicalForm.eigenspace_adjoint_comp`,
+    `OperatorAlgebras.CompactSpectral.IsCanonicalForm.finrank_eigenspace_adjoint_comp`,
+    `OperatorAlgebras.CompactSpectral.IsCanonicalForm.eigenspace_comp_adjoint`,
+    `OperatorAlgebras.CompactSpectral.hasSum_norm_sq_of_orthonormal`
+105. Lightlike/OperatorAlgebras/Spectral/TestsCanonicalForm.lean - `OperatorAlgebras.CompactSpectral.isEmpty_of_canonical_zero`,
+    `OperatorAlgebras.CompactSpectral.nonempty_of_canonical_ne_zero`
 
 ## References
 

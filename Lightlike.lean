@@ -472,6 +472,8 @@ import Lightlike.OperatorAlgebras.SpectralUnbounded
 import Lightlike.OperatorAlgebras.Spectral.Compact
 import Lightlike.OperatorAlgebras.Spectral.HilbertSchmidtCompact
 import Lightlike.OperatorAlgebras.Spectral.TestsCompact
+import Lightlike.OperatorAlgebras.Spectral.CanonicalForm
+import Lightlike.OperatorAlgebras.Spectral.TestsCanonicalForm
 import Lightlike.OperatorAlgebras.Semigroup.CauchyEstimate
 import Lightlike.OperatorAlgebras.Semigroup.Construct
 import Lightlike.OperatorAlgebras.Semigroup.Continuity
