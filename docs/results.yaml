@@ -2874,3 +2874,272 @@
   review: kernel-checked
   note: "Compared with Krajewski, arXiv:hep-th/9701081, Section 3.2, p. 13 (read): if the matrix of multiplicities is symmetric, the charge conjugation is unique up to unitary equivalence and acts as J (e_a ⊗ ψ ⊗ e_b) = e_b ⊗ ψ̄ ⊗ e_a; the orthonormal basis with L_ii ψ = ψ is exists_orthonormalBasis_fixed. Here A = ⊕ M_(n_i)(C) represented complex-linearly; the unitary intertwines π and J with the model krajewskiReal of the multiplicity matrix."
   since: unreleased
+- id: LL-0219
+  title: The Dirac operator of a real finite spectral triple is D = Δ + J Δ J with Δ hermitian, commuting with the right action and anticommuting with the chirality, and Δ is unique
+  area: NCG
+  file: Lightlike/NCG/DiracDecomposition.lean
+  decls: [Lightlike.NCG.proj_D_proj_rightOp, Lightlike.NCG.proj_D_proj_pi, Lightlike.NCG.Delta, Lightlike.NCG.D_eq_Delta_add, Lightlike.NCG.Delta_rightOp, Lightlike.NCG.Delta_gamma, Lightlike.NCG.Delta_symm, Lightlike.NCG.Delta_unique]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: krajewski-1998, location: "Section 3.4", check: "Dirac operator"}
+      - {ref: paschke-sitarz-1998, location: "Lemma 6", check: "Lemma 6"}
+  review: kernel-checked
+  note: "Compared with Krajewski, arXiv:hep-th/9701081, Section 3.4, p. 15 (read): D = D_L + D_R with [D_L, π(A)] = [D_R, J π(A) J⁻¹] = 0, unique since D anticommutes with χ, D_L = J D_R J⁻¹, so D = Δ + J Δ J⁻¹ with Δ hermitian, commuting with J π(A) J⁻¹ and anticommuting with χ; and Paschke-Sitarz, arXiv:q-alg/9612029, Lemma 6, p. 5 (the second half). The chirality is assumed scalar on each vertex H_ij, which Paschke-Sitarz Lemma 3 (p. 3) derives from the Hochschild-cycle axiom."
+  since: unreleased
+- id: LL-0220
+  title: The spectral theorem for compact self-adjoint operators, a Hilbert basis of eigenvectors with real eigenvalues, the expansion K x = sum of mu_i <b_i, x> b_i, and countably many eigenvalues that can only cluster at 0
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/Spectral/Compact.lean
+  decls: [Lightlike.OperatorAlgebras.CompactSpectral.exists_hilbertBasis_eigenvectors, Lightlike.OperatorAlgebras.CompactSpectral.hasSum_eigen, Lightlike.OperatorAlgebras.CompactSpectral.finite_eigenvalues_ge, Lightlike.OperatorAlgebras.CompactSpectral.countable_eigenvalues, Lightlike.OperatorAlgebras.CompactSpectral.countable_spectrum, Lightlike.OperatorAlgebras.CompactSpectral.hasEigenvalue_of_mem_spectrum, Lightlike.OperatorAlgebras.CompactSpectral.finiteDimensional_eigenspace]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: teschl-2009, location: "Theorem 6.6, p. 136", check: "compact"}
+  review: kernel-checked
+  note: "Compared with Teschl, Section 6.2, Theorem 6.6, p. 136 (read, online edition). Stated for a compact symmetric operator on a real or complex Hilbert space. The expansion (6.5), K = sum over the spectrum of lambda P_K({lambda}), is stated in a Hilbert basis of eigenvectors; grouping the basis vectors by eigenvalue gives the projections P_K({lambda}). The spectrum is stated as countable, its nonzero points as eigenvalues (read literally, 'the spectrum consists of eigenvalues' fails at 0: diag(1/(n+1)) on l2(N) is compact and self-adjoint with 0 in its spectrum and 0 not an eigenvalue, invDiag_zero_mem_spectrum_not_hasEigenvalue), and the eigenvalues of norm at least epsilon as finitely many. Hilbert-Schmidt operators are compact (Teschl, Section 6.3, p. 139), isCompactOperator_of_isHilbertSchmidt."
+  since: unreleased
+- id: LL-0221
+  title: A metric on R^4 with the spatial translations and rotations as Killing fields has the flat FLRW form
+  area: Spacetime
+  file: Lightlike/Spacetime/HomogeneousIsotropic.lean
+  decls: [Lightlike.lieDerivMetric_affField_basis, Lightlike.flat_flrw_of_killing]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (8.1)", check: "maximally symmetric"}
+  review: kernel-checked
+  note: "For a smooth metric g of any signature on R^4 whose Lie derivative vanishes along the three spatial translations and the three spatial rotations (checked on the coordinate basis fields), g_{0k} = 0, g_{ij} = a(t) delta_{ij} and g_{00} = b(t), with a and b functions of the time alone: the flat FLRW form with lapse b and scale factor a. Limits: only the flat case (k = 0); the curved cases (Killing fields of S^3 and H^3, classification of three-dimensional maximally symmetric spaces), the converse (the FLRW metric has these Killing fields) and the statement for isometry groups acting (not only infinitesimally) are follow-up tasks; the comparison with the source is pending and the location is the chapter."
+  since: unreleased
+
+- id: LL-0222
+  title: The age of an expanding universe with the strong energy condition is at most the Hubble time, and the density diverges as the scale factor tends to zero
+  area: Cosmology
+  file: Lightlike/Cosmology/BigBang.lean
+  decls: [Lightlike.Cosmology.bigBang_age_le, Lightlike.Cosmology.bigBang_density_tendsto_atTop, Lightlike.Cosmology.bigBang_age_lt_of_pos_density, Lightlike.Cosmology.bigBang_density_tendsto_atTop_of_pos]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (8.35)", check: "Big Bang"}
+  review: kernel-checked
+  note: "For a positive scale factor a on an open interval (t1, t2) with Friedmann's second equation with zero cosmological constant, the strong energy condition (rho + 3p at least zero) and a'(t0) > 0 at a time t0 in the interval: t0 - t1 is at most a(t0)/a'(t0); and for Friedmann's first equation with k at least zero and zero cosmological constant, if a tends to zero as t decreases to t1 then rho tends to infinity. With Carroll's hypotheses rho > 0 and p >= 0 the age is strictly less than a(t0)/a'(t0) (bigBang_age_lt_of_pos_density), and for every k, if rho(t0) > 0 and a tends to zero then rho tends to infinity, since rho(t) a(t)^2 >= rho(t0) a(t0)^2 for t <= t0 (bigBang_density_tendsto_atTop_of_pos); the Milne universe a = t, k = -1, rho = 0 shows that the positivity of the density is needed (milne_friedmann). Limits: real-variable statements; that the interval is maximal (so that a tends to zero at its left end) is not proved. Compared with Carroll's lecture notes, p. 224 (after eq. (8.41); 'by (8.35) we must have a'' < 0') and p. 225; see docs/notes/co1-carroll-comparison.md."
+  since: unreleased
+- id: LL-0223
+  title: A metric on R^4 with the spatial rotations and the translations of a maximally symmetric 3-space of curvature k as Killing fields has the FLRW form
+  area: Spacetime
+  file: Lightlike/Spacetime/HomogeneousIsotropicCurved.lean
+  decls: [Lightlike.ray_relation, Lightlike.curved_flrw_of_killing]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (8.1)", check: "maximally symmetric"}
+  review: kernel-checked
+  note: "Curved slices, the curved case of LL-0221 (curved_flrw_of_killing): for every k, if the three spatial rotations and the curved translations P_m = (1 - k|x|^2/4) d_m + (k/2) x_m (x . d) are Killing on D_k = {1 + k|x|^2/4 > 0}, then on D_k g_{0k} = 0, g_{ij} = a(t) delta_{ij}/(1 + k|x|^2/4)^2 and g_{00} = b(t), with a and b functions of the time alone (isotropy at (t, 0), and the Killing equation integrated along rays from (t, 0), ray_relation). Limits: the Killing fields are given in the isotropic chart; the classification of three-dimensional maximally symmetric spaces and the statement for isometry groups are not here."
+  since: unreleased
+- id: LL-0224
+  title: A 3-metric with a Killing algebra of the space-form type, isotropic at a point, is locally a constant multiple of the space form of curvature k
+  area: Spacetime
+  file: Lightlike/Spacetime/KillingOrbitChart.lean
+  decls: [Lightlike.isometric_spaceForm, Lightlike.orbit_comparison, Lightlike.gram_of_isotropy, Lightlike.SpaceForm.lieBracket_X, Lightlike.SpaceForm.killing_P, Lightlike.SpaceForm.killing_R]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (8.1)", check: "maximally symmetric"}
+  review: kernel-checked
+  note: "Route (A) to the abstract form of G1-024. On R^3 the curved translations P_m = (1 - k|x|^2/4) e_m + (k/2) x_m x and the rotations R_ab are Killing for the space form delta/(1 + k|x|^2/4)^2 with explicit structure constants S_k ([P_m, P_n] = -k R_mn, [R_ab, P_m] = delta_mb P_a - delta_ma P_b, so(3)). For a C^1 family of fields Y near a point p of a Banach space, indexed like this algebra, Killing for a symmetric G near p, with brackets S_k near p and with the rotations vanishing at p, the orbit maps o(xi) = exp(T sum xi_e Y_e)(p) and o_2(xi) = exp(T sum xi_e P_e)(0) satisfy G(o xi)(Do zeta, Do zeta') = c * delta/(1 + k|x|^2/4)^2 (o_2 xi)(Do_2 zeta, Do_2 zeta') near 0, c = G(p)(P_0(p), P_0(p)); at 0, Do_2 is T times the identity on the translation directions. Proof: along the orbits, (Gram matrix, G(J, Y), G(J', Y), G(J, J')) of the flow derivative J solves a linear equation in the structure constants alone (orbit_comparison, on fable3/ode-flow's differentiable flow). Limits: the Killing algebra and its structure constants are hypotheses (not derived from an isometry group); the four-dimensional assembly of the slices is not proved."
+  since: unreleased
+- id: LL-0225
+  title: A metric with a Killing algebra of the space-form type, isotropic along a worldline, has the FLRW form b(t) dt^2 + a(t) delta/(1 + k|x|^2/4)^2 in the orbit chart
+  area: Spacetime
+  file: Lightlike/Spacetime/KillingOrbitFLRW.lean
+  decls: [Lightlike.flrw_of_killing_algebra, Lightlike.orbit_time_data, Lightlike.pairing_zero_of_isotropy]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (8.1)", check: "maximally symmetric"}
+  review: kernel-checked
+  note: "G1-024 in four dimensions (route (A)). For a C^1 family of fields Y near c(t0), indexed like the Killing algebra of the space form of curvature k (translations P_m, rotations R_ab), Killing for a symmetric G near c(t0), with the brackets S_k there, and with the rotations vanishing along a differentiable curve c: in the chart Phi(t, xi) = exp(T sum xi_e Y_e)(c t), G(d_t, d_t) = G(c t)(c' t, c' t), G(d_t, d_zeta) = 0 and G(d_zeta, d_zeta') = a(t) delta/(1 + k|x|^2/4)^2 (o_2 xi)(Do_2 zeta, Do_2 zeta') with a(t) = G(c t)(P_0, P_0) and o_2 the orbit chart of the space form; at xi = 0, d_t Phi = c' t, d_zeta Phi = T sum zeta_e Y_e(c t), Do_2 = T id on the translation directions. Cross terms: the rotations fix c' (they vanish along c), so G(c', P_m) = 0 at c t, and along the orbits G(J_{c'}, Y) solves a homogeneous linear equation. Limits: the Killing algebra and its structure constants are hypotheses (not derived from an isometry group; two attempts recorded in docs/notes/co1-carroll-comparison.md: the group route needs Myers-Steenrod and the Lie group exponential, the infinitesimal route needs the rigidity of Killing fields and a real Schur lemma for so(3), none in Mathlib or Physlib); t is not normalised (b(t) for Carroll's -1)."
+  since: unreleased
+- id: LL-0226
+  title: With the strong energy condition and p <= rho the big bang singularity of an expanding FLRW universe is at a = 0, and p <= rho cannot be dropped
+  area: Cosmology
+  file: Lightlike/Cosmology/BigBangSingularity.lean
+  decls: [Lightlike.Cosmology.friedmann_834, Lightlike.Cosmology.bigBang_singularity, Lightlike.Cosmology.onePlusSqrt_friedmann, Lightlike.Cosmology.onePlusSqrt_not_dominant]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (8.35)", check: "Big Bang"}
+      - {ref: carroll-1997, location: "eq. (8.36)", check: "Friedmann"}
+  review: kernel-checked
+  note: "For a C^2 scale factor a > 0 on (t1, t2) solving both Friedmann equations with Lambda = 0, rho + 3p >= 0 and p <= rho, expanding at t0: either a -> 0 as t decreases to t1, or a', a'', rho and p are bounded on (t1, t0] (bigBang_singularity), so a singularity at the left end of the interval is at a = 0. Proof: ((a'^2 + k) a^4)' = 2 a' a^3 (a a'' + 2(a'^2 + k)) = 8 pi G a' a^5 (rho - p) >= 0 (Carroll's (8.34), a''/a + 2(a'/a)^2 + 2k/a^2 = 4 pi G (rho - p), which combines (8.35) and (8.36)), so rho a^6 stays bounded in the past while a >= L > 0. The hypothesis p <= rho is needed: a = 1 + sqrt t on (0, infinity), k = 0, solves both equations with rho > 0, p > 0, a' > 0, a'' < 0, and a' -> infinity as t -> 0 while a -> 1 (onePlusSqrt_friedmann); hence p > rho somewhere (onePlusSqrt_not_dominant). Carroll's 'we necessarily reach a singularity at a = 0' (p. 224) under rho > 0, p >= 0 alone fails for this a."
+  since: unreleased
+
+- id: LL-0227
+  title: For the equation of state p = w rho with constant w > -1/3 the big bang singularity of an expanding FLRW universe is at a = 0
+  area: Cosmology
+  file: Lightlike/Cosmology/BigBangEOS.lean
+  decls: [Lightlike.Cosmology.bigBang_singularity_of_eos]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (8.35)", check: "Big Bang"}
+      - {ref: carroll-1997, location: "eq. (8.36)", check: "Friedmann"}
+  review: kernel-checked
+  note: "Carroll's setting (8.21)-(8.23), p = w rho with constant w (w >= 0 at p. 224), for every w > -1/3: for a C^2 scale factor a > 0 on (t1, t2) solving both Friedmann equations with Lambda = 0, rho >= 0, p = w rho, expanding at t0, either a -> 0 as t decreases to t1 or a', a'', rho, p are bounded on (t1, t0]. Proof: (a'^2 + k) a^{1+3w} is constant (its derivative a' a^{3w} (2 a a'' + (1 + 3w)(a'^2 + k)) vanishes by (8.35), (8.36)), i.e. rho a^{3(1+w)} is constant as in (8.23). Reading (a) of p. 224, any rho > 0, p >= 0, is false (onePlusSqrt_friedmann, LL-0226); reading (b), this setting, is proved here."
+  since: unreleased
+- id: LL-0228
+  title: Einstein's equations for an FLRW spacetime with a perfect fluid, on the manifold layer, are equivalent to Friedmann's two equations
+  area: Spacetime
+  file: Lightlike/Spacetime/FLRWManifold.lean
+  decls: [Lightlike.Cosmology.flrwManifoldMetric_coordMetric, Lightlike.Cosmology.flrwManifold_einstein_iff_friedmann]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (8.36)", check: "Friedmann"}
+  review: kernel-checked
+  note: "The manifold form of LL-0133, through flrwManifoldMetric_coordMetric (in every chart the components of the manifold metric are the coordinate FLRW metric flrwMetric of LL-0133). The manifold is the chart domain t in I, 1 + k|x|^2/4 > 0 of the isotropic coordinates, an open subset of R^4 (for k > 0 it misses one point of the 3-sphere), not I x Sigma for a complete space of constant curvature. For the Levi-Civita connection of the metric (smooth, as proved for every Lorentzian metric) and the perfect fluid at rest in the chart, G + Lambda g = 8 pi G T holds iff Friedmann's first and second equations hold at every t in I. The comparison with the cited source is pending, as for LL-0133."
+  since: unreleased
+
+- id: LL-0229
+  title: A metric of any signature has a unique Levi-Civita connection on differentiable vector fields
+  area: Spacetime
+  file: Lightlike/Spacetime/LeviCivita.lean
+  decls: [Lightlike.leviCivita_exists_unique_proved]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (3.21)", check: "Christoffel"}
+  review: kernel-checked
+  note: "There is a torsion-free metric-compatible connection of a smooth nondegenerate metric of any signature (NondegMetric) on a smooth manifold (any model with corners; defined by the Koszul formula) and any two such connections agree on vector fields differentiable at the point. Carroll shows uniqueness from the coordinate formula (3.21) and asserts existence by the transformation law; here both are proved without coordinates. Compared with Carroll eqs. (3.17) to (3.21), read at those locations. The differences approved on 18 November 2026 (Lorentzian metrics only, Hausdorff manifolds) were removed by GE11 (metrics of any signature, no Hausdorff hypothesis)."
+  since: unreleased
+
+- id: LL-0230
+  title: The curvature of a Levi-Civita connection has the symmetries of the Riemann tensor and the Ricci tensor is symmetric
+  area: Spacetime
+  file: Lightlike/Spacetime/CurvatureSymmetries.lean
+  decls: [Lightlike.bianchi_first_proved, Lightlike.riemannLowerAt_pair_symm, Lightlike.ricciAt_symm_proved]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (3.91)", check: "Ricci"}
+  review: kernel-checked
+  note: "For the curvature R(X,Y)Z = nabla_X nabla_Y Z - nabla_Y nabla_X Z - nabla_[X,Y] Z of a torsion-free metric-compatible connection (the intrinsic form of Carroll's eq. (3.71), read at that location): the first Bianchi identity (torsion freeness only), the pair symmetry g(R(X,Y)Z,W) = g(R(Z,W)X,Y) and the symmetry of the Ricci tensor. Carroll states them in coordinates, eqs. (3.78) to (3.81) and (3.91) (read at those locations); the statements here are the intrinsic ones (representation). Setting: a smooth metric of any signature, a locally smooth connection, no Hausdorff hypothesis (GE11 removed the differences approved on 18 November 2026, Lorentzian metrics only and Hausdorff manifolds); no boundary and a finite-dimensional model space, as in the source. The comparison with Wald is pending: not read."
+  since: unreleased
+
+- id: LL-0231
+  title: The second Bianchi identity for a torsion-free connection
+  area: Spacetime
+  file: Lightlike/Spacetime/BianchiSecond.lean
+  decls: [Lightlike.bianchi_second_proved]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (3.88)", check: "Bianchi"}
+  review: kernel-checked
+  note: "For a smooth torsion-free connection, (nabla_X R)(Y,Z)W + (nabla_Y R)(Z,X)W + (nabla_Z R)(X,Y)W = 0. Carroll proves nabla_[lambda R_{rho sigma]mu nu} = 0 for the Christoffel connection, eqs. (3.87) and (3.88) (read at those locations), and remarks that a general connection has torsion terms; here the cyclic sum is over the derivative slot and the two vector slots, the same identity for the Christoffel connection by the pair symmetry (representation), and only torsion freeness is assumed (more general; no metric occurs). Setting: a locally smooth connection with no Hausdorff hypothesis (GE11 removed the Hausdorff convention approved on 18 November 2026); no boundary and a finite-dimensional model space, as in the source. The comparison with Wald is pending: not read."
+  since: unreleased
+
+- id: LL-0232
+  title: The Einstein tensor of a Levi-Civita connection is divergence free
+  area: Spacetime
+  file: Lightlike/Spacetime/DivergenceFree.lean
+  decls: [Lightlike.einstein_divergence_free_proved]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (3.96)", check: "Bianchi"}
+  review: kernel-checked
+  note: "For the Levi-Civita connection of a smooth metric of any signature on a C^2 manifold modelled on R^n without boundary (locally smooth connection, no Hausdorff hypothesis), the divergence g^{ij} (nabla_i G)(e_j, w) of the Einstein tensor G = Ric - (S/2) g vanishes. Carroll, eqs. (3.94) to (3.96) (read at those locations), derives nabla^mu G_{mu nu} = 0 by contracting the Bianchi identity twice; the proof here is a coordinate computation (representation). GE11 removed the differences approved on 18 November 2026 (Lorentzian metrics only, Hausdorff manifolds); the model is Fin n -> R without boundary, as in the source."
+  since: unreleased
+- id: LL-0233
+  title: The canonical form of a compact operator, K = sum of s_j <phi_j, .> phi'_j with orthonormal phi, phi' and positive singular values s_j, finitely many above every epsilon, the operator norm as their attained maximum, and the s_j^2 as exactly the nonzero eigenvalues of K*K and KK*, counted with multiplicity
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/Spectral/CanonicalForm.lean
+  decls: [Lightlike.OperatorAlgebras.CompactSpectral.IsCanonicalForm, Lightlike.OperatorAlgebras.CompactSpectral.exists_isCanonicalForm, Lightlike.OperatorAlgebras.CompactSpectral.isCanonicalForm_of_eigenbasis, Lightlike.OperatorAlgebras.CompactSpectral.IsCanonicalForm.le_opNorm, Lightlike.OperatorAlgebras.CompactSpectral.IsCanonicalForm.opNorm_le, Lightlike.OperatorAlgebras.CompactSpectral.IsCanonicalForm.exists_eq_opNorm, Lightlike.OperatorAlgebras.CompactSpectral.IsCanonicalForm.eigenspace_adjoint_comp, Lightlike.OperatorAlgebras.CompactSpectral.IsCanonicalForm.finrank_eigenspace_adjoint_comp, Lightlike.OperatorAlgebras.CompactSpectral.IsCanonicalForm.eigenspace_comp_adjoint, Lightlike.OperatorAlgebras.CompactSpectral.isCompactOperator_adjoint_comp]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: teschl-2009, location: "Theorem 6.7, p. 137", check: "compact"}
+  review: kernel-checked
+  note: "Compared with Teschl, Section 6.2, Theorem 6.7 and (6.7), p. 137 (read, online edition), for a compact operator on a real or complex Hilbert space. The orthonormal sets are families indexed by a type and the series (6.6) are stated pointwise; 'finitely many singular values or they converge to zero' is stated as finitely many s_j >= epsilon for every epsilon > 0; for every mu != 0 the mu-eigenspace of K*K (of KK*) is the span of the phi_j (the phi'_j) with s_j^2 = mu, of dimension #{j | s_j^2 = mu}; (6.7) is stated as an upper bound attained for K != 0 (for K = 0 there are no singular values)."
+  since: unreleased
+- id: LL-0234
+  title: The Schatten p-norms of a compact operator, the supremum formula (6.23) equal to the sum of the p-th powers of the singular values, so independent of the canonical form, with norm and adjoint bounds
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/Spectral/Schatten.lean
+  decls: [Lightlike.OperatorAlgebras.CompactSpectral.schattenSum, Lightlike.OperatorAlgebras.CompactSpectral.schattenSum_eq_tsum, Lightlike.OperatorAlgebras.CompactSpectral.schattenSum_le_tsum, Lightlike.OperatorAlgebras.CompactSpectral.tsum_le_schattenSum, Lightlike.OperatorAlgebras.CompactSpectral.norm_rpow_le_schattenSum, Lightlike.OperatorAlgebras.CompactSpectral.schattenSum_adjoint]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: teschl-2009, location: "Lemma 6.12, p. 141", check: "Schatten"}
+  review: kernel-checked
+  note: "Compared with Teschl, Section 6.3, (6.19)-(6.23) and Lemma 6.12, pp. 141-142 (read, online edition). schattenSum p K is the supremum (6.23) to the power p, over pairs of finite orthonormal families; for every canonical form and p >= 1 it equals the sum of s_j^p (6.19), so that sum does not depend on the canonical form. (6.21) and (6.22) are stated for schattenSum."
+  since: unreleased
+- id: LL-0235
+  title: J_2 is the Hilbert-Schmidt class, the square sum over any Hilbert basis equals the sum of the squared singular values (Lemma 6.10)
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/Spectral/SchattenHS.lean
+  decls: [Lightlike.OperatorAlgebras.CompactSpectral.tsum_norm_sq_apply_eq, Lightlike.OperatorAlgebras.CompactSpectral.schattenSum_two_eq_tsum_norm_sq, Lightlike.OperatorAlgebras.CompactSpectral.isHilbertSchmidt_iff]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: teschl-2009, location: "Lemma 6.10, p. 140", check: "Hilbert"}
+  review: kernel-checked
+  note: "Compared with Teschl, Section 6.3, Lemma 6.10, (6.14)-(6.17), p. 140, and p. 142 (read, online edition). The repository's Hilbert-Schmidt class (square sum finite in one Hilbert basis) is J_2: compact with finite schattenSum 2."
+  since: unreleased
+- id: LL-0236
+  title: J_1 is the trace class, and the trace norm of a product of two Hilbert-Schmidt operators is at most the product of their Hilbert-Schmidt norms (Lemma 6.13, (6.24))
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/Spectral/SchattenTrace.lean
+  decls: [Lightlike.OperatorAlgebras.CompactSpectral.schattenSum_one_mul_le, Lightlike.OperatorAlgebras.CompactSpectral.isTraceClass_iff, Lightlike.OperatorAlgebras.CompactSpectral.abs_apply_of_adjoint_apply_apply]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: teschl-2009, location: "Lemma 6.13, p. 142", check: "trace class"}
+  review: kernel-checked
+  note: "Compared with Teschl, Section 6.3, p. 142 and Lemma 6.13, (6.24), pp. 142-143 (read, online edition). The repository's trace class (diagonal sums of |K| finite in one Hilbert basis) is J_1: compact with finite schattenSum 1; (6.24) is stated with the Hilbert-Schmidt norm of K_1* (equal to that of K_1)."
+  since: unreleased
+- id: LL-0237
+  title: The Schatten norms satisfy the triangle inequality, are homogeneous and definite, lower semicontinuous under norm limits, and complete (Lemma 6.12)
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/Spectral/SchattenBanach.lean
+  decls: [Lightlike.OperatorAlgebras.CompactSpectral.schattenNorm, Lightlike.OperatorAlgebras.CompactSpectral.schattenNorm_add_le, Lightlike.OperatorAlgebras.CompactSpectral.schattenSum_smul, Lightlike.OperatorAlgebras.CompactSpectral.schattenNorm_eq_zero_iff, Lightlike.OperatorAlgebras.CompactSpectral.schattenSum_le_of_tendsto, Lightlike.OperatorAlgebras.CompactSpectral.exists_tendsto_schattenNorm]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: teschl-2009, location: "Lemma 6.12, p. 141", check: "Banach"}
+  review: kernel-checked
+  note: "Compared with Teschl, Section 6.3, Lemma 6.12, pp. 141-142 (read, online edition). 'J_p(H) with the norm is a Banach space' is stated as the norm properties (triangle inequality, homogeneity, definiteness) and completeness of the Cauchy sequences of compact operators with finite norm; no normed-space instance on J_p is built."
+  since: unreleased
+- id: LL-0238
+  title: The boundary terms of the first variation of the Einstein–Hilbert action with the Gibbons–Hawking–York term cancel on a region of a manifold
+  area: Spacetime
+  file: Lightlike/Spacetime/EHManifold/GHYManifold.lean
+  decls: [Lightlike.eh_ghy_variation_manifold]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: dyer-hinterbichler-2008, location: "eq. (4.4)", check: "boundary variation"}
+  review: kernel-checked
+  note: "For a measurable region D of a manifold with a metric of any signature, with a nowhere null C2 boundary (defining functions u with du != 0 and du(#du) != 0), and a smooth symmetric perturbation h vanishing outside a compact K and on the boundary: in the graph charts of the divergence theorem for the boundary vector field V(h) = div h# - grad tr h, the Einstein-Hilbert action of D n K minus the Gibbons-Hawking-York term of g + t h has first variation -int_{D n K} <G + Lambda g, h>_g dvol_g."
+  since: unreleased

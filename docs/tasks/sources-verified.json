@@ -1284,6 +1284,11 @@
     "snippet": "(2.34) where “diag” means a diagonal matrix with the given elements. If n is the dimension of the manifold, s is the number of +1’s in the canonical form, and t is the number of −1’s, then s − t is the signature of the m",
     "why": null
    },
+   "eq. (3.21)": {
+    "verified": true,
+    "snippet": "(3.21) 2 This is one of the most important formulas in this subject; commit it to memory. Of course, we have only proved that if a metric-compatible and torsion-free connection exists, it must be of the form (3.21); you",
+    "why": null
+   },
    "eq. (3.79)": {
     "verified": true,
     "snippet": "(3.79) With a little more work, which we leave to your imagination, we can see that the sum of cyclic permutations of the last three indices vanishes: Rρσµν + Rρµνσ + Rρνσµ = 0 . (3.80) This last property is equivalent t",
@@ -1294,39 +1299,24 @@
     "snippet": "(3.80) This last property is equivalent to the vanishing of the antisymmetric part of the last three indices: Rρ[σµν] = 0 . (3.81) All of these properties have been derived in a special coordinate system, but they are al",
     "why": null
    },
+   "eq. (3.88)": {
+    "verified": true,
+    "snippet": "(3.88) This is known as the Bianchi identity. (Notice that for a general connection there would be additional terms involving the torsion tensor.) It is closely related to the Jacobi identity, since (as you can show) it",
+    "why": null
+   },
+   "eq. (3.91)": {
+    "verified": true,
+    "snippet": "(3.91) as a consequence of the various symmetries of the Riemann tensor. Using the metric, we can take a further contraction to form the Ricci scalar: R = Rµ µ = g µν Rµν . (3.92) An especially useful form of the Bianchi",
+    "why": null
+   },
+   "eq. (3.96)": {
+    "verified": true,
+    "snippet": "(3.96) 3 CURVATURE 82 The Einstein tensor, which is symmetric due to the symmetry of the Ricci tensor and the metric, will be of great importance in general relativity. The Ricci tensor and the Ricci scalar contain infor",
+    "why": null
+   },
    "eq. (4.53)": {
     "verified": true,
     "snippet": "(4.53) can be very difficult to solve. The most popular sort of simplifying assumption is that the metric has a significant degree of symmetry, and we will talk later on about how symmetries of the metric make life easie",
-    "why": null
-   },
-   "eq. (4.72)": {
-    "verified": true,
-    "snippet": "(4.72) This is known as the Weak Energy Condition, or WEC. It seems like a fairly reasonable requirement, and many of the important theorems about solutions to general relativity (such as the singularity theorems of Hawk",
-    "why": null
-   },
-   "eq. (5.40)": {
-    "verified": true,
-    "snippet": "(5.40) 5 MORE GEOMETRY 140 By (5.25), one implication of a symmetry is that, if T is symmetric under some one-parameter family of diffeomorphisms, we can always find a coordinate system in which the components of T are a",
-    "why": null
-   },
-   "eq. (6.54)": {
-    "verified": true,
-    "snippet": "(6.54) Therefore we can drop the bars over hµν , as long as we are in this gauge. 6 WEAK FIELDS AND GRAVITATIONAL RADIATION 152 One nice feature of the transverse traceless gauge is that if you are given the components o",
-    "why": null
-   },
-   "eq. (7.29)": {
-    "verified": true,
-    "snippet": "(7.29) r r This is true for any spherically symmetric vacuum solution to Einstein’s equations; M func- tions as a parameter, which we happen to know can be interpreted as the conventional 7 THE SCHWARZSCHILD SOLUTION AND",
-    "why": null
-   },
-   "eq. (7.41)": {
-    "verified": true,
-    "snippet": "(7.41) r The Killing vector whose conserved quantity is the magnitude of the angular momentum is L = ∂φ , or \u0010 \u0011 Lµ = 0, 0, 0, r 2 sin2 θ . (7.42) Since (7.40) implies that sin θ = 1 along the geodesics of interest to us",
-    "why": null
-   },
-   "eq. (8.36)": {
-    "verified": true,
-    "snippet": "(8.36) a 3 a Together these are known as the Friedmann equations, and metrics of the form (8.7) which obey these equations define Friedmann-Robertson-Walker (FRW) universes. There is a bunch of terminology which is assoc",
     "why": null
    },
    "eq. (4.60)": {
@@ -1344,6 +1334,16 @@
     "snippet": "(4.67) −g δg µν 2 The fact that this simple action leads to the same vacuum field equations as we had previously arrived at by more informal arguments certainly reassures us that we are doing something right. What we wou",
     "why": null
    },
+   "eq. (4.72)": {
+    "verified": true,
+    "snippet": "(4.72) This is known as the Weak Energy Condition, or WEC. It seems like a fairly reasonable requirement, and many of the important theorems about solutions to general relativity (such as the singularity theorems of Hawk",
+    "why": null
+   },
+   "eq. (5.40)": {
+    "verified": true,
+    "snippet": "(5.40) 5 MORE GEOMETRY 140 By (5.25), one implication of a symmetry is that, if T is symmetric under some one-parameter family of diffeomorphisms, we can always find a coordinate system in which the components of T are a",
+    "why": null
+   },
    "eq. (5.42)": {
     "verified": true,
     "snippet": "(5.42) This last version is Killing’s equation. If a spacetime has a Killing vector, then we know we can find a coordinate system in which the metric is independent of one of the coordinates. By far the most useful fact",
@@ -1357,6 +1357,36 @@
    "eq. (5.46)": {
     "verified": true,
     "snippet": "(5.46) You can check for yourself that this actually does solve Killing’s equation. Note that in n ≥ 2 dimensions, there can be more Killing vectors than dimensions. This is because a set of Killing vector fields can be",
+    "why": null
+   },
+   "eq. (6.54)": {
+    "verified": true,
+    "snippet": "(6.54) Therefore we can drop the bars over hµν , as long as we are in this gauge. 6 WEAK FIELDS AND GRAVITATIONAL RADIATION 152 One nice feature of the transverse traceless gauge is that if you are given the components o",
+    "why": null
+   },
+   "eq. (7.29)": {
+    "verified": true,
+    "snippet": "(7.29) r r This is true for any spherically symmetric vacuum solution to Einstein’s equations; M func- tions as a parameter, which we happen to know can be interpreted as the conventional 7 THE SCHWARZSCHILD SOLUTION AND",
+    "why": null
+   },
+   "eq. (7.41)": {
+    "verified": true,
+    "snippet": "(7.41) r The Killing vector whose conserved quantity is the magnitude of the angular momentum is L = ∂φ , or \u0010 \u0011 Lµ = 0, 0, 0, r 2 sin2 θ . (7.42) Since (7.40) implies that sin θ = 1 along the geodesics of interest to us",
+    "why": null
+   },
+   "eq. (8.1)": {
+    "verified": true,
+    "snippet": "(8.1) Here t is the timelike coordinate, and (u1 , u2, u3 ) are the coordinates on Σ; γij is the max- imally symmetric metric on Σ. This formula is a special case of (7.2), which we used to derive the Schwarzschild metri",
+    "why": null
+   },
+   "eq. (8.35)": {
+    "verified": true,
+    "snippet": "(8.35) we must have ä < 0. Since we know from observations of distant galaxies that the universe is expanding (ȧ > 0), this means that the universe is “decelerating.” This is what we should expect, since the gravitatio",
+    "why": null
+   },
+   "eq. (8.36)": {
+    "verified": true,
+    "snippet": "(8.36) a 3 a Together these are known as the Friedmann equations, and metrics of the form (8.7) which obey these equations define Friedmann-Robertson-Walker (FRW) universes. There is a bunch of terminology which is assoc",
     "why": null
    }
   },
@@ -1926,6 +1956,21 @@
   },
   "citations": 67,
   "citations_via": "Semantic Scholar"
+ },
+ "dyer-hinterbichler-2008": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Boundary Terms, Variational Principles and Higher Derivative Modified Gravity",
+  "locations": {
+   "eq. (4.4)": {
+    "verified": true,
+    "snippet": "(4.4) V 2 We now have the boundary variation vanishing without any restriction on the normal derivatives. However, if this is the only property we desire, the 20 choice of 2K for the boundary term is not unique. We are f",
+    "why": null
+   }
+  },
+  "citations": 228,
+  "citations_via": "OpenAlex"
  },
  "edmonds-1957": {
   "checked": "2026-11-08",
@@ -3155,6 +3200,11 @@
     "verified": true,
     "snippet": "3.3 The chirality The chirality χ commutes with π(A) and J π(A)J −1 , and is hermitian, so that it can be written as a block diagonal matrix, χ = ⊕ Ini ⊗ χij ⊗ Inj .",
     "why": null
+   },
+   "Section 3.4": {
+    "verified": true,
+    "snippet": "3.4 The Dirac operator As we have already pointed out, a first order operator D on a (A, B)-bimodule M is an operator that satisfies D(xψy) = xD(ψy) + D(xψ)y − xD(ψ)y, for any ψ ∈ M, x ∈ A a",
+    "why": null
    }
   },
   "citations": 165,
@@ -3843,6 +3893,11 @@
     "verified": true,
     "snippet": "Lemma 2. The Hilbert subspace Hij has the following form: Hij = Cni ⊗ Crij ⊗ Cnj where rij are some integers, rij ≥ 0. We take Hij = 0 iff rij = 0. An element a acts on Hij from the left as ai ⊗ 1 ⊗ 1 and from the right",
     "why": null
+   },
+   "Lemma 6": {
+    "verified": true,
+    "snippet": "Lemma 6. The Dirac operator component Dij,kl vanishes unless i = k or j = l. In either of these cases D must commute with the corresponding action of the A or A0 , respectively. Proof: Let us rewrite the condition (2) fo",
+    "why": null
    }
   },
   "citations": 110,
@@ -4423,6 +4478,56 @@
   },
   "citations": 352,
   "citations_via": "Semantic Scholar"
+ },
+ "teschl-2009": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "Open Library",
+  "fetched_title": "Mathematical Methods in Quantum Mechanics With Applications to Schrödinger Operators",
+  "locations": {
+   "Lemma 6.10, p. 140": {
+    "verified": true,
+    "snippet": "Lemma 6.10. A compact operator K is Hilbert–Schmidt if and only if X kKψn k2 < ∞ (6.16) n for some orthonorma",
+    "why": null,
+    "page": 140
+   },
+   "Lemma 6.12, p. 141": {
+    "verified": true,
+    "snippet": "Lemma 6.12. The spaces Jp (H) together with the norm k.kp are Banach spaces. Moreover,   \u0010 X \u00111/p  kKkp",
+    "why": null,
+    "page": 141
+   },
+   "Lemma 6.13, p. 142": {
+    "verified": true,
+    "snippet": "Lemma 6.13. An operator is trace class if and only if it can be written as the product of two Hilbert–Schmidt operators, K = K1 K2 , and in this case",
+    "why": null,
+    "page": 142
+   },
+   "Theorem 6.6, p. 136": {
+    "verified": true,
+    "snippet": "Theorem 6.6 (Spectral theorem for compact operators). Suppose the op- erator K is self-adjoint and compact. Then the spectrum of K consists of an at most countable number of eigenvalues which can only cluster at 0. Moreo",
+    "why": null,
+    "page": 136
+   },
+   "Theorem 6.7, p. 137": {
+    "verified": true,
+    "snippet": "Theorem 6.7 (Canonical form of compact operators). Let K be compact. There exist orthonormal sets {φ̂j }, {φj } and positive numbers sj = sj (K) such that X X K= sj hφ",
+    "why": null,
+    "page": 137
+   }
+  },
+  "citations": null,
+  "citations_via": "unavailable",
+  "fulltext": {
+   "url": "https://www.mat.univie.ac.at/~gerald/ftp/book-schroe/schroe.pdf",
+   "edition": "the author's online edition of GSM 99 (AMS 2009), page numbers as printed",
+   "sha256": "8dc8de0b58aa0a3fedfe594a345f9b5875322e5526ea581cb640a98d55b82818",
+   "md5": "e7b3488759cfa229d2d145b96eb9828b",
+   "bytes": 1538372,
+   "page_offset": 12,
+   "pages_from": "printed page numbers (289 of 292 numbered pages)",
+   "why": null
+  }
  },
  "thiemann-1998": {
   "checked": "2026-11-08",

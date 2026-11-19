@@ -1091,6 +1091,17 @@ references:
     cite: "W. Huang, R. Wang, Y. Wu, D. Meng, Exact Endpoint Asymptotics and Almost-Sure Limits for Uniform Empirical Measures in Two Dimensions (2026), arXiv:2610.21070"
     title: "Exact Endpoint Asymptotics and Almost-Sure Limits for Uniform Empirical Measures in Two Dimensions"
     arxiv: "2610.21070"
+  teschl-2009:
+    cite: "G. Teschl, Mathematical Methods in Quantum Mechanics, With Applications to Schrödinger Operators, Graduate Studies in Mathematics 99, American Mathematical Society (2009)"
+    title: "Mathematical Methods in Quantum Mechanics"
+    isbn: "9780821846605"
+    fulltext: https://www.mat.univie.ac.at/~gerald/ftp/book-schroe/schroe.pdf
+    edition: "the author's online edition of GSM 99 (AMS 2009), page numbers as printed"
+    sha256: 8dc8de0b58aa0a3fedfe594a345f9b5875322e5526ea581cb640a98d55b82818
+  dyer-hinterbichler-2008:
+    cite: "E. Dyer and K. Hinterbichler, Boundary Terms, Variational Principles and Higher Derivative Modified Gravity, arXiv:0809.4033"
+    title: "Boundary Terms, Variational Principles and Higher Derivative Modified Gravity"
+    arxiv: "0809.4033"
 
 canonical:
   pl-topology: [lickorish-1999, moise-1977]
@@ -1230,6 +1241,10 @@ milestones:
       - {ref: turaev-1994, location: "Chapter: Chapter II. Invariants of closed 3-manifolds|10.1515/9783110883275-003"}
       - {ref: turaev-1994, location: "Chapter: Chapter XI. An algebraic construction of modular categories|10.1515/9783110883275-012"}
   GE1:
+    class: sourced
+    refs:
+      - {ref: carroll-1997, location: "Chapter 3", check: "Curvature"}
+  GE11:
     class: sourced
     refs:
       - {ref: carroll-1997, location: "Chapter 3", check: "Curvature"}

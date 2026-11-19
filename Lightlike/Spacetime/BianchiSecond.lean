@@ -14,10 +14,15 @@ Proof (operator form): near `x` the curvature field is `R(Y,Z)W = D_Y D_Z W - D_
 linearity and antisymmetry of the curvature in its first slots turns the remaining terms `R(∇_X Y, Z) + R(Y, ∇_X Z)`
 into `R([X,Y], Z)`.
 
-**Differences from the task `T-GE1-P7`** (which stays open): the task is for any `ModelWithCorners`, with
-`IsLeviCivita`, and no Hausdorff hypothesis; this theorem assumes no boundary, a locally smooth connection (`LocallySmoothConnection`, no Hausdorff hypothesis), and
-only `cov.torsion = 0`. The comparison with Wald, *General Relativity*, eq. (3.2.13), is pending: the source was not
-read at the cited location.
+**Former task `T-GE1-P7`, closed by `bianchi_second_proved`.** Differences from the task statement (approved on 18 November 2026, updated
+for the metrics of any signature of GE11): (1) no boundary and a finite-dimensional model space `E` (`ModelWithCorners` `𝓘(ℝ, E)`) instead of any
+`ModelWithCorners` (this matches the source, where manifolds are charts onto open subsets of `ℝⁿ`); the connection is locally smooth
+(`LocallySmoothConnection`), with no Hausdorff hypothesis; the task also assumes `[IsManifold I 2 M]`, so that is not a difference; (2) more general:
+only `cov.torsion = 0` is assumed, not `IsLeviCivita` (no metric occurs). The statement was compared with Carroll, *Lecture Notes on General Relativity*
+(1997), ch. 3, eqs. (3.87) and (3.88) (read at those locations): Carroll proves `∇_{[λ} R_{ρσ]μν} = 0` for the Christoffel connection and remarks that a
+general connection has additional torsion terms; here the cyclic sum runs over the derivative slot and the two vector slots of `R(·,·)W`, which is the same
+identity for the Christoffel connection by the pair symmetry (3.79) (kind: representation). The general statement (any `ModelWithCorners`) is the
+milestone GE11. The comparison with Wald, *General Relativity*, eq. (3.2.13), is pending: the source was not read at the cited location.
 -/
 
 open Bundle Manifold Set VectorField NormedSpace FiberBundle Filter
