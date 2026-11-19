@@ -21,16 +21,20 @@ http://www.blau.itp.unibe.ch/newlecturesGR.pdf, read in the PDF (printed page = 
   the Ricci identity at the three cyclic orderings, the antisymmetry, and the first Bianchi identity
   (`IsCoordMetric.bianchi_first`), rather than from (13.6)–(13.7).
 
+* `rigVec_eq_zero_of_isPreconnected`, `eq_of_rigVec_eq`: the rigidity statement after (14.2), on a connected open set:
+  a covector satisfying Killing's equation is determined by `θ` and `∂θ` (equivalently `∇θ`) at one point. Proof: along
+  a segment `(θ, ∂θ)` solves a linear ODE with continuous coefficients (`pd_pd_killing`, `rigVec_eq_zero_of_segment`,
+  `linear_ode_eq_zero` by Gronwall's inequality), and the zero set is open and relatively closed.
+
 Differences:
 * representation: in coordinates for a coordinate metric on an open set, for the covector `θ = K♭`; the index placement
   of (13.8) is that of our Riemann convention.
+* representation: "everywhere" is a connected open set of the chart (the source's tacit assumption); the proof is by
+  uniqueness for a linear ODE, valid for smooth fields, not the source's Taylor expansion.
 
 ## Plan
 
-1. Uniqueness in coordinates: along a segment in the domain, `(θ, ∂θ)` solves a linear ODE whose coefficients are
-   continuous (Christoffel symbols, their derivatives, the curvature); `θ` and `∂θ` vanish at one point ⇒ along the segment
-   (Gronwall); a clopen argument on a connected domain ⇒ everywhere. This replaces the source's Taylor-expansion remark
-   (which needs analyticity) by ODE uniqueness, valid for smooth fields.
+1. (done) Uniqueness in coordinates, above.
 2. On a manifold: Killing fields in charts satisfy the coordinate Killing equation; a Killing field on a connected manifold
    vanishing with its covariant derivative at one point vanishes.
 3. The bound (14.4) and the Killing algebra of the model type (G1-024's isometry-group form).
