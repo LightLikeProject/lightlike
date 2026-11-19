@@ -277,7 +277,11 @@ The Schatten sum `‖K‖_p^p` is the supremum of `∑ₖ |⟪ψₖ, K ϕₖ⟫|
     `OperatorAlgebras.weylOp`, `OperatorAlgebras.isWeylSystem_weylOp`, `OperatorAlgebras.ccrAlgebra`,
     `OperatorAlgebras.ccrW`, `OperatorAlgebras.isWeylSystem_ccrW`, `OperatorAlgebras.symplecticForm`,
     `OperatorAlgebras.CCRRep.isWeylSystem`, `OperatorAlgebras.IsWeylSystem.mem_spectrum`, `OperatorAlgebras.IsWeylSystem.norm_sub`,
-    `OperatorAlgebras.IsWeylSystem.not_separableSpace`, `OperatorAlgebras.ccrAlgebra_not_separableSpace`
+    `OperatorAlgebras.IsWeylSystem.not_separableSpace`, `OperatorAlgebras.ccrAlgebra_not_separableSpace`,
+    `OperatorAlgebras.IsWeylSystem.conj_sum`, `OperatorAlgebras.IsWeylSystem.norm_coeff_zero_le`, `OperatorAlgebras.twMul`,
+    `OperatorAlgebras.twNormSq`, `OperatorAlgebras.IsWeylSystem.linearCombination_twMul`,
+    `OperatorAlgebras.IsWeylSystem.linearCombination_twNormSq`, `OperatorAlgebras.twNormSq_apply_zero`,
+    `OperatorAlgebras.IsWeylSystem.norm_apply_zero_le`, `OperatorAlgebras.IsWeylSystem.sum_norm_sq_le`
 72. Lightlike/OperatorAlgebras/TestsWeylAlgebra.lean - `OperatorAlgebras.IsWeylSystem.mul_twist`,
     `OperatorAlgebras.IsWeylSystem.mul_ne_mul`, `OperatorAlgebras.not_isSymplecticForm_zero`,
     `OperatorAlgebras.weylOp_ell2Basis_apply`, `OperatorAlgebras.ccrW_mul_ne` (the CCR algebra of `ℝ²` is not

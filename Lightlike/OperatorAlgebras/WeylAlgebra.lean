@@ -23,6 +23,10 @@ Example 4.2.2 the CCR-algebra", p. 122).
 * `IsWeylSystem.mem_spectrum`, `IsWeylSystem.norm_sub`, `IsWeylSystem.not_separableSpace`, `ccrAlgebra_not_separableSpace`:
   in a C*-algebra the spectrum of `W(χ)`, `χ ≠ 0`, is the unit circle, `‖W(φ) - W(ψ)‖ = 2` for `φ ≠ ψ`, and the algebra is
   not separable unless `V = 0` (Proposition 4.2.3 (2), (3));
+* `IsWeylSystem.conj_sum`, `IsWeylSystem.norm_coeff_zero_le`, `twMul`, `twNormSq`, `IsWeylSystem.linearCombination_twMul`,
+  `IsWeylSystem.linearCombination_twNormSq`, `twNormSq_apply_zero`, `IsWeylSystem.norm_apply_zero_le`,
+  `IsWeylSystem.sum_norm_sq_le`: in any C*-algebra the coefficient of `W(0)` is at most the norm (the averaging in the proof
+  of Lemma 4.2.7), and the `ℓ²` norm of the coefficients is at most the norm;
 * `weylOp ω B φ`: Example 4.2.2 on a Hilbert space with a Hilbert basis `B` indexed by `V` (for instance `ℓ²(V)`);
   `ccrAlgebra ω B`, the closed star subalgebra they generate, a C*-algebra, and `ccrW`, its Weyl system;
 * `CCRRep.isWeylSystem`: the Weyl unitaries of a representation of the CCR over a complex inner product space `h` form a
@@ -343,6 +347,78 @@ theorem IsWeylSystem.norm_coeff_zero_le (hω : IsSymplecticForm ω) (hW : IsWeyl
       refine ih c (le_of_eq ?_ |>.trans (Nat.zero_le n))
       refine Finset.card_eq_zero.mpr (Finset.filter_eq_empty_iff.mpr fun ψ hψ h => ?_)
       exact h.2 (hex ψ hψ h.1)
+
+variable (ω) in
+/-- **The twisted convolution** of finitely supported coefficient functions: the product of the Weyl relations,
+`(∑ fᵩ W(φ)) (∑ gᵩ W(ψ)) = ∑ fᵩ gᵩ e^{-iω(φ,ψ)/2} W(φ + ψ)`. -/
+noncomputable def twMul (f g : V →₀ ℂ) : V →₀ ℂ :=
+  f.sum fun φ a => g.sum fun ψ b => Finsupp.single (φ + ψ) (Complex.exp (-(Complex.I * ((ω φ ψ / 2 : ℝ) : ℂ))) * (a * b))
+
+variable (ω) in
+/-- The coefficients of `(∑ fᵩ W(φ))* (∑ fᵩ W(φ))`. -/
+noncomputable def twNormSq (f : V →₀ ℂ) : V →₀ ℂ :=
+  f.sum fun φ a => f.sum fun ψ b =>
+    Finsupp.single (-φ + ψ) (Complex.exp (-(Complex.I * ((ω (-φ) ψ / 2 : ℝ) : ℂ))) * (starRingEnd ℂ a * b))
+
+/-- `∑ (f ⋆ g)ᵩ W(φ) = (∑ fᵩ W(φ)) (∑ gᵩ W(φ))`. -/
+lemma IsWeylSystem.linearCombination_twMul (hW : IsWeylSystem ω W) (f g : V →₀ ℂ) :
+    Finsupp.linearCombination ℂ W (twMul ω f g) =
+      Finsupp.linearCombination ℂ W f * Finsupp.linearCombination ℂ W g := by
+  simp only [twMul, map_finsuppSum, map_sum, Finsupp.linearCombination_single, Finsupp.linearCombination_apply,
+    Finsupp.sum]
+  rw [Finset.sum_mul]
+  refine Finset.sum_congr rfl fun φ _ => ?_
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl fun ψ _ => ?_
+  rw [smul_mul_smul_comm, hW.mul, smul_smul, mul_comm]
+  exact Finsupp.sum_single_index (h := fun x (c : ℂ) => c • W x) (zero_smul ℂ _)
+
+/-- `∑ (twNormSq f)ᵩ W(φ) = (∑ fᵩ W(φ))* (∑ fᵩ W(φ))`. -/
+lemma IsWeylSystem.linearCombination_twNormSq (hW : IsWeylSystem ω W) (f : V →₀ ℂ) :
+    Finsupp.linearCombination ℂ W (twNormSq ω f) =
+      star (Finsupp.linearCombination ℂ W f) * Finsupp.linearCombination ℂ W f := by
+  simp only [twNormSq, map_finsuppSum, map_sum, Finsupp.linearCombination_single, Finsupp.linearCombination_apply,
+    Finsupp.sum]
+  rw [star_sum, Finset.sum_mul]
+  refine Finset.sum_congr rfl fun φ _ => ?_
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl fun ψ _ => ?_
+  rw [star_smul, ← hW.map_neg, smul_mul_smul_comm, hW.mul, smul_smul, mul_comm]
+  exact Finsupp.sum_single_index (h := fun x (c : ℂ) => c • W x) (zero_smul ℂ _)
+
+/-- The coefficient of `W(0)` in `(∑ fᵩ W(φ))* (∑ fᵩ W(φ))` is `∑ |fᵩ|²`. -/
+lemma twNormSq_apply_zero (hω : IsSymplecticForm ω) (f : V →₀ ℂ) :
+    twNormSq ω f 0 = ∑ φ ∈ f.support, ((‖f φ‖ ^ 2 : ℝ) : ℂ) := by
+  classical
+  simp only [twNormSq, Finsupp.sum_apply, Finsupp.single_apply]
+  rw [Finsupp.sum]
+  refine Finset.sum_congr rfl fun φ hφ => ?_
+  rw [Finsupp.sum, Finset.sum_eq_single φ]
+  · rw [if_pos (neg_add_cancel φ), _root_.map_neg ω φ, LinearMap.neg_apply, hω.self_eq_zero, neg_zero,
+      zero_div, Complex.ofReal_zero, mul_zero, neg_zero, Complex.exp_zero, one_mul, ← Complex.normSq_eq_conj_mul_self,
+      Complex.normSq_eq_norm_sq]
+  · intro ψ _ hψ
+    rw [if_neg]
+    intro h
+    exact hψ (by simpa using congrArg (φ + ·) h)
+  · intro h
+    exact absurd hφ h
+
+/-- `|f₀| ≤ ‖∑ fᵩ W(φ)‖` (`IsWeylSystem.norm_coeff_zero_le` for finitely supported coefficients). -/
+lemma IsWeylSystem.norm_apply_zero_le (hω : IsSymplecticForm ω) (hW : IsWeylSystem ω W) (f : V →₀ ℂ) :
+    ‖f 0‖ ≤ ‖Finsupp.linearCombination ℂ W f‖ := by
+  classical
+  have h := hW.norm_coeff_zero_le hω (insert 0 f.support) f (Finset.mem_insert_self _ _)
+  rwa [← Finsupp.sum_of_support_subset f (Finset.subset_insert _ _) (fun φ c => c • W φ)
+    (fun _ _ => zero_smul _ _), ← Finsupp.linearCombination_apply] at h
+
+/-- **The `ℓ²` norm of the coefficients is at most the norm**: `∑ |fᵩ|² ≤ ‖∑ fᵩ W(φ)‖²` in any C*-algebra. -/
+theorem IsWeylSystem.sum_norm_sq_le (hω : IsSymplecticForm ω) (hW : IsWeylSystem ω W) (f : V →₀ ℂ) :
+    ∑ φ ∈ f.support, ‖f φ‖ ^ 2 ≤ ‖Finsupp.linearCombination ℂ W f‖ ^ 2 := by
+  have h := hW.norm_apply_zero_le hω (twNormSq ω f)
+  rw [twNormSq_apply_zero hω, hW.linearCombination_twNormSq, CStarRing.norm_star_mul_self, ← sq,
+    ← Complex.ofReal_sum, Complex.norm_real, Real.norm_of_nonneg (Finset.sum_nonneg fun _ _ => sq_nonneg _)] at h
+  exact h
 
 end WeylNorm
 
