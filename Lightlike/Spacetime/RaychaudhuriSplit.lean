@@ -21,6 +21,8 @@ variable {n : ℕ}
 /-- `|X|² = Xₐᵦ X^{ab}`, indices raised with `G⁻¹`. -/
 noncomputable def normSqG (G X : Matrix (Fin n) (Fin n) ℝ) : ℝ := trace (G⁻¹ * X * G⁻¹ * Xᵀ)
 
+/-- **The split into expansion, shear and rotation**: for `M v = 0` and `g(v, v) = -1`,
+`tr(M²) = Θ²/(n-1) + σ² - ω²` with `Θ = tr M`, `σ = sym(gM) - (Θ/(n-1))(g + v♭v♭)` and `ω = antisym(gM)`. -/
 theorem trace_sq_split (G M : Matrix (Fin n) (Fin n) ℝ) (u : Fin n → ℝ) (hG : Gᵀ = G) (hGu : IsUnit G.det)
     (hMu : M *ᵥ u = 0) (hnorm : u ⬝ᵥ (G *ᵥ u) = -1) (hn : 1 < n) :
     trace (M * M) = (trace M) ^ 2 / (n - 1) +

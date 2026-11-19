@@ -54,6 +54,7 @@ section
 variable {v : (Fin n → ℝ) → Fin n → ℝ} (hg : IsCoordMetric g U) (hv : ∀ a, ContDiffOn ℝ ∞ (fun y => v y a) U)
 include hg hv
 
+/-- `∇_b vᵃ` is differentiable on `U`. -/
 theorem differentiableAt_covD {y : Fin n → ℝ} (hy : y ∈ U) (a b : Fin n) :
     DifferentiableAt ℝ (covD g v a b) y := by
   unfold covD
