@@ -15,8 +15,12 @@ exists a `Cᵏ`-extension of `(M, g)`. Otherwise, `(M, g)` is called `Cᵏ`-inex
 * `IsInextendible g`: no Hausdorff extension exists (in a given universe).
 
 **Differences from the source.**
-* (kind: weaker) The metrics of the library are smooth, so `IsInextendible` is inextendibility in the class of
-  smooth metrics; it is implied by the `Cᵏ`-inextendibility of the source for every `k` and does not imply it.
+* The definition is the source's Definition 2.15 with `k = ∞`: the metrics of the library are smooth.
+* (kind: weaker, for theorems stated with it) Inextendibility among smooth metrics is implied by the source's
+  `C⁰`-inextendibility (and by `Cᵏ`-inextendibility for every `k`), and is less than it: a manifold can be
+  inextendible with smooth metrics and extendible with continuous ones (the source's Section 1.1). So a theorem
+  `IsInextendible g` is weaker than the source's theorem that the maximal analytic Schwarzschild spacetime is
+  `C⁰`-inextendible.
 * (kind: representation) An embedding between manifolds of the same dimension is an open embedding; the definition
   asks for an open embedding. The source's manifolds are Hausdorff by convention; the Hausdorff property of the
   target is a hypothesis here (without it every manifold has an extension, by doubling a point of its boundary in
