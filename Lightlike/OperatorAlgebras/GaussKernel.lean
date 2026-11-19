@@ -19,6 +19,7 @@ attribute [local instance] InnerProductSpace.complexToReal
 
 variable {h : Type*} [NormedAddCommGroup h] [InnerProductSpace ℂ h]
 
+/-- `σ(f, g) = Im⟪f, g⟫` is the real inner product `⟪i f, g⟫_ℝ`. -/
 lemma symp_eq_real_inner (f g : h) : symp h f g = ⟪Complex.I • f, g⟫_ℝ := by
   rw [symp, real_inner_eq_re_inner, inner_smul_left]
   simp [Complex.conj_I, Complex.mul_re]
