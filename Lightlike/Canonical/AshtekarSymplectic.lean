@@ -8,7 +8,11 @@ import Lightlike.Spacetime.VariationDet
 For a co-triad `e` with `det e > 0`, the metric `h = eᵀ e`, a symmetric `K_ab` and the ADM momentum
 `π^{ab} = √h (K^{ab} − K h^{ab})` (indices raised with `h`, `K = h^{ab} K_ab`): along the path `(e + t δe, K + t δK)`,
 the triad part of the Ashtekar–Barbero potential is the variation of `√h K` plus half the ADM potential,
-`E^a_i δK^i_a = δ(√h K) + ½ π^{ab} δh_ab` with `K^i_a = K_ab e^b_i` (`triad_potential`).
+`E^a_i δK^i_a = δ(√h K) + ½ π^{ab} δh_ab` with `K^i_a = K_ab e^b_i` (`triad_potential`). With `∫ E δΓ = 0` (`SpinVariation.lean`), for
+`A = Γ + γ K` (`abConn`): `∫ E δA = γ ∫ E δK` for every `K` (`integral_E_dAbConn_eq_triadK`, Holst (5)–(6)), and for a
+symmetric `K` `∫ E δA = γ ∫ δ(√h K) + (γ/2) ∫ π δh` (`integral_E_dAbConn`): up to the factor `γ/2` and an exact term
+the potential is the ADM potential (Ashtekar–Lewandowski (2.19)–(2.21); Gourgoulhon (4.106)–(4.109)). Without the
+symmetry the ADM form fails (`triad_potential_needs_symm`).
 
 Here `K` is the extrinsic curvature in the sign of Ashtekar–Lewandowski (2.18), `K_ab = q_a^α q_b^β ∇_α n_β` with `n`
 future directed, the opposite of the sign `K(u, v) = −u · ∇_v n` (Gourgoulhon (2.43)) of the library's extrinsic
@@ -70,6 +74,21 @@ lemma hasDerivAt_triadK_path (e δe K δK : Matrix (Fin 3) (Fin 3) ℝ) (hdet : 
   simp only [zero_smul, add_zero, Matrix.sub_apply, mul_neg, Finset.sum_add_distrib,
     Finset.sum_neg_distrib, Matrix.mul_apply (M := δK), Matrix.mul_apply (M := K), sub_eq_add_neg]
 
+/-- The variation of the metric `h = eᵀ e` along `e + t δe`: `δh = δeᵀ e + eᵀ δe`. -/
+lemma hasDerivAt_pathMetric (e δe : Matrix (Fin 3) (Fin 3) ℝ) (a b : Fin 3) :
+    HasDerivAt (fun t : ℝ => ((e + t • δe)ᵀ * (e + t • δe)) a b) ((δeᵀ * e + eᵀ * δe) a b) 0 := by
+  have hE : ∀ p q, HasDerivAt (fun t : ℝ => (e + t • δe) p q) (δe p q) 0 := fun p q => by
+    simp only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]
+    simpa using ((hasDerivAt_id (0 : ℝ)).mul_const (δe p q)).const_add (e p q)
+  have h := HasDerivAt.fun_sum fun l (_ : l ∈ Finset.univ) => (hE l a).mul (hE l b)
+  have hf : (fun t : ℝ => ((e + t • δe)ᵀ * (e + t • δe)) a b) =
+      fun t => ∑ l, (e + t • δe) l a * (e + t • δe) l b := funext fun t => by
+    simp only [Matrix.mul_apply, Matrix.transpose_apply]
+  rw [hf]
+  convert h using 1
+  simp only [zero_smul, Matrix.add_apply, Matrix.zero_apply, add_zero, Matrix.mul_apply, Matrix.transpose_apply,
+    Finset.sum_add_distrib]
+
 /-- **The triad part of the Ashtekar–Barbero potential**: for `det e > 0` and symmetric `K`, along the path
 `(e + t δe, K + t δK)` with `h_t = (e + t δe)ᵀ (e + t δe)`,
 `E^a_i δK^i_a = δ(√h h^{ab} K_ab) + ½ π^{ab} δh_ab`, where `E = |det e| e⁻¹` (`densTriad`), `K^i_a = (K e⁻¹)_{ai}`
@@ -87,9 +106,6 @@ theorem triad_potential (e δe K δK : Matrix (Fin 3) (Fin 3) ℝ) (hpos : 0 < e
     rw [Matrix.det_mul, Matrix.det_transpose, Real.sqrt_mul_self_eq_abs]
   have hinv : ∀ M : Matrix (Fin 3) (Fin 3) ℝ, (Mᵀ * M)⁻¹ = M⁻¹ * (M⁻¹)ᵀ := fun M => by
     rw [Matrix.mul_inv_rev, Matrix.transpose_nonsing_inv]
-  have hE : ∀ p q, HasDerivAt (fun t : ℝ => (e + t • δe) p q) (δe p q) 0 := fun p q => by
-    simp only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]
-    simpa using ((hasDerivAt_id (0 : ℝ)).mul_const (δe p q)).const_add (e p q)
   have hKd : ∀ p q, HasDerivAt (fun t : ℝ => (K + t • δK) p q) (δK p q) 0 := fun p q => by
     simp only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]
     simpa using ((hasDerivAt_id (0 : ℝ)).mul_const (δK p q)).const_add (K p q)
@@ -100,16 +116,8 @@ theorem triad_potential (e δe K δK : Matrix (Fin 3) (Fin 3) ℝ) (hpos : 0 < e
       (δK * e⁻¹ - K * (e⁻¹ * δe * e⁻¹)) a i := fun a i =>
     (hasDerivAt_triadK_path e δe K δK hpos.ne' a i).deriv
   -- the variation of `h`
-  have hH : ∀ a b, deriv (fun t : ℝ => ((e + t • δe)ᵀ * (e + t • δe)) a b) 0 = (δeᵀ * e + eᵀ * δe) a b := by
-    intro a b
-    have h := HasDerivAt.fun_sum fun l (_ : l ∈ Finset.univ) => (hE l a).mul (hE l b)
-    have hf : (fun t : ℝ => ((e + t • δe)ᵀ * (e + t • δe)) a b) =
-        fun t => ∑ l, (e + t • δe) l a * (e + t • δe) l b := funext fun t => by
-      simp only [Matrix.mul_apply, Matrix.transpose_apply]
-    rw [hf]
-    refine h.deriv.trans ?_
-    simp only [zero_smul, Matrix.add_apply, Matrix.zero_apply, add_zero, Matrix.mul_apply, Matrix.transpose_apply,
-      Finset.sum_add_distrib]
+  have hH : ∀ a b, deriv (fun t : ℝ => ((e + t • δe)ᵀ * (e + t • δe)) a b) 0 = (δeᵀ * e + eᵀ * δe) a b :=
+    fun a b => (hasDerivAt_pathMetric e δe a b).deriv
   -- the variation of `h^{ab} K_ab = tr(e⁻¹ e⁻ᵀ K)`
   have hT : HasDerivAt (fun t : ℝ => ((e + t • δe)⁻¹ * ((e + t • δe)⁻¹)ᵀ * (K + t • δK)).trace)
       ((-(e⁻¹ * δe * e⁻¹) * (e⁻¹)ᵀ * K + e⁻¹ * (-(e⁻¹ * δe * e⁻¹))ᵀ * K + e⁻¹ * (e⁻¹)ᵀ * δK).trace) 0 := by
@@ -188,5 +196,76 @@ theorem integral_E_dAbConn (γ : ℝ) (e δe : CoTriad) (K δK : TensorField 3)
   rw [← triad_potential (e y) (δe y) (K y) (δK y) (hpos y) (hK y)]
   simp only [hsplit, densTriad, Fin.sum_univ_three]
   ring
+
+
+/-- **The Ashtekar–Barbero potential on the full triad phase space**: for a smooth positively oriented co-triad `e`,
+a smooth compactly supported `δe` and any `K`, `δK` (no symmetry), along `(e + t δe, K + t δK)` with
+`h_t = (e + t δe)ᵀ (e + t δe)`, `∫ E^a_i δA^i_a = γ ∫ E^a_i δK^i_a` for `A = Γ + γ K` (`abConn`, `triadK`), as the
+integral of the difference: the spin-connection part vanishes (`integral_E_deriv_spinConn_eq_zero`; Holst (5)–(6),
+`∫ Ȧ′E′ = ∫ ȦE`). -/
+theorem integral_E_dAbConn_eq_triadK (γ : ℝ) (e δe : CoTriad) (K δK : TensorField 3)
+    (hs : ∀ k b, ContDiff ℝ ∞ (fun y => e y k b)) (hδ : ∀ k b, ContDiff ℝ ∞ (fun y => δe y k b))
+    (hδc : ∀ k b, HasCompactSupport (fun y => δe y k b)) (hpos : ∀ y, 0 < (e y).det) :
+    ∫ y, (∑ a, ∑ i, densTriad e y a i *
+        deriv (fun t : ℝ => abConn γ (fun z => e z + t • δe z) (fun z => (e z + t • δe z)ᵀ * (e z + t • δe z))
+          (fun z => K z + t • δK z) y a i) 0 -
+      γ * ∑ a, ∑ i, densTriad e y a i *
+        deriv (fun t : ℝ => triadK (fun z => e z + t • δe z) (fun z => K z + t • δK z) y a i) 0) = 0 := by
+  refine (MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)).trans
+    (integral_E_deriv_spinConn_eq_zero e δe hs hδ hδc hpos)
+  have hde : ∀ k b, DifferentiableAt ℝ (fun z => e z k b) y := fun k b => ((hs k b).differentiable (by simp)) y
+  have hdl : ∀ k b, DifferentiableAt ℝ (fun z => δe z k b) y := fun k b => ((hδ k b).differentiable (by simp)) y
+  have hsplit : ∀ a i, deriv (fun t : ℝ => abConn γ (fun z => e z + t • δe z)
+      (fun z => (e z + t • δe z)ᵀ * (e z + t • δe z)) (fun z => K z + t • δK z) y a i) 0 =
+      deriv (fun t : ℝ => spinConn (fun z => e z + t • δe z)
+        (fun z => (e z + t • δe z)ᵀ * (e z + t • δe z)) y a i) 0 +
+      γ * deriv (fun t : ℝ => triadK (fun z => e z + t • δe z) (fun z => K z + t • δK z) y a i) 0 := by
+    intro a i
+    have h1 := ((contDiffAt_spinConn_path e δe y hde hdl (hpos y).ne' a i).differentiableAt
+      (by simp)).hasDerivAt
+    have h2 : DifferentiableAt ℝ
+        (fun t : ℝ => triadK (fun z => e z + t • δe z) (fun z => K z + t • δK z) y a i) 0 :=
+      (hasDerivAt_triadK_path (e y) (δe y) (K y) (δK y) (hpos y).ne' a i).differentiableAt
+    exact (h1.add (h2.hasDerivAt.const_mul γ)).deriv
+  simp only [hsplit, Fin.sum_univ_three]
+  ring
+
+/-- The trace of a symmetric matrix times an antisymmetric one vanishes. -/
+lemma trace_mul_eq_zero_of_antisymm {S A : Matrix (Fin 3) (Fin 3) ℝ} (hS : Sᵀ = S) (hA : Aᵀ = -A) :
+    (S * A).trace = 0 := by
+  have h : (S * A).trace = -(S * A).trace := by
+    conv_lhs => rw [← Matrix.trace_transpose, Matrix.transpose_mul, hA, hS, Matrix.neg_mul, Matrix.trace_neg,
+      Matrix.trace_mul_comm]
+  linarith
+
+/-- **Trust check: `triad_potential` needs the symmetry of `K`** (the Gauss constraint). For `e = 1`, the antisymmetric
+`K = E₀₁ − E₁₀`, `δe = E₁₀` and `δK = 0`, the triad potential `E^a_i δK^i_a` is `−1`, while
+`δ(√h K) + ½ π^{ab} δh_ab = 0`. -/
+theorem triad_potential_needs_symm :
+    ¬ ∀ e δe K δK : Matrix (Fin 3) (Fin 3) ℝ, 0 < e.det →
+      ∑ a, ∑ i, (|e.det| • e⁻¹) a i * deriv (fun t : ℝ => ((K + t • δK) * (e + t • δe)⁻¹) a i) 0 =
+        deriv (fun t : ℝ => Real.sqrt ((e + t • δe)ᵀ * (e + t • δe)).det *
+          (((e + t • δe)ᵀ * (e + t • δe))⁻¹ * (K + t • δK)).trace) 0 +
+        (1 / 2) * ∑ a, ∑ b, (Real.sqrt (eᵀ * e).det • ((eᵀ * e)⁻¹ * K * (eᵀ * e)⁻¹ -
+            ((eᵀ * e)⁻¹ * K).trace • (eᵀ * e)⁻¹)) a b *
+          deriv (fun t : ℝ => ((e + t • δe)ᵀ * (e + t • δe)) a b) 0 := by
+  intro h
+  set δe : Matrix (Fin 3) (Fin 3) ℝ := Matrix.single 1 0 1 with hδe
+  set K : Matrix (Fin 3) (Fin 3) ℝ := Matrix.single 0 1 1 - Matrix.single 1 0 1 with hKdef
+  have hKT : Kᵀ = -K := by
+    rw [hKdef, Matrix.transpose_sub, Matrix.transpose_single, Matrix.transpose_single, neg_sub]
+  have h0 := h 1 δe K 0 (by simp)
+  have hL := fun a i => (hasDerivAt_triadK_path 1 δe K 0 (by simp) a i).deriv
+  have hH := fun a b => (hasDerivAt_pathMetric 1 δe a b).deriv
+  have hG : deriv (fun t : ℝ => Real.sqrt ((1 + t • δe)ᵀ * (1 + t • δe)).det *
+      (((1 + t • δe)ᵀ * (1 + t • δe))⁻¹ * (K + t • (0 : Matrix (Fin 3) (Fin 3) ℝ))).trace) 0 = 0 := by
+    have hz : (fun t : ℝ => Real.sqrt ((1 + t • δe)ᵀ * (1 + t • δe)).det *
+        (((1 + t • δe)ᵀ * (1 + t • δe))⁻¹ * (K + t • (0 : Matrix (Fin 3) (Fin 3) ℝ))).trace) = fun _ => 0 := by
+      funext t
+      rw [smul_zero, add_zero, trace_mul_eq_zero_of_antisymm _ hKT, mul_zero]
+      rw [Matrix.transpose_nonsing_inv, Matrix.transpose_mul, Matrix.transpose_transpose]
+    rw [hz, deriv_const]
+  simp only [hL, hH, hG] at h0
+  simp [hδe, hKdef, Matrix.trace, Fin.sum_univ_three, Matrix.mul_apply, Matrix.single_apply] at h0
 
 end Lightlike.Canonical

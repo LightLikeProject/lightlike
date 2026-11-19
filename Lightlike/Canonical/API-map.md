@@ -48,9 +48,9 @@ vanishes by the first Bianchi identity and the Palatini term is `det e · R`, so
 Einstein–Hilbert density for every `γ` [22] {3} {4}; the dual term of a constant rotation connection is not zero [22]. The densitized triad contracted with the variation of
 the spin connection is a divergence, so `∫ E δΓ = 0` and the functional derivative of `∫ Γ E` is `Γ`, the fact behind
 the canonical transformation to the Ashtekar–Barbero variables [23] {4}; the derivative of the spin connection along a
-path of co-triads satisfies the linearised compatibility, so this holds for the actual variation of `Γ` [24]. With
-it, for a symmetric `K` (the Gauss constraint), the Ashtekar–Barbero potential `∫ E δA` is `γ/2` times the ADM potential
-`∫ π δh` plus the exact term `γ δ∫ √h K` [25] {3}.
+path of co-triads satisfies the linearised compatibility, so this holds for the actual variation of `Γ` [24]. So on the
+whole triad phase space `∫ E δA = γ ∫ E δK`, and for a symmetric `K` (the Gauss constraint) the Ashtekar–Barbero
+potential `∫ E δA` is `γ/2` times the ADM potential `∫ π δh` plus the exact term `γ δ∫ √h K` [25] {3}.
 
 A grid computation in dimension two (`scripts/adm_algebra_check.py`) supports the three brackets; with the kinetic
 coefficient `1/2` of dimension three, used in dimension two, the bracket of two Hamiltonian constraints differs from
@@ -96,7 +96,8 @@ the momentum constraint of the structure function.
 24. Lightlike/Canonical/SpinVariation.lean - `Lightlike.Canonical.linCompat_dSpin`,
     `Lightlike.Canonical.integral_E_deriv_spinConn_eq_zero`
 25. Lightlike/Canonical/AshtekarSymplectic.lean - `Lightlike.Canonical.triad_potential`,
-    `Lightlike.Canonical.integral_E_dAbConn`
+    `Lightlike.Canonical.integral_E_dAbConn_eq_triadK`, `Lightlike.Canonical.integral_E_dAbConn`,
+    `Lightlike.Canonical.triad_potential_needs_symm`
 
 ## References
 
