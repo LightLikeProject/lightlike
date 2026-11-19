@@ -10,7 +10,9 @@ Mathlib defines the multivariate Gaussian measure by its covariance, as the imag
 
 Borinsky's formal integral, the zero-dimensional field theory as a formal power series in `ħ`, has the coefficient `35λ²/384` at order `ħ²` for the quartic potential `λx⁴/4!`, the sum `1/128 + 1/16 + 1/48` of the symmetry factors of the three vacuum graphs; a wrong factor for the sunset graph is shown to fail [7] {2}.
 
-**Missing.** Wick's theorem as an explicit sum over all pairings of the positions (here the recursion and the cases of two and four points), the asymptotic expansion of the quartic integral and Feynman graphs with their symmetry factors as orbits are open [TODO]. The formal integral is compared with Borinsky's Definition 3.1.1 and eq. (3.1.8) {2}; the other statements are not yet compared with a source.
+The vacuum graphs with `m` four-valent vertices are the orbits of the pairings of their half-edges under the permutations that keep the vertices (the wreath product `S₄ ≀ S_m`, of order `24^m m!`), the symmetry factor of a graph is the inverse of the order of its stabilizer, its automorphism group, and the symmetry factors sum to `(4m - 1)!!/(24^m m!)`, by the class formula [8] {2}; for two vertices the sum is `35/384` and for one vertex `1/8`.
+
+**Missing.** Wick's theorem as an explicit sum over all pairings of the positions (here the recursion and the cases of two and four points) and the asymptotic expansion of the quartic integral are open [TODO]. The formal integral is compared with Borinsky's Definition 3.1.1 and eq. (3.1.8) {2}; the other statements are not yet compared with a source.
 
 ## Lean References
 
@@ -21,8 +23,10 @@ Borinsky's formal integral, the zero-dimensional field theory as a formal power 
 5. Lightlike/FieldTheory/Gaussian/Mono.lean - `FieldTheory.mono`, `FieldTheory.dmono`, `FieldTheory.hasLineDerivAt_mono`
 6. Lightlike/FieldTheory/Gaussian/Moments.lean - `FieldTheory.integrable_mono`, `FieldTheory.integral_dmono`, `FieldTheory.moment_cons`, `FieldTheory.moment_odd`, `FieldTheory.moment_two`, `FieldTheory.moment_four`
 7. Lightlike/FieldTheory/ZeroDim/FormalIntegral.lean - `FieldTheory.formalIntegral`, `FieldTheory.formalIntegral_quartic_two`
+8. Lightlike/FieldTheory/ZeroDim/Graphs.lean - `FieldTheory.vertexPerm`, `FieldTheory.Pairing`, `FieldTheory.sum_inv_card_stabilizer`,
+   `FieldTheory.sum_inv_aut`, `FieldTheory.sum_inv_aut_two`, `FieldTheory.sum_inv_aut_one`
 
 ## References
 
 1. Mathlib, `Mathlib/Probability/Distributions/Gaussian/Multivariate.lean` (`multivariateGaussian`, `stdGaussian`) and `Fernique.lean` (`IsGaussian.memLp_id`).
-2. M. Borinsky, Graphs in perturbation theory: Algebraic structure and asymptotics, PhD thesis, Humboldt-Universität zu Berlin (2018), arXiv:1807.02046, §3.1 (Definition 3.1.1, eq. (3.1.2), p. 22; eq. (3.1.8), p. 24).
+2. M. Borinsky, Graphs in perturbation theory: Algebraic structure and asymptotics, PhD thesis, Humboldt-Universität zu Berlin (2018), arXiv:1807.02046, §2.1 (Definitions 2.1.6, 2.1.7, p. 11), §2.3 (Proposition 2.3.1, p. 15) and §3.1 (Definition 3.1.1, eq. (3.1.2), p. 22; Proposition 3.1.1, p. 23; eq. (3.1.8), p. 24).
