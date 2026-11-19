@@ -90,3 +90,32 @@ Hilbert–Schmidt space `HS(V_ξ)` is `EuclideanSpace ℂ (ι × ι)` (matrix en
 and Tao's `ι_ξ(T)(g) = ⟨T, ρ_ξ(g)*⟩_HS` is written as `tr(T ρ(g)) = ∑ i j, T (i, j) ρ(g) j i`. Equivariance of
 the map under `G × G` is not stated. `real_not_forall_memLp_two`, `real_character_not_memLp_two`: the check for
 `ℝ` (no source statement).
+
+On `fable2/ha5-next`: `classFunctions_hilbertBasis` (the irreducible characters form a Hilbert basis of the class
+functions) was compared with Tao's post, §2 "Nonabelian Fourier analysis", the unnumbered passage after Remark 9
+(read 18 November 2026): a class function is an `f ∈ L²(G)` with `f(g x g⁻¹) = f(x)`; its Fourier coefficients
+are conjugation invariant, hence scalar by Corollary 5 (cited there as "Lemma 5"), and "the `χ_ξ` form an
+orthonormal basis" of `L²(G)^G`, with `χ_ξ(g) = tr ρ_ξ(g)`. Match. Representation: class functions are the
+classes fixed by the conjugation operators `conjTr μ s` on `L²`; the Fourier coefficient is the matrix of inner
+products `⟪ρ_ij, f⟫`. Also on this branch the hypothesis `[μ.Regular]` is removed from every statement
+(Mathlib's `instRegularOfIsHaarMeasureOfCompactSpace`), and `exists_isotypic_isometry_equivariant` states the
+equivariance of Proposition 8 for left translations (Theorem 1).
+
+## Weyl integration formula for SU(2) (gap row G3-150, started 18 November 2026)
+
+Source read (18 November 2026, PDF text of pages 47 to 51): C. Teleman, *Representation Theory*, lecture notes,
+"CT, Lent 2005" (as printed on the first page), https://math.berkeley.edu/~teleman/math/RepThry.pdf.
+
+| Statement in the source | Location | Content as read |
+| --- | --- | --- |
+| conjugacy classes of SU(2) | Lecture 20, §(20.3), Proposition 20.4, p. 48 | the normalised trace `½ Tr` is a homeomorphism from the set of conjugacy classes of SU(2) onto `[−1, 1]`; matrices in SU(2) are conjugate iff their eigenvalues `{z, z⁻¹}` agree up to order |
+| Weyl integration formula | Lecture 20, §(20.7), Theorem 20.9, p. 49 | for a continuous class function `f` on SU(2): `∫_{SU(2)} f(g) dg = ½ · (1/2π) ∫₀^{2π} f(φ) |Δ(φ)|² dφ = (1/π) ∫₀^{2π} f(φ) sin² φ dφ`, with `dg` of total volume 1, `Δ(φ) = e^{iφ} − e^{−iφ}`, and `f(φ)` the value of `f` at `diag(e^{iφ}, e^{−iφ})` |
+| characters of the irreducible representations | Lecture 21, Theorem 21.1, p. 50 | the character of `Symⁿ ℂ²` is `zⁿ + zⁿ⁻² + … + z⁻ⁿ = (zⁿ⁺¹ − z⁻ⁿ⁻¹)/(z − z⁻¹)`, of norm 1; these are all the irreducible representations |
+
+The source proves Theorem 20.9 geometrically (SU(2) as the unit sphere of the quaternions, slices of constant
+latitude have volume `C sin² φ dφ`). The formalisation is planned by a different route (proof route, not a
+difference of statement): every element is conjugate to a diagonal one, the two sides agree on the characters
+`χ_n` (Schur orthogonality on the left, a trigonometric integral on the right), and polynomials in `cos φ` are
+dense. The general Weyl integration formula for compact connected Lie groups (maximal tori, Weyl group) is not
+started: no source for it has been read. Mathlib (pinned tree): root systems and their Weyl groups exist
+(`Mathlib/LinearAlgebra/RootSystem/`), but there is nothing on maximal tori of compact Lie groups.

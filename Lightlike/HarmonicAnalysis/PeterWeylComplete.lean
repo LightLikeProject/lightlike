@@ -119,8 +119,6 @@ theorem convOp_eq_zero_of_orth {χ : Lp ℂ 2 μ} (hχ : OrthToCoeff μ χ) {φ 
   rw [hdense] at hmem
   simpa using hmem
 
-variable [μ.Regular]
-
 /-- **Completeness.** A function orthogonal to all irreducible matrix coefficients is zero. -/
 theorem eq_zero_of_orthogonal_coeffFamily {χ : Lp ℂ 2 μ} (hχ : OrthToCoeff μ χ) : χ = 0 := by
   -- `⟪χ, ψ⟫ = 0` for every continuous `ψ`

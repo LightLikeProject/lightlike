@@ -109,8 +109,6 @@ theorem isOrtho_isotypic {π π' : IrrClass G} (h : π ≠ π') : isotypic μ π
   rintro _ ⟨ij, rfl⟩ _ ⟨kl, rfl⟩
   exact (orthonormal_coeffFamily μ).2 fun hab => h (congrArg Sigma.fst hab)
 
-variable [μ.Regular]
-
 /-- **Peter–Weyl theorem (Hilbert sum form).** `L²(G, μ)` is the Hilbert sum of the isotypic components of the
 classes of irreducible unitary representations of the compact group `G`. -/
 theorem peterWeyl_isHilbertSum :
