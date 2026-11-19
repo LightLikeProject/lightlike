@@ -280,6 +280,7 @@ variable {n : ℕ}
 /-- `f ↦ f ∘ σ` on tuples. -/
 def permEquiv (σ : Equiv.Perm (Fin n)) : (Fin n → ι) ≃ (Fin n → ι) := σ.symm.arrowCongr (Equiv.refl ι)
 
+/-- `permEquiv σ f = f ∘ σ`. -/
 lemma permEquiv_apply (σ : Equiv.Perm (Fin n)) (f : Fin n → ι) : permEquiv σ f = f ∘ σ := by
   funext i; simp [permEquiv, Equiv.arrowCongr_apply]
 
@@ -288,6 +289,7 @@ noncomputable def permL (σ : Equiv.Perm (Fin n)) :
     lp (fun _ : Fin n → ι => ℂ) 2 →L[ℂ] lp (fun _ : Fin n → ι => ℂ) 2 :=
   (SecondQuantSlot.reindexL (permEquiv (ι := ι) σ)).toLinearIsometry.toContinuousLinearMap
 
+/-- The coefficients of `P_σ Φ`. -/
 lemma permL_apply (σ : Equiv.Perm (Fin n)) (Φ : lp (fun _ : Fin n → ι => ℂ) 2) (f : Fin n → ι) :
     permL σ Φ f = Φ (f ∘ σ) := by
   show Φ (permEquiv σ f) = _
