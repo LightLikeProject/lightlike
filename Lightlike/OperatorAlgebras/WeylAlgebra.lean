@@ -23,6 +23,10 @@ Example 4.2.2 the CCR-algebra", p. 122).
 * `IsWeylSystem.mem_spectrum`, `IsWeylSystem.norm_sub`, `IsWeylSystem.not_separableSpace`, `ccrAlgebra_not_separableSpace`:
   in a C*-algebra the spectrum of `W(χ)`, `χ ≠ 0`, is the unit circle, `‖W(φ) - W(ψ)‖ = 2` for `φ ≠ ψ`, and the algebra is
   not separable unless `V = 0` (Proposition 4.2.3 (2), (3));
+* `IsWeylSystem.conj_sum`, `IsWeylSystem.norm_coeff_zero_le`, `twMul`, `twNormSq`, `IsWeylSystem.linearCombination_twMul`,
+  `IsWeylSystem.linearCombination_twNormSq`, `twNormSq_apply_zero`, `IsWeylSystem.norm_apply_zero_le`,
+  `IsWeylSystem.sum_norm_sq_le`: in any C*-algebra the coefficient of `W(0)` is at most the norm (the averaging in the proof
+  of Lemma 4.2.7), and the `ℓ²` norm of the coefficients is at most the norm;
 * `weylOp ω B φ`: Example 4.2.2 on a Hilbert space with a Hilbert basis `B` indexed by `V` (for instance `ℓ²(V)`);
   `ccrAlgebra ω B`, the closed star subalgebra they generate, a C*-algebra, and `ccrW`, its Weyl system;
 * `CCRRep.isWeylSystem`: the Weyl unitaries of a representation of the CCR over a complex inner product space `h` form a
@@ -255,6 +259,166 @@ theorem IsWeylSystem.not_separableSpace [Nontrivial V] (hω : IsSymplecticForm �
   have hinj : Function.Injective fun t : ℝ => t • v := smul_left_injective ℝ hv
   have : Countable V := Set.countable_univ_iff.mp hc
   exact Cardinal.not_countable_real (Set.countable_univ_iff.mpr hinj.countable)
+
+/-- Conjugation of a finite combination of Weyl elements: `W(ξ) (∑ c_ψ W(ψ)) W(-ξ) = ∑ e^{-iω(ξ,ψ)} c_ψ W(ψ)`. -/
+lemma IsWeylSystem.conj_sum (hω : IsSymplecticForm ω) (hW : IsWeylSystem ω W) (ξ : V) (s : Finset V) (c : V → ℂ) :
+    W ξ * (∑ ψ ∈ s, c ψ • W ψ) * W (-ξ) =
+      ∑ ψ ∈ s, (Complex.exp (-(Complex.I * ((ω ξ ψ : ℝ) : ℂ))) * c ψ) • W ψ := by
+  rw [Finset.mul_sum, Finset.sum_mul]
+  refine Finset.sum_congr rfl fun ψ _ => ?_
+  rw [mul_smul_comm, smul_mul_assoc, hW.conj hω, smul_smul, mul_comm]
+
+/-- **The coefficient of `W(0)` is bounded by the norm** (Bär-Ginoux-Pfäffle, proof of Lemma 4.2.7, here in any
+C*-algebra): `|c₀| ≤ ‖∑_{ψ ∈ s} c_ψ W(ψ)‖`. Averaging `a` with `W(ξ) a W(ξ)*` for `ω(ξ, φ) = π` removes the term of
+`φ ≠ 0` and keeps the term of `0`, without increasing the norm. -/
+theorem IsWeylSystem.norm_coeff_zero_le (hω : IsSymplecticForm ω) (hW : IsWeylSystem ω W) (s : Finset V)
+    (c : V → ℂ) (h0 : (0 : V) ∈ s) : ‖c 0‖ ≤ ‖∑ ψ ∈ s, c ψ • W ψ‖ := by
+  classical
+  suffices key : ∀ n, ∀ c : V → ℂ, (s.filter fun ψ => ψ ≠ 0 ∧ c ψ ≠ 0).card ≤ n →
+      ‖c 0‖ ≤ ‖∑ ψ ∈ s, c ψ • W ψ‖ from key _ c le_rfl
+  intro n
+  induction n with
+  | zero =>
+    intro c hc
+    have hempty := Finset.card_eq_zero.mp (Nat.le_zero.mp hc)
+    have hsum : ∑ ψ ∈ s, c ψ • W ψ = c 0 • W 0 := by
+      refine Finset.sum_eq_single_of_mem 0 h0 fun ψ hψ hψ0 => ?_
+      by_contra hne
+      have hmem : ψ ∈ s.filter fun ψ => ψ ≠ 0 ∧ c ψ ≠ 0 :=
+        Finset.mem_filter.mpr ⟨hψ, hψ0, fun h => hne (by rw [h, zero_smul])⟩
+      rw [hempty] at hmem
+      exact Finset.notMem_empty _ hmem
+    rw [hsum, hW.map_zero, norm_smul, norm_one, mul_one]
+  | succ n ih =>
+    intro c hc
+    by_cases hex : ∃ φ ∈ s, φ ≠ 0 ∧ c φ ≠ 0
+    · obtain ⟨φ, hφs, hφ0, hcφ⟩ := hex
+      obtain ⟨ξ₀, hξ₀⟩ : ∃ ξ₀, ω ξ₀ φ ≠ 0 := by
+        by_contra h
+        push_neg at h
+        exact hφ0 (hω.nondeg φ fun ψ => by rw [hω.antisymm, h ψ, neg_zero])
+      set ξ := (Real.pi / ω ξ₀ φ) • ξ₀ with hξ
+      have hωξ : ω ξ φ = Real.pi := by
+        rw [hξ, map_smul, LinearMap.smul_apply, smul_eq_mul, div_mul_cancel₀ _ hξ₀]
+      set c' : V → ℂ := fun ψ => ((1 + Complex.exp (-(Complex.I * ((ω ξ ψ : ℝ) : ℂ)))) / 2) * c ψ with hc'
+      have hc'0 : c' 0 = c 0 := by
+        have hz : ω ξ 0 = 0 := _root_.map_zero (ω ξ)
+        simp only [hc', hz, Complex.ofReal_zero, mul_zero, neg_zero, Complex.exp_zero]
+        ring
+      have hc'φ : c' φ = 0 := by
+        simp only [hc', hωξ]
+        rw [mul_comm Complex.I, Complex.exp_neg, Complex.exp_pi_mul_I]
+        ring
+      have hsub : (s.filter fun ψ => ψ ≠ 0 ∧ c' ψ ≠ 0) ⊆ (s.filter fun ψ => ψ ≠ 0 ∧ c ψ ≠ 0).erase φ := by
+        intro ψ hψ
+        simp only [Finset.mem_filter, Finset.mem_erase] at hψ ⊢
+        refine ⟨fun h => hψ.2.2 (by rw [h]; exact hc'φ), hψ.1, hψ.2.1, fun h => hψ.2.2 ?_⟩
+        simp only [hc', h, mul_zero]
+      have hcard : (s.filter fun ψ => ψ ≠ 0 ∧ c' ψ ≠ 0).card ≤ n := by
+        have h1 := Finset.card_le_card hsub
+        have h2 := Finset.card_erase_of_mem (s := s.filter fun ψ => ψ ≠ 0 ∧ c ψ ≠ 0) (a := φ)
+          (Finset.mem_filter.mpr ⟨hφs, hφ0, hcφ⟩)
+        omega
+      have hsum' : ∑ ψ ∈ s, c' ψ • W ψ = (1 / 2 : ℂ) • ((∑ ψ ∈ s, c ψ • W ψ) +
+          W ξ * (∑ ψ ∈ s, c ψ • W ψ) * W (-ξ)) := by
+        rw [hW.conj_sum hω, ← Finset.sum_add_distrib, Finset.smul_sum]
+        refine Finset.sum_congr rfl fun ψ _ => ?_
+        rw [← add_smul, smul_smul]
+        congr 1
+        simp only [hc']
+        ring
+      have hnorm : ‖(1 / 2 : ℂ) • ((∑ ψ ∈ s, c ψ • W ψ) + W ξ * (∑ ψ ∈ s, c ψ • W ψ) * W (-ξ))‖ ≤
+          ‖∑ ψ ∈ s, c ψ • W ψ‖ := by
+        have hu : ‖W ξ * (∑ ψ ∈ s, c ψ • W ψ) * W (-ξ)‖ = ‖∑ ψ ∈ s, c ψ • W ψ‖ := by
+          rw [show W ξ = ((⟨W ξ, hW.mem_unitary hω ξ⟩ : unitary A) : A) from rfl,
+            show W (-ξ) = ((⟨W (-ξ), hW.mem_unitary hω (-ξ)⟩ : unitary A) : A) from rfl, mul_assoc,
+            CStarRing.norm_coe_unitary_mul, CStarRing.norm_mul_coe_unitary]
+        rw [norm_smul]
+        calc ‖(1 / 2 : ℂ)‖ * ‖(∑ ψ ∈ s, c ψ • W ψ) + W ξ * (∑ ψ ∈ s, c ψ • W ψ) * W (-ξ)‖
+            ≤ ‖(1 / 2 : ℂ)‖ * (‖∑ ψ ∈ s, c ψ • W ψ‖ + ‖W ξ * (∑ ψ ∈ s, c ψ • W ψ) * W (-ξ)‖) :=
+              mul_le_mul_of_nonneg_left (norm_add_le _ _) (norm_nonneg _)
+          _ = ‖∑ ψ ∈ s, c ψ • W ψ‖ := by
+              rw [hu, norm_div, norm_one, Complex.norm_two]
+              ring
+      calc ‖c 0‖ = ‖c' 0‖ := by rw [hc'0]
+        _ ≤ ‖∑ ψ ∈ s, c' ψ • W ψ‖ := ih c' hcard
+        _ ≤ ‖∑ ψ ∈ s, c ψ • W ψ‖ := by rw [hsum']; exact hnorm
+    · push_neg at hex
+      refine ih c (le_of_eq ?_ |>.trans (Nat.zero_le n))
+      refine Finset.card_eq_zero.mpr (Finset.filter_eq_empty_iff.mpr fun ψ hψ h => ?_)
+      exact h.2 (hex ψ hψ h.1)
+
+variable (ω) in
+/-- **The twisted convolution** of finitely supported coefficient functions: the product of the Weyl relations,
+`(∑ fᵩ W(φ)) (∑ gᵩ W(ψ)) = ∑ fᵩ gᵩ e^{-iω(φ,ψ)/2} W(φ + ψ)`. -/
+noncomputable def twMul (f g : V →₀ ℂ) : V →₀ ℂ :=
+  f.sum fun φ a => g.sum fun ψ b => Finsupp.single (φ + ψ) (Complex.exp (-(Complex.I * ((ω φ ψ / 2 : ℝ) : ℂ))) * (a * b))
+
+variable (ω) in
+/-- The coefficients of `(∑ fᵩ W(φ))* (∑ fᵩ W(φ))`. -/
+noncomputable def twNormSq (f : V →₀ ℂ) : V →₀ ℂ :=
+  f.sum fun φ a => f.sum fun ψ b =>
+    Finsupp.single (-φ + ψ) (Complex.exp (-(Complex.I * ((ω (-φ) ψ / 2 : ℝ) : ℂ))) * (starRingEnd ℂ a * b))
+
+/-- `∑ (f ⋆ g)ᵩ W(φ) = (∑ fᵩ W(φ)) (∑ gᵩ W(φ))`. -/
+lemma IsWeylSystem.linearCombination_twMul (hW : IsWeylSystem ω W) (f g : V →₀ ℂ) :
+    Finsupp.linearCombination ℂ W (twMul ω f g) =
+      Finsupp.linearCombination ℂ W f * Finsupp.linearCombination ℂ W g := by
+  simp only [twMul, map_finsuppSum, map_sum, Finsupp.linearCombination_single, Finsupp.linearCombination_apply,
+    Finsupp.sum]
+  rw [Finset.sum_mul]
+  refine Finset.sum_congr rfl fun φ _ => ?_
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl fun ψ _ => ?_
+  rw [smul_mul_smul_comm, hW.mul, smul_smul, mul_comm]
+  exact Finsupp.sum_single_index (h := fun x (c : ℂ) => c • W x) (zero_smul ℂ _)
+
+/-- `∑ (twNormSq f)ᵩ W(φ) = (∑ fᵩ W(φ))* (∑ fᵩ W(φ))`. -/
+lemma IsWeylSystem.linearCombination_twNormSq (hW : IsWeylSystem ω W) (f : V →₀ ℂ) :
+    Finsupp.linearCombination ℂ W (twNormSq ω f) =
+      star (Finsupp.linearCombination ℂ W f) * Finsupp.linearCombination ℂ W f := by
+  simp only [twNormSq, map_finsuppSum, map_sum, Finsupp.linearCombination_single, Finsupp.linearCombination_apply,
+    Finsupp.sum]
+  rw [star_sum, Finset.sum_mul]
+  refine Finset.sum_congr rfl fun φ _ => ?_
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl fun ψ _ => ?_
+  rw [star_smul, ← hW.map_neg, smul_mul_smul_comm, hW.mul, smul_smul, mul_comm]
+  exact Finsupp.sum_single_index (h := fun x (c : ℂ) => c • W x) (zero_smul ℂ _)
+
+/-- The coefficient of `W(0)` in `(∑ fᵩ W(φ))* (∑ fᵩ W(φ))` is `∑ |fᵩ|²`. -/
+lemma twNormSq_apply_zero (hω : IsSymplecticForm ω) (f : V →₀ ℂ) :
+    twNormSq ω f 0 = ∑ φ ∈ f.support, ((‖f φ‖ ^ 2 : ℝ) : ℂ) := by
+  classical
+  simp only [twNormSq, Finsupp.sum_apply, Finsupp.single_apply]
+  rw [Finsupp.sum]
+  refine Finset.sum_congr rfl fun φ hφ => ?_
+  rw [Finsupp.sum, Finset.sum_eq_single φ]
+  · rw [if_pos (neg_add_cancel φ), _root_.map_neg ω φ, LinearMap.neg_apply, hω.self_eq_zero, neg_zero,
+      zero_div, Complex.ofReal_zero, mul_zero, neg_zero, Complex.exp_zero, one_mul, ← Complex.normSq_eq_conj_mul_self,
+      Complex.normSq_eq_norm_sq]
+  · intro ψ _ hψ
+    rw [if_neg]
+    intro h
+    exact hψ (by simpa using congrArg (φ + ·) h)
+  · intro h
+    exact absurd hφ h
+
+/-- `|f₀| ≤ ‖∑ fᵩ W(φ)‖` (`IsWeylSystem.norm_coeff_zero_le` for finitely supported coefficients). -/
+lemma IsWeylSystem.norm_apply_zero_le (hω : IsSymplecticForm ω) (hW : IsWeylSystem ω W) (f : V →₀ ℂ) :
+    ‖f 0‖ ≤ ‖Finsupp.linearCombination ℂ W f‖ := by
+  classical
+  have h := hW.norm_coeff_zero_le hω (insert 0 f.support) f (Finset.mem_insert_self _ _)
+  rwa [← Finsupp.sum_of_support_subset f (Finset.subset_insert _ _) (fun φ c => c • W φ)
+    (fun _ _ => zero_smul _ _), ← Finsupp.linearCombination_apply] at h
+
+/-- **The `ℓ²` norm of the coefficients is at most the norm**: `∑ |fᵩ|² ≤ ‖∑ fᵩ W(φ)‖²` in any C*-algebra. -/
+theorem IsWeylSystem.sum_norm_sq_le (hω : IsSymplecticForm ω) (hW : IsWeylSystem ω W) (f : V →₀ ℂ) :
+    ∑ φ ∈ f.support, ‖f φ‖ ^ 2 ≤ ‖Finsupp.linearCombination ℂ W f‖ ^ 2 := by
+  have h := hW.norm_apply_zero_le hω (twNormSq ω f)
+  rw [twNormSq_apply_zero hω, hW.linearCombination_twNormSq, CStarRing.norm_star_mul_self, ← sq,
+    ← Complex.ofReal_sum, Complex.norm_real, Real.norm_of_nonneg (Finset.sum_nonneg fun _ _ => sq_nonneg _)] at h
+  exact h
 
 end WeylNorm
 
