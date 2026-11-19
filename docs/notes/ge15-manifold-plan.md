@@ -143,7 +143,7 @@ flux (`ehFluxDiv`) kept. Still needed: chart independence of the flux divergence
 | Formal statement (Lean) | Source (Carroll, gr-qc/9712019, ch. 4) | Match |
 | --- | --- | --- |
 | `eh_first_variation_manifold_compact` (`CompactVariation.lean`): for a metric `g` of any signature on `M` and a smooth symmetric tensor field `h` vanishing outside a compact set `K`, `d/dt ehAction (g + t h) Λ K = −∫_K ⟨G + Λ g, h⟩_g d vol_g` at `t = 0` | (4.66), p. 116: `δS = ∫ dⁿx √−g [R_{μν} − ½ R g_{μν}] δg^{μν}` | match. Convention: the metric is varied, not its inverse (`δg^{μν} = −g^{μα} g^{νβ} δg_{αβ}`), hence the sign. Representation: the action is the integral over a compact set `K` containing the support of the perturbation (the action over all of `M` need not converge); `Λ` is added |
-| `eh_first_variation_manifold_eq_zero` (`ManifoldCritical.lean`), `isEHCriticalOnBall_iff` (`BallCriticalConverse.lean`) | (4.67), p. 116: stationary points of the action are the solutions of Einstein's equation | weaker. On the manifold only "Einstein's equation implies stationary", for perturbations in one small coordinate ball; the equivalence is proved for coordinate metrics on a ball |
+| `isEHStationary_iff_einstein` (`EinsteinIntrinsic.lean`), `isEHStationary_iff` (`ManifoldStationary.lean`) | (4.67), p. 116: stationary points of the action are the solutions of Einstein's equation | match (see the section on (4.73), (4.74) below for the statement with `Λ`) |
 
 How the compact-support form is proved (no chart independence of the Palatini flux is used): `K` is cut
 into finitely many disjoint measurable pieces, each in a small coordinate ball; over a piece the derivative
@@ -154,8 +154,9 @@ of the action is the chart integral of the Einstein term plus the divergence of 
 formula equals `−∫ ⟨G + Λ g, ρ_i h⟩` by `eh_first_variation_manifold_intrinsic` and the uniqueness of the
 derivative (`eh_first_variation_of_cover`).
 
-Open: the converse "stationary implies Einstein's equation" for the manifold action. It needs test tensor
-fields `ψ (E_ab + E_ba)` built from chart data as smooth sections.
+The converse "stationary implies Einstein's equation" is proved with test tensor fields `η (E_ab + E_ba)`
+built from chart data (`SymBilinField.ofChart`, `testField`) and the fundamental lemma of the calculus of
+variations on an open set.
 
 ## Catalogue draft (for the integrator; `docs/results.yaml` is not edited by this stream)
 
@@ -183,3 +184,13 @@ some constant. The resulting field equations are `R_{μν} − ½ R g_{μν} + �
 | `isEHStationary_iff_ricci`: for `n ≠ 2`, stationary iff `Ric = (2Λ/(n − 2)) g` | not in Carroll at this place; algebraic consequence (trace of (4.74)), from `satisfiesEinstein_iff_ricci` | corollary |
 
 So the statements with `Λ` are compared with (4.73), (4.74), and those with `Λ = 0` with (4.66), (4.67).
+
+## Matter: Carroll (4.68) to (4.70), p. 116 (read)
+
+Carroll: `S = S_H / (8πG) + S_M` (4.68); "`(1/√−g) δS/δg^{μν} = (1/8πG)(R_{μν} − ½ R g_{μν}) +
+(1/√−g) δS_M/δg^{μν} = 0`" (4.69); "we recover Einstein's equations if we can set
+`T_{μν} = −(1/√−g) δS_M/δg^{μν}`" (4.70).
+
+| Formal statement (Lean) | Source | Match |
+| --- | --- | --- |
+| `total_action_stationary_iff` (`MatterEinstein.lean`): if `SM` has the energy-momentum tensor `T` at `g` (`HasMatterVariation`: `d/dt SM (g + t h) = ∫_K ⟨T, h⟩_g d vol_g` for every `h` vanishing outside the compact `K`) and `κ ≠ 0`, then `ehAction · Λ K / κ + SM` is stationary at `g` for all such `h`, `K` if and only if `G(u, v) + Λ g(u, v) = κ T(u, v)` at every point | (4.68) to (4.70) with `κ = 8πG` | match. Convention: the metric is varied, not its inverse, so (4.70) reads `δS_M = +∫ ⟨T, δg⟩ d vol`. Representation: the matter action is an arbitrary function of the metric with a prescribed first variation (no matter fields); `Λ` is included; actions over compact sets |
