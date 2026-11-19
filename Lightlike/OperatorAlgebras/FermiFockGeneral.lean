@@ -558,6 +558,7 @@ lemma annW_basis (i : ι) : annW B b (b i) = fermiAnn B i := by rw [annW, creW_b
 /-- **The field operator** `φ(w) = a*(w) + a(w)` (Dereziński, §7.1, p. 29). -/
 noncomputable def fockField (w : Z) : Γ →L[ℂ] Γ := creW B b w + annW B b w
 
+/-- **The field operator `φ(w) = a*(w) + a(w)` is self-adjoint** (Dereziński, Section 7.1, p. 30). -/
 lemma isSelfAdjoint_fockField (w : Z) : IsSelfAdjoint (fockField B b w) := by
   rw [IsSelfAdjoint, ContinuousLinearMap.star_eq_adjoint, fockField, map_add, annW,
     ContinuousLinearMap.adjoint_adjoint, add_comm]
