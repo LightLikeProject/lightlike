@@ -2234,3 +2234,16 @@
   review: kernel-checked
   note: "A smooth function f of a variable x in a finite-dimensional real normed space E and a parameter l, with a critical point at x = 0 for every l near l0 and a nondegenerate Hessian at (0, l0), is f(0, l) plus the sum of w_i y_i^2, w_i = plus or minus one, in coordinates (y, l) that are a smooth local diffeomorphism of (x, l) near (0, l0). The number of negative signs is the Morse index (the largest dimension of a subspace on which the Hessian is negative definite). The function x^3 at 0 has no such chart. The parametric form generalises Milnor's Morse lemma; comparison with the book at that location is pending. Limits: f is smooth on the whole of E times F; the critical point is at x = 0; the index is not shown to equal the number of negative eigenvalues for an inner product."
   since: unreleased
+- id: LL-XXXX
+  title: The Cardy asymptotics of the integrated spectral density with relative error O(Δ^{-1/2}) from modular invariance (Mukhametzhanov–Zhiboedov)
+  area: Asymptotics
+  file: Lightlike/Asymptotics/Tauberian/CardyRelative.lean
+  decls: [Lightlike.Tauberian.cardy_mz, Lightlike.Tauberian.cardy_counting]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: mukhametzhanov-zhiboedov-2019, location: "eq. (1.8)"}
+  review: kernel-checked
+  note: "For a positive measure σ (the spectrum in the variable x = Δ - c/12, v = c/12) whose Laplace transform Z(β) = ∫ e^{-βx} dσ is finite for β > 0, invariant under z ↦ 4π²/z for Re z > 0 (MZ (2.2)), and satisfies |Z(β) - e^{a/β}| ≤ C e^{(a-g)/β} for real 0 < β < β₀ (a = 4π² v = π² c/3, g > 0), the integrated density F(Δ) = σ(-∞, Δ - v] satisfies |F(Δ) · 2π (cΔ/3)^{1/4} e^{-2π√(cΔ/3)} - 1| ≤ K Δ^{-1/2} for large Δ (cardy_mz), i.e. MZ (1.8). cardy_counting is the intermediate form |σ(-∞, x] - I₀(2√(a x))| ≤ K x^{-3/4} e^{2√(a x)}, I₀(s) = (1/π) ∫₀^π e^{s cos θ} dθ. Compared with the source at eq. (1.8) and (2.2)-(2.4) (read 19 November 2026). Representation difference (reported to the maintainers, decision pending): a positive measure in the shifted variable instead of the density ρ(Δ) = Σ δ(Δ - Δ_O). The high-temperature hypothesis is assumed only for real β (MZ: |β| → 0 with Re β > 0), which is a weaker hypothesis. Route: MZ's Sections 3-5 with a pole-free smoothing in place of the contour functional (docs/notes/sp3-full-strength-attempts.md, attempt D). Non-vacuity: σ = δ_{-v} + ρ₀ (CardyExample.lean)."
+  since: unreleased

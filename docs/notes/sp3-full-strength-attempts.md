@@ -103,8 +103,33 @@ on the real line and a residue formula for a pole on a segment are not in the pi
 * assembly `cardy_counting` (`CardyCounting.lean`): `|sigma(-inf,Delta] - I_0(2 sqrt(a Delta))| <= K Delta^{-3/4}
   e^{2 sqrt(a Delta)}`; with `besselI0_eff` this is MZ (1.8) with the relative error `O(Delta^{-1/2})`.
 
-Comparison status against the source: statement not yet compared with the printed (1.8) in this stage
-("comparison pending"); the hypotheses are MZ's printed ones (see item 1).
+## Comparison of `cardy_mz` with the source (read 19 November 2026, arXiv:1904.06359v1, pdftotext)
+
+Locations (printed page numbers of v1): the Theorem with eq. (1.8), p. 7; modular invariance (2.2), its
+integral form (2.3) and the density of states (2.4), p. 8; the crossing kernel (2.6) and its Laplace
+transform (2.7), p. 9; the proof, (5.1) = (1.8) restated, p. 15, the estimates (5.8)-(5.17), pp. 17-19,
+and the remainder (5.18)-(5.19), pp. 19-20.
+
+* (1.8): `F(Δ) = ∫₀^Δ dΔ' ρ(Δ') = (1/2π) (3/(cΔ))^{1/4} e^{2π√(cΔ/3)} [1 + O(Δ^{-1/2})]`, `Δ → ∞`, for a positive
+  `ρ` with `Z(β) = ∫₀^∞ dΔ e^{-β(Δ - c/12)} ρ(Δ)` modular invariant, `Z(β) = Z(4π²/β)` (for `Re β > 0`, (2.2)),
+  and `Z(β) = e^{π²c/(3β)}(1 + O(e^{-Δ₁/β}))`, `Δ₁ > 0`, as `|β| → 0` with `Re β > 0`.
+* `cardy_mz` (CardyRelative.lean): `|F(Δ) · √(4π√(aΔ)) e^{-2√(aΔ)} - 1| ≤ K Δ^{-1/2}` for `Δ ≥ Δ₁`, with
+  `F(Δ) = σ(-∞, Δ - v]`, `v = c/12`, `a = 4π²v = π²c/3`. Since `2√(aΔ) = 2π√(cΔ/3)` and
+  `√(4π√(aΔ)) = 2π(cΔ/3)^{1/4}`, this is (1.8) with an explicit constant in the `O`.
+* Hypotheses (`SpectralHyp` + `hmodC`): `Z(β)` finite for `β > 0`; `Z(z) = Z(4π²/z)` for `Re z > 0` (= (2.2));
+  `|Z(β) - e^{a/β}| ≤ C e^{(a-g)/β}` for real `0 < β < β₀` (= the high-temperature form with `g = Δ₁`, but only
+  on the real axis); the real modular invariance field is implied by (2.2).
+* Difference (kind representation; reported to the maintainers 19 Nov, decision pending): `σ` is a positive
+  measure in the shifted variable `x = Δ - c/12` instead of the density `ρ(Δ) = Σ_O δ(Δ - Δ_O)` of (2.4);
+  `F(Δ) = σ(-∞, Δ - v]`; the main term is written `√(4π√(aΔ)) e^{-2√(aΔ)} = 2π(cΔ/3)^{1/4} e^{-2π√(cΔ/3)}`.
+* Not a difference: assuming the high-temperature form only for real `β → 0⁺` is a weaker hypothesis than MZ's
+  (complex `β`, `|β| → 0`), so the formal theorem is stronger; named in the docstring.
+* `cardy_counting` (CardyCounting.lean) is the step of Section 5: `F_σ - F_{ρ₀} = O(x^{-3/4} e^{2√(a x)})` with the
+  crossing kernel `ρ₀` of (2.6) (atom at `x = 0`, density `√(a/x) I₁(2√(a x))`; `laplaceC_rho0` = (2.7)), and
+  `F_{ρ₀}(x) = I₀(2√(a x))` (`rho0_real_Iic`). MZ bound the remainder (5.19) with the contour functional; route D
+  replaces it by the pole-free smoothing above.
+* Non-vacuity: `σ = δ_{-v} + ρ₀` (CardyExample.lean) satisfies all hypotheses; its counting function is
+  `1 + I₀(2√(a x))` exactly (`exampleSpectrum_real_Iic`, trust check).
 
 ## Difference of kind to name if only part lands
 

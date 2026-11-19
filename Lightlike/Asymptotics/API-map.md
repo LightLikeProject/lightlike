@@ -93,6 +93,8 @@ The Morse lemma with parameters: a smooth function of a variable and a parameter
 
 A positive measure on the half line whose Laplace transform grows like `e^{a/β}` in the logarithmic sense, `β log L(β) → a > 0` as `β → 0⁺`, has a counting function with `log F(X) / (2 √(a X)) → 1`: a logarithmic Tauberian theorem of Ingham type, the growth behind the Cardy formula [41] {3}. The upper bound is the saddle estimate `F(X) ≤ e^{β X} L(β)`, from the window estimates of the Laplace transform [39] {3}. For the lower bound the Laplace transform is split into three windows around the saddle `x = a / β²`; the outer two are bounded by the Laplace transform at slightly different `β`, so the middle window carries at least half of `L(β)` [40] {3}. The theorem is weaker than Ingham's, which gives the asymptotics of `F` itself; Karamata's theorem and Ingham's theorem with the power correction are open.
 
+Under the hypotheses of Mukhametzhanov and Zhiboedov (a positive spectrum whose partition function is invariant under `β ↦ 4π²/β` for `Re β > 0` and is `e^{a/β}(1 + O(e^{-g/β}))` at high temperature), the integrated spectral density has the Cardy asymptotics `F(Δ) = (1/2π)(3/(cΔ))^{1/4} e^{2π√(cΔ/3)} (1 + O(Δ^{-1/2}))` [42] {3}. The intermediate form compares the counting function with `I₀(2√(aΔ))` up to `O(Δ^{-3/4} e^{2√(aΔ)})` [43]; it rests on a pole-free smoothing of the step function, whose Fourier representation needs no inversion theorem [47], and on a comparison of a measure with its smoothing by unit windows against the local bound [48]. The distribution function of the crossing measure is `I₀(2√(ax))` [46], and `I₀` has an effective asymptotic expansion with relative error `O(1/s)` [45]. The spectrum `δ_{-v} + ρ₀` satisfies the hypotheses [44].
+
 ## Lean References
 
 1. Lightlike/Asymptotics/Saddle.lean - `Asymptotics.disc_eq`, `Asymptotics.saddle_root`,
@@ -257,6 +259,14 @@ A positive measure on the half line whose Laplace transform grows like `e^{a/β}
 40. Lightlike/Asymptotics/Tauberian/Lower.lean - `Tauberian.counting_lower`
 41. Lightlike/Asymptotics/Tauberian/Ingham.lean - `Tauberian.laplace_bounds`, `Tauberian.log_counting_le`,
     `Tauberian.lower_eventually`, `Tauberian.ingham_log`
+42. Lightlike/Asymptotics/Tauberian/CardyRelative.lean - `Tauberian.cardy_relative`, `Tauberian.cardy_mz`
+43. Lightlike/Asymptotics/Tauberian/CardyCounting.lean - `Tauberian.cardy_counting`, `Tauberian.integral_exp_rho0`
+44. Lightlike/Asymptotics/Tauberian/CardyExample.lean - `Tauberian.exampleSpectrum`, `Tauberian.exampleSpectrum_hyp`,
+    `Tauberian.exampleSpectrum_modC`
+45. Lightlike/Asymptotics/Tauberian/LaplaceEff.lean - `Tauberian.laplace_cos_eff`, `Tauberian.besselI0_eff`
+46. Lightlike/Asymptotics/Tauberian/Rho0Cdf.lean - `Tauberian.rho0_real_Iic`
+47. Lightlike/Asymptotics/Tauberian/Smoothing.lean - `Tauberian.fourier_inv_eq`, `Tauberian.smooth_representation`
+48. Lightlike/Asymptotics/Tauberian/Assembly.lean - `Tauberian.comparison_le`
 
 ## References
 
