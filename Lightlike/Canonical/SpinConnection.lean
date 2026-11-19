@@ -98,6 +98,8 @@ lemma covTriad_metric (he : IsCoTriad e h) (hg : IsCoordMetric h U) (hx : x ∈ 
 def covTriadMat (e : CoTriad) (h : TensorField 3) (x : Fin 3 → ℝ) (a : Fin 3) : Matrix (Fin 3) (Fin 3) ℝ :=
   Matrix.of fun i b => covTriad e h x a i b
 
+/-- Metric compatibility in matrix form: `C_aᵀ e + eᵀ C_a = 0` for `C_a = (∇_a e^i_b)`, i.e. `∇_a h = 0` for
+`h = eᵀ e` (`covTriad_metric`). -/
 lemma covTriad_metric_mat (he : IsCoTriad e h) (hg : IsCoordMetric h U) (hx : x ∈ U)
     (hd : ∀ i b, DifferentiableAt ℝ (fun y => e y i b) x) (a : Fin 3) :
     (covTriadMat e h x a)ᵀ * e x + (e x)ᵀ * covTriadMat e h x a = 0 := by

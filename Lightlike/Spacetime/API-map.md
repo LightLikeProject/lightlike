@@ -77,6 +77,8 @@ The null, weak, strong and dominant energy conditions are stated pointwise for a
 
 The divergence theorem on a manifold: for a metric of any signature, its Levi-Civita connection, a smooth vector field `X` vanishing outside a compact set and a measurable domain `D` given near every point of its closure by a defining function (`D = {u ≥ 0}`, `du ≠ 0` where `u = 0`), `∫_D div X d vol_g` is the flux of `X` through the boundary of `D`, written with a partition of unity subordinate to charts and graph charts of the boundary in each chart; a density `f · dV_g` is the case of the field `f X` [57]. In a chart, `√|g| ∇ₐXᵃ = ∂ⱼ(√|g| Xʲ)`, and the theorem in `ℝⁿ⁺¹` needs its hypothesis only on the support of the field [56] [57].
 
+The conformally related metric `e^{2ψ} g` of a coordinate metric has the Christoffel symbols `Γᵃ_{bc} + δᵃ_c ∂_b ψ + δᵃ_b ∂_c ψ - g_{bc} gᵃᵈ ∂_d ψ`, and the Riemann tensor of any metric whose Christoffel symbols differ from those of `g` by a tensor `C` is that of `g` plus the derivative and quadratic terms in `C` [62].
+
 ## Lean References
 
 1. Lightlike/Spacetime/Curvature.lean - `IsCoordMetric`, `christoffel`, `riemann`, `ricci`,
@@ -153,6 +155,7 @@ The divergence theorem on a manifold: for a metric of any signature, its Levi-Ci
 59. Lightlike/Spacetime/RaychaudhuriNull.lean - `covD_orthogonal_of_const`, `nullProj`, `nullB`, `nullShear`, `nullRotation`, `raychaudhuri_null_equation`, `nullShear_normSq_nonneg`, `nullRotation_eq_zero`, `raychaudhuri_null_focusing_at`, `raychaudhuri_null_focusing`: Raychaudhuri's equation and focusing for a null geodesic field in coordinates.
 60. Lightlike/Spacetime/RaychaudhuriNullManifold.lean - `screenProj`, `nullRotation_chart_eq_zero`, `raychaudhuri_null_focusing_manifold_at`, `raychaudhuri_null_focusing_manifold`: null geodesic focusing on a manifold.
 61. Lightlike/Spacetime/KillingMinkowski.lean - `eq_affine_of_skew_deriv`, `killing_eq_affField`, `finrank_skewEta`, `finrank_killingFields`: every `C²` Killing field of Minkowski space is affine with an η-skew linear part, and the Killing fields form a space of dimension `n (n + 1) / 2`.
+62. Lightlike/Spacetime/ConformalCoord.lean - `conformalMetric`, `christoffel_conformal`, `christoffel_conformal_eventually`, `conformalC`, `riemann_of_christoffel_add`, `ricci_of_christoffel_add`, `pd_metric_eq_christoffel`, `sum_conformalC_trace`: the conformal change of a coordinate metric.
 
 ## References
 

@@ -2,7 +2,7 @@
 
 # Results
 
-211 proven results with stable IDs and 2 conditional results (proven under hypotheses that are named Lean propositions). An ID is never reused; a withdrawn result is kept as `retired`. Every declaration of the library, and so every proven result, depends only on the axioms `propext`, `Classical.choice` and `Quot.sound`.
+216 proven results with stable IDs and 2 conditional results (proven under hypotheses that are named Lean propositions). An ID is never reused; a withdrawn result is kept as `retired`. Every declaration of the library, and so every proven result, depends only on the axioms `propext`, `Classical.choice` and `Quot.sound`.
 
 Tier: **established** (standard mathematics and physics that the frontier work needs; candidates for Mathlib or Physlib later); **frontier** (proposals published in the peer-reviewed literature, labelled as proposals); **exploratory** (new or unpublished models and conjectures, kept in `Exploratory/` folders that nothing else imports; promoted to frontier only after publication). Every result is about the mathematics of a model, not a claim that the model describes nature.
 
@@ -621,3 +621,23 @@ Notes:
 - **LL-0209.** Compared with Huang, Wang, Wu, Meng, arXiv:2610.21070, Section 3.2.1, p. 5 (read): Pi(nu, eta) the probability couplings, W_1 the infimum of the cost of d, and the easy direction of (KR) for unit Lipschitz u. The equality (KR) is the next entry.
 - **LL-0210.** Compared with Huang, Wang, Wu, Meng, arXiv:2610.21070, Section 8.1, (8.1), p. 46 (read): the finite transport problem, min over couplings of the cost equals max over a_i + b_j <= d(x_i, x_j) of the dual value, with a minimum attained. Here the duality is for every continuous cost on a compact metric space, with an optimal coupling; the proof goes through the Hahn-Banach theorem and the Riesz-Markov-Kakutani theorem.
 - **LL-0211.** Compared with Huang, Wang, Wu, Meng, arXiv:2610.21070, Section 3.2.1, p. 5, (KR) (read): on a compact metric space, for Borel probability measures, inf over couplings of the integral of d equals sup over unit Lipschitz u of the pairing with nu - eta; Section 3.7 (1), p. 16: the minimum distance-cost coupling; Section 8.1, (8.2), p. 46: the c-transform u_i = min_j (d(x_i, x_j) - b_j), applied here on the space instead of on a finite net.
+
+## Noncommutative geometry: finite spectral triples
+
+API map: [Lightlike/NCG/API-map.md](../Lightlike/NCG/API-map.md)
+
+| ID | Result | Status | Tier | Lean |
+|---|---|---|---|---|
+| LL-0214 | The bimodule of a real finite spectral triple decomposes into the vertices H_ij of its Krajewski diagram, J maps H_ij onto H_ji, and the first-order condition lets D join only vertices in the same row or column (see note) | proven | established | `Lightlike.NCG.CentralPartition`, `Lightlike.NCG.proj`, `Lightlike.NCG.Hsub`, `Lightlike.NCG.completeOrthogonalIdempotents_proj`, `Lightlike.NCG.J_mem_Hsub`, `Lightlike.NCG.finrank_Hsub_symm`, `Lightlike.NCG.grading_mem_Hsub`, `Lightlike.NCG.proj_D_proj_eq_zero` in [Bimodule.lean](../Lightlike/NCG/Bimodule.lean) |
+| LL-0215 | The tensor form of the vertices of a finite spectral triple over a sum of complex matrix algebras, H_ij = C^(n_i) ⊗ C^(r_ij) ⊗ C^(n_j) with left and right matrix multiplication (see note) | proven | established | `Lightlike.NCG.stdPartition`, `Lightlike.NCG.Vsub`, `Lightlike.NCG.tensorEquiv`, `Lightlike.NCG.tensorEquiv_pi`, `Lightlike.NCG.tensorEquiv_rightOp_star`, `Lightlike.NCG.finrank_Hsub_eq` in [TensorForm.lean](../Lightlike/NCG/TensorForm.lean) |
+| LL-0216 | The multiplicity matrix of a real finite spectral triple over a sum of complex matrix algebras is symmetric (see note) | proven | established | `Lightlike.NCG.multiplicity`, `Lightlike.NCG.multiplicity_symm` in [Classification.lean](../Lightlike/NCG/Classification.lean) |
+| LL-0217 | Every symmetric multiplicity matrix is the multiplicity matrix of a real finite spectral triple over a sum of complex matrix algebras, with a grading for every symmetric choice of signs (see note) | proven | established | `Lightlike.NCG.krajewskiTriple`, `Lightlike.NCG.krajewskiReal`, `Lightlike.NCG.krajewskiGrading`, `Lightlike.NCG.multiplicity_krajewskiReal` in [KrajewskiModel.lean](../Lightlike/NCG/KrajewskiModel.lean) |
+| LL-0218 | The real structure of a finite spectral triple over a sum of complex matrix algebras is unique up to unitary equivalence, given its multiplicity matrix (see note) | proven | established | `Lightlike.NCG.exists_compatible_bases`, `Lightlike.NCG.coordIso`, `Lightlike.NCG.exists_unitary_krajewski` in [Uniqueness.lean](../Lightlike/NCG/Uniqueness.lean) |
+
+Notes:
+
+- **LL-0214.** Compared with Paschke and Sitarz, arXiv:q-alg/9612029, Lemma 1 (p. 2), Lemma 3 (p. 3, the first half), Lemma 4 (p. 3) and Lemma 6 (p. 5), and Krajewski, arXiv:hep-th/9701081, Section 3.2 (pp. 12-13) (read), for a family of central self-adjoint orthogonal projections P_i of a finite-dimensional real star-algebra with sum 1.
+- **LL-0215.** Compared with Paschke and Sitarz, arXiv:q-alg/9612029, Section 2 (complex spectral triples) and Lemma 2 (pp. 2-3) (read): for A = ⊕ M_(n_i)(C) represented complex-linearly, H_ij ≅ C^(n_i) ⊗ C^(r_ij) ⊗ C^(n_j) with a acting as a_i on the first factor and J π(b*) J as right multiplication by b_j on the last.
+- **LL-0216.** Compared with Krajewski, arXiv:hep-th/9701081, Section 3.2, p. 12 (read): K(H_ij) = H_ji, so the matrix of multiplicities is symmetric, m_ij = m_ji; here for A = ⊕ M_(n_i)(C) represented complex-linearly, with r_ij the multiplicity in H_ij ≅ C^(n_i) ⊗ C^(r_ij) ⊗ C^(n_j).
+- **LL-0217.** Compared with Krajewski, arXiv:hep-th/9701081, Section 3.2, p. 13 (read): conversely, if the matrix of multiplicities is symmetric it is possible to define J, J (e_a ⊗ ψ ⊗ e_b) = e_b ⊗ ψ̄ ⊗ e_a; and Section 3.3, p. 13: the chirality is ±1 on H_ij with χ_ij = χ_ji. Here A = ⊕ M_(n_i)(C), r symmetric with every summand acting on some vertex (faithfulness), D = 0.
+- **LL-0218.** Compared with Krajewski, arXiv:hep-th/9701081, Section 3.2, p. 13 (read): if the matrix of multiplicities is symmetric, the charge conjugation is unique up to unitary equivalence and acts as J (e_a ⊗ ψ ⊗ e_b) = e_b ⊗ ψ̄ ⊗ e_a; the orthonormal basis with L_ii ψ = ψ is exists_orthonormalBasis_fixed. Here A = ⊕ M_(n_i)(C) represented complex-linearly; the unitary intertwines π and J with the model krajewskiReal of the multiplicity matrix.

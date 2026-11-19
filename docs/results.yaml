@@ -2807,3 +2807,70 @@
   review: kernel-checked
   note: "Every C^2 vector field X on R^n that is a Killing field of the Minkowski metric at every point (the derivative of X is eta-skew, Killing's equation for the flat connection) is affine, X(y) = A y + c with A eta-skew; conversely these are Killing (affField_killing_iff). The pairs (A, c) form a space of dimension n(n-1)/2 + n = n(n+1)/2 (the eta-skew endomorphisms correspond to the antisymmetric matrices by lowering an index), so the Killing fields form a real vector space of dimension n(n+1)/2. Proof of the classification: the second derivative of X is symmetric in its first two slots and eta-skew in its last two, hence zero. Compared with Carroll's lecture notes (gr-qc/9712019), pp. 140-141: the largest possible number of Killing vectors on an n-dimensional manifold is n(n+1)/2, eq. (5.44) n + n(n-1)/2 = n(n+1)/2 for the translations and rotations of R^n, 'the same kind of counting argument applies to ... Minkowski space'; Carroll does not prove that these are all the Killing vectors. Limits: Killing fields are C^2 fields with Killing's equation; flows and isometries are not treated."
   since: unreleased
+- id: LL-0214
+  title: The bimodule of a real finite spectral triple decomposes into the vertices H_ij of its Krajewski diagram, J maps H_ij onto H_ji, and the first-order condition lets D join only vertices in the same row or column
+  area: NCG
+  file: Lightlike/NCG/Bimodule.lean
+  decls: [Lightlike.NCG.CentralPartition, Lightlike.NCG.proj, Lightlike.NCG.Hsub, Lightlike.NCG.completeOrthogonalIdempotents_proj, Lightlike.NCG.J_mem_Hsub, Lightlike.NCG.finrank_Hsub_symm, Lightlike.NCG.grading_mem_Hsub, Lightlike.NCG.proj_D_proj_eq_zero]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: paschke-sitarz-1998, location: "Lemma 1", check: "Lemma 1"}
+      - {ref: krajewski-1998, location: "Section 3.2", check: "charge conjugation"}
+  review: kernel-checked
+  note: "Compared with Paschke and Sitarz, arXiv:q-alg/9612029, Lemma 1 (p. 2), Lemma 3 (p. 3, the first half), Lemma 4 (p. 3) and Lemma 6 (p. 5), and Krajewski, arXiv:hep-th/9701081, Section 3.2 (pp. 12-13) (read), for a family of central self-adjoint orthogonal projections P_i of a finite-dimensional real star-algebra with sum 1."
+  since: unreleased
+- id: LL-0215
+  title: The tensor form of the vertices of a finite spectral triple over a sum of complex matrix algebras, H_ij = C^(n_i) ⊗ C^(r_ij) ⊗ C^(n_j) with left and right matrix multiplication
+  area: NCG
+  file: Lightlike/NCG/TensorForm.lean
+  decls: [Lightlike.NCG.stdPartition, Lightlike.NCG.Vsub, Lightlike.NCG.tensorEquiv, Lightlike.NCG.tensorEquiv_pi, Lightlike.NCG.tensorEquiv_rightOp_star, Lightlike.NCG.finrank_Hsub_eq]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: paschke-sitarz-1998, location: "Lemma 2", check: "Lemma 2"}
+  review: kernel-checked
+  note: "Compared with Paschke and Sitarz, arXiv:q-alg/9612029, Section 2 (complex spectral triples) and Lemma 2 (pp. 2-3) (read): for A = ⊕ M_(n_i)(C) represented complex-linearly, H_ij ≅ C^(n_i) ⊗ C^(r_ij) ⊗ C^(n_j) with a acting as a_i on the first factor and J π(b*) J as right multiplication by b_j on the last."
+  since: unreleased
+- id: LL-0216
+  title: The multiplicity matrix of a real finite spectral triple over a sum of complex matrix algebras is symmetric
+  area: NCG
+  file: Lightlike/NCG/Classification.lean
+  decls: [Lightlike.NCG.multiplicity, Lightlike.NCG.multiplicity_symm]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: krajewski-1998, location: "Section 3.2", check: "charge conjugation"}
+  review: kernel-checked
+  note: "Compared with Krajewski, arXiv:hep-th/9701081, Section 3.2, p. 12 (read): K(H_ij) = H_ji, so the matrix of multiplicities is symmetric, m_ij = m_ji; here for A = ⊕ M_(n_i)(C) represented complex-linearly, with r_ij the multiplicity in H_ij ≅ C^(n_i) ⊗ C^(r_ij) ⊗ C^(n_j)."
+  since: unreleased
+- id: LL-0217
+  title: Every symmetric multiplicity matrix is the multiplicity matrix of a real finite spectral triple over a sum of complex matrix algebras, with a grading for every symmetric choice of signs
+  area: NCG
+  file: Lightlike/NCG/KrajewskiModel.lean
+  decls: [Lightlike.NCG.krajewskiTriple, Lightlike.NCG.krajewskiReal, Lightlike.NCG.krajewskiGrading, Lightlike.NCG.multiplicity_krajewskiReal]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: krajewski-1998, location: "Section 3.2", check: "charge conjugation"}
+      - {ref: krajewski-1998, location: "Section 3.3", check: "chirality"}
+  review: kernel-checked
+  note: "Compared with Krajewski, arXiv:hep-th/9701081, Section 3.2, p. 13 (read): conversely, if the matrix of multiplicities is symmetric it is possible to define J, J (e_a ⊗ ψ ⊗ e_b) = e_b ⊗ ψ̄ ⊗ e_a; and Section 3.3, p. 13: the chirality is ±1 on H_ij with χ_ij = χ_ji. Here A = ⊕ M_(n_i)(C), r symmetric with every summand acting on some vertex (faithfulness), D = 0."
+  since: unreleased
+- id: LL-0218
+  title: The real structure of a finite spectral triple over a sum of complex matrix algebras is unique up to unitary equivalence, given its multiplicity matrix
+  area: NCG
+  file: Lightlike/NCG/Uniqueness.lean
+  decls: [Lightlike.NCG.exists_compatible_bases, Lightlike.NCG.coordIso, Lightlike.NCG.exists_unitary_krajewski]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: krajewski-1998, location: "Section 3.2", check: "charge conjugation"}
+  review: kernel-checked
+  note: "Compared with Krajewski, arXiv:hep-th/9701081, Section 3.2, p. 13 (read): if the matrix of multiplicities is symmetric, the charge conjugation is unique up to unitary equivalence and acts as J (e_a ⊗ ψ ⊗ e_b) = e_b ⊗ ψ̄ ⊗ e_a; the orthonormal basis with L_ii ψ = ψ is exists_orthonormalBasis_fixed. Here A = ⊕ M_(n_i)(C) represented complex-linearly; the unitary intertwines π and J with the model krajewskiReal of the multiplicity matrix."
+  since: unreleased

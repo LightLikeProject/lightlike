@@ -57,7 +57,14 @@ In the connection variables of loop quantum gravity a co-triad `e` of the spatia
 built from the Christoffel symbols of the metric [24] {5} {6}. The spin connection is compatible with the triad
 (`de + ε Γ ∧ e = 0`), the Ashtekar–Barbero connection is `A = Γ + γK`, and the Gauss constraint
 `∂_a E^a_i + ε_ijk A^j_a E^a_k` vanishes on the variables of ADM data, its extrinsic-curvature part exactly because the
-extrinsic curvature is symmetric [25] {5}.
+extrinsic curvature is symmetric [25] {5}. In four dimensions the spin connection of a tetrad is the gauge transform
+of the Christoffel connection by the frame, and its curvature is the Riemann tensor in the frame [26] {6}. The Holst
+action density adds to the Palatini term the dual term weighted by `1/γ`; on the tetrad connection the dual term
+vanishes by the first Bianchi identity and the Palatini term is `det e · R`, so the Holst density is the
+Einstein–Hilbert density for every `γ` [27] {5} {6}; the dual term of a constant rotation connection is not zero [27]. The densitized triad contracted with the variation of
+the spin connection is a divergence, so `∫ E δΓ = 0` and the functional derivative of `∫ Γ E` is `Γ`, the fact behind
+the canonical transformation to the Ashtekar–Barbero variables [28] {6}; the derivative of the spin connection along a
+path of co-triads satisfies the linearised compatibility, so this holds for the actual variation of `Γ` [29].
 
 A grid computation in dimension two (`scripts/adm_algebra_check.py`) supports the three brackets; with the kinetic
 coefficient `1/2` of dimension three, used in dimension two, the bracket of two Hamiltonian constraints differs from
@@ -105,6 +112,14 @@ the momentum constraint of the structure function.
 25. Lightlike/Canonical/SpinConnection.lean - `Lightlike.Canonical.spinConn`, `Lightlike.Canonical.spin_compat`,
     `Lightlike.Canonical.abConn`, `Lightlike.Canonical.gaussConstraint`, `Lightlike.Canonical.gauss_spinConn`,
     `Lightlike.Canonical.gauss_abConn`, `Lightlike.Canonical.gauss_abConn_antisymm_violates`
+26. Lightlike/Canonical/Tetrad.lean - `Lightlike.Canonical.tetradConn`, `Lightlike.Canonical.gaugeCurv`,
+    `Lightlike.Canonical.gaugeCurv_tetradConn`
+27. Lightlike/Canonical/Holst.lean - `Lightlike.Canonical.holstDensity`, `Lightlike.Canonical.holstStar_tetradConn`,
+    `Lightlike.Canonical.palatini_tetradConn`, `Lightlike.Canonical.holstDensity_tetradConn`,
+    `Lightlike.Canonical.holstStar_rotation`
+28. Lightlike/Canonical/AshtekarCanonical.lean - `Lightlike.Canonical.E_dSpin_eq_div`, `Lightlike.Canonical.integral_E_dSpin_eq_zero`
+29. Lightlike/Canonical/SpinVariation.lean - `Lightlike.Canonical.linCompat_dSpin`,
+    `Lightlike.Canonical.integral_E_deriv_spinConn_eq_zero`
 
 ## References
 
@@ -117,6 +132,6 @@ the momentum constraint of the structure function.
 4. J. C. Aurrekoetxea, K. Clough and E. A. Lim, *Cosmology using numerical relativity*, arXiv:2409.01939, equations (3),
    (23), (25), (26).
 5. A. Ashtekar and J. Lewandowski, *Background independent quantum gravity: a status report*, arXiv:gr-qc/0404018,
-   equations (2.16)-(2.18), (2.20)-(2.21), (2.23).
+   equations (2.6), (2.16)-(2.18), (2.20)-(2.21), (2.23).
 6. S. Holst, *Barbero's Hamiltonian derived from a generalized Hilbert-Palatini action*, arXiv:gr-qc/9511026,
-   equation (6).
+   equations (1), (3)-(6).
