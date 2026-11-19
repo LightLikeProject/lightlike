@@ -34,6 +34,11 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
   {H : Type*} [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
   {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I ∞ M]
 
+/-- Without boundary the derivative within `range 𝓘(ℝ, E)` is the ordinary derivative. -/
+theorem fderivWithin_range_self {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F] (f : E → F) (x : E) :
+    fderivWithin ℝ f (range 𝓘(ℝ, E)) x = fderiv ℝ f x := by
+  simp [modelWithCornersSelf_coe, fderivWithin_univ]
+
 /-- The derivative `W g` of a function along a vector field. -/
 def dirDerivW (g : M → ℝ) (W : Π y : M, TangentSpace I y) : M → ℝ :=
   fun z => mfderiv I 𝓘(ℝ, ℝ) g z (W z)
