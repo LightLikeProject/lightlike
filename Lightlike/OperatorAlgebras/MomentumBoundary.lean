@@ -84,8 +84,10 @@ lemma bvConst_spec (y : (momentumMin†).domain) :
 noncomputable def bvRep (y : (momentumMin†).domain) (x : ℝ) : ℂ :=
   bvConst y + ∫ t in (0 : ℝ)..x, Complex.I * (momentumMin† y : L2I) t
 
-/-- The boundary values `y(0)`, `y(1)` of `y ∈ D(A†)`. -/
+/-- The boundary value `y(0)` of `y ∈ D(A†)`. -/
 noncomputable def bv0 (y : (momentumMin†).domain) : ℂ := bvRep y 0
+
+/-- The boundary value `y(1)` of `y ∈ D(A†)`. -/
 noncomputable def bv1 (y : (momentumMin†).domain) : ℂ := bvRep y 1
 
 lemma bv0_eq (y : (momentumMin†).domain) : bv0 y = bvConst y := by simp [bv0, bvRep]
