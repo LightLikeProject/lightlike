@@ -16,6 +16,13 @@ Three massless particles, all outgoing, with square spinors `λ_i = |i]` and ang
   iff (2.95) holds (`angleAnsatz_weights_iff`), iff `x₁₂ = h₃ − h₁ − h₂`, `x₁₃ = h₂ − h₁ − h₃`,
   `x₂₃ = h₁ − h₂ − h₃` (2.96) (`angle_exponents_iff`). The square-bracket ansatz has the opposite
   exponents (`squareAnsatz_littleGroup`, `square_exponents_iff`, (2.98)).
+* **The dimension count** (Elvang-Huang p. 29): brackets have mass dimension 1 (`angleAnsatz_dilation`,
+  `squareAnsatz_dilation`); the angle amplitude has dimension `−(h₁ + h₂ + h₃)`, the square amplitude
+  `h₁ + h₂ + h₃`, and for `Σhᵢ ≠ 0` exactly one is positive (`three_point_dimension`); `HasMassDim`,
+  `HasMassDim.unique`; (2.97) has dimension `1` and (2.98) dimension `−1` (`gluon_mmp_massDim`,
+  `gluon_mmp_square_massDim`). **The selection** (`three_point_selection`): with the source's physical input
+  "the three-point amplitude has mass dimension 1" (p. 29, from locality and (2.99)) as a hypothesis, the
+  angle ansatz is the one for `Σhᵢ = −1` and the square ansatz the one for `Σhᵢ = +1`.
 * Trust checks: the gluon amplitude `⟨12⟩³/(⟨13⟩⟨23⟩)` of (2.97) has the weights of `1⁻2⁻3⁺`
   (`gluon_mmp_littleGroup`); the square-bracket alternative `[13][23]/[12]³` of (2.98) too
   (`gluon_mmp_square_littleGroup`).
@@ -236,5 +243,108 @@ theorem gluon_mmp_square_littleGroup (g : ℂ) {t : Fin 3 → ℂ} (ht : ∀ i, 
       t 0 ^ (2 : ℤ) * t 1 ^ (2 : ℤ) * t 2 ^ (-2 : ℤ) * squareAnsatz g (-3) 1 1 l := by
   rw [squareAnsatz_littleGroup g (-3) 1 1 ht]
   norm_num
+
+/-! ## Mass dimension (Elvang-Huang p. 29) -/
+
+/-- Brackets have mass dimension `1` (Elvang-Huang p. 29, from (2.24)): under `λ ↦ s λ`, `λ̃ ↦ s λ̃`
+(so `p ↦ s² p`) the angle ansatz is multiplied by `(s²)^{x₁₂ + x₁₃ + x₂₃}`. -/
+theorem angleAnsatz_dilation (c : ℂ) (x12 x13 x23 : ℤ) {s : ℂ} (hs : s ≠ 0)
+    (lt : Fin 3 → Fin 2 → ℂ) :
+    angleAnsatz c x12 x13 x23 (fun i => s • lt i) =
+      (s ^ 2) ^ (x12 + x13 + x23) * angleAnsatz c x12 x13 x23 lt := by
+  have h2 : s ^ 2 ≠ 0 := pow_ne_zero 2 hs
+  simp only [angleAnsatz, angleBr_smul_smul, mul_zpow, zpow_add₀ h2, ← sq]
+  ring
+
+/-- The square ansatz has mass dimension `y₁₂ + y₁₃ + y₂₃`. -/
+theorem squareAnsatz_dilation (c : ℂ) (y12 y13 y23 : ℤ) {s : ℂ} (hs : s ≠ 0)
+    (l : Fin 3 → Fin 2 → ℂ) :
+    squareAnsatz c y12 y13 y23 (fun i => s • l i) =
+      (s ^ 2) ^ (y12 + y13 + y23) * squareAnsatz c y12 y13 y23 l := by
+  have h2 : s ^ 2 ≠ 0 := pow_ne_zero 2 hs
+  simp only [squareAnsatz, squareBr_smul_smul, mul_zpow, zpow_add₀ h2, ← sq]
+  ring
+
+/-- **The dimension count** (Elvang-Huang p. 29): with the exponents fixed by little-group scaling, the
+angle amplitude (2.96) has mass dimension `−(h₁ + h₂ + h₃)` and the square amplitude `h₁ + h₂ + h₃`
+(`Hᵢ = 2hᵢ`); so for `h₁ + h₂ + h₃ ≠ 0` exactly one of them has positive dimension (for `1⁻2⁻3⁺`, `+1` for
+(2.97) and `−1` for (2.98)). -/
+theorem three_point_dimension {x12 x13 x23 y12 y13 y23 H1 H2 H3 : ℤ}
+    (hx : 2 * x12 = H3 - H1 - H2 ∧ 2 * x13 = H2 - H1 - H3 ∧ 2 * x23 = H1 - H2 - H3)
+    (hy : 2 * y12 = H1 + H2 - H3 ∧ 2 * y13 = H1 + H3 - H2 ∧ 2 * y23 = H2 + H3 - H1) :
+    2 * (x12 + x13 + x23) = -(H1 + H2 + H3) ∧ 2 * (y12 + y13 + y23) = H1 + H2 + H3 ∧
+      (H1 + H2 + H3 ≠ 0 → (0 < x12 + x13 + x23 ↔ ¬ 0 < y12 + y13 + y23)) := by
+  omega
+
+/-- A three-point function of the spinors has **mass dimension `k`** if it scales as `(s²)^k` under
+`λᵢ ↦ s λᵢ`, `λ̃ᵢ ↦ s λ̃ᵢ` (so `pᵢ ↦ s² pᵢ`; brackets have dimension `1`, Elvang-Huang p. 29). -/
+def HasMassDim (A : (Fin 3 → Fin 2 → ℂ) → (Fin 3 → Fin 2 → ℂ) → ℂ) (k : ℤ)
+    (l lt : Fin 3 → Fin 2 → ℂ) : Prop :=
+  ∀ s : ℂ, s ≠ 0 → A (fun i => s • l i) (fun i => s • lt i) = (s ^ 2) ^ k * A l lt
+
+lemma sqrt_two_sq : ((Real.sqrt 2 : ℝ) : ℂ) ^ 2 = 2 := by
+  have : (Real.sqrt 2) ^ 2 = 2 := Real.sq_sqrt (by norm_num)
+  exact_mod_cast this
+
+lemma sqrt_two_ne : ((Real.sqrt 2 : ℝ) : ℂ) ≠ 0 := by
+  have : (0 : ℝ) < Real.sqrt 2 := Real.sqrt_pos.2 (by norm_num)
+  exact_mod_cast this.ne'
+
+/-- The mass dimension of a nonzero function is unique. -/
+theorem HasMassDim.unique {A : (Fin 3 → Fin 2 → ℂ) → (Fin 3 → Fin 2 → ℂ) → ℂ} {k k' : ℤ}
+    {l lt : Fin 3 → Fin 2 → ℂ} (hA : A l lt ≠ 0) (h : HasMassDim A k l lt)
+    (h' : HasMassDim A k' l lt) : k = k' := by
+  have e := (h _ sqrt_two_ne).symm.trans (h' _ sqrt_two_ne)
+  rw [sqrt_two_sq] at e
+  exact zpow_two_injective (mul_right_cancel₀ hA e)
+
+/-- **The angle ansatz has mass dimension `x₁₂ + x₁₃ + x₂₃`** (and no other, if it is nonzero). -/
+theorem hasMassDim_angleAnsatz (c : ℂ) (x12 x13 x23 : ℤ) (l lt : Fin 3 → Fin 2 → ℂ) :
+    HasMassDim (fun _ lt => angleAnsatz c x12 x13 x23 lt) (x12 + x13 + x23) l lt :=
+  fun _ hs => angleAnsatz_dilation c x12 x13 x23 hs lt
+
+/-- **The square ansatz has mass dimension `y₁₂ + y₁₃ + y₂₃`.** -/
+theorem hasMassDim_squareAnsatz (c : ℂ) (y12 y13 y23 : ℤ) (l lt : Fin 3 → Fin 2 → ℂ) :
+    HasMassDim (fun l _ => squareAnsatz c y12 y13 y23 l) (y12 + y13 + y23) l lt :=
+  fun _ hs => squareAnsatz_dilation c y12 y13 y23 hs l
+
+/-- **(2.97) has mass dimension `1`** (Elvang-Huang p. 29). -/
+theorem gluon_mmp_massDim (g : ℂ) (l lt : Fin 3 → Fin 2 → ℂ) :
+    HasMassDim (fun _ lt => angleAnsatz g 3 (-1) (-1) lt) 1 l lt := by
+  simpa using hasMassDim_angleAnsatz g 3 (-1) (-1) l lt
+
+/-- **(2.98) has mass dimension `−1`** (Elvang-Huang p. 29). -/
+theorem gluon_mmp_square_massDim (g : ℂ) (l lt : Fin 3 → Fin 2 → ℂ) :
+    HasMassDim (fun l _ => squareAnsatz g (-3) 1 1 l) (-1) l lt := by
+  simpa using hasMassDim_squareAnsatz g (-3) 1 1 l lt
+
+/-- **The selection of the three-point amplitude** (Elvang-Huang p. 29, with the physical input that the
+three-point amplitude has mass dimension `1` as a hypothesis): a nonzero angle ansatz with the
+little-group weights `−2hᵢ` (`Hᵢ = 2hᵢ`) has mass dimension `1` iff `h₁ + h₂ + h₃ = −1`; a nonzero
+square ansatz with these weights has mass dimension `1` iff `h₁ + h₂ + h₃ = +1`. -/
+theorem three_point_selection {c : ℂ} {x12 x13 x23 y12 y13 y23 H1 H2 H3 : ℤ}
+    {l lt : Fin 3 → Fin 2 → ℂ}
+    (hx : 2 * x12 = H3 - H1 - H2 ∧ 2 * x13 = H2 - H1 - H3 ∧ 2 * x23 = H1 - H2 - H3)
+    (hy : 2 * y12 = H1 + H2 - H3 ∧ 2 * y13 = H1 + H3 - H2 ∧ 2 * y23 = H2 + H3 - H1)
+    (hA : angleAnsatz c x12 x13 x23 lt ≠ 0) (hB : squareAnsatz c y12 y13 y23 l ≠ 0) :
+    (HasMassDim (fun _ lt => angleAnsatz c x12 x13 x23 lt) 1 l lt ↔ H1 + H2 + H3 = -2) ∧
+      (HasMassDim (fun l _ => squareAnsatz c y12 y13 y23 l) 1 l lt ↔ H1 + H2 + H3 = 2) := by
+  constructor
+  · constructor
+    · intro h
+      have := HasMassDim.unique (A := fun _ lt => angleAnsatz c x12 x13 x23 lt) hA h
+        (hasMassDim_angleAnsatz c x12 x13 x23 l lt)
+      omega
+    · intro h
+      have hk : x12 + x13 + x23 = 1 := by omega
+      simpa [hk] using hasMassDim_angleAnsatz c x12 x13 x23 l lt
+  · constructor
+    · intro h
+      have := HasMassDim.unique (A := fun l _ => squareAnsatz c y12 y13 y23 l) hB h
+        (hasMassDim_squareAnsatz c y12 y13 y23 l lt)
+      omega
+    · intro h
+      have hk : y12 + y13 + y23 = 1 := by omega
+      simpa [hk] using hasMassDim_squareAnsatz c y12 y13 y23 l lt
 
 end Lightlike.SpinorHelicity

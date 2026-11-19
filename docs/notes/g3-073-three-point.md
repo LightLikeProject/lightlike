@@ -24,11 +24,18 @@ H. Elvang, Y. Huang, *Scattering Amplitudes*:
 * `angleAnsatz` (2.94), `angleAnsatz_littleGroup` (its scaling), `angle_exponents_iff` ((2.95) ⟺ (2.96)), `angleAnsatz_weights_iff`
   (a nonzero ansatz has the weights `−2hᵢ` for all scalings iff its exponents are (2.96)); `squareAnsatz`,
   `squareAnsatz_littleGroup`, `square_exponents_iff` (the opposite exponents, (2.98)).
+* Mass dimension (p. 29, (2.24), (2.99)): `angleAnsatz_dilation`, `squareAnsatz_dilation` (under `λᵢ ↦ sλᵢ`, `λ̃ᵢ ↦ sλ̃ᵢ`, so
+  `pᵢ ↦ s²pᵢ`, each bracket gets `s²`: dimension 1); `HasMassDim`, `HasMassDim.unique`, `hasMassDim_angleAnsatz`,
+  `hasMassDim_squareAnsatz`; `three_point_dimension`: with the little-group exponents the angle ansatz has dimension `−Σhᵢ` and the
+  square ansatz `+Σhᵢ`; `gluon_mmp_massDim` ((2.97) has dimension 1), `gluon_mmp_square_massDim` ((2.98) has dimension −1);
+  `three_point_selection`: under the hypothesis "the three-point amplitude has mass dimension 1", a nonzero angle ansatz with the
+  weights `−2hᵢ` occurs iff `Σhᵢ = −1`, a nonzero square ansatz iff `Σhᵢ = +1`.
 * Trust checks: `gluon_mmp_littleGroup` ((2.97) has the weights of `1⁻2⁻3⁺`), `gluon_mmp_square_littleGroup` ((2.98) too).
 
 ## Differences
 
 1. Representation: as in G3-072 (complex momenta, spinors `Fin 2 → ℂ` with lower indices, brackets as functions of the spinors);
    helicities enter as `Hᵢ = 2hᵢ ∈ ℤ`; amplitudes are the monomial Ansätze (2.94) with integer exponents.
-2. Not formalized: the dimensional-analysis and locality argument of p. 29 that selects (2.97) over (2.98); both Ansätze are in
-   Lean with their exponents.
+2. Representation: the physical input of p. 29 (locality: the three-point amplitude has mass dimension 1, the momentum
+   dependence of the `AA∂A` vertex of `Tr F²`; (2.99)) is a stated hypothesis of `three_point_selection`; the dimension count
+   and the selection are proved.
