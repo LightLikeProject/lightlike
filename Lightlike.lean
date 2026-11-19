@@ -742,6 +742,7 @@ import Lightlike.Spacetime.EHManifold.CompactVariation
 import Lightlike.Spacetime.EHManifold.Contraction
 import Lightlike.Spacetime.EHManifold.CoverVariation
 import Lightlike.Spacetime.EHManifold.EinsteinForm
+import Lightlike.Spacetime.EHManifold.EinsteinIntrinsic
 import Lightlike.Spacetime.EHManifold.FluxLinear
 import Lightlike.Spacetime.EHManifold.FluxLocal
 import Lightlike.Spacetime.EHManifold.IntegrandLinear
