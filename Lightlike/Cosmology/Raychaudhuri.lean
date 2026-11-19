@@ -8,7 +8,7 @@ Kar and SenGupta (gr-qc/0611123), eq. (12): for a timelike geodesic congruence `
 `Θ = ∇ₐvᵃ`, shear `σ` and rotation `ω`, `dΘ/dλ + Θ²/3 + σ² - ω² = -Rₐᵦ vᵃ vᵇ` (the Raychaudhuri equation), and
 eq. (16): convergence occurs if `Rₐᵦ vᵃ vᵇ + σ² - ω² ≥ 0`.
 
-* the focusing lemma `Lightlike.focusing` (`Spacetime/RiccatiFocusing.lean`): if `Θ' ≤ -Θ²/m` on `[0, L)` (`m > 0`) and
+* the focusing lemma `Lightlike.focusing` (`Lightlike/Spacetime/RiccatiFocusing.lean`): if `Θ' ≤ -Θ²/m` on `[0, L)` (`m > 0`) and
   `Θ(0) < 0`, then `L ≤ m/|Θ(0)|`: the expansion reaches `-∞` within affine time `m/|Θ(0)|` (with `m = 3`, `σ = ω = 0` and
   `Rₐᵦ vᵃ vᵇ ≥ 0` in (12));
 * `flrw_comoving_covDeriv`, `flrw_comoving_geodesic`, `flrw_comoving_expansion`: for the comoving congruence `u = ∂_t` of
