@@ -284,7 +284,7 @@ def killingFields (n : ℕ) : Submodule ℝ ((Fin n → ℝ) → (Fin n → ℝ)
     rw [← mul_add, h1, mul_zero]
 
 /-- The Killing field of a Poincaré parameter `(A, c)`. -/
-def poincareMap (n : ℕ) : (skewEta n × (Fin n → ℝ)) →ₗ[ℝ] killingFields n where
+def minkowskiPoincareMap (n : ℕ) : (skewEta n × (Fin n → ℝ)) →ₗ[ℝ] killingFields n where
   toFun p := ⟨fun y => p.1.1 y + p.2, (p.1.1.contDiff.add contDiff_const), fun x =>
     (affField_killing_iff p.1.1 p.2 x).2 p.1.2⟩
   map_add' p q := by
@@ -294,7 +294,7 @@ def poincareMap (n : ℕ) : (skewEta n × (Fin n → ℝ)) →ₗ[ℝ] killingFi
       RingHom.id_apply, Pi.add_apply]; ring
 
 /-- **The Killing fields of Minkowski space are the Poincaré parameters `(A, c)`.** -/
-theorem poincareMap_bijective (n : ℕ) : Function.Bijective (poincareMap n) := by
+theorem minkowskiPoincareMap_bijective (n : ℕ) : Function.Bijective (minkowskiPoincareMap n) := by
   constructor
   · intro p q h
     have hy : ∀ y, p.1.1 y + p.2 = q.1.1 y + q.2 := fun y => congrFun (congrArg Subtype.val h) y
@@ -309,6 +309,6 @@ theorem poincareMap_bijective (n : ℕ) : Function.Bijective (poincareMap n) := 
 
 /-- **The Killing fields of Minkowski space `ℝⁿ` form a vector space of dimension `n (n + 1) / 2`** (GE12 check). -/
 theorem finrank_killingFields (n : ℕ) : finrank ℝ (killingFields n) = n * (n + 1) / 2 := by
-  rw [← (LinearEquiv.ofBijective (poincareMap n) (poincareMap_bijective n)).finrank_eq, finrank_skewEta_prod]
+  rw [← (LinearEquiv.ofBijective (minkowskiPoincareMap n) (minkowskiPoincareMap_bijective n)).finrank_eq, finrank_skewEta_prod]
 
 end Lightlike
