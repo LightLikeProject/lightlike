@@ -5,7 +5,7 @@ Measures in Two Dimensions*, arXiv:2610.21070 (source key `huang-wang-wu-meng-20
 
 Read: Section 3.2.1, p. 5, the statement (KR): for Borel probability measures `ν`, `η` on a compact metric space
 `(M, d)`, `W₁(ν, η) = inf_{γ ∈ Π(ν, η)} ∫ d dγ = sup_{Lip(u) ≤ 1} ∫ u d(ν - η)`, with "the easy direction is immediate:
-for any coupling `γ` and unit Lipschitz function `u`, `∫ u d(ν - η) ≤ ∫ d dγ`". Section 8.1, pp. 46-47, the proof
+for any coupling `γ` and unit Lipschitz function `u`, `∫ u d(ν - η) ≤ ∫ d dγ`". Section 8.1, p. 46, the proof
 (finite grid, finite-dimensional linear programming duality (8.1), then approximation).
 
 | Source | Lean |
