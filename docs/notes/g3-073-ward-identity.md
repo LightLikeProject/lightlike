@@ -26,7 +26,20 @@ strong induction on the recursion. The induction step (`mdot_momRange_bgVertexSu
 Multiplied by `P²` it is a polynomial identity (`mdot_momRange_bgVertexSum`), so at `P² = 0`, with `p_n = −P_{1,n−1}`, it is the
 on-shell Ward identity at the last gluon for every `n` (`ward_last : WardIdentity m (m + 2)`).
 
+## W2: cyclic invariance and the Ward identity at every gluon
+
+`mdot_bgVertexSum_rotate`: for `p_0 + ⋯ + p_N = 0` and nonvanishing channel propagators, `ε_N · V(0, …, N−1) = ε_0 · V(1, …, N)`
+(arbitrary momenta and polarizations otherwise). Derived here: both sides of `Σ_c J(0..c) · V(c+1..N) = Σ_d V(0..d) · J(d+1..N)`
+count the vertices on the path from gluon `0` to gluon `N` of the planar trees (by the line on the left, by the line on the right;
+`mdot_vertex3_cyc`, `mdot_vertex4_cyc`: the three- and four-gluon vertices are cyclic, using momentum conservation at the vertex);
+the terms with a composite line are `P² J·J` on both sides, the remaining terms are the two amplitudes. MEASURED first: the ratio of
+the two amplitudes is `1` to 1e−15 for n = 3, …, 7 at random off-shell conserved momenta and random polarization vectors.
+
+`bgAmplitude_rotLabels`: the amplitude is invariant under rotating the labels by one (Elvang-Huang p. 25, property 1, "Cyclic").
+`wardIdentity_of_rotPos`, `ward_all`: the Ward identity at every gluon for every number of gluons, from `ward_last` by rotation.
+`residue_factorization'`, `bgAmplitude_eq_sum_channels'`: (3.5) on the pole and (3.7) without the Ward hypotheses ((3.7) keeps
+the falloff (3.6) as input, as the source states it).
+
 ## Differences
 
-None from the sources at the locations read; the off-shell identity is derived, not quoted. Ward at the other legs needs the
-cyclic invariance of the planar sum (next piece, W2).
+None from the sources at the locations read; the off-shell identity and the cyclic invariance are derived, not quoted.
