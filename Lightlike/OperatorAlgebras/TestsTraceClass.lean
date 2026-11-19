@@ -10,8 +10,8 @@ hypotheses are satisfiable, and the trace has the expected values on the simples
 Negative control: the identity of an infinite-dimensional Hilbert space is bounded, not compact, and not Hilbert-Schmidt
 (`not_isHilbertSchmidt_one`).
 
-Not covered here: the diagonal operator with eigenvalues `1 / n` (Hilbert-Schmidt and not trace class), which needs an
-explicit `ℓ²` and a diagonal operator, and a concrete infinite-dimensional space; open checks.
+The diagonal operator with eigenvalues `1 / (n + 1)` on `ℓ²(ℕ)` (Hilbert-Schmidt and not trace class) is checked in
+`TestsTraceClassDiag.lean`.
 -/
 
 open scoped InnerProductSpace
