@@ -342,6 +342,7 @@ import Lightlike.OperatorAlgebras.ResolventIdentity
 import Lightlike.OperatorAlgebras.SpectralStone
 import Lightlike.OperatorAlgebras.SpectralUnbounded
 import Lightlike.OperatorAlgebras.Spectral.Compact
+import Lightlike.OperatorAlgebras.Spectral.HilbertSchmidtCompact
 import Lightlike.OperatorAlgebras.Spectral.TestsCompact
 import Lightlike.OperatorAlgebras.Semigroup.CauchyEstimate
 import Lightlike.OperatorAlgebras.Semigroup.Construct

@@ -2,12 +2,12 @@
   title: The spectral theorem for compact self-adjoint operators, a Hilbert basis of eigenvectors with real eigenvalues, the expansion K x = sum of mu_i <b_i, x> b_i, and countably many eigenvalues that can only cluster at 0
   area: OperatorAlgebras
   file: Lightlike/OperatorAlgebras/Spectral/Compact.lean
-  decls: [Lightlike.OperatorAlgebras.CompactSpectral.exists_hilbertBasis_eigenvectors, Lightlike.OperatorAlgebras.CompactSpectral.hasSum_eigen, Lightlike.OperatorAlgebras.CompactSpectral.finite_eigenvalues_ge, Lightlike.OperatorAlgebras.CompactSpectral.countable_eigenvalues, Lightlike.OperatorAlgebras.CompactSpectral.countable_spectrum, Lightlike.OperatorAlgebras.CompactSpectral.hasEigenvalue_of_mem_spectrum, Lightlike.OperatorAlgebras.CompactSpectral.finiteDimensional_eigenspace]
+  decls: [Lightlike.OperatorAlgebras.CompactSpectral.exists_hilbertBasis_eigenvectors, Lightlike.OperatorAlgebras.CompactSpectral.hasSum_eigen, Lightlike.OperatorAlgebras.CompactSpectral.finite_eigenvalues_ge, Lightlike.OperatorAlgebras.CompactSpectral.countable_eigenvalues, Lightlike.OperatorAlgebras.CompactSpectral.countable_spectrum, Lightlike.OperatorAlgebras.CompactSpectral.hasEigenvalue_of_mem_spectrum, Lightlike.OperatorAlgebras.CompactSpectral.finiteDimensional_eigenspace, Lightlike.OperatorAlgebras.CompactSpectral.isCompactOperator_of_isHilbertSchmidt]
   status: proven
   tier: established
   source:
     refs:
       - {ref: teschl-2009, location: "Theorem 6.6, p. 136", check: "compact"}
   review: kernel-checked
-  note: "Compared with Teschl, Section 6.2, Theorem 6.6, p. 136 (read, online edition). Stated for a compact symmetric operator on a real or complex Hilbert space. The expansion (6.5), K = sum over the spectrum of lambda P_K({lambda}), is stated in a Hilbert basis of eigenvectors; grouping the basis vectors by eigenvalue gives the projections P_K({lambda}). The spectrum is stated as countable, its nonzero points as eigenvalues, and the eigenvalues of norm at least epsilon as finitely many."
+  note: "Compared with Teschl, Section 6.2, Theorem 6.6, p. 136 (read, online edition). Stated for a compact symmetric operator on a real or complex Hilbert space. The expansion (6.5), K = sum over the spectrum of lambda P_K({lambda}), is stated in a Hilbert basis of eigenvectors; grouping the basis vectors by eigenvalue gives the projections P_K({lambda}). The spectrum is stated as countable, its nonzero points as eigenvalues (read literally, 'the spectrum consists of eigenvalues' fails at 0: diag(1/(n+1)) on l2(N) is compact and self-adjoint with 0 in its spectrum and 0 not an eigenvalue, invDiag_zero_mem_spectrum_not_hasEigenvalue), and the eigenvalues of norm at least epsilon as finitely many. Hilbert-Schmidt operators are compact (Teschl, Section 6.3, p. 139), isCompactOperator_of_isHilbertSchmidt."
   since: unreleased
