@@ -82,8 +82,8 @@ L. Tubaro, M. Zanella, *An introduction to Malliavin calculus*, arXiv:2502.07941
   small parameter is `g = ħλ` at `m = ħ = 1` (by `φ = √ħ x` the integral is `√ħ` times the one with coupling `ħλ`).
 * `quarticZ_nevanlinna` (ZeroDim/QuarticComplex.lean): for every `R > 0`, `Z(λ) = ∫ e^{-λφ⁴ - φ²/2} dφ` is analytic
   in `C_R = {Re λ⁻¹ > 1/R}` and `|Z(λ) - Σ_{n ≤ N} a_n λⁿ| ≤ 16 √(2π) 32^N N! |λ|^{N+1}` for `λ ∈ C_R`, with
-  `a_n = (-1)ⁿ √(2π) (4n - 1)!!/n!`. Compared with V. Rivasseau, Z. Wang, *How to resum Feynman graphs*,
-  arXiv:1003.1037 (read): Theorem IV.1, p. 17, says that the partition function with potential `λφ^{2k}` is Borel
+  `a_n = (-1)ⁿ √(2π) (4n - 1)!!/n!`. Compared with V. Rivasseau, Z. Wang, *Loop vertex expansion for Φ^{2k} theory in
+  zero dimension*, arXiv:1003.1037 (read): Theorem IV.1, p. 17, says that the partition function with potential `λφ^{2k}` is Borel
   summable of order `k - 1`, with the analytic region `D_{k-1}` and "the argument for analyticity and Taylor bounds
   the same as above" (the `φ⁶` proof, (III-38)-(III-42), p. 9, with `Z(λ) = ∫ dφ e^{-λφ⁶ - φ²/2}` unnormalised);
   Theorem III.2 (Nevanlinna–Le Roy), p. 9, needs `f` analytic in `C_R^k = {Re λ^{-1/k} > R^{-1}}` and

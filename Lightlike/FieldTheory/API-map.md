@@ -104,4 +104,4 @@ For complex coupling, the quartic partition function `Z(λ) = ∫ e^{-λφ⁴ - 
 4. M. Polyak, Feynman diagrams for pedestrians and mathematicians, arXiv:math/0406251v1, §2.3 (Theorem 2.8, p. 5), §2.6 (eq. (18), p. 7) and §2.8 (Proposition 2.17, p. 9).
 5. C. E. Rasmussen, C. K. I. Williams, Gaussian Processes for Machine Learning, MIT Press (2006), Appendix A, §A.2, eq. (A.4), p. 200, and the sampling of `N(m, K)` as `m + L u` with `K = L Lᵀ`, p. 201.
 6. D. Skinner, Advanced Quantum Field Theory, lecture notes, University of Cambridge, Chapter 2, QFT in zero dimensions (www.damtp.cam.ac.uk/user/dbs26/AQFT/chap2.pdf), eq. (2.20), p. 17, and eqs. (2.26)-(2.28), pp. 19-20.
-7. V. Rivasseau, Z. Wang, How to resum Feynman graphs, arXiv:1003.1037, Theorem III.2 (Nevanlinna–Le Roy) and eqs. (III-34)-(III-35), p. 9; eq. (III-38), p. 9; Theorem IV.1, p. 17.
+7. V. Rivasseau, Z. Wang, Loop vertex expansion for Φ^{2k} theory in zero dimension, arXiv:1003.1037, Theorem III.2 (Nevanlinna–Le Roy) and eqs. (III-34)-(III-35), p. 9; eq. (III-38), p. 9; Theorem IV.1, p. 17.

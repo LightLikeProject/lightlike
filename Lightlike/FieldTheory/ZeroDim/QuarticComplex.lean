@@ -6,9 +6,9 @@ import Mathlib.Data.Nat.Choose.Bounds
 /-!
 # The quartic partition function for complex coupling
 
-The partition function of the zero-dimensional `λφ⁴` theory, `Z(λ) = ∫ e^{-λφ⁴ - φ²/2} dφ` (Rivasseau–Wang, *How
-to resum Feynman graphs*, arXiv:1003.1037, Theorem IV.1 with `k = 2`, p. 17, in the form of (III-38), p. 9), for
-complex `λ`. Its Taylor coefficients at `0` are `a_n = (-1)^n √(2π) (4n - 1)!!/n!`, and:
+The partition function of the zero-dimensional `λφ⁴` theory, `Z(λ) = ∫ e^{-λφ⁴ - φ²/2} dφ` (Rivasseau–Wang, *Loop
+vertex expansion for Φ^{2k} theory in zero dimension*, arXiv:1003.1037, Theorem IV.1 with `k = 2`, p. 17, in the
+form of (III-38), p. 9), for complex `λ`. Its Taylor coefficients at `0` are `a_n = (-1)^n √(2π) (4n - 1)!!/n!`, and:
 
 * `differentiableOn_quarticZ`: `Z` is analytic in the half-plane `Re λ > 0`, the domain `D_{k-1} = D_1` of the
   source's proof of Theorem IV.1, which contains the disk `C_R = {Re λ⁻¹ > 1/R}` of Nevanlinna's theorem (Theorem III.2
