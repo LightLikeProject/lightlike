@@ -1,4 +1,4 @@
-import Lightlike.OperatorAlgebras.Weyl
+import Lightlike.OperatorAlgebras.ShaleSufficiency
 
 /-!
 # Task T-OP2-P7
@@ -43,6 +43,6 @@ theorem shale_sufficiency {h : Type u} [NormedAddCommGroup h] [InnerProductSpace
     {K : Type*} [NormedAddCommGroup K] [InnerProductSpace ℂ K] [CompleteSpace K]
     (R : FockRep h K) (T : Bogoliubov h) (hβ : IsHilbertSchmidt T.betaPart) :
     Implements R.toCCRRep T := by
-  sorry
+  exact shale_sufficiency_of_hilbertSchmidt R T hβ
 
 end Lightlike.OperatorAlgebras

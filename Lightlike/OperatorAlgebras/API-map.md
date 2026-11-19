@@ -25,7 +25,8 @@ vacuum expectation `exp (-‖f‖² / 4)` [3]. Shale's criterion says that a Bog
 implemented by a unitary of the Fock representation exactly when its antilinear part is Hilbert–Schmidt {2}.
 In one mode the squeezing has `|α|² - |β|² = 1` and the dilation `f ↦ 2 f` is not symplectic [4]. A map with `‖B f‖ = c ‖f‖`, `c > 0`, is not Hilbert–Schmidt when a Hilbert basis is infinite [4]. On `L²(ℝ)` translation `ψ(x + t)` is a strongly continuous unitary group [5], and its generator is `-i d/dx` on `C²` functions with compact support, not `+i d/dx` [6]. On `L²(0, 1)` the operator `-i d/dx` on the `C²` functions supported inside `(0, 1)` is given by its graph [7]. The deficiency spaces of an operator are the kernels of the adjoint minus `±i`, and a self-adjoint operator has none [8]. The
 Fock space itself is not built here, and a Fock representation is characterized by its vacuum. The
-unbounded spectral theorem is not in Mathlib. Stone's theorem and Shale's criterion are [TODO] here.
+unbounded spectral theorem is not in Mathlib; it is ported from physicslib4: every self-adjoint operator has a unique
+projection-valued measure on the Borel sets of `ℝ` whose spectral integral of `λ` is the operator {4} [62]; the group `e^{itA}` of a self-adjoint operator is a `UnitaryGroup` whose generator is `A` [63]. Stone's theorem and Shale's criterion are [TODO] here.
 
 The graph of `-i d/dx` on the `C_c^∞(0, 1)` functions is the image of the smooth test functions under the same pair map, and lies inside the `C²` graph [11]. It contains a nonzero vector, a bump function supported in `(0, 1)` [12]. Mollification by a normed bump function maps a `C²` test function to a `C_c^∞` one, with the derivative of the mollified function the mollified derivative, and converges uniformly with its derivative, so the two graphs have the same closure [13].
 
@@ -48,6 +49,12 @@ For a bounded self-adjoint operator `B`, `exp (i s B)` is a unitary group, stron
 For a self-adjoint `A`, the approximating unitaries `exp (i t A_n)` have a strong limit `U t`: `U_n t x` is Cauchy on the domain by the estimate above, hence for every vector by density and isometry, and `‖U_n t x - U t x‖ ≤ |t| ‖A_n x - A x‖` on the domain. The limit is a strongly continuous unitary group, the difference quotient of `U t x` at `0` is within `2 ‖A_n x - A x‖` of that of `exp (i t A_n) x`, so the generator of the limit extends `A`, and since both are self-adjoint it equals `A`: this is Stone's theorem, existence [33]. For the phase group it recovers the phase group [34].
 
 The Gram matrix of the vectors `W f Ω` of a Fock representation is a function of `f` and `g` alone, by the Weyl relations and the vacuum expectation, so the map `c ↦ ∑ c f W f Ω` has the same norm for two Fock representations; it extends to a unitary that maps the vacuum to the vacuum and intertwines the Weyl unitaries, which is the uniqueness of the Fock representation [14]. The Gram function is Hermitian and normalized, and over the zero Hilbert space there is a Fock representation to which the uniqueness applies [15].
+
+A strongly continuous contraction semigroup on a Banach space has a generator, the limit of the difference quotients on the vectors where it exists, a partially defined linear map. A densely defined operator `A` with `λ - A` bounded below by `λ` and surjective for every `λ > 0` is the generator of a contraction semigroup (the generation direction of the Hille–Yosida theorem) [42] {3}: the resolvent `R(λ) = (λ - A)⁻¹` has norm at most `λ⁻¹`, the Yosida approximants `λ² R(λ) - λ` give contractions `exp (t (λ² R(λ) - λ))` that converge, by a Cauchy estimate and the density of the domain, to a semigroup whose generator contains `A`, and a dissipative generator with `λ - A` surjective equals `A`. Checks: the trivial semigroup is a contraction semigroup, the theorem applies to `A = 0`, and `A = id` fails the lower bound at `λ = 1` [43]. The converse holds as well, so the two form the equivalence of the Hille–Yosida theorem for contraction semigroups [44] {3}: the orbits `t ↦ S t x` are continuous for all times `t ≥ 0` by the semigroup law and continuity at `0` [45], the averages `t⁻¹ ∫₀ᵗ S s x ds` lie in the domain of the generator and converge to `x`, which makes the domain dense [45], the resolvent `∫₀^∞ e^{-λ t} S t y dt` is a Bochner integral that lies in the domain with `(λ - A) R(λ) y = y` [46], and `norm_dissip` gives the lower bound [44].
+
+A bounded operator on a complex Hilbert space is trace class when the diagonal sum `∑ ⟪eᵢ, |T| eᵢ⟫` converges in a Hilbert basis, and the trace and the trace norm do not depend on the basis [47]. The Hilbert-Schmidt operators, those with `∑ ‖S eᵢ‖² < ∞` in one basis, are two-sided ideal elements, and the diagonal sums of `R S` and `S R` for Hilbert-Schmidt `R`, `S` agree (cyclicity of the trace) [48]; a product of two Hilbert-Schmidt operators is trace class [49]. The trace pairing `A ↦ Tr (A ·)` is an isometry of the bounded operators into the dual of the trace class [50], and every continuous functional on the trace class is a trace pairing, so the dual of the trace class is the bounded operators [51]. The trace of the rank-one operator on `ℂ` is `1`, and every operator on a finite-dimensional space is trace class; the identity of an infinite-dimensional Hilbert space is not Hilbert-Schmidt [52]. The diagonal operator with eigenvalues `1 / (n + 1)` on `ℓ²(ℕ)` is Hilbert-Schmidt and not trace class [53]. This layer is ported from Physlib with attribution; the duality between the compact operators and the trace class is not covered.
+
+For a Hilbert basis `{eᵢ}`, `∑ᵢ |⟪eᵢ, y⟫|² = ‖y‖²` (Parseval), the Hilbert-Schmidt square sum `∑ᵢ ‖S eᵢ‖²` of a bounded `S` in one basis equals that of `S⋆` in a second basis, and so it converges in every Hilbert basis to the same sum once it converges in one [39]. A Bogoliubov transformation is `T f = α f + β f` with `α` complex-linear and `β` antilinear, and the symplectic condition gives `‖α e‖² - ‖β e‖² = ‖e‖²` and `4 ‖β e‖² = ‖T e‖² + ‖T (i e)‖² - 2 ‖e‖²`; `α` is a bounded operator with `α†α - 1` positive and `‖√(α†α - 1) e‖² = ‖β e‖²` [40]. Hence the antilinear part is Hilbert-Schmidt as soon as `∑ᵢ ‖β bᵢ‖²` converges in one Hilbert basis, and in particular when the finite sums `∑_{i ∈ s} (‖T bᵢ‖² + ‖T (i bᵢ)‖² - 2)` are bounded, the quantity that the vacuum projections onto finitely many modes control in the necessity part of Shale's criterion [41].
 
 ## Lean References
 
@@ -147,7 +154,6 @@ The Gram matrix of the vectors `W f Ω` of a Fock representation is a function o
     (the proof of task T-OP2-P5)
 38. Lightlike/OperatorAlgebras/TestsFockReduction.lean - `OperatorAlgebras.Bogoliubov.id`,
     `OperatorAlgebras.implements_id`
-
 39. Lightlike/OperatorAlgebras/HilbertSchmidtBasis.lean -
     `OperatorAlgebras.hasSum_norm_sq_inner_basis`, `OperatorAlgebras.hasSum_norm_sq_apply_eq_adjoint`,
     `OperatorAlgebras.hasSum_norm_sq_apply_of_basis`
@@ -158,6 +164,58 @@ The Gram matrix of the vectors `W f Ω` of a Fock representation is a function o
 41. Lightlike/OperatorAlgebras/ShaleHilbertSchmidt.lean -
     `OperatorAlgebras.Bogoliubov.isHilbertSchmidt_betaPart`,
     `OperatorAlgebras.Bogoliubov.isHilbertSchmidt_of_finite_bound`
+42. Lightlike/OperatorAlgebras/Semigroup/Generation.lean - `OperatorAlgebras.hille_yosida_generation`,
+    `OperatorAlgebras.ContractionSemigroup.norm_dissip` (the proof of task T-OP1-P7); definitions in
+    the file Semigroup/Defs: `OperatorAlgebras.ContractionSemigroup`, `OperatorAlgebras.ContractionSemigroup.generator`
+43. Lightlike/OperatorAlgebras/Semigroup/Tests.lean - `OperatorAlgebras.trivialSemigroup`
+44. Lightlike/OperatorAlgebras/Semigroup/Converse.lean - `OperatorAlgebras.contractionSemigroup_generator_hypotheses`,
+    `OperatorAlgebras.hilleYosida_contraction`
+45. Lightlike/OperatorAlgebras/Semigroup/Continuity.lean - `OperatorAlgebras.ContractionSemigroup.continuous_orbit`,
+    `OperatorAlgebras.ContractionSemigroup.dense_generatorDomain`
+46. Lightlike/OperatorAlgebras/Semigroup/LaplaceResolvent.lean - `OperatorAlgebras.ContractionSemigroup.resolvent`,
+    `OperatorAlgebras.ContractionSemigroup.tendsto_quot_resolvent`
+47. Lightlike/OperatorAlgebras/TraceClass/Basic.lean - `OperatorAlgebras.TraceClass.IsTraceClass`,
+    `OperatorAlgebras.TraceClass.trace`, `OperatorAlgebras.TraceClass.traceNorm`
+48. Lightlike/OperatorAlgebras/TraceClass/HilbertSchmidt.lean -
+    `OperatorAlgebras.TraceClass.HilbertSchmidt.IsHilbertSchmidt`,
+    `OperatorAlgebras.TraceClass.HilbertSchmidt.tsum_diagonal_mul_eq_tsum_diagonal_swap`
+49. Lightlike/OperatorAlgebras/TraceClass/GeneralProduct.lean -
+    `OperatorAlgebras.TraceClass.isTraceClass_mul_of_isHilbertSchmidt`
+50. Lightlike/OperatorAlgebras/TraceClass/TracePairingNorm.lean -
+    `OperatorAlgebras.TraceClass.TraceClass.tracePairingLinearIsometry`
+51. Lightlike/OperatorAlgebras/TraceClass/TracePairingSurjectivity.lean -
+    `OperatorAlgebras.TraceClass.TraceClass.tracePairing_surjective_concrete`
+52. Lightlike/OperatorAlgebras/TestsTraceClass.lean - `OperatorAlgebras.TraceClass.trace_rankOne_complex_one`,
+    `OperatorAlgebras.TraceClass.isTraceClass_id_complex`,
+    `OperatorAlgebras.TraceClass.not_isHilbertSchmidt_one`,
+    `OperatorAlgebras.TraceClass.diag_weights_square_summable_not_summable`
+53. Lightlike/OperatorAlgebras/TestsTraceClassDiag.lean - `OperatorAlgebras.TraceClass.diagOp`,
+    `OperatorAlgebras.TraceClass.invDiag_isHilbertSchmidt`, `OperatorAlgebras.TraceClass.invDiag_not_isTraceClass`
+54. Lightlike/OperatorAlgebras/ShaleDeterminant.lean - `OperatorAlgebras.det_four_add_of_posSemidef`,
+    `OperatorAlgebras.uncertaintyMatrix`, `OperatorAlgebras.cayleyBlock`,
+    `OperatorAlgebras.four_pow_mul_le_det_one_add` (the determinant bound from the uncertainty relation)
+55. Lightlike/OperatorAlgebras/FockVacuumAverage.lean - `OperatorAlgebras.modeVec`,
+    `OperatorAlgebras.integral_vacuumIntegrand`, `OperatorAlgebras.gaussZ_mul_norm_inner_sq_le` (the Gaussian
+    average of the Weyl unitaries over finitely many modes bounds the vacuum overlap)
+56. Lightlike/OperatorAlgebras/ShaleNecessity.lean - `OperatorAlgebras.covMatrix`,
+    `OperatorAlgebras.posSemidef_uncertaintyMatrix`, `OperatorAlgebras.norm_inner_sq_mul_sqrt_le_one`,
+    `OperatorAlgebras.shale_necessity_of_implements` (the proof of task T-OP2-P6)
+57. Lightlike/OperatorAlgebras/FockContinuity.lean - `OperatorAlgebras.FockRep.continuous_W` (norm continuity
+    of the Weyl unitaries of a Fock representation), `OperatorAlgebras.Bogoliubov.twist`
+58. Lightlike/OperatorAlgebras/VacuumProjection.lean - `OperatorAlgebras.vacAvg` (the vacuum projection of
+    finitely many modes), `OperatorAlgebras.vacAvg_symm`, `OperatorAlgebras.vacAvg_W_vacAvg`,
+    `OperatorAlgebras.vacAvg_idem`, `OperatorAlgebras.exists_fixed_of_decreasing_projections`
+59. Lightlike/OperatorAlgebras/ShaleSufficiency.lean - `OperatorAlgebras.det_le_exp_trace_sub_card`,
+    `OperatorAlgebras.norm_sq_vacAvg_twist_Ω`, `OperatorAlgebras.shale_sufficiency_of_hilbertSchmidt` (the
+    proof of task T-OP2-P7), `OperatorAlgebras.shale_criterion` (both directions)
+60. Lightlike/OperatorAlgebras/TestsShale.lean - `OperatorAlgebras.Bogoliubov.neg`,
+    `OperatorAlgebras.isHilbertSchmidt_id_betaPart`, `OperatorAlgebras.implements_neg`
+61. Lightlike/OperatorAlgebras/TestsShaleSqueeze.lean - `OperatorAlgebras.Bogoliubov.squeeze`,
+    `OperatorAlgebras.Bogoliubov.squeeze_betaPart`, `OperatorAlgebras.implements_squeeze`
+62. Lightlike/OperatorAlgebras/Spectral/Unbounded/Cayley.lean - `OperatorAlgebras.Spectral.Unbounded.existsUnique_spectralMeasure_unbounded`,
+    `OperatorAlgebras.Spectral.ProjectionValuedMeasure`
+63. Lightlike/OperatorAlgebras/Spectral/StoneBridge.lean - `OperatorAlgebras.Spectral.Stone.generator_eq`,
+    `OperatorAlgebras.Spectral.Stone.spectralGroup`, `OperatorAlgebras.Spectral.Stone.spectralGroup_generator`
 
 ## References
 
@@ -166,3 +224,7 @@ The Gram matrix of the vectors `W f Ω` of a Fock representation is a function o
 2. O. Bratteli and D. W. Robinson, *Operator Algebras and Quantum Statistical Mechanics 2*, 2nd ed.,
    Springer, 1997, Chapter 5, after D. Shale, *Linear symmetries of free boson fields*, Trans. Amer. Math.
    Soc. 103 (1962) 149.
+3. Math 7334 lecture notes, Georgia Tech (Spring 2017), Section 4: The Theorem of Hille and Yosida concerning semi-groups, Theorem 1.9, https://loss.math.gatech.edu/17SPRINGTEA/7334/NOTES/section4hilleyosida.pdf.
+4. G. Teschl, *Mathematical Methods in Quantum Mechanics*, Graduate Studies in Mathematics 99, American Mathematical
+   Society, 2009 (online edition), Theorem 3.7 (spectral theorem). The Lean files are ported from physicslib4
+   (github.com/physicslib/physicslib4, Apache-2.0).

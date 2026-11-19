@@ -34,3 +34,16 @@ Lean files: `Lightlike/GR/EuclideanSchwarzschild.lean`, `EuclideanCigar.lean`, `
 * `hawkingTemperature = 1/(8πM)`: source "β_H = 8πm, is the inverse of Hawking's temperature". MATCH.
 
 Not read: Gibbons-Hawking 1977 (Phys. Rev. D 15, 2752), cited by Kuntz et al. as ref. [2]; no location from it is claimed.
+
+## Open pieces of G1-058 (status, 18 November 2026)
+
+1. **No smooth extension for `β ≠ 8πM`** (not proved). Planned routes, none formalized yet:
+   * (a) *Cone ratio in a smooth surface.* In a smooth 2D Riemannian metric, circumference of the geodesic circle of radius `ρ` over `ρ` tends to `2π`
+     at every point. This needs the Riemannian length of curves and the distance function of a chart metric (not in the library): about the same
+     size as a new geometry layer (Regge's area). The Euclidean side is `tendsto_cone_ratio` (limit `β/(4M)`), so the contradiction would be `β/(4M) = 2π`.
+   * (b) *Holonomy of the Levi-Civita connection around the small circle*: `2π − β/(4M)` on the cone side, `O(ε²)` for a smooth metric (curvature times area).
+     This needs the parallel transport ODE and its estimate: also not in the library.
+   * (c) *Killing field with a fixed point*: `∂_τ` extends to a Killing field fixing the tip whose isotropy rotation has angular speed `κ = 1/(4M)`
+     (`kerrKappa M 0`), so periodicity forces `κβ ∈ 2πℤ`. Needs manifold-level Killing fields and their linearization at a fixed point.
+   No attempt has been completed; none counts toward the 17:10 two-attempt rule.
+2. **`∫√g R = 4π(1 − β/β_H) A` (A6)** needs distributional curvature of a cone: not started.
