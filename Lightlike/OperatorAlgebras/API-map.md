@@ -65,6 +65,8 @@ A representation of the CAR over `ℝᵐ` is a family of self-adjoint operators 
 
 For a finite-dimensional `h`, the Weyl unitaries are jointly strongly continuous [78]. The Gaussian average `P = ∫ e^{-‖z‖²/4} W z dz` satisfies `P W f P = (2π)^d e^{-‖f‖²/4} P` (von Neumann's identity, from the Gaussian kernel integral [79]), so `P₀ = (2π)^{-d} P` is an orthogonal projection, nonzero on a nonzero space by Fourier inversion, and a unit vector of its range has the Fock vacuum expectation [80]. Hence every representation of the Weyl relations of `h` is the Hilbert sum of Fock representations over an orthonormal basis of the range of `P₀`, it is irreducible iff that range is one-dimensional, and an irreducible one is unitarily equivalent to the Fock representation: the Stone-von Neumann theorem {8} [81].
 
+A map `y ↦ W y` into the unitaries with the Weyl relations is regular as soon as it has a cyclic quasi-free vector `Ψ`, `⟪Ψ, W y Ψ⟫ = exp(-η(y, y)/4)` [82]; then `Ψ` lies in the domain of every field operator `φ(y)`, the generator of `t ↦ W(t y)`, with `⟪φ(y₁)Ψ, φ(y₂)Ψ⟫ = ½(η(y₁, y₂) + i σ(y₁, y₂))` and `|σ(y₁, y₂)| ≤ η(y₁, y₁)^{1/2} η(y₂, y₂)^{1/2}` {9}; the Fock vacuum is quasi-free with `η = Re⟪·,·⟫` [83].
+
 ## Lean References
 
 1. Lightlike/OperatorAlgebras/UnitaryGroup.lean - `OperatorAlgebras.UnitaryGroup`,
@@ -276,6 +278,11 @@ For a finite-dimensional `h`, the Weyl unitaries are jointly strongly continuous
 81. Lightlike/OperatorAlgebras/StoneVN.lean - `OperatorAlgebras.vnProj`, `OperatorAlgebras.inner_W_of_vnProj`,
     `OperatorAlgebras.stone_von_neumann`, `OperatorAlgebras.isIrreducible_iff_finrank_vnRange`,
     `OperatorAlgebras.stone_von_neumann_irreducible`
+82. Lightlike/OperatorAlgebras/QuasiFree.lean - `OperatorAlgebras.WeylSystem.continuous_line_of_quasiFree`,
+    `OperatorAlgebras.CCRRep.IsQuasiFree`, `OperatorAlgebras.CCRRep.field`, `OperatorAlgebras.CCRRep.IsQuasiFree.mem_domain`,
+    `OperatorAlgebras.CCRRep.IsQuasiFree.inner_field_field`, `OperatorAlgebras.CCRRep.IsQuasiFree.abs_symp_le`,
+    `OperatorAlgebras.FockRep.isQuasiFree_vacuum`
+83. Lightlike/OperatorAlgebras/TestsQuasiFree.lean - `OperatorAlgebras.FockRep.inner_field_field_vacuum`
 
 ## References
 
@@ -299,3 +306,5 @@ For a finite-dimensional `h`, the Weyl unitaries are jointly strongly continuous
 8. J. Dereziński, *Introduction to representations of the canonical commutation and anticommutation
    relations*, Theorem 4 and Corollary 1; M. Faulhuber, *Time-Frequency Analysis*, lecture notes, 2022,
    Section 7.3.1 (von Neumann's proof).
+9. J. Dereziński, *Introduction to representations of the canonical commutation and anticommutation
+   relations*, Section 9.1, Theorems 37 and 39 (Theorem 39 (1) in the corrected form `½(η + iω)`).

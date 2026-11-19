@@ -2624,3 +2624,42 @@
   review: kernel-checked
   note: "Compared with Derezinski, Corollary 1, p. 12, and Faulhuber, Theorem 7.32, pp. 90-94 (read): with the same representation of the symplectic space and of the reference representation as LL-0198, for nonzero spaces."
   since: unreleased
+- id: LL-0200
+  title: A representation of the Weyl relations with a cyclic quasi-free vector is regular
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/QuasiFree.lean
+  decls: [Lightlike.OperatorAlgebras.WeylSystem.continuous_line_of_quasiFree, Lightlike.OperatorAlgebras.WeylSystem.toCCRRep]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: derezinski-2006, location: "Theorem 37, p. 38", check: "quasi-free"}
+  review: kernel-checked
+  note: "Compared with Derezinski, Section 9.1, p. 38 and Section 3.1, pp. 9-10 (read). The symplectic space is a complex inner product space h with sigma = Im<.,.>; a quasi-free vector satisfies <Psi, W y Psi> = exp(-eta(y, y)/4) for a symmetric real bilinear form eta (the source's quadratic form y eta y)."
+  since: unreleased
+- id: LL-0201
+  title: A quasi-free vector lies in the domain of every field operator, with two-point function (phi(y1) Psi | phi(y2) Psi) = (eta(y1, y2) + i sigma(y1, y2))/2
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/QuasiFree.lean
+  decls: [Lightlike.OperatorAlgebras.CCRRep.IsQuasiFree.mem_domain, Lightlike.OperatorAlgebras.CCRRep.IsQuasiFree.inner_field_field]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: derezinski-2006, location: "Theorem 39, p. 39", check: "quasi-free"}
+  review: kernel-checked
+  note: "Compared with Derezinski, Theorem 39 (1), p. 39 (read). The field operator phi(y) is the generator of t -> W(t y) = exp(i t phi(y)); (Psi | phi(y1) phi(y2) Psi) is read as (phi(y1) Psi | phi(y2) Psi); eta is the symmetric real bilinear form of (70) and sigma = Im<.,.> is the source's omega. The corrected formula (eta + i sigma)/2 is stated. Source error: as printed, Theorem 39 (1) reads y1 (eta + 2 i omega) y2; the second-order expansion of (70) gives (eta + i omega)/2, which the Fock vacuum (eta = Re<.,.>, two-point function <f, g>/2, FockRep.inner_field_field_vacuum) confirms."
+  since: unreleased
+- id: LL-0202
+  title: For a quasi-free vector, |sigma(y1, y2)| <= eta(y1, y1)^(1/2) eta(y2, y2)^(1/2)
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/QuasiFree.lean
+  decls: [Lightlike.OperatorAlgebras.CCRRep.IsQuasiFree.abs_symp_le, Lightlike.OperatorAlgebras.CCRRep.IsQuasiFree.abs_symp_le_two_mul]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: derezinski-2006, location: "Theorem 39, p. 39", check: "quasi-free"}
+  review: kernel-checked
+  note: "Compared with Derezinski, Theorem 39 (2), p. 39 (read): abs_symp_le_two_mul is the printed bound with the constant 2; abs_symp_le has the constant 1."
+  since: unreleased

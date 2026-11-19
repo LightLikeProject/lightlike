@@ -1649,6 +1649,16 @@
     "snippet": "Theorem 10. 1) Let (φ1 , φ2 , . . . , φ2n ) be a representation of the CAR over R2n in a Hilbert space H. Then there exists a Hilbert space K and a unitary operator U : ⊗ n C2 ⊗ K → H such that \u0010 \u0011 (j) U Ij−1 σ1 ⊗ 1K = φ",
     "why": null
    },
+   "Theorem 37, p. 38": {
+    "verified": true,
+    "snippet": "Theorem 37. A quasi-free representation is regular. Therefore, in a quasi-free representation we can define the corresponding field operators, denoted φ(y). If m is an integer, we say that σ is a pairing of {1, . . . , 2",
+    "why": null
+   },
+   "Theorem 39, p. 39": {
+    "verified": true,
+    "snippet": "Theorem 39. Suppose that Ψ is a quasi-free vector with η satisfying (70). Then 1) y1 (η + 2i ω)y2 = (Ψ |φ(y1 )φ(y2 )Ψ ); 2) |y1 ωy2 | ≤ 2|y1 ηy1 |1/2 |y2 ηy2 |1/2 , y1 , y2 ∈ Y. Proof. Note that (Ψ |φ(y)2 Ψ ) = yηy. This",
+    "why": null
+   },
    "Theorem 4, p. 12": {
     "verified": true,
     "snippet": "Theorem 4 (The Stone–von Neumann theorem). Suppose that (Y, ω) is a finite dimensional symplectic space and (18) a regular representation of the CCR. Suppose that we fix an identification of Y with X # ⊕ X . Then, there",
