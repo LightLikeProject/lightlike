@@ -1415,6 +1415,11 @@ import Lightlike.DynamicalTriangulations.Ergodicity
 import Lightlike.DynamicalTriangulations.Ergodicity3
 import Lightlike.DynamicalTriangulations.Tests
 import Lightlike.DynamicalTriangulations.Tests3
+import Lightlike.FieldTheory.Forest.Cube
+import Lightlike.FieldTheory.Forest.Formula
+import Lightlike.FieldTheory.Forest.Graph
+import Lightlike.FieldTheory.Forest.Partial
+import Lightlike.FieldTheory.Forest.Positivity
 import Lightlike.FieldTheory.Gaussian.Density
 import Lightlike.FieldTheory.Gaussian.FeynmanExpansion
 import Lightlike.FieldTheory.Gaussian.FeynmanGraphs
