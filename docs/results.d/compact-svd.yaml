@@ -1,13 +1,13 @@
 - id: LL-XXXX-b
-  title: The canonical form of a compact operator, K = sum of s_j <phi_j, .> phi'_j with orthonormal phi, phi' and positive singular values s_j, finitely many above every epsilon, and the operator norm as their supremum
+  title: The canonical form of a compact operator, K = sum of s_j <phi_j, .> phi'_j with orthonormal phi, phi' and positive singular values s_j, finitely many above every epsilon, the operator norm as their attained maximum, and the s_j^2 as exactly the nonzero eigenvalues of K*K and KK*, counted with multiplicity
   area: OperatorAlgebras
   file: Lightlike/OperatorAlgebras/Spectral/CanonicalForm.lean
-  decls: [Lightlike.OperatorAlgebras.CompactSpectral.IsCanonicalForm, Lightlike.OperatorAlgebras.CompactSpectral.exists_isCanonicalForm, Lightlike.OperatorAlgebras.CompactSpectral.isCanonicalForm_of_eigenbasis, Lightlike.OperatorAlgebras.CompactSpectral.IsCanonicalForm.le_opNorm, Lightlike.OperatorAlgebras.CompactSpectral.IsCanonicalForm.opNorm_le, Lightlike.OperatorAlgebras.CompactSpectral.isCompactOperator_adjoint_comp]
+  decls: [Lightlike.OperatorAlgebras.CompactSpectral.IsCanonicalForm, Lightlike.OperatorAlgebras.CompactSpectral.exists_isCanonicalForm, Lightlike.OperatorAlgebras.CompactSpectral.isCanonicalForm_of_eigenbasis, Lightlike.OperatorAlgebras.CompactSpectral.IsCanonicalForm.le_opNorm, Lightlike.OperatorAlgebras.CompactSpectral.IsCanonicalForm.opNorm_le, Lightlike.OperatorAlgebras.CompactSpectral.IsCanonicalForm.exists_eq_opNorm, Lightlike.OperatorAlgebras.CompactSpectral.IsCanonicalForm.eigenspace_adjoint_comp, Lightlike.OperatorAlgebras.CompactSpectral.IsCanonicalForm.finrank_eigenspace_adjoint_comp, Lightlike.OperatorAlgebras.CompactSpectral.IsCanonicalForm.eigenspace_comp_adjoint, Lightlike.OperatorAlgebras.CompactSpectral.isCompactOperator_adjoint_comp]
   status: proven
   tier: established
   source:
     refs:
       - {ref: teschl-2009, location: "Theorem 6.7, p. 137", check: "compact"}
   review: kernel-checked
-  note: "Compared with Teschl, Section 6.2, Theorem 6.7 and (6.7), p. 137 (read, online edition), for a compact operator on a real or complex Hilbert space. The orthonormal sets are families indexed by a type and the series (6.6) are stated pointwise; 'finitely many singular values or they converge to zero' is stated as finitely many s_j >= epsilon for every epsilon > 0; K*K phi_j = s_j^2 phi_j and KK* phi'_j = s_j^2 phi'_j are stated, not that every nonzero eigenvalue of K*K occurs with its multiplicity; (6.7) is stated as the least upper bound, not as an attained maximum."
+  note: "Compared with Teschl, Section 6.2, Theorem 6.7 and (6.7), p. 137 (read, online edition), for a compact operator on a real or complex Hilbert space. The orthonormal sets are families indexed by a type and the series (6.6) are stated pointwise; 'finitely many singular values or they converge to zero' is stated as finitely many s_j >= epsilon for every epsilon > 0; for every mu != 0 the mu-eigenspace of K*K (of KK*) is the span of the phi_j (the phi'_j) with s_j^2 = mu, of dimension #{j | s_j^2 = mu}; (6.7) is stated as an upper bound attained for K != 0 (for K = 0 there are no singular values)."
   since: unreleased

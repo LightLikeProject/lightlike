@@ -15,7 +15,13 @@ converge to zero. The proof applies Theorem 6.6 to `K*K`.
   `ε > 0`;
 * `isCanonicalForm_of_eigenbasis`, `exists_isCanonicalForm`: every compact operator has one, built from a Hilbert basis
   of eigenvectors of `K*K`;
-* `IsCanonicalForm.le_opNorm`, `IsCanonicalForm.opNorm_le`: `‖K‖ = sup sⱼ` (6.7), for every canonical form;
+* `IsCanonicalForm.le_opNorm`, `IsCanonicalForm.opNorm_le`, `IsCanonicalForm.exists_eq_opNorm`: `‖K‖ = maxⱼ sⱼ` (6.7),
+  for every canonical form, the maximum attained for `K ≠ 0`;
+* `IsCanonicalForm.toAdjoint`: `K*` has the canonical form with `φ`, `φ'` exchanged;
+* `IsCanonicalForm.finite_sq_eq`, `IsCanonicalForm.eigenspace_adjoint_comp`,
+  `IsCanonicalForm.finrank_eigenspace_adjoint_comp`, `IsCanonicalForm.eigenspace_comp_adjoint`: for `μ ≠ 0` the
+  `μ`-eigenspace of `K*K` (of `KK*`) is spanned by the `φⱼ` (the `φ'ⱼ`) with `sⱼ² = μ` and has dimension
+  `#{j | sⱼ² = μ}`: the `sⱼ²` are exactly the nonzero eigenvalues, counted with multiplicity;
 * `hasSum_norm_sq_of_orthonormal`: `‖∑ⱼ cⱼ vⱼ‖² = ∑ⱼ |cⱼ|²` for an orthonormal family `v`.
 -/
 
@@ -256,5 +262,136 @@ lemma IsCanonicalForm.opNorm_le {ι : Type*} {K : E →L[𝕜] E} {φ φ' : ι �
       _ = M ^ 2 * ∑' j, ‖⟪φ j, x⟫_𝕜‖ ^ 2 := tsum_mul_left
       _ ≤ M ^ 2 * ‖x‖ ^ 2 := by gcongr; exact hφ.tsum_inner_products_le x
   exact (pow_le_pow_iff_left₀ (norm_nonneg _) (by positivity) two_ne_zero).mp (by rw [mul_pow]; exact hle)
+
+/-- **`‖K‖` is the largest singular value** (Teschl (6.7), p. 137: `‖K‖ = maxⱼ sⱼ(K)`): for `K ≠ 0` some `sⱼ` equals
+`‖K‖`. Only finitely many `sⱼ` are at least `‖K‖ / 2`, there is at least one, and the largest of them is `‖K‖`. -/
+theorem IsCanonicalForm.exists_eq_opNorm {ι : Type*} {K : E →L[𝕜] E} {φ φ' : ι → E} {s : ι → ℝ}
+    (hc : IsCanonicalForm K φ φ' s) (hK : K ≠ 0) : ∃ j, s j = ‖K‖ := by
+  have hN : 0 < ‖K‖ := norm_pos_iff.mpr hK
+  have hF : {j | ‖K‖ / 2 ≤ s j}.Finite := hc.finite_ge _ (by positivity)
+  have hne : {j | ‖K‖ / 2 ≤ s j}.Nonempty := by
+    by_contra h
+    have hle : ∀ j, s j ≤ ‖K‖ / 2 := fun j => by
+      by_contra hj
+      exact h ⟨j, (not_le.mp hj).le⟩
+    have := hc.opNorm_le (by positivity) hle
+    linarith
+  obtain ⟨j₀, hj₀, hmax⟩ := hF.toFinset.exists_max_image s (hF.toFinset_nonempty.mpr hne)
+  rw [Set.Finite.mem_toFinset, Set.mem_setOf_eq] at hj₀
+  refine ⟨j₀, le_antisymm (hc.le_opNorm j₀) (hc.opNorm_le (hc.pos j₀).le fun j => ?_)⟩
+  by_cases hj : ‖K‖ / 2 ≤ s j
+  · exact hmax j ((Set.Finite.mem_toFinset hF).mpr hj)
+  · linarith [not_le.mp hj]
+
+open ContinuousLinearMap in
+/-- **The adjoint's canonical form**: `K* = ∑ⱼ sⱼ ⟪φ'ⱼ, ·⟫ φⱼ` is a canonical form of `K*` with the roles of `φ`, `φ'`
+exchanged. -/
+theorem IsCanonicalForm.toAdjoint {ι : Type*} {K : E →L[𝕜] E} {φ φ' : ι → E} {s : ι → ℝ}
+    (hc : IsCanonicalForm K φ φ' s) : IsCanonicalForm (adjoint K) φ' φ s where
+  orthonormal_left := hc.orthonormal_right
+  orthonormal_right := hc.orthonormal_left
+  pos := hc.pos
+  hasSum_apply := hc.hasSum_adjoint_apply
+  hasSum_adjoint_apply x := by rw [adjoint_adjoint]; exact hc.hasSum_apply x
+  apply_left := hc.adjoint_apply_right
+  adjoint_apply_right j := by rw [adjoint_adjoint]; exact hc.apply_left j
+  adjoint_apply_apply_left j := by rw [adjoint_adjoint]; exact hc.apply_adjoint_apply_right j
+  apply_adjoint_apply_right j := by rw [adjoint_adjoint]; exact hc.adjoint_apply_apply_left j
+  finite_ge := hc.finite_ge
+
+/-- For `μ ≠ 0` only finitely many `j` have `sⱼ² = μ`. -/
+lemma IsCanonicalForm.finite_sq_eq {ι : Type*} {K : E →L[𝕜] E} {φ φ' : ι → E} {s : ι → ℝ}
+    (hc : IsCanonicalForm K φ φ' s) {μ : 𝕜} (hμ : μ ≠ 0) : {j | ((s j ^ 2 : ℝ) : 𝕜) = μ}.Finite := by
+  refine (hc.finite_ge (Real.sqrt ‖μ‖) (Real.sqrt_pos.mpr (norm_pos_iff.mpr hμ))).subset fun j hj => ?_
+  rw [Set.mem_setOf_eq] at hj ⊢
+  have h := congrArg norm hj
+  rw [RCLike.norm_ofReal, abs_of_nonneg (sq_nonneg _)] at h
+  rw [← h, Real.sqrt_sq (hc.pos j).le]
+
+open ContinuousLinearMap in
+/-- **The eigenspaces of `K*K`** (Teschl, Theorem 6.7, p. 137: "the numbers `sⱼ(K)² > 0` are the nonzero eigenvalues of
+`K*K` (counted with multiplicity)"): for every canonical form and every `μ ≠ 0`, the `μ`-eigenspace of `K*K` is spanned
+by the `φⱼ` with `sⱼ² = μ`. An eigenvector `x` has `⟪φₖ, x⟫ = 0` unless `sₖ² = μ`; subtracting its expansion over the
+`φⱼ` with `sⱼ² = μ` leaves an eigenvector `y` with `K y = ∑ⱼ sⱼ ⟪φⱼ, y⟫ φ'ⱼ = 0`, so `μ y = K*K y = 0`. -/
+theorem IsCanonicalForm.eigenspace_adjoint_comp {ι : Type*} {K : E →L[𝕜] E} {φ φ' : ι → E} {s : ι → ℝ}
+    (hc : IsCanonicalForm K φ φ' s) {μ : 𝕜} (hμ : μ ≠ 0) :
+    eigenspace ((adjoint K ∘L K : E →L[𝕜] E) : E →ₗ[𝕜] E) μ =
+      Submodule.span 𝕜 (φ '' {j | ((s j ^ 2 : ℝ) : 𝕜) = μ}) := by
+  classical
+  have hS := hc.finite_sq_eq hμ
+  have hφ := hc.orthonormal_left
+  have heig : ∀ j ∈ {j | ((s j ^ 2 : ℝ) : 𝕜) = μ},
+      φ j ∈ eigenspace ((adjoint K ∘L K : E →L[𝕜] E) : E →ₗ[𝕜] E) μ := fun j hj => by
+    rw [mem_eigenspace_iff, ContinuousLinearMap.coe_coe, ContinuousLinearMap.comp_apply,
+      hc.adjoint_apply_apply_left j, Set.mem_setOf_eq.mp hj]
+  apply le_antisymm
+  · intro x hx
+    have hx' := mem_eigenspace_iff.mp hx
+    rw [ContinuousLinearMap.coe_coe, ContinuousLinearMap.comp_apply] at hx'
+    -- the coefficients of `x` vanish off `S`
+    have hzero : ∀ k, ((s k ^ 2 : ℝ) : 𝕜) ≠ μ → ⟪φ k, x⟫_𝕜 = 0 := fun k hk => by
+      have h1 : ⟪φ k, adjoint K (K x)⟫_𝕜 = μ * ⟪φ k, x⟫_𝕜 := by rw [hx', inner_smul_right]
+      rw [adjoint_inner_right, ← adjoint_inner_left, hc.adjoint_apply_apply_left k, inner_smul_left,
+        RCLike.conj_ofReal] at h1
+      have h2 : (((s k ^ 2 : ℝ) : 𝕜) - μ) * ⟪φ k, x⟫_𝕜 = 0 := by rw [sub_mul, h1, sub_self]
+      exact (mul_eq_zero.mp h2).resolve_left (sub_ne_zero.mpr hk)
+    set T := hS.toFinset
+    set y := x - ∑ j ∈ T, ⟪φ j, x⟫_𝕜 • φ j with hy
+    have hcoef : ∀ k, ⟪φ k, y⟫_𝕜 = 0 := fun k => by
+      rw [hy, inner_sub_right, inner_sum]
+      simp only [inner_smul_right, orthonormal_iff_ite.mp hφ k, mul_ite, mul_one, mul_zero]
+      rw [Finset.sum_ite_eq]
+      by_cases hk : k ∈ T
+      · rw [if_pos hk, sub_self]
+      · rw [if_neg hk, sub_zero]
+        exact hzero k fun h => hk ((Set.Finite.mem_toFinset hS).mpr h)
+    have hKy : K y = 0 := by
+      have h := hc.hasSum_apply y
+      simp only [hcoef, mul_zero, zero_smul] at h
+      exact h.unique hasSum_zero
+    have hymem : y ∈ eigenspace ((adjoint K ∘L K : E →L[𝕜] E) : E →ₗ[𝕜] E) μ :=
+      Submodule.sub_mem _ hx (Submodule.sum_mem _ fun j hj =>
+        Submodule.smul_mem _ _ (heig j ((Set.Finite.mem_toFinset hS).mp hj)))
+    have hy0 : y = 0 := by
+      have h := mem_eigenspace_iff.mp hymem
+      rw [ContinuousLinearMap.coe_coe, ContinuousLinearMap.comp_apply, hKy, map_zero] at h
+      exact (smul_eq_zero.mp h.symm).resolve_left hμ
+    have hxsum : x = ∑ j ∈ T, ⟪φ j, x⟫_𝕜 • φ j := sub_eq_zero.mp hy0
+    rw [hxsum]
+    exact Submodule.sum_mem _ fun j hj => Submodule.smul_mem _ _
+      (Submodule.subset_span ⟨j, (Set.Finite.mem_toFinset hS).mp hj, rfl⟩)
+  · refine Submodule.span_le.mpr fun x hx => ?_
+    obtain ⟨j, hj, rfl⟩ := hx
+    exact heig j hj
+
+open ContinuousLinearMap in
+/-- **Each nonzero eigenvalue of `K*K` has multiplicity `#{j | sⱼ² = μ}`** (Teschl, Theorem 6.7, p. 137, "counted with
+multiplicity"). -/
+theorem IsCanonicalForm.finrank_eigenspace_adjoint_comp {ι : Type*} {K : E →L[𝕜] E} {φ φ' : ι → E} {s : ι → ℝ}
+    (hc : IsCanonicalForm K φ φ' s) {μ : 𝕜} (hμ : μ ≠ 0) :
+    finrank 𝕜 (eigenspace ((adjoint K ∘L K : E →L[𝕜] E) : E →ₗ[𝕜] E) μ) =
+      Nat.card {j // ((s j ^ 2 : ℝ) : 𝕜) = μ} := by
+  have hS := hc.finite_sq_eq hμ
+  haveI : Fintype {j // ((s j ^ 2 : ℝ) : 𝕜) = μ} := hS.fintype
+  have hli : LinearIndependent 𝕜 (fun j : {j // ((s j ^ 2 : ℝ) : 𝕜) = μ} => φ j) :=
+    hc.orthonormal_left.linearIndependent.comp _ Subtype.val_injective
+  have hspan : Submodule.span 𝕜 (φ '' {j | ((s j ^ 2 : ℝ) : 𝕜) = μ}) =
+      Submodule.span 𝕜 (Set.range fun j : {j // ((s j ^ 2 : ℝ) : 𝕜) = μ} => φ j) := by
+    rw [Set.image_eq_range]; rfl
+  rw [hc.eigenspace_adjoint_comp hμ, hspan, finrank_span_eq_card hli, Nat.card_eq_fintype_card]
+
+open ContinuousLinearMap in
+/-- **The eigenspaces of `KK*`** (Teschl, Theorem 6.7, p. 137, "respectively `K*K`"): the `μ`-eigenspace of `KK*`,
+`μ ≠ 0`, is spanned by the `φ'ⱼ` with `sⱼ² = μ`, and has dimension `#{j | sⱼ² = μ}`. -/
+theorem IsCanonicalForm.eigenspace_comp_adjoint {ι : Type*} {K : E →L[𝕜] E} {φ φ' : ι → E} {s : ι → ℝ}
+    (hc : IsCanonicalForm K φ φ' s) {μ : 𝕜} (hμ : μ ≠ 0) :
+    eigenspace ((K ∘L adjoint K : E →L[𝕜] E) : E →ₗ[𝕜] E) μ =
+      Submodule.span 𝕜 (φ' '' {j | ((s j ^ 2 : ℝ) : 𝕜) = μ}) ∧
+    finrank 𝕜 (eigenspace ((K ∘L adjoint K : E →L[𝕜] E) : E →ₗ[𝕜] E) μ) =
+      Nat.card {j // ((s j ^ 2 : ℝ) : 𝕜) = μ} := by
+  have h1 := hc.toAdjoint.eigenspace_adjoint_comp hμ
+  have h2 := hc.toAdjoint.finrank_eigenspace_adjoint_comp hμ
+  rw [adjoint_adjoint] at h1 h2
+  exact ⟨h1, h2⟩
 
 end Lightlike.OperatorAlgebras.CompactSpectral
