@@ -394,7 +394,7 @@ The Schatten sum `‖K‖_p^p` is the supremum of `∑ₖ |⟪ψₖ, K ϕₖ⟫|
     `OperatorAlgebras.CompactSpectral.schattenNorm_eq_zero_iff`, `OperatorAlgebras.CompactSpectral.schattenSum_le_of_tendsto`,
     `OperatorAlgebras.CompactSpectral.exists_tendsto_schattenNorm`
 110. Lightlike/OperatorAlgebras/Spectral/TestsSchatten.lean - `OperatorAlgebras.CompactSpectral.schattenSum_two_invDiag_lt_top`,
-    `OperatorAlgebras.CompactSpectral.schattenSum_one_invDiag_eq_top` (`diag(1/(n+1))` is in `J₂` and not in `J₁`)
+    `OperatorAlgebras.CompactSpectral.schattenSum_one_invDiag_eq_top` (diag(1/(n+1)) is in J₂ and not in J₁)
 
 ## References
 
