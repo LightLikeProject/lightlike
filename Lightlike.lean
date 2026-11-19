@@ -737,6 +737,7 @@ import Lightlike.Spacetime.EHManifold.ChartAction
 import Lightlike.Spacetime.EHManifold.ChartVariation
 import Lightlike.Spacetime.EHManifold.IntrinsicAction
 import Lightlike.Spacetime.EHManifold.Locality
+import Lightlike.Spacetime.EHManifold.ManifoldCritical
 import Lightlike.Spacetime.EHManifold.ManifoldVariation
 import Lightlike.Spacetime.EHManifold.Perturbation
 import Lightlike.Spacetime.EHManifold.PerturbationExt
