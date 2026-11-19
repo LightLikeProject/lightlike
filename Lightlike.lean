@@ -738,6 +738,7 @@ import Lightlike.Spacetime.EHManifold.ChartVariation
 import Lightlike.Spacetime.EHManifold.Contraction
 import Lightlike.Spacetime.EHManifold.EinsteinForm
 import Lightlike.Spacetime.EHManifold.IntrinsicAction
+import Lightlike.Spacetime.EHManifold.IntrinsicIntegrand
 import Lightlike.Spacetime.EHManifold.Locality
 import Lightlike.Spacetime.EHManifold.ManifoldCritical
 import Lightlike.Spacetime.EHManifold.ManifoldVariation
