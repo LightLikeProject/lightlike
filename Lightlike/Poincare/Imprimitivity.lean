@@ -4,8 +4,8 @@ import Lightlike.Poincare.ConeL2
 # The canonical system of imprimitivity of the massive one-particle representations
 
 A *system of imprimitivity* (Freitag, Def. V.4.2) for a unitary representation `π` of a group `G` acting on a locally
-compact space `Y` is a regular `*`-homomorphism `S : C_c(Y) → B(H)` with `π(g) S(f) π(g)⁻¹ = S(f ∘ g⁻¹)`
-(`IsSystemOfImprimitivity`). For the induced representation `U` of `SL(2,ℂ)` on `L²(μ; ℂ^{n+1})` over the mass shell,
+compact space `Y` is a regular `*`-homomorphism `S : C_c(Y) → B(H)` with `π(g) S(f) π(g)⁻¹ = S(f ∘ g⁻¹)`;
+`IsSystemOfImprimitivity` takes `S` on the bounded continuous functions, unital. For the induced representation `U` of `SL(2,ℂ)` on `L²(μ; ℂ^{n+1})` over the mass shell,
 multiplication by functions of the momentum is one (`isSystemOfImprimitivity_inducedL2`, Freitag, Prop. V.4.4: every
 induced representation is imprimitive); the multiplications also commute with the translations
 (`translL2_bcfMul`).
@@ -92,8 +92,11 @@ lemma bcfMul_one : bcfMul (μ := μ) (E := E) (1 : X →ᵇ ℂ) = 1 := by
 /-! ## Systems of imprimitivity -/
 
 /-- **A system of imprimitivity** (Freitag, Def. V.4.2) for a map `π` from a group `G` acting on `Y` to the bounded
-operators of a Hilbert space: a bounded `*`-homomorphism `S` from the compactly supported continuous functions,
-non-degenerate, and covariant: `π(g) S(f) = S(f ∘ g⁻¹) π(g)`. -/
+operators of a Hilbert space: a bounded `*`-homomorphism `S` from the bounded continuous functions with `S 1 = 1`,
+covariant: `π(g) S(f) = S(f ∘ g⁻¹) π(g)`.
+
+Difference from the source (representation): the source's `S` is defined on the compactly supported continuous
+functions and is regular (non-degenerate); here it is defined on the bounded continuous functions and unital. -/
 structure IsSystemOfImprimitivity {G Y H : Type*} [Group G] [MulAction G Y] [TopologicalSpace Y]
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] (π : G → H →L[ℂ] H) (S : (Y →ᵇ ℂ) → H →L[ℂ] H) : Prop where
   map_mul : ∀ f g, S (f * g) = S f * S g
