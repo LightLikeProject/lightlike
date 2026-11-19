@@ -612,6 +612,54 @@ theorem dGammaTensor_zero_creT (h : Z →L[ℂ] Z) (w : Z) (Φ : lp (fun _ : Fin
     SecondQuantSlot.dGammaTensor b 0 h (creT b w Φ) = creT b (h w) Φ := by
   rw [SecondQuantSlot.dGammaTensor, Fin.sum_univ_succ, Fin.sum_univ_zero, add_zero, slotOp_zero_creT]
 
+/-- `(slotEquiv j).symm (m, k) = insertNth j k m`. -/
+lemma slotEquiv_symm_apply {m : ℕ} (j : Fin (m + 1)) (q : Fin m → ι) (k : ι) :
+    (SecondQuantSlot.slotEquiv (ι := ι) j).symm (q, k) = Fin.insertNth j k q := by
+  simp [SecondQuantSlot.slotEquiv, Fin.insertNthEquiv]
+
+/-- **The coefficients of `h` on slot `j`**: the `f j`-th coordinate of `h` applied to the vector with coefficients
+`k ↦ Φ(f with k in slot j)`. -/
+lemma slotOp_apply_eq {m : ℕ} (j : Fin (m + 1)) (h : Z →L[ℂ] Z) (Φ : lp (fun _ : Fin (m + 1) → ι => ℂ) 2)
+    (f : Fin (m + 1) → ι) :
+    SecondQuantSlot.slotOp b j h Φ f = b.repr (h (b.repr.symm (SecondQuantSlot.fiber
+      ((SecondQuantSlot.reindexL (SecondQuantSlot.slotEquiv j)).symm Φ) (Fin.removeNth j f)))) (f j) := by
+  have he : SecondQuantSlot.slotEquiv (ι := ι) j f = (Fin.removeNth j f, f j) := by
+    simp [SecondQuantSlot.slotEquiv, Fin.insertNthEquiv]
+  show (SecondQuantSlot.slotC b h ((SecondQuantSlot.reindexL (SecondQuantSlot.slotEquiv j)).symm Φ))
+    (SecondQuantSlot.slotEquiv j f) = _
+  rw [he]
+  rfl
+
+/-- **Slots are permuted covariantly**: `h` on slot `σ j` after `P_σ` is `P_σ` after `h` on slot `j`. -/
+lemma slotOp_permL {m : ℕ} (σ : Equiv.Perm (Fin (m + 1))) (j : Fin (m + 1)) (h : Z →L[ℂ] Z)
+    (Φ : lp (fun _ : Fin (m + 1) → ι => ℂ) 2) :
+    SecondQuantSlot.slotOp b (σ j) h (permL σ Φ) = permL σ (SecondQuantSlot.slotOp b j h Φ) := by
+  ext f
+  have hfib : SecondQuantSlot.fiber ((SecondQuantSlot.reindexL (SecondQuantSlot.slotEquiv (σ j))).symm (permL σ Φ))
+      (Fin.removeNth (σ j) f) =
+      SecondQuantSlot.fiber ((SecondQuantSlot.reindexL (SecondQuantSlot.slotEquiv j)).symm Φ)
+        (Fin.removeNth j (f ∘ σ)) := by
+    ext k
+    show (permL σ Φ) ((SecondQuantSlot.slotEquiv (σ j)).symm (Fin.removeNth (σ j) f, k)) =
+      Φ ((SecondQuantSlot.slotEquiv j).symm (Fin.removeNth j (f ∘ σ), k))
+    rw [slotEquiv_symm_apply, slotEquiv_symm_apply, permL_apply, Fin.insertNth_removeNth, Fin.insertNth_removeNth,
+      Function.update_comp_equiv, Equiv.symm_apply_apply]
+  rw [permL_apply, slotOp_apply_eq, slotOp_apply_eq, hfib, Function.comp_apply]
+
+/-- **`∑ⱼ hⱼ` commutes with the slot permutations.** -/
+theorem dGammaTensor_permL {m : ℕ} (σ : Equiv.Perm (Fin (m + 1))) (h : Z →L[ℂ] Z)
+    (Φ : lp (fun _ : Fin (m + 1) → ι => ℂ) 2) :
+    SecondQuantSlot.dGammaTensor b m h (permL σ Φ) = permL σ (SecondQuantSlot.dGammaTensor b m h Φ) := by
+  simp only [SecondQuantSlot.dGammaTensor, ContinuousLinearMap.sum_apply, map_sum]
+  rw [← Equiv.sum_comp σ]
+  exact Finset.sum_congr rfl fun j _ => slotOp_permL b σ j h Φ
+
+/-- **`∑ⱼ hⱼ` commutes with the antisymmetrizer.** -/
+theorem dGammaTensor_antisym {m : ℕ} (h : Z →L[ℂ] Z) (Φ : lp (fun _ : Fin (m + 1) → ι => ℂ) 2) :
+    SecondQuantSlot.dGammaTensor b m h (antisym (m + 1) Φ) = antisym (m + 1) (SecondQuantSlot.dGammaTensor b m h Φ) := by
+  simp only [antisym, ContinuousLinearMap.smul_apply, ContinuousLinearMap.sum_apply, map_smul, map_sum,
+    dGammaTensor_permL]
+
 end TensorCre
 
 section Core
