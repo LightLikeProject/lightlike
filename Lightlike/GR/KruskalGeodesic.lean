@@ -157,4 +157,115 @@ theorem contraction_kruskalC (hM : 0 < M) {z : Fin 4 → ℝ} (hz : z ∈ kruska
   simp only [quad_kruskalC] at h1
   exact h1.unique (hasDerivAt_kQ_line M hM hz K v)
 
+/-- `X' = (x·v)/|x|²`, the velocity of `X = log |x|`. -/
+def kXd (z v : Fin 4 → ℝ) : ℝ := xdot z v / rhoSq z
+
+/-- The squared angular velocity `|v|²/|x|² - X'²`. -/
+def kOm (z v : Fin 4 → ℝ) : ℝ := xdot v v / rhoSq z - kXd z v ^ 2
+
+/-- The common factor of the equations of motion: `h'(r) (X'² - T'²) + 2 r ω`. -/
+def kXi (z v : Fin 4 → ℝ) : ℝ :=
+  dkh M (krC M z) * (kXd z v ^ 2 - v 0 ^ 2) + 2 * krC M z * kOm z v
+
+section motion
+
+open Lightlike.Geodesic
+
+variable {M} {c w : ℝ → Fin 4 → ℝ} {I : Set ℝ}
+
+/-- **The equation of motion of `T`**: `(h T')' = T G'(s) Ξ`. -/
+theorem kruskalC_hasDerivAt_pT (hM : 0 < M) (hgeo : IsGeodesicOn (kruskalCMetric M) c w I) {t : ℝ}
+    (ht : t ∈ I) (hct : c t ∈ kruskalC) :
+    HasDerivAt (fun s => kh M (krC M (c s)) * w s 0)
+      (c t 0 * dkG M (krC M (c t)) * kXi M (c t) (w t)) t := by
+  have hK : HasDerivAt (fun _ : ℝ => (Pi.single 0 1 : Fin 4 → ℝ)) 0 t := hasDerivAt_const t _
+  have h1 := (hgeo.hasDerivAt_noether (isCoordMetric_kruskalC M hM) ht hct hK).neg
+  have hfun : (fun s => kh M (krC M (c s)) * w s 0) =
+      -fun s => ∑ k, (Pi.single 0 1 : Fin 4 → ℝ) k * ∑ j, kruskalCMetric M (c s) k j * w s j := by
+    funext s
+    simp [Fin.sum_univ_four, kruskalCMetric]
+  rw [hfun]
+  refine h1.congr_deriv ?_
+  rw [contraction_kruskalC M hM hct]
+  have hρ : rhoSq (c t) ≠ 0 := hct.1.ne'
+  simp only [kQline, krLine, kXi, kOm, kXd, xdot, Pi.zero_apply, zero_mul, Finset.sum_const_zero, zero_add,
+    Pi.single_eq_same, Pi.single_eq_of_ne (show (1 : Fin 4) ≠ 0 by decide),
+    Pi.single_eq_of_ne (show (2 : Fin 4) ≠ 0 by decide), Pi.single_eq_of_ne (show (3 : Fin 4) ≠ 0 by decide)]
+  field_simp
+  ring
+
+/-- **The equation of motion of `X`**: `(h X')' = X G'(s) Ξ`, `X = ½ log |x|²`. -/
+theorem kruskalC_hasDerivAt_pX (hM : 0 < M) (hgeo : IsGeodesicOn (kruskalCMetric M) c w I) {t : ℝ}
+    (ht : t ∈ I) (hct : c t ∈ kruskalC) :
+    HasDerivAt (fun s => kh M (krC M (c s)) * kXd (c s) (w s))
+      (1 / 2 * log (rhoSq (c t)) * dkG M (krC M (c t)) * kXi M (c t) (w t)) t := by
+  have hpos := hasDerivAt_pi.1 (hgeo.pos t ht)
+  have hK : HasDerivAt (fun s : ℝ => ![0, c s 1, c s 2, c s 3]) ![0, w t 1, w t 2, w t 3] t := by
+    rw [hasDerivAt_pi]
+    intro i
+    fin_cases i
+    · exact hasDerivAt_const t (0 : ℝ)
+    · exact hpos 1
+    · exact hpos 2
+    · exact hpos 3
+  have h1 := hgeo.hasDerivAt_noether (isCoordMetric_kruskalC M hM) ht hct hK
+  have hev : ∀ᶠ s in 𝓝 t, c s ∈ kruskalC :=
+    (hgeo.pos t ht).continuousAt.preimage_mem_nhds (isOpen_kruskalC.mem_nhds hct)
+  have hfun : (fun s => ∑ k, (![0, c s 1, c s 2, c s 3] : Fin 4 → ℝ) k *
+        ∑ j, kruskalCMetric M (c s) k j * w s j) =ᶠ[𝓝 t]
+      fun s => kh M (krC M (c s)) * kXd (c s) (w s) := by
+    filter_upwards [hev] with s hs
+    have hρ : rhoSq (c s) ≠ 0 := hs.1.ne'
+    have hρd : rhoSq (c s) = c s 1 ^ 2 + c s 2 ^ 2 + c s 3 ^ 2 := rfl
+    simp only [Fin.sum_univ_four, kruskalCMetric, kXd, xdot]
+    simp
+    field_simp
+    rw [hρd]
+    ring
+  refine (h1.congr_of_eventuallyEq hfun.symm).congr_deriv ?_
+  rw [contraction_kruskalC M hM hct]
+  have hρ : rhoSq (c t) ≠ 0 := hct.1.ne'
+  have hρd : rhoSq (c t) = c t 1 ^ 2 + c t 2 ^ 2 + c t 3 ^ 2 := rfl
+  simp only [Fin.sum_univ_four, kruskalCMetric, kQline, krLine, kXi, kOm, kXd, xdot]
+  simp
+  field_simp
+  rw [hρd]
+  ring
+
+/-- **The angular momentum is conserved**: for every axis `n`, `(r²/|x|²) n·(x × v)` is constant. -/
+theorem kruskalC_hasDerivAt_angular (hM : 0 < M) (hgeo : IsGeodesicOn (kruskalCMetric M) c w I) {t : ℝ}
+    (ht : t ∈ I) (hct : c t ∈ kruskalC) (n : Fin 4 → ℝ) :
+    HasDerivAt (fun s => krC M (c s) ^ 2 / rhoSq (c s) *
+      (n 1 * (c s 2 * w s 3 - c s 3 * w s 2) + n 2 * (c s 3 * w s 1 - c s 1 * w s 3) +
+        n 3 * (c s 1 * w s 2 - c s 2 * w s 1))) 0 t := by
+  have hpos := hasDerivAt_pi.1 (hgeo.pos t ht)
+  have hK : HasDerivAt (fun s : ℝ => ![0, n 2 * c s 3 - n 3 * c s 2, n 3 * c s 1 - n 1 * c s 3,
+        n 1 * c s 2 - n 2 * c s 1])
+      ![0, n 2 * w t 3 - n 3 * w t 2, n 3 * w t 1 - n 1 * w t 3, n 1 * w t 2 - n 2 * w t 1] t := by
+    rw [hasDerivAt_pi]
+    intro i
+    fin_cases i
+    · exact hasDerivAt_const t (0 : ℝ)
+    · exact ((hpos 3).const_mul (n 2)).sub ((hpos 2).const_mul (n 3))
+    · exact ((hpos 1).const_mul (n 3)).sub ((hpos 3).const_mul (n 1))
+    · exact ((hpos 2).const_mul (n 1)).sub ((hpos 1).const_mul (n 2))
+  have h1 := hgeo.hasDerivAt_noether (isCoordMetric_kruskalC M hM) ht hct hK
+  have hfun : (fun s => ∑ k, (![0, n 2 * c s 3 - n 3 * c s 2, n 3 * c s 1 - n 1 * c s 3,
+        n 1 * c s 2 - n 2 * c s 1] : Fin 4 → ℝ) k * ∑ j, kruskalCMetric M (c s) k j * w s j) =
+      fun s => krC M (c s) ^ 2 / rhoSq (c s) *
+      (n 1 * (c s 2 * w s 3 - c s 3 * w s 2) + n 2 * (c s 3 * w s 1 - c s 1 * w s 3) +
+        n 3 * (c s 1 * w s 2 - c s 2 * w s 1)) := by
+    funext s
+    simp only [Fin.sum_univ_four, kruskalCMetric]
+    simp
+    ring
+  rw [hfun] at h1
+  refine h1.congr_deriv ?_
+  rw [contraction_kruskalC M hM hct]
+  simp only [Fin.sum_univ_four, kruskalCMetric, kQline, krLine, xdot]
+  simp
+  ring
+
+end motion
+
 end Lightlike
