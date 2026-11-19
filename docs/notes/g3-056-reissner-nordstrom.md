@@ -24,7 +24,7 @@ S. M. Carroll, *Lecture Notes on General Relativity*, arXiv:gr-qc/9712019, chapt
 * `rn_maxwell`: (7.109) in the coordinate form `∂_μ(√|g| F^{μν}) = 0`, cyclic `∂F = 0` (representation; `MaxwellCoord.lean` docstring).
 * `rnF_eq_factor`, `rnF_rplus`, `rnF_rminus`: (7.113) with `G = 1` (MATCH).
 * `rn_extremal`: "GM² = p² + q² ... Δ(r) = 0 at a single radius, r = GM": the double root `Δ(M) = Δ'(M) = 0`, `Δ = (1 − M/r)²` (MATCH; "single radius"
-  is formalized as the coincidence `r₊ = r₋ = M` plus the double root).
+  is formalized as the coincidence `r₊ = r₋ = M` plus the double root). "the r coordinate is never timelike; it becomes null at r = GM, but is spacelike on either side": `rn_extremal_nonneg` (`Δ ≥ 0`, `Δ > 0` off `r = M`).
 * `rn_surfaceGravity` (`Δ'(r₊)/2 = (r₊ − r₋)/(2r₊²)`): supporting lemma, not in the source read.
 * Trust checks: `rn_schwarzschild` (`q = p = 0`), `rn_not_vacuum` (`q² + p² ≠ 0`: not Ricci-flat).
 
@@ -32,4 +32,4 @@ S. M. Carroll, *Lecture Notes on General Relativity*, arXiv:gr-qc/9712019, chapt
 
 The supersymmetric BPS bound (the row's "BPS bounds": `M ≥ |Q|` as a Bogomolny bound in N = 2 supergravity, saturated by the extremal solution)
 is not formalized; only the classical extremal Reissner–Nordström solution. Not proved: that `r = M` is an event horizon (causal structure), that
-`r` is never timelike in the extremal case (`Δ ≥ 0`, easy, not done), uniqueness.
+uniqueness.

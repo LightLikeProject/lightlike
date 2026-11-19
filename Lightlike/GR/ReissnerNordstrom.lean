@@ -412,6 +412,25 @@ theorem rn_extremal {M Q2 : ℝ} (hM : 0 < M) (h : M ^ 2 = Q2) :
     field_simp
     try ring
 
+/-- **In the extremal case `r` is never timelike** (Carroll p. 206: "the r coordinate is never timelike; it becomes null at
+r = GM, but is spacelike on either side"): `Δ ≥ 0` everywhere, `Δ > 0` off `r = M`, so `g_rr = Δ⁻¹ > 0` off the horizon. -/
+theorem rn_extremal_nonneg {M Q2 : ℝ} (h : M ^ 2 = Q2) {r : ℝ} (hr : r ≠ 0) :
+    0 ≤ rnF M Q2 r ∧ (r ≠ M → 0 < rnF M Q2 r) := by
+  have e : rnF M Q2 r = (1 - M / r) ^ 2 := by
+    unfold rnF
+    rw [← h]
+    field_simp
+    try ring
+  rw [e]
+  refine ⟨sq_nonneg _, fun hrM => ?_⟩
+  have h0 : 1 - M / r ≠ 0 := by
+    intro h0
+    apply hrM
+    have : M / r = 1 := by linarith
+    field_simp at this
+    linarith
+  positivity
+
 /-- **The surface gravity `Δ'(r₊)/2 = (r₊ − r₋)/(2r₊²)`**, zero exactly in the extremal case (`rn_extremal`).
 Supporting lemma, not compared with a source. -/
 theorem rn_surfaceGravity {M Q2 : ℝ} (h : Q2 ≤ M ^ 2) (hr : rnRplus M Q2 ≠ 0) :
