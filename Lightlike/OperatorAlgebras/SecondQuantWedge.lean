@@ -970,6 +970,156 @@ theorem dGammaFock_zero_creW (h : Z →L[ℂ] Z) (w : Z) (ψ : FermiL2 ι) (hψ 
         rw [hc, hc, map_smul, dGammaTensor_antisym, dGammaTensor_zero_creT]
     _ = _ := adjoint_embCLM_embCLM _ fun S hS => creWCoeff_apply_of_card b (h w) ψ hψ hS
 
+/-- **Conjugating by a unitary commutes with the adjoint**: `(U X V)* = U X* V` when `U V = 1`. -/
+lemma adjoint_conj {E F : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [CompleteSpace E]
+    [NormedAddCommGroup F] [InnerProductSpace ℂ F] [CompleteSpace F] (U : E →ₗᵢ[ℂ] F) (V : F →ₗᵢ[ℂ] E)
+    (hUV : ∀ y, U (V y) = y) (X : E →L[ℂ] E) :
+    ContinuousLinearMap.adjoint (U.toContinuousLinearMap ∘L X ∘L V.toContinuousLinearMap) =
+      U.toContinuousLinearMap ∘L ContinuousLinearMap.adjoint X ∘L V.toContinuousLinearMap := by
+  symm
+  rw [ContinuousLinearMap.eq_adjoint_iff]
+  intro x y
+  simp only [ContinuousLinearMap.comp_apply, LinearIsometry.coe_toContinuousLinearMap]
+  calc inner ℂ (U (ContinuousLinearMap.adjoint X (V x))) y
+      = inner ℂ (U (ContinuousLinearMap.adjoint X (V x))) (U (V y)) := by rw [hUV]
+    _ = inner ℂ (ContinuousLinearMap.adjoint X (V x)) (V y) := U.inner_map_map _ _
+    _ = inner ℂ (V x) (X (V y)) := ContinuousLinearMap.adjoint_inner_left _ _ _
+    _ = inner ℂ (U (V x)) (U (X (V y))) := (U.inner_map_map _ _).symm
+    _ = inner ℂ x (U (X (V y))) := by rw [hUV]
+
+/-- **`(h ⊗ 1)* = h* ⊗ 1`** on `ℓ²(M, Z)`. -/
+lemma adjoint_slotMap {M : Type*} (h : Z →L[ℂ] Z) :
+    ContinuousLinearMap.adjoint (SecondQuantSlot.slotMap h : lp (fun _ : M => Z) 2 →L[ℂ] _) =
+      SecondQuantSlot.slotMap (ContinuousLinearMap.adjoint h) := by
+  symm
+  rw [ContinuousLinearMap.eq_adjoint_iff]
+  intro x y
+  rw [lp.inner_eq_tsum, lp.inner_eq_tsum]
+  congr 1
+  funext m
+  rw [SecondQuantSlot.slotMap_apply, SecondQuantSlot.slotMap_apply, ContinuousLinearMap.adjoint_inner_left]
+
+/-- The coordinates are onto: `coordL (uncoordL c) = c`. -/
+lemma coordL_uncoordL {M : Type*} (c : lp (fun _ : M × ι => ℂ) 2) :
+    SecondQuantSlot.coordL b (SecondQuantSlot.uncoordL b c) = c := by
+  ext ⟨m, k⟩
+  show b.repr (b.repr.symm (SecondQuantSlot.fiber c m)) k = c (m, k)
+  rw [LinearIsometryEquiv.apply_symm_apply]
+  rfl
+
+/-- **`(h ⊗ 1)* = h* ⊗ 1`** in coordinates. -/
+lemma adjoint_slotC {M : Type*} (h : Z →L[ℂ] Z) :
+    ContinuousLinearMap.adjoint (SecondQuantSlot.slotC b h : lp (fun _ : M × ι => ℂ) 2 →L[ℂ] _) =
+      SecondQuantSlot.slotC b (ContinuousLinearMap.adjoint h) := by
+  rw [SecondQuantSlot.slotC, SecondQuantSlot.slotC, adjoint_conj _ _ (coordL_uncoordL b), adjoint_slotMap]
+
+/-- **`(hⱼ)* = (h*)ⱼ`.** -/
+lemma adjoint_slotOp {m : ℕ} (j : Fin (m + 1)) (h : Z →L[ℂ] Z) :
+    ContinuousLinearMap.adjoint (SecondQuantSlot.slotOp b j h) =
+      SecondQuantSlot.slotOp b j (ContinuousLinearMap.adjoint h) := by
+  rw [SecondQuantSlot.slotOp, SecondQuantSlot.slotOp,
+    adjoint_conj _ _ (fun y => LinearIsometryEquiv.apply_symm_apply _ y), adjoint_slotC]
+
+/-- **`(∑ⱼ hⱼ)* = ∑ⱼ (h*)ⱼ`.** -/
+lemma adjoint_dGammaTensor (m : ℕ) (h : Z →L[ℂ] Z) :
+    ContinuousLinearMap.adjoint (SecondQuantSlot.dGammaTensor b m h) =
+      SecondQuantSlot.dGammaTensor b m (ContinuousLinearMap.adjoint h) := by
+  rw [SecondQuantSlot.dGammaTensor, SecondQuantSlot.dGammaTensor, map_sum]
+  exact Finset.sum_congr rfl fun j _ => adjoint_slotOp b j h
+
+/-- **`dΓ(h)* = dΓ(h*)`.** -/
+theorem adjoint_dGammaFock (n : ℕ) (h : Z →L[ℂ] Z) :
+    ContinuousLinearMap.adjoint (dGammaFock b n h) = dGammaFock b n (ContinuousLinearMap.adjoint h) := by
+  rw [dGammaFock, dGammaFock, ContinuousLinearMap.adjoint_comp, ContinuousLinearMap.adjoint_comp,
+    ContinuousLinearMap.adjoint_adjoint, adjoint_dGammaTensor, ContinuousLinearMap.comp_assoc]
+
+/-- The fermionic creation operator `a*(w)` on `ℓ²(Finset ι)`, as a bounded operator. -/
+noncomputable def creL2 (w : Z) : FermiL2 ι →L[ℂ] FermiL2 ι :=
+  (creWCoeff b w).mkContinuous ‖w‖ (norm_creWCoeff_le b w)
+
+/-- `creL2 w = creWCoeff w`. -/
+lemma creL2_apply (w : Z) (ψ : FermiL2 ι) : creL2 b w ψ = creWCoeff b w ψ := rfl
+
+/-- **The fermionic annihilation operator** `a(w) = a*(w)*` on `ℓ²(Finset ι)`. -/
+noncomputable def annL2 (w : Z) : FermiL2 ι →L[ℂ] FermiL2 ι := ContinuousLinearMap.adjoint (creL2 b w)
+
+/-- A coefficient as an inner product: `v(S) = ⟪e_S, v⟫`. -/
+lemma apply_eq_inner_single (v : FermiL2 ι) (S : Finset ι) :
+    v S = inner ℂ (lp.single (E := fun _ : Finset ι => ℂ) 2 S (1 : ℂ)) v := by
+  rw [lp.inner_single_left, RCLike.inner_apply', map_one, one_mul]
+
+/-- `e_S` is an `|S|`-particle vector. -/
+lemma single_apply_of_card {S T : Finset ι} (hT : T.card ≠ S.card) :
+    (lp.single (E := fun _ : Finset ι => ℂ) 2 S (1 : ℂ)) T = 0 :=
+  lp.single_apply_ne _ _ _ fun h => hT (by rw [h])
+
+/-- **Vectors with different particle numbers are orthogonal.** -/
+lemma inner_eq_zero_of_card (x y : FermiL2 ι) {m m' : ℕ} (hm : m ≠ m') (hx : ∀ S : Finset ι, S.card ≠ m → x S = 0)
+    (hy : ∀ S : Finset ι, S.card ≠ m' → y S = 0) : inner ℂ x y = 0 := by
+  rw [lp.inner_eq_tsum]
+  refine (tsum_congr fun S => ?_).trans tsum_zero
+  by_cases hS : S.card = m
+  · rw [hy S (by rw [hS]; exact hm), inner_zero_right]
+  · rw [hx S hS, inner_zero_left]
+
+/-- **`a(w)` lowers the particle number by one.** -/
+lemma annL2_apply_of_card (w : Z) (v : FermiL2 ι) {m : ℕ} (hv : ∀ S : Finset ι, S.card ≠ m + 1 → v S = 0)
+    {S : Finset ι} (hS : S.card ≠ m) : annL2 b w v S = 0 := by
+  rw [apply_eq_inner_single, annL2, ContinuousLinearMap.adjoint_inner_right, creL2_apply]
+  exact inner_eq_zero_of_card _ _ (m := S.card + 1) (m' := m + 1) (by omega)
+    (fun T hT => creWCoeff_apply_of_card b w _ (fun S' hS' => single_apply_of_card hS') hT) hv
+
+/-- **The commutator `[dΓ(h), a(w)] = -a(h* w)` on the `(n+2)`-particle vectors**:
+`a(w) dΓₙ₊₂(h) φ = a(h* w) φ + dΓₙ₊₁(h) a(w) φ`. -/
+theorem annL2_dGammaFock (n : ℕ) (h : Z →L[ℂ] Z) (w : Z) (φ : FermiL2 ι)
+    (hφ : ∀ S : Finset ι, S.card ≠ n + 2 → φ S = 0) :
+    annL2 b w (dGammaFock b (n + 1) h φ) =
+      annL2 b (ContinuousLinearMap.adjoint h w) φ + dGammaFock b n h (annL2 b w φ) := by
+  ext S
+  rw [lp.coeFn_add, Pi.add_apply]
+  by_cases hS : S.card = n + 1
+  · set ψ := lp.single (E := fun _ : Finset ι => ℂ) 2 S (1 : ℂ) with hψdef
+    have hψ : ∀ T : Finset ι, T.card ≠ n + 1 → ψ T = 0 := fun T hT => single_apply_of_card (by rw [hS]; exact hT)
+    have key := dGammaFock_creW b n (ContinuousLinearMap.adjoint h) w ψ hψ
+    rw [apply_eq_inner_single, apply_eq_inner_single, apply_eq_inner_single, ← hψdef]
+    calc inner ℂ ψ (annL2 b w (dGammaFock b (n + 1) h φ))
+        = inner ℂ (creL2 b w ψ) (dGammaFock b (n + 1) h φ) := ContinuousLinearMap.adjoint_inner_right _ _ _
+      _ = inner ℂ (ContinuousLinearMap.adjoint (dGammaFock b (n + 1) h) (creL2 b w ψ)) φ :=
+          (ContinuousLinearMap.adjoint_inner_left _ _ _).symm
+      _ = inner ℂ (creL2 b (ContinuousLinearMap.adjoint h w) ψ) φ +
+            inner ℂ (creL2 b w (dGammaFock b n (ContinuousLinearMap.adjoint h) ψ)) φ := by
+          rw [adjoint_dGammaFock, creL2_apply, key, inner_add_left]
+          rfl
+      _ = inner ℂ ψ (annL2 b (ContinuousLinearMap.adjoint h w) φ) +
+            inner ℂ (dGammaFock b n (ContinuousLinearMap.adjoint h) ψ) (annL2 b w φ) := by
+          rw [annL2, annL2, ContinuousLinearMap.adjoint_inner_right, ContinuousLinearMap.adjoint_inner_right]
+      _ = inner ℂ ψ (annL2 b (ContinuousLinearMap.adjoint h w) φ) + inner ℂ ψ (dGammaFock b n h (annL2 b w φ)) := by
+          rw [← ContinuousLinearMap.adjoint_inner_right (dGammaFock b n (ContinuousLinearMap.adjoint h)),
+            adjoint_dGammaFock, ContinuousLinearMap.adjoint_adjoint]
+  · rw [annL2_apply_of_card b w _ (fun T hT => dGammaFock_apply_of_card b (n + 1) h φ hT) hS,
+      annL2_apply_of_card b _ φ hφ hS, dGammaFock_apply_of_card b n h _ hS, add_zero]
+
+/-- **`[dΓ(h), a(w)] = -a(h* w)` on the one-particle vectors**: `a(w) dΓ₁(h) φ = a(h* w) φ`. -/
+theorem annL2_dGammaFock_zero (h : Z →L[ℂ] Z) (w : Z) (φ : FermiL2 ι) (hφ : ∀ S : Finset ι, S.card ≠ 1 → φ S = 0) :
+    annL2 b w (dGammaFock b 0 h φ) = annL2 b (ContinuousLinearMap.adjoint h w) φ := by
+  ext S
+  by_cases hS : S.card = 0
+  · set ψ := lp.single (E := fun _ : Finset ι => ℂ) 2 S (1 : ℂ) with hψdef
+    have hψ : ∀ T : Finset ι, T.card ≠ 0 → ψ T = 0 := fun T hT => single_apply_of_card (by rw [hS]; exact hT)
+    have key := dGammaFock_zero_creW b (ContinuousLinearMap.adjoint h) w ψ hψ
+    rw [apply_eq_inner_single, apply_eq_inner_single, ← hψdef]
+    calc inner ℂ ψ (annL2 b w (dGammaFock b 0 h φ))
+        = inner ℂ (creL2 b w ψ) (dGammaFock b 0 h φ) := ContinuousLinearMap.adjoint_inner_right _ _ _
+      _ = inner ℂ (ContinuousLinearMap.adjoint (dGammaFock b 0 h) (creL2 b w ψ)) φ :=
+          (ContinuousLinearMap.adjoint_inner_left _ _ _).symm
+      _ = inner ℂ (creL2 b (ContinuousLinearMap.adjoint h w) ψ) φ := by
+          rw [adjoint_dGammaFock, creL2_apply, key]
+          rfl
+      _ = inner ℂ ψ (annL2 b (ContinuousLinearMap.adjoint h w) φ) :=
+          (ContinuousLinearMap.adjoint_inner_right _ _ _).symm
+  · rw [annL2_apply_of_card b w _ (m := 0) (fun T hT => dGammaFock_apply_of_card b 0 h φ hT) hS,
+      annL2_apply_of_card b _ φ (m := 0) hφ hS]
+
 end Gamma
 
 end Lightlike.OperatorAlgebras.SecondQuantWedge
