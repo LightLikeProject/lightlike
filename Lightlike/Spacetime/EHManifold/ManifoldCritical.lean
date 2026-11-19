@@ -10,8 +10,8 @@ equations with cosmological constant on the chart image of a compact set `K` (th
 `ehAction` of `K` vanishes for every symmetric tensor field supported in `K` (`K` inside a small coordinate
 ball of the chart).
 
-The converse on the manifold is not proved here (for coordinate metrics on a ball it is
-`isEHCriticalOnBall_iff`).
+Only this direction is stated in this file; for coordinate metrics on a ball both directions are
+`isEHCriticalOnBall_iff`.
 
 ## References
 

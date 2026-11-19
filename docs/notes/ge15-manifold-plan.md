@@ -19,7 +19,7 @@ arXiv PDF (text read on 19 November 2026):
 
 Carroll varies the inverse metric `δg^{μν}` and writes the integral with `dⁿx` and `√(−g)`, the natural volume
 element of the metric on the manifold. Equation (4.73) (the action with a cosmological constant,
-`S = ∫ dⁿx √(−g) (R − 2Λ)`, pp. 117 to 118) was located but not re-read by this stream; regge's note
+`S = ∫ dⁿx √(−g) (R − 2Λ)`, pp. 117 to 118) was located but not re-read for this note; regge's note
 (`docs/notes/ge15-carroll-comparison.md` on `regge/ge15` at 5a58787, read) compares it.
 
 ## What exists (read at 44bc02e)
@@ -69,7 +69,7 @@ Compiled, in `Lightlike/Spacetime/EHManifold/`:
 * `BallVariation.lean`: `eh_first_variation_ball`: regge's first-variation formula for a coordinate metric
   that is smooth, symmetric and nondegenerate only on a ball, and a perturbation supported in a compact set
   inside the smaller concentric ball. Proof: `eh_first_variation` for the metric composed with the retraction
-  (route (c) of the integrator; regge's theorem is used unchanged), and locality.
+  (the coordinate theorem is used unchanged), and locality.
 * `ChartVariation.lean`: `eh_first_variation_chart`: the same formula for the chart components
   `g.coordMetric x₀` of a metric `g` on a manifold, when the larger ball lies in the target of the chart.
 * `ChartAction.lean`: `NondegMetric.volumeMeasure_restrict_chart`: on a measurable `K` inside one chart
@@ -158,7 +158,7 @@ The converse "stationary implies Einstein's equation" is proved with test tensor
 built from chart data (`SymBilinField.ofChart`, `testField`) and the fundamental lemma of the calculus of
 variations on an open set.
 
-## Catalogue draft (for the integrator; `docs/results.yaml` is not edited by this stream)
+## Catalogue draft (for the maintainers; `docs/results.yaml` is not edited here)
 
 To be used only once the files compile and the gate is green.
 
