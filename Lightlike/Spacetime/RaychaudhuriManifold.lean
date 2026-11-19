@@ -1,5 +1,6 @@
 import Lightlike.Spacetime.RaychaudhuriCoord
 import Lightlike.Spacetime.LeviCivitaSmooth
+import Lightlike.Spacetime.RaychaudhuriFocusing
 
 open Bundle Manifold Set VectorField NormedSpace FiberBundle
 open scoped Manifold ContDiff Matrix Topology
@@ -222,6 +223,71 @@ theorem ricciAt_hv' [LocallySmoothConnection cov] (h : cov.IsLeviCivita g) {q : 
   rw [(extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).left_inv hq] at key
   exact key Y
 
+omit [IsManifold 𝓘(ℝ, Fin n → ℝ) 2 M] in
+/-- **The metric in components**: `g(u, w) = û ⬝ᵥ (g_{ij} ŵ)` at `φ⁻¹ y`. -/
+theorem g_hv {y : Fin n → ℝ} (hy : y ∈ (extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).target)
+    (u w : TangentSpace 𝓘(ℝ, Fin n → ℝ) ((extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).symm y)) :
+    g.g _ u w = hv x₀ _ u ⬝ᵥ (g.coordMetric x₀ y *ᵥ hv x₀ _ w) := by
+  have hp := symm_mem_chartTriv_baseSet x₀ hy
+  have hdec : ∀ z : TangentSpace 𝓘(ℝ, Fin n → ℝ) ((extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).symm y),
+      z = ∑ i, hv x₀ _ z i • coordBasis x₀ hp i := fun z => by
+    conv_lhs => rw [← symmL_hv x₀ hp z,
+      show hv x₀ _ z = ∑ i, hv x₀ _ z i • Pi.single i (1 : ℝ) by ext i; simp [Pi.single_apply]]
+    simp only [map_sum, map_smul, coordBasis_apply]
+  conv_lhs => rw [hdec u, hdec w]
+  simp only [map_sum, map_smul, sum_apply, smul_apply, smul_eq_mul,
+    ← g.coordMetric_eq x₀ hy, Matrix.mulVec, dotProduct, Finset.mul_sum]
+  rw [Finset.sum_comm]
+  exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
+
+omit [IsManifold 𝓘(ℝ, Fin n → ℝ) 2 M] in
+/-- `g_hv` at a point of the chart domain. -/
+theorem g_hv' {q : M} (hq : q ∈ (extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).source) (u w : TangentSpace 𝓘(ℝ, Fin n → ℝ) q) :
+    g.g q u w = hv x₀ q u ⬝ᵥ (g.coordMetric x₀ (extChartAt 𝓘(ℝ, Fin n → ℝ) x₀ q) *ᵥ hv x₀ q w) := by
+  have key := g_hv x₀ g ((extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).map_source hq)
+  rw [(extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).left_inv hq] at key
+  exact key u w
+
+/-- **Rotation-free in the chart**: if `g(∇_u V, w) = g(∇_w V, u)` at `x`, the coordinate rotation vanishes at `φ(x)`. -/
+theorem rotation_chart_eq_zero (h : cov.IsLeviCivita g) {V : Π p : M, TangentSpace 𝓘(ℝ, Fin n → ℝ) p} {x : M}
+    (hV : MDifferentiableAt 𝓘(ℝ, Fin n → ℝ) (𝓘(ℝ, Fin n → ℝ).prod 𝓘(ℝ, Fin n → ℝ))
+      (fun q : M => (⟨q, V q⟩ : TangentBundle 𝓘(ℝ, Fin n → ℝ) M)) x)
+    (hrot : ∀ u w : TangentSpace 𝓘(ℝ, Fin n → ℝ) x, g.g x (cov V x u) w = g.g x (cov V x w) u) :
+    rotation (g.coordMetric x) (chartComp x V) (extChartAt 𝓘(ℝ, Fin n → ℝ) x x) = 0 := by
+  have hxs : x ∈ (extChartAt 𝓘(ℝ, Fin n → ℝ) x).source := mem_extChartAt_source x
+  have hb := mem_baseSet_of_mem_source x hxs
+  have hG := g.coordMetric_transpose x (extChartAt 𝓘(ℝ, Fin n → ℝ) x x)
+  have key : ∀ a b, (g.coordMetric x (extChartAt 𝓘(ℝ, Fin n → ℝ) x x) *
+      covDMat (g.coordMetric x) (chartComp x V) (extChartAt 𝓘(ℝ, Fin n → ℝ) x x)) a b =
+      (g.coordMetric x (extChartAt 𝓘(ℝ, Fin n → ℝ) x x) *
+      covDMat (g.coordMetric x) (chartComp x V) (extChartAt 𝓘(ℝ, Fin n → ℝ) x x)) b a := by
+    intro a b
+    have e := hrot ((tTriv (E := Fin n → ℝ) x).symmL ℝ x (Pi.single b 1))
+      ((tTriv (E := Fin n → ℝ) x).symmL ℝ x (Pi.single a 1))
+    rw [g_hv' x g hxs, g_hv' x g hxs, hv_cov_eq' x cov g h hxs hV, hv_cov_eq' x cov g h hxs hV, hv_symmL x hb,
+      hv_symmL x hb] at e
+    have hs : ∀ i j, g.coordMetric x (extChartAt 𝓘(ℝ, Fin n → ℝ) x x) i j =
+        g.coordMetric x (extChartAt 𝓘(ℝ, Fin n → ℝ) x x) j i := fun i j => by
+      conv_rhs => rw [← hG]
+      rfl
+    simp only [Matrix.mulVec, dotProduct, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq',
+      Finset.mem_univ, ite_true] at e
+    simp only [Matrix.mul_apply]
+    rw [show (∑ c, g.coordMetric x (extChartAt 𝓘(ℝ, Fin n → ℝ) x x) a c *
+        covDMat (g.coordMetric x) (chartComp x V) (extChartAt 𝓘(ℝ, Fin n → ℝ) x x) c b) =
+        ∑ c, covDMat (g.coordMetric x) (chartComp x V) (extChartAt 𝓘(ℝ, Fin n → ℝ) x x) c b *
+          g.coordMetric x (extChartAt 𝓘(ℝ, Fin n → ℝ) x x) c a from
+      Finset.sum_congr rfl fun c _ => by rw [hs a c, mul_comm]]
+    rw [e]
+    exact Finset.sum_congr rfl fun c _ => by rw [hs b c, mul_comm]
+  unfold rotation
+  have hT : (g.coordMetric x (extChartAt 𝓘(ℝ, Fin n → ℝ) x x) *
+      covDMat (g.coordMetric x) (chartComp x V) (extChartAt 𝓘(ℝ, Fin n → ℝ) x x))ᵀ =
+      g.coordMetric x (extChartAt 𝓘(ℝ, Fin n → ℝ) x x) *
+      covDMat (g.coordMetric x) (chartComp x V) (extChartAt 𝓘(ℝ, Fin n → ℝ) x x) := by
+    ext a b; exact key b a
+  rw [hT, sub_self, smul_zero]
+
 end Chart
 
 /-- `IsCoordMetric` on a smaller open set. -/
@@ -232,6 +298,11 @@ theorem IsCoordMetric.of_subset {g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) 
   isUnit_det x hx := hg.isUnit_det x (hsub hx)
   smooth i j := (hg.smooth i j).mono hsub
 
+/-- `IsLorentzianCoordMetric` on a smaller open set. -/
+theorem IsLorentzianCoordMetric.of_subset {g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ} {U U' : Set (Fin n → ℝ)}
+    (hg : IsLorentzianCoordMetric g U) (hU' : IsOpen U') (hsub : U' ⊆ U) : IsLorentzianCoordMetric g U' :=
+  ⟨hg.1.of_subset hU' hsub, fun y hy => hg.2 y (hsub hy)⟩
+
 section Manifold
 variable (cov : Connection 𝓘(ℝ, Fin n → ℝ) M) (g : NondegMetric 𝓘(ℝ, Fin n → ℝ) M)
 
@@ -239,6 +310,69 @@ variable (cov : Connection 𝓘(ℝ, Fin n → ℝ) M) (g : NondegMetric 𝓘(�
 def expansionM (V : Π p : M, TangentSpace 𝓘(ℝ, Fin n → ℝ) p) (q : M) : ℝ :=
   LinearMap.trace ℝ (TangentSpace 𝓘(ℝ, Fin n → ℝ) q)
     (cov V q : TangentSpace 𝓘(ℝ, Fin n → ℝ) q →ₗ[ℝ] TangentSpace 𝓘(ℝ, Fin n → ℝ) q)
+
+/-- `V(Θ)`, the derivative of the expansion along `V`, as a real number. -/
+def expansionDeriv (V : Π p : M, TangentSpace 𝓘(ℝ, Fin n → ℝ) p) (x : M) : ℝ :=
+  mfderiv 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ, ℝ) (expansionM cov V) x (V x)
+
+section Expansion
+variable (h : cov.IsLeviCivita g) {V : Π p : M, TangentSpace 𝓘(ℝ, Fin n → ℝ) p}
+  (hV : ContMDiff 𝓘(ℝ, Fin n → ℝ) (𝓘(ℝ, Fin n → ℝ).prod 𝓘(ℝ, Fin n → ℝ)) ∞
+    (fun q : M => (⟨q, V q⟩ : TangentBundle 𝓘(ℝ, Fin n → ℝ) M)))
+include h hV
+
+/-- The expansion is the coordinate expansion of the components, on the chart domain. -/
+theorem expansionM_eq (x₀ : M) {q : M} (hq : q ∈ (extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).source) :
+    expansionM cov V q = expansion (g.coordMetric x₀) (chartComp x₀ V) (extChartAt 𝓘(ℝ, Fin n → ℝ) x₀ q) := by
+  simp only [expansionM]
+  rw [trace_eq_of_hv x₀ (mem_baseSet_of_mem_source x₀ hq) (cov V q) _
+    (hv_cov_eq' x₀ cov g h hq ((hV q).mdifferentiableAt (by simp)))]
+  simp [Matrix.trace, covDMat, expansion]
+
+omit h in
+/-- The components of a smooth field are smooth on the chart target. -/
+theorem contDiffOn_chartComp (x₀ : M) (a : Fin n) :
+    ContDiffOn ℝ ∞ (fun y => chartComp x₀ V y a) (extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).target := fun _ hy =>
+  (contDiffAt_pi.1 (contDiffAt_chartComp x₀ hy (hV _)) a).contDiffWithinAt
+
+/-- The expansion is differentiable. -/
+theorem mdifferentiableAt_expansionM (x : M) : MDifferentiableAt 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ, ℝ) (expansionM cov V) x := by
+  have hxs : x ∈ (extChartAt 𝓘(ℝ, Fin n → ℝ) x).source := mem_extChartAt_source x
+  have hexp : DifferentiableAt ℝ (expansion (g.coordMetric x) (chartComp x V)) (extChartAt 𝓘(ℝ, Fin n → ℝ) x x) := by
+    unfold expansion
+    exact DifferentiableAt.fun_sum fun a _ => differentiableAt_covD (g.isCoordMetric_coordMetric x)
+      (contDiffOn_chartComp hV x) ((extChartAt 𝓘(ℝ, Fin n → ℝ) x).map_source hxs) a a
+  have hφ : MDifferentiableAt 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ, Fin n → ℝ) (extChartAt 𝓘(ℝ, Fin n → ℝ) x) x :=
+    mdifferentiableAt_extChartAt (by simp)
+  have hΘ : expansionM cov V =ᶠ[𝓝 x]
+      (expansion (g.coordMetric x) (chartComp x V)) ∘ (extChartAt 𝓘(ℝ, Fin n → ℝ) x) := by
+    filter_upwards [(isOpen_extChartAt_source (I := 𝓘(ℝ, Fin n → ℝ)) x).mem_nhds hxs] with q hq
+    exact expansionM_eq cov g h hV x hq
+  exact ((hexp.mdifferentiableAt).comp x hφ).congr_of_eventuallyEq hΘ
+
+/-- **`V(Θ)` in the chart**: `V(Θ) = vᶜ ∂_c Θ` with the coordinate expansion of the components `v` at `φ(x)`. -/
+theorem mfderiv_expansionM (x : M) :
+    mfderiv 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ, ℝ) (expansionM cov V) x (V x) =
+      ∑ c, chartComp x V (extChartAt 𝓘(ℝ, Fin n → ℝ) x x) c *
+        pd c (expansion (g.coordMetric x) (chartComp x V)) (extChartAt 𝓘(ℝ, Fin n → ℝ) x x) := by
+  have hxs : x ∈ (extChartAt 𝓘(ℝ, Fin n → ℝ) x).source := mem_extChartAt_source x
+  have hx0 : (extChartAt 𝓘(ℝ, Fin n → ℝ) x).symm (extChartAt 𝓘(ℝ, Fin n → ℝ) x x) = x :=
+    (extChartAt 𝓘(ℝ, Fin n → ℝ) x).left_inv hxs
+  have hc : (expansionM cov V ∘ (extChartAt 𝓘(ℝ, Fin n → ℝ) x).symm) =ᶠ[𝓝 (extChartAt 𝓘(ℝ, Fin n → ℝ) x x)]
+      expansion (g.coordMetric x) (chartComp x V) := by
+    filter_upwards [(isOpen_extChartAt_target (I := 𝓘(ℝ, Fin n → ℝ)) x).mem_nhds
+      ((extChartAt 𝓘(ℝ, Fin n → ℝ) x).map_source hxs)] with y hy
+    simp only [Function.comp_apply]
+    rw [expansionM_eq cov g h hV x ((extChartAt 𝓘(ℝ, Fin n → ℝ) x).map_target hy),
+      (extChartAt 𝓘(ℝ, Fin n → ℝ) x).right_inv hy]
+  have hvx : hv x x (V x) = chartComp x V (extChartAt 𝓘(ℝ, Fin n → ℝ) x x) := by
+    simp only [chartComp, hx0]; rfl
+  rw [mfderiv_eq_chart (expansionM cov V) x x hxs (mdifferentiableAt_expansionM cov g h hV x) (V x), hc.fderiv_eq,
+    mfderiv_extChartAt_apply' x hxs, hvx, clm_apply_eq_sum']
+  simp only [smul_eq_mul]
+  rfl
+
+end Expansion
 
 /-- **The Raychaudhuri identity on a manifold**: for the Levi-Civita connection of a metric of any signature and a smooth
 vector field `V` that is geodesic near `x` (`∇_V V = 0`), `V(Θ) = -tr((∇V)²) - Ric(V, V)` at `x`, with `Θ = tr(∇V)`. -/
@@ -336,6 +470,99 @@ theorem raychaudhuri_leviCivita {V : Π p : M, TangentSpace 𝓘(ℝ, Fin n → 
             TangentSpace 𝓘(ℝ, Fin n → ℝ) x →ₗ[ℝ] TangentSpace 𝓘(ℝ, Fin n → ℝ) x) -
         (leviCivita g).ricciAt x (V x) (V x) :=
   raychaudhuri_manifold (leviCivita g) g ⟨leviCivita_torsion g, leviCivita_compat g⟩ hV hgeo
+
+/-- **The focusing inequality on a manifold** (Kar–SenGupta, after (16)): for a Lorentzian metric, its Levi-Civita
+connection and a smooth unit (`g(V, V) = -1` near `x`) geodesic (`∇_V V = 0` near `x`) vector field that is rotation-free at
+`x` (`g(∇_u V, w) = g(∇_w V, u)`) with `Ric(V, V) ≥ 0` at `x`: `V(Θ) ≤ -Θ²/(n-1)` at `x`. -/
+theorem raychaudhuri_focusing_manifold_at (gL : LorentzianMetric 𝓘(ℝ, Fin n → ℝ) M n) [LocallySmoothConnection cov]
+    (h : cov.IsLeviCivita gL.toNondegMetric) {V : Π p : M, TangentSpace 𝓘(ℝ, Fin n → ℝ) p}
+    (hV : ContMDiff 𝓘(ℝ, Fin n → ℝ) (𝓘(ℝ, Fin n → ℝ).prod 𝓘(ℝ, Fin n → ℝ)) ∞
+      (fun q : M => (⟨q, V q⟩ : TangentBundle 𝓘(ℝ, Fin n → ℝ) M)))
+    {x : M} (hgeo : ∀ᶠ q in 𝓝 x, cov V q (V q) = 0) (hnorm : ∀ᶠ q in 𝓝 x, gL.g q (V q) (V q) = -1) (hn : 1 < n)
+    (hrot : ∀ u w : TangentSpace 𝓘(ℝ, Fin n → ℝ) x, gL.g x (cov V x u) w = gL.g x (cov V x w) u)
+    (hR : 0 ≤ cov.ricciAt x (V x) (V x)) :
+    expansionDeriv cov V x ≤ -(expansionM cov V x) ^ 2 / (n - 1) := by
+  set g := gL.toNondegMetric
+  have hxs : x ∈ (extChartAt 𝓘(ℝ, Fin n → ℝ) x).source := mem_extChartAt_source x
+  have hx0 : (extChartAt 𝓘(ℝ, Fin n → ℝ) x).symm (extChartAt 𝓘(ℝ, Fin n → ℝ) x x) = x :=
+    (extChartAt 𝓘(ℝ, Fin n → ℝ) x).left_inv hxs
+  have hy0 : extChartAt 𝓘(ℝ, Fin n → ℝ) x x ∈ (extChartAt 𝓘(ℝ, Fin n → ℝ) x).target :=
+    (extChartAt 𝓘(ℝ, Fin n → ℝ) x).map_source hxs
+  have hmd : ∀ q, MDifferentiableAt 𝓘(ℝ, Fin n → ℝ) (𝓘(ℝ, Fin n → ℝ).prod 𝓘(ℝ, Fin n → ℝ))
+      (fun q : M => (⟨q, V q⟩ : TangentBundle 𝓘(ℝ, Fin n → ℝ) M)) q :=
+    fun q => (hV q).mdifferentiableAt (by simp)
+  obtain ⟨W, hWsub, hWo, hxW⟩ := mem_nhds_iff.1
+    ((hgeo.and hnorm).and ((isOpen_extChartAt_source (I := 𝓘(ℝ, Fin n → ℝ)) x).mem_nhds hxs))
+  set U := (extChartAt 𝓘(ℝ, Fin n → ℝ) x).target ∩ (extChartAt 𝓘(ℝ, Fin n → ℝ) x).symm ⁻¹' W with hU
+  have hUo : IsOpen U :=
+    (continuousOn_extChartAt_symm x).isOpen_inter_preimage (isOpen_extChartAt_target x) hWo
+  have hy0U : extChartAt 𝓘(ℝ, Fin n → ℝ) x x ∈ U := ⟨hy0, by simp only [mem_preimage, hx0]; exact hxW⟩
+  have hgL : IsLorentzianCoordMetric (g.coordMetric x) U :=
+    (gL.isLorentzianCoordMetric_coordMetric x).of_subset hUo inter_subset_left
+  have hvU : ∀ a, ContDiffOn ℝ ∞ (fun y => chartComp x V y a) U := fun a =>
+    (contDiffOn_chartComp hV x a).mono inter_subset_left
+  have hgeoU : ∀ y ∈ U, ∀ d, ∑ c, chartComp x V y c * covD (g.coordMetric x) (chartComp x V) d c y = 0 := by
+    intro y hy d
+    have hq := hWsub hy.2
+    have e := hv_cov_eq x cov g h hy.1 (hmd _) (V ((extChartAt 𝓘(ℝ, Fin n → ℝ) x).symm y))
+    have hvV : hv x _ (V ((extChartAt 𝓘(ℝ, Fin n → ℝ) x).symm y)) = chartComp x V y := rfl
+    rw [hq.1.1, hvV] at e
+    have e2 := congrFun e d
+    have h0 : hv x ((extChartAt 𝓘(ℝ, Fin n → ℝ) x).symm y) (0 : TangentSpace 𝓘(ℝ, Fin n → ℝ) _) = 0 :=
+      ((tTriv (E := Fin n → ℝ) x).linear ℝ (symm_mem_chartTriv_baseSet x hy.1)).map_zero
+    rw [h0] at e2
+    simp only [Pi.zero_apply, Matrix.mulVec, dotProduct, covDMat, Matrix.of_apply] at e2
+    rw [e2]
+    exact Finset.sum_congr rfl fun c _ => mul_comm _ _
+  have hnormU : ∀ y ∈ U, chartComp x V y ⬝ᵥ (g.coordMetric x y *ᵥ chartComp x V y) = -1 := by
+    intro y hy
+    have hq := hWsub hy.2
+    have e := g_hv x g hy.1 (V ((extChartAt 𝓘(ℝ, Fin n → ℝ) x).symm y)) (V ((extChartAt 𝓘(ℝ, Fin n → ℝ) x).symm y))
+    have hc : chartComp x V y = hv x _ (V ((extChartAt 𝓘(ℝ, Fin n → ℝ) x).symm y)) := rfl
+    rw [hc, ← e]
+    exact hq.1.2
+  have hvx : hv x x (V x) = chartComp x V (extChartAt 𝓘(ℝ, Fin n → ℝ) x x) := by
+    simp only [chartComp, hx0]; rfl
+  have hω := rotation_chart_eq_zero cov g h (hmd x) hrot
+  have hRc : 0 ≤ ∑ s, ∑ t, ricci (g.coordMetric x) s t (extChartAt 𝓘(ℝ, Fin n → ℝ) x x) *
+      chartComp x V (extChartAt 𝓘(ℝ, Fin n → ℝ) x x) s * chartComp x V (extChartAt 𝓘(ℝ, Fin n → ℝ) x x) t := by
+    rw [← hvx, ← ricciAt_hv' x cov g h hxs (V x)]; exact hR
+  have key := raychaudhuri_focusing_at hvU hgeoU hnormU hgL hy0U hn hω hRc
+  unfold expansionDeriv
+  rw [mfderiv_expansionM cov g h hV x, expansionM_eq cov g h hV x hxs]
+  exact key
+
+set_option backward.isDefEq.respectTransparency false in
+/-- **Geodesic focusing on a manifold** (Kar–SenGupta, after (16): zero rotation and `R_ab vᵃ vᵇ ≥ 0`): for a Lorentzian
+metric with its Levi-Civita connection and a smooth vector field `V`, along an integral curve `γ` of `V` (`γ' = V(γ)`) on
+`[0, L)` near which `V` is unit and geodesic, rotation-free with `Ric(V, V) ≥ 0` along `γ`, that starts converging
+(`Θ(γ(0)) < 0`): `L ≤ (n-1)/|Θ(γ(0))|`, so the expansion cannot stay finite along `γ` beyond that parameter. -/
+theorem raychaudhuri_focusing_manifold (gL : LorentzianMetric 𝓘(ℝ, Fin n → ℝ) M n) [LocallySmoothConnection cov]
+    (h : cov.IsLeviCivita gL.toNondegMetric) {V : Π p : M, TangentSpace 𝓘(ℝ, Fin n → ℝ) p}
+    (hV : ContMDiff 𝓘(ℝ, Fin n → ℝ) (𝓘(ℝ, Fin n → ℝ).prod 𝓘(ℝ, Fin n → ℝ)) ∞
+      (fun q : M => (⟨q, V q⟩ : TangentBundle 𝓘(ℝ, Fin n → ℝ) M))) (hn : 1 < n) {γ : ℝ → M} {L : ℝ}
+    (hγ : ∀ s ∈ Ico 0 L, HasMFDerivAt 𝓘(ℝ, ℝ) 𝓘(ℝ, Fin n → ℝ) γ s ((1 : ℝ →L[ℝ] ℝ).smulRight (V (γ s))))
+    (hgeo : ∀ s ∈ Ico 0 L, ∀ᶠ q in 𝓝 (γ s), cov V q (V q) = 0)
+    (hnorm : ∀ s ∈ Ico 0 L, ∀ᶠ q in 𝓝 (γ s), gL.g q (V q) (V q) = -1)
+    (hrot : ∀ s ∈ Ico 0 L, ∀ u w : TangentSpace 𝓘(ℝ, Fin n → ℝ) (γ s),
+      gL.g (γ s) (cov V (γ s) u) w = gL.g (γ s) (cov V (γ s) w) u)
+    (hR : ∀ s ∈ Ico 0 L, 0 ≤ cov.ricciAt (γ s) (V (γ s)) (V (γ s)))
+    (h0 : expansionM cov V (γ 0) < 0) : L ≤ (n - 1) / |expansionM cov V (γ 0)| := by
+  have hm : (0 : ℝ) < n - 1 := by
+    have : (1 : ℝ) < n := by exact_mod_cast hn
+    linarith
+  refine focusing (Θ := fun s => expansionM cov V (γ s)) (Θ' := fun s => expansionDeriv cov V (γ s)) hm ?_ ?_ h0
+  · intro s hs
+    have h1 := (mdifferentiableAt_expansionM cov gL.toNondegMetric h hV (γ s)).hasMFDerivAt
+    show HasDerivAt (expansionM cov V ∘ γ) (expansionDeriv cov V (γ s)) s
+    rw [hasDerivAt_iff_hasFDerivAt, ← hasMFDerivAt_iff_hasFDerivAt]
+    apply (h1.comp s (hγ s hs)).congr_mfderiv
+    rw [ContinuousLinearMap.ext_iff]
+    intro a
+    rw [ContinuousLinearMap.comp_apply, ContinuousLinearMap.smulRight_apply, map_smul]
+    rfl
+  · intro s hs
+    exact raychaudhuri_focusing_manifold_at cov gL h hV (hgeo s hs) (hnorm s hs) hn (hrot s hs) (hR s hs)
 
 end Manifold
 
