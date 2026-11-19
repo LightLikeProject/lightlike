@@ -1638,7 +1638,7 @@ tasks:
     area: "operator-algebras"
     tier: "established"
     source_class: "sourced"
-    source: "hall-2013, Chapter: Unbounded Self-Adjoint Operators; hall-2013, Chapter: The Spectral Theorem for Unbounded Self-Adjoint Operators"
+    source: "hall-2013, Chapter: Unbounded Self-Adjoint Operators; hall-2013, Chapter: The Spectral Theorem for Unbounded Self-Adjoint Operators; moretti-2016, Theorem 142"
     priority: 3
     priority_basis: "highly cited"
     size: "L"
@@ -1654,7 +1654,7 @@ tasks:
     area: "operator-algebras"
     tier: "established"
     source_class: "sourced"
-    source: "hall-2013, Chapter: Unbounded Self-Adjoint Operators; hall-2013, Chapter: The Spectral Theorem for Unbounded Self-Adjoint Operators"
+    source: "hall-2013, Chapter: Unbounded Self-Adjoint Operators; hall-2013, Chapter: The Spectral Theorem for Unbounded Self-Adjoint Operators; moretti-2016, Theorem 142"
     priority: 3
     priority_basis: "highly cited"
     size: "L"
@@ -1672,7 +1672,7 @@ tasks:
     area: "operator-algebras"
     tier: "established"
     source_class: "sourced"
-    source: "hall-2013, Chapter: Unbounded Self-Adjoint Operators; hall-2013, Chapter: The Spectral Theorem for Unbounded Self-Adjoint Operators"
+    source: "hall-2013, Chapter: Unbounded Self-Adjoint Operators; hall-2013, Chapter: The Spectral Theorem for Unbounded Self-Adjoint Operators; moretti-2016, Theorem 142"
     priority: 3
     priority_basis: "highly cited"
     size: "L"
@@ -1690,7 +1690,7 @@ tasks:
     area: "operator-algebras"
     tier: "established"
     source_class: "sourced"
-    source: "hall-2013, Chapter: Unbounded Self-Adjoint Operators; hall-2013, Chapter: The Spectral Theorem for Unbounded Self-Adjoint Operators"
+    source: "hall-2013, Chapter: Unbounded Self-Adjoint Operators; hall-2013, Chapter: The Spectral Theorem for Unbounded Self-Adjoint Operators; moretti-2016, Theorem 142"
     priority: 3
     priority_basis: "highly cited"
     size: "L"
@@ -1708,7 +1708,7 @@ tasks:
     area: "operator-algebras"
     tier: "established"
     source_class: "sourced"
-    source: "hall-2013, Chapter: Unbounded Self-Adjoint Operators; hall-2013, Chapter: The Spectral Theorem for Unbounded Self-Adjoint Operators"
+    source: "hall-2013, Chapter: Unbounded Self-Adjoint Operators; hall-2013, Chapter: The Spectral Theorem for Unbounded Self-Adjoint Operators; moretti-2016, Theorem 142"
     priority: 3
     priority_basis: "highly cited"
     size: "M"
@@ -1726,7 +1726,7 @@ tasks:
     area: "operator-algebras"
     tier: "established"
     source_class: "sourced"
-    source: "hall-2013, Chapter: Unbounded Self-Adjoint Operators; hall-2013, Chapter: The Spectral Theorem for Unbounded Self-Adjoint Operators"
+    source: "hall-2013, Chapter: Unbounded Self-Adjoint Operators; hall-2013, Chapter: The Spectral Theorem for Unbounded Self-Adjoint Operators; moretti-2016, Theorem 142"
     priority: 3
     priority_basis: "highly cited"
     size: "M"
@@ -1744,7 +1744,7 @@ tasks:
     area: "operator-algebras"
     tier: "established"
     source_class: "sourced"
-    source: "hall-2013, Chapter: Unbounded Self-Adjoint Operators; hall-2013, Chapter: The Spectral Theorem for Unbounded Self-Adjoint Operators"
+    source: "hall-2013, Chapter: Unbounded Self-Adjoint Operators; hall-2013, Chapter: The Spectral Theorem for Unbounded Self-Adjoint Operators; moretti-2016, Theorem 142"
     priority: 3
     priority_basis: "highly cited"
     size: "M"
@@ -1762,7 +1762,7 @@ tasks:
     area: "operator-algebras"
     tier: "established"
     source_class: "sourced"
-    source: "hall-2013, Chapter: Unbounded Self-Adjoint Operators; hall-2013, Chapter: The Spectral Theorem for Unbounded Self-Adjoint Operators"
+    source: "hall-2013, Chapter: Unbounded Self-Adjoint Operators; hall-2013, Chapter: The Spectral Theorem for Unbounded Self-Adjoint Operators; moretti-2016, Theorem 142"
     priority: 3
     priority_basis: "highly cited"
     size: "L"
@@ -1780,7 +1780,7 @@ tasks:
     area: "operator-algebras"
     tier: "established"
     source_class: "sourced"
-    source: "hall-2013, Chapter: Unbounded Self-Adjoint Operators; hall-2013, Chapter: The Spectral Theorem for Unbounded Self-Adjoint Operators"
+    source: "hall-2013, Chapter: Unbounded Self-Adjoint Operators; hall-2013, Chapter: The Spectral Theorem for Unbounded Self-Adjoint Operators; moretti-2016, Theorem 142"
     priority: 3
     priority_basis: "highly cited"
     size: "XL"
@@ -1988,7 +1988,7 @@ tasks:
     area: "operator-algebras"
     tier: "established"
     source_class: "sourced"
-    source: "reed-simon-1972, Chapter: Bounded Operators"
+    source: "reed-simon-1972, Chapter: Bounded Operators; moretti-2016, Proposition 97"
     priority: 6
     priority_basis: "other"
     size: "L"
@@ -2004,7 +2004,7 @@ tasks:
     area: "operator-algebras"
     tier: "established"
     source_class: "sourced"
-    source: "reed-simon-1972, Chapter: Bounded Operators"
+    source: "reed-simon-1972, Chapter: Bounded Operators; moretti-2016, Proposition 97"
     priority: 6
     priority_basis: "other"
     size: "L"
