@@ -5,7 +5,9 @@ import Lightlike
 
 Fails (with an error) if a definition in `Lightlike` has no docstring (Batteries' `docBlame`
 linter), or if a declaration named in an API map or in the results registry has none. Those
-names are listed in `.lake/api_names.tsv`, written by `python3 scripts/api_map.py names`.
+names are listed in `.lake/api_names.tsv`, written by `python3 scripts/api_map.py names`. A name
+there that is not a declaration at all (a bound variable such as `η`, a misspelling) is an
+error of its own, which says to drop the backticks or fix the name.
 
 Run from the repository root, after `python3 scripts/api_map.py names`:
 `lake env lean scripts/DocCheck.lean`.
@@ -32,9 +34,16 @@ open Lean Elab Command in
   unless skipped.isEmpty do
     logWarning m!"skipped, not a declaration name (a path or a phrase in backticks):\n{"\n".intercalate skipped}"
   let env ← getEnv
-  let missing ← names.filterM fun p => return (← findDocString? env p.1).isNone
-  if missing.isEmpty then
+  -- a name the environment has not got (a bound variable, a misspelling) has no docstring to
+  -- add: say so apart
+  let absent := names.filter fun p => !env.contains p.1
+  let missing ← (names.filter fun p => env.contains p.1).filterM fun p =>
+    return (← findDocString? env p.1).isNone
+  unless absent.isEmpty do
+    logError m!"names in the API maps or the registry that are not declarations (drop the \
+      backticks or fix the name):\n{"\n".intercalate (absent.map (·.2))}"
+  unless missing.isEmpty do
+    logError m!"declarations named in the API maps or the registry without docstrings:\n{"\n".intercalate (missing.map (·.2))}"
+  if absent.isEmpty && missing.isEmpty then
     logInfo m!"docstrings: all {names.length} declarations named in the API maps and the \
       registry are documented"
-  else
-    logError m!"declarations named in the API maps or the registry without docstrings:\n{"\n".intercalate (missing.map (·.2))}"
