@@ -407,6 +407,8 @@ import Lightlike.NCG.DiracDecomposition
 import Lightlike.NCG.FiniteSpectralTriple
 import Lightlike.NCG.KrajewskiModel
 import Lightlike.NCG.MatrixUnits
+import Lightlike.NCG.MixedSummands
+import Lightlike.NCG.PartialUnits
 import Lightlike.NCG.QuaternionComplexify
 import Lightlike.NCG.QuaternionMatrix
 import Lightlike.NCG.QuaternionSummands

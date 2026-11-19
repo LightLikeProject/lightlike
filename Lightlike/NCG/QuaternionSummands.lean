@@ -1,10 +1,10 @@
-import Lightlike.NCG.MatrixUnits
+import Lightlike.NCG.PartialUnits
 import Lightlike.NCG.QuaternionComplexify
 
 /-!
 # Quaternionic summands `Mₙ(ℍ)`
 
-T. Krajewski, arXiv:hep-th/9701081, Section 3.1, p. 10 (read): "`Mₙ(ℝ)` and `Mₙ(ℍ)` have only one irreducible
+ψ. Krajewski, arXiv:hep-th/9701081, Section 3.1, p. 10 (read): "`Mₙ(ℝ)` and `Mₙ(ℍ)` have only one irreducible
 representation, the fundamental one ... `nᵢ` is the dimension of the irreducible representation `i`", which for `Mₙ(ℍ)`
 is `ℂ²ⁿ`: `Mₙ(ℍ) ⊗_ℝ ℂ ≅ M₂ₙ(ℂ)`. For a real-linear `π` of `⊕ Mₙᵢ(ℍ)`, `ρ_αβ(q) = π(E_αβ(q))` and the complexification of
 `QuaternionComplexify.lean` give the units `U_{(αs)(βt)} = (ρ_αβ)_ℂ(E_st)` of `M₂ₙ(ℂ)` on `H`, indexed by
@@ -78,28 +78,34 @@ def unitHL (i : ι) (α β : Fin (n i)) : ℍ[ℝ] →ₗ[ℝ] MatSumH n where
     · simp [unitH, Pi.single_eq_of_ne hk]
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDimensional ℂ H] [CompleteSpace H]
-variable (T : FiniteSpectralTriple (MatSumH n) H)
+variable (ψ : MatSumH n →⋆ₙₐ[ℝ] (H →L[ℂ] H))
 
 /-- `ρ_αβ(q) = π(E^i_{αβ}(q))`, real-linear. -/
-def rhoH (i : ι) (α β : Fin (n i)) : ℍ[ℝ] →ₗ[ℝ] (H →L[ℂ] H) :=
-  (T.π : MatSumH n →⋆ₐ[ℝ] (H →L[ℂ] H)).toAlgHom.toLinearMap ∘ₗ unitHL i α β
+def rhoH (i : ι) (α β : Fin (n i)) : ℍ[ℝ] →ₗ[ℝ] (H →L[ℂ] H) where
+  toFun q := ψ (unitH i α β q)
+  map_add' p q := by
+    show ψ (unitHL i α β (p + q)) = ψ (unitHL i α β p) + ψ (unitHL i α β q)
+    rw [map_add, map_add]
+  map_smul' r q := by
+    show ψ (unitHL i α β (r • q)) = r • ψ (unitHL i α β q)
+    rw [map_smul, map_smul]
 
 /-- `ρ_αβ(q) = π(E^i_{αβ}(q))`. -/
-lemma rhoH_apply (i : ι) (α β : Fin (n i)) (q : ℍ[ℝ]) : rhoH T i α β q = T.π (unitH i α β q) := rfl
+lemma rhoH_apply (i : ι) (α β : Fin (n i)) (q : ℍ[ℝ]) : rhoH ψ i α β q = ψ (unitH i α β q) := rfl
 
 /-- The index of `M₂ₙ(ℂ)` as a pair in `Fin n × Fin 2`. -/
 def idxH (i : ι) (x : Fin (n i * 2)) : Fin (n i) × Fin 2 := finProdFinEquiv.symm x
 
 /-- **The units of `M₂ₙ(ℂ)` on `H`**: `U_{(αs)(βt)} = (ρ_αβ)_ℂ(E_st)`. -/
 def UH (i : ι) (x y : Fin (n i * 2)) : H →L[ℂ] H :=
-  complexify (rhoH T i (idxH i x).1 (idxH i y).1) (Matrix.single (idxH i x).2 (idxH i y).2 1)
+  complexify (rhoH ψ i (idxH i x).1 (idxH i y).1) (Matrix.single (idxH i x).2 (idxH i y).2 1)
 
 /-- `U_{xy} U_{zw} = δ_yz U_{xw}`. -/
 lemma UH_mul_same (i : ι) (x y z w : Fin (n i * 2)) :
-    UH T i x y * UH T i z w = if y = z then UH T i x w else 0 := by
+    UH ψ i x y * UH ψ i z w = if y = z then UH ψ i x w else 0 := by
   by_cases hβ : (idxH i y).1 = (idxH i z).1
-  · have hρ : ∀ p q, rhoH T i (idxH i x).1 (idxH i y).1 p * rhoH T i (idxH i z).1 (idxH i w).1 q =
-        rhoH T i (idxH i x).1 (idxH i w).1 (p * q) := fun p q => by
+  · have hρ : ∀ p q, rhoH ψ i (idxH i x).1 (idxH i y).1 p * rhoH ψ i (idxH i z).1 (idxH i w).1 q =
+        rhoH ψ i (idxH i x).1 (idxH i w).1 (p * q) := fun p q => by
       rw [rhoH_apply, rhoH_apply, rhoH_apply, ← map_mul, unitH_mul_same, if_pos hβ]
     rw [UH, UH, complexify_mul_of _ _ _ hρ]
     by_cases ht : (idxH i y).2 = (idxH i z).2
@@ -107,7 +113,7 @@ lemma UH_mul_same (i : ι) (x y z w : Fin (n i * 2)) :
       rw [if_pos hyz, ht, Matrix.single_mul_single_same, one_mul, UH]
     · have hyz : y ≠ z := fun h => ht (by rw [h])
       rw [if_neg hyz, Matrix.single_mul_single_of_ne (h := ht), complexify_zero]
-  · have hρ : ∀ p q, rhoH T i (idxH i x).1 (idxH i y).1 p * rhoH T i (idxH i z).1 (idxH i w).1 q =
+  · have hρ : ∀ p q, rhoH ψ i (idxH i x).1 (idxH i y).1 p * rhoH ψ i (idxH i z).1 (idxH i w).1 q =
         (0 : ℍ[ℝ] →ₗ[ℝ] (H →L[ℂ] H)) (p * q) := fun p q => by
       rw [rhoH_apply, rhoH_apply, ← map_mul, unitH_mul_same, if_neg hβ, map_zero, LinearMap.zero_apply]
     have hyz : y ≠ z := fun h => hβ (by rw [h])
@@ -115,15 +121,15 @@ lemma UH_mul_same (i : ι) (x y z w : Fin (n i * 2)) :
 
 /-- Units of different blocks multiply to `0`. -/
 lemma UH_mul_ne (i j : ι) (hij : i ≠ j) (x y : Fin (n i * 2)) (z w : Fin (n j * 2)) :
-    UH T i x y * UH T j z w = 0 := by
-  have hρ : ∀ p q, rhoH T i (idxH i x).1 (idxH i y).1 p * rhoH T j (idxH j z).1 (idxH j w).1 q =
+    UH ψ i x y * UH ψ j z w = 0 := by
+  have hρ : ∀ p q, rhoH ψ i (idxH i x).1 (idxH i y).1 p * rhoH ψ j (idxH j z).1 (idxH j w).1 q =
       (0 : ℍ[ℝ] →ₗ[ℝ] (H →L[ℂ] H)) (p * q) := fun p q => by
     rw [rhoH_apply, rhoH_apply, ← map_mul, unitH_mul_ne i j hij, map_zero, LinearMap.zero_apply]
   rw [UH, UH, complexify_mul_of _ _ _ hρ, complexify_zero_left]
 
 /-- `U_{xy}* = U_{yx}`. -/
-lemma star_UH (i : ι) (x y : Fin (n i * 2)) : star (UH T i x y) = UH T i y x := by
-  have hρ : ∀ q, star (rhoH T i (idxH i x).1 (idxH i y).1 q) = rhoH T i (idxH i y).1 (idxH i x).1 (star q) :=
+lemma star_UH (i : ι) (x y : Fin (n i * 2)) : star (UH ψ i x y) = UH ψ i y x := by
+  have hρ : ∀ q, star (rhoH ψ i (idxH i x).1 (idxH i y).1 q) = rhoH ψ i (idxH i y).1 (idxH i x).1 (star q) :=
     fun q => by rw [rhoH_apply, rhoH_apply, ← map_star, star_unitH]
   rw [UH, star_complexify _ _ hρ, UH]
   congr 1
@@ -228,46 +234,58 @@ lemma complexify_entries (ρ : ℍ[ℝ] →ₗ[ℝ] (H →L[ℂ] H)) (M : Matrix
   simp only [map_sum, map_smul, complexifyL_apply]
 
 /-- **The block sums**: `∑ₓ U_xx = π(1ᵢ)`. -/
-lemma sum_UH (i : ι) : ∑ x, UH T i x x = T.π (Pi.single i 1) := by
+lemma sum_UH (i : ι) : ∑ x, UH ψ i x x = ψ (Pi.single i 1) := by
   rw [← finProdFinEquiv.sum_comp, Fintype.sum_prod_type]
   simp only [UH, idxH, Equiv.symm_apply_apply]
-  have h1 : ∀ α, ∑ s : Fin 2, complexify (rhoH T i α α) (Matrix.single s s 1) = T.π (unitH i α α 1) := fun α => by
-    calc ∑ s : Fin 2, complexify (rhoH T i α α) (Matrix.single s s 1)
-        = complexifyL (rhoH T i α α) (∑ s : Fin 2, Matrix.single s s 1) := (map_sum (complexifyL _) _ _).symm
-      _ = complexify (rhoH T i α α) (quatToMat 1) := by rw [Matrix.sum_single_one, ← map_one quatToMat]; rfl
-      _ = T.π (unitH i α α 1) := complexify_quatToMat _ _
+  have h1 : ∀ α, ∑ s : Fin 2, complexify (rhoH ψ i α α) (Matrix.single s s 1) = ψ (unitH i α α 1) := fun α => by
+    calc ∑ s : Fin 2, complexify (rhoH ψ i α α) (Matrix.single s s 1)
+        = complexifyL (rhoH ψ i α α) (∑ s : Fin 2, Matrix.single s s 1) := (map_sum (complexifyL _) _ _).symm
+      _ = complexify (rhoH ψ i α α) (quatToMat 1) := by rw [Matrix.sum_single_one, ← map_one quatToMat]; rfl
+      _ = ψ (unitH i α α 1) := complexify_quatToMat _ _
   simp only [h1]
   rw [← map_sum, sum_unitH_block]
 
-/-- **The units of a quaternionic triple.** -/
-def unitsH : MatrixUnits (fun i => n i * 2) H where
-  U := UH T
-  mul_same := UH_mul_same T
-  mul_ne := UH_mul_ne T
-  star_U := star_UH T
-  sum_U := by
-    simp only [sum_UH]
-    rw [← map_sum, Finset.univ_sum_single (fun i => (1 : Matrix (Fin (n i)) (Fin (n i)) ℍ[ℝ]))]
-    exact map_one T.π
+/-- **The units of a quaternionic factor**, a partial system of matrix units with block units `ψ(1ᵢ)`. -/
+def partialH : PartialUnits (fun i => n i * 2) H where
+  U := UH ψ
+  mul_same := UH_mul_same ψ
+  mul_ne := UH_mul_ne ψ
+  star_U := star_UH ψ
 
-/-- **`σ ∘ φ = π`**: `∑_{st} ι(a_αβ)_st U_{(αs)(βt)} = (ρ_αβ)_ℂ(ι(a_αβ)) = π(E_αβ(a_αβ))`. -/
-lemma unitsH_hom_phiH (a : MatSumH n) : (unitsH T).hom (phiH a) = T.π a := by
-  rw [MatrixUnits.hom_apply]
+/-- **The block units add to `ψ(1)`.** -/
+lemma sum_sum_UH : ∑ i, ∑ x, UH ψ i x x = ψ 1 := by
+  simp only [sum_UH]
+  rw [← map_sum, Finset.univ_sum_single (fun i => (1 : Matrix (Fin (n i)) (Fin (n i)) ℍ[ℝ]))]
+  rfl
+
+/-- **`σ ∘ φ = ψ`**: `∑_{st} ι(a_αβ)_st U_{(αs)(βt)} = (ρ_αβ)_ℂ(ι(a_αβ)) = ψ(E_αβ(a_αβ))`. -/
+lemma sum_phiH_UH (a : MatSumH n) : ∑ i, ∑ x, ∑ y, phiH a i x y • UH ψ i x y = ψ a := by
   conv_rhs => rw [eq_sum_unitH a]
   simp only [map_sum]
   refine Finset.sum_congr rfl fun i _ => ?_
   simp only [← finProdFinEquiv.sum_comp, Fintype.sum_prod_type]
-  simp only [phiH_apply, phiHFun_apply, unitsH, UH, idxH, Equiv.symm_apply_apply]
+  simp only [phiH_apply, phiHFun_apply, UH, idxH, Equiv.symm_apply_apply]
   refine Finset.sum_congr rfl fun α _ => ?_
   rw [Finset.sum_comm]
   refine Finset.sum_congr rfl fun β _ => ?_
   rw [complexify_entries, complexify_quatToMat, rhoH_apply]
 
 /-- The units lie in the complex span of `π(A)`. -/
-lemma UH_mem_span (i : ι) (x y : Fin (n i * 2)) : UH T i x y ∈ Submodule.span ℂ (Set.range T.π) := by
+lemma UH_mem_span (i : ι) (x y : Fin (n i * 2)) : UH ψ i x y ∈ Submodule.span ℂ (Set.range ψ) := by
   rw [UH, complexify]
   exact Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _
-    (Submodule.subset_span ⟨unitH i _ _ (quatBasis k), (rhoH_apply T i _ _ _).symm⟩)
+    (Submodule.subset_span ⟨unitH i _ _ (quatBasis k), (rhoH_apply ψ i _ _ _).symm⟩)
+
+/-- **The units of a quaternionic triple.** -/
+def unitsH (T : FiniteSpectralTriple (MatSumH n) H) : MatrixUnits (fun i => n i * 2) H :=
+  (partialH T.π.toNonUnitalStarAlgHom).toMatrixUnits ((sum_sum_UH _).trans (map_one T.π))
+
+/-- **`σ ∘ φ = π`.** -/
+lemma unitsH_hom_phiH (T : FiniteSpectralTriple (MatSumH n) H) (a : MatSumH n) :
+    (unitsH T).hom (phiH a) = T.π a :=
+  sum_phiH_UH T.π.toNonUnitalStarAlgHom a
+
+variable (T : FiniteSpectralTriple (MatSumH n) H)
 
 /-- `1ᵢ ≠ 0` acts nontrivially. -/
 lemma pi_single_one_ne_zero [∀ i, NeZero (n i)] (i : ι) : T.π (Pi.single i 1) ≠ 0 := by
@@ -280,11 +298,11 @@ lemma pi_single_one_ne_zero [∀ i, NeZero (n i)] (i : ι) : T.π (Pi.single i 1
 def quatComplexification [∀ i, NeZero (n i)] : Complexification T (fun i => n i * 2) where
   σ := (unitsH T).hom
   injective_σ := (unitsH T).hom_injective_of_block fun i => by
-    rw [show ∑ x, (unitsH T).U i x x = ∑ x, UH T i x x from rfl, sum_UH]
+    rw [show ∑ x, (unitsH T).U i x x = ∑ x, UH T.π.toNonUnitalStarAlgHom i x x from rfl, sum_UH]
     exact pi_single_one_ne_zero T i
   φ := phiH
   pi_eq a := (unitsH_hom_phiH T a).symm
-  mem_span Y := (unitsH T).hom_mem _ (fun i x y => UH_mem_span T i x y) Y
+  mem_span Y := (unitsH T).hom_mem _ (fun i x y => UH_mem_span T.π.toNonUnitalStarAlgHom i x y) Y
 
 /-- **Uniqueness for quaternionic summands** (Krajewski, Section 3.1, p. 10, with Section 3.2, p. 13): a real finite
 spectral triple over `⊕ Mₙᵢ(ℍ)` is unitarily equivalent to the model `⊕ ℂ^{2nᵢ} ⊗ ℂ^{rᵢⱼ} ⊗ ℂ^{2nⱼ}` of the multiplicity

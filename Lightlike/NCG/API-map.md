@@ -67,6 +67,13 @@ For `A = ⊕ Mₙᵢ(ℂ)` acting real-linearly, `Q± = (1 ∓ i π(i·1))/2` ar
 `φ(a) = (aᵢ, āᵢ)` they form a complexification: such a triple is unitarily equivalent to the model of the multiplicity
 matrix over the fundamental and conjugate representations that occur {1} [22].
 
+Partial systems of matrix units, without `∑ U = 1`, combine over sums of index types [23]. For a mixed algebra
+`⊕ Mₙ(ℝ) × ⊕ Mₙ(ℂ) × ⊕ Mₙ(ℍ)` the restrictions `ψ₁, ψ₂, ψ₃` of `π` to the factors give partial systems: `ψ₁(E^i_{αβ})`,
+`ψ±(E^i_{αβ})` with the complex-linear and antilinear parts `ψ±(Y) = ½(ψ₂(Y) ∓ i ψ₂(iY))`, and the quaternionic units of
+`ψ₃`. They multiply to `0` across factors and their block units add to `1`, so every real finite spectral triple over a
+mixed algebra is unitarily equivalent to the model of the multiplicity matrix over the irreducible representations that
+occur {1} [24].
+
 ## Lean References
 
 1. Lightlike/NCG/FiniteSpectralTriple.lean - `NCG.FiniteSpectralTriple`, `NCG.FiniteSpectralTriple.comm`,
@@ -125,7 +132,8 @@ matrix over the fundamental and conjugate representations that occur {1} [22].
 21. Lightlike/NCG/QuaternionSummands.lean - `NCG.MatSumH`, `NCG.unitH`, `NCG.unitH_mul_same`, `NCG.unitH_mul_ne`,
     `NCG.star_unitH`, `NCG.unitHL`, `NCG.rhoH`, `NCG.rhoH_apply`, `NCG.idxH`, `NCG.UH`, `NCG.UH_mul_same`, `NCG.UH_mul_ne`,
     `NCG.star_UH`, `NCG.sum_unitH_block`, `NCG.eq_sum_unitH`, `NCG.phiHFun`, `NCG.phiHFun_apply`, `NCG.phiH`,
-    `NCG.phiH_apply`, `NCG.complexify_entries`, `NCG.sum_UH`, `NCG.unitsH`, `NCG.unitsH_hom_phiH`, `NCG.UH_mem_span`,
+    `NCG.phiH_apply`, `NCG.complexify_entries`, `NCG.sum_UH`, `NCG.partialH`, `NCG.sum_sum_UH`, `NCG.sum_phiH_UH`,
+    `NCG.unitsH`, `NCG.unitsH_hom_phiH`, `NCG.UH_mem_span`,
     `NCG.pi_single_one_ne_zero`, `NCG.quatComplexification`, `NCG.exists_unitary_quatSummands`
 22. Lightlike/NCG/ComplexSummands.lean - `NCG.uC`, `NCG.uC_mul`, `NCG.star_uC`, `NCG.uC_comm`, `NCG.unitC_mul_same`,
     `NCG.unitC_mul_ne`, `NCG.star_unitC`, `NCG.sum_unitC_block`, `NCG.Qb`, `NCG.Qb_mul_Qb`, `NCG.Qb_mul_Qb_ne`, `NCG.star_Qb`,
@@ -133,6 +141,20 @@ matrix over the fundamental and conjugate representations that occur {1} [22].
     `NCG.blockC`, `NCG.sum_UC`, `NCG.sum_blocks`, `NCG.UC_zero`, `NCG.unitsC`, `NCG.sum_smul_unitC`, `NCG.phiCAll`,
     `NCG.phiCFun`, `NCG.phiC`, `NCG.phiC_apply`, `NCG.Qb_true_pi_smul`, `NCG.Qb_false_pi_smul`, `NCG.GC`, `NCG.GC_zero`,
     `NCG.unitsC_hom_phiC`, `NCG.complexComplexification`, `NCG.exists_unitary_complexSummands`
+23. Lightlike/NCG/PartialUnits.lean - `NCG.PartialUnits`, `NCG.PartialUnits.sum`, `NCG.PartialUnits.sum_U_inl`,
+    `NCG.PartialUnits.sum_U_inr`, `NCG.PartialUnits.toMatrixUnits`
+24. Lightlike/NCG/MixedSummands.lean - `NCG.unitR_mul_same`, `NCG.unitR_mul_ne`, `NCG.star_unitR`, `NCG.partialR`,
+    `NCG.sum_unitR_block`, `NCG.sum_partialR`, `NCG.sum_sum_partialR`, `NCG.sum_phiR_partialR`, `NCG.partialR_mem_span`,
+    `NCG.sgn`, `NCG.psiPart`, `NCG.psiPart_add`, `NCG.psiPart_mul`, `NCG.star_psiPart`, `NCG.psi_rsmul`,
+    `NCG.smul_eq_re_im`, `NCG.I_smul_smul_eq`, `NCG.smul_psiPart_true`, `NCG.smul_psiPart_false`, `NCG.psiPart_zero`,
+    `NCG.psiPart_add'`, `NCG.psiPartA`, `NCG.psiPart_mem_span`, `NCG.BlocksP`, `NCG.partialC`, `NCG.sum_subtype_ne_zero`,
+    `NCG.psiPart_unitC_zero`, `NCG.sum_partialC`, `NCG.sum_sum_partialC`, `NCG.phiPAll`, `NCG.GP`, `NCG.phiPAll_one`,
+    `NCG.phiPAll_mul`, `NCG.phiPAll_zero`, `NCG.phiPAll_add`, `NCG.phiPAll_star`, `NCG.phiPAll_algebraMap`,
+    `NCG.sum_phiP_partialC`, `NCG.mul_eq_zero_of_mem_span`, `NCG.MatSumMixed`, `NCG.psi₁`, `NCG.psi₂`, `NCG.psi₃`,
+    `NCG.pi_eq_psi`, `NCG.partialCH`, `NCG.partialR_mul_CH`, `NCG.partialCH_mul_R`, `NCG.partialMixed`,
+    `NCG.sum_partialMixed`, `NCG.unitsMixed`, `NCG.dMixed`, `NCG.phiMixedFun`, `NCG.phiMixed`,
+    `NCG.unitsMixed_hom_phiMixed`, `NCG.pi_ne_zero_of_ne`, `NCG.span_psi_le`, `NCG.mixedComplexification`,
+    `NCG.neZero_dMixed`, `NCG.exists_unitary_mixed`
 
 ## References
 
