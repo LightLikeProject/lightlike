@@ -269,6 +269,7 @@ import Lightlike.GR.ComplexMinkowski
 import Lightlike.GR.SpinorHelicity
 import Lightlike.GR.ColourOrdered
 import Lightlike.GR.BCFWFactorization
+import Lightlike.GR.ParkeTaylorBCFW
 import Lightlike.GR.ThreePointAmplitude
 import Lightlike.GR.PenroseTransform
 import Lightlike.GR.WeylSpinor
