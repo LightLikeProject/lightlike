@@ -565,13 +565,18 @@ theorem flrwSliceK_eq (a : ℝ → ℝ) (t : ℝ) (y : Fin 3 → ℝ) :
     Fin.succ_ne_zero, ite_false, hn]
   split_ifs <;> simp [cfS, cfDn, div_eq_mul_inv]
 
-/-- The Christoffel symbols of the curved slice, `Γ^i_{jl} = −(k/2) S (δ_il y_j + δ_ij y_l − δ_jl y_i)`. -/
+/-- The coefficient of `y_r` in `δ_il y_j + δ_ij y_l − δ_jl y_i`, the linear form in the Christoffel symbols of the
+curved slice. -/
 def cfW (i j l r : Fin 3) : ℝ :=
   (if i = l ∧ r = j then 1 else 0) + (if i = j ∧ r = l then 1 else 0) - (if j = l ∧ r = i then 1 else 0)
 
+/-- The Christoffel symbols of the curved FLRW slice `(A S)² δ_ij` in the chart, computed by hand (proved equal to
+`Lightlike.christoffel` in `christoffel_cf`): `Γ^i_{jl} = −(k/2) S (δ_il y_j + δ_ij y_l − δ_jl y_i)`. -/
 def cfΓ (i j l : Fin 3) (y : Fin 3 → ℝ) : ℝ :=
   -(k / 2) * cfS k y * (cfW i j l 0 * y 0 + cfW i j l 1 * y 1 + cfW i j l 2 * y 2)
 
+/-- The coordinate derivative `∂_m Γ^i_{jl}` of the Christoffel symbols of the curved FLRW slice (proved equal to the
+derivative of `Lightlike.christoffel` in `pd_christoffel_cf`), using `∂_m S = −(k/2) y_m S²`. -/
 def cfDΓ (m i j l : Fin 3) (y : Fin 3 → ℝ) : ℝ :=
   -(k / 2) * ((-(k / 2 * y m) * cfS k y ^ 2) * (cfW i j l 0 * y 0 + cfW i j l 1 * y 1 + cfW i j l 2 * y 2) +
     cfS k y * cfW i j l m)
