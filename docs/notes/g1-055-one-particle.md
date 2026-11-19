@@ -62,7 +62,10 @@ shell `p² = m²`, `m > 0`, the light cone, or `{0}` (`exists_orbit`; Propositio
 concretely:
 
 * Mackey's imprimitivity theorem (a system of imprimitivity based on a transitive orbit is induced from the little
-  group): not in the library.
+  group): not in the library. Its first step is formalised for the mass shells (`OrbitMeasureClass.lean`,
+  `momPVM_eq_zero_of_null`): a momentum measure carried by a shell is absolutely continuous with respect to the image
+  of the Haar measure; the decomposition of `H` over the orbit and the passage to a representation of the stabiliser
+  are not.
 
 The massless representations of helicity `n/2` act on `L²(ν)` of the forward light cone, for every invariant
 measure `ν` (`ConeL2.lean`). The standard lift of the cone is discontinuous on the half-line `P₀₀ = 0` (no continuous
