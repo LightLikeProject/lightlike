@@ -58,3 +58,26 @@ the compatibility of the resulting stage tuples on overlaps, which is not formal
 entries continuous at `x₀` and constant rank near `x₀`, a selection built from the rows and columns of a nonzero minor at `x₀`
 (`MinorExists`) has an invertible block and a vanishing Schur complement on a neighbourhood of `x₀`. This is the pointwise form of the
 constant-rank hypothesis (the representation difference named above); the global cover is not formalised.
+
+## Chart independence of the secondary constraints (`DiracChart`)
+
+Source location, read in the arXiv PDF of hep-th/9312078 (sha256 `675b7cdda758b2d9…5819`), Section 3.3: p. 16, case ii),
+"In this case `u` is not fixed and 3.24 is only solvable if `h_m w^m_a ≈ 0` for all left null-eigenvectors `w_a` of `C`. Either
+these equations are fulfilled or they lead to a certain number `K₁` of new constraints" (3.26); p. 17, "For every left
+null-eigenvector `w^j_a` of the rectangular matrix `C_jm = {φ_j, φ_m}` the conditions `w^j_a {φ_j, H} ≈ 0` are fulfilled", and
+"we assume that the rank of `C` is constant on `Γ_c`". The source's condition uses all left null vectors and no chart.
+
+Proved (`Lightlike/Gauge/DiracChart.lean`): for a selection admissible at `x` (`Sel.Admissible`: the block invertible and the
+Schur complement zero, which is what constant rank gives, `DiracLocal.exists_selection_near`), the secondary constraints of the
+selection vanish at `x` iff the selection-free consistency system `{S_i, H} + ∑_a {S_i, φ_a} u_a = 0` is solvable
+(`Stage.chiFun_zero_iff`), iff `∑_i w_i {S_i, H}(x) = 0` for every left null vector `w` of `C(x)` (`Stage.chiFun_zero_iff_leftNull`,
+Wipf's form, through the Fredholm alternative `exists_mulVec_add_eq_zero_iff`). Hence two selections admissible at `x` give the
+same condition (`Stage.chiFun_zero_iff_of_admissible`), and on a set where two selections are admissible the next stages built
+from them have the same zero set (`Stage.zeroSet_next_inter`): the next constraint set, and so the pointwise `hcover`
+statement at one stage, does not depend on the chart.
+
+Open, the concrete stop for the whole sequence: two charts give different secondary constraint functions `χ_σ`, `χ_σ'` with the
+same zero set near the point; the next stage's consistency matrix uses their brackets `{χ, φ_a}`, `{χ, H}`, which agree on the
+surface only up to multiples of the constraints. Comparing them needs the Leibniz rule of the bracket (`{f g, φ} = f {g, φ} +
+g {f, φ}`) and a smooth invertible matrix with `χ_σ' = A χ_σ`; the abstract bracket `br` of `DiracAlgo` has no Leibniz rule,
+so the stage-by-stage comparison is stated for one stage.
