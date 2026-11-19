@@ -2314,6 +2314,11 @@
     "verified": true,
     "snippet": "(2.92) This is the Gauss relation. If we contract the Gauss relation on the indices γ and α and use γ µα γ αρ = γ µρ = δµρ + nµnρ , we obtain an expression that lets appear the Ricci tensors 4R and R associated with g an",
     "why": null
+   },
+   "eq. (B.8)": {
+    "verified": true,
+    "snippet": "(B.8) A vector field which obeys Eq. (B.8) is called a conformal Killing vector. It is the generator of some conformal isometry of (Σ, γ̃). A conformal isometry is a diffeomorphism Φ : Σ → Σ for which there exists some s",
+    "why": null
    }
   },
   "citations": 404,
