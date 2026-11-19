@@ -62,14 +62,13 @@ theorem dChristoffel_of_vanishing_on_face (g h : (Fin n → ℝ) → Matrix (Fin
   rw [hx0]
   simp only [Matrix.mul_zero, Matrix.zero_mul, Matrix.zero_apply, neg_zero, zero_mul, zero_add]
   congr 1
-  rw [hpd σ, hpd ν]
-  have h3 : ∀ l, (g x)⁻¹ ρ l * ((if σ = i then pd i (fun z => h z l ν) x else 0) +
-        (if ν = i then pd i (fun z => h z l σ) x else 0) - pd l (fun z => h z σ ν) x) =
+  have h3 : ∀ l, (g x)⁻¹ ρ l * (pd σ (fun z => h z l ν) x + pd ν (fun z => h z l σ) x -
+        pd l (fun z => h z σ ν) x) =
       (if σ = i then (g x)⁻¹ ρ l * pd i (fun z => h z l ν) x else 0) +
         (if ν = i then (g x)⁻¹ ρ l * pd i (fun z => h z l σ) x else 0) -
         (if l = i then (g x)⁻¹ ρ l * pd i (fun z => h z σ ν) x else 0) := by
     intro l
-    rw [hpd l σ ν]
+    rw [hpd σ l ν, hpd ν l σ, hpd l σ ν]
     by_cases hσ : σ = i <;> by_cases hν : ν = i <;> by_cases hl : l = i <;>
       simp only [hσ, hν, hl, if_true, if_false] <;> ring
   have h4 : ∀ c : Fin n → ℝ, ∀ P : Prop, ∀ [Decidable P],
@@ -78,7 +77,7 @@ theorem dChristoffel_of_vanishing_on_face (g h : (Fin n → ℝ) → Matrix (Fin
     by_cases hP : P
     · simp only [hP, if_true]
     · simp only [hP, if_false, Finset.sum_const_zero]
-  simp only [hpd, h3, Finset.sum_add_distrib, Finset.sum_sub_distrib, h4,
+  simp only [h3, Finset.sum_add_distrib, Finset.sum_sub_distrib, h4,
     Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
 /-- **The Palatini vector at a point of a face on which the perturbation vanishes.** -/
