@@ -55,7 +55,9 @@ potential `∫ E δA` is `γ/2` times the ADM potential `∫ π δh` plus the ex
 A connection in a local trivialisation, matrix-valued components `A_a(x)` on the chart, has along every `C¹` path a
 parallel transport `U' = −A_a(e) ė^a U`, `U(t₁) = 1`, which exists on every interval and is unique (by the global
 existence theorem for Lipschitz right-hand sides of `Lightlike/ODE/GlobalLipschitz.lean`); the holonomy `A(e)` along an
-edge is its end value, and for an `su(2)` connection it lies in `SU(2)` [26] {3}.
+edge is its end value, and for an `su(2)` connection it lies in `SU(2)` [26] {3}. It is unchanged under orientation-preserving
+reparametrisation, the reversed path has the inverse holonomy, and for piecewise `C¹` paths (lists of edges) the
+holonomy of a composite is the product, `A(e₂ ∘ e₁) = A(e₂) A(e₁)` [27] {3}.
 
 A grid computation in dimension two (`scripts/adm_algebra_check.py`) supports the three brackets; with the kinetic
 coefficient `1/2` of dimension three, used in dimension two, the bracket of two Hamiltonian constraints differs from
@@ -106,6 +108,8 @@ the momentum constraint of the structure function.
 26. Lightlike/Canonical/Holonomy.lean - `Lightlike.Canonical.transport`, `Lightlike.Canonical.holonomy`,
     `Lightlike.Canonical.transport_trans`, `Lightlike.Canonical.holonomy_mem_specialUnitaryGroup`,
     `Lightlike.Canonical.holonomy_u1Conn`
+27. Lightlike/Canonical/HolonomyPaths.lean - `Lightlike.Canonical.holonomy_comp_reparam`,
+    `Lightlike.Canonical.holonomy_revPath`, `Lightlike.Canonical.PwPath.hol_trans`, `Lightlike.Canonical.PwPath.hol_rev`
 
 ## References
 
@@ -114,6 +118,6 @@ the momentum constraint of the structure function.
 2. E. Gourgoulhon, *3+1 Formalism and Bases of Numerical Relativity*, arXiv:gr-qc/0703035, equations (2.43),
    (2.68)-(2.70), (3.1)-(3.10), (4.27)-(4.32).
 3. A. Ashtekar and J. Lewandowski, *Background independent quantum gravity: a status report*, arXiv:gr-qc/0404018,
-   equations (2.6), (2.16)-(2.21), (2.23), (4.35)-(4.36).
+   equations (2.6), (2.16)-(2.21), (2.23), (4.35)-(4.37).
 4. S. Holst, *Barbero's Hamiltonian derived from a generalized Hilbert-Palatini action*, arXiv:gr-qc/9511026,
    equations (1), (3)-(6).
