@@ -275,10 +275,13 @@ import Lightlike.OperatorAlgebras.ShaleSufficiency
 import Lightlike.OperatorAlgebras.FockUnique
 import Lightlike.OperatorAlgebras.GeneratorTranslation
 import Lightlike.OperatorAlgebras.GramUnitary
+import Lightlike.OperatorAlgebras.MomentumAdjoint
+import Lightlike.OperatorAlgebras.MomentumBoundary
 import Lightlike.OperatorAlgebras.MomentumDeficiency
 import Lightlike.OperatorAlgebras.MomentumInterval
 import Lightlike.OperatorAlgebras.MomentumMollify
 import Lightlike.OperatorAlgebras.MomentumSmooth
+import Lightlike.OperatorAlgebras.MomentumTheta
 import Lightlike.OperatorAlgebras.Resolvent
 import Lightlike.OperatorAlgebras.ResolventIdentity
 import Lightlike.OperatorAlgebras.SpectralStone
@@ -310,6 +313,7 @@ import Lightlike.OperatorAlgebras.TestsShale
 import Lightlike.OperatorAlgebras.TestsShaleSqueeze
 import Lightlike.OperatorAlgebras.TestsMomentumDeficiency
 import Lightlike.OperatorAlgebras.TestsMomentumSmooth
+import Lightlike.OperatorAlgebras.TestsMomentumTheta
 import Lightlike.OperatorAlgebras.TestsResolvent
 import Lightlike.OperatorAlgebras.TestsTranslationCore
 import Lightlike.OperatorAlgebras.TestsUnitaryGroup

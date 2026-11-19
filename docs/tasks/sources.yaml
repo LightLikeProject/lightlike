@@ -933,6 +933,10 @@ references:
     cite: "B. C. Hall, Quantum Theory for Mathematicians, Graduate Texts in Mathematics 267, Springer (2013)"
     title: "Quantum Theory for Mathematicians"
     doi: 10.1007/978-1-4614-7116-5
+  bonneau-faraut-valent-2001:
+    cite: "G. Bonneau, J. Faraut and G. Valent, Self-adjoint extensions of operators and the teaching of quantum mechanics, Am. J. Phys. 69 (2001) 322"
+    title: "Self-adjoint extensions of operators and the teaching of quantum mechanics"
+    arxiv: quant-ph/0103153
   nielsen-petz-2005:
     cite: "M. A. Nielsen and D. Petz, A simple proof of the strong subadditivity inequality, Quantum Inf. Comput. 5 (2005) 507-513"
     title: "A simple proof of the strong subadditivity inequality"
