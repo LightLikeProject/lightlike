@@ -34,7 +34,9 @@ Schwarzschild coordinates carries the induced metric `diag((1 − 2M/r)⁻¹, r�
 shift vanishes and the slice is static; its Ricci tensor is not zero but its scalar curvature is, so both constraints
 hold {2}. The slice of spatially flat FLRW carries `a(t)² δ_ij` and the momentum `−2a'(t) δ^{ij}` of its extrinsic
 curvature; the Hamiltonian constraint with the density of the comoving fluid holds exactly when the first Friedmann
-equation does, and the momentum constraint holds {2} {3}.
+equation does, and the momentum constraint holds {2} {3}; for a slice of spatial curvature `k`, with metric
+`(a S)² δ_ij`, `S = 1/(1 + k|x|²/4)`, the scalar curvature is `6k/a²` and the constraint holds exactly when
+`(a'/a)² = 8πGρ/3 − k/a² + Λ/3`, the cosmological constant entering as a fluid with `w = −1` [16] {3}.
 
 A grid computation in dimension two (`scripts/adm_algebra_check.py`) supports the three brackets; with the kinetic
 coefficient `1/2` of dimension three, used in dimension two, the bracket of two Hamiltonian constraints differs from
@@ -60,7 +62,9 @@ the momentum constraint of the structure function.
 14. Lightlike/Canonical/Hypersurface.lean - `Lightlike.Canonical.momentumConstraintM`, `Lightlike.Canonical.hamiltonianConstraintM`, `Lightlike.Canonical.admBracketM`
 15. Lightlike/Canonical/HypersurfaceBridge.lean - `Lightlike.Canonical.constraintM_bridge_global`
 16. Lightlike/Canonical/InitialData.lean - `Lightlike.Canonical.schSlice_hamiltonianConstraint`, `Lightlike.Canonical.schSlice_momentumConstraint`,
-    `Lightlike.Canonical.flrw_hamiltonian_iff`, `Lightlike.Canonical.flrw_momentumConstraint`
+    `Lightlike.Canonical.flrw_hamiltonian_iff`, `Lightlike.Canonical.flrw_momentumConstraint`,
+    `Lightlike.Canonical.scalarCurvature_flrwSliceK`, `Lightlike.Canonical.flrwK_hamiltonian_iff_Lambda`,
+    `Lightlike.Canonical.flrwK_momentumConstraint`
 
 ## References
 

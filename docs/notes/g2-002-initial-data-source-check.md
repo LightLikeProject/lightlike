@@ -19,6 +19,8 @@ Lean file: `Lightlike/Canonical/InitialData.lean`.
 | `flrwSlice_eq`: `γ_ij = a(t)² δ_ij`; lapse `1`, shift `0` (`flrwMetric_lapse`, `flrwMetric_shift`) | Aurrekoetxea–Clough–Lim, eq. (23), p. 10 (`γ_ij = a² δ_ij`, `K_ij ∼ −H γ_ij`, `K = −3H`) | Same slice metric. `flrwMetric a 0` is the `k = 0` case of `Lightlike/Cosmology/FLRW.lean`. |
 | `flrwMomentum_eq`: `π^{ij} = −2 a'(t) δ^{ij}` is `√γ (K γ^{ij} − K^{ij})` with `K_ij = −½ ∂_t γ_ij` | Gourgoulhon, eqs. (4.104) and (4.108), p. 67, with `N = 1`, `β = 0`; Aurrekoetxea–Clough–Lim, eq. (22) (the same formula for `K_ij`) and eq. (23), p. 10 | Same: `K_ij = −a a' δ_ij = −H γ_ij`, and the source's sign convention (negative `K` for expansion) is the one used. |
 | `flrw_hamiltonian_iff`: for `a(t) > 0`, `ℋ + 16πG √γ ρ = 0` iff `(a'/a)² = 8πGρ/3` | Aurrekoetxea–Clough–Lim, eq. (3), p. 4 (flat Friedmann equations), eq. (25), p. 10 (Hamiltonian constraint), and pp. 10-11 ("the Hamiltonian constraint is simply the first of the Friedmann equations in Eqn. (3)"); Gourgoulhon, eq. (4.19), p. 54 | Same equation. Representation: the constraint is written as `−√γ` times (4.19) / (25) with Newton's constant `G` kept; both sources write it with `G = 1` (eq. (3) of Aurrekoetxea–Clough–Lim keeps `G`). Eq. (25) of Aurrekoetxea–Clough–Lim prints `(3)R_ij`; the scalar `(3)R` is meant (it is contracted with nothing and compared with scalars), and Gourgoulhon's (4.19) has the scalar. |
+| `flrwK_hamiltonian_iff` (any `k`): `ℋ + 16πG √γ ρ = 0` iff `(a'/a)² = 8πGρ/3 − k/a²`, with `γ_ij = (a S)² δ_ij`, `S = 1/(1 + k|x|²/4)` (the spatial block of `flrwMetric a k`), `R = 6k/a²` (`scalarCurvature_flrwSliceK`) | Gourgoulhon, eq. (4.19), p. 54, for the constraint; the curved Friedmann equation is `Lightlike.Cosmology.FirstFriedmann` (`Lightlike/Cosmology/FLRW.lean`, which cites Carroll's lecture notes) | The constraint is the source's (4.19); Aurrekoetxea–Clough–Lim state the reduction to Friedmann only for `k = 0`, so the comparison of the curved case with a source that states it is pending. |
+| `flrwK_hamiltonian_iff_Lambda`: `ℋ + √γ (16πGρ + 2Λ) = 0` iff `(a'/a)² = 8πGρ/3 − k/a² + Λ/3` | Aurrekoetxea–Clough–Lim, p. 5, the text after eq. (6) (`w = −1` for the cosmological constant, densities added to give the sources of eq. (3)) | Representation: `Λ` is entered as the density `Λ/(8πG)` of a fluid with `w = −1` in `E = ρ` of (4.19). |
 | `flrw_momentumConstraint` (zero matter momentum) | Aurrekoetxea–Clough–Lim, eq. (26), p. 10, and p. 11 ("the momentum constraints are trivially satisfied via isotropy"); Gourgoulhon, eq. (4.22), p. 54 | Same, with `S_i = p_i = 0` for the comoving fluid. |
 
 ## Scope
@@ -26,8 +28,10 @@ Lean file: `Lightlike/Canonical/InitialData.lean`.
 * Schwarzschild: the slice `t = 0` in Schwarzschild coordinates on the chart region `r > 0`, `r ≠ 2M`,
   `sin θ ≠ 0`; positive definiteness of the slice metric on `r > 2M` (`schSlice_posDef`). The isotropic form of
   the same slice (Gourgoulhon, Sec. 8.2) is not formalised here.
-* FLRW: `k = 0`, `Λ = 0`, as in Aurrekoetxea–Clough–Lim's eq. (3). The cases `k ≠ 0` (spatial curvature
-  `6k/a²`) and `Λ ≠ 0` are not covered.
+* FLRW: any `k` and `Λ`, on the chart domain `1 + k|x|²/4 > 0` of `Lightlike.Cosmology.flrwDomain` (all of `ℝ³` for
+  `k ≥ 0`, the ball `|x| < 2/√|k|` for `k < 0`).
+* Schwarzschild: every slice `t = const` carries the same data (`schMetric_block_eq_schSlice`); the chart region is the
+  domain of the Schwarzschild coordinates themselves, as in Gourgoulhon's (7.16)–(7.17).
 
 ## Trust checks
 
@@ -37,3 +41,5 @@ Lean file: `Lightlike/Canonical/InitialData.lean`.
 * `schSliceRegion_nonempty`: the exterior region is not empty for every `M`.
 * `deSitter_hamiltonianConstraint`: de Sitter (`a = e^{Ht}`, `H² = 8πGρ_Λ/3`) satisfies the constraint at every time.
 * `expanding_vacuum_violates`: an expanding slice without matter (`H ≠ 0`, `ρ = 0`) violates it.
+* `ricci_cf`: the Ricci tensor `2kS²δ_ij` of the curved slice agrees with the spatial part of the four-dimensional
+  `Lightlike.Cosmology.ricci_flrw` at `a' = a'' = 0`, computed independently.
