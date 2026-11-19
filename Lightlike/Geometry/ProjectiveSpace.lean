@@ -16,6 +16,7 @@ complex (analytic) manifold modelled on `ℂⁿ` (`isManifold`): `CP 1` and `CP 
 * `isOpenMap_proj`: the projection `{v ≠ 0} → ℙ` is open (`π⁻¹(π O) = ⋃_c c • O`).
 * `isOpen_chartSet`, `continuousOn_chartFun`, `continuous_chartInv`, `chart`: the charts.
 * `instChartedSpace`, `isManifold`: the complex manifold `ℙⁿ(ℂ)`.
+* `instT2Space`, `instCompactSpace`: `ℙⁿ(ℂ)` is Hausdorff (`projectorOf_injective`) and compact.
 
 ## References
 
@@ -27,7 +28,7 @@ complex (analytic) manifold modelled on `ℂⁿ` (`isManifold`): `CP 1` and `CP 
 -/
 
 open Set Topology Filter
-open scoped LinearAlgebra.Projectivization Manifold ContDiff
+open scoped LinearAlgebra.Projectivization Manifold ContDiff Matrix
 
 noncomputable section
 
@@ -251,6 +252,139 @@ instance isManifold : IsManifold 𝓘(ℂ, Fin n → ℂ) ω (CP n) := by
     simp
   rw [hsrc]
   exact contDiffOn_transition i j
+
+/-! ## Hausdorff and compact -/
+
+/-- `Σ_i |v_i|²` as a complex number. -/
+def sqNorm (v : Fin (n + 1) → ℂ) : ℂ := star v ⬝ᵥ v
+
+lemma sqNorm_eq (v : Fin (n + 1) → ℂ) : sqNorm v = ((∑ i, Complex.normSq (v i) : ℝ) : ℂ) := by
+  simp only [sqNorm, dotProduct, Pi.star_apply, Complex.ofReal_sum]
+  refine Finset.sum_congr rfl fun i _ => ?_
+  rw [Complex.star_def, mul_comm, Complex.mul_conj]
+
+lemma sqNorm_ne_zero {v : Fin (n + 1) → ℂ} (hv : v ≠ 0) : sqNorm v ≠ 0 := by
+  rw [sqNorm_eq, Complex.ofReal_ne_zero]
+  obtain ⟨i, hi⟩ := Function.ne_iff.1 hv
+  have : 0 < Complex.normSq (v i) := Complex.normSq_pos.2 hi
+  exact (Finset.sum_pos' (fun j _ => Complex.normSq_nonneg _) ⟨i, Finset.mem_univ _, this⟩).ne'
+
+lemma sqNorm_smul (c : ℂ) (v : Fin (n + 1) → ℂ) : sqNorm (c • v) = star c * c * sqNorm v := by
+  simp only [sqNorm, star_smul, smul_dotProduct, dotProduct_smul, smul_eq_mul]
+  ring
+
+/-- The orthogonal projector `v v† / |v|²` onto the line of `v`. -/
+def projector (v : Fin (n + 1) → ℂ) : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ :=
+  (sqNorm v)⁻¹ • Matrix.vecMulVec v (star v)
+
+lemma projector_smul {c : ℂ} (hc : c ≠ 0) (v : Fin (n + 1) → ℂ) :
+    projector (c • v) = projector v := by
+  have hsc : star c ≠ 0 := star_ne_zero.2 hc
+  have hcc : star c * c ≠ 0 := mul_ne_zero hsc hc
+  ext i j
+  simp only [projector, sqNorm_smul, Matrix.smul_apply, Matrix.vecMulVec_apply, Pi.smul_apply,
+    Pi.star_apply, smul_eq_mul, star_mul', mul_inv]
+  field_simp
+
+lemma projector_mulVec (v w : Fin (n + 1) → ℂ) :
+    projector v *ᵥ w = ((sqNorm v)⁻¹ * (star v ⬝ᵥ w)) • v := by
+  ext i
+  simp only [projector, Matrix.smul_mulVec, Matrix.vecMulVec_mulVec, Pi.smul_apply, smul_eq_mul,
+    op_smul_eq_mul]
+  ring
+
+lemma projector_mulVec_self {v : Fin (n + 1) → ℂ} (hv : v ≠ 0) : projector v *ᵥ v = v := by
+  rw [projector_mulVec, show star v ⬝ᵥ v = sqNorm v from rfl, inv_mul_cancel₀ (sqNorm_ne_zero hv),
+    one_smul]
+
+/-- The projector of a point of `ℙⁿ(ℂ)`. -/
+def projectorOf (p : CP n) : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ := projector p.rep
+
+lemma projectorOf_proj (v : {v : Fin (n + 1) → ℂ // v ≠ 0}) : projectorOf (proj v) = projector v.1 := by
+  obtain ⟨c, hc⟩ := rep_proj v
+  rw [projectorOf, hc, projector_smul c.ne_zero]
+
+lemma continuous_projectorOf : Continuous (projectorOf (n := n)) := by
+  rw [isQuotientMap_proj.continuous_iff]
+  have : projectorOf ∘ proj = fun v : {v : Fin (n + 1) → ℂ // v ≠ 0} => projector v.1 :=
+    funext projectorOf_proj
+  rw [this]
+  have hs : Continuous fun v : {v : Fin (n + 1) → ℂ // v ≠ 0} => sqNorm v.1 := by
+    unfold sqNorm; fun_prop
+  refine Continuous.smul (hs.inv₀ fun v => sqNorm_ne_zero v.2) ?_
+  refine continuous_pi fun i => continuous_pi fun j => ?_
+  simp only [Matrix.vecMulVec_apply, Pi.star_apply]
+  exact ((continuous_apply i).comp continuous_subtype_val).mul
+    ((continuous_apply j).comp continuous_subtype_val).star
+
+lemma projectorOf_injective : Function.Injective (projectorOf (n := n)) := by
+  intro p q h
+  have hp := p.rep_nonzero
+  have hq := q.rep_nonzero
+  have e : p.rep = ((sqNorm q.rep)⁻¹ * (star q.rep ⬝ᵥ p.rep)) • q.rep := by
+    have := congrArg (fun M => M *ᵥ p.rep) h
+    simp only [projectorOf] at this
+    rw [projector_mulVec_self hp, projector_mulVec] at this
+    exact this
+  have hc : (sqNorm q.rep)⁻¹ * (star q.rep ⬝ᵥ p.rep) ≠ 0 := by
+    intro h0; rw [h0, zero_smul] at e; exact hp e
+  rw [← Projectivization.mk_rep p, ← Projectivization.mk_rep q, Projectivization.mk_eq_mk_iff]
+  exact ⟨Units.mk0 _ hc, by rw [Units.smul_def, Units.val_mk0, ← e]⟩
+
+/-- **`ℙⁿ(ℂ)` is Hausdorff**: the projector `[v] ↦ v v† / |v|²` is a continuous injection into
+matrices. -/
+instance instT2Space : T2Space (CP n) :=
+  T2Space.of_injective_continuous projectorOf_injective continuous_projectorOf
+
+/-- **`ℙⁿ(ℂ)` is compact**: the image of the compact set `{|v|² = 1}`. -/
+instance instCompactSpace : CompactSpace (CP n) := by
+  set K : Set (Fin (n + 1) → ℂ) := {v | sqNorm v = 1} with hK
+  have hKc : IsCompact K := by
+    refine Metric.isCompact_of_isClosed_isBounded ?_ ?_
+    · exact isClosed_eq (by unfold sqNorm; fun_prop) continuous_const
+    · rw [Metric.isBounded_iff_subset_closedBall 0]
+      refine ⟨1, fun v hv => ?_⟩
+      rw [mem_closedBall_zero_iff, pi_norm_le_iff_of_nonneg zero_le_one]
+      intro i
+      have h1 : ((∑ j, Complex.normSq (v j) : ℝ) : ℂ) = 1 := by rw [← sqNorm_eq]; exact hv
+      have h2 : (∑ j, Complex.normSq (v j) : ℝ) = 1 := by exact_mod_cast h1
+      have h3 : Complex.normSq (v i) ≤ 1 := h2 ▸ Finset.single_le_sum
+        (fun j _ => Complex.normSq_nonneg (v j)) (Finset.mem_univ i)
+      rw [Complex.normSq_eq_norm_sq] at h3
+      nlinarith [norm_nonneg (v i)]
+  have hK0 : ∀ v ∈ K, v ≠ 0 := fun v hv h0 => by
+    have hv' : sqNorm v = 1 := hv
+    rw [h0] at hv'; simp [sqNorm] at hv'
+  let f : K → CP n := fun v => proj ⟨v.1, hK0 v.1 v.2⟩
+  have hf : Continuous f := continuous_proj.comp (continuous_subtype_val.subtype_mk _)
+  have hsurj : Function.Surjective f := by
+    intro p
+    set v := p.rep
+    have hv := p.rep_nonzero
+    set r : ℝ := ∑ j, Complex.normSq (v j)
+    have hr : 0 < r := by
+      have := sqNorm_ne_zero hv
+      rw [sqNorm_eq, Complex.ofReal_ne_zero] at this
+      exact lt_of_le_of_ne (Finset.sum_nonneg fun j _ => Complex.normSq_nonneg _) (Ne.symm this)
+    set c : ℂ := (((Real.sqrt r)⁻¹ : ℝ) : ℂ)
+    have hc : c ≠ 0 := by
+      simp only [c, ne_eq, Complex.ofReal_eq_zero, inv_eq_zero]; exact (Real.sqrt_pos.2 hr).ne'
+    have hcv : c • v ∈ K := by
+      show sqNorm (c • v) = 1
+      rw [sqNorm_smul, sqNorm_eq, Complex.star_def, Complex.conj_ofReal, ← Complex.ofReal_mul,
+        ← Complex.ofReal_mul]
+      congr 1
+      rw [← mul_inv, Real.mul_self_sqrt hr.le, inv_mul_cancel₀ hr.ne']
+    refine ⟨⟨c • v, hcv⟩, ?_⟩
+    show Projectivization.mk ℂ (c • v) _ = p
+    conv_rhs => rw [← Projectivization.mk_rep p]
+    rw [Projectivization.mk_eq_mk_iff]
+    exact ⟨Units.mk0 c hc, rfl⟩
+  have hKs : CompactSpace K := isCompact_iff_compactSpace.1 hKc
+  have : IsCompact (univ : Set (CP n)) := by
+    rw [← hsurj.range_eq]
+    exact isCompact_range hf
+  exact ⟨this⟩
 
 /-! ### `CP¹` and `CP³` -/
 
