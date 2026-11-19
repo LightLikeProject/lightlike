@@ -87,6 +87,7 @@ On a compact metric space the couplings of two probability measures are the prob
 For a continuous cost `h` on the product of a compact metric space with itself there is an optimal coupling, and its cost is `sup {∫ f dμ + ∫ g dν | f(x) + g(y) ≤ h(x, y)}` over continuous `f`, `g` {12} [97]; the proof goes through the Hahn-Banach theorem for the sublinear functional `ω(k) = inf {∫ f dμ + ∫ g dν | k ≤ f ⊕ g}` and the Riesz-Markov-Kakutani theorem. For a separable cost `a(x) + b(y)` the dual value is `∫ a dμ + ∫ b dν` [98].
 
 Kantorovich-Rubinstein duality: on a compact metric space `W₁(μ, ν) = sup {∫ u dμ - ∫ u dν | u 1-Lipschitz}`, and the infimum defining `W₁` is attained {12} [99]; the `c`-transform `u(x) = inf_y (d(x, y) - g(y))` of a dual pair `(f, g)` is `1`-Lipschitz with `f ≤ u ≤ -g` [99]. For Dirac measures the supremum is `d(x, y)`, and `2`-Lipschitz tests exceed `W₁` [100].
+A compact symmetric operator `T` on a real or complex Hilbert space has a Hilbert basis of eigenvectors with real eigenvalues, assembled from Hilbert bases of the eigenspaces, whose sum is dense, and `T x = ∑ᵢ μᵢ ⟪bᵢ, x⟫ bᵢ` in it; only finitely many eigenvalues have `‖μ‖ ≥ ε`, since unit eigenvectors to distinct eigenvalues are orthonormal and their images are then `ε` apart inside a compact set, so the eigenvalues and the spectrum are countable [101]. The identity of `ℓ²(ℕ)` is symmetric, not compact, and has an infinite-dimensional eigenspace, and `0` is in the spectrum of the compact self-adjoint `diag(1/(n+1))` without being an eigenvalue [102]. A Hilbert-Schmidt operator is the norm limit of its finite sections `x ↦ ∑_{i ∈ F} ⟪bᵢ, x⟫ K bᵢ` and so is compact [103].
 
 ## Lean References
 
@@ -358,6 +359,17 @@ Kantorovich-Rubinstein duality: on a compact metric space `W₁(μ, ν) = sup {�
     `OperatorAlgebras.Transport.wasserstein1_eq_sSup`
 100. Lightlike/OperatorAlgebras/TestsKantorovichRubinstein.lean - `OperatorAlgebras.Transport.sSup_dirac`,
     `OperatorAlgebras.Transport.two_lipschitz_exceeds`, `OperatorAlgebras.Transport.ctrans_zero`
+101. Lightlike/OperatorAlgebras/Spectral/Compact.lean - `OperatorAlgebras.CompactSpectral.exists_hilbertBasis_eigenvectors`,
+    `OperatorAlgebras.CompactSpectral.hasSum_eigen`, `OperatorAlgebras.CompactSpectral.finite_eigenvalues_ge`,
+    `OperatorAlgebras.CompactSpectral.countable_eigenvalues`, `OperatorAlgebras.CompactSpectral.countable_spectrum`,
+    `OperatorAlgebras.CompactSpectral.hasEigenvalue_of_mem_spectrum`,
+    `OperatorAlgebras.CompactSpectral.finiteDimensional_eigenspace`
+102. Lightlike/OperatorAlgebras/Spectral/TestsCompact.lean - `OperatorAlgebras.CompactSpectral.not_finiteDimensional_eigenspace_id`,
+    `OperatorAlgebras.CompactSpectral.not_isCompactOperator_id`,
+    `OperatorAlgebras.CompactSpectral.exists_hilbertBasis_eigenvectors_of_finiteDimensional`,
+    `OperatorAlgebras.CompactSpectral.invDiag_zero_mem_spectrum_not_hasEigenvalue` (0 is in the spectrum of
+    diag(1/(n+1)) and is not an eigenvalue)
+103. Lightlike/OperatorAlgebras/Spectral/HilbertSchmidtCompact.lean - `OperatorAlgebras.CompactSpectral.isCompactOperator_of_isHilbertSchmidt`
 
 ## References
 
@@ -368,7 +380,7 @@ Kantorovich-Rubinstein duality: on a compact metric space `W₁(μ, ν) = sup {�
    Soc. 103 (1962) 149.
 3. Math 7334 lecture notes, Georgia Tech (Spring 2017), Section 4: The Theorem of Hille and Yosida concerning semi-groups, Theorem 1.9, https://loss.math.gatech.edu/17SPRINGTEA/7334/NOTES/section4hilleyosida.pdf.
 4. G. Teschl, *Mathematical Methods in Quantum Mechanics*, Graduate Studies in Mathematics 99, American Mathematical
-   Society, 2009 (online edition), Theorem 3.7 (spectral theorem). The Lean files are ported from physicslib4
+   Society, 2009 (online edition), Theorem 3.7 (spectral theorem) and Theorem 6.6 (compact self-adjoint operators). The Lean files are ported from physicslib4
    (github.com/physicslib/physicslib4, Apache-2.0).
 5. G. Bonneau, J. Faraut and G. Valent, *Self-adjoint extensions of operators and the teaching of quantum
    mechanics*, arXiv:quant-ph/0103153, Appendix A.3 and Section 5.3, eqs. (14) and (15).

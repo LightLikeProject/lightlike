@@ -4434,6 +4434,32 @@
   "citations": 352,
   "citations_via": "Semantic Scholar"
  },
+ "teschl-2009": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "Open Library",
+  "fetched_title": "Mathematical Methods in Quantum Mechanics With Applications to Schrödinger Operators",
+  "locations": {
+   "Theorem 6.6, p. 136": {
+    "verified": true,
+    "snippet": "Theorem 6.6 (Spectral theorem for compact operators). Suppose the op- erator K is self-adjoint and compact. Then the spectrum of K consists of an at most countable number of eigenvalues which can only cluster at 0. Moreo",
+    "why": null,
+    "page": 136
+   }
+  },
+  "citations": null,
+  "citations_via": "unavailable",
+  "fulltext": {
+   "url": "https://www.mat.univie.ac.at/~gerald/ftp/book-schroe/schroe.pdf",
+   "edition": "the author's online edition of GSM 99 (AMS 2009), page numbers as printed",
+   "sha256": "8dc8de0b58aa0a3fedfe594a345f9b5875322e5526ea581cb640a98d55b82818",
+   "md5": "e7b3488759cfa229d2d145b96eb9828b",
+   "bytes": 1538372,
+   "page_offset": 12,
+   "pages_from": "printed page numbers (289 of 292 numbered pages)",
+   "why": null
+  }
+ },
  "thiemann-1998": {
   "checked": "2026-11-08",
   "exists": true,
