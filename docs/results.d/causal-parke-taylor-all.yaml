@@ -3,7 +3,8 @@
   area: GR
   file: Lightlike/GR/ParkeTaylorAll.lean
   decls: [Lightlike.SpinorHelicity.IsBCFWFamilyMHV, Lightlike.SpinorHelicity.parkeTaylor_bcfw_far, Lightlike.SpinorHelicity.eq_parkeTaylor_of_bcfw_mhv, Lightlike.SpinorHelicity.eq_parkeTaylor_of_bcfw_mhv']
-  status: proven
+  status: conditional
+  hypotheses: [Lightlike.SpinorHelicity.IsBCFWFamilyMHV]
   tier: established
   source:
     refs:
