@@ -1,4 +1,5 @@
 import Mathlib
+import Physlib.Relativity.PauliMatrices.Basic
 
 /-!
 # Complexified Minkowski space as 2 × 2 matrices, its null cone, and twistor lines
@@ -30,6 +31,7 @@ a point as a line `ℂ² ⊂ ℂ⁴`, every linear embedding put in incidence fo
 **Conventions.** The source's metric has signature `(+, −, −, −)`, `qC x = x⁰² − x¹² − x²² − x³²`; the library's `η` has
 `(−, +, +, +)`, i.e. `−qC`. Indices: `Z = (μ^{0̇}, μ^{1̇}, λ_0, λ_1)` as in (1.22). Mathlib's `Module.Grassmannian`
 parametrises quotients (`G(n − k, V; F)` is the subspace Grassmannian); we use 2-dimensional submodules directly.
+Physlib's `PauliMatrix.pauliMatrix` gives the same matrix: `spinorMat_eq_pauli`.
 -/
 
 open Matrix Complex
@@ -74,6 +76,15 @@ def spinorEquiv : (Fin 4 → ℂ) ≃ₗ[ℂ] Matrix (Fin 2) (Fin 2) ℂ where
     have h2 := sqrt2_sq
     ext i j; fin_cases i <;> fin_cases j <;> simp [spinorMat, spinorInv] <;> field_simp <;> ring_nf <;>
       simp [h2, Complex.I_sq] <;> ring
+
+open PauliMatrix in
+/-- **The spinor matrix in Physlib's Pauli basis**: `x^{αα̇} = (1/√2) Σ_μ x^μ σ_μ` with Physlib's `pauliMatrix`
+(`σ₀ = 1` and the three Pauli matrices). -/
+theorem spinorMat_eq_pauli (x : Fin 4 → ℂ) :
+    spinorMat x = ((Real.sqrt 2 : ℂ)⁻¹) • (x 0 • pauliMatrix (Sum.inl 0) + x 1 • pauliMatrix (Sum.inr 0) +
+      x 2 • pauliMatrix (Sum.inr 1) + x 3 • pauliMatrix (Sum.inr 2)) := by
+  ext i j
+  fin_cases i <;> fin_cases j <;> simp [spinorMat, pauliMatrix] <;> ring
 
 /-- The complexified Minkowski form in the source's signature `(+, −, −, −)`. -/
 def qC (x : Fin 4 → ℂ) : ℂ := x 0 ^ 2 - x 1 ^ 2 - x 2 ^ 2 - x 3 ^ 2
