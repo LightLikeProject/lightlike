@@ -1,0 +1,13 @@
+- id: LL-XXXX-d
+  title: In a C*-algebra with a Weyl system of a symplectic vector space the Weyl elements are at distance 2 from each other, ‖W(φ) - W(ψ)‖ = 2 for φ ≠ ψ, and the algebra is not separable unless the space is zero
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/WeylAlgebra.lean
+  decls: [Lightlike.OperatorAlgebras.IsWeylSystem.mem_spectrum, Lightlike.OperatorAlgebras.IsWeylSystem.norm_sub, Lightlike.OperatorAlgebras.IsWeylSystem.not_separableSpace, Lightlike.OperatorAlgebras.ccrAlgebra_not_separableSpace]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: bgp-2007, location: "Proposition 4.2.3, p. 117", check: "Proposition 4.2.3"}
+  review: kernel-checked
+  note: "Compared with Bär-Ginoux-Pfäffle, arXiv:0806.1036, Proposition 4.2.3 (2), (3), pp. 117-118 (read): ‖W(φ) - W(ψ)‖ = 2 for φ ≠ ψ, and the algebra A of a Weyl system (A, W) is not separable unless V = {0}; here A is any nontrivial C*-algebra, and the CCR algebra of Example 4.2.2 is the case ccrAlgebra_not_separableSpace."
+  since: unreleased
