@@ -4,9 +4,10 @@
 
 This API proves the Brydges–Kennedy Taylor forest formula of Abdesselam and Rivasseau (Theorem III.1, eq. (III.2)):
 for a smooth function `H` from `ℝ^{P_n}` to a Banach space, `P_n` the links (unordered pairs of distinct points) of
-`n` points, `H(1)` is the sum over the forests `F` of `∫_{[0,1]^F} (∏_{l ∈ F} ∂/∂x_l) H (X^F(h)) dh`, where
-`X^F(h)_l` is the infimum of the `h` along the path of `F` joining the ends of `l`, and `0` if there is none. It also
-proves that the matrix with `1` on the diagonal and these entries off it is positive (Rivasseau–Wang, Theorem II.1).
+`n` points, `H(1)` is the sum over the forests `F` of `∫_{I^F} (∏_{l ∈ F} ∂/∂x_l) H (X^F(h)) dh`, `I` the unit
+interval, where `X^F(h)_l` is the infimum of the `h` along the path of `F` joining the ends of `l`, and `0` if there is
+none. It also proves that the matrix with `1` on the diagonal and these entries off it is positive (Rivasseau–Wang,
+Theorem II.1).
 
 ## Content (Alpha)
 
@@ -18,12 +19,12 @@ parameter of the forest keeps the ultrametric of the points already joined and g
 newly joins [1].
 
 Partial derivatives of a smooth function commute, so `∏_{l ∈ F} ∂/∂x_l H` does not depend on an order of `F` [2].
-On the cube `[0,1]^{P_n}` with Lebesgue measure, one coordinate integrates at a time, ties between coordinates have
+On the unit cube `I^{P_n}` with Lebesgue measure, one coordinate integrates at a time, ties between coordinates have
 measure zero, the cube splits by the coordinate of a finite set that is smallest, and restricting to the coordinates
-of `F` carries the cube to `[0,1]^F` [3].
+of `F` carries the cube to `I^F` [3].
 
 **The forest formula** (eq. (III.2)) holds for every smooth `H` from `ℝ^{P_n}` to a Banach space, with the integral
-over `[0,1]^F` [4] {1}, and with the integral over the whole cube `[0,1]^{P_n}` of the same integrand, a function of
+over `I^F` [4] {1}, and with the integral over the whole cube `I^{P_n}` of the same integrand, a function of
 the `h_l`, `l ∈ F`, only [4]. The proof is the iterated Taylor interpolation of Gurau, Rivasseau and Sfondrini
 (proof of Theorem 6.1) {3}, as an induction on the number of links: with all the entries between different clusters
 of `F` equal to `s`, the fundamental theorem of calculus in `s` from `0` to the smallest parameter of `F` gives the
