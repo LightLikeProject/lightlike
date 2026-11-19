@@ -55,3 +55,12 @@ H. Elvang, Y. Huang, *Scattering Amplitudes*, §3.1–3.2:
    factorizes as (3.5) (`ptShift_*`). Colour-ordered tree amplitudes of other helicity sectors are not defined in the library (no
    definition of a non-MHV tree amplitude), so for them the analytic structure and (3.5) remain hypotheses of
    `recursion_of_factorization`.
+
+## Update: the general helicity sectors (`FeynmanRecursion.lean`)
+
+Line 2 above is closed for the colour-ordered amplitudes defined from the Feynman rules (`ColourOrderedFeynman.lean`, note
+`g3-073-feynman-amplitudes.md`): their analytic structure (holomorphic off the propagator zeros, simple poles), the factorization
+(3.5) of every residue (`residue_shift_factorization`), and the recursion (3.7) for every shift with (3.2)–(3.3) under (3.6)
+(`bgAmplitude_eq_sum_channels`) are proved, the latter by partial fractions from Liouville's theorem
+(`eq_sum_div_sub_of_residues`), without the rational form `P/Q` of `recursion_of_factorization`.
+
