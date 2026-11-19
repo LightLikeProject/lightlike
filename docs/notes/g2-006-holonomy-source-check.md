@@ -63,6 +63,10 @@ footnote 17) and p. 35 (the common graph `α₃` of two graphs). Printed page nu
 
 ## Trust checks
 
+* `lineGraph_incomparable`: the straight one-edge graphs on `[0, 2] e₀` and `[1, 3] e₀` overlap on `[1, 2] e₀`; neither
+  is below the other (each has a vertex the other lacks, `ALGraph.vertices_subset_of_le`), and `ALGraph.directed` gives
+  them a common refinement.
+
 * `lGraph_IE_surjective`: the one-edge graph on the `L`-shaped edge (two analytic pieces, a corner at `e₀`) satisfies the
   hypotheses of a graph of Ashtekar–Lewandowski, and every element of `SU(2)` is the holonomy of a connection along it.
 

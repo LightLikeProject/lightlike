@@ -19,6 +19,8 @@ the boundary points of the sets where a piece of one graph meets a piece of the 
   (`le_common_left`, `le_common_right`), so the refinement order is directed (`directed`); `α₃` contains the vertices of
   both graphs (`vertices_subset_of_le`) and the holonomies of both graphs are products of holonomies along its edges
   (`exists_common_hol`).
+* Trust check (`lineGraph_incomparable`): the straight one-edge graphs on `[0, 2] e₀` and `[1, 3] e₀` are not
+  comparable, so their common refinement is a third graph.
 -/
 
 open Set Filter
@@ -838,5 +840,63 @@ theorem exists_common_hol {n : ℕ} {A : MatConn n} (hA : ∀ a, Continuous fun 
     hol_of_le hA (le_common_left α₁ α₂), hol_of_le hA (le_common_right α₁ α₂)⟩
 
 end ALGraph
+
+/-- The straight edge `t ↦ t e₀` on `[a, b]`: an edge of Ashtekar–Lewandowski with one analytic piece. -/
+def lineEdge {a b : ℝ} (hab : a < b) : ALEdge where
+  path t := t • (Pi.single 0 1 : Fin 3 → ℝ)
+  k := 1
+  k_pos := one_pos
+  τ := ![a, b]
+  τ_mono := Fin.strictMono_iff_lt_succ.2 fun j => by
+    rw [ALGraph.CutData.vec_castSucc, ALGraph.CutData.vec_succ]; exact hab
+  arc _ t := t • (Pi.single 0 1 : Fin 3 → ℝ)
+  arc_smooth _ := contDiff_id.smul contDiff_const
+  arc_analytic _ t _ := by
+    refine ⟨analyticAt_id.smul analyticAt_const, ?_⟩
+    have hd : HasDerivAt (fun t : ℝ => t • (Pi.single 0 1 : Fin 3 → ℝ)) (Pi.single 0 1) t := by
+      simpa using (hasDerivAt_id t).smul_const (Pi.single 0 1 : Fin 3 → ℝ)
+    rw [hd.deriv]
+    simp [funext_iff, Pi.single_apply]
+  arc_eq _ _ _ := rfl
+
+/-- The straight path is injective. -/
+lemma line_injective : Function.Injective fun t : ℝ => t • (Pi.single 0 1 : Fin 3 → ℝ) := fun s t h => by
+  simpa using congrFun h 0
+
+/-- The one-edge graph on the straight edge `t ↦ t e₀`, `t ∈ [a, b]`. -/
+def lineGraph {a b : ℝ} (hab : a < b) : ALGraph where
+  m := 1
+  edge _ := lineEdge hab
+  injOn_Ico _ := line_injective.injOn
+  injOn_Ioc _ := line_injective.injOn
+  meet i j hij := absurd (Subsingleton.elim i j) hij
+
+/-- The vertices of the straight one-edge graph are `a e₀` and `b e₀`. -/
+lemma mem_vertices_lineGraph {a b : ℝ} (hab : a < b) {v : Fin 3 → ℝ} :
+    v ∈ (lineGraph hab).vertices ↔ v = a • (Pi.single 0 1 : Fin 3 → ℝ) ∨ v = b • (Pi.single 0 1 : Fin 3 → ℝ) :=
+  ⟨fun ⟨_, h⟩ => h, fun h => ⟨⟨0, one_pos⟩, h⟩⟩
+
+namespace ALGraph
+
+/-- A graph with a vertex that is not a vertex of `α'` is not below `α'`. -/
+lemma not_le_of_vertex {α α' : ALGraph} {v : Fin 3 → ℝ} (hv : v ∈ α.vertices) (hv' : v ∉ α'.vertices) :
+    ¬ α.Le α' := fun h => hv' (vertices_subset_of_le h hv)
+
+end ALGraph
+
+/-- **Trust check: directedness needs a third graph.** The straight one-edge graphs on `[0, 2] e₀` and `[1, 3] e₀`
+overlap on `[1, 2] e₀`; neither is below the other (each has a vertex the other lacks), and they have a common
+refinement. -/
+theorem lineGraph_incomparable :
+    ¬ (lineGraph (show (0 : ℝ) < 2 by norm_num)).Le (lineGraph (show (1 : ℝ) < 3 by norm_num)) ∧
+    ¬ (lineGraph (show (1 : ℝ) < 3 by norm_num)).Le (lineGraph (show (0 : ℝ) < 2 by norm_num)) ∧
+    ∃ α₃ : ALGraph, (lineGraph (show (0 : ℝ) < 2 by norm_num)).Le α₃ ∧
+      (lineGraph (show (1 : ℝ) < 3 by norm_num)).Le α₃ := by
+  refine ⟨ALGraph.not_le_of_vertex ((mem_vertices_lineGraph _).2 (Or.inl rfl)) ?_,
+    ALGraph.not_le_of_vertex ((mem_vertices_lineGraph _).2 (Or.inr rfl)) ?_, ALGraph.directed _ _⟩
+  · rw [mem_vertices_lineGraph]
+    rintro (h | h) <;> have := congrFun h 0 <;> norm_num at this
+  · rw [mem_vertices_lineGraph]
+    rintro (h | h) <;> have := congrFun h 0 <;> norm_num at this
 
 end Lightlike.Canonical
