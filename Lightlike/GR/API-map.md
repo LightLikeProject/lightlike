@@ -25,7 +25,8 @@ Eddington-Finkelstein and Kruskal coordinates, where it is unbounded near `r = 0
 geodesics reach `r = 0` at a finite affine parameter [8], and the energy, the axial angular momentum and the
 radial equation hold along all geodesics of the Eddington-Finkelstein chart [13]. In the global chart
 of the Kruskal manifold the equations of motion of the geodesics are derived from Noether's formula [14], and
-the boost charge, the squared angular momentum and `g(w, w)` are constant along them [15]. The whole Kruskal manifold
+the boost charge, the squared angular momentum and `g(w, w)` are constant along them [15]. A geodesic on a finite interval whose radius is bounded below
+has a limit in the manifold [15]. The whole Kruskal manifold
 `{X² - T² > -1} × S²` is given in one global chart as a Lorentzian manifold [9], of which `(T, X, θ, φ)` is a
 chart [10]; it solves the vacuum equations [11], and in every extension of it, in the sense of {4}, a sequence
 approaching the singularity has no limit [12]. Maximality of the extension is not yet formalized. [TODO]
@@ -62,7 +63,8 @@ approaching the singularity has no limit [12]. Maximality of the extension is no
 14. Lightlike/GR/KruskalGeodesic.lean - `hasDerivAt_kG`, `hasDerivAt_kh`, `kQ`, `contraction_kruskalC`,
     `kruskalC_hasDerivAt_pT`, `kruskalC_hasDerivAt_pX`, `kruskalC_hasDerivAt_angular`
 15. Lightlike/GR/KruskalGeodesicBound.lean - `kruskalC_hasDerivAt_r`, `kruskalC_hasDerivAt_boost`,
-    `kruskalC_hasDerivAt_L2`, `kruskalC_hasDerivAt_kQ`
+    `kruskalC_hasDerivAt_L2`, `kruskalC_hasDerivAt_kQ`, `radial_sq`, `kruskalC_radius_bounded`,
+    `kruskalC_velocity_bounded`, `exists_tendsto_kruskalC_geodesic`
 
 ## References
 

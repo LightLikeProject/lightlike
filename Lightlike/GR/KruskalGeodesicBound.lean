@@ -10,7 +10,12 @@ Gap row G1-020, toward maximality. Along a geodesic of the Kruskal manifold in t
 
 * the boost charge `h (T X' - X T')`, the squared angular momentum `r⁴ ω` and `g(w, w)` are constant
   (`kruskalC_hasDerivAt_boost`, `kruskalC_hasDerivAt_L2`, `kruskalC_hasDerivAt_kQ`);
-* the radius obeys `r' = 2 G'(s) (X X' - T T')` (`kruskalC_hasDerivAt_r`).
+* the radius obeys `r' = 2 G'(s) (X X' - T T')` (`kruskalC_hasDerivAt_r`), and
+  `r'² = A²/(16M²) + (1 - 2M/r)(κ - L²/r²)` (`radial_sq`);
+* on a finite interval `[0, b)` with the radius bounded below, the radius is bounded above
+  (`kruskalC_radius_bounded`), the velocity is bounded (`kruskalC_velocity_bounded`, by Grönwall's inequality
+  for `(T, h T')` and `(X, h X')`), and the geodesic has a limit in the manifold at `b`
+  (`exists_tendsto_kruskalC_geodesic`).
 -/
 
 open Matrix Real Set Filter Topology
@@ -397,5 +402,49 @@ theorem kruskalC_velocity_bounded (hM : 0 < M) {b : ℝ}
   · exact hsq 1 (by simp only [xdot]; nlinarith [sq_nonneg (w t 2), sq_nonneg (w t 3)])
   · exact hsq 2 (by simp only [xdot]; nlinarith [sq_nonneg (w t 1), sq_nonneg (w t 3)])
   · exact hsq 3 (by simp only [xdot]; nlinarith [sq_nonneg (w t 1), sq_nonneg (w t 2)])
+
+/-- **A geodesic of the Kruskal manifold on a finite interval `[0, b)` whose radius is bounded below has a
+limit in the manifold at `b`.** -/
+theorem exists_tendsto_kruskalC_geodesic (hM : 0 < M) {b : ℝ} (hb : 0 < b)
+    (hgeo : IsGeodesicOn (kruskalCMetric M) c w (Ico 0 b))
+    (hc : ∀ t ∈ Ico 0 b, c t ∈ kruskalC) {r0 : ℝ} (hr0 : 0 < r0)
+    (hr : ∀ t ∈ Ico 0 b, r0 ≤ krC M (c t)) :
+    ∃ z ∈ kruskalC, Tendsto c (𝓝[<] b) (𝓝 z) := by
+  obtain ⟨C, BX, hC0, hw, hX⟩ := kruskalC_velocity_bounded hM hgeo hc hr0 hr
+  obtain ⟨z, hz⟩ := exists_tendsto_of_bounded_deriv_Ico (C := C.toNNReal) hb
+    (fun t ht => hgeo.pos t ht) (fun t ht => by
+      have h1 : (‖w t‖₊ : ℝ) ≤ (C.toNNReal : ℝ) := by
+        rw [Real.coe_toNNReal C hC0]
+        exact hw t ht
+      exact_mod_cast h1)
+  have hI : Ico 0 b ∈ 𝓝[<] b := Ico_mem_nhdsLT hb
+  -- `|x|²` stays away from `0`
+  have hρlim : Tendsto (fun t => rhoSq (c t)) (𝓝[<] b) (𝓝 (rhoSq z)) :=
+    (contDiff_rhoSq.continuous.tendsto z).comp hz
+  have hρ : exp (-(2 * BX)) ≤ rhoSq z := by
+    refine ge_of_tendsto hρlim ?_
+    filter_upwards [hI] with t ht
+    have hρt : 0 < rhoSq (c t) := (hc t ht).1
+    have h1 := (abs_le.1 (hX t ht)).1
+    calc exp (-(2 * BX)) ≤ exp (2 * (1 / 2 * log (rhoSq (c t)))) := Real.exp_le_exp.2 (by linarith)
+      _ = rhoSq (c t) := by
+          rw [show 2 * (1 / 2 * log (rhoSq (c t))) = log (rhoSq (c t)) by ring, exp_log hρt]
+  have hρz : 0 < rhoSq z := (exp_pos _).trans_le hρ
+  -- `X² - T²` stays away from `-1`
+  have hopen : IsOpen {y : Fin 4 → ℝ | 0 < rhoSq y} :=
+    isOpen_lt continuous_const contDiff_rhoSq.continuous
+  have hslim : Tendsto (fun t => sC (c t)) (𝓝[<] b) (𝓝 (sC z)) :=
+    ((contDiffOn_sC.continuousOn.continuousAt (hopen.mem_nhds hρz)).tendsto).comp hz
+  have hs : kF M r0 ≤ sC z := by
+    refine ge_of_tendsto hslim ?_
+    filter_upwards [hI] with t ht
+    have h1 : sC (c t) = kF M (krC M (c t)) := (kF_kG M hM (hc t ht).2).symm
+    rw [h1]
+    exact (kF_strictMonoOn M hM).monotoneOn (mem_Ici.2 hr0.le)
+      (mem_Ici.2 (hr0.le.trans (hr t ht))) (hr t ht)
+  have hk : -1 < kF M r0 := by
+    have := kF_strictMonoOn M hM (mem_Ici.2 le_rfl) (mem_Ici.2 hr0.le) hr0
+    rwa [kF_zero M hM.ne'] at this
+  exact ⟨z, ⟨hρz, hk.trans_le hs⟩, hz⟩
 
 end Lightlike
