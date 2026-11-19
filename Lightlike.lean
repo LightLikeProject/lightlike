@@ -1384,6 +1384,7 @@ import Lightlike.Gauge.MatrixInverse
 import Lightlike.Gauge.Orbits.GaugeOrbits
 import Lightlike.Gauge.Orbits.Tests
 import Lightlike.Gauge.PoissonJacobi
+import Lightlike.Geodesic.ConeTrap
 import Lightlike.Geodesic.Convex
 import Lightlike.Geodesic.ExpDiffeo
 import Lightlike.Geodesic.ExpJoint
@@ -1393,8 +1394,11 @@ import Lightlike.Geodesic.Gauss
 import Lightlike.Geodesic.GaussAux
 import Lightlike.Geodesic.GaussMaximal
 import Lightlike.Geodesic.GlobalTwoPoint
+import Lightlike.Geodesic.LocalCausality
+import Lightlike.Geodesic.LocalCausalityManifold
 import Lightlike.Geodesic.Radial
 import Lightlike.Geodesic.Tests
+import Lightlike.Geodesic.TimeBall
 import Lightlike.Geodesic.TwoPoint
 import Lightlike.Geodesic.Variation
 import Lightlike.Tests.ADM
