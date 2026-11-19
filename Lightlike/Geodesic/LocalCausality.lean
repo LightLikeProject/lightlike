@@ -18,6 +18,7 @@ lemma and the cone inequality `IsLorentzianForm.two_mul_le_of_spacelike`) and `f
 * `IsTimeBall.exists_cone_estimate`: `‖w‖ ≤ C x⁰(w)` for causal `Dφ(u) w`, `u` in a compact set.
 * `exists_isTimeBall`: time balls exist at every point, for every timelike `e`.
 * `IsTimeBall.causal_cone`: the `J⁺` line of (2.4.7), "⇒", in normal coordinates.
+* `IsTimeBall.chron_cone`: the `I⁺` line of (2.4.7), "⇒", in normal coordinates.
 
 Source read (pdftotext): P. T. Chruściel, *Elements of causality theory*, arXiv:1110.6706v1, section 2.4,
 Proposition 2.4.5 and (2.4.6)–(2.4.7), p. 20; Lemma 2.4.8, p. 21; Lemma 2.4.9, p. 22. See
@@ -237,6 +238,35 @@ theorem exists_isTimeBall {g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ} {
   · exact fun v hv => hball v (ball_subset_ball (min_le_left _ _) hv)
   · exact hNc.mono (ball_subset_ball (min_le_right _ _))
 
+/-- The quadratic form of a bounded bilinear map along a bounded Lipschitz curve is Lipschitz:
+`|B(x, x) - B(y, y)| ≤ 2 ‖B‖ R ‖x - y‖` for `‖x‖, ‖y‖ ≤ R`. -/
+theorem lipschitzOnWith_bilin_self {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    (B : E →L[ℝ] E →L[ℝ] ℝ) {v : ℝ → E} {s : Set ℝ} {K R : NNReal} (hv : LipschitzOnWith K v s)
+    (hR : ∀ t ∈ s, ‖v t‖ ≤ R) : LipschitzOnWith (2 * ‖B‖₊ * R * K) (fun t => B (v t) (v t)) s := by
+  refine LipschitzOnWith.of_dist_le_mul fun x hx y hy => ?_
+  have hst : ‖v x - v y‖ ≤ K * Dist.dist x y := by
+    rw [← dist_eq_norm]; exact hv.dist_le_mul x hx y hy
+  have hsplit : B (v x) (v x) - B (v y) (v y) = B (v x - v y) (v x) + B (v y) (v x - v y) := by
+    simp only [map_sub, _root_.sub_apply]; ring
+  rw [Real.dist_eq, hsplit]
+  have e1 := B.le_opNorm₂ (v x - v y) (v x)
+  have e2 := B.le_opNorm₂ (v y) (v x - v y)
+  rw [Real.norm_eq_abs] at e1 e2
+  have hr1 := hR x hx
+  have hr2 := hR y hy
+  have hB0 := norm_nonneg B
+  have hd0 := norm_nonneg (v x - v y)
+  push_cast
+  calc |B (v x - v y) (v x) + B (v y) (v x - v y)|
+      ≤ |B (v x - v y) (v x)| + |B (v y) (v x - v y)| := abs_add_le _ _
+    _ ≤ ‖B‖ * ‖v x - v y‖ * ‖v x‖ + ‖B‖ * ‖v y‖ * ‖v x - v y‖ := add_le_add e1 e2
+    _ ≤ ‖B‖ * ‖v x - v y‖ * R + ‖B‖ * R * ‖v x - v y‖ := by gcongr
+    _ = 2 * ‖B‖ * R * ‖v x - v y‖ := by ring
+    _ ≤ 2 * ‖B‖ * R * (K * Dist.dist x y) := by
+        have : 0 ≤ 2 * ‖B‖ * (R : ℝ) := by positivity
+        exact mul_le_mul_of_nonneg_left hst this
+    _ = 2 * ‖B‖ * R * K * Dist.dist x y := by ring
+
 namespace IsTimeBall
 
 variable {g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ} {U : Set (Fin n → ℝ)} {p e : Fin n → ℝ} {ρ r : ℝ}
@@ -359,30 +389,7 @@ theorem causal_cone (hL : IsLorentzianCoordMetric g U) (h : IsTimeBall g U p ρ 
       _ = (‖B‖ * C₁ ^ 2) * ℓ (v t) ^ 2 := by ring
   -- Lipschitz bounds
   have hbound : ∀ t ∈ Icc a b, ‖v t‖ ≤ r := fun t ht => (mem_ball_zero_iff.1 (hmem t ht)).le
-  have hfL : LipschitzOnWith (2 * ‖B‖₊ * ⟨r, h.pos.le⟩ * K) (fun t => B (v t) (v t)) (Icc a b) := by
-    refine LipschitzOnWith.of_dist_le_mul fun s hs t ht => ?_
-    have hst : ‖v s - v t‖ ≤ (K : ℝ) * Dist.dist s t := by
-      rw [← dist_eq_norm]; exact hv.dist_le_mul s hs t ht
-    have hsplit : B (v s) (v s) - B (v t) (v t) = B (v s - v t) (v s) + B (v t) (v s - v t) := by
-      simp only [map_sub, _root_.sub_apply]; ring
-    rw [Real.dist_eq, hsplit]
-    have e1 := B.le_opNorm₂ (v s - v t) (v s)
-    have e2 := B.le_opNorm₂ (v t) (v s - v t)
-    rw [Real.norm_eq_abs] at e1 e2
-    have hr1 := hbound s hs
-    have hr2 := hbound t ht
-    have hB0 := norm_nonneg B
-    have hd0 := norm_nonneg (v s - v t)
-    push_cast
-    calc |B (v s - v t) (v s) + B (v t) (v s - v t)|
-        ≤ |B (v s - v t) (v s)| + |B (v t) (v s - v t)| := abs_add_le _ _
-      _ ≤ ‖B‖ * ‖v s - v t‖ * ‖v s‖ + ‖B‖ * ‖v t‖ * ‖v s - v t‖ := add_le_add e1 e2
-      _ ≤ ‖B‖ * ‖v s - v t‖ * r + ‖B‖ * r * ‖v s - v t‖ := by gcongr
-      _ = 2 * ‖B‖ * r * ‖v s - v t‖ := by ring
-      _ ≤ 2 * ‖B‖ * r * ((K : ℝ) * Dist.dist s t) := by
-          have : 0 ≤ 2 * ‖B‖ * r := by have := h.pos; positivity
-          exact mul_le_mul_of_nonneg_left hst this
-      _ = 2 * ‖B‖ * r * (K : ℝ) * Dist.dist s t := by ring
+  have hfL := lipschitzOnWith_bilin_self B hv (R := ⟨r, h.pos.le⟩) hbound
   have hx0L : LipschitzOnWith (‖ℓ‖₊ * K) (fun t => ℓ (v t)) (Icc a b) :=
     ℓ.lipschitzWith.comp_lipschitzOnWith hv
   -- the differential inequalities
@@ -434,6 +441,92 @@ theorem causal_cone (hL : IsLorentzianCoordMetric g U) (h : IsTimeBall g U p ρ 
   refine ⟨by rw [hpB]; exact hfb, ?_⟩
   rw [← hℓ]
   exact (hpos b ⟨hab', le_rfl⟩).le
+
+/-- **Local causality in a time ball, the chronological future** (Chruściel, Proposition 2.4.5,
+the `I⁺` line of (2.4.7), "⇒"): if moreover `Dφ(v) v'` is timelike almost everywhere and `a < b`,
+the end point satisfies `σ_p = g_p(v, v) < 0` and `x⁰ = -g_p(e, v) > 0`. Along the curve `σ_p` is
+`≤ 0` (`causal_cone` on every initial segment), so `P = Dφ(v) v` is causal, and `σ_p' = 2 g(P, γ̇)`
+is negative where `v ≠ 0`. -/
+theorem chron_cone (hL : IsLorentzianCoordMetric g U) (h : IsTimeBall g U p ρ φ e r N)
+    {v : ℝ → Fin n → ℝ} {a b : ℝ} {K : NNReal} (hab : a < b) (hv : LipschitzOnWith K v (Icc a b))
+    (hmem : ∀ t ∈ Icc a b, v t ∈ ball (0 : Fin n → ℝ) r) (ha : v a = 0)
+    (hd : ∀ᵐ t, t ∈ Ioo a b → ∃ v' : Fin n → ℝ, HasDerivAt v v' t ∧
+      pairing g (φ (v t)) (fderiv ℝ φ (v t) v') (fderiv ℝ φ (v t) v') < 0 ∧
+      pairing g (φ (v t)) (N (v t)) (fderiv ℝ φ (v t) v') < 0) :
+    pairing g p (v b) (v b) < 0 ∧ 0 < -pairing g p e (v b) := by
+  have hg := hL.1
+  have hp : p ∈ U := by
+    have := h.map_mem (v := 0) (mem_ball_self h.pos); rwa [h.chart.map_zero] at this
+  set B := matForm (g p) with hB
+  have hpB : ∀ x y, pairing g p x y = B x y := fun x y => pairing_eq_matForm g p x y
+  have hBsymm : ∀ x y, B x y = B y x := fun x y => by rw [← hpB, ← hpB, pairing_comm hg hp]
+  set ℓ : (Fin n → ℝ) →L[ℝ] ℝ := -(B e) with hℓdef
+  have hℓ : ∀ w, ℓ w = -pairing g p e w := fun w => by
+    rw [hℓdef, _root_.neg_apply, hpB]
+  -- `σ_p ≤ 0` on every initial segment
+  have hcaus : ∀ t ∈ Icc a b, B (v t) (v t) ≤ 0 := fun t ht => by
+    rw [← hpB]
+    refine (h.causal_cone hL ht.1 (hv.mono (Icc_subset_Icc_right ht.2))
+      (fun s hs => hmem s ⟨hs.1, hs.2.trans ht.2⟩) ha ?_).1
+    filter_upwards [hd] with s hs hsm
+    obtain ⟨v', hv', hc, hf⟩ := hs ⟨hsm.1, lt_of_lt_of_le hsm.2 ht.2⟩
+    exact ⟨v', hv', hc.le, hf⟩
+  -- `x⁰ > 0` after `a`
+  have hlv : ∀ᵐ t, t ∈ Ioo a b → 0 < ℓ (deriv v t) := by
+    filter_upwards [hd] with t ht hmt
+    obtain ⟨v', hv', -, hf⟩ := ht hmt
+    have htr := hmem t (Ioo_subset_Icc_self hmt)
+    rw [hv'.deriv, hℓ, ← h.dual _ htr v']
+    linarith
+  have hpos : ∀ t ∈ Ioc a b, 0 < ℓ (v t) := by
+    intro t ht
+    have := (Lightlike.Causal.functional_increasing_of_ae_pos ht.1
+      (hv.mono (Icc_subset_Icc_right ht.2)) ℓ (by
+        filter_upwards [hlv] with s hs hsm
+        exact hs ⟨hsm.1, lt_of_lt_of_le hsm.2 ht.2⟩)).2
+    rwa [ha, map_zero] at this
+  -- `σ_p` decreases strictly
+  have hbound : ∀ t ∈ Icc a b, ‖v t‖ ≤ r := fun t ht => (mem_ball_zero_iff.1 (hmem t ht)).le
+  have hfL := lipschitzOnWith_bilin_self B hv (R := ⟨r, h.pos.le⟩) hbound
+  have hneg : ∀ᵐ t, t ∈ Ioo a b →
+      0 < (-(ContinuousLinearMap.id ℝ ℝ)) (deriv (fun t => B (v t) (v t)) t) := by
+    filter_upwards [hd] with t ht hmt
+    obtain ⟨v', hv', hc, hfut⟩ := ht hmt
+    have htr := hmem t (Ioo_subset_Icc_self hmt)
+    have hc' : HasDerivAt (fun s => B (v s)) (B v') t := B.hasFDerivAt.comp_hasDerivAt t hv'
+    have hf' : HasDerivAt (fun t => B (v t) (v t)) (B v' (v t) + B (v t) v') t :=
+      hc'.clm_apply hv'
+    have hy : φ (v t) ∈ U := h.map_mem htr
+    have hLf := isLorentzianForm_matForm hL hy
+    have hq : ∀ x z, pairing g (φ (v t)) x z = matForm (g (φ (v t))) x z := fun x z =>
+      pairing_eq_matForm g _ x z
+    have gPX : matForm (g (φ (v t))) (fderiv ℝ φ (v t) (v t)) (fderiv ℝ φ (v t) v') =
+        B (v t) v' := by
+      rw [← hq, ← hpB]; exact IsNormalChart.gauss hg h.chart (h.mem_ball htr) v'
+    have gPP : matForm (g (φ (v t))) (fderiv ℝ φ (v t) (v t)) (fderiv ℝ φ (v t) (v t)) =
+        B (v t) (v t) := by
+      rw [← hq, ← hpB]; exact IsNormalChart.gauss hg h.chart (h.mem_ball htr) (v t)
+    have gNP : matForm (g (φ (v t))) (fderiv ℝ φ (v t) (v t)) (N (v t)) = -ℓ (v t) := by
+      rw [← hq, pairing_comm hg hy, h.dual _ htr, hℓ, neg_neg]
+    have gNX : matForm (g (φ (v t))) (fderiv ℝ φ (v t) v') (N (v t)) < 0 := by
+      rw [← hq, pairing_comm hg hy]; exact hfut
+    have hNN : matForm (g (φ (v t))) (N (v t)) (N (v t)) < 0 := by
+      rw [← hq]; exact h.timelike _ htr
+    have hXX : matForm (g (φ (v t))) (fderiv ℝ φ (v t) v') (fderiv ℝ φ (v t) v') < 0 := by
+      rw [← hq]; exact hc
+    have hx0 := hpos t ⟨hmt.1, hmt.2.le⟩
+    have key := hLf.neg_of_causal_timelike hNN (by rw [gPP]; exact hcaus t (Ioo_subset_Icc_self hmt))
+      hXX (by rw [gNP]; linarith) gNX
+    rw [gPX] at key
+    rw [hf'.deriv, hBsymm v' (v t)]
+    simp only [_root_.neg_apply, ContinuousLinearMap.id_apply]
+    linarith
+  have hdec := (Lightlike.Causal.functional_increasing_of_ae_pos hab hfL
+    (-(ContinuousLinearMap.id ℝ ℝ)) hneg).2
+  simp only [_root_.neg_apply, ContinuousLinearMap.id_apply, ha, map_zero] at hdec
+  refine ⟨by rw [hpB]; linarith, ?_⟩
+  rw [← hℓ]
+  exact hpos b ⟨hab, le_rfl⟩
 
 end IsTimeBall
 
