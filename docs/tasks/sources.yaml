@@ -24,6 +24,10 @@ references:
     cite: "J. Milnor, Morse Theory, Annals of Mathematics Studies 51, Princeton University Press (1963)"
     title: "Morse Theory. (AM-51)"
     doi: 10.1515/9781400881802
+  benedetti-2019:
+    cite: "R. Benedetti, Lectures on Differential Topology (2019)"
+    title: "Lectures on Differential Topology"
+    arxiv: "1907.10297"
   reed-simon-1972:
     cite: "M. Reed and B. Simon, Methods of Modern Mathematical Physics I: Functional Analysis, Academic Press (1972)"
     title: "Methods of modern mathematical physics"
@@ -160,6 +164,10 @@ references:
     cite: "S. M. Carroll, Lecture Notes on General Relativity (1997)"
     title: "Lecture Notes on General Relativity"
     arxiv: gr-qc/9712019
+  grumiller-kummer-vassilevich-2002:
+    cite: "D. Grumiller, W. Kummer and D. V. Vassilevich, Dilaton gravity in two dimensions, Phys. Rept. 369 (2002) 327-430"
+    title: "Dilaton gravity in two dimensions"
+    arxiv: hep-th/0204253
   cky-1997:
     cite: "L. Crane, L. H. Kauffman and D. N. Yetter, State-sum invariants of 4-manifolds, J. Knot Theory Ramifications 6 (1997) 177-234"
     title: "State-Sum Invariants of 4-Manifolds I"
@@ -933,6 +941,18 @@ references:
     cite: "B. C. Hall, Quantum Theory for Mathematicians, Graduate Texts in Mathematics 267, Springer (2013)"
     title: "Quantum Theory for Mathematicians"
     doi: 10.1007/978-1-4614-7116-5
+  jaksic-ogata-pautrat-pillet-2012:
+    cite: "V. Jakšić, Y. Ogata, Y. Pautrat and C.-A. Pillet, Entropic fluctuations in quantum statistical mechanics. An introduction, in Quantum Theory from Small to Large Scales, Les Houches Summer School 95, Oxford University Press (2012)"
+    title: "Entropic Fluctuations in Quantum Statistical Mechanics. An Introduction"
+    arxiv: "1106.3786"
+  moretti-2016:
+    cite: "V. Moretti, Mathematical foundations of quantum mechanics: an advanced short course, Int. J. Geom. Methods Mod. Phys. 13 (2016) 1630011"
+    title: "Mathematical Foundations of Quantum Mechanics: An Advanced Short Course"
+    arxiv: "1508.06951"
+  bonneau-faraut-valent-2001:
+    cite: "G. Bonneau, J. Faraut and G. Valent, Self-adjoint extensions of operators and the teaching of quantum mechanics, Am. J. Phys. 69 (2001) 322"
+    title: "Self-adjoint extensions of operators and the teaching of quantum mechanics"
+    arxiv: quant-ph/0103153
   nielsen-petz-2005:
     cite: "M. A. Nielsen and D. Petz, A simple proof of the strong subadditivity inequality, Quantum Inf. Comput. 5 (2005) 507-513"
     title: "A simple proof of the strong subadditivity inequality"
@@ -1092,6 +1112,7 @@ milestones:
     class: sourced
     refs:
       - {ref: reed-simon-1972, location: "Chapter: Bounded Operators|10.1016/b978-0-12-585001-8.50012-x"}
+      - {ref: moretti-2016, location: "Proposition 97", check: "trace class"}
   SP3:
     class: sourced
     refs:
@@ -1685,6 +1706,7 @@ milestones:
     refs:
       - {ref: hall-2013, location: "Chapter: Unbounded Self-Adjoint Operators|10.1007/978-1-4614-7116-5_9"}
       - {ref: hall-2013, location: "Chapter: The Spectral Theorem for Unbounded Self-Adjoint Operators|10.1007/978-1-4614-7116-5_10"}
+      - {ref: moretti-2016, location: "Theorem 142", check: "Stone"}
   OP2:
     class: sourced
     refs:

@@ -693,6 +693,21 @@
   "citations": 212,
   "citations_via": "Semantic Scholar"
  },
+ "benedetti-2019": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Lectures on Differential Topology",
+  "locations": {
+   "Theorem 1.13": {
+    "verified": true,
+    "snippet": "Theorem 1.13. (Morse Lemma) Let 0 be a non degenerate critical point of index 0 ≤ λ ≤ n of f ∈ C ∞ (U, R), f (0) = 0. Then there is a local diffeomorphism x = φ(u), 0 = φ(0), such that ψ := φ−1 is defined on some U\u000f and",
+    "why": null
+   }
+  },
+  "citations": 10,
+  "citations_via": "Semantic Scholar"
+ },
  "benedetti-ziegler-2011": {
   "checked": "2026-11-08",
   "exists": true,
@@ -931,6 +946,31 @@
    }
   },
   "citations": 365,
+  "citations_via": "Semantic Scholar"
+ },
+ "bonneau-faraut-valent-2001": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Self-adjoint extensions of operators and the teaching of quantum mechanics",
+  "locations": {
+   "Appendix A.3, p. 19": {
+    "verified": true,
+    "snippet": "A.3 The operator P on a finite interval The Hilbert space is now H = L2 (0, L) and we take P = −i~D, D0 (P ) = {ψ ∈ Dmax (0, L), ψ(0) = ψ(L) = 0}. The symmetry of P on D0 (P ) follows",
+    "why": null
+   },
+   "eq. (14), p. 8": {
+    "verified": true,
+    "snippet": "(14) Moreover, the spectra are purely discrete. Using the boundary condition (14), the eigenval- ues and eigenfunctions are easily shown to be  2π~ θ  Pθ φn (x, θ) = νφn (x, θ), ν =n+ , n = 0, ±1, ±2, . . .   L 2π 1",
+    "why": null
+   },
+   "eq. (15), p. 8": {
+    "verified": true,
+    "snippet": "(15)  φn (x, θ) = √ exp 2iπν , (φm , φn ) = δmn .   L L As the phase θ appears in the eigenfunctions any measurement of the momentum of a given system should, in general, depend on it. To display this, let us go back",
+    "why": null
+   }
+  },
+  "citations": 271,
   "citations_via": "Semantic Scholar"
  },
  "bonzom-gurau-riello-rivasseau-2011": {
@@ -1277,6 +1317,36 @@
    "eq. (8.36)": {
     "verified": true,
     "snippet": "(8.36) a 3 a Together these are known as the Friedmann equations, and metrics of the form (8.7) which obey these equations define Friedmann-Robertson-Walker (FRW) universes. There is a bunch of terminology which is assoc",
+    "why": null
+   },
+   "eq. (4.60)": {
+    "verified": true,
+    "snippet": "(4.60) You can check this yourself. Therefore, the contribution of the first term in (4.56) to δS can be written Z h i √ (δS)1 = dn x −g g µν ∇λ (δΓλνµ ) − ∇ν (δΓλλµ ) Z h i √ = dn x −g ∇σ g µσ (δΓλλµ ) − g µν (δΓσµν ) ,",
+    "why": null
+   },
+   "eq. (4.66)": {
+    "verified": true,
+    "snippet": "(4.66) 2 This should vanish for arbitrary variations, so we are led to Einstein’s equations in vacuum: 1 δS 1 √ = Rµν − Rgµν = 0 . (4.67) −g δg µν 2 The fact that this simple action leads to the same vacuum field equatio",
+    "why": null
+   },
+   "eq. (4.67)": {
+    "verified": true,
+    "snippet": "(4.67) −g δg µν 2 The fact that this simple action leads to the same vacuum field equations as we had previously arrived at by more informal arguments certainly reassures us that we are doing something right. What we wou",
+    "why": null
+   },
+   "eq. (5.42)": {
+    "verified": true,
+    "snippet": "(5.42) This last version is Killing’s equation. If a spacetime has a Killing vector, then we know we can find a coordinate system in which the metric is independent of one of the coordinates. By far the most useful fact",
+    "why": null
+   },
+   "eq. (5.44)": {
+    "verified": true,
+    "snippet": "(5.44) 2 2 independent Killing vectors. The same kind of counting argument applies to maximally symmetric spaces with curvature (such as spheres) or a non-Euclidean signature (such as Minkowski space), although the detai",
+    "why": null
+   },
+   "eq. (5.46)": {
+    "verified": true,
+    "snippet": "(5.46) You can check for yourself that this actually does solve Killing’s equation. Note that in n ≥ 2 dimensions, there can be more Killing vectors than dimensions. This is because a set of Killing vector fields can be",
     "why": null
    }
   },
@@ -2125,7 +2195,7 @@
   "citations_via": "OpenAlex"
  },
  "gourgoulhon-2007": {
-  "checked": "2026-11-18",
+  "checked": "2026-11-19",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "3+1 Formalism and Bases of Numerical Relativity",
@@ -2133,6 +2203,16 @@
    "Section 2.5": {
     "verified": true,
     "snippet": "2.5 Gauss-Codazzi relations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 34 2.5.1 Gauss relation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 34 2.5.2 Codazzi relatio",
+    "why": null
+   },
+   "eq. (2.101)": {
+    "verified": true,
+    "snippet": "(2.101) This is the Codazzi relation, also called Codazzi-Mainardi relation in the mathematical litterature [52]. Remark : Thanks to the symmetries of the Riemann tensor (cf. Sec. 2.2.3), changing the index contracted wi",
+    "why": null
+   },
+   "eq. (2.92)": {
+    "verified": true,
+    "snippet": "(2.92) This is the Gauss relation. If we contract the Gauss relation on the indices γ and α and use γ µα γ αρ = γ µρ = δµρ + nµnρ , we obtain an expression that lets appear the Ricci tensors 4R and R associated with g an",
     "why": null
    }
   },
@@ -2670,6 +2750,21 @@
    }
   },
   "citations": 82,
+  "citations_via": "Semantic Scholar"
+ },
+ "jaksic-ogata-pautrat-pillet-2012": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Entropic Fluctuations in Quantum Statistical Mechanics. An Introduction",
+  "locations": {
+   "Proposition 2.20, p. 53": {
+    "verified": true,
+    "snippet": "Proposition 2.20 ρ is a β-KMS state iff ρ = ρβ . Proof. It remains to show that if ρ is β-KMS, then ρ = ρβ . Setting X = ρeβH and A = eβH C in the KMS condition tr(ρeβH Be−βH A) = tr(ρAB), yields tr(XBC) = tr(XCB) for al",
+    "why": null
+   }
+  },
+  "citations": 121,
   "citations_via": "Semantic Scholar"
  },
  "janson-2011": {
@@ -3323,6 +3418,31 @@
    }
   },
   "citations": 443,
+  "citations_via": "OpenAlex"
+ },
+ "moretti-2016": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Mathematical Foundations of Quantum Mechanics: An Advanced Short Course",
+  "locations": {
+   "Proposition 97": {
+    "verified": true,
+    "snippet": "Proposition 97. Let H a complex Hilbert space, B1 (H) satisfy the following prop- erties. (a) If T ∈ B1 (H) and N ⊂ H is any Hilbertian basis, then (65) holds and thus X ||T ||1 := hz||T |zi z∈N is well defined. (b) B1 (",
+    "why": null
+   },
+   "Theorem 142": {
+    "verified": true,
+    "snippet": "Theorem 142 (Stone theorem). Let R ∋ t 7→ Ut ∈ B(H) be a strongly contin- uous one-parameter unitary group in the complex Hilbert space H. The following facts hold. (a) There exists a unique selfadjoint operator, called",
+    "why": null
+   },
+   "Theorem 142, p. 83": {
+    "verified": true,
+    "snippet": "Theorem 142 (Stone theorem). Let R ∋ t 7→ Ut ∈ B(H) be a strongly contin- uous one-parameter unitary group in the complex Hilbert space H. The following facts hold. (a) There exists a unique selfadjoint operator, called",
+    "why": null
+   }
+  },
+  "citations": 9,
   "citations_via": "OpenAlex"
  },
  "mukhametzhanov-zhiboedov-2019": {
@@ -4379,6 +4499,21 @@
    }
   },
   "citations": 520,
+  "citations_via": "Semantic Scholar"
+ },
+ "grumiller-kummer-vassilevich-2002": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Dilaton Gravity in Two Dimensions",
+  "locations": {
+   "eq. (1.50)": {
+    "verified": true,
+    "snippet": "(1.50) Mγ Also the torsion simplifies to a volume form 1 T a = Tµν a dxµ ∧ dxν , Tµν a = (Dµ eν )a − (Dν eµ )a , (1.51) 2 with (Dµ )a b = ∂µ δ a b + ωµ ǫa b . (1.52) The Hodge dual of T a here is a diffeomorphism scalar:",
+    "why": null
+   }
+  },
+  "citations": 540,
   "citations_via": "Semantic Scholar"
  }
 }
