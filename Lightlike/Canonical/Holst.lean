@@ -77,10 +77,14 @@ theorem sum_antisymm_bianchi (D W : Fin 4 → Fin 4 → Fin 4 → Fin 4 → ℝ)
 def eps4 (I J K L : Fin 4) : ℝ :=
   ((J : ℝ) - I) * ((K : ℝ) - I) * ((L : ℝ) - I) * ((K : ℝ) - J) * ((L : ℝ) - J) * ((L : ℝ) - K) / 12
 
+/-- `ε_0123 = 1`. -/
 lemma eps4_0123 : eps4 0 1 2 3 = 1 := by norm_num [eps4]
 
+/-- `ε_IJKL` is antisymmetric in its first two indices. -/
 lemma eps4_swap12 (I J K L : Fin 4) : eps4 I J K L = -eps4 J I K L := by unfold eps4; ring
+/-- `ε_IJKL` is antisymmetric in its second and third indices. -/
 lemma eps4_swap23 (I J K L : Fin 4) : eps4 I J K L = -eps4 I K J L := by unfold eps4; ring
+/-- `ε_IJKL` is antisymmetric in its last two indices. -/
 lemma eps4_swap34 (I J K L : Fin 4) : eps4 I J K L = -eps4 I J L K := by unfold eps4; ring
 
 /-- The internal Minkowski metric `η = diag(−1, 1, 1, 1)` (`Lightlike.eta 4`). -/
@@ -271,8 +275,10 @@ theorem holstDensity_tetradConn (γ : ℝ) (hU : IsOpen U) (hx : x ∈ U)
   rw [palatini_tetradConn hU hx he hdet hg hT, holstStar_tetradConn hU hx he hdet hg]
   ring
 
-/-- The rotation generators `L₁₂ = E₁₂ − E₂₁` and `L₁₃ = E₁₃ − E₃₁` of `so(3) ⊂ so(1, 3)`. -/
+/-- The rotation generator `L₁₂ = E₁₂ − E₂₁` of `so(3) ⊂ so(1, 3)`. -/
 def rotL12 : Matrix (Fin 4) (Fin 4) ℝ := Matrix.single 1 2 1 - Matrix.single 2 1 1
+
+/-- The rotation generator `L₁₃ = E₁₃ − E₃₁` of `so(3) ⊂ so(1, 3)`. -/
 def rotL13 : Matrix (Fin 4) (Fin 4) ℝ := Matrix.single 1 3 1 - Matrix.single 3 1 1
 
 /-- **Trust check: the Holst term is not identically zero.** For the flat frame and the constant connection
