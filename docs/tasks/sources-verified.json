@@ -2259,6 +2259,21 @@
   "citations": 491,
   "citations_via": "OpenAlex"
  },
+ "grumiller-kummer-vassilevich-2002": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Dilaton Gravity in Two Dimensions",
+  "locations": {
+   "eq. (1.50)": {
+    "verified": true,
+    "snippet": "(1.50) Mγ Also the torsion simplifies to a volume form 1 T a = Tµν a dxµ ∧ dxν , Tµν a = (Dµ eν )a − (Dν eµ )a , (1.51) 2 with (Dµ )a b = ∂µ δ a b + ωµ ǫa b . (1.52) The Hodge dual of T a here is a diffeomorphism scalar:",
+    "why": null
+   }
+  },
+  "citations": 540,
+  "citations_via": "Semantic Scholar"
+ },
  "gurau-2008": {
   "checked": "2026-11-08",
   "exists": true,
@@ -3021,7 +3036,7 @@
   "citations_via": "Semantic Scholar"
  },
  "krajewski-1998": {
-  "checked": "2026-11-08",
+  "checked": "2026-11-19",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "Classification of Finite Spectral Triples",
@@ -3030,9 +3045,19 @@
     "verified": true,
     "snippet": "it is known that the spin structure on a riemannian manifold can be extended to noncommutative geometry using the notion of a spectral triple for finite geometries the corresponding finite spectral tr",
     "why": null
+   },
+   "Section 3.1": {
+    "verified": true,
+    "snippet": "3.1 The representation We first assume that the algebra is made of complex matrices with a complex representation, i.e. a representation linear over the complex numbers, and then, we extend our results to the real ca",
+    "why": null
+   },
+   "Section 3.2": {
+    "verified": true,
+    "snippet": "3.2 The charge conjugation Given a (A, A)-bimodule H with matrix m, it is natural to ask whether it corresponds to a real structure (that is, we can pass from one representation to the other by means of a charge conj",
+    "why": null
    }
   },
-  "citations": 168,
+  "citations": 165,
   "citations_via": "Semantic Scholar"
  },
  "krauth-nicolai-staudacher-1998": {
@@ -3664,7 +3689,7 @@
   "citations_via": "OpenAlex"
  },
  "paschke-sitarz-1998": {
-  "checked": "2026-11-08",
+  "checked": "2026-11-19",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "Discrete spectral triples and their symmetries",
@@ -3673,9 +3698,19 @@
     "verified": true,
     "snippet": "we classify 0 dimensional spectral triples over complex and real algebras and provide some general statements about their differential structure we investigate also whether such spectral triples admit",
     "why": null
+   },
+   "Lemma 1": {
+    "verified": true,
+    "snippet": "Lemma 1. Let Pi be the element of A with identity matrix in the i-th entry and zeroes elsewhere. Let Hij be Pi HPj . Then H is a direct sum of all Hij : M H= Hij i,j and if for every a ∈ A we denote Pi a (= aPi ) as ai w",
+    "why": null
+   },
+   "Lemma 2": {
+    "verified": true,
+    "snippet": "Lemma 2. The Hilbert subspace Hij has the following form: Hij = Cni ⊗ Crij ⊗ Cnj where rij are some integers, rij ≥ 0. We take Hij = 0 iff rij = 0. An element a acts on Hij from the left as ai ⊗ 1 ⊗ 1 and from the right",
+    "why": null
    }
   },
-  "citations": 112,
+  "citations": 110,
   "citations_via": "Semantic Scholar"
  },
  "perelomov-1986": {
@@ -4574,21 +4609,6 @@
    }
   },
   "citations": 520,
-  "citations_via": "Semantic Scholar"
- },
- "grumiller-kummer-vassilevich-2002": {
-  "checked": "2026-11-19",
-  "exists": true,
-  "via": "arXiv API",
-  "fetched_title": "Dilaton Gravity in Two Dimensions",
-  "locations": {
-   "eq. (1.50)": {
-    "verified": true,
-    "snippet": "(1.50) Mγ Also the torsion simplifies to a volume form 1 T a = Tµν a dxµ ∧ dxν , Tµν a = (Dµ eν )a − (Dν eµ )a , (1.51) 2 with (Dµ )a b = ∂µ δ a b + ωµ ǫa b . (1.52) The Hodge dual of T a here is a diffeomorphism scalar:",
-    "why": null
-   }
-  },
-  "citations": 540,
   "citations_via": "Semantic Scholar"
  }
 }

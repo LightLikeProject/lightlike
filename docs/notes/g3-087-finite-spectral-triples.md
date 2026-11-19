@@ -30,3 +30,27 @@ Here `Hᵢⱼ = 0` for `i ≠ j`, and this is the instance `H = H₀₀ ⊕ H₁
 
 Reused: Mathlib's `StarAlgHom`, `Matrix.toEuclideanCLM` (`M₂(ℂ) ≃⋆ₐ End(ℂ²)`), the adjoint star on `H →L[ℂ] H`,
 `Matrix.diagonalAlgHom`. Mathlib and Physlib have no spectral triples.
+
+## FST2: the bimodule `H = ⊕ Hᵢⱼ` and the links of `D`
+
+Statement draft (each against its read location):
+
+* `completeOrthogonalIdempotents_proj` (Paschke-Sitarz, Lemma 1, p. 2): for a central partition `Pᵢ` of `A`,
+  `Eᵢⱼ = π(Pᵢ) J π(Pⱼ) J` are complete orthogonal idempotents of `End(H)`, so `H = ⊕ᵢⱼ Hᵢⱼ` with `Hᵢⱼ = range Eᵢⱼ`.
+* `J_mem_Hsub`, `finrank_Hsub_symm` (Paschke-Sitarz, Lemma 4, p. 3; Krajewski §3.2, p. 12): `J Hᵢⱼ ⊆ Hⱼᵢ` and
+  `dim Hᵢⱼ = dim Hⱼᵢ`.
+* `grading_mem_Hsub` (Paschke-Sitarz, Lemma 3, p. 3, first half): `γ Hᵢⱼ ⊆ Hᵢⱼ`. The second half (`γ = ±1` on `Hᵢⱼ`) uses
+  the axiom that `γ` is the image of a Hochschild cycle and is not stated.
+* `proj_D_proj_eq_zero` (Paschke-Sitarz, Lemma 6, p. 5): `i ≠ k → j ≠ l → Eᵢⱼ D Eₖₗ = 0`.
+* `tensorEquiv`, `tensorEquiv_pi`, `tensorEquiv_rightOp_star`, `finrank_Hsub_eq` (Paschke-Sitarz, Lemma 2, pp. 2-3;
+  Krajewski §3.1, p. 10): for `A = ⊕ Mₙᵢ(ℂ)` with `π` complex-linear, `Hᵢⱼ ≃ (Fin nᵢ → Fin nⱼ → Vᵢⱼ)`,
+  `x ↦ (π(Eᵢ,0α) J π(Eⱼ,0β) J x)_{αβ}`, with `Vᵢⱼ = π(Eᵢ,00) J π(Eⱼ,00) J H` of dimension `rᵢⱼ`; `π(a)` acts as the
+  left multiplication by `aᵢ` and `J π(b*) J` as the right multiplication by `bⱼ`; `dim Hᵢⱼ = nᵢ nⱼ rᵢⱼ`. The proof
+  uses the matrix units of the summands directly (the content of Mathlib's Morita equivalence
+  `toModuleCatFromModuleCatLinearEquiv`, applied once on each side).
+
+The lemmas other than the tensor form hold for any finite-dimensional real `*`-algebra with a central partition (real
+summands `Mₙ(ℝ)`, `Mₙ(ℍ)` included); the tensor form is stated for complex summands acting complex-linearly.
+
+Test (`TestsBimodule.lean`): the two-point space with `J` the complex conjugation is a real structure, and its
+off-diagonal vertex `H₀₁` is zero.

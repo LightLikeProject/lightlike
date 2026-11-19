@@ -1,0 +1,27 @@
+- id: LL-XXXX-a
+  title: The bimodule of a real finite spectral triple decomposes into the vertices H_ij of its Krajewski diagram, J maps H_ij onto H_ji, and the first-order condition lets D join only vertices in the same row or column
+  area: NCG
+  file: Lightlike/NCG/Bimodule.lean
+  decls: [Lightlike.NCG.CentralPartition, Lightlike.NCG.proj, Lightlike.NCG.Hsub, Lightlike.NCG.completeOrthogonalIdempotents_proj, Lightlike.NCG.J_mem_Hsub, Lightlike.NCG.finrank_Hsub_symm, Lightlike.NCG.grading_mem_Hsub, Lightlike.NCG.proj_D_proj_eq_zero]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: paschke-sitarz-1998, location: "Lemma 1", check: "Lemma 1"}
+      - {ref: krajewski-1998, location: "Section 3.2", check: "charge conjugation"}
+  review: kernel-checked
+  note: "Compared with Paschke and Sitarz, arXiv:q-alg/9612029, Lemma 1 (p. 2), Lemma 3 (p. 3, the first half), Lemma 4 (p. 3) and Lemma 6 (p. 5), and Krajewski, arXiv:hep-th/9701081, Section 3.2 (pp. 12-13) (read), for a family of central self-adjoint orthogonal projections P_i of a finite-dimensional real star-algebra with sum 1."
+  since: unreleased
+- id: LL-XXXX-b
+  title: The tensor form of the vertices of a finite spectral triple over a sum of complex matrix algebras, H_ij = C^(n_i) ⊗ C^(r_ij) ⊗ C^(n_j) with left and right matrix multiplication
+  area: NCG
+  file: Lightlike/NCG/TensorForm.lean
+  decls: [Lightlike.NCG.stdPartition, Lightlike.NCG.Vsub, Lightlike.NCG.tensorEquiv, Lightlike.NCG.tensorEquiv_pi, Lightlike.NCG.tensorEquiv_rightOp_star, Lightlike.NCG.finrank_Hsub_eq]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: paschke-sitarz-1998, location: "Lemma 2", check: "Lemma 2"}
+  review: kernel-checked
+  note: "Compared with Paschke and Sitarz, arXiv:q-alg/9612029, Section 2 (complex spectral triples) and Lemma 2 (pp. 2-3) (read): for A = ⊕ M_(n_i)(C) represented complex-linearly, H_ij ≅ C^(n_i) ⊗ C^(r_ij) ⊗ C^(n_j) with a acting as a_i on the first factor and J π(b*) J as right multiplication by b_j on the last."
+  since: unreleased
