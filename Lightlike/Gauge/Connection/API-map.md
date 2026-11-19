@@ -30,8 +30,9 @@ g_ij(x) h)` for transition maps with `g_ii = 1` and `g_jk g_ij = g_ik`; it is a 
 when the `g_ij` are `C^n`, its local trivializations are `C^n`, and `G` acts on the right [10]. Local potentials `A_i`
 satisfying (38) define, through the local forms (36), a connection form on the tangent spaces of `P` whose
 representative in every trivialization is the given one; it is invariant (35), reproduces the Lie algebra on vertical
-vectors (34), and is the only form with these representatives (Theorem 10, p. 31) [11]. Its smoothness as a section of
-`T*P ⊗ g` is open [TODO].
+vectors (34), and is the only form with these representatives (Theorem 10, p. 31) [11]. When `G` and the transition
+maps are `C^n` (`n ≥ 3`) and the potentials are `C^m` one-forms with `m + 1 ≤ n`, the form is a `C^m` section of
+`Hom(TP, g)`, so smooth data give a smooth form [12].
 
 ## Lean References
 
@@ -64,6 +65,10 @@ vectors (34), and is the only form with these representatives (Theorem 10, p. 31
    `Gauge.PrincipalCocycle.connForm`, `Gauge.PrincipalCocycle.connForm_localTriv_symm`,
    `Gauge.PrincipalCocycle.connForm_unique`, `Gauge.PrincipalCocycle.connForm_act`,
    `Gauge.PrincipalCocycle.connForm_vertical`
+12. Lightlike/Gauge/Connection/PrincipalSmooth.lean - `Gauge.tangentCoordChange_prod`,
+   `Gauge.PrincipalCocycle.contMDiffAt_rightTrivial_coord`, `Gauge.PrincipalCocycle.contMDiffAt_adjointE_inv`,
+   `Gauge.PrincipalCocycle.contMDiffAt_localForm_coord`, `Gauge.PrincipalCocycle.connForm_eq_of_mem`,
+   `Gauge.PrincipalCocycle.connForm_contMDiffAt`, `Gauge.PrincipalCocycle.contMDiff_connForm`
 
 ## References
 

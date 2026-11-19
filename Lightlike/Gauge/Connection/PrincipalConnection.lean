@@ -26,7 +26,7 @@ namespace PrincipalCocycle
 variable {M G : Type u} [TopologicalSpace M] [TopologicalSpace G] [Group G]
   {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {H : Type*} [TopologicalSpace H]
   (I : ModelWithCorners ℝ E H) [ChartedSpace H M]
-  {E_G : Type*} [NormedAddCommGroup E_G] [NormedSpace ℝ E_G] [CompleteSpace E_G] [ChartedSpace E_G G]
+  {E_G : Type*} [NormedAddCommGroup E_G] [NormedSpace ℝ E_G] [ChartedSpace E_G G]
   [LieGroup 𝓘(ℝ, E_G) (minSmoothness ℝ 3) G]
 
 variable (E_G) in
@@ -45,22 +45,20 @@ noncomputable def localForm (A : M → E →L[ℝ] E_G) (z : M × G) : E × E_G 
 noncomputable def rightMC (g : M → G) (x : M) : E →L[ℝ] E_G :=
   (rightTrivial E_G (g x)).comp (mfderiv I 𝓘(ℝ, E_G) g x)
 
-omit [TopologicalSpace M] [CompleteSpace E_G] [LieGroup 𝓘(ℝ, E_G) (minSmoothness ℝ 3) G] in
+omit [TopologicalSpace M] [LieGroup 𝓘(ℝ, E_G) (minSmoothness ℝ 3) G] in
 lemma localForm_apply (A : M → E →L[ℝ] E_G) (z : M × G) (v : E × E_G) :
     localForm A z v = adjointE 𝓘(ℝ, E_G) z.2⁻¹ (A z.1 v.1 + rightTrivial E_G z.2 v.2) := rfl
 
-omit [CompleteSpace E_G] [LieGroup 𝓘(ℝ, E_G) (minSmoothness ℝ 3) G] in
+omit [LieGroup 𝓘(ℝ, E_G) (minSmoothness ℝ 3) G] in
 lemma rightMC_apply (g : M → G) (x : M) (ξ : E) :
     rightMC I g x ξ = rightTrivial E_G (g x) (mfderiv I 𝓘(ℝ, E_G) g x ξ) := rfl
 
 variable {I}
 
-omit [CompleteSpace E_G] in
 lemma mdifferentiableAt_mul_right' (a b : G) : MDifferentiableAt 𝓘(ℝ, E_G) 𝓘(ℝ, E_G) (· * a) b :=
   (contMDiff_mul_right (I := 𝓘(ℝ, E_G)) (n := minSmoothness ℝ 3)).contMDiffAt.mdifferentiableAt
     minSmoothness_three_ne_zero
 
-omit [CompleteSpace E_G] in
 /-- `dR_{(gh)⁻¹} ∘ dR_h = dR_{g⁻¹}` at `g`. -/
 lemma rightTrivial_mul_right (g h : G) (u : E_G) :
     rightTrivial E_G (g * h) (mfderiv 𝓘(ℝ, E_G) 𝓘(ℝ, E_G) (fun l : G => l * h) g u) = rightTrivial E_G g u := by
@@ -72,7 +70,6 @@ lemma rightTrivial_mul_right (g h : G) (u : E_G) :
   simp only [rightTrivial, hc]
   rfl
 
-omit [CompleteSpace E_G] in
 /-- `dR_{(gh)⁻¹} ∘ dL_g = Ad_g ∘ dR_{h⁻¹}` at `h`. -/
 lemma rightTrivial_mul_left (g h : G) (w : E_G) :
     rightTrivial E_G (g * h) (mfderiv 𝓘(ℝ, E_G) 𝓘(ℝ, E_G) (fun l : G => g * l) h w) =
@@ -92,7 +89,6 @@ lemma rightTrivial_mul_left (g h : G) (w : E_G) :
     exact (ContinuousLinearMap.ext_iff.1 hc w).symm
   exact key 1 (mul_inv_cancel h).symm
 
-omit [CompleteSpace E_G] in
 lemma adjointE_mul_apply (a b : G) (u : E_G) :
     adjointE 𝓘(ℝ, E_G) a (adjointE 𝓘(ℝ, E_G) b u) = adjointE 𝓘(ℝ, E_G) (a * b) u := by
   simp only [adjointE, adjoint_mul]
@@ -107,7 +103,7 @@ def IsCompatible (A : c.ι → M → E →L[ℝ] E_G) : Prop :=
   ∀ i j x, x ∈ c.U i → x ∈ c.U j →
     A j x = (adjointE 𝓘(ℝ, E_G) (c.g i j x)).comp (A i x) - rightMC I (c.g i j) x
 
-omit [CompleteSpace E_G] [ContinuousMul G] in
+omit [ContinuousMul G] in
 /-- The derivative of the transition map `(x, h) ↦ (x, g_ij(x) h)`: `(ξ, w) ↦ (ξ, dR_h dg_ij ξ + dL_{g_ij} w)`. -/
 lemma mfderiv_transition_apply {i j : c.ι} (hg : ContMDiffOn I 𝓘(ℝ, E_G) (minSmoothness ℝ 3) (c.g i j) (c.U i ⊓ c.U j))
     {z : M × G} (hz : z.1 ∈ c.U i ⊓ c.U j) (v : E × E_G) :
@@ -150,7 +146,7 @@ lemma mfderiv_transition_apply {i j : c.ι} (hg : ContMDiffOn I 𝓘(ℝ, E_G) (
 
 variable {c}
 
-omit [CompleteSpace E_G] [ContinuousMul G] in
+omit [ContinuousMul G] in
 /-- **The local forms agree through the transition maps** (Svetlichny eq. (37), from (38)):
 `ω^{U_j}_{ψ(z)} ∘ dψ_z = ω^{U_i}_z` for `ψ(x, h) = (x, g_ij(x) h)` on `(U_i ∩ U_j) × G`. -/
 theorem localForm_transition {A : c.ι → M → E →L[ℝ] E_G} (hA : c.IsCompatible I A) {i j : c.ι}
@@ -225,7 +221,6 @@ theorem connForm_localTriv_symm {A : c.ι → M → E →L[ℝ] E_G} (hA : c.IsC
         rw [hpt]
     _ = localForm (A i) z v := localForm_transition hA (hg i k) htr.1 htr.2.1 v
 
-omit [CompleteSpace E_G] in
 /-- **Theorem 10 (p. 31), uniqueness**: a form on `P` with the representatives `ω^{U_i}` in every trivialization is
 `connForm`. -/
 theorem connForm_unique {A : c.ι → M → E →L[ℝ] E_G}
@@ -258,7 +253,7 @@ theorem connForm_unique {A : c.ι → M → E →L[ℝ] E_G}
     rintro q rfl w rfl; rfl
   exact (key _ ((c.localTriv k).left_inv hp) _ hc.symm).symm.trans h
 
-omit [CompleteSpace E_G] [ContinuousMul G] [IsManifold I (minSmoothness ℝ 3) M] in
+omit [ContinuousMul G] [IsManifold I (minSmoothness ℝ 3) M] in
 /-- The derivative of the right action `(x, h) ↦ (x, h k)` on `M × G`. -/
 lemma mfderiv_actR_apply (k : G) (z : M × G) (u : E × E_G) :
     mfderiv (I.prod 𝓘(ℝ, E_G)) (I.prod 𝓘(ℝ, E_G)) (fun z : M × G => (z.1, z.2 * k)) z u =

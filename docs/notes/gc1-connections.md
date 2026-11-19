@@ -137,7 +137,16 @@ the `A_U`.
   trivializations (`g_VU = h_V ∘ h_U⁻¹`, the data the source uses in (37) and (38)) rather than as an abstract bundle
   with trivializations, which Mathlib does not have; the identification `T_h G ≃ g` by `dR_{h⁻¹}` (p. 30) is written
   out inside `localForm`; the fundamental vector of `L` is `d(p ·)_1 L` and (34) is stated at `p · 1`, which is `p`
-  (`act_one`). The smoothness of `ω` as a section of `T*P ⊗ g` is not stated.
+  (`act_one`). Smoothness (`PrincipalSmooth.lean`): if `G` and the `g_ij` are `C^n` with `n ≥ 3` and each `A_i` is a
+  `C^m` one-form on `U_i` with `m + 1 ≤ n`, then `ω` is a `C^m` section of Mathlib's hom bundle `Hom(TP, g)`
+  (`contMDiff_connForm`, from the chart form `connForm_contMDiffAt`: near a point `ω` is written through one
+  trivialization, `connForm_eq_of_mem`; the tangent coordinates of `M × G` split, `tangentCoordChange_prod`; and the
+  derivatives of the group operations are `C^m` in coordinates, `contMDiffAt_rightTrivial_coord`,
+  `contMDiffAt_adjointE_inv`, from Mathlib's `ContMDiffAt.mfderiv`); for smooth data the form is smooth. Differences,
+  kind representation: a `C^m` one-form `A_i` is given by its expression in the charts of `M`
+  (`x ↦ A_i(x) ∘ tangentCoordChange` is `C^m` near each point of `U_i`, which is Mathlib's criterion
+  `contMDiffAt_hom_bundle` for sections of the hom bundle); `G` also carries the `C³` Lie group structure of the
+  adjoint action (`minSmoothness ℝ 3 ≤ n`), and the `C¹` structures of the tangent bundles are passed as instances.
 
 The vector-bundle form of Theorem 10 is a separate result (`BundleConnection.lean`), not an attempt at `P`: a `C¹`
 vector bundle `V` with model fiber `F` over a manifold (structure group `GL(F)`); a local potential in a
@@ -154,6 +163,7 @@ Mathlib: `IsPicardLindelof`, `IsPicardLindelof.exists_eq_forall_mem_Icc_hasDeriv
 `ContDiffAt.isSymmSndFDerivAt`, `Filter.EventuallyEq.fderiv_eq`, `ODE_solution_unique_of_mem_Icc_right`,
 `integral_eq_sub_of_hasDeriv_right_of_le`, `integral_hasDerivAt_right`, `fderiv_mul'`, `TopCat.GlueData.MkCore`,
 `TopCat.GlueData.ι_eq_iff_rel`, `symm_trans_trans_mem_contDiffGroupoid_of_contMDiffOn`, `contMDiffOn_of_mem_maximalAtlas`,
-`mfderiv_prodMk`, `mfderiv_prod_eq_add_apply`, `Filter.EventuallyEq.mfderiv_eq`; no connections on principal bundles
+`mfderiv_prodMk`, `mfderiv_prod_eq_add_apply`, `Filter.EventuallyEq.mfderiv_eq`, `ContMDiffAt.mfderiv`,
+`contMDiffAt_hom_bundle`, `inTangentCoordinates_eq`, `tangentCoordChange_comp`; no connections on principal bundles
 in Mathlib. Physlib: `ElectromagneticPotential`, `toFieldStrength` (U(1) on Minkowski space) and
 `LocalGaugeData`; its holonomy and parallel transport are TODO there. Tau Ceti: not checked.

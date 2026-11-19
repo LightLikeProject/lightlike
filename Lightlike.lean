@@ -1302,6 +1302,7 @@ import Lightlike.Gauge.Connection.Local
 import Lightlike.Gauge.Connection.Principal
 import Lightlike.Gauge.Connection.PrincipalConnection
 import Lightlike.Gauge.Connection.PrincipalGlue
+import Lightlike.Gauge.Connection.PrincipalSmooth
 import Lightlike.Gauge.Connection.PureGauge
 import Lightlike.Gauge.Connection.SmallLoop
 import Lightlike.Gauge.Connection.Transport
