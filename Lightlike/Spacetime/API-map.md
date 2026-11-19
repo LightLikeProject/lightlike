@@ -75,6 +75,8 @@ Raychaudhuri's equation in coordinates: for a smooth field `v` geodesic on an op
 
 The null, weak, strong and dominant energy conditions are stated pointwise for a symmetric bilinear form on a Lorentzian vector space; dust with non-negative density satisfies all four, a positive cosmological constant violates the strong one, and a scalar field with negative potential at a point of vanishing gradient violates the weak one [43]. On a Lorentzian 4-manifold the four conditions hold for a stress-energy field at every point; for a perfect fluid they take the effective forms, and under the Einstein equations they are equivalent to the geometric forms on the Ricci and Einstein tensors [45]. For a perfect fluid the tensor conditions are Physlib's effective conditions on a cosmic fluid at c = 1 [46]. The electromagnetic field satisfies the weak, dominant and strong conditions, through a Lorentz frame started by any unit timelike vector [48].
 
+The source of the Einstein equations is conserved: if `G + Λ g = κ T` with `κ ≠ 0` for the Levi-Civita connection, the divergence of `T` vanishes, since the Einstein tensor is divergence free and the metric is parallel [62].
+
 The divergence theorem on a manifold: for a metric of any signature, its Levi-Civita connection, a smooth vector field `X` vanishing outside a compact set and a measurable domain `D` given near every point of its closure by a defining function (`D = {u ≥ 0}`, `du ≠ 0` where `u = 0`), `∫_D div X d vol_g` is the flux of `X` through the boundary of `D`, written with a partition of unity subordinate to charts and graph charts of the boundary in each chart; a density `f · dV_g` is the case of the field `f X` [57]. In a chart, `√|g| ∇ₐXᵃ = ∂ⱼ(√|g| Xʲ)`, and the theorem in `ℝⁿ⁺¹` needs its hypothesis only on the support of the field [56] [57].
 
 ## Lean References
@@ -153,6 +155,7 @@ The divergence theorem on a manifold: for a metric of any signature, its Levi-Ci
 59. Lightlike/Spacetime/RaychaudhuriNull.lean - `covD_orthogonal_of_const`, `nullProj`, `nullB`, `nullShear`, `nullRotation`, `raychaudhuri_null_equation`, `nullShear_normSq_nonneg`, `nullRotation_eq_zero`, `raychaudhuri_null_focusing_at`, `raychaudhuri_null_focusing`: Raychaudhuri's equation and focusing for a null geodesic field in coordinates.
 60. Lightlike/Spacetime/RaychaudhuriNullManifold.lean - `screenProj`, `nullRotation_chart_eq_zero`, `raychaudhuri_null_focusing_manifold_at`, `raychaudhuri_null_focusing_manifold`: null geodesic focusing on a manifold.
 61. Lightlike/Spacetime/KillingMinkowski.lean - `eq_affine_of_skew_deriv`, `killing_eq_affField`, `finrank_skewEta`, `finrank_killingFields`: every `C²` Killing field of Minkowski space is affine with an η-skew linear part, and the Killing fields form a space of dimension `n (n + 1) / 2`.
+62. Lightlike/Spacetime/StressEnergyConservation.lean - `divBilinAt_eq_zero_of_einsteinEq`, `covDerivBilinAt_metric`, `covDerivBilinAt_linear`, `mdiffAt_einstein_pair`: conservation of the source of the Einstein equations.
 
 ## References
 
