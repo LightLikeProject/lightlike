@@ -933,6 +933,10 @@ references:
     cite: "B. C. Hall, Quantum Theory for Mathematicians, Graduate Texts in Mathematics 267, Springer (2013)"
     title: "Quantum Theory for Mathematicians"
     doi: 10.1007/978-1-4614-7116-5
+  jaksic-ogata-pautrat-pillet-2012:
+    cite: "V. Jakšić, Y. Ogata, Y. Pautrat and C.-A. Pillet, Entropic fluctuations in quantum statistical mechanics. An introduction, in Quantum Theory from Small to Large Scales, Les Houches Summer School 95, Oxford University Press (2012)"
+    title: "Entropic Fluctuations in Quantum Statistical Mechanics. An Introduction"
+    arxiv: "1106.3786"
   nielsen-petz-2005:
     cite: "M. A. Nielsen and D. Petz, A simple proof of the strong subadditivity inequality, Quantum Inf. Comput. 5 (2005) 507-513"
     title: "A simple proof of the strong subadditivity inequality"

@@ -2672,6 +2672,21 @@
   "citations": 82,
   "citations_via": "Semantic Scholar"
  },
+ "jaksic-ogata-pautrat-pillet-2012": {
+  "checked": "2026-11-19",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Entropic Fluctuations in Quantum Statistical Mechanics. An Introduction",
+  "locations": {
+   "Proposition 2.20, p. 53": {
+    "verified": true,
+    "snippet": "Proposition 2.20 ρ is a β-KMS state iff ρ = ρβ . Proof. It remains to show that if ρ is β-KMS, then ρ = ρβ . Setting X = ρeβH and A = eβH C in the KMS condition tr(ρeβH Be−βH A) = tr(ρAB), yields tr(XBC) = tr(XCB) for al",
+    "why": null
+   }
+  },
+  "citations": 121,
+  "citations_via": "Semantic Scholar"
+ },
  "janson-2011": {
   "checked": "2026-11-08",
   "exists": true,

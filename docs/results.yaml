@@ -2393,3 +2393,16 @@
   review: kernel-checked
   note: "For a positive measure σ (the spectrum in the variable x = Δ - c/12, v = c/12) whose Laplace transform Z(β) = ∫ e^{-βx} dσ is finite for β > 0, invariant under z ↦ 4π²/z for Re z > 0 (MZ (2.2)), and satisfies |Z(β) - e^{a/β}| ≤ C e^{(a-g)/β} for real 0 < β < β₀ (a = 4π² v = π² c/3, g > 0), the integrated density F(Δ) = σ(-∞, Δ - v] satisfies |F(Δ) · 2π (cΔ/3)^{1/4} e^{-2π√(cΔ/3)} - 1| ≤ K Δ^{-1/2} for large Δ (cardy_mz), i.e. MZ (1.8). cardy_counting is the intermediate form |σ(-∞, x] - I₀(2√(a x))| ≤ K x^{-3/4} e^{2√(a x)}, I₀(s) = (1/π) ∫₀^π e^{s cos θ} dθ. Compared with the source at eq. (1.8) and (2.2)-(2.4) (read 19 November 2026). Representation difference (reported to the maintainers, decision pending): a positive measure in the shifted variable instead of the density ρ(Δ) = Σ δ(Δ - Δ_O). The high-temperature hypothesis is assumed only for real β (MZ: |β| → 0 with Re β > 0), which is a weaker hypothesis. Route: MZ's Sections 3-5 with a pole-free smoothing in place of the contour functional (docs/notes/sp3-full-strength-attempts.md, attempt D). Non-vacuity: σ = δ_{-v} + ρ₀ (CardyExample.lean)."
   since: unreleased
+- id: LL-0183
+  title: For a finite quantum system with Hamiltonian H, a state is KMS at inverse temperature beta iff it is the Gibbs state e^{-beta H} / tr e^{-beta H}
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/FiniteKMS.lean
+  decls: [Lightlike.OperatorAlgebras.isKMS_iff_eq_gibbs, Lightlike.OperatorAlgebras.isKMS_gibbs]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: jaksic-ogata-pautrat-pillet-2012, location: "Proposition 2.20, p. 53", check: "KMS"}
+  review: kernel-checked
+  note: "On Matrix n n C with tau^{-i beta}(B) = e^{beta H} B e^{-beta H}: a matrix rho of trace 1 satisfies tr(rho A B) = tr(rho tau^{-i beta}(B) A) for all A, B (the beta-KMS condition, eq. (2.24)) iff rho = e^{-beta H} / tr e^{-beta H}. Compared with Jaksic-Ogata-Pautrat-Pillet, Section 2.9, eq. (2.24) and Proposition 2.20, p. 53 (read). The statement is more general than the source's: H is any matrix with tr e^{-beta H} != 0 (the source takes H self-adjoint, where this holds), and rho is only required to have trace 1 (the source's states are positive)."
+  since: unreleased
