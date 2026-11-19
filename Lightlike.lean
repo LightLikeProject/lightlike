@@ -193,6 +193,7 @@ import Lightlike.CausalSets.Sprinkling
 import Lightlike.CausalSets.TestsCausalSets
 import Lightlike.Cosmology.FLRW
 import Lightlike.Cosmology.FLRWPhyslib
+import Lightlike.Cosmology.Raychaudhuri
 import Lightlike.FourD.Boundary
 import Lightlike.FourD.Complex
 import Lightlike.FourD.Orientation
