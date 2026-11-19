@@ -18,6 +18,8 @@ The one-variable Wick identity `∫ dx/√(2πħ) e^{-x²/(2aħ)} x^{2n} = √a 
 
 Graphs with legs on a half-edge type `π : H → V` are the involutions of `H` (edges are 2-cycles, legs are fixed points); every vertex lies in exactly one closed connected vertex set, and splitting off the component of a vertex gives `#graphs(R) = Σ_{v₀ ∈ S ⊆ R} #connected(S) · #graphs(R \ S)` [12] {2}.
 
+A labelled graph with half-edges `Fin n` and vertices `Fin k` is an attachment map with an involution of the half-edges; the pairs of bijections `S_n × S_k` act by relabelling, isomorphic graphs are the same orbit and the automorphisms are the stabilizer, so `1/|Aut Γ| = |orbit Γ|/(n! k!)` [13] {2}.
+
 **Missing.** The error bound of the quartic expansion is not stated in Borinsky, who treats the integral formally. The formal integral is compared with Borinsky's Definition 3.1.1 and eq. (3.1.8) {2}, the graphs with Borinsky §2.1 and §2.3 {2}, and Wick's theorem with Tubaro–Zanella's Theorem 2.19 {3}; the Gaussian measure and its integrals are not yet compared with a source.
 
 ## Lean References
@@ -39,6 +41,8 @@ Graphs with legs on a half-edge type `π : H → V` are the involutions of `H` (
    `FieldTheory.moment_eq_pairSum_of_posSemidef`
 12. Lightlike/FieldTheory/ZeroDim/Components.lean - `FieldTheory.HalfEdge.invOn`, `FieldTheory.HalfEdge.connInvOn`,
    `FieldTheory.HalfEdge.existsUnique_componentOn`, `FieldTheory.HalfEdge.card_invOn_eq_sum`
+13. Lightlike/FieldTheory/ZeroDim/GraphIso.lean - `FieldTheory.GraphAlg.LGraph`, `FieldTheory.GraphAlg.IsIso`, `FieldTheory.GraphAlg.isIso_iff_smul`,
+   `FieldTheory.GraphAlg.mem_aut_iff`, `FieldTheory.GraphAlg.card_orbit_mul_card_aut`, `FieldTheory.GraphAlg.inv_card_aut`
 
 ## References
 
