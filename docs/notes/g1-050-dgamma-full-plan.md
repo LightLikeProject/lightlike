@@ -36,3 +36,15 @@ isometric on `Γₙ` because every `n`-element `S` is the image of exactly `n!` 
 with `|sign| = 1`. Pieces: (D2a) `sign` of an injective tuple and its behaviour under a permutation of `Fin n`
 (`sign (f ∘ τ) = sign τ · sign f`); (D2b) the fibre count `#{f injective | image f = S} = n!`; (D2c) `Eₙ` as a linear isometry
 from the `n`-particle part of `ℓ²(Finset ι)` into `ℓ²(Fin n → ι)`, using the fibre count for the `HasSum` of `‖Eₙ ψ‖²`.
+
+Status: D2 and D3 are built (`SecondQuantWedge.lean`: `tupleSign`, `card_enum`, `embCLM` isometric on the `n`-particle
+vectors, `dGammaFock n h = Eₙ₊₁* (∑ⱼ hⱼ) Eₙ₊₁` with `norm_dGammaFock_le`: `‖dΓₙ₊₁(h)‖ ≤ (n + 1) ‖h‖` for every bounded `h`).
+
+D4, design. Approximation by finite-rank `h` does not reach a general bounded `h` (the finite-rank operators are not dense
+in `B(Z)` in norm, and the bound gives no strong convergence), so the commutators are proved as operator identities on the
+coordinate side: (D4a) the antisymmetrizer `A Φ (f) = (n!)⁻¹ ∑_σ sign σ Φ(f ∘ σ)`, a projection commuting with every
+`∑ⱼ hⱼ`; (D4b) `Eₙ Eₙ* = A` and `Eₙ* Eₙ = 1` on the `n`-particle vectors; (D4c) creation on the tensor power,
+`C_w Φ (f) = b.repr(w)(f 0) Φ(f ∘ succ)` (`w ⊗ Φ`), with `[∑ⱼ hⱼ, C_w] = C_{hw}` (slot `0` against the others);
+(D4d) the core coefficient identity `Eₙ₊₁ a*(w) = √(n+1) A C_w Eₙ` (`FermiFockGeneral.creW` against the signs of the
+enumerations); then `[dΓ(h), a*(w)] = √(n+1) Eₙ₊₁* A C_{hw} Eₙ = a*(hw)`, `[dΓ(h), a(w)] = -a(h* w)` by adjoints, and
+`[dΓ(h₁), dΓ(h₂)] = dΓ([h₁, h₂])` from `[∑ⱼ h₁ⱼ, ∑ⱼ h₂ⱼ] = ∑ⱼ [h₁, h₂]ⱼ` on the tensor side.
