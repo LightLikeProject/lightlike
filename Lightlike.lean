@@ -342,6 +342,13 @@ import Lightlike.OperatorAlgebras.FiniteRankApprox
 import Lightlike.OperatorAlgebras.CompactDual
 import Lightlike.OperatorAlgebras.CompactDualIso
 import Lightlike.OperatorAlgebras.YosidaLimit
+import Lightlike.OperatorAlgebras.VonNeumann
+import Lightlike.OperatorAlgebras.VonNeumannDecomp
+import Lightlike.OperatorAlgebras.VonNeumannBoundary
+import Lightlike.OperatorAlgebras.VonNeumannExt
+import Lightlike.OperatorAlgebras.VonNeumannClassify
+import Lightlike.OperatorAlgebras.VonNeumannDim
+import Lightlike.OperatorAlgebras.TestsVonNeumann
 import Lightlike.OperatorAlgebras.EntropyBell
 import Lightlike.Oscillatory.Flat
 import Lightlike.Oscillatory.GaussFourier
