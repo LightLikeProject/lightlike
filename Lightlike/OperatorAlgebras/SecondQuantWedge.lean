@@ -18,6 +18,7 @@ For the embedding of the `n`-particle fermionic Fock space `Γₙ` (the closed s
 * `embFun`, `hasSum_fiber`, `hasSum_norm_embFun`, `embL`, `norm_sq_embL`, `norm_embL_le`, `norm_embL_of_support`, `embCLM`:
   the embedding `Eₙ ψ (f) = (n!)^{-1/2} sign(f) ψ(image f)`, a contraction, isometric on the `n`-particle vectors;
 * `permEquiv`, `permL`, `antisym`, `antisym_apply`, `embFun_comp`, `antisym_embL`: the antisymmetrizer, and `A Eₙ = Eₙ`;
+* `tensorFun`, `hasSum_norm_tensorFun`: `c ⊗ Φ` in coordinates, `‖c ⊗ Φ‖² = ‖c‖² ‖Φ‖²`;
 * `norm_embCLM_le`, `dGammaFock`, `norm_dGammaFock_le`: `dΓₙ₊₁(h) = Eₙ₊₁* (∑ⱼ hⱼ) Eₙ₊₁` and `‖dΓₙ₊₁(h)‖ ≤ (n + 1) ‖h‖`.
 -/
 
@@ -294,6 +295,32 @@ lemma antisym_embL (ψ : lp (fun _ : Finset ι => ℂ) 2) : antisym n (embL n ψ
   exact mul_div_cancel_left₀ _ (by exact_mod_cast Nat.factorial_ne_zero n)
 
 end Antisym
+
+section Tensor
+
+variable {n : ℕ}
+
+/-- **The tensor product `c ⊗ Φ`** in coordinates: `(c ⊗ Φ)(f) = c(f 0) Φ(tail f)`. -/
+def tensorFun (c : ι → ℂ) (Φ : (Fin n → ι) → ℂ) (f : Fin (n + 1) → ι) : ℂ := c (f 0) * Φ (Fin.tail f)
+
+/-- **`‖c ⊗ Φ‖² = ‖c‖² ‖Φ‖²`.** -/
+lemma hasSum_norm_tensorFun {c : ι → ℂ} {Φ : (Fin n → ι) → ℂ} {s t : ℝ}
+    (hc : HasSum (fun i => ‖c i‖ ^ 2) s) (hΦ : HasSum (fun g => ‖Φ g‖ ^ 2) t) :
+    HasSum (fun f => ‖tensorFun c Φ f‖ ^ 2) (s * t) := by
+  rw [← (Fin.consEquiv (fun _ : Fin (n + 1) => ι)).hasSum_iff]
+  have hfun : (fun f : Fin (n + 1) → ι => ‖tensorFun c Φ f‖ ^ 2) ∘ Fin.consEquiv (fun _ : Fin (n + 1) => ι) =
+      fun x : ι × (Fin n → ι) => ‖c x.1‖ ^ 2 * ‖Φ x.2‖ ^ 2 := by
+    funext x
+    have hx : (Fin.consEquiv (fun _ : Fin (n + 1) => ι)) x = Fin.cons x.1 x.2 :=
+      funext fun i => Fin.consEquiv_apply (fun _ : Fin (n + 1) => ι) x i
+    simp only [Function.comp_apply, hx, tensorFun, Fin.cons_zero, Fin.tail_cons, norm_mul, mul_pow]
+  rw [hfun]
+  refine hc.mul hΦ ?_
+  refine summable_mul_of_summable_norm (f := fun i => ‖c i‖ ^ 2) (g := fun g => ‖Φ g‖ ^ 2) ?_ ?_
+  · simpa only [Real.norm_eq_abs, abs_pow, abs_norm] using hc.summable
+  · simpa only [Real.norm_eq_abs, abs_pow, abs_norm] using hΦ.summable
+
+end Tensor
 
 section Gamma
 
