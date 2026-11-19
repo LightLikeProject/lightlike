@@ -2,7 +2,7 @@
 
 Lean files: `Lightlike/ODE/GlobalLipschitz.lean`, `Lightlike/Canonical/Holonomy.lean`,
 `Lightlike/Canonical/HolonomyPaths.lean`, `Lightlike/Canonical/HolonomyGauge.lean`,
-`Lightlike/Canonical/HolonomyGraph.lean`, `Lightlike/Canonical/HolonomyALGraph.lean` (in progress).
+`Lightlike/Canonical/HolonomyGraph.lean`, `Lightlike/Canonical/HolonomyALGraph.lean`, `Lightlike/Canonical/HolonomyAnalytic.lean` (in progress).
 
 ## Source read
 
@@ -45,6 +45,9 @@ footnote 17) and p. 35 (the common graph `α₃` of two graphs). Printed page nu
 | `ALGraph.IE_actCoeff`, `ALGraph.IE_actCoeff_of_trivial`: `I_E(M^γ)_e = γ(t(e))⁻¹ I_E(M)_e γ(s(e))`; constant on `G⁰_α`-orbits | eqs. (4.14)-(4.17), p. 28 | Same (the values at the corners cancel). |
 | `ALGraph.IE_injective_mod`, `ALGraph.IE_surjective`: `I_E` one-to-one on `A_α / G⁰_α` and onto `SU(2)ⁿ` | p. 28: "natural 1-1 maps between `Ā_α` and `Gⁿ`" (4.16) | Same, for `G = SU(2)`. |
 | `ALGraph.IV`, `ALGraph.IV_eq_iff`, `ALGraph.IV_surjective`: `I_V` one-to-one on `G_α / G⁰_α` and onto `SU(2)^m` | eq. (4.17), p. 28 | Same, for `G = SU(2)`. |
+| `Edge.IsAnalytic`: an edge analytic at every parameter, with nonzero velocity (the arcs of `ALEdge`) | footnote 17, p. 33, and footnote 13, p. 27 (quoted above) | As for `ALEdge`. |
+| `eventually_eq_comp_of_tendsto`: two analytic arcs meeting at points accumulating at `(s₀, t₀)`, `f'(t₀) ≠ 0`, satisfy `e = f ∘ φ` near `s₀`, `φ` analytic | — | Tool for the common graph (the identity theorem after the analytic local inverse of a coordinate of `f`). |
+| `Edge.meetFrontier_finite`: two regular analytic arcs meet in finitely many pieces | p. 35: "we can introduce a third graph `α3` which contains all the edges and vertices of `α1` and `α2`" | Tool: the step behind the common graph, for the analytic arcs of the edges. |
 
 ## Trust checks
 
