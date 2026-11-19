@@ -51,6 +51,13 @@ import Lightlike.Asymptotics.EPRL.EprlHighVertex
 import Lightlike.Asymptotics.EPRL.HaarNode
 import Lightlike.Asymptotics.EPRL.HomForm
 import Lightlike.Asymptotics.EPRL.HomFormExpansion
+import Lightlike.Asymptotics.Karamata.Abelian
+import Lightlike.Asymptotics.Karamata.Counting
+import Lightlike.Asymptotics.Karamata.Functional
+import Lightlike.Asymptotics.Karamata.Karamata
+import Lightlike.Asymptotics.Karamata.LayerCake
+import Lightlike.Asymptotics.Karamata.RegularVariation
+import Lightlike.Asymptotics.Karamata.Tests
 import Lightlike.Asymptotics.Lorentzian.Action
 import Lightlike.Asymptotics.Lorentzian.ActionTests
 import Lightlike.Asymptotics.Lorentzian.Amplitude
