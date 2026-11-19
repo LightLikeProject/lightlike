@@ -75,6 +75,12 @@ itself, which the gap row names, was not opened.
 - `Lightlike.Geodesic.exists_expMap_along_gauss` (file `GaussMaximal`): the Gauss lemma at any
   vector of the domain of `exp` (Theorem 2.1.21 as stated, `x ∈ D_p`), not only in a normal
   neighbourhood.
+- `Lightlike.Geodesic.expDomain`, `expMap` (file `ExpMap`): the exponential map on its maximal
+  domain in the chart, `exp(p, v) = c_v(1)` for the geodesic from `p` with velocity `v` that
+  exists on an open set containing `[0, 1]` and stays in `U` on `[0, 1]` (Definition 2.1.13,
+  (2.2.5)–(2.2.6)). `isOpen_expDomain`, `smul_mem_expDomain` (Proposition 2.2.3: the domain is
+  open and star shaped), `expMap_smul` ((2.1.13)), `contDiffOn_expMap`, `gauss_expMap` (Theorem
+  2.1.21 on the whole domain). Known value: for the flat metric `exp_p v = p + v`.
 - `Lightlike.Geodesic.Tests.exists_expMap_diffeo_ads`: the hypotheses hold for anti-de Sitter
   space in the Poincaré patch (Lorentzian signature).
 
@@ -95,5 +101,6 @@ itself, which the gap row names, was not opened.
 
 ## Still open in the row
 
-Causally convex neighbourhoods; Theorem 2.2.6 in its global form; the star-shapedness part of
-Proposition 2.2.3.
+Local causality (the reading of "causally convex neighbourhoods" fixed by the integrator:
+Chruściel, *Elements of causality theory*, Propositions 2.4.5 and 2.4.7); Theorem 2.2.6 in its
+global form.

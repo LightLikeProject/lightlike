@@ -1,6 +1,7 @@
 import Lightlike.Geodesic.Gauss
 import Lightlike.Geodesic.Convex
 import Lightlike.Geodesic.GaussMaximal
+import Lightlike.Geodesic.ExpMap
 import Lightlike.GR.AdSPoincare
 
 /-!
@@ -74,5 +75,42 @@ theorem exists_geodesic_on_unit_interval {n : ℕ} {g : (Fin n → ℝ) → Matr
   refine ⟨γ, w, fun t ht => ⟨by linarith [ht.1], by linarith [ht.2]⟩, hgeo, fun t ht => ?_⟩
   rw [hφ t ⟨by linarith [ht.1], ht.2⟩, smul_zero, h.map_zero]
   exact hx
+
+/-- The flat metric (the identity matrix at every point) is a coordinate metric on `ℝⁿ`. -/
+theorem isCoordMetric_flat (n : ℕ) :
+    Lightlike.IsCoordMetric (fun _ : Fin n → ℝ => (1 : Matrix (Fin n) (Fin n) ℝ)) univ where
+  isOpen := isOpen_univ
+  symm := fun _ _ => Matrix.transpose_one
+  isUnit_det := fun _ _ => by simp
+  smooth := fun _ _ => contDiffOn_const
+
+/-- The acceleration of the flat metric vanishes. -/
+theorem accel_flat {n : ℕ} (x v : Fin n → ℝ) :
+    accel (fun _ : Fin n → ℝ => (1 : Matrix (Fin n) (Fin n) ℝ)) x v = 0 := by
+  funext i
+  simp [accel, Lightlike.christoffel, Lightlike.pd]
+
+/-- **Known value for the exponential map**: for the flat metric, `exp_p v = p + v`, on all of
+`ℝⁿ × ℝⁿ`. -/
+theorem expMap_flat {n : ℕ} (p v : Fin n → ℝ) :
+    expMap (fun _ : Fin n → ℝ => (1 : Matrix (Fin n) (Fin n) ℝ)) univ (p, v) = p + v := by
+  have hgeo : IsGeodesicOn (fun _ : Fin n → ℝ => (1 : Matrix (Fin n) (Fin n) ℝ))
+      (fun t : ℝ => p + t • v) (fun _ : ℝ => v) univ := by
+    refine ⟨fun t _ => ?_, fun t _ => ?_⟩
+    · have h0 := ((hasDerivAt_id t).smul_const v).const_add p
+      rw [one_smul] at h0
+      exact h0
+    · rw [accel_flat]
+      exact hasDerivAt_const t v
+  have h1 := expMap_eq (isCoordMetric_flat n) isOpen_univ (subset_univ _) hgeo
+    (fun _ _ => mem_univ _)
+  simpa using h1
+
+/-- **A wrong candidate is excluded**: for the flat metric, `exp_p v` is not `p` when `v ≠ 0`. -/
+theorem expMap_flat_ne {n : ℕ} (p : Fin n → ℝ) {v : Fin n → ℝ} (hv : v ≠ 0) :
+    expMap (fun _ : Fin n → ℝ => (1 : Matrix (Fin n) (Fin n) ℝ)) univ (p, v) ≠ p := by
+  rw [expMap_flat]
+  intro h
+  exact hv (by simpa using h)
 
 end Lightlike.Geodesic.Tests
