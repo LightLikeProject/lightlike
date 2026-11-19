@@ -171,3 +171,15 @@ To be used only once the files compile and the gate is green.
   `Lightlike.isEHStationary_iff` (`Lightlike/Spacetime/EHManifold/ManifoldStationary.lean`).
   Source: Carroll, ibid., (4.67), p. 116 (read). Difference: representation (Einstein's equation is stated in
   the components of every chart, as the vanishing of the symmetric part of `R^{αβ} − ½ R g^{αβ} + Λ g^{αβ}`).
+
+## The cosmological constant: Carroll (4.73), (4.74), p. 118 (read 19 November 2026)
+
+Carroll's text: "We therefore consider an action given by `S = ∫ dⁿx √−g (R − 2Λ)` (4.73), where `Λ` is
+some constant. The resulting field equations are `R_{μν} − ½ R g_{μν} + Λ g_{μν} = 0` (4.74)".
+
+| Formal statement (Lean) | Source | Match |
+| --- | --- | --- |
+| `isEHStationary_iff_einstein` (`EinsteinIntrinsic.lean`): `g` is a stationary point of `ehAction · Λ` (`∫_K (R − 2Λ) d vol_g`, for every perturbation of compact support) if and only if `G(u, v) + Λ g(u, v) = 0` for all tangent vectors at all points, `G = Ric − ½ R g` for the Levi-Civita connection | (4.73), (4.74), p. 118 | match, including the sign of `Λ`. Representation: the action is taken over compact sets containing the support of the perturbation; any signature and dimension |
+| `isEHStationary_iff_ricci`: for `n ≠ 2`, stationary iff `Ric = (2Λ/(n − 2)) g` | not in Carroll at this place; algebraic consequence (trace of (4.74)), from `satisfiesEinstein_iff_ricci` | corollary |
+
+So the statements with `Λ` are compared with (4.73), (4.74), and those with `Λ = 0` with (4.66), (4.67).
