@@ -1046,6 +1046,8 @@ import Lightlike.Spacetime.Causal.TimeOrientation
 import Lightlike.Spacetime.ChartChange
 import Lightlike.Spacetime.BianchiSecond
 import Lightlike.Spacetime.ConformalCoord
+import Lightlike.Spacetime.ConformalRicci
+import Lightlike.Spacetime.ConformalWeyl
 import Lightlike.Spacetime.ContractedBianchi
 import Lightlike.Spacetime.NullHypersurface
 import Lightlike.Spacetime.NullHypersurfaceCoord
