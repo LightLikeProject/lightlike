@@ -1,6 +1,6 @@
 # FT1 stage 3: Wick's theorem as a pairing sum, the quartic expansion and its Feynman graphs
 
-Status of 19 November 2026, branches `pl/ft1-wick`, `pl/ft1-graphs`, `pl/ft1-wickpairs` (work in progress). Claim tags: MEASURED = checked in Lean or by
+Status of 19 November 2026 (work in progress). Claim tags: MEASURED = checked in Lean or by
 reading the cited location; PROXY / ASSUMPTION = stated as such.
 
 ## Source read
