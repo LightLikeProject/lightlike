@@ -24,6 +24,13 @@ vertices in the same row or column of the Krajewski diagram {2} {1} [3]. For `A 
 `Hᵢⱼ ≅ ℂⁿⁱ ⊗ ℂʳⁱʲ ⊗ ℂⁿʲ` with `π(a)` the left multiplication by `aᵢ` and `J π(b*) J` the right multiplication by `bⱼ`,
 and `dim Hᵢⱼ = nᵢ nⱼ rᵢⱼ` {2} {1} [4]. On the two-point space the off-diagonal vertex `H₀₁` is zero [5].
 
+The multiplicity matrix `rᵢⱼ = dim Vᵢⱼ` of a real structure is symmetric {1} [6]. Conversely, for `A = ⊕ Mₙᵢ(ℂ)` and
+every symmetric `r` with `∀ i, ∃ j, rᵢⱼ > 0`, the space `⊕ᵢⱼ ℂʳⁱʲ ⊗ ℂⁿⁱ ⊗ ℂⁿʲ` with `π(a)` block diagonal with blocks
+`1 ⊗ aᵢ ⊗ 1`, `J ψ (i, j, ρ, α, β) = conj ψ (j, i, ρ, β, α)` and `D = 0` is a real finite spectral triple whose
+multiplicity matrix is `r`, and symmetric signs `sᵢⱼ = ±1` give a grading {1} [7]. On the two-point data the
+multiplicities are `r₀₀ = 1` and `r₀₁ = 0`, a non-symmetric matrix is the multiplicity matrix of no real structure, and
+on `ℂ ⊕ ℂ` every first-order `D` has `E₀₀ D E₁₁ = 0` [8].
+
 ## Lean References
 
 1. Lightlike/NCG/FiniteSpectralTriple.lean - `NCG.FiniteSpectralTriple`, `NCG.FiniteSpectralTriple.comm`,
@@ -37,10 +44,17 @@ and `dim Hᵢⱼ = nᵢ nⱼ rᵢⱼ` {2} {1} [4]. On the two-point space the of
    `NCG.IsComplexLinear`, `NCG.tensorEquiv_pi`, `NCG.tensorEquiv_rightOp_star`, `NCG.finrank_Hsub_eq`
 5. Lightlike/NCG/TestsBimodule.lean - `NCG.TwoPoint.twoPointReal`, `NCG.TwoPoint.twoPointPartition`,
    `NCG.TwoPoint.Hsub_zero_one`
+6. Lightlike/NCG/Classification.lean - `NCG.multiplicity`, `NCG.multiplicity_symm`
+7. Lightlike/NCG/KrajewskiModel.lean - `NCG.KIdx`, `NCG.HK`, `NCG.blockHom`, `NCG.piK`, `NCG.piK_injective`,
+   `NCG.swapIdx`, `NCG.JK`, `NCG.krajewskiTriple`, `NCG.krajewskiReal`, `NCG.gammaK`, `NCG.krajewskiGrading`,
+   `NCG.Vsub_krajewski`, `NCG.multiplicity_krajewskiReal`
+8. Lightlike/NCG/TestsClassification.lean - `NCG.TestsClassification.twoPointR`,
+   `NCG.TestsClassification.krajewski_twoPoint_diag`, `NCG.TestsClassification.krajewski_twoPoint_off`,
+   `NCG.TestsClassification.not_multiplicity_eq_of_not_symm`, `NCG.TestsClassification.twoPoint_link_eq_zero`
 
 ## References
 
 1. T. Krajewski, *Classification of finite spectral triples*, J. Geom. Phys. 28 (1998) 1-30, arXiv:hep-th/9701081,
-   Sections 2, 3.1 and 3.2.
+   Sections 2, 3.1, 3.2 and 3.3.
 2. M. Paschke and A. Sitarz, *Discrete spectral triples and their symmetries*, arXiv:q-alg/9612029, Section 2,
    Lemmas 1-4 and 6.

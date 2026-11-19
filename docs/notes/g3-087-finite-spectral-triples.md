@@ -54,3 +54,22 @@ summands `Mₙ(ℝ)`, `Mₙ(ℍ)` included); the tensor form is stated for compl
 
 Test (`TestsBimodule.lean`): the two-point space with `J` the complex conjugation is a real structure, and its
 off-diagonal vertex `H₀₁` is zero.
+
+## FST3: the multiplicity matrix and its realization
+
+* `multiplicity_symm` (Krajewski §3.2, p. 12): `rᵢⱼ = dim Vᵢⱼ` is symmetric, from `dim Hᵢⱼ = dim Hⱼᵢ` (Lemma 4) and
+  `dim Hᵢⱼ = nᵢ nⱼ rᵢⱼ` (Lemma 2).
+* `krajewskiTriple`, `krajewskiReal`, `krajewskiGrading`, `multiplicity_krajewskiReal` (Krajewski §3.2, p. 13 and §3.3,
+  p. 13): for `A = ⊕ Mₙᵢ(ℂ)` and a symmetric `r` in which every summand acts on some vertex, `H = ⊕ᵢⱼ ℂʳⁱʲ ⊗ ℂⁿⁱ ⊗ ℂⁿʲ`
+  (`EuclideanSpace` over `Σ (i, j), Fin rᵢⱼ × Fin nᵢ × Fin nⱼ`), `π(a)` block diagonal with blocks `1 ⊗ aᵢ ⊗ 1`
+  (`Matrix.blockDiagonal'` and the Kronecker product, so the star-homomorphism property is Mathlib's), `J` the conjugate
+  swap `(i, j, ρ, α, β) ↦ (j, i, ρ, β, α)` and `D = 0` form a real finite spectral triple; symmetric signs `sᵢⱼ = ±1` give
+  a grading; and the multiplicity matrix of this triple is `r` (`Vᵢⱼ` is spanned by the basis vectors at
+  `(i, j, ρ, 0, 0)`). So a matrix is the multiplicity matrix of a real structure exactly when it is symmetric.
+
+Not yet stated (the next pieces): uniqueness of the real structure up to unitary equivalence (Krajewski §3.2, p. 13,
+"the charge conjugation is unique up to unitary equivalence"), the Dirac operators on the links beyond Lemma 6
+(§3.4, p. 17), and Krajewski's real summands `Mₙ(ℝ)`, `Mₙ(ℍ)` in the tensor form and the model.
+
+Tests (`TestsClassification.lean`): the two-point data have `r₀₀ = 1`, `r₀₁ = 0`; a non-symmetric matrix is the
+multiplicity matrix of no real structure; on `ℂ ⊕ ℂ` every first-order `D` has `E₀₀ D E₁₁ = 0`.
