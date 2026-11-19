@@ -207,6 +207,7 @@ import Lightlike.Canonical.Tetrad
 import Lightlike.Canonical.Holst
 import Lightlike.Canonical.AshtekarCanonical
 import Lightlike.Canonical.SpinVariation
+import Lightlike.Canonical.AshtekarSymplectic
 import Lightlike.Canonical.FoliationLie
 import Lightlike.Canonical.FoliationSpacelike
 import Lightlike.Canonical.FoliationChart
