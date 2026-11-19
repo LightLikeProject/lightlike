@@ -7,7 +7,7 @@ import Mathlib.Analysis.Calculus.Deriv.Inv
 If a function `Θ` on `[0, L)` obeys `Θ' ≤ -Θ²/m` (`m > 0`) and starts negative, `Θ(0) < 0`, then `L ≤ m/|Θ(0)|`: `Θ` cannot
 stay finite beyond the parameter `m/|Θ(0)|`, since `1/Θ - s/m` is nondecreasing and `1/Θ < 0`. This is the analytic step
 of geodesic focusing from Raychaudhuri's equation (Kar and SenGupta, gr-qc/0611123, (12) and (16), with `m = n - 1`),
-used for the comoving congruence of FLRW (`Cosmology/Raychaudhuri.lean`).
+used for the comoving congruence of FLRW (`Lightlike/Cosmology/Raychaudhuri.lean`).
 -/
 
 open Set Filter Topology
