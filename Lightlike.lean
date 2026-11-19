@@ -966,6 +966,7 @@ import Lightlike.Gauge.DiracJacobi
 import Lightlike.Gauge.DiracAlgorithm
 import Lightlike.Gauge.MatrixInverse
 import Lightlike.Gauge.PoissonJacobi
+import Lightlike.Geodesic.Convex
 import Lightlike.Geodesic.ExpDiffeo
 import Lightlike.Geodesic.ExpJoint
 import Lightlike.Geodesic.ExpSmooth
@@ -973,6 +974,7 @@ import Lightlike.Geodesic.Gauss
 import Lightlike.Geodesic.GaussAux
 import Lightlike.Geodesic.Radial
 import Lightlike.Geodesic.Tests
+import Lightlike.Geodesic.TwoPoint
 import Lightlike.Tests.ADM
 import Lightlike.Tests.Constraints
 import Lightlike.Tests.DiracAlgorithm

@@ -1,4 +1,5 @@
 import Lightlike.Geodesic.Gauss
+import Lightlike.Geodesic.Convex
 import Lightlike.GR.AdSPoincare
 
 /-!
@@ -46,5 +47,18 @@ theorem exists_normal_chart_gauss_ads {L : ℝ} (hL : L ≠ 0) {x : Fin 4 → �
 theorem pairing_one {n : ℕ} (y a b : Fin n → ℝ) :
     pairing (fun _ => (1 : Matrix (Fin n) (Fin n) ℝ)) y a b = a ⬝ᵥ b := by
   rw [pairing_eq_dotProduct, Matrix.one_mulVec]
+
+/-- **Non-vacuity of `exists_convex_neighbourhood`, Lorentzian signature**: every point of
+anti-de Sitter space with `z > 0` has a convex neighbourhood inside the unit ball about it. -/
+theorem exists_convex_neighbourhood_ads {L : ℝ} (hL : L ≠ 0) {x : Fin 4 → ℝ}
+    (hx : x ∈ Lightlike.adsU) :
+    ∃ C : Set (Fin 4 → ℝ), IsOpen C ∧ x ∈ C ∧ C ⊆ ball x 1 ∧ C ⊆ Lightlike.adsU := by
+  obtain ⟨C, h1, h2, h3, h4, -⟩ :=
+    exists_convex_neighbourhood (Lightlike.isCoordMetric_ads L hL) hx one_pos
+  exact ⟨C, h1, h2, h3, h4⟩
+
+/-- **Known value for `sqDist`**: it is the square of the distance on the line. -/
+theorem sqDist_fin_one (x q : Fin 1 → ℝ) : sqDist x q = (q 0 - x 0) ^ 2 := by
+  simp [sqDist]
 
 end Lightlike.Geodesic.Tests
