@@ -2,7 +2,7 @@
 #   - lake build succeeds, and every file under Lightlike/ is imported by Lightlike.lean;
 #   - no sorry, admit, native_decide, axiom, implemented_by or extern in Lightlike/;
 #   - every declaration of the library depends only on propext, Classical.choice and Quot.sound
-#     (scripts/AxiomAudit.lean checks all of them; there is no list to keep);
+#     (scripts/AxiomAudit.lean checks all of them; there is no list to keep; the `axiom-audit` check);
 #   - nothing outside an Exploratory/ folder imports a module inside one;
 #   - every definition, and every declaration named in an API map or in docs/results.yaml, has a
 #     docstring;
@@ -16,12 +16,26 @@
 #   build          the Lean build and the checks that need it. On a pull request it runs only when
 #                  the pull request changes a Lean or build file or a file those checks read;
 #                  otherwise it is skipped, and a skipped job passes the required `build` check;
+#   axiom-audit    the result of the axiom audit of the build job (standard axioms only), as its own
+#                  required check; skipped, and so passing, when the build job is skipped;
+#   forbidden-constructs  the result of scripts/ci_check.py in the build job (no sorry, admit,
+#                  native_decide, axiom, implemented_by or extern outside the proofs of open proof
+#                  tasks; every file imported; nothing imports Exploratory/), as its own required check;
 #   python-checks  the numerical cross-checks, 4 at a time; on a pull request only when it changes
 #                  scripts/ or the pinned packages, and then only the quick checks and the slow
 #                  ones the change touches; a push to main runs every check, and a failure there
 #                  fails the run;
 #   prune-caches   after a push to main, deletes the library build caches the new one replaces.
-# Pushes to main and on-demand runs run every job.
+# Pushes to main and on-demand runs run every job; a merge-queue run (merge_group) runs every job but
+# the numerical cross-checks.
+#
+# Required checks (the ruleset of main): build, axiom-audit, forbidden-constructs here,
+# statement-unchanged (proof-task.yml) and comparator (comparator.yml). Every one of them reports
+# on every pull request and on every merge-queue run, skipped (which passes) when it has nothing to
+# check: a required check that never reports would block the pull request.
+#
+# Pull-request code runs only under `pull_request`, with the read-only token of `permissions` below
+# and no secrets; caches are restored from main and saved only by pushes to main.
 name: CI
 
 # When it runs: on every pull request, on every push to main, and on demand (Actions -> CI ->
@@ -29,6 +43,7 @@ name: CI
 # conditions below), because Actions minutes are limited.
 on:
   pull_request:
+  merge_group:
   push:
     branches: [main]
   workflow_dispatch:
@@ -76,6 +91,12 @@ jobs:
       - name: Decide which jobs the change needs [ci-only]
         id: diff
         run: |
+          if [ "$GITHUB_EVENT_NAME" = merge_group ]; then
+            echo "Merge queue: the build and its checks run; the numerical cross-checks do not."
+            echo "lean=true" >> "$GITHUB_OUTPUT"
+            echo "python=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
           if [ "$GITHUB_EVENT_NAME" != pull_request ]; then
             echo "Not a pull request: every job runs."
             echo "lean=true" >> "$GITHUB_OUTPUT"
@@ -170,6 +191,13 @@ jobs:
     defaults:
       run:
         shell: bash  # -eo pipefail, so `cmd | tee log` fails when cmd fails
+    # The outcomes of the axiom audit and of ci_check.py, reported by the jobs axiom-audit and
+    # forbidden-constructs: those two steps continue on error here, so that each rule has its own
+    # check. `continue-on-error` is the expression `${{ true }}`, not the literal `true`, so that the
+    # local gate (scripts/gate.py, which reads this file) still runs both as hard rules.
+    outputs:
+      axioms: ${{ steps.axioms.outcome }}
+      forbidden: ${{ steps.forbidden.outcome }}
     steps:
       # The runner starts with about 88 GB of 145 GB free and the build takes about 15 GB (measured
       # by the last step of this job on a run that restored the dependency cache: .lake/packages
@@ -246,10 +274,16 @@ jobs:
           path: .lake/build
           key: lightlike-build-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-${{ github.sha }}
 
-      - name: Axioms of every declaration (standard axioms only) [hard rule]
+      # Hard rule, reported by the axiom-audit job.
+      - name: Axioms of every declaration (standard axioms only) [hard rule, axiom-audit]
+        id: axioms
+        continue-on-error: ${{ true }}
         run: lake env lean scripts/AxiomAudit.lean
 
-      - name: Check (no sorry, every file imported by Lightlike.lean, nothing imports Exploratory/) [hard rule]
+      # Hard rule, reported by the forbidden-constructs job.
+      - name: Check (no sorry, every file imported by Lightlike.lean, nothing imports Exploratory/) [hard rule, forbidden-constructs]
+        id: forbidden
+        continue-on-error: ${{ true }}
         run: python3 scripts/ci_check.py --build-log build.log
 
       - name: Install the pinned Python packages [ci-only]
@@ -297,6 +331,34 @@ jobs:
           awk '$3 ~ /^[0-9]+$/ { if ($3 > s) s = $3; if (m == "" || $4 < m) m = $4; n++ }
                END { print "samples:", n, " peak swap used:", s, "MB  lowest free memory:", m, "MB" }' \
             "$RUNNER_TEMP/vmstat.log" || true
+
+  # The two hard rules the build job runs but does not fail on, each as its own required check. A job
+  # whose `needs` was skipped or failed is skipped, and a skipped job passes: when the build job is
+  # skipped (a pull request with no Lean change) there is nothing to audit, and when it fails, the
+  # `build` check blocks.
+  axiom-audit:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: The axiom audit of the build job passed (the step itself is a hard rule of the gate) [ci-only]
+        env:
+          OUTCOME: ${{ needs.build.outputs.axioms }}
+        run: |
+          echo "axiom audit (scripts/AxiomAudit.lean in the build job): $OUTCOME"
+          test "$OUTCOME" = success
+
+  forbidden-constructs:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: scripts/ci_check.py in the build job passed (the step itself is a hard rule of the gate) [ci-only]
+        env:
+          OUTCOME: ${{ needs.build.outputs.forbidden }}
+        run: |
+          echo "forbidden constructs (scripts/ci_check.py in the build job): $OUTCOME"
+          test "$OUTCOME" = success
 
   python-checks:
     needs: changes

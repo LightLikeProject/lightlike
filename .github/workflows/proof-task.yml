@@ -6,11 +6,18 @@ name: Proof task
 # line). A milestone or upstream task ID without the label passes with nothing to check.
 #
 # When it runs: never while the repository is private (the job condition below), so it uses no
-# Actions minutes now. Once the repository is public it runs on every such pull request. It runs
-# no Lean, so it takes seconds; the build itself is the CI workflow.
+# Actions minutes then; on a public repository on every such pull request. It runs no Lean, so it
+# takes seconds; the build itself is the CI workflow.
+#
+# `statement-unchanged` is a required check of main, so it must report on every pull request and on
+# every merge-queue run: the workflow triggers on both, and the job is skipped (which passes) on a
+# pull request that is not a proof task and in the merge queue. The merge queue does not carry the
+# pull request's body, and the check depends only on the pull request's own changes, which it
+# checked before the pull request entered the queue.
 on:
   pull_request:
     types: [opened, synchronize, reopened, labeled, edited]
+  merge_group:
 
 permissions:
   contents: read
@@ -18,6 +25,7 @@ permissions:
 jobs:
   statement-unchanged:
     if: >-
+      github.event_name == 'pull_request' &&
       github.event.repository.private == false &&
       (contains(github.event.pull_request.labels.*.name, 'proof-task') ||
        contains(github.event.pull_request.body, 'Task: T-'))
