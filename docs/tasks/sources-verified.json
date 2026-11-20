@@ -1339,7 +1339,7 @@
   "citations_via": "Semantic Scholar"
  },
  "carroll-1997": {
-  "checked": "2026-11-19",
+  "checked": "2026-11-20",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "Lecture Notes on General Relativity",
@@ -1452,6 +1452,41 @@
    "eq. (6.54)": {
     "verified": true,
     "snippet": "(6.54) Therefore we can drop the bars over hµν , as long as we are in this gauge. 6 WEAK FIELDS AND GRAVITATIONAL RADIATION 152 One nice feature of the transverse traceless gauge is that if you are given the components o",
+    "why": null
+   },
+   "eq. (7.117)": {
+    "verified": true,
+    "snippet": "(7.117) (r 2 + a2 ) and we recognize the spatial part of this as flat space in ellipsoidal coordinates. They are related to Cartesian coordinates in Euclidean 3-space by x = (r 2 + a2 )1/2 sin θ cos(φ) y = (r 2 + a2 )1/2",
+    "why": null
+   },
+   "eq. (7.125)": {
+    "verified": true,
+    "snippet": "(7.125) ρ This does not vanish at the outer event horizon; in fact, at r = r+ (where ∆ = 0), we have a2 ζ µ ζµ = sin2 θ ≥ 0 . (7.126) ρ2 So the Killing vector is already spacelike at the outer horizon, except at the nort",
+    "why": null
+   },
+   "eq. (7.126)": {
+    "verified": true,
+    "snippet": "(7.126) ρ2 So the Killing vector is already spacelike at the outer horizon, except at the north and south poles (θ = 0) where it is null. The locus of points where ζ µ ζµ = 0 is known as the Killing horizon, and is given",
+    "why": null
+   },
+   "eq. (7.127)": {
+    "verified": true,
+    "snippet": "(7.127) while the outer event horizon is given by (r+ − GM)2 = G2 M 2 − a2 . (7.128) There is thus a region in between these two surfaces, known as the ergosphere. Inside the ergosphere, you must move in the direction of",
+    "why": null
+   },
+   "eq. (7.149)": {
+    "verified": true,
+    "snippet": "(7.149) 2 We can differentiate to obtain, after a bit of work, a δMirr = √ 2 2 2 (Ω−1 H δM − δJ) . (7.150) 4G G M − a Mirr (I think I have the factors of G right, but it wouldn’t hurt to check.) Then our limit (7.147) be",
+    "why": null
+   },
+   "eq. (7.152)": {
+    "verified": true,
+    "snippet": "(7.152) 2 The result of this complete extraction is a Schwarzschild black hole of mass Mirr . It turns out that the best we can do is to start with an extreme Kerr black hole; then we can get out approximately 29% of its",
+    "why": null
+   },
+   "eq. (7.154)": {
+    "verified": true,
+    "snippet": "(7.154) 8πG where we have introduced √ G2 M 2 − a2 κ= √ . (7.155) 2GM(GM + G2 M 2 − a2 ) The quantity κ is known as the surface gravity of the black hole. It was equations like (7.154) that first started people thinking",
     "why": null
    },
    "eq. (7.29)": {

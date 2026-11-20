@@ -677,6 +677,77 @@ tasks:
     routes:
       - "Finite-rank operators are dense in the compact ones; a functional on them gives a bounded sesquilinear form on rank-one operators (`TraceClass.sesquilinearFormOfFunctional`), hence a bounded operator by Riesz, and its polar decomposition shows it is trace class with `‖T‖₁ = ‖f‖` (Reed-Simon I, Theorem VI.26)."
 
+  - id: T-GE6-P1
+    milestone: GE6
+    kind: proof
+    title: "The Kerr metric component g_tt = -(Δ - a² sin²θ)/ρ² (Carroll (7.125))"
+    file: Tasks/GE6/T_GE6_P1.lean
+    decl: Lightlike.kerr_gtt_eq
+    size: S
+    difficulty: intermediate
+    routes:
+      - "Unfold `kerrMetric`, `kerrS`, `kerrD`; clear the denominator with `kerrS_pos` and use `sin² + cos² = 1`."
+  - id: T-GE6-P2
+    milestone: GE6
+    kind: proof
+    title: "g_tt = a² sin²θ/ρ² ≥ 0 where Δ = 0 (Carroll (7.126))"
+    file: Tasks/GE6/T_GE6_P2.lean
+    decl: Lightlike.kerr_gtt_horizon
+    size: S
+    difficulty: intermediate
+    routes:
+      - "From `kerr_gtt_eq` (T-GE6-P1); nonnegativity from `kerrS_pos`."
+  - id: T-GE6-P3
+    milestone: GE6
+    kind: proof
+    title: "The ergosurface g_tt = 0 is (r - M)² = M² - a² cos²θ (Carroll (7.127))"
+    file: Tasks/GE6/T_GE6_P3.lean
+    decl: Lightlike.kerr_ergosurface_iff
+    size: S
+    difficulty: intermediate
+    routes:
+      - "Reduce to the numerator `Δ - a² sin²θ = r² - 2Mr + a² cos²θ` of `kerr_gtt_eq`."
+  - id: T-GE6-P4
+    milestone: GE6
+    kind: proof
+    title: "The Kerr metric at M = 0 is flat space in ellipsoidal coordinates, diagonal form (Carroll (7.117))"
+    file: Tasks/GE6/T_GE6_P4.lean
+    decl: Lightlike.kerr_mass_zero
+    size: S
+    difficulty: intermediate
+    routes:
+      - "Entrywise: `Matrix.ext` with `fin_cases`, then `simp [kerrMetric, kerrD]` and `field_simp`."
+  - id: T-GE6-P5
+    milestone: GE6
+    kind: proof
+    title: "The irreducible mass of a Kerr black hole: A/(16π) = (M² + √(M⁴ - (Ma)²))/2 (Carroll (7.148), (7.149))"
+    file: Tasks/GE6/T_GE6_P5.lean
+    decl: Lightlike.kerr_irreducible_mass
+    size: S
+    difficulty: intermediate
+    routes:
+      - "`rplus_sq_add` gives `r₊² + a² = 2 M r₊`; then `√(M⁴ - M² a²) = M √(M² - a²)`."
+  - id: T-GE6-P6
+    milestone: GE6
+    kind: proof
+    title: "Extreme Kerr: M - M_irr = (1 - 1/√2) M, about 29 % of M (Carroll (7.149), (7.152))"
+    file: Tasks/GE6/T_GE6_P6.lean
+    decl: Lightlike.kerr_extreme_extraction
+    size: S
+    difficulty: intermediate
+    routes:
+      - "At `a = M`, `r₊ = M`, so `M_irr² = M²/2`."
+  - id: T-GE6-P7
+    milestone: GE6
+    kind: proof
+    title: "The first law of Kerr black holes dM = (κ/8π) dA + Ω_H dJ along a differentiable family (Carroll (7.154), (7.155))"
+    file: Tasks/GE6/T_GE6_P7.lean
+    decl: Lightlike.kerr_first_law
+    size: M
+    difficulty: intermediate
+    routes:
+      - "Differentiate `r₊ = M + √(M² - a²)` (differentiable since `M² - a² > 0`); use `kerrKappa_eq` and `rplus_sq_add`."
+
 upstream:
   - id: T-UP-1
     target: Mathlib

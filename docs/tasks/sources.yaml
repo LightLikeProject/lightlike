@@ -1289,6 +1289,13 @@ milestones:
     class: sourced
     refs:
       - {ref: visser-2007, location: "Section 9", check: "Horizons"}
+      - {ref: carroll-1997, location: "eq. (7.125)", check: "Killing"}
+      - {ref: carroll-1997, location: "eq. (7.126)", check: "Killing"}
+      - {ref: carroll-1997, location: "eq. (7.127)", check: "Killing horizon"}
+      - {ref: carroll-1997, location: "eq. (7.117)", check: "ellipsoidal"}
+      - {ref: carroll-1997, location: "eq. (7.149)", check: "irreducible mass"}
+      - {ref: carroll-1997, location: "eq. (7.152)", check: "irreducible"}
+      - {ref: carroll-1997, location: "eq. (7.154)", check: "surface gravity"}
   GE7:
     class: sourced
     refs:
