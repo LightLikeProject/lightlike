@@ -154,7 +154,7 @@ The work is split into small tasks so that many people can work at once, several
 
 ## Review
 
-The [README](README.md#review) gives what a statement is checked for: conventions, quantifier
+The [review rubric](docs/review-rubric.md) gives what a statement is checked for: conventions, quantifier
 ranges, junk values and non-vacuity. To review a result, compare its statement and definitions
 with the cited source and post your findings on its issue; a maintainer then records it as
 **human-reviewed** in `docs/results.yaml`, with a link to that issue. A statement under review is
@@ -169,6 +169,14 @@ each with a merged pull request in this repository (or when an administrator wro
 pull request passes the check. A maintainer merges a pull request that needs review. Reviewers follow the [review rubric](docs/review-rubric.md): source
 match, hypotheses, conventions, quantifiers and edge cases. A proof-task pull request that changes
 only its own task file merges by itself once the checks pass.
+
+The kernel cannot check that a definition or a statement means what its source means, so each
+statement is compared with its cited source for conventions (signature, units, normalisations),
+quantifier ranges and hypotheses, junk values of partial operations (such as `ℕ` subtraction and
+`x / 0 = 0`) and non-vacuity (an example satisfies the hypotheses of each main theorem).
+
+To review an entry, or to report a mismatch, open an [issue](https://github.com/LightlikeProject/lightlike/issues/new)
+with the entry's ID, the place in its source, and what differs.
 
 ## Checking locally
 
@@ -247,3 +255,81 @@ including a conduct report, write to the project address, lightlike.project@gmai
 ## License
 
 By contributing you agree to license your contributions under the [Apache License 2.0](LICENSE).
+
+## What Lightlike is
+
+- **It is** a library of definitions, statements and proofs about the mathematics of physical
+  models. Every result has a tier: **established** (standard mathematics and physics),
+  **frontier** (published proposals) or **exploratory** (new or unpublished models). Exploratory
+  work goes in `Exploratory/` folders, which the rest of the library may not import.
+- **It is not** a claim that a model describes nature. A theorem says what follows from a model's
+  definitions, under the hypotheses and limits stated with it.
+- **It does not** prefer one approach to quantum gravity. Competing approaches sit side by side,
+  each formalized from its own literature.
+
+## How work is tracked
+
+- **The repository holds the plan; the issues hold the progress.** A task's issue opens when the
+  task becomes ready, and a workflow keeps its labels current from comments and pull requests:
+  **ready**, **claimed**, **in review**. Nobody edits a status by hand.
+- **Every task is taken by one person at a time.** Comment `/claim` to take
+  one (you are assigned) and `/unclaim` to release it. A claim lasts 48 hours, or while a pull request
+  naming the task is open; a person holds at most 3 claims.
+- **Proof tasks are claimed the same way.** Claims are advisory: if two pull requests arrive for one
+  task, the first that passes CI is merged.
+- **Done means merged.** A pull request that finishes a task says `Closes #<issue>`; a proof task's
+  issue is closed once its proof is on `main`. Tasks that need it then become ready.
+
+## Help wanted, community, license and citation
+
+Lightlike has one maintainer. Help is especially welcome with repository and CI maintenance, Lean
+infrastructure, domain review, and leading an area: open an issue labelled
+[**help wanted**](https://github.com/LightlikeProject/lightlike/labels/help%20wanted). Discussion
+and coordination on [Discord](https://discord.gg/Eyx3zTx9JW); questions and proposals in
+[GitHub Discussions](https://github.com/LightlikeProject/lightlike/discussions). Everyone follows
+the [code of conduct](CODE_OF_CONDUCT.md); contact: lightlike.project@gmail.com. Apache License 2.0,
+copyright The Lightlike contributors ([LICENSE](LICENSE)); cite it via [CITATION.cff](CITATION.cff).
+
+## Building
+
+Install Lean's version manager [elan](https://github.com/leanprover/elan) (see the [official
+instructions](https://lean-lang.org/install/)). The versions are pinned: Lean and Mathlib `v4.35.0`,
+Physlib at commit `cdfa609`. On Windows, install elan by those instructions, or run the commands
+below in WSL, or use [Codespaces](CONTRIBUTING.md#your-first-proof-task). On Linux and macOS:
+
+```sh
+curl https://elan.lean-lang.org/elan-init.sh -sSf | sh
+source "$HOME/.elan/env"
+git clone https://github.com/LightlikeProject/lightlike && cd lightlike
+lake exe cache get
+lake build
+lake build Tasks
+```
+
+`lake exe cache get` downloads Mathlib's prebuilt files; the first `lake build` compiles Physlib and
+Lightlike. On GitHub's 4-core Linux runner, Lightlike alone took about 42 minutes (Physlib comes on
+top). Later builds compile only what changed. A build needs about 11 GB of disk, and some modules up
+to about 6 GB of RAM per Lean process (16 GB is recommended; 8 GB machines may build very slowly).
+`lake build Tasks` builds the proof-task files in `Tasks/`, which are not part of the library. The
+checks in `scripts/` need Python 3.9 to 3.14 and the packages in `requirements.txt`:
+`python3 -m venv .venv && . .venv/bin/activate && pip install -r requirements.txt` (on Windows the
+venv is activated with `.venv\Scripts\activate`; `scripts/gate.py` runs the CI steps with bash).
+
+To use Lightlike in a project with the same Lean version, add to its `lakefile.toml`:
+
+```toml
+[[require]]
+name = "lightlike"
+git = "https://github.com/LightlikeProject/lightlike"
+rev = "v0.3.0"
+```
+
+Then, in a Lean file of that project:
+
+```lean
+import Lightlike
+
+open Lightlike
+
+#check @IsCoordMetric.bianchi_first   -- LL-0001, the first Bianchi identity in coordinates
+```

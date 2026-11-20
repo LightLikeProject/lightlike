@@ -135,7 +135,7 @@ Everything below is recommended practice, with the reason for it.
   with a source only if that source was read at the cited location; otherwise its note says that
   the comparison is pending.
 - A statement or definition is compared with its cited source for conventions, quantifier
-  ranges, hypotheses, junk values and non-vacuity ([README.md](README.md#review)). An agent asked
+  ranges, hypotheses, junk values and non-vacuity ([CONTRIBUTING.md](CONTRIBUTING.md#review)). An agent asked
   to review works in a fresh context, preferably as a different model, never on its own work, and
   posts its findings on the result's issue.
 - A change of scope or of the tier definitions is proposed in an issue first.
