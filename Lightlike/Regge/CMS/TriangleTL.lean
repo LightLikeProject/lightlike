@@ -46,9 +46,9 @@ theorem triangle_expansion {μ Λ s C : ℝ} (hμ : 0 < μ) (hΛ : 0 < Λ) (hC :
   set η : ℝ := min (1 / 2) ((1 - s) / (4 * (2 * Rr + 1))) with hη
   have hη0 : 0 < η := lt_min (by norm_num) (by apply div_pos <;> [linarith; positivity])
   set m : ℝ := √(1 - s ^ 2) with hm
-  have hm0 : 0 < m := Real.sqrt_pos.mpr (by nlinarith)
+  have hm0 : 0 < m := Real.sqrt_pos.mpr (sub_pos.mpr (pow_lt_one₀ hs0 hs two_ne_zero))
   set m' : ℝ := √(1 - s' ^ 2) with hm'
-  have hm'0 : 0 < m' := Real.sqrt_pos.mpr (by nlinarith)
+  have hm'0 : 0 < m' := Real.sqrt_pos.mpr (sub_pos.mpr (pow_lt_one₀ hs'0 hs'1 two_ne_zero))
   refine ⟨KT Rr m' * (C / μ + (2 * C / μ) ^ 2) + C / (2 * μ * m), min 1 (η / (D + 1)),
     lt_min one_pos (by positivity), fun h hh hh0 a₀ b₀ c₀ a b c P ha hb hc haΛ hbΛ hcΛ ha' hb' hc' hP
       hcos => ?_⟩
@@ -57,12 +57,12 @@ theorem triangle_expansion {μ Λ s C : ℝ} (hμ : 0 < μ) (hΛ : 0 < Λ) (hC :
   have hDh : D * h ≤ η := by
     have : D * h ≤ D * (η / (D + 1)) := by gcongr
     have h2 : D * (η / (D + 1)) ≤ η := by
-      rw [← mul_div_assoc, div_le_iff₀ (by positivity)]; nlinarith
+      rw [← mul_div_assoc, div_le_iff₀ (by positivity)]; linarith
     linarith
-  have hh2 : h ^ 2 ≤ h := by nlinarith
-  have hh3 : h ^ 3 ≤ h ^ 2 := by nlinarith [sq_nonneg h]
-  have hh4 : h ^ 4 ≤ h ^ 3 := by nlinarith [pow_pos hh 3]
-  have hh5 : h ^ 5 ≤ h ^ 4 := by nlinarith [pow_pos hh 4]
+  have hh2 : h ^ 2 ≤ h := pow_le_of_le_one hh.le hh1 two_ne_zero
+  have hh3 : h ^ 3 ≤ h ^ 2 := pow_le_pow_of_le_one hh.le hh1 (by norm_num)
+  have hh4 : h ^ 4 ≤ h ^ 3 := pow_le_pow_of_le_one hh.le hh1 (by norm_num)
+  have hh5 : h ^ 5 ≤ h ^ 4 := pow_le_pow_of_le_one hh.le hh1 (by norm_num)
   have hH2 : 0 < h ^ 2 := by positivity
   have ha0 : 0 < a₀ := lt_of_lt_of_le (by positivity) ha
   have hb0 : 0 < b₀ := lt_of_lt_of_le (by positivity) hb
@@ -119,7 +119,7 @@ theorem triangle_expansion {μ Λ s C : ℝ} (hμ : 0 < μ) (hΛ : 0 < Λ) (hC :
   have hε2L : ε₂ * L ≤ η := hε2D.trans hDh
   have hε0 : 0 ≤ ε₂ := hε30.trans h32
   have hε2 : ε₂ ≤ 1 / 2 := by
-    have : ε₂ ≤ ε₂ * L := by nlinarith
+    have : ε₂ ≤ ε₂ * L := le_mul_of_one_le_right hε0 hL1
     exact this.trans (hε2L.trans (min_le_left _ _))
   have hR : a₀ + b₀ + c₀ ≤ 2 * Rr * √(a₀ * b₀) := by
     have h1 : a₀ + b₀ + c₀ ≤ 3 * Λ * h ^ 2 := by linarith
@@ -133,8 +133,10 @@ theorem triangle_expansion {μ Λ s C : ℝ} (hμ : 0 < μ) (hΛ : 0 < Λ) (hC :
     have h1 := this.1; have h2 := this.2
     rw [abs_le]
     constructor
-    · rw [le_div_iff₀ (by positivity)] at h1; nlinarith
-    · rw [div_le_iff₀ (by positivity)] at h2; nlinarith
+    · rw [le_div_iff₀ (by positivity)] at h1
+      linarith [mul_le_mul_of_nonneg_right hs.le (by positivity : (0:ℝ) ≤ 2 * √(a₀ * b₀))]
+    · rw [div_le_iff₀ (by positivity)] at h2
+      linarith [mul_le_mul_of_nonneg_right hs.le (by positivity : (0:ℝ) ≤ 2 * √(a₀ * b₀))]
   have hf : cosArg (a₀ * (1 + x)) (b₀ * (1 + y)) (c₀ * (1 + z)) ∈ Set.Icc (-s') s' := by
     rw [← hax, ← hby, ← hcz]
     have key := abs_cosArg_sub_le (R := 2 * Rr) (ε := ε₂ * L) ha0 hb0 (by positivity)
@@ -142,7 +144,7 @@ theorem triangle_expansion {μ Λ s C : ℝ} (hμ : 0 < μ) (hΛ : 0 < Λ) (hC :
     · have hk : 2 * (2 * Rr + 1) * (ε₂ * L) ≤ (1 - s) / 2 := by
         have : ε₂ * L ≤ (1 - s) / (4 * (2 * Rr + 1)) := hε2L.trans (min_le_right _ _)
         rw [le_div_iff₀ (by positivity)] at this
-        nlinarith
+        linarith
       have hc1 := hcos.1; have hc2 := hcos.2
       have := abs_le.mp (show |(a + b - c) / (2 * √(a * b)) - (a₀ + b₀ - c₀) / (2 * √(a₀ * b₀))|
         ≤ 2 * (2 * Rr + 1) * (ε₂ * L) from key)
@@ -150,15 +152,16 @@ theorem triangle_expansion {μ Λ s C : ℝ} (hμ : 0 < μ) (hΛ : 0 < Λ) (hC :
       constructor <;> linarith [this.1, this.2]
     · calc |a - a₀| ≤ ε₃ * a₀ := by
             have := hx'; rw [hx, abs_div, abs_of_pos ha0, div_le_iff₀ ha0] at this; exact this
-        _ ≤ ε₂ * L * a₀ := by gcongr; nlinarith
+        _ ≤ ε₂ * L * a₀ := by gcongr; linarith [le_mul_of_one_le_right hε0 hL1]
     · calc |b - b₀| ≤ ε₃ * b₀ := by
             have := hy'; rw [hy, abs_div, abs_of_pos hb0, div_le_iff₀ hb0] at this; exact this
-        _ ≤ ε₂ * L * b₀ := by gcongr; nlinarith
+        _ ≤ ε₂ * L * b₀ := by gcongr; linarith [le_mul_of_one_le_right hε0 hL1]
     · have h1 : |c - c₀| ≤ ε₂ * c₀ := by
         have := hz'; rw [hz, abs_div, abs_of_pos hc0, div_le_iff₀ hc0] at this; exact this
       have h2 : c₀ ≤ L * (a₀ + b₀) := by
         have : Λ * h ^ 2 ≤ Λ / μ * (a₀ + b₀) := by
-          rw [div_mul_eq_mul_div, le_div_iff₀ hμ]; nlinarith [mul_pos hΛ hH2]
+          rw [div_mul_eq_mul_div, le_div_iff₀ hμ]
+          linarith [mul_le_mul_of_nonneg_left ha hΛ.le, mul_pos hΛ hb0]
         have : Λ / μ * (a₀ + b₀) ≤ L * (a₀ + b₀) := by gcongr; linarith
         linarith
       calc |c - c₀| ≤ ε₂ * c₀ := h1
@@ -177,8 +180,8 @@ theorem triangle_expansion {μ Λ s C : ℝ} (hμ : 0 < μ) (hΛ : 0 < Λ) (hC :
   have hden0 : 0 < μ * h ^ 2 * m := by positivity
   have hdiff : |(c - c₀) / (2 * √(a₀ * b₀) * qq (cosArg a₀ b₀ c₀)) -
       P / (2 * √(a₀ * b₀) * qq (cosArg a₀ b₀ c₀))| ≤ C / (2 * μ * m) * h ^ 3 := by
-    rw [← sub_div, abs_div, abs_of_pos (by nlinarith : 0 < 2 * √(a₀ * b₀) * qq (cosArg a₀ b₀ c₀)),
-      div_le_iff₀ (by nlinarith)]
+    rw [← sub_div, abs_div, abs_of_pos (by linarith : 0 < 2 * √(a₀ * b₀) * qq (cosArg a₀ b₀ c₀)),
+      div_le_iff₀ (by linarith)]
     calc |c - c₀ - P| ≤ C * h ^ 5 := hc'
       _ = C / (2 * μ * m) * h ^ 3 * (2 * (μ * h ^ 2 * m)) := by field_simp
       _ ≤ _ := mul_le_mul_of_nonneg_left (by linarith [hden]) (by positivity)
@@ -188,7 +191,7 @@ theorem triangle_expansion {μ Λ s C : ℝ} (hμ : 0 < μ) (hΛ : 0 < Λ) (hC :
       rw [hε₃, hε₂]
       have e : (2 * C / μ * h ^ 2) ^ 2 = (2 * C / μ) ^ 2 * h ^ 4 := by ring
       rw [e]
-      nlinarith [mul_le_mul_of_nonneg_left hh4 (sq_nonneg (2 * C / μ))]
+      linarith [mul_le_mul_of_nonneg_left hh4 (sq_nonneg (2 * C / μ))]
     calc _ ≤ KT Rr m' * ((C / μ + (2 * C / μ) ^ 2) * h ^ 3) :=
           mul_le_mul_of_nonneg_left hsum hKT0
       _ = _ := by ring

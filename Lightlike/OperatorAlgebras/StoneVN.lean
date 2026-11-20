@@ -37,11 +37,11 @@ variable {K : Type*} [NormedAddCommGroup K] [InnerProductSpace ℂ K] [CompleteS
 
 lemma vnConst_ne_zero : vnConst h ≠ 0 := by
   rw [vnConst, Ne, Complex.cpow_eq_zero_iff]
-  push_neg
+  push Not
   intro h0
   exfalso
   have : (Real.pi : ℂ) ≠ 0 := Complex.ofReal_ne_zero.mpr Real.pi_ne_zero
-  exact this (by simpa using h0)
+  exact this (by simp)
 
 /-- **von Neumann's projection** `P₀ = (2π)^{-d} ∫ e^{-‖z‖²/4} W z dz`. -/
 noncomputable def vnProj (R : CCRRep h K) (y : K) : K := (vnConst h)⁻¹ • gaussAvg R y
@@ -153,7 +153,7 @@ noncomputable def CCRRep.restrictW (R : CCRRep h K) (M : Submodule ℂ K) (hM : 
   map_smul' c v := by ext; simp
   left_inv w := by ext; simp [R.W_neg_W]
   right_inv w := by ext; simp [R.W_W_neg]
-  norm_map' w := by simp [Submodule.coe_norm]
+  norm_map' w := by simp
 
 lemma CCRRep.restrictW_apply (R : CCRRep h K) (M : Submodule ℂ K) (hM : ∀ f, ∀ w ∈ M, R.W f w ∈ M) (f : h) (w : M) :
     (R.restrictW M hM f w : K) = R.W f w := rfl
@@ -216,14 +216,14 @@ lemma orbitSpan_le_orthogonal (R : CCRRep h K) {g g' : K} (hg : vnProj R g = g) 
 noncomputable def vnRange (R : CCRRep h K) : Submodule ℂ K where
   carrier := {g | vnProj R g = g}
   add_mem' {a b} ha hb := by
-    simp only [Set.mem_setOf_eq] at *
+    simp only [Set.mem_ofPred_eq] at *
     rw [vnProj, gaussAvg_add, smul_add, ← vnProj, ← vnProj, ha, hb]
   zero_mem' := by
-    simp only [Set.mem_setOf_eq]
+    simp only [Set.mem_ofPred_eq]
     have := vnProj_smul R 0 0
     simpa using this
   smul_mem' c g hg := by
-    simp only [Set.mem_setOf_eq] at *
+    simp only [Set.mem_ofPred_eq] at *
     rw [vnProj_smul, hg]
 
 lemma isClosed_vnRange (R : CCRRep h K) : IsClosed (vnRange R : Set K) := by
@@ -243,8 +243,8 @@ lemma coe_gaussAvg_restrict (R : CCRRep h K) (M : Submodule ℂ K) (hM : ∀ f, 
 theorem eq_bot_of_orthogonal_vnRange (R : CCRRep h K) (M : Submodule ℂ K) (hM : ∀ f, ∀ w ∈ M, R.W f w ∈ M)
     (hMc : IsClosed (M : Set K)) (horth : ∀ g ∈ vnRange R, ∀ m ∈ M, ⟪g, m⟫_ℂ = 0) : M = ⊥ := by
   by_contra hne
-  haveI : CompleteSpace M := hMc.completeSpace_coe
-  haveI : Nontrivial M := Submodule.nontrivial_iff_ne_bot.mpr hne
+  have : CompleteSpace M := hMc.completeSpace_coe
+  have : Nontrivial M := Submodule.nontrivial_iff_ne_bot.mpr hne
   obtain ⟨w, hw⟩ := exists_gaussAvg_ne_zero (R.restrict M hM)
   set y : K := vnProj R w with hy
   have hyM : y ∈ M := by
@@ -303,12 +303,12 @@ theorem stone_von_neumann (R : CCRRep h K) :
       IsHilbertSum ℂ (fun i => orbitSpan R (g i)) (fun i => (orbitSpan R (g i)).subtypeₗᵢ) ∧
       ∀ i, ∃ S : FockRep h (orbitSpan R (g i)),
         S.toCCRRep = R.restrict (orbitSpan R (g i)) (orbitSpan_invariant R (g i)) := by
-  haveI : CompleteSpace (vnRange R) := (isClosed_vnRange R).completeSpace_coe
+  have : CompleteSpace (vnRange R) := (isClosed_vnRange R).completeSpace_coe
   obtain ⟨w, b, -⟩ := exists_hilbertBasis ℂ (vnRange R)
   refine ⟨w, fun i => (b i : K), fun i => ⟨(b i).2, by
     show ‖((b i : vnRange R) : K)‖ = 1
     simpa using b.orthonormal.1 i⟩, ?_, ?_⟩
-  · haveI : ∀ i, CompleteSpace (orbitSpan R (b i : K)) := fun i => (isClosed_orbitSpan R _).completeSpace_coe
+  · have : ∀ i, CompleteSpace (orbitSpan R (b i : K)) := fun i => (isClosed_orbitSpan R _).completeSpace_coe
     refine IsHilbertSum.mkInternal _ ?_ ?_
     · intro i j hij v w'
       have hle := orbitSpan_le_orthogonal R (g := (b i : K)) (g' := (b j : K)) (b i).2 (b j).2
@@ -316,7 +316,7 @@ theorem stone_von_neumann (R : CCRRep h K) :
       exact (Submodule.mem_orthogonal _ _).mp (hle w'.2) v v.2
     · set S := (⨆ i, orbitSpan R (b i : K)).topologicalClosure with hSdef
       have hSc : IsClosed (S : Set K) := Submodule.isClosed_topologicalClosure _
-      haveI : CompleteSpace S := hSc.completeSpace_coe
+      have : CompleteSpace S := hSc.completeSpace_coe
       have hsup : ∀ f, ∀ v ∈ ⨆ i, orbitSpan R (b i : K), R.W f v ∈ ⨆ i, orbitSpan R (b i : K) := by
         intro f v hv
         refine Submodule.iSup_induction _ (motive := fun v => R.W f v ∈ ⨆ i, orbitSpan R (b i : K)) hv
@@ -351,7 +351,7 @@ theorem stone_von_neumann (R : CCRRep h K) :
       rw [Submodule.orthogonal_eq_bot_iff] at hbot
       rw [hbot]
   · intro i
-    obtain ⟨S, hS, -⟩ := exists_fockRep_orbitSpan R (b i).2 (by rw [← Submodule.coe_norm, b.orthonormal.1 i])
+    obtain ⟨S, hS, -⟩ := exists_fockRep_orbitSpan R (b i).2 (by rw [Submodule.norm_coe, b.orthonormal.1 i])
     exact ⟨S, hS⟩
 
 open MeasureTheory
@@ -375,7 +375,7 @@ lemma orthogonal_invariant (R : CCRRep h K) {M : Submodule ℂ K} (hM : ∀ f, �
 /-- If `ran P₀` is spanned by the unit vector `g`, the orbit of `g` is everything. -/
 lemma orbitSpan_eq_top (R : CCRRep h K) {g : K} (hgR : ∀ g' ∈ vnRange R, g' ∈ Submodule.span ℂ {g}) :
     orbitSpan R g = ⊤ := by
-  haveI : CompleteSpace (orbitSpan R g) := (isClosed_orbitSpan R g).completeSpace_coe
+  have : CompleteSpace (orbitSpan R g) := (isClosed_orbitSpan R g).completeSpace_coe
   have hbot := eq_bot_of_orthogonal_vnRange R (orbitSpan R g)ᗮ (orthogonal_invariant R (orbitSpan_invariant R g))
     (Submodule.isClosed_orthogonal _) (fun g' hg' m hm => by
       obtain ⟨c, rfl⟩ := Submodule.mem_span_singleton.mp (hgR g' hg')
@@ -432,7 +432,7 @@ theorem isIrreducible_iff_finrank_vnRange [Nontrivial K] (R : CCRRep h K) :
     have hψM : ψ ∈ orbitSpan R g := htop ▸ Submodule.mem_top
     set ψ' : orbitSpan R g := ⟨ψ, hψM⟩ with hψ'
     have hψ'0 : ψ' ≠ 0 := fun h0 => hψ0 (congrArg Subtype.val h0)
-    haveI : CompleteSpace (orbitSpan R g) := (isClosed_orbitSpan R g).completeSpace_coe
+    have : CompleteSpace (orbitSpan R g) := (isClosed_orbitSpan R g).completeSpace_coe
     have hcyc := fockRep_cyclic S hψ'0
     have hWorb : orbitSpan R ψ ≤ W := Submodule.topologicalClosure_minimal _
       (Submodule.span_le.mpr (by rintro _ ⟨f, rfl⟩; exact hW f ψ hψW)) hWc

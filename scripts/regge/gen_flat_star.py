@@ -185,11 +185,11 @@ def emit_lean():
     out.append('    ring')
     out.append('  rw [eq_div_iff hdet, ← hdetp]')
     out.append('  simp only [Rnum, Matrix.adjugate_fin_three, Matrix.of_apply, Matrix.cons_val_zero, Matrix.cons_val_one,')
-    out.append('    Matrix.cons_val, Matrix.head_cons, Fin.sum_univ_three]')
+    out.append('    Matrix.cons_val, Fin.sum_univ_three]')
     lem_names = ', '.join('lenQ_%d_%d, lenR_%d_%d' % (a, b, a, b) for a in range(6) for b in range(6))
     out.append("  simp (config := { maxSteps := 100000000 }) only [Fin.sum_univ_six, %s, Einc, NPoly, NPoly', PPoly," % lem_names)
     out.append("    PPoly', qf, rf, ddq, Fin.sum_univ_three, Matrix.cons_val_zero,")
-    out.append("    Matrix.cons_val_one, Matrix.cons_val, Matrix.head_cons, div_eq_mul_inv]")
+    out.append("    Matrix.cons_val_one, Matrix.cons_val, div_eq_mul_inv]")
     out.append('  rw [hG 1 0, hG 2 0, hG 2 1]')
     out.append('  simp only [hd1 1 0, hd1 2 0, hd1 2 1, hd2 _ _ 1 0, hd2 _ _ 2 0, hd2 _ _ 2 1]')
     comb = ' + '.join('(%s * %s) * hu%d' % (lean_poly(det), lean_poly(Qs[k]), k + 1) for k in range(len(Ps)))
@@ -211,7 +211,7 @@ def emit_lemmas():
                    '    fin_cases j <;> simp <;> norm_num')
             out.append('/-- The Gram squared lengths of the incidence `(%d, %d)` with explicit edge vectors. -/\n'
                        'theorem lenQ_%d_%d (G : Fin 3 → Fin 3 → ℝ) : lenQ G %d %d = ![%s] := by\n%s\n'
-                       % (s_, h, s_, h, s_, h, ', '.join(qs), tac % 'lenQ'))
+                       % (s_, h, s_, h, s_, h, ', '.join(qs), tac.replace(' <;> norm_num', '') % 'lenQ'))
             out.append('/-- The second-order lengths of the incidence `(%d, %d)` with explicit edge data. -/\n'
                        'theorem lenR_%d_%d (dd : Fin 3 → Fin 3 → Fin 3 → Fin 3 → ℝ) : lenR dd %d %d = ![%s] := by\n%s\n'
                        % (s_, h, s_, h, s_, h, ', '.join(rs), tac % 'lenR'))
