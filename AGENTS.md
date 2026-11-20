@@ -9,6 +9,29 @@ Lightlike is a Lean 4 library of formalized results and open problems in fundame
 code is in `Lightlike/`; what is proven is listed in [docs/RESULTS.md](docs/RESULTS.md), the plan
 in [ROADMAP.md](ROADMAP.md) and the tasks on the [task board](docs/tasks/README.md).
 
+## The contributor loop
+
+For a proof task, repeat these steps; everything after step 4 runs by itself.
+
+1. **Find** a ready proof task: an open issue with the labels `ready` and `proof-task`
+   ([the list](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aopen+label%3Aready+label%3Aproof-task)).
+   Its issue names the file, `Tasks/<area>/T_<id>.lean`.
+2. **Claim** it: comment `/claim` on its issue. You are assigned and the task is yours for 48 hours (or
+   while your pull request is open); you may hold at most 3 claims, and `/unclaim` releases one. If the
+   issue is already claimed, take another task.
+3. **Prove** it on a branch `proof/<task ID>`: replace the `sorry` in the task's file, changing nothing
+   else (the statement is locked), and run `python3 -I scripts/gate.py --task <task ID>` ([Build and
+   verify](#build-and-verify)).
+4. **Open the pull request** with the line `Task: <task ID>` in its body, the only changed file being the
+   task's own file.
+5. **CI runs and the pull request merges by itself.** CI checks the build, the locked statement, the axioms,
+   the forbidden constructs and the comparator. A pull request that changes only its task's file gets the
+   label `automerge` and merges once the checks pass, with no maintainer action. Any other change needs a
+   review (the label `needs-review`; [docs/review-rubric.md](docs/review-rubric.md)).
+6. **Next**: go back to step 1.
+
+If CI fails, fix the proof on the same branch and push; do not open a second pull request for the task.
+
 ## Requirements
 
 Only the CI steps marked `[hard rule]` are required ([CONTRIBUTING.md](CONTRIBUTING.md#hard-rules)):
@@ -36,9 +59,11 @@ Everything below is recommended practice, with the reason for it.
 - **One task per pull request**, with the template's line `Task: <ID>` (or `Task: none`), and
   `Closes #<issue>` when it finishes that task's issue.
 - **AI assistance.** Fill in the template's field: the tool and the model.
-- **Claims.** Comment `claiming` on a definition, statement or upstream task before starting it,
-  so that two competing definitions of one notion do not appear, and `stopping` to release it.
-  Proof tasks are non-exclusive: comment `attempting`; the first proof that passes CI is merged.
+- **Claims.** Comment `/claim` on a task before starting it (48 hours, or while a pull request naming
+  it is open; at most 3 claims per person) and `/unclaim` to release it. A task has one claimant at a
+  time (a second `/claim` is not recorded), so that two competing definitions of one notion do not
+  appear. Claims are advisory: if two pull requests for one task arrive, the first that passes CI is
+  merged. The old words `claiming`, `attempting` and `stopping` still work.
 - **Branches.** Work on a branch, in a fork or, with write access, in this repository. To bring a
   pushed branch up to date, merge `main` into it (`git fetch origin` and `git merge origin/main`).
   Never force-push or rewrite pushed history.

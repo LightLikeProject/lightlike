@@ -1,0 +1,69 @@
+name: Review gate
+
+# Posts the commit status `review-gate` (the required check) on the head commit of a pull request, and sets
+# the label `needs-review` (scripts/review_gate.py has the rules): a pull request that adds, changes or
+# removes a Lean file under Lightlike/ or Tasks/ needs two approvals of its current commit from two
+# accounts other than the author, each with a merged pull request here, unless it is an auto-merge
+# proof-task pull request or its author administers the repository. Every other pull request passes. This
+# never merges anything.
+#
+# A status posted through the API satisfies a required status check whatever event computed it, so the
+# check does not depend on a check run of a pull_request_target or workflow_run job attaching to the head.
+#
+# Runs: pull_request_target (the pull request opens, changes, reopens or is relabelled) and workflow_run
+# (after "Review event", the no-op workflow that a review starts; a review event of a fork pull request has a
+# read-only token, so this run, which has the code and the token of `main`, does the work).
+#
+# Security: both triggers run `main`'s workflow file and the job checks out `main`, never the pull
+# request's head; the pull request is data read through the API. An edit of .github/ in a pull request is
+# guarded by the code-owner review of .github/CODEOWNERS.
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize, edited, labeled, ready_for_review]
+  workflow_run:
+    workflows: ["Review event"]
+    types: [completed]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+  statuses: write
+
+concurrency:
+  group: review-gate-${{ github.event.pull_request.number || github.event.workflow_run.head_sha }}
+  cancel-in-progress: true
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out main (never the pull request)
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install the pinned PyYAML
+        run: python3 -m pip install --quiet "$(grep -i '^pyyaml' requirements.txt)"
+
+      - name: Label needs-review and post the status (pull request event)
+        if: github.event_name == 'pull_request_target'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+        run: python3 scripts/review_gate.py --repo "$REPO" --pr "$PR" --labels --post-status
+
+      - name: Post the status (review event)
+        if: github.event_name == 'workflow_run'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.event.workflow_run.head_sha }}
+        run: python3 scripts/review_gate.py --repo "$REPO" --head-sha "$SHA" --post-status

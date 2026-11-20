@@ -1,0 +1,50 @@
+name: Auto-merge proof tasks
+
+# A proof-task pull request whose changed files are exactly its own task file gets the label
+# `automerge` and GitHub's auto-merge (squash): it enters the merge queue once the required checks
+# pass, with no maintainer action. When the file list changes the label is removed and auto-merge is
+# disabled. No other pull request is touched (scripts/automerge.py has the rules).
+#
+# Security: this uses pull_request_target, so it runs with a write token, and therefore it runs only
+# the code of `main` (the default checkout is the base branch; the job never fetches the pull request's
+# head). The body and the file list of the pull request are data read through the API; they never reach
+# a shell command or the checkout.
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize, edited, ready_for_review, converted_to_draft]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+# One run per pull request; a newer event replaces an older one, which reads everything again.
+concurrency:
+  group: automerge-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  automerge:
+    if: github.event.repository.private == false
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out main (never the pull request)
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install the pinned PyYAML
+        run: python3 -m pip install --quiet "$(grep -i '^pyyaml' requirements.txt)"
+
+      - name: Label and enable auto-merge, or undo it
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+        run: python3 scripts/automerge.py --repo "$REPO" --pr "$PR" --apply

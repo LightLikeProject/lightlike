@@ -1,0 +1,17 @@
+name: Review event
+
+# Does nothing. A review of a pull request starts it, and its completion starts "Review gate" (workflow_run),
+# which runs the code of `main` with a token that can post the status. A pull_request_review run of a fork
+# pull request has a read-only token and no secrets, so it cannot post the status itself.
+on:
+  pull_request_review:
+    types: [submitted, dismissed, edited]
+
+permissions: {}
+
+jobs:
+  noop:
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    steps:
+      - run: echo "a review event; the review gate workflow reads the reviews"
