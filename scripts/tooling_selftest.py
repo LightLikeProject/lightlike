@@ -571,8 +571,8 @@ _st, _acts = _sync(_ts2, _cfg2, _data, _card)
 _on = lambda acts, tid, op: [a for a in acts if a.get("task") == tid and a["op"] == op]  # noqa: E731
 _e = lambda acts, tid: (_on(acts, tid, "edit") or [{}])[0]  # noqa: E731
 expect("tasks sync: a claim is a live `/claim` (or `claiming`, `attempting`) comment of the last 48 hours; "
-       "released and expired ones drop out; a proof task keeps `ready` and may have several claimants",
-       _e(_acts, "T-X1-P1").get("add") == ["claimed"] and not _e(_acts, "T-X1-P1").get("remove")
+       "released and expired ones drop out; a proof task is exclusive like any other",
+       _e(_acts, "T-X1-P1").get("add") == ["claimed"] and _e(_acts, "T-X1-P1").get("remove") == ["ready"]
        and _e(_acts, "T-X1-P1").get("assign") == ["ann"]
        and tk.MARK.format("lapse cy 2026-09-01T00:00:00Z") in _on(_acts, "T-X1-P1", "comment")[0]["body"])
 expect("tasks sync: a claim assigns the claimant and replaces `ready` by `claimed`",
@@ -606,8 +606,8 @@ _dc2["issues"][3]["comments"].append(_c("github-actions[bot]", "no\n" + _ref[0][
                                         "2026-11-06T06:00:00Z"))
 _dc2["issues"][3]["assignees"] = []
 _dc2["issues"][3]["labels"] = ["ready"]
-_dc2["issues"][0]["assignees"], _dc2["issues"][0]["labels"] = ["gus"], ["proof-task", "ready", "claimed"]
-_dc2["issues"][1]["assignees"], _dc2["issues"][1]["labels"] = ["gus"], ["proof-task", "ready", "claimed"]
+_dc2["issues"][0]["assignees"], _dc2["issues"][0]["labels"] = ["gus"], ["proof-task", "claimed"]
+_dc2["issues"][1]["assignees"], _dc2["issues"][1]["labels"] = ["gus"], ["proof-task", "claimed"]
 _dc2["issues"][2]["assignees"], _dc2["issues"][2]["labels"] = ["gus"], ["milestone", "claimed"]
 expect("tasks sync: the refusal is posted once, and the refused claim does not come back by itself",
        not [a for a in _sync(_ts2, _cfg2, _dc2, _card)[1] if a["op"] in ("comment", "edit")])
@@ -629,6 +629,18 @@ expect("tasks sync: a claim past 48 hours is kept while a pull request naming th
        not _on(_acts_p, "T-X1", "comment") and _e(_acts_p, "T-X1").get("remove") == ["milestone"][:0]
        and len(_on(_acts_p, "T-X1-P1", "comment")) == 1
        and _e(_acts_p, "T-X1-P1").get("unassign") == ["fay"])
+_dt = json.loads(json.dumps(_dc))
+_dt["issues"] = [_iss(31, "T-X1: x", ["milestone", "claimed"],
+                      [_c("amy", "/claim", "2026-11-06T10:00:00Z"), _c("ben", "/claim", "2026-11-06T11:00:00Z"),
+                       _c("cat", "claiming", "2026-11-06T12:00:00Z")], assignees=["amy"])]
+_acts_t = _sync(_ts2, _cfg2, _dt, _card)[1]
+_tk = [a for a in _acts_t if a["op"] == "comment"]
+expect("tasks sync: a second `/claim` on a held task is answered once with the holder and the expiry, and not recorded",
+       len(_tk) == 2 and all("claimed by @amy" in a["body"] and "expires 2026-11-08T10:00:00Z" in a["body"] for a in _tk)
+       and tk.MARK.format("taken ben 2026-11-06T11:00:00Z") in _tk[0]["body"] and not _e(_acts_t, "T-X1").get("assign"))
+_dt["issues"][0]["comments"] += [_c("bot", "x\n" + a["body"].split("\n\n")[-1], "2026-11-06T13:00:00Z") for a in _tk]
+expect("tasks sync: the taken notices are posted once; the holder keeps the task",
+       not [a for a in _sync(_ts2, _cfg2, _dt, _card)[1] if a["op"] in ("comment", "edit")])
 expect("tasks: the commands `/claim` and `/unclaim` and their old words are recognized, `/claimed` is not",
        all(tk.CLAIM.search(x) for x in ("/claim", "  /Claim please", "claiming", "attempting via 1"))
        and all(tk.RELEASE.search(x) for x in ("/unclaim", "stopping", "Unclaiming", "no longer attempting"))

@@ -91,11 +91,11 @@ with the entry's ID, the place in its source, and what differs.
 - **The repository holds the plan; the issues hold the progress.** A task's issue opens when the
   task becomes ready, and a workflow keeps its labels current from comments and pull requests:
   **ready**, **claimed**, **in review**. Nobody edits a status by hand.
-- **Milestone and upstream tasks are taken by one person at a time.** Comment `/claim` to take
+- **Every task is taken by one person at a time.** Comment `/claim` to take
   one (you are assigned) and `/unclaim` to release it. A claim lasts 48 hours, or while a pull request
   naming the task is open; a person holds at most 3 claims.
-- **Proof tasks are open to everyone at once.** Comment `/claim` to show that you work on one (same
-  limits). The first proof that passes CI is merged.
+- **Proof tasks are claimed the same way.** Claims are advisory: if two pull requests arrive for one
+  task, the first that passes CI is merged.
 - **Done means merged.** A pull request that finishes a task says `Closes #<issue>`; a proof task's
   issue is closed once its proof is on `main`. Tasks that need it then become ready.
 

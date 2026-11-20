@@ -9,11 +9,11 @@ labels: ["proof-task"]
 **File** `{{file}}` · **declaration** `{{decl}}` · **milestone** {{milestone}} · **depends on** {{deps}}
 **Statement** {{lock}}: CI checks that a pull request leaves it as locked in docs/tasks/decomposition.yaml
 
-Proof tasks are non-exclusive: several people or agents may attempt this one at the same time,
-possibly by different routes. Comment `/claim` so the issue shows the label `claimed` and you are the
-assignee (48 hours, or as long as your pull request is open; at most 3 claims per person), and share
-approaches in this thread; `/unclaim` releases it. The first pull request that passes
-CI and review is merged; see CONTRIBUTING.md, "Working on the same problem".
+Comment `/claim` to take this task: the issue shows the label `claimed` and you are the assignee. A
+claim lasts 48 hours, or as long as a pull request naming the task is open; a person holds at most 3
+claims, and `/unclaim` releases one. While it is claimed, a second `/claim` is not recorded. Claims
+are advisory: if two pull requests arrive, the first that passes CI is merged. Share approaches in
+this thread; see CONTRIBUTING.md, "Working on the same problem".
 
 ### Routes
 

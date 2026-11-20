@@ -17,7 +17,7 @@ labels:
   claimed: {color: "fbca04", description: "Someone is working on it (comment `/claim`)"}
   attempting: {color: "c5def5", description: "Retired: proof tasks use claimed (comment `/claim`)"}
   in review: {color: "5319e7", description: "A pull request for it is open"}
-  proof-task: {color: "006b75", description: "Replace a sorry in a locked statement; non-exclusive"}
+  proof-task: {color: "006b75", description: "Replace a sorry in a locked statement"}
   milestone: {color: "1d76db", description: "A roadmap milestone: definitions, theorems and proofs"}
   upstream: {color: "d4c5f9", description: "Candidate for upstreaming"}
   "upstream:": {color: "d4c5f9", description: "Target library for upstreaming"}

@@ -118,7 +118,7 @@ name a task:
 |---|---|---|
 | `ready` | everything the task needs is done | its dependencies' issues are closed |
 | `blocked` | it waits for another task | a task it needs is not done |
-| `claimed` | someone works on it; they are the assignee (one person for a definition, statement or upstream task; several for a proof task) | someone comments `/claim`; it ends after 48 hours unless a pull request naming the task is open, or on `/unclaim` |
+| `claimed` | one person works on it; they are the assignee | someone comments `/claim`; it ends after 48 hours unless a pull request naming the task is open, or on `/unclaim` |
 | `in review` | a pull request for it is open | the pull request has the line `Task: <ID>` |
 
 Nobody sets these by hand, and nothing in the repository records progress. A task is done when its
@@ -131,7 +131,7 @@ area's [milestone table](docs/tasks/milestones.md) and its sources; the
 
 The work is split into small tasks so that many people can work at once, several on one problem.
 
-- **Claims.** Definition, statement and upstream tasks work best with one person at a time:
+- **Claims.** A task has one holder at a time:
   comment `/claim` on the issue, and `/unclaim` to release it. A claim lasts 48 hours, or as long as
   a pull request naming the task (`Task: <ID>`) is open; the workflow then says so on the issue and
   removes the assignee. A person holds at most 3 open claims; a fourth is refused with a comment.
@@ -142,8 +142,10 @@ The work is split into small tasks so that many people can work at once, several
   are split into intermediate lemmas, each its own statement and proof task.
 - **Ready** means every task it depends on is done, except proof tasks, which count once their
   statement is locked: you may use a lemma whose proof is still open.
-- **Claiming a proof task.** Proof tasks are non-exclusive. Commenting `/claim` on the issue labels it
-  `claimed` and assigns you (`/unclaim` withdraws it); sharing your approach in the thread helps others.
+- **Claiming a proof task.** Claims are exclusive for every kind of task. Commenting `/claim` on the
+  issue labels it `claimed` and assigns you (`/unclaim` withdraws it); a second `/claim` on a claimed
+  task is answered with the holder and the expiry. Claims are advisory: if two pull requests arrive,
+  the first that passes CI is merged. Sharing your approach in the thread helps others.
 - **First valid proof wins.** The first pull request that passes CI is merged. A later proof of
   the same statement is merged as an alternative only if it is clearly shorter, faster to check
   or more general.

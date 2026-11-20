@@ -1005,8 +1005,7 @@ def generic_card(t, ms):
                   f"A pull request for it has the line `Task: {t['id']}`; the one that finishes it says "
                   "`Closes #<this issue>`. See CONTRIBUTING.md."]
     else:
-        lines += ["Proof tasks are non-exclusive; comment `/claim` to show that you work on it (same limits), "
-                  "and see CONTRIBUTING.md, \"Working on the same problem\"."]
+        lines += ["Comment `/claim` to take it (see CONTRIBUTING.md, \"Working on the same problem\")."]
     return f"{t['id']}: {t['title']}", "\n".join(lines) + "\n"
 
 
@@ -1175,9 +1174,11 @@ def cmd_deps(check=False, packs_json=None, root=ROOT):
 
 ISSUE_TITLE = re.compile(rf"^\s*(?:\[proof task\]\s*)?({TASK_ID})\s*:")
 LAPSED = re.compile(r"<!-- tasks\.py sync: lapse (\S+) ")
-REFUSED = re.compile(r"<!-- tasks\.py sync: refused (\S+) ")
+REFUSED = re.compile(r"<!-- tasks\.py sync: (?:refused|taken) (\S+) ")
 LAPSE_TEXT = ("The claim of @{} expired after " + str(CLAIM_HOURS) + " hours without an open pull request that "
               "names the task, so the task is open to others. Comment `/claim` to take it again.")
+TAKEN_TEXT = ("@{} The task is claimed by @{}; that claim {}. A task has one holder at a time, so your `/claim` "
+              "is not recorded. Comment `/claim` again once it is released or has expired.")
 REFUSE_TEXT = ("@{} already holds {} open claims ({}). A person can hold at most " + str(MAX_CLAIMS) +
                " at a time: finish or release one with `/unclaim`, then comment `/claim` here again.")
 
@@ -1246,7 +1247,7 @@ def task_issues(tasks, issues):
 
 def activity(iss, prs, now):
     """Who works on the task of issue `iss`: (live, lapsed, ever). `live`: those who commented
-    `/claim` (or `claiming`, `attempting`) and have not released, in the order they started, whose claim
+    `/claim` (or `claiming`, `attempting`) and have not released, in the order they started (the first holds the task, the others are told it is taken), whose claim
     is at most CLAIM_HOURS old or who have an open pull request (`prs`, those that name the task);
     `lapsed`: [(login, claim time)] of the others; `ever`: everyone who claimed it. A lapse or refusal
     notice of `sync` ends that claim. A comment after the claim does not extend it."""
@@ -1281,10 +1282,10 @@ def live_labels(t, state, live, open_prs):
     """The labels of LIVE that the issue of task `t` carries in state `state`."""
     if state == "done":
         return []
-    exclusive, out = t["mode"] == "exclusive", []
+    out = []  # every task is exclusive: a claim blocks the others
     if state == "blocked":
         out.append("blocked")
-    elif not exclusive or not (live or open_prs):
+    elif not (live or open_prs):
         out.append("ready")
     if live:
         out.append("claimed")
@@ -1321,8 +1322,8 @@ def sync_plan(tasks, cfg, data, card, seed=None, now=None):
     acts = [dict(op="label", name=n) for n in LIVE + sorted({x for t in tasks for x in t["labels"]} - set(LIVE))
             if n not in have]
     seed_mark, proven_mark = MARK.format("seed"), MARK.format("proven")
-    # A person holds at most MAX_CLAIMS open claims (the first claimant of an exclusive task, or every
-    # claimant of a proof task, holds it); the later claims are refused and the claimant is told once.
+    # A person holds at most MAX_CLAIMS open claims (the first claimant of a task holds it); the later
+    # claims are refused and the claimant is told once.
     holds = OrderedDict()
     for tid, t in by.items():
         iss = issues.get(tid)
@@ -1330,7 +1331,7 @@ def sync_plan(tasks, cfg, data, card, seed=None, now=None):
             continue
         live = activity(iss, prs.get(tid, []), now)[0]
         started = claim_log(iss)[0]
-        for a in (live[:1] if t["mode"] == "exclusive" else live):
+        for a in live[:1]:
             holds.setdefault(a, []).append((started[a], tid))
     refused = {}
     for a, hs in holds.items():
@@ -1357,15 +1358,16 @@ def sync_plan(tasks, cfg, data, card, seed=None, now=None):
         live, lapsed, ever = activity(iss, mine, now)
         no = {a for a, _, _ in refused.get(tid, [])}
         live = [a for a in live if a not in no]
-        exclusive = t["mode"] == "exclusive"
+        started = claim_log(iss)[0]
+        taken = [(a, started[a]) for a in live[1:]]  # later claimants of a held task
+        live = live[:1]
         want = live_labels(t, state, live, open_prs)
         add = [x for x in want if x not in iss["labels"]]
         remove = [x for x in iss["labels"] if x in LIVE and x not in want]
         assign, unassign = [], []
         if state != "done":
-            held = live[:1] if exclusive else live
-            assign = [a for a in held if a not in iss["assignees"]]
-            unassign = [a for a in iss["assignees"] if a in ever and a not in held]
+            assign = [a for a in live if a not in iss["assignees"]]
+            unassign = [a for a in iss["assignees"] if a in ever and a not in live]
         if add or remove or assign or unassign:
             acts.append(dict(op="edit", task=tid, issue=num, add=add, remove=remove, assign=assign,
                              unassign=unassign))
@@ -1377,6 +1379,12 @@ def sync_plan(tasks, cfg, data, card, seed=None, now=None):
                           body=REFUSE_TEXT.format(a, MAX_CLAIMS, ", ".join(keep)) + "\n\n"
                           + MARK.format(f"refused {a} {stamp(when)}"))
                      for a, when, keep in refused.get(tid, [])]
+            if live:
+                until = (f"expires {stamp(started[live[0]] + datetime.timedelta(hours=CLAIM_HOURS))} unless a pull "
+                         "request naming the task is open")
+                acts += [dict(op="comment", task=tid, issue=num,
+                              body=TAKEN_TEXT.format(a, live[0], until) + "\n\n" + MARK.format(f"taken {a} {stamp(when)}"))
+                         for a, when in taken]
         if tid in seeded["closed"]:
             if seed_mark not in posted:
                 more = re.sub(r"^done\b\s*", "", seeded["closed"][tid]).strip()

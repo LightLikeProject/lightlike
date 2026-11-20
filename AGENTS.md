@@ -37,10 +37,10 @@ Everything below is recommended practice, with the reason for it.
   `Closes #<issue>` when it finishes that task's issue.
 - **AI assistance.** Fill in the template's field: the tool and the model.
 - **Claims.** Comment `/claim` on a task before starting it (48 hours, or while a pull request naming
-  it is open; at most 3 claims per person) and `/unclaim` to release it. A definition, statement or
-  upstream task has one claimant at a time, so that two competing definitions of one notion do not
-  appear. Proof tasks are non-exclusive; the first proof that passes CI is merged. The old words
-  `claiming`, `attempting` and `stopping` still work.
+  it is open; at most 3 claims per person) and `/unclaim` to release it. A task has one claimant at a
+  time (a second `/claim` is not recorded), so that two competing definitions of one notion do not
+  appear. Claims are advisory: if two pull requests for one task arrive, the first that passes CI is
+  merged. The old words `claiming`, `attempting` and `stopping` still work.
 - **Branches.** Work on a branch, in a fork or, with write access, in this repository. To bring a
   pushed branch up to date, merge `main` into it (`git fetch origin` and `git merge origin/main`).
   Never force-push or rewrite pushed history.
