@@ -59,7 +59,8 @@ UNLOCKED = "the statement awaits review and locking"
 LIVE = ["ready", "blocked", "claimed", "attempting", "in review"]
 MARK = "<!-- tasks.py sync: {} -->"  # hidden marker of each comment `sync` posts, so it posts once
 CONVENTIONS = "docs/CONVENTIONS.md"
-CLAIM_DAYS = 14
+CLAIM_HOURS = 48  # a claim lasts this long, or while a pull request naming the task is open
+MAX_CLAIMS = 3  # open claims per person
 SOURCES = "docs/tasks/sources.yaml"  # literature sources per milestone (scripts/sources.py)
 VERIFIED = "docs/tasks/sources-verified.json"
 STRUCTURAL = ("upstream",)  # kinds that need no literature source
@@ -76,9 +77,9 @@ MILESTONE_ID = re.compile(r"[A-Za-z][A-Za-z0-9]*")
 LOOKS_LIKE_ID = re.compile(r"[A-Z]{1,4}\d+[a-z]?")
 TASK_ID = r"T-[A-Za-z0-9]+(?:-[A-Za-z0-9]+)?"  # T-GE1, T-SF5a, T-QU1-P5, T-UP-1
 TASK_LINE_ANY = re.compile(rf"^\s*Task:\s*({TASK_ID})\b", re.M)
-ATTEMPT = re.compile(r"^\s*attempting\b", re.I | re.M)
-CLAIM = re.compile(r"^\s*claiming\b", re.I | re.M)
-RELEASE = re.compile(r"^\s*(stopping|releasing|unclaiming|no longer attempting)\b", re.I | re.M)
+# `/claim` and `/unclaim` are the commands; the words `claiming`, `attempting` and `stopping` are aliases.
+CLAIM = re.compile(r"^\s*(?:/claim|claiming|attempting)\b", re.I | re.M)
+RELEASE = re.compile(r"^\s*(?:/unclaim|stopping|releasing|unclaiming|no longer attempting)\b", re.I | re.M)
 
 
 def natural(s):
@@ -598,7 +599,6 @@ def readme(tasks, ms, repo):
         ("Ready proof tasks", "is:open label:ready label:proof-task", "Lean only, no physics"),
         ("Ready good first issues", 'is:open label:ready label:"good first issue"', ""),
         ("Claimed", "is:open label:claimed", "the claimant is the assignee"),
-        ("Attempting", "is:open label:attempting", "proof tasks with attempts in flight"),
         ("In review", 'is:open label:"in review"', "a pull request names the task"),
         ("Done", "is:closed reason:completed", "")])
     bullets = "\n".join(fill(b, "- ", "  ") for b in [
@@ -999,12 +999,13 @@ def generic_card(t, ms):
               "axioms only, nothing imports Exploratory/, docstrings), and",
               *[f"- {a}" for a in ACCEPT[t["kind"]]], ""]
     if t["mode"] == "exclusive":
-        lines += [f"To take it, comment `claiming`: you are assigned and others see the task is taken. A claim "
-                  f"lapses after {CLAIM_DAYS} days without a comment or pull request, and `stopping` releases it. "
+        lines += [f"To take it, comment `/claim`: you are assigned and others see the task is taken. A claim "
+                  f"lasts {CLAIM_HOURS} hours, or as long as a pull request naming the task is open; a person holds "
+                  f"at most {MAX_CLAIMS} claims, and `/unclaim` releases one. "
                   f"A pull request for it has the line `Task: {t['id']}`; the one that finishes it says "
                   "`Closes #<this issue>`. See CONTRIBUTING.md."]
     else:
-        lines += ["Proof tasks are non-exclusive; see CONTRIBUTING.md, \"Working on the same problem\"."]
+        lines += ["Comment `/claim` to take it (see CONTRIBUTING.md, \"Working on the same problem\")."]
     return f"{t['id']}: {t['title']}", "\n".join(lines) + "\n"
 
 
@@ -1173,8 +1174,13 @@ def cmd_deps(check=False, packs_json=None, root=ROOT):
 
 ISSUE_TITLE = re.compile(rf"^\s*(?:\[proof task\]\s*)?({TASK_ID})\s*:")
 LAPSED = re.compile(r"<!-- tasks\.py sync: lapse (\S+) ")
-LAPSE_TEXT = ("The claim of @{} lapsed after " + str(CLAIM_DAYS) + " days without a comment or pull request, "
-              "so the task is open to others. Comment `claiming` to take it again.")
+REFUSED = re.compile(r"<!-- tasks\.py sync: (?:refused|taken) (\S+) ")
+LAPSE_TEXT = ("The claim of @{} expired after " + str(CLAIM_HOURS) + " hours without an open pull request that "
+              "names the task, so the task is open to others. Comment `/claim` to take it again.")
+TAKEN_TEXT = ("@{} The task is claimed by @{}; that claim {}. A task has one holder at a time, so your `/claim` "
+              "is not recorded. Comment `/claim` again once it is released or has expired.")
+REFUSE_TEXT = ("@{} already holds {} open claims ({}). A person can hold at most " + str(MAX_CLAIMS) +
+               " at a time: finish or release one with `/unclaim`, then comment `/claim` here again.")
 
 
 def gh(args, fatal=True):
@@ -1241,43 +1247,48 @@ def task_issues(tasks, issues):
 
 def activity(iss, prs, now):
     """Who works on the task of issue `iss`: (live, lapsed, ever). `live`: those who commented
-    `claiming` or `attempting` and have not released, in the order they started, whose last comment
-    or pull request (`prs`, those that name the task) is at most CLAIM_DAYS old; `lapsed`: [(login,
-    claim time)] of the others; `ever`: everyone who claimed or attempted it. A lapse notice of
-    `sync` ends that claim."""
-    active, ever, last = OrderedDict(), set(), {}
+    `/claim` (or `claiming`, `attempting`) and have not released, in the order they started (the first holds the task, the others are told it is taken), whose claim
+    is at most CLAIM_HOURS old or who have an open pull request (`prs`, those that name the task);
+    `lapsed`: [(login, claim time)] of the others; `ever`: everyone who claimed it. A lapse or refusal
+    notice of `sync` ends that claim. A comment after the claim does not extend it."""
+    active, ever = claim_log(iss)
+    with_pr = {p["author"] for p in prs if p["state"] == "open"}
+    window = datetime.timedelta(hours=CLAIM_HOURS)
+    live = [a for a in active if now - active[a] <= window or a in with_pr]
+    return live, [(a, active[a]) for a in active if a not in live], ever
+
+
+def claim_log(iss):
+    """({login: time of the claim} in the order claimed, {everyone who claimed}) from the comments of `iss`:
+    a release, and a lapse or refusal notice of `sync`, end a claim."""
+    active, ever = OrderedDict(), set()
     for c in sorted(iss.get("comments") or [], key=lambda c: c["createdAt"]):
         a, body, when = c["author"], c.get("body") or "", parse_time(c["createdAt"])
-        m = LAPSED.search(body)
+        m = LAPSED.search(body) or REFUSED.search(body)
         if m:
             active.pop(m.group(1), None)
             continue
         if "<!-- tasks.py sync:" in body or a.endswith("[bot]"):
             continue
-        last[a] = max(last.get(a, when), when)
         if RELEASE.search(body):
             active.pop(a, None)
-        elif ATTEMPT.search(body) or CLAIM.search(body):
+        elif CLAIM.search(body):
             active.setdefault(a, when)
             ever.add(a)
-    for p in prs:
-        when = parse_time(p["updatedAt"])
-        last[p["author"]] = max(last.get(p["author"], when), when)
-    live = [a for a in active if now - last[a] <= datetime.timedelta(days=CLAIM_DAYS)]
-    return live, [(a, active[a]) for a in active if a not in live], ever
+    return active, ever
 
 
 def live_labels(t, state, live, open_prs):
     """The labels of LIVE that the issue of task `t` carries in state `state`."""
     if state == "done":
         return []
-    exclusive, out = t["mode"] == "exclusive", []
+    out = []  # every task is exclusive: a claim blocks the others
     if state == "blocked":
         out.append("blocked")
-    elif not exclusive or not (live or open_prs):
+    elif not (live or open_prs):
         out.append("ready")
     if live:
-        out.append("claimed" if exclusive else "attempting")
+        out.append("claimed")
     if open_prs:
         out.append("in review")
     return out
@@ -1311,6 +1322,21 @@ def sync_plan(tasks, cfg, data, card, seed=None, now=None):
     acts = [dict(op="label", name=n) for n in LIVE + sorted({x for t in tasks for x in t["labels"]} - set(LIVE))
             if n not in have]
     seed_mark, proven_mark = MARK.format("seed"), MARK.format("proven")
+    # A person holds at most MAX_CLAIMS open claims (the first claimant of a task holds it); the later
+    # claims are refused and the claimant is told once.
+    holds = OrderedDict()
+    for tid, t in by.items():
+        iss = issues.get(tid)
+        if iss is None or iss["state"] == "closed" or states[tid][0] == "done":
+            continue
+        live = activity(iss, prs.get(tid, []), now)[0]
+        started = claim_log(iss)[0]
+        for a in live[:1]:
+            holds.setdefault(a, []).append((started[a], tid))
+    refused = {}
+    for a, hs in holds.items():
+        for when, tid in sorted(hs)[MAX_CLAIMS:]:
+            refused.setdefault(tid, []).append((a, when, [x for _, x in sorted(hs)[:MAX_CLAIMS]]))
     for tid, t in by.items():
         state, mine = states[tid][0], prs.get(tid, [])
         open_prs = [p for p in mine if p["state"] == "open"]
@@ -1330,21 +1356,35 @@ def sync_plan(tasks, cfg, data, card, seed=None, now=None):
             continue
         posted = "\n".join(c.get("body") or "" for c in iss.get("comments") or [])
         live, lapsed, ever = activity(iss, mine, now)
-        exclusive = t["mode"] == "exclusive"
+        no = {a for a, _, _ in refused.get(tid, [])}
+        live = [a for a in live if a not in no]
+        started = claim_log(iss)[0]
+        taken = [(a, started[a]) for a in live[1:]]  # later claimants of a held task
+        live = live[:1]
         want = live_labels(t, state, live, open_prs)
         add = [x for x in want if x not in iss["labels"]]
         remove = [x for x in iss["labels"] if x in LIVE and x not in want]
         assign, unassign = [], []
-        if exclusive and state != "done":
-            assign = [a for a in live[:1] if a not in iss["assignees"]]
-            unassign = [a for a in iss["assignees"] if a in ever and a not in live[:1]]
+        if state != "done":
+            assign = [a for a in live if a not in iss["assignees"]]
+            unassign = [a for a in iss["assignees"] if a in ever and a not in live]
         if add or remove or assign or unassign:
             acts.append(dict(op="edit", task=tid, issue=num, add=add, remove=remove, assign=assign,
                              unassign=unassign))
-        if exclusive and state != "done":
+        if state != "done":
             acts += [dict(op="comment", task=tid, issue=num,
                           body=LAPSE_TEXT.format(a) + "\n\n" + MARK.format(f"lapse {a} {stamp(when)}"))
                      for a, when in lapsed]
+            acts += [dict(op="comment", task=tid, issue=num,
+                          body=REFUSE_TEXT.format(a, MAX_CLAIMS, ", ".join(keep)) + "\n\n"
+                          + MARK.format(f"refused {a} {stamp(when)}"))
+                     for a, when, keep in refused.get(tid, [])]
+            if live:
+                until = (f"expires {stamp(started[live[0]] + datetime.timedelta(hours=CLAIM_HOURS))} unless a pull "
+                         "request naming the task is open")
+                acts += [dict(op="comment", task=tid, issue=num,
+                              body=TAKEN_TEXT.format(a, live[0], until) + "\n\n" + MARK.format(f"taken {a} {stamp(when)}"))
+                         for a, when in taken]
         if tid in seeded["closed"]:
             if seed_mark not in posted:
                 more = re.sub(r"^done\b\s*", "", seeded["closed"][tid]).strip()
