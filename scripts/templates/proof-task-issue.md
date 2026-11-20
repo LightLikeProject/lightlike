@@ -10,8 +10,9 @@ labels: ["proof-task"]
 **Statement** {{lock}}: CI checks that a pull request leaves it as locked in docs/tasks/decomposition.yaml
 
 Proof tasks are non-exclusive: several people or agents may attempt this one at the same time,
-possibly by different routes. Comment "attempting" (non-binding) so the issue shows the label
-`attempting`, and share approaches in this thread; "stopping" ends your attempt. The first pull request that passes
+possibly by different routes. Comment `/claim` so the issue shows the label `claimed` and you are the
+assignee (48 hours, or as long as your pull request is open; at most 3 claims per person), and share
+approaches in this thread; `/unclaim` releases it. The first pull request that passes
 CI and review is merged; see CONTRIBUTING.md, "Working on the same problem".
 
 ### Routes

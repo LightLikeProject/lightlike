@@ -30,7 +30,7 @@ python3 -m venv .venv && . .venv/bin/activate && pip install -r requirements.txt
 Then, on either route:
 
 1. Pick a [proof task labelled **ready**](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aopen+label%3Aready+label%3Aproof-task),
-   comment `attempting` on its issue, and open its file, for example `Tasks/QU/T_QU1_P5.lean` for
+   comment `/claim` on its issue, and open its file, for example `Tasks/QU/T_QU1_P5.lean` for
    `T-QU1-P5`. Its header lists the definitions the statement uses, with their files, and lemmas
    about them; `scripts/context-pack <declaration>` prints all of them in one block.
 2. Run `lake build Tasks.QU.T_QU1_P5`. The first build compiles the parts of Physlib and Lightlike
@@ -55,7 +55,7 @@ Paste this into your coding agent, started in a clone set up as above. It follow
 You are contributing one proof to Lightlike, a Lean 4 library; this folder is a clone of it.
 1. Read AGENTS.md and CONTRIBUTING.md before anything else, and follow them.
 2. Pick one open proof task labelled `ready` (CONTRIBUTING.md, "Your first proof task"). Tell me
-   which, and comment `attempting` on its issue (or ask me to) before you start.
+   which, and comment `/claim` on its issue (or ask me to) before you start.
 3. Work on a branch `proof/<task ID>`, one task per pull request.
 4. Change only the proof in the task's file. Never edit the locked statement, and never add
    `sorry`, `admit`, `axiom`, `native_decide` or `maxHeartbeats 0`.
@@ -118,8 +118,7 @@ name a task:
 |---|---|---|
 | `ready` | everything the task needs is done | its dependencies' issues are closed |
 | `blocked` | it waits for another task | a task it needs is not done |
-| `claimed` | one person works on it; they are the assignee | someone comments `claiming` |
-| `attempting` | a proof task with attempts in flight | someone comments `attempting` |
+| `claimed` | someone works on it; they are the assignee (one person for a definition, statement or upstream task; several for a proof task) | someone comments `/claim`; it ends after 48 hours unless a pull request naming the task is open, or on `/unclaim` |
 | `in review` | a pull request for it is open | the pull request has the line `Task: <ID>` |
 
 Nobody sets these by hand, and nothing in the repository records progress. A task is done when its
@@ -133,16 +132,18 @@ area's [milestone table](docs/tasks/milestones.md) and its sources; the
 The work is split into small tasks so that many people can work at once, several on one problem.
 
 - **Claims.** Definition, statement and upstream tasks work best with one person at a time:
-  comment `claiming` on the issue, and `stopping` to release it. A claim lapses after 14 days
-  without a comment or pull request; the workflow then says so on the issue and removes the
-  assignee. This avoids two competing definitions of the same notion.
+  comment `/claim` on the issue, and `/unclaim` to release it. A claim lasts 48 hours, or as long as
+  a pull request naming the task (`Task: <ID>`) is open; the workflow then says so on the issue and
+  removes the assignee. A person holds at most 3 open claims; a fourth is refused with a comment.
+  This avoids two competing definitions of the same notion. The old words `claiming`, `attempting`
+  and `stopping` still work as aliases.
 - **Statements first.** Each result is first written as a Lean statement with `sorry`. Once it is
   reviewed and locked, its proof becomes a proof task with its own file in `Tasks/`. Large proofs
   are split into intermediate lemmas, each its own statement and proof task.
 - **Ready** means every task it depends on is done, except proof tasks, which count once their
   statement is locked: you may use a lemma whose proof is still open.
-- **Attempting.** Proof tasks are non-exclusive. Commenting `attempting` on the issue labels it
-  `attempting` (`stopping` withdraws it); sharing your approach in the thread helps others.
+- **Claiming a proof task.** Proof tasks are non-exclusive. Commenting `/claim` on the issue labels it
+  `claimed` and assigns you (`/unclaim` withdraws it); sharing your approach in the thread helps others.
 - **First valid proof wins.** The first pull request that passes CI is merged. A later proof of
   the same statement is merged as an alternative only if it is clearly shorter, faster to check
   or more general.

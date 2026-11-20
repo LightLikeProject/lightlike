@@ -36,9 +36,11 @@ Everything below is recommended practice, with the reason for it.
 - **One task per pull request**, with the template's line `Task: <ID>` (or `Task: none`), and
   `Closes #<issue>` when it finishes that task's issue.
 - **AI assistance.** Fill in the template's field: the tool and the model.
-- **Claims.** Comment `claiming` on a definition, statement or upstream task before starting it,
-  so that two competing definitions of one notion do not appear, and `stopping` to release it.
-  Proof tasks are non-exclusive: comment `attempting`; the first proof that passes CI is merged.
+- **Claims.** Comment `/claim` on a task before starting it (48 hours, or while a pull request naming
+  it is open; at most 3 claims per person) and `/unclaim` to release it. A definition, statement or
+  upstream task has one claimant at a time, so that two competing definitions of one notion do not
+  appear. Proof tasks are non-exclusive; the first proof that passes CI is merged. The old words
+  `claiming`, `attempting` and `stopping` still work.
 - **Branches.** Work on a branch, in a fork or, with write access, in this repository. To bring a
   pushed branch up to date, merge `main` into it (`git fetch origin` and `git merge origin/main`).
   Never force-push or rewrite pushed history.

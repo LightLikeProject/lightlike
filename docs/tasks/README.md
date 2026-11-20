@@ -8,7 +8,6 @@ working on what, and what is done, is on the issues:
 - [Ready proof tasks](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aopen+label%3Aready+label%3Aproof-task): Lean only, no physics
 - [Ready good first issues](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aopen+label%3Aready+label%3A%22good+first+issue%22)
 - [Claimed](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aopen+label%3Aclaimed): the claimant is the assignee
-- [Attempting](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aopen+label%3Aattempting): proof tasks with attempts in flight
 - [In review](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aopen+label%3A%22in+review%22): a pull request names the task
 - [Done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted)
 
