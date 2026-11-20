@@ -483,6 +483,7 @@ tasks:
     file: "Tasks/GE6/T_GE6_P1.lean"
     decl: "Lightlike.kerr_gtt_eq"
     routes: ["Unfold `kerrMetric`, `kerrS`, `kerrD`; clear the denominator with `kerrS_pos` and use `sin² + cos² = 1`."]
+    lock: "d1781fa563d729b6"
     labels: ["proof-task", "area: geometry", "size: S", "intermediate"]
   - id: "T-GE6-P2"
     kind: "proof"
@@ -501,6 +502,7 @@ tasks:
     file: "Tasks/GE6/T_GE6_P2.lean"
     decl: "Lightlike.kerr_gtt_horizon"
     routes: ["From `kerr_gtt_eq` (T-GE6-P1); nonnegativity from `kerrS_pos`."]
+    lock: "79bfc220bf89f144"
     labels: ["proof-task", "area: geometry", "size: S", "intermediate"]
   - id: "T-GE6-P3"
     kind: "proof"
@@ -519,6 +521,7 @@ tasks:
     file: "Tasks/GE6/T_GE6_P3.lean"
     decl: "Lightlike.kerr_ergosurface_iff"
     routes: ["Reduce to the numerator `Δ - a² sin²θ = r² - 2Mr + a² cos²θ` of `kerr_gtt_eq`."]
+    lock: "63452b70570642ca"
     labels: ["proof-task", "area: geometry", "size: S", "intermediate"]
   - id: "T-GE6-P4"
     kind: "proof"
@@ -537,6 +540,7 @@ tasks:
     file: "Tasks/GE6/T_GE6_P4.lean"
     decl: "Lightlike.kerr_mass_zero"
     routes: ["Entrywise: `Matrix.ext` with `fin_cases`, then `simp [kerrMetric, kerrD]` and `field_simp`."]
+    lock: "82a83265e184a5a9"
     labels: ["proof-task", "area: geometry", "size: S", "intermediate"]
   - id: "T-GE6-P5"
     kind: "proof"
@@ -555,6 +559,7 @@ tasks:
     file: "Tasks/GE6/T_GE6_P5.lean"
     decl: "Lightlike.kerr_irreducible_mass"
     routes: ["`rplus_sq_add` gives `r₊² + a² = 2 M r₊`; then `√(M⁴ - M² a²) = M √(M² - a²)`."]
+    lock: "9063c440414ff9c3"
     labels: ["proof-task", "area: geometry", "size: S", "intermediate"]
   - id: "T-GE6-P6"
     kind: "proof"
@@ -573,6 +578,7 @@ tasks:
     file: "Tasks/GE6/T_GE6_P6.lean"
     decl: "Lightlike.kerr_extreme_extraction"
     routes: ["At `a = M`, `r₊ = M`, so `M_irr² = M²/2`."]
+    lock: "08476dece9bcb162"
     labels: ["proof-task", "area: geometry", "size: S", "intermediate"]
   - id: "T-GE6-P7"
     kind: "proof"
@@ -591,6 +597,7 @@ tasks:
     file: "Tasks/GE6/T_GE6_P7.lean"
     decl: "Lightlike.kerr_first_law"
     routes: ["Differentiate `r₊ = M + √(M² - a²)` (differentiable since `M² - a² > 0`); use `kerrKappa_eq` and `rplus_sq_add`."]
+    lock: "0848073ab1830ed0"
     labels: ["proof-task", "area: geometry", "size: M", "intermediate"]
   - id: "T-GE7"
     kind: "milestone"

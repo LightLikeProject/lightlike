@@ -952,6 +952,13 @@ upstream:
 # last; `lock` rewrites it.
 locked:
   T-GE2-P11: "7f3818d52455ebb3"
+  T-GE6-P1: "d1781fa563d729b6"
+  T-GE6-P2: "79bfc220bf89f144"
+  T-GE6-P3: "63452b70570642ca"
+  T-GE6-P4: "82a83265e184a5a9"
+  T-GE6-P5: "9063c440414ff9c3"
+  T-GE6-P6: "08476dece9bcb162"
+  T-GE6-P7: "0848073ab1830ed0"
   T-QU1-P1: "e1f8fee660e6bb70"
   T-QU1-P2: "48d6183e645a58f7"
   T-QU1-P3: "f6a02ca2e41a673e"
