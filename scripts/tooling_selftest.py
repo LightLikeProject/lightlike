@@ -1015,5 +1015,89 @@ expect("contributors: the rendered body has the marker, the leaderboard and the 
 expect("contributors: the issue is found by its marker, and no other issue",
        ct.find_issue([{"number": 3, "body": "x"}, {"number": 5, "body": "a " + ct.MARK}, {"number": 9, "body": ct.MARK}]) == 5
        and ct.find_issue([{"number": 3, "body": "x"}, {"number": 4, "body": None}]) is None)
+# Auto-merge of proof-task pull requests: the decision is made from the body and the API file list only.
+import automerge as am  # noqa: E402
+_pf = {"T-X1-P1": "Tasks/X/T_X1_P1.lean", "T-X1-P2": "Tasks/X/T_X1_P2.lean"}
+_pr = lambda body="Task: T-X1-P1\n", **kw: dict(  # noqa: E731
+    dict(state="open", draft=False, base={"ref": "main"}, body=body, labels=[]), **kw)
+_fl = lambda *names, status="modified": [{"filename": n, "status": status} for n in names]  # noqa: E731
+_own = "Tasks/X/T_X1_P1.lean"
+expect("automerge: a proof-task pull request that changes exactly its own task file is eligible",
+       am.decide(_pr(), _fl(_own), _pf)[0] and am.plan(True, []) == ["label", "auto"]
+       and am.plan(True, ["automerge"]) == ["auto"])
+expect("automerge planted: any other file, an added, renamed or removed file, a second task file is not eligible",
+       not am.decide(_pr(), _fl(_own, "Lightlike/A.lean"), _pf)[0]
+       and not am.decide(_pr(), _fl(_own, "Tasks/X/T_X1_P2.lean"), _pf)[0]
+       and not am.decide(_pr(), _fl(_own, status="added"), _pf)[0]
+       and not am.decide(_pr(), _fl(_own, status="renamed"), _pf)[0]
+       and not am.decide(_pr(), _fl("Tasks/X/T_X1_P2.lean"), _pf)[0] and not am.decide(_pr(), [], _pf)[0])
+expect("automerge planted: no Task line, `Task: none`, a milestone task, two task lines, or a task line only in a "
+       "comment is not eligible",
+       not am.decide(_pr("text"), _fl(_own), _pf)[0] and not am.decide(_pr("Task: none"), _fl(_own), _pf)[0]
+       and not am.decide(_pr("Task: T-X1\n"), _fl(_own), _pf)[0]
+       and not am.decide(_pr("Task: T-X1-P1\nTask: T-X1-P2\n"), _fl(_own), _pf)[0]
+       and not am.decide(_pr("Task: T-X1-P1\nTask: none\n"), _fl(_own), _pf)[0]
+       and not am.decide(_pr("<!-- Task: T-X1-P1 -->"), _fl(_own), _pf)[0]
+       and am.decide(_pr("<!-- Task: T-X1-P2 -->\nTask: T-X1-P1\n"), _fl(_own), _pf)[0])
+expect("automerge planted: a closed, draft or non-main pull request is not eligible",
+       not am.decide(_pr(state="closed"), _fl(_own), _pf)[0] and not am.decide(_pr(draft=True), _fl(_own), _pf)[0]
+       and not am.decide(_pr(base={"ref": "dev"}), _fl(_own), _pf)[0])
+expect("automerge: a pull request that stops being eligible loses the label and auto-merge; others are left alone",
+       am.plan(False, ["automerge", "x"]) == ["unlabel", "noauto"] and am.plan(False, ["x"]) == []
+       and am.plan(False, []) == [])
+with tempfile.TemporaryDirectory() as _d:
+    _fx = pathlib.Path(_d) / "f.json"
+    _fx.write_text(json.dumps({"pr": _pr(labels=[{"name": "automerge"}]), "files": _fl(_own, "scripts/x.py"),
+                               "proof_files": _pf}))
+    _o = subprocess.run([sys.executable, str(HERE / "automerge.py"), "--selftest-data", str(_fx)],
+                        capture_output=True, text=True)
+    expect("automerge: the command line decides on a fixture and shows the steps",
+           json.loads(_o.stdout)["steps"] == ["unlabel", "noauto"] and not json.loads(_o.stdout)["eligible"])
+expect("automerge: proof_files reads the proof tasks of tasks.yaml",
+       am.proof_files(HERE.parent).get("T-GE2-P1", "").endswith("T_GE2_P1.lean")
+       and not any(k.count("-P") == 0 for k in am.proof_files(HERE.parent)))
+# The review gate (a commit status) and the label needs-review.
+import review_gate as rg  # noqa: E402
+_pf = {"T-X1-P1": "Tasks/X/T_X1_P1.lean"}
+_prr = lambda author="ann", body="", sha="s1", **kw: dict(  # noqa: E731
+    dict(state="open", draft=False, base={"ref": "main"}, body=body, user={"login": author}, head={"sha": sha},
+         labels=[]), **kw)
+_rv = lambda u, state="APPROVED", sha="s1", at="2026-01-01T00:00:00Z", typ="User": dict(  # noqa: E731
+    user={"login": u, "type": typ}, state=state, commit_id=sha, submitted_at=at)
+_none, _admin = (lambda u: False), (lambda u: u == "root")
+_m = lambda u: {"bo": 1, "cy": 3, "newbie": 0}.get(u, 0)  # noqa: E731
+_lf = lambda name="Lightlike/A.lean", status="modified", **kw: [dict({"filename": name, "status": status}, **kw)]  # noqa: E731
+_own = [{"filename": "Tasks/X/T_X1_P1.lean", "status": "modified"}]
+_ev = lambda pr, files, reviews=(), admin=_none: rg.evaluate(pr, files, list(reviews), admin, _m, _pf)[0]  # noqa: E731
+expect("review gate: a pull request that touches no Lean file of Lightlike/ or Tasks/ passes without review",
+       _ev(_prr(), [{"filename": "docs/a.md", "status": "modified"}]) == "success"
+       and _ev(_prr(), [{"filename": "scripts/x.py", "status": "added"}, {"filename": "Other/B.lean", "status": "added"}]) == "success"
+       and _ev(_prr(), []) == "success")
+expect("review gate: an auto-merge proof-task pull request passes, and so does an administrator's pull request",
+       _ev(_prr(body="Task: T-X1-P1"), _own) == "success"
+       and _ev(_prr(author="root"), _lf(), admin=_admin) == "success")
+expect("review gate: any added, changed, removed or renamed Lean file under Lightlike/ or Tasks/ needs two approvals",
+       all(rg.needs_review(_lf(n, st, **kw)) for n, st, kw in [
+           ("Lightlike/A.lean", "modified", {}), ("Lightlike/B/C.lean", "added", {}), ("Tasks/X/T.lean", "removed", {}),
+           ("Tasks/Y.lean", "renamed", {"previous_filename": "Lightlike/Z.lean"}),
+           ("docs/z.md", "renamed", {"previous_filename": "Lightlike/Z.lean"})])
+       and not rg.needs_review(_lf("Lightlike/A.md")) and not rg.needs_review(_lf("scripts/a.lean")))
+expect("review gate: two approvals of the current commit from distinct non-authors with merged pull requests pass",
+       _ev(_prr(), _lf(), [_rv("bo"), _rv("cy")]) == "success")
+expect("review gate planted: one approval, the author's own, a reviewer without a merged pull request, a bot, "
+       "an approval of an older commit, a later change request, a comment, a repeated reviewer stay pending",
+       all(_ev(_prr(), _lf(), r) == "pending" for r in (
+           [_rv("bo")], [_rv("bo"), _rv("ann")], [_rv("bo"), _rv("newbie")], [_rv("bo"), _rv("cy", typ="Bot")],
+           [_rv("bo"), _rv("cy", sha="old")],
+           [_rv("bo"), _rv("cy"), _rv("cy", "CHANGES_REQUESTED", at="2026-01-02T00:00:00Z")],
+           [_rv("bo"), _rv("cy", "COMMENTED")], [_rv("bo"), _rv("bo")], [_rv("bo"), _rv("cy", "DISMISSED")], [])))
+expect("review gate: a later approval after a change request counts",
+       _ev(_prr(), _lf(), [_rv("bo"), _rv("cy", "CHANGES_REQUESTED"), _rv("cy", at="2026-01-02T00:00:00Z")]) == "success")
+expect("review gate planted: an outsider's pull request that adds a file to its task is not an auto-merge pull request",
+       _ev(_prr(body="Task: T-X1-P1"), _own + [{"filename": "Lightlike/N.lean", "status": "added"}]) == "pending")
+expect("needs-review: the label is set on a Lean change, removed when it goes, never on an auto-merge pull request",
+       rg.label_plan(_prr(), _lf(), _pf, []) == ["label"] and rg.label_plan(_prr(), _lf(), _pf, ["needs-review"]) == []
+       and rg.label_plan(_prr(), [{"filename": "docs/a.md", "status": "modified"}], _pf, ["needs-review"]) == ["unlabel"]
+       and rg.label_plan(_prr(body="Task: T-X1-P1"), _own, _pf, ["needs-review"]) == ["unlabel"])
 print("selftest:", "OK" if not fails else f"FAILED ({len(fails)})")
 sys.exit(1 if fails else 0)

@@ -1,0 +1,16 @@
+name: Review gate (merge queue)
+
+# The required check `review-gate` must report on a merge-queue run too, or the queue waits for it for
+# ever. A pull request is in the queue only after it passed the gate, so this job passes.
+on:
+  merge_group:
+    types: [checks_requested]
+
+permissions: {}
+
+jobs:
+  review-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    steps:
+      - run: echo "the pull request passed the review gate to enter the merge queue"
