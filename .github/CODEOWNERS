@@ -1,0 +1,8 @@
+# Code owners. A pull request that changes one of these paths asks the owner for review, and the
+# repository ruleset can require that review. The build files, the toolchain pin, the workflows and
+# the scripts decide what CI runs, so only the maintainer changes them.
+/lakefile.toml        @RolandasTMNS
+/lake-manifest.json   @RolandasTMNS
+/lean-toolchain       @RolandasTMNS
+/.github/             @RolandasTMNS
+/scripts/             @RolandasTMNS
