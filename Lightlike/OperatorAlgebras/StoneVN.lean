@@ -39,9 +39,7 @@ lemma vnConst_ne_zero : vnConst h ≠ 0 := by
   rw [vnConst, Ne, Complex.cpow_eq_zero_iff]
   push Not
   intro h0
-  exfalso
-  have : (Real.pi : ℂ) ≠ 0 := Complex.ofReal_ne_zero.mpr Real.pi_ne_zero
-  exact this (by simp)
+  simp at h0
 
 /-- **von Neumann's projection** `P₀ = (2π)^{-d} ∫ e^{-‖z‖²/4} W z dz`. -/
 noncomputable def vnProj (R : CCRRep h K) (y : K) : K := (vnConst h)⁻¹ • gaussAvg R y
