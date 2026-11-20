@@ -154,7 +154,7 @@ The work is split into small tasks so that many people can work at once, several
 
 ## Review
 
-The [README](CONTRIBUTING.md#review) gives what a statement is checked for: conventions, quantifier
+The [review rubric](docs/review-rubric.md) gives what a statement is checked for: conventions, quantifier
 ranges, junk values and non-vacuity. To review a result, compare its statement and definitions
 with the cited source and post your findings on its issue; a maintainer then records it as
 **human-reviewed** in `docs/results.yaml`, with a link to that issue. A statement under review is
