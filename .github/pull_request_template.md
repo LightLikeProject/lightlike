@@ -20,3 +20,4 @@ Task:
 - [ ] Only Lean files changed; a renamed declaration keeps a `@[deprecated]` alias.
 - [ ] One topic; commit messages follow the format in CONTRIBUTING.md (`type(scope): summary`, a body that says why).
 - [ ] I have read the whole diff and vouch for it.
+- [ ] If this changes a Lean statement or definition: it follows the [review rubric](../docs/review-rubric.md) (source match, hypotheses, conventions, quantifiers, edge cases), and a non-vacuity example is included.

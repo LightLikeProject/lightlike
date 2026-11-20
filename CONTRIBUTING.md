@@ -158,6 +158,13 @@ with the cited source and post your findings on its issue; a maintainer then rec
 locked once it passes, or returned with reasons. A surprising result in an `Exploratory/` folder
 is reviewed first and flagged to the maintainers; work on it continues meanwhile.
 
+A pull request that changes Lean statements or definitions (not a proof-task pull request) gets the
+label `needs-review`. The check `review-gate` lets it merge only with two approvals of its current
+commit from two accounts other than the author, each with a merged pull request in this repository
+(or when an administrator wrote it). Reviewers follow the [review rubric](docs/review-rubric.md): source
+match, hypotheses, conventions, quantifiers and edge cases. A proof-task pull request that changes
+only its own task file merges by itself once the checks pass.
+
 ## Checking locally
 
 ```
