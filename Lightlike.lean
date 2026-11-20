@@ -1486,6 +1486,7 @@ import Lightlike.FieldTheory.Forest.Partial
 import Lightlike.FieldTheory.Forest.Positivity
 import Lightlike.FieldTheory.Borel.Contour
 import Lightlike.FieldTheory.Borel.Hankel
+import Lightlike.FieldTheory.Borel.Strip
 import Lightlike.FieldTheory.Borel.Transform
 import Lightlike.FieldTheory.Gaussian.Density
 import Lightlike.FieldTheory.Gaussian.FeynmanExpansion
