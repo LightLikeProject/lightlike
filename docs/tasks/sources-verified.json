@@ -798,6 +798,21 @@
   "citations": 10,
   "citations_via": "Semantic Scholar"
  },
+ "benedetti-gurau-keppler-lettera-2022": {
+  "checked": "2026-11-20",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "The small-$N$ series in the zero-dimensional $O(N)$ model: constructive expansions and transseries",
+  "locations": {
+   "Theorem 1": {
+    "verified": true,
+    "snippet": "Theorem 1 (Nevanlinna-Sokal [23], extended). Let f : C → C be a Borel summable function, hence analytic and obeying the bound (2.4) with some fixed β. Then: • the Borel transform of the asymptotic series of f , ∞ X 1 B(t",
+    "why": null
+   }
+  },
+  "citations": 13,
+  "citations_via": "OpenAlex"
+ },
  "benedetti-ziegler-2011": {
   "checked": "2026-11-08",
   "exists": true,
@@ -2640,11 +2655,16 @@
   "citations_via": "Semantic Scholar"
  },
  "gurau-rivasseau-sfondrini-2014": {
-  "checked": "2026-11-19",
+  "checked": "2026-11-20",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "Renormalization: an advanced overview",
   "locations": {
+   "Section 2.1.2": {
+    "verified": true,
+    "snippet": "2.1.2 Forests, trees and plane trees . . . . . . . . . . . . . . . . 11 2.1.3 Incidence, degree, adjacency and Laplacian matrices . . . 13 2.1.4 The symmetry factor . . . . . . . . . .",
+    "why": null
+   },
    "Theorem 6.1": {
     "verified": true,
     "snippet": "Theorem 6.1 (The Forest Formula) XZ f (1) = dwF ∂F f [X F (wF )] (6.1) F where • The sum over F is over forests over n labeled vertices i = 1, · · · , n, in- cluding the empty forest with no edge. Such forests are exactl",
@@ -4406,7 +4426,7 @@
   "citations_via": "Semantic Scholar"
  },
  "rivasseau-wang-2010": {
-  "checked": "2026-11-19",
+  "checked": "2026-11-20",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "Loop Vertex Expansion for Phi^2k Theory in Zero Dimension",
@@ -4414,6 +4434,11 @@
    "Theorem II.1": {
     "verified": true,
     "snippet": "Theorem II.1. X\u0002 Y Z 1 \u0003 Y ∂` ]f · [X F ({w`0 })] \u0001 f (1, . . . , 1) = dw` [ (II-1) F `∈F 0 `∈F where • the sum over F is over forests over the n vertices, including the empty one, • xF 0 ` ({w`0 }) is the infimum of the",
+    "why": null
+   },
+   "Theorem IV.1": {
+    "verified": true,
+    "snippet": "Theorem IV.1. The partition function of a field theory with potential λφ2k is Borel summable or order k − 1. Proof. This theorem is easy and do not need any loop vertex expansion. In this case the analytic region for λ w",
     "why": null
    }
   },

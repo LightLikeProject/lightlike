@@ -1122,6 +1122,10 @@ references:
     cite: "R. Gurau, V. Rivasseau, A. Sfondrini, Renormalization: an advanced overview (2014)"
     title: "Renormalization: an advanced overview"
     arxiv: "1401.5003"
+  benedetti-gurau-keppler-lettera-2022:
+    cite: "D. Benedetti, R. Gurau, H. Keppler, D. Lettera, The small-N series in the zero-dimensional O(N) model: constructive expansions and transseries (2022)"
+    title: "The small-N series in the zero-dimensional O(N) model: constructive expansions and transseries"
+    arxiv: "2210.14776"
 
 canonical:
   pl-topology: [lickorish-1999, moise-1977]
@@ -1669,6 +1673,9 @@ milestones:
     refs:
       - {ref: freidel-louapre-2002, location: "Abstract", check: "Borel summable"}
       - {ref: delepouve-gurau-rivasseau-2016, location: "Abstract", check: "Borel summability"}
+      - {ref: benedetti-gurau-keppler-lettera-2022, location: "Theorem 1", check: "Nevanlinna"}
+      - {ref: rivasseau-wang-2010, location: "Theorem IV.1", check: "Borel"}
+      - {ref: gurau-rivasseau-sfondrini-2014, location: "Section 2.1.2", check: "trees"}
   PG1:
     class: sourced
     refs:

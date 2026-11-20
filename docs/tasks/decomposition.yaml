@@ -663,6 +663,90 @@ tasks:
     routes:
       - "On `M = ℝᵈ` the charts are the identity and the atlas pieces partition `ℝᵈ`; for continuous compactly supported integrands the sum of the integrals over the pieces is the integral (`integral_iUnion`)."
 
+  - id: T-GF7-P1
+    milestone: GF7
+    kind: proof
+    title: "Nevanlinna–Sokal, eq. (B.6): the functions b_m along a vertical line are the successive derivatives of b_0"
+    file: Tasks/GF/T_GF7_P1.lean
+    decl: Lightlike.FieldTheory.Borel.SokalHyp.hasDerivAt_borelDeriv
+    size: M
+    difficulty: intermediate
+    routes:
+      - "Write R_{m+1}(z) = a_{m+1} z^{m+1} + R_{m+2}(z): then b_m(x) = a_m + a_{m+1} x + (1/2π) ∫ e^{xw} w^{m-1} R_{m+2}(w⁻¹) dy by Hankel's formula with k = 1 (hankel_vertical_y), and differentiate the last integral under the integral sign (hasDerivAt_integral_of_dominated_loc_of_deriv_le): |w^m R_{m+2}(w⁻¹)| ≤ K (m+2)! ρ^{-m-2} |w|^{-2} is integrable along the line (integrable_inv_sq_add)."
+  - id: T-GF7-P2
+    milestone: GF7
+    kind: proof
+    title: "Nevanlinna–Sokal, after eq. (B.6): |b_m(x)| ≤ K (ρ + 1/(2c)) (m+1)! ρ^{-m-1} e^{cx} for x ≥ 0"
+    file: Tasks/GF/T_GF7_P2.lean
+    decl: Lightlike.FieldTheory.Borel.SokalHyp.norm_borelDeriv_le
+    size: S
+    difficulty: intermediate
+    routes:
+      - "|a_m| ≤ K m! ρ^{-m} (SokalHyp.norm_coeff_le) and, by the rest-term bound with q = m + 1 at z = w⁻¹, the integrand is at most e^{cx} K (m+1)! ρ^{-m-1} (c² + y²)⁻¹, whose integral is π/c (integral_inv_sq_add); then m! ρ^{-m} ≤ ρ (m+1)! ρ^{-m-1} e^{cx}."
+  - id: T-GF7-P3
+    milestone: GF7
+    kind: proof
+    title: "Nevanlinna–Sokal, eq. (B.7): the local Borel transform B_x(t) = ∑ b_m(x) (t - x)^m/m! is analytic for |t - x| < ρ"
+    file: Tasks/GF/T_GF7_P3.lean
+    decl: Lightlike.FieldTheory.Borel.SokalHyp.analyticOnNhd_borelLocal
+    size: S
+    difficulty: intermediate
+    routes:
+      - "By T-GF7-P2 the coefficients b_m(x)/m! are at most C (m+1) ρ^{-m-1}, so the power series FormalMultilinearSeries.ofScalars of b_m(x)/m! has radius at least ρ; its sum is analytic on the ball (HasFPowerSeriesOnBall.analyticAt), and borelLocal is that sum at t - x."
+  - id: T-GF7-P4
+    milestone: GF7
+    kind: proof
+    title: "Nevanlinna–Sokal, Theorem 1 (second item): the Borel transform continues analytically to the strip dist(t, ℝ₊) < ρ, equal to b_0 on (0, ∞), with |B(t)| ≤ C e^{|t|/R} on smaller strips"
+    file: Tasks/GF/T_GF7_P4.lean
+    decl: Lightlike.FieldTheory.Borel.SokalHyp.exists_continuation
+    size: M
+    difficulty: advanced
+    routes:
+      - "On the real axis b_0(s) = ∑ b_m(x) (s - x)^m/m! for s > 0, |s - x| < ρ (Taylor's formula with integral remainder, T-GF7-P1 and T-GF7-P2), so B_x = B_{x'} on the intersection of their disks (identity theorem, AnalyticOnNhd.eqOn_of_preconnected_of_frequently_eq, T-GF7-P3) and B_x = borelT on |t| < ρ (SokalHyp.borelZero_eq_borelT); glue: B(t) = borelT a t for |t| < ρ, else B_{Re t}(t). The bound follows from T-GF7-P2 with c ↓ 1/R."
+    deps: [T-GF7-P1, T-GF7-P2, T-GF7-P3]
+  - id: T-GF7-P5
+    milestone: GF7
+    kind: proof
+    title: "Nevanlinna–Sokal, eq. (B.8): f(z) = (1/z) ∫_0^∞ e^{-x/z} b_0(x) dx for z in the disk C_R"
+    file: Tasks/GF/T_GF7_P5.lean
+    decl: Lightlike.FieldTheory.Borel.SokalHyp.eq_laplace_borelZero
+    size: M
+    difficulty: advanced
+    routes:
+      - "Without a half-plane Cauchy formula: b_0(x) - a_0 = 0 for x ≤ 0 (move the line to Re w = c' → ∞ with borelZero_indep and the bound M e^{xc'}/(2c')); then φ(x) = (b_0(x) - a_0) e^{-cx} is integrable and is the inverse Fourier transform of ξ ↦ (f(w⁻¹) - a_0)/w at w = c + 2πiξ, so Fourier inversion (Continuous.fourier_fourierInv_eq) gives ∫_0^∞ e^{-xw} (b_0(x) - a_0) dx = (f(w⁻¹) - a_0)/w for Re w > 1/R; take w = z⁻¹ and add ∫_0^∞ e^{-x/z} a_0 dx = a_0 z (integral_pow_mul_cexp_neg)."
+  - id: T-GF7-P6
+    milestone: GF7
+    kind: proof
+    title: "The Nevanlinna–Sokal theorem (Theorem 1 of Benedetti–Gurau–Keppler–Lettera with β = 0): the Borel transform converges near 0, continues to the strip, and its Laplace transform is f on C_R"
+    file: Tasks/GF/T_GF7_P6.lean
+    decl: Lightlike.FieldTheory.Borel.SokalHyp.nevanlinna_sokal
+    size: S
+    difficulty: intermediate
+    routes:
+      - "SokalHyp.hasSum_borelT for the first item; T-GF7-P4 for the continuation and the bound; T-GF7-P5 with B = b_0 on (0, ∞) for the Laplace representation, and the integrability from |b_0(x)| ≤ |a_0| + M e^{c'x}/(2c') with 1/R < c' < Re z⁻¹."
+    deps: [T-GF7-P4, T-GF7-P5]
+  - id: T-GF7-P7
+    milestone: GF7
+    kind: proof
+    title: "The partition function of the zero-dimensional λφ⁴ theory is Borel summable (Rivasseau–Wang Theorem IV.1 with k = 2)"
+    file: Tasks/GF/T_GF7_P7.lean
+    decl: Lightlike.FieldTheory.quarticZ_borel_summable
+    size: S
+    difficulty: intermediate
+    routes:
+      - "quarticZ_nevanlinna gives |R_N Z| ≤ 16√(2π) 32^N N! |λ|^{N+1} on every C_R; turn it into SokalHyp quarticZ quarticCoeff R K ρ with ρ = 1/32 (the case q = 0 from q = 1 and |a_0|) and apply T-GF7-P6; B does not depend on R because it is determined by its values near 0."
+    deps: [T-GF7-P6]
+  - id: T-GF7-P8
+    milestone: GF7
+    kind: proof
+    title: "Cayley's formula: there are n^{n-2} trees on n labelled vertices"
+    file: Tasks/GF/T_GF7_P8.lean
+    decl: Lightlike.FieldTheory.Forest.card_isTree
+    size: M
+    difficulty: intermediate
+    routes:
+      - "The Prüfer code: removing the least leaf and recording its neighbour, n - 2 times, is a bijection from the trees on Fin n to Fin n^(n-2); or count rooted forests by induction (the number of rooted forests on [n] with k given roots is k n^{n-k-1})."
+
 # Upstream tasks: finished results that belong in Mathlib (general mathematics) or Physlib
 # (general physics), with the rework each needs. Exclusive, like definition
 # tasks; `target` gives the label `upstream: <library>`.
@@ -881,6 +965,14 @@ upstream:
 # last; `lock` rewrites it.
 locked:
   T-GE2-P11: "7f3818d52455ebb3"
+  T-GF7-P1: "f8f6555019266f1d"
+  T-GF7-P2: "db1304f48b9b25e5"
+  T-GF7-P3: "76d02148e444c630"
+  T-GF7-P4: "c073c2a6ab79b085"
+  T-GF7-P5: "54db17e1b2cd4f38"
+  T-GF7-P6: "5c7b0de517f414c7"
+  T-GF7-P7: "82335811aba06b3a"
+  T-GF7-P8: "96328d9fd6a2fb2d"
   T-QU1-P1: "e1f8fee660e6bb70"
   T-QU1-P2: "48d6183e645a58f7"
   T-QU1-P3: "f6a02ca2e41a673e"
