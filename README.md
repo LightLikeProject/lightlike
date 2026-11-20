@@ -52,12 +52,13 @@ with the entry's ID (`LL-…`), the place in the source, and what differs. The
 
 **Run your agent on a proof task.** A proof task is one lemma whose statement is fixed (the
 [ready proof tasks](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aopen+label%3Aready+label%3Aproof-task)).
-Point your coding agent at [AGENTS.md](AGENTS.md) and one task: it sets up Lean, replaces the
-`sorry` and opens a pull request with the line `Task: T-…`, and CI checks it. For example, with
-Claude Code in a clone of this repository:
+Point your coding agent at [AGENTS.md](AGENTS.md): it follows the contributor loop, which claims a
+ready task with `/claim`, replaces the `sorry`, opens a pull request with the line `Task: T-…`, and
+CI checks and merges it; then it takes the next task. For example, with Claude Code in a clone of
+this repository:
 
 ```sh
-claude "Read AGENTS.md and follow it. Prove the proof task T-GE2-P1 in Tasks/GE2/T_GE2_P1.lean, changing only the proof, and open a pull request with the line 'Task: T-GE2-P1'."
+claude "Read AGENTS.md and follow its contributor loop: pick a ready proof task, /claim it, prove it, open the pull request with 'Task: T-…', then take the next one."
 ```
 
 To build the library yourself, see [Building and using Lightlike](#building-and-using-lightlike).

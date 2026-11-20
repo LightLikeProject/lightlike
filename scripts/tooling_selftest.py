@@ -997,5 +997,23 @@ if os.environ.get("LIGHTLIKE_NET") == "1":
 else:
     print("skip sources fulltext network (LIGHTLIKE_NET=1 runs it)")
 
+# The contributors list and the weekly leaderboard.
+import contributors as ct  # noqa: E402
+import datetime as _dt  # noqa: E402
+_now = _dt.datetime(2026, 11, 20, tzinfo=_dt.timezone.utc)
+_pr2 = lambda a, when, body="Task: T-A-P1": {"author": a, "mergedAt": when, "body": body}  # noqa: E731
+_rows, _wk = ct.tally([_pr2("ann", "2026-11-19T00:00:00Z"), _pr2("ann", "2026-11-18T00:00:00Z", "Task: T-A-P2\nTask: T-A-P3"),
+                       _pr2("bob", "2026-11-01T00:00:00Z"), _pr2("cy", "2026-11-19T00:00:00Z", "Task: T-A\n"),
+                       _pr2("bot[bot]", "2026-11-19T00:00:00Z"), _pr2("dee", None), _pr2("eve", "2026-11-19T00:00:00Z",
+                                                                                         "<!-- Task: T-A-P9 -->")], _now)
+expect("contributors: merged pull requests and proof tasks per account; the week counts only the last 7 days, "
+       "bots, unmerged pull requests, milestone tasks and commented-out lines do not count",
+       _rows == [("ann", 2, 3), ("bob", 1, 1), ("cy", 1, 0), ("eve", 1, 0)] and _wk == [("ann", 3)])
+_body = ct.render(_rows, _wk, _now)
+expect("contributors: the rendered body has the marker, the leaderboard and the list",
+       _body.startswith(ct.MARK) and "| 1 | @ann | 3 |" in _body and "| @bob | 1 | 1 |" in _body)
+expect("contributors: the issue is found by its marker, and no other issue",
+       ct.find_issue([{"number": 3, "body": "x"}, {"number": 5, "body": "a " + ct.MARK}, {"number": 9, "body": ct.MARK}]) == 5
+       and ct.find_issue([{"number": 3, "body": "x"}, {"number": 4, "body": None}]) is None)
 print("selftest:", "OK" if not fails else f"FAILED ({len(fails)})")
 sys.exit(1 if fails else 0)
