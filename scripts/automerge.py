@@ -16,7 +16,7 @@ never checks out or runs the code of a pull request: the body and the file list 
 API and are never put into a shell command.
 
     python3 scripts/automerge.py --repo OWNER/REPO --pr N [--apply]     print the decision; --apply acts
-    python3 scripts/automerge.py --selftest-data FILE.json              decide on a fixture (no GitHub)
+    python3 scripts/automerge.py --selftest-data FIXTURE                decide on a JSON fixture file (no GitHub)
 """
 from __future__ import annotations
 
