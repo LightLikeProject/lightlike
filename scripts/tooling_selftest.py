@@ -978,7 +978,7 @@ with tempfile.TemporaryDirectory() as _d:
 expect("automerge: proof_files reads the proof tasks of tasks.yaml",
        am.proof_files(HERE.parent).get("T-GE2-P1", "").endswith("T_GE2_P1.lean")
        and not any(k.count("-P") == 0 for k in am.proof_files(HERE.parent)))
-# The review gate and the label needs-review.
+# The review gate (a commit status) and the label needs-review.
 import review_gate as rg  # noqa: E402
 _pf = {"T-X1-P1": "Tasks/X/T_X1_P1.lean"}
 _prr = lambda author="ann", body="", sha="s1", **kw: dict(  # noqa: E731
@@ -988,49 +988,38 @@ _rv = lambda u, state="APPROVED", sha="s1", at="2026-01-01T00:00:00Z", typ="User
     user={"login": u, "type": typ}, state=state, commit_id=sha, submitted_at=at)
 _none, _admin = (lambda u: False), (lambda u: u == "root")
 _m = lambda u: {"bo": 1, "cy": 3, "newbie": 0}.get(u, 0)  # noqa: E731
-_lean = lambda patch, status="modified": [{"filename": "Lightlike/A.lean", "status": status, "patch": patch}]  # noqa: E731
-expect("review gate: an auto-merge proof-task pull request passes, an administrator's pull request passes",
-       rg.evaluate(_prr(body="Task: T-X1-P1"), [{"filename": "Tasks/X/T_X1_P1.lean", "status": "modified"}],
-                   [], _none, _m, _pf)[0]
-       and rg.evaluate(_prr(author="root"), _lean("+theorem x : True"), [], _admin, _m, _pf)[0])
+_lf = lambda name="Lightlike/A.lean", status="modified", **kw: [dict({"filename": name, "status": status}, **kw)]  # noqa: E731
+_own = [{"filename": "Tasks/X/T_X1_P1.lean", "status": "modified"}]
+_ev = lambda pr, files, reviews=(), admin=_none: rg.evaluate(pr, files, list(reviews), admin, _m, _pf)[0]  # noqa: E731
+expect("review gate: a pull request that touches no Lean file of Lightlike/ or Tasks/ passes without review",
+       _ev(_prr(), [{"filename": "docs/a.md", "status": "modified"}]) == "success"
+       and _ev(_prr(), [{"filename": "scripts/x.py", "status": "added"}, {"filename": "Other/B.lean", "status": "added"}]) == "success"
+       and _ev(_prr(), []) == "success")
+expect("review gate: an auto-merge proof-task pull request passes, and so does an administrator's pull request",
+       _ev(_prr(body="Task: T-X1-P1"), _own) == "success"
+       and _ev(_prr(author="root"), _lf(), admin=_admin) == "success")
+expect("review gate: any added, changed, removed or renamed Lean file under Lightlike/ or Tasks/ needs two approvals",
+       all(rg.needs_review(_lf(n, st, **kw)) for n, st, kw in [
+           ("Lightlike/A.lean", "modified", {}), ("Lightlike/B/C.lean", "added", {}), ("Tasks/X/T.lean", "removed", {}),
+           ("Tasks/Y.lean", "renamed", {"previous_filename": "Lightlike/Z.lean"}),
+           ("docs/z.md", "renamed", {"previous_filename": "Lightlike/Z.lean"})])
+       and not rg.needs_review(_lf("Lightlike/A.md")) and not rg.needs_review(_lf("scripts/a.lean")))
 expect("review gate: two approvals of the current commit from distinct non-authors with merged pull requests pass",
-       rg.evaluate(_prr(), _lean("+theorem x : True"), [_rv("bo"), _rv("cy")], _none, _m, _pf)[0])
+       _ev(_prr(), _lf(), [_rv("bo"), _rv("cy")]) == "success")
 expect("review gate planted: one approval, the author's own, a reviewer without a merged pull request, a bot, "
-       "an approval of an older commit, a later change request, a comment are not enough",
-       not rg.evaluate(_prr(), [], [_rv("bo")], _none, _m, _pf)[0]
-       and not rg.evaluate(_prr(), [], [_rv("bo"), _rv("ann")], _none, _m, _pf)[0]
-       and not rg.evaluate(_prr(), [], [_rv("bo"), _rv("newbie")], _none, _m, _pf)[0]
-       and not rg.evaluate(_prr(), [], [_rv("bo"), _rv("cy", typ="Bot")], _none, _m, _pf)[0]
-       and not rg.evaluate(_prr(), [], [_rv("bo"), _rv("cy", sha="old")], _none, _m, _pf)[0]
-       and not rg.evaluate(_prr(), [], [_rv("bo"), _rv("cy"), _rv("cy", "CHANGES_REQUESTED", at="2026-01-02T00:00:00Z")],
-                           _none, _m, _pf)[0]
-       and not rg.evaluate(_prr(), [], [_rv("bo"), _rv("cy", "COMMENTED")], _none, _m, _pf)[0]
-       and not rg.evaluate(_prr(), [], [_rv("bo"), _rv("bo")], _none, _m, _pf)[0])
-expect("review gate: a later approval after a change request counts; a dismissed one does not",
-       rg.evaluate(_prr(), [], [_rv("bo"), _rv("cy", "CHANGES_REQUESTED"), _rv("cy", at="2026-01-02T00:00:00Z")],
-                   _none, _m, _pf)[0]
-       and not rg.evaluate(_prr(), [], [_rv("bo"), _rv("cy", "DISMISSED")], _none, _m, _pf)[0])
-expect("review gate: a pull request by an outsider with a changed file list is not an auto-merge pull request",
-       not rg.evaluate(_prr(body="Task: T-X1-P1"), [{"filename": "Tasks/X/T_X1_P1.lean", "status": "modified"},
-                                                    {"filename": "scripts/x.py", "status": "added"}],
-                       [], _none, _m, _pf)[0])
-expect("needs-review: a changed or added declaration line, a new or removed Lean file, or a hidden diff needs review",
-       rg.needs_review(_lean("@@ -1 +1 @@\n-theorem a : P\n+theorem a : Q"))
-       and rg.needs_review(_lean("+  private noncomputable def f := 1"))
-       and rg.needs_review(_lean("+@[simp] lemma l : P := by simp"))
-       and rg.needs_review(_lean("+x", status="added")) and rg.needs_review(_lean(None))
-       and rg.needs_review(_lean("+structure S where\n+  a : Nat")))
-expect("needs-review control: a proof-body change, comments and non-Lean files do not",
-       not rg.needs_review(_lean("@@ -5,3 +5,3 @@ theorem a : P := by\n-  simp\n+  rfl\n+  -- def x"))
-       and not rg.needs_review([{"filename": "docs/a.md", "status": "modified", "patch": "+theorem"}])
-       and not rg.needs_review([]))
-expect("needs-review: the label is set on a statement change, removed when it goes, never on an auto-merge pull request",
-       rg.label_plan(_prr(), _lean("+def d := 1"), _pf, []) == ["label"]
-       and rg.label_plan(_prr(), _lean("+def d := 1"), _pf, ["needs-review"]) == []
-       and rg.label_plan(_prr(), _lean("+  rfl"), _pf, ["needs-review"]) == ["unlabel"]
-       and rg.label_plan(_prr(body="Task: T-X1-P1"), [{"filename": "Tasks/X/T_X1_P1.lean", "status": "modified"}],
-                         _pf, ["needs-review"]) == ["unlabel"])
-_o = subprocess.run([sys.executable, str(HERE / "review_gate.py"), "--event", "merge_group"], capture_output=True, text=True)
-expect("review gate: a merge-queue run passes", _o.returncode == 0)
+       "an approval of an older commit, a later change request, a comment, a repeated reviewer stay pending",
+       all(_ev(_prr(), _lf(), r) == "pending" for r in (
+           [_rv("bo")], [_rv("bo"), _rv("ann")], [_rv("bo"), _rv("newbie")], [_rv("bo"), _rv("cy", typ="Bot")],
+           [_rv("bo"), _rv("cy", sha="old")],
+           [_rv("bo"), _rv("cy"), _rv("cy", "CHANGES_REQUESTED", at="2026-01-02T00:00:00Z")],
+           [_rv("bo"), _rv("cy", "COMMENTED")], [_rv("bo"), _rv("bo")], [_rv("bo"), _rv("cy", "DISMISSED")], [])))
+expect("review gate: a later approval after a change request counts",
+       _ev(_prr(), _lf(), [_rv("bo"), _rv("cy", "CHANGES_REQUESTED"), _rv("cy", at="2026-01-02T00:00:00Z")]) == "success")
+expect("review gate planted: an outsider's pull request that adds a file to its task is not an auto-merge pull request",
+       _ev(_prr(body="Task: T-X1-P1"), _own + [{"filename": "Lightlike/N.lean", "status": "added"}]) == "pending")
+expect("needs-review: the label is set on a Lean change, removed when it goes, never on an auto-merge pull request",
+       rg.label_plan(_prr(), _lf(), _pf, []) == ["label"] and rg.label_plan(_prr(), _lf(), _pf, ["needs-review"]) == []
+       and rg.label_plan(_prr(), [{"filename": "docs/a.md", "status": "modified"}], _pf, ["needs-review"]) == ["unlabel"]
+       and rg.label_plan(_prr(body="Task: T-X1-P1"), _own, _pf, ["needs-review"]) == ["unlabel"])
 print("selftest:", "OK" if not fails else f"FAILED ({len(fails)})")
 sys.exit(1 if fails else 0)

@@ -1,7 +1,8 @@
 # Review rubric
 
-For reviewers of a pull request that changes Lean statements or definitions (it has the label
-`needs-review`). A proof-task pull request does not need this: its statement is locked and CI checks
+For reviewers of a pull request that adds, changes or removes a Lean file under `Lightlike/` or
+`Tasks/` (it has the label `needs-review`); the rule is the file, so a proof-only change is flagged
+too, and a review of it can be short. A proof-task pull request does not need this: its statement is locked and CI checks
 that it did not change. For a statement the question is not "does it compile" but **does it say
 what its source says, and nothing vacuous or false**. Two approvals from accounts other than the
 author, each with a merged pull request here, let the pull request merge (the check `review-gate`).

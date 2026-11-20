@@ -1,37 +1,41 @@
 name: Review gate
 
-# The required check `review-gate` (job name). It passes for an auto-merge proof-task pull request, for a
-# pull request by a repository administrator, and otherwise only with two approvals of the current commit
-# from two accounts other than the author, each with a merged pull request here (scripts/review_gate.py).
-# GitHub's own required reviews count only reviewers with write access, which outside reviewers do not
-# have. It never merges anything. On pull_request_target it also sets the label `needs-review`.
+# Posts the commit status `review-gate` (the required check) on the head commit of a pull request, and sets
+# the label `needs-review` (scripts/review_gate.py has the rules): a pull request that adds, changes or
+# removes a Lean file under Lightlike/ or Tasks/ needs two approvals of its current commit from two
+# accounts other than the author, each with a merged pull request here, unless it is an auto-merge
+# proof-task pull request or its author administers the repository. Every other pull request passes. This
+# never merges anything.
 #
-# Triggers: pull_request_target (opened, changed, reopened), pull_request_review (a review is submitted,
-# dismissed or edited), and merge_group (the check must report there too, or the merge queue waits for it).
+# A status posted through the API satisfies a required status check whatever event computed it, so the
+# check does not depend on a check run of a pull_request_target or workflow_run job attaching to the head.
 #
-# Security: the job checks out `main` (never the pull request's head) and runs only `main`'s script; the
-# pull request is data read through the API. A pull_request_review run takes this workflow file from the
-# pull request itself, so a pull request that edits .github/ must be protected by the code-owner review of
-# .github/CODEOWNERS (the ruleset requires it).
+# Runs: pull_request_target (the pull request opens, changes, reopens or is relabelled) and workflow_run
+# (after "Review event", the no-op workflow that a review starts; a review event of a fork pull request has a
+# read-only token, so this run, which has the code and the token of `main`, does the work).
+#
+# Security: both triggers run `main`'s workflow file and the job checks out `main`, never the pull
+# request's head; the pull request is data read through the API. An edit of .github/ in a pull request is
+# guarded by the code-owner review of .github/CODEOWNERS.
 on:
   pull_request_target:
-    types: [opened, reopened, synchronize, edited, ready_for_review]
-  pull_request_review:
-    types: [submitted, dismissed, edited]
-  merge_group:
-    types: [checks_requested]
+    types: [opened, reopened, synchronize, edited, labeled, ready_for_review]
+  workflow_run:
+    workflows: ["Review event"]
+    types: [completed]
 
 permissions:
   contents: read
   pull-requests: write
   issues: write
+  statuses: write
 
 concurrency:
-  group: review-gate-${{ github.event.pull_request.number || github.ref }}
+  group: review-gate-${{ github.event.pull_request.number || github.event.workflow_run.head_sha }}
   cancel-in-progress: true
 
 jobs:
-  review-gate:
+  evaluate:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -48,18 +52,18 @@ jobs:
       - name: Install the pinned PyYAML
         run: python3 -m pip install --quiet "$(grep -i '^pyyaml' requirements.txt)"
 
-      - name: Set the label needs-review (pull_request_target only)
+      - name: Label needs-review and post the status (pull request event)
         if: github.event_name == 'pull_request_target'
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
           PR: ${{ github.event.pull_request.number }}
-        run: python3 scripts/review_gate.py --repo "$REPO" --pr "$PR" --labels || true
+        run: python3 scripts/review_gate.py --repo "$REPO" --pr "$PR" --labels --post-status
 
-      - name: Evaluate the gate
+      - name: Post the status (review event)
+        if: github.event_name == 'workflow_run'
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
-          PR: ${{ github.event.pull_request.number }}
-          EVENT: ${{ github.event_name }}
-        run: python3 scripts/review_gate.py --repo "$REPO" --pr "${PR:-0}" --event "$EVENT"
+          SHA: ${{ github.event.workflow_run.head_sha }}
+        run: python3 scripts/review_gate.py --repo "$REPO" --head-sha "$SHA" --post-status
