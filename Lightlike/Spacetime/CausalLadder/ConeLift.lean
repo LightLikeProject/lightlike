@@ -86,12 +86,12 @@ lemma lift_arith {N K m₀ c c₃ q₀ ν ℓ τ nrm Qw Bil Qe Q Q' V : ℝ} (h�
       mul_le_mul_of_nonneg_left hBil (by positivity)
     have a3 : (ν * ℓ) ^ 2 * Qe ≤ (ν * ℓ) ^ 2 * (-q₀) :=
       mul_le_mul_of_nonneg_left hQe (sq_nonneg _)
-    rw [hexp]; nlinarith
+    rw [hexp]; linarith
   have h2 : V ^ 2 ≤ 2 * ℓ ^ 2 * (τ * c ^ 2 + ν * nrm ^ 2) := by
     have : V ^ 2 ≤ (ℓ * (τ * c + ν * nrm)) ^ 2 := pow_le_pow_left₀ hV0 hV 2
     have h3 : (τ * c + ν * nrm) ^ 2 ≤ 2 * (τ * c ^ 2 + ν * nrm ^ 2) := by
-      have : τ ^ 2 ≤ τ := by nlinarith
-      have : ν ^ 2 ≤ ν := by nlinarith
+      have : τ ^ 2 ≤ τ := pow_le_of_le_one hτ hτ1 two_ne_zero
+      have : ν ^ 2 ≤ ν := pow_le_of_le_one hν.le hν1 two_ne_zero
       nlinarith [sq_nonneg (τ * c - ν * nrm)]
     calc V ^ 2 ≤ (ℓ * (τ * c + ν * nrm)) ^ 2 := this
       _ = ℓ ^ 2 * (τ * c + ν * nrm) ^ 2 := by ring
@@ -130,14 +130,14 @@ lemma continuousAt_quadForm_apply {P : Type*} [TopologicalSpace P] {n : ℕ} {x�
     {A : P → Fin n → Fin n → ℝ} (hA : ContinuousAt A x₀) (w : Fin n → ℝ) :
     ContinuousAt (fun x => quadForm (A x) w) x₀ := by
   unfold quadForm
-  exact tendsto_finset_sum _ fun i _ => tendsto_finset_sum _ fun j _ =>
+  exact tendsto_finsetSum _ fun i _ => tendsto_finsetSum _ fun j _ =>
     continuousAt_const.mul (continuousAt_pi.1 (continuousAt_pi.1 hA i) j)
 
 lemma continuousAt_linForm_apply {P : Type*} [TopologicalSpace P] {n : ℕ} {x₀ : P}
     {B : P → Fin n → ℝ} (hB : ContinuousAt B x₀) (w : Fin n → ℝ) :
     ContinuousAt (fun x => linForm (B x) w) x₀ := by
   unfold linForm
-  exact tendsto_finset_sum _ fun i _ => continuousAt_const.mul (continuousAt_pi.1 hB i)
+  exact tendsto_finsetSum _ fun i _ => continuousAt_const.mul (continuousAt_pi.1 hB i)
 
 
 set_option maxHeartbeats 2000000 in
@@ -168,7 +168,7 @@ theorem cone_lift_estimate {P : Type*} [MetricSpace P] {n : ℕ} {x₀ : P}
   have hAij : ∀ i j, ContinuousAt (fun x => A x i j) x₀ := fun i j =>
     continuousAt_pi.1 (continuousAt_pi.1 hAc i) j
   have hBec : ContinuousAt Be x₀ :=
-    by rw [hBe]; exact continuousAt_pi.2 fun i => tendsto_finset_sum _ fun j _ => (hAij i j).mul continuousAt_const
+    by rw [hBe]; exact continuousAt_pi.2 fun i => tendsto_finsetSum _ fun j _ => (hAij i j).mul continuousAt_const
   have hlinBe : ∀ x w, linForm (Be x) w = bilForm (A x) w e := fun x w => by
     rw [hBe]; exact linForm_pair (A x) e w
   have h0' : ∀ w : Fin n → ℝ, w ≠ 0 → quadForm (A x₀) w ≤ 0 → linForm (Be x₀) w ≠ 0 :=
@@ -224,7 +224,7 @@ theorem cone_lift_estimate {P : Type*} [MetricSpace P] {n : ℕ} {x₀ : P}
     have h := (le_div_iff₀ (by positivity)).1 (hm₀ ▸ min_le_left (c₃ / (4 * N ^ 2 * (K + 1) * c ^ 2))
       (q₀ / (4 * N ^ 2 * (K + 1) * (en ^ 2 + 1))))
     have hpos : 0 ≤ 2 * N ^ 2 * m₀ * c ^ 2 := by positivity
-    nlinarith
+    linarith
   have hm2 : 2 * N ^ 2 * K * m₀ * en ^ 2 ≤ q₀ / 2 := by
     have h := (le_div_iff₀ (by positivity)).1 (hm₀ ▸ min_le_right (c₃ / (4 * N ^ 2 * (K + 1) * c ^ 2))
       (q₀ / (4 * N ^ 2 * (K + 1) * (en ^ 2 + 1))))
@@ -245,7 +245,7 @@ theorem cone_lift_estimate {P : Type*} [MetricSpace P] {n : ℕ} {x₀ : P}
   have hwn : 0 < ‖w‖ := norm_pos_iff.2 hw0
   have hℓ : 0 < ℓ := by
     by_contra h
-    push_neg at h
+    push Not at h
     nlinarith
   have hℓn : ℓ ≤ N * Bb * ‖w‖ := by
     have h1 := abs_linForm_le (B x₀) (B := Bb) (fun i => by linarith [hBx0 i, abs_nonneg (B x₀ i)]) w
@@ -297,7 +297,7 @@ theorem cone_lift_estimate {P : Type*} [MetricSpace P] {n : ℕ} {x₀ : P}
       refine hloss.trans ?_
       have : (n : ℝ) ^ 2 ≤ N ^ 2 := pow_le_pow_left₀ (Nat.cast_nonneg _) hN1 2
       have h2 : 0 ≤ K * (ν * m₀) * ‖τ • w + (ν * ℓ) • e‖ ^ 2 := by positivity
-      nlinarith
+      linarith [mul_le_mul_of_nonneg_right this h2]
     exact lift_arith (N := N) (K := K) (m₀ := m₀) (c := c) (c₃ := c₃) (q₀ := q₀) (ν := ν) (ℓ := ℓ)
       (τ := τ) (nrm := en) hν hν1 hℓ hτ hτ1 hK0 hm₀pos hN0.le hc hc₃pos hq₀ hen0 hm1 hm2
       hq hbilbound hxq.le hexp hloss' (norm_nonneg _) (hnorm0 τ hτ hτ1)
@@ -313,7 +313,7 @@ theorem cone_lift_estimate {P : Type*} [MetricSpace P] {n : ℕ} {x₀ : P}
     exact mul_neg_of_pos_of_neg (by positivity) hxL'
   have hf1 : linForm (B x') ((1 : ℝ) • w + (ν * ℓ) • e) < 0 := by
     by_contra h
-    push_neg at h
+    push Not at h
     have hne : linForm (B x') ((1 : ℝ) • w + (ν * ℓ) • e) ≠ 0 :=
       hsgn x' hx'r₀ _ (hneg 1 zero_le_one le_rfl)
     have hpos : 0 < linForm (B x') ((1 : ℝ) • w + (ν * ℓ) • e) := lt_of_le_of_ne h (Ne.symm hne)
@@ -334,8 +334,7 @@ theorem cone_lift_estimate {P : Type*} [MetricSpace P] {n : ℕ} {x₀ : P}
         _ ≤ N * Bb * (ℓ * (1 * c + ν * en)) := by gcongr
     have h4 : N * Bb * (ℓ * (1 * c + ν * en)) ≤ ℓ * M := by
       rw [hM]
-      have : ν * en ≤ en := by
-        nlinarith
+      have : ν * en ≤ en := mul_le_of_le_one_left hen0 hν1
       nlinarith [mul_pos hN0 hBb0, mul_pos (mul_pos hN0 hBb0) hℓ]
     linarith
   have hsq : linForm (B x') (w + (ν * ℓ) • e) ^ 2 ≤ (ℓ * M) ^ 2 := by
@@ -345,7 +344,7 @@ theorem cone_lift_estimate {P : Type*} [MetricSpace P] {n : ℕ} {x₀ : P}
   have hQ2 : quadForm (A x') (w + (ν * ℓ) • e) ≤ -(ν * c₃ * ℓ ^ 2) := by
     refine hQ1.trans ?_
     have : 0 ≤ ν * ℓ ^ 2 * (ν * q₀ / 2) := by positivity
-    nlinarith
+    linarith
   calc quadForm (A x') (w + (ν * ℓ) • e) ≤ -(ν * c₃ * ℓ ^ 2) := hQ2
     _ = -(ν * c₃ / M ^ 2) * (ℓ * M) ^ 2 := hfin.symm
     _ ≤ -(ν * c₃ / M ^ 2) * linForm (B x') (w + (ν * ℓ) • e) ^ 2 := by
