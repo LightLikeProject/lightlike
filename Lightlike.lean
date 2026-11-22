@@ -1476,6 +1476,7 @@ import Lightlike.SpinFoam.EPRLStateSum.ComplexLegs
 import Lightlike.SpinFoam.EPRLStateSum.PiFive
 import Lightlike.SpinFoam.EPRLStateSum.SimplexBox
 import Lightlike.SpinFoam.EPRLStateSum.ComplexTetSum
+import Lightlike.SpinFoam.EPRLStateSum.ComplexLabelSum
 import Lightlike.SpinFoam.Move15
 import Lightlike.SpinFoam.Move15Global
 import Lightlike.SpinFoam.BarrettCrane
