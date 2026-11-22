@@ -1351,6 +1351,7 @@ import Lightlike.SpinFoam.VertexAsymptoticsHyp.CutNondiff
 import Lightlike.SpinFoam.VertexAsymptoticsHyp.CutAssemble
 import Lightlike.SpinFoam.VertexAsymptoticsHyp.RotatedAction
 import Lightlike.SpinFoam.VertexAsymptoticsHyp.RotatedDefect
+import Lightlike.SpinFoam.VertexAsymptoticsHyp.DefectAssemble
 import Lightlike.Surfaces.Add
 import Lightlike.Surfaces.Arc
 import Lightlike.Surfaces.Basic
