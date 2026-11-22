@@ -300,6 +300,7 @@ import Lightlike.GR.ConformalPoincare
 import Lightlike.GR.GERow016.ScriPlus
 import Lightlike.GR.GERow016.AdSBoundary
 import Lightlike.GR.GERow016.Summary
+import Lightlike.GR.GERow016.Similarity
 import Lightlike.GR.EuclideanCigar
 import Lightlike.GR.EuclideanCone
 import Lightlike.GR.Kerr
