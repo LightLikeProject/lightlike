@@ -1457,6 +1457,7 @@ import Lightlike.SpinFoam.EPRLStateSum.NodeBasis
 import Lightlike.SpinFoam.EPRLStateSum.SimplexSwap
 import Lightlike.SpinFoam.EPRLStateSum.NodeRecoupling
 import Lightlike.SpinFoam.EPRLStateSum.RecouplingTranspose
+import Lightlike.SpinFoam.EPRLStateSum.NodeCoef
 import Lightlike.SpinFoam.Move15
 import Lightlike.SpinFoam.Move15Global
 import Lightlike.SpinFoam.BarrettCrane
