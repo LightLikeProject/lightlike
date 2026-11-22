@@ -75,4 +75,36 @@ theorem IsRiemMetric.abs_normSq_sub_le (hg : IsRiemMetric g U) {K : Set (Fin n �
   calc _ ≤ _ := this
     _ = _ := by ring
 
+/-- **Edge expansion with a frozen metric.** For a compact `K ⊆ U` there are `C`, `r > 0`, `ε > 0`
+such that for `x ∈ K`, `‖a - x‖ ≤ ε`, `‖b - a‖ ≤ r`:
+`|d(a, b)² - g_x(b - a, b - a)| ≤ C (‖b - a‖³ + ‖a - x‖ ‖b - a‖²)`. -/
+theorem IsRiemMetric.chartDist_sq_edge (hg : IsRiemMetric g U) {K : Set (Fin n → ℝ)}
+    (hK : IsCompact K) (hKU : K ⊆ U) :
+    ∃ C r ε : ℝ, 0 < r ∧ 0 < ε ∧ ∀ x ∈ K, ∀ a b : Fin n → ℝ, ‖a - x‖ ≤ ε → ‖b - a‖ ≤ r →
+      |chartDist g U a b ^ 2 - (b - a) ⬝ᵥ (g x *ᵥ (b - a))| ≤
+        C * (‖b - a‖ ^ 3 + ‖a - x‖ * ‖b - a‖ ^ 2) := by
+  obtain ⟨ε0, hε0, hsub⟩ := hK.exists_cthickening_subset_open hg.coord.isOpen hKU
+  obtain ⟨C1, r, hr, h1⟩ := hg.chartDist_sq_third hK.cthickening hsub
+  obtain ⟨C2, ε1, hC2, hε1, h2⟩ := hg.abs_normSq_sub_le hK hKU
+  refine ⟨|C1| + C2, r, min ε0 ε1, hr, lt_min hε0 hε1, fun x hx a b ha hb => ?_⟩
+  have haε0 : ‖a - x‖ ≤ ε0 := ha.trans (min_le_left _ _)
+  have haε1 : ‖a - x‖ ≤ ε1 := ha.trans (min_le_right _ _)
+  have hmem : a ∈ cthickening ε0 K :=
+    mem_cthickening_of_dist_le a x ε0 K hx (by rwa [dist_eq_norm])
+  have e1 := h1 a hmem (b - a) hb
+  rw [add_sub_cancel] at e1
+  have e2 := (h2 x hx a haε1).2 (b - a)
+  have hn3 : 0 ≤ ‖b - a‖ ^ 3 := by positivity
+  have hn2 : 0 ≤ ‖a - x‖ * ‖b - a‖ ^ 2 := by positivity
+  have hC1 : C1 * ‖b - a‖ ^ 3 ≤ |C1| * ‖b - a‖ ^ 3 :=
+    mul_le_mul_of_nonneg_right (le_abs_self C1) hn3
+  calc |chartDist g U a b ^ 2 - (b - a) ⬝ᵥ (g x *ᵥ (b - a))|
+      = |(chartDist g U a b ^ 2 - (b - a) ⬝ᵥ (g a *ᵥ (b - a))) +
+          ((b - a) ⬝ᵥ (g a *ᵥ (b - a)) - (b - a) ⬝ᵥ (g x *ᵥ (b - a)))| := by ring_nf
+    _ ≤ _ := abs_add_le _ _
+    _ ≤ C1 * ‖b - a‖ ^ 3 + C2 * ‖a - x‖ * ‖b - a‖ ^ 2 := add_le_add e1 e2
+    _ ≤ (|C1| + C2) * (‖b - a‖ ^ 3 + ‖a - x‖ * ‖b - a‖ ^ 2) := by
+      have : |C1| * ‖b - a‖ ^ 3 ≥ C1 * ‖b - a‖ ^ 3 := hC1
+      nlinarith [mul_nonneg (abs_nonneg C1) hn2]
+
 end Lightlike.Upstream.GeodesicExpansion
