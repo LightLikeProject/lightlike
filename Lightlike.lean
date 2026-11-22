@@ -1613,6 +1613,7 @@ import Lightlike.Spacetime.Corners.EinsteinEquations
 import Lightlike.Spacetime.Corners.LeviCivitaSmooth
 import Lightlike.Spacetime.Corners.LieDerivation
 import Lightlike.Spacetime.GreenOperators.Goursat
+import Lightlike.Spacetime.GreenOperators.Triangle
 import Lightlike.Spacetime.FLRWChart
 import Lightlike.Spacetime.FLRWCoord
 import Lightlike.Spacetime.FLRWModel
