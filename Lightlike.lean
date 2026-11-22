@@ -1473,6 +1473,9 @@ import Lightlike.SpinFoam.EPRLStateSum.SharedTetLegs
 import Lightlike.SpinFoam.EPRLStateSum.TwoToOneIncidence
 import Lightlike.SpinFoam.EPRLStateSum.ComplexIncidence
 import Lightlike.SpinFoam.EPRLStateSum.ComplexLegs
+import Lightlike.SpinFoam.EPRLStateSum.PiFive
+import Lightlike.SpinFoam.EPRLStateSum.SimplexBox
+import Lightlike.SpinFoam.EPRLStateSum.ComplexTetSum
 import Lightlike.SpinFoam.Move15
 import Lightlike.SpinFoam.Move15Global
 import Lightlike.SpinFoam.BarrettCrane
