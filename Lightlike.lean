@@ -1598,6 +1598,7 @@ import Lightlike.Tests.DiracAlgorithm
 import Lightlike.Tests.ReducedForm
 import Lightlike.Rows.G3_264.Defs
 import Lightlike.Rows.G3_264.FixedPoint
+import Lightlike.Rows.G3_264.Jacobian
 import Lightlike.GFT.Euler
 import Lightlike.Spacetime.Corners.BianchiSecond
 import Lightlike.Spacetime.Corners.Bridge
