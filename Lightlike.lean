@@ -263,6 +263,7 @@ import Lightlike.Cosmology.BigBang
 import Lightlike.Cosmology.BigBangSingularity
 import Lightlike.Cosmology.BigBangEOS
 import Lightlike.Cosmology.Raychaudhuri
+import Lightlike.Rows.G1_029.Complete
 import Lightlike.Rows.G1_029.Fixed
 import Lightlike.Rows.G1_029.Fixed2
 import Lightlike.Rows.G1_029.Stab
