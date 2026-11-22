@@ -1622,6 +1622,7 @@ import Lightlike.Spacetime.GreenOperators.Existence
 import Lightlike.Spacetime.GreenOperators.Advanced
 import Lightlike.Spacetime.GreenOperators.Support
 import Lightlike.Spacetime.GreenOperators.Cylinder
+import Lightlike.Spacetime.GreenOperators.IntegralForm
 import Lightlike.Spacetime.FLRWChart
 import Lightlike.Spacetime.FLRWCoord
 import Lightlike.Spacetime.FLRWModel
