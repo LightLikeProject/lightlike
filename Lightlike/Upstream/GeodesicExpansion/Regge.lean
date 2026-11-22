@@ -107,4 +107,55 @@ theorem IsRiemMetric.chartDist_sq_edge (hg : IsRiemMetric g U) {K : Set (Fin n �
       have : |C1| * ‖b - a‖ ^ 3 ≥ C1 * ‖b - a‖ ^ 3 := hC1
       nlinarith [mul_nonneg (abs_nonneg C1) hn2]
 
+/-- **Edge lengths of a small coordinate simplex.** For a compact `K ⊆ U` and `R ≥ 0` there are `C`
+and `h₀ > 0` such that for `x ∈ K`, `0 < h ≤ h₀` and `‖u‖, ‖v‖ ≤ R`, the squared geodesic distance
+between `x + h u` and `x + h v` is `h² g_x(v - u, v - u) + O(h³)`:
+`|d(x + h u, x + h v)² - h² g_x(v - u, v - u)| ≤ C h³`. -/
+theorem IsRiemMetric.chartDist_sq_simplex_edge (hg : IsRiemMetric g U) {K : Set (Fin n → ℝ)}
+    (hK : IsCompact K) (hKU : K ⊆ U) {R : ℝ} (hR : 0 ≤ R) :
+    ∃ C h₀ : ℝ, 0 < h₀ ∧ ∀ x ∈ K, ∀ h : ℝ, 0 < h → h ≤ h₀ → ∀ u v : Fin n → ℝ,
+      ‖u‖ ≤ R → ‖v‖ ≤ R →
+      |chartDist g U (x + h • u) (x + h • v) ^ 2 - h ^ 2 * ((v - u) ⬝ᵥ (g x *ᵥ (v - u)))| ≤
+        C * h ^ 3 := by
+  obtain ⟨C, r, ε, hr, hε, hE⟩ := hg.chartDist_sq_edge hK hKU
+  have hR1 : 0 < R + 1 := by linarith
+  refine ⟨|C| * (12 * R ^ 3), min ε r / (2 * (R + 1)), by positivity,
+    fun x hx h hh hh0 u v hu hv => ?_⟩
+  have hmin : h * (2 * (R + 1)) ≤ min ε r := by
+    rwa [le_div_iff₀ (by positivity)] at hh0
+  have hεm : min ε r ≤ ε := min_le_left _ _
+  have hrm : min ε r ≤ r := min_le_right _ _
+  have hau : ‖x + h • u - x‖ = h * ‖u‖ := by
+    rw [add_sub_cancel_left, norm_smul, Real.norm_of_nonneg hh.le]
+  have hba : (x + h • v) - (x + h • u) = h • (v - u) := by
+    rw [add_sub_add_left_eq_sub, smul_sub]
+  have hvu : ‖v - u‖ ≤ 2 * R := by
+    calc ‖v - u‖ ≤ ‖v‖ + ‖u‖ := norm_sub_le _ _
+      _ ≤ 2 * R := by linarith
+  have hbn : ‖(x + h • v) - (x + h • u)‖ = h * ‖v - u‖ := by
+    rw [hba, norm_smul, Real.norm_of_nonneg hh.le]
+  have hu' : h * ‖u‖ ≤ h * R := mul_le_mul_of_nonneg_left hu hh.le
+  have hvu' : h * ‖v - u‖ ≤ h * (2 * R) := mul_le_mul_of_nonneg_left hvu hh.le
+  have h1 : ‖x + h • u - x‖ ≤ ε := by
+    rw [hau]; nlinarith
+  have h2 : ‖(x + h • v) - (x + h • u)‖ ≤ r := by
+    rw [hbn]; nlinarith
+  have e := hE x hx (x + h • u) (x + h • v) h1 h2
+  rw [hbn, hau, hba] at e
+  have hq : (h • (v - u)) ⬝ᵥ (g x *ᵥ (h • (v - u))) = h ^ 2 * ((v - u) ⬝ᵥ (g x *ᵥ (v - u))) := by
+    rw [mulVec_smul, dotProduct_smul, smul_dotProduct]; simp only [smul_eq_mul]; ring
+  rw [hq] at e
+  refine e.trans ?_
+  have hn : 0 ≤ ‖v - u‖ := norm_nonneg _
+  have hnu : 0 ≤ ‖u‖ := norm_nonneg _
+  have hb3 : (h * ‖v - u‖) ^ 3 ≤ (h * (2 * R)) ^ 3 := by gcongr
+  have hb2 : h * ‖u‖ * (h * ‖v - u‖) ^ 2 ≤ h * R * (h * (2 * R)) ^ 2 := by gcongr
+  have hsum : (h * ‖v - u‖) ^ 3 + h * ‖u‖ * (h * ‖v - u‖) ^ 2 ≤ (12 * R ^ 3) * h ^ 3 := by
+    nlinarith
+  calc C * ((h * ‖v - u‖) ^ 3 + h * ‖u‖ * (h * ‖v - u‖) ^ 2)
+      ≤ |C| * ((h * ‖v - u‖) ^ 3 + h * ‖u‖ * (h * ‖v - u‖) ^ 2) :=
+        mul_le_mul_of_nonneg_right (le_abs_self C) (by positivity)
+    _ ≤ |C| * ((12 * R ^ 3) * h ^ 3) := mul_le_mul_of_nonneg_left hsum (abs_nonneg C)
+    _ = |C| * (12 * R ^ 3) * h ^ 3 := by ring
+
 end Lightlike.Upstream.GeodesicExpansion
