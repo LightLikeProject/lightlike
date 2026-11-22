@@ -1472,6 +1472,7 @@ import Lightlike.SpinFoam.TetrahedronTests
 import Lightlike.SpinFoam.TetrahedronCutoff
 import Lightlike.Dirac.Flat
 import Lightlike.Dirac.Tests
+import Lightlike.Dirac.SpinConnection
 import Lightlike.DynamicalTriangulations.Action
 import Lightlike.DynamicalTriangulations.Action3
 import Lightlike.DynamicalTriangulations.Causal
