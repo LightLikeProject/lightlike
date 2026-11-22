@@ -976,6 +976,7 @@ import Lightlike.Regge.Conv3.ReggeConvergenceTests
 import Lightlike.Regge.CMS4.Dihedral4Deriv
 import Lightlike.Regge.CMS4.Kuhn4
 import Lightlike.Regge.CMS4.Kuhn4Deriv
+import Lightlike.Regge.CMS4.Kuhn4Hinge0
 import Lightlike.Regge.Linear3.AngleSmooth
 import Lightlike.Regge.Linear3.SecondOrder
 import Lightlike.Regge.Linear3.SaintVenantHvec
