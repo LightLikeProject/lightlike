@@ -1600,6 +1600,7 @@ import Lightlike.GFT.Euler
 import Lightlike.Rows.G1_039.Basic
 import Lightlike.Rows.G1_039.Decomposition
 import Lightlike.Rows.G1_039.Transform
+import Lightlike.Rows.G1_039.Diagonalise
 import Lightlike.Spacetime.Corners.BianchiSecond
 import Lightlike.Spacetime.Corners.Bridge
 import Lightlike.Spacetime.Corners.ChartAgreement
