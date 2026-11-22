@@ -403,6 +403,7 @@ import Lightlike.Lorentz.SL2RPlancherel.CoshDist
 import Lightlike.Lorentz.SL2RPlancherel.CosineLogTanh
 import Lightlike.Lorentz.SL2RPlancherel.KernelParseval
 import Lightlike.Lorentz.SL2RPlancherel.Autocorrelation
+import Lightlike.Lorentz.SL2RPlancherel.HalfLine
 import Lightlike.Lorentz.SL2RPlancherel.LogTanhKernel
 import Lightlike.Lorentz.SL2RPlancherel.CoshSubstitution
 import Lightlike.Lorentz.SL2RPlancherel.RadialHaar
