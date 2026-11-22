@@ -1,9 +1,11 @@
-import Mathlib.Basic.Complex.Basic
-import Mathlib.Algebra.Lie.Sl2
-import Mathlib.Analysis.Complex.Polynomial.Basic
-import Mathlib.Algebra.Lie.Matrix
-import Mathlib.Algebra.Lie.Weights.Basic
-import Mathlib.LinearAlgebra.Eigenspace.Basic
+module
+
+public import Mathlib.Basic.Complex.Basic
+public import Mathlib.Algebra.Lie.Sl2
+public import Mathlib.Analysis.Complex.Polynomial.Basic
+public import Mathlib.Algebra.Lie.Matrix
+public import Mathlib.Algebra.Lie.Weights.Basic
+public import Mathlib.LinearAlgebra.Eigenspace.Basic
 
 /-!
 # Standard basis of an `sl₂`-triple of matrices with a primitive vector
@@ -16,6 +18,8 @@ independent eigenvectors of `H`, with `H ψ k = (n - 2k) ψ k`, `F ψ k = ψ (k+
 This is the first step of the classification of irreducible finite-dimensional `sl₂(ℂ)`-modules,
 proved from Mathlib's `Mathlib.Algebra.Lie.Sl2` only.
 -/
+
+@[expose] public section
 
 open Matrix Module LieModule
 
