@@ -1374,6 +1374,7 @@ import Lightlike.Tests.TuraevViroMoves
 import Lightlike.Tests.QM
 import Lightlike.Tests.SU2
 import Lightlike.Tests.SixJ
+import Lightlike.Rows.G1_054.Involution
 import Lightlike.Tests.SphereInvariants
 import Lightlike.Tests.SphereRecognition
 import Lightlike.Tests.TreeDependence
