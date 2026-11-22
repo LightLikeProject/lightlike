@@ -26,6 +26,7 @@ namespace Perturbation
 
 /-- The scalar part `(A, B, ψ, E)` of a metric perturbation of spatially flat FLRW in conformal time, at one
 comoving point: lapse `A`, shift potential `B`, curvature perturbation `ψ`, and shear potential `E`. -/
+@[ext]
 structure ScalarPert where
   /-- The lapse perturbation `A` (`δg₀₀ = -2 a² A`). -/
   A : ℝ → ℝ
@@ -107,6 +108,68 @@ theorem bardeen_pureGauge {a T L : ℝ → ℝ} (hT : Differentiable ℝ T) (hL 
     simp [bardeenPhi, hsh, hz]
   · rw [bardeenPsi_gauge (p := ⟨0, 0, 0, 0⟩) h0 hL]
     simp [bardeenPsi, hsh]
+
+/-- **Newtonian gauge.** The gauge transformation with `T = -σ`, `L = E` removes the shift and the shear
+potential and leaves exactly the Bardeen potentials as lapse and curvature perturbation. -/
+theorem gauge_newtonian (a : ℝ → ℝ) (p : ScalarPert) :
+    gauge a (fun η => - shear p η) p.E p
+      = ⟨bardeenPhi a p, fun _ => 0, bardeenPsi a p, fun _ => 0⟩ := by
+  have hd : deriv (fun η => - shear p η) = fun η => - deriv (shear p) η :=
+    funext fun η => deriv.neg (f := shear p)
+  have h1 : (fun η => p.A η - deriv (fun η => - shear p η) η - hubble a η * - shear p η)
+      = bardeenPhi a p := by
+    funext η
+    simp only [hd, bardeenPhi]
+    ring
+  have h2 : (fun η => p.B η + - shear p η - deriv p.E η) = fun _ => 0 := by
+    funext η
+    simp only [shear]
+    ring
+  have h3 : (fun η => p.psi η + hubble a η * - shear p η) = bardeenPsi a p := by
+    funext η
+    simp only [bardeenPsi]
+    ring
+  have h4 : (fun η => p.E η - p.E η) = fun _ => 0 := by
+    funext η
+    ring
+  simp only [gauge]
+  rw [h1, h2, h3, h4]
+
+/-- **Converse (pure gauge).** If both Bardeen potentials vanish identically then the perturbation is the
+gauge transform of the zero perturbation, with the generator `T = σ`, `L = -E`. -/
+theorem eq_gauge_zero_of_bardeen_eq_zero {a : ℝ → ℝ} {p : ScalarPert}
+    (hΦ : bardeenPhi a p = 0) (hΨ : bardeenPsi a p = 0) :
+    p = gauge a (shear p) (fun η => - p.E η) ⟨0, 0, 0, 0⟩ := by
+  have hd : deriv (fun η => - p.E η) = fun η => - deriv p.E η := funext fun η => deriv.neg (f := p.E)
+  ext η
+  · have := congrFun hΦ η
+    simp only [bardeenPhi, Pi.zero_apply] at this
+    simp only [gauge, Pi.zero_apply]
+    linarith
+  · simp only [gauge, hd, shear, Pi.zero_apply]
+    ring
+  · have := congrFun hΨ η
+    simp only [bardeenPsi, Pi.zero_apply] at this
+    simp only [gauge, Pi.zero_apply]
+    linarith
+  · simp only [gauge, Pi.zero_apply]
+    ring
+
+/-- **Characterisation of pure gauge.** For a perturbation with differentiable `B`, `E`, `E'`, both Bardeen
+potentials vanish identically iff the perturbation is the gauge transform of the zero perturbation by
+differentiable generators `T`, `L`. -/
+theorem bardeen_eq_zero_iff_pureGauge {a : ℝ → ℝ} {p : ScalarPert} (hB : Differentiable ℝ p.B)
+    (hE : Differentiable ℝ p.E) (hE' : Differentiable ℝ (deriv p.E)) :
+    (bardeenPhi a p = 0 ∧ bardeenPsi a p = 0) ↔
+      ∃ T L : ℝ → ℝ, Differentiable ℝ T ∧ Differentiable ℝ L ∧
+        p = gauge a T L ⟨0, 0, 0, 0⟩ := by
+  constructor
+  · rintro ⟨hΦ, hΨ⟩
+    exact ⟨shear p, fun η => - p.E η, hB.sub hE', hE.neg,
+      eq_gauge_zero_of_bardeen_eq_zero hΦ hΨ⟩
+  · rintro ⟨T, L, hT, hL, hp⟩
+    subst hp
+    exact ⟨funext fun η => (bardeen_pureGauge hT hL η).1, funext fun η => (bardeen_pureGauge hT hL η).2⟩
 
 end Perturbation
 end Cosmology
