@@ -1125,6 +1125,7 @@ import Lightlike.Spacetime.NullHypersurfaceCoord
 import Lightlike.Spacetime.RaychaudhuriAlgebra
 import Lightlike.Spacetime.RaychaudhuriCoord
 import Lightlike.Spacetime.RaychaudhuriFocusing
+import Lightlike.Spacetime.Raychaudhuri.FocusingSEC
 import Lightlike.Spacetime.RaychaudhuriManifold
 import Lightlike.Spacetime.RaychaudhuriNull
 import Lightlike.Spacetime.RaychaudhuriNullAlg
