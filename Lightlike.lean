@@ -708,6 +708,7 @@ import Lightlike.PL.Schoenflies.LatticeCycle
 import Lightlike.PL.Schoenflies.LatticeBoxes
 import Lightlike.PL.Schoenflies.LatticeSeg
 import Lightlike.PL.Schoenflies.LatticePoly
+import Lightlike.PL.Schoenflies.BoundaryPoly
 import Lightlike.PL.SimpleChain
 import Lightlike.PL.Chain
 import Lightlike.PL.TwoArcs
