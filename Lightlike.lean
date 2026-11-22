@@ -1624,3 +1624,4 @@ import Lightlike.Spacetime.StereoConformal
 import Lightlike.Spacetime.ConformalKilling
 import Lightlike.Spacetime.ConformalKillingField
 import Lightlike.Rows.G2_019.EntireSeries
+import Lightlike.Rows.G2_019.AiryDef
