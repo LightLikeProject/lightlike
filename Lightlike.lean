@@ -1617,6 +1617,7 @@ import Lightlike.Spacetime.GreenOperators.Triangle
 import Lightlike.Spacetime.GreenOperators.NullCoordinates
 import Lightlike.Spacetime.GreenOperators.Uniqueness
 import Lightlike.Spacetime.GreenOperators.TimeReversal
+import Lightlike.Spacetime.GreenOperators.Primitive
 import Lightlike.Spacetime.FLRWChart
 import Lightlike.Spacetime.FLRWCoord
 import Lightlike.Spacetime.FLRWModel
