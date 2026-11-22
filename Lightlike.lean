@@ -612,6 +612,7 @@ import Lightlike.OperatorAlgebras.EntropyBell
 import Lightlike.OperatorAlgebras.WeylAlgebra
 import Lightlike.OperatorAlgebras.TestsWeylAlgebra
 import Lightlike.Rows.G1_053.KMSStrip
+import Lightlike.Rows.G1_053.KMSDef
 import Lightlike.Oscillatory.Flat
 import Lightlike.Oscillatory.GaussFourier
 import Lightlike.Oscillatory.GaussFourierTests
