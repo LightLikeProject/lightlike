@@ -32,8 +32,7 @@ lemma gam_conj (ρ : CliffordRep n V) (i k : Fin n) :
   by_cases h : i = k
   · subst h
     simp [gam_mul_self]
-  · rw [ite_cond_eq_false _ _ (by simpa using h), gam_mul_swap ρ h, neg_mul, mul_assoc,
-      gam_mul_self]
+  · rw [if_neg h, gam_mul_swap ρ h, neg_mul, mul_assoc, gam_mul_self]
     simp
 
 lemma sum_gam_conj (ρ : CliffordRep n V) (x : E n) :
@@ -178,6 +177,107 @@ theorem integral_dirac_inner_weight {ρ : CliffordRep n V} (hρ : IsSkewRep ρ) 
   rw [h]
   refine integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)
   simp only [dirac_smul_apply ρ hφ hg x, inner_add_right, real_inner_smul_right]
+
+lemma inner_e (x : E n) (i : Fin n) : ⟪x, e i⟫ = x i := by
+  simp [e, EuclideanSpace.inner_single_right]
+
+lemma continuous_stereoW : Continuous (stereoW n : E n → ℝ) :=
+  Continuous.zpow₀ ((contDiff_stereoH (n := n)).continuous) _
+    (fun x => Or.inl (stereoH_pos x).ne')
+
+lemma continuous_dirac {ρ : CliffordRep n V} {f : E n → V} (hf : ContDiff ℝ 1 f) :
+    Continuous (dirac ρ f) := by
+  have hfd : Continuous (fderiv ℝ f) := hf.continuous_fderiv (by norm_num)
+  exact continuous_finset_sum _ fun i _ => (gam ρ i).continuous.comp (hfd.clm_apply continuous_const)
+
+lemma continuous_Yop_apply {ρ : CliffordRep n V} {f : E n → V} (hf : Continuous f) :
+    Continuous (fun x => Yop ρ x (f x)) := by
+  simp only [Yop, sum_apply, smul_apply]
+  exact continuous_finset_sum _ fun l _ =>
+    ((EuclideanSpace.proj l : E n →L[ℝ] ℝ).continuous).smul ((gam ρ l).continuous.comp hf)
+
+/-- Clifford multiplication by the position vector is skew-adjoint. -/
+lemma inner_Yop {ρ : CliffordRep n V} (hρ : IsSkewRep ρ) (x : E n) (u v : V) :
+    inner ℝ (Yop ρ x u) v = -inner ℝ u (Yop ρ x v) := by
+  have hρ' : ∀ (i : Fin n) (w u : V), inner ℝ (gam ρ i w) u = -inner ℝ w (gam ρ i u) := hρ
+  simp only [Yop, sum_apply, smul_apply, sum_inner, inner_sum, real_inner_smul_left,
+    real_inner_smul_right, hρ', Finset.sum_neg_distrib, mul_neg]
+
+omit [InnerProductSpace ℝ V] in
+/-- Integrability of a continuous function supported where a compactly supported `k` is nonzero. -/
+lemma integrable_of_cont_supp {u : E n → ℝ} {k : E n → V} (hu : Continuous u)
+    (hkc : HasCompactSupport k) (hs : ∀ x, k x = 0 → u x = 0) : Integrable u :=
+  hu.integrable_of_hasCompactSupport
+    (HasCompactSupport.intro hkc.isCompact fun x hx => hs x (image_eq_zero_of_notMem_tsupport hx))
+
+lemma sum_fderiv_stereoPhi_gam (ρ : CliffordRep n V) (g : E n → V) (x : E n) :
+    ∑ i, fderiv ℝ (stereoPhi n) x (e i) • gam ρ i (g x) =
+      ((1 - (n : ℝ)) * stereoW n x) • Yop ρ x (g x) := by
+  simp only [fderiv_stereoPhi_apply, inner_e, Yop, sum_apply, smul_apply, Finset.smul_sum,
+    smul_smul, mul_assoc]
+
+/-- **Formal self-adjointness of the Dirac operator of the round sphere, in the stereographic
+chart.** For `C¹` compactly supported spinor fields `f, g` on `ℝⁿ` (the chart), with `D = diracF`
+the Dirac operator in the stereographic frame and the Riemannian volume density `h^{-n}`
+(`stereoW`): `∫ ⟪D f, g⟫ h^{-n} dy = ∫ ⟪f, D g⟫ h^{-n} dy`.  The proof uses the weighted flat
+integration by parts and the skew-adjointness of `Y`; the term `(n-1)/2 · Y` of the spin
+connection exactly compensates the derivative of the density. -/
+theorem integral_diracF_stereo_inner {ρ : CliffordRep n V} (hρ : IsSkewRep ρ) {f g : E n → V}
+    (hf : ContDiff ℝ 1 f) (hg : ContDiff ℝ 1 g)
+    (hfc : HasCompactSupport f) (hgc : HasCompactSupport g) :
+    ∫ x, inner ℝ (diracF ρ stereoF stereoOmega f x) (g x) * stereoW n x =
+      ∫ x, inner ℝ (f x) (diracF ρ stereoF stereoOmega g x) * stereoW n x := by
+  have hweight := integral_dirac_inner_weight hρ (contDiff_stereoPhi (n := n)) hf hg hfc hgc
+  simp only [sum_fderiv_stereoPhi_gam] at hweight
+  have hL : ∀ x, inner ℝ (diracF ρ stereoF stereoOmega f x) (g x) * stereoW n x =
+      stereoPhi n x * inner ℝ (dirac ρ f x) (g x) +
+        (-((n : ℝ) - 1) / 2 * stereoW n x * inner ℝ (Yop ρ x (f x)) (g x)) := by
+    intro x
+    rw [diracF_stereo, inner_add_left, real_inner_smul_left, real_inner_smul_left, stereoPhi_eq]
+    ring
+  have hR : ∀ x, inner ℝ (f x) (diracF ρ stereoF stereoOmega g x) * stereoW n x =
+      (stereoPhi n x * inner ℝ (f x) (dirac ρ g x) +
+        inner ℝ (f x) (((1 - (n : ℝ)) * stereoW n x) • Yop ρ x (g x))) +
+        (-((n : ℝ) - 1) / 2 * stereoW n x * inner ℝ (Yop ρ x (f x)) (g x)) := by
+    intro x
+    rw [diracF_stereo, inner_add_right, real_inner_smul_right, real_inner_smul_right,
+      real_inner_smul_right, inner_Yop hρ, stereoPhi_eq]
+    ring
+  have hcw : Continuous (fun x : E n => -((n : ℝ) - 1) / 2 * stereoW n x) :=
+    continuous_const.mul continuous_stereoW
+  have ha1 : Integrable (fun x => stereoPhi n x * inner ℝ (dirac ρ f x) (g x)) :=
+    integrable_of_cont_supp (k := g)
+      (contDiff_stereoPhi.continuous.mul ((continuous_dirac hf).inner hg.continuous)) hgc
+      (fun x hx => by simp [hx])
+  have ha2 : Integrable
+      (fun x => -((n : ℝ) - 1) / 2 * stereoW n x * inner ℝ (Yop ρ x (f x)) (g x)) :=
+    integrable_of_cont_supp (k := g)
+      (hcw.mul ((continuous_Yop_apply hf.continuous).inner hg.continuous)) hgc
+      (fun x hx => by simp [hx])
+  have hb : Integrable (fun x => stereoPhi n x * inner ℝ (f x) (dirac ρ g x) +
+        inner ℝ (f x) (((1 - (n : ℝ)) * stereoW n x) • Yop ρ x (g x))) :=
+    integrable_of_cont_supp (k := f)
+      ((contDiff_stereoPhi.continuous.mul (hf.continuous.inner (continuous_dirac hg))).add
+        (hf.continuous.inner
+          ((continuous_const.mul continuous_stereoW).smul
+            (continuous_Yop_apply hg.continuous)))) hfc
+      (fun x hx => by simp [hx])
+  calc ∫ x, inner ℝ (diracF ρ stereoF stereoOmega f x) (g x) * stereoW n x
+      = ∫ x, (stereoPhi n x * inner ℝ (dirac ρ f x) (g x) +
+          (-((n : ℝ) - 1) / 2 * stereoW n x * inner ℝ (Yop ρ x (f x)) (g x))) :=
+        integral_congr_ae (Filter.Eventually.of_forall hL)
+    _ = (∫ x, stereoPhi n x * inner ℝ (dirac ρ f x) (g x)) +
+          ∫ x, (-((n : ℝ) - 1) / 2 * stereoW n x * inner ℝ (Yop ρ x (f x)) (g x)) :=
+        integral_add ha1 ha2
+    _ = (∫ x, (stereoPhi n x * inner ℝ (f x) (dirac ρ g x) +
+          inner ℝ (f x) (((1 - (n : ℝ)) * stereoW n x) • Yop ρ x (g x)))) +
+          ∫ x, (-((n : ℝ) - 1) / 2 * stereoW n x * inner ℝ (Yop ρ x (f x)) (g x)) := by
+        rw [hweight]
+    _ = ∫ x, ((stereoPhi n x * inner ℝ (f x) (dirac ρ g x) +
+          inner ℝ (f x) (((1 - (n : ℝ)) * stereoW n x) • Yop ρ x (g x))) +
+          (-((n : ℝ) - 1) / 2 * stereoW n x * inner ℝ (Yop ρ x (f x)) (g x))) :=
+        (integral_add hb ha2).symm
+    _ = _ := integral_congr_ae (Filter.Eventually.of_forall fun x => (hR x).symm)
 
 end Inner
 
