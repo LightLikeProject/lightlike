@@ -1334,6 +1334,7 @@ import Lightlike.SpinFoam.Ooguri
 import Lightlike.SpinFoam.SNet
 import Lightlike.SpinFoam.Tests
 import Lightlike.SpinFoam.Vertex
+import Lightlike.SpinFoam.VertexAsymptoticsHyp.FarCompact
 import Lightlike.Surfaces.Add
 import Lightlike.Surfaces.Arc
 import Lightlike.Surfaces.Basic
