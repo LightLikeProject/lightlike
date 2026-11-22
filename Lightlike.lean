@@ -539,6 +539,7 @@ import Lightlike.OperatorAlgebras.QuasiFreeState.PositiveFunctional
 import Lightlike.OperatorAlgebras.QuasiFreeState.Pure
 import Lightlike.OperatorAlgebras.QuasiFreeState.State
 import Lightlike.OperatorAlgebras.QuasiFreeState.Tests
+import Lightlike.OperatorAlgebras.QuasiFreeState.TwoPoint
 import Lightlike.OperatorAlgebras.QuasiFreeWick
 import Lightlike.OperatorAlgebras.SecondQuantization
 import Lightlike.OperatorAlgebras.SecondQuantFinite
