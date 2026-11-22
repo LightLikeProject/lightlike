@@ -134,6 +134,7 @@ import Lightlike.Asymptotics.SaddleRayTests
 import Lightlike.Asymptotics.SP3Row.BosonLog
 import Lightlike.Asymptotics.SP3Row.FreeBoson
 import Lightlike.Asymptotics.SP3Row.FreeBoson2
+import Lightlike.Asymptotics.SP3Row.FreeBoson3
 import Lightlike.Asymptotics.SP3Row.SignedBreak
 import Lightlike.Asymptotics.Stirling
 import Lightlike.Asymptotics.StirlingTests
