@@ -7,6 +7,7 @@ import Mathlib
 * `IsRiemMetric.normSq_lower`: uniform local positive-definiteness `λ ‖w‖² ≤ g_x(w, w)` on a compact.
 * `IsRiemMetric.chartDist_sq_simplex_edge'`: the squared edge error carries the factor `‖v - u‖²`.
 * `IsRiemMetric.chartDist_simplex_edge`: `|d(x + h u, x + h v) - h √(g_x(v - u, v - u))| ≤ C h² ‖v - u‖`.
+* `IsRiemMetric.tendsto_chartDist_simplex_edge_div`: `d(x + h u, x + h v) / h → √(g_x(v - u, v - u))`.
 -/
 
 open Matrix Set Filter Topology Metric
@@ -172,5 +173,33 @@ theorem IsRiemMetric.chartDist_simplex_edge (hg : IsRiemMetric g U) {K : Set (Fi
       nlinarith [hkey]
     rw [div_mul_eq_mul_div, div_mul_eq_mul_div, le_div_iff₀ hs]
     linarith [h3]
+
+/-- **Infinitesimal edge length.** For `x ∈ U` and fixed `u v`, the rescaled chart distance
+`d(x + h u, x + h v) / h` tends to `√(g_x(v - u, v - u))` as `h → 0⁺`. -/
+theorem IsRiemMetric.tendsto_chartDist_simplex_edge_div (hg : IsRiemMetric g U)
+    {x : Fin n → ℝ} (hx : x ∈ U) (u v : Fin n → ℝ) :
+    Tendsto (fun h : ℝ => chartDist g U (x + h • u) (x + h • v) / h) (𝓝[>] 0)
+      (𝓝 (Real.sqrt ((v - u) ⬝ᵥ (g x *ᵥ (v - u))))) := by
+  have hKU : ({x} : Set (Fin n → ℝ)) ⊆ U := by simpa using hx
+  obtain ⟨C, h₀, hh₀, hE⟩ := hg.chartDist_simplex_edge (isCompact_singleton (x := x)) hKU
+    (R := max ‖u‖ ‖v‖) (le_max_of_le_left (norm_nonneg u))
+  rw [tendsto_iff_dist_tendsto_zero]
+  have hlim : Tendsto (fun h : ℝ => C * h * ‖v - u‖) (𝓝[>] 0) (𝓝 0) := by
+    have : Tendsto (fun h : ℝ => C * h * ‖v - u‖) (𝓝 0) (𝓝 (C * 0 * ‖v - u‖)) :=
+      ((continuous_const.mul continuous_id).mul continuous_const).tendsto 0
+    simpa using this.mono_left nhdsWithin_le_nhds
+  refine squeeze_zero' (Eventually.of_forall fun _ => dist_nonneg) ?_ hlim
+  filter_upwards [Ioc_mem_nhdsGT hh₀] with h hh
+  have := hE x rfl h hh.1 hh.2 u v (le_max_left _ _) (le_max_right _ _)
+  rw [Real.dist_eq]
+  have e : chartDist g U (x + h • u) (x + h • v) / h -
+      Real.sqrt ((v - u) ⬝ᵥ (g x *ᵥ (v - u))) =
+      (chartDist g U (x + h • u) (x + h • v) -
+        h * Real.sqrt ((v - u) ⬝ᵥ (g x *ᵥ (v - u)))) / h := by
+    have := hh.1.ne'
+    field_simp
+  rw [e, abs_div, abs_of_pos hh.1, div_le_iff₀ hh.1]
+  calc _ ≤ C * h ^ 2 * ‖v - u‖ := this
+    _ = C * h * ‖v - u‖ * h := by ring
 
 end Lightlike.Upstream.GeodesicExpansion
