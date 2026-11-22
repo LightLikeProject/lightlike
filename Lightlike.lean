@@ -282,6 +282,7 @@ import Lightlike.GR.FeynmanFactorization
 import Lightlike.GR.FeynmanRecursion
 import Lightlike.GR.FeynmanWard
 import Lightlike.GR.ThreePointAmplitude
+import Lightlike.Rows.G3_261.Mandelstam
 import Lightlike.GR.PenroseTransform
 import Lightlike.GR.WeylSpinor
 import Lightlike.GR.ZeroRestMass
