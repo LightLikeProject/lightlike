@@ -1469,6 +1469,10 @@ import Lightlike.SpinFoam.EPRLStateSum.NodePairGluing
 import Lightlike.SpinFoam.EPRLStateSum.SignDecomp
 import Lightlike.SpinFoam.EPRLStateSum.SignedVertex
 import Lightlike.SpinFoam.EPRLStateSum.GlobalGluing
+import Lightlike.SpinFoam.EPRLStateSum.SharedTetLegs
+import Lightlike.SpinFoam.EPRLStateSum.TwoToOneIncidence
+import Lightlike.SpinFoam.EPRLStateSum.ComplexIncidence
+import Lightlike.SpinFoam.EPRLStateSum.ComplexLegs
 import Lightlike.SpinFoam.Move15
 import Lightlike.SpinFoam.Move15Global
 import Lightlike.SpinFoam.BarrettCrane
