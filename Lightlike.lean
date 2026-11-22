@@ -1464,6 +1464,7 @@ import Lightlike.SpinFoam.EPRLStateSum.NodeCoefSign
 import Lightlike.SpinFoam.EPRLStateSum.NodeCoefThree
 import Lightlike.SpinFoam.EPRLStateSum.NodeCoefMixed
 import Lightlike.SpinFoam.EPRLStateSum.NodeCoefObstruction
+import Lightlike.SpinFoam.EPRLStateSum.SimplexIntrinsic
 import Lightlike.SpinFoam.Move15
 import Lightlike.SpinFoam.Move15Global
 import Lightlike.SpinFoam.BarrettCrane
