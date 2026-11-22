@@ -714,6 +714,7 @@ import Lightlike.PL.Schoenflies.InsideBox
 import Lightlike.PL.Schoenflies.PolygonScale
 import Lightlike.PL.Schoenflies.CarrierBox
 import Lightlike.PL.Schoenflies.PolygonAround
+import Lightlike.PL.Schoenflies.ConnectedHull
 import Lightlike.PL.SimpleChain
 import Lightlike.PL.Chain
 import Lightlike.PL.TwoArcs
