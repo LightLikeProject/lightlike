@@ -62,4 +62,13 @@ theorem simpE_one {s : Finset V} (hs : #s = 5) (col : Finset V → ℕ)
     ite_eq_left ⟨fun e => eprlAdmissible_one _, hb⟩]
   exact eprlVertex_zero_right _ _ hb
 
+/-- **The weight at `γ = 1`**: the product of the SU(2) dimensions `J + 1` of the triangles and the
+vertex amplitudes `simpE 1` (the edge amplitudes are `1`); the face factor is that of the Ooguri
+weight. -/
+theorem weightE_one (K : Complex4 V) (col : Finset V → ℕ) :
+    weightE 1 K col =
+      (∏ f ∈ K.tris, ((col f : ℂ) + 1)) * ∏ s ∈ K.simps, simpE 1 col s := by
+  unfold weightE
+  simp [edgeAmp, faceAmp_one]
+
 end Lightlike.SpinFoam.EPRL
