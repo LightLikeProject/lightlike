@@ -1,5 +1,7 @@
 import Lightlike.SpinFoam.VertexAsymptoticsHyp.DensityBound
 import Lightlike.Asymptotics.Lorentzian.InnerIntegrable
+import Lightlike.Asymptotics.Lorentzian.VertexFixChart
+import Lightlike.Lorentz.FixedChart
 
 /-!
 # The Lorentzian vertex integrand is jointly integrable on `SL(2,ℂ)^4 × ℂ^10` (Haar-chart measure)
@@ -110,5 +112,54 @@ theorem integrable_lorIntegrand_haar4 {j p : Fin 10 → ℝ} (hj : ∀ e, 0 ≤ 
   refine integrable_vertexDensity_prod.mono' (measurable_lorIntegrand j p g).aestronglyMeasurable ?_
   filter_upwards [ae_overlaps hξ hξ'] with q hq
   exact norm_lorIntegrand_le hj hξ hξ' hq.1 hq.2
+
+/-- The fixed-chart coordinates `ℂ^3 → SL(2,ℂ)` on the four free variables, identity on `ℂ^10`. -/
+noncomputable def chartPair (q : (Fin 4 → (Fin 3 → ℂ)) × (Fin 10 → ℂ)) :
+    (Fin 4 → SL2C) × (Fin 10 → ℂ) :=
+  (fun a => fixChart 0 (q.1 a), q.2)
+
+theorem measurable_chartPair : Measurable chartPair :=
+  (measurable_pi_iff.mpr fun a => (measurable_fixChart 0).comp
+    ((measurable_pi_apply a).comp measurable_fst)).prodMk measurable_snd
+
+/-- **The Haar-chart measure is the Lebesgue measure transported by the fixed charts.** -/
+theorem haar4_prod_eq_map_chartPair :
+    haar4.prod (volume : Measure (Fin 10 → ℂ)) =
+      (volume : Measure ((Fin 4 → (Fin 3 → ℂ)) × (Fin 10 → ℂ))).map chartPair := by
+  have hsf : ∀ _ : Fin 4, SigmaFinite ((volume : Measure (Fin 3 → ℂ)).map (fixChart 0)) := by
+    intro _; rw [← haarC_eq_map_fixChart 0]; infer_instance
+  have h1 : haar4 = (volume : Measure (Fin 4 → (Fin 3 → ℂ))).map
+      (fun x a => fixChart 0 (x a)) := by
+    rw [volume_pi, Measure.pi_map_pi (f := fun _ : Fin 4 => fixChart 0) (hμ := hsf)
+      (fun _ => (measurable_fixChart 0).aemeasurable)]
+    unfold haar4
+    simp only [haarC_eq_map_fixChart 0]
+  have hm : Measurable (fun (x : Fin 4 → (Fin 3 → ℂ)) a => fixChart 0 (x a)) :=
+    measurable_pi_iff.mpr fun a => (measurable_fixChart 0).comp (measurable_pi_apply a)
+  have h2 := Measure.map_prod_map (volume : Measure (Fin 4 → (Fin 3 → ℂ)))
+    (volume : Measure (Fin 10 → ℂ)) hm (g := id) measurable_id
+  rw [Measure.map_id] at h2
+  rw [h1, h2, Measure.volume_eq_prod]
+  rfl
+
+/-- **Joint integrability in the fixed charts** (Lebesgue measure on `(ℂ^3)^4 × ℂ^10`), for unit
+boundary spinors and nonnegative spins. -/
+theorem integrable_lorIntegrand_chart {j p : Fin 10 → ℝ} (hj : ∀ e, 0 ≤ j e) {g : BdryData}
+    (hξ : ∀ e, ‖firstCol (g e 0)‖ = 1) (hξ' : ∀ e, ‖firstCol (g e 1)‖ = 1) :
+    Integrable (fun q : (Fin 4 → (Fin 3 → ℂ)) × (Fin 10 → ℂ) =>
+      lorIntegrand j p g (gauge (fun a => fixChart 0 (q.1 a))) q.2) volume := by
+  have h := integrable_lorIntegrand_haar4 (p := p) hj hξ hξ'
+  rw [haar4_prod_eq_map_chartPair] at h
+  exact (integrable_map_measure (measurable_lorIntegrand j p g).aestronglyMeasurable
+    measurable_chartPair.aemeasurable).mp h
+
+/-- **P1**: joint integrability of the vertex integrand (the hypothesis `VertexJointIntegrable`). -/
+theorem vertexJointIntegrable_of_unit {j p : Fin 10 → ℝ} (hj : ∀ k, 0 < j k) {g : BdryData}
+    (hξ : ∀ k, ‖firstCol (g k 0)‖ = 1) (hξ' : ∀ k, ‖firstCol (g k 1)‖ = 1) :
+    VertexJointIntegrable j p g := by
+  intro lam
+  have hl : ∀ e, 0 ≤ (lam : ℝ) * j e := fun e => mul_nonneg (Nat.cast_nonneg _) (hj e).le
+  refine ⟨?_, integrable_lorIntegrand_chart hl hξ hξ'⟩
+  exact (integrable_lorIntegrand_haar4 (p := fun k => (lam : ℝ) * p k) hl hξ hξ').integral_prod_left.aestronglyMeasurable
 
 end Lightlike.Asymptotics.Lorentzian
