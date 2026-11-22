@@ -1625,3 +1625,4 @@ import Lightlike.Spacetime.ConformalKilling
 import Lightlike.Spacetime.ConformalKillingField
 import Lightlike.Rows.G2_020.Basic
 import Lightlike.Rows.G2_020.Calculus
+import Lightlike.Rows.G2_020.Calculus2
