@@ -12,6 +12,10 @@ then every maximal tree is exchange-connected to the star at any chosen vertex `
 miss `r`: a tree edge `zy` with `ry` in the tree and `rz` not in it is exchanged for `zr`, which adds
 one edge at `r` (`TreeExchange` with `(u, v, w) = (z, y, r)`).
 
+Only triangles through `r` are used (`treeConnected_of_cone_triangles`). In a closed combinatorial
+3-manifold this forces the link of `r` (a 2-sphere) to have a complete graph as 1-skeleton, hence at
+most 4 vertices, so the criterion only covers the boundary of the 4-simplex among manifolds.
+
 The boundary of the 4-simplex (a combinatorial 3-sphere) has this property, see `K5` and
 `treeConnected_K5`, so the gauge-fixed amplitude of that sphere is independent of the tree.
 
@@ -70,15 +74,16 @@ lemma IsMaxTree.eq_star {K : Complex3 V} {T : Finset (Finset V)} (hT : IsMaxTree
     · rw [← h, pair_comm]
       exact key a ha (fun har => hab (har.trans h))
 
-/-- **Tree-connectedness for a complete 2-skeleton**: if any three distinct vertices of `K` span a
-triangle of `K`, then any two maximal trees are connected by triangle exchanges. -/
-theorem treeConnected_of_complete_triangles (K : Complex3 V)
-    (hK : ∀ ⦃x y z : V⦄, x ∈ K.verts → y ∈ K.verts → z ∈ K.verts → x ≠ y → y ≠ z → x ≠ z →
-      ({x, y, z} : Finset V) ∈ K.tris) : TreeConnected K := by
-  have main : ∀ r ∈ K.verts, ∀ n : ℕ, ∀ T : Finset (Finset V), IsMaxTree K T →
+/-- **Tree-connectedness for a cone 2-skeleton**: if `r` is a vertex of `K` such that every two
+further distinct vertices `x, y` span a triangle `{x, y, r}` with `r`, then any two maximal trees are
+connected by triangle exchanges. Only triangles through `r` are needed. -/
+theorem treeConnected_of_cone_triangles (K : Complex3 V) {r : V} (hr : r ∈ K.verts)
+    (hK : ∀ ⦃x y : V⦄, x ∈ K.verts → y ∈ K.verts → x ≠ y → y ≠ r → x ≠ r →
+      ({x, y, r} : Finset V) ∈ K.tris) : TreeConnected K := by
+  have main : ∀ n : ℕ, ∀ T : Finset (Finset V), IsMaxTree K T →
       #(T.filter (fun e => r ∉ e)) = n →
       Relation.EqvGen (TreeExchange K) T (K.edges.filter (fun e => r ∈ e)) := by
-    intro r hr n
+    intro n
     induction n using Nat.strong_induction_on with
     | _ n ih =>
     intro T hT hn
@@ -139,7 +144,7 @@ theorem treeConnected_of_complete_triangles (K : Complex3 V)
       have hyv : y ∈ K.verts := Complex3.mem_verts.mpr (by
         obtain ⟨t, ht, hst, _⟩ := Complex3.mem_edges.mp (hT.1 hyz)
         exact ⟨t, ht, hst (by simp)⟩)
-      have htri := hK hz'v hyv hr hz'y hyr hNz'.1
+      have htri := hK hz'v hyv hz'y hyr hNz'.1
       have hzy : ({z', y} : Finset V) ∈ T := by rwa [pair_comm]
       have hyr' : ({y, r} : Finset V) ∈ T := by rwa [pair_comm]
       have hf : ({z', r} : Finset V) ∉ T := fun h => hNz'.2 (by rwa [pair_comm] at h)
@@ -160,10 +165,19 @@ theorem treeConnected_of_complete_triangles (K : Complex3 V)
         exact lt_of_lt_of_eq (card_erase_lt_of_mem hmem) hn
       exact Relation.EqvGen.trans _ _ _ (Relation.EqvGen.rel _ _ hex) (ih _ hlt _ hT' rfl)
   intro T T' hT hT'
+  exact Relation.EqvGen.trans _ _ _ (main _ T hT rfl)
+    (Relation.EqvGen.symm _ _ (main _ T' hT' rfl))
+
+/-- **Tree-connectedness for a complete 2-skeleton**: if any three distinct vertices of `K` span a
+triangle of `K`, then any two maximal trees are connected by triangle exchanges. -/
+theorem treeConnected_of_complete_triangles (K : Complex3 V)
+    (hK : ∀ ⦃x y z : V⦄, x ∈ K.verts → y ∈ K.verts → z ∈ K.verts → x ≠ y → y ≠ z → x ≠ z →
+      ({x, y, z} : Finset V) ∈ K.tris) : TreeConnected K := by
+  intro T T' hT hT'
   have hne : K.verts.Nonempty := card_pos.mp (by have := hT.2.card; omega)
   obtain ⟨r, hr⟩ := hne
-  exact Relation.EqvGen.trans _ _ _ (main r hr _ T hT rfl)
-    (Relation.EqvGen.symm _ _ (main r hr _ T' hT' rfl))
+  exact treeConnected_of_cone_triangles K hr
+    (fun x y hx hy hxy hyr hxr => hK hx hy hr hxy hyr hxr) hT hT'
 
 /-- The boundary of the 4-simplex: the five tetrahedra on `Fin 5` (a combinatorial 3-sphere). -/
 def K5 : Complex3 (Fin 5) :=

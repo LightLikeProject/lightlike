@@ -850,6 +850,7 @@ import Lightlike.PonzanoRegge.TriangulationIndependence.TreeEdge
 import Lightlike.PonzanoRegge.TriangulationIndependence.NotTreeConnected
 import Lightlike.PonzanoRegge.TriangulationIndependence.CompleteSkeleton
 import Lightlike.PonzanoRegge.TriangulationIndependence.Tests.Cocycle
+import Lightlike.PonzanoRegge.TriangulationIndependence.Tests.CompleteSkeleton
 import Lightlike.PonzanoRegge.TriangulationIndependence.Tests.TreeConnected
 import Lightlike.PonzanoRegge.Unconditional
 import Lightlike.QM.Basic
