@@ -1481,6 +1481,7 @@ import Lightlike.Dirac.Covariant
 import Lightlike.Dirac.LichnerowiczFormula
 import Lightlike.Dirac.SpinDeriv
 import Lightlike.Dirac.RicciIdentity
+import Lightlike.Dirac.LichnerowiczGeneral
 import Lightlike.DynamicalTriangulations.Action
 import Lightlike.DynamicalTriangulations.Action3
 import Lightlike.DynamicalTriangulations.Causal
