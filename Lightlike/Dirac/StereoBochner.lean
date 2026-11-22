@@ -173,4 +173,73 @@ lemma sum_inner_hess_stereo {ρ : CliffordRep n V} (hρ : IsSkewRep ρ) {f : E n
   refine Finset.sum_congr rfl fun k _ => ?_
   ring
 
+/-- **Integrated Bochner identity on the round sphere** (stereographic chart, Riemannian density
+`h^{-n}`): for a compactly supported `C²` spinor field `f`,
+`∫ ⟪−∑ᵢ ∇²f(Fᵢ,Fᵢ), f⟫ h^{-n} = ∫ (∑ᵢ ‖∇ᵢ f‖²) h^{-n}`, i.e. `∇*∇` is nonnegative. -/
+theorem integral_inner_neg_hess_stereo {ρ : CliffordRep n V} (hρ : IsSkewRep ρ) {f : E n → V}
+    (hf : ContDiff ℝ 2 f) (hfc : HasCompactSupport f) :
+    ∫ x, inner ℝ (-∑ i, hessF ρ stereoF stereoOmega f x i i) (f x) * stereoW n x =
+      ∫ x, (∑ i, ‖nablaF ρ stereoF stereoOmega i f x‖ ^ 2) * stereoW n x := by
+  set G : Fin n → E n → ℝ :=
+    fun i y => inner ℝ (nablaF ρ stereoF stereoOmega i f y) (f y) with hGdef
+  have hGc1 : ∀ i, ContDiff ℝ 1 (G i) := fun i =>
+    (contDiff_nablaF_stereo hf i).inner ℝ (hf.of_le (by norm_num))
+  have hGcs : ∀ i, HasCompactSupport (G i) := fun i =>
+    HasCompactSupport.intro hfc.isCompact fun x hx => by
+      simp [G, image_eq_zero_of_notMem_tsupport hx]
+  have hφd : Continuous (fderiv ℝ (stereoPhi n)) := contDiff_stereoPhi.continuous_fderiv (by norm_num)
+  have hI1 : ∀ i, Integrable (fun x => stereoPhi n x * fderiv ℝ (G i) x (e i)) := fun i =>
+    integrable_mul_fderiv_scalar contDiff_stereoPhi.continuous (hGc1 i) (hGcs i) i
+  have hI2 : ∀ i, Integrable (fun x => fderiv ℝ (stereoPhi n) x (e i) * G i x) := fun i =>
+    integrable_of_cont_supp (k := G i)
+      ((hφd.clm_apply continuous_const).mul (hGc1 i).continuous) (hGcs i)
+      (fun x hx => by simp [hx])
+  set T : E n → ℝ := fun x => ∑ i, (stereoPhi n x * fderiv ℝ (G i) x (e i) +
+    fderiv ℝ (stereoPhi n) x (e i) * G i x) with hTdef
+  have hT0 : ∫ x, T x = 0 := by
+    simp only [T]
+    have hsum := integral_finsetSum (μ := volume) Finset.univ
+      (f := fun i x => stereoPhi n x * fderiv ℝ (G i) x (e i) +
+        fderiv ℝ (stereoPhi n) x (e i) * G i x) (fun i _ => (hI1 i).add (hI2 i))
+    rw [hsum]
+    refine Finset.sum_eq_zero fun i _ => ?_
+    rw [integral_add (hI1 i) (hI2 i),
+      integral_mul_fderiv_scalar contDiff_stereoPhi (hGc1 i) (hGcs i) i]
+    ring
+  have hTint : Integrable T := integrable_finsetSum _ fun i _ => (hI1 i).add (hI2 i)
+  have hBint : Integrable (fun x => (∑ i, ‖nablaF ρ stereoF stereoOmega i f x‖ ^ 2) *
+      stereoW n x) := by
+    refine Continuous.integrable_of_hasCompactSupport ?_ ?_
+    · refine (continuous_finsetSum _ fun i _ => ?_).mul continuous_stereoW
+      exact ((contDiff_nablaF_stereo hf i).continuous).norm.pow 2
+    · refine HasCompactSupport.intro hfc.isCompact fun x hx => ?_
+      simp [nablaF_stereo_eq_zero hx]
+  have hpt : ∀ x, inner ℝ (-∑ i, hessF ρ stereoF stereoOmega f x i i) (f x) * stereoW n x =
+      (∑ i, ‖nablaF ρ stereoF stereoOmega i f x‖ ^ 2) * stereoW n x - T x := by
+    intro x
+    rw [inner_neg_left, sum_inner, sum_inner_hess_stereo hρ hf.contDiffAt]
+    have hF : ∀ i, fderiv ℝ (G i) x (stereoF x i) = stereoH x * fderiv ℝ (G i) x (e i) := by
+      intro i
+      show fderiv ℝ (G i) x (stereoH x • e i) = _
+      rw [map_smul, smul_eq_mul]
+    have hT : T x = stereoW n x * (stereoH x * ∑ i, fderiv ℝ (G i) x (e i)) -
+        ((n : ℝ) - 1) * stereoW n x * ∑ i, x i * G i x := by
+      simp only [T, Finset.mul_sum, ← Finset.sum_sub_distrib]
+      refine Finset.sum_congr rfl fun i _ => ?_
+      rw [fderiv_stereoPhi_apply, inner_e, stereoPhi_eq]
+      ring
+    have hF' : ∑ i, fderiv ℝ (G i) x (stereoF x i) =
+        stereoH x * ∑ i, fderiv ℝ (G i) x (e i) := by
+      rw [Finset.mul_sum]
+      exact Finset.sum_congr rfl fun i _ => hF i
+    simp only [hGdef] at hT hF'
+    rw [hT, hF']
+    ring
+  calc ∫ x, inner ℝ (-∑ i, hessF ρ stereoF stereoOmega f x i i) (f x) * stereoW n x
+      = ∫ x, ((∑ i, ‖nablaF ρ stereoF stereoOmega i f x‖ ^ 2) * stereoW n x - T x) :=
+        integral_congr_ae (Filter.Eventually.of_forall hpt)
+    _ = (∫ x, (∑ i, ‖nablaF ρ stereoF stereoOmega i f x‖ ^ 2) * stereoW n x) - ∫ x, T x :=
+        integral_sub hBint hTint
+    _ = _ := by rw [hT0, sub_zero]
+
 end Lightlike.Dirac
