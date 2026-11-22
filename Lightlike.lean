@@ -417,6 +417,7 @@ import Lightlike.Lorentz.SL2RPlancherel.Link
 import Lightlike.Lorentz.SL2RPlancherel.Injectivity
 import Lightlike.Lorentz.SL2RPlancherel.Linearity
 import Lightlike.Lorentz.SL2RPlancherel.WeightIntegrable
+import Lightlike.Lorentz.SL2RPlancherel.SqrtWeight
 import Lightlike.Lorentz.SL2RPlancherel.Test
 import Lightlike.Lorentz.SL2RPlancherel.ArcsinIntegral
 import Lightlike.Lorentz.SL2RPlancherel.CoshDist
