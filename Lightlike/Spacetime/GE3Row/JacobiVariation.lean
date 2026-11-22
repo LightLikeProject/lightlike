@@ -173,4 +173,18 @@ theorem hasDerivAt_gammaApply {γ w u : ℝ → Fin n → ℝ} {γ' w' u' : Fin 
   refine HasDerivAt.congr_deriv this ?_
   simp only [Pi.add_apply, gammaDeriv, gammaApply, ← Finset.sum_add_distrib]
 
+/-- The algebra of the Jacobi equation: with `K = ∂_s ∂_t F`, `K' = -(∂_J Γ)(w,w) - Γ(K,w) - Γ(w,K)`
+and `P = K + Γ(w, J)` one gets `P' = -Γ(w, P) - R(J, w) w`. -/
+theorem jacobi_algebra (hg : Lightlike.IsCoordMetric g U) {x : Fin n → ℝ} (hx : x ∈ U)
+    (w J K : Fin n → ℝ) :
+    -(gammaDeriv g x J w w + gammaApply g x K w + gammaApply g x w K) +
+        (gammaDeriv g x w w J + gammaApply g x (accel g x w) J + gammaApply g x w K) =
+      -gammaApply g x w (K + gammaApply g x w J) - riemannApply g x w J := by
+  rw [riemannApply_eq, gammaApply_add_right, accel_eq_neg_gammaApply, gammaApply_neg_left,
+    gammaApply_comm hg hx K w, gammaApply_comm hg hx J w,
+    gammaApply_comm hg hx (gammaApply g x w w) J, gammaDeriv_comm hg hx w w J]
+  funext i
+  simp only [Pi.add_apply, Pi.sub_apply, Pi.neg_apply]
+  ring
+
 end Lightlike.Geodesic
