@@ -394,6 +394,7 @@ import Lightlike.Lorentz.PoincareIrreps.Massless
 import Lightlike.Lorentz.PoincareIrreps.Measure
 import Lightlike.Lorentz.PoincareIrreps.Poincare
 import Lightlike.Lorentz.PoincareIrreps.LightPoincare
+import Lightlike.Lorentz.PoincareIrreps.SpinCasimir
 import Lightlike.Lorentz.PoincareIrreps.Tests
 import Lightlike.Lorentz.PrincipalSeries
 import Lightlike.Lorentz.Radial

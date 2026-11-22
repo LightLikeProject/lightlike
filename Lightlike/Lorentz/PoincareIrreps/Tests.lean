@@ -6,6 +6,7 @@ public import Lightlike.Lorentz.PoincareIrreps.Massless
 public import Lightlike.Lorentz.PoincareIrreps.Measure
 public import Lightlike.Lorentz.PoincareIrreps.Poincare
 public import Lightlike.Lorentz.PoincareIrreps.LightPoincare
+public import Lightlike.Lorentz.PoincareIrreps.SpinCasimir
 
 /-!
 # Checks for the little groups of the Poincaré group (HA6, first piece)
@@ -127,6 +128,13 @@ example : (restMom 3).1.det = ((9 : ℝ) : ℂ) := by
 #print axioms poincareRep
 #print axioms lightInducedRep_translate
 #print axioms lightPoincareRep
+#print axioms spin_casimir
+#print axioms opE_spin_highest
+
+/-- Control: for spin `1/2` (`n = 1`) the Casimir `4 s (s+1)` is `3`. -/
+example : sl2Casimir (SU2Spin.opH (SU2Spin.σ 1)) (SU2Spin.opE (SU2Spin.σ 1))
+    (SU2Spin.opF (SU2Spin.σ 1)) = (3 : ℂ) • 1 := by
+  rw [spin_casimir]; norm_num
 
 /-- Control: the translation `T(0)` on the light cone is the identity. -/
 example (ψ : lightCone → ℂ) : lightTranslateOp 0 ψ = ψ := by
