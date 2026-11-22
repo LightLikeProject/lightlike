@@ -999,6 +999,8 @@ import Lightlike.Regge.CMS4.FanInt4
 import Lightlike.Regge.CMS4.Gauge4
 import Lightlike.Regge.CMS4.Pert4
 import Lightlike.Regge.CMS4.Pert4b
+import Lightlike.Regge.CMS4.Pert4c
+import Lightlike.Regge.CMS4.Pert4d
 import Lightlike.Regge.Linear3.AngleSmooth
 import Lightlike.Regge.Linear3.SecondOrder
 import Lightlike.Regge.Linear3.SaintVenantHvec
