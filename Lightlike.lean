@@ -844,6 +844,8 @@ import Lightlike.PonzanoRegge.TriangulationIndependence.Values
 import Lightlike.PonzanoRegge.TriangulationIndependence.Main
 import Lightlike.PonzanoRegge.TriangulationIndependence.NonVacuity
 import Lightlike.PonzanoRegge.TriangulationIndependence.TreeConnected
+import Lightlike.PonzanoRegge.TriangulationIndependence.Cocycle
+import Lightlike.PonzanoRegge.TriangulationIndependence.Tests.Cocycle
 import Lightlike.PonzanoRegge.TriangulationIndependence.Tests.TreeConnected
 import Lightlike.PonzanoRegge.Unconditional
 import Lightlike.QM.Basic
