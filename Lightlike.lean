@@ -1317,6 +1317,7 @@ import Lightlike.Spin4.Haar
 import Lightlike.Rows.G2_010.Complete
 import Lightlike.Rows.G2_010.Expand
 import Lightlike.Rows.G2_010.Gauge
+import Lightlike.Rows.G2_010.GaugeSpan
 import Lightlike.Rows.G2_010.HilbertBasis
 import Lightlike.Rows.G2_010.Maschke
 import Lightlike.Rows.G2_010.Orthonormal
