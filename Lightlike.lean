@@ -304,6 +304,7 @@ import Lightlike.GR.GERow016.Similarity
 import Lightlike.GR.GERow016.Dilation
 import Lightlike.GR.GERow016.Rotation
 import Lightlike.GR.GERow016.Robustness
+import Lightlike.GR.GERow016.Robustness2
 import Lightlike.GR.EuclideanCigar
 import Lightlike.GR.EuclideanCone
 import Lightlike.GR.Kerr
