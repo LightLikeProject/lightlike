@@ -1625,3 +1625,5 @@ import Lightlike.Spacetime.ConformalKilling
 import Lightlike.Spacetime.ConformalKillingField
 import Lightlike.Upstream.GeodesicExpansion.Basic
 import Lightlike.Upstream.GeodesicExpansion.Metric
+import Lightlike.Upstream.GeodesicExpansion.Jet
+import Lightlike.Upstream.GeodesicExpansion.Taylor
