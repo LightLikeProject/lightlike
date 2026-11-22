@@ -414,6 +414,7 @@ import Lightlike.Lorentz.SL2RPlancherel.SphericalIdentity
 import Lightlike.Lorentz.SL2RPlancherel.SphericalClean
 import Lightlike.Lorentz.SL2RPlancherel.NoInvariantForm
 import Lightlike.Lorentz.SL2RPlancherel.Link
+import Lightlike.Lorentz.SL2RPlancherel.Injectivity
 import Lightlike.Lorentz.SL2RPlancherel.Test
 import Lightlike.Lorentz.SL2RPlancherel.ArcsinIntegral
 import Lightlike.Lorentz.SL2RPlancherel.CoshDist
