@@ -988,6 +988,7 @@ import Lightlike.Regge.CMS4.Kuhn4Trust
 import Lightlike.Regge.CMS4.JetCore4
 import Lightlike.Regge.CMS4.JetClass4
 import Lightlike.Regge.CMS4.Valid4
+import Lightlike.Regge.CMS4.Schur4
 import Lightlike.Regge.Linear3.AngleSmooth
 import Lightlike.Regge.Linear3.SecondOrder
 import Lightlike.Regge.Linear3.SaintVenantHvec
