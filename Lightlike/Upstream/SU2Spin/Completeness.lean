@@ -121,4 +121,55 @@ theorem isSl2Triple_ops (hρ : Continuous ρ) (hH : opH ρ ≠ 0) :
 
 end Lie
 
+/-! ## Invariant subspaces -/
+
+/-- A subspace invariant under `A` is invariant under `exp A`. -/
+lemma exp_mulVec_mem {m : ℕ} [NeZero m] (W : Submodule ℂ (Fin m → ℂ))
+    (A : Matrix (Fin m) (Fin m) ℂ) (hA : ∀ v ∈ W, A *ᵥ v ∈ W) :
+    ∀ v ∈ W, NormedSpace.exp A *ᵥ v ∈ W := by
+  intro v hv
+  have hpow : ∀ k : ℕ, A ^ k *ᵥ v ∈ W := by
+    intro k
+    induction k with
+    | zero => simpa using hv
+    | succ k ih => rw [pow_succ', ← mulVec_mulVec]; exact hA _ ih
+  have hs := NormedSpace.exp_series_hasSum_exp' (𝕂 := ℝ) A
+  let g : Matrix (Fin m) (Fin m) ℂ →ₗ[ℝ] (Fin m → ℂ) :=
+    { toFun := fun M => M *ᵥ v
+      map_add' := fun M N => add_mulVec M N v
+      map_smul' := fun r M => by simp [smul_mulVec] }
+  have hg : Continuous g := LinearMap.continuous_of_finiteDimensional g
+  have hs' := hs.map g hg
+  refine (Submodule.closed_of_finiteDimensional W).mem_of_tendsto hs'.tendsto_sum_nat
+    (Eventually.of_forall fun n => W.sum_mem fun k _ => ?_)
+  show g (((k.factorial : ℝ)⁻¹) • A ^ k) ∈ W
+  rw [map_smul]
+  exact W.smul_of_tower_mem _ (hpow k)
+
+/-- **Invariance transfer**: a subspace invariant under `E, F, H` is invariant under `ρ`. -/
+theorem invariant_of_ops (hρ : Continuous ρ) (W : Submodule ℂ (Fin d → ℂ))
+    (hE : ∀ v ∈ W, opE ρ *ᵥ v ∈ W) (hF : ∀ v ∈ W, opF ρ *ᵥ v ∈ W)
+    (hH : ∀ v ∈ W, opH ρ *ᵥ v ∈ W) (g : specialUnitaryGroup (Fin 2) ℂ) :
+    ∀ v ∈ W, ρ g *ᵥ v ∈ W := by
+  have hZ : ∀ v ∈ W, dρ ρ suZ *ᵥ v ∈ W := fun v hv => by
+    rw [dρZ_eq, smul_mulVec]; exact W.smul_mem _ (hH v hv)
+  have hY : ∀ v ∈ W, dρ ρ suY *ᵥ v ∈ W := fun v hv => by
+    rw [dρY_eq, sub_mulVec]; exact W.sub_mem (hF v hv) (hE v hv)
+  have hX' : ∀ v ∈ W, dρ ρ suX *ᵥ v ∈ W := fun v hv => by
+    rw [dρX_eq, smul_mulVec, add_mulVec]
+    exact W.smul_mem _ (W.add_mem (hE v hv) (hF v hv))
+  obtain ⟨X, hX, hexp⟩ := exists_exp_eq g
+  have hdX : ∀ v ∈ W, dρ ρ X *ᵥ v ∈ W := by
+    intro v hv
+    rw [hX.decomp, dρ_add hρ ((isSu2_Z.smul _).add (isSu2_Y.smul _)) (isSu2_X.smul _),
+      dρ_add hρ (isSu2_Z.smul _) (isSu2_Y.smul _), dρ_smul hρ isSu2_Z, dρ_smul hρ isSu2_Y,
+      dρ_smul hρ isSu2_X, add_mulVec, add_mulVec, smul_mulVec, smul_mulVec,
+      smul_mulVec]
+    exact W.add_mem (W.add_mem (W.smul_of_tower_mem _ (hZ v hv))
+      (W.smul_of_tower_mem _ (hY v hv))) (W.smul_of_tower_mem _ (hX' v hv))
+  intro v hv
+  have hg : g = expCurve X hX 1 := Subtype.ext (by rw [expCurve_coe, one_smul, hexp])
+  rw [hg, rho_expCurve hρ hX, one_smul]
+  exact exp_mulVec_mem W _ hdX v hv
+
 end SU2Spin
