@@ -1597,6 +1597,8 @@ import Lightlike.Tests.Constraints
 import Lightlike.Tests.DiracAlgorithm
 import Lightlike.Tests.ReducedForm
 import Lightlike.Rows.G1_031.Background
+import Lightlike.Rows.G1_031.Variation
+import Lightlike.Rows.G1_031.Ricci
 import Lightlike.GFT.Euler
 import Lightlike.Spacetime.Corners.BianchiSecond
 import Lightlike.Spacetime.Corners.Bridge
