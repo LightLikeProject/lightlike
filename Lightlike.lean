@@ -1630,3 +1630,4 @@ import Lightlike.Upstream.GeodesicExpansion.Taylor
 import Lightlike.Upstream.GeodesicExpansion.Expansion
 import Lightlike.Upstream.GeodesicExpansion.ExpansionBounds
 import Lightlike.Upstream.GeodesicExpansion.ExpansionLocal
+import Lightlike.Upstream.GeodesicExpansion.DistLower
