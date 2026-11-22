@@ -49,4 +49,34 @@ theorem nabla_gam (ρ : CliffordRep n V) (ω : E n → Fin n → Matrix (Fin n) 
   rw [hd, map_add, ← hc]
   abel
 
+/-- `∇ᵢ` commutes with finite sums of functions differentiable at `x`. -/
+theorem nabla_sum (ρ : CliffordRep n V) (ω : E n → Fin n → Matrix (Fin n) (Fin n) ℝ)
+    (i : Fin n) {ι : Type*} (s : Finset ι) (g : ι → E n → V) (x : E n)
+    (hg : ∀ j ∈ s, DifferentiableAt ℝ (g j) x) :
+    nabla ρ ω i (fun y => ∑ j ∈ s, g j y) x = ∑ j ∈ s, nabla ρ ω i (g j) x := by
+  have hd : fderiv ℝ (fun y => ∑ j ∈ s, g j y) x = ∑ j ∈ s, fderiv ℝ (g j) x := by
+    exact (HasFDerivAt.fun_sum (fun j hj => (hg j hj).hasFDerivAt)).fderiv
+  unfold nabla
+  rw [hd, sum_apply, map_sum, Finset.sum_add_distrib]
+
+/-- `D²` in a frame: `D² f = ∑ᵢⱼ γᵢγⱼ ∇ᵢ∇ⱼ f + ∑ᵢⱼₖ (ωᵢ)ⱼₖ γᵢγₖ ∇ⱼ f`, the second sum being the
+connection on the vector index of `∇ f`. Needs each `∇ⱼ f` differentiable at `x`. -/
+theorem diracConn_diracConn (ρ : CliffordRep n V)
+    (ω : E n → Fin n → Matrix (Fin n) (Fin n) ℝ)
+    (hω : ∀ x i a b, ω x i a b = -ω x i b a) {f : E n → V} (x : E n)
+    (hf : ∀ j, DifferentiableAt ℝ (fun y => nabla ρ ω j f y) x) :
+    diracConn ρ ω (diracConn ρ ω f) x =
+      ∑ i, ∑ j, gam ρ i (gam ρ j (nabla ρ ω i (fun y => nabla ρ ω j f y) x)) +
+      ∑ i, ∑ j, ∑ k, (ω x i j k) • gam ρ i (gam ρ k (nabla ρ ω j f x)) := by
+  unfold diracConn
+  have h1 : ∀ i, nabla ρ ω i (fun y => ∑ j, gam ρ j (nabla ρ ω j f y)) x =
+      ∑ j, (gam ρ j (nabla ρ ω i (fun y => nabla ρ ω j f y) x) +
+        ∑ k, (ω x i j k) • gam ρ k (nabla ρ ω j f x)) := by
+    intro i
+    rw [nabla_sum ρ ω i Finset.univ (fun j y => gam ρ j (nabla ρ ω j f y)) x
+      (fun j _ => (gam ρ j).differentiableAt.comp x (hf j))]
+    refine Finset.sum_congr rfl fun j _ => ?_
+    exact nabla_gam ρ ω hω i j x (hf j)
+  simp only [h1, map_sum, map_add, Finset.sum_add_distrib, map_smul]
+
 end Lightlike.Dirac
