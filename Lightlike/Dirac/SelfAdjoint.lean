@@ -180,4 +180,60 @@ theorem integral_norm_dirac_sq {ρ : CliffordRep n V} (hρ : IsSkewRep ρ) {f : 
   rw [neg_eq_iff_eq_neg, ← Finset.sum_neg_distrib]
   exact Finset.sum_congr rfl fun i _ => hC i
 
+/-- A compactly supported `C²` solution of `D f = 0` has vanishing derivative. -/
+lemma fderiv_eq_zero_of_dirac_eq_zero {ρ : CliffordRep n V} (hρ : IsSkewRep ρ) {f : E n → V}
+    (hf : ContDiff ℝ 2 f) (hfc : HasCompactSupport f) (hD : ∀ x, dirac ρ f x = 0) (x : E n) :
+    fderiv ℝ f x = 0 := by
+  have h0 := integral_norm_dirac_sq hρ hf hfc
+  simp only [hD, norm_zero] at h0
+  have hu : Continuous (fun x => ∑ i, ‖fderiv ℝ f x (e i)‖ ^ 2) :=
+    continuous_finsetSum _ fun i _ => ((contDiff_partialF hf i).continuous.norm).pow 2
+  have hint : Integrable (fun x => ∑ i, ‖fderiv ℝ f x (e i)‖ ^ 2) := by
+    refine Continuous.integrable_of_hasCompactSupport hu ?_
+    refine HasCompactSupport.intro (hfc.fderiv (𝕜 := ℝ)).isCompact fun y hy => ?_
+    have : fderiv ℝ f y = 0 := image_eq_zero_of_notMem_tsupport hy
+    simp [this]
+  have hnn : (0 : E n → ℝ) ≤ fun x => ∑ i, ‖fderiv ℝ f x (e i)‖ ^ 2 :=
+    fun y => Finset.sum_nonneg fun i _ => sq_nonneg _
+  have hae : (fun x => ∑ i, ‖fderiv ℝ f x (e i)‖ ^ 2) =ᵐ[volume] 0 := by
+    have := (integral_eq_zero_iff_of_nonneg hnn hint).1 (by
+      simpa using h0.symm)
+    exact this
+  have hall := (Continuous.ae_eq_iff_eq volume hu continuous_zero).1 hae
+  have hx := congrFun hall x
+  simp only [Pi.zero_apply] at hx
+  have hi : ∀ i, fderiv ℝ f x (e i) = 0 := fun i => by
+    have := (Finset.sum_eq_zero_iff_of_nonneg (fun i _ => sq_nonneg ‖fderiv ℝ f x (e i)‖)).1 hx i
+      (Finset.mem_univ i)
+    simpa using this
+  refine ContinuousLinearMap.ext fun v => ?_
+  have hv : v = ∑ i, v i • e i := by
+    ext j
+    simp [e, Pi.single_apply]
+  rw [hv, map_sum]
+  simp [hi]
+
+/-- **Vanishing of compactly supported harmonic spinors on `ℝⁿ`** (`n ≥ 1`): if `f` is `C²`
+with compact support and `D f = 0` then `f = 0`. The flat case of the Bochner-type vanishing
+argument that the Lichnerowicz formula gives. -/
+theorem eq_zero_of_dirac_eq_zero [NeZero n] {ρ : CliffordRep n V} (hρ : IsSkewRep ρ)
+    {f : E n → V} (hf : ContDiff ℝ 2 f) (hfc : HasCompactSupport f)
+    (hD : ∀ x, dirac ρ f x = 0) : f = 0 := by
+  have : Nontrivial (E n) := ⟨⟨e ⟨0, Nat.pos_of_ne_zero (NeZero.ne n)⟩, 0, by
+    intro h
+    have := congrArg (fun v => v ⟨0, Nat.pos_of_ne_zero (NeZero.ne n)⟩) h
+    simp [e] at this⟩⟩
+  have hconst : ∀ x y, f x = f y :=
+    is_const_of_fderiv_eq_zero (hf.differentiable (by norm_num))
+      (fderiv_eq_zero_of_dirac_eq_zero hρ hf hfc hD)
+  obtain ⟨y, hy⟩ : ∃ y, y ∉ tsupport f := by
+    by_contra h
+    simp only [not_exists, not_not] at h
+    have : tsupport f = Set.univ := Set.eq_univ_of_forall h
+    exact noncompact_univ (E n) (this ▸ hfc.isCompact)
+  have hy0 : f y = 0 := image_eq_zero_of_notMem_tsupport hy
+  funext x
+  rw [hconst x y, hy0]
+  rfl
+
 end Lightlike.Dirac
