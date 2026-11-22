@@ -23,7 +23,7 @@ namespace Lightlike
 variable {M : Type*} [TopologicalSpace M] [ChartedSpace (Fin 4 → ℝ) M] [IsManifold 𝓘(ℝ, Fin 4 → ℝ) ∞ M]
   [IsManifold 𝓘(ℝ, Fin 4 → ℝ) 2 M] [T2Space M]
 
-/-- **Focusing of timelike geodesics under the strong energy condition** (Kar–SenGupta, gr-qc/0611123, after (16)): for a
+/-- **Focusing of timelike geodesics under the strong energy condition** (see `kar-sengupta-2007`, gr-qc/0611123, for the focusing argument): for a
 Lorentzian metric on a four-manifold with its Levi-Civita connection, `G = κ T` with `κ > 0` and `T` satisfying the strong
 energy condition, a smooth vector field `V` that is unit, geodesic and rotation-free along an integral curve `γ` on `[0, L)`
 and converging at `γ 0` (`Θ < 0`) gives `L ≤ 3 / |Θ(γ 0)|`. -/
