@@ -16,11 +16,12 @@ the same amplitude. This file packages it as a property of the complex:
   `TreeConnected`; this is how the ring of three tetrahedra fits (see
   `Lightlike/PonzanoRegge/TriangulationIndependence/Tests/TreeConnected.lean`).
 
-What is open: that every closed combinatorial 3-manifold is `TreeConnected`. Exchanges only add
-triangle boundaries to the cycles that the non-tree edges close in the tree, so two maximal trees
-are exchange-connected exactly when they differ by a change that is trivial in the fundamental
-group of the 2-skeleton; whether this is automatic for a closed manifold (as a graph-theoretic
-statement, with no Pachner moves) is not proved here, and no counterexample is known.
+That every closed combinatorial 3-manifold is `TreeConnected` is **false**: the seven-vertex
+combinatorial 3-sphere `Sphere7` of `Tests/SphereCounterexample.lean` has an isolated maximal tree
+(`not_treeConnected_of_isolated`), and non-simply-connected manifolds fail by `NotTreeConnected.lean`.
+So tree independence of the gauge-fixed amplitude on closed manifolds cannot be obtained from
+triangle exchanges alone (it holds on the tree-connected ones, e.g. stacked spheres,
+`TreeConnectedMove14.lean`).
 -/
 
 @[expose] public section

@@ -854,6 +854,8 @@ import Lightlike.PonzanoRegge.TriangulationIndependence.Tests.TreeConnectedMove1
 import Lightlike.PonzanoRegge.TriangulationIndependence.Tests.Cocycle
 import Lightlike.PonzanoRegge.TriangulationIndependence.Tests.CompleteSkeleton
 import Lightlike.PonzanoRegge.TriangulationIndependence.Tests.TreeConnected
+import Lightlike.PonzanoRegge.TriangulationIndependence.Isolated
+import Lightlike.PonzanoRegge.TriangulationIndependence.Tests.SphereCounterexample
 import Lightlike.PonzanoRegge.Unconditional
 import Lightlike.QM.Basic
 import Lightlike.Recoupling.FifteenJ
