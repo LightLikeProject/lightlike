@@ -1626,3 +1626,4 @@ import Lightlike.Spacetime.ConformalKillingField
 import Lightlike.Rows.G1_059.GreenOperator
 import Lightlike.Rows.G1_059.Model
 import Lightlike.Rows.G1_059.Retarded
+import Lightlike.Rows.G1_059.Uniqueness
