@@ -1627,6 +1627,7 @@ import Lightlike.Upstream.SU2Spin.Brackets
 import Lightlike.Upstream.SU2Spin.Differential
 import Lightlike.Upstream.SU2Spin.LieProduct
 import Lightlike.Upstream.SU2Spin.OneParameter
+import Lightlike.Upstream.SU2Spin.Sl2Standard
 import Lightlike.Upstream.SU2Spin.SpinRep
 import Lightlike.Upstream.SU2Spin.Su2Exp
 import Lightlike.Upstream.SU2Spin.Tests
