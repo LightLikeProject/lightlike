@@ -1137,6 +1137,7 @@ import Lightlike.Spacetime.Raychaudhuri.RicciManifold
 import Lightlike.Spacetime.Raychaudhuri.RicciSharp
 import Lightlike.Spacetime.Raychaudhuri.Shifted
 import Lightlike.Spacetime.Raychaudhuri.Tests
+import Lightlike.Spacetime.Raychaudhuri.Twist
 import Lightlike.Spacetime.RaychaudhuriManifold
 import Lightlike.Spacetime.RaychaudhuriNull
 import Lightlike.Spacetime.RaychaudhuriNullAlg
