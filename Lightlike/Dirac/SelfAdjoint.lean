@@ -102,4 +102,82 @@ theorem integral_dirac_inner {ρ : CliffordRep n V} (hρ : IsSkewRep ρ) {f g : 
   rw [integral_finsetSum _ (fun i _ => hint i), integral_finsetSum _ (fun i _ => hint' i)]
   exact Finset.sum_congr rfl fun i _ => hterm i
 
+/-- The `i`-th partial derivative `x ↦ ∂ᵢ f x`. -/
+noncomputable def partialF (f : E n → V) (i : Fin n) : E n → V := fun x => fderiv ℝ f x (e i)
+
+lemma contDiff_partialF {f : E n → V} (hf : ContDiff ℝ 2 f) (i : Fin n) :
+    ContDiff ℝ 1 (partialF f i) :=
+  (hf.fderiv_right (by norm_num)).clm_apply contDiff_const
+
+lemma hasCompactSupport_partialF {f : E n → V} (hfc : HasCompactSupport f) (i : Fin n) :
+    HasCompactSupport (partialF f i) := by
+  refine HasCompactSupport.intro (hfc.fderiv (𝕜 := ℝ)).isCompact fun x hx => ?_
+  simp [partialF, image_eq_zero_of_notMem_tsupport hx]
+
+/-- `D f` is `C¹` for `f` of class `C²`. -/
+lemma contDiff_dirac {ρ : CliffordRep n V} {f : E n → V} (hf : ContDiff ℝ 2 f) :
+    ContDiff ℝ 1 (dirac ρ f) :=
+  ContDiff.sum fun i _ => (gam ρ i).contDiff.comp (contDiff_partialF hf i)
+
+/-- `D f` has compact support if `f` does. -/
+lemma hasCompactSupport_dirac {ρ : CliffordRep n V} {f : E n → V} (hfc : HasCompactSupport f) :
+    HasCompactSupport (dirac ρ f) := by
+  refine HasCompactSupport.intro (hfc.fderiv (𝕜 := ℝ)).isCompact fun x hx => ?_
+  simp [dirac, image_eq_zero_of_notMem_tsupport hx]
+
+/-- **Integrated flat Lichnerowicz formula.** For a skew Clifford module and `f` of class `C²`
+with compact support, `∫ ‖D f‖² = ∫ ∑ᵢ ‖∂ᵢ f‖²`: `D²` and `∇*∇ = -Δ` have the same quadratic
+form on `ℝⁿ` (scalar curvature `R = 0`). -/
+theorem integral_norm_dirac_sq {ρ : CliffordRep n V} (hρ : IsSkewRep ρ) {f : E n → V}
+    (hf : ContDiff ℝ 2 f) (hfc : HasCompactSupport f) :
+    ∫ x, ‖dirac ρ f x‖ ^ 2 = ∫ x, ∑ i, ‖fderiv ℝ f x (e i)‖ ^ 2 := by
+  have hf1 : ContDiff ℝ 1 f := hf.of_le (by norm_num)
+  -- step A: ∫ ‖D f‖² = ∫ ⟪f, D (D f)⟫
+  have hA : ∫ x, ‖dirac ρ f x‖ ^ 2 = ∫ x, inner ℝ (f x) (dirac ρ (dirac ρ f) x) := by
+    rw [← integral_dirac_inner hρ hf1 (contDiff_dirac hf) hfc (hasCompactSupport_dirac hfc)]
+    exact integral_congr_ae (Filter.Eventually.of_forall fun x => (real_inner_self_eq_norm_sq _).symm)
+  -- step C: per-direction integration by parts
+  have hC : ∀ i : Fin n, ∫ x, inner ℝ (f x) (fderiv ℝ (partialF f i) x (e i)) =
+      -∫ x, ‖fderiv ℝ f x (e i)‖ ^ 2 := by
+    intro i
+    have := integral_inner_fderiv hf1 (contDiff_partialF hf i) hfc
+      (hasCompactSupport_partialF hfc i) i
+    rw [this]
+    congr 1
+    exact integral_congr_ae (Filter.Eventually.of_forall fun x => real_inner_self_eq_norm_sq _)
+  have hS : ∀ x, dirac ρ (dirac ρ f) x = -∑ i, fderiv ℝ (partialF f i) x (e i) := by
+    intro x
+    rw [dirac_dirac ρ hf x, laplacian_eq_iteratedFDeriv_orthonormalBasis f
+      (EuclideanSpace.basisFun (Fin n) ℝ)]
+    congr 1
+    refine Finset.sum_congr rfl fun i _ => ?_
+    have hd : ContDiff ℝ 1 (fderiv ℝ f) := hf.fderiv_right (by norm_num)
+    have : fderiv ℝ (partialF f i) x = (fderiv ℝ (fderiv ℝ f) x).flip (e i) := by
+      unfold partialF
+      rw [fderiv_clm_apply (hd.differentiable (by norm_num) x) (differentiableAt_const _)]
+      ext v
+      simp
+    simp [this, iteratedFDeriv_two_apply, e]
+  have hint : ∀ i : Fin n, Integrable
+      (fun x => inner ℝ (f x) (fderiv ℝ (partialF f i) x (e i))) := by
+    intro i
+    refine Continuous.integrable_of_hasCompactSupport ?_ ?_
+    · exact (innerSL ℝ).continuous₂.comp₂ hf.continuous
+        (((contDiff_partialF hf i).continuous_fderiv (by norm_num)).clm_apply continuous_const)
+    · refine HasCompactSupport.intro hfc.isCompact fun x hx => ?_
+      simp [image_eq_zero_of_notMem_tsupport hx]
+  have hint2 : ∀ i : Fin n, Integrable (fun x => ‖fderiv ℝ f x (e i)‖ ^ 2) := by
+    intro i
+    refine Continuous.integrable_of_hasCompactSupport ?_ ?_
+    · exact ((contDiff_partialF hf i).continuous.norm).pow 2
+    · refine HasCompactSupport.intro (hasCompactSupport_partialF hfc i).isCompact fun x hx => ?_
+      have : partialF f i x = 0 := image_eq_zero_of_notMem_tsupport hx
+      have : fderiv ℝ f x (e i) = 0 := this
+      simp [this]
+  rw [hA]
+  simp only [hS, inner_neg_right, inner_sum]
+  rw [integral_neg, integral_finsetSum _ (fun i _ => hint i), integral_finsetSum _ (fun i _ => hint2 i)]
+  rw [neg_eq_iff_eq_neg, ← Finset.sum_neg_distrib]
+  exact Finset.sum_congr rfl fun i _ => hC i
+
 end Lightlike.Dirac
