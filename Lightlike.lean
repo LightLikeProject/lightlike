@@ -691,6 +691,7 @@ import Lightlike.PL.Schoenflies.EarStep
 import Lightlike.PL.Schoenflies.Glue
 import Lightlike.PL.Schoenflies.HomeoForm
 import Lightlike.PL.Schoenflies.DiscForm
+import Lightlike.PL.Schoenflies.ConeExtension
 import Lightlike.PL.Schoenflies.PolygonalSchoenflies
 import Lightlike.PL.Schoenflies.ScpRot
 import Lightlike.PL.Schoenflies.TriMap
