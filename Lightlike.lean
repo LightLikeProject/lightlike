@@ -535,6 +535,7 @@ import Lightlike.OperatorAlgebras.QuasiFreeState.Covariance
 import Lightlike.OperatorAlgebras.QuasiFreeState.Functional
 import Lightlike.OperatorAlgebras.QuasiFreeState.GNS
 import Lightlike.OperatorAlgebras.QuasiFreeState.PositiveFunctional
+import Lightlike.OperatorAlgebras.QuasiFreeState.Pure
 import Lightlike.OperatorAlgebras.QuasiFreeState.State
 import Lightlike.OperatorAlgebras.QuasiFreeWick
 import Lightlike.OperatorAlgebras.SecondQuantization
