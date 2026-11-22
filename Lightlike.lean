@@ -131,6 +131,7 @@ import Lightlike.Asymptotics.SaddleAssembly
 import Lightlike.Asymptotics.SaddleAssemblyTests
 import Lightlike.Asymptotics.SaddleRay
 import Lightlike.Asymptotics.SaddleRayTests
+import Lightlike.Asymptotics.SP3Row.SignedBreak
 import Lightlike.Asymptotics.Stirling
 import Lightlike.Asymptotics.StirlingTests
 import Lightlike.Asymptotics.Tauberian.FourierExchange
