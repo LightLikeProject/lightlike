@@ -102,11 +102,10 @@ theorem clsAng_zero {m : Fin 4 → ℝ} (hG : (g m).PosDef) (hs : ∀ y, (g y)�
   unfold clsAng
   simpa only [Qt_zero g hs m hdet] using this
 
-/-- **The `first_order` field of `JetStarCore4` in dimension 4.** For a symmetric metric field with
-`g m` positive definite, the first-order coefficients of the dihedral angles add up to zero in
-every admissible class. -/
-theorem first_order4 {m : Fin 4 → ℝ} (hG : (g m).PosDef) (hs : ∀ y, (g y)ᵀ = g y)
-    (c : Fin 4 → Fin 3) (hc : ClsOK c) : clsSum4 c (angC14 g m) = 0 := by
+/-- **The moved class angle sum is constant `2π` near `t = 0`.** -/
+theorem clsAng_eventually_const {m : Fin 4 → ℝ} (hG : (g m).PosDef) (hs : ∀ y, (g y)ᵀ = g y)
+    (c : Fin 4 → Fin 3) (hc : ClsOK c) :
+    ∀ᶠ t in 𝓝 (0 : ℝ), clsAng g m c t = 2 * π := by
   have hder := hasDerivAt_clsAng g hG hs c
   have hcont : ContinuousAt (clsAng g m c) 0 := hder.continuousAt
   have h0 := clsAng_zero g hG hs c hc
@@ -115,8 +114,7 @@ theorem first_order4 {m : Fin 4 → ℝ} (hG : (g m).PosDef) (hs : ∀ y, (g y)�
     filter_upwards [this] with t ht
     rw [h0] at ht
     simpa [Metric.mem_ball, Real.dist_eq] using ht
-  have heq : ∀ᶠ t in 𝓝 (0 : ℝ), clsAng g m c t = 2 * π := by
-    filter_upwards [eventually_cls_int g hG hs c hc, hnear] with t ⟨k, hk⟩ hn
+  · filter_upwards [eventually_cls_int g hG hs c hc, hnear] with t ⟨k, hk⟩ hn
     rw [hk] at hn ⊢
     have h1 : |(k : ℝ) - 1| < 1 := by
       have : 2 * π * k - 2 * π = π * (2 * ((k : ℝ) - 1)) := by ring
@@ -138,6 +136,14 @@ theorem first_order4 {m : Fin 4 → ℝ} (hG : (g m).PosDef) (hs : ∀ y, (g y)�
       omega
     rw [hk1]
     simp
+
+/-- **The `first_order` field of `JetStarCore4` in dimension 4.** For a symmetric metric field with
+`g m` positive definite, the first-order coefficients of the dihedral angles add up to zero in
+every admissible class. -/
+theorem first_order4 {m : Fin 4 → ℝ} (hG : (g m).PosDef) (hs : ∀ y, (g y)ᵀ = g y)
+    (c : Fin 4 → Fin 3) (hc : ClsOK c) : clsSum4 c (angC14 g m) = 0 := by
+  have hder := hasDerivAt_clsAng g hG hs c
+  have heq := clsAng_eventually_const g hG hs c hc
   have hc2 : HasDerivAt (fun _ : ℝ => 2 * π) (clsSum4 c (angC14 g m)) 0 :=
     hder.congr_of_eventuallyEq (heq.mono fun t ht => ht.symm)
   exact hc2.unique (hasDerivAt_const _ _)
