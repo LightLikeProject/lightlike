@@ -148,4 +148,106 @@ lemma integrable_fourierInv_psiLine (hR : 0 < R) (hf : DifferentiableOn ℂ f (d
   refine hI.integrable_of_forall_notMem_eq_zero fun x hx => ?_
   rw [fourierInv_psiLine, borelZero_of_nonpos hR hf hM hM0 (not_lt.1 hx) hc, sub_self, mul_zero]
 
+/-- **Laplace transform of `b₀ - a₀` on the line**: for `c > 1/R` and `w = c + 2πiξ`,
+`∫_0^∞ e^{-xw} (b₀(x) - a₀) dx = (f(w⁻¹) - a₀)/w`, by Fourier inversion. -/
+lemma laplace_line (hR : 0 < R) (hf : DifferentiableOn ℂ f (diskC R))
+    (hM : ∀ z ∈ diskC R, ‖f z - a₀‖ ≤ M * ‖z‖) (hM0 : 0 ≤ M) {c : ℝ} (hc : 1 / R < c) (ξ : ℝ) :
+    ∫ x in Ioi (0 : ℝ), cexp (-((x : ℂ) * vline c ξ)) * (borelZero f a₀ x c - a₀) =
+      (f (vline c ξ)⁻¹ - a₀) / vline c ξ := by
+  have hint : Integrable (𝓕 (psiLine f a₀ c)) := by
+    have h := (integrable_fourierInv_psiLine hR hf hM hM0 hc).comp_neg
+    refine h.congr (Filter.Eventually.of_forall fun x => ?_)
+    show 𝓕⁻ (psiLine f a₀ c) (-x) = _
+    rw [Real.fourierInv_eq_fourier_neg, neg_neg]
+  have hψ := (continuous_psiLine (a₀ := a₀) hR hf hc).fourier_fourierInv_eq (integrable_psiLine hR hf hM hc) hint
+  have hx := congrFun hψ ξ
+  rw [Real.fourier_real_eq_integral_exp_smul] at hx
+  simp_rw [fourierInv_psiLine, smul_eq_mul] at hx
+  rw [← setIntegral_eq_integral_of_forall_compl_eq_zero (s := Ioi 0) (fun x hx' => by
+    rw [borelZero_of_nonpos hR hf hM hM0 (not_lt.1 hx') hc, sub_self, mul_zero, mul_zero])] at hx
+  unfold psiLine at hx
+  rw [← hx]
+  refine setIntegral_congr_fun measurableSet_Ioi fun x _ => ?_
+  rw [← mul_assoc, ← Complex.exp_add]
+  congr 3
+  simp only [vline]
+  push_cast
+  ring
+
+/-- **`f` is the Laplace transform of `b_0`** (Benedetti–Gurau–Keppler–Lettera, arXiv:2210.14776v2, Appendix B,
+eq. (B.8), p. 25): under the hypotheses of the Nevanlinna–Sokal theorem, for `z` in the disk `C_R` and any line
+`Re w = c > 1/R`, `f(z) = (1/z) ∫_0^∞ e^{-x/z} b_0(x) dx`.
+
+The source takes the line `Re w = c` with `Re z⁻¹ > c`; here any `c > 1/R` is allowed, `b_0` not depending on the
+line (`borelZero_indep`) (kind: representation). Non-vacuous: `sokalHyp_const`. Serves task T-GF7-P5; the statement
+is copied word for word from `Tasks/GF/T_GF7_P5.lean`. -/
+theorem SokalHyp.eq_laplace_borelZero {f : ℂ → ℂ} {a : ℕ → ℂ} {R K ρ : ℝ} (h : SokalHyp f a R K ρ) {c : ℝ}
+    (hc : 1 / R < c) {z : ℂ} (hz : z ∈ diskC R) :
+    f z = z⁻¹ * ∫ x in Ioi (0 : ℝ), cexp (-(x / z)) * borelZero f (a 0) x c := by
+  have hR := h.R_pos
+  have hM : ∀ z ∈ diskC R, ‖f z - a 0‖ ≤ K / ρ * ‖z‖ := fun z hz => by
+    have := h.rem 1 z hz
+    simpa using this
+  have hM0 : 0 ≤ K / ρ := div_nonneg h.K_nonneg h.ρ_pos.le
+  set w : ℂ := z⁻¹ with hw
+  have hwre : 1 / R < w.re := hz
+  have hz0 : z ≠ 0 := by
+    rintro rfl
+    simp [hw] at hwre
+    linarith [one_div_pos.2 hR]
+  have hw0 : w ≠ 0 := inv_ne_zero hz0
+  have hwz : w⁻¹ = z := inv_inv z
+  set c0 : ℝ := w.re with hc0
+  have hline : vline c0 (w.im / (2 * π)) = w := by
+    have hpi : (π : ℂ) ≠ 0 := Complex.ofReal_ne_zero.2 Real.pi_ne_zero
+    have h2 : (2 : ℂ) * π * ((w.im / (2 * π) : ℝ) : ℂ) = (w.im : ℂ) := by
+      push_cast; field_simp
+    rw [vline, h2, hc0]
+    exact Complex.re_add_im w
+  have hL := laplace_line (a₀ := a 0) hR h.analytic hM hM0 hwre (w.im / (2 * π))
+  rw [hline, hwz] at hL
+  have hpos : 0 < c0 := (one_div_pos.2 hR).trans hwre
+  -- integrability of the two pieces
+  have hrw : ∀ x : ℝ, cexp (-((x : ℂ) * w)) * (borelZero f (a 0) x c0 - a 0) =
+      cexp (-(((x * w.im : ℝ) : ℂ) * I)) * 𝓕⁻ (psiLine f (a 0) c0) x := fun x => by
+    rw [fourierInv_psiLine, ← mul_assoc, ← Complex.exp_add]
+    congr 3
+    conv_lhs => rw [← Complex.re_add_im w]
+    rw [hc0]
+    push_cast
+    ring
+  have hI1 : IntegrableOn (fun x : ℝ => cexp (-((x : ℂ) * w)) * (borelZero f (a 0) x c0 - a 0)) (Ioi 0) := by
+    have hint := (integrable_fourierInv_psiLine hR h.analytic hM hM0 hwre).norm.integrableOn (s := Ioi 0)
+    refine hint.mono' ?_ ?_
+    · simp_rw [hrw]
+      exact ((by fun_prop : Continuous fun x : ℝ => cexp (-(((x * w.im : ℝ) : ℂ) * I))).mul
+        (continuous_fourierInv_psiLine hR h.analytic hM hwre)).aestronglyMeasurable.restrict
+    · refine Filter.Eventually.of_forall fun x => ?_
+      rw [hrw, norm_mul]
+      have : ‖cexp (-(((x * w.im : ℝ) : ℂ) * I))‖ = 1 := by
+        rw [Complex.norm_exp]; simp
+      rw [this, one_mul]
+  have hI2 : IntegrableOn (fun x : ℝ => cexp (-((x : ℂ) * w)) * a 0) (Ioi 0) := by
+    have := integrableOn_pow_mul_cexp_neg 0 (s := w) hpos
+    simp only [pow_zero, one_mul] at this
+    simp_rw [mul_comm w] at this
+    exact MeasureTheory.Integrable.mul_const this _
+  have hI2' : ∫ x in Ioi (0 : ℝ), cexp (-((x : ℂ) * w)) * a 0 = a 0 * z := by
+    rw [integral_mul_const]
+    have := integral_pow_mul_cexp_neg 0 (s := w) hpos
+    simp only [pow_zero, one_mul, Nat.factorial_zero, Nat.cast_one] at this
+    simp_rw [mul_comm w] at this
+    rw [this, ← hwz, mul_comm]
+    simp [hw]
+  have hsplit : ∫ x in Ioi (0 : ℝ), cexp (-(x / z)) * borelZero f (a 0) x c =
+      ∫ x in Ioi (0 : ℝ), (cexp (-((x : ℂ) * w)) * (borelZero f (a 0) x c0 - a 0) +
+        cexp (-((x : ℂ) * w)) * a 0) := by
+    refine setIntegral_congr_fun measurableSet_Ioi fun x _ => ?_
+    rw [borelZero_indep hR h.analytic hM hM0 x hc hwre, hw, div_eq_mul_inv]
+    ring
+  rw [hsplit, integral_add hI1 hI2, hL, hI2']
+  rw [← hwz] at hz0 ⊢
+  field_simp
+  ring
+
 end Lightlike.FieldTheory.Borel
