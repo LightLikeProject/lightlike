@@ -1477,6 +1477,7 @@ import Lightlike.Dirac.Weitzenbock
 import Lightlike.Dirac.Lichnerowicz
 import Lightlike.Dirac.LichnerowiczTests
 import Lightlike.Dirac.SecondOrder
+import Lightlike.Dirac.Covariant
 import Lightlike.DynamicalTriangulations.Action
 import Lightlike.DynamicalTriangulations.Action3
 import Lightlike.DynamicalTriangulations.Causal
