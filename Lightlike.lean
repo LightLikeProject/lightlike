@@ -387,6 +387,8 @@ import Lightlike.Lorentz.PlancherelKernel
 import Lightlike.Lorentz.PlancherelOperator
 import Lightlike.Lorentz.PlancherelTests
 import Lightlike.Lorentz.PlancherelTrace
+import Lightlike.Lorentz.PoincareIrreps.Momentum
+import Lightlike.Lorentz.PoincareIrreps.Tests
 import Lightlike.Lorentz.PrincipalSeries
 import Lightlike.Lorentz.Radial
 import Lightlike.Lorentz.SL2C
