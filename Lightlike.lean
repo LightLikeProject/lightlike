@@ -1453,6 +1453,7 @@ import Lightlike.SpinFoam.EPRLStateSum.SimplexBasis
 import Lightlike.SpinFoam.EPRLStateSum.SimplexGen
 import Lightlike.SpinFoam.EPRLStateSum.SimplexOoguri
 import Lightlike.SpinFoam.EPRLStateSum.BFWeight
+import Lightlike.SpinFoam.EPRLStateSum.NodeBasis
 import Lightlike.SpinFoam.EPRLStateSum.SimplexSwap
 import Lightlike.SpinFoam.Move15
 import Lightlike.SpinFoam.Move15Global
