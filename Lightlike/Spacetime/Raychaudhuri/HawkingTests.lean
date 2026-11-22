@@ -3,6 +3,7 @@ import Lightlike.Spacetime.Raychaudhuri.HawkingManifold
 import Lightlike.Spacetime.Raychaudhuri.HawkingSEC
 import Lightlike.Spacetime.Raychaudhuri.HawkingFLRW
 import Lightlike.Spacetime.Raychaudhuri.HawkingDust
+import Lightlike.Spacetime.Raychaudhuri.CollapseHawking
 
 /-!
 # Axiom checks for the Hawking-type lifetime bounds (Tier 2, milestone CO3 analytic core)
@@ -24,3 +25,4 @@ open Lightlike
 #print axioms hawking_bound_strongEC
 #print axioms hawking_bound_flrw
 #print axioms hawking_bound_flrw_dust
+#print axioms collapse_hawking_bound
