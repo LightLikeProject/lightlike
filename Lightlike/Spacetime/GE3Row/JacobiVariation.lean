@@ -92,4 +92,85 @@ theorem riemannApply_eq (g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ) (x 
   rw [e1, e2, e3, e4]
   ring
 
+/-- The Christoffel symbols of a coordinate metric are symmetric in the lower indices on `U`. -/
+theorem christoffel_symm_of_mem (hg : Lightlike.IsCoordMetric g U) {y : Fin n → ℝ} (hy : y ∈ U)
+    (i j k : Fin n) :
+    Lightlike.christoffel g i j k y = Lightlike.christoffel g i k j y := by
+  have hs : ∀ a b, (fun z => g z a b) =ᶠ[𝓝 y] (fun z => g z b a) := fun a b =>
+    Filter.eventuallyEq_of_mem (hg.isOpen.mem_nhds hy) fun z hz => by
+      have := congrFun (congrFun (hg.symm z hz) b) a
+      simpa using this
+  unfold Lightlike.christoffel
+  refine congrArg _ (Finset.sum_congr rfl fun l _ => ?_)
+  have h3 : Lightlike.pd l (fun z => g z j k) y = Lightlike.pd l (fun z => g z k j) y := by
+    unfold Lightlike.pd
+    rw [(hs j k).fderiv_eq]
+  rw [h3]
+  ring
+
+/-- Symmetric lower indices: `Γ(v, u) = Γ(u, v)`. -/
+theorem gammaApply_comm (hg : Lightlike.IsCoordMetric g U) {x : Fin n → ℝ} (hx : x ∈ U)
+    (v u : Fin n → ℝ) : gammaApply g x v u = gammaApply g x u v := by
+  funext i
+  simp only [gammaApply]
+  rw [Finset.sum_comm]
+  refine Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_
+  rw [christoffel_symm_of_mem hg hx i k j]
+  ring
+
+/-- Symmetric lower indices: `(∂_y Γ)(v, u) = (∂_y Γ)(u, v)`. -/
+theorem gammaDeriv_comm (hg : Lightlike.IsCoordMetric g U) {x : Fin n → ℝ} (hx : x ∈ U)
+    (y v u : Fin n → ℝ) : gammaDeriv g x y v u = gammaDeriv g x y u v := by
+  funext i
+  simp only [gammaDeriv]
+  rw [Finset.sum_comm]
+  refine Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_
+  have : Lightlike.christoffel g i k j =ᶠ[𝓝 x] Lightlike.christoffel g i j k :=
+    Filter.eventuallyEq_of_mem (hg.isOpen.mem_nhds hx) fun z hz =>
+      christoffel_symm_of_mem hg hz i k j
+  rw [this.fderiv_eq]
+  ring
+
+theorem gammaApply_add_right (x v u u' : Fin n → ℝ) :
+    gammaApply g x v (u + u') = gammaApply g x v u + gammaApply g x v u' := by
+  funext i
+  simp [gammaApply, mul_add, Finset.sum_add_distrib]
+
+theorem gammaApply_neg_left (x v u : Fin n → ℝ) :
+    gammaApply g x (-v) u = -gammaApply g x v u := by
+  funext i
+  simp [gammaApply, Finset.sum_neg_distrib]
+
+theorem accel_eq_neg_gammaApply (x v : Fin n → ℝ) : accel g x v = -gammaApply g x v v := by
+  funext i
+  simp [accel, gammaApply, mul_assoc]
+
+/-- Product rule for the connection term along curves. -/
+theorem hasDerivAt_gammaApply {γ w u : ℝ → Fin n → ℝ} {γ' w' u' : Fin n → ℝ} {t : ℝ}
+    (hc : ∀ i j k, DifferentiableAt ℝ (Lightlike.christoffel g i j k) (γ t))
+    (hγ : HasDerivAt γ γ' t) (hw : HasDerivAt w w' t) (hu : HasDerivAt u u' t) :
+    HasDerivAt (fun r => gammaApply g (γ r) (w r) (u r))
+      (gammaDeriv g (γ t) γ' (w t) (u t) + gammaApply g (γ t) w' (u t) +
+        gammaApply g (γ t) (w t) u') t := by
+  rw [hasDerivAt_pi]
+  intro i
+  have hj : ∀ j k, HasDerivAt (fun r => Lightlike.christoffel g i j k (γ r) * w r j * u r k)
+      (fderiv ℝ (Lightlike.christoffel g i j k) (γ t) γ' * w t j * u t k +
+        Lightlike.christoffel g i j k (γ t) * w' j * u t k +
+        Lightlike.christoffel g i j k (γ t) * w t j * u' k) t := by
+    intro j k
+    have h1 : HasDerivAt (fun r => Lightlike.christoffel g i j k (γ r))
+        (fderiv ℝ (Lightlike.christoffel g i j k) (γ t) γ') t :=
+      (hc i j k).hasFDerivAt.comp_hasDerivAt t hγ
+    have h2 : HasDerivAt (fun r => w r j) (w' j) t := (hasDerivAt_pi.mp hw) j
+    have h3 : HasDerivAt (fun r => u r k) (u' k) t := (hasDerivAt_pi.mp hu) k
+    have := (h1.mul h2).mul h3
+    convert this using 1
+    simp only [Pi.mul_apply]
+    ring
+  have := HasDerivAt.fun_sum (u := Finset.univ) fun j _ =>
+    HasDerivAt.fun_sum (u := Finset.univ) fun k _ => hj j k
+  refine HasDerivAt.congr_deriv this ?_
+  simp only [Pi.add_apply, gammaDeriv, gammaApply, ← Finset.sum_add_distrib]
+
 end Lightlike.Geodesic
