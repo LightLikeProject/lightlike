@@ -12,6 +12,7 @@ public import Lightlike.Lorentz.PoincareIrreps.MasslessPL
 public import Lightlike.Lorentz.PoincareIrreps.Fibre
 public import Lightlike.Lorentz.PoincareIrreps.MasslessMeasure
 public import Lightlike.Lorentz.PoincareIrreps.Classification
+public import Lightlike.Lorentz.PoincareIrreps.ClassificationStatement
 
 /-!
 # Checks for the little groups of the Poincaré group (HA6, first piece)
@@ -193,6 +194,12 @@ example (h : ℤ) (A : SL2C) (μ : Fin 4) :
 #print axioms wignerSU2_ofSU2
 #print axioms wigner_massive
 #print axioms wigner_massless
+
+/-- The classification statement is a `Prop` (not proved), and its hypotheses are satisfiable. -/
+example : Prop := WignerClassification
+example : IsStronglyContinuous trivialRep ∧ HasPositiveEnergy trivialRep ∧ IsIrreducible trivialRep :=
+  trivialRep_admissible
+#print axioms trivialRep_admissible
 
 /-- The spinor map `z z†` is equivariant, and the light-cone measure is nonzero and invariant. -/
 example (A : SL2C) (z : Spinor) :
