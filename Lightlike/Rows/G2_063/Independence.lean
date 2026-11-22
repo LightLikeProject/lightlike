@@ -4,7 +4,21 @@ import Lightlike.Rows.G2_063.Poisson2
 /-!
 # Independence of Poisson counts on disjoint sets (via characteristic functions)
 
-Step 1 (this part): the exponential moment of a product of i.i.d. coordinates and the Poisson mixing.
+For the Poisson process `poissonProcess lam ν` and disjoint measurable `A`, `B` the joint
+characteristic function of `(N_A, N_B)` is
+`E exp (i (u N_A + v N_B)) = exp (lam ν(A) (e^{iu} - 1)) · exp (lam ν(B) (e^{iv} - 1))`.
+It is computed by conditioning on the Poisson number of points (the sample is an i.i.d. product, so
+`E ∏ f (x i) = (∫ f dν)^n`) and mixing `c^n` over `Po(lam)`. A product of characteristic functions
+means independence (Mathlib `indepFun_iff_charFun_prod`).
+
+## Main results
+
+* `integral_sample_prod_range`: `E ∏_{i<n} f (x i) = (∫ f dν)^n`.
+* `integral_poissonMeasure_pow`: `∫ c^n d Po(lam) = exp (lam (c - 1))`.
+* `integral_poissonProcess_exp_pair`: the joint exponential moment above.
+* `charFun_map_poissonProcess_ptCount`: the law of `N_A` has the characteristic function of
+  `Po(lam ν(A))`.
+* `indepFun_poissonProcess_ptCount`: `N_A` and `N_B` are independent for disjoint `A`, `B`.
 
 ## References
 
@@ -144,5 +158,42 @@ theorem integral_poissonProcess_exp_pair (lam : ℝ≥0) (ν : Measure α) [IsPr
     integral_poissonMeasure_pow]
   congr 1
   ring
+
+lemma measurable_poissonProcess_ptCount {A : Set α} (hA : MeasurableSet A) :
+    Measurable fun p : ℕ × (ℕ → α) => (ptCount A p.1 p.2 : ℝ) :=
+  measurable_from_prod_countable_right (f := fun p : ℕ × (ℕ → α) => (ptCount A p.1 p.2 : ℝ))
+    fun n => measurable_ptCount_real A hA n
+
+/-- The characteristic function of a Poisson count: that of `Po(lam ν(A))`. -/
+theorem charFun_map_poissonProcess_ptCount (lam : ℝ≥0) (ν : Measure α) [IsProbabilityMeasure ν]
+    {A : Set α} (hA : MeasurableSet A) (s : ℝ) :
+    charFun ((poissonProcess lam ν).map fun p : ℕ × (ℕ → α) => (ptCount A p.1 p.2 : ℝ)) s =
+      cexp (lam * (ν.real A * (cexp (s * I) - 1))) := by
+  have h := integral_poissonProcess_exp_pair lam ν hA MeasurableSet.empty
+    (Set.disjoint_empty A) s 0
+  simp only [zero_mul, add_zero, measureReal_empty, Complex.ofReal_zero, zero_mul,
+    mul_zero, Complex.exp_zero] at h
+  rw [charFun_apply, integral_map (measurable_poissonProcess_ptCount hA).aemeasurable
+    (by fun_prop)]
+  simpa [mul_comm] using h
+
+/-- **Independence of Poisson counts on disjoint sets**: for disjoint measurable `A`, `B`, the counts
+`N_A` and `N_B` of the Poisson process are independent random variables. -/
+theorem indepFun_poissonProcess_ptCount (lam : ℝ≥0) (ν : Measure α) [IsProbabilityMeasure ν]
+    {A B : Set α} (hA : MeasurableSet A) (hB : MeasurableSet B) (hAB : Disjoint A B) :
+    IndepFun (fun p : ℕ × (ℕ → α) => (ptCount A p.1 p.2 : ℝ))
+      (fun p : ℕ × (ℕ → α) => (ptCount B p.1 p.2 : ℝ)) (poissonProcess lam ν) := by
+  rw [indepFun_iff_charFun_prod (measurable_poissonProcess_ptCount hA).aemeasurable
+    (measurable_poissonProcess_ptCount hB).aemeasurable]
+  intro t
+  have hm : Measurable fun p : ℕ × (ℕ → α) => WithLp.toLp 2
+      ((ptCount A p.1 p.2 : ℝ), (ptCount B p.1 p.2 : ℝ)) :=
+    (WithLp.prod_continuous_toLp 2 ℝ ℝ).measurable.comp
+      ((measurable_poissonProcess_ptCount hA).prodMk (measurable_poissonProcess_ptCount hB))
+  rw [charFun_map_poissonProcess_ptCount lam ν hA, charFun_map_poissonProcess_ptCount lam ν hB,
+    charFun_apply, integral_map hm.aemeasurable (by fun_prop)]
+  have h := integral_poissonProcess_exp_pair lam ν hA hB hAB t.ofLp.1 t.ofLp.2
+  rw [← Complex.exp_add, ← h]
+  congr 1
 
 end Lightlike.Rows.G2_063
