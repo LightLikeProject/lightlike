@@ -1160,6 +1160,7 @@ import Lightlike.Spacetime.GERow10.NullCovector
 import Lightlike.Spacetime.GERow10.RicciNullTrivial
 import Lightlike.Spacetime.GERow10.ScalarWeakEC
 import Lightlike.Spacetime.GERow10.ScalarWeakECSharp
+import Lightlike.Spacetime.GERow10.ScalarWeakECTimelike
 import Lightlike.Spacetime.VolumeMeasure
 import Lightlike.Spacetime.CausalLadder.FullSupportMeasure
 import Lightlike.Spacetime.CausalLadder.NullBoundary
