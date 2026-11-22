@@ -1490,6 +1490,7 @@ import Lightlike.Dirac.SelfAdjoint
 import Lightlike.Dirac.SelfAdjointTests
 import Lightlike.Dirac.StereoSphere
 import Lightlike.Dirac.StereoCurved
+import Lightlike.Dirac.StereoBochner
 import Lightlike.DynamicalTriangulations.Action
 import Lightlike.DynamicalTriangulations.Action3
 import Lightlike.DynamicalTriangulations.Causal
