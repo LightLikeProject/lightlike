@@ -398,6 +398,7 @@ import Lightlike.Lorentz.SL2RPlancherel.AbelHalfIntegral
 import Lightlike.Lorentz.SL2RPlancherel.AbelKernel
 import Lightlike.Lorentz.SL2RPlancherel.AbelKernelTanh
 import Lightlike.Lorentz.SL2RPlancherel.AbelTransform
+import Lightlike.Lorentz.SL2RPlancherel.AbelComposition
 import Lightlike.Lorentz.SL2RPlancherel.ArcsinIntegral
 import Lightlike.Lorentz.SL2RPlancherel.CoshDist
 import Lightlike.Lorentz.SL2RPlancherel.CosineLogTanh
