@@ -858,6 +858,7 @@ import Lightlike.Recoupling.ThreeJInvariance
 import Lightlike.Regge.CombManifold
 import Lightlike.Rows.G1_046.Defs
 import Lightlike.Rows.G1_046.Checks
+import Lightlike.Rows.G1_046.Consequences
 import Lightlike.Regge.Complex
 import Lightlike.Regge.D4.Complex
 import Lightlike.Regge.D4.Dihedral
