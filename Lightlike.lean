@@ -1141,6 +1141,7 @@ import Lightlike.Spacetime.Raychaudhuri.RicciSharp
 import Lightlike.Spacetime.Raychaudhuri.Hawking
 import Lightlike.Spacetime.Raychaudhuri.HawkingManifold
 import Lightlike.Spacetime.Raychaudhuri.HawkingSEC
+import Lightlike.Spacetime.Raychaudhuri.HawkingFLRW
 import Lightlike.Spacetime.Raychaudhuri.HawkingTests
 import Lightlike.Spacetime.Raychaudhuri.Shifted
 import Lightlike.Spacetime.Raychaudhuri.Tests
