@@ -1468,6 +1468,7 @@ import Lightlike.SpinFoam.EPRLStateSum.SimplexIntrinsic
 import Lightlike.SpinFoam.EPRLStateSum.NodePairGluing
 import Lightlike.SpinFoam.EPRLStateSum.SignDecomp
 import Lightlike.SpinFoam.EPRLStateSum.SignedVertex
+import Lightlike.SpinFoam.EPRLStateSum.GlobalGluing
 import Lightlike.SpinFoam.Move15
 import Lightlike.SpinFoam.Move15Global
 import Lightlike.SpinFoam.BarrettCrane
