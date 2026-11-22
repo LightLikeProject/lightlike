@@ -80,4 +80,26 @@ theorem wkbDeriv_hasDerivAt {s : ℝ} (hs : s ^ 2 = 1) {x : ℝ} (hx : 0 < x) :
   simp only [hs]
   ring
 
+/-- Product of the two WKB amplitudes: `x^{-1/4} x^{-1/4} = 1 / x^{1/2}`. -/
+theorem wkbAmp_mul {x : ℝ} (hx : 0 < x) :
+    wkbAmp (-1) x * wkbAmp 1 x * x ^ (1/2 : ℝ) = 1 := by
+  have hr : 0 < x ^ (1/2 : ℝ) := Real.rpow_pos_of_pos hx _
+  have h : x ^ (-(1/4) : ℝ) * x ^ (-(1/4) : ℝ) * x ^ (1/2 : ℝ) = 1 := by
+    rw [← Real.rpow_add hx, ← Real.rpow_add hx]; norm_num
+  have h2 : Real.exp ((-1) * (2/3) * x ^ (3/2 : ℝ)) * Real.exp (1 * (2/3) * x ^ (3/2 : ℝ)) = 1 := by
+    rw [← Real.exp_add]; simp
+  unfold wkbAmp
+  calc _ = (x ^ (-(1/4) : ℝ) * x ^ (-(1/4) : ℝ) * x ^ (1/2 : ℝ)) *
+        (Real.exp ((-1) * (2/3) * x ^ (3/2 : ℝ)) * Real.exp (1 * (2/3) * x ^ (3/2 : ℝ))) := by ring
+    _ = 1 := by rw [h, h2]; norm_num
+
+/-- Wronskian of the two WKB solutions: `ψ₋ ψ₊' − ψ₋' ψ₊ = 2`, matching the normalisation
+`Ai ∼ ψ₋/(2√π)`, `Bi ∼ ψ₊/√π` (whose Wronskian is `1/π`). -/
+theorem wkb_wronskian {x : ℝ} (hx : 0 < x) :
+    wkbAmp (-1) x * wkbDeriv 1 x - wkbDeriv (-1) x * wkbAmp 1 x = 2 := by
+  have h := wkbAmp_mul hx
+  unfold wkbDeriv wkbLog at *
+  calc _ = (wkbAmp (-1) x * wkbAmp 1 x * x ^ (1/2 : ℝ)) * 2 := by ring
+    _ = 2 := by rw [h]; ring
+
 end Lightlike.Airy
