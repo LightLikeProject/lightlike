@@ -974,6 +974,7 @@ import Lightlike.Regge.Conv3.RiemannSumCont
 import Lightlike.Regge.Conv3.ReggeConvergence
 import Lightlike.Regge.Conv3.ReggeConvergenceTests
 import Lightlike.Regge.CMS4.Dihedral4Deriv
+import Lightlike.Regge.CMS4.Dihedral4Smooth
 import Lightlike.Regge.CMS4.Kuhn4
 import Lightlike.Regge.CMS4.Kuhn4Deriv
 import Lightlike.Regge.CMS4.Kuhn4Hinge0
