@@ -21,6 +21,7 @@ Riemannian density `h^{-n}`, which gives `∫ ⟪−∑ ∇²f(Fᵢ,Fᵢ), f⟫ 
 namespace Lightlike.Dirac
 
 open scoped RealInnerProductSpace
+open MeasureTheory
 
 variable {n : ℕ} {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℝ V]
 
@@ -81,6 +82,30 @@ lemma sum_stereoOmega_diag (x : E n) (k : Fin n) :
   have : ∑ i : Fin n, (if i = k then x i else 0) = x k := by simp
   rw [this, nsmul_eq_mul]
   ring
+
+/-- Scalar integration by parts against a `C¹` weight, with a compactly supported `C¹` factor. -/
+lemma integral_mul_fderiv_scalar {φ G : E n → ℝ} (hφ : ContDiff ℝ 1 φ) (hG : ContDiff ℝ 1 G)
+    (hGc : HasCompactSupport G) (i : Fin n) :
+    ∫ x, φ x * fderiv ℝ G x (e i) = -∫ x, fderiv ℝ φ x (e i) * G x := by
+  have hφd : Continuous (fderiv ℝ φ) := hφ.continuous_fderiv (by norm_num)
+  have hGd : Continuous (fderiv ℝ G) := hG.continuous_fderiv (by norm_num)
+  have h1 : Integrable (fun x => (ContinuousLinearMap.mul ℝ ℝ) (fderiv ℝ φ x (e i)) (G x)) :=
+    integrable_of_cont_supp (k := G)
+      ((hφd.clm_apply continuous_const).mul hG.continuous) hGc (fun x hx => by simp [hx])
+  have h2 : Integrable (fun x => (ContinuousLinearMap.mul ℝ ℝ) (φ x) (fderiv ℝ G x (e i))) := by
+    refine Continuous.integrable_of_hasCompactSupport
+      (hφ.continuous.mul (hGd.clm_apply continuous_const)) ?_
+    refine HasCompactSupport.intro hGc.isCompact fun x hx => ?_
+    have : fderiv ℝ G x = 0 := by
+      have := notMem_tsupport_iff_eventuallyEq.mp hx
+      exact (Filter.EventuallyEq.fderiv_eq this).trans (by simp)
+    simp [this]
+  have h3 : Integrable (fun x => (ContinuousLinearMap.mul ℝ ℝ) (φ x) (G x)) :=
+    integrable_of_cont_supp (k := G) (hφ.continuous.mul hG.continuous) hGc
+      (fun x hx => by simp [hx])
+  exact integral_bilinear_fderiv_right_eq_neg_left_of_integrable (μ := MeasureTheory.volume)
+    (B := ContinuousLinearMap.mul ℝ ℝ) (v := e i) h1 h2 h3
+    (fun x _ => (hφ.differentiable (by norm_num)) x) (fun x _ => (hG.differentiable (by norm_num)) x)
 
 /-- **Pointwise Bochner identity on the round sphere** (stereographic frame): with
 `Gᵢ(y) = ⟪∇ᵢ f(y), f(y)⟫`,
