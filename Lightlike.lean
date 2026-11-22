@@ -276,6 +276,7 @@ import Lightlike.Geometry.HeatKernel.Expansion
 import Lightlike.Geometry.HeatKernel.GaussianDeriv
 import Lightlike.Geometry.HeatKernel.Potential
 import Lightlike.Geometry.HeatKernel.InducedGravity
+import Lightlike.Geometry.HeatKernel.CutoffIntegrals
 import Lightlike.Geometry.HeatKernel.Product
 import Lightlike.Geometry.HeatKernel.ProductGeom
 import Lightlike.Geometry.HeatKernel.Sphere3Expansion
