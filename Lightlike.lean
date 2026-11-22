@@ -717,6 +717,8 @@ import Lightlike.PL.Schoenflies.PolygonAround
 import Lightlike.PL.Schoenflies.ConnectedHull
 import Lightlike.PL.Schoenflies.InsideSubset
 import Lightlike.PL.Schoenflies.PolygonExhaust
+import Lightlike.PL.Schoenflies.RegionCompact
+import Lightlike.PL.Schoenflies.PolygonNest
 import Lightlike.PL.SimpleChain
 import Lightlike.PL.Chain
 import Lightlike.PL.TwoArcs
