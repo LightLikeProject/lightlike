@@ -1639,5 +1639,6 @@ import Lightlike.Upstream.GeodesicExpansion.Final
 import Lightlike.Upstream.GeodesicExpansion.Corollaries
 import Lightlike.Upstream.GeodesicExpansion.Limits
 import Lightlike.Upstream.GeodesicExpansion.Regge
+import Lightlike.Upstream.GeodesicExpansion.ReggeLength
 import Lightlike.Upstream.GeodesicExpansion.Tests
 import Lightlike.Upstream.GeodesicExpansion.Tests2
