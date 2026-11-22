@@ -554,6 +554,7 @@ import Lightlike.OperatorAlgebras.TestsPureStates
 import Lightlike.OperatorAlgebras.GibbsKMS
 import Lightlike.Rows.G1_053.KMSState
 import Lightlike.Rows.G1_053.StripUnique
+import Lightlike.Rows.G1_053.Converse
 import Lightlike.OperatorAlgebras.TestsGibbsKMS
 import Lightlike.OperatorAlgebras.TestsFock
 import Lightlike.OperatorAlgebras.TestsFockExists
