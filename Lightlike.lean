@@ -711,6 +711,7 @@ import Lightlike.PL.Schoenflies.LatticePoly
 import Lightlike.PL.Schoenflies.BoundaryPoly
 import Lightlike.PL.Schoenflies.LeftmostInside
 import Lightlike.PL.Schoenflies.InsideBox
+import Lightlike.PL.Schoenflies.PolygonScale
 import Lightlike.PL.SimpleChain
 import Lightlike.PL.Chain
 import Lightlike.PL.TwoArcs
