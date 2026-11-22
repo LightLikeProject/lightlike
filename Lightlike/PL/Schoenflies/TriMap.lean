@@ -194,6 +194,30 @@ lemma triMap_bijOn (h : det3 a b c ≠ 0) (h' : det3 a' b' c' ≠ 0) :
     refine ⟨triMap a' b' c' a b c y, triMap_mapsTo h' h hy, ?_⟩
     exact triMap_left_inv h' h y
 
+/-- The map sends the edge `[a,b]` onto the edge `[a',b']`. -/
+lemma triMap_image_segment_ab (h : det3 a b c ≠ 0) :
+    triMap a b c a' b' c' '' segment ℝ a b = segment ℝ a' b' := by
+  rw [segment_eq_image', segment_eq_image', ← Set.image_comp]
+  refine Set.image_congr fun t _ => ?_
+  simp only [Function.comp]
+  rw [triMap_affine, triMap_a, triMap_b h]
+
+/-- The map sends the edge `[a,c]` onto the edge `[a',c']`. -/
+lemma triMap_image_segment_ac (h : det3 a b c ≠ 0) :
+    triMap a b c a' b' c' '' segment ℝ a c = segment ℝ a' c' := by
+  rw [segment_eq_image', segment_eq_image', ← Set.image_comp]
+  refine Set.image_congr fun t _ => ?_
+  simp only [Function.comp]
+  rw [triMap_affine, triMap_a, triMap_c h]
+
+/-- The map sends the edge `[b,c]` onto the edge `[b',c']`. -/
+lemma triMap_image_segment_bc (h : det3 a b c ≠ 0) :
+    triMap a b c a' b' c' '' segment ℝ b c = segment ℝ b' c' := by
+  rw [segment_eq_image', segment_eq_image', ← Set.image_comp]
+  refine Set.image_congr fun t _ => ?_
+  simp only [Function.comp]
+  rw [triMap_affine, triMap_b h, triMap_c h]
+
 end
 
 end Lightlike.PL.Schoenflies
