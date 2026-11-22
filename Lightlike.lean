@@ -1314,6 +1314,8 @@ import Lightlike.Spin4.EPRLTests
 import Lightlike.Spin4.Fusion
 import Lightlike.Spin4.FusionNineJ
 import Lightlike.Spin4.Haar
+import Lightlike.Rows.G2_010.Complete
+import Lightlike.Rows.G2_010.Expand
 import Lightlike.Rows.G2_010.Maschke
 import Lightlike.Rows.G2_010.Orthonormal
 import Lightlike.Spin4.Intertwiner4
