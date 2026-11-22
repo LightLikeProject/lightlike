@@ -1603,6 +1603,7 @@ import Lightlike.Rows.G1_039.Transform
 import Lightlike.Rows.G1_039.Diagonalise
 import Lightlike.Rows.G1_039.Scaling
 import Lightlike.Rows.G1_039.ClassA
+import Lightlike.Rows.G1_039.ClassB1
 import Lightlike.Spacetime.Corners.BianchiSecond
 import Lightlike.Spacetime.Corners.Bridge
 import Lightlike.Spacetime.Corners.ChartAgreement
