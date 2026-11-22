@@ -682,6 +682,7 @@ import Lightlike.PL.Schoenflies.ConvexSplit
 import Lightlike.PL.Schoenflies.EarCut
 import Lightlike.PL.Schoenflies.EarSplit
 import Lightlike.PL.Schoenflies.Glue
+import Lightlike.PL.Schoenflies.ScpRot
 import Lightlike.PL.Schoenflies.TriMap
 import Lightlike.PL.SimpleChain
 import Lightlike.PL.Chain
