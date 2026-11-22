@@ -1338,6 +1338,7 @@ import Lightlike.SpinFoam.VertexAsymptoticsHyp.DensityBound
 import Lightlike.SpinFoam.VertexAsymptoticsHyp.EdgeKernel
 import Lightlike.SpinFoam.VertexAsymptoticsHyp.FarCompact
 import Lightlike.SpinFoam.VertexAsymptoticsHyp.JointIntegrable
+import Lightlike.SpinFoam.VertexAsymptoticsHyp.TailIntegrable
 import Lightlike.Surfaces.Add
 import Lightlike.Surfaces.Arc
 import Lightlike.Surfaces.Basic
