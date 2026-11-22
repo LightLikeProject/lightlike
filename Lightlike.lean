@@ -402,6 +402,7 @@ import Lightlike.Lorentz.SL2RPlancherel.ArcsinIntegral
 import Lightlike.Lorentz.SL2RPlancherel.CoshDist
 import Lightlike.Lorentz.SL2RPlancherel.CosineLogTanh
 import Lightlike.Lorentz.SL2RPlancherel.KernelParseval
+import Lightlike.Lorentz.SL2RPlancherel.Autocorrelation
 import Lightlike.Lorentz.SL2RPlancherel.CoshSubstitution
 import Lightlike.Lorentz.SL2RPlancherel.RadialHaar
 import Lightlike.Lorentz.SL2RPlancherel.RadialIntegral
