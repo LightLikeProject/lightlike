@@ -706,6 +706,7 @@ import Lightlike.PL.Schoenflies.Grid
 import Lightlike.PL.Schoenflies.LatticeGraph
 import Lightlike.PL.Schoenflies.LatticeCycle
 import Lightlike.PL.Schoenflies.LatticeBoxes
+import Lightlike.PL.Schoenflies.LatticeSeg
 import Lightlike.PL.SimpleChain
 import Lightlike.PL.Chain
 import Lightlike.PL.TwoArcs
