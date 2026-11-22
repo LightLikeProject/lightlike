@@ -122,4 +122,70 @@ theorem reach_move14 {K : Complex3 V} {A B C D E : V} (h : IsMove14 K A B C D E)
         omega
       · simp [h.hCE.symm, h.hDE.symm]
 
+/-- **A 3-2 move, read at the level of states.** If `T` is a maximal tree of the smaller complex
+`move32 K h` and the cutoff of the edge `DE` that the inverse 2-3 move creates dominates
+`cut AD + cut AE`, then `(move32 K h, T, cut)` and `(K, T, cut)` are equivalent states, so the
+gauge-fixed amplitudes agree. The cutoff condition cannot be dropped: see `reach_move23`, where
+it is chosen, versus the 3-2 direction, where it is a constraint. -/
+theorem eqvGen_move32 {K : Complex3 V} {A B C D E : V} (h : IsMove32 K A B C D E)
+    {T : Finset (Finset V)} (hT : IsMaxTree (move32 K h) T) {cut : Finset V → ℕ}
+    (hcut : cut {A, D} + cut {A, E} ≤ cut {D, E}) :
+    Relation.EqvGen GFTreeStep (move32 K h, T, cut) (K, T, cut) := by
+  have := GFTreeStep.move23 (isMove23_move32 h) hT hcut
+  rw [move23_move32] at this
+  exact Relation.EqvGen.rel _ _ this
+
+/-- A forward Pachner move: a 2-3 or a 1-4 move (the ones that add simplices). -/
+inductive ForwardStep : Complex3 V → Complex3 V → Prop
+  | m23 {K : Complex3 V} {A B C D E : V} (h : IsMove23 K A B C D E) : ForwardStep K (move23 K h)
+  | m14 {K : Complex3 V} {A B C D E : V} (h : IsMove14 K A B C D E) : ForwardStep K (move14 K h)
+
+/-- A forward step is a Pachner step. -/
+theorem ForwardStep.pachnerStep {K K' : Complex3 V} (h : ForwardStep K K') : PachnerStep K K' := by
+  cases h with
+  | m23 h => exact .m23 h
+  | m14 h => exact .m14 h
+
+/-- A chain of forward moves (2-3 and 1-4 only). -/
+def ForwardMoves : Complex3 V → Complex3 V → Prop := Relation.ReflTransGen ForwardStep
+
+/-- A chain of forward moves is a move-connection. -/
+theorem ForwardMoves.moveConnected {K K' : Complex3 V} (h : ForwardMoves K K') :
+    MoveConnected K K' := by
+  induction h with
+  | refl => exact Relation.EqvGen.refl _
+  | tail _ hs ih => exact Relation.EqvGen.trans _ _ _ ih (Relation.EqvGen.rel _ _ hs.pachnerStep)
+
+/-- **Forward chains of moves keep the gauge-fixed amplitude, for every starting state.** Along a
+chain of 2-3 and 1-4 moves from `K` to `K'`, every state `(K, T, cut)` with a maximal tree `T`
+can be followed to a state `(K', T', cut')` with a maximal tree, by `GFTreeStep`s; hence
+`amplitudeGF K T cut = amplitudeGF K' T' cut'`. No cutoff condition is needed on the start state:
+the cutoffs of the new edges are chosen along the way. -/
+theorem ForwardMoves.reach {K K' : Complex3 V} (hK : ForwardMoves K K') {T : Finset (Finset V)}
+    (hT : IsMaxTree K T) (cut : Finset V → ℕ) :
+    ∃ (T' : Finset (Finset V)) (cut' : Finset V → ℕ), IsMaxTree K' T' ∧
+      Relation.ReflTransGen GFTreeStep (K, T, cut) (K', T', cut') := by
+  induction hK with
+  | refl => exact ⟨T, cut, hT, .refl⟩
+  | tail _ hs ih =>
+    obtain ⟨T', cut', hT', hr⟩ := ih
+    cases hs with
+    | m23 h =>
+      obtain ⟨c, -, hc⟩ := reach_move23 h hT' cut'
+      exact ⟨T', c, hT'.move23 h, hr.trans hc⟩
+    | m14 h =>
+      obtain ⟨c, -, hc⟩ := reach_move14 h hT' cut'
+      exact ⟨_, c, hT'.move14 h, hr.trans hc⟩
+
+/-- **Amplitude invariance along forward chains.** For `K` to `K'` by 2-3 and 1-4 moves and every
+maximal tree `T` and cutoff `cut` of `K`, there are a maximal tree `T'` and a cutoff `cut'` of `K'`
+with the same gauge-fixed amplitude. -/
+theorem ForwardMoves.exists_amplitudeGF_eq {K K' : Complex3 V} (hK : ForwardMoves K K')
+    {T : Finset (Finset V)} (hT : IsMaxTree K T) (cut : Finset V → ℕ) :
+    ∃ (T' : Finset (Finset V)) (cut' : Finset V → ℕ), IsMaxTree K' T' ∧
+      amplitudeGF K' T' cut' = amplitudeGF K T cut := by
+  obtain ⟨T', cut', hT', hr⟩ := hK.reach hT cut
+  exact ⟨T', cut', hT', (amplitudeGF_eqvGen_tree
+    (Relation.EqvGen.reflTransGen_le_eqvGen _ _ _ hr)).symm⟩
+
 end Lightlike.PR
