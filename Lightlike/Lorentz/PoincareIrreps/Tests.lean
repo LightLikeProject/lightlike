@@ -5,6 +5,7 @@ public import Lightlike.Lorentz.PoincareIrreps.Wigner
 public import Lightlike.Lorentz.PoincareIrreps.Massless
 public import Lightlike.Lorentz.PoincareIrreps.Measure
 public import Lightlike.Lorentz.PoincareIrreps.Poincare
+public import Lightlike.Lorentz.PoincareIrreps.LightPoincare
 
 /-!
 # Checks for the little groups of the Poincaré group (HA6, first piece)
@@ -124,6 +125,13 @@ example : (restMom 3).1.det = ((9 : ℝ) : ℂ) := by
 #print axioms pairing_smul
 #print axioms inducedRep_translate
 #print axioms poincareRep
+#print axioms lightInducedRep_translate
+#print axioms lightPoincareRep
+
+/-- Control: the translation `T(0)` on the light cone is the identity. -/
+example (ψ : lightCone → ℂ) : lightTranslateOp 0 ψ = ψ := by
+  funext P
+  simp [lightTranslateOp, pairing_zero_right]
 
 /-- The massive little group is compact. -/
 example : IsCompact ((MulAction.stabilizer SL2C (restMom 1) : Subgroup SL2C) : Set SL2C) :=
