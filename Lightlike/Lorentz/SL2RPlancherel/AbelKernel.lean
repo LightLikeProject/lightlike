@@ -1,4 +1,6 @@
-import Mathlib
+module
+
+public import Mathlib
 
 /-!
 # The kernel of the Abel-transform norm
@@ -8,6 +10,8 @@ For `1 ≤ a < b`,
 Antiderivative: `v ↦ -2 log (√(a-v) + √(b-v))`.  This is step (B) of the Plancherel route for
 `SL(2,ℝ)`: the norm `‖F‖²` is a double integral of `g' ⊗ g'` against this kernel.
 -/
+
+@[expose] public section
 
 namespace Lightlike.Lorentz.SL2RPlancherel
 
