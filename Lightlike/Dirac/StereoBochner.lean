@@ -323,4 +323,51 @@ theorem integral_norm_diracF_stereo_sq {ρ : CliffordRep n V} (hρ : IsSkewRep �
     _ = _ := by
         rw [integral_inner_neg_hess_stereo hρ hf hfc, integral_const_mul]
 
+lemma stereoW_pos (x : E n) : 0 < stereoW n x := zpow_pos (stereoH_pos x) _
+
+/-- **Friedrich-type lower bound on the sphere chart.** For a compactly supported `C²` spinor field,
+`(n(n-1)/4) ∫ ‖f‖² h^{-n} ≤ ∫ ‖D f‖² h^{-n}`. -/
+theorem integral_norm_diracF_stereo_ge {ρ : CliffordRep n V} (hρ : IsSkewRep ρ) {f : E n → V}
+    (hf : ContDiff ℝ 2 f) (hfc : HasCompactSupport f) :
+    ((n : ℝ) * (n - 1) / 4) * ∫ x, ‖f x‖ ^ 2 * stereoW n x ≤
+      ∫ x, ‖diracF ρ stereoF stereoOmega f x‖ ^ 2 * stereoW n x := by
+  rw [integral_norm_diracF_stereo_sq hρ hf hfc]
+  have : 0 ≤ ∫ x, (∑ i, ‖nablaF ρ stereoF stereoOmega i f x‖ ^ 2) * stereoW n x :=
+    integral_nonneg fun x => mul_nonneg (Finset.sum_nonneg fun i _ => sq_nonneg _)
+      (stereoW_pos x).le
+  linarith
+
+/-- The case of the unit 2-sphere: `½ ∫ ‖f‖² h^{-2} ≤ ∫ ‖D f‖² h^{-2}` (`R/4 = 1/2`, not `R/2 = 1`). -/
+theorem integral_norm_diracF_stereo_ge_two {ρ : CliffordRep 2 V} (hρ : IsSkewRep ρ)
+    {f : E 2 → V} (hf : ContDiff ℝ 2 f) (hfc : HasCompactSupport f) :
+    (1 / 2 : ℝ) * ∫ x, ‖f x‖ ^ 2 * stereoW 2 x ≤
+      ∫ x, ‖diracF ρ stereoF stereoOmega f x‖ ^ 2 * stereoW 2 x := by
+  have h := integral_norm_diracF_stereo_ge hρ hf hfc
+  norm_num at h
+  exact h
+
+/-- **Eigenvalue bound for the Dirac operator on the round sphere chart.**  If a nonzero compactly
+supported `C²` spinor field satisfies `D f = λ f` then `λ² ≥ n(n-1)/4` (for `n = 2` this is `λ² ≥ 1/2`,
+the Lichnerowicz bound `s/4`). -/
+theorem eigen_sq_ge_stereo {ρ : CliffordRep n V} (hρ : IsSkewRep ρ) {f : E n → V}
+    (hf : ContDiff ℝ 2 f) (hfc : HasCompactSupport f) (lam : ℝ)
+    (hD : ∀ x, diracF ρ stereoF stereoOmega f x = lam • f x) (x₀ : E n) (hx₀ : f x₀ ≠ 0) :
+    (n : ℝ) * (n - 1) / 4 ≤ lam ^ 2 := by
+  have h := integral_norm_diracF_stereo_ge hρ hf hfc
+  have hI : 0 < ∫ x, ‖f x‖ ^ 2 * stereoW n x := by
+    refine Continuous.integral_pos_of_hasCompactSupport_nonneg_nonzero (x := x₀)
+      ((hf.continuous.norm.pow 2).mul continuous_stereoW) ?_
+      (fun x => mul_nonneg (sq_nonneg _) (stereoW_pos x).le) ?_
+    · exact HasCompactSupport.intro hfc.isCompact fun x hx => by
+        simp [image_eq_zero_of_notMem_tsupport hx]
+    · exact (mul_pos (pow_pos (norm_pos_iff.mpr hx₀) 2) (stereoW_pos x₀)).ne'
+  have e : ∫ x, ‖diracF ρ stereoF stereoOmega f x‖ ^ 2 * stereoW n x =
+      lam ^ 2 * ∫ x, ‖f x‖ ^ 2 * stereoW n x := by
+    rw [← integral_const_mul]
+    refine integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)
+    simp only [hD, norm_smul, Real.norm_eq_abs, mul_pow, sq_abs]
+    ring
+  rw [e] at h
+  exact le_of_mul_le_mul_right h hI
+
 end Lightlike.Dirac
