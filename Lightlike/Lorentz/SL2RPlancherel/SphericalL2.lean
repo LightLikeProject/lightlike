@@ -99,4 +99,29 @@ theorem sphericalL2_apply_test (F : smoothCS) :
     sphericalL2 (sphE F) = sphF F :=
   LinearMap.extendOfIsometry_eq sphF denseRange_sphE norm_sphF F
 
+/-- Plancherel identity in `L²`: `‖sphericalL2 f‖ = ‖f‖`. -/
+theorem norm_sphericalL2 (f : Lp ℂ 2 (volume.restrict (Ioi (1 : ℝ)))) :
+    ‖sphericalL2 f‖ = ‖f‖ :=
+  sphericalL2.norm_map f
+
+/-- Polarised Plancherel identity: `sphericalL2` preserves the `L²` inner product. -/
+theorem inner_sphericalL2 (f g : Lp ℂ 2 (volume.restrict (Ioi (1 : ℝ)))) :
+    inner ℂ (sphericalL2 f) (sphericalL2 g) = inner ℂ f g :=
+  sphericalL2.inner_map_map f g
+
+theorem injective_sphericalL2 : Function.Injective sphericalL2 :=
+  sphericalL2.injective
+
+/-- The range of the spherical Plancherel map is closed in `L²(0, ∞)`. -/
+theorem isClosed_range_sphericalL2 : IsClosed (Set.range sphericalL2) :=
+  sphericalL2.isometry.isClosedEmbedding.isClosed_range
+
+/-- On a test function, the `L²` class of `sphericalL2` is the function `sphL2fun`
+(`√(ρ tanh πρ) f̂(ρ)/(2π)`) almost everywhere on `(0, ∞)`. -/
+theorem sphericalL2_apply_test_ae (F : smoothCS) :
+    (sphericalL2 (sphE F) : ℝ → ℂ) =ᵐ[volume.restrict (Ioi (0 : ℝ))]
+      sphL2fun (F : ℝ → ℂ) := by
+  rw [sphericalL2_apply_test]
+  exact MemLp.coeFn_toLp (memLp_sphL2fun F F.2.1 F.2.2)
+
 end Lightlike.Lorentz.SL2RPlancherel
