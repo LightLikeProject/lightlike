@@ -839,6 +839,7 @@ import Lightlike.PonzanoRegge.SphereConverse
 import Lightlike.PonzanoRegge.SphereHomology
 import Lightlike.PonzanoRegge.SphereInvariants
 import Lightlike.PonzanoRegge.SphereRecognition
+import Lightlike.PonzanoRegge.TriangulationIndependence.Moves
 import Lightlike.PonzanoRegge.Unconditional
 import Lightlike.QM.Basic
 import Lightlike.Recoupling.FifteenJ
