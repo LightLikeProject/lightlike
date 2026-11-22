@@ -89,4 +89,26 @@ lemma opNorm_cliff {ρ : CliffordRep n V} (hρ : IsSkewRep ρ) [Nontrivial V] (v
 
 end Inner
 
+/-- The coordinates of the gradient are the partial derivatives. -/
+lemma gradient_apply_eq (f : E n → ℝ) (x : E n) (i : Fin n) :
+    gradient f x i = fderiv ℝ f x (e i) := by
+  have h : inner ℝ (gradient f x) (e i) = fderiv ℝ f x (e i) := by
+    rw [gradient, InnerProductSpace.toDual_symm_apply]
+  have h2 : gradient f x i = inner ℝ (gradient f x) (e i) := by
+    rw [e, EuclideanSpace.inner_single_right]
+    simp
+  rw [h2, h]
+
+/-- **Leibniz rule for the Dirac operator**: `D(fψ) = f Dψ + (∇f)· ψ`, i.e. the commutator `[D, f]` is
+Clifford multiplication by the gradient of `f`. -/
+theorem dirac_smul (ρ : CliffordRep n V) {f : E n → ℝ} {ψ : E n → V} {x : E n}
+    (hf : DifferentiableAt ℝ f x) (hψ : DifferentiableAt ℝ ψ x) :
+    dirac ρ (fun y => f y • ψ y) x = f x • dirac ρ ψ x + cliff ρ (gradient f x) (ψ x) := by
+  have hd := hf.hasFDerivAt.smul hψ.hasFDerivAt
+  have hfd : fderiv ℝ (fun y => f y • ψ y) x = f x • fderiv ℝ ψ x + (fderiv ℝ f x).smulRight (ψ x) :=
+    hd.fderiv
+  simp only [dirac, hfd, cliff_eq_sum, gradient_apply_eq, add_apply,
+    smul_apply, ContinuousLinearMap.smulRight_apply, map_add, map_smul,
+    Finset.sum_add_distrib, Finset.smul_sum, sum_apply]
+
 end Lightlike.Dirac
