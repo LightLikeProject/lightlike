@@ -1640,6 +1640,7 @@ import Lightlike.Upstream.SpinReps2.BEPentagon3
 import Lightlike.Upstream.SpinReps2.BEDefs
 import Lightlike.Upstream.SpinReps2.BEPositive
 import Lightlike.Upstream.SpinReps2.BEPositive2
+import Lightlike.Upstream.SpinReps2.BiedenharnElliott
 import Lightlike.Upstream.SpinReps2.Intertwiner
 import Lightlike.Upstream.SpinReps2.LieBridge
 import Lightlike.Upstream.SpinReps2.SixJOrth
