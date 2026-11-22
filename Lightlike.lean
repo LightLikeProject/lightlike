@@ -401,6 +401,7 @@ import Lightlike.Lorentz.SL2RPlancherel.AbelTransform
 import Lightlike.Lorentz.SL2RPlancherel.AbelComposition
 import Lightlike.Lorentz.SL2RPlancherel.AbelCompose
 import Lightlike.Lorentz.SL2RPlancherel.AbelDeriv
+import Lightlike.Lorentz.SL2RPlancherel.AbelOperator
 import Lightlike.Lorentz.SL2RPlancherel.ArcsinIntegral
 import Lightlike.Lorentz.SL2RPlancherel.CoshDist
 import Lightlike.Lorentz.SL2RPlancherel.CosineLogTanh
