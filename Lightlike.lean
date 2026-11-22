@@ -700,6 +700,7 @@ import Lightlike.PL.Schoenflies.UniformLocalConn
 import Lightlike.PL.Schoenflies.JordanClosure
 import Lightlike.PL.Schoenflies.JordanLocConn
 import Lightlike.PL.Schoenflies.DenseExtension
+import Lightlike.PL.Schoenflies.FillHoles
 import Lightlike.PL.SimpleChain
 import Lightlike.PL.Chain
 import Lightlike.PL.TwoArcs
