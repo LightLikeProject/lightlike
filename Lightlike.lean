@@ -1488,6 +1488,7 @@ import Lightlike.Dirac.Jacobi
 import Lightlike.Dirac.LichnerowiczFrame
 import Lightlike.Dirac.SelfAdjoint
 import Lightlike.Dirac.SelfAdjointTests
+import Lightlike.Dirac.StereoSphere
 import Lightlike.DynamicalTriangulations.Action
 import Lightlike.DynamicalTriangulations.Action3
 import Lightlike.DynamicalTriangulations.Causal
