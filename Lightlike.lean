@@ -1624,3 +1624,4 @@ import Lightlike.Spacetime.StereoConformal
 import Lightlike.Spacetime.ConformalKilling
 import Lightlike.Spacetime.ConformalKillingField
 import Lightlike.Upstream.GeodesicExpansion.Basic
+import Lightlike.Upstream.GeodesicExpansion.Metric
