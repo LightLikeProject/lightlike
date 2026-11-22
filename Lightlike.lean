@@ -1626,3 +1626,4 @@ import Lightlike.Spacetime.ConformalKillingField
 import Lightlike.Rows.G1_048.ConeMetric
 import Lightlike.Rows.G1_048.ConeFlat
 import Lightlike.Rows.G1_048.ConeHolonomy
+import Lightlike.Rows.G1_048.ConeTests
