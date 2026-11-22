@@ -1525,6 +1525,7 @@ import Lightlike.GFT.Borel.Continuation
 import Lightlike.GFT.Borel.Exists
 import Lightlike.GFT.Borel.Laplace
 import Lightlike.GFT.Borel.Nevanlinna
+import Lightlike.GFT.Borel.Quartic
 import Lightlike.GFT.Bubble
 import Lightlike.GFT.ColoredGraph
 import Lightlike.GFT.Dual
