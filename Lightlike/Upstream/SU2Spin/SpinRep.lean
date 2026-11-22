@@ -1,6 +1,13 @@
 module
 
-public import Mathlib
+public import Mathlib.RepresentationTheory.Irreducible
+public import Mathlib.LinearAlgebra.UnitaryGroup
+public import Mathlib.Analysis.SpecialFunctions.Complex.Circle
+public import Mathlib.Analysis.SpecialFunctions.Sqrt
+public import Mathlib.Topology.Instances.Matrix
+public import Mathlib.Algebra.BigOperators.Fin
+public import Mathlib.Analysis.Complex.Trigonometric
+public import Mathlib.RingTheory.RootsOfUnity.Complex
 
 /-!
 # The spin representations of `SU(2)` and their irreducibility
