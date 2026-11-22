@@ -1446,6 +1446,7 @@ import Lightlike.Regge.Lorentzian.Schlaefli
 import Lightlike.Regge.Lorentzian.Tests
 import Lightlike.SpinFoam.EPRL
 import Lightlike.SpinFoam.EPRLTests
+import Lightlike.SpinFoam.EPRLStateSum.BFPoint
 import Lightlike.SpinFoam.Move15
 import Lightlike.SpinFoam.Move15Global
 import Lightlike.SpinFoam.BarrettCrane
