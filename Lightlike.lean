@@ -1637,4 +1637,5 @@ import Lightlike.Upstream.GeodesicExpansion.DistMid
 import Lightlike.Upstream.GeodesicExpansion.Riemannian
 import Lightlike.Upstream.GeodesicExpansion.Final
 import Lightlike.Upstream.GeodesicExpansion.Corollaries
+import Lightlike.Upstream.GeodesicExpansion.Limits
 import Lightlike.Upstream.GeodesicExpansion.Tests
