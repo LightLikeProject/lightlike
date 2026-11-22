@@ -1022,6 +1022,8 @@ import Lightlike.Regge.Linear.Taylor
 import Lightlike.Regge.Linear.Riemann
 import Lightlike.Regge.Linear.Converge
 import Lightlike.Regge.Linear.Tests
+import Lightlike.Regge.Linearized.ThinTriangle
+import Lightlike.Regge.Linearized.Tests
 import Lightlike.Regge.AreaRegge.Basic
 import Lightlike.Regge.AreaRegge.Deriv
 import Lightlike.Regge.AreaRegge.Realization
