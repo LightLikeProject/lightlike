@@ -85,6 +85,120 @@ theorem integrable_iteratedDeriv_sphereG {t : ℝ} (ht : 0 < t) (k : ℕ) :
     simpa [Function.comp_def] using h1
   exact (h2.const_mul (Real.sqrt t ^ k)).const_mul _
 
+/-- The leading term: `∫_0^∞ (2x+1) e^{-t x(x+1)} dx = 1/t`. -/
+theorem integral_sphereG {t : ℝ} (ht : 0 < t) :
+    ∫ x in Set.Ioi (0 : ℝ), sphereG t x = 1 / t := by
+  have hd : ∀ x : ℝ, HasDerivAt (fun x : ℝ => -(1 / t) * Real.exp (-(t * (x * (x + 1)))))
+      (sphereG t x) x := by
+    intro x
+    have h1 : HasDerivAt (fun x : ℝ => -(t * (x * (x + 1)))) (-(t * (2 * x + 1))) x := by
+      have := (((hasDerivAt_id x).mul ((hasDerivAt_id x).add_const 1)).const_mul t).neg
+      exact this.congr_deriv (by simp only [id]; ring)
+    have := (h1.exp).const_mul (-(1 / t))
+    convert this using 1
+    unfold sphereG
+    field_simp
+  have hlim : Tendsto (fun x : ℝ => -(1 / t) * Real.exp (-(t * (x * (x + 1))))) atTop
+      (nhds 0) := by
+    have h1 : Tendsto (fun x : ℝ => t * (x * (x + 1))) atTop atTop :=
+      Tendsto.const_mul_atTop ht (tendsto_id.atTop_mul_atTop₀ (tendsto_atTop_add_const_right _ _ tendsto_id))
+    have h2 := Real.tendsto_exp_neg_atTop_nhds_zero.comp h1
+    simpa [Function.comp_def] using h2.const_mul (-(1 / t))
+  have hint : MeasureTheory.IntegrableOn (sphereG t) (Set.Ioi 0) :=
+    (by simpa using integrable_iteratedDeriv_sphereG ht 0 : MeasureTheory.Integrable (sphereG t)).integrableOn
+  have := MeasureTheory.integral_Ioi_of_hasDerivAt_of_tendsto (a := (0 : ℝ))
+    (f := fun x : ℝ => -(1 / t) * Real.exp (-(t * (x * (x + 1))))) (f' := sphereG t)
+    (hd 0).continuousAt.continuousWithinAt (fun x _ => hd x) hint hlim
+  rw [this]
+  simp
+
+/-- One differentiation step: `(q E)' = (q' - t (2x+1) q) E` for `E = e^{-t x(x+1)}`. -/
+theorem deriv_step (t : ℝ) (q q' : ℝ → ℝ) (hd : Differentiable ℝ q)
+    (hq : ∀ x, deriv q x = q' x) :
+    deriv (fun x => q x * Real.exp (-(t * (x * (x + 1))))) =
+      fun x => (q' x - t * (2 * x + 1) * q x) * Real.exp (-(t * (x * (x + 1)))) := by
+  ext x
+  have h1 : HasDerivAt (fun x : ℝ => -(t * (x * (x + 1)))) (-(t * (2 * x + 1))) x := by
+    have := (((hasDerivAt_id x).mul ((hasDerivAt_id x).add_const 1)).const_mul t).neg
+    exact this.congr_deriv (by simp only [id]; ring)
+  have h : HasDerivAt (fun x => q x * Real.exp (-(t * (x * (x + 1)))))
+      (deriv q x * Real.exp (-(t * (x * (x + 1))))
+        + q x * (Real.exp (-(t * (x * (x + 1)))) * -(t * (2 * x + 1)))) x :=
+    (hd x).hasDerivAt.mul h1.exp
+  rw [h.deriv, hq x]
+  ring
+
+open Polynomial in
+/-- The polynomials in `y = 2x+1` with `sphereG⁽ᵏ⁾ = sphereP t k (2x+1) e^{-t x(x+1)}`. -/
+def sphereP (t : ℝ) : ℕ → ℝ[X]
+  | 0 => X
+  | k + 1 => 2 * derivative (sphereP t k) - C t * X * sphereP t k
+
+theorem hasDerivAt_eval_lin (p : Polynomial ℝ) (x : ℝ) :
+    HasDerivAt (fun x : ℝ => p.eval (2 * x + 1)) (2 * (Polynomial.derivative p).eval (2 * x + 1)) x := by
+  have hl : HasDerivAt (fun x : ℝ => 2 * x + 1) 2 x := by
+    simpa using ((hasDerivAt_id x).const_mul 2).add_const 1
+  have := (p.hasDerivAt (2 * x + 1)).comp x hl
+  simpa [Function.comp_def, mul_comm] using this
+
+theorem iteratedDeriv_sphereG_poly (t : ℝ) (k : ℕ) :
+    iteratedDeriv k (sphereG t) = fun x =>
+      (sphereP t k).eval (2 * x + 1) * Real.exp (-(t * (x * (x + 1)))) := by
+  induction k with
+  | zero => ext x; simp [sphereP, sphereG]
+  | succ k ih =>
+    rw [iteratedDeriv_succ, ih]
+    rw [deriv_step t (fun x => (sphereP t k).eval (2 * x + 1))
+      (fun x => 2 * (Polynomial.derivative (sphereP t k)).eval (2 * x + 1))
+      (fun x => (hasDerivAt_eval_lin _ x).differentiableAt)
+      (fun x => (hasDerivAt_eval_lin _ x).deriv)]
+    ext x
+    simp [sphereP]
+
+open Polynomial in
+theorem sphereP_one (t : ℝ) : sphereP t 1 = 2 - C t * X ^ 2 := by
+  simp [sphereP]; ring
+
+open Polynomial in
+theorem sphereP_two (t : ℝ) : sphereP t 2 = -6 * C t * X + C t ^ 2 * X ^ 3 := by
+  rw [sphereP, sphereP_one]; simp [derivative_mul]; ring
+
+open Polynomial in
+theorem derivative_C_pow' (t : ℝ) (n : ℕ) : derivative ((C t) ^ n) = 0 := by
+  rw [← C_pow, derivative_C]
+
+open Polynomial in
+theorem sphereP_three (t : ℝ) :
+    sphereP t 3 = -12 * C t + 12 * C t ^ 2 * X ^ 2 - C t ^ 3 * X ^ 4 := by
+  rw [sphereP, sphereP_two]
+  simp [derivative_mul, derivative_C_pow', map_ofNat]; ring
+
+open Polynomial in
+theorem sphereP_four (t : ℝ) :
+    sphereP t 4 = 60 * C t ^ 2 * X - 20 * C t ^ 3 * X ^ 3 + C t ^ 4 * X ^ 5 := by
+  rw [sphereP, sphereP_three]
+  simp [derivative_mul, derivative_C_pow', map_ofNat]; ring
+
+open Polynomial in
+theorem sphereP_five (t : ℝ) :
+    sphereP t 5 = 120 * C t ^ 2 - 180 * C t ^ 3 * X ^ 2 + 30 * C t ^ 4 * X ^ 4 - C t ^ 5 * X ^ 6 := by
+  rw [sphereP, sphereP_four]
+  simp [derivative_mul, derivative_C_pow', map_ofNat]; ring
+
+theorem iteratedDeriv_sphereG_zero (t : ℝ) : iteratedDeriv 0 (sphereG t) 0 = 1 := by
+  simp [sphereG]
+
+theorem iteratedDeriv_sphereG_one_zero (t : ℝ) : iteratedDeriv 1 (sphereG t) 0 = 2 - t := by
+  rw [iteratedDeriv_sphereG_poly, sphereP_one]; simp
+
+theorem iteratedDeriv_sphereG_three_zero (t : ℝ) :
+    iteratedDeriv 3 (sphereG t) 0 = -12 * t + 12 * t ^ 2 - t ^ 3 := by
+  rw [iteratedDeriv_sphereG_poly, sphereP_three]; simp
+
+theorem iteratedDeriv_sphereG_five_zero (t : ℝ) :
+    iteratedDeriv 5 (sphereG t) 0 = 120 * t ^ 2 - 180 * t ^ 3 + 30 * t ^ 4 - t ^ 5 := by
+  rw [iteratedDeriv_sphereG_poly, sphereP_five]; simp
+
 /-- The Euler–Maclaurin remainder integral of `sphereG t` is `O(t²)`:
 `∫_{(0,∞)} |G⁽⁶⁾| ≤ 2 e^{t/4} t² ∫_ℝ |gaussOdd⁽⁶⁾|`. -/
 theorem integral_abs_sphereG_six_le {t : ℝ} (ht : 0 < t) :
