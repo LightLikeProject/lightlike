@@ -891,6 +891,7 @@ import Lightlike.Regge.Schlaefli
 import Lightlike.Regge.Tests
 import Lightlike.Regge.Winding
 import Lightlike.Rows.G1_066.Focusing
+import Lightlike.Rows.G1_066.AreaGeometric
 import Lightlike.Regge.CMS.Angle
 import Lightlike.Regge.CMS.Lipschitz
 import Lightlike.Regge.CMS.Fat
