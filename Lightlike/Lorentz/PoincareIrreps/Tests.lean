@@ -10,6 +10,7 @@ public import Lightlike.Lorentz.PoincareIrreps.SpinCasimir
 public import Lightlike.Lorentz.PoincareIrreps.PauliLubanski
 public import Lightlike.Lorentz.PoincareIrreps.MasslessPL
 public import Lightlike.Lorentz.PoincareIrreps.Fibre
+public import Lightlike.Lorentz.PoincareIrreps.MasslessMeasure
 
 /-!
 # Checks for the little groups of the Poincaré group (HA6, first piece)
@@ -172,6 +173,17 @@ example (m : ℝ) (P : massShell m) : Module.finrank ℂ (atMomentum m 2 P) = 3 
 #print axioms finrank_atMomentum
 #print axioms inducedRep_apply_smul
 #print axioms inducedRep_atMomentum
+
+/-- The spinor map `z z†` is equivariant, and the light-cone measure is nonzero and invariant. -/
+example (A : SL2C) (z : Spinor) :
+    spinProj (Matrix.mulVec (A : Matrix (Fin 2) (Fin 2) ℂ) z) = A • spinProj z := spinProj_mulVec A z
+
+example (A : SL2C) : coneMeasure.map (lightSMul A) = coneMeasure := map_lightSMul_coneMeasure A
+
+#print axioms map_spinorMap_volume
+#print axioms map_lightSMul_coneMeasure
+#print axioms coneMeasure_ne_zero
+#print axioms lintegral_lightInducedRep_normSq
 
 /-- Control: helicity `1` (`h = 2`) at the standard momentum: `W = P` at `A = 1`, component `3`. -/
 example : lightPL 2 1 3 = ((coord (lightMom 1) 3 : ℝ) : ℂ) := by
