@@ -1632,3 +1632,5 @@ import Lightlike.Rows.G1_044.KKRicciRef
 import Lightlike.Rows.G1_044.KKTrans
 import Lightlike.Rows.G1_044.KKDiffDeriv
 import Lightlike.Rows.G1_044.KKTrace
+import Lightlike.Rows.G1_044.KKDiv
+import Lightlike.Rows.G1_044.KKRicci55
