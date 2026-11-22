@@ -15,6 +15,8 @@ is all of `K.tris`.
 * `amplitudeGF_union_of_forces`: adding to the gauge set faces that the gauge set forces does not
   change the state sum, for every cutoff.
 * `amplitudeGF_insert_of_step`: one forcing step.
+* `forcedTris`, `forces_forcedTris`, `amplitudeGF_eq_forcedTris`: closure of a gauge set.
+* `amplitudeGF_eq_of_mutual_forces`: mutually forcing gauge sets give equal state sums.
 
 Limits: finite cutoff statements, sufficient criteria. Nothing here says that gauge sets that do not
 force each other give different state sums.
@@ -55,5 +57,46 @@ theorem amplitudeGF_insert_of_step {K : Complex4 V} {T : Finset (Finset V)} {t f
     .step t f ht hf hT (.done (by simp))
   rw [insert_eq, union_comm]
   exact amplitudeGF_union_of_forces h cut
+
+/-- Forcing a finite set of faces one at a time: if `T` forces each `{f}`, `f ∈ S`, it forces `S`. -/
+theorem Forces.of_forall_mem {K : Complex4 V} {T : Finset (Finset V)} :
+    ∀ (S : Finset (Finset V)), (∀ f ∈ S, Forces K {f} T) → Forces K S T := by
+  classical
+  intro S
+  induction S using Finset.induction_on with
+  | empty => exact fun _ => .done (empty_subset _)
+  | insert a s _ ih =>
+    intro h
+    rw [insert_eq]
+    exact (h a (mem_insert_self _ _)).union (ih fun f hf => h f (mem_insert_of_mem hf))
+
+open Classical in
+/-- **The forcing closure of a gauge set**: the triangles of `K` that `T` forces. -/
+noncomputable def forcedTris (K : Complex4 V) (T : Finset (Finset V)) : Finset (Finset V) :=
+  K.tris.filter fun f => Forces K {f} T
+
+/-- A triangle is in `forcedTris K T` iff it is a triangle of `K` forced by `T`. -/
+theorem mem_forcedTris {K : Complex4 V} {T : Finset (Finset V)} {f : Finset V} :
+    f ∈ forcedTris K T ↔ f ∈ K.tris ∧ Forces K {f} T := by
+  classical
+  simp [forcedTris]
+
+/-- `T` forces its whole forcing closure. -/
+theorem forces_forcedTris (K : Complex4 V) (T : Finset (Finset V)) :
+    Forces K (forcedTris K T) T :=
+  Forces.of_forall_mem _ fun _ hf => (mem_forcedTris.mp hf).2
+
+/-- **Closing the gauge set under forcing changes nothing.** The gauge-fixed state sum for
+`T ∪ forcedTris K T` equals the one for `T`, at every cutoff. -/
+theorem amplitudeGF_eq_forcedTris (K : Complex4 V) (T : Finset (Finset V)) (cut : Finset V → ℕ) :
+    amplitudeGF K (T ∪ forcedTris K T) cut = amplitudeGF K T cut :=
+  amplitudeGF_union_of_forces (forces_forcedTris K T) cut
+
+/-- **Mutual forcing gives equal state sums.** If two gauge sets each force the other, their
+gauge-fixed state sums agree at every cutoff (no assumption that they force all of `K.tris`). -/
+theorem amplitudeGF_eq_of_mutual_forces {K : Complex4 V} {T T' : Finset (Finset V)}
+    (h : Forces K T' T) (h' : Forces K T T') (cut : Finset V → ℕ) :
+    amplitudeGF K T cut = amplitudeGF K T' cut := by
+  rw [← amplitudeGF_union_of_forces h cut, union_comm, amplitudeGF_union_of_forces h' cut]
 
 end Lightlike.SpinFoam
