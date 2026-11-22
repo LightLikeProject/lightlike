@@ -1626,3 +1626,5 @@ import Lightlike.Spacetime.ConformalKillingField
 import Lightlike.Rows.G1_062.Defs
 import Lightlike.Rows.G1_062.Torus
 import Lightlike.Rows.G1_062.Product
+import Lightlike.Rows.G1_062.Taylor
+import Lightlike.Rows.G1_062.Gauss
