@@ -8,6 +8,7 @@ public import Lightlike.Lorentz.PoincareIrreps.Poincare
 public import Lightlike.Lorentz.PoincareIrreps.LightPoincare
 public import Lightlike.Lorentz.PoincareIrreps.SpinCasimir
 public import Lightlike.Lorentz.PoincareIrreps.PauliLubanski
+public import Lightlike.Lorentz.PoincareIrreps.MasslessPL
 
 /-!
 # Checks for the little groups of the Poincaré group (HA6, first piece)
@@ -154,6 +155,28 @@ example : sl2Casimir (SU2Spin.opH (SU2Spin.σ 1)) (SU2Spin.opE (SU2Spin.σ 1))
 example (ψ : lightCone → ℂ) : lightTranslateOp 0 ψ = ψ := by
   funext P
   simp [lightTranslateOp, pairing_zero_right]
+
+#print axioms lightPL_eq
+#print axioms lightPL_square
+#print axioms helChar_rotZ
+#print axioms coord_smul_eq_sum
+
+/-- Control: helicity `1` (`h = 2`) at the standard momentum: `W = P` at `A = 1`, component `3`. -/
+example : lightPL 2 1 3 = ((coord (lightMom 1) 3 : ℝ) : ℂ) := by
+  rw [lightPL_eq, one_smul]
+  simp [lightHelicity]
+
+/-- Control: the character of the rotation by `2π` is `(-1)^h`: for `h = 1` it is `-1`
+(a spinor), i.e. `e^{i (1/2) 2π} = -1`. -/
+example : ((helChar 1 ⟨rotZ (2 * Real.pi), rotZ_mem_stabilizer _⟩ : Circle) : ℂ) = -1 := by
+  rw [helChar_rotZ]
+  have : Complex.I * (((lightHelicity 1 * (2 * Real.pi) : ℝ)) : ℂ) = Real.pi * Complex.I := by
+    simp [lightHelicity]; ring
+  rw [this, Complex.exp_pi_mul_I]
+
+/-- Control: the translations of the massless little group carry no helicity. -/
+example (h : ℤ) (t : ℂ) : helChar h ⟨SL2C.upper t, upper_mem_stabilizer t⟩ = 1 :=
+  helChar_upper h t _
 
 /-- The massive little group is compact. -/
 example : IsCompact ((MulAction.stabilizer SL2C (restMom 1) : Subgroup SL2C) : Set SL2C) :=
