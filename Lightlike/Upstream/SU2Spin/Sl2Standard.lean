@@ -144,4 +144,23 @@ lemma exists_primitive_span_eq_top (hd : 0 < d)
     exact hm (by simpa using this)
   · exact h
 
+/-- If the vectors `Fᵏ m`, `k ≤ n`, span, the dimension is `n + 1`. -/
+lemma dim_eq_succ (P : t.HasPrimitiveVectorWith m (n : ℂ))
+    (hspan : Submodule.span ℂ (Set.range fun k : Fin (n + 1) => fpow F m k) = ⊤) :
+    d = n + 1 := by
+  have h := finrank_span_eq_card (linearIndependent_fpow t P)
+  rw [hspan, finrank_top] at h
+  simpa using h
+
+/-- The basis `k ↦ Fᵏ m` of `ℂᵈ` when these vectors span. -/
+noncomputable def fpowBasis (P : t.HasPrimitiveVectorWith m (n : ℂ))
+    (hspan : Submodule.span ℂ (Set.range fun k : Fin (n + 1) => fpow F m k) = ⊤) :
+    Basis (Fin (n + 1)) ℂ (Fin d → ℂ) :=
+  Basis.mk (linearIndependent_fpow t P) hspan.ge
+
+@[simp] lemma fpowBasis_apply (P : t.HasPrimitiveVectorWith m (n : ℂ))
+    (hspan : Submodule.span ℂ (Set.range fun k : Fin (n + 1) => fpow F m k) = ⊤)
+    (k : Fin (n + 1)) : fpowBasis t P hspan k = fpow F m k := by
+  simp [fpowBasis]
+
 end SU2Spin
