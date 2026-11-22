@@ -263,6 +263,7 @@ import Lightlike.Cosmology.BigBang
 import Lightlike.Cosmology.BigBangSingularity
 import Lightlike.Cosmology.BigBangEOS
 import Lightlike.Cosmology.Raychaudhuri
+import Lightlike.Rows.G1_028.SlowRoll
 import Lightlike.FourD.Boundary
 import Lightlike.FourD.Complex
 import Lightlike.FourD.Orientation
