@@ -219,4 +219,101 @@ def counter1 : List Tet := move23 (move23 (move14 (move23 (move14 S3 [0,1,3,4] 5
 #eval (classInfo counter1).map (·.1)
 #eval ((classInfo counter1).filter (·.1 == 1)).map fun p => decode counter1 p.2.1
 
+/-! ## Numerical gauge-fixed Ponzano–Regge amplitude (Float, Racah 6j in doubled spins) -/
+
+def fact (n : Nat) : Float := (List.range n).foldl (fun acc i => acc * (i + 1).toFloat) 1.0
+
+def triOk (a b c : Nat) : Bool :=
+  (a + b + c) % 2 == 0 && a ≤ b + c && b ≤ a + c && c ≤ a + b
+
+def delta (a b c : Nat) : Float :=
+  Float.sqrt (fact ((a + b - c) / 2) * fact ((a + c - b) / 2) * fact ((b + c - a) / 2) /
+    fact ((a + b + c) / 2 + 1))
+
+/-- Wigner 6j `{j1 j2 j3; j4 j5 j6}` in doubled spins (Racah formula). -/
+def sixj (j1 j2 j3 j4 j5 j6 : Nat) : Float :=
+  if triOk j1 j2 j3 && triOk j1 j5 j6 && triOk j4 j2 j6 && triOk j4 j5 j3 then
+    let a1 := (j1 + j2 + j3) / 2
+    let a2 := (j1 + j5 + j6) / 2
+    let a3 := (j4 + j2 + j6) / 2
+    let a4 := (j4 + j5 + j3) / 2
+    let b1 := (j1 + j2 + j4 + j5) / 2
+    let b2 := (j2 + j3 + j5 + j6) / 2
+    let b3 := (j3 + j1 + j6 + j4) / 2
+    let lo := max (max a1 a2) (max a3 a4)
+    let hi := min (min b1 b2) b3
+    let pre := delta j1 j2 j3 * delta j1 j5 j6 * delta j4 j2 j6 * delta j4 j5 j3
+    let s := (List.range (hi + 1 - lo)).foldl (fun acc k =>
+      let t := lo + k
+      let sg : Float := if t % 2 == 0 then 1.0 else -1.0
+      acc + sg * fact (t + 1) / (fact (t - a1) * fact (t - a2) * fact (t - a3) * fact (t - a4) *
+        fact (b1 - t) * fact (b2 - t) * fact (b3 - t))) 0.0
+    pre * s
+  else 0.0
+
+/-- Gauge-fixed amplitude: spin `0` on `gauge` edges, spins `0..cut` on the others. -/
+def ampGF (ts : List Tet) (gauge : List (Nat × Nat)) (cut : Nat) : Float := Id.run do
+  let es := edgesOf ts
+  let eidx : Std.HashMap Nat Nat := Id.run do
+    let mut h : Std.HashMap Nat Nat := {}
+    for i in [0:es.size] do
+      h := h.insert (key es[i]!.1 es[i]!.2) i
+    return h
+  let ei (a b : Nat) : Nat := eidx[key a b]!
+  let isG : Array Bool := (Array.range es.size).map fun i =>
+    gauge.any fun (a, b) => key a b == key es[i]!.1 es[i]!.2
+  let free := ((Array.range es.size).filter fun i => !isG[i]!)
+  let tr := (trisOf ts).map fun (a, b, c) => (ei a b, ei b c, ei c a)
+  let tets := ts.map fun t => match t.mergeSort with
+    | [a, b, c, d] => (ei a b, ei b c, ei c a, ei c d, ei a d, ei b d)
+    | _ => (0, 0, 0, 0, 0, 0)
+  -- position of each edge in the DFS order (gauge edges: decided from the start)
+  let pos : Array Nat := (Array.range es.size).map fun i =>
+    if isG[i]! then 0 else (free.findIdx? (· == i)).getD 0 + 1
+  let mut total : Float := 0.0
+  -- iterative DFS with explicit stack of (position, colouring)
+  let mut stack : List (Nat × Array Nat) := [(0, Array.replicate es.size 0)]
+  let mut fuel := 200000000
+  while !stack.isEmpty && fuel > 0 do
+    fuel := fuel - 1
+    match stack with
+    | [] => pure ()
+    | (p, col) :: rest =>
+      stack := rest
+      if p == free.size then
+        let mut w : Float := 1.0
+        for i in [0:es.size] do
+          let J := col[i]!
+          w := w * (J + 1).toFloat * (if J % 2 == 0 then 1.0 else -1.0)
+        for (x, y, z) in tr do
+          let s := (col[x]! + col[y]! + col[z]!) / 2
+          w := w * (if s % 2 == 0 then 1.0 else -1.0)
+        for (x, y, z, u, v, q) in tets do
+          w := w * sixj col[x]! col[y]! col[z]! col[u]! col[v]! col[q]!
+        total := total + w
+      else
+        let e := free[p]!
+        for J in [0:cut + 1] do
+          let col' := col.set! e J
+          -- check triangles containing e whose edges are all decided
+          let ok := tr.all fun (x, y, z) =>
+            if x == e || y == e || z == e then
+              (pos[x]! ≤ p + 1 || isG[x]!) && (pos[y]! ≤ p + 1 || isG[y]!) &&
+                (pos[z]! ≤ p + 1 || isG[z]!) → triOk col'[x]! col'[y]! col'[z]!
+            else true
+          if ok then stack := (p + 1, col') :: stack
+  return total
+
+def pathK5 : List (Nat × Nat) := [(0, 1), (1, 2), (2, 3), (3, 4)]
+def starK5 : List (Nat × Nat) := [(0, 1), (0, 2), (0, 3), (0, 4)]
+#eval (ampGF S3 pathK5 1, ampGF S3 starK5 1)
+#eval (ampGF S3 pathK5 2, ampGF S3 starK5 2)
+
+def pathS7 : List (Nat × Nat) := [(1, 2), (3, 4), (0, 1), (0, 3), (4, 6), (5, 6)]
+def starS7 : List (Nat × Nat) := [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6)]
+def star1S7 : List (Nat × Nat) := [(1, 0), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6)]
+def path2S7 : List (Nat × Nat) := [(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6)]
+#eval (ampGF counter1 pathS7 1, ampGF counter1 starS7 1, ampGF counter1 star1S7 1,
+  ampGF counter1 path2S7 1)
+
 end Lightlike.PR.Experiment
