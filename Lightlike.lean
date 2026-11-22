@@ -401,6 +401,7 @@ import Lightlike.Lorentz.SL2RPlancherel.CoshDist
 import Lightlike.Lorentz.SL2RPlancherel.CoshSubstitution
 import Lightlike.Lorentz.SL2RPlancherel.RadialHaar
 import Lightlike.Lorentz.SL2RPlancherel.RadialIntegral
+import Lightlike.Lorentz.SL2RPlancherel.TanhSeries
 import Lightlike.Lorentz.SL2RPlancherel.UpperHalfPlaneIntegral
 import Lightlike.Lorentz.SL2RPlancherel.UpperHalfPlaneSubstitution
 import Lightlike.Lorentz.SL2RPrincipal
