@@ -679,6 +679,7 @@ import Lightlike.PL.PolygonBoundary
 import Lightlike.PL.PolygonPLHomeo
 import Lightlike.PL.Schoenflies.ConvexCut
 import Lightlike.PL.Schoenflies.EarCut
+import Lightlike.PL.Schoenflies.EarSplit
 import Lightlike.PL.Schoenflies.Glue
 import Lightlike.PL.Schoenflies.TriMap
 import Lightlike.PL.SimpleChain
