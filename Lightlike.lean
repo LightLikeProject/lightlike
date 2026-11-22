@@ -1449,6 +1449,7 @@ import Lightlike.SpinFoam.EPRLTests
 import Lightlike.SpinFoam.EPRLStateSum.BFPoint
 import Lightlike.SpinFoam.EPRLStateSum.BFRelation
 import Lightlike.SpinFoam.EPRLStateSum.SimplexBasis
+import Lightlike.SpinFoam.EPRLStateSum.SimplexGen
 import Lightlike.SpinFoam.Move15
 import Lightlike.SpinFoam.Move15Global
 import Lightlike.SpinFoam.BarrettCrane
