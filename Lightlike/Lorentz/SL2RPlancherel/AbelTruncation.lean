@@ -63,6 +63,7 @@ theorem integral_abelSlice_eq_halfAbel {φ H : ℝ → ℂ} (h : ∀ a, 1 < a �
 `∫_a φ a / √(a - v) = -π F v` for `v > 1`. -/
 theorem exists_abelSlice_trunc (F : ℝ → ℂ) (hF : ContDiff ℝ 2 F) (hc : HasCompactSupport F) :
     ∃ (R M : ℝ) (φ : ℝ → ℂ), Measurable φ ∧ (∀ a, ‖φ a‖ ≤ M) ∧ (∀ a, R ≤ a → φ a = 0) ∧
+      (∀ a, 1 < a → φ a = halfAbel (deriv F) a) ∧
       ∀ v, 1 < v → ∫ a, abelSlice φ v a = -(π : ℂ) * F v := by
   have hF1 : ContDiff ℝ 1 F := hF.of_le (by norm_num)
   have hd1 : ContDiff ℝ 1 (deriv F) := by
@@ -78,7 +79,16 @@ theorem exists_abelSlice_trunc (F : ℝ → ℂ) (hF : ContDiff ℝ 2 F) (hc : H
   set M : ℝ := max M0 0 with hMdef
   have hHzero : ∀ a, R ≤ a → H a = 0 := fun a ha => halfAbel_deriv_eq_zero hR ha
   have hR1 : (1 : ℝ) ≤ R := le_max_right _ _
-  refine ⟨R, M, (Icc 1 R).indicator H, hHc.measurable.indicator measurableSet_Icc, ?_, ?_, ?_⟩
+  have hagree : ∀ a, 1 < a → (Icc 1 R).indicator H a = H a := by
+    intro a ha
+    by_cases h : a ∈ Icc (1 : ℝ) R
+    · rw [indicator_of_mem h]
+    · rw [indicator_of_notMem h]
+      have : R < a := by
+        by_contra hh
+        exact h ⟨ha.le, not_lt.1 hh⟩
+      exact (hHzero a this.le).symm
+  refine ⟨R, M, (Icc 1 R).indicator H, hHc.measurable.indicator measurableSet_Icc, ?_, ?_, hagree, ?_⟩
   · intro a
     by_cases ha : a ∈ Icc (1 : ℝ) R
     · rw [indicator_of_mem ha]
@@ -91,15 +101,6 @@ theorem exists_abelSlice_trunc (F : ℝ → ℂ) (hF : ContDiff ℝ 2 F) (hc : H
       exact hHzero a ha
     · rw [indicator_of_notMem h]
   · intro v hv
-    have hagree : ∀ a, 1 < a → (Icc 1 R).indicator H a = H a := by
-      intro a ha
-      by_cases h : a ∈ Icc (1 : ℝ) R
-      · rw [indicator_of_mem h]
-      · rw [indicator_of_notMem h]
-        have : R < a := by
-          by_contra hh
-          exact h ⟨ha.le, not_lt.1 hh⟩
-        exact (hHzero a this.le).symm
     rw [integral_abelSlice_eq_halfAbel hagree hv, hH]
     exact halfAbel_halfAbel_deriv F hF1 hc v
 
@@ -113,12 +114,13 @@ bounded measurable `φ` (the truncation of `halfAbel F'`) with
 `∫_a ∫_b ∫_{v>1} (φ a/√(a-v)) (conj φ b/√(b-v)) = π² ∫_{v>1} F v · conj (F v)`. -/
 theorem exists_triple_integral_eq (F : ℝ → ℂ) (hF : ContDiff ℝ 2 F) (hc : HasCompactSupport F) :
     ∃ (R M : ℝ) (φ : ℝ → ℂ), Measurable φ ∧ (∀ a, ‖φ a‖ ≤ M) ∧ (∀ a, R ≤ a → φ a = 0) ∧
+      (∀ a, 1 < a → φ a = halfAbel (deriv F) a) ∧
       (∀ v, 1 < v → ∫ a, abelSlice φ v a = -(π : ℂ) * F v) ∧
       ∫ a, ∫ b, ∫ v in Ioi (1 : ℝ),
           abelSlice φ v a * abelSlice (fun x => (starRingEnd ℂ) (φ x)) v b =
         (π : ℂ) ^ 2 * ∫ v in Ioi (1 : ℝ), F v * (starRingEnd ℂ) (F v) := by
-  obtain ⟨R, M, φ, hφ, hM, hR, hint⟩ := exists_abelSlice_trunc F hF hc
-  refine ⟨R, M, φ, hφ, hM, hR, hint, ?_⟩
+  obtain ⟨R, M, φ, hφ, hM, hR, hag, hint⟩ := exists_abelSlice_trunc F hF hc
+  refine ⟨R, M, φ, hφ, hM, hR, hag, hint, ?_⟩
   rw [integral_integral_abelSlice_pair (ψ := fun x => (starRingEnd ℂ) (φ x)) hφ
     (Complex.continuous_conj.measurable.comp hφ) hM
     (fun a => by simpa using hM a) hR (fun a ha => by simp [hR a ha])]
