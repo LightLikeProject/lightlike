@@ -1626,4 +1626,5 @@ import Lightlike.Spacetime.ConformalKillingField
 import Lightlike.Upstream.SU2Spin.LieProduct
 import Lightlike.Upstream.SU2Spin.OneParameter
 import Lightlike.Upstream.SU2Spin.SpinRep
+import Lightlike.Upstream.SU2Spin.Su2Exp
 import Lightlike.Upstream.SU2Spin.Tests
