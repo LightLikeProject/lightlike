@@ -20,6 +20,9 @@ of the energy. This file proves the transitivity statements one orbit type at a 
 * `exists_smul_tachMom`: every `P` with `det P = -m²` is in the orbit of `tachMom m` (the case
   `P₀₀ = 0` is handled by an upper unipotent shear, `exists_upper_smul_pos`).
 
+* `exists_smul_restMom_of_neg`: the negative-energy mass shell is the orbit of `restMom (-m)`.
+* `exists_smul_neg_lightMom`: the negative light cone is the orbit of `-lightMom 1`.
+
 Reference: E. Wigner (1939); S. Weinberg, *The Quantum Theory of Fields I* (1995), Chapter 2.
 No equation numbers are claimed.
 -/
@@ -174,5 +177,40 @@ theorem exists_smul_tachMom {m : ℝ} (hm : 0 < m) {P : Herm2}
     refine ⟨(SL2C.upper z)⁻¹ * A, ?_⟩
     rw [mul_smul, hA, inv_smul_smul]
   · exact exists_smul_tachMom_of_pos hm hd h
+
+/-- `restMom (-m) = -restMom m`. -/
+lemma restMom_neg (m : ℝ) : restMom (-m) = -restMom m := by
+  apply Subtype.ext
+  rw [coe_neg_herm]
+  simp [restMom]
+
+/-- **The negative-energy mass shell is one orbit.** If `det P = m²` (`m > 0`) and `tr P < 0`, then
+`P = A (-m · 1) A†` for some `A ∈ SL(2,ℂ)`. -/
+theorem exists_smul_restMom_of_neg {m : ℝ} (hm : 0 < m) {P : Herm2}
+    (hd : P.1.det = ((m ^ 2 : ℝ) : ℂ)) (ht : P.1.trace.re < 0) :
+    ∃ A : SL2C, A • restMom (-m) = P := by
+  have hmem : (-P) ∈ massShell m := by
+    refine ⟨?_, ?_⟩
+    · rw [coe_neg_herm, Matrix.det_neg]
+      simpa using hd
+    · rw [coe_neg_herm, Matrix.trace_neg]
+      simpa using ht
+  refine ⟨boost hm ⟨-P, hmem⟩, ?_⟩
+  rw [restMom_neg, smul_neg, boost_smul_rest hm ⟨-P, hmem⟩, neg_neg]
+
+/-- **The negative light cone (without apex) is one orbit.** If `det P = 0` and `tr P < 0`, then
+`P = A (-lightMom 1) A†` for some `A ∈ SL(2,ℂ)`. -/
+theorem exists_smul_neg_lightMom {P : Herm2}
+    (hd : P.1.det = 0) (ht : P.1.trace.re < 0) :
+    ∃ A : SL2C, A • (-lightMom 1) = P := by
+  have hmem : (-P) ∈ lightCone := by
+    refine ⟨?_, ?_⟩
+    · rw [coe_neg_herm, Matrix.det_neg]
+      simp [hd]
+    · rw [coe_neg_herm, Matrix.trace_neg]
+      simpa using ht
+  obtain ⟨A, hA⟩ := exists_smul_lightMom hmem
+  refine ⟨A, ?_⟩
+  rw [smul_neg, hA, neg_neg]
 
 end Lightlike.Lorentz.HARow055
