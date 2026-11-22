@@ -116,6 +116,21 @@ theorem sachsWolfe_ne_without_intrinsic {Φ : ℝ} (h : Φ ≠ 0) :
   apply h
   linarith
 
+/-- **The Sachs–Wolfe effect, end to end.** In a spatially flat, `Λ = 0` FLRW background obeying
+Friedmann's first equation at time `t` with `𝓗 ≠ 0`, take a one-parameter family of adiabatic
+perturbations (`1 + δ(ε) = (1 + Θ(ε))³`, `Θ(0) = 0`) whose first-order values are `Θ₁ = Θ₀` and
+`δ₁ = δ_m`. If on super-horizon scales (`k = 0`) in matter domination (`Φ' = 0`, `Ψ = Φ`) the `00`
+Einstein equation holds, then `ΔT/T = Θ₀ + Ψ = Φ/3`. -/
+theorem sachsWolfe_flrw {a ρ Θ δ : ℝ → ℝ} {Gn t Φ Θ₁ δ₁ : ℝ}
+    (hF : FirstFriedmann a ρ 0 0 Gn t) (h𝓗 : conformalHubble a t ≠ 0)
+    (hE : Einstein00 Gn (a t) (ρ t) (conformalHubble a t) 0 Φ 0 Φ δ₁)
+    (h0 : Θ 0 = 0) (hΘ : HasDerivAt Θ Θ₁ 0) (hδ : HasDerivAt δ δ₁ 0)
+    (had : ∀ ε, 1 + δ ε = (1 + Θ ε) ^ 3) :
+    swAnisotropy Θ₁ Φ = Φ / 3 := by
+  have h1 : δ₁ = 3 * Θ₁ := hδ.unique (intrinsic_eq_third h0 hΘ had)
+  exact sachsWolfe (intrinsic_eq_third' h1)
+    (delta_eq_neg_two_mul h𝓗 (conformalFriedmann hF) hE)
+
 end SachsWolfe
 
 end Cosmology
