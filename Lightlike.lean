@@ -680,6 +680,7 @@ import Lightlike.PL.PolygonPLHomeo
 import Lightlike.PL.Schoenflies.ConvexCut
 import Lightlike.PL.Schoenflies.ConvexSplit
 import Lightlike.PL.Schoenflies.DetColl
+import Lightlike.PL.Schoenflies.EarBoundary
 import Lightlike.PL.Schoenflies.EarCut
 import Lightlike.PL.Schoenflies.EarInduction
 import Lightlike.PL.Schoenflies.EarMain
