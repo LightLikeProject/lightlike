@@ -1624,6 +1624,7 @@ import Lightlike.Spacetime.StereoConformal
 import Lightlike.Spacetime.ConformalKilling
 import Lightlike.Spacetime.ConformalKillingField
 import Lightlike.Upstream.SU2Spin.Brackets
+import Lightlike.Upstream.SU2Spin.Completeness
 import Lightlike.Upstream.SU2Spin.Differential
 import Lightlike.Upstream.SU2Spin.LieProduct
 import Lightlike.Upstream.SU2Spin.OneParameter
