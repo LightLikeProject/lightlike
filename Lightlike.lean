@@ -697,6 +697,7 @@ import Lightlike.PL.Schoenflies.PolygonalSchoenflies
 import Lightlike.PL.Schoenflies.ScpRot
 import Lightlike.PL.Schoenflies.TriMap
 import Lightlike.PL.Schoenflies.UniformLocalConn
+import Lightlike.PL.Schoenflies.JordanClosure
 import Lightlike.PL.SimpleChain
 import Lightlike.PL.Chain
 import Lightlike.PL.TwoArcs
