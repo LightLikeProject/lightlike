@@ -612,6 +612,7 @@ import Lightlike.OperatorAlgebras.EntropyBell
 import Lightlike.OperatorAlgebras.WeylAlgebra
 import Lightlike.OperatorAlgebras.TestsWeylAlgebra
 import Lightlike.Rows.G1_069.PageValue
+import Lightlike.Rows.G1_069.Ensemble
 import Lightlike.Oscillatory.Flat
 import Lightlike.Oscillatory.GaussFourier
 import Lightlike.Oscillatory.GaussFourierTests
