@@ -9,6 +9,7 @@ public import Lightlike.Lorentz.PoincareIrreps.LightPoincare
 public import Lightlike.Lorentz.PoincareIrreps.SpinCasimir
 public import Lightlike.Lorentz.PoincareIrreps.PauliLubanski
 public import Lightlike.Lorentz.PoincareIrreps.MasslessPL
+public import Lightlike.Lorentz.PoincareIrreps.Fibre
 
 /-!
 # Checks for the little groups of the Poincaré group (HA6, first piece)
@@ -160,6 +161,17 @@ example (ψ : lightCone → ℂ) : lightTranslateOp 0 ψ = ψ := by
 #print axioms lightPL_square
 #print axioms helChar_rotZ
 #print axioms coord_smul_eq_sum
+
+/-- Massive spin `1/2` tied to `inducedRep`: two states per momentum (a control: spin 1 gives 3). -/
+example (m : ℝ) (P : massShell m) : Module.finrank ℂ (atMomentum m 1 P) = 2 :=
+  finrank_atMomentum_spinHalf m P
+
+example (m : ℝ) (P : massShell m) : Module.finrank ℂ (atMomentum m 2 P) = 3 :=
+  finrank_atMomentum m 2 P
+
+#print axioms finrank_atMomentum
+#print axioms inducedRep_apply_smul
+#print axioms inducedRep_atMomentum
 
 /-- Control: helicity `1` (`h = 2`) at the standard momentum: `W = P` at `A = 1`, component `3`. -/
 example : lightPL 2 1 3 = ((coord (lightMom 1) 3 : ℝ) : ℂ) := by

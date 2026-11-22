@@ -397,6 +397,7 @@ import Lightlike.Lorentz.PoincareIrreps.LightPoincare
 import Lightlike.Lorentz.PoincareIrreps.SpinCasimir
 import Lightlike.Lorentz.PoincareIrreps.PauliLubanski
 import Lightlike.Lorentz.PoincareIrreps.MasslessPL
+import Lightlike.Lorentz.PoincareIrreps.Fibre
 import Lightlike.Lorentz.PoincareIrreps.Tests
 import Lightlike.Lorentz.PrincipalSeries
 import Lightlike.Lorentz.Radial
