@@ -1625,6 +1625,7 @@ import Lightlike.Spacetime.GreenOperators.Cylinder
 import Lightlike.Spacetime.GreenOperators.IntegralForm
 import Lightlike.Spacetime.GreenOperators.Bessel
 import Lightlike.Spacetime.GreenOperators.RiemannKernel
+import Lightlike.Spacetime.GreenOperators.RiemannSol
 import Lightlike.Spacetime.FLRWChart
 import Lightlike.Spacetime.FLRWCoord
 import Lightlike.Spacetime.FLRWModel
