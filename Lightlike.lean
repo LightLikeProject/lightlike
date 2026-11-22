@@ -264,6 +264,7 @@ import Lightlike.Cosmology.BigBangSingularity
 import Lightlike.Cosmology.BigBangEOS
 import Lightlike.Cosmology.Raychaudhuri
 import Lightlike.Rows.G1_032.GrowthCore
+import Lightlike.Rows.G1_032.Jeans
 import Lightlike.Rows.G1_032.Linearized
 import Lightlike.FourD.Boundary
 import Lightlike.FourD.Complex
