@@ -1635,6 +1635,8 @@ import Lightlike.Upstream.SU2Spin.Su2Exp
 import Lightlike.Upstream.SU2Spin.Tests
 import Lightlike.Upstream.SpinReps2.AxiomsCheck
 import Lightlike.Upstream.SpinReps2.BEPentagon
+import Lightlike.Upstream.SpinReps2.BEPentagon2
+import Lightlike.Upstream.SpinReps2.BEPentagon3
 import Lightlike.Upstream.SpinReps2.Intertwiner
 import Lightlike.Upstream.SpinReps2.LieBridge
 import Lightlike.Upstream.SpinReps2.SixJOrth
