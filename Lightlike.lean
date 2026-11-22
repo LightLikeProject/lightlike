@@ -468,6 +468,12 @@ import Lightlike.OperatorAlgebras.FiniteStates
 import Lightlike.OperatorAlgebras.FockExists
 import Lightlike.OperatorAlgebras.FockInner
 import Lightlike.OperatorAlgebras.FockIrreducible
+import Lightlike.Rows.G2_077.PositivePart
+import Lightlike.Rows.G2_077.Surj
+import Lightlike.Rows.G2_077.SurjMatrix
+import Lightlike.Rows.G2_077.OneParticle
+import Lightlike.Rows.G2_077.Final
+import Lightlike.Rows.G2_077.Tests
 import Lightlike.OperatorAlgebras.FockJW
 import Lightlike.OperatorAlgebras.GaussAvg
 import Lightlike.OperatorAlgebras.GaussKernel
