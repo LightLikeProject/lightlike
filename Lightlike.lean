@@ -1521,6 +1521,7 @@ import Lightlike.GFT.Borel.Deriv
 import Lightlike.GFT.Borel.NormBound
 import Lightlike.GFT.Borel.Local
 import Lightlike.GFT.Borel.Taylor
+import Lightlike.GFT.Borel.Continuation
 import Lightlike.GFT.Bubble
 import Lightlike.GFT.ColoredGraph
 import Lightlike.GFT.Dual
