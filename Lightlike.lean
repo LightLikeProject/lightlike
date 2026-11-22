@@ -268,6 +268,7 @@ import Lightlike.FourD.Complex
 import Lightlike.FourD.Orientation
 import Lightlike.FourD.Pachner
 import Lightlike.FourD.Tests
+import Lightlike.Geometry.HeatKernel.Consistency
 import Lightlike.Geometry.HeatKernel.EulerMaclaurin
 import Lightlike.Geometry.HeatKernel.EulerMaclaurinSum
 import Lightlike.Geometry.HeatKernel.Expansion
