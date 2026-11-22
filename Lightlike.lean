@@ -1628,3 +1628,4 @@ import Lightlike.Rows.G1_059.Minkowski2
 import Lightlike.Rows.G1_059.Minkowski2b
 import Lightlike.Rows.G1_059.Minkowski2c
 import Lightlike.Rows.G1_059.Minkowski2d
+import Lightlike.Rows.G1_059.Minkowski2e
