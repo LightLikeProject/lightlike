@@ -1448,6 +1448,7 @@ import Lightlike.SpinFoam.EPRL
 import Lightlike.SpinFoam.EPRLTests
 import Lightlike.SpinFoam.EPRLStateSum.BFPoint
 import Lightlike.SpinFoam.EPRLStateSum.BFRelation
+import Lightlike.SpinFoam.EPRLStateSum.SimplexAmpP
 import Lightlike.SpinFoam.EPRLStateSum.SimplexBasis
 import Lightlike.SpinFoam.EPRLStateSum.SimplexGen
 import Lightlike.SpinFoam.EPRLStateSum.SimplexSwap
