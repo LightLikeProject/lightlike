@@ -841,6 +841,7 @@ import Lightlike.PonzanoRegge.SphereInvariants
 import Lightlike.PonzanoRegge.SphereRecognition
 import Lightlike.PonzanoRegge.TriangulationIndependence.Moves
 import Lightlike.PonzanoRegge.TriangulationIndependence.Values
+import Lightlike.PonzanoRegge.TriangulationIndependence.Main
 import Lightlike.PonzanoRegge.Unconditional
 import Lightlike.QM.Basic
 import Lightlike.Recoupling.FifteenJ
