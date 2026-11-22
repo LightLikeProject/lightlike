@@ -396,6 +396,7 @@ import Lightlike.Lorentz.SL2RCasimir
 import Lightlike.Lorentz.SL2RDiscrete
 import Lightlike.Lorentz.SL2RPlancherel.AbelHalfIntegral
 import Lightlike.Lorentz.SL2RPlancherel.AbelKernel
+import Lightlike.Lorentz.SL2RPlancherel.AbelKernelTanh
 import Lightlike.Lorentz.SL2RPlancherel.AbelTransform
 import Lightlike.Lorentz.SL2RPlancherel.ArcsinIntegral
 import Lightlike.Lorentz.SL2RPlancherel.CoshDist
