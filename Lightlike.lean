@@ -689,6 +689,7 @@ import Lightlike.PL.Schoenflies.EarRot
 import Lightlike.PL.Schoenflies.EarSplit
 import Lightlike.PL.Schoenflies.EarStep
 import Lightlike.PL.Schoenflies.Glue
+import Lightlike.PL.Schoenflies.HomeoForm
 import Lightlike.PL.Schoenflies.PolygonalSchoenflies
 import Lightlike.PL.Schoenflies.ScpRot
 import Lightlike.PL.Schoenflies.TriMap
