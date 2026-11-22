@@ -702,6 +702,7 @@ import Lightlike.PL.Schoenflies.JordanLocConn
 import Lightlike.PL.Schoenflies.DenseExtension
 import Lightlike.PL.Schoenflies.FillHoles
 import Lightlike.PL.Schoenflies.ComponentReach
+import Lightlike.PL.Schoenflies.Grid
 import Lightlike.PL.SimpleChain
 import Lightlike.PL.Chain
 import Lightlike.PL.TwoArcs
