@@ -677,6 +677,7 @@ import Lightlike.PL.PolygonApprox
 import Lightlike.PL.PolygonBall
 import Lightlike.PL.PolygonBoundary
 import Lightlike.PL.PolygonPLHomeo
+import Lightlike.PL.Schoenflies.TriMap
 import Lightlike.PL.SimpleChain
 import Lightlike.PL.Chain
 import Lightlike.PL.TwoArcs
