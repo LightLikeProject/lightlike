@@ -14,6 +14,9 @@ stable under products.  Iterating on circles gives the flat `n`-torus (`Torus.le
 * `Lightlike.Rows.G1_062.PolyTrace.mul`: product of two traces of the form
   `c t^{-d/2}(1 + r)`, `r = O(t^N)` for all `N`.
 * `Lightlike.Rows.G1_062.circleTrace_polyTrace`: the circle heat trace is of this form.
+* `Lightlike.Rows.G1_062.torusTrace_hasHeatExpansion`: the flat `n`-torus has `a₀ = vol/(4π)^{n/2}`
+  and `aₖ = 0` for `k ≥ 1`.
+* `Lightlike.Rows.G1_062.torusTrace_no_constant_term`: hence no `t⁰` term (trust check of T-GE8).
 -/
 
 open Filter Topology Asymptotics
@@ -148,5 +151,99 @@ theorem circleTrace_polyTrace {L : ℝ} (hL : 0 < L) :
   · rw [circleTrace_eq hL ht]
     simp only [Nat.cast_one]
     ring
+
+/-- Spectral summand of the circle of length `L` is summable. -/
+theorem circle_summable {L : ℝ} (hL : 0 < L) {t : ℝ} (ht : 0 < t) :
+    Summable fun a : ℤ => ((1 : ℕ) : ℝ) * Real.exp (-t * (2 * Real.pi * a / L) ^ 2) := by
+  have hpi := Real.pi_pos
+  have := summable_exp_int_sq (y := 4 * Real.pi * t / L ^ 2) (by positivity)
+  refine this.congr fun a => ?_
+  rw [Nat.cast_one, one_mul]
+  congr 1
+  field_simp
+  ring
+
+/-- The heat trace of the flat torus `∏ᵢ ℝ/Lᵢℤ`: spectrum `∑ᵢ (2π nᵢ/Lᵢ)²`, `n ∈ ℤⁿ`,
+multiplicity one. -/
+noncomputable def torusTrace {n : ℕ} (L : Fin n → ℝ) : ℝ → ℝ :=
+  heatTrace (fun x : Fin n → ℤ => ∑ i, (2 * Real.pi * (x i : ℝ) / L i) ^ 2) (fun _ => 1)
+
+/-- The spectral summand of the flat torus is summable. -/
+theorem torus_summable : ∀ (n : ℕ) (L : Fin n → ℝ), (∀ i, 0 < L i) → ∀ t : ℝ, 0 < t →
+    Summable fun x : Fin n → ℤ =>
+      ((1 : ℕ) : ℝ) * Real.exp (-t * ∑ i, (2 * Real.pi * (x i : ℝ) / L i) ^ 2) := by
+  intro n
+  induction n with
+  | zero => intro L _ t _; exact Summable.of_finite
+  | succ n ih =>
+    intro L hL t ht
+    have h1 := circle_summable (hL 0) ht
+    have h2 := ih (fun i => L i.succ) (fun i => hL _) t ht
+    have h := (heatTrace_prod (fun a : ℤ => (2 * Real.pi * a / L 0) ^ 2)
+      (fun y : Fin n → ℤ => ∑ i, (2 * Real.pi * (y i : ℝ) / L i.succ) ^ 2)
+      (fun _ => 1) (fun _ => 1) h1 h2).1
+    refine (Equiv.summable_iff (Fin.consEquiv (fun _ => ℤ))).mp ?_
+    refine h.congr fun p => ?_
+    simp [Function.comp, Fin.sum_univ_succ]
+
+/-- The torus heat trace splits off a circle factor. -/
+theorem torusTrace_succ {n : ℕ} {L : Fin (n + 1) → ℝ} (hL : ∀ i, 0 < L i) {t : ℝ} (ht : 0 < t) :
+    torusTrace L t = circleTrace (L 0) t * torusTrace (fun i => L i.succ) t := by
+  have h1 := circle_summable (hL 0) ht
+  have h2 := torus_summable n (fun i => L i.succ) (fun i => hL _) t ht
+  have h := (heatTrace_prod (fun a : ℤ => (2 * Real.pi * a / L 0) ^ 2)
+      (fun y : Fin n → ℤ => ∑ i, (2 * Real.pi * (y i : ℝ) / L i.succ) ^ 2)
+      (fun _ => 1) (fun _ => 1) h1 h2).2
+  have e := (Fin.consEquiv (fun _ => ℤ)).tsum_eq
+    (fun x : Fin (n + 1) → ℤ => ((1 : ℕ) : ℝ) *
+      Real.exp (-t * ∑ i, (2 * Real.pi * (x i : ℝ) / L i) ^ 2))
+  unfold torusTrace circleTrace heatTrace at *
+  rw [← e]
+  simpa [Function.comp, Fin.sum_univ_succ] using h
+
+/-- Every flat torus heat trace is of the form `c t^{-n/2}(1 + r)` with `r` smaller than every
+power of `t`, with `c = ∏ Lᵢ/√(4π)`. -/
+theorem torusTrace_polyTrace : ∀ (n : ℕ) (L : Fin n → ℝ), (∀ i, 0 < L i) →
+    PolyTrace (torusTrace L) (∏ i, L i / Real.sqrt (4 * Real.pi)) n := by
+  intro n
+  induction n with
+  | zero =>
+    intro L _
+    refine ⟨fun _ => 0, fun N => isBigO_zero _ _, fun t ht => ?_⟩
+    simp [torusTrace, heatTrace]
+  | succ n ih =>
+    intro L hL
+    have h := (circleTrace_polyTrace (hL 0)).mul (ih (fun i => L i.succ) (fun i => hL _))
+    rw [Fin.prod_univ_succ]
+    obtain ⟨r, hr, e⟩ := h
+    rw [add_comm 1 n] at e
+    refine ⟨r, hr, fun t ht => ?_⟩
+    rw [torusTrace_succ hL ht, ← e t ht]
+
+/-- **Heat trace of the flat `n`-torus.** For all `K ≥ 1`,
+`Z(t) = (∏ Lᵢ)/(4π)^{n/2} · t^{-n/2} + O(t^{K-n/2})`: the leading coefficient is the volume times
+`(4π)^{-n/2}` and all higher Seeley–DeWitt coefficients vanish. -/
+theorem torusTrace_hasHeatExpansion {n : ℕ} {L : Fin n → ℝ} (hL : ∀ i, 0 < L i) {K : ℕ}
+    (hK : 1 ≤ K) :
+    HasHeatExpansion (torusTrace L) n
+      (fun k => if k = 0 then ∏ i, L i / Real.sqrt (4 * Real.pi) else 0) K :=
+  (torusTrace_polyTrace n L hL).hasHeatExpansion hK
+
+/-- **The flat torus has no `t⁰` term.** In dimension `n ≥ 1`, any heat expansion of the torus
+trace to order `K` has vanishing coefficient at every `k < K` with `t^{k - n/2} = t⁰`
+(i.e. the Seeley–DeWitt coefficient `a_{n/2}` for even `n`; in particular `a₁ = 0` on the
+flat 2-torus, consistent with `a₁ = (4π)^{-n/2} ∫ R/6` and `R = 0`). -/
+theorem torusTrace_no_constant_term {n : ℕ} (hn : 1 ≤ n) {L : Fin n → ℝ} (hL : ∀ i, 0 < L i)
+    {K : ℕ} {b : ℕ → ℝ} (hb : HasHeatExpansion (torusTrace L) n b K) :
+    ∀ k < K, (k : ℝ) - (n : ℝ) / 2 = 0 → b k = 0 := by
+  intro k hk h0
+  have hK : 1 ≤ K := by omega
+  have hk0 : k ≠ 0 := by
+    rintro rfl
+    have : (n : ℝ) = 0 := by simp at h0; linarith
+    have : n = 0 := by exact_mod_cast this
+    omega
+  have := hb.coeff_unique (torusTrace_hasHeatExpansion hL hK) k hk
+  simpa [hk0] using this
 
 end Lightlike.Rows.G1_062
