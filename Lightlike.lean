@@ -1626,6 +1626,9 @@ import Lightlike.Spacetime.GreenOperators.IntegralForm
 import Lightlike.Spacetime.GreenOperators.Bessel
 import Lightlike.Spacetime.GreenOperators.RiemannKernel
 import Lightlike.Spacetime.GreenOperators.RiemannSol
+import Lightlike.Spacetime.GreenOperators.PrimitiveGen
+import Lightlike.Spacetime.GreenOperators.MassiveExistence
+import Lightlike.Spacetime.GreenOperators.MassiveAdvanced
 import Lightlike.Spacetime.FLRWChart
 import Lightlike.Spacetime.FLRWCoord
 import Lightlike.Spacetime.FLRWModel
