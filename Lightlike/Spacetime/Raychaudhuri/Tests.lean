@@ -1,5 +1,6 @@
 import Lightlike.Spacetime.Raychaudhuri.FocusingSEC
 import Lightlike.Spacetime.Raychaudhuri.Examples
+import Lightlike.Spacetime.Raychaudhuri.DustField
 import Lightlike.Cosmology.Raychaudhuri
 
 /-!
@@ -13,6 +14,8 @@ import Lightlike.Cosmology.Raychaudhuri
 -/
 
 #print axioms Lightlike.raychaudhuri_focusing_strongEC
+#print axioms Lightlike.flrwManifold_dust_strongEC
+#print axioms Lightlike.matForm_perfectFluid
 #print axioms Lightlike.Cosmology.minkowski_comoving_expansion
 #print axioms Lightlike.Cosmology.flrw_comoving_expansion
 #print axioms Lightlike.Cosmology.deSitter_no_focusing
