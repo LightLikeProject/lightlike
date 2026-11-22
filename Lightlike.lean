@@ -1605,6 +1605,7 @@ import Lightlike.Rows.G1_039.Scaling
 import Lightlike.Rows.G1_039.ClassA
 import Lightlike.Rows.G1_039.ClassB1
 import Lightlike.Rows.G1_039.ClassB2
+import Lightlike.Rows.G1_039.ClassB3
 import Lightlike.Spacetime.Corners.BianchiSecond
 import Lightlike.Spacetime.Corners.Bridge
 import Lightlike.Spacetime.Corners.ChartAgreement
