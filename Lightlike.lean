@@ -1470,6 +1470,7 @@ import Lightlike.SpinFoam.Tetrahedron
 import Lightlike.SpinFoam.TetrahedronSixJ
 import Lightlike.SpinFoam.TetrahedronTests
 import Lightlike.SpinFoam.TetrahedronCutoff
+import Lightlike.SpinFoam.OoguriGaugeFixed.Capstone
 import Lightlike.DynamicalTriangulations.Action
 import Lightlike.DynamicalTriangulations.Action3
 import Lightlike.DynamicalTriangulations.Causal
