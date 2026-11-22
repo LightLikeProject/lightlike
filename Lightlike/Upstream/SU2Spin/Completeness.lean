@@ -211,4 +211,53 @@ lemma σ_apply (n : ℕ) (g : SU2) : σ n g = spinMat n g := rfl
 
 lemma continuous_σ (n : ℕ) : Continuous (σ n) := continuous_spinRep
 
+section Intertwiner
+
+attribute [local instance 100] LieRing.ofAssociativeRing
+
+/-- Two matrix `sl₂`-triples with primitive vectors of the same weight `n` whose `F`-orbits span
+are intertwined by a linear isomorphism (sending `Fᵏ m` to `F'ᵏ m'`). -/
+lemma exists_intertwiner {d d' : ℕ} {H E F : Matrix (Fin d) (Fin d) ℂ}
+    {H' E' F' : Matrix (Fin d') (Fin d') ℂ} (t : IsSl2Triple H E F) (t' : IsSl2Triple H' E' F')
+    {m : Fin d → ℂ} {m' : Fin d' → ℂ} {n : ℕ}
+    (P : t.HasPrimitiveVectorWith m (n : ℂ)) (P' : t'.HasPrimitiveVectorWith m' (n : ℂ))
+    (hspan : Submodule.span ℂ (Set.range fun k : Fin (n + 1) => fpow F m k) = ⊤)
+    (hspan' : Submodule.span ℂ (Set.range fun k : Fin (n + 1) => fpow F' m' k) = ⊤) :
+    ∃ T : (Fin d → ℂ) ≃ₗ[ℂ] (Fin d' → ℂ),
+      (∀ v, T (H *ᵥ v) = H' *ᵥ T v) ∧ (∀ v, T (E *ᵥ v) = E' *ᵥ T v) ∧
+      (∀ v, T (F *ᵥ v) = F' *ᵥ T v) := by
+  set b := fpowBasis t P hspan with hbdef
+  set b' := fpowBasis t' P' hspan' with hb'def
+  let T := b.equiv b' (Equiv.refl _)
+  have hb : ∀ k, b k = fpow F m k := fpowBasis_apply t P hspan
+  have hb' : ∀ k, b' k = fpow F' m' k := fpowBasis_apply t' P' hspan'
+  have hT : ∀ j : ℕ, j ≤ n → T (fpow F m j) = fpow F' m' j := fun j hj => by
+    have h : T (b ⟨j, by omega⟩) = b' ⟨j, by omega⟩ := Basis.equiv_apply ..
+    rw [hb, hb'] at h
+    exact h
+  have key : ∀ (A : Matrix (Fin d) (Fin d) ℂ) (A' : Matrix (Fin d') (Fin d') ℂ),
+      (∀ k : Fin (n + 1), T (A *ᵥ fpow F m k) = A' *ᵥ T (fpow F m k)) →
+      ∀ v, T (A *ᵥ v) = A' *ᵥ T v := by
+    intro A A' h v
+    have : (T : (Fin d → ℂ) →ₗ[ℂ] (Fin d' → ℂ)) ∘ₗ A.mulVecLin =
+        A'.mulVecLin ∘ₗ (T : (Fin d → ℂ) →ₗ[ℂ] (Fin d' → ℂ)) :=
+      b.ext fun k => by simpa [hb] using h k
+    exact LinearMap.congr_fun this v
+  refine ⟨T, key _ _ fun k => ?_, key _ _ fun k => ?_, key _ _ fun k => ?_⟩
+  · rw [mulVec_H_fpow t P, map_smul, hT k (by omega), mulVec_H_fpow t' P']
+  · rcases Nat.eq_zero_or_pos (k : ℕ) with h0 | hpos
+    · have h := hT 0 (by omega)
+      rw [fpow_zero, fpow_zero] at h
+      rw [h0, fpow_zero, mulVec_E_m t P, map_zero, h, mulVec_E_m t' P']
+    · obtain ⟨j, hj⟩ := Nat.exists_eq_succ_of_ne_zero hpos.ne'
+      rw [hj, Nat.succ_eq_add_one, mulVec_E_fpow_succ t P, map_smul, hT j (by omega),
+        hT (j + 1) (by omega), mulVec_E_fpow_succ t' P']
+  · rw [hT k (by omega), ← fpow_succ, ← fpow_succ]
+    by_cases hk : (k : ℕ) + 1 ≤ n
+    · exact hT _ hk
+    · have : (k : ℕ) = n := by omega
+      rw [this, fpow_succ_eq_zero t P, fpow_succ_eq_zero t' P', map_zero]
+
+end Intertwiner
+
 end SU2Spin
