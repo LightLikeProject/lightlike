@@ -548,6 +548,8 @@ import Lightlike.OperatorAlgebras.TestsBoundedGroup
 import Lightlike.OperatorAlgebras.TestsCARUnique
 import Lightlike.OperatorAlgebras.TestsFiniteKMS
 import Lightlike.OperatorAlgebras.Wasserstein
+import Lightlike.OperatorAlgebras.OPRow160.ModularCapstone
+import Lightlike.OperatorAlgebras.OPRow160.TestsModularCapstone
 import Lightlike.OperatorAlgebras.TestsWasserstein
 import Lightlike.OperatorAlgebras.MongeKantorovich
 import Lightlike.OperatorAlgebras.TestsMongeKantorovich
