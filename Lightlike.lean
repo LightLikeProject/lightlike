@@ -273,6 +273,7 @@ import Lightlike.Geometry.HeatKernel.EulerMaclaurinSum
 import Lightlike.Geometry.HeatKernel.Expansion
 import Lightlike.Geometry.HeatKernel.GaussianDeriv
 import Lightlike.Geometry.HeatKernel.SphereSummand
+import Lightlike.Geometry.HeatKernel.SphereTrace
 import Lightlike.Geometry.HeatKernel.Theta
 import Lightlike.Geometry.HeatKernel.Torus
 import Lightlike.Geometry.ProjectiveSpace

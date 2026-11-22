@@ -37,6 +37,16 @@ def HasHeatExpansion (n : ℕ) (K : ℝ → ℝ) (a : ℕ → ℝ) : Prop :=
   ∀ N : ℕ, (fun t => K t - ∑ k ∈ Finset.range N, a k * t ^ ((k : ℝ) - n / 2)) =O[𝓝[>] (0 : ℝ)]
     fun t => t ^ ((N : ℝ) - n / 2)
 
+/-- **Finite-order heat-trace expansion.** `HasHeatExpansionTo n m K a`: the error after the first
+`m` terms of `Σ_k a k * t ^ (k - n/2)` is `O(t ^ (m - n/2))` as `t → 0⁺`. This is the statement
+`HasHeatExpansion` makes for the single index `N = m`. -/
+def HasHeatExpansionTo (n m : ℕ) (K : ℝ → ℝ) (a : ℕ → ℝ) : Prop :=
+  (fun t => K t - ∑ k ∈ Finset.range m, a k * t ^ ((k : ℝ) - n / 2)) =O[𝓝[>] (0 : ℝ)]
+    fun t => t ^ ((m : ℝ) - n / 2)
+
+theorem HasHeatExpansion.to {n : ℕ} {K : ℝ → ℝ} {a : ℕ → ℝ} (h : HasHeatExpansion n K a)
+    (m : ℕ) : HasHeatExpansionTo n m K a := h m
+
 variable {n : ℕ} {K L : ℝ → ℝ} {a b : ℕ → ℝ}
 
 /-- Heat-trace expansions add. -/
