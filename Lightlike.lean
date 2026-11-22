@@ -268,6 +268,8 @@ import Lightlike.FourD.Complex
 import Lightlike.FourD.Orientation
 import Lightlike.FourD.Pachner
 import Lightlike.FourD.Tests
+import Lightlike.Geometry.HeatKernel.Expansion
+import Lightlike.Geometry.HeatKernel.Theta
 import Lightlike.Geometry.ProjectiveSpace
 import Lightlike.GR.ColourAlgebra
 import Lightlike.GR.ComplexMinkowski
