@@ -1634,3 +1634,4 @@ import Lightlike.Upstream.GeodesicExpansion.DistLower
 import Lightlike.Upstream.GeodesicExpansion.DistUpper
 import Lightlike.Upstream.GeodesicExpansion.DistExpansion
 import Lightlike.Upstream.GeodesicExpansion.DistMid
+import Lightlike.Upstream.GeodesicExpansion.Riemannian
