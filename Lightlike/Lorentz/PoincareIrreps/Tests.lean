@@ -11,6 +11,7 @@ public import Lightlike.Lorentz.PoincareIrreps.PauliLubanski
 public import Lightlike.Lorentz.PoincareIrreps.MasslessPL
 public import Lightlike.Lorentz.PoincareIrreps.Fibre
 public import Lightlike.Lorentz.PoincareIrreps.MasslessMeasure
+public import Lightlike.Lorentz.PoincareIrreps.Classification
 
 /-!
 # Checks for the little groups of the Poincaré group (HA6, first piece)
@@ -173,6 +174,25 @@ example (m : ℝ) (P : massShell m) : Module.finrank ℂ (atMomentum m 2 P) = 3 
 #print axioms finrank_atMomentum
 #print axioms inducedRep_apply_smul
 #print axioms inducedRep_atMomentum
+
+/-- Little-group irreducibility of the spin-1/2 fibre, and the summary theorems apply. -/
+example {m : ℝ} (hm : 0 < m) (W : Submodule ℂ (massShell m → Fin 2 → ℂ))
+    (hWle : W ≤ atMomentum m 1 (restShell hm))
+    (hinv : ∀ g : Lightlike.SU2, ∀ ψ ∈ W, inducedRep hm 1 (SL2C.ofSU2 g) ψ ∈ W) :
+    W = ⊥ ∨ W = atMomentum m 1 (restShell hm) :=
+  atRest_irreducible hm 1 W hWle hinv
+
+example {m : ℝ} (hm : 0 < m) (P : massShell m) : P.1.1.det = ((m ^ 2 : ℝ) : ℂ) :=
+  (wigner_massive m hm 1).2.2.1 P
+
+example (h : ℤ) (A : SL2C) (μ : Fin 4) :
+    lightPL h A μ = (lightHelicity h : ℂ) * (coord (A • lightMom 1) μ : ℝ) :=
+  (wigner_massless h).2.2.1 A μ
+
+#print axioms atRest_irreducible
+#print axioms wignerSU2_ofSU2
+#print axioms wigner_massive
+#print axioms wigner_massless
 
 /-- The spinor map `z z†` is equivariant, and the light-cone measure is nonzero and invariant. -/
 example (A : SL2C) (z : Spinor) :
