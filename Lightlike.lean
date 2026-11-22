@@ -1337,6 +1337,7 @@ import Lightlike.SpinFoam.Vertex
 import Lightlike.SpinFoam.VertexAsymptoticsHyp.DensityBound
 import Lightlike.SpinFoam.VertexAsymptoticsHyp.EdgeKernel
 import Lightlike.SpinFoam.VertexAsymptoticsHyp.FarCompact
+import Lightlike.SpinFoam.VertexAsymptoticsHyp.HessianAssemble
 import Lightlike.SpinFoam.VertexAsymptoticsHyp.HessianKernel
 import Lightlike.SpinFoam.VertexAsymptoticsHyp.HessianPSD
 import Lightlike.SpinFoam.VertexAsymptoticsHyp.HessianSecondOrder
