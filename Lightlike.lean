@@ -1300,6 +1300,7 @@ import Lightlike.Spacetime.EHManifold.TestsFRHessian
 import Lightlike.Spacetime.EHManifold.TestsMatter
 import Lightlike.Spacetime.EHManifold.WSplit
 import Lightlike.Spin4.Burnside
+import Lightlike.Upstream.Spin4.QuaternionSU2
 import Lightlike.Spin4.CGBridge
 import Lightlike.Spin4.ClebschGordan
 import Lightlike.Spin4.Clifford
