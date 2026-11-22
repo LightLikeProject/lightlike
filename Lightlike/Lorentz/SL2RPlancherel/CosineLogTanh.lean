@@ -195,4 +195,54 @@ theorem integral_cos_mul_neg_log_tanh {ρ : ℝ} (hρ : 0 < ρ) :
   field_simp
   ring
 
+/-- `-log tanh (x/4)` is integrable on `(0, ∞)`: a logarithmic singularity at `0`, exponential
+decay at `∞`.  Proof: it is the sum of the series `∑ (2/(2m+1)) e^{-((2m+1)/2) x}` whose terms have
+integrals `4/(2m+1)²`, summable. -/
+theorem integrableOn_neg_log_tanh :
+    IntegrableOn (fun x : ℝ => -Real.log (Real.tanh (x / 4))) (Ioi 0) := by
+  set F : ℕ → ℝ → ℝ := fun m x =>
+    2 / (2 * m + 1) * Real.exp (-(((2 * m + 1 : ℝ) / 2) * x)) with hF
+  have hFnn : ∀ m x, 0 ≤ F m x := fun m x => by simp only [hF]; positivity
+  have hFint : ∀ m, IntegrableOn (F m) (Ioi 0) := fun m => (cexp_integrable m).const_mul _
+  have hFval : ∀ m : ℕ, ∫ x in Ioi (0:ℝ), F m x = 4 / (2 * (m:ℝ) + 1) ^ 2 := by
+    intro m
+    simp only [hF]
+    rw [integral_const_mul, cexp_integral]
+    field_simp
+    ring
+  have hsum : Summable fun m : ℕ => 4 / (2 * (m:ℝ) + 1) ^ 2 := by
+    have : Summable fun m : ℕ => 4 * (1 / ((m:ℝ) + 1) ^ 2) := by
+      refine Summable.mul_left _ ?_
+      have := (summable_nat_add_iff 1).mpr
+        (Real.summable_one_div_nat_pow.mpr (by norm_num : 1 < 2))
+      simpa using this
+    refine Summable.of_nonneg_of_le (fun m => by positivity) (fun m => ?_) this
+    have : (0:ℝ) < (m:ℝ) + 1 := by positivity
+    rw [mul_one_div, div_le_div_iff₀ (by positivity) (by positivity)]
+    nlinarith [sq_nonneg (m:ℝ), Nat.cast_nonneg (α := ℝ) m]
+  have hmeas : Measurable (fun x : ℝ => -Real.log (Real.tanh (x / 4))) :=
+    (Real.measurable_log.comp (by
+      simp only [Real.tanh_eq_sinh_div_cosh]
+      exact (Real.continuous_sinh.measurable.comp (measurable_id.div_const 4)).div
+        (Real.continuous_cosh.measurable.comp (measurable_id.div_const 4)))).neg
+  have hnn : 0 ≤ᵐ[volume.restrict (Ioi (0:ℝ))] fun x : ℝ => -Real.log (Real.tanh (x / 4)) := by
+    filter_upwards [ae_restrict_mem measurableSet_Ioi] with x hx
+    exact (hasSum_neg_log_tanh x hx).nonneg (fun m => hFnn m x)
+  refine (lintegral_ofReal_ne_top_iff_integrable hmeas.aestronglyMeasurable hnn).mp ?_
+  have h1 : ∫⁻ x in Ioi (0:ℝ), ENNReal.ofReal (-Real.log (Real.tanh (x / 4)))
+      = ∑' m, ∫⁻ x in Ioi (0:ℝ), ENNReal.ofReal (F m x) := by
+    rw [← lintegral_tsum (fun m => (hFint m).1.aemeasurable.ennreal_ofReal)]
+    refine setLIntegral_congr_fun measurableSet_Ioi (fun x hx => ?_)
+    have hg := hasSum_neg_log_tanh x hx
+    rw [← hg.tsum_eq, ENNReal.ofReal_tsum_of_nonneg (fun m => hFnn m x) hg.summable]
+  rw [h1]
+  have h2 : ∀ m : ℕ, ∫⁻ x in Ioi (0:ℝ), ENNReal.ofReal (F m x)
+      = ENNReal.ofReal (4 / (2 * (m:ℝ) + 1) ^ 2) := by
+    intro m
+    rw [← hFval m, ofReal_integral_eq_lintegral_ofReal (hFint m)
+      (Filter.Eventually.of_forall (hFnn m))]
+  simp only [h2]
+  rw [← ENNReal.ofReal_tsum_of_nonneg (fun m => by positivity) hsum]
+  exact ENNReal.ofReal_ne_top
+
 end Lightlike.Lorentz.SL2RPlancherel
