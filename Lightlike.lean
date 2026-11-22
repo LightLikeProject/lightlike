@@ -256,6 +256,7 @@ import Lightlike.CausalSets.MyrheimGen
 import Lightlike.CausalSets.PosetCount
 import Lightlike.CausalSets.Rectangle
 import Lightlike.CausalSets.Sprinkling
+import Lightlike.Rows.G2_063.Process
 import Lightlike.CausalSets.TestsCausalSets
 import Lightlike.Cosmology.FLRW
 import Lightlike.Cosmology.FLRWPhyslib
