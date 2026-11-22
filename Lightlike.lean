@@ -1603,6 +1603,7 @@ import Lightlike.Rows.G1_031.Curvature
 import Lightlike.Rows.G1_031.Tensor
 import Lightlike.Rows.G1_031.Einstein
 import Lightlike.Rows.G1_031.Main
+import Lightlike.Rows.G1_031.Diag
 import Lightlike.GFT.Euler
 import Lightlike.Spacetime.Corners.BianchiSecond
 import Lightlike.Spacetime.Corners.Bridge
