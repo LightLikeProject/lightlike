@@ -260,4 +260,142 @@ lemma exists_intertwiner {d d' : ℕ} {H E F : Matrix (Fin d) (Fin d) ℂ}
 
 end Intertwiner
 
+/-! ## The completeness theorem -/
+
+/-- `dρ` on a general element of `su(2)`, in terms of the basis `suZ, suY, suX`. -/
+lemma dρ_decomp (hρ : Continuous ρ) {X : Matrix (Fin 2) (Fin 2) ℂ} (hX : IsSu2 X) :
+    dρ ρ X = (X 0 0).im • dρ ρ suZ + (-(X 0 1).re) • dρ ρ suY + (X 0 1).im • dρ ρ suX := by
+  rw [show dρ ρ X = dρ ρ ((X 0 0).im • suZ + (-(X 0 1).re) • suY + (X 0 1).im • suX) from
+      congrArg _ hX.decomp,
+    dρ_add hρ ((isSu2_Z.smul _).add (isSu2_Y.smul _)) (isSu2_X.smul _),
+    dρ_add hρ (isSu2_Z.smul _) (isSu2_Y.smul _), dρ_smul hρ isSu2_Z, dρ_smul hρ isSu2_Y,
+    dρ_smul hρ isSu2_X]
+
+/-- **Intertwining transfer**: a linear map intertwining `H, E, F` of two continuous
+representations of `SU(2)` intertwines the representations. -/
+theorem intertwine_of_ops {d' : ℕ} [NeZero d'] {ρ' : specialUnitaryGroup (Fin 2) ℂ →*
+      Matrix (Fin d') (Fin d') ℂ}
+    (hρ : Continuous ρ) (hρ' : Continuous ρ') (T : (Fin d → ℂ) →ₗ[ℂ] (Fin d' → ℂ))
+    (hTH : ∀ v, T (opH ρ *ᵥ v) = opH ρ' *ᵥ T v) (hTE : ∀ v, T (opE ρ *ᵥ v) = opE ρ' *ᵥ T v)
+    (hTF : ∀ v, T (opF ρ *ᵥ v) = opF ρ' *ᵥ T v) (g : specialUnitaryGroup (Fin 2) ℂ)
+    (v : Fin d → ℂ) : T (ρ g *ᵥ v) = ρ' g *ᵥ T v := by
+  have hTZ : ∀ v, T (dρ ρ suZ *ᵥ v) = dρ ρ' suZ *ᵥ T v := fun v => by
+    rw [dρZ_eq, smul_mulVec, map_smul, hTH, dρZ_eq, smul_mulVec]
+  have hTY : ∀ v, T (dρ ρ suY *ᵥ v) = dρ ρ' suY *ᵥ T v := fun v => by
+    rw [dρY_eq, sub_mulVec, map_sub, hTF, hTE, dρY_eq, sub_mulVec]
+  have hTX : ∀ v, T (dρ ρ suX *ᵥ v) = dρ ρ' suX *ᵥ T v := fun v => by
+    rw [dρX_eq, smul_mulVec, add_mulVec, map_smul, map_add, hTE, hTF, dρX_eq, smul_mulVec,
+      add_mulVec]
+  obtain ⟨X, hX, hexp⟩ := exists_exp_eq g
+  have hTd : ∀ v, T (dρ ρ X *ᵥ v) = dρ ρ' X *ᵥ T v := by
+    intro v
+    rw [dρ_decomp hρ hX, dρ_decomp hρ' hX]
+    have hr : ∀ (r : ℝ) (w : Fin d → ℂ), T (r • w) = r • T w :=
+      fun r w => T.map_smul_of_tower r w
+    simp only [add_mulVec, smul_mulVec, map_add]
+    rw [hr, hr, hr, hTZ, hTY, hTX]
+  have hg : g = expCurve X hX 1 := Subtype.ext (by rw [expCurve_coe, one_smul, hexp])
+  rw [hg, rho_expCurve hρ hX, rho_expCurve hρ' hX, one_smul, one_smul]
+  exact intertwine_exp T hTd v
+
+/-- If `opH ρ = 0` then `ρ` is trivial. -/
+lemma eq_one_of_opH_eq_zero (hρ : Continuous ρ) (hH : opH ρ = 0)
+    (g : specialUnitaryGroup (Fin 2) ℂ) : ρ g = 1 := by
+  obtain ⟨b1, b2, -⟩ := brackets hρ
+  have hz : dρ ρ suZ = 0 := by rw [dρZ_eq, hH, smul_zero]
+  have hx : dρ ρ suX = 0 := by
+    rw [hz, zero_mul, mul_zero, sub_zero] at b1
+    have := b1.symm
+    rwa [neg_smul, neg_eq_zero, smul_eq_zero, or_iff_right (by norm_num)] at this
+  have hy : dρ ρ suY = 0 := by
+    rw [hz, zero_mul, mul_zero, sub_zero] at b2
+    have := b2.symm
+    rwa [smul_eq_zero, or_iff_right (by norm_num)] at this
+  obtain ⟨X, hX, hexp⟩ := exists_exp_eq g
+  have hg : g = expCurve X hX 1 := Subtype.ext (by rw [expCurve_coe, one_smul, hexp])
+  rw [hg, rho_expCurve hρ hX, one_smul, dρ_decomp hρ hX, hz, hy, hx]
+  simp
+
+/-- An irreducible representation on which every element acts trivially is one-dimensional. -/
+lemma eq_one_of_trivial {d : ℕ} [NeZero d] {ρ : specialUnitaryGroup (Fin 2) ℂ →*
+      Matrix (Fin d) (Fin d) ℂ}
+    (hirr : ∀ W : Submodule ℂ (Fin d → ℂ), (∀ g : SU2, ∀ v ∈ W, ρ g *ᵥ v ∈ W) →
+      W = ⊥ ∨ W = ⊤)
+    (htriv : ∀ g, ρ g = 1) : d = 1 := by
+  set x : Fin d → ℂ := Pi.single 0 1
+  have hx0 : x ≠ 0 := fun h => by simpa [x] using congrFun h 0
+  rcases hirr (Submodule.span ℂ {x}) (fun g v hv => by rw [htriv g, one_mulVec]; exact hv)
+    with h | h
+  · exact absurd (Submodule.span_singleton_eq_bot.mp h) hx0
+  · have h1 := finrank_span_singleton (K := ℂ) hx0
+    rw [h, finrank_top, Module.finrank_fin_fun] at h1
+    exact h1
+
+lemma spinMat_zero' (g : Matrix (Fin 2) (Fin 2) ℂ) : spinMat 0 g = 1 := by
+  have hk : kron 0 g = 1 := by
+    ext s t
+    rw [Subsingleton.elim s t, one_apply_eq, kron_apply, Finset.univ_eq_empty, Finset.prod_empty]
+  rw [spinMat, hk, Matrix.mul_one, emb_conjTranspose_mul_emb]
+
+section Main
+
+attribute [local instance 100] LieRing.ofAssociativeRing
+
+/-- For an irreducible `ρ` with `opH ρ ≠ 0`, the weight `n` of a cyclic primitive vector. -/
+lemma exists_primitive_of_irreducible (hρ : Continuous ρ) (hH : opH ρ ≠ 0)
+    (hirr : ∀ W : Submodule ℂ (Fin d → ℂ), (∀ g : SU2, ∀ v ∈ W, ρ g *ᵥ v ∈ W) →
+      W = ⊥ ∨ W = ⊤) :
+    ∃ (n : ℕ) (m : Fin d → ℂ), (isSl2Triple_ops hρ hH).HasPrimitiveVectorWith m (n : ℂ) ∧
+      Submodule.span ℂ (Set.range fun k : Fin (n + 1) => fpow (opF ρ) m k) = ⊤ :=
+  exists_primitive_span_eq_top (isSl2Triple_ops hρ hH) (Nat.pos_of_ne_zero (NeZero.ne d))
+    fun W hH' hE hF => hirr W (invariant_of_ops hρ W hE hF hH')
+
+/-- **Group-level completeness.** Every continuous irreducible representation of SU(2)
+on `ℂ^d` is equivalent to a spin representation `spinRep n`. -/
+theorem spinRep_complete (ρ : SU2 →* Matrix (Fin d) (Fin d) ℂ) (hρ : Continuous ρ)
+    (hirr : ∀ W : Submodule ℂ (Fin d → ℂ), (∀ g : SU2, ∀ v ∈ W, ρ g *ᵥ v ∈ W) → W = ⊥ ∨ W = ⊤) :
+    ∃ n : ℕ, ∃ T : (Fin d → ℂ) ≃ₗ[ℂ] (Fin (n + 1) → ℂ), ∀ (g : SU2) (v : Fin d → ℂ),
+      T (ρ g *ᵥ v) = (spinRep n g : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) *ᵥ T v := by
+  by_cases hH : opH ρ = 0
+  · have htriv := eq_one_of_opH_eq_zero hρ hH
+    have hd1 := eq_one_of_trivial hirr htriv
+    subst hd1
+    refine ⟨0, LinearEquiv.refl ℂ _, fun g v => ?_⟩
+    simp [htriv g, spinMat_zero']
+  · obtain ⟨n, m, P, hspan⟩ := exists_primitive_of_irreducible hρ hH hirr
+    have hd := dim_eq_succ (isSl2Triple_ops hρ hH) P hspan
+    have hirrσ : ∀ W : Submodule ℂ (Fin (n + 1) → ℂ),
+        (∀ g : SU2, ∀ v ∈ W, σ n g *ᵥ v ∈ W) → W = ⊥ ∨ W = ⊤ :=
+      fun W h => isInvariant_eq_bot_or_eq_top (n := n) h
+    have hn : n ≠ 0 := by
+      rintro rfl
+      refine hH ?_
+      have hv : ∀ v : Fin d → ℂ, opH ρ *ᵥ v = 0 := by
+        intro v
+        have hv : v ∈ Submodule.span ℂ
+            (Set.range fun k : Fin (0 + 1) => fpow (opF ρ) m k) := by
+          rw [hspan]; trivial
+        obtain ⟨c, rfl⟩ := (Submodule.mem_span_range_iff_exists_fun ℂ).mp hv
+        simp only [mulVec_sum, mulVec_smul]
+        refine Finset.sum_eq_zero fun k _ => ?_
+        rw [mulVec_H_fpow _ P]
+        simp
+      ext i j
+      simpa [mulVec_single_one] using congrFun (hv (Pi.single j 1)) i
+    have hH' : opH (σ n) ≠ 0 := by
+      intro h0
+      have := eq_one_of_trivial hirrσ (eq_one_of_opH_eq_zero (continuous_σ n) h0)
+      omega
+    obtain ⟨n', m', P', hspan'⟩ := exists_primitive_span_eq_top (isSl2Triple_ops (continuous_σ n) hH')
+      (Nat.pos_of_ne_zero (NeZero.ne (n + 1)))
+      fun W hH'' hE hF => hirrσ W (invariant_of_ops (continuous_σ n) W hE hF hH'')
+    have hd' := dim_eq_succ (isSl2Triple_ops (continuous_σ n) hH') P' hspan'
+    obtain rfl : n = n' := by omega
+    obtain ⟨T, hTH, hTE, hTF⟩ := exists_intertwiner (isSl2Triple_ops hρ hH)
+      (isSl2Triple_ops (continuous_σ n) hH') P P' hspan hspan'
+    exact ⟨n, T, fun g v =>
+      intertwine_of_ops hρ (continuous_σ n) T.toLinearMap hTH hTE hTF g v⟩
+
+end Main
+
 end SU2Spin
