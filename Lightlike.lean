@@ -703,6 +703,8 @@ import Lightlike.PL.Schoenflies.DenseExtension
 import Lightlike.PL.Schoenflies.FillHoles
 import Lightlike.PL.Schoenflies.ComponentReach
 import Lightlike.PL.Schoenflies.Grid
+import Lightlike.PL.Schoenflies.LatticeGraph
+import Lightlike.PL.Schoenflies.LatticeCycle
 import Lightlike.PL.SimpleChain
 import Lightlike.PL.Chain
 import Lightlike.PL.TwoArcs
