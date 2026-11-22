@@ -3,6 +3,7 @@ module
 public import Lightlike.Lorentz.PoincareIrreps.Momentum
 public import Lightlike.Lorentz.PoincareIrreps.Wigner
 public import Lightlike.Lorentz.PoincareIrreps.Massless
+public import Lightlike.Lorentz.PoincareIrreps.Measure
 
 /-!
 # Checks for the little groups of the Poincaré group (HA6, first piece)
@@ -93,6 +94,21 @@ example (A : SL2C) (ψ : lightCone → ℂ) (P : lightCone) :
 
 #print axioms lightInducedRep
 #print axioms exists_smul_lightMom
+
+/-- The invariant measure on the mass shell is `SL(2,ℂ)`-invariant. -/
+example {m : ℝ} (hm : 0 < m) (A : SL2C) :
+    (shellMeasure hm).map (shellSMul hm A) = shellMeasure hm :=
+  map_shellSMul_shellMeasure hm A
+
+/-- Control: the fibre norm of a vector is non-negative and zero only for `0` (spin 1/2). -/
+example (v : Fin 2 → ℂ) (h : fibreNormSq v = 0) : v = 0 := by
+  funext i
+  have h0 : ∀ j ∈ Finset.univ, ‖v j‖ ^ 2 = 0 :=
+    (Finset.sum_eq_zero_iff_of_nonneg (fun j _ => by positivity)).mp h
+  simpa using h0 i (Finset.mem_univ i)
+
+#print axioms map_shellSMul_shellMeasure
+#print axioms lintegral_inducedRep_normSq
 
 /-- The massive little group is compact. -/
 example : IsCompact ((MulAction.stabilizer SL2C (restMom 1) : Subgroup SL2C) : Set SL2C) :=

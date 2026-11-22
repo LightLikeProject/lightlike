@@ -391,6 +391,7 @@ import Lightlike.Lorentz.PoincareIrreps.Momentum
 import Lightlike.Lorentz.PoincareIrreps.Boost
 import Lightlike.Lorentz.PoincareIrreps.Wigner
 import Lightlike.Lorentz.PoincareIrreps.Massless
+import Lightlike.Lorentz.PoincareIrreps.Measure
 import Lightlike.Lorentz.PoincareIrreps.Tests
 import Lightlike.Lorentz.PrincipalSeries
 import Lightlike.Lorentz.Radial
