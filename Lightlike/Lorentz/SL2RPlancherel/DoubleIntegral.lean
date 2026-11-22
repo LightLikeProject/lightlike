@@ -72,4 +72,55 @@ theorem integral_kernel_autocorr_eq {L : ℝ → ℂ} (hL : Integrable L) (h : S
           ring
         rw [e, this]
 
+/-- For an odd bounded `h` and an even integrable kernel `L`, the inner integral
+`∫ L(z-y) h(z) dz` folds onto `z > 0`: `∫_{z>0} (L(z-y) - L(z+y)) h(z) dz`. -/
+theorem integral_kernel_odd_half {L : ℝ → ℂ} (hL : Integrable L) (hLe : ∀ x, L (-x) = L x)
+    (h : SchwartzMap ℝ ℂ) (hodd : ∀ x, h (-x) = - h x) (y : ℝ) :
+    ∫ z, L (z - y) * h z = ∫ z in Ioi (0:ℝ), (L (z - y) - L (z + y)) * h z := by
+  have hG : Integrable (fun z : ℝ => L (z - y) * h z) := by
+    have h1 : Integrable (fun z : ℝ => L (z - y)) := hL.comp_sub_right y
+    have := Integrable.bdd_mul (c := ‖h.toBoundedContinuousFunction‖) h1
+      h.continuous.aestronglyMeasurable
+      (Filter.Eventually.of_forall (fun p => h.toBoundedContinuousFunction.norm_coe_le_norm p))
+    refine this.congr (Filter.Eventually.of_forall (fun z => ?_))
+    simp only [mul_comm]
+  rw [integral_eq_Ioi_add_neg hG]
+  refine integral_congr_ae (Filter.Eventually.of_forall (fun z => ?_))
+  simp only
+  have e : L (-z - y) = L (z + y) := by
+    rw [show -z - y = -(z + y) by ring, hLe]
+  rw [e, hodd]
+  ring
+
+/-- Quadrant form: for an odd Schwartz `h` and an even integrable `L`,
+`∫ conj h(y) ∫ L(z-y) h(z) dz dy = 2 ∫_{y>0} conj h(y) ∫_{z>0} (L(z-y) - L(z+y)) h(z) dz dy`. -/
+theorem integral_kernel_odd_quadrant {L : ℝ → ℂ} (hL : Integrable L) (hLe : ∀ x, L (-x) = L x)
+    (h : SchwartzMap ℝ ℂ) (hodd : ∀ x, h (-x) = - h x) :
+    ∫ y, starRingEnd ℂ (h y) * ∫ z, L (z - y) * h z =
+      2 * ∫ y in Ioi (0:ℝ), starRingEnd ℂ (h y) *
+        ∫ z in Ioi (0:ℝ), (L (z - y) - L (z + y)) * h z := by
+  have hH := integrable_kernel_pair hL h
+  have hF : Integrable (fun y : ℝ => starRingEnd ℂ (h y) * ∫ z, L (z - y) * h z) := by
+    refine hH.integral_prod_right.congr (Filter.Eventually.of_forall (fun y => ?_))
+    simp only
+    rw [← integral_const_mul]
+    refine integral_congr_ae (Filter.Eventually.of_forall (fun z => ?_))
+    simp only
+    ring
+  have hI : ∀ y, ∫ z, L (z - (-y)) * h z = - ∫ z, L (z - y) * h z := by
+    intro y
+    have h1 := integral_neg_eq_self (fun z : ℝ => L (z - y) * h z) volume
+    rw [← h1, ← integral_neg]
+    refine integral_congr_ae (Filter.Eventually.of_forall (fun z => ?_))
+    simp only
+    have e : L (-z - y) = L (z - -y) := by
+      rw [show -z - y = -(z - -y) by ring, hLe]
+    rw [e, hodd]
+    ring
+  rw [integral_eq_Ioi_add_neg hF, ← integral_const_mul]
+  refine setIntegral_congr_fun measurableSet_Ioi (fun y _ => ?_)
+  have hc : starRingEnd ℂ (h (-y)) = - starRingEnd ℂ (h y) := by rw [hodd]; simp
+  rw [hc, hI, integral_kernel_odd_half hL hLe h hodd y]
+  ring
+
 end Lightlike.Lorentz.SL2RPlancherel
