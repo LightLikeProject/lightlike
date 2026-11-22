@@ -11,6 +11,8 @@ base point in a compact `K ⊆ U`:
   `d(x, x + w)² = g_x(w, w) + O(‖w‖³)`.
 * `IsRiemMetric.chartDist_sq_two_sided`, `IsRiemMetric.riemannianEDist_sq_two_sided`:
   `c ‖w‖² ≤ d(x, x + w)² ≤ C ‖w‖²`.
+* `IsRiemMetric.chartDist_sub_sqrt_le`, `IsRiemMetric.riemannianEDist_sub_sqrt_le`:
+  `|d(x, x + w) - √(g_x(w, w))| ≤ C ‖w‖²`.
 -/
 
 open Matrix Set Filter Topology Metric MeasureTheory Manifold Bundle
@@ -139,6 +141,73 @@ theorem IsRiemMetric.riemannianEDist_sq_two_sided (hg : IsRiemMetric g U)
   let := hg.riemannianBundle
   obtain ⟨c, C, r, hc, hr, h⟩ := hg.chartDist_sq_two_sided hK hKU
   refine ⟨c, C, r, hc, hr, fun x y hx hxy => ?_⟩
+  rw [← hg.chartDist_eq_toReal_riemannianEDist x y]
+  have := h x hx ((y : Fin n → ℝ) - x) hxy
+  rwa [add_sub_cancel] at this
+
+/-- **Distance versus the length of the chart displacement (chart form).** For a compact
+`K ⊆ U` there are `C` and `r > 0` with `|d(x, x + w) - √(g_x(w, w))| ≤ C ‖w‖²` for `x ∈ K`,
+`‖w‖ ≤ r`: the distance is the `g_x`-length of `w` up to a quadratic error. -/
+theorem IsRiemMetric.chartDist_sub_sqrt_le (hg : IsRiemMetric g U) {K : Set (Fin n → ℝ)}
+    (hK : IsCompact K) (hKU : K ⊆ U) :
+    ∃ C r : ℝ, 0 < r ∧ ∀ x ∈ K, ∀ w : Fin n → ℝ, ‖w‖ ≤ r →
+      |chartDist g U x (x + w) - Real.sqrt (w ⬝ᵥ (g x *ᵥ w))| ≤ C * ‖w‖ ^ 2 := by
+  obtain ⟨C₁, r₁, hr₁, h₁⟩ := hg.chartDist_sq_third hK hKU
+  obtain ⟨c, C₂, r₂, hc, hr₂, h₂⟩ := hg.chartDist_sq_two_sided hK hKU
+  have hs : 0 < Real.sqrt c := Real.sqrt_pos.mpr hc
+  refine ⟨C₁ / Real.sqrt c, min r₁ r₂, lt_min hr₁ hr₂, fun x hx w hw => ?_⟩
+  have hw₁ : ‖w‖ ≤ r₁ := hw.trans (min_le_left _ _)
+  have hw₂ : ‖w‖ ≤ r₂ := hw.trans (min_le_right _ _)
+  obtain ⟨hlow, hup⟩ := h₂ x hx w hw₂
+  have hth := h₁ x hx w hw₁
+  have hq : 0 ≤ w ⬝ᵥ (g x *ᵥ w) := hg.normSq_nonneg (hKU hx) w
+  have hd := chartDist_nonneg (g := g) (U := U) (x := x) (y := x + w)
+  set d := chartDist g U x (x + w) with hddef
+  set q := w ⬝ᵥ (g x *ᵥ w) with hqdef
+  have hn := norm_nonneg w
+  rcases hn.eq_or_lt with h0 | hpos
+  · have hw0 : ‖w‖ = 0 := h0.symm
+    have hd2 : d ^ 2 ≤ 0 := by simpa [hw0] using hup
+    have hd0 : d = 0 := by nlinarith
+    have hq0 : q = 0 := by
+      have := abs_le.mp hth
+      rw [hw0] at this
+      nlinarith [this.1, this.2]
+    simp [hd0, hq0, hw0]
+  · have hdl : Real.sqrt c * ‖w‖ ≤ d := by
+      have : (Real.sqrt c * ‖w‖) ^ 2 ≤ d ^ 2 := by
+        rw [mul_pow, Real.sq_sqrt hc.le]; exact hlow
+      exact abs_le_of_sq_le_sq' this hd |>.2
+    have hsq : Real.sqrt q ^ 2 = q := Real.sq_sqrt hq
+    have hsq0 := Real.sqrt_nonneg q
+    have hprod : |d - Real.sqrt q| * (d + Real.sqrt q) = |d ^ 2 - q| := by
+      rw [← abs_of_nonneg (by positivity : 0 ≤ d + Real.sqrt q), ← abs_mul]
+      congr 1
+      nlinarith
+    have hkey : |d - Real.sqrt q| * (Real.sqrt c * ‖w‖) ≤ C₁ * ‖w‖ ^ 3 := by
+      calc |d - Real.sqrt q| * (Real.sqrt c * ‖w‖) ≤ |d - Real.sqrt q| * (d + Real.sqrt q) :=
+            mul_le_mul_of_nonneg_left (by linarith) (abs_nonneg _)
+        _ = |d ^ 2 - q| := hprod
+        _ ≤ C₁ * ‖w‖ ^ 3 := hth
+    have h3 : |d - Real.sqrt q| * Real.sqrt c ≤ C₁ * ‖w‖ ^ 2 := by
+      refine le_of_mul_le_mul_right ?_ hpos
+      nlinarith [hkey]
+    rw [div_mul_eq_mul_div, le_div_iff₀ hs]
+    linarith [h3]
+
+/-- **Distance versus the length of the displacement (Mathlib form).** For `x ∈ K`, `y ∈ U` with
+`‖y - x‖ ≤ r`: `|d(x, y) - √(g_x(y - x, y - x))| ≤ C ‖y - x‖²`. -/
+theorem IsRiemMetric.riemannianEDist_sub_sqrt_le (hg : IsRiemMetric g U)
+    {K : Set (Fin n → ℝ)} (hK : IsCompact K) (hKU : K ⊆ U) :
+    letI := hg.riemannianBundle
+    ∃ C r : ℝ, 0 < r ∧ ∀ x y : U, (x : Fin n → ℝ) ∈ K → ‖(y : Fin n → ℝ) - x‖ ≤ r →
+      |(riemannianEDist 𝓘(ℝ, Fin n → ℝ) x y).toReal -
+          Real.sqrt (((y : Fin n → ℝ) - (x : Fin n → ℝ)) ⬝ᵥ
+            (g (x : Fin n → ℝ) *ᵥ ((y : Fin n → ℝ) - (x : Fin n → ℝ))))| ≤
+        C * ‖(y : Fin n → ℝ) - x‖ ^ 2 := by
+  let := hg.riemannianBundle
+  obtain ⟨C, r, hr, h⟩ := hg.chartDist_sub_sqrt_le hK hKU
+  refine ⟨C, r, hr, fun x y hx hxy => ?_⟩
   rw [← hg.chartDist_eq_toReal_riemannianEDist x y]
   have := h x hx ((y : Fin n → ℝ) - x) hxy
   rwa [add_sub_cancel] at this
