@@ -1354,6 +1354,7 @@ import Lightlike.SpinFoam.VertexAsymptoticsHyp.RotatedDefect
 import Lightlike.SpinFoam.VertexAsymptoticsHyp.DefectAssemble
 import Lightlike.SpinFoam.VertexAsymptoticsHyp.HessianIff
 import Lightlike.SpinFoam.VertexAsymptoticsHyp.HessianIffVertex
+import Lightlike.SpinFoam.VertexAsymptoticsHyp.HessianGauge
 import Lightlike.Surfaces.Add
 import Lightlike.Surfaces.Arc
 import Lightlike.Surfaces.Basic
