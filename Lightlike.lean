@@ -396,6 +396,7 @@ import Lightlike.Lorentz.SL2RCasimir
 import Lightlike.Lorentz.SL2RDiscrete
 import Lightlike.Lorentz.SL2RPlancherel.ArcsinIntegral
 import Lightlike.Lorentz.SL2RPlancherel.CoshDist
+import Lightlike.Lorentz.SL2RPlancherel.CoshSubstitution
 import Lightlike.Lorentz.SL2RPlancherel.UpperHalfPlaneIntegral
 import Lightlike.Lorentz.SL2RPrincipal
 import Lightlike.Lorentz.SU2Average
