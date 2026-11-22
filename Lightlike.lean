@@ -722,6 +722,7 @@ import Lightlike.PL.Schoenflies.PolygonNest
 import Lightlike.PL.Schoenflies.AnnulusConnected
 import Lightlike.PL.Schoenflies.ChordSplit
 import Lightlike.PL.Schoenflies.GlueHomeo
+import Lightlike.PL.Schoenflies.RegionGlue
 import Lightlike.PL.SimpleChain
 import Lightlike.PL.Chain
 import Lightlike.PL.TwoArcs
