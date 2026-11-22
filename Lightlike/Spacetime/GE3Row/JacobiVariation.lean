@@ -4,7 +4,18 @@ import Lightlike.Spacetime.RicciContinuous
 /-!
 # Jacobi fields from variations through geodesics (row G1-006, GE3)
 
-Algebra of the connection terms: the expansion of `R(J, w) w` in terms of `Γ` and `∂Γ`.
+The geodesic deviation equation for a smooth variation through geodesics: if `H (t, s)` is a `C³`
+family in a chart with every `t ↦ H (t, s)` a geodesic, then `J = ∂_s H (·, 0)` is a Jacobi field
+(`IsJacobiOn`, `D_t D_t J = -R(J, w) w`) along `H (·, 0)`.
+
+## Main statements
+
+* `Lightlike.Geodesic.exists_isJacobiOn_of_variation`: the variation lemma.
+* `Lightlike.Geodesic.riemannApply_eq`: `R(J, w) w` in terms of `Γ` and `∂Γ`.
+* `Lightlike.Geodesic.jacobi_algebra`: the index algebra, using the symmetry of `Γ`
+  (`christoffel_symm_of_mem`).
+
+Supporting lemmas; the catalogue entry (Jacobi equation) is for the merger.
 -/
 
 open Set Filter Topology Matrix
@@ -186,5 +197,102 @@ theorem jacobi_algebra (hg : Lightlike.IsCoordMetric g U) {x : Fin n → ℝ} (h
   funext i
   simp only [Pi.add_apply, Pi.sub_apply, Pi.neg_apply]
   ring
+
+/-- Derivative of a directional derivative along a curve (chain rule). -/
+theorem hasDerivAt_fderiv_comp {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
+    {f : ℝ × ℝ → F} {q : ℝ → ℝ × ℝ} {q' : ℝ × ℝ} {r : ℝ}
+    (hf : DifferentiableAt ℝ (fderiv ℝ f) (q r)) (hq : HasDerivAt q q' r) (v : ℝ × ℝ) :
+    HasDerivAt (fun r => fderiv ℝ f (q r) v) (fderiv ℝ (fderiv ℝ f) (q r) q' v) r := by
+  have h := hf.hasFDerivAt.comp_hasDerivAt r hq
+  simpa using h.clm_apply (hasDerivAt_const r v)
+
+/-- Second derivatives of a `C²` function on `ℝ²` are symmetric. -/
+theorem isSymm_of_contDiff_two {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
+    {f : ℝ × ℝ → F} (hf : ContDiff ℝ 2 f) (p : ℝ × ℝ) : IsSymmSndFDerivAt ℝ f p :=
+  hf.contDiffAt.isSymmSndFDerivAt (by simp [minSmoothness_of_isRCLikeNormedField])
+
+/-- **Jacobi fields from variations.** Let `H (t, s)` be a `C³` family of curves in a chart, each
+`t ↦ H (t, s)` (for `s` near `0`) a geodesic on `I` with velocity `∂_t H`, and the base geodesic
+`s = 0` inside `U`. Then `J = ∂_s H (·, 0)` is a Jacobi field along `H (·, 0)`
+(`IsJacobiOn`), with `P = D_t J = ∂_t ∂_s H + Γ(w, J)`. -/
+theorem exists_isJacobiOn_of_variation (hg : Lightlike.IsCoordMetric g U)
+    {H : ℝ × ℝ → Fin n → ℝ} (hH : ContDiff ℝ 3 H) {I : Set ℝ} (hU : ∀ t ∈ I, H (t, 0) ∈ U)
+    (hgeo : ∀ᶠ s in 𝓝 (0 : ℝ),
+      IsGeodesicOn g (fun t => H (t, s)) (fun t => fderiv ℝ H (t, s) (1, 0)) I) :
+    ∃ P, IsJacobiOn g (fun t => H (t, 0)) (fun t => fderiv ℝ H (t, 0) (1, 0))
+      (fun t => fderiv ℝ H (t, 0) (0, 1)) P I := by
+  have hf2 : ContDiff ℝ 2 (fderiv ℝ H) := hH.fderiv_right (by norm_num)
+  have hf1 : ContDiff ℝ 1 (fderiv ℝ (fderiv ℝ H)) := hf2.fderiv_right (by norm_num)
+  have hdH : ∀ p, DifferentiableAt ℝ H p := fun p => (hH.differentiable (by norm_num)) p
+  have hd1 : ∀ p, DifferentiableAt ℝ (fderiv ℝ H) p := fun p => (hf2.differentiable (by norm_num)) p
+  have hd2 : ∀ p, DifferentiableAt ℝ (fderiv ℝ (fderiv ℝ H)) p :=
+    fun p => (hf1.differentiable (by norm_num)) p
+  have hsH := isSymm_of_contDiff_two (hH.of_le (by norm_num : (2 : WithTop ℕ∞) ≤ 3))
+  have hsf := isSymm_of_contDiff_two hf2
+  have hq0 : ∀ t : ℝ, HasDerivAt (fun t : ℝ => ((t, 0) : ℝ × ℝ)) ((1, 0) : ℝ × ℝ) t := fun t => by
+    simpa using (hasDerivAt_id t).prodMk (hasDerivAt_const t (0 : ℝ))
+  have hqs : ∀ t s : ℝ, HasDerivAt (fun s : ℝ => ((t, s) : ℝ × ℝ)) ((0, 1) : ℝ × ℝ) s :=
+    fun t s => by
+      simpa using (hasDerivAt_const s t).prodMk (hasDerivAt_id s)
+  refine ⟨fun t => fderiv ℝ (fderiv ℝ H) (t, 0) (0, 1) (1, 0) +
+    gammaApply g (H (t, 0)) (fderiv ℝ H (t, 0) (1, 0)) (fderiv ℝ H (t, 0) (0, 1)), ?_, ?_, ?_⟩
+  · exact hgeo.self_of_nhds
+  · intro t ht
+    have h := hasDerivAt_fderiv_comp (f := H) (hd1 _) (hq0 t) (0, 1)
+    refine h.congr_deriv ?_
+    simp only [add_sub_cancel_right]
+    exact hsH (t, 0) (1, 0) (0, 1)
+  · intro t ht
+    have hΓ : ∀ i j k, DifferentiableAt ℝ (Lightlike.christoffel g i j k) (H (t, 0)) := fun i j k =>
+      ((Lightlike.contDiffOn_christoffel hg i j k).contDiffAt
+        (hg.isOpen.mem_nhds (hU t ht))).differentiableAt (by simp)
+    have hγ : HasDerivAt (fun t : ℝ => H (t, 0)) (fderiv ℝ H (t, 0) (1, 0)) t :=
+      (hdH (t, 0)).hasFDerivAt.comp_hasDerivAt t (hq0 t)
+    have hw : HasDerivAt (fun t : ℝ => fderiv ℝ H (t, 0) (1, 0))
+        (accel g (H (t, 0)) (fderiv ℝ H (t, 0) (1, 0))) t :=
+      (hgeo.self_of_nhds).vel t ht
+    have hJ : HasDerivAt (fun t : ℝ => fderiv ℝ H (t, 0) (0, 1))
+        (fderiv ℝ (fderiv ℝ H) (t, 0) (0, 1) (1, 0)) t := by
+      have h := hasDerivAt_fderiv_comp (f := H) (hd1 _) (hq0 t) (0, 1)
+      refine h.congr_deriv ?_
+      exact hsH (t, 0) (1, 0) (0, 1)
+    have hK : HasDerivAt (fun t : ℝ => fderiv ℝ (fderiv ℝ H) (t, 0) (0, 1) (1, 0))
+        (fderiv ℝ (fderiv ℝ (fderiv ℝ H)) (t, 0) (1, 0) (0, 1) (1, 0)) t := by
+      have h := hasDerivAt_fderiv_comp (f := fderiv ℝ H) (hd2 _) (hq0 t) (0, 1)
+      simpa using h.clm_apply (hasDerivAt_const t ((1, 0) : ℝ × ℝ))
+    have hKval : fderiv ℝ (fderiv ℝ (fderiv ℝ H)) (t, 0) (0, 1) (1, 0) (1, 0) =
+        -(gammaDeriv g (H (t, 0)) (fderiv ℝ H (t, 0) (0, 1)) (fderiv ℝ H (t, 0) (1, 0))
+            (fderiv ℝ H (t, 0) (1, 0)) +
+          gammaApply g (H (t, 0)) (fderiv ℝ (fderiv ℝ H) (t, 0) (0, 1) (1, 0))
+            (fderiv ℝ H (t, 0) (1, 0)) +
+          gammaApply g (H (t, 0)) (fderiv ℝ H (t, 0) (1, 0))
+            (fderiv ℝ (fderiv ℝ H) (t, 0) (0, 1) (1, 0))) := by
+      have hφ : HasDerivAt (fun s : ℝ => fderiv ℝ (fderiv ℝ H) (t, s) (1, 0) (1, 0))
+          (fderiv ℝ (fderiv ℝ (fderiv ℝ H)) (t, 0) (0, 1) (1, 0) (1, 0)) 0 := by
+        have h := hasDerivAt_fderiv_comp (f := fderiv ℝ H) (hd2 _) (hqs t 0) (1, 0)
+        simpa using h.clm_apply (hasDerivAt_const (0 : ℝ) ((1, 0) : ℝ × ℝ))
+      have hws : HasDerivAt (fun s : ℝ => fderiv ℝ H (t, s) (1, 0))
+          (fderiv ℝ (fderiv ℝ H) (t, 0) (0, 1) (1, 0)) 0 :=
+        hasDerivAt_fderiv_comp (f := H) (hd1 _) (hqs t 0) (1, 0)
+      have hγs : HasDerivAt (fun s : ℝ => H (t, s)) (fderiv ℝ H (t, 0) (0, 1)) 0 :=
+        (hdH (t, 0)).hasFDerivAt.comp_hasDerivAt 0 (hqs t 0)
+      have hψ := (hasDerivAt_gammaApply hΓ hγs hws hws).neg
+      have hev : (fun s : ℝ => fderiv ℝ (fderiv ℝ H) (t, s) (1, 0) (1, 0))
+          =ᶠ[𝓝 0] (fun s : ℝ => -gammaApply g (H (t, s)) (fderiv ℝ H (t, s) (1, 0))
+            (fderiv ℝ H (t, s) (1, 0))) := by
+        filter_upwards [hgeo] with s hs
+        have h1 := hs.vel t ht
+        have hq1 : HasDerivAt (fun t' : ℝ => ((t', s) : ℝ × ℝ)) ((1, 0) : ℝ × ℝ) t := by
+          simpa using (hasDerivAt_id t).prodMk (hasDerivAt_const t s)
+        have h2 := hasDerivAt_fderiv_comp (f := H) (hd1 _) hq1 (1, 0)
+        rw [← accel_eq_neg_gammaApply]
+        exact h2.unique h1
+      exact (hφ.unique (hψ.congr_of_eventuallyEq hev))
+    have hP := hK.add (hasDerivAt_gammaApply hΓ hγ hw hJ)
+    refine hP.congr_deriv ?_
+    have e := congrArg (fun L : ℝ × ℝ →L[ℝ] Fin n → ℝ => L (1, 0))
+      (hsf (t, 0) (1, 0) (0, 1))
+    rw [e, hKval]
+    exact jacobi_algebra hg (hU t ht) _ _ _
 
 end Lightlike.Geodesic

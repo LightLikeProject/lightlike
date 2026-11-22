@@ -1137,6 +1137,7 @@ import Lightlike.Spacetime.ExtensionChart
 import Lightlike.Spacetime.GeodesicChartChange
 import Lightlike.Spacetime.GeodesicMomentum
 import Lightlike.Spacetime.GE3Row.Jacobi
+import Lightlike.Spacetime.GE3Row.JacobiVariation
 import Lightlike.Spacetime.Kretschmann
 import Lightlike.Spacetime.EnergyConditions
 import Lightlike.Spacetime.EnergyConditionsField
