@@ -1625,3 +1625,4 @@ import Lightlike.Spacetime.ConformalKilling
 import Lightlike.Spacetime.ConformalKillingField
 import Lightlike.Rows.G2_012.Multiplier
 import Lightlike.Rows.G2_012.Area
+import Lightlike.Rows.G2_012.Spectrum
