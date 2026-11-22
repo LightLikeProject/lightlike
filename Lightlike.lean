@@ -1025,6 +1025,7 @@ import Lightlike.Regge.Linear.Tests
 import Lightlike.Regge.AreaRegge.Basic
 import Lightlike.Regge.AreaRegge.Deriv
 import Lightlike.Regge.AreaRegge.Realization
+import Lightlike.Rows.G2_014.SpinOps
 import Lightlike.SU2.Brackets
 import Lightlike.SU2.Completeness
 import Lightlike.SU2.Differential
