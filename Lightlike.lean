@@ -1624,3 +1624,4 @@ import Lightlike.Spacetime.StereoConformal
 import Lightlike.Spacetime.ConformalKilling
 import Lightlike.Spacetime.ConformalKillingField
 import Lightlike.Rows.G1_059.Abstract
+import Lightlike.Rows.G1_059.Minkowski2
