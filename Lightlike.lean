@@ -265,6 +265,7 @@ import Lightlike.Cosmology.BigBangEOS
 import Lightlike.Cosmology.Raychaudhuri
 import Lightlike.Rows.G2_018.LQC
 import Lightlike.Rows.G2_018.Numerics
+import Lightlike.Rows.G2_018.WDW
 import Lightlike.FourD.Boundary
 import Lightlike.FourD.Complex
 import Lightlike.FourD.Orientation
