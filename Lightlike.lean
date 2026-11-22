@@ -841,6 +841,7 @@ import Lightlike.PonzanoRegge.SphereInvariants
 import Lightlike.PonzanoRegge.SphereRecognition
 import Lightlike.PonzanoRegge.Unconditional
 import Lightlike.QM.Basic
+import Lightlike.Rows.G2_077.PauliJordan
 import Lightlike.Recoupling.FifteenJ
 import Lightlike.Recoupling.Intertwiner
 import Lightlike.Recoupling.Invariant
