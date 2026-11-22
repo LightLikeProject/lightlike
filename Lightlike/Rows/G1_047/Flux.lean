@@ -95,4 +95,81 @@ theorem tendsto_delta (e v : ℝ) (hv : v ≠ 0) {A : ℝ × ℝ → ℝ} {φ : 
       ≤ ‖p‖ * (2 / |v| * ‖covD e (A p) (fderiv ℝ φ p u) (φ p)‖) := by gcongr
     _ = _ := by ring
 
+/-- **Circulation of `e A` at infinity.** With `φ ∈ C¹`, `A_j` continuous, `|φ|² → v² ≠ 0`,
+`r ‖D_jφ‖ → 0` and winding number `n` (`∮ dθ = 2π n` on large squares),
+`e ∮_{∂[−R,R]²} (A₂ dy − A₁ dx) → 2π n`. -/
+theorem tendsto_bdy_A (e v : ℝ) (n : ℤ) (hv : v ≠ 0) {A₁ A₂ : ℝ × ℝ → ℝ} {φ : ℝ × ℝ → ℂ}
+    (hφ : ContDiff ℝ 1 φ) (hA₁ : Continuous A₁) (hA₂ : Continuous A₂)
+    (hinf : Tendsto (fun p => Complex.normSq (φ p)) (Bornology.cobounded (ℝ × ℝ)) (nhds (v ^ 2)))
+    (h₁ : Tendsto (fun p : ℝ × ℝ => ‖p‖ * ‖covD e (A₁ p) (fderiv ℝ φ p (1, 0)) (φ p)‖)
+      (Bornology.cobounded (ℝ × ℝ)) (nhds 0))
+    (h₂ : Tendsto (fun p : ℝ × ℝ => ‖p‖ * ‖covD e (A₂ p) (fderiv ℝ φ p (0, 1)) (φ p)‖)
+      (Bornology.cobounded (ℝ × ℝ)) (nhds 0))
+    (hw : ∀ᶠ R in atTop,
+      bdy (windingForm φ (1, 0)) (windingForm φ (0, 1)) R = 2 * Real.pi * n) :
+    Tendsto (fun R => e * bdy A₁ A₂ R) atTop (nhds (2 * Real.pi * n)) := by
+  obtain ⟨R₀, hR₀⟩ := exists_ne_zero_of_tendsto_normSq hv hinf
+  obtain ⟨N₁, hN₁⟩ := eventually_atTop.mp hw
+  have d₁ := tendsto_delta e v hv (A := A₁) (1, 0) hinf h₁
+  have d₂ := tendsto_delta e v hv (A := A₂) (0, 1) hinf h₂
+  rw [Metric.tendsto_atTop]
+  intro ε hε
+  obtain ⟨r₁, hr₁⟩ := decay_bound d₁ (c := ε / 16) (by positivity)
+  obtain ⟨r₂, hr₂⟩ := decay_bound d₂ (c := ε / 16) (by positivity)
+  refine ⟨max (max N₁ (max r₁ r₂)) (max R₀ 1), fun R hR => ?_⟩
+  have hRN : N₁ ≤ R := (le_max_left _ _).trans ((le_max_left _ _).trans hR)
+  have hRr₁ : r₁ ≤ R := (le_max_left _ _).trans ((le_max_right _ _).trans
+    ((le_max_left _ _).trans hR))
+  have hRr₂ : r₂ ≤ R := (le_max_right _ _).trans ((le_max_right _ _).trans
+    ((le_max_left _ _).trans hR))
+  have hRR₀ : R₀ ≤ R := (le_max_left _ _).trans ((le_max_right _ _).trans hR)
+  have hR1 : 1 ≤ R := (le_max_right _ _).trans ((le_max_right _ _).trans hR)
+  have hRpos : 0 < R := by linarith
+  have hsph : ∀ p : ℝ × ℝ, ‖p‖ = R → φ p ≠ 0 := fun p hp => hR₀ p (by rw [hp]; exact hRR₀)
+  have hwf : ∀ u : ℝ × ℝ, ContinuousOn (windingForm φ u) {p | ‖p‖ = R} := fun u p hp =>
+    (continuousAt_windingForm hφ u (hsph p hp)).continuousWithinAt
+  have hδ : ∀ (A : ℝ × ℝ → ℝ) (u : ℝ × ℝ), Continuous A →
+      ContinuousOn (fun p => windingForm φ u p - e * A p) {p | ‖p‖ = R} := fun A u hA =>
+    (hwf u).sub (continuous_const.mul hA).continuousOn
+  have hlin := bdy_lin e hRpos.le hA₁.continuousOn hA₂.continuousOn
+    (hδ A₁ (1, 0) hA₁) (hδ A₂ (0, 1) hA₂)
+  simp only [add_sub_cancel] at hlin
+  rw [hN₁ R hRN] at hlin
+  have hb : |bdy (fun p => windingForm φ (1, 0) p - e * A₁ p)
+      (fun p => windingForm φ (0, 1) p - e * A₂ p) R| ≤ 8 * R * (ε / 16 / R) := by
+    refine bdy_abs_le hRpos.le fun p hp => ⟨?_, ?_⟩
+    · have := hr₁ p (by rw [hp]; exact hRr₁)
+      rw [hp, abs_of_nonneg (mul_nonneg hRpos.le (abs_nonneg _))] at this
+      rw [le_div_iff₀ hRpos]; linarith
+    · have := hr₂ p (by rw [hp]; exact hRr₂)
+      rw [hp, abs_of_nonneg (mul_nonneg hRpos.le (abs_nonneg _))] at this
+      rw [le_div_iff₀ hRpos]; linarith
+  have h8 : 8 * R * (ε / 16 / R) = ε / 2 := by field_simp; ring
+  rw [h8] at hb
+  rw [Real.dist_eq]
+  have : e * bdy A₁ A₂ R - 2 * Real.pi * n =
+      -bdy (fun p => windingForm φ (1, 0) p - e * A₁ p)
+        (fun p => windingForm φ (0, 1) p - e * A₂ p) R := by
+    linarith
+  rw [this, abs_neg]
+  linarith
+
+/-- **Flux quantisation (CO24).** Under the hypotheses of `tendsto_bdy_A` (and `φ, A_j ∈ C¹`),
+the flux through `[−R, R]²` satisfies `e ∫∫ B → 2π n`, `B = ∂₁A₂ − ∂₂A₁`; i.e. the total flux is
+`2π n / e` for `e ≠ 0`. -/
+theorem flux_tendsto (e v : ℝ) (n : ℤ) (hv : v ≠ 0) {A₁ A₂ : ℝ × ℝ → ℝ} {φ : ℝ × ℝ → ℂ}
+    (hφ : ContDiff ℝ 1 φ) (hA₁ : ContDiff ℝ 1 A₁) (hA₂ : ContDiff ℝ 1 A₂)
+    (hinf : Tendsto (fun p => Complex.normSq (φ p)) (Bornology.cobounded (ℝ × ℝ)) (nhds (v ^ 2)))
+    (h₁ : Tendsto (fun p : ℝ × ℝ => ‖p‖ * ‖covD e (A₁ p) (fderiv ℝ φ p (1, 0)) (φ p)‖)
+      (Bornology.cobounded (ℝ × ℝ)) (nhds 0))
+    (h₂ : Tendsto (fun p : ℝ × ℝ => ‖p‖ * ‖covD e (A₂ p) (fderiv ℝ φ p (0, 1)) (φ p)‖)
+      (Bornology.cobounded (ℝ × ℝ)) (nhds 0))
+    (hw : ∀ᶠ R in atTop,
+      bdy (windingForm φ (1, 0)) (windingForm φ (0, 1)) R = 2 * Real.pi * n) :
+    Tendsto (fun R : ℝ => e * ∫ x in (-R)..R, ∫ y in (-R)..R,
+        (fderiv ℝ A₂ (x, y) (1, 0) - fderiv ℝ A₁ (x, y) (0, 1))) atTop
+      (nhds (2 * Real.pi * n)) := by
+  simp only [box_flux_eq_bdy hA₁ hA₂]
+  exact tendsto_bdy_A e v n hv hφ hA₁.continuous hA₂.continuous hinf h₁ h₂ hw
+
 end Lightlike.Vortex
