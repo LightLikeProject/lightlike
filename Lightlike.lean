@@ -1637,6 +1637,8 @@ import Lightlike.Upstream.SpinReps2.AxiomsCheck
 import Lightlike.Upstream.SpinReps2.BEPentagon
 import Lightlike.Upstream.SpinReps2.BEPentagon2
 import Lightlike.Upstream.SpinReps2.BEPentagon3
+import Lightlike.Upstream.SpinReps2.BEDefs
+import Lightlike.Upstream.SpinReps2.BEPositive
 import Lightlike.Upstream.SpinReps2.Intertwiner
 import Lightlike.Upstream.SpinReps2.LieBridge
 import Lightlike.Upstream.SpinReps2.SixJOrth
