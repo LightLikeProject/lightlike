@@ -144,4 +144,93 @@ theorem quad_angle_sum {m : Fin 4 → ℝ} (hG : (g m).PosDef) (c : Fin 4 → Fi
   have hi' := Finset.mem_range.1 hi
   rw [incAng4_orient g hG c _ (chain_mem_quad c hq i hi'), hnext i hi']
 
+/-- The class sum of a certified hex class is the sum over the six incidences of the chain. -/
+theorem clsSum4_hex (c : Fin 4 → Fin 3) (hq : hexCert c = true) (f : Fin 24 → Fin 10 → ℝ) :
+    clsSum4 c f = ∑ i ∈ Finset.range 6, f (chainOf c |>.getD i default).1
+      (chainOf c |>.getD i default).2 := by
+  simp only [hexCert, Bool.and_eq_true, decide_eq_true_eq, List.all_eq_true] at hq
+  obtain ⟨⟨⟨⟨⟨⟨⟨⟨hL, hlen⟩, hnd⟩, hcl⟩, hadj⟩, ha1⟩, ha2⟩, hLm⟩, hmL⟩ := hq
+  have hm : ∀ e, e ∈ (chainOf c).take 6 ↔ InClass4 c e.1 e.2 := by
+    intro e
+    rw [← mem_incsOf_iff]
+    constructor
+    · intro h
+      simpa using hmL e h
+    · intro h
+      simpa using hLm e h
+  rw [clsSum4_eq_list_sum c f _ hnd hm, sum_take_getD (chainOf c) (fun e => f e.1 e.2) 6 (by omega)]
+
+/-- The chain entries `i < 6` of a certified hex class are incidences of the class. -/
+theorem chain_mem_hex (c : Fin 4 → Fin 3) (hq : hexCert c = true) (i : ℕ) (hi : i < 6) :
+    (chainOf c).getD i default ∈ incsOf c := by
+  simp only [hexCert, Bool.and_eq_true, decide_eq_true_eq, List.all_eq_true] at hq
+  obtain ⟨⟨⟨⟨⟨⟨⟨⟨hL, hlen⟩, hnd⟩, hcl⟩, hadj⟩, ha1⟩, ha2⟩, hLm⟩, hmL⟩ := hq
+  have h1 : (chainOf c).getD i default ∈ (chainOf c).take 6 := by
+    rw [List.getD_eq_getElem _ _ (by omega)]
+    exact List.mem_iff_getElem.2 ⟨i, by simp; omega, by simp⟩
+  simpa using hmL _ h1
+
+/-- A successful `antiB` test gives the real relation `v = -u` modulo the axis plane. -/
+theorem antiB_real (c : Fin 4 → Fin 3) (u w : Fin 4 → ℤ) (h : antiB c u w = true) :
+    ∃ a b : ℝ, (fun k => (w k : ℝ)) = -(fun k => (u k : ℝ)) + a • (fun i => (cw1 c i : ℝ))
+      + b • (fun i => (ax2 c i : ℝ)) := by
+  simp only [antiB, List.any_eq_true, decide_eq_true_eq, List.mem_range] at h
+  obtain ⟨a, -, b, -, hab⟩ := h
+  refine ⟨((a : ℤ) - 4 : ℤ), ((b : ℤ) - 4 : ℤ), ?_⟩
+  funext k
+  have := congrFun hab k
+  simp only [Pi.add_apply, Pi.neg_apply, Pi.smul_apply, smul_eq_mul]
+  rw [this]
+  push_cast
+  ring
+
+/-- **The angle sum of a hex class.** -/
+theorem hex_angle_sum {m : Fin 4 → ℝ} (hG : (g m).PosDef) (c : Fin 4 → Fin 3)
+    (hq : hexCert c = true) :
+    clsSum4 c (fun σ h => incAng4 h (incQ4 g m σ h)) = 2 * π := by
+  have hq' := hq
+  simp only [hexCert, Bool.and_eq_true, decide_eq_true_eq, List.all_eq_true] at hq'
+  obtain ⟨⟨⟨⟨⟨⟨⟨⟨hL, hlen⟩, hnd⟩, hcl⟩, hadj⟩, ha1⟩, ha2⟩, hLm⟩, hmL⟩ := hq'
+  rw [clsSum4_hex c hq]
+  set ch := chainOf c with hch
+  let v : ℕ → Fin 4 → ℝ := fun i => fun k => (((orient c (ch.getD i default)).1 k : ℤ) : ℝ)
+  have hD := gramW_class_pos g hG c _ (chain_mem_hex c hq 0 (by norm_num))
+  have hnext : ∀ i < 6, (fun k => (((orient c (ch.getD i default)).2 k : ℤ) : ℝ)) = v (i + 1) := by
+    intro i hi
+    have := (hadj i (List.mem_range.2 hi)).2
+    simp only [adjB, decide_eq_true_eq] at this
+    simp only [v, this]
+  have hpos : ∀ i < 6, 0 < det4 (fun i => (cw1 c i : ℝ)) (fun i => (ax2 c i : ℝ)) (v i) (v (i + 1)) := by
+    intro i hi
+    have := (hadj i (List.mem_range.2 hi)).1
+    simp only [posB, decide_eq_true_eq] at this
+    rw [← hnext i hi]
+    simp only [v]
+    rw [det4_cast]
+    exact_mod_cast this
+  have h3 := antiB_real c _ _ ha1
+  have h6 := antiB_real c _ _ ha2
+  have key := hex_fan4 hG hD v hpos h3 h6
+  rw [← key]
+  refine Finset.sum_congr rfl fun i hi => ?_
+  have hi' := Finset.mem_range.1 hi
+  rw [incAng4_orient g hG c _ (chain_mem_hex c hq i hi'), hnext i hi']
+
+/-- An admissible class passes the boolean admissibility test. -/
+theorem clsOKB_of_clsOK {c : Fin 4 → Fin 3} (h : ClsOK c) : clsOKB c = true := by
+  obtain ⟨⟨i, hi⟩, ⟨j, hj⟩⟩ := h
+  simp only [clsOKB, Bool.and_eq_true, List.any_eq_true, List.mem_finRange, true_and,
+    decide_eq_true_eq]
+  exact ⟨⟨i, hi⟩, ⟨j, hj⟩⟩
+
+/-- **The Gram star is flat in every admissible class (dimension 4).** For a positive definite
+metric `g m`, the dihedral angles of the Gram simplices of the incidences of any admissible
+triangle class add up to `2π`. This is the `angle_sum` field of `JetStarCore4`. -/
+theorem angle_sum4 {m : Fin 4 → ℝ} (hG : (g m).PosDef) (c : Fin 4 → Fin 3) (hc : ClsOK c) :
+    clsSum4 c (fun σ h => incAng4 h (incQ4 g m σ h)) = 2 * π := by
+  obtain ⟨n, hn, rfl⟩ := exists_clsOfNat c
+  rcases cert_all ⟨n, hn⟩ (clsOKB_of_clsOK hc) with h | h
+  · exact quad_angle_sum g hG _ h
+  · exact hex_angle_sum g hG _ h
+
 end Lightlike.Regge4

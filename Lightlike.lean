@@ -994,6 +994,7 @@ import Lightlike.Regge.CMS4.Plucker4
 import Lightlike.Regge.CMS4.Inc4
 import Lightlike.Regge.CMS4.Comb4
 import Lightlike.Regge.CMS4.Cast4
+import Lightlike.Regge.CMS4.Assemble4
 import Lightlike.Regge.Linear3.AngleSmooth
 import Lightlike.Regge.Linear3.SecondOrder
 import Lightlike.Regge.Linear3.SaintVenantHvec
