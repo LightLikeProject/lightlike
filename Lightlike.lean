@@ -1600,6 +1600,7 @@ import Lightlike.Rows.G1_031.Background
 import Lightlike.Rows.G1_031.Variation
 import Lightlike.Rows.G1_031.Ricci
 import Lightlike.Rows.G1_031.Curvature
+import Lightlike.Rows.G1_031.Tensor
 import Lightlike.GFT.Euler
 import Lightlike.Spacetime.Corners.BianchiSecond
 import Lightlike.Spacetime.Corners.Bridge
