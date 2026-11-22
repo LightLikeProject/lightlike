@@ -74,4 +74,47 @@ lemma inner_nablaF_nablaF {ρ : CliffordRep n V} (hρ : IsSkewRep ρ) (F : E n �
   rw [e1, inner_add_left, spinForm_inner_skew hρ hskew, hn]
   ring
 
+lemma sum_stereoOmega_diag (x : E n) (k : Fin n) :
+    ∑ i, stereoOmega x i i k = ((n : ℝ) - 1) * x k := by
+  simp only [stereoOmega, ite_true, Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ,
+    Fintype.card_fin]
+  have : ∑ i : Fin n, (if i = k then x i else 0) = x k := by simp
+  rw [this, nsmul_eq_mul]
+  ring
+
+/-- **Pointwise Bochner identity on the round sphere** (stereographic frame): with
+`Gᵢ(y) = ⟪∇ᵢ f(y), f(y)⟫`,
+`∑ᵢ ⟪∇²f(Fᵢ,Fᵢ), f⟫ = ∑ᵢ ∂_{Fᵢ} Gᵢ − ∑ᵢ ‖∇ᵢ f‖² − (n-1) ∑ₖ xₖ Gₖ`. -/
+lemma sum_inner_hess_stereo {ρ : CliffordRep n V} (hρ : IsSkewRep ρ) {f : E n → V} {x : E n}
+    (hf : ContDiffAt ℝ 2 f x) :
+    ∑ i, inner ℝ (hessF ρ stereoF stereoOmega f x i i) (f x) =
+      ∑ i, fderiv ℝ (fun y => inner ℝ (nablaF ρ stereoF stereoOmega i f y) (f y)) x (stereoF x i) -
+        ∑ i, ‖nablaF ρ stereoF stereoOmega i f x‖ ^ 2 -
+        ((n : ℝ) - 1) * ∑ k, x k * inner ℝ (nablaF ρ stereoF stereoOmega k f x) (f x) := by
+  have hfd : DifferentiableAt ℝ f x := hf.differentiableAt (by norm_num)
+  have hω : ∀ a k l, DifferentiableAt ℝ (fun y => stereoOmega y a k l) x := fun a k l =>
+    ((contDiff_stereoOmega a k l).differentiable (by norm_num)) x
+  have hnf : ∀ j, DifferentiableAt ℝ (fun y => nablaF ρ stereoF stereoOmega j f y) x := by
+    intro j
+    have h1 : DifferentiableAt ℝ (fun y => fderiv ℝ f y (stereoF y j)) x :=
+      ((hf.fderiv_right (m := 1) (by norm_num)).differentiableAt one_ne_zero).clm_apply
+        (((contDiff_stereoF j).differentiable (by norm_num)) x)
+    have h2 := (hasFDerivAt_spinForm ρ (M := fun y => stereoOmega y j) (g := f) (hω j) hfd
+      ).differentiableAt
+    exact h1.add h2
+  have h1 : ∀ i, inner ℝ (hessF ρ stereoF stereoOmega f x i i) (f x) =
+      (fderiv ℝ (fun y => inner ℝ (nablaF ρ stereoF stereoOmega i f y) (f y)) x (stereoF x i) -
+        ‖nablaF ρ stereoF stereoOmega i f x‖ ^ 2) -
+      ∑ k, stereoOmega x i i k * inner ℝ (nablaF ρ stereoF stereoOmega k f x) (f x) := by
+    intro i
+    rw [hessF, inner_sub_left, inner_nablaF_nablaF hρ stereoF stereoOmega i
+      (fun k l => stereoOmega_skew x i k l) hfd (hnf i), sum_inner]
+    simp only [real_inner_smul_left]
+  simp only [h1, Finset.sum_sub_distrib]
+  rw [Finset.sum_comm]
+  simp only [← Finset.sum_mul, sum_stereoOmega_diag, Finset.mul_sum]
+  congr 1
+  refine Finset.sum_congr rfl fun k _ => ?_
+  ring
+
 end Lightlike.Dirac
