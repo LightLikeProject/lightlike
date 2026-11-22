@@ -1126,6 +1126,7 @@ import Lightlike.Spacetime.RaychaudhuriAlgebra
 import Lightlike.Spacetime.RaychaudhuriCoord
 import Lightlike.Spacetime.RaychaudhuriFocusing
 import Lightlike.Spacetime.Raychaudhuri.CollapseDust
+import Lightlike.Spacetime.Raychaudhuri.ComovingCov
 import Lightlike.Spacetime.Raychaudhuri.ConstField
 import Lightlike.Spacetime.Raychaudhuri.DustField
 import Lightlike.Spacetime.Raychaudhuri.Examples
