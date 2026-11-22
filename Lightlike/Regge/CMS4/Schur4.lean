@@ -1,4 +1,5 @@
 import Mathlib
+import Lightlike.Regge.CMS4.Valid4
 
 /-!
 # Schur complement of a `4 × 4` determinant with a `2 × 2` corner
@@ -94,5 +95,67 @@ theorem bf2_gram (G : Matrix (Fin 4) (Fin 4) ℝ) (w₁ w₂ t u t' v : Fin 4 �
       gramW G w₁ w₂ * (bf2 G w₁ w₂ t t' * bf2 G w₁ w₂ u v
         - bf2 G w₁ w₂ t v * bf2 G w₁ w₂ u t') := h
   linarith
+
+/-- A `3 × 3` determinant of `G`-pairings against the axis is the axis Gram determinant times the
+quotient form: `det [[⟨w₁,w₁⟩, ⟨w₁,w₂⟩, ⟨w₁,b⟩], [⟨w₂,w₁⟩, ⟨w₂,w₂⟩, ⟨w₂,b⟩],
+[⟨a,w₁⟩, ⟨a,w₂⟩, ⟨a,b⟩]] = gramW * bf2 a b`. -/
+theorem det3_eq_gramW_mul_bf2 (G : Matrix (Fin 4) (Fin 4) ℝ) (w₁ w₂ a b : Fin 4 → ℝ)
+    (hD : gramW G w₁ w₂ ≠ 0) :
+    det3 (w₁ ⬝ᵥ (G *ᵥ w₁)) (w₁ ⬝ᵥ (G *ᵥ w₂)) (w₁ ⬝ᵥ (G *ᵥ b))
+      (w₂ ⬝ᵥ (G *ᵥ w₁)) (w₂ ⬝ᵥ (G *ᵥ w₂)) (w₂ ⬝ᵥ (G *ᵥ b))
+      (a ⬝ᵥ (G *ᵥ w₁)) (a ⬝ᵥ (G *ᵥ w₂)) (a ⬝ᵥ (G *ᵥ b)) = gramW G w₁ w₂ * bf2 G w₁ w₂ a b := by
+  unfold bf2
+  field_simp
+  simp only [det3, gramW]
+  ring
+
+/-- **The dihedral angle of a Gram simplex is an angle in the plane quotient.** For five points `x`
+of `ℝ⁴` with the squared lengths of a symmetric form `B`, the cosine of the dihedral angle at the
+triangle `pqr` between the tetrahedra `pqrt` and `pqru` is
+`bf2 a b / √(bf2 a a · bf2 b b)` for `a = x t - x p`, `b = x u - x p`, with axis
+`(x q - x p, x r - x p)`. -/
+theorem cosS_gram {B : Matrix (Fin 4) (Fin 4) ℝ} (hs : Bᵀ = B) (x : Fin 5 → Fin 4 → ℝ)
+    (p q r t u : Fin 5) (hD : 0 < gramW B (x q - x p) (x r - x p)) :
+    cosS (fun a b => (x b - x a) ⬝ᵥ (B *ᵥ (x b - x a))) p q r t u =
+      bf2 B (x q - x p) (x r - x p) (x t - x p) (x u - x p) /
+        √(bf2 B (x q - x p) (x r - x p) (x t - x p) (x t - x p) *
+          bf2 B (x q - x p) (x r - x p) (x u - x p) (x u - x p)) := by
+  have ip_eq : ∀ a b : Fin 5, ipS (fun a b => (x b - x a) ⬝ᵥ (B *ᵥ (x b - x a))) p a b
+      = (x a - x p) ⬝ᵥ (B *ᵥ (x b - x p)) := by
+    intro a b
+    unfold ipS
+    rw [← polar4 hs (x a - x p) (x b - x p), sub_sub_sub_cancel_right]
+  have h1 := det3_eq_gramW_mul_bf2 B (x q - x p) (x r - x p) (x t - x p) (x u - x p) hD.ne'
+  have h2 := det3_eq_gramW_mul_bf2 B (x q - x p) (x r - x p) (x t - x p) (x t - x p) hD.ne'
+  have h3 := det3_eq_gramW_mul_bf2 B (x q - x p) (x r - x p) (x u - x p) (x u - x p) hD.ne'
+  have hsym : ∀ a b : Fin 4 → ℝ, a ⬝ᵥ (B *ᵥ b) = b ⬝ᵥ (B *ᵥ a) := fun a b => by
+    rw [Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose, hs, dotProduct_comm]
+  have eM : mixedS (fun a b => (x b - x a) ⬝ᵥ (B *ᵥ (x b - x a))) p q r t u =
+      gramW B (x q - x p) (x r - x p) *
+        bf2 B (x q - x p) (x r - x p) (x t - x p) (x u - x p) := by
+    rw [← h1]
+    simp only [mixedS, ip_eq]
+  have eT : gram3S (fun a b => (x b - x a) ⬝ᵥ (B *ᵥ (x b - x a))) p q r t =
+      gramW B (x q - x p) (x r - x p) *
+        bf2 B (x q - x p) (x r - x p) (x t - x p) (x t - x p) := by
+    rw [← h2]
+    simp only [gram3S, ip_eq]
+  have eU : gram3S (fun a b => (x b - x a) ⬝ᵥ (B *ᵥ (x b - x a))) p q r u =
+      gramW B (x q - x p) (x r - x p) *
+        bf2 B (x q - x p) (x r - x p) (x u - x p) (x u - x p) := by
+    rw [← h3]
+    simp only [gram3S, ip_eq]
+  unfold cosS
+  rw [eM, eT, eU]
+  have : gramW B (x q - x p) (x r - x p) * bf2 B (x q - x p) (x r - x p) (x t - x p) (x t - x p) *
+      (gramW B (x q - x p) (x r - x p) * bf2 B (x q - x p) (x r - x p) (x u - x p) (x u - x p))
+      = (gramW B (x q - x p) (x r - x p)) ^ 2 *
+        (bf2 B (x q - x p) (x r - x p) (x t - x p) (x t - x p) *
+          bf2 B (x q - x p) (x r - x p) (x u - x p) (x u - x p)) := by ring
+  rw [this, Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq hD.le]
+  by_cases hz : √(bf2 B (x q - x p) (x r - x p) (x t - x p) (x t - x p) *
+      bf2 B (x q - x p) (x r - x p) (x u - x p) (x u - x p)) = 0
+  · rw [hz]; simp
+  · field_simp
 
 end Lightlike.Regge4
