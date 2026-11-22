@@ -84,8 +84,8 @@ theorem dρ_smul (hρ : Continuous ρ) {X : Matrix (Fin 2) (Fin 2) ℂ} (hX : Is
   simp only [expCurve_coe, smul_smul]
 
 /-- `ρ(exp(X + Y)) = exp(dρ X + dρ Y)`, by the Lie product formula on both sides. -/
-lemma rho_expCurve_add_one [NeZero d] (hρ : Continuous ρ) {X Y : Matrix (Fin 2) (Fin 2) ℂ} (hX : IsSu2 X)
-    (hY : IsSu2 Y) :
+lemma rho_expCurve_add_one [NeZero d] (hρ : Continuous ρ) {X Y : Matrix (Fin 2) (Fin 2) ℂ}
+    (hX : IsSu2 X) (hY : IsSu2 Y) :
     ρ (expCurve (X + Y) (hX.add hY) 1) = NormedSpace.exp (dρ ρ X + dρ ρ Y) := by
   set u : ℕ → specialUnitaryGroup (Fin 2) ℂ :=
     fun n => (expCurve X hX (n : ℝ)⁻¹ * expCurve Y hY (n : ℝ)⁻¹) ^ n

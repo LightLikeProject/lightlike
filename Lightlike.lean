@@ -1623,6 +1623,7 @@ import Lightlike.Spacetime.SphereMetric
 import Lightlike.Spacetime.StereoConformal
 import Lightlike.Spacetime.ConformalKilling
 import Lightlike.Spacetime.ConformalKillingField
+import Lightlike.Upstream.SU2Spin.AxiomsCheck
 import Lightlike.Upstream.SU2Spin.Brackets
 import Lightlike.Upstream.SU2Spin.Completeness
 import Lightlike.Upstream.SU2Spin.Differential

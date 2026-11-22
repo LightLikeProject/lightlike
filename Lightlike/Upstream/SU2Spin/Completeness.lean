@@ -386,7 +386,8 @@ theorem spinRep_complete (ρ : SU2 →* Matrix (Fin d) (Fin d) ℂ) (hρ : Conti
       intro h0
       have := eq_one_of_trivial hirrσ (eq_one_of_opH_eq_zero (continuous_σ n) h0)
       omega
-    obtain ⟨n', m', P', hspan'⟩ := exists_primitive_span_eq_top (isSl2Triple_ops (continuous_σ n) hH')
+    obtain ⟨n', m', P', hspan'⟩ :=
+      exists_primitive_span_eq_top (isSl2Triple_ops (continuous_σ n) hH')
       (Nat.pos_of_ne_zero (NeZero.ne (n + 1)))
       fun W hH'' hE hF => hirrσ W (invariant_of_ops (continuous_σ n) W hE hF hH'')
     have hd' := dim_eq_succ (isSl2Triple_ops (continuous_σ n) hH') P' hspan'
