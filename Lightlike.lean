@@ -1628,3 +1628,4 @@ import Lightlike.Upstream.GeodesicExpansion.Metric
 import Lightlike.Upstream.GeodesicExpansion.Jet
 import Lightlike.Upstream.GeodesicExpansion.Taylor
 import Lightlike.Upstream.GeodesicExpansion.Expansion
+import Lightlike.Upstream.GeodesicExpansion.ExpansionBounds
