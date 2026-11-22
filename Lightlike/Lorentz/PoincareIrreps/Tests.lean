@@ -1,6 +1,7 @@
 module
 
 public import Lightlike.Lorentz.PoincareIrreps.Momentum
+public import Lightlike.Lorentz.PoincareIrreps.Wigner
 
 /-!
 # Checks for the little groups of the Poincaré group (HA6, first piece)
@@ -60,6 +61,21 @@ example (t : ℂ) (h : SL2C.upper t ∈ MulAction.stabilizer SL2C (lightMom 1)) 
 /-- The tachyonic little group is not compact. -/
 example : ¬ IsCompact ((MulAction.stabilizer SL2C (tachMom 1) : Subgroup SL2C) : Set SL2C) :=
   not_isCompact_stabilizer_tachMom 1
+
+/-- The standard boost carries the rest momentum to `P`. -/
+example {m : ℝ} (hm : 0 < m) (P : massShell m) : boost hm P • restMom m = P.1 :=
+  boost_smul_rest hm P
+
+/-- The Wigner rotation is a cocycle in `SU(2)`. -/
+example {m : ℝ} (hm : 0 < m) (A B : SL2C) (P : massShell m) :
+    wignerSU2 hm (A * B) P = wignerSU2 hm A (shellSMul hm B P) * wignerSU2 hm B P :=
+  wignerSU2_mul hm A B P
+
+/-- The induced action is a representation: the identity acts trivially. -/
+example {m : ℝ} (hm : 0 < m) (n : ℕ) : inducedRep hm n 1 = 1 := (inducedRep hm n).map_one
+
+#print axioms wignerSU2_mul
+#print axioms inducedRep
 
 /-- The massive little group is compact. -/
 example : IsCompact ((MulAction.stabilizer SL2C (restMom 1) : Subgroup SL2C) : Set SL2C) :=
