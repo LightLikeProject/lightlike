@@ -172,4 +172,43 @@ theorem invariant_of_ops (hρ : Continuous ρ) (W : Submodule ℂ (Fin d → ℂ
   rw [hg, rho_expCurve hρ hX, one_smul]
   exact exp_mulVec_mem W _ hdX v hv
 
+/-! ## Intertwiners and the spin representation as matrices -/
+
+/-- Intertwining passes to exponentials: `T A = B T` implies `T exp A = exp B T`. -/
+lemma intertwine_exp {m m' : ℕ} (T : (Fin m → ℂ) →ₗ[ℂ] (Fin m' → ℂ))
+    {A : Matrix (Fin m) (Fin m) ℂ} {B : Matrix (Fin m') (Fin m') ℂ}
+    (hT : ∀ v, T (A *ᵥ v) = B *ᵥ T v) (v : Fin m → ℂ) :
+    T (NormedSpace.exp A *ᵥ v) = NormedSpace.exp B *ᵥ T v := by
+  have hpow : ∀ k : ℕ, T (A ^ k *ᵥ v) = B ^ k *ᵥ T v := by
+    intro k
+    induction k with
+    | zero => simp
+    | succ k ih => rw [pow_succ', ← mulVec_mulVec, hT, ih, pow_succ', ← mulVec_mulVec]
+  let gA : Matrix (Fin m) (Fin m) ℂ →ₗ[ℝ] (Fin m' → ℂ) :=
+    { toFun := fun M => T (M *ᵥ v)
+      map_add' := fun M N => by rw [add_mulVec, map_add]
+      map_smul' := fun r M => by rw [smul_mulVec, T.map_smul_of_tower]; rfl }
+  let gB : Matrix (Fin m') (Fin m') ℂ →ₗ[ℝ] (Fin m' → ℂ) :=
+    { toFun := fun M => M *ᵥ T v
+      map_add' := fun M N => add_mulVec M N _
+      map_smul' := fun r M => by rw [smul_mulVec]; rfl }
+  have hA := (NormedSpace.exp_series_hasSum_exp' (𝕂 := ℝ) A).map gA
+    (LinearMap.continuous_of_finiteDimensional gA)
+  have hB := (NormedSpace.exp_series_hasSum_exp' (𝕂 := ℝ) B).map gB
+    (LinearMap.continuous_of_finiteDimensional gB)
+  refine hA.unique ?_
+  convert hB using 1
+  funext k
+  show T ((((k.factorial : ℝ)⁻¹) • A ^ k) *ᵥ v) = (((k.factorial : ℝ)⁻¹) • B ^ k) *ᵥ T v
+  rw [smul_mulVec, T.map_smul_of_tower, hpow, smul_mulVec]
+  rfl
+
+/-- The spin representation as a monoid homomorphism into matrices. -/
+noncomputable def σ (n : ℕ) : SU2 →* Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ :=
+  (Matrix.unitaryGroup (Fin (n + 1)) ℂ).subtype.comp (spinRep n)
+
+lemma σ_apply (n : ℕ) (g : SU2) : σ n g = spinMat n g := rfl
+
+lemma continuous_σ (n : ℕ) : Continuous (σ n) := continuous_spinRep
+
 end SU2Spin
