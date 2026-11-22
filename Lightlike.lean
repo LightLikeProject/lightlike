@@ -1502,6 +1502,7 @@ import Lightlike.Dirac.ConnesDistance2
 import Lightlike.Dirac.ConnesDistance3
 import Lightlike.Dirac.ConnesDistance4
 import Lightlike.Dirac.ConnesDistance5
+import Lightlike.Dirac.ConnesDistance6
 import Lightlike.DynamicalTriangulations.Action
 import Lightlike.DynamicalTriangulations.Action3
 import Lightlike.DynamicalTriangulations.Causal
