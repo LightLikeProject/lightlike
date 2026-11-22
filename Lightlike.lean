@@ -276,6 +276,7 @@ import Lightlike.Geometry.HeatKernel.GaussianDeriv
 import Lightlike.Geometry.HeatKernel.Product
 import Lightlike.Geometry.HeatKernel.ProductGeom
 import Lightlike.Geometry.HeatKernel.Sphere3Expansion
+import Lightlike.Geometry.HeatKernel.Sphere3Product
 import Lightlike.Geometry.HeatKernel.Sphere3Summand
 import Lightlike.Geometry.HeatKernel.Sphere3Trace
 import Lightlike.Geometry.HeatKernel.SphereSummand
