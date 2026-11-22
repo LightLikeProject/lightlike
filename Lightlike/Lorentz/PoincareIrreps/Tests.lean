@@ -7,6 +7,7 @@ public import Lightlike.Lorentz.PoincareIrreps.Measure
 public import Lightlike.Lorentz.PoincareIrreps.Poincare
 public import Lightlike.Lorentz.PoincareIrreps.LightPoincare
 public import Lightlike.Lorentz.PoincareIrreps.SpinCasimir
+public import Lightlike.Lorentz.PoincareIrreps.PauliLubanski
 
 /-!
 # Checks for the little groups of the Poincaré group (HA6, first piece)
@@ -130,6 +131,19 @@ example : (restMom 3).1.det = ((9 : ℝ) : ℂ) := by
 #print axioms lightPoincareRep
 #print axioms spin_casimir
 #print axioms opE_spin_highest
+#print axioms spinJ_casimir
+#print axioms pauliLubanski_square
+#print axioms momentum_dot_pauliLubanski
+#print axioms ofVec_coord
+
+/-- Control: massive spin-`1/2` (`n = 1`), `m = 2`: `W² = −m² s(s+1) = −3` in the rest frame. -/
+example : pauliLubanski 2 1 1 0 * pauliLubanski 2 1 1 0 - pauliLubanski 2 1 1 1 * pauliLubanski 2 1 1 1 -
+    pauliLubanski 2 1 1 2 * pauliLubanski 2 1 1 2 - pauliLubanski 2 1 1 3 * pauliLubanski 2 1 1 3 =
+    (-3 : ℂ) • (1 : Matrix (Fin 2) (Fin 2) ℂ) := by
+  rw [pauliLubanski_square]
+  congr 1
+  push_cast
+  norm_num
 
 /-- Control: for spin `1/2` (`n = 1`) the Casimir `4 s (s+1)` is `3`. -/
 example : sl2Casimir (SU2Spin.opH (SU2Spin.σ 1)) (SU2Spin.opE (SU2Spin.σ 1))
