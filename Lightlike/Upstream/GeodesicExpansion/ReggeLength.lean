@@ -101,4 +101,76 @@ theorem IsRiemMetric.chartDist_sq_simplex_edge' (hg : IsRiemMetric g U) {K : Set
     _ ≤ |C| * ((3 * R) * h ^ 3 * ‖v - u‖ ^ 2) := mul_le_mul_of_nonneg_left hsum (abs_nonneg C)
     _ = |C| * (3 * R) * h ^ 3 * ‖v - u‖ ^ 2 := by ring
 
+/-- **Regge edge lengths of a small coordinate simplex.** For a compact `K ⊆ U` and `R ≥ 0` there
+are `C` and `h₀ > 0` such that for `x ∈ K`, `0 < h ≤ h₀`, `‖u‖, ‖v‖ ≤ R`:
+`|d(x + h u, x + h v) - h √(g_x(v - u, v - u))| ≤ C h² ‖v - u‖`. -/
+theorem IsRiemMetric.chartDist_simplex_edge (hg : IsRiemMetric g U) {K : Set (Fin n → ℝ)}
+    (hK : IsCompact K) (hKU : K ⊆ U) {R : ℝ} (hR : 0 ≤ R) :
+    ∃ C h₀ : ℝ, 0 < h₀ ∧ ∀ x ∈ K, ∀ h : ℝ, 0 < h → h ≤ h₀ → ∀ u v : Fin n → ℝ,
+      ‖u‖ ≤ R → ‖v‖ ≤ R →
+      |chartDist g U (x + h • u) (x + h • v) -
+          h * Real.sqrt ((v - u) ⬝ᵥ (g x *ᵥ (v - u)))| ≤ C * h ^ 2 * ‖v - u‖ := by
+  obtain ⟨C', h₁, hh₁, hE⟩ := hg.chartDist_sq_simplex_edge' hK hKU hR
+  obtain ⟨l, r, hl, hr, hL⟩ := hg.normSq_lower hK hKU
+  have hs : 0 < Real.sqrt l := Real.sqrt_pos.mpr hl
+  have hR1 : 0 < 2 * R + 1 := by linarith
+  refine ⟨C' / Real.sqrt l, min h₁ (r / (2 * R + 1)), lt_min hh₁ (by positivity),
+    fun x hx h hh hh0 u v hu hv => ?_⟩
+  have hhr : h * (2 * R + 1) ≤ r := by
+    have := hh0.trans (min_le_right _ _)
+    rwa [le_div_iff₀ hR1] at this
+  have hh1 : h ≤ h₁ := hh0.trans (min_le_left _ _)
+  have hvu : ‖v - u‖ ≤ 2 * R := by
+    calc ‖v - u‖ ≤ ‖v‖ + ‖u‖ := norm_sub_le _ _
+      _ ≤ 2 * R := by linarith
+  have hn := norm_nonneg (v - u)
+  have hhn : ‖h • (v - u)‖ = h * ‖v - u‖ := by
+    rw [norm_smul, Real.norm_of_nonneg hh.le]
+  have hhnr : ‖h • (v - u)‖ ≤ r := by
+    rw [hhn]; nlinarith
+  have hlow := hL x hx (h • (v - u)) hhnr
+  have hq : (h • (v - u)) ⬝ᵥ (g x *ᵥ (h • (v - u))) =
+      h ^ 2 * ((v - u) ⬝ᵥ (g x *ᵥ (v - u))) := by
+    rw [mulVec_smul, dotProduct_smul, smul_dotProduct]; simp only [smul_eq_mul]; ring
+  rw [hq, hhn] at hlow
+  have hE' := hE x hx h hh hh1 u v hu hv
+  have hq0 : 0 ≤ (v - u) ⬝ᵥ (g x *ᵥ (v - u)) := hg.normSq_nonneg (hKU hx) _
+  have hd := chartDist_nonneg (g := g) (U := U) (x := x + h • u) (y := x + h • v)
+  set d := chartDist g U (x + h • u) (x + h • v) with hddef
+  set q := (v - u) ⬝ᵥ (g x *ᵥ (v - u)) with hqdef
+  have hsq0 := Real.sqrt_nonneg q
+  have hsq : Real.sqrt q ^ 2 = q := Real.sq_sqrt hq0
+  rcases hn.eq_or_lt with h0 | hpos
+  · have hw0 : ‖v - u‖ = 0 := h0.symm
+    have hvu0 : v - u = 0 := norm_eq_zero.mp hw0
+    have hq00 : q = 0 := by simp [hqdef, hvu0]
+    have hd2 : d ^ 2 ≤ 0 := by
+      have := (abs_le.mp hE').2
+      rw [hw0, hq00] at this
+      nlinarith
+    have hd0 : d = 0 := by nlinarith
+    simp [hd0, hq00, hw0]
+  · set s := h * Real.sqrt q with hsdef
+    have hs0 : 0 ≤ s := by positivity
+    have hss : s ^ 2 = h ^ 2 * q := by rw [hsdef, mul_pow, hsq]
+    have hsl : Real.sqrt l * (h * ‖v - u‖) ≤ s := by
+      have : (Real.sqrt l * (h * ‖v - u‖)) ^ 2 ≤ s ^ 2 := by
+        rw [mul_pow, Real.sq_sqrt hl.le, hss]; linarith
+      exact (abs_le_of_sq_le_sq' this hs0).2
+    have hprod : |d - s| * (d + s) = |d ^ 2 - h ^ 2 * q| := by
+      rw [← abs_of_nonneg (by positivity : 0 ≤ d + s), ← abs_mul]
+      congr 1
+      nlinarith
+    have hkey : |d - s| * (Real.sqrt l * (h * ‖v - u‖)) ≤ C' * h ^ 3 * ‖v - u‖ ^ 2 := by
+      calc |d - s| * (Real.sqrt l * (h * ‖v - u‖)) ≤ |d - s| * (d + s) :=
+            mul_le_mul_of_nonneg_left (by linarith) (abs_nonneg _)
+        _ = |d ^ 2 - h ^ 2 * q| := hprod
+        _ ≤ _ := hE'
+    have hhn0 : 0 < h * ‖v - u‖ := mul_pos hh hpos
+    have h3 : |d - s| * Real.sqrt l ≤ C' * h ^ 2 * ‖v - u‖ := by
+      refine le_of_mul_le_mul_right ?_ hhn0
+      nlinarith [hkey]
+    rw [div_mul_eq_mul_div, div_mul_eq_mul_div, le_div_iff₀ hs]
+    linarith [h3]
+
 end Lightlike.Upstream.GeodesicExpansion
