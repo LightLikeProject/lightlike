@@ -1631,6 +1631,7 @@ import Lightlike.Spacetime.GreenOperators.MassiveExistence
 import Lightlike.Spacetime.GreenOperators.MassiveAdvanced
 import Lightlike.Spacetime.GreenOperators.MassiveSupport
 import Lightlike.Spacetime.GreenOperators.GreenIdentities
+import Lightlike.Spacetime.GreenOperators.PauliJordan
 import Lightlike.Spacetime.FLRWChart
 import Lightlike.Spacetime.FLRWCoord
 import Lightlike.Spacetime.FLRWModel
