@@ -62,4 +62,18 @@ theorem thin_triangle_sensitivity_unbounded (M : ℝ) :
     rw [← Real.sqrt_sq_eq_abs]; exact Real.sqrt_le_sqrt (by linarith)
   linarith [le_abs_self M]
 
+/-- **No uniform Lipschitz constant over thin triangles (nonlinear form).** For every `L : ℝ≥0`
+there is a nondegenerate triangle with squared sides `1, 1, c` such that the apex angle, as a
+function of the squared base `c + ε`, is not `L`-Lipschitz on any neighbourhood of `ε = 0`.
+So the angle error of a metric perturbation of fixed size is not controlled by one constant over
+a non-fat family; this is the consistency estimate that fails, without using linearization. -/
+theorem thin_triangle_not_uniformly_lipschitz (L : NNReal) :
+    ∃ c : ℝ, 0 < c ∧ c < 4 ∧ ∀ s ∈ nhds (0 : ℝ),
+      ¬ LipschitzOnWith L (fun ε : ℝ => triAngle (1 + ε * 0) (1 + ε * 0) (c + ε * 1)) s := by
+  obtain ⟨c, d, hc0, hc4, hder, hM⟩ := thin_triangle_sensitivity_unbounded (L : ℝ)
+  refine ⟨c, hc0, hc4, fun s hs hlip => ?_⟩
+  have := hder.le_of_lipschitzOn hs hlip
+  rw [Real.norm_eq_abs] at this
+  linarith [le_abs_self d]
+
 end Lightlike.Regge.Linearized
