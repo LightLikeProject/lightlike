@@ -83,6 +83,37 @@ lemma sum_stereoOmega_diag (x : E n) (k : Fin n) :
   rw [this, nsmul_eq_mul]
   ring
 
+/-- Integrability of `φ ∂ᵢ G` for a continuous `φ` and compactly supported `C¹` function `G`. -/
+lemma integrable_mul_fderiv_scalar {φ G : E n → ℝ} (hφ : Continuous φ) (hG : ContDiff ℝ 1 G)
+    (hGc : HasCompactSupport G) (i : Fin n) :
+    Integrable (fun x => φ x * fderiv ℝ G x (e i)) := by
+  have hGd : Continuous (fderiv ℝ G) := hG.continuous_fderiv (by norm_num)
+  refine Continuous.integrable_of_hasCompactSupport
+    (hφ.mul (hGd.clm_apply continuous_const)) ?_
+  refine HasCompactSupport.intro hGc.isCompact fun x hx => ?_
+  simp [fderiv_of_notMem_tsupport ℝ hx]
+
+/-- The stereographic covariant derivative of a compactly supported field vanishes off `tsupport f`. -/
+lemma nablaF_stereo_eq_zero {ρ : CliffordRep n V} {f : E n → V} {x : E n} (hx : x ∉ tsupport f)
+    (i : Fin n) : nablaF ρ stereoF stereoOmega i f x = 0 := by
+  simp [nablaF, fderiv_of_notMem_tsupport ℝ hx, image_eq_zero_of_notMem_tsupport hx]
+
+/-- The stereographic covariant derivative of a `C²` field is `C¹`. -/
+lemma contDiff_nablaF_stereo {ρ : CliffordRep n V} {f : E n → V} (hf : ContDiff ℝ 2 f)
+    (i : Fin n) : ContDiff ℝ 1 (fun y => nablaF ρ stereoF stereoOmega i f y) := by
+  have hf1 : ContDiff ℝ 1 f := hf.of_le (by norm_num)
+  refine ContDiff.add ?_ ?_
+  · exact (hf.fderiv_right (m := 1) (by norm_num)).clm_apply
+      ((contDiff_stereoF i).of_le (by norm_num))
+  · have h : ∀ y, spinForm ρ (stereoOmega y i) (f y) =
+        (1 / 4 : ℝ) • ∑ k, ∑ l, stereoOmega y i k l • (gam ρ k * gam ρ l) (f y) := by
+      intro y
+      simp only [spinForm, smul_apply, sum_apply]
+    simp only [h]
+    refine ContDiff.const_smul _ (ContDiff.sum fun k _ => ContDiff.sum fun l _ => ?_)
+    exact ((contDiff_stereoOmega i k l).of_le (by norm_num)).smul
+      ((gam ρ k * gam ρ l).contDiff.comp hf1)
+
 /-- Scalar integration by parts against a `C¹` weight, with a compactly supported `C¹` factor. -/
 lemma integral_mul_fderiv_scalar {φ G : E n → ℝ} (hφ : ContDiff ℝ 1 φ) (hG : ContDiff ℝ 1 G)
     (hGc : HasCompactSupport G) (i : Fin n) :
