@@ -1624,3 +1624,4 @@ import Lightlike.Spacetime.StereoConformal
 import Lightlike.Spacetime.ConformalKilling
 import Lightlike.Spacetime.ConformalKillingField
 import Lightlike.Upstream.SU2Spin.SpinRep
+import Lightlike.Upstream.SU2Spin.Tests
