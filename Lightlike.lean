@@ -1381,6 +1381,7 @@ import Lightlike.Rows.G1_054.Uniqueness
 import Lightlike.Rows.G1_054.SubspaceUnique
 import Lightlike.Rows.G1_054.Strip
 import Lightlike.Rows.G1_054.KMS
+import Lightlike.Rows.G1_054.Model
 import Lightlike.Tests.SphereInvariants
 import Lightlike.Tests.SphereRecognition
 import Lightlike.Tests.TreeDependence
