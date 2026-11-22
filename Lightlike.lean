@@ -400,6 +400,7 @@ import Lightlike.Lorentz.SL2RPlancherel.AbelKernelTanh
 import Lightlike.Lorentz.SL2RPlancherel.AbelTransform
 import Lightlike.Lorentz.SL2RPlancherel.ArcsinIntegral
 import Lightlike.Lorentz.SL2RPlancherel.CoshDist
+import Lightlike.Lorentz.SL2RPlancherel.CosineLogTanh
 import Lightlike.Lorentz.SL2RPlancherel.CoshSubstitution
 import Lightlike.Lorentz.SL2RPlancherel.RadialHaar
 import Lightlike.Lorentz.SL2RPlancherel.RadialIntegral
