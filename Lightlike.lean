@@ -1480,6 +1480,7 @@ import Lightlike.SpinFoam.EPRLStateSum.ComplexLabelSum
 import Lightlike.SpinFoam.EPRLStateSum.ComplexOoguriShape
 import Lightlike.SpinFoam.EPRLStateSum.ComplexSignParity
 import Lightlike.SpinFoam.EPRLStateSum.ComplexSignTet
+import Lightlike.SpinFoam.EPRLStateSum.ComplexSignPair
 import Lightlike.SpinFoam.Move15
 import Lightlike.SpinFoam.Move15Global
 import Lightlike.SpinFoam.BarrettCrane
