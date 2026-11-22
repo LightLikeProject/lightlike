@@ -552,6 +552,7 @@ import Lightlike.OperatorAlgebras.PureStates
 import Lightlike.OperatorAlgebras.PureStatesC0
 import Lightlike.OperatorAlgebras.TestsPureStates
 import Lightlike.OperatorAlgebras.GibbsKMS
+import Lightlike.Rows.G1_053.KMSState
 import Lightlike.OperatorAlgebras.TestsGibbsKMS
 import Lightlike.OperatorAlgebras.TestsFock
 import Lightlike.OperatorAlgebras.TestsFockExists
