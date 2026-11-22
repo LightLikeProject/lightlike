@@ -1483,6 +1483,7 @@ import Lightlike.Dirac.SpinDeriv
 import Lightlike.Dirac.RicciIdentity
 import Lightlike.Dirac.LichnerowiczGeneral
 import Lightlike.Dirac.CurvatureSymmetry
+import Lightlike.Dirac.Bianchi
 import Lightlike.DynamicalTriangulations.Action
 import Lightlike.DynamicalTriangulations.Action3
 import Lightlike.DynamicalTriangulations.Causal
