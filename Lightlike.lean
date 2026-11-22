@@ -1024,6 +1024,7 @@ import Lightlike.Regge.Linear.Converge
 import Lightlike.Regge.Linear.Tests
 import Lightlike.Regge.Linearized.ThinTriangle
 import Lightlike.Regge.Linearized.ThinKite
+import Lightlike.Regge.Linearized.PolarGauge
 import Lightlike.Regge.Linearized.Tests
 import Lightlike.Regge.AreaRegge.Basic
 import Lightlike.Regge.AreaRegge.Deriv
