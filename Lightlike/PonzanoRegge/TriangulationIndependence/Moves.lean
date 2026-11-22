@@ -135,6 +135,20 @@ theorem eqvGen_move32 {K : Complex3 V} {A B C D E : V} (h : IsMove32 K A B C D E
   rw [move23_move32] at this
   exact Relation.EqvGen.rel _ _ this
 
+/-- **A 4-1 move, read at the level of states.** If `T` is a maximal tree of the smaller complex
+`move41 K h` and the cutoffs of the edges `AE`, `BE`, `CE` that the inverse 1-4 move creates
+dominate those of `AD`, `BD`, `CD`, then `(move41 K h, T, cut)` and `(K, insert DE T, cut)` are
+equivalent states, so the gauge-fixed amplitudes agree. As for `eqvGen_move32`, the cutoff
+condition is a constraint in this direction. -/
+theorem eqvGen_move41 {K : Complex3 V} {A B C D E : V} (h : IsMove41 K A B C D E)
+    {T : Finset (Finset V)} (hT : IsMaxTree (move41 K h) T) {cut : Finset V → ℕ}
+    (hA : cut {A, D} ≤ cut {A, E}) (hB : cut {B, D} ≤ cut {B, E})
+    (hC : cut {C, D} ≤ cut {C, E}) :
+    Relation.EqvGen GFTreeStep (move41 K h, T, cut) (K, insert {D, E} T, cut) := by
+  have := GFTreeStep.move14 (isMove14_move41 h) hT hA hB hC
+  rw [move14_move41] at this
+  exact Relation.EqvGen.rel _ _ this
+
 /-- A forward Pachner move: a 2-3 or a 1-4 move (the ones that add simplices). -/
 inductive ForwardStep : Complex3 V → Complex3 V → Prop
   | m23 {K : Complex3 V} {A B C D E : V} (h : IsMove23 K A B C D E) : ForwardStep K (move23 K h)
@@ -187,5 +201,57 @@ theorem ForwardMoves.exists_amplitudeGF_eq {K K' : Complex3 V} (hK : ForwardMove
   obtain ⟨T', cut', hT', hr⟩ := hK.reach hT cut
   exact ⟨T', cut', hT', (amplitudeGF_eqvGen_tree
     (Relation.EqvGen.reflTransGen_le_eqvGen _ _ _ hr)).symm⟩
+
+/-! ## Realising a move-connection by a chain of states -/
+
+/-- **`K` and `K'` are realised as the same gauge-fixed amplitude**: there are maximal trees and
+cutoffs on both sides whose states are joined by a chain of `GFTreeStep`s (in either direction). -/
+def Realises (K K' : Complex3 V) : Prop :=
+  ∃ (T T' : Finset (Finset V)) (cut cut' : Finset V → ℕ), IsMaxTree K T ∧ IsMaxTree K' T' ∧
+    Relation.EqvGen GFTreeStep (K, T, cut) (K', T', cut')
+
+/-- Realised complexes have the same gauge-fixed amplitude for some maximal trees and cutoffs. -/
+theorem Realises.exists_amplitudeGF_eq {K K' : Complex3 V} (h : Realises K K') :
+    ∃ (T T' : Finset (Finset V)) (cut cut' : Finset V → ℕ), IsMaxTree K T ∧ IsMaxTree K' T' ∧
+      amplitudeGF K T cut = amplitudeGF K' T' cut' := by
+  obtain ⟨T, T', cut, cut', hT, hT', he⟩ := h
+  have := amplitudeGF_eqvGen_tree he
+  exact ⟨T, T', cut, cut', hT, hT', this⟩
+
+/-- `Realises` is symmetric. -/
+theorem Realises.symm {K K' : Complex3 V} (h : Realises K K') : Realises K' K := by
+  obtain ⟨T, T', cut, cut', hT, hT', he⟩ := h
+  exact ⟨T', T, cut', cut, hT', hT, he.symm⟩
+
+/-- A complex with a maximal tree is realised with itself. -/
+theorem Realises.refl_of {K : Complex3 V} {T : Finset (Finset V)} (hT : IsMaxTree K T) :
+    Realises K K :=
+  ⟨T, T, fun _ => 0, fun _ => 0, hT, hT, Relation.EqvGen.refl _⟩
+
+/-- A chain of forward moves between complexes with a maximal tree is a realisation. -/
+theorem ForwardMoves.realises {K K' : Complex3 V} (hK : ForwardMoves K K')
+    {T : Finset (Finset V)} (hT : IsMaxTree K T) : Realises K K' := by
+  obtain ⟨T', cut', hT', hr⟩ := hK.reach hT (fun _ => 0)
+  exact ⟨T, T', fun _ => 0, cut', hT, hT',
+    Relation.EqvGen.reflTransGen_le_eqvGen _ _ _ hr⟩
+
+/-- A single 3-2 move is a realisation, when the smaller complex has a maximal tree: take the
+cutoff to be constant, so that the cutoff condition of `eqvGen_move32` holds. -/
+theorem Realises.of_move32 {K : Complex3 V} {A B C D E : V} (h : IsMove32 K A B C D E)
+    {T : Finset (Finset V)} (hT : IsMaxTree (move32 K h) T) :
+    Realises (move32 K h) K := by
+  have h23 := hT.move23 (isMove23_move32 h)
+  rw [move23_move32] at h23
+  exact ⟨T, T, fun _ => 0, fun _ => 0, hT, h23, by
+    simpa using eqvGen_move32 h hT (cut := fun _ => 0) (by simp)⟩
+
+/-- A single 4-1 move is a realisation, when the smaller complex has a maximal tree. -/
+theorem Realises.of_move41 {K : Complex3 V} {A B C D E : V} (h : IsMove41 K A B C D E)
+    {T : Finset (Finset V)} (hT : IsMaxTree (move41 K h) T) :
+    Realises (move41 K h) K := by
+  have h14 := hT.move14 (isMove14_move41 h)
+  rw [move14_move41] at h14
+  exact ⟨T, _, fun _ => 0, fun _ => 0, hT, h14,
+    eqvGen_move41 h hT (cut := fun _ => 0) le_rfl le_rfl le_rfl⟩
 
 end Lightlike.PR
