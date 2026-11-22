@@ -1634,6 +1634,7 @@ import Lightlike.Upstream.SU2Spin.SpinRep
 import Lightlike.Upstream.SU2Spin.Su2Exp
 import Lightlike.Upstream.SU2Spin.Tests
 import Lightlike.Upstream.SpinReps2.AxiomsCheck
+import Lightlike.Upstream.SpinReps2.Intertwiner
 import Lightlike.Upstream.SpinReps2.SixJOrth
 import Lightlike.Upstream.SpinReps2.SixJZero
 import Lightlike.Upstream.SpinReps2.ThreeJOrth

@@ -1,4 +1,4 @@
-import Lightlike.Upstream.SpinReps2.ThreeJOrth
+import Lightlike.Upstream.SpinReps2.Intertwiner
 
 /-!
 # Axiom checks for the upstream 3j/6j files (`SpinReps2`)
@@ -8,3 +8,6 @@ import Lightlike.Upstream.SpinReps2.ThreeJOrth
 -/
 
 #print axioms PhyslibAlpha.Sl2.sum_threeJ_mul_threeJ
+#print axioms PhyslibAlpha.Sl2.sixJSym_zero_left
+#print axioms PhyslibAlpha.Sl2.sixJSym_orth_all
+#print axioms PhyslibAlpha.Sl2.sum_fourJ_mul_fourJ
