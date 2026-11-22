@@ -532,6 +532,7 @@ import Lightlike.OperatorAlgebras.StoneVN
 import Lightlike.OperatorAlgebras.QuasiFree
 import Lightlike.OperatorAlgebras.QuasiFreeState.BoundedForm
 import Lightlike.OperatorAlgebras.QuasiFreeState.Covariance
+import Lightlike.OperatorAlgebras.QuasiFreeState.Fock
 import Lightlike.OperatorAlgebras.QuasiFreeState.Functional
 import Lightlike.OperatorAlgebras.QuasiFreeState.GNS
 import Lightlike.OperatorAlgebras.QuasiFreeState.PositiveFunctional
