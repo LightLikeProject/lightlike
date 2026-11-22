@@ -1,6 +1,7 @@
 import Lightlike.Spacetime.Raychaudhuri.FocusingSEC
 import Lightlike.Spacetime.Raychaudhuri.Examples
 import Lightlike.Spacetime.Raychaudhuri.DustField
+import Lightlike.Spacetime.Raychaudhuri.CollapseExample
 import Lightlike.Cosmology.Raychaudhuri
 
 /-!
@@ -23,3 +24,7 @@ import Lightlike.Cosmology.Raychaudhuri
 #print axioms Lightlike.flrwManifold_comoving_expansion
 #print axioms Lightlike.minkowskiManifold_comoving_expansion
 #print axioms Lightlike.deSitterManifold_no_focusing
+#print axioms Lightlike.Cosmology.collapse_friedmann
+#print axioms Lightlike.flrwManifold_comoving_rotationFree
+#print axioms Lightlike.hasMFDerivAt_opens_of_coe
+#print axioms Lightlike.collapse_focusing_example
