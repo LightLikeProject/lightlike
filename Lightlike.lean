@@ -1518,6 +1518,7 @@ import Lightlike.FieldTheory.ZeroDim.Quartic
 import Lightlike.FieldTheory.ZeroDim.QuarticComplex
 import Lightlike.FieldTheory.ZeroDim.Ties
 import Lightlike.GFT.Borel.Deriv
+import Lightlike.GFT.Borel.NormBound
 import Lightlike.GFT.Bubble
 import Lightlike.GFT.ColoredGraph
 import Lightlike.GFT.Dual
