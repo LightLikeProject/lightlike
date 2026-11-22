@@ -30,4 +30,16 @@ theorem integral_fourier_mul_fourierInv {L A : ℝ → ℂ} (hL : Integrable L) 
     simpa using! h
   rw [h2, hinv]
 
+/-- The same for a Schwartz function `A`: all the regularity hypotheses hold automatically. -/
+theorem integral_fourier_mul_fourierInv_schwartz {L : ℝ → ℂ} (hL : Integrable L)
+    (A : SchwartzMap ℝ ℂ) :
+    ∫ ξ, 𝓕 L ξ * 𝓕⁻ (A : ℝ → ℂ) ξ = ∫ x, L x * A x :=
+  integral_fourier_mul_fourierInv hL A.continuous A.integrable
+    (by
+      have := SchwartzMap.integrable (μ := volume) (𝓕 A : SchwartzMap ℝ ℂ)
+      rwa [SchwartzMap.fourier_coe] at this)
+    (by
+      have := SchwartzMap.integrable (μ := volume) (𝓕⁻ A : SchwartzMap ℝ ℂ)
+      rwa [SchwartzMap.fourierInv_coe] at this)
+
 end Lightlike.Lorentz.SL2RPlancherel
