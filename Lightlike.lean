@@ -405,6 +405,7 @@ import Lightlike.Lorentz.SL2RPlancherel.KernelParseval
 import Lightlike.Lorentz.SL2RPlancherel.Autocorrelation
 import Lightlike.Lorentz.SL2RPlancherel.DoubleIntegral
 import Lightlike.Lorentz.SL2RPlancherel.QuadrantPlancherel
+import Lightlike.Lorentz.SL2RPlancherel.DerivativePlancherel
 import Lightlike.Lorentz.SL2RPlancherel.HalfLine
 import Lightlike.Lorentz.SL2RPlancherel.LogTanhKernel
 import Lightlike.Lorentz.SL2RPlancherel.CoshSubstitution
