@@ -36,6 +36,28 @@ lemma bijOn_union_glue {α β : Type*} {f : α → β} {A B : Set α} {A' B' : S
     · obtain ⟨x, hx, rfl⟩ := hB.surjOn hy
       exact ⟨x, Or.inr hx, rfl⟩
 
+/-- Gluing of two different maps that agree on the overlap: the map equal to `g` on `B` and to `f`
+elsewhere restricts to `f` on `A` and to `g` on `B`, and is bijective `A ∪ B → A' ∪ B'`. This is
+the ear step: `f` is the map of the smaller region, `g` the triangle map of the ear. -/
+lemma exists_bijOn_union_glue {α β : Type*} {f g : α → β} {A B : Set α} {A' B' : Set β}
+    (hA : BijOn f A A') (hB : BijOn g B B') (hfg : EqOn f g (A ∩ B))
+    (hAB : A' ∩ B' ⊆ g '' (A ∩ B)) :
+    ∃ F : α → β, BijOn F (A ∪ B) (A' ∪ B') ∧ EqOn F f A ∧ EqOn F g B := by
+  classical
+  let F : α → β := fun x => if x ∈ B then g x else f x
+  have hFB : EqOn F g B := fun x hx => by simp [F, hx]
+  have hFA : EqOn F f A := fun x hx => by
+    by_cases h : x ∈ B
+    · simp [F, h, (hfg ⟨hx, h⟩).symm]
+    · simp [F, h]
+  refine ⟨F, ?_, hFA, hFB⟩
+  have hA' : BijOn F A A' := hA.congr hFA.symm
+  have hB' : BijOn F B B' := hB.congr hFB.symm
+  refine bijOn_union_glue hA' hB' ?_
+  intro y hy
+  obtain ⟨z, hz, rfl⟩ := hAB hy
+  exact ⟨z, hz, hFB hz.2⟩
+
 /-- A different map on the second piece breaks the hypothesis: the overlap condition is needed.
 Two maps `ℕ → ℕ` that are bijective on `{0}` and `{1}` onto `{0}` but overlap wrongly are not
 glued bijectively (trust check: the conclusion fails without `hAB`). -/
