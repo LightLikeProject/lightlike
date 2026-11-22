@@ -114,6 +114,36 @@ lemma contDiff_nablaF_stereo {ρ : CliffordRep n V} {f : E n → V} (hf : ContDi
     exact ((contDiff_stereoOmega i k l).of_le (by norm_num)).smul
       ((gam ρ k * gam ρ l).contDiff.comp hf1)
 
+/-- The stereographic covariant derivative of a `C¹` field is continuous. -/
+lemma continuous_nablaF_stereo {ρ : CliffordRep n V} {g : E n → V} (hg : ContDiff ℝ 1 g)
+    (i : Fin n) : Continuous (fun y => nablaF ρ stereoF stereoOmega i g y) := by
+  refine Continuous.add ?_ ?_
+  · exact (hg.continuous_fderiv (by norm_num)).clm_apply (contDiff_stereoF i).continuous
+  · have h : ∀ y, spinForm ρ (stereoOmega y i) (g y) =
+        (1 / 4 : ℝ) • ∑ k, ∑ l, stereoOmega y i k l • (gam ρ k * gam ρ l) (g y) := by
+      intro y
+      simp only [spinForm, smul_apply, sum_apply]
+    simp only [h]
+    refine Continuous.const_smul (continuous_finsetSum _ fun k _ =>
+      continuous_finsetSum _ fun l _ => ?_) _
+    exact ((contDiff_stereoOmega i k l).continuous).smul
+      ((gam ρ k * gam ρ l).continuous.comp hg.continuous)
+
+/-- `D f` is `C¹` for a `C²` field `f` in the stereographic frame. -/
+lemma contDiff_diracF_stereo {ρ : CliffordRep n V} {f : E n → V} (hf : ContDiff ℝ 2 f) :
+    ContDiff ℝ 1 (diracF ρ stereoF stereoOmega f) :=
+  ContDiff.sum fun i _ => (gam ρ i).contDiff.comp (contDiff_nablaF_stereo hf i)
+
+/-- `D g` is continuous for a `C¹` field `g` in the stereographic frame. -/
+lemma continuous_diracF_stereo {ρ : CliffordRep n V} {g : E n → V} (hg : ContDiff ℝ 1 g) :
+    Continuous (diracF ρ stereoF stereoOmega g) :=
+  continuous_finsetSum _ fun i _ => (gam ρ i).continuous.comp (continuous_nablaF_stereo hg i)
+
+/-- `D f` vanishes off `tsupport f`. -/
+lemma diracF_stereo_eq_zero {ρ : CliffordRep n V} {f : E n → V} {x : E n}
+    (hx : x ∉ tsupport f) : diracF ρ stereoF stereoOmega f x = 0 := by
+  simp [diracF, nablaF_stereo_eq_zero hx]
+
 /-- Scalar integration by parts against a `C¹` weight, with a compactly supported `C¹` factor. -/
 lemma integral_mul_fderiv_scalar {φ G : E n → ℝ} (hφ : ContDiff ℝ 1 φ) (hG : ContDiff ℝ 1 G)
     (hGc : HasCompactSupport G) (i : Fin n) :
@@ -241,5 +271,56 @@ theorem integral_inner_neg_hess_stereo {ρ : CliffordRep n V} (hρ : IsSkewRep �
     _ = (∫ x, (∑ i, ‖nablaF ρ stereoF stereoOmega i f x‖ ^ 2) * stereoW n x) - ∫ x, T x :=
         integral_sub hBint hTint
     _ = _ := by rw [hT0, sub_zero]
+
+/-- **Integrated Lichnerowicz formula on the round sphere** (stereographic chart, Riemannian density
+`h^{-n}`): for a compactly supported `C²` spinor field `f` (values in a skew Clifford module),
+`∫ ‖D f‖² h^{-n} = ∫ (∑ᵢ ‖∇ᵢ f‖²) h^{-n} + (n(n-1)/4) ∫ ‖f‖² h^{-n}`.
+The constant `n(n-1)/4 = s/4` with scalar curvature `s = n(n-1)` of the unit sphere. -/
+theorem integral_norm_diracF_stereo_sq {ρ : CliffordRep n V} (hρ : IsSkewRep ρ) {f : E n → V}
+    (hf : ContDiff ℝ 2 f) (hfc : HasCompactSupport f) :
+    ∫ x, ‖diracF ρ stereoF stereoOmega f x‖ ^ 2 * stereoW n x =
+      (∫ x, (∑ i, ‖nablaF ρ stereoF stereoOmega i f x‖ ^ 2) * stereoW n x) +
+        ((n : ℝ) * (n - 1) / 4) * ∫ x, ‖f x‖ ^ 2 * stereoW n x := by
+  have hDc1 := contDiff_diracF_stereo (ρ := ρ) hf
+  have hDcs : HasCompactSupport (diracF ρ stereoF stereoOmega f) :=
+    HasCompactSupport.intro hfc.isCompact fun x hx => diracF_stereo_eq_zero hx
+  have h1 := integral_diracF_stereo_inner hρ (hf.of_le (by norm_num)) hDc1 hfc hDcs
+  have hM : Integrable (fun x => inner ℝ (f x)
+      (diracF ρ stereoF stereoOmega (diracF ρ stereoF stereoOmega f) x) * stereoW n x) := by
+    refine Continuous.integrable_of_hasCompactSupport ?_ ?_
+    · exact (hf.continuous.inner (continuous_diracF_stereo hDc1)).mul continuous_stereoW
+    · exact HasCompactSupport.intro hfc.isCompact fun x hx => by
+        simp [image_eq_zero_of_notMem_tsupport hx]
+  have hQ : Integrable (fun x => ((n : ℝ) * (n - 1) / 4) * (‖f x‖ ^ 2 * stereoW n x)) :=
+    integrable_of_cont_supp (k := f)
+      (continuous_const.mul ((hf.continuous.norm.pow 2).mul continuous_stereoW)) hfc
+      (fun x hx => by simp [hx])
+  have hP : ∀ x, inner ℝ (f x)
+        (diracF ρ stereoF stereoOmega (diracF ρ stereoF stereoOmega f) x) * stereoW n x =
+      inner ℝ (-∑ i, hessF ρ stereoF stereoOmega f x i i) (f x) * stereoW n x +
+        ((n : ℝ) * (n - 1) / 4) * (‖f x‖ ^ 2 * stereoW n x) := by
+    intro x
+    rw [stereo_lichnerowicz ρ hf.contDiffAt, inner_add_right, real_inner_smul_right,
+      real_inner_self_eq_norm_sq, real_inner_comm (-∑ i, hessF ρ stereoF stereoOmega f x i i) (f x)]
+    ring
+  have hPint : Integrable (fun x => inner ℝ (-∑ i, hessF ρ stereoF stereoOmega f x i i) (f x) *
+      stereoW n x) := by
+    refine (hM.sub hQ).congr (Filter.Eventually.of_forall fun x => ?_)
+    simp only [Pi.sub_apply]
+    rw [hP x]
+    ring
+  calc ∫ x, ‖diracF ρ stereoF stereoOmega f x‖ ^ 2 * stereoW n x
+      = ∫ x, inner ℝ (diracF ρ stereoF stereoOmega f x) (diracF ρ stereoF stereoOmega f x) *
+          stereoW n x := by
+        simp only [real_inner_self_eq_norm_sq]
+    _ = ∫ x, inner ℝ (f x)
+          (diracF ρ stereoF stereoOmega (diracF ρ stereoF stereoOmega f) x) * stereoW n x := h1
+    _ = ∫ x, (inner ℝ (-∑ i, hessF ρ stereoF stereoOmega f x i i) (f x) * stereoW n x +
+          ((n : ℝ) * (n - 1) / 4) * (‖f x‖ ^ 2 * stereoW n x)) :=
+        integral_congr_ae (Filter.Eventually.of_forall hP)
+    _ = (∫ x, inner ℝ (-∑ i, hessF ρ stereoF stereoOmega f x i i) (f x) * stereoW n x) +
+          ∫ x, ((n : ℝ) * (n - 1) / 4) * (‖f x‖ ^ 2 * stereoW n x) := integral_add hPint hQ
+    _ = _ := by
+        rw [integral_inner_neg_hess_stereo hρ hf hfc, integral_const_mul]
 
 end Lightlike.Dirac
