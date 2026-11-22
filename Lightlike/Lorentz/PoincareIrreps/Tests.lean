@@ -2,6 +2,7 @@ module
 
 public import Lightlike.Lorentz.PoincareIrreps.Momentum
 public import Lightlike.Lorentz.PoincareIrreps.Wigner
+public import Lightlike.Lorentz.PoincareIrreps.Massless
 
 /-!
 # Checks for the little groups of the Poincaré group (HA6, first piece)
@@ -76,6 +77,22 @@ example {m : ℝ} (hm : 0 < m) (n : ℕ) : inducedRep hm n 1 = 1 := (inducedRep 
 
 #print axioms wignerSU2_mul
 #print axioms inducedRep
+
+/-- The light cone is exactly the orbit of `lightMom 1`. -/
+example (P : Herm2) : P ∈ lightCone ↔ ∃ A : SL2C, A • lightMom 1 = P :=
+  ⟨exists_smul_lightMom, by rintro ⟨A, rfl⟩; exact smul_lightMom_mem_lightCone A⟩
+
+/-- The massless induced action is a representation, in every helicity. -/
+example (h : ℤ) (A B : SL2C) : lightInducedRep h (A * B) = lightInducedRep h A * lightInducedRep h B :=
+  (lightInducedRep h).map_mul A B
+
+/-- Helicity `0`: the induced representation is the trivial-character one. -/
+example (A : SL2C) (ψ : lightCone → ℂ) (P : lightCone) :
+    lightInducedRep 0 A ψ P = ψ (lightSMul A⁻¹ P) := by
+  simp [lightInducedRep_apply, helChar_apply]
+
+#print axioms lightInducedRep
+#print axioms exists_smul_lightMom
 
 /-- The massive little group is compact. -/
 example : IsCompact ((MulAction.stabilizer SL2C (restMom 1) : Subgroup SL2C) : Set SL2C) :=
