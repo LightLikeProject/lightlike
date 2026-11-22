@@ -1132,6 +1132,7 @@ import Lightlike.Spacetime.Raychaudhuri.ConstField
 import Lightlike.Spacetime.Raychaudhuri.DustField
 import Lightlike.Spacetime.Raychaudhuri.Examples
 import Lightlike.Spacetime.Raychaudhuri.FocusingSEC
+import Lightlike.Spacetime.Raychaudhuri.FocusingSECMargin
 import Lightlike.Spacetime.Raychaudhuri.RicciBound
 import Lightlike.Spacetime.Raychaudhuri.RicciManifold
 import Lightlike.Spacetime.Raychaudhuri.RicciSharp
