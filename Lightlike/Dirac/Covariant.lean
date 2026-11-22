@@ -79,4 +79,26 @@ theorem diracConn_diracConn (ρ : CliffordRep n V)
     exact nabla_gam ρ ω hω i j x (hf j)
   simp only [h1, map_sum, map_add, Finset.sum_add_distrib, map_smul]
 
+/-- `D² f = ∑ᵢⱼ γᵢγⱼ aᵢⱼ` with the frame Hessian
+`aᵢⱼ = ∇ᵢ∇ⱼ f − ∑ₖ (ωᵢ)ⱼₖ ∇ₖ f` (the second covariant derivative `∇²f(eᵢ, eⱼ)`). -/
+theorem diracConn_diracConn_hessian (ρ : CliffordRep n V)
+    (ω : E n → Fin n → Matrix (Fin n) (Fin n) ℝ)
+    (hω : ∀ x i a b, ω x i a b = -ω x i b a) {f : E n → V} (x : E n)
+    (hf : ∀ j, DifferentiableAt ℝ (fun y => nabla ρ ω j f y) x) :
+    diracConn ρ ω (diracConn ρ ω f) x =
+      ∑ i, ∑ j, gam ρ i (gam ρ j
+        (nabla ρ ω i (fun y => nabla ρ ω j f y) x - ∑ k, (ω x i j k) • nabla ρ ω k f x)) := by
+  rw [diracConn_diracConn ρ ω hω x hf]
+  have h2 : ∑ i, ∑ j, ∑ k, (ω x i j k) • gam ρ i (gam ρ k (nabla ρ ω j f x)) =
+      ∑ i, ∑ j, ∑ k, (ω x i k j) • gam ρ i (gam ρ j (nabla ρ ω k f x)) := by
+    refine Finset.sum_congr rfl fun i _ => ?_
+    exact Finset.sum_comm
+  rw [h2]
+  rw [← Finset.sum_add_distrib]
+  refine Finset.sum_congr rfl fun i _ => ?_
+  rw [← Finset.sum_add_distrib]
+  refine Finset.sum_congr rfl fun j _ => ?_
+  simp only [map_sub, map_sum, map_smul, hω x i _ j, neg_smul, Finset.sum_neg_distrib]
+  abel
+
 end Lightlike.Dirac
