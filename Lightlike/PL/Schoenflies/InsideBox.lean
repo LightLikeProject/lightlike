@@ -79,4 +79,25 @@ theorem exists_polygon_inside_box (F : Finset (ℤ × ℤ)) (hF : F.Nonempty) :
     (fun x hx => Polygon.eventually_parity_eq _ hx) hpre hsub hz hc]
   exact hpar
 
+/-- **A connected set covered by the open inflated squares of `F`, each meeting it, lies inside the
+boundary polygon of `F`.** -/
+theorem exists_polygon_inside_connected (F : Finset (ℤ × ℤ)) (hF : F.Nonempty) {C : Set (ℝ × ℝ)}
+    (hC : IsPreconnected C) (hCF : C ⊆ ⋃ q ∈ F, openBoxU q)
+    (hmeet : ∀ q ∈ F, (C ∩ openBoxU q).Nonempty) :
+    ∃ (n : ℕ) (v : Fin n → ℤ × ℤ), 3 ≤ n ∧ Function.Injective v ∧
+      (∀ i, BdAdj (sqSet F) (v i) (v (finRotate n i))) ∧ (latticePoly v).IsSimple ∧
+      ∀ z ∈ C, z ∉ (latticePoly v).carrier ∧ (latticePoly v).parity z = 1 := by
+  obtain ⟨n, v, hn, hv, hadj, hsimp, q0, hq0, h0⟩ := exists_polygon_inside_box F hF
+  refine ⟨n, v, hn, hv, hadj, hsimp, ?_⟩
+  have hnot : ∀ z ∈ C, z ∉ (latticePoly v).carrier := by
+    intro z hz
+    obtain ⟨q, hq, hzq⟩ := mem_iUnion₂.1 (hCF hz)
+    exact fun h => Set.disjoint_left.1 (carrier_not_mem_openBox hadj hq) h hzq
+  obtain ⟨w0, hw0C, hw0q⟩ := hmeet q0 hq0
+  intro z hz
+  refine ⟨hnot z hz, ?_⟩
+  rw [constOn_of_isPreconnected (Polygon.isClosed_carrier _)
+    (fun x hx => Polygon.eventually_parity_eq _ hx) hC (fun w hw => hnot w hw) hz hw0C]
+  exact (h0 w0 hw0q).2
+
 end Lightlike.PL.Schoenflies
