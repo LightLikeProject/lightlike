@@ -1,5 +1,6 @@
 import Lightlike.SpinFoam.ForcingMoves
 import Lightlike.SpinFoam.GaugeChain
+import Lightlike.SpinFoam.ForcingBlocking
 
 /-!
 # Gauge independence of the Ooguri state sum through forcing closures
@@ -98,5 +99,31 @@ theorem amplitudeGF_eq_of_mutual_forces {K : Complex4 V} {T T' : Finset (Finset 
     (h : Forces K T' T) (h' : Forces K T T') (cut : Finset V → ℕ) :
     amplitudeGF K T cut = amplitudeGF K T' cut := by
   rw [← amplitudeGF_union_of_forces h cut, union_comm, amplitudeGF_union_of_forces h' cut]
+
+/-- **The regularised limit only sees the forcing closure.** Along any sequence of cutoffs
+`cuts : ι → Finset V → ℕ` and any filter `l`, the gauge-fixed state sums for `T ∪ U` converge to a
+limit `a` if and only if those for `T` do, when `T` forces `U`. (A statement about existence and
+value of the cutoff limit, in particular about its independence of the gauge set.) -/
+theorem tendsto_amplitudeGF_union_iff {K : Complex4 V} {T U : Finset (Finset V)}
+    (h : Forces K U T) {ι : Type*} (cuts : ι → Finset V → ℕ) (l : Filter ι) (a : ℝ) :
+    Filter.Tendsto (fun i => amplitudeGF K (T ∪ U) (cuts i)) l (nhds a) ↔
+      Filter.Tendsto (fun i => amplitudeGF K T (cuts i)) l (nhds a) := by
+  simp only [amplitudeGF_union_of_forces h]
+
+/-- **Cutoff limits of mutually forcing gauge sets agree.** If `T` and `T'` force each other, then the
+state sums converge to `a` along `cuts` for `T` iff for `T'`. -/
+theorem tendsto_amplitudeGF_iff_of_mutual_forces {K : Complex4 V} {T T' : Finset (Finset V)}
+    (h : Forces K T' T) (h' : Forces K T T') {ι : Type*} (cuts : ι → Finset V → ℕ)
+    (l : Filter ι) (a : ℝ) :
+    Filter.Tendsto (fun i => amplitudeGF K T (cuts i)) l (nhds a) ↔
+      Filter.Tendsto (fun i => amplitudeGF K T' (cuts i)) l (nhds a) := by
+  simp only [amplitudeGF_eq_of_mutual_forces h h']
+
+/-- **Blocking-set criterion for the trivial state sum.** If the gauge set `T ⊆ K.tris` meets every
+nonempty blocking set, then the gauge-fixed state sum is `1` at every cutoff. -/
+theorem amplitudeGF_eq_one_of_meets_blocking {K : Complex4 V} {T : Finset (Finset V)}
+    (hT : T ⊆ K.tris) (h : ∀ X, Blocking K X → X.Nonempty → (X ∩ T).Nonempty)
+    (cut : Finset V → ℕ) : amplitudeGF K T cut = 1 :=
+  amplitudeGF_eq_one_of_forces ((forces_iff_meets_blocking K hT).mpr h) cut
 
 end Lightlike.SpinFoam
