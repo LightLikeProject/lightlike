@@ -2,6 +2,7 @@ import Mathlib
 import Lightlike.Geometry.HeatKernel.Expansion
 import Lightlike.Geometry.HeatKernel.Consistency
 import Lightlike.Geometry.HeatKernel.Sphere3Expansion
+import Lightlike.Geometry.HeatKernel.ProductGeom
 
 /-!
 # Heat-trace expansion with a constant potential `E`
@@ -199,5 +200,40 @@ theorem heatCoeffsE_one_unique {n m : ℕ} (hm : 2 ≤ m) {K : ℝ → ℝ} {a :
     (hg : HasHeatExpansionTo n m K (heatCoeffsE n V R ric riem E)) :
     a 1 = (4 * π) ^ (-((n : ℝ) / 2)) * V * (6 * E + R) / 6 :=
   ha.coeff_unique hg 1 (by omega)
+
+/-- **Additivity of the potential on products.** `heatCoeffsE` is a Cauchy product up to `a₂`, with
+volumes multiplying and `R`, `|Ric|²`, `|Riem|²`, `E` adding. -/
+theorem heatCoeffsE_conv (n m : ℕ) (V V' R R' r r' s s' E E' : ℝ) {k : ℕ} (hk : k < 3) :
+    convCoeff (heatCoeffsE n V R r s E) (heatCoeffsE m V' R' r' s' E') k
+      = heatCoeffsE (n + m) (V * V') (R + R') (r + r') (s + s') (E + E') k := by
+  have hcc : (4 * π) ^ (-((n : ℝ) / 2)) * (4 * π) ^ (-((m : ℝ) / 2))
+      = (4 * π) ^ (-(((n + m : ℕ) : ℝ) / 2)) := by
+    rw [← Real.rpow_add (by positivity)]
+    congr 1
+    push_cast
+    ring
+  interval_cases k
+  · rw [convCoeff_zero]
+    simp only [heatCoeffsE]
+    rw [← hcc]
+    ring
+  · rw [convCoeff_one]
+    simp only [heatCoeffsE]
+    rw [← hcc]
+    ring
+  · rw [convCoeff_two]
+    simp only [heatCoeffsE]
+    rw [← hcc]
+    ring
+
+/-- **`S² × S²` with independent constant potentials `E`, `E'`** (`D = -(Δ + E + E')`): the product
+of the two shifted traces has the coefficients `heatCoeffsE` with `E + E'`. -/
+theorem hasHeatExpansionTo_sphere_prod_sphere_exp (E E' : ℝ) :
+    HasHeatExpansionTo (2 + 2) 3
+      (fun t => (sphereTrace t * Real.exp (E * t)) * (sphereTrace t * Real.exp (E' * t)))
+      (heatCoeffsE (2 + 2) ((4 * π) * (4 * π)) (2 + 2) (2 + 2) (4 + 4) (E + E')) := by
+  refine ((hasHeatExpansionTo_sphereTrace_exp E).mul (hasHeatExpansionTo_sphereTrace_exp E')).congr_coeff ?_
+  intro k hk
+  exact heatCoeffsE_conv 2 2 _ _ _ _ _ _ _ _ _ _ hk
 
 end Lightlike.HeatKernel
