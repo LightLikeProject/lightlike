@@ -84,7 +84,7 @@ lemma coneMetric_inv {a : ℝ} (ha : a ≠ 0) {x : Fin 4 → ℝ} (hx : x 2 ≠ 
   unfold coneMetric
   rw [Matrix.diagonal_mul_diagonal]
   ext i j
-  fin_cases i <;> fin_cases j <;> simp <;> field_simp
+  fin_cases i <;> fin_cases j <;> simp; field_simp
 
 /-- The nonzero Christoffel symbols of the conical metric, as a table:
 `Γ^r_{θθ} = −a² r`, `Γ^θ_{rθ} = Γ^θ_{θr} = 1/r`. -/
