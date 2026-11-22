@@ -4,6 +4,7 @@ public import Lightlike.Lorentz.PoincareIrreps.Momentum
 public import Lightlike.Lorentz.PoincareIrreps.Wigner
 public import Lightlike.Lorentz.PoincareIrreps.Massless
 public import Lightlike.Lorentz.PoincareIrreps.Measure
+public import Lightlike.Lorentz.PoincareIrreps.Poincare
 
 /-!
 # Checks for the little groups of the Poincaré group (HA6, first piece)
@@ -109,6 +110,20 @@ example (v : Fin 2 → ℂ) (h : fibreNormSq v = 0) : v = 0 := by
 
 #print axioms map_shellSMul_shellMeasure
 #print axioms lintegral_inducedRep_normSq
+
+/-- Control: the Minkowski product of `(1,0,0,0)` with `(2,1,0,0)` is `2` (signature `(+,−,−,−)`). -/
+example : pairing (ofVec ![1, 0, 0, 0]) (ofVec ![2, 1, 0, 0]) = 2 := by
+  rw [pairing_ofVec]
+  simp
+
+/-- Control: the rest momentum has `P² = m²`. -/
+example : (restMom 3).1.det = ((9 : ℝ) : ℂ) := by
+  simp [restMom]
+  norm_num
+
+#print axioms pairing_smul
+#print axioms inducedRep_translate
+#print axioms poincareRep
 
 /-- The massive little group is compact. -/
 example : IsCompact ((MulAction.stabilizer SL2C (restMom 1) : Subgroup SL2C) : Set SL2C) :=
