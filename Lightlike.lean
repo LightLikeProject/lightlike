@@ -1031,6 +1031,7 @@ import Lightlike.Rows.G2_014.Volume
 import Lightlike.Rows.G2_014.VolumeOp
 import Lightlike.Rows.G2_014.SpinHalf
 import Lightlike.Rows.G2_014.FourValent
+import Lightlike.Rows.G2_014.FourSpinHalf
 import Lightlike.SU2.Brackets
 import Lightlike.SU2.Completeness
 import Lightlike.SU2.Differential
