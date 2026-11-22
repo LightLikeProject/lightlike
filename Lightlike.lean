@@ -280,7 +280,9 @@ import Lightlike.Geometry.HeatKernel.Sphere3Expansion
 import Lightlike.Geometry.HeatKernel.Sphere3Product
 import Lightlike.Geometry.HeatKernel.Sphere3Summand
 import Lightlike.Geometry.HeatKernel.Sphere3Trace
+import Lightlike.Geometry.HeatKernel.SphereCurvatureTie
 import Lightlike.Geometry.HeatKernel.SphereSummand
+import Lightlike.Geometry.HeatKernel.StereoCurvature
 import Lightlike.Geometry.HeatKernel.SphereTrace
 import Lightlike.Geometry.HeatKernel.Theta
 import Lightlike.Geometry.HeatKernel.Torus
