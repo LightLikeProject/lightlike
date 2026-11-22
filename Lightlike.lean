@@ -1497,6 +1497,7 @@ import Lightlike.Dirac.EigenspinorK1
 import Lightlike.Dirac.ConformalDirac
 import Lightlike.Dirac.RadialEigen
 import Lightlike.Dirac.EigenGeneralK
+import Lightlike.Dirac.ConnesDistance
 import Lightlike.DynamicalTriangulations.Action
 import Lightlike.DynamicalTriangulations.Action3
 import Lightlike.DynamicalTriangulations.Causal
