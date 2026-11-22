@@ -1347,6 +1347,8 @@ import Lightlike.SpinFoam.VertexAsymptoticsHyp.LogCut
 import Lightlike.SpinFoam.VertexAsymptoticsHyp.CutRank
 import Lightlike.SpinFoam.VertexAsymptoticsHyp.TailIntegrable
 import Lightlike.SpinFoam.VertexAsymptoticsHyp.ZeroSetTangent
+import Lightlike.SpinFoam.VertexAsymptoticsHyp.CutNondiff
+import Lightlike.SpinFoam.VertexAsymptoticsHyp.CutAssemble
 import Lightlike.Surfaces.Add
 import Lightlike.Surfaces.Arc
 import Lightlike.Surfaces.Basic
