@@ -6,7 +6,7 @@ import Lightlike.SpinFoam.EPRLStateSum.NodeCoefMixed
 `NodeCoefMixed` shows that for `t₀ + t₂` odd the positional sum over a shared tetrahedron label
 `i`, seen at rotations of different parity, vanishes. Here we put it next to the same-parity sum
 (`δ_{ll'}`, `sum_nodeCoef_zero_mul_left`) and give a concrete instance. So a closed complex in which
-a tetrahedron sits at nodes of different parity is *not* glued by orthogonality in EPRL.lean's
+a tetrahedron sits at nodes of different parity is *not* glued by orthogonality in Lightlike/SpinFoam/EPRL.lean's
 positional basis: this is the obstruction to stating `amplitude 1 = Ooguri` for the positional
 `EPRL.amplitude` (the intrinsic sorted-basis amplitude is the open programme item `L4b`).
 

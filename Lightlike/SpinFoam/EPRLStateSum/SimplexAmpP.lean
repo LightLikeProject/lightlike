@@ -5,7 +5,7 @@ import Lightlike.SpinFoam.EPRLStateSum.SimplexSwap
 
 `fifteenJSimplex_eq_sum_ampP` writes the 15j symbol of a 4-simplex, with the virtual spins
 `i_a` in the channel `(a+1, a+2)(a+3, a+4)`, as a signed combination of the Ooguri vertex
-amplitudes `ampP J K` (`SpinFoam/Vertex.lean`), whose virtual spins `K a = l_a` are in the channel
+amplitudes `ampP J K` (`Lightlike/SpinFoam/Vertex.lean`), whose virtual spins `K a = l_a` are in the channel
 `(a+1, a+3)(a+2, a+4)`. The coefficients are products of five recoupling matrices and the sign
 `recoupSign J K = (-1)^(K₀+…+K₄+J₁₂+J₁₄+J₃₄) * ampSign J K`.
 -/

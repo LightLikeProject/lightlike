@@ -6,11 +6,11 @@ import Lightlike.GR.KerrHorizon
 
 For `0 < M`, `a² ≤ M²` (geometric units `G = c = 1`) the event horizon of Kerr sits at `r = r₊`
 (`kerrRplus`); its area is `A = 4π (r₊² + a²)` (`kerrArea`), the angular momentum is `J = M a`
-(`kerrJ`).  With `Ω_H = a/(2 M r₊)` (`kerrOmega`) and `κ` (`kerrKappa`) of `GR/KerrHorizon.lean` we prove
+(`kerrJ`).  With `Ω_H = a/(2 M r₊)` (`kerrOmega`) and `κ` (`kerrKappa`) of `Lightlike/GR/KerrHorizon.lean` we prove
 the **Smarr formula** `M = 2 Ω_H J + κ A / (4π)` (`kerr_smarr`).  Source: carlip-2014 (Section 2).
 
 Trust controls: with the wrong area `4π r₊²` the formula fails for `a ≠ 0` (`kerr_smarr_wrongArea_fails`
-in `KerrControls.lean`).
+in `Lightlike/GR/KerrControl.lean`).
 -/
 
 noncomputable section

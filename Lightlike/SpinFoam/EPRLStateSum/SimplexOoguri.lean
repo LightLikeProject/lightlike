@@ -7,7 +7,7 @@ import Lightlike.SpinFoam.EPRLStateSum.BFPoint
 `simpE_one_eq_sum_ampP`: for a 4-simplex `s` whose boundary data are an SU(2) boundary
 (`IsVertexBoundary (triSpins ..) 0 (tetLabels ..)`), the EPRL vertex `simpE 1 col s` is the
 signed combination `Σ_l Π_a fourRecoupling(i_a, l_a) · recoupSign J l · ampP J l` of the Ooguri vertex
-amplitudes of `SpinFoam/Vertex.lean`, where `J p q = col (s∖{s_p, s_q})` and `i_a = col (s∖{s_a})`
+amplitudes of `Lightlike/SpinFoam/Vertex.lean`, where `J p q = col (s∖{s_p, s_q})` and `i_a = col (s∖{s_a})`
 are the data from which `vertexAmp` builds `ampP`. The two vertices thus differ by a change of basis
 of the tetrahedron labels, not by a factor.
 -/

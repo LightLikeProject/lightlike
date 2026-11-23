@@ -11,7 +11,7 @@ Jordan curve theorem in the form `jordan_inner_closure`:
 
 * `unifLocConn_range_circle`: the image of a continuous injective map from the circle is uniformly locally
   connected (it is homeomorphic to the circle, which is locally connected).
-* `unifLocConn_closure`: if `U` is open, `closure U = U ∪ J` with `J` compact and uniformly locally connected,
+* `unifLocConn_closure`: if `U` is an open set, `closure U = U ∪ J` with `J` compact and uniformly locally connected,
   then `closure U` is uniformly locally connected.  A point `y ∈ U` near `x ∈ J` is joined to `x` by the open ball
   `ball y (dist y J)`, which lies in `U`, followed by the nearest point of `J` and a small connected piece of `J`.
 * `jordan_closure_unifLocConn`: the combination for a Jordan curve.

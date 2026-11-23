@@ -3,7 +3,7 @@ import Lightlike.SpinFoam.EPRLStateSum.BFWeight
 /-!
 # The EPRL vertex at `γ = 1` in the intrinsic (sorted) basis of the tetrahedra
 
-`simpE_one_eq_sum_ampP` expands the vertex of `EPRL.lean` with, at the node `a`, the recoupling
+`simpE_one_eq_sum_ampP` expands the vertex of `Lightlike/SpinFoam/EPRL.lean` with, at the node `a`, the recoupling
 matrix of the tetrahedron legs *rotated* by `a mod 4` (`NodeBasis.lean`). Here the node matrix is
 the one of the legs in their sorted order, the same for every simplex containing the tetrahedron:
 

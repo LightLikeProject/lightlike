@@ -8,7 +8,7 @@ Row G2-017 (milestone CA7).  The abstract criterion used for the `μ̄` evolutio
 quantum cosmology: a densely defined symmetric operator `T` which is bounded below,
 `Re ⟨x, T x⟩ ≥ -C ‖x‖²`, and such that `T† - μ` is injective for one real `μ < -C`, is essentially
 self-adjoint.  (The classical Carleman/limit-point criterion does not apply to the evolution operator,
-whose Jacobi coefficients grow quadratically; the maximum principle of `MaxPrinciple.lean` gives the
+whose Jacobi coefficients grow quadratically; the maximum principle of the maximum principle (`MaxPrinciple`) gives the
 injectivity hypothesis instead.)
 
 ## Main statements

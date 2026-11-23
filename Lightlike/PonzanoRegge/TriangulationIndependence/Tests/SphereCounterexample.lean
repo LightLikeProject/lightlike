@@ -16,7 +16,7 @@ is isolated (no triangle of `Sph7` has two of its edges), so by `not_treeConnect
 the star at `0` is a maximal tree that cannot be reached by triangle exchanges:
 **`Sph7` is a simply connected closed combinatorial 3-manifold that is not `TreeConnected`.**
 
-Consequences recorded in `HANDOFF.md`: tree-connectedness is not preserved by the 2-3 move, and
+Consequences recorded in the handoff note of the stream (not in the repository): tree-connectedness is not preserved by the 2-3 move, and
 the criterion "`π₁` of the 2-skeleton trivial ⇒ `TreeConnected`" is false. The exchange argument
 (`amplitudeGF_eqvGen_exchange`) therefore cannot prove tree independence for all closed
 combinatorial 3-manifolds; whether the amplitude is tree independent on `Sph7` is not decided here.

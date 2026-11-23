@@ -10,7 +10,7 @@ intertwiners are in the channel `(a+1, a+3)(a+2, a+4)`. The theorem `simplexGen_
 file identifies each of those contractions, up to the sign `(-1)^(l₀+…+l₄+j₁₂+j₁₄+j₃₄)`, with the
 `fifteenJSimplex` whose vertices and edges are relabelled by the pentagram permutation
 `(0, 2, 4, 1, 3)`, which is the symbol that occurs in the closed form `ampP` of the vertex
-amplitude of the Ooguri model (`SpinFoam/Vertex.lean`).
+amplitude of the Ooguri model (`Lightlike/SpinFoam/Vertex.lean`).
 
 The proof is a change of the ten summation variables (a permutation of the product box, with three
 reversed projections) and `fourJ_swapPairs` at each of the five vertices.

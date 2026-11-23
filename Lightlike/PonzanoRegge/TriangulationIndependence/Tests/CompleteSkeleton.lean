@@ -8,7 +8,7 @@ public import Lightlike.PonzanoRegge.TriangulationIndependence.CompleteSkeleton
 On `K5` the path `01, 12, 23, 34` and the star at `0` are two maximal trees; they are connected by
 triangle exchanges (`treeConnected_K5`), so their gauge-fixed amplitudes agree at every cut-off.
 This is the positive counterpart of the ring of three tetrahedra, where the two trees differ and
-`TreeConnected` fails (`Tests/Cocycle.lean`).
+`TreeConnected` fails (`Lightlike/PonzanoRegge/TriangulationIndependence/Tests/Cocycle.lean`).
 -/
 
 @[expose] public section

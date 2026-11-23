@@ -1,7 +1,7 @@
 """Numerical check (not a proof) of the statement of the large-spin asymptotics of the coherent 15j
 integral and of the Euclidean EPRL vertex in Lightlike/Asymptotics/EPRL/Amplitude.lean,
 ReggeState.lean and Lightlike/Asymptotics/EPRL/Formula.lean, and of the gluing, stationarity, suppression and critical-point
-results proved there (Gluing.lean, Decay.lean, GluingSolutions.lean, Normals.lean, Lightlike/Asymptotics/EPRL/Critical.lean),
+results proved there (Gluing.lean, Lightlike/Asymptotics/EPRL/Decay.lean, GluingSolutions.lean, Normals.lean, Lightlike/Asymptotics/EPRL/Critical.lean),
 built independently of the Lean files with numpy.
 
 Sources: Barrett, Dowdall, Fairbairn, Gomes, Hellmann, J. Math. Phys. 50 (2009) 112504,
@@ -68,7 +68,7 @@ Checks, which must pass:
  7. non-vacuity: lam^12 |EPRL leading term| and lam^6 |15j leading term| do not tend to 0: their
     maxima over the windows [200 k, 200 (k + 1)), k = 0..19, are all at least half of the overall
     maximum;
- 8. gluing and stationarity (Gluing.lean, Decay.lean): at 2000 random points with random SU(2) data
+ 8. gluing and stationarity (Gluing.lean, Lightlike/Asymptotics/EPRL/Decay.lean): at 2000 random points with random SU(2) data
     |P_e| <= 1 and |P_e|^2 = (1 + nu(X_a g_ab eps) . nu(X_b g_ba))/2 (Lean: norm_prop_le,
     normSq_prop); at 20 random gluing points (g_ba = X_b^H X_a g_ab eps d(phi_e), random spins
     1..4) |F| = 1 and the finite-difference gradient of theta -> F(chart X theta) at 0 equals

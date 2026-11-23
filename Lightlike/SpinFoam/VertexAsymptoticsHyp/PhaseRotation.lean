@@ -9,7 +9,7 @@ changes neither `‖ξ‖`, nor `spinVec ξ` (hence not the closure and nondegen
 `lorHessian_invertible_at_critical`), nor the real part of the vertex action, but it rotates the
 overlap `⟨Z, ξ⟩ ⟨Jξ', Z'⟩` of edge `k` by `c`.  This is the tool behind the observation that
 `lorHessian_invertible_at_critical` has no hypothesis keeping the overlaps off the branch cut of
-`Complex.log` (see `HANDOFF.md`).  Supporting lemmas only.
+`Complex.log` (a handoff note of the stream, not in the repository).  Supporting lemmas only.
 -/
 
 open Complex

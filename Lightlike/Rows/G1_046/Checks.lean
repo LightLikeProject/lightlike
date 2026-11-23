@@ -6,12 +6,12 @@ public import Lightlike.Rows.G1_046.Defs
 # Consequences of the de Sitter conjecture and trust checks (row G1-046, milestone CO23)
 
 * `expPotential_gradNorm_div` : for `V = V₀ e^{-λφ} > 0`, `|∇V|/V = |λ|`.
-* `expPotential_deSitter` : the exponential potential satisfies the de Sitter conjecture with
+* `expPotential_deSitter` : the exponential potential satisfies the de Sitter bound with
   `c = λ` (and with `c = |λ|`).
 * `not_deSitter_of_critical` : a potential with a de Sitter critical point (`V > 0`, `dV = 0`)
-  violates the conjecture for every `c > 0`; `quadPotential_not_deSitter` is the example
+  violates the bound for every `c > 0`; `quadPotential_not_deSitter` is the example
   `Λ + m²φ²/2`.
-* `slowRoll_contradiction` : if the conjecture holds with `c > √2`, then `ε_V > 1` wherever
+* `slowRoll_contradiction` : if the bound holds with `c > √2`, then `ε_V > 1` wherever
   `V > 0`, so the slow-roll condition `ε_V < 1` fails everywhere (`not_slowRoll_of_deSitter`).
 * `slowRollEps_exp` : `ε_V = λ²/2` for the exponential potential, so `ε_V < 1` iff `λ² < 2`.
 * `slowRollEps_quad` and `slowRollEps_quad_sqrt_two` : for `m²φ²/2`, `ε_V = 2/φ²`, equal to `1`

@@ -13,7 +13,7 @@ normalized (`qfState_one`), positive (`qfState_star_mul_self_nonneg`), bounded (
 
 (Bratteli-Robinson 2, Chapter 5; Dereziński, arXiv:math-ph/0511030, Section 9.1.)
 
-Not proved here: that `ρ_η` lives on the *universal* CCR algebra `ccrAlgebra`; that would need the uniqueness of the
+Left to a later row: that `ρ_η` lives on the *universal* CCR algebra `ccrAlgebra`; that would need the uniqueness of the
 C*-norm on the Weyl algebra of a discrete group (amenability), which is not in the library.
 -/
 

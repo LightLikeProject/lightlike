@@ -16,7 +16,7 @@ mixture over `n` of the product measures, weighted by the Poisson probabilities.
 the count is then the definition.
 
 The main use is the Poisson sprinkling into a region of Minkowski space
-(`Lightlike/Rows/G2_063/Sprinkling.lean`), where `μ` is the intensity times the Lebesgue measure on
+(`Lightlike/CausalSets/Sprinkling.lean`), where `μ` is the intensity times the Lebesgue measure on
 the region.
 
 ## Main definitions

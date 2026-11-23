@@ -17,7 +17,7 @@ the same amplitude. This file packages it as a property of the complex:
   `Lightlike/PonzanoRegge/TriangulationIndependence/Tests/TreeConnected.lean`).
 
 That every closed combinatorial 3-manifold is `TreeConnected` is **false**: the seven-vertex
-combinatorial 3-sphere `Sphere7` of `Tests/SphereCounterexample.lean` has an isolated maximal tree
+combinatorial 3-sphere `Sphere7` of `Lightlike/PonzanoRegge/TriangulationIndependence/Tests/SphereCounterexample.lean` has an isolated maximal tree
 (`not_treeConnected_of_isolated`), and non-simply-connected manifolds fail by `NotTreeConnected.lean`.
 So tree independence of the gauge-fixed amplitude on closed manifolds cannot be obtained from
 triangle exchanges alone (it holds on the tree-connected ones, e.g. stacked spheres,

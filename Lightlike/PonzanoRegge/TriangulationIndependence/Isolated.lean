@@ -10,7 +10,7 @@ A maximal tree `T` of `K` is **isolated** when no triangle of `K` has two of its
 a triangle, none ends at `T`). An isolated tree is alone in its exchange class, so if `K` has
 another maximal tree, `K` is not `TreeConnected`
 (`not_treeConnected_of_isolated`). This is the criterion used for the combinatorial 3-sphere with
-seven vertices in `Tests/SphereCounterexample.lean`, where it refutes the hope that every
+seven vertices in `Lightlike/PonzanoRegge/TriangulationIndependence/Tests/SphereCounterexample.lean`, where it refutes the hope that every
 simply connected closed 3-manifold is tree-connected (programme item L9b/L13, closed-manifold gauge
 tree, Freidel–Louapre 2004, Section III).
 
