@@ -2166,3 +2166,8 @@ import Lightlike.Rows.G1_034.Limit
 import Lightlike.Rows.G1_034.Existence
 import Lightlike.Rows.G1_034.Truncation
 import Lightlike.Rows.G1_034.Main
+import Lightlike.Rows.G3_255.MetricExpansion
+import Lightlike.Rows.G3_255.InverseExpansion
+import Lightlike.Rows.G3_255.VolumeFactor
+import Lightlike.Rows.G3_255.VertexOrders
+import Lightlike.Rows.G3_255.DiagramClasses
