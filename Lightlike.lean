@@ -279,6 +279,9 @@ import Lightlike.Rows.G1_032.Checks
 import Lightlike.Rows.G1_032.GrowthCore
 import Lightlike.Rows.G1_032.Jeans
 import Lightlike.Rows.G1_032.Linearized
+import Lightlike.Rows.G2_018.LQC
+import Lightlike.Rows.G2_018.Numerics
+import Lightlike.Rows.G2_018.WDW
 import Lightlike.FourD.Boundary
 import Lightlike.FourD.Complex
 import Lightlike.FourD.Orientation
