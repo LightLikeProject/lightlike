@@ -2298,3 +2298,4 @@ import Lightlike.Rows.G1_068.Tests
 import Lightlike.Rows.G1_047.Pointwise
 import Lightlike.Rows.G1_047.Field
 import Lightlike.Rows.G1_047.Stokes
+import Lightlike.Rows.G2_007.Uniform
