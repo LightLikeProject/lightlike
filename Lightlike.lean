@@ -2223,3 +2223,7 @@ import Lightlike.Rows.G2_015.Pullback
 import Lightlike.Rows.G2_015.Flux
 import Lightlike.Rows.G2_015.Algebra
 import Lightlike.Rows.G2_015.Test
+import Lightlike.Rows.G1_059.GreenOperator
+import Lightlike.Rows.G1_059.Model
+import Lightlike.Rows.G1_059.Retarded
+import Lightlike.Rows.G1_059.Uniqueness
