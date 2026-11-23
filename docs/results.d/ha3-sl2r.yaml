@@ -1,5 +1,5 @@
 - id: LL-XXXX-a
-  title: The spherical Plancherel theorem for SL(2,R): the spherical transform is a unitary equivalence from L²(1,∞) onto L²(0,∞), with the density ρ tanh(πρ)
+  title: "The spherical Plancherel theorem for SL(2,R): the spherical transform is a unitary equivalence from L²(1,∞) onto L²(0,∞), with the density ρ tanh(πρ)"
   area: Lorentz
   file: Lightlike/Lorentz/SL2RPlancherel/SphericalSurjective.lean
   decls: [Lightlike.Lorentz.SL2RPlancherel.sphericalL2Equiv, Lightlike.Lorentz.SL2RPlancherel.surjective_sphericalL2]
@@ -12,7 +12,7 @@
   note: "Compared with Kitaev, arXiv:1711.08169, Section 4, eq. (79)-(80), p. 14 (read 24 November 2026): the Plancherel measure of PSL(2,R) on the principal series C_{1/4+s^2} is (2π)^{-2} tanh(πs) s ds, the same density ρ tanh(πρ) with ρ = s. Difference (representation): only the spherical, K-biinvariant part is proven, as the transform of a function of v = cosh r > 1 in a square-root normalisation; the discrete series D_n (weight (2π)^{-2}(n - 1/2)) and the non-spherical K-types are NOT proven, so this does not close HA3. The comparison with Knapp (1986) and Gelfand-Graev-Vilenkin (1966) is pending: the books were not read at the cited locations."
   since: unreleased
 - id: LL-XXXX-b
-  title: The spherical Plancherel formula for SL(2,R) on smooth compactly supported functions of the hyperbolic distance, with the density ρ tanh(πρ)
+  title: "The spherical Plancherel formula for SL(2,R) on smooth compactly supported functions of the hyperbolic distance, with the density ρ tanh(πρ)"
   area: Lorentz
   file: Lightlike/Lorentz/SL2RPlancherel/SphericalClean.lean
   decls: [Lightlike.Lorentz.SL2RPlancherel.norm_sq_eq_sph]
@@ -25,7 +25,7 @@
   note: "Compared with Kitaev, arXiv:1711.08169, Section 4, eq. (79)-(80), p. 14 (read 24 November 2026): the Plancherel measure of PSL(2,R) on the principal series C_{1/4+s^2} is (2π)^{-2} tanh(πs) s ds, the same density ρ tanh(πρ) with ρ = s. Difference (representation): only the spherical, K-biinvariant part is proven, as the transform of a function of v = cosh r > 1 in a square-root normalisation; the discrete series D_n (weight (2π)^{-2}(n - 1/2)) and the non-spherical K-types are NOT proven, so this does not close HA3. The comparison with Knapp (1986) and Gelfand-Graev-Vilenkin (1966) is pending: the books were not read at the cited locations."
   since: unreleased
 - id: LL-XXXX-c
-  title: The principal series of SL(2,R), |cx+d|^{iν-1} on L²(R), is a unitary representation
+  title: "The principal series of SL(2,R), |cx+d|^{iν-1} on L²(R), is a unitary representation"
   area: Lorentz
   file: Lightlike/Lorentz/SL2RPrincipal.lean
   decls: [Lightlike.Lorentz.SL2R.principalSeries_mem_unitary]
@@ -38,7 +38,7 @@
   note: "The comparison with Knapp (1986) is pending: the book was not read at the cited location. Compared with Kitaev, arXiv:1711.08169, Section 2, the list (10) of unitary irreducible representations (read 24 November 2026; the page number was not checked). Kitaev works on the universal cover; here SL(2,R) itself. Irreducibility is not proven."
   since: unreleased
 - id: LL-XXXX-d
-  title: The discrete series D_n^+ of SL(2,R) on a weighted Bergman space of the upper half plane is a unitary representation
+  title: "The discrete series D_n^+ of SL(2,R) on a weighted Bergman space of the upper half plane is a unitary representation"
   area: Lorentz
   file: Lightlike/Lorentz/SL2RBergman.lean
   decls: [Lightlike.Lorentz.SL2R.discreteSeries_mem_unitary, Lightlike.Lorentz.SL2R.continuous_discreteSeries]
@@ -51,7 +51,7 @@
   note: "The comparison with Knapp (1986) is pending: the book was not read at the cited location. Compared with Kitaev, arXiv:1711.08169, Section 2, the list (10) of unitary irreducible representations (read 24 November 2026; the page number was not checked). Kitaev works on the universal cover; here SL(2,R) itself. Irreducibility is not proven."
   since: unreleased
 - id: LL-XXXX-e
-  title: The Casimir operator of SL(2,R) acts by -(1+ν²)/4 on the principal series and by (n/2)(n/2-1) on the discrete series D_n^+
+  title: "The Casimir operator of SL(2,R) acts by -(1+ν²)/4 on the principal series and by (n/2)(n/2-1) on the discrete series D_n^+"
   area: Lorentz
   file: Lightlike/Lorentz/SL2RCasimir.lean
   decls: [Lightlike.Lorentz.SL2R.casimir_principal, Lightlike.Lorentz.SL2R.casimir_discrete, Lightlike.Lorentz.SL2R.casimir_lowestVec]
