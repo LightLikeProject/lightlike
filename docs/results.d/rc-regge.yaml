@@ -1,0 +1,65 @@
+- id: LL-XXXX-a
+  title: "The linearized deficit angle at a vertex of a flat positively oriented star under a displacement field with a metric perturbation t is -t times the area of the star, independent of the gauge, covariant under scaling, and zero if and only if t = 0"
+  area: Regge
+  file: Lightlike/Regge/Linearized/DeficitLaw.lean
+  decls: [Lightlike.Regge.Linearized.combStarDeficit_hasDerivAt_area, Lightlike.Regge.Linearized.combStarDeficit_gauge_independent, Lightlike.Regge.Linearized.combStarDeficit_scale_covariant, Lightlike.Regge.Linearized.combStarDeficit_zero_iff]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: christiansen-2011, location: "Abstract", check: "converge to their continuous counterparts"}
+  review: kernel-checked
+  note: "Vertex-level content of linearized Regge calculus in two dimensions (the flat background has zero deficit: flat_background_zero in Tests.lean). The comparison with Christiansen (2011) is pending: the paper was not read at the cited location. RC3 stays OPEN: Christiansen's convergence of solutions and eigenpairs on tori (Thm 4.7) needs Sobolev spaces, Regge finite-element spaces and Courant-Fischer, which are absent from Mathlib; Roček-Williams (1981) has no source key."
+  since: unreleased
+- id: LL-XXXX-b
+  title: "Fatness is needed: thin triangles have unbounded angle sensitivity, so the angles are not uniformly Lipschitz in the edge lengths"
+  area: Regge
+  file: Lightlike/Regge/Linearized/ThinTriangle.lean
+  decls: [Lightlike.Regge.Linearized.thin_triangle_sensitivity_unbounded, Lightlike.Regge.Linearized.thin_triangle_not_uniformly_lipschitz]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: christiansen-2011, location: "Abstract", check: "converge to their continuous counterparts"}
+  review: kernel-checked
+  note: "Trust check of RC3 (a non-fat refinement fails), at the level of one triangle; the failure for a concrete sequence of triangulations of a torus is not proved (a sheared lattice stayed consistent). The comparison with Christiansen (2011) is pending: the paper was not read at the cited location. RC3 stays OPEN: Christiansen's convergence of solutions and eigenpairs on tori (Thm 4.7) needs Sobolev spaces, Regge finite-element spaces and Courant-Fischer, which are absent from Mathlib; Roček-Williams (1981) has no source key."
+  since: unreleased
+- id: LL-XXXX-c
+  title: "A flat background gives zero linearized deficit"
+  area: Regge
+  file: Lightlike/Regge/Linearized/Tests.lean
+  decls: [Lightlike.Regge.Linearized.flat_background_zero]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: christiansen-2011, location: "Abstract", check: "converge to their continuous counterparts"}
+  review: kernel-checked
+  note: "Trust check of RC3. The comparison with Christiansen (2011) is pending: the paper was not read at the cited location. RC3 stays OPEN: Christiansen's convergence of solutions and eigenpairs on tori (Thm 4.7) needs Sobolev spaces, Regge finite-element spaces and Courant-Fischer, which are absent from Mathlib; Roček-Williams (1981) has no source key."
+  since: unreleased
+- id: LL-XXXX-d
+  title: "In dimension 4 the area-weighted sum over the 240 hinge incidences of Kuhn's orthoscheme triangulation of the first variation of the dihedral angle for a curvature operator K is -scal(K)/2"
+  area: Regge
+  file: Lightlike/Regge/CMS4/Kuhn4Core.lean
+  decls: [Lightlike.Regge4.kuhn4_sum]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: christiansen-2011, location: "Section 1", check: "converges in the sense of measures"}
+  review: kernel-checked
+  note: "Dimension 4 analogue of the Cheeger-Müller-Schrader hinge sum; no symmetry or Bianchi identity of K is used. The comparison with Christiansen (2011), Section 1 (the statement of the Cheeger-Müller-Schrader theorem), is pending: not read at the cited location. RC6 is proven in dimension 2 and partial in dimension 4: the convergence theorem for general metrics in dimension 4 (the angle_sum, first_order and curvature fields of JetStarCore4 for a general jet) is NOT proved."
+  since: unreleased
+- id: LL-XXXX-e
+  title: "Trust checks of the dimension 4 Regge sum: a flat curvature operator gives zero, and the sum without the area weights does not vanish for a scalar-flat curvature operator"
+  area: Regge
+  file: Lightlike/Regge/CMS4/Kuhn4Trust.lean
+  decls: [Lightlike.Regge4.kuhn4_sum_flat, Lightlike.Regge4.kuhn4_unweighted_fails]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: christiansen-2011, location: "Section 1", check: "converges in the sense of measures"}
+  review: kernel-checked
+  note: "Trust checks of RC6 (flat triangulations give zero; a curvature density without the volume weights fails to converge). The comparison with Christiansen (2011), Section 1 (the statement of the Cheeger-Müller-Schrader theorem), is pending: not read at the cited location. RC6 is proven in dimension 2 and partial in dimension 4: the convergence theorem for general metrics in dimension 4 (the angle_sum, first_order and curvature fields of JetStarCore4 for a general jet) is NOT proved."
+  since: unreleased
