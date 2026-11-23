@@ -29,7 +29,7 @@ theorem hessMat_congr {f g : (Fin n → ℝ) → ℂ} {x : Fin n → ℝ} (h : f
   rw [h1.fderiv_eq]
 
 /-- The Hessian of a constant multiple of a function smooth on an open set. -/
-theorem hessMat_const_mul {f : (Fin n → ℝ) → ℂ} {U : Set (Fin n → ℝ)} (hU : IsOpen U)
+theorem hessMat_const_mul_open {f : (Fin n → ℝ) → ℂ} {U : Set (Fin n → ℝ)} (hU : IsOpen U)
     (hf : ContDiffOn ℝ ∞ f U) {x : Fin n → ℝ} (hx : x ∈ U) (c : ℂ) :
     hessMat (fun y => c * f y) x = c • hessMat f x := by
   ext i j
@@ -116,7 +116,7 @@ theorem re_qform_hessMat_nonpos {S : (Fin n → ℝ) → ℂ} {U : Set (Fin n �
     exact mul_nonneg χ.nonneg (by linarith)
   have key := im_qform_hessMat_nonneg hΦ hΦ0 hΦ1 (by positivity : 0 < 2 * δ) hIm v
   have hH : hessMat (fun y => (χ y : ℂ) * Ψ y) 0 = -Complex.I • hessMat S x₀ := by
-    rw [hessMat_congr hEq, hΨ, hessMat_const_mul hU'o hrec hΨ0U, hessMat_recentre]
+    rw [hessMat_congr hEq, hΨ, hessMat_const_mul_open hU'o hrec hΨ0U, hessMat_recentre]
   rw [hH] at key
   have hq : qform (-Complex.I • hessMat S x₀) v = -Complex.I * qform (hessMat S x₀) v := by
     simp [qform, Finset.mul_sum, mul_assoc]

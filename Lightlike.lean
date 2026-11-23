@@ -1084,10 +1084,6 @@ import Lightlike.PonzanoRegge.TriangulationIndependence.Isolated
 import Lightlike.PonzanoRegge.TriangulationIndependence.Tests.SphereCounterexample
 import Lightlike.PonzanoRegge.Unconditional
 import Lightlike.QM.Basic
-import Lightlike.Rows.G2_077.PauliJordan
-import Lightlike.Rows.G2_077.Fock
-import Lightlike.Rows.G2_077.Fock2
-import Lightlike.Rows.G2_077.Weyl
 import Lightlike.Recoupling.FifteenJ
 import Lightlike.Recoupling.Intertwiner
 import Lightlike.Recoupling.Invariant
@@ -2322,6 +2318,5 @@ import Lightlike.Rows.G1_039.LieStructure
 import Lightlike.Rows.G2_036.CatalanAsymptotics
 import Lightlike.Rows.G1_067.EventHorizon
 import Lightlike.Rows.G1_054.Parts
-import Lightlike.Rows.G1_044.Lift
 import Lightlike.Rows.G1_033.BoseIntegral
 import Lightlike.Rows.G1_033.Check
