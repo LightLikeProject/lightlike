@@ -282,6 +282,9 @@ import Lightlike.Rows.G1_032.Linearized
 import Lightlike.Rows.G2_018.LQC
 import Lightlike.Rows.G2_018.Numerics
 import Lightlike.Rows.G2_018.WDW
+import Lightlike.Rows.G1_041.NoHair
+import Lightlike.Rows.G1_041.Tendsto
+import Lightlike.Rows.G1_041.Checks
 import Lightlike.FourD.Boundary
 import Lightlike.FourD.Complex
 import Lightlike.FourD.Orientation
