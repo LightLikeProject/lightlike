@@ -2092,6 +2092,7 @@ import Lightlike.Rows.G3_264.Jacobian
 import Lightlike.Rows.G1_040.WainwrightHsu
 import Lightlike.Rows.G1_040.Preservation
 import Lightlike.Rows.G1_040.Barbalat
+import Lightlike.Rows.G3_255.GammaGamma
 import Lightlike.GFT.Euler
 import Lightlike.Rows.G1_039.Basic
 import Lightlike.Rows.G1_039.Decomposition
