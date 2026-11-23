@@ -1,0 +1,13 @@
+- id: LL-XXXX-a
+  title: "The large-spin asymptotics of Racah's alternating sum for the 6j symbol of a Euclidean tetrahedron, proved by the complex saddle-point method: the scaled sum minus cos(S_Regge + π/4)/(√(12π)(2π)²) tends to 0"
+  area: PonzanoRegge
+  file: Lightlike/Asymptotics/SaddleAssembly.lean
+  decls: [Lightlike.Asymptotics.racahSumAsymptotics]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: gurau-2008, location: "Theorem 1", check: "saddle"}
+  review: kernel-checked
+  note: "Statement RacahSumAsymptotics (Assembly.lean): for every Euclidean tetrahedron with integer edges j, √(√vol2(ℓ)) e^{-D(ℓ)} racahSum(λj) - cos(S_Regge(ℓ) + π/4)/(√(12π)(2π)²) → 0 as λ → ∞, with edge lengths ℓ_e = λ j_e + 1/2. The proof is by the contour integral and a descent contour through the saddle (not the real-variable Riemann-sum step of Gurau, which is not valid as stated, see the milestone SP2). Trust checks: the formula with only one of the two complex-conjugate saddles is false at the regular tetrahedron (not_racahSumAsymptotics_one_saddle_regular, SP2/OneSaddle.lean); the formula with phase 0 or -π/4 is false (SaddleAssemblyTests.lean). The comparison with Gurau (2008), Theorem 1, is pending: the paper was not read at the cited location. It is the input of the Ponzano–Regge formula LL-0030."
+  since: unreleased
