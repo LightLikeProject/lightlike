@@ -1959,6 +1959,14 @@ import Lightlike.Tests.ADMBracket
 import Lightlike.Tests.Constraints
 import Lightlike.Tests.DiracAlgorithm
 import Lightlike.Tests.ReducedForm
+import Lightlike.Rows.G1_031.Background
+import Lightlike.Rows.G1_031.Variation
+import Lightlike.Rows.G1_031.Ricci
+import Lightlike.Rows.G1_031.Curvature
+import Lightlike.Rows.G1_031.Tensor
+import Lightlike.Rows.G1_031.Einstein
+import Lightlike.Rows.G1_031.Main
+import Lightlike.Rows.G1_031.Diag
 import Lightlike.GFT.Euler
 import Lightlike.Rows.G1_039.Basic
 import Lightlike.Rows.G1_039.Decomposition
