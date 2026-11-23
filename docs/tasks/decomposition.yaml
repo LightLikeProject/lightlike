@@ -285,16 +285,6 @@ tasks:
     difficulty: research-level
     routes:
       - "Teschl, Mathematical Methods in Quantum Mechanics, Theorem 3.7 (resolvent, Herglotz functions, Stieltjes inversion), or the Cayley transform, the continuous functional calculus of the unitary and the Riesz–Markov theorem, transported to the real line."
-  - id: T-SF10-P1
-    milestone: SF10
-    kind: proof
-    title: Joint integrability of the Lorentzian vertex integrand
-    file: Tasks/SF/T_SF10_P1.lean
-    decl: Lightlike.Asymptotics.Lorentzian.lorVertex_jointIntegrable
-    size: L
-    difficulty: research-level
-    routes:
-      - "Bound the modulus of the integrand by the product of the weights `triWeight` of the ten edges and integrate edge by edge: the finiteness of the Lorentzian EPRL vertex (Kaminski–Kisielowski–Lewandowski, arXiv:0909.0939) or a direct estimate of `∏_e ∫ ‖g_e‖ dw` from `norm_exp_triAction` and the integrability of the `Ω` density (`Lightlike/Asymptotics/Lorentzian/Amplitude.lean`)."
   - id: T-SF10-P2
     milestone: SF10
     kind: proof
@@ -316,16 +306,6 @@ tasks:
     difficulty: intermediate
     routes:
       - "Split `1 - χ = (ψ - χ) + (1 - ψ)` for a cutoff `ψ` in `U` equal to `1` near `K`; the first part is `lorVertex_farRemainder_compact` (T-SF10-P5), the second `lorVertex_farRemainder_tail` (T-SF10-P6). The critical-set hypothesis is `CriticalSetIs` with the cutoff `1` (the first form, with `χ`, is false: a critical point outside `tsupport χ` contributes `λ^{-22}`; `docs/notes/sf10-p3-assessment.md`)."
-  - id: T-SF10-P5
-    milestone: SF10
-    kind: proof
-    title: The compact part of the Lorentzian far remainder is of rapidly decreasing order
-    file: Tasks/SF/T_SF10_P5.lean
-    decl: Lightlike.Asymptotics.Lorentzian.lorVertex_farRemainder_compact
-    size: M
-    difficulty: intermediate
-    routes:
-      - "`(ψ - χ) A` is smooth with compact support in `U` and has no critical point of `S` in its support: `expPhase_suppressed` (`Suppression.lean`) with `Re S ≤ 0` from `re_lorAction_le_zero`."
   - id: T-SF10-P6
     milestone: SF10
     kind: proof
@@ -664,79 +644,6 @@ tasks:
     routes:
       - "On `M = ℝᵈ` the charts are the identity and the atlas pieces partition `ℝᵈ`; for continuous compactly supported integrands the sum of the integrals over the pieces is the integral (`integral_iUnion`)."
 
-  - id: T-GF7-P1
-    milestone: GF7
-    kind: proof
-    title: "Nevanlinna–Sokal, eq. (B.6): the functions b_m along a vertical line are the successive derivatives of b_0"
-    file: Tasks/GF/T_GF7_P1.lean
-    decl: Lightlike.FieldTheory.Borel.SokalHyp.hasDerivAt_borelDeriv
-    size: M
-    difficulty: intermediate
-    routes:
-      - "Write R_{m+1}(z) = a_{m+1} z^{m+1} + R_{m+2}(z): then b_m(x) = a_m + a_{m+1} x + (1/2π) ∫ e^{xw} w^{m-1} R_{m+2}(w⁻¹) dy by Hankel's formula with k = 1 (hankel_vertical_y), and differentiate the last integral under the integral sign (hasDerivAt_integral_of_dominated_loc_of_deriv_le): |w^m R_{m+2}(w⁻¹)| ≤ K (m+2)! ρ^{-m-2} |w|^{-2} is integrable along the line (integrable_inv_sq_add)."
-  - id: T-GF7-P2
-    milestone: GF7
-    kind: proof
-    title: "Nevanlinna–Sokal, after eq. (B.6): |b_m(x)| ≤ K (ρ + 1/(2c)) (m+1)! ρ^{-m-1} e^{cx} for x ≥ 0"
-    file: Tasks/GF/T_GF7_P2.lean
-    decl: Lightlike.FieldTheory.Borel.SokalHyp.norm_borelDeriv_le
-    size: S
-    difficulty: intermediate
-    routes:
-      - "|a_m| ≤ K m! ρ^{-m} (SokalHyp.norm_coeff_le) and, by the rest-term bound with q = m + 1 at z = w⁻¹, the integrand is at most e^{cx} K (m+1)! ρ^{-m-1} (c² + y²)⁻¹, whose integral is π/c (integral_inv_sq_add); then m! ρ^{-m} ≤ ρ (m+1)! ρ^{-m-1} e^{cx}."
-  - id: T-GF7-P3
-    milestone: GF7
-    kind: proof
-    title: "Nevanlinna–Sokal, eq. (B.7): the local Borel transform B_x(t) = ∑ b_m(x) (t - x)^m/m! is analytic for |t - x| < ρ"
-    file: Tasks/GF/T_GF7_P3.lean
-    decl: Lightlike.FieldTheory.Borel.SokalHyp.analyticOnNhd_borelLocal
-    size: S
-    difficulty: intermediate
-    routes:
-      - "By T-GF7-P2 the coefficients b_m(x)/m! are at most C (m+1) ρ^{-m-1}, so the power series FormalMultilinearSeries.ofScalars of b_m(x)/m! has radius at least ρ; its sum is analytic on the ball (HasFPowerSeriesOnBall.analyticAt), and borelLocal is that sum at t - x."
-  - id: T-GF7-P4
-    milestone: GF7
-    kind: proof
-    title: "Nevanlinna–Sokal, Theorem 1 (second item): the Borel transform continues analytically to the strip dist(t, ℝ₊) < ρ, equal to b_0 on (0, ∞), with |B(t)| ≤ C e^{|t|/R} on smaller strips"
-    file: Tasks/GF/T_GF7_P4.lean
-    decl: Lightlike.FieldTheory.Borel.SokalHyp.exists_continuation
-    size: M
-    difficulty: advanced
-    routes:
-      - "On the real axis b_0(s) = ∑ b_m(x) (s - x)^m/m! for s > 0, |s - x| < ρ (Taylor's formula with integral remainder, T-GF7-P1 and T-GF7-P2), so B_x = B_{x'} on the intersection of their disks (identity theorem, AnalyticOnNhd.eqOn_of_preconnected_of_frequently_eq, T-GF7-P3) and B_x = borelT on |t| < ρ (SokalHyp.borelZero_eq_borelT); glue: B(t) = borelT a t for |t| < ρ, else B_{Re t}(t). The bound follows from T-GF7-P2 with c ↓ 1/R."
-    deps: [T-GF7-P1, T-GF7-P2, T-GF7-P3]
-  - id: T-GF7-P5
-    milestone: GF7
-    kind: proof
-    title: "Nevanlinna–Sokal, eq. (B.8): f(z) = (1/z) ∫_0^∞ e^{-x/z} b_0(x) dx for z in the disk C_R"
-    file: Tasks/GF/T_GF7_P5.lean
-    decl: Lightlike.FieldTheory.Borel.SokalHyp.eq_laplace_borelZero
-    size: M
-    difficulty: advanced
-    routes:
-      - "Without a half-plane Cauchy formula: b_0(x) - a_0 = 0 for x ≤ 0 (move the line to Re w = c' → ∞ with borelZero_indep and the bound M e^{xc'}/(2c')); then φ(x) = (b_0(x) - a_0) e^{-cx} is integrable and is the inverse Fourier transform of ξ ↦ (f(w⁻¹) - a_0)/w at w = c + 2πiξ, so Fourier inversion (Continuous.fourier_fourierInv_eq) gives ∫_0^∞ e^{-xw} (b_0(x) - a_0) dx = (f(w⁻¹) - a_0)/w for Re w > 1/R; take w = z⁻¹ and add ∫_0^∞ e^{-x/z} a_0 dx = a_0 z (integral_pow_mul_cexp_neg)."
-  - id: T-GF7-P6
-    milestone: GF7
-    kind: proof
-    title: "The Nevanlinna–Sokal theorem (Theorem 1 of Benedetti–Gurau–Keppler–Lettera with β = 0): the Borel transform converges near 0, continues to the strip, and its Laplace transform is f on C_R"
-    file: Tasks/GF/T_GF7_P6.lean
-    decl: Lightlike.FieldTheory.Borel.SokalHyp.nevanlinna_sokal
-    size: S
-    difficulty: intermediate
-    routes:
-      - "SokalHyp.hasSum_borelT for the first item; T-GF7-P4 for the continuation and the bound; T-GF7-P5 with B = b_0 on (0, ∞) for the Laplace representation, and the integrability from |b_0(x)| ≤ |a_0| + M e^{c'x}/(2c') with 1/R < c' < Re z⁻¹."
-    deps: [T-GF7-P4, T-GF7-P5]
-  - id: T-GF7-P7
-    milestone: GF7
-    kind: proof
-    title: "The partition function of the zero-dimensional λφ⁴ theory is Borel summable (Rivasseau–Wang Theorem IV.1 with k = 2)"
-    file: Tasks/GF/T_GF7_P7.lean
-    decl: Lightlike.FieldTheory.quarticZ_borel_summable
-    size: S
-    difficulty: intermediate
-    routes:
-      - "quarticZ_nevanlinna gives |R_N Z| ≤ 16√(2π) 32^N N! |λ|^{N+1} on every C_R; turn it into SokalHyp quarticZ quarticCoeff R K ρ with ρ = 1/32 (the case q = 0 from q = 1 and |a_0|) and apply T-GF7-P6; B does not depend on R because it is determined by its values near 0."
-    deps: [T-GF7-P6]
   - id: T-GF7-P8
     milestone: GF7
     kind: proof
