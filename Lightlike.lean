@@ -2153,3 +2153,10 @@ import Lightlike.Rows.G1_059.Minkowski2c
 import Lightlike.Rows.G1_059.Minkowski2d
 import Lightlike.Rows.G1_059.Minkowski2e
 import Lightlike.Rows.G1_059.Minkowski2f
+import Lightlike.Rows.G2_008.Limit
+import Lightlike.Rows.G2_008.Surjective
+import Lightlike.Rows.G2_008.Cylindrical
+import Lightlike.Rows.G2_008.Functional
+import Lightlike.Rows.G2_008.Linear
+import Lightlike.Rows.G2_008.Existence
+import Lightlike.Rows.G2_008.Positive
