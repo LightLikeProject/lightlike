@@ -8,7 +8,6 @@ working on what, and what is done, is on the issues:
 - [Ready proof tasks](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aopen+label%3Aready+label%3Aproof-task): Lean only, no physics
 - [Ready good first issues](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aopen+label%3Aready+label%3A%22good+first+issue%22)
 - [Claimed](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aopen+label%3Aclaimed): the claimant is the assignee
-- [Attempting](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aopen+label%3Aattempting): proof tasks with attempts in flight
 - [In review](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aopen+label%3A%22in+review%22): a pull request names the task
 - [Done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted)
 
@@ -97,10 +96,9 @@ approaches.
 | [`T-CS2-P2`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CS2-P2%22) | The Myrheim–Meyer relation probability in four dimensions is 1/20 | [T_CS2_P2.lean](../../Tasks/CS2/T_CS2_P2.lean) | CS2 | M | advanced |
 | [`T-CS2-P3`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CS2-P3%22) | A rectangle instead of the diamond gives a different relation probability | [T_CS2_P3.lean](../../Tasks/CS2/T_CS2_P3.lean) | CS2 | M | intermediate |
 | [`T-CS3-P1`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CS3-P1%22) | The longest chain of n uniform points of the 1+1 diamond is about 2 sqrt(n) | [T_CS3_P1.lean](../../Tasks/CS3/T_CS3_P1.lean) | CS3 | L | research-level |
-| [`T-SF10-P1`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-SF10-P1%22) | Joint integrability of the Lorentzian vertex integrand | [T_SF10_P1.lean](../../Tasks/SF/T_SF10_P1.lean) | SF10 | L | research-level |
+| [`T-GF7-P8`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GF7-P8%22) | Cayley's formula: there are n^{n-2} trees on n labelled vertices | [T_GF7_P8.lean](../../Tasks/GF/T_GF7_P8.lean) | GF7 | M | intermediate |
 | [`T-SF10-P2`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-SF10-P2%22) | Invertibility of the Hessian of the Lorentzian vertex action at a critical point | [T_SF10_P2.lean](../../Tasks/SF/T_SF10_P2.lean) | SF10 | L | research-level |
 | [`T-SF10-P3`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-SF10-P3%22) | The far part of the Lorentzian vertex integral is of lower order | [T_SF10_P3.lean](../../Tasks/SF/T_SF10_P3.lean) | SF10 | S | intermediate |
-| [`T-SF10-P5`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-SF10-P5%22) | The compact part of the Lorentzian far remainder is of rapidly decreasing order | [T_SF10_P5.lean](../../Tasks/SF/T_SF10_P5.lean) | SF10 | M | intermediate |
 | [`T-SF10-P6`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-SF10-P6%22) | The non-compact tail of the Lorentzian far remainder is of lower order | [T_SF10_P6.lean](../../Tasks/SF/T_SF10_P6.lean) | SF10 | L | research-level |
 | [`T-SF10-P4`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-SF10-P4%22) | Finiteness and classification of the critical points of the Lorentzian vertex action | [T_SF10_P4.lean](../../Tasks/SF/T_SF10_P4.lean) | SF10 | L | research-level |
 
@@ -305,9 +303,10 @@ Done-when texts and trust checks: [milestones.md](milestones.md#pl-topology).
 | [`T-PL1`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-PL1%22) | Simplicial complexes in every dimension; links, stars, joins, cones; stellar subdivisions and welds; … | lickorish-1999 | M | intermediate |  |
 | [`T-PL2`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-PL2%22) | Pachner's theorem: closed combinatorial manifolds are stellar-equivalent exactly when they are related by … | lickorish-1999 | L | advanced |  |
 | [`T-PL5`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-PL5%22) | The topology Moise's proof needs: Jordan curve and Schoenflies theorems in the plane, and the 3-dimensional … | moise-1977, mccleary-2006 | R | research-level |  |
-| [`T-PL6`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-PL6%22) | Moise's theorem: every topological 3-manifold has a triangulation, unique up to PL homeomorphism | moise-1977, Tame imbedding | R | research-level | PL5 |
 | [`T-PL4`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-PL4%22) | Geometric realisations, PL maps and PL homeomorphisms; Newman's theorem: PL-homeomorphic realisations exactly … | lickorish-1999 | L | advanced | PL2 |
-| [`T-PL7`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-PL7%22) | Assembly: homeomorphic closed 3-manifolds have triangulations related by the moves on `Complex3`; … | turaev-1994, lickorish-1999 | M | intermediate | PL2, PL4, PL6 |
+| [`T-PL7a`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-PL7a%22) | Assembly up to PL homeomorphism: PL-homeomorphic closed combinatorial 3-manifolds have triangulations related … | turaev-1994, lickorish-1999 | M | intermediate | PL2, PL4 |
+| [`T-PL6`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-PL6%22) | Moise's theorem: every topological 3-manifold has a triangulation, unique up to PL homeomorphism | moise-1977, Tame imbedding | R | research-level | PL5 |
+| [`T-PL7b`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-PL7b%22) | Assembly up to homeomorphism: homeomorphic closed 3-manifolds have triangulations related by the moves on … | turaev-1994, lickorish-1999 | R | research-level | PL7a, PL6 |
 | [`T-PL3`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-PL3%22) | The classification of closed combinatorial surfaces up to 2D bistellar moves | lickorish-1999, moise-1977 | L | advanced |  |
 
 ### Quantum groups and state-sum TQFTs
@@ -318,7 +317,7 @@ Done-when texts and trust checks: [milestones.md](milestones.md#quantum-groups-a
 |---|---|---|---|---|---|
 | [`T-QU1`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-QU1%22) | q-deformed Biedenharn–Elliott identity and orthogonality for `r ≥ 4` | turaev-1994, koekoek-swarttouw-1996 | L | advanced |  |
 | [`T-QU3`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-QU3%22) | Modular tensor categories from `U_q(sl₂)` at roots of unity, and the Reshetikhin–Turaev invariant from surgery | turaev-1994 | R | research-level | QU1 |
-| [`T-QU4`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-QU4%22) | Biedenharn–Elliott identity for all spins; Ponzano–Regge amplitude; invariance under the 2-3 move at the … | edmonds-1957, varshalovich-1988, barrett-naish-guzman-2009, … | M | intermediate |  |
+| [`T-QU4`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-QU4%22) | Biedenharn–Elliott identity for all spins; Ponzano–Regge amplitude; invariance under the 2-3 move at the … | edmonds-1957, varshalovich-1988, barrett-naish-guzman-2009, … | M | intermediate | HA4 |
 | [`T-QU5`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-QU5%22) | Triangulation independence of the regularised Ponzano–Regge amplitude as far as it goes without Pachner's … | barrett-naish-guzman-2009, freidel-louapre-2004 | M | intermediate |  |
 | [`T-QU2`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-QU2%22) | The Crane–Yetter state sum: quantum 15j symbols at roots of unity, invariance under the 4D Pachner moves | cky-1997 | L | advanced | QU1, SF3 |
 
@@ -400,7 +399,7 @@ Done-when texts and trust checks: [milestones.md](milestones.md#group-field-theo
 | [`T-GF1`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GF1%22) | Colored graphs and their dual pseudo-manifolds (Gurau 2010; crystallization theory) | gurau-2010 | M | intermediate | PL1 |
 | [`T-GF6`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GF6%22) | Renormalizability of tensorial GFTs: T⁴₄ (Ben Geloun–Rivasseau 2013), SU(2) in 3D (Carrozza–Oriti–Rivasseau … | ben-geloun-rivasseau-2011, carrozza-oriti-rivasseau-2014 | R | research-level | FT2, GF3 |
 | [`T-GF5`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GF5%22) | Melons are branched polymers (Gurau–Ryan 2014) | gurau-ryan-2013 | R | research-level | GF4, RN3 |
-| [`T-GF7`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GF7%22) | Borel summability: the modified Boulatov model (Freidel–Louapre 2003), quartic tensor models … | freidel-louapre-2002, delepouve-gurau-rivasseau-2016 | R | research-level | FT1 |
+| [`T-GF7`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GF7%22) | Borel summability: the modified Boulatov model (Freidel–Louapre 2003), quartic tensor models … | freidel-louapre-2002, delepouve-gurau-rivasseau-2016, … | R | research-level | FT1 |
 
 ### Holography
 

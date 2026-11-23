@@ -30,10 +30,10 @@ theorem class_A0 (H : Fin 3 → Fin 3 → ℝ) (hH : ∀ i j, H i j = H j i) (k 
     clsSum (dirs k) (fun σ h => dth h (incVec (fun _ Δ => qf H Δ) σ h)) = 0 := by
   fin_cases k <;>
   · simp only [clsSum, InClass, dirs, Fin.sum_univ_six, Fin.forall_fin_succ,
-      perms, hP, hQ, kv, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, Matrix.head_cons]
+      perms, hP, hQ, kv, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val]
     norm_num [Matrix.cons_val_zero]
     simp only [incVec, dth, qf, kpos, perms, hP, hQ, hR, hS, kv, Fin.sum_univ_three,
-      Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, Matrix.head_cons]
+      Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val]
     norm_num
     simp only [hH 1 0, hH 2 0, hH 2 1]
     ring
@@ -45,10 +45,10 @@ theorem class_A1 (dh : Fin 3 → Fin 3 → Fin 3 → ℝ) (hd : ∀ k i j, dh k 
     clsSum (dirs k) (fun σ h => dth h (incVec (fun s Δ => d1q dh s Δ) σ h)) = 0 := by
   fin_cases k <;>
   · simp only [clsSum, InClass, dirs, Fin.sum_univ_six, Fin.forall_fin_succ,
-      perms, hP, hQ, kv, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, Matrix.head_cons]
+      perms, hP, hQ, kv, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val]
     norm_num [Matrix.cons_val_zero]
     simp only [incVec, dth, d1q, kpos, perms, hP, hQ, hR, hS, kv, Fin.sum_univ_three,
-      Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, Matrix.head_cons]
+      Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val]
     norm_num
     simp only [hd _ 1 0, hd _ 2 0, hd _ 2 1]
     ring

@@ -1,11 +1,12 @@
 # Keeps the task issues current: `python3 scripts/tasks.py sync --apply` reads every issue, its
-# comments (`claiming`, `attempting`, `stopping`) and the pull requests that name a task
+# comments (`/claim` and `/unclaim`; the old words `claiming`, `attempting` and `stopping` are aliases) and the pull requests that name a task
 # (`Task: T-...`), then sets the labels ready, blocked, claimed, attempting and in review, assigns
-# claimants, lets claims lapse after 14 days without activity, closes the issue of a proof task
+# claimants, releases a claim 48 hours after `/claim` unless a pull request naming the task is open,
+# refuses a fourth open claim of one person, closes the issue of a proof task
 # once its proof is on main, and opens the issue of each task that becomes ready.
 #
 # When it runs: on issue, comment and pull request events, on pushes to main that change the plan
-# or the task files, daily, and on demand. Only when the repository variable TASK_SYNC is `on`
+# or the task files, hourly (so that claims expire on time), and on demand. Only when the repository variable TASK_SYNC is `on`
 # (Settings -> Secrets and variables -> Actions -> Variables), so it is off until the maintainers
 # switch it on. Its own comments and edits use GITHUB_TOKEN, which starts no further runs.
 #
@@ -24,7 +25,7 @@ on:
     branches: [main]
     paths: ['docs/tasks/**', 'Tasks/**']
   schedule:
-    - cron: '17 4 * * *'
+    - cron: '17 * * * *'
   workflow_dispatch:
 
 permissions:

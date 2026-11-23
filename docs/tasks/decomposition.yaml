@@ -45,7 +45,8 @@ needs:
   PL4: [PL2]
   PL5: []
   PL6: [PL5]
-  PL7: [PL2, PL4, PL6]
+  PL7a: [PL2, PL4]
+  PL7b: [PL7a, PL6]
 
 # Milestones whose statements are all among the proof tasks below. Once those are locked, the
 # milestones that need one of them can start, before its proofs are done.
@@ -284,16 +285,6 @@ tasks:
     difficulty: research-level
     routes:
       - "Teschl, Mathematical Methods in Quantum Mechanics, Theorem 3.7 (resolvent, Herglotz functions, Stieltjes inversion), or the Cayley transform, the continuous functional calculus of the unitary and the Riesz–Markov theorem, transported to the real line."
-  - id: T-SF10-P1
-    milestone: SF10
-    kind: proof
-    title: Joint integrability of the Lorentzian vertex integrand
-    file: Tasks/SF/T_SF10_P1.lean
-    decl: Lightlike.Asymptotics.Lorentzian.lorVertex_jointIntegrable
-    size: L
-    difficulty: research-level
-    routes:
-      - "Bound the modulus of the integrand by the product of the weights `triWeight` of the ten edges and integrate edge by edge: the finiteness of the Lorentzian EPRL vertex (Kaminski–Kisielowski–Lewandowski, arXiv:0909.0939) or a direct estimate of `∏_e ∫ ‖g_e‖ dw` from `norm_exp_triAction` and the integrability of the `Ω` density (`Lightlike/Asymptotics/Lorentzian/Amplitude.lean`)."
   - id: T-SF10-P2
     milestone: SF10
     kind: proof
@@ -315,16 +306,6 @@ tasks:
     difficulty: intermediate
     routes:
       - "Split `1 - χ = (ψ - χ) + (1 - ψ)` for a cutoff `ψ` in `U` equal to `1` near `K`; the first part is `lorVertex_farRemainder_compact` (T-SF10-P5), the second `lorVertex_farRemainder_tail` (T-SF10-P6). The critical-set hypothesis is `CriticalSetIs` with the cutoff `1` (the first form, with `χ`, is false: a critical point outside `tsupport χ` contributes `λ^{-22}`; `docs/notes/sf10-p3-assessment.md`)."
-  - id: T-SF10-P5
-    milestone: SF10
-    kind: proof
-    title: The compact part of the Lorentzian far remainder is of rapidly decreasing order
-    file: Tasks/SF/T_SF10_P5.lean
-    decl: Lightlike.Asymptotics.Lorentzian.lorVertex_farRemainder_compact
-    size: M
-    difficulty: intermediate
-    routes:
-      - "`(ψ - χ) A` is smooth with compact support in `U` and has no critical point of `S` in its support: `expPhase_suppressed` (`Suppression.lean`) with `Re S ≤ 0` from `re_lorAction_le_zero`."
   - id: T-SF10-P6
     milestone: SF10
     kind: proof
@@ -663,6 +644,17 @@ tasks:
     routes:
       - "On `M = ℝᵈ` the charts are the identity and the atlas pieces partition `ℝᵈ`; for continuous compactly supported integrands the sum of the integrals over the pieces is the integral (`integral_iUnion`)."
 
+  - id: T-GF7-P8
+    milestone: GF7
+    kind: proof
+    title: "Cayley's formula: there are n^{n-2} trees on n labelled vertices"
+    file: Tasks/GF/T_GF7_P8.lean
+    decl: Lightlike.FieldTheory.Forest.card_isTree
+    size: M
+    difficulty: intermediate
+    routes:
+      - "The Prüfer code: removing the least leaf and recording its neighbour, n - 2 times, is a bijection from the trees on Fin n to Fin n^(n-2); or count rooted forests by induction (the number of rooted forests on [n] with k given roots is k n^{n-k-1})."
+
 # Upstream tasks: finished results that belong in Mathlib (general mathematics) or Physlib
 # (general physics), with the rework each needs. Exclusive, like definition
 # tasks; `target` gives the label `upstream: <library>`.
@@ -959,6 +951,14 @@ locked:
   T-GE6-P5: "9063c440414ff9c3"
   T-GE6-P6: "08476dece9bcb162"
   T-GE6-P7: "0848073ab1830ed0"
+  T-GF7-P1: "f8f6555019266f1d"
+  T-GF7-P2: "db1304f48b9b25e5"
+  T-GF7-P3: "76d02148e444c630"
+  T-GF7-P4: "c073c2a6ab79b085"
+  T-GF7-P5: "54db17e1b2cd4f38"
+  T-GF7-P6: "5c7b0de517f414c7"
+  T-GF7-P7: "82335811aba06b3a"
+  T-GF7-P8: "96328d9fd6a2fb2d"
   T-QU1-P1: "e1f8fee660e6bb70"
   T-QU1-P2: "48d6183e645a58f7"
   T-QU1-P3: "f6a02ca2e41a673e"

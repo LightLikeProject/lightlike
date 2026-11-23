@@ -57,7 +57,7 @@ geodesics of Regge calculus.
 | GE3 | Geodesics, the exponential map and the Raychaudhuri equation on a manifold | the Raychaudhuri equation for timelike geodesic congruences, and focusing under the strong energy condition | expansion of comoving congruences in Minkowski and in FLRW in closed form; a congruence in a spacetime violating the energy condition does not focus | M | GE1 |
 | GE4 | Penrose's singularity theorem (1965) | a globally hyperbolic spacetime with a non-compact Cauchy surface, the null energy condition and a closed trapped surface is null-geodesically incomplete | the hypotheses hold in the Schwarzschild interior (trapped spheres at `r < 2M`); Minkowski has no closed trapped surface | R | GE2, GE3 |
 | GE5 | Spin structures and the Dirac operator, on Mathlib's Clifford algebras; the Lichnerowicz formula | the Dirac operator on ℝⁿ and on a spin manifold; `D² = ∇*∇ + R/4` | Dirac spectrum on the unit 2-sphere `±(k+1)` with multiplicity `2(k+1)`; the formula with `R/2` shown to fail | L | GE1 |
-| GE6 | Kerr in Boyer–Lindquist coordinates; Killing horizons, surface gravity and angular velocity | Kerr proven a vacuum solution; `κ = √(M²−a²)/(2Mr₊)` and `Ω_H = a/(2Mr₊)` computed | `a = 0` gives Schwarzschild with `κ = 1/(4M)`; a sign flipped in g_tφ shown not to be Ricci-flat | M | GE10 |
+| GE6 | Kerr in Boyer–Lindquist coordinates; Killing horizons, surface gravity and angular velocity | Kerr proven a vacuum solution; `κ = √(M²−a²)/(2Mr₊)` and `Ω_H = a/(2Mr₊)` computed | `a = 0` gives Schwarzschild with `κ = 1/(4M)`; the coefficient of `g_tφ` halved shown not to be Ricci-flat (flipping its sign gives Kerr with `-a`, which is Ricci-flat) | M | GE10 |
 | GE7 | Conformal compactification: null infinity of Minkowski space, the conformal boundary of anti-de Sitter space | both defined, with the conformal action of the isometry groups on the boundary | the compactified Minkowski space as a region of the Einstein static universe; a non-conformal rescaling shown to fail | M | GE2 |
 | GE8 | Heat-kernel expansion of Laplace-type operators on compact Riemannian manifolds (Seeley–DeWitt coefficients `a₀`, `a₁`, `a₂`) | the asymptotic expansion of the heat trace with `a₁ = (4π)^{-n/2}∫R/6` | unit 2-sphere: `Σ(2l+1)e^{−t l(l+1)} = 1/t + 1/3 + t/15 + O(t²)`; the flat torus has no `t⁰` term | L | GE1 |
 | GE9 | Spacetime geometry: Lorentzian metrics, Minkowski space, coordinate curvature, Riemann symmetries, chart changes | - | - | - | - |
@@ -269,7 +269,8 @@ it to PL topology, layer 3 to topological 3-manifolds.
 | PL4 | 2 | Geometric realisations, PL maps and PL homeomorphisms; Newman's theorem: PL-homeomorphic realisations exactly when stellar-equivalent | L |
 | PL5 | 3 | The topology Moise's proof needs: Jordan curve and Schoenflies theorems in the plane, and the 3-dimensional tools fixed by a survey at the start of PL5 | R |
 | PL6 | 3 | Moise's theorem: every topological 3-manifold has a triangulation, unique up to PL homeomorphism | R |
-| PL7 | - | Assembly: homeomorphic closed 3-manifolds have triangulations related by the moves on `Complex3`; consequences for the state sums | M |
+| PL7a | - | Assembly up to PL homeomorphism: PL-homeomorphic closed combinatorial 3-manifolds have triangulations related by the moves on `Complex3`; consequences for the state sums | M |
+| PL7b | - | Assembly up to homeomorphism: homeomorphic closed 3-manifolds have triangulations related by the moves on `Complex3` (needs Moise's theorem, PL6); consequences for the state sums | R |
 
 - **PL1, done when:** the definitions with their basic properties are in place; trust checks: the
   boundary of an (n+1)-simplex is a PL n-sphere, small known examples (the octahedron is a PL
@@ -291,10 +292,9 @@ it to PL topology, layer 3 to topological 3-manifolds.
   characteristic) are not stellar-equivalent.
 - **PL5, done when:** the statements fixed by the survey at the start of PL5 are proven.
 - **PL6, done when:** both parts of Moise's theorem are proven.
-- **PL7, done when:** the Turaev–Viro state sum at `r = 3`, which is already unconditionally
-  invariant under the moves, is proven to be an invariant of closed 3-manifolds up to
-  homeomorphism; and for the Ponzano–Regge amplitude it is stated exactly which invariance follows,
-  given its cutoff and gauge-tree conditions.
+- **PL7a, done when:** the Turaev–Viro state sum at `r = 3`, which is already unconditionally
+  invariant under the moves, is proven to be an invariant of closed 3-manifolds up to PL homeomorphism (from PL2 and PL4); and for the Ponzano–Regge amplitude it is stated exactly which invariance up to PL homeomorphism follows, given its cutoff and gauge-tree conditions.
+- **PL7b, done when:** the same up to homeomorphism (from PL7a and Moise's theorem, PL6).
 
 ### Quantum groups and state-sum TQFTs
 
@@ -305,7 +305,7 @@ Folder `Lightlike/TuraevViro/`.
 | QU1 | q-deformed Biedenharn–Elliott identity and orthogonality for `r ≥ 4` | below | below | L | `TuraevViro/` |
 | QU2 | The Crane–Yetter state sum: quantum 15j symbols at roots of unity, invariance under the 4D Pachner moves | below | below | L | QU1, SF3 |
 | QU3 | Modular tensor categories from `U_q(sl₂)` at roots of unity, and the Reshetikhin–Turaev invariant from surgery | the RT invariant of closed 3-manifolds given by surgery on framed links is defined and proven invariant under the Kirby moves | `S³`, `S²×S¹` and lens spaces `L(p,1)` against published values; a non-modular S-matrix shown to break invariance | R | QU1 |
-| QU4 | Biedenharn–Elliott identity for all spins; Ponzano–Regge amplitude; invariance under the 2-3 move at the level of the weight (exact for the gauge-fixed amplitude below) | - | - | - | - |
+| QU4 | Biedenharn–Elliott identity for all spins; Ponzano–Regge amplitude; invariance under the 2-3 move at the level of the weight (exact for the gauge-fixed amplitude below) | the Biedenharn–Elliott identity for the SU(2) 6j symbols is proven for all spins, the Ponzano–Regge amplitude is defined, and its weight is proven invariant under the 2-3 move, exactly for the gauge-fixed amplitude | a known 6j value; a wrong sign convention in the 6j symbol shown to break the Biedenharn–Elliott identity | M | HA4 |
 | QU5 | Triangulation independence of the regularised Ponzano–Regge amplitude as far as it goes without Pachner's theorem | - | - | - | - |
 
 - **QU1, done when**: the q-Biedenharn–Elliott identity and q-orthogonality are
@@ -605,9 +605,11 @@ A spin foam model assigns amplitudes to labellings of a fixed 2-complex (dual to
   are proven. Trust checks: values against published numerics where available, and a wrong
   simplicity constraint shown to give a different result.
 - **SF6b, done when:** the EPRL state sum on a closed 4-complex (the vertex amplitude of SF6, a
-  stated face amplitude and the edge normalizations) is defined, with its basic properties and its
-  relation to the Ooguri model at the BF point stated and proven. Trust checks: a small complex
-  against published numerics where available.
+  stated face amplitude and the edge normalizations) is defined, with its basic properties
+  (independence of the vertex order and of the orientation) and its
+  relation to the Ooguri model at the BF point stated and proven. Trust checks: on a small closed
+  4-complex at low spins, the state sum computed in Lean equals the Ooguri amplitude at the BF point;
+  a wrong face amplitude shown to break that equality.
 - **SF7, done when:** the Lorentzian EPRL vertex amplitude is defined and its finiteness proven
   (Engle–Pereira–Rovelli–Livine 2008; Engle–Pereira 2009 for finiteness).
 - **SF8, done when:** `PR.PonzanoReggeFormula` (`PonzanoRegge/Asymptotics.lean`) is proven

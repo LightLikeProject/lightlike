@@ -1,0 +1,35 @@
+name: Contributors
+
+# Rewrites the pinned issue "Contributors and weekly leaderboard" (found by a marker in its body; created once
+# with the label `leaderboard`) from the merged pull requests: every contributor, and the proof tasks merged
+# per account in the last 7 days (scripts/contributors.py). Actions cannot push to `main`, so the list is an
+# issue; the maintainers pin it once. It touches no other issue.
+#
+# Runs weekly and on demand, with the checkout of `main`; it reads pull request bodies as data only.
+on:
+  schedule:
+    - cron: '23 5 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: read
+
+jobs:
+  contributors:
+    if: github.event.repository.private == false || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Rewrite the leaderboard issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: python3 scripts/contributors.py --repo "$REPO" --apply

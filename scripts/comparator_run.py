@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
-"""Runs `lake comparator` on the proof tasks that a push to main has just proved.
+"""Runs `lake comparator` on the proof tasks that a change has just proved.
 
     python3 scripts/comparator_run.py --before <sha> --after <sha> [--paranoid] [--dry-run]
     python3 scripts/comparator_run.py --all [--paranoid] [--dry-run]
 
-For each task file under Tasks/ (docs/tasks/tasks.yaml gives its declaration) that the push changed
+For each task file under Tasks/ (docs/tasks/tasks.yaml gives its declaration) that the change
+(`--before`..`--after`: a pull request's merge commit against its base, a merge-queue run against the
+queue's base, or a push to main against the previous main) changed
 and that no longer contains `sorry`, the challenge is the file as first committed (the locked
 statement, with its `sorry`) and the solution is the file now. `lake comparator` then establishes
 that the solution proves the same statement as the challenge (kernel type equality of the theorem,
@@ -13,8 +15,9 @@ is accepted by the kernel; `--paranoid` also runs the external kernels. `--all` 
 task file (the weekly run).
 
 It extends, not replaces, scripts/proof_task_check.py (statement text unchanged, in a pull
-request) and the axiom audit (audited theorems only). It is a main-only job that never blocks a
-pull request: .github/workflows/comparator.yml. `--dry-run` prints the selection and each
+request) and the axiom audit (audited theorems only). .github/workflows/comparator.yml runs it as the
+required check `comparator` of pull requests and merge-queue runs, and, without blocking, after a push to
+main and weekly. `--dry-run` prints the selection and each
 comparator configuration and runs nothing; without it the script needs `lake` and `bwrap` and edits the
 working copy (two scratch modules and their lean_lib entries in the root lakefile), so run it only on a
 disposable CI checkout. Exit 0 all accepted or nothing to judge, 1 a rejection, 2 could not run."""

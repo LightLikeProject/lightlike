@@ -30,7 +30,7 @@ python3 -m venv .venv && . .venv/bin/activate && pip install -r requirements.txt
 Then, on either route:
 
 1. Pick a [proof task labelled **ready**](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aopen+label%3Aready+label%3Aproof-task),
-   comment `attempting` on its issue, and open its file, for example `Tasks/QU/T_QU1_P5.lean` for
+   comment `/claim` on its issue, and open its file, for example `Tasks/QU/T_QU1_P5.lean` for
    `T-QU1-P5`. Its header lists the definitions the statement uses, with their files, and lemmas
    about them; `scripts/context-pack <declaration>` prints all of them in one block.
 2. Run `lake build Tasks.QU.T_QU1_P5`. The first build compiles the parts of Physlib and Lightlike
@@ -55,7 +55,7 @@ Paste this into your coding agent, started in a clone set up as above. It follow
 You are contributing one proof to Lightlike, a Lean 4 library; this folder is a clone of it.
 1. Read AGENTS.md and CONTRIBUTING.md before anything else, and follow them.
 2. Pick one open proof task labelled `ready` (CONTRIBUTING.md, "Your first proof task"). Tell me
-   which, and comment `attempting` on its issue (or ask me to) before you start.
+   which, and comment `/claim` on its issue (or ask me to) before you start.
 3. Work on a branch `proof/<task ID>`, one task per pull request.
 4. Change only the proof in the task's file. Never edit the locked statement, and never add
    `sorry`, `admit`, `axiom`, `native_decide` or `maxHeartbeats 0`.
@@ -118,8 +118,7 @@ name a task:
 |---|---|---|
 | `ready` | everything the task needs is done | its dependencies' issues are closed |
 | `blocked` | it waits for another task | a task it needs is not done |
-| `claimed` | one person works on it; they are the assignee | someone comments `claiming` |
-| `attempting` | a proof task with attempts in flight | someone comments `attempting` |
+| `claimed` | one person works on it; they are the assignee | someone comments `/claim`; it ends after 48 hours unless a pull request naming the task is open, or on `/unclaim` |
 | `in review` | a pull request for it is open | the pull request has the line `Task: <ID>` |
 
 Nobody sets these by hand, and nothing in the repository records progress. A task is done when its
@@ -132,17 +131,21 @@ area's [milestone table](docs/tasks/milestones.md) and its sources; the
 
 The work is split into small tasks so that many people can work at once, several on one problem.
 
-- **Claims.** Definition, statement and upstream tasks work best with one person at a time:
-  comment `claiming` on the issue, and `stopping` to release it. A claim lapses after 14 days
-  without a comment or pull request; the workflow then says so on the issue and removes the
-  assignee. This avoids two competing definitions of the same notion.
+- **Claims.** A task has one holder at a time:
+  comment `/claim` on the issue, and `/unclaim` to release it. A claim lasts 48 hours, or as long as
+  a pull request naming the task (`Task: <ID>`) is open; the workflow then says so on the issue and
+  removes the assignee. A person holds at most 3 open claims; a fourth is refused with a comment.
+  This avoids two competing definitions of the same notion. The old words `claiming`, `attempting`
+  and `stopping` still work as aliases.
 - **Statements first.** Each result is first written as a Lean statement with `sorry`. Once it is
   reviewed and locked, its proof becomes a proof task with its own file in `Tasks/`. Large proofs
   are split into intermediate lemmas, each its own statement and proof task.
 - **Ready** means every task it depends on is done, except proof tasks, which count once their
   statement is locked: you may use a lemma whose proof is still open.
-- **Attempting.** Proof tasks are non-exclusive. Commenting `attempting` on the issue labels it
-  `attempting` (`stopping` withdraws it); sharing your approach in the thread helps others.
+- **Claiming a proof task.** Claims are exclusive for every kind of task. Commenting `/claim` on the
+  issue labels it `claimed` and assigns you (`/unclaim` withdraws it); a second `/claim` on a claimed
+  task is answered with the holder and the expiry. Claims are advisory: if two pull requests arrive,
+  the first that passes CI is merged. Sharing your approach in the thread helps others.
 - **First valid proof wins.** The first pull request that passes CI is merged. A later proof of
   the same statement is merged as an alternative only if it is clearly shorter, faster to check
   or more general.
@@ -151,12 +154,29 @@ The work is split into small tasks so that many people can work at once, several
 
 ## Review
 
-The [README](README.md#review) gives what a statement is checked for: conventions, quantifier
+The [review rubric](docs/review-rubric.md) gives what a statement is checked for: conventions, quantifier
 ranges, junk values and non-vacuity. To review a result, compare its statement and definitions
 with the cited source and post your findings on its issue; a maintainer then records it as
 **human-reviewed** in `docs/results.yaml`, with a link to that issue. A statement under review is
 locked once it passes, or returned with reasons. A surprising result in an `Exploratory/` folder
 is reviewed first and flagged to the maintainers; work on it continues meanwhile.
+
+A pull request that adds, changes or removes a Lean file under `Lightlike/` or `Tasks/` (and is not a
+proof-task pull request that changes only its own task file) gets the label `needs-review`: a
+statement can change on any line of a signature, so the rule is the file. The check `review-gate`
+lets it merge only with two approvals of its current commit from two accounts other than the author,
+each with a merged pull request in this repository (or when an administrator wrote it). Every other
+pull request passes the check. A maintainer merges a pull request that needs review. Reviewers follow the [review rubric](docs/review-rubric.md): source
+match, hypotheses, conventions, quantifiers and edge cases. A proof-task pull request that changes
+only its own task file merges by itself once the checks pass.
+
+The kernel cannot check that a definition or a statement means what its source means, so each
+statement is compared with its cited source for conventions (signature, units, normalisations),
+quantifier ranges and hypotheses, junk values of partial operations (such as `ℕ` subtraction and
+`x / 0 = 0`) and non-vacuity (an example satisfies the hypotheses of each main theorem).
+
+To review an entry, or to report a mismatch, open an [issue](https://github.com/LightlikeProject/lightlike/issues/new)
+with the entry's ID, the place in its source, and what differs.
 
 ## Checking locally
 
@@ -235,3 +255,81 @@ including a conduct report, write to the project address, lightlike.project@gmai
 ## License
 
 By contributing you agree to license your contributions under the [Apache License 2.0](LICENSE).
+
+## What Lightlike is
+
+- **It is** a library of definitions, statements and proofs about the mathematics of physical
+  models. Every result has a tier: **established** (standard mathematics and physics),
+  **frontier** (published proposals) or **exploratory** (new or unpublished models). Exploratory
+  work goes in `Exploratory/` folders, which the rest of the library may not import.
+- **It is not** a claim that a model describes nature. A theorem says what follows from a model's
+  definitions, under the hypotheses and limits stated with it.
+- **It does not** prefer one approach to quantum gravity. Competing approaches sit side by side,
+  each formalized from its own literature.
+
+## How work is tracked
+
+- **The repository holds the plan; the issues hold the progress.** A task's issue opens when the
+  task becomes ready, and a workflow keeps its labels current from comments and pull requests:
+  **ready**, **claimed**, **in review**. Nobody edits a status by hand.
+- **Every task is taken by one person at a time.** Comment `/claim` to take
+  one (you are assigned) and `/unclaim` to release it. A claim lasts 48 hours, or while a pull request
+  naming the task is open; a person holds at most 3 claims.
+- **Proof tasks are claimed the same way.** Claims are advisory: if two pull requests arrive for one
+  task, the first that passes CI is merged.
+- **Done means merged.** A pull request that finishes a task says `Closes #<issue>`; a proof task's
+  issue is closed once its proof is on `main`. Tasks that need it then become ready.
+
+## Help wanted, community, license and citation
+
+Lightlike has one maintainer. Help is especially welcome with repository and CI maintenance, Lean
+infrastructure, domain review, and leading an area: open an issue labelled
+[**help wanted**](https://github.com/LightlikeProject/lightlike/labels/help%20wanted). Discussion
+and coordination on [Discord](https://discord.gg/Eyx3zTx9JW); questions and proposals in
+[GitHub Discussions](https://github.com/LightlikeProject/lightlike/discussions). Everyone follows
+the [code of conduct](CODE_OF_CONDUCT.md); contact: lightlike.project@gmail.com. Apache License 2.0,
+copyright The Lightlike contributors ([LICENSE](LICENSE)); cite it via [CITATION.cff](CITATION.cff).
+
+## Building
+
+Install Lean's version manager [elan](https://github.com/leanprover/elan) (see the [official
+instructions](https://lean-lang.org/install/)). The versions are pinned: Lean and Mathlib `v4.35.0`,
+Physlib at commit `cdfa609`. On Windows, install elan by those instructions, or run the commands
+below in WSL, or use [Codespaces](CONTRIBUTING.md#your-first-proof-task). On Linux and macOS:
+
+```sh
+curl https://elan.lean-lang.org/elan-init.sh -sSf | sh
+source "$HOME/.elan/env"
+git clone https://github.com/LightlikeProject/lightlike && cd lightlike
+lake exe cache get
+lake build
+lake build Tasks
+```
+
+`lake exe cache get` downloads Mathlib's prebuilt files; the first `lake build` compiles Physlib and
+Lightlike. On GitHub's 4-core Linux runner, Lightlike alone took about 42 minutes (Physlib comes on
+top). Later builds compile only what changed. A build needs about 11 GB of disk, and some modules up
+to about 6 GB of RAM per Lean process (16 GB is recommended; 8 GB machines may build very slowly).
+`lake build Tasks` builds the proof-task files in `Tasks/`, which are not part of the library. The
+checks in `scripts/` need Python 3.9 to 3.14 and the packages in `requirements.txt`:
+`python3 -m venv .venv && . .venv/bin/activate && pip install -r requirements.txt` (on Windows the
+venv is activated with `.venv\Scripts\activate`; `scripts/gate.py` runs the CI steps with bash).
+
+To use Lightlike in a project with the same Lean version, add to its `lakefile.toml`:
+
+```toml
+[[require]]
+name = "lightlike"
+git = "https://github.com/LightlikeProject/lightlike"
+rev = "v0.3.0"
+```
+
+Then, in a Lean file of that project:
+
+```lean
+import Lightlike
+
+open Lightlike
+
+#check @IsCoordMetric.bianchi_first   -- LL-0001, the first Bianchi identity in coordinates
+```

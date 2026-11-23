@@ -13,7 +13,7 @@ evaluated at the chart point `y`.
 Main result: `NondegMetric.isCoordMetric_coordMetric` - on the chart's target (an open set
 containing the image of `x₀`), these components form an `IsCoordMetric`: symmetric, invertible,
 with `C^∞` entries. Hence every coordinate curvature statement in `Curvature.lean` /
-`Einstein.lean` applies to the coordinate expression of any smooth Lorentzian metric.
+`Lightlike/GR/Einstein.lean` applies to the coordinate expression of any smooth Lorentzian metric.
 
 Proof ingredients (all from Mathlib):
 * `TangentBundle.symmL_trivializationAt`: the derivative of the inverse chart is the inverse

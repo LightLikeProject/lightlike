@@ -11,7 +11,7 @@ Lightlike/Recoupling/Intertwiner.lean, in physical (not doubled) units, with Sym
 3. Control (wrong input): the phase (-1)^(j1+j4+k+l) must fail somewhere.
 4. Reference values used by the Lean trust checks (Lightlike/Recoupling/Tests.lean).
 5. Orthogonality at fixed spins, the reference values of the trust checks for sixJSym_orth_all
-   (Intertwiner.lean) and sum_threeJ_mul_threeJ (ThreeJ.lean), exact:
+   (Lightlike/Recoupling/Intertwiner.lean) and sum_threeJ_mul_threeJ (ThreeJ.lean), exact:
      sum_x (2x+1)(2q+1) {1 1/2 x; 1 1/2 q}{1 1/2 x; 1 1/2 r} = delta_qr for q, r in {1/2, 3/2};
      sum_{m1 m2} (1/2 1/2 J; m1 m2 0)(1/2 1/2 J'; m1 m2 0) = delta_JJ' / (2J+1) for J, J' in {0, 1}.
    Control (wrong input): without the weight (2x+1) the q = r = 1/2 sum is 5/18, not 1.

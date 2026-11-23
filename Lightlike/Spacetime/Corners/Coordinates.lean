@@ -18,7 +18,7 @@ the image of `x₀`) these components form an `IsCoordMetricW`, for any model wi
 invertible, with `C^∞` entries. Signature: `LorentzianMetric.coordMetric_congr_etaW` (for a Lorentzian metric the
 coordinate matrix is congruent to `η` on the chart target, any model with corners) and
 `LorentzianMetric.isLorentzianCoordMetric_coordMetricW` (an `IsLorentzianCoordMetric`, boundaryless model). Hence every coordinate curvature statement in `Curvature.lean` /
-`Einstein.lean` applies to the coordinate expression of any smooth Lorentzian metric.
+`Lightlike/GR/Einstein.lean` applies to the coordinate expression of any smooth Lorentzian metric.
 
 Proof ingredients (all from Mathlib):
 * `TangentBundle.symmL_trivializationAt`: the derivative of the inverse chart is the inverse

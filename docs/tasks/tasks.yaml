@@ -2,12 +2,12 @@
 # The plan only: who works on a task, and whether it is done, is on its GitHub issue.
 summary:
   tasks: 298
-  by_kind: {"milestone": 215, "proof": 60, "upstream": 23}
-  by_size: {"S": 17, "M": 121, "L": 113, "R": 46}
+  by_kind: {"milestone": 216, "proof": 59, "upstream": 23}
+  by_size: {"S": 17, "M": 121, "L": 112, "R": 47}
   by_difficulty: {"intermediate": 138, "advanced": 80, "research-level": 80}
-  by_area: {"geometry": 43, "cosmology": 29, "semiclassical": 9, "cft": 5, "dynamics": 3, "gauge-constrained": 5, "harmonic-analysis": 17, "operator-algebras": 22, "asymptotics": 5, "qft-rg": 6, "pl-topology": 11, "quantum-groups": 11, "random-geometry": 5, "asymptotic-safety": 4, "canonical-qg": 16, "causal-sets": 12, "dynamical-triangulations": 5, "gft-tensor": 7, "holography": 8, "low-dim-gravity": 7, "matrix-models": 5, "ncg": 6, "perturbative-qg": 8, "regge": 6, "spin-foams": 22, "string-theory": 11, "twistors": 6, "other": 4}
+  by_area: {"geometry": 43, "cosmology": 29, "semiclassical": 9, "cft": 5, "dynamics": 3, "gauge-constrained": 5, "harmonic-analysis": 17, "operator-algebras": 22, "asymptotics": 5, "qft-rg": 6, "pl-topology": 12, "quantum-groups": 11, "random-geometry": 5, "asymptotic-safety": 4, "canonical-qg": 16, "causal-sets": 12, "dynamical-triangulations": 5, "gft-tensor": 8, "holography": 8, "low-dim-gravity": 7, "matrix-models": 5, "ncg": 6, "perturbative-qg": 8, "regge": 6, "spin-foams": 20, "string-theory": 11, "twistors": 6, "other": 4}
   by_source_class: {"sourced": 275, "structural": 23}
-  by_priority_basis: {"canonical": 126, "highly cited": 83, "unlocks many": 5, "recent": 12, "other": 49}
+  by_priority_basis: {"canonical": 127, "highly cited": 83, "unlocks many": 5, "recent": 12, "other": 48}
 tasks:
   - id: "T-GE1"
     kind: "milestone"
@@ -464,7 +464,7 @@ tasks:
     difficulty: "intermediate"
     mode: "exclusive"
     deps: ["T-GE10"]
-    checks: ["`a = 0` gives Schwarzschild with `κ = 1/(4M)`", "a sign flipped in g_tφ shown not to be Ricci-flat"]
+    checks: ["`a = 0` gives Schwarzschild with `κ = 1/(4M)`", "the coefficient of `g_tφ` halved shown not to be Ricci-flat (flipping its sign gives Kerr with `-a`, which is Ricci-flat)"]
     labels: ["milestone", "area: geometry", "size: M", "intermediate"]
   - id: "T-GE7"
     kind: "milestone"
@@ -2124,7 +2124,7 @@ tasks:
     tier: "established"
     source_class: "sourced"
     source: "lickorish-1999, Theorem 5.9; moise-1977, Chapter: The classification of compact connected 2-manifolds"
-    priority: 7
+    priority: 8
     priority_basis: "canonical"
     size: "L"
     difficulty: "advanced"
@@ -2140,7 +2140,7 @@ tasks:
     tier: "established"
     source_class: "sourced"
     source: "lickorish-1999, Theorem 4.5"
-    priority: 5
+    priority: 4
     priority_basis: "canonical"
     size: "L"
     difficulty: "advanced"
@@ -2172,7 +2172,7 @@ tasks:
     tier: "established"
     source_class: "sourced"
     source: "moise-1977, Chapter: The Triangulation theorem; moise-1977, Chapter: The Hauptvermutung; Tame imbedding"
-    priority: 4
+    priority: 6
     priority_basis: "canonical"
     size: "R"
     difficulty: "research-level"
@@ -2180,22 +2180,38 @@ tasks:
     deps: ["T-PL5"]
     checks: []
     labels: ["milestone", "area: pl-topology", "size: R", "research-level"]
-  - id: "T-PL7"
+  - id: "T-PL7a"
     kind: "milestone"
-    title: "Assembly: homeomorphic closed 3-manifolds have triangulations related by the moves on `Complex3`; consequences for the state sums"
-    milestone: "PL7"
+    title: "Assembly up to PL homeomorphism: PL-homeomorphic closed combinatorial 3-manifolds have triangulations related by the moves on `Complex3`; consequences for the state sums"
+    milestone: "PL7a"
     area: "pl-topology"
     tier: "established"
     source_class: "sourced"
     source: "turaev-1994, Chapter VII. Simplicial state sums on 3-manifolds; lickorish-1999, Theorem 5.9"
-    priority: 6
+    priority: 5
     priority_basis: "canonical"
     size: "M"
     difficulty: "intermediate"
     mode: "exclusive"
-    deps: ["T-PL2", "T-PL4", "T-PL6"]
+    deps: ["T-PL2", "T-PL4"]
     checks: []
     labels: ["milestone", "area: pl-topology", "size: M", "intermediate"]
+  - id: "T-PL7b"
+    kind: "milestone"
+    title: "Assembly up to homeomorphism: homeomorphic closed 3-manifolds have triangulations related by the moves on `Complex3` (needs Moise's theorem, PL6); consequences for the state sums"
+    milestone: "PL7b"
+    area: "pl-topology"
+    tier: "established"
+    source_class: "sourced"
+    source: "turaev-1994, Chapter VII. Simplicial state sums on 3-manifolds; lickorish-1999, Theorem 5.9"
+    priority: 7
+    priority_basis: "canonical"
+    size: "R"
+    difficulty: "research-level"
+    mode: "exclusive"
+    deps: ["T-PL7a", "T-PL6"]
+    checks: []
+    labels: ["milestone", "area: pl-topology", "size: R", "research-level"]
   - id: "T-QU1"
     kind: "milestone"
     title: "q-deformed Biedenharn–Elliott identity and orthogonality for `r ≥ 4`"
@@ -2371,8 +2387,8 @@ tasks:
     size: "M"
     difficulty: "intermediate"
     mode: "exclusive"
-    deps: []
-    checks: []
+    deps: ["T-HA4"]
+    checks: ["a known 6j value", "a wrong sign convention in the 6j symbol shown to break the Biedenharn–Elliott identity"]
     labels: ["milestone", "area: quantum-groups", "size: M", "intermediate"]
   - id: "T-QU5"
     kind: "milestone"
@@ -3187,7 +3203,7 @@ tasks:
     area: "gft-tensor"
     tier: "frontier"
     source_class: "sourced"
-    source: "freidel-louapre-2002; delepouve-gurau-rivasseau-2016"
+    source: "freidel-louapre-2002; delepouve-gurau-rivasseau-2016; benedetti-gurau-keppler-lettera-2022, Theorem 1; rivasseau-wang-2010, Theorem IV.1; gurau-rivasseau-sfondrini-2014, Section 2.1.2"
     priority: 7
     priority_basis: "other"
     size: "R"
@@ -3196,6 +3212,25 @@ tasks:
     deps: ["T-FT1"]
     checks: ["Borel sum against the series at small coupling", "the unmodified model's growth shown to prevent it"]
     labels: ["milestone", "area: gft-tensor", "size: R", "research-level"]
+  - id: "T-GF7-P8"
+    kind: "proof"
+    title: "Cayley's formula: there are n^{n-2} trees on n labelled vertices"
+    milestone: "GF7"
+    area: "gft-tensor"
+    tier: "frontier"
+    source_class: "sourced"
+    source: "freidel-louapre-2002; delepouve-gurau-rivasseau-2016; benedetti-gurau-keppler-lettera-2022, Theorem 1; rivasseau-wang-2010, Theorem IV.1; gurau-rivasseau-sfondrini-2014, Section 2.1.2"
+    priority: 7
+    priority_basis: "other"
+    size: "M"
+    difficulty: "intermediate"
+    mode: "non-exclusive"
+    deps: []
+    file: "Tasks/GF/T_GF7_P8.lean"
+    decl: "Lightlike.FieldTheory.Forest.card_isTree"
+    routes: ["The Prüfer code: removing the least leaf and recording its neighbour, n - 2 times, is a bijection from the trees on Fin n to Fin n^(n-2); or count rooted forests by induction (the number of rooted forests on [n] with k given roots is k n^{n-k-1})."]
+    lock: "96328d9fd6a2fb2d"
+    labels: ["proof-task", "area: gft-tensor", "size: M", "intermediate"]
   - id: "T-HO1"
     kind: "milestone"
     title: "Anti-de Sitter space: hyperboloid model, `SO(d,2)` isometries, Poincaré and global coordinates, conformal boundary"
@@ -3994,7 +4029,7 @@ tasks:
     difficulty: "intermediate"
     mode: "exclusive"
     deps: ["T-SF6", "T-SF5b"]
-    checks: ["a small complex against published numerics where available"]
+    checks: ["on a small closed 4-complex at low spins, the state sum computed in Lean equals the Ooguri amplitude at the BF point", "a wrong face amplitude shown to break that equality"]
     labels: ["milestone", "area: spin-foams", "size: M", "intermediate"]
   - id: "T-SF7"
     kind: "milestone"
@@ -4060,24 +4095,6 @@ tasks:
     deps: ["T-SF7", "T-SP1"]
     checks: ["against published numerics of the Lorentzian vertex", "a boundary state with normals that do not close shown to be suppressed"]
     labels: ["milestone", "area: spin-foams", "size: R", "research-level"]
-  - id: "T-SF10-P1"
-    kind: "proof"
-    title: "Joint integrability of the Lorentzian vertex integrand"
-    milestone: "SF10"
-    area: "spin-foams"
-    tier: "frontier"
-    source_class: "sourced"
-    source: "bdfhp-2010, §6.4; bdfhp-2010, §4.2.2; bdfhp-2010, §5.4.2; bdfhp-2010, §5.4.3; bdfhp-2010, §6.2; bdfhp-2010, eq. (53); bdfhp-2010, eq. (56); bdfhp-2010, eq. (57)"
-    priority: 14
-    priority_basis: "other"
-    size: "L"
-    difficulty: "research-level"
-    mode: "non-exclusive"
-    deps: []
-    file: "Tasks/SF/T_SF10_P1.lean"
-    decl: "Lightlike.Asymptotics.Lorentzian.lorVertex_jointIntegrable"
-    routes: ["Bound the modulus of the integrand by the product of the weights `triWeight` of the ten edges and integrate edge by edge: the finiteness of the Lorentzian EPRL vertex (Kaminski–Kisielowski–Lewandowski, arXiv:0909.0939) or a direct estimate of `∏_e ∫ ‖g_e‖ dw` from `norm_exp_triAction` and the integrability of the `Ω` density (`Lightlike/Asymptotics/Lorentzian/Amplitude.lean`)."]
-    labels: ["proof-task", "area: spin-foams", "size: L", "research-level"]
   - id: "T-SF10-P2"
     kind: "proof"
     title: "Invertibility of the Hessian of the Lorentzian vertex action at a critical point"
@@ -4114,24 +4131,6 @@ tasks:
     decl: "Lightlike.Asymptotics.Lorentzian.lorVertex_farRemainder"
     routes: ["Split `1 - χ = (ψ - χ) + (1 - ψ)` for a cutoff `ψ` in `U` equal to `1` near `K`; the first part is `lorVertex_farRemainder_compact` (T-SF10-P5), the second `lorVertex_farRemainder_tail` (T-SF10-P6). The critical-set hypothesis is `CriticalSetIs` with the cutoff `1` (the first form, with `χ`, is false: a critical point outside `tsupport χ` contributes `λ^{-22}`; `docs/notes/sf10-p3-assessment.md`)."]
     labels: ["proof-task", "area: spin-foams", "size: S", "intermediate"]
-  - id: "T-SF10-P5"
-    kind: "proof"
-    title: "The compact part of the Lorentzian far remainder is of rapidly decreasing order"
-    milestone: "SF10"
-    area: "spin-foams"
-    tier: "frontier"
-    source_class: "sourced"
-    source: "bdfhp-2010, §6.4; bdfhp-2010, §4.2.2; bdfhp-2010, §5.4.2; bdfhp-2010, §5.4.3; bdfhp-2010, §6.2; bdfhp-2010, eq. (53); bdfhp-2010, eq. (56); bdfhp-2010, eq. (57)"
-    priority: 14
-    priority_basis: "other"
-    size: "M"
-    difficulty: "intermediate"
-    mode: "non-exclusive"
-    deps: []
-    file: "Tasks/SF/T_SF10_P5.lean"
-    decl: "Lightlike.Asymptotics.Lorentzian.lorVertex_farRemainder_compact"
-    routes: ["`(ψ - χ) A` is smooth with compact support in `U` and has no critical point of `S` in its support: `expPhase_suppressed` (`Suppression.lean`) with `Re S ≤ 0` from `re_lorAction_le_zero`."]
-    labels: ["proof-task", "area: spin-foams", "size: M", "intermediate"]
   - id: "T-SF10-P6"
     kind: "proof"
     title: "The non-compact tail of the Lorentzian far remainder is of lower order"
