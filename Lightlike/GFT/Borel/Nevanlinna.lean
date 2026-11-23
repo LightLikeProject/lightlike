@@ -74,7 +74,7 @@ lemma SokalHyp.integrableOn_laplace (h : SokalHyp f a R K ρ) {B : ℂ → ℂ} 
         ring
 
 /-- **The Nevanlinna–Sokal theorem** (task T-GF7-P6; Benedetti–Gurau–Keppler–Lettera, arXiv:2210.14776v2,
-Theorem 1, eqs. (2.4)-(2.6), pp. 5-6, with `β = 0`): statement copied word for word from `Tasks/GF/T_GF7_P6.lean`.
+Theorem 1, eqs. (2.4)-(2.6), pp. 5-6, with `β = 0`): statement copied word for word from the closed task `T-GF7-P6`.
 Non-vacuous: `sokalHyp_const`. -/
 theorem SokalHyp.nevanlinna_sokal {f : ℂ → ℂ} {a : ℕ → ℂ} {R K ρ : ℝ} (h : SokalHyp f a R K ρ) :
     (∀ t : ℂ, ‖t‖ < ρ → HasSum (fun k => a k * t ^ k / (k ! : ℂ)) (borelT a t)) ∧

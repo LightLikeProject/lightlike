@@ -5,7 +5,7 @@ import Lightlike.FieldTheory.Borel.Strip
 
 Serves task T-GF7-P1 (Nevanlinna–Sokal, Benedetti–Gurau–Keppler–Lettera, arXiv:2210.14776v2, Appendix B,
 eq. (B.6)): `SokalHyp.hasDerivAt_borelDeriv`, with the statement copied word for word from
-`Tasks/GF/T_GF7_P1.lean`. The proof writes `R_{m+1}(z) = a_{m+1} z^{m+1} + R_{m+2}(z)`, evaluates the
+the closed task `T-GF7-P1`. The proof writes `R_{m+1}(z) = a_{m+1} z^{m+1} + R_{m+2}(z)`, evaluates the
 first part by Hankel's formula (`hankel_vertical_y`, `k = 1`) and differentiates the second under the
 integral sign.
 -/

@@ -5,7 +5,7 @@ import Lightlike.GFT.Borel.Deriv
 
 Serves task T-GF7-P2 (Nevanlinna–Sokal, Benedetti–Gurau–Keppler–Lettera, arXiv:2210.14776v2, Appendix B,
 after eq. (B.6)): `SokalHyp.norm_borelDeriv_le`, with the statement copied word for word from
-`Tasks/GF/T_GF7_P2.lean`. The integrand is bounded by the rest-term bound with `q = m + 1`, the integral of
+the closed task `T-GF7-P2`. The integrand is bounded by the rest-term bound with `q = m + 1`, the integral of
 `(c² + y²)⁻¹` is `π / c`, and `|a_m| ≤ K m! ρ^{-m}` handles the constant term.
 -/
 

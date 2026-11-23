@@ -154,7 +154,7 @@ lemma SokalHyp.norm_borelGlue_le (h : SokalHyp f a R K ρ) {ρ' : ℝ} (hρ'0 : 
     _ = _ := by ring
 
 /-- **The Borel transform continues to the strip** (task T-GF7-P4); statement copied from
-`Tasks/GF/T_GF7_P4.lean`. -/
+the closed task `T-GF7-P4`. -/
 theorem SokalHyp.exists_continuation {f : ℂ → ℂ} {a : ℕ → ℂ} {R K ρ : ℝ} (h : SokalHyp f a R K ρ) :
     ∃ B : ℂ → ℂ, AnalyticOnNhd ℂ B (sokalStrip ρ) ∧ (∀ t : ℂ, ‖t‖ < ρ → B t = borelT a t) ∧
       (∀ c : ℝ, 1 / R < c → ∀ x : ℝ, 0 < x → B x = borelZero f (a 0) x c) ∧

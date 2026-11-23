@@ -49,7 +49,7 @@ theorem quarticZ_sokalHyp {R : ℝ} (hR : 0 < R) :
       _ = _ := by ring
 
 /-- **The quartic partition function is Borel summable** (task T-GF7-P7; Rivasseau–Wang, arXiv:1003.1037,
-Theorem IV.1 with `k = 2`): statement copied word for word from `Tasks/GF/T_GF7_P7.lean`. -/
+Theorem IV.1 with `k = 2`): statement copied word for word from the closed task `T-GF7-P7`. -/
 theorem quarticZ_borel_summable :
     ∃ ρ : ℝ, 0 < ρ ∧ ∃ B : ℂ → ℂ, AnalyticOnNhd ℂ B (sokalStrip ρ) ∧
       (∀ t : ℂ, ‖t‖ < ρ → HasSum (fun n => quarticCoeff n * t ^ n / (n ! : ℂ)) (B t)) ∧

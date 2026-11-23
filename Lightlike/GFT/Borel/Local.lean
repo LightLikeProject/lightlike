@@ -6,7 +6,7 @@ import Mathlib.Analysis.Analytic.OfScalars
 
 Serves task T-GF7-P3 (Nevanlinna–Sokal, Benedetti–Gurau–Keppler–Lettera, arXiv:2210.14776v2, Appendix B,
 eq. (B.7)): `SokalHyp.analyticOnNhd_borelLocal`, with the statement copied word for word from
-`Tasks/GF/T_GF7_P3.lean`. By the bound of `SokalHyp.norm_borelDeriv_le` the coefficients `b_m(x)/m!` are at most
+the closed task `T-GF7-P3`. By the bound of `SokalHyp.norm_borelDeriv_le` the coefficients `b_m(x)/m!` are at most
 `C (m+1) ρ^{-m-1}`, so the power series `ofScalars` of these coefficients has radius at least `ρ`, and
 `borelLocal` is its sum at `t - x`.
 -/

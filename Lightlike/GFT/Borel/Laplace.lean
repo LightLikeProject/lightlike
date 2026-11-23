@@ -180,7 +180,7 @@ eq. (B.8), p. 25): under the hypotheses of the Nevanlinna–Sokal theorem, for `
 
 The source takes the line `Re w = c` with `Re z⁻¹ > c`; here any `c > 1/R` is allowed, `b_0` not depending on the
 line (`borelZero_indep`) (kind: representation). Non-vacuous: `sokalHyp_const`. Serves task T-GF7-P5; the statement
-is copied word for word from `Tasks/GF/T_GF7_P5.lean`. -/
+is copied word for word from the closed task `T-GF7-P5`. -/
 theorem SokalHyp.eq_laplace_borelZero {f : ℂ → ℂ} {a : ℕ → ℂ} {R K ρ : ℝ} (h : SokalHyp f a R K ρ) {c : ℝ}
     (hc : 1 / R < c) {z : ℂ} (hz : z ∈ diskC R) :
     f z = z⁻¹ * ∫ x in Ioi (0 : ℝ), cexp (-(x / z)) * borelZero f (a 0) x c := by

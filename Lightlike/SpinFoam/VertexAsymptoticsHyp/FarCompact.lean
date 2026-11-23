@@ -10,7 +10,7 @@ each point of the finite critical set `K`, the integral `∫ (ψ - χ) A e^{λ S
 vertex in the fixed charts is `O(λ^{-N})` for every `N`. The amplitude `(ψ - χ) A` is smooth with
 compact support, `Re S ≤ 0` there (`re_lorAction_le_zero`), and no critical point of `S` lies in its
 support, so `expPhase_suppressed` applies. Source: BDFHP, Sec. 6.4 (`bdfhp-2010`); the statement is
-the one of `Tasks/SF/T_SF10_P5.lean`.
+the one of the closed task `T-SF10-P5`.
 -/
 
 open Filter MeasureTheory Lightlike.Oscillatory Lightlike.Asymptotics.EPRL Matrix
@@ -22,7 +22,7 @@ namespace Lightlike.Asymptotics.Lorentzian
 set_option linter.unusedVariables false in
 /-- **The compact part of the far remainder is `O(λ^{-N})` for every `N`** (hypothesis `hK` is
 `CriticalSetIs` with the cutoff `1`: every critical point of `tsupport A` with `Re S = 0` lies in `K`).
-Same statement as `Tasks/SF/T_SF10_P5.lean`; the proof applies `expPhase_suppressed` to the smooth
+Same statement as the closed task `T-SF10-P5`; the proof applies `expPhase_suppressed` to the smooth
 compactly supported amplitude `(ψ - χ) A`, which vanishes near `K`. -/
 theorem lorVertex_farRemainder_compact_proof
     {j p : Fin 10 → ℝ} {γ : ℝ} (hj : ∀ k, 0 < j k)
