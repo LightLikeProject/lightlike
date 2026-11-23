@@ -20,6 +20,11 @@ The axis is the ordinary point `p = (1, 0)`.
   `ω = ((1 + uv)² + ρ²)^(-1/2)`, `sin η = ω t`, `cos η = ω (1 - uv)`, `p₀ = ω (1 + uv)`, `p⃗ = ω x⃗`
   (`cart_key` is the forward identity `ω (1 + uv) = p₀`, `ω² (1 + u²)(1 + v²) = 1`; `eta_unique`, `exists_eta`).
 
+## Difference from the source (representation)
+
+Carroll writes the sphere part as `sin² χ dΩ²` on `(η, χ)` with `|η| + χ < π`. Here the sphere is `S³ ⊂ ℝ⁴` in
+Cartesian form and the region is `|η| < π`, `ω > 0` (equivalent to `|η| + χ < π`); the metric on `S³` is the same.
+
 ## References
 
 * S. M. Carroll, *Lecture Notes on General Relativity*, arXiv gr-qc/9712019, chapter 7, eqs. (7.86)–(7.102),
