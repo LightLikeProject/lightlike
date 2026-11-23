@@ -4,7 +4,7 @@ import Lightlike.OperatorAlgebras.FockExists
 /-!
 # A quasi-free state whose covariance is the real part of a complex inner product is pure
 
-Let `(V, ω, η)` be a symplectic space with a covariance, and suppose there is an additive bijection `e : V ≃+ h` onto a
+Let `(V, ω, η)` be a symplectic space with a covariance, and suppose there is a surjective additive map `e : V →+ h` onto a
 complex inner product space with `ω(a, b) = Im ⟨e a, e b⟩` and `η(a, b) = Re ⟨e a, e b⟩`. Then the Gram kernel of the
 quasi-free state is the Gram kernel of the Fock vectors (`qfKer_eq_fockGram`), so the GNS space of the quasi-free
 state is unitarily equivalent to the Fock space with the Weyl unitaries matching (`exists_unitary_qf_fock`). The
@@ -30,7 +30,7 @@ variable {V : Type u} [AddCommGroup V] [Module ℝ V] (ω η : LinearMap.BilinFo
   {h : Type v} [NormedAddCommGroup h] [InnerProductSpace ℂ h]
 
 /-- **The Gram kernel of the quasi-free state is the Fock Gram function**, transported along `e`. -/
-theorem qfKer_eq_fockGram (e : V ≃+ h) (hω : ∀ a b, ω a b = symp h (e a) (e b))
+theorem qfKer_eq_fockGram (e : V →+ h) (hω : ∀ a b, ω a b = symp h (e a) (e b))
     (hη : ∀ a b, η a b = (⟪e a, e b⟫_ℂ).re) (f g : V) :
     qfKer ω η f g = fockGram (e f) (e g) := by
   have hsub : e (g - f) = e g - e f := map_sub e g f
@@ -50,7 +50,7 @@ variable [Fact (qfKerM ω η).PosSemidef]
 
 /-- **The GNS space of the quasi-free state is the Fock space**: a unitary `U` with `U (kq f) = W(e f) Ω` that
 intertwines the Weyl unitaries, `U W(g) = W(e g) U`. -/
-theorem exists_unitary_qf_fock (hω₀ : ∀ a b, ω a b = -ω b a) (e : V ≃+ h)
+theorem exists_unitary_qf_fock (hω₀ : ∀ a b, ω a b = -ω b a) (e : V →+ h) (he : Function.Surjective e)
     (hω : ∀ a b, ω a b = symp h (e a) (e b)) (hη : ∀ a b, η a b = (⟪e a, e b⟫_ℂ).re) :
     ∃ U : QFSpace ω η ≃ₗᵢ[ℂ] FockSpace h, ∀ g ψ, U (qfW ω η hω₀ g ψ) = (fockRepOf h).W (e g) (U ψ) := by
   set R := fockRepOf h with hR
@@ -63,7 +63,9 @@ theorem exists_unitary_qf_fock (hω₀ : ∀ a b, ω a b = -ω b a) (e : V ≃+ 
       ext x
       constructor
       · rintro ⟨f, rfl⟩; exact ⟨e f, rfl⟩
-      · rintro ⟨f, rfl⟩; exact ⟨e.symm f, by simp⟩
+      · rintro ⟨f, rfl⟩
+        obtain ⟨g, rfl⟩ := he f
+        exact ⟨g, rfl⟩
     rw [hr, hrange, Submodule.dense_iff_topologicalClosure_eq_top]
     exact R.cyclic
   obtain ⟨U, hU⟩ := exists_unitary_of_gram_eq (Φ₁ := qfPhi ω η) (Φ₂ := Φ₂)
@@ -97,19 +99,19 @@ theorem exists_unitary_qf_fock (hω₀ : ∀ a b, ω a b = -ω b a) (e : V ≃+ 
   exact congrFun this ψ
 
 /-- **A quasi-free state whose covariance is the real part of a complex inner product is pure**: if
-`ω = Im⟨e ·, e ·⟩` and `η = Re⟨e ·, e ·⟩` for an additive bijection `e` onto a complex inner product space, then the
+`ω = Im⟨e ·, e ·⟩` and `η = Re⟨e ·, e ·⟩` for a surjective additive map `e` onto a complex inner product space, then the
 GNS representation of `ω_η` is irreducible and `ω_η` is a pure state (sufficiency half of the purity criterion). -/
-theorem isPureState_qfState_of_equiv (hω₀ : ∀ a b, ω a b = -ω b a) (e : V ≃+ h)
+theorem isPureState_qfState_of_equiv (hω₀ : ∀ a b, ω a b = -ω b a) (e : V →+ h) (he : Function.Surjective e)
     (hω : ∀ a b, ω a b = symp h (e a) (e b)) (hη : ∀ a b, η a b = (⟪e a, e b⟫_ℂ).re) :
     IsPureState (qfState ω η hω₀) := by
-  obtain ⟨U, hU⟩ := exists_unitary_qf_fock ω η hω₀ e hω hη
+  obtain ⟨U, hU⟩ := exists_unitary_qf_fock ω η hω₀ e he hω hη
   refine isPureState_qfState ω η hω₀ fun T hT => ?_
   set R := fockRepOf h with hR
   let C : FockSpace h →L[ℂ] FockSpace h :=
     (U : QFSpace ω η →L[ℂ] FockSpace h).comp (T.comp (U.symm : FockSpace h →L[ℂ] QFSpace ω η))
   have hC : ∀ f ψ, C (R.W f ψ) = R.W f (C ψ) := by
     intro f ψ
-    obtain ⟨g, rfl⟩ := e.surjective f
+    obtain ⟨g, rfl⟩ := he f
     have h1 : U.symm (R.W (e g) ψ) = qfW ω η hω₀ g (U.symm ψ) := by
       apply U.injective
       rw [hU]; simp

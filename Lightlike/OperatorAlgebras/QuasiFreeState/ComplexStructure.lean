@@ -16,7 +16,7 @@ In a basis this is the finite-dimensional matrix condition used for the Sorkin-J
 
 open scoped InnerProductSpace ComplexConjugate
 
-universe u
+universe u v
 
 namespace Lightlike.OperatorAlgebras.QuasiFreeState
 
@@ -167,24 +167,35 @@ def innerCore : @InnerProductSpace.Core ℂ V _ _ S.cmodule :=
 
 end CompatibleComplexStructure
 
+/-- **Purity of a quasi-free state that factors through a surjection onto a space with a compatible complex
+structure**: if `P : V → R` is a surjective additive map onto a real space `R` with a compatible complex structure `S`
+for `(ωR, ηR)`, and `ω = ωR ∘ (P × P)`, `η = ηR ∘ (P × P)`, then the quasi-free state `ω_η` of `V` is pure. This allows a
+degenerate `ω` on `V` (the kernel of `P` is the centre of the Weyl algebra, on which the state is `1`). -/
+theorem isPureState_qfState_of_complexStructure_retract {W : Type v} [AddCommGroup W] [Module ℝ W]
+    {ωW ηW : LinearMap.BilinForm ℝ W} [Fact (qfKerM ω η).PosSemidef]
+    (S : CompatibleComplexStructure ωW ηW) (P : V →+ W) (hP : Function.Surjective P)
+    (hω : ∀ a b, ω a b = ωW (P a) (P b)) (hη : ∀ a b, η a b = ηW (P a) (P b)) :
+    IsPureState (qfState ω η (fun a b => by rw [hω, hω, S.omega_antisymm])) := by
+  letI : Module ℂ W := S.cmodule
+  letI c : InnerProductSpace.Core ℂ W := S.innerCore
+  letI : NormedAddCommGroup W := @InnerProductSpace.Core.toNormedAddCommGroup ℂ W _ _ _ c
+  letI : InnerProductSpace ℂ W := InnerProductSpace.ofCore c.toCore
+  refine isPureState_qfState_of_equiv ω η _ (h := W) P hP ?_ ?_
+  · intro a b
+    show ω a b = ((ηW (P a) (P b) : ℂ) + Complex.I * (ωW (P a) (P b) : ℂ)).im
+    simp [hω]
+  · intro a b
+    show η a b = ((ηW (P a) (P b) : ℂ) + Complex.I * (ωW (P a) (P b) : ℂ)).re
+    simp [hη]
+
 /-- **Purity of a quasi-free state with a compatible complex structure** (sufficiency half of the purity criterion): if
 `J² = -1`, `η` is `J`-invariant and positive definite and `ω(x, y) = -η(x, J y)`, then the quasi-free state `ω_η` is
 pure. The proof makes `V` a complex inner product space with `⟨x, y⟩ = η(x, y) + i ω(x, y)` and applies
 `isPureState_qfState_of_equiv` with `e = id`. -/
 theorem isPureState_qfState_of_complexStructure [Fact (qfKerM ω η).PosSemidef]
     (S : CompatibleComplexStructure ω η) :
-    IsPureState (qfState ω η S.omega_antisymm) := by
-  letI : Module ℂ V := S.cmodule
-  letI c : InnerProductSpace.Core ℂ V := S.innerCore
-  letI : NormedAddCommGroup V := @InnerProductSpace.Core.toNormedAddCommGroup ℂ V _ _ _ c
-  letI : InnerProductSpace ℂ V := InnerProductSpace.ofCore c.toCore
-  refine isPureState_qfState_of_equiv ω η S.omega_antisymm (h := V) (AddEquiv.refl V) ?_ ?_
-  · intro a b
-    show ω a b = ((η a b : ℂ) + Complex.I * (ω a b : ℂ)).im
-    simp
-  · intro a b
-    show η a b = ((η a b : ℂ) + Complex.I * (ω a b : ℂ)).re
-    simp
-
+    IsPureState (qfState ω η S.omega_antisymm) :=
+  isPureState_qfState_of_complexStructure_retract S (AddMonoidHom.id V) Function.surjective_id
+    (fun _ _ => rfl) (fun _ _ => rfl)
 
 end Lightlike.OperatorAlgebras.QuasiFreeState

@@ -692,11 +692,13 @@ import Lightlike.OperatorAlgebras.QuasiFreeState.Fock
 import Lightlike.OperatorAlgebras.QuasiFreeState.FockEquiv
 import Lightlike.OperatorAlgebras.QuasiFreeState.Functional
 import Lightlike.OperatorAlgebras.QuasiFreeState.GNS
+import Lightlike.OperatorAlgebras.QuasiFreeState.PauliJordan
 import Lightlike.OperatorAlgebras.QuasiFreeState.PositiveFunctional
 import Lightlike.OperatorAlgebras.QuasiFreeState.Pure
 import Lightlike.OperatorAlgebras.QuasiFreeState.State
 import Lightlike.OperatorAlgebras.QuasiFreeState.Tests
 import Lightlike.OperatorAlgebras.QuasiFreeState.TestsComplexStructure
+import Lightlike.OperatorAlgebras.QuasiFreeState.TestsPauliJordan
 import Lightlike.OperatorAlgebras.QuasiFreeState.TwoPoint
 import Lightlike.OperatorAlgebras.QuasiFreeWick
 import Lightlike.OperatorAlgebras.SecondQuantization
