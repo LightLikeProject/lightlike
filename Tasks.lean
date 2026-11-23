@@ -29,13 +29,6 @@ import Tasks.GE2.T_GE2_P17
 import Tasks.GE2.T_GE2_P18
 import Tasks.GE2.T_GE2_P19
 import Tasks.GE2.T_GE2_P20
-import Tasks.GF.T_GF7_P1
-import Tasks.GF.T_GF7_P2
-import Tasks.GF.T_GF7_P3
-import Tasks.GF.T_GF7_P4
-import Tasks.GF.T_GF7_P5
-import Tasks.GF.T_GF7_P6
-import Tasks.GF.T_GF7_P7
 import Tasks.GF.T_GF7_P8
 import Tasks.OP.T_OP1_P1
 import Tasks.OP.T_OP1_P2
@@ -59,11 +52,9 @@ import Tasks.QU.T_QU1_P3
 import Tasks.QU.T_QU1_P4
 import Tasks.QU.T_QU1_P5
 import Tasks.QU.T_QU1_P6
-import Tasks.SF.T_SF10_P1
 import Tasks.SF.T_SF10_P2
 import Tasks.SF.T_SF10_P3
 import Tasks.SF.T_SF10_P4
-import Tasks.SF.T_SF10_P5
 import Tasks.SF.T_SF10_P6
 import Tasks.SP.T_SP3_P1
 
