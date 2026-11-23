@@ -2305,3 +2305,5 @@ import Lightlike.Rows.G1_047.Pointwise
 import Lightlike.Rows.G1_047.Field
 import Lightlike.Rows.G1_047.Stokes
 import Lightlike.Rows.G2_007.Uniform
+import Lightlike.Rows.G1_039.Bianchi
+import Lightlike.Rows.G1_039.LieStructure
