@@ -1999,6 +1999,11 @@ import Lightlike.Rows.G1_031.Tensor
 import Lightlike.Rows.G1_031.Einstein
 import Lightlike.Rows.G1_031.Main
 import Lightlike.Rows.G1_031.Diag
+import Lightlike.Rows.G1_063.Curvature2D
+import Lightlike.Rows.G1_063.Divergence
+import Lightlike.Rows.G1_063.Anomaly
+import Lightlike.Rows.G1_063.Uniqueness
+import Lightlike.Rows.G1_063.Existence
 import Lightlike.GFT.Euler
 import Lightlike.Rows.G1_039.Basic
 import Lightlike.Rows.G1_039.Decomposition
