@@ -1851,3 +1851,17 @@ import Lightlike.Upstream.SU2Spin.Sl2Standard
 import Lightlike.Upstream.SU2Spin.SpinRep
 import Lightlike.Upstream.SU2Spin.Su2Exp
 import Lightlike.Upstream.SU2Spin.Tests
+import Lightlike.Upstream.SpinReps2.AxiomsCheck
+import Lightlike.Upstream.SpinReps2.BEPentagon
+import Lightlike.Upstream.SpinReps2.BEPentagon2
+import Lightlike.Upstream.SpinReps2.BEPentagon3
+import Lightlike.Upstream.SpinReps2.BEDefs
+import Lightlike.Upstream.SpinReps2.BEPositive
+import Lightlike.Upstream.SpinReps2.BEPositive2
+import Lightlike.Upstream.SpinReps2.BiedenharnElliott
+import Lightlike.Upstream.SpinReps2.Intertwiner
+import Lightlike.Upstream.SpinReps2.LieBridge
+import Lightlike.Upstream.SpinReps2.SixJOrth
+import Lightlike.Upstream.SpinReps2.SixJZero
+import Lightlike.Upstream.SpinReps2.ThreeJOrth
+import Lightlike.Upstream.SpinReps2.ThreeJZero
