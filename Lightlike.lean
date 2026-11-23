@@ -131,6 +131,11 @@ import Lightlike.Asymptotics.SaddleAssembly
 import Lightlike.Asymptotics.SaddleAssemblyTests
 import Lightlike.Asymptotics.SaddleRay
 import Lightlike.Asymptotics.SaddleRayTests
+import Lightlike.Asymptotics.SP3Row.BosonLog
+import Lightlike.Asymptotics.SP3Row.FreeBoson
+import Lightlike.Asymptotics.SP3Row.FreeBoson2
+import Lightlike.Asymptotics.SP3Row.FreeBoson3
+import Lightlike.Asymptotics.SP3Row.SignedBreak
 import Lightlike.Asymptotics.Stirling
 import Lightlike.Asymptotics.StirlingTests
 import Lightlike.Asymptotics.Tauberian.FourierExchange
@@ -656,6 +661,8 @@ import Lightlike.OperatorAlgebras.TestsBoundedGroup
 import Lightlike.OperatorAlgebras.TestsCARUnique
 import Lightlike.OperatorAlgebras.TestsFiniteKMS
 import Lightlike.OperatorAlgebras.Wasserstein
+import Lightlike.OperatorAlgebras.OPRow160.ModularCapstone
+import Lightlike.OperatorAlgebras.OPRow160.TestsModularCapstone
 import Lightlike.OperatorAlgebras.TestsWasserstein
 import Lightlike.OperatorAlgebras.MongeKantorovich
 import Lightlike.OperatorAlgebras.TestsMongeKantorovich
