@@ -1372,6 +1372,8 @@ import Lightlike.Spacetime.CausalLadder.LiftData
 import Lightlike.Spacetime.CausalLadder.LocalLift
 import Lightlike.Spacetime.Causal.BasicRelations
 import Lightlike.Spacetime.Causal.CauchyClosed
+import Lightlike.Rows.G1_012.Defs
+import Lightlike.Rows.G1_012.Skeleton
 import Lightlike.Spacetime.Causal.ChainReach
 import Lightlike.Spacetime.Causal.TimeReversal
 import Lightlike.Spacetime.Causal.OpenPast
