@@ -41,4 +41,8 @@ Source: the same, p. 192-195 (read 19 November), after (7.87) where `r = 0` is c
 * `cartT_axis`, `cartX_axis`, `cartOmega_axis`: on the axis `t = 2 tan (η/2)`, `x⃗ = 0`, `ω = cos² (η/2)`.
 
 Difference (representation): the source writes the sphere part as `sin² χ dΩ²`; here `|v|²` is the round metric of `S³ ⊂ ℝ⁴`,
-the same metric. Not yet stated: the bijection onto all of `ℝ × ℝ³` (axis included), and the AdS part is `AdSCompactification`.
+the same metric. * `bijOn_cartMap`: `(η, p) ↦ (t, x⃗)` is a bijection from `{|η| < π, p ∈ S³, ω > 0}` onto `ℝ × ℝ³`, axis included
+  (the source's (7.92)/(7.99) region, in Cartesian form; the inverse is algebraic, no arctan).
+
+Difference (representation): the source's regions (7.92), (7.99) are in `(U, V)`/`(η, χ)`; ours is `|η| < π` with `ω > 0`
+(equivalent to `|η| + χ < π`), and the sphere is `S³ ⊂ ℝ⁴` instead of `(χ, n)`. The AdS part is `AdSCompactification`.
