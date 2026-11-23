@@ -2071,6 +2071,9 @@ import Lightlike.Rows.G1_011.Test
 import Lightlike.Rows.G3_264.Defs
 import Lightlike.Rows.G3_264.FixedPoint
 import Lightlike.Rows.G3_264.Jacobian
+import Lightlike.Rows.G1_040.WainwrightHsu
+import Lightlike.Rows.G1_040.Preservation
+import Lightlike.Rows.G1_040.Barbalat
 import Lightlike.GFT.Euler
 import Lightlike.Rows.G1_039.Basic
 import Lightlike.Rows.G1_039.Decomposition
