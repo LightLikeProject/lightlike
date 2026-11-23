@@ -1,0 +1,65 @@
+- id: LL-XXXX-a
+  title: "The heat trace of the unit 2-sphere, Σ(2l+1)e^{-t l(l+1)}, has the expansion 1/t + 1/3 + t/15 + O(t²) as t → 0⁺"
+  area: GR
+  file: Lightlike/Geometry/HeatKernel/SphereTrace.lean
+  decls: [Lightlike.HeatKernel.hasHeatExpansionTo_sphereTrace]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: vassilevich-2003, location: "eq. (4.27)", check: "6E"}
+  review: kernel-checked
+  note: "Trust check of the milestone GE8 (unit 2-sphere); the coefficients are the explicit sphereCoeff, by Euler-Maclaurin. The comparison with Vassilevich (2003), eq. (4.27), is pending: the paper was not read at the cited location. This is an example-level result: the general Seeley-DeWitt expansion on a compact Riemannian manifold is NOT proved (Mathlib has no Laplace-Beltrami operator, manifold heat kernel or elliptic theory), so GE8 stays open."
+  since: unreleased
+- id: LL-XXXX-b
+  title: "The heat trace Σ_{k∈ℤⁿ} e^{-t|k|²} of the flat n-torus has the asymptotic expansion π^{n/2} t^{-n/2} with every other coefficient zero, in particular no t⁰ term"
+  area: GR
+  file: Lightlike/Geometry/HeatKernel/Torus.lean
+  decls: [Lightlike.HeatKernel.hasHeatExpansion_torusTrace]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: vassilevich-2003, location: "eq. (4.27)", check: "6E"}
+  review: kernel-checked
+  note: "Trust check of the milestone GE8 (flat torus, theta function); the torus is written with the spectrum |k|² (side 2π), so the leading coefficient is π^{n/2} = V/(4π)^{n/2} with V = (2π)^n. The comparison with Vassilevich (2003), eq. (4.27), is pending: the paper was not read at the cited location. This is an example-level result: the general Seeley-DeWitt expansion on a compact Riemannian manifold is NOT proved (Mathlib has no Laplace-Beltrami operator, manifold heat kernel or elliptic theory), so GE8 stays open."
+  since: unreleased
+- id: LL-XXXX-c
+  title: "On the round 2-sphere and 3-sphere, any expansion of the heat trace has a₁ = (4π)^{-n/2} V R/6, with R the scalar curvature of the round metric computed by Lightlike's scalarCurvature (R = n(n-1))"
+  area: GR
+  file: Lightlike/Geometry/HeatKernel/SphereCurvatureTie.lean
+  decls: [Lightlike.HeatKernel.sphere2_a1_curv, Lightlike.HeatKernel.sphere3_a1_curv, Lightlike.HeatKernel.hasHeatExpansionTo_sphereTrace_curv, Lightlike.HeatKernel.hasHeatExpansionTo_sphere3Trace_curv]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: vassilevich-2003, location: "eq. (4.27)", check: "6E"}
+  review: kernel-checked
+  note: "The curvature of the stereographic round metric is scalarCurvature_stereo (StereoCurvature.lean); the uniqueness of the coefficients is HasHeatExpansionTo.coeff_unique (Unique.lean). The comparison with Vassilevich (2003), eq. (4.27), is pending: the paper was not read at the cited location. This is an example-level result: the general Seeley-DeWitt expansion on a compact Riemannian manifold is NOT proved (Mathlib has no Laplace-Beltrami operator, manifold heat kernel or elliptic theory), so GE8 stays open."
+  since: unreleased
+- id: LL-XXXX-d
+  title: "The scalar curvature of the round unit n-sphere in stereographic coordinates is n(n-1)"
+  area: GR
+  file: Lightlike/Geometry/HeatKernel/StereoCurvature.lean
+  decls: [Lightlike.HeatKernel.scalarCurvature_stereo]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: vassilevich-2003, location: "eq. (4.27)", check: "6E"}
+  review: kernel-checked
+  note: "Used to tie the a₁ coefficient of the sphere heat traces to Lightlike's scalar curvature. Convention: the sign of R is that of Lightlike.scalarCurvature (positive on spheres). The comparison with Vassilevich (2003), eq. (4.27), is pending: the paper was not read at the cited location. This is an example-level result: the general Seeley-DeWitt expansion on a compact Riemannian manifold is NOT proved (Mathlib has no Laplace-Beltrami operator, manifold heat kernel or elliptic theory), so GE8 stays open."
+  since: unreleased
+- id: LL-XXXX-e
+  title: "Induced gravity from the heat kernel: for D = -Δ + ξR the coefficient a₁ is proportional to (1-6ξ), it vanishes for the conformal coupling in n = 4 and not in other dimensions, and the induced inverse Newton constant is (1-6ξ)/(12πε) with proper-time cutoff ε"
+  area: GR
+  file: Lightlike/Geometry/HeatKernel/InducedGravity.lean
+  decls: [Lightlike.HeatKernel.heatCoeffsE_conformal_four_one, Lightlike.HeatKernel.heatCoeffsE_conformal_one_ne_zero, Lightlike.HeatKernel.conformalCoupling_eq_sixth_iff, Lightlike.HeatKernel.inducedInvG_spec]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: vassilevich-2003, location: "eq. (4.27)", check: "6E"}
+  review: kernel-checked
+  note: "Target OA3 (Sakharov 1967): the cutoff integrals of t^-3, t^-2, t^-1 are in CutoffIntegrals.lean. The comparison with Vassilevich (2003), eq. (4.27), is pending: the paper was not read at the cited location. This is an example-level result: the general Seeley-DeWitt expansion on a compact Riemannian manifold is NOT proved (Mathlib has no Laplace-Beltrami operator, manifold heat kernel or elliptic theory), so GE8 stays open."
+  since: unreleased
