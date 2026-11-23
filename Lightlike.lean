@@ -263,6 +263,8 @@ import Lightlike.CausalSets.PosetCount
 import Lightlike.CausalSets.Rectangle
 import Lightlike.CausalSets.Sprinkling
 import Lightlike.CausalSets.TestsCausalSets
+import Lightlike.Rows.G2_064.LISBridge
+import Lightlike.Rows.G2_064.TestsLISBridge
 import Lightlike.Cosmology.FLRW
 import Lightlike.Cosmology.FLRWPhyslib
 import Lightlike.Cosmology.BigBang
