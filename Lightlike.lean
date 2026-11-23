@@ -1228,6 +1228,13 @@ import Lightlike.Regge.Linear.Taylor
 import Lightlike.Regge.Linear.Riemann
 import Lightlike.Regge.Linear.Converge
 import Lightlike.Regge.Linear.Tests
+import Lightlike.Regge.Linearized.ThinTriangle
+import Lightlike.Regge.Linearized.ThinKite
+import Lightlike.Regge.Linearized.PolarGauge
+import Lightlike.Regge.Linearized.FlatGauge
+import Lightlike.Regge.Linearized.CombinedGauge
+import Lightlike.Regge.Linearized.DeficitLaw
+import Lightlike.Regge.Linearized.Tests
 import Lightlike.Regge.AreaRegge.Basic
 import Lightlike.Regge.AreaRegge.Deriv
 import Lightlike.Regge.AreaRegge.Realization
