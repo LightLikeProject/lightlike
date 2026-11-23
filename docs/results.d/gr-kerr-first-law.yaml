@@ -1,0 +1,26 @@
+- id: LL-XXXX-a
+  title: First law of Kerr black-hole mechanics, dM = kappa/(8 pi) dA + Omega_H dJ, along any differentiable family of non-extremal Kerr black holes
+  area: GR
+  file: Lightlike/Rows/G1_066/KerrFirstLaw.lean
+  decls: [Lightlike.Rows.G1_066.kerr_first_law]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carlip-2014, location: "Section 2", check: "first law"}
+  review: kernel-checked
+  note: "Geometric units G = c = 1, 0 < M and a^2 < M^2 along the family (M t, a t). A = 4 pi (r_+^2 + a^2) is the exact Kerr horizon area (kerrArea), J = M a, with kappa and Omega_H as in Lightlike/GR/KerrHorizon.lean. Curve form: A and J are differentiable and the identity holds for their derivatives. Row G1-066, milestone GE6."
+  since: unreleased
+- id: LL-XXXX-b
+  title: Smarr formula for Kerr, M = 2 Omega_H J + kappa A/(4 pi), for 0 < M and a^2 <= M^2
+  area: GR
+  file: Lightlike/Rows/G1_066/KerrArea.lean
+  decls: [Lightlike.Rows.G1_066.kerr_smarr]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carlip-2014, location: "Section 2", check: "Smarr"}
+  review: kernel-checked
+  note: "Uses the exact Kerr area 4 pi (r_+^2 + a^2); a control (kerr_smarr_wrongArea_fails in Lightlike/GR/KerrControl.lean) shows the Schwarzschild area 4 pi r_+^2 makes the formula fail for a != 0. Row G1-066, milestone GE6."
+  since: unreleased
