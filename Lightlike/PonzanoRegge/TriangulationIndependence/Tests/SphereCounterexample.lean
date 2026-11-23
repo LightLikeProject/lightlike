@@ -39,6 +39,7 @@ theorem h1 : IsMove14 S3 0 1 3 4 5 :=
     by decide +kernel, by decide +kernel, by decide +kernel, by decide +kernel, by decide +kernel,
     by decide +kernel, by decide +kernel⟩
 
+/-- The 3-sphere after the first 1-4 move on `S3`. -/
 def K1 : Complex3 (Fin 7) := move14 S3 h1
 
 theorem h2 : IsMove23 K1 0 3 4 2 5 :=
@@ -46,6 +47,7 @@ theorem h2 : IsMove23 K1 0 3 4 2 5 :=
     by decide +kernel, by decide +kernel, by decide +kernel, by decide +kernel, by decide +kernel,
     by decide +kernel, by decide +kernel, by decide +kernel, by decide +kernel⟩
 
+/-- After the 2-3 move on `K1`. -/
 def K2 : Complex3 (Fin 7) := move23 K1 h2
 
 theorem h3 : IsMove14 K2 0 1 2 4 6 :=
@@ -53,6 +55,7 @@ theorem h3 : IsMove14 K2 0 1 2 4 6 :=
     by decide +kernel, by decide +kernel, by decide +kernel, by decide +kernel, by decide +kernel,
     by decide +kernel, by decide +kernel⟩
 
+/-- After the 1-4 move on `K2`. -/
 def K3 : Complex3 (Fin 7) := move14 K2 h3
 
 theorem h4 : IsMove23 K3 0 1 2 3 6 :=
@@ -60,6 +63,7 @@ theorem h4 : IsMove23 K3 0 1 2 3 6 :=
     by decide +kernel, by decide +kernel, by decide +kernel, by decide +kernel, by decide +kernel,
     by decide +kernel, by decide +kernel, by decide +kernel, by decide +kernel⟩
 
+/-- After the 2-3 move on `K3`. -/
 def K4 : Complex3 (Fin 7) := move23 K3 h4
 
 theorem h5 : IsMove23 K4 0 1 3 5 6 :=

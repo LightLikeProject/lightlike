@@ -26,7 +26,18 @@ open Set
 
 /-- A triangle `a b c` of the source together with the target triangle `a' b' c'`. -/
 structure Tri where
-  (a b c a' b' c' : ℝ × ℝ)
+  /-- Source vertex `a`. -/
+  a : ℝ × ℝ
+  /-- Source vertex `b`. -/
+  b : ℝ × ℝ
+  /-- Source vertex `c`. -/
+  c : ℝ × ℝ
+  /-- Target vertex `a'`, the image of `a`. -/
+  a' : ℝ × ℝ
+  /-- Target vertex `b'`, the image of `b`. -/
+  b' : ℝ × ℝ
+  /-- Target vertex `c'`, the image of `c`. -/
+  c' : ℝ × ℝ
 
 /-- The source triangle of a `Tri`, as a convex hull. -/
 def Tri.src (t : Tri) : Set (ℝ × ℝ) := convexHull ℝ {t.a, t.b, t.c}
