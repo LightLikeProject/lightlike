@@ -2050,6 +2050,9 @@ import Lightlike.Rows.G1_011.Expansion
 import Lightlike.Rows.G1_011.Trapped
 import Lightlike.Rows.G1_011.NonVacuous
 import Lightlike.Rows.G1_011.Test
+import Lightlike.Rows.G3_264.Defs
+import Lightlike.Rows.G3_264.FixedPoint
+import Lightlike.Rows.G3_264.Jacobian
 import Lightlike.GFT.Euler
 import Lightlike.Rows.G1_039.Basic
 import Lightlike.Rows.G1_039.Decomposition
