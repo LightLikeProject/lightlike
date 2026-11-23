@@ -3587,3 +3587,16 @@
   review: kernel-checked
   note: "Compared with Rivasseau and Wang, arXiv:1003.1037, Theorem II.1, eq. (II-1), p. 2, and the convex combination (II-4) of block matrices of ones, pp. 2-3 (read): the symmetric n x n matrix X^F with X_ii = 1 and X_ij the infimum of the parameters w on the path of the forest F from i to j (0 if there is none) is positive. posSemidef_forestMatrix: for any finite set of links F and parameters with w_l <= 1 on F, forestMatrix F w (1 on the diagonal, the ultrametric of F off it, equal to the path infimum for w >= 0 by forestPoint_eq_path_inf and forestMatrix_eq_forestPoint) is Matrix.PosSemidef. Difference, representation, with the meaning unchanged: positive is Matrix.PosSemidef (symmetric with x^T X x >= 0); the matrix can be singular (one link with parameter 1 gives the 2 x 2 matrix of ones), so the source's positive is positive semidefinite. Not a difference: the statement holds for any finite set of links and needs only w_l <= 1 on F, which contains the source's case of a forest with parameters in the unit interval. Proof: the integral form of (II-4): for t in (0, 1], t <= X_ij exactly when i and j are joined by the links with w >= t (le_ultra_iff), so X is the integral over t of the block matrices of ones of those clusters, each positive (sum_block_nonneg)."
   since: unreleased
+- id: LL-XXXX-a
+  title: The Turaev–Viro state sum at r = 3 is an invariant of closed combinatorial 3-manifolds up to PL homeomorphism
+  area: TuraevViro
+  file: Lightlike/TuraevViro/PLInvariance.lean
+  decls: [Lightlike.TV.turaevViro3_plHomeomorphic]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: turaev-1994, location: "Chapter: Chapter VII. Simplicial state sums on 3-manifolds|10.1515/9783110883275-008"}
+  review: kernel-checked
+  note: "Let K and L be complexes on Complex3 with at least one tetrahedron each, K a closed combinatorial 3-manifold, whose generated simplicial complexes are PL homeomorphic. Then K and L have the same Turaev–Viro state sum at r = 3. Proof: Newman's theorem (PL homeomorphic implies stellar equivalent) and the ergodicity of the 2-3, 3-2, 1-4 and 4-1 moves on closed combinatorial 3-manifolds (moveEquiv3_lift_iff_stellarEquiv, which uses Pachner's theorem in dimension 3, on main), together with the invariance of the r = 3 state sum under the four moves (turaevViro3_move23 and turaevViro3_move14, and the inverse moves, which follow by composition), and under relabelling of the vertices, which the lifts to V ⊕ ℕ need. The statement is a consequence of the invariance in the book; the comparison with Turaev, Chapter VII, is pending (not read at the location). Limits: only r = 3; for r ≥ 4 the invariance under the moves is conditional on q-Biedenharn–Elliott (LL-0031). Nothing is claimed about the Ponzano–Regge amplitude: its regularised values are only included in one another along forward moves (TriangulationIndependence/Main.lean), so PL homeomorphism gives no equality there. Trust check: the boundary of the 4-simplex (5 tetrahedra) and of the 16-cell (16 tetrahedra) are PL homeomorphic and their r = 3 sums agree (turaevViro3_simplex4_cell16)."
+  since: unreleased

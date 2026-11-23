@@ -1760,6 +1760,7 @@ import Lightlike.Tests.SphereInvariants
 import Lightlike.Tests.SphereRecognition
 import Lightlike.Tests.TreeDependence
 import Lightlike.TuraevViro.LevelOne
+import Lightlike.TuraevViro.PLInvariance
 import Lightlike.TuraevViro.Model
 import Lightlike.TuraevViro.QNumber
 import Lightlike.TuraevViro.QSixJ
@@ -1815,6 +1816,7 @@ import Lightlike.TuraevViro.Reflect.RacahTreeE1
 import Lightlike.TuraevViro.Reflect.RacahTreeE3
 import Lightlike.TuraevViro.Reflect.RacahTreeE5
 import Lightlike.TuraevViro.Reflect.RacahTreeX0
+import Lightlike.TuraevViro.PLInvarianceTests
 import Lightlike.TuraevViro.Tests
 import Lightlike.TuraevViro.TuraevViro
 import Lightlike.Regge.Lorentzian.Angle
