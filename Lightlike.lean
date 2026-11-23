@@ -292,6 +292,8 @@ import Lightlike.Rows.G1_030.Bardeen
 import Lightlike.Rows.G1_030.Tests
 import Lightlike.Rows.G1_028.SlowRoll
 import Lightlike.Rows.G1_028.SlowRollDynamics
+import Lightlike.Rows.G1_027.ScalarFLRW
+import Lightlike.Rows.G1_027.ScalarChecks
 import Lightlike.FourD.Boundary
 import Lightlike.FourD.Complex
 import Lightlike.FourD.Orientation
