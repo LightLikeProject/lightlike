@@ -1631,6 +1631,16 @@ import Lightlike.Tests.TuraevViroMoves
 import Lightlike.Tests.QM
 import Lightlike.Tests.SU2
 import Lightlike.Tests.SixJ
+import Lightlike.Rows.G1_054.Involution
+import Lightlike.Rows.G1_054.Modular
+import Lightlike.Rows.G1_054.BoundedTransform
+import Lightlike.Rows.G1_054.Uniqueness
+import Lightlike.Rows.G1_054.SubspaceUnique
+import Lightlike.Rows.G1_054.Strip
+import Lightlike.Rows.G1_054.KMS
+import Lightlike.Rows.G1_054.Model
+import Lightlike.Rows.G1_054.Failure
+import Lightlike.Rows.G1_054.Tests
 import Lightlike.Tests.SphereInvariants
 import Lightlike.Tests.SphereRecognition
 import Lightlike.Tests.TreeDependence
