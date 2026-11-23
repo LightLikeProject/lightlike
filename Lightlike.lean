@@ -2177,3 +2177,8 @@ import Lightlike.Rows.G3_255.InverseExpansion
 import Lightlike.Rows.G3_255.VolumeFactor
 import Lightlike.Rows.G3_255.VertexOrders
 import Lightlike.Rows.G3_255.DiagramClasses
+import Lightlike.Rows.G2_012.Multiplier
+import Lightlike.Rows.G2_012.Area
+import Lightlike.Rows.G2_012.Spectrum
+import Lightlike.Rows.G2_012.Casimir
+import Lightlike.Rows.G2_012.Tests
