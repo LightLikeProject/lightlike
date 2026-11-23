@@ -2318,3 +2318,4 @@ import Lightlike.Rows.G2_007.Uniform
 import Lightlike.Rows.G1_039.Bianchi
 import Lightlike.Rows.G1_039.LieStructure
 import Lightlike.Rows.G2_036.CatalanAsymptotics
+import Lightlike.Rows.G1_067.EventHorizon
