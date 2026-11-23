@@ -464,7 +464,7 @@ tasks:
     difficulty: "intermediate"
     mode: "exclusive"
     deps: ["T-GE10"]
-    checks: ["`a = 0` gives Schwarzschild with `κ = 1/(4M)`", "a sign flipped in g_tφ shown not to be Ricci-flat"]
+    checks: ["`a = 0` gives Schwarzschild with `κ = 1/(4M)`", "the coefficient of `g_tφ` halved shown not to be Ricci-flat (flipping its sign gives Kerr with `-a`, which is Ricci-flat)"]
     labels: ["milestone", "area: geometry", "size: M", "intermediate"]
   - id: "T-GE7"
     kind: "milestone"
@@ -2387,8 +2387,8 @@ tasks:
     size: "M"
     difficulty: "intermediate"
     mode: "exclusive"
-    deps: []
-    checks: []
+    deps: ["T-HA4"]
+    checks: ["a known 6j value", "a wrong sign convention in the 6j symbol shown to break the Biedenharn–Elliott identity"]
     labels: ["milestone", "area: quantum-groups", "size: M", "intermediate"]
   - id: "T-QU5"
     kind: "milestone"
@@ -4162,7 +4162,7 @@ tasks:
     difficulty: "intermediate"
     mode: "exclusive"
     deps: ["T-SF6", "T-SF5b"]
-    checks: ["a small complex against published numerics where available"]
+    checks: ["on a small closed 4-complex at low spins, the state sum computed in Lean equals the Ooguri amplitude at the BF point", "a wrong face amplitude shown to break that equality"]
     labels: ["milestone", "area: spin-foams", "size: M", "intermediate"]
   - id: "T-SF7"
     kind: "milestone"
