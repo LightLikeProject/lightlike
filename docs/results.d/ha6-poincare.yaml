@@ -1,0 +1,65 @@
+- id: LL-XXXX-a
+  title: "The massive one-particle representation of the Poincaré group, induced from SU(2): it preserves the L² norm, is covariant under translations, has P² = m², W² = −m² s(s+1) and n+1 states per momentum"
+  area: Lorentz
+  file: Lightlike/Lorentz/PoincareIrreps/Classification.lean
+  decls: [Lightlike.Lorentz.Poincare.wigner_massive]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: weinberg-1995, location: "Chapter: RELATIVISTIC QUANTUM MECHANICS|10.1017/CBO9781139644167.004"}
+  review: kernel-checked
+  note: "The representation is built by induction from the little group SU(2) on the mass shell of SL(2,C) = double cover of the Lorentz group, spin s = n/2 (n = 1: two states per momentum). Not claimed: irreducibility, and Wigner's classification theorem (ClassificationStatement.lean states it as a Prop, it is not proven: its proof needs Mackey's imprimitivity theorem). The comparison with Weinberg (1995), Chapter 2, is pending: the book was not read at the cited location, and Wigner (1939) was not read. Weinberg works in signature (-,+,+,+) with W^2 = m^2 j(j+1); here (+,-,-,-), so W^2 = -m^2 s(s+1) (the sign convention is stated in the task, milestones.md HA6)."
+  since: unreleased
+- id: LL-XXXX-b
+  title: "The massless one-particle representation of finite helicity h/2, induced from the character of ISO(2): it preserves the L² norm of the light cone, has P² = 0, W = (h/2) P and W² = 0"
+  area: Lorentz
+  file: Lightlike/Lorentz/PoincareIrreps/Classification.lean
+  decls: [Lightlike.Lorentz.Poincare.wigner_massless]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: weinberg-1995, location: "Chapter: RELATIVISTIC QUANTUM MECHANICS|10.1017/CBO9781139644167.004"}
+  review: kernel-checked
+  note: "The representation is induced from the helicity character of the little group ISO(2) (trivial on the translations of the little group). Not claimed: irreducibility, the classification of massless representations of infinite spin. The comparison with Weinberg (1995), Chapter 2, is pending: the book was not read at the cited location, and Wigner (1939) was not read. Weinberg works in signature (-,+,+,+) with W^2 = m^2 j(j+1); here (+,-,-,-), so W^2 = -m^2 s(s+1) (the sign convention is stated in the task, milestones.md HA6)."
+  since: unreleased
+- id: LL-XXXX-c
+  title: "The Pauli–Lubanski square of the massive spin-n/2 representation is W² = −m² s(s+1), with s = n/2 and the signature (+,−,−,−)"
+  area: Lorentz
+  file: Lightlike/Lorentz/PoincareIrreps/PauliLubanski.lean
+  decls: [Lightlike.Lorentz.Poincare.pauliLubanski_square, Lightlike.Lorentz.Poincare.momentum_dot_pauliLubanski, Lightlike.Lorentz.Poincare.spinJ_casimir]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: weinberg-1995, location: "Chapter: RELATIVISTIC QUANTUM MECHANICS|10.1017/CBO9781139644167.004"}
+  review: kernel-checked
+  note: "Non-vacuity: spinJ_casimir (J_x²+J_y²+J_z² = s(s+1) for every n) and P·W = 0. The comparison with Weinberg (1995), Chapter 2, is pending: the book was not read at the cited location, and Wigner (1939) was not read. Weinberg works in signature (-,+,+,+) with W^2 = m^2 j(j+1); here (+,-,-,-), so W^2 = -m^2 s(s+1) (the sign convention is stated in the task, milestones.md HA6)."
+  since: unreleased
+- id: LL-XXXX-d
+  title: "The little groups of the Poincaré group: the stabilizer of the rest momentum m·1 in SL(2,C) is SU(2) and is compact, and the stabilizer of the light-like momentum is the group of upper triangular matrices with the phase character, with the translations as the kernel of the phase"
+  area: Lorentz
+  file: Lightlike/Lorentz/PoincareIrreps/Momentum.lean
+  decls: [Lightlike.Lorentz.Poincare.stabilizer_restMom, Lightlike.Lorentz.Poincare.isCompact_stabilizer_restMom, Lightlike.Lorentz.Poincare.mem_stabilizer_lightMom, Lightlike.Lorentz.Poincare.mem_ker_phase]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: weinberg-1995, location: "Chapter: RELATIVISTIC QUANTUM MECHANICS|10.1017/CBO9781139644167.004"}
+  review: kernel-checked
+  note: "Statements in the spinor model of momentum space (Hermitian 2x2 matrices, A acts by A P A†). The comparison with Weinberg (1995), Chapter 2, is pending: the book was not read at the cited location, and Wigner (1939) was not read. Weinberg works in signature (-,+,+,+) with W^2 = m^2 j(j+1); here (+,-,-,-), so W^2 = -m^2 s(s+1) (the sign convention is stated in the task, milestones.md HA6)."
+  since: unreleased
+- id: LL-XXXX-e
+  title: "For massless states of finite helicity the Pauli–Lubanski vector is W = (h/2) P"
+  area: Lorentz
+  file: Lightlike/Lorentz/PoincareIrreps/MasslessPL.lean
+  decls: [Lightlike.Lorentz.Poincare.lightPL_eq, Lightlike.Lorentz.Poincare.lightPL_square, Lightlike.Lorentz.Poincare.helChar_upper]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: weinberg-1995, location: "Chapter: RELATIVISTIC QUANTUM MECHANICS|10.1017/CBO9781139644167.004"}
+  review: kernel-checked
+  note: "The vector W is computed from the helicity character and the rotation generator J_z; lightPL_square gives W² = 0. The comparison with Weinberg (1995), Chapter 2, is pending: the book was not read at the cited location, and Wigner (1939) was not read. Weinberg works in signature (-,+,+,+) with W^2 = m^2 j(j+1); here (+,-,-,-), so W^2 = -m^2 s(s+1) (the sign convention is stated in the task, milestones.md HA6)."
+  since: unreleased
