@@ -1402,6 +1402,7 @@ import Lightlike.Spacetime.Causal.CausalCurve
 import Lightlike.Spacetime.Causal.CurveGlobal
 import Lightlike.Spacetime.Causal.CurveMargin
 import Lightlike.Spacetime.Causal.CurveOps
+import Lightlike.Rows.G1_007.LorentzLength
 import Lightlike.Spacetime.Causal.ConeConvex
 import Lightlike.Spacetime.Causal.DomainOfDependence
 import Lightlike.Spacetime.Causal.Extension
