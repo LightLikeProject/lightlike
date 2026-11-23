@@ -269,7 +269,8 @@ it to PL topology, layer 3 to topological 3-manifolds.
 | PL4 | 2 | Geometric realisations, PL maps and PL homeomorphisms; Newman's theorem: PL-homeomorphic realisations exactly when stellar-equivalent | L |
 | PL5 | 3 | The topology Moise's proof needs: Jordan curve and Schoenflies theorems in the plane, and the 3-dimensional tools fixed by a survey at the start of PL5 | R |
 | PL6 | 3 | Moise's theorem: every topological 3-manifold has a triangulation, unique up to PL homeomorphism | R |
-| PL7 | - | Assembly: homeomorphic closed 3-manifolds have triangulations related by the moves on `Complex3`; consequences for the state sums | M |
+| PL7a | - | Assembly up to PL homeomorphism: PL-homeomorphic closed combinatorial 3-manifolds have triangulations related by the moves on `Complex3`; consequences for the state sums | M |
+| PL7b | - | Assembly up to homeomorphism: homeomorphic closed 3-manifolds have triangulations related by the moves on `Complex3` (needs Moise's theorem, PL6); consequences for the state sums | R |
 
 - **PL1, done when:** the definitions with their basic properties are in place; trust checks: the
   boundary of an (n+1)-simplex is a PL n-sphere, small known examples (the octahedron is a PL
@@ -291,10 +292,9 @@ it to PL topology, layer 3 to topological 3-manifolds.
   characteristic) are not stellar-equivalent.
 - **PL5, done when:** the statements fixed by the survey at the start of PL5 are proven.
 - **PL6, done when:** both parts of Moise's theorem are proven.
-- **PL7, done when:** the Turaev–Viro state sum at `r = 3`, which is already unconditionally
-  invariant under the moves, is proven to be an invariant of closed 3-manifolds up to
-  homeomorphism; and for the Ponzano–Regge amplitude it is stated exactly which invariance follows,
-  given its cutoff and gauge-tree conditions.
+- **PL7a, done when:** the Turaev–Viro state sum at `r = 3`, which is already unconditionally
+  invariant under the moves, is proven to be an invariant of closed 3-manifolds up to PL homeomorphism (from PL2 and PL4); and for the Ponzano–Regge amplitude it is stated exactly which invariance up to PL homeomorphism follows, given its cutoff and gauge-tree conditions.
+- **PL7b, done when:** the same up to homeomorphism (from PL7a and Moise's theorem, PL6).
 
 ### Quantum groups and state-sum TQFTs
 

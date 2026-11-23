@@ -1226,7 +1226,12 @@ milestones:
     refs:
       - {ref: moise-1977, location: "Chapter: The Triangulation theorem|10.1007/978-1-4612-9906-6_36"}
       - {ref: moise-1977, location: "Chapter: The Hauptvermutung; Tame imbedding|10.1007/978-1-4612-9906-6_37"}
-  PL7:
+  PL7a:
+    class: sourced
+    refs:
+      - {ref: turaev-1994, location: "Chapter: Chapter VII. Simplicial state sums on 3-manifolds|10.1515/9783110883275-008"}
+      - {ref: lickorish-1999, location: "Theorem 5.9", check: "bistellar"}
+  PL7b:
     class: sourced
     refs:
       - {ref: turaev-1994, location: "Chapter: Chapter VII. Simplicial state sums on 3-manifolds|10.1515/9783110883275-008"}
