@@ -3596,7 +3596,7 @@
   tier: established
   source:
     refs:
-      - {ref: kitaev-2017, location: "eq. (80), p. 14", check: "Plancherel"}
+      - {ref: kitaev-2017, location: "Section 4", check: "Plancherel"}
   review: kernel-checked
   note: "Compared with Kitaev, arXiv:1711.08169, eq. (79)-(80), p. 14 (read 24 November 2026): the Plancherel measure of PSL(2,R) on the principal series C_{1/4+s^2} is (2π)^{-2} tanh(πs) s ds, the same density ρ tanh(πρ) with ρ = s. Differences: (representation) only the spherical, K-biinvariant part is proven, as the transform of a function of the hyperbolic distance (v = cosh r > 1) in a square-root normalisation, not the full Plancherel measure; the discrete series D_n (weight (2π)^{-2}(n - 1/2)) and the non-spherical K-types are NOT proven, so this does not close HA3. The comparison with Knapp (1986) and Gelfand-Graev-Vilenkin (1966) is pending: the books were not read at the cited locations."
   since: unreleased
@@ -3609,7 +3609,7 @@
   tier: established
   source:
     refs:
-      - {ref: kitaev-2017, location: "Section 2, eq. (10), p. 5"}
+      - {ref: knapp-1986, location: "Chapter: Chapter II. Representations of SU(2), SL(2, ℝ) and SL(2, ℂ)|10.1515/9781400883974-005"}
   review: kernel-checked
   note: "Compared with Kitaev, arXiv:1711.08169, the list (10) of the unitary irreducible representations (continuous series with q >= 1/4 the principal series, discrete series D_λ^±) (read 24 November 2026, location by pdftotext, page number not checked). Kitaev works on the universal cover; here SL(2,R) itself, the principal series as |cx+d|^{iν-1} on L²(R) and the discrete series D_n^+ on a weighted Bergman space of the upper half plane (n >= 2). Irreducibility is not proven. The comparison with Knapp (1986) is pending: the book was not read at the cited location."
   since: unreleased
@@ -3622,7 +3622,7 @@
   tier: established
   source:
     refs:
-      - {ref: kitaev-2017, location: "Section 2, eq. (10), p. 5", check: "Casimir"}
+      - {ref: knapp-1986, location: "Chapter: Chapter II. Representations of SU(2), SL(2, ℝ) and SL(2, ℂ)|10.1515/9781400883974-005"}
   review: kernel-checked
   note: "Compared with Kitaev, arXiv:1711.08169, eq. (10): the Casimir eigenvalue is q = λ(1-λ), with q = 1/4 + s² on the principal series (λ = 1/2 + is) and λ = n/2 on D_n^±. Convention difference: our Casimir has the opposite sign, so it acts by -q = -(1/4 + s²) = -(1+ν²)/4 with ν = 2s, and by (n/2)(n/2 - 1) = -q for λ = n/2; it is the sign of the Casimir of the Lie algebra action by differentiation. Non-vacuity: casimir_lowestVec on the nonzero lowest-weight vector. Page number of eq. (10) not checked."
   since: unreleased
