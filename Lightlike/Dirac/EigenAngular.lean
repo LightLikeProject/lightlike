@@ -358,4 +358,101 @@ theorem sphere_eigen_mode (ρ : CliffordRep 2 V) (v : V) (n d : ℕ) {ε : ℝ} 
     rw [fPoly, derivative_C_mul]
     linear_combination (-(C lam⁻¹ : ℝ[X])) * h1 + (gPoly (n + 1) d) * hC
 
+/-- `angSpinor` is additive in the constant spinor. -/
+lemma angSpinor_add (ρ : CliffordRep 2 V) (v w : V) (c₁ c₂ : E 2 → ℂ) :
+    angSpinor ρ (v + w) c₁ c₂ = angSpinor ρ v c₁ c₂ + angSpinor ρ w c₁ c₂ := by
+  funext y
+  simp only [angSpinor, Lv_apply, map_add, map_smul, Pi.add_apply, smul_add]
+  abel
+
+/-- `angSpinor` is homogeneous in the constant spinor. -/
+lemma angSpinor_smul (ρ : CliffordRep 2 V) (a : ℝ) (v : V) (c₁ c₂ : E 2 → ℂ) :
+    angSpinor ρ (a • v) c₁ c₂ = a • angSpinor ρ v c₁ c₂ := by
+  funext y
+  simp only [angSpinor, Lv_apply, map_add, map_smul, Pi.smul_apply, smul_add, smul_comm a]
+
+/-- The Dirac operator of the sphere is additive on differentiable spinors (finite sums). -/
+lemma diracF_stereo_sum (ρ : CliffordRep 2 V) {ι : Type*} (t : Finset ι) (f : ι → E 2 → V) (x : E 2)
+    (hf : ∀ i ∈ t, DifferentiableAt ℝ (f i) x) :
+    diracF ρ stereoF stereoOmega (fun y => ∑ i ∈ t, f i y) x =
+      ∑ i ∈ t, diracF ρ stereoF stereoOmega (f i) x := by
+  have hs : HasFDerivAt (fun y => ∑ i ∈ t, f i y) (∑ i ∈ t, fderiv ℝ (f i) x) x :=
+    HasFDerivAt.fun_sum (fun i hi => (hf i hi).hasFDerivAt)
+  simp only [diracF_stereo, dirac, hs.fderiv, sum_apply, map_sum,
+    Finset.smul_sum, Finset.sum_add_distrib]
+  rw [Finset.sum_comm]
+
+/-- The `n`-th mode of level `k+1` (`0 ≤ n ≤ k`), sign `ε`, constant spinor `v`:
+`h^{1/2} g_n` with `g_n = angG ρ v n (k+1) G F`, `G = gPoly (n+1) (k−n)`, `F = Ψ/λ`, `λ = ε(k+1)`. -/
+noncomputable def modeFn (ρ : CliffordRep 2 V) (k : ℕ) (ε : ℝ) (n : ℕ) (v : V) : E 2 → V :=
+  fun y => stereoH y ^ ((((2 : ℕ) : ℝ) - 1) / 2) •
+    angG ρ v n (k + 1) (gPoly (n + 1) (k - n)) (fPoly (n + 1) (k - n) (ε * ((k + 1 : ℕ) : ℝ))) y
+
+/-- Each mode is an eigenspinor with eigenvalue `ε (k+1)`. -/
+theorem modeFn_eigen (ρ : CliffordRep 2 V) (k : ℕ) {ε : ℝ} (hε : ε * ε = 1) {n : ℕ} (hn : n ≤ k)
+    (v : V) (x : E 2) :
+    diracF ρ stereoF stereoOmega (modeFn ρ k ε n v) x = (ε * ((k + 1 : ℕ) : ℝ)) • modeFn ρ k ε n v x := by
+  obtain ⟨d, rfl⟩ := Nat.exists_eq_add_of_le hn
+  have e : n + d + 1 = n + 1 + d := by omega
+  have h := sphere_eigen_mode ρ v n d hε x
+  have hm : modeFn ρ (n + d) ε n v = fun y => stereoH y ^ ((((2 : ℕ) : ℝ) - 1) / 2) •
+      angG ρ v n (n + 1 + d) (gPoly (n + 1) d) (fPoly (n + 1) d (ε * ((n + 1 + d : ℕ) : ℝ))) y := by
+    funext y
+    simp only [modeFn, e, Nat.add_sub_cancel_left]
+  rw [hm]
+  simp only [e]
+  exact h
+
+/-- Each mode is differentiable. -/
+theorem modeFn_differentiable (ρ : CliffordRep 2 V) (k : ℕ) (ε : ℝ) (n : ℕ) (v : V) (x : E 2) :
+    DifferentiableAt ℝ (modeFn ρ k ε n v) x := by
+  have hne : 1 + ‖x‖ ^ 2 ≠ 0 := by positivity
+  set G := gPoly (n + 1) (k - n)
+  set F := fPoly (n + 1) (k - n) (ε * ((k + 1 : ℕ) : ℝ))
+  obtain ⟨Ψ1, h1, -, -⟩ := angProfile_deriv (fun u => ((1 + u) ^ (k + 1))⁻¹ * G.eval u) (n + 1) x
+    (hasDerivAt_prof (k + 1) G hne)
+  obtain ⟨Ψ2, h2, -, -⟩ := angProfile_deriv (fun u => ((1 + u) ^ (k + 1))⁻¹ * F.eval u) n x
+    (hasDerivAt_prof (k + 1) F hne)
+  have hd : DifferentiableAt ℝ (angG ρ v n (k + 1) G F) x :=
+    (hasFDerivAt_angSpinor ρ v h1 h2).differentiableAt
+  have hH : DifferentiableAt ℝ (fun y : E 2 => stereoH y) x := by
+    unfold stereoH
+    have : DifferentiableAt ℝ (fun y : E 2 => ‖y‖ ^ 2) x := (hasStrictFDerivAt_norm_sq x).hasFDerivAt.differentiableAt
+    fun_prop
+  have hP : DifferentiableAt ℝ (fun y : E 2 => stereoH y ^ ((((2 : ℕ) : ℝ) - 1) / 2)) x :=
+    hH.rpow_const (Or.inl (stereoH_pos x).ne')
+  exact hP.smul hd
+
+lemma modeFn_add (ρ : CliffordRep 2 V) (k : ℕ) (ε : ℝ) (n : ℕ) (v w : V) :
+    modeFn ρ k ε n (v + w) = modeFn ρ k ε n v + modeFn ρ k ε n w := by
+  funext y
+  simp only [modeFn, angG, angSpinor_add, Pi.add_apply, smul_add]
+
+lemma modeFn_smul (ρ : CliffordRep 2 V) (k : ℕ) (ε : ℝ) (n : ℕ) (a : ℝ) (v : V) :
+    modeFn ρ k ε n (a • v) = a • modeFn ρ k ε n v := by
+  funext y
+  simp only [modeFn, angG, angSpinor_smul, Pi.smul_apply, smul_comm a]
+
+/-- The linear map sending `(v_0, …, v_k)` to `∑ₙ h^{1/2} g_n(v_n)`. -/
+noncomputable def modeMap (ρ : CliffordRep 2 V) (k : ℕ) (ε : ℝ) : (Fin (k + 1) → V) →ₗ[ℝ] (E 2 → V) where
+  toFun w := fun y => ∑ n : Fin (k + 1), modeFn ρ k ε n (w n) y
+  map_add' w w' := by
+    funext y
+    simp [modeFn_add, Finset.sum_add_distrib]
+  map_smul' a w := by
+    funext y
+    simp [modeFn_smul, Finset.smul_sum]
+
+/-- **Every image of `modeMap` is an eigenspinor** of the Dirac operator of `S²` (in the chart)
+with eigenvalue `ε (k+1)`. -/
+theorem modeMap_eigen (ρ : CliffordRep 2 V) (k : ℕ) {ε : ℝ} (hε : ε * ε = 1) (w : Fin (k + 1) → V)
+    (x : E 2) :
+    diracF ρ stereoF stereoOmega (modeMap ρ k ε w) x =
+      (ε * ((k + 1 : ℕ) : ℝ)) • modeMap ρ k ε w x := by
+  have h := diracF_stereo_sum ρ Finset.univ (fun n : Fin (k + 1) => modeFn ρ k ε n (w n)) x
+    (fun n _ => modeFn_differentiable ρ k ε n (w n) x)
+  have e : modeMap ρ k ε w = fun y => ∑ n : Fin (k + 1), modeFn ρ k ε n (w n) y := rfl
+  rw [e, h]
+  simp only [modeFn_eigen ρ k hε (Nat.lt_succ_iff.mp (Fin.is_lt _)), Finset.smul_sum]
+
 end Lightlike.Dirac
