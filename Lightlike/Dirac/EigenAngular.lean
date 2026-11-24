@@ -49,6 +49,7 @@ lemma gam0_Jop_comm (ρ : CliffordRep 2 V) (w : V) : gam ρ 0 (Jop ρ w) = -Jop 
 noncomputable def Lv (ρ : CliffordRep 2 V) (v : V) : ℂ →L[ℝ] V :=
   Complex.reCLM.smulRight v + Complex.imCLM.smulRight (Jop ρ v)
 
+/-- `Lv c = Re c • v + Im c • J v`. -/
 lemma Lv_apply (ρ : CliffordRep 2 V) (v : V) (c : ℂ) : Lv ρ v c = c.re • v + c.im • Jop ρ v := by
   simp [Lv]
 
@@ -90,6 +91,7 @@ theorem dirac_angular (ρ : CliffordRep 2 V) (v : V) {c₁ c₂ : E 2 → ℂ} {
 noncomputable def zcL : E 2 →L[ℝ] ℂ :=
   (EuclideanSpace.proj (0 : Fin 2)).smulRight (1 : ℂ) + (EuclideanSpace.proj (1 : Fin 2)).smulRight Complex.I
 
+/-- The complex coordinate of `y` is `y₀ + i y₁`. -/
 lemma zcL_apply (y : E 2) : zcL y = (y 0 : ℂ) + (y 1 : ℂ) * Complex.I := by
   simp [zcL]
 
@@ -149,6 +151,7 @@ noncomputable def angG (ρ : CliffordRep 2 V) (v : V) (n s : ℕ) (G F : ℝ[X])
   angSpinor ρ v (angProfile (fun u => ((1 + u) ^ s)⁻¹ * G.eval u) (n + 1))
     (angProfile (fun u => ((1 + u) ^ s)⁻¹ * F.eval u) n)
 
+/-- `z̄ z = ‖y‖²`. -/
 lemma zbar_mul_z (x : E 2) : starRingEnd ℂ (zcL x) * zcL x = ((‖x‖ ^ 2 : ℝ) : ℂ) := by
   rw [zcL_apply, EuclideanSpace.norm_sq_eq]
   simp [Fin.sum_univ_two, Complex.ext_iff, pow_two]
@@ -228,9 +231,11 @@ open Polynomial
 noncomputable def psiPoly (m s : ℝ) (P : ℝ[X]) : ℝ[X] :=
   (1 + X) * (C m * P + X * P.derivative) - C s * X * P
 
+/-- The constant coefficient of `Ψ`. -/
 lemma coeff_psiPoly_zero (m s : ℝ) (P : ℝ[X]) : (psiPoly m s P).coeff 0 = m * P.coeff 0 := by
   simp [psiPoly, add_mul, coeff_derivative, mul_add]
 
+/-- The coefficients of `Ψ` in terms of those of `P`. -/
 lemma coeff_psiPoly_succ (m s : ℝ) (P : ℝ[X]) (j : ℕ) :
     (psiPoly m s P).coeff (j + 1) =
       (m + j + 1) * P.coeff (j + 1) + (m + j - s) * P.coeff j := by
@@ -270,6 +275,7 @@ noncomputable def gcoef (m d : ℕ) : ℕ → ℝ
   | 0 => 1
   | i + 1 => (-(((d : ℝ) - i) * ((m : ℝ) + d - 1 - i)) / (((i : ℝ) + 1) * ((m : ℝ) + 1 + i))) * gcoef m d i
 
+/-- The two-term recurrence of the coefficients, in cleared-denominator form. -/
 lemma gcoef_rec (m d i : ℕ) :
     ((i : ℝ) + 1) * ((m : ℝ) + 1 + i) * gcoef m d (i + 1) +
       (((m + d : ℕ) : ℝ) - m - i) * (((m + d : ℕ) : ℝ) - 1 - i) * gcoef m d i = 0 := by
@@ -280,6 +286,7 @@ lemma gcoef_rec (m d i : ℕ) :
   field_simp
   ring
 
+/-- The coefficients vanish past degree `d`. -/
 lemma gcoef_eq_zero (m d j : ℕ) : gcoef m d (d + 1 + j) = 0 := by
   induction j with
   | zero =>
@@ -293,6 +300,7 @@ lemma gcoef_eq_zero (m d j : ℕ) : gcoef m d (d + 1 + j) = 0 := by
     rw [ih]
     ring
 
+/-- The coefficients vanish past degree `d`. -/
 lemma gcoef_eq_zero_of_lt {m d j : ℕ} (h : d + 1 ≤ j) : gcoef m d j = 0 := by
   obtain ⟨i, rfl⟩ := Nat.exists_eq_add_of_le h
   exact gcoef_eq_zero m d i
@@ -300,6 +308,7 @@ lemma gcoef_eq_zero_of_lt {m d j : ℕ} (h : d + 1 ≤ j) : gcoef m d j = 0 := b
 /-- The radial polynomial `G_{m,d} = Σ_{i ≤ d} c_i X^i` (degree `d`). -/
 noncomputable def gPoly (m d : ℕ) : ℝ[X] := ∑ j ∈ Finset.range (d + 1), C (gcoef m d j) * X ^ j
 
+/-- The coefficients of `gPoly`. -/
 lemma coeff_gPoly (m d i : ℕ) : (gPoly m d).coeff i = gcoef m d i := by
   unfold gPoly
   rw [finsetSum_coeff]
@@ -314,6 +323,7 @@ lemma coeff_gPoly (m d i : ℕ) : (gPoly m d).coeff i = gcoef m d i := by
         omega
       simp [this]
 
+/-- `gPoly` has constant coefficient `1`. -/
 lemma coeff_gPoly_zero (m d : ℕ) : (gPoly m d).coeff 0 = 1 := by
   rw [coeff_gPoly]; rfl
 
@@ -423,11 +433,13 @@ theorem modeFn_differentiable (ρ : CliffordRep 2 V) (k : ℕ) (ε : ℝ) (n : �
     hH.rpow_const (Or.inl (stereoH_pos x).ne')
   exact hP.smul hd
 
+/-- `modeFn` is additive in the constant spinor. -/
 lemma modeFn_add (ρ : CliffordRep 2 V) (k : ℕ) (ε : ℝ) (n : ℕ) (v w : V) :
     modeFn ρ k ε n (v + w) = modeFn ρ k ε n v + modeFn ρ k ε n w := by
   funext y
   simp only [modeFn, angG, angSpinor_add, Pi.add_apply, smul_add]
 
+/-- `modeFn` is homogeneous in the constant spinor. -/
 lemma modeFn_smul (ρ : CliffordRep 2 V) (k : ℕ) (ε : ℝ) (n : ℕ) (a : ℝ) (v : V) :
     modeFn ρ k ε n (a • v) = a • modeFn ρ k ε n v := by
   funext y
@@ -454,5 +466,140 @@ theorem modeMap_eigen (ρ : CliffordRep 2 V) (k : ℕ) {ε : ℝ} (hε : ε * ε
   have e : modeMap ρ k ε w = fun y => ∑ n : Fin (k + 1), modeFn ρ k ε n (w n) y := rfl
   rw [e, h]
   simp only [modeFn_eigen ρ k hε (Nat.lt_succ_iff.mp (Fin.is_lt _)), Finset.smul_sum]
+
+/-- **Triangular independence.** Let `L : V → V` be linear with `L² = -1`, and `G n, F n` polynomials with
+`F n (0) ≠ 0`.  If `∑_{n ≤ k} r^{n+1} G_n(r²) v_n + r^n F_n(r²) L v_n = 0` for all real `r`, then every `v_n = 0`. -/
+theorem indep_core (L : V →L[ℝ] V) (hL : ∀ w, L (L w) = -w) (k : ℕ) (G F : ℕ → ℝ[X]) (v : ℕ → V)
+    (hF : ∀ n ≤ k, (F n).eval 0 ≠ 0)
+    (hsum : ∀ r : ℝ, ∑ n ∈ Finset.range (k + 1),
+      ((r ^ (n + 1) * (G n).eval (r ^ 2)) • v n + (r ^ n * (F n).eval (r ^ 2)) • L (v n)) = 0) :
+    ∀ n ≤ k, v n = 0 := by
+  have key : ∀ N, N ≤ k + 1 → ∀ n < N, v n = 0 := by
+    intro N
+    induction N with
+    | zero => intro _ n hn; omega
+    | succ N ih =>
+      intro hN n hn
+      have hprev : ∀ n < N, v n = 0 := ih (by omega)
+      rcases Nat.lt_succ_iff_lt_or_eq.mp hn with h | h
+      · exact hprev n h
+      subst h
+      -- reduce the sum to the indices `≥ n`
+      set H : ℝ → V := fun r => ∑ j ∈ Finset.Ico n (k + 1),
+        ((r ^ (j + 1 - n) * (G j).eval (r ^ 2)) • v j + (r ^ (j - n) * (F j).eval (r ^ 2)) • L (v j)) with hH
+      have hHr : ∀ r : ℝ, r ≠ 0 → H r = 0 := by
+        intro r hr
+        have h1 : r ^ n • H r = 0 := by
+          rw [← hsum r, hH, Finset.smul_sum]
+          have hsplit : Finset.range (k + 1) = Finset.range n ∪ Finset.Ico n (k + 1) := by
+            ext j; simp; omega
+          rw [hsplit, Finset.sum_union (by
+            rw [Finset.disjoint_left]; intro j hj1 hj2; simp at hj1 hj2; omega)]
+          rw [Finset.sum_eq_zero (s := Finset.range n) (fun j hj => by
+            rw [hprev j (Finset.mem_range.mp hj)]; simp), zero_add]
+          refine Finset.sum_congr rfl fun j hj => ?_
+          have hj' := Finset.mem_Ico.mp hj
+          rw [smul_add, smul_smul, smul_smul]
+          congr 2
+          · rw [← mul_assoc, ← pow_add, Nat.add_sub_cancel' (by omega)]
+          · rw [← mul_assoc, ← pow_add, Nat.add_sub_cancel' (by omega)]
+        exact (smul_eq_zero.mp h1).resolve_left (pow_ne_zero _ hr)
+      have hcont : Continuous H := by
+        rw [hH]
+        fun_prop
+      have hH0 : H 0 = 0 := by
+        have hdense : Dense {r : ℝ | r ≠ 0} := by
+          simpa [Set.compl_def] using dense_compl_singleton (0 : ℝ)
+        have := hcont.ext_on hdense continuous_const (fun r hr => hHr r hr)
+        exact congrFun this 0
+      have hn' : n ≤ k := by omega
+      have hterm : H 0 = (F n).eval 0 • L (v n) := by
+        rw [hH]
+        simp only
+        rw [Finset.sum_eq_single n]
+        · simp
+        · intro j hj hjn
+          have hj' := Finset.mem_Ico.mp hj
+          have h1 : j + 1 - n ≠ 0 := by omega
+          have h2 : j - n ≠ 0 := by omega
+          simp [zero_pow h1, zero_pow h2]
+        · intro hn0; exact absurd (Finset.mem_Ico.mpr ⟨le_refl n, by omega⟩) hn0
+      rw [hterm] at hH0
+      have hL0 : L (v n) = 0 := (smul_eq_zero.mp hH0).resolve_left (hF n hn')
+      have := hL (v n)
+      rw [hL0, map_zero] at this
+      exact neg_eq_zero.mp this.symm
+  intro n hn
+  exact key (n + 1) (by omega) n (by omega)
+
+/-- `Lv` of a real number is the scalar multiple of `v`. -/
+lemma Lv_ofReal (ρ : CliffordRep 2 V) (v : V) (x : ℝ) : Lv ρ v (x : ℂ) = x • v := by
+  simp [Lv_apply]
+
+/-- The value of `F` at `0` is `m/λ`. -/
+lemma eval_zero_fPoly (m d : ℕ) {lam : ℝ} :
+    (fPoly m d lam).eval 0 = lam⁻¹ * (m : ℝ) := by
+  rw [← coeff_zero_eq_eval_zero, fPoly, coeff_C_mul, coeff_psiPoly_zero, coeff_gPoly_zero, mul_one]
+
+/-- The mode on the real axis. -/
+lemma modeFn_real_axis (ρ : CliffordRep 2 V) (k : ℕ) (ε : ℝ) (n : ℕ) (v : V) (r : ℝ) :
+    modeFn ρ k ε n v (r • e (0 : Fin 2)) =
+      (stereoH (r • e (0 : Fin 2)) ^ ((((2 : ℕ) : ℝ) - 1) / 2) * ((1 + r ^ 2) ^ (k + 1))⁻¹) •
+        ((r ^ (n + 1) * (gPoly (n + 1) (k - n)).eval (r ^ 2)) • v +
+          (r ^ n * (fPoly (n + 1) (k - n) (ε * ((k + 1 : ℕ) : ℝ))).eval (r ^ 2)) • gam ρ 0 v) := by
+  have hz : zcL (r • e (0 : Fin 2)) = (r : ℂ) := by simp [zcL_apply, e]
+  have hn : ‖r • e (0 : Fin 2)‖ ^ 2 = r ^ 2 := by simp [e, norm_smul]
+  simp only [modeFn, angG, angSpinor, angProfile, hz, hn]
+  have h1 : ∀ (a : ℝ) (m : ℕ), ((a : ℝ) : ℂ) * (r : ℂ) ^ m = ((a * r ^ m : ℝ) : ℂ) := by
+    intro a m; push_cast; ring
+  rw [h1, h1, Lv_ofReal, Lv_ofReal, map_smul]
+  module
+
+/-- **Lower bound for the multiplicity.** For `ε = ±1` the linear map `modeMap` from `(k+1)` copies of the
+spinor module into the eigenspinors of the sphere Dirac operator (eigenvalue `ε(k+1)`, stereographic chart)
+is injective. -/
+theorem modeMap_injective (ρ : CliffordRep 2 V) (k : ℕ) {ε : ℝ} (hε : ε * ε = 1) :
+    Function.Injective (modeMap ρ k ε) := by
+  rw [← LinearMap.ker_eq_bot (f := modeMap ρ k ε), LinearMap.ker_eq_bot']
+  intro w hw
+  set v : ℕ → V := fun n => if h : n < k + 1 then w ⟨n, h⟩ else 0 with hv
+  have hε0 : ε ≠ 0 := by rintro rfl; simp at hε
+  have hF : ∀ n ≤ k, ((fun n => fPoly (n + 1) (k - n) (ε * ((k + 1 : ℕ) : ℝ))) n).eval 0 ≠ 0 := by
+    intro n _
+    simp only [eval_zero_fPoly]
+    have : ((k + 1 : ℕ) : ℝ) ≠ 0 := by positivity
+    positivity
+  have hsum : ∀ r : ℝ, ∑ n ∈ Finset.range (k + 1),
+      ((r ^ (n + 1) * (gPoly (n + 1) (k - n)).eval (r ^ 2)) • v n +
+        (r ^ n * (fPoly (n + 1) (k - n) (ε * ((k + 1 : ℕ) : ℝ))).eval (r ^ 2)) • gam ρ 0 (v n)) = 0 := by
+    intro r
+    have h0 := congrFun hw (r • e (0 : Fin 2))
+    have h1 : ∑ n : Fin (k + 1), modeFn ρ k ε n (w n) (r • e (0 : Fin 2)) = 0 := h0
+    have hc : stereoH (r • e (0 : Fin 2)) ^ ((((2 : ℕ) : ℝ) - 1) / 2) * ((1 + r ^ 2) ^ (k + 1))⁻¹ ≠ 0 := by
+      have := stereoH_pos (r • e (0 : Fin 2))
+      positivity
+    simp only [modeFn_real_axis, ← Finset.smul_sum] at h1
+    have h2 := (smul_eq_zero.mp h1).resolve_left hc
+    rw [← h2]
+    rw [← Fin.sum_univ_eq_sum_range (fun n => ((r ^ (n + 1) * (gPoly (n + 1) (k - n)).eval (r ^ 2)) • v n +
+        (r ^ n * (fPoly (n + 1) (k - n) (ε * ((k + 1 : ℕ) : ℝ))).eval (r ^ 2)) • gam ρ 0 (v n))) (k + 1)]
+    refine Finset.sum_congr rfl fun n _ => ?_
+    have hn : (n : ℕ) ≤ k := Nat.lt_succ_iff.mp n.is_lt
+    simp [hv, hn]
+  have := indep_core (gam ρ 0) (gam_sq ρ 0) k (fun n => gPoly (n + 1) (k - n))
+    (fun n => fPoly (n + 1) (k - n) (ε * ((k + 1 : ℕ) : ℝ))) v hF hsum
+  funext n
+  have := this n (Nat.lt_succ_iff.mp n.is_lt)
+  simpa [hv, Nat.lt_succ_iff.mp n.is_lt] using this
+
+/-- **GE5, lower bound `dim ≥ (k+1)·dim V` (spectrum of `S²`).** For `ε = ±1` the eigenspinors of the Dirac
+operator of the unit 2-sphere (stereographic chart, library convention `γᵢ² = -1`) with eigenvalue `ε (k+1)`
+contain an injective linear image of `(k+1)` copies of the spinor module `V`.  For `V = ℂ²` this is the
+multiplicity `2(k+1)` over `ℂ`. -/
+theorem sphere_dirac_lower_bound (ρ : CliffordRep 2 V) (k : ℕ) {ε : ℝ} (hε : ε * ε = 1) :
+    ∃ Φ : (Fin (k + 1) → V) →ₗ[ℝ] (E 2 → V), Function.Injective Φ ∧
+      ∀ (w : Fin (k + 1) → V) (x : E 2),
+        diracF ρ stereoF stereoOmega (Φ w) x = (ε * ((k + 1 : ℕ) : ℝ)) • Φ w x :=
+  ⟨modeMap ρ k ε, modeMap_injective ρ k hε, fun w x => modeMap_eigen ρ k hε w x⟩
 
 end Lightlike.Dirac

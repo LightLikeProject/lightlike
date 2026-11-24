@@ -4205,3 +4205,16 @@
   review: kernel-checked
   note: "The two trust checks of the GF7 milestone, in the available form: the Borel sum against the series (quartic_borelSum_vs_series), and super-factorial growth preventing summability in the Nevanlinna–Sokal sense (not_sokalHyp_of_superfactorial). The latter is a generic stand-in: the growth (q!)² of the unmodified Boulatov model is not derived because that model is not in the library. It shows that the hypothesis fails, not that the function is not Borel summable by another definition."
   since: unreleased
+- id: LL-XXXX-a
+  title: "For every k and sign epsilon the eigenvalue epsilon (k+1) of the Dirac operator of the unit 2-sphere in the stereographic chart has an injective linear image of k+1 copies of the spinor module among its eigenspinors"
+  area: GR
+  file: Lightlike/Dirac/EigenAngular.lean
+  decls: [Lightlike.Dirac.sphere_dirac_lower_bound, Lightlike.Dirac.modeMap_injective, Lightlike.Dirac.modeMap_eigen, Lightlike.Dirac.sphere_eigen_mode, Lightlike.Dirac.angG_flat_eigen, Lightlike.Dirac.dirac_angular]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: boldt-2015, location: "Theorem 3.1", check: "multiplicities"}
+  review: kernel-checked
+  note: "Compared with Boldt, arXiv:1504.03121, Theorem 3.1, p. 6 (read): the Dirac eigenvalues of the round S^n are +-(n/2 + k) with multiplicity 2^[n/2] C(n+k-1, k); for n = 2 this is +-(k+1) with multiplicity 2(k+1). Here, in the stereographic chart and for an arbitrary Clifford module V of Cl(R^2), the k+1 angular modes c1 = (1+|y|^2)^-(k+1) z^(n+1) G_n(|y|^2), c2 = (1+|y|^2)^-(k+1) z^n F_n(|y|^2) (n = 0..k, G_n a terminating hypergeometric polynomial of degree k-n) give eigenspinors h^(1/2) (Lv c1 + gamma_0 Lv c2) of eigenvalue epsilon (k+1), and the map (v_0..v_k) to the sum is linear and injective. For V = C^2 this is the lower bound 2(k+1) over C. WEAKER: a lower bound only; no completeness (no statement that there are no other eigenvalues or eigenspinors), no regularity condition at the north pole of the sphere and no L^2 or spinor-bundle statement; the chart carries no such notion in the library."
+  since: unreleased

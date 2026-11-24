@@ -1936,6 +1936,7 @@ import Lightlike.Dirac.EigenspinorK1
 import Lightlike.Dirac.ConformalDirac
 import Lightlike.Dirac.RadialEigen
 import Lightlike.Dirac.EigenGeneralK
+import Lightlike.Dirac.EigenAngular
 import Lightlike.Dirac.ConnesDistance
 import Lightlike.Dirac.ConnesDistance2
 import Lightlike.Dirac.ConnesDistance3
