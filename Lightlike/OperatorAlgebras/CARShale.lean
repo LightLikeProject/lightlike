@@ -1,4 +1,5 @@
 import Lightlike.OperatorAlgebras.FermiFockGeneral
+import Mathlib.Analysis.InnerProductSpace.l2Space
 
 /-!
 # Fermionic Fock representations of the CAR over a Hilbert space: words of creation operators
@@ -206,5 +207,44 @@ theorem orthonormal_vec [DecidableEq ι] (a : ι → (E →L[ℂ] E)) (hc : ∀ 
           rw [← Finset.insert_erase hj, ← Finset.insert_erase hjT, e])
         rw [if_neg hST, if_neg this]; simp
     · rw [if_neg hjT, inner_zero_right, mul_zero, if_neg (fun e => hjT (by rw [← e]; exact hj))]
+
+section Unitary
+
+variable {Γ : Type*} [NormedAddCommGroup Γ] [InnerProductSpace ℂ Γ] [CompleteSpace Γ] [CompleteSpace E]
+
+/-- **The unitary from a Fock space to a CAR representation with a vacuum and dense words.** If the words
+`vec c Ω S` span a dense subspace of `E` then `B S ↦ vec c Ω S` extends to a unitary `U : Γ ≃ₗᵢ E`, and
+`U` intertwines the creation operators `fermiCre B j` with `c j`. -/
+theorem exists_unitary_of_dense (B : HilbertBasis (Finset ι) ℂ Γ) (a : ι → (E →L[ℂ] E))
+    (hc : ∀ i j, c i * c j + c j * c i = 0)
+    (hca : ∀ i j, a i * c j + c j * a i = if i = j then 1 else 0) (hΩ : ∀ j, a j Ω = 0)
+    (hn : ⟪Ω, Ω⟫_ℂ = 1) (hadj : ∀ j x y, ⟪a j x, y⟫_ℂ = ⟪x, c j y⟫_ℂ)
+    (hdense : ⊤ ≤ (Submodule.span ℂ (Set.range (vec c Ω))).topologicalClosure) :
+    ∃ U : Γ ≃ₗᵢ[ℂ] E, (∀ S, U (B S) = vec c Ω S) ∧ ∀ j x, U (fermiCre B j x) = c j (U x) := by
+  have horth : Orthonormal ℂ (vec c Ω) := by
+    rw [orthonormal_iff_ite]
+    intro S T
+    exact orthonormal_vec a hc hca hΩ hn hadj _ S T rfl
+  let b' : HilbertBasis (Finset ι) ℂ E := HilbertBasis.mk horth hdense
+  have hb' : ∀ S, b' S = vec c Ω S := fun S => by simp [b', HilbertBasis.coe_mk]
+  set U : Γ ≃ₗᵢ[ℂ] E := B.repr.trans b'.repr.symm with hUdef
+  have hU : ∀ S, U (B S) = vec c Ω S := fun S => by
+    rw [hUdef, LinearIsometryEquiv.trans_apply, HilbertBasis.repr_self, ← hb', ← HilbertBasis.repr_self b']
+    simp
+  refine ⟨U, hU, fun j x => ?_⟩
+  have key : ((U.toContinuousLinearEquiv : Γ →L[ℂ] E)).comp (fermiCre B j) = (c j).comp (U.toContinuousLinearEquiv : Γ →L[ℂ] E) := by
+    refine ContinuousLinearMap.ext_on (s := Set.range B) (Submodule.dense_iff_topologicalClosure_eq_top.2 B.dense_span) ?_
+    rintro _ ⟨S, rfl⟩
+    simp only [ContinuousLinearMap.comp_apply]
+    show U (fermiCre B j (B S)) = c j (U (B S))
+    rw [hU, fermiCre_basis]
+    by_cases hj : j ∈ S
+    · rw [if_pos hj, map_zero]
+      exact (cre_word_of_mem hc (by simpa using hj)).symm
+    · rw [if_neg hj, map_smul, hU, cre_vec hc hj]
+      rfl
+  exact congrArg (fun f => f x) key
+
+end Unitary
 
 end Lightlike.OperatorAlgebras.CARShale
