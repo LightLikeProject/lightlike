@@ -1,0 +1,13 @@
+- id: LL-XXXX-a
+  title: "The expansion Θ = tr ∇V of a smooth null geodesic field V of the Levi-Civita connection is the frame expansion Σᵢ g(∇_{eᵢ} V, eᵢ) over any n − 2 orthonormal vectors orthogonal to the null pair V, N with g(V, N) = −1"
+  area: Spacetime
+  file: Lightlike/Spacetime/NullFrameExpansion.lean
+  decls: [Lightlike.trappedExp_expansionM_eq, Lightlike.trappedExp_cov_null, Lightlike.Penrose.NullFrame.trace_eq]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: kar-sengupta-2007, location: "eq. (17)", check: "null"}
+  review: kernel-checked
+  note: "G1-012 (closed trapped surfaces), the link between the expansion of the null normals of a surface and the Θ of raychaudhuri_null_focusing_manifold (LL for G1-009). Linear algebra first: in a nondegenerate symmetric form on a space of dimension m + 2 with an orthonormal m-frame orthogonal to a null pair (V, N), g(V, N) = -1, tr A = Σᵢ B(A eᵢ, eᵢ) − B(A V, N) − B(A N, V) (NullFrame.trace_eq); then g(∇_u V, V) = 0 for a null field (trappedExp_cov_null, from the chart statement covD_orthogonal_of_const) and ∇_V V = 0 kill the two correction terms. Hypotheses: V smooth, g(V, V) = 0 near x, ∇_V V = 0 at x, n ≥ 2. It does not say that the frame spans the tangent space of a surface: that, and that V is a null normal of the surface, belong to the definition of the trapped surface. The comparison with Kar and SenGupta is pending (only eq. (17) is a recorded verified location)."
+  since: unreleased
