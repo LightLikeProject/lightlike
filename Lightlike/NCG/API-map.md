@@ -86,6 +86,11 @@ Krajewski's Table 1: `μ_{iαj} μ_{iᾱj} ≥ 0` for a complex summand `i` agai
 `μ_{iαjβ} μ_{iᾱjβ̄} ≥ 0` for two complex summands; the intersection form `Tr(γ π(p) J π(q) J)` of minimal projections
 is every entry of Table 1: `μ`, `∑_α μ`, `2μ`, `∑_{αβ} μ`, `2 ∑_α μ` and `4μ` {1} [26].
 
+Conversely to `D = Δ + J Δ J`, for a real graded triple whose chirality is a scalar on each vertex and a self-adjoint
+`Δ` that commutes with `J π(b) J` and anticommutes with the grading, the operator `Δ + J Δ J` is self-adjoint, satisfies
+the first-order condition and `D J = J D`, and anticommutes with the grading, so the same representation, `J` and grading
+form a real graded triple with this Dirac operator {1} [27]; `Δ = 0` gives `D = 0` [27].
+
 ## Lean References
 
 1. Lightlike/NCG/FiniteSpectralTriple.lean - `NCG.FiniteSpectralTriple`, `NCG.FiniteSpectralTriple.comm`,
