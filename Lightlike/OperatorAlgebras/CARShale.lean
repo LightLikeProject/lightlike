@@ -117,6 +117,7 @@ lemma ann_word [DecidableEq ι] (a : ι → (E →L[ℂ] E)) (hca : ∀ i j, a i
 /-- The vector of a finite set `S`: the word of its increasing enumeration. -/
 def vec (c : ι → (E →L[ℂ] E)) (Ω : E) (S : Finset ι) : E := word c Ω (S.sort (· ≤ ·))
 
+/-- The increasing enumeration of `insert j S` is the sorted insertion of `j` into that of `S`. -/
 lemma sort_insert' [DecidableEq ι] {S : Finset ι} {j : ι} (hj : j ∉ S) :
     (insert j S).sort (· ≤ ·) = (S.sort (· ≤ ·)).orderedInsert (· ≤ ·) j := by
   apply List.Perm.eq_of_pairwise (fun a b _ _ h1 h2 => le_antisymm h1 h2)
@@ -126,6 +127,7 @@ lemma sort_insert' [DecidableEq ι] {S : Finset ι} {j : ι} (hj : j ∉ S) :
     refine Eq.trans ?_ (Multiset.coe_eq_coe.2 (List.perm_orderedInsert (· ≤ ·) j _)).symm
     rw [← Multiset.cons_coe, Finset.sort_eq]
 
+/-- The number of entries below `j` in the enumeration of `S`. -/
 lemma sort_filter_length (S : Finset ι) (j : ι) :
     ((S.sort (· ≤ ·)).filter (fun i => decide (i < j))).length = (S.filter (· < j)).card := by
   have h := congrArg Multiset.card (show (((S.sort (· ≤ ·)).filter (fun i => decide (i < j)) : List ι) : Multiset ι) =
@@ -133,6 +135,7 @@ lemma sort_filter_length (S : Finset ι) (j : ι) :
   rw [Multiset.coe_card] at h
   rw [h]; rfl
 
+/-- Erasing `j` from the increasing enumeration of `S` is the enumeration of `S.erase j`. -/
 lemma sort_erase [DecidableEq ι] (S : Finset ι) (j : ι) :
     (S.sort (· ≤ ·)).erase j = (S.erase j).sort (· ≤ ·) := by
   apply List.Perm.eq_of_pairwise (fun a b _ _ h1 h2 => le_antisymm h1 h2)
@@ -141,6 +144,7 @@ lemma sort_erase [DecidableEq ι] (S : Finset ι) (j : ι) :
   · rw [← Multiset.coe_eq_coe, Finset.sort_eq, ← Multiset.coe_erase, Finset.sort_eq]
     rfl
 
+/-- The increasing enumeration of a finite set is strictly increasing. -/
 lemma sort_pairwise_lt (S : Finset ι) : (S.sort (· ≤ ·)).Pairwise (· < ·) := by
   exact Finset.sortedLT_sort S |>.pairwise
 
@@ -158,8 +162,10 @@ lemma ann_vec [DecidableEq ι] (a : ι → (E →L[ℂ] E))
   rw [ann_word a hca hΩ (sort_pairwise_lt S), sort_filter_length, sort_erase S j]
   simp
 
+/-- `(-1)^n` is real. -/
 lemma conj_neg_one_pow (n : ℕ) : (starRingEnd ℂ) ((-1 : ℂ) ^ n) = (-1 : ℂ) ^ n := by simp
 
+/-- `(-1)^n (-1)^n = 1`. -/
 lemma neg_one_pow_mul_self (n : ℕ) : (-1 : ℂ) ^ n * (-1 : ℂ) ^ n = 1 := by
   rw [← pow_add, ← two_mul, pow_mul]; simp
 
@@ -298,14 +304,17 @@ noncomputable def annR (j : ι) : Γ →L[ℂ] Γ := (1 / 2 : ℂ) • (pField B
 /-- The creation operator of the transformed mode `j`: `(φ(R eⱼ) - i φ(R (i eⱼ)))/2`. -/
 noncomputable def creR (j : ι) : Γ →L[ℂ] Γ := (1 / 2 : ℂ) • (pField B b R j - Complex.I • qField B b R j)
 
+/-- `Re ⟪eᵢ, eⱼ⟫ = δᵢⱼ`. -/
 lemma re_inner_basis [DecidableEq ι] (i j : ι) : (⟪b i, b j⟫_ℂ).re = if i = j then 1 else 0 := by
   rw [orthonormal_iff_ite.1 b.orthonormal i j]; split_ifs <;> simp
 
+/-- `Re ⟪i eᵢ, i eⱼ⟫ = δᵢⱼ`. -/
 lemma re_inner_I_basis [DecidableEq ι] (i j : ι) :
     (⟪Complex.I • b i, Complex.I • b j⟫_ℂ).re = if i = j then 1 else 0 := by
   rw [inner_smul_left, inner_smul_right]
   simpa using re_inner_basis b i j
 
+/-- `Re ⟪eᵢ, i eⱼ⟫ = 0`. -/
 lemma re_inner_basis_I [DecidableEq ι] (i j : ι) : (⟪b i, Complex.I • b j⟫_ℂ).re = 0 := by
   rw [inner_smul_right]
   have := orthonormal_iff_ite.1 b.orthonormal i j
@@ -330,6 +339,7 @@ lemma creR_annR_car [DecidableEq ι] (i j : ι) :
   · intro i j; rw [pField, qField, key, re_inner_basis_I b i j]; simp
 
 omit hR in
+/-- The field operators are symmetric. -/
 lemma inner_field (w : Z) (x y : Γ) : ⟪fockField B b w x, y⟫_ℂ = ⟪x, fockField B b w y⟫_ℂ := by
   have h := isSelfAdjoint_fockField B b w
   rw [IsSelfAdjoint, ContinuousLinearMap.star_eq_adjoint] at h
@@ -346,6 +356,7 @@ lemma inner_annR_creR (j : ι) (x y : Γ) : ⟪annR B b R j x, y⟫_ℂ = ⟪x, 
   ring
 
 omit hR in
+/-- The field is additive in the test vector. -/
 lemma fockField_add (w w' : Z) : fockField B b (w + w') = fockField B b w + fockField B b w' := by
   have h1 := creW_add B b w w'
   have h2 : annW B b (w + w') = annW B b w + annW B b w' := by
@@ -353,6 +364,7 @@ lemma fockField_add (w w' : Z) : fockField B b (w + w') = fockField B b w + fock
   rw [fockField, fockField, fockField, h1, h2]; abel
 
 omit hR in
+/-- The field is real-homogeneous in the test vector. -/
 lemma fockField_real_smul (r : ℝ) (w : Z) : fockField B b (r • w) = (r : ℂ) • fockField B b w := by
   have h0 : r • w = (r : ℂ) • w := (Complex.coe_smul r w).symm
   have h1 : creW B b (r • w) = (r : ℂ) • creW B b w := by rw [h0, creW_smul]
@@ -361,19 +373,23 @@ lemma fockField_real_smul (r : ℝ) (w : Z) : fockField B b (r • w) = (r : ℂ
   rw [fockField, fockField, h1, h2, smul_add]
 
 omit hR in
+/-- The field is continuous in the test vector. -/
 lemma continuous_fockField : Continuous (fockField B b) :=
   (continuous_creW B b).add (continuous_annW B b)
 
+/-- A real-linear map preserving `Re ⟪·,·⟫` is an isometry. -/
 lemma norm_R (w : Z) : ‖R w‖ = ‖w‖ := by
   have h := hR w w
   rw [inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K] at h
   simp [sq, Complex.mul_re] at h
   nlinarith [norm_nonneg (R w), norm_nonneg w]
 
+/-- A real-linear map preserving `Re ⟪·,·⟫` is continuous. -/
 lemma continuous_R : Continuous R :=
   (LinearMap.mkContinuous R 1 (fun w => by rw [one_mul, norm_R R hR])).continuous
 
 include hR in
+/-- The CAR of the transformed modes, with the Kronecker delta written as an `if`. -/
 lemma creR_car_ite [DecidableEq ι] :
     (∀ i j, creR B b R i * creR B b R j + creR B b R j * creR B b R i = 0) ∧
     (∀ i j, annR B b R i * creR B b R j + creR B b R j * annR B b R i = if i = j then 1 else 0) ∧
@@ -485,15 +501,18 @@ theorem dense_words [DecidableEq ι] (hRs : Function.Surjective R) (Ω : Γ) (hn
   · rw [h1]
 
 omit hR in
+/-- `φ(R eⱼ) = a'ⱼ + c'ⱼ`. -/
 lemma pField_eq (j : ι) : pField B b R j = annR B b R j + creR B b R j := by
   simp only [annR, creR]; module
 
 omit hR in
+/-- `φ(R(i eⱼ)) = i (c'ⱼ - a'ⱼ)`. -/
 lemma qField_eq (j : ι) : qField B b R j = Complex.I • (creR B b R j - annR B b R j) := by
   simp only [annR, creR]
   linear_combination (norm := (match_scalars <;> (ring_nf; try simp only [Complex.I_sq]; try ring)))
 
 omit hR in
+/-- `φ(i eⱼ) = i (a*(eⱼ) - a(eⱼ))`. -/
 lemma fockField_I_basis (j : ι) :
     fockField B b (Complex.I • b j) = Complex.I • (fermiCre B j - fermiAnn B j) := by
   have h1 : creW B b (Complex.I • b j) = Complex.I • fermiCre B j := by rw [creW_smul, creW_basis B b]
@@ -668,6 +687,7 @@ lemma annR_vac (j : ι) : annR B b R j (B ∅) = creW B b (betaPart R (b j)) (B 
   simp [ContinuousLinearMap.smul_apply, ContinuousLinearMap.add_apply]
 
 omit hR in
+/-- `‖annR j Ω₀‖ = ‖β eⱼ‖`. -/
 lemma norm_annR_vac (j : ι) : ‖annR B b R j (B ∅)‖ = ‖betaPart R (b j)‖ := by
   rw [annR_vac B b, norm_creW_vac B b]
 

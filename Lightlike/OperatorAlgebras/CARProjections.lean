@@ -32,6 +32,7 @@ variable {n}
 /-- The complementary projection `1 - n k`. -/
 def Q (n : ι → (Γ →L[ℂ] Γ)) (k : ι) : Γ →L[ℂ] Γ := 1 - n k
 
+/-- The complementary projections commute. -/
 lemma commute_Q (h : IsProjFamily n) (k l : ι) : Commute (Q n k) (Q n l) := by
   show Q n k * Q n l = Q n l * Q n k
   simp only [Q, sub_mul, mul_sub, one_mul, mul_one, h.comm k l]
@@ -41,8 +42,10 @@ lemma commute_Q (h : IsProjFamily n) (k l : ι) : Commute (Q n k) (Q n l) := by
 noncomputable def PF (h : IsProjFamily n) (F : Finset ι) : Γ →L[ℂ] Γ :=
   F.noncommProd (Q n) (fun k _ l _ _ => commute_Q h k l)
 
+/-- The empty product is `1`. -/
 lemma PF_empty (h : IsProjFamily n) : PF h ∅ = 1 := rfl
 
+/-- Adding a mode multiplies by its complementary projection. -/
 lemma PF_insert [DecidableEq ι] (h : IsProjFamily n) {F : Finset ι} {k : ι} (hk : k ∉ F) :
     PF h (insert k F) = Q n k * PF h F := by
   unfold PF
@@ -53,28 +56,34 @@ section
 variable [DecidableEq ι] (h : IsProjFamily n)
 include h
 
+/-- `1 - n k` is symmetric. -/
 lemma Q_symm (k : ι) (x y : Γ) : ⟪Q n k x, y⟫_ℂ = ⟪x, Q n k y⟫_ℂ := by
   simp only [Q, ContinuousLinearMap.sub_apply, ContinuousLinearMap.one_apply, inner_sub_left, inner_sub_right,
     h.symm k x y]
 
+/-- `1 - n k` is idempotent. -/
 lemma Q_idem (k : ι) : Q n k * Q n k = Q n k := by
   simp only [Q, sub_mul, mul_sub, one_mul, mul_one, h.idem k]; abel
 
+/-- `(1 - n k) n k = 0`. -/
 lemma Q_mul_n (k : ι) : Q n k * n k = 0 := by
   simp only [Q, sub_mul, one_mul, h.idem k, sub_self]
 
+/-- `PF` commutes with each `1 - n l`. -/
 lemma PF_comm_Q (F : Finset ι) (l : ι) : Q n l * PF h F = PF h F * Q n l := by
   induction F using Finset.induction_on with
   | empty => rw [PF_empty, mul_one, one_mul]
   | insert k F hk ih =>
     rw [PF_insert h hk, ← mul_assoc, (commute_Q h l k).eq, mul_assoc, ih, mul_assoc]
 
+/-- `PF` commutes with each `n l`. -/
 lemma PF_comm_n (F : Finset ι) (l : ι) : n l * PF h F = PF h F * n l := by
   have := PF_comm_Q h F l
   simp only [Q, sub_mul, mul_sub, one_mul, mul_one] at this
   have h2 : PF h F - n l * PF h F = PF h F - PF h F * n l := by simpa using this
   exact sub_right_injective h2
 
+/-- `PF` is symmetric. -/
 lemma PF_symm (F : Finset ι) (x y : Γ) : ⟪PF h F x, y⟫_ℂ = ⟪x, PF h F y⟫_ℂ := by
   induction F using Finset.induction_on generalizing x y with
   | empty => simp [PF_empty]
@@ -82,6 +91,7 @@ lemma PF_symm (F : Finset ι) (x y : Γ) : ⟪PF h F x, y⟫_ℂ = ⟪x, PF h F 
     rw [PF_insert h hk, ContinuousLinearMap.mul_apply, Q_symm h, ih, ContinuousLinearMap.mul_apply,
       ← ContinuousLinearMap.mul_apply, ← ContinuousLinearMap.mul_apply, ← PF_comm_Q h F k]
 
+/-- `PF` is idempotent. -/
 lemma PF_idem (F : Finset ι) : PF h F * PF h F = PF h F := by
   induction F using Finset.induction_on with
   | empty => rw [PF_empty, mul_one]
@@ -92,6 +102,7 @@ lemma PF_idem (F : Finset ι) : PF h F * PF h F = PF h F := by
       _ = (Q n k * Q n k) * (PF h F * PF h F) := by simp only [mul_assoc]
       _ = Q n k * PF h F := by rw [Q_idem h, ih]
 
+/-- `PF` is a contraction. -/
 lemma norm_PF_le (F : Finset ι) (x : Γ) : ‖PF h F x‖ ≤ ‖x‖ := by
   have h1 : ⟪PF h F x, PF h F x⟫_ℂ = ⟪x, PF h F x⟫_ℂ := by
     rw [PF_symm h, ← ContinuousLinearMap.mul_apply, PF_idem h]
@@ -106,6 +117,7 @@ lemma norm_PF_le (F : Finset ι) (x : Γ) : ‖PF h F x‖ ≤ ‖x‖ := by
   · have hp : 0 < ‖PF h F x‖ := lt_of_le_of_ne (norm_nonneg _) (Ne.symm h0)
     nlinarith
 
+/-- `‖(1 - n k) x‖² = ‖x‖² - ‖n k x‖²`. -/
 lemma norm_sq_Q (k : ι) (x : Γ) : ‖Q n k x‖ ^ 2 = ‖x‖ ^ 2 - ‖n k x‖ ^ 2 := by
   have hx : x = Q n k x + n k x := by simp [Q]
   have horth : ⟪Q n k x, n k x⟫_ℂ = 0 := by
@@ -190,6 +202,7 @@ theorem isProjFamily_of_car (hcc : ∀ i j, c i * c j + c j * c i = 0) (haa : �
       rw [eA, eB, h3, h4]
       simp
 
+/-- `‖c k (a k x)‖ = ‖a k x‖` for CAR modes. -/
 lemma norm_sq_cre_ann (hcc : ∀ i j, c i * c j + c j * c i = 0) (haa : ∀ i j, a i * a j + a j * a i = 0)
     (hca : ∀ i j, a i * c j + c j * a i = if i = j then 1 else 0) (hadj : ∀ j x y, ⟪a j x, y⟫_ℂ = ⟪x, c j y⟫_ℂ)
     (k : ι) (x : Γ) : ‖c k (a k x)‖ ^ 2 = ‖a k x‖ ^ 2 := by

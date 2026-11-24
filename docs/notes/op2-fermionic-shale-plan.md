@@ -15,4 +15,12 @@ Sufficiency (β Hilbert-Schmidt implies implemented):
    reflections `φ(u)` (each implemented by the field operator), which reduces to the case `‖β‖_HS < 1`.
 3. Necessity: `⟨Ω', N Ω'⟩ = ‖β‖²_HS`, with the finiteness of the particle number to be derived from the implementer.
 
-Status: step 1 started (CARShale.lean). Steps 2 and 3 not started.
+Status:
+
+* Step 1 done: `CARShale.exists_implementer` (vacuum to unitary, every `R` with a unit vacuum).
+* Step 2 done for `‖β‖²_HS < 1` only: `CARProjections.norm_sq_PF_ge` (Bonferroni), `CARShale.exists_vacuum_of_small`,
+  `CARShale.fermionic_shale_of_small`.
+* Step 2 for a general Hilbert-Schmidt `β` is open. The vacuum overlap `⟨Ω₀, P_F Ω₀⟩` can vanish (a particle-hole swap of one
+  mode), so a different test vector is needed. The bound `⟨v, P_F v⟩ ≥ ‖P_{F₀} v‖² − ∑_{k∉F₀} ‖b_k v‖²` does not close the
+  argument by itself.
+* Step 3 (necessity) not started.
