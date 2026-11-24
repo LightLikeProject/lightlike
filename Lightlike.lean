@@ -2349,3 +2349,5 @@ import Lightlike.Rows.G1_059.Test1
 import Lightlike.Rows.G2_019.Test
 import Lightlike.Rows.G2_033.Check
 import Lightlike.PonzanoRegge.TriangulationIndependence.Tests.ExchangeSearch
+import Lightlike.QuantumGroups.UqSl2
+import Lightlike.QuantumGroups.UqSl2Tests
