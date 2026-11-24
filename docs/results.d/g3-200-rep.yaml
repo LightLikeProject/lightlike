@@ -1,0 +1,26 @@
+- id: LL-XXXX-b
+  title: "The two-dimensional representation of U_q(sl₂) for every unit q of a field: E ↦ e₁₂, F ↦ e₂₁, K ↦ diag(q, q⁻¹), K⁻¹ ↦ diag(q⁻¹, q)"
+  area: QuantumGroups
+  file: Lightlike/QuantumGroups/UqSl2Rep.lean
+  decls: [Lightlike.QuantumGroups.UqSl2.fundRep, Lightlike.QuantumGroups.UqSl2.fundRep_E, Lightlike.QuantumGroups.UqSl2.fundRep_F, Lightlike.QuantumGroups.UqSl2.fundRep_K, Lightlike.QuantumGroups.UqSl2.fundRep_Ki]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: turaev-1994, location: "Chapter: Chapter XI. An algebraic construction of modular categories|10.1515/9783110883275-012"}
+  review: kernel-checked
+  note: "Part of QU3 (G3-200), which stays open. The matrices satisfy the five defining relations of UqSl2 (K K⁻¹ = K⁻¹ K = 1, K E = q² E K, K F = q⁻² F K, (q − q⁻¹)(E F − F E) = K − K⁻¹), so they define an algebra homomorphism fundRep by the universal property of the quotient (fundGen_rel). No hypothesis on q: it also holds at roots of unity and at q² = 1. The comparison with Turaev, Chapter XI, is pending: the book was not read at the cited location."
+  since: unreleased
+- id: LL-XXXX-c
+  title: "The braiding of the two-dimensional representation of U_q(sl₂): the matrix Ř (Ř v₀₀ = q v₀₀, Ř v₁₁ = q v₁₁, Ř v₀₁ = v₁₀, Ř v₁₀ = v₀₁ + (q − q⁻¹) v₁₀) commutes with the action of every element of U_q(sl₂) on the tensor square, satisfies the Hecke relation (Ř − q)(Ř + q⁻¹) = 0 and the braid relation Ř₁₂ Ř₂₃ Ř₁₂ = Ř₂₃ Ř₁₂ Ř₂₃"
+  area: QuantumGroups
+  file: Lightlike/QuantumGroups/UqSl2Braid.lean
+  decls: [Lightlike.QuantumGroups.UqSl2.fundBraid, Lightlike.QuantumGroups.UqSl2.fundTensorRep, Lightlike.QuantumGroups.UqSl2.fundBraid_comm_all, Lightlike.QuantumGroups.UqSl2.fundBraid_hecke, Lightlike.QuantumGroups.UqSl2.fundBraid_braid]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: turaev-1994, location: "Chapter: Chapter XI. An algebraic construction of modular categories|10.1515/9783110883275-012"}
+  review: kernel-checked
+  note: "Part of QU3 (G3-200), which stays open. The tensor square fundTensorRep is the representation on k² ⊗ k² with E, F, K, K⁻¹ acting by the matrices fundCoE, fundCoF, fundCoK, fundCoKi of ΔE = E ⊗ K + 1 ⊗ E, ΔF = F ⊗ 1 + K⁻¹ ⊗ F, ΔK = K ⊗ K, ΔK⁻¹ = K⁻¹ ⊗ K⁻¹ (the coproduct of UqSl2); it is shown to be a representation by the defining relations (tensorGen_rel). Ř = P R is the unique intertwiner up to the identity with the eigenvalue q on v₀₀, v₁₁ and trace q − q⁻¹ on the weight-zero space, so it is the R-matrix of this representation in the form Ř. Not proved: that the universal R-matrix exists and acts as Ř, and that fundTensorRep is the tensor product of fundRep with itself through the library's comul (the matrices were checked against comul_E, comul_F, comul_K by reading, not by a Lean statement). The braid relation holds for every unit q; the Hecke relation is a quadratic relation with eigenvalues q and −q⁻¹. The comparison with Turaev, Chapter XI, is pending."
+  since: unreleased
