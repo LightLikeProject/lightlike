@@ -283,6 +283,7 @@ theorem antipodeOp_gen (x : Gen) :
     antipodeOp (gen x : UqSl2 k q) = antipodeGen (k := k) (q := q) x := by
   cases x <;> simp [antipodeOp, gen, E, F, K, Ki]
 
+/-- The four generators `E, F, K, K⁻¹` generate `U_q(sl₂)` as a `k`-algebra. -/
 theorem adjoin_gen : Algebra.adjoin k (Set.range (gen : Gen → UqSl2 k q)) = ⊤ := by
   rw [eq_top_iff]
   intro y _
