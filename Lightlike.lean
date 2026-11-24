@@ -1388,6 +1388,7 @@ import Lightlike.Spacetime.Causal.BasicRelations
 import Lightlike.Spacetime.Causal.CauchyClosed
 import Lightlike.Rows.G1_012.Defs
 import Lightlike.Rows.G1_012.Skeleton
+import Lightlike.Rows.G1_012.GeodesicUnique
 import Lightlike.Rows.G1_012.GeodesicChartIndep
 import Lightlike.Rows.G1_012.ExpLocal
 import Lightlike.Rows.G1_012.AchronalBoundary
