@@ -1,0 +1,24 @@
+- id: LL-XXXX-a
+  title: "The fusion ring of SU(2) at level r - 2: the coefficients N_ab^c = 1 for admissible triples are symmetric, 0 is the unit, the quantum dimension [a+1] is multiplicative, and the ring is associative for r = 3, 4, 5, 6"
+  area: TuraevViro
+  file: Lightlike/TuraevViro/FusionRing.lean
+  decls: [Lightlike.TV.fusionN, Lightlike.TV.fusionN_comm₁₂, Lightlike.TV.fusionN_comm₂₃, Lightlike.TV.fusionN_zero_left, Lightlike.TV.fusion_dim, Lightlike.TV.fusion_assoc_small]
+  status: proven
+  tier: established
+  source:
+    refs: []
+  review: kernel-checked
+  note: "Comparison pending (the SU(2)_k fusion rules source was not read). The coefficients are the admissibility qAdm already used by the Turaev-Viro code; the multiplicativity of the quantum dimension is sum_qAdm_qnum. WEAKER: associativity is proved only for the levels r = 3, 4, 5, 6 (all colour quadruples by decide); the statement for every r is not proved (a counting proof exceeded the build memory limit). Not built: the F-matrices as isomorphisms of a monoidal category, the pentagon (it is the q-Biedenharn-Elliott identity, a hypothesis of this library), the braiding, the modular tensor category."
+  since: unreleased
+- id: LL-XXXX-b
+  title: "The S matrix of SU(2) at level r - 2, S_ab = sqrt(2/r) sin(pi (a+1)(b+1)/r): symmetric, its unit row is the quantum dimension, and the Verlinde formula holds for the unit-object row"
+  area: TuraevViro
+  file: Lightlike/TuraevViro/SMatrix.lean
+  decls: [Lightlike.TV.sMat, Lightlike.TV.sMat_comm, Lightlike.TV.sMat_zero_left, Lightlike.TV.sMat_zero_zero_pos, Lightlike.TV.verlinde_zero]
+  status: proven
+  tier: established
+  source:
+    refs: []
+  review: kernel-checked
+  note: "Comparison pending (no source for the SU(2)_k S matrix was read). verlinde_zero is S_0a S_0b = S_00 sum_c N_ab^c S_0c, the multiplicativity of the quantum dimension fusion_dim. WEAKER: only the unit-object row of the Verlinde formula is proved; the formula for the other rows, the orthogonality S^2 = 1 (charge conjugation is trivial for SU(2)), unitarity, and the relation with the T matrix are not."
+  since: unreleased
