@@ -4166,3 +4166,42 @@
   review: kernel-checked
   note: "HA6 (G1-055), the lockable statement of the milestone. WignerClassification is a Prop, NOT proved: every such representation is trivial on the translations, or equivalent to a massive poincareRep, or to a massless finite-helicity lightPoincareRep, or massless of infinite spin (MasslessNotHelicity). Its proof needs Mackey's imprimitivity theorem; isSystemOfImprimitivity_inducedL2 (Imprimitivity.lean) is one ingredient. Non-vacuity: trivialRep_classified (the trivial representation falls in the first case). The statement uses the library's own definitions of equivalence and positive energy; comparison with Weinberg and Wigner pending (not read). "
   since: unreleased
+- id: LL-0314
+  title: "Nevanlinna–Sokal theorem: if f is analytic in the disk Re z⁻¹ > 1/R and its Taylor remainders obey |f(z) − Σ_{k<q} a_k z^k| ≤ K q! ρ^{-q} |z|^q, then the Borel transform of the series continues analytically to a strip and f is its Laplace transform on the whole disk"
+  area: FieldTheory
+  file: Lightlike/GFT/Borel/Nevanlinna.lean
+  decls: [Lightlike.FieldTheory.Borel.SokalHyp.nevanlinna_sokal]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: benedetti-gurau-keppler-lettera-2022, location: "Theorem 1"}
+  review: kernel-checked
+  note: "GF7 (G3-172), task T-GF7-P6, case β = 0 of Theorem 1 (eqs. (2.4)-(2.6)): the statement is the one of the closed task, non-vacuous by sokalHyp_const. The proof follows Appendix B (contour integrals along vertical lines, Hankel's formula; Hankel.lean, Contour.lean, Transform.lean, Local.lean, Exists.lean, Laplace.lean in Lightlike/GFT/Borel and Lightlike/FieldTheory/Borel). Not claimed: Gevrey or resurgence statements, β ≠ 0. The comparison with the source is pending: the paper was not read at the cited theorem."
+  since: unreleased
+- id: LL-0315
+  title: "The partition function Z(λ) = ∫ e^{-λφ⁴ − φ²/2} dφ of the zero-dimensional quartic model is Borel summable: the Borel transform of its perturbative series continues to a strip and Z is its Laplace transform on every disk Re λ⁻¹ > 1/R"
+  area: FieldTheory
+  file: Lightlike/GFT/Borel/Quartic.lean
+  decls: [Lightlike.FieldTheory.quarticZ_sokalHyp, Lightlike.FieldTheory.quarticZ_borel_summable]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: rivasseau-wang-2010, location: "Theorem IV.1"}
+  review: kernel-checked
+  note: "GF7 (G3-172), task T-GF7-P7: Rivasseau–Wang Theorem IV.1 with k = 2, here by the Nevanlinna–Sokal theorem (the Nevanlinna–Sokal entry) with ρ = 1/32 and K = 16√(2π), not by the loop vertex expansion. This is the zero-dimensional quartic model only: the modified Boulatov model (Freidel–Louapre 2003) and the quartic tensor models of Delepouve–Gurau–Rivasseau are not in the library, so GF7 is met for one model. The comparison with the source is pending: the paper was not read at the cited theorem."
+  since: unreleased
+- id: LL-0316
+  title: "Trust checks of the Borel summability of the quartic model: its Borel sum is within 3√(2π) λ of the zeroth-order term of the series for every small coupling, and coefficients of size (q!)² or more violate the Nevanlinna–Sokal hypotheses for every K and ρ"
+  area: FieldTheory
+  file: Lightlike/GFT/Borel/Tests.lean
+  decls: [Lightlike.FieldTheory.quartic_borelSum_vs_series, Lightlike.FieldTheory.not_sokalHyp_of_superfactorial, Lightlike.FieldTheory.quartic_coeff_factorial_bound]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: rivasseau-wang-2010, location: "Theorem IV.1"}
+  review: kernel-checked
+  note: "The two trust checks of the GF7 milestone, in the available form: the Borel sum against the series (quartic_borelSum_vs_series), and super-factorial growth preventing summability in the Nevanlinna–Sokal sense (not_sokalHyp_of_superfactorial). The latter is a generic stand-in: the growth (q!)² of the unmodified Boulatov model is not derived because that model is not in the library. It shows that the hypothesis fails, not that the function is not Borel summable by another definition."
+  since: unreleased
