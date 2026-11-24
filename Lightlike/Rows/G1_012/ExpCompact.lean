@@ -2,6 +2,7 @@ import Lightlike.Rows.G1_012.ExpFlow
 import Lightlike.Rows.G1_012.Defs
 import Lightlike.Rows.G1_012.Orthogonality
 import Lightlike.Geodesic.TimeBall
+import Lightlike.Rows.G1_012.LocalGenerators
 
 /-!
 # Compactness of the exponential image of compact null data (G1-012)
@@ -329,3 +330,204 @@ theorem bounded_null_normalised (hL : Lightlike.IsLorentzianCoordMetric g U)
     rw [mem_sphere_zero_iff_norm, norm_smul, norm_inv, norm_norm, inv_mul_cancel₀ hwn.ne']
 
 end Lightlike.Geodesic
+
+namespace Lightlike.Penrose
+
+variable {n : ℕ} {M : Type*} [TopologicalSpace M] [ChartedSpace (Fin n → ℝ) M]
+  [IsManifold 𝓘(ℝ, Fin n → ℝ) ∞ M] [SecondCountableTopology M] [T2Space M]
+  [IsManifold 𝓘(ℝ, Fin n → ℝ) 2 M] [MeasurableSpace M] [BorelSpace M]
+  {g : LorentzianMetric 𝓘(ℝ, Fin n → ℝ) M n}
+
+/-- The vector with chart coordinates `w` at `p` is zero iff `w = 0`. -/
+theorem symmL_eq_zero_iff (x p : M) (hp : p ∈ (extChartAt 𝓘(ℝ, Fin n → ℝ) x).source)
+    (w : Fin n → ℝ) : (chartTriv n x).symmL ℝ p w = 0 ↔ w = 0 := by
+  constructor
+  · intro h0
+    have hb := mem_baseSet_of_mem_source x p hp
+    have h1 : (Causal.tTriv 𝓘(ℝ, Fin n → ℝ) M x ⟨p, (chartTriv n x).symmL ℝ p w⟩).2 = w := by
+      rw [Trivialization.symmL_apply _ hb]
+      exact (Trivialization.apply_mk_symm (chartTriv n x) hb w) ▸ rfl
+    rw [h0] at h1
+    have hlin : (Causal.tTriv 𝓘(ℝ, Fin n → ℝ) M x ⟨p, (0 : TangentSpace 𝓘(ℝ, Fin n → ℝ) p)⟩).2 =
+        (chartTriv n x).linearEquivAt ℝ p hb 0 := by
+      rw [Trivialization.linearEquivAt_apply]
+    rw [hlin, map_zero] at h1
+    exact h1.symm
+  · rintro rfl; exact map_zero _
+
+/-- A tangent vector given by chart coordinates `w` is a nonzero null vector iff `w` is. -/
+theorem isNullVec_symmL_iff (x p : M) (hp : p ∈ (extChartAt 𝓘(ℝ, Fin n → ℝ) x).source)
+    (w : Fin n → ℝ) :
+    IsNullVec g (⟨p, (chartTriv n x).symmL ℝ p w⟩ : TangentBundle 𝓘(ℝ, Fin n → ℝ) M) ↔
+      Lightlike.Geodesic.pairing (g.coordMetric x) (extChartAt 𝓘(ℝ, Fin n → ℝ) x p) w w = 0 ∧
+        w ≠ 0 := by
+  unfold IsNullVec
+  show g.g p ((chartTriv n x).symmL ℝ p w) ((chartTriv n x).symmL ℝ p w) = 0 ∧
+    (chartTriv n x).symmL ℝ p w ≠ 0 ↔ _
+  rw [metric_eq_bil_at g.toNondegMetric x p hp w w, pairing_eq_bil]
+  exact and_congr Iff.rfl (not_congr (symmL_eq_zero_iff x p hp w))
+
+/-- The pairing with the time orientation field, in chart coordinates. -/
+theorem pairing_timeOrientation_symmL (T : Causal.TimeOrientation g) (x p : M)
+    (hp : p ∈ (extChartAt 𝓘(ℝ, Fin n → ℝ) x).source) (w : Fin n → ℝ) :
+    g.g p ((chartTriv n x).symmL ℝ p w) (T.X p) =
+      Lightlike.Geodesic.pairing (g.coordMetric x) (extChartAt 𝓘(ℝ, Fin n → ℝ) x p) w
+        (timeCoord T x (extChartAt 𝓘(ℝ, Fin n → ℝ) x p)) := by
+  rw [timeOrientation_eq_symmL T x p hp, metric_eq_bil_at g.toNondegMetric x p hp,
+    pairing_eq_bil]
+
+/-- The compact piece of normalised null vectors over `S ∩ P`, `P` compact in the chart at `x`. -/
+theorem compact_normalised_null_piece (T : Causal.TimeOrientation g) (x : M) {S : Set M}
+    (hS : IsCompact S) {P : Set M} (hP : IsCompact P)
+    (hPs : P ⊆ (extChartAt 𝓘(ℝ, Fin n → ℝ) x).source) :
+    IsCompact {z : TangentBundle 𝓘(ℝ, Fin n → ℝ) M | z.proj ∈ S ∩ P ∧ IsNullVec g z ∧
+      g.g z.proj z.snd (T.X z.proj) = -1} := by
+  set ψ := extChartAt 𝓘(ℝ, Fin n → ℝ) x with hψ
+  set e := chartTriv n x with he
+  have hSP : IsCompact (S ∩ P) := hS.inter_right hP.isClosed
+  set Kc : Set (Fin n → ℝ) := ψ '' (S ∩ P) with hKc
+  have hKcc : IsCompact Kc :=
+    hSP.image_of_continuousOn ((continuousOn_extChartAt (I := 𝓘(ℝ, Fin n → ℝ)) x).mono
+      (inter_subset_right.trans hPs))
+  have hKct : Kc ⊆ ψ.target := by
+    rintro _ ⟨s, hs, rfl⟩
+    exact ψ.map_source (hPs hs.2)
+  have hL := g.isLorentzianCoordMetric_coordMetric x
+  obtain ⟨R, hR⟩ := Lightlike.Geodesic.bounded_null_normalised hL hKcc hKct
+    (continuousOn_timeCoord T x) (fun y hy => timeCoord_timelike T x hy)
+  set Kp : Set ((Fin n → ℝ) × (Fin n → ℝ)) := {q | q.1 ∈ Kc ∧
+    Lightlike.Geodesic.pairing (g.coordMetric x) q.1 q.2 q.2 = 0 ∧
+    Lightlike.Geodesic.pairing (g.coordMetric x) q.1 (timeCoord T x q.1) q.2 = -1} with hKp
+  have hKpc : IsCompact Kp := by
+    refine (hKcc.prod (isCompact_closedBall (0 : Fin n → ℝ) R)).of_isClosed_subset ?_ ?_
+    · -- closed
+      have hg1 := hL.1
+      have hQc : ContinuousOn (fun q : (Fin n → ℝ) × (Fin n → ℝ) =>
+          Lightlike.Geodesic.pairing (g.coordMetric x) q.1 q.2 q.2) (Kc ×ˢ univ) := by
+        simp only [Lightlike.Geodesic.pairing]
+        refine continuousOn_finsetSum _ fun i _ => continuousOn_finsetSum _ fun j _ => ?_
+        exact (continuous_apply i |>.comp_continuousOn continuousOn_snd).mul
+          (((hg1.smooth i j).continuousOn.comp continuousOn_fst
+            (fun q hq => hKct hq.1)).mul (continuous_apply j |>.comp_continuousOn continuousOn_snd))
+      have hℓc : ContinuousOn (fun q : (Fin n → ℝ) × (Fin n → ℝ) =>
+          Lightlike.Geodesic.pairing (g.coordMetric x) q.1 (timeCoord T x q.1) q.2) (Kc ×ˢ univ) := by
+        simp only [Lightlike.Geodesic.pairing]
+        refine continuousOn_finsetSum _ fun i _ => continuousOn_finsetSum _ fun j _ => ?_
+        exact ((continuous_apply i |>.comp_continuousOn
+          ((continuousOn_timeCoord T x).comp continuousOn_fst (fun q hq => hKct hq.1)))).mul
+          (((hg1.smooth i j).continuousOn.comp continuousOn_fst
+            (fun q hq => hKct hq.1)).mul (continuous_apply j |>.comp_continuousOn continuousOn_snd))
+      have hC : IsClosed (Kc ×ˢ (univ : Set (Fin n → ℝ))) := hKcc.isClosed.prod isClosed_univ
+      have h1 := hQc.preimage_isClosed_of_isClosed hC (isClosed_singleton (x := (0 : ℝ)))
+      have h2 := (hℓc.mono inter_subset_left).preimage_isClosed_of_isClosed h1
+        (isClosed_singleton (x := (-1 : ℝ)))
+      convert h2 using 1
+      ext q
+      constructor
+      · rintro ⟨h1, h2, h3⟩
+        exact ⟨⟨⟨h1, mem_univ _⟩, h2⟩, h3⟩
+      · rintro ⟨⟨⟨h1, -⟩, h2⟩, h3⟩
+        exact ⟨h1, h2, h3⟩
+    · rintro q ⟨hq1, hq2, hq3⟩
+      refine ⟨hq1, ?_⟩
+      rw [mem_closedBall_zero_iff]
+      exact hR q.1 hq1 q.2 hq2 hq3
+  -- the image under the inverse trivialization
+  set Φ : (Fin n → ℝ) × (Fin n → ℝ) → TangentBundle 𝓘(ℝ, Fin n → ℝ) M := fun q =>
+    TotalSpace.mk' (Fin n → ℝ) (ψ.symm q.1) (e.symm (ψ.symm q.1) q.2) with hΦ
+  have hΦc : ContinuousOn Φ Kp := by
+    have hsymm := e.continuousOn_symm
+    have hmap : MapsTo (fun q : (Fin n → ℝ) × (Fin n → ℝ) => (ψ.symm q.1, q.2)) Kp
+        (e.baseSet ×ˢ univ) := fun q hq => by
+      refine ⟨?_, trivial⟩
+      rw [he, chartTriv_baseSet_eq]
+      exact ψ.map_target (hKct hq.1)
+    exact hsymm.comp (((continuousOn_extChartAt_symm (I := 𝓘(ℝ, Fin n → ℝ)) x).comp
+      continuousOn_fst (fun q hq => hKct hq.1)).prodMk continuousOn_snd) hmap
+  have hg1 := hL.1
+  have hΦeq : ∀ q ∈ Kp, ∃ s ∈ S ∩ P, ψ s = q.1 ∧
+      Φ q = (⟨s, (chartTriv n x).symmL ℝ s q.2⟩ : TangentBundle 𝓘(ℝ, Fin n → ℝ) M) := by
+    intro q hq
+    obtain ⟨s, hs, hsq⟩ := hq.1
+    refine ⟨s, hs, hsq, ?_⟩
+    have hb : s ∈ e.baseSet := by
+      rw [he, chartTriv_baseSet_eq]; exact hPs hs.2
+    show (⟨ψ.symm q.1, e.symm (ψ.symm q.1) q.2⟩ : TangentBundle 𝓘(ℝ, Fin n → ℝ) M) = _
+    rw [← hsq, ψ.left_inv (hPs hs.2), Trivialization.symmL_apply e (R := ℝ) hb]
+  have hset : {z : TangentBundle 𝓘(ℝ, Fin n → ℝ) M | z.proj ∈ S ∩ P ∧ IsNullVec g z ∧
+      g.g z.proj z.snd (T.X z.proj) = -1} = Φ '' Kp := by
+    ext z
+    constructor
+    · rintro ⟨hzP, hz1, hz2⟩
+      have hsP : z.proj ∈ ψ.source := hPs hzP.2
+      have hb : z.proj ∈ e.baseSet := mem_baseSet_of_mem_source x z.proj hsP
+      have hzsrc : z ∈ e.source := by rw [e.mem_source]; exact hb
+      set w : Fin n → ℝ := (e z).2 with hw
+      have hzs : z = (⟨z.proj, (chartTriv n x).symmL ℝ z.proj w⟩ : TangentBundle 𝓘(ℝ, Fin n → ℝ) M) := by
+        have h1 := Trivialization.symm_apply_apply e hzsrc
+        have h2 : e z = (z.proj, w) := Prod.ext (e.coe_fst hzsrc) rfl
+        rw [h2] at h1
+        rw [Trivialization.symmL_apply e (R := ℝ) hb, Trivialization.mk_symm e hb]
+        exact h1.symm
+      rw [hzs] at hz1 hz2
+      have hnv := (isNullVec_symmL_iff x z.proj hsP w).1 hz1
+      refine ⟨(ψ z.proj, w), ⟨⟨z.proj, hzP, rfl⟩, hnv.1, ?_⟩, ?_⟩
+      · rw [pairing_timeOrientation_symmL T x z.proj hsP w] at hz2
+        rw [Lightlike.Geodesic.pairing_comm hg1 (ψ.map_source hsP)]
+        exact hz2
+      · obtain ⟨s, hs, hsq, hΦs⟩ := hΦeq (ψ z.proj, w) ⟨⟨z.proj, hzP, rfl⟩, hnv.1, by
+          rw [Lightlike.Geodesic.pairing_comm hg1 (ψ.map_source hsP)]
+          rw [pairing_timeOrientation_symmL T x z.proj hsP w] at hz2
+          exact hz2⟩
+        have hs' : s = z.proj := ψ.injOn (hPs hs.2) hsP hsq
+        subst hs'
+        rw [hΦs]
+        exact hzs.symm
+    · rintro ⟨q, hq, rfl⟩
+      obtain ⟨s, hs, hsq, hΦs⟩ := hΦeq q hq
+      have hsP : s ∈ ψ.source := hPs hs.2
+      rw [hΦs]
+      have hQ := hq.2.1
+      have hℓ := hq.2.2
+      rw [← hsq] at hQ hℓ
+      have hw0 : q.2 ≠ 0 := by
+        rintro h0
+        rw [h0] at hℓ
+        simp [Lightlike.Geodesic.pairing] at hℓ
+      refine ⟨hs, (isNullVec_symmL_iff x s hsP q.2).2 ⟨hQ, hw0⟩, ?_⟩
+      show g.g s ((chartTriv n x).symmL ℝ s q.2) (T.X s) = -1
+      rw [pairing_timeOrientation_symmL T x s hsP q.2,
+        Lightlike.Geodesic.pairing_comm hg1 (ψ.map_source hsP)]
+      exact hℓ
+  rw [hset]
+  exact hKpc.image_of_continuousOn hΦc
+
+/-- **The normalised null vectors over a compact set are a compact set of the tangent bundle.** -/
+theorem compact_normalised_null (T : Causal.TimeOrientation g) {S : Set M} (hS : IsCompact S) :
+    IsCompact {z : TangentBundle 𝓘(ℝ, Fin n → ℝ) M | z.proj ∈ S ∧ IsNullVec g z ∧
+      g.g z.proj z.snd (T.X z.proj) = -1} := by
+  classical
+  haveI : LocallyCompactSpace M := ChartedSpace.locallyCompactSpace (Fin n → ℝ) M
+  have hloc : ∀ p : M, ∃ P : Set M, IsCompact P ∧ p ∈ interior P ∧
+      P ⊆ (extChartAt 𝓘(ℝ, Fin n → ℝ) p).source := fun p =>
+    exists_compact_subset (isOpen_extChartAt_source (I := 𝓘(ℝ, Fin n → ℝ)) p)
+      (mem_extChartAt_source p)
+  choose P hPc hPi hPs using hloc
+  obtain ⟨b, hbS, hbfin, hbcov⟩ := hS.elim_finite_subcover_image
+    (fun p _ => isOpen_interior (s := P p)) (fun p hp => mem_iUnion₂.2 ⟨p, hp, hPi p⟩)
+  have hset : {z : TangentBundle 𝓘(ℝ, Fin n → ℝ) M | z.proj ∈ S ∧ IsNullVec g z ∧
+      g.g z.proj z.snd (T.X z.proj) = -1} =
+      ⋃ p ∈ b, {z : TangentBundle 𝓘(ℝ, Fin n → ℝ) M | z.proj ∈ S ∩ P p ∧ IsNullVec g z ∧
+        g.g z.proj z.snd (T.X z.proj) = -1} := by
+    ext z
+    constructor
+    · rintro ⟨hzS, hz1, hz2⟩
+      obtain ⟨p, hpb, hzp⟩ := mem_iUnion₂.1 (hbcov hzS)
+      exact mem_iUnion₂.2 ⟨p, hpb, ⟨hzS, interior_subset hzp⟩, hz1, hz2⟩
+    · intro hz
+      obtain ⟨p, -, ⟨hzS, -⟩, hz1, hz2⟩ := mem_iUnion₂.1 hz
+      exact ⟨hzS, hz1, hz2⟩
+  rw [hset]
+  exact hbfin.isCompact_biUnion fun p _ => compact_normalised_null_piece T p hS (hPc p) (hPs p)
+
+end Lightlike.Penrose
