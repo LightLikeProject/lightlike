@@ -1967,6 +1967,7 @@ import Lightlike.TemperleyLieb.Kappa
 import Lightlike.TemperleyLieb.QNumbers
 import Lightlike.TemperleyLieb.Fusion
 import Lightlike.TemperleyLieb.Complete
+import Lightlike.TemperleyLieb.Window
 import Lightlike.Dirac.ConnesDistance
 import Lightlike.Dirac.ConnesDistance2
 import Lightlike.Dirac.ConnesDistance3
