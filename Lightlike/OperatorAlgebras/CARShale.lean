@@ -247,4 +247,81 @@ theorem exists_unitary_of_dense (B : HilbertBasis (Finset ι) ℂ Γ) (a : ι �
 
 end Unitary
 
+section Ladder
+
+variable {A : Type*} [Ring A] [Algebra ℂ A]
+
+/-- **Ladder operators from two real families of anticommuting fields**: if `p i`, `q i` satisfy
+`{p i, p j} = {q i, q j} = 2 δ`, `{p i, q j} = 0`, then `a i = (p i + i q i)/2` and `c i = (p i - i q i)/2` satisfy the CAR. -/
+lemma ladder_car [DecidableEq ι] (p q : ι → A)
+    (hpp : ∀ i j, p i * p j + p j * p i = (2 * if i = j then (1 : ℂ) else 0) • (1 : A))
+    (hqq : ∀ i j, q i * q j + q j * q i = (2 * if i = j then (1 : ℂ) else 0) • (1 : A))
+    (hpq : ∀ i j, p i * q j + q j * p i = 0) (i j : ι) :
+    ((1 / 2 : ℂ) • (p i - Complex.I • q i)) * ((1 / 2 : ℂ) • (p j - Complex.I • q j)) +
+        ((1 / 2 : ℂ) • (p j - Complex.I • q j)) * ((1 / 2 : ℂ) • (p i - Complex.I • q i)) = 0 ∧
+    ((1 / 2 : ℂ) • (p i + Complex.I • q i)) * ((1 / 2 : ℂ) • (p j - Complex.I • q j)) +
+        ((1 / 2 : ℂ) • (p j - Complex.I • q j)) * ((1 / 2 : ℂ) • (p i + Complex.I • q i)) =
+      (if i = j then (1 : ℂ) else 0) • (1 : A) := by
+  have h1 := hpp i j
+  have h2 := hqq i j
+  have h3 := hpq i j
+  have h4 := hpq j i
+  constructor
+  · simp only [smul_mul_smul_comm, mul_sub, sub_mul, mul_smul_comm, smul_mul_assoc, smul_sub, smul_smul]
+    linear_combination (norm := (match_scalars <;> (ring_nf; try simp only [Complex.I_sq]; try ring))) (1 / 4 : ℂ) • h1 - (1 / 4 : ℂ) • h2 - (Complex.I / 4) • h3 - (Complex.I / 4) • h4
+  · simp only [smul_mul_smul_comm, mul_sub, mul_add, sub_mul, add_mul, mul_smul_comm, smul_mul_assoc, smul_sub, smul_add, smul_smul]
+    linear_combination (norm := (match_scalars <;> (ring_nf; try simp only [Complex.I_sq]; try ring))) (1 / 4 : ℂ) • h1 + (1 / 4 : ℂ) • h2 - (Complex.I / 4) • h3 + (Complex.I / 4) • h4
+
+end Ladder
+
+section FockLadder
+
+variable {Γ : Type*} [NormedAddCommGroup Γ] [InnerProductSpace ℂ Γ] [CompleteSpace Γ]
+  (B : HilbertBasis (Finset ι) ℂ Γ) {Z : Type*} [NormedAddCommGroup Z] [InnerProductSpace ℂ Z] [CompleteSpace Z]
+  (b : HilbertBasis ι ℂ Z) (R : Z →ₗ[ℝ] Z)
+
+/-- The real part of the field `φ(R eⱼ)`. -/
+noncomputable def pField (j : ι) : Γ →L[ℂ] Γ := fockField B b (R (b j))
+
+/-- The imaginary part `φ(R (i eⱼ))`. -/
+noncomputable def qField (j : ι) : Γ →L[ℂ] Γ := fockField B b (R (Complex.I • b j))
+
+/-- The annihilation operator of the transformed mode `j`: `(φ(R eⱼ) + i φ(R (i eⱼ)))/2`. -/
+noncomputable def annR (j : ι) : Γ →L[ℂ] Γ := (1 / 2 : ℂ) • (pField B b R j + Complex.I • qField B b R j)
+
+/-- The creation operator of the transformed mode `j`: `(φ(R eⱼ) - i φ(R (i eⱼ)))/2`. -/
+noncomputable def creR (j : ι) : Γ →L[ℂ] Γ := (1 / 2 : ℂ) • (pField B b R j - Complex.I • qField B b R j)
+
+lemma re_inner_basis [DecidableEq ι] (i j : ι) : (⟪b i, b j⟫_ℂ).re = if i = j then 1 else 0 := by
+  rw [orthonormal_iff_ite.1 b.orthonormal i j]; split_ifs <;> simp
+
+lemma re_inner_I_basis [DecidableEq ι] (i j : ι) :
+    (⟪Complex.I • b i, Complex.I • b j⟫_ℂ).re = if i = j then 1 else 0 := by
+  rw [inner_smul_left, inner_smul_right]
+  simpa using re_inner_basis b i j
+
+lemma re_inner_basis_I [DecidableEq ι] (i j : ι) : (⟪b i, Complex.I • b j⟫_ℂ).re = 0 := by
+  rw [inner_smul_right]
+  have := orthonormal_iff_ite.1 b.orthonormal i j
+  split_ifs at this with h
+  · rw [this]; simp
+  · rw [this]; simp
+
+variable (hR : ∀ w w', (⟪R w, R w'⟫_ℂ).re = (⟪w, w'⟫_ℂ).re)
+include hR
+
+/-- The ladder operators of the transformed modes satisfy the CAR. -/
+lemma creR_annR_car [DecidableEq ι] (i j : ι) :
+    creR B b R i * creR B b R j + creR B b R j * creR B b R i = 0 ∧
+    annR B b R i * creR B b R j + creR B b R j * annR B b R i = (if i = j then (1 : ℂ) else 0) • (1 : Γ →L[ℂ] Γ) := by
+  have key : ∀ w w' : Z, fockField B b (R w) * fockField B b (R w') + fockField B b (R w') * fockField B b (R w) =
+      ((2 * (⟪w, w'⟫_ℂ).re : ℝ) : ℂ) • (1 : Γ →L[ℂ] Γ) := fun w w' => by
+    rw [fockField_anticomm, hR]
+  refine ladder_car (pField B b R) (qField B b R) ?_ ?_ ?_ i j
+  · intro i j; rw [pField, pField, key, re_inner_basis b i j]; split_ifs <;> simp
+  · intro i j; rw [qField, qField, key, re_inner_I_basis b i j]; split_ifs <;> simp
+  · intro i j; rw [pField, qField, key, re_inner_basis_I b i j]; simp
+
+end FockLadder
+
 end Lightlike.OperatorAlgebras.CARShale
