@@ -267,4 +267,43 @@ theorem card_sortedSet_le (a b : ℕ) : (sortedSet a b).card ≤ (a + 1) * (b + 
     _ ≤ ((Finset.range (a + 1)) ×ˢ (Finset.range (b + 1))).card := Finset.card_le_card himg
     _ = (a + 1) * (b + 1) := by simp
 
+/-- **Rank bound (A)**: the common kernel of the block generators in the window has dimension at most
+`(a+1)(b+1)`. -/
+theorem finrank_kernel_le (q : kˣ) (a b : ℕ) (U : Submodule k (ModelSpace k)) (hU : U ≤ Win k (a + b))
+    (hker : ∀ v ∈ U, ∀ j, Jab a b j → modelE q j v = 0) [FiniteDimensional k U] :
+    Module.finrank k U ≤ (a + 1) * (b + 1) := by
+  let Φ : U →ₗ[k] (↥(sortedSet a b) → k) :=
+    { toFun := fun v σ => (v : ModelSpace k) (σ : ℕ → Bool)
+      map_add' := fun v w => by funext σ; simp
+      map_smul' := fun c v => by funext σ; simp }
+  have hinj : Function.Injective Φ := by
+    intro v w hvw
+    have hvU := v.2
+    have hwU := w.2
+    set z : ModelSpace k := (v : ModelSpace k) - (w : ModelSpace k) with hzdef
+    have hzker : ∀ j, Jab a b j → modelE q j z = 0 := by
+      intro j hj
+      rw [hzdef, map_sub, hker v hvU j hj, hker w hwU j hj, sub_zero]
+    have hz : ∀ σ ∈ tailZero (a + b), z σ = 0 := by
+      refine zero_of_sorted q (J := Jab a b) (fun j hj => by rcases hj with h | h <;> omega) hzker ?_
+      intro σ hσ hs
+      have hmem : σ ∈ sortedSet a b := by
+        simp only [sortedSet, Finset.mem_filter, Set.Finite.mem_toFinset]
+        exact ⟨hσ, hs⟩
+      have := congrFun hvw ⟨σ, hmem⟩
+      simp only [Φ, LinearMap.coe_mk, AddHom.coe_mk] at this
+      simp [hzdef, this]
+    apply Subtype.ext
+    ext σ
+    by_cases hσ : σ ∈ tailZero (a + b)
+    · have := hz σ hσ
+      simp only [hzdef, Finsupp.coe_sub, Pi.sub_apply] at this
+      exact sub_eq_zero.mp this
+    · have h1 := (Finsupp.mem_supported' k (v : ModelSpace k)).mp (hU hvU) σ hσ
+      have h2 := (Finsupp.mem_supported' k (w : ModelSpace k)).mp (hU hwU) σ hσ
+      rw [h1, h2]
+  have := LinearMap.finrank_le_finrank_of_injective hinj
+  simp only [Module.finrank_fintype_fun_eq_card, Fintype.card_coe] at this
+  exact this.trans (card_sortedSet_le a b)
+
 end Lightlike.TemperleyLieb
