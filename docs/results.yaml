@@ -4413,3 +4413,42 @@
   review: kernel-checked
   note: "T-UP-22 (G1-019): the Mathlib-ready rework of LL-0045. The chart distance of LL-0045 is shown equal to Manifold.riemannianEDist of the tangent bundle of the open set U (IsRiemMetric.riemannianBundle; Riemannian.lean: pathELength_eq, riemannianEDist_eq, chartDist_eq_toReal_riemannianEDist), and the two expansions are restated for it. Scope: an open subset of Rⁿ as a manifold with a global chart, not a general Riemannian manifold; the pull-back to a manifold with atlas is not stated. Not opened as a Mathlib pull request by this project."
   since: unreleased
+- id: LL-0333
+  title: "OP2 in one place: a Fock representation exists on every complex Hilbert space, a Bogoliubov transformation is implemented iff its antilinear part is Hilbert-Schmidt (Shale), |alpha|^2 - |beta|^2 = 1 for one mode, and a constant |beta| on l^2(N) is not implementable"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/OPRow050/OP2Summary.lean
+  decls: [Lightlike.OperatorAlgebras.op2_fock_and_shale, Lightlike.OperatorAlgebras.op2_one_mode_alpha_beta, Lightlike.OperatorAlgebras.op2_infinite_modes_not_implementable, Lightlike.OperatorAlgebras.op2_one_mode_implementable]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: derezinski-2006, location: "Theorem 24, p. 27", check: "Shale"}
+  review: kernel-checked
+  note: "Restates the OP2 done-when and trust checks (milestones.md, OP2) from shale_criterion, Bogoliubov.norm_alpha_sq_sub_norm_beta_sq, not_implements_squeezeEllTwo and implements_squeeze, so a change in any of them breaks the file. The comparison with Dereziński is the one of the Shale entry already catalogued (Theorem 24, p. 27, read there); Shale's own paper (1962) was not read. The proof of necessity and sufficiency is this library's (ShaleSufficiency, ShaleNecessity)."
+  since: unreleased
+- id: LL-0334
+  title: "A quasi-free state of the Weyl algebra of a finite-dimensional symplectic space with a compatible complex structure (J^2 = -1, eta J-invariant and positive definite, omega(x,y) = -eta(x,Jy)) is pure; the degenerate-omega case factors through a surjection onto such a space"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/QuasiFreeState/ComplexStructure.lean
+  decls: [Lightlike.OperatorAlgebras.QuasiFreeState.isPureState_qfState_of_complexStructure, Lightlike.OperatorAlgebras.QuasiFreeState.isPureState_qfState_of_complexStructure_retract, Lightlike.OperatorAlgebras.QuasiFreeState.isPureState_qfState_of_equiv]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: gerard-2019, location: "Proposition 4.9.1", check: "pure iff"}
+  review: kernel-checked
+  note: "Compared with Gérard, arXiv:1901.10175, Section 4.9.1, Proposition 4.9.1 (read, text extracted from the PDF): a quasi-free state with covariance eta (his convention omega(W(x)) = exp(-(1/2) x.eta x), so his 2 eta is the eta here with exp(-(1/4) eta)) is pure iff (2 eta^cpl, sigma^cpl) is Kahler, i.e. there is an anti-involution j in Sp with sigma j = 2 eta; the proof there is cited to Derezinski-Gerard, Theorem 17.13, and is not read. Differences: WEAKER, only the sufficiency half is proved (a compatible J gives purity); the necessity (pure implies a compatible J) is not proved. REPRESENTATION, the space is finite-dimensional with eta positive definite on the quotient; the proof identifies the GNS space with a Fock space of the complex inner product eta + i omega and uses irreducibility of the Fock representation, not the Kahler argument; the sign of the J relation (omega = -eta J) is a convention."
+  since: unreleased
+- id: LL-0335
+  title: "The Sorkin-Johnston state of a finite causal set is pure: |iD| is the positive square root of -D^2, the Pauli-Jordan matrix is a(C - C^T) for the causal matrix C, and the quasi-free state of (D, |iD|) is pure for every a"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/QuasiFreeState/SorkinJohnston.lean
+  decls: [Lightlike.OperatorAlgebras.QuasiFreeState.isPureState_causalSet, Lightlike.OperatorAlgebras.QuasiFreeState.exists_pjData, Lightlike.OperatorAlgebras.QuasiFreeState.isPureState_pauliJordan]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: johnston-2009, location: "eq. (10)", check: "Pauli-Jordan"}
+  review: kernel-checked
+  note: "Compared with Johnston, arXiv:0909.0944, eq. (10) Delta = K_R - K_A, K_A = K_R^T, and eq. (16) K_R = a C (1 - a b C)^-1 (read). Differences: WEAKER, only the massless two-dimensional retarded matrix a C (b = 0) is built, not the four-dimensional K_R = a L (1 - a b L)^-1 nor the massive one; the state is the quasi-free state with covariance |iD| on the symplectic space (R^n, D), which is the positive-part construction of Afshordi, Aslanbeigi and Sorkin (arXiv:1205.1296, title and authors checked, not read), and no comparison with their formulas is claimed. The purity is by the compatible complex structure of the previous entry."
+  since: unreleased
