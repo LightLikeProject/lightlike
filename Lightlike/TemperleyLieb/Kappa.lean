@@ -2,10 +2,13 @@ import Mathlib
 import Lightlike.TemperleyLieb.Contraction
 
 /-!
-# Absorption of the sub-blocks of a projector
+# Absorption of the sub-blocks of a projector, the eigen-equation and the vertex norm
 
 `jwAt q (s+1) n · jwAt q s (n+1) = jwAt q s (n+1)`: the projector on `n+1` strands absorbs the projector on its last
-`n` strands (the first `n` strands are `JwProps.absL`); this is the mirror image.
+`n` strands (the first `n` strands are `JwProps.absL`); this is the mirror image.  `contraction_all` is the
+contraction of the junction for every block size, `vertex_eigen` shows that `Q e_{a-1} Q` acts on the vertex with `i`
+arcs by the scalar `lamRec a b i`, and `vertex_norm_value` that `p_c (nestCap Q nestCup) p_c = kapRec a b i · p_c`,
+with `kapRec a b (i+1) = lamRec a b (i+1) · kapRec (a-1) (b-1) i`.
 -/
 
 namespace Lightlike.TemperleyLieb
@@ -218,5 +221,206 @@ theorem Qab_mul_full (q : kˣ) (a b : ℕ) (hd : ∀ j, j < a + b → chebD (loo
       exact this
   obtain ⟨κ, -, h2⟩ := absorb (k := k) (e := modelE q) (p := jwAt q 0 (a + b)) hL hR _ hQ
   exact ⟨κ, h2⟩
+
+/-- **The eigen-equation**: `Q e_{a-1} Q` acts on the vertex with `i` arcs by `lamRec a b i`. -/
+theorem vertex_eigen (q : kˣ) : ∀ (i a b : ℕ), 1 ≤ a → 1 ≤ b → i ≤ a → i ≤ b →
+    (∀ j, j ≤ a + b → chebD (loopVal q) j ≠ 0) →
+    (Qab q a b * modelE q (a - 1) * Qab q a b) * Vop q a b i = lamRec q a b i • Vop q a b i := by
+  intro i
+  induction i with
+  | zero =>
+    intro a b ha hb _ _ hd
+    obtain ⟨κ, hκ⟩ := Qab_mul_full q a b (fun j hj => hd j (by omega))
+    have hQ := Qab_idem q a b (fun j hj => hd j (by omega))
+    have hp := jwProps_of_le (isTL_shift q 0) (a + b) (fun j hj => hd j (by omega)) (a + b) le_rfl
+    have hjw : jwAt q 0 (a + b) = jw (loopVal q) (modelE q) (a + b) := rfl
+    have hk : modelE q (a - 1) * jwAt q 0 (a + b) = 0 := by
+      rw [hjw]; exact hp.killL (a - 1) (by omega)
+    simp only [Vop, nestCup, mul_one, Nat.sub_zero, mul_zero, Nat.add_zero, lamRec, zero_smul]
+    calc Qab q a b * modelE q (a - 1) * Qab q a b * (Qab q a b * jwAt q 0 (a + b))
+        = Qab q a b * modelE q (a - 1) * (Qab q a b * Qab q a b) * jwAt q 0 (a + b) := by
+          simp only [mul_assoc]
+      _ = Qab q a b * modelE q (a - 1) * Qab q a b * jwAt q 0 (a + b) := by rw [hQ]
+      _ = 0 := by
+          rw [mul_assoc (Qab q a b * modelE q (a - 1)), hκ, mul_smul_comm, mul_assoc (Qab q a b), hk]
+          simp
+  | succ i' ih =>
+    intro a b ha hb hia hib hd
+    obtain ⟨α, rfl⟩ : ∃ α, a = α + 1 := ⟨a - 1, by omega⟩
+    obtain ⟨β, rfl⟩ : ∃ β, b = β + 1 := ⟨b - 1, by omega⟩
+    have hd' : ∀ j, j ≤ α + β + 1 → chebD (loopVal q) j ≠ 0 := fun j hj => hd j (by omega)
+    have hQ := Qab_idem q (α + 1) (β + 1) (fun j hj => hd j (by omega))
+    have hQ2 := Qab_idem q α β (fun j hj => hd j (by omega))
+    -- decomposition of the vertex
+    have hV : Vop q (α + 1) (β + 1) (i' + 1) =
+        Qab q (α + 1) (β + 1) * cupOp q α * Vop q α β i' := by
+      have hl : α + 1 - (i' + 1) = α - i' := by omega
+      have hc : α + 1 + (β + 1) - 2 * (i' + 1) = α + β - 2 * i' := by omega
+      have hl2 : α - i' + i' = α := by omega
+      unfold Vop
+      rw [hl, hc]
+      have hnest : nestCup q (α - i') (i' + 1) = cupOp q α * nestCup q (α - i') i' := by
+        simp only [nestCup, hl2]
+      rw [hnest]
+      calc Qab q (α + 1) (β + 1) * (cupOp q α * nestCup q (α - i') i') * jwAt q 0 (α + β - 2 * i')
+          = (Qab q (α + 1) (β + 1) * cupOp q α) * nestCup q (α - i') i' * jwAt q 0 (α + β - 2 * i') := by
+            simp only [mul_assoc]
+        _ = (Qab q (α + 1) (β + 1) * cupOp q α * Qab q α β) * nestCup q (α - i') i' *
+              jwAt q 0 (α + β - 2 * i') := by rw [← Qab_cup q α β hd']
+        _ = _ := by simp only [mul_assoc]
+    have hQV : Qab q α β * Vop q α β i' = Vop q α β i' := by
+      unfold Vop
+      rw [← mul_assoc, ← mul_assoc, hQ2]
+    have hX := contraction_all q α β hd'
+    have key : (capOp q α * Qab q (α + 1) (β + 1) * cupOp q α) * Vop q α β i' =
+        lamRec q (α + 1) (β + 1) (i' + 1) • Vop q α β i' := by
+      rw [hX, add_mul, smul_mul_assoc, smul_mul_assoc, hQV]
+      by_cases hαβ : 1 ≤ α ∧ 1 ≤ β
+      · have hih := ih α β hαβ.1 hαβ.2 (by omega) (by omega) (fun j hj => hd j (by omega))
+        rw [hih]
+        simp only [lamRec, Nat.add_sub_cancel, smul_smul]
+        module
+      · have hc2 : sCoef q (α + 1) * sCoef q (β + 1) = 0 := by
+          rcases Nat.eq_zero_or_pos α with h0 | h0
+          · subst h0; simp [sCoef]
+          · have : β = 0 := by omega
+            subst this; simp [sCoef]
+        rw [hc2]
+        simp only [lamRec, Nat.add_sub_cancel, hc2, zero_smul, add_zero, zero_mul]
+    rw [hV, Nat.add_sub_cancel]
+    calc Qab q (α + 1) (β + 1) * modelE q α * Qab q (α + 1) (β + 1) *
+          (Qab q (α + 1) (β + 1) * cupOp q α * Vop q α β i')
+        = Qab q (α + 1) (β + 1) * modelE q α * (Qab q (α + 1) (β + 1) * Qab q (α + 1) (β + 1)) *
+          cupOp q α * Vop q α β i' := by simp only [mul_assoc]
+      _ = Qab q (α + 1) (β + 1) * (cupOp q α * capOp q α) * Qab q (α + 1) (β + 1) *
+          cupOp q α * Vop q α β i' := by rw [hQ, cup_cap]
+      _ = Qab q (α + 1) (β + 1) * cupOp q α * ((capOp q α * Qab q (α + 1) (β + 1) * cupOp q α) *
+          Vop q α β i') := by simp only [mul_assoc]
+      _ = lamRec q (α + 1) (β + 1) (i' + 1) • (Qab q (α + 1) (β + 1) * cupOp q α * Vop q α β i') := by
+          rw [key, mul_smul_comm]
+
+/-- The projector on `n + r` strands absorbs the projector on its last `n` strands, on the left. -/
+theorem jwAt_absorb_suffix_all (q : kˣ) (s : ℕ) : ∀ (r n : ℕ),
+    (∀ j, j < n + r → chebD (loopVal q) j ≠ 0) →
+    jwAt q (s + r) n * jwAt q s (n + r) = jwAt q s (n + r) := by
+  intro r
+  induction r with
+  | zero =>
+    intro n hd
+    have hp := jwProps_of_le (isTL_shift q s) n (fun j hj => hd j (by omega)) n le_rfl
+    exact hp.idem
+  | succ r ih =>
+    intro n hd
+    have h1 := ih (n + 1) (fun j hj => hd j (by omega))
+    have h2 := jwAt_absorb_suffix_left q (s + r) n (fun j hj => hd j (by omega))
+    have e1 : n + 1 + r = n + (r + 1) := by omega
+    rw [e1] at h1
+    calc jwAt q (s + (r + 1)) n * jwAt q s (n + (r + 1))
+        = jwAt q (s + r + 1) n * jwAt q s (n + (r + 1)) := rfl
+      _ = jwAt q (s + r + 1) n * (jwAt q (s + r) (n + 1) * jwAt q s (n + (r + 1))) := by rw [h1]
+      _ = (jwAt q (s + r + 1) n * jwAt q (s + r) (n + 1)) * jwAt q s (n + (r + 1)) := by rw [mul_assoc]
+      _ = _ := by rw [h2, h1]
+
+/-- The norm of the vertex with `i` arcs, as a recursion. -/
+noncomputable def kapRec (q : kˣ) : ℕ → ℕ → ℕ → k
+  | _, _, 0 => 1
+  | a, b, i + 1 => lamRec q a b (i + 1) * kapRec q (a - 1) (b - 1) i
+
+/-- `Q(a,b)` acts on the full projector as the identity. -/
+theorem Qab_mul_full_eq (q : kˣ) (a b : ℕ) (hd : ∀ j, j < a + b → chebD (loopVal q) j ≠ 0) :
+    Qab q a b * jwAt q 0 (a + b) = jwAt q 0 (a + b) := by
+  have h1 := jwAt_absorb_suffix_all q 0 a b (fun j hj => hd j (by omega))
+  rw [show b + a = a + b by omega, zero_add] at h1
+  have hp := jwProps_of_le (isTL_shift q 0) (a + b) hd (a + b) le_rfl
+  have h2 : jwAt q 0 a * jwAt q 0 (a + b) = jwAt q 0 (a + b) := hp.absL a (by omega)
+  unfold Qab
+  rw [mul_assoc, h1, h2]
+
+/-- **The value of the vertex norm**: `p_c (nestCap Q nestCup) p_c = kapRec a b i · p_c`. -/
+theorem vertex_norm_value (q : kˣ) : ∀ (i a b : ℕ), i ≤ a → i ≤ b →
+    (∀ j, j ≤ a + b → chebD (loopVal q) j ≠ 0) →
+    jwAt q 0 (a + b - 2 * i) * (nestCap q (a - i) i * Qab q a b * nestCup q (a - i) i) *
+        jwAt q 0 (a + b - 2 * i) = kapRec q a b i • jwAt q 0 (a + b - 2 * i) := by
+  intro i
+  induction i with
+  | zero =>
+    intro a b _ _ hd
+    have hp := jwProps_of_le (isTL_shift q 0) (a + b) (fun j hj => hd j (by omega)) (a + b) le_rfl
+    have hQP := Qab_mul_full_eq q a b (fun j hj => hd j (by omega))
+    have hidem : jwAt q 0 (a + b) * jwAt q 0 (a + b) = jwAt q 0 (a + b) := hp.idem
+    simp only [nestCap, nestCup, one_mul, mul_one, Nat.sub_zero, mul_zero, Nat.add_zero, kapRec, one_smul]
+    rw [mul_assoc, hQP, hidem]
+  | succ i' ih =>
+    intro a b hia hib hd
+    obtain ⟨α, rfl⟩ : ∃ α, a = α + 1 := ⟨a - 1, by omega⟩
+    obtain ⟨β, rfl⟩ : ∃ β, b = β + 1 := ⟨b - 1, by omega⟩
+    have hd' : ∀ j, j ≤ α + β + 1 → chebD (loopVal q) j ≠ 0 := fun j hj => hd j (by omega)
+    have hl : α + 1 - (i' + 1) = α - i' := by omega
+    have hc : α + 1 + (β + 1) - 2 * (i' + 1) = α + β - 2 * i' := by omega
+    have hl2 : α - i' + i' = α := by omega
+    have hQ2 := Qab_idem q α β (fun j hj => hd j (by omega))
+    have hX := contraction_all q α β hd'
+    have ih' := ih α β (by omega) (by omega) (fun j hj => hd j (by omega))
+    have hcap : nestCap q (α - i') (i' + 1) = nestCap q (α - i') i' * capOp q α := by
+      simp only [nestCap, hl2]
+    have hcup : nestCup q (α - i') (i' + 1) = cupOp q α * nestCup q (α - i') i' := by
+      simp only [nestCup, hl2]
+    rw [hl, hc, hcap, hcup]
+    have hmid : nestCap q (α - i') i' * capOp q α * Qab q (α + 1) (β + 1) * (cupOp q α * nestCup q (α - i') i') =
+        nestCap q (α - i') i' * (capOp q α * Qab q (α + 1) (β + 1) * cupOp q α) * nestCup q (α - i') i' := by
+      simp only [mul_assoc]
+    rw [hmid, hX]
+    have hJ : (1 ≤ α ∧ 1 ≤ β) →
+        nestCap q (α - i') i' * (Qab q α β * modelE q (α - 1) * Qab q α β) * nestCup q (α - i') i' *
+            jwAt q 0 (α + β - 2 * i') =
+          lamRec q α β i' • (nestCap q (α - i') i' * Qab q α β * nestCup q (α - i') i' *
+            jwAt q 0 (α + β - 2 * i')) := by
+      intro hαβ
+      have hih := vertex_eigen q i' α β hαβ.1 hαβ.2 (by omega) (by omega) (fun j hj => hd j (by omega))
+      unfold Vop at hih
+      calc nestCap q (α - i') i' * (Qab q α β * modelE q (α - 1) * Qab q α β) * nestCup q (α - i') i' *
+            jwAt q 0 (α + β - 2 * i')
+          = nestCap q (α - i') i' * ((Qab q α β * modelE q (α - 1) * Qab q α β) *
+              (Qab q α β * nestCup q (α - i') i' * jwAt q 0 (α + β - 2 * i'))) := by
+            simp only [mul_assoc]
+            rw [← mul_assoc (Qab q α β) (Qab q α β), hQ2]
+        _ = _ := by rw [hih, mul_smul_comm]; simp only [mul_assoc]
+    by_cases hαβ : 1 ≤ α ∧ 1 ≤ β
+    · have h1 := hJ hαβ
+      calc jwAt q 0 (α + β - 2 * i') * (nestCap q (α - i') i' *
+            ((loopVal q - sCoef q (α + 1) - sCoef q (β + 1)) • Qab q α β +
+              (sCoef q (α + 1) * sCoef q (β + 1)) • (Qab q α β * modelE q (α - 1) * Qab q α β)) *
+            nestCup q (α - i') i') * jwAt q 0 (α + β - 2 * i')
+          = (loopVal q - sCoef q (α + 1) - sCoef q (β + 1)) •
+              (jwAt q 0 (α + β - 2 * i') * (nestCap q (α - i') i' * Qab q α β * nestCup q (α - i') i') *
+                jwAt q 0 (α + β - 2 * i')) +
+            (sCoef q (α + 1) * sCoef q (β + 1)) •
+              (jwAt q 0 (α + β - 2 * i') * (nestCap q (α - i') i' * (Qab q α β * modelE q (α - 1) * Qab q α β) *
+                nestCup q (α - i') i') * jwAt q 0 (α + β - 2 * i')) := by
+            simp only [mul_add, add_mul, mul_smul_comm, smul_mul_assoc]
+        _ = _ := by
+            have e2 : jwAt q 0 (α + β - 2 * i') * (nestCap q (α - i') i' * (Qab q α β * modelE q (α - 1) * Qab q α β) *
+                nestCup q (α - i') i') * jwAt q 0 (α + β - 2 * i') =
+                lamRec q α β i' • (kapRec q α β i' • jwAt q 0 (α + β - 2 * i')) := by
+              calc jwAt q 0 (α + β - 2 * i') * (nestCap q (α - i') i' * (Qab q α β * modelE q (α - 1) * Qab q α β) *
+                    nestCup q (α - i') i') * jwAt q 0 (α + β - 2 * i')
+                  = jwAt q 0 (α + β - 2 * i') * (nestCap q (α - i') i' * (Qab q α β * modelE q (α - 1) * Qab q α β) *
+                    nestCup q (α - i') i' * jwAt q 0 (α + β - 2 * i')) := by simp only [mul_assoc]
+                _ = jwAt q 0 (α + β - 2 * i') * (lamRec q α β i' • (nestCap q (α - i') i' * Qab q α β *
+                    nestCup q (α - i') i' * jwAt q 0 (α + β - 2 * i'))) := by rw [h1]
+                _ = lamRec q α β i' • (jwAt q 0 (α + β - 2 * i') * (nestCap q (α - i') i' * Qab q α β *
+                    nestCup q (α - i') i') * jwAt q 0 (α + β - 2 * i')) := by
+                    rw [mul_smul_comm]; simp only [mul_assoc]
+                _ = lamRec q α β i' • (kapRec q α β i' • jwAt q 0 (α + β - 2 * i')) := by rw [ih']
+            rw [e2, ih']
+            simp only [kapRec, lamRec, Nat.add_sub_cancel, smul_smul]
+            module
+    · have hc2 : sCoef q (α + 1) * sCoef q (β + 1) = 0 := by
+        rcases Nat.eq_zero_or_pos α with h0 | h0
+        · subst h0; simp [sCoef]
+        · have : β = 0 := by omega
+          subst this; simp [sCoef]
+      simp only [hc2, zero_smul, add_zero, mul_add, add_mul, mul_smul_comm, smul_mul_assoc, ih']
+      simp only [kapRec, lamRec, Nat.add_sub_cancel, hc2, smul_smul, zero_mul, add_zero]
 
 end Lightlike.TemperleyLieb
