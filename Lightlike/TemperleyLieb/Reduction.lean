@@ -121,4 +121,34 @@ theorem cap_mul_cup_mem (q : kˣ) {n : ℕ} {z : Module.End k (ModelSpace k)} (h
     rw [mul_smul_comm, smul_mul_assoc]
     exact Subalgebra.smul_mem _ (hx m m' hm hm') r
 
+/-- `i` nested cups at the junction `l`: `cup_{l+i-1} ⋯ cup_{l+1} cup_l`. -/
+noncomputable def nestCup (q : kˣ) (l : ℕ) : ℕ → Module.End k (ModelSpace k)
+  | 0 => 1
+  | i + 1 => cupOp q (l + i) * nestCup q l i
+
+/-- `i` nested caps at the junction `l`: `cap_l cap_{l+1} ⋯ cap_{l+i-1}` (the dual of `nestCup`). -/
+noncomputable def nestCap (q : kˣ) (l : ℕ) : ℕ → Module.End k (ModelSpace k)
+  | 0 => 1
+  | i + 1 => nestCap q l i * capOp q (l + i)
+
+/-- **Sandwich of the nested junction.** For `Q ∈ C N` and `l + 2 i ≤ N + 1`, the nested caps and cups reduce
+`Q` to `C (N - 2 i)` (natural subtraction): `nestCap l i · Q · nestCup l i ∈ C (N - 2i)`. -/
+theorem nestCap_mul_nestCup_mem (q : kˣ) (l : ℕ) :
+    ∀ (i N : ℕ) {Q : Module.End k (ModelSpace k)}, Q ∈ CSub q N → l + 2 * i ≤ N + 1 →
+      nestCap q l i * Q * nestCup q l i ∈ CSub q (N - 2 * i) := by
+  intro i
+  induction i with
+  | zero => intro N Q hQ _; simpa [nestCap, nestCup] using hQ
+  | succ i ih =>
+    intro N Q hQ hl
+    have h1 : nestCap q l (i + 1) * Q * nestCup q l (i + 1) =
+        nestCap q l i * (capOp q (l + i) * Q * cupOp q (l + i)) * nestCup q l i := by
+      simp only [nestCap, nestCup, mul_assoc]
+    rw [h1]
+    obtain ⟨n, rfl⟩ : ∃ n, N = n + 1 := ⟨N - 1, by omega⟩
+    have h2 := cap_mul_cup_mem q (n := n) hQ (l + i) (l + i) (by omega) (by omega)
+    have h3 := ih (n - 1) h2 (by omega)
+    have h4 : n - 1 - 2 * i = n + 1 - 2 * (i + 1) := by omega
+    rwa [h4] at h3
+
 end Lightlike.TemperleyLieb
