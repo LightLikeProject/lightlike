@@ -1396,6 +1396,7 @@ import Lightlike.Rows.G1_012.NullVariation
 import Lightlike.Rows.G1_012.Orthogonality
 import Lightlike.Rows.G1_012.TrappedSurface
 import Lightlike.Rows.G1_012.GeodesicChartIndep
+import Lightlike.Rows.G1_012.ExpLocal
 import Lightlike.Spacetime.Causal.ChainReach
 import Lightlike.Spacetime.Causal.TimeReversal
 import Lightlike.Spacetime.Causal.OpenPast
