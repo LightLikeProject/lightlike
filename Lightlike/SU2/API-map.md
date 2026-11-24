@@ -17,8 +17,9 @@ Physlib's standard `sl₂`-module `V(n)` {1} [4].
 
 Every continuous irreducible finite-dimensional representation of SU(2) is equivalent to one of
 the spin representations [5]. This is the SU(2) case of the Peter–Weyl theorem {2}. The general
-Peter–Weyl theorem for compact groups, with the decomposition of `L²(G)`, is not yet formalized.
-[TODO]
+Peter–Weyl theorem for compact groups is also formalized in `Lightlike/HarmonicAnalysis/`: the matrix
+coefficients are dense in `C(G)` and in `L²(G)`, and `L²(G)` is the Hilbert sum of the isotypic
+components (`peterWeyl_dense_continuous`, `peterWeyl_dense_L2`, `peterWeyl_isHilbertSum`).
 
 ## Lean References
 

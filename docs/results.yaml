@@ -3756,3 +3756,81 @@
   review: kernel-checked
   note: "The vector W is computed from the helicity character and the rotation generator J_z; lightPL_square gives W² = 0. The comparison with Weinberg (1995), Chapter 2, is pending: the book was not read at the cited location, and Wigner (1939) was not read. Weinberg works in signature (-,+,+,+) with W^2 = m^2 j(j+1); here (+,-,-,-), so W^2 = -m^2 s(s+1) (the sign convention is stated in the task, milestones.md HA6)."
   since: unreleased
+- id: LL-0283
+  title: "Peter–Weyl (density form): for a compact Hausdorff group, the matrix coefficients of finite-dimensional unitary representations are dense in C(G) in the sup norm and, for a Haar measure, in L²(G)"
+  area: SU2
+  file: Lightlike/HarmonicAnalysis/PeterWeyl.lean
+  decls: [Lightlike.HarmonicAnalysis.peterWeyl_dense_continuous, Lightlike.HarmonicAnalysis.peterWeyl_dense_L2]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: brocker-tom-dieck-1985, location: "Chapter: Representative Functions|10.1007/978-3-662-12918-0_3"}
+  review: kernel-checked
+  note: "Proved by Stone–Weierstrass for the separation of points (PeterWeylSeparation.lean, through convolution operators, which are compact and self-adjoint) and the density of C(G) in L². The comparison with Bröcker and tom Dieck (1985), Chapter III, is pending: the book was not read at the cited location."
+  since: unreleased
+- id: LL-0284
+  title: "Peter–Weyl (Hilbert sum form): L²(G) of a compact group with a Haar measure is the Hilbert direct sum of the isotypic components of the irreducible unitary representation classes"
+  area: SU2
+  file: Lightlike/HarmonicAnalysis/PeterWeylIsotypic.lean
+  decls: [Lightlike.HarmonicAnalysis.peterWeyl_isHilbertSum]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: brocker-tom-dieck-1985, location: "Chapter: Representative Functions|10.1007/978-3-662-12918-0_3"}
+  review: kernel-checked
+  note: "The Hilbert basis of rescaled matrix coefficients is peterWeyl_hilbertBasis (PeterWeylHilbert.lean); the isotypic component of a class is the span of its coefficients. Both are lockable statements of the milestone. The comparison with Bröcker and tom Dieck (1985), Chapter III, is pending: the book was not read at the cited location."
+  since: unreleased
+- id: LL-0285
+  title: "Schur orthogonality of the matrix coefficients of irreducible unitary representations of a compact group: zero for inequivalent representations, δδ/dim for equal ones"
+  area: SU2
+  file: Lightlike/HarmonicAnalysis/SchurOrthogonality.lean
+  decls: [Lightlike.HarmonicAnalysis.UnitaryMatrixRep.schur_orthogonality_ne, Lightlike.HarmonicAnalysis.UnitaryMatrixRep.schur_orthogonality_eq]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: brocker-tom-dieck-1985, location: "Chapter: Representative Functions|10.1007/978-3-662-12918-0_3"}
+  review: kernel-checked
+  note: "Haar measure normalised to a probability measure. The comparison with Bröcker and tom Dieck (1985), Chapter III, is pending: the book was not read at the cited location."
+  since: unreleased
+- id: LL-0286
+  title: "The characters e^{inθ} of U(1) form a Hilbert basis of L²(U(1)), and the irreducible unitary representations of the circle are the characters"
+  area: SU2
+  file: Lightlike/HarmonicAnalysis/PeterWeylCircle.lean
+  decls: [Lightlike.HarmonicAnalysis.circle_hilbertBasis, Lightlike.HarmonicAnalysis.orthonormal_circleMonoLp, Lightlike.HarmonicAnalysis.circle_irreducible_classification]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: brocker-tom-dieck-1985, location: "Chapter: Representative Functions|10.1007/978-3-662-12918-0_3"}
+  review: kernel-checked
+  note: "Trust check of the milestone (U(1)). The comparison with Bröcker and tom Dieck (1985), Chapter III, is pending: the book was not read at the cited location."
+  since: unreleased
+- id: LL-0287
+  title: "Schur orthogonality of the matrix coefficients and of the characters of the spin-n/2 representations of SU(2)"
+  area: SU2
+  file: Lightlike/HarmonicAnalysis/PeterWeylSU2.lean
+  decls: [Lightlike.HarmonicAnalysis.su2_schur_orthogonality, Lightlike.HarmonicAnalysis.su2_character_orthogonality]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: brocker-tom-dieck-1985, location: "Chapter: Representative Functions|10.1007/978-3-662-12918-0_3"}
+  review: kernel-checked
+  note: "Trust check of the milestone (SU(2)); the Hilbert basis of the sqrt(n+1) D^n_ij is su2_hilbertBasis in SU2PeterWeyl.lean. The comparison with Bröcker and tom Dieck (1985), Chapter III, is pending: the book was not read at the cited location."
+  since: unreleased
+- id: LL-0288
+  title: "The real line has no square-integrable matrix coefficients: its unitary characters are not in L²(R)"
+  area: SU2
+  file: Lightlike/HarmonicAnalysis/PeterWeylReal.lean
+  decls: [Lightlike.HarmonicAnalysis.real_not_forall_memLp_two, Lightlike.HarmonicAnalysis.real_character_not_memLp_two]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: brocker-tom-dieck-1985, location: "Chapter: Representative Functions|10.1007/978-3-662-12918-0_3"}
+  review: kernel-checked
+  note: "Trust check of the milestone (non-compact R); the general statement for infinite Haar measure is not_forall_memLp_two_of_measure_univ_eq_top in CharacterOrthogonality.lean. The comparison with Bröcker and tom Dieck (1985), Chapter III, is pending: the book was not read at the cited location."
+  since: unreleased
