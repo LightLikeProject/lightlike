@@ -3,6 +3,8 @@ import Lightlike.Rows.G1_012.Defs
 import Lightlike.Rows.G1_012.Orthogonality
 import Lightlike.Geodesic.TimeBall
 import Lightlike.Rows.G1_012.LocalGenerators
+import Lightlike.Rows.G1_012.ExpMap
+import Lightlike.Rows.G1_012.Generators
 
 /-!
 # Compactness of the exponential image of compact null data (G1-012)
@@ -529,5 +531,179 @@ theorem compact_normalised_null (T : Causal.TimeOrientation g) {S : Set M} (hS :
       exact ⟨hzS, hz1, hz2⟩
   rw [hset]
   exact hbfin.isCompact_biUnion fun p _ => compact_normalised_null_piece T p hS (hPc p) (hPs p)
+
+end Lightlike.Penrose
+
+namespace Lightlike.Penrose
+
+variable {n : ℕ} {M : Type*} [TopologicalSpace M] [ChartedSpace (Fin n → ℝ) M]
+  [IsManifold 𝓘(ℝ, Fin n → ℝ) ∞ M] [SecondCountableTopology M] [T2Space M]
+  [IsManifold 𝓘(ℝ, Fin n → ℝ) 2 M] [MeasurableSpace M] [BorelSpace M]
+  {g : LorentzianMetric 𝓘(ℝ, Fin n → ℝ) M n}
+
+/-- A geodesic curve is differentiable (as a map of manifolds) at each point of its domain. -/
+theorem IsGeodesicCurveOn.mdifferentiableAt {γ : ℝ → M} {J : Set ℝ} (hJ : IsOpen J)
+    (h : IsGeodesicCurveOn g γ J) {t : ℝ} (ht : t ∈ J) :
+    MDifferentiableAt 𝓘(ℝ, ℝ) 𝓘(ℝ, Fin n → ℝ) γ t := by
+  obtain ⟨w, O, hO, hsrc, hgeo⟩ := h t ht
+  have hO' : IsOpen (interior O) := isOpen_interior
+  exact (phase_coord g (γ t) hO' (fun s hs => hsrc s (interior_subset hs))
+    ⟨fun s hs => hgeo.pos s (interior_subset hs), fun s hs => hgeo.vel s (interior_subset hs)⟩
+    (mem_interior_iff_mem_nhds.2 hO)).1
+
+/-- **A null geodesic on `[0, L]` extends to a complete null geodesic**, with the same one-sided
+velocity at `0`. -/
+theorem generator_extend (hc : NullGeodesicallyComplete g) {γ : ℝ → M} {L : ℝ} (hL : 0 < L)
+    (hγ : IsNullGeodesicOn g γ (Icc 0 L)) :
+    ∃ γ' : ℝ → M, IsNullGeodesicOn g γ' univ ∧ EqOn γ γ' (Icc 0 L) ∧
+      (Causal.velocity 𝓘(ℝ, Fin n → ℝ) γ (Icc 0 L) 0 : Fin n → ℝ) =
+        mfderiv 𝓘(ℝ, ℝ) 𝓘(ℝ, Fin n → ℝ) γ' 0 (1 : ℝ) := by
+  obtain ⟨γ', hγ', heq⟩ := hc γ 0 L hL (hγ.mono Ioo_subset_Icc_self)
+  have hcont : ContinuousOn γ (Icc 0 L) := fun t ht =>
+    (IsGeodesicCurveOn.continuousAt g hγ.isGeodesicCurveOn ht).continuousWithinAt
+  have hcont' : ContinuousOn γ' (Icc 0 L) := fun t ht =>
+    (IsGeodesicCurveOn.continuousAt g hγ'.isGeodesicCurveOn (mem_univ t)).continuousWithinAt
+  have heqI : EqOn γ γ' (Icc 0 L) := by
+    refine heq.of_subset_closure hcont hcont' Ioo_subset_Icc_self ?_
+    rw [closure_Ioo hL.ne]
+  refine ⟨γ', hγ', heqI, ?_⟩
+  have hmd : MDifferentiableAt 𝓘(ℝ, ℝ) 𝓘(ℝ, Fin n → ℝ) γ' 0 :=
+    IsGeodesicCurveOn.mdifferentiableAt isOpen_univ hγ'.isGeodesicCurveOn (mem_univ 0)
+  have hu : UniqueMDiffWithinAt 𝓘(ℝ, ℝ) (Icc (0 : ℝ) L) 0 :=
+    (uniqueDiffOn_Icc hL 0 ⟨le_rfl, hL.le⟩).uniqueMDiffWithinAt
+  unfold Causal.velocity
+  have hev : γ =ᶠ[𝓝[Icc 0 L] 0] γ' := by
+    filter_upwards [self_mem_nhdsWithin] with t ht using heqI ht
+  rw [hev.mfderivWithin_eq (heqI ⟨le_rfl, hL.le⟩), mfderivWithin_eq_mfderiv hu hmd]
+  rfl
+
+end Lightlike.Penrose
+
+namespace Lightlike.Penrose
+
+variable {n : ℕ} {M : Type*} [TopologicalSpace M] [ChartedSpace (Fin n → ℝ) M]
+  [IsManifold 𝓘(ℝ, Fin n → ℝ) ∞ M] [SecondCountableTopology M] [T2Space M]
+  [IsManifold 𝓘(ℝ, Fin n → ℝ) 2 M] [MeasurableSpace M] [BorelSpace M]
+  {g : LorentzianMetric 𝓘(ℝ, Fin n → ℝ) M n}
+
+/-- A null geodesic has a nonzero null velocity at each parameter. -/
+theorem nullAt_of_isNullGeodesicOn {γ : ℝ → M} {J : Set ℝ} (hJ : IsOpen J)
+    (h : IsNullGeodesicOn g γ J) {t : ℝ} (ht : t ∈ J) : NullAt g γ t := by
+  obtain ⟨w, O, hO, hsrc, hgeo, hw0, hbil⟩ := h t ht
+  have hO' : IsOpen (interior O) := isOpen_interior
+  have hgeo' : Lightlike.Geodesic.IsGeodesicOn (g.coordMetric (γ t))
+      (fun s => extChartAt 𝓘(ℝ, Fin n → ℝ) (γ t) (γ s)) w (interior O) :=
+    ⟨fun s hs => hgeo.pos s (interior_subset hs), fun s hs => hgeo.vel s (interior_subset hs)⟩
+  have hcoord := (phase_coord g (γ t) hO' (fun s hs => hsrc s (interior_subset hs)) hgeo'
+    (mem_interior_iff_mem_nhds.2 hO)).2
+  exact (nullAt_iff_chart g (γ t) (hsrc t (mem_of_mem_nhds hO)) hcoord).2 ⟨hbil, hw0⟩
+
+/-- **The phase of a rescaled geodesic curve.** For a geodesic curve `γ` on an open set containing
+`c t`, the velocity of `s ↦ γ (c s)` at `t` is `c` times the velocity of `γ` at `c t`. -/
+theorem velocity_scale {γ : ℝ → M} {J : Set ℝ} (hJ : IsOpen J) (h : IsGeodesicCurveOn g γ J)
+    (c : ℝ) {t : ℝ} (ht : c * t ∈ J) :
+    (mfderiv 𝓘(ℝ, ℝ) 𝓘(ℝ, Fin n → ℝ) (fun s => γ (c * s)) t (1 : ℝ) : Fin n → ℝ) =
+      c • mfderiv 𝓘(ℝ, ℝ) 𝓘(ℝ, Fin n → ℝ) γ (c * t) (1 : ℝ) := by
+  have hJ' : IsOpen ((fun s : ℝ => c * s) ⁻¹' J) := hJ.preimage (by fun_prop)
+  have hsc := IsGeodesicCurveOn.scale g h c
+  have ht' : t ∈ (fun s : ℝ => c * s) ⁻¹' J := ht
+  set x := γ (c * t) with hx
+  have e1 := deriv_chart_eq_phase g hJ' hsc ht'
+  have e2 := deriv_chart_eq_phase g hJ h ht
+  have hd : deriv (fun s => extChartAt 𝓘(ℝ, Fin n → ℝ) x (γ (c * s))) t =
+      c • deriv (fun s => extChartAt 𝓘(ℝ, Fin n → ℝ) x (γ s)) (c * t) := by
+    have := deriv_comp_mul_left (c := c) (x := t)
+      (f := fun s => extChartAt 𝓘(ℝ, Fin n → ℝ) x (γ s))
+    simpa [smul_eq_mul] using this
+  have hxb : x ∈ (chartTriv n x).baseSet := mem_baseSet_of_mem_source x x (mem_extChartAt_source x)
+  have hLE : ∀ v : TangentSpace 𝓘(ℝ, Fin n → ℝ) x, (Causal.tTriv 𝓘(ℝ, Fin n → ℝ) M x ⟨x, v⟩).2 =
+      (chartTriv n x).linearEquivAt ℝ x hxb v := fun v => by
+    rw [Trivialization.linearEquivAt_apply]
+  have e1' : deriv (fun s => extChartAt 𝓘(ℝ, Fin n → ℝ) x (γ (c * s))) t =
+      (chartTriv n x).linearEquivAt ℝ x hxb
+        (mfderiv 𝓘(ℝ, ℝ) 𝓘(ℝ, Fin n → ℝ) (fun s => γ (c * s)) t (1 : ℝ)) := by
+    rw [← hLE]; exact e1
+  have e2' : deriv (fun s => extChartAt 𝓘(ℝ, Fin n → ℝ) x (γ s)) (c * t) =
+      (chartTriv n x).linearEquivAt ℝ x hxb
+        (mfderiv 𝓘(ℝ, ℝ) 𝓘(ℝ, Fin n → ℝ) γ (c * t) (1 : ℝ)) := by
+    rw [← hLE]; exact e2
+  rw [hd, e2', ← map_smul] at e1'
+  exact ((chartTriv n x).linearEquivAt ℝ x hxb).injective e1'.symm
+
+/-- **The normalised focal bound** (the output of the focusing theorem, a hypothesis of the cover):
+every future null geodesic from `S` to a point outside `I⁺(S)` has normalised affine length
+`-g(γ'(0), X) · L ≤ Λ`. -/
+def NormalisedFocalBound (T : Causal.TimeOrientation g) (S : Set M) (Λ : ℝ) : Prop :=
+  ∀ (γ : ℝ → M) (L : ℝ), 0 < L → IsFutureNullGeodesicOn T γ (Icc 0 L) → γ 0 ∈ S →
+    γ L ∉ Causal.chronFutureSet T S →
+    -(g.g (γ 0) (Causal.velocity 𝓘(ℝ, Fin n → ℝ) γ (Icc 0 L) 0) (T.X (γ 0))) * L ≤ Λ
+
+/-- **A compact cover of the boundary of the causal future** from the focal bound. -/
+theorem exists_compact_cover_of_focal (T : Causal.TimeOrientation g)
+    (hc : NullGeodesicallyComplete g) {S : Set M} (hS : IsCompact S) {Λ : ℝ} (hΛ : 0 ≤ Λ)
+    (hfocal : NormalisedFocalBound T S Λ) (hclosed : IsClosed (Causal.causalFutureSet T S)) :
+    ∃ C : Set M, IsCompact C ∧ frontier (Causal.causalFutureSet T S) ⊆ C := by
+  obtain ⟨C₀, hC₀, hC₀prop⟩ := compact_nullExp_image g hc (compact_normalised_null T hS)
+    (fun z hz => hz.2.1) hΛ
+  refine ⟨S ∪ C₀, hS.union hC₀, fun q hq => ?_⟩
+  have hqJ : q ∈ Causal.causalFutureSet T S := by
+    have := hq.1
+    rwa [hclosed.closure_eq] at this
+  have hqI : q ∉ Causal.chronFutureSet T S := fun h =>
+    hq.2 (Causal.chronFutureSet_subset_interior T S h)
+  rcases exists_generator T hqJ hqI with hqS | ⟨s, hs, γ, L, hL, hγ, h0, hLq⟩
+  · exact Or.inl hqS
+  · right
+    obtain ⟨γ', hγ', heq, hvel⟩ := generator_extend hc hL hγ.1
+    have h0L : (0 : ℝ) ∈ Icc 0 L := ⟨le_rfl, hL.le⟩
+    have hfut := hγ.2 0 h0L
+    set c : ℝ := -(g.g (γ 0) (Causal.velocity 𝓘(ℝ, Fin n → ℝ) γ (Icc 0 L) 0) (T.X (γ 0))) with hcdef
+    have hcpos : 0 < c := by rw [hcdef]; linarith
+    have hfoc := hfocal γ L hL hγ (h0 ▸ hs) (hLq ▸ hqI)
+    set γ'' : ℝ → M := fun τ => γ' (c⁻¹ * τ) with hγ''
+    have hγ''null : IsNullGeodesicOn g γ'' univ := by
+      have := hγ'.comp_affine (inv_ne_zero hcpos.ne') 0
+      simpa [hγ''] using this
+    have hγ0 : γ' 0 = γ 0 := (heq h0L).symm
+    have hp0 : γ' (c⁻¹ * 0) = γ 0 := by rw [mul_zero]; exact hγ0
+    have hnull0 := nullAt_of_isNullGeodesicOn isOpen_univ hγ' (mem_univ (c⁻¹ * 0))
+    have hsnd := velocity_scale (g := g) isOpen_univ hγ'.isGeodesicCurveOn c⁻¹ (t := 0) (mem_univ _)
+    have hu : (mfderiv 𝓘(ℝ, ℝ) 𝓘(ℝ, Fin n → ℝ) γ' (c⁻¹ * 0) (1 : ℝ) : Fin n → ℝ) =
+        Causal.velocity 𝓘(ℝ, Fin n → ℝ) γ (Icc 0 L) 0 := by
+      rw [hvel, mul_zero]
+    have key : ∀ (p q : M) (h : p = q) (w : Fin n → ℝ), g.g p w (T.X p) = g.g q w (T.X q) := by
+      intro p q h w; subst h; rfl
+    have hz : phase (n := n) γ'' 0 ∈ {z : TangentBundle 𝓘(ℝ, Fin n → ℝ) M | z.proj ∈ S ∧
+        IsNullVec g z ∧ g.g z.proj z.snd (T.X z.proj) = -1} := by
+      refine ⟨by show γ' (c⁻¹ * 0) ∈ S; rw [hp0, h0]; exact hs, ?_, ?_⟩
+      · refine ⟨?_, ?_⟩
+        · show g.g (γ'' 0) (mfderiv 𝓘(ℝ, ℝ) 𝓘(ℝ, Fin n → ℝ) γ'' 0 (1 : ℝ))
+            (mfderiv 𝓘(ℝ, ℝ) 𝓘(ℝ, Fin n → ℝ) γ'' 0 (1 : ℝ)) = 0
+          rw [hsnd]
+          have h1 := hnull0.1
+          simp only [map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul]
+          have h1' : g.g (γ' (c⁻¹ * 0)) (mfderiv 𝓘(ℝ, ℝ) 𝓘(ℝ, Fin n → ℝ) γ' (c⁻¹ * 0) (1 : ℝ))
+            (mfderiv 𝓘(ℝ, ℝ) 𝓘(ℝ, Fin n → ℝ) γ' (c⁻¹ * 0) (1 : ℝ)) = 0 := h1
+          rw [h1']; ring
+        · show mfderiv 𝓘(ℝ, ℝ) 𝓘(ℝ, Fin n → ℝ) γ'' 0 (1 : ℝ) ≠ 0
+          rw [hsnd]
+          exact smul_ne_zero (inv_ne_zero hcpos.ne') hnull0.2
+      · show g.g (γ'' 0) (mfderiv 𝓘(ℝ, ℝ) 𝓘(ℝ, Fin n → ℝ) γ'' 0 (1 : ℝ)) (T.X (γ'' 0)) = -1
+        rw [hsnd]
+        simp only [map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul]
+        have e1 := key (γ' (c⁻¹ * 0)) (γ 0) hp0
+          (mfderiv 𝓘(ℝ, ℝ) 𝓘(ℝ, Fin n → ℝ) γ' (c⁻¹ * 0) (1 : ℝ))
+        have e2 : g.g (γ' (c⁻¹ * 0)) (mfderiv 𝓘(ℝ, ℝ) 𝓘(ℝ, Fin n → ℝ) γ' (c⁻¹ * 0) (1 : ℝ))
+            (T.X (γ' (c⁻¹ * 0))) = -c := by
+          rw [e1, hu, hcdef]; ring
+        show c⁻¹ * g.g (γ' (c⁻¹ * 0)) (mfderiv 𝓘(ℝ, ℝ) 𝓘(ℝ, Fin n → ℝ) γ' (c⁻¹ * 0) (1 : ℝ))
+            (T.X (γ' (c⁻¹ * 0))) = -1
+        rw [e2]; field_simp
+    have hmem := hC₀prop _ hz γ'' hγ''null rfl (c * L) ⟨mul_nonneg hcpos.le hL.le, hfoc⟩
+    have : γ'' (c * L) = q := by
+      simp only [hγ'']
+      rw [inv_mul_cancel_left₀ hcpos.ne', ← hLq]
+      exact (heq ⟨hL.le, le_rfl⟩).symm
+    rwa [this] at hmem
 
 end Lightlike.Penrose
