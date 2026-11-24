@@ -1,0 +1,104 @@
+- id: LL-XXXX-a
+  title: "Constraint counting and the circle check: the number of degrees of freedom of the reduced phase space is 2n − 2m + r (r second-class constraints), a second-class set has an even number of constraints, and for the particle on a circle the constraints |q|² − 1 and ⟨p,q⟩ are second class (reduced dimension 2) while treating them as first class gives the wrong count 0"
+  area: Gauge
+  file: Lightlike/Gauge/ConstraintsAPI.lean
+  decls: [Lightlike.Gauge.even_of_isSecondClass, Lightlike.Gauge.diracBracket_constraint, Lightlike.Gauge.finrank_reducedTangent]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: henneaux-teitelboim-1992, location: "Chapter: CHAPTER ONE. CONSTRAINED HAMILTONIAN SYSTEMS|10.1515/9780691213866-004"}
+  review: kernel-checked
+  note: "GC4 (G3-132). Flat phase space X × X with Physlib's Poisson bracket; the Dirac bracket {f,g} − Σ {f,φ_a} (C⁻¹)_ab {φ_b,g} is antisymmetric and vanishes against a constraint when C is invertible. The circle particle and the wrong-count check are circle_isSecondClass and circle_wrong_count (Lightlike/Tests/Constraints.lean). finrank_reducedTangent: dim of the reduced tangent space is dim E − 2 dim(orbit), for a linear action at a zero of the moment map. The comparison with the cited sources is pending in the registry (Wipf hep-th/9312078 is not a registered source; the comparison note docs/notes/gc4-source-dirac.md is the record)."
+  since: unreleased
+- id: LL-XXXX-b
+  title: "The Dirac consistency algorithm terminates: for nested regular stages with nonempty zero sets the zero sets are constant from some stage on, and a regular stage has at most dim E constraint functions"
+  area: Gauge
+  file: Lightlike/Gauge/DiracRegular.lean
+  decls: [Lightlike.Gauge.card_le_finrank_of_regular, Lightlike.Gauge.exists_stable_of_regular]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: henneaux-teitelboim-1992, location: "Chapter: CHAPTER ONE. CONSTRAINED HAMILTONIAN SYSTEMS|10.1515/9780691213866-004"}
+  review: kernel-checked
+  note: "GC4 (G3-132). Termination by counting under linear independence of the gradients (regularity is a hypothesis; the smooth existence of the secondary constraints is not proved here). Without regularity there is no termination: the chain {x ≤ 1/(k+1)} in ℝ (DiracNonlinear.lean). The comparison with the cited sources is pending in the registry (Wipf hep-th/9312078 is not a registered source; the comparison note docs/notes/gc4-source-dirac.md is the record)."
+  since: unreleased
+- id: LL-XXXX-c
+  title: "The secondary constraints of the Dirac algorithm do not depend on the choice of the invertible block: two admissible selection rules give the same constraint surface at every stage"
+  area: Gauge
+  file: Lightlike/Gauge/DiracChart.lean
+  decls: [Lightlike.Gauge.zeroSet_stages_eq]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: henneaux-teitelboim-1992, location: "Chapter: CHAPTER ONE. CONSTRAINED HAMILTONIAN SYSTEMS|10.1515/9780691213866-004"}
+  review: kernel-checked
+  note: "GC4 (G3-132). Hypotheses: the bracket is first order (br f g x = B x (df) (dg)) and the stages are regular. Equivalent to the left-null-vector form of the consistency condition (chiFun_zero_iff_leftNull; Wipf hep-th/9312078, Sec. 3.3, pp. 16-17). The comparison with the cited sources is pending in the registry (Wipf hep-th/9312078 is not a registered source; the comparison note docs/notes/gc4-source-dirac.md is the record)."
+  since: unreleased
+- id: LL-XXXX-d
+  title: "The Dirac consistency algorithm with local charts glued into a finite atlas: the constraint surfaces are constant from stage dim E + 1 on, and the consistency system is solvable at every point of the final surface; this follows from constant rank of the consistency matrix near every point of the primary surface"
+  area: Gauge
+  file: Lightlike/Gauge/DiracGlue.lean
+  decls: [Lightlike.Gauge.DiracAtlas.final_consistent, Lightlike.Gauge.final_consistent_of_constantRank]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: henneaux-teitelboim-1992, location: "Chapter: CHAPTER ONE. CONSTRAINED HAMILTONIAN SYSTEMS|10.1515/9780691213866-004"}
+  review: kernel-checked
+  note: "GC4 (G3-132). Removes the hypothesis of one globally admissible selection of DiracAlgo.final_consistent_of_cover: constant rank gives local admissibility only, and the charts are glued with overlap compatibility (zeroSet_stages_inter_eq). Hypotheses: first-order bracket and ConstantRankAt (constant rank near each point, independent stage derivatives, strict differentiability). The comparison with the cited sources is pending in the registry (Wipf hep-th/9312078 is not a registered source; the comparison note docs/notes/gc4-source-dirac.md is the record)."
+  since: unreleased
+- id: LL-XXXX-e
+  title: "The induced form on the reduced space D^⊥/D of a linear coisotropic reduction is alternating and nondegenerate, for a nondegenerate reflexive form σ and an isotropic subspace D of a finite-dimensional space"
+  area: Gauge
+  file: Lightlike/Gauge/ReducedForm.lean
+  decls: [Lightlike.Gauge.reducedForm_isAlt, Lightlike.Gauge.reducedForm_nondegenerate]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: cannas-da-silva-2001, location: "Chapter: The Marsden-Weinstein-Meyer Theorem|10.1007/978-3-540-45330-7_23"}
+  review: kernel-checked
+  note: "GC4 (G3-132): the linear case of the Marsden–Weinstein reduction (Cannas da Silva, Lemma 23.3). NOT covered: Theorem 23.1, the reduction of a manifold at a regular value of a moment map for a free proper action (no moment map or quotient manifold in the library; see docs/notes/gc4-marsden-weinstein-gap.md in the queue). GC4 stays partial. The comparison with the cited sources is pending in the registry (Wipf hep-th/9312078 is not a registered source; the comparison note docs/notes/gc4-source-dirac.md is the record)."
+  since: unreleased
+- id: LL-XXXX-f
+  title: "Faddeev–Popov in finite dimension, infinitesimal: if the matrix {G_a, φ_b} of the gauge-fixing functions G with the first-class constraints is invertible, the gauge directions X_{φ_b} are linearly independent and meet the tangent space of the slice only in 0"
+  area: Gauge
+  file: Lightlike/Gauge/FaddeevPopov.lean
+  decls: [Lightlike.Gauge.fpMatrix, Lightlike.Gauge.linearIndependent_hamField_of_det_ne_zero, Lightlike.Gauge.eq_zero_of_mem_ker_of_det_ne_zero]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: henneaux-teitelboim-1992, location: "Chapter: CHAPTER ONE. CONSTRAINED HAMILTONIAN SYSTEMS|10.1515/9780691213866-004"}
+  review: kernel-checked
+  note: "GC4 (G3-132). Infinitesimal and local only: the global statements (Gribov copies) are not covered. The comparison with the cited sources is pending in the registry (Wipf hep-th/9312078 is not a registered source; the comparison note docs/notes/gc4-source-dirac.md is the record)."
+  since: unreleased
+- id: LL-XXXX-g
+  title: "The Hamiltonian vector fields of first-class constraints are tangent to the constraint surface and Ω-orthogonal to its tangent directions"
+  area: Gauge
+  file: Lightlike/Gauge/GaugeFlow.lean
+  decls: [Lightlike.Gauge.pairing_hamField_eq_zero_of_firstClass, Lightlike.Gauge.gradForm_hamField_eq_zero]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: henneaux-teitelboim-1992, location: "Chapter: CHAPTER ONE. CONSTRAINED HAMILTONIAN SYSTEMS|10.1515/9780691213866-004"}
+  review: kernel-checked
+  note: "GC4 (G3-132). Infinitesimal gauge directions: df(X_g) = {f,g}, Ω(X_g, v) = dg(v). The flows themselves are not covered here; see the gauge orbit theorem for the integral manifolds. The comparison with the cited sources is pending in the registry (Wipf hep-th/9312078 is not a registered source; the comparison note docs/notes/gc4-source-dirac.md is the record)."
+  since: unreleased
+- id: LL-XXXX-h
+  title: "Gauge orbits (Wipf, Theorem 5): for C² first-class constraints with C¹ structure functions and independent gradients at x₀, through every point of the constraint surface near x₀ there is a map t ↦ f(t, x) of ℝ^m near 0 into the surface whose range is the span of the constraint Hamiltonian fields"
+  area: Gauge
+  file: Lightlike/Gauge/Orbits/GaugeOrbits.lean
+  decls: [Lightlike.Gauge.exists_gauge_orbit]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: henneaux-teitelboim-1992, location: "Chapter: CHAPTER ONE. CONSTRAINED HAMILTONIAN SYSTEMS|10.1515/9780691213866-004"}
+  review: kernel-checked
+  note: "GC4 (G3-132). Local statement; proof by Frobenius for a family that is involutive only on an invariant set (Lightlike.ODE.exists_integral_manifold_of_involutive_on). Non-vacuity: exists_gauge_orbit_momentum (Lightlike/Gauge/Orbits/Tests.lean: γ = p on ℝ × ℝ). The comparison with Wipf Section 5.2 is recorded in docs/notes/gauge-orbits-wipf5.md. The comparison with the cited sources is pending in the registry (Wipf hep-th/9312078 is not a registered source; the comparison note docs/notes/gc4-source-dirac.md is the record)."
+  since: unreleased
