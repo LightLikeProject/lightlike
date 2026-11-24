@@ -61,10 +61,12 @@ noncomputable def capOp (q : kˣ) (i : ℕ) : Module.End k (ModelSpace k) :=
 noncomputable def cupOp (q : kˣ) (i : ℕ) : Module.End k (ModelSpace k) :=
   Finsupp.lsum k (fun σ => LinearMap.toSpanSingleton k _ (cupBasis q i σ))
 
+/-- The cap on a basis vector. -/
 @[simp] lemma capOp_single (q : kˣ) (i : ℕ) (σ : ℕ → Bool) (c : k) :
     capOp q i (single σ c) = c • capBasis q i σ := by
   simp [capOp]
 
+/-- The cup on a basis vector. -/
 @[simp] lemma cupOp_single (q : kˣ) (i : ℕ) (σ : ℕ → Bool) (c : k) :
     cupOp q i (single σ c) = c • cupBasis q i σ := by
   simp [cupOp]
