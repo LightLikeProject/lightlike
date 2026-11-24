@@ -4068,16 +4068,3 @@
   review: kernel-checked
   note: "For a symmetric bilinear form T and a Lorentzian form g in dimension four on a normed real vector space, with the conditions as in LL-0180: the dominant condition contains the weak one, the weak condition implies the null condition, the strong condition implies the null condition, hence the dominant condition implies the null one. The null conditions follow from the timelike ones by continuity: a null vector k is the limit of the timelike vectors k + eps w, with w timelike and g(k, w) <= 0, and the functions v -> T(v, v) and v -> (T - (1/2) tr_g T g)(v, v) are continuous. The comparison with Curiel, section 2.1, is pending: the implications are not read at that location. Limits: pointwise, dimension four; the strong condition does not imply the weak one and the weak does not imply the strong one (cosmo_energyConditions and the perfect-fluid equivalences of LL-0180), so no further implication is claimed. Trust check: dust satisfies the dominant condition, hence the null condition through the implication (the example at the end of the file)."
   since: unreleased
-- id: LL-XXXX-a
-  title: "U_q(sl₂) as a Hopf algebra over a field, with its antipode"
-  area: QuantumGroups
-  file: Lightlike/QuantumGroups/UqSl2.lean
-  decls: [Lightlike.QuantumGroups.UqSl2, Lightlike.QuantumGroups.UqSl2.comul, Lightlike.QuantumGroups.UqSl2.counit, Lightlike.QuantumGroups.UqSl2.antipodeOp, Lightlike.QuantumGroups.UqSl2.adjoin_gen]
-  status: proven
-  tier: established
-  source:
-    refs:
-      - {ref: turaev-1994, location: "Chapter: Chapter XI. An algebraic construction of modular categories|10.1515/9783110883275-012"}
-  review: kernel-checked
-  note: "Part of QU3, which stays open. For a field k and a unit q, the k-algebra on generators E, F, K, K⁻¹ with K K⁻¹ = K⁻¹ K = 1, K E = q² E K, K F = q⁻² F K and (q − q⁻¹)(E F − F E) = K − K⁻¹ carries a Hopf algebra structure with Δ E = E ⊗ K + 1 ⊗ E, Δ F = F ⊗ 1 + K⁻¹ ⊗ F, Δ K = K ⊗ K, ε E = ε F = 0, ε K = 1, S E = −E K⁻¹, S F = −K F, S K = K⁻¹. These are the common conventions; matching them to the normalisation of the cited chapter was not checked, since the chapter was not read at that location. The commutation relation is written without division, so it is defined for every q; for q² = 1 it is a different (non-quantum) algebra. No representation theory, R-matrix, ribbon element or modular category is proved here (QU3 stays open); the checks in UqSl2Tests.lean are identities on generators."
-  since: unreleased
