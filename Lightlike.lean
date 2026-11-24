@@ -2107,6 +2107,7 @@ import Lightlike.Rows.G1_049.Tests
 import Lightlike.Rows.G1_011.Defs
 import Lightlike.Rows.G1_011.Expansion
 import Lightlike.Rows.G1_011.Trapped
+import Lightlike.Rows.G1_011.Minkowski
 import Lightlike.Rows.G1_011.NonVacuous
 import Lightlike.Rows.G1_011.Test
 import Lightlike.Rows.G3_264.Defs
