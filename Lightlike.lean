@@ -1478,6 +1478,7 @@ import Lightlike.Spacetime.GE3Row.Sphere
 import Lightlike.Spacetime.Kretschmann
 import Lightlike.Spacetime.EnergyConditions
 import Lightlike.Spacetime.EnergyConditionsField
+import Lightlike.Spacetime.EnergyConditionsImplications
 import Lightlike.Spacetime.EnergyConditionsPhyslib
 import Lightlike.Spacetime.EnergyConditionsEM
 import Lightlike.Spacetime.OpenCoordMetric

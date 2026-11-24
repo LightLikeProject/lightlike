@@ -4055,3 +4055,16 @@
   review: kernel-checked
   note: "Trust checks of RC6 (flat triangulations give zero; a curvature density without the volume weights fails to converge). The comparison with Christiansen (2011), Section 1 (the statement of the Cheeger-Müller-Schrader theorem), is pending: not read at the cited location. RC6 is proven in dimension 2 and partial in dimension 4: the convergence theorem for general metrics in dimension 4 (the angle_sum, first_order and curvature fields of JetStarCore4 for a general jet) is NOT proved."
   since: unreleased
+- id: LL-0306
+  title: The dominant energy condition implies the weak one, and the weak and the strong ones imply the null one
+  area: Spacetime
+  file: Lightlike/Spacetime/EnergyConditionsImplications.lean
+  decls: [Lightlike.weakEC_of_dominantEC, Lightlike.nullEC_of_weakEC, Lightlike.nullEC_of_strongEC, Lightlike.nullEC_of_dominantEC]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: curiel-2014, location: "§2.1", check: "null"}
+  review: kernel-checked
+  note: "For a symmetric bilinear form T and a Lorentzian form g in dimension four on a normed real vector space, with the conditions as in LL-0180: the dominant condition contains the weak one, the weak condition implies the null condition, the strong condition implies the null condition, hence the dominant condition implies the null one. The null conditions follow from the timelike ones by continuity: a null vector k is the limit of the timelike vectors k + eps w, with w timelike and g(k, w) <= 0, and the functions v -> T(v, v) and v -> (T - (1/2) tr_g T g)(v, v) are continuous. The comparison with Curiel, section 2.1, is pending: the implications are not read at that location. Limits: pointwise, dimension four; the strong condition does not imply the weak one and the weak does not imply the strong one (cosmo_energyConditions and the perfect-fluid equivalences of LL-0180), so no further implication is claimed. Trust check: dust satisfies the dominant condition, hence the null condition through the implication (the example at the end of the file)."
+  since: unreleased
