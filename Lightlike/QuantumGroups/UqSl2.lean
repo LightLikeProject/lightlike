@@ -50,18 +50,23 @@ def K : UqSl2 k q := RingQuot.mkAlgHom k _ (FreeAlgebra.ι k Gen.K)
 /-- The generator `K⁻¹`. -/
 def Ki : UqSl2 k q := RingQuot.mkAlgHom k _ (FreeAlgebra.ι k Gen.Ki)
 
+/-- The relation `K K⁻¹ = 1`. -/
 theorem K_mul_Ki : (K : UqSl2 k q) * Ki = 1 := by
   simpa [E, F, K, Ki] using RingQuot.mkAlgHom_rel k (Rel.kki (k := k) (q := q))
 
+/-- The relation `K⁻¹ K = 1`. -/
 theorem Ki_mul_K : (Ki : UqSl2 k q) * K = 1 := by
   simpa [E, F, K, Ki] using RingQuot.mkAlgHom_rel k (Rel.kik (k := k) (q := q))
 
+/-- The relation `K E = q² E K`. -/
 theorem K_mul_E : (K : UqSl2 k q) * E = algebraMap k _ ((q : k) ^ 2) * (E * K) := by
   simpa [E, F, K, Ki] using RingQuot.mkAlgHom_rel k (Rel.ke (k := k) (q := q))
 
+/-- The relation `K F = q⁻² F K`. -/
 theorem K_mul_F : (K : UqSl2 k q) * F = algebraMap k _ ((↑q⁻¹ : k) ^ 2) * (F * K) := by
   simpa [E, F, K, Ki] using RingQuot.mkAlgHom_rel k (Rel.kf (k := k) (q := q))
 
+/-- The relation `(q - q⁻¹)(E F - F E) = K - K⁻¹`. -/
 theorem E_mul_F_sub : algebraMap k (UqSl2 k q) ((q : k) - ↑q⁻¹) * (E * F - F * E) = K - Ki := by
   simpa [E, F, K, Ki] using RingQuot.mkAlgHom_rel k (Rel.ef (k := k) (q := q))
 
@@ -175,13 +180,21 @@ noncomputable def counit : UqSl2 k q →ₐ[k] k :=
 theorem counit_gen (x : Gen) : counit (gen x : UqSl2 k q) = counitGen (k := k) x := by
   cases x <;> simp [counit, gen, E, F, K, Ki]
 
+/-- The coproduct of `E`: `ΔE = E ⊗ K + 1 ⊗ E`. -/
 @[simp] theorem comul_E : comul (E : UqSl2 k q) = E ⊗ₜ K + 1 ⊗ₜ E := comul_gen Gen.E
+/-- The coproduct of `F`: `ΔF = F ⊗ 1 + K⁻¹ ⊗ F`. -/
 @[simp] theorem comul_F : comul (F : UqSl2 k q) = F ⊗ₜ 1 + Ki ⊗ₜ F := comul_gen Gen.F
+/-- The coproduct of `K`: `ΔK = K ⊗ K`. -/
 @[simp] theorem comul_K : comul (K : UqSl2 k q) = K ⊗ₜ K := comul_gen Gen.K
+/-- The coproduct of `K⁻¹`: `ΔK⁻¹ = K⁻¹ ⊗ K⁻¹`. -/
 @[simp] theorem comul_Ki : comul (Ki : UqSl2 k q) = Ki ⊗ₜ Ki := comul_gen Gen.Ki
+/-- The counit of `E` is `0`. -/
 @[simp] theorem counit_E : counit (E : UqSl2 k q) = 0 := counit_gen Gen.E
+/-- The counit of `F` is `0`. -/
 @[simp] theorem counit_F : counit (F : UqSl2 k q) = 0 := counit_gen Gen.F
+/-- The counit of `K` is `1`. -/
 @[simp] theorem counit_K : counit (K : UqSl2 k q) = 1 := counit_gen Gen.K
+/-- The counit of `K⁻¹` is `1`. -/
 @[simp] theorem counit_Ki : counit (Ki : UqSl2 k q) = 1 := counit_gen Gen.Ki
 
 theorem coassoc_aux :
@@ -303,12 +316,16 @@ theorem adjoin_gen : Algebra.adjoin k (Set.range (gen : Gen → UqSl2 k q)) = �
 noncomputable def antipodeLin : UqSl2 k q →ₗ[k] UqSl2 k q :=
   (MulOpposite.opLinearEquiv k).symm.toLinearMap ∘ₗ (antipodeOp (k := k) (q := q)).toLinearMap
 
+/-- The antipode of `E`: `S E = -E K⁻¹`. -/
 @[simp] theorem antipodeLin_E : antipodeLin (E : UqSl2 k q) = (-1 : k) • (E * Ki) :=
   congrArg MulOpposite.unop (antipodeOp_gen (k := k) (q := q) Gen.E)
+/-- The antipode of `F`: `S F = -K F`. -/
 @[simp] theorem antipodeLin_F : antipodeLin (F : UqSl2 k q) = (-1 : k) • (K * F) :=
   congrArg MulOpposite.unop (antipodeOp_gen (k := k) (q := q) Gen.F)
+/-- The antipode of `K`: `S K = K⁻¹`. -/
 @[simp] theorem antipodeLin_K : antipodeLin (K : UqSl2 k q) = Ki :=
   congrArg MulOpposite.unop (antipodeOp_gen (k := k) (q := q) Gen.K)
+/-- The antipode of `K⁻¹`: `S K⁻¹ = K`. -/
 @[simp] theorem antipodeLin_Ki : antipodeLin (Ki : UqSl2 k q) = K :=
   congrArg MulOpposite.unop (antipodeOp_gen (k := k) (q := q) Gen.Ki)
 @[simp] theorem antipodeLin_one : antipodeLin (1 : UqSl2 k q) = 1 := by
