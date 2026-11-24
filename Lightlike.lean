@@ -1385,6 +1385,7 @@ import Lightlike.Spacetime.Causal.CauchyClosed
 import Lightlike.Rows.G1_012.Defs
 import Lightlike.Rows.G1_012.Skeleton
 import Lightlike.Rows.G1_012.Assembly
+import Lightlike.Rows.G1_012.NullGeodCausal
 import Lightlike.Spacetime.Causal.ChainReach
 import Lightlike.Spacetime.Causal.TimeReversal
 import Lightlike.Spacetime.Causal.OpenPast
