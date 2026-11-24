@@ -1938,6 +1938,7 @@ import Lightlike.Dirac.ConnesDistance7
 import Lightlike.SpinFoam.OoguriGaugeFixed.Capstone
 import Lightlike.SpinFoam.OoguriGaugeFixed.ForcingClosure
 import Lightlike.SpinFoam.OoguriGaugeFixed.ForcingClosureAlgebra
+import Lightlike.SpinFoam.OoguriGaugeFixed.ForcingClosureOrder
 import Lightlike.SpinFoam.OoguriGaugeFixed.ForcingClosureTotal
 import Lightlike.SpinFoam.OoguriGaugeFixed.Test
 import Lightlike.DynamicalTriangulations.Action
