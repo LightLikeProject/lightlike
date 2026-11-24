@@ -602,4 +602,123 @@ theorem sphere_dirac_lower_bound (ρ : CliffordRep 2 V) (k : ℕ) {ε : ℝ} (h�
         diracF ρ stereoF stereoOmega (Φ w) x = (ε * ((k + 1 : ℕ) : ℝ)) • Φ w x :=
   ⟨modeMap ρ k ε, modeMap_injective ρ k hε, fun w x => modeMap_eigen ρ k hε w x⟩
 
+/-- The radial operator `(1+X) Ψ' − s Ψ + l P`, `Ψ = psiPoly m s P`. -/
+noncomputable def odeOp (m s l : ℝ) (P : ℝ[X]) : ℝ[X] :=
+  (1 + X) * (psiPoly m s P).derivative - C s * psiPoly m s P + C l * P
+
+/-- Constant coefficient of `odeOp`. -/
+lemma odeOp_coeff_zero (m s l : ℝ) (P : ℝ[X]) :
+    (odeOp m s l P).coeff 0 = (m + 1) * P.coeff 1 + (m - s - s * m + l) * P.coeff 0 := by
+  have hd : ∀ j : ℕ, (psiPoly m s P).derivative.coeff j = (psiPoly m s P).coeff (j + 1) * ((j : ℝ) + 1) := by
+    intro j; rw [coeff_derivative]
+  simp only [odeOp, add_mul, one_mul, coeff_add, coeff_sub, coeff_C_mul, coeff_X_mul_zero, hd]
+  rw [coeff_psiPoly_succ, coeff_psiPoly_zero]
+  push_cast
+  ring
+
+/-- Higher coefficients of `odeOp`: a three-term relation. -/
+lemma odeOp_coeff_succ (m s l : ℝ) (P : ℝ[X]) (j : ℕ) :
+    (odeOp m s l P).coeff (j + 1) =
+      ((j : ℝ) + 2) * (m + j + 2) * P.coeff (j + 2) +
+        (((j : ℝ) + 2) * (m + j + 1 - s) + ((j : ℝ) + 1 - s) * (m + j + 1) + l) * P.coeff (j + 1) +
+        ((j : ℝ) + 1 - s) * (m + j - s) * P.coeff j := by
+  have hd : ∀ j : ℕ, (psiPoly m s P).derivative.coeff j = (psiPoly m s P).coeff (j + 1) * ((j : ℝ) + 1) := by
+    intro j; rw [coeff_derivative]
+  simp only [odeOp, add_mul, one_mul, coeff_add, coeff_sub, coeff_C_mul, coeff_X_mul, hd]
+  simp only [coeff_psiPoly_succ]
+  push_cast
+  ring
+
+/-- **Uniqueness of the radial profile.** If a polynomial `G` solves the radial equation with
+`l = s²`, `s = m + d`, then `G = G(0) · gPoly m d`: the mode of weight `m` and level `s` is unique
+up to a scalar among all polynomials. -/
+theorem odeOp_unique (m d : ℕ) (G : ℝ[X]) (hG : odeOp (m : ℝ) ((m + d : ℕ) : ℝ) (((m + d : ℕ) : ℝ) ^ 2) G = 0) :
+    G = C (G.coeff 0) * gPoly m d := by
+  set s : ℝ := ((m + d : ℕ) : ℝ) with hs
+  have hg : odeOp (m : ℝ) s (s ^ 2) (gPoly m d) = 0 := psiPoly_ode (m : ℝ) s (gPoly m d) (by
+    intro i; simp only [coeff_gPoly]; exact gcoef_rec m d i)
+  set D : ℝ[X] := G - C (G.coeff 0) * gPoly m d with hD
+  have hD0 : D.coeff 0 = 0 := by simp [hD, coeff_gPoly_zero]
+  have h0 := congrArg (fun p => p.coeff 0) hG
+  have h0g := congrArg (fun p => p.coeff 0) hg
+  simp only [odeOp_coeff_zero, coeff_zero] at h0 h0g
+  rw [coeff_gPoly_zero] at h0g
+  have hj : ∀ j : ℕ, ((j : ℝ) + 2) * (m + j + 2) * G.coeff (j + 2) +
+        (((j : ℝ) + 2) * (m + j + 1 - s) + ((j : ℝ) + 1 - s) * (m + j + 1) + s ^ 2) * G.coeff (j + 1) +
+        ((j : ℝ) + 1 - s) * (m + j - s) * G.coeff j = 0 := by
+    intro j
+    have := congrArg (fun p => p.coeff (j + 1)) hG
+    simpa only [odeOp_coeff_succ, coeff_zero] using this
+  have hjg : ∀ j : ℕ, ((j : ℝ) + 2) * (m + j + 2) * (gPoly m d).coeff (j + 2) +
+        (((j : ℝ) + 2) * (m + j + 1 - s) + ((j : ℝ) + 1 - s) * (m + j + 1) + s ^ 2) * (gPoly m d).coeff (j + 1) +
+        ((j : ℝ) + 1 - s) * (m + j - s) * (gPoly m d).coeff j = 0 := by
+    intro j
+    have := congrArg (fun p => p.coeff (j + 1)) hg
+    simpa only [odeOp_coeff_succ, coeff_zero] using this
+  have key : ∀ i, D.coeff i = 0 ∧ D.coeff (i + 1) = 0 := by
+    intro i
+    induction i with
+    | zero =>
+      refine ⟨hD0, ?_⟩
+      have h1 : D.coeff 1 = G.coeff 1 - G.coeff 0 * (gPoly m d).coeff 1 := by simp [hD]
+      have hm : ((m : ℝ) + 1) ≠ 0 := by positivity
+      have : ((m : ℝ) + 1) * D.coeff 1 = 0 := by
+        rw [h1]; linear_combination h0 - G.coeff 0 * h0g
+      exact (mul_eq_zero.mp this).resolve_left hm
+    | succ i ih =>
+      refine ⟨ih.2, ?_⟩
+      have hc : ∀ n, D.coeff n = G.coeff n - G.coeff 0 * (gPoly m d).coeff n := by intro n; simp [hD]
+      have hm : ((i : ℝ) + 2) * (m + i + 2) ≠ 0 := by positivity
+      have e0 := hc i
+      have e1 := hc (i + 1)
+      have e2 := hc (i + 2)
+      have : ((i : ℝ) + 2) * (m + i + 2) * D.coeff (i + 2) = 0 := by
+        rw [e2]
+        have := hj i
+        have hh := hjg i
+        rw [ih.1] at e0
+        rw [ih.2] at e1
+        linear_combination this - G.coeff 0 * hh + (((i : ℝ) + 1 - s) * (m + i - s)) * e0 +
+          (((i : ℝ) + 2) * (m + i + 1 - s) + ((i : ℝ) + 1 - s) * (m + i + 1) + s ^ 2) * e1
+      exact (mul_eq_zero.mp this).resolve_left hm
+  ext i
+  have := (key i).1
+  rw [hD] at this
+  simp only [coeff_sub, sub_eq_zero] at this
+  simpa [coeff_C_mul] using this
+
+/-- **Completeness in the angular polynomial class (polynomial level).** Let `G, F` be polynomials with
+`Ψ(G) = λ F` and `−((1+X)F' − sF) = λ G`, where `G` is reduced (`G(−1) ≠ 0`: the profile
+`(1+t)^{-s} z^{n+1} G` is not already a lower level times a power of `1+t`), and the weight satisfies the
+decay condition `n + 1 ≤ s`.  Then `λ² = s²` and `G = G(0) · gPoly (n+1) (s−n−1)`. -/
+theorem mode_complete (n s : ℕ) (hns : n + 1 ≤ s) (G F : ℝ[X]) (lam : ℝ)
+    (ha : psiPoly ((n : ℝ) + 1) (s : ℝ) G = C lam * F)
+    (hb : -((1 + X) * F.derivative - C (s : ℝ) * F) = C lam * G) (hG : G.eval (-1) ≠ 0) :
+    lam ^ 2 = (s : ℝ) ^ 2 ∧ G = C (G.coeff 0) * gPoly (n + 1) (s - (n + 1)) := by
+  have hode : odeOp ((n : ℝ) + 1) (s : ℝ) (lam ^ 2) G = 0 := by
+    have h1 : (1 + X) * (psiPoly ((n : ℝ) + 1) (s : ℝ) G).derivative -
+        C (s : ℝ) * psiPoly ((n : ℝ) + 1) (s : ℝ) G = -(C lam * (C lam * G)) := by
+      rw [ha, derivative_mul, derivative_C, zero_mul, zero_add]
+      linear_combination (-(C lam : ℝ[X])) * hb
+    unfold odeOp
+    rw [C_pow]
+    linear_combination h1
+  have hev := congrArg (Polynomial.eval (-1 : ℝ)) hode
+  have hsq : lam ^ 2 = (s : ℝ) ^ 2 := by
+    simp only [odeOp, psiPoly, eval_add, eval_sub, eval_mul, eval_C, eval_X, eval_one, eval_zero,
+      derivative_mul, derivative_add, derivative_sub, derivative_C, derivative_X, derivative_one,
+      eval_pow] at hev
+    have : (lam ^ 2 - (s : ℝ) ^ 2) * G.eval (-1) = 0 := by linear_combination hev
+    have := (mul_eq_zero.mp this).resolve_right hG
+    linarith
+  refine ⟨hsq, ?_⟩
+  obtain ⟨d, hd⟩ := Nat.exists_eq_add_of_le hns
+  have hs : s = n + 1 + d := by omega
+  subst hs
+  have h2 : odeOp ((n + 1 : ℕ) : ℝ) ((n + 1 + d : ℕ) : ℝ) (((n + 1 + d : ℕ) : ℝ) ^ 2) G = 0 := by
+    rw [← hsq] at *
+    convert hode using 2 <;> push_cast <;> ring
+  have := odeOp_unique (n + 1) d G h2
+  simpa using this
+
 end Lightlike.Dirac
