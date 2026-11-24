@@ -721,4 +721,133 @@ theorem mode_complete (n s : ℕ) (hns : n + 1 ≤ s) (G F : ℝ[X]) (lam : ℝ)
   have := odeOp_unique (n + 1) d G h2
   simpa using this
 
+open Polynomial in
+/-- The flat Dirac operator of `angG` on the real axis `y = r e₀`. -/
+lemma dirac_angG_axis (ρ : CliffordRep 2 V) (v : V) (n s : ℕ) (G F : ℝ[X]) (r : ℝ) :
+    dirac ρ (angG ρ v n s G F) (r • e (0 : Fin 2)) =
+      (2 * (((1 + r ^ 2) ^ s)⁻¹ * G.derivative.eval (r ^ 2) -
+          (s : ℝ) * ((1 + r ^ 2) ^ (s + 1))⁻¹ * G.eval (r ^ 2)) * r ^ (n + 2) +
+        2 * ((n : ℝ) + 1) * (((1 + r ^ 2) ^ s)⁻¹ * G.eval (r ^ 2)) * r ^ n) • gam ρ 0 v -
+      (2 * (((1 + r ^ 2) ^ s)⁻¹ * F.derivative.eval (r ^ 2) -
+          (s : ℝ) * ((1 + r ^ 2) ^ (s + 1))⁻¹ * F.eval (r ^ 2)) * r ^ (n + 1)) • v := by
+  have hn : ‖r • e (0 : Fin 2)‖ ^ 2 = r ^ 2 := by simp [e, norm_smul]
+  have hne : 1 + ‖r • e (0 : Fin 2)‖ ^ 2 ≠ 0 := by positivity
+  obtain ⟨Ψ1, h1, d1m, d1p⟩ := angProfile_deriv (fun u => ((1 + u) ^ s)⁻¹ * G.eval u) (n + 1)
+    (r • e (0 : Fin 2)) (hasDerivAt_prof s G hne)
+  obtain ⟨Ψ2, h2, d2m, d2p⟩ := angProfile_deriv (fun u => ((1 + u) ^ s)⁻¹ * F.eval u) n
+    (r • e (0 : Fin 2)) (hasDerivAt_prof s F hne)
+  have hD := dirac_angular ρ v h1 h2
+  have hz : zcL (r • e (0 : Fin 2)) = (r : ℂ) := by simp [zcL_apply, e]
+  unfold angG
+  rw [hD, d1m, d2p, hz, hn]
+  simp only [Complex.conj_ofReal]
+  have c1 : ∀ (a : ℝ) (m : ℕ), ((a : ℝ) : ℂ) * (r : ℂ) ^ m = ((a * r ^ m : ℝ) : ℂ) := by
+    intro a m; push_cast; ring
+  push_cast
+  rw [← map_smul (gam ρ 0), ← Lv_ofReal ρ v, ← Lv_ofReal ρ v]
+  congr 2 <;> push_cast <;> ring
+
+/-- `angG` on the real axis. -/
+lemma angG_real_axis (ρ : CliffordRep 2 V) (v : V) (n s : ℕ) (G F : ℝ[X]) (r : ℝ) :
+    angG ρ v n s G F (r • e (0 : Fin 2)) =
+      (((1 + r ^ 2) ^ s)⁻¹ * G.eval (r ^ 2) * r ^ (n + 1)) • v +
+        (((1 + r ^ 2) ^ s)⁻¹ * F.eval (r ^ 2) * r ^ n) • gam ρ 0 v := by
+  have hz : zcL (r • e (0 : Fin 2)) = (r : ℂ) := by simp [zcL_apply, e]
+  have hn : ‖r • e (0 : Fin 2)‖ ^ 2 = r ^ 2 := by simp [e, norm_smul]
+  simp only [angG, angSpinor, angProfile, hz, hn]
+  have h1 : ∀ (a : ℝ) (m : ℕ), ((a : ℝ) : ℂ) * (r : ℂ) ^ m = ((a * r ^ m : ℝ) : ℂ) := by
+    intro a m; push_cast; ring
+  rw [h1, h1, Lv_ofReal, Lv_ofReal, map_smul]
+
+/-- A spinor `v ≠ 0` is independent of `γ₀ v`. -/
+lemma indep_gam (ρ : CliffordRep 2 V) {v : V} (hv : v ≠ 0) {α β : ℝ}
+    (h : α • v + β • gam ρ 0 v = 0) : α = 0 ∧ β = 0 := by
+  have h2 := congrArg (gam ρ 0) h
+  simp only [map_add, map_smul, gam_sq, map_zero] at h2
+  have h3 : (α ^ 2 + β ^ 2) • v = 0 := by
+    have : (α ^ 2 + β ^ 2) • v = α • (α • v + β • gam ρ 0 v) - β • (α • gam ρ 0 v + β • -v) := by
+      module
+    rw [this, h, h2]; simp
+  have h4 : α ^ 2 + β ^ 2 = 0 := (smul_eq_zero.mp h3).resolve_right hv
+  constructor <;> nlinarith [sq_nonneg α, sq_nonneg β]
+
+open Polynomial in
+/-- **Converse of `angG_flat_eigen`.** For a nonzero constant spinor `v`, if `h D₀ g = λ g` holds at every
+point for the angular spinor `g = angG v n s G F`, then the two polynomial identities hold. -/
+theorem angG_flat_converse (ρ : CliffordRep 2 V) {v : V} (hv : v ≠ 0) (n s : ℕ) (G F : ℝ[X]) (lam : ℝ)
+    (hflat : ∀ x : E 2, stereoH x • dirac ρ (angG ρ v n s G F) x = lam • angG ρ v n s G F x) :
+    psiPoly ((n : ℝ) + 1) (s : ℝ) G = C lam * F ∧
+      -((1 + X) * F.derivative - C (s : ℝ) * F) = C lam * G := by
+  have key : ∀ t : ℝ, 0 < t →
+      ((1 + t) * ((n + 1) * G.eval t + t * G.derivative.eval t) - s * t * G.eval t = lam * F.eval t) ∧
+      (-((1 + t) * F.derivative.eval t - s * F.eval t) = lam * G.eval t) := by
+    intro t ht
+    set r := Real.sqrt t with hr
+    have hr0 : 0 < r := Real.sqrt_pos.mpr ht
+    have hrt : r ^ 2 = t := Real.sq_sqrt ht.le
+    have hx := hflat (r • e (0 : Fin 2))
+    rw [dirac_angG_axis, angG_real_axis] at hx
+    have hh : stereoH (r • e (0 : Fin 2)) = (1 + r ^ 2) / 2 := by
+      simp [stereoH, e, norm_smul]
+    rw [hh] at hx
+    have hq := indep_gam ρ hv (α := -((1 + r ^ 2) / 2 * (2 * (((1 + r ^ 2) ^ s)⁻¹ * F.derivative.eval (r ^ 2) -
+          (s : ℝ) * ((1 + r ^ 2) ^ (s + 1))⁻¹ * F.eval (r ^ 2)) * r ^ (n + 1))) -
+        lam * (((1 + r ^ 2) ^ s)⁻¹ * G.eval (r ^ 2) * r ^ (n + 1)))
+      (β := (1 + r ^ 2) / 2 * (2 * (((1 + r ^ 2) ^ s)⁻¹ * G.derivative.eval (r ^ 2) -
+          (s : ℝ) * ((1 + r ^ 2) ^ (s + 1))⁻¹ * G.eval (r ^ 2)) * r ^ (n + 2) +
+        2 * ((n : ℝ) + 1) * (((1 + r ^ 2) ^ s)⁻¹ * G.eval (r ^ 2)) * r ^ n) -
+        lam * (((1 + r ^ 2) ^ s)⁻¹ * F.eval (r ^ 2) * r ^ n)) (by
+      linear_combination (norm := module) hx)
+    obtain ⟨h1, h2⟩ := hq
+    rw [hrt] at h1 h2
+    have hP : (1 + t) ^ s ≠ 0 := by positivity
+    have hrn : r ^ n ≠ 0 := pow_ne_zero _ hr0.ne'
+    have hrn1 : r ^ (n + 1) ≠ 0 := pow_ne_zero _ hr0.ne'
+    have h1' : r ^ (n + 1) * ((1 + t) ^ s)⁻¹ *
+        (-((1 + t) * F.derivative.eval t - s * F.eval t) - lam * G.eval t) = 0 := by
+      rw [pow_succ (1 + t) s] at h1
+      field_simp at h1 ⊢
+      linear_combination h1
+    have h2' : r ^ n * ((1 + t) ^ s)⁻¹ *
+        ((1 + t) * ((n + 1) * G.eval t + t * G.derivative.eval t) - s * t * G.eval t - lam * F.eval t) = 0 := by
+      rw [pow_succ (1 + t) s] at h2
+      have hr2 : r ^ (n + 2) = r ^ n * t := by rw [← hrt]; ring
+      rw [hr2] at h2
+      field_simp at h2 ⊢
+      linear_combination h2
+    refine ⟨?_, ?_⟩
+    · have := (mul_eq_zero.mp h2').resolve_left (mul_ne_zero hrn (inv_ne_zero hP))
+      linarith
+    · have := (mul_eq_zero.mp h1').resolve_left (mul_ne_zero hrn1 (inv_ne_zero hP))
+      linarith
+  constructor
+  · apply Polynomial.eq_of_infinite_eval_eq
+    refine Set.Infinite.mono (fun t ht => ?_) (Set.Ioi_infinite (0 : ℝ))
+    have := (key t ht).1
+    simp only [Set.mem_setOf_eq, psiPoly, eval_sub, eval_mul, eval_add, eval_C, eval_X, eval_one]
+    linear_combination this
+  · apply Polynomial.eq_of_infinite_eval_eq
+    refine Set.Infinite.mono (fun t ht => ?_) (Set.Ioi_infinite (0 : ℝ))
+    have := (key t ht).2
+    simp only [Set.mem_setOf_eq, eval_sub, eval_mul, eval_add, eval_C, eval_X, eval_one, eval_neg]
+    linear_combination this
+
+open Polynomial in
+/-- **GE5, completeness in the angular polynomial class.** Let `v ≠ 0` and let the angular spinor
+`g = angG v n s G F` (profile `(1+t)^{-s} z^{n+1} G`, `(1+t)^{-s} z^n F`, reduced: `G(-1) ≠ 0`, with the
+decay condition `n + 1 ≤ s`) be a flat eigenspinor, `h D₀ g = λ g` everywhere.  Then `λ = ±s` and `G` is a
+multiple of the radial polynomial `gPoly (n+1) (s-n-1)` used in `sphere_dirac_lower_bound`: within this class
+the family of the lower bound is exhaustive.  (PARTIAL for GE5: no statement about spinors outside the class.) -/
+theorem angular_class_complete (ρ : CliffordRep 2 V) {v : V} (hv : v ≠ 0) (n s : ℕ) (hns : n + 1 ≤ s)
+    (G F : ℝ[X]) (lam : ℝ) (hG : G.eval (-1) ≠ 0)
+    (hflat : ∀ x : E 2, stereoH x • dirac ρ (angG ρ v n s G F) x = lam • angG ρ v n s G F x) :
+    (lam = s ∨ lam = -s) ∧ G = C (G.coeff 0) * gPoly (n + 1) (s - (n + 1)) := by
+  obtain ⟨ha, hb⟩ := angG_flat_converse ρ hv n s G F lam hflat
+  obtain ⟨hsq, hGe⟩ := mode_complete n s hns G F lam ha hb hG
+  refine ⟨?_, hGe⟩
+  have : (lam - s) * (lam + s) = 0 := by linear_combination hsq
+  rcases mul_eq_zero.mp this with h | h
+  · left; linarith
+  · right; linarith
+
 end Lightlike.Dirac
