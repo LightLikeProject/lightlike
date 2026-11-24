@@ -1,5 +1,7 @@
 import Lightlike.OperatorAlgebras.FermiFockGeneral
 import Mathlib.Analysis.InnerProductSpace.l2Space
+import Lightlike.OperatorAlgebras.CARProjections
+import Lightlike.OperatorAlgebras.VacuumProjection
 
 /-!
 # Fermionic Fock representations of the CAR over a Hilbert space: words of creation operators
@@ -261,16 +263,20 @@ lemma ladder_car [DecidableEq ι] (p q : ι → A)
         ((1 / 2 : ℂ) • (p j - Complex.I • q j)) * ((1 / 2 : ℂ) • (p i - Complex.I • q i)) = 0 ∧
     ((1 / 2 : ℂ) • (p i + Complex.I • q i)) * ((1 / 2 : ℂ) • (p j - Complex.I • q j)) +
         ((1 / 2 : ℂ) • (p j - Complex.I • q j)) * ((1 / 2 : ℂ) • (p i + Complex.I • q i)) =
-      (if i = j then (1 : ℂ) else 0) • (1 : A) := by
+      (if i = j then (1 : ℂ) else 0) • (1 : A) ∧
+    ((1 / 2 : ℂ) • (p i + Complex.I • q i)) * ((1 / 2 : ℂ) • (p j + Complex.I • q j)) +
+        ((1 / 2 : ℂ) • (p j + Complex.I • q j)) * ((1 / 2 : ℂ) • (p i + Complex.I • q i)) = 0 := by
   have h1 := hpp i j
   have h2 := hqq i j
   have h3 := hpq i j
   have h4 := hpq j i
-  constructor
+  refine ⟨?_, ?_, ?_⟩
   · simp only [smul_mul_smul_comm, mul_sub, sub_mul, mul_smul_comm, smul_mul_assoc, smul_sub, smul_smul]
     linear_combination (norm := (match_scalars <;> (ring_nf; try simp only [Complex.I_sq]; try ring))) (1 / 4 : ℂ) • h1 - (1 / 4 : ℂ) • h2 - (Complex.I / 4) • h3 - (Complex.I / 4) • h4
   · simp only [smul_mul_smul_comm, mul_sub, mul_add, sub_mul, add_mul, mul_smul_comm, smul_mul_assoc, smul_sub, smul_add, smul_smul]
     linear_combination (norm := (match_scalars <;> (ring_nf; try simp only [Complex.I_sq]; try ring))) (1 / 4 : ℂ) • h1 + (1 / 4 : ℂ) • h2 - (Complex.I / 4) • h3 + (Complex.I / 4) • h4
+  · simp only [smul_mul_smul_comm, mul_add, add_mul, mul_smul_comm, smul_mul_assoc, smul_add, smul_smul]
+    linear_combination (norm := (match_scalars <;> (ring_nf; try simp only [Complex.I_sq]; try ring))) (1 / 4 : ℂ) • h1 - (1 / 4 : ℂ) • h2 + (Complex.I / 4) • h3 + (Complex.I / 4) • h4
 
 end Ladder
 
@@ -313,7 +319,8 @@ include hR
 /-- The ladder operators of the transformed modes satisfy the CAR. -/
 lemma creR_annR_car [DecidableEq ι] (i j : ι) :
     creR B b R i * creR B b R j + creR B b R j * creR B b R i = 0 ∧
-    annR B b R i * creR B b R j + creR B b R j * annR B b R i = (if i = j then (1 : ℂ) else 0) • (1 : Γ →L[ℂ] Γ) := by
+    annR B b R i * creR B b R j + creR B b R j * annR B b R i = (if i = j then (1 : ℂ) else 0) • (1 : Γ →L[ℂ] Γ) ∧
+    annR B b R i * annR B b R j + annR B b R j * annR B b R i = 0 := by
   have key : ∀ w w' : Z, fockField B b (R w) * fockField B b (R w') + fockField B b (R w') * fockField B b (R w) =
       ((2 * (⟪w, w'⟫_ℂ).re : ℝ) : ℂ) • (1 : Γ →L[ℂ] Γ) := fun w w' => by
     rw [fockField_anticomm, hR]
@@ -369,15 +376,17 @@ lemma continuous_R : Continuous R :=
 include hR in
 lemma creR_car_ite [DecidableEq ι] :
     (∀ i j, creR B b R i * creR B b R j + creR B b R j * creR B b R i = 0) ∧
-    (∀ i j, annR B b R i * creR B b R j + creR B b R j * annR B b R i = if i = j then 1 else 0) :=
+    (∀ i j, annR B b R i * creR B b R j + creR B b R j * annR B b R i = if i = j then 1 else 0) ∧
+    (∀ i j, annR B b R i * annR B b R j + annR B b R j * annR B b R i = 0) :=
   ⟨fun i j => (creR_annR_car B b R hR i j).1, fun i j => by
-    rw [(creR_annR_car B b R hR i j).2]; split_ifs <;> simp⟩
+    rw [(creR_annR_car B b R hR i j).2.1]; split_ifs <;> simp,
+    fun i j => (creR_annR_car B b R hR i j).2.2⟩
 
 /-- **The closed span of the words of a vacuum is dense, by irreducibility.** -/
 theorem dense_words [DecidableEq ι] (hRs : Function.Surjective R) (Ω : Γ) (hn : Ω ≠ 0)
     (hvac : ∀ j, annR B b R j Ω = 0) :
     ⊤ ≤ (Submodule.span ℂ (Set.range (vec (creR B b R) Ω))).topologicalClosure := by
-  obtain ⟨hc, hca⟩ := creR_car_ite B b R hR
+  obtain ⟨hc, hca, -⟩ := creR_car_ite B b R hR
   set W := (Submodule.span ℂ (Set.range (vec (creR B b R) Ω))).topologicalClosure with hW
   have hmap : ∀ f : Γ →L[ℂ] Γ, (∀ S, f (vec (creR B b R) Ω S) ∈ Submodule.span ℂ (Set.range (vec (creR B b R) Ω))) →
       ∀ x ∈ W, f x ∈ W := by
@@ -528,7 +537,7 @@ theorem exists_implementer (hRs : Function.Surjective R) (Ω : Γ) (hn : ⟪Ω, 
     (hvac : ∀ j, annR B b R j Ω = 0) :
     ∃ U : Γ ≃ₗᵢ[ℂ] Γ, ∀ w x, U (fockField B b w x) = fockField B b (R w) (U x) := by
   have hΩ0 : Ω ≠ 0 := fun h => by rw [h, inner_zero_left] at hn; exact zero_ne_one hn
-  obtain ⟨hc, hca⟩ := creR_car_ite B b R hR
+  obtain ⟨hc, hca, -⟩ := creR_car_ite B b R hR
   obtain ⟨U, hU, hUc⟩ := exists_unitary_of_dense B (annR B b R) hc hca hvac hn
     (inner_annR_creR B b R) (dense_words B b R hR hRs Ω hΩ0 hvac)
   have hUa : ∀ j x, U (fermiAnn B j x) = annR B b R j (U x) := by
@@ -570,6 +579,56 @@ theorem exists_implementer (hRs : Function.Surjective R) (Ω : Γ) (hn : ⟪Ω, 
     show _ = qField B b R j (U x)
     rw [qField_eq, ContinuousLinearMap.smul_apply, ContinuousLinearMap.sub_apply]
   exact eq_top_of_basis b T2 hcl h1 h2 w x
+
+include hR in
+/-- **A unit vector killed by all `annR j`** exists when the Fock vacuum has small new-particle number:
+`∑_{k ∈ F} ‖annR k Ω₀‖² ≤ h < 1` for every finite `F`. -/
+theorem exists_vacuum_of_small [DecidableEq ι] (Ω₀ : Γ) (hΩ₀ : ‖Ω₀‖ = 1) (h : ℝ) (hh : h < 1)
+    (hsmall : ∀ F : Finset ι, ∑ k ∈ F, ‖annR B b R k Ω₀‖ ^ 2 ≤ h) :
+    ∃ Ω : Γ, ⟪Ω, Ω⟫_ℂ = 1 ∧ ∀ j, annR B b R j Ω = 0 := by
+  obtain ⟨hc, hca, haa⟩ := creR_car_ite B b R hR
+  have hadj : ∀ j x y, ⟪annR B b R j x, y⟫_ℂ = ⟪x, creR B b R j y⟫_ℂ := inner_annR_creR B b R
+  have hP := CARProjections.isProjFamily_of_car (annR B b R) (creR B b R) hc haa hca hadj
+  obtain ⟨Ω', hlow, hfix⟩ := exists_fixed_of_decreasing_projections (K := Γ)
+    (fun s => CARProjections.PF hP s)
+    (fun s φ ψ => CARProjections.PF_symm hP s φ ψ)
+    (fun s ψ => by
+      show (CARProjections.PF hP s * CARProjections.PF hP s) ψ = _
+      rw [CARProjections.PF_idem hP])
+    (fun s φ ψ => map_sub _ _ _)
+    (fun s ψ => CARProjections.norm_PF_le hP s ψ)
+    (fun s t hst ψ hψ => CARProjections.PF_fix_of_subset hP (Finset.le_iff_subset.1 hst) hψ)
+    Ω₀ (1 - h) (fun s => by
+      have h1 := CARProjections.norm_sq_PF_ge hP s Ω₀
+      have h2 : ∑ k ∈ s, ‖(creR B b R k * annR B b R k) Ω₀‖ ^ 2 = ∑ k ∈ s, ‖annR B b R k Ω₀‖ ^ 2 :=
+        Finset.sum_congr rfl fun k _ => CARProjections.norm_sq_cre_ann (annR B b R) (creR B b R) hc haa hca hadj k Ω₀
+      rw [h2, hΩ₀] at h1
+      have := hsmall s
+      show 1 - h ≤ ‖CARProjections.PF hP s Ω₀‖ ^ 2
+      linarith)
+  have hpos : 0 < ‖Ω'‖ := by
+    have : 0 < ‖Ω'‖ ^ 2 := lt_of_lt_of_le (by linarith) hlow
+    exact lt_of_le_of_ne (norm_nonneg _) (fun e => by rw [← e] at this; simp at this)
+  have hann : ∀ j, annR B b R j Ω' = 0 := fun j => by
+    have h1 := CARProjections.Q_fix hP (t := {j}) (hfix {j}) (Finset.mem_singleton_self j)
+    have h2 : (creR B b R j * annR B b R j) Ω' = 0 := by
+      have : CARProjections.Q (fun k => creR B b R k * annR B b R k) j Ω' = Ω' - (creR B b R j * annR B b R j) Ω' := by
+        simp [CARProjections.Q]
+      rw [this] at h1
+      exact sub_eq_self.1 h1
+    have h3 := CARProjections.norm_sq_cre_ann (annR B b R) (creR B b R) hc haa hca hadj j Ω'
+    have h4 : ‖annR B b R j Ω'‖ ^ 2 = 0 := by
+      rw [← h3]
+      have : (creR B b R j) ((annR B b R j) Ω') = 0 := h2
+      rw [this]; simp
+    exact norm_eq_zero.1 (pow_eq_zero_iff (two_ne_zero) |>.1 h4)
+  refine ⟨((‖Ω'‖⁻¹ : ℝ) : ℂ) • Ω', ?_, fun j => by rw [map_smul, hann j, smul_zero]⟩
+  rw [inner_smul_left, inner_smul_right, inner_self_eq_norm_sq_to_K]
+  simp only [Complex.conj_ofReal]
+  have hne : ((‖Ω'‖ : ℝ) : ℂ) ≠ 0 := by exact_mod_cast hpos.ne'
+  push_cast
+  field_simp
+  rfl
 
 end FockLadder
 
