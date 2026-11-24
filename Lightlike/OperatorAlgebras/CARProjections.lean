@@ -146,4 +146,67 @@ lemma PF_fix_of_subset {s t : Finset ι} (hst : s ⊆ t) {ψ : Γ} (hψ : PF h t
 
 end
 
+section Car
+
+variable [DecidableEq ι] (a c : ι → (Γ →L[ℂ] Γ))
+
+/-- The number operators `c k * a k` of CAR modes form a family of commuting symmetric idempotents. -/
+theorem isProjFamily_of_car (hcc : ∀ i j, c i * c j + c j * c i = 0) (haa : ∀ i j, a i * a j + a j * a i = 0)
+    (hca : ∀ i j, a i * c j + c j * a i = if i = j then 1 else 0) (hadj : ∀ j x y, ⟪a j x, y⟫_ℂ = ⟪x, c j y⟫_ℂ) :
+    IsProjFamily (fun k => c k * a k) where
+  symm k x y := by
+    have hadj' : ∀ j x y, ⟪c j x, y⟫_ℂ = ⟪x, a j y⟫_ℂ := fun j x y => by
+      rw [← inner_conj_symm, ← hadj, inner_conj_symm]
+    simp only [ContinuousLinearMap.mul_apply, hadj', hadj]
+  idem k := by
+    have h1 := hca k k
+    have h2 : c k * c k = 0 := by
+      have := hcc k k
+      have h3 : (2 : ℂ) • (c k * c k) = 0 := by rw [two_smul]; exact this
+      exact (smul_eq_zero.1 h3).resolve_left two_ne_zero
+    simp only [if_true] at h1
+    calc c k * a k * (c k * a k) = c k * (a k * c k) * a k := by simp only [mul_assoc]
+      _ = c k * (1 - c k * a k) * a k := by rw [eq_sub_of_add_eq h1]
+      _ = c k * a k := by
+        rw [mul_sub, mul_one, sub_mul, show c k * (c k * a k) * a k = (c k * c k) * a k * a k by simp only [mul_assoc], h2]
+        simp
+  comm k l := by
+    by_cases hkl : k = l
+    · rw [hkl]
+    · have h1 : a k * c l = -(c l * a k) := by
+        have := hca k l
+        rw [if_neg hkl] at this; exact eq_neg_of_add_eq_zero_left this
+      have h2 : a l * c k = -(c k * a l) := by
+        have := hca l k
+        rw [if_neg (Ne.symm hkl)] at this; exact eq_neg_of_add_eq_zero_left this
+      have h3 : c l * c k = -(c k * c l) := eq_neg_of_add_eq_zero_left (by rw [add_comm]; exact hcc k l)
+      have h4 : a l * a k = -(a k * a l) := eq_neg_of_add_eq_zero_left (by rw [add_comm]; exact haa k l)
+      have eA : c k * a k * (c l * a l) = -(c k * c l * (a k * a l)) := by
+        rw [show c k * a k * (c l * a l) = c k * (a k * c l) * a l by simp only [mul_assoc], h1]
+        simp only [mul_neg, neg_mul, mul_assoc]
+      have eB : c l * a l * (c k * a k) = -(c l * c k * (a l * a k)) := by
+        rw [show c l * a l * (c k * a k) = c l * (a l * c k) * a k by simp only [mul_assoc], h2]
+        simp only [mul_neg, neg_mul, mul_assoc]
+      rw [eA, eB, h3, h4]
+      simp
+
+lemma norm_sq_cre_ann (hcc : ∀ i j, c i * c j + c j * c i = 0) (haa : ∀ i j, a i * a j + a j * a i = 0)
+    (hca : ∀ i j, a i * c j + c j * a i = if i = j then 1 else 0) (hadj : ∀ j x y, ⟪a j x, y⟫_ℂ = ⟪x, c j y⟫_ℂ)
+    (k : ι) (x : Γ) : ‖c k (a k x)‖ ^ 2 = ‖a k x‖ ^ 2 := by
+  have hP := isProjFamily_of_car a c hcc haa hca hadj
+  have h1 : ⟪c k (a k x), c k (a k x)⟫_ℂ = ⟪a k x, a k x⟫_ℂ := by
+    have e1 := hP.symm k (x) ((c k * a k) x)
+    have e2 := hP.idem k
+    have e3 : ⟪(c k * a k) x, (c k * a k) x⟫_ℂ = ⟪x, (c k * a k) x⟫_ℂ := by
+      rw [hP.symm k, ← ContinuousLinearMap.mul_apply, e2]
+    have e4 : ⟪x, (c k * a k) x⟫_ℂ = ⟪a k x, a k x⟫_ℂ := by
+      simp only [ContinuousLinearMap.mul_apply]
+      rw [← hadj]
+    exact e3.trans e4
+  have := congrArg RCLike.re h1
+  rw [inner_self_eq_norm_sq, inner_self_eq_norm_sq] at this
+  exact_mod_cast this
+
+end Car
+
 end Lightlike.OperatorAlgebras.CARProjections
