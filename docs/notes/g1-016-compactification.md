@@ -31,4 +31,18 @@ Differences:
 * `compOmega_eq_zero_iff`: conformal infinity, p. 196: on the closed region `0 ≤ χ`, `|η| + χ ≤ π` the conformal factor
   `ω` vanishes exactly on the boundary `|η| + χ = π`, where the physical metric `ω⁻² ds̄²` is not defined.
 
-Next: the embedding including the axis (Cartesian or ambient form), and the AdS boundary.
+## The axis (`Lightlike/Spacetime/MinkowskiCompactificationAxis.lean`, 24 November 2026)
+
+Source: the same, p. 192-195 (read 19 November), after (7.87) where `r = 0` is called well-behaved. The polar form degenerates at
+`χ = 0`; the Cartesian form with `p = (cos χ, sin χ n)` on the unit sphere of `ℝ × ℝ³` does not.
+
+* `minkowski_eq_conformal_esu_cartesian`: on tangent vectors `a ∂_η + v` (`⟨p, v⟩ = 0`), `-dt² + |dx⃗|² = ω⁻² (-a² + |v|²)`
+  at every point with `ω ≠ 0`, the axis included. Checked symbolically (sympy) before the Lean proof.
+* `cartT_axis`, `cartX_axis`, `cartOmega_axis`: on the axis `t = 2 tan (η/2)`, `x⃗ = 0`, `ω = cos² (η/2)`.
+
+Difference (representation): the source writes the sphere part as `sin² χ dΩ²`; here `|v|²` is the round metric of `S³ ⊂ ℝ⁴`,
+the same metric. * `bijOn_cartMap`: `(η, p) ↦ (t, x⃗)` is a bijection from `{|η| < π, p ∈ S³, ω > 0}` onto `ℝ × ℝ³`, axis included
+  (the source's (7.92)/(7.99) region, in Cartesian form; the inverse is algebraic, no arctan).
+
+Difference (representation): the source's regions (7.92), (7.99) are in `(U, V)`/`(η, χ)`; ours is `|η| < π` with `ω > 0`
+(equivalent to `|η| + χ < π`), and the sphere is `S³ ⊂ ℝ⁴` instead of `(χ, n)`. The AdS part is `AdSCompactification`.

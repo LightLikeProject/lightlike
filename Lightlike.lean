@@ -1535,6 +1535,7 @@ import Lightlike.Spacetime.KillingRigidity
 import Lightlike.Spacetime.KillingRigidityCoord
 import Lightlike.Spacetime.LinearODEZero
 import Lightlike.Spacetime.MinkowskiCompactification
+import Lightlike.Spacetime.MinkowskiCompactificationAxis
 import Lightlike.Spacetime.Hypersurface
 import Lightlike.Spacetime.HomogeneousIsotropic
 import Lightlike.Spacetime.HomogeneousIsotropicCurved
