@@ -388,4 +388,129 @@ theorem phase_shift {γ : ℝ → M} {J : Set ℝ} (hJ : IsOpen J) (h : IsGeodes
     (Causal.tTriv 𝓘(ℝ, Fin n → ℝ) M (γ t) (phase (n := n) γ t)).2
   rw [← e1, hd, e2]
 
+/-- **Geodesic curves with the same phase at one time agree** (phase form). -/
+theorem eqOn_of_phase_eq' {γ₁ γ₂ : ℝ → M} {J : Set ℝ} (hJo : IsOpen J) (hJc : IsPreconnected J)
+    (h₁ : IsGeodesicCurveOn g γ₁ J) (h₂ : IsGeodesicCurveOn g γ₂ J) {t₀ : ℝ} (ht₀ : t₀ ∈ J)
+    (hph : phase (n := n) γ₁ t₀ = phase γ₂ t₀) : EqOn γ₁ γ₂ J := by
+  have h0 : γ₁ t₀ = γ₂ t₀ := congrArg Bundle.TotalSpace.proj hph
+  refine IsGeodesicCurveOn.eqOn g hJo hJc h₁ h₂ ht₀ h0 ?_
+  have e1 := deriv_chart_eq_phase g hJo h₁ ht₀
+  have e2 := deriv_chart_eq_phase g hJo h₂ ht₀
+  rw [← h0] at e2
+  rw [e1, e2, hph]
+
+/-- **The germ of the geodesic flow along `[0, t]` at `z₀`**: a neighbourhood `N` of `z₀` and
+geodesic curves `Γ z`, `z ∈ N`, with phase `z` at `0`, defined on `(-ε, t + ε)`, whose phase is jointly
+continuous. -/
+def FlowGerm (z₀ : TangentBundle 𝓘(ℝ, Fin n → ℝ) M) (t : ℝ) : Prop :=
+  ∃ (N : Set (TangentBundle 𝓘(ℝ, Fin n → ℝ) M)) (ε : ℝ) (Γ : TangentBundle 𝓘(ℝ, Fin n → ℝ) M → ℝ → M),
+    IsOpen N ∧ z₀ ∈ N ∧ 0 < ε ∧
+    (∀ z ∈ N, IsGeodesicCurveOn g (Γ z) (Ioo (-ε) (t + ε)) ∧ phase (n := n) (Γ z) 0 = z) ∧
+    ContinuousOn (fun zs : TangentBundle 𝓘(ℝ, Fin n → ℝ) M × ℝ => phase (n := n) (Γ zs.1) zs.2)
+      (N ×ˢ Ioo (-ε) (t + ε))
+
+/-- **Extending a flow germ by a local flow box.** -/
+theorem flowGerm_step {z₀ : TangentBundle 𝓘(ℝ, Fin n → ℝ) M} {t : ℝ} (ht : 0 ≤ t)
+    {N : Set (TangentBundle 𝓘(ℝ, Fin n → ℝ) M)} {ε : ℝ}
+    {Γ : TangentBundle 𝓘(ℝ, Fin n → ℝ) M → ℝ → M} (hNo : IsOpen N) (hz₀ : z₀ ∈ N) (hε : 0 < ε)
+    (hgeo : ∀ z ∈ N, IsGeodesicCurveOn g (Γ z) (Ioo (-ε) (t + ε)) ∧ phase (n := n) (Γ z) 0 = z)
+    (hcont : ContinuousOn (fun zs : TangentBundle 𝓘(ℝ, Fin n → ℝ) M × ℝ =>
+      phase (n := n) (Γ zs.1) zs.2) (N ×ˢ Ioo (-ε) (t + ε)))
+    {N' : Set (TangentBundle 𝓘(ℝ, Fin n → ℝ) M)} {δ' : ℝ}
+    {Γ' : TangentBundle 𝓘(ℝ, Fin n → ℝ) M → ℝ → M} (hN'o : IsOpen N') (hδ' : 0 < δ')
+    (hgeo' : ∀ z ∈ N', IsGeodesicCurveOn g (Γ' z) (Ioo (-δ') δ') ∧ phase (n := n) (Γ' z) 0 = z)
+    (hcont' : ContinuousOn (fun zs : TangentBundle 𝓘(ℝ, Fin n → ℝ) M × ℝ =>
+      phase (n := n) (Γ' zs.1) zs.2) (N' ×ˢ Ioo (-δ') δ'))
+    (hF : phase (n := n) (Γ z₀) t ∈ N') {t₂ : ℝ} (h1 : t ≤ t₂) (h2 : t₂ < t + δ') :
+    FlowGerm g z₀ t₂ := by
+  classical
+  haveI : Nonempty M := ⟨z₀.proj⟩
+  set J₁ : Set ℝ := Ioo (-ε) (t + ε) with hJ₁
+  set J₂ : Set ℝ := Ioo (t - δ') (t + δ') with hJ₂
+  have htJ₁ : t ∈ J₁ := ⟨by linarith, by linarith⟩
+  have htJ₂ : t ∈ J₂ := ⟨by linarith, by linarith⟩
+  set F : TangentBundle 𝓘(ℝ, Fin n → ℝ) M → TangentBundle 𝓘(ℝ, Fin n → ℝ) M :=
+    fun z => phase (n := n) (Γ z) t with hFdef
+  have hFc : ContinuousOn F N :=
+    hcont.comp (continuousOn_id.prodMk continuousOn_const) (fun z hz => ⟨hz, htJ₁⟩)
+  set N₁ := N ∩ F ⁻¹' N' with hN₁
+  have hN₁o : IsOpen N₁ := hFc.isOpen_inter_preimage hNo hN'o
+  have hz₀N₁ : z₀ ∈ N₁ := ⟨hz₀, hF⟩
+  set G : TangentBundle 𝓘(ℝ, Fin n → ℝ) M → ℝ → M := fun z s => Γ' (F z) (s - t) with hG
+  have hJ₂eq : (fun s : ℝ => s - t) ⁻¹' Ioo (-δ') δ' = J₂ := by
+    ext s
+    simp only [mem_preimage, mem_Ioo, hJ₂]
+    constructor <;> rintro ⟨h1, h2⟩ <;> constructor <;> linarith
+  have hGgeo : ∀ z ∈ N₁, IsGeodesicCurveOn g (G z) J₂ := by
+    intro z hz
+    have := IsGeodesicCurveOn.shift g (hgeo' (F z) hz.2).1 t
+    rw [hJ₂eq] at this
+    exact this
+  have hGphase : ∀ z ∈ N₁, phase (n := n) (G z) t = F z := by
+    intro z hz
+    have := phase_shift g isOpen_Ioo (hgeo' (F z) hz.2).1 t (t := 0) ⟨by linarith, hδ'⟩
+    simp only [zero_add] at this
+    have e : G z = fun s => Γ' (F z) (s - t) := rfl
+    rw [e, this]
+    exact (hgeo' (F z) hz.2).2
+  have hagr : ∀ z ∈ N₁, EqOn (Γ z) (G z) (J₁ ∩ J₂) := by
+    intro z hz
+    exact eqOn_of_phase_eq' g (isOpen_Ioo.inter isOpen_Ioo)
+      (ordConnected_Ioo.inter ordConnected_Ioo).isPreconnected
+      ((hgeo z hz.1).1.mono inter_subset_left) ((hGgeo z hz).mono inter_subset_right)
+      ⟨htJ₁, htJ₂⟩ (by rw [hGphase z hz])
+  choose! Γ₂ hΓ₂ using fun z (hz : z ∈ N₁) =>
+    IsGeodesicCurveOn.exists_union g (hgeo z hz.1).1 (hGgeo z hz) isOpen_Ioo isOpen_Ioo (hagr z hz)
+  set ε₂ : ℝ := min ε (t + δ' - t₂) with hε₂
+  have hε₂pos : 0 < ε₂ := lt_min hε (by linarith)
+  have hsub : Ioo (-ε₂) (t₂ + ε₂) ⊆ J₁ ∪ J₂ := by
+    intro σ hσ
+    by_cases h : σ < t + ε
+    · exact Or.inl ⟨by linarith [hσ.1, min_le_left ε (t + δ' - t₂)], h⟩
+    · exact Or.inr ⟨by linarith [not_lt.1 h], by linarith [hσ.2, min_le_right ε (t + δ' - t₂)]⟩
+  have hΓ₂J₁ : ∀ z ∈ N₁, ∀ s ∈ J₁, Γ₂ z s = Γ z s := fun z hz s hs => (hΓ₂ z hz).2.1 s hs
+  have hΓ₂J₂ : ∀ z ∈ N₁, ∀ s ∈ J₂, Γ₂ z s = G z s := fun z hz s hs => (hΓ₂ z hz).2.2 s hs
+  have hphJ₁ : ∀ z ∈ N₁, ∀ s ∈ J₁, phase (n := n) (Γ₂ z) s = phase (Γ z) s := by
+    intro z hz s hs
+    refine phase_congr g isOpen_Ioo ((hΓ₂ z hz).1.mono subset_union_left) (hgeo z hz.1).1 hs ?_
+    filter_upwards [isOpen_Ioo.mem_nhds hs] with r hr using hΓ₂J₁ z hz r hr
+  have hphJ₂ : ∀ z ∈ N₁, ∀ s ∈ J₂, phase (n := n) (Γ₂ z) s = phase (Γ' (F z)) (s - t) := by
+    intro z hz s hs
+    have hs' : s - t ∈ Ioo (-δ') δ' := ⟨by linarith [hs.1], by linarith [hs.2]⟩
+    have e1 : phase (n := n) (Γ₂ z) s = phase (G z) s := by
+      refine phase_congr g isOpen_Ioo ((hΓ₂ z hz).1.mono subset_union_right) (hGgeo z hz) hs ?_
+      filter_upwards [isOpen_Ioo.mem_nhds hs] with r hr using hΓ₂J₂ z hz r hr
+    have e2 := phase_shift g isOpen_Ioo (hgeo' (F z) hz.2).1 t hs'
+    simp only [sub_add_cancel] at e2
+    rw [e1]
+    exact e2
+  refine ⟨N₁, ε₂, Γ₂, hN₁o, hz₀N₁, hε₂pos, fun z hz => ⟨(hΓ₂ z hz).1.mono hsub, ?_⟩, ?_⟩
+  · have h0 : (0 : ℝ) ∈ J₁ := ⟨by linarith, by linarith⟩
+    rw [hphJ₁ z hz 0 h0]
+    exact (hgeo z hz.1).2
+  · -- continuity
+    have hA1 : ContinuousOn (fun zs : TangentBundle 𝓘(ℝ, Fin n → ℝ) M × ℝ =>
+        phase (n := n) (Γ₂ zs.1) zs.2) (N₁ ×ˢ J₁) := by
+      refine (hcont.mono (prod_mono inter_subset_left subset_rfl)).congr fun zs hzs => ?_
+      exact hphJ₁ zs.1 hzs.1 zs.2 hzs.2
+    have hA2 : ContinuousOn (fun zs : TangentBundle 𝓘(ℝ, Fin n → ℝ) M × ℝ =>
+        phase (n := n) (Γ₂ zs.1) zs.2) (N₁ ×ˢ J₂) := by
+      have hmap : MapsTo (fun zs : TangentBundle 𝓘(ℝ, Fin n → ℝ) M × ℝ => (F zs.1, zs.2 - t))
+          (N₁ ×ˢ J₂) (N' ×ˢ Ioo (-δ') δ') := fun zs hzs =>
+        ⟨hzs.1.2, ⟨by linarith [hzs.2.1], by linarith [hzs.2.2]⟩⟩
+      have hc2 : ContinuousOn (fun zs : TangentBundle 𝓘(ℝ, Fin n → ℝ) M × ℝ => (F zs.1, zs.2 - t))
+          (N₁ ×ˢ J₂) :=
+        ((hFc.mono inter_subset_left).comp continuousOn_fst (fun zs hzs => hzs.1)).prodMk
+          (continuousOn_snd.sub continuousOn_const)
+      refine (hcont'.comp hc2 hmap).congr fun zs hzs => ?_
+      exact hphJ₂ zs.1 hzs.1 zs.2 hzs.2
+    intro p hp
+    by_cases h1 : p.2 ∈ J₁
+    · exact ((hA1.continuousAt ((hN₁o.prod isOpen_Ioo).mem_nhds ⟨hp.1, h1⟩))).continuousWithinAt
+    · have h2 : p.2 ∈ J₂ := by
+        rcases hsub hp.2 with h | h
+        · exact absurd h h1
+        · exact h
+      exact ((hA2.continuousAt ((hN₁o.prod isOpen_Ioo).mem_nhds ⟨hp.1, h2⟩))).continuousWithinAt
+
 end Lightlike.Penrose
