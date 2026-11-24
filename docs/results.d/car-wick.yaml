@@ -1,0 +1,11 @@
+- id: LL-XXXX-a
+  title: "Wick's theorem for the CAR fields of a Bogoliubov vacuum, for every number of fields: the vacuum expectation of a product of linear combinations of the transformed operators b, b* is the Pfaffian recursion of the pairings, whose two-point value is the sum of u_i v'_i"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/CARWick.lean
+  decls: [Lightlike.OperatorAlgebras.carField, Lightlike.OperatorAlgebras.carField_anticomm, Lightlike.OperatorAlgebras.car_wick, Lightlike.OperatorAlgebras.car_wick_two]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source for the fermionic Wick theorem was read). Instance of the abstract recursion of FermionWick.lean (the previous entry): for a vector killed by all the transformed annihilation operators, the fields sum_j u_j b_j + sum_j v_j b_j^* are split fields, the anticommutator of the annihilation part with a field is the scalar sum u_j v'_j (the CAR of the transformed operators, isCARPairs_bog), and car_wick gives <Psi, x_1 ... x_n Psi> = <Psi, Psi> wick [x_1, ..., x_n] for every n; car_wick_two is n = 2. The fields a_j, c_j are such combinations by the inverse transformation (bog_inv), so the statement covers them, but this is not stated separately. WEAKER: finitely many modes (the infinite-mode vacuum and Shale for fermions are not built); no explicit n = 4 expansion check (the recursion is proved for all n); mixed quasi-free states are not covered."
+  since: unreleased

@@ -602,6 +602,7 @@ import Lightlike.ODE.Tests
 import Lightlike.OperatorAlgebras.BoundedGroup
 import Lightlike.OperatorAlgebras.CARBogoliubov
 import Lightlike.OperatorAlgebras.CARQuasiFree
+import Lightlike.OperatorAlgebras.CARWick
 import Lightlike.OperatorAlgebras.CARUnique
 import Lightlike.OperatorAlgebras.CCRJoint
 import Lightlike.OperatorAlgebras.Deficiency
