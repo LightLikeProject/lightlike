@@ -4921,3 +4921,16 @@
   review: kernel-checked
   note: "GE3 (G1-005): the FLRW check of the focusing theorems (dust p = 0 with ρ ≥ 0 on an interval satisfies StrongECField on the FLRW manifold). The comparison with the source is pending in the registry."
   since: unreleased
+- id: LL-0372
+  title: Every hermitian operator that commutes with J pi(b) J and anticommutes with the chirality gives a real graded finite spectral triple with Dirac operator D = Delta + J Delta J
+  area: NCG
+  file: Lightlike/NCG/DiracConverse.lean
+  decls: [Lightlike.NCG.conjOp, Lightlike.NCG.conjOp_selfAdjoint, Lightlike.NCG.conjOp_commute_pi, Lightlike.NCG.conjOp_gamma, Lightlike.NCG.ofDelta, Lightlike.NCG.ofDelta_D, Lightlike.NCG.realOfDelta, Lightlike.NCG.gradingOfDelta]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: krajewski-1998, location: "Section 3.4", check: "Dirac operator"}
+  review: kernel-checked
+  note: "The converse of LL-0219. Krajewski, arXiv:hep-th/9701081, Section 3.4, p. 15 (read), states that the Dirac operator is given by D = Delta + J Delta J^-1 with Delta hermitian, commuting with J pi(A) J^-1 and anticommuting with chi. Here, for a real graded finite spectral triple of KO-dimension 0 and a hermitian Delta commuting with J pi(b) J and anticommuting with the grading, D' = Delta + J Delta J is self-adjoint, satisfies the first-order condition and D J = J D, and anticommutes with the grading, so the same representation, J and grading form a real graded triple with Dirac operator D'. Together with LL-0219 (every Dirac operator has this form, with Delta unique) this is the statement of the section in the case where the chirality is a scalar on each vertex. The paper's own proof was not compared line by line; the first-order condition is proved here from order zero and the commutation of Delta with J pi(b) J."
+  since: unreleased
