@@ -4706,3 +4706,335 @@
   review: kernel-checked
   note: "GC4 (G3-132). Local statement; proof by Frobenius for a family that is involutive only on an invariant set (Lightlike.ODE.exists_integral_manifold_of_involutive_on). Non-vacuity: exists_gauge_orbit_momentum (Lightlike/Gauge/Orbits/Tests.lean: γ = p on ℝ × ℝ). The comparison with Wipf Section 5.2 is recorded in docs/notes/gauge-orbits-wipf5.md. The comparison with the cited sources is pending in the registry (Wipf hep-th/9312078 is not a registered source; the comparison note docs/notes/gc4-source-dirac.md is the record)."
   since: unreleased
+- id: LL-0356
+  title: "The pentagon equation of the F-matrices of U_q(sl₂) at q = e^{iπ/r}, with F^{abc}_d[e, f] = (−1)^((a+b+c+d)/2) √([e+1][f+1]) {a b e; c d f}_q, follows from the quantum Biedenharn–Elliott identity, and holds unconditionally at r = 3"
+  area: TuraevViro
+  file: Lightlike/TuraevViro/FMatrix.lean
+  decls: [Lightlike.TV.fMat, Lightlike.TV.fMat_pentagon, Lightlike.TV.fMat_pentagon_three]
+  status: conditional
+  hypotheses: [Lightlike.TV.qBiedenharnElliott]
+  tier: established
+  source:
+    refs:
+      - {ref: turaev-1994, location: "Chapter: Chapter VI. 6j-symbols|10.1515/9783110883275-007"}
+  review: kernel-checked
+  note: "QU3 (G3-201), conditional in the style of LL-0031: fMat_pentagon takes qBiedenharnElliott hr, the q-Biedenharn–Elliott identity (proved at r = 3 only, qBiedenharnElliott_three, which gives fMat_pentagon_three unconditionally; numerical evidence for other r, docs/notes/qbe-all-levels.md). The pentagon is the Biedenharn–Elliott sum over h with the signs and the square roots of the dimensions moved into the F-matrices; the signs agree termwise under the parity of the admissible triads. The convention (the sign (−1)^((a+b+c+d)/2) and the symmetric normalisation √(dim e dim f)) was checked numerically at r = 5 for all labels before the Lean statement, and the same pentagon without the sign fails (difference 2.0). Not proved: the hexagon, the existence of the full modular tensor category, the F-matrices as the associator of a representation category of U_q(sl₂) (they are defined from the 6j symbols, not from UqSl2). The comparison with Turaev, Chapter VI, is pending."
+  since: unreleased
+- id: LL-0357
+  title: "On a Lorentzian manifold a perfect fluid field with unit timelike velocity satisfies the null, weak, strong and dominant energy conditions exactly when ρ + p ≥ 0; ρ ≥ 0 and ρ + p ≥ 0; ρ + p ≥ 0 and ρ + 3p ≥ 0; |p| ≤ ρ everywhere, and dust with ρ ≥ 0 satisfies all four"
+  area: Spacetime
+  file: Lightlike/Spacetime/EnergyConditionsField.lean
+  decls: [Lightlike.LorentzianMetric.fluidField_nullEC_iff, Lightlike.LorentzianMetric.fluidField_weakEC_iff, Lightlike.LorentzianMetric.fluidField_strongEC_iff, Lightlike.LorentzianMetric.fluidField_dominantEC_iff, Lightlike.LorentzianMetric.fluidField_dust]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: curiel-2014, location: "§2.1"}
+      - {ref: hawking-ellis-1973, location: "Chapter: The physical significance of curvature|10.1017/CBO9780511524646.005"}
+  review: kernel-checked
+  note: "GE14 (G1-010). The pointwise equivalences at a point are LL entries on Lightlike/Spacetime/EnergyConditions.lean; these are their statements for a field on a manifold (4 dimensions). Dust is the trust check of the milestone. The comparison with the source is pending in the registry."
+  since: unreleased
+- id: LL-0358
+  title: "Trust checks of the energy conditions on a manifold: a constant Klein–Gordon field with a negative potential value violates the weak energy condition, and the electromagnetic stress-energy tensor of an antisymmetric field satisfies the null condition at every point"
+  area: Spacetime
+  file: Lightlike/Spacetime/EnergyConditionsField.lean
+  decls: [Lightlike.LorentzianMetric.scalarField_const_violates_weak, Lightlike.LorentzianMetric.emField_nullEC]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: curiel-2014, location: "§2.1"}
+      - {ref: hawking-ellis-1973, location: "Chapter: The physical significance of curvature|10.1017/CBO9780511524646.005"}
+  review: kernel-checked
+  note: "GE14 (G1-010): the Klein–Gordon check of the milestone (negative potential violates the weak condition, on a nonempty manifold) and the null condition of the electromagnetic field. 4 dimensions. The null condition of the Klein–Gordon field is in Lightlike/Spacetime/GERow10/KleinGordonNEC.lean (not catalogued here). The comparison with the source is pending in the registry."
+  since: unreleased
+- id: LL-0359
+  title: "The null, weak, strong and dominant energy conditions of a perfect fluid are exactly Physlib's NullEnergyCondition, WeakEnergyCondition, StrongEnergyCondition and DominantEnergyCondition of a CosmicFluid at c = 1"
+  area: Spacetime
+  file: Lightlike/Spacetime/EnergyConditionsPhyslib.lean
+  decls: [Lightlike.fluid_nullEC_iff_physlib, Lightlike.fluid_weakEC_iff_physlib, Lightlike.fluid_strongEC_iff_physlib, Lightlike.fluid_dominantEC_iff_physlib]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: curiel-2014, location: "§2.1"}
+      - {ref: hawking-ellis-1973, location: "Chapter: The physical significance of curvature|10.1017/CBO9780511524646.005"}
+  review: kernel-checked
+  note: "GE14 (G1-010): the link to Physlib's cosmology definitions that the milestone asks for for fluids. The conditions are those of a unit timelike fluid velocity in 4 dimensions. The comparison with the source is pending in the registry."
+  since: unreleased
+- id: LL-0360
+  title: "The source of the Einstein equations is conserved: if G + Λ g = κ T for the Levi-Civita connection and κ ≠ 0, then ∇^μ T_{μν} = 0"
+  area: Spacetime
+  file: Lightlike/Spacetime/StressEnergyConservation.lean
+  decls: [Lightlike.divBilinAt_eq_zero_of_einsteinEq]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "Chapter 4"}
+  review: kernel-checked
+  note: "GE14 (G1-010), after Carroll (4.38), (4.42), (4.43): conservation of the stress-energy tensor from the Bianchi identity of the Einstein tensor and the parallel metric, with a cosmological constant (the source has Λ = 0). The divergence is divBilinAt, g^{ij}(∇_i T)(e_j, w), on a manifold modelled on ℝⁿ. The comparison with the source is pending in the registry."
+  since: unreleased
+- id: LL-0361
+  title: "The Dirac operator squares to minus the Laplacian on flat space: D(D f) = -Δ f for a C² function with values in a Clifford module"
+  area: GR
+  file: Lightlike/Dirac/Flat.lean
+  decls: [Lightlike.Dirac.dirac_dirac]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: bgv-1992, location: "Chapter: Clifford Modules and Dirac Operators|10.1007/978-3-642-58088-8_4"}
+  review: kernel-checked
+  note: "GE5 (G1-017). In flat ℝⁿ, for a C² map into any Clifford module (Q v = -‖v‖²), D(D f) = -Δ f: the flat case of D² = ∇*∇ + R/4 with R = 0. Supporting: clifford_double_sum (Dirac/SecondOrder.lean), pure Clifford algebra: Σ γᵢγⱼ aᵢⱼ = -Σ aᵢᵢ + ½ Σ γᵢγⱼ(aᵢⱼ - aⱼᵢ). Spin structures and the Dirac operator on a manifold are NOT in this entry. The comparison with the source is pending in the registry (the location cited is the only recorded verified one; the docstring of the Lean file claims no equation number)."
+  since: unreleased
+- id: LL-0362
+  title: "Lichnerowicz in a frame: for a frame connection with antisymmetric connection form and a curvature with the Riemann symmetries, D² f = −Σ ∇²f(eᵢ, eᵢ) + (s/4) f, given the Ricci identity for the frame Hessian"
+  area: GR
+  file: Lightlike/Dirac/LichnerowiczFormula.lean
+  decls: [Lightlike.Dirac.lichnerowicz_frame]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: bgv-1992, location: "Chapter: Clifford Modules and Dirac Operators|10.1007/978-3-642-58088-8_4"}
+  review: kernel-checked
+  note: "GE5 (G1-017). In a frame with antisymmetric connection form ω, D²f = -Σᵢ ∇²f(eᵢ, eᵢ) + (s/4) f with s = Σ Rᵢⱼⱼᵢ, for a curvature with the Riemann symmetries. The Ricci identity (the antisymmetric part of the frame Hessian is the spinor curvature ¼ Σ Rᵢⱼₖₗ γₖγₗ acting on f) is a HYPOTHESIS here, not derived. Compare LL entry for lichnerowicz_general (torsion-free skew frame on ℝⁿ). Not covered: a spin manifold (spin structure, global Dirac operator) and the Lichnerowicz formula on it. The comparison with the source is pending in the registry (the location cited is the only recorded verified one; the docstring of the Lean file claims no equation number)."
+  since: unreleased
+- id: LL-0363
+  title: "On the unit 2-sphere the curvature term of the Lichnerowicz formula is s/4 and not s/2"
+  area: GR
+  file: Lightlike/Dirac/LichnerowiczTests.lean
+  decls: [Lightlike.Dirac.curvatureTerm_sphere, Lightlike.Dirac.sphere_half_formula_fails]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: bgv-1992, location: "Chapter: Clifford Modules and Dirac Operators|10.1007/978-3-642-58088-8_4"}
+  review: kernel-checked
+  note: "GE5 (G1-017), the trust checks of the milestone at the curvature term: on the unit 2-sphere (scalar curvature 2) the curvature term of the Clifford generators is (1/2)•1 = (s/4)•1, and the version with s/2 instead of s/4 is shown to fail. Only the S² curvature term is checked here; the Dirac spectrum on S² (±(k+1)) is in other files. The S² spectrum with multiplicities is NOT in this entry. The comparison with the source is pending in the registry (the location cited is the only recorded verified one; the docstring of the Lean file claims no equation number)."
+  since: unreleased
+- id: LL-0364
+  title: "Raychaudhuri focusing under the strong energy condition: a unit geodesic rotation-free congruence with negative expansion Θ_0 in dimension 4 cannot be continued beyond parameter 3/|Θ_0|, when G = κT with κ > 0 and T satisfies the strong energy condition"
+  area: Spacetime
+  file: Lightlike/Spacetime/Raychaudhuri/FocusingSEC.lean
+  decls: [Lightlike.raychaudhuri_focusing_strongEC]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "Chapter 4"}
+      - {ref: hawking-ellis-1973, location: "Chapter: The physical significance of curvature|10.1017/CBO9780511524646.005"}
+  review: kernel-checked
+  note: "GE3 (G1-005). In dimension 4 with Λ = 0, G = κ T, κ > 0 and the strong energy condition for the field T: for a unit (g(V,V) = -1) geodesic rotation-free field V along an integral curve on [0, L) with Θ(γ 0) < 0, L ≤ 3/|Θ(γ 0)|. By strongECField_iff_ricci the strong condition is Ric(ξ,ξ) ≥ 0, and then raychaudhuri_focusing_manifold applies. The comparison with the source is pending in the registry (the location cited is the only recorded verified one; the docstring of the Lean file claims no equation number)."
+  since: unreleased
+- id: LL-0365
+  title: "Hawking-type bound: under the strong energy condition in dimension 4 the length of a unit geodesic rotation-free integral curve with Θ at most C < 0 at the start is at most 3/|C|"
+  area: Spacetime
+  file: Lightlike/Spacetime/Raychaudhuri/HawkingSEC.lean
+  decls: [Lightlike.hawking_bound_strongEC]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "Chapter 4"}
+      - {ref: hawking-ellis-1973, location: "Chapter: The physical significance of curvature|10.1017/CBO9780511524646.005"}
+  review: kernel-checked
+  note: "GE3 (G1-005). The same hypotheses as the focusing theorem with Θ(γ 0) ≤ C < 0: L ≤ 3/|C|, built on hawking_bound_manifold. The comparison with the source is pending in the registry (the location cited is the only recorded verified one; the docstring of the Lean file claims no equation number)."
+  since: unreleased
+- id: LL-0366
+  title: "Contracting FLRW universe: a time-like geodesic through a contracting FLRW with Ricci curvature nonnegative has length at most one Hubble time 1/h"
+  area: Spacetime
+  file: Lightlike/Spacetime/Raychaudhuri/HawkingFLRW.lean
+  decls: [Lightlike.hawking_bound_flrw]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "Chapter 4"}
+      - {ref: hawking-ellis-1973, location: "Chapter: The physical significance of curvature|10.1017/CBO9780511524646.005"}
+  review: kernel-checked
+  note: "GE3 (G1-005), the FLRW check: on the open FLRW manifold an integral curve of ∂_t with Ric(∂_t,∂_t) ≥ 0 along it and ȧ/a ≤ -h < 0 at the start has L ≤ 1/h (hawking_bound_flrw, Hubble-time bound). The comparison with the source is pending in the registry (the location cited is the only recorded verified one; the docstring of the Lean file claims no equation number)."
+  since: unreleased
+- id: LL-0367
+  title: "Focusing with twist: if the expansion obeys Θ' ≤ −(Θ² − b²)/m on [0, L) and Θ(0) < −b then L ≤ m/(−b − Θ(0))"
+  area: Spacetime
+  file: Lightlike/Spacetime/Raychaudhuri/TwistFocusing.lean
+  decls: [Lightlike.focusing_twisted]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "Chapter 4"}
+  review: kernel-checked
+  note: "GE3 (G1-005), the twisted Raychaudhuri inequality: for m > 0 and b ≥ 0, if Θ' ≤ -(Θ² - b²)/m on [0,L) and Θ(0) < -b then L ≤ m/(-b - Θ(0)); with b = √m ω this is the inequality with rotation. The comparison with the source is pending in the registry (the location cited is the only recorded verified one; the docstring of the Lean file claims no equation number)."
+  since: unreleased
+- id: LL-0368
+  title: "The Klein–Gordon field satisfies the null energy condition for every potential, while a constant field with negative potential violates the weak energy condition although it satisfies the null condition"
+  area: Spacetime
+  file: Lightlike/Spacetime/GERow10/KleinGordonNEC.lean
+  decls: [Lightlike.scalar_nullEC, Lightlike.scalarField_nullECField, Lightlike.scalarField_const_nullEC_not_weakEC]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: curiel-2014, location: "§2.1"}
+  review: kernel-checked
+  note: "GE14 (G1-010). For T = dφ⊗dφ − (½|dφ|² + V) g in 4-dimensional Lorentzian signature, T(k,k) = (dφ k)² ≥ 0 for null k, so the null energy condition holds for every φ and potential (pointwise and as a field); with dφ = 0 and a negative potential value the null condition holds and the weak condition fails (the trust check of the milestone, beyond scalarField_const_violates_weak). The comparison with the source is pending in the registry (the location cited is the only recorded verified one; the docstring of the Lean file claims no equation number)."
+  since: unreleased
+- id: LL-0369
+  title: "With a Klein–Gordon source the Ricci curvature of a null vector is κ(dφ k)², nonnegative and zero exactly when dφ k = 0"
+  area: Spacetime
+  file: Lightlike/Spacetime/GERow10/KleinGordonRicci.lean
+  decls: [Lightlike.scalarField_ricciAt_null_nonneg, Lightlike.scalarField_ricciAt_null_eq_zero_iff]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: curiel-2014, location: "§2.1"}
+  review: kernel-checked
+  note: "GE14 (G1-010). Under the Einstein equations with Λ = 0 and κ ≥ 0, Ric(k,k) = κ (dφ k)² ≥ 0 for null k for the Klein–Gordon source, with equality for κ > 0 exactly when dφ k = 0. The comparison with the source is pending in the registry (the location cited is the only recorded verified one; the docstring of the Lean file claims no equation number)."
+  since: unreleased
+- id: LL-0370
+  title: "The weak energy condition of a Klein–Gordon field is exactly 0 ≤ ½|dφ|² + V for a vanishing or spacelike gradient"
+  area: Spacetime
+  file: Lightlike/Spacetime/GERow10/ScalarWeakECSharp.lean
+  decls: [Lightlike.scalar_weakEC_iff]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: curiel-2014, location: "§2.1"}
+  review: kernel-checked
+  note: "GE14 (G1-010). The sharp weak energy condition of a Klein–Gordon field at a point with vanishing or spacelike gradient is 0 ≤ ½|dφ|² + V (4 dimensions); the null and timelike gradients are scalar_weakEC_iff_of_null (0 ≤ V) in ScalarWeakECNull.lean and scalar_weakEC_iff_of_timelike (0 ≤ V − ½|dφ|²) in ScalarWeakECTimelike.lean, and scalar_weakEC_of_nonneg_potential (ScalarWeakEC.lean) says the weak condition holds whenever V ≥ 0. The comparison with the source is pending in the registry (the location cited is the only recorded verified one; the docstring of the Lean file claims no equation number)."
+  since: unreleased
+- id: LL-0371
+  title: "Dust with ρ ≥ 0 on the FLRW manifold satisfies the strong energy condition"
+  area: Spacetime
+  file: Lightlike/Spacetime/Raychaudhuri/DustField.lean
+  decls: [Lightlike.flrwManifold_dust_strongEC]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "Chapter 4"}
+  review: kernel-checked
+  note: "GE3 (G1-005): the FLRW check of the focusing theorems (dust p = 0 with ρ ≥ 0 on an interval satisfies StrongECField on the FLRW manifold). The comparison with the source is pending in the registry."
+  since: unreleased
+- id: LL-0372
+  title: Every hermitian operator that commutes with J pi(b) J and anticommutes with the chirality gives a real graded finite spectral triple with Dirac operator D = Delta + J Delta J
+  area: NCG
+  file: Lightlike/NCG/DiracConverse.lean
+  decls: [Lightlike.NCG.conjOp, Lightlike.NCG.conjOp_selfAdjoint, Lightlike.NCG.conjOp_commute_pi, Lightlike.NCG.conjOp_gamma, Lightlike.NCG.ofDelta, Lightlike.NCG.ofDelta_D, Lightlike.NCG.realOfDelta, Lightlike.NCG.gradingOfDelta]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: krajewski-1998, location: "Section 3.4", check: "Dirac operator"}
+  review: kernel-checked
+  note: "The converse of LL-0219. Krajewski, arXiv:hep-th/9701081, Section 3.4, p. 15 (read), states that the Dirac operator is given by D = Delta + J Delta J^-1 with Delta hermitian, commuting with J pi(A) J^-1 and anticommuting with chi. Here, for a real graded finite spectral triple of KO-dimension 0 and a hermitian Delta commuting with J pi(b) J and anticommuting with the grading, D' = Delta + J Delta J is self-adjoint, satisfies the first-order condition and D J = J D, and anticommutes with the grading, so the same representation, J and grading form a real graded triple with Dirac operator D'. Together with LL-0219 (every Dirac operator has this form, with Delta unique) this is the statement of the section in the case where the chirality is a scalar on each vertex. The paper's own proof was not compared line by line; the first-order condition is proved here from order zero and the commutation of Delta with J pi(b) J."
+  since: unreleased
+- id: LL-0373
+  title: "The Levi-Civita connection of a conformally rescaled metric e^{2ψ} g in coordinates: Γ̃ᵃ_{bc} = Γᵃ_{bc} + δᵃ_c ∂_bψ + δᵃ_b ∂_cψ − g_{bc} gᵃᵈ ∂_dψ"
+  area: Spacetime
+  file: Lightlike/Spacetime/ConformalCoord.lean
+  decls: [Lightlike.christoffel_conformal]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "Chapter 3"}
+  review: kernel-checked
+  note: "GE7 (G1-016). Hypotheses: g and ψ differentiable at x, det g(x) ≠ 0, g(x) symmetric; any dimension and signature. The comparison with the source is pending in the registry: the location cited is the only recorded verified one (Carroll's Chapter 3), while the compactification itself is in Carroll's Chapter 7 (pp. 192-196), Gourgoulhon gr-qc/0703035 Section 6.3.1 and Campos-Verdaguer gr-qc/9307027 Appendix C, none recorded as verified."
+  since: unreleased
+- id: LL-0374
+  title: "Under the conformal change g̃ = e^{2ψ} g the Ricci tensor is R̃_{σν} = R_{σν} − (n−2)∇_σ∇_νψ − g_{σν}□ψ + (n−2)∂_σψ ∂_νψ − (n−2) g_{σν}|dψ|² and the scalar curvature is R̃ = e^{−2ψ}(R − 2(n−1)□ψ − (n−1)(n−2)|dψ|²)"
+  area: Spacetime
+  file: Lightlike/Spacetime/ConformalRicci.lean
+  decls: [Lightlike.ricci_conformal, Lightlike.scalarCurvature_conformal]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "Chapter 3"}
+  review: kernel-checked
+  note: "GE7 (G1-016). Any dimension n and signature; coordinates on an open set of ℝⁿ with a smooth coordinate metric. The comparison with the source is pending in the registry: the location cited is the only recorded verified one (Carroll's Chapter 3), while the compactification itself is in Carroll's Chapter 7 (pp. 192-196), Gourgoulhon gr-qc/0703035 Section 6.3.1 and Campos-Verdaguer gr-qc/9307027 Appendix C, none recorded as verified."
+  since: unreleased
+- id: LL-0375
+  title: "The Weyl tensor is conformally invariant: for g̃ = e^{2ψ} g and n ≥ 3, C̃_{ρσμν} = e^{2ψ} C_{ρσμν} and C̃^ρ_{σμν} = C^ρ_{σμν}"
+  area: Spacetime
+  file: Lightlike/Spacetime/ConformalWeyl.lean
+  decls: [Lightlike.riemann_conformal, Lightlike.riemannLow_conformal, Lightlike.weyl_conformal, Lightlike.weylUp_conformal]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "Chapter 3"}
+  review: kernel-checked
+  note: "GE7 (G1-016), built on the conformal change of the Riemann tensor (riemann_conformal). The comparison with the source is pending in the registry: the location cited is the only recorded verified one (Carroll's Chapter 3), while the compactification itself is in Carroll's Chapter 7 (pp. 192-196), Gourgoulhon gr-qc/0703035 Section 6.3.1 and Campos-Verdaguer gr-qc/9307027 Appendix C, none recorded as verified."
+  since: unreleased
+- id: LL-0376
+  title: "Minkowski space is conformal to a region of the Einstein static universe: in the coordinates η = arctan u + arctan v, χ = arctan u − arctan v the Minkowski metric is ω⁻²(−dη² + dχ² + sin²χ dΩ²) with ω = (cos η + cos χ)/2, the map (η, χ) ↦ (t, r) is a bijection of {0 < χ, |η| + χ < π} onto {r > 0}, and the conformal factor vanishes exactly on |η| + χ = π"
+  area: Spacetime
+  file: Lightlike/Spacetime/MinkowskiCompactification.lean
+  decls: [Lightlike.minkowski_eq_conformal_esu, Lightlike.bijOn_comp, Lightlike.compOmega_eq_zero_iff]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "Chapter 3"}
+  review: kernel-checked
+  note: "GE7 (G1-016). The conformal infinity (null infinity η ± χ = ±π with i⁰ and i^±) is the vanishing locus of ω (compOmega_eq_zero_iff); the null character of the boundary and the action of the Poincaré group on it are NOT proved. The identification is a metric identity on tangent vectors, not a manifold embedding. The comparison with the source is pending in the registry: the location cited is the only recorded verified one (Carroll's Chapter 3), while the compactification itself is in Carroll's Chapter 7 (pp. 192-196), Gourgoulhon gr-qc/0703035 Section 6.3.1 and Campos-Verdaguer gr-qc/9307027 Appendix C, none recorded as verified."
+  since: unreleased
+- id: LL-0377
+  title: "The conformal embedding of Minkowski space in Cartesian form, axis included: the map (η, p) ↦ (t, x⃗) from the region {|η| < π, p ∈ S³, ω > 0} of ℝ × S³ is a bijection onto ℝ × ℝ³, the metric is ω⁻² times the Einstein static universe metric, and the axis r = 0 is the ordinary point p = (1, 0⃗)"
+  area: Spacetime
+  file: Lightlike/Spacetime/MinkowskiCompactificationAxis.lean
+  decls: [Lightlike.minkowski_eq_conformal_esu_cartesian, Lightlike.bijOn_cartMap, Lightlike.cartOmega_axis]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "Chapter 3"}
+  review: kernel-checked
+  note: "GE7 (G1-016), the clause that the polar form of the embedding leaves open (the axis r = 0). The Cartesian form is this library's representation of Carroll (7.100), stated in its docstring; the axis is well-behaved after (7.87) in the source. The comparison with the source is pending in the registry: the location cited is the only recorded verified one (Carroll's Chapter 3), while the compactification itself is in Carroll's Chapter 7 (pp. 192-196), Gourgoulhon gr-qc/0703035 Section 6.3.1 and Campos-Verdaguer gr-qc/9307027 Appendix C, none recorded as verified."
+  since: unreleased
+- id: LL-0378
+  title: "Anti-de Sitter space is conformal to a region of the Einstein static universe: with tan θ the radial coordinate, its metric is cos⁻²θ (−dτ² + dθ² + sin²θ dΩ²) on 0 ≤ θ < π/2, and the boundary θ = π/2 carries the metric −dτ² + dΩ²"
+  area: Spacetime
+  file: Lightlike/Spacetime/AdSCompactification.lean
+  decls: [Lightlike.ads_eq_conformal_esu, Lightlike.bijOn_tan_ads, Lightlike.ads_boundary_metric]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "Chapter 3"}
+  review: kernel-checked
+  note: "GE7 (G1-016). The conformal action of SO(2,3) on the boundary is NOT proved. Source of the AdS coordinates: Blau, Lecture Notes on General Relativity, Section 39.3 (not a registered source). The comparison with the source is pending in the registry: the location cited is the only recorded verified one (Carroll's Chapter 3), while the compactification itself is in Carroll's Chapter 7 (pp. 192-196), Gourgoulhon gr-qc/0703035 Section 6.3.1 and Campos-Verdaguer gr-qc/9307027 Appendix C, none recorded as verified."
+  since: unreleased
+- id: LL-0379
+  title: "A non-conformal rescaling does not give the Einstein static universe: if λ² ≠ 1, the form −λ² a² + b² + sin²χ q is not a multiple of −a² + b² + sin²χ q, while for λ² = 1 it is"
+  area: Spacetime
+  file: Lightlike/Spacetime/MinkowskiCompactificationTests.lean
+  decls: [Lightlike.not_conformal_time_rescaling, Lightlike.conformal_time_rescaling_one]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "Chapter 3"}
+  review: kernel-checked
+  note: "GE7 (G1-016), the trust check 'a non-conformal rescaling shown to fail' of the milestone. A rescaling of the time direction only; non-vacuity by the case λ² = 1. The comparison with the source is pending in the registry: the location cited is the only recorded verified one (Carroll's Chapter 3), while the compactification itself is in Carroll's Chapter 7 (pp. 192-196), Gourgoulhon gr-qc/0703035 Section 6.3.1 and Campos-Verdaguer gr-qc/9307027 Appendix C, none recorded as verified."
+  since: unreleased
+- id: LL-0380
+  title: "For every k and sign epsilon the eigenvalue epsilon (k+1) of the Dirac operator of the unit 2-sphere in the stereographic chart has an injective linear image of k+1 copies of the spinor module among its eigenspinors"
+  area: GR
+  file: Lightlike/Dirac/EigenAngular.lean
+  decls: [Lightlike.Dirac.sphere_dirac_lower_bound, Lightlike.Dirac.modeMap_injective, Lightlike.Dirac.modeMap_eigen, Lightlike.Dirac.sphere_eigen_mode, Lightlike.Dirac.angG_flat_eigen, Lightlike.Dirac.dirac_angular]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: boldt-2015, location: "Theorem 3.1", check: "multiplicities"}
+  review: kernel-checked
+  note: "Compared with Boldt, arXiv:1504.03121, Theorem 3.1, p. 6 (read): the Dirac eigenvalues of the round S^n are +-(n/2 + k) with multiplicity 2^[n/2] C(n+k-1, k); for n = 2 this is +-(k+1) with multiplicity 2(k+1). Here, in the stereographic chart and for an arbitrary Clifford module V of Cl(R^2), the k+1 angular modes c1 = (1+|y|^2)^-(k+1) z^(n+1) G_n(|y|^2), c2 = (1+|y|^2)^-(k+1) z^n F_n(|y|^2) (n = 0..k, G_n a terminating hypergeometric polynomial of degree k-n) give eigenspinors h^(1/2) (Lv c1 + gamma_0 Lv c2) of eigenvalue epsilon (k+1), and the map (v_0..v_k) to the sum is linear and injective. For V = C^2 this is the lower bound 2(k+1) over C. WEAKER: a lower bound only; no completeness (no statement that there are no other eigenvalues or eigenspinors), no regularity condition at the north pole of the sphere and no L^2 or spinor-bundle statement; the chart carries no such notion in the library."
+  since: unreleased
