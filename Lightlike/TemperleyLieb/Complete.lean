@@ -1,5 +1,5 @@
 import Mathlib
-import Lightlike.TemperleyLieb.Fusion
+import Lightlike.TemperleyLieb.ChannelFusion
 
 /-!
 # Completeness of a family of orthogonal idempotents by a rank count

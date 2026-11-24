@@ -1965,7 +1965,7 @@ import Lightlike.TemperleyLieb.JwNatural
 import Lightlike.TemperleyLieb.Contraction
 import Lightlike.TemperleyLieb.Kappa
 import Lightlike.TemperleyLieb.QNumbers
-import Lightlike.TemperleyLieb.Fusion
+import Lightlike.TemperleyLieb.ChannelFusion
 import Lightlike.TemperleyLieb.Complete
 import Lightlike.TemperleyLieb.Window
 import Lightlike.Dirac.ConnesDistance
