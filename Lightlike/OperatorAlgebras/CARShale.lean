@@ -475,6 +475,102 @@ theorem dense_words [DecidableEq ι] (hRs : Function.Surjective R) (Ω : Γ) (hn
     exact hn (by simpa using hΩW)
   · rw [h1]
 
+omit hR in
+lemma pField_eq (j : ι) : pField B b R j = annR B b R j + creR B b R j := by
+  simp only [annR, creR]; module
+
+omit hR in
+lemma qField_eq (j : ι) : qField B b R j = Complex.I • (creR B b R j - annR B b R j) := by
+  simp only [annR, creR]
+  linear_combination (norm := (match_scalars <;> (ring_nf; try simp only [Complex.I_sq]; try ring)))
+
+omit hR in
+lemma fockField_I_basis (j : ι) :
+    fockField B b (Complex.I • b j) = Complex.I • (fermiCre B j - fermiAnn B j) := by
+  have h1 : creW B b (Complex.I • b j) = Complex.I • fermiCre B j := by rw [creW_smul, creW_basis B b]
+  have h2 : annW B b (Complex.I • b j) = -Complex.I • fermiAnn B j := by
+    rw [annW, h1, map_smulₛₗ, Complex.conj_I]; rfl
+  rw [fockField, h1, h2]; module
+
+omit hR in
+/-- A closed real subspace of `Z` containing every `eⱼ` and `i eⱼ` is everything. -/
+lemma eq_top_of_basis (T' : Submodule ℝ Z) (hcl : IsClosed (T' : Set Z)) (h1 : ∀ j, b j ∈ T')
+    (h2 : ∀ j, Complex.I • b j ∈ T') (w : Z) : w ∈ T' := by
+  have hspan : ∀ y ∈ Submodule.span ℂ (Set.range b), y ∈ T' ∧ Complex.I • y ∈ T' := by
+    intro y hy
+    induction hy using Submodule.span_induction with
+    | mem y hy =>
+      obtain ⟨j, rfl⟩ := hy
+      exact ⟨h1 j, h2 j⟩
+    | zero => exact ⟨T'.zero_mem, by simpa using T'.zero_mem⟩
+    | add y z _ _ hy hz => exact ⟨by simpa using T'.add_mem hy.1 hz.1, by rw [smul_add]; exact T'.add_mem hy.2 hz.2⟩
+    | smul c y _ hy =>
+      have he : ∀ (z : ℂ) (y : Z), z • y = z.re • y + z.im • (Complex.I • y) := fun z y => by
+        conv_lhs => rw [← Complex.re_add_im z]
+        rw [add_smul, mul_smul, Complex.coe_smul, Complex.coe_smul]
+      refine ⟨?_, ?_⟩
+      · rw [he c y]; exact T'.add_mem (T'.smul_mem _ hy.1) (T'.smul_mem _ hy.2)
+      · rw [smul_smul, he (Complex.I * c) y]
+        simp only [Complex.mul_re, Complex.I_re, Complex.I_im, zero_mul, one_mul, zero_sub, Complex.mul_im, zero_add]
+        exact T'.add_mem (T'.smul_mem _ hy.1) (T'.smul_mem _ hy.2)
+  have hd : Dense (Submodule.span ℂ (Set.range b) : Set Z) :=
+    Submodule.dense_iff_topologicalClosure_eq_top.2 b.dense_span
+  have hsub : (Submodule.span ℂ (Set.range b) : Set Z) ⊆ (T' : Set Z) := fun y hy => (hspan y hy).1
+  have := hcl.closure_subset_iff.2 hsub
+  rw [hd.closure_eq] at this
+  exact this (Set.mem_univ w)
+
+include hR in
+/-- **A unit vacuum of the transformed modes gives an implementer.** If `R` is a surjective real-linear map of `Z`
+preserving `Re⟪·,·⟫`, and `Ω` is a unit vector killed by every `annR j`, then a unitary `U` of the Fock space
+satisfies `U φ(w) = φ(R w) U` for all `w`. -/
+theorem exists_implementer (hRs : Function.Surjective R) (Ω : Γ) (hn : ⟪Ω, Ω⟫_ℂ = 1)
+    (hvac : ∀ j, annR B b R j Ω = 0) :
+    ∃ U : Γ ≃ₗᵢ[ℂ] Γ, ∀ w x, U (fockField B b w x) = fockField B b (R w) (U x) := by
+  have hΩ0 : Ω ≠ 0 := fun h => by rw [h, inner_zero_left] at hn; exact zero_ne_one hn
+  obtain ⟨hc, hca⟩ := creR_car_ite B b R hR
+  obtain ⟨U, hU, hUc⟩ := exists_unitary_of_dense B (annR B b R) hc hca hvac hn
+    (inner_annR_creR B b R) (dense_words B b R hR hRs Ω hΩ0 hvac)
+  have hUa : ∀ j x, U (fermiAnn B j x) = annR B b R j (U x) := by
+    intro j x
+    apply ext_inner_right ℂ
+    intro y
+    obtain ⟨y', rfl⟩ := U.surjective y
+    rw [LinearIsometryEquiv.inner_map_map, inner_annR_creR B b R, ← hUc, LinearIsometryEquiv.inner_map_map]
+    exact ContinuousLinearMap.adjoint_inner_left (fermiCre B j) y' x
+  refine ⟨U, fun w x => ?_⟩
+  let T2 : Submodule ℝ Z :=
+    { carrier := {w | ∀ x, U (fockField B b w x) = fockField B b (R w) (U x)}
+      add_mem' := fun {v v'} hv hv' x => by
+        rw [map_add R, fockField_add B b, fockField_add B b, ContinuousLinearMap.add_apply,
+          ContinuousLinearMap.add_apply, map_add U, hv x, hv' x]
+      zero_mem' := fun x => by
+        have : fockField B b 0 = 0 := by
+          have := fockField_real_smul B b (0 : ℝ) 0
+          simpa using this
+        simp [this, map_zero R]
+      smul_mem' := fun r v hv x => by
+        rw [map_smul R, fockField_real_smul B b, fockField_real_smul B b, ContinuousLinearMap.smul_apply,
+          ContinuousLinearMap.smul_apply, map_smul U, hv x] }
+  have hcl : IsClosed (T2 : Set Z) := by
+    have : (T2 : Set Z) = ⋂ x : Γ, {w | U (fockField B b w x) = fockField B b (R w) (U x)} := by
+      ext v; simp [T2]
+    rw [this]
+    refine isClosed_iInter fun x => isClosed_eq ?_ ?_
+    · exact U.continuous.comp ((continuous_fockField B b).clm_apply continuous_const)
+    · exact ((continuous_fockField B b).comp (continuous_R R hR)).clm_apply continuous_const
+  have h1 : ∀ j, b j ∈ T2 := fun j x => by
+    have : fockField B b (b j) = fermiCre B j + fermiAnn B j := by
+      rw [fockField, creW_basis B b, annW_basis B b]
+    rw [this, ContinuousLinearMap.add_apply, map_add, hUc, hUa]
+    show _ = pField B b R j (U x)
+    rw [pField_eq, ContinuousLinearMap.add_apply, add_comm]
+  have h2 : ∀ j, Complex.I • b j ∈ T2 := fun j x => by
+    rw [fockField_I_basis, ContinuousLinearMap.smul_apply, ContinuousLinearMap.sub_apply, map_smul, map_sub, hUc, hUa]
+    show _ = qField B b R j (U x)
+    rw [qField_eq, ContinuousLinearMap.smul_apply, ContinuousLinearMap.sub_apply]
+  exact eq_top_of_basis b T2 hcl h1 h2 w x
+
 end FockLadder
 
 end Lightlike.OperatorAlgebras.CARShale
