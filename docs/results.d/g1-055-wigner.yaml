@@ -1,0 +1,52 @@
+- id: LL-XXXX-a
+  title: "The massive one-particle representations of the Poincaré group on L²(d³p / 2ω_p) are irreducible: a closed subspace invariant under all translations and all U(A) is 0 or everything"
+  area: Lorentz
+  file: Lightlike/Poincare/ShellSourceMeasure.lean
+  decls: [Lightlike.Poincare.irreducible_massive_sourceMeasure]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: weinberg-1995, location: "Chapter: RELATIVISTIC QUANTUM MECHANICS|10.1017/CBO9781139644167.004"}
+  review: kernel-checked
+  note: "HA6 (G1-055). No hypothesis beyond the closed invariant subspace: the invariant measure is the explicit sourceMeasure (d³p / 2ω_p), with measurePreserving_shellAct_sourceMeasure. The general form irreducible_massive (IrreducibleMassive.lean) takes any σ-finite SL(2,C)-invariant measure on the shell and rests on commutant_eq_scalar (the commutant of the translations and U(A) is the scalars). Not claimed: that every irreducible positive-energy representation is of this form (WignerClassification, stated only). The comparison with Weinberg (1995), Chapter 2, is pending: the book was not read at the cited location, and Wigner (1939) was not read."
+  since: unreleased
+- id: LL-XXXX-b
+  title: "The massless one-particle representations of finite helicity on L²(d³p / 2|p|) are irreducible: a closed subspace invariant under all translations and all helicity representations is 0 or everything"
+  area: Lorentz
+  file: Lightlike/Poincare/ConeSourceMeasure.lean
+  decls: [Lightlike.Poincare.irreducible_massless_coneSourceMeasure]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: weinberg-1995, location: "Chapter: RELATIVISTIC QUANTUM MECHANICS|10.1017/CBO9781139644167.004"}
+  review: kernel-checked
+  note: "HA6 (G1-055). No hypothesis beyond the closed invariant subspace: the measure is the explicit coneSourceMeasure, with measurePreserving_coneSourceMeasure and sigmaFinite_coneSourceMeasure. The general form irreducible_massless (IrreducibleMassless.lean) takes any σ-finite SL(2,C)-invariant measure on the light cone and rests on commutant_eq_scalar_cone. Not claimed: infinite-spin massless representations, and the classification. The comparison with Weinberg (1995), Chapter 2, is pending: the book was not read at the cited location, and Wigner (1939) was not read."
+  since: unreleased
+- id: LL-XXXX-c
+  title: "The little group of a tachyonic momentum is not compact: the stabilizer of the standard momentum (0, 0, 0, κ) contains the boosts along the first spatial axis"
+  area: Lorentz
+  file: Lightlike/Poincare/LittleGroups.lean
+  decls: [Lightlike.Poincare.boost_mem_littleGroup_tachyon, Lightlike.Poincare.not_isCompact_littleGroup_tachyon]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: weinberg-1995, location: "Chapter: RELATIVISTIC QUANTUM MECHANICS|10.1017/CBO9781139644167.004"}
+  review: kernel-checked
+  note: "The trust check of HA6 that a tachyonic orbit has a non-compact little group (the stabilizer in the Lorentz group of tachyonStd κ). The same statement in the spinor model of momentum space is not_isCompact_stabilizer_tachMom (Lightlike/Lorentz/PoincareIrreps/Momentum.lean). It shows why the induction used for the massive case (from the compact SU(2)) does not apply to a tachyonic orbit; it does not classify tachyonic representations. The comparison with Weinberg (1995), Chapter 2, is pending: the book was not read at the cited location, and Wigner (1939) was not read."
+  since: unreleased
+- id: LL-XXXX-d
+  title: "Wigner's classification of irreducible, strongly continuous, unitary, positive-energy representations of the Poincaré group, stated as a precise proposition with a non-vacuity check"
+  area: Lorentz
+  file: Lightlike/Lorentz/PoincareIrreps/ClassificationStatement.lean
+  decls: [Lightlike.Lorentz.Poincare.WignerClassification, Lightlike.Lorentz.Poincare.trivialRep_classified]
+  status: stated
+  tier: established
+  source:
+    refs:
+      - {ref: weinberg-1995, location: "Chapter: RELATIVISTIC QUANTUM MECHANICS|10.1017/CBO9781139644167.004"}
+  review: kernel-checked
+  note: "HA6 (G1-055), the lockable statement of the milestone. WignerClassification is a Prop, NOT proved: every such representation is trivial on the translations, or equivalent to a massive poincareRep, or to a massless finite-helicity lightPoincareRep, or massless of infinite spin (MasslessNotHelicity). Its proof needs Mackey's imprimitivity theorem; isSystemOfImprimitivity_inducedL2 (Imprimitivity.lean) is one ingredient. Non-vacuity: trivialRep_classified (the trivial representation falls in the first case). The statement uses the library's own definitions of equivalence and positive energy; comparison with Weinberg and Wigner pending (not read). "
+  since: unreleased
