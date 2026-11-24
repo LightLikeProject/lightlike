@@ -7,7 +7,7 @@
   tier: frontier
   source:
     refs:
-      - {ref: johnston-2009, location: "eq. (16)", check: "retarded"}
+      - {ref: johnston-2009, location: "eq. (10)", check: "Pauli-Jordan"}
   review: kernel-checked
   note: "Compared with Johnston, arXiv:0909.0944, eqs. (10) and (16) (read): Delta = K_R - K_R^T with K_R = a L (1 - a b L)^-1, b = -m^2/rho in the massive case. Here K_R is defined for any matrix M, the support lemma applies to the causal matrix and the link matrix (strictly increasing in the order), so 1 - a b M is invertible for every a, b and K_R (1 - a b M) = a M; purity holds for every K_R, whatever the normalisation of a, b. WEAKER: the state is the quasi-free state with covariance |i Delta|, which is the positive-part construction of Afshordi, Aslanbeigi and Sorkin (arXiv:1205.1296, not read); no comparison with their formulas, and the identification of b and the normalisation a with the mass and the sprinkling density rho is not formalised."
   since: unreleased
