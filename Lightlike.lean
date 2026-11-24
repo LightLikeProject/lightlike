@@ -601,6 +601,7 @@ import Lightlike.ODE.LocalFlow
 import Lightlike.ODE.Tests
 import Lightlike.OperatorAlgebras.BoundedGroup
 import Lightlike.OperatorAlgebras.CARBogoliubov
+import Lightlike.OperatorAlgebras.CARQuasiFree
 import Lightlike.OperatorAlgebras.CARUnique
 import Lightlike.OperatorAlgebras.CCRJoint
 import Lightlike.OperatorAlgebras.Deficiency
@@ -714,6 +715,7 @@ import Lightlike.OperatorAlgebras.SecondQuantWedge
 import Lightlike.OperatorAlgebras.FermiFockGeneral
 import Lightlike.OperatorAlgebras.TestsBoundedGroup
 import Lightlike.OperatorAlgebras.TestsCARBogoliubov
+import Lightlike.OperatorAlgebras.TestsCARQuasiFree
 import Lightlike.OperatorAlgebras.TestsCARUnique
 import Lightlike.OperatorAlgebras.TestsFiniteKMS
 import Lightlike.OperatorAlgebras.Wasserstein

@@ -1,7 +1,7 @@
 # OP2, CAR half (G3-158): fermionic Bogoliubov transformations
 
 Status: in progress. Done: Bogoliubov transformations of the CAR and their unitary implementability in finite dimensions.
-Not done: quasi-free states of the CAR algebra (the fermionic counterpart of `QuasiFreeState/`).
+Second part (`CARQuasiFree.lean`, branch opalg/op2-car-quasifree): Bogoliubov vacua, the pure quasi-free states. Not done: Wick's theorem beyond the two-point function.
 
 Already on main (read, reused): the finite CAR in Jordan-Wigner form (`FiniteCAR`), uniqueness of its irreducible representations
 (`CARUnique`, Dereziński Theorem 10), the exterior-algebra creation/annihilation operators (`FermionFock`), the Fock representation
@@ -19,3 +19,10 @@ Tests: particle-hole swap; the one-mode conditions force `αβ = 0` (contrast `|
 
 Not shown: the necessity of the conditions (that a CAR-preserving linear map has them), infinitely many modes (the fermionic Shale
 criterion, `β` Hilbert-Schmidt, is not formalised), quasi-free states. No comparison with Dereziński Section 7 or Araki's papers is claimed.
+
+## Quasi-free part (`CARQuasiFree.lean`, `TestsCARQuasiFree.lean`)
+A vector `Ψ` with `bⱼ Ψ = 0` for all `j` (Bogoliubov vacuum) has `⟪aᵢΨ, aⱼΨ⟫ = (β*β)ᵢⱼ‖Ψ‖²`, `⟪cᵢΨ, cⱼΨ⟫ = (α*α)ᵢⱼ‖Ψ‖²`,
+`⟪aᵢΨ, cⱼΨ⟫ = (β*α)ᵢⱼ‖Ψ‖²` (`bogVacuum_inner_a_a`, `_c_c`, `_a_c`); it exists for the Jordan-Wigner representation
+(`exists_bogVacuum_jordanWigner`, `Ψ = UΩ`) and is unique up to a scalar (`bogVacuum_unique`, one-dimensional vacuum space of the
+irreducible transformed representation). Two-mode test: occupation `s²δᵢⱼ`, pairing `-sc`. Not proved: Wick's formula for the higher
+functions, mixed (non-pure) quasi-free states, the converse (every pure quasi-free state is a Bogoliubov vacuum).
