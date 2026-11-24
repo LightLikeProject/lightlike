@@ -1,4 +1,4 @@
-- id: LL-XXXX-a
+- id: LL-XXXX-f
   title: "The Sorkin-Johnston state of a finite causal set is pure for the retarded matrix K_R = a M (1 - a b M)^-1 (the link matrix in four dimensions, the causal matrix in two, any mass), and 1 - a b M is invertible because M is supported on the causal order"
   area: OperatorAlgebras
   file: Lightlike/OperatorAlgebras/QuasiFreeState/SJRetarded.lean
