@@ -1469,6 +1469,7 @@ import Lightlike.Spacetime.CurveBounds
 import Lightlike.Spacetime.DivergenceFree
 import Lightlike.Spacetime.ExtensionChart
 import Lightlike.Spacetime.GeodesicChartChange
+import Lightlike.Spacetime.GeodesicIntrinsic
 import Lightlike.Spacetime.GeodesicMomentum
 import Lightlike.Spacetime.GE3Row.Conjugate
 import Lightlike.Spacetime.GE3Row.Jacobi
@@ -1478,6 +1479,7 @@ import Lightlike.Spacetime.GE3Row.Sphere
 import Lightlike.Spacetime.Kretschmann
 import Lightlike.Spacetime.EnergyConditions
 import Lightlike.Spacetime.EnergyConditionsField
+import Lightlike.Spacetime.EnergyConditionsImplications
 import Lightlike.Spacetime.EnergyConditionsPhyslib
 import Lightlike.Spacetime.EnergyConditionsEM
 import Lightlike.Spacetime.OpenCoordMetric
