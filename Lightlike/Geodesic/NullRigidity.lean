@@ -95,7 +95,7 @@ theorem lipschitzOnWith_div_functional {E : Type*} [NormedAddCommGroup E] [Norme
 /-- **Local rigidity of a causal curve ending on the null cone of its start point** (the local step
 towards "generators of `∂J⁺(S)` are null geodesics"). In a time ball at `p`, let `v` be a Lipschitz
 curve in normal coordinates from `v a = 0` with future causal velocity almost everywhere, and
-`σ_p(v b) = 0`. Then `v t = lam t • v b`, with `lam` monotone from `0` to `1`: the curve is a
+`σ_p(v b) = 0`. Then `v t = lam t • v b`, with `lam` continuous and monotone from `0` to `1`: the curve is a
 reparametrisation of the radial null geodesic from `p` to `φ (v b)`. -/
 theorem IsTimeBall.null_rigidity (hL : IsLorentzianCoordMetric g U) {p e : Fin n → ℝ} {ρ r : ℝ}
     {φ : OpenPartialHomeomorph (Fin n → ℝ) (Fin n → ℝ)} {N : (Fin n → ℝ) → Fin n → ℝ}
@@ -106,7 +106,7 @@ theorem IsTimeBall.null_rigidity (hL : IsLorentzianCoordMetric g U) {p e : Fin n
       pairing g (φ (v t)) (fderiv ℝ φ (v t) v') (fderiv ℝ φ (v t) v') ≤ 0 ∧
       pairing g (φ (v t)) (N (v t)) (fderiv ℝ φ (v t) v') < 0)
     (hnull : pairing g p (v b) (v b) = 0) :
-    ∃ lam : ℝ → ℝ, lam a = 0 ∧ lam b = 1 ∧ MonotoneOn lam (Icc a b) ∧
+    ∃ lam : ℝ → ℝ, lam a = 0 ∧ lam b = 1 ∧ MonotoneOn lam (Icc a b) ∧ ContinuousOn lam (Icc a b) ∧
       ∀ t ∈ Icc a b, v t = lam t • v b := by
   have hg := hL.1
   have hp : p ∈ U := by
@@ -247,9 +247,10 @@ theorem IsTimeBall.null_rigidity (hL : IsLorentzianCoordMetric g U) {p e : Fin n
       rw [this, zero_smul])
     simp only [ContinuousLinearMap.zero_apply, sub_self, mul_zero] at this
     exact (sub_eq_zero.1 (norm_le_zero_iff.1 this)).symm
-  refine ⟨fun t => ℓ (v t) / ℓ (v b), by simp [hℓa], div_self hℓb.ne', ?_, ?_⟩
+  refine ⟨fun t => ℓ (v t) / ℓ (v b), by simp [hℓa], div_self hℓb.ne', ?_, ?_, ?_⟩
   · intro s hs t ht hst
     exact div_le_div_of_nonneg_right (hmono.1 s hs t ht hst) hℓb.le
+  · exact (ℓ.continuous.comp_continuousOn hv.continuousOn).div_const _
   · intro t ht
     rcases ht.1.eq_or_lt with rfl | hta
     · simp [ha, hℓa]

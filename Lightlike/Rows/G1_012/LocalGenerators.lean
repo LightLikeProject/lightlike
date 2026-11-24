@@ -343,7 +343,9 @@ theorem local_null_rigidity (T : Causal.TimeOrientation g) (x : M) {β : ℝ →
     (hb : β b ∉ Causal.chronFuture T (β a)) :
     ∃ (lam : ℝ → ℝ) (vb : Fin n → ℝ), vb ∈ ball (0 : Fin n → ℝ) r ∧
       Lightlike.Geodesic.pairing (g.coordMetric x) (extChartAt 𝓘(ℝ, Fin n → ℝ) x (β a)) vb vb = 0 ∧
-      lam a = 0 ∧ lam b = 1 ∧ MonotoneOn lam (Icc a b) ∧
+      Lightlike.Geodesic.pairing (g.coordMetric x) (extChartAt 𝓘(ℝ, Fin n → ℝ) x (β a))
+        (timeCoord T x (extChartAt 𝓘(ℝ, Fin n → ℝ) x (β a))) vb ≤ 0 ∧
+      lam a = 0 ∧ lam b = 1 ∧ MonotoneOn lam (Icc a b) ∧ ContinuousOn lam (Icc a b) ∧
       ∀ t ∈ Icc a b, extChartAt 𝓘(ℝ, Fin n → ℝ) x (β t) = φ (lam t • vb) := by
   have hL := g.isLorentzianCoordMetric_coordMetric x
   have hg := hL.1
@@ -429,12 +431,12 @@ theorem local_null_rigidity (T : Causal.TimeOrientation g) (x : M) {β : ℝ →
     have e2 : ψ.symm p = β a := ψ.left_inv (hsrc a ⟨le_rfl, hab.le⟩)
     rw [e1, e2] at hmem
     exact hb hmem
-  obtain ⟨lam, hl0, hl1, hmono, hlam⟩ := hTB.null_rigidity hL hab hvL
+  obtain ⟨lam, hl0, hl1, hmono, hcont, hlam⟩ := hTB.null_rigidity hL hab hvL
     (fun t ht => (hvball t ht).1) hva (by
       filter_upwards [hd] with t ht hmt
       obtain ⟨v', hv', h1, h2⟩ := ht hmt
       exact ⟨v', hv', h1, h2⟩) hnull
-  refine ⟨lam, v b, hvb.1, hnull, hl0, hl1, hmono, fun t ht => ?_⟩
+  refine ⟨lam, v b, hvb.1, hnull, by linarith [hcone.2], hl0, hl1, hmono, hcont, fun t ht => ?_⟩
   rw [← hlam t ht, (hvball t ht).2]
 
 end Lightlike.Penrose
