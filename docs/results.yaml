@@ -104,6 +104,7 @@
       - {ref: hall-2015, location: "Chapter: Basic Representation Theory|10.1007/978-3-319-13467-3_4"}
       - {ref: martin-dussaud-2019, location: "§4.1", check: "representations"}
   review: kernel-checked
+  note: "Mathlib-ready rework (T-UP-1, G3-147): Lightlike/Upstream/SU2Spin/SpinRep.lean proves the same statement as SU2Spin.spinRepresentation_isIrreducible, for Mathlib's specialUnitaryGroup in Mathlib style (no Lightlike namespace, so it is not a separate registry entry); AxiomsCheck.lean and Tests.lean check it. The pull request to Mathlib has not been opened by this project."
   since: 0.1.0
 - id: LL-0008
   title: Every continuous irreducible finite-dimensional representation of SU(2) is a spin representation
@@ -118,6 +119,7 @@
       - {ref: brocker-tom-dieck-1985, location: "Chapter: Elementary Representation Theory|10.1007/978-3-662-12918-0_2"}
       - {ref: martin-dussaud-2019, location: "§4.1", check: "representations"}
   review: kernel-checked
+  note: "Mathlib-ready rework (T-UP-2, G3-147): Lightlike/Upstream/SU2Spin/Completeness.lean proves SU2Spin.spinRep_complete without the project's exponential map (it uses the Lie-algebra data in Su2Exp.lean, Differential.lean and Sl2Standard.lean of the same folder); not a separate registry entry because the names have no Lightlike prefix. The pull request to Mathlib has not been opened by this project."
   since: 0.1.0
 - id: LL-0009
   title: The derivative of the spin-n/2 representation is Physlib's sl₂-module V(n)
