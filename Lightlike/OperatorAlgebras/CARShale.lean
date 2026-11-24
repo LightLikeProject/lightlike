@@ -338,6 +338,143 @@ lemma inner_annR_creR (j : ι) (x y : Γ) : ⟪annR B b R j x, y⟫_ℂ = ⟪x, 
   simp [Complex.conj_I, h2]
   ring
 
+omit hR in
+lemma fockField_add (w w' : Z) : fockField B b (w + w') = fockField B b w + fockField B b w' := by
+  have h1 := creW_add B b w w'
+  have h2 : annW B b (w + w') = annW B b w + annW B b w' := by
+    rw [annW, h1, map_add]; rfl
+  rw [fockField, fockField, fockField, h1, h2]; abel
+
+omit hR in
+lemma fockField_real_smul (r : ℝ) (w : Z) : fockField B b (r • w) = (r : ℂ) • fockField B b w := by
+  have h0 : r • w = (r : ℂ) • w := (Complex.coe_smul r w).symm
+  have h1 : creW B b (r • w) = (r : ℂ) • creW B b w := by rw [h0, creW_smul]
+  have h2 : annW B b (r • w) = (r : ℂ) • annW B b w := by
+    rw [annW, h1, map_smulₛₗ, Complex.conj_ofReal]; rfl
+  rw [fockField, fockField, h1, h2, smul_add]
+
+omit hR in
+lemma continuous_fockField : Continuous (fockField B b) :=
+  (continuous_creW B b).add (continuous_annW B b)
+
+lemma norm_R (w : Z) : ‖R w‖ = ‖w‖ := by
+  have h := hR w w
+  rw [inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K] at h
+  simp [sq, Complex.mul_re] at h
+  nlinarith [norm_nonneg (R w), norm_nonneg w]
+
+lemma continuous_R : Continuous R :=
+  (LinearMap.mkContinuous R 1 (fun w => by rw [one_mul, norm_R R hR])).continuous
+
+include hR in
+lemma creR_car_ite [DecidableEq ι] :
+    (∀ i j, creR B b R i * creR B b R j + creR B b R j * creR B b R i = 0) ∧
+    (∀ i j, annR B b R i * creR B b R j + creR B b R j * annR B b R i = if i = j then 1 else 0) :=
+  ⟨fun i j => (creR_annR_car B b R hR i j).1, fun i j => by
+    rw [(creR_annR_car B b R hR i j).2]; split_ifs <;> simp⟩
+
+/-- **The closed span of the words of a vacuum is dense, by irreducibility.** -/
+theorem dense_words [DecidableEq ι] (hRs : Function.Surjective R) (Ω : Γ) (hn : Ω ≠ 0)
+    (hvac : ∀ j, annR B b R j Ω = 0) :
+    ⊤ ≤ (Submodule.span ℂ (Set.range (vec (creR B b R) Ω))).topologicalClosure := by
+  obtain ⟨hc, hca⟩ := creR_car_ite B b R hR
+  set W := (Submodule.span ℂ (Set.range (vec (creR B b R) Ω))).topologicalClosure with hW
+  have hmap : ∀ f : Γ →L[ℂ] Γ, (∀ S, f (vec (creR B b R) Ω S) ∈ Submodule.span ℂ (Set.range (vec (creR B b R) Ω))) →
+      ∀ x ∈ W, f x ∈ W := by
+    intro f hf x hx
+    have hsp : ∀ y ∈ Submodule.span ℂ (Set.range (vec (creR B b R) Ω)),
+        f y ∈ Submodule.span ℂ (Set.range (vec (creR B b R) Ω)) := fun y hy => by
+      induction hy using Submodule.span_induction with
+      | mem y hy => obtain ⟨S, rfl⟩ := hy; exact hf S
+      | zero => simp
+      | add y z _ _ hy hz => rw [map_add]; exact Submodule.add_mem _ hy hz
+      | smul r y _ hy => rw [map_smul]; exact Submodule.smul_mem _ _ hy
+    rw [hW, ← SetLike.mem_coe, Submodule.topologicalClosure_coe] at hx ⊢
+    exact map_mem_closure f.continuous hx (fun y hy => hsp y hy)
+  have hcre : ∀ j, ∀ x ∈ W, creR B b R j x ∈ W := fun j => hmap _ fun S => by
+    by_cases hj : j ∈ S
+    · have : creR B b R j (vec (creR B b R) Ω S) = 0 := cre_word_of_mem hc (by simpa using hj)
+      rw [this]; exact Submodule.zero_mem _
+    · rw [cre_vec hc hj]
+      exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)
+  have hann : ∀ j, ∀ x ∈ W, annR B b R j x ∈ W := fun j => hmap _ fun S => by
+    rw [ann_vec (annR B b R) hca hvac S j]
+    split_ifs
+    · exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)
+    · exact Submodule.zero_mem _
+  have hp : ∀ j, ∀ x ∈ W, pField B b R j x ∈ W := fun j x hx => by
+    have : pField B b R j x = annR B b R j x + creR B b R j x := by
+      simp only [annR, creR, ContinuousLinearMap.smul_apply, ContinuousLinearMap.add_apply,
+        ContinuousLinearMap.sub_apply]
+      module
+    rw [this]; exact W.add_mem (hann j x hx) (hcre j x hx)
+  have hq : ∀ j, ∀ x ∈ W, qField B b R j x ∈ W := fun j x hx => by
+    have : qField B b R j x = (-Complex.I) • (annR B b R j x - creR B b R j x) := by
+      simp only [annR, creR, ContinuousLinearMap.smul_apply, ContinuousLinearMap.add_apply,
+        ContinuousLinearMap.sub_apply]
+      linear_combination (norm := (match_scalars <;> (ring_nf; try simp only [Complex.I_sq]; try ring)))
+    rw [this]; exact W.smul_mem _ (W.sub_mem (hann j x hx) (hcre j x hx))
+  -- the real subspace of `v` with `φ(v) W ⊆ W`
+  let T : Submodule ℝ Z :=
+    { carrier := {v | ∀ x ∈ W, fockField B b v x ∈ W}
+      add_mem' := fun {v v'} hv hv' x hx => by
+        rw [fockField_add B b, ContinuousLinearMap.add_apply]; exact W.add_mem (hv x hx) (hv' x hx)
+      zero_mem' := fun x hx => by
+        have : fockField B b 0 = 0 := by
+          have := fockField_real_smul B b (0 : ℝ) 0
+          simpa using this
+        rw [this]; simpa using W.zero_mem
+      smul_mem' := fun r v hv x hx => by
+        rw [fockField_real_smul B b, ContinuousLinearMap.smul_apply]; exact W.smul_mem _ (hv x hx) }
+  have hTclosed : IsClosed (T : Set Z) := by
+    have : (T : Set Z) = ⋂ x ∈ (W : Set Γ), {v | fockField B b v x ∈ (W : Set Γ)} := by
+      ext v; simp [T]
+    rw [this]
+    refine isClosed_biInter fun x _ => ?_
+    exact (Submodule.isClosed_topologicalClosure _).preimage
+      ((continuous_fockField B b).clm_apply continuous_const)
+  let T' : Submodule ℝ Z := T.comap R
+  have hT'closed : IsClosed (T' : Set Z) := hTclosed.preimage (continuous_R R hR)
+  have hbT : ∀ j, b j ∈ T' := fun j x hx => hp j x hx
+  have hbIT : ∀ j, Complex.I • b j ∈ T' := fun j x hx => hq j x hx
+  have hspan : ∀ y ∈ Submodule.span ℂ (Set.range b), y ∈ T' ∧ Complex.I • y ∈ T' := by
+    intro y hy
+    induction hy using Submodule.span_induction with
+    | mem y hy =>
+      obtain ⟨j, rfl⟩ := hy
+      refine ⟨hbT j, hbIT j⟩
+    | zero => exact ⟨T'.zero_mem, by simpa using T'.zero_mem⟩
+    | add y z _ _ hy hz => exact ⟨by simpa using T'.add_mem hy.1 hz.1, by rw [smul_add]; exact T'.add_mem hy.2 hz.2⟩
+    | smul c y _ hy =>
+      have he : ∀ (z : ℂ) (y : Z), z • y = z.re • y + z.im • (Complex.I • y) := fun z y => by
+        conv_lhs => rw [← Complex.re_add_im z]
+        rw [add_smul, mul_smul, Complex.coe_smul, Complex.coe_smul]
+      refine ⟨?_, ?_⟩
+      · rw [he c y]; exact T'.add_mem (T'.smul_mem _ hy.1) (T'.smul_mem _ hy.2)
+      · rw [smul_smul, he (Complex.I * c) y]
+        simp only [Complex.mul_re, Complex.I_re, Complex.I_im, zero_mul, one_mul, zero_sub, Complex.mul_im, zero_add]
+        exact T'.add_mem (T'.smul_mem _ hy.1) (T'.smul_mem _ hy.2)
+  have hall : ∀ w : Z, w ∈ T' := by
+    intro w
+    have hd : Dense (Submodule.span ℂ (Set.range b) : Set Z) :=
+      Submodule.dense_iff_topologicalClosure_eq_top.2 b.dense_span
+    have hsub : (Submodule.span ℂ (Set.range b) : Set Z) ⊆ (T' : Set Z) := fun y hy => (hspan y hy).1
+    have := (hT'closed.closure_subset_iff.2 hsub)
+    rw [hd.closure_eq] at this
+    exact this (Set.mem_univ w)
+  have hfield : ∀ v : Z, ∀ x ∈ W, fockField B b v x ∈ W := fun v x hx => by
+    obtain ⟨w, rfl⟩ := hRs v
+    exact hall w x hx
+  rcases fockField_irreducible B b W (Submodule.isClosed_topologicalClosure _) hfield with h0 | h1
+  · exfalso
+    have hΩW : Ω ∈ W := by
+      have : vec (creR B b R) Ω ∅ = Ω := by simp [vec, word]
+      rw [← this]
+      exact Submodule.le_topologicalClosure _ (Submodule.subset_span ⟨_, rfl⟩)
+    rw [h0] at hΩW
+    exact hn (by simpa using hΩW)
+  · rw [h1]
+
 end FockLadder
 
 end Lightlike.OperatorAlgebras.CARShale
