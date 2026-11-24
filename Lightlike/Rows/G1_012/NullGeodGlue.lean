@@ -98,4 +98,16 @@ theorem IsNullGeodesicOn.union {γ₁ γ₂ : ℝ → M} {J₁ J₂ : Set ℝ} (
   intro t ht
   exact ht.elim (fun h => h1 t h) (fun h => h2 t h)
 
+/-- **Gluing null geodesics, existential form.** -/
+theorem IsNullGeodesicOn.exists_union {γ₁ γ₂ : ℝ → M} {J₁ J₂ : Set ℝ} (h₁ : IsNullGeodesicOn g γ₁ J₁)
+    (h₂ : IsNullGeodesicOn g γ₂ J₂) (hJ₁ : IsOpen J₁) (hJ₂ : IsOpen J₂)
+    (hag : EqOn γ₁ γ₂ (J₁ ∩ J₂)) :
+    ∃ γ : ℝ → M, IsNullGeodesicOn g γ (J₁ ∪ J₂) ∧ (∀ σ ∈ J₁, γ σ = γ₁ σ) ∧
+      ∀ σ ∈ J₂, γ σ = γ₂ σ := by
+  classical
+  refine ⟨_, h₁.union h₂ hJ₁ hJ₂ hag, fun σ hσ => by simp [hσ], fun σ hσ => ?_⟩
+  by_cases h1 : σ ∈ J₁
+  · simp [h1, hag ⟨h1, hσ⟩]
+  · simp [h1]
+
 end Lightlike.Penrose
