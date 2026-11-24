@@ -1,0 +1,11 @@
+- id: LL-XXXX-a
+  title: "Wick's theorem for fermionic fields on a vacuum for every number of fields: the vacuum expectation of a product of split fields (annihilation part killing the vacuum, creation part killed by the functional, scalar anticommutators with the annihilation parts) is the Pfaffian-type recursion of the pairings"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/FermionWick.lean
+  decls: [Lightlike.OperatorAlgebras.wick, Lightlike.OperatorAlgebras.A_pass, Lightlike.OperatorAlgebras.expect_prod, Lightlike.OperatorAlgebras.wick_pair, Lightlike.OperatorAlgebras.wick_single]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source for the fermionic Wick theorem was read). Proved for lists of every length n: l(phi_1 ... phi_n Psi) = l(Psi) wick pair [phi_1, ..., phi_n], with wick (x :: l) = sum_i (-1)^i pair x l_i wick (l without l_i) (the Pfaffian expansion along the first row); odd n gives 0 (wick_single, n = 1), and wick_pair is the n = 2 case (the two-point function). The fields are abstract split fields A + B on a complex vector space; the instance for the CAR fields of a Bogoliubov vacuum (the fields linear in the transformed a, c) is NOT built here: the hypotheses (A Psi = 0, l(B v) = 0, A phi + phi A scalar) are what CARQuasiFree.lean proves for the two-point functions, but the scalar anticommutator for general linear combinations is not wired in. The bosonic counterpart for the CCR (hafnian) is npoint_eq_haf in QuasiFreeWick.lean."
+  since: unreleased
