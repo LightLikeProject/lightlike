@@ -1,0 +1,13 @@
+- id: LL-XXXX-a
+  title: "The partition function of the zero-dimensional quartic model is analytic for Re λ > 0 and its Taylor remainders obey |R_N Z(λ)| ≤ 16 √(2π) 32^N N! |λ|^{N+1} uniformly in every disk Re λ⁻¹ > 1/R"
+  area: FieldTheory
+  file: Lightlike/FieldTheory/ZeroDim/QuarticComplex.lean
+  decls: [Lightlike.FieldTheory.differentiableOn_quarticZ, Lightlike.FieldTheory.norm_quarticZ_sub_le, Lightlike.FieldTheory.quarticZ_nevanlinna]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: rivasseau-wang-2010, location: "Theorem IV.1"}
+  review: kernel-checked
+  note: "GF7 piece (C) of G2-045: the analytic hypotheses of Nevanlinna's theorem for Z(λ) = ∫ e^{-λφ⁴ - φ²/2} dφ with complex coupling (Rivasseau–Wang, Theorem IV.1 with k = 2, via the hypotheses of Theorem III.2 with k = 1). The constants A = 16√(2π), B = 32 are this library's, from the Taylor bound |e^{-z} - Σ_{m<M} (-z)^m/m!| ≤ |z|^M/M! for Re z ≥ 0; the source gives its own constants. The comparison with the source is pending: the paper was not read at the cited theorem here. Borel summability itself (the consequence) is a separate entry."
+  since: unreleased
