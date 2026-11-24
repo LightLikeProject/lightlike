@@ -1389,6 +1389,7 @@ import Lightlike.Spacetime.Causal.CauchyClosed
 import Lightlike.Rows.G1_012.Defs
 import Lightlike.Rows.G1_012.Skeleton
 import Lightlike.Rows.G1_012.AchronalBoundary
+import Lightlike.Rows.G1_012.PenroseCovering
 import Lightlike.Rows.G1_012.Assembly
 import Lightlike.Rows.G1_012.NullGeodCausal
 import Lightlike.Rows.G1_012.TrappedSurface
