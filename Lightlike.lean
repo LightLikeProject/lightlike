@@ -1387,6 +1387,7 @@ import Lightlike.Spacetime.Causal.CauchyClosed
 import Lightlike.Rows.G1_012.Defs
 import Lightlike.Rows.G1_012.Skeleton
 import Lightlike.Rows.G1_012.GeodesicChartIndep
+import Lightlike.Rows.G1_012.ExpLocal
 import Lightlike.Spacetime.Causal.ChainReach
 import Lightlike.Spacetime.Causal.TimeReversal
 import Lightlike.Spacetime.Causal.OpenPast
