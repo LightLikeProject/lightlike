@@ -23,6 +23,108 @@ variable {n : ℕ} {M : Type*} [TopologicalSpace M] [ChartedSpace (Fin n → ℝ
   [IsManifold 𝓘(ℝ, Fin n → ℝ) 2 M] [MeasurableSpace M] [BorelSpace M]
   {g : LorentzianMetric 𝓘(ℝ, Fin n → ℝ) M n}
 
+/-- **The radial null geodesic of a time ball is a null geodesic on an open interval containing
+`[0, 1]`.** -/
+theorem radial_isNullGeodesicOn (T : Causal.TimeOrientation g) (x : M) {p : Fin n → ℝ}
+    {ρ r : ℝ} {φ : OpenPartialHomeomorph (Fin n → ℝ) (Fin n → ℝ)} {N : (Fin n → ℝ) → Fin n → ℝ}
+    (hTB : Lightlike.Geodesic.IsTimeBall (g.coordMetric x)
+      (extChartAt 𝓘(ℝ, Fin n → ℝ) x).target p ρ φ (timeCoord T x p) r N)
+    {w : Fin n → ℝ} (hw : w ∈ ball (0 : Fin n → ℝ) r) (hw0 : w ≠ 0)
+    (hσ : Lightlike.Geodesic.pairing (g.coordMetric x) p w w = 0) :
+    ∃ lam : ℝ, 1 < lam ∧ IsNullGeodesicOn g
+      (fun s : ℝ => (extChartAt 𝓘(ℝ, Fin n → ℝ) x).symm (φ (s • w))) (Ioo (-lam) lam) := by
+  have hL := g.isLorentzianCoordMetric_coordMetric x
+  have hg := hL.1
+  set ψ := extChartAt 𝓘(ℝ, Fin n → ℝ) x with hψ
+  have hwρ : w ∈ ball (0 : Fin n → ℝ) ρ := hTB.mem_ball hw
+  -- a slightly longer vector still in the normal ball
+  obtain ⟨lam, hlam1, hlamw⟩ : ∃ lam : ℝ, 1 < lam ∧ lam • w ∈ ball (0 : Fin n → ℝ) ρ := by
+    have hopen : IsOpen ((fun t : ℝ => t • w) ⁻¹' ball (0 : Fin n → ℝ) ρ) :=
+      isOpen_ball.preimage (by fun_prop)
+    obtain ⟨δ, hδ, hsub⟩ := Metric.isOpen_iff.1 hopen 1 (by simpa using hwρ)
+    refine ⟨1 + δ / 2, by linarith, hsub ?_⟩
+    rw [Metric.mem_ball, Real.dist_eq]
+    rw [abs_of_nonneg (by linarith)]; linarith
+  have hlam0 : 0 < lam := by linarith
+  -- the chart geodesic and its rescaling
+  obtain ⟨γ', w', -, -, -, hgeo', hγ'⟩ := hTB.chart.geodesic (lam • w) hlamw
+  have hgeoS := hgeo'.scale lam⁻¹
+  set O : Set ℝ := Ioo (-lam) lam with hO
+  have hOo : IsOpen O := isOpen_Ioo
+  have hIO : Icc (0 : ℝ) 1 ⊆ O := fun s hs => ⟨by linarith [hs.1], by linarith [hs.2]⟩
+  have hsw : ∀ s ∈ O, s • w ∈ ball (0 : Fin n → ℝ) ρ := by
+    intro s hs
+    have hs' : |s| < lam := abs_lt.2 hs
+    rw [mem_ball_zero_iff] at hlamw ⊢
+    rw [norm_smul, Real.norm_eq_abs]
+    rw [norm_smul, Real.norm_eq_abs, abs_of_pos hlam0] at hlamw
+    calc |s| * ‖w‖ ≤ lam * ‖w‖ := by gcongr
+      _ < ρ := hlamw
+  set c : ℝ → Fin n → ℝ := fun s => φ (s • w) with hc
+  set c' : ℝ → Fin n → ℝ := fun s => fderiv ℝ φ (s • w) w with hc'
+  have hφd : ∀ s ∈ O, HasDerivAt c (c' s) s := by
+    intro s hs
+    have hsrc : s • w ∈ φ.source := by rw [hTB.chart.source_eq]; exact hsw s hs
+    have hdφ : HasFDerivAt φ (fderiv ℝ φ (s • w)) (s • w) :=
+      ((hTB.chart.contDiffOn.contDiffAt (φ.open_source.mem_nhds hsrc)).differentiableAt
+        (by simp)).hasFDerivAt
+    have hin : HasDerivAt (fun s : ℝ => s • w) w s := by
+      simpa using (hasDerivAt_id s).smul_const w
+    exact hdφ.comp_hasDerivAt s hin
+  have hctarget : ∀ s ∈ O, c s ∈ ψ.target := fun s hs =>
+    hTB.chart.target_subset (φ.map_source (by rw [hTB.chart.source_eq]; exact hsw s hs))
+  have hmemS : ∀ s ∈ O, s ∈ (fun t : ℝ => lam⁻¹ * t) ⁻¹' Ioo (-1 : ℝ) 2 := by
+    intro s hs
+    have hs' : |s| < lam := abs_lt.2 hs
+    have h1 : |lam⁻¹ * s| < 1 := by
+      rw [abs_mul, abs_of_pos (inv_pos.2 hlam0), inv_mul_lt_iff₀ hlam0]; linarith
+    have := abs_lt.1 h1
+    exact ⟨by linarith [this.1], by linarith [this.2]⟩
+  have hcγ : ∀ s ∈ O, γ' (lam⁻¹ * s) = c s := by
+    intro s hs
+    have hs' : |s| < lam := abs_lt.2 hs
+    have h1 : |lam⁻¹ * s| ≤ 1 := by
+      rw [abs_mul, abs_of_pos (inv_pos.2 hlam0), inv_mul_le_iff₀ hlam0]; linarith
+    have := abs_le.1 h1
+    rw [hγ' _ ⟨this.1, this.2⟩]
+    simp only [hc, smul_smul]
+    have : lam⁻¹ * s * lam = s := by field_simp
+    rw [this]
+  set w'' : ℝ → Fin n → ℝ := fun s => lam⁻¹ • w' (lam⁻¹ * s) with hw''
+  have hpos'' : ∀ s ∈ O, HasDerivAt c (w'' s) s := by
+    intro s hs
+    refine (hgeoS.pos s (hmemS s hs)).congr_of_eventuallyEq ?_
+    filter_upwards [hOo.mem_nhds hs] with s' hs'
+    exact (hcγ s' hs').symm
+  have hw''eq : ∀ s ∈ O, w'' s = c' s := fun s hs => (hpos'' s hs).unique (hφd s hs)
+  have hgeoC : Lightlike.Geodesic.IsGeodesicOn (g.coordMetric x) c w'' O := by
+    refine ⟨hpos'', fun s hs => ?_⟩
+    have h2 := hgeoS.vel s (hmemS s hs)
+    rw [hcγ s hs] at h2
+    exact h2
+  have hcM : ∀ s ∈ O, ψ (ψ.symm (c s)) = c s := fun s hs => ψ.right_inv (hctarget s hs)
+  have hgeoM : Lightlike.Geodesic.IsGeodesicOn (g.coordMetric x)
+      (fun s => ψ (ψ.symm (c s))) w'' O := by
+    refine ⟨fun s hs => ?_, fun s hs => ?_⟩
+    · refine (hgeoC.pos s hs).congr_of_eventuallyEq ?_
+      filter_upwards [hOo.mem_nhds hs] with s' hs' using hcM s' hs'
+    · have := hgeoC.vel s hs
+      rw [← hcM s hs] at this
+      exact this
+  have hNull : IsNullGeodesicOn g (fun s => ψ.symm (c s)) O := by
+    refine isNullGeodesicOn_of_chart g x hOo (fun s hs => ψ.map_target (hctarget s hs))
+      (fun s hs => ?_) (fun s hs => ?_) hgeoM
+    · rw [hw''eq s hs]
+      intro h0
+      have := hTB.chart.fderiv_symm_apply (hsw s hs) w
+      have h0' : fderiv ℝ φ (s • w) w = 0 := h0
+      rw [h0', map_zero] at this
+      exact hw0 this.symm
+    · rw [hcM s hs, hw''eq s hs, ← pairing_eq_bil]
+      rw [show c s = φ (s • w) from rfl]
+      exact (radial_pairing hg hTB.chart (hsw s hs)).trans hσ
+  exact ⟨lam, hlam1, hNull⟩
+
 /-- **A radial null segment of a future time ball is a future null geodesic of `M`.** -/
 theorem radial_isFutureNullGeodesicOn (T : Causal.TimeOrientation g) (x : M) {p : Fin n → ℝ}
     {ρ r : ℝ} {φ : OpenPartialHomeomorph (Fin n → ℝ) (Fin n → ℝ)} {N : (Fin n → ℝ) → Fin n → ℝ}

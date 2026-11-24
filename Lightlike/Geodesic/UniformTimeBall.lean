@@ -311,7 +311,7 @@ theorem exists_uniform_future_timeBall {g : (Fin n → ℝ) → Matrix (Fin n) (
     (hg : IsCoordMetric g U) {K : Set (Fin n → ℝ)} (hK : IsCompact K) (hKU : K ⊆ U)
     {e : (Fin n → ℝ) → Fin n → ℝ} (he' : ContinuousOn e U)
     (hlt' : ∀ y ∈ U, pairing g y (e y) (e y) < 0) :
-    ∃ ρ r η : ℝ, 0 < r ∧ r ≤ ρ ∧ 0 < η ∧ ∀ p ∈ K, ∃ (φ : OpenPartialHomeomorph (Fin n → ℝ) (Fin n → ℝ))
+    ∃ ρ r η : ℝ, 0 < r ∧ r < ρ ∧ 0 < η ∧ ∀ p ∈ K, ∃ (φ : OpenPartialHomeomorph (Fin n → ℝ) (Fin n → ℝ))
       (N : (Fin n → ℝ) → Fin n → ℝ), IsTimeBall g U p ρ φ (e p) r N ∧
       (∀ v ∈ ball (0 : Fin n → ℝ) r, pairing g (φ v) (N v) (e (φ v)) < 0) ∧
       ∀ y : Fin n → ℝ, Dist.dist y p < η → ∃ v ∈ ball (0 : Fin n → ℝ) r, φ v = y := by
@@ -444,7 +444,7 @@ theorem exists_uniform_future_timeBall {g : (Fin n → ℝ) → Matrix (Fin n) (
     (hF2c.mono hSub) hF20
   have hrle : min r r₂ ≤ ρ / 2 := (min_le_left _ _).trans hrρ
   obtain ⟨η, hη0, hηy⟩ := hη (min r r₂) (lt_min hr hr₂) (hrle.trans (half_le_self hρ.le))
-  refine ⟨ρ, min r r₂, η, lt_min hr hr₂, hrle.trans (half_le_self hρ.le), hη0, fun p hp => ?_⟩
+  refine ⟨ρ, min r r₂, η, lt_min hr hr₂, hrle.trans_lt (half_lt_self hρ), hη0, fun p hp => ?_⟩
   have hrb : ball (0 : Fin n → ℝ) (min r r₂) ⊆ ball (0 : Fin n → ℝ) ρ :=
     ball_subset_ball (hrle.trans (half_le_self hρ.le))
   have hrb1 : ball (0 : Fin n → ℝ) (min r r₂) ⊆ ball (0 : Fin n → ℝ) r :=
