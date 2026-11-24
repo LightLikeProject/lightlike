@@ -5038,7 +5038,7 @@
   review: kernel-checked
   note: "Compared with Boldt, arXiv:1504.03121, Theorem 3.1, p. 6 (read): the Dirac eigenvalues of the round S^n are +-(n/2 + k) with multiplicity 2^[n/2] C(n+k-1, k); for n = 2 this is +-(k+1) with multiplicity 2(k+1). Here, in the stereographic chart and for an arbitrary Clifford module V of Cl(R^2), the k+1 angular modes c1 = (1+|y|^2)^-(k+1) z^(n+1) G_n(|y|^2), c2 = (1+|y|^2)^-(k+1) z^n F_n(|y|^2) (n = 0..k, G_n a terminating hypergeometric polynomial of degree k-n) give eigenspinors h^(1/2) (Lv c1 + gamma_0 Lv c2) of eigenvalue epsilon (k+1), and the map (v_0..v_k) to the sum is linear and injective. For V = C^2 this is the lower bound 2(k+1) over C. WEAKER: a lower bound only; no completeness (no statement that there are no other eigenvalues or eigenspinors), no regularity condition at the north pole of the sphere and no L^2 or spinor-bundle statement; the chart carries no such notion in the library."
   since: unreleased
-- id: LL-XXXX-b
+- id: LL-0381
   title: "Within the angular polynomial class, a flat eigenspinor of the Dirac operator of the unit 2-sphere in the stereographic chart that is reduced and satisfies the decay condition has eigenvalue plus or minus s and the radial profile of the family of the lower bound"
   area: GR
   file: Lightlike/Dirac/EigenAngular.lean
