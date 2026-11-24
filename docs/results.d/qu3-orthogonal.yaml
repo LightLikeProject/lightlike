@@ -1,0 +1,11 @@
+- id: LL-XXXX-a
+  title: "Discrete sine orthogonality, sum over x < r of sin(a pi x/r) sin(b pi x/r) = (r/2) delta_ab for 0 < a, b < r, and S^2 = 1 for the S matrix of SU(2) at level r - 2"
+  area: TuraevViro
+  file: Lightlike/TuraevViro/SOrthogonal.lean
+  decls: [Lightlike.TV.sum_sin_mul_sin_orth, Lightlike.TV.sMat_mul_self]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source for the SU(2)_k S matrix was read). The proof telescopes 2 sin(phi/2) sum cos(x phi) (two_sin_mul_sum_cos), evaluates the full-period cosine sum (1 - (-1)^k)/2 for 0 < k < 2r, and uses that a - b and a + b have the same parity. S is real and symmetric (sMat_comm), so S^2 = 1 says it is an orthogonal involution; charge conjugation is trivial for SU(2). WEAKER than the full modular data: the Verlinde formula for the rows other than the unit row, the T matrix and the relation (ST)^3 = S^2 are not proved."
+  since: unreleased
