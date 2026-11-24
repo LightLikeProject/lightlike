@@ -8,9 +8,11 @@ A **closed trapped surface** `S` in a space-time `(M, g)` with Levi-Civita conne
 (Penrose 1965; Hawking–Ellis 1973, §8.1; Senovilla–Garfinkle 2015, §2): a compact spacelike surface of codimension
 two whose two families of future null normals both converge, `θ < 0`.
 
-Representation (a difference from the textbook "embedded submanifold"): `S` is a **regular level set**
-`S = f⁻¹(0)` of a smooth map `f : M → ℝ²` with surjective derivative along `S`, so that `T_x S = ker df_x` has
-dimension `n - 2` with no submanifold theory. The expansion of a null normal field `k` along `S` is
+**Weaker than the textbook "embedded submanifold"** (difference approved as `weaker`): `S` is a **regular level
+set** `S = f⁻¹(0)` of a smooth map `f : M → ℝ²` with surjective derivative along `S`, so that `T_x S = ker df_x`
+has dimension `n - 2` with no submanifold theory. A regular level set has a trivial normal bundle, so this covers
+a proper subclass of the closed embedded codimension-two surfaces (those with trivial normal bundle, for example
+the round spheres of a Schwarzschild slice). The expansion of a null normal field `k` along `S` is
 `θ_k(x) = Σᵢ g(∇_{eᵢ} k, eᵢ)` for a `g`-orthonormal basis `(eᵢ)` of `T_x S` (independent of the basis); as for
 `Trapped.IsTrappedSphere` (G1-011) the surface is trapped if **every** smooth future null normal field has `θ_k < 0`
 on `S` (both families at once, since both are future null normal fields). Spacelikeness of `S` is not a separate
