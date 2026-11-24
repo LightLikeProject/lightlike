@@ -124,6 +124,20 @@ computed (the partial trace identity only gives the top and bottom ones).
 Next Lean step for (B): the shifted family `e ∘ (· + s)` is `IsTL`, the generalised partial trace identity,
 and `A² = c A`.  Next step for (A): naturality lemmas of `cup` and `cap` against `e_j`.
 
+## F3 status: the vertex norm is a scalar, and its value (MEASURED)
+
+Lean (`Natural`, `Reduction`, `Vertex`): cups and caps slide through the generators; `cap_m z cup_{m'} ∈ C(n-1)` for
+`z ∈ C(n+1)` (`cap_mul_cup_mem`); the nested junction sandwich `nestCap l i · Q · nestCup l i ∈ C(N - 2i)`
+(`nestCap_mul_nestCup_mem`); and `vertex_norm`: `p_c · nestCap · (p_a p_b') · nestCup · p_c = κ p_c` for some scalar
+`κ`, `c = a + b - 2i`, `l = a - i` (needs `d_j ≠ 0` for `j < c`).
+MEASURED value of `κ` (numpy, matrices of cups, caps and projectors on `2^n`, random complex `q`, nine cases with
+`a, b ≤ 3`, `i ≤ min(a,b)`): `κ(a,b,i) = θ(a,b,c) / Δ_c` exactly, with Kauffman–Lins' signed `θ` and
+`Δ_c = (-1)^c [c+1]`, `[n] = (q^n - q^{-n})/(q - q^{-1})` (i.e. `A² = q`, loop value `-q - q^{-1}`); the
+model's conventions (`cup = |01⟩ - q|10⟩`, `cap⟨01| = -q⁻¹, cap⟨10| = 1`) agree with Kauffman–Lins.
+Next: prove this value (an induction on `b` through the Jones–Wenzl recursion; the naive recursion does not
+close because `P'_b` does not commute with the new generator, so it needs the partial-trace identity of the vertex),
+then the fusion identity `p_a p_b = Σ_c (Δ_c/θ(a,b,c)) V V'`, then recoupling and the pentagon.
+
 ## Decision
 
 No route in this note is a row-sized step. The two structural routes (F, E) are milestone-sized
