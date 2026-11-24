@@ -1,4 +1,4 @@
-- id: LL-XXXX-a
+- id: LL-XXXX-g
   title: "Wick's theorem for fermionic fields on a vacuum for every number of fields: the vacuum expectation of a product of split fields (annihilation part killing the vacuum, creation part killed by the functional, scalar anticommutators with the annihilation parts) is the Pfaffian-type recursion of the pairings"
   area: OperatorAlgebras
   file: Lightlike/OperatorAlgebras/FermionWick.lean
