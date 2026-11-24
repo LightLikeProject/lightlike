@@ -41,3 +41,6 @@ pending: Bratteli-Robinson 2, Chapter 5, not read). So this has no catalogue ent
 
 Surprise / backlog: the sufficiency half reduces entirely to the existing Fock irreducibility; the hard half
 (necessity, `η` degenerate) and the CS7 specialisation (positive part of the Pauli-Jordan matrix gives `J`) are open.
+
+## Comparison (24 Nov 2026): Gérard, arXiv:1901.10175, Proposition 4.9.1
+Read (text extracted from the PDF): a quasi-free state with covariance `η` (there `ω(W(x)) = exp(-½ x·ηx)`, so his `2η` is the `η` here) is pure iff `(2η^cpl, σ^cpl)` is Kähler, i.e. `σ j = 2η` for an anti-involution `j ∈ Sp`; the proof is cited there to Dereziński-Gérard, Theorem 17.13 (not read). Bratteli-Robinson 2 was not available, so the comparison is with Gérard. Our `CompatibleComplexStructure` is this condition with `J = -j`. Sufficiency is proved here; necessity is not (it needs the polar-decomposition argument of his Proposition 4.9.2, or a decomposition of a non-extremal state, not formalised).
