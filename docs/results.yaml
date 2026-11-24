@@ -4491,3 +4491,29 @@
   review: kernel-checked
   note: "SF10 (G2-028), task T-SF10-P2, reduction only: with det_ne_zero_of_re_psd_ker (HessianKernel.lean: a complex symmetric matrix with positive semidefinite real part is invertible iff Re and Im have no common real kernel vector), the invertibility HessianInvertible is equivalent to a kernel condition on the 44 x 44 matrix. The kernel condition itself, for non-degenerate boundary data, is NOT proved (numerical evidence only: scripts/asymptotics/lorentzian_hessian_kernel_check.py), so HessianInvertible is not discharged."
   since: unreleased
+- id: LL-0339
+  title: "Fermionic Bogoliubov transformations of the CAR: b = alpha a + beta c has anticommutators alpha alpha* + beta beta* and alpha beta^T + beta alpha^T; under alpha alpha* + beta beta* = 1 and alpha beta^T + beta alpha^T = 0 the CAR is preserved, the transformation is invertible, the transformed Majorana family of an irreducible CAR representation is an irreducible CAR representation, hence unitarily implemented (finite dimensions)"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/CARBogoliubov.lean
+  decls: [Lightlike.OperatorAlgebras.bogAnn_bogCre_anticomm, Lightlike.OperatorAlgebras.bogAnn_anticomm, Lightlike.OperatorAlgebras.isCARPairs_bog, Lightlike.OperatorAlgebras.bog_inv, Lightlike.OperatorAlgebras.isCAROn_bogFam, Lightlike.OperatorAlgebras.isIrreducibleCAR_bogFam, Lightlike.OperatorAlgebras.bogoliubov_implementable]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: derezinski-2006, location: "Theorem 10, p. 17", check: "Theorem 10"}
+  review: kernel-checked
+  note: "The implementer exists by the uniqueness of irreducible representations of the CAR over R^{2n} (Dereziński Theorem 10, p. 17, read; the file CARUnique.lean, entry above), applied to the original and the transformed Majorana families. The Bogoliubov conditions alpha alpha* + beta beta* = 1, alpha beta^T + beta alpha^T = 0 and the formulas are computed here; no statement of Section 7 on fermionic Bogoliubov transformations was read, so no comparison with it is claimed. WEAKER: only sufficiency of the two conditions is proved (necessity, that a CAR-preserving map has them, is not), only finitely many modes (the infinite-mode criterion, beta Hilbert-Schmidt, is not formalised), and the spaces are finite-dimensional with modes indexed by Fin n. For one mode the conditions force alpha beta = 0 (TestsCARBogoliubov: one_mode_trivial), the fermionic contrast to |alpha|^2 - |beta|^2 = 1."
+  since: unreleased
+- id: LL-0340
+  title: "Bogoliubov vacua of the CAR: a vector killed by every transformed annihilation operator has two-point functions <a_i Psi, a_j Psi> = (beta* beta)_ij |Psi|^2, <c_i Psi, c_j Psi> = (alpha* alpha)_ij |Psi|^2, <a_i Psi, c_j Psi> = (beta* alpha)_ij |Psi|^2; it exists for the Jordan-Wigner representation and is unique up to a scalar"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/CARQuasiFree.lean
+  decls: [Lightlike.OperatorAlgebras.bogVacuum_inner_a_a, Lightlike.OperatorAlgebras.bogVacuum_inner_c_c, Lightlike.OperatorAlgebras.bogVacuum_inner_a_c, Lightlike.OperatorAlgebras.bogVacuum_exists, Lightlike.OperatorAlgebras.bogVacuum_unique, Lightlike.OperatorAlgebras.exists_bogVacuum_jordanWigner]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: derezinski-2006, location: "Theorem 10, p. 17", check: "Theorem 10"}
+  review: kernel-checked
+  note: "The pure quasi-free (Gaussian) state x -> <Psi, x Psi>/<Psi, Psi> of the CAR over R^{2n}, as the Fock vacuum of the transformed representation. Existence is the implementing unitary of the previous entry applied to the Fock vacuum; uniqueness is that the vacuum space of the irreducible transformed representation is one-dimensional (isIrreducibleCAR_iff, the theorem 10 file above). WEAKER: only the two-point functions are computed (Wick's formula for the higher functions, mixed quasi-free states and the converse that every pure quasi-free state is a Bogoliubov vacuum are not proved); finite-dimensional. No comparison with a published statement of the two-point function is claimed. Trust check: the two-mode mixing has occupation s^2 and pairing -sc (TestsCARQuasiFree)."
+  since: unreleased
