@@ -104,6 +104,7 @@
       - {ref: hall-2015, location: "Chapter: Basic Representation Theory|10.1007/978-3-319-13467-3_4"}
       - {ref: martin-dussaud-2019, location: "§4.1", check: "representations"}
   review: kernel-checked
+  note: "Mathlib-ready rework (T-UP-1, G3-147): Lightlike/Upstream/SU2Spin/SpinRep.lean proves the same statement as SU2Spin.spinRepresentation_isIrreducible, for Mathlib's specialUnitaryGroup in Mathlib style (no Lightlike namespace, so it is not a separate registry entry); AxiomsCheck.lean and Tests.lean check it. The pull request to Mathlib has not been opened by this project."
   since: 0.1.0
 - id: LL-0008
   title: Every continuous irreducible finite-dimensional representation of SU(2) is a spin representation
@@ -118,6 +119,7 @@
       - {ref: brocker-tom-dieck-1985, location: "Chapter: Elementary Representation Theory|10.1007/978-3-662-12918-0_2"}
       - {ref: martin-dussaud-2019, location: "§4.1", check: "representations"}
   review: kernel-checked
+  note: "Mathlib-ready rework (T-UP-2, G3-147): Lightlike/Upstream/SU2Spin/Completeness.lean proves SU2Spin.spinRep_complete without the project's exponential map (it uses the Lie-algebra data in Su2Exp.lean, Differential.lean and Sl2Standard.lean of the same folder); not a separate registry entry because the names have no Lightlike prefix. The pull request to Mathlib has not been opened by this project."
   since: 0.1.0
 - id: LL-0009
   title: The derivative of the spin-n/2 representation is Physlib's sl₂-module V(n)
@@ -131,6 +133,7 @@
       - {ref: hall-2015, location: "Chapter: Basic Representation Theory|10.1007/978-3-319-13467-3_4"}
       - {ref: hall-2015, location: "Chapter: Lie Algebras|10.1007/978-3-319-13467-3_3"}
   review: kernel-checked
+  note: "Physlib-ready rework (T-UP-6, G3-148): Lightlike/Upstream/SpinReps2/LieBridge.lean proves SU2Spin.dSpin_E, SU2Spin.dSpin_F and SU2Spin.dSpin_H for Physlib's standard sl2-module, on top of the Mathlib-ready spin representation of Lightlike/Upstream/SU2Spin. Not a separate registry entry: the names have no Lightlike prefix. The pull request to Physlib has not been opened by this project."
   since: 0.1.0
 - id: LL-0010
   title: Spin(4) is a double cover of SO(4)
@@ -143,6 +146,7 @@
     refs:
       - {ref: lawson-michelsohn-1989, location: "Chapter: I. Clifford Algebras, Spin Groups and Their Representations|10.1515/9781400883912-004"}
   review: kernel-checked
+  note: "Mathlib-ready rework (T-UP-7 and T-UP-8, G3-149): Lightlike/Upstream/Spin4/QuaternionSU2.lean has Quaternion.unitaryEquivSU2 (the unit quaternions are SU(2)) and Lightlike/Upstream/Spin4/Spin4Cover.lean has Quaternion.rotHom_surjective and Quaternion.rotHom_eq_one_iff (the double cover of SO(4) by unitary ℍ × unitary ℍ), in the style of Mathlib/Algebra/Quaternion.lean. Not a separate registry entry: the names have no Lightlike prefix. The pull request to Mathlib has not been opened by this project."
   since: 0.1.0
 - id: LL-0011
   title: Mathlib's Clifford-algebra spin group of ℝ⁴ is Spin(4)
@@ -155,6 +159,7 @@
     refs:
       - {ref: lawson-michelsohn-1989, location: "Chapter: I. Clifford Algebras, Spin Groups and Their Representations|10.1515/9781400883912-004"}
   review: kernel-checked
+  note: "Mathlib-ready rework (T-UP-9, G3-149): Lightlike/Upstream/Spin4/CliffordSpin.lean has Quaternion.spinGroupEquiv : spinGroup negNormSq ≃* unitary ℍ × unitary ℍ and spinGroupEquivSU2, built on Mathlib's Clifford-algebra spin group. Not a separate registry entry: the names have no Lightlike prefix. The pull request to Mathlib has not been opened by this project."
   since: 0.1.0
 - id: LL-0012
   title: The representations (j₊, j₋) are all the irreducible representations of Spin(4)
@@ -168,6 +173,7 @@
       - {ref: brocker-tom-dieck-1985, location: "Chapter: Elementary Representation Theory|10.1007/978-3-662-12918-0_2"}
       - {ref: lawson-michelsohn-1989, location: "Chapter: I. Clifford Algebras, Spin Groups and Their Representations|10.1515/9781400883912-004"}
   review: kernel-checked
+  note: "T-UP-10 (G3-149) is not started: the upstream form needs the classification of the representations of SU(2) and the double cover in Mathlib first (T-UP-2, T-UP-8), which this project has not upstreamed."
   since: 0.1.0
 - id: LL-0013
   title: Clebsch–Gordan decomposition of (j₊, j₋) on the diagonal SU(2)
@@ -246,7 +252,7 @@
       - {ref: martin-dussaud-2019, location: "§5.3", check: "orthonormal basis"}
       - {ref: edmonds-1957, location: "Chapter: Chapter 3. The Coupling of Angular Momentum Vectors|10.1515/9781400884186-004"}
   review: kernel-checked
-  note: "The comparison with Edmonds (1957) is pending: the book was not read at the cited location."
+  note: "The comparison with Edmonds (1957) is pending: the book was not read at the cited location. Physlib-ready rework (T-UP-3, G3-148): Lightlike/Upstream/SpinReps2/ThreeJOrth.lean proves PhyslibAlpha.Sl2.sum_threeJ_mul_threeJ for Physlib's threeJ in doubled spins; ThreeJZero.lean has the zero-spin cases. Not a separate registry entry: the names have no Lightlike prefix. The pull request to Physlib has not been opened by this project."
   since: 0.1.0
 - id: LL-0019
   title: Orthonormal 4-valent intertwiners and orthogonality of the 6j recoupling matrix
@@ -260,6 +266,7 @@
       - {ref: martin-dussaud-2019, location: "§5.4", check: "direct sum"}
       - {ref: martin-dussaud-2019, location: "§5.5", check: "6j"}
   review: kernel-checked
+  note: "Physlib-ready rework (T-UP-4, G3-148): Lightlike/Upstream/SpinReps2/SixJOrth.lean proves PhyslibAlpha.Sl2.sixJSym_orth (positive spins), sixJSym_sq_orth and sixJSym_orth_all (all spins, zero-spin cases in SixJZero.lean); Intertwiner.lean has the orthonormality of the 4-valent intertwiners (sum_fourJ_mul_fourJ). Not a separate registry entry: the names have no Lightlike prefix. The pull request to Physlib has not been opened by this project."
   since: 0.1.0
 - id: LL-0020
   title: The contraction of ten 3j symbols over the 4-simplex is the 15j symbol
@@ -300,7 +307,7 @@
       - {ref: edmonds-1957, location: "Chapter: Chapter 6. The Construction of Invariants from the Vector-Coupling Coefficients|10.1515/9781400884186-007"}
       - {ref: varshalovich-1988, location: "Chapter: 6j Symbols and the Racah Coefficients|10.1142/9789814415491_0010"}
   review: kernel-checked
-  note: "The comparison with Edmonds (1957) and Varshalovich et al. (1988) is pending: the books were not read at the cited locations."
+  note: "The comparison with Edmonds (1957) and Varshalovich et al. (1988) is pending: the books were not read at the cited locations. Physlib-ready rework (T-UP-5, G3-148): Lightlike/Upstream/SpinReps2/BiedenharnElliott.lean, BEPositive.lean and BEPentagon*.lean prove PhyslibAlpha.Sl2.biedenharnElliott for every spin, stated for Physlib's sixJSym in doubled units; the zero-spin case analysis is split into lemmas (be_a_zero, be_p_zero, be_swap*). Not a separate registry entry: the names have no Lightlike prefix. The pull request to Physlib has not been opened by this project."
   since: 0.1.0
 - id: LL-0023
   title: Pachner's theorem, stellar version, in all dimensions
@@ -3702,7 +3709,7 @@
     refs:
       - {ref: weinberg-1995, location: "Chapter: RELATIVISTIC QUANTUM MECHANICS|10.1017/CBO9781139644167.004"}
   review: kernel-checked
-  note: "The representation is built by induction from the little group SU(2) on the mass shell of SL(2,C) = double cover of the Lorentz group, spin s = n/2 (n = 1: two states per momentum). Not claimed: irreducibility, and Wigner's classification theorem (ClassificationStatement.lean states it as a Prop, it is not proven: its proof needs Mackey's imprimitivity theorem). The comparison with Weinberg (1995), Chapter 2, is pending: the book was not read at the cited location, and Wigner (1939) was not read. Weinberg works in signature (-,+,+,+) with W^2 = m^2 j(j+1); here (+,-,-,-), so W^2 = -m^2 s(s+1) (the sign convention is stated in the task, milestones.md HA6)."
+  note: "The representation is built by induction from the little group SU(2) on the mass shell of SL(2,C) = double cover of the Lorentz group, spin s = n/2 (n = 1: two states per momentum). Not claimed: Wigner's classification theorem (irreducibility is a separate entry: irreducible_massive_sourceMeasure) (ClassificationStatement.lean states it as a Prop, it is not proven: its proof needs Mackey's imprimitivity theorem). The comparison with Weinberg (1995), Chapter 2, is pending: the book was not read at the cited location, and Wigner (1939) was not read. Weinberg works in signature (-,+,+,+) with W^2 = m^2 j(j+1); here (+,-,-,-), so W^2 = -m^2 s(s+1) (the sign convention is stated in the task, milestones.md HA6)."
   since: unreleased
 - id: LL-0279
   title: "The massless one-particle representation of finite helicity h/2, induced from the character of ISO(2): it preserves the L² norm of the light cone, has P² = 0, W = (h/2) P and W² = 0"
@@ -3715,7 +3722,7 @@
     refs:
       - {ref: weinberg-1995, location: "Chapter: RELATIVISTIC QUANTUM MECHANICS|10.1017/CBO9781139644167.004"}
   review: kernel-checked
-  note: "The representation is induced from the helicity character of the little group ISO(2) (trivial on the translations of the little group). Not claimed: irreducibility, the classification of massless representations of infinite spin. The comparison with Weinberg (1995), Chapter 2, is pending: the book was not read at the cited location, and Wigner (1939) was not read. Weinberg works in signature (-,+,+,+) with W^2 = m^2 j(j+1); here (+,-,-,-), so W^2 = -m^2 s(s+1) (the sign convention is stated in the task, milestones.md HA6)."
+  note: "The representation is induced from the helicity character of the little group ISO(2) (trivial on the translations of the little group). Not claimed: the classification of massless representations of infinite spin (irreducibility is a separate entry: irreducible_massless_coneSourceMeasure). The comparison with Weinberg (1995), Chapter 2, is pending: the book was not read at the cited location, and Wigner (1939) was not read. Weinberg works in signature (-,+,+,+) with W^2 = m^2 j(j+1); here (+,-,-,-), so W^2 = -m^2 s(s+1) (the sign convention is stated in the task, milestones.md HA6)."
   since: unreleased
 - id: LL-0280
   title: "The Pauli–Lubanski square of the massive spin-n/2 representation is W² = −m² s(s+1), with s = n/2 and the signature (+,−,−,−)"
@@ -4106,4 +4113,95 @@
       - {ref: freidel-louapre-2003, location: "Section IV", check: "GAUGE SYMMETRIES AND DIVERGENCES"}
   review: kernel-checked
   note: "Capstone of SF5d (G2-023), the two trust checks of the milestone: starT obeys IsGauge and gives amplitude 1; gauge9 (starT minus one triangle) violates it and gives 5, so a gauge set that breaks the hypotheses changes the amplitude. Cutoff 1/2 on every triangle. Invariance under the five Pachner moves and gauge independence are LL-0049 to LL-0051 and LL-0068. Comparison with Freidel-Louapre pending."
+  since: unreleased
+- id: LL-0310
+  title: "The massive one-particle representations of the Poincaré group on L²(d³p / 2ω_p) are irreducible: a closed subspace invariant under all translations and all U(A) is 0 or everything"
+  area: Lorentz
+  file: Lightlike/Poincare/ShellSourceMeasure.lean
+  decls: [Lightlike.Poincare.irreducible_massive_sourceMeasure]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: weinberg-1995, location: "Chapter: RELATIVISTIC QUANTUM MECHANICS|10.1017/CBO9781139644167.004"}
+  review: kernel-checked
+  note: "HA6 (G1-055). No hypothesis beyond the closed invariant subspace: the invariant measure is the explicit sourceMeasure (d³p / 2ω_p), with measurePreserving_shellAct_sourceMeasure. The general form irreducible_massive (IrreducibleMassive.lean) takes any σ-finite SL(2,C)-invariant measure on the shell and rests on commutant_eq_scalar (the commutant of the translations and U(A) is the scalars). Not claimed: that every irreducible positive-energy representation is of this form (WignerClassification, stated only). The comparison with Weinberg (1995), Chapter 2, is pending: the book was not read at the cited location, and Wigner (1939) was not read."
+  since: unreleased
+- id: LL-0311
+  title: "The massless one-particle representations of finite helicity on L²(d³p / 2|p|) are irreducible: a closed subspace invariant under all translations and all helicity representations is 0 or everything"
+  area: Lorentz
+  file: Lightlike/Poincare/ConeSourceMeasure.lean
+  decls: [Lightlike.Poincare.irreducible_massless_coneSourceMeasure]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: weinberg-1995, location: "Chapter: RELATIVISTIC QUANTUM MECHANICS|10.1017/CBO9781139644167.004"}
+  review: kernel-checked
+  note: "HA6 (G1-055). No hypothesis beyond the closed invariant subspace: the measure is the explicit coneSourceMeasure, with measurePreserving_coneSourceMeasure and sigmaFinite_coneSourceMeasure. The general form irreducible_massless (IrreducibleMassless.lean) takes any σ-finite SL(2,C)-invariant measure on the light cone and rests on commutant_eq_scalar_cone. Not claimed: infinite-spin massless representations, and the classification. The comparison with Weinberg (1995), Chapter 2, is pending: the book was not read at the cited location, and Wigner (1939) was not read."
+  since: unreleased
+- id: LL-0312
+  title: "The little group of a tachyonic momentum is not compact: the stabilizer of the standard momentum (0, 0, 0, κ) contains the boosts along the first spatial axis"
+  area: Lorentz
+  file: Lightlike/Poincare/LittleGroups.lean
+  decls: [Lightlike.Poincare.boost_mem_littleGroup_tachyon, Lightlike.Poincare.not_isCompact_littleGroup_tachyon]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: weinberg-1995, location: "Chapter: RELATIVISTIC QUANTUM MECHANICS|10.1017/CBO9781139644167.004"}
+  review: kernel-checked
+  note: "The trust check of HA6 that a tachyonic orbit has a non-compact little group (the stabilizer in the Lorentz group of tachyonStd κ). The same statement in the spinor model of momentum space is not_isCompact_stabilizer_tachMom (Lightlike/Lorentz/PoincareIrreps/Momentum.lean). It shows why the induction used for the massive case (from the compact SU(2)) does not apply to a tachyonic orbit; it does not classify tachyonic representations. The comparison with Weinberg (1995), Chapter 2, is pending: the book was not read at the cited location, and Wigner (1939) was not read."
+  since: unreleased
+- id: LL-0313
+  title: "Wigner's classification of irreducible, strongly continuous, unitary, positive-energy representations of the Poincaré group, stated as a precise proposition with a non-vacuity check"
+  area: Lorentz
+  file: Lightlike/Lorentz/PoincareIrreps/ClassificationStatement.lean
+  decls: [Lightlike.Lorentz.Poincare.WignerClassification, Lightlike.Lorentz.Poincare.trivialRep_classified]
+  status: stated
+  tier: established
+  source:
+    refs:
+      - {ref: weinberg-1995, location: "Chapter: RELATIVISTIC QUANTUM MECHANICS|10.1017/CBO9781139644167.004"}
+  review: kernel-checked
+  note: "HA6 (G1-055), the lockable statement of the milestone. WignerClassification is a Prop, NOT proved: every such representation is trivial on the translations, or equivalent to a massive poincareRep, or to a massless finite-helicity lightPoincareRep, or massless of infinite spin (MasslessNotHelicity). Its proof needs Mackey's imprimitivity theorem; isSystemOfImprimitivity_inducedL2 (Imprimitivity.lean) is one ingredient. Non-vacuity: trivialRep_classified (the trivial representation falls in the first case). The statement uses the library's own definitions of equivalence and positive energy; comparison with Weinberg and Wigner pending (not read). "
+  since: unreleased
+- id: LL-0314
+  title: "Nevanlinna–Sokal theorem: if f is analytic in the disk Re z⁻¹ > 1/R and its Taylor remainders obey |f(z) − Σ_{k<q} a_k z^k| ≤ K q! ρ^{-q} |z|^q, then the Borel transform of the series continues analytically to a strip and f is its Laplace transform on the whole disk"
+  area: FieldTheory
+  file: Lightlike/GFT/Borel/Nevanlinna.lean
+  decls: [Lightlike.FieldTheory.Borel.SokalHyp.nevanlinna_sokal]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: benedetti-gurau-keppler-lettera-2022, location: "Theorem 1"}
+  review: kernel-checked
+  note: "GF7 (G3-172), task T-GF7-P6, case β = 0 of Theorem 1 (eqs. (2.4)-(2.6)): the statement is the one of the closed task, non-vacuous by sokalHyp_const. The proof follows Appendix B (contour integrals along vertical lines, Hankel's formula; Hankel.lean, Contour.lean, Transform.lean, Local.lean, Exists.lean, Laplace.lean in Lightlike/GFT/Borel and Lightlike/FieldTheory/Borel). Not claimed: Gevrey or resurgence statements, β ≠ 0. The comparison with the source is pending: the paper was not read at the cited theorem."
+  since: unreleased
+- id: LL-0315
+  title: "The partition function Z(λ) = ∫ e^{-λφ⁴ − φ²/2} dφ of the zero-dimensional quartic model is Borel summable: the Borel transform of its perturbative series continues to a strip and Z is its Laplace transform on every disk Re λ⁻¹ > 1/R"
+  area: FieldTheory
+  file: Lightlike/GFT/Borel/Quartic.lean
+  decls: [Lightlike.FieldTheory.quarticZ_sokalHyp, Lightlike.FieldTheory.quarticZ_borel_summable]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: rivasseau-wang-2010, location: "Theorem IV.1"}
+  review: kernel-checked
+  note: "GF7 (G3-172), task T-GF7-P7: Rivasseau–Wang Theorem IV.1 with k = 2, here by the Nevanlinna–Sokal theorem (the Nevanlinna–Sokal entry) with ρ = 1/32 and K = 16√(2π), not by the loop vertex expansion. This is the zero-dimensional quartic model only: the modified Boulatov model (Freidel–Louapre 2003) and the quartic tensor models of Delepouve–Gurau–Rivasseau are not in the library, so GF7 is met for one model. The comparison with the source is pending: the paper was not read at the cited theorem."
+  since: unreleased
+- id: LL-0316
+  title: "Trust checks of the Borel summability of the quartic model: its Borel sum is within 3√(2π) λ of the zeroth-order term of the series for every small coupling, and coefficients of size (q!)² or more violate the Nevanlinna–Sokal hypotheses for every K and ρ"
+  area: FieldTheory
+  file: Lightlike/GFT/Borel/Tests.lean
+  decls: [Lightlike.FieldTheory.quartic_borelSum_vs_series, Lightlike.FieldTheory.not_sokalHyp_of_superfactorial, Lightlike.FieldTheory.quartic_coeff_factorial_bound]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: rivasseau-wang-2010, location: "Theorem IV.1"}
+  review: kernel-checked
+  note: "The two trust checks of the GF7 milestone, in the available form: the Borel sum against the series (quartic_borelSum_vs_series), and super-factorial growth preventing summability in the Nevanlinna–Sokal sense (not_sokalHyp_of_superfactorial). The latter is a generic stand-in: the growth (q!)² of the unmodified Boulatov model is not derived because that model is not in the library. It shows that the hypothesis fails, not that the function is not Borel summable by another definition."
   since: unreleased

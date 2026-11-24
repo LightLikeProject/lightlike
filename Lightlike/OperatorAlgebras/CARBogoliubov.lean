@@ -328,15 +328,19 @@ lemma carCreation_bogFam (φ : Fin (2 * n) → (E →L[ℂ] E)) (α β : Matrix 
     carCreation (bogFam φ α β) j = bogCre α β (carAnnihilation φ) (carCreation φ) j :=
   carCreation_majFam _ _ j
 
-/-- **A Bogoliubov transform of a CAR representation is a CAR representation.** -/
-theorem isCAROn_bogFam {φ : Fin (2 * n) → (E →L[ℂ] E)} (h : IsCAROn φ) (α β : Matrix (Fin n) (Fin n) ℂ)
-    (h1 : α * αᴴ + β * βᴴ = 1) (h2 : α * βᵀ + β * αᵀ = 0) : IsCAROn (bogFam φ α β) := by
-  refine isCAROn_majFam (isCARPairs_bog h.isCARPairs α β h1 h2) fun i p q => ?_
+/-- The transformed operators are adjoint to each other: `⟪bᵢ p, q⟫ = ⟪p, bᵢ* q⟫`. -/
+lemma bog_adj {φ : Fin (2 * n) → (E →L[ℂ] E)} (h : IsCAROn φ) (α β : Matrix (Fin n) (Fin n) ℂ) (i : Fin n) (p q : E) :
+    ⟪bogAnn α β (carAnnihilation φ) (carCreation φ) i p, q⟫_ℂ = ⟪p, bogCre α β (carAnnihilation φ) (carCreation φ) i q⟫_ℂ := by
   have hc : ∀ j p q, ⟪carCreation φ j p, q⟫_ℂ = ⟪p, carAnnihilation φ j q⟫_ℂ := fun j p q => by
     rw [← inner_conj_symm, ← h.adj, inner_conj_symm]
   simp only [bogAnn, bogCre, ContinuousLinearMap.sum_apply, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply,
     sum_inner, inner_sum, inner_add_left, inner_add_right, inner_smul_left, inner_smul_right, h.adj, hc,
     Complex.conj_conj]
+
+/-- **A Bogoliubov transform of a CAR representation is a CAR representation.** -/
+theorem isCAROn_bogFam {φ : Fin (2 * n) → (E →L[ℂ] E)} (h : IsCAROn φ) (α β : Matrix (Fin n) (Fin n) ℂ)
+    (h1 : α * αᴴ + β * βᴴ = 1) (h2 : α * βᵀ + β * αᵀ = 0) : IsCAROn (bogFam φ α β) :=
+  isCAROn_majFam (isCARPairs_bog h.isCARPairs α β h1 h2) (bog_adj h α β)
 
 /-- A closed subspace invariant under every `φ'ₖ` is invariant under `aⱼ', cⱼ'` (as combinations of the `φ'ₖ`). -/
 lemma invariant_of_majFam {a c : Fin n → (E →L[ℂ] E)} {W : Submodule ℂ E}
