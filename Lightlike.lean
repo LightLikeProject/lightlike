@@ -1386,6 +1386,7 @@ import Lightlike.Spacetime.Causal.BasicRelations
 import Lightlike.Spacetime.Causal.CauchyClosed
 import Lightlike.Rows.G1_012.Defs
 import Lightlike.Rows.G1_012.Skeleton
+import Lightlike.Rows.G1_012.GeodesicChartIndep
 import Lightlike.Spacetime.Causal.ChainReach
 import Lightlike.Spacetime.Causal.TimeReversal
 import Lightlike.Spacetime.Causal.OpenPast
@@ -1506,6 +1507,7 @@ import Lightlike.Spacetime.GERow10.ScalarWeakEC
 import Lightlike.Spacetime.GERow10.ScalarWeakECSharp
 import Lightlike.Spacetime.GERow10.ScalarWeakECTimelike
 import Lightlike.Spacetime.GERow10.ScalarWeakECNull
+import Lightlike.Spacetime.ChartTransition
 import Lightlike.Spacetime.VolumeMeasure
 import Lightlike.Spacetime.CausalLadder.FullSupportMeasure
 import Lightlike.Spacetime.CausalLadder.NullBoundary
