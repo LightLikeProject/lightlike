@@ -143,6 +143,7 @@
     refs:
       - {ref: lawson-michelsohn-1989, location: "Chapter: I. Clifford Algebras, Spin Groups and Their Representations|10.1515/9781400883912-004"}
   review: kernel-checked
+  note: "Mathlib-ready rework (T-UP-7 and T-UP-8, G3-149): Lightlike/Upstream/Spin4/QuaternionSU2.lean has Quaternion.unitaryEquivSU2 (the unit quaternions are SU(2)) and Lightlike/Upstream/Spin4/Spin4Cover.lean has Quaternion.rotHom_surjective and Quaternion.rotHom_eq_one_iff (the double cover of SO(4) by unitary ℍ × unitary ℍ), in the style of Mathlib/Algebra/Quaternion.lean. Not a separate registry entry: the names have no Lightlike prefix. The pull request to Mathlib has not been opened by this project."
   since: 0.1.0
 - id: LL-0011
   title: Mathlib's Clifford-algebra spin group of ℝ⁴ is Spin(4)
@@ -155,6 +156,7 @@
     refs:
       - {ref: lawson-michelsohn-1989, location: "Chapter: I. Clifford Algebras, Spin Groups and Their Representations|10.1515/9781400883912-004"}
   review: kernel-checked
+  note: "Mathlib-ready rework (T-UP-9, G3-149): Lightlike/Upstream/Spin4/CliffordSpin.lean has Quaternion.spinGroupEquiv : spinGroup negNormSq ≃* unitary ℍ × unitary ℍ and spinGroupEquivSU2, built on Mathlib's Clifford-algebra spin group. Not a separate registry entry: the names have no Lightlike prefix. The pull request to Mathlib has not been opened by this project."
   since: 0.1.0
 - id: LL-0012
   title: The representations (j₊, j₋) are all the irreducible representations of Spin(4)
@@ -168,6 +170,7 @@
       - {ref: brocker-tom-dieck-1985, location: "Chapter: Elementary Representation Theory|10.1007/978-3-662-12918-0_2"}
       - {ref: lawson-michelsohn-1989, location: "Chapter: I. Clifford Algebras, Spin Groups and Their Representations|10.1515/9781400883912-004"}
   review: kernel-checked
+  note: "T-UP-10 (G3-149) is not started: the upstream form needs the classification of the representations of SU(2) and the double cover in Mathlib first (T-UP-2, T-UP-8), which this project has not upstreamed."
   since: 0.1.0
 - id: LL-0013
   title: Clebsch–Gordan decomposition of (j₊, j₋) on the diagonal SU(2)
