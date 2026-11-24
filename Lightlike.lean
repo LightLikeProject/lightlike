@@ -1465,6 +1465,7 @@ import Lightlike.Spacetime.Raychaudhuri.TwistFocusing
 import Lightlike.Spacetime.RaychaudhuriManifold
 import Lightlike.Spacetime.RaychaudhuriNull
 import Lightlike.Spacetime.RaychaudhuriNullAlg
+import Lightlike.Spacetime.NullFrameExpansion
 import Lightlike.Spacetime.RaychaudhuriNullManifold
 import Lightlike.Spacetime.RaychaudhuriShear
 import Lightlike.Spacetime.RaychaudhuriSplit
