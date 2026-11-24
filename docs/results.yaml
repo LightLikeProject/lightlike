@@ -1794,7 +1794,7 @@
     refs:
       - {ref: bdfhp-2010, location: "eq. (53)", check: "Regge state"}
   review: kernel-checked
-  note: "The Haar measure of SL(2,C) is Lebesgue measure in the chart g_0 (FixedChart.lean, density 1); through a measure-preserving linear identification of R^44 with (C^3)^4 x C^10 the vertex of the scaled data (lambda j, lambda p) with constants cc(lambda) is (prod cc) s^-4 times the integral over R^44 of a(x) e^{lambda S(x)}, a = prod 1/(|Z_ab|^2 |Z_ba|^2) independent of lambda, s the Haar normalisation factor (VertexHaarChart.lean). The chart is smooth where the third coordinate of each chart is nonzero, and the sum over the critical points with the error O(lambda^(m - 23)) follows from weighted_asymptotics_local. Each named hypothesis is its own proof task, with a statement and an open proof: T-SF10-P1 (VertexJointIntegrable), T-SF10-P2 (HessianInvertible at a critical point), T-SF10-P3 (FarRemainderBound), T-SF10-P4 (CriticalSetIs: finiteness and classification of the critical set). In the fixed chart, lorVertex_suppressed_fixChart (VertexSuppressed.lean) proves the non-closing case of item 4 of the theorem (BDFHP eq. (56): boundary data whose normals do not close at a node are suppressed faster than every power), given the far-remainder bound. NOT PROVED (named hypotheses): the joint integrability of the integrand on SL(2,C)^4 x C^10 and the measurability of the outer integral (the vertex is defined as an iterated integral; the existing finiteness is of the complex inner integral, not of its modulus), the classification of the critical set (hK), the invertibility of the Hessian (hdet), the remainder bound (hfar) and its integrability (hint), and the weight bound. The two-point formula with the constants of eq. (57) for an action smooth only on an open set is lorVertex_asymptotic_formula_local (AsymptoticFormulaLocal.lean), under the same hypotheses; the constants of eq. (57) are not computed.  Status conditional, as the hypotheses are open facts about lorVertex itself, not conditions on the input data: joint integrability hjoint and measurability hF of the vertex integrand, the invertibility of the Hessian hdet (assumed by BDFHP), the remainder estimate hfar with its integrability hint (not in BDFHP; hint is assumed only for lambda in N, the integer sequence the proof uses: the form for all real tau fails for tau < 0 wherever an overlap vanishes), and the classification hK of the critical points (BDFHP Sec. 5.4.3, outside SU(2) via the bivector theorem of arXiv:0902.1170); the cutoff chi, the weight bound hw and the boundary data are conditions checked per instance. The error exponent m - 23: the stationary phase in 44 real dimensions gives the leading term order lambda^(-44/2) = lambda^(-22) and the error one further power lambda^(-23), times the order lambda^m of the weight (hw). Differences from BDFHP eq. (53), read at Sec. 6.4: the statement is the generic stationary-phase sum over an abstract finite critical set K, with an error bound O(lambda^(m - 23)) where the source states an asymptotic equivalence; it does not identify the phase with gamma Sum k Theta, the sign (-1)^(chi + M), the order lambda^(-12) or the two parity-related critical points of eq. (53); and lambda runs over the natural numbers."
+  note: "The Haar measure of SL(2,C) is Lebesgue measure in the chart g_0 (FixedChart.lean, density 1); through a measure-preserving linear identification of R^44 with (C^3)^4 x C^10 the vertex of the scaled data (lambda j, lambda p) with constants cc(lambda) is (prod cc) s^-4 times the integral over R^44 of a(x) e^{lambda S(x)}, a = prod 1/(|Z_ab|^2 |Z_ba|^2) independent of lambda, s the Haar normalisation factor (VertexHaarChart.lean). The chart is smooth where the third coordinate of each chart is nonzero, and the sum over the critical points with the error O(lambda^(m - 23)) follows from weighted_asymptotics_local. Each named hypothesis is its own proof task, with a statement and an open proof: T-SF10-P1 (VertexJointIntegrable), T-SF10-P2 (HessianInvertible at a critical point), T-SF10-P3 (FarRemainderBound), T-SF10-P4 (CriticalSetIs: finiteness and classification of the critical set). In the fixed chart, lorVertex_suppressed_fixChart (VertexSuppressed.lean) proves the non-closing case of item 4 of the theorem (BDFHP eq. (56): boundary data whose normals do not close at a node are suppressed faster than every power), given the far-remainder bound. NOT PROVED (named hypotheses): the joint integrability of the integrand on SL(2,C)^4 x C^10 and the measurability of the outer integral (the vertex is defined as an iterated integral; the existing finiteness is of the complex inner integral, not of its modulus), the classification of the critical set (hK), the invertibility of the Hessian (hdet), the remainder bound (hfar) and its integrability (hint), and the weight bound. The two-point formula with the constants of eq. (57) for an action smooth only on an open set is lorVertex_asymptotic_formula_local (AsymptoticFormulaLocal.lean), under the same hypotheses; the constants of eq. (57) are not computed.  Status conditional, as the hypotheses are open facts about lorVertex itself, not conditions on the input data: joint integrability hjoint and measurability hF of the vertex integrand, the invertibility of the Hessian hdet (assumed by BDFHP), the remainder estimate hfar with its integrability hint (not in BDFHP; hint is assumed only for lambda in N, the integer sequence the proof uses: the form for all real tau fails for tau < 0 wherever an overlap vanishes), and the classification hK of the critical points (BDFHP Sec. 5.4.3, outside SU(2) via the bivector theorem of arXiv:0902.1170); the cutoff chi, the weight bound hw and the boundary data are conditions checked per instance. The error exponent m - 23: the stationary phase in 44 real dimensions gives the leading term order lambda^(-44/2) = lambda^(-22) and the error one further power lambda^(-23), times the order lambda^m of the weight (hw). Differences from BDFHP eq. (53), read at Sec. 6.4: the statement is the generic stationary-phase sum over an abstract finite critical set K, with an error bound O(lambda^(m - 23)) where the source states an asymptotic equivalence; it does not identify the phase with gamma Sum k Theta, the sign (-1)^(chi + M), the order lambda^(-12) or the two parity-related critical points of eq. (53); and lambda runs over the natural numbers. Update (24 Nov 2026): VertexJointIntegrable is proved for positive spins and unit boundary spinors (vertexJointIntegrable_of_unit, T-SF10-P1); the other three hypotheses remain."
   since: 0.3.0
 - id: LL-0136
   title: "A set of triangles that is robust for a closed 4D complex, together with the triangle {a, p, q}, forces every triangle after any 2-4 Pachner move"
@@ -4204,4 +4204,505 @@
       - {ref: rivasseau-wang-2010, location: "Theorem IV.1"}
   review: kernel-checked
   note: "The two trust checks of the GF7 milestone, in the available form: the Borel sum against the series (quartic_borelSum_vs_series), and super-factorial growth preventing summability in the Nevanlinna–Sokal sense (not_sokalHyp_of_superfactorial). The latter is a generic stand-in: the growth (q!)² of the unmodified Boulatov model is not derived because that model is not in the library. It shows that the hypothesis fails, not that the function is not Borel summable by another definition."
+  since: unreleased
+- id: LL-0317
+  title: "The partition function of the zero-dimensional quartic model is analytic for Re λ > 0 and its Taylor remainders obey |R_N Z(λ)| ≤ 16 √(2π) 32^N N! |λ|^{N+1} uniformly in every disk Re λ⁻¹ > 1/R"
+  area: FieldTheory
+  file: Lightlike/FieldTheory/ZeroDim/QuarticComplex.lean
+  decls: [Lightlike.FieldTheory.differentiableOn_quarticZ, Lightlike.FieldTheory.norm_quarticZ_sub_le, Lightlike.FieldTheory.quarticZ_nevanlinna]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: rivasseau-wang-2010, location: "Theorem IV.1"}
+  review: kernel-checked
+  note: "GF7 piece (C) of G2-045: the analytic hypotheses of Nevanlinna's theorem for Z(λ) = ∫ e^{-λφ⁴ - φ²/2} dφ with complex coupling (Rivasseau–Wang, Theorem IV.1 with k = 2, via the hypotheses of Theorem III.2 with k = 1). The constants A = 16√(2π), B = 32 are this library's, from the Taylor bound |e^{-z} - Σ_{m<M} (-z)^m/m!| ≤ |z|^M/M! for Re z ≥ 0; the source gives its own constants. The comparison with the source is pending: the paper was not read at the cited theorem here. Borel summability itself (the consequence) is a separate entry."
+  since: unreleased
+- id: LL-0318
+  title: "Wick's theorem for a centred Gaussian measure with positive semidefinite covariance S: the moment E[x_{l_0} ⋯ x_{l_{n-1}}] is the sum over the full Wick contractions of the n positions of the products ∏ S_{l_p l_q} over the contracted pairs"
+  area: FieldTheory
+  file: Lightlike/FieldTheory/Gaussian/WickSemidef.lean
+  decls: [Lightlike.FieldTheory.moment_eq_pairSum_of_posSemidef]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: borinsky-2018, location: "Abstract"}
+  review: kernel-checked
+  note: "FT1. For positive definite S the same statement is moment_eq_pairSum (Gaussian/Wick.lean), proven from Isserlis' recursion; the semidefinite case is by approximation. The comparison with the sources named in Lightlike/FieldTheory/API-map.md is pending in the registry: only the Abstract of Borinsky (2018) is recorded as verified, the other sources are not registered."
+  since: unreleased
+- id: LL-0319
+  title: "The coefficient of λ² in the formal integral of the quartic potential λx⁴/4! is 35/384"
+  area: FieldTheory
+  file: Lightlike/FieldTheory/ZeroDim/FormalIntegral.lean
+  decls: [Lightlike.FieldTheory.formalIntegral_quartic_two]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: borinsky-2018, location: "Abstract"}
+  review: kernel-checked
+  note: "FT1 trust check, Borinsky's formal integral at order ħ², the value 35/384 = 1/128 + 1/16 + 1/48. A wrong symmetry factor is shown to fail by an unnamed example in the same file (1/128 + 1/16 + 1/24 ≠ 35/384, the melon graph taken with 1/24 instead of 1/48). The comparison with the sources named in Lightlike/FieldTheory/API-map.md is pending in the registry: only the Abstract of Borinsky (2018) is recorded as verified, the other sources are not registered."
+  since: unreleased
+- id: LL-0320
+  title: "The vacuum graphs of the quartic model with two vertices are exactly the figure-eights, the dumbbell and the melon graph, with automorphism groups of orders 128, 16 and 48, and the sum of the inverse orders is 35/384"
+  area: FieldTheory
+  file: Lightlike/FieldTheory/ZeroDim/Graphs.lean
+  decls: [Lightlike.FieldTheory.sum_inv_aut_two, Lightlike.FieldTheory.vacuum_graphs_two]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: borinsky-2018, location: "Abstract"}
+  review: kernel-checked
+  note: "FT1. The graphs are the orbits of the pairings of the half-edges under S_4 ≀ S_2 (order 24² · 2), the symmetry factor is the inverse order of the stabilizer. The three orbits are pairwise distinct (vacuum_graphs_two) and their stabilizers have orders 128, 16, 48. The comparison with the sources named in Lightlike/FieldTheory/API-map.md is pending in the registry: only the Abstract of Borinsky (2018) is recorded as verified, the other sources are not registered."
+  since: unreleased
+- id: LL-0321
+  title: "The exponential formula for Feynman graphs: the sum of all graphs with their symmetry factors is the exponential of the sum of the connected graphs, coefficientwise on isomorphism classes"
+  area: FieldTheory
+  file: Lightlike/FieldTheory/ZeroDim/GraphExp.lean
+  decls: [Lightlike.FieldTheory.GraphAlg.expXc_eq_X]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: borinsky-2018, location: "Abstract"}
+  review: kernel-checked
+  note: "FT1. Graphs of any vertex degrees with legs; X = e^{X_c} in the algebra of graph classes with the disjoint-union product. The proof cuts a graph at a component and glues it back. The comparison with the sources named in Lightlike/FieldTheory/API-map.md is pending in the registry: only the Abstract of Borinsky (2018) is recorded as verified, the other sources are not registered."
+  since: unreleased
+- id: LL-0322
+  title: "The Feynman expansion of a Gaussian integral: for a homogeneous polynomial V of degree d and a positive semidefinite covariance S, E_S[V^m] is the sum over the labellings of the m vertices and the full Wick contractions of their md legs of ∏ c(i_v) ∏ S"
+  area: FieldTheory
+  file: Lightlike/FieldTheory/Gaussian/FeynmanExpansion.lean
+  decls: [Lightlike.FieldTheory.integral_homogPoly_pow]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: borinsky-2018, location: "Abstract"}
+  review: kernel-checked
+  note: "FT1. The case of odd md, where both sides vanish, is integral_homogPoly_pow_of_odd; polynomial potentials are integral_polyPot_pow (FeynmanPoly.lean). The comparison with the sources named in Lightlike/FieldTheory/API-map.md is pending in the registry: only the Abstract of Borinsky (2018) is recorded as verified, the other sources are not registered."
+  since: unreleased
+- id: LL-0323
+  title: "The Feynman expansion over graphs: E_S[(V/d!)^m]/m! is the sum over the isomorphism classes Γ of graphs with m vertices of valence d of graphWeight(Γ)/|Aut Γ|"
+  area: FieldTheory
+  file: Lightlike/FieldTheory/Gaussian/FeynmanGraphs.lean
+  decls: [Lightlike.FieldTheory.integral_homogPoly_pow_graphs]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: borinsky-2018, location: "Abstract"}
+  review: kernel-checked
+  note: "FT1, the theorem of the milestone for one vertex type: the expansion equals the sum over Feynman graphs with symmetry factors. Needs S and the coefficient tensor c symmetric. Several vertex types: integral_polyPot_pow_graphs (FeynmanGraphsPoly.lean). The comparison with the sources named in Lightlike/FieldTheory/API-map.md is pending in the registry: only the Abstract of Borinsky (2018) is recorded as verified, the other sources are not registered."
+  since: unreleased
+- id: LL-0324
+  title: "Feynman rules with a source: for a weight multiplicative under disjoint union, the generating function of all graphs weighted w(Γ)/|Aut Γ| is the exponential of the generating function of the connected graphs"
+  area: FieldTheory
+  file: Lightlike/FieldTheory/ZeroDim/GraphEval.lean
+  decls: [Lightlike.FieldTheory.GraphAlg.coeff_gen_X]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: borinsky-2018, location: "Abstract"}
+  review: kernel-checked
+  note: "FT1. Coefficientwise in the algebra graded by half-edges and vertices. The comparison with the sources named in Lightlike/FieldTheory/API-map.md is pending in the registry: only the Abstract of Borinsky (2018) is recorded as verified, the other sources are not registered."
+  since: unreleased
+- id: LL-0325
+  title: "The weighted sum of the leg-free graphs with vertex weights μ is the formal partition function with a source, and it is the exponential of the connected one: Z = exp(W/ħ)"
+  area: FieldTheory
+  file: Lightlike/FieldTheory/ZeroDim/GraphRules.lean
+  decls: [Lightlike.FieldTheory.GraphAlg.gen_X_eq_formalZ, Lightlike.FieldTheory.GraphAlg.coeff_formalZ_eq_exp]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: borinsky-2018, location: "Abstract"}
+  review: kernel-checked
+  note: "FT1. With the vertex weights μ_1 = j and μ_d = λ_d. The comparison with the sources named in Lightlike/FieldTheory/API-map.md is pending in the registry: only the Abstract of Borinsky (2018) is recorded as verified, the other sources are not registered."
+  since: unreleased
+- id: LL-0326
+  title: "The quartic expansion with remainder: for g ≥ 0 and every M, the integral of e^{-x²/2 - g x⁴/24} differs from √(2π) Σ_{m<M} (-g/24)^m (4m-1)!!/m! by at most √(2π) (g/24)^M (4M-1)!!/M!"
+  area: FieldTheory
+  file: Lightlike/FieldTheory/ZeroDim/Quartic.lean
+  decls: [Lightlike.FieldTheory.quartic_expansion]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: borinsky-2018, location: "Abstract"}
+  review: kernel-checked
+  note: "FT1. Error at most the size of the next term, by the alternating Taylor bound for e^{-t}. This is the integral side of the milestone; it is an asymptotic statement, not convergence of the series. The comparison with the sources named in Lightlike/FieldTheory/API-map.md is pending in the registry: only the Abstract of Borinsky (2018) is recorded as verified, the other sources are not registered."
+  since: unreleased
+- id: LL-0327
+  title: "The remainder of the quartic expansion after N + 1 terms is o(g^N) as g tends to 0 from above, so the series is the asymptotic expansion of the integral"
+  area: FieldTheory
+  file: Lightlike/FieldTheory/ZeroDim/Ties.lean
+  decls: [Lightlike.FieldTheory.tendsto_quartic_div]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: borinsky-2018, location: "Abstract"}
+  review: kernel-checked
+  note: "FT1. Ties the formal series to the integral (Skinner's (2.20) sense of an asymptotic expansion). The comparison with the sources named in Lightlike/FieldTheory/API-map.md is pending in the registry: only the Abstract of Borinsky (2018) is recorded as verified, the other sources are not registered."
+  since: unreleased
+- id: LL-0328
+  title: "The on-shell recursion for the colour-ordered Feynman amplitudes of Yang–Mills theory: under the large-z falloff of the shifted amplitude, A_n is the sum over the planar channels of the product of the lower amplitudes at the poles divided by the propagator"
+  area: GR
+  file: Lightlike/GR/FeynmanRecursion.lean
+  decls: [Lightlike.SpinorHelicity.eq_sum_div_sub_of_residues, Lightlike.SpinorHelicity.bgAmplitude_eq_sum_channels]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: elvang-huang-2013, location: "eq. (3.4)"}
+  review: kernel-checked
+  note: "G3-073. Elvang-Huang (3.4)-(3.7): partial fractions from Liouville's theorem, then the recursion for the colour-ordered Feynman rules of the library (Gervais-Neveu gauge), for any shift with (3.2)-(3.3). The statement takes the large-z falloff (3.6), Â_n(z) → 0 at infinity (hypothesis hinf), as an input, as Elvang-Huang do (p. 36); they cite the falloff (3.11) for Yang-Mills from the literature without proof. It also takes the Ward identities of the lower-point amplitudes as hypotheses, which the next entry removes. The comparison with the source is pending in the registry (only eq. (3.4) is recorded as verified)."
+  since: unreleased
+- id: LL-0329
+  title: "The Ward identity of the colour-ordered Feynman amplitudes holds at every gluon for every number of gluons, and with it the factorization on the poles and the recursion hold without the Ward identity as a hypothesis"
+  area: GR
+  file: Lightlike/GR/FeynmanWard.lean
+  decls: [Lightlike.SpinorHelicity.ward_all, Lightlike.SpinorHelicity.residue_factorization', Lightlike.SpinorHelicity.bgAmplitude_eq_sum_channels']
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: elvang-huang-2013, location: "eq. (3.4)"}
+  review: kernel-checked
+  note: "G3-073. P·J(a,…,b) = −(1/√2) Σ_c J(a,…,c) J(c+1,…,b) for null momenta and transverse polarizations (mdot_momRange_bgCurrent), by strong induction on the current recursion; at P² = 0 this is the on-shell Ward identity at the last gluon (ward_last), and the cyclic property (Elvang-Huang p. 25) gives it at every gluon (ward_all). The Gervais-Neveu form of the identity is not printed in the sources read (Dixon hep-ph/9601359 (57) is for Feynman gauge). bgAmplitude_eq_sum_channels' still takes the large-z falloff (3.6) as a hypothesis (hinf): the falloff is not proved. The comparison with the source is pending (Elvang-Huang p. 17 for the Ward identity is not a recorded verified location)."
+  since: unreleased
+- id: LL-0330
+  title: "Trust checks of the Einstein equations for FLRW with a perfect fluid: de Sitter space (a = e^{Ht}, k = 0, ρ = -p) is a solution iff H² = 8πGρ/3, Einstein's static universe (a constant, k = 1, dust) is a solution iff Λ = 1/a² = 4πGρ, and with k = -1 there is no static dust solution"
+  area: Cosmology
+  file: Lightlike/Cosmology/FLRW.lean
+  decls: [Lightlike.Cosmology.deSitter_einstein_iff, Lightlike.Cosmology.deSitter_example, Lightlike.Cosmology.einsteinStatic_einstein_iff, Lightlike.Cosmology.not_einsteinStatic_einstein_of_negCurvature]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (8.36)", check: "Friedmann"}
+  review: kernel-checked
+  note: "CO1 (G1-023), the three trust checks of the milestone at the level of Einstein's equations (IsEinsteinSolution), through flrw_einstein_iff_friedmann (LL-0133). deSitter_example shows the hypotheses are met (H = 1, ρ = 1, G = 3/8π). The static-universe checks have the Friedmann-level forms einsteinStatic_friedmann_iff and not_einsteinStatic_friedmann_of_negCurvature in the same file. The cosmological constant of de Sitter is carried by the fluid (Λ = 0, ρ = -p = ρΛ). The comparison with Carroll is pending: only eq. (8.36) is a recorded verified location."
+  since: unreleased
+- id: LL-0331
+  title: "Einstein's equations for an FLRW metric with a perfect fluid hold on an open interval of time iff Physlib's first-order and second-order Friedmann equations hold, at c = 1, at every time"
+  area: Cosmology
+  file: Lightlike/Cosmology/FLRWPhyslib.lean
+  decls: [Lightlike.Cosmology.firstOrderFriedmann_onTime_iff, Lightlike.Cosmology.secondOrderFriedmann_onTime_iff, Lightlike.Cosmology.flrw_einstein_iff_physlib_friedmann]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (8.36)", check: "Friedmann"}
+  review: kernel-checked
+  note: "CO1 (G1-023), the link to Physlib's Friedmann definitions that the milestone asks for. The two forms of each equation agree at c = 1 for functions of the real time coordinate read as functions on Physlib's Time (onTime); this file only restates flrw_einstein_iff_friedmann (LL-0133) with Physlib's equations on the right. Spatial curvature k is any real number, as in LL-0133."
+  since: unreleased
+- id: LL-0332
+  title: "Mathlib form of the fifth-order expansion of the squared geodesic distance: for a Riemannian coordinate metric on an open subset U of Rⁿ, viewed as a Riemannian manifold, the square of Mathlib's riemannianEDist equals the quartic jet F_x(y − x) up to O(‖y − x‖⁵), uniformly for x in a compact set, and the same about the midpoint with no cubic term"
+  area: Regge
+  file: Lightlike/Upstream/GeodesicExpansion/Final.lean
+  decls: [Lightlike.Upstream.GeodesicExpansion.IsRiemMetric.riemannianEDist_sq_expansion, Lightlike.Upstream.GeodesicExpansion.IsRiemMetric.riemannianEDist_sq_expansion_midpoint]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: brewin-2009, location: "Section 9", check: "geodesic"}
+  review: kernel-checked
+  note: "T-UP-22 (G1-019): the Mathlib-ready rework of LL-0045. The chart distance of LL-0045 is shown equal to Manifold.riemannianEDist of the tangent bundle of the open set U (IsRiemMetric.riemannianBundle; Riemannian.lean: pathELength_eq, riemannianEDist_eq, chartDist_eq_toReal_riemannianEDist), and the two expansions are restated for it. Scope: an open subset of Rⁿ as a manifold with a global chart, not a general Riemannian manifold; the pull-back to a manifold with atlas is not stated. Not opened as a Mathlib pull request by this project."
+  since: unreleased
+- id: LL-0333
+  title: "OP2 in one place: a Fock representation exists on every complex Hilbert space, a Bogoliubov transformation is implemented iff its antilinear part is Hilbert-Schmidt (Shale), |alpha|^2 - |beta|^2 = 1 for one mode, and a constant |beta| on l^2(N) is not implementable"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/OPRow050/OP2Summary.lean
+  decls: [Lightlike.OperatorAlgebras.op2_fock_and_shale, Lightlike.OperatorAlgebras.op2_one_mode_alpha_beta, Lightlike.OperatorAlgebras.op2_infinite_modes_not_implementable, Lightlike.OperatorAlgebras.op2_one_mode_implementable]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: derezinski-2006, location: "Theorem 24, p. 27", check: "Shale"}
+  review: kernel-checked
+  note: "Restates the OP2 done-when and trust checks (milestones.md, OP2) from shale_criterion, Bogoliubov.norm_alpha_sq_sub_norm_beta_sq, not_implements_squeezeEllTwo and implements_squeeze, so a change in any of them breaks the file. The comparison with Dereziński is the one of the Shale entry already catalogued (Theorem 24, p. 27, read there); Shale's own paper (1962) was not read. The proof of necessity and sufficiency is this library's (ShaleSufficiency, ShaleNecessity)."
+  since: unreleased
+- id: LL-0334
+  title: "A quasi-free state of the Weyl algebra of a finite-dimensional symplectic space with a compatible complex structure (J^2 = -1, eta J-invariant and positive definite, omega(x,y) = -eta(x,Jy)) is pure; the degenerate-omega case factors through a surjection onto such a space"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/QuasiFreeState/ComplexStructure.lean
+  decls: [Lightlike.OperatorAlgebras.QuasiFreeState.isPureState_qfState_of_complexStructure, Lightlike.OperatorAlgebras.QuasiFreeState.isPureState_qfState_of_complexStructure_retract, Lightlike.OperatorAlgebras.QuasiFreeState.isPureState_qfState_of_equiv]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: gerard-2019, location: "Proposition 4.9.1", check: "pure iff"}
+  review: kernel-checked
+  note: "Compared with Gérard, arXiv:1901.10175, Section 4.9.1, Proposition 4.9.1 (read, text extracted from the PDF): a quasi-free state with covariance eta (his convention omega(W(x)) = exp(-(1/2) x.eta x), so his 2 eta is the eta here with exp(-(1/4) eta)) is pure iff (2 eta^cpl, sigma^cpl) is Kahler, i.e. there is an anti-involution j in Sp with sigma j = 2 eta; the proof there is cited to Derezinski-Gerard, Theorem 17.13, and is not read. Differences: WEAKER, only the sufficiency half is proved (a compatible J gives purity); the necessity (pure implies a compatible J) is not proved. REPRESENTATION, the space is finite-dimensional with eta positive definite on the quotient; the proof identifies the GNS space with a Fock space of the complex inner product eta + i omega and uses irreducibility of the Fock representation, not the Kahler argument; the sign of the J relation (omega = -eta J) is a convention."
+  since: unreleased
+- id: LL-0335
+  title: "The Sorkin-Johnston state of a finite causal set is pure: |iD| is the positive square root of -D^2, the Pauli-Jordan matrix is a(C - C^T) for the causal matrix C, and the quasi-free state of (D, |iD|) is pure for every a"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/QuasiFreeState/SorkinJohnston.lean
+  decls: [Lightlike.OperatorAlgebras.QuasiFreeState.isPureState_causalSet, Lightlike.OperatorAlgebras.QuasiFreeState.exists_pjData, Lightlike.OperatorAlgebras.QuasiFreeState.isPureState_pauliJordan]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: johnston-2009, location: "eq. (10)", check: "Pauli-Jordan"}
+  review: kernel-checked
+  note: "Compared with Johnston, arXiv:0909.0944, eq. (10) Delta = K_R - K_A, K_A = K_R^T, and eq. (16) K_R = a C (1 - a b C)^-1 (read). Differences: WEAKER, only the massless two-dimensional retarded matrix a C (b = 0) is built, not the four-dimensional K_R = a L (1 - a b L)^-1 nor the massive one; the state is the quasi-free state with covariance |iD| on the symplectic space (R^n, D), which is the positive-part construction of Afshordi, Aslanbeigi and Sorkin (arXiv:1205.1296, title and authors checked, not read), and no comparison with their formulas is claimed. The purity is by the compatible complex structure of the previous entry."
+  since: unreleased
+- id: LL-0336
+  title: "The integrand of the Lorentzian EPRL vertex is jointly integrable on SL(2,C)^4 × C^10 in the fixed charts, for positive spins and unit boundary spinors: the hypothesis VertexJointIntegrable of the stationary-phase theorem holds"
+  area: Asymptotics
+  file: Lightlike/SpinFoam/VertexAsymptoticsHyp/JointIntegrable.lean
+  decls: [Lightlike.Asymptotics.Lorentzian.vertexJointIntegrable_of_unit]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: bdfhp-2010, location: "eq. (53)", check: "Regge state"}
+  review: kernel-checked
+  note: "SF10 (G2-028), task T-SF10-P1: discharges one of the four hypotheses of LL-0135 (VertexJointIntegrable). The estimate is by Tonelli: the modulus of the integrand is bounded by the product of the ten densities, whose C^10 integral is a product of ten kernels, integrable over the Haar measure. The other three hypotheses (CriticalSetIs, HessianInvertible, FarRemainderBound) are NOT discharged. The docstring of VertexJointIntegrable in VertexFixChart.lean still says not proved; it predates this theorem. The comparison with BDFHP is pending (the source uses the joint integral implicitly, Sec. 6.4)."
+  since: unreleased
+- id: LL-0337
+  title: "The compact part of the far remainder of the Lorentzian vertex integral is O(λ^{-N}) for every N: for smooth compactly supported cutoffs χ ≤ ψ equal to 1 near the finite critical set K, the integral of (ψ − χ) A e^{λS} decays faster than any power of λ"
+  area: Asymptotics
+  file: Lightlike/SpinFoam/VertexAsymptoticsHyp/FarCompact.lean
+  decls: [Lightlike.Asymptotics.Lorentzian.lorVertex_farRemainder_compact_proof]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: bdfhp-2010, location: "eq. (53)", check: "Regge state"}
+  review: kernel-checked
+  note: "SF10 (G2-028), task T-SF10-P5: the part ψ − χ of the split of T-SF10-P3, by expPhase_suppressed applied to the compactly supported amplitude (ψ − χ) A, which vanishes near K. Hypothesis hK is CriticalSetIs with the cutoff 1: every critical point of tsupport A with Re S = 0 lies in K. The non-compact part 1 − ψ (T-SF10-P6) is open, so FarRemainderBound is not discharged; a numerical test supports the needed gap Re S ≤ −δ outside a compact set (docs/notes/sf10-p6-numeric.md)."
+  since: unreleased
+- id: LL-0338
+  title: "The Hessian of the Lorentzian vertex action at a point with Re S = 0 is invertible if and only if no nonzero real vector lies in the common kernel of the real and imaginary parts of its negative; the real part is positive semidefinite and the matrix is symmetric"
+  area: Asymptotics
+  file: Lightlike/SpinFoam/VertexAsymptoticsHyp/HessianIffVertex.lean
+  decls: [Lightlike.Asymptotics.Lorentzian.lorHessian_neg_symm_psd, Lightlike.Asymptotics.Lorentzian.lorHessian_det_ne_zero_iff_ker, Lightlike.Asymptotics.Lorentzian.lorHessian_det_ne_zero_iff_quad]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: bdfhp-2010, location: "eq. (53)", check: "Regge state"}
+  review: kernel-checked
+  note: "SF10 (G2-028), task T-SF10-P2, reduction only: with det_ne_zero_of_re_psd_ker (HessianKernel.lean: a complex symmetric matrix with positive semidefinite real part is invertible iff Re and Im have no common real kernel vector), the invertibility HessianInvertible is equivalent to a kernel condition on the 44 x 44 matrix. The kernel condition itself, for non-degenerate boundary data, is NOT proved (numerical evidence only: scripts/asymptotics/lorentzian_hessian_kernel_check.py), so HessianInvertible is not discharged."
+  since: unreleased
+- id: LL-0339
+  title: "Fermionic Bogoliubov transformations of the CAR: b = alpha a + beta c has anticommutators alpha alpha* + beta beta* and alpha beta^T + beta alpha^T; under alpha alpha* + beta beta* = 1 and alpha beta^T + beta alpha^T = 0 the CAR is preserved, the transformation is invertible, the transformed Majorana family of an irreducible CAR representation is an irreducible CAR representation, hence unitarily implemented (finite dimensions)"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/CARBogoliubov.lean
+  decls: [Lightlike.OperatorAlgebras.bogAnn_bogCre_anticomm, Lightlike.OperatorAlgebras.bogAnn_anticomm, Lightlike.OperatorAlgebras.isCARPairs_bog, Lightlike.OperatorAlgebras.bog_inv, Lightlike.OperatorAlgebras.isCAROn_bogFam, Lightlike.OperatorAlgebras.isIrreducibleCAR_bogFam, Lightlike.OperatorAlgebras.bogoliubov_implementable]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: derezinski-2006, location: "Theorem 10, p. 17", check: "Theorem 10"}
+  review: kernel-checked
+  note: "The implementer exists by the uniqueness of irreducible representations of the CAR over R^{2n} (Dereziński Theorem 10, p. 17, read; the file CARUnique.lean, entry above), applied to the original and the transformed Majorana families. The Bogoliubov conditions alpha alpha* + beta beta* = 1, alpha beta^T + beta alpha^T = 0 and the formulas are computed here; no statement of Section 7 on fermionic Bogoliubov transformations was read, so no comparison with it is claimed. WEAKER: only sufficiency of the two conditions is proved (necessity, that a CAR-preserving map has them, is not), only finitely many modes (the infinite-mode criterion, beta Hilbert-Schmidt, is not formalised), and the spaces are finite-dimensional with modes indexed by Fin n. For one mode the conditions force alpha beta = 0 (TestsCARBogoliubov: one_mode_trivial), the fermionic contrast to |alpha|^2 - |beta|^2 = 1."
+  since: unreleased
+- id: LL-0340
+  title: "Bogoliubov vacua of the CAR: a vector killed by every transformed annihilation operator has two-point functions <a_i Psi, a_j Psi> = (beta* beta)_ij |Psi|^2, <c_i Psi, c_j Psi> = (alpha* alpha)_ij |Psi|^2, <a_i Psi, c_j Psi> = (beta* alpha)_ij |Psi|^2; it exists for the Jordan-Wigner representation and is unique up to a scalar"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/CARQuasiFree.lean
+  decls: [Lightlike.OperatorAlgebras.bogVacuum_inner_a_a, Lightlike.OperatorAlgebras.bogVacuum_inner_c_c, Lightlike.OperatorAlgebras.bogVacuum_inner_a_c, Lightlike.OperatorAlgebras.bogVacuum_exists, Lightlike.OperatorAlgebras.bogVacuum_unique, Lightlike.OperatorAlgebras.exists_bogVacuum_jordanWigner]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: derezinski-2006, location: "Theorem 10, p. 17", check: "Theorem 10"}
+  review: kernel-checked
+  note: "The pure quasi-free (Gaussian) state x -> <Psi, x Psi>/<Psi, Psi> of the CAR over R^{2n}, as the Fock vacuum of the transformed representation. Existence is the implementing unitary of the previous entry applied to the Fock vacuum; uniqueness is that the vacuum space of the irreducible transformed representation is one-dimensional (isIrreducibleCAR_iff, the theorem 10 file above). WEAKER: only the two-point functions are computed (Wick's formula for the higher functions, mixed quasi-free states and the converse that every pure quasi-free state is a Bogoliubov vacuum are not proved); finite-dimensional. No comparison with a published statement of the two-point function is claimed. Trust check: the two-mode mixing has occupation s^2 and pairing -sc (TestsCARQuasiFree)."
+  since: unreleased
+- id: LL-0341
+  title: "The expansion Θ = tr ∇V of a smooth null geodesic field V of the Levi-Civita connection is the frame expansion Σᵢ g(∇_{eᵢ} V, eᵢ) over any n − 2 orthonormal vectors orthogonal to the null pair V, N with g(V, N) = −1"
+  area: Spacetime
+  file: Lightlike/Spacetime/NullFrameExpansion.lean
+  decls: [Lightlike.trappedExp_expansionM_eq, Lightlike.trappedExp_cov_null, Lightlike.Penrose.NullFrame.trace_eq]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: kar-sengupta-2007, location: "eq. (17)", check: "null"}
+  review: kernel-checked
+  note: "G1-012 (closed trapped surfaces), the link between the expansion of the null normals of a surface and the Θ of raychaudhuri_null_focusing_manifold (LL for G1-009). Linear algebra first: in a nondegenerate symmetric form on a space of dimension m + 2 with an orthonormal m-frame orthogonal to a null pair (V, N), g(V, N) = -1, tr A = Σᵢ B(A eᵢ, eᵢ) − B(A V, N) − B(A N, V) (NullFrame.trace_eq); then g(∇_u V, V) = 0 for a null field (trappedExp_cov_null, from the chart statement covD_orthogonal_of_const) and ∇_V V = 0 kill the two correction terms. Hypotheses: V smooth, g(V, V) = 0 near x, ∇_V V = 0 at x, n ≥ 2. It does not say that the frame spans the tangent space of a surface: that, and that V is a null normal of the surface, belong to the definition of the trapped surface. The comparison with Kar and SenGupta is pending (only eq. (17) is a recorded verified location)."
+  since: unreleased
+- id: LL-0342
+  title: "The fusion ring of SU(2) at level r - 2: the coefficients N_ab^c = 1 for admissible triples are symmetric, 0 is the unit, the quantum dimension [a+1] is multiplicative, and the ring is associative for r = 3, 4, 5, 6"
+  area: TuraevViro
+  file: Lightlike/TuraevViro/FusionRing.lean
+  decls: [Lightlike.TV.fusionN, Lightlike.TV.fusionN_comm₁₂, Lightlike.TV.fusionN_comm₂₃, Lightlike.TV.fusionN_zero_left, Lightlike.TV.fusion_dim, Lightlike.TV.fusion_assoc_small]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (the SU(2)_k fusion rules source was not read). The coefficients are the admissibility qAdm already used by the Turaev-Viro code; the multiplicativity of the quantum dimension is sum_qAdm_qnum. WEAKER: associativity is proved only for the levels r = 3, 4, 5, 6 (all colour quadruples by decide); the statement for every r is not proved (a counting proof exceeded the build memory limit). Not built: the F-matrices as isomorphisms of a monoidal category, the pentagon (it is the q-Biedenharn-Elliott identity, a hypothesis of this library), the braiding, the modular tensor category."
+  since: unreleased
+- id: LL-0343
+  title: "The S matrix of SU(2) at level r - 2, S_ab = sqrt(2/r) sin(pi (a+1)(b+1)/r): symmetric, its unit row is the quantum dimension, and the Verlinde formula holds for the unit-object row"
+  area: TuraevViro
+  file: Lightlike/TuraevViro/SMatrix.lean
+  decls: [Lightlike.TV.sMat, Lightlike.TV.sMat_comm, Lightlike.TV.sMat_zero_left, Lightlike.TV.sMat_zero_zero_pos, Lightlike.TV.verlinde_zero]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source for the SU(2)_k S matrix was read). verlinde_zero is S_0a S_0b = S_00 sum_c N_ab^c S_0c, the multiplicativity of the quantum dimension fusion_dim. WEAKER: only the unit-object row of the Verlinde formula is proved; the formula for the other rows, the orthogonality S^2 = 1 (charge conjugation is trivial for SU(2)), unitarity, and the relation with the T matrix are not."
+  since: unreleased
+- id: LL-0344
+  title: "Discrete sine orthogonality, sum over x < r of sin(a pi x/r) sin(b pi x/r) = (r/2) delta_ab for 0 < a, b < r, and S^2 = 1 for the S matrix of SU(2) at level r - 2"
+  area: TuraevViro
+  file: Lightlike/TuraevViro/SOrthogonal.lean
+  decls: [Lightlike.TV.sum_sin_mul_sin_orth, Lightlike.TV.sMat_mul_self]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source for the SU(2)_k S matrix was read). The proof telescopes 2 sin(phi/2) sum cos(x phi) (two_sin_mul_sum_cos), evaluates the full-period cosine sum (1 - (-1)^k)/2 for 0 < k < 2r, and uses that a - b and a + b have the same parity. S is real and symmetric (sMat_comm), so S^2 = 1 says it is an orthogonal involution; charge conjugation is trivial for SU(2). WEAKER than the full modular data: the Verlinde formula for the rows other than the unit row, the T matrix and the relation (ST)^3 = S^2 are not proved."
+  since: unreleased
+- id: LL-0345
+  title: "U_q(sl₂) as a Hopf algebra over a field, with its antipode"
+  area: QuantumGroups
+  file: Lightlike/QuantumGroups/UqSl2.lean
+  decls: [Lightlike.QuantumGroups.UqSl2, Lightlike.QuantumGroups.UqSl2.comul, Lightlike.QuantumGroups.UqSl2.counit, Lightlike.QuantumGroups.UqSl2.antipodeOp, Lightlike.QuantumGroups.UqSl2.adjoin_gen]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: turaev-1994, location: "Chapter: Chapter XI. An algebraic construction of modular categories|10.1515/9783110883275-012"}
+  review: kernel-checked
+  note: "Part of QU3, which stays open. For a field k and a unit q, the k-algebra on generators E, F, K, K⁻¹ with K K⁻¹ = K⁻¹ K = 1, K E = q² E K, K F = q⁻² F K and (q − q⁻¹)(E F − F E) = K − K⁻¹ carries a Hopf algebra structure with Δ E = E ⊗ K + 1 ⊗ E, Δ F = F ⊗ 1 + K⁻¹ ⊗ F, Δ K = K ⊗ K, ε E = ε F = 0, ε K = 1, S E = −E K⁻¹, S F = −K F, S K = K⁻¹. These are the common conventions; matching them to the normalisation of the cited chapter was not checked, since the chapter was not read at that location. The commutation relation is written without division, so it is defined for every q; for q² = 1 it is a different (non-quantum) algebra. No representation theory, R-matrix, ribbon element or modular category is proved here (QU3 stays open); the checks in UqSl2Tests.lean are identities on generators."
+  since: unreleased
+- id: LL-0346
+  title: "The two-dimensional representation of U_q(sl₂) for every unit q of a field: E ↦ e₁₂, F ↦ e₂₁, K ↦ diag(q, q⁻¹), K⁻¹ ↦ diag(q⁻¹, q)"
+  area: QuantumGroups
+  file: Lightlike/QuantumGroups/UqSl2Rep.lean
+  decls: [Lightlike.QuantumGroups.UqSl2.fundRep, Lightlike.QuantumGroups.UqSl2.fundRep_E, Lightlike.QuantumGroups.UqSl2.fundRep_F, Lightlike.QuantumGroups.UqSl2.fundRep_K, Lightlike.QuantumGroups.UqSl2.fundRep_Ki]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: turaev-1994, location: "Chapter: Chapter XI. An algebraic construction of modular categories|10.1515/9783110883275-012"}
+  review: kernel-checked
+  note: "Part of QU3 (G3-200), which stays open. The matrices satisfy the five defining relations of UqSl2 (K K⁻¹ = K⁻¹ K = 1, K E = q² E K, K F = q⁻² F K, (q − q⁻¹)(E F − F E) = K − K⁻¹), so they define an algebra homomorphism fundRep by the universal property of the quotient (fundGen_rel). No hypothesis on q: it also holds at roots of unity and at q² = 1. The comparison with Turaev, Chapter XI, is pending: the book was not read at the cited location."
+  since: unreleased
+- id: LL-0347
+  title: "The braiding of the two-dimensional representation of U_q(sl₂): the matrix Ř (Ř v₀₀ = q v₀₀, Ř v₁₁ = q v₁₁, Ř v₀₁ = v₁₀, Ř v₁₀ = v₀₁ + (q − q⁻¹) v₁₀) commutes with the action of every element of U_q(sl₂) on the tensor square, satisfies the Hecke relation (Ř − q)(Ř + q⁻¹) = 0 and the braid relation Ř₁₂ Ř₂₃ Ř₁₂ = Ř₂₃ Ř₁₂ Ř₂₃"
+  area: QuantumGroups
+  file: Lightlike/QuantumGroups/UqSl2Braid.lean
+  decls: [Lightlike.QuantumGroups.UqSl2.fundBraid, Lightlike.QuantumGroups.UqSl2.fundTensorRep, Lightlike.QuantumGroups.UqSl2.fundBraid_comm_all, Lightlike.QuantumGroups.UqSl2.fundBraid_hecke, Lightlike.QuantumGroups.UqSl2.fundBraid_braid]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: turaev-1994, location: "Chapter: Chapter XI. An algebraic construction of modular categories|10.1515/9783110883275-012"}
+  review: kernel-checked
+  note: "Part of QU3 (G3-200), which stays open. The tensor square fundTensorRep is the representation on k² ⊗ k² with E, F, K, K⁻¹ acting by the matrices fundCoE, fundCoF, fundCoK, fundCoKi of ΔE = E ⊗ K + 1 ⊗ E, ΔF = F ⊗ 1 + K⁻¹ ⊗ F, ΔK = K ⊗ K, ΔK⁻¹ = K⁻¹ ⊗ K⁻¹ (the coproduct of UqSl2); it is shown to be a representation by the defining relations (tensorGen_rel). Ř = P R is the unique intertwiner up to the identity with the eigenvalue q on v₀₀, v₁₁ and trace q − q⁻¹ on the weight-zero space, so it is the R-matrix of this representation in the form Ř. Not proved: that the universal R-matrix exists and acts as Ř, and that fundTensorRep is the tensor product of fundRep with itself through the library's comul (the matrices were checked against comul_E, comul_F, comul_K by reading, not by a Lean statement). The braid relation holds for every unit q; the Hecke relation is a quadratic relation with eigenvalues q and −q⁻¹. The comparison with Turaev, Chapter XI, is pending."
+  since: unreleased
+- id: LL-0348
+  title: "Constraint counting and the circle check: the number of degrees of freedom of the reduced phase space is 2n − 2m + r (r second-class constraints), a second-class set has an even number of constraints, and for the particle on a circle the constraints |q|² − 1 and ⟨p,q⟩ are second class (reduced dimension 2) while treating them as first class gives the wrong count 0"
+  area: Gauge
+  file: Lightlike/Gauge/ConstraintsAPI.lean
+  decls: [Lightlike.Gauge.even_of_isSecondClass, Lightlike.Gauge.diracBracket_constraint, Lightlike.Gauge.finrank_reducedTangent]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: henneaux-teitelboim-1992, location: "Chapter: CHAPTER ONE. CONSTRAINED HAMILTONIAN SYSTEMS|10.1515/9780691213866-004"}
+  review: kernel-checked
+  note: "GC4 (G3-132). Flat phase space X × X with Physlib's Poisson bracket; the Dirac bracket {f,g} − Σ {f,φ_a} (C⁻¹)_ab {φ_b,g} is antisymmetric and vanishes against a constraint when C is invertible. The circle particle and the wrong-count check are circle_isSecondClass and circle_wrong_count (Lightlike/Tests/Constraints.lean). finrank_reducedTangent: dim of the reduced tangent space is dim E − 2 dim(orbit), for a linear action at a zero of the moment map. The comparison with the cited sources is pending in the registry (Wipf hep-th/9312078 is not a registered source; the comparison note docs/notes/gc4-source-dirac.md is the record)."
+  since: unreleased
+- id: LL-0349
+  title: "The Dirac consistency algorithm terminates: for nested regular stages with nonempty zero sets the zero sets are constant from some stage on, and a regular stage has at most dim E constraint functions"
+  area: Gauge
+  file: Lightlike/Gauge/DiracRegular.lean
+  decls: [Lightlike.Gauge.card_le_finrank_of_regular, Lightlike.Gauge.exists_stable_of_regular]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: henneaux-teitelboim-1992, location: "Chapter: CHAPTER ONE. CONSTRAINED HAMILTONIAN SYSTEMS|10.1515/9780691213866-004"}
+  review: kernel-checked
+  note: "GC4 (G3-132). Termination by counting under linear independence of the gradients (regularity is a hypothesis; the smooth existence of the secondary constraints is not proved here). Without regularity there is no termination: the chain {x ≤ 1/(k+1)} in ℝ (DiracNonlinear.lean). The comparison with the cited sources is pending in the registry (Wipf hep-th/9312078 is not a registered source; the comparison note docs/notes/gc4-source-dirac.md is the record)."
+  since: unreleased
+- id: LL-0350
+  title: "The secondary constraints of the Dirac algorithm do not depend on the choice of the invertible block: two admissible selection rules give the same constraint surface at every stage"
+  area: Gauge
+  file: Lightlike/Gauge/DiracChart.lean
+  decls: [Lightlike.Gauge.zeroSet_stages_eq]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: henneaux-teitelboim-1992, location: "Chapter: CHAPTER ONE. CONSTRAINED HAMILTONIAN SYSTEMS|10.1515/9780691213866-004"}
+  review: kernel-checked
+  note: "GC4 (G3-132). Hypotheses: the bracket is first order (br f g x = B x (df) (dg)) and the stages are regular. Equivalent to the left-null-vector form of the consistency condition (chiFun_zero_iff_leftNull; Wipf hep-th/9312078, Sec. 3.3, pp. 16-17). The comparison with the cited sources is pending in the registry (Wipf hep-th/9312078 is not a registered source; the comparison note docs/notes/gc4-source-dirac.md is the record)."
+  since: unreleased
+- id: LL-0351
+  title: "The Dirac consistency algorithm with local charts glued into a finite atlas: the constraint surfaces are constant from stage dim E + 1 on, and the consistency system is solvable at every point of the final surface; this follows from constant rank of the consistency matrix near every point of the primary surface"
+  area: Gauge
+  file: Lightlike/Gauge/DiracGlue.lean
+  decls: [Lightlike.Gauge.DiracAtlas.final_consistent, Lightlike.Gauge.final_consistent_of_constantRank]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: henneaux-teitelboim-1992, location: "Chapter: CHAPTER ONE. CONSTRAINED HAMILTONIAN SYSTEMS|10.1515/9780691213866-004"}
+  review: kernel-checked
+  note: "GC4 (G3-132). Removes the hypothesis of one globally admissible selection of DiracAlgo.final_consistent_of_cover: constant rank gives local admissibility only, and the charts are glued with overlap compatibility (zeroSet_stages_inter_eq). Hypotheses: first-order bracket and ConstantRankAt (constant rank near each point, independent stage derivatives, strict differentiability). The comparison with the cited sources is pending in the registry (Wipf hep-th/9312078 is not a registered source; the comparison note docs/notes/gc4-source-dirac.md is the record)."
+  since: unreleased
+- id: LL-0352
+  title: "The induced form on the reduced space D^⊥/D of a linear coisotropic reduction is alternating and nondegenerate, for a nondegenerate reflexive form σ and an isotropic subspace D of a finite-dimensional space"
+  area: Gauge
+  file: Lightlike/Gauge/ReducedForm.lean
+  decls: [Lightlike.Gauge.reducedForm_isAlt, Lightlike.Gauge.reducedForm_nondegenerate]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: cannas-da-silva-2001, location: "Chapter: The Marsden-Weinstein-Meyer Theorem|10.1007/978-3-540-45330-7_23"}
+  review: kernel-checked
+  note: "GC4 (G3-132): the linear case of the Marsden–Weinstein reduction (Cannas da Silva, Lemma 23.3). NOT covered: Theorem 23.1, the reduction of a manifold at a regular value of a moment map for a free proper action (no moment map or quotient manifold in the library; see docs/notes/gc4-marsden-weinstein-gap.md in the queue). GC4 stays partial. The comparison with the cited sources is pending in the registry (Wipf hep-th/9312078 is not a registered source; the comparison note docs/notes/gc4-source-dirac.md is the record)."
+  since: unreleased
+- id: LL-0353
+  title: "Faddeev–Popov in finite dimension, infinitesimal: if the matrix {G_a, φ_b} of the gauge-fixing functions G with the first-class constraints is invertible, the gauge directions X_{φ_b} are linearly independent and meet the tangent space of the slice only in 0"
+  area: Gauge
+  file: Lightlike/Gauge/FaddeevPopov.lean
+  decls: [Lightlike.Gauge.fpMatrix, Lightlike.Gauge.linearIndependent_hamField_of_det_ne_zero, Lightlike.Gauge.eq_zero_of_mem_ker_of_det_ne_zero]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: henneaux-teitelboim-1992, location: "Chapter: CHAPTER ONE. CONSTRAINED HAMILTONIAN SYSTEMS|10.1515/9780691213866-004"}
+  review: kernel-checked
+  note: "GC4 (G3-132). Infinitesimal and local only: the global statements (Gribov copies) are not covered. The comparison with the cited sources is pending in the registry (Wipf hep-th/9312078 is not a registered source; the comparison note docs/notes/gc4-source-dirac.md is the record)."
+  since: unreleased
+- id: LL-0354
+  title: "The Hamiltonian vector fields of first-class constraints are tangent to the constraint surface and Ω-orthogonal to its tangent directions"
+  area: Gauge
+  file: Lightlike/Gauge/GaugeFlow.lean
+  decls: [Lightlike.Gauge.pairing_hamField_eq_zero_of_firstClass, Lightlike.Gauge.gradForm_hamField_eq_zero]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: henneaux-teitelboim-1992, location: "Chapter: CHAPTER ONE. CONSTRAINED HAMILTONIAN SYSTEMS|10.1515/9780691213866-004"}
+  review: kernel-checked
+  note: "GC4 (G3-132). Infinitesimal gauge directions: df(X_g) = {f,g}, Ω(X_g, v) = dg(v). The flows themselves are not covered here; see the gauge orbit theorem for the integral manifolds. The comparison with the cited sources is pending in the registry (Wipf hep-th/9312078 is not a registered source; the comparison note docs/notes/gc4-source-dirac.md is the record)."
+  since: unreleased
+- id: LL-0355
+  title: "Gauge orbits (Wipf, Theorem 5): for C² first-class constraints with C¹ structure functions and independent gradients at x₀, through every point of the constraint surface near x₀ there is a map t ↦ f(t, x) of ℝ^m near 0 into the surface whose range is the span of the constraint Hamiltonian fields"
+  area: Gauge
+  file: Lightlike/Gauge/Orbits/GaugeOrbits.lean
+  decls: [Lightlike.Gauge.exists_gauge_orbit]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: henneaux-teitelboim-1992, location: "Chapter: CHAPTER ONE. CONSTRAINED HAMILTONIAN SYSTEMS|10.1515/9780691213866-004"}
+  review: kernel-checked
+  note: "GC4 (G3-132). Local statement; proof by Frobenius for a family that is involutive only on an invariant set (Lightlike.ODE.exists_integral_manifold_of_involutive_on). Non-vacuity: exists_gauge_orbit_momentum (Lightlike/Gauge/Orbits/Tests.lean: γ = p on ℝ × ℝ). The comparison with Wipf Section 5.2 is recorded in docs/notes/gauge-orbits-wipf5.md. The comparison with the cited sources is pending in the registry (Wipf hep-th/9312078 is not a registered source; the comparison note docs/notes/gc4-source-dirac.md is the record)."
   since: unreleased

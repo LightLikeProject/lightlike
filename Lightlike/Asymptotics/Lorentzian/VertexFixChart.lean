@@ -116,12 +116,13 @@ theorem lorChartAction_fixVertexChart_contDiffOn
 
 open Filter MeasureTheory Lightlike.Oscillatory in
 open _root_.Asymptotics in
-/-- **Hypothesis `VertexJointIntegrable`** (open fact about `lorVertex`, not proved): for every
+/-- **Hypothesis `VertexJointIntegrable`** (proved for positive spins and unit boundary spinors by
+`vertexJointIntegrable_of_unit`, `Lightlike/SpinFoam/VertexAsymptoticsHyp/JointIntegrable.lean`): for every
 `λ ∈ ℕ` the outer integral of the vertex of the scaled data is measurable and the integrand is jointly
 integrable on `(ℂ³)⁴ × ℂ¹⁰` in the fixed charts. The vertex is defined as an iterated integral and the
 existing finiteness (`integrable_lorOuter`) is that of the complex inner integral, not of its modulus;
-BDFHP use the joint integral implicitly (Sec. 6.4 p. 30). Provable in Lean only with an estimate of
-`∏_e ∫ ‖g_e‖ dw` (a source for the finiteness of the EPRL vertex would be needed). -/
+BDFHP use the joint integral implicitly (Sec. 6.4 p. 30). The proof of `vertexJointIntegrable_of_unit` bounds the modulus of the
+integrand by the product of the ten densities, `∏_e ∫ ‖g_e‖ dw`. -/
 def VertexJointIntegrable (j p : Fin 10 → ℝ) (g : BdryData) : Prop :=
   ∀ lam : ℕ, AEStronglyMeasurable (fun x : Fin 4 → SL2C => ∫ w : Fin 10 → ℂ,
       lorIntegrand (fun k => (lam : ℝ) * j k) (fun k => (lam : ℝ) * p k) g (Lightlike.Lorentz.gauge x) w)
