@@ -88,8 +88,8 @@ theorem exists_uniform_geodesic (hg : Lightlike.IsCoordMetric g U) {K : Set (Fin
   exact hQ x (hKU (htK x hxt)) p hpx v (ball_subset_ball (hδt x hxt) hv)
 
 
-/-- The image of an open set `V ⊆ B(0, ρ)` under `exp_p` is open, when `{p} × B(0, ρ) ⊆ W` for the
-neighbourhood `W` of the zero section of `exists_twoPoint_diffeo_global`. -/
+/-- `exp_p` maps every `IsOpen` set `V` with `{p} × V ⊆ W` onto an `IsOpen` set, where `W` is the
+neighbourhood of the zero section of `exists_twoPoint_diffeo_global`. -/
 lemma isOpen_image_expMap {W : Set ((Fin n → ℝ) × (Fin n → ℝ))}
     {G : (Fin n → ℝ) × (Fin n → ℝ) → (Fin n → ℝ) × (Fin n → ℝ)} (hW : IsOpen W)
     (himg : IsOpen (twoPointMap g U '' W)) (hG : ∀ q ∈ W, G (twoPointMap g U q) = q)
