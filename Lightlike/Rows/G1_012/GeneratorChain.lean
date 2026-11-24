@@ -535,4 +535,30 @@ theorem genReach_extend (T : Causal.TimeOrientation g) (x : M) {β : ℝ → M} 
     rw [hvel]
     exact hfut0
 
+/-- **Shortening a null geodesic reach.** -/
+theorem genReach_mono (T : Causal.TimeOrientation g) {β : ℝ → M} {a b t t₁ : ℝ}
+    (hβ : Causal.IsFutureCausalCurve T β (Icc a b)) (hat : a < t) (htt : t ≤ t₁) (ht₁ : t₁ ≤ b)
+    (h : GenReach T β a t₁) : GenReach T β a t := by
+  obtain ⟨γ, S, lam, e, hS, he, hnull, hγ0, hγS, hl0, hlS, hmono, hcont, hβγ, hfut⟩ := h
+  have hta : t ∈ Icc a t₁ := ⟨hat.le, htt⟩
+  have hS0 : 0 < lam t := by
+    refine lt_of_le_of_ne ?_ fun h0 => ?_
+    · have := hmono ⟨le_rfl, hat.le.trans htt⟩ hta hat.le
+      rwa [hl0] at this
+    · refine Causal_not_const hβ (Icc_subset_Icc le_rfl (htt.trans ht₁) : Icc a t ⊆ Icc a b) hat ?_
+      intro s hs
+      have hs0 : lam s = 0 := by
+        have h1 := hmono ⟨le_rfl, hat.le.trans htt⟩ ⟨hs.1, hs.2.trans htt⟩ hs.1
+        have h2 := hmono ⟨hs.1, hs.2.trans htt⟩ hta hs.2
+        linarith
+      rw [hβγ s ⟨hs.1, hs.2.trans htt⟩, hβγ a ⟨le_rfl, hat.le.trans htt⟩, hs0, hl0]
+  have hlt : lam t ≤ S := by
+    have := hmono hta ⟨hat.le.trans htt, le_rfl⟩ htt
+    rwa [hlS] at this
+  refine ⟨γ, lam t, lam, e, hS0, he, hnull.mono ?_, hγ0, (hβγ t hta).symm, hl0, rfl,
+    hmono.mono (Icc_subset_Icc le_rfl htt), hcont.mono (Icc_subset_Icc le_rfl htt),
+    fun s hs => hβγ s ⟨hs.1, hs.2.trans htt⟩, hfut⟩
+  intro σ hσ
+  exact ⟨hσ.1, by linarith [hσ.2]⟩
+
 end Lightlike.Penrose
