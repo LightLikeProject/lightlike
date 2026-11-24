@@ -1784,6 +1784,7 @@ import Lightlike.Rows.G1_054.Tests
 import Lightlike.Tests.SphereInvariants
 import Lightlike.Tests.SphereRecognition
 import Lightlike.Tests.TreeDependence
+import Lightlike.TuraevViro.FMatrix
 import Lightlike.TuraevViro.LevelOne
 import Lightlike.TuraevViro.PLInvariance
 import Lightlike.TuraevViro.Model

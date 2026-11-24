@@ -4706,3 +4706,17 @@
   review: kernel-checked
   note: "GC4 (G3-132). Local statement; proof by Frobenius for a family that is involutive only on an invariant set (Lightlike.ODE.exists_integral_manifold_of_involutive_on). Non-vacuity: exists_gauge_orbit_momentum (Lightlike/Gauge/Orbits/Tests.lean: γ = p on ℝ × ℝ). The comparison with Wipf Section 5.2 is recorded in docs/notes/gauge-orbits-wipf5.md. The comparison with the cited sources is pending in the registry (Wipf hep-th/9312078 is not a registered source; the comparison note docs/notes/gc4-source-dirac.md is the record)."
   since: unreleased
+- id: LL-0356
+  title: "The pentagon equation of the F-matrices of U_q(sl₂) at q = e^{iπ/r}, with F^{abc}_d[e, f] = (−1)^((a+b+c+d)/2) √([e+1][f+1]) {a b e; c d f}_q, follows from the quantum Biedenharn–Elliott identity, and holds unconditionally at r = 3"
+  area: TuraevViro
+  file: Lightlike/TuraevViro/FMatrix.lean
+  decls: [Lightlike.TV.fMat, Lightlike.TV.fMat_pentagon, Lightlike.TV.fMat_pentagon_three]
+  status: conditional
+  hypotheses: [Lightlike.TV.qBiedenharnElliott]
+  tier: established
+  source:
+    refs:
+      - {ref: turaev-1994, location: "Chapter: Chapter VI. 6j-symbols|10.1515/9783110883275-007"}
+  review: kernel-checked
+  note: "QU3 (G3-201), conditional in the style of LL-0031: fMat_pentagon takes qBiedenharnElliott hr, the q-Biedenharn–Elliott identity (proved at r = 3 only, qBiedenharnElliott_three, which gives fMat_pentagon_three unconditionally; numerical evidence for other r, docs/notes/qbe-all-levels.md). The pentagon is the Biedenharn–Elliott sum over h with the signs and the square roots of the dimensions moved into the F-matrices; the signs agree termwise under the parity of the admissible triads. The convention (the sign (−1)^((a+b+c+d)/2) and the symmetric normalisation √(dim e dim f)) was checked numerically at r = 5 for all labels before the Lean statement, and the same pentagon without the sign fails (difference 2.0). Not proved: the hexagon, the existence of the full modular tensor category, the F-matrices as the associator of a representation category of U_q(sl₂) (they are defined from the 6j symbols, not from UqSl2). The comparison with Turaev, Chapter VI, is pending."
+  since: unreleased
