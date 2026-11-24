@@ -322,6 +322,22 @@ lemma creR_annR_car [DecidableEq ι] (i j : ι) :
   · intro i j; rw [qField, qField, key, re_inner_I_basis b i j]; split_ifs <;> simp
   · intro i j; rw [pField, qField, key, re_inner_basis_I b i j]; simp
 
+omit hR in
+lemma inner_field (w : Z) (x y : Γ) : ⟪fockField B b w x, y⟫_ℂ = ⟪x, fockField B b w y⟫_ℂ := by
+  have h := isSelfAdjoint_fockField B b w
+  rw [IsSelfAdjoint, ContinuousLinearMap.star_eq_adjoint] at h
+  rw [← ContinuousLinearMap.adjoint_inner_right, h]
+
+omit hR in
+/-- `annR j` is the adjoint of `creR j`. -/
+lemma inner_annR_creR (j : ι) (x y : Γ) : ⟪annR B b R j x, y⟫_ℂ = ⟪x, creR B b R j y⟫_ℂ := by
+  simp only [annR, creR, pField, qField, ContinuousLinearMap.smul_apply, ContinuousLinearMap.add_apply,
+    ContinuousLinearMap.sub_apply, inner_smul_left, inner_smul_right, inner_add_left, inner_sub_right,
+    inner_field B b]
+  have h2 : (starRingEnd ℂ) (2 : ℂ) = 2 := map_ofNat _ 2
+  simp [Complex.conj_I, h2]
+  ring
+
 end FockLadder
 
 end Lightlike.OperatorAlgebras.CARShale
