@@ -180,6 +180,8 @@ is every entry of Table 1: `μ`, `∑_α μ`, `2μ`, `∑_{αβ} μ`, `2 ∑_α 
     `NCG.phiMixed_pH`, `NCG.interForm`, `NCG.interForm_real_real`, `NCG.interForm_quat_quat`, `NCG.interForm_real_quat`,
     `NCG.pC`, `NCG.BlocksOf`, `NCG.phiMixed_pC`, `NCG.interForm_complex_real`, `NCG.interForm_complex_complex`,
     `NCG.interForm_complex_quat`, `NCG.interForm_real_complex`, `NCG.interForm_quat_complex`
+27. Lightlike/NCG/DiracConverse.lean - `NCG.conjOp`, `NCG.conjOp_selfAdjoint`, `NCG.conjOp_commute_pi`, `NCG.conjOp_gamma`,
+    `NCG.CommutesJ`, `NCG.ofDelta`, `NCG.ofDelta_D`, `NCG.realOfDelta`, `NCG.gradingOfDelta`
 
 ## References
 
