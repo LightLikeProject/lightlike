@@ -1389,7 +1389,10 @@ import Lightlike.Spacetime.Causal.CauchyClosed
 import Lightlike.Rows.G1_012.Defs
 import Lightlike.Rows.G1_012.Skeleton
 import Lightlike.Rows.G1_012.AchronalBoundary
+import Lightlike.Rows.G1_012.PenroseCovering
 import Lightlike.Rows.G1_012.Assembly
+import Lightlike.Rows.G1_012.NullGeodCausal
+import Lightlike.Rows.G1_012.TrappedSurface
 import Lightlike.Spacetime.Causal.ChainReach
 import Lightlike.Spacetime.Causal.TimeReversal
 import Lightlike.Spacetime.Causal.OpenPast
@@ -1470,6 +1473,7 @@ import Lightlike.Spacetime.Raychaudhuri.TwistFocusing
 import Lightlike.Spacetime.RaychaudhuriManifold
 import Lightlike.Spacetime.RaychaudhuriNull
 import Lightlike.Spacetime.RaychaudhuriNullAlg
+import Lightlike.Spacetime.NullFrameExpansion
 import Lightlike.Spacetime.RaychaudhuriNullManifold
 import Lightlike.Spacetime.RaychaudhuriShear
 import Lightlike.Spacetime.RaychaudhuriSplit
@@ -1780,6 +1784,7 @@ import Lightlike.Tests.TreeDependence
 import Lightlike.TuraevViro.LevelOne
 import Lightlike.TuraevViro.PLInvariance
 import Lightlike.TuraevViro.Model
+import Lightlike.TuraevViro.FusionRing
 import Lightlike.TuraevViro.QNumber
 import Lightlike.TuraevViro.QSixJ
 import Lightlike.TuraevViro.QFifteenJ
