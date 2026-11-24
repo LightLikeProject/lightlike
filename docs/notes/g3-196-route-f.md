@@ -66,6 +66,35 @@ Route E (the same with `Rep U_q(sl₂)` instead of diagrams) needs the Hopf alge
 the queue), its finite-dimensional modules, the `q`-Clebsch–Gordan coefficients and the negligible
 quotient; the milestones are the same shape with larger F1 and F3 and no diagrams.
 
+## Progress (24 Nov 2026) and the measured dictionary for F4
+
+F1 and F2 are Lean: `Lightlike/TemperleyLieb/Basic.lean` (the algebra `TL k δ` with relations, universal
+property, the Chebyshev sequence `chebD`) and `JonesWenzl.lean` (in any algebra with an `IsTL` family, for
+`d_i ≠ 0` up to `N`: `jw n` idempotent, killed by `e_i`, absorbing, commuting with `e_i` for `i ≥ n`, and the
+partial trace identity `e_n jw(n+1) e_n = (d_{n+1}/d_n) jw n e_n`).
+
+MEASURED dictionary (exact, ratio 1.0 on 400 sampled tuples at each of r = 5, 6, 7, 9; Python with mpmath at
+30 digits, `scripts/tv_check.py: q6j` against Kauffman–Lins' formulas written from memory and corrected only
+by this test): with `[n] = sin(nπ/r)/sin(π/r)`, `θ(a,b,c) = (-1)^{x+y+z} [x+y+z+1]! [x]![y]![z]! /
+([x+y]![y+z]![x+z]!)` (`x = (a+b-c)/2`, etc., doubled spins) and
+`Tet[A B E; C D F] = (I!/E!) Σ_s (-1)^s [s+1]! / (Π_i [s-a_i]! Π_j [b_j-s]!)` with
+`a = ((A+D+E)/2, (B+C+E)/2, (A+B+F)/2, (C+D+F)/2)`, `b = ((B+D+E+F)/2, (A+C+E+F)/2, (A+B+C+D)/2)`,
+`I! = Π_{i,j} [b_j - a_i]!`, `E! = [A]![B]![C]![D]![E]![F]!`:
+`qSixJ r A D E C B F = Tet[A B E; C D F] / sqrt(|θ(A,D,E) θ(B,C,E) θ(A,B,F) θ(C,D,F)|)`.
+So the identification F4 splits into (a) the evaluation of the tetrahedral net as this explicit sum (Kauffman–
+Lins' theorem, by induction with the fusion identity) and (b) an elementary `q`-factorial manipulation.
+
+Model and design decisions for F3 to F5:
+- the model `Finset ℕ →₀ k` (the infinite tensor power of `k²`, a basis vector is the set of positions carrying
+  `1`) carries `e_i` as local operators on the positions `i, i+1`, so the relations hold for every `i` with no
+  length bookkeeping, and the finite tensor powers are the subspaces supported below `N`; cup and cap
+  weights `a = d = 1`, `b = -q`, `c = -q⁻¹` give `δ = -q - q⁻¹`;
+- nets are evaluated as pairings of vectors (states) in the model, so the trace and the pairing are
+  explicit finite sums; the fusion identity and the evaluation of `θ` and `Tet` are inductions on
+  the Jones–Wenzl recursion, which `JonesWenzl.lean` already provides;
+- the root of unity: `d_{r-1} = 0`, projectors exist up to `jw (r-1)`, and the trees with all colours `≤ r-2`
+  are the ones the library's `qAdm` keeps.
+
 ## Decision
 
 No route in this note is a row-sized step. The two structural routes (F, E) are milestone-sized
