@@ -1469,6 +1469,7 @@ import Lightlike.Spacetime.CurveBounds
 import Lightlike.Spacetime.DivergenceFree
 import Lightlike.Spacetime.ExtensionChart
 import Lightlike.Spacetime.GeodesicChartChange
+import Lightlike.Spacetime.GeodesicIntrinsic
 import Lightlike.Spacetime.GeodesicMomentum
 import Lightlike.Spacetime.GE3Row.Conjugate
 import Lightlike.Spacetime.GE3Row.Jacobi
