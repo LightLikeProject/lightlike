@@ -1,0 +1,55 @@
+- id: LL-XXXX-a
+  title: "On a Lorentzian manifold a perfect fluid field with unit timelike velocity satisfies the null, weak, strong and dominant energy conditions exactly when ρ + p ≥ 0; ρ ≥ 0 and ρ + p ≥ 0; ρ + p ≥ 0 and ρ + 3p ≥ 0; |p| ≤ ρ everywhere, and dust with ρ ≥ 0 satisfies all four"
+  area: Spacetime
+  file: Lightlike/Spacetime/EnergyConditionsField.lean
+  decls: [Lightlike.LorentzianMetric.fluidField_nullEC_iff, Lightlike.LorentzianMetric.fluidField_weakEC_iff, Lightlike.LorentzianMetric.fluidField_strongEC_iff, Lightlike.LorentzianMetric.fluidField_dominantEC_iff, Lightlike.LorentzianMetric.fluidField_dust]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: curiel-2014, location: "§2.1"}
+      - {ref: hawking-ellis-1973, location: "Chapter: The physical significance of curvature|10.1017/CBO9780511524646.005"}
+  review: kernel-checked
+  note: "GE14 (G1-010). The pointwise equivalences at a point are LL entries on Lightlike/Spacetime/EnergyConditions.lean; these are their statements for a field on a manifold (4 dimensions). Dust is the trust check of the milestone. The comparison with the source is pending in the registry."
+  since: unreleased
+- id: LL-XXXX-b
+  title: "Trust checks of the energy conditions on a manifold: a constant Klein–Gordon field with a negative potential value violates the weak energy condition, and the electromagnetic stress-energy tensor of an antisymmetric field satisfies the null condition at every point"
+  area: Spacetime
+  file: Lightlike/Spacetime/EnergyConditionsField.lean
+  decls: [Lightlike.LorentzianMetric.scalarField_const_violates_weak, Lightlike.LorentzianMetric.emField_nullEC]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: curiel-2014, location: "§2.1"}
+      - {ref: hawking-ellis-1973, location: "Chapter: The physical significance of curvature|10.1017/CBO9780511524646.005"}
+  review: kernel-checked
+  note: "GE14 (G1-010): the Klein–Gordon check of the milestone (negative potential violates the weak condition, on a nonempty manifold) and the null condition of the electromagnetic field. 4 dimensions. The null condition of the Klein–Gordon field is in Lightlike/Spacetime/GERow10/KleinGordonNEC.lean (not catalogued here). The comparison with the source is pending in the registry."
+  since: unreleased
+- id: LL-XXXX-c
+  title: "The null, weak, strong and dominant energy conditions of a perfect fluid are exactly Physlib's NullEnergyCondition, WeakEnergyCondition, StrongEnergyCondition and DominantEnergyCondition of a CosmicFluid at c = 1"
+  area: Spacetime
+  file: Lightlike/Spacetime/EnergyConditionsPhyslib.lean
+  decls: [Lightlike.fluid_nullEC_iff_physlib, Lightlike.fluid_weakEC_iff_physlib, Lightlike.fluid_strongEC_iff_physlib, Lightlike.fluid_dominantEC_iff_physlib]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: curiel-2014, location: "§2.1"}
+      - {ref: hawking-ellis-1973, location: "Chapter: The physical significance of curvature|10.1017/CBO9780511524646.005"}
+  review: kernel-checked
+  note: "GE14 (G1-010): the link to Physlib's cosmology definitions that the milestone asks for for fluids. The conditions are those of a unit timelike fluid velocity in 4 dimensions. The comparison with the source is pending in the registry."
+  since: unreleased
+- id: LL-XXXX-d
+  title: "The source of the Einstein equations is conserved: if G + Λ g = κ T for the Levi-Civita connection and κ ≠ 0, then ∇^μ T_{μν} = 0"
+  area: Spacetime
+  file: Lightlike/Spacetime/StressEnergyConservation.lean
+  decls: [Lightlike.divBilinAt_eq_zero_of_einsteinEq]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "Chapter 4"}
+  review: kernel-checked
+  note: "GE14 (G1-010), after Carroll (4.38), (4.42), (4.43): conservation of the stress-energy tensor from the Bianchi identity of the Einstein tensor and the parallel metric, with a cosmological constant (the source has Λ = 0). The divergence is divBilinAt, g^{ij}(∇_i T)(e_j, w), on a manifold modelled on ℝⁿ. The comparison with the source is pending in the registry."
+  since: unreleased
