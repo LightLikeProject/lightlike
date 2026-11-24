@@ -1139,6 +1139,10 @@ references:
     cite: "P. Martinetti, From Monge to Higgs: a survey of distance computations in noncommutative geometry (2016)"
     title: "From Monge to Higgs: a survey of distance computations in noncommutative geometry"
     arxiv: "1604.00499"
+  gerard-2019:
+    cite: "C. Gérard, Microlocal analysis of quantum fields on curved spacetimes, ESI Lectures in Mathematics and Physics, EMS (2019)"
+    title: "Microlocal analysis of quantum fields on curved spacetimes"
+    arxiv: "1901.10175"
 canonical:
   pl-topology: [lickorish-1999, moise-1977]
   asymptotics: [hormander-1990]

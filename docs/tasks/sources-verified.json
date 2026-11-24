@@ -1814,7 +1814,7 @@
   "citations_via": "Semantic Scholar"
  },
  "derezinski-2006": {
-  "checked": "2026-11-19",
+  "checked": "2026-11-24",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "Introduction to representations of the canonical commutation and anticommutation relations",
@@ -2533,6 +2533,21 @@
   "fetched_title": "General relativistic strings ",
   "locations": {},
   "citations": 348,
+  "citations_via": "OpenAlex"
+ },
+ "gerard-2019": {
+  "checked": "2026-11-24",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Microlocal Analysis of Quantum Fields on Curved Spacetimes",
+  "locations": {
+   "Proposition 4.9.1": {
+    "verified": true,
+    "snippet": "Proposition 4.9.1. A quasi-free state on CCRpol (X , σ) with covariance η is pure iff (2η cpl , σ cpl ) is Kähler, i.e. there exists an anti-involution jcpl ∈ Sp(X cpl , σ cpl ) such that σ cpl jcpl = 2η cpl . Note that",
+    "why": null
+   }
+  },
+  "citations": 46,
   "citations_via": "OpenAlex"
  },
  "ggv-1966": {
