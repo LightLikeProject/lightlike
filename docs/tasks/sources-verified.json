@@ -3263,7 +3263,7 @@
   "citations_via": "Semantic Scholar"
  },
  "johnston-2009": {
-  "checked": "2026-11-08",
+  "checked": "2026-11-24",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "Feynman Propagator for a Free Scalar Field on a Causal Set",
@@ -3274,8 +3274,8 @@
     "why": null
    }
   },
-  "citations": 88,
-  "citations_via": "Semantic Scholar"
+  "citations": 103,
+  "citations_via": "OpenAlex"
  },
  "junker-schrohe-2002": {
   "checked": "2026-11-11",
