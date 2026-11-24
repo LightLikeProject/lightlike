@@ -115,6 +115,12 @@ idempotents are Lagrange polynomials in the single operator `A = Q e_{a-1} Q`, a
 fixed by the three-term recurrence that the library already proves for `qSixJ` in the third colour
 (`Reflect/RacahRecurrence`).  Signs are the open point of (B): overlaps of eigenvectors give `F²` unless the
 vectors are fixed by the tree construction.
+CORRECTION (MEASURED, numpy, 2^n-dimensional model, random complex `q`): the identity
+`e_{a-1} p_a p_b e_{a-1} = c · e_{a-1} p_{a-1} p'_{b-1}` holds for `(a,b) ∈ {(1,1),(2,1),(1,2)}` (with `c = d_a/d_{a-1}`
+for `b = 1`) and FAILS for `(2,2), (3,2), (2,3), (3,3)`; so `(Q e Q)² = c Q e Q` is false for blocks of size at
+least two, as it must be since `Q·TL·Q` has dimension `min(a,b)+1` and `Q e Q` has that many eigenvalues.  In (B) the
+channel idempotents are Lagrange polynomials in `A = Q e_{a-1} Q` over its eigenvalues, which first have to be
+computed (the partial trace identity only gives the top and bottom ones).
 Next Lean step for (B): the shifted family `e ∘ (· + s)` is `IsTL`, the generalised partial trace identity,
 and `A² = c A`.  Next step for (A): naturality lemmas of `cup` and `cap` against `e_j`.
 
