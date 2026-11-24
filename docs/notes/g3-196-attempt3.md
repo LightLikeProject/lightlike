@@ -56,7 +56,7 @@ and report; G3-196 and everything it blocks (G3-197 general r, G3-199, G2-029) s
 
 TASK: test step (ii): does the x-sum of BE admit a termwise recurrence in the external colour `p`
 whose coefficients do not depend on `x`?
-METHOD: `scripts/research/be_recurrence_test.py R kmax` (mpmath, 40 digits, `q6j` of
+METHOD: a local script `be_recurrence_test.py R kmax` (not in the repo) (mpmath, 40 digits, `q6j` of
 `scripts/tv_check.py`). For tuples with at least `k + 2` nonzero `x`-rows, build the matrix
 `M[x, j] = t_x(p + 2j)`, `j = 0..k`, and test for a null vector by its smallest singular value.
 ACCEPTANCE CRITERION: a null vector in essentially every such tuple at some fixed `k`.
