@@ -1782,6 +1782,7 @@ import Lightlike.Tests.TreeDependence
 import Lightlike.TuraevViro.LevelOne
 import Lightlike.TuraevViro.PLInvariance
 import Lightlike.TuraevViro.Model
+import Lightlike.TuraevViro.FusionRing
 import Lightlike.TuraevViro.QNumber
 import Lightlike.TuraevViro.QSixJ
 import Lightlike.TuraevViro.QFifteenJ
