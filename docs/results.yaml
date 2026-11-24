@@ -4374,3 +4374,29 @@
   review: kernel-checked
   note: "G3-073. P·J(a,…,b) = −(1/√2) Σ_c J(a,…,c) J(c+1,…,b) for null momenta and transverse polarizations (mdot_momRange_bgCurrent), by strong induction on the current recursion; at P² = 0 this is the on-shell Ward identity at the last gluon (ward_last), and the cyclic property (Elvang-Huang p. 25) gives it at every gluon (ward_all). The Gervais-Neveu form of the identity is not printed in the sources read (Dixon hep-ph/9601359 (57) is for Feynman gauge). bgAmplitude_eq_sum_channels' still takes the large-z falloff (3.6) as a hypothesis (hinf): the falloff is not proved. The comparison with the source is pending (Elvang-Huang p. 17 for the Ward identity is not a recorded verified location)."
   since: unreleased
+- id: LL-0330
+  title: "Trust checks of the Einstein equations for FLRW with a perfect fluid: de Sitter space (a = e^{Ht}, k = 0, ρ = -p) is a solution iff H² = 8πGρ/3, Einstein's static universe (a constant, k = 1, dust) is a solution iff Λ = 1/a² = 4πGρ, and with k = -1 there is no static dust solution"
+  area: Cosmology
+  file: Lightlike/Cosmology/FLRW.lean
+  decls: [Lightlike.Cosmology.deSitter_einstein_iff, Lightlike.Cosmology.deSitter_example, Lightlike.Cosmology.einsteinStatic_einstein_iff, Lightlike.Cosmology.not_einsteinStatic_einstein_of_negCurvature]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (8.36)", check: "Friedmann"}
+  review: kernel-checked
+  note: "CO1 (G1-023), the three trust checks of the milestone at the level of Einstein's equations (IsEinsteinSolution), through flrw_einstein_iff_friedmann (LL-0133). deSitter_example shows the hypotheses are met (H = 1, ρ = 1, G = 3/8π). The static-universe checks have the Friedmann-level forms einsteinStatic_friedmann_iff and not_einsteinStatic_friedmann_of_negCurvature in the same file. The cosmological constant of de Sitter is carried by the fluid (Λ = 0, ρ = -p = ρΛ). The comparison with Carroll is pending: only eq. (8.36) is a recorded verified location."
+  since: unreleased
+- id: LL-0331
+  title: "Einstein's equations for an FLRW metric with a perfect fluid hold on an open interval of time iff Physlib's first-order and second-order Friedmann equations hold, at c = 1, at every time"
+  area: Cosmology
+  file: Lightlike/Cosmology/FLRWPhyslib.lean
+  decls: [Lightlike.Cosmology.firstOrderFriedmann_onTime_iff, Lightlike.Cosmology.secondOrderFriedmann_onTime_iff, Lightlike.Cosmology.flrw_einstein_iff_physlib_friedmann]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (8.36)", check: "Friedmann"}
+  review: kernel-checked
+  note: "CO1 (G1-023), the link to Physlib's Friedmann definitions that the milestone asks for. The two forms of each equation agree at c = 1 for functions of the real time coordinate read as functions on Physlib's Time (onTime); this file only restates flrw_einstein_iff_friedmann (LL-0133) with Physlib's equations on the right. Spatial curvature k is any real number, as in LL-0133."
+  since: unreleased
