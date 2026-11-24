@@ -24,6 +24,7 @@ namespace Lightlike.TV
 noncomputable def sMat (r a b : ℕ) : ℝ :=
   Real.sqrt (2 / r) * Real.sin (((a + 1 : ℕ) : ℝ) * ((b + 1 : ℕ) : ℝ) * π / r)
 
+/-- The S matrix is symmetric. -/
 lemma sMat_comm (r a b : ℕ) : sMat r a b = sMat r b a := by
   unfold sMat; rw [mul_comm ((a + 1 : ℕ) : ℝ)]
 
@@ -34,6 +35,7 @@ lemma sMat_zero_left {r : ℕ} (hr : 2 ≤ r) (b : ℕ) : sMat r 0 b = sMat r 0 
   simp only [Nat.cast_zero, zero_add, Nat.cast_one, one_mul]
   field_simp
 
+/-- `S_{00} > 0`. -/
 lemma sMat_zero_zero_pos {r : ℕ} (hr : 2 ≤ r) : 0 < sMat r 0 0 := by
   unfold sMat
   have hr' : (0 : ℝ) < r := by exact_mod_cast (by omega : 0 < r)
