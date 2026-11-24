@@ -26,9 +26,11 @@ def fusionN (r a b c : ℕ) : ℕ := if qAdm r a b c then 1 else 0
 lemma qAdm_comm12 (r a b c : ℕ) : qAdm r a b c ↔ qAdm r b a c := by unfold qAdm Tri; omega
 lemma qAdm_comm23 (r a b c : ℕ) : qAdm r a b c ↔ qAdm r a c b := by unfold qAdm Tri; omega
 
+/-- The fusion coefficient is symmetric in the first two colours. -/
 lemma fusionN_comm₁₂ (r a b c : ℕ) : fusionN r a b c = fusionN r b a c := by
   unfold fusionN; simp only [qAdm_comm12 r a b c]
 
+/-- The fusion coefficient is symmetric in the last two colours. -/
 lemma fusionN_comm₂₃ (r a b c : ℕ) : fusionN r a b c = fusionN r a c b := by
   unfold fusionN; simp only [qAdm_comm23 r a b c]
 
