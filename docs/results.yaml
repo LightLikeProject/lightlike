@@ -4400,3 +4400,16 @@
   review: kernel-checked
   note: "CO1 (G1-023), the link to Physlib's Friedmann definitions that the milestone asks for. The two forms of each equation agree at c = 1 for functions of the real time coordinate read as functions on Physlib's Time (onTime); this file only restates flrw_einstein_iff_friedmann (LL-0133) with Physlib's equations on the right. Spatial curvature k is any real number, as in LL-0133."
   since: unreleased
+- id: LL-0332
+  title: "Mathlib form of the fifth-order expansion of the squared geodesic distance: for a Riemannian coordinate metric on an open subset U of Rⁿ, viewed as a Riemannian manifold, the square of Mathlib's riemannianEDist equals the quartic jet F_x(y − x) up to O(‖y − x‖⁵), uniformly for x in a compact set, and the same about the midpoint with no cubic term"
+  area: Regge
+  file: Lightlike/Upstream/GeodesicExpansion/Final.lean
+  decls: [Lightlike.Upstream.GeodesicExpansion.IsRiemMetric.riemannianEDist_sq_expansion, Lightlike.Upstream.GeodesicExpansion.IsRiemMetric.riemannianEDist_sq_expansion_midpoint]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: brewin-2009, location: "Section 9", check: "geodesic"}
+  review: kernel-checked
+  note: "T-UP-22 (G1-019): the Mathlib-ready rework of LL-0045. The chart distance of LL-0045 is shown equal to Manifold.riemannianEDist of the tangent bundle of the open set U (IsRiemMetric.riemannianBundle; Riemannian.lean: pathELength_eq, riemannianEDist_eq, chartDist_eq_toReal_riemannianEDist), and the two expansions are restated for it. Scope: an open subset of Rⁿ as a manifold with a global chart, not a general Riemannian manifold; the pull-back to a manifold with atlas is not stated. Not opened as a Mathlib pull request by this project."
+  since: unreleased
