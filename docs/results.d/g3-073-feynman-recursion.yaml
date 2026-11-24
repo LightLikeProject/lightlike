@@ -1,0 +1,26 @@
+- id: LL-XXXX-a
+  title: "The on-shell recursion for the colour-ordered Feynman amplitudes of Yang–Mills theory: under the large-z falloff of the shifted amplitude, A_n is the sum over the planar channels of the product of the lower amplitudes at the poles divided by the propagator"
+  area: GR
+  file: Lightlike/GR/FeynmanRecursion.lean
+  decls: [Lightlike.SpinorHelicity.eq_sum_div_sub_of_residues, Lightlike.SpinorHelicity.bgAmplitude_eq_sum_channels]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: elvang-huang-2013, location: "eq. (3.4)"}
+  review: kernel-checked
+  note: "G3-073. Elvang-Huang (3.4)-(3.7): partial fractions from Liouville's theorem, then the recursion for the colour-ordered Feynman rules of the library (Gervais-Neveu gauge), for any shift with (3.2)-(3.3). The statement takes the large-z falloff (3.6), Â_n(z) → 0 at infinity (hypothesis hinf), as an input, as Elvang-Huang do (p. 36); they cite the falloff (3.11) for Yang-Mills from the literature without proof. It also takes the Ward identities of the lower-point amplitudes as hypotheses, which the next entry removes. The comparison with the source is pending in the registry (only eq. (3.4) is recorded as verified)."
+  since: unreleased
+- id: LL-XXXX-b
+  title: "The Ward identity of the colour-ordered Feynman amplitudes holds at every gluon for every number of gluons, and with it the factorization on the poles and the recursion hold without the Ward identity as a hypothesis"
+  area: GR
+  file: Lightlike/GR/FeynmanWard.lean
+  decls: [Lightlike.SpinorHelicity.ward_all, Lightlike.SpinorHelicity.residue_factorization', Lightlike.SpinorHelicity.bgAmplitude_eq_sum_channels']
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: elvang-huang-2013, location: "eq. (3.4)"}
+  review: kernel-checked
+  note: "G3-073. P·J(a,…,b) = −(1/√2) Σ_c J(a,…,c) J(c+1,…,b) for null momenta and transverse polarizations (mdot_momRange_bgCurrent), by strong induction on the current recursion; at P² = 0 this is the on-shell Ward identity at the last gluon (ward_last), and the cyclic property (Elvang-Huang p. 25) gives it at every gluon (ward_all). The Gervais-Neveu form of the identity is not printed in the sources read (Dixon hep-ph/9601359 (57) is for Feynman gauge). bgAmplitude_eq_sum_channels' still takes the large-z falloff (3.6) as a hypothesis (hinf): the falloff is not proved. The comparison with the source is pending (Elvang-Huang p. 17 for the Ward identity is not a recorded verified location)."
+  since: unreleased
