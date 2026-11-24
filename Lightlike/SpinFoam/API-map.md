@@ -46,6 +46,20 @@ cutoff can depend on the gauge set (numerical evidence, a non-manifold complex a
 triangulation), so independence for all gauge sets is not claimed. Removing the cutoff is not yet
 formalized. [TODO]
 
+The gauge-fixed state sum depends on the gauge set only through what it forces. Adding triangles that
+the gauge set already forces does not change the sum at any cutoff, and gauge sets that force each
+other give equal sums, whether or not they force every triangle [29]. The forcing closure `forcedTris`
+of a set of triangles is monotone, idempotent and contained in the triangles of the complex, and
+the state sum with the closure as gauge set equals the sum with the set itself [30]. The closure is
+every triangle exactly when the set forces every triangle, and then the sum is `1` at every
+cutoff [31]. Forcing between subsets of the triangles is the inclusion order of the closures, it is
+transitive, and equal closures are mutual forcing, so the state sum is constant on forcing classes
+[32]. On the boundary of the 5-simplex the cone gauge set and a twisted gauge set have the same
+closure (every triangle) and the same sum, while the cone with one triangle removed has a smaller
+closure [33]. The trust check bundles the milestone's two checks: the cone obeys the gauge rule
+and gives `1`, and the cone minus one triangle violates it and gives `5` [34]. All of these are
+finite-cutoff statements; nothing says that gauge sets with different closures give different sums.
+
 The Barrett–Crane model {5} puts a simple representation `(j, j)` of Spin(4) on every triangle and
 the Barrett–Crane intertwiner `Σ_i ι_i ⊗ ι_i` on every tetrahedron. A representation `(n, m)`
 satisfies the simplicity constraint exactly when `n = m` [14]. The vertex amplitude is the sum of the
@@ -211,6 +225,23 @@ proved).
     `SpinFoam.tetraRemovable_iff_bddAbove`, `SpinFoam.tetraTerm_zeroSpin`,
     `SpinFoam.tetraPartition_ge`, `SpinFoam.tetraPartition_unbounded`,
     `SpinFoam.not_tetraRemovable`, `SpinFoam.tetraPartition_two_ge`
+29. Lightlike/SpinFoam/OoguriGaugeFixed/ForcingClosure.lean - `SpinFoam.Forces.union`,
+    `SpinFoam.amplitudeGF_union_of_forces`, `SpinFoam.amplitudeGF_insert_of_step`,
+    `SpinFoam.forcedTris`, `SpinFoam.forces_forcedTris`, `SpinFoam.amplitudeGF_eq_forcedTris`,
+    `SpinFoam.amplitudeGF_eq_of_mutual_forces`, `SpinFoam.tendsto_amplitudeGF_iff_of_mutual_forces`
+30. Lightlike/SpinFoam/OoguriGaugeFixed/ForcingClosureAlgebra.lean - `SpinFoam.forcedTris_mono`,
+    `SpinFoam.forcedTris_forcedTris`, `SpinFoam.forces_iff_subset_forcedTris`,
+    `SpinFoam.amplitudeGF_eq_of_forcedTris_eq`
+31. Lightlike/SpinFoam/OoguriGaugeFixed/ForcingClosureTotal.lean - `SpinFoam.forcedTris_eq_tris_iff`,
+    `SpinFoam.amplitudeGF_forcedTris`, `SpinFoam.amplitudeGF_eq_one_of_forcedTris_eq_tris`,
+    `SpinFoam.forcedTris_union_eq`, `SpinFoam.amplitudeGF_union_eq_forcedTris_union`
+32. Lightlike/SpinFoam/OoguriGaugeFixed/ForcingClosureOrder.lean -
+    `SpinFoam.forces_iff_forcedTris_subset`, `SpinFoam.Forces.trans'`,
+    `SpinFoam.forcedTris_eq_iff_mutual_forces`, `SpinFoam.amplitudeGF_eq_of_forces_forces`
+33. Lightlike/SpinFoam/OoguriGaugeFixed/Test.lean - `SpinFoam.forces_starT`,
+    `SpinFoam.forcedTris_starT`, `SpinFoam.amplitudeGF_starT_eq_twistT`,
+    `SpinFoam.forcedTris_gauge9_ne`
+34. Lightlike/SpinFoam/OoguriGaugeFixed/Capstone.lean - `SpinFoam.gaugeFixed_sphere6_trust`
 
 ## References
 
