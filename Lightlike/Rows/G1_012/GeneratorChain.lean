@@ -561,4 +561,114 @@ theorem genReach_mono (T : Causal.TimeOrientation g) {β : ℝ → M} {a b t t�
   intro σ hσ
   exact ⟨hσ.1, by linarith [hσ.2]⟩
 
+set_option maxHeartbeats 1600000 in
+/-- **The local step of the chain**: around each `t*` there is `ε > 0` such that a null geodesic
+reach of `β t₁` (or `t₁ = a`) extends to `β t₂` for `t₁ < t₂` within `ε` of `t*`. -/
+theorem chain_step (T : Causal.TimeOrientation g) {β : ℝ → M} {a b : ℝ} (hab : a < b)
+    (hβ : Causal.IsFutureCausalCurve T β (Icc a b))
+    (hno : ∀ t' ∈ Icc a b, ∀ t'' ∈ Icc a b, t' ≤ t'' → β t'' ∉ Causal.chronFuture T (β t'))
+    {t' : ℝ} (ht' : t' ∈ Icc a b) :
+    ∃ ε : ℝ, 0 < ε ∧ ∀ t₁ ∈ Icc a b, ∀ t₂ ∈ Icc a b, |t₁ - t'| ≤ ε → |t₂ - t'| ≤ ε → t₁ < t₂ →
+      (t₁ = a ∨ GenReach T β a t₁) → GenReach T β a t₂ := by
+  set x : M := β t' with hx
+  set ψ := extChartAt 𝓘(ℝ, Fin n → ℝ) x with hψ
+  -- a neighbourhood in the chart source
+  obtain ⟨K₀, U, hU, hmaps, -⟩ := hβ.lipschitz t' ht'
+  obtain ⟨ε₀, hε₀, hε₀U⟩ : ∃ ε₀ > 0, ∀ t ∈ Icc a b, |t - t'| < ε₀ → β t ∈ ψ.source := by
+    rw [mem_nhdsWithin_iff_exists_mem_nhds_inter] at hU
+    obtain ⟨V, hV, hVU⟩ := hU
+    obtain ⟨ε₀, hε₀, hball⟩ := Metric.mem_nhds_iff.1 hV
+    refine ⟨ε₀, hε₀, fun t ht htε => hmaps (hVU ⟨hball ?_, ht⟩)⟩
+    rw [Metric.mem_ball, Real.dist_eq]; exact htε
+  set a' : ℝ := max a (t' - ε₀ / 2) with ha'
+  set b' : ℝ := min b (t' + ε₀ / 2) with hb'
+  have ha'a : a ≤ a' := le_max_left _ _
+  have hb'b : b' ≤ b := min_le_left _ _
+  have hat' : a' ≤ t' := max_le ht'.1 (by linarith)
+  have hb't : t' ≤ b' := le_min ht'.2 (by linarith)
+  have hab' : a' < b' := by
+    rcases hat'.eq_or_lt with h1 | h1
+    · rcases hb't.eq_or_lt with h2 | h2
+      · exfalso
+        have : a = t' ∨ t' - ε₀ / 2 = t' := by
+          rcases max_choice a (t' - ε₀ / 2) with h | h
+          · left; rw [ha'] at h1; rw [h] at h1; exact h1
+          · right; rw [ha'] at h1; rw [h] at h1; exact h1
+        rcases this with h | h
+        · rcases min_choice b (t' + ε₀ / 2) with h' | h'
+          · rw [hb', h'] at h2; linarith [ht'.2, hab]
+          · rw [hb', h'] at h2; linarith
+        · linarith
+      · exact lt_of_le_of_lt hat' h2
+    · exact lt_of_lt_of_le h1 hb't
+  have hsubab : Icc a' b' ⊆ Icc a b := Icc_subset_Icc ha'a hb'b
+  have hsrc' : ∀ t ∈ Icc a' b', β t ∈ ψ.source := by
+    intro t ht
+    refine hε₀U t (hsubab ht) ?_
+    rw [abs_lt]; constructor <;> linarith [ht.1, ht.2, le_max_right a (t' - ε₀ / 2),
+      min_le_right b (t' + ε₀ / 2)]
+  have hβ' : Causal.IsFutureCausalCurve T β (Icc a' b') :=
+    Causal.IsCurveWith.mono hβ ha'a hb'b hab'
+  obtain ⟨L, hL, -⟩ := chart_curve_data T x hβ' hsrc'
+  have hcomp : IsCompact ((ψ ∘ β) '' Icc a' b') := isCompact_Icc.image_of_continuousOn hL.continuousOn
+  have hKU : (ψ ∘ β) '' Icc a' b' ⊆ ψ.target := by
+    rintro _ ⟨t, ht, rfl⟩
+    exact ψ.map_source (hsrc' t ht)
+  have hg1 := (g.isLorentzianCoordMetric_coordMetric x).1
+  obtain ⟨ρ, r, η, hr, hrρ, hη, hball⟩ := Lightlike.Geodesic.exists_uniform_future_timeBall hg1 hcomp hKU
+    (continuousOn_timeCoord T x) (fun y hy => timeCoord_timelike T x hy)
+  have hU' : UniformFutureBall T x (ψ '' (β '' Icc a' b')) ρ r η := by
+    refine ⟨hr, hrρ, hη, ?_⟩
+    rw [Set.image_image] at *
+    simpa [Set.image_comp] using hball
+  set ε : ℝ := min (ε₀ / 4) (η / (4 * ((L : ℝ) + 1))) with hε
+  have hεpos : 0 < ε := lt_min (by linarith) (by positivity)
+  refine ⟨ε, hεpos, fun t₁ ht₁ t₂ ht₂ h1 h2 h12 hreach => ?_⟩
+  have hεle : ε ≤ ε₀ / 4 := min_le_left _ _
+  have hεη : (L : ℝ) * (3 * ε) < η := by
+    have h4 : ε ≤ η / (4 * ((L : ℝ) + 1)) := min_le_right _ _
+    have hL0 : (0 : ℝ) ≤ L := L.2
+    have : (L : ℝ) * (3 * ε) ≤ (L : ℝ) * (3 * (η / (4 * ((L : ℝ) + 1)))) := by gcongr
+    have h5 : (L : ℝ) * (3 * (η / (4 * ((L : ℝ) + 1)))) < η := by
+      rw [show (L : ℝ) * (3 * (η / (4 * ((L : ℝ) + 1)))) = 3 * η * L / (4 * ((L : ℝ) + 1)) by ring,
+        div_lt_iff₀ (by positivity)]
+      nlinarith
+    linarith
+  have hin' : ∀ t ∈ Icc a b, |t - t'| ≤ ε → t ∈ Icc a' b' := by
+    intro t ht htε
+    have := abs_le.1 htε
+    exact ⟨max_le ht.1 (by linarith [this.1, hεle, hε₀]), le_min ht.2 (by linarith [this.2, hεle, hε₀])⟩
+  have hno' : ∀ u ∈ Icc a' b', ∀ v ∈ Icc a' b', u ≤ v → β v ∉ Causal.chronFuture T (β u) :=
+    fun u hu v hv huv => hno u (hsubab hu) v (hsubab hv) huv
+  have ht₁' := hin' t₁ ht₁ h1
+  have ht₂' := hin' t₂ ht₂ h2
+  have hd1 := abs_le.1 h1
+  have hd2 := abs_le.1 h2
+  by_cases hta : t₁ = a
+  · subst hta
+    have hd : (L : ℝ) * (t₂ - t₁) < η := lt_of_le_of_lt
+      (mul_le_mul_of_nonneg_left (by linarith [hd1.1, hd2.2, hεpos]) L.2) hεη
+    obtain ⟨φ, N, vb, lam, hTB, hfut, hcov, hvb, hvb0, hnull, hx0, hl0, hl1, hmono, hcont, hlam⟩ :=
+      window_radial T x hβ' hsrc' hno' hL hU' ht₁' ht₂' h12 hd
+    exact genReach_of_window T x (fun t ht => hsrc' t ⟨ht₁'.1.trans ht.1, ht.2.trans ht₂'.2⟩) h12
+      hTB hfut hvb hvb0 hnull hx0 hl0 hl1 hmono hcont hlam
+  · have hreach' : GenReach T β a t₁ := hreach.resolve_left hta
+    have hat1 : a < t₁ := lt_of_le_of_ne ht₁.1 (Ne.symm hta)
+    set t₀ : ℝ := max a (t₁ - ε) with ht₀def
+    have hat₀ : a ≤ t₀ := le_max_left _ _
+    have h01 : t₀ < t₁ := max_lt hat1 (by linarith)
+    have ht₀' : t₀ ∈ Icc a' b' :=
+      ⟨max_le_max le_rfl (by linarith [hd1.1, hεle, hε₀]), h01.le.trans ht₁'.2⟩
+    have ht₀ab : t₀ ∈ Icc a b := ⟨hat₀, h01.le.trans ht₁.2⟩
+    have hd : (L : ℝ) * (t₂ - t₀) < η := by
+      refine lt_of_le_of_lt (mul_le_mul_of_nonneg_left ?_ L.2) hεη
+      have : t₁ - ε ≤ t₀ := le_max_right _ _
+      linarith [hd1.1, hd2.2, hεpos]
+    have h02 : t₀ < t₂ := h01.trans h12
+    obtain ⟨φ, N, vb, lam, hTB, hfut, hcov, hvb, hvb0, hnull, hx0, hl0, hl1, hmono, hcont, hlam⟩ :=
+      window_radial T x hβ' hsrc' hno' hL hU' ht₀' ht₂' h02 hd
+    exact genReach_extend T x hβ hat₀ h01 h12 ht₂.2
+      (fun t ht => hsrc' t ⟨ht₀'.1.trans ht.1, ht.2.trans ht₂'.2⟩) hrρ hTB hvb hvb0 hnull hl0 hl1
+      hmono hcont hlam hreach'
+
 end Lightlike.Penrose
