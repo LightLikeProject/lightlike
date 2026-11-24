@@ -127,4 +127,38 @@ theorem jwAt_mirror (q : kˣ) (s s' m : ℕ) (hd : ∀ j, j < m → chebD (loopV
     rw [← mul_assoc, ← mul_assoc, key, mul_assoc (reflectOp k N), h1]
     simp
 
+/-- Conjugation by an involution transports `U - c U E U`. -/
+lemma conj_sub_smul_mul {A : Type*} [Ring A] [Algebra k A] (c : k) (ρ U E : A) (hρ : ρ * ρ = 1) :
+    ρ * (U - c • (U * E * U)) * ρ =
+      ρ * U * ρ - c • ((ρ * U * ρ) * (ρ * E * ρ) * (ρ * U * ρ)) := by
+  rw [mul_sub, sub_mul, mul_smul_comm, smul_mul_assoc]
+  congr 2
+  simp only [mul_assoc, ← mul_assoc ρ ρ, hρ, one_mul]
+
+/-- **The recursion from the left end**: `jw (n+2)` on the strands `s, …, s + n + 1` is
+`U - (d_n/d_{n+1}) U e_s U` with `U` the projector on the strands `s + 1, …, s + n + 1`. -/
+theorem jwAt_succ_succ_left (q : kˣ) (s n : ℕ) (hd : ∀ j, j < n + 2 → chebD (loopVal q) j ≠ 0) :
+    jwAt q s (n + 2) = jwAt q (s + 1) (n + 1) -
+      (chebD (loopVal q) n / chebD (loopVal q) (n + 1)) •
+        (jwAt q (s + 1) (n + 1) * modelE q s * jwAt q (s + 1) (n + 1)) := by
+  set N := s + n + 2 with hN
+  have hρ := reflectOp_mul_self (k := k) N
+  have m1 : jwAt q s (n + 2) = reflectOp k N * jwAt q 0 (n + 2) * reflectOp k N := by
+    have := jwAt_mirror (k := k) q 0 s (n + 2) hd
+    rwa [show 0 + s + (n + 2) = N by omega] at this
+  have m2 : jwAt q (s + 1) (n + 1) = reflectOp k N * jwAt q 0 (n + 1) * reflectOp k N := by
+    have := jwAt_mirror (k := k) q 0 (s + 1) (n + 1) (fun j hj => hd j (by omega))
+    rwa [show 0 + (s + 1) + (n + 1) = N by omega] at this
+  have m3 : reflectOp k N * modelE q n * reflectOp k N = modelE q s := by
+    have := reflect_conj_e (k := k) q n s
+    rwa [show n + s + 2 = N by omega] at this
+  have h0 : jwAt q 0 (n + 2) = jwAt q 0 (n + 1) -
+      (chebD (loopVal q) n / chebD (loopVal q) (n + 1)) •
+        (jwAt q 0 (n + 1) * modelE q n * jwAt q 0 (n + 1)) := jw_succ_succ n
+  rw [m1, h0]
+  have h := conj_sub_smul_mul (A := Module.End k (ModelSpace k))
+    (chebD (loopVal q) n / chebD (loopVal q) (n + 1)) (reflectOp k N) (jwAt q 0 (n + 1)) (modelE q n) hρ
+  refine h.trans ?_
+  rw [← m2, m3]
+
 end Lightlike.TemperleyLieb
