@@ -1,0 +1,11 @@
+- id: LL-XXXX-i
+  title: "Fermionic Shale in infinitely many modes, sufficiency for a small antilinear part: a surjective real-linear map R of a Hilbert space Z preserving Re of the inner product, whose antilinear part beta satisfies sum over every finite set of |beta e_k|^2 at most h < 1, is implemented by a unitary of the fermionic Fock space, U phi(w) = phi(R w) U; and for any R, a unit vector killed by the transformed annihilation operators gives such a unitary"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/CARShale.lean
+  decls: [Lightlike.OperatorAlgebras.CARShale.exists_unitary_of_dense, Lightlike.OperatorAlgebras.CARShale.dense_words, Lightlike.OperatorAlgebras.CARShale.exists_implementer, Lightlike.OperatorAlgebras.CARShale.exists_vacuum_of_small, Lightlike.OperatorAlgebras.CARShale.fermionic_shale_of_small]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source for the fermionic Shale theorem was read). Part of OP2, not the whole criterion. WEAKER: (1) only sufficiency, and only under the strict bound sum |beta e_k|^2 < 1 (Hilbert-Schmidt norm of beta below 1); the general Hilbert-Schmidt case (Araki, Bratteli-Robinson) and the necessity of the Hilbert-Schmidt condition are not proved here. (2) The bound is on the basis vectors of a Hilbert basis, which is the squared Hilbert-Schmidt norm of beta. Proof: the transformed annihilators are the CAR family (p + i q)/2 built from the fields phi(R e_k), phi(R(i e_k)); the words of transformed creation operators on a unit vacuum are orthonormal, dense by irreducibility of the Fock representation, and define the unitary; the vacuum is the limit of the decreasing commuting projections prod (1 - c_k a_k), bounded below by the Bonferroni inequality 1 - sum |a_k Omega_0|^2."
+  since: unreleased
