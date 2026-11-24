@@ -214,4 +214,57 @@ lemma block_ext (s L : ℕ) {σ τ : ℕ → Bool}
   · have := block_lt s L hσ hτ hp hpL h1 h0; omega
   · rfl
 
+/-- The generators inside the two blocks `[0,a)` and `[a,a+b)`. -/
+def Jab (a b : ℕ) (j : ℕ) : Prop := j + 2 ≤ a ∨ (a ≤ j ∧ j + 2 ≤ a + b)
+
+/-- The sorted window sequences for the two blocks. -/
+noncomputable def sortedSet (a b : ℕ) : Finset (ℕ → Bool) :=
+  (tailZero_finite (a + b)).toFinset.filter (fun σ => SortedAt (Jab a b) σ)
+
+/-- The number of sorted sequences is at most `(a+1)(b+1)`. -/
+theorem card_sortedSet_le (a b : ℕ) : (sortedSet a b).card ≤ (a + 1) * (b + 1) := by
+  have hinj : Set.InjOn (fun σ : ℕ → Bool => (onesIn 0 a σ, onesIn a b σ)) (sortedSet a b : Set (ℕ → Bool)) := by
+    intro σ hσ τ hτ h
+    simp only [sortedSet, Finset.coe_filter, Set.Finite.mem_toFinset, Set.mem_setOf_eq] at hσ hτ
+    obtain ⟨hσw, hσs⟩ := hσ
+    obtain ⟨hτw, hτs⟩ := hτ
+    have h1 : onesIn 0 a σ = onesIn 0 a τ := (Prod.mk.inj h).1
+    have h2 : onesIn a b σ = onesIn a b τ := (Prod.mk.inj h).2
+    have m1 : ∀ {ρ : ℕ → Bool}, SortedAt (Jab a b) ρ →
+        ∀ p, 0 ≤ p → p + 1 < 0 + a → ρ p = true → ρ (p + 1) = true := by
+      intro ρ hρ p _ hp h
+      by_contra hne
+      have : ρ (p + 1) = false := by simpa using hne
+      exact hρ p (Or.inl (by omega)) ⟨h, this⟩
+    have m2 : ∀ {ρ : ℕ → Bool}, SortedAt (Jab a b) ρ →
+        ∀ p, a ≤ p → p + 1 < a + b → ρ p = true → ρ (p + 1) = true := by
+      intro ρ hρ p hp hpb h
+      by_contra hne
+      have : ρ (p + 1) = false := by simpa using hne
+      exact hρ p (Or.inr ⟨hp, by omega⟩) ⟨h, this⟩
+    have e1 := block_ext 0 a (m1 hσs) (m1 hτs) (by simpa [onesIn] using h1)
+    have e2 := block_ext a b (m2 hσs) (m2 hτs) h2
+    funext p
+    by_cases hp : p < a
+    · exact e1 p (Nat.zero_le _) (by omega)
+    · by_cases hp2 : p < a + b
+      · exact e2 p (by omega) (by omega)
+      · rw [hσw p (by omega), hτw p (by omega)]
+  have himg : (sortedSet a b).image (fun σ : ℕ → Bool => (onesIn 0 a σ, onesIn a b σ)) ⊆
+      (Finset.range (a + 1)) ×ˢ (Finset.range (b + 1)) := by
+    intro x hx
+    simp only [Finset.mem_image] at hx
+    obtain ⟨σ, _, rfl⟩ := hx
+    simp only [Finset.mem_product, Finset.mem_range]
+    constructor
+    · unfold onesIn
+      have := Finset.card_filter_le (Finset.Ico 0 (0 + a)) (fun p => σ p = true)
+      rw [Nat.card_Ico] at this; omega
+    · unfold onesIn
+      have := Finset.card_filter_le (Finset.Ico a (a + b)) (fun p => σ p = true)
+      rw [Nat.card_Ico] at this; omega
+  calc (sortedSet a b).card = ((sortedSet a b).image _).card := (Finset.card_image_of_injOn hinj).symm
+    _ ≤ ((Finset.range (a + 1)) ×ˢ (Finset.range (b + 1))).card := Finset.card_le_card himg
+    _ = (a + 1) * (b + 1) := by simp
+
 end Lightlike.TemperleyLieb
