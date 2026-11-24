@@ -513,4 +513,88 @@ theorem flowGerm_step {z₀ : TangentBundle 𝓘(ℝ, Fin n → ℝ) M} {t : ℝ
         · exact h
       exact ((hA2.continuousAt ((hN₁o.prod isOpen_Ioo).mem_nhds ⟨hp.1, h2⟩))).continuousWithinAt
 
+/-- **A flow germ restricts to earlier times.** -/
+theorem FlowGerm.mono {z₀ : TangentBundle 𝓘(ℝ, Fin n → ℝ) M} {t t' : ℝ}
+    (h : FlowGerm g z₀ t) (h0 : 0 ≤ t') (htt : t' ≤ t) : FlowGerm g z₀ t' := by
+  obtain ⟨N, ε, Γ, hNo, hz₀, hε, hgeo, hcont⟩ := h
+  have hsub : Ioo (-ε) (t' + ε) ⊆ Ioo (-ε) (t + ε) := Ioo_subset_Ioo le_rfl (by linarith)
+  exact ⟨N, ε, Γ, hNo, hz₀, hε, fun z hz => ⟨(hgeo z hz).1.mono hsub, (hgeo z hz).2⟩,
+    hcont.mono (prod_mono subset_rfl hsub)⟩
+
+/-- A flow germ at `z₀` follows the given geodesic curve through `z₀`. -/
+theorem FlowGerm.phase_eq {z₀ : TangentBundle 𝓘(ℝ, Fin n → ℝ) M} {γ₀ : ℝ → M} {I₀ : Set ℝ}
+    (hI₀ : IsOpen I₀) (hI₀c : I₀.OrdConnected) (hγ₀ : IsGeodesicCurveOn g γ₀ I₀)
+    (hph : phase (n := n) γ₀ 0 = z₀)
+    (h0 : 0 ∈ I₀) {t : ℝ} (ht : 0 ≤ t) (htI : t ∈ I₀) {N : Set (TangentBundle 𝓘(ℝ, Fin n → ℝ) M)}
+    {ε : ℝ} {Γ : TangentBundle 𝓘(ℝ, Fin n → ℝ) M → ℝ → M} (hz₀ : z₀ ∈ N) (hε : 0 < ε)
+    (hgeo : ∀ z ∈ N, IsGeodesicCurveOn g (Γ z) (Ioo (-ε) (t + ε)) ∧ phase (n := n) (Γ z) 0 = z) :
+    phase (n := n) (Γ z₀) t = phase γ₀ t := by
+  have hJo : IsOpen (Ioo (-ε) (t + ε) ∩ I₀) := isOpen_Ioo.inter hI₀
+  have hJc : IsPreconnected (Ioo (-ε) (t + ε) ∩ I₀) :=
+    (ordConnected_Ioo.inter hI₀c).isPreconnected
+  have h0J : (0 : ℝ) ∈ Ioo (-ε) (t + ε) ∩ I₀ := ⟨⟨by linarith, by linarith⟩, h0⟩
+  have htJ : t ∈ Ioo (-ε) (t + ε) ∩ I₀ := ⟨⟨by linarith, by linarith⟩, htI⟩
+  have heq := eqOn_of_phase_eq' g hJo hJc ((hgeo z₀ hz₀).1.mono inter_subset_left)
+    (hγ₀.mono inter_subset_right) h0J (by rw [(hgeo z₀ hz₀).2, hph])
+  refine phase_congr g hJo ((hgeo z₀ hz₀).1.mono inter_subset_left) (hγ₀.mono inter_subset_right)
+    htJ ?_
+  filter_upwards [hJo.mem_nhds htJ] with r hr using heq hr
+
+/-- **The geodesic flow is continuous along a geodesic**: if `γ₀` is a geodesic curve on an open
+interval `I₀ ⊇ [0, Λ]` with phase `z₀` at `0`, then there is a flow germ at `z₀` along `[0, Λ]`: all
+geodesics with initial phase `z` near `z₀` exist on `(-ε, Λ + ε)` and their phases depend continuously on
+`(z, s)`. -/
+theorem flowGerm_along {z₀ : TangentBundle 𝓘(ℝ, Fin n → ℝ) M} {γ₀ : ℝ → M} {I₀ : Set ℝ}
+    (hI₀ : IsOpen I₀) (hI₀c : I₀.OrdConnected) (hγ₀ : IsGeodesicCurveOn g γ₀ I₀)
+    (hph : phase (n := n) γ₀ 0 = z₀) (h0 : 0 ∈ I₀) {Λ : ℝ} (hΛ : 0 ≤ Λ) (hsub : Icc 0 Λ ⊆ I₀) :
+    ∀ t ∈ Icc 0 Λ, FlowGerm g z₀ t := by
+  set s : Set ℝ := {t | FlowGerm g z₀ t} with hs
+  -- the local flow box along `γ₀`
+  have hbox : ∀ t ∈ Icc 0 Λ, ∃ (N' : Set (TangentBundle 𝓘(ℝ, Fin n → ℝ) M)) (δ' : ℝ)
+      (Γ' : TangentBundle 𝓘(ℝ, Fin n → ℝ) M → ℝ → M), IsOpen N' ∧ phase (n := n) γ₀ t ∈ N' ∧
+      0 < δ' ∧ (∀ z ∈ N', IsGeodesicCurveOn g (Γ' z) (Ioo (-δ') δ') ∧ phase (n := n) (Γ' z) 0 = z) ∧
+      ContinuousOn (fun zs : TangentBundle 𝓘(ℝ, Fin n → ℝ) M × ℝ => phase (n := n) (Γ' zs.1) zs.2)
+        (N' ×ˢ Ioo (-δ') δ') := fun t _ => exists_local_flow g (phase (n := n) γ₀ t)
+  have hmain : Icc 0 Λ ⊆ s := by
+    refine IsClosed.Icc_subset_of_forall_mem_nhdsWithin ?_ ?_ ?_
+    · -- closedness
+      refine isClosed_of_closure_subset fun t' ht' => ?_
+      have ht'I : t' ∈ Icc 0 Λ := isClosed_Icc.closure_subset_iff.2 inter_subset_right ht'
+      refine ⟨?_, ht'I⟩
+      obtain ⟨N', δ', Γ', hN'o, hw, hδ', hgeo', hcont'⟩ := hbox t' ht'I
+      have hpc : ContinuousAt (phase (n := n) γ₀) t' :=
+        phase_continuousAt g hI₀ hγ₀ (hsub ht'I)
+      obtain ⟨η, hη, hηN⟩ := Metric.eventually_nhds_iff.1 (hpc.eventually (hN'o.mem_nhds hw))
+      set m : ℝ := min η δ' with hm
+      have hmpos : 0 < m := lt_min hη hδ'
+      obtain ⟨t, htm, hts⟩ := mem_closure_iff.1 ht' (Ioo (t' - m) (t' + m)) isOpen_Ioo
+        ⟨by linarith, by linarith⟩
+      have htI : t ∈ Icc 0 Λ := hts.2
+      by_cases hle : t' ≤ t
+      · exact FlowGerm.mono g hts.1 ht'I.1 hle
+      · have hlt : t < t' := not_le.1 hle
+        obtain ⟨N, ε, Γ, hNo, hz₀, hε, hgeo, hcont⟩ := hts.1
+        have hF : phase (n := n) (Γ z₀) t ∈ N' := by
+          rw [FlowGerm.phase_eq g hI₀ hI₀c hγ₀ hph h0 htI.1 (hsub htI) hz₀ hε hgeo]
+          refine hηN ?_
+          rw [Real.dist_eq, abs_lt]
+          constructor <;> linarith [htm.1, htm.2, min_le_left η δ']
+        exact flowGerm_step g htI.1 hNo hz₀ hε hgeo hcont hN'o hδ' hgeo' hcont' hF hlt.le
+          (by linarith [htm.1, min_le_right η δ'])
+    · -- the start
+      obtain ⟨N, δ, Γ, hNo, hz₀, hδ, hgeo, hcont⟩ := exists_local_flow g z₀
+      exact ⟨N, δ, Γ, hNo, hz₀, hδ, fun z hz => by simpa using hgeo z hz, by simpa using hcont⟩
+    · -- extension to the right
+      rintro x ⟨hxs, hx0, hxΛ⟩
+      have hxI : x ∈ Icc 0 Λ := ⟨hx0, hxΛ.le⟩
+      obtain ⟨N', δ', Γ', hN'o, hw, hδ', hgeo', hcont'⟩ := hbox x hxI
+      obtain ⟨N, ε, Γ, hNo, hz₀, hε, hgeo, hcont⟩ := hxs
+      have hF : phase (n := n) (Γ z₀) x ∈ N' := by
+        rw [FlowGerm.phase_eq g hI₀ hI₀c hγ₀ hph h0 hx0 (hsub hxI) hz₀ hε hgeo]
+        exact hw
+      refine Filter.mem_of_superset (Ioo_mem_nhdsGT (show x < x + δ' by linarith)) ?_
+      intro t₂ ht₂
+      exact flowGerm_step g hx0 hNo hz₀ hε hgeo hcont hN'o hδ' hgeo' hcont' hF ht₂.1.le (by linarith [ht₂.2])
+  exact fun t ht => hmain ht
+
 end Lightlike.Penrose
