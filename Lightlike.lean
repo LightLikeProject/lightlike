@@ -1963,6 +1963,7 @@ import Lightlike.TemperleyLieb.Unique
 import Lightlike.TemperleyLieb.Mirror
 import Lightlike.TemperleyLieb.JwNatural
 import Lightlike.TemperleyLieb.Contraction
+import Lightlike.TemperleyLieb.Kappa
 import Lightlike.Dirac.ConnesDistance
 import Lightlike.Dirac.ConnesDistance2
 import Lightlike.Dirac.ConnesDistance3
