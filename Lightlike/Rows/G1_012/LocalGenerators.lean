@@ -98,6 +98,22 @@ theorem IsLorentzianForm.neg_of_causal_of_timelike (h : IsLorentzianForm m B) {X
   have h0 : B u N = 0 := le_antisymm hle (not_lt.1 hcon)
   exact hne (h.eq_zero_of_orthogonal_timelike (X := N) hN h0 hu)
 
+/-- **A nonzero causal vector with negative product with a future timelike vector is future
+directed**: `B N N < 0`, `B N X < 0`, `B u u ≤ 0`, `u ≠ 0`, `B u N < 0` give `B u X < 0`. -/
+theorem IsLorentzianForm.neg_of_neg_pair_causal (h : IsLorentzianForm m B) {X N u : V}
+    (hX : B X X < 0) (hN : B N N < 0) (hNX : B N X < 0) (hu : B u u ≤ 0) (hne : u ≠ 0)
+    (huN : B u N < 0) : B u X < 0 := by
+  have hsymm := h.symm
+  by_contra hcon
+  push_neg at hcon
+  rcases hcon.eq_or_lt with h0 | hpos
+  · exact hne (h.eq_zero_of_orthogonal_timelike (X := X) hX h0.symm hu)
+  · have hnu : B (-u) (-u) ≤ 0 := by simpa using hu
+    have h1 : B (-u) X < 0 := by simpa using hpos
+    have := h.nonpos_of_futureCausal hX hnu hN.le h1 hNX
+    have e : B (-u) N = -B u N := by simp
+    linarith
+
 end Lightlike
 
 open Metric
@@ -188,28 +204,23 @@ open Metric
 variable {n : ℕ} {M : Type*} [TopologicalSpace M] [ChartedSpace (Fin n → ℝ) M]
   [IsManifold 𝓘(ℝ, Fin n → ℝ) ∞ M] {g : LorentzianMetric 𝓘(ℝ, Fin n → ℝ) M n}
 
-/-- The pairing of the radial velocity `Dφ(s w) w` with itself is `σ_p(w)`. -/
+/-- The pairing of the radial velocity `Dφ(s w) w` with itself is `σ_p(w)` (for `s w` in the normal
+ball). -/
 theorem radial_pairing {gc : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ} {U : Set (Fin n → ℝ)}
     (hg : IsCoordMetric gc U) {p : Fin n → ℝ} {ρ : ℝ}
     {φ : OpenPartialHomeomorph (Fin n → ℝ) (Fin n → ℝ)}
-    (h : Lightlike.Geodesic.IsNormalChart gc U p ρ φ) {w : Fin n → ℝ} {s : ℝ} (hs : 0 ≤ s)
-    (hs1 : s ≤ 1) (hw : w ∈ ball (0 : Fin n → ℝ) ρ) :
+    (h : Lightlike.Geodesic.IsNormalChart gc U p ρ φ) {w : Fin n → ℝ} {s : ℝ}
+    (hsw : s • w ∈ ball (0 : Fin n → ℝ) ρ) :
     Lightlike.Geodesic.pairing gc (φ (s • w)) (fderiv ℝ φ (s • w) w) (fderiv ℝ φ (s • w) w) =
       Lightlike.Geodesic.pairing gc p w w := by
-  have hsw : s • w ∈ ball (0 : Fin n → ℝ) ρ := by
-    rw [mem_ball_zero_iff] at hw ⊢
-    rw [norm_smul, Real.norm_eq_abs, abs_of_nonneg hs]
-    nlinarith [norm_nonneg w]
-  rcases hs.eq_or_lt with rfl | hpos
+  rcases eq_or_ne s 0 with rfl | hs0
   · simp only [zero_smul]
     rw [h.hasFDerivAt_zero.fderiv, h.map_zero]
     rfl
   · have := h.gauss hg hsw (s • w)
     rw [map_smul, Lightlike.Geodesic.pairing_smul_left, Lightlike.Geodesic.pairing_smul_right,
       Lightlike.Geodesic.pairing_smul_left, Lightlike.Geodesic.pairing_smul_right] at this
-    have hs0 : s ≠ 0 := hpos.ne'
-    have := mul_left_cancel₀ hs0 (mul_left_cancel₀ hs0 this)
-    exact this
+    exact mul_left_cancel₀ hs0 (mul_left_cancel₀ hs0 this)
 
 /-- The time orientation field in chart coordinates is timelike for the coordinate metric. -/
 theorem timeCoord_timelike (T : Causal.TimeOrientation g) (x : M) {y : Fin n → ℝ}
@@ -294,7 +305,7 @@ theorem radial_mem_chronFuture (T : Causal.TimeOrientation g) (x : M) {p : Fin n
     have hq : ∀ a b, Lightlike.Geodesic.pairing (g.coordMetric x) (c s) a b =
         matForm (g.coordMetric x (c s)) a b := fun a b => Lightlike.Geodesic.pairing_eq_matForm _ _ a b
     have hσs : Lightlike.Geodesic.pairing (g.coordMetric x) (c s) (c' s) (c' s) < 0 := by
-      rw [← radial_pairing hg hTB.chart hs.1 hs.2 (hTB.mem_ball hw)] at hσ
+      rw [← radial_pairing hg hTB.chart (hTB.mem_ball (hmemr s hs))] at hσ
       exact hσ
     have hdual : Lightlike.Geodesic.pairing (g.coordMetric x) (c s) (N (s • w)) (c' s) < 0 := by
       rw [hTB.dual _ (hmemr s hs)]; exact hx0
