@@ -1,4 +1,5 @@
 import Lightlike.Rows.G1_007.LorentzLength
+import Lightlike.Spacetime.Causal.ChainCurve
 
 /-!
 # Time separation (row G1-007)
@@ -8,7 +9,17 @@ The Lorentzian length (`Causal.lorentzLength`) does not change when the paramete
 inequality of the time separation `d(p, q)`.
 
 * `Causal.velocity_shift`: the velocity of `t ↦ γ (t + k)` is the velocity of `γ` at `t + k`;
-* `Causal.lorentzLength_shift`: `L(t ↦ γ (t + k)) on [a - k, b - k] = L(γ) on [a, b]`.
+* `Causal.lorentzLength_shift`: `L(t ↦ γ (t + k)) on [a - k, b - k] = L(γ) on [a, b]`;
+* `Causal.lorentzLength_congr`: the length depends only on the values of the curve on `[a, b]`;
+* `Causal.timeSep T p q`: the time separation `d(p, q)`, the supremum of the Lorentzian lengths of the
+  future-directed timelike curves (`IsFutureTimelikeCurve`) from `p` to `q`, in `ℝ≥0∞` (`0` if there is none);
+  `lorentzLength_le_timeSep`: the length of a curve is at most `d` of its endpoints;
+* `Causal.timeSep_add_le`: the **reverse triangle inequality** `d(p, q) + d(q, r) ≤ d(p, r)` when there are timelike
+  curves from `p` to `q` and from `q` to `r` (glue the second, translated, to the first).
+
+Differences from the textbook `d`: the supremum is over `IsFutureTimelikeCurve` (a timelike velocity with a margin on
+compact subintervals, `Lightlike/Spacetime/Causal/CausalCurve.lean`), not over piecewise `C¹` curves, and `d(p, q) = 0` (not `-∞` or
+undefined) when `q ∉ I⁺(p)`. The value `+∞` is possible (no global hyperbolicity assumed).
 
 ## References
 
@@ -76,6 +87,96 @@ theorem lorentzLength_shift {P : ∀ x : M, TangentSpace I x → Prop} {γ : ℝ
   obtain ⟨hd, -⟩ := h3 (show t + k ∈ Icc a b from ⟨by linarith [ht.1], by linarith [ht.2]⟩)
   unfold lorentzSpeed
   rw [velocity_shift hab ht hd]
+
+/-- The Lorentzian length depends only on the values of the curve on `[a, b]`. -/
+theorem lorentzLength_congr {γ γ' : ℝ → M} {a b : ℝ} (_hab : a < b) (h : EqOn γ γ' (Icc a b)) :
+    lorentzLength g γ a b = lorentzLength g γ' a b := by
+  unfold lorentzLength
+  refine setLIntegral_congr_fun measurableSet_Icc fun t ht => ?_
+  have hv : (velocity I γ' (Icc a b) t : E) = (velocity I γ (Icc a b) t : E) := by
+    have e := mfderivWithin_congr (I := 𝓘(ℝ, ℝ)) (I' := I) (s := Icc a b) (x := t) (f₁ := γ') (f := γ)
+      (fun y hy => (h hy).symm) (h ht).symm
+    unfold velocity
+    rw [e]
+    rfl
+  have hp : γ t = γ' t := h ht
+  have key : ∀ x y : M, x = y → ∀ v : E, g.g x v v = g.g y v v := fun x y hxy v => by subst hxy; rfl
+  have hs : g.g (γ t) (velocity I γ (Icc a b) t) (velocity I γ (Icc a b) t) =
+      g.g (γ' t) (velocity I γ' (Icc a b) t) (velocity I γ' (Icc a b) t) := by
+    have h1 := key (γ t) (γ' t) hp (velocity I γ (Icc a b) t)
+    refine h1.trans ?_
+    have h2 : (velocity I γ (Icc a b) t : E) = (velocity I γ' (Icc a b) t : E) := hv.symm
+    exact congrArg (fun v : E => g.g (γ' t) v v) h2
+  unfold lorentzSpeed
+  rw [hs]
+
+variable {g} (T : TimeOrientation g)
+
+/-- The **time separation** (Lorentzian distance) `d(p, q)`: the supremum of the Lorentzian lengths of the
+future-directed timelike curves from `p` to `q`, in `ℝ≥0∞`; the supremum of the empty set is `0`, so `d(p, q) = 0`
+when there is no such curve. -/
+def timeSep (p q : M) : ℝ≥0∞ :=
+  sSup {x | ∃ (γ : ℝ → M) (a b : ℝ), a < b ∧ IsFutureTimelikeCurve T γ (Icc a b) ∧ γ a = p ∧ γ b = q ∧
+    lorentzLength g γ a b = x}
+
+/-- The length of a future-directed timelike curve from `p` to `q` is at most `d(p, q)`. -/
+theorem lorentzLength_le_timeSep {γ : ℝ → M} {a b : ℝ} (hab : a < b)
+    (h : IsFutureTimelikeCurve T γ (Icc a b)) :
+    lorentzLength g γ a b ≤ timeSep T (γ a) (γ b) :=
+  le_sSup ⟨γ, a, b, hab, h, rfl, rfl, rfl⟩
+
+/-- **Reverse triangle inequality**: if there are future-directed timelike curves from `p` to `q` and from `q` to `r`,
+then `d(p, q) + d(q, r) ≤ d(p, r)`. (Without the curves the left side can be positive while `d(p, r) = 0`: the
+supremum over no curve is `0`.) -/
+theorem timeSep_add_le {p q r : M}
+    (hpq : ∃ (γ : ℝ → M) (a b : ℝ), a < b ∧ IsFutureTimelikeCurve T γ (Icc a b) ∧ γ a = p ∧ γ b = q)
+    (hqr : ∃ (γ : ℝ → M) (a b : ℝ), a < b ∧ IsFutureTimelikeCurve T γ (Icc a b) ∧ γ a = q ∧ γ b = r) :
+    timeSep T p q + timeSep T q r ≤ timeSep T p r := by
+  unfold timeSep
+  obtain ⟨γ₀, a₀, b₀, hab₀, h₀, hp₀, hq₀⟩ := hpq
+  obtain ⟨γ₀', c₀, d₀, hcd₀, h₀', hq₀', hr₀⟩ := hqr
+  have : Nonempty ↑{x | ∃ (γ : ℝ → M) (a b : ℝ), a < b ∧ IsFutureTimelikeCurve T γ (Icc a b) ∧ γ a = p ∧
+      γ b = q ∧ lorentzLength g γ a b = x} := ⟨⟨_, γ₀, a₀, b₀, hab₀, h₀, hp₀, hq₀, rfl⟩⟩
+  have : Nonempty ↑{x | ∃ (γ : ℝ → M) (a b : ℝ), a < b ∧ IsFutureTimelikeCurve T γ (Icc a b) ∧ γ a = q ∧
+      γ b = r ∧ lorentzLength g γ a b = x} := ⟨⟨_, γ₀', c₀, d₀, hcd₀, h₀', hq₀', hr₀, rfl⟩⟩
+  rw [sSup_eq_iSup', sSup_eq_iSup', ENNReal.iSup_add]
+  refine iSup_le fun x => ?_
+  rw [ENNReal.add_iSup]
+  refine iSup_le fun y => ?_
+  obtain ⟨x, γ₁, a, b, hab, h₁, hp, hq, hx⟩ := x
+  obtain ⟨y, γ₂, c, d, hcd, h₂, hq', hr, hy⟩ := y
+  have hbe : b < b + (d - c) := by linarith
+  have h₃ := IsFutureTimelikeCurve.shift T h₂ hcd (c - b)
+  rw [show c - (c - b) = b by ring, show d - (c - b) = b + (d - c) by ring] at h₃
+  have hj : γ₁ b = (fun t => γ₂ (t + (c - b))) b := by
+    simp only [add_sub_cancel]; rw [hq, hq']
+  have hG := IsFutureTimelikeCurve.glue T h₁ h₃ hab hbe hj
+  set G : ℝ → M := fun t => if t ≤ b then γ₁ t else γ₂ (t + (c - b)) with hGdef
+  have hlen : lorentzLength g G a (b + (d - c)) = x + y := by
+    rw [lorentzLength_add g hG.1 hab.le hbe.le]
+    have e1 : lorentzLength g G a b = lorentzLength g γ₁ a b :=
+      lorentzLength_congr g hab fun t ht => by simp [hGdef, ht.2]
+    have e2 : lorentzLength g G b (b + (d - c)) = lorentzLength g (fun t => γ₂ (t + (c - b))) b (b + (d - c)) :=
+      lorentzLength_congr g hbe fun t ht => by
+        by_cases htb : t ≤ b
+        · have : t = b := le_antisymm htb ht.1
+          subst this
+          simp [hGdef, hj]
+        · simp [hGdef, htb]
+    have e3 : lorentzLength g (fun t => γ₂ (t + (c - b))) b (b + (d - c)) = lorentzLength g γ₂ c d := by
+      have := lorentzLength_shift g h₂.1 hcd (c - b)
+      rwa [show c - (c - b) = b by ring, show d - (c - b) = b + (d - c) by ring] at this
+    rw [e1, e2, e3, hx, hy]
+  rw [← hlen]
+  have := lorentzLength_le_timeSep T (γ := G) (a := a) (b := b + (d - c)) (by linarith) hG
+  have hGa : G a = p := by simp [hGdef, hab.le, hp]
+  have hGb : G (b + (d - c)) = r := by
+    have : ¬ (b + (d - c) ≤ b) := by linarith
+    simp only [hGdef, this, ↓reduceIte]
+    rw [show b + (d - c) + (c - b) = d by ring]
+    exact hr
+  rw [hGa, hGb] at this
+  exact this
 
 end Causal
 
