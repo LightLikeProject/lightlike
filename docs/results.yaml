@@ -4530,3 +4530,179 @@
   review: kernel-checked
   note: "G1-012 (closed trapped surfaces), the link between the expansion of the null normals of a surface and the Θ of raychaudhuri_null_focusing_manifold (LL for G1-009). Linear algebra first: in a nondegenerate symmetric form on a space of dimension m + 2 with an orthonormal m-frame orthogonal to a null pair (V, N), g(V, N) = -1, tr A = Σᵢ B(A eᵢ, eᵢ) − B(A V, N) − B(A N, V) (NullFrame.trace_eq); then g(∇_u V, V) = 0 for a null field (trappedExp_cov_null, from the chart statement covD_orthogonal_of_const) and ∇_V V = 0 kill the two correction terms. Hypotheses: V smooth, g(V, V) = 0 near x, ∇_V V = 0 at x, n ≥ 2. It does not say that the frame spans the tangent space of a surface: that, and that V is a null normal of the surface, belong to the definition of the trapped surface. The comparison with Kar and SenGupta is pending (only eq. (17) is a recorded verified location)."
   since: unreleased
+- id: LL-0342
+  title: "The fusion ring of SU(2) at level r - 2: the coefficients N_ab^c = 1 for admissible triples are symmetric, 0 is the unit, the quantum dimension [a+1] is multiplicative, and the ring is associative for r = 3, 4, 5, 6"
+  area: TuraevViro
+  file: Lightlike/TuraevViro/FusionRing.lean
+  decls: [Lightlike.TV.fusionN, Lightlike.TV.fusionN_comm₁₂, Lightlike.TV.fusionN_comm₂₃, Lightlike.TV.fusionN_zero_left, Lightlike.TV.fusion_dim, Lightlike.TV.fusion_assoc_small]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (the SU(2)_k fusion rules source was not read). The coefficients are the admissibility qAdm already used by the Turaev-Viro code; the multiplicativity of the quantum dimension is sum_qAdm_qnum. WEAKER: associativity is proved only for the levels r = 3, 4, 5, 6 (all colour quadruples by decide); the statement for every r is not proved (a counting proof exceeded the build memory limit). Not built: the F-matrices as isomorphisms of a monoidal category, the pentagon (it is the q-Biedenharn-Elliott identity, a hypothesis of this library), the braiding, the modular tensor category."
+  since: unreleased
+- id: LL-0343
+  title: "The S matrix of SU(2) at level r - 2, S_ab = sqrt(2/r) sin(pi (a+1)(b+1)/r): symmetric, its unit row is the quantum dimension, and the Verlinde formula holds for the unit-object row"
+  area: TuraevViro
+  file: Lightlike/TuraevViro/SMatrix.lean
+  decls: [Lightlike.TV.sMat, Lightlike.TV.sMat_comm, Lightlike.TV.sMat_zero_left, Lightlike.TV.sMat_zero_zero_pos, Lightlike.TV.verlinde_zero]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source for the SU(2)_k S matrix was read). verlinde_zero is S_0a S_0b = S_00 sum_c N_ab^c S_0c, the multiplicativity of the quantum dimension fusion_dim. WEAKER: only the unit-object row of the Verlinde formula is proved; the formula for the other rows, the orthogonality S^2 = 1 (charge conjugation is trivial for SU(2)), unitarity, and the relation with the T matrix are not."
+  since: unreleased
+- id: LL-0344
+  title: "Discrete sine orthogonality, sum over x < r of sin(a pi x/r) sin(b pi x/r) = (r/2) delta_ab for 0 < a, b < r, and S^2 = 1 for the S matrix of SU(2) at level r - 2"
+  area: TuraevViro
+  file: Lightlike/TuraevViro/SOrthogonal.lean
+  decls: [Lightlike.TV.sum_sin_mul_sin_orth, Lightlike.TV.sMat_mul_self]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source for the SU(2)_k S matrix was read). The proof telescopes 2 sin(phi/2) sum cos(x phi) (two_sin_mul_sum_cos), evaluates the full-period cosine sum (1 - (-1)^k)/2 for 0 < k < 2r, and uses that a - b and a + b have the same parity. S is real and symmetric (sMat_comm), so S^2 = 1 says it is an orthogonal involution; charge conjugation is trivial for SU(2). WEAKER than the full modular data: the Verlinde formula for the rows other than the unit row, the T matrix and the relation (ST)^3 = S^2 are not proved."
+  since: unreleased
+- id: LL-0345
+  title: "U_q(sl₂) as a Hopf algebra over a field, with its antipode"
+  area: QuantumGroups
+  file: Lightlike/QuantumGroups/UqSl2.lean
+  decls: [Lightlike.QuantumGroups.UqSl2, Lightlike.QuantumGroups.UqSl2.comul, Lightlike.QuantumGroups.UqSl2.counit, Lightlike.QuantumGroups.UqSl2.antipodeOp, Lightlike.QuantumGroups.UqSl2.adjoin_gen]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: turaev-1994, location: "Chapter: Chapter XI. An algebraic construction of modular categories|10.1515/9783110883275-012"}
+  review: kernel-checked
+  note: "Part of QU3, which stays open. For a field k and a unit q, the k-algebra on generators E, F, K, K⁻¹ with K K⁻¹ = K⁻¹ K = 1, K E = q² E K, K F = q⁻² F K and (q − q⁻¹)(E F − F E) = K − K⁻¹ carries a Hopf algebra structure with Δ E = E ⊗ K + 1 ⊗ E, Δ F = F ⊗ 1 + K⁻¹ ⊗ F, Δ K = K ⊗ K, ε E = ε F = 0, ε K = 1, S E = −E K⁻¹, S F = −K F, S K = K⁻¹. These are the common conventions; matching them to the normalisation of the cited chapter was not checked, since the chapter was not read at that location. The commutation relation is written without division, so it is defined for every q; for q² = 1 it is a different (non-quantum) algebra. No representation theory, R-matrix, ribbon element or modular category is proved here (QU3 stays open); the checks in UqSl2Tests.lean are identities on generators."
+  since: unreleased
+- id: LL-0346
+  title: "The two-dimensional representation of U_q(sl₂) for every unit q of a field: E ↦ e₁₂, F ↦ e₂₁, K ↦ diag(q, q⁻¹), K⁻¹ ↦ diag(q⁻¹, q)"
+  area: QuantumGroups
+  file: Lightlike/QuantumGroups/UqSl2Rep.lean
+  decls: [Lightlike.QuantumGroups.UqSl2.fundRep, Lightlike.QuantumGroups.UqSl2.fundRep_E, Lightlike.QuantumGroups.UqSl2.fundRep_F, Lightlike.QuantumGroups.UqSl2.fundRep_K, Lightlike.QuantumGroups.UqSl2.fundRep_Ki]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: turaev-1994, location: "Chapter: Chapter XI. An algebraic construction of modular categories|10.1515/9783110883275-012"}
+  review: kernel-checked
+  note: "Part of QU3 (G3-200), which stays open. The matrices satisfy the five defining relations of UqSl2 (K K⁻¹ = K⁻¹ K = 1, K E = q² E K, K F = q⁻² F K, (q − q⁻¹)(E F − F E) = K − K⁻¹), so they define an algebra homomorphism fundRep by the universal property of the quotient (fundGen_rel). No hypothesis on q: it also holds at roots of unity and at q² = 1. The comparison with Turaev, Chapter XI, is pending: the book was not read at the cited location."
+  since: unreleased
+- id: LL-0347
+  title: "The braiding of the two-dimensional representation of U_q(sl₂): the matrix Ř (Ř v₀₀ = q v₀₀, Ř v₁₁ = q v₁₁, Ř v₀₁ = v₁₀, Ř v₁₀ = v₀₁ + (q − q⁻¹) v₁₀) commutes with the action of every element of U_q(sl₂) on the tensor square, satisfies the Hecke relation (Ř − q)(Ř + q⁻¹) = 0 and the braid relation Ř₁₂ Ř₂₃ Ř₁₂ = Ř₂₃ Ř₁₂ Ř₂₃"
+  area: QuantumGroups
+  file: Lightlike/QuantumGroups/UqSl2Braid.lean
+  decls: [Lightlike.QuantumGroups.UqSl2.fundBraid, Lightlike.QuantumGroups.UqSl2.fundTensorRep, Lightlike.QuantumGroups.UqSl2.fundBraid_comm_all, Lightlike.QuantumGroups.UqSl2.fundBraid_hecke, Lightlike.QuantumGroups.UqSl2.fundBraid_braid]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: turaev-1994, location: "Chapter: Chapter XI. An algebraic construction of modular categories|10.1515/9783110883275-012"}
+  review: kernel-checked
+  note: "Part of QU3 (G3-200), which stays open. The tensor square fundTensorRep is the representation on k² ⊗ k² with E, F, K, K⁻¹ acting by the matrices fundCoE, fundCoF, fundCoK, fundCoKi of ΔE = E ⊗ K + 1 ⊗ E, ΔF = F ⊗ 1 + K⁻¹ ⊗ F, ΔK = K ⊗ K, ΔK⁻¹ = K⁻¹ ⊗ K⁻¹ (the coproduct of UqSl2); it is shown to be a representation by the defining relations (tensorGen_rel). Ř = P R is the unique intertwiner up to the identity with the eigenvalue q on v₀₀, v₁₁ and trace q − q⁻¹ on the weight-zero space, so it is the R-matrix of this representation in the form Ř. Not proved: that the universal R-matrix exists and acts as Ř, and that fundTensorRep is the tensor product of fundRep with itself through the library's comul (the matrices were checked against comul_E, comul_F, comul_K by reading, not by a Lean statement). The braid relation holds for every unit q; the Hecke relation is a quadratic relation with eigenvalues q and −q⁻¹. The comparison with Turaev, Chapter XI, is pending."
+  since: unreleased
+- id: LL-0348
+  title: "Constraint counting and the circle check: the number of degrees of freedom of the reduced phase space is 2n − 2m + r (r second-class constraints), a second-class set has an even number of constraints, and for the particle on a circle the constraints |q|² − 1 and ⟨p,q⟩ are second class (reduced dimension 2) while treating them as first class gives the wrong count 0"
+  area: Gauge
+  file: Lightlike/Gauge/ConstraintsAPI.lean
+  decls: [Lightlike.Gauge.even_of_isSecondClass, Lightlike.Gauge.diracBracket_constraint, Lightlike.Gauge.finrank_reducedTangent]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: henneaux-teitelboim-1992, location: "Chapter: CHAPTER ONE. CONSTRAINED HAMILTONIAN SYSTEMS|10.1515/9780691213866-004"}
+  review: kernel-checked
+  note: "GC4 (G3-132). Flat phase space X × X with Physlib's Poisson bracket; the Dirac bracket {f,g} − Σ {f,φ_a} (C⁻¹)_ab {φ_b,g} is antisymmetric and vanishes against a constraint when C is invertible. The circle particle and the wrong-count check are circle_isSecondClass and circle_wrong_count (Lightlike/Tests/Constraints.lean). finrank_reducedTangent: dim of the reduced tangent space is dim E − 2 dim(orbit), for a linear action at a zero of the moment map. The comparison with the cited sources is pending in the registry (Wipf hep-th/9312078 is not a registered source; the comparison note docs/notes/gc4-source-dirac.md is the record)."
+  since: unreleased
+- id: LL-0349
+  title: "The Dirac consistency algorithm terminates: for nested regular stages with nonempty zero sets the zero sets are constant from some stage on, and a regular stage has at most dim E constraint functions"
+  area: Gauge
+  file: Lightlike/Gauge/DiracRegular.lean
+  decls: [Lightlike.Gauge.card_le_finrank_of_regular, Lightlike.Gauge.exists_stable_of_regular]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: henneaux-teitelboim-1992, location: "Chapter: CHAPTER ONE. CONSTRAINED HAMILTONIAN SYSTEMS|10.1515/9780691213866-004"}
+  review: kernel-checked
+  note: "GC4 (G3-132). Termination by counting under linear independence of the gradients (regularity is a hypothesis; the smooth existence of the secondary constraints is not proved here). Without regularity there is no termination: the chain {x ≤ 1/(k+1)} in ℝ (DiracNonlinear.lean). The comparison with the cited sources is pending in the registry (Wipf hep-th/9312078 is not a registered source; the comparison note docs/notes/gc4-source-dirac.md is the record)."
+  since: unreleased
+- id: LL-0350
+  title: "The secondary constraints of the Dirac algorithm do not depend on the choice of the invertible block: two admissible selection rules give the same constraint surface at every stage"
+  area: Gauge
+  file: Lightlike/Gauge/DiracChart.lean
+  decls: [Lightlike.Gauge.zeroSet_stages_eq]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: henneaux-teitelboim-1992, location: "Chapter: CHAPTER ONE. CONSTRAINED HAMILTONIAN SYSTEMS|10.1515/9780691213866-004"}
+  review: kernel-checked
+  note: "GC4 (G3-132). Hypotheses: the bracket is first order (br f g x = B x (df) (dg)) and the stages are regular. Equivalent to the left-null-vector form of the consistency condition (chiFun_zero_iff_leftNull; Wipf hep-th/9312078, Sec. 3.3, pp. 16-17). The comparison with the cited sources is pending in the registry (Wipf hep-th/9312078 is not a registered source; the comparison note docs/notes/gc4-source-dirac.md is the record)."
+  since: unreleased
+- id: LL-0351
+  title: "The Dirac consistency algorithm with local charts glued into a finite atlas: the constraint surfaces are constant from stage dim E + 1 on, and the consistency system is solvable at every point of the final surface; this follows from constant rank of the consistency matrix near every point of the primary surface"
+  area: Gauge
+  file: Lightlike/Gauge/DiracGlue.lean
+  decls: [Lightlike.Gauge.DiracAtlas.final_consistent, Lightlike.Gauge.final_consistent_of_constantRank]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: henneaux-teitelboim-1992, location: "Chapter: CHAPTER ONE. CONSTRAINED HAMILTONIAN SYSTEMS|10.1515/9780691213866-004"}
+  review: kernel-checked
+  note: "GC4 (G3-132). Removes the hypothesis of one globally admissible selection of DiracAlgo.final_consistent_of_cover: constant rank gives local admissibility only, and the charts are glued with overlap compatibility (zeroSet_stages_inter_eq). Hypotheses: first-order bracket and ConstantRankAt (constant rank near each point, independent stage derivatives, strict differentiability). The comparison with the cited sources is pending in the registry (Wipf hep-th/9312078 is not a registered source; the comparison note docs/notes/gc4-source-dirac.md is the record)."
+  since: unreleased
+- id: LL-0352
+  title: "The induced form on the reduced space D^⊥/D of a linear coisotropic reduction is alternating and nondegenerate, for a nondegenerate reflexive form σ and an isotropic subspace D of a finite-dimensional space"
+  area: Gauge
+  file: Lightlike/Gauge/ReducedForm.lean
+  decls: [Lightlike.Gauge.reducedForm_isAlt, Lightlike.Gauge.reducedForm_nondegenerate]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: cannas-da-silva-2001, location: "Chapter: The Marsden-Weinstein-Meyer Theorem|10.1007/978-3-540-45330-7_23"}
+  review: kernel-checked
+  note: "GC4 (G3-132): the linear case of the Marsden–Weinstein reduction (Cannas da Silva, Lemma 23.3). NOT covered: Theorem 23.1, the reduction of a manifold at a regular value of a moment map for a free proper action (no moment map or quotient manifold in the library; see docs/notes/gc4-marsden-weinstein-gap.md in the queue). GC4 stays partial. The comparison with the cited sources is pending in the registry (Wipf hep-th/9312078 is not a registered source; the comparison note docs/notes/gc4-source-dirac.md is the record)."
+  since: unreleased
+- id: LL-0353
+  title: "Faddeev–Popov in finite dimension, infinitesimal: if the matrix {G_a, φ_b} of the gauge-fixing functions G with the first-class constraints is invertible, the gauge directions X_{φ_b} are linearly independent and meet the tangent space of the slice only in 0"
+  area: Gauge
+  file: Lightlike/Gauge/FaddeevPopov.lean
+  decls: [Lightlike.Gauge.fpMatrix, Lightlike.Gauge.linearIndependent_hamField_of_det_ne_zero, Lightlike.Gauge.eq_zero_of_mem_ker_of_det_ne_zero]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: henneaux-teitelboim-1992, location: "Chapter: CHAPTER ONE. CONSTRAINED HAMILTONIAN SYSTEMS|10.1515/9780691213866-004"}
+  review: kernel-checked
+  note: "GC4 (G3-132). Infinitesimal and local only: the global statements (Gribov copies) are not covered. The comparison with the cited sources is pending in the registry (Wipf hep-th/9312078 is not a registered source; the comparison note docs/notes/gc4-source-dirac.md is the record)."
+  since: unreleased
+- id: LL-0354
+  title: "The Hamiltonian vector fields of first-class constraints are tangent to the constraint surface and Ω-orthogonal to its tangent directions"
+  area: Gauge
+  file: Lightlike/Gauge/GaugeFlow.lean
+  decls: [Lightlike.Gauge.pairing_hamField_eq_zero_of_firstClass, Lightlike.Gauge.gradForm_hamField_eq_zero]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: henneaux-teitelboim-1992, location: "Chapter: CHAPTER ONE. CONSTRAINED HAMILTONIAN SYSTEMS|10.1515/9780691213866-004"}
+  review: kernel-checked
+  note: "GC4 (G3-132). Infinitesimal gauge directions: df(X_g) = {f,g}, Ω(X_g, v) = dg(v). The flows themselves are not covered here; see the gauge orbit theorem for the integral manifolds. The comparison with the cited sources is pending in the registry (Wipf hep-th/9312078 is not a registered source; the comparison note docs/notes/gc4-source-dirac.md is the record)."
+  since: unreleased
+- id: LL-0355
+  title: "Gauge orbits (Wipf, Theorem 5): for C² first-class constraints with C¹ structure functions and independent gradients at x₀, through every point of the constraint surface near x₀ there is a map t ↦ f(t, x) of ℝ^m near 0 into the surface whose range is the span of the constraint Hamiltonian fields"
+  area: Gauge
+  file: Lightlike/Gauge/Orbits/GaugeOrbits.lean
+  decls: [Lightlike.Gauge.exists_gauge_orbit]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: henneaux-teitelboim-1992, location: "Chapter: CHAPTER ONE. CONSTRAINED HAMILTONIAN SYSTEMS|10.1515/9780691213866-004"}
+  review: kernel-checked
+  note: "GC4 (G3-132). Local statement; proof by Frobenius for a family that is involutive only on an invariant set (Lightlike.ODE.exists_integral_manifold_of_involutive_on). Non-vacuity: exists_gauge_orbit_momentum (Lightlike/Gauge/Orbits/Tests.lean: γ = p on ℝ × ℝ). The comparison with Wipf Section 5.2 is recorded in docs/notes/gauge-orbits-wipf5.md. The comparison with the cited sources is pending in the registry (Wipf hep-th/9312078 is not a registered source; the comparison note docs/notes/gc4-source-dirac.md is the record)."
+  since: unreleased
