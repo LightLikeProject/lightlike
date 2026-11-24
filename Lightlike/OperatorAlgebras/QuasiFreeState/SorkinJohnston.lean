@@ -19,8 +19,9 @@ pure (`isPureState_causalSet`), by `isPureState_pauliJordan`.
 
 Not claimed: the coefficient `a` of the four-dimensional retarded matrix `K_R = a L (1 - a b L)⁻¹` (with the link
 matrix `L`) and the massive two-dimensional case, which are other antisymmetric matrices and are covered by
-`isPureState_pauliJordan` once `Δ = K_R - K_Rᵀ` is given. The second source named in the milestone line,
-arXiv:1205.7062, is a different paper (an eigenvalue-statistics paper); the Afshordi-Aslanbeigi-Sorkin paper was not read.
+`isPureState_pauliJordan` once `Δ = K_R - K_Rᵀ` is given (the four-dimensional and the massive two-dimensional
+matrices are not built). The second source of the milestone line is Afshordi-Aslanbeigi-Sorkin, arXiv:1205.1296
+(title and authors checked against arXiv; not read, so no comparison with it is claimed).
 -/
 
 set_option linter.unusedSectionVars false

@@ -1063,6 +1063,21 @@
   "citations": 365,
   "citations_via": "Semantic Scholar"
  },
+ "boldt-2015": {
+  "checked": "2026-11-24",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Properties of the Dirac spectrum on three dimensional lens spaces",
+  "locations": {
+   "Theorem 3.1": {
+    "verified": true,
+    "snippet": "Theorem 3.1 ([Hit74], [Sul79], [Bär96]). The eigenvalues of the Dirac operator on the round sphere S n are \u0010n \u0011 ± + k , k ∈ N0 2 with corresponding multiplicities \u0010 \u0010n \u0011\u0011 \u0012 \u0013 [n ] n+k−1 multS n ± +k =2 2 . 2 k We now pa",
+    "why": null
+   }
+  },
+  "citations": 6,
+  "citations_via": "OpenAlex"
+ },
  "bonneau-faraut-valent-2001": {
   "checked": "2026-11-19",
   "exists": true,
@@ -2471,6 +2486,26 @@
   "citations": 798,
   "citations_via": "OpenAlex"
  },
+ "friedrich-kirchberg-2001": {
+  "checked": "2026-11-24",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Eigenvalue estimates of the Dirac operator depending on the Ricci tensor",
+  "locations": {
+   "Section 0": {
+    "verified": true,
+    "snippet": "0 Introduction If M n is a compact Riemannian spin manifold with positive scalar curvature R, then each",
+    "why": null
+   },
+   "eq. (11)": {
+    "verified": true,
+    "snippet": "(11) ∇∗ ∇ = D 2 − 41 R . The local expression of the Bochner Laplacian ∇∗ ∇ is (12) ∇∗ ∇ = −∇Xk ,X k = −∇Xk ∇X k + Γk kl ∇Xl , where the Christoffel symbols Γij k are defined by ∇Xi Xj = Γij k Xk . In the proof of the fo",
+    "why": null
+   }
+  },
+  "citations": 13,
+  "citations_via": "Semantic Scholar"
+ },
  "frs-2023": {
   "checked": "2026-11-11",
   "exists": true,
@@ -3818,6 +3853,21 @@
    }
   },
   "citations": 36,
+  "citations_via": "Semantic Scholar"
+ },
+ "martinetti-2016": {
+  "checked": "2026-11-24",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "From Monge to Higgs: a survey of distance computations in noncommutative geometry",
+  "locations": {
+   "eq. (2.10)": {
+    "verified": true,
+    "snippet": "(2.10) d(δx , δy ) = dgeo (x, y). A similar result is obtained, in case M is a spin manifold, with H = L2 (M, S) the Hilbert space of square integrable spinors and (2.11) D = ∂/ := −iγ µ (∂µ + ωµ ) the usual Dirac operat",
+    "why": null
+   }
+  },
+  "citations": 18,
   "citations_via": "Semantic Scholar"
  },
  "mccleary-2006": {

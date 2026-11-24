@@ -1,4 +1,4 @@
-# G3-159 (OP2, for CS7): purity of a quasi-free state from a complex structure
+# G3-159 (OP2, for CS7; in progress, Bratteli-Robinson 2 comparison pending, necessity skipped): purity of a quasi-free state from a complex structure
 
 Question: when is the quasi-free state `ω_η` (`ω_η(W(φ)) = exp(-¼ η(φ, φ))`) of a finite-dimensional symplectic space
 a pure state, in a form CS7 ("the positive part of the Pauli-Jordan matrix defines a pure quasi-free state") can use?
@@ -29,8 +29,8 @@ retract form `isPureState_qfState_of_complexStructure_retract` handles the degen
 `isPureState_causalSet`: the Sorkin-Johnston state of every finite causal set is pure. Differences / not claimed: only the
 antisymmetrised retarded matrix `a C` (massless `M²`, any `a`) is built; the 4D `K_R = a L (1 - a b L)⁻¹` and the massive
 2D case are other antisymmetric matrices and are covered by `isPureState_pauliJordan` once `Δ` is given; the milestone's
-second source arXiv:1205.7062 is NOT the Afshordi-Aslanbeigi-Sorkin paper (it is a paper on fluctuations of linear
-eigenvalue statistics), so that source is unverified; the identification `Q = Pos(iΔ) = ½ (|iΔ| + iΔ)` with the
+second source Afshordi-Aslanbeigi-Sorkin is arXiv:1205.1296 (title/authors checked against arXiv, NOT read; an earlier
+ID 1205.7062 was a different paper), so no comparison with it is claimed; the identification `Q = Pos(iΔ) = ½ (|iΔ| + iΔ)` with the
 two-point function `½ (η + iω)` of `QuasiFreeState` rests on eq. (20) and the stated relation `Im Q = Δ/2` (read), with
 `η = |iΔ|` (not itself a displayed formula in the paper). Necessity not proved.
 
