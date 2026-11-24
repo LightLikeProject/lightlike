@@ -72,7 +72,6 @@ they are not generic. No fixed order gives a termwise recurrence on all tuples.
 Conclusion: step (ii) fails as stated. The recurrence coefficients of a single 6j symbol depend on
 `x`, so the sum over `x` needs an auxiliary telescoping term in `x` (creative telescoping for a
 sum of products of three terminating series), i.e. a two-parameter identity of the kind the old
-stop trigger names. Per the owner's rule ("if it fails or needs a two-parameter identity,
-G3-196 stays conditional"), **G3-196 stays conditional; no further attempts**. LL-0031 rests on
+stop trigger names. By the rule agreed for this attempt (a failure, or a need for a two-parameter identity, leaves
+the row open), **G3-196 stays conditional; no further attempts**. LL-0031 rests on
 `qBiedenharnElliott` for `r >= 4`; `qOrthogonality` is proved (LL-0075).
-Spend of this attempt: about $3 more (row total $7.0 at the last reading, 0.18 %).
