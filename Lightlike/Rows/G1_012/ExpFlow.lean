@@ -154,7 +154,7 @@ theorem chartTriv_baseSet_eq (x : M) :
 theorem exists_local_flow (z₀ : TangentBundle 𝓘(ℝ, Fin n → ℝ) M) :
     ∃ (N : Set (TangentBundle 𝓘(ℝ, Fin n → ℝ) M)) (δ : ℝ)
       (Γ : TangentBundle 𝓘(ℝ, Fin n → ℝ) M → ℝ → M),
-      N ∈ 𝓝 z₀ ∧ 0 < δ ∧ (∀ z ∈ N, IsGeodesicCurveOn g (Γ z) (Ioo (-δ) δ) ∧ phase (n := n) (Γ z) 0 = z) ∧
+      IsOpen N ∧ z₀ ∈ N ∧ 0 < δ ∧ (∀ z ∈ N, IsGeodesicCurveOn g (Γ z) (Ioo (-δ) δ) ∧ phase (n := n) (Γ z) 0 = z) ∧
       ContinuousOn (fun zs : TangentBundle 𝓘(ℝ, Fin n → ℝ) M × ℝ => phase (n := n) (Γ zs.1) zs.2)
         (N ×ˢ Ioo (-δ) δ) := by
   set x : M := z₀.proj with hx
@@ -232,7 +232,7 @@ theorem exists_local_flow (z₀ : TangentBundle 𝓘(ℝ, Fin n → ℝ) M) :
     refine e.toOpenPartialHomeomorph.injOn hsrc' hz.1 ?_
     show e (phase (n := n) (Γ z) 0) = e z
     rw [h1, hz2, hΓ0, hΦ0 (c z) hz.2]
-  refine ⟨N, T, Γ, hNo.mem_nhds hz₀N, hT, fun z hz => ⟨hΓgeo z hz, hphase0 z hz⟩, ?_⟩
+  refine ⟨N, T, Γ, hNo, hz₀N, hT, fun z hz => ⟨hΓgeo z hz, hphase0 z hz⟩, ?_⟩
   -- continuity
   have hmaps : MapsTo (fun zs : TangentBundle 𝓘(ℝ, Fin n → ℝ) M × ℝ => (zs.2, c zs.1))
       (N ×ˢ Ioo (-T) T) (Ioo (-T) T ×ˢ ball q₀ r) := fun zs hzs => ⟨hzs.2, hzs.1.2⟩
@@ -262,5 +262,130 @@ theorem exists_local_flow (z₀ : TangentBundle 𝓘(ℝ, Fin n → ℝ) M) :
   rw [h1] at this
   show phase (n := n) (Γ zs.1) zs.2 = TotalSpace.mk' (Fin n → ℝ) (Γ zs.1 zs.2) (e.symm (Γ zs.1 zs.2) (Φ zs.2 (c zs.1)).2)
   exact this.symm.trans (Trivialization.mk_symm e hb (Φ zs.2 (c zs.1)).2).symm
+
+/-- **Geodesic curves are local**: they depend only on the germ of the curve at each parameter. -/
+theorem IsGeodesicCurveOn.congr_eventuallyEq {γ γ' : ℝ → M} {J : Set ℝ}
+    (h : IsGeodesicCurveOn g γ J) (hev : ∀ t ∈ J, γ =ᶠ[𝓝 t] γ') : IsGeodesicCurveOn g γ' J := by
+  intro t ht
+  obtain ⟨w, O, hO, hsrc, hgeo⟩ := h t ht
+  have hev' := hev t ht
+  have hγt : γ' t = γ t := (hev'.self_of_nhds).symm
+  set O' : Set ℝ := {s | γ s = γ' s} ∩ O with hO'
+  have hO'n : O' ∈ 𝓝 t := Filter.inter_mem hev' hO
+  refine ⟨w, interior O', interior_mem_nhds.2 hO'n, fun s hs => ?_, ?_⟩
+  · have hs' := interior_subset hs
+    rw [hγt, ← hs'.1]; exact hsrc s hs'.2
+  · refine ⟨fun s hs => ?_, fun s hs => ?_⟩
+    · have hs' := interior_subset hs
+      have h1 := hgeo.pos s hs'.2
+      rw [hγt]
+      refine h1.congr_of_eventuallyEq ?_
+      filter_upwards [mem_interior_iff_mem_nhds.1 hs] with r hr
+      show _ = _
+      rw [hr.1]
+    · have hs' := interior_subset hs
+      have h1 := hgeo.vel s hs'.2
+      rw [hγt]
+      rw [show γ' s = γ s from hs'.1.symm]
+      exact h1
+
+open Classical in
+/-- **Gluing geodesic curves**: two geodesic curves on open intervals that agree on the overlap
+glue to a geodesic curve on the union. -/
+theorem IsGeodesicCurveOn.exists_union {γ₁ γ₂ : ℝ → M} {J₁ J₂ : Set ℝ}
+    (h₁ : IsGeodesicCurveOn g γ₁ J₁) (h₂ : IsGeodesicCurveOn g γ₂ J₂) (hJ₁ : IsOpen J₁)
+    (hJ₂ : IsOpen J₂) (hag : EqOn γ₁ γ₂ (J₁ ∩ J₂)) :
+    ∃ γ : ℝ → M, IsGeodesicCurveOn g γ (J₁ ∪ J₂) ∧ (∀ σ ∈ J₁, γ σ = γ₁ σ) ∧
+      ∀ σ ∈ J₂, γ σ = γ₂ σ := by
+  have e1 : ∀ σ ∈ J₁, (fun s => if s ∈ J₁ then γ₁ s else γ₂ s) σ = γ₁ σ := fun σ hσ => by simp [hσ]
+  have e2 : ∀ σ ∈ J₂, (fun s => if s ∈ J₁ then γ₁ s else γ₂ s) σ = γ₂ σ := by
+    intro σ hσ
+    by_cases h1 : σ ∈ J₁
+    · simp [h1, hag ⟨h1, hσ⟩]
+    · simp [h1]
+  refine ⟨_, ?_, e1, e2⟩
+  intro t ht
+  rcases ht with ht | ht
+  · exact (IsGeodesicCurveOn.congr_eventuallyEq g h₁ (fun s hs => by
+      filter_upwards [hJ₁.mem_nhds hs] with r hr using (e1 r hr).symm)) t ht
+  · exact (IsGeodesicCurveOn.congr_eventuallyEq g h₂ (fun s hs => by
+      filter_upwards [hJ₂.mem_nhds hs] with r hr using (e2 r hr).symm)) t ht
+
+/-- **Shifting a geodesic curve in the parameter.** -/
+theorem IsGeodesicCurveOn.shift {γ : ℝ → M} {J : Set ℝ} (h : IsGeodesicCurveOn g γ J) (a : ℝ) :
+    IsGeodesicCurveOn g (fun s => γ (s - a)) ((fun s => s - a) ⁻¹' J) := by
+  intro t ht
+  obtain ⟨w, O, hO, hsrc, hgeo⟩ := h (t - a) ht
+  refine ⟨fun s => w (s - a), (fun s => s - a) ⁻¹' O, ?_, fun s hs => hsrc _ hs, hgeo.shift a⟩
+  exact (continuous_id.sub continuous_const).continuousAt.preimage_mem_nhds hO
+
+/-- The derivative of the chart expression of a geodesic curve, in the chart at the point itself, is
+the tangent coordinate of its phase. -/
+theorem deriv_chart_eq_phase {γ : ℝ → M} {J : Set ℝ} (hJ : IsOpen J) (h : IsGeodesicCurveOn g γ J)
+    {t : ℝ} (ht : t ∈ J) :
+    deriv (fun s => extChartAt 𝓘(ℝ, Fin n → ℝ) (γ t) (γ s)) t =
+      (Causal.tTriv 𝓘(ℝ, Fin n → ℝ) M (γ t) (phase (n := n) γ t)).2 := by
+  obtain ⟨w, O, hO, hsrc, hgeo⟩ := h t ht
+  have hO' : IsOpen (interior O) := isOpen_interior
+  have e1 := phase_coord g (γ t) hO' (fun s hs => hsrc s (interior_subset hs))
+    ⟨fun s hs => hgeo.pos s (interior_subset hs), fun s hs => hgeo.vel s (interior_subset hs)⟩
+    (mem_interior_iff_mem_nhds.2 hO)
+  rw [e1.2]
+  exact (hgeo.pos t (mem_of_mem_nhds hO)).deriv
+
+/-- **Two points of the tangent bundle over `x` with the same tangent coordinates in the chart at
+`x` are equal.** -/
+theorem tangent_ext (x : M) (z z' : TangentBundle 𝓘(ℝ, Fin n → ℝ) M) (hp : z.proj = x)
+    (hp' : z'.proj = x)
+    (hc : (Causal.tTriv 𝓘(ℝ, Fin n → ℝ) M x z).2 = (Causal.tTriv 𝓘(ℝ, Fin n → ℝ) M x z').2) :
+    z = z' := by
+  set e := Lightlike.chartTriv n x with he
+  have hz : z ∈ e.source := by
+    rw [e.mem_source, he, chartTriv_baseSet_eq, hp]; exact mem_extChartAt_source x
+  have hz' : z' ∈ e.source := by
+    rw [e.mem_source, he, chartTriv_baseSet_eq, hp']; exact mem_extChartAt_source x
+  refine e.toOpenPartialHomeomorph.injOn hz hz' ?_
+  show e z = e z'
+  refine Prod.ext ?_ hc
+  rw [e.coe_fst hz, e.coe_fst hz', hp, hp']
+
+/-- **The phase is determined by the germ of the curve.** -/
+theorem phase_congr {γ γ' : ℝ → M} {J : Set ℝ} (hJ : IsOpen J) (h : IsGeodesicCurveOn g γ J)
+    (h' : IsGeodesicCurveOn g γ' J) {t : ℝ} (ht : t ∈ J) (hev : γ =ᶠ[𝓝 t] γ') :
+    phase (n := n) γ t = phase γ' t := by
+  have hb : γ t = γ' t := hev.self_of_nhds
+  refine tangent_ext (γ t) _ _ rfl hb.symm ?_
+  have e1 := deriv_chart_eq_phase g hJ h ht
+  have e2 := deriv_chart_eq_phase g hJ h' ht
+  have hd : deriv (fun s => extChartAt 𝓘(ℝ, Fin n → ℝ) (γ t) (γ s)) t =
+      deriv (fun s => extChartAt 𝓘(ℝ, Fin n → ℝ) (γ t) (γ' s)) t :=
+    Filter.EventuallyEq.deriv_eq (hev.mono fun s hs => by simp only [hs])
+  have e2' : deriv (fun s => extChartAt 𝓘(ℝ, Fin n → ℝ) (γ t) (γ' s)) t =
+      (Causal.tTriv 𝓘(ℝ, Fin n → ℝ) M (γ t) (phase (n := n) γ' t)).2 := by
+    rw [hb]; exact e2
+  show (Causal.tTriv 𝓘(ℝ, Fin n → ℝ) M (γ t) (phase (n := n) γ t)).2 =
+    (Causal.tTriv 𝓘(ℝ, Fin n → ℝ) M (γ t) (phase (n := n) γ' t)).2
+  rw [← e1, hd, e2']
+
+/-- **The phase of a shifted curve.** -/
+theorem phase_shift {γ : ℝ → M} {J : Set ℝ} (hJ : IsOpen J) (h : IsGeodesicCurveOn g γ J) (a : ℝ)
+    {t : ℝ} (ht : t ∈ J) :
+    phase (n := n) (fun s => γ (s - a)) (t + a) = phase γ t := by
+  have hJ' : IsOpen ((fun s : ℝ => s - a) ⁻¹' J) := hJ.preimage (continuous_id.sub continuous_const)
+  have hsh := IsGeodesicCurveOn.shift g h a
+  have hta : t + a ∈ (fun s : ℝ => s - a) ⁻¹' J := by simpa using ht
+  have hb : (fun s => γ (s - a)) (t + a) = γ t := by simp
+  refine tangent_ext (γ t) _ _ hb rfl ?_
+  have e1 := deriv_chart_eq_phase g hJ' hsh hta
+  have e2 := deriv_chart_eq_phase g hJ h ht
+  simp only [add_sub_cancel_right] at e1
+  have hd : deriv (fun s => extChartAt 𝓘(ℝ, Fin n → ℝ) (γ t) (γ (s - a))) (t + a) =
+      deriv (fun s => extChartAt 𝓘(ℝ, Fin n → ℝ) (γ t) (γ s)) t := by
+    have := deriv_comp_sub_const (a := a) (x := t + a)
+      (f := fun s => extChartAt 𝓘(ℝ, Fin n → ℝ) (γ t) (γ s))
+    simpa using this
+  show (Causal.tTriv 𝓘(ℝ, Fin n → ℝ) M (γ t) (phase (n := n) (fun s => γ (s - a)) (t + a))).2 =
+    (Causal.tTriv 𝓘(ℝ, Fin n → ℝ) M (γ t) (phase (n := n) γ t)).2
+  rw [← e1, hd, e2]
 
 end Lightlike.Penrose
