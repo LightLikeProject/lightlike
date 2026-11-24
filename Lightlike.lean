@@ -2080,6 +2080,8 @@ import Lightlike.Geodesic.GaussMaximal
 import Lightlike.Geodesic.GlobalTwoPoint
 import Lightlike.Geodesic.LocalCausality
 import Lightlike.Geodesic.LocalCausalityManifold
+import Lightlike.Geodesic.UniformNormalChart
+import Lightlike.Geodesic.UniformTimeBall
 import Lightlike.Geodesic.Radial
 import Lightlike.Geodesic.Tests
 import Lightlike.Geodesic.TimeBall

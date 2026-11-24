@@ -129,7 +129,9 @@ such that for every `p ∈ K` there is a normal chart `φ` at `p` on the ball of
 `φ v = exp_p v` there. -/
 theorem exists_uniform_normalChart (hg : Lightlike.IsCoordMetric g U) {K : Set (Fin n → ℝ)}
     (hK : IsCompact K) (hKU : K ⊆ U) :
-    ∃ ρ : ℝ, 0 < ρ ∧ ∀ p ∈ K, ∃ φ : OpenPartialHomeomorph (Fin n → ℝ) (Fin n → ℝ),
+    ∃ ρ : ℝ, 0 < ρ ∧ (∀ p ∈ K, ∀ v ∈ ball (0 : Fin n → ℝ) ρ,
+        ((p, v) : (Fin n → ℝ) × (Fin n → ℝ)) ∈ expDomain g U) ∧
+      ∀ p ∈ K, ∃ φ : OpenPartialHomeomorph (Fin n → ℝ) (Fin n → ℝ),
       IsNormalChart g U p ρ φ ∧ ∀ v ∈ ball (0 : Fin n → ℝ) ρ, φ v = expMap g U (p, v) := by
   obtain ⟨ρ₁, hρ₁, hgeo⟩ := exists_uniform_geodesic hg hK hKU
   obtain ⟨W, G, hW, hW0, hWd, hinj, hWs, himg, -, hG, hGs⟩ := exists_twoPoint_diffeo_global hg
@@ -143,7 +145,8 @@ theorem exists_uniform_normalChart (hg : Lightlike.IsCoordMetric g U) {K : Set (
   obtain ⟨ρ₂, hρ₂, hbv⟩ := Metric.isOpen_iff.1 hv 0 (h0v rfl)
   set ρ := min ρ₁ ρ₂ with hρ
   have hρpos : 0 < ρ := lt_min hρ₁ hρ₂
-  refine ⟨ρ, hρpos, fun p hp => ?_⟩
+  refine ⟨ρ, hρpos, fun p hp w hw => ?_, fun p hp => ?_⟩
+  · exact hWd (huv ⟨hKu hp, hbv (ball_subset_ball (min_le_right _ _) hw)⟩)
   have hball : ∀ w ∈ ball (0 : Fin n → ℝ) ρ, ((p, w) : (Fin n → ℝ) × (Fin n → ℝ)) ∈ W :=
     fun w hw => huv ⟨hKu hp, hbv (ball_subset_ball (min_le_right _ _) hw)⟩
   set f : (Fin n → ℝ) → (Fin n → ℝ) := fun w => expMap g U (p, w) with hf
