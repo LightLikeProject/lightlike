@@ -104,4 +104,114 @@ lemma kernel_relation (q : kˣ) {j : ℕ} {v : ModelSpace k} (hv : modelE q j v 
   have hq : (q : k) * ((q⁻¹ : kˣ) : k) = 1 := by simp
   linear_combination ((q⁻¹ : kˣ) : k) * h - (v σ) * hq
 
+/-- The sum of the positions of the ones below `N`. -/
+def posSum (N : ℕ) (σ : ℕ → Bool) : ℕ := ∑ p ∈ Finset.range N, if σ p then p else 0
+
+/-- Moving a one from `j` to `j + 1` increases the position sum by one. -/
+lemma posSum_swap {N j : ℕ} (hj : j + 2 ≤ N) {σ : ℕ → Bool} (h0 : σ j = true) (h1 : σ (j + 1) = false) :
+    posSum N (set2 σ j false true) = posSum N σ + 1 := by
+  unfold posSum
+  have hjN : j + 1 < N := by omega
+  have e : ∀ f : ℕ → ℕ, ∑ p ∈ Finset.range N, f p =
+      ∑ p ∈ (Finset.range N).erase j |>.erase (j + 1), f p + f j + f (j + 1) := by
+    intro f
+    rw [← Finset.add_sum_erase _ _ (Finset.mem_range.mpr (by omega : j < N))]
+    rw [← Finset.add_sum_erase _ _ (Finset.mem_erase.mpr ⟨by omega, Finset.mem_range.mpr hjN⟩ : j + 1 ∈ (Finset.range N).erase j)]
+    ring
+  rw [e, e (fun p => if σ p then p else 0)]
+  have hsame : ∑ p ∈ ((Finset.range N).erase j).erase (j + 1),
+      (if set2 σ j false true p then p else 0) = ∑ p ∈ ((Finset.range N).erase j).erase (j + 1),
+      (if σ p then p else 0) := by
+    refine Finset.sum_congr rfl fun p hp => ?_
+    have hp1 : p ≠ j + 1 := (Finset.mem_erase.mp hp).1
+    have hp2 : p ≠ j := (Finset.mem_erase.mp (Finset.mem_erase.mp hp).2).1
+    simp [set2, Function.update_apply, hp1, hp2]
+  rw [hsame]
+  simp [set2, h0, h1]
+  ring
+
+/-- Sorted with respect to the generators `J`: no `(1,0)` pattern at `j, j+1` for `j ∈ J`. -/
+def SortedAt (J : ℕ → Prop) (σ : ℕ → Bool) : Prop := ∀ j, J j → ¬(σ j = true ∧ σ (j + 1) = false)
+
+/-- **Sorted coordinates.** A vector in the common kernel of `e_j` (`j ∈ J`) vanishes on the window as soon as it
+vanishes on the sorted sequences. -/
+theorem zero_of_sorted (q : kˣ) {N : ℕ} {J : ℕ → Prop} (hJ : ∀ j, J j → j + 2 ≤ N)
+    {v : ModelSpace k} (hv : ∀ j, J j → modelE q j v = 0)
+    (hs : ∀ σ ∈ tailZero N, SortedAt J σ → v σ = 0) : ∀ σ ∈ tailZero N, v σ = 0 := by
+  have hbound : ∀ σ ∈ tailZero N, posSum N σ ≤ N * N := by
+    intro σ _
+    unfold posSum
+    calc ∑ p ∈ Finset.range N, (if σ p then p else 0) ≤ ∑ p ∈ Finset.range N, N := by
+          refine Finset.sum_le_sum fun p hp => ?_
+          split_ifs
+          · exact (Finset.mem_range.mp hp).le
+          · exact Nat.zero_le _
+      _ = N * N := by simp [mul_comm]
+  have key : ∀ m, ∀ σ ∈ tailZero N, N * N - posSum N σ = m → v σ = 0 := by
+    intro m
+    induction m using Nat.strong_induction_on with
+    | _ m ih =>
+      intro σ hσ hm
+      by_cases hsort : SortedAt J σ
+      · exact hs σ hσ hsort
+      · simp only [SortedAt, not_forall, not_not] at hsort
+        obtain ⟨j, hjJ, h0, h1⟩ := hsort
+        have hj := hJ j hjJ
+        have hσ' : set2 σ j false true ∈ tailZero N := set2_mem_tailZero hj hσ _ _
+        have hpos := posSum_swap hj h0 h1
+        have hb := hbound _ hσ'
+        have := ih (N * N - posSum N (set2 σ j false true)) (by omega) _ hσ' rfl
+        rw [kernel_relation q (hv j hjJ) h0 h1, this, mul_zero]
+  intro σ hσ
+  exact key _ σ hσ rfl
+
+/-- The number of ones of `σ` in the block `[s, s + L)`. -/
+def onesIn (s L : ℕ) (σ : ℕ → Bool) : ℕ := ((Finset.Ico s (s + L)).filter (fun p => σ p = true)).card
+
+/-- A monotone block (`1` stays `1`) has ones on all of `[p, s+L)` as soon as `σ p = 1`. -/
+lemma block_mono (s L : ℕ) {σ : ℕ → Bool}
+    (hm : ∀ p, s ≤ p → p + 1 < s + L → σ p = true → σ (p + 1) = true) {p : ℕ} (hp : s ≤ p)
+    (hpL : p < s + L) (hσp : σ p = true) : ∀ r, p ≤ r → r < s + L → σ r = true := by
+  intro r hpr hrL
+  induction r, hpr using Nat.le_induction with
+  | base => exact hσp
+  | succ r hpr ih => exact hm r (by omega) (by omega) (ih (by omega))
+
+/-- If `σ p = 1` and `τ p = 0` in monotone blocks then `σ` has more ones than `τ`. -/
+lemma block_lt (s L : ℕ) {σ τ : ℕ → Bool}
+    (hσ : ∀ p, s ≤ p → p + 1 < s + L → σ p = true → σ (p + 1) = true)
+    (hτ : ∀ p, s ≤ p → p + 1 < s + L → τ p = true → τ (p + 1) = true) {p : ℕ} (hp : s ≤ p)
+    (hpL : p < s + L) (h1 : σ p = true) (h0 : τ p = false) : onesIn s L τ < onesIn s L σ := by
+  unfold onesIn
+  have hall := block_mono s L hσ hp hpL h1
+  have h_sub1 : Finset.Ico p (s + L) ⊆ (Finset.Ico s (s + L)).filter (fun r => σ r = true) := by
+    intro r hr
+    simp only [Finset.mem_Ico] at hr
+    simp only [Finset.mem_filter, Finset.mem_Ico]
+    exact ⟨⟨by omega, hr.2⟩, hall r hr.1 hr.2⟩
+  have h_sub2 : (Finset.Ico s (s + L)).filter (fun r => τ r = true) ⊆ Finset.Ico (p + 1) (s + L) := by
+    intro r hr
+    simp only [Finset.mem_filter, Finset.mem_Ico] at hr ⊢
+    by_cases hrp : r ≤ p
+    · exfalso
+      have := block_mono s L hτ hr.1.1 hr.1.2 hr.2 p hrp hpL
+      rw [h0] at this; exact Bool.noConfusion this
+    · exact ⟨by omega, hr.1.2⟩
+  have c1 := Finset.card_le_card h_sub1
+  have c2 := Finset.card_le_card h_sub2
+  simp only [Nat.card_Ico] at c1 c2
+  omega
+
+/-- A monotone (`1` stays `1`) block is determined by its number of ones. -/
+lemma block_ext (s L : ℕ) {σ τ : ℕ → Bool}
+    (hσ : ∀ p, s ≤ p → p + 1 < s + L → σ p = true → σ (p + 1) = true)
+    (hτ : ∀ p, s ≤ p → p + 1 < s + L → τ p = true → τ (p + 1) = true)
+    (hc : onesIn s L σ = onesIn s L τ) : ∀ p, s ≤ p → p < s + L → σ p = τ p := by
+  intro p hp hpL
+  rcases h1 : σ p with _ | _ <;> rcases h0 : τ p with _ | _
+  · rfl
+  · have := block_lt s L hτ hσ hp hpL h0 h1; omega
+  · have := block_lt s L hσ hτ hp hpL h1 h0; omega
+  · rfl
+
 end Lightlike.TemperleyLieb
