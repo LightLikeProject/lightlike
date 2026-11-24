@@ -86,6 +86,7 @@ def ofDelta (hΔ : IsSelfAdjoint Δ) : FiniteSpectralTriple A H :=
     D := diracOfDelta R Δ
     isSelfAdjoint_D := hΔ.add (conjOp_selfAdjoint R hΔ) }
 
+/-- The Dirac operator of `ofDelta` is `Δ + J Δ J`. -/
 lemma ofDelta_D (hΔ : IsSelfAdjoint Δ) : (ofDelta R hΔ).D = Δ + conjOp R Δ := rfl
 
 /-- `J` is a real structure for `ofDelta`: the first-order condition and `D J = J D` hold. -/
