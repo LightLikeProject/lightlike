@@ -22,10 +22,17 @@ CS7 step (second commit, branch opalg/op2-sj-pure): `QuasiFreeState/PauliJordan.
 `HD = DH`), `J = -(H|_R)⁻¹ D|_R` on `R = range H` is a compatible complex structure (`pjStructure`), `ℝⁿ = R ⊕ ker H`,
 and `isPureState_pauliJordan` says the quasi-free state with `ω = x⬝Dy`, `η = x⬝Hy` is pure (`ker D` is the centre; the
 retract form `isPureState_qfState_of_complexStructure_retract` handles the degenerate `ω`). Tests: the 2-chain
-(`D = a[[0,-1],[1,0]]`, `H = a·1`), a symmetric matrix rejected, the 1-point chain. NOT done: the existence of `H = |iD|`
-from `D` (the matrix square root), the definition of `D` from a causal set (retarded Green function; CS1 `Basic` is on
-main, the coefficient is dimension dependent and the sources Johnston 0909.0944 and Afshordi-Aslanbeigi-Sorkin
-1205.7062 are unread), and necessity.
+(`D = a[[0,-1],[1,0]]`, `H = a·1`), a symmetric matrix rejected, the 1-point chain. Third commit: `QuasiFreeState/SorkinJohnston.lean`: `exists_pjData` (`|iD|` = CFC square root of `-D²`, commutes with `D`),
+`causalMatrix`, `pauliJordanMatrix a = a (C - Cᵀ)` (Johnston, arXiv:0909.0944, READ: eq. (1) causal matrix, eq. (10)
+`Δ = K_R - K_A`, `K_A = K_Rᵀ`, eq. (16) `K_R = a C (1 - a b C)⁻¹`, `a = 1/2`, `b = -m²/ρ` in `M²`, so the massless case is
+`K_R = a C`, eq. (20) `Q = Σ λ_i u_i u_i†`, `iΔ = Q - Qᵀ`, eq. (22) `[φ_x, φ_y] = iΔ_xy`, `Im Q = Δ/2`), and
+`isPureState_causalSet`: the Sorkin-Johnston state of every finite causal set is pure. Differences / not claimed: only the
+antisymmetrised retarded matrix `a C` (massless `M²`, any `a`) is built; the 4D `K_R = a L (1 - a b L)⁻¹` and the massive
+2D case are other antisymmetric matrices and are covered by `isPureState_pauliJordan` once `Δ` is given; the milestone's
+second source arXiv:1205.7062 is NOT the Afshordi-Aslanbeigi-Sorkin paper (it is a paper on fluctuations of linear
+eigenvalue statistics), so that source is unverified; the identification `Q = Pos(iΔ) = ½ (|iΔ| + iΔ)` with the
+two-point function `½ (η + iω)` of `QuasiFreeState` rests on eq. (20) and the stated relation `Im Q = Δ/2` (read), with
+`η = |iΔ|` (not itself a displayed formula in the paper). Necessity not proved.
 
 Not proved: the necessity (pure implies a compatible `J`). Source status: Dereziński, arXiv:math-ph/0511030, was read
 for the conventions only, eq. (70) p. 38 (`(Ψ|W(y)Ψ) = exp(-¼ yηy)`) and Theorem 39 p. 39; it contains no purity
