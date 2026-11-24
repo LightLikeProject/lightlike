@@ -630,6 +630,60 @@ theorem exists_vacuum_of_small [DecidableEq ι] (Ω₀ : Γ) (hΩ₀ : ‖Ω₀�
   field_simp
   rfl
 
+omit hR in
+/-- The annihilation operator kills the Fock vacuum `B ∅`. -/
+lemma annW_vac (w : Z) : annW B b w (B ∅) = 0 := by
+  apply ext_inner_right ℂ
+  intro y
+  rw [annW, ContinuousLinearMap.adjoint_inner_left, inner_zero_left]
+  rw [← HilbertBasis.repr_apply_apply, repr_creW_apply]
+  simp
+
+omit hR in
+/-- `a*(w)` applied to the vacuum has norm `‖w‖`. -/
+lemma norm_creW_vac (w : Z) : ‖creW B b w (B ∅)‖ = ‖w‖ := by
+  have h := annW_creW_anticomm B b w w
+  have h2 := congrArg (fun f => f (B ∅)) h
+  simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.mul_apply, annW_vac B b, map_zero, add_zero,
+    ContinuousLinearMap.smul_apply, ContinuousLinearMap.one_apply] at h2
+  have h3 : ⟪B ∅, annW B b w (creW B b w (B ∅))⟫_ℂ = ⟪w, w⟫_ℂ * ⟪B ∅, B ∅⟫_ℂ := by
+    rw [h2, inner_smul_right]
+  have h4 : ⟪B ∅, annW B b w (creW B b w (B ∅))⟫_ℂ = ⟪creW B b w (B ∅), creW B b w (B ∅)⟫_ℂ := by
+    rw [annW, ContinuousLinearMap.adjoint_inner_right]
+  have hB : ⟪B ∅, B ∅⟫_ℂ = 1 := by simpa using orthonormal_iff_ite.1 B.orthonormal ∅ ∅
+  rw [h4, hB, mul_one, inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K] at h3
+  have : ‖creW B b w (B ∅)‖ ^ 2 = ‖w‖ ^ 2 := by exact_mod_cast h3
+  exact (sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _)).1 this
+
+/-- The antilinear part of `R`: `β w = (R w + i R(i w))/2`. -/
+noncomputable def betaPart (w : Z) : Z := (1 / 2 : ℂ) • (R w + Complex.I • R (Complex.I • w))
+
+omit hR in
+/-- `annR j` applied to the vacuum is `a*(β eⱼ)` on the vacuum. -/
+lemma annR_vac (j : ι) : annR B b R j (B ∅) = creW B b (betaPart R (b j)) (B ∅) := by
+  have h1 : ∀ w : Z, fockField B b w (B ∅) = creW B b w (B ∅) := fun w => by
+    rw [fockField, ContinuousLinearMap.add_apply, annW_vac B b, add_zero]
+  simp only [annR, pField, qField, ContinuousLinearMap.smul_apply, ContinuousLinearMap.add_apply, h1, betaPart]
+  rw [creW_smul, creW_add, creW_smul]
+  simp [ContinuousLinearMap.smul_apply, ContinuousLinearMap.add_apply]
+
+omit hR in
+lemma norm_annR_vac (j : ι) : ‖annR B b R j (B ∅)‖ = ‖betaPart R (b j)‖ := by
+  rw [annR_vac B b, norm_creW_vac B b]
+
+include hR in
+/-- **Fermionic Shale, sufficiency for small antilinear part.** If `R` is a surjective real-linear map of `Z`
+preserving `Re⟪·,·⟫` and `∑_{k ∈ F} ‖β eₖ‖² ≤ h < 1` for every finite `F` (a Hilbert-Schmidt bound on the
+antilinear part `β` of `R`), then `R` is implemented by a unitary of the fermionic Fock space:
+`U φ(w) = φ(R w) U`. -/
+theorem fermionic_shale_of_small [DecidableEq ι] (hRs : Function.Surjective R) (h : ℝ) (hh : h < 1)
+    (hsmall : ∀ F : Finset ι, ∑ k ∈ F, ‖betaPart R (b k)‖ ^ 2 ≤ h) :
+    ∃ U : Γ ≃ₗᵢ[ℂ] Γ, ∀ w x, U (fockField B b w x) = fockField B b (R w) (U x) := by
+  have hB : ‖B ∅‖ = 1 := B.orthonormal.1 ∅
+  obtain ⟨Ω, hn, hvac⟩ := exists_vacuum_of_small B b R hR (B ∅) hB h hh (fun F => by
+    simpa only [norm_annR_vac B b R] using hsmall F)
+  exact exists_implementer B b R hR hRs Ω hn hvac
+
 end FockLadder
 
 end Lightlike.OperatorAlgebras.CARShale
