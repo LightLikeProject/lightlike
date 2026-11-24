@@ -1,4 +1,4 @@
-# G3-159 (OP2, for CS7; in progress, Bratteli-Robinson 2 comparison pending, necessity skipped): purity of a quasi-free state from a complex structure
+# G3-159 (OP2, for CS7): purity of a quasi-free state from a complex structure
 
 Question: when is the quasi-free state `ω_η` (`ω_η(W(φ)) = exp(-¼ η(φ, φ))`) of a finite-dimensional symplectic space
 a pure state, in a form CS7 ("the positive part of the Pauli-Jordan matrix defines a pure quasi-free state") can use?
@@ -29,8 +29,8 @@ retract form `isPureState_qfState_of_complexStructure_retract` handles the degen
 `isPureState_causalSet`: the Sorkin-Johnston state of every finite causal set is pure. Differences / not claimed: only the
 antisymmetrised retarded matrix `a C` (massless `M²`, any `a`) is built; the 4D `K_R = a L (1 - a b L)⁻¹` and the massive
 2D case are other antisymmetric matrices and are covered by `isPureState_pauliJordan` once `Δ` is given; the milestone's
-second source Afshordi-Aslanbeigi-Sorkin is arXiv:1205.1296 (title/authors checked against arXiv, NOT read; an earlier
-ID 1205.7062 was a different paper), so no comparison with it is claimed; the identification `Q = Pos(iΔ) = ½ (|iΔ| + iΔ)` with the
+second source arXiv:1205.7062 is NOT the Afshordi-Aslanbeigi-Sorkin paper (it is a paper on fluctuations of linear
+eigenvalue statistics), so that source is unverified; the identification `Q = Pos(iΔ) = ½ (|iΔ| + iΔ)` with the
 two-point function `½ (η + iω)` of `QuasiFreeState` rests on eq. (20) and the stated relation `Im Q = Δ/2` (read), with
 `η = |iΔ|` (not itself a displayed formula in the paper). Necessity not proved.
 
@@ -41,3 +41,6 @@ pending: Bratteli-Robinson 2, Chapter 5, not read). So this has no catalogue ent
 
 Surprise / backlog: the sufficiency half reduces entirely to the existing Fock irreducibility; the hard half
 (necessity, `η` degenerate) and the CS7 specialisation (positive part of the Pauli-Jordan matrix gives `J`) are open.
+
+## Comparison (24 Nov 2026): Gérard, arXiv:1901.10175, Proposition 4.9.1
+Read (text extracted from the PDF): a quasi-free state with covariance `η` (there `ω(W(x)) = exp(-½ x·ηx)`, so his `2η` is the `η` here) is pure iff `(2η^cpl, σ^cpl)` is Kähler, i.e. `σ j = 2η` for an anti-involution `j ∈ Sp`; proof cited to Dereziński-Gérard, Theorem 17.13 (not read). Bratteli-Robinson 2 was not available, so the comparison is with Gérard. Our `CompatibleComplexStructure` is this condition with `J = -j`; sufficiency is proved here, necessity is not (it needs the polar-decomposition argument of his Proposition 4.9.2 or a decomposition of a non-extremal state; not formalised).
