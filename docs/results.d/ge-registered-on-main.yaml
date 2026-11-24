@@ -1,0 +1,146 @@
+- id: LL-XXXX-a
+  title: "The Dirac operator squares to minus the Laplacian on flat space: D(D f) = -Δ f for a C² function with values in a Clifford module"
+  area: GR
+  file: Lightlike/Dirac/Flat.lean
+  decls: [Lightlike.Dirac.dirac_dirac]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: bgv-1992, location: "Chapter: Clifford Modules and Dirac Operators|10.1007/978-3-642-58088-8_4"}
+  review: kernel-checked
+  note: "GE5 (G1-017). In flat ℝⁿ, for a C² map into any Clifford module (Q v = -‖v‖²), D(D f) = -Δ f: the flat case of D² = ∇*∇ + R/4 with R = 0. Supporting: clifford_double_sum (Dirac/SecondOrder.lean), pure Clifford algebra: Σ γᵢγⱼ aᵢⱼ = -Σ aᵢᵢ + ½ Σ γᵢγⱼ(aᵢⱼ - aⱼᵢ). Spin structures and the Dirac operator on a manifold are NOT in this entry. The comparison with the source is pending in the registry (the location cited is the only recorded verified one; the docstring of the Lean file claims no equation number)."
+  since: unreleased
+- id: LL-XXXX-b
+  title: "Lichnerowicz in a frame: for a frame connection with antisymmetric connection form and a curvature with the Riemann symmetries, D² f = −Σ ∇²f(eᵢ, eᵢ) + (s/4) f, given the Ricci identity for the frame Hessian"
+  area: GR
+  file: Lightlike/Dirac/LichnerowiczFormula.lean
+  decls: [Lightlike.Dirac.lichnerowicz_frame]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: bgv-1992, location: "Chapter: Clifford Modules and Dirac Operators|10.1007/978-3-642-58088-8_4"}
+  review: kernel-checked
+  note: "GE5 (G1-017). In a frame with antisymmetric connection form ω, D²f = -Σᵢ ∇²f(eᵢ, eᵢ) + (s/4) f with s = Σ Rᵢⱼⱼᵢ, for a curvature with the Riemann symmetries. The Ricci identity (the antisymmetric part of the frame Hessian is the spinor curvature ¼ Σ Rᵢⱼₖₗ γₖγₗ acting on f) is a HYPOTHESIS here, not derived. Compare LL entry for lichnerowicz_general (torsion-free skew frame on ℝⁿ). Not covered: a spin manifold (spin structure, global Dirac operator) and the Lichnerowicz formula on it. The comparison with the source is pending in the registry (the location cited is the only recorded verified one; the docstring of the Lean file claims no equation number)."
+  since: unreleased
+- id: LL-XXXX-c
+  title: "On the unit 2-sphere the curvature term of the Lichnerowicz formula is s/4 and not s/2"
+  area: GR
+  file: Lightlike/Dirac/LichnerowiczTests.lean
+  decls: [Lightlike.Dirac.curvatureTerm_sphere, Lightlike.Dirac.sphere_half_formula_fails]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: bgv-1992, location: "Chapter: Clifford Modules and Dirac Operators|10.1007/978-3-642-58088-8_4"}
+  review: kernel-checked
+  note: "GE5 (G1-017), the trust checks of the milestone at the curvature term: on the unit 2-sphere (scalar curvature 2) the curvature term of the Clifford generators is (1/2)•1 = (s/4)•1, and the version with s/2 instead of s/4 is shown to fail. Only the S² curvature term is checked here; the Dirac spectrum on S² (±(k+1)) is in other files. The S² spectrum with multiplicities is NOT in this entry. The comparison with the source is pending in the registry (the location cited is the only recorded verified one; the docstring of the Lean file claims no equation number)."
+  since: unreleased
+- id: LL-XXXX-d
+  title: "Raychaudhuri focusing under the strong energy condition: a unit geodesic rotation-free congruence with negative expansion Θ_0 in dimension 4 cannot be continued beyond parameter 3/|Θ_0|, when G = κT with κ > 0 and T satisfies the strong energy condition"
+  area: Spacetime
+  file: Lightlike/Spacetime/Raychaudhuri/FocusingSEC.lean
+  decls: [Lightlike.raychaudhuri_focusing_strongEC]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "Chapter 4"}
+      - {ref: hawking-ellis-1973, location: "Chapter: The physical significance of curvature|10.1017/CBO9780511524646.005"}
+  review: kernel-checked
+  note: "GE3 (G1-005). In dimension 4 with Λ = 0, G = κ T, κ > 0 and the strong energy condition for the field T: for a unit (g(V,V) = -1) geodesic rotation-free field V along an integral curve on [0, L) with Θ(γ 0) < 0, L ≤ 3/|Θ(γ 0)|. By strongECField_iff_ricci the strong condition is Ric(ξ,ξ) ≥ 0, and then raychaudhuri_focusing_manifold applies. The comparison with the source is pending in the registry (the location cited is the only recorded verified one; the docstring of the Lean file claims no equation number)."
+  since: unreleased
+- id: LL-XXXX-e
+  title: "Hawking-type bound: under the strong energy condition in dimension 4 the length of a unit geodesic rotation-free integral curve with Θ at most C < 0 at the start is at most 3/|C|"
+  area: Spacetime
+  file: Lightlike/Spacetime/Raychaudhuri/HawkingSEC.lean
+  decls: [Lightlike.hawking_bound_strongEC]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "Chapter 4"}
+      - {ref: hawking-ellis-1973, location: "Chapter: The physical significance of curvature|10.1017/CBO9780511524646.005"}
+  review: kernel-checked
+  note: "GE3 (G1-005). The same hypotheses as the focusing theorem with Θ(γ 0) ≤ C < 0: L ≤ 3/|C|, built on hawking_bound_manifold. The comparison with the source is pending in the registry (the location cited is the only recorded verified one; the docstring of the Lean file claims no equation number)."
+  since: unreleased
+- id: LL-XXXX-f
+  title: "Contracting FLRW universe: a time-like geodesic through a contracting FLRW with Ricci curvature nonnegative has length at most one Hubble time 1/h"
+  area: Spacetime
+  file: Lightlike/Spacetime/Raychaudhuri/HawkingFLRW.lean
+  decls: [Lightlike.hawking_bound_flrw]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "Chapter 4"}
+      - {ref: hawking-ellis-1973, location: "Chapter: The physical significance of curvature|10.1017/CBO9780511524646.005"}
+  review: kernel-checked
+  note: "GE3 (G1-005), the FLRW check: on the open FLRW manifold an integral curve of ∂_t with Ric(∂_t,∂_t) ≥ 0 along it and ȧ/a ≤ -h < 0 at the start has L ≤ 1/h (hawking_bound_flrw, Hubble-time bound). The comparison with the source is pending in the registry (the location cited is the only recorded verified one; the docstring of the Lean file claims no equation number)."
+  since: unreleased
+- id: LL-XXXX-g
+  title: "Focusing with twist: if the expansion obeys Θ' ≤ −(Θ² − b²)/m on [0, L) and Θ(0) < −b then L ≤ m/(−b − Θ(0))"
+  area: Spacetime
+  file: Lightlike/Spacetime/Raychaudhuri/TwistFocusing.lean
+  decls: [Lightlike.focusing_twisted]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "Chapter 4"}
+  review: kernel-checked
+  note: "GE3 (G1-005), the twisted Raychaudhuri inequality: for m > 0 and b ≥ 0, if Θ' ≤ -(Θ² - b²)/m on [0,L) and Θ(0) < -b then L ≤ m/(-b - Θ(0)); with b = √m ω this is the inequality with rotation. The comparison with the source is pending in the registry (the location cited is the only recorded verified one; the docstring of the Lean file claims no equation number)."
+  since: unreleased
+- id: LL-XXXX-h
+  title: "The Klein–Gordon field satisfies the null energy condition for every potential, while a constant field with negative potential violates the weak energy condition although it satisfies the null condition"
+  area: Spacetime
+  file: Lightlike/Spacetime/GERow10/KleinGordonNEC.lean
+  decls: [Lightlike.scalar_nullEC, Lightlike.scalarField_nullECField, Lightlike.scalarField_const_nullEC_not_weakEC]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: curiel-2014, location: "§2.1"}
+  review: kernel-checked
+  note: "GE14 (G1-010). For T = dφ⊗dφ − (½|dφ|² + V) g in 4-dimensional Lorentzian signature, T(k,k) = (dφ k)² ≥ 0 for null k, so the null energy condition holds for every φ and potential (pointwise and as a field); with dφ = 0 and a negative potential value the null condition holds and the weak condition fails (the trust check of the milestone, beyond scalarField_const_violates_weak). The comparison with the source is pending in the registry (the location cited is the only recorded verified one; the docstring of the Lean file claims no equation number)."
+  since: unreleased
+- id: LL-XXXX-i
+  title: "With a Klein–Gordon source the Ricci curvature of a null vector is κ(dφ k)², nonnegative and zero exactly when dφ k = 0"
+  area: Spacetime
+  file: Lightlike/Spacetime/GERow10/KleinGordonRicci.lean
+  decls: [Lightlike.scalarField_ricciAt_null_nonneg, Lightlike.scalarField_ricciAt_null_eq_zero_iff]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: curiel-2014, location: "§2.1"}
+  review: kernel-checked
+  note: "GE14 (G1-010). Under the Einstein equations with Λ = 0 and κ ≥ 0, Ric(k,k) = κ (dφ k)² ≥ 0 for null k for the Klein–Gordon source, with equality for κ > 0 exactly when dφ k = 0. The comparison with the source is pending in the registry (the location cited is the only recorded verified one; the docstring of the Lean file claims no equation number)."
+  since: unreleased
+- id: LL-XXXX-j
+  title: "The weak energy condition of a Klein–Gordon field is exactly 0 ≤ ½|dφ|² + V for a vanishing or spacelike gradient"
+  area: Spacetime
+  file: Lightlike/Spacetime/GERow10/ScalarWeakECSharp.lean
+  decls: [Lightlike.scalar_weakEC_iff]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: curiel-2014, location: "§2.1"}
+  review: kernel-checked
+  note: "GE14 (G1-010). The sharp weak energy condition of a Klein–Gordon field at a point with vanishing or spacelike gradient is 0 ≤ ½|dφ|² + V (4 dimensions); the null and timelike gradients are scalar_weakEC_iff_of_null (0 ≤ V) in ScalarWeakECNull.lean and scalar_weakEC_iff_of_timelike (0 ≤ V − ½|dφ|²) in ScalarWeakECTimelike.lean, and scalar_weakEC_of_nonneg_potential (ScalarWeakEC.lean) says the weak condition holds whenever V ≥ 0. The comparison with the source is pending in the registry (the location cited is the only recorded verified one; the docstring of the Lean file claims no equation number)."
+  since: unreleased
+- id: LL-XXXX-k
+  title: "Dust with ρ ≥ 0 on the FLRW manifold satisfies the strong energy condition"
+  area: Spacetime
+  file: Lightlike/Spacetime/Raychaudhuri/DustField.lean
+  decls: [Lightlike.flrwManifold_dust_strongEC]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "Chapter 4"}
+  review: kernel-checked
+  note: "GE3 (G1-005): the FLRW check of the focusing theorems (dust p = 0 with ρ ≥ 0 on an interval satisfies StrongECField on the FLRW manifold). The comparison with the source is pending in the registry."
+  since: unreleased
