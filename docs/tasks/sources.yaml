@@ -1127,6 +1127,18 @@ references:
     title: "The small-N series in the zero-dimensional O(N) model: constructive expansions and transseries"
     arxiv: "2210.14776"
 
+  friedrich-kirchberg-2001:
+    cite: "T. Friedrich, K.-D. Kirchberg, Eigenvalue estimates of the Dirac operator depending on the Ricci tensor (2001)"
+    title: "Eigenvalue estimates of the Dirac operator depending on the Ricci tensor"
+    arxiv: math/0104121
+  boldt-2015:
+    cite: "S. Boldt, Properties of the Dirac spectrum on three dimensional lens spaces (2015)"
+    title: "Properties of the Dirac spectrum on three dimensional lens spaces"
+    arxiv: "1504.03121"
+  martinetti-2016:
+    cite: "P. Martinetti, From Monge to Higgs: a survey of distance computations in noncommutative geometry (2016)"
+    title: "From Monge to Higgs: a survey of distance computations in noncommutative geometry"
+    arxiv: "1604.00499"
 canonical:
   pl-topology: [lickorish-1999, moise-1977]
   asymptotics: [hormander-1990]
@@ -1298,6 +1310,13 @@ milestones:
     class: sourced
     refs:
       - {ref: visser-2007, location: "Section 9", check: "Horizons"}
+      - {ref: carroll-1997, location: "eq. (7.125)", check: "Killing"}
+      - {ref: carroll-1997, location: "eq. (7.126)", check: "Killing"}
+      - {ref: carroll-1997, location: "eq. (7.127)", check: "Killing horizon"}
+      - {ref: carroll-1997, location: "eq. (7.117)", check: "ellipsoidal"}
+      - {ref: carroll-1997, location: "eq. (7.149)", check: "irreducible mass"}
+      - {ref: carroll-1997, location: "eq. (7.152)", check: "irreducible"}
+      - {ref: carroll-1997, location: "eq. (7.154)", check: "surface gravity"}
   GE7:
     class: sourced
     refs:
