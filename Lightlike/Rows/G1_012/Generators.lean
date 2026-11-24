@@ -62,4 +62,22 @@ theorem exists_generator (T : Causal.TimeOrientation g) {S : Set M} {q : M}
     obtain ⟨γ, L, hL, hγ, hγ0, hγL⟩ := exists_null_geodesic_of_no_shortcut T hlt hβ hno
     exact ⟨s, hsS, γ, L, hL, hγ, by rw [hγ0, hβa], by rw [hγL, hβb]⟩
 
+/-- **Orthogonal generators.** A point `q` of `J⁺(S) \ I⁺(S)` is in `S` or is the end of a future null
+geodesic `γ` from `s ∈ S` which is `g`-orthogonal to every curve in `S` through `s`: if `σ` is a
+curve in `S` with `σ 0 = s` whose chart expression at `s` has derivative `D` at `0`, then
+`g(γ'(0), D) = 0`. -/
+theorem exists_orthogonal_generator (T : Causal.TimeOrientation g) {S : Set M} {q : M}
+    (hqJ : q ∈ Causal.causalFutureSet T S) (hqI : q ∉ Causal.chronFutureSet T S) :
+    q ∈ S ∨ ∃ s ∈ S, ∃ (γ : ℝ → M) (L : ℝ), 0 < L ∧ IsFutureNullGeodesicOn T γ (Icc 0 L) ∧
+      γ 0 = s ∧ γ L = q ∧
+      ∀ (σ : ℝ → M), σ 0 = s → (∀ ε, σ ε ∈ S) →
+        (∀ᶠ ε in 𝓝 (0 : ℝ), σ ε ∈ (extChartAt 𝓘(ℝ, Fin n → ℝ) (γ 0)).source) →
+        ∀ {D : Fin n → ℝ}, HasDerivAt (fun ε => extChartAt 𝓘(ℝ, Fin n → ℝ) (γ 0) (σ ε)) D 0 →
+          g.g (γ 0) (Causal.velocity 𝓘(ℝ, Fin n → ℝ) γ (Icc 0 L) 0)
+            ((chartTriv n (γ 0)).symmL ℝ (γ 0) D) = 0 := by
+  rcases exists_generator T hqJ hqI with hq | ⟨s, hs, γ, L, hL, hγ, h0, hL'⟩
+  · exact Or.inl hq
+  · refine Or.inr ⟨s, hs, γ, L, hL, hγ, h0, hL', fun σ hσ0 hσS hsrc D hD => ?_⟩
+    exact null_geodesic_orthogonal T hL hγ (by rw [hL']; exact hqI) (by rw [hσ0, h0]) hσS hsrc hD
+
 end Lightlike.Penrose
