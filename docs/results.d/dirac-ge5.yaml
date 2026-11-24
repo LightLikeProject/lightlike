@@ -1,0 +1,65 @@
+- id: LL-XXXX-a
+  title: "The Lichnerowicz formula in a torsion-free skew frame on R^n: D^2 f = -sum of second covariant derivatives plus (s/4) f, with s the scalar curvature of the frame connection"
+  area: GR
+  file: Lightlike/Dirac/LichnerowiczGeneral.lean
+  decls: [Lightlike.Dirac.lichnerowicz_general]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: friedrich-kirchberg-2001, location: "eq. (11)", check: "Lichnerowicz"}
+  review: kernel-checked
+  note: "Compared with Friedrich and Kirchberg, arXiv:math/0104121, the Schrödinger-Lichnerowicz formula (11), nabla*nabla = D^2 - R/4 (read; the formula is displayed in the proof of the Weitzenböck estimate, not at the start). Differences: REPRESENTATION, the statement is local, for V-valued C^2 functions on R^n with a Clifford representation (no spinor bundle, no spin structure), a torsion-free skew frame connection with structure functions and the Riemann pair and first Bianchi symmetries as hypotheses (the symmetries are not derived from torsion freeness), and it is pointwise at a point x, so it is not the global operator identity on a closed spin manifold. The Bochner Laplacian is the frame Hessian trace -sum hessF f x i i."
+  since: unreleased
+- id: LL-XXXX-b
+  title: "Friedrich's eigenvalue bound on the round sphere in the stereographic chart: a nonzero compactly supported C^2 eigenspinor of the Dirac operator has lambda^2 at least n^2/4 (n at least 2)"
+  area: GR
+  file: Lightlike/Dirac/StereoFriedrich.lean
+  decls: [Lightlike.Dirac.eigen_sq_ge_friedrich_stereo]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: friedrich-kirchberg-2001, location: "Section 0", check: "eigenvalue"}
+  review: kernel-checked
+  note: "Compared with Friedrich and Kirchberg, arXiv:math/0104121, Section 0 (Introduction), p. 1 (read): on a compact Riemannian spin manifold with scalar curvature R > 0 every Dirac eigenvalue satisfies lambda^2 >= n R0 / (4 (n-1)), R0 the minimum of R; for the unit sphere R = n (n-1), so the bound is n^2/4. WEAKER: the statement is for spinors in the stereographic chart (a Clifford representation, compactly supported C^2 functions on R^n, so vanishing near the north pole) and not for all eigenspinors of a closed spin manifold; the Dirac operator is the one of the chart metric (stereoF, stereoOmega). No equality case."
+  since: unreleased
+- id: LL-XXXX-c
+  title: "For every k and sign epsilon the radial spinor with polynomial profile solves D f = epsilon (k+1) f for the Dirac operator of the unit 2-sphere in the stereographic chart"
+  area: GR
+  file: Lightlike/Dirac/EigenGeneralK.lean
+  decls: [Lightlike.Dirac.diracF_stereo_eigen_general]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: boldt-2015, location: "Theorem 3.1", check: "multiplicities"}
+  review: kernel-checked
+  note: "Compared with Boldt, arXiv:1504.03121, Theorem 3.1, p. 6 (read; attributed there to Hitchin 1974, Sulanke 1979, Bär 1996): the Dirac eigenvalues of the round S^n are +-(n/2 + k), k >= 0, with multiplicity 2^[n/2] C(n+k-1, k); for n = 2 this is +-(k+1) with multiplicity 2(k+1). WEAKER: only that the displayed radial spinors satisfy the eigenvalue equation in the chart (eigenvalues epsilon (k+1) occur, as equations, on a chart without a regularity condition at the north pole), with no multiplicity, no completeness of the spectrum and no global L^2 statement; the nonvanishing of the spinor is proved for k = 0 and k = 1 only (killingSpinor_ne_zero, eigSpinorOne_ne_zero)."
+  since: unreleased
+- id: LL-XXXX-d
+  title: "The Connes distance of the flat Dirac operator on R^n between two points is the Euclidean distance, for every skew Clifford representation on a nontrivial space"
+  area: GR
+  file: Lightlike/Dirac/ConnesDistance2.lean
+  decls: [Lightlike.Dirac.connesDist_eq_norm, Lightlike.Dirac.dirac_smul, Lightlike.Dirac.opNorm_cliff]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: martinetti-2016, location: "eq. (2.10)", check: "geodesic"}
+  review: kernel-checked
+  note: "Compared with Martinetti, arXiv:1604.00499, Section 2, eqs. (2.10) and (2.11), p. 6 (read): for a complete Riemannian (spin) manifold, with D the signature operator or the Dirac operator, the spectral distance between pure states equals the geodesic distance; the norm of the commutator [D, f] is the Lipschitz norm of f (p. 6, citing Rieffel and [22]). Differences: REPRESENTATION, our D is the flat Dirac operator on R^n for an arbitrary skew Clifford representation on a nontrivial normed space (not L^2 spinors), the test functions are C^1 with sup norm of the gradient at most 1 (Lip1), and only the flat case is proved, with Leibniz rule D(f psi) = f D psi + cliff(grad f) psi; no general spin manifold."
+  since: unreleased
+- id: LL-XXXX-e
+  title: "The Connes distance on the circle R/LZ for the Dirac operator -i d/dx is the geodesic distance, the infimum over integers m of |p - q - m L|"
+  area: GR
+  file: Lightlike/Dirac/ConnesDistance5.lean
+  decls: [Lightlike.Dirac.circConnesDist_eq_iInf]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: martinetti-2016, location: "eq. (2.10)", check: "geodesic"}
+  review: kernel-checked
+  note: "Compared with Martinetti, arXiv:1604.00499, Section 2, eq. (2.10), p. 6 (read): the spectral distance between pure states is the geodesic distance on a complete Riemannian manifold, here the circle of length L. Differences: REPRESENTATION, the distance is the supremum over periodic C^1 functions of the circle with |f'| at most 1 (LipCirc), computed through the periodic lift to R and an explicit smooth approximant of the triangle wave (circFn); the Hilbert space and operator are not formalised for the circle, the commutator norm is replaced by the Lipschitz bound (bridge lip1_liftFn_iff to the flat case)."
+  since: unreleased
