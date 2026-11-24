@@ -1,0 +1,39 @@
+- id: LL-XXXX-a
+  title: "The integrand of the Lorentzian EPRL vertex is jointly integrable on SL(2,C)^4 × C^10 in the fixed charts, for positive spins and unit boundary spinors: the hypothesis VertexJointIntegrable of the stationary-phase theorem holds"
+  area: Asymptotics
+  file: Lightlike/SpinFoam/VertexAsymptoticsHyp/JointIntegrable.lean
+  decls: [Lightlike.Asymptotics.Lorentzian.vertexJointIntegrable_of_unit]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: bdfhp-2010, location: "eq. (53)", check: "Regge state"}
+  review: kernel-checked
+  note: "SF10 (G2-028), task T-SF10-P1: discharges one of the four hypotheses of LL-0135 (VertexJointIntegrable). The estimate is by Tonelli: the modulus of the integrand is bounded by the product of the ten densities, whose C^10 integral is a product of ten kernels, integrable over the Haar measure. The other three hypotheses (CriticalSetIs, HessianInvertible, FarRemainderBound) are NOT discharged. The docstring of VertexJointIntegrable in VertexFixChart.lean still says not proved; it predates this theorem. The comparison with BDFHP is pending (the source uses the joint integral implicitly, Sec. 6.4)."
+  since: unreleased
+- id: LL-XXXX-b
+  title: "The compact part of the far remainder of the Lorentzian vertex integral is O(λ^{-N}) for every N: for smooth compactly supported cutoffs χ ≤ ψ equal to 1 near the finite critical set K, the integral of (ψ − χ) A e^{λS} decays faster than any power of λ"
+  area: Asymptotics
+  file: Lightlike/SpinFoam/VertexAsymptoticsHyp/FarCompact.lean
+  decls: [Lightlike.Asymptotics.Lorentzian.lorVertex_farRemainder_compact_proof]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: bdfhp-2010, location: "eq. (53)", check: "Regge state"}
+  review: kernel-checked
+  note: "SF10 (G2-028), task T-SF10-P5: the part ψ − χ of the split of T-SF10-P3, by expPhase_suppressed applied to the compactly supported amplitude (ψ − χ) A, which vanishes near K. Hypothesis hK is CriticalSetIs with the cutoff 1: every critical point of tsupport A with Re S = 0 lies in K. The non-compact part 1 − ψ (T-SF10-P6) is open, so FarRemainderBound is not discharged; a numerical test supports the needed gap Re S ≤ −δ outside a compact set (docs/notes/sf10-p6-numeric.md)."
+  since: unreleased
+- id: LL-XXXX-c
+  title: "The Hessian of the Lorentzian vertex action at a point with Re S = 0 is invertible if and only if no nonzero real vector lies in the common kernel of the real and imaginary parts of its negative; the real part is positive semidefinite and the matrix is symmetric"
+  area: Asymptotics
+  file: Lightlike/SpinFoam/VertexAsymptoticsHyp/HessianIffVertex.lean
+  decls: [Lightlike.Asymptotics.Lorentzian.lorHessian_neg_symm_psd, Lightlike.Asymptotics.Lorentzian.lorHessian_det_ne_zero_iff_ker, Lightlike.Asymptotics.Lorentzian.lorHessian_det_ne_zero_iff_quad]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: bdfhp-2010, location: "eq. (53)", check: "Regge state"}
+  review: kernel-checked
+  note: "SF10 (G2-028), task T-SF10-P2, reduction only: with det_ne_zero_of_re_psd_ker (HessianKernel.lean: a complex symmetric matrix with positive semidefinite real part is invertible iff Re and Im have no common real kernel vector), the invertibility HessianInvertible is equivalent to a kernel condition on the 44 x 44 matrix. The kernel condition itself, for non-degenerate boundary data, is NOT proved (numerical evidence only: scripts/asymptotics/lorentzian_hessian_kernel_check.py), so HessianInvertible is not discharged."
+  since: unreleased
