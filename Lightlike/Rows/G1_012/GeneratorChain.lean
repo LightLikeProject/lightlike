@@ -671,4 +671,58 @@ theorem chain_step (T : Causal.TimeOrientation g) {β : ℝ → M} {a b : ℝ} (
       (fun t ht => hsrc' t ⟨ht₀'.1.trans ht.1, ht.2.trans ht₂'.2⟩) hrρ hTB hvb hvb0 hnull hl0 hl1
       hmono hcont hlam hreach'
 
+/-- **A future causal curve with no timelike shortcut is a null geodesic.** If `β` is a future
+causal curve on `[a, b]` such that no later point is in `I⁺` of an earlier one, then there is a future
+null geodesic `γ : [0, S] → M` from `β a` to `β b` (a monotone reparametrisation of `β`). -/
+theorem exists_null_geodesic_of_no_shortcut (T : Causal.TimeOrientation g) {β : ℝ → M} {a b : ℝ}
+    (hab : a < b) (hβ : Causal.IsFutureCausalCurve T β (Icc a b))
+    (hno : ∀ t' ∈ Icc a b, ∀ t'' ∈ Icc a b, t' ≤ t'' → β t'' ∉ Causal.chronFuture T (β t')) :
+    ∃ (γ : ℝ → M) (S : ℝ), 0 < S ∧ IsFutureNullGeodesicOn T γ (Icc 0 S) ∧ γ 0 = β a ∧
+      γ S = β b := by
+  set P : Set ℝ := {t | t = a ∨ GenReach T β a t} with hP
+  have hclosed : IsClosed (P ∩ Icc a b) := by
+    refine isClosed_of_closure_subset fun t' ht' => ?_
+    have ht'I : t' ∈ Icc a b :=
+      isClosed_Icc.closure_subset_iff.2 inter_subset_right ht'
+    refine ⟨?_, ht'I⟩
+    obtain ⟨ε, hε, hstep⟩ := chain_step T hab hβ hno ht'I
+    obtain ⟨t₁, ht₁O, ht₁S⟩ := mem_closure_iff.1 ht' (Ioo (t' - ε) (t' + ε)) isOpen_Ioo
+      ⟨by linarith, by linarith⟩
+    have hd : |t₁ - t'| ≤ ε := abs_le.2 ⟨by linarith [ht₁O.1], by linarith [ht₁O.2]⟩
+    rcases lt_trichotomy t₁ t' with hlt | heq | hgt
+    · right
+      exact hstep t₁ ht₁S.2 t' ht'I hd (by simp [hε.le]) hlt ht₁S.1
+    · rw [← heq]; exact ht₁S.1
+    · rcases eq_or_lt_of_le ht'I.1 with hta | hta
+      · left; exact hta.symm
+      · right
+        have hGR : GenReach T β a t₁ := ht₁S.1.resolve_left (by intro h; linarith)
+        exact genReach_mono T hβ hta hgt.le ht₁S.2.2 hGR
+  have hsub : Icc a b ⊆ P := by
+    refine hclosed.Icc_subset_of_forall_mem_nhdsWithin (Or.inl rfl) ?_
+    rintro x ⟨hxP, hxa, hxb⟩
+    have hxI : x ∈ Icc a b := ⟨hxa, hxb.le⟩
+    obtain ⟨ε, hε, hstep⟩ := chain_step T hab hβ hno hxI
+    set ε' : ℝ := min ε (b - x) with hε'
+    have hε'pos : 0 < ε' := lt_min hε (by linarith)
+    refine Filter.mem_of_superset (Ioo_mem_nhdsGT (show x < x + ε' by linarith)) ?_
+    intro t ht
+    have htb : t ≤ b := by
+      have := min_le_right ε (b - x)
+      linarith [ht.2]
+    have htε : t - x ≤ ε := by
+      have := min_le_left ε (b - x)
+      linarith [ht.2]
+    right
+    exact hstep x hxI t ⟨hxa.trans ht.1.le, htb⟩ (by simp [hε.le])
+      (abs_le.2 ⟨by linarith [ht.1], htε⟩) ht.1 hxP
+  have hbP := hsub ⟨hab.le, le_rfl⟩
+  have hGR : GenReach T β a b := hbP.resolve_left (by intro h; linarith)
+  obtain ⟨γ, S, lam, e, hS, he, hnull, hγ0, hγS, -, -, -, -, -, hfut0⟩ := hGR
+  refine ⟨γ, S, hS, ?_, hγ0, hγS⟩
+  have hnull' : IsNullGeodesicOn g γ (Icc 0 S) := hnull.mono fun σ hσ => ⟨by linarith [hσ.1], by linarith [hσ.2]⟩
+  refine isFutureNullGeodesicOn_of_one T hS hnull' ⟨0, ⟨le_rfl, hS.le⟩, ?_⟩
+  rw [velocity_Icc_zero hS]
+  exact hfut0
+
 end Lightlike.Penrose
