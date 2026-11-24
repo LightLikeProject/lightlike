@@ -131,6 +131,7 @@
       - {ref: hall-2015, location: "Chapter: Basic Representation Theory|10.1007/978-3-319-13467-3_4"}
       - {ref: hall-2015, location: "Chapter: Lie Algebras|10.1007/978-3-319-13467-3_3"}
   review: kernel-checked
+  note: "Physlib-ready rework (T-UP-6, G3-148): Lightlike/Upstream/SpinReps2/LieBridge.lean proves SU2Spin.dSpin_E, SU2Spin.dSpin_F and SU2Spin.dSpin_H for Physlib's standard sl2-module, on top of the Mathlib-ready spin representation of Lightlike/Upstream/SU2Spin. Not a separate registry entry: the names have no Lightlike prefix. The pull request to Physlib has not been opened by this project."
   since: 0.1.0
 - id: LL-0010
   title: Spin(4) is a double cover of SO(4)
@@ -246,7 +247,7 @@
       - {ref: martin-dussaud-2019, location: "§5.3", check: "orthonormal basis"}
       - {ref: edmonds-1957, location: "Chapter: Chapter 3. The Coupling of Angular Momentum Vectors|10.1515/9781400884186-004"}
   review: kernel-checked
-  note: "The comparison with Edmonds (1957) is pending: the book was not read at the cited location."
+  note: "The comparison with Edmonds (1957) is pending: the book was not read at the cited location. Physlib-ready rework (T-UP-3, G3-148): Lightlike/Upstream/SpinReps2/ThreeJOrth.lean proves PhyslibAlpha.Sl2.sum_threeJ_mul_threeJ for Physlib's threeJ in doubled spins; ThreeJZero.lean has the zero-spin cases. Not a separate registry entry: the names have no Lightlike prefix. The pull request to Physlib has not been opened by this project."
   since: 0.1.0
 - id: LL-0019
   title: Orthonormal 4-valent intertwiners and orthogonality of the 6j recoupling matrix
@@ -260,6 +261,7 @@
       - {ref: martin-dussaud-2019, location: "§5.4", check: "direct sum"}
       - {ref: martin-dussaud-2019, location: "§5.5", check: "6j"}
   review: kernel-checked
+  note: "Physlib-ready rework (T-UP-4, G3-148): Lightlike/Upstream/SpinReps2/SixJOrth.lean proves PhyslibAlpha.Sl2.sixJSym_orth (positive spins), sixJSym_sq_orth and sixJSym_orth_all (all spins, zero-spin cases in SixJZero.lean); Intertwiner.lean has the orthonormality of the 4-valent intertwiners (sum_fourJ_mul_fourJ). Not a separate registry entry: the names have no Lightlike prefix. The pull request to Physlib has not been opened by this project."
   since: 0.1.0
 - id: LL-0020
   title: The contraction of ten 3j symbols over the 4-simplex is the 15j symbol
@@ -300,7 +302,7 @@
       - {ref: edmonds-1957, location: "Chapter: Chapter 6. The Construction of Invariants from the Vector-Coupling Coefficients|10.1515/9781400884186-007"}
       - {ref: varshalovich-1988, location: "Chapter: 6j Symbols and the Racah Coefficients|10.1142/9789814415491_0010"}
   review: kernel-checked
-  note: "The comparison with Edmonds (1957) and Varshalovich et al. (1988) is pending: the books were not read at the cited locations."
+  note: "The comparison with Edmonds (1957) and Varshalovich et al. (1988) is pending: the books were not read at the cited locations. Physlib-ready rework (T-UP-5, G3-148): Lightlike/Upstream/SpinReps2/BiedenharnElliott.lean, BEPositive.lean and BEPentagon*.lean prove PhyslibAlpha.Sl2.biedenharnElliott for every spin, stated for Physlib's sixJSym in doubled units; the zero-spin case analysis is split into lemmas (be_a_zero, be_p_zero, be_swap*). Not a separate registry entry: the names have no Lightlike prefix. The pull request to Physlib has not been opened by this project."
   since: 0.1.0
 - id: LL-0023
   title: Pachner's theorem, stellar version, in all dimensions
