@@ -1,6 +1,7 @@
 import Lightlike.Rows.G1_012.ExpFlow
 import Lightlike.Rows.G1_012.Defs
 import Lightlike.Rows.G1_012.Orthogonality
+import Lightlike.Geodesic.TimeBall
 
 /-!
 # Compactness of the exponential image of compact null data (G1-012)
@@ -249,3 +250,82 @@ theorem compact_nullExp_image (hc : NullGeodesicallyComplete g)
   exact ⟨(z, t), ⟨hz, ht⟩, (huniq z hz γ hγ hph t).symm⟩
 
 end Lightlike.Penrose
+
+namespace Lightlike.Geodesic
+
+variable {n : ℕ} {g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ} {U : Set (Fin n → ℝ)}
+
+/-- **Normalised null vectors over a compact set of base points are bounded** in chart
+coordinates. -/
+theorem bounded_null_normalised (hL : Lightlike.IsLorentzianCoordMetric g U)
+    {Kc : Set (Fin n → ℝ)} (hKc : IsCompact Kc) (hKcU : Kc ⊆ U)
+    {X : (Fin n → ℝ) → Fin n → ℝ} (hX : ContinuousOn X U)
+    (hXt : ∀ y ∈ U, pairing g y (X y) (X y) < 0) :
+    ∃ R : ℝ, ∀ u ∈ Kc, ∀ w : Fin n → ℝ, pairing g u w w = 0 → pairing g u (X u) w = -1 →
+      ‖w‖ ≤ R := by
+  set Sg : Set ((Fin n → ℝ) × (Fin n → ℝ)) := Kc ×ˢ sphere (0 : Fin n → ℝ) 1 with hSgd
+  have hSgc : IsCompact Sg := hKc.prod (isCompact_sphere 0 1)
+  have hg := hL.1
+  have hQ : ContinuousOn (fun q : (Fin n → ℝ) × (Fin n → ℝ) => pairing g q.1 q.2 q.2) Sg := by
+    simp only [pairing]
+    refine continuousOn_finsetSum _ fun i _ => continuousOn_finsetSum _ fun j _ => ?_
+    exact (continuous_apply i |>.comp_continuousOn continuousOn_snd).mul
+      (((hg.smooth i j).continuousOn.comp continuousOn_fst
+        (fun q hq => hKcU hq.1)).mul (continuous_apply j |>.comp_continuousOn continuousOn_snd))
+  have hℓ : ContinuousOn (fun q : (Fin n → ℝ) × (Fin n → ℝ) => pairing g q.1 (X q.1) q.2) Sg := by
+    simp only [pairing]
+    refine continuousOn_finsetSum _ fun i _ => continuousOn_finsetSum _ fun j _ => ?_
+    exact ((continuous_apply i |>.comp_continuousOn
+      (hX.comp continuousOn_fst (fun q hq => hKcU hq.1)))).mul
+      (((hg.smooth i j).continuousOn.comp continuousOn_fst
+        (fun q hq => hKcU hq.1)).mul (continuous_apply j |>.comp_continuousOn continuousOn_snd))
+  have hF : ContinuousOn (fun q : (Fin n → ℝ) × (Fin n → ℝ) =>
+      max |pairing g q.1 q.2 q.2| |pairing g q.1 (X q.1) q.2|) Sg :=
+    hQ.abs.sup hℓ.abs
+  by_cases hne : Sg.Nonempty
+  · obtain ⟨q₀, hq₀, hmin⟩ := hSgc.exists_isMinOn hne hF
+    set c : ℝ := max |pairing g q₀.1 q₀.2 q₀.2| |pairing g q₀.1 (X q₀.1) q₀.2| with hc
+    have hcpos : 0 < c := by
+      by_contra hcon
+      have h0 : c = 0 := le_antisymm (not_lt.1 hcon) (le_max_of_le_left (abs_nonneg _))
+      have hQ0 : pairing g q₀.1 q₀.2 q₀.2 = 0 := abs_eq_zero.1 (le_antisymm
+        ((le_max_left _ _).trans h0.le) (abs_nonneg _))
+      have hℓ0 : pairing g q₀.1 (X q₀.1) q₀.2 = 0 := abs_eq_zero.1 (le_antisymm
+        ((le_max_right _ _).trans h0.le) (abs_nonneg _))
+      have hy : q₀.1 ∈ U := hKcU hq₀.1
+      have hLf := isLorentzianForm_matForm hL hy
+      have hq : ∀ a b, pairing g q₀.1 a b = matForm (g q₀.1) a b := fun a b =>
+        pairing_eq_matForm g _ a b
+      have := hLf.eq_zero_of_orthogonal_timelike (X := X q₀.1) (w := q₀.2)
+        (by rw [← hq]; exact hXt _ hy) (by rw [← hq, pairing_comm hg hy]; exact hℓ0)
+        (by rw [← hq]; exact hQ0.le)
+      have hn : ‖q₀.2‖ = 1 := mem_sphere_zero_iff_norm.1 hq₀.2
+      rw [this] at hn
+      simp at hn
+    refine ⟨c⁻¹, fun u hu w hQw hℓw => ?_⟩
+    have hw0 : w ≠ 0 := by
+      rintro rfl
+      simp [pairing] at hℓw
+    have hwn : 0 < ‖w‖ := norm_pos_iff.2 hw0
+    set ŵ : Fin n → ℝ := ‖w‖⁻¹ • w with hŵ
+    have hŵs : ŵ ∈ sphere (0 : Fin n → ℝ) 1 := by
+      rw [mem_sphere_zero_iff_norm, hŵ, norm_smul, norm_inv, norm_norm, inv_mul_cancel₀ hwn.ne']
+    have hmem : (u, ŵ) ∈ Sg := ⟨hu, hŵs⟩
+    have hQŵ : pairing g u ŵ ŵ = 0 := by
+      rw [hŵ, pairing_smul_left, pairing_smul_right, hQw]; ring
+    have hℓŵ : pairing g u (X u) ŵ = -‖w‖⁻¹ := by
+      rw [hŵ, pairing_smul_right, hℓw]; ring
+    have hle : c ≤ max |pairing g u ŵ ŵ| |pairing g u (X u) ŵ| := hmin hmem
+    rw [hQŵ, hℓŵ, abs_zero, abs_neg, abs_of_pos (inv_pos.2 hwn), max_eq_right (inv_nonneg.2 hwn.le)]
+      at hle
+    exact (le_inv_comm₀ hcpos hwn).1 hle
+  · refine ⟨0, fun u hu w hQw hℓw => ?_⟩
+    exfalso
+    have hw0 : w ≠ 0 := by
+      rintro rfl
+      simp [pairing] at hℓw
+    have hwn : 0 < ‖w‖ := norm_pos_iff.2 hw0
+    refine hne ⟨(u, ‖w‖⁻¹ • w), hu, ?_⟩
+    rw [mem_sphere_zero_iff_norm, norm_smul, norm_inv, norm_norm, inv_mul_cancel₀ hwn.ne']
+
+end Lightlike.Geodesic
