@@ -4218,3 +4218,133 @@
   review: kernel-checked
   note: "GF7 piece (C) of G2-045: the analytic hypotheses of Nevanlinna's theorem for Z(λ) = ∫ e^{-λφ⁴ - φ²/2} dφ with complex coupling (Rivasseau–Wang, Theorem IV.1 with k = 2, via the hypotheses of Theorem III.2 with k = 1). The constants A = 16√(2π), B = 32 are this library's, from the Taylor bound |e^{-z} - Σ_{m<M} (-z)^m/m!| ≤ |z|^M/M! for Re z ≥ 0; the source gives its own constants. The comparison with the source is pending: the paper was not read at the cited theorem here. Borel summability itself (the consequence) is a separate entry."
   since: unreleased
+- id: LL-0318
+  title: "Wick's theorem for a centred Gaussian measure with positive semidefinite covariance S: the moment E[x_{l_0} ⋯ x_{l_{n-1}}] is the sum over the full Wick contractions of the n positions of the products ∏ S_{l_p l_q} over the contracted pairs"
+  area: FieldTheory
+  file: Lightlike/FieldTheory/Gaussian/WickSemidef.lean
+  decls: [Lightlike.FieldTheory.moment_eq_pairSum_of_posSemidef]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: borinsky-2018, location: "Abstract"}
+  review: kernel-checked
+  note: "FT1. For positive definite S the same statement is moment_eq_pairSum (Gaussian/Wick.lean), proven from Isserlis' recursion; the semidefinite case is by approximation. The comparison with the sources named in Lightlike/FieldTheory/API-map.md is pending in the registry: only the Abstract of Borinsky (2018) is recorded as verified, the other sources are not registered."
+  since: unreleased
+- id: LL-0319
+  title: "The coefficient of λ² in the formal integral of the quartic potential λx⁴/4! is 35/384"
+  area: FieldTheory
+  file: Lightlike/FieldTheory/ZeroDim/FormalIntegral.lean
+  decls: [Lightlike.FieldTheory.formalIntegral_quartic_two]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: borinsky-2018, location: "Abstract"}
+  review: kernel-checked
+  note: "FT1 trust check, Borinsky's formal integral at order ħ², the value 35/384 = 1/128 + 1/16 + 1/48. A wrong symmetry factor is shown to fail by an unnamed example in the same file (1/128 + 1/16 + 1/24 ≠ 35/384, the melon graph taken with 1/24 instead of 1/48). The comparison with the sources named in Lightlike/FieldTheory/API-map.md is pending in the registry: only the Abstract of Borinsky (2018) is recorded as verified, the other sources are not registered."
+  since: unreleased
+- id: LL-0320
+  title: "The vacuum graphs of the quartic model with two vertices are exactly the figure-eights, the dumbbell and the melon graph, with automorphism groups of orders 128, 16 and 48, and the sum of the inverse orders is 35/384"
+  area: FieldTheory
+  file: Lightlike/FieldTheory/ZeroDim/Graphs.lean
+  decls: [Lightlike.FieldTheory.sum_inv_aut_two, Lightlike.FieldTheory.vacuum_graphs_two]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: borinsky-2018, location: "Abstract"}
+  review: kernel-checked
+  note: "FT1. The graphs are the orbits of the pairings of the half-edges under S_4 ≀ S_2 (order 24² · 2), the symmetry factor is the inverse order of the stabilizer. The three orbits are pairwise distinct (vacuum_graphs_two) and their stabilizers have orders 128, 16, 48. The comparison with the sources named in Lightlike/FieldTheory/API-map.md is pending in the registry: only the Abstract of Borinsky (2018) is recorded as verified, the other sources are not registered."
+  since: unreleased
+- id: LL-0321
+  title: "The exponential formula for Feynman graphs: the sum of all graphs with their symmetry factors is the exponential of the sum of the connected graphs, coefficientwise on isomorphism classes"
+  area: FieldTheory
+  file: Lightlike/FieldTheory/ZeroDim/GraphExp.lean
+  decls: [Lightlike.FieldTheory.GraphAlg.expXc_eq_X]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: borinsky-2018, location: "Abstract"}
+  review: kernel-checked
+  note: "FT1. Graphs of any vertex degrees with legs; X = e^{X_c} in the algebra of graph classes with the disjoint-union product. The proof cuts a graph at a component and glues it back. The comparison with the sources named in Lightlike/FieldTheory/API-map.md is pending in the registry: only the Abstract of Borinsky (2018) is recorded as verified, the other sources are not registered."
+  since: unreleased
+- id: LL-0322
+  title: "The Feynman expansion of a Gaussian integral: for a homogeneous polynomial V of degree d and a positive semidefinite covariance S, E_S[V^m] is the sum over the labellings of the m vertices and the full Wick contractions of their md legs of ∏ c(i_v) ∏ S"
+  area: FieldTheory
+  file: Lightlike/FieldTheory/Gaussian/FeynmanExpansion.lean
+  decls: [Lightlike.FieldTheory.integral_homogPoly_pow]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: borinsky-2018, location: "Abstract"}
+  review: kernel-checked
+  note: "FT1. The case of odd md, where both sides vanish, is integral_homogPoly_pow_of_odd; polynomial potentials are integral_polyPot_pow (FeynmanPoly.lean). The comparison with the sources named in Lightlike/FieldTheory/API-map.md is pending in the registry: only the Abstract of Borinsky (2018) is recorded as verified, the other sources are not registered."
+  since: unreleased
+- id: LL-0323
+  title: "The Feynman expansion over graphs: E_S[(V/d!)^m]/m! is the sum over the isomorphism classes Γ of graphs with m vertices of valence d of graphWeight(Γ)/|Aut Γ|"
+  area: FieldTheory
+  file: Lightlike/FieldTheory/Gaussian/FeynmanGraphs.lean
+  decls: [Lightlike.FieldTheory.integral_homogPoly_pow_graphs]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: borinsky-2018, location: "Abstract"}
+  review: kernel-checked
+  note: "FT1, the theorem of the milestone for one vertex type: the expansion equals the sum over Feynman graphs with symmetry factors. Needs S and the coefficient tensor c symmetric. Several vertex types: integral_polyPot_pow_graphs (FeynmanGraphsPoly.lean). The comparison with the sources named in Lightlike/FieldTheory/API-map.md is pending in the registry: only the Abstract of Borinsky (2018) is recorded as verified, the other sources are not registered."
+  since: unreleased
+- id: LL-0324
+  title: "Feynman rules with a source: for a weight multiplicative under disjoint union, the generating function of all graphs weighted w(Γ)/|Aut Γ| is the exponential of the generating function of the connected graphs"
+  area: FieldTheory
+  file: Lightlike/FieldTheory/ZeroDim/GraphEval.lean
+  decls: [Lightlike.FieldTheory.GraphAlg.coeff_gen_X]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: borinsky-2018, location: "Abstract"}
+  review: kernel-checked
+  note: "FT1. Coefficientwise in the algebra graded by half-edges and vertices. The comparison with the sources named in Lightlike/FieldTheory/API-map.md is pending in the registry: only the Abstract of Borinsky (2018) is recorded as verified, the other sources are not registered."
+  since: unreleased
+- id: LL-0325
+  title: "The weighted sum of the leg-free graphs with vertex weights μ is the formal partition function with a source, and it is the exponential of the connected one: Z = exp(W/ħ)"
+  area: FieldTheory
+  file: Lightlike/FieldTheory/ZeroDim/GraphRules.lean
+  decls: [Lightlike.FieldTheory.GraphAlg.gen_X_eq_formalZ, Lightlike.FieldTheory.GraphAlg.coeff_formalZ_eq_exp]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: borinsky-2018, location: "Abstract"}
+  review: kernel-checked
+  note: "FT1. With the vertex weights μ_1 = j and μ_d = λ_d. The comparison with the sources named in Lightlike/FieldTheory/API-map.md is pending in the registry: only the Abstract of Borinsky (2018) is recorded as verified, the other sources are not registered."
+  since: unreleased
+- id: LL-0326
+  title: "The quartic expansion with remainder: for g ≥ 0 and every M, the integral of e^{-x²/2 - g x⁴/24} differs from √(2π) Σ_{m<M} (-g/24)^m (4m-1)!!/m! by at most √(2π) (g/24)^M (4M-1)!!/M!"
+  area: FieldTheory
+  file: Lightlike/FieldTheory/ZeroDim/Quartic.lean
+  decls: [Lightlike.FieldTheory.quartic_expansion]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: borinsky-2018, location: "Abstract"}
+  review: kernel-checked
+  note: "FT1. Error at most the size of the next term, by the alternating Taylor bound for e^{-t}. This is the integral side of the milestone; it is an asymptotic statement, not convergence of the series. The comparison with the sources named in Lightlike/FieldTheory/API-map.md is pending in the registry: only the Abstract of Borinsky (2018) is recorded as verified, the other sources are not registered."
+  since: unreleased
+- id: LL-0327
+  title: "The remainder of the quartic expansion after N + 1 terms is o(g^N) as g tends to 0 from above, so the series is the asymptotic expansion of the integral"
+  area: FieldTheory
+  file: Lightlike/FieldTheory/ZeroDim/Ties.lean
+  decls: [Lightlike.FieldTheory.tendsto_quartic_div]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: borinsky-2018, location: "Abstract"}
+  review: kernel-checked
+  note: "FT1. Ties the formal series to the integral (Skinner's (2.20) sense of an asymptotic expansion). The comparison with the sources named in Lightlike/FieldTheory/API-map.md is pending in the registry: only the Abstract of Borinsky (2018) is recorded as verified, the other sources are not registered."
+  since: unreleased
