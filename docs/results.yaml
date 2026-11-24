@@ -4055,3 +4055,55 @@
   review: kernel-checked
   note: "Trust checks of RC6 (flat triangulations give zero; a curvature density without the volume weights fails to converge). The comparison with Christiansen (2011), Section 1 (the statement of the Cheeger-Müller-Schrader theorem), is pending: not read at the cited location. RC6 is proven in dimension 2 and partial in dimension 4: the convergence theorem for general metrics in dimension 4 (the angle_sum, first_order and curvature fields of JetStarCore4 for a general jet) is NOT proved."
   since: unreleased
+- id: LL-0306
+  title: The dominant energy condition implies the weak one, and the weak and the strong ones imply the null one
+  area: Spacetime
+  file: Lightlike/Spacetime/EnergyConditionsImplications.lean
+  decls: [Lightlike.weakEC_of_dominantEC, Lightlike.nullEC_of_weakEC, Lightlike.nullEC_of_strongEC, Lightlike.nullEC_of_dominantEC]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: curiel-2014, location: "§2.1", check: "null"}
+  review: kernel-checked
+  note: "For a symmetric bilinear form T and a Lorentzian form g in dimension four on a normed real vector space, with the conditions as in LL-0180: the dominant condition contains the weak one, the weak condition implies the null condition, the strong condition implies the null condition, hence the dominant condition implies the null one. The null conditions follow from the timelike ones by continuity: a null vector k is the limit of the timelike vectors k + eps w, with w timelike and g(k, w) <= 0, and the functions v -> T(v, v) and v -> (T - (1/2) tr_g T g)(v, v) are continuous. The comparison with Curiel, section 2.1, is pending: the implications are not read at that location. Limits: pointwise, dimension four; the strong condition does not imply the weak one and the weak does not imply the strong one (cosmo_energyConditions and the perfect-fluid equivalences of LL-0180), so no further implication is claimed. Trust check: dust satisfies the dominant condition, hence the null condition through the implication (the example at the end of the file)."
+  since: unreleased
+- id: LL-0307
+  title: "The gauge-fixed Ooguri state sum depends on the gauge set only through its forcing closure: mutually forcing gauge sets give equal sums at every cutoff, and a gauge set whose closure is every triangle gives 1"
+  area: SpinFoam
+  file: Lightlike/SpinFoam/OoguriGaugeFixed/ForcingClosure.lean
+  decls: [Lightlike.SpinFoam.amplitudeGF_union_of_forces, Lightlike.SpinFoam.amplitudeGF_eq_forcedTris, Lightlike.SpinFoam.amplitudeGF_eq_of_mutual_forces]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: freidel-louapre-2003, location: "Section IV", check: "GAUGE SYMMETRIES AND DIVERGENCES"}
+  review: kernel-checked
+  note: "Part of SF5d (G2-023). Removes the word every from LL-0068/amplitudeGF_eq_of_forces: the state sum depends on a gauge set T only through forcedTris K T, whether or not that is all of K.tris. Finite cutoff statements and sufficient criteria only: nothing says that gauge sets with different closures give different sums. The comparison with Freidel-Louapre (2003), Section IV, is pending: the gauge rule is this library's proposal for the 4D analogue of the maximal tree, not a construction from the literature."
+  since: unreleased
+- id: LL-0308
+  title: "The forcing closure of a set of triangles is a closure operator, forcing is its inclusion order, and the gauge-fixed state sum is constant on forcing classes"
+  area: SpinFoam
+  file: Lightlike/SpinFoam/OoguriGaugeFixed/ForcingClosureOrder.lean
+  decls: [Lightlike.SpinFoam.forces_iff_forcedTris_subset, Lightlike.SpinFoam.Forces.trans', Lightlike.SpinFoam.forcedTris_eq_iff_mutual_forces, Lightlike.SpinFoam.amplitudeGF_eq_of_forces_forces]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: freidel-louapre-2003, location: "Section IV", check: "GAUGE SYMMETRIES AND DIVERGENCES"}
+  review: kernel-checked
+  note: "Part of SF5d (G2-023). Order structure of the forcing relation inside K.tris: Forces K T' T iff forcedTris K T' is in forcedTris K T; equal closures iff mutual forcing. Combinatorial statement about this library's gauge rule; no literature counterpart, comparison pending."
+  since: unreleased
+- id: LL-0309
+  title: "Trust check of the gauge-fixed Ooguri state sum on the boundary of the 5-simplex: the cone gauge set obeys the gauge rule and gives 1, and a gauge set that violates the rule gives 5"
+  area: SpinFoam
+  file: Lightlike/SpinFoam/OoguriGaugeFixed/Capstone.lean
+  decls: [Lightlike.SpinFoam.gaugeFixed_sphere6_trust]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: freidel-louapre-2003, location: "Section IV", check: "GAUGE SYMMETRIES AND DIVERGENCES"}
+  review: kernel-checked
+  note: "Capstone of SF5d (G2-023), the two trust checks of the milestone: starT obeys IsGauge and gives amplitude 1; gauge9 (starT minus one triangle) violates it and gives 5, so a gauge set that breaks the hypotheses changes the amplitude. Cutoff 1/2 on every triangle. Invariance under the five Pachner moves and gauge independence are LL-0049 to LL-0051 and LL-0068. Comparison with Freidel-Louapre pending."
+  since: unreleased

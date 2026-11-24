@@ -1410,6 +1410,7 @@ import Lightlike.Spacetime.Causal.CurveGlobal
 import Lightlike.Spacetime.Causal.CurveMargin
 import Lightlike.Spacetime.Causal.CurveOps
 import Lightlike.Rows.G1_007.LorentzLength
+import Lightlike.Rows.G1_007.TimeSeparation
 import Lightlike.Spacetime.Causal.ConeConvex
 import Lightlike.Spacetime.Causal.DomainOfDependence
 import Lightlike.Spacetime.Causal.Extension
@@ -1473,6 +1474,7 @@ import Lightlike.Spacetime.CurveBounds
 import Lightlike.Spacetime.DivergenceFree
 import Lightlike.Spacetime.ExtensionChart
 import Lightlike.Spacetime.GeodesicChartChange
+import Lightlike.Spacetime.GeodesicIntrinsic
 import Lightlike.Spacetime.GeodesicMomentum
 import Lightlike.Spacetime.GE3Row.Conjugate
 import Lightlike.Spacetime.GE3Row.Jacobi
@@ -1482,6 +1484,7 @@ import Lightlike.Spacetime.GE3Row.Sphere
 import Lightlike.Spacetime.Kretschmann
 import Lightlike.Spacetime.EnergyConditions
 import Lightlike.Spacetime.EnergyConditionsField
+import Lightlike.Spacetime.EnergyConditionsImplications
 import Lightlike.Spacetime.EnergyConditionsPhyslib
 import Lightlike.Spacetime.EnergyConditionsEM
 import Lightlike.Spacetime.OpenCoordMetric
@@ -1939,6 +1942,7 @@ import Lightlike.Dirac.ConnesDistance7
 import Lightlike.SpinFoam.OoguriGaugeFixed.Capstone
 import Lightlike.SpinFoam.OoguriGaugeFixed.ForcingClosure
 import Lightlike.SpinFoam.OoguriGaugeFixed.ForcingClosureAlgebra
+import Lightlike.SpinFoam.OoguriGaugeFixed.ForcingClosureOrder
 import Lightlike.SpinFoam.OoguriGaugeFixed.ForcingClosureTotal
 import Lightlike.SpinFoam.OoguriGaugeFixed.Test
 import Lightlike.DynamicalTriangulations.Action
