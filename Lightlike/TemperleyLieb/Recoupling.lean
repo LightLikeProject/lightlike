@@ -178,4 +178,79 @@ theorem recoup_row_sum [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) (a b c e d
     recoup q a b c e d f d') (ν := 1) (by rw [key, one_smul])
   exact this
 
+/-- **The two-level sandwich of the second bracketing is a scalar.** -/
+theorem Wop_Wop_sandwich_R (q : kˣ) (a b c f d : ℕ) (hN : 1 ≤ a + b + c)
+    (hd : ∀ j, j ≤ a + b + c → chebD (loopVal q) j ≠ 0)
+    (hfb : f ≤ b) (hfc : f ≤ c) (hda : d ≤ a) (hdf : d ≤ b + c - 2 * f)
+    {Y : Module.End k (ModelSpace k)} (hY : Y ∈ CSub q (a + b + c - 1)) :
+    ∃ ε : k, Wop q a (b + c - 2 * f) d * (sh a (Wop q b c f) * Y * sh a (Vop q b c f)) *
+      Vop q a (b + c - 2 * f) d = ε • jwAt q 0 (a + (b + c - 2 * f) - 2 * d) := by
+  set C := b + c - 2 * f with hC
+  have hdAc : ∀ j, j ≤ a + C → chebD (loopVal q) j ≠ 0 := fun j hj => hd j (by omega)
+  have hQmem : (jwAt q a b * jwAt q (b + a) c : Module.End k (ModelSpace k)) ∈ CSub q (a + b + c - 1) := by
+    have h1 : jwAt q a b ∈ CSub q (a + b + c - 1) :=
+      tlSub_mono (m := a + b - 1) (n := a + b + c - 1) (by omega) (jwAt_mem q a b)
+    have h2 : jwAt q (b + a) c ∈ CSub q (a + b + c - 1) :=
+      tlSub_mono (m := b + a + c - 1) (n := a + b + c - 1) (by omega) (jwAt_mem q (b + a) c)
+    exact Subalgebra.mul_mem _ h1 h2
+  have hZ0 : (jwAt q a b * jwAt q (b + a) c) * Y * (jwAt q a b * jwAt q (b + a) c) ∈ CSub q (a + b + c - 1) :=
+    Subalgebra.mul_mem _ (Subalgebra.mul_mem _ hQmem hY) hQmem
+  have hX1 := nestCap_mul_nestCup_mem q (b - f + a) f (a + b + c - 1) hZ0 (by omega)
+  rw [show a + b + c - 1 - 2 * f = a + C - 1 by omega] at hX1
+  set X1 := nestCap q (b - f + a) f * ((jwAt q a b * jwAt q (b + a) c) * Y * (jwAt q a b * jwAt q (b + a) c)) *
+    nestCup q (b - f + a) f with hX1def
+  have hW1 : sh a (Wop q b c f) * Y * sh a (Vop q b c f) = jwAt q a C * X1 * jwAt q a C := by
+    rw [sh_Wop, sh_Vop]; rw [hX1def]; simp only [mul_assoc, hC]
+  have hQ'mem : Qab q a C ∈ CSub q (a + C - 1) := Qab_mem q a C
+  have hJ1 := Qab_mul_jwAt_shift (k := k) q a C hdAc
+  have hJ2 := jwAt_shift_mul_Qab (k := k) q a C hdAc
+  have hX2 : Qab q a C * X1 * Qab q a C ∈ CSub q (a + C - 1) :=
+    Subalgebra.mul_mem _ (Subalgebra.mul_mem _ hQ'mem hX1) hQ'mem
+  have hX3 := nestCap_mul_nestCup_mem q (a - d) d (a + C - 1) hX2 (by omega)
+  rw [show a + C - 1 - 2 * d = (a + C - 2 * d) - 1 by omega] at hX3
+  have hDd : ∀ j, j < a + C - 2 * d → chebD (loopVal q) j ≠ 0 := fun j hj => hd j (by omega)
+  obtain ⟨ε, hε⟩ := jwAt_sandwich q hDd hX3
+  refine ⟨ε, ?_⟩
+  rw [hW1]
+  unfold Wop Vop
+  calc jwAt q 0 (a + C - 2 * d) * nestCap q (a - d) d * Qab q a C * (jwAt q a C * X1 * jwAt q a C) *
+        (Qab q a C * nestCup q (a - d) d * jwAt q 0 (a + C - 2 * d))
+      = jwAt q 0 (a + C - 2 * d) * (nestCap q (a - d) d * ((Qab q a C * jwAt q a C) * X1 *
+        (jwAt q a C * Qab q a C)) * nestCup q (a - d) d) * jwAt q 0 (a + C - 2 * d) := by simp only [mul_assoc]
+    _ = jwAt q 0 (a + C - 2 * d) * (nestCap q (a - d) d * (Qab q a C * X1 * Qab q a C) * nestCup q (a - d) d) *
+        jwAt q 0 (a + C - 2 * d) := by rw [hJ1, hJ2]
+    _ = ε • jwAt q 0 (a + C - 2 * d) := hε
+
+/-- **One-dimensionality of the second-bracketing tree corner.** -/
+theorem treeR_sandwich (q : kˣ) (a b c f d : ℕ) (hN : 1 ≤ a + b + c)
+    (hd : ∀ j, j ≤ a + b + c → chebD (loopVal q) j ≠ 0)
+    (hfb : f ≤ b) (hfc : f ≤ c) (hda : d ≤ a) (hdf : d ≤ b + c - 2 * f)
+    {Y : Module.End k (ModelSpace k)} (hY : Y ∈ CSub q (a + b + c - 1)) :
+    ∃ μ : k, treeR q a b c f d * Y * treeR q a b c f d = μ • treeR q a b c f d := by
+  obtain ⟨ε, hε⟩ := Wop_Wop_sandwich_R q a b c f d hN hd hfb hfc hda hdf hY
+  set C := b + c - 2 * f with hC
+  have hdAc : ∀ j, j ≤ a + C → chebD (loopVal q) j ≠ 0 := fun j hj => hd j (by omega)
+  have hV2 := Vop_mul_jwAt (k := k) q a C hdAc hda hdf
+  have hT : treeR q a b c f d = ((kapRec q b c f)⁻¹ * (kapRec q a C d)⁻¹) •
+      (sh a (Vop q b c f) * Vop q a C d * Wop q a C d * sh a (Wop q b c f)) := by
+    unfold treeR Eop
+    simp only [smul_mul_assoc, mul_smul_comm, smul_smul, mul_assoc, hC]
+  rw [hT]
+  simp only [smul_mul_assoc, mul_smul_comm, smul_smul]
+  refine ⟨ε * ((kapRec q b c f)⁻¹ * (kapRec q a C d)⁻¹), ?_⟩
+  have key : (sh a (Vop q b c f) * Vop q a C d * Wop q a C d * sh a (Wop q b c f)) * Y *
+      (sh a (Vop q b c f) * Vop q a C d * Wop q a C d * sh a (Wop q b c f)) =
+      ε • (sh a (Vop q b c f) * Vop q a C d * Wop q a C d * sh a (Wop q b c f)) := by
+    calc _ = sh a (Vop q b c f) * Vop q a C d * (Wop q a C d * (sh a (Wop q b c f) * Y * sh a (Vop q b c f)) *
+          Vop q a C d) * Wop q a C d * sh a (Wop q b c f) := by simp only [mul_assoc]
+      _ = sh a (Vop q b c f) * Vop q a C d * (ε • jwAt q 0 (a + C - 2 * d)) * Wop q a C d *
+          sh a (Wop q b c f) := by rw [hε]
+      _ = _ := by
+          rw [mul_smul_comm, smul_mul_assoc, smul_mul_assoc]
+          congr 1
+          rw [mul_assoc (sh a (Vop q b c f)), hV2]
+  rw [key, smul_smul]
+  congr 1
+  ring
+
 end Lightlike.TemperleyLieb
