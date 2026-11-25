@@ -490,4 +490,105 @@ theorem recoup_eq_zero_of_ne [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) (a b
   rw [finrank_range_treeL q a b c e d hea heb hdc hdA hd hq2, finrank_range_treeR q a b c f d' hfb hfc hda hdf hd hq2] at r1 r2
   omega
 
+/-- `treeR` as a sandwich of the translated three-block projector. -/
+theorem treeR_eq (q : kˣ) (a b c f d : ℕ) (hfb : f ≤ b) (hfc : f ≤ c)
+    (hdc : ∀ j, j ≤ a + (b + c - 2 * f) → chebD (loopVal q) j ≠ 0) :
+    treeR q a b c f d = (kapRec q b c f)⁻¹ • ((jwAt q a b * jwAt q (b + a) c) *
+      (nestCup q (b - f + a) f * Eop q a (b + c - 2 * f) d * nestCap q (b - f + a) f) *
+      (jwAt q a b * jwAt q (b + a) c)) := by
+  unfold treeR
+  congr 1
+  have hJE := jwAt_shift_mul_Eop (k := k) q a (b + c - 2 * f) d hdc
+  have hEJ := Eop_mul_jwAt_shift (k := k) q a (b + c - 2 * f) d hdc
+  have hJEJ : (jwAt q a (b + c - 2 * f) : Module.End k (ModelSpace k)) * Eop q a (b + c - 2 * f) d *
+      jwAt q a (b + c - 2 * f) = Eop q a (b + c - 2 * f) d := by rw [hJE, hEJ]
+  rw [sh_Vop, sh_Wop]
+  calc _ = (jwAt q a b * jwAt q (b + a) c) * nestCup q (b - f + a) f * (jwAt q a (b + c - 2 * f) *
+        Eop q a (b + c - 2 * f) d * jwAt q a (b + c - 2 * f)) * nestCap q (b - f + a) f *
+        (jwAt q a b * jwAt q (b + a) c) := by simp only [mul_assoc]
+    _ = _ := by rw [hJEJ]; simp only [mul_assoc]
+
+/-- `treeR · P₃ = treeR`. -/
+theorem treeR_mul_P3 (q : kˣ) (a b c f d : ℕ) (hfb : f ≤ b) (hfc : f ≤ c)
+    (hd : ∀ j, j ≤ a + b + c → chebD (loopVal q) j ≠ 0) :
+    treeR q a b c f d * P3 q a b c = treeR q a b c f d := by
+  have hdc : ∀ j, j ≤ a + (b + c - 2 * f) → chebD (loopVal q) j ≠ 0 := fun j hj => hd j (by omega)
+  have hsh := congrArg (sh a) (Qab_idem (k := k) q b c (fun j hj => hd j (by omega)))
+  rw [sh_mul] at hsh
+  have hQs : sh a (Qab q b c : Module.End k (ModelSpace k)) = jwAt q a b * jwAt q (b + a) c := by
+    unfold Qab; rw [sh_mul, sh_jwAt, sh_jwAt]; simp
+  rw [hQs] at hsh
+  have hp : (jwAt q 0 a : Module.End k (ModelSpace k)) * (jwAt q a b * jwAt q (b + a) c) =
+      (jwAt q a b * jwAt q (b + a) c) * jwAt q 0 a := by
+    rw [← mul_assoc, jwAt_comm_jwAt q le_rfl b, mul_assoc, jwAt_comm_jwAt q (by omega) c, mul_assoc]
+  have hP3 : P3 q a b c = jwAt q 0 a * (jwAt q a b * jwAt q (b + a) c) := by
+    rw [← jwAt_mul_sh_Qab, hQs]
+  have hEp := Eop_mul_jwAt (k := k) q a (b + c - 2 * f) hdc d
+  have hnp := jwAt_mul_nestCap (k := k) q (a := a) (l := b - f + a) (by omega) f
+  rw [treeR_eq q a b c f d hfb hfc hdc, smul_mul_assoc, hP3]
+  congr 1
+  set Qs : Module.End k (ModelSpace k) := jwAt q a b * jwAt q (b + a) c with hQsdef
+  have hQp : Qs * (jwAt q 0 a * Qs) = jwAt q 0 a * Qs := by
+    rw [← mul_assoc, ← hp, mul_assoc, hsh]
+  have hEn : Eop q a (b + c - 2 * f) d * (nestCap q (b - f + a) f * jwAt q 0 a) =
+      Eop q a (b + c - 2 * f) d * nestCap q (b - f + a) f := by
+    rw [← hnp, ← mul_assoc, hEp]
+  calc Qs * (nestCup q (b - f + a) f * Eop q a (b + c - 2 * f) d * nestCap q (b - f + a) f) * Qs *
+        (jwAt q 0 a * Qs)
+      = Qs * (nestCup q (b - f + a) f * Eop q a (b + c - 2 * f) d * nestCap q (b - f + a) f) *
+        (Qs * (jwAt q 0 a * Qs)) := by simp only [mul_assoc]
+    _ = Qs * (nestCup q (b - f + a) f * (Eop q a (b + c - 2 * f) d * (nestCap q (b - f + a) f * jwAt q 0 a))) * Qs := by
+          rw [hQp]; simp only [mul_assoc]
+    _ = _ := by rw [hEn]; simp only [mul_assoc]
+
+/-- **The second-bracketing tree idempotents are non-zero.** -/
+theorem treeR_ne_zero (q : kˣ) (a b c f d : ℕ) (hfb : f ≤ b) (hfc : f ≤ c) (hda : d ≤ a)
+    (hdf : d ≤ b + c - 2 * f)
+    (hd : ∀ j, j ≤ a + b + c → chebD (loopVal q) j ≠ 0)
+    (hq2 : ∀ j, 1 ≤ j → j ≤ a + b + c + 1 → (q : k) ^ (2 * j) ≠ 1) :
+    treeR q a b c f d ≠ 0 := by
+  set C := b + c - 2 * f with hC
+  have hdAc : ∀ j, j ≤ a + C → chebD (loopVal q) j ≠ 0 := fun j hj => hd j (by omega)
+  have hκ1 := kapRec_ne (k := k) q f b c hfb hfc (fun j h1 h2 => hq2 j h1 (by omega))
+  have hκ2 := kapRec_ne (k := k) q d a C hda hdf (fun j h1 h2 => hq2 j h1 (by omega))
+  have hW1 := Wop_mul_Vop q b c f hfb hfc (fun j hj => hd j (by omega))
+  have hW2 := Wop_mul_Vop q a C d hda hdf hdAc
+  have hW1' : sh a (Wop q b c f : Module.End k (ModelSpace k)) * sh a (Vop q b c f) =
+      kapRec q b c f • jwAt q a C := by
+    rw [← sh_mul, hW1, sh_smul, sh_jwAt]; simp [hC]
+  have hJV : jwAt q a C * Vop q a C d = Vop q a C d := by
+    have := jwAt_shift_mul_Qab (k := k) q a C hdAc
+    unfold Vop; rw [← mul_assoc, ← mul_assoc, this]
+  have hmid : Wop q a C d * (sh a (Wop q b c f) * sh a (Vop q b c f)) * Vop q a C d =
+      (kapRec q b c f * kapRec q a C d) • jwAt q 0 (a + C - 2 * d) := by
+    rw [hW1', mul_smul_comm, smul_mul_assoc, mul_assoc, hJV, hW2, smul_smul]
+  intro h0
+  have hT : treeR q a b c f d = ((kapRec q b c f)⁻¹ * (kapRec q a C d)⁻¹) •
+      (sh a (Vop q b c f) * Vop q a C d * Wop q a C d * sh a (Wop q b c f)) := by
+    unfold treeR Eop
+    simp only [smul_mul_assoc, mul_smul_comm, smul_smul, mul_assoc, hC]
+  rw [hT] at h0
+  have h1 : sh a (Vop q b c f) * Vop q a C d * Wop q a C d * sh a (Wop q b c f) = 0 := by
+    rcases smul_eq_zero.mp h0 with h | h
+    · exact absurd h (mul_ne_zero (inv_ne_zero hκ1) (inv_ne_zero hκ2))
+    · exact h
+  have hm : (Wop q a C d * sh a (Wop q b c f)) * (sh a (Vop q b c f) * Vop q a C d) =
+      (kapRec q b c f * kapRec q a C d) • jwAt q 0 (a + C - 2 * d) := by
+    rw [← hmid]; simp only [mul_assoc]
+  have h1' : (sh a (Vop q b c f) * Vop q a C d) * (Wop q a C d * sh a (Wop q b c f)) = 0 := by
+    rw [← h1]; simp only [mul_assoc]
+  have h2 : ((Wop q a C d * sh a (Wop q b c f)) * (sh a (Vop q b c f) * Vop q a C d)) *
+      ((Wop q a C d * sh a (Wop q b c f)) * (sh a (Vop q b c f) * Vop q a C d)) = 0 := by
+    calc _ = (Wop q a C d * sh a (Wop q b c f)) * ((sh a (Vop q b c f) * Vop q a C d) *
+          (Wop q a C d * sh a (Wop q b c f))) * (sh a (Vop q b c f) * Vop q a C d) := by simp only [mul_assoc]
+      _ = 0 := by rw [h1']; simp
+  rw [hm, smul_mul_assoc, mul_smul_comm, smul_smul] at h2
+  have hpp : jwAt q 0 (a + C - 2 * d) * jwAt q 0 (a + C - 2 * d) =
+      (jwAt q 0 (a + C - 2 * d) : Module.End k (ModelSpace k)) :=
+    jwAt_idem (k := k) q (N := a + C + 1) (by omega) (fun j hj => hdAc j (by omega))
+  rw [hpp] at h2
+  rcases smul_eq_zero.mp h2 with h | h
+  · exact absurd h (mul_ne_zero (mul_ne_zero hκ1 hκ2) (mul_ne_zero hκ1 hκ2))
+  · exact jwAt_ne_zero q _ h
+
 end Lightlike.TemperleyLieb
