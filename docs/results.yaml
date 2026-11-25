@@ -5115,3 +5115,49 @@
   review: kernel-checked
   note: "Comparison pending (no source for the fermionic Wick theorem was read). Instance of the abstract recursion of FermionWick.lean (the previous entry): for a vector killed by all the transformed annihilation operators, the fields sum_j u_j b_j + sum_j v_j b_j^* are split fields, the anticommutator of the annihilation part with a field is the scalar sum u_j v'_j (the CAR of the transformed operators, isCARPairs_bog), and car_wick gives <Psi, x_1 ... x_n Psi> = <Psi, Psi> wick [x_1, ..., x_n] for every n; car_wick_two is n = 2. The fields a_j, c_j are such combinations by the inverse transformation (bog_inv), so the statement covers them, but this is not stated separately. WEAKER: finitely many modes (the infinite-mode vacuum and Shale for fermions are not built); no explicit n = 4 expansion check (the recursion is proved for all n); mixed quasi-free states are not covered."
   since: unreleased
+- id: LL-XXXX-a
+  title: "Face counts and Euler characteristic of the 4-simplex and of the boundary of a 5-simplex: a 4-simplex has f_k = C(5, k+1), the boundary of a 5-simplex has f_k = C(6, k+1) for k <= 4, so Euler characteristics 1 and 2"
+  area: FourD
+  file: Lightlike/FourD/Complex.lean
+  decls: [Lightlike.FourD.Complex4.card_faces_simplex, Lightlike.FourD.Complex4.card_faces_sphere, Lightlike.FourD.Complex4.euler4_simplex, Lightlike.FourD.Complex4.euler4_sphere]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source was read at a cited location). Proved for every vertex set of the right size: the face vectors are (5, 10, 10, 5, 1) and (6, 15, 20, 15, 6), with Euler characteristics 1 and 2; Euler characteristic here is the alternating sum of the face counts, not a homology invariant."
+  since: unreleased
+- id: LL-XXXX-b
+  title: "A pure 4-complex is closed exactly when it is a pseudo-manifold without boundary tetrahedra; the boundary tetrahedra through a triangle are even in number in a pseudo-manifold; the boundary of a 4-simplex and of a 5-simplex are closed"
+  area: FourD
+  file: Lightlike/FourD/Boundary.lean
+  decls: [Lightlike.FourD.Complex4.isClosed4_iff, Lightlike.FourD.Complex4.even_card_bdryTets, Lightlike.FourD.Complex4.boundary_simplex_closed, Lightlike.FourD.Complex4.isClosed4_sphere]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source was read at a cited location). Pseudo-manifold is the combinatorial condition that every tetrahedron lies in at most two 4-simplices (closed: exactly two); it is not the topological notion, and no link or connectedness condition is imposed. The parity statement is the double count of (tetrahedron, 4-simplex) pairs over a triangle."
+  since: unreleased
+- id: LL-XXXX-c
+  title: "The boundary of a 5-simplex is coherently oriented: the incidence numbers relSign S of the 4-simplices form an orientation whose fundamental chain is the boundary chain of the 5-simplex"
+  area: FourD
+  file: Lightlike/FourD/Orientation.lean
+  decls: [Lightlike.FourD.Complex4.isOrientation_sphere]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source was read at a cited location). Orientation is the combinatorial coherent sign assignment on the 4-simplices (IsOrientation in Orientation.lean); the signs are the incidence numbers relSign S of a 4-simplex in the 5-simplex on S, the sum of inc over the omitted vertex."
+  since: unreleased
+- id: LL-XXXX-d
+  title: "A 4D Pachner move leaves the boundary tetrahedra unchanged and preserves, in both directions, the pseudo-manifold and the closedness conditions"
+  area: FourD
+  file: Lightlike/FourD/Pachner.lean
+  decls: [Lightlike.FourD.Complex4.bdryTets_move, Lightlike.FourD.Complex4.isPseudo4_move_iff, Lightlike.FourD.Complex4.isClosed4_move_iff]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: lickorish-1999, location: "Theorem 5.9", check: "bistellar"}
+  review: kernel-checked
+  note: "Comparison pending: the cited location concerns bistellar moves between combinatorial manifolds; the statements here are the combinatorial preservation of the pseudo-manifold and closedness conditions defined in Boundary.lean, which that theorem does not state. The move is the one of LL-0035 (an involution, IsMove precondition on a pair of complementary faces of a 5-simplex)."
+  since: unreleased
