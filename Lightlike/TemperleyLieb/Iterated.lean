@@ -392,4 +392,35 @@ theorem cup_mul_cap_mem (q : kˣ) (hδ : loopVal q ≠ 0) {n m : ℕ} (hm : m �
     rw [this]
     exact Subalgebra.smul_mem _ (Subalgebra.mul_mem _ hx hy) _
 
+/-- **Nested expansion**: `nestCup l i · z · nestCap l i ∈ C (n + 2 i)` for `z ∈ C n` and `l ≤ n + 1`. -/
+theorem nestCup_mul_nestCap_mem (q : kˣ) (hδ : loopVal q ≠ 0) {n l : ℕ} (hl : l ≤ n + 1)
+    {z : Module.End k (ModelSpace k)} (hz : z ∈ CSub q n) :
+    ∀ i : ℕ, nestCup q l i * z * nestCap q l i ∈ CSub q (n + 2 * i) := by
+  intro i
+  induction i with
+  | zero => simpa [nestCup, nestCap] using hz
+  | succ i ih =>
+    have h := cup_mul_cap_mem q hδ (n := n + 2 * i) (m := l + i) (by omega) ih
+    have e : nestCup q l (i + 1) * z * nestCap q l (i + 1) =
+        cupOp q (l + i) * (nestCup q l i * z * nestCap q l i) * capOp q (l + i) := by
+      simp only [nestCup, nestCap, mul_assoc]
+    rw [e, show n + 2 * (i + 1) = n + 2 * i + 2 by ring]
+    exact h
+
+/-- **The channel idempotent lies in `C (a + b - 1)`** (`a + b - 2 i ≥ 1`). -/
+theorem Eop_mem (q : kˣ) (hδ : loopVal q ≠ 0) {a b i : ℕ} (hia : i ≤ a) (hib : i ≤ b) (hc : 1 ≤ a + b - 2 * i) :
+    (Eop q a b i : Module.End k (ModelSpace k)) ∈ CSub q (a + b - 1) := by
+  have hp : jwAt q 0 (a + b - 2 * i) * jwAt q 0 (a + b - 2 * i) ∈ CSub q (a + b - 2 * i - 1) := by
+    have := jwAt_mem (k := k) q 0 (a + b - 2 * i)
+    rw [zero_add] at this
+    exact Subalgebra.mul_mem _ this this
+  have hn := nestCup_mul_nestCap_mem q hδ (n := a + b - 2 * i - 1) (l := a - i) (by omega) hp i
+  rw [show a + b - 2 * i - 1 + 2 * i = a + b - 1 by omega] at hn
+  have hVW : Vop q a b i * Wop q a b i = Qab q a b * (nestCup q (a - i) i * (jwAt q 0 (a + b - 2 * i) *
+      jwAt q 0 (a + b - 2 * i)) * nestCap q (a - i) i) * Qab q a b := by
+    unfold Vop Wop; simp only [mul_assoc]
+  unfold Eop
+  rw [hVW]
+  exact Subalgebra.smul_mem _ (Subalgebra.mul_mem _ (Subalgebra.mul_mem _ (Qab_mem q a b) hn) (Qab_mem q a b)) _
+
 end Lightlike.TemperleyLieb
