@@ -16,18 +16,26 @@ surface `S` (`FocalImpliesChron`), a degenerate Gram matrix `Q (σ₀, t₀)` wi
 4. The family starts on `S` after a correction of order `s³` supported near `t = 0` and ends at `γ (L)`; for small
    `s ≠ 0` the curve `α (s, ·)` is a future timelike curve from `S` to `γ (L)`.
 
-## Lemmas needed (none is in the repository)
+## Chart-level lemmas (proved)
 
-* **L1 (parallel transport):** a parallel transverse null field along a geodesic of a manifold, across charts.
-* **L2 (second-order expansion):** in one chart, `g (α) (α_t, α_t) = s² (|DW|² - R (W, γ', γ', W) - 2 φ') + O (s³)`
-  uniformly in `t`, for `α (s, t) = γ t + s W t + s² Z t` with `Z = φ N + (second-order term of exp)`.
-* **L3 (gluing):** a family `α (s, ·)` on `[0, L]` defined chartwise on a partition and matched at the nodes up to
-  `O (s³)` corrections.
-* **L4 (index form):** `I (J̃, J̃) = 0` for the broken Jacobi field and `I (J̃ + εη, J̃ + εη) < 0`.
-* **L5 (start on `S`):** a curve in `S` with prescribed first and second order jet (from `exists_surface_param`).
-* **L6 (conclusion):** a family of timelike curves from points of `S` to `γ L` gives `γ L ∈ I⁺(S)`.
+* `hasDerivAt_normK`, `hasDerivAt_normK_second`: for a curve `c` and a field `Y` along it, in a chart,
+  `d/ds g (c) (Y, Y) = 2 g (D_s Y, Y)` and the second derivative is `2 (g (K' + Γ (c', K), Y) + g (K, K))`.
+* `coeffK_zero_eq`, `hasDerivAt_E_gpair`: at `s = 0` the coefficient of `s²` is
+  `|D_t W|² - g (R (w, W) W, w) + d/dt g (E, w)` with `E = D_s α_s`, for a geodesic `t ↦ α (0, t)` with velocity `w`.
+* `tidal_swap`: `g (R (w, W) W, w) = g (R (W, w) w, W)`.
+* `uniform_neg_local`: if `g (α) (α_t, α_t)` has vanishing first `s`-jet and negative second-order coefficient at
+  `(0, t₀)`, it is negative for `0 < |s|` small, uniformly for `t` near `t₀`.
 
-## Size
+## Route of the remaining lemmas
 
-L2 and L3 are the bulk: the second variation of `g (∂ₜα, ∂ₜα)` in coordinates and its transport across several
-charts along `γ ([0, L])`.
+* The coefficient with `Z̃ = 0` is the intrinsic function `A_W (t) = (1/2) ∂ₛ² g (α₀) (∂ₜα₀, ∂ₜα₀)` of the
+  intrinsic family `α₀ (s, t) = exp_{γ t} (s W t)`; it is the chart expression `|D_t W|² - g (R (w, W) W, w)` in
+  every chart, so no transformation law across charts is needed.
+* The correction `Z̃ = φ N` with `N = X / (-g (w, X))` for a smooth future timelike field `X` has `g (N, w) = -1`
+  and `g (E, w) = -2 φ`; then the coefficient is `A_W - 2 φ'`, and `φ' = (1/2) A_W + δ` gives a negative coefficient
+  `-2 δ`. The boundary conditions `φ (L) = 0` and the value of `φ (0)` fixed by the curve in `S` give the
+  condition `I (W) + 2 δ L < Ψ₀`.
+* For the Jacobi part, `A_J = d/dt g (D J, J) = (1/2) Q''`-type boundary terms through the intrinsic Gram function
+  `Qg`; the kink field `η` and the correction at the start are supported in single charts.
+* The family is `α (s, t) = Ξ ⟨γ t, s W + s² Z̃⟩` with `Ξ z = Γ z 1` from the smooth flow germ at the zero phase;
+  homogeneity `Ξ ⟨p, λ v⟩ = Γ ⟨p, v⟩ λ` gives `D Ξ (p, 0) = id` and `D² Ξ (p, 0) (v, v) = -Γ (p) (v, v)`.
