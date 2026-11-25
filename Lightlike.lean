@@ -1953,6 +1953,7 @@ import Lightlike.Dirac.EigenGeneralK
 import Lightlike.Dirac.EigenAngular
 import Lightlike.Dirac.AngularFourier
 import Lightlike.Dirac.AngularModes
+import Lightlike.Dirac.ModeODE
 import Lightlike.TemperleyLieb.Basic
 import Lightlike.TemperleyLieb.JonesWenzl
 import Lightlike.TemperleyLieb.Model
