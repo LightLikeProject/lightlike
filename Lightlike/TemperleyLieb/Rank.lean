@@ -1,5 +1,7 @@
 import Mathlib
 import Lightlike.TemperleyLieb.Window
+import Lightlike.TemperleyLieb.Natural
+import Lightlike.TemperleyLieb.Vertex
 
 /-!
 # Coefficients of `e_j v` and the sorted-coordinates bound
@@ -510,9 +512,11 @@ theorem modelE_dicke (q : kˣ) {c m j : ℕ} (hj : j + 2 ≤ c) : modelE q j (di
 /-- The canonical sequence with `m` ones in front. -/
 def frontOnes (m : ℕ) : ℕ → Bool := fun p => decide (p < m)
 
+/-- `frontOnes m` lies in the window `c`. -/
 lemma frontOnes_mem {c m : ℕ} (h : m ≤ c) : frontOnes m ∈ tailZero c := by
   intro j hj; simp [frontOnes]; omega
 
+/-- `frontOnes m` has `m` ones. -/
 lemma wtCount_frontOnes {c m : ℕ} (h : m ≤ c) : wtCount c (frontOnes m) = m := by
   unfold wtCount onesSum frontOnes
   have h2 : ∀ p : ℕ, (if decide (p < m) = true then 1 else 0) = (if p < m then 1 else 0) := by
@@ -523,6 +527,7 @@ lemma wtCount_frontOnes {c m : ℕ} (h : m ≤ c) : wtCount c (frontOnes m) = m 
     ext p; simp; omega
   rw [h3]; simp
 
+/-- `frontOnes m` is in the Dicke set. -/
 lemma frontOnes_mem_dickeSet {c m : ℕ} (h : m ≤ c) : frontOnes m ∈ dickeSet c m :=
   mem_dickeSet.mpr ⟨frontOnes_mem h, wtCount_frontOnes h⟩
 
@@ -552,5 +557,94 @@ theorem dicke_linearIndependent (q : kˣ) (c : ℕ) :
     rw [mem_dickeSet, wtCount_frontOnes hle] at hm
     exact hji (Fin.ext hm.2.symm)
   · intro hn; exact absurd hi hn
+
+/-- Inserting a pair at a position `≤ n` keeps the window (with `n + 2`). -/
+lemma insertTwo_mem_tailZero {n m : ℕ} (hm : m ≤ n) {σ : ℕ → Bool} (h : σ ∈ tailZero n) (x y : Bool)
+    (hx : x = false ∨ m + 2 ≤ n + 2) (hy : y = false ∨ m + 2 ≤ n + 2) :
+    insertTwo σ m x y ∈ tailZero (n + 2) := by
+  intro j hj
+  simp only [insertTwo]
+  split_ifs with a b c
+  · omega
+  · rcases hx with hx | hx
+    · exact hx
+    · omega
+  · rcases hy with hy | hy
+    · exact hy
+    · omega
+  · exact h (j - 2) (by omega)
+
+/-- The cup maps the window `n` into the window `n + 2` (insertion position `≤ n`). -/
+theorem cupOp_preserves (q : kˣ) {n m : ℕ} (hm : m ≤ n) :
+    ∀ v ∈ Win k n, cupOp q m v ∈ Win k (n + 2) := by
+  intro v hv
+  have hv' : v ∈ Submodule.span k ((fun σ => single σ (1 : k)) '' tailZero n) := by
+    rw [Win, Finsupp.supported_eq_span_single] at hv; exact hv
+  clear hv
+  induction hv' using Submodule.span_induction with
+  | mem x hx =>
+    obtain ⟨σ, hσ, rfl⟩ := hx
+    simp only [cupOp_single, one_smul, cupBasis]
+    exact Submodule.sub_mem _ (single_mem_Win (insertTwo_mem_tailZero hm hσ _ _ (Or.inr (by omega)) (Or.inr (by omega))) _)
+      (Submodule.smul_mem _ _ (single_mem_Win (insertTwo_mem_tailZero hm hσ _ _ (Or.inr (by omega)) (Or.inr (by omega))) _))
+  | zero => simp
+  | add x y _ _ hx hy => rw [map_add]; exact Submodule.add_mem _ hx hy
+  | smul r x _ hx => rw [map_smul]; exact Submodule.smul_mem _ r hx
+
+/-- The nested cups map the window `c` into the window `c + 2 i` (junction `l ≤ c`). -/
+theorem nestCup_preserves (q : kˣ) {l c : ℕ} (hl : l ≤ c) : ∀ (i : ℕ), ∀ v ∈ Win k c, nestCup q l i v ∈ Win k (c + 2 * i) := by
+  intro i
+  induction i with
+  | zero => intro v hv; simpa [nestCup] using hv
+  | succ i ih =>
+    intro v hv
+    have h1 := ih v hv
+    have h2 := cupOp_preserves q (n := c + 2 * i) (m := l + i) (by omega) _ h1
+    simpa [nestCup, Nat.mul_succ, add_assoc] using h2
+
+/-- The shifted projector preserves the window (`s + n ≤ N`). -/
+theorem jwAt_preserves (q : kˣ) {s n N : ℕ} (h : s + n ≤ N) : ∀ v ∈ Win k N, jwAt q s n v ∈ Win k N := by
+  rcases n with _ | n
+  · intro v hv; unfold jwAt; rw [jw_zero]; simpa using hv
+  · exact preserves_of_mem q (m := s + (n + 1) - 1) (by omega) (jwAt_mem q s (n + 1))
+
+/-- Removing a pair at a position `m` with `m + 2 ≤ n` maps the window `n` into the window `n - 2`. -/
+lemma removeTwo_mem_tailZero {n m : ℕ} (hm : m + 2 ≤ n) {σ : ℕ → Bool} (h : σ ∈ tailZero n) :
+    removeTwo σ m ∈ tailZero (n - 2) := by
+  intro j hj
+  simp only [removeTwo]
+  split_ifs with a
+  · omega
+  · exact h (j + 2) (by omega)
+
+/-- The cap maps the window `n` into the window `n - 2` (`m + 2 ≤ n`). -/
+theorem capOp_preserves (q : kˣ) {n m : ℕ} (hm : m + 2 ≤ n) :
+    ∀ v ∈ Win k n, capOp q m v ∈ Win k (n - 2) := by
+  intro v hv
+  have hv' : v ∈ Submodule.span k ((fun σ => single σ (1 : k)) '' tailZero n) := by
+    rw [Win, Finsupp.supported_eq_span_single] at hv; exact hv
+  clear hv
+  induction hv' using Submodule.span_induction with
+  | mem x hx =>
+    obtain ⟨σ, hσ, rfl⟩ := hx
+    simp only [capOp_single, one_smul, capBasis]
+    exact single_mem_Win (removeTwo_mem_tailZero hm hσ) _
+  | zero => simp
+  | add x y _ _ hx hy => rw [map_add]; exact Submodule.add_mem _ hx hy
+  | smul r x _ hx => rw [map_smul]; exact Submodule.smul_mem _ r hx
+
+/-- The nested caps map the window `N` into the window `N - 2 i` (`l + 2 i ≤ N`). -/
+theorem nestCap_preserves (q : kˣ) {l : ℕ} : ∀ (i N : ℕ), l + 2 * i ≤ N →
+    ∀ v ∈ Win k N, nestCap q l i v ∈ Win k (N - 2 * i) := by
+  intro i
+  induction i with
+  | zero => intro N _ v hv; simpa [nestCap] using hv
+  | succ i ih =>
+    intro N hN v hv
+    have h1 := capOp_preserves q (n := N) (m := l + i) (by omega) v hv
+    have h2 := ih (N - 2) (by omega) _ h1
+    have e : N - 2 - 2 * i = N - 2 * (i + 1) := by omega
+    rw [e] at h2
+    simpa [nestCap] using h2
 
 end Lightlike.TemperleyLieb
