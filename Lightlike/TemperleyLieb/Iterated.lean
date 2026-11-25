@@ -477,4 +477,38 @@ theorem Wop_Wop_sandwich (q : kˣ) (a b c e d : ℕ) (hN : 1 ≤ a + b + c)
         jwAt q 0 (A + c - 2 * d) := by rw [h1, h2]
     _ = ε • jwAt q 0 (A + c - 2 * d) := hε
 
+/-- **One-dimensionality of the tree corner**: `treeL e d · Y · treeL e d` is a multiple of `treeL e d`
+for every `Y ∈ C (a+b+c-1)`. -/
+theorem treeL_sandwich (q : kˣ) (a b c e d : ℕ) (hN : 1 ≤ a + b + c)
+    (hd : ∀ j, j ≤ a + b + c → chebD (loopVal q) j ≠ 0)
+    (hea : e ≤ a) (heb : e ≤ b) (hdc : d ≤ c) (hdA : d ≤ a + b - 2 * e)
+    {Y : Module.End k (ModelSpace k)} (hY : Y ∈ CSub q (a + b + c - 1)) :
+    ∃ μ : k, treeL q a b c e d * Y * treeL q a b c e d = μ • treeL q a b c e d := by
+  obtain ⟨ε, hε⟩ := Wop_Wop_sandwich q a b c e d hN hd hea heb hdc hdA hY
+  set A := a + b - 2 * e with hA
+  have hdAc : ∀ j, j ≤ A + c → chebD (loopVal q) j ≠ 0 := fun j hj => hd j (by omega)
+  have hV2 := Vop_mul_jwAt (k := k) q A c hdAc hdA hdc
+  have hT : treeL q a b c e d = ((kapRec q a b e)⁻¹ * (kapRec q A c d)⁻¹) •
+      (Vop q a b e * Vop q A c d * Wop q A c d * Wop q a b e) := by
+    rw [treeL_eq q a b c e d hdAc]
+    unfold Eop
+    rw [mul_smul_comm, smul_mul_assoc, smul_smul]
+    simp only [mul_assoc, hA]
+  rw [hT]
+  simp only [smul_mul_assoc, mul_smul_comm, smul_smul]
+  refine ⟨ε * ((kapRec q a b e)⁻¹ * (kapRec q A c d)⁻¹), ?_⟩
+  have key : (Vop q a b e * Vop q A c d * Wop q A c d * Wop q a b e) * Y *
+      (Vop q a b e * Vop q A c d * Wop q A c d * Wop q a b e) =
+      ε • (Vop q a b e * Vop q A c d * Wop q A c d * Wop q a b e) := by
+    calc _ = Vop q a b e * Vop q A c d * (Wop q A c d * (Wop q a b e * Y * Vop q a b e) * Vop q A c d) *
+          Wop q A c d * Wop q a b e := by simp only [mul_assoc]
+      _ = Vop q a b e * Vop q A c d * (ε • jwAt q 0 (A + c - 2 * d)) * Wop q A c d * Wop q a b e := by rw [hε]
+      _ = _ := by
+          rw [mul_smul_comm, smul_mul_assoc, smul_mul_assoc]
+          congr 1
+          rw [mul_assoc (Vop q a b e), hV2]
+  rw [key, smul_smul]
+  congr 1
+  ring
+
 end Lightlike.TemperleyLieb
