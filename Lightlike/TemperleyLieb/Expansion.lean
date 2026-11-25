@@ -82,4 +82,46 @@ theorem P3_mul_UR (q : kˣ) (a b c f d' : ℕ) (hfb : f ≤ b) (hfc : f ≤ c)
           unfold Vop; rw [← mul_assoc, ← mul_assoc, hQ]
         rw [this]
 
+/-- The Gram coefficient `U_L' U_R = g · p_D` (zero when the total channels differ). -/
+noncomputable def gramCoef (q : kˣ) (a b c e d f d' : ℕ) : k :=
+  if h : ∃ g : k, ULd q a b c e d * UR q a b c f d' = g • jwAt q 0 (a + b - 2 * e + c - 2 * d) then h.choose else 0
+
+/-- **The Gram coefficient as a scalar, in every case.** -/
+theorem gram_spec (q : kˣ) (hδ : loopVal q ≠ 0) (a b c e d f d' : ℕ) (hN : 1 ≤ a + b + c)
+    (hd : ∀ j, j ≤ a + b + c → chebD (loopVal q) j ≠ 0)
+    (hea : e ≤ a) (heb : e ≤ b) (hfb : f ≤ b) (hfc : f ≤ c) (hdc : d ≤ c) (hdA : d ≤ a + b - 2 * e)
+    (hda : d' ≤ a) (hdf : d' ≤ b + c - 2 * f) :
+    ULd q a b c e d * UR q a b c f d' = gramCoef q a b c e d f d' • jwAt q 0 (a + b - 2 * e + c - 2 * d) := by
+  have hex : ∃ g : k, ULd q a b c e d * UR q a b c f d' = g • jwAt q 0 (a + b - 2 * e + c - 2 * d) := by
+    by_cases hD : a + b - 2 * e + c - 2 * d = a + (b + c - 2 * f) - 2 * d'
+    · exact gram_scalar q a b c e d f d' hN hd hea heb hfb hfc hdc hdA hda hdf hD
+    · exact ⟨0, by rw [zero_smul]; exact gram_vanish q hδ a b c e d f d' hN hd hea heb hfb hfc hdc hdA hda hdf hD⟩
+  unfold gramCoef
+  rw [dif_pos hex]
+  exact hex.choose_spec
+
+/-- **Expansion of the second-bracketing tree vector in the first-bracketing basis.** -/
+theorem expansion [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) (a b c f d' : ℕ) (hab : 1 ≤ a + b)
+    (hd : ∀ j, j ≤ a + b + c → chebD (loopVal q) j ≠ 0)
+    (hq2 : ∀ j, 1 ≤ j → j ≤ a + b + c + 1 → (q : k) ^ (2 * j) ≠ 1)
+    (hfb : f ≤ b) (hfc : f ≤ c) (hda : d' ≤ a) (hdf : d' ≤ b + c - 2 * f) :
+    UR q a b c f d' = ∑ e : Fin (min a b + 1), ∑ d : Fin (min (a + b - 2 * e) c + 1),
+      ((kapRec q a b e)⁻¹ * (kapRec q (a + b - 2 * e) c d)⁻¹ * gramCoef q a b c e d f d') • UL q a b c e d := by
+  have hN : 1 ≤ a + b + c := by omega
+  conv_lhs => rw [← P3_mul_UR q a b c f d' hfb hfc hd]
+  have hP : P3 q a b c = ∑ e : Fin (min a b + 1), ∑ d : Fin (min (a + b - 2 * e) c + 1), treeL q a b c e d :=
+    Qab_mul_jwAt_trees q a b c hab hd hq2
+  rw [hP, Finset.sum_mul]
+  refine Finset.sum_congr rfl fun e _ => ?_
+  rw [Finset.sum_mul]
+  refine Finset.sum_congr rfl fun d _ => ?_
+  have hea : (e : ℕ) ≤ a := (Nat.lt_succ_iff.mp e.2).trans (min_le_left _ _)
+  have heb : (e : ℕ) ≤ b := (Nat.lt_succ_iff.mp e.2).trans (min_le_right _ _)
+  have hdd := Nat.lt_succ_iff.mp d.2
+  have hdc : (d : ℕ) ≤ c := hdd.trans (min_le_right _ _)
+  have hdA : (d : ℕ) ≤ a + b - 2 * e := hdd.trans (min_le_left _ _)
+  rw [treeL_eq_UU q a b c e d (fun j hj => hd j (by omega)), smul_mul_assoc, mul_assoc,
+    gram_spec q hδ a b c e d f d' hN hd hea heb hfb hfc hdc hdA hda hdf, mul_smul_comm,
+    UL_mul_proj q a b c e d hea heb hdA hdc (fun j hj => hd j (by omega)), smul_smul]
+
 end Lightlike.TemperleyLieb
