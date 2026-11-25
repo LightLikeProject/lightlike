@@ -34,7 +34,7 @@ For a smooth connection on a Hausdorff manifold modelled on a finite-dimensional
 
 For a Levi-Civita connection of a smooth Lorentzian metric (same hypotheses) the first Bianchi identity holds, the lowered curvature is antisymmetric in each pair of slots and symmetric under exchange of the pairs, and the Ricci tensor is symmetric [14].
 
-In a chart of a manifold modelled on `ℝⁿ` (Hausdorff), the components of the curvature of a Levi-Civita connection are the coordinate Riemann tensor, its Ricci tensor and scalar curvature are the coordinate ones, and the Einstein equations hold on the manifold iff the coordinate vacuum equations hold in every chart [15].
+In a chart of a manifold modelled on `ℝⁿ` (Hausdorff), the components of the curvature of a Levi-Civita connection are the coordinate Riemann tensor, its Ricci tensor and scalar curvature are the coordinate ones, and the Einstein equations hold on the manifold iff the coordinate vacuum equations hold in every chart [15]; for any model with corners the same agreement holds for the Riemann, Ricci and scalar curvature of a Levi-Civita connection [128].
 
 For a smooth torsion-free connection the second Bianchi identity holds: the cyclic sum of the covariant derivative of the curvature vanishes [16].
 
@@ -274,6 +274,7 @@ three keep infinity, while a special conformal transformation moves the point at
     `isoAct_dirac`, `isoAct_fst`, `transAct`, `coneForm_transAct`, `transAct_dirac`, `transAct_fst`, `dilAct`, `coneForm_dilAct`,
     `dilAct_dirac`, `dilAct_fst`, `specAct`, `coneForm_specAct`, `specAct_dirac`, `specAct_dirac_smul`, `specAct_infinity`,
     `specAct_infinity_fst_ne`
+128. Lightlike/Spacetime/Corners/ChartAgreement.lean - `riemann_coord_compW`, `ricciAt_coordW`, `scalarCurvatureAt_coordW`: in every chart the Riemann, Ricci and scalar curvature of a Levi-Civita connection are the coordinate ones, for any model with corners.
 
 ## References
 
