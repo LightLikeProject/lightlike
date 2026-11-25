@@ -268,4 +268,68 @@ noncomputable def modeA (a : ℂ) (m : ℕ) (r : ℝ) : ℂ := (r : ℂ) ^ m * h
 noncomputable def modeB (ν a : ℂ) (m : ℕ) (r : ℝ) : ℂ :=
   (2 / ν) * ((r : ℂ) ^ (m + 1) / (1 + (r : ℂ) ^ 2)) * powerSum (hgCoef1 a m) (xOf r)
 
+/-- **The explicit regular solution solves the mode system.** -/
+theorem modeHyper_isModeSol {ν a : ℂ} (hν : ν ≠ 0) (ha : a ^ 2 = -ν ^ 2 / 4) (m : ℕ) :
+    IsModeSol ν m (modeA a m) (modeB ν a m) := by
+  intro r hr
+  have hxr := abs_xOf_lt r
+  have hK : (1 + (r : ℂ) ^ 2) ≠ 0 := by
+    have : (0 : ℝ) < 1 + r ^ 2 := by positivity
+    exact_mod_cast this.ne'
+  have hr' : (r : ℂ) ≠ 0 := Complex.ofReal_ne_zero.mpr hr.ne'
+  -- derivatives of the building blocks
+  have dx := hasDerivAt_xOf r
+  have dG : HasDerivAt (hgSum a m ∘ xOf) (((2 * r / (1 + r ^ 2) ^ 2 : ℝ) : ℂ) * powerSum (hgCoef1 a m) (xOf r)) r := by
+    have := (hasDerivAt_hgSum a m hxr).scomp r dx
+    simpa [smul_eq_mul] using this
+  have dG1 : HasDerivAt (powerSum (hgCoef1 a m) ∘ xOf)
+      (((2 * r / (1 + r ^ 2) ^ 2 : ℝ) : ℂ) * powerSum (hgCoef2 a m) (xOf r)) r := by
+    have := (hasDerivAt_hgSum1 a m hxr).scomp r dx
+    simpa [smul_eq_mul] using this
+  have dpow : ∀ k : ℕ, HasDerivAt (fun r : ℝ => (r : ℂ) ^ k) ((k : ℂ) * (r : ℂ) ^ (k - 1)) r := fun k =>
+    (hasDerivAt_pow k (r : ℂ)).comp_ofReal
+  have dK : HasDerivAt (fun r : ℝ => 1 + (r : ℂ) ^ 2) (2 * (r : ℂ)) r := by
+    have := (dpow 2).const_add 1
+    simpa using this
+  have hpm : ∀ k : ℕ, (k : ℂ) * (r : ℂ) ^ (k - 1) = (k : ℂ) / r * (r : ℂ) ^ k := by
+    intro k
+    cases k with
+    | zero => simp
+    | succ k => simp [pow_succ]; field_simp
+  have hx' : ((2 * r / (1 + r ^ 2) ^ 2 : ℝ) : ℂ) = 2 * (r : ℂ) / (1 + (r : ℂ) ^ 2) ^ 2 := by push_cast; ring
+  constructor
+  · have := (dpow m).mul dG
+    refine (this : HasDerivAt (fun y : ℝ => (y : ℂ) ^ m * (hgSum a m ∘ xOf) y) _ r).congr_deriv ?_
+    rw [hpm m, hx']
+    unfold modeB modeA
+    simp only [Int.cast_natCast, Function.comp]
+    field_simp
+    ring
+  · have dQ : HasDerivAt (fun r : ℝ => (r : ℂ) ^ (m + 1) / (1 + (r : ℂ) ^ 2))
+        ((((m + 1 : ℕ) : ℂ) * (r : ℂ) ^ (m + 1 - 1) * (1 + (r : ℂ) ^ 2) - (r : ℂ) ^ (m + 1) * (2 * (r : ℂ))) /
+          (1 + (r : ℂ) ^ 2) ^ 2) r := (dpow (m + 1)).div dK hK
+    have := (dQ.const_mul (2 / ν)).mul dG1
+    refine (this : HasDerivAt (fun y : ℝ => (2 / ν) * ((y : ℂ) ^ (m + 1) / (1 + (y : ℂ) ^ 2)) *
+      (powerSum (hgCoef1 a m) ∘ xOf) y) _ r).congr_deriv ?_
+    have hode := hgSum_ode a m hxr
+    have hxc : (xOf r : ℂ) = (r : ℂ) ^ 2 / (1 + (r : ℂ) ^ 2) := by unfold xOf; push_cast; ring
+    rw [hxc] at hode
+    rw [hx']
+    unfold modeB modeA
+    simp only [Int.cast_add, Int.cast_natCast, Int.cast_one, Function.comp, hgSum]
+    simp only [Nat.add_sub_cancel, Nat.cast_add, Nat.cast_one]
+    rw [ha] at hode
+    set G2 := powerSum (hgCoef2 a m) (xOf r) with hG2
+    set G1 := powerSum (hgCoef1 a m) (xOf r) with hG1
+    set G0 := powerSum (hgCoef a m) (xOf r) with hG0
+    have hr1 : (1 + (r : ℂ) ^ 2) ≠ 0 := hK
+    calc _ = (-((↑m + 1) / (r : ℂ)) * (2 / ν * ((r : ℂ) ^ (m + 1) / (1 + (r : ℂ) ^ 2)) * G1) +
+          ν / (1 + (r : ℂ) ^ 2) * ((r : ℂ) ^ m * G0)) +
+        (4 / ν * (r : ℂ) ^ m / (1 + (r : ℂ) ^ 2)) *
+          ((r : ℂ) ^ 2 / (1 + (r : ℂ) ^ 2) * (1 - (r : ℂ) ^ 2 / (1 + (r : ℂ) ^ 2)) * G2 +
+            ((m : ℂ) + 1 - (r : ℂ) ^ 2 / (1 + (r : ℂ) ^ 2)) * G1 + (-ν ^ 2 / 4) * G0) := by
+          field_simp
+          ring
+      _ = _ := by rw [hode, mul_zero, add_zero]
+
 end Lightlike.Dirac
