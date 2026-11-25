@@ -54,8 +54,12 @@ equality of that integral with this vertex is not yet formalized. [TODO]
 5. Lightlike/Spin4/ClebschGordan.lean - `Spin4.spin4_diag_clebschGordan`
 6. Lightlike/Spin4/EPRL.lean - `Spin4.eprlMap`, `Spin4.eprlMap_equivariant`,
    `Spin4.eprlMap_isometry`, `Spin4.eprl_weak_simplicity`, `Spin4.weak_simplicity_iff`,
-   `Spin4.eprl_not_strong_simplicity`
-7. Lightlike/Spin4/Fusion.lean - `Spin4.fusion_eq`, `Spin4.eprlIntertwiner_injective_iff`
+   `Spin4.eprl_not_strong_simplicity`, `Spin4.isEPRLLabel_iff`, `Spin4.eprlAdmissible_iff`,
+   `Spin4.eprlAdmissible_rat_iff`, `Spin4.eprlAdmissible_irrational_iff`,
+   `Spin4.eprlMap_unique`, `Spin4.mem_range_eprlMap_iff`, `Spin4.eprl_weak_simplicity_inner`
+7. Lightlike/Spin4/Fusion.lean - `Spin4.fusion_eq`, `Spin4.eprlIntertwiner_injective_iff`,
+   `Spin4.eprlIntertwiner_isSpin4Intertwiner`, `Spin4.fusion_eq_zero`,
+   `Spin4.eprlRecoupling_singlet`
 8. Lightlike/Spin4/Coherent.lean - `Spin4.cohState`, `Spin4.resolution_cohState`,
    `Spin4.resolution_cohState4`, `Spin4.eprlMap_cohState`
 9. Lightlike/Spin4/CoherentIntertwiner.lean - `Spin4.cohInt`
