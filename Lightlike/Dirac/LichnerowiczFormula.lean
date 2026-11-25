@@ -45,6 +45,16 @@ theorem diracConn_diracConn_antisymm (ρ : CliffordRep n V)
   exact clifford_double_sum ρ
     (fun i j => nabla ρ ω i (fun y => nabla ρ ω j f y) x - ∑ k, (ω x i j k) • nabla ρ ω k f x)
 
+/-- The Ricci identity for the frame Hessian of `f` at `x`: its antisymmetric part is the action of
+the spinor curvature `¼ ∑ Rᵢⱼₖₗ γₖγₗ` of `R` on `f x`. A hypothesis of `lichnerowicz_frame`, not
+derived there; `ricci_identity` proves the corresponding statement for the frame connection. -/
+def FrameRicciIdentity (ρ : CliffordRep n V) (ω : E n → Fin n → Matrix (Fin n) (Fin n) ℝ)
+    (f : E n → V) (x : E n) (R : Fin n → Fin n → Fin n → Fin n → ℝ) : Prop :=
+  ∀ i j,
+    (nabla ρ ω i (fun y => nabla ρ ω j f y) x - ∑ k, (ω x i j k) • nabla ρ ω k f x) -
+      (nabla ρ ω j (fun y => nabla ρ ω i f y) x - ∑ k, (ω x j i k) • nabla ρ ω k f x) =
+    spinorCurvature (gam ρ) R i j (f x)
+
 /-- **Lichnerowicz formula in a frame (Ricci identity as hypothesis).**  If the antisymmetric part
 of the frame Hessian of `f` at `x` is the action of the spinor curvature `¼ ∑ Rᵢⱼₖₗ γₖγₗ`, and `R`
 has the symmetries of a Riemann tensor, then `D² f x = -∑ᵢ ∇²f(eᵢ,eᵢ) + (s/4) f x`. -/
@@ -56,13 +66,11 @@ theorem lichnerowicz_frame (ρ : CliffordRep n V)
     (hR1 : ∀ i j k l, R i j k l = - R j i k l)
     (hP : ∀ i j k l, R i j k l = R k l i j)
     (hB : ∀ i j k l, R i j k l + R j k i l + R k i j l = 0)
-    (hRicci : ∀ i j,
-      (nabla ρ ω i (fun y => nabla ρ ω j f y) x - ∑ k, (ω x i j k) • nabla ρ ω k f x) -
-        (nabla ρ ω j (fun y => nabla ρ ω i f y) x - ∑ k, (ω x j i k) • nabla ρ ω k f x) =
-      spinorCurvature (gam ρ) R i j (f x)) :
+    (hRicci : FrameRicciIdentity ρ ω f x R) :
     diracConn ρ ω (diracConn ρ ω f) x =
       -∑ i, (nabla ρ ω i (fun y => nabla ρ ω i f y) x - ∑ k, (ω x i i k) • nabla ρ ω k f x) +
       ((1 / 4 : ℝ) * ∑ i, ∑ j, R i j j i) • f x := by
+  unfold FrameRicciIdentity at hRicci
   rw [diracConn_diracConn_antisymm ρ ω hω x hf]
   simp only [hRicci]
   have h := congrArg (fun L => L (f x))

@@ -120,6 +120,20 @@ lemma curvF_antisymm (F : E n → Fin n → E n)
   simp only [omegaD]
   ring
 
+/-- The pair symmetry `R_{ijkl} = R_{klij}` of the frame curvature `curvF F ω cs x`. A hypothesis of
+`lichnerowicz_general`, not derived there; `lichnerowicz_general'` derives it from the first Bianchi
+identity. -/
+def CurvPairSymm (F : E n → Fin n → E n) (ω : E n → Fin n → Matrix (Fin n) (Fin n) ℝ)
+    (cs : Fin n → Fin n → Fin n → ℝ) (x : E n) : Prop :=
+  ∀ i j k l, curvF F ω cs x i j k l = curvF F ω cs x k l i j
+
+/-- The first Bianchi identity `R_{ijkl} + R_{jkil} + R_{kijl} = 0` of the frame curvature
+`curvF F ω cs x`. A hypothesis of `lichnerowicz_general`, not derived there;
+`lichnerowicz_frame_general` derives it for a `C²` torsion-free frame. -/
+def CurvBianchi (F : E n → Fin n → E n) (ω : E n → Fin n → Matrix (Fin n) (Fin n) ℝ)
+    (cs : Fin n → Fin n → Fin n → ℝ) (x : E n) : Prop :=
+  ∀ i j k l, curvF F ω cs x i j k l + curvF F ω cs x j k i l + curvF F ω cs x k i j l = 0
+
 /-- **Lichnerowicz formula in a general frame.**  For a `C²` spinor field `f`, a torsion-free
 skew frame connection (`ω`, structure functions `cs`) whose curvature `curvF` has the Riemann
 pair and first Bianchi symmetries, `D² f = -∑ₐ ∇²f(Fₐ,Fₐ) + (s/4) f` with
@@ -133,9 +147,7 @@ theorem lichnerowicz_general (ρ : CliffordRep n V) (F : E n → Fin n → E n)
     (hbr : ∀ a b, fderiv ℝ (fun y => F y b) x (F x a) - fderiv ℝ (fun y => F y a) x (F x b) =
       ∑ c, cs a b c • F x c)
     (htors : ∀ a b c, ω x a b c - ω x b a c = cs a b c)
-    (hP : ∀ i j k l, curvF F ω cs x i j k l = curvF F ω cs x k l i j)
-    (hB : ∀ i j k l, curvF F ω cs x i j k l + curvF F ω cs x j k i l +
-      curvF F ω cs x k i j l = 0) :
+    (hP : CurvPairSymm F ω cs x) (hB : CurvBianchi F ω cs x) :
     diracF ρ F ω (diracF ρ F ω f) x =
       -∑ i, hessF ρ F ω f x i i +
       ((1 / 4 : ℝ) * ∑ i, ∑ j, curvF F ω cs x i j j i) • f x := by

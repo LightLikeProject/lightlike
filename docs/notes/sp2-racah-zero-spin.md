@@ -2,7 +2,7 @@
 
 **Question.** Is there a sum in the exact shape of `racahSum` whose value is known independently, so that the definition (signs, factorials, ranges) is checked against an exact value?
 
-**Result (PROVED in Lean, `Lightlike/Asymptotics/SP2/RacahZeroSpin.lean`).** For a triad `(a, b, c)`,
+**Result (PROVED in Lean, `Lightlike/Asymptotics/RacahSaddles/RacahZeroSpin.lean`).** For a triad `(a, b, c)`,
 `racahSum ![0, a, a, c, b, b] = (-1)^(a+b+c) (a+b+c+1)! / ((b+c-a)! (a+c-b)! (a+b-c)!)` (`racahSum_zero_spin`),
 computed from the definition. With `racahFormula` and the 6j symbol with a zero spin (`sixJSym_zero_left`, proved separately),
 `Δ · racahSum = (-1)^(a+b+c) / √((2a+1)(2b+1))` (`racahDelta_mul_racahSum_zero_spin`): the two independent computations agree, so the sign

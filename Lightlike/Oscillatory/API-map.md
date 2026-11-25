@@ -33,7 +33,8 @@ integral to the critical points [3].
 The model integral is the Gaussian with a complex symmetric quadratic form of positive definite real
 part, equal to `(2π)^{n/2} invSqrtDet A` with the branch fixed by the product of the principal roots
 of the eigenvalues, not by the principal root of the determinant [5]; its Fourier transform is the
-complex Gaussian [6]. The quadratic-phase lemma (Lemma 7.7.3 of {1}) gives the leading term for a
+complex Gaussian [6]. For a real diagonal Hessian `invSqrtDet` is `|det|^{-1/2} e^{iπ sgn/4}`, the
+Maslov phase [15]. The quadratic-phase lemma (Lemma 7.7.3 of {1}) gives the leading term for a
 quadratic phase [4]. A one-dimensional Laplace estimate with an explicit constant uniform in the
 phase and the amplitude is proved for use by consumers whose phase depends on further parameters {2} [10].
 
@@ -68,6 +69,7 @@ refuted [13] [14].
     `Oscillatory.nonstationary_phase_needs_noncritical`
 13. Lightlike/Oscillatory/GaussFourierTests.lean - `Oscillatory.integral_gaussLin_wrong_constant`
 14. Lightlike/Oscillatory/LaplaceRayTests.lean - `Oscillatory.laplace_ray_gaussian_wrong_constant`
+15. Lightlike/Oscillatory/QuadraticPhaseTests.lean - `Oscillatory.invSqrtDet_neg_I_real_diagonal`
 
 ## References
 

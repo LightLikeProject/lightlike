@@ -46,7 +46,8 @@ Raychaudhuri's equation for a general geodesic congruence on a manifold is not y
    `Cosmology.perfectFluid`, `Cosmology.IsEinsteinSolution`, `Cosmology.FirstFriedmann`,
    `Cosmology.SecondFriedmann`, `Cosmology.flrw_einstein_iff_friedmann`,
    `Cosmology.friedmann_continuity`, `Cosmology.deSitter_einstein_iff`,
-   `Cosmology.einsteinStatic_einstein_iff`, `Cosmology.not_einsteinStatic_einstein_of_negCurvature`
+   `Cosmology.einsteinStatic_einstein_iff`, `Cosmology.not_einsteinStatic_einstein_of_negCurvature`,
+   `Cosmology.deSitter_example`
 2. Lightlike/Cosmology/FLRWPhyslib.lean - `Cosmology.onTime`, `Cosmology.timeDeriv_onTime`,
    `Cosmology.firstOrderFriedmann_onTime_iff`, `Cosmology.secondOrderFriedmann_onTime_iff`,
    `Cosmology.flrw_einstein_iff_physlib_friedmann`

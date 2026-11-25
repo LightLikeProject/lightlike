@@ -25,7 +25,8 @@ Sizes measure scope, not time.
 
 A milestone is done, and its issue is closed, when all of the following hold on `main`. Items 1
 and 2 are enforced by CI; items 3 to 5 are the project's standard for calling a milestone
-finished, checked in review, and do not block individual contributions.
+finished, checked through the milestone's review items (the evidence is written into the
+checklist), and do not block individual contributions.
 
 1. **Proofs complete.** Its main theorems have zero `sorry`, and they use only Lean's standard
    axioms `propext`, `Classical.choice`, `Quot.sound` (checked for every declaration of the

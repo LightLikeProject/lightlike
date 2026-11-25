@@ -97,3 +97,17 @@ operator square `W_μ W^μ` is the pointwise matrix product (`pauliLubanski_sq_o
   (`pauliLubanski_stone`).
 
 The operators act on the chart test functions; that is the domain on which the identity is stated.
+
+## Attempt 3, massless case: the full generators on the chart `P₀₀ > 0` (compiled, 25 Nov 2026)
+
+`Lightlike/Poincare/PauliLubanskiMassless.lean`. The obstruction of attempt 2 (no global smooth section: `coneLift`
+has `1/a` with `a = √(P₀₀/2)`) is avoided by working on the open chart `P₀₀ > 0` of the light cone (all of it except
+the negative `z`-axis, a null set), where `coneLift` is the smooth `[[a, 0], [P̄₀₁/(2a), 1/a]]`. There the `(0,0)`
+entry of the Wigner element is `(A₀₀ a_Q + A₀₁ Q₁₀/(2 a_Q))/a_P` (`wigner00`), and along `γ(t)⁻¹ • P` its derivative
+is `i · helCoef P X` (`helicity_phase_deriv`: the real parts cancel because `P₀₀ = 2a²`). Result:
+`hasDerivAt_helicityAct_curve` (generator = helicity phase + orbital derivative), `plComb_genValM` (orbital part
+cancels by `plGen_fix`, helicity coefficient `p^μ/2` by `helCoef_plGen`), and
+`hasDerivAt_pauliLubanski_massless`: `½ ε^{μνρσ} p_σ M_{νρ} = i (n/2) p^μ` pointwise on the chart, for every
+chart-differentiable wave function. Not done: the chart `P₀₀ = 0` (the section jumps there, so the pointwise
+derivative of `helicityAct` does not exist for this section; a smooth-section model differs by a phase function),
+and the `L²` Stone-generator version (the massive one is `PauliLubanskiStone.lean`).
