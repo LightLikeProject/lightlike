@@ -544,7 +544,7 @@ milestones:
       - id: m2
         kind: main
         text: "The critical points of the action with fixed boundary data are the vacuum Einstein equations with Λ"
-        decls: []
+        decls: [Lightlike.IsEHStationary, Lightlike.isEHStationary_iff]
         hint: "Close: Lightlike.isEHCritical_iff (ℝⁿ, compactly supported variations), Lightlike.isEHCriticalOnBall_iff (ball), Lightlike.eh_ghy_variation_manifold (fixed boundary, Gibbons-Hawking-York corrected). Missing: critical points iff Einstein equations on a manifold region."
       - id: p1
         kind: piece
