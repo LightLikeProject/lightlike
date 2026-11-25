@@ -113,10 +113,13 @@ non-vacuity check (stated, not proven) [41].
 ## Lean References
 
 1. Lightlike/Lorentz/SL2C.lean - `Lorentz.SL2C.isPerfect`,
-   `Lorentz.SL2C.modularCharacter_eq_one`, `Lorentz.SL2C.haar_isMulRightInvariant`
+   `Lorentz.SL2C.modularCharacter_eq_one`, `Lorentz.SL2C.haar_isMulRightInvariant`,
+   `Lorentz.SL2C.haar_univ`
 2. Lightlike/Lorentz/PrincipalSeries.lean - `Lorentz.principalSeries`,
-   `Lorentz.principalSeries_mem_unitary`, `Lorentz.principalSeries_mul`
-3. Lightlike/Lorentz/Continuity.lean - `Lorentz.continuous_principalSeries_action`
+   `Lorentz.principalSeries_mem_unitary`, `Lorentz.principalSeries_mul`,
+   `Lorentz.principalSeries_one`, `Lorentz.principalSeries_norm`, `Lorentz.principalSeries_inner`
+3. Lightlike/Lorentz/Continuity.lean - `Lorentz.continuous_principalSeries`,
+   `Lorentz.continuous_principalSeries_action`
 4. Lightlike/Lorentz/Homogeneous.lean - `Lorentz.casimir1_eq`, `Lorentz.casimir2_eq`
 5. Lightlike/Lorentz/SU2Decomposition.lean - `Lorentz.principalSeries_suV`,
    `Lorentz.principalSeries_isHilbertSum`, `Lorentz.intertwiner_eq_smul`,

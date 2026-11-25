@@ -34,7 +34,7 @@ For a smooth connection on a Hausdorff manifold modelled on a finite-dimensional
 
 For a Levi-Civita connection of a smooth Lorentzian metric (same hypotheses) the first Bianchi identity holds, the lowered curvature is antisymmetric in each pair of slots and symmetric under exchange of the pairs, and the Ricci tensor is symmetric [14].
 
-In a chart of a manifold modelled on `ℝⁿ` (Hausdorff), the components of the curvature of a Levi-Civita connection are the coordinate Riemann tensor, its Ricci tensor and scalar curvature are the coordinate ones, and the Einstein equations hold on the manifold iff the coordinate vacuum equations hold in every chart [15].
+In a chart of a manifold modelled on `ℝⁿ` (Hausdorff), the components of the curvature of a Levi-Civita connection are the coordinate Riemann tensor, its Ricci tensor and scalar curvature are the coordinate ones, and the Einstein equations hold on the manifold iff the coordinate vacuum equations hold in every chart [15]; for any model with corners the same agreement holds for the Riemann, Ricci and scalar curvature of a Levi-Civita connection [128].
 
 For a smooth torsion-free connection the second Bianchi identity holds: the cyclic sum of the covariant derivative of the curvature vanishes [16].
 
@@ -179,7 +179,7 @@ three keep infinity, while a special conformal transformation moves the point at
 40. Lightlike/Spacetime/EinsteinTwoDim.lean - `ricci_two_dim`, `einsteinUp_two_dim`, `isEHCritical_two_dim`: in two dimensions the Ricci tensor is half the scalar curvature times the metric, the Einstein tensor vanishes, and every smooth nondegenerate metric is a critical point of the Einstein-Hilbert action without cosmological term.
 41. Lightlike/Spacetime/CoordKilling.lean - `coordField_killing`: a coordinate field along which the metric components are constant is a Killing field of the Levi-Civita connection.
 42. Lightlike/Spacetime/SchwarzschildKilling.lean - `schwarzschild_killing`: the time translation `∂_t` is a Killing field of exterior Schwarzschild.
-43. Lightlike/Spacetime/EnergyConditions.lean - `NullEC`, `WeakEC`, `StrongEC`, `DominantEC`, `dust_energyConditions`, `cosmo_energyConditions`, `scalar_negative_potential_violates_weak`, `fluid_weakEC_iff`, `fluid_dominantEC_iff`, `em_nullEC`: the pointwise energy conditions of a stress-energy tensor on a Lorentzian vector space and their trust checks.
+43. Lightlike/Spacetime/EnergyConditions.lean - `NullEC`, `WeakEC`, `StrongEC`, `DominantEC`, `dust_energyConditions`, `cosmo_energyConditions`, `scalar_negative_potential_violates_weak`, `fluid_nullEC_iff`, `fluid_strongEC_iff`, `fluid_weakEC_iff`, `fluid_dominantEC_iff`, `em_nullEC`: the pointwise energy conditions of a stress-energy tensor on a Lorentzian vector space and their trust checks.
 44. Lightlike/Spacetime/IsometryKilling.lean - `fderiv_apply_inr_of_id`, `killing_of_isometry_family`, `killing_of_isometry_family_on`: the generator of a one-parameter family of isometries is a Killing field, in coordinates.
 45. Lightlike/Spacetime/EnergyConditionsField.lean - `LorentzianMetric.NullECField`, `LorentzianMetric.fluidField_dominantEC_iff`, `LorentzianMetric.nullECField_iff_ricci`, `LorentzianMetric.strongECField_iff_ricci`, `LorentzianMetric.dominantECField_iff_einstein`, `LorentzianMetric.weakECField_iff_einstein`, `LorentzianMetric.fluidField_nullEC_iff`, `LorentzianMetric.fluidField_weakEC_iff`, `LorentzianMetric.fluidField_strongEC_iff`, `LorentzianMetric.fluidField_dust`, `LorentzianMetric.scalarField_const_violates_weak`, `LorentzianMetric.emField_nullEC`: the energy conditions of a stress-energy field on a Lorentzian 4-manifold, the perfect-fluid forms, and the equivalence of the physical and geometric forms under the Einstein equations.
 46. Lightlike/Spacetime/EnergyConditionsPhyslib.lean - `fluid_nullEC_iff_physlib`, `fluid_weakEC_iff_physlib`, `fluid_strongEC_iff_physlib`, `fluid_dominantEC_iff_physlib`: for a perfect fluid the tensor energy conditions are Physlib's effective energy conditions on a cosmic fluid at c = 1.
@@ -274,6 +274,7 @@ three keep infinity, while a special conformal transformation moves the point at
     `isoAct_dirac`, `isoAct_fst`, `transAct`, `coneForm_transAct`, `transAct_dirac`, `transAct_fst`, `dilAct`, `coneForm_dilAct`,
     `dilAct_dirac`, `dilAct_fst`, `specAct`, `coneForm_specAct`, `specAct_dirac`, `specAct_dirac_smul`, `specAct_infinity`,
     `specAct_infinity_fst_ne`
+128. Lightlike/Spacetime/Corners/ChartAgreement.lean - `riemann_coord_compW`, `ricciAt_coordW`, `scalarCurvatureAt_coordW`: in every chart the Riemann, Ricci and scalar curvature of a Levi-Civita connection are the coordinate ones, for any model with corners.
 
 ## References
 

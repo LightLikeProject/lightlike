@@ -12,7 +12,7 @@ import Lightlike.HarmonicAnalysis.PeterWeylSU2
 * `trivialRep_two_not_isIrreducible`, `integral_trivialRep_two`: the trivial two-dimensional representation
   is not irreducible, and for it `∫ ρ₀₀ conj ρ₀₀ = 1 ≠ 1/2`: Schur orthogonality needs irreducibility.
 
-Tests; no catalogue entry.
+Tests, and the catalogue entry of `peterWeyl_isHilbertSum_haar`.
 -/
 
 open MeasureTheory TopologicalSpace

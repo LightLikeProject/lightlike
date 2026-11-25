@@ -4,9 +4,9 @@
 Every task of Lightlike and what it needs. This page changes only when the plan changes; who is
 working on what, and what is done, is on the Project board and the issues:
 
-- [Project board](https://github.com/orgs/LightlikeProject/projects) "Lightlike": the plan, one issue per milestone in the columns Ready, In progress, In review, Done and Not scheduled; the v1.0 milestones are taken in the order of its Rank
+- [Project board](https://github.com/orgs/LightlikeProject/projects) "Lightlike": the plan, one issue per milestone in the columns Ready, In progress, Done and Not scheduled; the v1.0 milestones are taken in the order of its Rank
 - [Ready v1.0 milestones](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aopen+milestone%3Av1.0+label%3A%22status%3A+ready%22): nobody has claimed them
-- [Not scheduled](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aopen+label%3Anot-scheduled): milestones outside v1.0, open to outside contributors
+- [Not scheduled](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aopen+label%3Amilestone+no%3Amilestone): milestones outside v1.0, open to outside contributors
 - [Ready proof tasks](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aopen+label%3Aready+label%3Aproof-task): Lean only, no physics
 - [Ready good first issues](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aopen+label%3Aready+label%3A%22good+first+issue%22)
 - [Claimed](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aopen+label%3Aclaimed): the claimant is the assignee
@@ -24,10 +24,10 @@ Every milestone has one GitHub issue, and a proof task's issue is opened when th
 ready; the task's ID starts the issue's title, and the ID in the tables below links to it. The issue
 is where a task is claimed and discussed. A milestone's issue holds its checklist, ticked from
 `main` by `scripts/milestone_status.py` and written with its status label and board column by
-`scripts/sync_github.py` after every merge; the maintainer closes it after a passing review. The
-labels of a proof task's issue are set by a workflow (`.github/workflows/tasks.yml`) from the
-issue's comments and the pull requests that name the task, and it closes when the proof is on
-`main`. How to take a task, and how several people work on the same one, is in
+`scripts/sync_github.py` after every merge, which closes it once every item is ticked. The labels of
+a proof task's issue are set by a workflow (`.github/workflows/tasks.yml`) from the issue's comments
+and the pull requests that name the task, and it closes when the proof is on `main`. How to take a
+task, and how several people work on the same one, is in
 [CONTRIBUTING.md](../../CONTRIBUTING.md#working-on-the-same-problem).
 
 A proof task is **ready** when the tasks it needs are done; a needed proof task counts once its
