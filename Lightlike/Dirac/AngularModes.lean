@@ -196,4 +196,80 @@ theorem mode_eq_bar {g₁ g₂ : E 2 → ℂ} (h₁ : ContDiff ℝ 1 g₁) (h₂
     ring
   rw [this]; exact hint
 
+/-- **Second mode equation.** If `(1+|x|²) i (∂₀ g₂ − i ∂₁ g₂) = 2 λ g₁` then
+`(1+r²) i (c₂_{m+1}' + ((m+1)/r) c₂_{m+1}) = 2 λ c₁_m`. -/
+theorem mode_eq {g₁ g₂ : E 2 → ℂ} (h₁ : ContDiff ℝ 1 g₁) (h₂ : ContDiff ℝ 1 g₂) (lam : ℂ)
+    (hB : ∀ x : E 2, (1 + (‖x‖ ^ 2 : ℝ) : ℂ) * Complex.I *
+      (fderiv ℝ g₂ x (e (0 : Fin 2)) - Complex.I * fderiv ℝ g₂ x (e (1 : Fin 2))) = 2 * lam * g₁ x)
+    (m : ℤ) {r : ℝ} (hr : r ≠ 0) :
+    (1 + (r ^ 2 : ℝ) : ℂ) * Complex.I * (deriv (fcoef (polarFn g₂) (m + 1)) r +
+        (((m + 1 : ℤ) : ℂ) / r) * fcoef (polarFn g₂) (m + 1) r) = 2 * lam * fcoef (polarFn g₁) m r := by
+  obtain ⟨d2r, d2t, c2, c2r, c2t⟩ := polar_data h₂
+  have hder : deriv (fcoef (polarFn g₂) (m + 1)) r = fcoef (polarDr g₂) (m + 1) r :=
+    (hasDerivAt_fcoef (m + 1) d2r c2 c2r r).deriv
+  have hθc : Continuous fun θ : ℝ => polarDθ g₂ r θ := c2t.comp (continuous_const.prodMk continuous_id)
+  have hrc : Continuous fun θ : ℝ => polarDr g₂ r θ := c2r.comp (continuous_const.prodMk continuous_id)
+  have hth := fcoef_dtheta (m + 1) (fun θ => d2t r θ) (by simp [polarFn, polarPt_two_pi]) hθc
+  have hpt : ∀ θ : ℝ, Complex.exp (-((m + 1 : ℤ) : ℂ) * θ * Complex.I) *
+      (polarDr g₂ r θ - (Complex.I / r) * polarDθ g₂ r θ) * ((1 + (r ^ 2 : ℝ) : ℂ) * Complex.I) =
+      2 * lam * (Complex.exp (-(m : ℂ) * θ * Complex.I) * polarFn g₁ r θ) := by
+    intro θ
+    have h := hB (polarPt r θ)
+    rw [polarPt_norm_sq] at h
+    have hw := polar_wirtinger (fderiv ℝ g₂ (polarPt r θ)) hr θ
+    have hw' : fderiv ℝ g₂ (polarPt r θ) (e (0 : Fin 2)) - Complex.I * fderiv ℝ g₂ (polarPt r θ) (e (1 : Fin 2)) =
+        Complex.exp (-(θ : ℂ) * Complex.I) * (polarDr g₂ r θ - (Complex.I / r) * polarDθ g₂ r θ) := by
+      have hmul : Complex.exp (-(θ : ℂ) * Complex.I) * Complex.exp ((θ : ℂ) * Complex.I) = 1 := by
+        rw [← Complex.exp_add]; simp
+      unfold polarDr polarDθ
+      rw [hw, ← mul_assoc, hmul, one_mul]
+    rw [hw'] at h
+    have hE : Complex.exp (-((m + 1 : ℤ) : ℂ) * θ * Complex.I) = Complex.exp (-(m : ℂ) * θ * Complex.I) *
+        Complex.exp (-(θ : ℂ) * Complex.I) := by
+      rw [← Complex.exp_add]; congr 1; push_cast; ring
+    calc _ = Complex.exp (-(m : ℂ) * θ * Complex.I) * ((1 + (r ^ 2 : ℝ) : ℂ) * Complex.I *
+          (Complex.exp (-(θ : ℂ) * Complex.I) * (polarDr g₂ r θ - (Complex.I / r) * polarDθ g₂ r θ))) := by
+          rw [hE]; ring
+      _ = _ := by rw [h]; unfold polarFn; ring
+  have hE0 : Continuous fun θ : ℝ => Complex.exp (-((m + 1 : ℤ) : ℂ) * θ * Complex.I) := by fun_prop
+  have hint := congrArg (fun f : ℝ → ℂ => ∫ θ in (0 : ℝ)..(2 * Real.pi), f θ) (funext hpt)
+  have lhs : ∫ θ in (0 : ℝ)..(2 * Real.pi), Complex.exp (-((m + 1 : ℤ) : ℂ) * θ * Complex.I) *
+        (polarDr g₂ r θ - (Complex.I / r) * polarDθ g₂ r θ) * ((1 + (r ^ 2 : ℝ) : ℂ) * Complex.I) =
+      ((1 + (r ^ 2 : ℝ) : ℂ) * Complex.I) * (fcoef (polarDr g₂) (m + 1) r -
+        (Complex.I / r) * ∫ θ in (0 : ℝ)..(2 * Real.pi),
+          Complex.exp (-((m + 1 : ℤ) : ℂ) * θ * Complex.I) * polarDθ g₂ r θ) := by
+    have e1 : ∀ θ : ℝ, Complex.exp (-((m + 1 : ℤ) : ℂ) * θ * Complex.I) *
+        (polarDr g₂ r θ - (Complex.I / r) * polarDθ g₂ r θ) * ((1 + (r ^ 2 : ℝ) : ℂ) * Complex.I) =
+        ((1 + (r ^ 2 : ℝ) : ℂ) * Complex.I) * (Complex.exp (-((m + 1 : ℤ) : ℂ) * θ * Complex.I) * polarDr g₂ r θ) -
+        ((1 + (r ^ 2 : ℝ) : ℂ) * Complex.I) * (Complex.I / r) *
+          (Complex.exp (-((m + 1 : ℤ) : ℂ) * θ * Complex.I) * polarDθ g₂ r θ) := fun θ => by ring
+    simp only [e1]
+    have i1 : IntervalIntegrable (fun θ : ℝ => ((1 + (r ^ 2 : ℝ) : ℂ) * Complex.I) *
+        (Complex.exp (-((m + 1 : ℤ) : ℂ) * θ * Complex.I) * polarDr g₂ r θ)) MeasureTheory.volume 0 (2 * Real.pi) :=
+      (continuous_const.mul (hE0.mul hrc)).intervalIntegrable _ _
+    have i2 : IntervalIntegrable (fun θ : ℝ => ((1 + (r ^ 2 : ℝ) : ℂ) * Complex.I) * (Complex.I / r) *
+        (Complex.exp (-((m + 1 : ℤ) : ℂ) * θ * Complex.I) * polarDθ g₂ r θ)) MeasureTheory.volume 0 (2 * Real.pi) :=
+      (continuous_const.mul (hE0.mul hθc)).intervalIntegrable _ _
+    rw [intervalIntegral.integral_sub i1 i2, intervalIntegral.integral_const_mul,
+      intervalIntegral.integral_const_mul]
+    unfold fcoef
+    ring
+  have rhs : ∫ θ in (0 : ℝ)..(2 * Real.pi), 2 * lam *
+        (Complex.exp (-(m : ℂ) * θ * Complex.I) * polarFn g₁ r θ) = 2 * lam * fcoef (polarFn g₁) m r := by
+    rw [intervalIntegral.integral_const_mul]; rfl
+  rw [lhs, rhs, hth] at hint
+  rw [hder]
+  have : (1 + (r ^ 2 : ℝ) : ℂ) * Complex.I * (fcoef (polarDr g₂) (m + 1) r +
+        (((m + 1 : ℤ) : ℂ) / r) * fcoef (polarFn g₂) (m + 1) r) =
+      ((1 + (r ^ 2 : ℝ) : ℂ) * Complex.I) * (fcoef (polarDr g₂) (m + 1) r -
+        (Complex.I / r) * (((m + 1 : ℤ) : ℂ) * Complex.I * ∫ θ in (0 : ℝ)..(2 * Real.pi),
+          Complex.exp (-((m + 1 : ℤ) : ℂ) * θ * Complex.I) * polarFn g₂ r θ)) := by
+    unfold fcoef
+    have hr' : (r : ℂ) ≠ 0 := Complex.ofReal_ne_zero.mpr hr
+    field_simp
+    ring_nf
+    simp only [Complex.I_sq]
+    ring
+  rw [this]; exact hint
+
 end Lightlike.Dirac
