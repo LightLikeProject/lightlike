@@ -615,6 +615,7 @@ import Lightlike.OperatorAlgebras.FiniteKMS
 import Lightlike.OperatorAlgebras.FiniteModular
 import Lightlike.OperatorAlgebras.FiniteStandard
 import Lightlike.OperatorAlgebras.FiniteStates
+import Lightlike.OperatorAlgebras.FermionWick
 import Lightlike.OperatorAlgebras.FockExists
 import Lightlike.OperatorAlgebras.FockInner
 import Lightlike.OperatorAlgebras.FockIrreducible
