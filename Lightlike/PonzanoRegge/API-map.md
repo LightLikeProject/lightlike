@@ -33,7 +33,7 @@ closed combinatorial 3-manifolds, in both directions and along chains [9].
 
 The tetrahedron's squared volume, its dihedral angles and its Regge action are defined from the
 edge lengths, and the Ponzano–Regge asymptotic formula for the 6j symbol is stated as a
-proposition {3} [12]. Its proof is not yet formalized. [TODO] A forward chain of 2-3 and 1-4 moves only enlarges the set of regularised amplitude values, and so do the 3-2 and 4-1 moves in the other direction [13]. If complexes related by a given relation have a common forward descendant under Pachner moves, every regularised amplitude of each is a regularised amplitude of one common complex [14].
+proposition {3} [12]. Its proof is not yet formalized. [TODO] A forward chain of 2-3 and 1-4 moves only enlarges the set of regularised amplitude values, so the complex obtained by a 3-2 or 4-1 move has a subset of the values [13]. If complexes related by a given relation have a common forward descendant under Pachner moves, every regularised amplitude of each is a regularised amplitude of one common complex [14].
 
 ## Lean References
 
