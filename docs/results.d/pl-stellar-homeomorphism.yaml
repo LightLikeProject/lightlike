@@ -16,11 +16,9 @@
   decls: [Lightlike.PL.SComplex.PLHomeomorphic.starAt]
   status: proven
   tier: established
-  source:
-    refs:
-      - {ref: lickorish-1999, location: "Section 3 (as cited in the Lean docstring)"}
+  source: exploratory
   review: kernel-checked
-  note: "Comparison pending: the source location is the one the Lean docstring gives; it was not read for this entry. The PL homeomorphism is the linear map x ↦ x − x_a (e_a − b_A) from the realisation of the subdivision onto that of the complex (b_A the barycentre of A), proved bijective and PL on each simplex. Hypotheses: A is a nonempty face of K and a is a new vertex, as in the Lean statement; no unproved hypothesis."
+  note: "Comparison pending: the Lean docstring cites Lickorish 1999, section 3, but that location is not among the verified source locations and was not read for this entry. The PL homeomorphism is the linear map x ↦ x − x_a (e_a − b_A) from the realisation of the subdivision onto that of the complex (b_A the barycentre of A), proved bijective and PL on each simplex. Hypotheses: A is a nonempty face of K and a is a new vertex, as in the Lean statement; no unproved hypothesis."
   since: unreleased
 - id: LL-XXXX-c
   title: "Stellar equivalent simplicial complexes are PL homeomorphic (the easy direction of Newman's theorem)"
