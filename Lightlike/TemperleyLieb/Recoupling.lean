@@ -110,4 +110,41 @@ theorem treeL_ne_zero (q : kˣ) (a b c e d : ℕ) (hea : e ≤ a) (heb : e ≤ b
   · exact absurd h (mul_ne_zero (mul_ne_zero hκ1 hκ2) (mul_ne_zero hκ1 hκ2))
   · exact jwAt_ne_zero q _ h
 
+/-- The two bracketings give the same projector. -/
+theorem jwAt_mul_sh_Qab (q : kˣ) (a b c : ℕ) :
+    (jwAt q 0 a : Module.End k (ModelSpace k)) * sh a (Qab q b c) = P3 q a b c := by
+  unfold Qab P3
+  rw [sh_mul, sh_jwAt, sh_jwAt, zero_add, add_comm b a, Qab, mul_assoc]
+
+/-- The recoupling coefficient: the scalar by which `treeL e d · treeR f d' · treeL e d` multiplies `treeL e d`. -/
+noncomputable def recoup (q : kˣ) (a b c e d f d' : ℕ) : k :=
+  if h : ∃ μ : k, treeL q a b c e d * treeR q a b c f d' * treeL q a b c e d = μ • treeL q a b c e d
+  then h.choose else 0
+
+/-- The scalar is unique when the tree idempotent is non-zero. -/
+theorem smul_left_cancel_of_ne_zero {T : Module.End k (ModelSpace k)} (hT : T ≠ 0) {μ ν : k}
+    (h : μ • T = ν • T) : μ = ν := by
+  by_contra hne
+  have : (μ - ν) • T = 0 := by
+    refine LinearMap.ext fun v => ?_
+    have := congrArg (fun S : Module.End k (ModelSpace k) => S v) h
+    simp only [LinearMap.smul_apply] at this ⊢
+    rw [sub_smul, this, sub_self]; rfl
+  rcases smul_eq_zero.mp this with h1 | h1
+  · exact hne (sub_eq_zero.mp h1)
+  · exact hT h1
+
+/-- Specification of the recoupling coefficient (first colour `a ≥ 1`, last colour `c ≥ 1`). -/
+theorem recoup_spec [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) (a b c e d f d' : ℕ) (ha : 1 ≤ a)
+    (hd : ∀ j, j ≤ a + b + c → chebD (loopVal q) j ≠ 0)
+    (hea : e ≤ a) (heb : e ≤ b) (hdc : d ≤ c) (hdA : d ≤ a + b - 2 * e)
+    (hfb : f ≤ b) (hfc : f ≤ c) (hda : d' ≤ a) (hdf : d' ≤ b + c - 2 * f) :
+    treeL q a b c e d * treeR q a b c f d' * treeL q a b c e d = recoup q a b c e d f d' • treeL q a b c e d := by
+  have hY := treeR_mem (k := k) q hδ (a := a) (b := b) (c := c) (f := f) (d := d') hd hfb hfc hda hdf (by omega)
+  obtain ⟨μ, hμ⟩ := treeL_sandwich q a b c e d (by omega) hd hea heb hdc hdA hY
+  have hex : ∃ μ : k, treeL q a b c e d * treeR q a b c f d' * treeL q a b c e d = μ • treeL q a b c e d := ⟨μ, hμ⟩
+  unfold recoup
+  rw [dif_pos hex]
+  exact hex.choose_spec
+
 end Lightlike.TemperleyLieb
