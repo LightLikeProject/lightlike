@@ -189,6 +189,7 @@ interior point, and of loops about points outside them [66]. The Jordan curve th
 54. Lightlike/PL/Cycle.lean - `PL.CycleGraph`, `PL.CycleGraph.isSphere1`,
     `PL.CycleGraph.isPLSphere`, `PL.isPLSphere_closure_of_isSphere1`
 55. Lightlike/PL/StellarHomeo.lean - `PL.SComplex.PLHomeomorphic.starAt`,
+    `PL.SComplex.PLHomeomorphic.of_stellarEquivIn`,
     `PL.SComplex.PLHomeomorphic.of_stellarEquiv`
 56. Lightlike/PL/Euler.lean - `PL.SComplex.StellarEquiv.euler_eq`,
     `PL.SComplex.not_stellarEquiv_of_euler_ne`
@@ -212,6 +213,7 @@ interior point, and of loops about points outside them [66]. The Jordan curve th
     `PL.loopIndex_eq_zero_of_far`
 67. Lightlike/PL/JordanCurve.lean - `PL.jordan_at_most_two`, `PL.jordan_at_most_two_prod`,
     `PL.jordan_curve_theorem`
+68. Lightlike/PL/Realisation.lean - `PL.SComplex.isGeom_real`
 
 ## References
 
