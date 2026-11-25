@@ -54,6 +54,9 @@ proposition {3} [12]. Its proof is not yet formalized. [TODO]
 11. Lightlike/PonzanoRegge/SphereRecognition.lean - `PR.isSphere2_iff_isSurfaceSphere`
 12. Lightlike/PonzanoRegge/Asymptotics.lean - `PR.vol2`, `PR.dihedral`, `PR.reggeAction`,
     `PR.PonzanoReggeFormula`
+13. Lightlike/PonzanoRegge/TriangulationIndependence/Values.lean - `PR.ampValues_mono_forward`,
+    `PR.ampValues_move32_subset`, `PR.ampValues_move41_subset`
+14. Lightlike/PonzanoRegge/TriangulationIndependence/Main.lean - `PR.triangulation_independence_of_pachner`
 
 ## References
 

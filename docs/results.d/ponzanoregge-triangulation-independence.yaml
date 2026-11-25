@@ -1,0 +1,23 @@
+- id: LL-XXXX-a
+  title: "Forward chains of 2-3 and 1-4 moves only enlarge the set of regularised Ponzano–Regge amplitude values: ampValues K ⊆ ampValues K' when K' is obtained from K by forward moves, and the complexes obtained by a 3-2 move or a 4-1 move have a subset of the values"
+  area: PonzanoRegge
+  file: Lightlike/PonzanoRegge/TriangulationIndependence/Values.lean
+  decls: [Lightlike.PR.ampValues_mono_forward, Lightlike.PR.ampValues_move32_subset, Lightlike.PR.ampValues_move41_subset]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location for these statements; they are statements about this library's regularised amplitude. ampValues K is the set of values of the gauge-fixed amplitude amplitudeGF K T cut over maximal trees T of K and cut-offs cut. A forward move (2-3 or 1-4) lets every gauge-fixed amplitude of K be written as a gauge-fixed amplitude of the new complex at a new maximal tree and cut-off (exists_amplitudeGF_eq), so the value sets grow; the 3-2 and 4-1 statements follow because those moves are the inverses of forward moves. The values are real numbers (the amplitude is real-valued here), and the cut-off is a regulator, so this says nothing about the cut-off removed. No unproved hypothesis."
+  since: unreleased
+- id: LL-XXXX-b
+  title: "Triangulation independence of the regularised Ponzano–Regge amplitude, given Pachner's theorem in its forward form: if two triangulations are related by Same and Same-related complexes have a common forward descendant under Pachner moves, then every gauge-fixed amplitude of each is a gauge-fixed amplitude, at some maximal tree and cut-off, of one common complex"
+  area: PonzanoRegge
+  file: Lightlike/PonzanoRegge/TriangulationIndependence/Main.lean
+  decls: [Lightlike.PR.triangulation_independence_of_pachner]
+  status: conditional
+  hypotheses: [Lightlike.PR.PachnerForwardHyp]
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Conditional on the Lean proposition PachnerForwardHyp Same (Same-related complexes have a common forward descendant under the 2-3 and 1-4 moves), which is not proved by this theorem or assumed true; the stellar form of Pachner's theorem for Complex3 is the theorem pachner3 (PL/PachnerMoves.lean, catalogued with milestone PL2), and whether it yields this forward form was not established here. Comparison pending: no source was read at a cited location. The cut-off is a regulator, so this is the form in which independence holds before the cut-off is removed; it is not the statement that the cut-off amplitude is a triangulation invariant."
+  since: unreleased
