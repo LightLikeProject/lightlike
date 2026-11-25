@@ -28,8 +28,9 @@ EPRL recoupling coefficients [7]. On intertwiners the map is injective exactly w
 doubled spins is even or there are no SU(2) intertwiners {2} [7].
 
 SU(2) and Spin(4) coherent states resolve the identity, and the EPRL map sends an SU(2) coherent
-state to a Spin(4) coherent state [8]. Coherent intertwiners are defined by group averaging {3}
-[9]. For two links their norm is given by the normals [10], and at any valence, normals that do
+state to a Spin(4) coherent state, and the overlaps of coherent states are powers of a matrix entry [8].
+Coherent intertwiners are defined by group averaging {3}, which is an orthogonal projection, and they have an
+overlap formula and a resolution of the identity, for SU(2) and for Spin(4) [9]. For two links their norm is given by the normals [10], and at any valence, normals that do
 not close are exponentially suppressed as the spins grow [11].
 
 The Euclidean EPRL vertex amplitude, for `γ < 1`, is the contraction along the 4-simplex of the
@@ -49,16 +50,26 @@ equality of that integral with this vertex is not yet formalized. [TODO]
    `Spin4.toSO4_eq_one_iff`, `Spin4.isCoveringMap_toSO4Mat`
 2. Lightlike/Spin4/Clifford.lean - `Spin4.spinEquiv`, `Spin4.spinGroup_conj_ι`
 3. Lightlike/Spin4/Rep.lean - `Spin4.spin4Rep`, `Spin4.spin4Mat_mem_unitaryGroup`,
-   `Spin4.spin4Representation_isIrreducible`, `Spin4.finrank_tensorSpace`
+   `Spin4.continuous_spin4Rep`, `Spin4.inner_spin4Unitary`,
+   `Spin4.spin4Tensor_isIrreducible`, `Spin4.spin4Representation_isIrreducible`,
+   `Spin4.isInvariant_eq_bot_or_eq_top`, `Spin4.isIrreducible_extTprod` (Burnside.lean),
+   `Spin4.finrank_tensorSpace`, `Spin4.finrank_idx`
 4. Lightlike/Spin4/Completeness.lean - `Spin4.spin4Rep_complete`
 5. Lightlike/Spin4/ClebschGordan.lean - `Spin4.spin4_diag_clebschGordan`
 6. Lightlike/Spin4/EPRL.lean - `Spin4.eprlMap`, `Spin4.eprlMap_equivariant`,
    `Spin4.eprlMap_isometry`, `Spin4.eprl_weak_simplicity`, `Spin4.weak_simplicity_iff`,
-   `Spin4.eprl_not_strong_simplicity`
-7. Lightlike/Spin4/Fusion.lean - `Spin4.fusion_eq`, `Spin4.eprlIntertwiner_injective_iff`
-8. Lightlike/Spin4/Coherent.lean - `Spin4.cohState`, `Spin4.resolution_cohState`,
-   `Spin4.resolution_cohState4`, `Spin4.eprlMap_cohState`
-9. Lightlike/Spin4/CoherentIntertwiner.lean - `Spin4.cohInt`
+   `Spin4.eprl_not_strong_simplicity`, `Spin4.isEPRLLabel_iff`, `Spin4.eprlAdmissible_iff`,
+   `Spin4.eprlAdmissible_rat_iff`, `Spin4.eprlAdmissible_irrational_iff`,
+   `Spin4.eprlMap_unique`, `Spin4.mem_range_eprlMap_iff`, `Spin4.eprl_weak_simplicity_inner`
+7. Lightlike/Spin4/Fusion.lean - `Spin4.fusion_eq`, `Spin4.eprlIntertwiner_injective_iff`,
+   `Spin4.eprlIntertwiner_isSpin4Intertwiner`, `Spin4.fusion_eq_zero`,
+   `Spin4.eprlRecoupling_singlet`
+8. Lightlike/Spin4/Coherent.lean - `Spin4.cohState`, `Spin4.inner_cohState`, `Spin4.normSq_inner_cohState`,
+   `Spin4.inner_cohState4`, `Spin4.resolution_cohState`, `Spin4.resolution_cohState4`,
+   `Spin4.eprlMap_cohState`
+9. Lightlike/Spin4/CoherentIntertwiner.lean - `Spin4.cohInt`, `Spin4.avgP_mul_avgP`,
+   `Spin4.cohInt_isInvariantN`, `Spin4.inner_cohInt`, `Spin4.resolution_cohInt`,
+   `Spin4.cohInt4_invariant`, `Spin4.inner_cohInt4`, `Spin4.resolution_cohInt4`
 10. Lightlike/Spin4/CoherentTwoValent.lean - `Spin4.norm_sq_cohInt_two`
 11. Lightlike/Spin4/CoherentSuppression.lean - `Spin4.normSq_cohInt_le_exp`,
     `Spin4.cohInt_suppressed`

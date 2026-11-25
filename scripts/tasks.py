@@ -28,8 +28,8 @@ work may build on a result whose proof is still open. `sync` reads the issues, t
 sets the labels ready, blocked, claimed, attempting and in review, assigns claimants, lets claims
 lapse, and opens the issue of each proof task that becomes ready. On a milestone's issue it writes
 only the claim labels (claimed, attempting) and the assignees: scripts/sync_github.py opens the
-milestone issues and writes their status, area and size labels, and the merger closes a milestone's
-issue after a passing review. It prints what it would do unless given `--apply`."""
+milestone issues, writes their status, area and size labels, and closes a milestone's issue once
+its checklist is fully ticked. It prints what it would do unless given `--apply`."""
 import argparse, datetime, importlib.util, json, pathlib, re, subprocess, sys, tempfile, textwrap, time
 from collections import Counter, OrderedDict
 
@@ -630,11 +630,11 @@ def readme(tasks, ms, repo):
         s, 100, initial_indent=first, subsequent_indent=rest, break_on_hyphens=False,
         break_long_words=False)
     board = (f"- [Project board](https://github.com/orgs/{repo.split('/')[0]}/projects) \"Lightlike\": the plan, "
-             "one issue per milestone in the columns Ready, In progress, In review, Done and Not scheduled; "
+             "one issue per milestone in the columns Ready, In progress, Done and Not scheduled; "
              "the v1.0 milestones are taken in the order of its Rank")
     live = board + "\n" + "\n".join(f"- [{name}]({search(repo, q)}){': ' + what if what else ''}" for name, q, what in [
         ("Ready v1.0 milestones", 'is:open milestone:v1.0 label:"status: ready"', "nobody has claimed them"),
-        ("Not scheduled", "is:open label:not-scheduled", "milestones outside v1.0, open to outside contributors"),
+        ("Not scheduled", "is:open label:milestone no:milestone", "milestones outside v1.0, open to outside contributors"),
         ("Ready proof tasks", "is:open label:ready label:proof-task", "Lean only, no physics"),
         ("Ready good first issues", 'is:open label:ready label:"good first issue"', ""),
         ("Claimed", "is:open label:claimed", "the claimant is the assignee"),
@@ -652,7 +652,7 @@ def readme(tasks, ms, repo):
         "ready; the task's ID starts the issue's title, and the ID in the tables below links to it. The "
         "issue is where a task is claimed and discussed. A milestone's issue holds its checklist, ticked "
         "from `main` by `scripts/milestone_status.py` and written with its status label and board column "
-        "by `scripts/sync_github.py` after every merge; the maintainer closes it after a passing review. "
+        "by `scripts/sync_github.py` after every merge, which closes it once every item is ticked. "
         "The labels of a proof task's issue are set by a workflow (`.github/workflows/tasks.yml`) from "
         "the issue's comments and the pull requests that name the task, and it closes when the proof is "
         "on `main`. How to take a task, and how several people work on the same one, is in "
@@ -1450,7 +1450,7 @@ def sync_plan(tasks, cfg, data, card, seed=None, now=None):
                               body=TAKEN_TEXT.format(a, live[0], until) + "\n\n" + MARK.format(f"taken {a} {stamp(when)}"))
                          for a, when in taken]
         if t["kind"] == "milestone":
-            continue  # closed by the merger after a passing review, never here
+            continue  # closed by scripts/sync_github.py once fully ticked, never here
         if tid in seeded["closed"]:
             if seed_mark not in posted:
                 more = re.sub(r"^done\b\s*", "", seeded["closed"][tid]).strip()

@@ -16,10 +16,16 @@ differential of the spin-`n/2` representation acts on the generators `E`, `F`, `
 Physlib's standard `sl₂`-module `V(n)` {1} [4].
 
 Every continuous irreducible finite-dimensional representation of SU(2) is equivalent to one of
-the spin representations [5]. This is the SU(2) case of the Peter–Weyl theorem {2}. The general
+the spin representations [5], also in the unitary form [13]. This is the SU(2) case of the Peter–Weyl theorem {2}. The general
 Peter–Weyl theorem for compact groups is also formalized in `Lightlike/HarmonicAnalysis/`: the matrix
 coefficients are dense in `C(G)` and in `L²(G)`, and `L²(G)` is the Hilbert sum of the isotypic
-components (`peterWeyl_dense_continuous`, `peterWeyl_dense_L2`, `peterWeyl_isHilbertSum`).
+components (`peterWeyl_dense_continuous`, `peterWeyl_dense_L2`, `peterWeyl_isHilbertSum`). For the
+normalised Haar measure of the group the Hilbert sum statement needs no hypothesis on a measure [14].
+
+The spin representations are unitary and continuous [1]. The Clebsch–Gordan matrices of Physlib
+intertwine the representations of the group (Lightlike/Spin4/CGBridge.lean), and with them the two
+ways of coupling three spins to a total spin are equivariant maps whose overlap is Racah's 6j symbol
+of Physlib {1}, and the matrix of the overlap is that 6j symbol times the identity [12].
 
 Further results of this area in the results catalogue:
 Peter–Weyl (density form): for a compact Hausdorff group, the matrix coefficients of finite-dimensional
@@ -35,10 +41,12 @@ L²(R) [11].
 
 ## Lean References
 
-1. Lightlike/SU2/SpinRep.lean - `SU2.spinRep`, `SU2.spinRepresentation_isIrreducible`
+1. Lightlike/SU2/SpinRep.lean - `SU2.spinRep`, `SU2.spinRepresentation_isIrreducible`,
+   `SU2.spinMat_mem_unitaryGroup`, `SU2.continuous_spinRep`
 2. Lightlike/SU2/Su2Exp.lean - `SU2.exists_exp_eq`
 3. Lightlike/SU2/LieProduct.lean - `SU2.lie_product`
-4. Lightlike/SU2/LieBridge.lean - `SU2.dSpin_E`, `SU2.dSpin_F`, `SU2.dSpin_H`
+4. Lightlike/SU2/LieBridge.lean - `SU2.dSpin_E`, `SU2.dSpin_F`, `SU2.dSpin_H`,
+   `SU2.exists_dSpin_equiv`
 5. Lightlike/SU2/Completeness.lean - `SU2.spinRep_complete`
 6. Lightlike/HarmonicAnalysis/PeterWeyl.lean - `HarmonicAnalysis.peterWeyl_dense_continuous`,
    `HarmonicAnalysis.peterWeyl_dense_L2`
@@ -52,6 +60,10 @@ L²(R) [11].
     `HarmonicAnalysis.su2_character_orthogonality`
 11. Lightlike/HarmonicAnalysis/PeterWeylReal.lean - `HarmonicAnalysis.real_not_forall_memLp_two`,
     `HarmonicAnalysis.real_character_not_memLp_two`
+12. Lightlike/SU2/Recoupling6j.lean - `SU2.coupleLeft_equivariant`, `SU2.coupleRight_equivariant`,
+    `SU2.sum_cg_overlap`, `SU2.sum_cg_matrix`
+13. Lightlike/HarmonicAnalysis/SU2Complete.lean - `HarmonicAnalysis.su2_irreducible_classification`
+14. Lightlike/HarmonicAnalysis/PeterWeylTests.lean - `HarmonicAnalysis.peterWeyl_isHilbertSum_haar`
 
 ## References
 

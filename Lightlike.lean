@@ -1420,6 +1420,7 @@ import Lightlike.SU2.Differential
 import Lightlike.SU2.LieBridge
 import Lightlike.SU2.LieProduct
 import Lightlike.SU2.OneParameter
+import Lightlike.SU2.Recoupling6j
 import Lightlike.SU2.SpinRep
 import Lightlike.SU2.Su2Exp
 import Lightlike.Spacetime.CausalLadder.ChartVelocity
