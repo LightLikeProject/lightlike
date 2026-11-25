@@ -1,0 +1,13 @@
+- id: LL-XXXX
+  title: The map from the ten squared edge lengths of a 4-simplex to the ten squared areas of its triangles is strictly differentiable at every point, with derivative the Jacobian matrix of the squared areas
+  area: Regge
+  file: Lightlike/Regge/AreaRegge/Deriv.lean
+  decls: [Lightlike.AreaRegge.hasStrictFDerivAt_areaSqMap]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: brw-1999, location: "eq. (2)", check: "neighbourhood of the regular four-simplex"}
+  review: kernel-checked
+  note: "Comparison pending for this entry (the cited equation concerns the area map near the regular 4-simplex and was compared for the local-injectivity entry; the differentiability is a supporting fact the source does not state separately). areaSqMap s t is Heron's formula for the squared area of triangle t in the squared edge lengths s (triAreaSq, a polynomial, so the map is smooth on all of R^10, with no non-degeneracy hypothesis; at degenerate or non-geometric s the 'areas' are the polynomial values, possibly negative). The derivative jacCLM s is the continuous linear map of the matrix jac s; strict differentiability (HasStrictFDerivAt) is the hypothesis of the inverse function theorem used for the local invertibility entry (Near the regular 4-simplex the ten triangle areas determine the ten edge lengths)."
+  since: unreleased
