@@ -1697,6 +1697,7 @@ import Lightlike.Spacetime.MinkowskiCompactification
 import Lightlike.Spacetime.MinkowskiCompactificationAxis
 import Lightlike.Spacetime.MinkowskiCompactificationTests
 import Lightlike.Spacetime.MinkowskiCompactificationAction
+import Lightlike.Spacetime.MinkowskiConformalAction
 import Lightlike.Spacetime.Hypersurface
 import Lightlike.Spacetime.HomogeneousIsotropic
 import Lightlike.Spacetime.HomogeneousIsotropicCurved

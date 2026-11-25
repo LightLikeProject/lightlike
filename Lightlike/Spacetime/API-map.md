@@ -267,6 +267,10 @@ is the ordinary point p = (1, 0⃗) [125].
 125. Lightlike/Spacetime/MinkowskiCompactificationAxis.lean - `minkowski_eq_conformal_esu_cartesian`,
      `bijOn_cartMap`, `cartOmega_axis`
 126. Lightlike/Spacetime/MinkowskiCompactificationAction.lean - `thetaDil`, `thetaDil_continuous`, `thetaDil_pi_div_two`, `tan_thetaDil`, `dilComp`, `dilComp_continuous`, `dilComp_mem`, `dilComp_compT`, `dilComp_compR`, `compOmega_dilComp_eq_zero_iff`: the dilation of Minkowski space extends continuously to the closed region of the Einstein static universe, acts there as the dilation and preserves null infinity, in the null angles of the compactification.
+127. Lightlike/Spacetime/MinkowskiConformalAction.lean - `coneForm`, `dirac`, `coneForm_dirac`, `isoAct`, `coneForm_isoAct`,
+    `isoAct_dirac`, `isoAct_fst`, `transAct`, `coneForm_transAct`, `transAct_dirac`, `transAct_fst`, `dilAct`, `coneForm_dilAct`,
+    `dilAct_dirac`, `dilAct_fst`, `specAct`, `coneForm_specAct`, `specAct_dirac`, `specAct_dirac_smul`, `specAct_infinity`,
+    `specAct_infinity_fst_ne`
 
 ## References
 
