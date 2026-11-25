@@ -203,4 +203,19 @@ theorem mode_sol_zero {ν : ℂ} {m : ℤ} {a b : ℝ → ℂ} (h : IsModeSol ν
   simp only [Prod.mk.injEq] at this
   exact this
 
+/-- Scalar multiples of mode solutions are mode solutions. -/
+theorem IsModeSol.smul {ν : ℂ} {m : ℤ} {a b : ℝ → ℂ} (h : IsModeSol ν m a b) (c : ℂ) :
+    IsModeSol ν m (fun r => c * a r) (fun r => c * b r) := by
+  intro r hr
+  obtain ⟨h1, h2⟩ := h r hr
+  refine ⟨(h1.const_mul c).congr_deriv ?_, (h2.const_mul c).congr_deriv ?_⟩ <;> ring
+
+/-- Differences of mode solutions are mode solutions. -/
+theorem IsModeSol.sub {ν : ℂ} {m : ℤ} {a b a' b' : ℝ → ℂ} (h : IsModeSol ν m a b) (h' : IsModeSol ν m a' b') :
+    IsModeSol ν m (fun r => a r - a' r) (fun r => b r - b' r) := by
+  intro r hr
+  obtain ⟨h1, h2⟩ := h r hr
+  obtain ⟨h1', h2'⟩ := h' r hr
+  refine ⟨(h1.sub h1').congr_deriv ?_, (h2.sub h2').congr_deriv ?_⟩ <;> ring
+
 end Lightlike.Dirac
