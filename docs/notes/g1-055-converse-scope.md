@@ -107,3 +107,73 @@ lines, 3–5 days, independent of step B4.
 
 Part A (3–4 days), then B1–B3 (1–2 days), then Part C (3–5 days), so that the list of representations is complete
 before the converse, then B4–B5, the long part.
+
+## Attempt 1 at Part B (the imprimitivity step), 25 Nov 2026
+
+State at the start: the momentum PVM `E` of an irreducible positive-energy representation exists (`momPVMRep`), is
+covariant, ergodic and carried by one orbit with `E ≪` the invariant measure (`OneOrbit`, `OrbitMeasureClass`,
+`IrreducibleMassive`); nothing about the multiplicity or the stabiliser representation.
+
+Built: `Lightlike/OperatorAlgebras/Spectral/Cyclic.lean`, the cyclic subspace of a PVM: for `ψ ∈ H` the linear
+isometry `cycIso : L²(μ_ψ) → H` with `cycIso 1 = ψ`, `cycIso (g f) = ∫ g dE · cycIso f` (norm identity
+`‖∫ f ψ‖² = ∫ |f|² dμ_ψ`, density of bounded Borel functions in `L²` via `Lp.simpleFunc`, extension by
+`LinearMap.extendOfIsometry`). This is step 1 of Freitag's Theorem 4.10 / Mackey's theorem for the transitive case.
+
+Remaining for the massive orbit `X = SL(2,ℂ)/SU(2)`, in order (all absent from Mathlib and the library):
+
+1. **(done, `CyclicDecomposition.lean`: `exists_cyclic_family`, `integral_mem_orthogonal`)** **Orthogonal decomposition into cyclic subspaces** `H = ⊕ Z(ψ_i)` (Zorn over families of mutually `E`-orthogonal
+   cyclic subspaces; separability of `H` gives a countable family). Needs: `Z(ψ)` is `E`-invariant, and the
+   orthogonal complement of an `E`-invariant subspace is `E`-invariant (easy), so the Zorn step is routine; about
+   300 lines.
+2. **(done, `OrbitMeasureClassConverse.lean`: `momPVM_eq_zero_iff`; by Tonelli, not needing irreducibility)** **Measure classes agree**: each `μ_{ψ_i}` is equivalent to the invariant measure on the orbit (from
+   quasi-invariance, ergodicity and `E ≪ invariant`, which is `momPVM_eq_zero_of_null` plus the converse from
+   irreducibility). About 300 lines.
+3. **Ergodic transitive case: multiplicity one over a cocycle.** Choose a Borel section `σ : X → G` (`stdLift`,
+   already present for the massive shell) and a vector `ψ_0` in a fixed stabiliser-isotypic piece; define
+   `K = ` the multiplicity space as the space of intertwiners from the little-group representation to `H` evaluated at
+   the base point. For compact stabiliser the base-point fibre is obtained from the Peter–Weyl projections
+   `P_ρ = dim ρ ∫_K χ_ρ(k)^* U(k) dk` of `K = SU(2)` composed with the localisation `E(B_ε)/|B_ε|`; the limit
+   `ε → 0` is the missing differentiation theorem for the PVM (Lebesgue differentiation on the homogeneous space for
+   vector-valued `E`-densities); this is the first real obstruction, 800 lines or more.
+4. **The cocycle `D(σ(gx)^{-1} g σ(x))` on `L²(X; K)`** and the unitary equivalence `H ≅ L²(X, μ; K)` carrying
+   `U` to the induced action `inducedL2` and `E` to multiplication (uses 1–3, direct integral of Hilbert spaces
+   over `X`: `L²(X; K)` with `K` separable is already the form used in `InducedL2`).
+5. **Irreducibility of `U` forces irreducibility of `D`** (a commuting projection in the fibre gives an
+   `E`-commuting projection on `H`), then the stabiliser's irreducible unitary representations are the
+   `(2s+1)`-dimensional ones (compact `SU(2)`, Peter–Weyl, finite-dimensional irreducibles are `spinRep s`); the
+   massive case ends.
+
+The massless case needs the same steps with the noncompact stabiliser `ISO(2)`-cover and Mackey's second
+(little-group) step for `ℝ² ⋊ U(1)`, including the continuous-spin series; it is the hard half and is not started.
+
+Verdict after attempt 1: step 0 (cyclic subspace) is proved; steps 1–5 are open, all with Lean-sized but concrete
+statements; the single hard analytic input is the vector-valued differentiation of the PVM in step 3.
+
+### Attempt 2 (Frobenius reciprocity): built, and why it does NOT give the converse, 25 Nov 2026
+
+Idea: for the compact stabiliser `K = SU(2)`, take a `K`-type `σ ⊂ E(B)H` and the matrix coefficients
+`Ψ h(P) = (⟨f_j, V(L(P))⁻¹ h⟩)_j` as a bounded `SL(2,ℂ)`-intertwiner `H → L²(shell; ℂ^{n+1})` (the norm bound is the
+Tonelli computation of `momPVM_eq_zero_iff`), then conclude by irreducibility of the induced representation.
+
+Built and compiling (supporting, generic): `HarmonicAnalysis/RepFiniteSubspace.lean` (a continuous unitary
+representation of a compact group has a nonzero finite-dimensional invariant subspace inside any closed subspace
+containing an orbit), `HarmonicAnalysis/RepSU2Isometry.lean` (such a subspace contains an orthonormal spin multiplet
+`ρ(k) f_j = Σ_i spin_n(k)_{ij} f_i`), `OperatorAlgebras/Spectral/SchurScalar.lean` (a self-adjoint operator commuting
+with an irreducible set is a scalar).
+
+**The route fails for a concrete reason.** `Ψ` intertwines only the `SL(2,ℂ)` action. It does not intertwine the
+translations with the multiplication by `e^{i p·a}`, nor `E(S)` with `1_S`: `f_j ∈ E(B)H` is localised in the ball `B`,
+not at the base point, and `E(L(P)⁻¹S) f_j = f_j` only when `L(P)B ⊂ S`. Under `SL(2,ℂ)` alone the induced
+representation on `L²(shell; ℂ^{n+1})` is highly reducible (a direct integral of principal series), so "the image is a
+closed invariant subspace of an irreducible representation" is unavailable. Making `Ψ` commute with `E` needs `B`
+shrunk to the point: `Ψ_ε = ν(B_ε)^{-1/2} Ψ|_{B_ε}` is uniformly bounded (norm `≤ 1`) and almost commutes with
+multiplications by continuous functions (error `≤ osc(f|_{L(P)B_ε}) → 0`), so a weak-operator limit point `Ψ`
+commutes with `E` and with `SL(2,ℂ)`, hence `Ψ*Ψ` is a scalar by `SchurScalar`; but nothing bounds `‖Ψ_ε h‖` from
+below uniformly (the lower bound is the differentiation theorem again, `T_ε` commutes with `SL(2,ℂ)` only), so `Ψ = 0`
+cannot be excluded. This is the same obstruction as step 3 of attempt 1 (vector-valued differentiation of the PVM).
+
+Verdict after two real attempts for the massive orbit: steps 0, 1, 2 and the compact-group tools are proved; the
+remaining obstruction is one analytic statement, stated as a candidate lemma: *for an irreducible representation with
+momentum PVM `E ~ ν` on the shell and a `K`-invariant family of balls `B_ε ↓ {x₀}`, the operators
+`ν(B_ε)^{-1/2} P_σ E(B_ε)` have a nonzero weak-operator limit point on `H`* (equivalently, existence of a generalised
+fibre vector at the base point). Without it the classification converse stays at this reduction.
