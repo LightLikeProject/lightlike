@@ -1,0 +1,56 @@
+- id: LL-XXXX-a
+  title: In a geometric triangulation of a region of 3-space every interior edge has deficit angle zero, and the Regge action is a pure boundary term
+  area: Regge
+  file: Lightlike/Regge/Embedded.lean
+  decls: [Lightlike.Regge.IsGeometric.deficit_eq_zero, Lightlike.Regge.IsGeometric.reggeAction_eq]
+  status: proven
+  tier: established
+  main: true
+  source:
+    refs:
+      - {ref: dittrich-freidel-speziale-2007, location: "eq. (1)", check: "deficit angles"}
+  review: kernel-checked
+  note: "Let E be a real inner product space of dimension 3, K a 3-dimensional simplicial complex whose edges form an edge manifold (IsEdgeManifold), and x a geometric triangulation (IsGeometric: every tetrahedron non-degenerate, distinct tetrahedra with disjoint topological interiors of the convex hulls). With the induced edge lengths, every interior edge e has deficit(K, l, e) = 2 pi - (sum of the dihedral angles of the tetrahedra around e) = 0 (deficit_eq_zero; the link of an interior edge is a cycle). Hence the Regge action is the boundary term S = sum over boundary edges of l_e (pi - sum of the dihedral angles) (reggeAction_eq, with bdryAngle the angle pi - sum). Eq. (1) of Dittrich, Freidel and Speziale (read at that location) defines the deficit angle as epsilon_h = 2 pi - sum of the dihedral angles at the hinge h; the definition here is that formula for n = 3 (hinge = edge), and the vanishing theorem is not stated at that equation: its comparison with a source is pending. The hypotheses (finrank 3, IsGeometric, IsEdgeManifold, interior edge) are proved assumptions, not unproved propositions."
+  since: unreleased
+
+- id: LL-XXXX-b
+  title: The deficit angle is zero on the axis of the octahedron and on the diagonal of the unit cube, as flat triangulations of regions of 3-space
+  area: Regge
+  file: Lightlike/Regge/Tests.lean
+  decls: [Lightlike.Regge.Tests.octahedron_deficit, Lightlike.Regge.Tests.cube_deficit]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: dittrich-freidel-speziale-2007, location: "eq. (1)", check: "deficit angles"}
+  review: kernel-checked
+  note: "Non-vacuity examples of the flat case, computed from the lengths with the dihedral angle of Lightlike.PR.dihedral. Octahedron: the axis {0, 1} lies in four tetrahedra with link angles 0, pi/2, pi, 3 pi/2, 2 pi, deficit 0 (by deficit_eq_zero_of_cyl). Cube: the diagonal {0, 7} of the unit cube lies in the six Kuhn tetrahedra, each with dihedral angle pi/3 (dihedral_kuhn), so the deficit is 2 pi - 6 (pi/3) = 0 by direct computation. The deficit is the one of eq. (1) of Dittrich, Freidel and Speziale (read at that location); the numerical values are not from a source."
+  since: unreleased
+
+- id: LL-XXXX-c
+  title: On the boundary of the 4-simplex with unit edge lengths every edge has deficit angle 2 pi - 3 arccos(1/3), which is positive
+  area: Regge
+  file: Lightlike/Regge/Tests.lean
+  decls: [Lightlike.Regge.Tests.simplexBoundary_deficit]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: dittrich-freidel-speziale-2007, location: "eq. (1)", check: "deficit angles"}
+  review: kernel-checked
+  note: "Curved example: the boundary of the 4-simplex is a triangulated 3-sphere; each edge lies in three tetrahedra, each with dihedral angle arccos(1/3) for unit lengths (dihedral_one), so the deficit 2 pi - 3 arccos(1/3) is positive, the discrete positive curvature. Deficit as in eq. (1) of Dittrich, Freidel and Speziale (read at that location); the value is a computation, not a statement of the source."
+  since: unreleased
+
+- id: LL-XXXX-d
+  title: "Wrong angle formulas fail on the flat cube: the exterior angle gives deficit -2 pi and the face angle gives pi/2, where the correct value is 0"
+  area: Regge
+  file: Lightlike/Regge/Tests.lean
+  decls: [Lightlike.Regge.Tests.cube_exterior_fails, Lightlike.Regge.Tests.cube_faceAngle_fails]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: dittrich-freidel-speziale-2007, location: "eq. (1)", check: "deficit angles"}
+  review: kernel-checked
+  note: "Trust checks that the dihedral angle in the definition of the deficit is the right one. Using the exterior angle pi - dihedral on the six Kuhn tetrahedra around the cube diagonal gives -2 pi (cube_exterior_fails); using the law-of-cosines face angle at a vertex instead of the angle between faces gives 6 (pi/4) and deficit pi/2 (cube_faceAngle_fails); the correct deficit is 0 (LL-XXXX-b). The wrong formulas are the ones defined in the test file, not formulas of a source."
+  since: unreleased

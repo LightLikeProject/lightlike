@@ -14,8 +14,9 @@ metric, and the recognition of triangulated discs.
 The dihedral angles of a tetrahedron are computed from its six edge lengths, and this formula
 agrees with Euclidean geometry for every tetrahedron in `ℝ³` [1]. Deficit angles and the Regge
 action are defined on a triangulation with edge lengths {1} [2]. Deficit angles vanish for
-triangulations embedded in `ℝ³` [3]. A test file shows that a wrong angle formula gives the wrong
-deficits on a cube [4].
+triangulations embedded in `ℝ³`, and the Regge action of such a region is a boundary term [3]. Test examples
+show that the deficit is zero on the octahedron axis and the cube diagonal, positive on the boundary of the
+4-simplex, and that a wrong angle formula gives the wrong deficits on a cube [4].
 
 Schläfli's identity holds at every non-degenerate tetrahedron [5]. As a consequence, for
 non-degenerate lengths the Regge action is stationary under variations that fix the boundary
@@ -207,8 +208,10 @@ O(‖y − x‖⁵), uniformly for x in a compact set, and the same about the mi
 
 1. Lightlike/Regge/Dihedral.lean - `Regge.dihedral_dist`
 2. Lightlike/Regge/Complex.lean - `Regge.deficit`, `Regge.reggeAction`
-3. Lightlike/Regge/Embedded.lean - `Regge.IsGeometric.deficit_eq_zero`
-4. Lightlike/Regge/Tests.lean - `Regge.Tests.cube_exterior_fails`,
+3. Lightlike/Regge/Embedded.lean - `Regge.IsGeometric.deficit_eq_zero`,
+   `Regge.IsGeometric.reggeAction_eq`
+4. Lightlike/Regge/Tests.lean - `Regge.Tests.octahedron_deficit`, `Regge.Tests.cube_deficit`,
+   `Regge.Tests.simplexBoundary_deficit`, `Regge.Tests.cube_exterior_fails`,
    `Regge.Tests.cube_faceAngle_fails`
 5. Lightlike/Regge/Schlaefli.lean - `Regge.schlaefli`
 6. Lightlike/Regge/ReggeEquations.lean - `Regge.reggeAction_stationary_iff`
