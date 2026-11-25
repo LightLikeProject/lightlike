@@ -5128,7 +5128,7 @@
   since: unreleased
 - id: LL-XXXX-b
   title: "Poisson summation with a real shift: the sum over the integers of e^{-π a (n+s)²} is a^{-1/2} Σ_n e^{-π n²/a} e^{2π i n s}, and differs from a^{-1/2} by at most a^{-1/2} Σ_{n≠0} e^{-π n²/a} for every real s"
-  area: Geometry
+  area: GR
   file: Lightlike/Geometry/HeatKernel/ShiftedTheta.lean
   decls: [Lightlike.HeatKernel.tsum_exp_neg_shift, Lightlike.HeatKernel.abs_tsum_shift_sub_le, Lightlike.HeatKernel.gaussTail]
   status: proven
