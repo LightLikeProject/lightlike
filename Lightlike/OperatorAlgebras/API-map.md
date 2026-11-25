@@ -16,7 +16,7 @@ A strongly continuous one-parameter unitary group is a family of unitaries `U t`
 `U (s + t) = U s ∘ U t` and `t ↦ U t ψ` continuous [1]. Its generator `A` is `-i d/dt U t ψ` at `0`, on
 the vectors where the derivative exists, so that formally `U t = exp (i t A)` [1]. Stone's theorem says
 that the generator is self-adjoint, that every self-adjoint operator is a generator, and that the group is
-determined by it {1}. The phase group `exp (i λ t)` has the generator `λ`, and the generators of `λ = 1`
+determined by it {1} [131]. The phase group `exp (i λ t)` has the generator `λ`, and the generators of `λ = 1`
 and `λ = -1` differ [2]. A Bogoliubov transformation of a complex Hilbert space `h` is a continuous
 real-linear bijection that preserves the symplectic form `Im ⟪f, g⟫`, with a complex-linear part and an
 antilinear part [3]. A representation of the Weyl relations is a family of unitaries `W f` with
@@ -525,6 +525,8 @@ recursion of the pairings, whose two-point value is the sum of u_i v'_i [130].
      `OperatorAlgebras.expect_prod`, `OperatorAlgebras.wick_pair`, `OperatorAlgebras.wick_single`
 130. Lightlike/OperatorAlgebras/CARWick.lean - `OperatorAlgebras.carField`,
      `OperatorAlgebras.carField_anticomm`, `OperatorAlgebras.car_wick`, `OperatorAlgebras.car_wick_two`
+131. Lightlike/OperatorAlgebras/StoneMomentum/MomentumCapstone.lean -
+     `OperatorAlgebras.StoneMomentum.stone_theorem`
 
 ## References
 
