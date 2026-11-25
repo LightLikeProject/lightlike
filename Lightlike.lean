@@ -1644,6 +1644,8 @@ import Lightlike.Spacetime.LeviCivitaSmooth
 import Lightlike.Spacetime.RiccatiFocusing
 import Lightlike.Spacetime.RicciContinuous
 import Lightlike.Spacetime.SchwarzschildManifold
+import Lightlike.Spacetime.TorsionRicci
+import Lightlike.Spacetime.SphereManifold
 import Lightlike.Spacetime.CoordKilling
 import Lightlike.Spacetime.SchwarzschildKilling
 import Lightlike.Spacetime.ChartTensor
