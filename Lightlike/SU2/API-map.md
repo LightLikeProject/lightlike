@@ -24,7 +24,7 @@ components (`peterWeyl_dense_continuous`, `peterWeyl_dense_L2`, `peterWeyl_isHil
 The spin representations are unitary and continuous [1]. The Clebsch–Gordan matrices of Physlib
 intertwine the representations of the group (Lightlike/Spin4/CGBridge.lean), and with them the two
 ways of coupling three spins to a total spin are equivariant maps whose overlap is Racah's 6j symbol
-of Physlib {1} [12].
+of Physlib {1}, and the matrix of the overlap is that 6j symbol times the identity [12].
 
 Further results of this area in the results catalogue:
 Peter–Weyl (density form): for a compact Hausdorff group, the matrix coefficients of finite-dimensional
@@ -60,7 +60,7 @@ L²(R) [11].
 11. Lightlike/HarmonicAnalysis/PeterWeylReal.lean - `HarmonicAnalysis.real_not_forall_memLp_two`,
     `HarmonicAnalysis.real_character_not_memLp_two`
 12. Lightlike/SU2/Recoupling6j.lean - `SU2.coupleLeft_equivariant`, `SU2.coupleRight_equivariant`,
-    `SU2.sum_cg_overlap`
+    `SU2.sum_cg_overlap`, `SU2.sum_cg_matrix`
 13. Lightlike/HarmonicAnalysis/SU2Complete.lean - `HarmonicAnalysis.su2_irreducible_classification`
 
 ## References

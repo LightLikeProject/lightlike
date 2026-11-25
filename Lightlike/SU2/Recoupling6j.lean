@@ -1,5 +1,6 @@
 import Lightlike.Spin4.CGBridge
 import Lightlike.Recoupling.Intertwiner
+import Lightlike.HarmonicAnalysis.PeterWeylSU2
 
 /-!
 # The 6j symbols as recoupling coefficients of the spin representations of SU(2)
@@ -17,16 +18,18 @@ This file closes the circle for three spins: the two ways of coupling `a ⊗ b �
 * `coupleLeft_apply`, `coupleRight_apply`: their entries are the sums of Clebsch–Gordan
   coefficients in `sum_cg_overlap`;
 * `sum_cg_overlap`: the Hilbert–Schmidt inner product of `coupleLeft` and `coupleRight` is
-  `(J + 1) (-1)^(…) √((e + 1)(f + 1)) {a b e; c J f}` (the Racah recoupling coefficient).
+  `(J + 1) (-1)^(…) √((e + 1)(f + 1)) {a b e; c J f}`;
+* `sum_cg_matrix`: **the matrix identity**: `coupleLeftᴴ · coupleRight = λ · 1` with
+  `λ = (-1)^((a+b+c+J)/2) √((e + 1)(f + 1)) {a b e; c J f}`, the Racah recoupling coefficient. The
+  proof is Schur's lemma for the irreducible representation `spinRep J` (`overlap_scalar`), which
+  reduces it to the trace, that is, to `sum_cg_overlap`.
 
 ## Differences from the sources
 
-The overlap is stated as the sum over all entries (the Hilbert–Schmidt inner product), not as the
-matrix identity `coupleLeftᴴ coupleRight = λ · 1`, which follows from Schur's lemma for `spinRep`
-(not used here). The sign is the product of the signs of the phases of the Clebsch–Gordan
-coefficients (Condon–Shortley, as in Physlib) and of the 3j symmetries; it is not simplified to the
-textbook `(-1)^{a+b+c+J}`, and has not been compared with a source (comparison pending). This
-is **weaker** than the matrix form, which is not proved here.
+The sign is the textbook one `(-1)^{a+b+c+J}` in spins, `(-1)^((a+b+c+J)/2)` in doubled units, for
+the Condon–Shortley phases of Physlib's Clebsch–Gordan coefficients (the sign of the product of the
+two couplings was simplified by parity, `sign_simplify`). The comparison of the sign convention with
+a source (Edmonds, Ch. 6; Varshalovich, Ch. 9) is pending: the chapters were not read for this file.
 
 ## References
 
@@ -452,11 +455,208 @@ theorem coupleRight_apply (a b c k₁ k₂ : ℕ) (α : Fin (a + 1)) (β : Fin (
   · simp
 
 
+/-! ## The matrix identity -/
+
+lemma spinMat_inv_coe (n : ℕ) (g : SU2) :
+    spinMat n ((g⁻¹ : SU2) : Matrix (Fin 2) (Fin 2) ℂ) =
+      (spinMat n (g : Matrix (Fin 2) (Fin 2) ℂ))ᴴ := by
+  rw [spinMat_conjTranspose]
+  congr 1
+
+/-- Schur: the overlap of two intertwiners from `spinMat n` into the same unitary
+representation is a scalar. -/
+lemma overlap_scalar {I : Type} [Fintype I] [DecidableEq I] {n : ℕ}
+    (D : SU2 → Matrix I I ℂ) (hD : ∀ g, D g⁻¹ = (D g)ᴴ)
+    (U W : Matrix I (Fin (n + 1)) ℂ)
+    (hU : ∀ g : SU2, D g * U = U * spinMat n (g : Matrix (Fin 2) (Fin 2) ℂ))
+    (hW : ∀ g : SU2, D g * W = W * spinMat n (g : Matrix (Fin 2) (Fin 2) ℂ)) :
+    Uᴴ * W = (trace (Uᴴ * W) / ((n : ℂ) + 1)) • (1 : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) := by
+  have hUd : ∀ g : SU2, Uᴴ * D g = spinMat n (g : Matrix (Fin 2) (Fin 2) ℂ) * Uᴴ := by
+    intro g
+    have h := hU g⁻¹
+    rw [hD, spinMat_inv_coe] at h
+    have h2 := congrArg Matrix.conjTranspose h
+    simpa [Matrix.conjTranspose_mul] using h2
+  have hX : ∀ g : SU2, (Lightlike.HarmonicAnalysis.su2Spin n).mat g * (Uᴴ * W) =
+      (Uᴴ * W) * (Lightlike.HarmonicAnalysis.su2Spin n).mat g := by
+    intro g
+    show spinMat n (g : Matrix (Fin 2) (Fin 2) ℂ) * (Uᴴ * W) =
+      (Uᴴ * W) * spinMat n (g : Matrix (Fin 2) (Fin 2) ℂ)
+    rw [← Matrix.mul_assoc, ← hUd, Matrix.mul_assoc, hW, ← Matrix.mul_assoc]
+  obtain ⟨c, hc⟩ := Lightlike.HarmonicAnalysis.UnitaryMatrixRep.schur_scalar
+    (Lightlike.HarmonicAnalysis.su2Spin_isIrreducible n) _ hX
+  have htr : trace (Uᴴ * W) = c * ((n : ℂ) + 1) := by
+    rw [hc, Matrix.trace_smul]; simp
+  rw [htr, mul_div_cancel_right₀ _ (by exact_mod_cast Nat.succ_ne_zero n), ← hc]
+
+open scoped Kronecker in
+/-- Entries of `(coupleLeft)ᴴ * coupleRight`, with the second coupling reindexed to the index
+types of the first. -/
+noncomputable def overlapMatrix (a b c k₁ k₂ k₁' k₂' : ℕ)
+    (hJ : a + b - 2 * k₁ + c - 2 * k₂ = a + (b + c - 2 * k₁') - 2 * k₂') :
+    Matrix (Fin (a + b - 2 * k₁ + c - 2 * k₂ + 1)) (Fin (a + b - 2 * k₁ + c - 2 * k₂ + 1)) ℂ :=
+  (coupleLeft a b c k₁ k₂)ᴴ * (coupleRight a b c k₁' k₂').submatrix (Equiv.prodAssoc _ _ _)
+    (finCongr (by rw [hJ]))
+
+
+lemma equivariant_cast {I : Type} [Fintype I] [DecidableEq I] {m n : ℕ} (h : m = n)
+    (D : SU2 → Matrix I I ℂ) (M : Matrix I (Fin (m + 1)) ℂ)
+    (hM : ∀ g : SU2, D g * M = M * spinMat m (g : Matrix (Fin 2) (Fin 2) ℂ)) :
+    ∀ g : SU2, D g * M.submatrix id (finCongr (by rw [h]) : Fin (n + 1) ≃ Fin (m + 1)) =
+      M.submatrix id (finCongr (by rw [h]) : Fin (n + 1) ≃ Fin (m + 1)) *
+        spinMat n (g : Matrix (Fin 2) (Fin 2) ℂ) := by
+  subst h
+  intro g
+  simpa using hM g
+
+open scoped Kronecker in
+theorem coupleRight_equivariant_left {a b c k₁ k₂ : ℕ} (hk₁b : k₁ ≤ b) (hk₁c : k₁ ≤ c)
+    (hk₂a : k₂ ≤ a) (hk₂f : k₂ ≤ b + c - 2 * k₁) (g : SU2) :
+    ((spinMat a g ⊗ₖ spinMat b g) ⊗ₖ spinMat c g) *
+        (coupleRight a b c k₁ k₂).submatrix (Equiv.prodAssoc _ _ _) id =
+      (coupleRight a b c k₁ k₂).submatrix (Equiv.prodAssoc _ _ _) id *
+        spinMat (a + (b + c - 2 * k₁) - 2 * k₂) g := by
+  have h := coupleRight_equivariant hk₁b hk₁c hk₂a hk₂f g
+  have hD : ((spinMat a g ⊗ₖ spinMat b g) ⊗ₖ spinMat c g) =
+      (spinMat a g ⊗ₖ (spinMat b g ⊗ₖ spinMat c g)).submatrix (Equiv.prodAssoc _ _ _)
+        (Equiv.prodAssoc _ _ _) := by
+    rw [← Matrix.kronecker_assoc', Matrix.submatrix_submatrix]
+    simp
+  rw [hD, Matrix.submatrix_mul_equiv, h, Matrix.submatrix_mul _ _ _ id id Function.bijective_id]
+  simp
+
+
+/-- The real overlap sum of two couplings for fixed output labels `x`, `y`. -/
+noncomputable def overlapSum (a b c k₁ k₂ k₁' k₂' x y : ℕ) : ℝ :=
+  ∑ α ∈ range (a + 1), ∑ β ∈ range (b + 1), ∑ γ ∈ range (c + 1),
+    (∑ l ∈ range (a + b - 2 * k₁ + 1),
+      cgCoefficient a b k₁ l α β * cgCoefficient (a + b - 2 * k₁) c k₂ x l γ) *
+    (∑ l ∈ range (b + c - 2 * k₁' + 1),
+      cgCoefficient b c k₁' l β γ * cgCoefficient a (b + c - 2 * k₁') k₂' y α l)
+
+lemma overlapMatrix_apply (a b c k₁ k₂ k₁' k₂' : ℕ)
+    (hJ : a + b - 2 * k₁ + c - 2 * k₂ = a + (b + c - 2 * k₁') - 2 * k₂')
+    (δ δ' : Fin (a + b - 2 * k₁ + c - 2 * k₂ + 1)) :
+    overlapMatrix a b c k₁ k₂ k₁' k₂' hJ δ δ' =
+      ((overlapSum a b c k₁ k₂ k₁' k₂' δ δ' : ℝ) : ℂ) := by
+  unfold overlapMatrix overlapSum
+  rw [Matrix.mul_apply, Fintype.sum_prod_type]
+  simp only [Matrix.conjTranspose_apply, Matrix.submatrix_apply, Fintype.sum_prod_type,
+    Equiv.prodAssoc_apply, finCongr_apply, coupleLeft_apply, coupleRight_apply, Fin.val_cast,
+    Complex.star_def, Complex.conj_ofReal, Finset.sum_range]
+  push_cast
+  rfl
+
+lemma trace_overlapMatrix (a b c k₁ k₂ k₁' k₂' : ℕ)
+    (hJ : a + b - 2 * k₁ + c - 2 * k₂ = a + (b + c - 2 * k₁') - 2 * k₂') :
+    trace (overlapMatrix a b c k₁ k₂ k₁' k₂' hJ) =
+      ((∑ x ∈ range (a + b - 2 * k₁ + c - 2 * k₂ + 1), overlapSum a b c k₁ k₂ k₁' k₂' x x : ℝ) : ℂ) := by
+  rw [Matrix.trace]
+  simp only [Matrix.diag_apply, overlapMatrix_apply]
+  rw [Complex.ofReal_sum]
+  exact Fin.sum_univ_eq_sum_range (fun x => ((overlapSum a b c k₁ k₂ k₁' k₂' x x : ℝ) : ℂ)) _
+
+lemma sum_overlapSum_diag (a b c k₁ k₂ k₁' k₂' : ℕ) :
+    ∑ x ∈ range (a + b - 2 * k₁ + c - 2 * k₂ + 1), overlapSum a b c k₁ k₂ k₁' k₂' x x =
+      ∑ α ∈ range (a + 1), ∑ β ∈ range (b + 1), ∑ γ ∈ range (c + 1),
+        ∑ δ ∈ range (a + b - 2 * k₁ + c - 2 * k₂ + 1),
+        (∑ l ∈ range (a + b - 2 * k₁ + 1),
+          cgCoefficient a b k₁ l α β * cgCoefficient (a + b - 2 * k₁) c k₂ δ l γ) *
+        (∑ l ∈ range (b + c - 2 * k₁' + 1),
+          cgCoefficient b c k₁' l β γ * cgCoefficient a (b + c - 2 * k₁') k₂' δ α l) := by
+  unfold overlapSum
+  rw [Finset.sum_comm]
+  refine Finset.sum_congr rfl fun α _ => ?_
+  rw [Finset.sum_comm]
+  refine Finset.sum_congr rfl fun β _ => ?_
+  rw [Finset.sum_comm]
+
+lemma ofReal_mul_div_succ (N : ℕ) (s : ℝ) :
+    ((((N : ℝ) + 1) * s : ℝ) : ℂ) / ((N : ℂ) + 1) = (s : ℂ) := by
+  have : ((N : ℂ) + 1) ≠ 0 := by exact_mod_cast Nat.succ_ne_zero N
+  push_cast
+  field_simp
+
+lemma sign_simplify {a b c k₁ k₂ k₁' : ℕ} (hk₁a : k₁ ≤ a) (hk₁b : k₁ ≤ b) (hk₂c : k₂ ≤ c)
+    (hk₂e : k₂ ≤ a + b - 2 * k₁) (hk₁'b : k₁' ≤ b) (hk₁'c : k₁' ≤ c) :
+    (-1 : ℝ) ^ (a + k₁ + k₂ + b + k₁') * (-1) ^ ((a + b + (a + b - 2 * k₁)) / 2) *
+      (-1) ^ ((a + c + (a + b - 2 * k₁) + (b + c - 2 * k₁')) / 2) =
+      (-1 : ℝ) ^ ((a + b + c + (a + b - 2 * k₁ + c - 2 * k₂)) / 2) := by
+  rw [← pow_add, ← pow_add]; apply neg_one_pow_eq_of_mod; omega
+
+open scoped Kronecker in
+/-- Schur step: the overlap matrix is the scalar `λ • 1` with `λ = trace / (J + 1)`. -/
+lemma overlapMatrix_eq {a b c k₁ k₂ k₁' k₂' : ℕ} (hk₁a : k₁ ≤ a) (hk₁b : k₁ ≤ b)
+    (hk₂e : k₂ ≤ a + b - 2 * k₁) (hk₂c : k₂ ≤ c) (hk₁'b : k₁' ≤ b) (hk₁'c : k₁' ≤ c)
+    (hk₂'a : k₂' ≤ a) (hk₂'f : k₂' ≤ b + c - 2 * k₁')
+    (hJ : a + b - 2 * k₁ + c - 2 * k₂ = a + (b + c - 2 * k₁') - 2 * k₂') :
+    overlapMatrix a b c k₁ k₂ k₁' k₂' hJ =
+      (trace (overlapMatrix a b c k₁ k₂ k₁' k₂' hJ) / (((a + b - 2 * k₁ + c - 2 * k₂ : ℕ) : ℂ) + 1)) •
+        (1 : Matrix (Fin (a + b - 2 * k₁ + c - 2 * k₂ + 1))
+          (Fin (a + b - 2 * k₁ + c - 2 * k₂ + 1)) ℂ) := by
+  have hD : ∀ g : SU2, ((spinMat a ((g⁻¹ : SU2) : Matrix (Fin 2) (Fin 2) ℂ) ⊗ₖ
+        spinMat b ((g⁻¹ : SU2) : Matrix (Fin 2) (Fin 2) ℂ)) ⊗ₖ
+        spinMat c ((g⁻¹ : SU2) : Matrix (Fin 2) (Fin 2) ℂ)) =
+      ((spinMat a (g : Matrix (Fin 2) (Fin 2) ℂ) ⊗ₖ spinMat b (g : Matrix (Fin 2) (Fin 2) ℂ)) ⊗ₖ
+        spinMat c (g : Matrix (Fin 2) (Fin 2) ℂ))ᴴ := by
+    intro g
+    simp only [Matrix.conjTranspose_kronecker, spinMat_inv_coe]
+  have hW := equivariant_cast (m := a + (b + c - 2 * k₁') - 2 * k₂')
+    (n := a + b - 2 * k₁ + c - 2 * k₂) hJ.symm
+    (fun g : SU2 => (spinMat a (g : Matrix (Fin 2) (Fin 2) ℂ) ⊗ₖ
+        spinMat b (g : Matrix (Fin 2) (Fin 2) ℂ)) ⊗ₖ spinMat c (g : Matrix (Fin 2) (Fin 2) ℂ))
+    ((coupleRight a b c k₁' k₂').submatrix (Equiv.prodAssoc _ _ _) id)
+    (coupleRight_equivariant_left hk₁'b hk₁'c hk₂'a hk₂'f)
+  exact overlap_scalar (n := a + b - 2 * k₁ + c - 2 * k₂)
+    (fun g : SU2 => (spinMat a (g : Matrix (Fin 2) (Fin 2) ℂ) ⊗ₖ
+        spinMat b (g : Matrix (Fin 2) (Fin 2) ℂ)) ⊗ₖ spinMat c (g : Matrix (Fin 2) (Fin 2) ℂ))
+    hD (coupleLeft a b c k₁ k₂) _ (coupleLeft_equivariant hk₁a hk₁b hk₂e hk₂c) hW
+
+open scoped Kronecker in
+/-- **The matrix form of the recoupling identity.** For `δ, δ' ≤ J`,
+`Σ_{αβγ} [coupleLeft]_{(αβγ), δ} [coupleRight]_{(αβγ), δ'} = δ_{δδ'} (-1)^((a+b+c+J)/2)
+√((e+1)(f+1)) {a b e; c J f}`. -/
+theorem sum_cg_matrix {a b c k₁ k₂ k₁' k₂' : ℕ} (hk₁a : k₁ ≤ a) (hk₁b : k₁ ≤ b)
+    (hk₂e : k₂ ≤ a + b - 2 * k₁) (hk₂c : k₂ ≤ c) (hk₁'b : k₁' ≤ b) (hk₁'c : k₁' ≤ c)
+    (hk₂'a : k₂' ≤ a) (hk₂'f : k₂' ≤ b + c - 2 * k₁')
+    (hJ : a + b - 2 * k₁ + c - 2 * k₂ = a + (b + c - 2 * k₁') - 2 * k₂')
+    {δ δ' : ℕ} (hδ : δ ≤ a + b - 2 * k₁ + c - 2 * k₂) (hδ' : δ' ≤ a + b - 2 * k₁ + c - 2 * k₂) :
+    ∑ α ∈ range (a + 1), ∑ β ∈ range (b + 1), ∑ γ ∈ range (c + 1),
+        (∑ l ∈ range (a + b - 2 * k₁ + 1),
+          cgCoefficient a b k₁ l α β * cgCoefficient (a + b - 2 * k₁) c k₂ δ l γ) *
+        (∑ l ∈ range (b + c - 2 * k₁' + 1),
+          cgCoefficient b c k₁' l β γ * cgCoefficient a (b + c - 2 * k₁') k₂' δ' α l) =
+      if δ = δ' then (-1 : ℝ) ^ ((a + b + c + (a + b - 2 * k₁ + c - 2 * k₂)) / 2) *
+        Real.sqrt ((((a + b - 2 * k₁ : ℕ) : ℝ) + 1) * (((b + c - 2 * k₁' : ℕ) : ℝ) + 1)) *
+        sixJSym a b (a + b - 2 * k₁) c (a + b - 2 * k₁ + c - 2 * k₂) (b + c - 2 * k₁') else 0 := by
+  have hX := overlapMatrix_eq hk₁a hk₁b hk₂e hk₂c hk₁'b hk₁'c hk₂'a hk₂'f hJ
+  have hov := sum_cg_overlap hk₁a hk₁b hk₂e hk₂c hk₁'b hk₁'c hk₂'a hk₂'f hJ
+  rw [← sum_overlapSum_diag, sign_simplify hk₁a hk₁b hk₂c hk₂e hk₁'b hk₁'c] at hov
+  have htr := trace_overlapMatrix a b c k₁ k₂ k₁' k₂' hJ
+  have h1 := congrFun₂ hX ⟨δ, by omega⟩ ⟨δ', by omega⟩
+  rw [overlapMatrix_apply, htr] at h1
+  rw [mul_assoc, mul_assoc] at hov
+  rw [hov, ofReal_mul_div_succ] at h1
+  rw [mul_assoc]
+  change overlapSum a b c k₁ k₂ k₁' k₂' δ δ' = _
+  by_cases h : δ = δ'
+  · simp only [Matrix.smul_apply, Matrix.one_apply, h, ite_true, smul_eq_mul,
+      mul_one] at h1 ⊢
+    exact_mod_cast h1
+  · simp only [Matrix.smul_apply, Matrix.one_apply, Fin.mk.injEq, h, ite_false, smul_eq_mul,
+      mul_zero] at h1 ⊢
+    exact_mod_cast h1
+
 /-! ## Non-vacuity -/
 
 /-- The hypotheses of `sum_cg_overlap` hold, for three spins `1/2` coupled to `J = 3/2`. -/
 example : (0 : ℕ) ≤ 1 ∧ (0 : ℕ) ≤ 1 ∧ (0 : ℕ) ≤ 1 + 1 - 2 * 0 ∧ (0 : ℕ) ≤ 1 ∧
     1 + 1 - 2 * 0 + 1 - 2 * 0 = 1 + (1 + 1 - 2 * 0) - 2 * 0 := by omega
+
+/-- The matrix identity applied to three spins `1/2` coupled to `3/2` (the hypotheses hold). -/
+example := sum_cg_matrix (a := 1) (b := 1) (c := 1) (k₁ := 0) (k₂ := 0) (k₁' := 0) (k₂' := 0)
+  (by omega) (by omega) (by omega) (by omega) (by omega) (by omega) (by omega) (by omega)
+  (by omega) (δ := 0) (δ' := 0) (by omega) (by omega)
 
 /-- The overlap theorem applied to three spins `1/2` coupled to `3/2`. -/
 example := sum_cg_overlap (a := 1) (b := 1) (c := 1) (k₁ := 0) (k₂ := 0) (k₁' := 0) (k₂' := 0)

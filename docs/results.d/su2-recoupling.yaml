@@ -40,10 +40,10 @@
   note: "Comparison pending (the cited locations were not re-read for this entry). Unitary form of LL-0008: the representation is a unitary matrix representation (UnitaryMatrixRep SU2 κ) on a finite index type κ, irreducible, and the equivalence is a unitary one to su2Spin n; the dimension Fintype.card κ = n + 1."
   since: unreleased
 - id: LL-XXXX-d
-  title: The two couplings of three SU(2) spins to a total spin are equivariant for the spin representations, and their overlap is Racah's 6j symbol (Hilbert–Schmidt form)
+  title: The two couplings of three SU(2) spins to a total spin are equivariant for the spin representations, and the matrix of their overlap is Racah's 6j symbol times the identity
   area: SU2
   file: Lightlike/SU2/Recoupling6j.lean
-  decls: [Lightlike.SU2.coupleLeft_equivariant, Lightlike.SU2.coupleRight_equivariant, Lightlike.SU2.coupleLeft_apply, Lightlike.SU2.coupleRight_apply, Lightlike.SU2.sum_cg_overlap]
+  decls: [Lightlike.SU2.coupleLeft_equivariant, Lightlike.SU2.coupleRight_equivariant, Lightlike.SU2.coupleLeft_apply, Lightlike.SU2.coupleRight_apply, Lightlike.SU2.sum_cg_overlap, Lightlike.SU2.sum_cg_matrix]
   status: proven
   tier: established
   source:
@@ -51,5 +51,5 @@
       - {ref: edmonds-1957, location: "Chapter: Chapter 6. The Construction of Invariants from the Vector-Coupling Coefficients|10.1515/9781400884186-007"}
       - {ref: varshalovich-1988, location: "Chapter: 6j Symbols and the Racah Coefficients|10.1142/9789814415491_0010"}
   review: kernel-checked
-  note: "Comparison pending (the cited chapters were not read for this entry). Doubled spins a, b, c; couplings via Physlib's Clebsch–Gordan coefficients (Condon–Shortley phase) and the group-equivariant matrices cgMatrix of Spin4/CGBridge.lean. WEAKER (a difference from the source; the full matrix identity is still to be proved): the overlap is the sum over all entries (Hilbert–Schmidt inner product), not the matrix identity coupleLeft^H coupleRight = λ·1 (which follows from Schur's lemma for the spin representations, not formalised here), and the sign is not simplified to the textbook (-1)^(a+b+c+J). The 6j symbol is Physlib's sixJSym, not redefined; the recoupling at the level of invariant tensors is Recoupling.fourJ_eq_sum_fourRecoupling."
+  note: "Comparison pending (the cited chapters were not read for this entry). Doubled spins a, b, c; couplings via Physlib's Clebsch-Gordan coefficients (Condon-Shortley phase) and the group-equivariant matrices cgMatrix of Spin4/CGBridge.lean. sum_cg_matrix: for delta, delta' <= J the sum over the three product indices of coupleLeft_(alpha beta gamma, delta) coupleRight_(alpha beta gamma, delta') is delta_(delta delta') (-1)^((a+b+c+J)/2) sqrt((e+1)(f+1)) {a b e; c J f}, i.e. coupleLeft^H coupleRight = lambda 1, by Schur's lemma for the spin-J representation and the trace identity sum_cg_overlap (the Hilbert-Schmidt form). The sign convention (Physlib's Clebsch-Gordan phases) is not compared with a source. The 6j symbol is Physlib's sixJSym, not redefined; the recoupling at the level of invariant tensors is Recoupling.fourJ_eq_sum_fourRecoupling."
   since: unreleased
