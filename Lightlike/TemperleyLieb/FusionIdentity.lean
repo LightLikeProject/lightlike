@@ -689,4 +689,31 @@ theorem finrank_range_Eop_eq [CharZero k] (q : kˣ) (a b : ℕ)
     exact hA.trans hB
   exact ((Finset.sum_eq_sum_iff_of_le hlow).mp heq i (Finset.mem_univ i)).symm
 
+/-- `Q(a,b)` preserves every window containing the two blocks. -/
+theorem Qab_maps_gen (q : kˣ) {a b M : ℕ} (hM : a + b ≤ M) :
+    ∀ v ∈ Win k M, (Qab q a b : Module.End k (ModelSpace k)) v ∈ Win k M :=
+  fun v hv => jwAt_preserves q (s := 0) (n := a) (N := M) (by omega) _
+    (jwAt_preserves q (s := a) (n := b) (N := M) hM v hv)
+
+/-- `V_i` maps the window `M - 2 i` into the window `M`. -/
+theorem Vop_maps_gen (q : kˣ) {a b i M : ℕ} (hia : i ≤ a) (hib : i ≤ b) (hM : a + b ≤ M) :
+    ∀ v ∈ Win k (M - 2 * i), Vop q a b i v ∈ Win k M := by
+  intro v hv
+  unfold Vop
+  simp only [Module.End.mul_apply]
+  have h0 := jwAt_preserves q (s := 0) (n := a + b - 2 * i) (N := M - 2 * i) (by omega) v hv
+  have h1 := nestCup_preserves q (l := a - i) (c := M - 2 * i) (by omega) i _ h0
+  rw [show M - 2 * i + 2 * i = M by omega] at h1
+  exact Qab_maps_gen q hM _ h1
+
+/-- `W_i` maps the window `M` into the window `M - 2 i`. -/
+theorem Wop_maps_gen (q : kˣ) {a b i M : ℕ} (hia : i ≤ a) (hib : i ≤ b) (hM : a + b ≤ M) :
+    ∀ v ∈ Win k M, Wop q a b i v ∈ Win k (M - 2 * i) := by
+  intro v hv
+  unfold Wop
+  simp only [Module.End.mul_apply]
+  have h0 := Qab_maps_gen q hM v hv
+  have h1 := nestCap_preserves q (l := a - i) i M (by omega) _ h0
+  exact jwAt_preserves q (s := 0) (n := a + b - 2 * i) (N := M - 2 * i) (by omega) _ h1
+
 end Lightlike.TemperleyLieb
