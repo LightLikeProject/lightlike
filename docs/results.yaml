@@ -3868,17 +3868,18 @@
   note: "Statement RacahSumAsymptotics (Assembly.lean): for every Euclidean tetrahedron with integer edges j, √(√vol2(ℓ)) e^{-D(ℓ)} racahSum(λj) - cos(S_Regge(ℓ) + π/4)/(√(12π)(2π)²) → 0 as λ → ∞, with edge lengths ℓ_e = λ j_e + 1/2. The proof is by the contour integral and a descent contour through the saddle (not the real-variable Riemann-sum step of Gurau, which is not valid as stated, see the milestone SP2). Trust checks: the formula with only one of the two complex-conjugate saddles is false at the regular tetrahedron (not_racahSumAsymptotics_one_saddle_regular, SP2/OneSaddle.lean); the formula with phase 0 or -π/4 is false (SaddleAssemblyTests.lean). The comparison with Gurau (2008), Theorem 1, is pending: the paper was not read at the cited location. It is the input of the Ponzano–Regge formula LL-0030."
   since: unreleased
 - id: LL-0291
-  title: "The Lichnerowicz formula in a torsion-free skew frame on R^n: D^2 f = -sum of second covariant derivatives plus (s/4) f, with s the scalar curvature of the frame connection"
+  title: "The Lichnerowicz formula in a torsion-free skew frame on R^n: D^2 f = -sum of second covariant derivatives plus (s/4) f, with s the scalar curvature of the frame connection, given the pair symmetry and the first Bianchi identity of that curvature"
   area: GR
   file: Lightlike/Dirac/LichnerowiczGeneral.lean
   decls: [Lightlike.Dirac.lichnerowicz_general]
-  status: proven
+  status: conditional
   tier: established
   source:
     refs:
       - {ref: friedrich-kirchberg-2001, location: "eq. (11)", check: "Lichnerowicz"}
   review: kernel-checked
-  note: "Compared with Friedrich and Kirchberg, arXiv:math/0104121, the Schrödinger-Lichnerowicz formula (11), nabla*nabla = D^2 - R/4 (read; the formula is displayed in the proof of the Weitzenböck estimate, not at the start). Differences: REPRESENTATION, the statement is local, for V-valued C^2 functions on R^n with a Clifford representation (no spinor bundle, no spin structure), a torsion-free skew frame connection with structure functions and the Riemann pair and first Bianchi symmetries as hypotheses (the symmetries are not derived from torsion freeness), and it is pointwise at a point x, so it is not the global operator identity on a closed spin manifold. The Bochner Laplacian is the frame Hessian trace -sum hessF f x i i."
+  hypotheses: [Lightlike.Dirac.CurvPairSymm, Lightlike.Dirac.CurvBianchi]
+  note: "Conditional (inventory, 25 Nov 2026) on the pair symmetry and the first Bianchi identity of the frame curvature (hypotheses hP, hB: CurvPairSymm, CurvBianchi). Both are derived elsewhere on main: lichnerowicz_general' (Lightlike/Dirac/CurvatureSymmetry.lean) derives the pair symmetry from the Bianchi identity, and lichnerowicz_frame_general (Lightlike/Dirac/LichnerowiczFrame.lean) proves the same formula with neither hypothesis. It is not this entry's statement, because its conditions are stronger: a C² frame (not only differentiable), a frame linearly independent at x, and the skewness, bracket and torsion relations on a neighbourhood of x (not only at x). That theorem is left for a later entry of its own. Compared with Friedrich and Kirchberg, arXiv:math/0104121, the Schrödinger-Lichnerowicz formula (11), nabla*nabla = D^2 - R/4 (read; the formula is displayed in the proof of the Weitzenböck estimate, not at the start). Differences: REPRESENTATION, the statement is local, for V-valued C^2 functions on R^n with a Clifford representation (no spinor bundle, no spin structure), a torsion-free skew frame connection with structure functions and the Riemann pair and first Bianchi symmetries as hypotheses (the symmetries are not derived from torsion freeness), and it is pointwise at a point x, so it is not the global operator identity on a closed spin manifold. The Bochner Laplacian is the frame Hessian trace -sum hessF f x i i."
   since: unreleased
 - id: LL-0292
   title: "Friedrich's eigenvalue bound on the round sphere in the stereographic chart: a nonzero compactly supported C^2 eigenspinor of the Dirac operator has lambda^2 at least n^2/4 (n at least 2)"
@@ -3982,7 +3983,7 @@
     refs:
       - {ref: vassilevich-2003, location: "eq. (4.27)", check: "6E"}
   review: kernel-checked
-  note: "Used to tie the a₁ coefficient of the sphere heat traces to Lightlike's scalar curvature. Convention: the sign of R is that of Lightlike.scalarCurvature (positive on spheres). Compared with Vassilevich (2003), arXiv:hep-th/0306138, eq. (4.27), p. 40 (read): a_2(f, D) = (4π)^{-n/2} 6^{-1} ∫ tr{f(6E + R)}, so for the scalar Laplacian (E = 0, f = 1) a_1 = (4π)^{-n/2} ∫R/6 in the Lightlike normalisation (the heat trace coefficient of t^{1-n/2}), with R positive on spheres as in the source; on the unit 2-sphere this is (4π)^{-1}·(2/6)·4π = 1/3, and eq. (4.28) gives the next coefficient (4π)^{-1} 360^{-1} ∫(5R² - 2R_ij R_ij + 2R_ijkl R_ijkl) = 24/360 = 1/15, the t/15 of the milestone (computed by hand from the source, not formalised). This is an example-level result: the general Seeley-DeWitt expansion on a compact Riemannian manifold is NOT proved (Mathlib has no Laplace-Beltrami operator, manifold heat kernel or elliptic theory), so GE8 stays open."
+  note: "Citation to be checked (inventory, 25 Nov 2026): Vassilevich eq. (4.27) is the a_2 heat coefficient; it does not state that the scalar curvature of the unit n-sphere is n(n-1). The right location is not recorded yet. Used to tie the a₁ coefficient of the sphere heat traces to Lightlike's scalar curvature. Convention: the sign of R is that of Lightlike.scalarCurvature (positive on spheres). Compared with Vassilevich (2003), arXiv:hep-th/0306138, eq. (4.27), p. 40 (read): a_2(f, D) = (4π)^{-n/2} 6^{-1} ∫ tr{f(6E + R)}, so for the scalar Laplacian (E = 0, f = 1) a_1 = (4π)^{-n/2} ∫R/6 in the Lightlike normalisation (the heat trace coefficient of t^{1-n/2}), with R positive on spheres as in the source; on the unit 2-sphere this is (4π)^{-1}·(2/6)·4π = 1/3, and eq. (4.28) gives the next coefficient (4π)^{-1} 360^{-1} ∫(5R² - 2R_ij R_ij + 2R_ijkl R_ijkl) = 24/360 = 1/15, the t/15 of the milestone (computed by hand from the source, not formalised). This is an example-level result: the general Seeley-DeWitt expansion on a compact Riemannian manifold is NOT proved (Mathlib has no Laplace-Beltrami operator, manifold heat kernel or elliptic theory), so GE8 stays open."
   since: unreleased
 - id: LL-0300
   title: "Induced gravity from the heat kernel: for D = -Δ + ξR the coefficient a₁ is proportional to (1-6ξ), it vanishes for the conformal coupling in n = 4 and not in other dimensions, and the induced inverse Newton constant is (1-6ξ)/(12πε) with proper-time cutoff ε"
@@ -4229,7 +4230,7 @@
     refs:
       - {ref: borinsky-2018, location: "Abstract"}
   review: kernel-checked
-  note: "FT1. For positive definite S the same statement is moment_eq_pairSum (Gaussian/Wick.lean), proven from Isserlis' recursion; the semidefinite case is by approximation. The comparison with the sources named in Lightlike/FieldTheory/API-map.md is pending in the registry: only the Abstract of Borinsky (2018) is recorded as verified, the other sources are not registered."
+  note: "Citation to be checked (inventory, 25 Nov 2026): the docstring cites Tubaro–Zanella (Theorem 2), the registry Borinsky (2018) at Abstract level only; Tubaro–Zanella is not in docs/tasks/sources.yaml. FT1. For positive definite S the same statement is moment_eq_pairSum (Gaussian/Wick.lean), proven from Isserlis' recursion; the semidefinite case is by approximation. The comparison with the sources named in Lightlike/FieldTheory/API-map.md is pending in the registry: only the Abstract of Borinsky (2018) is recorded as verified, the other sources are not registered."
   since: unreleased
 - id: LL-0319
   title: "The coefficient of λ² in the formal integral of the quartic potential λx⁴/4! is 35/384"
@@ -4281,7 +4282,7 @@
     refs:
       - {ref: borinsky-2018, location: "Abstract"}
   review: kernel-checked
-  note: "FT1. The case of odd md, where both sides vanish, is integral_homogPoly_pow_of_odd; polynomial potentials are integral_polyPot_pow (FeynmanPoly.lean). The comparison with the sources named in Lightlike/FieldTheory/API-map.md is pending in the registry: only the Abstract of Borinsky (2018) is recorded as verified, the other sources are not registered."
+  note: "Citation to be checked (inventory, 25 Nov 2026): the docstring cites Polyak eq. (18), the registry Borinsky (2018) at Abstract level only; Polyak is not in docs/tasks/sources.yaml. FT1. The case of odd md, where both sides vanish, is integral_homogPoly_pow_of_odd; polynomial potentials are integral_polyPot_pow (FeynmanPoly.lean). The comparison with the sources named in Lightlike/FieldTheory/API-map.md is pending in the registry: only the Abstract of Borinsky (2018) is recorded as verified, the other sources are not registered."
   since: unreleased
 - id: LL-0323
   title: "The Feynman expansion over graphs: E_S[(V/d!)^m]/m! is the sum over the isomorphism classes Γ of graphs with m vertices of valence d of graphWeight(Γ)/|Aut Γ|"
@@ -4353,26 +4354,28 @@
   area: GR
   file: Lightlike/GR/FeynmanRecursion.lean
   decls: [Lightlike.SpinorHelicity.eq_sum_div_sub_of_residues, Lightlike.SpinorHelicity.bgAmplitude_eq_sum_channels]
-  status: proven
+  status: conditional
   tier: established
   source:
     refs:
       - {ref: elvang-huang-2013, location: "eq. (3.4)"}
   review: kernel-checked
-  note: "G3-073. Elvang-Huang (3.4)-(3.7): partial fractions from Liouville's theorem, then the recursion for the colour-ordered Feynman rules of the library (Gervais-Neveu gauge), for any shift with (3.2)-(3.3). The statement takes the large-z falloff (3.6), Â_n(z) → 0 at infinity (hypothesis hinf), as an input, as Elvang-Huang do (p. 36); they cite the falloff (3.11) for Yang-Mills from the literature without proof. It also takes the Ward identities of the lower-point amplitudes as hypotheses, which the next entry removes. The comparison with the source is pending in the registry (only eq. (3.4) is recorded as verified)."
+  hypotheses: [Lightlike.SpinorHelicity.LargeZFalloff, Lightlike.SpinorHelicity.WardIdentity]
+  note: "Conditional (inventory, 25 Nov 2026) on the large-z falloff (3.6) of the shifted amplitude (hypothesis hinf, LargeZFalloff), which this library does not prove, and on the Ward identities of the lower amplitudes (hW, WardIdentity), which ward_all (LL-0329) proves for every m and j. G3-073. Elvang-Huang (3.4)-(3.7): partial fractions from Liouville's theorem, then the recursion for the colour-ordered Feynman rules of the library (Gervais-Neveu gauge), for any shift with (3.2)-(3.3). The statement takes the large-z falloff (3.6), Â_n(z) → 0 at infinity (hypothesis hinf), as an input, as Elvang-Huang do (p. 36); they cite the falloff (3.11) for Yang-Mills from the literature without proof. It also takes the Ward identities of the lower-point amplitudes as hypotheses, which the next entry removes. The comparison with the source is pending in the registry (only eq. (3.4) is recorded as verified)."
   since: unreleased
 - id: LL-0329
   title: "The Ward identity of the colour-ordered Feynman amplitudes holds at every gluon for every number of gluons, and with it the factorization on the poles and the recursion hold without the Ward identity as a hypothesis"
   area: GR
   file: Lightlike/GR/FeynmanWard.lean
   decls: [Lightlike.SpinorHelicity.ward_all, Lightlike.SpinorHelicity.residue_factorization', Lightlike.SpinorHelicity.bgAmplitude_eq_sum_channels']
-  status: proven
+  status: conditional
   tier: established
   source:
     refs:
       - {ref: elvang-huang-2013, location: "eq. (3.4)"}
   review: kernel-checked
-  note: "G3-073. P·J(a,…,b) = −(1/√2) Σ_c J(a,…,c) J(c+1,…,b) for null momenta and transverse polarizations (mdot_momRange_bgCurrent), by strong induction on the current recursion; at P² = 0 this is the on-shell Ward identity at the last gluon (ward_last), and the cyclic property (Elvang-Huang p. 25) gives it at every gluon (ward_all). The Gervais-Neveu form of the identity is not printed in the sources read (Dixon hep-ph/9601359 (57) is for Feynman gauge). bgAmplitude_eq_sum_channels' still takes the large-z falloff (3.6) as a hypothesis (hinf): the falloff is not proved. The comparison with the source is pending (Elvang-Huang p. 17 for the Ward identity is not a recorded verified location)."
+  hypotheses: [Lightlike.SpinorHelicity.LargeZFalloff]
+  note: "Conditional (inventory, 25 Nov 2026): ward_all and residue_factorization' are unconditional, but the recursion bgAmplitude_eq_sum_channels' still takes the large-z falloff (3.6) as the hypothesis hinf (LargeZFalloff), which this library does not prove. G3-073. P·J(a,…,b) = −(1/√2) Σ_c J(a,…,c) J(c+1,…,b) for null momenta and transverse polarizations (mdot_momRange_bgCurrent), by strong induction on the current recursion; at P² = 0 this is the on-shell Ward identity at the last gluon (ward_last), and the cyclic property (Elvang-Huang p. 25) gives it at every gluon (ward_all). The Gervais-Neveu form of the identity is not printed in the sources read (Dixon hep-ph/9601359 (57) is for Feynman gauge). bgAmplitude_eq_sum_channels' still takes the large-z falloff (3.6) as a hypothesis (hinf): the falloff is not proved. The comparison with the source is pending (Elvang-Huang p. 17 for the Ward identity is not a recorded verified location)."
   since: unreleased
 - id: LL-0330
   title: "Trust checks of the Einstein equations for FLRW with a perfect fluid: de Sitter space (a = e^{Ht}, k = 0, ρ = -p) is a solution iff H² = 8πGρ/3, Einstein's static universe (a constant, k = 1, dust) is a solution iff Λ = 1/a² = 4πGρ, and with k = -1 there is no static dust solution"
@@ -4411,7 +4414,7 @@
     refs:
       - {ref: brewin-2009, location: "Section 9", check: "geodesic"}
   review: kernel-checked
-  note: "T-UP-22 (G1-019): the Mathlib-ready rework of LL-0045. The chart distance of LL-0045 is shown equal to Manifold.riemannianEDist of the tangent bundle of the open set U (IsRiemMetric.riemannianBundle; Riemannian.lean: pathELength_eq, riemannianEDist_eq, chartDist_eq_toReal_riemannianEDist), and the two expansions are restated for it. Scope: an open subset of Rⁿ as a manifold with a global chart, not a general Riemannian manifold; the pull-back to a manifold with atlas is not stated. Not opened as a Mathlib pull request by this project."
+  note: "Citation to be checked (inventory, 25 Nov 2026): the verified text at Brewin Section 9 is the metric series in Riemann normal coordinates; that it states the fifth-order expansion of the squared geodesic distance is unchecked. T-UP-22 (G1-019): the Mathlib-ready rework of LL-0045. The chart distance of LL-0045 is shown equal to Manifold.riemannianEDist of the tangent bundle of the open set U (IsRiemMetric.riemannianBundle; Riemannian.lean: pathELength_eq, riemannianEDist_eq, chartDist_eq_toReal_riemannianEDist), and the two expansions are restated for it. Scope: an open subset of Rⁿ as a manifold with a global chart, not a general Riemannian manifold; the pull-back to a manifold with atlas is not stated. Not opened as a Mathlib pull request by this project."
   since: unreleased
 - id: LL-0333
   title: "OP2 in one place: a Fock representation exists on every complex Hilbert space, a Bogoliubov transformation is implemented iff its antilinear part is Hilbert-Schmidt (Shale), |alpha|^2 - |beta|^2 = 1 for one mode, and a constant |beta| on l^2(N) is not implementable"
@@ -4463,7 +4466,7 @@
     refs:
       - {ref: bdfhp-2010, location: "eq. (53)", check: "Regge state"}
   review: kernel-checked
-  note: "SF10 (G2-028), task T-SF10-P1: discharges one of the four hypotheses of LL-0135 (VertexJointIntegrable). The estimate is by Tonelli: the modulus of the integrand is bounded by the product of the ten densities, whose C^10 integral is a product of ten kernels, integrable over the Haar measure. The other three hypotheses (CriticalSetIs, HessianInvertible, FarRemainderBound) are NOT discharged. The docstring of VertexJointIntegrable in VertexFixChart.lean still says not proved; it predates this theorem. The comparison with BDFHP is pending (the source uses the joint integral implicitly, Sec. 6.4)."
+  note: "Citation to be checked (inventory, 25 Nov 2026): BDFHP (2010) eq. (53) is the asymptotic formula of the vertex amplitude, not a joint-integrability statement. SF10 (G2-028), task T-SF10-P1: discharges one of the four hypotheses of LL-0135 (VertexJointIntegrable). The estimate is by Tonelli: the modulus of the integrand is bounded by the product of the ten densities, whose C^10 integral is a product of ten kernels, integrable over the Haar measure. The other three hypotheses (CriticalSetIs, HessianInvertible, FarRemainderBound) are NOT discharged. The docstring of VertexJointIntegrable in VertexFixChart.lean still says not proved; it predates this theorem. The comparison with BDFHP is pending (the source uses the joint integral implicitly, Sec. 6.4)."
   since: unreleased
 - id: LL-0337
   title: "The compact part of the far remainder of the Lorentzian vertex integral is O(λ^{-N}) for every N: for smooth compactly supported cutoffs χ ≤ ψ equal to 1 near the finite critical set K, the integral of (ψ − χ) A e^{λS} decays faster than any power of λ"
@@ -4476,7 +4479,7 @@
     refs:
       - {ref: bdfhp-2010, location: "eq. (53)", check: "Regge state"}
   review: kernel-checked
-  note: "SF10 (G2-028), task T-SF10-P5: the part ψ − χ of the split of T-SF10-P3, by expPhase_suppressed applied to the compactly supported amplitude (ψ − χ) A, which vanishes near K. Hypothesis hK is CriticalSetIs with the cutoff 1: every critical point of tsupport A with Re S = 0 lies in K. The non-compact part 1 − ψ (T-SF10-P6) is open, so FarRemainderBound is not discharged; a numerical test supports the needed gap Re S ≤ −δ outside a compact set (docs/notes/sf10-p6-numeric.md)."
+  note: "Citation to be checked (inventory, 25 Nov 2026): BDFHP (2010) eq. (53) is the asymptotic formula, not the estimate of the compact part of the far remainder. SF10 (G2-028), task T-SF10-P5: the part ψ − χ of the split of T-SF10-P3, by expPhase_suppressed applied to the compactly supported amplitude (ψ − χ) A, which vanishes near K. Hypothesis hK is CriticalSetIs with the cutoff 1: every critical point of tsupport A with Re S = 0 lies in K. The non-compact part 1 − ψ (T-SF10-P6) is open, so FarRemainderBound is not discharged; a numerical test supports the needed gap Re S ≤ −δ outside a compact set (docs/notes/sf10-p6-numeric.md)."
   since: unreleased
 - id: LL-0338
   title: "The Hessian of the Lorentzian vertex action at a point with Re S = 0 is invertible if and only if no nonzero real vector lies in the common kernel of the real and imaginary parts of its negative; the real part is positive semidefinite and the matrix is symmetric"
@@ -4489,7 +4492,7 @@
     refs:
       - {ref: bdfhp-2010, location: "eq. (53)", check: "Regge state"}
   review: kernel-checked
-  note: "SF10 (G2-028), task T-SF10-P2, reduction only: with det_ne_zero_of_re_psd_ker (HessianKernel.lean: a complex symmetric matrix with positive semidefinite real part is invertible iff Re and Im have no common real kernel vector), the invertibility HessianInvertible is equivalent to a kernel condition on the 44 x 44 matrix. The kernel condition itself, for non-degenerate boundary data, is NOT proved (numerical evidence only: scripts/asymptotics/lorentzian_hessian_kernel_check.py), so HessianInvertible is not discharged."
+  note: "Citation to be checked (inventory, 25 Nov 2026): BDFHP (2010) eq. (53) is the asymptotic formula, not a statement about the invertibility of the Hessian. SF10 (G2-028), task T-SF10-P2, reduction only: with det_ne_zero_of_re_psd_ker (HessianKernel.lean: a complex symmetric matrix with positive semidefinite real part is invertible iff Re and Im have no common real kernel vector), the invertibility HessianInvertible is equivalent to a kernel condition on the 44 x 44 matrix. The kernel condition itself, for non-degenerate boundary data, is NOT proved (numerical evidence only: scripts/asymptotics/lorentzian_hessian_kernel_check.py), so HessianInvertible is not discharged."
   since: unreleased
 - id: LL-0339
   title: "Fermionic Bogoliubov transformations of the CAR: b = alpha a + beta c has anticommutators alpha alpha* + beta beta* and alpha beta^T + beta alpha^T; under alpha alpha* + beta beta* = 1 and alpha beta^T + beta alpha^T = 0 the CAR is preserved, the transformation is invertible, the transformed Majorana family of an irreducible CAR representation is an irreducible CAR representation, hence unitarily implemented (finite dimensions)"
@@ -4528,7 +4531,7 @@
     refs:
       - {ref: kar-sengupta-2007, location: "eq. (17)", check: "null"}
   review: kernel-checked
-  note: "G1-012 (closed trapped surfaces), the link between the expansion of the null normals of a surface and the Θ of raychaudhuri_null_focusing_manifold (LL for G1-009). Linear algebra first: in a nondegenerate symmetric form on a space of dimension m + 2 with an orthonormal m-frame orthogonal to a null pair (V, N), g(V, N) = -1, tr A = Σᵢ B(A eᵢ, eᵢ) − B(A V, N) − B(A N, V) (NullFrame.trace_eq); then g(∇_u V, V) = 0 for a null field (trappedExp_cov_null, from the chart statement covD_orthogonal_of_const) and ∇_V V = 0 kill the two correction terms. Hypotheses: V smooth, g(V, V) = 0 near x, ∇_V V = 0 at x, n ≥ 2. It does not say that the frame spans the tangent space of a surface: that, and that V is a null normal of the surface, belong to the definition of the trapped surface. The comparison with Kar and SenGupta is pending (only eq. (17) is a recorded verified location)."
+  note: "Citation to be checked (inventory, 25 Nov 2026): Kar–Sengupta (2007) eq. (17) is the null focusing equation, not the identity between the expansion of a null geodesic field and the frame trace. G1-012 (closed trapped surfaces), the link between the expansion of the null normals of a surface and the Θ of raychaudhuri_null_focusing_manifold (LL for G1-009). Linear algebra first: in a nondegenerate symmetric form on a space of dimension m + 2 with an orthonormal m-frame orthogonal to a null pair (V, N), g(V, N) = -1, tr A = Σᵢ B(A eᵢ, eᵢ) − B(A V, N) − B(A N, V) (NullFrame.trace_eq); then g(∇_u V, V) = 0 for a null field (trappedExp_cov_null, from the chart statement covD_orthogonal_of_const) and ∇_V V = 0 kill the two correction terms. Hypotheses: V smooth, g(V, V) = 0 near x, ∇_V V = 0 at x, n ≥ 2. It does not say that the frame spans the tangent space of a surface: that, and that V is a null normal of the surface, belong to the definition of the trapped surface. The comparison with Kar and SenGupta is pending (only eq. (17) is a recorded verified location)."
   since: unreleased
 - id: LL-0342
   title: "The fusion ring of SU(2) at level r - 2: the coefficients N_ab^c = 1 for admissible triples are symmetric, 0 is the unit, the quantum dimension [a+1] is multiplicative, and the ring is associative for r = 3, 4, 5, 6"
@@ -4793,13 +4796,14 @@
   area: GR
   file: Lightlike/Dirac/LichnerowiczFormula.lean
   decls: [Lightlike.Dirac.lichnerowicz_frame]
-  status: proven
+  status: conditional
   tier: established
   source:
     refs:
       - {ref: bgv-1992, location: "Chapter: Clifford Modules and Dirac Operators|10.1007/978-3-642-58088-8_4"}
   review: kernel-checked
-  note: "GE5 (G1-017). In a frame with antisymmetric connection form ω, D²f = -Σᵢ ∇²f(eᵢ, eᵢ) + (s/4) f with s = Σ Rᵢⱼⱼᵢ, for a curvature with the Riemann symmetries. The Ricci identity (the antisymmetric part of the frame Hessian is the spinor curvature ¼ Σ Rᵢⱼₖₗ γₖγₗ acting on f) is a HYPOTHESIS here, not derived. Compare LL entry for lichnerowicz_general (torsion-free skew frame on ℝⁿ). Not covered: a spin manifold (spin structure, global Dirac operator) and the Lichnerowicz formula on it. The comparison with the source is pending in the registry (the location cited is the only recorded verified one; the docstring of the Lean file claims no equation number)."
+  hypotheses: [Lightlike.Dirac.FrameRicciIdentity]
+  note: "Conditional (inventory, 25 Nov 2026) on the Ricci identity for the frame Hessian (hypothesis hRicci, FrameRicciIdentity); R is any array with the Riemann symmetries hR1, hP, hB, which are part of the statement. For the curvature of the frame connection itself, lichnerowicz_general (LL-0291) uses ricci_identity in place of hRicci. GE5 (G1-017). In a frame with antisymmetric connection form ω, D²f = -Σᵢ ∇²f(eᵢ, eᵢ) + (s/4) f with s = Σ Rᵢⱼⱼᵢ, for a curvature with the Riemann symmetries. The Ricci identity (the antisymmetric part of the frame Hessian is the spinor curvature ¼ Σ Rᵢⱼₖₗ γₖγₗ acting on f) is a HYPOTHESIS here, not derived. Compare LL entry for lichnerowicz_general (torsion-free skew frame on ℝⁿ). Not covered: a spin manifold (spin structure, global Dirac operator) and the Lichnerowicz formula on it. The comparison with the source is pending in the registry (the location cited is the only recorded verified one; the docstring of the Lean file claims no equation number)."
   since: unreleased
 - id: LL-0363
   title: "On the unit 2-sphere the curvature term of the Lichnerowicz formula is s/4 and not s/2"
@@ -4984,7 +4988,7 @@
     refs:
       - {ref: carroll-1997, location: "Chapter 3"}
   review: kernel-checked
-  note: "GE7 (G1-016). The conformal infinity (null infinity η ± χ = ±π with i⁰ and i^±) is the vanishing locus of ω (compOmega_eq_zero_iff); the null character of the boundary and the action of the Poincaré group on it are NOT proved. The identification is a metric identity on tangent vectors, not a manifold embedding. The comparison with the source is pending in the registry: the location cited is the only recorded verified one (Carroll's Chapter 3), while the compactification itself is in Carroll's Chapter 7 (pp. 192-196), Gourgoulhon gr-qc/0703035 Section 6.3.1 and Campos-Verdaguer gr-qc/9307027 Appendix C, none recorded as verified."
+  note: "Citation to be checked (inventory, 25 Nov 2026): the conformal compactification of Minkowski space is in Carroll's Chapter 7, not Chapter 3; Chapter 7 is not yet a verified location of carroll-1997, so Chapter 3 stays cited until it is. GE7 (G1-016). The conformal infinity (null infinity η ± χ = ±π with i⁰ and i^±) is the vanishing locus of ω (compOmega_eq_zero_iff); the null character of the boundary and the action of the Poincaré group on it are NOT proved. The identification is a metric identity on tangent vectors, not a manifold embedding. The comparison with the source is pending in the registry: the location cited is the only recorded verified one (Carroll's Chapter 3), while the compactification itself is in Carroll's Chapter 7 (pp. 192-196), Gourgoulhon gr-qc/0703035 Section 6.3.1 and Campos-Verdaguer gr-qc/9307027 Appendix C, none recorded as verified."
   since: unreleased
 - id: LL-0377
   title: "The conformal embedding of Minkowski space in Cartesian form, axis included: the map (η, p) ↦ (t, x⃗) from the region {|η| < π, p ∈ S³, ω > 0} of ℝ × S³ is a bijection onto ℝ × ℝ³, the metric is ω⁻² times the Einstein static universe metric, and the axis r = 0 is the ordinary point p = (1, 0⃗)"
@@ -4997,7 +5001,7 @@
     refs:
       - {ref: carroll-1997, location: "Chapter 3"}
   review: kernel-checked
-  note: "GE7 (G1-016), the clause that the polar form of the embedding leaves open (the axis r = 0). The Cartesian form is this library's representation of Carroll (7.100), stated in its docstring; the axis is well-behaved after (7.87) in the source. The comparison with the source is pending in the registry: the location cited is the only recorded verified one (Carroll's Chapter 3), while the compactification itself is in Carroll's Chapter 7 (pp. 192-196), Gourgoulhon gr-qc/0703035 Section 6.3.1 and Campos-Verdaguer gr-qc/9307027 Appendix C, none recorded as verified."
+  note: "Citation to be checked (inventory, 25 Nov 2026): the Cartesian form is Carroll (7.100), Chapter 7, not Chapter 3; (7.100) is not yet a verified location of carroll-1997, so Chapter 3 stays cited until it is. GE7 (G1-016), the clause that the polar form of the embedding leaves open (the axis r = 0). The Cartesian form is this library's representation of Carroll (7.100), stated in its docstring; the axis is well-behaved after (7.87) in the source. The comparison with the source is pending in the registry: the location cited is the only recorded verified one (Carroll's Chapter 3), while the compactification itself is in Carroll's Chapter 7 (pp. 192-196), Gourgoulhon gr-qc/0703035 Section 6.3.1 and Campos-Verdaguer gr-qc/9307027 Appendix C, none recorded as verified."
   since: unreleased
 - id: LL-0378
   title: "Anti-de Sitter space is conformal to a region of the Einstein static universe: with tan θ the radial coordinate, its metric is cos⁻²θ (−dτ² + dθ² + sin²θ dΩ²) on 0 ≤ θ < π/2, and the boundary θ = π/2 carries the metric −dτ² + dΩ²"
@@ -5010,7 +5014,7 @@
     refs:
       - {ref: carroll-1997, location: "Chapter 3"}
   review: kernel-checked
-  note: "GE7 (G1-016). The conformal action of SO(2,3) on the boundary is NOT proved. Source of the AdS coordinates: Blau, Lecture Notes on General Relativity, Section 39.3 (not a registered source). The comparison with the source is pending in the registry: the location cited is the only recorded verified one (Carroll's Chapter 3), while the compactification itself is in Carroll's Chapter 7 (pp. 192-196), Gourgoulhon gr-qc/0703035 Section 6.3.1 and Campos-Verdaguer gr-qc/9307027 Appendix C, none recorded as verified."
+  note: "Citation to be checked (inventory, 25 Nov 2026): Carroll Chapter 3 does not treat the conformal compactification of anti-de Sitter space; the coordinates follow Blau, Lecture Notes on General Relativity, Section 39.3, which is not a registered source. GE7 (G1-016). The conformal action of SO(2,3) on the boundary is NOT proved. Source of the AdS coordinates: Blau, Lecture Notes on General Relativity, Section 39.3 (not a registered source). The comparison with the source is pending in the registry: the location cited is the only recorded verified one (Carroll's Chapter 3), while the compactification itself is in Carroll's Chapter 7 (pp. 192-196), Gourgoulhon gr-qc/0703035 Section 6.3.1 and Campos-Verdaguer gr-qc/9307027 Appendix C, none recorded as verified."
   since: unreleased
 - id: LL-0379
   title: "A non-conformal rescaling does not give the Einstein static universe: if λ² ≠ 1, the form −λ² a² + b² + sin²χ q is not a multiple of −a² + b² + sin²χ q, while for λ² = 1 it is"
@@ -5023,7 +5027,7 @@
     refs:
       - {ref: carroll-1997, location: "Chapter 3"}
   review: kernel-checked
-  note: "GE7 (G1-016), the trust check 'a non-conformal rescaling shown to fail' of the milestone. A rescaling of the time direction only; non-vacuity by the case λ² = 1. The comparison with the source is pending in the registry: the location cited is the only recorded verified one (Carroll's Chapter 3), while the compactification itself is in Carroll's Chapter 7 (pp. 192-196), Gourgoulhon gr-qc/0703035 Section 6.3.1 and Campos-Verdaguer gr-qc/9307027 Appendix C, none recorded as verified."
+  note: "Citation to be checked (inventory, 25 Nov 2026): this is a trust check (a non-conformal rescaling fails), not a statement of Carroll; the Chapter 3 citation does not support it. GE7 (G1-016), the trust check 'a non-conformal rescaling shown to fail' of the milestone. A rescaling of the time direction only; non-vacuity by the case λ² = 1. The comparison with the source is pending in the registry: the location cited is the only recorded verified one (Carroll's Chapter 3), while the compactification itself is in Carroll's Chapter 7 (pp. 192-196), Gourgoulhon gr-qc/0703035 Section 6.3.1 and Campos-Verdaguer gr-qc/9307027 Appendix C, none recorded as verified."
   since: unreleased
 - id: LL-0380
   title: "For every k and sign epsilon the eigenvalue epsilon (k+1) of the Dirac operator of the unit 2-sphere in the stereographic chart has an injective linear image of k+1 copies of the spinor module among its eigenspinors"
