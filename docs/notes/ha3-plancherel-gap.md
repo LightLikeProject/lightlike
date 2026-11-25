@@ -24,8 +24,8 @@ is not done.
 Question: for the ladder images `h_{l,r}[G] = (ladUp (l-1) r ∘ … ∘ ladUp 0 r)(sinh^r G^{(r)}(cosh ξ))` of a smooth compactly supported `G`
 (the `K`-type `(l, r)` of the principal-series picture), is `π² ∫ |h_{l,r}[G]|² sinh ξ dξ = ¼ ∫ ρ tanh(πρ) wl(l,ρ) wl(r,ρ) |Ĝ(ρ)|² dρ`?
 
-- MEASURED (sympy/mpmath, `G = exp(-cosh ξ)`, `(l, r) ∈ {(0,0),(1,0),(0,1),(1,1),(0,2),(1,2)}`, relative agreement `1e-8`
-  or better, the limit of the quadrature): yes, with `wl(n, ρ) = ∏_{k<n} ((k + ½)² + ρ²)`, also for odd `r`. So the target is the
+- MEASURED (sympy/mpmath, `G = exp(-cosh ξ)`, `(l, r) ∈ {(0,0),(1,0),(0,1),(1,1),(0,2),(1,2)}`, relative difference at most `2e-7`,
+  of the order of the quadrature error on a trapezoid grid): yes, with `wl(n, ρ) = ∏_{k<n} ((k + ½)² + ρ²)`, also for odd `r`. So the target is the
   right statement and the factor `(l + ½)² + ρ²` of the left recursion does not depend on `r`.
 - PROVED (new): `radialCasimir_ladUp` (`LadderCasimir.lean`): `Cas_{l+1,r} ∘ ladUp l r = ladUp l r ∘ Cas_{l,r}` on `ξ > 0` for smooth `F`
   (no shift); `ladUp_profile` (`LadderProfile.lean`): `ladUp k 0 (sinh^k G^{(k)}∘cosh) = sinh^{k+1} G^{(k+1)}∘cosh` on `ξ > 0`, which is
