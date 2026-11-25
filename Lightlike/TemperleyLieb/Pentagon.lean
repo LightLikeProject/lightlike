@@ -86,4 +86,30 @@ theorem TD_expand [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) (a b c d j m i 
   · have hg := Fc_guard h0
     rw [TE_eq_mul_UL q c d j g (hg.1.trans (min_le_left _ _)) (hg.1.trans (min_le_right _ _))]
 
+/-- The Gram coefficient vanishes between different total channels. -/
+theorem gramCoef_zero_of_ne (q : kˣ) (hδ : loopVal q ≠ 0) (a b c e d f d' : ℕ) (hN : 1 ≤ a + b + c)
+    (hd : ∀ j, j ≤ a + b + c → chebD (loopVal q) j ≠ 0)
+    (hea : e ≤ a) (heb : e ≤ b) (hfb : f ≤ b) (hfc : f ≤ c) (hdc : d ≤ c) (hdA : d ≤ a + b - 2 * e)
+    (hda : d' ≤ a) (hdf : d' ≤ b + c - 2 * f)
+    (hne : a + b - 2 * e + c - 2 * d ≠ a + (b + c - 2 * f) - 2 * d') :
+    gramCoef (k := k) q a b c e d f d' = 0 := by
+  have h1 := gram_spec q hδ a b c e d f d' hN hd hea heb hfb hfc hdc hdA hda hdf
+  have h2 : ULd q a b c e d * UR (k := k) q a b c f d' = 0 :=
+    gram_vanish q hδ a b c e d f d' hN hd hea heb hfb hfc hdc hdA hda hdf hne
+  rw [h2] at h1
+  exact (smul_eq_zero.mp h1.symm).resolve_right (jwAt_ne_zero q _)
+
+/-- A non-zero `Fc` forces equal total channels. -/
+theorem Fc_total (q : kˣ) (hδ : loopVal q ≠ 0) (a b c e d f d' : ℕ) (hN : 1 ≤ a + b + c)
+    (hd : ∀ j, j ≤ a + b + c → chebD (loopVal q) j ≠ 0)
+    (hfb : f ≤ b) (hfc : f ≤ c) (hda : d' ≤ a) (hdf : d' ≤ b + c - 2 * f)
+    (h : Fc (k := k) q a b c e d f d' ≠ 0) :
+    a + b - 2 * e + c - 2 * d = a + (b + c - 2 * f) - 2 * d' := by
+  by_contra hne
+  obtain ⟨he, hdd⟩ := Fc_guard h
+  apply h
+  have hz := gramCoef_zero_of_ne (k := k) q hδ a b c e d f d' hN hd (he.trans (min_le_left _ _))
+    (he.trans (min_le_right _ _)) hfb hfc (hdd.trans (min_le_right _ _)) (hdd.trans (min_le_left _ _)) hda hdf hne
+  simp only [Fc, hz, mul_zero, ite_self]
+
 end Lightlike.TemperleyLieb
