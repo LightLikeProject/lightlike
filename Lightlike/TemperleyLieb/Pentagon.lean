@@ -162,4 +162,29 @@ theorem TD_expand_C [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) (a b c d j m 
   · rw [← Fc_total q hδ b c d f h j m (by omega) (fun x hx => hd x (by omega)) hjc hjd hmb hmz h0]
     simp only [TC]
 
+/-- `a((bc)d)` as a left translate factor times a three-block right tree. -/
+theorem TC_eq (q : kˣ) (a b c d f h i : ℕ) :
+    TC q a b c d f h i = sh a (Vop q b c f) * UR q a (b + c - 2 * f) d h i := by
+  simp only [TC, UL, UR, sh_mul, mul_assoc]
+
+/-- `(a(bc))d` as the same left translate factor times a three-block left tree. -/
+theorem TB_eq (q : kˣ) (a b c d f d' g : ℕ) :
+    TB q a b c d f d' g = sh a (Vop q b c f) * UL q a (b + c - 2 * f) d d' g := by
+  simp only [TB, UL, UR, mul_assoc]
+
+/-- **`a((bc)d)` in the basis `(a(bc))d`** (the arrow `C → B` of the pentagon). -/
+theorem TC_expand [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) (a b c d f h i : ℕ) (ha : 1 ≤ a)
+    (hd : ∀ x, x ≤ a + b + c + d → chebD (loopVal q) x ≠ 0)
+    (hq2 : ∀ x, 1 ≤ x → x ≤ a + b + c + d + 1 → (q : k) ^ (2 * x) ≠ 1)
+    (hfb : f ≤ b) (hfc : f ≤ c) (hhX : h ≤ b + c - 2 * f) (hhd : h ≤ d) (hia : i ≤ a)
+    (hiz : i ≤ b + c - 2 * f + d - 2 * h) :
+    TC q a b c d f h i = ∑ d' ∈ Finset.range (a + 1), ∑ g ∈ Finset.range (d + 1),
+      Fc q a (b + c - 2 * f) d d' g h i • TB q a b c d f d' g := by
+  rw [TC_eq, expansion_range q hδ a (b + c - 2 * f) d h i (by omega) (fun x hx => hd x (by omega))
+    (fun x h1 h2 => hq2 x h1 (by omega)) hhX hhd hia (by omega), Finset.mul_sum]
+  refine Finset.sum_congr rfl fun d' _ => ?_
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl fun g _ => ?_
+  rw [mul_smul_comm, TB_eq]
+
 end Lightlike.TemperleyLieb
