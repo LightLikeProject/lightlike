@@ -272,4 +272,84 @@ theorem eq_zero_of_window {N : ℕ} {T : Module.End k (ModelSpace k)} (hT : Eqv 
   have : (single σ c : ModelSpace k) = c • single σ 1 := by simp
   rw [this, map_smul, h1, smul_zero]; simp
 
+/-! ### The channel idempotents -/
+
+/-- The projector `p_c` is idempotent. -/
+theorem jwAt_idem (q : kˣ) {c N : ℕ} (hc : c ≤ N) (hd : ∀ j, j < N → chebD (loopVal q) j ≠ 0) :
+    jwAt q 0 c * jwAt q 0 c = (jwAt q 0 c : Module.End k (ModelSpace k)) :=
+  (jwProps_of_le (isTL_shift q 0) N hd c hc).idem
+
+/-- `e_j p_c = 0` for `j + 1 < c`. -/
+theorem modelE_mul_jwAt (q : kˣ) {c N : ℕ} (hc : c ≤ N) (hd : ∀ j, j < N → chebD (loopVal q) j ≠ 0) {j : ℕ}
+    (hj : j + 1 < c) : (modelE q j : Module.End k (ModelSpace k)) * jwAt q 0 c = 0 := by
+  have := (jwProps_of_le (isTL_shift q 0) N hd c hc).killL j hj
+  simp only [add_zero] at this
+  exact this
+
+/-- The channel idempotent `E_i = κ_i⁻¹ V_i W_i`. -/
+noncomputable def Eop (q : kˣ) (a b i : ℕ) : Module.End k (ModelSpace k) :=
+  (kapRec q a b i)⁻¹ • (Vop q a b i * Wop q a b i)
+
+section algebra
+
+variable (q : kˣ) (a b : ℕ) (hd : ∀ j, j ≤ a + b → chebD (loopVal q) j ≠ 0)
+include hd
+
+theorem Vop_mul_jwAt {i : ℕ} (hi : i ≤ a) (hi' : i ≤ b) :
+    Vop q a b i * jwAt q 0 (a + b - 2 * i) = Vop q a b i := by
+  have := jwAt_idem (k := k) q (c := a + b - 2 * i) (N := a + b + 1) (by omega) (fun j hj => hd j (by omega))
+  unfold Vop; rw [mul_assoc, this]
+
+theorem jwAt_mul_Wop {i : ℕ} (hi : i ≤ a) (hi' : i ≤ b) :
+    jwAt q 0 (a + b - 2 * i) * Wop q a b i = Wop q a b i := by
+  have := jwAt_idem (k := k) q (c := a + b - 2 * i) (N := a + b + 1) (by omega) (fun j hj => hd j (by omega))
+  unfold Wop; rw [← mul_assoc, ← mul_assoc, this]
+
+theorem Qab_mul_Vop (i : ℕ) :
+    Qab q a b * Vop q a b i = Vop q a b i := by
+  have := Qab_idem (k := k) q a b (fun j hj => hd j (by omega))
+  unfold Vop; rw [← mul_assoc, ← mul_assoc, this]
+
+theorem Wop_mul_Qab (i : ℕ) :
+    Wop q a b i * Qab q a b = Wop q a b i := by
+  have := Qab_idem (k := k) q a b (fun j hj => hd j (by omega))
+  unfold Wop; rw [mul_assoc, this]
+
+theorem Eop_idem {i : ℕ} (hi : i ≤ a) (hi' : i ≤ b)
+    (hq2 : ∀ j, 1 ≤ j → j ≤ a + b + 1 → (q : k) ^ (2 * j) ≠ 1) :
+    Eop q a b i * Eop q a b i = Eop q a b i := by
+  have hκ := kapRec_ne (k := k) q i a b hi hi' hq2
+  unfold Eop
+  rw [smul_mul_assoc, mul_smul_comm, smul_smul]
+  have : Vop q a b i * Wop q a b i * (Vop q a b i * Wop q a b i) =
+      kapRec q a b i • (Vop q a b i * Wop q a b i) := by
+    calc _ = Vop q a b i * (Wop q a b i * Vop q a b i) * Wop q a b i := by simp only [mul_assoc]
+      _ = Vop q a b i * (kapRec q a b i • jwAt q 0 (a + b - 2 * i)) * Wop q a b i := by
+          rw [Wop_mul_Vop q a b i hi hi' hd]
+      _ = kapRec q a b i • (Vop q a b i * jwAt q 0 (a + b - 2 * i) * Wop q a b i) := by
+          rw [mul_smul_comm, smul_mul_assoc]
+      _ = _ := by rw [Vop_mul_jwAt q a b hd hi hi']
+  rw [this, smul_smul, mul_assoc, inv_mul_cancel₀ hκ, mul_one]
+
+theorem Eop_orth (ha : 1 ≤ a) (hb : 1 ≤ b) {i j : ℕ} (hi : i ≤ a) (hi' : i ≤ b) (hj : j ≤ a) (hj' : j ≤ b)
+    (hij : i ≠ j) (hq2 : ∀ m, 1 ≤ m → m ≤ a + b + 1 → (q : k) ^ (2 * m) ≠ 1) :
+    Eop q a b i * Eop q a b j = 0 := by
+  have h0 := channel_orth q a b i j ha hb hi hi' hj hj' hd (lamRec_ne q a b i j hi hi' hj hj' hij hq2)
+  unfold Eop
+  rw [smul_mul_assoc, mul_smul_comm, smul_smul]
+  have : Vop q a b i * Wop q a b i * (Vop q a b j * Wop q a b j) = 0 := by
+    calc _ = Vop q a b i * (Wop q a b i * Vop q a b j) * Wop q a b j := by simp only [mul_assoc]
+      _ = 0 := by rw [h0]; simp
+  rw [this, smul_zero]
+
+theorem Qab_mul_Eop (i : ℕ) : Qab q a b * Eop q a b i = Eop q a b i := by
+  unfold Eop
+  rw [mul_smul_comm, ← mul_assoc, Qab_mul_Vop q a b hd]
+
+theorem Eop_mul_Qab (i : ℕ) : Eop q a b i * Qab q a b = Eop q a b i := by
+  unfold Eop
+  rw [smul_mul_assoc, mul_assoc, Wop_mul_Qab q a b hd]
+
+end algebra
+
 end Lightlike.TemperleyLieb
