@@ -1506,6 +1506,7 @@ import Lightlike.Spacetime.Causal.Relations
 import Lightlike.Spacetime.Causal.SmoothOrientation
 import Lightlike.Spacetime.Causal.TestsBasic
 import Lightlike.Spacetime.Causal.TestsMinkowski
+import Lightlike.Spacetime.Causal.TimeCylinder
 import Lightlike.Spacetime.Causal.TimeOrientation
 import Lightlike.Spacetime.ChartChange
 import Lightlike.Spacetime.BianchiSecond
