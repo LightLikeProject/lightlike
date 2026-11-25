@@ -253,4 +253,19 @@ theorem treeR_sandwich (q : kˣ) (a b c f d : ℕ) (hN : 1 ≤ a + b + c)
   congr 1
   ring
 
+/-- `treeL` preserves the window `a + b + c`. -/
+theorem treeL_maps (q : kˣ) {a b c e d : ℕ} (hea : e ≤ a) (heb : e ≤ b) (hdc : d ≤ c) (hdA : d ≤ a + b - 2 * e)
+    (hd : ∀ j, j ≤ a + b + c → chebD (loopVal q) j ≠ 0) :
+    ∀ v ∈ Win k (a + b + c), (treeL q a b c e d : Module.End k (ModelSpace k)) v ∈ Win k (a + b + c) := by
+  intro v hv
+  rw [treeL_eq q a b c e d (fun j hj => hd j (by omega))]
+  rw [LinearMap.smul_apply]
+  refine Submodule.smul_mem _ _ ?_
+  have h1 := Wop_maps_gen q (a := a) (b := b) (i := e) (M := a + b + c) hea heb (by omega) v hv
+  rw [show a + b + c - 2 * e = (a + b - 2 * e) + c by omega] at h1
+  have h2 := Eop_maps (k := k) q (a := a + b - 2 * e) (b := c) (i := d) hdA hdc _ h1
+  have h3 := Vop_maps_gen q (a := a) (b := b) (i := e) (M := a + b + c) hea heb (by omega) _
+    (by rw [show a + b + c - 2 * e = (a + b - 2 * e) + c by omega]; exact h2)
+  simpa [Module.End.mul_apply] using h3
+
 end Lightlike.TemperleyLieb
