@@ -108,7 +108,7 @@ milestones:
       - id: t3
         kind: trust
         text: "A spacetime with closed timelike curves (Minkowski with time rolled up) violates chronology"
-        decls: []
+        decls: [Lightlike.timeCylinder_not_isChronological, Lightlike.timeCylinderMetric, Lightlike.timeCylinderOrientation]
         hint: "Missing: the rolled-up Minkowski spacetime and x ∈ chronFuture x. Existing: Lightlike.Causal.IsChronological, Lightlike.Causal.chronFuture; a CTC cylinder exists in GreenOperators/Cylinder.lean but does not use them."
       - id: c1
         kind: catalogue
