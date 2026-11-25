@@ -102,4 +102,61 @@ lemma PB.summable {c : ℕ → ℂ} (hc : PB c) {t : ℝ} (ht : |t| < 1) : Summa
   obtain ⟨C, K, hC, hK, hcb⟩ := hc
   exact summable_powerTerms hC hcb ht
 
+/-- Shift a sequence to the right by one place (inserting a zero). -/
+def shr (c : ℕ → ℂ) : ℕ → ℂ
+  | 0 => 0
+  | n + 1 => c n
+
+lemma pb_shr {c : ℕ → ℂ} (hc : PB c) : PB (shr c) := by
+  obtain ⟨C, K, hC, hK, hcb⟩ := hc
+  refine ⟨C, K, hC, hK, fun n => ?_⟩
+  cases n with
+  | zero =>
+    have h0 : ‖shr c 0‖ = 0 := by simp [shr]
+    rw [h0]; positivity
+  | succ n =>
+    show ‖c n‖ ≤ _
+    calc ‖c n‖ ≤ C * ((n : ℝ) + 1) ^ K := hcb n
+      _ ≤ C * (((n + 1 : ℕ) : ℝ) + 1) ^ K := by
+          apply mul_le_mul_of_nonneg_left _ hC
+          apply Real.rpow_le_rpow (by positivity) _ hK
+          push_cast; linarith
+
+/-- Multiplying the sum by `x` shifts the coefficients. -/
+lemma powerSum_shr {c : ℕ → ℂ} (hc : PB c) {t : ℝ} (ht : |t| < 1) :
+    powerSum (shr c) t = (t : ℂ) * powerSum c t := by
+  unfold powerSum
+  have hs := (pb_shr hc).summable ht
+  rw [hs.tsum_eq_zero_add, ← tsum_mul_left]
+  simp only [shr, zero_mul, zero_add]
+  refine tsum_congr fun n => ?_
+  ring
+
+lemma powerSum_add {c d : ℕ → ℂ} (hc : PB c) (hd : PB d) {t : ℝ} (ht : |t| < 1) :
+    powerSum (fun n => c n + d n) t = powerSum c t + powerSum d t := by
+  unfold powerSum
+  rw [← (hc.summable ht).tsum_add (hd.summable ht)]
+  exact tsum_congr fun n => by ring
+
+lemma powerSum_const_mul (r : ℂ) (c : ℕ → ℂ) (t : ℝ) :
+    powerSum (fun n => r * c n) t = r * powerSum c t := by
+  unfold powerSum
+  rw [← tsum_mul_left]
+  exact tsum_congr fun n => by ring
+
+lemma powerSum_mul_nat {c : ℕ → ℂ} (hc : PB c) {t : ℝ} (ht : |t| < 1) :
+    powerSum (fun n => (n : ℂ) * c n) t = (t : ℂ) * powerSum (fun n => ((n : ℂ) + 1) * c (n + 1)) t := by
+  have h1 : (fun n : ℕ => (n : ℂ) * c n) = shr (fun n => ((n : ℂ) + 1) * c (n + 1)) := by
+    funext n
+    cases n with
+    | zero => simp [shr]
+    | succ n => simp [shr]
+  have h2 : PB fun n : ℕ => ((n : ℂ) + 1) * c (n + 1) := by
+    obtain ⟨C, K, hC, hK, hb⟩ := hc.mul_nat.shift
+    refine ⟨C, K, hC, hK, fun n => ?_⟩
+    have := hb n
+    simpa using this
+  rw [h1]
+  exact powerSum_shr h2 ht
+
 end Lightlike.Dirac
