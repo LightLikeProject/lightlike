@@ -59,4 +59,27 @@ theorem complete_of_rank {ι : Type*} [Fintype ι] [DecidableEq ι] (Q : V →�
   rw [hR] at h5
   exact sub_eq_zero.mp h5
 
+/-- **Trace of a conjugated idempotent.** If `W ∘ V = κ P` and `E ∘ P = E`, then `κ⁻¹ V E W` has the trace of `E`. -/
+theorem trace_conj {P Q : Type*} [AddCommGroup P] [Module K P] [Module.Free K P] [Module.Finite K P]
+    [AddCommGroup Q] [Module K Q] [Module.Free K Q] [Module.Finite K Q]
+    (Vw : P →ₗ[K] Q) (Ww : Q →ₗ[K] P) (Ew Pp : P →ₗ[K] P) (κ : K) (hκ : κ ≠ 0)
+    (hWV : Ww ∘ₗ Vw = κ • Pp) (hEP : Ew ∘ₗ Pp = Ew) :
+    trace K Q (κ⁻¹ • (Vw ∘ₗ Ew ∘ₗ Ww)) = trace K P Ew := by
+  rw [map_smul, smul_eq_mul]
+  have h1 : trace K Q (Vw ∘ₗ (Ew ∘ₗ Ww)) = trace K P ((Ew ∘ₗ Ww) ∘ₗ Vw) := trace_comp_comm' (Ew ∘ₗ Ww) Vw
+  have h2 : (Ew ∘ₗ Ww) ∘ₗ Vw = κ • Ew := by
+    rw [LinearMap.comp_assoc, hWV, LinearMap.comp_smul, hEP]
+  rw [h1, h2, map_smul, smul_eq_mul, ← mul_assoc, inv_mul_cancel₀ hκ, one_mul]
+
+/-- **Ranks of conjugated idempotents.** -/
+theorem finrank_conj {P Q : Type*} [AddCommGroup P] [Module K P] [Module.Free K P] [Module.Finite K P]
+    [AddCommGroup Q] [Module K Q] [Module.Free K Q] [Module.Finite K Q]
+    (Vw : P →ₗ[K] Q) (Ww : Q →ₗ[K] P) (Ew Pp : P →ₗ[K] P) (κ : K) (hκ : κ ≠ 0)
+    (hWV : Ww ∘ₗ Vw = κ • Pp) (hEP : Ew ∘ₗ Pp = Ew) (hE : IsIdempotentElem Ew)
+    (hT : IsIdempotentElem (κ⁻¹ • (Vw ∘ₗ Ew ∘ₗ Ww))) :
+    finrank K (range (κ⁻¹ • (Vw ∘ₗ Ew ∘ₗ Ww))) = finrank K (range Ew) := by
+  have h := trace_conj Vw Ww Ew Pp κ hκ hWV hEP
+  rw [trace_idempotent hT, trace_idempotent hE] at h
+  exact_mod_cast h
+
 end Lightlike.TemperleyLieb
