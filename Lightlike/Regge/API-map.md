@@ -14,8 +14,9 @@ metric, and the recognition of triangulated discs.
 The dihedral angles of a tetrahedron are computed from its six edge lengths, and this formula
 agrees with Euclidean geometry for every tetrahedron in `ℝ³` [1]. Deficit angles and the Regge
 action are defined on a triangulation with edge lengths {1} [2]. Deficit angles vanish for
-triangulations embedded in `ℝ³` [3]. A test file shows that a wrong angle formula gives the wrong
-deficits on a cube [4].
+triangulations embedded in `ℝ³`, and the Regge action of such a region is a boundary term [3]. Test examples
+show that the deficit is zero on the octahedron axis and the cube diagonal, positive on the boundary of the
+4-simplex, and that a wrong angle formula gives the wrong deficits on a cube [4].
 
 Schläfli's identity holds at every non-degenerate tetrahedron [5]. As a consequence, for
 non-degenerate lengths the Regge action is stationary under variations that fix the boundary
@@ -25,7 +26,11 @@ embedded in `ℝ³` solve these equations [7].
 In four dimensions the dihedral angles of a 4-simplex are computed from its ten edge lengths and
 agree with Euclidean geometry [8], deficit angles are defined at triangles [9], Schläfli's identity
 holds [10], the Regge equations are the vanishing of the interior deficits [11], and flat
-triangulations solve them [12].
+triangulations solve them [12]. In a geometric triangulation of a region of `ℝ⁴` every interior
+triangle has deficit zero and the Regge action is a sum over the boundary triangles [101]; the
+boundary of the 5-simplex with unit lengths is curved, with deficit `2π - 3 arccos(1/4) > 0` at
+every triangle [102]; the exterior angle and a formula without the square root both fail on a
+flat ring of 4-simplices [102].
 
 In dimension 2, for a Riemannian metric on a region of the plane, the deficit angles of fat vertex
 stars of bounded valence, with geodesic edge lengths and weighted by a Lipschitz function, differ
@@ -184,7 +189,9 @@ triangulated disc [16].
 
 Further results of this area in the results catalogue:
 Lorentzian Regge calculus with Sorkin's complex angles: flat Minkowski regions have zero deficit angles
-and solve the Regge equations [90]. The 3D Regge action of the Kuhn triangulation of a grid converges to
+and solve the Regge equations [90]. For non-degenerate squared lengths the Lorentzian Regge action is
+stationary under boundary-fixed variations exactly when the area-derivative-weighted deficits vanish at
+every interior edge [103]. The 3D Regge action of the Kuhn triangulation of a grid converges to
 half the Einstein-Hilbert action of a Riemannian metric (the Kuhn-grid case of the convergence theorem
 of Cheeger, Mueller and Schrader) [91]. The Regge action of a flat closed 3-complex is a quadratic form
 in the first variations of the lengths up to third order [92]. The Regge action of the periodic Kuhn
@@ -207,8 +214,10 @@ O(‖y − x‖⁵), uniformly for x in a compact set, and the same about the mi
 
 1. Lightlike/Regge/Dihedral.lean - `Regge.dihedral_dist`
 2. Lightlike/Regge/Complex.lean - `Regge.deficit`, `Regge.reggeAction`
-3. Lightlike/Regge/Embedded.lean - `Regge.IsGeometric.deficit_eq_zero`
-4. Lightlike/Regge/Tests.lean - `Regge.Tests.cube_exterior_fails`,
+3. Lightlike/Regge/Embedded.lean - `Regge.IsGeometric.deficit_eq_zero`,
+   `Regge.IsGeometric.reggeAction_eq`
+4. Lightlike/Regge/Tests.lean - `Regge.Tests.octahedron_deficit`, `Regge.Tests.cube_deficit`,
+   `Regge.Tests.simplexBoundary_deficit`, `Regge.Tests.cube_exterior_fails`,
    `Regge.Tests.cube_faceAngle_fails`
 5. Lightlike/Regge/Schlaefli.lean - `Regge.schlaefli`
 6. Lightlike/Regge/ReggeEquations.lean - `Regge.reggeAction_stationary_iff`
@@ -387,6 +396,12 @@ O(‖y − x‖⁵), uniformly for x in a compact set, and the same about the mi
 100. Lightlike/Upstream/GeodesicExpansion/Final.lean -
      `Upstream.GeodesicExpansion.IsRiemMetric.riemannianEDist_sq_expansion`,
      `Upstream.GeodesicExpansion.IsRiemMetric.riemannianEDist_sq_expansion_midpoint`
+101. Lightlike/Regge/D4/Embedded.lean - `Regge4.IsGeometric4.deficit4_eq_zero`,
+     `Regge4.IsGeometric4.reggeAction4_eq`
+102. Lightlike/Regge/D4/Tests.lean - `Regge4.Tests.flatRing_deficit`, `Regge4.Tests.cone5_deficit`,
+     `Regge4.Tests.sphere5_deficit`, `Regge4.Tests.sphere5_reggeAction`,
+     `Regge4.Tests.flatRing_exterior`, `Regge4.Tests.flatRing_noSqrt`
+103. Lightlike/Regge/Lorentzian/ReggeEquations.lean - `ReggeLor.lorReggeAction_stationary_iff`
 
 ## References
 

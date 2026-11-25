@@ -662,8 +662,8 @@ expect("tasks sync control: labels that exist are not created again",
        not [a for a in _acts if a["op"] == "label"])
 _seed = {"closed": {"X4": "done (older work)"}, "notes": {"X3": "in progress"}}
 _s1 = _sync(_ts2, _cfg2, _data, _card, _seed)[1]
-expect("tasks sync: the seed opens and closes no milestone issue (scripts/sync_github.py opens them, the "
-       "merger closes them after a passing review)",
+expect("tasks sync: the seed opens and closes no milestone issue (scripts/sync_github.py opens and closes "
+       "them)",
        not [a for a in _s1 if a.get("task") in ("T-X3", "T-X4")])
 _data2 = json.loads(json.dumps(_data))
 _data2["issues"] += [_iss(10, "T-X4: f", [], [_c("bot", tk.MARK.format("seed"), "2026-11-06T00:00:00Z")],

@@ -21,14 +21,15 @@
 #                      written). A catalogue item with no decls covers the theorems of the
 #                      main and piece items.
 #     hint:            optional: what is missing, or which existing results come close
-#     review_evidence: review items only: `docs/tasks/reviews/<ID>.md#<item id>`, filled in by the
-#                      reviewer. The item is ticked when that section says `Result: pass`.
+#     review_evidence: review items only: null, or the evidence written by whoever did the work:
+#                      what was compared with what, and the result (at least 30 characters).
+#                      The item is ticked once it is written. There is no separate review step.
 #
 # A catalogue item is ticked when each of its declarations is ticked, is named by an entry of
 # docs/results.yaml with `status: proven`, and is cited in the API map of its folder.
 
 # v1.0 (owner decision, 25 Nov 2026): the S, M and L milestones of the eight core areas. On GitHub
-# their issues are in the GitHub Milestone "v1.0"; every other milestone has the label not-scheduled.
+# their issues are in the GitHub Milestone "v1.0"; every other milestone is outside it (not scheduled).
 v1.0:
   areas: [geometry, harmonic-analysis, operator-algebras, asymptotics, pl-topology, quantum-groups, regge, spin-foams]
   sizes: [S, M, L]
@@ -707,8 +708,7 @@ milestones:
       - id: p4
         kind: piece
         text: "The 6j symbols are linked to the SU(2) representations (recoupling coefficients of the tensor products of spinRep)"
-        decls: []
-        hint: "No declaration relates SU2.spinRep or the 3j/CG coefficients to the 6j symbols; the Recoupling 6j are defined independently (e.g. PhyslibAlpha.Sl2.sixJSym_orth_all in Lightlike/Upstream/SpinReps2/SixJOrth.lean)."
+        decls: [Lightlike.SU2.coupleLeft_equivariant, Lightlike.SU2.coupleRight_equivariant, Lightlike.SU2.sum_cg_overlap, Lightlike.SU2.sum_cg_matrix]
       - id: c1
         kind: catalogue
         text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
