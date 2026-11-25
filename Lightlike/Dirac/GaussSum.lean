@@ -367,4 +367,111 @@ theorem tendsto_hgPartial_int (j m : ℕ) (hj : 1 ≤ j) (hjm : j ≤ m) :
       push_cast
       exact this
 
+/-- The terms depend on `a` only through `a²`. -/
+lemma hgTerm_neg (a c : ℂ) (n : ℕ) : hgTerm (-a) c n = hgTerm a c n := by
+  induction n with
+  | zero => simp [hgTerm]
+  | succ n ih => simp only [hgTerm, ih]; ring
+
+/-- For `a = 0` the series is `1 + 0 + 0 + ⋯`. -/
+lemma hgPartial_zero (c : ℂ) (N : ℕ) (hN : 1 ≤ N) : hgPartial 0 c N = 1 := by
+  have h : ∀ n : ℕ, hgTerm 0 c (n + 1) = 0 := by
+    intro n
+    induction n with
+    | zero => simp [hgTerm]
+    | succ n ih => rw [hgTerm, ih]; simp
+  obtain ⟨M, rfl⟩ : ∃ M, N = M + 1 := ⟨N - 1, by omega⟩
+  unfold hgPartial
+  rw [Finset.sum_range_succ', Finset.sum_eq_zero fun n _ => h n]
+  simp [hgTerm]
+
+/-- **Classification of the value at infinity.** The partial sums of `₂F₁(a, −a; m+1; 1)` converge, and the limit
+vanishes exactly when `a = ±k` for an integer `k ≥ m + 1`. -/
+theorem hgPartial_limit (a : ℂ) (m : ℕ) :
+    ∃ L : ℂ, Filter.Tendsto (fun N : ℕ => hgPartial a ((m : ℂ) + 1) N) Filter.atTop (nhds L) ∧
+      (L = 0 ↔ ∃ k : ℕ, m + 1 ≤ k ∧ (a = k ∨ a = -(k : ℂ))) := by
+  by_cases ha : a = 0
+  · subst ha
+    refine ⟨1, ?_, ?_⟩
+    · refine tendsto_const_nhds.congr' ?_
+      filter_upwards [Filter.eventually_ge_atTop 1] with N hN
+      exact (hgPartial_zero _ N hN).symm
+    · constructor
+      · intro h; exact absurd h one_ne_zero
+      · rintro ⟨k, hk, hk0 | hk0⟩
+        · have : (k : ℂ) ≠ 0 := by exact_mod_cast (by omega : k ≠ 0)
+          exact absurd hk0.symm this
+        · have : (k : ℂ) ≠ 0 := by exact_mod_cast (by omega : k ≠ 0)
+          exact absurd (neg_eq_zero.mp hk0.symm) this
+  by_cases hint : ∃ j : ℕ, 1 ≤ j ∧ j ≤ m ∧ (a = j ∨ a = -(j : ℂ))
+  · obtain ⟨j, hj, hjm, hja⟩ := hint
+    have hsq : a ^ 2 = (j : ℂ) ^ 2 := by rcases hja with h | h <;> rw [h] <;> ring
+    -- the terms depend on a² only
+    have hterm : ∀ n, hgTerm a ((m : ℂ) + 1) n = hgTerm (j : ℂ) ((m : ℂ) + 1) n := by
+      rcases hja with h | h
+      · intro n; rw [h]
+      · intro n; rw [h, hgTerm_neg]
+    obtain ⟨L, hL0, hL⟩ := tendsto_hgPartial_int j m hj hjm
+    refine ⟨L, ?_, ?_⟩
+    · refine hL.congr fun N => ?_
+      unfold hgPartial; exact Finset.sum_congr rfl fun n _ => (hterm n).symm
+    · constructor
+      · intro h; exact absurd h hL0
+      · rintro ⟨k, hk, hk0⟩
+        exfalso
+        have : (k : ℂ) ^ 2 = (j : ℂ) ^ 2 := by rcases hk0 with h | h <;> rw [← hsq, h] <;> ring
+        have : (k : ℕ) ^ 2 = j ^ 2 := by exact_mod_cast this
+        nlinarith
+  · push_neg at hint
+    have hne : ∀ j < m, ((j : ℂ) + 1) ^ 2 ≠ a ^ 2 := by
+      intro j hj h
+      have := hint (j + 1) (by omega) (by omega)
+      have h2 : a = ((j : ℂ) + 1) ∨ a = -((j : ℂ) + 1) := by
+        have : (a - ((j : ℂ) + 1)) * (a + ((j : ℂ) + 1)) = 0 := by linear_combination -h
+        rcases mul_eq_zero.mp this with h1 | h1
+        · left; linear_combination h1
+        · right; linear_combination h1
+      rcases h2 with h2 | h2
+      · exact this.1 (by rw [h2]; push_cast; ring)
+      · exact this.2 (by rw [h2]; push_cast; ring)
+    refine ⟨_, tendsto_hgPartial ha m hne, ?_⟩
+    have hpi : (Real.pi : ℂ) ≠ 0 := Complex.ofReal_ne_zero.mpr Real.pi_ne_zero
+    have hprod : ∏ j ∈ Finset.range m, (((j : ℂ) + 1) ^ 2 / (((j : ℂ) + 1) ^ 2 - a ^ 2)) ≠ 0 := by
+      refine Finset.prod_ne_zero_iff.mpr fun j hj => ?_
+      have hj' : j < m := Finset.mem_range.mp hj
+      have h1 : ((j : ℂ) + 1) ≠ 0 := by exact_mod_cast Nat.succ_ne_zero j
+      exact div_ne_zero (pow_ne_zero 2 h1) (sub_ne_zero.mpr (hne j hj'))
+    constructor
+    · intro h
+      have h1 : Complex.sin (Real.pi * a) / (Real.pi * a) = 0 := (mul_eq_zero.mp h).resolve_right hprod
+      have h2 : Complex.sin (Real.pi * a) = 0 := by
+        rcases div_eq_zero_iff.mp h1 with h | h
+        · exact h
+        · exact absurd h (mul_ne_zero hpi ha)
+      obtain ⟨k, hk⟩ := Complex.sin_eq_zero_iff.mp h2
+      have hak : a = (k : ℂ) := by
+        have : (Real.pi : ℂ) * a = (Real.pi : ℂ) * k := by rw [hk]; ring
+        exact mul_left_cancel₀ hpi this
+      have hk0 : k ≠ 0 := by rintro rfl; simp at hak; exact ha hak
+      have hcast : (k : ℂ) = (k.natAbs : ℂ) ∨ (k : ℂ) = -(k.natAbs : ℂ) := by
+        rcases Int.natAbs_eq k with h | h
+        · left; have := congrArg (Int.cast (R := ℂ)) h; simp only [Int.cast_natCast] at this; exact this
+        · right; have := congrArg (Int.cast (R := ℂ)) h; simp only [Int.cast_neg, Int.cast_natCast] at this; exact this
+      refine ⟨k.natAbs, ?_, ?_⟩
+      · by_contra hlt
+        push_neg at hlt
+        have := hint k.natAbs (by omega) (by omega)
+        rcases hcast with h | h
+        · exact this.1 (hak.trans h)
+        · exact this.2 (hak.trans h)
+      · rcases hcast with h | h
+        · left; exact hak.trans h
+        · right; exact hak.trans h
+    · rintro ⟨k, hk, hk0⟩
+      have : Complex.sin (Real.pi * a) = 0 := by
+        rcases hk0 with h | h
+        · rw [h, mul_comm]; exact Complex.sin_nat_mul_pi k
+        · rw [h, mul_neg, Complex.sin_neg, mul_comm]; simp [Complex.sin_nat_mul_pi k]
+      rw [this]; simp
+
 end Lightlike.Dirac
