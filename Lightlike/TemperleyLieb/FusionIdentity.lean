@@ -638,4 +638,55 @@ theorem fusion_identity [CharZero k] (q : kˣ) (a b : ℕ)
     exact sub_eq_zero.mp hz
   exact hcomp
 
+/-- **The rank of the channel is exactly `a + b - 2i + 1`** on the window. -/
+theorem finrank_range_Eop_eq [CharZero k] (q : kˣ) (a b : ℕ)
+    (hd : ∀ j, j ≤ a + b → chebD (loopVal q) j ≠ 0)
+    (hq2 : ∀ j, 1 ≤ j → j ≤ a + b + 1 → (q : k) ^ (2 * j) ≠ 1) (i : Fin (min a b + 1)) :
+    Module.finrank k (LinearMap.range (resW (N := a + b) (Eop q a b i : Module.End k (ModelSpace k))
+      (Eop_maps q ((Nat.lt_succ_iff.mp i.2).trans (min_le_left _ _)) ((Nat.lt_succ_iff.mp i.2).trans (min_le_right _ _)))))
+      = a + b - 2 * (i : ℕ) + 1 := by
+  have hia : ∀ i : Fin (min a b + 1), (i : ℕ) ≤ a := fun i => (Nat.lt_succ_iff.mp i.2).trans (min_le_left _ _)
+  have hib : ∀ i : Fin (min a b + 1), (i : ℕ) ≤ b := fun i => (Nat.lt_succ_iff.mp i.2).trans (min_le_right _ _)
+  have hQm := Qab_maps (k := k) q a b
+  have hEm : ∀ i : Fin (min a b + 1), ∀ v ∈ Win k (a + b), (Eop q a b i : Module.End k (ModelSpace k)) v ∈ Win k (a + b) :=
+    fun i => Eop_maps q (hia i) (hib i)
+  set R : Fin (min a b + 1) → Module.End k (Win k (a + b)) :=
+    fun i => resW (Eop q a b i : Module.End k (ModelSpace k)) (hEm i) with hR
+  set RQ : Module.End k (Win k (a + b)) := resW (Qab q a b : Module.End k (ModelSpace k)) hQm with hRQ
+  have hfi := fusion_identity (k := k) q a b hd hq2
+  have hsum : RQ = ∑ i, R i := by
+    refine LinearMap.ext fun x => Subtype.ext ?_
+    have := congrArg (fun T : Module.End k (ModelSpace k) => T (x : ModelSpace k)) hfi
+    simpa [hRQ, hR, LinearMap.sum_apply, Submodule.coe_sum, resW_apply] using this
+  have hidQ : IsIdempotentElem RQ := by
+    show RQ * RQ = RQ
+    rw [hRQ, resW_mul]
+    exact resW_congr (Qab_idem q a b (fun j hj => hd j (by omega))) _ _
+  have hidE : ∀ i, IsIdempotentElem (R i) := fun i => by
+    show R i * R i = R i
+    simp only [hR]
+    rw [resW_mul]
+    exact resW_congr (Eop_idem q a b hd (hia i) (hib i) hq2) _ _
+  have tr : ∀ {X : Module.End k (Win k (a + b))}, IsIdempotentElem X →
+      LinearMap.trace k (Win k (a + b)) X = (Module.finrank k (LinearMap.range X) : k) :=
+    fun {X} (hX : IsIdempotentElem X) => trace_idempotent (K := k) (V := Win k (a + b)) hX
+  have h1 : (Module.finrank k (LinearMap.range RQ) : k) = ∑ i, (Module.finrank k (LinearMap.range (R i)) : k) := by
+    rw [← tr hidQ, hsum, map_sum]
+    exact Finset.sum_congr rfl fun i _ => tr (hidE i)
+  have h2 : Module.finrank k (LinearMap.range RQ) = ∑ i, Module.finrank k (LinearMap.range (R i)) := by
+    exact_mod_cast h1
+  have hA := finrank_range_Qab_le (k := k) q a b (fun j hj => hd j (by omega))
+  have hB := sum_channel_dims a b
+  rw [← Fin.sum_univ_eq_sum_range (fun i => a + b - 2 * i + 1) (min a b + 1)] at hB
+  have hlow : ∀ i ∈ (Finset.univ : Finset (Fin (min a b + 1))), a + b - 2 * (i : ℕ) + 1 ≤
+      Module.finrank k (LinearMap.range (R i)) := fun i _ => le_finrank_range_Eop q (hia i) (hib i) hd hq2
+  have hle : ∑ i : Fin (min a b + 1), (a + b - 2 * (i : ℕ) + 1) ≤
+      ∑ i : Fin (min a b + 1), Module.finrank k (LinearMap.range (R i)) := Finset.sum_le_sum hlow
+  have heq : ∑ i : Fin (min a b + 1), (a + b - 2 * (i : ℕ) + 1) =
+      ∑ i : Fin (min a b + 1), Module.finrank k (LinearMap.range (R i)) := by
+    apply le_antisymm hle
+    rw [← h2]
+    exact hA.trans hB
+  exact ((Finset.sum_eq_sum_iff_of_le hlow).mp heq i (Finset.mem_univ i)).symm
+
 end Lightlike.TemperleyLieb

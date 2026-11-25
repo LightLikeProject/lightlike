@@ -15,6 +15,10 @@ open LinearMap Module
 
 variable {K : Type*} [Field K] [CharZero K] {V : Type*} [AddCommGroup V] [Module K V] [FiniteDimensional K V]
 
+/-- The trace of an idempotent is the rank of its range. -/
+theorem trace_idempotent {X : V →ₗ[K] V} (hX : IsIdempotentElem X) :
+    trace K V X = (finrank K (range X) : K) := hX.isProj_range.trace
+
 /-- **Completeness by rank.** -/
 theorem complete_of_rank {ι : Type*} [Fintype ι] [DecidableEq ι] (Q : V →ₗ[K] V) (E : ι → V →ₗ[K] V)
     (hQ : IsIdempotentElem Q) (hE : ∀ i, IsIdempotentElem (E i)) (hEE : ∀ i j, i ≠ j → E i * E j = 0)
