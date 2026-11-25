@@ -57,7 +57,7 @@ axiom, and none of these modules uses `maxHeartbeats 0`.
 The associator of the fusion ring is given by the quantum 6j symbols: `F^{abc}_d[e, f] = (-1)^((a+b+c+d)/2) √([e+1][f+1]) {a b e; c d f}_q`, and its pentagon equation
 `F^{pcd}_e[g, l] F^{abl}_e[p, k] = Σ_h F^{abc}_g[p, h] F^{ahd}_e[g, k] F^{bcd}_k[h, l]` follows from the quantum
 Biedenharn–Elliott identity by moving the signs and the square roots of the dimensions into the F-matrices, so it is conditional on
-`qBiedenharnElliott` and unconditional at `r = 3` [28]. The hexagon and the rest of the modular category are not treated.
+`qBiedenharnElliott` and unconditional at `r = 3` [28]. For four spin-1/2 lines the quantum 6j symbols are evaluated (the F-matrix `F^{111}_1` on the channels `0, 2` is `[[-1/[2], √[3]/[2]], [√[3]/[2], 1/[2]]]`), and with the braiding eigenvalues `R^{ab}_c = (-1)^((a+b-c)/2) q^{(c(c+2) - a(a+2) - b(b+2))/4}` the hexagon equation `R^{11}_e F[e,g] R^{11}_g = Σ_h F[e,h] R^{1h}_1 F[h,g]` holds for `q = e^{iπ/r}`, `r ≥ 4` [36]. The hexagon for general spins and the rest of the modular category are not treated.
 
 Further results of this area in the results catalogue:
 Norm one of the q-6j matrix at every level r ≥ 2 [29]. q-orthogonality of the 6j symbol at every level r
@@ -120,6 +120,7 @@ level r - 2 [35].
 34. Lightlike/TuraevViro/SMatrix.lean - `TV.sMat`, `TV.sMat_comm`, `TV.sMat_zero_left`,
     `TV.sMat_zero_zero_pos`, `TV.verlinde_zero`
 35. Lightlike/TuraevViro/SOrthogonal.lean - `TV.sum_sin_mul_sin_orth`, `TV.sMat_mul_self`
+36. Lightlike/TuraevViro/Hexagon.lean - `TV.Rbr`, `TV.sixJ_half_00`, `TV.sixJ_half_02`, `TV.sixJ_half_22`, `TV.fMat_half_00`, `TV.fMat_half_02`, `TV.fMat_half_22`, `TV.hexagon_half`
 
 ## References
 
