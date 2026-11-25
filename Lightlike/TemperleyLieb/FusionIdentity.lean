@@ -569,7 +569,7 @@ lemma Eqv.sum {N : ℕ} {ι : Type*} (s : Finset ι) {f : ι → Module.End k (M
     exact (h a (Finset.mem_insert_self _ _)).add (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /-- **The fusion identity** `Q(a,b) = Σ_{i ≤ min a b} E_i` in the model of the Temperley–Lieb algebra. -/
-theorem fusion_identity [CharZero k] (q : kˣ) (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b)
+theorem fusion_identity [CharZero k] (q : kˣ) (a b : ℕ)
     (hd : ∀ j, j ≤ a + b → chebD (loopVal q) j ≠ 0)
     (hq2 : ∀ j, 1 ≤ j → j ≤ a + b + 1 → (q : k) ^ (2 * j) ≠ 1) :
     Qab q a b = ∑ i : Fin (min a b + 1), Eop q a b i := by
@@ -594,8 +594,10 @@ theorem fusion_identity [CharZero k] (q : kˣ) (a b : ℕ) (ha : 1 ≤ a) (hb : 
           rw [resW_mul]
           exact resW_congr (Eop_idem q a b hd (hia i) (hib i) hq2) _ _)
         (fun i j hij => by
+          have hne : (i : ℕ) ≠ j := fun h => hij (Fin.ext h)
+          have hm : 1 ≤ min a b := by have h1 := i.2; have h2 := j.2; omega
           have this : (Eop q a b i * Eop q a b j : Module.End k (ModelSpace k)) = 0 :=
-            Eop_orth q a b hd ha hb (hia i) (hib i) (hia j) (hib j) (fun h => hij (Fin.ext h)) hq2
+            Eop_orth q a b hd (by omega) (by omega) (hia i) (hib i) (hia j) (hib j) hne hq2
           refine LinearMap.ext fun x => Subtype.ext ?_
           have h2 := congrArg (fun T : Module.End k (ModelSpace k) => T (x : ModelSpace k)) this
           simpa [resW_apply] using h2)
