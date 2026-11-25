@@ -6044,3 +6044,58 @@
   review: kernel-checked
   note: "Comparison pending (the Regge equation itself, Sorkin 1975 and Asante-Dittrich-Padua eq. (3.2), was not read; Sorkin 2019, Section 9 is cited for the Lorentzian angles and deficits the statement uses). Hypothesis LorLengthsNondeg4 K L: no null triangle, no null tetrahedron, every 4-simplex Lorentzian (gram4L < 0), in every labelling. The variation is along a line of signed squared lengths L + tau v with v = 0 on the boundary edges; the action lorReggeAction is complex (Sorkin's complex angles with the causal-type weights), HasDerivAt at tau = 0 with derivative 0, and the equations are the complex sum over interior triangles of lorAreaPartial * lorDeficit = 0, where lorAreaPartial = +- (L_f + L_g - L_e)/(4 sqrt|triHL|) with the sign of triHL. The derivative of the angles drops out by the Lorentzian Schlaefli identity (lorSchlaefli4_finset). The statement says nothing on solutions other than flat Minkowski space (the flat case is the separate flat-solution entry). Non-vacuity: the cone example in Tests.lean (lorReggeAction_stationary_iff applied at an interior edge of the cone, with four interior triangles) instantiates the hypotheses."
   since: unreleased
+- id: LL-0463
+  title: Time evolution exp(-i t H) of a self-adjoint Hamiltonian on a finite-dimensional Hilbert space is a one-parameter unitary group that preserves inner products
+  area: QM
+  file: Lightlike/QM/Basic.lean
+  decls: [Lightlike.QM.evolve_add, Lightlike.QM.inner_evolve]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: hall-2013, location: "Chapter: A First Approach to Quantum Mechanics|10.1007/978-1-4614-7116-5_3"}
+  review: kernel-checked
+  note: "On a finite-dimensional complex inner product space, for a self-adjoint operator Hm, U(t) = exp(-i t Hm) (built as Mathlib's selfAdjoint.expUnitary of -t Hm, so U(t) is unitary by construction) satisfies U(s + t) = U(s) U(t) (evolve_add; with evolve_zero a one-parameter group) and ⟨U(t) φ, U(t) ψ⟩ = ⟨φ, ψ⟩ (inner_evolve: transition amplitudes are preserved; the norm case is norm_evolve in LL-0006). The Schrödinger equation is schrodinger (LL-0006). The source location is the chapter on quantum mechanics of Hall's book, chapter level only: no statement was compared at a section or equation number."
+  since: unreleased
+
+- id: LL-0464
+  title: The Born probabilities of an observable in a unit state sum to one, ‖P_μ ψ‖² over the eigenvalues μ
+  area: QM
+  file: Lightlike/QM/Basic.lean
+  decls: [Lightlike.QM.sum_bornProb]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: hall-2013, location: "Chapter: A First Approach to Quantum Mechanics|10.1007/978-1-4614-7116-5_3"}
+  review: kernel-checked
+  note: "For a self-adjoint operator A on a finite-dimensional complex Hilbert space with eigenvalues μ and orthogonal projections P_μ onto the eigenspaces, the Born probability of the outcome μ in the state ψ is bornProb A ψ μ = ‖P_μ ψ‖², it is nonnegative, and for a unit vector ψ the probabilities sum to 1 (sum_bornProb; Parseval for the eigenspace decomposition, sum_bornProb_eq_norm_sq, from Mathlib's spectral theorem). They form a probability distribution bornPMF on the eigenvalues. The probability is defined with the eigenspace projection, so it does not depend on a choice of eigenvectors in a degenerate eigenspace. This is the Born rule as a definition plus a normalisation theorem: the statement that measurement outcomes occur with these probabilities is a postulate and is not proved. Source location chapter-level only (Hall 2013, chapter on a first approach to quantum mechanics)."
+  since: unreleased
+
+- id: LL-0465
+  title: The expectation value ⟨ψ, A ψ⟩ is the Born-weighted sum of the eigenvalues of A
+  area: QM
+  file: Lightlike/QM/Basic.lean
+  decls: [Lightlike.QM.expectation_eq_sum]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: hall-2013, location: "Chapter: A First Approach to Quantum Mechanics|10.1007/978-1-4614-7116-5_3"}
+  review: kernel-checked
+  note: "For a self-adjoint operator A on a finite-dimensional complex Hilbert space and any vector ψ, ⟨ψ, A ψ⟩ = Σ_μ μ ‖P_μ ψ‖² over the eigenvalues μ of A, with P_μ the orthogonal projection onto the eigenspace (expectation_eq_sum), by the spectral theorem isometry H ≅ ⊕ E_μ. For a unit vector the weights are the Born probabilities of LL-0464. Source location chapter-level only (Hall 2013)."
+  since: unreleased
+
+- id: LL-0466
+  title: The Born probabilities of an observable that commutes with the Hamiltonian are conserved under time evolution
+  area: QM
+  file: Lightlike/QM/Basic.lean
+  decls: [Lightlike.QM.bornProb_evolve_of_commute]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: hall-2013, location: "Chapter: A First Approach to Quantum Mechanics|10.1007/978-1-4614-7116-5_3"}
+  review: kernel-checked
+  note: "If the self-adjoint operator A commutes with the self-adjoint Hamiltonian Hm, then for every real t, vector ψ and eigenvalue μ of A, bornProb A (U(t) ψ) μ = bornProb A ψ μ, where U(t) = exp(-i t Hm) (bornProb_evolve_of_commute). Proof: U(t) commutes with A, so it maps each eigenspace into itself, commutes with each eigenspace projection P_μ and preserves the norm. Source location chapter-level only (Hall 2013)."
+  since: unreleased
