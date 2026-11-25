@@ -112,4 +112,43 @@ theorem mode_wronskian_zero_of_decay {ν : ℂ} {m : ℤ} {a₁ b₁ a₂ b₂ :
       _ = 2 * C ^ 2 / r := by field_simp
   · exact tendsto_const_nhds.div_atTop Filter.tendsto_id
 
+/-- The right-hand side of the mode system as a map `ℂ × ℂ → ℂ × ℂ`. -/
+noncomputable def modeField (ν : ℂ) (m : ℤ) (r : ℝ) (z : ℂ × ℂ) : ℂ × ℂ :=
+  (((m : ℂ) / r) * z.1 + (ν / (1 + (r : ℂ) ^ 2)) * z.2,
+    -(((m + 1 : ℤ) : ℂ) / r) * z.2 + (ν / (1 + (r : ℂ) ^ 2)) * z.1)
+
+/-- **A mode solution vanishing at one point vanishes identically** (uniqueness for the linear system). -/
+theorem mode_sol_zero {ν : ℂ} {m : ℤ} {a b : ℝ → ℂ} (h : IsModeSol ν m a b) {r₀ : ℝ} (hr₀ : 0 < r₀)
+    (ha : a r₀ = 0) (hb : b r₀ = 0) : ∀ r : ℝ, 0 < r → a r = 0 ∧ b r = 0 := by
+  intro r hr
+  set ε : ℝ := min r r₀ / 2 with hε
+  set R : ℝ := max r r₀ + 1 with hR
+  have hε0 : 0 < ε := by have := lt_min hr hr₀; rw [hε]; linarith
+  have hεr : ε < r := by have := min_le_left r r₀; rw [hε]; linarith
+  have hεr₀ : ε < r₀ := by have := min_le_right r r₀; rw [hε]; linarith
+  have hrR : r < R := by have := le_max_left r r₀; rw [hR]; linarith
+  have hr₀R : r₀ < R := by have := le_max_right r r₀; rw [hR]; linarith
+  -- Lipschitz constant
+  set Kc : ℝ := (|(m : ℝ)| + 1) / ε + ‖ν‖ with hKc
+  have hKc0 : 0 ≤ Kc := by positivity
+  have hlip : ∀ t ∈ Set.Ioo ε R, LipschitzOnWith (Real.toNNReal Kc) (modeField ν m t) Set.univ := by
+    sorry
+  have hf : ∀ t ∈ Set.Ioo ε R, HasDerivAt (fun t => (a t, b t)) (modeField ν m t (a t, b t)) t ∧
+      (a t, b t) ∈ (Set.univ : Set (ℂ × ℂ)) := by
+    intro t ht
+    have ht0 : 0 < t := lt_trans hε0 ht.1
+    exact ⟨(h t ht0).1.prodMk (h t ht0).2, Set.mem_univ _⟩
+  have hg : ∀ t ∈ Set.Ioo ε R, HasDerivAt (fun _ : ℝ => ((0 : ℂ), (0 : ℂ))) (modeField ν m t ((0 : ℂ), (0 : ℂ))) t ∧
+      ((0 : ℂ), (0 : ℂ)) ∈ (Set.univ : Set (ℂ × ℂ)) := by
+    intro t ht
+    refine ⟨?_, Set.mem_univ _⟩
+    have : modeField ν m t ((0 : ℂ), (0 : ℂ)) = 0 := by simp [modeField]
+    rw [this]
+    exact (hasDerivAt_const t ((0 : ℂ), (0 : ℂ)))
+  have := ODE_solution_unique_of_mem_Ioo (f := fun t => (a t, b t)) (g := fun _ => ((0 : ℂ), (0 : ℂ)))
+    (v := modeField ν m) (s := fun _ => Set.univ) hlip ⟨hεr₀, hr₀R⟩ hf hg (by simp [ha, hb])
+  have := this ⟨hεr, hrR⟩
+  simp only [Prod.mk.injEq] at this
+  exact this
+
 end Lightlike.Dirac
