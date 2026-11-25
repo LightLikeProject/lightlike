@@ -49,7 +49,10 @@ equality of that integral with this vertex is not yet formalized. [TODO]
    `Spin4.toSO4_eq_one_iff`, `Spin4.isCoveringMap_toSO4Mat`
 2. Lightlike/Spin4/Clifford.lean - `Spin4.spinEquiv`, `Spin4.spinGroup_conj_ι`
 3. Lightlike/Spin4/Rep.lean - `Spin4.spin4Rep`, `Spin4.spin4Mat_mem_unitaryGroup`,
-   `Spin4.spin4Representation_isIrreducible`, `Spin4.finrank_tensorSpace`
+   `Spin4.continuous_spin4Rep`, `Spin4.inner_spin4Unitary`,
+   `Spin4.spin4Tensor_isIrreducible`, `Spin4.spin4Representation_isIrreducible`,
+   `Spin4.isInvariant_eq_bot_or_eq_top`, `Spin4.isIrreducible_extTprod` (Burnside.lean),
+   `Spin4.finrank_tensorSpace`, `Spin4.finrank_idx`
 4. Lightlike/Spin4/Completeness.lean - `Spin4.spin4Rep_complete`
 5. Lightlike/Spin4/ClebschGordan.lean - `Spin4.spin4_diag_clebschGordan`
 6. Lightlike/Spin4/EPRL.lean - `Spin4.eprlMap`, `Spin4.eprlMap_equivariant`,

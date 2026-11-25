@@ -5364,3 +5364,36 @@
   review: kernel-checked
   note: "Comparison pending: the cited location concerns bistellar moves between combinatorial manifolds; the statements here are the combinatorial preservation of the pseudo-manifold and closedness conditions defined in Boundary.lean, which that theorem does not state. The move is the one of LL-0035 (an involution, IsMove precondition on a pair of complementary faces of a 5-simplex)."
   since: unreleased
+- id: LL-0408
+  title: "The Spin(4) representation (j₊, j₋) = (n/2, m/2) is unitary and continuous: the matrices of the tensor product of two SU(2) spin representations are unitary, depend continuously on the group element, and the tensor form preserves the inner product"
+  area: Spin4
+  file: Lightlike/Spin4/Rep.lean
+  decls: [Lightlike.Spin4.spin4Mat_mem_unitaryGroup, Lightlike.Spin4.continuous_spin4Rep, Lightlike.Spin4.inner_spin4Unitary]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source was read at a cited location for this statement; it is the standard fact that the external tensor product of unitary representations of SU(2) and SU(2) is a unitary representation of SU(2) x SU(2), cf. Barrett-Crane 1998 and Perez 2013 for the labelling by (j+, j-)). Spin(4) is the product SU(2) x SU(2) (Lightlike.Spin4); the representation is the external tensor product of the spin n/2 and spin m/2 representations, for every n, m in N. No hypotheses."
+  since: unreleased
+- id: LL-0409
+  title: "The Spin(4) representation (j₊, j₋) = (n/2, m/2) is irreducible over the complex numbers, for every n, m: the external tensor product of two irreducible representations of SU(2) is an irreducible representation of SU(2) x SU(2)"
+  area: Spin4
+  file: Lightlike/Spin4/Rep.lean
+  decls: [Lightlike.Spin4.spin4Tensor_isIrreducible, Lightlike.Spin4.spin4Representation_isIrreducible, Lightlike.Spin4.isInvariant_eq_bot_or_eq_top, Lightlike.Spin4.isIrreducible_extTprod]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source was read at a cited location). The general statement isIrreducible_extTprod (Lightlike/Spin4/Burnside.lean) is the external tensor product of irreducible representations of two groups over an algebraically closed field, proved with Burnside's theorem; the SU(2) spin representations are irreducible by spinRepresentation_isIrreducible. The converse (these are all the irreducible representations) is Lightlike.Spin4.spin4Rep_complete (Completeness.lean). No hypotheses."
+  since: unreleased
+- id: LL-0410
+  title: "The dimension of the Spin(4) representation (j₊, j₋) = (n/2, m/2) is (2j₊+1)(2j₋+1) = (n+1)(m+1), for the abstract tensor space and for the matrix space"
+  area: Spin4
+  file: Lightlike/Spin4/Rep.lean
+  decls: [Lightlike.Spin4.finrank_tensorSpace, Lightlike.Spin4.finrank_idx]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source was read at a cited location); the dimension of a tensor product is the product of the dimensions. Proved as the complex finrank of TensorSpace n m and of the index space Idx n m -> C. No hypotheses."
+  since: unreleased
