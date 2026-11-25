@@ -5115,3 +5115,14 @@
   review: kernel-checked
   note: "Comparison pending (no source for the fermionic Wick theorem was read). Instance of the abstract recursion of FermionWick.lean (the previous entry): for a vector killed by all the transformed annihilation operators, the fields sum_j u_j b_j + sum_j v_j b_j^* are split fields, the anticommutator of the annihilation part with a field is the scalar sum u_j v'_j (the CAR of the transformed operators, isCARPairs_bog), and car_wick gives <Psi, x_1 ... x_n Psi> = <Psi, Psi> wick [x_1, ..., x_n] for every n; car_wick_two is n = 2. The fields a_j, c_j are such combinations by the inverse transformation (bog_inv), so the statement covers them, but this is not stated separately. WEAKER: finitely many modes (the infinite-mode vacuum and Shale for fermions are not built); no explicit n = 4 expansion check (the recursion is proved for all n); mixed quasi-free states are not covered."
   since: unreleased
+- id: LL-XXXX
+  title: "Minkowski space solves the vacuum Einstein equations with vanishing cosmological constant on all of R^n"
+  area: GR
+  file: Lightlike/GR/Einstein.lean
+  decls: [Lightlike.minkowski_isVacuumSolution]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source was read at a cited location). The coordinate vacuum equations G_{mu nu} + Lambda g_{mu nu} = 0 with Lambda = 0 hold at every point of R^n for the constant metric eta, for every dimension n, because the Riemann tensor vanishes (Minkowski flatness) and so do the Ricci tensor, the scalar curvature and the Einstein tensor."
+  since: unreleased
