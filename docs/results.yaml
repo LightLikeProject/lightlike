@@ -6522,3 +6522,47 @@
   review: kernel-checked
   note: "For the weight n ≥ 2, the closed subspace of the weighted L² space L²(ℍ, μ_n) of classes with a holomorphic representative (holoSubmodule n, the weighted Bergman space) is not zero: it contains the class of the lowest vector z ↦ (z + i)^{−n} (holoSubmodule_ne_bot, lowestClass_mem, lowestClass_ne_zero), which is nonzero because it is nonzero at the point i and the measure charges every neighbourhood. This is what makes the discrete series D_n^+ (LL-0276) a nonzero unitary representation, not the trivial representation on the zero space. Irreducibility of D_n^+ is not proven, and neither is the negative series D_n^-. The comparison with Knapp (1986) is pending: the book was not read at the cited location (chapter level)."
   since: unreleased
+- id: LL-0501
+  title: "Minkowski space is flat: in its chart the constant metric eta is a coordinate metric on all of R^n with vanishing Riemann tensor"
+  area: Spacetime
+  file: Lightlike/Spacetime/Curvature.lean
+  decls: [Lightlike.minkowski_flat]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source was read at a cited location). Flatness is the vanishing of the coordinate Riemann tensor of the constant metric eta on every point of R^n (IsFlatOn on Set.univ), for every dimension n."
+  since: unreleased
+- id: LL-0502
+  title: "The standard basis of R^n is a Lorentz frame for the Minkowski form eta, in every dimension"
+  area: Spacetime
+  file: Lightlike/Spacetime/Minkowski.lean
+  decls: [Lightlike.minkowskiForm_isLorentzian]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source was read at a cited location). The statement is IsLorentzianForm n (minkowskiForm n): the basis Pi.basisFun satisfies B (e i) (e j) = eta n i j (IsLorentzianForm n B), the definition of a Lorentzian form of dimension n."
+  since: unreleased
+- id: LL-0503
+  title: "The lowered coordinate Riemann tensor is antisymmetric in its last index pair, and satisfies the lowered first Bianchi identity R_{rho sigma mu nu} + R_{rho mu nu sigma} + R_{rho nu sigma mu} = 0 on the domain of a coordinate metric"
+  area: Spacetime
+  file: Lightlike/Spacetime/RiemannSymmetry.lean
+  decls: [Lightlike.riemannLower_antisymm_last, Lightlike.IsCoordMetric.bianchi_first_lower]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source was read at a cited location; the unlowered identity and the pair symmetry are LL-0001, whose Carroll equations (3.79) and (3.80) these lowered forms accompany). The antisymmetry is a formula identity valid for every metric function and every point; the Bianchi identity needs IsCoordMetric (a smooth symmetric metric, invertible on the open set U) and a point of its domain U."
+  since: unreleased
+- id: LL-0504
+  title: "The vacuum Einstein equations with a cosmological constant are chart-independent: if a metric solves them on U, its pullback under a chart change solves them on the chart domain, for every Lambda"
+  area: Spacetime
+  file: Lightlike/Spacetime/ChartChange.lean
+  decls: [Lightlike.isVacuumSolution_pullback]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source was read at a cited location). Follows from the tensor transformation of the Einstein tensor (LL-0002 and einsteinTensor_pullback) and of the metric; IsChartChange is a smooth map from the open set V into U with invertible Jacobian determinant on V, and the equation is Einstein tensor plus Lambda times the metric equals zero in the coordinate formulation."
+  since: unreleased
