@@ -1955,6 +1955,7 @@ import Lightlike.Dirac.AngularFourier
 import Lightlike.Dirac.AngularModes
 import Lightlike.Dirac.ModeODE
 import Lightlike.Dirac.ModeSeries
+import Lightlike.Dirac.GaussSum
 import Lightlike.TemperleyLieb.Basic
 import Lightlike.TemperleyLieb.JonesWenzl
 import Lightlike.TemperleyLieb.Model

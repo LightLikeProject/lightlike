@@ -153,4 +153,50 @@ lemma tendsto_mul_hgTerm {a : ℂ} (ha : a ≠ 0) (j : ℕ) :
     rw [e]
     ring
 
+/-- **The value at infinity.** For `a ≠ 0` with `a² ≠ j²` for `1 ≤ j ≤ m`, the partial sums of `₂F₁(a, −a; m+1; 1)`
+converge to `sin(πa)/(πa) · ∏_{j=1}^m j² / (j² − a²)`. -/
+theorem tendsto_hgPartial {a : ℂ} (ha : a ≠ 0) (m : ℕ) (hne : ∀ j < m, ((j : ℂ) + 1) ^ 2 ≠ a ^ 2) :
+    Filter.Tendsto (fun N : ℕ => hgPartial a ((m : ℂ) + 1) N) Filter.atTop
+      (nhds (Complex.sin (Real.pi * a) / (Real.pi * a) *
+        ∏ j ∈ Finset.range m, (((j : ℂ) + 1) ^ 2 / (((j : ℂ) + 1) ^ 2 - a ^ 2)))) := by
+  induction m with
+  | zero =>
+    simp only [Nat.cast_zero, zero_add, Finset.range_zero, Finset.prod_empty, mul_one]
+    have := tendsto_eulerProd ha
+    rw [← Filter.tendsto_add_atTop_iff_nat 1]
+    refine this.congr fun N => ?_
+    unfold hgPartial
+    rw [hgTerm_one_partial]
+  | succ m ih =>
+    have ih' := ih (fun j hj => hne j (Nat.lt_succ_of_lt hj))
+    set c : ℂ := (m : ℂ) + 1 with hc
+    have hcn : ∀ n : ℕ, c + n ≠ 0 := fun n => by
+      have : (0 : ℝ) < m + 1 + n := by positivity
+      rw [hc]; exact_mod_cast this.ne'
+    have hden : c ^ 2 - a ^ 2 ≠ 0 := sub_ne_zero.mpr (hne m (Nat.lt_succ_self m))
+    have hN := tendsto_mul_hgTerm ha m
+    rw [← hc] at hN
+    have h1 := (ih'.const_mul (c ^ 2)).add (hN.const_mul c)
+    have h2 := h1.div_const (c ^ 2 - a ^ 2)
+    have hlim : (c ^ 2 * (Complex.sin (Real.pi * a) / (Real.pi * a) *
+          ∏ j ∈ Finset.range m, (((j : ℂ) + 1) ^ 2 / (((j : ℂ) + 1) ^ 2 - a ^ 2))) + c * 0) / (c ^ 2 - a ^ 2) =
+        Complex.sin (Real.pi * a) / (Real.pi * a) *
+          ((∏ j ∈ Finset.range m, (((j : ℂ) + 1) ^ 2 / (((j : ℂ) + 1) ^ 2 - a ^ 2))) * (c ^ 2 / (c ^ 2 - a ^ 2))) := by
+      field_simp
+      ring
+    have key : Filter.Tendsto (fun N : ℕ => hgPartial a (c + 1) N) Filter.atTop
+        (nhds (Complex.sin (Real.pi * a) / (Real.pi * a) *
+          ((∏ j ∈ Finset.range m, (((j : ℂ) + 1) ^ 2 / (((j : ℂ) + 1) ^ 2 - a ^ 2))) * (c ^ 2 / (c ^ 2 - a ^ 2))))) := by
+      rw [← hlim]
+      refine h2.congr fun N => ?_
+      have hp := hgTerm_partial a c hcn N
+      simp only [hgPartial]
+      field_simp
+      linear_combination (-1 : ℂ) * hp
+    rw [Finset.prod_range_succ]
+    have e1 : ((m + 1 : ℕ) : ℂ) + 1 = c + 1 := by rw [hc]; push_cast; ring
+    have e2 : (((m : ℕ) : ℂ) + 1) = c := hc.symm
+    rw [e1, e2]
+    exact key
+
 end Lightlike.Dirac
