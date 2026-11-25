@@ -30,7 +30,8 @@ import leansrc  # noqa: E402
 # Maintainer tools: their file names are fixtures and command-line examples, not references.
 TOOLING = {"ci_check.py", "proof_task_check.py", "tooling_selftest.py", "run_python_checks.py",
            "gate.py", "tasks.py", "api_map.py", "sources.py", "prune_docs.py", "leansrc.py",
-           "sixj_support.py", "doc_refs_check.py"}
+           "sixj_support.py", "doc_refs_check.py", "milestone_status.py", "sync_github.py",
+           "consistency_check.py"}
 PACKAGES = {"Mathlib": ".lake/packages/mathlib", "Physlib": ".lake/packages/Physlib",
             "PhyslibAlpha": ".lake/packages/Physlib"}
 PATH = re.compile(r"(?<![\w./-])((?:[\w.-]+/)*[\w-][\w.-]*\.(?:lean|py|md|yaml|yml|json|toml|txt))"

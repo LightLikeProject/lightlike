@@ -1,14 +1,33 @@
-# The repository whose issues track the tasks, and the colours of the task labels. Read by
-# `python3 scripts/tasks.py sync`, which .github/workflows/tasks.yml runs on every issue, comment and
-# pull request event and hourly; it creates any label that is missing.
+# The repository whose issues track the tasks, its Project board, and the colours of the task labels.
+# Read by two scripts, each the only writer of its own labels (owner, 25 Nov 2026):
 #
-# Labels that `sync` keeps current on each open task issue:
-#   ready, blocked      whether every task it needs is done (docs/tasks/README.md lists the needs)
-#   claimed             someone took the task by commenting `/claim` (48 hours, or while a pull request is open)
-#   in review           a pull request with the line `Task: <ID>` is open
-# The other labels follow from the plan (kind, area, size, difficulty) and do not change.
+# `python3 scripts/tasks.py sync` (the claim Action, .github/workflows/tasks.yml: on every issue,
+# comment and pull request event, and hourly) keeps current
+#   on a proof task's issue: ready, blocked (whether every task it needs is done), claimed (someone
+#     commented `/claim`: 48 hours, or while a pull request is open), in review (a pull request with
+#     the line `Task: <ID>` is open); it opens the issue when the task becomes ready and closes it
+#     when the task's declaration has no sorry on main;
+#   on a milestone's issue: claimed and attempting only, and the assignees.
+#
+# `python3 scripts/sync_github.py apply` (run by the merger after a merge) keeps current, on a
+# milestone's issue: its title and body (the checklist computed by scripts/milestone_status.py),
+# the plan labels (milestone, area, size, difficulty), one status label for a v1.0 milestone
+# (status: ready, status: in-progress, status: review, status: done), not-scheduled and help-wanted
+# for the others, the GitHub Milestone "v1.0", and the column on the Project board. It opens the issue
+# of a milestone that has none. Neither script closes a milestone's issue: the merger does, after a
+# passing review.
 org: LightlikeProject
 repo: LightlikeProject/lightlike
+
+# The Project board of the milestones (scripts/sync_github.py): its title, and the single-select
+# field whose options are the columns.
+project:
+  title: Lightlike
+  field: Status
+  columns: [Ready, In progress, In review, Done, Not scheduled]
+  # A number field: the ranking of each open v1.0 milestone (`ranking:` of checklists.yaml).
+  # Sorting the Ready column by it shows what is next.
+  rank_field: Rank
 
 # Label colours and descriptions. A key ending in ":" applies to every label with that prefix.
 labels:
@@ -27,3 +46,9 @@ labels:
   intermediate: {color: "c2e0c6", description: "Needs some Lean or domain experience"}
   advanced: {color: "e99695", description: "Needs substantial Lean and domain experience"}
   research-level: {color: "b60205", description: "Open-ended; several routes may be needed"}
+  "status: ready": {color: "0e8a16", description: "v1.0 milestone: free to take (the streams take them in ranking order)"}
+  "status: in-progress": {color: "fbca04", description: "v1.0 milestone: a stream or a contributor works on it"}
+  "status: review": {color: "5319e7", description: "v1.0 milestone: every item but the review items is ticked; waits for its review"}
+  "status: done": {color: "0e8a16", description: "v1.0 milestone: reviewed and closed"}
+  not-scheduled: {color: "bfdadc", description: "Outside v1.0: open to outside contributors, not worked on by the project's streams"}
+  help-wanted: {color: "008672", description: "Open to outside contributors"}
