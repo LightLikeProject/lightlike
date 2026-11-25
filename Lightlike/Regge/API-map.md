@@ -25,7 +25,11 @@ embedded in `ℝ³` solve these equations [7].
 In four dimensions the dihedral angles of a 4-simplex are computed from its ten edge lengths and
 agree with Euclidean geometry [8], deficit angles are defined at triangles [9], Schläfli's identity
 holds [10], the Regge equations are the vanishing of the interior deficits [11], and flat
-triangulations solve them [12].
+triangulations solve them [12]. In a geometric triangulation of a region of `ℝ⁴` every interior
+triangle has deficit zero and the Regge action is a sum over the boundary triangles [101]; the
+boundary of the 5-simplex with unit lengths is curved, with deficit `2π - 3 arccos(1/4) > 0` at
+every triangle [102]; the exterior angle and a formula without the square root both fail on a
+flat ring of 4-simplices [102].
 
 In dimension 2, for a Riemannian metric on a region of the plane, the deficit angles of fat vertex
 stars of bounded valence, with geodesic edge lengths and weighted by a Lipschitz function, differ
@@ -387,6 +391,11 @@ O(‖y − x‖⁵), uniformly for x in a compact set, and the same about the mi
 100. Lightlike/Upstream/GeodesicExpansion/Final.lean -
      `Upstream.GeodesicExpansion.IsRiemMetric.riemannianEDist_sq_expansion`,
      `Upstream.GeodesicExpansion.IsRiemMetric.riemannianEDist_sq_expansion_midpoint`
+101. Lightlike/Regge/D4/Embedded.lean - `Regge4.IsGeometric4.deficit4_eq_zero`,
+     `Regge4.IsGeometric4.reggeAction4_eq`
+102. Lightlike/Regge/D4/Tests.lean - `Regge4.Tests.flatRing_deficit`, `Regge4.Tests.cone5_deficit`,
+     `Regge4.Tests.sphere5_deficit`, `Regge4.Tests.sphere5_reggeAction`,
+     `Regge4.Tests.flatRing_exterior`, `Regge4.Tests.flatRing_noSqrt`
 
 ## References
 

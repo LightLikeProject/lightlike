@@ -5115,3 +5115,47 @@
   review: kernel-checked
   note: "Comparison pending (no source for the fermionic Wick theorem was read). Instance of the abstract recursion of FermionWick.lean (the previous entry): for a vector killed by all the transformed annihilation operators, the fields sum_j u_j b_j + sum_j v_j b_j^* are split fields, the anticommutator of the annihilation part with a field is the scalar sum u_j v'_j (the CAR of the transformed operators, isCARPairs_bog), and car_wick gives <Psi, x_1 ... x_n Psi> = <Psi, Psi> wick [x_1, ..., x_n] for every n; car_wick_two is n = 2. The fields a_j, c_j are such combinations by the inverse transformation (bog_inv), so the statement covers them, but this is not stated separately. WEAKER: finitely many modes (the infinite-mode vacuum and Shale for fermions are not built); no explicit n = 4 expansion check (the recursion is proved for all n); mixed quasi-free states are not covered."
   since: unreleased
+- id: LL-XXXX-a
+  title: "In a geometric triangulation of a region of R^4 every interior triangle has deficit angle zero, and the 4D Regge action is the sum over the boundary triangles of area times (pi minus the sum of the dihedral angles)"
+  area: Regge
+  file: Lightlike/Regge/D4/Embedded.lean
+  decls: [Lightlike.Regge4.IsGeometric4.deficit4_eq_zero, Lightlike.Regge4.IsGeometric4.reggeAction4_eq]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source was read at a cited location). Hypotheses (all in the statement): the ambient space E has finrank 4, the 4-simplices are non-degenerate with pairwise disjoint interiors (IsGeometric4), and the complex is a triangulated manifold at its triangles (IsTriManifold); the lengths are the induced Euclidean distances. The statement is for interior triangles (intTris4) only."
+  since: unreleased
+- id: LL-XXXX-b
+  title: "The dihedral angle of a 4-simplex computed from its edge lengths equals the Euclidean angle between the components of two vertex directions orthogonal to the plane of a triangle"
+  area: Regge
+  file: Lightlike/Regge/D4/Dihedral.lean
+  decls: [Lightlike.Regge4.dihedral4_dist]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source was read at a cited location). For lengths that are the distances of an embedding x of the vertices into a real inner product space, and for a triangle pqr with nonzero Gram determinant (gram2 ℓ p q r ≠ 0); the vertices s and u are the apexes of the two tetrahedra."
+  since: unreleased
+- id: LL-XXXX-c
+  title: "The boundary of the 5-simplex with unit edge lengths is curved: every triangle has deficit angle 2 pi - 3 arccos(1/4) > 0, and the Regge action is 20 (sqrt 3 / 4)(2 pi - 3 arccos(1/4))"
+  area: Regge
+  file: Lightlike/Regge/D4/Tests.lean
+  decls: [Lightlike.Regge4.Tests.sphere5_deficit, Lightlike.Regge4.Tests.sphere5_reggeAction]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source was read at a cited location). A closed-form example with all edge lengths 1 on the complex sphere5 (6 vertices, 20 triangles, each in three 4-simplices); the value uses the 4-simplex dihedral angle arccos(1/4) and the triangle area sqrt 3 / 4."
+  since: unreleased
+- id: LL-XXXX-d
+  title: "Trust checks for the 4D deficit angle: the flat ring and the 4-simplex subdivided from an interior vertex have zero interior deficits, and the exterior angle and a formula without the square root give deficits pi and pi/6 on the flat ring"
+  area: Regge
+  file: Lightlike/Regge/D4/Tests.lean
+  decls: [Lightlike.Regge4.Tests.flatRing_deficit, Lightlike.Regge4.Tests.cone5_deficit, Lightlike.Regge4.Tests.flatRing_exterior, Lightlike.Regge4.Tests.flatRing_noSqrt]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source was read at a cited location). Non-vacuity examples of LL-XXXX-a: the flat ring (three 4-simplices around the triangle {0,1,2}) and the 4-simplex subdivided from an interior vertex by the 1-5 Pachner move (cone5, all ten interior triangles); the two wrong-formula checks show the deficit would not vanish, so the zero deficits are not an artefact of the definition."
+  since: unreleased
