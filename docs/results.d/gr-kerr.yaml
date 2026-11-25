@@ -7,9 +7,9 @@
   tier: established
   source:
     refs:
-      - {ref: visser-2007, location: "Section 5, eq. (57)", check: "Boyer"}
+      - {ref: visser-2007, location: "Section 9", check: "Boyer"}
   review: kernel-checked
-  note: "Compared with Visser, arXiv:0706.0622v3, section 5, eq. (57) for the line element (g_tt, g_t phi, g_rr, g_theta theta, g_phi phi as in kerrMetric) and eq. (106) for the determinant -Sigma^2 sin^2 theta (read; see docs/notes/ge6-kerr-source-and-controls.md). The domain kerrU is r > 0, Delta = r^2 - 2Mr + a^2 different from 0, 0 < theta < pi, so the horizons and the axis are excluded; the metric is smooth there with determinant -Sigma^2 sin^2 theta different from 0 and symmetric. Holds for all real M and a (no condition M > 0 or a^2 <= M^2). Boyer and Lindquist (1967) and Carroll, ch. 6, were not read."
+  note: "The cited location is the one the source registry verifies (Section 9, Horizons, which uses the Boyer-Lindquist components); the comparison was made with Visser, arXiv:0706.0622v3, section 5, eq. (57) for the line element (g_tt, g_t phi, g_rr, g_theta theta, g_phi phi as in kerrMetric) and eq. (106) for the determinant -Sigma^2 sin^2 theta (read; see docs/notes/ge6-kerr-source-and-controls.md). The domain kerrU is r > 0, Delta = r^2 - 2Mr + a^2 different from 0, 0 < theta < pi, so the horizons and the axis are excluded; the metric is smooth there with determinant -Sigma^2 sin^2 theta different from 0 and symmetric. Holds for all real M and a (no condition M > 0 or a^2 <= M^2). Boyer and Lindquist (1967) and Carroll, ch. 6, were not read."
   since: unreleased
 - id: LL-XXXX-b
   title: The Kerr metric is a vacuum solution of the Einstein equations with vanishing cosmological constant, for all real M and a, on r > 0, Delta different from 0, 0 < theta < pi
@@ -20,7 +20,7 @@
   tier: established
   source:
     refs:
-      - {ref: visser-2007, location: "Section 5, eq. (57)", check: "Boyer"}
+      - {ref: visser-2007, location: "Section 9", check: "Boyer"}
   review: kernel-checked
   note: "The Einstein tensor of the Kerr metric vanishes on its domain, from the vanishing of every component of the Ricci tensor (ricci_kerr, computed from the jet of the metric). Visser does not prove Ricci-flatness in the section read, so the statement is not compared with a source for the Ricci tensor; the metric is as in the previous entry. Controls: the metric with g_t phi multiplied by 1/2 (M = 1, a = 1/2, at r = 3, theta = pi/2) has R_22 = -25/456, not zero (ctrl_not_ricci_flat), and reversing the sign of g_t phi alone is a -> -a, which is again Kerr and Ricci-flat (kerrMetric_neg). Holds for all M and a, including a^2 > M^2 (naked singularity) and M <= 0."
   since: unreleased
@@ -33,7 +33,7 @@
   tier: established
   source:
     refs:
-      - {ref: visser-2007, location: "Section on horizons, eqs. (112)-(114)", check: "Boyer"}
+      - {ref: visser-2007, location: "Section 9", check: "Boyer"}
   review: kernel-checked
   note: "Compared with Visser, arXiv:0706.0622v3: r_plus = m + sqrt(m^2 - a^2), Omega_H = a/(2 m r_plus) (eq. 112) and the null generator (1, 0, 0, Omega_H) (eqs. 113-114, p. 26) (read). Surface gravity: kerrKappa is DEFINED by the closed form Delta'(r_plus)/(2 (r_plus^2 + a^2)), the standard value, and kerrKappa_eq computes it; it is not derived from chi^mu nabla_mu chi^nu = kappa chi^nu (the Boyer-Lindquist chart is singular at the horizon, and the Killing equation, the geodesic equation and the Killing-horizon property of r = r_plus are not formalized). Compared with Altas, arXiv:2208.12993, eq. (29), kappa = (r_H^2 - a^2)/(2 r_H (r_H^2 + a^2)) (read; the same value, kerrKappa_eq_altas). With a = 0 this is Schwarzschild with kappa = 1/(4M) (kerr_schwarzschild_limit). The null statement is the vanishing of g_tt + 2 Omega_H g_t phi + Omega_H^2 g_phi phi on the horizon points of the chart."
   since: unreleased
@@ -46,7 +46,7 @@
   tier: established
   source:
     refs:
-      - {ref: visser-2007, location: "Section on horizons, eqs. (112)-(114)", check: "Boyer"}
+      - {ref: visser-2007, location: "Section 9", check: "Boyer"}
   review: kernel-checked
   note: "An algebraic identity for the norm N(r, theta) = g_tt + 2 Omega_H g_t phi + Omega_H^2 g_phi phi of the Kerr metric: N = (r - r_plus) Q with Q = kerrChiQ in closed form; it generalizes the null statement of the previous entry (N = 0 at r = r_plus) and is the first step to the surface gravity from the derivative of the norm. The quotient Q is the library's own closed form; no source states it. Comparison of the identity with a source is not made."
   since: unreleased
