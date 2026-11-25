@@ -474,4 +474,65 @@ theorem hgPartial_limit (a : ℂ) (m : ℕ) :
         · rw [h, mul_neg, Complex.sin_neg, mul_comm]; simp [Complex.sin_nat_mul_pi k]
       rw [this]; simp
 
+/-- **Polynomial growth of the hypergeometric coefficients.** -/
+theorem hgTerm_bound (a : ℂ) (m : ℕ) : ∀ n : ℕ,
+    ‖hgTerm a ((m : ℂ) + 1) n‖ ≤ ((n : ℝ) + 1) ^ (2 * max ‖a‖ 1) := by
+  set A : ℝ := max ‖a‖ 1 with hA
+  have hA1 : 1 ≤ A := le_max_right _ _
+  have hAa : ‖a‖ ≤ A := le_max_left _ _
+  intro n
+  induction n with
+  | zero => simp [hgTerm]
+  | succ n ih =>
+    have hn1 : (0 : ℝ) < n + 1 := by positivity
+    have hc : ‖((m : ℂ) + 1 + n)‖ = (m : ℝ) + 1 + n := by
+      have : ((m : ℂ) + 1 + n) = (((m : ℝ) + 1 + n : ℝ) : ℂ) := by push_cast; ring
+      rw [this, Complex.norm_real, Real.norm_of_nonneg (by positivity)]
+    have hn1c : ‖((n : ℂ) + 1)‖ = (n : ℝ) + 1 := by
+      have : ((n : ℂ) + 1) = (((n : ℝ) + 1 : ℝ) : ℂ) := by push_cast; ring
+      rw [this, Complex.norm_real, Real.norm_of_nonneg hn1.le]
+    have hnorm : ‖(n : ℂ)‖ = n := by simp
+    have h1 : ‖((n : ℂ) + a)‖ ≤ n + A := by
+      calc _ ≤ ‖(n : ℂ)‖ + ‖a‖ := norm_add_le _ _
+        _ ≤ n + A := by rw [hnorm]; linarith
+    have h2 : ‖((n : ℂ) - a)‖ ≤ n + A := by
+      calc _ ≤ ‖(n : ℂ)‖ + ‖a‖ := norm_sub_le _ _
+        _ ≤ n + A := by rw [hnorm]; linarith
+    have hratio : ‖hgTerm a ((m : ℂ) + 1) (n + 1)‖ ≤ ‖hgTerm a ((m : ℂ) + 1) n‖ * (1 + A / ((n : ℝ) + 1)) ^ 2 := by
+      simp only [hgTerm]
+      rw [norm_div, norm_mul, norm_mul, norm_mul, hc, hn1c]
+      have hden : (0 : ℝ) < ((m : ℝ) + 1 + n) * ((n : ℝ) + 1) := by positivity
+      have hq : ‖((n : ℂ) + a)‖ * ‖((n : ℂ) - a)‖ / (((m : ℝ) + 1 + n) * ((n : ℝ) + 1)) ≤
+          (1 + A / ((n : ℝ) + 1)) ^ 2 := by
+        rw [div_le_iff₀ hden]
+        have hnum : ‖((n : ℂ) + a)‖ * ‖((n : ℂ) - a)‖ ≤ ((n : ℝ) + A) ^ 2 := by
+          rw [sq]; exact mul_le_mul h1 h2 (norm_nonneg _) (by positivity)
+        have hm : (n : ℝ) + 1 ≤ (m : ℝ) + 1 + n := by
+          have : (0 : ℝ) ≤ m := Nat.cast_nonneg m; linarith
+        have e : (1 + A / ((n : ℝ) + 1)) ^ 2 * (((m : ℝ) + 1 + n) * ((n : ℝ) + 1)) ≥
+            (1 + A / ((n : ℝ) + 1)) ^ 2 * (((n : ℝ) + 1) * ((n : ℝ) + 1)) :=
+          mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right hm hn1.le) (by positivity)
+        have e2 : (1 + A / ((n : ℝ) + 1)) ^ 2 * (((n : ℝ) + 1) * ((n : ℝ) + 1)) = ((n : ℝ) + 1 + A) ^ 2 := by
+          field_simp
+        have : ((n : ℝ) + A) ^ 2 ≤ ((n : ℝ) + 1 + A) ^ 2 := by
+          apply pow_le_pow_left₀ (by positivity); linarith
+        linarith
+      calc ‖hgTerm a ((m : ℂ) + 1) n‖ * (‖((n : ℂ) + a)‖ * ‖((n : ℂ) - a)‖) / (((m : ℝ) + 1 + n) * ((n : ℝ) + 1))
+          = ‖hgTerm a ((m : ℂ) + 1) n‖ * (‖((n : ℂ) + a)‖ * ‖((n : ℂ) - a)‖ / (((m : ℝ) + 1 + n) * ((n : ℝ) + 1))) := by ring
+        _ ≤ _ := mul_le_mul_of_nonneg_left hq (norm_nonneg _)
+    have hB : (0 : ℝ) ≤ ((n : ℝ) + 1) ^ (2 * A) := Real.rpow_nonneg hn1.le _
+    have hbern : (((n : ℝ) + 1) ^ (2 * A)) * (1 + A / ((n : ℝ) + 1)) ^ 2 ≤ (((n + 1 : ℕ) : ℝ) + 1) ^ (2 * A) := by
+      have hs0 : (0 : ℝ) ≤ 1 / ((n : ℝ) + 1) := by positivity
+      have h1' : 1 + A * (1 / ((n : ℝ) + 1)) ≤ (1 + 1 / ((n : ℝ) + 1)) ^ A :=
+        one_add_mul_self_le_rpow_one_add (by linarith) hA1
+      have h2' : (((n + 1 : ℕ) : ℝ) + 1) = ((n : ℝ) + 1) * (1 + 1 / ((n : ℝ) + 1)) := by
+        push_cast; field_simp
+      rw [h2', Real.mul_rpow hn1.le (by positivity)]
+      apply mul_le_mul_of_nonneg_left _ hB
+      have h3 : (1 + A / ((n : ℝ) + 1)) = 1 + A * (1 / ((n : ℝ) + 1)) := by ring
+      rw [h3, show (2 * A) = A + A by ring, Real.rpow_add (by positivity), ← sq]
+      apply pow_le_pow_left₀ (by positivity)
+      exact h1'
+    exact hratio.trans ((mul_le_mul_of_nonneg_right ih (sq_nonneg _)).trans hbern)
+
 end Lightlike.Dirac
