@@ -1978,6 +1978,7 @@ import Lightlike.Dirac.ModeODE
 import Lightlike.Dirac.ModeSeries
 import Lightlike.Dirac.GaussSum
 import Lightlike.Dirac.ModeHyper
+import Lightlike.Dirac.ModeClassify
 import Lightlike.Dirac.EigenPole
 import Lightlike.TemperleyLieb.Basic
 import Lightlike.TemperleyLieb.JonesWenzl
