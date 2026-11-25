@@ -135,4 +135,31 @@ theorem TB_expand [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) (a b c d f d' g
   · rw [← Fc_total q hδ a b c e d₁ f d' (by omega) (fun x hx => hd x (by omega)) hfb hfc hda hdf h0]
     simp only [UL4]
 
+/-- `a((bc)d)` with channels `f` (for `b, c`), `h` (for `bc, d`), `i` (total). -/
+noncomputable def TC (q : kˣ) (a b c d f h i : ℕ) : Module.End k (ModelSpace k) :=
+  sh a (UL q b c d f h) * Vop q a (b + c - 2 * f + d - 2 * h) i
+
+/-- `a(b(cd))` as a translate of a three-block right tree times the root vertex. -/
+theorem TD_eq_sh_UR (q : kˣ) (a b c d j m i : ℕ) :
+    TD q a b c d j m i = sh a (UR q b c d j m) * Vop q a (b + (c + d - 2 * j) - 2 * m) i := by
+  simp only [TD, UR]
+
+/-- **`a(b(cd))` in the basis `a((bc)d)`** (the arrow `D → C` of the pentagon). -/
+theorem TD_expand_C [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) (a b c d j m i : ℕ) (hb : 1 ≤ b)
+    (hd : ∀ x, x ≤ a + b + c + d → chebD (loopVal q) x ≠ 0)
+    (hq2 : ∀ x, 1 ≤ x → x ≤ a + b + c + d + 1 → (q : k) ^ (2 * x) ≠ 1)
+    (hjc : j ≤ c) (hjd : j ≤ d) (hmb : m ≤ b) (hmz : m ≤ c + d - 2 * j) :
+    TD q a b c d j m i = ∑ f ∈ Finset.range (b + 1), ∑ h ∈ Finset.range (d + 1),
+      Fc q b c d f h j m • TC q a b c d f h i := by
+  rw [TD_eq_sh_UR, expansion_range q hδ b c d j m (by omega) (fun x hx => hd x (by omega))
+    (fun x h1 h2 => hq2 x h1 (by omega)) hjc hjd hmb hmz, sh_sum, Finset.sum_mul]
+  refine Finset.sum_congr rfl fun f _ => ?_
+  rw [sh_sum, Finset.sum_mul]
+  refine Finset.sum_congr rfl fun h _ => ?_
+  rw [sh_smul, smul_mul_assoc]
+  by_cases h0 : Fc (k := k) q b c d f h j m = 0
+  · rw [h0]; simp
+  · rw [← Fc_total q hδ b c d f h j m (by omega) (fun x hx => hd x (by omega)) hjc hjd hmb hmz h0]
+    simp only [TC]
+
 end Lightlike.TemperleyLieb
