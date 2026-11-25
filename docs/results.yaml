@@ -6457,3 +6457,16 @@
   review: kernel-checked
   note: "Comparison pending for a2: the t^1 coefficient 1/15 equals (4 pi)^(-1) V (5 R^2 - 2 |Ric|^2 + 2 |Riem|^2)/360 = (20 - 4 + 8)/360 = 1/15, which is the formula that heatCoeffs defines (a definition of formulas, not derived from an operator); no source was read at a cited location for the a2 formula. For a1 the comparison with Vassilevich (2003), eq. (4.27), is in LL-0296. An example on the 2-sphere only: no theorem for a general manifold."
   since: unreleased
+- id: LL-0496
+  title: The Morse index is the number of negative eigenvalues of the Hessian - on a finite-dimensional real inner product space, the number of negative signs in the diagonal normal form of the Morse lemma, equivalently the largest dimension of a subspace on which the Hessian is negative definite, is the number of negative eigenvalues, with multiplicity, of the symmetric operator of the Hessian
+  area: Asymptotics
+  file: Lightlike/Asymptotics/MorseIndex.lean
+  decls: [Lightlike.Morse.sigNeg_hessQuad_eq_card_neg_eigenvalues, Lightlike.Morse.exists_symmetric_operator, Lightlike.Morse.morse_diagonal_eigenvalues]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: milnor-1963, location: "Chapter: PART I. NON-DEGENERATE SMOOTH FUNCTIONS ON A MANIFOLD|10.1515/9781400881802-002"}
+  review: kernel-checked
+  note: "Comparison pending (Milnor's index is defined as the maximal dimension of a subspace on which the Hessian is negative definite; the chapter is verified in the registry, the statement that this is the number of negative eigenvalues is standard linear algebra and was not read at a location). Setting: E a finite-dimensional real inner product space, B a continuous bilinear form (the Hessian) represented by a symmetric operator A (B x y = <x, A y>, which exists for every symmetric B, exists_symmetric_operator). sigNeg of the quadratic form v -> (1/2) B v v (Mathlib's signature, the largest dimension of a negative-definite subspace) equals the number of negative eigenvalues of A (Mathlib's eigenvalues of a symmetric operator, listed with multiplicity), proved by diagonalising A in an orthonormal eigenbasis and using Sylvester's law of inertia (sigNeg of a weighted sum of squares). The corollary morse_diagonal_eigenvalues restates the Morse lemma's number of negative signs w_i < 0 as this number of negative eigenvalues. A positive scalar factor (the 1/2 of the quadratic form) does not change the signs."
+  since: unreleased
