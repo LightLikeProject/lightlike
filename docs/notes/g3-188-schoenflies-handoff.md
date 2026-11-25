@@ -2,7 +2,7 @@
 
 Row G3-188 left the v1.0 list on 22 Nov; the work is parked here, not deleted. Branches (in the oscillatory
 worktrees, all light-gated): `oscillatory/g3-188-step4`, `-cyc`, `-quad`, `-goodquad`, `-spoke`, `-insert`, `-qboundary`, `-ringcells`,
-`-side` (queued #681 to #738), and `oscillatory/g3-188-nested` (cca7cbb, queued #749).
+`-side`, and `oscillatory/g3-188-nested` (cca7cbb).
 
 ## Proven (Lean, namespace `Lightlike.PL.Schoenflies`)
 
