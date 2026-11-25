@@ -14,9 +14,10 @@ On `ℝ²` with the Minkowski metric the flat connection `∇_v Y = DY(v)` is th
 Main result `torsion_connection_ricci_ne`: the flat connection is a Levi-Civita connection of the Minkowski
 metric with vanishing Ricci tensor, while `twistedConnection` has torsion and a Ricci tensor that is not zero.
 
-**Difference from the cited statement** (Lee, *Introduction to Riemannian Manifolds*, ch. 5, comparison not
-read at the cited location: pending): a worked example on `ℝ²` with one chosen connection, not a statement
-for every connection with torsion.
+This is a trust check: the statement is existential, so one worked example proves it. It uses the intrinsic
+`Connection.ricciAt` of `Connection.lean` (not a separate coordinate formula). The universal reading, that
+every connection with torsion changes the Ricci tensor, is false: on flat `ℝⁿ`, `∇_X Y = D_X Y + ω(X) Y` with a
+constant 1-form `ω` has torsion and zero Ricci tensor.
 -/
 
 open Bundle Manifold Set VectorField NormedSpace FiberBundle
