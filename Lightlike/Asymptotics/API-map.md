@@ -97,6 +97,18 @@ Karamata's Tauberian theorem for a regularly varying Laplace transform is proved
 
 Under the hypotheses of Mukhametzhanov and Zhiboedov (a positive spectrum whose partition function is invariant under `β ↦ 4π²/β` for `Re β > 0` and is `e^{a/β}(1 + O(e^{-g/β}))` at high temperature), the integrated spectral density has the Cardy asymptotics `F(Δ) = (1/2π)(3/(cΔ))^{1/4} e^{2π√(cΔ/3)} (1 + O(Δ^{-1/2}))` [47] {3}. The intermediate form compares the counting function with `I₀(2√(aΔ))` up to `O(Δ^{-3/4} e^{2√(aΔ)})` [48]; it rests on a pole-free smoothing of the step function, whose Fourier representation needs no inversion theorem [52], and on a comparison of a measure with its smoothing by unit windows against the local bound [53]. The distribution function of the crossing measure is `I₀(2√(ax))` [51], and `I₀` has an effective asymptotic expansion with relative error `O(1/s)` [50]. The spectrum `δ_{-v} + ρ₀` satisfies the hypotheses [49].
 
+Further results of this area in the results catalogue:
+The mixed second derivatives of the Lorentzian vertex action along two different nodes, or two different
+spinors, vanish, and the 44 x 44 matrix assembled from the node, spinor and mixed blocks is symmetric
+[54]. The integrand of the Lorentzian EPRL vertex is jointly integrable on SL(2,C)^4 × C^10 in the fixed
+charts, for positive spins and unit boundary spinors: the hypothesis VertexJointIntegrable of the
+stationary-phase theorem holds [55]. The compact part of the far remainder of the Lorentzian vertex
+integral is O(λ^{-N}) for every N: for smooth compactly supported cutoffs χ ≤ ψ equal to 1 near the
+finite critical set K, the integral of (ψ − χ) A e^{λS} decays faster than any power of λ (conditional)
+[56]. The Hessian of the Lorentzian vertex action at a point with Re S = 0 is invertible if and only if
+no nonzero real vector lies in the common kernel of the real and imaginary parts of its negative; the
+real part is positive semidefinite and the matrix is symmetric [57].
+
 ## Lean References
 
 1. Lightlike/Asymptotics/Saddle.lean - `Asymptotics.disc_eq`, `Asymptotics.saddle_root`,
@@ -274,6 +286,15 @@ Under the hypotheses of Mukhametzhanov and Zhiboedov (a positive spectrum whose 
 51. Lightlike/Asymptotics/Tauberian/Rho0Cdf.lean - `Tauberian.rho0_real_Iic`
 52. Lightlike/Asymptotics/Tauberian/Smoothing.lean - `Tauberian.fourier_inv_eq`, `Tauberian.smooth_representation`
 53. Lightlike/Asymptotics/Tauberian/Assembly.lean - `Tauberian.comparison_le`
+54. Lightlike/Asymptotics/Lorentzian/HessianAssembly.lean - `Asymptotics.Lorentzian.nodeBilin_self`
+55. Lightlike/SpinFoam/VertexAsymptoticsHyp/JointIntegrable.lean -
+    `Asymptotics.Lorentzian.vertexJointIntegrable_of_unit`
+56. Lightlike/SpinFoam/VertexAsymptoticsHyp/FarCompact.lean -
+    `Asymptotics.Lorentzian.lorVertex_farRemainder_compact_proof`
+57. Lightlike/SpinFoam/VertexAsymptoticsHyp/HessianIffVertex.lean -
+    `Asymptotics.Lorentzian.lorHessian_neg_symm_psd`,
+    `Asymptotics.Lorentzian.lorHessian_det_ne_zero_iff_ker`,
+    `Asymptotics.Lorentzian.lorHessian_det_ne_zero_iff_quad`
 
 ## References
 

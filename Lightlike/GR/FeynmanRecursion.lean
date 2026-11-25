@@ -132,6 +132,12 @@ def channelTerm (m : ℕ) (p e : ℕ → Fin 4 → ℂ) (i j : ℕ) (lP ltP lq l
     bgAmplitude (j - i - 1) (leftMom p i j (-momRange p i j)) (leftPol e i j (epsPlus lP (-ltP) ltq)) *
       bgAmplitude (m - (j - i)) (collapse p i j (momRange p i j)) (collapse e i j (epsMinus lP ltP lq))
 
+/-- The large-`z` falloff of the shifted colour-ordered amplitude (Elvang-Huang (3.6)): `Â_n(z) → 0` as
+`z → ∞`. It is a hypothesis of `bgAmplitude_eq_sum_channels` and `bgAmplitude_eq_sum_channels'`. The
+library does not derive it: Elvang-Huang take it as the input of the recursion (p. 36). -/
+def LargeZFalloff (m : ℕ) (p e : ℂ → ℕ → Fin 4 → ℂ) : Prop :=
+  Tendsto (fun z => bgAmplitude m (p z) (e z)) (cocompact ℂ) (𝓝 0)
+
 /-- **The on-shell recursion for the colour-ordered Feynman amplitudes** (Elvang-Huang (3.7)): for a holomorphic
 one-parameter family of kinematics (a shift) under which the planar channels `C` have `P̂_I²(z) = P_I² + z s_I`
 (`s_I ≠ 0`, (3.2)) with distinct poles `z_I` ((3.3)), the other channels have nonvanishing propagators, and
@@ -149,7 +155,7 @@ theorem bgAmplitude_eq_sum_channels (m : ℕ) (p e : ℂ → ℕ → Fin 4 → �
     (hinj : ∀ x ∈ C, ∀ y ∈ C, zI x = zI y → x = y)
     (hfix : ∀ c d, c < d → d ≤ m + 1 → ¬ (c = 0 ∧ d = m + 1) → (c, d) ∉ C → ∀ z,
       mdot (momRange (p z) c d) (momRange (p z) c d) ≠ 0)
-    (hinf : Tendsto (fun z => bgAmplitude m (p z) (e z)) (cocompact ℂ) (𝓝 0))
+    (hinf : LargeZFalloff m p e)
     (lP ltP lq ltq : ℕ × ℕ → Fin 2 → ℂ)
     (hP : ∀ x ∈ C, momRange (p (zI x)) x.1 x.2 = nullMom (lP x) (ltP x))
     (hq1 : ∀ x ∈ C, angleBr (ltq x) (ltP x) ≠ 0) (hq2 : ∀ x ∈ C, squareBr (lq x) (lP x) ≠ 0)

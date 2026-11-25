@@ -54,7 +54,7 @@ named in the milestone text, which was not read.
 
 ## 3. A sum with known value, outside the Racah shape (PROVED in Lean)
 
-The done-when clause also asks for a sum with known asymptotics. `Lightlike/Asymptotics/SP2/KnownSum.lean` proves Kummer's
+The done-when clause also asks for a sum with known asymptotics. `Lightlike/Asymptotics/RacahSaddles/KnownSum.lean` proves Kummer's
 alternating sum of binomial squares, `Σ_t (−1)^t C(2n,t)² = (−1)^n C(2n,n)` (`kummer_alternating`), an alternating
 ratio of Gamma functions `Γ(2n+1)² / (Γ(t+1)² Γ(2n−t+1)²)`, with the sum of the absolute values of the terms equal to `C(4n,2n)`
 (`kummer_abs_sum`), so the terms exceed the sum by a factor at least `4^n/(4n+1)` (`kummer_cancellation`). It confirms in a case

@@ -24,10 +24,13 @@ orthogonality relation [5]. Reference values for small spins are checked in the 
 
 1. Lightlike/Recoupling/ThreeJ.lean - `Recoupling.sum_threeJ_mul_threeJ`
 2. Lightlike/Recoupling/Intertwiner.lean - `Recoupling.sum_fourJ_mul_fourJ`,
-   `Recoupling.sixJSym_orth_all`
-3. Lightlike/Recoupling/FifteenJ.lean - `Recoupling.fifteenJSimplex`
+   `Recoupling.sixJSym_orth_all`, `Recoupling.sum_fourJ_mul_fourJ_swap`,
+   `Recoupling.fourJ_eq_sum_fourRecoupling`
+3. Lightlike/Recoupling/FifteenJ.lean - `Recoupling.fifteenJSimplex`,
+   `Recoupling.fifteenJ_eq_mobius`
 4. Lightlike/Recoupling/Simplex.lean - `Recoupling.fifteenJSimplex_eq`
-5. Lightlike/Recoupling/Orthogonality.lean - `Recoupling.sum_fifteenJ_mul_fifteenJ`
+5. Lightlike/Recoupling/Orthogonality.lean - `Recoupling.sum_fifteenJ_mul_fifteenJ`,
+   `Recoupling.sum_mobius_mul_mobius`
 
 ## References
 

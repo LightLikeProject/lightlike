@@ -136,9 +136,6 @@ lemma empty_mem_stdJoin : ∀ {Cs : List (Finset V)}, IsStdList Cs → ∅ ∈ s
   | _ :: _, ⟨hC, _, hCs⟩ => mem_join.2 ⟨∅, mem_boundary.2 (Finset.ssubset_iff_subset_ne.2
       ⟨empty_subset _, hC.ne_empty.symm⟩), ∅, empty_mem_stdJoin hCs, union_empty _⟩
 
-lemma verts_boundary_subset (C : Finset V) : (boundary C).verts ⊆ C := fun x hx =>
-  (mem_boundary.1 (mem_verts.1 hx)).subset (mem_singleton_self x)
-
 lemma verts_stdJoin_subset : ∀ Cs : List (Finset V), (stdJoin Cs).verts ⊆ suppList Cs
   | [] => by simp [stdJoin, suppList, verts_simplex]
   | C :: Cs => (verts_join_subset _ _).trans

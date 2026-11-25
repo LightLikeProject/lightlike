@@ -501,7 +501,7 @@ theorem bgAmplitude_eq_sum_channels' (m : ℕ) (p e : ℂ → ℕ → Fin 4 → 
     (hinj : ∀ x ∈ C, ∀ y ∈ C, zI x = zI y → x = y)
     (hfix : ∀ c d, c < d → d ≤ m + 1 → ¬ (c = 0 ∧ d = m + 1) → (c, d) ∉ C → ∀ z,
       mdot (momRange (p z) c d) (momRange (p z) c d) ≠ 0)
-    (hinf : Filter.Tendsto (fun z => bgAmplitude m (p z) (e z)) (Filter.cocompact ℂ) (nhds 0))
+    (hinf : LargeZFalloff m p e)
     (lP ltP lq ltq : ℕ × ℕ → Fin 2 → ℂ)
     (hP : ∀ x ∈ C, momRange (p (zI x)) x.1 x.2 = nullMom (lP x) (ltP x))
     (hq1 : ∀ x ∈ C, angleBr (ltq x) (ltP x) ≠ 0) (hq2 : ∀ x ∈ C, squareBr (lq x) (lP x) ≠ 0)

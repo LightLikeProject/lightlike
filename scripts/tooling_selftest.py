@@ -98,6 +98,9 @@ import api_map  # noqa: E402
 import generated  # noqa: E402
 expect("generated files: the guard tells generated from hand-written parts, and its planted changes fail",
        generated.selftest() == 0)
+_ms = subprocess.run([sys.executable, str(HERE / "milestone_status.py"), "--selftest"], capture_output=True, text=True)
+expect("milestone status: planted bad checklists fail the schema, and ticks follow the declarations' audit",
+       _ms.returncode == 0)
 _root = pathlib.Path(__file__).resolve().parent.parent
 expect("review control: kernel-checked needs no reference; a human review with its issue URL passes",
        api_map.review_errors("x", "kernel-checked", None, _root) == []
@@ -562,7 +565,7 @@ _data = {"now": "2026-11-07T00:00:00Z", "labels": tk.LIVE + sorted({x for t in _
         _c("ann", "a second note", "2026-11-06T14:00:00Z")]),
     _iss(2, "T-X1: x", ["milestone", "ready"], [_c("dee", "claiming", "2026-11-06T20:00:00Z")]),
     _iss(3, "T-B1: b", ["ready"], [_c("old", "claiming", "2026-10-01T00:00:00Z")], assignees=["old", "maint"]),
-    _iss(4, "T-X2: s", ["blocked"], [], state="closed", reason="completed"),
+    _iss(4, "T-X2: s", ["blocked", "claimed"], [], state="closed", reason="completed"),
     _iss(5, "T-B2: dup", [], [], state="closed", reason="not_planned"),
     _iss(9, "T-X1: a later duplicate", [], [])],
     "pulls": [{"number": 7, "body": "<!--\nTask: T-X1\n-->\nTask: T-B1\n", "author": "eve", "state": "open",
@@ -575,12 +578,14 @@ expect("tasks sync: a claim is a live `/claim` (or `claiming`, `attempting`) com
        _e(_acts, "T-X1-P1").get("add") == ["claimed"] and _e(_acts, "T-X1-P1").get("remove") == ["ready"]
        and _e(_acts, "T-X1-P1").get("assign") == ["ann"]
        and tk.MARK.format("lapse cy 2026-09-01T00:00:00Z") in _on(_acts, "T-X1-P1", "comment")[0]["body"])
-expect("tasks sync: a claim assigns the claimant and replaces `ready` by `claimed`",
-       _e(_acts, "T-X1") == dict(op="edit", task="T-X1", issue=2, add=["claimed"], remove=["ready"],
+expect("tasks sync: a claim on a milestone's issue assigns the claimant and adds `claimed`; its other labels "
+       "(ready, blocked, in review) are left to scripts/sync_github.py",
+       _e(_acts, "T-X1") == dict(op="edit", task="T-X1", issue=2, add=["claimed"], remove=[],
                                  assign=["dee"], unassign=[]))
-expect("tasks sync: a lapsed claim unassigns the claimant only and is announced; an open PR sets `in review`",
-       _e(_acts, "T-B1").get("unassign") == ["old"] and _e(_acts, "T-B1").get("add") == ["in review"]
-       and _e(_acts, "T-B1").get("remove") == ["ready"] and len(_on(_acts, "T-B1", "comment")) == 1
+expect("tasks sync: a lapsed claim unassigns the claimant only and is announced; on a milestone's issue an "
+       "open PR sets no label",
+       _e(_acts, "T-B1").get("unassign") == ["old"] and not _e(_acts, "T-B1").get("add")
+       and not _e(_acts, "T-B1").get("remove") and len(_on(_acts, "T-B1", "comment")) == 1
        and _lapse in _on(_acts, "T-B1", "comment")[0]["body"])
 _data3 = json.loads(json.dumps(_data))
 _data3["issues"][2]["comments"].append(_c("github-actions[bot]", "lapsed\n" + _lapse, "2026-11-06T00:00:00Z"))
@@ -626,7 +631,7 @@ _dp["pulls"] = [{"number": 9, "body": "Task: T-X1", "author": "fay", "state": "o
 _acts_p = _sync(_ts2, _cfg2, _dp, _card)[1]
 expect("tasks sync: a claim past 48 hours is kept while a pull request naming the task is open, and released "
        "when there is none; a claim never lapses by comments alone",
-       not _on(_acts_p, "T-X1", "comment") and _e(_acts_p, "T-X1").get("remove") == ["milestone"][:0]
+       not _on(_acts_p, "T-X1", "comment") and not _e(_acts_p, "T-X1").get("remove")
        and len(_on(_acts_p, "T-X1-P1", "comment")) == 1
        and _e(_acts_p, "T-X1-P1").get("unassign") == ["fay"])
 _dt = json.loads(json.dumps(_dc))
@@ -645,8 +650,9 @@ expect("tasks: the commands `/claim` and `/unclaim` and their old words are reco
        all(tk.CLAIM.search(x) for x in ("/claim", "  /Claim please", "claiming", "attempting via 1"))
        and all(tk.RELEASE.search(x) for x in ("/unclaim", "stopping", "Unclaiming", "no longer attempting"))
        and not tk.CLAIM.search("/claimed") and not tk.CLAIM.search("I am claiming") and not tk.RELEASE.search("/unclaimed"))
-expect("tasks sync: a closed issue loses its live labels and makes its task done; a duplicate is ignored",
-       _e(_acts, "T-X2").get("remove") == ["blocked"] and _st["T-X2"][0] == "done"
+expect("tasks sync: a closed milestone issue loses its claim labels (only) and makes its task done; a "
+       "duplicate is ignored",
+       _e(_acts, "T-X2").get("remove") == ["claimed"] and _st["T-X2"][0] == "done"
        and not _on(_acts, "T-B2", "create") and not [a for a in _acts if a.get("issue") == 9])
 expect("tasks sync: a task that becomes ready gets an issue; a blocked one does not; a commented-out Task line is ignored",
        [a["labels"] for a in _on(_acts, "T-X1-P2", "create")] == [["proof-task", "area: alpha", "size: S",
@@ -656,10 +662,9 @@ expect("tasks sync control: labels that exist are not created again",
        not [a for a in _acts if a["op"] == "label"])
 _seed = {"closed": {"X4": "done (older work)"}, "notes": {"X3": "in progress"}}
 _s1 = _sync(_ts2, _cfg2, _data, _card, _seed)[1]
-expect("tasks sync: the seed opens and closes the issue of earlier done work, and posts earlier notes",
-       [a["op"] for a in _s1 if a.get("task") == "T-X4"] == ["create", "close"]
-       and "(older work)." in _on(_s1, "T-X4", "close")[0]["body"]
-       and [a["op"] for a in _s1 if a.get("task") == "T-X3"] == ["create", "comment"])
+expect("tasks sync: the seed opens and closes no milestone issue (scripts/sync_github.py opens and closes "
+       "them)",
+       not [a for a in _s1 if a.get("task") in ("T-X3", "T-X4")])
 _data2 = json.loads(json.dumps(_data))
 _data2["issues"] += [_iss(10, "T-X4: f", [], [_c("bot", tk.MARK.format("seed"), "2026-11-06T00:00:00Z")],
                           state="closed", reason="completed"),
@@ -679,6 +684,18 @@ _data6["issues"][0]["comments"].append(_c("bot", tk.MARK.format("proven"), "2026
 expect("tasks sync: a proof task proven on main has its issue closed, once",
        len(_on(_s6, "T-X1-P1", "close")) == 1 and "has no `sorry`" in _on(_s6, "T-X1-P1", "close")[0]["body"]
        and not _on(_sync(_ts6, _cfg2, _data6, _card)[1], "T-X1-P1", "close"))
+_kind = {t["id"]: t["kind"] for t in _ts2 + _ts6}
+expect("tasks sync: a milestone's issue is never opened or closed by `sync`, even when all its proof tasks are proven",
+       not [a for a in _acts + _s1 + _s6 if a["op"] in ("create", "close") and _kind.get(a.get("task")) == "milestone"])
+_sg = subprocess.run([sys.executable, str(HERE / "sync_github.py"), "--selftest"], capture_output=True, text=True)
+expect("sync_github: status labels, columns and the GitHub Milestone follow the computed status; claim labels, "
+       "closing and proof-task issues are left alone; writes are paced", _sg.returncode == 0)
+_cc = subprocess.run([sys.executable, str(HERE / "consistency_check.py"), "--selftest"], capture_output=True, text=True)
+expect("consistency check: planted duplicate issues, early closes, double claims, planning IDs, proven entries on open "
+       "hypotheses and merge-queue entries without a milestone fail", _cc.returncode == 0)
+_pi = subprocess.run([sys.executable, str(HERE / "planning_ids.py"), "--selftest"], capture_output=True, text=True)
+expect("planning IDs: planted gap, milestone, row and catalogue IDs in Lean folder, file and declaration names fail; "
+       "SixJRow, lower case, comments and task files do not", _pi.returncode == 0)
 
 with tempfile.TemporaryDirectory() as d:
     tmp = pathlib.Path(d)
@@ -1056,48 +1073,17 @@ with tempfile.TemporaryDirectory() as _d:
 expect("automerge: proof_files reads the proof tasks of tasks.yaml",
        am.proof_files(HERE.parent).get("T-GE2-P1", "").endswith("T_GE2_P1.lean")
        and not any(k.count("-P") == 0 for k in am.proof_files(HERE.parent)))
-# The review gate (a commit status) and the label needs-review.
+# The review gate (a commit status): pull requests carry no review label and merge when their checks pass.
 import review_gate as rg  # noqa: E402
-_pf = {"T-X1-P1": "Tasks/X/T_X1_P1.lean"}
-_prr = lambda author="ann", body="", sha="s1", **kw: dict(  # noqa: E731
-    dict(state="open", draft=False, base={"ref": "main"}, body=body, user={"login": author}, head={"sha": sha},
-         labels=[]), **kw)
-_rv = lambda u, state="APPROVED", sha="s1", at="2026-01-01T00:00:00Z", typ="User": dict(  # noqa: E731
-    user={"login": u, "type": typ}, state=state, commit_id=sha, submitted_at=at)
-_none, _admin = (lambda u: False), (lambda u: u == "root")
-_m = lambda u: {"bo": 1, "cy": 3, "newbie": 0}.get(u, 0)  # noqa: E731
-_lf = lambda name="Lightlike/A.lean", status="modified", **kw: [dict({"filename": name, "status": status}, **kw)]  # noqa: E731
-_own = [{"filename": "Tasks/X/T_X1_P1.lean", "status": "modified"}]
-_ev = lambda pr, files, reviews=(), admin=_none: rg.evaluate(pr, files, list(reviews), admin, _m, _pf)[0]  # noqa: E731
-expect("review gate: a pull request that touches no Lean file of Lightlike/ or Tasks/ passes without review",
-       _ev(_prr(), [{"filename": "docs/a.md", "status": "modified"}]) == "success"
-       and _ev(_prr(), [{"filename": "scripts/x.py", "status": "added"}, {"filename": "Other/B.lean", "status": "added"}]) == "success"
-       and _ev(_prr(), []) == "success")
-expect("review gate: an auto-merge proof-task pull request passes, and so does an administrator's pull request",
-       _ev(_prr(body="Task: T-X1-P1"), _own) == "success"
-       and _ev(_prr(author="root"), _lf(), admin=_admin) == "success")
-expect("review gate: any added, changed, removed or renamed Lean file under Lightlike/ or Tasks/ needs two approvals",
-       all(rg.needs_review(_lf(n, st, **kw)) for n, st, kw in [
-           ("Lightlike/A.lean", "modified", {}), ("Lightlike/B/C.lean", "added", {}), ("Tasks/X/T.lean", "removed", {}),
-           ("Tasks/Y.lean", "renamed", {"previous_filename": "Lightlike/Z.lean"}),
-           ("docs/z.md", "renamed", {"previous_filename": "Lightlike/Z.lean"})])
-       and not rg.needs_review(_lf("Lightlike/A.md")) and not rg.needs_review(_lf("scripts/a.lean")))
-expect("review gate: two approvals of the current commit from distinct non-authors with merged pull requests pass",
-       _ev(_prr(), _lf(), [_rv("bo"), _rv("cy")]) == "success")
-expect("review gate planted: one approval, the author's own, a reviewer without a merged pull request, a bot, "
-       "an approval of an older commit, a later change request, a comment, a repeated reviewer stay pending",
-       all(_ev(_prr(), _lf(), r) == "pending" for r in (
-           [_rv("bo")], [_rv("bo"), _rv("ann")], [_rv("bo"), _rv("newbie")], [_rv("bo"), _rv("cy", typ="Bot")],
-           [_rv("bo"), _rv("cy", sha="old")],
-           [_rv("bo"), _rv("cy"), _rv("cy", "CHANGES_REQUESTED", at="2026-01-02T00:00:00Z")],
-           [_rv("bo"), _rv("cy", "COMMENTED")], [_rv("bo"), _rv("bo")], [_rv("bo"), _rv("cy", "DISMISSED")], [])))
-expect("review gate: a later approval after a change request counts",
-       _ev(_prr(), _lf(), [_rv("bo"), _rv("cy", "CHANGES_REQUESTED"), _rv("cy", at="2026-01-02T00:00:00Z")]) == "success")
-expect("review gate planted: an outsider's pull request that adds a file to its task is not an auto-merge pull request",
-       _ev(_prr(body="Task: T-X1-P1"), _own + [{"filename": "Lightlike/N.lean", "status": "added"}]) == "pending")
-expect("needs-review: the label is set on a Lean change, removed when it goes, never on an auto-merge pull request",
-       rg.label_plan(_prr(), _lf(), _pf, []) == ["label"] and rg.label_plan(_prr(), _lf(), _pf, ["needs-review"]) == []
-       and rg.label_plan(_prr(), [{"filename": "docs/a.md", "status": "modified"}], _pf, ["needs-review"]) == ["unlabel"]
-       and rg.label_plan(_prr(body="Task: T-X1-P1"), _own, _pf, ["needs-review"]) == ["unlabel"])
+_prr = lambda author="ann", body="": dict(state="open", base={"ref": "main"}, body=body, user={"login": author},  # noqa: E731
+                                          head={"sha": "s1"}, labels=[])
+expect("review gate: every pull request passes, a Lean change of Lightlike/ or Tasks/ included",
+       all(rg.evaluate(_prr(), f)[0] == "success" for f in (
+           [], [{"filename": "docs/a.md", "status": "modified"}], [{"filename": "Lightlike/A.lean", "status": "modified"}],
+           [{"filename": "Tasks/X/T_X1_P1.lean", "status": "added"}, {"filename": "Lightlike/N.lean", "status": "added"}])))
+expect("review gate: the old label needs-review is removed where present and never added",
+       rg.label_plan(["needs-review", "x"]) == ["unlabel"] and rg.label_plan([]) == [] and rg.label_plan(["claimed"]) == [])
+expect("review gate planted: no code path of the script adds a label",
+       "labels[]=" not in (HERE / "review_gate.py").read_text() and '"POST", "-f", f"labels' not in (HERE / "review_gate.py").read_text())
 print("selftest:", "OK" if not fails else f"FAILED ({len(fails)})")
 sys.exit(1 if fails else 0)

@@ -477,7 +477,11 @@ def check(root: Path, base: str | None = None) -> list[str]:
 def names(root: Path) -> int:
     rows = [("map", f, d) for m in maps(root) for f, d in lint_map(root, m)[1]]
     rows += [("registry", e["file"], d) for e in load(root) if e["status"] != "retired"
-             for d in e["decls"] + (e.get("hypotheses") or [])]
+             for d in e["decls"]]
+    # a hypothesis is stated where it is defined, usually not in the file of the result that takes it,
+    # so it is checked to exist, not to be declared in a given file (an empty file column)
+    rows += [("hypothesis", "", h) for e in load(root) if e["status"] != "retired"
+             for h in e.get("hypotheses") or []]
     out = root / ".lake/api_names.tsv"
     out.parent.mkdir(exist_ok=True)
     out.write_text("".join(f"{s}\t{f}\t{d}\n" for s, f, d in rows), encoding="utf-8")
