@@ -62,3 +62,15 @@ The numbers come from a throw-away sympy script (exact `ℚ(i)` arithmetic) that
 for the spectrum is Boldt, arXiv:1504.03121, Theorem 3.1 (eigenvalues `±(n/2 + k)`, multiplicity `2^{[n/2]} C(n+k−1, k)`,
 which for `n = 2` is `±(k+1)` with multiplicity `2(k+1)`), cited in LL-0293; the table above is a numerical check of the
 multiplicity in the chart, not a derivation.
+
+## Update 25 Nov 2026: route to completeness for smooth sections (milestones)
+
+Chart equations for an arbitrary smooth spinor `g = (g₁, g₂)`: `(1+|z|²) i ∂_z g₂ = λ g₁`, `(1+|z|²) i ∂_{z̄} g₁ = λ g₂`.
+In polar form `∂_{z̄} = (e^{iθ}/2)(∂_r + (i/r)∂_θ)`, so the angular modes `g₁ ~ a_m(r) e^{imθ}`, `g₂ ~ b_{m+1}(r) e^{i(m+1)θ}` satisfy
+`(1+r²)(i/2)(b' + (m+1) b/r) = λ a` and `(1+r²)(i/2)(a' − m a/r) = λ b`.
+Milestones: (M1, Lean, `Dirac/AngularFourier.lean`) the coefficient of the angular derivative of a periodic function is `i m`
+times the coefficient (`fcoef_dtheta`), and the radial derivative commutes with taking coefficients (`hasDerivAt_fcoef`);
+(M2) chain rule from the chart to polar coordinates and the two mode ODEs for a smooth chart spinor;
+(M3) classification of the solutions of the mode ODE that are regular at `r = 0` and decay at `∞` (the polynomial class of
+`EigenGeneralK`/`ge5-complete`), which needs a uniqueness statement for the singular linear ODE;
+(M4) a smooth spinor on the sphere is determined by its Fourier modes (completeness of `e^{imθ}` on smooth functions).

@@ -1951,6 +1951,7 @@ import Lightlike.Dirac.ConformalDirac
 import Lightlike.Dirac.RadialEigen
 import Lightlike.Dirac.EigenGeneralK
 import Lightlike.Dirac.EigenAngular
+import Lightlike.Dirac.AngularFourier
 import Lightlike.TemperleyLieb.Basic
 import Lightlike.TemperleyLieb.JonesWenzl
 import Lightlike.TemperleyLieb.Model
