@@ -36,3 +36,19 @@ Question: for the ladder images `h_{l,r}[G] = (ladUp (l-1) r ∘ … ∘ ladUp 0
   and `ladDown_ladUp` are still global (about 100 lines). (2) The boundary term of the adjoint identity at
   `ξ → 0`: `h_{l,r}[G](a) conj(h_{l+1,r}[G'](a)) sinh a → 0` needs `h_{l,r}[G] = O(ξ^{l+r})` with a smooth quotient, a separate induction
   (about 150 lines). (3) The polarised induction of `KClaim_succ` with the weight `wl l · wl r`. Estimated 500 more lines.
+
+### Closed form found in attempt 2 (25 Nov 2026): the whole `(l, r)` recursion lives in `v = cosh ξ`
+
+`ladUp l r (sinh^{l+r} ξ · u(cosh ξ)) = sinh^{l+r+1} ξ · (u' + r u/(v+1))(cosh ξ)` (direct computation:
+`(n cosh - l cosh - r) u + sinh² u'` with `n = l + r` equals `r (cosh - 1) u + sinh² u'`). With `w = (v+1)^r u` the step is `w ↦ w'`, hence
+
+`h_{l,r}[G](ξ) = sinh^{l+r} ξ · (v+1)^{-r} (d/dv)^l [ (v+1)^r G^{(r)}(v) ]` at `v = cosh ξ`,
+
+checked symbolically for `(1,1), (2,1), (1,2), (2,2)` (sympy; e.g. `h_{1,1} = (v-1)((v+1) G'' + G')`, `h_{2,2} = (v-1)² ((v+1)² G'''' + 4 (v+1) G''' + 2 G'')`).
+Consequences: (i) the boundary term at `ξ → 0` disappears (the weight `(v-1)^{l+r}(v+1)^{l-r}` vanishes at `v = 1` and the factor is a smooth
+function of `v`, so no `O(ξ^{l+r})` induction is needed); (ii) the `L²(sinh ξ dξ)` norm is the Jacobi-weighted Sobolev form
+`∫_{v>1} (v-1)^{l+r} (v+1)^{l-r} |(v+1)^{-r} ∂^l ((v+1)^r G^{(r)})|² dv`, the exact analogue of `Kform` of `KTypePlancherel.lean`
+(which is `r = 0`); (iii) the induction step is integration by parts in `v` against this weight, then the intertwining
+`radialCasimir_ladUp` (already proved) in `v`. Remaining plan: define `Wform r l F G` (this form), prove the `v`-variable step
+`Wform r (l+1) F F = Wform r l F (radialQ F) + l (l+1) Wform r l F F` with `(v+1)^r` conjugation, base `l = 0` = `Kform r` of
+`KTypePlancherel`, then the polarised induction `KClaim_succ` with the weight `wl l · wl r`.
