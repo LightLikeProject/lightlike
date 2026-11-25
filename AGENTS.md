@@ -52,8 +52,9 @@ For a proof task, repeat these steps; everything after step 4 runs by itself.
    task's own file.
 5. **CI runs and the pull request merges by itself.** CI checks the build, the locked statement, the axioms,
    the forbidden constructs and the comparator. A pull request that changes only its task's file gets the
-   label `automerge` and merges once the checks pass, with no maintainer action. Any other change needs a
-   review (the label `needs-review`; [docs/review-rubric.md](docs/review-rubric.md)).
+   label `automerge` and merges once the checks pass, with no maintainer action. Any other pull request
+   carries no review label either: a maintainer merges it once its checks pass. Reviews are of finished
+   milestones, not of pull requests ([CONTRIBUTING.md](CONTRIBUTING.md#review)).
 6. **Next**: go back to step 1.
 
 If CI fails, fix the proof on the same branch and push; do not open a second pull request for the task.
@@ -76,6 +77,8 @@ Only the CI steps marked `[hard rule]` are required ([CONTRIBUTING.md](CONTRIBUT
   counts in `README.md`, `ROADMAP.md` and `CHANGELOG.md`): don't run `api_map.py generate` or
   `tasks.py generate` on a branch. The maintainers regenerate after merging, in one commit per
   batch (`scripts/generated.py check`; `reset` undoes such a change).
+- No planning ID (milestone, gap, row or catalogue ID) in a Lean folder, file, namespace or
+  declaration name under `Lightlike/`: files go in subject folders (`scripts/planning_ids.py`).
 
 A proof-task pull request changes only the proof of its declaration: the statement is locked.
 Everything below is recommended practice, with the reason for it.

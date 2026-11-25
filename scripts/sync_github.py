@@ -23,7 +23,9 @@ never touches a proof-task issue, and never writes the claim labels claimed and 
 claim Action (scripts/tasks.py sync, .github/workflows/tasks.yml) writes those from comments. This
 script reads them, to show an outside contributor's claim.
 
-The status of a v1.0 milestone: done when its issue is closed; review when every item of its
+The status of a v1.0 milestone: done when its issue is closed, except review while a closed issue has
+the label review-pending (its review has not run yet; the issue is reopened if the review fails);
+review when every item of its
 checklist but the review items is ticked (the review ticks those); in-progress when a stream (status
 file at most a day old) or an outside contributor (claim label) holds it; ready otherwise. A milestone outside v1.0 is in the column Not
 scheduled until its issue is closed, then in Done.
@@ -65,6 +67,7 @@ STATUS = {"ready": "Ready", "in-progress": "In progress", "review": "In review",
 COLUMNS = [*STATUS.values(), "Not scheduled"]
 NOT_SCHEDULED, HELP_WANTED = "not-scheduled", "help-wanted"
 CLAIM_LABELS = {"claimed", "attempting"}  # the claim Action's; never written here
+REVIEW_PENDING = "review-pending"  # set by hand on a closed issue whose review has not run; never written here
 OLD_STATUS = {"ready", "blocked", "in review"}  # the claim Action set these on milestone issues before 25 Nov
 TIERS = {"good first issue", "intermediate", "advanced", "research-level"}
 WARN = re.compile(r"rate limit|secondary|abuse|warning|error|forbidden", re.I)
@@ -148,7 +151,7 @@ def remaining():
 
 def status_of(st, iss, outside):
     if iss and iss["state"] == "closed":
-        return "done"
+        return "review" if REVIEW_PENDING in iss.get("labels", []) else "done"
     if not st["v1"]:
         return None
     if st["done"]:
@@ -473,7 +476,7 @@ def selftest():
 
     status = dict(main="abc1234", computed_at="2026-11-25T08:00Z",
                   milestones={"A1": st("A1"), "A2": st("A2", claimed=["regge"]), "A3": st("A3", done=True),
-                              "B1": st("B1", v1=False), "A4": st("A4")})
+                              "B1": st("B1", v1=False), "A4": st("A4"), "A5": st("A5")})
     tasks = [task(m) for m in status["milestones"]] + [dict(id="T-A1-P1", kind="proof", milestone="A1", labels=[])]
     board = dict(id="P", number=1, field_id="F", rank_id="R", options={c: c for c in [*STATUS.values(), "Not scheduled"]},
                  items={"1": dict(id="I1", column="Ready", rank=None)})
@@ -483,6 +486,8 @@ def selftest():
                             milestone="v1.0", body=MS.body(status["milestones"]["A1"], "zzz9999", "1 November 2026", [], {})),
                         iss(2, "A2", ["milestone", "claimed", "blocked"]),
                         iss(3, "A3", ["milestone", "area: geometry", "size: M", "intermediate"], state="closed", reason="completed"),
+                        iss(6, "A5", ["milestone", "area: geometry", "size: M", "intermediate", REVIEW_PENDING],
+                            state="closed", reason="completed", milestone="v1.0"),
                         iss(4, "B1", ["milestone", "area: geometry", "size: M", "intermediate", "claimed"],
                             milestone="v1.0", assignees=["someone"]),
                         iss(9, "A1", ["milestone"]),
@@ -503,6 +508,10 @@ def selftest():
     expect("a closed issue gives status: done and the column Done; it is not reopened",
            "status: done" in e("A3")["add"] and by[("board", "A3")][0]["column"] == "Done"
            and not any(a["op"] in ("close", "reopen") for a in acts))
+    expect("a closed issue with the label review-pending gives status: review and the column In review; the label "
+           "stays and the issue is neither reopened nor closed",
+           "status: review" in e("A5")["add"] and REVIEW_PENDING not in e("A5")["remove"]
+           and by[("board", "A5")][0]["column"] == "In review")
     expect("outside v1.0: not-scheduled and help-wanted, out of the GitHub Milestone, column Not scheduled; "
            "the outside claim is shown", e("B1")["milestone"] == "" and {NOT_SCHEDULED, HELP_WANTED} <= set(e("B1")["add"])
            and by[("board", "B1")][0]["column"] == "Not scheduled" and "@someone" in e("B1")["body"])

@@ -182,6 +182,27 @@ value `4π`, not a convergence theorem and not a statement about triangulations 
 A 2-complex with boundary is a disc in the combinatorial sense exactly when it is an intrinsic
 triangulated disc [16].
 
+Further results of this area in the results catalogue:
+Lorentzian Regge calculus with Sorkin's complex angles: flat Minkowski regions have zero deficit angles
+and solve the Regge equations [90]. The 3D Regge action of the Kuhn triangulation of a grid converges to
+half the Einstein-Hilbert action of a Riemannian metric (the Kuhn-grid case of the convergence theorem
+of Cheeger, Mueller and Schrader) [91]. The Regge action of a flat closed 3-complex is a quadratic form
+in the first variations of the lengths up to third order [92]. The Regge action of the periodic Kuhn
+complex of the 3-torus with geodesic lengths of a periodic Riemannian metric tends to half the
+Einstein-Hilbert action [93]. The sum Q_n of the linearized Regge action of the periodic Kuhn complex
+converges to the Saint-Venant form [94]. The linearized deficit angle at a vertex of a flat positively
+oriented star under a displacement field with a metric perturbation t is -t times the area of the star,
+independent of the gauge, covariant under scaling, and zero if and only if t = 0 [95]. Fatness is
+needed: thin triangles have unbounded angle sensitivity, so the angles are not uniformly Lipschitz in
+the edge lengths [96]. A flat background gives zero linearized deficit [97]. In dimension 4 the
+area-weighted sum over the 240 hinge incidences of Kuhn's orthoscheme triangulation of the first
+variation of the dihedral angle for a curvature operator K is -scal(K)/2 [98]. Trust checks of the
+dimension 4 Regge sum: a flat curvature operator gives zero, and the sum without the area weights does
+not vanish for a scalar-flat curvature operator [99]. Mathlib form of the fifth-order expansion of the
+squared geodesic distance: for a Riemannian coordinate metric on an open subset U of Rⁿ, viewed as a
+Riemannian manifold, the square of Mathlib's riemannianEDist equals the quartic jet F_x(y − x) up to
+O(‖y − x‖⁵), uniformly for x in a compact set, and the same about the midpoint with no cubic term [100].
+
 ## Lean References
 
 1. Lightlike/Regge/Dihedral.lean - `Regge.dihedral_dist`
@@ -325,17 +346,13 @@ triangulated disc [16].
     `Regge.Conv3.expMetric_core`, `Regge.Conv3.expMetric_not_flat`
 77. Lightlike/Regge/Conv3/ChartChangeDChr.lean - `Regge.Conv3.dChr_eq_flat`,
     `Regge.Conv3.inv_contract`
-
 78. Lightlike/Regge/Conv3/DivergencePeriodic.lean - `Regge.Conv3.integral_div_periodic`
 79. Lightlike/Regge/Linear3/FierzPauli.lean - `Regge.Linear3.fpDens`, `Regge.Linear3.fp_identity`,
     `Regge.Linear3.div_Tfield`, `Regge.Linear3.saintVenant_eq_fierzPauli`
-
 80. Lightlike/Regge/Conv3/CurvatureEta.lean - `Regge.Conv3.curvJ`, `Regge.Conv3.scalar_curvJ`,
     `Regge.Conv3.scalar_gEta`, `Regge.Conv3.Feta_eq`, `Regge.Conv3.contDiffOn_Feta`, `Regge.Conv3.Feta_flat`
-
 81. Lightlike/Regge/Conv3/FetaTaylor.lean - `Regge.Conv3.F1`, `Regge.Conv3.F2`,
     `Regge.Conv3.feta_expansion`
-
 82. Lightlike/Regge/Conv3/Exp2.lean - `Regge.Conv3.Exp2`, `Regge.Conv3.Exp2.poly`, `Regge.Conv3.Exp2.add`,
     `Regge.Conv3.Exp2.mul`, `Regge.Conv3.Exp2.sum`, `Regge.Conv3.Exp2.congr`
 83. Lightlike/Regge/Conv3/Exp2Inv.lean - `Regge.Conv3.Exp2.inv`, `Regge.Conv3.Exp2.sqrt`,
@@ -344,17 +361,32 @@ triangulated disc [16].
     `Regge.Conv3.curv_exp`, `Regge.Conv3.feta_exp`, `Regge.Conv3.F_eq`
 85. Lightlike/Regge/Conv3/CurvaturePoly.lean - `Regge.Conv3.divTp`, `Regge.Conv3.F2_poly`,
     `Regge.Conv3.F1_eq`, `Regge.Conv3.F2_eq`
-
 86. Lightlike/Regge/Linear3/PeriodicDivergences.lean - `Regge.Linear3.div_S1field`, `Regge.Linear3.div_Tprime`,
     `Regge.Linear3.integral_F1_zero`, `Regge.Linear3.integral_F2_eq`
 87. Lightlike/Regge/Linear3/EtaCoefficient.lean - `Regge.Linear3.eh_eta_sq_coeff`,
     `Regge.Linear3.eh_eta_sq_coeff_zero`
-
 88. Lightlike/Regge/Linear3/EtaCoefficientTests.lean - `Regge.Linear3.integral_fpDens_hTest`,
     `Regge.Linear3.integral_wrongDens_hTest`, `Regge.Linear3.wrong_weights_ne`
-
 89. Lightlike/Regge/GaussBonnet2D.lean - `Regge.discrete_gauss_bonnet`, `Regge.sum_angleOf`,
     `Regge.octahedron_deficit_sum`, `Regge.octOpen_deficit_sum_ne`
+90. Lightlike/Regge/Lorentzian/FlatSolution.lean - `ReggeLor.IsGeometric4.lorReggeAction_stationary`
+91. Lightlike/Regge/Conv3/ReggeConvergence.lean - `Regge.Conv3.reggeAction3`,
+    `Regge.Conv3.regge3d_tendsto`
+92. Lightlike/Regge/Linear3/SecondOrder.lean - `Regge.Linear3.regge_second_order`
+93. Lightlike/Regge/Linear3/TorusConvergence.lean - `Regge.Linear3.torus_regge_converges`
+94. Lightlike/Regge/Linear3/LinearizedLimit.lean - `Regge.Linear3.Qn_converges`
+95. Lightlike/Regge/Linearized/DeficitLaw.lean - `Regge.Linearized.combStarDeficit_hasDerivAt_area`,
+    `Regge.Linearized.combStarDeficit_gauge_independent`,
+    `Regge.Linearized.combStarDeficit_scale_covariant`, `Regge.Linearized.combStarDeficit_zero_iff`
+96. Lightlike/Regge/Linearized/ThinTriangle.lean -
+    `Regge.Linearized.thin_triangle_sensitivity_unbounded`,
+    `Regge.Linearized.thin_triangle_not_uniformly_lipschitz`
+97. Lightlike/Regge/Linearized/Tests.lean - `Regge.Linearized.flat_background_zero`
+98. Lightlike/Regge/CMS4/Kuhn4Core.lean - `Regge4.kuhn4_sum`
+99. Lightlike/Regge/CMS4/Kuhn4Trust.lean - `Regge4.kuhn4_sum_flat`, `Regge4.kuhn4_unweighted_fails`
+100. Lightlike/Upstream/GeodesicExpansion/Final.lean -
+     `Upstream.GeodesicExpansion.IsRiemMetric.riemannianEDist_sq_expansion`,
+     `Upstream.GeodesicExpansion.IsRiemMetric.riemannianEDist_sq_expansion_midpoint`
 
 ## References
 

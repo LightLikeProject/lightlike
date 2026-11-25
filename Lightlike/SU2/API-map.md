@@ -21,6 +21,18 @@ Peter–Weyl theorem for compact groups is also formalized in `Lightlike/Harmoni
 coefficients are dense in `C(G)` and in `L²(G)`, and `L²(G)` is the Hilbert sum of the isotypic
 components (`peterWeyl_dense_continuous`, `peterWeyl_dense_L2`, `peterWeyl_isHilbertSum`).
 
+Further results of this area in the results catalogue:
+Peter–Weyl (density form): for a compact Hausdorff group, the matrix coefficients of finite-dimensional
+unitary representations are dense in C(G) in the sup norm and, for a Haar measure, in L²(G) [6].
+Peter–Weyl (Hilbert sum form): L²(G) of a compact group with a Haar measure is the Hilbert direct sum of
+the isotypic components of the irreducible unitary representation classes [7]. Schur orthogonality of
+the matrix coefficients of irreducible unitary representations of a compact group: zero for inequivalent
+representations, δδ/dim for equal ones [8]. The characters e^{inθ} of U(1) form a Hilbert basis of
+L²(U(1)), and the irreducible unitary representations of the circle are the characters [9]. Schur
+orthogonality of the matrix coefficients and of the characters of the spin-n/2 representations of SU(2)
+[10]. The real line has no square-integrable matrix coefficients: its unitary characters are not in
+L²(R) [11].
+
 ## Lean References
 
 1. Lightlike/SU2/SpinRep.lean - `SU2.spinRep`, `SU2.spinRepresentation_isIrreducible`
@@ -28,6 +40,18 @@ components (`peterWeyl_dense_continuous`, `peterWeyl_dense_L2`, `peterWeyl_isHil
 3. Lightlike/SU2/LieProduct.lean - `SU2.lie_product`
 4. Lightlike/SU2/LieBridge.lean - `SU2.dSpin_E`, `SU2.dSpin_F`, `SU2.dSpin_H`
 5. Lightlike/SU2/Completeness.lean - `SU2.spinRep_complete`
+6. Lightlike/HarmonicAnalysis/PeterWeyl.lean - `HarmonicAnalysis.peterWeyl_dense_continuous`,
+   `HarmonicAnalysis.peterWeyl_dense_L2`
+7. Lightlike/HarmonicAnalysis/PeterWeylIsotypic.lean - `HarmonicAnalysis.peterWeyl_isHilbertSum`
+8. Lightlike/HarmonicAnalysis/SchurOrthogonality.lean -
+   `HarmonicAnalysis.UnitaryMatrixRep.schur_orthogonality_ne`,
+   `HarmonicAnalysis.UnitaryMatrixRep.schur_orthogonality_eq`
+9. Lightlike/HarmonicAnalysis/PeterWeylCircle.lean - `HarmonicAnalysis.circle_hilbertBasis`,
+   `HarmonicAnalysis.orthonormal_circleMonoLp`, `HarmonicAnalysis.circle_irreducible_classification`
+10. Lightlike/HarmonicAnalysis/PeterWeylSU2.lean - `HarmonicAnalysis.su2_schur_orthogonality`,
+    `HarmonicAnalysis.su2_character_orthogonality`
+11. Lightlike/HarmonicAnalysis/PeterWeylReal.lean - `HarmonicAnalysis.real_not_forall_memLp_two`,
+    `HarmonicAnalysis.real_character_not_memLp_two`
 
 ## References
 

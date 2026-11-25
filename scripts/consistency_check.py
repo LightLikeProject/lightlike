@@ -7,11 +7,12 @@
               the computed checklist is a failure);
   checklists  every v1.0 milestone has a checklist in the format of docs/tasks/checklists.yaml;
   closed      no v1.0 milestone's issue is closed while an item is unticked or before a passing
-              review;
+              review; a closed issue with the label review-pending is a transitional state, not a
+              failure (its review runs, and it is reopened if the review fails);
   claims      every claimed milestone has a fresh stream status file; no two streams claim the
               same milestone, no stream claims two, and no stream claims a milestone outside v1.0;
-  names       no planning ID (a gap row ID such as G1-007, written G1_007 in Lean, or the folder
-              Rows) in a Lean folder name, file name, namespace or declaration name;
+  names       no planning ID (a gap, milestone, row or catalogue ID) in a Lean folder name, file
+              name, namespace or declaration name: scripts/planning_ids.py, which CI runs too;
   catalogue   no entry of docs/results.yaml is `proven` while listing hypotheses, or while one of
               its declarations takes a proposition that another entry lists as an open hypothesis
               (with --lake or --audit: read from the hypotheses that scripts/AxiomAudit.lean
@@ -37,7 +38,6 @@ import collections
 import datetime
 import json
 import pathlib
-import re
 import sys
 import tempfile
 
@@ -45,11 +45,9 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
 import milestone_status as MS  # noqa: E402
 import sync_github as SG  # noqa: E402
+import planning_ids as PI  # noqa: E402
 import tasks as T  # noqa: E402
 
-GAP_ID = re.compile(r"(?<![A-Za-z0-9])G[0-9]+[_-][0-9]{3}(?![0-9])")
-DECL_LINE = re.compile(r"^\s*(?:@\[[^\]]*\]\s*)?(?:(?:private|protected|noncomputable|public|partial|unsafe)\s+)*"
-                       r"(namespace|theorem|lemma|def|abbrev|structure|class|inductive|instance|opaque)\s+(\S+)")
 WAITING = {"ready", "taken", "held"}
 START, END = "<!-- consistency_check: start -->", "<!-- consistency_check: end -->"
 SHOW = 8  # examples listed per failure
@@ -100,7 +98,7 @@ def check_closed(status, tasks, data, stored):
     out = []
     for mid, i in sorted(issues.items(), key=lambda x: T.natural(x[0])):
         st = status["milestones"][mid]
-        if i["state"] != "closed" or not st["v1"] or st["closable"]:
+        if i["state"] != "closed" or not st["v1"] or st["closable"] or SG.REVIEW_PENDING in i.get("labels", []):
             continue
         why = [f"{st['ticked']} of {st['total']} items ticked"] if not st["done"] else []
         why.append(f"review: {st['review']['state']}")
@@ -126,22 +124,8 @@ def check_claims(status):
 
 
 def check_names(main):
-    paths, decls = [], []
-    for base in ("Lightlike", "Tasks"):
-        for p in sorted((main / base).rglob("*.lean")) if (main / base).is_dir() else []:
-            rel = p.relative_to(main)
-            if "Rows" in rel.parts or GAP_ID.search(str(rel)):
-                paths.append(str(rel))
-            for n, line in enumerate(p.read_text(errors="replace").splitlines(), 1):
-                m = DECL_LINE.match(line)
-                if m and (GAP_ID.search(m.group(2)) or re.search(r"(?:^|\.)Rows(?:\.|$)", m.group(2))):
-                    decls.append(f"{m.group(2)} ({rel}:{n})")
-    out = []
-    if paths:
-        out.append(f"{len(paths)} Lean files have a planning ID in their path: {some(paths)}")
-    if decls:
-        out.append(f"{len(decls)} namespaces or declarations have a planning ID in their name: {some(decls)}")
-    return out
+    hits = PI.check(main)
+    return [f"{len(hits)} Lean folder, file or declaration names have a planning ID: {some(hits)}"] if hits else []
 
 
 def catalogue(main):
@@ -280,12 +264,12 @@ def selftest():
                                      done=False, review=dict(state="none", why="not yet"), closable=False), **k)
     status = dict(main="abc1234", computed_at="2026-11-25T08:00Z", milestones={
         "A1": st("A1", claimed_by=["regge", "opalg"]), "A2": st("A2", stale_claims=["oscillatory"]),
-        "A3": st("A3", ticked=2, done=True, review=dict(state="pass"), closable=True), "B1": st("B1", v1=False, claimed_by=["regge"])})
+        "A3": st("A3", ticked=2, done=True, review=dict(state="pass"), closable=True), "B1": st("B1", v1=False, claimed_by=["regge"]), "A4": st("A4")})
     tasks = [dict(id=f"T-{m}", kind="milestone", milestone=m, labels=["milestone"]) for m in status["milestones"]]
     iss = lambda n, mid, **k: dict(dict(number=n, title=f"T-{mid}: Title {mid}", state="open", reason="",  # noqa: E731
                                         labels=["milestone"], assignees=[], milestone=None, body="", url=f"u/{n}"), **k)
     data = dict(issues=[iss(1, "A1", state="closed", reason="completed"), iss(2, "A1"), iss(3, "A3", state="closed", reason="completed"),
-                        iss(4, "B1")],
+                        iss(4, "B1"), iss(5, "A4", state="closed", reason="completed", labels=["milestone", "review-pending"])],
                 labels=[], milestones=["v1.0"],
                 board=dict(id="P", number=1, field_id="F", options={c: c for c in SG.COLUMNS}, items={}))
     iss_f = check_issues(status, tasks, data, {}, {})
@@ -293,7 +277,8 @@ def selftest():
            any("A1 has 2 issues" in x for x in iss_f) and any("milestones have no issue: A2" in x for x in iss_f)
            and any(x.startswith("B1 #4 is not as") for x in iss_f))
     cl = check_closed(status, tasks, data, {})
-    expect("closed: an issue closed with unticked items fails; one closed after a passing review does not",
+    expect("closed: an issue closed with unticked items fails; one closed after a passing review, and one closed "
+           "with the label review-pending (transitional), do not",
            len(cl) == 1 and cl[0].startswith("A1 #1 is closed, but 1 of 2 items ticked"))
     cc = check_claims(status)
     expect("claims: two streams on one milestone, a stale status file, a stream on two milestones and one outside v1.0 fail",
@@ -310,8 +295,8 @@ def selftest():
         (m / "Tasks/GE/T_GE2_P1.lean").write_text("theorem Lightlike.Tasks.t : True := trivial\n")
         nm = check_names(m)
     expect("names: a Rows path, a gap ID in a namespace and in a declaration name fail; a comment, a task file and G12 do not",
-           len(nm) == 2 and nm[0].startswith("1 Lean files") and nm[1].startswith("2 namespaces or declarations")
-           and "gap_G2_015_ok" in nm[1] and "G12 " not in nm[1])
+           len(nm) == 1 and nm[0].startswith("4 Lean folder, file or declaration names") and "Lightlike/Rows/" in nm[0]
+           and "gap_G2_015_ok" in nm[0] and "G12 " not in nm[0] and "T_GE2_P1" not in nm[0])
     ents = [dict(id="LL-1", status="proven", decls=["a"], hypotheses=["H"]),
             dict(id="LL-2", status="conditional", decls=["b"], hypotheses=["Lightlike.Q"]),
             dict(id="LL-3", status="proven", decls=["c"]), dict(id="LL-4", status="proven", decls=["d"])]

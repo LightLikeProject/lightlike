@@ -1,12 +1,10 @@
 # Review rubric
 
-For reviewers of a pull request that adds, changes or removes a Lean file under `Lightlike/` or
-`Tasks/` (it has the label `needs-review`); the rule is the file, so a proof-only change is flagged
-too, and a review of it can be short. A proof-task pull request does not need this: its statement is locked and CI checks
-that it did not change. For a statement the question is not "does it compile" but **does it say
-what its source says, and nothing vacuous or false**. Two approvals from accounts other than the
-author, each with a merged pull request here, let the pull request merge (the check `review-gate`).
-Approve only what you have read yourself.
+For the review of a finished milestone (by an agent session other than the one that did the work) and for
+an expert who reviews a result; pull requests themselves carry no review label and merge when their checks
+pass ([CONTRIBUTING.md](../CONTRIBUTING.md#review)). For a statement the question is not "does it compile"
+but **does it say what its source says, and nothing vacuous or false**. Pass only what you have read
+yourself.
 
 Work through the five points; for each, say in the review what you checked.
 

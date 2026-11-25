@@ -35,6 +35,78 @@ horizon {3} [18]. The coordinate field `∂_T` is a time orientation of the Krus
 chart [10]; it solves the vacuum equations [11], and in every extension of it, in the sense of {4}, a sequence
 approaching the singularity has no limit [12].
 
+Further results of this area in the results catalogue:
+The null cone of complexified Minkowski space is the set of rank-one spinor matrices; a point is a
+twistor line, determined by the point, every line off the plane at infinity is one, and two lines meet
+iff their points are null separated; the Plücker coordinates of a line lie on the Klein quadric and
+every point of the quadric is a line [20]. The twistor Hermitian form has signature (2,2); the twistor
+line of a point is null iff the point is real; the stabilizer of the infinity twistor in SU(2,2) is the
+Poincaré group SL(2,C) ⋉ {Hermitian translations} [21]. Projective twistor space CP^3 splits by the sign
+of the (++−−) form into PT+, PN, PT−, each nonempty; the line of a point lies in PN iff the point is
+real [22]. Lines of CP^3 (2-planes of C^4) are in bijection with the points of the Klein quadric; the
+lines meeting the line at infinity are exactly the complement of the affine chart of complexified
+Minkowski space, X^23 = I_AB X^AB = 0 [23]. A bispinor 2-form is ε F̃ + ε̄ F with symmetric SD and ASD
+parts (a linear equivalence), and Maxwell's equations hold iff the parts satisfy the spin-1
+zero-rest-mass equations [24]. Zero-rest-mass fields of every helicity; the components of a C² z.r.m.
+field solve the wave equation; the momentum eigenstates p_{α1}⋯p_{α2|h|} e^{ik·x} are z.r.m. fields
+[24]. Tensors with the symmetries of a Weyl tensor are exactly ε ε Ψ̃ + ε̄ ε̄ Ψ with Ψ, Ψ̃ totally
+symmetric (the Weyl spinor decomposition) [25]. The Penrose transform by contour integrals is a
+zero-rest-mass field of helicity −(n+1)/2, 0 and (n+1)/2 (differentiation under the integral sign), and
+for twistor functions of homogeneity 2h−2 it does not depend on the section of the line; the elementary
+solution 2πi/det x [26]. A complex momentum is null iff its bispinor is −λλ̃ᵀ, the factorization is
+unique up to little-group scaling; ⟨pq⟩[pq] = 2p·q, s_ij = ⟨ij⟩[ji], and the Schouten identities [27].
+Three-particle special kinematics (all angle or all square brackets vanish), and three-point amplitudes
+fixed by little-group scaling, x_12 = h_3 − h_1 − h_2, with the mass-dimension selection between angle
+and square brackets [28]. The Parke–Taylor colour-ordered MHV amplitudes are cyclic, reflect with
+(−1)^n, satisfy the U(1) decoupling identity for every n and the five-point Kleiss–Kuijf relation, have
+little-group weights t^{−2h}, and at four points equal `[34]^4/([12][23][34][41])` under momentum
+conservation [29]. The U(N) colour algebra in the normalisation Tr TᵃTᵇ = δᵃᵇ — completeness (Fierz) for
+U(N) and SU(N), the structure constants as traces of commutators, products of two structure constants as
+single traces, and the Jacobi identity [30]. The BCFW shift preserves momentum conservation and
+on-shellness and makes channel momenta squared linear in z; a rational function with simple poles
+vanishing at infinity has Â(0) = −Σ Res Â(z)/z, and with factorized residues this is the on-shell
+recursion; for the shifted Parke–Taylor amplitude the single residue factorizes into lower-point
+amplitudes [31]. The Parke–Taylor formula ⟨ij⟩⁴/(⟨12⟩⋯⟨n1⟩) for any positions i ≠ j of the two
+negative-helicity gluons by BCFW recursion, conditional on the BCFW large-z falloff (3.11), taken as a
+hypothesis (conditional) [32]. First law of Kerr black-hole mechanics, dM = kappa/(8 pi) dA + Omega_H
+dJ, along any differentiable family of non-extremal Kerr black holes [33]. Smarr formula for Kerr, M = 2
+Omega_H J + kappa A/(4 pi), for 0 < M and a^2 <= M^2 [34]. The Lichnerowicz formula in a torsion-free
+skew frame on R^n: D^2 f = -sum of second covariant derivatives plus (s/4) f, with s the scalar
+curvature of the frame connection, given the pair symmetry and the first Bianchi identity of that
+curvature (conditional) [35]. Friedrich's eigenvalue bound on the round sphere in the stereographic
+chart: a nonzero compactly supported C^2 eigenspinor of the Dirac operator has lambda^2 at least n^2/4
+(n at least 2) [36]. For every k and sign epsilon the radial spinor with polynomial profile solves D f =
+epsilon (k+1) f for the Dirac operator of the unit 2-sphere in the stereographic chart [37]. The Connes
+distance of the flat Dirac operator on R^n between two points is the Euclidean distance, for every skew
+Clifford representation on a nontrivial space [38]. The Connes distance on the circle R/LZ for the Dirac
+operator -i d/dx is the geodesic distance, the infimum over integers m of |p - q - m L| [39]. The heat
+trace of the unit 2-sphere, Σ(2l+1)e^{-t l(l+1)}, has the expansion 1/t + 1/3 + t/15 + O(t²) as t → 0⁺
+[40]. The heat trace Σ_{k∈ℤⁿ} e^{-t|k|²} of the flat n-torus has the asymptotic expansion π^{n/2}
+t^{-n/2} with every other coefficient zero, in particular no t⁰ term [41]. On the round 2-sphere and
+3-sphere, any expansion of the heat trace has a₁ = (4π)^{-n/2} V R/6, with R the scalar curvature of the
+round metric computed by Lightlike's scalarCurvature (R = n(n-1)) [42]. The scalar curvature of the
+round unit n-sphere in stereographic coordinates is n(n-1) [43]. Induced gravity from the heat kernel:
+for D = -Δ + ξR the coefficient a₁ is proportional to (1-6ξ), it vanishes for the conformal coupling in
+n = 4 and not in other dimensions, and the induced inverse Newton constant is (1-6ξ)/(12πε) with
+proper-time cutoff ε [44]. The on-shell recursion for the colour-ordered Feynman amplitudes of
+Yang–Mills theory: under the large-z falloff of the shifted amplitude, A_n is the sum over the planar
+channels of the product of the lower amplitudes at the poles divided by the propagator (conditional)
+[45]. The Ward identity of the colour-ordered Feynman amplitudes holds at every gluon for every number
+of gluons, and with it the factorization on the poles and the recursion hold without the Ward identity
+as a hypothesis (conditional) [46]. The Dirac operator squares to minus the Laplacian on flat space: D(D
+f) = -Δ f for a C² function with values in a Clifford module [47]. Lichnerowicz in a frame: for a frame
+connection with antisymmetric connection form and a curvature with the Riemann symmetries, D² f = −Σ
+∇²f(eᵢ, eᵢ) + (s/4) f, given the Ricci identity for the frame Hessian (conditional) [48]. On the unit
+2-sphere the curvature term of the Lichnerowicz formula is s/4 and not s/2 [49]. For every k and sign
+epsilon the eigenvalue epsilon (k+1) of the Dirac operator of the unit 2-sphere in the stereographic
+chart has an injective linear image of k+1 copies of the spinor module among its eigenspinors [50].
+Within the angular polynomial class, a flat eigenspinor of the Dirac operator of the unit 2-sphere in
+the stereographic chart that is reduced and satisfies the decay condition has eigenvalue plus or minus s
+and the radial profile of the family of the lower bound [50]. In the angular polynomial class,
+boundedness of the half-density spinor at the pole of the sphere forces the decay condition, so a
+reduced flat eigenspinor of the Dirac operator of the unit 2-sphere in the stereographic chart has
+eigenvalue plus or minus s and the radial profile of the lower bound [51].
+
 ## Lean References
 
 1. Lightlike/GR/Einstein.lean - `einsteinTensor`, `IsVacuumSolution`,
@@ -74,6 +146,79 @@ approaching the singularity has no limit [12].
 18. Lightlike/GR/KruskalHorizon.lean - `ReachesKruskalInfinity`, `reachesKruskalInfinity_iff`,
     `frontier_kruskal_past_of_infinity`
 19. Lightlike/GR/KruskalOrientation.lean - `kruskalOrientation`, `kruskal_timeOrientable`
+20. Lightlike/GR/ComplexMinkowski.lean - `qC_eq_zero_iff`, `qC_eq_zero_iff_tmul`,
+    `isHermitian_spinorMat_iff`, `twistorLine_injective`, `exists_twistorLine_eq`,
+    `twistorLine_inf_ne_bot_iff`, `plucker_klein`, `klein_decomposable`
+21. Lightlike/GR/TwistorConformal.lean - `twistorNorm_inc_eq_zero_iff`, `twistorLine_null_iff`,
+    `isSU22_and_fixesInfinity_iff`
+22. Lightlike/GR/TwistorSpace.lean - `penroseHerm_signature`, `penroseNorm_incidence_eq_zero_iff`,
+    `cp3_partition`, `mk_incidencePenrose_mem`
+23. Lightlike/GR/TwistorKlein.lean - `kleinEquiv`, `compl_range_twistorLine`, `twistorLine_affine_chart`
+24. Lightlike/GR/ZeroRestMass.lean - `Spinor.maxwell_decomposition`, `Spinor.maxwellEquiv`,
+    `Spinor.maxwell_iff_zrm_D`, `Spinor.maxwell_iff_zrm`, `Spinor.IsZrmNeg`, `Spinor.IsZrmPos`,
+    `Spinor.IsZrmNeg.box_eq_zero`, `Spinor.IsZrmPos.box_eq_zero`, `Spinor.planeWave_isZrmNeg`,
+    `Spinor.planeWave_isZrmPos`, `Spinor.planeWave_isZrmScalar`
+25. Lightlike/GR/WeylSpinor.lean - `Spinor.weyl_eq_weylOf`, `Spinor.weylOf_isWeyl`, `Spinor.weylEquiv`
+26. Lightlike/GR/PenroseTransform.lean - `Spinor.hasFDerivAt_circleIntegral_twistorPt`,
+    `Spinor.penroseNeg_isZrmNeg`, `Spinor.penroseScalar_isZrmScalar`, `Spinor.penrosePos_isZrmPos`,
+    `Spinor.penroseNeg_rescale`, `Spinor.penroseScalar_rescale`, `Spinor.penrosePos_rescale`,
+    `Spinor.penroseScalar_elementary`
+27. Lightlike/GR/SpinorHelicity.lean - `SpinorHelicity.det_momBispinor`,
+    `SpinorHelicity.mdot_self_eq_zero_iff`, `SpinorHelicity.exists_littleGroup_of_eq`,
+    `SpinorHelicity.nullMom_littleGroup`, `SpinorHelicity.angleBr_mul_squareBr`,
+    `SpinorHelicity.mandelstam_nullMom`, `SpinorHelicity.schouten_angleBr`,
+    `SpinorHelicity.schouten_squareBr`
+28. Lightlike/GR/ThreePointAmplitude.lean - `SpinorHelicity.conserved3_iff`,
+    `SpinorHelicity.special_kinematics`, `SpinorHelicity.angleAnsatz_weights_iff`,
+    `SpinorHelicity.three_point_dimension`, `SpinorHelicity.three_point_selection`
+29. Lightlike/GR/ColourOrdered.lean - `SpinorHelicity.parkeTaylor_rotate`,
+    `SpinorHelicity.parkeTaylor_rev`, `SpinorHelicity.eikonal_sum`,
+    `SpinorHelicity.parkeTaylor_U1_decoupling`, `SpinorHelicity.parkeTaylor_littleGroup_plus`,
+    `SpinorHelicity.parkeTaylor_littleGroup_minus`, `SpinorHelicity.parkeTaylor_KK5`,
+    `SpinorHelicity.parkeTaylor_four_eq_square`
+30. Lightlike/GR/ColourAlgebra.lean - `Colour.expand_generators`, `Colour.fierz`, `Colour.fierz_su`,
+    `Colour.commutator_eq_structureConst`, `Colour.i_mul_eq_trace_sub`, `Colour.structureConst_mul_sum`,
+    `Colour.jacobi_colour`
+31. Lightlike/GR/BCFWFactorization.lean - `SpinorHelicity.conserved_bcfw`,
+    `SpinorHelicity.mdot_momSum_bcfw`, `SpinorHelicity.mdot_momSum_bcfw_eq`,
+    `SpinorHelicity.eval_div_nodal`, `SpinorHelicity.tendsto_residue`,
+    `SpinorHelicity.tendsto_cocompact_zero`, `SpinorHelicity.eval_zero_eq_neg_sum_residues`,
+    `SpinorHelicity.recursion_of_factorization`, `SpinorHelicity.ptShift_eq`,
+    `SpinorHelicity.ptShift_rational`, `SpinorHelicity.ptShift_channel`,
+    `SpinorHelicity.ptShift_onshell`, `SpinorHelicity.ptShift_factorization`
+32. Lightlike/GR/ParkeTaylorAll.lean - `SpinorHelicity.IsBCFWFamilyMHV`,
+    `SpinorHelicity.parkeTaylor_bcfw_far`, `SpinorHelicity.eq_parkeTaylor_of_bcfw_mhv`,
+    `SpinorHelicity.eq_parkeTaylor_of_bcfw_mhv'`
+33. Lightlike/GR/KerrFirstLaw/KerrFirstLaw.lean - `GR.KerrFirstLaw.kerr_first_law`
+34. Lightlike/GR/KerrFirstLaw/KerrArea.lean - `GR.KerrFirstLaw.kerr_smarr`
+35. Lightlike/Dirac/LichnerowiczGeneral.lean - `Dirac.lichnerowicz_general`
+36. Lightlike/Dirac/StereoFriedrich.lean - `Dirac.eigen_sq_ge_friedrich_stereo`
+37. Lightlike/Dirac/EigenGeneralK.lean - `Dirac.diracF_stereo_eigen_general`
+38. Lightlike/Dirac/ConnesDistance2.lean - `Dirac.connesDist_eq_norm`
+39. Lightlike/Dirac/ConnesDistance5.lean - `Dirac.circConnesDist_eq_iInf`
+40. Lightlike/Geometry/HeatKernel/SphereTrace.lean - `HeatKernel.hasHeatExpansionTo_sphereTrace`
+41. Lightlike/Geometry/HeatKernel/Torus.lean - `HeatKernel.hasHeatExpansion_torusTrace`
+42. Lightlike/Geometry/HeatKernel/SphereCurvatureTie.lean - `HeatKernel.sphere2_a1_curv`,
+    `HeatKernel.sphere3_a1_curv`, `HeatKernel.hasHeatExpansionTo_sphereTrace_curv`,
+    `HeatKernel.hasHeatExpansionTo_sphere3Trace_curv`
+43. Lightlike/Geometry/HeatKernel/StereoCurvature.lean - `HeatKernel.scalarCurvature_stereo`
+44. Lightlike/Geometry/HeatKernel/InducedGravity.lean - `HeatKernel.heatCoeffsE_conformal_four_one`,
+    `HeatKernel.heatCoeffsE_conformal_one_ne_zero`, `HeatKernel.conformalCoupling_eq_sixth_iff`,
+    `HeatKernel.inducedInvG_spec`
+45. Lightlike/GR/FeynmanRecursion.lean - `SpinorHelicity.eq_sum_div_sub_of_residues`,
+    `SpinorHelicity.bgAmplitude_eq_sum_channels`
+46. Lightlike/GR/FeynmanWard.lean - `SpinorHelicity.ward_all`, `SpinorHelicity.residue_factorization'`,
+    `SpinorHelicity.bgAmplitude_eq_sum_channels'`
+47. Lightlike/Dirac/Flat.lean - `Dirac.dirac_dirac`
+48. Lightlike/Dirac/LichnerowiczFormula.lean - `Dirac.lichnerowicz_frame`
+49. Lightlike/Dirac/LichnerowiczTests.lean - `Dirac.curvatureTerm_sphere`,
+    `Dirac.sphere_half_formula_fails`
+50. Lightlike/Dirac/EigenAngular.lean - `Dirac.sphere_dirac_lower_bound`, `Dirac.modeMap_injective`,
+    `Dirac.modeMap_eigen`, `Dirac.sphere_eigen_mode`, `Dirac.angG_flat_eigen`, `Dirac.dirac_angular`,
+    `Dirac.angular_class_complete`, `Dirac.angG_flat_converse`, `Dirac.mode_complete`,
+    `Dirac.odeOp_unique`
+51. Lightlike/Dirac/EigenPole.lean - `Dirac.angular_class_complete_bounded`, `Dirac.decay_of_bounded`,
+    `Dirac.degree_le_of_bounded`, `Dirac.level_of_degree`
 
 ## References
 
