@@ -469,4 +469,47 @@ theorem finrank_range_Qab_le (q : kˣ) (a b : ℕ) (hd : ∀ i, i ≤ a + b → 
       (Submodule.injective_subtype _) (LinearMap.range R))
   rw [h2]; exact h1
 
+/-- `E_i` preserves the window `a + b`. -/
+theorem Eop_maps (q : kˣ) {a b i : ℕ} (hia : i ≤ a) (hib : i ≤ b) :
+    ∀ v ∈ Win k (a + b), (Eop q a b i : Module.End k (ModelSpace k)) v ∈ Win k (a + b) := by
+  intro v hv
+  unfold Eop
+  rw [LinearMap.smul_apply]
+  exact Submodule.smul_mem _ _ (Vop_maps q hia hib _ (Wop_maps q hia hib v hv))
+
+/-- `Q` preserves the window `a + b`. -/
+theorem Qab_maps (q : kˣ) (a b : ℕ) : ∀ v ∈ Win k (a + b), (Qab q a b : Module.End k (ModelSpace k)) v ∈ Win k (a + b) :=
+  fun v hv => jwAt_preserves q (s := 0) (n := a) (N := a + b) (by omega) _
+    (jwAt_preserves q (s := a) (n := b) (N := a + b) le_rfl v hv)
+
+/-- **Rank bound (B)**: `rank E_i ≥ a + b - 2 i + 1`. -/
+theorem le_finrank_range_Eop (q : kˣ) {a b i : ℕ} (hia : i ≤ a) (hib : i ≤ b)
+    (hd : ∀ j, j ≤ a + b → chebD (loopVal q) j ≠ 0)
+    (hq2 : ∀ j, 1 ≤ j → j ≤ a + b + 1 → (q : k) ^ (2 * j) ≠ 1) :
+    a + b - 2 * i + 1 ≤ Module.finrank k (LinearMap.range (resW (N := a + b) (Eop q a b i : Module.End k (ModelSpace k))
+      (Eop_maps q hia hib))) := by
+  have hκ := kapRec_ne (k := k) q i a b hia hib hq2
+  set c := a + b - 2 * i with hc
+  -- the vectors `V D_m`, as elements of the range of `E_i` restricted to the window
+  have hfix : ∀ m : Fin (c + 1), (Eop q a b i : Module.End k (ModelSpace k)) (Vop q a b i (dicke q c m)) =
+      Vop q a b i (dicke q c m) := by
+    intro m
+    have h1 := congrArg (fun T : Module.End k (ModelSpace k) => T (dicke q c m))
+      (Wop_mul_Vop q a b i hia hib hd)
+    have e : (jwAt q 0 (a + b - 2 * i) : Module.End k (ModelSpace k)) (dicke q c m) = dicke q c m :=
+      jwAt_dicke q c m
+    simp only [Module.End.mul_apply, LinearMap.smul_apply, e] at h1
+    unfold Eop
+    rw [LinearMap.smul_apply, Module.End.mul_apply, h1, map_smul, smul_smul, inv_mul_cancel₀ hκ, one_smul]
+  let g : Fin (c + 1) → LinearMap.range (resW (N := a + b) (Eop q a b i : Module.End k (ModelSpace k))
+      (Eop_maps q hia hib)) := fun m =>
+    ⟨⟨Vop q a b i (dicke q c m), Vop_dicke_mem q a b i m hia hib⟩, ⟨⟨Vop q a b i (dicke q c m),
+      Vop_dicke_mem q a b i m hia hib⟩, Subtype.ext (hfix m)⟩⟩
+  have hli : LinearIndependent k g := by
+    have h1 := Vop_dicke_independent (k := k) q a b i hia hib hd hq2
+    refine LinearIndependent.of_comp ((Submodule.subtype _) ∘ₗ (Submodule.subtype _)) ?_
+    exact h1
+  have := hli.fintype_card_le_finrank
+  simpa using this
+
 end Lightlike.TemperleyLieb
