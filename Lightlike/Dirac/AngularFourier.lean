@@ -77,4 +77,60 @@ theorem hasDerivAt_fcoef {G G' : ℝ → ℝ → ℂ} (m : ℤ)
     (Filter.Eventually.of_forall fun t _ r _ => (hG r t).const_mul _)
   exact this.2
 
+/-- **Uniqueness of Fourier modes.** A continuous function on `[0, 2π]` with equal end values whose Fourier
+coefficients `∫₀^{2π} e^{-imθ} G θ dθ` all vanish is zero. -/
+theorem eq_zero_of_fcoef_eq_zero {G : ℝ → ℂ} (hc : Continuous G) (hend : G 0 = G (2 * Real.pi))
+    (h : ∀ m : ℤ, ∫ θ in (0 : ℝ)..(2 * Real.pi), Complex.exp (-(m : ℂ) * θ * Complex.I) * G θ = 0) :
+    ∀ θ ∈ Set.Icc (0 : ℝ) (2 * Real.pi), G θ = 0 := by
+  have hT : Fact (0 < 2 * Real.pi) := ⟨by positivity⟩
+  let f : C(AddCircle (2 * Real.pi), ℂ) :=
+    ⟨AddCircle.liftIco (2 * Real.pi) 0 G,
+      AddCircle.liftIco_continuous (by simpa using hend) hc.continuousOn⟩
+  have hcoef : ∀ n : ℤ, fourierCoeff (f : AddCircle (2 * Real.pi) → ℂ) n = 0 := by
+    intro n
+    rw [show (f : AddCircle (2 * Real.pi) → ℂ) = AddCircle.liftIco (2 * Real.pi) 0 G from rfl,
+      fourierCoeff_eq_intervalIntegral _ _ 0]
+    have this : ∀ x : ℝ, fourier (-n) (x : AddCircle (2 * Real.pi)) • G x =
+        Complex.exp (-(n : ℂ) * x * Complex.I) * G x := by
+      intro x
+      rw [fourier_coe_apply, smul_eq_mul]
+      congr 1
+      have hpi : (Real.pi : ℂ) ≠ 0 := Complex.ofReal_ne_zero.mpr Real.pi_ne_zero
+      congr 1
+      push_cast
+      field_simp
+    have e : ∫ x in (0 : ℝ)..(0 + 2 * Real.pi), fourier (-n) (x : AddCircle (2 * Real.pi)) •
+        AddCircle.liftIco (2 * Real.pi) 0 G (x : AddCircle (2 * Real.pi)) =
+        ∫ x in (0 : ℝ)..(2 * Real.pi), Complex.exp (-(n : ℂ) * x * Complex.I) * G x := by
+      rw [zero_add]
+      refine intervalIntegral.integral_congr_Ioo_of_le (by positivity) fun x hx => ?_
+      have hx' : x ∈ Set.Ico (0 : ℝ) (0 + 2 * Real.pi) := by
+        simpa using Set.Ioo_subset_Ico_self hx
+      rw [AddCircle.liftIco_coe_apply hx']
+      exact this x
+    rw [e, h n, smul_zero]
+  have hrepr : ∀ n : ℤ, (fourierBasis.repr (ContinuousMap.toLp 2 AddCircle.haarAddCircle ℂ f)) n = 0 := by
+    intro n
+    rw [fourierBasis_repr, fourierCoeff_toLp]
+    exact hcoef n
+  have hzero : ContinuousMap.toLp (E := ℂ) 2 AddCircle.haarAddCircle ℂ f = ContinuousMap.toLp (E := ℂ) 2 AddCircle.haarAddCircle ℂ 0 := by
+    have h0 : fourierBasis.repr (ContinuousMap.toLp 2 AddCircle.haarAddCircle ℂ f) = 0 := by
+      ext n; simpa using hrepr n
+    have : ContinuousMap.toLp (E := ℂ) 2 AddCircle.haarAddCircle ℂ f = 0 := by
+      have := (fourierBasis (T := 2 * Real.pi)).repr.injective (h0.trans (map_zero _).symm)
+      exact this
+    rw [this]
+    ext1
+    simp
+  have hf0 : f = 0 := ContinuousMap.toLp_injective (p := 2) AddCircle.haarAddCircle (𝕜 := ℂ) hzero
+  have key : ∀ θ : ℝ, θ ∈ Set.Ico 0 (0 + 2 * Real.pi) → G θ = 0 := by
+    intro θ hθ
+    have := congrArg (fun g : C(AddCircle (2 * Real.pi), ℂ) => g ((θ : ℝ) : AddCircle (2 * Real.pi))) hf0
+    simpa [f, AddCircle.liftIco_coe_apply hθ] using this
+  intro θ hθ
+  rcases eq_or_lt_of_le hθ.2 with h2 | h2
+  · rw [h2, ← hend]
+    exact key 0 ⟨le_refl _, by simp [Real.pi_pos]⟩
+  · exact key θ ⟨hθ.1, by simpa using h2⟩
+
 end Lightlike.Dirac
