@@ -5049,3 +5049,16 @@
   review: kernel-checked
   note: "Comparison pending (no source for the fermionic Shale theorem was read). Part of OP2, not the whole criterion. WEAKER: (1) only sufficiency, and only under the strict bound sum |beta e_k|^2 < 1 (Hilbert-Schmidt norm of beta below 1); the general Hilbert-Schmidt case (Araki, Bratteli-Robinson) and the necessity of the Hilbert-Schmidt condition are not proved here. (2) The bound is on the basis vectors of a Hilbert basis, which is the squared Hilbert-Schmidt norm of beta. Proof: the transformed annihilators are the CAR family (p + i q)/2 built from the fields phi(R e_k), phi(R(i e_k)); the words of transformed creation operators on a unit vacuum are orthonormal, dense by irreducibility of the Fock representation, and define the unitary; the vacuum is the limit of the decreasing commuting projections prod (1 - c_k a_k), bounded below by the Bonferroni inequality 1 - sum |a_k Omega_0|^2."
   since: unreleased
+- id: LL-0382
+  title: "Within the angular polynomial class, a flat eigenspinor of the Dirac operator of the unit 2-sphere in the stereographic chart that is reduced and satisfies the decay condition has eigenvalue plus or minus s and the radial profile of the family of the lower bound"
+  area: GR
+  file: Lightlike/Dirac/EigenAngular.lean
+  decls: [Lightlike.Dirac.angular_class_complete, Lightlike.Dirac.angG_flat_converse, Lightlike.Dirac.mode_complete, Lightlike.Dirac.odeOp_unique]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: boldt-2015, location: "Theorem 3.1", check: "multiplicities"}
+  review: kernel-checked
+  note: "Companion of the lower bound (LL-0380, same file) against Boldt, arXiv:1504.03121, Theorem 3.1, p. 6 (read): eigenvalues +-(n/2 + k) with multiplicity 2^[n/2] C(n+k-1, k); for n = 2 this is +-(k+1) with multiplicity 2(k+1). Here, for a nonzero constant spinor v and spinors of the form c1 = (1+t)^-s z^(n+1) G(t), c2 = (1+t)^-s z^n F(t), t = |y|^2, G(-1) not zero (reduced), n+1 <= s (decay O(1/|y|) at the pole in this class), a flat eigenspinor has eigenvalue +-s and G a multiple of the radial polynomial of the lower bound, by the coefficient recurrence and evaluation of the radial equation at t = -1. WEAKER (PARTIAL for GE5): only within this class of spinors; not an exclusion of other eigenvalues or eigenspinors of the sphere, which needs smooth sections on S^2, regularity at the pole and the angular Fourier decomposition, none of which is in the library; the decay condition is assumed as n+1 <= s, not derived from smoothness at the pole."
+  since: unreleased
