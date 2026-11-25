@@ -114,4 +114,62 @@ theorem gram_eq (q : kˣ) (a b c e d f d' : ℕ) :
   unfold gramMid Wop Vop
   simp only [mul_assoc]
 
+/-- The factors lie in the expected subalgebras. -/
+theorem gramMid_mem (q : kˣ) (a b c e d f d' : ℕ) (hN : 1 ≤ a + b + c)
+    (hea : e ≤ a) (heb : e ≤ b) (hfb : f ≤ b) (hfc : f ≤ c) (hdc : d ≤ c) (hdA : d ≤ a + b - 2 * e)
+    (hda : d' ≤ a) (hdf : d' ≤ b + c - 2 * f)
+    (hD : a + b - 2 * e + c - 2 * d = a + (b + c - 2 * f) - 2 * d') :
+    gramMid q a b c e d f d' ∈ CSub q (a + b - 2 * e + c - 2 * d - 1) := by
+  set N := a + b + c with hNdef
+  have hZ : Qab q a b * (jwAt q a b * jwAt q (b + a) c) ∈ CSub q (N - 1) := by
+    have h1 : Qab q a b ∈ CSub q (N - 1) := tlSub_mono (m := a + b - 1) (n := N - 1) (by omega) (Qab_mem q a b)
+    have h2 : jwAt q a b ∈ CSub q (N - 1) := tlSub_mono (m := a + b - 1) (n := N - 1) (by omega) (jwAt_mem q a b)
+    have h3 : jwAt q (b + a) c ∈ CSub q (N - 1) :=
+      tlSub_mono (m := b + a + c - 1) (n := N - 1) (by omega) (jwAt_mem q (b + a) c)
+    exact Subalgebra.mul_mem _ h1 (Subalgebra.mul_mem _ h2 h3)
+  have hYL : Qab q (a + b - 2 * e) c * jwAt q 0 (a + b - 2 * e) ∈ CSub q (N - 1 - 2 * e) := by
+    have h1 : Qab q (a + b - 2 * e) c ∈ CSub q (N - 1 - 2 * e) :=
+      tlSub_mono (m := a + b - 2 * e + c - 1) (n := N - 1 - 2 * e) (by omega) (Qab_mem q _ c)
+    have h2 : jwAt q 0 (a + b - 2 * e) ∈ CSub q (N - 1 - 2 * e) := by
+      have := jwAt_mem (k := k) q 0 (a + b - 2 * e)
+      exact tlSub_mono (by omega) this
+    exact Subalgebra.mul_mem _ h1 h2
+  have hYR : jwAt q a (b + c - 2 * f) * Qab q a (b + c - 2 * f) ∈ CSub q (N - 1 - 2 * f) := by
+    have h1 : jwAt q a (b + c - 2 * f) ∈ CSub q (N - 1 - 2 * f) :=
+      tlSub_mono (m := a + (b + c - 2 * f) - 1) (n := N - 1 - 2 * f) (by omega) (jwAt_mem q a _)
+    have h2 : Qab q a (b + c - 2 * f) ∈ CSub q (N - 1 - 2 * f) :=
+      tlSub_mono (m := a + (b + c - 2 * f) - 1) (n := N - 1 - 2 * f) (by omega) (Qab_mem q a _)
+    exact Subalgebra.mul_mem _ h1 h2
+  rcases le_total e f with hef | hef
+  · obtain ⟨t, rfl⟩ := Nat.exists_eq_add_of_le hef
+    obtain rfl : d = d' + t := by omega
+    have hYR2 : jwAt q a (b + c - 2 * (t + e)) * Qab q a (b + c - 2 * (t + e)) ∈ CSub q (N - 1 - 2 * e - 2 * t) := by
+      have := hYR
+      rw [show e + t = t + e from add_comm e t] at this
+      rwa [show N - 1 - 2 * (t + e) = N - 1 - 2 * e - 2 * t by omega] at this
+    have key := balanced_le q (N := N - 1) hZ e t d' (a + b - 2 * e - (d' + t)) (a - e) (b - (t + e) + a) (a - d')
+      (YL := Qab q (a + b - 2 * e) c * jwAt q 0 (a + b - 2 * e))
+      (YR := jwAt q a (b + c - 2 * (t + e)) * Qab q a (b + c - 2 * (t + e)))
+      hYL hYR2 (by omega) (by omega) (by omega) (by omega) (by omega) (by omega)
+    unfold gramMid
+    rw [show e + t = t + e from add_comm e t]
+    have hidx : a + b - 2 * e + c - 2 * (d' + t) - 1 = N - 1 - 2 * e - 2 * t - 2 * d' := by omega
+    rw [hidx]
+    exact key
+  · obtain ⟨t, rfl⟩ := Nat.exists_eq_add_of_le hef
+    obtain rfl : d' = d + t := by omega
+    have hYL2 : Qab q (a + b - 2 * (t + f)) c * jwAt q 0 (a + b - 2 * (t + f)) ∈ CSub q (N - 1 - 2 * f - 2 * t) := by
+      have := hYL
+      rw [show f + t = t + f from add_comm f t] at this
+      rwa [show N - 1 - 2 * (t + f) = N - 1 - 2 * f - 2 * t by omega] at this
+    have key := balanced_ge q (N := N - 1) hZ f t d (a + b - 2 * (t + f) - d) (a - (t + f)) (b - f + a) (a - (d + t))
+      (YL := Qab q (a + b - 2 * (t + f)) c * jwAt q 0 (a + b - 2 * (t + f)))
+      (YR := jwAt q a (b + c - 2 * f) * Qab q a (b + c - 2 * f))
+      hYR hYL2 (by omega) (by omega) (by omega) (by omega) (by omega) (by omega)
+    unfold gramMid
+    rw [show f + t = t + f from add_comm f t]
+    have hidx : a + b - 2 * (t + f) + c - 2 * d - 1 = N - 1 - 2 * f - 2 * t - 2 * d := by omega
+    rw [hidx]
+    exact key
+
 end Lightlike.TemperleyLieb
