@@ -146,4 +146,28 @@ theorem Vop_comm_sh (q : kˣ) {a b e : ℕ} (hea : e ≤ a) (heb : e ≤ b) (Y :
   rw [← mul_assoc, jwAt_comm_sh q (u := 0) (by omega) Y]
   simp only [mul_assoc]
 
+/-- Gluing twice composes the heads. -/
+lemma pre_comp (s t : ℕ) (σ : ℕ → Bool) (ρ : ℕ → Bool) :
+    pre s σ (pre t (tl s σ) ρ) = pre (s + t) σ ρ := by
+  funext n
+  simp only [pre, tl]
+  split_ifs <;> first | rfl | (exfalso; omega) | (congr 1; omega)
+
+/-- The tail of a tail. -/
+lemma tl_tl (s t : ℕ) (σ : ℕ → Bool) : tl t (tl s σ) = tl (s + t) σ := by
+  funext n
+  simp only [tl]; congr 1; omega
+
+/-- Translating twice translates by the sum. -/
+theorem sh_sh (s t : ℕ) (X : Module.End k (ModelSpace k)) : sh s (sh t X) = sh (s + t) X := by
+  apply Finsupp.lhom_ext
+  intro σ c
+  rw [sh_single, sh_single, sh_single, tl_tl]
+  congr 1
+  rw [one_smul, Finsupp.lmapDomain_apply, Finsupp.lmapDomain_apply, Finsupp.lmapDomain_apply,
+    ← Finsupp.mapDomain_comp]
+  congr 1
+  funext ρ
+  exact pre_comp s t σ ρ
+
 end Lightlike.TemperleyLieb
