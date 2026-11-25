@@ -638,6 +638,7 @@ import Lightlike.OperatorAlgebras.CARProjections
 import Lightlike.OperatorAlgebras.CARQuasiFree
 import Lightlike.OperatorAlgebras.CARWick
 import Lightlike.OperatorAlgebras.CARShale
+import Lightlike.OperatorAlgebras.CARWickFour
 import Lightlike.OperatorAlgebras.CARShaleConj
 import Lightlike.OperatorAlgebras.CARShaleHS
 import Lightlike.OperatorAlgebras.CARShaleHeavy

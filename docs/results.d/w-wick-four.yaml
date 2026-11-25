@@ -1,0 +1,11 @@
+- id: LL-XXXX-w
+  title: "The four-point Wick expansion for fermionic split fields and for the CAR fields of a Bogoliubov vacuum: <phi1 phi2 phi3 phi4> = p12 p34 - p13 p24 + p14 p23 with the pair expectations pij of the fields"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/CARWickFour.lean
+  decls: [Lightlike.OperatorAlgebras.wick_four, Lightlike.OperatorAlgebras.pairOf_carField, Lightlike.OperatorAlgebras.car_wick_four]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source for the fermionic Wick theorem was read). The explicit n = 4 instance of the recursion of the Wick entries (FermionWick.lean and CARWick.lean): wick_four expands the Pfaffian recursion for four abstract split fields, car_wick_four applies it to the CAR fields of a Bogoliubov vacuum. It closes the 'no n = 4 check' difference of the CARWick entry; finite modes only, as there."
+  since: unreleased
