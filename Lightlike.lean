@@ -743,6 +743,8 @@ import Lightlike.OperatorAlgebras.QuasiFreeState.BoundedForm
 import Lightlike.OperatorAlgebras.QuasiFreeState.ComplexStructure
 import Lightlike.OperatorAlgebras.QuasiFreeState.NecessityLinear
 import Lightlike.OperatorAlgebras.QuasiFreeState.NecessityState
+import Lightlike.OperatorAlgebras.QuasiFreeState.NecessityGauss
+import Lightlike.OperatorAlgebras.QuasiFreeState.NecessityMain
 import Lightlike.OperatorAlgebras.QuasiFreeState.Covariance
 import Lightlike.OperatorAlgebras.QuasiFreeState.Fock
 import Lightlike.OperatorAlgebras.QuasiFreeState.FockEquiv

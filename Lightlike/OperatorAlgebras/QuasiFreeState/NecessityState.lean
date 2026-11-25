@@ -170,7 +170,7 @@ lemma kform_twNormSq (κ : V → ℂ) (hω : ∀ a b, ω a b = -ω b a) (x : V �
 theorem exists_state_of_kernel [Fact (qfKerM ω η).PosSemidef] (hω : ∀ a b, ω a b = -ω b a) (κ : V → ℂ)
     (hκ0 : κ 0 = 1) (hpos : (kernelOf ω κ).PosSemidef)
     (hdom : ((2 : ℂ) • qfKer ω η - kernelOf ω κ).PosSemidef) :
-    ∃ ψ : qfAlgebra ω η hω →ₗ[ℂ] ℂ, IsState ψ ∧ ∀ x, ψ (qfWA ω η hω x) = κ x := by
+    ∃ ψ : qfAlgebra ω η hω →ₗ[ℂ] ℂ, IsState ψ ∧ Continuous ψ ∧ ∀ x, ψ (qfWA ω η hω x) = κ x := by
   have hd : DenseRange (qfPhi ω η) := by
     have h := dense_range_qfPhi ω η
     rwa [LinearMap.coe_range] at h
@@ -189,7 +189,12 @@ theorem exists_state_of_kernel [Fact (qfKerM ω η).PosSemidef] (hω : ∀ a b, 
       rw [qfPhi_single]; exact qfW_vac ω η hω x
     rw [h1, hΩ, hT]
     simp [kform, kernelOf, hκ0]
-  refine ⟨ψ, ⟨?_, ?_⟩, hψW⟩
+  have hψc : Continuous ψ := by
+    show Continuous (fun b : qfAlgebra ω η hω =>
+      ⟪qfVac ω η, T ((b : QFSpace ω η →L[ℂ] QFSpace ω η) (qfVac ω η))⟫_ℂ)
+    exact continuous_const.inner (T.continuous.comp
+      ((ContinuousLinearMap.apply ℂ (QFSpace ω η) (qfVac ω η)).continuous.comp continuous_subtype_val))
+  refine ⟨ψ, ⟨?_, ?_⟩, hψc, hψW⟩
   · have : (1 : qfAlgebra ω η hω) = qfWA ω η hω 0 := ((isWeylSystem_qfWA ω η hω).map_zero).symm
     rw [this, hψW, hκ0]
   · intro a
