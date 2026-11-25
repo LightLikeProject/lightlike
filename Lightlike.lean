@@ -984,6 +984,7 @@ import Lightlike.PL.Schoenflies.QuadSplit
 import Lightlike.PL.Schoenflies.ChainSplitSet
 import Lightlike.PL.Schoenflies.GoodQuad
 import Lightlike.PL.Schoenflies.RingSpoke
+import Lightlike.PL.Schoenflies.RaySplit
 import Lightlike.PL.SimpleChain
 import Lightlike.PL.Chain
 import Lightlike.PL.TwoArcs
