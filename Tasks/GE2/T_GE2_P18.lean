@@ -1,4 +1,6 @@
 import Lightlike.Spacetime.Causal.DomainOfDependence
+import Lightlike.Spacetime.Causal.CauchyEquiv
+import Lightlike.Spacetime.CausalLadder.PointReach
 
 /-!
 # Task T-GE2-P18
@@ -56,11 +58,14 @@ namespace Lightlike.Causal
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
   {H : Type*} [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
   {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I ∞ M]
+  [T2Space M] [SecondCountableTopology M] [BoundarylessManifold I M]
   {n : ℕ} {g : LorentzianMetric I M n} (T : TimeOrientation g)
 
 /-- **An achronal set is a Cauchy surface iff its domain of dependence is the whole manifold.** -/
 theorem isCauchySurface_iff_domainDep_eq_univ {S : Set M} (h : IsAchronal T S) :
-    IsCauchySurface T S ↔ domainDep T S = Set.univ := by
-  sorry
+    IsCauchySurface T S ↔ domainDep T S = Set.univ :=
+  isCauchySurface_iff_domainDep_eq_univ_of_push T
+    (fun _ _ _ hxy hyz => causalFuture_chronFuture_trans_of_isOpen T (isOpen_chronFuture_aux T.neg) hxy hyz)
+    (fun _ _ _ hxy hyz => chronFuture_causalFuture_trans_of_isOpen T (isOpen_chronFuture_aux T) hxy hyz) h
 
 end Lightlike.Causal
