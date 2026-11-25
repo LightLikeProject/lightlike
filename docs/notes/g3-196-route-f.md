@@ -95,6 +95,35 @@ Model and design decisions for F3 to F5:
 - the root of unity: `d_{r-1} = 0`, projectors exist up to `jw (r-1)`, and the trees with all colours `≤ r-2`
   are the ones the library's `qAdm` keeps.
 
+## F3: the crux and the two architectures (24 Nov 2026, after F1, F2, the model, cups and caps, Jones' expectation)
+
+Done in Lean: `Basic` (algebra), `JonesWenzl` (projectors, partial trace), `Model` (the relations on the infinite
+tensor power), `CupCap` (loop value, `e_i = cup cap`, zigzag), `Jones` (expectation, absorption).
+
+The crux. The vertex `V(a,b;c) = (p_a ⊗ p_b) · Y · p_c` (`Y` = `i` nested cups at the junction) and its dual
+`V'` satisfy `V' V = κ p_c` with `κ = θ(a,b,c)/Δ_c`.  Two ways to prove such statements:
+
+(A) Diagrammatic operator calculus in `End(ModelSpace)`: `V'V` is a closed-up diagram, so it lies in
+`tlSub e (c-1)` and `absorb` gives `κ`.  The reduction "`cap z cup ∈ tlSub`" needs the naturality of cups and
+caps against `e_j` (cases `j` away from, adjacent to and equal to the junction) and an induction on words with
+a drifting cap position; about 600 lines for one arc, more for nested arcs.
+(B) Corner algebra: work only in `tlSub e (a+b-1)` with `W_i = Q N_i Q`, `Q = p_a p_b` shifted, `N_i` the nested
+`e`-product.  Then `(Q e_{a-1} Q)² = c · Q e_{a-1} Q` follows from a generalised partial trace identity
+`e_{a-1} p_a p_b e_{a-1} = c · e_{a-1} p_{a-1} p_{b-1}` plus absorption, with no cups or caps.  The channel
+idempotents are Lagrange polynomials in the single operator `A = Q e_{a-1} Q`, and the two operators `A^{(ab)}`,
+`A^{(bc)}` of a triple product form a Leonard pair; the 6j symbols are the overlaps of their eigenvectors,
+fixed by the three-term recurrence that the library already proves for `qSixJ` in the third colour
+(`Reflect/RacahRecurrence`).  Signs are the open point of (B): overlaps of eigenvectors give `F²` unless the
+vectors are fixed by the tree construction.
+CORRECTION (MEASURED, numpy, 2^n-dimensional model, random complex `q`): the identity
+`e_{a-1} p_a p_b e_{a-1} = c · e_{a-1} p_{a-1} p'_{b-1}` holds for `(a,b) ∈ {(1,1),(2,1),(1,2)}` (with `c = d_a/d_{a-1}`
+for `b = 1`) and FAILS for `(2,2), (3,2), (2,3), (3,3)`; so `(Q e Q)² = c Q e Q` is false for blocks of size at
+least two, as it must be since `Q·TL·Q` has dimension `min(a,b)+1` and `Q e Q` has that many eigenvalues.  In (B) the
+channel idempotents are Lagrange polynomials in `A = Q e_{a-1} Q` over its eigenvalues, which first have to be
+computed (the partial trace identity only gives the top and bottom ones).
+Next Lean step for (B): the shifted family `e ∘ (· + s)` is `IsTL`, the generalised partial trace identity,
+and `A² = c A`.  Next step for (A): naturality lemmas of `cup` and `cap` against `e_j`.
+
 ## Decision
 
 No route in this note is a row-sized step. The two structural routes (F, E) are milestone-sized
