@@ -1,0 +1,14 @@
+- id: LL-XXXX-f
+  title: "A quasi-free state of the Weyl algebra of a finite-dimensional symplectic space is pure if and only if there is a compatible complex structure (J^2 = -1, eta J-invariant and positive definite, omega(x,y) = -eta(x,Jy)): if there is none, the state is a proper convex combination of two different states (the Gaussian-weighted splitting of the quasi-free kernel)"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/QuasiFreeState/NecessityMain.lean
+  decls: [Lightlike.OperatorAlgebras.QuasiFreeState.exists_compatible_of_pure, Lightlike.OperatorAlgebras.QuasiFreeState.isPureState_iff_compatible]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: gerard-2019, location: "Proposition 4.9.1", check: "pure iff"}
+      - {ref: yamagami-2008, location: "Proposition 2.7", check: "pure state"}
+  review: kernel-checked
+  note: "Converse of LL-0334, so with it the iff of Gerard Proposition 4.9.1 and of Yamagami (phi_S pure iff S is extremal, i.e. a projection). Proof route (not the source's, which cites the Fock-representation theory): with the eta-Riesz operator T = eta^-1 omega (eta-skew, norm <= 1), either T^2 = -1, which is a compatible J, or a spectral vector of -T^2 with eigenvalue mu < 1 gives that eta - (1 - mu) rho^2 is still a covariance (key_ineq, exists_sub_covariance); the Gaussian family kappa_h(x) = exp(-eta'(x,x)/4) int h(t) e^{it rho(x)} d gamma(t) has a positive semidefinite kernel dominated by 2 qfKer, hence a state (exists_state_of_kernel); two such states with weights h and 2 - h average to the quasi-free state, and they differ (Measure.ext_of_charFun), so it is not extremal. A state is pure here when it is an extreme point of the states. WEAKER: finite dimension only; the degenerate omega is not treated separately (the sufficiency has the retract form, LL-0334)."
+  since: unreleased
