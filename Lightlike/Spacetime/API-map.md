@@ -12,13 +12,13 @@ proven in coordinates apply to the components of a manifold-level metric.
 
 A coordinate metric on an open set is a smooth, symmetric, invertible matrix-valued function of
 the coordinates [1]. From it one computes the Christoffel symbols, the Riemann tensor, the Ricci
-tensor and the scalar curvature by the standard formulas {1} [1]. Minkowski space is flat [1].
+tensor and the scalar curvature by the standard formulas {1} [1]. Minkowski space is flat [1], and the standard basis of `ℝⁿ` is a Lorentz frame for the Minkowski form [6].
 
-The lowered Riemann tensor is symmetric under exchange of its index pairs and satisfies the first
+The lowered Riemann tensor is symmetric under exchange of its index pairs, antisymmetric in its last pair, and satisfies the first
 Bianchi identity [2]. The second Bianchi identity in coordinates is not yet formalized. [TODO]
 
 Under a smooth change of coordinates the Riemann tensor, the Ricci tensor and the scalar curvature
-transform as tensors, and solutions of the vacuum Einstein equations pull back to solutions [3].
+transform as tensors, and solutions of the vacuum Einstein equations pull back to solutions, for any cosmological constant [3].
 
 A Lorentzian metric on a smooth manifold modelled on `ℝⁿ` is a smooth symmetric bilinear form on
 each tangent space with signature (−,+,…,+), in the mostly-plus convention {2} [4]. In every chart
@@ -124,12 +124,12 @@ is the ordinary point p = (1, 0⃗) [125].
 1. Lightlike/Spacetime/Curvature.lean - `IsCoordMetric`, `christoffel`, `riemann`, `ricci`,
    `scalarCurvature`, `minkowski_flat`, `NondegMetric.coordMetric`
 2. Lightlike/Spacetime/RiemannSymmetry.lean - `IsCoordMetric.riemannLower_pair_symm`,
-   `IsCoordMetric.bianchi_first`
+   `IsCoordMetric.bianchi_first`, `riemannLower_antisymm_last`, `IsCoordMetric.bianchi_first_lower`
 3. Lightlike/Spacetime/ChartChange.lean - `riemann_pullback`, `ricci_pullback`,
    `scalarCurvature_pullback`, `isVacuumSolution_pullback`
 4. Lightlike/Spacetime/Lorentzian.lean - `LorentzianMetric`, `NondegMetric`
 5. Lightlike/Spacetime/Coordinates.lean - `LorentzianMetric.isLorentzianCoordMetric_coordMetric`
-6. Lightlike/Spacetime/Minkowski.lean - `twin_paradox`
+6. Lightlike/Spacetime/Minkowski.lean - `twin_paradox`, `minkowskiForm_isLorentzian`
 7. Lightlike/Spacetime/Connection.lean - `Connection`, `Connection.curvatureAt`, `Connection.riemannLowerAt`,
    `Connection.ricciAt`, `Connection.scalarCurvatureAt`, `Connection.IsMetricCompatible`,
    `Connection.IsLeviCivita`, `Connection.covDerivCurvatureAt`, `Connection.covDerivBilinAt`,
