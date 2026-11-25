@@ -1,0 +1,28 @@
+- id: LL-XXXX-a
+  title: The gauge-fixed Ooguri state sum does not depend on the gauge set when each gauge set forces every triangle, and equals 1 at every cutoff
+  area: SpinFoam
+  file: Lightlike/SpinFoam/GaugeIndependence.lean
+  decls: [Lightlike.SpinFoam.amplitudeGF_eq_of_forces, Lightlike.SpinFoam.amplitudeGF_eq_of_isGauge_forces]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: freidel-louapre-2004, location: "Section III"}
+      - {ref: ooguri-1992, location: "Abstract", check: "Alexander moves"}
+  review: kernel-checked
+  note: "For a 4-dimensional complex K and two sets of triangles T, T′ that each force every triangle of K (Forces K K.tris T: iterating the forcing rule, a tetrahedron with three triangles of spin 0 has its fourth triangle and its virtual spin at 0), the gauge-fixed Ooguri state sum amplitudeGF K T cut equals amplitudeGF K T′ cut′ for all cutoffs cut, cut′ (amplitudeGF_eq_of_forces): in a colouring of nonzero weight everything vanishes, so both state sums are 1 (amplitudeGF_eq_one_of_forces). The same holds for two gauge sets (IsGauge, the collapsibility rule) that force (amplitudeGF_eq_of_isGauge_forces). This is a sufficient criterion for independence of the gauge choice, not a theorem about all gauge sets: IsGauge does not imply Forces, and for gauge sets that do not force every triangle the finite-cutoff state sum can depend on the gauge set (numerical evidence, not a Lean statement: scripts/spinfoam/gauge_independence_check.py, five 4-simplices glued non-manifold-wise with four different values at cutoff 1/2, and scripts/spinfoam/gauge_manifold_check.py, a 4-sphere triangulation with 24 4-simplices with state sums 1 and 7/2 at cutoffs 1/2 and 1). The general case of non-forcing gauge sets is an open question and is not claimed. The gauge rule is this library's proposal for the 4D analogue of the maximal tree of Freidel–Louapre (Section III of their paper is the verified location of the 3D gauge fixing), not a construction from the literature, and the independence statement is not in the sources: comparison with a source is not applicable to the criterion and pending for the 3D analogy. Removal of the cutoff is not proven."
+  since: unreleased
+
+- id: LL-XXXX-b
+  title: The size of a gauge set of the 4D gauge rule is the number of edges minus the number of vertices plus one
+  area: SpinFoam
+  file: Lightlike/SpinFoam/Ooguri.lean
+  decls: [Lightlike.SpinFoam.IsGauge.card_eq]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: freidel-louapre-2004, location: "Section III"}
+  review: kernel-checked
+  note: "If T is a gauge set of K (IsGauge K T: T is a set of triangles of K such that the vertices, the edges and the triangles of T form a collapsible 2-complex), then #T = #edges − #vertices + 1 (IsGauge.card_eq), by the Euler characteristic of the collapsible complex. This is the count of the 4D analogue of the maximal tree: in the 3D gauge fixing of Freidel–Louapre a maximal tree has #vertices − 1 edges, the complement of a maximal tree has #edges − #vertices + 1 edges, and here the same number of triangles is fixed. The rule IsGauge is the library's proposal; the count was not compared with an equation of the source (the location cited is the section on the 3D gauge fixing)."
+  since: unreleased
