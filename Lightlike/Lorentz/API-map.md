@@ -34,8 +34,9 @@ to `g · o`, and the integral of a function of `t = cosh r` is `4π³ ∫_{t > 1
 `sin(ρr) / (ρ sinh r)` [9], and for radial functions
 `∫ |f|² dg = (2π⁴)⁻¹ ∫_{ρ > 0} ρ² |f̂(ρ)|² dρ` [10].
 
-The full Plancherel formula {3} {4} is proved, but its normalization constant has not yet been
-compared with the literature, so it is not listed in `docs/RESULTS.md`. It is stated with the
+The full Plancherel formula {3} {4} is proved. In the variables of Perez and Rovelli {10} its constant is
+`1/(32π⁴)`, which is four times smaller than the constant printed there; it agrees with Rühl {1} as
+quoted by Simão {11}. The formula is stated with the
 principal series `π_{n,ρ}` labelled by `n ∈ ℤ` and `ρ ∈ ℝ` (`n = 2k`), for functions that are
 restrictions of smooth compactly supported functions on 2 × 2 complex arrays. Its ingredients are a
 second chart adapted to the action on a fixed point `z` [11], derivatives of parametric integrals
