@@ -20,3 +20,14 @@
   review: kernel-checked
   note: "Comparison pending (no source read at a cited location; the Bergman kernel of the weighted Bergman space A^2_n of the upper half-plane is classical). Proof: the Cayley transform to the unit disc (Jacobian 4/|1-w|^4), the weighted mean-value property of holomorphic functions on the disc for radial weights, and the radial integral of (1-|w|^2)^(n-2). Used for the formal degree of the discrete series in LL-XXXX-q."
   since: unreleased
+- id: LL-XXXX-y
+  title: "Schur orthogonality of the holomorphic discrete series of SL(2,R) against the lowest weight vector: for n >= 2, every v in the weighted Bergman space A^2_n with holomorphic representative phi, <e_0, v> = (4 pi/(n-1)) (-2i)^(-n) phi(i), |<v, D_n(g) e_0>|^2 = |c_0|^2 Im(u)^n |phi(u)|^2 with u = (g^-1)^T i, and the integral over SL(2,R) of |<v, D_n(g) e_0>|^2 is 2 pi |c_0|^2 ||v||^2"
+  area: Lorentz
+  file: Lightlike/Lorentz/SL2RPlancherel/DiscreteSchur.lean
+  decls: [Lightlike.Lorentz.schur_lowest, Lightlike.Lorentz.norm_sq_pairing_holo, Lightlike.Lorentz.inner_lowest_holo]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source read at a cited location). Proof: the reproducing property of e_0 (LL-XXXX-x), unitarity of D_n, the Iwasawa integral over SL(2,R) (the integrand depends only on z = g.i since D_n(k_theta) e_0 is a phase times e_0), (g_z^-1)^T i = -1/z and the invariance of the hyperbolic measure under z -> -1/z. This also shows that e_0 is cyclic. WEAKER: Schur orthogonality for pairs of arbitrary vectors needs the irreducibility of D_n^+ and is not proved; formal degree for e_0 itself is LL-XXXX-q."
+  since: unreleased

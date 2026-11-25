@@ -40,6 +40,32 @@ For `(k,l)` the matrix coefficient `⟨e_k, P^{ε,iν}(a_r) e_l⟩ = φ^{kl}_ν(
 * B3. `c_{kl}` is the same for all `(k,l)` of a given parity class up to the factor that the matrix coefficient
   normalisation produces: it equals `ν tanh(πν/2)` for even and `ν coth(πν/2)` for odd classes.
 
+## Step B′. The ladder-operator route from the spherical case to all K-types
+
+The Lie algebra acts on `C^∞(G)` by the left- and right-invariant vector fields; with `L_0 = -iΛ_0`, `L_{±1} = ∓Λ_1 - iΛ_2`
+(Kitaev, arXiv:1711.08169, eq. (46)-(47)) a function of type `(l, r)` (`L_0^L Ψ = -lΨ`, `L_0^R Ψ = -rΨ`) is
+`Ψ(e^{ϕΛ_0} e^{ξΛ_1} e^{-ϑΛ_0}) = e^{i(lϕ+rϑ)} f(u)`, `u = tanh²(ξ/2)`, and the left raising and lowering operators act as
+
+`L^L_{±1}(l, r) = ±(1-u) u^{1/2} ∂_u - (l+r)/2 · u^{-1/2} - (l-r)/2 · u^{1/2}`, `(l, r) ↦ (l ± 1, r)`.
+
+On the Casimir eigenfunctions `A_{λ,l,r}` (eq. (56)) they satisfy `L^L_{-1} A_{λ,l,r} = -A_{λ,l-1,r}` and
+`L^L_{1} A_{λ,l,r} = -(l+λ)(l+1-λ) A_{λ,l+1,r}` (eq. (60)); for the principal series `λ = 1/2 + iρ` the factor is
+`(l+1/2)² + ρ²`.
+
+* B′1. `L^L_{±1}` are the vector fields of the complexified Lie algebra acting on `C_c^∞(G)`; `⟨L_{+1} f, g⟩ = -⟨f, L_{-1} g⟩`
+  for `f, g ∈ C_c^∞(G)` (integration by parts for the Haar measure of the unimodular group `G`).
+* B′2. On the representation side `π(L_{±1} f) = dπ(L_{±1}) π(f)`, and in the `K`-basis `e_l` of `P^{ε,iρ}` the raising operator
+  has `‖dπ(L_{+1}) e_l‖² = (l+1/2)² + ρ²` (`SL2RCasimir.lean`).
+* B′3. (Recursion.) If `∫|f|² = ∫ |⟨e_l, π(f) e_r⟩|² dμ(ρ)` for all `f` of type `(l, r)` in a subspace `V_{l,r}`, then the same holds, with
+  the same `μ`, for `L_{+1} V_{l,r} ⊂ V_{l+1,r}`: both sides change by the factor `(l+1/2)² + ρ²`, using `L_{-1} L_{+1} = -Q + (L_0)² - L_0`
+  and the Casimir eigenvalue.
+* B′4. (Range.) For `f ∈ C_c^∞(G)` of type `(l+1, r)` orthogonal to the kernel of `L_{-1}` on the discrete series, `f ∈ L_{+1} C_c^∞(G)`;
+  the first-order ODE `L_{+1} h = f` is solved by integration along `ξ` and the compactness of the support is the orthogonality
+  to the lowest weight vectors. This is where the discrete series enters (`C1`-`C4`).
+* B′5. Induction on `|l|` from the spherical case `(0, 0)` (`norm_sq_eq_sph`) for `l ≡ r ≡ 0 (mod 2)` and from a base case `(1, 1)`
+  for `l ≡ r ≡ 1 (mod 2)`; the latter is the Plancherel formula on `L²(ℍ, y^{1} dμ_ℍ)`-sections and needs its own Mehler-Fock-type
+  transform (`ρ coth(πρ)`).
+
 ## Step C. Discrete series
 
 * C1. (Matrix coefficient of the lowest weight vector.) For `e_0 = lowestVec n` the coefficient
