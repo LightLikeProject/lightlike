@@ -1715,6 +1715,8 @@ import Lightlike.Spacetime.KillingOrbitChart
 import Lightlike.Spacetime.KillingOrbitFLRW
 import Lightlike.Spacetime.SpaceFormKilling
 import Lightlike.Spacetime.SphereHypersurface
+import Lightlike.Spacetime.HypersurfaceInduced
+import Lightlike.Spacetime.HypersurfaceInducedTests
 import Lightlike.Spacetime.HypersurfaceNormal
 import Lightlike.Spacetime.HypersurfaceConstraints
 import Lightlike.Spacetime.VariationDet

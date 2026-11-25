@@ -120,7 +120,7 @@ bijection onto ℝ × ℝ³, the metric is ω⁻² times the Einstein static uni
 is the ordinary point p = (1, 0⃗) [125]. In the null-cone picture of the compactification (a point x embedded as
 (1, B x x, x) in the cone B x x = P⁺P⁻, infinity the set P⁺ = 0), isometries, translations, dilations and special
 conformal transformations preserve the cone form and act on the embedded points as the stated maps of V; the first
-three keep infinity, while a special conformal transformation moves the point at infinity to the finite point b [127].
+three keep infinity, while a special conformal transformation moves the point at infinity to the finite point b [127]. The induced metric of a level set of a smooth function is defined pointwise, as the metric restricted to the kernel of the differential of the function, and it is nondegenerate wherever the normal is not null [130].
 
 ## Lean References
 
@@ -276,6 +276,7 @@ three keep infinity, while a special conformal transformation moves the point at
     `specAct_infinity_fst_ne`
 128. Lightlike/Spacetime/Corners/ChartAgreement.lean - `riemann_coord_compW`, `ricciAt_coordW`, `scalarCurvatureAt_coordW`: in every chart the Riemann, Ricci and scalar curvature of a Levi-Civita connection are the coordinate ones, for any model with corners.
 129. Lightlike/Spacetime/EHManifold/ManifoldStationary.lean - `IsEHStationary`, `isEHStationary_iff`: a metric is stationary for the Einstein–Hilbert action under compactly supported perturbations exactly when it satisfies the vacuum Einstein equations.
+130. Lightlike/Spacetime/HypersurfaceInduced.lean - `Hypersurface.levelTangent`, `Hypersurface.inducedMetric`, `Hypersurface.inducedMetric_separating_of_isUnitNormal`, `Hypersurface.inducedMetric_separating_of_nonnull`: the induced metric of a level set, defined pointwise as the metric restricted to the kernel of the differential, and nondegenerate where the normal is not null.
 
 ## References
 

@@ -481,8 +481,8 @@ milestones:
       - id: p2
         kind: piece
         text: "The induced metric on a hypersurface is defined"
-        decls: []
-        hint: "No separate definition; g restricted to tangent fields via Lightlike.Hypersurface.IsTangentNear (hypersurface = level set of a smooth function, no manifold structure on the leaf)."
+        decls: [Lightlike.Hypersurface.levelTangent, Lightlike.Hypersurface.inducedMetric, Lightlike.Hypersurface.inducedMetric_separating_of_isUnitNormal, Lightlike.Hypersurface.inducedMetric_separating_of_nonnull]
+        hint: "Defined pointwise, without a manifold structure on the leaf: g restricted to the kernel of the differential of the defining function (levelTangent); nondegenerate when the normal is non-null."
       - id: p3
         kind: piece
         text: "The second fundamental form (extrinsic curvature) K(v,w) = g(∇_v n, w) is defined"
