@@ -106,4 +106,44 @@ theorem cupOp_comm_sh (q : kˣ) {s m : ℕ} (hm : m ≤ s) (Y : Module.End k (Mo
     sh_lmapDomain, cupOp_lmap q hm, cupOp_lmap q hm]
   simp only [cupBasis, h1, h2, map_sub, map_smul, sh_lmapDomain]
 
+/-- Every element of `C(N)` commutes with a translate `sh s Y` once `N < s`. -/
+theorem CSub_comm_sh (q : kˣ) {N s : ℕ} (hN : N < s) {X : Module.End k (ModelSpace k)}
+    (hX : X ∈ CSub (k := k) q N) (Y : Module.End k (ModelSpace k)) : X * sh s Y = sh s Y * X := by
+  unfold CSub tlSub at hX
+  induction hX using Algebra.adjoin_induction with
+  | mem x hx =>
+    obtain ⟨j, hj, rfl⟩ := hx
+    exact modelE_comm_sh q (by omega) Y
+  | algebraMap r => exact Algebra.commutes r (sh s Y)
+  | add x y _ _ hx hy => rw [add_mul, mul_add, hx, hy]
+  | mul x y _ _ hx hy => rw [mul_assoc, hy, ← mul_assoc, hx, mul_assoc]
+
+/-- A nest of cups at the positions `≥ l`, with `l ≤ s`, carries `sh s Y` to `sh (s + 2i) Y`. -/
+theorem nestCup_comm_sh (q : kˣ) {s l : ℕ} (hl : l ≤ s) (Y : Module.End k (ModelSpace k)) :
+    ∀ i, nestCup q l i * sh s Y = sh (s + 2 * i) Y * nestCup q l i := by
+  intro i
+  induction i with
+  | zero => simp [nestCup]
+  | succ i ih =>
+    rw [nestCup, mul_assoc, ih, ← mul_assoc, cupOp_comm_sh q (by omega) Y, mul_assoc,
+      show s + 2 * i + 2 = s + 2 * (i + 1) by ring]
+
+/-- `jwAt q u n` commutes with `sh s Y` when it lives on the first `s` strands. -/
+theorem jwAt_comm_sh (q : kˣ) {u n s : ℕ} (h : u + n ≤ s) (Y : Module.End k (ModelSpace k)) :
+    jwAt q u n * sh s Y = sh s Y * jwAt q u n := by
+  rcases Nat.lt_or_ge n 2 with hn | hn
+  · interval_cases n <;> simp [jwAt, jw_zero, jw_one]
+  · exact CSub_comm_sh q (N := u + n - 1) (by omega) (jwAt_mem q u n) Y
+
+/-- **The vertex `V` carries a translate of the tail through.** -/
+theorem Vop_comm_sh (q : kˣ) {a b e : ℕ} (hea : e ≤ a) (heb : e ≤ b) (Y : Module.End k (ModelSpace k)) :
+    Vop q a b e * sh (a + b - 2 * e) Y = sh (a + b) Y * Vop q a b e := by
+  have hs : a + b - 2 * e + 2 * e = a + b := by omega
+  unfold Vop Qab
+  rw [mul_assoc, mul_assoc, jwAt_comm_sh q (u := 0) (by omega) Y, ← mul_assoc (nestCup q _ _),
+    nestCup_comm_sh q (by omega) Y, hs, ← mul_assoc, ← mul_assoc, mul_assoc (jwAt q 0 a),
+    jwAt_comm_sh q (u := a) (by omega) Y]
+  rw [← mul_assoc, jwAt_comm_sh q (u := 0) (by omega) Y]
+  simp only [mul_assoc]
+
 end Lightlike.TemperleyLieb
