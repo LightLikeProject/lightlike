@@ -1,0 +1,69 @@
+# Hand-written input to scripts/tasks.py, next to milestones.md and decomposition.yaml: per
+# milestone, its GitHub issue, its place in the ranking of v1.0, and the checklist of a v1.0
+# milestone. `python3 scripts/tasks.py generate` copies all of it into docs/tasks/tasks.yaml.
+#
+# Status is never written here. `scripts/milestone_status.py` computes it on a built `main`: an
+# item is ticked when every declaration it names exists, has no `sorry` and uses only Lean's
+# standard axioms (the per-declaration mode of scripts/AxiomAudit.lean). Who has claimed a
+# milestone, and its last step, come from the claim and the stream status files, not from here.
+#
+# Per milestone (the key is its ID in milestones.md):
+#   issue:    the number of its GitHub issue. Written once by scripts/sync_github.py when it opens
+#             the issue, so a second run never opens a second one. Never edited by hand.
+#   ranking:  v1.0 only: its place in the order in which the streams take milestones (1 = first),
+#             kept by the integrator (milestones that unblock others come first).
+#   items:    v1.0 only: the checklist, built from the done-when and the trust checks. Each item:
+#     id:              unique within the milestone (m = main theorem, p = piece, t = trust check,
+#                      c = catalogue, r = review), e.g. m1, p2, t3
+#     kind:            main | piece | trust | catalogue | review
+#     text:            what has to hold, in one sentence
+#     decls:           the full names of the declarations that satisfy it (empty while none is
+#                      written). A catalogue item with no decls covers the theorems of the
+#                      main and piece items.
+#     hint:            optional: what is missing, or which existing results come close
+#     review_evidence: review items only: `docs/tasks/reviews/<ID>.md#<item id>`, filled in by the
+#                      reviewer. The item is ticked when that section says `Result: pass`.
+#
+# A catalogue item is ticked when each of its declarations is ticked, is named by an entry of
+# docs/results.yaml with `status: proven`, and is cited in the API map of its folder.
+
+# v1.0 (owner decision, 25 Nov 2026): the S, M and L milestones of the eight core areas. On GitHub
+# their issues are in the GitHub Milestone "v1.0"; every other milestone has the label not-scheduled.
+v1.0:
+  areas: [geometry, harmonic-analysis, operator-algebras, asymptotics, pl-topology, quantum-groups, regge, spin-foams]
+  sizes: [S, M, L]
+  count: 55
+
+milestones:
+  GE1:
+    ranking: null
+    items:
+      - id: m1
+        kind: main
+        text: "The Riemann tensor, the Ricci tensor and the scalar curvature of the Levi-Civita connection agree in every chart with the coordinate curvature"
+        decls: [Lightlike.riemann_coord_compW, Lightlike.ricciAt_coordW, Lightlike.scalarCurvatureAt_coordW]
+      - id: p1
+        kind: piece
+        text: "The Levi-Civita connection of a metric exists and is unique"
+        decls: [Lightlike.leviCivita_exists_unique_proved]
+      - id: p2
+        kind: piece
+        text: "The curvature, Ricci tensor and scalar curvature of a connection are defined intrinsically, and R(X,Y)Z = ∇_X∇_Y Z − ∇_Y∇_X Z − ∇_[X,Y] Z"
+        decls: [Lightlike.Connection.curvatureAt, Lightlike.Connection.ricciAt, Lightlike.Connection.scalarCurvatureAt, Lightlike.curvatureAt_apply_proved]
+      - id: t1
+        kind: trust
+        text: "The round 2-sphere of radius r, as a manifold with its Levi-Civita connection, has scalar curvature 2/r²"
+        decls: []
+        hint: "Close but not this: Lightlike.Test.sphere_scalar (coordinate formula on the (θ, φ) chart), scalarCurv_sphere (sphere in ℝ³ by the Gauss equation), scalarCurvature_stereo_two (radius 1 only). Missing: the statement for the intrinsic scalarCurvatureAt."
+      - id: t2
+        kind: trust
+        text: "Schwarzschild is Ricci-flat, for the Levi-Civita connection on the exterior manifold"
+        decls: [Lightlike.schwarzschild_ricci_eq_zero]
+      - id: t3
+        kind: trust
+        text: "A connection with torsion gives a different Ricci tensor from the Levi-Civita connection of the same metric"
+        decls: []
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []

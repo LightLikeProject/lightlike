@@ -87,3 +87,47 @@ open AxiomAudit in
     let names := (roots.filter hit.contains).qsort Name.lt
     logError m!"axioms: {names.size} of {roots.size} declarations use non-standard axioms \
       {bad.qsort Name.lt}:\n{"\n".intercalate (names.toList.take 100 |>.map toString)}"
+
+/-! ## Per-declaration mode
+
+Used by `scripts/milestone_status.py`. When `LL_DECLS` names a file with one declaration name per
+line, the audit writes one JSON line per name to the file named by `LL_DECLS_OUT`: whether the
+declaration exists, its module, and the axioms it depends on, with the same search as above (a
+`sorry` shows up as `sorryAx`). For a name that does not exist, the line lists as candidates the
+library's declarations with the same last component. Without `LL_DECLS` this part does nothing. -/
+
+open AxiomAudit in
+#eval show CommandElabM Unit from do
+  let some inp ← (IO.getEnv "LL_DECLS" : IO (Option String)) | return
+  let out := (← (IO.getEnv "LL_DECLS_OUT" : IO (Option String))).getD "decls-status.jsonl"
+  let env ← getEnv
+  let qs := ((← (IO.FS.readFile inp : IO String)).splitOn "\n").map
+    (fun s => (s.replace " " "").replace "\r" "") |>.filter (· ≠ "")
+  let last (s : String) : String := (s.splitOn ".").getLast?.getD s
+  let missing := qs.filter (fun q => (env.find? q.toName).isNone) |>.map last
+  -- The library's declarations whose last component is that of a missing name.
+  let mut cands : Std.HashMap String (Array String) := {}
+  if !missing.isEmpty then
+    for (c, _) in env.constants.map₁ do
+      if let .str _ s := c then
+        if missing.contains s then
+          if let some m ← liftCoreM (findModuleOf? c) then
+            if (`Lightlike).isPrefixOf m then
+              cands := cands.insert s ((cands.getD s #[]).push c.toString)
+  let mut lines : Array String := #[]
+  for q in qs do
+    let n := q.toName
+    match env.find? n with
+    | some ci =>
+      let m ← liftCoreM (findModuleOf? n)
+      let axs := (reach env #[n]).2.toArray.qsort Name.lt |>.map (Json.str ·.toString)
+      let kind := match ci with
+        | .thmInfo _ => "theorem" | .defnInfo _ => "def" | .inductInfo _ => "inductive"
+        | .opaqueInfo _ => "opaque" | .axiomInfo _ => "axiom" | _ => "other"
+      lines := lines.push (Json.mkObj [("q", q), ("found", true), ("name", n.toString),
+        ("module", (m.map Name.toString).getD ""), ("kind", kind), ("axioms", Json.arr axs)]).compress
+    | none =>
+      let cs := ((cands.getD (last q) #[]).qsort (· < ·)).map Json.str
+      lines := lines.push (Json.mkObj [("q", q), ("found", false), ("candidates", Json.arr cs)]).compress
+  IO.FS.writeFile out ("\n".intercalate lines.toList ++ "\n")
+  logInfo m!"decls: {qs.length} names, {qs.length - missing.length} found, written to {out}"

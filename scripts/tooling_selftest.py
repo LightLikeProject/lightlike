@@ -98,6 +98,9 @@ import api_map  # noqa: E402
 import generated  # noqa: E402
 expect("generated files: the guard tells generated from hand-written parts, and its planted changes fail",
        generated.selftest() == 0)
+_ms = subprocess.run([sys.executable, str(HERE / "milestone_status.py"), "--selftest"], capture_output=True, text=True)
+expect("milestone status: planted bad checklists fail the schema, and ticks follow the declarations' audit",
+       _ms.returncode == 0)
 _root = pathlib.Path(__file__).resolve().parent.parent
 expect("review control: kernel-checked needs no reference; a human review with its issue URL passes",
        api_map.review_errors("x", "kernel-checked", None, _root) == []
