@@ -33,7 +33,7 @@ claude "Read AGENTS.md and follow it. Pick a ready proof task, prove it, and ope
 
 ## How work is tracked
 
-The [Project board](https://github.com/orgs/LightLikeProject/projects) is the plan: one issue per [milestone](docs/tasks/milestones.md), in the columns Ready, In progress, In review, Done and Not scheduled. The [v1.0](https://github.com/LightLikeProject/lightlike/issues?q=is%3Aissue+milestone%3Av1.0) milestones are worked in ranking order. Each issue holds the milestone's checklist, ticked by a script from `main`; nobody edits a status by hand. A milestone is done after every item is ticked and a review by someone other than its author. Proof tasks link to their milestone. Details: [CONTRIBUTING.md](CONTRIBUTING.md#how-work-is-tracked).
+The [Project board](https://github.com/orgs/LightLikeProject/projects) is the plan: one issue per [milestone](docs/tasks/milestones.md), in the columns Ready, In progress, Done and Not scheduled. The [v1.0](https://github.com/LightLikeProject/lightlike/issues?q=is%3Aissue+milestone%3Av1.0) milestones are worked in ranking order. Each issue holds the milestone's checklist, ticked by a script from `main`; nobody edits a status by hand. A milestone is done, and its issue closed, once every item is ticked; review items are ticked by the evidence written into them. Proof tasks link to their milestone. Details: [CONTRIBUTING.md](CONTRIBUTING.md#how-work-is-tracked).
 
 ## Use
 
