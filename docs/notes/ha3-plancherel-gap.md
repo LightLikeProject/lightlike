@@ -18,3 +18,20 @@ orbits; and an abstract Hermitian form has no continuity that would let one diff
 A group-level statement would need a Hilbert space with a strongly continuous unitary representation and a `K`-fixed unit vector, whose
 spherical function `φ(g) = ⟨π(g) v, v⟩` satisfies `|φ| ≤ 1`, against the growth of the spherical function for `|τ| > 1`; this development
 is not done.
+
+## K-types `(l, r)`, attempt 1 (25 Nov 2026)
+
+Question: for the ladder images `h_{l,r}[G] = (ladUp (l-1) r ∘ … ∘ ladUp 0 r)(sinh^r G^{(r)}(cosh ξ))` of a smooth compactly supported `G`
+(the `K`-type `(l, r)` of the principal-series picture), is `π² ∫ |h_{l,r}[G]|² sinh ξ dξ = ¼ ∫ ρ tanh(πρ) wl(l,ρ) wl(r,ρ) |Ĝ(ρ)|² dρ`?
+
+- MEASURED (sympy/mpmath, `G = exp(-cosh ξ)`, `(l, r) ∈ {(0,0),(1,0),(0,1),(1,1),(0,2),(1,2)}`, relative agreement `1e-8`
+  or better, the limit of the quadrature): yes, with `wl(n, ρ) = ∏_{k<n} ((k + ½)² + ρ²)`, also for odd `r`. So the target is the
+  right statement and the factor `(l + ½)² + ρ²` of the left recursion does not depend on `r`.
+- PROVED (new): `radialCasimir_ladUp` (`LadderCasimir.lean`): `Cas_{l+1,r} ∘ ladUp l r = ladUp l r ∘ Cas_{l,r}` on `ξ > 0` for smooth `F`
+  (no shift); `ladUp_profile` (`LadderProfile.lean`): `ladUp k 0 (sinh^k G^{(k)}∘cosh) = sinh^{k+1} G^{(k+1)}∘cosh` on `ξ > 0`, which is
+  the base `(0, r) = (r, 0)`: `Cas_{k,0} = Cas_{0,k}` as operators.
+- Not proved, with the concrete obstructions: (1) `radialCasimir_ladUp`, `ladder_adjoint`, `ladDown_ladUp` assume a global `ContDiff` of `F`,
+  but `ladUp l r F` is only smooth on `ξ > 0` (`ladCoeff` has `1/sinh ξ`), so the recursion needs local (`ContDiffAt` on `Ioi 0`)
+  versions of `hasDerivAt_ladUp`, `ladder_adjoint`, `radialCasimir_ladUp` (about 150 lines). (2) The boundary term of the adjoint identity at
+  `ξ → 0`: `h_{l,r}[G](a) conj(h_{l+1,r}[G'](a)) sinh a → 0` needs `h_{l,r}[G] = O(ξ^{l+r})` with a smooth quotient, a separate induction
+  (about 150 lines). (3) The polarised induction of `KClaim_succ` with the weight `wl l · wl r`. Estimated 500 more lines.
