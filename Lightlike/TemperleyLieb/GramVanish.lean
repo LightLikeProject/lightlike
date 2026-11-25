@@ -252,4 +252,73 @@ theorem gramMid_caps_kill_1 (q : kˣ) (hδ : loopVal q ≠ 0) (a b c e t d' j : 
     (by simpa using hZ3) (a + b - 2 * e - ((j + 1) + d' + t)) j (by omega)
   simpa [mul_assoc] using this
 
+/-- Caps in excess, case 2 (`e = (s+1) + d' + f`). -/
+theorem gramMid_caps_kill_2 (q : kˣ) (hδ : loopVal q ≠ 0) (a b c d f d' s : ℕ) (hN : 1 ≤ a + b + c)
+    (hd : ∀ i, i ≤ a + b + c → chebD (loopVal q) i ≠ 0)
+    (hea : (s + 1) + d' + f ≤ a) (heb : (s + 1) + d' + f ≤ b) (hfb : f ≤ b) (hfc : f ≤ c)
+    (hdc : d ≤ c) (hdA : d ≤ a + b - 2 * ((s + 1) + d' + f)) (hda : d' ≤ a) (hdf : d' ≤ b + c - 2 * f) :
+    gramMid q a b c ((s + 1) + d' + f) d f d' * jwAt q 0 (a + (b + c - 2 * f) - 2 * d') = 0 := by
+  obtain ⟨hZ, hYL, hYR⟩ := gram_parts (k := k) q a b c ((s + 1) + d' + f) f hN hea heb hfb hfc
+  obtain ⟨Z2, hZ2, hW⟩ := unbal_caps_2 q (N := a + b + c - 1) hZ f s d' d (a + b - 2 * ((s + 1) + d' + f) - d)
+    (a - ((s + 1) + d' + f)) (b - f + a) (a - d') hYR (by omega) (by omega) (by omega) (by omega)
+  unfold gramMid
+  rw [hW]
+  have hD : a + (b + c - 2 * f) - 2 * d' = a + b + c - 1 - 2 * f - 2 * d' + 1 := by omega
+  rw [hD]
+  have hd1 : ∀ i, i < a + b + c - 1 - 2 * f - 2 * d' + 1 → chebD (loopVal q) i ≠ 0 := fun i hi => hd i (by omega)
+  have hd2 : ∀ i, i < a + b + c - 1 - 2 * f - 2 * d' + 1 + 1 → chebD (loopVal q) i ≠ 0 := fun i hi => hd i (by omega)
+  have := caps_mul_proj_zero q hδ hd1 hd2
+    (A := nestCap q (a + b - 2 * ((s + 1) + d' + f) - d) d * (Qab q (a + b - 2 * ((s + 1) + d' + f)) c *
+      jwAt q 0 (a + b - 2 * ((s + 1) + d' + f)))) (Z := Z2) (D := a + b + c - 1 - 2 * f - 2 * d' + 1)
+    (by simpa using hZ2) (a - ((s + 1) + d' + f)) s (by omega)
+  simpa [mul_assoc] using this
+
+/-- Caps in excess, case 3 (`e = d' + f`, `d = j + 1`). -/
+theorem gramMid_caps_kill_3 (q : kˣ) (hδ : loopVal q ≠ 0) (a b c f d' j : ℕ) (hN : 1 ≤ a + b + c)
+    (hd : ∀ i, i ≤ a + b + c → chebD (loopVal q) i ≠ 0)
+    (hea : d' + f ≤ a) (heb : d' + f ≤ b) (hfb : f ≤ b) (hfc : f ≤ c)
+    (hdc : j + 1 ≤ c) (hdA : j + 1 ≤ a + b - 2 * (d' + f)) (hda : d' ≤ a) (hdf : d' ≤ b + c - 2 * f) :
+    gramMid q a b c (d' + f) (j + 1) f d' * jwAt q 0 (a + (b + c - 2 * f) - 2 * d') = 0 := by
+  obtain ⟨hZ, hYL, hYR⟩ := gram_parts (k := k) q a b c (d' + f) f hN hea heb hfb hfc
+  have hYL' : Qab q (a + b - 2 * (d' + f)) c * jwAt q 0 (a + b - 2 * (d' + f)) ∈ CSub q (a + b + c - 1 - 2 * f - 2 * d') := by
+    rwa [show a + b + c - 1 - 2 * (d' + f) = a + b + c - 1 - 2 * f - 2 * d' by omega] at hYL
+  obtain ⟨Z2, hZ2, hW⟩ := unbal_caps_3 q (N := a + b + c - 1) hZ f d' (j + 1) (a + b - 2 * (d' + f) - (j + 1))
+    (a - (d' + f)) (b - f + a) (a - d') hYR hYL' (by omega) (by omega) (by omega) (by omega)
+  unfold gramMid
+  rw [hW]
+  have hD : a + (b + c - 2 * f) - 2 * d' = a + b + c - 1 - 2 * f - 2 * d' + 1 := by omega
+  rw [hD]
+  have hd1 : ∀ i, i < a + b + c - 1 - 2 * f - 2 * d' + 1 → chebD (loopVal q) i ≠ 0 := fun i hi => hd i (by omega)
+  have hd2 : ∀ i, i < a + b + c - 1 - 2 * f - 2 * d' + 1 + 1 → chebD (loopVal q) i ≠ 0 := fun i hi => hd i (by omega)
+  have hYZ : (Qab q (a + b - 2 * (d' + f)) c * jwAt q 0 (a + b - 2 * (d' + f))) * Z2 ∈
+      CSub q (a + b + c - 1 - 2 * f - 2 * d') := Subalgebra.mul_mem _ hYL' hZ2
+  have := caps_mul_proj_zero q hδ hd1 hd2 (A := 1) (Z := (Qab q (a + b - 2 * (d' + f)) c *
+      jwAt q 0 (a + b - 2 * (d' + f))) * Z2) (D := a + b + c - 1 - 2 * f - 2 * d' + 1)
+    (by simpa using hYZ) (a + b - 2 * (d' + f) - (j + 1)) j (by omega)
+  simpa [mul_assoc] using this
+
+/-- Caps in excess, case 4 (`e = t + f`, `d' = r + t`, `d = (j+1) + r`, `r ≥ 1`). -/
+theorem gramMid_caps_kill_4 (q : kˣ) (hδ : loopVal q ≠ 0) (a b c f t r j : ℕ) (hN : 1 ≤ a + b + c)
+    (hd : ∀ i, i ≤ a + b + c → chebD (loopVal q) i ≠ 0)
+    (hea : t + f ≤ a) (heb : t + f ≤ b) (hfb : f ≤ b) (hfc : f ≤ c)
+    (hdc : (j + 1) + r ≤ c) (hdA : (j + 1) + r ≤ a + b - 2 * (t + f)) (hda : r + t ≤ a)
+    (hdf : r + t ≤ b + c - 2 * f) :
+    gramMid q a b c (t + f) ((j + 1) + r) f (r + t) * jwAt q 0 (a + (b + c - 2 * f) - 2 * (r + t)) = 0 := by
+  obtain ⟨hZ, hYL, hYR⟩ := gram_parts (k := k) q a b c (t + f) f hN hea heb hfb hfc
+  have hYL' : Qab q (a + b - 2 * (t + f)) c * jwAt q 0 (a + b - 2 * (t + f)) ∈ CSub q (a + b + c - 1 - 2 * f - 2 * t) := by
+    rwa [show a + b + c - 1 - 2 * (t + f) = a + b + c - 1 - 2 * f - 2 * t by omega] at hYL
+  obtain ⟨Z3, hZ3, hW⟩ := unbal_caps_4 q (N := a + b + c - 1) hZ f t r j ((j + 1) + r)
+    (a + b - 2 * (t + f) - ((j + 1) + r)) (a - (t + f)) (b - f + a) (a - (r + t)) hYR hYL'
+    (by omega) (by omega) (by omega) (by omega) (by omega) (by omega)
+  unfold gramMid
+  rw [hW]
+  have hD : a + (b + c - 2 * f) - 2 * (r + t) = a + b + c - 1 - 2 * f - 2 * t - 2 * r + 1 := by omega
+  rw [hD]
+  have hd1 : ∀ i, i < a + b + c - 1 - 2 * f - 2 * t - 2 * r + 1 → chebD (loopVal q) i ≠ 0 := fun i hi => hd i (by omega)
+  have hd2 : ∀ i, i < a + b + c - 1 - 2 * f - 2 * t - 2 * r + 1 + 1 → chebD (loopVal q) i ≠ 0 :=
+    fun i hi => hd i (by omega)
+  have := caps_mul_proj_zero q hδ hd1 hd2 (A := 1) (Z := Z3) (D := a + b + c - 1 - 2 * f - 2 * t - 2 * r + 1)
+    (by simpa using hZ3) (a + b - 2 * (t + f) - ((j + 1) + r)) j (by omega)
+  simpa [mul_assoc] using this
+
 end Lightlike.TemperleyLieb
