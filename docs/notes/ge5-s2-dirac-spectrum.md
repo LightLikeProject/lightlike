@@ -74,3 +74,17 @@ times the coefficient (`fcoef_dtheta`), and the radial derivative commutes with 
 (M3) classification of the solutions of the mode ODE that are regular at `r = 0` and decay at `∞` (the polynomial class of
 `EigenGeneralK`/`ge5-complete`), which needs a uniqueness statement for the singular linear ODE;
 (M4, Lean, done) a continuous spinor component is determined by its Fourier modes (`eq_zero_of_fcoef_polar`: all modes zero ⇒ zero, via Mathlib's Fourier basis on `AddCircle`); M2 is also Lean (`mode_eq_bar`, `mode_eq` in `Dirac/AngularModes.lean`).
+
+### M3 plan (25 Nov 2026): the mode ODE and two candidate routes
+
+With `ν = -2iλ`, `K = 1 + r²`, the mode pair `(a, b) = (c₁_m, c₂_{m+1})` solves `a' = (m/r) a + (ν/K) b`,
+`b' = -((m+1)/r) b + (ν/K) a`. Writing `A = r^{-m} a`, `B = r^{m+1} b` gives `K r^{2m+1} A' = ν B` and
+`K B' ... = ν r^{2m+1} A`, i.e. the spin-weighted Legendre equation `(K σ A')' = (ν² σ / K) A`, `σ = r^{2m+1}`.
+Route 1 (ODE): Frobenius series at `r = 0` (the regular solution is unique up to a scalar, `a ~ r^{|m|}`), then show
+that it decays at infinity iff the hypergeometric series terminates, i.e. `λ = ±(k+1)`; the non-terminating case needs the
+asymptotics at `t = r² → ∞` (connection formula or a Sturm/Wronskian comparison argument). Route 2 (functional
+analytic): the explicit eigenspinors of the lower bound span a dense subspace of `L²`, `D` is symmetric on smooth sections
+(integration by parts in the chart with the sphere measure), so an eigenspinor with another eigenvalue is orthogonal to a
+dense set, hence zero. Route 2 needs the `L²`/symmetry statement and a Stone–Weierstrass density argument, but no ODE
+asymptotics. Both are well above one session; first deliverable for either: regularity of the modes of a smooth spinor at
+the origin (`c_m(r) = O(r^{|m|})`).
