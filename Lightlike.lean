@@ -1959,6 +1959,8 @@ import Lightlike.Dirac.EigenAngular
 import Lightlike.Dirac.EigenPole
 import Lightlike.TemperleyLieb.Basic
 import Lightlike.TemperleyLieb.JonesWenzl
+import Lightlike.TemperleyLieb.Model
+import Lightlike.TemperleyLieb.CupCap
 import Lightlike.Dirac.ConnesDistance
 import Lightlike.Dirac.ConnesDistance2
 import Lightlike.Dirac.ConnesDistance3
