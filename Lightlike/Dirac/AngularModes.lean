@@ -276,7 +276,7 @@ theorem mode_eq {g₁ g₂ : E 2 → ℂ} (h₁ : ContDiff ℝ 1 g₁) (h₂ : C
   rw [this]; exact hint
 
 /-- Every point of the plane has polar coordinates `r ≥ 0`, `θ ∈ [0, 2π]`. -/
-theorem polarPt_surj (x : E 2) : ∃ r : ℝ, ∃ θ : ℝ, θ ∈ Set.Icc (0 : ℝ) (2 * Real.pi) ∧ polarPt r θ = x := by
+theorem polarPt_surj (x : E 2) : ∃ r : ℝ, 0 ≤ r ∧ ∃ θ : ℝ, θ ∈ Set.Icc (0 : ℝ) (2 * Real.pi) ∧ polarPt r θ = x := by
   set z : ℂ := ⟨x 0, x 1⟩ with hz
   have hc : ‖z‖ * Real.cos (Complex.arg z) = x 0 := by
     have := Complex.norm_mul_cos_arg z
@@ -292,20 +292,52 @@ theorem polarPt_surj (x : E 2) : ∃ r : ℝ, ∃ θ : ℝ, θ ∈ Set.Icc (0 : 
     · simp [polarPt, e, h1, hc]
     · simp [polarPt, e, h2, hs]
   by_cases hneg : Complex.arg z < 0
-  · refine ⟨‖z‖, Complex.arg z + 2 * Real.pi, ⟨by linarith [Complex.neg_pi_lt_arg z], by linarith⟩, hx _ ?_ ?_⟩
+  · refine ⟨‖z‖, norm_nonneg _, Complex.arg z + 2 * Real.pi, ⟨by linarith [Complex.neg_pi_lt_arg z], by linarith⟩, hx _ ?_ ?_⟩
     · simp [Real.cos_add_two_pi]
     · simp [Real.sin_add_two_pi]
-  · refine ⟨‖z‖, Complex.arg z, ⟨not_lt.mp hneg, by linarith [Complex.arg_le_pi z, Real.pi_pos]⟩, hx _ rfl rfl⟩
+  · refine ⟨‖z‖, norm_nonneg _, Complex.arg z, ⟨not_lt.mp hneg, by linarith [Complex.arg_le_pi z, Real.pi_pos]⟩, hx _ rfl rfl⟩
 
 /-- **Uniqueness of the angular modes of a continuous function.** If all Fourier coefficients of the polar
 function vanish, the function is zero. -/
 theorem eq_zero_of_fcoef_polar {g : E 2 → ℂ} (hg : Continuous g)
     (h : ∀ (m : ℤ) (r : ℝ), fcoef (polarFn g) m r = 0) : g = 0 := by
   funext x
-  obtain ⟨r, θ, hθ, rfl⟩ := polarPt_surj x
+  obtain ⟨r, -, θ, hθ, rfl⟩ := polarPt_surj x
   have hc : Continuous fun θ : ℝ => polarFn g r θ := hg.comp (polarPt_continuous.comp
     (continuous_const.prodMk continuous_id))
   have := eq_zero_of_fcoef_eq_zero hc (by simp [polarFn, polarPt_two_pi]) (fun m => h m r) θ hθ
   simpa [polarFn] using this
+
+/-- **Uniqueness of the modes, positive radii only**: a continuous function whose polar Fourier modes vanish for
+`r > 0` is zero. -/
+theorem eq_zero_of_fcoef_polar_pos {g : E 2 → ℂ} (hg : Continuous g)
+    (h : ∀ (m : ℤ) (r : ℝ), 0 < r → fcoef (polarFn g) m r = 0) : g = 0 := by
+  have hne : ∀ x : E 2, x ≠ 0 → g x = 0 := by
+    intro x hx
+    obtain ⟨r, hr0, θ, hθ, rfl⟩ := polarPt_surj x
+    have hrpos : 0 < r := by
+      rcases hr0.eq_or_lt with h0 | h0
+      · exfalso; apply hx; subst h0; simp [polarPt]
+      · exact h0
+    have hc : Continuous fun θ : ℝ => polarFn g r θ := hg.comp (polarPt_continuous.comp
+      (continuous_const.prodMk continuous_id))
+    have := eq_zero_of_fcoef_eq_zero hc (by simp [polarFn, polarPt_two_pi]) (fun m => h m r hrpos) θ hθ
+    simpa [polarFn] using this
+  funext x
+  by_cases hx : x = 0
+  · subst hx
+    have h1 : Filter.Tendsto (fun t : ℝ => g (t • e (0 : Fin 2))) (nhdsWithin 0 (Set.Ioi 0)) (nhds (g 0)) := by
+      have : Continuous fun t : ℝ => g (t • e (0 : Fin 2)) := hg.comp (continuous_id.smul continuous_const)
+      simpa using (this.tendsto 0).mono_left nhdsWithin_le_nhds
+    have h2 : ∀ᶠ t in nhdsWithin (0 : ℝ) (Set.Ioi 0), g (t • e (0 : Fin 2)) = 0 := by
+      filter_upwards [self_mem_nhdsWithin] with t ht
+      apply hne
+      intro h0
+      have := congrArg (fun v : E 2 => v 0) h0
+      simp [e] at this
+      exact absurd this (ne_of_gt ht)
+    have := tendsto_nhds_unique h1 (tendsto_const_nhds.congr' (h2.mono fun t ht => ht.symm))
+    simpa using this
+  · exact hne x hx
 
 end Lightlike.Dirac
