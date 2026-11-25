@@ -678,7 +678,7 @@ milestones:
       - id: t3
         kind: trust
         text: "A complementary-series parameter outside (0, 1/2) gives a non-unitary representation"
-        decls: []
+        decls: [Lightlike.Lorentz.SL2RPlancherel.no_invariant_form, Lightlike.Lorentz.SL2RPlancherel.no_invariant_form_smooth, Lightlike.Lorentz.SL2RPlancherel.no_invariant_form_smooth_boundary]
         hint: "Close but not this: Lightlike.Lorentz.SL2RPlancherel.no_invariant_form and no_invariant_form_smooth show no invariant form (infinitesimal, form only assumed skew for E, F, H) for |tau| > 1 (sigma > 1/2). Missing: the boundary and sigma < 0 cases, and a statement about unitarity of the group representation."
       - id: c1
         kind: catalogue

@@ -84,7 +84,10 @@ principal series acts unitarily on `L²(ℝ)`, jointly continuously in `(g, f)` 
 discrete series acts unitarily on the weighted Bergman space `A²_n` of the upper half-plane, a
 closed subspace that the action preserves and that is nonzero for `n ≥ 2` [29] [30]. The Casimir
 operator is `-(1 + ν²)/4` on the principal series and `(n/2)(n/2 - 1)` on holomorphic functions,
-attained by the nonzero vector `lowestVec n` of `A²_n` [31].
+attained by the nonzero vector `lowestVec n` of `A²_n` [31]. For the principal-series model with parameter
+`ν = iτ`, no positive definite sesquilinear form on smooth functions has the generators skew when `|τ| > 1`,
+and none when `τ = 1`, by the sign of the Casimir on the `K`-fixed vector; for `|τ| < 1` (the complementary
+series) there is no such obstruction [42] [43].
 
 The irreducibility of the principal series is not yet formalized. [TODO]
 
@@ -190,6 +193,11 @@ non-vacuity check (stated, not proven) [41].
     `Poincare.not_isCompact_littleGroup_tachyon`
 41. Lightlike/Lorentz/PoincareIrreps/ClassificationStatement.lean -
     `Lorentz.Poincare.WignerClassification`, `Lorentz.Poincare.trivialRep_classified`
+42. Lightlike/Lorentz/SL2RPlancherel/NoInvariantFormBoundary.lean -
+    `Lorentz.SL2RPlancherel.eq_zero_of_casimir_zero`,
+    `Lorentz.SL2RPlancherel.no_invariant_form_smooth_boundary`: no positive definite skew form for `τ = 1`
+43. Lightlike/Lorentz/SL2RPlancherel/NoInvariantForm.lean - `Lorentz.SL2RPlancherel.no_invariant_form`,
+    `Lorentz.SL2RPlancherel.no_invariant_form_smooth`: no positive definite skew form for `|τ| > 1`
 
 ## References
 

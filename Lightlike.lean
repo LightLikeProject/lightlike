@@ -531,6 +531,7 @@ import Lightlike.Lorentz.SL2RPlancherel.KTypePlancherel
 import Lightlike.Lorentz.SL2RPlancherel.SphericalIdentity
 import Lightlike.Lorentz.SL2RPlancherel.SphericalClean
 import Lightlike.Lorentz.SL2RPlancherel.NoInvariantForm
+import Lightlike.Lorentz.SL2RPlancherel.NoInvariantFormBoundary
 import Lightlike.Lorentz.SL2RPlancherel.Link
 import Lightlike.Lorentz.SL2RPlancherel.Injectivity
 import Lightlike.Lorentz.SL2RPlancherel.Linearity
