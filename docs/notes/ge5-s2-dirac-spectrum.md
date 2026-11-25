@@ -103,3 +103,22 @@ and its uniqueness (coefficient recurrences above, radius of convergence 1); (S2
 the closed hypergeometric parameters; (S3) the value at `x = 1` (Gauss) via the Euler integral and Mathlib's Beta
 integral, or via the contiguous relation; (S4) non-vanishing off the quantised set; (S5) assembly with M2, M4 and the
 decay at the pole. S3 is the hard part (no hypergeometric function theory in Mathlib).
+
+### M3 route 1, closed form found (25 Nov 2026, S2 and S3 mapped, not yet in Lean)
+
+Eliminating `H` from the series system gives `t(1+t)² F'' + (1+t)((m+2)t + m + 1) F' − μ² F = 0`; its exponents are
+`0, −m` at `t = 0`, `±iμ = ±λ` at `t = −1`, `0, −(m+1)` at `t = ∞`, so (Pfaff) the regular solution is
+**`F(t) = ₂F₁(λ, −λ; m+1; x)`, `x = t/(1+t) = r²/(1+r²)`**, with `λ = iμ`. Its Taylor coefficients in `x` are
+`γ_n = (λ)_n (−λ)_n / ((m+1)_n n!)`, `γ_n ~ n^{-m-2}`, so the series converges at `x = 1` and `F(r → ∞) = S(m+1)` with
+`S(c) = Σ_n (λ)_n(−λ)_n/((c)_n n!)`. The solution decays at infinity iff `S(m+1) = 0` (the other behaviour `a ~ r^m` is
+non-decaying).
+*Elementary evaluation of `S`* (no Gauss theorem needed):
+(a) telescoping: with `T_n(c)` the terms, `(c² − λ²) T_n(c+1) − c² T_n(c) = R_{n+1} − R_n`, `R_n = c n T_n(c)`; since
+`(N+1) T_{N+1}(c) → 0` for `c > 0`, `(c² − λ²) S(c+1) = c² S(c)`;
+(b) base case: `T_n(1) = P_n − P_{n−1}` with `P_n = ∏_{j ≤ n}(1 − λ²/j²)`, so `S(1) = lim P_N = sin(πλ)/(πλ)`
+(Mathlib: `Complex.tendsto_euler_sin_prod`);
+(c) hence `S(m+1) = S(1) ∏_{j=1}^m j²/(j² − λ²)`, which vanishes iff `λ ∈ ℤ`, `|λ| ≥ m+1`. The integers `1 ≤ |λ| ≤ m`
+need one more argument (the series terminates; Chu–Vandermonde gives `S(m+1) = (m+1−j)_j/(m+1)_j ≠ 0`).
+This is exactly the quantisation `λ = ±(k+1)`, `k ≥ m`. Remaining Lean work: identify `F` with the `x`-series (ODE for the
+`x`-series plus uniqueness from `ModeODE.lean`), Abel's theorem at `x = 1`, the dichotomy decaying / non-decaying at infinity,
+and the integer case.
