@@ -9,7 +9,7 @@
     refs:
       - {ref: derezinski-2006, location: "Theorem 31, p. 32", check: "Theorem 31"}
   review: kernel-checked
-  note: "The sufficiency half of the equivalence LL-XXXX-i (the comparison with the source is recorded there). Proof: the transformed annihilators of any vector are a CAR system; a unit vector killed by them gives a unitary on the words of transformed creation operators (dense by irreducibility); the vacuum is the limit of the decreasing commuting projections prod (1 - c_k a_k) over the modes of an eigenbasis of K = beta* beta, with the relative decoupling bound (decoupling), class by class, and the finitely many heavy classes handled by mode flips."
+  note: "The sufficiency half of the equivalence LL-0381 (the comparison with the source is recorded there). Proof: the transformed annihilators of any vector are a CAR system; a unit vector killed by them gives a unitary on the words of transformed creation operators (dense by irreducibility); the vacuum is the limit of the decreasing commuting projections prod (1 - c_k a_k) over the modes of an eigenbasis of K = beta* beta, with the relative decoupling bound (decoupling), class by class, and the finitely many heavy classes handled by mode flips."
   since: unreleased
 - id: LL-XXXX-t
   title: "Uniqueness of the implementer of a fermionic Bogoliubov transformation up to a phase: two unitaries U, U' of the fermionic Fock space with U phi(w) = phi(R w) U and U' phi(w) = phi(R w) U' satisfy U' = c U with |c| = 1"
