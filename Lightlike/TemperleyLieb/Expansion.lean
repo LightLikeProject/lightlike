@@ -164,4 +164,48 @@ theorem ULd_mul_UL [CharZero k] (q : kˣ) (a b c : ℕ)
           simp only [mul_assoc]
       _ = 0 := by rw [h0]; simp
 
+/-- The four-block left-bracketed tree vector `((ab)c)d` with channels `e, d₁, g`. -/
+noncomputable def UL4 (q : kˣ) (a b c d e d₁ g : ℕ) : Module.End k (ModelSpace k) :=
+  UL q a b c e d₁ * Vop q (a + b - 2 * e + c - 2 * d₁) d g
+
+/-- The dual four-block left-bracketed tree vector. -/
+noncomputable def ULd4 (q : kˣ) (a b c d e d₁ g : ℕ) : Module.End k (ModelSpace k) :=
+  Wop q (a + b - 2 * e + c - 2 * d₁) d g * ULd q a b c e d₁
+
+/-- **Orthogonality of the four-block left-bracketed tree vectors**
+(only the diagonal case `e = e'`, `d₁ = d₁'` is stated; the other cases follow from `ULd_mul_UL`). -/
+theorem ULd4_mul_UL4_diag [CharZero k] (q : kˣ) (a b c d e d₁ g g' : ℕ)
+    (hd : ∀ j, j ≤ a + b + c + d → chebD (loopVal q) j ≠ 0)
+    (hea : e ≤ a) (heb : e ≤ b) (hdA : d₁ ≤ a + b - 2 * e) (hdc : d₁ ≤ c)
+    (hgA : g ≤ a + b - 2 * e + c - 2 * d₁) (hgd : g ≤ d)
+    (hgA' : g' ≤ a + b - 2 * e + c - 2 * d₁) (hgd' : g' ≤ d)
+    (hq2 : ∀ j, 1 ≤ j → j ≤ a + b + c + d + 1 → (q : k) ^ (2 * j) ≠ 1) :
+    ULd4 q a b c d e d₁ g * UL4 q a b c d e d₁ g' =
+      if g = g' then (kapRec q a b e * kapRec q (a + b - 2 * e) c d₁ *
+        kapRec q (a + b - 2 * e + c - 2 * d₁) d g) • jwAt q 0 (a + b - 2 * e + c - 2 * d₁ + d - 2 * g)
+      else 0 := by
+  have h3 := ULd_mul_UL (k := k) q a b c (fun j hj => hd j (by omega)) (fun j h1 h2 => hq2 j h1 (by omega))
+    hea heb hea heb hdA hdc hdA hdc
+  rw [if_pos ⟨rfl, rfl⟩] at h3
+  unfold ULd4 UL4
+  have : Wop q (a + b - 2 * e + c - 2 * d₁) d g * ULd q a b c e d₁ * (UL q a b c e d₁ *
+      Vop q (a + b - 2 * e + c - 2 * d₁) d g') =
+      Wop q (a + b - 2 * e + c - 2 * d₁) d g * (ULd q a b c e d₁ * UL q a b c e d₁) *
+        Vop q (a + b - 2 * e + c - 2 * d₁) d g' := by simp only [mul_assoc]
+  rw [this, h3]
+  have hp : jwAt q 0 (a + b - 2 * e + c - 2 * d₁) * Vop q (a + b - 2 * e + c - 2 * d₁) d g' =
+      Vop q (a + b - 2 * e + c - 2 * d₁) d g' := by
+    unfold Vop; rw [← mul_assoc, ← mul_assoc, jwAt_mul_Qab' (k := k) q _ d (fun j hj => hd j (by omega))]
+  rw [mul_smul_comm, smul_mul_assoc, mul_assoc, hp]
+  by_cases hgg : g = g'
+  · subst hgg
+    rw [if_pos rfl, Wop_mul_Vop q _ d g hgA hgd (fun j hj => hd j (by omega)), smul_smul, mul_assoc]
+  · rw [if_neg hgg]
+    have hm : 1 ≤ min (a + b - 2 * e + c - 2 * d₁) d := by omega
+    have h0 := channel_orth q (a + b - 2 * e + c - 2 * d₁) d g g' (by omega) (by omega) hgA hgd hgA' hgd'
+      (fun j hj => hd j (by omega))
+      (lamRec_ne q (a + b - 2 * e + c - 2 * d₁) d g g' hgA hgd hgA' hgd' hgg
+        (fun j h1 h2 => hq2 j h1 (by omega)))
+    rw [h0, smul_zero]
+
 end Lightlike.TemperleyLieb
