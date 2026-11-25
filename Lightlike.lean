@@ -380,6 +380,7 @@ import Lightlike.GR.EddingtonFinkelstein
 import Lightlike.GR.EFConstants
 import Lightlike.GR.EFNullGeodesic
 import Lightlike.GR.AdSConformal
+import Lightlike.GR.AdSTwo
 import Lightlike.GR.ConformalMinkowski
 import Lightlike.GR.ConformalPoincare
 import Lightlike.GR.AdSConformalBoundary.ScriPlus
@@ -1541,6 +1542,7 @@ import Lightlike.Spacetime.PenroseSingularity.TrappedSurface
 import Lightlike.Spacetime.Causal.ChainReach
 import Lightlike.Spacetime.Causal.TimeReversal
 import Lightlike.Spacetime.Causal.OpenPast
+import Lightlike.Spacetime.Causal.OpenSegment
 import Lightlike.Spacetime.CausalLadder.NearFuture
 import Lightlike.Spacetime.Causal.ChainStep
 import Lightlike.Spacetime.Causal.MeshSequence
