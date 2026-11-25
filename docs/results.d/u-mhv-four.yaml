@@ -1,0 +1,14 @@
+- id: LL-XXXX-u
+  title: "The Parke-Taylor formula for four gluons from the Feynman rules on all generic kinematics: for momentum-conserving four-gluon kinematics with all angle and square brackets nonzero and generic references, the colour-ordered Berends-Giele amplitude with the negative gluons at 0 and j (any position) equals <0j>^4/(<01><12><23><30>)"
+  area: GR
+  file: Lightlike/GR/MHVFour.lean
+  decls: [Lightlike.SpinorHelicity.trueAmp_four, Lightlike.SpinorHelicity.Gen4_closed]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: elvang-huang-2013, location: "eq. (3.11)", check: "background field"}
+      - {ref: elvang-huang-2013, location: "eq. (2.82)", check: "Cyclic"}
+  review: kernel-checked
+  note: "Compared with Elvang-Huang (2.80), (3.11) and the cyclic property p. 25 (read), as in the entry of the Parke-Taylor induction. For four gluons the genericity of that induction is the nonvanishing of the brackets: the class of kinematics with momentum conservation, all angle and square brackets nonzero and generic references is closed under the reductions of the induction (Gen4_closed, trueKin_four), so the Berends-Giele amplitude is the Parke-Taylor amplitude on this open set (trueAmp_four), with an explicit numeric point in TestsMHVInduction.lean (non-vacuity). Nothing is claimed for kinematics outside the class."
+  since: unreleased

@@ -346,6 +346,14 @@ import Lightlike.GR.FeynmanWard
 import Lightlike.GR.MHVChannelTwo
 import Lightlike.GR.MHVChannelTwoJ2
 import Lightlike.GR.MHVBase
+import Lightlike.GR.MHVBrackets
+import Lightlike.GR.MHVFive
+import Lightlike.GR.MHVFour
+import Lightlike.GR.MHVMax
+import Lightlike.GR.TestsMHVFive
+import Lightlike.GR.TestsMHVInduction
+import Lightlike.GR.TestsMHVSeven
+import Lightlike.GR.TestsMHVSix
 import Lightlike.GR.MHVRotate
 import Lightlike.GR.MHVPTStep
 import Lightlike.GR.MHVStepFar

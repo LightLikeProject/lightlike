@@ -1,0 +1,11 @@
+- id: LL-XXXX-v
+  title: "Non-vacuity of the Parke-Taylor formula for the Feynman-rule amplitudes at five gluons: the class Gen5 of generic five-gluon kinematics (bracket conditions, three-particle propagators, distinct poles, pole spinors of the channel [1,3]) is closed under the reductions of the induction, and an explicit rational five-gluon point lies in it for every position of the second negative gluon"
+  area: GR
+  file: Lightlike/GR/MHVFive.lean
+  decls: [Lightlike.SpinorHelicity.Gen5_closed, Lightlike.SpinorHelicity.trueKin_five]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source states the genericity conditions of the Feynman-rule induction; the Parke-Taylor formula is compared in the entry of the Parke-Taylor induction). Gen5_closed shows that that induction applies to the class Gen5, and trueKin_five that its members satisfy the hypotheses of the BCFW recursion (momentum conservation, nonzero brackets, nonvanishing propagators P_012^2, P_123^2 and P_123 . r, distinct poles); the explicit point is in TestsMHVFive.lean. For six gluons the maximal closed class is nonempty (the six-gluon entry); for seven gluons too (gmax_seven, TestsMHVSeven.lean); for eight or more gluons that the class is nonempty is not proved."
+  since: unreleased

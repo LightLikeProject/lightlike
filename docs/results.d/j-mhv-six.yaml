@@ -1,0 +1,11 @@
+- id: LL-XXXX-j
+  title: "Non-vacuity of the Parke-Taylor formula for the Feynman-rule amplitudes at six gluons: the maximal closed class Gmax (all the reductions of the induction satisfy their hypotheses) is closed under the reductions, and an explicit rational six-gluon point lies in Gmax 3 j for every position j = 1, ..., 5 of the second negative gluon, so that the theorem trueAmp_eq_ptN applies to it"
+  area: GR
+  file: Lightlike/GR/TestsMHVSix.lean
+  decls: [Lightlike.SpinorHelicity.Tests.gmax_six]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source states the genericity conditions of the Feynman-rule induction; the Parke-Taylor formula is compared in the entry of the Parke-Taylor induction). The class Gmax (MHVMax.lean, closedClass_Gmax) unfolds the far step and the cyclic step along the reductions of the induction down to three gluons, so it is closed by construction; the point of TestsMHVSix.lean (found by a rational search, scripts not part of the library) satisfies every hypothesis of every reduction: all brackets and propagators of the shifted channels are checked by norm_num through the bracket formulas of MHVBrackets.lean (mdot_range_self, mdot_range_ref, zpole_eq_sums), with the pole spinors given explicitly. With the four-gluon entry (four gluons, all generic kinematics) and the five-gluon entry (five gluons) this removes the caveat that the class is empty beyond three gluons; for seven gluons the same method gives an explicit point in Gmax 4 j for j = 1, ..., 6 (gmax_seven in TestsMHVSeven.lean, not a catalogue entry); for eight or more gluons that the class is nonempty is not proved."
+  since: unreleased
