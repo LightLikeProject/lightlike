@@ -14,8 +14,14 @@ on an open set {1} [1]. For `Λ = 0` in any dimension other than two, they are e
 vanishing of the Ricci tensor [1]. Minkowski space solves them [1].
 
 The exterior Schwarzschild metric of mass `M > 0`, in Schwarzschild coordinates on `r > 2M` and
-`0 < θ < π`, has Lorentzian signature and solves the vacuum equations with `Λ = 0` {2} [2]. Other
-exact solutions, such as Kerr and de Sitter, are not yet formalized. [TODO]
+`0 < θ < π`, has Lorentzian signature and solves the vacuum equations with `Λ = 0` {2} [2]. The Kerr metric of mass `M` and spin `a`, in Boyer–Lindquist coordinates, is a coordinate metric on `r > 0`,
+`Δ ≠ 0`, `0 < θ < π` [53] and a vacuum solution of the Einstein equations with `Λ = 0` for every `M` and
+`a` [54]; its line element and determinant are those of Visser {5}. For `0 < M` and `a² ≤ M²` the outer
+horizon is `r₊ = M + √(M² − a²)`, the surface gravity (defined as `Δ'(r₊)/(2(r₊² + a²))`) is
+`√(M² − a²)/(2 M r₊)`, and the Killing field `∂_t + Ω_H ∂_φ`, `Ω_H = a/(2 M r₊)`, has vanishing norm on
+`r = r₊` [55]; its norm factors as `(r − r₊)` times an explicit quotient [56]. That `r = r₊` is a Killing
+horizon, and the equation `∇_χ χ = κ χ`, are not formalized. De Sitter and other exact solutions are
+not yet formalized. [TODO]
 
 The Kruskal-Szekeres extension of the Schwarzschild metric: its four regions, the horizon `T = ±X`, the
 radial null directions and the one-way property of the black hole region {3} [3]; the Kruskal coordinates of
@@ -221,6 +227,10 @@ eigenvalue plus or minus s and the radial profile of the lower bound [51].
     `Dirac.degree_le_of_bounded`, `Dirac.level_of_degree`
 52. Lightlike/Geometry/HeatKernel/ShiftedTheta.lean - `HeatKernel.tsum_exp_neg_shift`,
     `HeatKernel.abs_tsum_shift_sub_le`, `HeatKernel.gaussTail`
+53. Lightlike/GR/Kerr.lean - `kerrMetric`, `kerrU`, `isCoordMetric_kerr`
+54. Lightlike/GR/KerrRicci.lean - `kerr_isVacuumSolution`
+55. Lightlike/GR/KerrHorizon.lean - `kerrKappa`, `kerrOmega`, `kerrKappa_eq`, `kerr_chi_null`
+56. Lightlike/GR/KerrHorizonKillingField/KerrSurfaceGravity.lean - `kerrChiNorm_eq`
 
 ## References
 
@@ -230,3 +240,6 @@ eigenvalue plus or minus s and the radial profile of the lower bound [51].
 3. S. M. Carroll, *Lecture Notes on General Relativity*, arXiv:gr-qc/9712019, chapter 7.
 4. J. Sbierski, The C⁰-inextendibility of the Schwarzschild spacetime and the spacelike diameter in
    Lorentzian geometry, arXiv:1507.00601, Definition 2.15.
+5. M. Visser, *The Kerr spacetime: A brief introduction*, arXiv:0706.0622, section 5 (eq. (57), the
+   Boyer–Lindquist line element; eq. (106), the determinant) and the section on horizons
+   (eqs. (112)–(114)).

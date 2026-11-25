@@ -2,25 +2,20 @@
 """The status of every milestone, computed from `main` (status is computed, never typed).
 
 The plan is read from this checkout: the milestone tables of docs/tasks/milestones.md and the
-checklists of docs/tasks/checklists.yaml. The library, docs/results.yaml, the API maps and the
-reviews are read from a checkout of `main` with the library built.
+checklists of docs/tasks/checklists.yaml. The library, docs/results.yaml and the API maps are read
+from a checkout of `main` with the library built.
 
 An item of a checklist is ticked when every declaration it names exists in the library, has no
 `sorry` and uses only Lean's standard axioms `propext`, `Classical.choice` and `Quot.sound`. This
 is the search of scripts/AxiomAudit.lean, in its per-declaration mode, not a text search. A
 catalogue item also needs each declaration in an entry of docs/results.yaml with `status: proven`
-and cited in an API map. A review item needs `Result: pass` in its section of the review file.
+and cited in an API map. A review item (a comparison with a source) is ticked when its
+`review_evidence` in docs/tasks/checklists.yaml holds the evidence, written by whoever did the
+work: what was compared with what, and the result.
 
-The review that closes a milestone (by someone other than its author) is the file
-docs/tasks/reviews/<ID>.md on main, with these lines at the top:
-
-    Verdict: pass            (or fail)
-    Reviewer: <session>      the session that reviewed, against the done-when
-    Worked by: <session>, …  the sessions that did the work
-    Commit: <sha>            the commit of main that was reviewed
-
-and one section `## <item id>` per review item, containing `Result: pass` or `Result: fail`. A
-review counts only when the reviewer is not among those who did the work.
+A milestone is done when every item of its checklist is ticked; scripts/sync_github.py then closes
+its issue. There is no separate review step (owner, 25 Nov 2026): a review happens only when the
+owner asks for one.
 
 Usage, from the repository root:
 
@@ -55,7 +50,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 import tasks as T  # noqa: E402
 
 CHECKLISTS = "docs/tasks/checklists.yaml"
-REVIEWS = "docs/tasks/reviews"
+MIN_EVIDENCE = 30  # characters: the evidence of a review item, not a word like "ok"
 STANDARD = {"propext", "Classical.choice", "Quot.sound"}
 KINDS = {"main": "m", "piece": "p", "trust": "t", "catalogue": "c", "review": "r"}
 KIND_TITLE = {"main": "Main theorem", "piece": "Piece", "trust": "Trust check", "catalogue": "Catalogue",
@@ -149,7 +144,7 @@ def item_problems(where, items):
         decls = it.get("decls")
         if kind == "review":
             if "review_evidence" not in it:
-                probs.append(f"{w}: a review item has review_evidence (null until the review)")
+                probs.append(f"{w}: a review item has review_evidence (null until the evidence is written)")
             if decls:
                 probs.append(f"{w}: a review item names no declarations")
         else:
@@ -162,8 +157,9 @@ def item_problems(where, items):
                     if not (isinstance(d, str) and FULL_NAME.match(d)):
                         probs.append(f"{w}: {d!r} is not a full name starting with Lightlike.")
         ev = it.get("review_evidence")
-        if ev is not None and not re.fullmatch(rf"{REVIEWS}/[\w.-]+\.md#[a-z]\d+", str(ev)):
-            probs.append(f"{w}: review_evidence must be {REVIEWS}/<ID>.md#<item id>")
+        if ev is not None and not (isinstance(ev, str) and len(ev.strip()) >= MIN_EVIDENCE):
+            probs.append(f"{w}: review_evidence is null or the evidence itself (what was compared with "
+                         f"what, and the result; at least {MIN_EVIDENCE} characters)")
     for k in ("main", "catalogue"):
         if k not in kinds:
             probs.append(f"{where}: the checklist has no {k} item")
@@ -223,24 +219,6 @@ def catalogue_index(main):
     return proven, other, cited
 
 
-def read_review(main, mid):
-    p = pathlib.Path(main, REVIEWS, f"{mid}.md")
-    if not p.is_file():
-        return None
-    text = p.read_text()
-    head = {}
-    for line in text.splitlines()[:12]:
-        m = re.match(r"^(Verdict|Reviewer|Worked by|Commit):\s*(.*?)\s*$", line)
-        if m:
-            head[m[1].lower()] = m[2]
-    items = {}
-    for sec in re.split(r"^## ", text, flags=re.M)[1:]:
-        iid = sec.split(None, 1)[0] if sec.strip() else ""
-        m = re.search(r"^Result:\s*(pass|fail)\b", sec, re.M | re.I)
-        items[iid] = m[1].lower() if m else None
-    return dict(head=head, items=items)
-
-
 def read_streams(folder):
     out = []
     for p in sorted(pathlib.Path(folder).glob("*.json")) if folder else []:
@@ -271,7 +249,6 @@ def compute(ms, tasks, data, v1, aud, cat, main_sha, main, streams, now):
                   stale_claims=[s["stream"] for s in streams if s["milestone"] == mid and not fresh(s, now)],
                   last_step=max((s for s in streams if s["milestone"] == mid),
                                 key=lambda s: s.get("updated_at") or "", default=None))
-        review = read_review(main, mid) if mid in v1 else None
         items = []
         if mid in v1:
             # A catalogue item without decls covers the theorems of the main and piece items
@@ -279,15 +256,12 @@ def compute(ms, tasks, data, v1, aud, cat, main_sha, main, streams, now):
             core = [d for it in e.get("items") or [] if it.get("kind") in ("main", "piece")
                     for d in it.get("decls") or [] if (aud.get(d) or {}).get("kind", "theorem") == "theorem"]
             for it in e.get("items") or []:
-                items.append(item_status(it, aud, proven, other, cited, core, review))
+                items.append(item_status(it, aud, proven, other, cited, core))
         st["items"] = items
         st["ticked"] = sum(i["ticked"] for i in items)
         st["total"] = len(items)
-        # done: every item but the review items is ticked, so the milestone goes to review; the review
-        # file ticks the review items. closable: done, the review passes and every item is ticked.
-        st["done"] = bool(items) and all(i["ticked"] for i in items if i["kind"] != "review")
-        st["review"] = review_status(review, st["done"])
-        st["closable"] = st["done"] and st["review"]["state"] == "pass" and st["ticked"] == st["total"]
+        # done: every item is ticked (review items by their written evidence); the issue is then closed.
+        st["done"] = bool(items) and st["ticked"] == st["total"]
         out[mid] = st
     return dict(main=main_sha, computed_at=now, milestones=out)
 
@@ -303,16 +277,14 @@ def fresh(s, now):
     return n - t <= datetime.timedelta(hours=FRESH_HOURS)
 
 
-def item_status(it, aud, proven, other, cited, core, review):
+def item_status(it, aud, proven, other, cited, core):
     kind = it.get("kind")
     r = dict(id=it.get("id"), kind=kind, text=it.get("text", ""), hint=it.get("hint"), decls=[], ticked=False, why="")
     if kind == "review":
         ev = it.get("review_evidence")
-        res = ((review or {}).get("items") or {}).get(it.get("id"))
         r["review_evidence"] = ev
-        r["ticked"] = bool(ev) and res == "pass"
-        r["why"] = ("" if r["ticked"] else "no review yet" if not ev or review is None
-                    else f"the review says {res}" if res else "the review has no result for this item")
+        r["ticked"] = isinstance(ev, str) and len(ev.strip()) >= MIN_EVIDENCE
+        r["why"] = "" if r["ticked"] else "no evidence written yet"
         return r
     names = list(it.get("decls") or []) or (core if kind == "catalogue" else [])
     for d in names:
@@ -328,20 +300,6 @@ def item_status(it, aud, proven, other, cited, core, review):
     if not names:
         r["why"] = "no declaration is named yet"
     return r
-
-
-def review_status(review, done):
-    if review is None:
-        return dict(state="none", why="not yet: every item but the review items ticked first, then a review by a session that did not do the work"
-                    if not done else "waiting: every item but the review items is ticked; it needs a review by a session that did not do the work")
-    h = review["head"]
-    worked = {w.strip() for w in (h.get("worked by") or "").split(",") if w.strip()}
-    if not h.get("reviewer") or h["reviewer"] in worked:
-        return dict(state="invalid", why="the reviewer did the work, or is not named", **h)
-    v = (h.get("verdict") or "").lower()
-    if v not in ("pass", "fail"):
-        return dict(state="invalid", why="the review has no verdict", **h)
-    return dict(state=v, why="", **h)
 
 
 # --- The issue body ------------------------------------------------------------------------------
@@ -387,10 +345,6 @@ def body(st, repo_sha, date, outside=None, issue_of=None):
     if ls:
         L.append(f"- **Last step:** {ls.get('step') or '—'} ({ls.get('updated_at') or 'no time'}"
                  + (f"; branch `{ls['branch']}`" if ls.get("branch") else "") + ")")
-    if st["v1"]:
-        rv = st["review"]
-        L.append("- **Review:** " + (f"{rv['state']} (by {rv.get('reviewer')}, of {rv.get('commit')})"
-                                     if rv["state"] in ("pass", "fail") else rv["why"]))
     if st["proof_tasks"]:
         L += ["", "### Proof tasks", "", *[f"- {p}" + (f" (#{issue_of[p]})" if (issue_of or {}).get(p) else "")
                                            for p in st["proof_tasks"]]]
@@ -404,7 +358,7 @@ def rank(milestones):
 
     Topological over the needs (a milestone ranks below the milestones it needs). Among those whose
     needs are placed: most v1.0 milestones unblocked (directly or through others) first, then fewer
-    open proof items (main theorem, piece, trust check), then fewer open reviews, then the ID.
+    open proof items (main theorem, piece, trust check), then fewer open review items, then the ID.
     Returns (order, unblocked, open, needs): unblocked[ID] is the sorted list of milestones that
     need ID, open[ID] the counts (proof, review, catalogue) of its unticked items."""
     v = {k: m for k, m in milestones.items() if m["v1"]}
@@ -453,7 +407,7 @@ def ranking_md(res, order, unblocked, open_, needs):
          "**Rule.** Milestones that unblock others come first. *Unblocks* counts the v1.0 milestones that "
          "need this one, directly or through others (the Needs column of docs/tasks/milestones.md). A "
          "milestone always ranks below the milestones it needs. Ties: fewer open proof items first, then "
-         "fewer open reviews.", "",
+         "fewer open review items.", "",
          "**Taking work.** A stream takes the highest-ranked milestone that is free: not claimed by another "
          "stream's status file (fresh, at most 24 h old) or by an outside contributor's claim label, and not "
          "closed. Its needs do not have to be closed first. If its work really waits on an unfinished need, "
@@ -461,9 +415,9 @@ def ranking_md(res, order, unblocked, open_, needs):
          "next one.", "",
          "**Open items** are the unticked items of docs/tasks/checklists.yaml, computed from main: *proof* "
          "= main theorem, piece or trust check without a declaration yet; *review* = a review item (a "
-         "comparison with a source); *catalogue* = the docs/results.yaml entries and API-map citations. When "
-         "every item but the review items is ticked, the milestone goes to review by a different stream, on "
-         "Opus; the review ticks the review items.", "",
+         "comparison with a source, ticked when the stream that does the work writes the evidence into the "
+         "item); *catalogue* = the docs/results.yaml entries and API-map citations. A milestone is done, "
+         "and its issue closed, when every item is ticked.", "",
          "Recomputed after every merge that ticks items and after every closed milestone; `ranking:` in "
          "docs/tasks/checklists.yaml carries the same numbers.", "",
          "| Rank | ID | Milestone | Size | Unblocks | Open: proof / review / catalogue | Needs | Issue |",
@@ -475,8 +429,8 @@ def ranking_md(res, order, unblocked, open_, needs):
                  f"{('#' + str(m['issue'])) if m['issue'] else 'none yet'} |")
     tot = [sum(open_[k][j] for k in order) for j in range(3)]
     full = sum(v[k]["done"] for k in order)
-    L += ["", f"Totals: {tot[0]} open proof items, {tot[1]} open reviews, {tot[2]} open catalogue items over "
-          f"{len(order)} milestones; {full} ready for review (main {sha}).", ""]
+    L += ["", f"Totals: {tot[0]} open proof items, {tot[1]} open review items, {tot[2]} open catalogue items "
+          f"over {len(order)} milestones; {full} done (main {sha}).", ""]
     return "\n".join(L)
 
 
@@ -530,7 +484,7 @@ def cmd_compute(a):
         (out / "bodies" / f"{mid}.md").write_text(body(st, sha, now[:10]))
     v = [s for s in res["milestones"].values() if s["v1"]]
     print(f"milestone_status: main {sha[:7]}; {len(res['milestones'])} milestones, {len(v)} of v1.0: "
-          f"{sum(s['done'] for s in v)} ready for review, {sum(s['closable'] for s in v)} closable; "
+          f"{sum(s['done'] for s in v)} done; "
           f"items {sum(s['ticked'] for s in v)} of {sum(s['total'] for s in v)} ticked; wrote {out}")
     return 0
 
@@ -557,17 +511,17 @@ def selftest():
             "Lightlike.e": "axioms", "Lightlike.f": "missing"}
     fails = [f"{n}: {decl_state(n, aud)[0]} != {w}" for n, w in want.items() if decl_state(n, aud)[0] != w]
     cat = ({"Lightlike.a": ["LL-1"]}, {"Lightlike.g": ["LL-2"]}, {"Lightlike.a"})
-    it = lambda **k: item_status(dict(k), aud, *cat, ["Lightlike.a"], None)  # noqa: E731
+    it = lambda **k: item_status(dict(k), aud, *cat, ["Lightlike.a"])  # noqa: E731
     checks = [(it(id="m1", kind="main", decls=["Lightlike.a"])["ticked"], True),
               (it(id="m1", kind="main", decls=["Lightlike.a", "Lightlike.b"])["ticked"], False),
               (it(id="t1", kind="trust", decls=[])["ticked"], False),
               (it(id="c1", kind="catalogue", decls=[])["ticked"], True),
               (it(id="c1", kind="catalogue", decls=["Lightlike.e"])["ticked"], False),
-              (it(id="r1", kind="review", review_evidence=None)["ticked"], False)]
+              (it(id="r1", kind="review", review_evidence=None)["ticked"], False),
+              (it(id="r1", kind="review", review_evidence="ok")["ticked"], False),
+              (it(id="r1", kind="review", review_evidence="Source eq. (3.12) compared with weylOf: same sign")["ticked"],
+               True)]
     fails += [f"item check {i}: {got} != {w}" for i, (got, w) in enumerate(checks) if got != w]
-    rv = review_status(dict(head={"verdict": "pass", "reviewer": "opalg", "worked by": "opalg, regge"}, items={}), True)
-    if rv["state"] != "invalid":
-        fails.append("a review by a session that did the work counted")
     bad = item_problems("x", [dict(id="m1", kind="main", text="t", decls=["short_name"]),
                               dict(id="p1", kind="review", text="t", decls=[])])
     if len(bad) < 3:
@@ -578,21 +532,18 @@ def selftest():
     if order != ["A", "B", "E", "C", "D", "F"]:
         fails.append(f"rank: unblockers first and needs first gave {order}, not A B E C D F")
     with tempfile.TemporaryDirectory() as d:
-        # A milestone with a review item goes to review once its other items are ticked; the review
-        # file ticks the review item, and only then is it closable.
+        # A milestone with a review item is done only once the evidence is written into the item.
         ms_ = {"R": dict(title="t", area="X", size="S", done_when="", trust="", needs=[])}
         data_ = {"milestones": {"R": {"items": [dict(id="m1", kind="main", decls=["Lightlike.a"]),
-                                                dict(id="r1", kind="review", text="t", review_evidence="compare")]}}}
+                                                dict(id="r1", kind="review", text="t", review_evidence=None)]}}}
         run = lambda: compute(ms_, [], data_, {"R"}, aud, cat, "0" * 40, d, [], "2026-11-25T00:00:00Z")["milestones"]["R"]  # noqa: E731
         st = run()
-        if not st["done"] or st["closable"] or st["ticked"] != 1:
-            fails.append(f"review item: before the review done={st['done']} closable={st['closable']} ticked={st['ticked']}")
-        rd = pathlib.Path(d, REVIEWS)
-        rd.mkdir(parents=True)
-        (rd / "R.md").write_text("Verdict: pass\nReviewer: opalg\nWorked by: regge\nCommit: abc\n\n## r1\n\nResult: pass\n")
+        if st["done"] or st["ticked"] != 1:
+            fails.append(f"review item: before the evidence done={st['done']} ticked={st['ticked']}")
+        data_["milestones"]["R"]["items"][1]["review_evidence"] = "Source p. 3 compared with Lightlike.a: matches"
         st = run()
-        if not st["closable"] or st["ticked"] != 2:
-            fails.append(f"review item: after a passing review closable={st['closable']} ticked={st['ticked']}")
+        if not st["done"] or st["ticked"] != 2:
+            fails.append(f"review item: with the evidence done={st['done']} ticked={st['ticked']}")
         f = pathlib.Path(d) / "c.yaml"
         f.write_text("milestones:\n  A:\n    issue: 1\n    ranking: 3\n  B:\n    ranking: null\n  C:\n    issue: 3\n")
         n = write_rankings(["B", "A"], f)

@@ -97,7 +97,8 @@ homeomorphic to a torus [25].
 18. Lightlike/Surfaces/Tube.lean - `Surfaces.handle_of_cut`, `Surfaces.crosscap_of_cut`,
     `Surfaces.twist_of_KB`
 19. Lightlike/Surfaces/Classify.lean - `Surfaces.classify`, `Surfaces.isSurface_iff_classify`,
-    `Surfaces.dyck_step`, `Surfaces.classify_unique`, `Surfaces.exists_eqvGen_stdModel_iff`
+    `Surfaces.dyck_step`, `Surfaces.classify_unique`, `Surfaces.exists_eqvGen_stdModel_iff`,
+    `Surfaces.stdModel_eq_of_inv`
 20. Lightlike/Surfaces/Tests.lean - `Surfaces.isSurface_of_cert`, `Surfaces.T7`,
     `Surfaces.T7_model`, `Surfaces.T7_not_klein`, `Surfaces.torus_not_klein`,
     `Surfaces.two_spheres_no_model`
