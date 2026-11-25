@@ -821,6 +821,7 @@ import Lightlike.OperatorAlgebras.Yosida
 import Lightlike.OperatorAlgebras.TraceClass.Banach
 import Lightlike.OperatorAlgebras.TraceClass.Basic
 import Lightlike.OperatorAlgebras.TraceClass.BoundedSesquilinearForm
+import Lightlike.OperatorAlgebras.TraceClass.DualOfTraceClass
 import Lightlike.OperatorAlgebras.TraceClass.GeneralIdeal
 import Lightlike.OperatorAlgebras.TraceClass.GeneralProduct
 import Lightlike.OperatorAlgebras.TraceClass.HilbertSchmidt
