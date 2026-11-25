@@ -1,0 +1,27 @@
+- id: LL-XXXX-a
+  title: The first variation of the Einstein–Hilbert action on a measurable region of a manifold is the integral of minus the contraction of G + Λg with the perturbation, plus the divergence of the boundary vector field of the variation
+  area: Spacetime
+  file: Lightlike/Spacetime/EHManifold/RegionVariation.lean
+  decls: [Lightlike.eh_variation_region_manifold]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (4.66)", check: "arbitrary variations"}
+  review: kernel-checked
+  note: "For a metric g (nondegenerate, any signature) on a smooth manifold modelled on R^n (second countable, Hausdorff, C^2), a measurable region D, a symmetric tensor field h vanishing outside a compact set K and a real Λ, the derivative at t = 0 of the Einstein–Hilbert action of g + t h over D ∩ K (the integral of R − 2Λ for the metric g + t h with its volume measure) is ∫_{D ∩ K} (−⟨G + Λ g, h⟩_g + div_g V(h)) d vol_g, where G is the Einstein tensor, ⟨·,·⟩_g the contraction with g⁻¹ (ehIntegrand) and V(h) = palatiniField g h the boundary vector field of the variation, δ(√|g| R_{μν} g^{μν}) = √|g| div V (the Palatini identity of the library). When D contains K the divergence term vanishes (eh_first_variation_manifold_compact, which is the case without a boundary term); when D has a boundary and h vanishes on it, the boundary terms of the divergence are cancelled by the Gibbons–Hawking–York term (eh_ghy_variation_manifold, LL-0238). The proof cuts D ∩ K into disjoint measurable pieces inside small chart balls. Compared with Carroll, Lecture Notes on General Relativity, eq. (4.66) (read at that location: the variation with a total derivative term, and the cosmological term added); KIND representation: Carroll varies the inverse metric δg^{μν} on R^n-like regions, here the variation is of g by h with δg^{μν} = −g^{μα} g^{νβ} h_{αβ}, and the region is a measurable subset of a manifold."
+  since: unreleased
+
+- id: LL-XXXX-b
+  title: A metric is a stationary point of the Einstein–Hilbert action with a cosmological constant, for symmetric perturbations of compact support, exactly when it satisfies the vacuum Einstein equations with that constant, on every manifold
+  area: Spacetime
+  file: Lightlike/Spacetime/EHManifold/ManifoldStationary.lean
+  decls: [Lightlike.IsEHStationary, Lightlike.isEHStationary_iff]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (4.67)", check: "vacuum"}
+  review: kernel-checked
+  note: "For a metric g on a smooth manifold modelled on R^n (second countable, Hausdorff, C^2) and a real Λ, IsEHStationary g Λ says that for every smooth symmetric tensor field h and every compact K outside which h vanishes the first variation of the Einstein–Hilbert action of g over K is zero: variations with fixed boundary data, that is vanishing outside a compact set. It holds iff in every chart the symmetric part of R^{αβ} − ½ R g^{αβ} + Λ g^{αβ} vanishes at every point of the chart target (isEHStationary_iff), the vacuum Einstein equations with the cosmological constant, by eh_first_variation_manifold_compact and the fundamental lemma of the calculus of variations in a chart with test fields supported in coordinate balls. The statement is for the manifold M itself, with variations of compact support; a region with boundary is covered through its interior as a manifold, and the version with variations vanishing only on the boundary and the Gibbons–Hawking–York term is eh_ghy_variation_manifold (LL-0238). KIND representation: the 'compact region with fixed boundary data' of the milestone is represented by compactly supported variations on a manifold without boundary. Compared with Carroll, eq. (4.67), p. 116 (read at that location: the equations of motion follow because the variation vanishes for arbitrary variations)."
+  since: unreleased
