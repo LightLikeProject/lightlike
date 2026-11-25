@@ -5115,7 +5115,7 @@
   review: kernel-checked
   note: "Comparison pending (no source for the fermionic Wick theorem was read). Instance of the abstract recursion of FermionWick.lean (the previous entry): for a vector killed by all the transformed annihilation operators, the fields sum_j u_j b_j + sum_j v_j b_j^* are split fields, the anticommutator of the annihilation part with a field is the scalar sum u_j v'_j (the CAR of the transformed operators, isCARPairs_bog), and car_wick gives <Psi, x_1 ... x_n Psi> = <Psi, Psi> wick [x_1, ..., x_n] for every n; car_wick_two is n = 2. The fields a_j, c_j are such combinations by the inverse transformation (bog_inv), so the statement covers them, but this is not stated separately. WEAKER: finitely many modes (the infinite-mode vacuum and Shale for fermions are not built); no explicit n = 4 expansion check (the recursion is proved for all n); mixed quasi-free states are not covered."
   since: unreleased
-- id: LL-XXXX
+- id: LL-XXXX-a
   title: "On a Lorentzian manifold the exponential map is smooth near the zero section, with exp_p(0) = p, derivative the identity at the zero section, and second fibre derivative minus the Christoffel contraction; it is the time-one value of the geodesic with the given initial vector"
   area: Spacetime
   file: Lightlike/Spacetime/PenroseSingularity/ExpTheta.lean
@@ -5126,7 +5126,7 @@
   review: kernel-checked
   note: "GE3 (G1-006), manifold lift of the smooth exponential map. For every point p₀ of a Lorentzian manifold there is ThetaData: an open set D of chart pairs (q, w) around (ψ p₀, 0), ψ the chart at p₀, and a smooth map Θ on D with Θ (q, 0) = q, D_wΘ (q, 0) = id, D_w²Θ (q, 0) (w, w) = -Γ (q) (w, w) (the chart Christoffel contraction) and Θ (q, w) = ψ (expT (ζ (q, w))), where ζ (q, w) is the tangent vector with chart base point q and components w in the trivialization at p₀. expT z is the value at 1 of any geodesic curve whose phase at 0 is the tangent vector z (expT_eq_of; well defined because geodesic curves with equal phase agree, with T2); it does not depend on a chart. The smoothness comes from the smooth geodesic flow germ at the zero vector and the homogeneity exp (p, λ v) = γ_v (λ). Comparison pending: no source was read for this entry. The statement is that of Kunzinger and Steinbauer, Riemannian Geometry, lecture notes, 2.1.13 and 2.1.14 (as recorded in docs/notes/geodesic-exp-sources.md, there read by another stream), and of the standard texts on semi-Riemannian geometry; here the smoothness is given in a chart with the first and second fibre jets, and the local diffeomorphism property is not part of this entry (the coordinate-level version is Lightlike/Geodesic/ExpDiffeo.lean). Chart Christoffel conventions as in Lightlike.Geodesic.accel."
   since: unreleased
-- id: LL-XXXX
+- id: LL-XXXX-b
   title: "Poisson summation with a real shift: the sum over the integers of e^{-π a (n+s)²} is a^{-1/2} Σ_n e^{-π n²/a} e^{2π i n s}, and differs from a^{-1/2} by at most a^{-1/2} Σ_{n≠0} e^{-π n²/a} for every real s"
   area: Geometry
   file: Lightlike/Geometry/HeatKernel/ShiftedTheta.lean
