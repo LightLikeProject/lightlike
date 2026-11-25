@@ -6470,3 +6470,17 @@
   review: kernel-checked
   note: "Comparison pending (Milnor's index is defined as the maximal dimension of a subspace on which the Hessian is negative definite; the chapter is verified in the registry, the statement that this is the number of negative eigenvalues is standard linear algebra and was not read at a location). Setting: E a finite-dimensional real inner product space, B a continuous bilinear form (the Hessian) represented by a symmetric operator A (B x y = <x, A y>, which exists for every symmetric B, exists_symmetric_operator). sigNeg of the quadratic form v -> (1/2) B v v (Mathlib's signature, the largest dimension of a negative-definite subspace) equals the number of negative eigenvalues of A (Mathlib's eigenvalues of a symmetric operator, listed with multiplicity), proved by diagonalising A in an orthonormal eigenbasis and using Sylvester's law of inertia (sigNeg of a weighted sum of squares). The corollary morse_diagonal_eigenvalues restates the Morse lemma's number of negative signs w_i < 0 as this number of negative eigenvalues. A positive scalar factor (the 1/2 of the quadratic form) does not change the signs."
   since: unreleased
+- id: LL-0497
+  title: The gauge-fixed Ooguri state sum does not depend on the gauge set when each gauge set forces every triangle, and equals 1 at every cutoff
+  area: SpinFoam
+  file: Lightlike/SpinFoam/GaugeIndependence.lean
+  decls: [Lightlike.SpinFoam.amplitudeGF_eq_of_forces, Lightlike.SpinFoam.amplitudeGF_eq_of_isGauge_forces]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: freidel-louapre-2004, location: "Section III"}
+      - {ref: ooguri-1992, location: "Abstract", check: "Alexander moves"}
+  review: kernel-checked
+  note: "For a 4-dimensional complex K and two sets of triangles T, T′ that each force every triangle of K (Forces K K.tris T: iterating the forcing rule, a tetrahedron with three triangles of spin 0 has its fourth triangle and its virtual spin at 0), the gauge-fixed Ooguri state sum amplitudeGF K T cut equals amplitudeGF K T′ cut′ for all cutoffs cut, cut′ (amplitudeGF_eq_of_forces): in a colouring of nonzero weight everything vanishes, so both state sums are 1 (amplitudeGF_eq_one_of_forces). The same holds for two gauge sets (IsGauge, the collapsibility rule) that force (amplitudeGF_eq_of_isGauge_forces). This is a sufficient criterion for independence of the gauge choice, not a theorem about all gauge sets: IsGauge does not imply Forces, and for gauge sets that do not force every triangle the finite-cutoff state sum can depend on the gauge set (numerical evidence, not a Lean statement: scripts/spinfoam/gauge_independence_check.py, five 4-simplices glued non-manifold-wise with four different values at cutoff 1/2, and scripts/spinfoam/gauge_manifold_check.py, a 4-sphere triangulation with 24 4-simplices with state sums 1 and 7/2 at cutoffs 1/2 and 1). The general case of non-forcing gauge sets is an open question and is not claimed. The gauge rule is this library's proposal for the 4D analogue of the maximal tree of Freidel–Louapre (Section III of their paper is the verified location of the 3D gauge fixing), not a construction from the literature, and the independence statement is not in the sources: comparison with a source is not applicable to the criterion and pending for the 3D analogy. Removal of the cutoff is not proven."
+  since: unreleased
