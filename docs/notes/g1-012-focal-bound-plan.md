@@ -36,7 +36,14 @@ point outside `I⁺(S)` has normalised affine length `-g(γ'(0), X)·L ≤ Λ`. 
 4. **Chart-level identity.** JacobiIdentity.lean and JacobiCompat.lean: with Christoffel symbols `Γ` and `∂Γ`
    symmetric in the lower indices, `D²J = (J'' + 2Γ(v, J') + ∂_dΓ J^d v v) - R^a_{σγδ} v^σ J^γ v^δ`, and
    `(g(W₁, W₂))' = g(D W₁, W₂) + g(W₁, D W₂)` along a curve.
-5. **Initial value.** `θ(0) = frameExpansion` for an orthonormal frame of `T_s S`, with a uniform bound on compact
+5. **Manifold wiring.** For `F(σ, t) = exp_{p(σ)}(t k(p(σ)))` with `p` a parametrisation of `S`
+   (`exists_level_param`, LevelParam.lean) the scalar functions `ω_j = g(∂_t F, ∂_{σ_j} F)` vanish identically:
+   `ω_j(σ, 0) = g(k, ∂_j p) = 0` and `∂_t ω_j = g(∂_t F, D_j ∂_t F) = ½ ∂_{σ_j} g(∂_t F, ∂_t F) = 0` for null
+   geodesics. Hence `J_i ⊥ γ'`, and `∂_iω_j - ∂_jω_i = 0` gives `g(P_i, J_j) = g(P_j, J_i)`, i.e. `C` is symmetric at
+   every `t` in any chart, with no propagation of the Wronskian across charts. The intrinsic expansion is
+   `θ = ½ tr (Q⁻¹ Q')` with `Q_ij = g(J_i, J_j)`, `J_i = ∂_{σ_i} F`; its Riccati inequality holds chartwise
+   (`exists_isJacobiOn_local`, JacobiLocal.lean, gives the Jacobi equation near each `t₀`).
+6. **Initial value.** `θ(0) = frameExpansion` for an orthonormal frame of `T_s S`, with a uniform bound on compact
    `S` from the trapped hypothesis applied to `k₁, k₂`.
-6. **Focal point.** A focal point `t₀` of a generator, with `det Q(t₀) = 0`, puts `γ(L)` in `I⁺(S)` for `L > t₀`
+7. **Focal point.** A focal point `t₀` of a generator, with `det Q(t₀) = 0`, puts `γ(L)` in `I⁺(S)` for `L > t₀`
    (second variation of the null generator; the first variation is `null_geodesic_orthogonal`).

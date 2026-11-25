@@ -1428,6 +1428,9 @@ import Lightlike.Spacetime.PenroseSingularity.JacobiRiccati
 import Lightlike.Spacetime.PenroseSingularity.JacobiDecomp
 import Lightlike.Spacetime.PenroseSingularity.JacobiGeom
 import Lightlike.Spacetime.PenroseSingularity.JacobiRic
+import Lightlike.Spacetime.PenroseSingularity.LevelParam
+import Lightlike.Spacetime.PenroseSingularity.JacobiLocal
+import Lightlike.Spacetime.PenroseSingularity.JacobiVarChart
 import Lightlike.Spacetime.PenroseSingularity.NullGeodGlue
 import Lightlike.Spacetime.PenroseSingularity.GeodesicChartConverse
 import Lightlike.Spacetime.PenroseSingularity.NullGeodChart
