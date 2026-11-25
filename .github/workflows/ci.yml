@@ -171,6 +171,12 @@ jobs:
       - name: Check the literature sources of tasks and results [hard rule]
         run: python3 scripts/sources.py check
 
+      # The checklists of the milestones (docs/tasks/checklists.yaml) have the format described at
+      # its top: every v1.0 milestone has one, every item a known kind, review items their evidence
+      # path. Offline; reads only the plan, not the library.
+      - name: Check the format of the milestone checklists [hard rule]
+        run: python3 scripts/milestone_status.py schema
+
       - name: Check the task list [advisory]
         continue-on-error: true
         run: python3 scripts/tasks.py check

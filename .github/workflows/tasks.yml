@@ -3,7 +3,11 @@
 # (`Task: T-...`), then sets the labels ready, blocked, claimed, attempting and in review, assigns
 # claimants, releases a claim 48 hours after `/claim` unless a pull request naming the task is open,
 # refuses a fourth open claim of one person, closes the issue of a proof task
-# once its proof is on main, and opens the issue of each task that becomes ready.
+# once its proof is on main, and opens the issue of each proof task that becomes ready.
+# On a milestone's issue it writes only the claim labels (claimed, attempting) and the assignees:
+# scripts/sync_github.py, run by the merger, opens milestone issues and writes their status, area
+# and size labels and their place on the Project board (docs/tasks/board.yaml). A milestone's issue
+# is closed by the merger after a passing review, never by this workflow.
 #
 # When it runs: on issue, comment and pull request events, on pushes to main that change the plan
 # or the task files, hourly (so that claims expire on time), and on demand. Only when the repository variable TASK_SYNC is `on`
