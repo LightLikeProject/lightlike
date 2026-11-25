@@ -364,4 +364,28 @@ theorem pair_TC [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) (a b c d e₀ d�
     rw [if_neg (fun hh => hne hh.symm)]
   · intro hh; exact absurd (Finset.mem_range.mpr (by have := h₀.2.2.2; omega)) hh
 
+/-- **Pairing of `ULd4` with `a(b(cd))`, through `a((bc)d)` and `(a(bc))d`.** -/
+theorem pair_TD_path1 [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) (a b c d e₀ d₀ g₀ j m i : ℕ)
+    (ha : 1 ≤ a) (hb : 1 ≤ b)
+    (hd : ∀ x, x ≤ a + b + c + d → chebD (loopVal q) x ≠ 0)
+    (hq2 : ∀ x, 1 ≤ x → x ≤ a + b + c + d + 1 → (q : k) ^ (2 * x) ≠ 1)
+    (hjc : j ≤ c) (hjd : j ≤ d) (hmb : m ≤ b) (hmz : m ≤ c + d - 2 * j) (hia : i ≤ a)
+    (hiz : i ≤ b + (c + d - 2 * j) - 2 * m) (h₀ : ValidA a b c d e₀ d₀ g₀) :
+    ULd4 q a b c d e₀ d₀ g₀ * TD q a b c d j m i =
+      (∑ f ∈ Finset.range (b + 1), ∑ h ∈ Finset.range (d + 1), ∑ d' ∈ Finset.range (a + 1),
+        Fc q b c d f h j m * (Fc q a (b + c - 2 * f) d d' g₀ h i * Fc q a b c e₀ d₀ f d')) •
+        Nrm q a b c d e₀ d₀ g₀ := by
+  rw [TD_expand_C q hδ a b c d j m i hb hd hq2 hjc hjd hmb hmz, Finset.mul_sum, Finset.sum_smul]
+  refine Finset.sum_congr rfl fun f _ => ?_
+  rw [Finset.mul_sum, Finset.sum_smul]
+  refine Finset.sum_congr rfl fun h _ => ?_
+  rw [mul_smul_comm]
+  by_cases h0 : Fc (k := k) q b c d f h j m = 0
+  · rw [h0]; simp
+  · obtain ⟨hv1, hv2⟩ := Fc_guard h0
+    have ht := Fc_total q hδ b c d f h j m (by omega) (fun x hx => hd x (by omega)) hjc hjd hmb hmz h0
+    rw [pair_TC q hδ a b c d e₀ d₀ g₀ f h i ha hd hq2 (hv1.trans (min_le_left _ _)) (hv1.trans (min_le_right _ _))
+      (hv2.trans (min_le_left _ _)) (hv2.trans (min_le_right _ _)) hia (by omega) h₀, smul_smul, Finset.mul_sum,
+      Finset.sum_smul]
+
 end Lightlike.TemperleyLieb
