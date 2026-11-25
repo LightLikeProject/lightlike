@@ -314,4 +314,57 @@ lemma hgTerm_int (j : ℕ) (hj : 1 ≤ j) : ∀ n : ℕ,
       have h1 : (j.choose (n + 1) : ℂ) = 0 := by rw [Nat.choose_eq_zero_of_lt (by omega)]; simp
       simp [h0, h1]
 
+/-- For `a = j ≥ 1` the partial sums at `c = j + 1` are eventually constant and non-zero. -/
+lemma tendsto_hgPartial_int_base (j : ℕ) (hj : 1 ≤ j) :
+    ∃ L : ℂ, L ≠ 0 ∧ Filter.Tendsto (fun N : ℕ => hgPartial (j : ℂ) ((j : ℂ) + 1) N) Filter.atTop (nhds L) := by
+  have hjpos : (1 : ℝ) ≤ j := by exact_mod_cast hj
+  have hs : ∀ i : ℕ, i ≤ j → (j : ℂ) + i ≠ 0 := fun i _ => by
+    have : (0 : ℝ) < j + i := by positivity
+    exact_mod_cast this.ne'
+  have hpf := alt_binomial_sum j (j : ℂ) hs
+  have hj0 : (j : ℂ) ≠ 0 := by exact_mod_cast (by omega : j ≠ 0)
+  refine ⟨(j : ℂ) * ((j.factorial : ℂ) / ∏ i ∈ Finset.range (j + 1), ((j : ℂ) + i)), ?_, ?_⟩
+  · refine mul_ne_zero hj0 (div_ne_zero (by exact_mod_cast (Nat.factorial_pos j).ne') ?_)
+    exact Finset.prod_ne_zero_iff.mpr fun i hi => hs i (by simpa [Nat.lt_succ_iff] using hi)
+  · refine tendsto_const_nhds.congr' ?_
+    filter_upwards [Filter.eventually_ge_atTop (j + 1)] with N hN
+    unfold hgPartial
+    have hsplit : ∑ n ∈ Finset.range N, hgTerm (j : ℂ) ((j : ℂ) + 1) n =
+        ∑ n ∈ Finset.range (j + 1), hgTerm (j : ℂ) ((j : ℂ) + 1) n := by
+      symm
+      apply Finset.sum_subset
+      · intro n hn; simp only [Finset.mem_range] at hn ⊢; omega
+      · intro n _ hn
+        simp only [Finset.mem_range, not_lt] at hn
+        rw [hgTerm_int j hj, Nat.choose_eq_zero_of_lt (by omega)]
+        simp
+    rw [hsplit, ← hpf, Finset.mul_sum]
+    refine Finset.sum_congr rfl fun n _ => ?_
+    rw [hgTerm_int j hj]
+    ring
+
+/-- **The integer case `1 ≤ |a| ≤ m`**: the value at infinity is non-zero. -/
+theorem tendsto_hgPartial_int (j m : ℕ) (hj : 1 ≤ j) (hjm : j ≤ m) :
+    ∃ L : ℂ, L ≠ 0 ∧ Filter.Tendsto (fun N : ℕ => hgPartial (j : ℂ) ((m : ℂ) + 1) N) Filter.atTop (nhds L) := by
+  have hj0 : (j : ℂ) ≠ 0 := by exact_mod_cast (by omega : j ≠ 0)
+  induction m, hjm using Nat.le_induction with
+  | base => exact tendsto_hgPartial_int_base j hj
+  | succ m hjm ih =>
+    obtain ⟨L, hL0, hL⟩ := ih
+    have hcn : ∀ n : ℕ, ((m : ℂ) + 1) + n ≠ 0 := fun n => by
+      have : (0 : ℝ) < m + 1 + n := by positivity
+      exact_mod_cast this.ne'
+    have hden : ((m : ℂ) + 1) ^ 2 - (j : ℂ) ^ 2 ≠ 0 := by
+      have : ((m : ℝ) + 1) ^ 2 - (j : ℝ) ^ 2 ≠ 0 := by
+        have : (j : ℝ) < (m : ℝ) + 1 := by exact_mod_cast Nat.lt_succ_of_le hjm
+        have h2 : (0 : ℝ) < j := by exact_mod_cast hj
+        nlinarith
+      exact_mod_cast this
+    refine ⟨((m : ℂ) + 1) ^ 2 * L / (((m : ℂ) + 1) ^ 2 - (j : ℂ) ^ 2), ?_, ?_⟩
+    · have hm1 : ((m : ℂ) + 1) ≠ 0 := by simpa using hcn 0
+      exact div_ne_zero (mul_ne_zero (pow_ne_zero 2 hm1) hL0) hden
+    · have := tendsto_hgPartial_step hcn hden (tendsto_mul_hgTerm hj0 m) hL
+      push_cast
+      exact this
+
 end Lightlike.Dirac
