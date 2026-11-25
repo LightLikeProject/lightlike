@@ -93,7 +93,7 @@ separates [60]. An arc does not separate the plane [61]. Every component of the 
 curve has the whole curve as its frontier [62]. The index of a loop about a point, and the Theta Lemma
 [63]. The index of a loop is constant along a path avoiding it, and zero for a loop in a half plane
 [64]. Lemma 9.14 of the theta configuration of a Jordan curve [65]. The index of a triangle about an
-interior point, and of loops about points outside them [66]. The Jordan curve theorem [67].
+interior point, and of loops about points outside them [66]. The Jordan curve theorem [67]. The geometric realisation of a finite simplicial complex is a geometric complex, its simplices being the convex hulls of affinely independent basis vectors [68].
 
 ## Lean References
 
