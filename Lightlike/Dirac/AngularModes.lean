@@ -19,6 +19,7 @@ noncomputable def polarPt (r θ : ℝ) : E 2 := (r * Real.cos θ) • e (0 : Fin
 /-- `g` in polar coordinates. -/
 noncomputable def polarFn (g : E 2 → ℂ) (r θ : ℝ) : ℂ := g (polarPt r θ)
 
+/-- The polar point depends continuously on `(r, θ)`. -/
 lemma polarPt_continuous : Continuous fun p : ℝ × ℝ => polarPt p.1 p.2 := by
   unfold polarPt; fun_prop
 
@@ -88,9 +89,11 @@ noncomputable def polarDr (g : E 2 → ℂ) (r θ : ℝ) : ℂ :=
 noncomputable def polarDθ (g : E 2 → ℂ) (r θ : ℝ) : ℂ :=
   fderiv ℝ g (polarPt r θ) ((-(r * Real.sin θ)) • e (0 : Fin 2) + (r * Real.cos θ) • e (1 : Fin 2))
 
+/-- The polar point is `2π`-periodic in the angle. -/
 lemma polarPt_two_pi (r : ℝ) : polarPt r (2 * Real.pi) = polarPt r 0 := by
   simp [polarPt]
 
+/-- The squared norm of the polar point is `r²`. -/
 lemma polarPt_norm_sq (r θ : ℝ) : ‖polarPt r θ‖ ^ 2 = r ^ 2 := by
   have h0 : polarPt r θ 0 = r * Real.cos θ := by simp [polarPt, e]
   have h1 : polarPt r θ 1 = r * Real.sin θ := by simp [polarPt, e]
