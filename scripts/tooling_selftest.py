@@ -693,6 +693,9 @@ expect("sync_github: status labels, columns and the GitHub Milestone follow the 
 _cc = subprocess.run([sys.executable, str(HERE / "consistency_check.py"), "--selftest"], capture_output=True, text=True)
 expect("consistency check: planted duplicate issues, early closes, double claims, planning IDs, proven entries on open "
        "hypotheses and merge-queue entries without a milestone fail", _cc.returncode == 0)
+_pi = subprocess.run([sys.executable, str(HERE / "planning_ids.py"), "--selftest"], capture_output=True, text=True)
+expect("planning IDs: planted gap, milestone, row and catalogue IDs in Lean folder, file and declaration names fail; "
+       "SixJRow, lower case, comments and task files do not", _pi.returncode == 0)
 
 with tempfile.TemporaryDirectory() as d:
     tmp = pathlib.Path(d)

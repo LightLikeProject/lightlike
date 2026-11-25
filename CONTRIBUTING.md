@@ -96,6 +96,10 @@ the modules it changes and the modules that import them.
    `CHANGELOG.md`. The maintainers regenerate them after merging, in one commit per batch, so
    that pull requests do not conflict in them (`scripts/generated.py check`;
    `python3 scripts/generated.py reset` undoes such a change and keeps the rest).
+9. No planning ID in a Lean name: folders, files, namespaces and declarations under `Lightlike/`
+   are named by their mathematics and sit in subject folders, never named by a milestone, gap,
+   row or catalogue ID (`GE3`, `G1_007`, `HARow055`, `LL0031`) (`scripts/planning_ids.py`). The
+   proof-task files of `Tasks/` keep their task IDs.
 
 A proof-task pull request must also change only the proof of its declaration: the statement was
 reviewed and locked (the `Proof task` workflow checks this). Other CI steps are `[advisory]`.
