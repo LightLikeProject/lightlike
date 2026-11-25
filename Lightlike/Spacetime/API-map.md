@@ -120,7 +120,7 @@ bijection onto ℝ × ℝ³, the metric is ω⁻² times the Einstein static uni
 is the ordinary point p = (1, 0⃗) [125]. In the null-cone picture of the compactification (a point x embedded as
 (1, B x x, x) in the cone B x x = P⁺P⁻, infinity the set P⁺ = 0), isometries, translations, dilations and special
 conformal transformations preserve the cone form and act on the embedded points as the stated maps of V; the first
-three keep infinity, while a special conformal transformation moves the point at infinity to the finite point b [127].
+three keep infinity, while a special conformal transformation moves the point at infinity to the finite point b [127]. The induced metric of a level set of a smooth function is defined pointwise, as the metric restricted to the kernel of the differential of the function, and it is nondegenerate wherever the normal is not null [128].
 
 ## Lean References
 
@@ -274,7 +274,7 @@ three keep infinity, while a special conformal transformation moves the point at
     `isoAct_dirac`, `isoAct_fst`, `transAct`, `coneForm_transAct`, `transAct_dirac`, `transAct_fst`, `dilAct`, `coneForm_dilAct`,
     `dilAct_dirac`, `dilAct_fst`, `specAct`, `coneForm_specAct`, `specAct_dirac`, `specAct_dirac_smul`, `specAct_infinity`,
     `specAct_infinity_fst_ne`
-128. Lightlike/Spacetime/HypersurfaceInduced.lean - `Hypersurface.levelTangent`, `Hypersurface.inducedMetric`, `Hypersurface.inducedMetric_separating_of_isUnitNormal`, `Hypersurface.inducedMetric_separating_of_nonnull`: the induced metric of a level set, defined pointwise as `g` restricted to the kernel of the differential, and nondegenerate where the normal is not null.
+128. Lightlike/Spacetime/HypersurfaceInduced.lean - `Hypersurface.levelTangent`, `Hypersurface.inducedMetric`, `Hypersurface.inducedMetric_separating_of_isUnitNormal`, `Hypersurface.inducedMetric_separating_of_nonnull`: the induced metric of a level set, defined pointwise as the metric restricted to the kernel of the differential, and nondegenerate where the normal is not null.
 
 ## References
 
