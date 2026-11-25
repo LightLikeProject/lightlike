@@ -184,7 +184,9 @@ triangulated disc [16].
 
 Further results of this area in the results catalogue:
 Lorentzian Regge calculus with Sorkin's complex angles: flat Minkowski regions have zero deficit angles
-and solve the Regge equations [90]. The 3D Regge action of the Kuhn triangulation of a grid converges to
+and solve the Regge equations [90]. For non-degenerate squared lengths the Lorentzian Regge action is
+stationary under boundary-fixed variations exactly when the area-derivative-weighted deficits vanish at
+every interior edge [101]. The 3D Regge action of the Kuhn triangulation of a grid converges to
 half the Einstein-Hilbert action of a Riemannian metric (the Kuhn-grid case of the convergence theorem
 of Cheeger, Mueller and Schrader) [91]. The Regge action of a flat closed 3-complex is a quadratic form
 in the first variations of the lengths up to third order [92]. The Regge action of the periodic Kuhn
@@ -387,6 +389,7 @@ O(‖y − x‖⁵), uniformly for x in a compact set, and the same about the mi
 100. Lightlike/Upstream/GeodesicExpansion/Final.lean -
      `Upstream.GeodesicExpansion.IsRiemMetric.riemannianEDist_sq_expansion`,
      `Upstream.GeodesicExpansion.IsRiemMetric.riemannianEDist_sq_expansion_midpoint`
+101. Lightlike/Regge/Lorentzian/ReggeEquations.lean - `ReggeLor.lorReggeAction_stationary_iff`
 
 ## References
 

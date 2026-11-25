@@ -1,0 +1,13 @@
+- id: LL-XXXX
+  title: The Lorentzian discrete Einstein equations - for non-degenerate squared edge lengths, the Lorentzian Regge action is stationary under every variation of the squared lengths that fixes the boundary lengths exactly when the sum over the interior triangles at each interior edge of the derivative of the triangle area with respect to the squared edge length times the Lorentzian deficit vanishes
+  area: Regge
+  file: Lightlike/Regge/Lorentzian/ReggeEquations.lean
+  decls: [Lightlike.ReggeLor.lorReggeAction_stationary_iff]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: sorkin-2019, location: "Section 9", check: "defect"}
+  review: kernel-checked
+  note: "Comparison pending (the Regge equation itself, Sorkin 1975 and Asante-Dittrich-Padua eq. (3.2), was not read; Sorkin 2019, Section 9 is cited for the Lorentzian angles and deficits the statement uses). Hypothesis LorLengthsNondeg4 K L: no null triangle, no null tetrahedron, every 4-simplex Lorentzian (gram4L < 0), in every labelling. The variation is along a line of signed squared lengths L + tau v with v = 0 on the boundary edges; the action lorReggeAction is complex (Sorkin's complex angles with the causal-type weights), HasDerivAt at tau = 0 with derivative 0, and the equations are the complex sum over interior triangles of lorAreaPartial * lorDeficit = 0, where lorAreaPartial = +- (L_f + L_g - L_e)/(4 sqrt|triHL|) with the sign of triHL. The derivative of the angles drops out by the Lorentzian Schlaefli identity (lorSchlaefli4_finset). The statement says nothing on solutions other than flat Minkowski space (the flat case is the separate flat-solution entry). Non-vacuity: the cone example in Tests.lean (lorReggeAction_stationary_iff applied at an interior edge of the cone, with four interior triangles) instantiates the hypotheses."
+  since: unreleased
