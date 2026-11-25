@@ -152,7 +152,7 @@ vanishes. Needs `Re S ≤ -δ` on the support of `1 - χ` or an integrability es
 non-compact directions: a new estimate. -/
 def FarRemainderBound (j p : Fin 10 → ℝ) (g : BdryData)
     (e : (Fin 44 → ℝ) ≃ᵐ ((Fin 4 → Fin 3 → ℂ) × (Fin 10 → ℂ))) (χ : (Fin 44 → ℝ) → ℝ) : Prop :=
-  (∀ lam : ℕ, Integrable fun x => (((1 - χ x : ℝ) : ℂ) * chartAmplitude e x) *
+  (∀ lam : ℕ, 1 ≤ lam → Integrable fun x => (((1 - χ x : ℝ) : ℂ) * chartAmplitude e x) *
       cexp ((lam : ℝ) * lorChartAction j p g (fixVertexChart e) x)) ∧
     (fun lam : ℕ => ∫ x, (((1 - χ x : ℝ) : ℂ) * chartAmplitude e x) *
         cexp ((lam : ℝ) * lorChartAction j p g (fixVertexChart e) x))

@@ -94,7 +94,7 @@ theorem lorVertex_farRemainder_tail
     (hK : CriticalSetIs j p g e (fun _ => 1) K)
     (ψ : (Fin 44 → ℝ) → ℝ) (hψ : ContDiff ℝ ∞ ψ) (hψc : HasCompactSupport ψ) (hψU : tsupport ψ ⊆ U)
     (hψ01 : ∀ x, 0 ≤ ψ x ∧ ψ x ≤ 1) (hψ1 : ∀ x ∈ K, ψ =ᶠ[nhds x] fun _ => 1) :
-    (∀ lam : ℕ, Integrable fun x => (((1 - ψ x : ℝ) : ℂ) * chartAmplitude e x) *
+    (∀ lam : ℕ, 1 ≤ lam → Integrable fun x => (((1 - ψ x : ℝ) : ℂ) * chartAmplitude e x) *
         Complex.exp ((lam : ℝ) * lorChartAction j p g (fixVertexChart e) x)) ∧
       (fun lam : ℕ => ∫ x, (((1 - ψ x : ℝ) : ℂ) * chartAmplitude e x) *
           Complex.exp ((lam : ℝ) * lorChartAction j p g (fixVertexChart e) x)) =O[atTop]

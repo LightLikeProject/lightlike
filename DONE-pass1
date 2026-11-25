@@ -1,0 +1,6 @@
+DONE (PARTIAL) G3-188, branch api-g3-188/pl5-schoenflies, commit e045462f.
+Proved: polygonal Schoenflies theorem in the plane (boundary form): Lightlike.PL.Schoenflies.polygonal_schoenflies in
+Lightlike/PL/Schoenflies/PolygonalSchoenflies.lean (simple n-gon -> strictly convex n-gon, PL bijection of regions, vertices/edges
+affine, carrier -> frontier, inside -> interior); also carrier_eq_frontier_hull_scp. Standard axioms only, no sorry.
+NOT proved: topological Schoenflies (arbitrary Jordan curve) and the PL5 3-dimensional tools (out of scope; see HANDOFF.md).
+Catalogue/merger: add a docs/results.yaml entry for polygonal_schoenflies; the file imports Lightlike.PL.TestsPolygon for its example.
