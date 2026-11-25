@@ -221,11 +221,8 @@ interior point, and of loops about points outside them [66]. The Jordan curve th
 68. Lightlike/PL/PachnerMoves.lean - `PL.pachner3`, `PL.pachner4`
 69. Lightlike/PL/Pachner.lean - `PL.SComplex.BistellarEquiv.stellarEquiv`
 70. Lightlike/PL/Realisation.lean - `PL.SComplex.isGeom_real`
-<<<<<<< HEAD
 71. Lightlike/PL/Links.lean - `PL.SComplex.IsPLSphere.isClosedCombManifold`,
     `PL.SComplex.IsClosedCombManifold.link_face`
-=======
->>>>>>> oscillatory/pl4-c1
 
 ## References
 
