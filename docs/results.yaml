@@ -3597,7 +3597,7 @@
 - id: LL-0270
   title: First law of Kerr black-hole mechanics, dM = kappa/(8 pi) dA + Omega_H dJ, along any differentiable family of non-extremal Kerr black holes
   area: GR
-  file: Lightlike/Rows/G1_066/KerrFirstLaw.lean
+  file: Lightlike/GR/KerrFirstLaw/KerrFirstLaw.lean
   decls: [Lightlike.Rows.G1_066.kerr_first_law]
   status: proven
   tier: established
@@ -3610,7 +3610,7 @@
 - id: LL-0271
   title: Smarr formula for Kerr, M = 2 Omega_H J + kappa A/(4 pi), for 0 < M and a^2 <= M^2
   area: GR
-  file: Lightlike/Rows/G1_066/KerrArea.lean
+  file: Lightlike/GR/KerrFirstLaw/KerrArea.lean
   decls: [Lightlike.Rows.G1_066.kerr_smarr]
   status: proven
   tier: established
@@ -3865,7 +3865,7 @@
     refs:
       - {ref: gurau-2008, location: "Theorem 1", check: "saddle"}
   review: kernel-checked
-  note: "Statement RacahSumAsymptotics (Assembly.lean): for every Euclidean tetrahedron with integer edges j, √(√vol2(ℓ)) e^{-D(ℓ)} racahSum(λj) - cos(S_Regge(ℓ) + π/4)/(√(12π)(2π)²) → 0 as λ → ∞, with edge lengths ℓ_e = λ j_e + 1/2. The proof is by the contour integral and a descent contour through the saddle (not the real-variable Riemann-sum step of Gurau, which is not valid as stated, see the milestone SP2). Trust checks: the formula with only one of the two complex-conjugate saddles is false at the regular tetrahedron (not_racahSumAsymptotics_one_saddle_regular, SP2/OneSaddle.lean); the formula with phase 0 or -π/4 is false (SaddleAssemblyTests.lean). The comparison with Gurau (2008), Theorem 1, is pending: the paper was not read at the cited location. It is the input of the Ponzano–Regge formula LL-0030."
+  note: "Statement RacahSumAsymptotics (Assembly.lean): for every Euclidean tetrahedron with integer edges j, √(√vol2(ℓ)) e^{-D(ℓ)} racahSum(λj) - cos(S_Regge(ℓ) + π/4)/(√(12π)(2π)²) → 0 as λ → ∞, with edge lengths ℓ_e = λ j_e + 1/2. The proof is by the contour integral and a descent contour through the saddle (not the real-variable Riemann-sum step of Gurau, which is not valid as stated, see the milestone SP2). Trust checks: the formula with only one of the two complex-conjugate saddles is false at the regular tetrahedron (not_racahSumAsymptotics_one_saddle_regular, RacahSaddles/OneSaddle.lean); the formula with phase 0 or -π/4 is false (SaddleAssemblyTests.lean). The comparison with Gurau (2008), Theorem 1, is pending: the paper was not read at the cited location. It is the input of the Ponzano–Regge formula LL-0030."
   since: unreleased
 - id: LL-0291
   title: "The Lichnerowicz formula in a torsion-free skew frame on R^n: D^2 f = -sum of second covariant derivatives plus (s/4) f, with s the scalar curvature of the frame connection, given the pair symmetry and the first Bianchi identity of that curvature"
@@ -4419,7 +4419,7 @@
 - id: LL-0333
   title: "OP2 in one place: a Fock representation exists on every complex Hilbert space, a Bogoliubov transformation is implemented iff its antilinear part is Hilbert-Schmidt (Shale), |alpha|^2 - |beta|^2 = 1 for one mode, and a constant |beta| on l^2(N) is not implementable"
   area: OperatorAlgebras
-  file: Lightlike/OperatorAlgebras/OPRow050/OP2Summary.lean
+  file: Lightlike/OperatorAlgebras/FockShale/Summary.lean
   decls: [Lightlike.OperatorAlgebras.op2_fock_and_shale, Lightlike.OperatorAlgebras.op2_one_mode_alpha_beta, Lightlike.OperatorAlgebras.op2_infinite_modes_not_implementable, Lightlike.OperatorAlgebras.op2_one_mode_implementable]
   status: proven
   tier: established
@@ -4749,7 +4749,7 @@
       - {ref: curiel-2014, location: "§2.1"}
       - {ref: hawking-ellis-1973, location: "Chapter: The physical significance of curvature|10.1017/CBO9780511524646.005"}
   review: kernel-checked
-  note: "GE14 (G1-010): the Klein–Gordon check of the milestone (negative potential violates the weak condition, on a nonempty manifold) and the null condition of the electromagnetic field. 4 dimensions. The null condition of the Klein–Gordon field is in Lightlike/Spacetime/GERow10/KleinGordonNEC.lean (not catalogued here). The comparison with the source is pending in the registry."
+  note: "GE14 (G1-010): the Klein–Gordon check of the milestone (negative potential violates the weak condition, on a nonempty manifold) and the null condition of the electromagnetic field. 4 dimensions. The null condition of the Klein–Gordon field is in Lightlike/Spacetime/ScalarEnergyConditions/KleinGordonNEC.lean (not catalogued here). The comparison with the source is pending in the registry."
   since: unreleased
 - id: LL-0359
   title: "The null, weak, strong and dominant energy conditions of a perfect fluid are exactly Physlib's NullEnergyCondition, WeakEnergyCondition, StrongEnergyCondition and DominantEnergyCondition of a CosmicFluid at c = 1"
@@ -4876,7 +4876,7 @@
 - id: LL-0368
   title: "The Klein–Gordon field satisfies the null energy condition for every potential, while a constant field with negative potential violates the weak energy condition although it satisfies the null condition"
   area: Spacetime
-  file: Lightlike/Spacetime/GERow10/KleinGordonNEC.lean
+  file: Lightlike/Spacetime/ScalarEnergyConditions/KleinGordonNEC.lean
   decls: [Lightlike.scalar_nullEC, Lightlike.scalarField_nullECField, Lightlike.scalarField_const_nullEC_not_weakEC]
   status: proven
   tier: established
@@ -4889,7 +4889,7 @@
 - id: LL-0369
   title: "With a Klein–Gordon source the Ricci curvature of a null vector is κ(dφ k)², nonnegative and zero exactly when dφ k = 0"
   area: Spacetime
-  file: Lightlike/Spacetime/GERow10/KleinGordonRicci.lean
+  file: Lightlike/Spacetime/ScalarEnergyConditions/KleinGordonRicci.lean
   decls: [Lightlike.scalarField_ricciAt_null_nonneg, Lightlike.scalarField_ricciAt_null_eq_zero_iff]
   status: proven
   tier: established
@@ -4902,7 +4902,7 @@
 - id: LL-0370
   title: "The weak energy condition of a Klein–Gordon field is exactly 0 ≤ ½|dφ|² + V for a vanishing or spacelike gradient"
   area: Spacetime
-  file: Lightlike/Spacetime/GERow10/ScalarWeakECSharp.lean
+  file: Lightlike/Spacetime/ScalarEnergyConditions/ScalarWeakECSharp.lean
   decls: [Lightlike.scalar_weakEC_iff]
   status: proven
   tier: established
