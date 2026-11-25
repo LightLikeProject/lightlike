@@ -1,0 +1,11 @@
+- id: LL-XXXX
+  title: "For a perfect fluid (ρ + p) u u + p g with g(u,u) = −1 on a four-dimensional Lorentzian vector space, the null energy condition holds exactly when ρ + p ≥ 0, and the strong energy condition holds exactly when ρ + p ≥ 0 and ρ + 3p ≥ 0"
+  area: Spacetime
+  file: Lightlike/Spacetime/EnergyConditions.lean
+  decls: [Lightlike.fluid_nullEC_iff, Lightlike.fluid_strongEC_iff]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending for this entry: the null and strong conditions and the effective forms for a perfect fluid were compared, in the entry LL-0180 (which catalogues the weak and dominant forms of the same family), with Curiel, A Primer on Energy Conditions (arXiv 1405.0403), section 2.1, pp. 5-6, which is not a registered source, so no registered location is cited here. Hypotheses, stated in the Lean theorems: g is a Lorentzian form of dimension 4 (IsLorentzianForm 4 g) and u is a unit timelike vector (g u u = -1); the energy conditions are the pointwise ones on a vector space, not a field on a manifold (the field versions are LorentzianMetric.fluidField_nullEC_iff and fluidField_strongEC_iff, not catalogued here). The strong condition is the one for the trace-reversed tensor T - (1/2) tr_g(T) g, as defined by StrongEC. No unproved hypothesis."
+  since: unreleased
