@@ -122,3 +122,16 @@ need one more argument (the series terminates; Chu–Vandermonde gives `S(m+1) =
 This is exactly the quantisation `λ = ±(k+1)`, `k ≥ m`. Remaining Lean work: identify `F` with the `x`-series (ODE for the
 `x`-series plus uniqueness from `ModeODE.lean`), Abel's theorem at `x = 1`, the dichotomy decaying / non-decaying at infinity,
 and the integer case.
+
+### Status after S3 (25 Nov 2026)
+
+Lean, no `sorry`: `ModeODE.lean` (Wronskian: at most one bounded and one decaying solution), `ModeSeries.lean` (the
+regular solution as a power series in `t = r²`, solving the system on `(-1,1)`), `GaussSum.lean` (`hgPartial_limit`: for the
+`x`-series `₂F₁(a,−a;m+1;x)` the value at `x = 1` exists and vanishes iff `a = ±k`, `k ≥ m+1`; telescoping, Euler product,
+partial-fraction identity). Remaining for the classification of smooth eigenspinors with decay at the pole:
+(S2') the `x`-series `G(x) = Σ hgTerm_n x^n` gives a solution `(r^m G(x(r)), r^{m+1} H̃)` of `IsModeSol` (termwise
+differentiation with a polynomial growth bound for `hgTerm`, chain rule through `x = r²/(1+r²)`, hypergeometric ODE
+`x(1−x)G'' + (m+1−x)G' + λ²G = 0`); (S4') Abel's theorem (`Complex.tendsto_tsum_powerSeries_nhdsWithin_stolzSet`)
+gives `G(x(r)) → L` as `r → ∞`; (S5') a mode that is bounded at `0` and `O(1/r)` at `∞` is a multiple of the regular
+solution (Wronskian plus ODE uniqueness) hence `L = 0`, hence `λ = ±k`, `k ≥ m+1`; negative `m` by the symmetric argument;
+then combine with `AngularModes.lean` (mode equations) and `eq_zero_of_fcoef_polar` (modes determine the spinor).
