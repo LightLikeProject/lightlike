@@ -169,6 +169,17 @@ Open before the pentagon: (i) the signed matrix: expansion of `U_R` in the basis
 (ii) the matrix-unit identification giving `treeR = Σ U recoup U'` and the orthogonality relations; (iii) the
 pentagon for four blocks; (iv) the dictionary with `qSixJ` (Tet formula) and the truncation at `r`.
 
+### Plan for the signed Gram pairing (25 Nov 2026, not started in Lean)
+
+`G(e,d; f,d') := (W_d W_e)(sh V_f · V_d')`, the pairing of a first-bracketing and a second-bracketing tree vector, should be a
+scalar multiple of `p_D` when the total channels agree (its square-type products are the `recoup` coefficients already
+proved). The reduction needed: between the layers `caps_d · [Q'' p_A] · caps_e · Z · cups_f · [J Q''] · cups_{d'}` with
+`Z ∈ C(N-1)` and `e + d = f + d'`, the caps and cups can be paired from the middle outward even though `e ≠ f`: after
+pairing `min(e,f)` of them, the leftover caps (or cups) meet the next C-element and the other layer. This needs a version of
+`nestCap_mul_nestCup_mem` for `i ≠ j` that tracks the leftover, built on `cap_mul_cup_mem` (distinct junctions allowed). After
+that: matrix units `U_e U'_{e'}`, expansion `treeR = Σ U G U'`, the pentagon for four blocks, and the Tet dictionary. PROXY
+estimate 1500 to 2500 lines.
+
 ## Decision
 
 No route in this note is a row-sized step. The two structural routes (F, E) are milestone-sized
