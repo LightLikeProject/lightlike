@@ -1334,7 +1334,7 @@ milestones:
       - id: t2
         kind: trust
         text: "A wrong value of q makes one of the identities (q-Biedenharn–Elliott or q-orthogonality) fail"
-        decls: []
+        decls: [Lightlike.TV.Test.tv4_wrong_q_fails]
         hint: "Close but not this: Lightlike.TV.Test.tv4_classical_dims_fail (Lightlike/TuraevViro/Tests.lean) breaks both identities with classical dimensions, a wrong model rather than a wrong value of q. Missing: a counterexample with a different q."
       - id: c1
         kind: catalogue
