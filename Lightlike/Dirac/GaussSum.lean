@@ -46,4 +46,56 @@ lemma hgTerm_telescope (a c : ℂ) (hc : ∀ n : ℕ, c + n ≠ 0) (n : ℕ) :
   field_simp
   ring
 
+/-- **Partial sums of the telescoping identity.** -/
+lemma hgTerm_partial (a c : ℂ) (hc : ∀ n : ℕ, c + n ≠ 0) (N : ℕ) :
+    (c ^ 2 - a ^ 2) * ∑ n ∈ Finset.range N, hgTerm a (c + 1) n - c ^ 2 * ∑ n ∈ Finset.range N, hgTerm a c n =
+      c * (N : ℂ) * hgTerm a c N := by
+  induction N with
+  | zero => simp
+  | succ N ih =>
+    rw [Finset.sum_range_succ, Finset.sum_range_succ, mul_add, mul_add]
+    have := hgTerm_telescope a c hc N
+    push_cast
+    linear_combination ih + this
+
+/-- The partial products of Euler's sine product. -/
+noncomputable def eulerProd (a : ℂ) (n : ℕ) : ℂ := ∏ j ∈ Finset.range n, (1 - a ^ 2 / ((j : ℂ) + 1) ^ 2)
+
+/-- One more factor of the Euler product. -/
+lemma eulerProd_succ (a : ℂ) (n : ℕ) :
+    eulerProd a (n + 1) = eulerProd a n * (1 - a ^ 2 / ((n : ℂ) + 1) ^ 2) := by
+  unfold eulerProd; rw [Finset.prod_range_succ]
+
+/-- For `c = 1` the terms are the differences of the Euler products. -/
+lemma hgTerm_one_succ (a : ℂ) (n : ℕ) :
+    hgTerm a 1 (n + 1) = -(a ^ 2 / ((n : ℂ) + 1) ^ 2) * eulerProd a n := by
+  induction n with
+  | zero => simp [hgTerm, eulerProd]; ring
+  | succ n ih =>
+    have h1 : ((n : ℂ) + 1) ≠ 0 := by exact_mod_cast Nat.succ_ne_zero n
+    have h2 : ((n : ℂ) + 1 + 1) ≠ 0 := by
+      have : (0 : ℝ) < n + 1 + 1 := by positivity
+      exact_mod_cast this.ne'
+    have h3 : (2 + (n : ℂ)) ≠ 0 := by
+      have : (0 : ℝ) < 2 + n := by positivity
+      exact_mod_cast this.ne'
+    have h4 : ((n : ℂ) + 2) ≠ 0 := by
+      have : (0 : ℝ) < n + 2 := by positivity
+      exact_mod_cast this.ne'
+    rw [hgTerm, ih, eulerProd_succ]
+    push_cast
+    rw [show (1 : ℂ) + ((n : ℂ) + 1) = (n : ℂ) + 2 by ring, show ((n : ℂ) + 1) + 1 = (n : ℂ) + 2 by ring]
+    field_simp
+    ring
+
+/-- The partial sums for `c = 1` are the Euler products. -/
+lemma hgTerm_one_partial (a : ℂ) (N : ℕ) : ∑ n ∈ Finset.range (N + 1), hgTerm a 1 n = eulerProd a N := by
+  induction N with
+  | zero => simp [hgTerm, eulerProd]
+  | succ N ih =>
+    rw [Finset.sum_range_succ, ih, hgTerm_one_succ, eulerProd_succ]
+    have h1 : ((N : ℂ) + 1) ≠ 0 := by exact_mod_cast Nat.succ_ne_zero N
+    field_simp
+    ring
+
 end Lightlike.Dirac
