@@ -23,7 +23,7 @@ nonnegative, and it has a finite limit `Y_∞` with
 
 @[expose] public section
 
-namespace Lightlike.Rows.G1_034
+namespace Lightlike.Cosmology.FreezeOut
 
 open Set Filter Topology
 
@@ -71,4 +71,10 @@ theorem freezeout_zero_eq_limit {lam : ℝ} (hlam : 0 ≤ lam) {x₀ Y₀ : ℝ}
   exact hB.congr' (by
     filter_upwards [eventually_ge_atTop x₀] with x hx using (heq hx).symm)
 
-end Lightlike.Rows.G1_034
+end Lightlike.Cosmology.FreezeOut
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_034.freezeout_exists_unique_limit := _root_.Lightlike.Cosmology.FreezeOut.freezeout_exists_unique_limit
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_034.freezeout_zero_eq_limit := _root_.Lightlike.Cosmology.FreezeOut.freezeout_zero_eq_limit
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_034.isSol_Bsol := _root_.Lightlike.Cosmology.FreezeOut.isSol_Bsol

@@ -31,7 +31,7 @@ Jets at a point only: no fields, no integration, no manifold.
 
 open Finset
 
-namespace Lightlike.Rows.G3_255
+namespace Lightlike.GR.EinsteinHilbertExpansion
 
 variable {n : ℕ}
 
@@ -62,4 +62,10 @@ theorem gammaGamma_smul (g gi : Matrix (Fin n) (Fin n) ℝ) (dg : Fin n → Fin 
   refine Finset.sum_congr rfl fun σ _ => ?_
   ring
 
-end Lightlike.Rows.G3_255
+end Lightlike.GR.EinsteinHilbertExpansion
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.gammaGamma := _root_.Lightlike.GR.EinsteinHilbertExpansion.gammaGamma
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.gammaGamma_smul := _root_.Lightlike.GR.EinsteinHilbertExpansion.gammaGamma_smul
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.gammaLow := _root_.Lightlike.GR.EinsteinHilbertExpansion.gammaLow

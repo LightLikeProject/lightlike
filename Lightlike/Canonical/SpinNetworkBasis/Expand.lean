@@ -10,7 +10,7 @@ Row G2-010 (milestone OP, task T-CA2). If every factor `f e` lies in `spinSpan`,
 Supporting lemmas for the spin-network basis theorem; no catalogue entry.
 -/
 
-namespace Lightlike.Rows.G2_010
+namespace Lightlike.Canonical.SpinNetworkBasis
 
 open Lightlike Lightlike.Spin4 Lightlike.HarmonicAnalysis
 
@@ -78,4 +78,11 @@ lemma prod_mem_phiSpan (f : E → SU2 → ℂ) (hf : ∀ e, f e ∈ spinSpan) :
 
 end
 
-end Lightlike.Rows.G2_010
+end Lightlike.Canonical.SpinNetworkBasis
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.phiSpan := _root_.Lightlike.Canonical.SpinNetworkBasis.phiSpan
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.phi_mem_phiSpan := _root_.Lightlike.Canonical.SpinNetworkBasis.phi_mem_phiSpan
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.prod_mem_phiSpan := _root_.Lightlike.Canonical.SpinNetworkBasis.prod_mem_phiSpan
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.spinMat_eq_phiEdge := _root_.Lightlike.Canonical.SpinNetworkBasis.spinMat_eq_phiEdge

@@ -19,7 +19,7 @@ Both are integrable (`integrable_poissonMeasure_id`, `integrable_poissonMeasure_
 
 open MeasureTheory ProbabilityTheory Real NNReal Nat
 
-namespace Lightlike.Rows.G2_063
+namespace Lightlike.CausalSets.PoissonProcessCounts
 
 /-- The Poisson weights times `n` sum to `r`. -/
 lemma hasSum_poisson_mean (r : ℝ≥0) :
@@ -80,4 +80,13 @@ theorem integral_poissonMeasure_descFactorial (r : ℝ≥0) :
   rw [integral_poissonMeasure]
   simpa [smul_eq_mul] using (hasSum_poisson_pair r).tsum_eq
 
-end Lightlike.Rows.G2_063
+end Lightlike.CausalSets.PoissonProcessCounts
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.hasSum_poisson_mean := _root_.Lightlike.CausalSets.PoissonProcessCounts.hasSum_poisson_mean
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.hasSum_poisson_pair := _root_.Lightlike.CausalSets.PoissonProcessCounts.hasSum_poisson_pair
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.integrable_poissonMeasure_id := _root_.Lightlike.CausalSets.PoissonProcessCounts.integrable_poissonMeasure_id
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.integrable_poissonMeasure_pair := _root_.Lightlike.CausalSets.PoissonProcessCounts.integrable_poissonMeasure_pair
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.integral_poissonMeasure_descFactorial := _root_.Lightlike.CausalSets.PoissonProcessCounts.integral_poissonMeasure_descFactorial
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.integral_poissonMeasure_id := _root_.Lightlike.CausalSets.PoissonProcessCounts.integral_poissonMeasure_id

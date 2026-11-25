@@ -9,7 +9,7 @@ integrand, computes its modulus, and gives the Gaussian domination used for ever
 differentiation under the integral sign in the later files.
 -/
 
-namespace Lightlike.Rows.G2_020
+namespace Lightlike.Asymptotics.AiryContourIntegral
 
 open Complex MeasureTheory
 
@@ -95,4 +95,15 @@ lemma integrable_pow_airyIntegrand {α : ℝ} (hα : 0 < α) (n : ℕ) (z : ℂ)
   have := continuous_airyIntegrand α z
   exact (by fun_prop : Continuous fun u : ℝ => ((u : ℂ) + α * I) ^ n).mul this |>.aestronglyMeasurable
 
-end Lightlike.Rows.G2_020
+end Lightlike.Asymptotics.AiryContourIntegral
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_020.airyIntegrand := _root_.Lightlike.Asymptotics.AiryContourIntegral.airyIntegrand
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_020.airyPhase := _root_.Lightlike.Asymptotics.AiryContourIntegral.airyPhase
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_020.continuous_airyIntegrand := _root_.Lightlike.Asymptotics.AiryContourIntegral.continuous_airyIntegrand
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_020.exp_gauss_le := _root_.Lightlike.Asymptotics.AiryContourIntegral.exp_gauss_le
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_020.integrable_pow_airyIntegrand := _root_.Lightlike.Asymptotics.AiryContourIntegral.integrable_pow_airyIntegrand
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_020.norm_airyIntegrand := _root_.Lightlike.Asymptotics.AiryContourIntegral.norm_airyIntegrand
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_020.norm_pow_airyIntegrand_le := _root_.Lightlike.Asymptotics.AiryContourIntegral.norm_pow_airyIntegrand_le
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_020.re_airyPhase := _root_.Lightlike.Asymptotics.AiryContourIntegral.re_airyPhase

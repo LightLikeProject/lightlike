@@ -18,7 +18,7 @@ remainder starting at `ε³`.
 
 open Matrix
 
-namespace Lightlike.Rows.G3_255
+namespace Lightlike.GR.EinsteinHilbertExpansion
 
 /-- The second-order expansion `1 + ε t₁/2 + ε² (t₁²/8 - t₂/4)` of `√(det (1 + ε A))`, where
 `t₁ = tr A` and `t₂ = tr A²`. -/
@@ -47,4 +47,11 @@ theorem det_one_add_smul_sub_volOrder2_sq (ε : ℝ) (A : Matrix (Fin 4) (Fin 4)
 @[simp] theorem volOrder2_zero (t₁ t₂ : ℝ) : volOrder2 0 t₁ t₂ = 1 := by
   simp [volOrder2]
 
-end Lightlike.Rows.G3_255
+end Lightlike.GR.EinsteinHilbertExpansion
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.det_one_add_smul_sub_volOrder2_sq := _root_.Lightlike.GR.EinsteinHilbertExpansion.det_one_add_smul_sub_volOrder2_sq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.volOrder2 := _root_.Lightlike.GR.EinsteinHilbertExpansion.volOrder2
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.volOrder2_sq := _root_.Lightlike.GR.EinsteinHilbertExpansion.volOrder2_sq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.volOrder2_zero := _root_.Lightlike.GR.EinsteinHilbertExpansion.volOrder2_zero

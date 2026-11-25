@@ -9,7 +9,7 @@ Row G1-047 (CO24). With `d₁ d₂` the partial derivatives of `Field.lean`, for
 circulation. Used with `F = A` (flux) and `F = J` (current). Supporting lemmas; no catalogue entry.
 -/
 
-namespace Lightlike.Rows.G1_047
+namespace Lightlike.Gauge.AbelianHiggsBogomolny
 
 open MeasureTheory
 
@@ -49,4 +49,10 @@ theorem green_rect {F₁ F₂ : ℝ × ℝ → ℝ} (h₁ : ContDiff ℝ 1 F₁)
   simp only [intervalIntegral.integral_neg]
   ring
 
-end Lightlike.Rows.G1_047
+end Lightlike.Gauge.AbelianHiggsBogomolny
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_047.«continuous_d₁» := _root_.Lightlike.Gauge.AbelianHiggsBogomolny.«continuous_d₁»
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_047.«continuous_d₂» := _root_.Lightlike.Gauge.AbelianHiggsBogomolny.«continuous_d₂»
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_047.green_rect := _root_.Lightlike.Gauge.AbelianHiggsBogomolny.green_rect

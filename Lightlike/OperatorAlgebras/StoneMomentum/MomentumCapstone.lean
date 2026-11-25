@@ -24,7 +24,7 @@ the trust checks of OP1 in one place and in the second vocabulary:
 
 open scoped InnerProductSpace LinearPMap ContDiff
 
-namespace Lightlike.OperatorAlgebras.OPRow154
+namespace Lightlike.OperatorAlgebras.StoneMomentum
 
 open Lightlike.OperatorAlgebras
 
@@ -139,4 +139,20 @@ theorem momentumMin_deficiency_indices :
       deficiencyDim momentumMin (-Complex.I) = 1 :=
   deficiency_indices_momentumMin
 
-end Lightlike.OperatorAlgebras.OPRow154
+end Lightlike.OperatorAlgebras.StoneMomentum
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.OperatorAlgebras.OPRow154.closure_momentumSmoothR := _root_.Lightlike.OperatorAlgebras.StoneMomentum.closure_momentumSmoothR
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.OperatorAlgebras.OPRow154.deficiencySpace_congr := _root_.Lightlike.OperatorAlgebras.StoneMomentum.deficiencySpace_congr
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.OperatorAlgebras.OPRow154.deficiencySpace_of_isEssentiallySelfAdjoint := _root_.Lightlike.OperatorAlgebras.StoneMomentum.deficiencySpace_of_isEssentiallySelfAdjoint
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.OperatorAlgebras.OPRow154.momentumMin_deficiency_indices := _root_.Lightlike.OperatorAlgebras.StoneMomentum.momentumMin_deficiency_indices
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.OperatorAlgebras.OPRow154.momentumMin_not_isEssentiallySelfAdjoint := _root_.Lightlike.OperatorAlgebras.StoneMomentum.momentumMin_not_isEssentiallySelfAdjoint
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.OperatorAlgebras.OPRow154.momentumSmoothR := _root_.Lightlike.OperatorAlgebras.StoneMomentum.momentumSmoothR
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.OperatorAlgebras.OPRow154.momentumSmoothR_domain := _root_.Lightlike.OperatorAlgebras.StoneMomentum.momentumSmoothR_domain
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.OperatorAlgebras.OPRow154.momentumSmoothR_isEssentiallySelfAdjoint := _root_.Lightlike.OperatorAlgebras.StoneMomentum.momentumSmoothR_isEssentiallySelfAdjoint
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.OperatorAlgebras.OPRow154.momentumSmoothR_le := _root_.Lightlike.OperatorAlgebras.StoneMomentum.momentumSmoothR_le
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.OperatorAlgebras.OPRow154.momentumSmoothR_ofCS := _root_.Lightlike.OperatorAlgebras.StoneMomentum.momentumSmoothR_ofCS
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.OperatorAlgebras.OPRow154.momentumSmoothR_unique_selfAdjoint_extension := _root_.Lightlike.OperatorAlgebras.StoneMomentum.momentumSmoothR_unique_selfAdjoint_extension
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.OperatorAlgebras.OPRow154.stone_theorem := _root_.Lightlike.OperatorAlgebras.StoneMomentum.stone_theorem
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.OperatorAlgebras.OPRow154.translationGroup_eq_spectralGroup := _root_.Lightlike.OperatorAlgebras.StoneMomentum.translationGroup_eq_spectralGroup

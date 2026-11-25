@@ -13,7 +13,7 @@ theorem (`Complex.HadamardThreeLines`) on the strip turned by `z = i w`.
 
 open Complex Set Filter Topology
 
-namespace Lightlike.Rows.G1_053
+namespace Lightlike.OperatorAlgebras.KMSInfiniteDimensions
 
 /-- The closed strip `0 ≤ Im z ≤ β`. -/
 def strip (β : ℝ) : Set ℂ := {z | 0 ≤ z.im ∧ z.im ≤ β}
@@ -115,4 +115,12 @@ theorem eq_zero_of_real_zero {β : ℝ} (hβ : 0 < β) {F : ℂ → ℂ}
     exact tendsto_nhds_unique h1 (tendsto_const_nhds.congr' h2.symm)
   · exact hlow z hz h
 
-end Lightlike.Rows.G1_053
+end Lightlike.OperatorAlgebras.KMSInfiniteDimensions
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_053.I_mul_im := _root_.Lightlike.OperatorAlgebras.KMSInfiniteDimensions.I_mul_im
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_053.I_mul_neg_I_mul := _root_.Lightlike.OperatorAlgebras.KMSInfiniteDimensions.I_mul_neg_I_mul
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_053.eq_zero_of_real_zero := _root_.Lightlike.OperatorAlgebras.KMSInfiniteDimensions.eq_zero_of_real_zero
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_053.openStrip := _root_.Lightlike.OperatorAlgebras.KMSInfiniteDimensions.openStrip
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_053.strip := _root_.Lightlike.OperatorAlgebras.KMSInfiniteDimensions.strip

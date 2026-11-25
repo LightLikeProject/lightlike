@@ -24,7 +24,7 @@ not proved here.
 * copeland-2006
 -/
 
-namespace Lightlike.Rows.G1_029
+namespace Lightlike.Cosmology.QuintessenceFixedPoints
 
 noncomputable section
 
@@ -145,4 +145,28 @@ lemma jdet_sc {μ γ y : ℝ} (hμ : μ ≠ 0) (hy : y ^ 2 = 9 * γ * (2 - γ) /
 
 end
 
-end Lightlike.Rows.G1_029
+end Lightlike.Cosmology.QuintessenceFixedPoints
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.hasDerivAt_vfx_x := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.hasDerivAt_vfx_x
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.hasDerivAt_vfx_y := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.hasDerivAt_vfx_y
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.hasDerivAt_vfy_x := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.hasDerivAt_vfy_x
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.hasDerivAt_vfy_y := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.hasDerivAt_vfy_y
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.jdet := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.jdet
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.jdet_eq := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.jdet_eq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.jdet_kin_neg := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.jdet_kin_neg
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.jdet_kin_pos := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.jdet_kin_pos
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.jdet_origin := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.jdet_origin
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.jdet_sc := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.jdet_sc
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.jdet_sf := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.jdet_sf
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.jtr := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.jtr
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.jtr_kin_neg := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.jtr_kin_neg
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.jtr_kin_pos := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.jtr_kin_pos
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.jtr_origin := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.jtr_origin
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.jtr_sc := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.jtr_sc
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.jtr_sf := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.jtr_sf
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.jxx := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.jxx
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.jxy := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.jxy
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.jyx := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.jyx
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.jyy := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.jyy

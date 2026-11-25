@@ -9,14 +9,14 @@ Taylor bound around a *midpoint* with explicit constants.  We phrase it for a *d
 
 ## Main results
 
-* `Lightlike.Rows.G1_062.tayRem_bound`: one-sided Taylor remainder bound.
-* `Lightlike.Rows.G1_062.midpoint_bound`: the symmetric difference
+* `Lightlike.Geometry.HeatTraceExpansion.tayRem_bound`: one-sided Taylor remainder bound.
+* `Lightlike.Geometry.HeatTraceExpansion.midpoint_bound`: the symmetric difference
   `u 0 (m+r) - u 0 (m-r)` equals the odd part of the Taylor polynomial up to `2 M r^n / n!`.
 -/
 
 open Set intervalIntegral
 
-namespace Lightlike.Rows.G1_062
+namespace Lightlike.Geometry.HeatTraceExpansion
 
 /-- `u` is a derivative chain: `u (i+1)` is the derivative of `u i`. -/
 def IsChain (u : ℕ → ℝ → ℝ) : Prop := ∀ i x, HasDerivAt (u i) (u (i + 1) x) x
@@ -142,4 +142,13 @@ theorem midpoint_bound (u : ℕ → ℝ → ℝ) (hu : IsChain u) (m r M : ℝ) 
         abs_sub _ _
     _ ≤ _ := by linarith
 
-end Lightlike.Rows.G1_062
+end Lightlike.Geometry.HeatTraceExpansion
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.IsChain := _root_.Lightlike.Geometry.HeatTraceExpansion.IsChain
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.IsChain.continuous := _root_.Lightlike.Geometry.HeatTraceExpansion.IsChain.continuous
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.midpoint_bound := _root_.Lightlike.Geometry.HeatTraceExpansion.midpoint_bound
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.tayRem := _root_.Lightlike.Geometry.HeatTraceExpansion.tayRem
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.tayRem_bound := _root_.Lightlike.Geometry.HeatTraceExpansion.tayRem_bound
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.tayRem_hasDerivAt := _root_.Lightlike.Geometry.HeatTraceExpansion.tayRem_hasDerivAt

@@ -14,7 +14,7 @@ Supporting lemmas for the spin-network basis theorem; no catalogue entry.
 
 open MeasureTheory
 
-namespace Lightlike.Rows.G2_010
+namespace Lightlike.Canonical.SpinNetworkBasis
 
 open Lightlike Lightlike.Spin4 Lightlike.HarmonicAnalysis
 
@@ -135,4 +135,18 @@ theorem dense_phiSpanC : Dense (phiSpanC E : Set C(E → SU2, ℂ)) :=
 
 end
 
-end Lightlike.Rows.G2_010
+end Lightlike.Canonical.SpinNetworkBasis
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.dense_phiSpanC := _root_.Lightlike.Canonical.SpinNetworkBasis.dense_phiSpanC
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.dense_prodAlg := _root_.Lightlike.Canonical.SpinNetworkBasis.dense_prodAlg
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.mem_phiSpanC_of_mem_phiSpan := _root_.Lightlike.Canonical.SpinNetworkBasis.mem_phiSpanC_of_mem_phiSpan
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.mul_mem_prodSet := _root_.Lightlike.Canonical.SpinNetworkBasis.mul_mem_prodSet
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.one_mem_prodSet := _root_.Lightlike.Canonical.SpinNetworkBasis.one_mem_prodSet
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.phiSpanC := _root_.Lightlike.Canonical.SpinNetworkBasis.phiSpanC
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.prodAlg := _root_.Lightlike.Canonical.SpinNetworkBasis.prodAlg
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.prodAlg_separates := _root_.Lightlike.Canonical.SpinNetworkBasis.prodAlg_separates
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.prodSet := _root_.Lightlike.Canonical.SpinNetworkBasis.prodSet
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.prodSet_subset_phiSpanC := _root_.Lightlike.Canonical.SpinNetworkBasis.prodSet_subset_phiSpanC
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.star_mem_prodSet := _root_.Lightlike.Canonical.SpinNetworkBasis.star_mem_prodSet

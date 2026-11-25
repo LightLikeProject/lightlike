@@ -26,7 +26,7 @@ vacuum only for the one value `c = -V(φ)`, which depends on the parameters of `
   as we state it ourselves).
 -/
 
-namespace Lightlike.Rows.G1_045
+namespace Lightlike.Cosmology.VacuumEnergyNoGo
 
 variable {ι : Type*} [Fintype ι]
 
@@ -83,4 +83,14 @@ theorem no_constant_adjustment (V : (ι → ℝ) → ℝ) {φ₁ φ₂ : ι → 
   rw [constant_adjustment_unique] at h1 h2
   exact hne (by unfold vacuumEnergy; linarith)
 
-end Lightlike.Rows.G1_045
+end Lightlike.Cosmology.VacuumEnergyNoGo
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_045.IsVacuum := _root_.Lightlike.Cosmology.VacuumEnergyNoGo.IsVacuum
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_045.constant_adjustment_unique := _root_.Lightlike.Cosmology.VacuumEnergyNoGo.constant_adjustment_unique
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_045.isVacuum_add_const := _root_.Lightlike.Cosmology.VacuumEnergyNoGo.isVacuum_add_const
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_045.no_constant_adjustment := _root_.Lightlike.Cosmology.VacuumEnergyNoGo.no_constant_adjustment
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_045.shiftPot := _root_.Lightlike.Cosmology.VacuumEnergyNoGo.shiftPot
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_045.vacuumEnergy := _root_.Lightlike.Cosmology.VacuumEnergyNoGo.vacuumEnergy
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_045.vacuumEnergy_add_const := _root_.Lightlike.Cosmology.VacuumEnergyNoGo.vacuumEnergy_add_const

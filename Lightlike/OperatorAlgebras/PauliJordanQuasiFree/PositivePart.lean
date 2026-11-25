@@ -16,7 +16,7 @@ Wightman two-point function of the Sorkin–Johnston state (Afshordi–Aslanbeig
 
 open scoped Matrix MatrixOrder ComplexOrder
 
-namespace Lightlike.Rows.G2_077
+namespace Lightlike.OperatorAlgebras.PauliJordanQuasiFree
 
 variable {ι : Type*} [Fintype ι] [DecidableEq ι]
 
@@ -94,4 +94,25 @@ theorem pjPos_eq (hΔ : Δᵀ = -Δ) :
 /-- `(iΔ)⁺` is positive semidefinite. -/
 theorem pjPos_nonneg (Δ : Matrix ι ι ℝ) : 0 ≤ pjPos Δ := CFC.posPart_nonneg _
 
-end Lightlike.Rows.G2_077
+end Lightlike.OperatorAlgebras.PauliJordanQuasiFree
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.absRe := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.absRe
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.absRe_mul_self := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.absRe_mul_self
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.absRe_nonneg := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.absRe_nonneg
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.abs_iMat := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.abs_iMat
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.cx := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.cx
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.cx_absRe_nonneg := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.cx_absRe_nonneg
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.cx_add := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.cx_add
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.cx_apply := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.cx_apply
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.cx_mul := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.cx_mul
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.iMat := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.iMat
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.isSelfAdjoint_absRe := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.isSelfAdjoint_absRe
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.isSelfAdjoint_iMat := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.isSelfAdjoint_iMat
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.pjPos := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.pjPos
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.pjPos_eq := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.pjPos_eq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.pjPos_nonneg := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.pjPos_nonneg
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.star_cx := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.star_cx
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.star_iMat := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.star_iMat
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.star_iMat_mul_iMat := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.star_iMat_mul_iMat

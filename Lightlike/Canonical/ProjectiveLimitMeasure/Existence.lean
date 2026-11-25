@@ -16,7 +16,7 @@ continuous functions (`HasOuterApproxClosed`, true for metrizable `X i`, such as
 open MeasureTheory
 open scoped CompactlySupported
 
-namespace Lightlike.Rows.G2_009
+namespace Lightlike.Canonical.ProjectiveLimitMeasure
 
 universe u v
 
@@ -63,4 +63,9 @@ theorem exists_isLimit [∀ i, HasOuterApproxClosed (X i)] (hf : IsProjSystem f)
   rw [cylExt_cyl hf hs hμ] at this
   exact this
 
-end Lightlike.Rows.G2_009
+end Lightlike.Canonical.ProjectiveLimitMeasure
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.cylPositive := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.cylPositive
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.exists_isLimit := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.exists_isLimit

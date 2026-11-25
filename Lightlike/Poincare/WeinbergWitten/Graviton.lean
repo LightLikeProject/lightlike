@@ -24,7 +24,7 @@ files of this folder.
 
 open MeasureTheory Lightlike.Poincare Lightlike.Lorentz
 
-namespace Lightlike.Rows.G3_253
+namespace Lightlike.Poincare.WeinbergWitten
 
 noncomputable section
 
@@ -84,4 +84,16 @@ theorem helicityAct_rot_helicity (h : ℤ) (θ : ℝ) (ψ : LightCone → ℂ) :
 
 end
 
-end Lightlike.Rows.G3_253
+end Lightlike.Poincare.WeinbergWitten
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_253.OneParticle := _root_.Lightlike.Poincare.WeinbergWitten.OneParticle
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_253.gravitonRep := _root_.Lightlike.Poincare.WeinbergWitten.gravitonRep
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_253.helicityAct_rot_helicity := _root_.Lightlike.Poincare.WeinbergWitten.helicityAct_rot_helicity
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_253.helicityRep := _root_.Lightlike.Poincare.WeinbergWitten.helicityRep
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_253.helicityRepE := _root_.Lightlike.Poincare.WeinbergWitten.helicityRepE
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_253.helicityRep_irreducible := _root_.Lightlike.Poincare.WeinbergWitten.helicityRep_irreducible
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_253.helicityRep_mul := _root_.Lightlike.Poincare.WeinbergWitten.helicityRep_mul
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_253.helicityRep_one := _root_.Lightlike.Poincare.WeinbergWitten.helicityRep_one
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_253.helicityRep_surjective := _root_.Lightlike.Poincare.WeinbergWitten.helicityRep_surjective

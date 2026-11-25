@@ -9,7 +9,7 @@ Statement-shape checks: the sphere check has `a₀ = 1`, `a₁ = 1/3`, `a₂ = 1
 and the torus check has no constant term.
 -/
 
-open Lightlike.Rows.G1_062
+open Lightlike.Geometry.HeatTraceExpansion
 
 example : HasHeatExpansion sphereTrace 2 sphereCoeff 3 := sphereTrace_hasHeatExpansion
 example : sphereCoeff 0 = 1 ∧ sphereCoeff 1 = 1 / 3 ∧ sphereCoeff 2 = 1 / 15 := by

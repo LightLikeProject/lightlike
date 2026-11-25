@@ -17,7 +17,7 @@ There `s₁₂ = -2`, `s₁₃ = s₁₄ = 1`, `A[1234] = A[1243] = 1/2`, and
 
 noncomputable section
 
-namespace Lightlike.Rows.G3_261
+namespace Lightlike.GR.KLTBCJRelations
 
 open Lightlike.SpinorHelicity
 
@@ -90,4 +90,22 @@ theorem cfg_bcj_wrong :
     sBr cfgL cfgLt 0 1 * pt1234 cfgLt ≠ sBr cfgL cfgLt 0 2 * pt1243 cfgLt := by
   rw [cfg_s12, cfg_s13, cfg_pt1234, cfg_pt1243]; norm_num
 
-end Lightlike.Rows.G3_261
+end Lightlike.GR.KLTBCJRelations
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_261.cfgL := _root_.Lightlike.GR.KLTBCJRelations.cfgL
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_261.cfgLt := _root_.Lightlike.GR.KLTBCJRelations.cfgLt
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_261.cfg_angle := _root_.Lightlike.GR.KLTBCJRelations.cfg_angle
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_261.cfg_bcj_wrong := _root_.Lightlike.GR.KLTBCJRelations.cfg_bcj_wrong
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_261.cfg_conserved := _root_.Lightlike.GR.KLTBCJRelations.cfg_conserved
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_261.cfg_klt := _root_.Lightlike.GR.KLTBCJRelations.cfg_klt
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_261.cfg_klt_value := _root_.Lightlike.GR.KLTBCJRelations.cfg_klt_value
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_261.cfg_klt_wrong_t := _root_.Lightlike.GR.KLTBCJRelations.cfg_klt_wrong_t
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_261.cfg_klt_wrong_u := _root_.Lightlike.GR.KLTBCJRelations.cfg_klt_wrong_u
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_261.cfg_pt1234 := _root_.Lightlike.GR.KLTBCJRelations.cfg_pt1234
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_261.cfg_pt1243 := _root_.Lightlike.GR.KLTBCJRelations.cfg_pt1243
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_261.cfg_s12 := _root_.Lightlike.GR.KLTBCJRelations.cfg_s12
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_261.cfg_s13 := _root_.Lightlike.GR.KLTBCJRelations.cfg_s13
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_261.cfg_s14 := _root_.Lightlike.GR.KLTBCJRelations.cfg_s14
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_261.cfg_square := _root_.Lightlike.GR.KLTBCJRelations.cfg_square

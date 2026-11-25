@@ -10,7 +10,7 @@ frequency `ω > 0` (acceleration parameter `a > 0`) that depends on `U` only is,
 signature of a positive-frequency Minkowski mode (`e^{-iΩU}`, `Ω > 0`, is bounded there).  Its boundary
 value on the positive axis `U > 0` (the left wedge) differs from the pure left Rindler mode by the factor
 `e^{-πω/a}`.  This factor is what produces the Planck spectrum `1/(e^{2πω/a} - 1)`
-(see `Lightlike.Rows.G1_049.Bogoliubov`).
+(see `Lightlike.OperatorAlgebras.UnruhEffect.Bogoliubov`).
 
 ## Main statements
 
@@ -20,7 +20,7 @@ value on the positive axis `U > 0` (the left wedge) differs from the pure left R
 * `differentiableOn_F`: `F` is holomorphic on the lower half plane.
 -/
 
-namespace Lightlike.Rows.G1_049
+namespace Lightlike.OperatorAlgebras.UnruhEffect
 
 open Real
 open scoped Complex
@@ -124,4 +124,15 @@ theorem differentiableOn_unruhMode (ω a : ℝ) (ha : 0 < a) :
     exact DifferentiableAt.cexp ((differentiableAt_const _).mul h2)
   exact h3.differentiableWithinAt
 
-end Lightlike.Rows.G1_049
+end Lightlike.OperatorAlgebras.UnruhEffect
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_049.differentiableOn_unruhMode := _root_.Lightlike.OperatorAlgebras.UnruhEffect.differentiableOn_unruhMode
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_049.leftRindlerMap := _root_.Lightlike.OperatorAlgebras.UnruhEffect.leftRindlerMap
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_049.log_ofReal_neg := _root_.Lightlike.OperatorAlgebras.UnruhEffect.log_ofReal_neg
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_049.unruhMode := _root_.Lightlike.OperatorAlgebras.UnruhEffect.unruhMode
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_049.unruhMode_neg := _root_.Lightlike.OperatorAlgebras.UnruhEffect.unruhMode_neg
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_049.unruhMode_pos := _root_.Lightlike.OperatorAlgebras.UnruhEffect.unruhMode_pos
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_049.unruhMode_rindler_left := _root_.Lightlike.OperatorAlgebras.UnruhEffect.unruhMode_rindler_left
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_049.unruhMode_rindler_right := _root_.Lightlike.OperatorAlgebras.UnruhEffect.unruhMode_rindler_right

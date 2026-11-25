@@ -13,7 +13,7 @@ to `C(Lim f, ℝ)` and applies the Riesz–Markov theorem.
 
 open MeasureTheory
 
-namespace Lightlike.Rows.G2_009
+namespace Lightlike.Canonical.ProjectiveLimitMeasure
 
 universe u v
 
@@ -46,4 +46,9 @@ theorem integral_eq_of_cyl_eq [IsDirected ι (· ≤ ·)] [Nonempty ι] [∀ i, 
   rw [← integral_comp_bonding hf hμ hik g, ← integral_comp_bonding hf hμ hjk g']
   exact congrArg (fun φ : C(X k, ℝ) => ∫ x, φ x ∂μ k) hk
 
-end Lightlike.Rows.G2_009
+end Lightlike.Canonical.ProjectiveLimitMeasure
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.integral_comp_bonding := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.integral_comp_bonding
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.integral_eq_of_cyl_eq := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.integral_eq_of_cyl_eq

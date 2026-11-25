@@ -31,7 +31,7 @@ No equation numbers are claimed.
 
 open Matrix
 
-namespace Lightlike.Lorentz.HARow055
+namespace Lightlike.Lorentz.WignerOrbits
 
 open Lightlike.Lorentz Lightlike.Lorentz.Poincare
 
@@ -213,4 +213,17 @@ theorem exists_smul_neg_lightMom {P : Herm2}
   refine ⟨A, ?_⟩
   rw [smul_neg, hA, neg_neg]
 
-end Lightlike.Lorentz.HARow055
+end Lightlike.Lorentz.WignerOrbits
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Lorentz.HARow055.exists_smul_neg_lightMom := _root_.Lightlike.Lorentz.WignerOrbits.exists_smul_neg_lightMom
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Lorentz.HARow055.exists_smul_restMom_of_neg := _root_.Lightlike.Lorentz.WignerOrbits.exists_smul_restMom_of_neg
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Lorentz.HARow055.exists_smul_tachMom := _root_.Lightlike.Lorentz.WignerOrbits.exists_smul_tachMom
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Lorentz.HARow055.exists_smul_tachMom_of_neg := _root_.Lightlike.Lorentz.WignerOrbits.exists_smul_tachMom_of_neg
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Lorentz.HARow055.exists_smul_tachMom_of_pos := _root_.Lightlike.Lorentz.WignerOrbits.exists_smul_tachMom_of_pos
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Lorentz.HARow055.exists_upper_smul_pos := _root_.Lightlike.Lorentz.WignerOrbits.exists_upper_smul_pos
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Lorentz.HARow055.neg_tachMom_eq_smul := _root_.Lightlike.Lorentz.WignerOrbits.neg_tachMom_eq_smul
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Lorentz.HARow055.restMom_neg := _root_.Lightlike.Lorentz.WignerOrbits.restMom_neg
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Lorentz.HARow055.smul_tachMom_apply := _root_.Lightlike.Lorentz.WignerOrbits.smul_tachMom_apply
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Lorentz.HARow055.upper_smul_apply_zero := _root_.Lightlike.Lorentz.WignerOrbits.upper_smul_apply_zero

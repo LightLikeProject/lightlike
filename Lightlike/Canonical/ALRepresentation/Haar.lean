@@ -21,7 +21,7 @@ open scoped CompactlySupported
 
 noncomputable section
 
-namespace Lightlike.Rows.G2_011
+namespace Lightlike.Canonical.ALRepresentation
 
 section
 variable {K : Type*} [Group K] [TopologicalSpace K] [IsTopologicalGroup K]
@@ -173,4 +173,17 @@ theorem invariant_functional_eq_haar (Λ : C(K, ℂ) →ₗ[ℂ] ℂ)
   push_cast
   ring
 
-end Lightlike.Rows.G2_011
+end Lightlike.Canonical.ALRepresentation
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.cplx := _root_.Lightlike.Canonical.ALRepresentation.cplx
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.cplx_add := _root_.Lightlike.Canonical.ALRepresentation.cplx_add
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.cplx_apply := _root_.Lightlike.Canonical.ALRepresentation.cplx_apply
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.cplx_smul := _root_.Lightlike.Canonical.ALRepresentation.cplx_smul
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.cplx_sub := _root_.Lightlike.Canonical.ALRepresentation.cplx_sub
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.cplx_translateR := _root_.Lightlike.Canonical.ALRepresentation.cplx_translateR
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.invariant_functional_eq_haar := _root_.Lightlike.Canonical.ALRepresentation.invariant_functional_eq_haar
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.real_invariant_functional_eq_haar := _root_.Lightlike.Canonical.ALRepresentation.real_invariant_functional_eq_haar
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.translateR := _root_.Lightlike.Canonical.ALRepresentation.translateR
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.translateR_apply := _root_.Lightlike.Canonical.ALRepresentation.translateR_apply

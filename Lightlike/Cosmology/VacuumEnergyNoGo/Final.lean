@@ -28,7 +28,7 @@ the potential `V`. Weinberg's argument (1989, own formulation; the source text
 * `weinberg_cutoff_scaling`: the cut-off zero-point density scales as `Λ_c⁴`.
 -/
 
-namespace Lightlike.Rows.G1_045
+namespace Lightlike.Cosmology.VacuumEnergyNoGo
 
 /-- **Weinberg's no-go theorem.** Let `V` be a scale-covariant potential of degree `deg ≠ 0` on the
 constant fields `ι → ℝ`. Then
@@ -79,4 +79,10 @@ theorem weinberg_cutoff_scaling {m Λ : ℝ} (hΛ : 0 < Λ) :
     zeroPointDensity 0 Λ = Λ ^ 4 / (16 * Real.pi ^ 2) :=
   ⟨zeroPointDensity_scaling hΛ, zeroPointDensity_massless Λ hΛ.le⟩
 
-end Lightlike.Rows.G1_045
+end Lightlike.Cosmology.VacuumEnergyNoGo
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_045.weinberg_cutoff_scaling := _root_.Lightlike.Cosmology.VacuumEnergyNoGo.weinberg_cutoff_scaling
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_045.weinberg_no_go := _root_.Lightlike.Cosmology.VacuumEnergyNoGo.weinberg_no_go
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_045.weinberg_no_go_example := _root_.Lightlike.Cosmology.VacuumEnergyNoGo.weinberg_no_go_example

@@ -12,16 +12,16 @@ The retarded Green operator is the convolution with the indicator `Q` of the clo
 
 ## Main definitions
 
-* `Lightlike.Rows.G1_059.smoothFns`, `testFns`: smooth functions, and smooth compactly supported
+* `Lightlike.Spacetime.WaveEquationGreenOperators.smoothFns`, `testFns`: smooth functions, and smooth compactly supported
   functions on `ℝ × ℝ`.
-* `Lightlike.Rows.G1_059.wave`: the operator `P = ∂_v ∂_u` on smooth functions.
-* `Lightlike.Rows.G1_059.retarded`: the retarded Green operator `f ↦ f ⋆ Q`.
+* `Lightlike.Spacetime.WaveEquationGreenOperators.wave`: the operator `P = ∂_v ∂_u` on smooth functions.
+* `Lightlike.Spacetime.WaveEquationGreenOperators.retarded`: the retarded Green operator `f ↦ f ⋆ Q`.
 -/
 
 open Function MeasureTheory Set
 open scoped ContDiff Convolution
 
-namespace Lightlike.Rows.G1_059
+namespace Lightlike.Spacetime.WaveEquationGreenOperators
 
 /-- Smooth functions on `ℝ × ℝ` (null coordinates of `1+1` Minkowski space). -/
 def smoothFns : Submodule ℝ (ℝ × ℝ → ℝ) where
@@ -89,4 +89,18 @@ noncomputable def dirDeriv (w : ℝ × ℝ) : smoothFns →ₗ[ℝ] smoothFns wh
 functions of the null coordinates `(u, v)`. -/
 noncomputable def wave : smoothFns →ₗ[ℝ] smoothFns := dirDeriv (0, 1) ∘ₗ dirDeriv (1, 0)
 
-end Lightlike.Rows.G1_059
+end Lightlike.Spacetime.WaveEquationGreenOperators
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_059.contDiff_dirDeriv := _root_.Lightlike.Spacetime.WaveEquationGreenOperators.contDiff_dirDeriv
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_059.diffAt_smooth := _root_.Lightlike.Spacetime.WaveEquationGreenOperators.diffAt_smooth
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_059.dirDeriv := _root_.Lightlike.Spacetime.WaveEquationGreenOperators.dirDeriv
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_059.quadrant := _root_.Lightlike.Spacetime.WaveEquationGreenOperators.quadrant
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_059.quadrant_locInt := _root_.Lightlike.Spacetime.WaveEquationGreenOperators.quadrant_locInt
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_059.retardedFun := _root_.Lightlike.Spacetime.WaveEquationGreenOperators.retardedFun
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_059.retardedFun_smooth := _root_.Lightlike.Spacetime.WaveEquationGreenOperators.retardedFun_smooth
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_059.smoothFns := _root_.Lightlike.Spacetime.WaveEquationGreenOperators.smoothFns
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_059.testFns := _root_.Lightlike.Spacetime.WaveEquationGreenOperators.testFns
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_059.testFns_le := _root_.Lightlike.Spacetime.WaveEquationGreenOperators.testFns_le
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_059.wave := _root_.Lightlike.Spacetime.WaveEquationGreenOperators.wave

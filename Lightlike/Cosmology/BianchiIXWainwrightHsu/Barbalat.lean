@@ -8,7 +8,7 @@ uniformly continuous, and `∫_{-∞}^0 q P < ∞` with `P = N₁N₂N₃ ≥ L 
 the lemma below then gives `q → 0` as `τ → -∞`.
 -/
 
-namespace Lightlike.Rows.G1_040
+namespace Lightlike.Cosmology.BianchiIXWainwrightHsu
 
 open Filter Topology MeasureTheory
 
@@ -70,4 +70,8 @@ lemma barbalat_atBot {q : ℝ → ℝ} (hq0 : ∀ t, 0 ≤ q t) (hqc : Continuou
   have : (t - (t - δ / 2)) * (ε / 2) = ε * δ / 4 := by ring
   nlinarith [h1.1, h1.2, h2.1, h2.2]
 
-end Lightlike.Rows.G1_040
+end Lightlike.Cosmology.BianchiIXWainwrightHsu
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_040.barbalat_atBot := _root_.Lightlike.Cosmology.BianchiIXWainwrightHsu.barbalat_atBot

@@ -12,7 +12,7 @@ limit" of CA2.
 
 open MeasureTheory
 
-namespace Lightlike.Rows.G2_009
+namespace Lightlike.Canonical.ProjectiveLimitMeasure
 
 variable (G : Type) [TopologicalSpace G]
 
@@ -39,4 +39,10 @@ theorem not_exists_isLimit_scaled [SecondCountableTopology G] [MeasurableSpace G
     Nat.cast_zero, zero_add, Nat.cast_one]
   norm_num
 
-end Lightlike.Rows.G2_009
+end Lightlike.Canonical.ProjectiveLimitMeasure
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.forget := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.forget
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.isProjSystem_forget := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.isProjSystem_forget
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.not_exists_isLimit_scaled := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.not_exists_isLimit_scaled

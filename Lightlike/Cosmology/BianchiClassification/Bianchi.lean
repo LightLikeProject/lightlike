@@ -15,7 +15,7 @@ that of Ellis–MacCallum (1969), which is not in `docs/tasks/sources.yaml`, so 
 
 open Matrix
 
-namespace Lightlike.Rows.G1_039
+namespace Lightlike.Cosmology.BianchiClassification
 
 /-- The bracket of the Bianchi algebra with data `(n, a)`:
 `[x, y] = n (x × y) + (a·x) y − (a·y) x`. -/
@@ -51,4 +51,11 @@ theorem bBracket_jacobi_iff (n : Matrix (Fin 3) (Fin 3) ℝ) (hn : n.IsSymm) (a 
   · intro h x y z
     rw [bJac_eq n hn, h, smul_zero]
 
-end Lightlike.Rows.G1_039
+end Lightlike.Cosmology.BianchiClassification
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.bBracket := _root_.Lightlike.Cosmology.BianchiClassification.bBracket
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.bBracket_jacobi_iff := _root_.Lightlike.Cosmology.BianchiClassification.bBracket_jacobi_iff
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.bJac := _root_.Lightlike.Cosmology.BianchiClassification.bJac
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.bJac_eq := _root_.Lightlike.Cosmology.BianchiClassification.bJac_eq

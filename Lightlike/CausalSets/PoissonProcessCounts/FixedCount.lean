@@ -22,7 +22,7 @@ process comparison. Both are for a sample of `n` points in a region, the relatio
 
 open MeasureTheory ProbabilityTheory
 
-namespace Lightlike.Rows.G2_063
+namespace Lightlike.CausalSets.PoissonProcessCounts
 
 variable {α : Type*} [MeasurableSpace α]
 
@@ -143,4 +143,14 @@ theorem integral_pairCount (ν : Measure α) [IsProbabilityMeasure ν] {R : Set 
       (measurable_pi_apply _).prodMk (measurable_pi_apply _)
     exact (integrable_const (1 : ℝ)).indicator (hm hR)
 
-end Lightlike.Rows.G2_063
+end Lightlike.CausalSets.PoissonProcessCounts
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.integral_pairCount := _root_.Lightlike.CausalSets.PoissonProcessCounts.integral_pairCount
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.integral_ptCount := _root_.Lightlike.CausalSets.PoissonProcessCounts.integral_ptCount
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.measurable_pairCount_real := _root_.Lightlike.CausalSets.PoissonProcessCounts.measurable_pairCount_real
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.measurable_ptCount_real := _root_.Lightlike.CausalSets.PoissonProcessCounts.measurable_ptCount_real
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.pairCount := _root_.Lightlike.CausalSets.PoissonProcessCounts.pairCount
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.ptCount := _root_.Lightlike.CausalSets.PoissonProcessCounts.ptCount
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.sample := _root_.Lightlike.CausalSets.PoissonProcessCounts.sample

@@ -11,7 +11,7 @@ node Hilbert space as a sum over the `e`-th magnetic number.
 
 open Matrix Lightlike.SU2 Lightlike.Spin4 Lightlike.Poincare
 
-namespace Lightlike.Rows.G2_014
+namespace Lightlike.Canonical.VolumeOperator
 
 /-- `J_x = -σ_x / 2` on spin `1/2` (in the convention of `spinOp`). -/
 lemma spinOp_one_zero :
@@ -54,4 +54,11 @@ lemma edgeOp_mulVec_apply {K : ℕ} {n : Fin K → ℕ} (e : Fin K) (a : Fin 3) 
   · intro m'' hm''
     simp only [liftOp_apply, ite_eq_right hm'', zero_mul]
 
-end Lightlike.Rows.G2_014
+end Lightlike.Canonical.VolumeOperator
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.edgeOp_mulVec_apply := _root_.Lightlike.Canonical.VolumeOperator.edgeOp_mulVec_apply
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.spinOp_one_one := _root_.Lightlike.Canonical.VolumeOperator.spinOp_one_one
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.spinOp_one_two := _root_.Lightlike.Canonical.VolumeOperator.spinOp_one_two
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.spinOp_one_zero := _root_.Lightlike.Canonical.VolumeOperator.spinOp_one_zero

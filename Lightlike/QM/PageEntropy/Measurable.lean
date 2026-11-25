@@ -7,7 +7,7 @@ import Lightlike.QM.PageEntropy.Ensemble
 hence is integrable for the probability measure `sphereProb m n`; so `avgEntropy m n ∈ [0, log m]`.
 -/
 
-namespace Lightlike.Rows.G1_069
+namespace Lightlike.QM.PageEntropy
 
 open MeasureTheory Metric
 
@@ -54,4 +54,14 @@ theorem avgEntropy_le_log (m n : ℕ) [NeZero m] [NeZero n] : avgEntropy m n ≤
     (sphereEntropy_le_log m n) (μ := sphereProb m n)
   simpa [avgEntropy] using h
 
-end Lightlike.Rows.G1_069
+end Lightlike.QM.PageEntropy
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_069.avgEntropy_le_log := _root_.Lightlike.QM.PageEntropy.avgEntropy_le_log
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_069.avgEntropy_nonneg := _root_.Lightlike.QM.PageEntropy.avgEntropy_nonneg
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_069.continuous_reducedState := _root_.Lightlike.QM.PageEntropy.continuous_reducedState
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_069.continuous_sphereEntropy := _root_.Lightlike.QM.PageEntropy.continuous_sphereEntropy
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_069.integrable_sphereEntropy := _root_.Lightlike.QM.PageEntropy.integrable_sphereEntropy
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_069.sphereEntropy_le_log := _root_.Lightlike.QM.PageEntropy.sphereEntropy_le_log
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_069.sphereEntropy_nonneg := _root_.Lightlike.QM.PageEntropy.sphereEntropy_nonneg

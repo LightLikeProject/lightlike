@@ -4,6 +4,23 @@ Notable changes to Lightlike. Results are identified by stable IDs (`LL-NNNN`), 
 sources and review status in [docs/RESULTS.md](docs/RESULTS.md). Versions follow
 [Semantic Versioning](https://semver.org/); before 1.0.0, minor versions may change the API.
 
+## [Unreleased]
+
+### Library
+
+- No planning IDs in Lean names. The folders under `Lightlike/Rows/` and eleven other ID-named
+  folders move to subject folders. The namespaces `Lightlike.Rows.*`, `Lightlike.SP3Row`,
+  `Lightlike.Lorentz.HARow055` and `Lightlike.OperatorAlgebras.OPRow154` take the names of their
+  new folders (for example `Lightlike.Rows.G1_066` becomes `Lightlike.GR.KerrFirstLaw`), and four
+  declarations get descriptive names: `op2_fock_and_shale` becomes `fockRepOf_implements_iff`,
+  `op2_one_mode_alpha_beta` becomes `squeeze_norm_alpha_sq_sub_norm_beta_sq_one`,
+  `op2_infinite_modes_not_implementable` becomes `squeezeEllTwo_not_implementable` and
+  `op2_one_mode_implementable` becomes `squeeze_implementable`.
+- Every renamed declaration keeps its old name as a deprecated alias for one release: deprecated
+  since 0.4.0, removed in 0.5.0. Code that uses an old name still builds, with a warning that names
+  the new one. Imports of moved files must use the new paths.
+- A CI step keeps planning IDs out of Lean folder, file and declaration names.
+
 ## [0.3.0]
 
 ### Library

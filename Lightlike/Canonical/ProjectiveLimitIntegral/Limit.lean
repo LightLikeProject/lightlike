@@ -18,7 +18,7 @@ open MeasureTheory Set
 
 universe u v
 
-namespace Lightlike.Rows.G2_008
+namespace Lightlike.Canonical.ProjectiveLimitIntegral
 
 /-- An **inverse system** of topological spaces `X i` over a preorder `ι`: continuous bonding maps
 `f : X j → X i` for `i ≤ j`, with `f` the identity for `i = i` and compatible with composition. -/
@@ -115,4 +115,23 @@ end Measures
 
 end InvSystem
 
-end Lightlike.Rows.G2_008
+end Lightlike.Canonical.ProjectiveLimitIntegral
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_008.InvSystem := _root_.Lightlike.Canonical.ProjectiveLimitIntegral.InvSystem
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_008.InvSystem.IsConsistent := _root_.Lightlike.Canonical.ProjectiveLimitIntegral.InvSystem.IsConsistent
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_008.InvSystem.IsLimitMeasure := _root_.Lightlike.Canonical.ProjectiveLimitIntegral.InvSystem.IsLimitMeasure
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_008.InvSystem.IsLimitMeasure.isConsistent := _root_.Lightlike.Canonical.ProjectiveLimitIntegral.InvSystem.IsLimitMeasure.isConsistent
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_008.InvSystem.Limit := _root_.Lightlike.Canonical.ProjectiveLimitIntegral.InvSystem.Limit
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_008.InvSystem.continuous_f := _root_.Lightlike.Canonical.ProjectiveLimitIntegral.InvSystem.continuous_f
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_008.InvSystem.continuous_proj := _root_.Lightlike.Canonical.ProjectiveLimitIntegral.InvSystem.continuous_proj
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_008.InvSystem.f := _root_.Lightlike.Canonical.ProjectiveLimitIntegral.InvSystem.f
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_008.InvSystem.f_comp := _root_.Lightlike.Canonical.ProjectiveLimitIntegral.InvSystem.f_comp
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_008.InvSystem.f_proj := _root_.Lightlike.Canonical.ProjectiveLimitIntegral.InvSystem.f_proj
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_008.InvSystem.f_self := _root_.Lightlike.Canonical.ProjectiveLimitIntegral.InvSystem.f_self
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_008.InvSystem.isClosed_limit := _root_.Lightlike.Canonical.ProjectiveLimitIntegral.InvSystem.isClosed_limit
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_008.InvSystem.measurable_f := _root_.Lightlike.Canonical.ProjectiveLimitIntegral.InvSystem.measurable_f
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_008.InvSystem.measurable_proj := _root_.Lightlike.Canonical.ProjectiveLimitIntegral.InvSystem.measurable_proj
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_008.InvSystem.not_exists_isLimitMeasure := _root_.Lightlike.Canonical.ProjectiveLimitIntegral.InvSystem.not_exists_isLimitMeasure
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_008.InvSystem.proj := _root_.Lightlike.Canonical.ProjectiveLimitIntegral.InvSystem.proj

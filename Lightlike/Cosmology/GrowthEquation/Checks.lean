@@ -11,7 +11,7 @@ In the Einstein–de Sitter universe (`k = Λ = 0`, `a = t^{2/3}`) the first Fri
 (Bernardeau et al. 2002, Section 2.3, source key `bernardeau-2002`).
 -/
 
-namespace Lightlike.Rows.G1_032
+namespace Lightlike.Cosmology.GrowthEquation
 
 open Cosmology
 
@@ -66,4 +66,10 @@ theorem eds_growth_ode {ρ : ℝ → ℝ} {Gn t p : ℝ} (ht : 0 < t)
     ring
   rw [e, hq, mul_zero]
 
-end Lightlike.Rows.G1_032
+end Lightlike.Cosmology.GrowthEquation
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_032.eds_four_pi_G_rho := _root_.Lightlike.Cosmology.GrowthEquation.eds_four_pi_G_rho
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_032.eds_growth_ode := _root_.Lightlike.Cosmology.GrowthEquation.eds_growth_ode
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_032.eds_hubble := _root_.Lightlike.Cosmology.GrowthEquation.eds_hubble

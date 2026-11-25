@@ -14,7 +14,7 @@ there is a function `F_{A,B}`, bounded and continuous on the closed strip `0 ≤
   `(τ, β)`-KMS for `τᵗ(A) = e^{itH} A e^{-itH}`.
 -/
 
-namespace Lightlike.Rows.G1_053
+namespace Lightlike.OperatorAlgebras.KMSInfiniteDimensions
 
 open Lightlike.OperatorAlgebras.GibbsKMS
 
@@ -38,4 +38,9 @@ theorem isKMSState_gibbs (b : HilbertBasis ι ℂ H) (ev : ι → ℝ) {β : ℝ
     ⟨_, fun _ hz => norm_kmsFun_le b ev hβ hZ A B hz⟩, fun t => kmsFun_ofReal b ev hβ hZ A B t,
     fun t => kmsFun_add_I_mul b ev hβ hZ A B t⟩
 
-end Lightlike.Rows.G1_053
+end Lightlike.OperatorAlgebras.KMSInfiniteDimensions
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_053.IsKMSState := _root_.Lightlike.OperatorAlgebras.KMSInfiniteDimensions.IsKMSState
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_053.isKMSState_gibbs := _root_.Lightlike.OperatorAlgebras.KMSInfiniteDimensions.isKMSState_gibbs

@@ -27,7 +27,7 @@ equation numbers are claimed. The classification itself is the lockable statemen
 
 open Lightlike.Lorentz Lightlike.Lorentz.Poincare MeasureTheory
 
-namespace Lightlike.Lorentz.HARow055
+namespace Lightlike.Lorentz.WignerOrbits
 
 /-- **Massive one-particle representation, summary.** On the mass shell `P² = m²`; the induced
 representation `inducedRep` preserves the `L²` norm; `W² = −m² s(s+1)` with `s = n/2`; the space of
@@ -69,4 +69,10 @@ theorem wigner_tachyon_summary (m : ℝ) :
     ¬ IsCompact ((MulAction.stabilizer SL2C (tachMom m) : Subgroup SL2C) : Set SL2C) :=
   ⟨by rw [tachMom_eq_ofVec, det_ofVec]; simp, not_isCompact_stabilizer_tachMom m⟩
 
-end Lightlike.Lorentz.HARow055
+end Lightlike.Lorentz.WignerOrbits
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Lorentz.HARow055.wigner_massive_summary := _root_.Lightlike.Lorentz.WignerOrbits.wigner_massive_summary
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Lorentz.HARow055.wigner_massless_summary := _root_.Lightlike.Lorentz.WignerOrbits.wigner_massless_summary
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Lorentz.HARow055.wigner_tachyon_summary := _root_.Lightlike.Lorentz.WignerOrbits.wigner_tachyon_summary

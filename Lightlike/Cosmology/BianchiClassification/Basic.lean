@@ -11,21 +11,21 @@ Wainwright–Hsu treatment of Bianchi cosmologies).  On `ℝ³ = Fin 3 → ℝ` 
 
 ## Main definitions
 
-* `Lightlike.Rows.G1_039.bracket`: the bracket attached to `(n, a)`.
-* `Lightlike.Rows.G1_039.IsClassA`, `IsClassB`: class A is `a = 0`, class B is `a ≠ 0`.
+* `Lightlike.Cosmology.BianchiClassification.bracket`: the bracket attached to `(n, a)`.
+* `Lightlike.Cosmology.BianchiClassification.IsClassA`, `IsClassB`: class A is `a = 0`, class B is `a ≠ 0`.
 
 ## Main results
 
-* `Lightlike.Rows.G1_039.jacobi_bracket_eq`: the Jacobi expression equals
+* `Lightlike.Cosmology.BianchiClassification.jacobi_bracket_eq`: the Jacobi expression equals
   `2 det(x, y, z) • (n a)`.
-* `Lightlike.Rows.G1_039.jacobi_bracket_iff`: Jacobi for all arguments iff `n a = 0`.
+* `Lightlike.Cosmology.BianchiClassification.jacobi_bracket_iff`: Jacobi for all arguments iff `n a = 0`.
 
 ## References
 
 * heinzle-uggla-2009a (Section 3)
 -/
 
-namespace Lightlike.Rows.G1_039
+namespace Lightlike.Cosmology.BianchiClassification
 
 /-- The bracket on `ℝ³` with Bianchi data `(n, a)`:
 `[x, y] = n (x × y) + (a · x) y - (a · y) x`. -/
@@ -86,4 +86,16 @@ theorem bracket_add_right (n : Matrix (Fin 3) (Fin 3) ℝ) (a x y y' : Fin 3 →
   simp [bracket, crossProduct, Matrix.mulVec, dotProduct, Fin.sum_univ_three]
   ring
 
-end Lightlike.Rows.G1_039
+end Lightlike.Cosmology.BianchiClassification
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.IsClassA := _root_.Lightlike.Cosmology.BianchiClassification.IsClassA
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.IsClassB := _root_.Lightlike.Cosmology.BianchiClassification.IsClassB
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.bracket := _root_.Lightlike.Cosmology.BianchiClassification.bracket
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.bracket_add_left := _root_.Lightlike.Cosmology.BianchiClassification.bracket_add_left
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.bracket_add_right := _root_.Lightlike.Cosmology.BianchiClassification.bracket_add_right
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.bracket_self := _root_.Lightlike.Cosmology.BianchiClassification.bracket_self
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.jacobi := _root_.Lightlike.Cosmology.BianchiClassification.jacobi
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.jacobi_bracket_eq := _root_.Lightlike.Cosmology.BianchiClassification.jacobi_bracket_eq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.jacobi_bracket_iff := _root_.Lightlike.Cosmology.BianchiClassification.jacobi_bracket_iff

@@ -12,7 +12,7 @@ noncomputable section
 
 open MeasureTheory Set
 
-namespace Lightlike.Rows.G2_008
+namespace Lightlike.Canonical.ProjectiveLimitIntegral
 
 namespace InvSystem
 
@@ -76,4 +76,9 @@ lemma lamL_nonneg (F : C(S.Limit, ℝ)) (hF : 0 ≤ F) : 0 ≤ S.lamL hS hμ hp 
 
 end InvSystem
 
-end Lightlike.Rows.G2_008
+end Lightlike.Canonical.ProjectiveLimitIntegral
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_008.InvSystem.lamL_cyl_ge := _root_.Lightlike.Canonical.ProjectiveLimitIntegral.InvSystem.lamL_cyl_ge
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_008.InvSystem.lamL_nonneg := _root_.Lightlike.Canonical.ProjectiveLimitIntegral.InvSystem.lamL_nonneg

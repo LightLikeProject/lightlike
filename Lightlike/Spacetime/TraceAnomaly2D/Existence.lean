@@ -17,7 +17,7 @@ tensor, without the free traceless function `t_u(u) , t_v(v)`).
 
 noncomputable section
 
-namespace Lightlike.Rows.G1_063
+namespace Lightlike.Spacetime.TraceAnomaly2D
 
 open Lightlike
 open scoped ContDiff
@@ -119,4 +119,13 @@ theorem stressPoly_anomaly_conservation {ψ : (Fin 2 → ℝ) → ℝ} (hψ : Co
       ∀ ν, divT (confEta2 ψ) (stressPoly ψ (c / (12 * Real.pi))) ν x = 0 :=
   (anomaly_conservation_iff hψ c _ x rfl).2 (stressPoly_flat hψ _ x)
 
-end Lightlike.Rows.G1_063
+end Lightlike.Spacetime.TraceAnomaly2D
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_063.pd_shapeD := _root_.Lightlike.Spacetime.TraceAnomaly2D.pd_shapeD
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_063.pd_shapeO := _root_.Lightlike.Spacetime.TraceAnomaly2D.pd_shapeO
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_063.pd_smooth := _root_.Lightlike.Spacetime.TraceAnomaly2D.pd_smooth
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_063.stressPoly := _root_.Lightlike.Spacetime.TraceAnomaly2D.stressPoly
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_063.stressPoly_anomaly_conservation := _root_.Lightlike.Spacetime.TraceAnomaly2D.stressPoly_anomaly_conservation
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_063.stressPoly_flat := _root_.Lightlike.Spacetime.TraceAnomaly2D.stressPoly_flat

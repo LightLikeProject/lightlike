@@ -21,7 +21,7 @@ consequences of the condition (for instance the relation between the weights of 
 No boundedness is needed.
 -/
 
-namespace Lightlike.Rows.G1_053
+namespace Lightlike.OperatorAlgebras.KMSInfiniteDimensions
 
 open Complex Set Topology Filter MeasureTheory ComplexConjugate
 open scoped Interval
@@ -241,4 +241,13 @@ theorem eqOn_of_eqOn_real {F G : ℂ → ℂ} {β : ℝ} (hβ : 0 < β)
   have := eqOn_zero_of_eqOn_real hβ (hFc.sub hGc) (hFd.sub hGd) (fun t => by simp [h t]) hz
   simpa [sub_eq_zero] using this
 
-end Lightlike.Rows.G1_053
+end Lightlike.OperatorAlgebras.KMSInfiniteDimensions
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_053.eqOn_of_eqOn_real := _root_.Lightlike.OperatorAlgebras.KMSInfiniteDimensions.eqOn_of_eqOn_real
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_053.eqOn_zero_of_eqOn_real := _root_.Lightlike.OperatorAlgebras.KMSInfiniteDimensions.eqOn_zero_of_eqOn_real
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_053.rectInt := _root_.Lightlike.OperatorAlgebras.KMSInfiniteDimensions.rectInt
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_053.rectInt_split := _root_.Lightlike.OperatorAlgebras.KMSInfiniteDimensions.rectInt_split
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_053.removable_line := _root_.Lightlike.OperatorAlgebras.KMSInfiniteDimensions.removable_line
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_053.vert_intervalIntegrable := _root_.Lightlike.OperatorAlgebras.KMSInfiniteDimensions.vert_intervalIntegrable

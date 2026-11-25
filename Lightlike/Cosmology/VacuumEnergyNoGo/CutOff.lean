@@ -18,7 +18,7 @@ tuning: it scales like `Λ⁴`.
 * `zeroPointDensity_massless_scaling`: `ρ(0, Λ) = Λ⁴ ρ(0, 1)`.
 -/
 
-namespace Lightlike.Rows.G1_045
+namespace Lightlike.Cosmology.VacuumEnergyNoGo
 
 open intervalIntegral
 
@@ -79,4 +79,13 @@ theorem zeroPointDensity_massless_scaling {Λ : ℝ} (hΛ : 0 < Λ) :
   rw [zeroPointDensity_massless Λ hΛ.le, zeroPointDensity_massless 1 zero_le_one]
   ring
 
-end Lightlike.Rows.G1_045
+end Lightlike.Cosmology.VacuumEnergyNoGo
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_045.zeroPointDensity := _root_.Lightlike.Cosmology.VacuumEnergyNoGo.zeroPointDensity
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_045.zeroPointDensity_massless := _root_.Lightlike.Cosmology.VacuumEnergyNoGo.zeroPointDensity_massless
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_045.zeroPointDensity_massless_scaling := _root_.Lightlike.Cosmology.VacuumEnergyNoGo.zeroPointDensity_massless_scaling
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_045.zeroPointDensity_scaling := _root_.Lightlike.Cosmology.VacuumEnergyNoGo.zeroPointDensity_scaling
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_045.zeroPointIntegrand := _root_.Lightlike.Cosmology.VacuumEnergyNoGo.zeroPointIntegrand
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_045.zeroPointIntegrand_mul := _root_.Lightlike.Cosmology.VacuumEnergyNoGo.zeroPointIntegrand_mul

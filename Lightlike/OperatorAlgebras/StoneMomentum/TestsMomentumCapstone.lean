@@ -11,7 +11,7 @@ group of a one-dimensional space and returns that group; the hypotheses of the d
 are non-empty (the space `L²(0, 1)` has a dense domain of `momentumMin`).
 -/
 
-namespace Lightlike.OperatorAlgebras.OPRow154
+namespace Lightlike.OperatorAlgebras.StoneMomentum
 
 /-- The domain of the momentum operator on `C_c^∞(ℝ)` has a nonzero vector. -/
 theorem momentumSmoothR_domain_ne_bot : ∃ f ∈ momentumSmoothR.domain, f ≠ 0 := by
@@ -23,4 +23,9 @@ theorem stone_phaseGroup (l : ℝ) :
     ∃! U : UnitaryGroup ℂ, U.generator = (phaseGroup l : UnitaryGroup ℂ).generator :=
   stone_theorem.2 _ (phaseGroup l : UnitaryGroup ℂ).generator_isSelfAdjoint
 
-end Lightlike.OperatorAlgebras.OPRow154
+end Lightlike.OperatorAlgebras.StoneMomentum
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.OperatorAlgebras.OPRow154.momentumSmoothR_domain_ne_bot := _root_.Lightlike.OperatorAlgebras.StoneMomentum.momentumSmoothR_domain_ne_bot
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.OperatorAlgebras.OPRow154.stone_phaseGroup := _root_.Lightlike.OperatorAlgebras.StoneMomentum.stone_phaseGroup

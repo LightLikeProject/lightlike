@@ -22,7 +22,7 @@ open MeasureTheory Set Real Filter Topology
 
 noncomputable section
 
-namespace Lightlike.SP3Row
+namespace Lightlike.Asymptotics.FreeBosonGrowth
 
 /-- The signed density `f(x) = 1 + x cos x` on `[0, ∞)`. -/
 def signedDensity (x : ℝ) : ℝ := 1 + x * Real.cos x
@@ -211,4 +211,20 @@ theorem not_tendsto_signedCount :
   rw [signedCount_eq, hsin, hcos, Real.rpow_one, div_lt_iff₀ hX0] at hk2
   linarith
 
-end Lightlike.SP3Row
+end Lightlike.Asymptotics.FreeBosonGrowth
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.SP3Row.antiderivCos := _root_.Lightlike.Asymptotics.FreeBosonGrowth.antiderivCos
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.SP3Row.hasDerivAt_antiderivCos := _root_.Lightlike.Asymptotics.FreeBosonGrowth.hasDerivAt_antiderivCos
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.SP3Row.integrableOn_cos_density := _root_.Lightlike.Asymptotics.FreeBosonGrowth.integrableOn_cos_density
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.SP3Row.integral_cos_density := _root_.Lightlike.Asymptotics.FreeBosonGrowth.integral_cos_density
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.SP3Row.not_tendsto_signedCount := _root_.Lightlike.Asymptotics.FreeBosonGrowth.not_tendsto_signedCount
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.SP3Row.signedCount := _root_.Lightlike.Asymptotics.FreeBosonGrowth.signedCount
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.SP3Row.signedCount_eq := _root_.Lightlike.Asymptotics.FreeBosonGrowth.signedCount_eq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.SP3Row.signedDensity := _root_.Lightlike.Asymptotics.FreeBosonGrowth.signedDensity
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.SP3Row.signedDensity_pi_neg := _root_.Lightlike.Asymptotics.FreeBosonGrowth.signedDensity_pi_neg
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.SP3Row.signedLaplace := _root_.Lightlike.Asymptotics.FreeBosonGrowth.signedLaplace
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.SP3Row.signedLaplace_eq := _root_.Lightlike.Asymptotics.FreeBosonGrowth.signedLaplace_eq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.SP3Row.tendsto_antiderivCos := _root_.Lightlike.Asymptotics.FreeBosonGrowth.tendsto_antiderivCos
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.SP3Row.tendsto_mul_signedLaplace := _root_.Lightlike.Asymptotics.FreeBosonGrowth.tendsto_mul_signedLaplace

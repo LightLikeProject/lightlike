@@ -14,7 +14,7 @@ Supporting lemmas for the spin-network basis theorem; no catalogue entry.
 
 open Lightlike Lightlike.HarmonicAnalysis Lightlike.HarmonicAnalysis.UnitaryMatrixRep Matrix
 
-namespace Lightlike.Rows.G2_010
+namespace Lightlike.Canonical.SpinNetworkBasis
 
 noncomputable section
 
@@ -340,4 +340,37 @@ theorem coe_mem_spinSpan_of_mem_matrixCoeffSpan {f : C(SU2, ℂ)} (hf : f ∈ ma
 
 end
 
-end Lightlike.Rows.G2_010
+end Lightlike.Canonical.SpinNetworkBasis
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.CoefSpin := _root_.Lightlike.Canonical.SpinNetworkBasis.CoefSpin
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.IsInv := _root_.Lightlike.Canonical.SpinNetworkBasis.IsInv
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.IsUnitaryRep := _root_.Lightlike.Canonical.SpinNetworkBasis.IsUnitaryRep
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.IsUnitaryRep.continuous := _root_.Lightlike.Canonical.SpinNetworkBasis.IsUnitaryRep.continuous
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.IsUnitaryRep.inner_map := _root_.Lightlike.Canonical.SpinNetworkBasis.IsUnitaryRep.inner_map
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.IsUnitaryRep.isInv_orthogonal := _root_.Lightlike.Canonical.SpinNetworkBasis.IsUnitaryRep.isInv_orthogonal
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.IsUnitaryRep.map_inv := _root_.Lightlike.Canonical.SpinNetworkBasis.IsUnitaryRep.map_inv
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.IsUnitaryRep.map_mul := _root_.Lightlike.Canonical.SpinNetworkBasis.IsUnitaryRep.map_mul
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.IsUnitaryRep.map_one := _root_.Lightlike.Canonical.SpinNetworkBasis.IsUnitaryRep.map_one
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.IsUnitaryRep.restrict := _root_.Lightlike.Canonical.SpinNetworkBasis.IsUnitaryRep.restrict
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.coe_mem_spinSpan_of_mem_matrixCoeffSpan := _root_.Lightlike.Canonical.SpinNetworkBasis.coe_mem_spinSpan_of_mem_matrixCoeffSpan
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.coefSpin_of_entries := _root_.Lightlike.Canonical.SpinNetworkBasis.coefSpin_of_entries
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.coefSpin_of_isUnitaryRep := _root_.Lightlike.Canonical.SpinNetworkBasis.coefSpin_of_isUnitaryRep
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.coordLin := _root_.Lightlike.Canonical.SpinNetworkBasis.coordLin
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.coordLin_apply := _root_.Lightlike.Canonical.SpinNetworkBasis.coordLin_apply
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.entry_mem_of_equivalent := _root_.Lightlike.Canonical.SpinNetworkBasis.entry_mem_of_equivalent
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.entry_mem_spinSpan := _root_.Lightlike.Canonical.SpinNetworkBasis.entry_mem_spinSpan
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.inner_eq_sum := _root_.Lightlike.Canonical.SpinNetworkBasis.inner_eq_sum
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.isUnitaryRep_toLpLin := _root_.Lightlike.Canonical.SpinNetworkBasis.isUnitaryRep_toLpLin
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.pi_coordLin := _root_.Lightlike.Canonical.SpinNetworkBasis.pi_coordLin
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.repMat := _root_.Lightlike.Canonical.SpinNetworkBasis.repMat
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.repMat_mem_unitaryGroup := _root_.Lightlike.Canonical.SpinNetworkBasis.repMat_mem_unitaryGroup
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.repMat_mul := _root_.Lightlike.Canonical.SpinNetworkBasis.repMat_mul
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.repMat_one := _root_.Lightlike.Canonical.SpinNetworkBasis.repMat_one
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.restrictRep := _root_.Lightlike.Canonical.SpinNetworkBasis.restrictRep
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.spinMat_mem_spinSpan := _root_.Lightlike.Canonical.SpinNetworkBasis.spinMat_mem_spinSpan
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.spinSpan := _root_.Lightlike.Canonical.SpinNetworkBasis.spinSpan
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.toMatrixRep := _root_.Lightlike.Canonical.SpinNetworkBasis.toMatrixRep
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.toMatrixRep_isIrreducible := _root_.Lightlike.Canonical.SpinNetworkBasis.toMatrixRep_isIrreducible
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.toMatrixRep_mat := _root_.Lightlike.Canonical.SpinNetworkBasis.toMatrixRep_mat

@@ -6,7 +6,7 @@ import Lightlike.OperatorAlgebras.UnruhEffect.Planck
 Row G1-049 (milestone SC1).  Source: `crispino-higuchi-matsas-2008`, Section II (Unruh 1976).
 -/
 
-namespace Lightlike.Rows.G1_049
+namespace Lightlike.OperatorAlgebras.UnruhEffect
 
 open Real
 open scoped Complex
@@ -30,4 +30,8 @@ theorem unruh_planck {ω a : ℝ} (hω : 0 < ω) (ha : 0 < a) :
   · intro z
     rw [unruhSqueeze_norm_betaPart_sq hω ha z, unruhBeta_sq hω ha]
 
-end Lightlike.Rows.G1_049
+end Lightlike.OperatorAlgebras.UnruhEffect
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_049.unruh_planck := _root_.Lightlike.OperatorAlgebras.UnruhEffect.unruh_planck

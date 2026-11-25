@@ -27,7 +27,7 @@ realised here as "the flow `Δ^{i c t}` with `c ∉ {0,1}` fails KMS at the same
 open MeasureTheory Complex Set Filter Topology
 open scoped Real
 
-namespace Lightlike.Rows.G1_054
+namespace Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace
 
 /-- The Gaussian vector `ξ(k) = e^{π k/2 - k²}`. -/
 noncomputable def gaussXi (k : ℝ) : ℂ := ((Real.exp (π * k / 2 - k ^ 2) : ℝ) : ℂ)
@@ -110,4 +110,14 @@ theorem gauss_not_kms_rate (c : ℝ) (hc0 : c ≠ 0) (hc1 : c ≠ 1) :
   · exact hc0 h
   · exact hc1 (by linarith)
 
-end Lightlike.Rows.G1_054
+end Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.gaussXi := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.gaussXi
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.gaussXi_bwRel := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.gaussXi_bwRel
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.gaussXi_memLp := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.gaussXi_memLp
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.gauss_not_kms_rate := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.gauss_not_kms_rate
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.laplace_gauss_eq := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.laplace_gauss_eq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.laplace_gauss_real := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.laplace_gauss_real
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.matrixDensity_gauss := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.matrixDensity_gauss

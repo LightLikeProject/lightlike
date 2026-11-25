@@ -17,7 +17,7 @@ import Lightlike.CausalSets.PoissonProcessCounts.Independence
 
 open MeasureTheory ProbabilityTheory NNReal Complex
 
-namespace Lightlike.Rows.G2_063
+namespace Lightlike.CausalSets.PoissonProcessCounts
 
 variable {α : Type*} [MeasurableSpace α]
 
@@ -81,4 +81,10 @@ theorem cond_poissonProcess_count {lam : ℝ≥0} (hlam : 0 < lam) (ν : Measure
   rw [cond_apply hs, hi, poissonProcess, Measure.prod_prod, Measure.prod_prod, measure_univ,
     mul_one, ← mul_assoc, ENNReal.inv_mul_cancel h0 ht, one_mul]
 
-end Lightlike.Rows.G2_063
+end Lightlike.CausalSets.PoissonProcessCounts
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.cond_poissonProcess_count := _root_.Lightlike.CausalSets.PoissonProcessCounts.cond_poissonProcess_count
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.map_poissonProcess_ptCount := _root_.Lightlike.CausalSets.PoissonProcessCounts.map_poissonProcess_ptCount
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.variance_poissonProcess_ptCount := _root_.Lightlike.CausalSets.PoissonProcessCounts.variance_poissonProcess_ptCount

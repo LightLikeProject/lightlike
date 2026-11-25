@@ -15,7 +15,7 @@ open scoped ContDiff
 
 noncomputable section
 
-namespace Lightlike.Rows.G1_031
+namespace Lightlike.Cosmology.LinearizedTensorModes
 
 open Lightlike Lightlike.Cosmology
 
@@ -70,4 +70,10 @@ theorem tensor_mode_equation (hfa : ContDiff ℝ ∞ a) (hne : ∀ t, a t ≠ 0)
     have : pd 0 (pd 0 f) x + 2 * Hf a x * pd 0 f x - pd 3 (pd 3 f) x = 0 := h
     rw [this]; ring
 
-end Lightlike.Rows.G1_031
+end Lightlike.Cosmology.LinearizedTensorModes
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_031.fieldEq_conf_11 := _root_.Lightlike.Cosmology.LinearizedTensorModes.fieldEq_conf_11
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_031.hasDerivAt_fieldEq_tPert_of_background := _root_.Lightlike.Cosmology.LinearizedTensorModes.hasDerivAt_fieldEq_tPert_of_background
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_031.tensor_mode_equation := _root_.Lightlike.Cosmology.LinearizedTensorModes.tensor_mode_equation

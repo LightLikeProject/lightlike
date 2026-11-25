@@ -13,7 +13,7 @@ commute (`liftOp_comm`).
 
 open Matrix
 
-namespace Lightlike.Rows.G2_014
+namespace Lightlike.Canonical.VolumeOperator
 
 variable {k : ℕ}
 
@@ -173,4 +173,23 @@ theorem edgeOp_comm_zx (e : Fin k) :
     edgeOp n e 2 * edgeOp n e 0 - edgeOp n e 0 * edgeOp n e 2 = Complex.I • edgeOp n e 1 := by
   simp only [edgeOp, ← liftOp_mul, ← liftOp_sub, spinOp_comm_zx, liftOp_smul]
 
-end Lightlike.Rows.G2_014
+end Lightlike.Canonical.VolumeOperator
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.Idx := _root_.Lightlike.Canonical.VolumeOperator.Idx
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.edgeOp := _root_.Lightlike.Canonical.VolumeOperator.edgeOp
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.edgeOp_comm_of_ne := _root_.Lightlike.Canonical.VolumeOperator.edgeOp_comm_of_ne
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.edgeOp_comm_xy := _root_.Lightlike.Canonical.VolumeOperator.edgeOp_comm_xy
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.edgeOp_comm_yz := _root_.Lightlike.Canonical.VolumeOperator.edgeOp_comm_yz
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.edgeOp_comm_zx := _root_.Lightlike.Canonical.VolumeOperator.edgeOp_comm_zx
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.edgeOp_conjTranspose := _root_.Lightlike.Canonical.VolumeOperator.edgeOp_conjTranspose
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.liftOp := _root_.Lightlike.Canonical.VolumeOperator.liftOp
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.liftOp_add := _root_.Lightlike.Canonical.VolumeOperator.liftOp_add
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.liftOp_apply := _root_.Lightlike.Canonical.VolumeOperator.liftOp_apply
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.liftOp_comm := _root_.Lightlike.Canonical.VolumeOperator.liftOp_comm
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.liftOp_conjTranspose := _root_.Lightlike.Canonical.VolumeOperator.liftOp_conjTranspose
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.liftOp_mul := _root_.Lightlike.Canonical.VolumeOperator.liftOp_mul
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.liftOp_smul := _root_.Lightlike.Canonical.VolumeOperator.liftOp_smul
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.liftOp_sub := _root_.Lightlike.Canonical.VolumeOperator.liftOp_sub
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.sum_eq_update := _root_.Lightlike.Canonical.VolumeOperator.sum_eq_update

@@ -20,7 +20,7 @@ for nonvanishing brackets and momentum conservation (`Conserved l lt`).  The onl
 
 noncomputable section
 
-namespace Lightlike.Rows.G3_261
+namespace Lightlike.GR.KLTBCJRelations
 
 open Lightlike.SpinorHelicity
 
@@ -68,4 +68,11 @@ theorem bcj_four {l lt : Fin 4 → Fin 2 → ℂ} (h : Conserved l lt)
   linear_combination (angleBr (lt 0) (lt 3) * angleBr (lt 0) (lt 1) ^ 5 * angleBr (lt 2) (lt 3) *
     angleBr (lt 0) (lt 2)) * c
 
-end Lightlike.Rows.G3_261
+end Lightlike.GR.KLTBCJRelations
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_261.angle_square_relation := _root_.Lightlike.GR.KLTBCJRelations.angle_square_relation
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_261.bcj_four := _root_.Lightlike.GR.KLTBCJRelations.bcj_four
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_261.pt1234 := _root_.Lightlike.GR.KLTBCJRelations.pt1234
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_261.pt1243 := _root_.Lightlike.GR.KLTBCJRelations.pt1243

@@ -8,19 +8,19 @@ Its small-time asymptotic expansion on a compact `d`-manifold has the Seeley–D
 `Z(t) ≃ ∑ₖ aₖ t^{k - d/2}` (`vassilevich-2003`, the heat kernel expansion; `bgv-1992`).
 This file fixes the objects the row G1-062 talks about:
 
-* `Lightlike.Rows.G1_062.heatTrace`: the heat trace of a weighted spectrum.
-* `Lightlike.Rows.G1_062.HasHeatExpansion`: `Z` has the expansion with the coefficients `a`
+* `Lightlike.Geometry.HeatTraceExpansion.heatTrace`: the heat trace of a weighted spectrum.
+* `Lightlike.Geometry.HeatTraceExpansion.HasHeatExpansion`: `Z` has the expansion with the coefficients `a`
   up to order `K` in dimension `d`.
 
 ## Main results
 
-* `Lightlike.Rows.G1_062.HasHeatExpansion.coeff_unique`: the coefficients are unique, so "the
+* `Lightlike.Geometry.HeatTraceExpansion.HasHeatExpansion.coeff_unique`: the coefficients are unique, so "the
   `t⁰` term vanishes" is a meaningful statement.
 -/
 
 open Filter Topology
 
-namespace Lightlike.Rows.G1_062
+namespace Lightlike.Geometry.HeatTraceExpansion
 
 /-- The heat trace `∑ᵢ mᵢ e^{-t λᵢ}` of a spectrum `ev` with multiplicities `mult`. -/
 noncomputable def heatTrace {ι : Type*} (ev : ι → ℝ) (mult : ι → ℕ) (t : ℝ) : ℝ :=
@@ -123,4 +123,11 @@ theorem HasHeatExpansion.coeff_unique {Z : ℝ → ℝ} {d K : ℕ} {a b : ℕ �
   have := coeff_eq_zero_of_isBigO (fun k => a k - b k) d K h' k hk
   linarith
 
-end Lightlike.Rows.G1_062
+end Lightlike.Geometry.HeatTraceExpansion
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.HasHeatExpansion := _root_.Lightlike.Geometry.HeatTraceExpansion.HasHeatExpansion
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.HasHeatExpansion.coeff_unique := _root_.Lightlike.Geometry.HeatTraceExpansion.HasHeatExpansion.coeff_unique
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.coeff_eq_zero_of_isBigO := _root_.Lightlike.Geometry.HeatTraceExpansion.coeff_eq_zero_of_isBigO
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.heatTrace := _root_.Lightlike.Geometry.HeatTraceExpansion.heatTrace

@@ -8,8 +8,8 @@ By the spectral theorem a real symmetric `n` is `U D Uᵀ` with `U` orthogonal. 
 
 ## Main results
 
-* `Lightlike.Rows.G1_039.exists_orthogonal_diagonal`: spectral theorem in the form needed here.
-* `Lightlike.Rows.G1_039.exists_diagonalisation`: every Bianchi bracket is isomorphic to one with
+* `Lightlike.Cosmology.BianchiClassification.exists_orthogonal_diagonal`: spectral theorem in the form needed here.
+* `Lightlike.Cosmology.BianchiClassification.exists_diagonalisation`: every Bianchi bracket is isomorphic to one with
   diagonal `n`, preserving `n a = 0` and `a = 0`.
 
 ## References
@@ -17,7 +17,7 @@ By the spectral theorem a real symmetric `n` is `U D Uᵀ` with `U` orthogonal. 
 * heinzle-uggla-2009a (Section 3)
 -/
 
-namespace Lightlike.Rows.G1_039
+namespace Lightlike.Cosmology.BianchiClassification
 
 open Matrix
 
@@ -56,4 +56,9 @@ theorem exists_diagonalisation (n : Matrix (Fin 3) (Fin 3) ℝ) (hn : n.IsSymm) 
   · intro h0
     rw [h0, Matrix.mulVec_zero]
 
-end Lightlike.Rows.G1_039
+end Lightlike.Cosmology.BianchiClassification
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.exists_diagonalisation := _root_.Lightlike.Cosmology.BianchiClassification.exists_diagonalisation
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.exists_orthogonal_diagonal := _root_.Lightlike.Cosmology.BianchiClassification.exists_orthogonal_diagonal

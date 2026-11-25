@@ -18,7 +18,7 @@ zero on gauge-invariant trivalent nodes.
 
 open Matrix
 
-namespace Lightlike.Rows.G2_014
+namespace Lightlike.Canonical.VolumeOperator
 
 variable {K : ℕ} {n : Fin K → ℕ}
 
@@ -137,4 +137,14 @@ theorem qOp_three_mulVec_eq_zero {n : Fin 3 → ℕ} {ψ : Idx n → ℂ} (hψ :
   rw [← hSv]
   abel
 
-end Lightlike.Rows.G2_014
+end Lightlike.Canonical.VolumeOperator
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.IsInvariant := _root_.Lightlike.Canonical.VolumeOperator.IsInvariant
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.qOp := _root_.Lightlike.Canonical.VolumeOperator.qOp
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.qOp_conjTranspose := _root_.Lightlike.Canonical.VolumeOperator.qOp_conjTranspose
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.qOp_three_mulVec_eq_zero := _root_.Lightlike.Canonical.VolumeOperator.qOp_three_mulVec_eq_zero
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.six_term_zero := _root_.Lightlike.Canonical.VolumeOperator.six_term_zero
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.totalOp := _root_.Lightlike.Canonical.VolumeOperator.totalOp
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.triple_conjTranspose := _root_.Lightlike.Canonical.VolumeOperator.triple_conjTranspose

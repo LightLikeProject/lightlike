@@ -18,7 +18,7 @@ Row G1-034 (milestone CO7).  Generic comparison lemmas for a function `Y` with r
 
 @[expose] public section
 
-namespace Lightlike.Rows.G1_034
+namespace Lightlike.Cosmology.FreezeOut
 
 open Set Filter Topology
 
@@ -161,4 +161,15 @@ theorem IsSol.bsol_le {lam : ℝ} (hlam : 0 ≤ lam) {e : ℝ → ℝ} {x₀ Y�
   have := key x hx
   simpa using this
 
-end Lightlike.Rows.G1_034
+end Lightlike.Cosmology.FreezeOut
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_034.Bsol := _root_.Lightlike.Cosmology.FreezeOut.Bsol
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_034.IsSol.bsol_le := _root_.Lightlike.Cosmology.FreezeOut.IsSol.bsol_le
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_034.antitoneOn_add_div := _root_.Lightlike.Cosmology.FreezeOut.antitoneOn_add_div
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_034.continuousOn_Bsol := _root_.Lightlike.Cosmology.FreezeOut.continuousOn_Bsol
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_034.exists_tendsto_of_antitoneOn := _root_.Lightlike.Cosmology.FreezeOut.exists_tendsto_of_antitoneOn
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_034.hasDerivAt_Bsol := _root_.Lightlike.Cosmology.FreezeOut.hasDerivAt_Bsol
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_034.nonneg_of_deriv := _root_.Lightlike.Cosmology.FreezeOut.nonneg_of_deriv
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_034.one_le_denom := _root_.Lightlike.Cosmology.FreezeOut.one_le_denom

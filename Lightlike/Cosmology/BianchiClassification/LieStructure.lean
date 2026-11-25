@@ -13,7 +13,7 @@ algebra over `ℝ` (`BianchiAlg d`).  The trace of `ad x` is `2 (a·x)` (`trace_
 
 open Matrix
 
-namespace Lightlike.Rows.G1_039
+namespace Lightlike.Cosmology.BianchiClassification
 
 /-- Data `(n, a)` of a Bianchi algebra: `n` symmetric, `a` a vector, with `n a = 0`
 (the Jacobi condition, `bBracket_jacobi_iff`). -/
@@ -196,4 +196,30 @@ theorem unimodular_iff_classA :
 
 end BianchiAlg
 
-end Lightlike.Rows.G1_039
+end Lightlike.Cosmology.BianchiClassification
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.BianchiAlg := _root_.Lightlike.Cosmology.BianchiClassification.BianchiAlg
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.BianchiAlg.bracket_def := _root_.Lightlike.Cosmology.BianchiClassification.BianchiAlg.bracket_def
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.BianchiAlg.trace_ad_eq := _root_.Lightlike.Cosmology.BianchiClassification.BianchiAlg.trace_ad_eq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.BianchiAlg.unimodular_iff_classA := _root_.Lightlike.Cosmology.BianchiClassification.BianchiAlg.unimodular_iff_classA
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.BianchiData := _root_.Lightlike.Cosmology.BianchiClassification.BianchiData
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.BianchiData.IsClassA := _root_.Lightlike.Cosmology.BianchiClassification.BianchiData.IsClassA
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.BianchiData.IsClassB := _root_.Lightlike.Cosmology.BianchiClassification.BianchiData.IsClassB
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.BianchiData.a := _root_.Lightlike.Cosmology.BianchiClassification.BianchiData.a
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.BianchiData.n := _root_.Lightlike.Cosmology.BianchiClassification.BianchiData.n
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.BianchiData.na := _root_.Lightlike.Cosmology.BianchiClassification.BianchiData.na
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.BianchiData.symm := _root_.Lightlike.Cosmology.BianchiClassification.BianchiData.symm
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.adMat := _root_.Lightlike.Cosmology.BianchiClassification.adMat
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.adMat_mulVec := _root_.Lightlike.Cosmology.BianchiClassification.adMat_mulVec
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.bBracket_add_left := _root_.Lightlike.Cosmology.BianchiClassification.bBracket_add_left
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.bBracket_add_right := _root_.Lightlike.Cosmology.BianchiClassification.bBracket_add_right
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.bBracket_anti := _root_.Lightlike.Cosmology.BianchiClassification.bBracket_anti
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.bBracket_leibniz := _root_.Lightlike.Cosmology.BianchiClassification.bBracket_leibniz
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.bBracket_neg_right := _root_.Lightlike.Cosmology.BianchiClassification.bBracket_neg_right
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.bBracket_self := _root_.Lightlike.Cosmology.BianchiClassification.bBracket_self
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.bBracket_smul_left := _root_.Lightlike.Cosmology.BianchiClassification.bBracket_smul_left
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.bBracket_smul_right := _root_.Lightlike.Cosmology.BianchiClassification.bBracket_smul_right
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.crossMat := _root_.Lightlike.Cosmology.BianchiClassification.crossMat
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.trace_adMat := _root_.Lightlike.Cosmology.BianchiClassification.trace_adMat

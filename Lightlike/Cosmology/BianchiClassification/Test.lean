@@ -2,7 +2,7 @@ import Lightlike.Cosmology.BianchiClassification.Classification
 
 /-! Sanity checks for G1-039: the classification theorem uses only the standard axioms. -/
 
-open Lightlike.Rows.G1_039
+open Lightlike.Cosmology.BianchiClassification
 
 #print axioms exists_bianchiType
 #print axioms numeral_surjective

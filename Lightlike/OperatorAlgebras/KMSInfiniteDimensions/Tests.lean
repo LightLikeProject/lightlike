@@ -11,7 +11,7 @@ import Lightlike.OperatorAlgebras.KMSInfiniteDimensions.Converse
 * `twoLevel_kms_at_two_pi`, `twoLevel_uniform_not_kms`: a concrete instance on `ℂ²` at `β = 2π`.
 -/
 
-namespace Lightlike.Rows.G1_053
+namespace Lightlike.OperatorAlgebras.KMSInfiniteDimensions
 
 open Lightlike.OperatorAlgebras.GibbsKMS
 open scoped InnerProductSpace
@@ -74,4 +74,13 @@ theorem twoLevel_uniform_not_kms :
       (diagState (EuclideanSpace.basisFun (Fin 2) ℂ).toHilbertBasis (fun _ => 1)) (2 * Real.pi) :=
   not_isKMSState_uniform _ _ (by positivity) (m := 0) (n := 1) (by simp)
 
-end Lightlike.Rows.G1_053
+end Lightlike.OperatorAlgebras.KMSInfiniteDimensions
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_053.gibbs_eq_diagState := _root_.Lightlike.OperatorAlgebras.KMSInfiniteDimensions.gibbs_eq_diagState
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_053.not_isKMSState_of_weights := _root_.Lightlike.OperatorAlgebras.KMSInfiniteDimensions.not_isKMSState_of_weights
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_053.not_isKMSState_pure := _root_.Lightlike.OperatorAlgebras.KMSInfiniteDimensions.not_isKMSState_pure
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_053.not_isKMSState_uniform := _root_.Lightlike.OperatorAlgebras.KMSInfiniteDimensions.not_isKMSState_uniform
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_053.twoLevel_kms_at_two_pi := _root_.Lightlike.OperatorAlgebras.KMSInfiniteDimensions.twoLevel_kms_at_two_pi
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_053.twoLevel_uniform_not_kms := _root_.Lightlike.OperatorAlgebras.KMSInfiniteDimensions.twoLevel_uniform_not_kms

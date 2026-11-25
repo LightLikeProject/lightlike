@@ -189,8 +189,8 @@ eigenvalue plus or minus s and the radial profile of the lower bound [51].
 32. Lightlike/GR/ParkeTaylorAll.lean - `SpinorHelicity.IsBCFWFamilyMHV`,
     `SpinorHelicity.parkeTaylor_bcfw_far`, `SpinorHelicity.eq_parkeTaylor_of_bcfw_mhv`,
     `SpinorHelicity.eq_parkeTaylor_of_bcfw_mhv'`
-33. Lightlike/GR/KerrFirstLaw/KerrFirstLaw.lean - `Rows.G1_066.kerr_first_law`
-34. Lightlike/GR/KerrFirstLaw/KerrArea.lean - `Rows.G1_066.kerr_smarr`
+33. Lightlike/GR/KerrFirstLaw/KerrFirstLaw.lean - `GR.KerrFirstLaw.kerr_first_law`
+34. Lightlike/GR/KerrFirstLaw/KerrArea.lean - `GR.KerrFirstLaw.kerr_smarr`
 35. Lightlike/Dirac/LichnerowiczGeneral.lean - `Dirac.lichnerowicz_general`
 36. Lightlike/Dirac/StereoFriedrich.lean - `Dirac.eigen_sq_ge_friedrich_stereo`
 37. Lightlike/Dirac/EigenGeneralK.lean - `Dirac.diracF_stereo_eigen_general`

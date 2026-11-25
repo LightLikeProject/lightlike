@@ -25,7 +25,7 @@ slow roll (`ε_V < 1`) contradicts it for `c > √2`.
 
 @[expose] public section
 
-namespace Lightlike.Rows.G1_046
+namespace Lightlike.Cosmology.SwamplandConjectures
 
 open Real
 
@@ -89,4 +89,17 @@ theorem gradNorm_real (V : ℝ → ℝ) (φ : ℝ) : gradNorm V φ = |deriv V φ
   unfold gradNorm
   rw [← norm_deriv_eq_norm_fderiv, Real.norm_eq_abs]
 
-end Lightlike.Rows.G1_046
+end Lightlike.Cosmology.SwamplandConjectures
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_046.DeSitterConjecture := _root_.Lightlike.Cosmology.SwamplandConjectures.DeSitterConjecture
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_046.DistanceConjecture := _root_.Lightlike.Cosmology.SwamplandConjectures.DistanceConjecture
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_046.RefinedDeSitterConjecture := _root_.Lightlike.Cosmology.SwamplandConjectures.RefinedDeSitterConjecture
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_046.expPotential := _root_.Lightlike.Cosmology.SwamplandConjectures.expPotential
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_046.gradNorm := _root_.Lightlike.Cosmology.SwamplandConjectures.gradNorm
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_046.gradNorm_real := _root_.Lightlike.Cosmology.SwamplandConjectures.gradNorm_real
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_046.hasDerivAt_expPotential := _root_.Lightlike.Cosmology.SwamplandConjectures.hasDerivAt_expPotential
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_046.hasDerivAt_quadPotential := _root_.Lightlike.Cosmology.SwamplandConjectures.hasDerivAt_quadPotential
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_046.quadPotential := _root_.Lightlike.Cosmology.SwamplandConjectures.quadPotential
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_046.slowRollEps := _root_.Lightlike.Cosmology.SwamplandConjectures.slowRollEps

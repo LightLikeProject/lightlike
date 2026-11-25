@@ -7,7 +7,7 @@ import Lightlike.Asymptotics.AiryContourIntegral.Calculus
 `u`-derivative of the integrand), hence `Ai'' = z Ai` for `Ai z = (1/2π) airyMoment α 0 z`.
 -/
 
-namespace Lightlike.Rows.G2_020
+namespace Lightlike.Asymptotics.AiryContourIntegral
 
 open Complex MeasureTheory Filter Topology
 
@@ -112,4 +112,14 @@ lemma hasDerivAt_airyAiLineDeriv {α : ℝ} (hα : 0 < α) (z : ℂ) :
   ring_nf
   simp
 
-end Lightlike.Rows.G2_020
+end Lightlike.Asymptotics.AiryContourIntegral
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_020.airyAiLine := _root_.Lightlike.Asymptotics.AiryContourIntegral.airyAiLine
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_020.airyAiLineDeriv := _root_.Lightlike.Asymptotics.AiryContourIntegral.airyAiLineDeriv
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_020.airyMoment_two_add := _root_.Lightlike.Asymptotics.AiryContourIntegral.airyMoment_two_add
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_020.hasDerivAt_airyAiLine := _root_.Lightlike.Asymptotics.AiryContourIntegral.hasDerivAt_airyAiLine
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_020.hasDerivAt_airyAiLineDeriv := _root_.Lightlike.Asymptotics.AiryContourIntegral.hasDerivAt_airyAiLineDeriv
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_020.hasDerivAt_airyIntegrand_u := _root_.Lightlike.Asymptotics.AiryContourIntegral.hasDerivAt_airyIntegrand_u
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_020.tendsto_airyIntegrand_zero := _root_.Lightlike.Asymptotics.AiryContourIntegral.tendsto_airyIntegrand_zero

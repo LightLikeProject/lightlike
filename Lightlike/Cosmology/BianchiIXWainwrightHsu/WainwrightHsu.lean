@@ -14,7 +14,7 @@ were not read there, and their consistency is *checked here*: the constraint is 
 theorem: `(N₁N₂N₃)' = 3 q N₁N₂N₃`.
 -/
 
-namespace Lightlike.Rows.G1_040
+namespace Lightlike.Cosmology.BianchiIXWainwrightHsu
 
 open Real
 
@@ -107,4 +107,25 @@ lemma IsSol.prod_monotone {γ : ℝ → Fin 5 → ℝ} (h : IsSol γ)
 
 end
 
-end Lightlike.Rows.G1_040
+end Lightlike.Cosmology.BianchiIXWainwrightHsu
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_040.Gc := _root_.Lightlike.Cosmology.BianchiIXWainwrightHsu.Gc
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_040.IsSol := _root_.Lightlike.Cosmology.BianchiIXWainwrightHsu.IsSol
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_040.IsSol.comp := _root_.Lightlike.Cosmology.BianchiIXWainwrightHsu.IsSol.comp
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_040.IsSol.prod_deriv := _root_.Lightlike.Cosmology.BianchiIXWainwrightHsu.IsSol.prod_deriv
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_040.IsSol.prod_monotone := _root_.Lightlike.Cosmology.BianchiIXWainwrightHsu.IsSol.prod_monotone
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_040.Kc := _root_.Lightlike.Cosmology.BianchiIXWainwrightHsu.Kc
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_040.Sm := _root_.Lightlike.Cosmology.BianchiIXWainwrightHsu.Sm
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_040.Sp := _root_.Lightlike.Cosmology.BianchiIXWainwrightHsu.Sp
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_040.constraint_deriv := _root_.Lightlike.Cosmology.BianchiIXWainwrightHsu.constraint_deriv
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_040.dG := _root_.Lightlike.Cosmology.BianchiIXWainwrightHsu.dG
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_040.n1 := _root_.Lightlike.Cosmology.BianchiIXWainwrightHsu.n1
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_040.n2 := _root_.Lightlike.Cosmology.BianchiIXWainwrightHsu.n2
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_040.n3 := _root_.Lightlike.Cosmology.BianchiIXWainwrightHsu.n3
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_040.qd := _root_.Lightlike.Cosmology.BianchiIXWainwrightHsu.qd
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_040.qd_nonneg := _root_.Lightlike.Cosmology.BianchiIXWainwrightHsu.qd_nonneg
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_040.sm := _root_.Lightlike.Cosmology.BianchiIXWainwrightHsu.sm
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_040.sp := _root_.Lightlike.Cosmology.BianchiIXWainwrightHsu.sp
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_040.vf := _root_.Lightlike.Cosmology.BianchiIXWainwrightHsu.vf

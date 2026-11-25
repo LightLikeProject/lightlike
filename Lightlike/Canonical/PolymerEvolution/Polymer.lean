@@ -23,7 +23,7 @@ References: Ashtekar–Pawlowski–Singh 2006 (`aps-2006`), Kamiński–Lewandow
 
 open scoped InnerProductSpace
 
-namespace Lightlike.Rows.G2_017
+namespace Lightlike.Canonical.PolymerEvolution
 
 noncomputable section
 
@@ -71,4 +71,13 @@ theorem dense_polymerDomain : Dense (polymerDomain : Set PolymerSpace) := by
 
 end
 
-end Lightlike.Rows.G2_017
+end Lightlike.Canonical.PolymerEvolution
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_017.PolymerSpace := _root_.Lightlike.Canonical.PolymerEvolution.PolymerSpace
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_017.dense_polymerDomain := _root_.Lightlike.Canonical.PolymerEvolution.dense_polymerDomain
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_017.inner_ket := _root_.Lightlike.Canonical.PolymerEvolution.inner_ket
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_017.ket := _root_.Lightlike.Canonical.PolymerEvolution.ket
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_017.ket_apply := _root_.Lightlike.Canonical.PolymerEvolution.ket_apply
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_017.polymerDomain := _root_.Lightlike.Canonical.PolymerEvolution.polymerDomain

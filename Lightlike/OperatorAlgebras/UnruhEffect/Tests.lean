@@ -2,7 +2,7 @@ import Lightlike.OperatorAlgebras.UnruhEffect.Summary
 
 /-! Tests for row G1-049. -/
 
-namespace Lightlike.Rows.G1_049
+namespace Lightlike.OperatorAlgebras.UnruhEffect
 
 open Real
 
@@ -19,4 +19,4 @@ example (z : ℂ) : (OperatorAlgebras.Bogoliubov.id ℂ).betaPart z = 0 := (unru
 
 #check @unruh_planck
 
-end Lightlike.Rows.G1_049
+end Lightlike.OperatorAlgebras.UnruhEffect

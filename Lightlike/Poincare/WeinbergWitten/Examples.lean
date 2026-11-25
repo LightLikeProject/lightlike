@@ -19,7 +19,7 @@ neither is Weinberg's soft theorem. The "massive evasion" is the algebraic state
 diagonal massive matrix element has, is compatible with a nonzero tensor such as `e_t e_tᵀ` (the energy density at rest).
 -/
 
-namespace Lightlike.Rows.G3_253
+namespace Lightlike.Poincare.WeinbergWitten
 
 open Matrix
 
@@ -99,4 +99,14 @@ theorem massive_evades :
 
 end
 
-end Lightlike.Rows.G3_253
+end Lightlike.Poincare.WeinbergWitten
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_253.massive_evades := _root_.Lightlike.Poincare.WeinbergWitten.massive_evades
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_253.photon_allows := _root_.Lightlike.Poincare.WeinbergWitten.photon_allows
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_253.ww_graviton := _root_.Lightlike.Poincare.WeinbergWitten.ww_graviton
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_253.ww_helicity := _root_.Lightlike.Poincare.WeinbergWitten.ww_helicity
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_253.zRot_transpose := _root_.Lightlike.Poincare.WeinbergWitten.zRot_transpose
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_253.zRot_vecMulVec_wBasis := _root_.Lightlike.Poincare.WeinbergWitten.zRot_vecMulVec_wBasis
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_253.zRot_wBasis := _root_.Lightlike.Poincare.WeinbergWitten.zRot_wBasis

@@ -14,7 +14,7 @@ This is the step that precedes the extension to `C(Lim f, ℝ)` and the Riesz–
 
 open MeasureTheory
 
-namespace Lightlike.Rows.G2_009
+namespace Lightlike.Canonical.ProjectiveLimitMeasure
 
 universe u v
 
@@ -123,4 +123,15 @@ theorem abs_cylFunctional_le [CompactSpace (Lim f)] (hf : IsProjSystem f)
   rw [h3, mul_comm]
   exact mul_le_mul_of_nonneg_left h4 ENNReal.toReal_nonneg
 
-end Lightlike.Rows.G2_009
+end Lightlike.Canonical.ProjectiveLimitMeasure
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.Consistent.measure_univ_eq := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.Consistent.measure_univ_eq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.abs_cylFunctional_le := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.abs_cylFunctional_le
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.cylFunctional := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.cylFunctional
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.cylFunctional_cyl := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.cylFunctional_cyl
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.cylInt := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.cylInt
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.cylInt_eq := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.cylInt_eq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.integrable_of_continuous := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.integrable_of_continuous
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.norm_le_norm_cyl := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.norm_le_norm_cyl

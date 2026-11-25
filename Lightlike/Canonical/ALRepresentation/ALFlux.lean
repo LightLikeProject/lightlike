@@ -15,7 +15,7 @@ noncomputable section
 
 open MeasureTheory
 
-namespace Lightlike.Rows.G2_011
+namespace Lightlike.Canonical.ALRepresentation
 
 variable {K : Type*} [Group K] [TopologicalSpace K] [IsTopologicalGroup K] [CompactSpace K]
   [MeasurableSpace K] [OpensMeasurableSpace K] [MeasurableMul K] (μ : Measure K)
@@ -89,4 +89,17 @@ def alRep : HFRep K (Lp ℂ 2 μ) where
   flux := alFlux μ
   covariant k f ξ := shiftIso_mulOp μ k f ξ
 
-end Lightlike.Rows.G2_011
+end Lightlike.Canonical.ALRepresentation
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.alFlux := _root_.Lightlike.Canonical.ALRepresentation.alFlux
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.alFlux_apply := _root_.Lightlike.Canonical.ALRepresentation.alFlux_apply
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.alRep := _root_.Lightlike.Canonical.ALRepresentation.alRep
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.shiftEquiv := _root_.Lightlike.Canonical.ALRepresentation.shiftEquiv
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.shiftEquiv_apply := _root_.Lightlike.Canonical.ALRepresentation.shiftEquiv_apply
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.shiftIso := _root_.Lightlike.Canonical.ALRepresentation.shiftIso
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.shiftIso_ae := _root_.Lightlike.Canonical.ALRepresentation.shiftIso_ae
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.shiftIso_mul := _root_.Lightlike.Canonical.ALRepresentation.shiftIso_mul
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.shiftIso_mulOp := _root_.Lightlike.Canonical.ALRepresentation.shiftIso_mulOp
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.shiftIso_one := _root_.Lightlike.Canonical.ALRepresentation.shiftIso_one

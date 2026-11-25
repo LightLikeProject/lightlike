@@ -15,7 +15,7 @@ this file defines the trace `T^μ_μ = g^{ab} T_{ab}` (`trT`) and the divergence
 
 noncomputable section
 
-namespace Lightlike.Rows.G1_063
+namespace Lightlike.Spacetime.TraceAnomaly2D
 
 open Lightlike
 open scoped ContDiff
@@ -75,4 +75,14 @@ theorem divT_confEta2 {ψ : (Fin 2 → ℝ) → ℝ} (hψ : ContDiff ℝ ∞ ψ)
   · simp [divT, confEta2_inv, christoffel_confEta2 hψ, eta_apply, etaDiag, Fin.sum_univ_two, hT]
     ring
 
-end Lightlike.Rows.G1_063
+end Lightlike.Spacetime.TraceAnomaly2D
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_063.christoffel_confEta2 := _root_.Lightlike.Spacetime.TraceAnomaly2D.christoffel_confEta2
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_063.confEta2_inv := _root_.Lightlike.Spacetime.TraceAnomaly2D.confEta2_inv
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_063.divT := _root_.Lightlike.Spacetime.TraceAnomaly2D.divT
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_063.divT_confEta2 := _root_.Lightlike.Spacetime.TraceAnomaly2D.divT_confEta2
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_063.isSymm_eta2 := _root_.Lightlike.Spacetime.TraceAnomaly2D.isSymm_eta2
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_063.trT := _root_.Lightlike.Spacetime.TraceAnomaly2D.trT
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_063.trT_confEta2 := _root_.Lightlike.Spacetime.TraceAnomaly2D.trT_confEta2

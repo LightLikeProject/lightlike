@@ -10,16 +10,16 @@ in the next file).
 
 ## Main results
 
-* `Lightlike.Rows.G1_039.BNormalisable`
-* `Lightlike.Rows.G1_039.bnormalisable_one_zero`: `l = (±1, ±1, 0)`, `a = (0, 0, α)`.
-* `Lightlike.Rows.G1_039.bnormalisable_two_zero`: `l = (±1, 0, 0)`, `a₀ = 0`.
+* `Lightlike.Cosmology.BianchiClassification.BNormalisable`
+* `Lightlike.Cosmology.BianchiClassification.bnormalisable_one_zero`: `l = (±1, ±1, 0)`, `a = (0, 0, α)`.
+* `Lightlike.Cosmology.BianchiClassification.bnormalisable_two_zero`: `l = (±1, 0, 0)`, `a₀ = 0`.
 
 ## References
 
 * heinzle-uggla-2009a (Section 3)
 -/
 
-namespace Lightlike.Rows.G1_039
+namespace Lightlike.Cosmology.BianchiClassification
 
 open Matrix
 
@@ -115,4 +115,15 @@ theorem bnormalisable_two_zero (s : ℝ) (hs : s = 1 ∨ s = -1) (a : V3) (h0 : 
       (bnormalisable_two_zero_pos (fun i => -a i) (by simp [h0]) (by simpa using hne))
     ext i; fin_cases i <;> simp
 
-end Lightlike.Rows.G1_039
+end Lightlike.Cosmology.BianchiClassification
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.BNormalisable := _root_.Lightlike.Cosmology.BianchiClassification.BNormalisable
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.BNormalisable.of_iso := _root_.Lightlike.Cosmology.BianchiClassification.BNormalisable.of_iso
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.BNormalisable.of_iso' := _root_.Lightlike.Cosmology.BianchiClassification.BNormalisable.of_iso'
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.bnormalisable_one_zero := _root_.Lightlike.Cosmology.BianchiClassification.bnormalisable_one_zero
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.bnormalisable_one_zero_ne := _root_.Lightlike.Cosmology.BianchiClassification.bnormalisable_one_zero_ne
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.bnormalisable_one_zero_pos := _root_.Lightlike.Cosmology.BianchiClassification.bnormalisable_one_zero_pos
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.bnormalisable_two_zero := _root_.Lightlike.Cosmology.BianchiClassification.bnormalisable_two_zero
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.bnormalisable_two_zero_pos := _root_.Lightlike.Cosmology.BianchiClassification.bnormalisable_two_zero_pos

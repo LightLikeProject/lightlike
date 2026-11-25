@@ -12,7 +12,7 @@ noncomputable section
 
 open MeasureTheory Set
 
-namespace Lightlike.Rows.G2_008
+namespace Lightlike.Canonical.ProjectiveLimitIntegral
 
 namespace InvSystem
 
@@ -107,4 +107,14 @@ lemma abs_lam_le (F : S.cylSubalgebra) : |S.lam hS hμ hp F| ≤ ‖(F : C(S.Lim
 
 end InvSystem
 
-end Lightlike.Rows.G2_008
+end Lightlike.Canonical.ProjectiveLimitIntegral
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_008.InvSystem.abs_lam_le := _root_.Lightlike.Canonical.ProjectiveLimitIntegral.InvSystem.abs_lam_le
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_008.InvSystem.exists_cyl := _root_.Lightlike.Canonical.ProjectiveLimitIntegral.InvSystem.exists_cyl
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_008.InvSystem.integrable_cont := _root_.Lightlike.Canonical.ProjectiveLimitIntegral.InvSystem.integrable_cont
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_008.InvSystem.lam := _root_.Lightlike.Canonical.ProjectiveLimitIntegral.InvSystem.lam
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_008.InvSystem.lamFun := _root_.Lightlike.Canonical.ProjectiveLimitIntegral.InvSystem.lamFun
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_008.InvSystem.lamFun_cyl := _root_.Lightlike.Canonical.ProjectiveLimitIntegral.InvSystem.lamFun_cyl
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_008.InvSystem.lam_cyl := _root_.Lightlike.Canonical.ProjectiveLimitIntegral.InvSystem.lam_cyl

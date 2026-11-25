@@ -40,7 +40,7 @@ Supporting definitions; no catalogue entry.
 
 noncomputable section
 
-namespace Lightlike.Rows.G2_011
+namespace Lightlike.Canonical.ALRepresentation
 
 variable (K : Type*) [Group K] [TopologicalSpace K] [IsTopologicalGroup K]
 
@@ -104,4 +104,20 @@ theorem HFRep.state_translate (ρ : HFRep K H) {Ω : H} (hΩ : FluxInvariant ρ 
   nth_rewrite 1 [← hΩ k]
   exact LinearIsometryEquiv.inner_map_map _ _ _
 
-end Lightlike.Rows.G2_011
+end Lightlike.Canonical.ALRepresentation
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.FluxInvariant := _root_.Lightlike.Canonical.ALRepresentation.FluxInvariant
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.HFRep := _root_.Lightlike.Canonical.ALRepresentation.HFRep
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.HFRep.covariant := _root_.Lightlike.Canonical.ALRepresentation.HFRep.covariant
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.HFRep.flux := _root_.Lightlike.Canonical.ALRepresentation.HFRep.flux
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.HFRep.hol := _root_.Lightlike.Canonical.ALRepresentation.HFRep.hol
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.HFRep.state := _root_.Lightlike.Canonical.ALRepresentation.HFRep.state
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.HFRep.state_star_mul_self := _root_.Lightlike.Canonical.ALRepresentation.HFRep.state_star_mul_self
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.HFRep.state_translate := _root_.Lightlike.Canonical.ALRepresentation.HFRep.state_translate
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.translate := _root_.Lightlike.Canonical.ALRepresentation.translate
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.translate_apply := _root_.Lightlike.Canonical.ALRepresentation.translate_apply
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.translate_mul := _root_.Lightlike.Canonical.ALRepresentation.translate_mul
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.translate_one := _root_.Lightlike.Canonical.ALRepresentation.translate_one
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.translate_star_mul := _root_.Lightlike.Canonical.ALRepresentation.translate_star_mul

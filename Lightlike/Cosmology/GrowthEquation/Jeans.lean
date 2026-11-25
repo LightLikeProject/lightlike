@@ -9,7 +9,7 @@ import Lightlike.Cosmology.GrowthEquation.Linearized
 (Bernardeau et al. 2002, Section 2.3, source key `bernardeau-2002`).
 -/
 
-namespace Lightlike.Rows.G1_032
+namespace Lightlike.Cosmology.GrowthEquation
 
 /-- Squared Jeans wavenumber `k_J² = 4πGρ/c_s²`. -/
 noncomputable def jeansWavenumberSq (ρ G cs : ℝ) : ℝ := 4 * Real.pi * G * ρ / cs ^ 2
@@ -78,4 +78,13 @@ theorem jeans_exponential {ω2 γ : ℝ} (hγ : γ ^ 2 = -ω2) (t : ℝ) :
   rw [this, hγ]
   ring
 
-end Lightlike.Rows.G1_032
+end Lightlike.Cosmology.GrowthEquation
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_032.cs_sq_mul_jeans := _root_.Lightlike.Cosmology.GrowthEquation.cs_sq_mul_jeans
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_032.growth_equation_mode := _root_.Lightlike.Cosmology.GrowthEquation.growth_equation_mode
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_032.jeansWavenumberSq := _root_.Lightlike.Cosmology.GrowthEquation.jeansWavenumberSq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_032.jeans_coeff_neg_iff := _root_.Lightlike.Cosmology.GrowthEquation.jeans_coeff_neg_iff
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_032.jeans_coeff_pos_iff := _root_.Lightlike.Cosmology.GrowthEquation.jeans_coeff_pos_iff
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_032.jeans_exponential := _root_.Lightlike.Cosmology.GrowthEquation.jeans_exponential

@@ -27,7 +27,7 @@ This file gives the process and, by Fubini over the mixing law, the means of the
 
 open MeasureTheory ProbabilityTheory NNReal
 
-namespace Lightlike.Rows.G2_063
+namespace Lightlike.CausalSets.PoissonProcessCounts
 
 variable {α : Type*} [MeasurableSpace α]
 
@@ -99,4 +99,13 @@ theorem integral_poissonProcess_pairCount (lam : ℝ≥0) (ν : Measure α) [IsP
   simp_rw [integral_pairCount ν hR]
   rw [integral_mul_const, integral_poissonMeasure_descFactorial]
 
-end Lightlike.Rows.G2_063
+end Lightlike.CausalSets.PoissonProcessCounts
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.integral_poissonProcess_of_bound := _root_.Lightlike.CausalSets.PoissonProcessCounts.integral_poissonProcess_of_bound
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.integral_poissonProcess_pairCount := _root_.Lightlike.CausalSets.PoissonProcessCounts.integral_poissonProcess_pairCount
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.integral_poissonProcess_ptCount := _root_.Lightlike.CausalSets.PoissonProcessCounts.integral_poissonProcess_ptCount
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.pairCount_le := _root_.Lightlike.CausalSets.PoissonProcessCounts.pairCount_le
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.poissonProcess := _root_.Lightlike.CausalSets.PoissonProcessCounts.poissonProcess
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.ptCount_le := _root_.Lightlike.CausalSets.PoissonProcessCounts.ptCount_le

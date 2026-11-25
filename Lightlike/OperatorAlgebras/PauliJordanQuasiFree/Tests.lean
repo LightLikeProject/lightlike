@@ -11,7 +11,7 @@ import Lightlike.OperatorAlgebras.PauliJordanQuasiFree.Final
 
 open scoped Matrix MatrixOrder ComplexOrder
 
-namespace Lightlike.Rows.G2_077
+namespace Lightlike.OperatorAlgebras.PauliJordanQuasiFree
 
 /-- The standard `2 × 2` antisymmetric matrix. -/
 def J2 : Matrix (Fin 2) (Fin 2) ℝ := !![0, 1; -1, 0]
@@ -44,4 +44,14 @@ lemma not_antisymm_sym : ¬ ((!![0, 1; 1, 0] : Matrix (Fin 2) (Fin 2) ℝ)ᵀ = 
   simp at this
   norm_num at this
 
-end Lightlike.Rows.G2_077
+end Lightlike.OperatorAlgebras.PauliJordanQuasiFree
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.J2 := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.J2
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.J2_antisymm := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.J2_antisymm
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.J2_expectation := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.J2_expectation
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.J2_quadratic := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.J2_quadratic
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.J2_transpose_mul := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.J2_transpose_mul
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.absRe_J2 := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.absRe_J2
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.not_antisymm_sym := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.not_antisymm_sym

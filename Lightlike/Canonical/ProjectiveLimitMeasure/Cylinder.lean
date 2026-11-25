@@ -13,7 +13,7 @@ Hausdorff, and the *cylinder functions* `g ∘ proj i` (`g` continuous on `X i`)
 
 open MeasureTheory
 
-namespace Lightlike.Rows.G2_009
+namespace Lightlike.Canonical.ProjectiveLimitMeasure
 
 universe u v
 
@@ -110,4 +110,18 @@ theorem topologicalClosure_cylAlgebra [∀ i, CompactSpace (X i)] [∀ i, T2Spac
    ContinuousMap.subalgebra_topologicalClosure_eq_top_of_separatesPoints _
     (separatesPoints_cylAlgebra f hf)
 
-end Lightlike.Rows.G2_009
+end Lightlike.Canonical.ProjectiveLimitMeasure
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.compactSpace_lim := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.compactSpace_lim
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.cyl := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.cyl
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.cylAlgebra := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.cylAlgebra
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.cyl_apply := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.cyl_apply
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.cyl_eq_cyl_comp := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.cyl_eq_cyl_comp
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.isClosed_lim := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.isClosed_lim
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.mem_cylAlgebra := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.mem_cylAlgebra
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.projC := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.projC
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.projC_apply := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.projC_apply
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.separatesPoints_cylAlgebra := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.separatesPoints_cylAlgebra
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.topologicalClosure_cylAlgebra := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.topologicalClosure_cylAlgebra

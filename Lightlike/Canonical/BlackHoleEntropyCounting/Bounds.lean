@@ -10,7 +10,7 @@ import Lightlike.Canonical.BlackHoleEntropyCounting.Num
 
 open Real
 
-namespace Lightlike.Rows.G2_016
+namespace Lightlike.Canonical.BlackHoleEntropyCounting
 
 /-- Truncated series `1 - v/2 - v²/8 - v³/16` of `√(1-v)`. -/
 noncomputable def Pp (v : ℝ) : ℝ := 1 - v / 2 - v ^ 2 / 8 - v ^ 3 / 16
@@ -160,4 +160,22 @@ theorem countSum_two_gt : 1 < countSum (fun _ => (2 : ℝ)) (2374 / 10000) := by
   unfold countSum
   linarith
 
-end Lightlike.Rows.G2_016
+end Lightlike.Canonical.BlackHoleEntropyCounting
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.Pp := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.Pp
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.Pp_le_one := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.Pp_le_one
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.Pp_sq_ge := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.Pp_sq_ge
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.Pp_sq_le := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.Pp_sq_le
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.areaLabel_eq := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.areaLabel_eq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.areaLabel_le_tLab := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.areaLabel_le_tLab
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.countSum_two_gt := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.countSum_two_gt
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.lowTerm := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.lowTerm
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.lowTerm_le := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.lowTerm_le
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.qLo_le_exp := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.qLo_le_exp
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.sLab := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.sLab
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.sLab_le_areaLabel := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.sLab_le_areaLabel
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.sLab_le_self := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.sLab_le_self
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.tLab := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.tLab
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.tLab_le_self := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.tLab_le_self

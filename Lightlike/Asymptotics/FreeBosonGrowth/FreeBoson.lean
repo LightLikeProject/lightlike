@@ -16,7 +16,7 @@ open scoped PowerSeries.WithPiTopology
 
 noncomputable section
 
-namespace Lightlike.SP3Row
+namespace Lightlike.Asymptotics.FreeBosonGrowth
 
 /-- Product of two power series with weighted-absolutely-summable coefficients. -/
 lemma summable_tsum_mul {q : ℝ} {A B : PowerSeries ℝ}
@@ -149,4 +149,14 @@ lemma coeff_prodGeom (N n : ℕ) :
     have hc : ¬ (i + 1 ≤ N) := by omega
     simp only [hc, ↓reduceIte]
 
-end Lightlike.SP3Row
+end Lightlike.Asymptotics.FreeBosonGrowth
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.SP3Row.coeff_geomX := _root_.Lightlike.Asymptotics.FreeBosonGrowth.coeff_geomX
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.SP3Row.coeff_prodGeom := _root_.Lightlike.Asymptotics.FreeBosonGrowth.coeff_prodGeom
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.SP3Row.geomX := _root_.Lightlike.Asymptotics.FreeBosonGrowth.geomX
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.SP3Row.geomX_ev := _root_.Lightlike.Asymptotics.FreeBosonGrowth.geomX_ev
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.SP3Row.prodGeom := _root_.Lightlike.Asymptotics.FreeBosonGrowth.prodGeom
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.SP3Row.prodGeom_ev := _root_.Lightlike.Asymptotics.FreeBosonGrowth.prodGeom_ev
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.SP3Row.summable_tsum_mul := _root_.Lightlike.Asymptotics.FreeBosonGrowth.summable_tsum_mul

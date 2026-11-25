@@ -13,7 +13,7 @@ Supporting lemmas for the spin-network basis theorem; no catalogue entry.
 
 open MeasureTheory
 
-namespace Lightlike.Rows.G2_010
+namespace Lightlike.Canonical.SpinNetworkBasis
 
 open Lightlike Lightlike.Spin4 Lightlike.HarmonicAnalysis
 
@@ -108,4 +108,15 @@ lemma gauge_mem_Wn (g : V → SU2) (n : E → ℕ) {v : Lp ℂ 2 (haarPi E)} (hv
 
 end
 
-end Lightlike.Rows.G2_010
+end Lightlike.Canonical.SpinNetworkBasis
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.Wn := _root_.Lightlike.Canonical.SpinNetworkBasis.Wn
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.continuous_act := _root_.Lightlike.Canonical.SpinNetworkBasis.continuous_act
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.gauge_mem_Wn := _root_.Lightlike.Canonical.SpinNetworkBasis.gauge_mem_Wn
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.gauge_phiLp_mem_Wn := _root_.Lightlike.Canonical.SpinNetworkBasis.gauge_phiLp_mem_Wn
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.gauge_toLp := _root_.Lightlike.Canonical.SpinNetworkBasis.gauge_toLp
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.phiEdge_mul := _root_.Lightlike.Canonical.SpinNetworkBasis.phiEdge_mul
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.phiLp_mem_Wn := _root_.Lightlike.Canonical.SpinNetworkBasis.phiLp_mem_Wn
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.phi_act := _root_.Lightlike.Canonical.SpinNetworkBasis.phi_act

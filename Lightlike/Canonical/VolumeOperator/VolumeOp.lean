@@ -17,7 +17,7 @@ different results on any eigenvector with nonzero eigenvalue (`volumeOp_ne_of_ne
 
 open Matrix
 
-namespace Lightlike.Rows.G2_014
+namespace Lightlike.Canonical.VolumeOperator
 
 variable {K : ℕ} {n : Fin K → ℕ}
 
@@ -132,4 +132,15 @@ theorem volumeOp_ne_of_ne {κ κ' : ℝ} (hκ : κ ≠ κ') (s : Fin K → Fin K
     exact abs_pos.mpr hμ
   exact hκ (mul_right_cancel₀ hs h3)
 
-end Lightlike.Rows.G2_014
+end Lightlike.Canonical.VolumeOperator
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.Qnode := _root_.Lightlike.Canonical.VolumeOperator.Qnode
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.Qnode_isHermitian := _root_.Lightlike.Canonical.VolumeOperator.Qnode_isHermitian
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.Qnode_three := _root_.Lightlike.Canonical.VolumeOperator.Qnode_three
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.cfc_mulVec_of_eigenvector := _root_.Lightlike.Canonical.VolumeOperator.cfc_mulVec_of_eigenvector
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.volumeOp := _root_.Lightlike.Canonical.VolumeOperator.volumeOp
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.volumeOp_mulVec_of_eigenvector := _root_.Lightlike.Canonical.VolumeOperator.volumeOp_mulVec_of_eigenvector
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.volumeOp_ne_of_ne := _root_.Lightlike.Canonical.VolumeOperator.volumeOp_ne_of_ne
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.volumeOp_three_mulVec_eq_zero := _root_.Lightlike.Canonical.VolumeOperator.volumeOp_three_mulVec_eq_zero

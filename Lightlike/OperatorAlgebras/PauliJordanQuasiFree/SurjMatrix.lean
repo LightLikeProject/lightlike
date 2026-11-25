@@ -10,7 +10,7 @@ for every `b` there is a real `y` with `S y = -Δ b`, `Δ y = S b`.
 
 open scoped Matrix MatrixOrder ComplexOrder
 
-namespace Lightlike.Rows.G2_077
+namespace Lightlike.OperatorAlgebras.PauliJordanQuasiFree
 
 variable {ι : Type*} [Fintype ι] [DecidableEq ι] {Δ : Matrix ι ι ℝ}
 
@@ -82,4 +82,15 @@ theorem exists_real_pjPos_eq (hΔ : Δᵀ = -Δ) (v : ι → ℂ) :
   simp only [ofR, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Pi.neg_apply, Complex.ofReal_neg]
   linear_combination (1 / 2 : ℂ) * (↑((Δ *ᵥ fun i => (v i).im) i)) * Complex.I_sq
 
-end Lightlike.Rows.G2_077
+end Lightlike.OperatorAlgebras.PauliJordanQuasiFree
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.absRe_comm := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.absRe_comm
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.absRe_sq := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.absRe_sq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.absRe_transpose := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.absRe_transpose
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.cx_mulVec_ofR := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.cx_mulVec_ofR
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.exists_real_pjPos_eq := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.exists_real_pjPos_eq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.exists_real_solve := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.exists_real_solve
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.inner_toEuclideanLin := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.inner_toEuclideanLin
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.ofR := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.ofR

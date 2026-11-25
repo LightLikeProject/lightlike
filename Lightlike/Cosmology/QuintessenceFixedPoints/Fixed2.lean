@@ -20,7 +20,7 @@ coincide?  Here `γ = 1 + w_m` is the matter parameter and `λ` the slope of the
 * copeland-2006
 -/
 
-namespace Lightlike.Rows.G1_029
+namespace Lightlike.Cosmology.QuintessenceFixedPoints
 
 noncomputable section
 
@@ -101,4 +101,12 @@ theorem scPoint_eq_sfPoint_iff {l γ : ℝ} (hγ : 0 ≤ γ) (hγ2 : γ ≤ 2) (
 
 end
 
-end Lightlike.Rows.G1_029
+end Lightlike.Cosmology.QuintessenceFixedPoints
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.scPoint_eq_sfPoint_iff := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.scPoint_eq_sfPoint_iff
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.scPoint_mem_disc_iff := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.scPoint_mem_disc_iff
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.scPoint_norm_sq := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.scPoint_norm_sq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.sfPoint_mem_disc_iff := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.sfPoint_mem_disc_iff
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.sfPoint_norm_sq := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.sfPoint_norm_sq

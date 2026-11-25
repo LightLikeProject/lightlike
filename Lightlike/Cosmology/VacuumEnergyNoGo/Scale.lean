@@ -18,7 +18,7 @@ is not an adjustment but forces a flat direction (see the `Example` file).
 * `weinberg_vanish`: at a vacuum of a scale-covariant potential of degree `≠ 0`, `V φ = 0`.
 -/
 
-namespace Lightlike.Rows.G1_045
+namespace Lightlike.Cosmology.VacuumEnergyNoGo
 
 variable {ι : Type*} [Fintype ι]
 
@@ -75,4 +75,13 @@ theorem weinberg_vanish {V : (ι → ℝ) → ℝ} {d : ι → ℝ} {deg : ℝ} 
   · exact absurd h' hdeg
   · exact h'
 
-end Lightlike.Rows.G1_045
+end Lightlike.Cosmology.VacuumEnergyNoGo
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_045.ScaleCovariant := _root_.Lightlike.Cosmology.VacuumEnergyNoGo.ScaleCovariant
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_045.fderiv_scale_euler := _root_.Lightlike.Cosmology.VacuumEnergyNoGo.fderiv_scale_euler
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_045.hasDerivAt_scale := _root_.Lightlike.Cosmology.VacuumEnergyNoGo.hasDerivAt_scale
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_045.scale := _root_.Lightlike.Cosmology.VacuumEnergyNoGo.scale
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_045.scale_one := _root_.Lightlike.Cosmology.VacuumEnergyNoGo.scale_one
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_045.weinberg_vanish := _root_.Lightlike.Cosmology.VacuumEnergyNoGo.weinberg_vanish

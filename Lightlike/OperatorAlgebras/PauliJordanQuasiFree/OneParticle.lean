@@ -12,7 +12,7 @@ its range is the real span of the complex subspace `range Q`, i.e. `T` is real-s
 
 open scoped Matrix MatrixOrder ComplexOrder
 
-namespace Lightlike.Rows.G2_077
+namespace Lightlike.OperatorAlgebras.PauliJordanQuasiFree
 
 variable {ι : Type*} [Fintype ι] [DecidableEq ι] {Δ : Matrix ι ι ℝ}
 
@@ -121,4 +121,22 @@ theorem exists_T_eq (hΔ : Δᵀ = -Δ) {w : EuclideanSpace ℂ ι} (hw : w ∈ 
     rw [← Complex.ofReal_mul, mul_inv_cancel₀ (by simp)]; simp
   rw [this, one_smul]
 
-end Lightlike.Rows.G2_077
+end Lightlike.OperatorAlgebras.PauliJordanQuasiFree
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.Tvec := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.Tvec
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.Tvec_mem := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.Tvec_mem
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.embR := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.embR
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.embR_smul := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.embR_smul
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.exists_T_eq := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.exists_T_eq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.im_inner_Tvec := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.im_inner_Tvec
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.inner_Tvec := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.inner_Tvec
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.inner_embR_pjPos := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.inner_embR_pjPos
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.inner_sqrtP := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.inner_sqrtP
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.isSelfAdjoint_sqrtP := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.isSelfAdjoint_sqrtP
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.norm_sq_Tvec := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.norm_sq_Tvec
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.oneParticle := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.oneParticle
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.sqrtP := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.sqrtP
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.sqrtP_eq_of_pjPos_eq := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.sqrtP_eq_of_pjPos_eq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.sqrtP_mul_self := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.sqrtP_mul_self

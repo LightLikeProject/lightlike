@@ -14,7 +14,7 @@ With `S(t) = ∑ₗ (2l+1) e^{-t (l+1/2)²}` we show
 
 open Set Filter Topology
 
-namespace Lightlike.Rows.G1_062
+namespace Lightlike.Geometry.HeatTraceExpansion
 
 /-- The half-integer theta sum `S(t) = ∑ₗ (2l+1) e^{-t (l+1/2)²}`. -/
 noncomputable def thetaHalf (t : ℝ) : ℝ :=
@@ -69,4 +69,13 @@ lemma sphereTrace_eq (t : ℝ) : sphereTrace t = Real.exp (t / 4) * thetaHalf t 
   push_cast
   ring
 
-end Lightlike.Rows.G1_062
+end Lightlike.Geometry.HeatTraceExpansion
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.gu_one_mid := _root_.Lightlike.Geometry.HeatTraceExpansion.gu_one_mid
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.sphereTrace := _root_.Lightlike.Geometry.HeatTraceExpansion.sphereTrace
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.sphereTrace_eq := _root_.Lightlike.Geometry.HeatTraceExpansion.sphereTrace_eq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.thetaHalf := _root_.Lightlike.Geometry.HeatTraceExpansion.thetaHalf
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.thetaHalf_expansion := _root_.Lightlike.Geometry.HeatTraceExpansion.thetaHalf_expansion
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.xs_one_eq := _root_.Lightlike.Geometry.HeatTraceExpansion.xs_one_eq

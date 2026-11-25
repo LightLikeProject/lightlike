@@ -13,7 +13,8 @@ A planning ID is any of:
 
 Under Lightlike/ the check reads every folder and file name, and the namespaces and declaration
 names of the .lean files (from the source text, so it needs no build). Docstrings and comments may
-name IDs. The proof-task statements in Tasks/ are named by their task ID on purpose (`T_QU1_P5`
+name IDs. A deprecated alias that keeps a renamed declaration's old name for one release
+(`@[deprecated (since := "0.4.0")] alias Old := New`) passes when its new name has no ID. The proof-task statements in Tasks/ are named by their task ID on purpose (`T_QU1_P5`
 is their public handle), so there only gap IDs and a `Rows` folder count. A name such as `SixJRow`
 (a row of a recurrence) is mathematics, not a planning ID: only a folder name is checked for a bare
 `Row`.
@@ -37,8 +38,9 @@ MILESTONE_ROW = re.compile(r"^\| ([A-Z]{1,4}[0-9]+[a-z]?) \|", re.M)
 # a name part: an upper-case run with digits (`OP2`, `SF5a`), an upper-case run, a word, digits
 PART = re.compile(r"[A-Z]+[0-9]+[a-z]?(?![a-z])|[A-Z]+(?![a-z])|[A-Z]?[a-z]+|[0-9]+")
 DECL_LINE = re.compile(r"^\s*(?:@\[[^\]]*\]\s*)?(?:(?:private|protected|noncomputable|public|partial|unsafe|nonrec)\s+)*"
-                       r"(namespace|theorem|lemma|def|abbrev|structure|class|inductive|instance|opaque|irreducible_def)"
+                       r"(namespace|theorem|lemma|def|abbrev|structure|class|inductive|instance|opaque|irreducible_def|alias)"
                        r"\s+([^\s:({\[⦃]+)")
+DEPRECATED_ALIAS = re.compile(r"^\s*@\[deprecated\b[^\]]*\]\s*alias\s+\S+\s*:=\s*(\S+)")
 
 
 def milestone_ids(root: pathlib.Path) -> set[str]:
@@ -77,6 +79,9 @@ def check(root: pathlib.Path = ROOT) -> list[str]:
             out.append(f"{rel}: file name has {', '.join(bad)}")
         for n, line in enumerate(p.read_text(encoding="utf-8", errors="replace").splitlines(), 1):
             m = DECL_LINE.match(line)
+            old = DEPRECATED_ALIAS.match(line)
+            if old and not name_ids(old.group(1), ids):
+                continue
             if m:
                 bad = name_ids(m.group(2), ids)
                 if bad:
@@ -118,6 +123,10 @@ def selftest() -> int:
             "Lightlike/TuraevViro/SixJRow.lean": "theorem sixJRow_rec : True := trivial\n-- milestone SF5a, row G1-007, LL-0031\n"
                                                  "/-- see GE3 -/\ntheorem SU2_spin : True := trivial\ntheorem SF5ab : True := trivial\n",
             "Lightlike/Asymptotics/FreeBoson/Growth.lean": "namespace Lightlike.Asymptotics.FreeBosonGrowth\n",
+            "Lightlike/Lorentz/WignerOrbits/Old.lean": '@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_007.t'
+                                                       " := _root_.Lightlike.Lorentz.WignerOrbits.t\n"
+                                                       "alias Lightlike.Lorentz.HARow055.t := t\n"
+                                                       "@[deprecated] alias Lightlike.Rows.G1_007.u := Lightlike.Rows.G1_007.t\n",
             "Tasks/GE/T_GE3_P1.lean": "theorem Lightlike.Tasks.T_GE3_P1 : True := trivial\n",
             "Tasks/GE/T_G1_007.lean": "theorem t : True := trivial\n",
         }
@@ -138,7 +147,10 @@ def selftest() -> int:
                "SixJRow" not in joined and "SU2" not in joined and "SF5ab" not in joined and "FreeBoson" not in joined)
         expect("a task file named by its task ID passes; a gap ID in Tasks fails",
                "T_GE3_P1" not in joined and "Tasks/GE/T_G1_007.lean: name has a gap ID" in joined)
-        expect("nothing else", len(hits) == 10 or print(joined) or False)
+        expect("a deprecated alias keeping an old name passes; a plain alias, or one whose new name has an ID, fails",
+               "Old.lean:1:" not in joined and "Old.lean:2: alias Lightlike.Lorentz.HARow055.t has HARow" in joined
+               and "Old.lean:3: alias Lightlike.Rows.G1_007.u has G1_007" in joined)
+        expect("nothing else", len(hits) == 12 or print(joined) or False)
         (r / "Lightlike").rename(r / "Gone")
         (r / "Tasks").rename(r / "Gone2")
         expect("an empty tree passes", check(r) == [])

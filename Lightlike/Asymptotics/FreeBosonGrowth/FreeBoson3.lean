@@ -18,7 +18,7 @@ open MeasureTheory Set Filter Topology ENNReal
 
 noncomputable section
 
-namespace Lightlike.SP3Row
+namespace Lightlike.Asymptotics.FreeBosonGrowth
 
 /-- The spectral measure of the chiral free boson: `p(n)` states at energy `n`. -/
 def partitionMeasure : Measure ℝ :=
@@ -119,4 +119,16 @@ theorem free_boson_growth :
   filter_upwards [self_mem_nhdsWithin] with β hβ
   rw [log_laplace_partitionMeasure hβ]
 
-end Lightlike.SP3Row
+end Lightlike.Asymptotics.FreeBosonGrowth
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.SP3Row.free_boson_growth := _root_.Lightlike.Asymptotics.FreeBosonGrowth.free_boson_growth
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.SP3Row.integrable_exp_partitionMeasure := _root_.Lightlike.Asymptotics.FreeBosonGrowth.integrable_exp_partitionMeasure
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.SP3Row.laplace_partitionMeasure := _root_.Lightlike.Asymptotics.FreeBosonGrowth.laplace_partitionMeasure
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.SP3Row.lintegral_exp_lt_top := _root_.Lightlike.Asymptotics.FreeBosonGrowth.lintegral_exp_lt_top
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.SP3Row.lintegral_exp_partitionMeasure := _root_.Lightlike.Asymptotics.FreeBosonGrowth.lintegral_exp_partitionMeasure
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.SP3Row.lintegral_partitionMeasure := _root_.Lightlike.Asymptotics.FreeBosonGrowth.lintegral_partitionMeasure
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.SP3Row.log_laplace_partitionMeasure := _root_.Lightlike.Asymptotics.FreeBosonGrowth.log_laplace_partitionMeasure
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.SP3Row.partitionMeasure := _root_.Lightlike.Asymptotics.FreeBosonGrowth.partitionMeasure
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.SP3Row.partitionMeasure_Iio := _root_.Lightlike.Asymptotics.FreeBosonGrowth.partitionMeasure_Iio

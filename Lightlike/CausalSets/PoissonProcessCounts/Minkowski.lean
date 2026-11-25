@@ -27,7 +27,7 @@ that two uniform points of `A` are related.
 
 open MeasureTheory NNReal Lightlike.CausalSets
 
-namespace Lightlike.Rows.G2_063
+namespace Lightlike.CausalSets.PoissonProcessCounts
 
 /-- **Expected relation count of a Poisson sprinkling into a region.** -/
 theorem expected_relations_poisson_region {d : ℕ} (lam : ℝ≥0) (A : Set (Fin (d + 1) → ℝ))
@@ -69,4 +69,12 @@ theorem expected_relations_poisson_rect (lam : ℝ≥0) :
   have h := expected_relations_poisson_region (d := 1) lam rectSet
   exact h.trans (by rw [regionRelProb_rect]; ring)
 
-end Lightlike.Rows.G2_063
+end Lightlike.CausalSets.PoissonProcessCounts
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.expected_relations_poisson_diamond_four := _root_.Lightlike.CausalSets.PoissonProcessCounts.expected_relations_poisson_diamond_four
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.expected_relations_poisson_diamond_two := _root_.Lightlike.CausalSets.PoissonProcessCounts.expected_relations_poisson_diamond_two
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.expected_relations_poisson_rect := _root_.Lightlike.CausalSets.PoissonProcessCounts.expected_relations_poisson_rect
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.expected_relations_poisson_region := _root_.Lightlike.CausalSets.PoissonProcessCounts.expected_relations_poisson_region
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.isProbabilityMeasure_regionMeasure_rect := _root_.Lightlike.CausalSets.PoissonProcessCounts.isProbabilityMeasure_regionMeasure_rect

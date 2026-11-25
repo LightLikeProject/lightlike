@@ -12,7 +12,7 @@ noncomputable section
 
 open MeasureTheory Set
 
-namespace Lightlike.Rows.G2_008
+namespace Lightlike.Canonical.ProjectiveLimitIntegral
 
 namespace InvSystem
 
@@ -48,4 +48,10 @@ lemma lamL_cyl (i : ι) (φ : C(X i, ℝ)) : S.lamL hS hμ hp (S.cyl i φ) = ∫
 
 end InvSystem
 
-end Lightlike.Rows.G2_008
+end Lightlike.Canonical.ProjectiveLimitIntegral
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_008.InvSystem.denseRange_cylSubalgebra_val := _root_.Lightlike.Canonical.ProjectiveLimitIntegral.InvSystem.denseRange_cylSubalgebra_val
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_008.InvSystem.lamL := _root_.Lightlike.Canonical.ProjectiveLimitIntegral.InvSystem.lamL
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_008.InvSystem.lamL_cyl := _root_.Lightlike.Canonical.ProjectiveLimitIntegral.InvSystem.lamL_cyl

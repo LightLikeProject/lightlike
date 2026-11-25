@@ -8,7 +8,7 @@ import Lightlike.OperatorAlgebras.TestsFockReduction
 Row G1-049 (milestone SC1).  For a Rindler mode of frequency `ω > 0` and acceleration `a > 0` the Bogoliubov
 coefficients between the Minkowski and the Rindler modes are
 `α = 1/√(1 - e^{-2πω/a})` and `β = e^{-πω/a} α` (Unruh 1976; Crispino-Higuchi-Matsas 2008, §II).
-The ratio `β/α = e^{-πω/a}` is the weight found in `Lightlike.Rows.G1_049.unruhMode_rindler_left`.
+The ratio `β/α = e^{-πω/a}` is the weight found in `Lightlike.OperatorAlgebras.UnruhEffect.unruhMode_rindler_left`.
 Here the coefficients are written through the Planck factor `n(ω) = 1/(e^{2πω/a} - 1)`:
 `β² = n`, `α² = 1 + n`, so `α² - β² = 1` and `β/α = e^{-πω/a}`.  The one-mode squeezing with these
 coefficients (`Bogoliubov.squeeze`) has `‖β z‖² = n ‖z‖²`.  Writing `2πω/a = ω/T`, the factor
@@ -24,7 +24,7 @@ coefficients (`Bogoliubov.squeeze`) has `‖β z‖² = n ‖z‖²`.  Writing `
 * `betaPart_id`, `squeeze_one_zero_betaPart`: the inertial (trivial) transformation has `β = 0`.
 -/
 
-namespace Lightlike.Rows.G1_049
+namespace Lightlike.OperatorAlgebras.UnruhEffect
 
 open Real
 open scoped Complex
@@ -145,4 +145,23 @@ theorem squeeze_one_zero_betaPart (z : ℂ) :
   rw [Bogoliubov.squeeze_betaPart]
   simp
 
-end Lightlike.Rows.G1_049
+end Lightlike.OperatorAlgebras.UnruhEffect
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_049.betaPart_id := _root_.Lightlike.OperatorAlgebras.UnruhEffect.betaPart_id
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_049.one_lt_exp_planck := _root_.Lightlike.OperatorAlgebras.UnruhEffect.one_lt_exp_planck
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_049.planck := _root_.Lightlike.OperatorAlgebras.UnruhEffect.planck
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_049.planck_eq_bose := _root_.Lightlike.OperatorAlgebras.UnruhEffect.planck_eq_bose
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_049.planck_pos := _root_.Lightlike.OperatorAlgebras.UnruhEffect.planck_pos
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_049.planck_tendsto_zero := _root_.Lightlike.OperatorAlgebras.UnruhEffect.planck_tendsto_zero
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_049.squeeze_one_zero_betaPart := _root_.Lightlike.OperatorAlgebras.UnruhEffect.squeeze_one_zero_betaPart
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_049.unruhAlpha := _root_.Lightlike.OperatorAlgebras.UnruhEffect.unruhAlpha
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_049.unruhAlpha_sq_sub_unruhBeta_sq := _root_.Lightlike.OperatorAlgebras.UnruhEffect.unruhAlpha_sq_sub_unruhBeta_sq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_049.unruhBeta := _root_.Lightlike.OperatorAlgebras.UnruhEffect.unruhBeta
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_049.unruhBeta_eq_exp_mul_unruhAlpha := _root_.Lightlike.OperatorAlgebras.UnruhEffect.unruhBeta_eq_exp_mul_unruhAlpha
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_049.unruhBeta_sq := _root_.Lightlike.OperatorAlgebras.UnruhEffect.unruhBeta_sq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_049.unruhSqueeze := _root_.Lightlike.OperatorAlgebras.UnruhEffect.unruhSqueeze
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_049.unruhSqueeze_alphaPart := _root_.Lightlike.OperatorAlgebras.UnruhEffect.unruhSqueeze_alphaPart
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_049.unruhSqueeze_norm_betaPart_sq := _root_.Lightlike.OperatorAlgebras.UnruhEffect.unruhSqueeze_norm_betaPart_sq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_049.unruhTemp := _root_.Lightlike.OperatorAlgebras.UnruhEffect.unruhTemp

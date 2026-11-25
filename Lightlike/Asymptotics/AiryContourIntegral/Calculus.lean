@@ -7,7 +7,7 @@ import Lightlike.Asymptotics.AiryContourIntegral.Basic
 differentiable in `z` with derivative `i · airyMoment α (n+1) z`.
 -/
 
-namespace Lightlike.Rows.G2_020
+namespace Lightlike.Asymptotics.AiryContourIntegral
 
 open Complex MeasureTheory Metric
 
@@ -82,4 +82,11 @@ lemma hasDerivAt_airyMoment {α : ℝ} (hα : 0 < α) (n : ℕ) (z : ℂ) :
   rw [integral_const_mul] at this
   exact this
 
-end Lightlike.Rows.G2_020
+end Lightlike.Asymptotics.AiryContourIntegral
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_020.airyMoment := _root_.Lightlike.Asymptotics.AiryContourIntegral.airyMoment
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_020.hasDerivAt_airyIntegrand := _root_.Lightlike.Asymptotics.AiryContourIntegral.hasDerivAt_airyIntegrand
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_020.hasDerivAt_airyMoment := _root_.Lightlike.Asymptotics.AiryContourIntegral.hasDerivAt_airyMoment
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_020.norm_deriv_airyIntegrand_le := _root_.Lightlike.Asymptotics.AiryContourIntegral.norm_deriv_airyIntegrand_le

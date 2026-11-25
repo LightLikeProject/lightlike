@@ -14,7 +14,7 @@ open scoped Nat
 
 public section
 
-namespace Lightlike.Rows.G1_033
+namespace Lightlike.Cosmology.BoseIntegral
 
 /-- The Gamma integral for integer powers: `∫₀^∞ xᵏ e^{-c x} dx = k!/c^{k+1}`, `c > 0`. -/
 lemma integral_pow_mul_exp_neg (k : ℕ) {c : ℝ} (hc : 0 < c) :
@@ -104,4 +104,13 @@ theorem integral_cube_div_exp_sub_one :
   norm_num [Nat.factorial]
   ring
 
-end Lightlike.Rows.G1_033
+end Lightlike.Cosmology.BoseIntegral
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_033.hasSum_exp_neg_succ := _root_.Lightlike.Cosmology.BoseIntegral.hasSum_exp_neg_succ
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_033.integrableOn_pow_mul_exp_neg := _root_.Lightlike.Cosmology.BoseIntegral.integrableOn_pow_mul_exp_neg
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_033.integral_cube_div_exp_sub_one := _root_.Lightlike.Cosmology.BoseIntegral.integral_cube_div_exp_sub_one
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_033.integral_pow_div_exp_sub_one := _root_.Lightlike.Cosmology.BoseIntegral.integral_pow_div_exp_sub_one
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_033.integral_pow_mul_exp_neg := _root_.Lightlike.Cosmology.BoseIntegral.integral_pow_mul_exp_neg
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_033.tsum_one_div_succ_pow_four := _root_.Lightlike.Cosmology.BoseIntegral.tsum_one_div_succ_pow_four

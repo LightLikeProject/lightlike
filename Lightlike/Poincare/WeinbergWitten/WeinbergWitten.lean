@@ -19,7 +19,7 @@ The passage from the matrix element of the stress tensor to the Breit-frame tens
 (where `M → p^μ p^ν ≠ 0` by the normalisation of the energy–momentum), are not formalised here.
 -/
 
-namespace Lightlike.Rows.G3_253
+namespace Lightlike.Poincare.WeinbergWitten
 
 open Matrix
 
@@ -165,4 +165,14 @@ theorem ww_vanishing (M : Matrix (Fin 4) (Fin 4) ℂ) (k : ℤ) (hk : 2 < |k|)
 
 end
 
-end Lightlike.Rows.G3_253
+end Lightlike.Poincare.WeinbergWitten
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_253.bil_covariance := _root_.Lightlike.Poincare.WeinbergWitten.bil_covariance
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_253.exists_angle_ne := _root_.Lightlike.Poincare.WeinbergWitten.exists_angle_ne
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_253.wBasis := _root_.Lightlike.Poincare.WeinbergWitten.wBasis
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_253.wWeight := _root_.Lightlike.Poincare.WeinbergWitten.wWeight
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_253.ww_vanishing := _root_.Lightlike.Poincare.WeinbergWitten.ww_vanishing
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_253.zRot := _root_.Lightlike.Poincare.WeinbergWitten.zRot
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_253.zRot_transpose_wBasis := _root_.Lightlike.Poincare.WeinbergWitten.zRot_transpose_wBasis

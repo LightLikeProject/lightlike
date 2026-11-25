@@ -17,7 +17,7 @@ For a Hilbert basis `b`, real eigenvalues `ev` and weights `p : ι → ℂ`, the
 No summability of `p` is needed: on matrix units the series has one term.
 -/
 
-namespace Lightlike.Rows.G1_053
+namespace Lightlike.OperatorAlgebras.KMSInfiniteDimensions
 
 open Lightlike.OperatorAlgebras.GibbsKMS
 open scoped InnerProductSpace
@@ -97,4 +97,15 @@ theorem weights_of_isKMSState (b : HilbertBasis ι ℂ H) (ev : ι → ℝ) (p :
   rw [h2] at h1
   simpa using h1.symm
 
-end Lightlike.Rows.G1_053
+end Lightlike.OperatorAlgebras.KMSInfiniteDimensions
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_053.diagState := _root_.Lightlike.OperatorAlgebras.KMSInfiniteDimensions.diagState
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_053.diagState_mul_rankOne := _root_.Lightlike.OperatorAlgebras.KMSInfiniteDimensions.diagState_mul_rankOne
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_053.diagState_rankOne_mul := _root_.Lightlike.OperatorAlgebras.KMSInfiniteDimensions.diagState_rankOne_mul
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_053.inner_basis_basis := _root_.Lightlike.OperatorAlgebras.KMSInfiniteDimensions.inner_basis_basis
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_053.norm_basis := _root_.Lightlike.OperatorAlgebras.KMSInfiniteDimensions.norm_basis
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_053.rankOne := _root_.Lightlike.OperatorAlgebras.KMSInfiniteDimensions.rankOne
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_053.rankOne_apply := _root_.Lightlike.OperatorAlgebras.KMSInfiniteDimensions.rankOne_apply
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_053.weights_of_isKMSState := _root_.Lightlike.OperatorAlgebras.KMSInfiniteDimensions.weights_of_isKMSState

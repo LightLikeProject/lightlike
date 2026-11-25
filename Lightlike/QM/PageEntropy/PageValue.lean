@@ -18,7 +18,7 @@ random-state ensemble:
 * `pageValue_wrong_two_two`: dropping the correction `(m − 1)/(2n)` gives `7/12 ≠ 1/3`.
 -/
 
-namespace Lightlike.Rows.G1_069
+namespace Lightlike.QM.PageEntropy
 
 open Finset
 
@@ -51,4 +51,12 @@ theorem sVN_traceRight_prod_pure {d₁ d₂ : Type*} [Fintype d₁] [Fintype d�
   rw [MState.pure_prod_pure, MState.traceRight_prod_eq]
   exact Sᵥₙ_of_pure_zero ψ₁
 
-end Lightlike.Rows.G1_069
+end Lightlike.QM.PageEntropy
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_069.pageValue := _root_.Lightlike.QM.PageEntropy.pageValue
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_069.pageValue_one_left := _root_.Lightlike.QM.PageEntropy.pageValue_one_left
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_069.pageValue_two_two := _root_.Lightlike.QM.PageEntropy.pageValue_two_two
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_069.pageValue_wrong_two_two := _root_.Lightlike.QM.PageEntropy.pageValue_wrong_two_two
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_069.sVN_traceRight_prod_pure := _root_.Lightlike.QM.PageEntropy.sVN_traceRight_prod_pure

@@ -13,7 +13,7 @@ projective limit of Haar measures (`ashtekar-lewandowski-1995`, §3.3).
 
 open MeasureTheory
 
-namespace Lightlike.Rows.G2_009
+namespace Lightlike.Canonical.ProjectiveLimitMeasure
 
 variable {G : Type} [MeasurableSpace G]
 
@@ -114,4 +114,13 @@ theorem exists_isLimit_haar [Group G] [TopologicalSpace G] [IsTopologicalGroup G
     isProbabilityMeasure_haar
   exists_isLimit_pi _
 
-end Lightlike.Rows.G2_009
+end Lightlike.Canonical.ProjectiveLimitMeasure
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.consistent_pi := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.consistent_pi
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.exists_isLimit_haar := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.exists_isLimit_haar
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.exists_isLimit_pi := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.exists_isLimit_pi
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.isProbabilityMeasure_haar := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.isProbabilityMeasure_haar
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.pi_map_comp_injective := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.pi_map_comp_injective
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.surjective_forget := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.surjective_forget

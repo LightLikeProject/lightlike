@@ -13,7 +13,7 @@ open scoped ContDiff
 
 noncomputable section
 
-namespace Lightlike.Rows.G1_031
+namespace Lightlike.Cosmology.LinearizedTensorModes
 
 open Lightlike Lightlike.Cosmology
 
@@ -56,4 +56,10 @@ theorem scalar_conf (hfa : ContDiff ℝ ∞ a) (hne : ∀ t, a t ≠ 0) :
   field_simp
   ring
 
-end Lightlike.Rows.G1_031
+end Lightlike.Cosmology.LinearizedTensorModes
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_031.pd_christoffel_conf := _root_.Lightlike.Cosmology.LinearizedTensorModes.pd_christoffel_conf
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_031.ricci_conf := _root_.Lightlike.Cosmology.LinearizedTensorModes.ricci_conf
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_031.scalar_conf := _root_.Lightlike.Cosmology.LinearizedTensorModes.scalar_conf

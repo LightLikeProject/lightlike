@@ -10,15 +10,15 @@ normal forms `0` (Bianchi I), `diag(1,0,0)` (II), `diag(1,-1,0)` (VI₀), `diag(
 
 ## Main results
 
-* `Lightlike.Rows.G1_039.exists_sign_scale`: rescaling a diagonal `n` to entries in `{0, ±1}`.
-* `Lightlike.Rows.G1_039.exists_classA_normal`: the six class A normal forms.
+* `Lightlike.Cosmology.BianchiClassification.exists_sign_scale`: rescaling a diagonal `n` to entries in `{0, ±1}`.
+* `Lightlike.Cosmology.BianchiClassification.exists_classA_normal`: the six class A normal forms.
 
 ## References
 
 * heinzle-uggla-2009a (Section 3)
 -/
 
-namespace Lightlike.Rows.G1_039
+namespace Lightlike.Cosmology.BianchiClassification
 
 open Matrix
 
@@ -180,4 +180,23 @@ theorem exists_classA_normal (l : Fin 3 → ℝ) :
   rw [e1, e2] at h1
   exact h1
 
-end Lightlike.Rows.G1_039
+end Lightlike.Cosmology.BianchiClassification
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.ClassAGood := _root_.Lightlike.Cosmology.BianchiClassification.ClassAGood
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.ClassAGood.neg := _root_.Lightlike.Cosmology.BianchiClassification.ClassAGood.neg
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.ClassAGood.sw01 := _root_.Lightlike.Cosmology.BianchiClassification.ClassAGood.sw01
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.ClassAGood.sw12 := _root_.Lightlike.Cosmology.BianchiClassification.ClassAGood.sw12
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.ClassAGoodZ := _root_.Lightlike.Cosmology.BianchiClassification.ClassAGoodZ
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.ClassAGoodZ.good := _root_.Lightlike.Cosmology.BianchiClassification.ClassAGoodZ.good
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.ClassAGoodZ.neg := _root_.Lightlike.Cosmology.BianchiClassification.ClassAGoodZ.neg
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.ClassAGoodZ.sw01 := _root_.Lightlike.Cosmology.BianchiClassification.ClassAGoodZ.sw01
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.ClassAGoodZ.sw12 := _root_.Lightlike.Cosmology.BianchiClassification.ClassAGoodZ.sw12
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.ClassANormal := _root_.Lightlike.Cosmology.BianchiClassification.ClassANormal
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.classAGoodZ_all := _root_.Lightlike.Cosmology.BianchiClassification.classAGoodZ_all
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.classAGood_all := _root_.Lightlike.Cosmology.BianchiClassification.classAGood_all
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.classAGood_base := _root_.Lightlike.Cosmology.BianchiClassification.classAGood_base
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.exists_classA_normal := _root_.Lightlike.Cosmology.BianchiClassification.exists_classA_normal
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.exists_scale_one := _root_.Lightlike.Cosmology.BianchiClassification.exists_scale_one
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.exists_sign_scale := _root_.Lightlike.Cosmology.BianchiClassification.exists_sign_scale

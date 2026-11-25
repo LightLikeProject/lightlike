@@ -17,7 +17,7 @@ compact spaces; the existence direction is in later files of this folder.
 
 open MeasureTheory
 
-namespace Lightlike.Rows.G2_009
+namespace Lightlike.Canonical.ProjectiveLimitMeasure
 
 universe u v
 
@@ -93,4 +93,21 @@ theorem not_exists_isLimit_of_measure_univ_ne {μ : ∀ i, Measure (X i)} {i j :
     (h : μ i Set.univ ≠ μ j Set.univ) : ¬ ∃ ν : Measure (Lim f), IsLimit f ν μ :=
   fun ⟨_, hν⟩ => h ((hν.measure_univ i).trans (hν.measure_univ j).symm)
 
-end Lightlike.Rows.G2_009
+end Lightlike.Canonical.ProjectiveLimitMeasure
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.Consistent := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.Consistent
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.IsLimit := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.IsLimit
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.IsLimit.consistent := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.IsLimit.consistent
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.IsLimit.measure_univ := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.IsLimit.measure_univ
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.IsProjSystem := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.IsProjSystem
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.IsProjSystem.comp := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.IsProjSystem.comp
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.IsProjSystem.cont := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.IsProjSystem.cont
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.IsProjSystem.id := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.IsProjSystem.id
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.Lim := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.Lim
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.continuous_proj := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.continuous_proj
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.not_exists_isLimit_of_measure_univ_ne := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.not_exists_isLimit_of_measure_univ_ne
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.not_exists_isLimit_of_not_consistent := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.not_exists_isLimit_of_not_consistent
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.proj := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.proj
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.proj_comp := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.proj_comp

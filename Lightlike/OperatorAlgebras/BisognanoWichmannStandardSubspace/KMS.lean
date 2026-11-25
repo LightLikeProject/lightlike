@@ -21,7 +21,7 @@ This is the (model-level) KMS boundary relation at inverse temperature `2π`.
 open MeasureTheory Complex Set Filter Topology
 open scoped Real
 
-namespace Lightlike.Rows.G1_054
+namespace Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace
 
 variable {φ : ℝ → ℂ}
 
@@ -65,4 +65,9 @@ theorem laplace_sub_two_pi
   simp only [hw, map_neg, map_mul, Complex.conj_ofReal, Complex.conj_I, map_ofNat]
   ring
 
-end Lightlike.Rows.G1_054
+end Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.integral_conj_neg := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.integral_conj_neg
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.laplace_sub_two_pi := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.laplace_sub_two_pi

@@ -17,7 +17,7 @@ current; it is proved from the derivatives in a later file). Under it the densit
 Supporting lemmas; no catalogue entry.
 -/
 
-namespace Lightlike.Rows.G1_047
+namespace Lightlike.Gauge.AbelianHiggsBogomolny
 
 open Complex ComplexConjugate
 
@@ -74,4 +74,14 @@ theorem energyDensity_ge_minus (e v B K : ℝ) (a b φ : ℂ)
   rw [energyDensity_eq_minus e v B K a b φ hK]
   nlinarith [sq_nonneg (B + e * (v ^ 2 - ‖φ‖ ^ 2)), sq_nonneg ‖a - I * b‖]
 
-end Lightlike.Rows.G1_047
+end Lightlike.Gauge.AbelianHiggsBogomolny
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_047.energyDensity := _root_.Lightlike.Gauge.AbelianHiggsBogomolny.energyDensity
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_047.energyDensity_eq_minus := _root_.Lightlike.Gauge.AbelianHiggsBogomolny.energyDensity_eq_minus
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_047.energyDensity_eq_plus := _root_.Lightlike.Gauge.AbelianHiggsBogomolny.energyDensity_eq_plus
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_047.energyDensity_ge_minus := _root_.Lightlike.Gauge.AbelianHiggsBogomolny.energyDensity_ge_minus
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_047.energyDensity_ge_plus := _root_.Lightlike.Gauge.AbelianHiggsBogomolny.energyDensity_ge_plus
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_047.normSq_sum_eq_minus := _root_.Lightlike.Gauge.AbelianHiggsBogomolny.normSq_sum_eq_minus
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_047.normSq_sum_eq_plus := _root_.Lightlike.Gauge.AbelianHiggsBogomolny.normSq_sum_eq_plus

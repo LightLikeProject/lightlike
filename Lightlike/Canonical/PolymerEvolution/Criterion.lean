@@ -23,7 +23,7 @@ existing unbounded-operator API).
 open scoped InnerProductSpace LinearPMap
 open Filter Topology Lightlike.OperatorAlgebras.Spectral.Unbounded
 
-namespace Lightlike.Rows.G2_017
+namespace Lightlike.Canonical.PolymerEvolution
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
@@ -93,4 +93,9 @@ theorem isEssentiallySelfAdjoint_of_semibounded {T : H →ₗ.[ℂ] H} (hT : Has
     rw [adjoint_closure_eq_adjoint hT hc]; exact hk
   exact ⟨hsym, hc, LinearPMap.isSelfAdjoint_def.mpr (adjoint_eq_of_range_eq_top hleS hr hk')⟩
 
-end Lightlike.Rows.G2_017
+end Lightlike.Canonical.PolymerEvolution
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_017.isEssentiallySelfAdjoint_of_semibounded := _root_.Lightlike.Canonical.PolymerEvolution.isEssentiallySelfAdjoint_of_semibounded
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_017.norm_lower_bound_of_re_inner := _root_.Lightlike.Canonical.PolymerEvolution.norm_lower_bound_of_re_inner

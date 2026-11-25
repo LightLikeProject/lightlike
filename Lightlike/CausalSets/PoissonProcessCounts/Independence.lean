@@ -27,7 +27,7 @@ means independence (Mathlib `indepFun_iff_charFun_prod`).
 
 open MeasureTheory ProbabilityTheory NNReal Complex
 
-namespace Lightlike.Rows.G2_063
+namespace Lightlike.CausalSets.PoissonProcessCounts
 
 variable {α : Type*} [MeasurableSpace α]
 
@@ -196,4 +196,16 @@ theorem indepFun_poissonProcess_ptCount (lam : ℝ≥0) (ν : Measure α) [IsPro
   rw [← Complex.exp_add, ← h]
   congr 1
 
-end Lightlike.Rows.G2_063
+end Lightlike.CausalSets.PoissonProcessCounts
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.charFun_map_poissonProcess_ptCount := _root_.Lightlike.CausalSets.PoissonProcessCounts.charFun_map_poissonProcess_ptCount
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.indepFun_poissonProcess_ptCount := _root_.Lightlike.CausalSets.PoissonProcessCounts.indepFun_poissonProcess_ptCount
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.integral_exp_indicator_pair := _root_.Lightlike.CausalSets.PoissonProcessCounts.integral_exp_indicator_pair
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.integral_poissonMeasure_pow := _root_.Lightlike.CausalSets.PoissonProcessCounts.integral_poissonMeasure_pow
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.integral_poissonProcess_exp_pair := _root_.Lightlike.CausalSets.PoissonProcessCounts.integral_poissonProcess_exp_pair
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.integral_sample_eval := _root_.Lightlike.CausalSets.PoissonProcessCounts.integral_sample_eval
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.integral_sample_prod_range := _root_.Lightlike.CausalSets.PoissonProcessCounts.integral_sample_prod_range
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.measurable_poissonProcess_ptCount := _root_.Lightlike.CausalSets.PoissonProcessCounts.measurable_poissonProcess_ptCount
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.ptCount_real_eq_sum := _root_.Lightlike.CausalSets.PoissonProcessCounts.ptCount_real_eq_sum

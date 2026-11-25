@@ -23,7 +23,7 @@ invariant, and the planar system reduces to the one-dimensional system on `x ∈
   scalar-field point is a global attractor of the open interval (nonlinear statement).
 -/
 
-namespace Lightlike.Rows.G1_029
+namespace Lightlike.Cosmology.QuintessenceFixedPoints
 
 noncomputable section
 
@@ -125,4 +125,20 @@ theorem vacF_neg_of_gt {μ x : ℝ} (hx : x < 1) (hxμ : μ / 3 < x) (hμ : -3 <
 
 end
 
-end Lightlike.Rows.G1_029
+end Lightlike.Cosmology.QuintessenceFixedPoints
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.hasDerivAt_vacF := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.hasDerivAt_vacF
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.vacF := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.vacF
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.vacF' := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.vacF'
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.vacF'_kin_neg := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.vacF'_kin_neg
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.vacF'_kin_pos := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.vacF'_kin_pos
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.vacF'_sf := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.vacF'_sf
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.vacF_neg_of_gt := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.vacF_neg_of_gt
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.vacF_pos_of_lt := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.vacF_pos_of_lt
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.vacF_zero_iff := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.vacF_zero_iff
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.vac_kin_neg_stable_iff := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.vac_kin_neg_stable_iff
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.vac_kin_pos_stable_iff := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.vac_kin_pos_stable_iff
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.vac_sf_stable_iff := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.vac_sf_stable_iff
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.vfx_circle := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.vfx_circle

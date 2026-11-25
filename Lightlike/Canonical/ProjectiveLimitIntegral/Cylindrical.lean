@@ -15,7 +15,7 @@ noncomputable section
 
 open Set
 
-namespace Lightlike.Rows.G2_008
+namespace Lightlike.Canonical.ProjectiveLimitIntegral
 
 namespace InvSystem
 
@@ -90,4 +90,14 @@ theorem cylSubalgebra_topologicalClosure [Nonempty ι] [IsDirectedOrder ι]
 
 end InvSystem
 
-end Lightlike.Rows.G2_008
+end Lightlike.Canonical.ProjectiveLimitIntegral
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_008.InvSystem.cyl := _root_.Lightlike.Canonical.ProjectiveLimitIntegral.InvSystem.cyl
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_008.InvSystem.cylSubalgebra := _root_.Lightlike.Canonical.ProjectiveLimitIntegral.InvSystem.cylSubalgebra
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_008.InvSystem.cylSubalgebra_separatesPoints := _root_.Lightlike.Canonical.ProjectiveLimitIntegral.InvSystem.cylSubalgebra_separatesPoints
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_008.InvSystem.cylSubalgebra_topologicalClosure := _root_.Lightlike.Canonical.ProjectiveLimitIntegral.InvSystem.cylSubalgebra_topologicalClosure
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_008.InvSystem.cyl_apply := _root_.Lightlike.Canonical.ProjectiveLimitIntegral.InvSystem.cyl_apply
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_008.InvSystem.cyl_eq_of_le := _root_.Lightlike.Canonical.ProjectiveLimitIntegral.InvSystem.cyl_eq_of_le
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_008.InvSystem.mem_cylSubalgebra := _root_.Lightlike.Canonical.ProjectiveLimitIntegral.InvSystem.mem_cylSubalgebra

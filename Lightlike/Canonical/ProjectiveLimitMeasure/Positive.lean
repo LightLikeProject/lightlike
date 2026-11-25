@@ -11,7 +11,7 @@ nonnegative, and `∫ g dμ i ≥ -ε μ(1)` for a cylinder profile `g ≥ -ε`
 
 open MeasureTheory
 
-namespace Lightlike.Rows.G2_009
+namespace Lightlike.Canonical.ProjectiveLimitMeasure
 
 universe u v
 
@@ -76,4 +76,9 @@ theorem cylExt_nonneg [CompactSpace (Lim f)] (hf : IsProjSystem f)
   have h6 : ε * M < c / 2 := by nlinarith
   linarith
 
-end Lightlike.Rows.G2_009
+end Lightlike.Canonical.ProjectiveLimitMeasure
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.cylExt_nonneg := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.cylExt_nonneg
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.neg_mul_le_integral_of_dist_lt := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.neg_mul_le_integral_of_dist_lt

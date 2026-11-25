@@ -22,7 +22,7 @@ These are the kinematic facts the four-point BCJ and KLT relations of the same r
 
 noncomputable section
 
-namespace Lightlike.Rows.G3_261
+namespace Lightlike.GR.KLTBCJRelations
 
 open Lightlike.SpinorHelicity
 
@@ -88,4 +88,15 @@ theorem sBr_zero_three_eq {l lt : Fin 4 → Fin 2 → ℂ} (h : Conserved l lt) 
     sBr_symm l lt 3 1, sBr_symm l lt 3 2] at *
   linear_combination (h0 - h1 - h2 + h3) / 2
 
-end Lightlike.Rows.G3_261
+end Lightlike.GR.KLTBCJRelations
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_261.sBr := _root_.Lightlike.GR.KLTBCJRelations.sBr
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_261.sBr_row_sum := _root_.Lightlike.GR.KLTBCJRelations.sBr_row_sum
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_261.sBr_self := _root_.Lightlike.GR.KLTBCJRelations.sBr_self
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_261.sBr_sum_zero := _root_.Lightlike.GR.KLTBCJRelations.sBr_sum_zero
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_261.sBr_symm := _root_.Lightlike.GR.KLTBCJRelations.sBr_symm
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_261.sBr_zero_one_eq := _root_.Lightlike.GR.KLTBCJRelations.sBr_zero_one_eq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_261.sBr_zero_three_eq := _root_.Lightlike.GR.KLTBCJRelations.sBr_zero_three_eq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_261.sBr_zero_two_eq := _root_.Lightlike.GR.KLTBCJRelations.sBr_zero_two_eq

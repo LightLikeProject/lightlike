@@ -21,7 +21,7 @@ The numerical value `γ_M ≈ 0.2375` is in later files of this folder.
 
 open Real
 
-namespace Lightlike.Rows.G2_016
+namespace Lightlike.Canonical.BlackHoleEntropyCounting
 
 /-- The label `n ↦ √((n+1)(n+3)) = 2√(j(j+1))` with `j = (n+1)/2`: the area of a spin-`j`
 puncture, in units of `4πγ ℓ_P²`. -/
@@ -131,4 +131,18 @@ theorem exists_root_of_lt_gt {w : ℕ → ℝ} (h0 : ∀ n, 0 ≤ w n) (hw : ∀
   have := intermediate_value_Icc' hab hc
   exact this ⟨hfb.le, hfa.le⟩
 
-end Lightlike.Rows.G2_016
+end Lightlike.Canonical.BlackHoleEntropyCounting
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.areaLabel := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.areaLabel
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.areaLabel_ge := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.areaLabel_ge
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.areaLabel_pos := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.areaLabel_pos
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.continuousOn_countSum := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.continuousOn_countSum
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.countSum := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.countSum
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.exists_root_of_lt_gt := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.exists_root_of_lt_gt
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.root_unique := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.root_unique
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.strictAntiOn_countSum := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.strictAntiOn_countSum
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.summable_majorant := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.summable_majorant
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.summable_term := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.summable_term
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.term_le := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.term_le

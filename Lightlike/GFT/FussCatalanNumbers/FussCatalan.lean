@@ -13,7 +13,7 @@ with Mathlib's `catalan` (`fussCatalan_two`).
 **Sources.** `bonzom-gurau-riello-rivasseau-2011`, `gurau-2011`; no equation number is cited.
 -/
 
-namespace Lightlike.Rows.G2_035
+namespace Lightlike.GFT.FussCatalanNumbers
 
 /-- The **Fuss–Catalan number** `binom(p n, n) / ((p - 1) n + 1)` (natural-number division, which is
 exact for `p ≥ 1`: see `mul_fussCatalan`). -/
@@ -71,4 +71,15 @@ theorem fussCatalan_four_values :
 ternary-tree count `12`, at `n = 3`. -/
 theorem wrong_denominator_ne : (3 * 3).choose 3 / ((3 - 1) * 3) ≠ fussCatalan 3 3 := by decide +kernel
 
-end Lightlike.Rows.G2_035
+end Lightlike.GFT.FussCatalanNumbers
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_035.dvd_choose := _root_.Lightlike.GFT.FussCatalanNumbers.dvd_choose
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_035.fussCatalan := _root_.Lightlike.GFT.FussCatalanNumbers.fussCatalan
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_035.fussCatalan_four_values := _root_.Lightlike.GFT.FussCatalanNumbers.fussCatalan_four_values
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_035.fussCatalan_one := _root_.Lightlike.GFT.FussCatalanNumbers.fussCatalan_one
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_035.fussCatalan_three_values := _root_.Lightlike.GFT.FussCatalanNumbers.fussCatalan_three_values
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_035.fussCatalan_two := _root_.Lightlike.GFT.FussCatalanNumbers.fussCatalan_two
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_035.mul_fussCatalan := _root_.Lightlike.GFT.FussCatalanNumbers.mul_fussCatalan
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_035.wrong_denominator_ne := _root_.Lightlike.GFT.FussCatalanNumbers.wrong_denominator_ne

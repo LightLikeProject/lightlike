@@ -18,7 +18,7 @@ open scoped ContDiff
 
 noncomputable section
 
-namespace Lightlike.Rows.G1_031
+namespace Lightlike.Cosmology.LinearizedTensorModes
 
 open Lightlike Lightlike.Cosmology
 
@@ -69,4 +69,13 @@ theorem christoffel_conf (ha : DifferentiableAt ℝ a (x 0)) (hpos : a (x 0) ≠
   fin_cases i <;> fin_cases j <;> fin_cases k <;>
     simp [cc, sgn] <;> field_simp
 
-end Lightlike.Rows.G1_031
+end Lightlike.Cosmology.LinearizedTensorModes
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_031.cc := _root_.Lightlike.Cosmology.LinearizedTensorModes.cc
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_031.christoffel_conf := _root_.Lightlike.Cosmology.LinearizedTensorModes.christoffel_conf
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_031.confMetric := _root_.Lightlike.Cosmology.LinearizedTensorModes.confMetric
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_031.confMetric_apply := _root_.Lightlike.Cosmology.LinearizedTensorModes.confMetric_apply
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_031.pd_confMetric := _root_.Lightlike.Cosmology.LinearizedTensorModes.pd_confMetric
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_031.sgn := _root_.Lightlike.Cosmology.LinearizedTensorModes.sgn

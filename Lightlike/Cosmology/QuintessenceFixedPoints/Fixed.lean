@@ -26,7 +26,7 @@ here, and the stability statements are in `Stab.lean` and `Stab2.lean`.
 * copeland-2006
 -/
 
-namespace Lightlike.Rows.G1_029
+namespace Lightlike.Cosmology.QuintessenceFixedPoints
 
 noncomputable section
 
@@ -96,4 +96,21 @@ theorem vf_sc {μ γ y : ℝ} (hμ : μ ≠ 0) (hy : y ^ 2 = 9 * γ * (2 - γ) /
 
 end
 
-end Lightlike.Rows.G1_029
+end Lightlike.Cosmology.QuintessenceFixedPoints
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.aux := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.aux
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.c32 := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.c32
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.c32_pos := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.c32_pos
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.c32_sq := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.c32_sq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.scPoint := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.scPoint
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.sfPoint := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.sfPoint
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.vf_kin_neg := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.vf_kin_neg
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.vf_kin_pos := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.vf_kin_pos
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.vf_origin := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.vf_origin
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.vf_sc := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.vf_sc
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.vf_sf := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.vf_sf
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.vfx := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.vfx
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.vfy := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.vfy
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.vfy_eq := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.vfy_eq

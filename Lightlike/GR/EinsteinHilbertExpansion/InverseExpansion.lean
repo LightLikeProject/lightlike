@@ -13,7 +13,7 @@ Einstein–Hilbert density is the truncated geometric series below, with an exac
 
 open Matrix
 
-namespace Lightlike.Rows.G3_255
+namespace Lightlike.GR.EinsteinHilbertExpansion
 
 variable {n : Type*} [Fintype n] [DecidableEq n] {R : Type*} [CommRing R]
 
@@ -44,4 +44,10 @@ theorem inv_one_add_smul (ε : R) (A : Matrix n n R) (h : IsUnit (1 + ε • A).
   rw [key]
   abel
 
-end Lightlike.Rows.G3_255
+end Lightlike.GR.EinsteinHilbertExpansion
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.invSeries := _root_.Lightlike.GR.EinsteinHilbertExpansion.invSeries
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.inv_one_add_smul := _root_.Lightlike.GR.EinsteinHilbertExpansion.inv_one_add_smul
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.one_add_smul_mul_geom := _root_.Lightlike.GR.EinsteinHilbertExpansion.one_add_smul_mul_geom

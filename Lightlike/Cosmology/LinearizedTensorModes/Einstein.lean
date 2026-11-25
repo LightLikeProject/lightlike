@@ -17,7 +17,7 @@ open scoped ContDiff
 
 noncomputable section
 
-namespace Lightlike.Rows.G1_031
+namespace Lightlike.Cosmology.LinearizedTensorModes
 
 open Lightlike Lightlike.Cosmology
 
@@ -79,4 +79,13 @@ theorem hasDerivAt_fieldEq_tPert (hfa : ContDiff ℝ ∞ a) (hne : ∀ t, a t �
     have hpos := hne (x 0)
     fin_cases μ <;> fin_cases ν <;> simp [dl, cp] <;> field_simp <;> ring
 
-end Lightlike.Rows.G1_031
+end Lightlike.Cosmology.LinearizedTensorModes
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_031.contDiff_confMetric := _root_.Lightlike.Cosmology.LinearizedTensorModes.contDiff_confMetric
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_031.contDiff_tPert := _root_.Lightlike.Cosmology.LinearizedTensorModes.contDiff_tPert
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_031.det_confMetric_ne := _root_.Lightlike.Cosmology.LinearizedTensorModes.det_confMetric_ne
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_031.fieldEq := _root_.Lightlike.Cosmology.LinearizedTensorModes.fieldEq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_031.fluidT := _root_.Lightlike.Cosmology.LinearizedTensorModes.fluidT
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_031.hasDerivAt_fieldEq_tPert := _root_.Lightlike.Cosmology.LinearizedTensorModes.hasDerivAt_fieldEq_tPert

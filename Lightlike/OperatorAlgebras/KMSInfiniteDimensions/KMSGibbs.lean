@@ -8,13 +8,13 @@ Row G1-053.  The Gibbs functional `gibbs b ev β` on `B(H)`, for a Hamiltonian d
 basis `b` with eigenvalues `ev` and summable Boltzmann weights `exp(-β evₙ)`, together with the
 Heisenberg flow `dyn b ev`, satisfies the infinite-dimensional KMS condition `IsKMSFunctional`
 (Panangaden, Proposition 5.9 and Definition 5.8).  This shows that the notion of
-`Lightlike.Rows.G1_053.KMSDef` is satisfied by a genuine infinite-dimensional example, with the
+`Lightlike.OperatorAlgebras.KMSInfiniteDimensions.KMSDef` is satisfied by a genuine infinite-dimensional example, with the
 witness function supplied by `GibbsKMS.kmsFun`.
 -/
 
 open Complex
 
-namespace Lightlike.Rows.G1_053
+namespace Lightlike.OperatorAlgebras.KMSInfiniteDimensions
 
 open Lightlike.OperatorAlgebras
 
@@ -35,4 +35,8 @@ theorem isKMSFunctional_gibbs (b : HilbertBasis ι ℂ H) (ev : ι → ℝ) {β 
   · intro t
     exact GibbsKMS.kmsFun_add_I_mul b ev hβ hZ A B t
 
-end Lightlike.Rows.G1_053
+end Lightlike.OperatorAlgebras.KMSInfiniteDimensions
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_053.isKMSFunctional_gibbs := _root_.Lightlike.OperatorAlgebras.KMSInfiniteDimensions.isKMSFunctional_gibbs

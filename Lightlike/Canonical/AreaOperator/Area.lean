@@ -13,7 +13,7 @@ spin-network function is an eigenfunction with eigenvalue `8π γ ℓ_P² Σ_i �
 
 open MeasureTheory Lightlike.HarmonicAnalysis UnitaryMatrixRep
 
-namespace Lightlike.Rows.G2_012
+namespace Lightlike.Canonical.AreaOperator
 
 noncomputable section
 
@@ -88,4 +88,14 @@ theorem areaOperator_spinNetwork {k : ℕ} (γ ℓ : ℝ) (m : Fin k → ℕ) (a
 
 end
 
-end Lightlike.Rows.G2_012
+end Lightlike.Canonical.AreaOperator
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_012.areaOperator := _root_.Lightlike.Canonical.AreaOperator.areaOperator
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_012.areaOperator_spinNetwork := _root_.Lightlike.Canonical.AreaOperator.areaOperator_spinNetwork
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_012.casSqrt := _root_.Lightlike.Canonical.AreaOperator.casSqrt
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_012.casSqrt_eq_sqrt_j := _root_.Lightlike.Canonical.AreaOperator.casSqrt_eq_sqrt_j
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_012.edgeMult := _root_.Lightlike.Canonical.AreaOperator.edgeMult
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_012.edgeMult_spinNetwork := _root_.Lightlike.Canonical.AreaOperator.edgeMult_spinNetwork
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_012.spinNetwork := _root_.Lightlike.Canonical.AreaOperator.spinNetwork

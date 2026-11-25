@@ -16,7 +16,7 @@ solutions on `[t₀, t₀ + n]` into one global forward solution.
 
 @[expose] public section
 
-namespace Lightlike.Rows.G1_034
+namespace Lightlike.Cosmology.FreezeOut
 
 open Set Metric
 open scoped NNReal
@@ -92,4 +92,10 @@ theorem exists_global_forward {f : ℝ → ℝ → ℝ} {t₀ y₀ : ℝ} {Lc B 
       (by filter_upwards [Icc_mem_nhdsWithin_Ici le_rfl ht htN] with x hx using heq hx) hYt
   simpa only [hYt] using hd2
 
-end Lightlike.Rows.G1_034
+end Lightlike.Cosmology.FreezeOut
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_034.Icc_mem_nhdsWithin_Ici := _root_.Lightlike.Cosmology.FreezeOut.Icc_mem_nhdsWithin_Ici
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_034.exists_global_forward := _root_.Lightlike.Cosmology.FreezeOut.exists_global_forward
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_034.exists_local_forward := _root_.Lightlike.Cosmology.FreezeOut.exists_local_forward

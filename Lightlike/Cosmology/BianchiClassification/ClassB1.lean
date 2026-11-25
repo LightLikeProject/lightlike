@@ -10,15 +10,15 @@ the sign changes `a ↦ (a₀, -a₁, -a₂)` and `n ↦ -n, a ↦ -a` (both ins
 
 ## Main results
 
-* `Lightlike.Rows.G1_039.bracketIso_flip12`, `bracketIso_neg`
-* `Lightlike.Rows.G1_039.bracketIso_rotate`
+* `Lightlike.Cosmology.BianchiClassification.bracketIso_flip12`, `bracketIso_neg`
+* `Lightlike.Cosmology.BianchiClassification.bracketIso_rotate`
 
 ## References
 
 * heinzle-uggla-2009a (Section 3)
 -/
 
-namespace Lightlike.Rows.G1_039
+namespace Lightlike.Cosmology.BianchiClassification
 
 open Matrix
 
@@ -99,4 +99,11 @@ theorem bracketIso_rotate (a : V3) (h0 : a 0 = 0) (hne : a 1 ≠ 0 ∨ a 2 ≠ 0
       nlinarith [hr2]
   rwa [e1, e2] at h
 
-end Lightlike.Rows.G1_039
+end Lightlike.Cosmology.BianchiClassification
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.ClassBNormal := _root_.Lightlike.Cosmology.BianchiClassification.ClassBNormal
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.bracketIso_flip12 := _root_.Lightlike.Cosmology.BianchiClassification.bracketIso_flip12
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.bracketIso_neg := _root_.Lightlike.Cosmology.BianchiClassification.bracketIso_neg
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.bracketIso_rotate := _root_.Lightlike.Cosmology.BianchiClassification.bracketIso_rotate

@@ -23,7 +23,7 @@ in contrast to the Poisson process (`cov_poissonProcess_ptCount`: covariance `0`
 
 open MeasureTheory ProbabilityTheory
 
-namespace Lightlike.Rows.G2_063
+namespace Lightlike.CausalSets.PoissonProcessCounts
 
 variable {α : Type*} [MeasurableSpace α]
 
@@ -84,4 +84,12 @@ theorem not_indepCount_sample (ν : Measure α) [IsProbabilityMeasure ν]
   have : 0 < (n : ℝ) * (ν.real A * ν.real B) := by positivity
   linarith
 
-end Lightlike.Rows.G2_063
+end Lightlike.CausalSets.PoissonProcessCounts
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.cov_sample_ptCount_disjoint := _root_.Lightlike.CausalSets.PoissonProcessCounts.cov_sample_ptCount_disjoint
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.integrable_sample_pairCount := _root_.Lightlike.CausalSets.PoissonProcessCounts.integrable_sample_pairCount
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.integrable_sample_ptCount := _root_.Lightlike.CausalSets.PoissonProcessCounts.integrable_sample_ptCount
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.integral_sample_ptCount_mul := _root_.Lightlike.CausalSets.PoissonProcessCounts.integral_sample_ptCount_mul
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.not_indepCount_sample := _root_.Lightlike.CausalSets.PoissonProcessCounts.not_indepCount_sample

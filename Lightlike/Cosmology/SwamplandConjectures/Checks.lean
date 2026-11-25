@@ -20,7 +20,7 @@ public import Lightlike.Cosmology.SwamplandConjectures.Defs
 
 @[expose] public section
 
-namespace Lightlike.Rows.G1_046
+namespace Lightlike.Cosmology.SwamplandConjectures
 
 open Real
 
@@ -120,4 +120,18 @@ theorem slowRollEps_quad_sqrt_two {m : ℝ} (hm : m ≠ 0) :
   rw [slowRollEps_quad hm (by positivity), Real.sq_sqrt (by norm_num)]
   norm_num
 
-end Lightlike.Rows.G1_046
+end Lightlike.Cosmology.SwamplandConjectures
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_046.expPotential_deSitter := _root_.Lightlike.Cosmology.SwamplandConjectures.expPotential_deSitter
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_046.expPotential_deSitter_abs := _root_.Lightlike.Cosmology.SwamplandConjectures.expPotential_deSitter_abs
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_046.expPotential_gradNorm_div := _root_.Lightlike.Cosmology.SwamplandConjectures.expPotential_gradNorm_div
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_046.not_deSitter_of_critical := _root_.Lightlike.Cosmology.SwamplandConjectures.not_deSitter_of_critical
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_046.not_slowRoll_of_deSitter := _root_.Lightlike.Cosmology.SwamplandConjectures.not_slowRoll_of_deSitter
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_046.quadPotential_not_deSitter := _root_.Lightlike.Cosmology.SwamplandConjectures.quadPotential_not_deSitter
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_046.slowRollEps_exp := _root_.Lightlike.Cosmology.SwamplandConjectures.slowRollEps_exp
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_046.slowRollEps_exp_lt_one_iff := _root_.Lightlike.Cosmology.SwamplandConjectures.slowRollEps_exp_lt_one_iff
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_046.slowRollEps_quad := _root_.Lightlike.Cosmology.SwamplandConjectures.slowRollEps_quad
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_046.slowRollEps_quad_sqrt_two := _root_.Lightlike.Cosmology.SwamplandConjectures.slowRollEps_quad_sqrt_two
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_046.slowRoll_contradiction := _root_.Lightlike.Cosmology.SwamplandConjectures.slowRoll_contradiction

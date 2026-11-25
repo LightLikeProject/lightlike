@@ -23,7 +23,7 @@ Main results:
 
 open Real
 
-namespace Lightlike.Rows.G2_016
+namespace Lightlike.Canonical.BlackHoleEntropyCounting
 
 theorem two_nonneg_w : ∀ n : ℕ, 0 ≤ (fun _ : ℕ => (2 : ℝ)) n := fun _ => by norm_num
 
@@ -130,4 +130,24 @@ theorem counting_asymptotics :
   rw [h] at h1
   linarith
 
-end Lightlike.Rows.G2_016
+end Lightlike.Canonical.BlackHoleEntropyCounting
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.areaLabel_zero := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.areaLabel_zero
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.countSum_gammaM := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.countSum_gammaM
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.counting_asymptotics := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.counting_asymptotics
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.entropy := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.entropy
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.entropy_div := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.entropy_div
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.entropy_eq := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.entropy_eq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.exists_gammaM := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.exists_gammaM
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.gammaM := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.gammaM
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.gammaM_mem := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.gammaM_mem
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.gammaM_pos := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.gammaM_pos
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.gammaM_unique := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.gammaM_unique
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.halfSpinGamma := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.halfSpinGamma
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.halfSpinGamma_bounds := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.halfSpinGamma_bounds
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.halfSum := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.halfSum
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.halfSum_eq_one_iff := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.halfSum_eq_one_iff
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.two_le_w := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.two_le_w
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.two_nonneg_w := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.two_nonneg_w

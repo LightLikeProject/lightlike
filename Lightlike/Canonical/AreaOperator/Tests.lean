@@ -12,9 +12,9 @@ one spin-`1` puncture from two spin-`1/2` punctures while the `j`-model does not
 
 open MeasureTheory MeasureTheory.Measure TopologicalSpace Lightlike.HarmonicAnalysis
 
-namespace Lightlike.Rows.G2_012.Tests
+namespace Lightlike.Canonical.AreaOperator.Tests
 
-open Lightlike.Rows.G2_012
+open Lightlike.Canonical.AreaOperator
 
 /-- The normalised Haar measure on `SU(2)`. -/
 noncomputable abbrev μ₀ : Measure SU2 := Measure.haarMeasure (⊤ : PositiveCompacts SU2)
@@ -55,4 +55,8 @@ example : areaEigenvalueJ 1 1 (fun _ : Fin 1 => 1) < areaGap 1 1 :=
 #check @areaOperator_spinNetwork
 #check @sum_spinOp_sq_eq_casSqrt_sq
 
-end Lightlike.Rows.G2_012.Tests
+end Lightlike.Canonical.AreaOperator.Tests
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_012.Tests.«μ₀» := _root_.Lightlike.Canonical.AreaOperator.Tests.«μ₀»

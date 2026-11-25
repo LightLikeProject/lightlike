@@ -12,7 +12,7 @@ For a step `h ∈ (0, 1]` and the midpoints `m_j = (j + 1/2) h`, the sums
 
 open Set
 
-namespace Lightlike.Rows.G1_062
+namespace Lightlike.Geometry.HeatTraceExpansion
 
 /-- Decay of the derivative chain, in the form used on an interval `[x, y]`, `0 ≤ x ≤ y`. -/
 lemma gu_le (q : ℕ) : ∃ C : ℝ, 0 ≤ C ∧ ∀ x y : ℝ, 0 ≤ x → x ≤ y → |gu q y| ≤ C / (1 + x) ^ 2 := by
@@ -94,4 +94,15 @@ lemma summable_gu_mid (q : ℕ) {h : ℝ} (h0 : 0 < h) (h1 : h ≤ 1) :
     (summable_mul_left_iff h0.ne').mp hs
   exact hs'.of_abs
 
-end Lightlike.Rows.G1_062
+end Lightlike.Geometry.HeatTraceExpansion
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.gu_le := _root_.Lightlike.Geometry.HeatTraceExpansion.gu_le
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.le_mid := _root_.Lightlike.Geometry.HeatTraceExpansion.le_mid
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.mid := _root_.Lightlike.Geometry.HeatTraceExpansion.mid
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.mid_nonneg := _root_.Lightlike.Geometry.HeatTraceExpansion.mid_nonneg
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.sumW_aux := _root_.Lightlike.Geometry.HeatTraceExpansion.sumW_aux
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.sumW_le := _root_.Lightlike.Geometry.HeatTraceExpansion.sumW_le
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.sum_abs_gu_mid_le := _root_.Lightlike.Geometry.HeatTraceExpansion.sum_abs_gu_mid_le
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.summable_gu_mid := _root_.Lightlike.Geometry.HeatTraceExpansion.summable_gu_mid

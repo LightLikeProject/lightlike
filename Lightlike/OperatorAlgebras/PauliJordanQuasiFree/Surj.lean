@@ -10,7 +10,7 @@ equation `S y = -T b`, `T y = U b` is solvable.  This is the real-solvability st
 `f ↦ √P f` has dense (indeed full) range.
 -/
 
-namespace Lightlike.Rows.G2_077
+namespace Lightlike.OperatorAlgebras.PauliJordanQuasiFree
 
 open Submodule
 
@@ -86,4 +86,10 @@ theorem exists_solve (T U : E →ₗ[ℝ] E)
   rw [eq_neg_iff_add_eq_zero, hz] at *
   exact this
 
-end Lightlike.Rows.G2_077
+end Lightlike.OperatorAlgebras.PauliJordanQuasiFree
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.exists_solve := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.exists_solve
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.orth_range_eq_ker := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.orth_range_eq_ker
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.range_eq_orth_ker := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.range_eq_orth_ker

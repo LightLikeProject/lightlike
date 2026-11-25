@@ -12,7 +12,7 @@ open scoped ContDiff
 
 noncomputable section
 
-namespace Lightlike.Rows.G1_031
+namespace Lightlike.Cosmology.LinearizedTensorModes
 
 open Lightlike Lightlike.Cosmology
 
@@ -37,4 +37,8 @@ theorem dScalar_tPert (hfa : ContDiff ℝ ∞ a) (hne : ∀ t, a t ≠ 0) (hf : 
   field_simp
   ring
 
-end Lightlike.Rows.G1_031
+end Lightlike.Cosmology.LinearizedTensorModes
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_031.dScalar_tPert := _root_.Lightlike.Cosmology.LinearizedTensorModes.dScalar_tPert

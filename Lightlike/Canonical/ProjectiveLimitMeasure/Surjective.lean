@@ -10,7 +10,7 @@ every projection `proj f i : Lim f → X i` is surjective.  This is what makes t
 
 open MeasureTheory
 
-namespace Lightlike.Rows.G2_009
+namespace Lightlike.Canonical.ProjectiveLimitMeasure
 
 universe u v
 
@@ -53,4 +53,8 @@ theorem surjective_proj [IsDirected ι (· ≤ ·)] [Nonempty ι] [∀ i, Compac
         (if h' : p.1 ≤ M then f h' z else Classical.arbitrary (X p.1))
       simp [h1 p hp, h2 p hp, hf.comp]
 
-end Lightlike.Rows.G2_009
+end Lightlike.Canonical.ProjectiveLimitMeasure
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.surjective_proj := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.surjective_proj

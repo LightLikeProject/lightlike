@@ -15,7 +15,7 @@ what the construction uses of the single-edge operators `spinOp n a` (`Lightlike
 
 open Matrix Lightlike.SU2 Lightlike.Spin4 Lightlike.Poincare
 
-namespace Lightlike.Rows.G2_014
+namespace Lightlike.Canonical.VolumeOperator
 
 variable {n : ℕ}
 
@@ -181,4 +181,17 @@ theorem spinOp_comm_zx :
   rw [e, dSpin_bracket_HE, dSpin_bracket_HF, smul_smul, hI]
   module
 
-end Lightlike.Rows.G2_014
+end Lightlike.Canonical.VolumeOperator
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.dSpin_bracket_EF := _root_.Lightlike.Canonical.VolumeOperator.dSpin_bracket_EF
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.dSpin_bracket_EH := _root_.Lightlike.Canonical.VolumeOperator.dSpin_bracket_EH
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.dSpin_bracket_FH := _root_.Lightlike.Canonical.VolumeOperator.dSpin_bracket_FH
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.spinOp_comm_xy := _root_.Lightlike.Canonical.VolumeOperator.spinOp_comm_xy
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.spinOp_comm_yz := _root_.Lightlike.Canonical.VolumeOperator.spinOp_comm_yz
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.spinOp_comm_zx := _root_.Lightlike.Canonical.VolumeOperator.spinOp_comm_zx
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.spinOp_conjTranspose := _root_.Lightlike.Canonical.VolumeOperator.spinOp_conjTranspose
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.spinOp_one_eq := _root_.Lightlike.Canonical.VolumeOperator.spinOp_one_eq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.spinOp_two_eq := _root_.Lightlike.Canonical.VolumeOperator.spinOp_two_eq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.spinOp_zero_eq := _root_.Lightlike.Canonical.VolumeOperator.spinOp_zero_eq

@@ -13,13 +13,13 @@ diagonal `n` and `a = (0, 0, α)` taken from an explicit list, the Bianchi types
 
 ## Main definitions
 
-* `Lightlike.Rows.G1_039.BianchiType`: the types, with the families `VI h`, `VII h`.
-* `Lightlike.Rows.G1_039.BianchiType.Valid`, `.n`, `.a`, `.IsClassA`, `.numeral`.
+* `Lightlike.Cosmology.BianchiClassification.BianchiType`: the types, with the families `VI h`, `VII h`.
+* `Lightlike.Cosmology.BianchiClassification.BianchiType.Valid`, `.n`, `.a`, `.IsClassA`, `.numeral`.
 
 ## Main results
 
-* `Lightlike.Rows.G1_039.exists_bianchiType`: the classification theorem.
-* `Lightlike.Rows.G1_039.numeral_surjective`: the Roman numerals `1, …, 9` all occur and no
+* `Lightlike.Cosmology.BianchiClassification.exists_bianchiType`: the classification theorem.
+* `Lightlike.Cosmology.BianchiClassification.numeral_surjective`: the Roman numerals `1, …, 9` all occur and no
   other (nine types `I`–`IX`).
 
 ## References
@@ -27,7 +27,7 @@ diagonal `n` and `a = (0, 0, α)` taken from an explicit list, the Bianchi types
 * heinzle-uggla-2009a (Section 3)
 -/
 
-namespace Lightlike.Rows.G1_039
+namespace Lightlike.Cosmology.BianchiClassification
 
 open Matrix
 
@@ -230,4 +230,25 @@ theorem numeral_surjective :
     · exact ⟨.VIII, trivial, rfl⟩
     · exact ⟨.IX, trivial, rfl⟩
 
-end Lightlike.Rows.G1_039
+end Lightlike.Cosmology.BianchiClassification
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.BianchiType := _root_.Lightlike.Cosmology.BianchiClassification.BianchiType
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.BianchiType.I := _root_.Lightlike.Cosmology.BianchiClassification.BianchiType.I
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.BianchiType.II := _root_.Lightlike.Cosmology.BianchiClassification.BianchiType.II
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.BianchiType.IV := _root_.Lightlike.Cosmology.BianchiClassification.BianchiType.IV
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.BianchiType.IX := _root_.Lightlike.Cosmology.BianchiClassification.BianchiType.IX
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.BianchiType.IsClassA := _root_.Lightlike.Cosmology.BianchiClassification.BianchiType.IsClassA
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.BianchiType.V := _root_.Lightlike.Cosmology.BianchiClassification.BianchiType.V
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.BianchiType.VI := _root_.Lightlike.Cosmology.BianchiClassification.BianchiType.VI
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.BianchiType.VII := _root_.Lightlike.Cosmology.BianchiClassification.BianchiType.VII
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.BianchiType.VIII := _root_.Lightlike.Cosmology.BianchiClassification.BianchiType.VIII
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.BianchiType.Valid := _root_.Lightlike.Cosmology.BianchiClassification.BianchiType.Valid
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.BianchiType.a := _root_.Lightlike.Cosmology.BianchiClassification.BianchiType.a
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.BianchiType.isClassA_iff := _root_.Lightlike.Cosmology.BianchiClassification.BianchiType.isClassA_iff
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.BianchiType.n := _root_.Lightlike.Cosmology.BianchiClassification.BianchiType.n
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.BianchiType.numeral := _root_.Lightlike.Cosmology.BianchiClassification.BianchiType.numeral
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.exists_bianchiType := _root_.Lightlike.Cosmology.BianchiClassification.exists_bianchiType
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.exists_diagonalisation_iff := _root_.Lightlike.Cosmology.BianchiClassification.exists_diagonalisation_iff
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.numeral_surjective := _root_.Lightlike.Cosmology.BianchiClassification.numeral_surjective

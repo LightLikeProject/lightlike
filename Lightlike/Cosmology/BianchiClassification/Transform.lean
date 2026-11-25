@@ -10,16 +10,16 @@ isomorphism between the two brackets") and prove that it is reflexive and transi
 
 ## Main results
 
-* `Lightlike.Rows.G1_039.transpose_mulVec_cross`: `Pᵀ (P x × P y) = det P • (x × y)`.
-* `Lightlike.Rows.G1_039.bracketIso_transform`: the transformation law of `(n, a)`.
-* `Lightlike.Rows.G1_039.BracketIso.trans`: composition of changes of basis.
+* `Lightlike.Cosmology.BianchiClassification.transpose_mulVec_cross`: `Pᵀ (P x × P y) = det P • (x × y)`.
+* `Lightlike.Cosmology.BianchiClassification.bracketIso_transform`: the transformation law of `(n, a)`.
+* `Lightlike.Cosmology.BianchiClassification.BracketIso.trans`: composition of changes of basis.
 
 ## References
 
 * heinzle-uggla-2009a (Section 3)
 -/
 
-namespace Lightlike.Rows.G1_039
+namespace Lightlike.Cosmology.BianchiClassification
 
 open Matrix
 
@@ -69,4 +69,12 @@ theorem bracketIso_transform (n : Matrix (Fin 3) (Fin 3) ℝ) (a : V3)
   rw [hcross, hdot, hdot, Matrix.mulVec_sub, Matrix.mulVec_add, Matrix.mulVec_smul,
     Matrix.mulVec_smul]
 
-end Lightlike.Rows.G1_039
+end Lightlike.Cosmology.BianchiClassification
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.BracketIso := _root_.Lightlike.Cosmology.BianchiClassification.BracketIso
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.BracketIso.refl := _root_.Lightlike.Cosmology.BianchiClassification.BracketIso.refl
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.BracketIso.trans := _root_.Lightlike.Cosmology.BianchiClassification.BracketIso.trans
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.bracketIso_transform := _root_.Lightlike.Cosmology.BianchiClassification.bracketIso_transform
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.transpose_mulVec_cross := _root_.Lightlike.Cosmology.BianchiClassification.transpose_mulVec_cross

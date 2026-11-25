@@ -14,7 +14,7 @@ import Lightlike.Canonical.AreaOperator.Area
 
 open MeasureTheory Lightlike.HarmonicAnalysis UnitaryMatrixRep
 
-namespace Lightlike.Rows.G2_012
+namespace Lightlike.Canonical.AreaOperator
 
 noncomputable section
 
@@ -157,4 +157,26 @@ theorem areaEigenvalue_two_ne_one_one {γ ℓ : ℝ} (hγ : γ ≠ 0) (hℓ : �
 
 end
 
-end Lightlike.Rows.G2_012
+end Lightlike.Canonical.AreaOperator
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_012.areaEigenvalue := _root_.Lightlike.Canonical.AreaOperator.areaEigenvalue
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_012.areaEigenvalueJ := _root_.Lightlike.Canonical.AreaOperator.areaEigenvalueJ
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_012.areaEigenvalueJ_single_one_ne_areaGap := _root_.Lightlike.Canonical.AreaOperator.areaEigenvalueJ_single_one_ne_areaGap
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_012.areaEigenvalueJ_two_eq_one_one := _root_.Lightlike.Canonical.AreaOperator.areaEigenvalueJ_two_eq_one_one
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_012.areaEigenvalue_eq_zero_or_gap_le := _root_.Lightlike.Canonical.AreaOperator.areaEigenvalue_eq_zero_or_gap_le
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_012.areaEigenvalue_single_one := _root_.Lightlike.Canonical.AreaOperator.areaEigenvalue_single_one
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_012.areaEigenvalue_two_ne_one_one := _root_.Lightlike.Canonical.AreaOperator.areaEigenvalue_two_ne_one_one
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_012.areaEigenvalue_zero := _root_.Lightlike.Canonical.AreaOperator.areaEigenvalue_zero
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_012.areaGap := _root_.Lightlike.Canonical.AreaOperator.areaGap
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_012.areaGap_le_areaEigenvalue := _root_.Lightlike.Canonical.AreaOperator.areaGap_le_areaEigenvalue
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_012.areaOperatorJ_spinNetwork := _root_.Lightlike.Canonical.AreaOperator.areaOperatorJ_spinNetwork
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_012.areaOperatorWith := _root_.Lightlike.Canonical.AreaOperator.areaOperatorWith
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_012.areaOperatorWith_spinNetwork := _root_.Lightlike.Canonical.AreaOperator.areaOperatorWith_spinNetwork
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_012.areaOperator_eq_areaEigenvalue := _root_.Lightlike.Canonical.AreaOperator.areaOperator_eq_areaEigenvalue
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_012.areaOperator_eq_with := _root_.Lightlike.Canonical.AreaOperator.areaOperator_eq_with
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_012.casSqrt_nonneg := _root_.Lightlike.Canonical.AreaOperator.casSqrt_nonneg
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_012.casSqrt_one := _root_.Lightlike.Canonical.AreaOperator.casSqrt_one
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_012.casSqrt_sq := _root_.Lightlike.Canonical.AreaOperator.casSqrt_sq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_012.sqrt3_div_two_le_casSqrt := _root_.Lightlike.Canonical.AreaOperator.sqrt3_div_two_le_casSqrt

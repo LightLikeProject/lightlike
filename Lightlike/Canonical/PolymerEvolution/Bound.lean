@@ -24,7 +24,7 @@ References: Ashtekar–Pawlowski–Singh 2006 (`aps-2006`), Kamiński–Lewandow
 
 open scoped InnerProductSpace
 
-namespace Lightlike.Rows.G2_017
+namespace Lightlike.Canonical.PolymerEvolution
 
 noncomputable section
 
@@ -117,4 +117,9 @@ theorem diffOp_semibounded (h : ℝ) (a c : ℝ → ℝ) (C : ℝ) (ha : ∀ v, 
 
 end
 
-end Lightlike.Rows.G2_017
+end Lightlike.Canonical.PolymerEvolution
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_017.diffOp_semibounded := _root_.Lightlike.Canonical.PolymerEvolution.diffOp_semibounded
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_017.summable_of_zero_triple := _root_.Lightlike.Canonical.PolymerEvolution.summable_of_zero_triple

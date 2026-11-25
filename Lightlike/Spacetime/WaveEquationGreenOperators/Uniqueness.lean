@@ -12,16 +12,16 @@ has only the zero solution (two integrations).  Since the support of a solution 
 
 ## Main results
 
-* `Lightlike.Rows.G1_059.eq_zero_of_wave_eq_zero`: the homogeneous problem with data vanishing in
+* `Lightlike.Spacetime.WaveEquationGreenOperators.eq_zero_of_wave_eq_zero`: the homogeneous problem with data vanishing in
   the far past has only the trivial solution.
-* `Lightlike.Rows.G1_059.retarded_unique`: any Green operator for `(wave, causalFuture)` is the
+* `Lightlike.Spacetime.WaveEquationGreenOperators.retarded_unique`: any Green operator for `(wave, causalFuture)` is the
   retarded operator `retarded`.
 -/
 
 open Function MeasureTheory Set Filter Topology
 open scoped ContDiff
 
-namespace Lightlike.Rows.G1_059
+namespace Lightlike.Spacetime.WaveEquationGreenOperators
 
 /-- The slice of a smooth function in the `v` direction has derivative `∂_v g`. -/
 theorem hasDerivAt_slice_snd {g : ℝ × ℝ → ℝ} (hg : ContDiff ℝ ∞ g) (a s : ℝ) :
@@ -105,4 +105,12 @@ theorem retarded_unique {G : testFns →ₗ[ℝ] smoothFns}
     (hG : IsGreenOperator smoothFns testFns testFns_le wave causalFuture G) : G = retarded :=
   hG.unique isGreenOperator_retarded retarded_hU
 
-end Lightlike.Rows.G1_059
+end Lightlike.Spacetime.WaveEquationGreenOperators
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_059.eq_zero_of_wave_eq_zero := _root_.Lightlike.Spacetime.WaveEquationGreenOperators.eq_zero_of_wave_eq_zero
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_059.hasDerivAt_slice_fst := _root_.Lightlike.Spacetime.WaveEquationGreenOperators.hasDerivAt_slice_fst
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_059.hasDerivAt_slice_snd := _root_.Lightlike.Spacetime.WaveEquationGreenOperators.hasDerivAt_slice_snd
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_059.retarded_hU := _root_.Lightlike.Spacetime.WaveEquationGreenOperators.retarded_hU
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_059.retarded_unique := _root_.Lightlike.Spacetime.WaveEquationGreenOperators.retarded_unique

@@ -10,7 +10,7 @@ wrong-rate flow fails.
 
 open scoped Real
 
-namespace Lightlike.Rows.G1_054
+namespace Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace
 
 /-- The Gaussian is an instance of `kms_model`: KMS relation at `β = 2π` on the boundary lines. -/
 example : ∀ t : ℝ, laplace (matrixDensity gaussXi gaussXi) (-(2 * π * Complex.I * t) - 2 * π)
@@ -27,4 +27,4 @@ example : ¬ ∀ t : ℝ, laplace (matrixDensity gaussXi gaussXi) (-(2 * π * Co
 #check @kms_model
 #check @gauss_not_kms_rate
 
-end Lightlike.Rows.G1_054
+end Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace

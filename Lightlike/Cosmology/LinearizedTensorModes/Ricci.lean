@@ -14,7 +14,7 @@ open scoped ContDiff
 
 noncomputable section
 
-namespace Lightlike.Rows.G1_031
+namespace Lightlike.Cosmology.LinearizedTensorModes
 
 open Lightlike Lightlike.Cosmology
 
@@ -50,4 +50,9 @@ theorem dRicci_tPert (hfa : ContDiff ℝ ∞ a) (hne : ∀ t, a t ≠ 0) (hf : C
   fin_cases σ <;> fin_cases ν <;>
     simp [cc, K1, dGd, dG, dl, cp, sgn, h1, h2, c1, c2, pd_const] <;> ring
 
-end Lightlike.Rows.G1_031
+end Lightlike.Cosmology.LinearizedTensorModes
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_031.dRicci_tPert := _root_.Lightlike.Cosmology.LinearizedTensorModes.dRicci_tPert
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_031.pd_comm' := _root_.Lightlike.Cosmology.LinearizedTensorModes.pd_comm'

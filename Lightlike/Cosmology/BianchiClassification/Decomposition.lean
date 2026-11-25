@@ -9,9 +9,9 @@ An alternating bilinear map `B : ℝ³ × ℝ³ → ℝ³` factors through the c
 
 ## Main results
 
-* `Lightlike.Rows.G1_039.exists_bracket_eq`: an alternating bilinear `B` equals `bracket n a`
+* `Lightlike.Cosmology.BianchiClassification.exists_bracket_eq`: an alternating bilinear `B` equals `bracket n a`
   for some symmetric `n` and some `a`.
-* `Lightlike.Rows.G1_039.exists_bracket_eq_of_jacobi`: if moreover `B` satisfies Jacobi, then
+* `Lightlike.Cosmology.BianchiClassification.exists_bracket_eq_of_jacobi`: if moreover `B` satisfies Jacobi, then
   `n a = 0`.
 
 ## References
@@ -19,7 +19,7 @@ An alternating bilinear map `B : ℝ³ × ℝ³ → ℝ³` factors through the c
 * heinzle-uggla-2009a (Section 3)
 -/
 
-namespace Lightlike.Rows.G1_039
+namespace Lightlike.Cosmology.BianchiClassification
 
 /-- The space `ℝ³`. -/
 abbrev V3 : Type := Fin 3 → ℝ
@@ -83,4 +83,12 @@ theorem exists_bracket_eq_of_jacobi (B : V3 →ₗ[ℝ] V3 →ₗ[ℝ] V3) (hB :
   intro x y z
   simpa [jacobi, ← h] using hJ x y z
 
-end Lightlike.Rows.G1_039
+end Lightlike.Cosmology.BianchiClassification
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.V3 := _root_.Lightlike.Cosmology.BianchiClassification.V3
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.alt_antisymm := _root_.Lightlike.Cosmology.BianchiClassification.alt_antisymm
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.alt_apply := _root_.Lightlike.Cosmology.BianchiClassification.alt_apply
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.exists_bracket_eq := _root_.Lightlike.Cosmology.BianchiClassification.exists_bracket_eq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.exists_bracket_eq_of_jacobi := _root_.Lightlike.Cosmology.BianchiClassification.exists_bracket_eq_of_jacobi

@@ -26,7 +26,7 @@ satisfying the kinematic Jacobi identity `n_s + n_t + n_u = 0`, we prove
 
 noncomputable section
 
-namespace Lightlike.Rows.G3_261
+namespace Lightlike.GR.KLTBCJRelations
 
 open Lightlike.SpinorHelicity
 
@@ -99,4 +99,16 @@ theorem klt_four {l lt : Fin 4 → Fin 2 → ℂ} (h : Conserved l lt)
   exact klt_algebra hs ht hu (sBr_sum_zero h) (bcjNum_jacobi h ha)
     (bcjNum_amp_1234 l lt hs hu) (bcjNum_amp_1243 l lt hs ht)
 
-end Lightlike.Rows.G3_261
+end Lightlike.GR.KLTBCJRelations
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_261.bcjNumS := _root_.Lightlike.GR.KLTBCJRelations.bcjNumS
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_261.bcjNumT := _root_.Lightlike.GR.KLTBCJRelations.bcjNumT
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_261.bcjNumU := _root_.Lightlike.GR.KLTBCJRelations.bcjNumU
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_261.bcjNum_amp_1234 := _root_.Lightlike.GR.KLTBCJRelations.bcjNum_amp_1234
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_261.bcjNum_amp_1243 := _root_.Lightlike.GR.KLTBCJRelations.bcjNum_amp_1243
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_261.bcjNum_jacobi := _root_.Lightlike.GR.KLTBCJRelations.bcjNum_jacobi
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_261.klt_algebra := _root_.Lightlike.GR.KLTBCJRelations.klt_algebra
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_261.klt_four := _root_.Lightlike.GR.KLTBCJRelations.klt_four
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_261.sBr_ne_zero := _root_.Lightlike.GR.KLTBCJRelations.sBr_ne_zero

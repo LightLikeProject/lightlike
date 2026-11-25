@@ -9,7 +9,7 @@ continuous linear functional `cylExt` on `C(Lim f, ℝ)` (`ashtekar-lewandowski-
 
 open MeasureTheory
 
-namespace Lightlike.Rows.G2_009
+namespace Lightlike.Canonical.ProjectiveLimitMeasure
 
 universe u v
 
@@ -55,4 +55,11 @@ theorem cylExt_cyl [CompactSpace (Lim f)] (hf : IsProjSystem f)
     ⟨cyl f i g, mem_cylAlgebra f hf i g⟩
   exact this.trans (cylFunctional_cyl hf hs hμ i g)
 
-end Lightlike.Rows.G2_009
+end Lightlike.Canonical.ProjectiveLimitMeasure
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.cylCLM := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.cylCLM
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.cylExt := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.cylExt
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.cylExt_cyl := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.cylExt_cyl
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_009.dense_cylAlgebra := _root_.Lightlike.Canonical.ProjectiveLimitMeasure.dense_cylAlgebra

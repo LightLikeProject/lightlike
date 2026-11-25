@@ -11,7 +11,7 @@ of `∂_u`, `∂_v` on compactly supported smooth functions is the primitive fro
 open Function MeasureTheory Set Filter Topology
 open scoped ContDiff Convolution
 
-namespace Lightlike.Rows.G1_059
+namespace Lightlike.Spacetime.WaveEquationGreenOperators
 
 theorem dirDeriv_retardedFun {f : ℝ × ℝ → ℝ} (hf : f ∈ testFns) (w : ℝ × ℝ) (x : ℝ × ℝ) :
     fderiv ℝ (retardedFun f) x w = retardedFun (fun p => fderiv ℝ f p w) x := by
@@ -150,4 +150,19 @@ theorem isGreenOperator_retarded :
   left_inv := retarded_wave
   support_subset := support_retarded
 
-end Lightlike.Rows.G1_059
+end Lightlike.Spacetime.WaveEquationGreenOperators
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_059.causalFuture := _root_.Lightlike.Spacetime.WaveEquationGreenOperators.causalFuture
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_059.dirDeriv_mem_testFns := _root_.Lightlike.Spacetime.WaveEquationGreenOperators.dirDeriv_mem_testFns
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_059.dirDeriv_retardedFun := _root_.Lightlike.Spacetime.WaveEquationGreenOperators.dirDeriv_retardedFun
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_059.integral_Iic_fst := _root_.Lightlike.Spacetime.WaveEquationGreenOperators.integral_Iic_fst
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_059.integral_Iic_snd := _root_.Lightlike.Spacetime.WaveEquationGreenOperators.integral_Iic_snd
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_059.isGreenOperator_retarded := _root_.Lightlike.Spacetime.WaveEquationGreenOperators.isGreenOperator_retarded
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_059.retarded := _root_.Lightlike.Spacetime.WaveEquationGreenOperators.retarded
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_059.retardedFun_eq := _root_.Lightlike.Spacetime.WaveEquationGreenOperators.retardedFun_eq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_059.retardedFun_wave := _root_.Lightlike.Spacetime.WaveEquationGreenOperators.retardedFun_wave
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_059.retarded_wave := _root_.Lightlike.Spacetime.WaveEquationGreenOperators.retarded_wave
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_059.support_retarded := _root_.Lightlike.Spacetime.WaveEquationGreenOperators.support_retarded
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_059.wave_retarded := _root_.Lightlike.Spacetime.WaveEquationGreenOperators.wave_retarded

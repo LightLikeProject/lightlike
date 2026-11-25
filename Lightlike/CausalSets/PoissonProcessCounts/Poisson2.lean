@@ -24,7 +24,7 @@ Taking means gives `E[N_A N_B] = lam ν(A ∩ B) + lam² ν(A) ν(B)`, hence
 
 open MeasureTheory ProbabilityTheory NNReal
 
-namespace Lightlike.Rows.G2_063
+namespace Lightlike.CausalSets.PoissonProcessCounts
 
 variable {α : Type*} [MeasurableSpace α]
 
@@ -125,4 +125,13 @@ theorem cov_poissonProcess_ptCount (lam : ℝ≥0) (ν : Measure α) [IsProbabil
     integral_poissonProcess_ptCount lam ν hB]
   ring
 
-end Lightlike.Rows.G2_063
+end Lightlike.CausalSets.PoissonProcessCounts
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.cov_poissonProcess_ptCount := _root_.Lightlike.CausalSets.PoissonProcessCounts.cov_poissonProcess_ptCount
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.integrable_poissonProcess_pairCount := _root_.Lightlike.CausalSets.PoissonProcessCounts.integrable_poissonProcess_pairCount
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.integrable_poissonProcess_ptCount := _root_.Lightlike.CausalSets.PoissonProcessCounts.integrable_poissonProcess_ptCount
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.integral_poissonProcess_ptCount_mul := _root_.Lightlike.CausalSets.PoissonProcessCounts.integral_poissonProcess_ptCount_mul
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.ptCount_mul_ptCount := _root_.Lightlike.CausalSets.PoissonProcessCounts.ptCount_mul_ptCount
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_063.real_prod_prod_eq := _root_.Lightlike.CausalSets.PoissonProcessCounts.real_prod_prod_eq

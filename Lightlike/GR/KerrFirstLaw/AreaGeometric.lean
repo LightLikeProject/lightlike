@@ -19,7 +19,7 @@ horizon has no future end point):
 open Set Matrix
 open scoped ContDiff
 
-namespace Lightlike.Rows.G1_066
+namespace Lightlike.GR.KerrFirstLaw
 
 open Lightlike
 
@@ -68,4 +68,9 @@ theorem area_nondecreasing_of_complete_generator (hgL : IsLorentzianCoordMetric 
     (hpos : ∀ s, 0 ≤ s → 0 ≤ A s) : MonotoneOn A (Ici 0) :=
   areaElement_monotone hA (expansion_nonneg_of_complete_generator hgL hv hgeo hnull hn hγU hγ hN hR) hpos
 
-end Lightlike.Rows.G1_066
+end Lightlike.GR.KerrFirstLaw
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_066.area_nondecreasing_of_complete_generator := _root_.Lightlike.GR.KerrFirstLaw.area_nondecreasing_of_complete_generator
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_066.expansion_nonneg_of_complete_generator := _root_.Lightlike.GR.KerrFirstLaw.expansion_nonneg_of_complete_generator

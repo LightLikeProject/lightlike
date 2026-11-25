@@ -3,7 +3,7 @@ import Lightlike.GR.HawkingRadiation.Summary
 /-! Tests for row G1-068: signatures of the thermality theorems, and the Schwarzschild check
 `T = 1/(8πM)`. -/
 
-open Lightlike.Rows.G1_068
+open Lightlike.GR.HawkingRadiation
 
 #check @hawking_collapse_thermal
 #check @hawking_schwarzschild_thermal

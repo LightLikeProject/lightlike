@@ -27,7 +27,7 @@ References: Ashtekar–Pawlowski–Singh 2006 (`aps-2006`), Kamiński–Lewandow
 open scoped InnerProductSpace LinearPMap
 open Lightlike.OperatorAlgebras.Spectral.Unbounded
 
-namespace Lightlike.Rows.G2_017
+namespace Lightlike.Canonical.PolymerEvolution
 
 noncomputable section
 
@@ -239,4 +239,21 @@ theorem diffOp_isSymmetric (h : ℝ) (a c : ℝ → ℝ) : IsSymmetric (diffOp h
 
 end
 
-end Lightlike.Rows.G2_017
+end Lightlike.Canonical.PolymerEvolution
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_017.diffOp := _root_.Lightlike.Canonical.PolymerEvolution.diffOp
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_017.diffOp_apply := _root_.Lightlike.Canonical.PolymerEvolution.diffOp_apply
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_017.diffOp_domain := _root_.Lightlike.Canonical.PolymerEvolution.diffOp_domain
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_017.diffOp_isSymmetric := _root_.Lightlike.Canonical.PolymerEvolution.diffOp_isSymmetric
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_017.diffOp_ket := _root_.Lightlike.Canonical.PolymerEvolution.diffOp_ket
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_017.diffOp_symm_ket := _root_.Lightlike.Canonical.PolymerEvolution.diffOp_symm_ket
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_017.diffOp_symm_ket_left := _root_.Lightlike.Canonical.PolymerEvolution.diffOp_symm_ket_left
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_017.finite_support_formal := _root_.Lightlike.Canonical.PolymerEvolution.finite_support_formal
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_017.finite_support_of_mem_polymerDomain := _root_.Lightlike.Canonical.PolymerEvolution.finite_support_of_mem_polymerDomain
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_017.formal := _root_.Lightlike.Canonical.PolymerEvolution.formal
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_017.formal_add := _root_.Lightlike.Canonical.PolymerEvolution.formal_add
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_017.formal_smul := _root_.Lightlike.Canonical.PolymerEvolution.formal_smul
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_017.ket_mem_domain := _root_.Lightlike.Canonical.PolymerEvolution.ket_mem_domain
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_017.«memℓp_formal» := _root_.Lightlike.Canonical.PolymerEvolution.«memℓp_formal»

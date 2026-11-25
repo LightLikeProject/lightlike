@@ -495,10 +495,10 @@ recursion of the pairings, whose two-point value is the sum of u_i v'_i [130].
 120. Lightlike/OperatorAlgebras/FiniteKMS.lean - `OperatorAlgebras.isKMS_iff_eq_gibbs`,
      `OperatorAlgebras.isKMS_gibbs`
 121. Lightlike/OperatorAlgebras/FiniteModular.lean - `OperatorAlgebras.isKMS_modular`
-122. Lightlike/OperatorAlgebras/FockShale/Summary.lean - `OperatorAlgebras.op2_fock_and_shale`,
-     `OperatorAlgebras.op2_one_mode_alpha_beta`,
-     `OperatorAlgebras.op2_infinite_modes_not_implementable`,
-     `OperatorAlgebras.op2_one_mode_implementable`
+122. Lightlike/OperatorAlgebras/FockShale/Summary.lean - `OperatorAlgebras.fockRepOf_implements_iff`,
+     `OperatorAlgebras.squeeze_norm_alpha_sq_sub_norm_beta_sq_one`,
+     `OperatorAlgebras.squeezeEllTwo_not_implementable`,
+     `OperatorAlgebras.squeeze_implementable`
 123. Lightlike/OperatorAlgebras/QuasiFreeState/ComplexStructure.lean -
      `OperatorAlgebras.QuasiFreeState.isPureState_qfState_of_complexStructure`,
      `OperatorAlgebras.QuasiFreeState.isPureState_qfState_of_complexStructure_retract`

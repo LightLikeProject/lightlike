@@ -12,7 +12,7 @@ the bounded operators `C` and `D` with `C² + D² = 1` and `C D + D C = 0`
 (`Δ = (1 - C)(1 + C)⁻¹`, `D = J (1 - C²)^{1/2}`).
 -/
 
-namespace Lightlike.Rows.G1_054
+namespace Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace
 
 open Complex
 
@@ -93,4 +93,14 @@ theorem linPart_of_commute (T : H →L[ℝ] H) (h : ∀ x, T (I • x) = I • T
   rw [linPart_apply, h, smul_smul, I_mul_I]
   module
 
-end Lightlike.Rows.G1_054
+end Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.antiPart := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.antiPart
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.antiPart_apply := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.antiPart_apply
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.linPart := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.linPart
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.linPart_add_antiPart := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.linPart_add_antiPart
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.linPart_apply := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.linPart_apply
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.linPart_of_commute := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.linPart_of_commute
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.smul_eq_re_im := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.smul_eq_re_im

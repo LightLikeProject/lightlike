@@ -14,13 +14,13 @@ potential and of `δ`. The linearized system is
 * Poisson `Δφ = 4πG a² ρ δ`.
 
 `growth_core` eliminates `D`, `Δφ` and gives `δ'' + 2Hδ' - 4πGρδ = (c_s²/a²) Δδ`. This is the
-purely algebraic step; the reduction from the vector fields lives in `Lightlike.Rows.G1_032`
+purely algebraic step; the reduction from the vector fields lives in `Lightlike.Cosmology.GrowthEquation`
 (later files).
 -/
 
 open Filter Topology
 
-namespace Lightlike.Rows.G1_032
+namespace Lightlike.Cosmology.GrowthEquation
 
 /-- **Growth equation, scalar core.** With the linearized continuity equation `δ' = -D/a` near `t`,
 the divergence of the linearized Euler equation `D' = -(a'/a) D - Δφ/a - c_s² Δδ/a` and the
@@ -42,4 +42,8 @@ theorem growth_core (a δ D Lφ Lδ ρ : ℝ → ℝ) (G cs t : ℝ)
   field_simp
   ring
 
-end Lightlike.Rows.G1_032
+end Lightlike.Cosmology.GrowthEquation
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_032.growth_core := _root_.Lightlike.Cosmology.GrowthEquation.growth_core

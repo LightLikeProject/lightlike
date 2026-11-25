@@ -6,18 +6,18 @@ import Lightlike.Geometry.HeatTraceExpansion.SphereTrace
 
 Trust check of `T-GE8`: `∑ₗ (2l+1) e^{-t l(l+1)} = 1/t + 1/3 + t/15 + O(t²)` as `t → 0⁺`.
 
-* `Lightlike.Rows.G1_062.exp_quarter_bound`: `|e^{t/4} - (1 + t/4 + t²/32)| ≤ t³/288` on `[0,1]`.
-* `Lightlike.Rows.G1_062.sphere_arith`: the real-number bookkeeping for the product.
-* `Lightlike.Rows.G1_062.sphereTrace_bound`: `|Z(t) - (1/t + 1/3 + t/15)| ≤ K t²` on `(0,1]`.
-* `Lightlike.Rows.G1_062.sphereTrace_hasHeatExpansion`: `HasHeatExpansion sphereTrace 2 sphereCoeff 3`,
+* `Lightlike.Geometry.HeatTraceExpansion.exp_quarter_bound`: `|e^{t/4} - (1 + t/4 + t²/32)| ≤ t³/288` on `[0,1]`.
+* `Lightlike.Geometry.HeatTraceExpansion.sphere_arith`: the real-number bookkeeping for the product.
+* `Lightlike.Geometry.HeatTraceExpansion.sphereTrace_bound`: `|Z(t) - (1/t + 1/3 + t/15)| ≤ K t²` on `(0,1]`.
+* `Lightlike.Geometry.HeatTraceExpansion.sphereTrace_hasHeatExpansion`: `HasHeatExpansion sphereTrace 2 sphereCoeff 3`,
   i.e. `a₀ = 1`, `a₁ = 1/3`, `a₂ = 1/15` (with the normalisation `(4π)^{-1} · vol = 1`).
-* `Lightlike.Rows.G1_062.sphere_a1_check`: `a₁ = (4π)⁻¹ · ∫ R/6` numerically on the unit
+* `Lightlike.Geometry.HeatTraceExpansion.sphere_a1_check`: `a₁ = (4π)⁻¹ · ∫ R/6` numerically on the unit
   2-sphere (`R = 2`, `vol = 4π`); this is an arithmetic check, not the Gauss–Bonnet theorem.
 -/
 
 open Set Filter Topology
 
-namespace Lightlike.Rows.G1_062
+namespace Lightlike.Geometry.HeatTraceExpansion
 
 /-- Taylor bound for `e^{t/4}` on `[0,1]`. -/
 lemma exp_quarter_bound (t : ℝ) (h0 : 0 ≤ t) (h1 : t ≤ 1) :
@@ -142,4 +142,13 @@ theorem sphere_a1_check : (4 * Real.pi)⁻¹ * ((2 / 6) * (4 * Real.pi)) = 1 / 3
   field_simp
   norm_num
 
-end Lightlike.Rows.G1_062
+end Lightlike.Geometry.HeatTraceExpansion
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.exp_quarter_bound := _root_.Lightlike.Geometry.HeatTraceExpansion.exp_quarter_bound
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.sphereCoeff := _root_.Lightlike.Geometry.HeatTraceExpansion.sphereCoeff
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.sphereTrace_bound := _root_.Lightlike.Geometry.HeatTraceExpansion.sphereTrace_bound
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.sphereTrace_hasHeatExpansion := _root_.Lightlike.Geometry.HeatTraceExpansion.sphereTrace_hasHeatExpansion
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.sphere_a1_check := _root_.Lightlike.Geometry.HeatTraceExpansion.sphere_a1_check
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.sphere_arith := _root_.Lightlike.Geometry.HeatTraceExpansion.sphere_arith

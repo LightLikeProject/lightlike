@@ -13,7 +13,7 @@ With `h = √t` and `gu 1 (m_l) = 2 m_l e^{-m_l²}` this is the expansion
 
 open Set Filter Topology
 
-namespace Lightlike.Rows.G1_062
+namespace Lightlike.Geometry.HeatTraceExpansion
 
 /-- The scaled midpoint sum `x_q(h) = h ∑'_j gu q (mid h j)`. -/
 noncomputable def xs (q : ℕ) (h : ℝ) : ℝ := h * ∑' j : ℕ, gu q (mid h j)
@@ -99,4 +99,12 @@ theorem xs_one_expansion : ∃ C : ℝ, 0 ≤ C ∧ ∀ h : ℝ, 0 < h → h ≤
         apply le_of_eq
         ring
 
-end Lightlike.Rows.G1_062
+end Lightlike.Geometry.HeatTraceExpansion
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.level_five := _root_.Lightlike.Geometry.HeatTraceExpansion.level_five
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.level_one := _root_.Lightlike.Geometry.HeatTraceExpansion.level_one
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.level_three := _root_.Lightlike.Geometry.HeatTraceExpansion.level_three
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.xs := _root_.Lightlike.Geometry.HeatTraceExpansion.xs
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.xs_one_expansion := _root_.Lightlike.Geometry.HeatTraceExpansion.xs_one_expansion

@@ -16,7 +16,7 @@ not a definition adopted by fiat.  The Lie-algebra computation is `Lightlike.Spi
 
 open Matrix Lightlike.SU2
 
-namespace Lightlike.Rows.G2_012
+namespace Lightlike.Canonical.AreaOperator
 
 noncomputable section
 
@@ -57,4 +57,10 @@ theorem sum_spinOp_sq_eq_casSqrt_sq (m : ℕ) :
 
 end
 
-end Lightlike.Rows.G2_012
+end Lightlike.Canonical.AreaOperator
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_012.spinOp := _root_.Lightlike.Canonical.AreaOperator.spinOp
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_012.sum_dSpin_su_sq := _root_.Lightlike.Canonical.AreaOperator.sum_dSpin_su_sq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_012.sum_spinOp_sq_eq_casSqrt_sq := _root_.Lightlike.Canonical.AreaOperator.sum_spinOp_sq_eq_casSqrt_sq

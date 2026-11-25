@@ -7,7 +7,7 @@ Row G3-255.  Write `g = η + κ h` and `L_EH = (2/κ²) √(-g) R`.  Since `R` a
 `κ h`, the part of `L_EH` with exactly `n` fields `h` carries `κ^(n-2)`: the `n = 2` part is the
 Fierz–Pauli kinetic term (`κ⁰`, the propagator), the `n = 3` part is the cubic vertex (`κ¹`),
 the `n = 4` part the quartic vertex (`κ²`).  (The origin of the lower orders of `√(-g)` is
-`Lightlike.Rows.G3_255.volOrder2`.)  This file records only the counting; it does not compute
+`Lightlike.GR.EinsteinHilbertExpansion.volOrder2`.)  This file records only the counting; it does not compute
 vertex tensors.
 
 * `GravVertex`: the graviton self-interactions that are vertices (cubic, quartic).
@@ -17,7 +17,7 @@ vertex tensors.
   `Σ legs - 2 · (number of vertices)`.
 -/
 
-namespace Lightlike.Rows.G3_255
+namespace Lightlike.GR.EinsteinHilbertExpansion
 
 /-- Graviton self-interaction vertices coming from the expansion of the Einstein–Hilbert action
 (the quadratic term is the propagator, not a vertex). -/
@@ -80,4 +80,20 @@ theorem totalKappa_replicate_cubic (k : ℕ) :
     totalKappa (List.replicate k GravVertex.cubic) = k := by
   simp [totalKappa, GravVertex.kappaOrder, List.map_replicate, List.sum_replicate]
 
-end Lightlike.Rows.G3_255
+end Lightlike.GR.EinsteinHilbertExpansion
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.GravVertex := _root_.Lightlike.GR.EinsteinHilbertExpansion.GravVertex
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.GravVertex.cubic := _root_.Lightlike.GR.EinsteinHilbertExpansion.GravVertex.cubic
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.GravVertex.kappaOrder := _root_.Lightlike.GR.EinsteinHilbertExpansion.GravVertex.kappaOrder
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.GravVertex.kappaOrder_add_two := _root_.Lightlike.GR.EinsteinHilbertExpansion.GravVertex.kappaOrder_add_two
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.GravVertex.legs := _root_.Lightlike.GR.EinsteinHilbertExpansion.GravVertex.legs
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.GravVertex.ofLegs := _root_.Lightlike.GR.EinsteinHilbertExpansion.GravVertex.ofLegs
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.GravVertex.ofLegs_legs := _root_.Lightlike.GR.EinsteinHilbertExpansion.GravVertex.ofLegs_legs
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.GravVertex.quartic := _root_.Lightlike.GR.EinsteinHilbertExpansion.GravVertex.quartic
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.GravVertex.three_le_legs := _root_.Lightlike.GR.EinsteinHilbertExpansion.GravVertex.three_le_legs
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.kappaPower_list := _root_.Lightlike.GR.EinsteinHilbertExpansion.kappaPower_list
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.totalKappa := _root_.Lightlike.GR.EinsteinHilbertExpansion.totalKappa
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.totalKappa_replicate_cubic := _root_.Lightlike.GR.EinsteinHilbertExpansion.totalKappa_replicate_cubic
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.totalLegs := _root_.Lightlike.GR.EinsteinHilbertExpansion.totalLegs

@@ -17,17 +17,17 @@ files of this folder.
 
 ## Main definitions
 
-* `Lightlike.Rows.G1_059.IsGreenOperator`: the defining properties of a Green operator.
+* `Lightlike.Spacetime.WaveEquationGreenOperators.IsGreenOperator`: the defining properties of a Green operator.
 
 ## Main results
 
-* `Lightlike.Rows.G1_059.IsGreenOperator.unique`: at most one Green operator for `(P, J)` when the
+* `Lightlike.Spacetime.WaveEquationGreenOperators.IsGreenOperator.unique`: at most one Green operator for `(P, J)` when the
   homogeneous problem with support in `J (supp f)` has only the zero solution.
 -/
 
 open Function
 
-namespace Lightlike.Rows.G1_059
+namespace Lightlike.Spacetime.WaveEquationGreenOperators
 
 variable {X : Type*}
 
@@ -66,4 +66,12 @@ theorem IsGreenOperator.unique {E D : Submodule ℝ (X → ℝ)} {hDE : D ≤ E}
     simp [h1, h2]
   exact sub_eq_zero.mp (hU f _ h0 hsupp)
 
-end Lightlike.Rows.G1_059
+end Lightlike.Spacetime.WaveEquationGreenOperators
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_059.IsGreenOperator := _root_.Lightlike.Spacetime.WaveEquationGreenOperators.IsGreenOperator
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_059.IsGreenOperator.left_inv := _root_.Lightlike.Spacetime.WaveEquationGreenOperators.IsGreenOperator.left_inv
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_059.IsGreenOperator.right_inv := _root_.Lightlike.Spacetime.WaveEquationGreenOperators.IsGreenOperator.right_inv
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_059.IsGreenOperator.support_subset := _root_.Lightlike.Spacetime.WaveEquationGreenOperators.IsGreenOperator.support_subset
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_059.IsGreenOperator.unique := _root_.Lightlike.Spacetime.WaveEquationGreenOperators.IsGreenOperator.unique

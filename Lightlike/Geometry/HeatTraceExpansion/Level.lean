@@ -12,7 +12,7 @@ This is the sum over `j` of `midpoint_bound` on `[j h, (j+1) h]`, the left side 
 
 open Set Filter Topology
 
-namespace Lightlike.Rows.G1_062
+namespace Lightlike.Geometry.HeatTraceExpansion
 
 lemma gu_tendsto_zero (p : ℕ) {h : ℝ} (h0 : 0 < h) :
     Tendsto (fun N : ℕ => gu p ((N : ℝ) * h)) atTop (𝓝 0) := by
@@ -112,4 +112,11 @@ theorem level (p m : ℕ) : ∃ c : ℝ, 0 ≤ c ∧ ∀ h : ℝ, 0 < h → h �
     simpa [sub_eq_add_neg] using (h1'.sub_const (gu p 0)).sub h2
   exact le_of_tendsto' hlim.abs hbd
 
-end Lightlike.Rows.G1_062
+end Lightlike.Geometry.HeatTraceExpansion
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.gu_tendsto_zero := _root_.Lightlike.Geometry.HeatTraceExpansion.gu_tendsto_zero
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.level := _root_.Lightlike.Geometry.HeatTraceExpansion.level
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.remJ := _root_.Lightlike.Geometry.HeatTraceExpansion.remJ
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.remJ_bound := _root_.Lightlike.Geometry.HeatTraceExpansion.remJ_bound

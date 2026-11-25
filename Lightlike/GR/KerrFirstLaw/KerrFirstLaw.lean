@@ -13,7 +13,7 @@ Source: carlip-2014 (Section 2).
 
 noncomputable section
 
-namespace Lightlike.Rows.G1_066
+namespace Lightlike.GR.KerrFirstLaw
 
 open Lightlike Real
 
@@ -61,4 +61,8 @@ theorem kerr_first_law {M a : ℝ → ℝ} {M' a' : ℝ} {t : ℝ}
   field_simp
   linear_combination (-8 * M') * hs
 
-end Lightlike.Rows.G1_066
+end Lightlike.GR.KerrFirstLaw
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_066.kerr_first_law := _root_.Lightlike.GR.KerrFirstLaw.kerr_first_law

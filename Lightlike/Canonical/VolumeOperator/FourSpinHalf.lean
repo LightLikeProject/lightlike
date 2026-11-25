@@ -15,7 +15,7 @@ regularization constants give different results (`volume_four_halves_ne`).
 
 open Matrix
 
-namespace Lightlike.Rows.G2_014
+namespace Lightlike.Canonical.VolumeOperator
 
 /-- Four edges, each of spin `1/2`. -/
 abbrev n4 : Fin 4 → ℕ := fun _ => 1
@@ -178,4 +178,26 @@ theorem volume_four_halves_ne {κ κ' : ℝ} (hκ : κ ≠ κ') (σ : ℝ) (hσ 
   have h3 : 0 < Real.sqrt 3 := Real.sqrt_pos.mpr (by norm_num)
   rcases hσ with h | h <;> simp [h, h3.ne']
 
-end Lightlike.Rows.G2_014
+end Lightlike.Canonical.VolumeOperator
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.IsInvariant.add_smul := _root_.Lightlike.Canonical.VolumeOperator.IsInvariant.add_smul
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.Qnode_psiS := _root_.Lightlike.Canonical.VolumeOperator.Qnode_psiS
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.eps := _root_.Lightlike.Canonical.VolumeOperator.eps
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.n4 := _root_.Lightlike.Canonical.VolumeOperator.n4
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.n4_apply := _root_.Lightlike.Canonical.VolumeOperator.n4_apply
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.phi := _root_.Lightlike.Canonical.VolumeOperator.phi
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.phi_invariant := _root_.Lightlike.Canonical.VolumeOperator.phi_invariant
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.psi0 := _root_.Lightlike.Canonical.VolumeOperator.psi0
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.psi0_invariant := _root_.Lightlike.Canonical.VolumeOperator.psi0_invariant
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.psiS := _root_.Lightlike.Canonical.VolumeOperator.psiS
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.psiS_invariant := _root_.Lightlike.Canonical.VolumeOperator.psiS_invariant
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.psiS_ne_zero := _root_.Lightlike.Canonical.VolumeOperator.psiS_ne_zero
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.qOp_apply := _root_.Lightlike.Canonical.VolumeOperator.qOp_apply
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.q_phi := _root_.Lightlike.Canonical.VolumeOperator.q_phi
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.q_psi0 := _root_.Lightlike.Canonical.VolumeOperator.q_psi0
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.q_psiS := _root_.Lightlike.Canonical.VolumeOperator.q_psiS
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.totalOp_apply := _root_.Lightlike.Canonical.VolumeOperator.totalOp_apply
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.volume_four_halves_eigen := _root_.Lightlike.Canonical.VolumeOperator.volume_four_halves_eigen
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.volume_four_halves_ne := _root_.Lightlike.Canonical.VolumeOperator.volume_four_halves_ne

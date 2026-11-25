@@ -17,7 +17,7 @@ Every statement below is therefore about the spin-network functions themselves.
 
 open MeasureTheory Lightlike.HarmonicAnalysis UnitaryMatrixRep
 
-namespace Lightlike.Rows.G2_012
+namespace Lightlike.Canonical.AreaOperator
 
 noncomputable section
 
@@ -87,4 +87,12 @@ theorem pwMultiplier_su2Coeff (φ : ℕ → ℝ) (m : ℕ) (a b : Fin (m + 1)) :
 
 end
 
-end Lightlike.Rows.G2_012
+end Lightlike.Canonical.AreaOperator
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_012.pwCoeff := _root_.Lightlike.Canonical.AreaOperator.pwCoeff
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_012.pwCoeff_su2Coeff := _root_.Lightlike.Canonical.AreaOperator.pwCoeff_su2Coeff
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_012.pwMultiplier := _root_.Lightlike.Canonical.AreaOperator.pwMultiplier
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_012.pwMultiplier_const_mul_su2Coeff := _root_.Lightlike.Canonical.AreaOperator.pwMultiplier_const_mul_su2Coeff
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_012.pwMultiplier_su2Coeff := _root_.Lightlike.Canonical.AreaOperator.pwMultiplier_su2Coeff

@@ -23,7 +23,7 @@ Wightman theory is *not* proved here.
 open MeasureTheory Complex Set Filter Topology
 open scoped Real
 
-namespace Lightlike.Rows.G1_054
+namespace Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace
 
 variable {ξ η : ℝ → ℂ}
 
@@ -84,4 +84,14 @@ theorem kms_model (hξ : MemLp ξ 2) (hη : MemLp η 2) (rξ : BWRel ξ) (rη : 
   exact ⟨laplace_continuousOn h0 h1, fun w a b => laplace_differentiableAt h0 h1 a b,
     laplace_sub_two_pi (bw_relation_phi rξ rη)⟩
 
-end Lightlike.Rows.G1_054
+end Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.BWRel := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.BWRel
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.bw_relation_phi := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.bw_relation_phi
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.integrable_matrixDensity := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.integrable_matrixDensity
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.integrable_matrixDensity_exp := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.integrable_matrixDensity_exp
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.kms_model := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.kms_model
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.matrixDensity := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.matrixDensity
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.memLp_conj_neg := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.memLp_conj_neg

@@ -16,7 +16,7 @@ open scoped ContDiff
 
 noncomputable section
 
-namespace Lightlike.Rows.G1_031
+namespace Lightlike.Cosmology.LinearizedTensorModes
 
 open Lightlike Lightlike.Cosmology
 
@@ -120,4 +120,17 @@ theorem pd_dChristoffel_dPert (hfa : ContDiff ℝ ∞ a) (hne : ∀ t, a t ≠ 0
   rw [this]
   exact (hasPd_dGD hu (hdiff _) (hdiff' _) (hne _) μ i j k).2
 
-end Lightlike.Rows.G1_031
+end Lightlike.Cosmology.LinearizedTensorModes
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_031.K2 := _root_.Lightlike.Cosmology.LinearizedTensorModes.K2
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_031.K3 := _root_.Lightlike.Cosmology.LinearizedTensorModes.K3
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_031.dChristoffel_dPert := _root_.Lightlike.Cosmology.LinearizedTensorModes.dChristoffel_dPert
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_031.dGD := _root_.Lightlike.Cosmology.LinearizedTensorModes.dGD
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_031.dGDd := _root_.Lightlike.Cosmology.LinearizedTensorModes.dGDd
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_031.dPert := _root_.Lightlike.Cosmology.LinearizedTensorModes.dPert
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_031.dPert_apply := _root_.Lightlike.Cosmology.LinearizedTensorModes.dPert_apply
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_031.hasPd_dGD := _root_.Lightlike.Cosmology.LinearizedTensorModes.hasPd_dGD
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_031.pd_dChristoffel_dPert := _root_.Lightlike.Cosmology.LinearizedTensorModes.pd_dChristoffel_dPert
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_031.pd_dPert := _root_.Lightlike.Cosmology.LinearizedTensorModes.pd_dPert

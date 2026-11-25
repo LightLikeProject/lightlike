@@ -10,7 +10,7 @@ import Lightlike.Canonical.BlackHoleEntropyCounting.Bounds
 
 open Real
 
-namespace Lightlike.Rows.G2_016
+namespace Lightlike.Canonical.BlackHoleEntropyCounting
 
 /-- Upper rational bound for `exp(-π · 0.2376)`. -/
 theorem exp_le_qHi : Real.exp (-(π * (2376 / 10000))) ≤ 474055 / 1000000 := by
@@ -161,4 +161,13 @@ theorem countSum_two_lt : countSum (fun _ => (2 : ℝ)) (2376 / 10000) < 1 := by
   rw [e, ← hsum]
   linarith
 
-end Lightlike.Rows.G2_016
+end Lightlike.Canonical.BlackHoleEntropyCounting
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.countSum_two_lt := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.countSum_two_lt
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.exp_le_qHi := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.exp_le_qHi
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.self_sub_sLab_le := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.self_sub_sLab_le
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.tail_term_le := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.tail_term_le
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.upTerm := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.upTerm
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.upTerm_ge := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.upTerm_ge

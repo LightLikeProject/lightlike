@@ -13,7 +13,7 @@ noncomputable section
 
 open Set
 
-namespace Lightlike.Rows.G2_008
+namespace Lightlike.Canonical.ProjectiveLimitIntegral
 
 namespace InvSystem
 
@@ -80,4 +80,8 @@ theorem proj_surjective [∀ i, CompactSpace (X i)] [∀ i, T2Space (X i)] [IsDi
 
 end InvSystem
 
-end Lightlike.Rows.G2_008
+end Lightlike.Canonical.ProjectiveLimitIntegral
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_008.InvSystem.proj_surjective := _root_.Lightlike.Canonical.ProjectiveLimitIntegral.InvSystem.proj_surjective

@@ -14,7 +14,7 @@ only and `D_{vv}` on `v` only, and the conformal factor `ψ` has dropped out
 
 noncomputable section
 
-namespace Lightlike.Rows.G1_063
+namespace Lightlike.Spacetime.TraceAnomaly2D
 
 open Lightlike
 open scoped ContDiff
@@ -70,4 +70,8 @@ theorem anomaly_unique {ψ : (Fin 2 → ℝ) → ℝ} (hψ : ContDiff ℝ ∞ ψ
       pd_sub (hd 0 1) (hd' 0 1), pd_sub (hd 0 1) (hd' 0 1)]
     linarith
 
-end Lightlike.Rows.G1_063
+end Lightlike.Spacetime.TraceAnomaly2D
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_063.anomaly_unique := _root_.Lightlike.Spacetime.TraceAnomaly2D.anomaly_unique

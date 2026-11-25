@@ -15,7 +15,7 @@ in `Lightlike/GR/KerrControl.lean`).
 
 noncomputable section
 
-namespace Lightlike.Rows.G1_066
+namespace Lightlike.GR.KerrFirstLaw
 
 open Lightlike Real
 
@@ -61,4 +61,14 @@ theorem kerr_smarr {M a : ℝ} (hM : 0 < M) (h : a ^ 2 ≤ M ^ 2) :
   rw [kerr_rotation_term hM h, kerr_kappa_area hM h]
   ring
 
-end Lightlike.Rows.G1_066
+end Lightlike.GR.KerrFirstLaw
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_066.kerrArea := _root_.Lightlike.GR.KerrFirstLaw.kerrArea
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_066.kerrArea_eq := _root_.Lightlike.GR.KerrFirstLaw.kerrArea_eq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_066.kerrJ := _root_.Lightlike.GR.KerrFirstLaw.kerrJ
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_066.kerrRplus_pos := _root_.Lightlike.GR.KerrFirstLaw.kerrRplus_pos
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_066.kerr_kappa_area := _root_.Lightlike.GR.KerrFirstLaw.kerr_kappa_area
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_066.kerr_rotation_term := _root_.Lightlike.GR.KerrFirstLaw.kerr_rotation_term
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_066.kerr_smarr := _root_.Lightlike.GR.KerrFirstLaw.kerr_smarr

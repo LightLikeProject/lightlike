@@ -22,8 +22,8 @@ files of the folder.
 -/
 
 namespace Lightlike
-namespace Rows
-namespace G1_037
+namespace Cosmology
+namespace ConformalVacuumFLRW
 
 open Complex
 
@@ -140,6 +140,25 @@ lemma normSq_alphaC_sub_normSq_betaC (hy : IsMode q k y) (hu : IsMode q k u) (hn
 
 end Bogoliubov
 
-end G1_037
-end Rows
+end ConformalVacuumFLRW
+end Cosmology
 end Lightlike
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_037.IsMode := _root_.Lightlike.Cosmology.ConformalVacuumFLRW.IsMode
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_037.IsMode.conj := _root_.Lightlike.Cosmology.ConformalVacuumFLRW.IsMode.conj
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_037.IsMode.diff := _root_.Lightlike.Cosmology.ConformalVacuumFLRW.IsMode.diff
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_037.IsMode.diff' := _root_.Lightlike.Cosmology.ConformalVacuumFLRW.IsMode.diff'
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_037.IsMode.eqn := _root_.Lightlike.Cosmology.ConformalVacuumFLRW.IsMode.eqn
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_037.IsMode.normalized_of_at := _root_.Lightlike.Cosmology.ConformalVacuumFLRW.IsMode.normalized_of_at
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_037.IsMode.wr_const := _root_.Lightlike.Cosmology.ConformalVacuumFLRW.IsMode.wr_const
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_037.IsNormalized := _root_.Lightlike.Cosmology.ConformalVacuumFLRW.IsNormalized
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_037.alphaC := _root_.Lightlike.Cosmology.ConformalVacuumFLRW.alphaC
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_037.alphaC_eq := _root_.Lightlike.Cosmology.ConformalVacuumFLRW.alphaC_eq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_037.betaC := _root_.Lightlike.Cosmology.ConformalVacuumFLRW.betaC
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_037.betaC_eq := _root_.Lightlike.Cosmology.ConformalVacuumFLRW.betaC_eq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_037.deriv_conj_fun := _root_.Lightlike.Cosmology.ConformalVacuumFLRW.deriv_conj_fun
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_037.eq_alpha_mul_add_beta_mul := _root_.Lightlike.Cosmology.ConformalVacuumFLRW.eq_alpha_mul_add_beta_mul
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_037.normSq_alphaC_sub_normSq_betaC := _root_.Lightlike.Cosmology.ConformalVacuumFLRW.normSq_alphaC_sub_normSq_betaC
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_037.wr := _root_.Lightlike.Cosmology.ConformalVacuumFLRW.wr

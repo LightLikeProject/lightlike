@@ -22,7 +22,7 @@ spacetime (SC2, SC6).
 * `hawking_schwarzschild_thermal`: the combination, `|β|² = 1/(exp(ω/T_H) - 1)`.
 -/
 
-namespace Lightlike.Rows.G1_068
+namespace Lightlike.GR.HawkingRadiation
 
 noncomputable section
 
@@ -63,4 +63,10 @@ theorem hawking_schwarzschild_thermal {M ω w : ℝ} (hM : 0 < M) (hω : 0 < ω)
 
 end
 
-end Lightlike.Rows.G1_068
+end Lightlike.GR.HawkingRadiation
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_068.hawking_collapse_thermal := _root_.Lightlike.GR.HawkingRadiation.hawking_collapse_thermal
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_068.hawking_schwarzschild_thermal := _root_.Lightlike.GR.HawkingRadiation.hawking_schwarzschild_thermal
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_068.schwarzschild_surfaceGravity_temperature := _root_.Lightlike.GR.HawkingRadiation.schwarzschild_surfaceGravity_temperature

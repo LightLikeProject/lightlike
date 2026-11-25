@@ -9,12 +9,12 @@ Existence of the power series `B ∈ ℚ⟦X⟧` with `B = 1 + X · B^p`, by Pic
 `iter 0 = 1`, `iter (k+1) = 1 + X · (iter k)^p`.  The step `iter (k+1) - iter k` is divisible by
 `X^(k+1)`, so the coefficientwise limit exists.  This series is the generating function of rooted
 `p`-ary trees counted by internal nodes; its coefficients are identified with the Fuss–Catalan numbers
-in `Lightlike.Rows.G2_035` (later files).
+in `Lightlike.GFT.FussCatalanNumbers` (later files).
 -/
 
 open PowerSeries
 
-namespace Lightlike.Rows.G2_035
+namespace Lightlike.GFT.FussCatalanNumbers
 
 /-- Picard iterates of `B = 1 + X B^p`. -/
 noncomputable def iter (p : ℕ) : ℕ → ℚ⟦X⟧
@@ -85,4 +85,15 @@ theorem constantCoeff_seriesB (p : ℕ) : constantCoeff (seriesB p) = 1 := by
   have := congrArg (constantCoeff) (seriesB_eq p)
   simpa using this
 
-end Lightlike.Rows.G2_035
+end Lightlike.GFT.FussCatalanNumbers
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_035.X_pow_dvd_iter_sub := _root_.Lightlike.GFT.FussCatalanNumbers.X_pow_dvd_iter_sub
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_035.X_pow_dvd_iter_succ_sub := _root_.Lightlike.GFT.FussCatalanNumbers.X_pow_dvd_iter_succ_sub
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_035.X_pow_dvd_seriesB_sub := _root_.Lightlike.GFT.FussCatalanNumbers.X_pow_dvd_seriesB_sub
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_035.coeff_iter_eq := _root_.Lightlike.GFT.FussCatalanNumbers.coeff_iter_eq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_035.constantCoeff_seriesB := _root_.Lightlike.GFT.FussCatalanNumbers.constantCoeff_seriesB
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_035.iter := _root_.Lightlike.GFT.FussCatalanNumbers.iter
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_035.seriesB := _root_.Lightlike.GFT.FussCatalanNumbers.seriesB
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_035.seriesB_eq := _root_.Lightlike.GFT.FussCatalanNumbers.seriesB_eq

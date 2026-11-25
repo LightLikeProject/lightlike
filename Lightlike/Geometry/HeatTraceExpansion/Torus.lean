@@ -10,14 +10,14 @@ By Poisson summation (`Real.tsum_exp_neg_mul_int_sq`) and the Jacobi theta bound
 
 ## Main results
 
-* `Lightlike.Rows.G1_062.exp_neg_div_isBigO_pow`: `e^{-c/t} = O(t^N)` as `t → 0⁺`.
-* `Lightlike.Rows.G1_062.circleTrace_sub_isBigO`: `Z_{S¹_L}(t) - L/√(4π) t^{-1/2}` is exponentially
+* `Lightlike.Geometry.HeatTraceExpansion.exp_neg_div_isBigO_pow`: `e^{-c/t} = O(t^N)` as `t → 0⁺`.
+* `Lightlike.Geometry.HeatTraceExpansion.circleTrace_sub_isBigO`: `Z_{S¹_L}(t) - L/√(4π) t^{-1/2}` is exponentially
   small as `t → 0⁺`.
 -/
 
 open Filter Topology Asymptotics Complex
 
-namespace Lightlike.Rows.G1_062
+namespace Lightlike.Geometry.HeatTraceExpansion
 
 /-- `e^{-c/t}` vanishes faster than any power of `t` as `t → 0⁺`. -/
 theorem exp_neg_div_isBigO_pow {c : ℝ} (hc : 0 < c) (N : ℕ) :
@@ -167,4 +167,13 @@ theorem circleTrace_hasHeatExpansion {L : ℝ} (hL : 0 < L) {K : ℕ} (hK : 1 �
   rw [circleTrace_eq hL ht]
   ring
 
-end Lightlike.Rows.G1_062
+end Lightlike.Geometry.HeatTraceExpansion
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.abs_tsum_exp_sub_one_le := _root_.Lightlike.Geometry.HeatTraceExpansion.abs_tsum_exp_sub_one_le
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.circleTrace := _root_.Lightlike.Geometry.HeatTraceExpansion.circleTrace
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.circleTrace_eq := _root_.Lightlike.Geometry.HeatTraceExpansion.circleTrace_eq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.circleTrace_hasHeatExpansion := _root_.Lightlike.Geometry.HeatTraceExpansion.circleTrace_hasHeatExpansion
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.exp_neg_div_isBigO_pow := _root_.Lightlike.Geometry.HeatTraceExpansion.exp_neg_div_isBigO_pow
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.ofReal_tsum_exp_eq_jacobiTheta := _root_.Lightlike.Geometry.HeatTraceExpansion.ofReal_tsum_exp_eq_jacobiTheta

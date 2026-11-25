@@ -9,8 +9,8 @@ two vectors) so as to place the vanishing eigenvalues at the end, then uses the 
 
 ## Main results
 
-* `Lightlike.Rows.G1_039.bnormalisable_sign`
-* `Lightlike.Rows.G1_039.exists_classB_normal`: for `l_i a_i = 0` and `a ≠ 0`, the bracket
+* `Lightlike.Cosmology.BianchiClassification.bnormalisable_sign`
+* `Lightlike.Cosmology.BianchiClassification.exists_classB_normal`: for `l_i a_i = 0` and `a ≠ 0`, the bracket
   `(diag l, a)` is isomorphic to a class B normal form with `a = (0, 0, α)`.
 
 ## References
@@ -18,7 +18,7 @@ two vectors) so as to place the vanishing eigenvalues at the end, then uses the 
 * heinzle-uggla-2009a (Section 3)
 -/
 
-namespace Lightlike.Rows.G1_039
+namespace Lightlike.Cosmology.BianchiClassification
 
 open Matrix
 
@@ -211,4 +211,15 @@ theorem exists_classB_normal (l a : Fin 3 → ℝ) (hla : ∀ i, l i * a i = 0) 
   obtain ⟨t, α, hc, hi⟩ := bnormalisable_sign s _ hs3 hsa hne
   exact ⟨t, α, hc, hsc.trans hi⟩
 
-end Lightlike.Rows.G1_039
+end Lightlike.Cosmology.BianchiClassification
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.bnormalisable_one_zero_at0 := _root_.Lightlike.Cosmology.BianchiClassification.bnormalisable_one_zero_at0
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.bnormalisable_one_zero_at1 := _root_.Lightlike.Cosmology.BianchiClassification.bnormalisable_one_zero_at1
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.bnormalisable_one_zero_at2 := _root_.Lightlike.Cosmology.BianchiClassification.bnormalisable_one_zero_at2
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.bnormalisable_sign := _root_.Lightlike.Cosmology.BianchiClassification.bnormalisable_sign
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.bnormalisable_sign_aux := _root_.Lightlike.Cosmology.BianchiClassification.bnormalisable_sign_aux
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.bnormalisable_two_zero_at1 := _root_.Lightlike.Cosmology.BianchiClassification.bnormalisable_two_zero_at1
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.bnormalisable_two_zero_at2 := _root_.Lightlike.Cosmology.BianchiClassification.bnormalisable_two_zero_at2
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.exists_classB_normal := _root_.Lightlike.Cosmology.BianchiClassification.exists_classB_normal

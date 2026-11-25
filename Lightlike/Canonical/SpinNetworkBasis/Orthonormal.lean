@@ -20,7 +20,7 @@ Supporting lemmas for the spin-network basis theorem; no catalogue entry.
 
 open MeasureTheory
 
-namespace Lightlike.Rows.G2_010
+namespace Lightlike.Canonical.SpinNetworkBasis
 
 open Lightlike Lightlike.Spin4 Lightlike.HarmonicAnalysis Lightlike.HarmonicAnalysis.UnitaryMatrixRep
 
@@ -164,4 +164,24 @@ theorem orthonormal_phiLp :
 
 end
 
-end Lightlike.Rows.G2_010
+end Lightlike.Canonical.SpinNetworkBasis
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.Idx := _root_.Lightlike.Canonical.SpinNetworkBasis.Idx
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.continuous_phi := _root_.Lightlike.Canonical.SpinNetworkBasis.continuous_phi
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.continuous_phiEdge := _root_.Lightlike.Canonical.SpinNetworkBasis.continuous_phiEdge
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.haarPi := _root_.Lightlike.Canonical.SpinNetworkBasis.haarPi
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.haarSU2_isHaar := _root_.Lightlike.Canonical.SpinNetworkBasis.haarSU2_isHaar
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.inner_phiLp := _root_.Lightlike.Canonical.SpinNetworkBasis.inner_phiLp
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.orthonormal_phiLp := _root_.Lightlike.Canonical.SpinNetworkBasis.orthonormal_phiLp
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.phi := _root_.Lightlike.Canonical.SpinNetworkBasis.phi
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.phiC := _root_.Lightlike.Canonical.SpinNetworkBasis.phiC
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.phiEdge := _root_.Lightlike.Canonical.SpinNetworkBasis.phiEdge
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.phiEdge_inner_eq := _root_.Lightlike.Canonical.SpinNetworkBasis.phiEdge_inner_eq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.phiEdge_inner_ne := _root_.Lightlike.Canonical.SpinNetworkBasis.phiEdge_inner_ne
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.phiLp := _root_.Lightlike.Canonical.SpinNetworkBasis.phiLp
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.phi_inner_eq := _root_.Lightlike.Canonical.SpinNetworkBasis.phi_inner_eq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.phi_inner_ne := _root_.Lightlike.Canonical.SpinNetworkBasis.phi_inner_ne
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.phi_mul_conj := _root_.Lightlike.Canonical.SpinNetworkBasis.phi_mul_conj
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.secondCountableSU2 := _root_.Lightlike.Canonical.SpinNetworkBasis.secondCountableSU2

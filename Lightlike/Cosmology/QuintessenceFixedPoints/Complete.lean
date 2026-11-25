@@ -19,7 +19,7 @@ a whole line of zeros occurs).
 * copeland-2006
 -/
 
-namespace Lightlike.Rows.G1_029
+namespace Lightlike.Cosmology.QuintessenceFixedPoints
 
 noncomputable section
 
@@ -108,4 +108,9 @@ theorem vf_zero_classify_half_disc {l γ x y : ℝ} (hγ : γ ≠ 2) (hlγ : l �
 
 end
 
-end Lightlike.Rows.G1_029
+end Lightlike.Cosmology.QuintessenceFixedPoints
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.vf_zero_classify := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.vf_zero_classify
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.vf_zero_classify_half_disc := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.vf_zero_classify_half_disc

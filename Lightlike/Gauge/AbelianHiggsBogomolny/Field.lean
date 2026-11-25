@@ -14,7 +14,7 @@ The main result `curl_current` is the hypothesis `hK` of `Pointwise.lean`.
 Supporting lemmas; no catalogue entry.
 -/
 
-namespace Lightlike.Rows.G1_047
+namespace Lightlike.Gauge.AbelianHiggsBogomolny
 
 open Complex ComplexConjugate
 
@@ -106,4 +106,16 @@ theorem hK_of_contDiff (e : ℝ) {A₁ A₂ : ℝ × ℝ → ℝ} {φ : ℝ × �
   rw [curl_current e hA₁ hA₂ hφ x]
   ring
 
-end Lightlike.Rows.G1_047
+end Lightlike.Gauge.AbelianHiggsBogomolny
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_047.covD := _root_.Lightlike.Gauge.AbelianHiggsBogomolny.covD
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_047.curl_current := _root_.Lightlike.Gauge.AbelianHiggsBogomolny.curl_current
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_047.current := _root_.Lightlike.Gauge.AbelianHiggsBogomolny.current
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_047.«d₁» := _root_.Lightlike.Gauge.AbelianHiggsBogomolny.«d₁»
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_047.«d₂» := _root_.Lightlike.Gauge.AbelianHiggsBogomolny.«d₂»
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_047.fderiv_current := _root_.Lightlike.Gauge.AbelianHiggsBogomolny.fderiv_current
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_047.hK_of_contDiff := _root_.Lightlike.Gauge.AbelianHiggsBogomolny.hK_of_contDiff
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_047.hasFDerivAt_partial := _root_.Lightlike.Gauge.AbelianHiggsBogomolny.hasFDerivAt_partial
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_047.magField := _root_.Lightlike.Gauge.AbelianHiggsBogomolny.magField

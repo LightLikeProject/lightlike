@@ -13,7 +13,7 @@ Row G3-255 (graviton vertices from the Einstein–Hilbert expansion).  The Einst
 
 open Matrix
 
-namespace Lightlike.Rows.G3_255
+namespace Lightlike.GR.EinsteinHilbertExpansion
 
 /-- The Laplace expansion of a `4 × 4` determinant, with every entry written out. -/
 theorem det_fin_four (B : Matrix (Fin 4) (Fin 4) ℝ) :
@@ -42,4 +42,9 @@ theorem det_one_add_smul_fin4 (ε : ℝ) (A : Matrix (Fin 4) (Fin 4) ℝ) :
   simp [Matrix.trace, Matrix.mul_apply, Fin.sum_univ_succ]
   ring
 
-end Lightlike.Rows.G3_255
+end Lightlike.GR.EinsteinHilbertExpansion
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.det_fin_four := _root_.Lightlike.GR.EinsteinHilbertExpansion.det_fin_four
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.det_one_add_smul_fin4 := _root_.Lightlike.GR.EinsteinHilbertExpansion.det_one_add_smul_fin4

@@ -14,7 +14,7 @@ noncomputable section
 
 open MeasureTheory Set
 
-namespace Lightlike.Rows.G2_008
+namespace Lightlike.Canonical.ProjectiveLimitIntegral
 
 namespace InvSystem
 
@@ -58,4 +58,10 @@ end Measures
 
 end InvSystem
 
-end Lightlike.Rows.G2_008
+end Lightlike.Canonical.ProjectiveLimitIntegral
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_008.InvSystem.cyl_injective := _root_.Lightlike.Canonical.ProjectiveLimitIntegral.InvSystem.cyl_injective
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_008.InvSystem.integral_comp_f := _root_.Lightlike.Canonical.ProjectiveLimitIntegral.InvSystem.integral_comp_f
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_008.InvSystem.integral_eq_of_cyl_eq := _root_.Lightlike.Canonical.ProjectiveLimitIntegral.InvSystem.integral_eq_of_cyl_eq

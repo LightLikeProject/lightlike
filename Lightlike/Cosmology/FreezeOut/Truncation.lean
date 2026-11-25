@@ -20,7 +20,7 @@ it stays in `[0, K)`, hence solves the original equation.
 
 @[expose] public section
 
-namespace Lightlike.Rows.G1_034
+namespace Lightlike.Cosmology.FreezeOut
 
 open Set Metric
 open scoped NNReal
@@ -120,4 +120,14 @@ theorem exists_isSol {lam : ℝ} (hlam : 0 ≤ lam) {e : ℝ → ℝ} {x₀ Y₀
   have := hY x hx
   simpa only [hf, trunc_of_mem (hnn x hx) hx1] using this
 
-end Lightlike.Rows.G1_034
+end Lightlike.Cosmology.FreezeOut
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_034.exists_isSol := _root_.Lightlike.Cosmology.FreezeOut.exists_isSol
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_034.trunc := _root_.Lightlike.Cosmology.FreezeOut.trunc
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_034.trunc_le := _root_.Lightlike.Cosmology.FreezeOut.trunc_le
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_034.trunc_lipschitz := _root_.Lightlike.Cosmology.FreezeOut.trunc_lipschitz
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_034.trunc_nonneg := _root_.Lightlike.Cosmology.FreezeOut.trunc_nonneg
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_034.trunc_of_mem := _root_.Lightlike.Cosmology.FreezeOut.trunc_of_mem
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_034.trunc_of_neg := _root_.Lightlike.Cosmology.FreezeOut.trunc_of_neg

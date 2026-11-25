@@ -18,7 +18,7 @@ Supporting lemmas around the hypotheses of `Lightlike/Cosmology/SwamplandConject
 
 @[expose] public section
 
-namespace Lightlike.Rows.G1_046
+namespace Lightlike.Cosmology.SwamplandConjectures
 
 open Real Filter Topology
 
@@ -83,4 +83,13 @@ theorem eosExp_lt_iff (l : ℝ) : eosExp l < -1 / 3 ↔ l ^ 2 < 2 := by
   unfold eosExp
   constructor <;> intro h <;> linarith
 
-end Lightlike.Rows.G1_046
+end Lightlike.Cosmology.SwamplandConjectures
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_046.DistanceConjecture.tendsto_zero := _root_.Lightlike.Cosmology.SwamplandConjectures.DistanceConjecture.tendsto_zero
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_046.distanceConjecture_exp := _root_.Lightlike.Cosmology.SwamplandConjectures.distanceConjecture_exp
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_046.eosExp := _root_.Lightlike.Cosmology.SwamplandConjectures.eosExp
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_046.eosExp_lt_iff := _root_.Lightlike.Cosmology.SwamplandConjectures.eosExp_lt_iff
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_046.refined_of_deSitter := _root_.Lightlike.Cosmology.SwamplandConjectures.refined_of_deSitter
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_046.tachyonic_direction_of_critical := _root_.Lightlike.Cosmology.SwamplandConjectures.tachyonic_direction_of_critical

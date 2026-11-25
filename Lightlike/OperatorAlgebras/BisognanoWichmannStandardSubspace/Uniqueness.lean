@@ -31,7 +31,7 @@ open scoped LinearPMap InnerProductSpace
 
 set_option linter.unusedSectionVars false
 
-namespace Lightlike.Rows.G1_054
+namespace Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace
 
 variable {𝓗 : Type*} [NormedAddCommGroup 𝓗] [InnerProductSpace ℂ 𝓗] [CompleteSpace 𝓗]
 
@@ -228,4 +228,25 @@ theorem ModularPair.ext_of_op {P Q : ModularPair 𝓗} (hP : P.IsPositive) (hQ :
   intro x hx hy
   rw [← tot_of_mem _ hx, ← tot_of_mem _ hy, P.tot_eq_J_op hx, Q.tot_eq_J_op hy, hop _ hx, hJ]
 
-end Lightlike.Rows.G1_054
+end Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.Amap := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.Amap
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.Amap_apply := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.Amap_apply
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.Amap_isPositive := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.Amap_isPositive
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.Amap_sq_inner := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.Amap_sq_inner
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.Amap_symm := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.Amap_symm
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.ModularPair.IsPositive := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.ModularPair.IsPositive
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.ModularPair.ext_of_op := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.ModularPair.ext_of_op
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.ModularPair.norm_tot := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.ModularPair.norm_tot
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.ModularPair.op_eq := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.ModularPair.op_eq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.ModularPair.tot_eq_J_op := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.ModularPair.tot_eq_J_op
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.ModularPair.tot_eq_zero := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.ModularPair.tot_eq_zero
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.ModularPair.tot_op := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.ModularPair.tot_op
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.dense_range_Amap := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.dense_range_Amap
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.inner_eq_of_norm_eq := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.inner_eq_of_norm_eq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.isSol_solMap := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.isSol_solMap
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.solMap := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.solMap
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.solMap_eq := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.solMap_eq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.totLin := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.totLin

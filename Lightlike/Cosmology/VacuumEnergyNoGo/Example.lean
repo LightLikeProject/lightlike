@@ -24,7 +24,7 @@ The conclusion of the no-go theorem fails when a hypothesis is dropped:
 * `shifted_vacuum_energy_ne_zero`, `not_vacuum_energy_ne_zero`: the dropped-hypothesis counterexamples.
 -/
 
-namespace Lightlike.Rows.G1_045
+namespace Lightlike.Cosmology.VacuumEnergyNoGo
 
 /-- The scale-covariant example potential on two fields. -/
 def exampleV (a b : ℝ) (x : Fin 2 → ℝ) : ℝ :=
@@ -166,4 +166,18 @@ theorem not_vacuum_energy_ne_zero (a b : ℝ) :
   have := ((isVacuum_exampleV_iff a b _).mp h).1
   simp at this
 
-end Lightlike.Rows.G1_045
+end Lightlike.Cosmology.VacuumEnergyNoGo
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_045.exampleDV := _root_.Lightlike.Cosmology.VacuumEnergyNoGo.exampleDV
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_045.exampleV := _root_.Lightlike.Cosmology.VacuumEnergyNoGo.exampleV
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_045.exampleV_scaleCovariant := _root_.Lightlike.Cosmology.VacuumEnergyNoGo.exampleV_scaleCovariant
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_045.exampleWeights := _root_.Lightlike.Cosmology.VacuumEnergyNoGo.exampleWeights
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_045.exists_flat_vacuum_iff := _root_.Lightlike.Cosmology.VacuumEnergyNoGo.exists_flat_vacuum_iff
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_045.hasFDerivAt_exampleV := _root_.Lightlike.Cosmology.VacuumEnergyNoGo.hasFDerivAt_exampleV
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_045.isVacuum_exampleV_iff := _root_.Lightlike.Cosmology.VacuumEnergyNoGo.isVacuum_exampleV_iff
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_045.not_scaleCovariant_shift := _root_.Lightlike.Cosmology.VacuumEnergyNoGo.not_scaleCovariant_shift
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_045.not_vacuum_energy_ne_zero := _root_.Lightlike.Cosmology.VacuumEnergyNoGo.not_vacuum_energy_ne_zero
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_045.shifted_vacuum_energy_ne_zero := _root_.Lightlike.Cosmology.VacuumEnergyNoGo.shifted_vacuum_energy_ne_zero
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_045.vacuum_eq_zero_of_ne := _root_.Lightlike.Cosmology.VacuumEnergyNoGo.vacuum_eq_zero_of_ne

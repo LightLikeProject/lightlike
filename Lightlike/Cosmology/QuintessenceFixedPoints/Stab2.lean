@@ -20,7 +20,7 @@ of `Fixed.lean` (Copeland–Sami–Tsujikawa 2006, copeland-2006), for `0 < γ <
   iff `λ² ≥ 3γ`, so at `λ² = 3γ` it merges with `sfPoint` and the stability passes from one to the other.
 -/
 
-namespace Lightlike.Rows.G1_029
+namespace Lightlike.Cosmology.QuintessenceFixedPoints
 
 noncomputable section
 
@@ -211,4 +211,22 @@ theorem scPoint_stable_iff {l γ : ℝ} (hγ : 0 < γ) (hγ2 : γ < 2) (hl : l �
 
 end
 
-end Lightlike.Rows.G1_029
+end Lightlike.Cosmology.QuintessenceFixedPoints
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.LinStable := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.LinStable
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.kin_neg_not_stable := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.kin_neg_not_stable
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.kin_pos_not_stable := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.kin_pos_not_stable
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.linStable_iff := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.linStable_iff
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.origin_not_stable := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.origin_not_stable
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.origin_saddle := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.origin_saddle
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.re_neg_of_root := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.re_neg_of_root
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.root_real := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.root_real
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.scPoint_stable_iff := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.scPoint_stable_iff
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.scPoint_x_eq := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.scPoint_x_eq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.scPoint_y_sq := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.scPoint_y_sq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.sc_tr_det := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.sc_tr_det
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.sfPoint_stable_iff := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.sfPoint_stable_iff
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.sfPoint_y_sq := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.sfPoint_y_sq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.sf_tr_det := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.sf_tr_det

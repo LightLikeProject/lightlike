@@ -23,7 +23,7 @@ The Mellin–Fourier integrals are *not* evaluated here: `kernelPlus`/`kernelMin
 
 open Complex
 
-namespace Lightlike.Rows.G1_068
+namespace Lightlike.GR.HawkingRadiation
 
 noncomputable section
 
@@ -90,4 +90,13 @@ theorem planck_of_ratio {a b y : ℝ} (hy : 0 < y) (hab : a - b = 1) (hb : b = R
 
 end
 
-end Lightlike.Rows.G1_068
+end Lightlike.GR.HawkingRadiation
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_068.kernelMinus := _root_.Lightlike.GR.HawkingRadiation.kernelMinus
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_068.kernelPlus := _root_.Lightlike.GR.HawkingRadiation.kernelPlus
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_068.norm_cpow_minus := _root_.Lightlike.GR.HawkingRadiation.norm_cpow_minus
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_068.norm_cpow_plus := _root_.Lightlike.GR.HawkingRadiation.norm_cpow_plus
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_068.norm_kernelMinus_sq := _root_.Lightlike.GR.HawkingRadiation.norm_kernelMinus_sq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_068.planck_of_ratio := _root_.Lightlike.GR.HawkingRadiation.planck_of_ratio

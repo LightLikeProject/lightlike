@@ -12,7 +12,7 @@ import Lightlike.Geometry.HeatTraceExpansion.Taylor
 
 open Polynomial Set
 
-namespace Lightlike.Rows.G1_062
+namespace Lightlike.Geometry.HeatTraceExpansion
 
 lemma gauss_pow_le (M : ℕ) (y : ℝ) :
     (1 + y ^ 2) ^ M * Real.exp (-y ^ 2) ≤ Real.exp 1 * M.factorial := by
@@ -89,4 +89,18 @@ lemma gu_decay (i : ℕ) : ∃ C : ℝ, ∀ y : ℝ, |gu i y| * (1 + y ^ 2) ≤ 
   obtain ⟨C, hC⟩ := polyGauss_bound (pp i) 1
   exact ⟨C, fun y => by simpa [gu] using hC y⟩
 
-end Lightlike.Rows.G1_062
+end Lightlike.Geometry.HeatTraceExpansion
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.gauss_pow_le := _root_.Lightlike.Geometry.HeatTraceExpansion.gauss_pow_le
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.gu := _root_.Lightlike.Geometry.HeatTraceExpansion.gu
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.gu_chain := _root_.Lightlike.Geometry.HeatTraceExpansion.gu_chain
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.gu_decay := _root_.Lightlike.Geometry.HeatTraceExpansion.gu_decay
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.gu_four_zero := _root_.Lightlike.Geometry.HeatTraceExpansion.gu_four_zero
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.gu_one := _root_.Lightlike.Geometry.HeatTraceExpansion.gu_one
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.gu_two_zero := _root_.Lightlike.Geometry.HeatTraceExpansion.gu_two_zero
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.gu_zero_zero := _root_.Lightlike.Geometry.HeatTraceExpansion.gu_zero_zero
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.polyGauss_bound := _root_.Lightlike.Geometry.HeatTraceExpansion.polyGauss_bound
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.poly_le := _root_.Lightlike.Geometry.HeatTraceExpansion.poly_le
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.pp := _root_.Lightlike.Geometry.HeatTraceExpansion.pp

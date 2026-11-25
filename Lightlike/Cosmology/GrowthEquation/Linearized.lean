@@ -16,7 +16,7 @@ about a homogeneous background of density `ρ(t)` (Bernardeau et al. 2002, Secti
 
 open Filter Topology
 
-namespace Lightlike.Rows.G1_032
+namespace Lightlike.Cosmology.GrowthEquation
 
 /-- Comoving position space. -/
 abbrev Space := Fin 3 → ℝ
@@ -188,4 +188,26 @@ theorem growth_equation_pressureless {a ρ : ℝ → ℝ} {G : ℝ} {δ φ : ℝ
   have := growth_equation hsys ha ha0 hδ hφ hu t x
   simpa using this
 
-end Lightlike.Rows.G1_032
+end Lightlike.Cosmology.GrowthEquation
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_032.LinearizedEulerPoisson := _root_.Lightlike.Cosmology.GrowthEquation.LinearizedEulerPoisson
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_032.LinearizedEulerPoisson.continuity := _root_.Lightlike.Cosmology.GrowthEquation.LinearizedEulerPoisson.continuity
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_032.LinearizedEulerPoisson.euler := _root_.Lightlike.Cosmology.GrowthEquation.LinearizedEulerPoisson.euler
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_032.LinearizedEulerPoisson.poisson := _root_.Lightlike.Cosmology.GrowthEquation.LinearizedEulerPoisson.poisson
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_032.Space := _root_.Lightlike.Cosmology.GrowthEquation.Space
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_032.contDiff_dir := _root_.Lightlike.Cosmology.GrowthEquation.contDiff_dir
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_032.contDiff_dx := _root_.Lightlike.Cosmology.GrowthEquation.contDiff_dx
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_032.divg := _root_.Lightlike.Cosmology.GrowthEquation.divg
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_032.dt := _root_.Lightlike.Cosmology.GrowthEquation.dt
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_032.dt_dx_comm := _root_.Lightlike.Cosmology.GrowthEquation.dt_dx_comm
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_032.dx := _root_.Lightlike.Cosmology.GrowthEquation.dx
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_032.dx_mul_time := _root_.Lightlike.Cosmology.GrowthEquation.dx_mul_time
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_032.dx_neg := _root_.Lightlike.Cosmology.GrowthEquation.dx_neg
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_032.dx_sub := _root_.Lightlike.Cosmology.GrowthEquation.dx_sub
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_032.fderiv_dir := _root_.Lightlike.Cosmology.GrowthEquation.fderiv_dir
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_032.growth_equation := _root_.Lightlike.Cosmology.GrowthEquation.growth_equation
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_032.growth_equation_pressureless := _root_.Lightlike.Cosmology.GrowthEquation.growth_equation_pressureless
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_032.hasDerivAt_slice := _root_.Lightlike.Cosmology.GrowthEquation.hasDerivAt_slice
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_032.lap := _root_.Lightlike.Cosmology.GrowthEquation.lap

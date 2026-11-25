@@ -4,7 +4,7 @@ import Lightlike.Canonical.BlackHoleEntropyCounting.Counting
 # Numerical tools for the counting root (row G2-016, milestone CA6)
 
 Generic term-by-term bounds used to localise the root `γ_M` of `countSum (fun _ => 2) γ = 1`
-(`Lightlike.Rows.G2_016.countSum`). With `m = n + 2` the area label is
+(`Lightlike.Canonical.BlackHoleEntropyCounting.countSum`). With `m = n + 2` the area label is
 `areaLabel n = √(m² - 1) = m - δ` for a small `δ`, so that
 `exp(-π γ areaLabel n) = exp(-π γ)^m · exp(π γ δ)`; one only needs bounds for `q = exp(-π γ)` and
 a polynomial bound for `exp` on `[0, 1]`.
@@ -12,7 +12,7 @@ a polynomial bound for `exp` on `[0, 1]`.
 
 open Real
 
-namespace Lightlike.Rows.G2_016
+namespace Lightlike.Canonical.BlackHoleEntropyCounting
 
 /-- Upper degree-6 Taylor bound for `exp` on `[0,1]` (with Lagrange-type remainder). -/
 noncomputable def polyUp (y : ℝ) : ℝ :=
@@ -108,4 +108,14 @@ theorem term_low {γ q y1 t : ℝ} (hγ : 0 ≤ γ) (hq0 : 0 ≤ q) (hq : q ≤ 
   rw [e2] at e1
   exact (mul_le_mul e3 e5 e6 (pow_nonneg (Real.exp_pos _).le _)).trans e1
 
-end Lightlike.Rows.G2_016
+end Lightlike.Canonical.BlackHoleEntropyCounting
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.areaLabel_ge_sub := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.areaLabel_ge_sub
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.exp_le_polyUp := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.exp_le_polyUp
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.polyLo := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.polyLo
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.polyLo_le_exp := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.polyLo_le_exp
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.polyUp := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.polyUp
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.term_low := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.term_low
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_016.term_up := _root_.Lightlike.Canonical.BlackHoleEntropyCounting.term_up

@@ -22,7 +22,7 @@ for the wedge is `S = J Δ^{1/2}` (later files of this row).
 
 open Filter Topology Complex
 
-namespace Lightlike.Rows.G1_054
+namespace Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace
 
 variable {𝓗 : Type*} [NormedAddCommGroup 𝓗] [InnerProductSpace ℂ 𝓗]
 
@@ -144,4 +144,30 @@ lemma mem_standardSubspace_iff (ξ : 𝓗) :
 
 end TomitaData
 
-end Lightlike.Rows.G1_054
+end Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.TomitaData := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.TomitaData
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.TomitaData.closed := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.TomitaData.closed
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.TomitaData.cyclic := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.TomitaData.cyclic
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.TomitaData.dense := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.TomitaData.dense
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.TomitaData.dom := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.TomitaData.dom
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.TomitaData.dom_subset_sup := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.TomitaData.dom_subset_sup
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.TomitaData.fixedClosed := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.TomitaData.fixedClosed
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.TomitaData.fixedSubmodule := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.TomitaData.fixedSubmodule
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.TomitaData.isClosed_fixed := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.TomitaData.isClosed_fixed
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.TomitaData.mem_fixedClosed_iff := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.TomitaData.mem_fixedClosed_iff
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.TomitaData.mem_fixedSubmodule_iff := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.TomitaData.mem_fixedSubmodule_iff
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.TomitaData.mem_mulI_iff := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.TomitaData.mem_mulI_iff
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.TomitaData.mem_standardSubspace_iff := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.TomitaData.mem_standardSubspace_iff
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.TomitaData.op := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.TomitaData.op
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.TomitaData.op_add := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.TomitaData.op_add
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.TomitaData.op_mem := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.TomitaData.op_mem
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.TomitaData.op_neg := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.TomitaData.op_neg
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.TomitaData.op_op := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.TomitaData.op_op
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.TomitaData.op_smul := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.TomitaData.op_smul
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.TomitaData.op_sub := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.TomitaData.op_sub
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.TomitaData.op_zero := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.TomitaData.op_zero
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.TomitaData.separating := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.TomitaData.separating
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.TomitaData.standardSubspace := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.TomitaData.standardSubspace

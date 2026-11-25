@@ -16,7 +16,7 @@ solution starts at `x₀ > 0` with `Y(x₀) = Y₀`.
 
 @[expose] public section
 
-namespace Lightlike.Rows.G1_034
+namespace Lightlike.Cosmology.FreezeOut
 
 open Set Metric
 
@@ -84,4 +84,12 @@ theorem IsSol.eqOn {lam : ℝ} (hlam : 0 ≤ lam) {e : ℝ → ℝ} {x₀ Y₀ :
     (hY.1.trans hZ.1.symm)
   exact key ⟨hx, by linarith⟩
 
-end Lightlike.Rows.G1_034
+end Lightlike.Cosmology.FreezeOut
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_034.IsSol := _root_.Lightlike.Cosmology.FreezeOut.IsSol
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_034.IsSol.continuousOn := _root_.Lightlike.Cosmology.FreezeOut.IsSol.continuousOn
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_034.IsSol.eqOn := _root_.Lightlike.Cosmology.FreezeOut.IsSol.eqOn
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_034.lip_rhs := _root_.Lightlike.Cosmology.FreezeOut.lip_rhs
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_034.rhs := _root_.Lightlike.Cosmology.FreezeOut.rhs

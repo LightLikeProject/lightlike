@@ -9,7 +9,7 @@ scalar equation `f' = a f` with continuous `a` gives `f t = f 0 · exp (∫₀�
 time (`IsSol.Gc_eq_zero`), and `N₁N₂N₃ > 0` (type IX) is preserved (`IsSol.prod_pos`).
 -/
 
-namespace Lightlike.Rows.G1_040
+namespace Lightlike.Cosmology.BianchiIXWainwrightHsu
 
 open Real
 
@@ -122,4 +122,17 @@ lemma IsSol.prod_monotone_of_pos {γ : ℝ → Fin 5 → ℝ} (h : IsSol γ)
 
 end
 
-end Lightlike.Rows.G1_040
+end Lightlike.Cosmology.BianchiIXWainwrightHsu
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_040.IsSol.Gc_deriv := _root_.Lightlike.Cosmology.BianchiIXWainwrightHsu.IsSol.Gc_deriv
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_040.IsSol.Gc_eq_zero := _root_.Lightlike.Cosmology.BianchiIXWainwrightHsu.IsSol.Gc_eq_zero
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_040.IsSol.comp_exp := _root_.Lightlike.Cosmology.BianchiIXWainwrightHsu.IsSol.comp_exp
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_040.IsSol.continuous := _root_.Lightlike.Cosmology.BianchiIXWainwrightHsu.IsSol.continuous
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_040.IsSol.n1_pos := _root_.Lightlike.Cosmology.BianchiIXWainwrightHsu.IsSol.n1_pos
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_040.IsSol.n2_pos := _root_.Lightlike.Cosmology.BianchiIXWainwrightHsu.IsSol.n2_pos
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_040.IsSol.n3_pos := _root_.Lightlike.Cosmology.BianchiIXWainwrightHsu.IsSol.n3_pos
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_040.IsSol.prod_monotone_of_pos := _root_.Lightlike.Cosmology.BianchiIXWainwrightHsu.IsSol.prod_monotone_of_pos
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_040.linear_ode_exp := _root_.Lightlike.Cosmology.BianchiIXWainwrightHsu.linear_ode_exp
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_040.qd_continuous := _root_.Lightlike.Cosmology.BianchiIXWainwrightHsu.qd_continuous

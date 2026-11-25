@@ -18,7 +18,7 @@ translating `η` by `s / a` is the boost of rapidity `s` (the wedge boost group 
 * `boost_mem_wedge`, `boost_add`, `boost_interval`: the boosts form a group of the wedge's isometries.
 -/
 
-namespace Lightlike.Rows.G1_049
+namespace Lightlike.OperatorAlgebras.UnruhEffect
 
 open Real
 
@@ -121,4 +121,19 @@ theorem boost_mem_wedge {a : ℝ} (ha : 0 < a) (s : ℝ) {p : ℝ × ℝ} (hp : 
   rw [boost_rindlerMap ha.ne']
   exact rindlerMap_mem_wedge ha _ _
 
-end Lightlike.Rows.G1_049
+end Lightlike.OperatorAlgebras.UnruhEffect
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_049.boost := _root_.Lightlike.OperatorAlgebras.UnruhEffect.boost
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_049.boost_add := _root_.Lightlike.OperatorAlgebras.UnruhEffect.boost_add
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_049.boost_interval := _root_.Lightlike.OperatorAlgebras.UnruhEffect.boost_interval
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_049.boost_mem_wedge := _root_.Lightlike.OperatorAlgebras.UnruhEffect.boost_mem_wedge
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_049.boost_rindlerMap := _root_.Lightlike.OperatorAlgebras.UnruhEffect.boost_rindlerMap
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_049.boost_zero := _root_.Lightlike.OperatorAlgebras.UnruhEffect.boost_zero
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_049.exists_rindlerMap_eq := _root_.Lightlike.OperatorAlgebras.UnruhEffect.exists_rindlerMap_eq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_049.interval := _root_.Lightlike.OperatorAlgebras.UnruhEffect.interval
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_049.interval_rindlerMap := _root_.Lightlike.OperatorAlgebras.UnruhEffect.interval_rindlerMap
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_049.rindlerMap := _root_.Lightlike.OperatorAlgebras.UnruhEffect.rindlerMap
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_049.rindlerMap_mem_wedge := _root_.Lightlike.OperatorAlgebras.UnruhEffect.rindlerMap_mem_wedge
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_049.rindlerWedge := _root_.Lightlike.OperatorAlgebras.UnruhEffect.rindlerWedge

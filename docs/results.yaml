@@ -3598,7 +3598,7 @@
   title: First law of Kerr black-hole mechanics, dM = kappa/(8 pi) dA + Omega_H dJ, along any differentiable family of non-extremal Kerr black holes
   area: GR
   file: Lightlike/GR/KerrFirstLaw/KerrFirstLaw.lean
-  decls: [Lightlike.Rows.G1_066.kerr_first_law]
+  decls: [Lightlike.GR.KerrFirstLaw.kerr_first_law]
   status: proven
   tier: established
   source:
@@ -3611,7 +3611,7 @@
   title: Smarr formula for Kerr, M = 2 Omega_H J + kappa A/(4 pi), for 0 < M and a^2 <= M^2
   area: GR
   file: Lightlike/GR/KerrFirstLaw/KerrArea.lean
-  decls: [Lightlike.Rows.G1_066.kerr_smarr]
+  decls: [Lightlike.GR.KerrFirstLaw.kerr_smarr]
   status: proven
   tier: established
   source:
@@ -4420,7 +4420,7 @@
   title: "OP2 in one place: a Fock representation exists on every complex Hilbert space, a Bogoliubov transformation is implemented iff its antilinear part is Hilbert-Schmidt (Shale), |alpha|^2 - |beta|^2 = 1 for one mode, and a constant |beta| on l^2(N) is not implementable"
   area: OperatorAlgebras
   file: Lightlike/OperatorAlgebras/FockShale/Summary.lean
-  decls: [Lightlike.OperatorAlgebras.op2_fock_and_shale, Lightlike.OperatorAlgebras.op2_one_mode_alpha_beta, Lightlike.OperatorAlgebras.op2_infinite_modes_not_implementable, Lightlike.OperatorAlgebras.op2_one_mode_implementable]
+  decls: [Lightlike.OperatorAlgebras.fockRepOf_implements_iff, Lightlike.OperatorAlgebras.squeeze_norm_alpha_sq_sub_norm_beta_sq_one, Lightlike.OperatorAlgebras.squeezeEllTwo_not_implementable, Lightlike.OperatorAlgebras.squeeze_implementable]
   status: proven
   tier: established
   source:

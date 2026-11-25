@@ -20,7 +20,7 @@ open scoped Matrix MatrixOrder ComplexOrder
 
 universe u
 
-namespace Lightlike.Rows.G2_077
+namespace Lightlike.OperatorAlgebras.PauliJordanQuasiFree
 
 open Lightlike.OperatorAlgebras
 
@@ -118,4 +118,21 @@ theorem exists_pure_quasiFree (hΔ : Δᵀ = -Δ) :
     obtain ⟨f, rfl⟩ := hT g
     exact hC f ψ
 
-end Lightlike.Rows.G2_077
+end Lightlike.OperatorAlgebras.PauliJordanQuasiFree
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.PureQuasiFreeRep := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.PureQuasiFreeRep
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.PureQuasiFreeRep.W := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.PureQuasiFreeRep.W
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.PureQuasiFreeRep.W_zero := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.PureQuasiFreeRep.W_zero
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.PureQuasiFreeRep.continuous_line := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.PureQuasiFreeRep.continuous_line
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.PureQuasiFreeRep.cyclic := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.PureQuasiFreeRep.cyclic
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.PureQuasiFreeRep.expectation := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.PureQuasiFreeRep.expectation
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.PureQuasiFreeRep.irreducible := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.PureQuasiFreeRep.irreducible
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.PureQuasiFreeRep.«norm_Ω» := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.PureQuasiFreeRep.«norm_Ω»
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.PureQuasiFreeRep.weyl := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.PureQuasiFreeRep.weyl
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.PureQuasiFreeRep.«Ω» := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.PureQuasiFreeRep.«Ω»
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.Tvec_add := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.Tvec_add
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.Tvec_smul := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.Tvec_smul
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.Tvec_zero := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.Tvec_zero
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_077.exists_pure_quasiFree := _root_.Lightlike.OperatorAlgebras.PauliJordanQuasiFree.exists_pure_quasiFree

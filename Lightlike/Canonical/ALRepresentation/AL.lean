@@ -17,7 +17,7 @@ noncomputable section
 
 open MeasureTheory
 
-namespace Lightlike.Rows.G2_011
+namespace Lightlike.Canonical.ALRepresentation
 
 variable {K : Type*} [TopologicalSpace K] [CompactSpace K] [MeasurableSpace K]
   [OpensMeasurableSpace K] (μ : Measure K)
@@ -119,4 +119,18 @@ def alHol : C(K, ℂ) →⋆ₐ[ℂ] (Lp ℂ 2 μ →L[ℂ] Lp ℂ 2 μ) where
     rw [ContinuousLinearMap.star_eq_adjoint, ContinuousLinearMap.eq_adjoint_iff]
     exact fun ξ η => mulOp_inner μ f ξ η
 
-end Lightlike.Rows.G2_011
+end Lightlike.Canonical.ALRepresentation
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.alHol := _root_.Lightlike.Canonical.ALRepresentation.alHol
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.mulFun := _root_.Lightlike.Canonical.ALRepresentation.mulFun
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.mulFun_ae := _root_.Lightlike.Canonical.ALRepresentation.mulFun_ae
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.mulOp := _root_.Lightlike.Canonical.ALRepresentation.mulOp
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.mulOp_add := _root_.Lightlike.Canonical.ALRepresentation.mulOp_add
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.mulOp_ae := _root_.Lightlike.Canonical.ALRepresentation.mulOp_ae
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.mulOp_algebraMap := _root_.Lightlike.Canonical.ALRepresentation.mulOp_algebraMap
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.mulOp_inner := _root_.Lightlike.Canonical.ALRepresentation.mulOp_inner
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.mulOp_mul := _root_.Lightlike.Canonical.ALRepresentation.mulOp_mul
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.mulOp_one := _root_.Lightlike.Canonical.ALRepresentation.mulOp_one
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_011.mulOp_zero := _root_.Lightlike.Canonical.ALRepresentation.mulOp_zero

@@ -19,7 +19,7 @@ in the momentum model (`Δ^{iz} = e^{-2π i z k}`, so `z = t - i s` with `0 ≤ 
 open MeasureTheory Complex Set Filter Topology
 open scoped Real
 
-namespace Lightlike.Rows.G1_054
+namespace Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace
 
 /-- The Laplace transform `∫ φ(k) e^{w k} dk` of a function `φ : ℝ → ℂ`. -/
 noncomputable def laplace (φ : ℝ → ℂ) (w : ℂ) : ℂ := ∫ k : ℝ, φ k * cexp (w * k)
@@ -149,4 +149,14 @@ theorem laplace_differentiableAt (h0 : Integrable φ)
     refine h2.congr_deriv ?_
     simp only [id]; ring
 
-end Lightlike.Rows.G1_054
+end Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.abs_mul_exp_le := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.abs_mul_exp_le
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.exp_le_one_add := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.exp_le_one_add
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.integrable_bound := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.integrable_bound
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.laplace := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.laplace
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.laplace_continuousOn := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.laplace_continuousOn
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.laplace_differentiableAt := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.laplace_differentiableAt
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.norm_cexp_mul := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.norm_cexp_mul

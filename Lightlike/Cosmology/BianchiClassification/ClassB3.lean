@@ -8,14 +8,14 @@ is `a`; this gives the class B normal form of type V.
 
 ## Main results
 
-* `Lightlike.Rows.G1_039.bnormalisable_zero`: `BNormalisable ![0, 0, 0] a` for `a ≠ 0`.
+* `Lightlike.Cosmology.BianchiClassification.bnormalisable_zero`: `BNormalisable ![0, 0, 0] a` for `a ≠ 0`.
 
 ## References
 
 * heinzle-uggla-2009a (Section 3)
 -/
 
-namespace Lightlike.Rows.G1_039
+namespace Lightlike.Cosmology.BianchiClassification
 
 open Matrix
 
@@ -63,4 +63,9 @@ theorem bnormalisable_zero (a : V3) (ha : a ≠ 0) : BNormalisable ![0, 0, 0] a 
   rw [hz, hd]
   exact h
 
-end Lightlike.Rows.G1_039
+end Lightlike.Cosmology.BianchiClassification
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.bnormalisable_zero := _root_.Lightlike.Cosmology.BianchiClassification.bnormalisable_zero
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.exists_matrix_third_row := _root_.Lightlike.Cosmology.BianchiClassification.exists_matrix_third_row

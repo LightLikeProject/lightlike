@@ -18,7 +18,7 @@ of the scalar field is `w_φ = (x² - y²)/(x² + y²)`.  We evaluate it at the 
 * copeland-2006
 -/
 
-namespace Lightlike.Rows.G1_029
+namespace Lightlike.Cosmology.QuintessenceFixedPoints
 
 noncomputable section
 
@@ -65,4 +65,12 @@ theorem wphi_scPoint {l γ : ℝ} (hγ : 0 < γ) (hγ2 : γ ≤ 2) (hl : l ≠ 0
 
 end
 
-end Lightlike.Rows.G1_029
+end Lightlike.Cosmology.QuintessenceFixedPoints
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.wphi := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.wphi
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.wphi_kin_neg := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.wphi_kin_neg
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.wphi_kin_pos := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.wphi_kin_pos
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.wphi_scPoint := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.wphi_scPoint
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_029.wphi_sfPoint := _root_.Lightlike.Cosmology.QuintessenceFixedPoints.wphi_sfPoint

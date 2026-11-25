@@ -20,7 +20,7 @@ determined by its standard subspace `H(D, J)`.
 open Complex
 open scoped LinearPMap
 
-namespace Lightlike.Rows.G1_054
+namespace Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace
 
 variable {𝓗 : Type*} [NormedAddCommGroup 𝓗] [InnerProductSpace ℂ 𝓗]
 
@@ -75,4 +75,10 @@ theorem ext_of_subspace {P Q : ModularPair 𝓗} (hP : P.IsPositive) (hQ : Q.IsP
 
 end ModularPair
 
-end Lightlike.Rows.G1_054
+end Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.ModularPair.ext_of_subspace := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.ModularPair.ext_of_subspace
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.TomitaData.dom_op_eq_of_fixedClosed := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.TomitaData.dom_op_eq_of_fixedClosed
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.TomitaData.op_decomp := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.TomitaData.op_decomp

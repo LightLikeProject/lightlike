@@ -14,7 +14,7 @@ derive it. This file computes that `R` from the library's coordinate curvature
 
 noncomputable section
 
-namespace Lightlike.Rows.G1_063
+namespace Lightlike.Spacetime.TraceAnomaly2D
 
 open Lightlike
 open scoped ContDiff
@@ -55,4 +55,12 @@ theorem scalarCurvature_conformalEta2 {ψ : (Fin 2 → ℝ) → ℝ} (hψ : Cont
   norm_num
   ring
 
-end Lightlike.Rows.G1_063
+end Lightlike.Spacetime.TraceAnomaly2D
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_063.boxC_eta2 := _root_.Lightlike.Spacetime.TraceAnomaly2D.boxC_eta2
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_063.confEta2 := _root_.Lightlike.Spacetime.TraceAnomaly2D.confEta2
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_063.isCoordMetric_eta2 := _root_.Lightlike.Spacetime.TraceAnomaly2D.isCoordMetric_eta2
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_063.scalarCurvature_conformalEta2 := _root_.Lightlike.Spacetime.TraceAnomaly2D.scalarCurvature_conformalEta2
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_063.scalarCurvature_eta2 := _root_.Lightlike.Spacetime.TraceAnomaly2D.scalarCurvature_eta2

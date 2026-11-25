@@ -12,7 +12,7 @@ Supporting lemmas for the spin-network basis theorem; no catalogue entry.
 
 open MeasureTheory
 
-namespace Lightlike.Rows.G2_010
+namespace Lightlike.Canonical.SpinNetworkBasis
 
 open Lightlike Lightlike.Spin4 Lightlike.HarmonicAnalysis
 
@@ -58,4 +58,12 @@ lemma phiHilbertBasis_apply (a : Σ n : E → ℕ, Idx n × Idx n) : phiHilbertB
 
 end
 
-end Lightlike.Rows.G2_010
+end Lightlike.Canonical.SpinNetworkBasis
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.dense_span_phiLp := _root_.Lightlike.Canonical.SpinNetworkBasis.dense_span_phiLp
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.map_phiSpanC := _root_.Lightlike.Canonical.SpinNetworkBasis.map_phiSpanC
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.phiFam := _root_.Lightlike.Canonical.SpinNetworkBasis.phiFam
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.phiHilbertBasis := _root_.Lightlike.Canonical.SpinNetworkBasis.phiHilbertBasis
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_010.phiHilbertBasis_apply := _root_.Lightlike.Canonical.SpinNetworkBasis.phiHilbertBasis_apply

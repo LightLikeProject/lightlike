@@ -22,7 +22,7 @@ open MeasureTheory Set Real Filter Topology
 
 noncomputable section
 
-namespace Lightlike.SP3Row
+namespace Lightlike.Asymptotics.FreeBosonGrowth
 
 /-- `log Z(β) = ∑_{k ≥ 1} (-log (1 - e^{-βk}))` for the chiral boson, `Z(β) = ∏ (1 - e^{-βk})⁻¹`. -/
 def bosonLogZ (β : ℝ) : ℝ := ∑' k : ℕ, -Real.log (1 - Real.exp (-(β * ((k : ℝ) + 1))))
@@ -179,4 +179,14 @@ theorem tendsto_mul_bosonLogZ :
   rw [bosonLogZ_eq hβ', ← tsum_mul_left]
   exact tsum_congr fun j => by ring
 
-end Lightlike.SP3Row
+end Lightlike.Asymptotics.FreeBosonGrowth
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.SP3Row.bosonLogZ := _root_.Lightlike.Asymptotics.FreeBosonGrowth.bosonLogZ
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.SP3Row.bosonLogZ_eq := _root_.Lightlike.Asymptotics.FreeBosonGrowth.bosonLogZ_eq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.SP3Row.div_exp_sub_one_le := _root_.Lightlike.Asymptotics.FreeBosonGrowth.div_exp_sub_one_le
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.SP3Row.tendsto_div_exp_mul := _root_.Lightlike.Asymptotics.FreeBosonGrowth.tendsto_div_exp_mul
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.SP3Row.tendsto_div_exp_sub_one := _root_.Lightlike.Asymptotics.FreeBosonGrowth.tendsto_div_exp_sub_one
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.SP3Row.tendsto_exp_sub_one_div := _root_.Lightlike.Asymptotics.FreeBosonGrowth.tendsto_exp_sub_one_div
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.SP3Row.tendsto_mul_bosonLogZ := _root_.Lightlike.Asymptotics.FreeBosonGrowth.tendsto_mul_bosonLogZ

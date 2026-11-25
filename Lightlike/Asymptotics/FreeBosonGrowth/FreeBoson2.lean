@@ -15,7 +15,7 @@ open PowerSeries Finset Filter Topology
 
 noncomputable section
 
-namespace Lightlike.SP3Row
+namespace Lightlike.Asymptotics.FreeBosonGrowth
 
 /-- The number of partitions of `n`, as a real number. -/
 def pcount (n : ℕ) : ℝ := (Fintype.card (Nat.Partition n) : ℝ)
@@ -121,4 +121,14 @@ theorem tsum_pcount_mul_pow {q : ℝ} (hq0 : 0 ≤ q) (hq1 : q < 1) :
     calc Real.exp T ≤ Real.exp (Real.log (∑' n, pcount n * q ^ n)) := Real.exp_le_exp.2 this
       _ = _ := Real.exp_log hLpos
 
-end Lightlike.SP3Row
+end Lightlike.Asymptotics.FreeBosonGrowth
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.SP3Row.card_restricted_eq := _root_.Lightlike.Asymptotics.FreeBosonGrowth.card_restricted_eq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.SP3Row.card_restricted_le := _root_.Lightlike.Asymptotics.FreeBosonGrowth.card_restricted_le
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.SP3Row.pcount := _root_.Lightlike.Asymptotics.FreeBosonGrowth.pcount
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.SP3Row.pcount_nonneg := _root_.Lightlike.Asymptotics.FreeBosonGrowth.pcount_nonneg
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.SP3Row.prod_inv_eq_exp := _root_.Lightlike.Asymptotics.FreeBosonGrowth.prod_inv_eq_exp
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.SP3Row.summable_neglog := _root_.Lightlike.Asymptotics.FreeBosonGrowth.summable_neglog
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.SP3Row.tsum_pcount_mul_pow := _root_.Lightlike.Asymptotics.FreeBosonGrowth.tsum_pcount_mul_pow

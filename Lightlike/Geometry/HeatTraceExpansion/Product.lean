@@ -10,18 +10,18 @@ stable under products.  Iterating on circles gives the flat `n`-torus (`Torus.le
 
 ## Main results
 
-* `Lightlike.Rows.G1_062.heatTrace_prod`: the heat trace of a product is the product of the traces.
-* `Lightlike.Rows.G1_062.PolyTrace.mul`: product of two traces of the form
+* `Lightlike.Geometry.HeatTraceExpansion.heatTrace_prod`: the heat trace of a product is the product of the traces.
+* `Lightlike.Geometry.HeatTraceExpansion.PolyTrace.mul`: product of two traces of the form
   `c t^{-d/2}(1 + r)`, `r = O(t^N)` for all `N`.
-* `Lightlike.Rows.G1_062.circleTrace_polyTrace`: the circle heat trace is of this form.
-* `Lightlike.Rows.G1_062.torusTrace_hasHeatExpansion`: the flat `n`-torus has `a₀ = vol/(4π)^{n/2}`
+* `Lightlike.Geometry.HeatTraceExpansion.circleTrace_polyTrace`: the circle heat trace is of this form.
+* `Lightlike.Geometry.HeatTraceExpansion.torusTrace_hasHeatExpansion`: the flat `n`-torus has `a₀ = vol/(4π)^{n/2}`
   and `aₖ = 0` for `k ≥ 1`.
-* `Lightlike.Rows.G1_062.torusTrace_no_constant_term`: hence no `t⁰` term (trust check of T-GE8).
+* `Lightlike.Geometry.HeatTraceExpansion.torusTrace_no_constant_term`: hence no `t⁰` term (trust check of T-GE8).
 -/
 
 open Filter Topology Asymptotics
 
-namespace Lightlike.Rows.G1_062
+namespace Lightlike.Geometry.HeatTraceExpansion
 
 /-- The Gaussian theta terms `e^{-π y n²}` are summable over `ℤ` for `y > 0`. -/
 theorem summable_exp_int_sq {y : ℝ} (hy : 0 < y) :
@@ -246,4 +246,20 @@ theorem torusTrace_no_constant_term {n : ℕ} (hn : 1 ≤ n) {L : Fin n → ℝ}
   have := hb.coeff_unique (torusTrace_hasHeatExpansion hL hK) k hk
   simpa [hk0] using this
 
-end Lightlike.Rows.G1_062
+end Lightlike.Geometry.HeatTraceExpansion
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.PolyTrace := _root_.Lightlike.Geometry.HeatTraceExpansion.PolyTrace
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.PolyTrace.hasHeatExpansion := _root_.Lightlike.Geometry.HeatTraceExpansion.PolyTrace.hasHeatExpansion
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.PolyTrace.mul := _root_.Lightlike.Geometry.HeatTraceExpansion.PolyTrace.mul
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.circleTrace_polyTrace := _root_.Lightlike.Geometry.HeatTraceExpansion.circleTrace_polyTrace
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.circle_summable := _root_.Lightlike.Geometry.HeatTraceExpansion.circle_summable
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.heatTrace_prod := _root_.Lightlike.Geometry.HeatTraceExpansion.heatTrace_prod
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.summable_exp_int_sq := _root_.Lightlike.Geometry.HeatTraceExpansion.summable_exp_int_sq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.torusTrace := _root_.Lightlike.Geometry.HeatTraceExpansion.torusTrace
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.torusTrace_hasHeatExpansion := _root_.Lightlike.Geometry.HeatTraceExpansion.torusTrace_hasHeatExpansion
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.torusTrace_no_constant_term := _root_.Lightlike.Geometry.HeatTraceExpansion.torusTrace_no_constant_term
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.torusTrace_polyTrace := _root_.Lightlike.Geometry.HeatTraceExpansion.torusTrace_polyTrace
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.torusTrace_succ := _root_.Lightlike.Geometry.HeatTraceExpansion.torusTrace_succ
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_062.torus_summable := _root_.Lightlike.Geometry.HeatTraceExpansion.torus_summable

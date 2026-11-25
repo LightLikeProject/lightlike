@@ -16,7 +16,7 @@ wrong flow, such as a rotation in place of a boost, fails the KMS condition.
 
 open Complex Set
 
-namespace Lightlike.Rows.G1_053
+namespace Lightlike.OperatorAlgebras.KMSInfiniteDimensions
 
 variable {A : Type*} [Mul A]
 
@@ -62,4 +62,10 @@ theorem tracial_of_trivial_flow {ω : A → ℂ} {β : ℝ} (hβ : 0 < β)
 
 end IsKMSFunctional
 
-end Lightlike.Rows.G1_053
+end Lightlike.OperatorAlgebras.KMSInfiniteDimensions
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_053.IsKMSFunctional := _root_.Lightlike.OperatorAlgebras.KMSInfiniteDimensions.IsKMSFunctional
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_053.IsKMSFunctional.eq_of_agree := _root_.Lightlike.OperatorAlgebras.KMSInfiniteDimensions.IsKMSFunctional.eq_of_agree
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_053.IsKMSFunctional.tracial_of_trivial_flow := _root_.Lightlike.OperatorAlgebras.KMSInfiniteDimensions.IsKMSFunctional.tracial_of_trivial_flow

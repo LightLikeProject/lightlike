@@ -19,7 +19,7 @@ attribute [local instance] Matrix.linftyOpNormedAddCommGroup Matrix.linftyOpNorm
 
 noncomputable section
 
-namespace Lightlike.Rows.G2_007
+namespace Lightlike.Canonical.UniformHolonomyRefinement
 
 open Lightlike.Canonical
 
@@ -83,4 +83,8 @@ theorem hol_of_le_uniform {α α' : ALGraph} (h : α.Le α') (i : Fin α.m) :
     List.take_of_length_le (by simp)] at this
   exact this
 
-end Lightlike.Rows.G2_007
+end Lightlike.Canonical.UniformHolonomyRefinement
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_007.hol_of_le_uniform := _root_.Lightlike.Canonical.UniformHolonomyRefinement.hol_of_le_uniform

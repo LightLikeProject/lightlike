@@ -16,7 +16,7 @@ conformal-factor dependence and the conservation law is the Wess–Zumino consis
 
 noncomputable section
 
-namespace Lightlike.Rows.G1_063
+namespace Lightlike.Spacetime.TraceAnomaly2D
 
 open Lightlike
 open scoped ContDiff
@@ -60,4 +60,9 @@ theorem anomaly_conservation_iff {ψ : (Fin 2 → ℝ) → ℝ} (hψ : ContDiff 
     rw [h1]
     linarith
 
-end Lightlike.Rows.G1_063
+end Lightlike.Spacetime.TraceAnomaly2D
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_063.anomaly_conservation_iff := _root_.Lightlike.Spacetime.TraceAnomaly2D.anomaly_conservation_iff
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_063.anomaly_rhs := _root_.Lightlike.Spacetime.TraceAnomaly2D.anomaly_rhs

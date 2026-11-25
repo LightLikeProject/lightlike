@@ -16,7 +16,7 @@ Row G1-034 (milestone CO7).  For a solution `Y` of `dY/dx = -(λ/x²)(Y² - e²)
 
 @[expose] public section
 
-namespace Lightlike.Rows.G1_034
+namespace Lightlike.Cosmology.FreezeOut
 
 open Set Filter Topology
 
@@ -73,4 +73,10 @@ theorem IsSol.limit {lam : ℝ} (hlam : 0 ≤ lam) {e : ℝ → ℝ} {x₀ Y₀ 
       filter_upwards [eventually_ge_atTop x₀] with x hx
       exact h.upper hlam hx₀ hM x hx)
 
-end Lightlike.Rows.G1_034
+end Lightlike.Cosmology.FreezeOut
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_034.IsSol.antitone := _root_.Lightlike.Cosmology.FreezeOut.IsSol.antitone
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_034.IsSol.limit := _root_.Lightlike.Cosmology.FreezeOut.IsSol.limit
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_034.IsSol.upper := _root_.Lightlike.Cosmology.FreezeOut.IsSol.upper

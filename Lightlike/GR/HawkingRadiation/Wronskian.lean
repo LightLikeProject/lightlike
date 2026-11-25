@@ -21,7 +21,7 @@ and deduce the pointwise value of the Wronskian density
 
 open Complex
 
-namespace Lightlike.Rows.G1_068
+namespace Lightlike.GR.HawkingRadiation
 
 noncomputable section
 
@@ -111,4 +111,10 @@ theorem normalized_kernels_planck {s w : ℝ} (hs : 0 < s) (hw : 0 < w) (c : ℂ
 
 end
 
-end Lightlike.Rows.G1_068
+end Lightlike.GR.HawkingRadiation
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_068.norm_gamma_I_mul_sq := _root_.Lightlike.GR.HawkingRadiation.norm_gamma_I_mul_sq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_068.normalized_kernels_planck := _root_.Lightlike.GR.HawkingRadiation.normalized_kernels_planck
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_068.wronskian_density := _root_.Lightlike.GR.HawkingRadiation.wronskian_density

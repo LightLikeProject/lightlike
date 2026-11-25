@@ -9,15 +9,15 @@ interchanges two diagonal entries of `n` (and the matching entries of `a`, up to
 
 ## Main results
 
-* `Lightlike.Rows.G1_039.bracketIso_diagonal_scale`
-* `Lightlike.Rows.G1_039.bracketIso_swap01`, `bracketIso_swap12`
+* `Lightlike.Cosmology.BianchiClassification.bracketIso_diagonal_scale`
+* `Lightlike.Cosmology.BianchiClassification.bracketIso_swap01`, `bracketIso_swap12`
 
 ## References
 
 * heinzle-uggla-2009a (Section 3)
 -/
 
-namespace Lightlike.Rows.G1_039
+namespace Lightlike.Cosmology.BianchiClassification
 
 open Matrix
 
@@ -61,4 +61,10 @@ theorem bracketIso_swap12 (l : Fin 3 → ℝ) (a : V3) :
     · simp [crossProduct, Matrix.mulVec, dotProduct, Fin.sum_univ_three]
       ring
 
-end Lightlike.Rows.G1_039
+end Lightlike.Cosmology.BianchiClassification
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.bracketIso_diagonal_scale := _root_.Lightlike.Cosmology.BianchiClassification.bracketIso_diagonal_scale
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.bracketIso_swap01 := _root_.Lightlike.Cosmology.BianchiClassification.bracketIso_swap01
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_039.bracketIso_swap12 := _root_.Lightlike.Cosmology.BianchiClassification.bracketIso_swap12

@@ -12,7 +12,7 @@ vector `ψ` as `4 q_{012}`: `Qnode_four_mulVec`. The proof uses only the commuta
 
 open Matrix
 
-namespace Lightlike.Rows.G2_014
+namespace Lightlike.Canonical.VolumeOperator
 
 variable {n : Fin 4 → ℕ}
 
@@ -31,7 +31,7 @@ lemma qOp_reduce {ψ : Idx n → ℂ} (i j l : Fin 4) (hij : i ≠ j)
     intro a b c
     rw [← mulVec_mulVec, hZ c, mulVec_sub, mulVec_sub, mulVec_neg, mulVec_mulVec, mulVec_mulVec,
       mulVec_mulVec]
-  have hS := Lightlike.Rows.G2_014.six_term_zero (edgeOp n i) (edgeOp n j)
+  have hS := Lightlike.Canonical.VolumeOperator.six_term_zero (edgeOp n i) (edgeOp n j)
     (fun a b => edgeOp_comm_of_ne hij a b)
     (edgeOp_comm_xy i) (edgeOp_comm_yz i) (edgeOp_comm_zx i)
     (edgeOp_comm_xy j) (edgeOp_comm_yz j) (edgeOp_comm_zx j)
@@ -109,4 +109,13 @@ theorem Qnode_four_mulVec {ψ : Idx n → ℂ} (hψ : IsInvariant n ψ) :
     smul_mulVec, h013, h023, h123]
   module
 
-end Lightlike.Rows.G2_014
+end Lightlike.Canonical.VolumeOperator
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.Qnode_four := _root_.Lightlike.Canonical.VolumeOperator.Qnode_four
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.Qnode_four_mulVec := _root_.Lightlike.Canonical.VolumeOperator.Qnode_four_mulVec
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.qOp_cyc := _root_.Lightlike.Canonical.VolumeOperator.qOp_cyc
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.qOp_reduce := _root_.Lightlike.Canonical.VolumeOperator.qOp_reduce
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.qOp_swap := _root_.Lightlike.Canonical.VolumeOperator.qOp_swap
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G2_014.sgn4 := _root_.Lightlike.Canonical.VolumeOperator.sgn4

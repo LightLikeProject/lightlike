@@ -18,7 +18,7 @@ The classes are named structurally (they describe the topology, not a numerical 
 with a specific figure of the paper).
 -/
 
-namespace Lightlike.Rows.G3_255
+namespace Lightlike.GR.EinsteinHilbertExpansion
 
 open GravVertex
 
@@ -140,4 +140,37 @@ theorem nonVertexSum_eq (c : OneLoopDiagram → ℝ) (l : List OneLoopDiagram) :
     nonVertexSum c l = diagramSum c l - vertexSum c l := by
   rw [diagramSum_split]; ring
 
-end Lightlike.Rows.G3_255
+end Lightlike.GR.EinsteinHilbertExpansion
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.OneLoopDiagram := _root_.Lightlike.GR.EinsteinHilbertExpansion.OneLoopDiagram
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.OneLoopDiagram.all := _root_.Lightlike.GR.EinsteinHilbertExpansion.OneLoopDiagram.all
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.OneLoopDiagram.box := _root_.Lightlike.GR.EinsteinHilbertExpansion.OneLoopDiagram.box
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.OneLoopDiagram.box_not_vertex := _root_.Lightlike.GR.EinsteinHilbertExpansion.OneLoopDiagram.box_not_vertex
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.OneLoopDiagram.crossedBox := _root_.Lightlike.GR.EinsteinHilbertExpansion.OneLoopDiagram.crossedBox
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.OneLoopDiagram.crossedBox_not_vertex := _root_.Lightlike.GR.EinsteinHilbertExpansion.OneLoopDiagram.crossedBox_not_vertex
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.OneLoopDiagram.doubleSeagull := _root_.Lightlike.GR.EinsteinHilbertExpansion.OneLoopDiagram.doubleSeagull
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.OneLoopDiagram.gravVertices := _root_.Lightlike.GR.EinsteinHilbertExpansion.OneLoopDiagram.gravVertices
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.OneLoopDiagram.gravitonLoopCubic := _root_.Lightlike.GR.EinsteinHilbertExpansion.OneLoopDiagram.gravitonLoopCubic
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.OneLoopDiagram.gravitonLoopCubic_vertex := _root_.Lightlike.GR.EinsteinHilbertExpansion.OneLoopDiagram.gravitonLoopCubic_vertex
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.OneLoopDiagram.gravitonLoopQuartic := _root_.Lightlike.GR.EinsteinHilbertExpansion.OneLoopDiagram.gravitonLoopQuartic
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.OneLoopDiagram.gravitonLoopQuartic_vertex := _root_.Lightlike.GR.EinsteinHilbertExpansion.OneLoopDiagram.gravitonLoopQuartic_vertex
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.OneLoopDiagram.isVertexDiagram := _root_.Lightlike.GR.EinsteinHilbertExpansion.OneLoopDiagram.isVertexDiagram
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.OneLoopDiagram.matterLoop := _root_.Lightlike.GR.EinsteinHilbertExpansion.OneLoopDiagram.matterLoop
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.OneLoopDiagram.mem_all := _root_.Lightlike.GR.EinsteinHilbertExpansion.OneLoopDiagram.mem_all
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.OneLoopDiagram.nodup_all := _root_.Lightlike.GR.EinsteinHilbertExpansion.OneLoopDiagram.nodup_all
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.OneLoopDiagram.scalarSelfEnergy := _root_.Lightlike.GR.EinsteinHilbertExpansion.OneLoopDiagram.scalarSelfEnergy
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.OneLoopDiagram.seagullTripleVertex := _root_.Lightlike.GR.EinsteinHilbertExpansion.OneLoopDiagram.seagullTripleVertex
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.OneLoopDiagram.selfVertexKappa := _root_.Lightlike.GR.EinsteinHilbertExpansion.OneLoopDiagram.selfVertexKappa
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.OneLoopDiagram.selfVertexKappa_pos_iff := _root_.Lightlike.GR.EinsteinHilbertExpansion.OneLoopDiagram.selfVertexKappa_pos_iff
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.OneLoopDiagram.triangle := _root_.Lightlike.GR.EinsteinHilbertExpansion.OneLoopDiagram.triangle
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.OneLoopDiagram.triangle_not_vertex := _root_.Lightlike.GR.EinsteinHilbertExpansion.OneLoopDiagram.triangle_not_vertex
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.OneLoopDiagram.tripleVertexCorrection := _root_.Lightlike.GR.EinsteinHilbertExpansion.OneLoopDiagram.tripleVertexCorrection
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.OneLoopDiagram.tripleVertexCorrection_vertex := _root_.Lightlike.GR.EinsteinHilbertExpansion.OneLoopDiagram.tripleVertexCorrection_vertex
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.diagramSum := _root_.Lightlike.GR.EinsteinHilbertExpansion.diagramSum
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.diagramSum_split := _root_.Lightlike.GR.EinsteinHilbertExpansion.diagramSum_split
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.nonVertexSum := _root_.Lightlike.GR.EinsteinHilbertExpansion.nonVertexSum
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.nonVertexSum_eq := _root_.Lightlike.GR.EinsteinHilbertExpansion.nonVertexSum_eq
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.sum_ne_sum_nonVertex := _root_.Lightlike.GR.EinsteinHilbertExpansion.sum_ne_sum_nonVertex
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G3_255.vertexSum := _root_.Lightlike.GR.EinsteinHilbertExpansion.vertexSum

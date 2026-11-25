@@ -24,7 +24,7 @@ subspace `H(D, J)`. This is the standard subspace whose modular objects are `(D�
 open Filter Topology Complex
 open scoped LinearPMap
 
-namespace Lightlike.Rows.G1_054
+namespace Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace
 
 variable {𝓗 : Type*} [NormedAddCommGroup 𝓗] [InnerProductSpace ℂ 𝓗] [CompleteSpace 𝓗]
 
@@ -116,4 +116,22 @@ lemma mem_subspace_iff (ξ : 𝓗) :
 
 end ModularPair
 
-end Lightlike.Rows.G1_054
+end Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.ModularPair := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.ModularPair
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.ModularPair.D := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.ModularPair.D
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.ModularPair.J := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.ModularPair.J
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.ModularPair.J_J := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.ModularPair.J_J
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.ModularPair.intertwine := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.ModularPair.intertwine
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.ModularPair.mem_subspace_iff := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.ModularPair.mem_subspace_iff
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.ModularPair.op := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.ModularPair.op
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.ModularPair.op_add := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.ModularPair.op_add
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.ModularPair.op_mem := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.ModularPair.op_mem
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.ModularPair.op_of_mem := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.ModularPair.op_of_mem
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.ModularPair.op_op := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.ModularPair.op_op
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.ModularPair.op_smul := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.ModularPair.op_smul
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.ModularPair.selfAdjoint := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.ModularPair.selfAdjoint
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.ModularPair.subspace := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.ModularPair.subspace
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_054.ModularPair.tomita := _root_.Lightlike.OperatorAlgebras.BisognanoWichmannStandardSubspace.ModularPair.tomita

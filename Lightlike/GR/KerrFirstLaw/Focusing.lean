@@ -15,7 +15,7 @@ affine parameter `m/|θ|`; but the generators of an event horizon have no future
 * `area_nondecreasing_of_complete`: the two together.
 -/
 
-namespace Lightlike.Rows.G1_066
+namespace Lightlike.GR.KerrFirstLaw
 
 open Set
 
@@ -55,4 +55,10 @@ theorem area_nondecreasing_of_complete {A Θ Θ' : ℝ → ℝ} {m : ℝ} (hm : 
     MonotoneOn A (Ici 0) :=
   areaElement_monotone hA (expansion_nonneg_of_complete hm hd hle) hpos
 
-end Lightlike.Rows.G1_066
+end Lightlike.GR.KerrFirstLaw
+
+/-! Deprecated names (kept for one release) -/
+
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_066.areaElement_monotone := _root_.Lightlike.GR.KerrFirstLaw.areaElement_monotone
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_066.area_nondecreasing_of_complete := _root_.Lightlike.GR.KerrFirstLaw.area_nondecreasing_of_complete
+@[deprecated (since := "0.4.0")] alias _root_.Lightlike.Rows.G1_066.expansion_nonneg_of_complete := _root_.Lightlike.GR.KerrFirstLaw.expansion_nonneg_of_complete
