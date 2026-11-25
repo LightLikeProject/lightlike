@@ -172,4 +172,19 @@ theorem gramMid_mem (q : kˣ) (a b c e d f d' : ℕ) (hN : 1 ≤ a + b + c)
     rw [hidx]
     exact key
 
+/-- **The Gram pairing of a first- and a second-bracketing tree vector is a scalar** (equal total channels). -/
+theorem gram_scalar (q : kˣ) (a b c e d f d' : ℕ) (hN : 1 ≤ a + b + c)
+    (hd : ∀ j, j ≤ a + b + c → chebD (loopVal q) j ≠ 0)
+    (hea : e ≤ a) (heb : e ≤ b) (hfb : f ≤ b) (hfc : f ≤ c) (hdc : d ≤ c) (hdA : d ≤ a + b - 2 * e)
+    (hda : d' ≤ a) (hdf : d' ≤ b + c - 2 * f)
+    (hD : a + b - 2 * e + c - 2 * d = a + (b + c - 2 * f) - 2 * d') :
+    ∃ g : k, (Wop q (a + b - 2 * e) c d * Wop q a b e) * (sh a (Vop q b c f) * Vop q a (b + c - 2 * f) d') =
+      g • jwAt q 0 (a + b - 2 * e + c - 2 * d) := by
+  have hmem := gramMid_mem q a b c e d f d' hN hea heb hfb hfc hdc hdA hda hdf hD
+  have hdD : ∀ j, j < a + b - 2 * e + c - 2 * d → chebD (loopVal q) j ≠ 0 := fun j hj => hd j (by omega)
+  obtain ⟨g, hg⟩ := jwAt_sandwich q hdD hmem
+  refine ⟨g, ?_⟩
+  rw [gram_eq, ← hD]
+  exact hg
+
 end Lightlike.TemperleyLieb
