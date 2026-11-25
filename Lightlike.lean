@@ -634,6 +634,7 @@ import Lightlike.OperatorAlgebras.CARShaleHeavy
 import Lightlike.OperatorAlgebras.CARShaleK
 import Lightlike.OperatorAlgebras.CARShaleMain
 import Lightlike.OperatorAlgebras.CARShaleNec
+import Lightlike.OperatorAlgebras.CARShaleUnique
 import Lightlike.OperatorAlgebras.CARShaleVac
 import Lightlike.OperatorAlgebras.CARShaleVec
 import Lightlike.OperatorAlgebras.CARUnique
