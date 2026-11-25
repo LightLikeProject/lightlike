@@ -2080,6 +2080,7 @@ import Lightlike.TemperleyLieb.Jones
 import Lightlike.TemperleyLieb.Natural
 import Lightlike.TemperleyLieb.Reduction
 import Lightlike.TemperleyLieb.Vertex
+import Lightlike.TemperleyLieb.VertexNorm
 import Lightlike.Dirac.ConnesDistance
 import Lightlike.Dirac.ConnesDistance2
 import Lightlike.Dirac.ConnesDistance3
