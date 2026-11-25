@@ -5318,3 +5318,25 @@
   review: kernel-checked
   note: "PARTIAL: only the K-types (l, 0) of radial functions F o cosh, proved by induction on l from the spherical Plancherel formula (norm_sq_eq_sph): the step is K_{l+1}(F) = S_l(F, QF) + l(l+1) K_l(F) (Kform_succ, integration by parts against the weight (v^2-1)^l, with (QF)^(l) = -((v^2-1)F^(l+2) + 2(l+1)vF^(l+1) + l(l+1)F^(l))) together with (QF)^ = (1/4 + rho^2) F^ (sphTransformH_radialQ) and polarisation; it multiplies the weight by (l+1/2)^2 + rho^2, the ladder factor of Kitaev arXiv:1711.08169 eq. (60) (read: the factor of the lowering/raising operators on the Casimir eigenfunctions). Comparison with Lang or Knapp pending (source exploratory). The general K-types (l, r), r != 0, the base case (1,1), the discrete series part and the assembly of the Plancherel formula of SL(2,R) are not proved."
   since: unreleased
+- id: LL-XXXX-a
+  title: "The coefficients of an asymptotic expansion of the heat trace as t tends to 0+ are unique: two expansions of the same function to order m agree in the first m coefficients, and two full expansions are equal"
+  area: GR
+  file: Lightlike/Geometry/HeatKernel/Unique.lean
+  decls: [Lightlike.HeatKernel.HasHeatExpansionTo.coeff_unique, Lightlike.HeatKernel.HasHeatExpansion.coeff_unique]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source was read at a cited location): this is the standard uniqueness of the coefficients of an asymptotic series in the scale t^(k - n/2). HasHeatExpansionTo n m K a says K t = sum over k < m of a k t^(k - n/2) up to O(t^(m - n/2)) as t tends to 0+, with the dimension n only fixing the powers; it is stated for functions of one real variable, with no operator or manifold."
+  since: unreleased
+- id: LL-XXXX-b
+  title: "The heat trace of the unit 2-sphere, sum (2l+1) exp(-t l(l+1)), has an expansion to order t^2 whose coefficients are the Seeley-DeWitt coefficients a0, a1, a2 for V = 4 pi, R = 2, |Ric|^2 = 2, |Riem|^2 = 4"
+  area: GR
+  file: Lightlike/Geometry/HeatKernel/Consistency.lean
+  decls: [Lightlike.HeatKernel.hasHeatExpansionTo_sphereTrace_geom]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending for a2: the t^1 coefficient 1/15 equals (4 pi)^(-1) V (5 R^2 - 2 |Ric|^2 + 2 |Riem|^2)/360 = (20 - 4 + 8)/360 = 1/15, which is the formula that heatCoeffs defines (a definition of formulas, not derived from an operator); no source was read at a cited location for the a2 formula. For a1 the comparison with Vassilevich (2003), eq. (4.27), is in LL-0296. An example on the 2-sphere only: no theorem for a general manifold."
+  since: unreleased
