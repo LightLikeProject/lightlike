@@ -162,7 +162,10 @@ two-level sandwich `W_d W_e Y V_e V_d` is a scalar times a projector by `absorb`
 `recoup e d f d'` := that scalar for `Y = treeR f d'`; `recoup_row_sum`: `Σ_{f,d'} recoup = 1`.
 Also proved: the exact rank `D+1` of every tree idempotent on the window (trace of a conjugated idempotent) and
 `recoup = 0` unless the total channels `D` agree (`recoup_eq_zero_of_ne`, from the two-sided minimality and the ranks).
-Open before the pentagon: (i) the column sums of the recoupling matrix;
+Both readings of the coefficient agree (`recoupR_eq`) and the column sums are `1` too (`recoup_col_sum`): the matrix of
+squared 6j symbols is doubly stochastic and block diagonal in the total channel `D`.
+Open before the pentagon: (i) the signed matrix: expansion of `U_R` in the basis `U_e` of the multiplicity space
+(spanning of `Hom_D`, a dimension count of order a thousand lines), because `recoup` only sees squares;
 (ii) the matrix-unit identification giving `treeR = Σ U recoup U'` and the orthogonality relations; (iii) the
 pentagon for four blocks; (iv) the dictionary with `qSixJ` (Tet formula) and the truncation at `r`.
 

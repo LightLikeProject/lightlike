@@ -591,4 +591,95 @@ theorem treeR_ne_zero (q : kˣ) (a b c f d : ℕ) (hfb : f ≤ b) (hfc : f ≤ c
   · exact absurd h (mul_ne_zero (mul_ne_zero hκ1 hκ2) (mul_ne_zero hκ1 hκ2))
   · exact jwAt_ne_zero q _ h
 
+/-- The recoupling coefficient read from the other side: the scalar of `treeR · treeL · treeR`. -/
+noncomputable def recoupR (q : kˣ) (a b c e d f d' : ℕ) : k :=
+  if h : ∃ μ : k, treeR q a b c f d' * treeL q a b c e d * treeR q a b c f d' = μ • treeR q a b c f d'
+  then h.choose else 0
+
+/-- **The two readings of the recoupling coefficient agree.** -/
+theorem recoupR_eq [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) (a b c e d f d' : ℕ) (ha : 1 ≤ a) (hc : 1 ≤ c)
+    (hd : ∀ j, j ≤ a + b + c → chebD (loopVal q) j ≠ 0)
+    (hq2 : ∀ j, 1 ≤ j → j ≤ a + b + c + 1 → (q : k) ^ (2 * j) ≠ 1)
+    (hea : e ≤ a) (heb : e ≤ b) (hdc : d ≤ c) (hdA : d ≤ a + b - 2 * e)
+    (hfb : f ≤ b) (hfc : f ≤ c) (hda : d' ≤ a) (hdf : d' ≤ b + c - 2 * f) :
+    recoupR q a b c e d f d' = recoup q a b c e d f d' := by
+  have hL0 := treeL_ne_zero (k := k) q a b c e d hea heb hdc hdA hd hq2
+  have hR0 := treeR_ne_zero (k := k) q a b c f d' hfb hfc hda hdf hd hq2
+  have hspec := recoup_spec (k := k) q hδ a b c e d f d' ha hd hea heb hdc hdA hfb hfc hda hdf
+  have hLmem := treeL_mem (k := k) q hδ (a := a) (b := b) (c := c) (e := e) (d := d) hea heb hdc hdA (by omega)
+  obtain ⟨μ', hμ'⟩ := treeR_sandwich q a b c f d' (by omega) hd hfb hfc hda hdf hLmem
+  have hex : ∃ μ : k, treeR q a b c f d' * treeL q a b c e d * treeR q a b c f d' = μ • treeR q a b c f d' :=
+    ⟨μ', hμ'⟩
+  have hR : recoupR q a b c e d f d' = μ' := by
+    unfold recoupR; rw [dif_pos hex]
+    exact smul_left_cancel_of_ne_zero hR0 (hex.choose_spec.symm.trans hμ')
+  rw [hR]
+  have e1 : treeL q a b c e d * (treeR q a b c f d' * treeL q a b c e d * treeR q a b c f d') *
+      treeL q a b c e d = (μ' * recoup q a b c e d f d') • treeL q a b c e d := by
+    rw [hμ', mul_smul_comm, smul_mul_assoc, hspec, smul_smul]
+  have e2 : treeL q a b c e d * (treeR q a b c f d' * treeL q a b c e d * treeR q a b c f d') *
+      treeL q a b c e d = (recoup q a b c e d f d' * recoup q a b c e d f d') • treeL q a b c e d := by
+    calc _ = (treeL q a b c e d * treeR q a b c f d' * treeL q a b c e d) * treeR q a b c f d' *
+          treeL q a b c e d := by simp only [mul_assoc]
+      _ = _ := by rw [hspec, smul_mul_assoc, smul_mul_assoc, hspec, smul_smul]
+  rw [e1] at e2
+  have h3 := smul_left_cancel_of_ne_zero hL0 e2
+  by_cases hlam : recoup q a b c e d f d' = 0
+  · -- then `μ'² R = 0`
+    have e3 : treeR q a b c f d' * (treeL q a b c e d * treeR q a b c f d' * treeL q a b c e d) *
+        treeR q a b c f d' = (μ' * μ') • treeR q a b c f d' := by
+      calc _ = (treeR q a b c f d' * treeL q a b c e d * treeR q a b c f d') * treeL q a b c e d *
+            treeR q a b c f d' := by simp only [mul_assoc]
+        _ = _ := by rw [hμ', smul_mul_assoc, smul_mul_assoc, hμ', smul_smul]
+    rw [hspec, hlam, zero_smul, mul_zero, zero_mul] at e3
+    have := smul_left_cancel_of_ne_zero hR0 (e3.symm.trans (zero_smul k _).symm)
+    rw [hlam]; exact mul_self_eq_zero.mp this
+  · exact mul_right_cancel₀ hlam h3
+
+/-- Specification of the second reading. -/
+theorem recoupR_spec [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) (a b c e d f d' : ℕ) (ha : 1 ≤ a) (hc : 1 ≤ c)
+    (hd : ∀ j, j ≤ a + b + c → chebD (loopVal q) j ≠ 0)
+    (hea : e ≤ a) (heb : e ≤ b) (hdc : d ≤ c) (hdA : d ≤ a + b - 2 * e)
+    (hfb : f ≤ b) (hfc : f ≤ c) (hda : d' ≤ a) (hdf : d' ≤ b + c - 2 * f) :
+    treeR q a b c f d' * treeL q a b c e d * treeR q a b c f d' = recoupR q a b c e d f d' • treeR q a b c f d' := by
+  have hLmem := treeL_mem (k := k) q hδ (a := a) (b := b) (c := c) (e := e) (d := d) hea heb hdc hdA (by omega)
+  obtain ⟨μ', hμ'⟩ := treeR_sandwich q a b c f d' (by omega) hd hfb hfc hda hdf hLmem
+  have hex : ∃ μ : k, treeR q a b c f d' * treeL q a b c e d * treeR q a b c f d' = μ • treeR q a b c f d' :=
+    ⟨μ', hμ'⟩
+  unfold recoupR
+  rw [dif_pos hex]
+  exact hex.choose_spec
+
+/-- **Column sums of the recoupling matrix are `1`.** -/
+theorem recoup_col_sum [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) (a b c f d' : ℕ) (ha : 1 ≤ a) (hc : 1 ≤ c)
+    (hd : ∀ j, j ≤ a + b + c → chebD (loopVal q) j ≠ 0)
+    (hq2 : ∀ j, 1 ≤ j → j ≤ a + b + c + 1 → (q : k) ^ (2 * j) ≠ 1)
+    (hfb : f ≤ b) (hfc : f ≤ c) (hda : d' ≤ a) (hdf : d' ≤ b + c - 2 * f) :
+    ∑ e : Fin (min a b + 1), ∑ d : Fin (min (a + b - 2 * e) c + 1), recoup q a b c e d f d' = 1 := by
+  have hR0 := treeR_ne_zero (k := k) q a b c f d' hfb hfc hda hdf hd hq2
+  have hidem := treeR_mul (k := k) q a b c hd hq2 (f := f) (d := d') (f' := f) (d' := d')
+    (le_min hfb hfc) (le_min hfb hfc) (le_min hda hdf) (le_min hda hdf)
+  rw [if_pos ⟨rfl, rfl⟩] at hidem
+  have hsum : ∑ e : Fin (min a b + 1), ∑ d : Fin (min (a + b - 2 * e) c + 1), treeL q a b c e d = P3 q a b c := by
+    rw [← Qab_mul_jwAt_trees q a b c (by omega) hd hq2]; rfl
+  have hRP := treeR_mul_P3 (k := k) q a b c f d' hfb hfc hd
+  have key : treeR q a b c f d' * P3 q a b c * treeR q a b c f d' = treeR q a b c f d' := by
+    rw [hRP, hidem]
+  have hexp : treeR q a b c f d' * P3 q a b c * treeR q a b c f d' =
+      (∑ e : Fin (min a b + 1), ∑ d : Fin (min (a + b - 2 * e) c + 1), recoup q a b c e d f d') •
+        treeR q a b c f d' := by
+    rw [← hsum, Finset.mul_sum, Finset.sum_mul, Finset.sum_smul]
+    refine Finset.sum_congr rfl fun e he => ?_
+    rw [Finset.mul_sum, Finset.sum_mul, Finset.sum_smul]
+    refine Finset.sum_congr rfl fun d _ => ?_
+    have hea : (e : ℕ) ≤ a := (Nat.lt_succ_iff.mp e.2).trans (min_le_left _ _)
+    have heb : (e : ℕ) ≤ b := (Nat.lt_succ_iff.mp e.2).trans (min_le_right _ _)
+    have hdd := Nat.lt_succ_iff.mp d.2
+    rw [← recoupR_eq q hδ a b c e d f d' ha hc hd hq2 hea heb (hdd.trans (min_le_right _ _))
+      (hdd.trans (min_le_left _ _)) hfb hfc hda hdf]
+    exact recoupR_spec q hδ a b c e d f d' ha hc hd hea heb (hdd.trans (min_le_right _ _))
+      (hdd.trans (min_le_left _ _)) hfb hfc hda hdf
+  rw [hexp] at key
+  exact smul_left_cancel_of_ne_zero hR0 (by rw [key, one_smul])
+
 end Lightlike.TemperleyLieb
