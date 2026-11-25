@@ -23,13 +23,19 @@ point outside `I⁺(S)` has normalised affine length `-g(γ'(0), X)·L ≤ Λ`. 
    `tr R ≥ 0`, `Y` invertible on `[0, T)`, `θ(0) = tr (Y' Y⁻¹)(0) < 0` give `T ≤ m / |θ(0)|`.
    `trace_sq_ge_of_gram` (JacobiGram.lean): for `Q` positive definite and `Q B` symmetric,
    `(tr B)²/m ≤ tr B²`.
-3. **Gram route (no parallel frames).** With `J_i = ∂_{σ_i} F`, `Q_ij = g(J_i, J_j)` (unchanged by adding
-   multiples of the null `γ'`), `K_i = D_t J_i`: `D_t J_i = D_{σ_i} γ'`, `D_t γ' = 0`, `g(J_i, γ') = g(K_i, γ') = 0`;
-   `K_i = Σ_j B_{ji} J_j + c_i γ'` when `Q` is nondegenerate; `Q' = BᵀQ + Q B`; Jacobi `D_t K_i = -R(J_i, γ')γ'`; pair
-   symmetry of Riemann gives `Q B` symmetric; `B' + B² = -R̂` with `tr R̂ = Ric(γ', γ')`; so `θ = tr B` satisfies
-   `θ' ≤ -θ²/m` and `focusing` applies.
-4. **Chart-level identities.** JacobiIdentity.lean: with Christoffel symbols `Γ` and `∂Γ` symmetric in the
-   lower indices, `D²J = (J'' + 2Γ(v, J') + ∂_dΓ J^d v v) - R^a_{σγδ} v^σ J^γ v^δ`.
+3. **Gram route (no parallel frames).** For Jacobi fields `J_i` with covariant derivatives `P_i` along a null
+   geodesic (`IsJacobiOn`, GE3Row/Jacobi.lean, which a variation of geodesics produces by
+   `exists_isJacobiOn_of_variation`), set `Q = g(J_i, J_j)`, `C = g(P_i, J_j)`, `ρ = g(R(J_i, w)w, J_j)`.
+   `jacobi_gram_derivs` (JacobiGeom.lean): `Q' = C + Cᵀ`, `C' = -ρ + g(P_i, P_j)`; `gramP_eq`: for `J_i`, `P_i`
+   orthogonal to the null `w` in dimension `m + 2`, `g(P_i, P_j) = C Q⁻¹ Cᵀ` (the span of `J_i` and `w` is
+   `w^⊥`, `exists_decomp_perp_null`); `gramC_symm`: `C` stays symmetric along the geodesic; `ρ` is symmetric
+   (`gpair_riemannApply_symm`, pair symmetry of Riemann); `trace_gram_rho`: `tr (Q⁻¹ ρ) = Ric(w, w)`
+   (a null frame `J`, `w`, `N` and `NullFrame.trace_eq`). `hasDerivAt_gram_expansion` and `gram_focusing`
+   (JacobiRiccati.lean): `θ = tr (Q⁻¹ Cᵀ)` has `θ' = -tr (Q⁻¹ ρ) - tr B²` and `focusing` gives
+   `T ≤ m / |θ(0)|`. `jacobi_focusing_chart` (JacobiRic.lean) combines these.
+4. **Chart-level identity.** JacobiIdentity.lean and JacobiCompat.lean: with Christoffel symbols `Γ` and `∂Γ`
+   symmetric in the lower indices, `D²J = (J'' + 2Γ(v, J') + ∂_dΓ J^d v v) - R^a_{σγδ} v^σ J^γ v^δ`, and
+   `(g(W₁, W₂))' = g(D W₁, W₂) + g(W₁, D W₂)` along a curve.
 5. **Initial value.** `θ(0) = frameExpansion` for an orthonormal frame of `T_s S`, with a uniform bound on compact
    `S` from the trapped hypothesis applied to `k₁, k₂`.
 6. **Focal point.** A focal point `t₀` of a generator, with `det Q(t₀) = 0`, puts `γ(L)` in `I⁺(S)` for `L > t₀`
