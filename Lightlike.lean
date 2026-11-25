@@ -1456,6 +1456,8 @@ import Lightlike.Spacetime.PenroseSingularity.NegativeJet
 import Lightlike.Spacetime.PenroseSingularity.ExpGerm
 import Lightlike.Spacetime.PenroseSingularity.ExpTheta
 import Lightlike.Spacetime.PenroseSingularity.VariationJets
+import Lightlike.Spacetime.PenroseSingularity.ExpIntrinsic
+import Lightlike.Spacetime.PenroseSingularity.VariationIntrinsic
 import Lightlike.Spacetime.PenroseSingularity.NullGeodGlue
 import Lightlike.Spacetime.PenroseSingularity.GeodesicChartConverse
 import Lightlike.Spacetime.PenroseSingularity.NullGeodChart

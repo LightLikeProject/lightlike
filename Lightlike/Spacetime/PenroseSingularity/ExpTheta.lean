@@ -1,4 +1,5 @@
 import Lightlike.Spacetime.PenroseSingularity.ExpGerm
+import Lightlike.Spacetime.PenroseSingularity.ExpIntrinsic
 import Lightlike.Spacetime.PenroseSingularity.GeodesicChartConverse
 import Lightlike.Spacetime.PenroseSingularity.JacobiVarChart
 import Lightlike.Spacetime.PenroseSingularity.FormContinuity
@@ -247,6 +248,9 @@ structure ThetaData (g : LorentzianMetric 𝓘(ℝ, Fin n → ℝ) M n) (p₀ : 
   /-- `D_w² Θ (q, 0) (w, w) = -Γ (q) (w, w)`. -/
   jet2 : ∀ q, (q, (0 : Fin n → ℝ)) ∈ D → ∀ w, fderiv ℝ (fderiv ℝ Θ) (q, 0) (0, w) (0, w) =
     Lightlike.Geodesic.accel (g.coordMetric p₀) q w
+  /-- `Θ` is the chart expression of the intrinsic exponential map applied to the tangent vector with the
+  coordinates `(q, w)` in the chart at `p₀`. -/
+  exp_eq : ∀ x ∈ D, Θ x = extChartAt 𝓘(ℝ, Fin n → ℝ) p₀ (expT g (zetaMap (n := n) p₀ x))
 
 /-- The smooth exponential map in the chart at `p₀` exists. -/
 theorem exists_thetaData (p₀ : M) : Nonempty (ThetaData g p₀) := by
@@ -300,7 +304,7 @@ theorem exists_thetaData (p₀ : M) : Nonempty (ThetaData g p₀) := by
       (contMDiffOn_extChartAt (I := 𝓘(ℝ, Fin n → ℝ)) (x := p₀)).comp (hX.mono inter_subset_left)
         (fun x hx => by have h := hx.2; rw [mem_preimage, hψ, extChartAt_source] at h; exact h)
     exact contMDiffOn_iff_contDiffOn.1 h1
-  refine ⟨⟨D, fun x => ψ (Γ (ζ x) 1), hDo, hmem0, hΘsm, ?_, ?_, ?_⟩⟩
+  refine ⟨⟨D, fun x => ψ (Γ (ζ x) 1), hDo, hmem0, hΘsm, ?_, ?_, ?_, ?_⟩⟩
   · intro q hq
     have hq' : q ∈ ψ.target := hq.1.1.1
     have hz : ζ (q, 0) = ⟨ψ.symm q, 0⟩ := hζ0 q hq'
@@ -313,5 +317,8 @@ theorem exists_thetaData (p₀ : M) : Nonempty (ThetaData g p₀) := by
     exact (theta_jets g p₀ hε hgeo hDo (fun x hx => hx.1.2) (fun x => rfl) hΘsm hq0.1.1.1 hq0 w).1
   · intro q hq0 w
     exact (theta_jets g p₀ hε hgeo hDo (fun x hx => hx.1.2) (fun x => rfl) hΘsm hq0.1.1.1 hq0 w).2
+  · intro x hx
+    show ψ (Γ (ζ x) 1) = ψ (expT g (ζ x))
+    rw [expT_eq_flow g hε hgeo hx.1.2]
 
 end Lightlike.Penrose

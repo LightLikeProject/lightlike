@@ -400,6 +400,67 @@ theorem varA_hasDerivAt_E (hg : Lightlike.IsCoordMetric g U) (hV : IsOpen V) (hD
     simp only [varA_zero_section j0 hVD hr, hc1 r hr, hY0 r hr]
   · simp only [e0, e1, e2, ← hWd]
 
+/-- `g(2 Z, w) = 2 g(Z, w)`. -/
+theorem gpairAt_two_smul_left (x z w : Fin n → ℝ) :
+    gpairAt g x ((2 : ℝ) • z) w = 2 * gpairAt g x z w := by
+  simp only [gpairAt, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
+  refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring
+
+/-- **The second-order coefficient of the variation** with the null curve `γc`, the field `W` and the correction
+`Z`: it is `d/dt (2 g(Z, γc'))` plus `g(D_t W, D_t W)` minus the tidal term. -/
+theorem varA_hasDerivAt_pair {δ : ℝ} (hg : Lightlike.IsCoordMetric g U) (hV : IsOpen V) (hD0 : IsOpen D)
+    (hΘ : ContDiffOn ℝ ∞ Θ D) (hA : ContDiffOn ℝ 3 (varA Θ γc W Z) V)
+    (j0 : ∀ q, (q, (0 : Fin n → ℝ)) ∈ D → Θ (q, 0) = q)
+    (j1 : ∀ q, (q, (0 : Fin n → ℝ)) ∈ D → ∀ w, fderiv ℝ Θ (q, 0) (0, w) = w)
+    (j2 : ∀ q, (q, (0 : Fin n → ℝ)) ∈ D → ∀ w, fderiv ℝ (fderiv ℝ Θ) (q, 0) (0, w) (0, w) =
+      Lightlike.Geodesic.accel g q w)
+    (hVD : ∀ p ∈ V, (γc p.2, p.1 • W p.2 + p.1 ^ 2 • Z p.2) ∈ D)
+    (hcU : ∀ p ∈ V, varA Θ γc W Z p ∈ U) {t : ℝ} (hp : ((0 : ℝ), t) ∈ V)
+    (hγ : HasDerivAt (deriv γc) (Lightlike.Geodesic.accel g (γc t) (deriv γc t)) t)
+    (hZ : HasDerivAt (fun r => 2 * gpairAt g (γc r) (Z r) (deriv γc r)) (δ : ℝ) t) :
+    coeffK g (fun s t => varA Θ γc W Z (s, t)) (fun s t => jetC1 (varA Θ γc W Z) (s, t))
+        (fun s t => jetC2 (varA Θ γc W Z) (s, t)) (fun s t => jetY (varA Θ γc W Z) (s, t))
+        (fun s t => jetY1 (varA Θ γc W Z) (s, t)) (fun s t => jetY2 (varA Θ γc W Z) (s, t)) 0 t =
+      δ + gpairAt g (γc t) (deriv W t + Lightlike.Geodesic.gammaApply g (γc t) (W t) (deriv γc t))
+        (deriv W t + Lightlike.Geodesic.gammaApply g (γc t) (W t) (deriv γc t)) -
+      gpairAt g (γc t) (Lightlike.Geodesic.riemannApply g (γc t) (W t) (deriv γc t)) (deriv γc t) := by
+  have h := varA_hasDerivAt_E hg hV hD0 hΘ hA j0 j1 hVD hcU hp hγ
+  have hmem : ∀ᶠ r in 𝓝 t, (((0 : ℝ), r) : ℝ × ℝ) ∈ V :=
+    (continuous_const.prodMk continuous_id).continuousAt.preimage_mem_nhds (hV.mem_nhds hp)
+  have hfun : (fun r => gpairAt g (γc r) (jetC2 (varA Θ γc W Z) (0, r) +
+        Lightlike.Geodesic.gammaApply g (γc r) (W r) (W r)) (deriv γc r)) =ᶠ[𝓝 t]
+      fun r => 2 * gpairAt g (γc r) (Z r) (deriv γc r) := by
+    filter_upwards [hmem] with r hr
+    have hrD : (γc r, (0 : Fin n → ℝ)) ∈ D := by simpa using hVD _ hr
+    have hc2 : jetC2 (varA Θ γc W Z) (0, r) = (2 : ℝ) • Z r + Lightlike.Geodesic.accel g (γc r) (W r) := by
+      exact (varA_values hV hD0 hΘ hA j0 j1 (gc := g) j2 hVD hr hrD).2.2
+    rw [hc2, Lightlike.Geodesic.accel_eq_neg_gammaApply]
+    have : (2 : ℝ) • Z r + -Lightlike.Geodesic.gammaApply g (γc r) (W r) (W r) +
+        Lightlike.Geodesic.gammaApply g (γc r) (W r) (W r) = (2 : ℝ) • Z r := by abel
+    rw [this, gpairAt_two_smul_left]
+  have h2 := h.unique ((hZ.congr_of_eventuallyEq hfun))
+  linarith
+
+/-- With `Z = φ N` and `g(N, γc') = -1`, the pairing derivative is `-2 φ'`. -/
+theorem hasDerivAt_two_pair_of_phi {φ : ℝ → ℝ} {N : ℝ → Fin n → ℝ} {φ' : ℝ} {t : ℝ}
+    (hg : Lightlike.IsCoordMetric g U) (hN : ∀ r, gpairAt g (γc r) (N r) (deriv γc r) = -1)
+    (hφ : HasDerivAt (fun r => φ r) φ' t) (hZ : ∀ r, Z r = φ r • N r) :
+    HasDerivAt (fun r => 2 * gpairAt g (γc r) (Z r) (deriv γc r)) (-2 * φ') t := by
+  have hs : ∀ r, gpairAt g (γc r) (Z r) (deriv γc r) = -φ r := by
+    intro r
+    rw [hZ r]
+    simp only [gpairAt, Pi.smul_apply, smul_eq_mul]
+    have := hN r
+    simp only [gpairAt] at this
+    calc ∑ a, ∑ b, g (γc r) a b * (φ r * N r a) * deriv γc r b
+        = φ r * ∑ a, ∑ b, g (γc r) a b * N r a * deriv γc r b := by
+          rw [Finset.mul_sum]; refine Finset.sum_congr rfl fun a _ => ?_
+          rw [Finset.mul_sum]; refine Finset.sum_congr rfl fun b _ => ?_; ring
+      _ = -φ r := by rw [this]; ring
+  have h := (hφ.neg).const_mul 2
+  refine (h.congr_deriv (by ring)).congr_of_eventuallyEq (Filter.Eventually.of_forall fun r => ?_)
+  simp [hs r]
+
 end Package
 
 end Lightlike.Penrose
