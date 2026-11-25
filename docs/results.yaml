@@ -5623,3 +5623,58 @@
   review: kernel-checked
   note: "Comparison pending (the cited section treats the Ponzano-Regge gauge fixing with a maximal tree; the 4D gauge rule IsGauge is this library's proposal for its analogue, not a construction from the literature). The count is the Euler characteristic of the collapsible complex gaugeCx K T, which is 1 (Collapsible.euler_eq), with the vertices counted with sign +, the edges -, the triangles +, so #T - #edges + #vertices = 1. The value E - V + 1 is the degree of divergence that Bonzom and Smerlak find for a triangulated 4-sphere (comparison pending; not read). Non-vacuity: gauge sets exist (isGauge_starK0, isGauge_T14, with ten and fourteen triangles; these are checked in the kernel in Tests.lean). The count for a given complex says nothing on whether the gauge-fixed state sum is finite."
   since: unreleased
+- id: LL-0429
+  title: "For 0 < γ < 1 the labels j± = |1 ± γ| j / 2 are a pair of spins (n/2, m/2) exactly when n + m = J and n − m = γ J (doubled units), so j₊ + j₋ = j and j₊ − j₋ = γ j"
+  area: Spin4
+  file: Lightlike/Spin4/EPRL.lean
+  decls: [Lightlike.Spin4.isEPRLLabel_iff]
+  status: proven
+  tier: frontier
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location for this statement (LL-0037 cites Engle-Pereira-Rovelli-Livine 2008, Section III, for the EPRL map). The spins are doubled natural numbers J, n, m; the condition IsEPRLLabel says that (n/2, m/2) are the labels |1 + gamma| J/4 and |1 - gamma| J/4 in half-integer form; the Lean statement is the equivalence with the two linear equations. Hypotheses 0 < gamma < 1 are stated in the theorem. No unproved hypothesis."
+  since: unreleased
+- id: LL-0430
+  title: "The admissible EPRL spins for 0 < γ < 1: J is admissible exactly when γ J = p is a natural number with J + p even; for rational γ = p/q this means J = q t with (p + q) t even; for irrational γ only J = 0 is admissible"
+  area: Spin4
+  file: Lightlike/Spin4/EPRL.lean
+  decls: [Lightlike.Spin4.eprlAdmissible_iff, Lightlike.Spin4.eprlAdmissible_rat_iff, Lightlike.Spin4.eprlAdmissible_irrational_iff]
+  status: proven
+  tier: frontier
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location. The set is determined by the requirement that j+ and j- are half-integers (isEPRLLabel_iff); the rational statement is for coprime p, q with 0 < p < q, and the irrational one shows that for irrational gamma the EPRL condition is empty except at J = 0. Hypotheses on gamma are stated in the Lean theorems. No unproved hypothesis."
+  since: unreleased
+- id: LL-0431
+  title: "The EPRL map V_j → V_{j₊} ⊗ V_{j₋} (j = j₊ + j₋) is unique up to a scalar among the SU(2)-equivariant maps, and its image is the eigenspace of the diagonal Casimir with the eigenvalue of spin j"
+  area: Spin4
+  file: Lightlike/Spin4/EPRL.lean
+  decls: [Lightlike.Spin4.eprlMap_unique, Lightlike.Spin4.mem_range_eprlMap_iff]
+  status: proven
+  tier: frontier
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location. Uniqueness is Schur's lemma applied to the multiplicity-free decomposition of V_{j+} (x) V_{j-} under the diagonal SU(2) action (spin j = j+ + j- occurs once); the image statement is stated with the matrix casDiag n m of the diagonal Casimir. No hypotheses beyond equivariance in eprlMap_unique."
+  since: unreleased
+- id: LL-0432
+  title: "Weak simplicity in matrix-element form: for 0 < γ < 1 and EPRL labels, the matrix elements of the simplicity operator (boost minus γ times rotation, for every X of the Lie algebra with X₁₁ = −X₀₀) between any two vectors of the image of the EPRL map vanish"
+  area: Spin4
+  file: Lightlike/Spin4/EPRL.lean
+  decls: [Lightlike.Spin4.eprl_weak_simplicity_inner]
+  status: proven
+  tier: frontier
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location (LL-0037 cites Engle-Pereira-Rovelli-Livine 2008, Section III, for the operator form (eprl_weak_simplicity)). This is the same statement written as the vanishing of star(eprlMap v) . (simplicityOp X (eprlMap w)); it follows from eprl_weak_simplicity. Hypotheses 0 < gamma < 1 and IsEPRLLabel are stated in the theorem."
+  since: unreleased
+- id: LL-0433
+  title: "The EPRL map acts on 4-valent intertwiners: the image of an SU(2) intertwiner is a Spin(4) intertwiner, and its fusion coefficient with the channels x, y, z is (a scale factor) times the conjugate of one EPRL recoupling times another when the triangle condition holds and 0 otherwise; the singlet recoupling is √(n+m+1) / (√(n+1) √(m+1))"
+  area: Spin4
+  file: Lightlike/Spin4/Fusion.lean
+  decls: [Lightlike.Spin4.eprlIntertwiner_isSpin4Intertwiner, Lightlike.Spin4.fusion_eq, Lightlike.Spin4.fusion_eq_zero, Lightlike.Spin4.eprlRecoupling_singlet]
+  status: proven
+  tier: frontier
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location (the injectivity criterion eprlIntertwiner_injective_iff is LL-0038). The comparison of the fusion formula with the literature (the EPRL fusion coefficients) is pending; the Lean statement is proved from the definitions. Channel membership hypotheses are stated in the theorems. No unproved hypothesis."
+  since: unreleased
