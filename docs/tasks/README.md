@@ -2,9 +2,11 @@
 # Task board
 
 Every task of Lightlike and what it needs. This page changes only when the plan changes; who is
-working on what, and what is done, is on the issues:
+working on what, and what is done, is on the Project board and the issues:
 
-- [Ready](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aopen+label%3Aready): everything the task needs is in place and nobody has claimed it
+- [Project board](https://github.com/orgs/LightlikeProject/projects) "Lightlike": the plan, one issue per milestone in the columns Ready, In progress, In review, Done and Not scheduled; the v1.0 milestones are taken in the order of its Rank
+- [Ready v1.0 milestones](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aopen+milestone%3Av1.0+label%3A%22status%3A+ready%22): nobody has claimed them
+- [Not scheduled](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aopen+label%3Anot-scheduled): milestones outside v1.0, open to outside contributors
 - [Ready proof tasks](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aopen+label%3Aready+label%3Aproof-task): Lean only, no physics
 - [Ready good first issues](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aopen+label%3Aready+label%3A%22good+first+issue%22)
 - [Claimed](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aopen+label%3Aclaimed): the claimant is the assignee
@@ -18,25 +20,31 @@ working on what, and what is done, is on the issues:
   They need knowledge of the area.
 - **[Upstream](#upstream)** tasks rework a result of Lightlike for Mathlib or Physlib.
 
-The GitHub issue of a task is opened when the task becomes ready, with the task's ID at the start of
-its title; the ID in the tables below links to it. The issue is where a task is claimed, discussed
-and closed when it is done; its labels are set by a workflow (`.github/workflows/tasks.yml`) from
-the issue's comments and the pull requests that name the task. How to take a task, and how several
-people work on the same one, is in
+Every milestone has one GitHub issue, and a proof task's issue is opened when the task becomes
+ready; the task's ID starts the issue's title, and the ID in the tables below links to it. The issue
+is where a task is claimed and discussed. A milestone's issue holds its checklist, ticked from
+`main` by `scripts/milestone_status.py` and written with its status label and board column by
+`scripts/sync_github.py` after every merge; the maintainer closes it after a passing review. The
+labels of a proof task's issue are set by a workflow (`.github/workflows/tasks.yml`) from the
+issue's comments and the pull requests that name the task, and it closes when the proof is on
+`main`. How to take a task, and how several people work on the same one, is in
 [CONTRIBUTING.md](../../CONTRIBUTING.md#working-on-the-same-problem).
 
-A task is **ready** when the tasks it needs are done. A proof task counts once its statement is
-locked, so a proof may use a lemma whose own proof is still open. What a finished milestone must
-satisfy is in [milestones.md](milestones.md#definition-of-done-every-milestone); the dependencies,
-sources and labels of every task are in [tasks.yaml](tasks.yaml).
+A proof task is **ready** when the tasks it needs are done; a needed proof task counts once its
+statement is locked, so a proof may use a lemma whose own proof is still open. A v1.0 milestone is
+ready when nobody holds it; the milestones it needs do not have to be closed first. What a finished
+milestone must satisfy is in [milestones.md](milestones.md#definition-of-done-every-milestone); the
+dependencies, sources and labels of every task are in [tasks.yaml](tasks.yaml).
 
 ## Order within an area
 
-The milestones of each area are listed in a suggested order, by their sources
-([sources.yaml](sources.yaml)): first those that follow the area's standard references, then those
-with a source cited at least 300 times, then those that at least 5 other milestones need, then those
-with sources from 2015 on, then the rest. The order suggests where to start; it does not rank the
-approaches.
+The v1.0 milestones are taken in the order of their ranking (`ranking:` in
+[checklists.yaml](checklists.yaml), the Rank on the Project board): those that unblock other
+milestones first, each after the milestones it needs. Within an area, the milestones are listed in a
+suggested order, by their sources ([sources.yaml](sources.yaml)): first those that follow the area's
+standard references, then those with a source cited at least 300 times, then those that at least 5
+other milestones need, then those with sources from 2015 on, then the rest. The order suggests where
+to start; it does not rank the approaches.
 
 ## Proof tasks
 
