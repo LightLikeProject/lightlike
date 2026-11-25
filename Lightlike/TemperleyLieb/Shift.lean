@@ -147,4 +147,30 @@ theorem sh_jwAt (q : kˣ) (t u : ℕ) : ∀ n, sh t (jwAt q u n : Module.End k (
       rw [h2 u, h2 (u + t), sh_sub, sh_smul, sh_mul, sh_mul, ih (n + 1) (by omega), sh_modelE,
         show n + u + t = n + (u + t) by ring]
 
+lemma sh_zero (s : ℕ) : sh s (0 : Module.End k (ModelSpace k)) = 0 := by
+  apply Finsupp.lhom_ext
+  intro σ c
+  simp [sh_single]
+
+lemma sh_sum {ι : Type*} (s : ℕ) (S : Finset ι) (f : ι → Module.End k (ModelSpace k)) :
+    sh s (∑ i ∈ S, f i) = ∑ i ∈ S, sh s (f i) := by
+  classical
+  induction S using Finset.induction_on with
+  | empty => simp [sh_zero]
+  | insert a S ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, sh_add, ih]
+
+/-- Translation sends the nested cups at the junction `l` to the nested cups at `l + s`. -/
+theorem sh_nestCup (q : kˣ) (s l : ℕ) : ∀ i, sh s (nestCup q l i : Module.End k (ModelSpace k)) = nestCup q (l + s) i := by
+  intro i
+  induction i with
+  | zero => simp [nestCup, sh_one]
+  | succ i ih => rw [nestCup, nestCup, sh_mul, ih, sh_cupOp, show l + i + s = l + s + i by ring]
+
+/-- Translation sends the nested caps at the junction `l` to the nested caps at `l + s`. -/
+theorem sh_nestCap (q : kˣ) (s l : ℕ) : ∀ i, sh s (nestCap q l i : Module.End k (ModelSpace k)) = nestCap q (l + s) i := by
+  intro i
+  induction i with
+  | zero => simp [nestCap, sh_one]
+  | succ i ih => rw [nestCap, nestCap, sh_mul, ih, sh_capOp, show l + i + s = l + s + i by ring]
+
 end Lightlike.TemperleyLieb

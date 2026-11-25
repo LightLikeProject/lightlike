@@ -290,4 +290,49 @@ theorem treeL_mul [CharZero k] (q : kˣ) (a b c : ℕ)
         _ = 0 := by rw [h0]; simp
     rw [this, smul_zero]
 
+/-- Pushing an element through the Jones–Wenzl step, from the right. -/
+theorem push_step_r {A : Type*} [Ring A] [Algebra k A] (c : k) (u J J' e e' : A) (h1 : J * u = u * J')
+    (h2 : e * u = u * e') : (J - c • (J * e * J)) * u = u * (J' - c • (J' * e' * J')) := by
+  rw [mul_sub, sub_mul, mul_smul_comm, smul_mul_assoc, h1]
+  congr 2
+  calc J * e * J * u = J * e * (J * u) := by simp only [mul_assoc]
+    _ = J * (e * u) * J' := by rw [h1]; simp only [mul_assoc]
+    _ = J * u * e' * J' := by rw [h2]; simp only [mul_assoc]
+    _ = u * J' * e' * J' := by rw [h1]
+    _ = u * (J' * e' * J') := by simp only [mul_assoc]
+
+/-- A projector to the left of a cup commutes with it. -/
+theorem jwAt_mul_cupOp (q : kˣ) {s m : ℕ} :
+    ∀ n, s + n ≤ m → (jwAt q s n : Module.End k (ModelSpace k)) * cupOp q m = cupOp q m * jwAt q s n := by
+  intro n
+  induction n using Nat.strong_induction_on with
+  | _ n ih =>
+    intro hn
+    rcases n with _ | _ | n
+    · simp [jwAt, jw_zero]
+    · simp [jwAt, jw_one]
+    · have h2 : jwAt q s (n + 2) = jwAt q s (n + 1) -
+          (chebD (loopVal q) n / chebD (loopVal q) (n + 1)) •
+            (jwAt q s (n + 1) * modelE q (n + s) * jwAt q s (n + 1)) := jw_succ_succ n
+      rw [h2]
+      exact push_step_r (A := Module.End k (ModelSpace k)) _ _ _ _ _ _ (ih (n + 1) (by omega) (by omega))
+        (e_mul_cup_near q (by omega))
+
+/-- A projector to the left of a cap commutes with it. -/
+theorem jwAt_mul_capOp (q : kˣ) {s m : ℕ} :
+    ∀ n, s + n ≤ m → (jwAt q s n : Module.End k (ModelSpace k)) * capOp q m = capOp q m * jwAt q s n := by
+  intro n
+  induction n using Nat.strong_induction_on with
+  | _ n ih =>
+    intro hn
+    rcases n with _ | _ | n
+    · simp [jwAt, jw_zero]
+    · simp [jwAt, jw_one]
+    · have h2 : jwAt q s (n + 2) = jwAt q s (n + 1) -
+          (chebD (loopVal q) n / chebD (loopVal q) (n + 1)) •
+            (jwAt q s (n + 1) * modelE q (n + s) * jwAt q s (n + 1)) := jw_succ_succ n
+      rw [h2]
+      exact push_step_r (A := Module.End k (ModelSpace k)) _ _ _ _ _ _ (ih (n + 1) (by omega) (by omega))
+        (cap_mul_e_near q (m := m) (j := n + s) (by omega)).symm
+
 end Lightlike.TemperleyLieb
