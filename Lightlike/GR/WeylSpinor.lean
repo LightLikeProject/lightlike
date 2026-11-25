@@ -6,7 +6,7 @@ import Lightlike.GR.ZeroRestMass
 A 4-index bispinor tensor `C_{abcd}` (`a = (α, α̇)`) with the symmetries of a Weyl tensor (antisymmetric
 in each pair, symmetric under the exchange of pairs, the cyclic identity, trace-free with
 `η^{ac} ↔ ε^{αγ} ε^{α̇γ̇}`) is `C = ε_{αβ} ε_{γδ} Ψ̃_{α̇β̇γ̇δ̇} + ε_{α̇β̇} ε_{γ̇δ̇} Ψ_{αβγδ}` with `Ψ`, `Ψ̃` totally
-symmetric (`weyl_decomposition`), and conversely (`weylOf_isWeyl`, `weylParts_weylOf`): a linear
+symmetric (`weyl_eq_weylOf`), and conversely (`weylOf_isWeyl`, `weylParts_weylOf`): a linear
 equivalence between Weyl tensors and pairs of totally symmetric 4-spinors (`weylEquiv`), the Weyl term
 of Adamo's (3.12). The Weyl tensors form a space of dimension `10 = 5 + 5`.
 
