@@ -102,7 +102,7 @@ milestones:
       - id: t2
         kind: trust
         text: "Anti-de Sitter is not globally hyperbolic"
-        decls: []
+        decls: [Lightlike.adsTwo_not_globallyHyperbolic, Lightlike.adsTwoMetric, Lightlike.adsTwoOrientation]
         hint: "Missing: no anti-de Sitter spacetime with a causal statement. Existing: Lightlike.adsBoundary and Lightlike.adsCompact_boundary (coordinate-level conformal boundary), Lightlike.Causal.IsGloballyHyperbolic (the predicate to negate)."
       - id: t3
         kind: trust
