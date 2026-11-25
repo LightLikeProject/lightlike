@@ -47,4 +47,41 @@ theorem proj_mul_cup_zero (q : kˣ) (hδ : loopVal q ≠ 0) {D N : ℕ} (hd : �
   · exact absurd h hδ
   · exact h
 
+/-- The projector absorbs `C (D-1)` on both sides, by the same scalar. -/
+theorem proj_absorb (q : kˣ) {D : ℕ} (hd : ∀ j, j < D → chebD (loopVal q) j ≠ 0) {Z : Module.End k (ModelSpace k)}
+    (hZ : Z ∈ CSub q (D - 1)) :
+    ∃ ε : k, Z * jwAt q 0 D = ε • jwAt q 0 D ∧ jwAt q 0 D * Z = ε • jwAt q 0 D := by
+  have hprops := jwProps_of_le (isTL_shift q 0) D hd D le_rfl
+  have hjw : jwAt q 0 D = jw (loopVal q) (modelE q) D := rfl
+  have hL : ∀ j < D - 1, modelE q j * jwAt q 0 D = 0 := fun j hj => by
+    rw [hjw]; exact hprops.killL j (by omega)
+  have hR : ∀ j < D - 1, jwAt q 0 D * modelE q j = 0 := fun j hj => by
+    rw [hjw]; exact hprops.killR j (by omega)
+  obtain ⟨c, h1, h2⟩ := absorb (k := k) (e := modelE q) (p := jwAt q 0 D) hL hR _ hZ
+  exact ⟨c, h2, h1⟩
+
+/-- **Extra caps next to the projector die.** -/
+theorem caps_mul_proj_zero (q : kˣ) (hδ : loopVal q ≠ 0) {D : ℕ} (hd : ∀ j, j < D → chebD (loopVal q) j ≠ 0)
+    (hd' : ∀ j, j < D + 1 → chebD (loopVal q) j ≠ 0) {Z A : Module.End k (ModelSpace k)} (hZ : Z ∈ CSub q (D - 1))
+    (μ j : ℕ) (hμ : μ + j + 2 ≤ D) :
+    A * nestCap q μ (j + 1) * Z * jwAt q 0 D = 0 := by
+  obtain ⟨ε, h1, -⟩ := proj_absorb q hd hZ
+  have hc := cap_mul_proj_zero (k := k) q hδ hd' (D := D) (N := D + 1) (by omega) (m := μ + j) hμ
+  have e : nestCap q μ (j + 1) = nestCap q μ j * capOp q (μ + j) := rfl
+  calc A * nestCap q μ (j + 1) * Z * jwAt q 0 D = A * (nestCap q μ j * capOp q (μ + j)) * (Z * jwAt q 0 D) := by
+        rw [e]; simp only [mul_assoc]
+    _ = 0 := by rw [h1, mul_smul_comm]; simp only [mul_assoc, hc, mul_zero, smul_zero]
+
+/-- **Extra cups next to the projector die.** -/
+theorem proj_mul_cups_zero (q : kˣ) (hδ : loopVal q ≠ 0) {D : ℕ} (hd : ∀ j, j < D → chebD (loopVal q) j ≠ 0)
+    (hd' : ∀ j, j < D + 1 → chebD (loopVal q) j ≠ 0) {Z A : Module.End k (ModelSpace k)} (hZ : Z ∈ CSub q (D - 1))
+    (μ j : ℕ) (hμ : μ + j + 2 ≤ D) :
+    jwAt q 0 D * Z * nestCup q μ (j + 1) * A = 0 := by
+  obtain ⟨ε, -, h2⟩ := proj_absorb q hd hZ
+  have hc := proj_mul_cup_zero (k := k) q hδ hd' (D := D) (N := D + 1) (by omega) (m := μ + j) hμ
+  have e : nestCup q μ (j + 1) = cupOp q (μ + j) * nestCup q μ j := rfl
+  calc jwAt q 0 D * Z * nestCup q μ (j + 1) * A = (jwAt q 0 D * Z) * (cupOp q (μ + j) * nestCup q μ j) * A := by
+        rw [e]
+    _ = 0 := by rw [h2, smul_mul_assoc, smul_mul_assoc]; simp only [mul_assoc]; rw [← mul_assoc (jwAt q 0 D), hc, zero_mul, smul_zero]
+
 end Lightlike.TemperleyLieb
