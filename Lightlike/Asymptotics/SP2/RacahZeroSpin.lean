@@ -65,8 +65,8 @@ theorem racahDelta_mul_racahSum_zero_spin (a b c : ℕ) (hab : c ≤ a + b) (hac
     (hbc : b ≤ a + c) :
     racahDelta ![0, a, a, c, b, b] * racahSum ![0, a, a, c, b, b] =
       (-1 : ℝ) ^ (a + b + c) / (√(2 * (a : ℝ) + 1) * √(2 * (b : ℝ) + 1)) := by
-  have h := racahFormula ![0, a, a, c, b, b] (by simp [PR.IsTriad]; omega) (by simp [PR.IsTriad]; omega)
-    (by simp [PR.IsTriad]; omega) (by simp [PR.IsTriad]; omega)
+  have h := racahFormula ![0, a, a, c, b, b] (by simp [PR.IsTriad]; try omega) (by simp [PR.IsTriad]; try omega)
+    (by simp [PR.IsTriad]; try omega) (by simp [PR.IsTriad]; try omega)
   simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val] at h
   rw [← h]
   sorry
