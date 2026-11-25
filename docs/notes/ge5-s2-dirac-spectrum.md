@@ -88,3 +88,18 @@ analytic): the explicit eigenspinors of the lower bound span a dense subspace of
 dense set, hence zero. Route 2 needs the `L²`/symmetry statement and a Stone–Weierstrass density argument, but no ODE
 asymptotics. Both are well above one session; first deliverable for either: regularity of the modes of a smooth spinor at
 the origin (`c_m(r) = O(r^{|m|})`).
+
+### M3 route 1, worked out (25 Nov 2026)
+
+For `m ≥ 0` put `a = r^m F(t)`, `b = r^{m+1} H(t)`, `t = r²`, `μ = ν/2`. The mode system becomes
+`(1+t) F' = μ H`, `(1+t)(t H' + (m+1) H) = μ F`; the Taylor coefficients satisfy
+`(n+1) f_{n+1} + n f_n = μ h_n`, `(n+m+1) h_n + (n+m) h_{n-1} = μ f_n`, so the regular solution is unique up to the scalar `f_0`
+(this is the Wronskian statement of `ModeODE.lean`, now with an explicit series; the other Frobenius solution has `a ~ r^{-m}`).
+At `t → ∞` the solutions behave as `F, H → const` (non-decaying: `a ~ r^m`) or `F, H ~ t^{-(m+1)}` (decaying: `a ~ r^{-m-2}`).
+The regular solution decays iff the coefficient of the first behaviour vanishes; that coefficient is a Gauss-type
+connection constant `Γ(c)Γ(c-a-b)/(Γ(c-a)Γ(c-b))` of the hypergeometric function in `x = t/(1+t)`, and it vanishes iff
+the series terminates, i.e. `μ = ±(k+1)/2 · …` (the quantisation `λ = ±(k+1)`). Stages for Lean: (S1) the series solution
+and its uniqueness (coefficient recurrences above, radius of convergence 1); (S2) the change of variable `x = t/(1+t)` and
+the closed hypergeometric parameters; (S3) the value at `x = 1` (Gauss) via the Euler integral and Mathlib's Beta
+integral, or via the contiguous relation; (S4) non-vanishing off the quantised set; (S5) assembly with M2, M4 and the
+decay at the pole. S3 is the hard part (no hypergeometric function theory in Mathlib).
