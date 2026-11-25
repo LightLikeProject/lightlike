@@ -41,3 +41,13 @@ Decision (24 Nov): the old `IsClosedTrappedSurface` stays untouched. New def `Is
 ## D2 done (24 Nov, late)
 `exists_null_normal_pair` (Rows/G1_012/TrappedNormals.lean): for a closed trapped spacelike surface there are smooth global fields `k₁, k₂` on `M`, future null normals along `S`, such that every future null normal at a point of `S` is a positive multiple of one of them, and `frameExpansion < 0` for both (the trapped hypothesis). Construction: `∇fⁱ` (metric duals), Gram matrix `G`, `D = -det G > 0` and `Q > 0` from spacelikeness (`PlaneData.D_pos_Q_pos`), `k_± = √D·τ' ± Rτ'` in the basis `∇f¹, ∇f²` (`kα`, `kβ`), smooth on `{D > 0}`, cut off by a smooth bump.
 Remaining: D3 (expansion along a generator and its Riccati inequality), D4 (a focal point puts the end of the generator in `I⁺(S)`).
+
+## D3a done: focusing of a Jacobi matrix
+`jacobi_focusing` (Rows/G1_012/JacobiMatrix.lean): `Y'' = -R Y`, symmetric Wronskian, `tr R ≥ 0`, `Y` invertible on `[0, T)` and `θ(0) = tr (Y' Y⁻¹)(0) < 0` give `T ≤ m / |θ(0)|` (Riccati `θ' ≤ -θ²/m`, `tr B² ≥ (tr B)²/m` for the symmetric `B = Y' Y⁻¹`).
+
+## D3b (geometric side), remaining, in order
+1. Jacobi equation for the variation `F(σ, t) = exp_σ(t k(σ))` of geodesics, in covariant form `D²J = -R(J, γ')γ'` (chart: differentiate the geodesic equation in `σ`; smooth dependence on `σ` is `sflowGerm_along`).
+2. Screen frame: a parallel orthonormal frame of `γ'^⊥ / γ'` along `γ`, `Y_{ab} = g(J_b, E_a)`; then `Y'' = -R_screen Y`, `tr R_screen = Ric(γ', γ')` (null convergence condition).
+3. Symmetric Wronskian from the symmetry of the null second fundamental form of `S` (`g(∇_{e_i} k, e_j)` symmetric because `k` is a normal field and `e_i` are tangent to `S`).
+4. `θ(0) = frameExpansion`; the uniform bound on compact `S`.
+Then D4: focal point (`det Y = 0` at `t₀`) implies `γ(L) ∈ I⁺(S)` for `L > t₀`.
