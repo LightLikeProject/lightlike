@@ -53,7 +53,7 @@ equivalent, and, when both or neither contain the empty face, their realisations
 homeomorphic [56] [21].
 
 The 3-complexes of the Ponzano–Regge API generate simplicial complexes, and its closed
-combinatorial 3-manifolds are closed combinatorial 3-manifolds in this sense [6]. In dimension two, a connected graph with two
+combinatorial 3-manifolds are closed combinatorial 3-manifolds in this sense [6]. Pachner's theorem holds for the 3- and 4-complexes given by their top simplices, with their moves, on copies with new vertices [68]. In dimension two, a connected graph with two
 edges at every vertex is reached from the boundary of a triangle by subdividing edges, and so
 generates a PL 1-sphere [54]; this identifies the vertex links of the closed surfaces of
 the surface API as PL 1-spheres. The same
@@ -103,9 +103,12 @@ interior point, and of loops about points outside them [66]. The Jordan curve th
 3. Lightlike/PL/Bistellar.lean - `PL.SComplex.bistellar`, `PL.SComplex.StellarEquiv.bistellar`
 4. Lightlike/PL/Manifold.lean - `PL.SComplex.IsPLSphere`, `PL.SComplex.IsPLBall`,
    `PL.SComplex.IsCombManifold`, `PL.SComplex.isPLSphere_boundary`, `PL.SComplex.isPLBall_simplex`
-5. Lightlike/PL/PachnerMain.lean - `PL.SComplex.pachner`
-6. Lightlike/PL/Complex3.lean - `PL.ofComplex3`, `PL.isClosedCombManifold_ofComplex3`
-7. Lightlike/PL/Complex4.lean - `PL.ofComplex4`, `PL.IsCombManifold4`
+5. Lightlike/PL/PachnerMain.lean - `PL.SComplex.pachner`,
+   `PL.SComplex.StellarEquivIn.bistellarEquivIn`, `PL.SComplex.BistellarEquiv.stellarEquiv`
+6. Lightlike/PL/Complex3.lean - `PL.ofComplex3`, `PL.isBistellar_move23`, `PL.isBistellar_move32`,
+   `PL.isBistellar_move14`, `PL.isBistellar_move41`, `PL.isClosedCombManifold_ofComplex3`
+7. Lightlike/PL/Complex4.lean - `PL.ofComplex4`, `PL.IsCombManifold4`, `PL.isBistellar_move4`,
+   `PL.ofComplex4_move`, `PL.isMove_of_isBistellar`, `PL.isCombManifold4_move_iff`
 8. Lightlike/PL/CellGeom.lean - `PL.CellStructure`, `PL.CellStructure.pt_injOn`
 9. Lightlike/PL/SliceGeom.lean - `PL.SComplex.sliceStructure`, `PL.SComplex.sliceHull`
 10. Lightlike/PL/CellPolytope.lean - `PL.SComplex.sliceHull_eq`, `PL.SComplex.cellSet_eq`,
@@ -212,6 +215,7 @@ interior point, and of loops about points outside them [66]. The Jordan curve th
     `PL.loopIndex_eq_zero_of_far`
 67. Lightlike/PL/JordanCurve.lean - `PL.jordan_at_most_two`, `PL.jordan_at_most_two_prod`,
     `PL.jordan_curve_theorem`
+68. Lightlike/PL/PachnerMoves.lean - `PL.pachner3`, `PL.pachner4`
 
 ## References
 
