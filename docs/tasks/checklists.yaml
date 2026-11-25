@@ -21,8 +21,9 @@
 #                      written). A catalogue item with no decls covers the theorems of the
 #                      main and piece items.
 #     hint:            optional: what is missing, or which existing results come close
-#     review_evidence: review items only: `docs/tasks/reviews/<ID>.md#<item id>`, filled in by the
-#                      reviewer. The item is ticked when that section says `Result: pass`.
+#     review_evidence: review items only: null, or the evidence written by whoever did the work:
+#                      what was compared with what, and the result (at least 30 characters).
+#                      The item is ticked once it is written. There is no separate review step.
 #
 # A catalogue item is ticked when each of its declarations is ticked, is named by an entry of
 # docs/results.yaml with `status: proven`, and is cited in the API map of its folder.

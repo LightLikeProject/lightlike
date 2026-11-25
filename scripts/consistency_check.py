@@ -6,9 +6,9 @@
               board column that scripts/sync_github.py would give it (so a body that differs from
               the computed checklist is a failure);
   checklists  every v1.0 milestone has a checklist in the format of docs/tasks/checklists.yaml;
-  closed      no v1.0 milestone's issue is closed while an item is unticked or before a passing
-              review; a closed issue with the label review-pending is a transitional state, not a
-              failure (its review runs, and it is reopened if the review fails);
+  closed      no v1.0 milestone's issue is closed while an item of its checklist is unticked (there
+              is no review step: scripts/sync_github.py closes the issue once every item is ticked,
+              and an open issue of a fully ticked milestone fails under issues);
   claims      every claimed milestone has a fresh stream status file; no two streams claim the
               same milestone, no stream claims two, and no stream claims a milestone outside v1.0;
   names       no planning ID (a gap, milestone, row or catalogue ID) in a Lean folder name, file
@@ -98,11 +98,9 @@ def check_closed(status, tasks, data, stored):
     out = []
     for mid, i in sorted(issues.items(), key=lambda x: T.natural(x[0])):
         st = status["milestones"][mid]
-        if i["state"] != "closed" or not st["v1"] or st["closable"] or SG.REVIEW_PENDING in i.get("labels", []):
+        if i["state"] != "closed" or not st["v1"] or st["done"]:
             continue
-        why = [f"{st['ticked']} of {st['total']} items ticked"] if not st["done"] else []
-        why.append(f"review: {st['review']['state']}")
-        out.append(f"{mid} #{i['number']} is closed, but " + "; ".join(why) + " (reopen it)")
+        out.append(f"{mid} #{i['number']} is closed, but {st['ticked']} of {st['total']} items ticked (reopen it)")
     return out
 
 
@@ -261,10 +259,10 @@ def selftest():
     st = lambda mid, **k: dict(dict(id=mid, title=f"Title {mid}", area="geometry", size="M", v1=True,  # noqa: E731
                                      ranking=None, issue=None, done_when="x", trust=[], needs=[], proof_tasks=[],
                                      claimed_by=[], stale_claims=[], last_step=None, items=[], ticked=1, total=2,
-                                     done=False, review=dict(state="none", why="not yet"), closable=False), **k)
+                                     done=False), **k)
     status = dict(main="abc1234", computed_at="2026-11-25T08:00Z", milestones={
         "A1": st("A1", claimed_by=["regge", "opalg"]), "A2": st("A2", stale_claims=["oscillatory"]),
-        "A3": st("A3", ticked=2, done=True, review=dict(state="pass"), closable=True), "B1": st("B1", v1=False, claimed_by=["regge"]), "A4": st("A4")})
+        "A3": st("A3", ticked=2, done=True), "B1": st("B1", v1=False, claimed_by=["regge"]), "A4": st("A4")})
     tasks = [dict(id=f"T-{m}", kind="milestone", milestone=m, labels=["milestone"]) for m in status["milestones"]]
     iss = lambda n, mid, **k: dict(dict(number=n, title=f"T-{mid}: Title {mid}", state="open", reason="",  # noqa: E731
                                         labels=["milestone"], assignees=[], milestone=None, body="", url=f"u/{n}"), **k)
@@ -277,9 +275,9 @@ def selftest():
            any("A1 has 2 issues" in x for x in iss_f) and any("milestones have no issue: A2" in x for x in iss_f)
            and any(x.startswith("B1 #4 is not as") for x in iss_f))
     cl = check_closed(status, tasks, data, {})
-    expect("closed: an issue closed with unticked items fails; one closed after a passing review, and one closed "
-           "with the label review-pending (transitional), do not",
-           len(cl) == 1 and cl[0].startswith("A1 #1 is closed, but 1 of 2 items ticked"))
+    expect("closed: an issue closed with unticked items fails, with or without the retired label review-pending; "
+           "one closed with every item ticked does not",
+           len(cl) == 2 and cl[0].startswith("A1 #1 is closed, but 1 of 2 items ticked") and cl[1].startswith("A4 #5"))
     cc = check_claims(status)
     expect("claims: two streams on one milestone, a stale status file, a stream on two milestones and one outside v1.0 fail",
            any("A1 is claimed by 2 streams" in x for x in cc) and any("oscillatory claims A2" in x for x in cc)

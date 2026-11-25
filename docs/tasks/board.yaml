@@ -12,10 +12,10 @@
 # `python3 scripts/sync_github.py apply` (run by the merger after a merge) keeps current, on a
 # milestone's issue: its title and body (the checklist computed by scripts/milestone_status.py),
 # the plan labels (milestone, area, size, difficulty), one status label for a v1.0 milestone
-# (status: ready, status: in-progress, status: review, status: done), the GitHub Milestone "v1.0",
-# and the column on the Project board (Not scheduled: an open milestone issue without the v1.0
-# Milestone). It opens the issue of a milestone that has none. Neither script closes a milestone's issue: the merger does, after a
-# passing review.
+# (status: ready, status: in-progress, status: done), the GitHub Milestone "v1.0", and the column
+# on the Project board (Not scheduled: an open milestone issue without the v1.0 Milestone). It opens
+# the issue of a milestone that has none, and closes it once every item of its checklist is ticked
+# (there is no review step).
 org: LightlikeProject
 repo: LightlikeProject/lightlike
 
@@ -24,7 +24,7 @@ repo: LightlikeProject/lightlike
 project:
   title: Lightlike
   field: Status
-  columns: [Ready, In progress, In review, Done, Not scheduled]
+  columns: [Ready, In progress, Done, Not scheduled]
   # A number field: the ranking of each open v1.0 milestone (`ranking:` of checklists.yaml).
   # Sorting the Ready column by it shows what is next.
   rank_field: Rank
@@ -48,5 +48,4 @@ labels:
   research-level: {color: "b60205", description: "Open-ended; several routes may be needed"}
   "status: ready": {color: "0e8a16", description: "v1.0 milestone: free to take (the streams take them in ranking order)"}
   "status: in-progress": {color: "fbca04", description: "v1.0 milestone: a stream or a contributor works on it"}
-  "status: review": {color: "5319e7", description: "v1.0 milestone: every item but the review items is ticked; waits for its review"}
   "status: done": {color: "0e8a16", description: "v1.0 milestone: reviewed and closed"}

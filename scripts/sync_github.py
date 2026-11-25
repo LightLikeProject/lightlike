@@ -12,17 +12,18 @@ every milestone of docs/tasks/milestones.md:
     changed);
   - writes the labels of its own families: the plan labels (milestone, area, size, difficulty,
     upstream) and one status label for a v1.0 milestone (status: ready, status: in-progress,
-    status: review, status: done). A milestone outside v1.0 gets no extra label: being outside the
-    GitHub Milestone "v1.0" is what marks it not scheduled. It removes the old status labels ready,
-    blocked and in review, and the retired labels not-scheduled and help-wanted, from milestone
-    issues;
+    status: done). A milestone outside v1.0 gets no extra label: being outside the GitHub
+    Milestone "v1.0" is what marks it not scheduled. It removes the old status labels ready,
+    blocked, in review and status: review, and the retired labels not-scheduled, help-wanted and
+    review-pending, from milestone issues;
   - puts each v1.0 milestone in the GitHub Milestone "v1.0", and takes the others out of it;
-  - sets its column on the Project board: Ready, In progress, In review, Done or Not scheduled
-    (an open milestone issue without the v1.0 Milestone), and, for an open v1.0 milestone, the
-    board's number field Rank to its `ranking:`.
+  - sets its column on the Project board: Ready, In progress, Done or Not scheduled (an open
+    milestone issue without the v1.0 Milestone), and, for an open v1.0 milestone, the board's
+    number field Rank to its `ranking:`;
+  - closes the issue of a milestone whose checklist is fully ticked (reason completed). There is
+    no review step (owner, 25 Nov 2026): review items are ticked by the evidence written into them.
 
-It never closes or reopens an issue (the merger closes a milestone's issue after a passing review),
-never touches a proof-task issue, and never writes the claim labels claimed and attempting: the
+It never reopens an issue, never touches a proof-task issue, and never writes the claim labels claimed and attempting: the
 claim Action (scripts/tasks.py sync, .github/workflows/tasks.yml) writes those from comments. This
 script reads them, to show an outside contributor's claim.
 
@@ -66,11 +67,11 @@ import milestone_status as MS  # noqa: E402
 import tasks as T  # noqa: E402
 
 V1_MILESTONE = "v1.0"
-STATUS = {"ready": "Ready", "in-progress": "In progress", "review": "In review", "done": "Done"}
+STATUS = {"ready": "Ready", "in-progress": "In progress", "done": "Done"}
 COLUMNS = [*STATUS.values(), "Not scheduled"]
-RETIRED = {"not-scheduled", "help-wanted"}  # dropped 25 Nov: outside the v1.0 Milestone means not scheduled
+RETIRED = {"not-scheduled", "help-wanted", "review-pending"}  # dropped 25 Nov: outside the v1.0 Milestone means
+# not scheduled, and there is no review step
 CLAIM_LABELS = {"claimed", "attempting"}  # the claim Action's; never written here
-REVIEW_PENDING = "review-pending"  # set by hand on a closed issue whose review has not run; never written here
 OLD_STATUS = {"ready", "blocked", "in review"}  # the claim Action set these on milestone issues before 25 Nov
 TIERS = {"good first issue", "intermediate", "advanced", "research-level"}
 WARN = re.compile(r"rate limit|secondary|abuse|warning|error|forbidden", re.I)
@@ -153,12 +154,10 @@ def remaining():
 # --- The plan ------------------------------------------------------------------------------------
 
 def status_of(st, iss, outside):
-    if iss and iss["state"] == "closed":
-        return "review" if REVIEW_PENDING in iss.get("labels", []) else "done"
+    if (iss and iss["state"] == "closed") or st["done"]:
+        return "done"
     if not st["v1"]:
         return None
-    if st["done"]:
-        return "review"
     if st["claimed_by"] or outside:
         return "in-progress"
     return "ready"
@@ -240,6 +239,8 @@ def plan(status, tasks, data, stored, spec, only=None):
             e["milestone"] = ""
         if e["title"] or e["body"] or e["add"] or e["remove"] or e["milestone"] is not None:
             acts.append(e)
+        if st["done"] and iss["state"] != "closed":
+            acts.append(dict(op="close", mid=mid, issue=iss["number"]))
         item = (board or {}).get("items", {}).get(str(iss["number"]))
         if not item or item.get("column") != column or not same_rank(item.get("rank"), rank):
             acts.append(dict(op="board", mid=mid, issue=iss["number"], url=iss.get("url"),
@@ -263,6 +264,8 @@ def describe(a):
     if a["op"] == "create":
         return (f'{a["mid"]}: open issue "{a["title"][:70]}" [{", ".join(a["labels"])}]'
                 + (f' in {a["milestone"]}' if a["milestone"] else "") + f'; board {a["column"]}')
+    if a["op"] == "close":
+        return f'{a["mid"]} #{a["issue"]}: close (every item ticked)'
     if a["op"] == "board":
         return (f'{a["mid"]} #{a["issue"]}: board {"add, " if not a["item"] else ""}column {a["column"]}'
                 + f', rank {a["rank"] if a.get("rank") is not None else "(none)"}')
@@ -392,6 +395,9 @@ def apply(acts, conf, board, stop_file, per, board_per, record):
             finally:
                 if tmp:
                     pathlib.Path(tmp).unlink()
+        elif a["op"] == "close":
+            guard(issues)
+            gh(["issue", "close", str(a["issue"]), "--repo", repo, "--reason", "completed"])
         elif a["op"] == "board":
             to_board(a, a["url"])
             continue
@@ -473,12 +479,12 @@ def selftest():
     def st(mid, v1=True, done=False, claimed=()):
         return dict(id=mid, title=f"Title {mid}", area="geometry", size="M", v1=v1, ranking=None, issue=None,
                     done_when="x", trust=[], needs=[], proof_tasks=[], claimed_by=list(claimed), stale_claims=[],
-                    last_step=None, items=[], ticked=0, total=0, done=done,
-                    review=dict(state="none", why="not yet"), closable=False)
+                    last_step=None, items=[], ticked=0, total=0, done=done)
 
     status = dict(main="abc1234", computed_at="2026-11-25T08:00Z",
                   milestones={"A1": st("A1"), "A2": st("A2", claimed=["regge"]), "A3": st("A3", done=True),
-                              "B1": st("B1", v1=False), "A4": st("A4"), "A5": st("A5")})
+                              "B1": st("B1", v1=False), "A4": st("A4"), "A5": st("A5"),
+                              "A6": st("A6", done=True)})
     tasks = [task(m) for m in status["milestones"]] + [dict(id="T-A1-P1", kind="proof", milestone="A1", labels=[])]
     board = dict(id="P", number=1, field_id="F", rank_id="R", options={c: c for c in [*STATUS.values(), "Not scheduled"]},
                  items={"1": dict(id="I1", column="Ready", rank=None)})
@@ -488,7 +494,8 @@ def selftest():
                             milestone="v1.0", body=MS.body(status["milestones"]["A1"], "zzz9999", "1 November 2026", [], {})),
                         iss(2, "A2", ["milestone", "claimed", "blocked"]),
                         iss(3, "A3", ["milestone", "area: geometry", "size: M", "intermediate"], state="closed", reason="completed"),
-                        iss(6, "A5", ["milestone", "area: geometry", "size: M", "intermediate", REVIEW_PENDING],
+                        iss(7, "A6", ["milestone", "area: geometry", "size: M", "intermediate"], milestone="v1.0"),
+                        iss(6, "A5", ["milestone", "area: geometry", "size: M", "intermediate", "review-pending"],
                             state="closed", reason="completed", milestone="v1.0"),
                         iss(4, "B1", ["milestone", "area: geometry", "size: M", "intermediate", "claimed",
                                       "not-scheduled", "help-wanted"],
@@ -508,16 +515,18 @@ def selftest():
            e("A1") and e("A1")["issue"] == 1 and e("A1")["body"] is None and e("A1")["remove"] == ["ready"])
     expect("a stream's claim gives status: in-progress; the claim label is not touched; blocked goes",
            e("A2")["add"][-1] == "status: in-progress" and "claimed" not in e("A2")["remove"] and "blocked" in e("A2")["remove"])
-    expect("a closed issue gives status: done and the column Done; it is not reopened",
+    expect("a closed issue gives status: done and the column Done; it is neither reopened nor closed again",
            "status: done" in e("A3")["add"] and by[("board", "A3")][0]["column"] == "Done"
-           and not any(a["op"] in ("close", "reopen") for a in acts))
-    expect("a closed issue with the label review-pending gives status: review and the column In review; the label "
-           "stays and the issue is neither reopened nor closed",
-           "status: review" in e("A5")["add"] and REVIEW_PENDING not in e("A5")["remove"]
-           and by[("board", "A5")][0]["column"] == "In review")
+           and not by[("close", "A3")] and not any(a["op"] == "reopen" for a in acts))
+    expect("a closed issue with the retired label review-pending: status: done, the column Done, the label goes",
+           "status: done" in e("A5")["add"] and "review-pending" in e("A5")["remove"]
+           and by[("board", "A5")][0]["column"] == "Done" and not by[("close", "A5")])
+    expect("a fully ticked milestone's open issue is closed, with status: done and the column Done",
+           len(by[("close", "A6")]) == 1 and "status: done" in e("A6")["add"] and by[("board", "A6")][0]["column"] == "Done"
+           and not by[("close", "A1")])
     expect("outside v1.0: out of the GitHub Milestone, column Not scheduled, no status label; the retired labels "
            "not-scheduled and help-wanted are removed; the outside claim is shown",
-           e("B1")["milestone"] == "" and RETIRED <= set(e("B1")["remove"])
+           e("B1")["milestone"] == "" and {"not-scheduled", "help-wanted"} <= set(e("B1")["remove"])
            and not any(x.startswith("status: ") or x in RETIRED for x in e("B1")["add"])
            and by[("board", "B1")][0]["column"] == "Not scheduled" and "@someone" in e("B1")["body"])
     expect("a milestone without an issue is opened once, in v1.0, with its labels",
