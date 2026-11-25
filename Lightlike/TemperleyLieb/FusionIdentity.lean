@@ -115,6 +115,7 @@ def app (N : ℕ) (ρ τ : ℕ → Bool) : ℕ → Bool := fun j => if j < N the
 noncomputable def iota (N : ℕ) (τ : ℕ → Bool) : ModelSpace k →ₗ[k] ModelSpace k :=
   Finsupp.lmapDomain k k (fun ρ => app N ρ τ)
 
+/-- Gluing a tail to a basis vector. -/
 lemma iota_single (N : ℕ) (τ ρ : ℕ → Bool) (c : k) : iota N τ (single ρ c) = single (app N ρ τ) c := by
   simp [iota]
 
@@ -137,18 +138,22 @@ lemma Eqv.apply {N : ℕ} {T : Module.End k (ModelSpace k)} (hT : Eqv N T) (τ :
       _ = iota N τ (T (single ρ c)) := by
           rw [show (single ρ c : ModelSpace k) = c • single ρ 1 by simp, map_smul, map_smul]
 
+/-- Equivariant operators are closed under products. -/
 lemma Eqv.mul {N : ℕ} {S T : Module.End k (ModelSpace k)} (hS : Eqv N S) (hT : Eqv N T) : Eqv N (S * T) := by
   intro τ ρ
   rw [Module.End.mul_apply, hT τ ρ, hS.apply, Module.End.mul_apply]
 
+/-- Equivariant operators are closed under sums. -/
 lemma Eqv.add {N : ℕ} {S T : Module.End k (ModelSpace k)} (hS : Eqv N S) (hT : Eqv N T) : Eqv N (S + T) := by
   intro τ ρ
   rw [LinearMap.add_apply, hS τ ρ, hT τ ρ, LinearMap.add_apply, map_add]
 
+/-- Equivariant operators are closed under scalars. -/
 lemma Eqv.smul {N : ℕ} {T : Module.End k (ModelSpace k)} (r : k) (hT : Eqv N T) : Eqv N (r • T) := by
   intro τ ρ
   rw [LinearMap.smul_apply, hT τ ρ, LinearMap.smul_apply, map_smul]
 
+/-- The identity does not see the tail. -/
 lemma eqv_one (N : ℕ) : Eqv N (1 : Module.End k (ModelSpace k)) := by
   intro τ ρ; simp [iota_single]
 
@@ -295,26 +300,31 @@ section algebra
 variable (q : kˣ) (a b : ℕ) (hd : ∀ j, j ≤ a + b → chebD (loopVal q) j ≠ 0)
 include hd
 
+/-- `V_i p = V_i`. -/
 theorem Vop_mul_jwAt {i : ℕ} (hi : i ≤ a) (hi' : i ≤ b) :
     Vop q a b i * jwAt q 0 (a + b - 2 * i) = Vop q a b i := by
   have := jwAt_idem (k := k) q (c := a + b - 2 * i) (N := a + b + 1) (by omega) (fun j hj => hd j (by omega))
   unfold Vop; rw [mul_assoc, this]
 
+/-- `p W_i = W_i`. -/
 theorem jwAt_mul_Wop {i : ℕ} (hi : i ≤ a) (hi' : i ≤ b) :
     jwAt q 0 (a + b - 2 * i) * Wop q a b i = Wop q a b i := by
   have := jwAt_idem (k := k) q (c := a + b - 2 * i) (N := a + b + 1) (by omega) (fun j hj => hd j (by omega))
   unfold Wop; rw [← mul_assoc, ← mul_assoc, this]
 
+/-- `Q V_i = V_i`. -/
 theorem Qab_mul_Vop (i : ℕ) :
     Qab q a b * Vop q a b i = Vop q a b i := by
   have := Qab_idem (k := k) q a b (fun j hj => hd j (by omega))
   unfold Vop; rw [← mul_assoc, ← mul_assoc, this]
 
+/-- `W_i Q = W_i`. -/
 theorem Wop_mul_Qab (i : ℕ) :
     Wop q a b i * Qab q a b = Wop q a b i := by
   have := Qab_idem (k := k) q a b (fun j hj => hd j (by omega))
   unfold Wop; rw [mul_assoc, this]
 
+/-- `E_i` is idempotent. -/
 theorem Eop_idem {i : ℕ} (hi : i ≤ a) (hi' : i ≤ b)
     (hq2 : ∀ j, 1 ≤ j → j ≤ a + b + 1 → (q : k) ^ (2 * j) ≠ 1) :
     Eop q a b i * Eop q a b i = Eop q a b i := by
@@ -331,6 +341,7 @@ theorem Eop_idem {i : ℕ} (hi : i ≤ a) (hi' : i ≤ b)
       _ = _ := by rw [Vop_mul_jwAt q a b hd hi hi']
   rw [this, smul_smul, mul_assoc, inv_mul_cancel₀ hκ, mul_one]
 
+/-- `E_i E_j = 0` for distinct channels. -/
 theorem Eop_orth (ha : 1 ≤ a) (hb : 1 ≤ b) {i j : ℕ} (hi : i ≤ a) (hi' : i ≤ b) (hj : j ≤ a) (hj' : j ≤ b)
     (hij : i ≠ j) (hq2 : ∀ m, 1 ≤ m → m ≤ a + b + 1 → (q : k) ^ (2 * m) ≠ 1) :
     Eop q a b i * Eop q a b j = 0 := by
@@ -342,10 +353,12 @@ theorem Eop_orth (ha : 1 ≤ a) (hb : 1 ≤ b) {i j : ℕ} (hi : i ≤ a) (hi' :
       _ = 0 := by rw [h0]; simp
   rw [this, smul_zero]
 
+/-- `Q E_i = E_i`. -/
 theorem Qab_mul_Eop (i : ℕ) : Qab q a b * Eop q a b i = Eop q a b i := by
   unfold Eop
   rw [mul_smul_comm, ← mul_assoc, Qab_mul_Vop q a b hd]
 
+/-- `E_i Q = E_i`. -/
 theorem Eop_mul_Qab (i : ℕ) : Eop q a b i * Qab q a b = Eop q a b i := by
   unfold Eop
   rw [smul_mul_assoc, mul_assoc, Wop_mul_Qab q a b hd]
@@ -410,14 +423,17 @@ instance finiteDimensional_Win (N : ℕ) : FiniteDimensional k (Win k N) := by
 noncomputable def resW {N : ℕ} (T : Module.End k (ModelSpace k)) (hT : ∀ v ∈ Win k N, T v ∈ Win k N) :
     Module.End k (Win k N) := LinearMap.restrict T hT
 
+/-- The restriction acts as the operator. -/
 lemma resW_apply {N : ℕ} (T : Module.End k (ModelSpace k)) (hT : ∀ v ∈ Win k N, T v ∈ Win k N) (x : Win k N) :
     ((resW T hT x : Win k N) : ModelSpace k) = T x := rfl
 
+/-- Restriction is multiplicative. -/
 lemma resW_mul {N : ℕ} (S T : Module.End k (ModelSpace k)) (hS : ∀ v ∈ Win k N, S v ∈ Win k N)
     (hT : ∀ v ∈ Win k N, T v ∈ Win k N) :
     resW S hS * resW T hT = resW (S * T) (fun v hv => hS _ (hT v hv)) := by
   ext x; rfl
 
+/-- A restriction determines the operator on the window. -/
 lemma resW_inj {N : ℕ} (S T : Module.End k (ModelSpace k)) (hS : ∀ v ∈ Win k N, S v ∈ Win k N)
     (hT : ∀ v ∈ Win k N, T v ∈ Win k N) (h : resW S hS = resW T hT) : ∀ v ∈ Win k N, S v = T v := by
   intro v hv
@@ -511,5 +527,113 @@ theorem le_finrank_range_Eop (q : kˣ) {a b i : ℕ} (hia : i ≤ a) (hib : i �
     exact h1
   have := hli.fintype_card_le_finrank
   simpa using this
+
+/-! ### Assembly -/
+
+/-- The channel dimensions add up to the dimension bound: `Σ_{i ≤ min a b} (a + b - 2 i + 1) = (a+1)(b+1)`. -/
+theorem sum_channel_dims (a b : ℕ) :
+    (a + 1) * (b + 1) ≤ ∑ i ∈ Finset.range (min a b + 1), (a + b - 2 * i + 1) := by
+  have key : ∀ m, m ≤ a → m ≤ b → ∑ i ∈ Finset.range (m + 1), (a + b - 2 * i + 1) + m * (m + 1) =
+      (m + 1) * (a + b + 1) := by
+    intro m
+    induction m with
+    | zero => intro _ _; simp
+    | succ m ih =>
+      intro h1 h2
+      have := ih (by omega) (by omega)
+      rw [Finset.sum_range_succ]
+      obtain ⟨t, ht⟩ : ∃ t, a + b - 2 * (m + 1) + 1 = t ∧ t + 2 * (m + 1) = a + b + 1 :=
+        ⟨a + b - 2 * (m + 1) + 1, rfl, by omega⟩
+      rw [ht.1]
+      nlinarith [ht.2]
+  have h := key (min a b) (min_le_left _ _) (min_le_right _ _)
+  rcases le_total a b with hab | hab
+  · rw [min_eq_left hab] at h ⊢
+    nlinarith [h]
+  · rw [min_eq_right hab] at h ⊢
+    nlinarith [h]
+
+/-- Equal operators have equal restrictions. -/
+lemma resW_congr {N : ℕ} {S T : Module.End k (ModelSpace k)} (h : S = T) (hS : ∀ v ∈ Win k N, S v ∈ Win k N)
+    (hT : ∀ v ∈ Win k N, T v ∈ Win k N) : resW S hS = resW T hT := by
+  subst h; rfl
+
+/-- Equivariant operators are closed under finite sums. -/
+lemma Eqv.sum {N : ℕ} {ι : Type*} (s : Finset ι) {f : ι → Module.End k (ModelSpace k)} (h : ∀ i ∈ s, Eqv N (f i)) :
+    Eqv N (∑ i ∈ s, f i) := by
+  classical
+  induction s using Finset.induction_on with
+  | empty => simpa using (eqv_one (k := k) N).smul 0
+  | insert a s ha ih =>
+    rw [Finset.sum_insert ha]
+    exact (h a (Finset.mem_insert_self _ _)).add (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
+
+/-- **The fusion identity** `Q(a,b) = Σ_{i ≤ min a b} E_i` in the model of the Temperley–Lieb algebra. -/
+theorem fusion_identity [CharZero k] (q : kˣ) (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b)
+    (hd : ∀ j, j ≤ a + b → chebD (loopVal q) j ≠ 0)
+    (hq2 : ∀ j, 1 ≤ j → j ≤ a + b + 1 → (q : k) ^ (2 * j) ≠ 1) :
+    Qab q a b = ∑ i : Fin (min a b + 1), Eop q a b i := by
+  have hia : ∀ i : Fin (min a b + 1), (i : ℕ) ≤ a := fun i => by have := i.2; omega
+  have hib : ∀ i : Fin (min a b + 1), (i : ℕ) ≤ b := fun i => by have := i.2; omega
+  have hQm := Qab_maps (k := k) q a b
+  have hEm : ∀ i : Fin (min a b + 1), ∀ v ∈ Win k (a + b), (Eop q a b i : Module.End k (ModelSpace k)) v ∈ Win k (a + b) :=
+    fun i => Eop_maps q (hia i) (hib i)
+  have hcomp : Qab q a b = ∑ i : Fin (min a b + 1), Eop q a b i := by
+    -- on the window
+    have hwin : ∀ v ∈ Win k (a + b), (Qab q a b : Module.End k (ModelSpace k)) v =
+        (∑ i : Fin (min a b + 1), (Eop q a b i : Module.End k (ModelSpace k))) v := by
+      have hrank := complete_of_rank (K := k) (V := Win k (a + b)) (ι := Fin (min a b + 1))
+        (resW (Qab q a b : Module.End k (ModelSpace k)) hQm)
+        (fun i => resW (Eop q a b i : Module.End k (ModelSpace k)) (hEm i))
+        (by
+          show resW _ hQm * resW _ hQm = resW _ hQm
+          rw [resW_mul]
+          exact resW_congr (Qab_idem q a b (fun j hj => hd j (by omega))) _ _)
+        (fun i => by
+          show resW _ (hEm i) * resW _ (hEm i) = resW _ (hEm i)
+          rw [resW_mul]
+          exact resW_congr (Eop_idem q a b hd (hia i) (hib i) hq2) _ _)
+        (fun i j hij => by
+          have this : (Eop q a b i * Eop q a b j : Module.End k (ModelSpace k)) = 0 :=
+            Eop_orth q a b hd ha hb (hia i) (hib i) (hia j) (hib j) (fun h => hij (Fin.ext h)) hq2
+          refine LinearMap.ext fun x => Subtype.ext ?_
+          have h2 := congrArg (fun T : Module.End k (ModelSpace k) => T (x : ModelSpace k)) this
+          simpa [resW_apply] using h2)
+        (fun i => by
+          rw [resW_mul]
+          exact resW_congr (Qab_mul_Eop q a b hd i) _ _)
+        (fun i => by
+          rw [resW_mul]
+          exact resW_congr (Eop_mul_Qab q a b hd i) _ _)
+        (by
+          have h1 := finrank_range_Qab_le (k := k) q a b (fun j hj => hd j (by omega))
+          have h2 : ∑ i : Fin (min a b + 1), (a + b - 2 * (i : ℕ) + 1) ≤
+              ∑ i : Fin (min a b + 1), Module.finrank k (LinearMap.range
+                (resW (Eop q a b i : Module.End k (ModelSpace k)) (hEm i))) :=
+            Finset.sum_le_sum fun i _ => le_finrank_range_Eop q (hia i) (hib i) hd hq2
+          have h3 := sum_channel_dims a b
+          rw [← Fin.sum_univ_eq_sum_range (fun i => a + b - 2 * i + 1) (min a b + 1)] at h3
+          exact h1.trans (h3.trans h2))
+      intro v hv
+      have := congrArg (fun f : Module.End k (Win k (a + b)) => ((f ⟨v, hv⟩ : Win k (a + b)) : ModelSpace k)) hrank
+      simpa [LinearMap.sum_apply, Submodule.coe_sum, resW_apply] using this
+    -- tail equivariance
+    have hT : Eqv (a + b) ((Qab q a b : Module.End k (ModelSpace k)) -
+        ∑ i : Fin (min a b + 1), (Eop q a b i : Module.End k (ModelSpace k))) := by
+      have h1 : Eqv (a + b) (Qab q a b : Module.End k (ModelSpace k)) := eqv_Qab q
+      have h2 : Eqv (a + b) (∑ i : Fin (min a b + 1), (Eop q a b i : Module.End k (ModelSpace k))) :=
+        Eqv.sum _ fun i _ => eqv_Eop q (hia i) (hib i)
+      have := h1.add (h2.smul (-1 : k))
+      have e : ((Qab q a b : Module.End k (ModelSpace k)) -
+          ∑ i : Fin (min a b + 1), (Eop q a b i : Module.End k (ModelSpace k))) =
+          (Qab q a b : Module.End k (ModelSpace k)) +
+          (-1 : k) • ∑ i : Fin (min a b + 1), (Eop q a b i : Module.End k (ModelSpace k)) := by
+        refine LinearMap.ext fun v => ?_
+        simp [sub_eq_add_neg]
+      rw [e]; exact this
+    have hz := eq_zero_of_window hT (fun v hv => by
+      rw [LinearMap.sub_apply, hwin v hv, sub_self])
+    exact sub_eq_zero.mp hz
+  exact hcomp
 
 end Lightlike.TemperleyLieb

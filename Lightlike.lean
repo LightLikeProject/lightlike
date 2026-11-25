@@ -1969,6 +1969,7 @@ import Lightlike.TemperleyLieb.ChannelFusion
 import Lightlike.TemperleyLieb.Complete
 import Lightlike.TemperleyLieb.Window
 import Lightlike.TemperleyLieb.Rank
+import Lightlike.TemperleyLieb.FusionIdentity
 import Lightlike.Dirac.ConnesDistance
 import Lightlike.Dirac.ConnesDistance2
 import Lightlike.Dirac.ConnesDistance3
