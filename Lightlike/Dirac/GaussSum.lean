@@ -98,4 +98,19 @@ lemma hgTerm_one_partial (a : ℂ) (N : ℕ) : ∑ n ∈ Finset.range (N + 1), h
     field_simp
     ring
 
+/-- **Euler's product**: the partial products converge to `sin(πa)/(πa)` for `a ≠ 0`. -/
+lemma tendsto_eulerProd {a : ℂ} (ha : a ≠ 0) :
+    Filter.Tendsto (fun N : ℕ => eulerProd a N) Filter.atTop (nhds (Complex.sin (Real.pi * a) / (Real.pi * a))) := by
+  have := tendsto_euler_sin_prod' ha
+  refine this.congr fun N => ?_
+  unfold eulerProd
+  refine Finset.prod_congr rfl fun j _ => ?_
+  simp only [sineTerm]
+  ring
+
+/-- **The sum for `c = 1`**: `Σ hgTerm a 1 n = sin(πa)/(πa)`. -/
+lemma hasSum_hgTerm_one {a : ℂ} (ha : a ≠ 0) :
+    HasSum (hgTerm a 1) (Complex.sin (Real.pi * a) / (Real.pi * a)) := by
+  sorry
+
 end Lightlike.Dirac
