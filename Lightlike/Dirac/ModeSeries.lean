@@ -229,4 +229,41 @@ theorem hasDerivAt_powerSum {K C : ℝ} {c : ℕ → ℂ} (hC : 0 ≤ C) (hc : �
   rw [hshift] at key
   exact key
 
+/-- The power-series terms converge absolutely on `(-1, 1)`. -/
+theorem summable_powerTerms {K C : ℝ} {c : ℕ → ℂ} (hC : 0 ≤ C) (hc : ∀ n, ‖c n‖ ≤ C * ((n : ℝ) + 1) ^ K) {t : ℝ}
+    (ht : |t| < 1) : Summable fun n : ℕ => c n * (t : ℂ) ^ n := by
+  have hs : Summable fun n : ℕ => C * (((n : ℝ) + 1) ^ ⌈K⌉₊ * |t| ^ n) :=
+    (summable_succ_pow_geom _ (abs_nonneg t) ht).mul_left C
+  refine Summable.of_norm_bounded hs fun n => ?_
+  rw [norm_mul, norm_pow, Complex.norm_real, Real.norm_eq_abs]
+  have hK : ((n : ℝ) + 1) ^ K ≤ ((n : ℝ) + 1) ^ (⌈K⌉₊ : ℝ) :=
+    Real.rpow_le_rpow_of_exponent_le (by have : (0 : ℝ) ≤ n := Nat.cast_nonneg n; linarith) (Nat.le_ceil K)
+  rw [Real.rpow_natCast] at hK
+  calc ‖c n‖ * |t| ^ n ≤ (C * ((n : ℝ) + 1) ^ K) * |t| ^ n :=
+        mul_le_mul_of_nonneg_right (hc n) (by positivity)
+    _ ≤ (C * ((n : ℝ) + 1) ^ ⌈K⌉₊) * |t| ^ n :=
+        mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hK hC) (by positivity)
+    _ = C * (((n : ℝ) + 1) ^ ⌈K⌉₊ * |t| ^ n) := by ring
+
+/-- The coefficients of the derivative series have polynomial growth too. -/
+lemma deriv_coeff_bound {K C : ℝ} (hK : 0 ≤ K) (hC : 0 ≤ C) {c : ℕ → ℂ}
+    (hc : ∀ n, ‖c n‖ ≤ C * ((n : ℝ) + 1) ^ K) (n : ℕ) :
+    ‖((n : ℂ) + 1) * c (n + 1)‖ ≤ (C * 2 ^ K) * ((n : ℝ) + 1) ^ (K + 1) := by
+  have hn1 : (0 : ℝ) < n + 1 := by positivity
+  rw [norm_mul]
+  have h1 : ‖((n : ℂ) + 1)‖ = (n : ℝ) + 1 := by
+    have : ((n : ℂ) + 1) = (((n : ℝ) + 1 : ℝ) : ℂ) := by push_cast; ring
+    rw [this, Complex.norm_real, Real.norm_of_nonneg hn1.le]
+  rw [h1]
+  have h2 : (((n + 1 : ℕ) : ℝ) + 1) ^ K ≤ 2 ^ K * ((n : ℝ) + 1) ^ K := by
+    rw [← Real.mul_rpow (by norm_num) hn1.le]
+    apply Real.rpow_le_rpow (by positivity) _ hK
+    push_cast; linarith [(Nat.cast_nonneg n : (0 : ℝ) ≤ n)]
+  calc ((n : ℝ) + 1) * ‖c (n + 1)‖ ≤ ((n : ℝ) + 1) * (C * (((n + 1 : ℕ) : ℝ) + 1) ^ K) :=
+        mul_le_mul_of_nonneg_left (hc (n + 1)) hn1.le
+    _ ≤ ((n : ℝ) + 1) * (C * (2 ^ K * ((n : ℝ) + 1) ^ K)) :=
+        mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left h2 hC) hn1.le
+    _ = (C * 2 ^ K) * ((n : ℝ) + 1) ^ (K + 1) := by
+        rw [Real.rpow_add hn1, Real.rpow_one]; ring
+
 end Lightlike.Dirac
