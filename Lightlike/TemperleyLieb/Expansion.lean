@@ -208,4 +208,48 @@ theorem ULd4_mul_UL4_diag [CharZero k] (q : kˣ) (a b c d e d₁ g g' : ℕ)
         (fun j h1 h2 => hq2 j h1 (by omega)))
     rw [h0, smul_zero]
 
+/-- The normalised `F`-coefficient, zero outside the admissible range of `(e, d)`. -/
+noncomputable def Fc (q : kˣ) (a b c e d f d' : ℕ) : k :=
+  if e ≤ min a b ∧ d ≤ min (a + b - 2 * e) c then
+    (kapRec q a b e)⁻¹ * (kapRec q (a + b - 2 * e) c d)⁻¹ * gramCoef q a b c e d f d'
+  else 0
+
+/-- **The expansion over plain ranges** (non-admissible indices carry the coefficient zero). -/
+theorem expansion_range [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) (a b c f d' : ℕ) (hab : 1 ≤ a + b)
+    (hd : ∀ j, j ≤ a + b + c → chebD (loopVal q) j ≠ 0)
+    (hq2 : ∀ j, 1 ≤ j → j ≤ a + b + c + 1 → (q : k) ^ (2 * j) ≠ 1)
+    (hfb : f ≤ b) (hfc : f ≤ c) (hda : d' ≤ a) (hdf : d' ≤ b + c - 2 * f) :
+    UR q a b c f d' = ∑ e ∈ Finset.range (a + 1), ∑ d ∈ Finset.range (c + 1),
+      Fc q a b c e d f d' • UL q a b c e d := by
+  rw [expansion q hδ a b c f d' hab hd hq2 hfb hfc hda hdf]
+  have inner : ∀ e : ℕ, e ≤ min a b →
+      ∑ d : Fin (min (a + b - 2 * e) c + 1),
+        ((kapRec q a b e)⁻¹ * (kapRec q (a + b - 2 * e) c d)⁻¹ * gramCoef q a b c e d f d') • UL q a b c e d =
+      ∑ d ∈ Finset.range (c + 1), Fc q a b c e d f d' • UL q a b c e d := by
+    intro e he
+    rw [Fin.sum_univ_eq_sum_range (fun d => ((kapRec q a b e)⁻¹ * (kapRec q (a + b - 2 * e) c d)⁻¹ *
+      gramCoef q a b c e d f d') • UL q a b c e d) (min (a + b - 2 * e) c + 1)]
+    calc _ = ∑ d ∈ Finset.range (min (a + b - 2 * e) c + 1), Fc q a b c e d f d' • UL q a b c e d := by
+          refine Finset.sum_congr rfl fun d hd' => ?_
+          have hd2 : d ≤ min (a + b - 2 * e) c := Nat.lt_succ_iff.mp (Finset.mem_range.mp hd')
+          simp only [Fc, if_pos (And.intro he hd2)]
+      _ = _ := by
+          refine Finset.sum_subset
+            (Finset.range_subset_range.mpr (by have := min_le_right (a + b - 2 * e) c; omega)) ?_
+          intro d _ hd'
+          have : ¬ d ≤ min (a + b - 2 * e) c := fun h => hd' (Finset.mem_range.mpr (Nat.lt_succ_of_le h))
+          simp only [Fc, if_neg (fun h : e ≤ min a b ∧ d ≤ min (a + b - 2 * e) c => this h.2), zero_smul]
+  rw [Fin.sum_univ_eq_sum_range (fun e => ∑ d : Fin (min (a + b - 2 * e) c + 1),
+      ((kapRec q a b e)⁻¹ * (kapRec q (a + b - 2 * e) c d)⁻¹ * gramCoef q a b c e d f d') • UL q a b c e d)
+      (min a b + 1)]
+  calc _ = ∑ e ∈ Finset.range (min a b + 1), ∑ d ∈ Finset.range (c + 1), Fc q a b c e d f d' • UL q a b c e d :=
+        Finset.sum_congr rfl fun e he => inner e (Nat.lt_succ_iff.mp (Finset.mem_range.mp he))
+    _ = _ := by
+        refine Finset.sum_subset
+          (Finset.range_subset_range.mpr (by have := min_le_left a b; omega)) ?_
+        intro e _ he'
+        have : ¬ e ≤ min a b := fun h => he' (Finset.mem_range.mpr (Nat.lt_succ_of_le h))
+        refine Finset.sum_eq_zero fun d _ => ?_
+        simp only [Fc, if_neg (fun h : e ≤ min a b ∧ d ≤ min (a + b - 2 * e) c => this h.1), zero_smul]
+
 end Lightlike.TemperleyLieb
