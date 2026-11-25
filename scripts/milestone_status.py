@@ -283,9 +283,11 @@ def compute(ms, tasks, data, v1, aud, cat, main_sha, main, streams, now):
         st["items"] = items
         st["ticked"] = sum(i["ticked"] for i in items)
         st["total"] = len(items)
-        st["done"] = bool(items) and st["ticked"] == st["total"]
+        # done: every item but the review items is ticked, so the milestone goes to review; the review
+        # file ticks the review items. closable: done, the review passes and every item is ticked.
+        st["done"] = bool(items) and all(i["ticked"] for i in items if i["kind"] != "review")
         st["review"] = review_status(review, st["done"])
-        st["closable"] = st["done"] and st["review"]["state"] == "pass"
+        st["closable"] = st["done"] and st["review"]["state"] == "pass" and st["ticked"] == st["total"]
         out[mid] = st
     return dict(main=main_sha, computed_at=now, milestones=out)
 
@@ -330,8 +332,8 @@ def item_status(it, aud, proven, other, cited, core, review):
 
 def review_status(review, done):
     if review is None:
-        return dict(state="none", why="not yet: every item ticked first, then a review by a session that did not do the work"
-                    if not done else "waiting: every item is ticked; it needs a review by a session that did not do the work")
+        return dict(state="none", why="not yet: every item but the review items ticked first, then a review by a session that did not do the work"
+                    if not done else "waiting: every item but the review items is ticked; it needs a review by a session that did not do the work")
     h = review["head"]
     worked = {w.strip() for w in (h.get("worked by") or "").split(",") if w.strip()}
     if not h.get("reviewer") or h["reviewer"] in worked:
@@ -455,12 +457,13 @@ def ranking_md(res, order, unblocked, open_, needs):
          "**Taking work.** A stream takes the highest-ranked milestone that is free: not claimed by another "
          "stream's status file (fresh, at most 24 h old) or by an outside contributor's claim label, and not "
          "closed. Its needs do not have to be closed first. If its work really waits on an unfinished need, "
-         "the stream hands it back (state `handed_back` and the reason in its status file) and takes the "
+         "the stream hands it back (state `handed-back` and the reason in its status file) and takes the "
          "next one.", "",
          "**Open items** are the unticked items of docs/tasks/checklists.yaml, computed from main: *proof* "
          "= main theorem, piece or trust check without a declaration yet; *review* = a review item (a "
          "comparison with a source); *catalogue* = the docs/results.yaml entries and API-map citations. When "
-         "every item is ticked, the milestone goes to review by a different stream, on Opus.", "",
+         "every item but the review items is ticked, the milestone goes to review by a different stream, on "
+         "Opus; the review ticks the review items.", "",
          "Recomputed after every merge that ticks items and after every closed milestone; `ranking:` in "
          "docs/tasks/checklists.yaml carries the same numbers.", "",
          "| Rank | ID | Milestone | Size | Unblocks | Open: proof / review / catalogue | Needs | Issue |",
@@ -471,9 +474,9 @@ def ranking_md(res, order, unblocked, open_, needs):
                  f"{w[0]} / {w[1]} / {w[2]} | {', '.join(needs[k]) or '-'} | "
                  f"{('#' + str(m['issue'])) if m['issue'] else 'none yet'} |")
     tot = [sum(open_[k][j] for k in order) for j in range(3)]
-    full = sum(all(i["ticked"] for i in v[k]["items"]) for k in order)
+    full = sum(v[k]["done"] for k in order)
     L += ["", f"Totals: {tot[0]} open proof items, {tot[1]} open reviews, {tot[2]} open catalogue items over "
-          f"{len(order)} milestones; {full} with every item ticked (main {sha}).", ""]
+          f"{len(order)} milestones; {full} ready for review (main {sha}).", ""]
     return "\n".join(L)
 
 
@@ -527,7 +530,7 @@ def cmd_compute(a):
         (out / "bodies" / f"{mid}.md").write_text(body(st, sha, now[:10]))
     v = [s for s in res["milestones"].values() if s["v1"]]
     print(f"milestone_status: main {sha[:7]}; {len(res['milestones'])} milestones, {len(v)} of v1.0: "
-          f"{sum(s['done'] for s in v)} with every item ticked, {sum(s['closable'] for s in v)} closable; "
+          f"{sum(s['done'] for s in v)} ready for review, {sum(s['closable'] for s in v)} closable; "
           f"items {sum(s['ticked'] for s in v)} of {sum(s['total'] for s in v)} ticked; wrote {out}")
     return 0
 
@@ -575,6 +578,21 @@ def selftest():
     if order != ["A", "B", "E", "C", "D", "F"]:
         fails.append(f"rank: unblockers first and needs first gave {order}, not A B E C D F")
     with tempfile.TemporaryDirectory() as d:
+        # A milestone with a review item goes to review once its other items are ticked; the review
+        # file ticks the review item, and only then is it closable.
+        ms_ = {"R": dict(title="t", area="X", size="S", done_when="", trust="", needs=[])}
+        data_ = {"milestones": {"R": {"items": [dict(id="m1", kind="main", decls=["Lightlike.a"]),
+                                                dict(id="r1", kind="review", text="t", review_evidence="compare")]}}}
+        run = lambda: compute(ms_, [], data_, {"R"}, aud, cat, "0" * 40, d, [], "2026-11-25T00:00:00Z")["milestones"]["R"]  # noqa: E731
+        st = run()
+        if not st["done"] or st["closable"] or st["ticked"] != 1:
+            fails.append(f"review item: before the review done={st['done']} closable={st['closable']} ticked={st['ticked']}")
+        rd = pathlib.Path(d, REVIEWS)
+        rd.mkdir(parents=True)
+        (rd / "R.md").write_text("Verdict: pass\nReviewer: opalg\nWorked by: regge\nCommit: abc\n\n## r1\n\nResult: pass\n")
+        st = run()
+        if not st["closable"] or st["ticked"] != 2:
+            fails.append(f"review item: after a passing review closable={st['closable']} ticked={st['ticked']}")
         f = pathlib.Path(d) / "c.yaml"
         f.write_text("milestones:\n  A:\n    issue: 1\n    ranking: 3\n  B:\n    ranking: null\n  C:\n    issue: 3\n")
         n = write_rankings(["B", "A"], f)

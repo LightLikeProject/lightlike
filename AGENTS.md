@@ -31,8 +31,9 @@ columns Ready, In progress, In review, Done and Not scheduled.
    script ticks an item once its declarations are on `main` with no `sorry` and only the standard
    axioms. Nobody ticks an item or edits a status by hand.
 5. **Pull requests** for a milestone carry the line `Task: T-<ID>` (for example `Task: T-HA4`), never
-   `Closes #<issue>`. When every item is ticked, someone who did not do the work reviews the milestone
-   against its done-when; the maintainer closes the issue after a passing review.
+   `Closes #<issue>`. When every item but the review items is ticked, someone who did not do the work
+   reviews the milestone against its done-when, which ticks the review items; the maintainer closes the
+   issue after a passing review.
 
 ## The contributor loop
 

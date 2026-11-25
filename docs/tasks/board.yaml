@@ -48,7 +48,7 @@ labels:
   research-level: {color: "b60205", description: "Open-ended; several routes may be needed"}
   "status: ready": {color: "0e8a16", description: "v1.0 milestone: free to take (the streams take them in ranking order)"}
   "status: in-progress": {color: "fbca04", description: "v1.0 milestone: a stream or a contributor works on it"}
-  "status: review": {color: "5319e7", description: "v1.0 milestone: every checklist item is ticked; waits for its review"}
+  "status: review": {color: "5319e7", description: "v1.0 milestone: every item but the review items is ticked; waits for its review"}
   "status: done": {color: "0e8a16", description: "v1.0 milestone: reviewed and closed"}
   not-scheduled: {color: "bfdadc", description: "Outside v1.0: open to outside contributors, not worked on by the project's streams"}
   help-wanted: {color: "008672", description: "Open to outside contributors"}

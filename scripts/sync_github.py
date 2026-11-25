@@ -24,8 +24,8 @@ claim Action (scripts/tasks.py sync, .github/workflows/tasks.yml) writes those f
 script reads them, to show an outside contributor's claim.
 
 The status of a v1.0 milestone: done when its issue is closed; review when every item of its
-checklist is ticked; in-progress when a stream (status file at most a day old) or an outside
-contributor (claim label) holds it; ready otherwise. A milestone outside v1.0 is in the column Not
+checklist but the review items is ticked (the review ticks those); in-progress when a stream (status
+file at most a day old) or an outside contributor (claim label) holds it; ready otherwise. A milestone outside v1.0 is in the column Not
 scheduled until its issue is closed, then in Done.
 
 Usage, from the repository root:

@@ -137,7 +137,7 @@ on the Project board, and one status label:
 |---|---|---|
 | `status: ready` | free to take | Ready |
 | `status: in-progress` | claimed, by a contributor (`/claim`) or by one of the maintainers' agents | In progress |
-| `status: review` | every checklist item is ticked; it waits for its review | In review |
+| `status: review` | every checklist item but the review items is ticked; it waits for its review, which ticks the review items | In review |
 | `status: done` | reviewed and closed | Done |
 
 Nobody sets these by hand. A proof task is done when the workflow closes its issue, once the proof
