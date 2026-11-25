@@ -19,12 +19,49 @@ namespace Lightlike.Penrose
 variable {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
   [NormedAddCommGroup F] [NormedSpace ℝ F] [FiniteDimensional ℝ F]
 
-theorem exists_level_param {m : ℕ} (hdim : finrank ℝ E = finrank ℝ F + m) {f : E → F} {x₀ : E}
-    (hf : ContDiffAt ℝ ∞ f x₀) (hA : Function.Surjective (fderiv ℝ f x₀)) :
-    ∃ p : (Fin m → ℝ) → E, ContDiffAt ℝ ∞ p 0 ∧ p 0 = x₀ ∧ (∀ᶠ σ in nhds (0 : Fin m → ℝ), f (p σ) = f x₀) ∧
+/-- **The local inverse of a smooth map is smooth on a neighbourhood** (not only at the point). -/
+theorem eventually_contDiffAt_localInverse {E' : Type*} [NormedAddCommGroup E'] [NormedSpace ℝ E']
+    [CompleteSpace E] [CompleteSpace E'] {Φ : E → E'} {x₀ : E} {U : Set E} (hU : IsOpen U) (hx₀ : x₀ ∈ U)
+    (hΦ : ContDiffOn ℝ ∞ Φ U) {Feq : E ≃L[ℝ] E'} (hd : HasFDerivAt Φ (Feq : E →L[ℝ] E') x₀)
+    (hc : ContDiffAt ℝ ∞ Φ x₀) (hn0 : (∞ : WithTop ℕ∞) ≠ 0) :
+    ∀ᶠ y in nhds (Φ x₀), ContDiffAt ℝ ∞ (hc.localInverse hd hn0) y := by
+  set e := hc.toOpenPartialHomeomorph Φ hd hn0 with he
+  have hsymm : hc.localInverse hd hn0 = e.symm := rfl
+  rw [hsymm]
+  have hxs : x₀ ∈ e.source := hc.mem_toOpenPartialHomeomorph_source hd hn0
+  have hyt : Φ x₀ ∈ e.target := hc.image_mem_toOpenPartialHomeomorph_target hd hn0
+  -- the derivative of `Φ` is invertible near `x₀`
+  have hfc : ContinuousAt (fderiv ℝ Φ) x₀ := by
+    have : ContDiffAt ℝ 1 Φ x₀ := hc.of_le (by exact_mod_cast (le_top : (1 : ℕ∞) ≤ ⊤))
+    exact (this.fderiv_right (m := 0) (by norm_num)).continuousAt
+  have hopen := (ContinuousLinearEquiv.isOpen (𝕜 := ℝ) (E := E) (F := E'))
+  have hder : HasFDerivAt Φ (Feq : E →L[ℝ] E') x₀ := hd
+  have hmem : fderiv ℝ Φ x₀ ∈ Set.range ((↑) : (E ≃L[ℝ] E') → E →L[ℝ] E') := ⟨Feq, hder.fderiv.symm⟩
+  have hnb : ∀ᶠ a in nhds x₀, fderiv ℝ Φ a ∈ Set.range ((↑) : (E ≃L[ℝ] E') → E →L[ℝ] E') :=
+    hfc.eventually (hopen.mem_nhds hmem)
+  have hcont : ContinuousAt e.symm (Φ x₀) := e.continuousAt_symm hyt
+  have hsx : e.symm (Φ x₀) = x₀ := by
+    have := e.left_inv hxs
+    simpa [he] using this
+  have hev : ∀ᶠ y in nhds (Φ x₀), e.symm y ∈ U ∧ fderiv ℝ Φ (e.symm y) ∈
+      Set.range ((↑) : (E ≃L[ℝ] E') → E →L[ℝ] E') := by
+    have h1 : ∀ᶠ a in nhds x₀, a ∈ U ∧ fderiv ℝ Φ a ∈ Set.range ((↑) : (E ≃L[ℝ] E') → E →L[ℝ] E') :=
+      (Filter.eventually_of_mem (hU.mem_nhds hx₀) fun a ha => ha).and hnb
+    exact hcont.eventually (by rw [hsx]; exact h1)
+  filter_upwards [hev, e.open_target.mem_nhds hyt] with y ⟨hyU, ⟨f₀', hf₀'⟩⟩ hyt'
+  have hΦa : ContDiffAt ℝ ∞ Φ (e.symm y) := hΦ.contDiffAt (hU.mem_nhds hyU)
+  have hdiff : HasFDerivAt Φ (f₀' : E →L[ℝ] E') (e.symm y) := by
+    rw [hf₀']; exact (hΦa.differentiableAt (by simp)).hasFDerivAt
+  exact e.contDiffAt_symm hyt' hdiff hΦa
+
+theorem exists_level_param {m : ℕ} (hdim : finrank ℝ E = finrank ℝ F + m) {f : E → F} {x₀ : E} {U : Set E}
+    (hU : IsOpen U) (hx₀ : x₀ ∈ U) (hfU : ContDiffOn ℝ ∞ f U) (hA : Function.Surjective (fderiv ℝ f x₀)) :
+    ∃ p : (Fin m → ℝ) → E, (∃ V : Set (Fin m → ℝ), IsOpen V ∧ (0 : Fin m → ℝ) ∈ V ∧ ContDiffOn ℝ ∞ p V) ∧
+      ContDiffAt ℝ ∞ p 0 ∧ p 0 = x₀ ∧ (∀ᶠ σ in nhds (0 : Fin m → ℝ), f (p σ) = f x₀) ∧
       Function.Injective (fderiv ℝ p 0) ∧
       (∀ v, fderiv ℝ f x₀ v = 0 ↔ ∃ u, fderiv ℝ p 0 u = v) := by
   classical
+  have hf : ContDiffAt ℝ ∞ f x₀ := hfU.contDiffAt (hU.mem_nhds hx₀)
   set A : E →L[ℝ] F := fderiv ℝ f x₀ with hAdef
   -- the kernel has dimension `m`
   have hrank : finrank ℝ (LinearMap.ker (A : E →ₗ[ℝ] F)) = m := by
@@ -82,7 +119,12 @@ theorem exists_level_param {m : ℕ} (hdim : finrank ℝ E = finrank ℝ F + m) 
     convert this using 1
     funext σ
     simp [haff]
-  refine ⟨fun σ => G (aff σ), ?_, ?_, ?_, ?_, ?_⟩
+  have hΦU : ContDiffOn ℝ ∞ Φ U := hfU.prodMk PrC.contDiff.contDiffOn
+  have hGev := eventually_contDiffAt_localInverse hU hx₀ hΦU (Feq := Feq) hΦd hΦc hn0
+  obtain ⟨N, hNn, hNo, hN0⟩ := eventually_nhds_iff.1 hGev
+  refine ⟨fun σ => G (aff σ), ⟨aff ⁻¹' N, hNo.preimage haffc, by simpa [haffΦ] using hN0, ?_⟩, ?_, ?_, ?_, ?_, ?_⟩
+  · intro σ hσ
+    exact (hNn _ hσ).comp σ (by fun_prop) |>.contDiffWithinAt
   · have h2 : ContDiffAt ℝ ∞ aff 0 := by fun_prop
     rw [← haffΦ] at hGc
     exact hGc.comp 0 h2
