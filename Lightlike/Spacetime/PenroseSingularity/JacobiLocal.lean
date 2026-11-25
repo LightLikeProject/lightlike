@@ -40,7 +40,8 @@ theorem exists_isJacobiOn_local (hg : Lightlike.IsCoordMetric g U) {H : ℝ × �
     (hU : ∀ p ∈ W, H p ∈ U)
     (hgeo : ∀ p ∈ W, IsGeodesicOn g (fun t => H (t, p.2)) (fun t => fderiv ℝ H (t, p.2) (1, 0))
       {t | (t, p.2) ∈ W}) :
-    ∃ δ > 0, ∃ P, IsJacobiOn g (fun t => H (t, 0)) (fun t => fderiv ℝ H (t, 0) (1, 0))
+    ∃ δ > 0, (∀ t ∈ Ioo (t₀ - δ) (t₀ + δ), ((t, (0 : ℝ)) : ℝ × ℝ) ∈ W) ∧
+      ∃ P, IsJacobiOn g (fun t => H (t, 0)) (fun t => fderiv ℝ H (t, 0) (1, 0))
       (fun t => fderiv ℝ H (t, 0) (0, 1)) P (Ioo (t₀ - δ) (t₀ + δ)) := by
   classical
   obtain ⟨r, hr, hball⟩ := Metric.isOpen_iff.1 hW _ ht₀
@@ -105,7 +106,11 @@ theorem exists_isJacobiOn_local (hg : Lightlike.IsCoordMetric g U) {H : ℝ × �
     rw [(hH'eq _ hp).self_of_nhds]
     exact hU _ hpW
   obtain ⟨P, hP⟩ := exists_isJacobiOn_of_variation hg hH'c hU' hgeo'
-  refine ⟨δ, hδpos, P, ?_⟩
+  refine ⟨δ, hδpos, ?_, P, ?_⟩
+  · intro t ht
+    have hp := hin t 0 (hIT t ht) (by simpa using hδpos)
+    exact hball (lt_of_lt_of_le (by simpa [Metric.mem_ball] using hp) (by linarith : r / 4 ≤ r)
+      |> fun h => by simpa [Metric.mem_ball] using h)
   refine hP.congr_eventually (fun t ht => ?_) (fun t ht => ?_) (fun t ht => ?_)
   · have hp := hin t 0 (hIT t ht) (by simpa using hδpos)
     have hcont : Continuous fun t' : ℝ => ((t', 0) : ℝ × ℝ) := by fun_prop
