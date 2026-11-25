@@ -1,0 +1,42 @@
+- id: LL-XXXX-a
+  title: The recoupling identity behind the 4D Pachner 3-3 move of the Ooguri model - the sum over the colours of the inner triangle and the three inner tetrahedra of the product of the three vertex amplitudes is the evaluation of a reduced spin network, and the reduced networks of the two sides agree
+  area: SpinFoam
+  file: Lightlike/SpinFoam/Move33.lean
+  decls: [Lightlike.SpinFoam.Move33.inner_eq, Lightlike.SpinFoam.Move33.lhs_eq_ev_NL, Lightlike.SpinFoam.Move33.ev_NL_rev]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: ooguri-1992, location: "Abstract", check: "Alexander moves"}
+      - {ref: perez-2013, location: "§6.1.3", check: "BF theory"}
+  review: kernel-checked
+  note: "Comparison pending (no source states the identity in this finite-cutoff network form; the cited locations only describe the model and its Pachner invariance). For each of the 20 cases c, with the inner triangle colour weighted by its dimension jA + 1, lhs_eq_ev_NL expresses the left side as the evaluation (NL c).ev of the reduced network once the cutoffs exceed the triangle inequalities (hypotheses h1, h2, hA, h3); inner_eq is the same for colourings of the vertex set V, and ev_NL_rev says (NL c).ev = (NL c.rev).ev (a gauge transformation and a relabelling). The 3-3 invariance of the state sum, LL-0049, is built from these. The networks are the library's own encoding (Recoupling.fifteenJSimplex_eq identifies the vertex amplitude with the 15j symbol). Checked in the kernel on 4-spheres (amplitudeGF_move33_example)."
+  since: unreleased
+- id: LL-XXXX-b
+  title: The recoupling identity behind the 4D Pachner 2-4 move of the Ooguri model - the sum over the colours of the three inner triangles and six inner tetrahedra on the four-simplex side is a reduced spin network, and the sum over the colour of the inner tetrahedron on the two-simplex side is the reduced network of the other side
+  area: SpinFoam
+  file: Lightlike/SpinFoam/Move24.lean
+  decls: [Lightlike.SpinFoam.Move24.lhs_eq_ev_NL24, Lightlike.SpinFoam.Move24.sumB_eq_ev_QB]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: ooguri-1992, location: "Abstract", check: "Alexander moves"}
+      - {ref: perez-2013, location: "§6.1.3", check: "BF theory"}
+  review: kernel-checked
+  note: "Comparison pending (no source states the identity in this finite-cutoff network form). For each of the 15 cases c, lhs_eq_ev_NL24 evaluates the union of the four vertex networks, summed over the colours of the inner triangles (weights x + 1) and the six inner tetrahedra, as the reduced network (NL c).ev, under nine cutoff inequalities; sumB_eq_ev_QB evaluates the union of the two vertex networks summed over the colour of the inner tetrahedron as (QB c).ev under one triangle inequality; the reduced networks NL and QB are related by ev_NL_eq_QB in the same file (not catalogued separately). The 2-4 invariance of the state sum, LL-0050, is built from these. Checked in the kernel on a 4-sphere (amplitudeGF_move24_example)."
+  since: unreleased
+- id: LL-XXXX-c
+  title: The recoupling identity behind the 4D Pachner 1-5 move of the Ooguri model - the sum over the colours of the six inner triangles and ten inner tetrahedra on the five-simplex side is a reduced spin network, equal to the one-simplex network times the dimensions of four free triangles
+  area: SpinFoam
+  file: Lightlike/SpinFoam/Move15.lean
+  decls: [Lightlike.SpinFoam.Move15.lhs_eq_ev_NL15, Lightlike.SpinFoam.Move15.ev_NL_eq_QB]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: ooguri-1992, location: "Abstract", check: "Alexander moves"}
+      - {ref: perez-2013, location: "§6.1.3", check: "BF theory"}
+  review: kernel-checked
+  note: "Comparison pending (no source states the identity in this finite-cutoff network form). For each of the 6 cases c, lhs_eq_ev_NL15 evaluates the union of the five vertex networks, summed over the colours of the six inner triangles (weights x + 1) and the ten inner tetrahedra, as the reduced network (NL c).ev under sixteen cutoff inequalities; ev_NL_eq_QB says (NL c).ev col = prod_{j=0..3} (col(trT c j) + 1) * (QB c).ev col, the dimensions of the four free triangles {b, a_0, a_j} times the one-simplex network. The 1-5 invariance of the state sum, LL-0051, is built from these. Checked in the kernel on the boundary of the 5-simplex (amplitudeGF_move15_example)."
+  since: unreleased
