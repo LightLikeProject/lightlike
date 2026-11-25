@@ -11,7 +11,7 @@ is the search of scripts/AxiomAudit.lean, in its per-declaration mode, not a tex
 catalogue item also needs each declaration in an entry of docs/results.yaml with `status: proven`
 and cited in an API map. A review item needs `Result: pass` in its section of the review file.
 
-The review that closes a milestone (rule 5 of the owner's decision of 25 Nov 2026) is the file
+The review that closes a milestone (by someone other than its author) is the file
 docs/tasks/reviews/<ID>.md on main, with these lines at the top:
 
     Verdict: pass            (or fail)

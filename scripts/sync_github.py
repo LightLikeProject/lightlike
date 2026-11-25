@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Bring the milestone issues and the Project board in line with the computed status.
 
-Status is computed, never typed (rule 4 of the owner's decision of 25 Nov 2026). This script reads
+Status is computed, never typed. This script reads
 the status that scripts/milestone_status.py computed (OUT/status.json) and the live issues, and for
 every milestone of docs/tasks/milestones.md:
 
@@ -480,7 +480,7 @@ def selftest():
     iss = lambda n, mid, labels, **k: dict(dict(number=n, title=f"T-{mid}: Title {mid}", state="open", reason="",  # noqa: E731
                                                 labels=labels, assignees=[], milestone=None, body="", url=f"u/{n}"), **k)
     data = dict(issues=[iss(1, "A1", ["milestone", "area: geometry", "size: M", "intermediate", "ready", "status: ready"],
-                            milestone="v1.0", body=MS.body(status["milestones"]["A1"], "zzz9999", "2026-11-01", [], {})),
+                            milestone="v1.0", body=MS.body(status["milestones"]["A1"], "zzz9999", "1 November 2026", [], {})),
                         iss(2, "A2", ["milestone", "claimed", "blocked"]),
                         iss(3, "A3", ["milestone", "area: geometry", "size: M", "intermediate"], state="closed", reason="completed"),
                         iss(4, "B1", ["milestone", "area: geometry", "size: M", "intermediate", "claimed"],

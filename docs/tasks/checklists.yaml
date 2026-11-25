@@ -11,7 +11,7 @@
 #   issue:    the number of its GitHub issue. Written once by scripts/sync_github.py when it opens
 #             the issue, so a second run never opens a second one. Never edited by hand.
 #   ranking:  v1.0 only: its place in the order in which the streams take milestones (1 = first),
-#             kept by the integrator (milestones that unblock others come first).
+#             kept by the maintainers (milestones that unblock others come first).
 #   items:    v1.0 only: the checklist, built from the done-when and the trust checks. Each item:
 #     id:              unique within the milestone (m = main theorem, p = piece, t = trust check,
 #                      c = catalogue, r = review), e.g. m1, p2, t3
