@@ -77,7 +77,8 @@ end Abstract
 
 section Concrete
 
-/-- **No positive invariant form at `τ = 1`, on smooth functions.** -/
+/-- **No positive invariant form at `τ = 1`, on smooth functions** (infinitesimal: `E, F, H` on smooth vectors, not
+group-level; `τ = -1` is not decided). -/
 theorem no_invariant_form_smooth_boundary
     (B : smoothFns →ₛₗ[starRingEnd ℂ] smoothFns →ₗ[ℂ] ℂ)
     (hBE : ∀ u w, B (opE 1 u) w + B u (opE 1 w) = 0) (hBF : ∀ u w, B (opF u) w + B u (opF w) = 0)
