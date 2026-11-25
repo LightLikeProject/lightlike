@@ -131,8 +131,10 @@ theorem exists_uniform_normalChart (hg : Lightlike.IsCoordMetric g U) {K : Set (
     (hK : IsCompact K) (hKU : K ⊆ U) :
     ∃ ρ : ℝ, 0 < ρ ∧ (∀ p ∈ K, ∀ v ∈ ball (0 : Fin n → ℝ) ρ,
         ((p, v) : (Fin n → ℝ) × (Fin n → ℝ)) ∈ expDomain g U) ∧
-      ∀ p ∈ K, ∃ φ : OpenPartialHomeomorph (Fin n → ℝ) (Fin n → ℝ),
-      IsNormalChart g U p ρ φ ∧ ∀ v ∈ ball (0 : Fin n → ℝ) ρ, φ v = expMap g U (p, v) := by
+      (∀ p ∈ K, ∃ φ : OpenPartialHomeomorph (Fin n → ℝ) (Fin n → ℝ),
+      IsNormalChart g U p ρ φ ∧ ∀ v ∈ ball (0 : Fin n → ℝ) ρ, φ v = expMap g U (p, v)) ∧
+      ∀ r' : ℝ, 0 < r' → r' ≤ ρ → ∃ η : ℝ, 0 < η ∧ ∀ p ∈ K, ∀ y : Fin n → ℝ, Dist.dist y p < η →
+        ∃ v ∈ ball (0 : Fin n → ℝ) r', expMap g U (p, v) = y := by
   obtain ⟨ρ₁, hρ₁, hgeo⟩ := exists_uniform_geodesic hg hK hKU
   obtain ⟨W, G, hW, hW0, hWd, hinj, hWs, himg, -, hG, hGs⟩ := exists_twoPoint_diffeo_global hg
   obtain ⟨u, v, hu, hv, hKu, h0v, huv⟩ := generalized_tube_lemma hK isCompact_singleton hW
@@ -145,7 +147,7 @@ theorem exists_uniform_normalChart (hg : Lightlike.IsCoordMetric g U) {K : Set (
   obtain ⟨ρ₂, hρ₂, hbv⟩ := Metric.isOpen_iff.1 hv 0 (h0v rfl)
   set ρ := min ρ₁ ρ₂ with hρ
   have hρpos : 0 < ρ := lt_min hρ₁ hρ₂
-  refine ⟨ρ, hρpos, fun p hp w hw => ?_, fun p hp => ?_⟩
+  refine ⟨ρ, hρpos, fun p hp w hw => ?_, fun p hp => ?_, ?_⟩
   · exact hWd (huv ⟨hKu hp, hbv (ball_subset_ball (min_le_right _ _) hw)⟩)
   have hball : ∀ w ∈ ball (0 : Fin n → ℝ) ρ, ((p, w) : (Fin n → ℝ) × (Fin n → ℝ)) ∈ W :=
     fun w hw => huv ⟨hKu hp, hbv (ball_subset_ball (min_le_right _ _) hw)⟩
@@ -241,4 +243,41 @@ theorem exists_uniform_normalChart (hg : Lightlike.IsCoordMetric g U) {K : Set (
     · rw [(hγ 1 ⟨by norm_num, le_rfl⟩).1, one_smul]; rfl
     · exact (hγ t ht).1
       
+  -- uniform neighbourhood of the diagonal inside `exp_p (B(0, r'))`
+  intro r' hr' hr'ρ
+  have hball : ∀ p ∈ K, ∀ w ∈ ball (0 : Fin n → ℝ) ρ, ((p, w) : (Fin n → ℝ) × (Fin n → ℝ)) ∈ W :=
+    fun p hp w hw => huv ⟨hKu hp, hbv (ball_subset_ball (min_le_right _ _) hw)⟩
+  set W' : Set ((Fin n → ℝ) × (Fin n → ℝ)) := W ∩ (univ ×ˢ ball (0 : Fin n → ℝ) r') with hW'
+  have hW'o : IsOpen W' := hW.inter (isOpen_univ.prod isOpen_ball)
+  have hΩ : IsOpen (twoPointMap g U '' W') := by
+    have : twoPointMap g U '' W' = twoPointMap g U '' W ∩ G ⁻¹' W' := by
+      ext y
+      constructor
+      · rintro ⟨q, hq, rfl⟩
+        exact ⟨⟨q, hq.1, rfl⟩, by rw [Set.mem_preimage, hG q hq.1]; exact hq⟩
+      · rintro ⟨⟨q, hq, rfl⟩, hy⟩
+        rw [Set.mem_preimage, hG q hq] at hy
+        exact ⟨q, hy, rfl⟩
+    rw [this]
+    exact hGs.continuousOn.isOpen_inter_preimage himg hW'o
+  set D : Set ((Fin n → ℝ) × (Fin n → ℝ)) := (fun p => (p, p)) '' K with hD
+  have hDc : IsCompact D := hK.image (by fun_prop)
+  have hDΩ : D ⊆ twoPointMap g U '' W' := by
+    rintro _ ⟨p, hp, rfl⟩
+    have hp0 : ((p, 0) : (Fin n → ℝ) × (Fin n → ℝ)) ∈ W' :=
+      ⟨hball p hp 0 (mem_ball_self hρpos), trivial, mem_ball_self hr'⟩
+    refine ⟨(p, 0), hp0, ?_⟩
+    show (p, expMap g U (p, 0)) = (p, p)
+    rw [expMap_zero hg (hKU hp)]
+  obtain ⟨δ, hδ, hthick⟩ := hDc.exists_thickening_subset_open hΩ hDΩ
+  refine ⟨δ, hδ, fun p hp y hy => ?_⟩
+  have hmem : ((p, y) : (Fin n → ℝ) × (Fin n → ℝ)) ∈ thickening δ D := by
+    rw [mem_thickening_iff]
+    refine ⟨(p, p), ⟨p, hp, rfl⟩, ?_⟩
+    rw [Prod.dist_eq, dist_self, max_lt_iff]
+    exact ⟨hδ, hy⟩
+  obtain ⟨⟨a, b⟩, ⟨-, -, hb⟩, hq⟩ := hthick hmem
+  simp only [twoPointMap, Prod.mk.injEq] at hq
+  obtain ⟨rfl, hy'⟩ := hq
+  exact ⟨b, hb, hy'⟩
 end Lightlike.Geodesic

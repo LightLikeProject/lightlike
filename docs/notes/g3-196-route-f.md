@@ -66,6 +66,64 @@ Route E (the same with `Rep U_q(sl₂)` instead of diagrams) needs the Hopf alge
 the queue), its finite-dimensional modules, the `q`-Clebsch–Gordan coefficients and the negligible
 quotient; the milestones are the same shape with larger F1 and F3 and no diagrams.
 
+## Progress (24 Nov 2026) and the measured dictionary for F4
+
+F1 and F2 are Lean: `Lightlike/TemperleyLieb/Basic.lean` (the algebra `TL k δ` with relations, universal
+property, the Chebyshev sequence `chebD`) and `JonesWenzl.lean` (in any algebra with an `IsTL` family, for
+`d_i ≠ 0` up to `N`: `jw n` idempotent, killed by `e_i`, absorbing, commuting with `e_i` for `i ≥ n`, and the
+partial trace identity `e_n jw(n+1) e_n = (d_{n+1}/d_n) jw n e_n`).
+
+MEASURED dictionary (exact, ratio 1.0 on 400 sampled tuples at each of r = 5, 6, 7, 9; Python with mpmath at
+30 digits, `scripts/tv_check.py: q6j` against Kauffman–Lins' formulas written from memory and corrected only
+by this test): with `[n] = sin(nπ/r)/sin(π/r)`, `θ(a,b,c) = (-1)^{x+y+z} [x+y+z+1]! [x]![y]![z]! /
+([x+y]![y+z]![x+z]!)` (`x = (a+b-c)/2`, etc., doubled spins) and
+`Tet[A B E; C D F] = (I!/E!) Σ_s (-1)^s [s+1]! / (Π_i [s-a_i]! Π_j [b_j-s]!)` with
+`a = ((A+D+E)/2, (B+C+E)/2, (A+B+F)/2, (C+D+F)/2)`, `b = ((B+D+E+F)/2, (A+C+E+F)/2, (A+B+C+D)/2)`,
+`I! = Π_{i,j} [b_j - a_i]!`, `E! = [A]![B]![C]![D]![E]![F]!`:
+`qSixJ r A D E C B F = Tet[A B E; C D F] / sqrt(|θ(A,D,E) θ(B,C,E) θ(A,B,F) θ(C,D,F)|)`.
+So the identification F4 splits into (a) the evaluation of the tetrahedral net as this explicit sum (Kauffman–
+Lins' theorem, by induction with the fusion identity) and (b) an elementary `q`-factorial manipulation.
+
+Model and design decisions for F3 to F5:
+- the model `Finset ℕ →₀ k` (the infinite tensor power of `k²`, a basis vector is the set of positions carrying
+  `1`) carries `e_i` as local operators on the positions `i, i+1`, so the relations hold for every `i` with no
+  length bookkeeping, and the finite tensor powers are the subspaces supported below `N`; cup and cap
+  weights `a = d = 1`, `b = -q`, `c = -q⁻¹` give `δ = -q - q⁻¹`;
+- nets are evaluated as pairings of vectors (states) in the model, so the trace and the pairing are
+  explicit finite sums; the fusion identity and the evaluation of `θ` and `Tet` are inductions on
+  the Jones–Wenzl recursion, which `JonesWenzl.lean` already provides;
+- the root of unity: `d_{r-1} = 0`, projectors exist up to `jw (r-1)`, and the trees with all colours `≤ r-2`
+  are the ones the library's `qAdm` keeps.
+
+## F3: the crux and the two architectures (24 Nov 2026, after F1, F2, the model, cups and caps, Jones' expectation)
+
+Done in Lean: `Basic` (algebra), `JonesWenzl` (projectors, partial trace), `Model` (the relations on the infinite
+tensor power), `CupCap` (loop value, `e_i = cup cap`, zigzag), `Jones` (expectation, absorption).
+
+The crux. The vertex `V(a,b;c) = (p_a ⊗ p_b) · Y · p_c` (`Y` = `i` nested cups at the junction) and its dual
+`V'` satisfy `V' V = κ p_c` with `κ = θ(a,b,c)/Δ_c`.  Two ways to prove such statements:
+
+(A) Diagrammatic operator calculus in `End(ModelSpace)`: `V'V` is a closed-up diagram, so it lies in
+`tlSub e (c-1)` and `absorb` gives `κ`.  The reduction "`cap z cup ∈ tlSub`" needs the naturality of cups and
+caps against `e_j` (cases `j` away from, adjacent to and equal to the junction) and an induction on words with
+a drifting cap position; about 600 lines for one arc, more for nested arcs.
+(B) Corner algebra: work only in `tlSub e (a+b-1)` with `W_i = Q N_i Q`, `Q = p_a p_b` shifted, `N_i` the nested
+`e`-product.  Then `(Q e_{a-1} Q)² = c · Q e_{a-1} Q` follows from a generalised partial trace identity
+`e_{a-1} p_a p_b e_{a-1} = c · e_{a-1} p_{a-1} p_{b-1}` plus absorption, with no cups or caps.  The channel
+idempotents are Lagrange polynomials in the single operator `A = Q e_{a-1} Q`, and the two operators `A^{(ab)}`,
+`A^{(bc)}` of a triple product form a Leonard pair; the 6j symbols are the overlaps of their eigenvectors,
+fixed by the three-term recurrence that the library already proves for `qSixJ` in the third colour
+(`Reflect/RacahRecurrence`).  Signs are the open point of (B): overlaps of eigenvectors give `F²` unless the
+vectors are fixed by the tree construction.
+CORRECTION (MEASURED, numpy, 2^n-dimensional model, random complex `q`): the identity
+`e_{a-1} p_a p_b e_{a-1} = c · e_{a-1} p_{a-1} p'_{b-1}` holds for `(a,b) ∈ {(1,1),(2,1),(1,2)}` (with `c = d_a/d_{a-1}`
+for `b = 1`) and FAILS for `(2,2), (3,2), (2,3), (3,3)`; so `(Q e Q)² = c Q e Q` is false for blocks of size at
+least two, as it must be since `Q·TL·Q` has dimension `min(a,b)+1` and `Q e Q` has that many eigenvalues.  In (B) the
+channel idempotents are Lagrange polynomials in `A = Q e_{a-1} Q` over its eigenvalues, which first have to be
+computed (the partial trace identity only gives the top and bottom ones).
+Next Lean step for (B): the shifted family `e ∘ (· + s)` is `IsTL`, the generalised partial trace identity,
+and `A² = c A`.  Next step for (A): naturality lemmas of `cup` and `cap` against `e_j`.
+
 ## Decision
 
 No route in this note is a row-sized step. The two structural routes (F, E) are milestone-sized

@@ -3943,7 +3943,7 @@
     refs:
       - {ref: vassilevich-2003, location: "eq. (4.27)", check: "6E"}
   review: kernel-checked
-  note: "Trust check of the milestone GE8 (unit 2-sphere); the coefficients are the explicit sphereCoeff, by Euler-Maclaurin. The comparison with Vassilevich (2003), eq. (4.27), is pending: the paper was not read at the cited location. This is an example-level result: the general Seeley-DeWitt expansion on a compact Riemannian manifold is NOT proved (Mathlib has no Laplace-Beltrami operator, manifold heat kernel or elliptic theory), so GE8 stays open."
+  note: "Trust check of the milestone GE8 (unit 2-sphere); the coefficients are the explicit sphereCoeff, by Euler-Maclaurin. Compared with Vassilevich (2003), arXiv:hep-th/0306138, eq. (4.27), p. 40 (read): a_2(f, D) = (4π)^{-n/2} 6^{-1} ∫ tr{f(6E + R)}, so for the scalar Laplacian (E = 0, f = 1) a_1 = (4π)^{-n/2} ∫R/6 in the Lightlike normalisation (the heat trace coefficient of t^{1-n/2}), with R positive on spheres as in the source; on the unit 2-sphere this is (4π)^{-1}·(2/6)·4π = 1/3, and eq. (4.28) gives the next coefficient (4π)^{-1} 360^{-1} ∫(5R² - 2R_ij R_ij + 2R_ijkl R_ijkl) = 24/360 = 1/15, the t/15 of the milestone (computed by hand from the source, not formalised). This is an example-level result: the general Seeley-DeWitt expansion on a compact Riemannian manifold is NOT proved (Mathlib has no Laplace-Beltrami operator, manifold heat kernel or elliptic theory), so GE8 stays open."
   since: unreleased
 - id: LL-0297
   title: "The heat trace Σ_{k∈ℤⁿ} e^{-t|k|²} of the flat n-torus has the asymptotic expansion π^{n/2} t^{-n/2} with every other coefficient zero, in particular no t⁰ term"
@@ -3956,7 +3956,7 @@
     refs:
       - {ref: vassilevich-2003, location: "eq. (4.27)", check: "6E"}
   review: kernel-checked
-  note: "Trust check of the milestone GE8 (flat torus, theta function); the torus is written with the spectrum |k|² (side 2π), so the leading coefficient is π^{n/2} = V/(4π)^{n/2} with V = (2π)^n. The comparison with Vassilevich (2003), eq. (4.27), is pending: the paper was not read at the cited location. This is an example-level result: the general Seeley-DeWitt expansion on a compact Riemannian manifold is NOT proved (Mathlib has no Laplace-Beltrami operator, manifold heat kernel or elliptic theory), so GE8 stays open."
+  note: "Trust check of the milestone GE8 (flat torus, theta function); the torus is written with the spectrum |k|² (side 2π), so the leading coefficient is π^{n/2} = V/(4π)^{n/2} with V = (2π)^n. Compared with Vassilevich (2003), arXiv:hep-th/0306138, eq. (4.27), p. 40 (read): a_2(f, D) = (4π)^{-n/2} 6^{-1} ∫ tr{f(6E + R)}, so for the scalar Laplacian (E = 0, f = 1) a_1 = (4π)^{-n/2} ∫R/6 in the Lightlike normalisation (the heat trace coefficient of t^{1-n/2}), with R positive on spheres as in the source; on the unit 2-sphere this is (4π)^{-1}·(2/6)·4π = 1/3, and eq. (4.28) gives the next coefficient (4π)^{-1} 360^{-1} ∫(5R² - 2R_ij R_ij + 2R_ijkl R_ijkl) = 24/360 = 1/15, the t/15 of the milestone (computed by hand from the source, not formalised). This is an example-level result: the general Seeley-DeWitt expansion on a compact Riemannian manifold is NOT proved (Mathlib has no Laplace-Beltrami operator, manifold heat kernel or elliptic theory), so GE8 stays open."
   since: unreleased
 - id: LL-0298
   title: "On the round 2-sphere and 3-sphere, any expansion of the heat trace has a₁ = (4π)^{-n/2} V R/6, with R the scalar curvature of the round metric computed by Lightlike's scalarCurvature (R = n(n-1))"
@@ -3969,7 +3969,7 @@
     refs:
       - {ref: vassilevich-2003, location: "eq. (4.27)", check: "6E"}
   review: kernel-checked
-  note: "The curvature of the stereographic round metric is scalarCurvature_stereo (StereoCurvature.lean); the uniqueness of the coefficients is HasHeatExpansionTo.coeff_unique (Unique.lean). The comparison with Vassilevich (2003), eq. (4.27), is pending: the paper was not read at the cited location. This is an example-level result: the general Seeley-DeWitt expansion on a compact Riemannian manifold is NOT proved (Mathlib has no Laplace-Beltrami operator, manifold heat kernel or elliptic theory), so GE8 stays open."
+  note: "The curvature of the stereographic round metric is scalarCurvature_stereo (StereoCurvature.lean); the uniqueness of the coefficients is HasHeatExpansionTo.coeff_unique (Unique.lean). Compared with Vassilevich (2003), arXiv:hep-th/0306138, eq. (4.27), p. 40 (read): a_2(f, D) = (4π)^{-n/2} 6^{-1} ∫ tr{f(6E + R)}, so for the scalar Laplacian (E = 0, f = 1) a_1 = (4π)^{-n/2} ∫R/6 in the Lightlike normalisation (the heat trace coefficient of t^{1-n/2}), with R positive on spheres as in the source; on the unit 2-sphere this is (4π)^{-1}·(2/6)·4π = 1/3, and eq. (4.28) gives the next coefficient (4π)^{-1} 360^{-1} ∫(5R² - 2R_ij R_ij + 2R_ijkl R_ijkl) = 24/360 = 1/15, the t/15 of the milestone (computed by hand from the source, not formalised). This is an example-level result: the general Seeley-DeWitt expansion on a compact Riemannian manifold is NOT proved (Mathlib has no Laplace-Beltrami operator, manifold heat kernel or elliptic theory), so GE8 stays open."
   since: unreleased
 - id: LL-0299
   title: "The scalar curvature of the round unit n-sphere in stereographic coordinates is n(n-1)"
@@ -3982,7 +3982,7 @@
     refs:
       - {ref: vassilevich-2003, location: "eq. (4.27)", check: "6E"}
   review: kernel-checked
-  note: "Used to tie the a₁ coefficient of the sphere heat traces to Lightlike's scalar curvature. Convention: the sign of R is that of Lightlike.scalarCurvature (positive on spheres). The comparison with Vassilevich (2003), eq. (4.27), is pending: the paper was not read at the cited location. This is an example-level result: the general Seeley-DeWitt expansion on a compact Riemannian manifold is NOT proved (Mathlib has no Laplace-Beltrami operator, manifold heat kernel or elliptic theory), so GE8 stays open."
+  note: "Used to tie the a₁ coefficient of the sphere heat traces to Lightlike's scalar curvature. Convention: the sign of R is that of Lightlike.scalarCurvature (positive on spheres). Compared with Vassilevich (2003), arXiv:hep-th/0306138, eq. (4.27), p. 40 (read): a_2(f, D) = (4π)^{-n/2} 6^{-1} ∫ tr{f(6E + R)}, so for the scalar Laplacian (E = 0, f = 1) a_1 = (4π)^{-n/2} ∫R/6 in the Lightlike normalisation (the heat trace coefficient of t^{1-n/2}), with R positive on spheres as in the source; on the unit 2-sphere this is (4π)^{-1}·(2/6)·4π = 1/3, and eq. (4.28) gives the next coefficient (4π)^{-1} 360^{-1} ∫(5R² - 2R_ij R_ij + 2R_ijkl R_ijkl) = 24/360 = 1/15, the t/15 of the milestone (computed by hand from the source, not formalised). This is an example-level result: the general Seeley-DeWitt expansion on a compact Riemannian manifold is NOT proved (Mathlib has no Laplace-Beltrami operator, manifold heat kernel or elliptic theory), so GE8 stays open."
   since: unreleased
 - id: LL-0300
   title: "Induced gravity from the heat kernel: for D = -Δ + ξR the coefficient a₁ is proportional to (1-6ξ), it vanishes for the conformal coupling in n = 4 and not in other dimensions, and the induced inverse Newton constant is (1-6ξ)/(12πε) with proper-time cutoff ε"
@@ -3995,7 +3995,7 @@
     refs:
       - {ref: vassilevich-2003, location: "eq. (4.27)", check: "6E"}
   review: kernel-checked
-  note: "Target OA3 (Sakharov 1967): the cutoff integrals of t^-3, t^-2, t^-1 are in CutoffIntegrals.lean. The comparison with Vassilevich (2003), eq. (4.27), is pending: the paper was not read at the cited location. This is an example-level result: the general Seeley-DeWitt expansion on a compact Riemannian manifold is NOT proved (Mathlib has no Laplace-Beltrami operator, manifold heat kernel or elliptic theory), so GE8 stays open."
+  note: "Target OA3 (Sakharov 1967): the cutoff integrals of t^-3, t^-2, t^-1 are in CutoffIntegrals.lean. Compared with Vassilevich (2003), arXiv:hep-th/0306138, eq. (4.27), p. 40 (read): a_2(f, D) = (4π)^{-n/2} 6^{-1} ∫ tr{f(6E + R)}, so for the scalar Laplacian (E = 0, f = 1) a_1 = (4π)^{-n/2} ∫R/6 in the Lightlike normalisation (the heat trace coefficient of t^{1-n/2}), with R positive on spheres as in the source; on the unit 2-sphere this is (4π)^{-1}·(2/6)·4π = 1/3, and eq. (4.28) gives the next coefficient (4π)^{-1} 360^{-1} ∫(5R² - 2R_ij R_ij + 2R_ijkl R_ijkl) = 24/360 = 1/15, the t/15 of the milestone (computed by hand from the source, not formalised). This is an example-level result: the general Seeley-DeWitt expansion on a compact Riemannian manifold is NOT proved (Mathlib has no Laplace-Beltrami operator, manifold heat kernel or elliptic theory), so GE8 stays open."
   since: unreleased
 - id: LL-0301
   title: "The linearized deficit angle at a vertex of a flat positively oriented star under a displacement field with a metric perturbation t is -t times the area of the star, independent of the gauge, covariant under scaling, and zero if and only if t = 0"
@@ -5037,4 +5037,76 @@
       - {ref: boldt-2015, location: "Theorem 3.1", check: "multiplicities"}
   review: kernel-checked
   note: "Compared with Boldt, arXiv:1504.03121, Theorem 3.1, p. 6 (read): the Dirac eigenvalues of the round S^n are +-(n/2 + k) with multiplicity 2^[n/2] C(n+k-1, k); for n = 2 this is +-(k+1) with multiplicity 2(k+1). Here, in the stereographic chart and for an arbitrary Clifford module V of Cl(R^2), the k+1 angular modes c1 = (1+|y|^2)^-(k+1) z^(n+1) G_n(|y|^2), c2 = (1+|y|^2)^-(k+1) z^n F_n(|y|^2) (n = 0..k, G_n a terminating hypergeometric polynomial of degree k-n) give eigenspinors h^(1/2) (Lv c1 + gamma_0 Lv c2) of eigenvalue epsilon (k+1), and the map (v_0..v_k) to the sum is linear and injective. For V = C^2 this is the lower bound 2(k+1) over C. WEAKER: a lower bound only; no completeness (no statement that there are no other eigenvalues or eigenspinors), no regularity condition at the north pole of the sphere and no L^2 or spinor-bundle statement; the chart carries no such notion in the library."
+  since: unreleased
+- id: LL-0381
+  title: "Fermionic Shale in infinitely many modes, sufficiency for a small antilinear part: a surjective real-linear map R of a Hilbert space Z preserving Re of the inner product, whose antilinear part beta satisfies sum over every finite set of |beta e_k|^2 at most h < 1, is implemented by a unitary of the fermionic Fock space, U phi(w) = phi(R w) U; and for any R, a unit vector killed by the transformed annihilation operators gives such a unitary"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/CARShale.lean
+  decls: [Lightlike.OperatorAlgebras.CARShale.exists_unitary_of_dense, Lightlike.OperatorAlgebras.CARShale.dense_words, Lightlike.OperatorAlgebras.CARShale.exists_implementer, Lightlike.OperatorAlgebras.CARShale.exists_vacuum_of_small, Lightlike.OperatorAlgebras.CARShale.fermionic_shale_of_small]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source for the fermionic Shale theorem was read). Part of OP2, not the whole criterion. WEAKER: (1) only sufficiency, and only under the strict bound sum |beta e_k|^2 < 1 (Hilbert-Schmidt norm of beta below 1); the general Hilbert-Schmidt case (Araki, Bratteli-Robinson) and the necessity of the Hilbert-Schmidt condition are not proved here. (2) The bound is on the basis vectors of a Hilbert basis, which is the squared Hilbert-Schmidt norm of beta. Proof: the transformed annihilators are the CAR family (p + i q)/2 built from the fields phi(R e_k), phi(R(i e_k)); the words of transformed creation operators on a unit vacuum are orthonormal, dense by irreducibility of the Fock representation, and define the unitary; the vacuum is the limit of the decreasing commuting projections prod (1 - c_k a_k), bounded below by the Bonferroni inequality 1 - sum |a_k Omega_0|^2."
+  since: unreleased
+- id: LL-0382
+  title: "Within the angular polynomial class, a flat eigenspinor of the Dirac operator of the unit 2-sphere in the stereographic chart that is reduced and satisfies the decay condition has eigenvalue plus or minus s and the radial profile of the family of the lower bound"
+  area: GR
+  file: Lightlike/Dirac/EigenAngular.lean
+  decls: [Lightlike.Dirac.angular_class_complete, Lightlike.Dirac.angG_flat_converse, Lightlike.Dirac.mode_complete, Lightlike.Dirac.odeOp_unique]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: boldt-2015, location: "Theorem 3.1", check: "multiplicities"}
+  review: kernel-checked
+  note: "Companion of the lower bound (LL-0380, same file) against Boldt, arXiv:1504.03121, Theorem 3.1, p. 6 (read): eigenvalues +-(n/2 + k) with multiplicity 2^[n/2] C(n+k-1, k); for n = 2 this is +-(k+1) with multiplicity 2(k+1). Here, for a nonzero constant spinor v and spinors of the form c1 = (1+t)^-s z^(n+1) G(t), c2 = (1+t)^-s z^n F(t), t = |y|^2, G(-1) not zero (reduced), n+1 <= s (decay O(1/|y|) at the pole in this class), a flat eigenspinor has eigenvalue +-s and G a multiple of the radial polynomial of the lower bound, by the coefficient recurrence and evaluation of the radial equation at t = -1. WEAKER (PARTIAL for GE5): only within this class of spinors; not an exclusion of other eigenvalues or eigenspinors of the sphere, which needs smooth sections on S^2, regularity at the pole and the angular Fourier decomposition, none of which is in the library; the decay condition is assumed as n+1 <= s, not derived from smoothness at the pole."
+  since: unreleased
+- id: LL-0383
+  title: "In the angular polynomial class, boundedness of the half-density spinor at the pole of the sphere forces the decay condition, so a reduced flat eigenspinor of the Dirac operator of the unit 2-sphere in the stereographic chart has eigenvalue plus or minus s and the radial profile of the lower bound"
+  area: GR
+  file: Lightlike/Dirac/EigenPole.lean
+  decls: [Lightlike.Dirac.angular_class_complete_bounded, Lightlike.Dirac.decay_of_bounded, Lightlike.Dirac.degree_le_of_bounded, Lightlike.Dirac.level_of_degree]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: boldt-2015, location: "Theorem 3.1", check: "multiplicities"}
+  review: kernel-checked
+  note: "Companion of LL-0380 and LL-0382 against Boldt, arXiv:1504.03121, Theorem 3.1, p. 6 (read): eigenvalues +-(n/2 + k) with multiplicity 2^[n/2] C(n+k-1, k); for n = 2 this is +-(k+1) with multiplicity 2(k+1). Here the decay condition n+1 <= s assumed in LL-0382 is derived from the boundedness of the spinor h^(1/2) g on the plane (the norm of the spinor of the sphere in the orthonormal frame of the chart, which a spinor extending continuously over the pole must satisfy), by the top coefficient of the radial equation (s = deg G + 1 or s = n + 1 + deg G) and the growth of the polynomial profile on the real axis. WEAKER (PARTIAL for GE5): boundedness is only a necessary condition for continuity at the pole (the chart at the other pole is not in the library), and only the angular polynomial class is covered; completeness among all smooth spinors of the sphere remains open."
+  since: unreleased
+- id: LL-0384
+  title: "The Sorkin-Johnston state of a finite causal set is pure for the retarded matrix K_R = a M (1 - a b M)^-1 (the link matrix in four dimensions, the causal matrix in two, any mass), and 1 - a b M is invertible because M is supported on the causal order"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/QuasiFreeState/SJRetarded.lean
+  decls: [Lightlike.OperatorAlgebras.QuasiFreeState.isPureState_retarded, Lightlike.OperatorAlgebras.QuasiFreeState.isUnit_one_sub_smul, Lightlike.OperatorAlgebras.QuasiFreeState.retardedMatrix_mul, Lightlike.OperatorAlgebras.QuasiFreeState.linkMatrix]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: johnston-2009, location: "eq. (10)", check: "Pauli-Jordan"}
+  review: kernel-checked
+  note: "Compared with Johnston, arXiv:0909.0944, eqs. (10) and (16) (read): Delta = K_R - K_R^T with K_R = a L (1 - a b L)^-1, b = -m^2/rho in the massive case. Here K_R is defined for any matrix M, the support lemma applies to the causal matrix and the link matrix (strictly increasing in the order), so 1 - a b M is invertible for every a, b and K_R (1 - a b M) = a M; purity holds for every K_R, whatever the normalisation of a, b. WEAKER: the state is the quasi-free state with covariance |i Delta|, which is the positive-part construction of Afshordi, Aslanbeigi and Sorkin (arXiv:1205.1296, not read); no comparison with their formulas, and the identification of b and the normalisation a with the mass and the sprinkling density rho is not formalised."
+  since: unreleased
+- id: LL-0385
+  title: "Wick's theorem for fermionic fields on a vacuum for every number of fields: the vacuum expectation of a product of split fields (annihilation part killing the vacuum, creation part killed by the functional, scalar anticommutators with the annihilation parts) is the Pfaffian-type recursion of the pairings"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/FermionWick.lean
+  decls: [Lightlike.OperatorAlgebras.wick, Lightlike.OperatorAlgebras.A_pass, Lightlike.OperatorAlgebras.expect_prod, Lightlike.OperatorAlgebras.wick_pair, Lightlike.OperatorAlgebras.wick_single]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source for the fermionic Wick theorem was read). Proved for lists of every length n: l(phi_1 ... phi_n Psi) = l(Psi) wick pair [phi_1, ..., phi_n], with wick (x :: l) = sum_i (-1)^i pair x l_i wick (l without l_i) (the Pfaffian expansion along the first row); odd n gives 0 (wick_single, n = 1), and wick_pair is the n = 2 case (the two-point function). The fields are abstract split fields A + B on a complex vector space; the instance for the CAR fields of a Bogoliubov vacuum (the fields linear in the transformed a, c) is NOT built here: the hypotheses (A Psi = 0, l(B v) = 0, A phi + phi A scalar) are what CARQuasiFree.lean proves for the two-point functions, but the scalar anticommutator for general linear combinations is not wired in. The bosonic counterpart for the CCR (hafnian) is npoint_eq_haf in QuasiFreeWick.lean."
+  since: unreleased
+- id: LL-0386
+  title: "Wick's theorem for the CAR fields of a Bogoliubov vacuum, for every number of fields: the vacuum expectation of a product of linear combinations of the transformed operators b, b* is the Pfaffian recursion of the pairings, whose two-point value is the sum of u_i v'_i"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/CARWick.lean
+  decls: [Lightlike.OperatorAlgebras.carField, Lightlike.OperatorAlgebras.carField_anticomm, Lightlike.OperatorAlgebras.car_wick, Lightlike.OperatorAlgebras.car_wick_two]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source for the fermionic Wick theorem was read). Instance of the abstract recursion of FermionWick.lean (the previous entry): for a vector killed by all the transformed annihilation operators, the fields sum_j u_j b_j + sum_j v_j b_j^* are split fields, the anticommutator of the annihilation part with a field is the scalar sum u_j v'_j (the CAR of the transformed operators, isCARPairs_bog), and car_wick gives <Psi, x_1 ... x_n Psi> = <Psi, Psi> wick [x_1, ..., x_n] for every n; car_wick_two is n = 2. The fields a_j, c_j are such combinations by the inverse transformation (bog_inv), so the statement covers them, but this is not stated separately. WEAKER: finitely many modes (the infinite-mode vacuum and Shale for fermions are not built); no explicit n = 4 expansion check (the recursion is proved for all n); mixed quasi-free states are not covered."
   since: unreleased
