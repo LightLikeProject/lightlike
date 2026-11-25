@@ -54,7 +54,7 @@ milestones:
       - id: t1
         kind: trust
         text: "The round 2-sphere of radius r, as a manifold with its Levi-Civita connection, has scalar curvature 2/r²"
-        decls: []
+        decls: [Lightlike.roundSphere2_scalarCurvatureAt, Lightlike.roundSphere2_exists_leviCivita]
         hint: "Close but not this: Lightlike.Test.sphere_scalar (coordinate formula on the (θ, φ) chart), scalarCurv_sphere (sphere in ℝ³ by the Gauss equation), scalarCurvature_stereo_two (radius 1 only). Missing: the statement for the intrinsic scalarCurvatureAt."
       - id: t2
         kind: trust
