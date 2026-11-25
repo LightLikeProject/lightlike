@@ -423,4 +423,58 @@ theorem Eop_mem (q : kˣ) (hδ : loopVal q ≠ 0) {a b i : ℕ} (hia : i ≤ a) 
   rw [hVW]
   exact Subalgebra.smul_mem _ (Subalgebra.mul_mem _ (Subalgebra.mul_mem _ (Qab_mem q a b) hn) (Qab_mem q a b)) _
 
+/-- **Sandwich scalar**: `p_D Z p_D` is a scalar multiple of `p_D` for `Z ∈ C (D - 1)`. -/
+theorem jwAt_sandwich (q : kˣ) {D : ℕ} (hd : ∀ j, j < D → chebD (loopVal q) j ≠ 0)
+    {Z : Module.End k (ModelSpace k)} (hZ : Z ∈ CSub q (D - 1)) :
+    ∃ ε : k, jwAt q 0 D * Z * jwAt q 0 D = ε • jwAt q 0 D := by
+  have hprops := jwProps_of_le (isTL_shift q 0) D hd D le_rfl
+  have hjw : jwAt q 0 D = jw (loopVal q) (modelE q) D := rfl
+  have hL : ∀ j < D - 1, modelE q j * jwAt q 0 D = 0 := fun j hj => by
+    rw [hjw]; exact hprops.killL j (by omega)
+  have hR : ∀ j < D - 1, jwAt q 0 D * modelE q j = 0 := fun j hj => by
+    rw [hjw]; exact hprops.killR j (by omega)
+  obtain ⟨κ, h1, -⟩ := absorb (k := k) (e := modelE q) (p := jwAt q 0 D) hL hR _ hZ
+  refine ⟨κ, ?_⟩
+  have hidem : jwAt q 0 D * jwAt q 0 D = jwAt q 0 D := by rw [hjw]; exact hprops.idem
+  rw [h1, smul_mul_assoc, hidem]
+
+/-- **The two-level sandwich is a scalar**: for `Y ∈ C (a+b+c-1)` and the channels `e` of `(a,b)` and `d` of
+`(a+b-2e, c)`, `W_d W_e Y V_e V_d` is a scalar multiple of the projector on the remaining strands. -/
+theorem Wop_Wop_sandwich (q : kˣ) (a b c e d : ℕ) (hN : 1 ≤ a + b + c)
+    (hd : ∀ j, j ≤ a + b + c → chebD (loopVal q) j ≠ 0)
+    (hea : e ≤ a) (heb : e ≤ b) (hdc : d ≤ c) (hdA : d ≤ a + b - 2 * e)
+    {Y : Module.End k (ModelSpace k)} (hY : Y ∈ CSub q (a + b + c - 1)) :
+    ∃ ε : k, Wop q (a + b - 2 * e) c d * (Wop q a b e * Y * Vop q a b e) * Vop q (a + b - 2 * e) c d =
+      ε • jwAt q 0 (a + b - 2 * e + c - 2 * d) := by
+  set A := a + b - 2 * e with hA
+  have hdAc : ∀ j, j ≤ A + c → chebD (loopVal q) j ≠ 0 := fun j hj => hd j (by omega)
+  have hQmem : Qab q a b ∈ CSub q (a + b + c - 1) :=
+    tlSub_mono (m := a + b - 1) (n := a + b + c - 1) (by omega) (Qab_mem q a b)
+  have hQYQ : Qab q a b * Y * Qab q a b ∈ CSub q (a + b + c - 1) :=
+    Subalgebra.mul_mem _ (Subalgebra.mul_mem _ hQmem hY) hQmem
+  have hX1 := nestCap_mul_nestCup_mem q (a - e) e (a + b + c - 1) hQYQ (by omega)
+  rw [show a + b + c - 1 - 2 * e = A + c - 1 by omega] at hX1
+  set X1 := nestCap q (a - e) e * (Qab q a b * Y * Qab q a b) * nestCup q (a - e) e with hX1def
+  have hW1 : Wop q a b e * Y * Vop q a b e = jwAt q 0 A * X1 * jwAt q 0 A := by
+    unfold Wop Vop; rw [hX1def]; simp only [mul_assoc, hA]
+  have hQ'mem : Qab q A c ∈ CSub q (A + c - 1) := Qab_mem q A c
+  have hX2 : Qab q A c * X1 * Qab q A c ∈ CSub q (A + c - 1) :=
+    Subalgebra.mul_mem _ (Subalgebra.mul_mem _ hQ'mem hX1) hQ'mem
+  have hX3 := nestCap_mul_nestCup_mem q (A - d) d (A + c - 1) hX2 (by omega)
+  rw [show A + c - 1 - 2 * d = (A + c - 2 * d) - 1 by omega] at hX3
+  have hDd : ∀ j, j < A + c - 2 * d → chebD (loopVal q) j ≠ 0 := fun j hj => hd j (by omega)
+  obtain ⟨ε, hε⟩ := jwAt_sandwich q hDd hX3
+  refine ⟨ε, ?_⟩
+  have h1 := Qab_mul_jwAt' (k := k) q A c hdAc
+  have h2 := jwAt_mul_Qab' (k := k) q A c hdAc
+  rw [hW1]
+  unfold Wop Vop
+  calc jwAt q 0 (A + c - 2 * d) * nestCap q (A - d) d * Qab q A c * (jwAt q 0 A * X1 * jwAt q 0 A) *
+        (Qab q A c * nestCup q (A - d) d * jwAt q 0 (A + c - 2 * d))
+      = jwAt q 0 (A + c - 2 * d) * (nestCap q (A - d) d * (Qab q A c * jwAt q 0 A * X1 * (jwAt q 0 A * Qab q A c)) *
+        nestCup q (A - d) d) * jwAt q 0 (A + c - 2 * d) := by simp only [mul_assoc]
+    _ = jwAt q 0 (A + c - 2 * d) * (nestCap q (A - d) d * (Qab q A c * X1 * Qab q A c) * nestCup q (A - d) d) *
+        jwAt q 0 (A + c - 2 * d) := by rw [h1, h2]
+    _ = ε • jwAt q 0 (A + c - 2 * d) := hε
+
 end Lightlike.TemperleyLieb
