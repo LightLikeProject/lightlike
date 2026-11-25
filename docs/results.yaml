@@ -5318,3 +5318,17 @@
   review: kernel-checked
   note: "PARTIAL: only the K-types (l, 0) of radial functions F o cosh, proved by induction on l from the spherical Plancherel formula (norm_sq_eq_sph): the step is K_{l+1}(F) = S_l(F, QF) + l(l+1) K_l(F) (Kform_succ, integration by parts against the weight (v^2-1)^l, with (QF)^(l) = -((v^2-1)F^(l+2) + 2(l+1)vF^(l+1) + l(l+1)F^(l))) together with (QF)^ = (1/4 + rho^2) F^ (sphTransformH_radialQ) and polarisation; it multiplies the weight by (l+1/2)^2 + rho^2, the ladder factor of Kitaev arXiv:1711.08169 eq. (60) (read: the factor of the lowering/raising operators on the Casimir eigenfunctions). Comparison with Lang or Knapp pending (source exploratory). The general K-types (l, r), r != 0, the base case (1,1), the discrete series part and the assembly of the Plancherel formula of SL(2,R) are not proved."
   since: unreleased
+- id: LL-XXXX
+  title: "The cutoff gauge-fixed Ponzano-Regge amplitude is exactly invariant under a single 2-3 move, for a gauge set inside the edges and a maximal tree, whenever the new edge DE has cutoff at least cut AD plus cut AE"
+  area: PonzanoRegge
+  file: Lightlike/PonzanoRegge/GaugeFixed.lean
+  decls: [Lightlike.PR.amplitudeGF_move23, Lightlike.PR.amplitudeGF_move23_tree]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: freidel-louapre-2004, location: "Section III", check: "gauge"}
+      - {ref: barrett-naish-guzman-2009, location: "§2.2.1", check: "Pachner moves"}
+  review: kernel-checked
+  note: "Comparison pending: neither source was read at the cited location for this statement; the cited locations are those of the chain statement in LL-0027, of which this is the single-move form. Hypotheses (all in the statement): the move is a 2-3 move of the complex, the gauge set T lies in the edges of the complex (amplitudeGF_move23) or is a maximal tree (amplitudeGF_move23_tree, which also gives that T is a maximal tree of the new complex), and the cutoff of the new edge dominates cut AD + cut AE. It is an identity at finite cutoff, as in LL-0027."
+  since: unreleased

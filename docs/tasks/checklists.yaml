@@ -1399,7 +1399,7 @@ milestones:
       - id: t2
         kind: trust
         text: "A wrong sign convention in the 6j symbol breaks the Biedenharn–Elliott identity"
-        decls: []
+        decls: [Lightlike.PR.Test.be_wrongSign_fails]
         hint: "Missing in Lean. Close but not this: Lightlike.PR.Test.weightWith_wrong_model (flips the triangle sign of the PR weight, not the 6j sign, and not BE); scripts/pr23_check.py --wrong-edge-sign is Python, and an edge sign."
       - id: c1
         kind: catalogue
