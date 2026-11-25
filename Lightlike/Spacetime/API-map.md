@@ -34,7 +34,7 @@ For a smooth connection on a Hausdorff manifold modelled on a finite-dimensional
 
 For a Levi-Civita connection of a smooth Lorentzian metric (same hypotheses) the first Bianchi identity holds, the lowered curvature is antisymmetric in each pair of slots and symmetric under exchange of the pairs, and the Ricci tensor is symmetric [14].
 
-In a chart of a manifold modelled on `ℝⁿ` (Hausdorff), the components of the curvature of a Levi-Civita connection are the coordinate Riemann tensor, its Ricci tensor and scalar curvature are the coordinate ones, and the Einstein equations hold on the manifold iff the coordinate vacuum equations hold in every chart [15]. The round 2-sphere of radius `r` (Mathlib's unit sphere with the metric `r² h`, modelled on `Fin 2 → ℝ`) has scalar curvature `2 / r²` at every point for the intrinsic scalar curvature of every locally smooth Levi-Civita connection, through the conformal factor of the stereographic charts [126], [127], [128], [129].
+In a chart of a manifold modelled on `ℝⁿ` (Hausdorff), the components of the curvature of a Levi-Civita connection are the coordinate Riemann tensor, its Ricci tensor and scalar curvature are the coordinate ones, and the Einstein equations hold on the manifold iff the coordinate vacuum equations hold in every chart [15]. The round 2-sphere of radius r (Mathlib's unit sphere with the metric r² h, modelled on Fin 2 → ℝ) has scalar curvature 2 / r² at every point for the intrinsic scalar curvature of every locally smooth Levi-Civita connection, through the conformal factor of the stereographic charts [126], [127], [128], [129].
 
 For a smooth torsion-free connection the second Bianchi identity holds: the cyclic sum of the covariant derivative of the curvature vanishes [16].
 
@@ -266,10 +266,10 @@ is the ordinary point p = (1, 0⃗) [125].
 124. Lightlike/Spacetime/Raychaudhuri/DustField.lean - `flrwManifold_dust_strongEC`
 125. Lightlike/Spacetime/MinkowskiCompactificationAxis.lean - `minkowski_eq_conformal_esu_cartesian`,
      `bijOn_cartMap`, `cartOmega_axis`
-126. Lightlike/Spacetime/RoundSphereTwo.lean - `S2`, `radiusForm`, `roundMetric2I`, `dι_I2`: the round metric `r² h` of the 2-sphere as a smooth nondegenerate metric of the manifold modelled on `Fin 2 → ℝ`.
-127. Lightlike/Spacetime/RoundSphereTwoChart.lean - `inner_fderiv_chartInv2`: the inverse stereographic chart of the 2-sphere is conformal with the factor `16 / (‖u‖² + 4)²`.
+126. Lightlike/Spacetime/RoundSphereTwo.lean - `S2`, `radiusForm`, `roundMetric2I`, `dι_I2`: the round metric r² h of the 2-sphere as a smooth nondegenerate metric of the manifold modelled on Fin 2 → ℝ.
+127. Lightlike/Spacetime/RoundSphereTwoChart.lean - `inner_fderiv_chartInv2`: the inverse stereographic chart of the 2-sphere is conformal with the factor 16 / (‖u‖² + 4)².
 128. Lightlike/Spacetime/RoundSphereTwoCoord.lean - `coordMetric_round2`, `chart_symm_deriv2`, `mfderiv_I2_chart_symm`: the coordinate metric of the round 2-sphere in the charts of Mathlib's atlas.
-129. Lightlike/Spacetime/RoundSphereTwoCurvature.lean - `coordMetric_round2_eq`, `roundSphere2_scalarCurvatureAt`, `roundSphere2_exists_leviCivita`: the round 2-sphere of radius `r` has scalar curvature `2 / r²`.
+129. Lightlike/Spacetime/RoundSphereTwoCurvature.lean - `coordMetric_round2_eq`, `roundSphere2_scalarCurvatureAt`, `roundSphere2_exists_leviCivita`: the round 2-sphere of radius r has scalar curvature 2 / r².
 
 ## References
 
