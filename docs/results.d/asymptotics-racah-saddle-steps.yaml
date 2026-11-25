@@ -1,0 +1,88 @@
+- id: LL-XXXX-a
+  title: "Racah's alternating 6j sum is the imaginary part of a contour integral: for Racah's kernel f(z) = πT(z)/sin(πz), with T entire and built from 1/Γ, real x₁ left of a face sum and x₂ right of a quadrilateral sum, f has a primitive Φ on the closed upper half-plane minus the integers, continuous at x₁ and x₂, and racahSum = −Im(Φ(x₂) − Φ(x₁))/π"
+  area: Asymptotics
+  file: Lightlike/Asymptotics/ContourIdentity.lean
+  decls: [Lightlike.Asymptotics.racahSum_eq_im_primitive]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location for this statement; it is a step of the complex saddle-point proof of the Racah-sum asymptotics (LL-0290), which the library proves in place of the real-variable step of Gurau 2008. The kernel has Racah's term as its residue at each integer (T is built from 1/Gamma), so the sum is given by the imaginary parts of the primitive at the two ends. The spins are given by the six natural numbers J (the integer edges); faceN and quadN are the face sums and quadrilateral sums of J. Hypotheses stated in the Lean theorem: x1 is below some face sum and x2 above some quadrilateral sum. No unproved hypothesis."
+  since: unreleased
+- id: LL-XXXX-b
+  title: "Complex Stirling on sectors: if Re w ≥ −c‖w‖ with 0 ≤ c < 1 and ‖w‖² ≥ 2/(1−c), the Stirling series Σ d(w+n) converges and the remainder satisfies ‖μ(w)‖ ≤ 3/(4(1−c)‖w‖); and Γ(w + N + ½) / (√(2π) exp(f(w+N) + μ(w+N))) → 1 as N → ∞ for w off the negative real axis, with f(w) = w log w − w"
+  area: Asymptotics
+  file: Lightlike/Asymptotics/Stirling.lean
+  decls: [Lightlike.Asymptotics.norm_stirMu_le, Lightlike.Asymptotics.tendsto_Gamma_div_stir]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location for this statement; it is a step of the complex saddle-point proof of the Racah-sum asymptotics (LL-0290), which the library proves in place of the real-variable step of Gurau 2008. Complex Stirling bounds for the Gamma function in the form needed by the kernel of Racah's sum. Hypotheses stated in the Lean theorems: the sector condition and the size condition for the bound; w in the slit plane for the limit. The classical Stirling formula is not claimed as a new result: the entry records the explicit remainder bound on sectors with its constant, which is what the saddle-point estimate uses."
+  since: unreleased
+- id: LL-XXXX-c
+  title: "The leading form of Racah's kernel: for A_i = a_i + 3/2, B_k = b_k + 2 with ΣA = ΣB and Im Z > 0, the kernel at Z − 3/2 equals e^{ψ(Z)} P_A(Z) e^{E(Z)} / ((2π)²(1 + e^{2πiZ})) exactly, and under rescaling by N the kernel differs from e^{Nψ(x)} P_A(x) by a relative error at most C(y, R)/N"
+  area: Asymptotics
+  file: Lightlike/Asymptotics/KernelLead.lean
+  decls: [Lightlike.Asymptotics.racahKernel_eq_lead, Lightlike.Asymptotics.norm_racahKernel_sub_lead_le]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location for this statement; it is a step of the complex saddle-point proof of the Racah-sum asymptotics (LL-0290), which the library proves in place of the real-variable step of Gurau 2008. psi is the phase (phaseC A B), P_A the amplitude (leadP A), E the Stirling error (kernelErr). Hypotheses stated in the Lean theorems: the balance condition ΣA = ΣB, Im Z > 0 for the exact form, and for the rescaled bound Im x ≥ y > 0, the norms of x, x − A_i, x − B_k at most R and N large in terms of y and R, with an explicit constant C(y, R) = kernelLeadC y R. No unproved hypothesis."
+  since: unreleased
+- id: LL-XXXX-d
+  title: "A descent path from a point of the upper half-plane below the saddle level of the phase of a Euclidean tetrahedron exists and lands at a real point x: it is a lift of the descent field on [0, T) converging to x, with phase(x) = phase(z₀) − T, bdry(x) = Im phase(z₀) and Re phase(x) < Re phase(z₀)"
+  area: Asymptotics
+  file: Lightlike/Asymptotics/Descent.lean
+  decls: [Lightlike.Asymptotics.IsEuclid.exists_descent]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location for this statement; it is a step of the complex saddle-point proof of the Racah-sum asymptotics (LL-0290), which the library proves in place of the real-variable step of Gurau 2008. The descent field is z' = −1/ψ'(z) for the continued phase ψ. Euclidean means that the twelve triangle inequalities of the faces hold and the squared volume is positive (IsEuclid). Hypotheses stated in the Lean theorem: IsEuclid l, Im z0 > 0 and Re phase(z0) < Re phase(saddle). No unproved hypothesis."
+  since: unreleased
+- id: LL-XXXX-e
+  title: "No landing in the middle for a Euclidean tetrahedron: the descent landing point x of the previous entry lies at or to the left of some face sum, or at or to the right of some quadrilateral sum"
+  area: Asymptotics
+  file: Lightlike/Asymptotics/Landing.lean
+  decls: [Lightlike.Asymptotics.IsEuclid.exists_descent_outside]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location for this statement; it is a step of the complex saddle-point proof of the Racah-sum asymptotics (LL-0290), which the library proves in place of the real-variable step of Gurau 2008. Hypotheses stated in the Lean theorem: IsEuclid l, Im z0 > 0 and Re phase(z0) < Re phase(saddle). It refines the descent existence theorem of Descent.lean by excluding a landing point that is to the right of every face sum and to the left of every quadrilateral sum."
+  since: unreleased
+- id: LL-XXXX-f
+  title: "The local Laplace estimate along a valley ray: for a phase with valley direction v = valleyDir u₀ ε τ at the saddle s, with the cubic remainder and the quadratic decrease bounds on [0, r], the integral ∫₀ʳ v e^{N(ψ(s + tv) − ψ(s))} dt equals ε u₀ √(π/(N‖b‖))/2 up to C/N, with one C for ε = ±1 and |τ| ≤ 1/2"
+  area: Asymptotics
+  file: Lightlike/Asymptotics/Closing.lean
+  decls: [Lightlike.Asymptotics.laplace_valley]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location for this statement; it is a step of the complex saddle-point proof of the Racah-sum asymptotics (LL-0290), which the library proves in place of the real-variable step of Gurau 2008. The leading term does not depend on the tilt tau of the valley direction. Hypotheses stated in the Lean theorem: b is not zero, u0 has norm 1 with b u0^2 = −‖b‖, r > 0, and the ray bounds hold for all admissible eps and tau (positive imaginary part, cubic remainder at most K t^3, real part at most Re psi(s) − ‖b‖ t^2/4). It uses the uniform one-dimensional Laplace estimate of Lightlike.Oscillatory (laplace_ray_uniform). No unproved hypothesis."
+  since: unreleased
+- id: LL-XXXX-g
+  title: "The ray estimate for a primitive of the rescaled Racah kernel: along a valley ray from the saddle s of length r, with the valley bounds and the norm bounds, ‖(2π)² N^{3/2} e^{−Nψ(s)} (F(s + rv) − F(s)) − ε P(s) u₀ √(π/‖b‖)/2‖ ≤ C/√N for every primitive F of N K(N w − 3/2) on the upper half-plane"
+  area: Asymptotics
+  file: Lightlike/Asymptotics/SaddleRay.lean
+  decls: [Lightlike.Asymptotics.ray_estimate]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location for this statement; it is a step of the complex saddle-point proof of the Racah-sum asymptotics (LL-0290), which the library proves in place of the real-variable step of Gurau 2008. The constant C depends only on r, the lower bound on ‖b‖, K, y and R. Hypotheses stated in the Lean theorem: the valley bounds, Im(s + tv) ≥ y and the three norm bounds on [0, r], the scaling conditions N A_i = a_i + 3/2 and N B_k = b_k + 2 with ΣA = ΣB, and N large in terms of y and R. It combines the leading form of the kernel (the kernel entry above) with the local Laplace estimate. No unproved hypothesis."
+  since: unreleased
+- id: LL-XXXX-h
+  title: "The outer side of the contour for a Euclidean tetrahedron: given a uniform approximation of the rescaled phases by the phase of the tetrahedron on compacts, a ray of descent from the saddle, a descent line landing at a real point x, and a uniform bound on the rescaled kernel G, there are a real p near x and constants C, δ > 0 with |F(p) − F(Q_λ)| ≤ C λ e^{λ(D_λ − δ)} for every primitive F of G_λ continuous at p"
+  area: Asymptotics
+  file: Lightlike/Asymptotics/SaddleAssembly.lean
+  decls: [Lightlike.Asymptotics.IsEuclid.outer_side]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location for this statement; it is a step of the complex saddle-point proof of the Racah-sum asymptotics (LL-0290), which the library proves in place of the real-variable step of Gurau 2008. The path is the segment from Q_lambda to s0 + r v, the ray to s0 + r_c v, the descent line up to a point close to x, and the vertical segment down to p = Re alpha(T'). It shows that the outer part of the contour contributes exponentially less than the saddle. Hypotheses stated in the Lean theorem (the approximation, the ray bound, the descent line, the bound on G and the regularity set reg); IsEuclid l. No unproved hypothesis."
+  since: unreleased
