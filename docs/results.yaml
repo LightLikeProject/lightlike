@@ -6566,3 +6566,16 @@
   review: kernel-checked
   note: "Comparison pending (no source was read at a cited location). Follows from the tensor transformation of the Einstein tensor (LL-0002 and einsteinTensor_pullback) and of the metric; IsChartChange is a smooth map from the open set V into U with invertible Jacobian determinant on V, and the equation is Einstein tensor plus Lambda times the metric equals zero in the coordinate formulation."
   since: unreleased
+- id: LL-0505
+  title: A Spin(4) representation (n/2, m/2) with n + m > 0 satisfies the weak simplicity constraint of the Barrett-Crane model, Y^H (K - 0 L) Y = 0 on the image of the highest-spin embedding, exactly when n = m
+  area: SpinFoam
+  file: Lightlike/SpinFoam/BarrettCrane.lean
+  decls: [Lightlike.SpinFoam.BC.simple_iff]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: barrett-crane-1998, location: "Section IV", check: "New Model"}
+  review: kernel-checked
+  note: "Comparison pending for this statement (Barrett and Crane, Section IV, define the model with simple representations (j, j); the weak simplicity constraint as the vanishing of Y^H (K - gamma L) Y at gamma = 0 on the image of the highest-spin embedding is the EPRL form of the constraint, taken from the library's Spin4/EPRL.lean, here specialised to gamma = 0). Doubled spins n, m; the constraint is stated for every traceless X in sl(2, C) in the form of the library, eprlMap n m is the embedding of the highest-spin representation and simplicityOp 0 n m X the constraint operator. The statement is the case gamma = 0 of weak_simplicity_iff (the previous simplicity entry): the constraint holds iff n - m = gamma (n + m), which for gamma = 0 is n = m. Hypothesis 0 < n + m. A non-simple representation, spins (1/2, 0), violates it (the test not_simple_half_zero), the simple one, spins (1/2, 1/2), satisfies it (simple_half_half)."
+  since: unreleased
