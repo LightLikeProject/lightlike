@@ -335,4 +335,61 @@ theorem jwAt_mul_capOp (q : kˣ) {s m : ℕ} :
       exact push_step_r (A := Module.End k (ModelSpace k)) _ _ _ _ _ _ (ih (n + 1) (by omega) (by omega))
         (cap_mul_e_near q (m := m) (j := n + s) (by omega)).symm
 
+/-- **The middle case of the expansion**: `cup_{l+1} e_l cap_{l+1} = e_{l+1} e_l e_{l+2} e_{l+1}`. -/
+theorem cup_e_cap_mid (q : kˣ) (l : ℕ) :
+    (cupOp q (l + 1) * modelE q l * capOp q (l + 1) : Module.End k (ModelSpace k)) =
+      modelE q (l + 1) * modelE q l * modelE q (l + 2) * modelE q (l + 1) := by
+  have hc : (modelE q l : Module.End k (ModelSpace k)) * modelE q (l + 2) = modelE q (l + 2) * modelE q l :=
+    (modelE_isTL q).comm l (l + 2) le_rfl
+  have h : (capOp q (l + 1) : Module.End k (ModelSpace k)) * (modelE q l * modelE q (l + 2)) * cupOp q (l + 1) =
+      modelE q l := by
+    rw [hc, ← mul_assoc, cap_mul_e_succ q (l + 1), cap_mul_e_near q (m := l + 2) (j := l) le_rfl,
+      mul_assoc, cap_succ_cup q (l + 1), mul_one]
+  calc (cupOp q (l + 1) * modelE q l * capOp q (l + 1) : Module.End k (ModelSpace k))
+      = cupOp q (l + 1) * (capOp q (l + 1) * (modelE q l * modelE q (l + 2)) * cupOp q (l + 1)) *
+        capOp q (l + 1) := by rw [h]
+    _ = (cupOp q (l + 1) * capOp q (l + 1)) * modelE q l * modelE q (l + 2) *
+        (cupOp q (l + 1) * capOp q (l + 1)) := by simp only [mul_assoc]
+    _ = _ := by rw [cup_cap]
+
+/-- **Expansion**: conjugating an element of `C n` by a cup and a cap at a junction `m ≤ n + 1` stays in `C (n + 2)`. -/
+theorem cup_mul_cap_mem (q : kˣ) (hδ : loopVal q ≠ 0) {n m : ℕ} (hm : m ≤ n + 1)
+    {z : Module.End k (ModelSpace k)} (hz : z ∈ CSub q n) : cupOp q m * z * capOp q m ∈ CSub q (n + 2) := by
+  have hcc : (capOp q m : Module.End k (ModelSpace k)) * cupOp q m = loopVal q • 1 := by
+    rw [cap_cup, Algebra.algebraMap_eq_smul_one]; rfl
+  have he : (modelE q m : Module.End k (ModelSpace k)) ∈ CSub q (n + 2) := e_mem_tlSub (by omega)
+  unfold CSub tlSub at hz
+  induction hz using Algebra.adjoin_induction with
+  | mem x hx =>
+    obtain ⟨j, hj, rfl⟩ := hx
+    by_cases h1 : j + 2 ≤ m
+    · rw [← e_mul_cup_near q h1, mul_assoc, cup_cap]
+      exact Subalgebra.mul_mem _ (e_mem_tlSub (by omega)) he
+    · by_cases h2 : m ≤ j
+      · have : cupOp q m * modelE q j = modelE q (j + 2) * cupOp q m := (e_mul_cup_far q h2).symm
+        rw [this, mul_assoc, cup_cap]
+        exact Subalgebra.mul_mem _ (e_mem_tlSub (by omega)) he
+      · obtain ⟨l, rfl⟩ : ∃ l, m = l + 1 := ⟨m - 1, by omega⟩
+        have hjl : j = l := by omega
+        subst hjl
+        rw [cup_e_cap_mid]
+        exact Subalgebra.mul_mem _ (Subalgebra.mul_mem _ (Subalgebra.mul_mem _ (e_mem_tlSub (by omega))
+          (e_mem_tlSub (by omega))) (e_mem_tlSub (by omega))) (e_mem_tlSub (by omega))
+  | algebraMap r =>
+    rw [Algebra.algebraMap_eq_smul_one, mul_smul_comm, smul_mul_assoc, mul_one, cup_cap]
+    exact Subalgebra.smul_mem _ he r
+  | add x y _ _ hx hy => rw [mul_add, add_mul]; exact Subalgebra.add_mem _ hx hy
+  | mul x y _ _ hx hy =>
+    have e : (cupOp q m * x * capOp q m) * (cupOp q m * y * capOp q m) =
+        loopVal q • (cupOp q m * (x * y) * capOp q m : Module.End k (ModelSpace k)) := by
+      calc _ = cupOp q m * x * (capOp q m * cupOp q m) * y * capOp q m := by simp only [mul_assoc]
+        _ = _ := by
+          rw [hcc]
+          simp only [mul_smul_comm, smul_mul_assoc, mul_one, mul_assoc]
+    have : cupOp q m * (x * y) * capOp q m = (loopVal q)⁻¹ • ((cupOp q m * x * capOp q m) *
+        (cupOp q m * y * capOp q m)) := by
+      rw [e, smul_smul, inv_mul_cancel₀ hδ, one_smul]
+    rw [this]
+    exact Subalgebra.smul_mem _ (Subalgebra.mul_mem _ hx hy) _
+
 end Lightlike.TemperleyLieb
