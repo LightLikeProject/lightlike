@@ -1,4 +1,5 @@
 import Lightlike.Spacetime.Curvature
+import Lightlike.Spacetime.RiemannSymmetry
 
 /-!
 # Continuity of the curvature of a smooth coordinate metric
@@ -44,12 +45,6 @@ lemma contDiffOn_inv_entry {A : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ} 
     rw [Matrix.inv_def, Ring.inverse_eq_inv']
     simp
   refine (ContDiffOn.mul (hd.inv hdet) hadj).congr fun y hy => this y hy
-
-/-- Coordinate derivatives of a smooth function are smooth. -/
-lemma contDiffOn_pd {f : (Fin n → ℝ) → ℝ} {U : Set (Fin n → ℝ)} (hf : ContDiffOn ℝ ∞ f U)
-    (hU : IsOpen U) (k : Fin n) : ContDiffOn ℝ ∞ (pd k f) U := by
-  have h := hf.fderiv_of_isOpen hU (m := ∞) le_rfl
-  exact h.clm_apply contDiffOn_const
 
 /-- The Christoffel symbols of a coordinate metric are smooth on its domain. -/
 theorem contDiffOn_christoffel {g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ} {U : Set (Fin n → ℝ)}

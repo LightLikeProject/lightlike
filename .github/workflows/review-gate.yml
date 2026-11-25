@@ -1,11 +1,8 @@
 name: Review gate
 
-# Posts the commit status `review-gate` (the required check) on the head commit of a pull request, and sets
-# the label `needs-review` (scripts/review_gate.py has the rules): a pull request that adds, changes or
-# removes a Lean file under Lightlike/ or Tasks/ needs two approvals of its current commit from two
-# accounts other than the author, each with a merged pull request here, unless it is an auto-merge
-# proof-task pull request or its author administers the repository. Every other pull request passes. This
-# never merges anything.
+# Posts the commit status `review-gate` (a required check of the ruleset) on the head commit of a pull
+# request. It always passes: pull requests carry no review label and merge when their gates and checks pass
+# (scripts/review_gate.py). It also removes the old label `needs-review` where it is still present.
 #
 # A status posted through the API satisfies a required status check whatever event computed it, so the
 # check does not depend on a check run of a pull_request_target or workflow_run job attaching to the head.
@@ -52,7 +49,7 @@ jobs:
       - name: Install the pinned PyYAML
         run: python3 -m pip install --quiet "$(grep -i '^pyyaml' requirements.txt)"
 
-      - name: Label needs-review and post the status (pull request event)
+      - name: Remove the old label needs-review and post the status (pull request event)
         if: github.event_name == 'pull_request_target'
         env:
           GH_TOKEN: ${{ github.token }}

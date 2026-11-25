@@ -10,13 +10,18 @@ distribution on measurement outcomes.
 
 A Hamiltonian is a self-adjoint operator on a finite-dimensional Hilbert space. Its exponential
 gives the time evolution of a state, which preserves the norm and solves the Schrödinger equation
-{1} [1]. Measuring an observable in a normalised state gives each eigenvalue with the probability
-of the Born rule, and these probabilities form a probability distribution on the outcomes [1].
+{1} [1]. The evolution is a one-parameter group that preserves inner products {1} [1]. Measuring an
+observable in a normalised state gives each eigenvalue with the probability of the Born rule, and these
+probabilities sum to one and form a probability distribution on the outcomes [1]. The expectation value is
+the sum of the eigenvalues weighted by these probabilities, and the probabilities of an observable that
+commutes with the Hamiltonian do not change in time [1].
 Infinite-dimensional Hilbert spaces and unbounded operators are not covered here. [TODO]
 
 ## Lean References
 
-1. Lightlike/QM/Basic.lean - `QM.evolve`, `QM.norm_evolve`, `QM.schrodinger`, `QM.bornPMF`
+1. Lightlike/QM/Basic.lean - `QM.evolve`, `QM.evolve_add`, `QM.norm_evolve`, `QM.inner_evolve`,
+   `QM.schrodinger`, `QM.sum_bornProb`, `QM.bornPMF`, `QM.expectation_eq_sum`,
+   `QM.bornProb_evolve_of_commute`
 
 ## References
 

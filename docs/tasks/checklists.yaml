@@ -1,0 +1,2030 @@
+# Hand-written input to scripts/tasks.py, next to milestones.md and decomposition.yaml: per
+# milestone, its GitHub issue, its place in the ranking of v1.0, and the checklist of a v1.0
+# milestone. `python3 scripts/tasks.py generate` copies all of it into docs/tasks/tasks.yaml.
+#
+# Status is never written here. `scripts/milestone_status.py` computes it on a built `main`: an
+# item is ticked when every declaration it names exists, has no `sorry` and uses only Lean's
+# standard axioms (the per-declaration mode of scripts/AxiomAudit.lean). Who has claimed a
+# milestone, and its last step, come from the claim and the stream status files, not from here.
+#
+# Per milestone (the key is its ID in milestones.md):
+#   issue:    the number of its GitHub issue. Written once by scripts/sync_github.py when it opens
+#             the issue, so a second run never opens a second one. Never edited by hand.
+#   ranking:  v1.0 only: its place in the order in which the streams take milestones (1 = first),
+#             kept by the maintainers (milestones that unblock others come first).
+#   items:    v1.0 only: the checklist, built from the done-when and the trust checks. Each item:
+#     id:              unique within the milestone (m = main theorem, p = piece, t = trust check,
+#                      c = catalogue, r = review), e.g. m1, p2, t3
+#     kind:            main | piece | trust | catalogue | review
+#     text:            what has to hold, in one sentence
+#     decls:           the full names of the declarations that satisfy it (empty while none is
+#                      written). A catalogue item with no decls covers the theorems of the
+#                      main and piece items.
+#     hint:            optional: what is missing, or which existing results come close
+#     review_evidence: review items only: null, or the evidence written by whoever did the work:
+#                      what was compared with what, and the result (at least 30 characters).
+#                      The item is ticked once it is written. There is no separate review step.
+#
+# A catalogue item is ticked when each of its declarations is ticked, is named by an entry of
+# docs/results.yaml with `status: proven`, and is cited in the API map of its folder.
+
+# v1.0 (owner decision, 25 Nov 2026): the S, M and L milestones of the eight core areas. On GitHub
+# their issues are in the GitHub Milestone "v1.0"; every other milestone is outside it (not scheduled).
+v1.0:
+  areas: [geometry, harmonic-analysis, operator-algebras, asymptotics, pl-topology, quantum-groups, regge, spin-foams]
+  sizes: [S, M, L]
+  count: 55
+
+milestones:
+  GE1:
+    issue: 4
+    ranking: 2
+    items:
+      - id: m1
+        kind: main
+        text: "The Riemann tensor, the Ricci tensor and the scalar curvature of the Levi-Civita connection agree in every chart with the coordinate curvature"
+        decls: [Lightlike.riemann_coord_compW, Lightlike.ricciAt_coordW, Lightlike.scalarCurvatureAt_coordW]
+      - id: p1
+        kind: piece
+        text: "The Levi-Civita connection of a metric exists and is unique"
+        decls: [Lightlike.leviCivita_exists_unique_proved]
+      - id: p2
+        kind: piece
+        text: "The curvature, Ricci tensor and scalar curvature of a connection are defined intrinsically, and R(X,Y)Z = ∇_X∇_Y Z − ∇_Y∇_X Z − ∇_[X,Y] Z"
+        decls: [Lightlike.Connection.curvatureAt, Lightlike.Connection.ricciAt, Lightlike.Connection.scalarCurvatureAt, Lightlike.curvatureAt_apply_proved]
+      - id: t1
+        kind: trust
+        text: "The round 2-sphere of radius r, as a manifold with its Levi-Civita connection, has scalar curvature 2/r²"
+        decls: []
+        hint: "Close but not this: Lightlike.Test.sphere_scalar (coordinate formula on the (θ, φ) chart), scalarCurv_sphere (sphere in ℝ³ by the Gauss equation), scalarCurvature_stereo_two (radius 1 only). Missing: the statement for the intrinsic scalarCurvatureAt."
+      - id: t2
+        kind: trust
+        text: "Schwarzschild is Ricci-flat, for the Levi-Civita connection on the exterior manifold"
+        decls: [Lightlike.schwarzschild_ricci_eq_zero]
+      - id: t3
+        kind: trust
+        text: "A connection with torsion gives a different Ricci tensor from the Levi-Civita connection of the same metric"
+        decls: []
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  GE2:
+    ranking: 19
+    items:
+      - id: m1
+        kind: main
+        text: "Minkowski space is globally hyperbolic and the slice t = 0 is a Cauchy surface of it"
+        decls: [Lightlike.Causal.minkowski_globallyHyperbolic, Lightlike.Causal.minkowski_slice_isCauchySurface]
+      - id: p1
+        kind: piece
+        text: "Time orientation of a Lorentzian manifold is defined"
+        decls: [Lightlike.Causal.TimeOrientation, Lightlike.Causal.TimeOrientable]
+      - id: p2
+        kind: piece
+        text: "Future causal, future timelike and inextendible future timelike curves are defined"
+        decls: [Lightlike.Causal.IsFutureCausalCurve, Lightlike.Causal.IsFutureTimelikeCurve, Lightlike.Causal.IsInextendibleFutureTimelike]
+      - id: p3
+        kind: piece
+        text: "The chronological and causal futures are defined"
+        decls: [Lightlike.Causal.chronFuture, Lightlike.Causal.causalFuture]
+      - id: p4
+        kind: piece
+        text: "Global hyperbolicity and Cauchy surfaces are defined"
+        decls: [Lightlike.Causal.IsGloballyHyperbolic, Lightlike.Causal.IsCauchySurface, Lightlike.Causal.IsChronological]
+      - id: p5
+        kind: piece
+        text: "Basic properties of the causal relations: chronological inside causal, reflexivity of causal, transitivity of both, causal implies chronological"
+        decls: [Lightlike.Causal.chron_subset_causal, Lightlike.Causal.self_mem_causalFuture, Lightlike.Causal.causal_trans, Lightlike.Causal.chron_trans, Lightlike.Causal.chronological_of_causal]
+      - id: t1
+        kind: trust
+        text: "Minkowski's causal future is the closed light cone"
+        decls: [Lightlike.Causal.minkowski_causalFuture_eq]
+      - id: t2
+        kind: trust
+        text: "Anti-de Sitter is not globally hyperbolic"
+        decls: []
+        hint: "Missing: no anti-de Sitter spacetime with a causal statement. Existing: Lightlike.adsBoundary and Lightlike.adsCompact_boundary (coordinate-level conformal boundary), Lightlike.Causal.IsGloballyHyperbolic (the predicate to negate)."
+      - id: t3
+        kind: trust
+        text: "A spacetime with closed timelike curves (Minkowski with time rolled up) violates chronology"
+        decls: []
+        hint: "Missing: the rolled-up Minkowski spacetime and x ∈ chronFuture x. Existing: Lightlike.Causal.IsChronological, Lightlike.Causal.chronFuture; a CTC cylinder exists in GreenOperators/Cylinder.lean but does not use them."
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  GE3:
+    ranking: 22
+    items:
+      - id: m1
+        kind: main
+        text: "The Raychaudhuri equation holds for a geodesic timelike congruence on a manifold with the Levi-Civita connection"
+        decls: [Lightlike.raychaudhuri_leviCivita]
+      - id: m2
+        kind: main
+        text: "Under the strong energy condition a timelike geodesic congruence with negative expansion focuses within finite proper time"
+        decls: [Lightlike.raychaudhuri_focusing_strongEC]
+        hint: "Dimension 4, Λ = 0 absorbed into T, rotation-free hypothesis; the bound is L ≤ 3/|Θ|."
+      - id: p1
+        kind: piece
+        text: "The general form of the Raychaudhuri equation on a manifold, and focusing from Ric(V,V) ≥ 0"
+        decls: [Lightlike.raychaudhuri_manifold, Lightlike.raychaudhuri_focusing_manifold, Lightlike.raychaudhuri_focusing_manifold_at]
+      - id: t1
+        kind: trust
+        text: "The expansion of comoving congruences is 0 in Minkowski space and 3ȧ/a in FLRW, in closed form"
+        decls: [Lightlike.Cosmology.minkowski_comoving_expansion, Lightlike.Cosmology.flrw_comoving_expansion, Lightlike.Cosmology.flrw_raychaudhuri, Lightlike.minkowskiManifold_comoving_expansion, Lightlike.flrwManifold_comoving_expansion]
+      - id: t2
+        kind: trust
+        text: "A congruence in a spacetime violating the energy condition does not focus (de Sitter: Θ = 3H > 0)"
+        decls: [Lightlike.Cosmology.deSitter_no_focusing, Lightlike.deSitterManifold_no_focusing]
+        hint: "States the values of Θ and Ric, not a literal non-blow-up theorem; Lightlike.twisted_no_focusing is a rotation counterexample."
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  GE5:
+    ranking: 51
+    items:
+      - id: m1
+        kind: main
+        text: "On a spin manifold the Dirac operator satisfies D² = ∇*∇ + R/4"
+        decls: []
+        hint: "Missing: spin structure, global Dirac operator and ∇*∇ on a manifold. Close: Lightlike.Dirac.lichnerowicz_frame_general (local frame form), Lightlike.Dirac.lichnerowicz_general, Lightlike.Dirac.stereo_lichnerowicz_two (S² chart)."
+      - id: p1
+        kind: piece
+        text: "The Dirac operator on ℝⁿ is defined on Mathlib Clifford-algebra modules"
+        decls: [Lightlike.Dirac.dirac]
+      - id: p2
+        kind: piece
+        text: "On ℝⁿ the Dirac operator squares to minus the Laplacian"
+        decls: [Lightlike.Dirac.dirac_dirac]
+      - id: p3
+        kind: piece
+        text: "A spin structure on a manifold is defined"
+        decls: []
+        hint: "Missing entirely."
+      - id: p4
+        kind: piece
+        text: "The Dirac operator on a spin manifold is defined, with the rough Laplacian ∇*∇ on spinors"
+        decls: []
+        hint: "Missing. Close: Lightlike.Dirac.diracF, Lightlike.Dirac.diracConn (frame/chart operators)."
+      - id: t1
+        kind: trust
+        text: "The Dirac spectrum on the unit 2-sphere is ±(k+1) with multiplicity 2(k+1)"
+        decls: []
+        hint: "Partial only: Lightlike.Dirac.sphere_dirac_lower_bound (eigenvalue k+1 with 2(k+1) multiplicity lower bound), Lightlike.Dirac.angular_class_complete_bounded (completeness inside an angular class, chart only). Missing: no other eigenvalues, smooth sections on S²."
+      - id: t2
+        kind: trust
+        text: "The formula D² = ∇*∇ + R/2 is shown to fail on the 2-sphere"
+        decls: [Lightlike.Dirac.sphere_half_formula_fails, Lightlike.Dirac.stereo_two_half_fails, Lightlike.Dirac.curvatureTerm_sphere]
+        hint: "Weak: scalar inequality s/2 ≠ s/4 for s = 2, not a failure of an operator identity."
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  GE6:
+    issue: 5
+    ranking: 23
+    items:
+      - id: m1
+        kind: main
+        text: "The Kerr metric in Boyer-Lindquist coordinates is a vacuum solution of the Einstein equations"
+        decls: [Lightlike.kerr_isVacuumSolution]
+      - id: m2
+        kind: main
+        text: "The surface gravity κ = √(M²−a²)/(2Mr₊) and the horizon angular velocity Ω_H = a/(2Mr₊) of Kerr are computed"
+        decls: [Lightlike.kerrKappa_eq, Lightlike.kerrKappa, Lightlike.kerrOmega]
+        hint: "kerrKappa and kerrOmega are defined by formula (Δ'(r₊)/(2(r₊²+a²)) and a/(2Mr₊)), not derived from the Killing field."
+      - id: p1
+        kind: piece
+        text: "The Kerr metric in Boyer-Lindquist coordinates is defined on its domain and is a coordinate metric"
+        decls: [Lightlike.kerrMetric, Lightlike.kerrU, Lightlike.isCoordMetric_kerr]
+      - id: p2
+        kind: piece
+        text: "The Killing vector χ = ∂_t + Ω_H ∂_φ is null on r = r₊"
+        decls: [Lightlike.kerr_chi_null, Lightlike.kerrChiNorm_eq]
+        hint: "Not stated: ∂_t, ∂_φ, χ are Killing fields, ∇_χ χ = κχ, r = r₊ is a Killing horizon."
+      - id: t1
+        kind: trust
+        text: "With a = 0 Kerr is Schwarzschild with κ = 1/(4M)"
+        decls: [Lightlike.kerrMetric_zero, Lightlike.kerr_schwarzschild_limit]
+      - id: t2
+        kind: trust
+        text: "The Kerr metric with the coefficient of g_tφ halved is not Ricci-flat, while flipping its sign gives Kerr with −a, which is Ricci-flat"
+        decls: [Lightlike.ctrl_not_ricci_flat, Lightlike.ctrl_ricci_22, Lightlike.ctrlMetric, Lightlike.kerrMetric_neg, Lightlike.kerr_isVacuumSolution]
+        hint: "The halved-g_tφ control is at M = 1, a = 1/2, r = 3, θ = π/2 only; the sign flip is two theorems (kerrMetric_neg, kerr_isVacuumSolution M (-a)), not one."
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  GE7:
+    ranking: 47
+    items:
+      - id: m1
+        kind: main
+        text: "The Poincaré group acts conformally on null infinity of Minkowski space"
+        decls: []
+        hint: "Missing beyond the time shift: boosts, rotations, dilation on scri+. Close: Lightlike.scriTimeShift_scriPoint, Lightlike.poincare_conformal (acts on the compactified bulk metric, not on scri)."
+      - id: m2
+        kind: main
+        text: "The isometry group of anti-de Sitter space acts conformally on its conformal boundary"
+        decls: []
+        hint: "Missing: the full SO(2,3) action. Close (subgroup generators only): Lightlike.adsBdyMetric_timeShift, Lightlike.adsBdyMetric_rotate, Lightlike.dilation_conformal_boundary, Lightlike.inversion_conformal_boundary, Lightlike.specialConformal3_conformal (flat boundary of the Poincaré patch)."
+      - id: p1
+        kind: piece
+        text: "Null infinity of Minkowski space is defined"
+        decls: [Lightlike.scriPlus, Lightlike.scriPlus_eq_range, Lightlike.scriFactor_scriPlus, Lightlike.compactify_tendsto_scriPoint]
+        hint: "Future null infinity only, coordinate-level."
+      - id: p2
+        kind: piece
+        text: "The conformal boundary of anti-de Sitter space is defined"
+        decls: [Lightlike.adsBoundary, Lightlike.pullback_adsGlobal, Lightlike.adsCompact_boundary]
+        hint: "Fixed d = 3, L = 1, coordinate-level (Fin 4 → ℝ), not a manifold embedding."
+      - id: t1
+        kind: trust
+        text: "The compactified Minkowski space is a region of the Einstein static universe"
+        decls: [Lightlike.pullback_compact, Lightlike.compactify_mem, Lightlike.pullback_esu_doubling, Lightlike.minkowski_eq_conformal_esu]
+      - id: t2
+        kind: trust
+        text: "A non-conformal rescaling of Minkowski space is shown to fail"
+        decls: [Lightlike.arctan_not_conformal, Lightlike.minkowski_nonconformal_fails]
+        hint: "Weak: one point (1,2,π/2,0) and the arctan(t), arctan(r) rescaling only."
+      - id: r1
+        kind: review
+        text: "The source of LL-0376 (Minkowski space conformal to a region of the Einstein static universe, polar form) is checked: Carroll (1997) treats it in Chapter 7, not Chapter 3; the location is read and recorded in docs/results.yaml and docs/tasks/sources.yaml"
+        review_evidence: null
+      - id: r2
+        kind: review
+        text: "The source of LL-0377 (the Cartesian form, axis included) is checked against Carroll (1997) eq. (7.100) and the remark after (7.87), and the location is recorded in place of Chapter 3"
+        review_evidence: null
+      - id: r3
+        kind: review
+        text: "The source of LL-0378 (anti-de Sitter space conformal to a region of the Einstein static universe) is a registered source that states it (for example Blau, Lecture Notes on General Relativity, Section 39.3), compared with the coordinates of the Lean statement; Carroll Chapter 3 does not treat it"
+        review_evidence: null
+      - id: r4
+        kind: review
+        text: "LL-0379 (a non-conformal rescaling fails) is a trust check, not a statement of a source: its citation of Carroll Chapter 3 is removed or replaced by one that supports it"
+        review_evidence: null
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  GE8:
+    ranking: 42
+    items:
+      - id: m1
+        kind: main
+        text: "The heat trace of a Laplace-type operator on a compact Riemannian manifold has an asymptotic expansion whose a₁ is (4π)^{-n/2}∫R/6"
+        decls: []
+        hint: "Missing: Laplace-type operator on a compact manifold, its heat trace, and the general expansion. Close: Lightlike.HeatKernel.heatCoeffs (formula only), Lightlike.HeatKernel.sphere2_a1_curv (S² example), Lightlike.HeatKernel.hasHeatExpansionTo_sphereTrace."
+      - id: p1
+        kind: piece
+        text: "The asymptotic heat expansion and the uniqueness of its coefficients"
+        decls: [Lightlike.HeatKernel.HasHeatExpansionTo, Lightlike.HeatKernel.HasHeatExpansionTo.coeff_unique, Lightlike.HeatKernel.HasHeatExpansion.coeff_unique]
+      - id: p2
+        kind: piece
+        text: "The Seeley-DeWitt coefficients a₀, a₁, a₂ in terms of volume and curvature are defined"
+        decls: [Lightlike.HeatKernel.heatCoeffs, Lightlike.HeatKernel.heatCoeffsE]
+        hint: "A definition of formulas, not derived from an operator."
+      - id: p3
+        kind: piece
+        text: "On the round 2-sphere a₁ equals (4π)^{-1}∫R/6"
+        decls: [Lightlike.HeatKernel.sphere2_a1_curv, Lightlike.HeatKernel.hasHeatExpansionTo_sphereTrace_curv, Lightlike.HeatKernel.scalarCurvature_stereo, Lightlike.HeatKernel.hasHeatExpansionTo_sphereTrace_geom]
+        hint: "Examples only (S², S³), V = 4π hard-coded."
+      - id: t1
+        kind: trust
+        text: "On the unit 2-sphere, Σ(2l+1)e^{−t l(l+1)} = 1/t + 1/3 + t/15 + O(t²)"
+        decls: [Lightlike.HeatKernel.hasHeatExpansionTo_sphereTrace]
+      - id: t2
+        kind: trust
+        text: "The flat torus has no t⁰ term in its heat trace"
+        decls: [Lightlike.HeatKernel.hasHeatExpansion_torusTrace, Lightlike.HeatKernel.hasHeatExpansion_torusTrace_geom]
+        hint: "The torus is the explicit lattice sum, not an operator on a manifold."
+      - id: r1
+        kind: review
+        text: "The source of LL-0299 (the scalar curvature of the round unit n-sphere is n(n-1)) is a location that states it: Vassilevich (2003) eq. (4.27) is the a₂ coefficient; the right location is read and recorded in docs/results.yaml"
+        review_evidence: null
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  GE9:
+    issue: 6
+    ranking: 6
+    items:
+      - id: m1
+        kind: main
+        text: "The Riemann, Ricci and scalar curvature of a coordinate metric transform as tensors under a change of chart"
+        decls: [Lightlike.riemann_pullback, Lightlike.ricci_pullback, Lightlike.scalarCurvature_pullback]
+      - id: p1
+        kind: piece
+        text: "Lorentzian metrics on a manifold are defined, and their chart components are Lorentzian coordinate metrics"
+        decls: [Lightlike.LorentzianMetric, Lightlike.LorentzianMetric.isLorentzianCoordMetric_coordMetric]
+      - id: p2
+        kind: piece
+        text: "Minkowski space is defined as a Lorentzian metric on ℝⁿ"
+        decls: [Lightlike.minkowskiMetric, Lightlike.minkowskiForm_isLorentzian]
+      - id: p3
+        kind: piece
+        text: "The coordinate Christoffel symbols, Riemann, Ricci and scalar curvature are defined, and Minkowski space is flat"
+        decls: [Lightlike.christoffel, Lightlike.riemann, Lightlike.ricci, Lightlike.scalarCurvature, Lightlike.IsFlatOn, Lightlike.minkowski_flat]
+      - id: p4
+        kind: piece
+        text: "The Riemann tensor has the pair symmetry, the antisymmetry and the first Bianchi identity"
+        decls: [Lightlike.IsCoordMetric.riemannLower_pair_symm, Lightlike.riemannLower_antisymm_last, Lightlike.IsCoordMetric.bianchi_first, Lightlike.IsCoordMetric.bianchi_first_lower]
+      - id: p5
+        kind: piece
+        text: "A chart change is defined, and the vacuum equations are chart-invariant"
+        decls: [Lightlike.IsChartChange, Lightlike.isVacuumSolution_pullback]
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  GE10:
+    issue: 7
+    ranking: 16
+    items:
+      - id: m1
+        kind: main
+        text: "Minkowski space is a solution of the vacuum Einstein equations"
+        decls: [Lightlike.minkowski_isVacuumSolution]
+      - id: m2
+        kind: main
+        text: "Exterior Schwarzschild (r > 2M, M > 0) is a solution of the vacuum Einstein equations"
+        decls: [Lightlike.sch_isVacuumSolution]
+      - id: p1
+        kind: piece
+        text: "The vacuum Einstein equations with cosmological constant are defined, and for Λ = 0 they are Ricci-flatness"
+        decls: [Lightlike.IsVacuumSolution, Lightlike.einsteinTensor, Lightlike.vacuum_iff_ricci_eq_zero]
+      - id: p2
+        kind: piece
+        text: "Exterior Schwarzschild is a Lorentzian metric"
+        decls: [Lightlike.sch_isLorentzian]
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  GE11:
+    ranking: 53
+    items:
+      - id: m1
+        kind: main
+        text: "For any non-degenerate metric on any ModelWithCorners without a Hausdorff hypothesis, the Riemann tensor has the first Bianchi identity and the pair symmetry"
+        decls: [Lightlike.bianchi_first_provedW, Lightlike.riemannLowerAt_pair_symmW]
+      - id: m2
+        kind: main
+        text: "In that generality the Ricci tensor is symmetric"
+        decls: [Lightlike.ricciAt_symm_provedW]
+      - id: m3
+        kind: main
+        text: "In that generality the second Bianchi identity holds"
+        decls: [Lightlike.bianchi_second_provedW]
+      - id: m4
+        kind: main
+        text: "In that generality the divergence of the Einstein tensor is zero"
+        decls: []
+        hint: "Close: Lightlike.einstein_divergence_free_provedW, but the model space is fixed to Fin n → ℝ (not any finite-dimensional space)."
+      - id: m5
+        kind: main
+        text: "In that generality the intrinsic curvature agrees in every chart with the coordinate curvature"
+        decls: []
+        hint: "Close: Lightlike.riemann_coord_compW, Lightlike.ricciAt_coordW, Lightlike.satisfiesEinstein_iff_chart_provedW (coordinate layer is Fin n → ℝ only)."
+      - id: p1
+        kind: piece
+        text: "The curvature tensor of an arbitrary connection is computed by any extensions, on any finite-dimensional model space, without Hausdorff"
+        decls: [Lightlike.curvatureAt_apply_eventuallyW]
+      - id: p2
+        kind: piece
+        text: "The Levi-Civita connection of a non-degenerate metric exists, is unique and is smooth"
+        decls: [Lightlike.leviCivita_exists_unique_proved, Lightlike.contMDiffAt_leviCivitaW]
+      - id: t1
+        kind: trust
+        text: "The round 2-sphere (Riemannian) has the same identities"
+        decls: []
+        hint: "Missing: no S² instance in Corners/ (only the 3-sphere roundMetric)."
+      - id: t2
+        kind: trust
+        text: "A manifold with boundary has the same identities"
+        decls: []
+        hint: "Missing: no concrete example with boundary or corners."
+      - id: t3
+        kind: trust
+        text: "A non-Hausdorff example has the same identities"
+        decls: []
+        hint: "Missing: no example such as the line with two origins."
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  GE12:
+    ranking: 54
+    items:
+      - id: m1
+        kind: main
+        text: "£_V g = 0 is equivalent to Killing equation ∇_(μ V_ν) = 0"
+        decls: [Lightlike.isKillingAt_iff_lieDerivMetric_eq_zero, Lightlike.lieDerivMetric_eq_of_isLeviCivita]
+        hint: "Pointwise at x, Levi-Civita, metric Lie derivative only."
+      - id: m2
+        kind: main
+        text: "The Killing fields of a metric form a Lie algebra"
+        decls: []
+        hint: "Close: Lightlike.IsKillingNear.lieBracket (closure under the bracket). Missing: the linear structure (sums, real multiples) on a manifold."
+      - id: m3
+        kind: main
+        text: "De Sitter, anti-de Sitter and Hⁿ are maximally symmetric, with constant sectional curvature"
+        decls: []
+        hint: "Missing entirely. Close: Lightlike.SpaceForm.killing_P, Lightlike.SpaceForm.killing_R (3-dimensional Riemannian space form)."
+      - id: p1
+        kind: piece
+        text: "The Lie derivative of tensor fields on a smooth manifold is defined"
+        decls: []
+        hint: "Only the metric: Lightlike.lieDerivMetric."
+      - id: p2
+        kind: piece
+        text: "De Sitter, anti-de Sitter and Hⁿ are defined"
+        decls: []
+        hint: "Missing: no definitions (only FLRW de Sitter examples)."
+      - id: t1
+        kind: trust
+        text: "The n(n+1)/2 Killing fields of Minkowski space close into the Poincaré algebra"
+        decls: [Lightlike.finrank_killingFields, Lightlike.killing_eq_affField, Lightlike.mlieBracket_affField, Lightlike.skew_comm_skew]
+        hint: "Brackets given by formula, not an explicit isomorphism with a named Poincaré Lie algebra."
+      - id: t2
+        kind: trust
+        text: "The rotation field of the round 2-sphere is Killing and a dilation is not"
+        decls: []
+        hint: "Half done: Lightlike.not_isKillingAt_dilation (Minkowski). Missing: the S² rotation field."
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  GE13:
+    ranking: 40
+    items:
+      - id: m1
+        kind: main
+        text: "For a non-null hypersurface of a pseudo-Riemannian manifold the extrinsic curvature is symmetric"
+        decls: [Lightlike.Hypersurface.secondFF_symm_fields]
+      - id: m2
+        kind: main
+        text: "The Gauss relation holds for a non-null hypersurface"
+        decls: [Lightlike.Hypersurface.gauss_relation]
+      - id: m3
+        kind: main
+        text: "The Codazzi relation holds for a non-null hypersurface"
+        decls: [Lightlike.Hypersurface.codazzi_relation]
+      - id: p1
+        kind: piece
+        text: "The unit normal of a non-null hypersurface is defined and exists"
+        decls: [Lightlike.Hypersurface.IsUnitNormal, Lightlike.Hypersurface.exists_isUnitNormal]
+      - id: p2
+        kind: piece
+        text: "The induced metric on a hypersurface is defined"
+        decls: []
+        hint: "No separate definition; g restricted to tangent fields via Lightlike.Hypersurface.IsTangentNear (hypersurface = level set of a smooth function, no manifold structure on the leaf)."
+      - id: p3
+        kind: piece
+        text: "The second fundamental form (extrinsic curvature) K(v,w) = g(∇_v n, w) is defined"
+        decls: [Lightlike.Hypersurface.secondFF, Lightlike.Hypersurface.gaussCurv, Lightlike.Hypersurface.covK]
+      - id: t1
+        kind: trust
+        text: "The sphere of radius r in ℝ³ has K = h/r and scalar curvature 2/r² from the Gauss relation"
+        decls: [Lightlike.secondFF_sphere, Lightlike.gaussCurv_sphere, Lightlike.scalarCurv_sphere]
+      - id: t2
+        kind: trust
+        text: "A constant-time slice of FLRW has K = (ȧ/a) h"
+        decls: [Lightlike.Cosmology.secondFF_flrwSlice, Lightlike.Cosmology.secondFF_flrwSlice_tangent, Lightlike.Cosmology.isUnitNormal_flrwSlice]
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  GE14:
+    ranking: 21
+    items:
+      - id: m1
+        kind: main
+        text: "Dominant implies weak implies null, and strong implies null, for the energy conditions"
+        decls: [Lightlike.weakEC_of_dominantEC, Lightlike.nullEC_of_weakEC, Lightlike.nullEC_of_dominantEC, Lightlike.nullEC_of_strongEC]
+      - id: m2
+        kind: main
+        text: "For a perfect fluid each of the four energy conditions is equivalent to its inequalities in ρ and p"
+        decls: [Lightlike.fluid_nullEC_iff, Lightlike.fluid_weakEC_iff, Lightlike.fluid_strongEC_iff, Lightlike.fluid_dominantEC_iff, Lightlike.LorentzianMetric.fluidField_nullEC_iff, Lightlike.LorentzianMetric.fluidField_weakEC_iff, Lightlike.LorentzianMetric.fluidField_strongEC_iff, Lightlike.LorentzianMetric.fluidField_dominantEC_iff]
+        hint: "Dimension 4, unit timelike u."
+      - id: p1
+        kind: piece
+        text: "The null, weak, strong and dominant energy conditions are defined for a (0,2)-tensor on a Lorentzian manifold"
+        decls: [Lightlike.NullEC, Lightlike.WeakEC, Lightlike.StrongEC, Lightlike.DominantEC, Lightlike.LorentzianMetric.NullECField, Lightlike.LorentzianMetric.WeakECField, Lightlike.LorentzianMetric.StrongECField, Lightlike.LorentzianMetric.DominantECField]
+        hint: "Dimension fixed at 4; symmetry of T not assumed."
+      - id: t1
+        kind: trust
+        text: "Dust with ρ ≥ 0 satisfies all four energy conditions"
+        decls: [Lightlike.dust_energyConditions, Lightlike.LorentzianMetric.fluidField_dust]
+      - id: t2
+        kind: trust
+        text: "A positive cosmological constant violates the strong energy condition"
+        decls: [Lightlike.cosmo_energyConditions]
+      - id: t3
+        kind: trust
+        text: "A Klein-Gordon field with a negative potential violates the weak energy condition"
+        decls: [Lightlike.scalar_negative_potential_violates_weak, Lightlike.LorentzianMetric.scalarField_const_violates_weak]
+        hint: "Witness at dφ = 0 (constant φ)."
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  GE15:
+    ranking: 41
+    items:
+      - id: m1
+        kind: main
+        text: "On a compact region the first variation of ∫√−g (R − 2Λ) in the metric is ∫√−g (G_μν + Λ g_μν) δg^μν plus a boundary term"
+        decls: [Lightlike.eh_variation_region_manifold, Lightlike.eh_first_variation]
+        hint: "eh_first_variation: ℝⁿ, no boundary term; eh_variation_region_manifold: manifold region with the divergence (boundary) term."
+      - id: m2
+        kind: main
+        text: "The critical points of the action with fixed boundary data are the vacuum Einstein equations with Λ"
+        decls: []
+        hint: "Close: Lightlike.isEHCritical_iff (ℝⁿ, compactly supported variations), Lightlike.isEHCriticalOnBall_iff (ball), Lightlike.eh_ghy_variation_manifold (fixed boundary, Gibbons-Hawking-York corrected). Missing: critical points iff Einstein equations on a manifold region."
+      - id: p1
+        kind: piece
+        text: "Criticality of the Einstein-Hilbert action is defined"
+        decls: [Lightlike.IsEHCritical, Lightlike.einsteinTensor]
+      - id: p2
+        kind: piece
+        text: "With fixed boundary data the boundary terms cancel and the derivative is −∫⟨G + Λg, h⟩"
+        decls: [Lightlike.eh_ghy_variation_manifold]
+        hint: "Needs a C² nowhere-null boundary and h = 0 on ∂D."
+      - id: t1
+        kind: trust
+        text: "The Palatini identity for δR_μν"
+        decls: [Lightlike.palatini_coord, Lightlike.dRicci]
+      - id: t2
+        kind: trust
+        text: "In two dimensions the variation of ∫√g R vanishes (Gauss-Bonnet)"
+        decls: [Lightlike.isEHCritical_two_dim, Lightlike.einsteinUp_two_dim]
+        hint: "Λ = 0, coordinate ℝ²."
+      - id: t3
+        kind: trust
+        text: "A wrong sign of Λ gives the wrong de Sitter radius"
+        decls: [Lightlike.closedDeSitter_wrong_sign, Lightlike.closedDeSitter_einsteinEq]
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  HA1:
+    issue: 15
+    ranking: 8
+    items:
+      - id: m1
+        kind: main
+        text: "The principal-series representations of SL(2,C) (n in Z, rho real) are unitary, and decompose as a Hilbert sum of SU(2) representations of spin j = |k|, |k|+1, ... , each once"
+        decls: [Lightlike.Lorentz.principalSeries_mem_unitary, Lightlike.Lorentz.principalSeries_isHilbertSum]
+      - id: p1
+        kind: piece
+        text: "The principal series pi_{n,rho} is defined as a continuous representation of SL(2,C) on L2(C), a group homomorphism"
+        decls: [Lightlike.Lorentz.principalSeries, Lightlike.Lorentz.principalSeries_mul, Lightlike.Lorentz.principalSeries_one]
+      - id: p2
+        kind: piece
+        text: "Each pi_{n,rho}(g) preserves the L2 inner product, and the representation is strongly continuous"
+        decls: [Lightlike.Lorentz.principalSeries_norm, Lightlike.Lorentz.principalSeries_inner, Lightlike.Lorentz.continuous_principalSeries, Lightlike.Lorentz.continuous_principalSeries_action]
+      - id: p3
+        kind: piece
+        text: "The restriction to SU(2) is equivariant for the spin-j spaces, and an intertwiner onto a spin class occurs exactly once"
+        decls: [Lightlike.Lorentz.principalSeries_suV, Lightlike.Lorentz.intertwiner_eq_zero, Lightlike.Lorentz.intertwiner_eq_smul]
+      - id: p4
+        kind: piece
+        text: "The Haar measure of SL(2,C) exists, is unimodular (right invariant) with infinite total volume, and has the explicit chart form used for the principal series"
+        decls: [Lightlike.Lorentz.SL2C.haar_isMulRightInvariant, Lightlike.Lorentz.SL2C.haar_univ, Lightlike.Lorentz.haarC, Lightlike.Lorentz.isHaarMeasure_haarC]
+      - id: t1
+        kind: trust
+        text: "The Casimir values of the principal series are (k^2 - rho^2 - 1) and k rho"
+        decls: [Lightlike.Lorentz.casimir1_eq, Lightlike.Lorentz.casimir2_eq]
+        hint: "Stated on homogeneous functions on C^2 (the chart model), linked to the L2 action by Lightlike.Lorentz.chart_actH, not as an operator on L2(C)."
+      - id: t2
+        kind: trust
+        text: "A non-unitary parameter (Im rho != 0) gives a representation that does not preserve the L2 norm"
+        decls: [Lightlike.Lorentz.Tests.not_unitary_of_im_ne_zero]
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  HA2:
+    issue: 16
+    ranking: 15
+    items:
+      - id: m1
+        kind: main
+        text: "For f the restriction of a smooth compactly supported function on 2x2 arrays, the sum over n in Z of the integral over rho of (n^2 + 4 rho^2) times the squared Hilbert-Schmidt norm of pi_{n,rho}(f) equals 16 pi^4 times the integral of |f|^2 over SL(2,C), with every integrand integrable"
+        decls: [Lightlike.Lorentz.plancherel]
+      - id: p1
+        kind: piece
+        text: "The trace form: the sum over n and integral over rho of (n^2 + 4 rho^2) tr pi_{n,rho}(F) equals 16 pi^4 F(1)"
+        decls: [Lightlike.Lorentz.plancherel_trace]
+      - id: p2
+        kind: piece
+        text: "pi_{n,rho}(f) = integral of f(g) pi_{n,rho}(g) dg is the kernel operator used in the formula (psKernel), and the formula holds for it"
+        decls: [Lightlike.Lorentz.piOp, Lightlike.Lorentz.psKernel, Lightlike.Lorentz.plancherel_piOp]
+      - id: p3
+        kind: piece
+        text: "The formula in the variables of Perez-Rovelli (sigma = 2 rho) and of Ruhl, with the constants 1/(32 pi^4) and 1/2"
+        decls: [Lightlike.Lorentz.plancherel_trace_perezRovelli, Lightlike.Lorentz.plancherel_trace_ruhl]
+      - id: p4
+        kind: piece
+        text: "The radial (spherical) form of the Plancherel formula"
+        decls: [Lightlike.Lorentz.spherical_plancherel]
+      - id: r1
+        kind: review
+        text: "The Plancherel normalisation is compared with Perez-Rovelli (A11)/(A16); the factor 4 is either explained (a convention, stated in the docstring) or corrected"
+        review_evidence: null
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  HA3:
+    ranking: 48
+    items:
+      - id: m1
+        kind: main
+        text: "The unitary irreducible representations of SL(2,R) used by JT gravity and AdS3 (principal and discrete series) are defined and unitary"
+        decls: [Lightlike.Lorentz.SL2R.principalSeries, Lightlike.Lorentz.SL2R.principalSeries_mem_unitary, Lightlike.Lorentz.SL2R.discreteSeries, Lightlike.Lorentz.SL2R.discreteSeries_mem_unitary]
+        hint: "Discrete series: only D_n^+ (holomorphic) on main; D_n^- not found. Irreducibility of either family is not stated (rg irreducible in SL2R*.lean, SL2RPlancherel/*.lean finds nothing)."
+      - id: m2
+        kind: main
+        text: "The Plancherel formula for L2(SL(2,R)): principal series with density rho tanh(pi rho), discrete series, all K-types"
+        decls: []
+        hint: "Only the spherical (K-biinvariant) part is on main: Lightlike.Lorentz.SL2RPlancherel.sphericalL2Equiv, Lightlike.Lorentz.SL2RPlancherel.norm_sq_eq_sph. Missing: non-spherical K-types, discrete-series weights (n - 1/2), the statement tying the abstract decomposition of L2(SL(2,R)) to the density."
+      - id: p1
+        kind: piece
+        text: "The principal series of SL(2,R) is a strongly continuous unitary representation"
+        decls: [Lightlike.Lorentz.SL2R.principalSeries, Lightlike.Lorentz.SL2R.principalSeries_mem_unitary, Lightlike.Lorentz.SL2R.continuous_principalSeries_action]
+      - id: p2
+        kind: piece
+        text: "The discrete series D_n^+ is a unitary representation on a non-trivial holomorphic subspace of the Bergman space"
+        decls: [Lightlike.Lorentz.SL2R.discreteSeries, Lightlike.Lorentz.SL2R.discreteSeries_mem_unitary, Lightlike.Lorentz.SL2R.holoSubmodule_ne_bot]
+        hint: "D_n^- is missing."
+      - id: p3
+        kind: piece
+        text: "The spherical Plancherel transform is an isometry onto its image on K-biinvariant functions"
+        decls: [Lightlike.Lorentz.SL2RPlancherel.sphericalL2Equiv, Lightlike.Lorentz.SL2RPlancherel.norm_sq_eq_sph]
+      - id: t1
+        kind: trust
+        text: "The Casimir values of the principal and discrete series"
+        decls: [Lightlike.Lorentz.SL2R.casimir_principal, Lightlike.Lorentz.SL2R.casimir_discrete, Lightlike.Lorentz.SL2RPlancherel.casimir_complementary]
+      - id: t2
+        kind: trust
+        text: "The Plancherel density of the principal series is proportional to rho tanh(pi rho)"
+        decls: [Lightlike.Lorentz.SL2RPlancherel.norm_sq_eq_sph, Lightlike.Lorentz.SL2RPlancherel.density_pos]
+        hint: "Spherical part only: pi^2 * integral |F|^2 = 1/4 * integral rho tanh(pi rho) |f^(rho)|^2; no discrete-series weight, density not tied to an abstract decomposition of L2(SL(2,R))."
+      - id: t3
+        kind: trust
+        text: "A complementary-series parameter outside (0, 1/2) gives a non-unitary representation"
+        decls: []
+        hint: "Close but not this: Lightlike.Lorentz.SL2RPlancherel.no_invariant_form and no_invariant_form_smooth show no invariant form (infinitesimal, form only assumed skew for E, F, H) for |tau| > 1 (sigma > 1/2). Missing: the boundary and sigma < 0 cases, and a statement about unitarity of the group representation."
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  HA4:
+    issue: 17
+    ranking: 1
+    items:
+      - id: m1
+        kind: main
+        text: "Every irreducible unitary (finite-dimensional, continuous) representation of SU(2) is isomorphic to the spin n/2 representation, dimension n + 1"
+        decls: [Lightlike.HarmonicAnalysis.su2_irreducible_classification, Lightlike.SU2.spinRep_complete]
+      - id: p1
+        kind: piece
+        text: "The spin n/2 representation of SU(2) is defined, unitary and continuous"
+        decls: [Lightlike.SU2.spinRep, Lightlike.SU2.spinMat_mem_unitaryGroup, Lightlike.SU2.continuous_spinRep]
+      - id: p2
+        kind: piece
+        text: "The spin n/2 representation is irreducible"
+        decls: [Lightlike.SU2.spinRepresentation_isIrreducible]
+      - id: p3
+        kind: piece
+        text: "The Lie-algebra action of the spin representation is linked to Physlib's sl2-modules (E, F, H intertwined; Lie-algebra completeness)"
+        decls: [Lightlike.SU2.dSpin_E, Lightlike.SU2.dSpin_F, Lightlike.SU2.dSpin_H, Lightlike.SU2.exists_dSpin_equiv]
+      - id: p4
+        kind: piece
+        text: "The 6j symbols are linked to the SU(2) representations (recoupling coefficients of the tensor products of spinRep)"
+        decls: [Lightlike.SU2.coupleLeft_equivariant, Lightlike.SU2.coupleRight_equivariant, Lightlike.SU2.sum_cg_overlap, Lightlike.SU2.sum_cg_matrix]
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  HA5:
+    issue: 193
+    ranking: 24
+    items:
+      - id: m1
+        kind: main
+        text: "For a compact Hausdorff group the matrix coefficients of finite-dimensional unitary representations are dense in C(G)"
+        decls: [Lightlike.HarmonicAnalysis.peterWeyl_dense_continuous]
+      - id: m2
+        kind: main
+        text: "For a compact Hausdorff group with Haar measure the matrix coefficients are dense in L2(G)"
+        decls: [Lightlike.HarmonicAnalysis.peterWeyl_dense_L2]
+      - id: m3
+        kind: main
+        text: "L2(G) is the Hilbert direct sum of the isotypic components End(V_pi), indexed by the irreducible classes"
+        decls: [Lightlike.HarmonicAnalysis.peterWeyl_isHilbertSum, Lightlike.HarmonicAnalysis.peterWeyl_isHilbertSum_haar]
+      - id: p1
+        kind: piece
+        text: "The span of matrix coefficients, the irreducible classes and the isotypic component are defined"
+        decls: [Lightlike.HarmonicAnalysis.matrixCoeffSpan, Lightlike.HarmonicAnalysis.IrrClass, Lightlike.HarmonicAnalysis.isotypic]
+      - id: t1
+        kind: trust
+        text: "For U(1) the characters e^{i n theta} form an orthonormal basis of L2"
+        decls: [Lightlike.HarmonicAnalysis.circle_hilbertBasis]
+      - id: t2
+        kind: trust
+        text: "Schur orthogonality of characters for SU(2)"
+        decls: [Lightlike.HarmonicAnalysis.su2_character_orthogonality]
+      - id: t3
+        kind: trust
+        text: "For the non-compact group R, no finite-dimensional unitary representation has all matrix coefficients square-integrable"
+        decls: [Lightlike.HarmonicAnalysis.real_not_forall_memLp_two]
+        hint: "Slightly weaker form on main: for every f.d. unitary rep and row i, not all entries of the row are in L2."
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  HA6:
+    issue: 194
+    ranking: 36
+    items:
+      - id: m1
+        kind: main
+        text: "The massive one-particle representation of spin n/2 is constructed by induction from SU(2) (double cover of SO(3)), preserves the L2 norm, has P^2 = m^2 and W^2 = -m^2 s(s+1) in signature (+,-,-,-)"
+        decls: [Lightlike.Lorentz.Poincare.wigner_massive]
+      - id: m2
+        kind: main
+        text: "The massless one-particle representation of helicity h/2 is constructed by induction from ISO(2), preserves the L2 norm, has P^2 = 0 and W^2 = 0"
+        decls: [Lightlike.Lorentz.Poincare.wigner_massless]
+      - id: m3
+        kind: main
+        text: "The classification of the positive-energy irreducible representations of the Poincare group is a lockable statement"
+        decls: [Lightlike.Lorentz.Poincare.WignerClassification, Lightlike.Lorentz.Poincare.trivialRep_classified]
+        hint: "Stated only, not proven, by design (registry LL-0313 status stated). trivialRep_classified is a non-vacuity check."
+      - id: p1
+        kind: piece
+        text: "The induced representations of the Poincare group (massive and massless) are defined"
+        decls: [Lightlike.Lorentz.Poincare.inducedRep, Lightlike.Lorentz.Poincare.poincareRep, Lightlike.Lorentz.Poincare.lightInducedRep, Lightlike.Lorentz.Poincare.lightPoincareRep]
+      - id: p2
+        kind: piece
+        text: "The Pauli-Lubanski vector is defined and its square is -m^2 s(s+1) on the massive representation"
+        decls: [Lightlike.Lorentz.Poincare.pauliLubanski, Lightlike.Lorentz.Poincare.pauliLubanski_square, Lightlike.Lorentz.Poincare.spinJ_casimir]
+      - id: t1
+        kind: trust
+        text: "Massless finite-helicity states satisfy W = h P"
+        decls: [Lightlike.Lorentz.Poincare.lightPL_eq, Lightlike.Lorentz.Poincare.lightPL_square]
+        hint: "Helicity convention h/2: W = (h/2) P."
+      - id: t2
+        kind: trust
+        text: "A massive spin-1/2 representation has two states per momentum"
+        decls: [Lightlike.Lorentz.Poincare.finrank_atMomentum_spinHalf, Lightlike.Lorentz.Poincare.finrank_atMomentum]
+      - id: t3
+        kind: trust
+        text: "A tachyonic orbit has a non-compact little group"
+        decls: [Lightlike.Poincare.not_isCompact_littleGroup_tachyon, Lightlike.Poincare.boost_mem_littleGroup_tachyon]
+      - id: r1
+        kind: review
+        text: "The statement WignerClassification is compared with Wigner (1939) and Weinberg, QFT I, section 2.5: the list of positive-energy irreducible classes (massive spin s, massless helicity h, and the cases left out) matches the source"
+        review_evidence: null
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: [Lightlike.Lorentz.Poincare.wigner_massive, Lightlike.Lorentz.Poincare.wigner_massless, Lightlike.Lorentz.Poincare.pauliLubanski_square, Lightlike.Lorentz.Poincare.spinJ_casimir]
+        hint: "trivialRep_classified is left out: its entry LL-0313 is a stated (lockable) statement by design."
+  OP1:
+    issue: 18
+    ranking: 12
+    items:
+      - id: m1
+        kind: main
+        text: "Stone's theorem on a complex Hilbert space: a strongly continuous one-parameter unitary group has a self-adjoint generator, and every self-adjoint operator generates exactly one such group"
+        decls: [Lightlike.OperatorAlgebras.StoneMomentum.stone_theorem]
+      - id: p1
+        kind: piece
+        text: "A strongly continuous one-parameter unitary group and its generator are defined"
+        decls: [Lightlike.OperatorAlgebras.UnitaryGroup, Lightlike.OperatorAlgebras.UnitaryGroup.generator]
+      - id: p2
+        kind: piece
+        text: "Stone, direction 1: the generator of a unitary group is self-adjoint"
+        decls: [Lightlike.OperatorAlgebras.UnitaryGroup.generator_isSelfAdjoint]
+      - id: p3
+        kind: piece
+        text: "Stone, direction 2: every self-adjoint operator is the generator of a unitary group"
+        decls: [Lightlike.OperatorAlgebras.generator_stoneGroup]
+      - id: p4
+        kind: piece
+        text: "Uniqueness: two unitary groups with the same generator are equal"
+        decls: [Lightlike.OperatorAlgebras.UnitaryGroup.eq_of_generator_eq]
+      - id: t1
+        kind: trust
+        text: "-i d/dx is essentially self-adjoint on C_c^infinity(R) and generates translations"
+        decls: [Lightlike.OperatorAlgebras.StoneMomentum.momentumSmoothR_isEssentiallySelfAdjoint, Lightlike.OperatorAlgebras.StoneMomentum.closure_momentumSmoothR, Lightlike.OperatorAlgebras.StoneMomentum.translationGroup_eq_spectralGroup]
+      - id: t2
+        kind: trust
+        text: "On L2[0,1] without boundary conditions -i d/dx has deficiency indices (1,1)"
+        decls: [Lightlike.OperatorAlgebras.StoneMomentum.momentumMin_deficiency_indices, Lightlike.OperatorAlgebras.deficiency_indices_momentumMin]
+        hint: "The operator is on C^2 functions with support inside (0,1); equality of closure with the C_c^infinity version is proven (Lightlike.OperatorAlgebras.closure_momentumGraphSmooth_eq)."
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  OP2:
+    ranking: 25
+    items:
+      - id: m1
+        kind: main
+        text: "Shale's criterion: in the Fock representation a Bogoliubov transformation is unitarily implementable if and only if its beta part is Hilbert-Schmidt"
+        decls: [Lightlike.OperatorAlgebras.fockRepOf_implements_iff, Lightlike.OperatorAlgebras.shale_criterion]
+      - id: p1
+        kind: piece
+        text: "The Fock representation exists on every complex Hilbert space"
+        decls: [Lightlike.OperatorAlgebras.FockRep, Lightlike.OperatorAlgebras.fockRepOf]
+      - id: p2
+        kind: piece
+        text: "Bogoliubov transformations, implementability and Hilbert-Schmidt operators are defined"
+        decls: [Lightlike.OperatorAlgebras.Bogoliubov, Lightlike.OperatorAlgebras.Implements, Lightlike.OperatorAlgebras.IsHilbertSchmidt]
+      - id: p3
+        kind: piece
+        text: "Necessity: an implementable Bogoliubov transformation has Hilbert-Schmidt beta part"
+        decls: [Lightlike.OperatorAlgebras.shale_necessity_of_implements]
+      - id: p4
+        kind: piece
+        text: "Sufficiency: a Bogoliubov transformation with Hilbert-Schmidt beta part is implementable"
+        decls: [Lightlike.OperatorAlgebras.shale_sufficiency_of_hilbertSchmidt]
+      - id: t1
+        kind: trust
+        text: "|alpha|^2 - |beta|^2 = 1 for one mode"
+        decls: [Lightlike.OperatorAlgebras.squeeze_norm_alpha_sq_sub_norm_beta_sq_one, Lightlike.OperatorAlgebras.Bogoliubov.norm_alpha_sq_sub_norm_beta_sq]
+      - id: t2
+        kind: trust
+        text: "A Bogoliubov transformation with infinitely many modes of constant |beta| is not implementable"
+        decls: [Lightlike.OperatorAlgebras.squeezeEllTwo_not_implementable, Lightlike.OperatorAlgebras.not_implements_squeezeEllTwo]
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  OP3:
+    ranking: 26
+    items:
+      - id: m1
+        kind: main
+        text: "For a faithful state (positive definite density matrix) on a matrix algebra, the state is KMS at beta = 1 for its modular flow"
+        decls: [Lightlike.OperatorAlgebras.isKMS_modular_one, Lightlike.OperatorAlgebras.modular_flow_eq_modGroup]
+      - id: p1
+        kind: piece
+        text: "The modular operator of a faithful state on a matrix algebra is defined (Delta xi = rho xi rho^-1)"
+        decls: [Lightlike.OperatorAlgebras.modOp, Lightlike.OperatorAlgebras.modOpSqrt, Lightlike.OperatorAlgebras.modOpSqrt_modOpSqrt, Lightlike.OperatorAlgebras.modConj_modOp_sqrt]
+        hint: "modOp is stated for rho = e^{-H}; the rho form is modOpSqrt squared. No single lemma ties modOp(-log rho) to Delta_rho."
+      - id: p2
+        kind: piece
+        text: "Tomita-Takesaki: Delta = S^dagger S and S(a rho^{1/2}) = a^dagger rho^{1/2}"
+        decls: [Lightlike.OperatorAlgebras.inner_tomita, Lightlike.OperatorAlgebras.tomita_apply]
+      - id: p3
+        kind: piece
+        text: "The modular flow is defined, and Delta^{it} implements it"
+        decls: [Lightlike.OperatorAlgebras.modGroup, Lightlike.OperatorAlgebras.modOpPow, Lightlike.OperatorAlgebras.modOpPow_mul_modOpPow_neg]
+      - id: p4
+        kind: piece
+        text: "The KMS condition is defined, and a state is KMS iff it is the Gibbs state"
+        decls: [Lightlike.OperatorAlgebras.IsKMS, Lightlike.OperatorAlgebras.isKMS_gibbs, Lightlike.OperatorAlgebras.isKMS_iff_eq_gibbs]
+      - id: t1
+        kind: trust
+        text: "The Gibbs state of a qubit is KMS at its temperature"
+        decls: [Lightlike.OperatorAlgebras.qubit_gibbs_isKMS, Lightlike.OperatorAlgebras.qubit_isKMS_iff]
+      - id: t2
+        kind: trust
+        text: "A non-Gibbs state is not KMS"
+        decls: [Lightlike.OperatorAlgebras.qubit_maximallyMixed_not_isKMS, Lightlike.OperatorAlgebras.not_isKMS_of_ne]
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  OP4:
+    issue: 19
+    ranking: 27
+    items:
+      - id: m1
+        kind: main
+        text: "Strong subadditivity: for every density matrix on A x B x C, S(A|BC) <= S(A|B), equivalently S(AB) + S(BC) >= S(B) + S(ABC)"
+        decls: [Lightlike.OperatorAlgebras.strong_subadditivity]
+        hint: "Wrapper of Physlib qConditionalEnt_strong_subadditivity (Physlib is the dependency, proof not in Lightlike)."
+      - id: t1
+        kind: trust
+        text: "For the Bell state S(A) = log 2 and S(AB) = 0"
+        decls: [Lightlike.OperatorAlgebras.bell_entropies]
+      - id: t2
+        kind: trust
+        text: "The classical inequality S(AB) >= S(A) fails for the Bell state"
+        decls: [Lightlike.OperatorAlgebras.bell_conditional_entropy_neg]
+        hint: "States S(AB) < S(B) via the conditional entropy, which equals the value for S(A) by symmetry."
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  OP5:
+    issue: 20
+    ranking: 28
+    items:
+      - id: m1
+        kind: main
+        text: "Unitary evolution: exp(-i t H) is a unitary one-parameter group on a finite-dimensional Hilbert space"
+        decls: [Lightlike.QM.evolve, Lightlike.QM.evolve_add, Lightlike.QM.norm_evolve, Lightlike.QM.inner_evolve]
+      - id: m2
+        kind: main
+        text: "The Schrodinger equation: t -> U(t) psi0 is differentiable with derivative -i H U(t) psi0"
+        decls: [Lightlike.QM.schrodinger]
+      - id: m3
+        kind: main
+        text: "The Born rule: outcome probabilities are the squared norms of eigenspace projections, sum to 1 on unit states, and form a probability distribution on the eigenvalues"
+        decls: [Lightlike.QM.bornProb, Lightlike.QM.sum_bornProb, Lightlike.QM.bornPMF]
+      - id: p1
+        kind: piece
+        text: "The expectation value is the Born-weighted sum of the eigenvalues"
+        decls: [Lightlike.QM.expectation_eq_sum]
+      - id: p2
+        kind: piece
+        text: "Born probabilities of an observable commuting with H are conserved under evolution"
+        decls: [Lightlike.QM.bornProb_evolve_of_commute]
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  OP6:
+    issue: 195
+    ranking: 43
+    items:
+      - id: m1
+        kind: main
+        text: "The trace-class operators S1 and the Hilbert-Schmidt operators S2 are two-sided ideals in the bounded operators, with S2 * S2 contained in S1"
+        decls: [Lightlike.OperatorAlgebras.TraceClass.isTraceClass_mul_mul, Lightlike.OperatorAlgebras.TraceClass.HilbertSchmidt.isHilbertSchmidt_mul_left, Lightlike.OperatorAlgebras.TraceClass.HilbertSchmidt.isHilbertSchmidt_mul_right, Lightlike.OperatorAlgebras.TraceClass.isTraceClass_mul_of_isHilbertSchmidt]
+        hint: "Proven for every Hilbert space, stronger than separable."
+      - id: m2
+        kind: main
+        text: "The trace is well defined (independent of the Hilbert basis) and cyclic"
+        decls: [Lightlike.OperatorAlgebras.TraceClass.trace_eq_of_hilbertBasis, Lightlike.OperatorAlgebras.TraceClass.trace_mul_cycle]
+      - id: m3
+        kind: main
+        text: "K* is isometrically isomorphic to S1 (the dual of the compact operators), as a lockable statement"
+        decls: [Lightlike.OperatorAlgebras.compact_dual_eq_traceClass_proof]
+        hint: "Locked statement is Lightlike.OperatorAlgebras.TraceClass.compact_dual_eq_traceClass in Tasks/OP/T_OP6_P1.lean (proof body present, not a sorry stub), left out of decls as a Tasks file."
+      - id: m4
+        kind: main
+        text: "(S1)* is isometrically isomorphic to B(H) (trace pairing), as a lockable statement"
+        decls: []
+        hint: "Parts exist but no single statement and no lock task: Lightlike.OperatorAlgebras.TraceClass.TraceClass.tracePairingLinearIsometry (isometry) and Lightlike.OperatorAlgebras.TraceClass.TraceClass.tracePairing_surjective_concrete (surjective)."
+      - id: p1
+        kind: piece
+        text: "S1 and S2 are defined and closed under sums and scalar multiples, with a norm bound for the ideal property"
+        decls: [Lightlike.OperatorAlgebras.TraceClass.IsTraceClass, Lightlike.OperatorAlgebras.TraceClass.HilbertSchmidt.IsHilbertSchmidt, Lightlike.OperatorAlgebras.TraceClass.isTraceClass_add, Lightlike.OperatorAlgebras.TraceClass.isTraceClass_smul, Lightlike.OperatorAlgebras.TraceClass.HilbertSchmidt.isHilbertSchmidt_add, Lightlike.OperatorAlgebras.TraceClass.HilbertSchmidt.isHilbertSchmidt_smul, Lightlike.OperatorAlgebras.TraceClass.traceNorm_mul_mul_le]
+      - id: p2
+        kind: piece
+        text: "The trace is defined on trace-class operators and is additive and homogeneous"
+        decls: [Lightlike.OperatorAlgebras.TraceClass.trace, Lightlike.OperatorAlgebras.TraceClass.trace_add, Lightlike.OperatorAlgebras.TraceClass.trace_smul]
+      - id: t1
+        kind: trust
+        text: "The diagonal operator with eigenvalues 1/n is Hilbert-Schmidt and not trace class"
+        decls: [Lightlike.OperatorAlgebras.TraceClass.invDiag_isHilbertSchmidt, Lightlike.OperatorAlgebras.TraceClass.invDiag_not_isTraceClass]
+      - id: t2
+        kind: trust
+        text: "tr(AB) = tr(BA) for rank-one A, B"
+        decls: [Lightlike.OperatorAlgebras.TraceClass.trace_mul_cycle, Lightlike.OperatorAlgebras.TraceClass.TraceClass.isTraceClass_rankOne]
+        hint: "General statement (stronger); no rank-one instance is named: Lightlike.OperatorAlgebras.TraceClass.TraceClass.tracePairing_rankOne_left uses it."
+      - id: t3
+        kind: trust
+        text: "A bounded non-compact operator is not Hilbert-Schmidt"
+        decls: [Lightlike.OperatorAlgebras.TraceClass.not_isHilbertSchmidt_one, Lightlike.OperatorAlgebras.CompactSpectral.not_isCompactOperator_id]
+        hint: "Two separate statements (identity of an infinite-dimensional space is not HS; identity on l2 is not compact), not one; Lightlike.OperatorAlgebras.CompactSpectral.isCompactOperator_of_isHilbertSchmidt gives the implication."
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  SP1:
+    issue: 21
+    ranking: 35
+    items:
+      - id: m1
+        kind: main
+        text: "For a smooth compactly supported amplitude a and a smooth phase φ with Im φ ≥ 0 and non-degenerate critical points, ∫ a(x) e^{iλφ(x)} dx on ℝⁿ equals the sum over the critical points of e^{iλφ(x₀)} (2π/λ)^{n/2} (det(−iH))^{-1/2} a(x₀) up to an error O(λ^{-n/2-1})"
+        decls: [Lightlike.Oscillatory.stationary_phase, Lightlike.Oscillatory.stationary_phase_pi]
+      - id: p1
+        kind: piece
+        text: "The leading coefficient carries the determinant and signature of the Hessian: invSqrtDet is the inverse square root of det(−iH) with the branch fixed by the eigenvalues, and for a real diagonal Hessian it equals |det|^{-1/2} e^{iπ sgn/4}"
+        decls: [Lightlike.Oscillatory.invSqrtDet, Lightlike.Oscillatory.invSqrtDet_neg_I_real_diagonal]
+        hint: "The general real-symmetric case of the Maslov value is not stated separately; the signature enters only through the eigenvalue branches."
+      - id: p2
+        kind: piece
+        text: "The theorem covers complex phases with Im φ ≥ 0 on an open set containing the support of the amplitude (Hörmander 7.7.5)"
+        decls: [Lightlike.Oscillatory.stationary_phase_of_isOpen]
+      - id: t1
+        kind: trust
+        text: "Gaussian integrals are in closed form, and the stationary-phase formula is checked on a Fresnel integral"
+        decls: [Lightlike.Oscillatory.integral_gauss_eq_invSqrtDet, Lightlike.Oscillatory.integral_gaussLin_eq_invSqrtDet, Lightlike.Oscillatory.fresnel_bump]
+      - id: t2
+        kind: trust
+        text: "A degenerate phase (i x⁴) changes the order: the stationary-phase expansion fails for it, and the non-degeneracy hypothesis cannot be dropped"
+        decls: [Lightlike.Oscillatory.quarticPhase_not_isBigO, Lightlike.Oscillatory.stationary_phase_needs_nondegenerate]
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  SP2:
+    issue: 22
+    ranking: 50
+    items:
+      - id: m1
+        kind: main
+        text: "For the balanced alternating Gamma-ratio sum in the shape of Racah's 6j single-sum formula, √√vol²(ℓ) e^{−D(ℓ)} racahSum(λj) − cos(S_Regge + π/4)/(√(12π)(2π)²) → 0 for every Euclidean integer-edge tetrahedron, proven by the complex saddle-point method"
+        decls: [Lightlike.Asymptotics.racahSumAsymptotics]
+        hint: "Stated for the 6j shape only (4 face sums, 3 quad sums), not for a general balanced Gamma-ratio sum; the statement is the one agreed with SF8. Predicate: Lightlike.Asymptotics.RacahSumAsymptotics."
+      - id: p1
+        kind: piece
+        text: "The sum is a contour integral: Racah's sum equals −Im(Φ(x₂) − Φ(x₁))/π, where Φ is a primitive of the kernel πT(z)/sin(πz)"
+        decls: [Lightlike.Asymptotics.racahSum, Lightlike.Asymptotics.racahKernel, Lightlike.Asymptotics.racahSum_eq_im_primitive]
+      - id: p2
+        kind: piece
+        text: "Complex Stirling, uniform on sectors: the Gamma quotient is bounded and asymptotic to its Stirling form on sectors, and the kernel equals its leading term up to an explicit bound"
+        decls: [Lightlike.Asymptotics.norm_stirMu_le, Lightlike.Asymptotics.tendsto_Gamma_div_stir, Lightlike.Asymptotics.racahKernel_eq_lead, Lightlike.Asymptotics.norm_racahKernel_sub_lead_le]
+      - id: p3
+        kind: piece
+        text: "A descent contour through the saddle in the upper half-plane exists, and the contour can be continued outside the saddle region"
+        decls: [Lightlike.Asymptotics.IsEuclid.exists_descent, Lightlike.Asymptotics.IsEuclid.exists_descent_outside]
+      - id: p4
+        kind: piece
+        text: "The local Laplace estimate along the descent contour, with the estimate on the outer side"
+        decls: [Lightlike.Asymptotics.laplace_valley, Lightlike.Asymptotics.ray_estimate, Lightlike.Asymptotics.IsEuclid.outer_side]
+      - id: t1
+        kind: trust
+        text: "The formula agrees with the exact Racah sums for a family of growing spins"
+        decls: [Lightlike.Asymptotics.racahSumAsymptotics_regular]
+        hint: "Only the regular tetrahedron j = (m,…,m) is covered, by a corollary of the main theorem; no check against exact sums for other spin families."
+      - id: t2
+        kind: trust
+        text: "The method gives the right asymptotics for a sum whose asymptotics are known independently"
+        decls: []
+        hint: "Missing: a second, independent sum with known asymptotics. Close: Lightlike.Asymptotics.racahSumAsymptotics_regular (regular tetrahedron only)."
+      - id: t3
+        kind: trust
+        text: "The formula with only one of the two complex-conjugate saddles fails"
+        decls: [Lightlike.Asymptotics.not_racahSumAsymptotics_one_saddle_regular]
+        hint: "Regular tetrahedron only (half amplitude)."
+      - id: t4
+        kind: trust
+        text: "The real-variable estimate (Riemann sum, Euler-Maclaurin) is shown to be wrong for these sums"
+        decls: []
+        hint: "Missing: no statement on main. Close but not this: Lightlike.Asymptotics.not_ponzanoReggeFormulaWith_zero (a wrong-phase check, not a real-variable-estimate check)."
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  SP3:
+    issue: 196
+    ranking: 45
+    items:
+      - id: m1
+        kind: main
+        text: "For a positive measure ρ on [0, ∞) whose Laplace transform satisfies ∫ e^{−βx} dρ ~ β^{−α} ℓ(1/β) as β → 0 with ℓ slowly varying, ρ[0, X] ~ X^α ℓ(X)/Γ(α+1)"
+        decls: [Lightlike.Tauberian.karamata]
+      - id: m2
+        kind: main
+        text: "For a positive measure on [0, ∞) whose Laplace transform grows like e^{a/β}, the counting function ρ[0, X] has the asymptotics of Mukhametzhanov–Zhiboedov 2019, eq. (1.8)"
+        decls: []
+        hint: "Missing: Ingham's theorem for the counting function itself. Close: Lightlike.Tauberian.ingham_log (logarithmic form only, log F(X)/(2√(aX)) → 1; its docstring says weaker) and Lightlike.Tauberian.cardy_mz / cardy_relative (the (1.8) asymptotics with a 1+O(X^{-1/2}) error, but for a measure with a SpectralHyp and a modular-invariance hypothesis, not for a general L ~ e^{a/β})."
+      - id: p1
+        kind: piece
+        text: "Slowly varying functions are defined (ℓ eventually positive, ℓ(ct)/ℓ(t) → 1 for every c > 0)"
+        decls: [Lightlike.Tauberian.SlowlyVarying]
+      - id: t1
+        kind: trust
+        text: "Lebesgue measure on [0, ∞) gives α = 1"
+        decls: [Lightlike.Karamata.karamata_lebesgue]
+      - id: t2
+        kind: trust
+        text: "The growth of the spectrum of a free boson follows from the Tauberian theorem"
+        decls: [Lightlike.Asymptotics.FreeBosonGrowth.free_boson_growth]
+        hint: "Logarithmic form only: log N(X)/(2√(π²X/6)) → 1, via ingham_log; not the Hardy-Ramanujan asymptotics of N(X) itself."
+      - id: t3
+        kind: trust
+        text: "A signed measure (density 1 + x cos x) shown to break the conclusion of Karamata's theorem"
+        decls: [Lightlike.Asymptotics.FreeBosonGrowth.not_tendsto_signedCount]
+        hint: "Companion: Lightlike.Asymptotics.FreeBosonGrowth.tendsto_mul_signedLaplace shows the Laplace hypothesis still holds for it (inventory did not read it in full)."
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  SP4:
+    issue: 197
+    ranking: 46
+    items:
+      - id: m1
+        kind: main
+        text: "Near a non-degenerate critical point of a smooth function, with the critical point at x = 0 and a parameter λ, there are smooth coordinates (a local diffeomorphism fixing λ) in which f(x, λ) = f(0, λ) + Σ wᵢ yᵢ² with every wᵢ = ±1"
+        decls: [Lightlike.Morse.morse_diagonal]
+      - id: p1
+        kind: piece
+        text: "The chart of the diagonal normal form is defined: a local diffeomorphism of E × F fixing the parameter, smooth with smooth inverse at the base point"
+        decls: [Lightlike.Morse.HasDiagonalMorseChart]
+      - id: p2
+        kind: piece
+        text: "The Morse lemma with parameters: f(x, λ) = f(0, λ) + ½ B(Φ(x, λ), Φ(x, λ)) near (0, λ₀) with Φ smooth, and (x, λ) ↦ (Φ(x, λ), λ) a local diffeomorphism"
+        decls: [Lightlike.Morse.morse_lemma_with_parameters, Lightlike.Morse.morse_coordinates]
+      - id: t1
+        kind: trust
+        text: "The number k of negative signs equals the number of negative eigenvalues of the Hessian"
+        decls: []
+        hint: "Missing: the eigenvalue form. Close: Lightlike.Morse.morse_diagonal gives k = sigNeg of the Hessian (largest dimension of a negative-definite subspace); its docstring says the eigenvalue form is not proved."
+      - id: t2
+        kind: trust
+        text: "x³ at 0 has no diagonal Morse chart"
+        decls: [Lightlike.Morse.not_hasDiagonalMorseChart_cube]
+      - id: r1
+        kind: review
+        text: "The statement matches Milnor, Morse Theory, Part I, Lemma 2.2, in its generality: E, F finite-dimensional real normed spaces in Type, f smooth on all of E × F, critical point at x = 0 for λ near λ₀; check that this covers a smooth function on ℝⁿ near any non-degenerate critical point"
+        review_evidence: null
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  PL1:
+    issue: 26
+    ranking: 29
+    items:
+      - id: m1
+        kind: main
+        text: "The definitions are in place with their basic properties: complexes in every dimension, links, stars, joins and cones, stellar subdivisions and welds, bistellar moves, combinatorial manifolds and PL spheres"
+        decls: [Lightlike.PL.SComplex.link_cone_apex, Lightlike.PL.SComplex.star_eq_join, Lightlike.PL.SComplex.weld_starAt, Lightlike.PL.SComplex.bistellar_bistellar, Lightlike.PL.SComplex.IsPLSphere.isClosedCombManifold]
+      - id: p1
+        kind: piece
+        text: "Finite abstract simplicial complexes of any dimension"
+        decls: [Lightlike.PL.SComplex]
+      - id: p2
+        kind: piece
+        text: "Links, stars, joins and cones, with star = join of link and vertex, link of the cone apex, and link of a link"
+        decls: [Lightlike.PL.SComplex.link, Lightlike.PL.SComplex.star, Lightlike.PL.SComplex.join, Lightlike.PL.SComplex.cone, Lightlike.PL.SComplex.star_eq_join, Lightlike.PL.SComplex.link_cone_apex, Lightlike.PL.SComplex.link_link]
+      - id: p3
+        kind: piece
+        text: "Stellar subdivisions and welds, with the weld inverting the subdivision, and stellar equivalence"
+        decls: [Lightlike.PL.SComplex.starAt, Lightlike.PL.SComplex.weld, Lightlike.PL.SComplex.weld_starAt, Lightlike.PL.SComplex.starAt_weld, Lightlike.PL.SComplex.StellarEquivIn, Lightlike.PL.SComplex.StellarEquiv]
+      - id: p4
+        kind: piece
+        text: "Bistellar moves, involutive, and compatible with stellar equivalence"
+        decls: [Lightlike.PL.SComplex.IsBistellar, Lightlike.PL.SComplex.bistellar, Lightlike.PL.SComplex.bistellar_bistellar, Lightlike.PL.SComplex.StellarEquiv.bistellar]
+      - id: p5
+        kind: piece
+        text: "PL spheres, PL balls, combinatorial manifolds and closed combinatorial manifolds, with a PL sphere being a closed combinatorial manifold and links of faces of a closed combinatorial manifold being of the same kind"
+        decls: [Lightlike.PL.SComplex.IsPLSphere, Lightlike.PL.SComplex.IsPLBall, Lightlike.PL.SComplex.IsClosedCombManifold, Lightlike.PL.SComplex.IsCombManifold, Lightlike.PL.SComplex.IsPLSphere.isClosedCombManifold, Lightlike.PL.SComplex.IsClosedCombManifold.link_face]
+      - id: t1
+        kind: trust
+        text: "The boundary of an (n+1)-simplex is a PL n-sphere"
+        decls: [Lightlike.PL.SComplex.isPLSphere_boundary, Lightlike.PL.SComplex.isClosedCombManifold_boundary]
+      - id: t2
+        kind: trust
+        text: "The octahedron is a PL 2-sphere"
+        decls: [Lightlike.PL.isPLSphere_octahedron, Lightlike.PL.isClosedCombManifold_octahedron]
+      - id: t3
+        kind: trust
+        text: "A non-manifold (two 2-spheres glued at a vertex) is rejected"
+        decls: [Lightlike.PL.not_isCombManifold_wedge, Lightlike.PL.not_isPLSphere_wedge]
+      - id: t4
+        kind: trust
+        text: "The 3-dimensional bistellar moves agree with Lightlike.PR.move23 and Lightlike.PR.move14 on Complex3"
+        decls: [Lightlike.PL.ofComplex3_move23, Lightlike.PL.ofComplex3_move14, Lightlike.PL.ofComplex3_move32, Lightlike.PL.ofComplex3_move41]
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  PL2:
+    issue: 27
+    ranking: 13
+    items:
+      - id: m1
+        kind: main
+        text: "For a closed combinatorial n-manifold, stellar equivalence is the same as bistellar equivalence (Pachner's theorem, every dimension)"
+        decls: [Lightlike.PL.SComplex.pachner]
+      - id: m2
+        kind: main
+        text: "Stellar-equivalent closed combinatorial 3-manifolds on Complex3 are related by a chain of 2-3, 3-2, 1-4 and 4-1 moves"
+        decls: [Lightlike.PL.pachner3]
+      - id: p1
+        kind: piece
+        text: "Stellar equivalence implies bistellar equivalence for closed combinatorial manifolds, and the converse"
+        decls: [Lightlike.PL.SComplex.StellarEquivIn.bistellarEquivIn, Lightlike.PL.SComplex.BistellarEquiv.stellarEquiv]
+      - id: p2
+        kind: piece
+        text: "The moves of Complex3 (2-3, 3-2, 1-4, 4-1) are bistellar moves, and the complex of a closed combinatorial 3-manifold on Complex3 is a closed combinatorial manifold"
+        decls: [Lightlike.PL.isBistellar_move23, Lightlike.PL.isBistellar_move32, Lightlike.PL.isBistellar_move14, Lightlike.PL.isBistellar_move41, Lightlike.PL.isClosedCombManifold_ofComplex3]
+      - id: p3
+        kind: piece
+        text: "The 4-dimensional bridge: the 4D moves on Complex4 are bistellar, Pachner applies, and combinatorial 4-manifolds are preserved and reflected by the moves"
+        decls: [Lightlike.PL.isBistellar_move4, Lightlike.PL.ofComplex4_move, Lightlike.PL.isMove_of_isBistellar, Lightlike.PL.pachner4, Lightlike.PL.IsCombManifold4, Lightlike.PL.isCombManifold4_move_iff]
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  PL3:
+    issue: 28
+    ranking: 30
+    items:
+      - id: m1
+        kind: main
+        text: "Every connected closed combinatorial surface is related by 2D bistellar moves to a standard model determined by its orientability and Euler characteristic"
+        decls: [Lightlike.Surfaces.classify, Lightlike.Surfaces.exists_eqvGen_stdModel_iff]
+      - id: m2
+        kind: main
+        text: "The standard models are pairwise inequivalent under 2D bistellar moves"
+        decls: [Lightlike.Surfaces.classify_unique]
+        hint: "The explicit corollary stdModel b n ~ stdModel b' n' implies b = b' and n = n' is not stated separately; it follows from classify_unique in one step (PL analogue: Lightlike.Surfaces.stdModel_eq_of_plHomeomorphic)."
+      - id: p1
+        kind: piece
+        text: "The surfaces, the 2D bistellar moves and the standard models are defined"
+        decls: [Lightlike.Surfaces.IsSurface, Lightlike.PR.Move2, Lightlike.Surfaces.stdModel]
+      - id: p2
+        kind: piece
+        text: "The standard model is fixed by its orientability and Euler characteristic, with the Euler characteristic formulas of the models"
+        decls: [Lightlike.Surfaces.stdModel_eq_of_inv, Lightlike.Surfaces.euler2_stdModel_true, Lightlike.Surfaces.euler2_stdModel_false]
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  PL4:
+    issue: 29
+    ranking: 17
+    items:
+      - id: m1
+        kind: main
+        text: "Newman's theorem: two finite simplicial complexes have PL-homeomorphic realisations exactly when they are stellar-equivalent"
+        decls: [Lightlike.PL.SComplex.StellarEquiv.of_plHomeomorphic, Lightlike.PL.SComplex.PLHomeomorphic.of_stellarEquiv]
+      - id: p1
+        kind: piece
+        text: "Geometric realisations, PL maps and PL homeomorphisms are defined, and the realisation of a complex is geometric"
+        decls: [Lightlike.PL.SComplex.real, Lightlike.PL.SComplex.IsPLMap, Lightlike.PL.SComplex.IsPLHomeo, Lightlike.PL.SComplex.PLHomeomorphic, Lightlike.PL.SComplex.isGeom_real]
+      - id: p2
+        kind: piece
+        text: "Stellar subdivision and stellar equivalence preserve the PL homeomorphism type"
+        decls: [Lightlike.PL.SComplex.PLHomeomorphic.starAt, Lightlike.PL.SComplex.PLHomeomorphic.of_stellarEquivIn, Lightlike.PL.SComplex.PLHomeomorphic.of_stellarEquiv]
+      - id: t1
+        kind: trust
+        text: "A subdivision is PL-homeomorphic to the original complex"
+        decls: [Lightlike.PL.SComplex.IsSubdivision.isPLHomeo, Lightlike.PL.SComplex.PLHomeomorphic.starAt]
+      - id: t2
+        kind: trust
+        text: "Complexes with different Euler characteristic are not stellar-equivalent (hence not PL-homeomorphic)"
+        decls: [Lightlike.PL.SComplex.not_stellarEquiv_of_euler_ne, Lightlike.PL.SComplex.not_plHomeomorphic_of_euler_ne]
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  PL7a:
+    ranking: 37
+    items:
+      - id: m1
+        kind: main
+        text: "The r = 3 Turaev–Viro state sum is an invariant of closed combinatorial 3-manifolds up to PL homeomorphism"
+        decls: [Lightlike.TV.turaevViro3_plHomeomorphic]
+      - id: m2
+        kind: main
+        text: "For the Ponzano–Regge amplitude, the invariance up to PL homeomorphism that follows is stated exactly, given the cutoff and gauge-tree conditions: if triangulations of one manifold have a common forward descendant under Pachner moves, then every gauge-fixed amplitude of each is a gauge-fixed amplitude of the descendant at some tree and cutoff"
+        decls: [Lightlike.PR.triangulation_independence_of_pachner, Lightlike.PR.ampValues_mono_forward, Lightlike.PR.ampValues_move32_subset, Lightlike.PR.ampValues_move41_subset]
+        hint: "Conditional: triangulation_independence_of_pachner takes Lightlike.PR.PachnerForwardHyp as a hypothesis, whose truth is open; nothing is unconditional for Ponzano–Regge."
+      - id: p1
+        kind: piece
+        text: "The r = 3 state sum is the same along chains of 3D moves and under renaming of vertices"
+        decls: [Lightlike.TV.turaevViro3_move32, Lightlike.TV.turaevViro3_move41, Lightlike.TV.turaevViro3_moveEquiv3]
+      - id: p2
+        kind: piece
+        text: "The inputs from PL2 and PL4: Pachner's theorem on Complex3 and Newman's theorem"
+        decls: [Lightlike.PL.pachner3, Lightlike.PL.SComplex.StellarEquiv.of_plHomeomorphic]
+      - id: r1
+        kind: review
+        text: "The statement of the Ponzano–Regge invariance (docs/notes/pl7a-ponzano-regge.md and the PLInvariance docstring) says exactly which invariance up to PL homeomorphism follows, and matches the declarations of m2; the prose is not a Lean theorem, so a reviewer checks it"
+        review_evidence: null
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  QU1:
+    issue: 31
+    ranking: 20
+    items:
+      - id: m1
+        kind: main
+        text: "The q-Biedenharn–Elliott identity (Lightlike.TV.qBiedenharnElliott hr) holds for every level r ≥ 4, as a theorem with no hypothesis"
+        decls: []
+        hint: "Proven only at r = 3 (Lightlike.TV.qBiedenharnElliott_three, Lightlike/TuraevViro/LevelOne.lean). At r = 4 and r = 5 it is proven in the task files Tasks/QU/T_QU1_P2.lean and T_QU1_P4.lean (Lightlike.TV.qBiedenharnElliott_four, qBiedenharnElliott_five; no sorry), which are not in the Lightlike library, so not listed. The all-r statement qBiedenharnElliott_all is a sorry stub (Tasks/QU/T_QU1_P6.lean)."
+      - id: m2
+        kind: main
+        text: "The q-orthogonality identity (Lightlike.TV.qOrthogonality hr) holds for every level r ≥ 4, as a theorem with no hypothesis"
+        decls: [Lightlike.TV.Refl.qOrthogonality_proved]
+        hint: "qOrthogonality_proved holds for all r ≥ 2 (hypothesis 2 ≤ r only), so it covers r ≥ 4."
+      - id: p1
+        kind: piece
+        text: "The Turaev–Viro invariance theorems under the 2-3 and 1-4 moves hold for every level r ≥ 4 without q-Biedenharn–Elliott and q-orthogonality as hypotheses"
+        decls: []
+        hint: "Close but not this: Lightlike.TV.turaevViro_move23_of_BE and Lightlike.TV.turaevViro_move14_of_BE (orthogonality discharged, still take qBiedenharnElliott hr), Lightlike.TV.turaevViro_move23 and turaevViro_move14 (conditional). Missing: the unconditional versions for r ≥ 4, which follow from m1."
+      - id: t1
+        kind: trust
+        text: "Known q-6j values at a root of unity, and the q-Biedenharn–Elliott and q-orthogonality identities on concrete instances, agree with the Lean definitions"
+        decls: [Lightlike.TV.Test.q6j4_110_110, Lightlike.TV.Test.q6j4_112_110, Lightlike.TV.Test.q6j4_121_121, Lightlike.TV.Test.q6j4_000_111_sq, Lightlike.TV.Test.tv4_orth_instance, Lightlike.TV.Test.tv4_be_instance]
+        hint: "Level r = 4 only; no check against a published table of q-6j values at other levels (q6j4_* are hand-computed values)."
+      - id: t2
+        kind: trust
+        text: "A wrong value of q makes one of the identities (q-Biedenharn–Elliott or q-orthogonality) fail"
+        decls: []
+        hint: "Close but not this: Lightlike.TV.Test.tv4_classical_dims_fail (Lightlike/TuraevViro/Tests.lean) breaks both identities with classical dimensions, a wrong model rather than a wrong value of q. Missing: a counterexample with a different q."
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  QU2:
+    issue: 38
+    ranking: 52
+    items:
+      - id: m1
+        kind: main
+        text: "The Crane–Yetter state sum of a 4-dimensional combinatorial complex, built from the quantum 15j symbols at q = e^{iπ/r}, is invariant under the 4D Pachner moves"
+        decls: []
+        hint: "Nothing on main: no Crane–Yetter state sum and no invariance theorem. Lightlike/TuraevViro/QFifteenJ.lean says so itself; invariance needs q-Biedenharn–Elliott (QU1), proven only at r = 3 (Lightlike.TV.qBiedenharnElliott_three)."
+      - id: p1
+        kind: piece
+        text: "The Crane–Yetter state sum (colourings of a 4-complex, face and edge weights, sum of products of quantum 15j symbols) is defined"
+        decls: []
+        hint: "Missing. Only the vertex weight exists: Lightlike.TV.qFifteenJ."
+      - id: p2
+        kind: piece
+        text: "The quantum 15j symbol at q = e^{iπ/r} is defined, as the sum over one spin of five quantum 6j symbols weighted by a quantum dimension"
+        decls: [Lightlike.TV.qFifteenJ]
+        hint: "Also Lightlike.TV.qFifteenJ_zero (all spins zero gives 1 for r ≥ 2). The closure convention and the sum range are not compared with Crane–Kauffman–Yetter (the docstring says so)."
+      - id: t1
+        kind: trust
+        text: "The invariant of S⁴ and of CP² agrees with the known values (Crane–Kauffman–Yetter, J. Knot Theory Ramif. 6 (1997) 177)"
+        decls: []
+        hint: "Missing: no triangulation of S⁴ or CP² and no evaluation of the state sum."
+      - id: t2
+        kind: trust
+        text: "A wrong q breaks invariance of the state sum under a 4D Pachner move"
+        decls: []
+        hint: "Missing."
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  QU4:
+    issue: 40
+    ranking: 44
+    items:
+      - id: m1
+        kind: main
+        text: "The Biedenharn–Elliott identity for the SU(2) 6j symbols holds for all spins"
+        decls: [Lightlike.Pentagon.biedenharnElliott]
+        hint: "Statement Lightlike.BiedenharnElliott is the identity for all doubled spins, no extra hypothesis. Also Lightlike.PhyslibAlpha.Sl2.biedenharnElliott (Lightlike/Upstream/SpinReps2/BiedenharnElliott.lean) not verified here, so not listed."
+      - id: m2
+        kind: main
+        text: "The weight of the Ponzano–Regge amplitude is invariant under the 2-3 move, and the gauge-fixed amplitude is exactly invariant (equality, given the cutoff condition)"
+        decls: [Lightlike.PR.weight_move23_unconditional, Lightlike.PR.amplitudeGF_move23, Lightlike.PR.amplitudeGF_move23_tree]
+        hint: "weight_move23 (Lightlike.PR.weight_move23) takes a BEAt instance, so is not listed; the _unconditional form is. amplitudeGF_move23 needs T ⊆ K.edges and the cutoff inequality cut{A,D}+cut{A,E} ≤ cut{D,E}."
+      - id: p1
+        kind: piece
+        text: "The Ponzano–Regge weight, the amplitude with a spin cutoff, and the gauge-fixed amplitude are defined"
+        decls: [Lightlike.PR.weight, Lightlike.PR.amplitude, Lightlike.PR.amplitudeGF]
+      - id: t1
+        kind: trust
+        text: "A known 6j value is reproduced"
+        decls: [Lightlike.SixJAudit.sixJ_hh0_hh1, Lightlike.SixJAudit.sixJ_111_hhh, Lightlike.SixJAudit.sixJ_222_222, Lightlike.biedenharnElliott_instance]
+        hint: "Registry LL-0022 notes the comparison with Edmonds/Varshalovich is still pending."
+      - id: t2
+        kind: trust
+        text: "A wrong sign convention in the 6j symbol breaks the Biedenharn–Elliott identity"
+        decls: []
+        hint: "Missing in Lean. Close but not this: Lightlike.PR.Test.weightWith_wrong_model (flips the triangle sign of the PR weight, not the 6j sign, and not BE); scripts/pr23_check.py --wrong-edge-sign is Python, and an edge sign."
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  QU5:
+    issue: 41
+    ranking: 38
+    items:
+      - id: m1
+        kind: main
+        text: "The gauge-fixed Ponzano–Regge amplitude is unchanged along every chain of 2-3, 3-2, 1-4 and 4-1 moves, also with a maximal tree as gauge set"
+        decls: [Lightlike.PR.amplitudeGF_eqvGen, Lightlike.PR.amplitudeGF_eqvGen_tree]
+      - id: p1
+        kind: piece
+        text: "The 1-4 move changes the amplitude by the factor Σ(d+1)² of the new edge (weight and summed amplitude)"
+        decls: [Lightlike.PR.weight_move14, Lightlike.PR.amplitude_move14]
+      - id: p2
+        kind: piece
+        text: "The 3-2 and 4-1 moves are recognised on any complex, and the amplitude is invariant under them"
+        decls: [Lightlike.PR.IsMove32, Lightlike.PR.amplitudeGF_move32, Lightlike.PR.amplitudeGF_move41]
+      - id: p3
+        kind: piece
+        text: "Changing the maximal tree by triangle exchanges leaves the gauge-fixed amplitude unchanged for every cutoff"
+        decls: [Lightlike.PR.amplitudeGF_exchange, Lightlike.PR.amplitudeGF_eqvGen_exchange]
+      - id: p4
+        kind: piece
+        text: "Closed combinatorial 3-manifolds are preserved by all four moves"
+        decls: [Lightlike.PR.isCombManifold_move23_iff, Lightlike.PR.isCombManifold_move14_iff, Lightlike.PR.isCombManifold_iff_of_eqvGen]
+      - id: p5
+        kind: piece
+        text: "Combinatorial 2-spheres are connected closed pseudo-surfaces with Euler characteristic 2, and are exactly the intrinsic triangulated 2-spheres"
+        decls: [Lightlike.PR.IsSphere2.invariants, Lightlike.PR.isSphere2_iff_isSurfaceSphere]
+      - id: p6
+        kind: piece
+        text: "Partial answers: the cutoff is irrelevant when the gauge set forces every edge (amplitude 1), and the amplitude with finite cutoffs depends on the maximal tree on a ring of three tetrahedra"
+        decls: [Lightlike.PR.amplitudeGF_of_forcesAll, Lightlike.PR.Test.Manifold.amplitudeGF_S3_star, Lightlike.PR.Test.Ring.amplitudeGF_tree_dependent, Lightlike.PR.Test.Ring.not_eqvGen_exchange_T1_T2]
+      - id: r1
+        kind: review
+        text: "The scope of the milestone (the six bullets of ‘what is proven’ in docs/tasks/milestones.md, QU5) is covered by m1 and p1 to p6, and nothing in them claims triangulation independence"
+        review_evidence: null
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  RC4:
+    issue: 62
+    ranking: 9
+    items:
+      - id: m1
+        kind: main
+        text: "The deficit angles vanish at every interior edge for a flat (geometric) triangulation of a region of ℝ³"
+        decls: [Lightlike.Regge.IsGeometric.deficit_eq_zero, Lightlike.Regge.Tests.octahedron_deficit, Lightlike.Regge.Tests.cube_deficit]
+        hint: "General theorem needs finrank = 3, nondegenerate tetrahedra with disjoint interiors, an edge manifold and an interior edge. The two tests are concrete examples."
+      - id: m2
+        kind: main
+        text: "The deficit angles are nonzero on a curved example (the boundary of the 4-simplex)"
+        decls: [Lightlike.Regge.Tests.simplexBoundary_deficit]
+      - id: m3
+        kind: main
+        text: "A wrong angle formula is shown to fail: it gives a non-zero deficit on a flat triangulation"
+        decls: [Lightlike.Regge.Tests.cube_exterior_fails, Lightlike.Regge.Tests.cube_faceAngle_fails]
+      - id: p1
+        kind: piece
+        text: "The dihedral angle from edge lengths, the deficit angle and the Regge action of a triangulation are defined, and the dihedral angle from lengths is the Euclidean one"
+        decls: [Lightlike.Regge.deficit, Lightlike.Regge.reggeAction, Lightlike.Regge.dihedral_dist, Lightlike.Regge.IsGeometric.reggeAction_eq]
+        hint: "dihedral_dist is stated for Lightlike.PR.dihedral of the six distances (defined in Lightlike/PonzanoRegge/Asymptotics.lean)."
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  RC5:
+    issue: 63
+    ranking: 14
+    items:
+      - id: m1
+        kind: main
+        text: "The 4D deficit angles vanish at every interior triangle for a flat (geometric) triangulation of a region of ℝ⁴"
+        decls: [Lightlike.Regge4.IsGeometric4.deficit4_eq_zero, Lightlike.Regge4.Tests.flatRing_deficit, Lightlike.Regge4.Tests.cone5_deficit]
+        hint: "General theorem needs finrank = 4, nondegenerate 4-simplices with disjoint interiors, a triangulated manifold and an interior triangle."
+      - id: m2
+        kind: main
+        text: "The 4D deficit angles are nonzero on a curved example (the boundary of the 5-simplex)"
+        decls: [Lightlike.Regge4.Tests.sphere5_deficit]
+      - id: m3
+        kind: main
+        text: "A wrong angle formula is shown to fail: it gives a non-zero deficit on the flat 4D ring"
+        decls: [Lightlike.Regge4.Tests.flatRing_exterior, Lightlike.Regge4.Tests.flatRing_noSqrt]
+      - id: p1
+        kind: piece
+        text: "The dihedral angle of a 4-simplex from its edge lengths is defined and equals the Euclidean dihedral angle"
+        decls: [Lightlike.Regge4.dihedral4, Lightlike.Regge4.dihedral4_dist]
+      - id: p2
+        kind: piece
+        text: "The 4D deficit angle and the 4D Regge action are defined, and the Regge action is stationary exactly under the Regge equations"
+        decls: [Lightlike.Regge4.deficit4, Lightlike.Regge4.reggeAction4, Lightlike.Regge4.IsGeometric4.reggeAction4_eq, Lightlike.Regge4.reggeAction4_stationary_iff, Lightlike.Regge4.Tests.sphere5_reggeAction]
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  RC1:
+    issue: 65
+    ranking: 31
+    items:
+      - id: m1
+        kind: main
+        text: "The Regge equations of Lorentzian Regge calculus hold in the form of RC5: stationarity of the Lorentzian Regge action under variations of the interior edge lengths with the boundary fixed is equivalent to Σ ∂A_t/∂L_e · ε_t = 0 at every interior edge"
+        decls: [Lightlike.ReggeLor.lorReggeAction_stationary_iff]
+        hint: "Hypothesis LorLengthsNondeg4 (non-null triangles and tetrahedra, Lorentzian 4-simplices) is a natural non-degeneracy condition."
+      - id: p1
+        kind: piece
+        text: "The Lorentzian deficit angle (with the Sorkin angles at spacelike and timelike triangles) and the Lorentzian Regge action are defined"
+        decls: [Lightlike.ReggeLor.lorDeficit, Lightlike.ReggeLor.lorReggeAction, Lightlike.ReggeLor.lorDihedral4, Lightlike.ReggeLor.sorkinAngle]
+        hint: "lorDihedral4 returns the junk value 0 at null triangles; the theorems exclude them by non-null hypotheses."
+      - id: t1
+        kind: trust
+        text: "A flat Lorentzian triangulation has zero deficits"
+        decls: [Lightlike.ReggeLor.IsGeometric4.lorDeficit_eq_zero, Lightlike.ReggeLor.Tests.lorDeficit_T, Lightlike.ReggeLor.Tests.lorDeficit_S]
+      - id: t2
+        kind: trust
+        text: "Euclidean angles used on Lorentzian data give a wrong (non-zero) deficit on a flat triangulation"
+        decls: [Lightlike.ReggeLor.Tests.wrong_eucAngle_T, Lightlike.ReggeLor.Tests.wrong_causalZ_S, Lightlike.ReggeLor.Tests.wrong_realAngles_S]
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  RC2:
+    issue: 66
+    ranking: 32
+    items:
+      - id: m1
+        kind: main
+        text: "The map from the squared edge lengths of a 4-simplex to its squared triangle areas is locally invertible (injective on a neighbourhood with open image) at the regular 4-simplex"
+        decls: [Lightlike.AreaRegge.areaSqMap_local_inj, Lightlike.AreaRegge.area_local_inj]
+        hint: "area_local_inj is the same for the areas themselves, not the squared areas."
+      - id: p1
+        kind: piece
+        text: "The area-to-length map of a 4-simplex (squared areas of the 10 triangles from the 10 squared edge lengths) and its Jacobian are defined"
+        decls: [Lightlike.AreaRegge.areaSq, Lightlike.AreaRegge.area, Lightlike.AreaRegge.jac, Lightlike.AreaRegge.sReg, Lightlike.AreaRegge.hasStrictFDerivAt_areaSqMap]
+      - id: t1
+        kind: trust
+        text: "The Jacobian is invertible at the regular 4-simplex"
+        decls: [Lightlike.AreaRegge.jac_regular_isUnit]
+      - id: t2
+        kind: trust
+        text: "There is a configuration where areas do not determine lengths: two different 4-simplices with the same areas"
+        decls: [Lightlike.AreaRegge.corner_pair, Lightlike.AreaRegge.corner_pair_realized]
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  SF3:
+    issue: 67
+    ranking: 3
+    items:
+      - id: m1
+        kind: main
+        text: "4-complexes with their 4-simplices, boundary, orientation and the 4D Pachner moves (as operations that act on complexes) are defined in Lean"
+        decls: [Lightlike.FourD.Complex4, Lightlike.FourD.Complex4.IsMove, Lightlike.FourD.Complex4.move]
+      - id: p1
+        kind: piece
+        text: "4-complexes and 4-simplices: faces by dimension, Euler characteristic, the single 4-simplex and the boundary sphere of a 5-simplex"
+        decls: [Lightlike.FourD.Complex4, Lightlike.FourD.Complex4.faces, Lightlike.FourD.Complex4.euler4, Lightlike.FourD.Complex4.simplex, Lightlike.FourD.Complex4.sphere]
+      - id: p2
+        kind: piece
+        text: "Boundary data: the boundary tetrahedra of a complex, pseudo-manifold and closedness conditions, and the boundary complex"
+        decls: [Lightlike.FourD.Complex4.bdryTets, Lightlike.FourD.Complex4.IsPseudo4, Lightlike.FourD.Complex4.IsClosed4, Lightlike.FourD.Complex4.boundary]
+      - id: p3
+        kind: piece
+        text: "Orientation: a coherent orientation of a complex and orientability"
+        decls: [Lightlike.FourD.Complex4.IsOrientation, Lightlike.FourD.Complex4.IsOrientable]
+      - id: p4
+        kind: piece
+        text: "The 4D Pachner moves (1-5, 2-4, 3-3 and inverses) as one operation: the move precondition IsMove and the complex move K h"
+        decls: [Lightlike.FourD.Complex4.IsMove, Lightlike.FourD.Complex4.move]
+      - id: p5
+        kind: piece
+        text: "Basic properties: Euler characteristic and face counts of the 4-simplex and its boundary sphere, closedness and orientation of the sphere, evenness of the boundary tetrahedra, and behaviour of a move (involutive, Euler characteristic, boundary, closedness and orientability under a move)"
+        decls: [Lightlike.FourD.Complex4.euler4_simplex, Lightlike.FourD.Complex4.euler4_sphere, Lightlike.FourD.Complex4.card_faces_simplex, Lightlike.FourD.Complex4.card_faces_sphere, Lightlike.FourD.Complex4.isClosed4_iff, Lightlike.FourD.Complex4.even_card_bdryTets, Lightlike.FourD.Complex4.boundary_simplex_closed, Lightlike.FourD.Complex4.isClosed4_sphere, Lightlike.FourD.Complex4.isOrientation_sphere, Lightlike.FourD.Complex4.move_move, Lightlike.FourD.Complex4.euler4_move, Lightlike.FourD.Complex4.bdryTets_move, Lightlike.FourD.Complex4.isPseudo4_move_iff, Lightlike.FourD.Complex4.isClosed4_move_iff, Lightlike.FourD.Complex4.isOrientable_move_iff]
+      - id: t1
+        kind: trust
+        text: "The face counts of a 4-simplex are (5, 10, 10, 5, 1) and those of its boundary (the 4-sphere with 6 vertices) are (6, 15, 20, 15, 6) with Euler characteristic 2"
+        decls: [Lightlike.FourD.Tests.fvec_delta4, Lightlike.FourD.Tests.boundary_delta4, Lightlike.FourD.Tests.sphere6_checks, Lightlike.FourD.Complex4.card_faces_simplex, Lightlike.FourD.Complex4.card_faces_sphere]
+      - id: t2
+        kind: trust
+        text: "A malformed move is not an IsMove and does not produce a valid (closed) complex"
+        decls: [Lightlike.FourD.Tests.badFresh_fails, Lightlike.FourD.Tests.badDrop_fails, Lightlike.FourD.Tests.badVertex_fails]
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  SF4:
+    issue: 68
+    ranking: 5
+    items:
+      - id: m1
+        kind: main
+        text: "The 4-valent intertwiners built from 3j symbols and the 15j symbols built from 6j symbols are orthogonal, for all spins"
+        decls: [Lightlike.Recoupling.sum_fourJ_mul_fourJ, Lightlike.Recoupling.sum_fifteenJ_mul_fifteenJ]
+      - id: p1
+        kind: piece
+        text: "The 4-valent intertwiner is defined from 3j symbols"
+        decls: [Lightlike.Recoupling.fourJ]
+      - id: p2
+        kind: piece
+        text: "The 15j symbol is defined from 6j symbols"
+        decls: [Lightlike.Recoupling.fifteenJ]
+      - id: p3
+        kind: piece
+        text: "The contraction of five 4-valent intertwiners on K5 (ten 3j symbols) equals the 15j symbol up to the normalisation factors"
+        decls: [Lightlike.Recoupling.fifteenJSimplex, Lightlike.Recoupling.fifteenJSimplex_eq]
+      - id: p4
+        kind: piece
+        text: "Further orthogonality and recoupling properties of the 4-valent intertwiner and the 15j symbol (swapped form, recoupling expansion, Möbius form)"
+        decls: [Lightlike.Recoupling.sum_fourJ_mul_fourJ_swap, Lightlike.Recoupling.fourJ_eq_sum_fourRecoupling, Lightlike.Recoupling.sum_mobius_mul_mobius, Lightlike.Recoupling.fifteenJ_eq_mobius]
+      - id: t1
+        kind: trust
+        text: "15j values and reduction identities: known values at small spins, a₀ = 0 collapses the 15j to a product of 6j symbols, and an untwisted variant is shown to fail"
+        decls: [Lightlike.Recoupling.fifteenJ_zero, Lightlike.Recoupling.Tests.fifteenJ_value, Lightlike.Recoupling.Tests.fifteenJ_all_nonzero, Lightlike.Recoupling.Tests.fifteenJSimplex_cycle, Lightlike.Recoupling.Tests.fifteenJ_untwisted_fails, Lightlike.Recoupling.fifteenJ_of_a_zero]
+        hint: "The small-spin values are hand-computed from the definitions; the inventory did not check them against a literature table."
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  SF4b:
+    issue: 69
+    ranking: 7
+    items:
+      - id: m1
+        kind: main
+        text: "The Ooguri gauge-fixed state sum on a 4-complex (finite cutoffs, explicit cutoff inequalities) is invariant under the 3-3, 2-4 and 1-5 moves"
+        decls: [Lightlike.SpinFoam.amplitudeGF_move33, Lightlike.SpinFoam.amplitudeGF_move24, Lightlike.SpinFoam.Move15.amplitudeGF_move15]
+      - id: p1
+        kind: piece
+        text: "3-3 recoupling identity: the sum over the three inner colourings on the two sides of the 3-3 move agree"
+        decls: [Lightlike.SpinFoam.Move33.inner_eq, Lightlike.SpinFoam.Move33.lhs_eq_ev_NL, Lightlike.SpinFoam.Move33.ev_NL_rev]
+      - id: p2
+        kind: piece
+        text: "2-4 recoupling identity (the 4D analogue of the 6j orthogonality)"
+        decls: [Lightlike.SpinFoam.Move24.lhs_eq_ev_NL24, Lightlike.SpinFoam.Move24.sumB_eq_ev_QB]
+      - id: p3
+        kind: piece
+        text: "1-5 recoupling identity"
+        decls: [Lightlike.SpinFoam.Move15.lhs_eq_ev_NL15, Lightlike.SpinFoam.Move15.ev_NL_eq_QB]
+      - id: p4
+        kind: piece
+        text: "The Ooguri vertex amplitude is the 15j symbol, so the identities above are identities of 15j symbols"
+        decls: [Lightlike.Recoupling.fifteenJSimplex_eq, Lightlike.SpinFoam.ampP, Lightlike.SpinFoam.vertexAmp]
+      - id: p5
+        kind: piece
+        text: "Global invariance of the gauge-fixed amplitude with the new inner triangles gauge-fixed (2-4, 4-2, 1-5, 5-1, 3-3)"
+        decls: [Lightlike.SpinFoam.amplitudeGF_move33_gauge, Lightlike.SpinFoam.amplitudeGF_move24_gauge, Lightlike.SpinFoam.amplitudeGF_move42_gauge, Lightlike.SpinFoam.Move15.amplitudeGF_move15_gauge, Lightlike.SpinFoam.Move15.amplitudeGF_move51_gauge]
+      - id: t1
+        kind: trust
+        text: "Numerical verification for small spins: the invariance statements are checked by kernel computation on explicit 4-spheres"
+        decls: [Lightlike.SpinFoam.amplitudeGF_move33_example, Lightlike.SpinFoam.amplitudeGF_move24_example, Lightlike.SpinFoam.amplitudeGF_move15_example]
+      - id: t2
+        kind: trust
+        text: "A perturbed 15j (vertex amplitude) is shown to violate the 3-3 identity"
+        decls: [Lightlike.SpinFoam.ampBad_breaks_move33]
+        hint: "The perturbation is ampP + 1 on one colouring, not a perturbed numeric 15j value; the amplitude sums to 3 before and 1 after the move."
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  SF5a:
+    issue: 70
+    ranking: 4
+    items:
+      - id: m1
+        kind: main
+        text: "For all n, m the Spin(4) representation (SU(2) spin n/2) ⊗ (SU(2) spin m/2) is unitary, irreducible over ℂ, and of dimension (n+1)(m+1)"
+        decls: [Lightlike.Spin4.spin4Tensor_isIrreducible, Lightlike.Spin4.finrank_tensorSpace, Lightlike.Spin4.spin4Mat_mem_unitaryGroup]
+      - id: p1
+        kind: piece
+        text: "Spin(4) is SU(2) × SU(2)"
+        decls: [Lightlike.Spin4]
+      - id: p2
+        kind: piece
+        text: "The Spin(4) representation (j₊, j₋) is defined as the tensor product of two SU(2) representations, as an abstract representation and as a matrix representation, with their equivalence"
+        decls: [Lightlike.Spin4.spin4Tensor, Lightlike.Spin4.spin4Rep, Lightlike.Spin4.spin4Representation, Lightlike.Spin4.spin4Equiv]
+      - id: p3
+        kind: piece
+        text: "Unitarity: the matrices spin4Rep n m g are unitary and continuous in g, and the tensor form preserves the inner product"
+        decls: [Lightlike.Spin4.spin4Mat_mem_unitaryGroup, Lightlike.Spin4.continuous_spin4Rep, Lightlike.Spin4.spin4Unitary, Lightlike.Spin4.inner_spin4Unitary]
+      - id: p4
+        kind: piece
+        text: "Irreducibility: the tensor product of two irreducible SU(2) representations is an irreducible Spin(4) representation"
+        decls: [Lightlike.Spin4.spin4Tensor_isIrreducible, Lightlike.Spin4.spin4Representation_isIrreducible, Lightlike.Spin4.isInvariant_eq_bot_or_eq_top, Lightlike.Spin4.isIrreducible_extTprod]
+      - id: p5
+        kind: piece
+        text: "Dimension: the representation has dimension (2j₊+1)(2j₋+1) = (n+1)(m+1)"
+        decls: [Lightlike.Spin4.finrank_tensorSpace, Lightlike.Spin4.finrank_idx]
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  SF5b:
+    issue: 71
+    ranking: 10
+    items:
+      - id: m1
+        kind: main
+        text: "The Ooguri gauge-fixed amplitude on a 4-complex is invariant under the 3-3, 2-4, 4-2, 1-5 and 5-1 Pachner moves, with the gauge rule preserved (finite cutoffs, explicit cutoff inequalities)"
+        decls: [Lightlike.SpinFoam.amplitudeGF_move33_gauge, Lightlike.SpinFoam.amplitudeGF_move24_gauge, Lightlike.SpinFoam.amplitudeGF_move42_gauge, Lightlike.SpinFoam.Move15.amplitudeGF_move15_gauge, Lightlike.SpinFoam.Move15.amplitudeGF_move51_gauge]
+      - id: p1
+        kind: piece
+        text: "The Ooguri amplitude is stated on a 4-complex: face weights, gauge-fixed and plain amplitude with face-wise cutoffs"
+        decls: [Lightlike.SpinFoam.weight, Lightlike.SpinFoam.amplitudeGF, Lightlike.SpinFoam.amplitude]
+      - id: p2
+        kind: piece
+        text: "The vertex amplitude of a 4-simplex is the 15j symbol"
+        decls: [Lightlike.SpinFoam.vertexAmp, Lightlike.SpinFoam.ampP, Lightlike.Recoupling.fifteenJSimplex_eq]
+      - id: p3
+        kind: piece
+        text: "The gauge rule (a set of triangles with fixed spin 0 whose complement collapses) and its cardinality"
+        decls: [Lightlike.SpinFoam.IsGauge, Lightlike.SpinFoam.IsGauge.card_eq]
+      - id: t1
+        kind: trust
+        text: "Amplitude values on the boundary of the 5-simplex"
+        decls: [Lightlike.SpinFoam.amplitudeGF_sphere6_edge, Lightlike.SpinFoam.amplitudeGF_starT, Lightlike.SpinFoam.weight_sphereCol, Lightlike.SpinFoam.vertexAmp_zero, Lightlike.SpinFoam.gaugeFixed_sphere6_trust]
+      - id: t2
+        kind: trust
+        text: "A wrong vertex amplitude is shown to break the 3-3 invariance, while the correct one satisfies it on the same complex"
+        decls: [Lightlike.SpinFoam.ampBad_breaks_move33, Lightlike.SpinFoam.amplitudeGF_move33_T33]
+        hint: "The wrong amplitude is ampP + 1 on one colouring."
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  SF5c:
+    issue: 72
+    ranking: 11
+    items:
+      - id: m1
+        kind: main
+        text: "The EPRL map V_j → V_{j₊} ⊗ V_{j₋} is an isometric, SU(2)-equivariant embedding"
+        decls: [Lightlike.Spin4.eprlMap_isometry, Lightlike.Spin4.eprlMap_equivariant]
+      - id: p1
+        kind: piece
+        text: "For 0 < γ < 1 the labels j± = |1 ± γ| j / 2 are defined and characterised"
+        decls: [Lightlike.Spin4.jPlus, Lightlike.Spin4.jMinus, Lightlike.Spin4.IsEPRLLabel, Lightlike.Spin4.isEPRLLabel_iff]
+      - id: p2
+        kind: piece
+        text: "The admissible set of spins (γJ = p natural and J + p even; rational and irrational γ)"
+        decls: [Lightlike.Spin4.eprlAdmissible_iff, Lightlike.Spin4.eprlAdmissible_rat_iff, Lightlike.Spin4.eprlAdmissible_irrational_iff]
+      - id: p3
+        kind: piece
+        text: "The EPRL map is defined and unique, and its image is characterised"
+        decls: [Lightlike.Spin4.eprlMap, Lightlike.Spin4.eprlMap_unique, Lightlike.Spin4.mem_range_eprlMap_iff]
+      - id: p4
+        kind: piece
+        text: "Action on 4-valent intertwiners: the image of an intertwiner is a Spin(4) intertwiner, with fusion coefficients given in closed form and their selection rule"
+        decls: [Lightlike.Spin4.eprlIntertwiner, Lightlike.Spin4.eprlIntertwiner_isSpin4Intertwiner, Lightlike.Spin4.eprlIntertwiner_injective_iff, Lightlike.Spin4.fusion, Lightlike.Spin4.fusion_eq, Lightlike.Spin4.fusion_eq_zero, Lightlike.Spin4.eprlRecoupling_singlet]
+      - id: p5
+        kind: piece
+        text: "The weak linear simplicity constraint holds on the image of the EPRL map for 0 < γ < 1 and EPRL labels, and holds only for EPRL labels"
+        decls: [Lightlike.Spin4.eprl_weak_simplicity, Lightlike.Spin4.eprl_weak_simplicity_inner, Lightlike.Spin4.weak_simplicity_iff]
+      - id: t1
+        kind: trust
+        text: "Fusion coefficients agree with published values"
+        decls: [Lightlike.Spin4.Test.fusion_third, Lightlike.Spin4.Test.fusion_nineJ_third]
+        hint: "Only loosely met: f(0;0,0) = 2/3 is a hand-derived closed form and fusion_nineJ_third cross-checks against a 9j built from the 6j; no literal table from a paper."
+      - id: t2
+        kind: trust
+        text: "A non-EPRL label assignment is shown to violate the simplicity constraint"
+        decls: [Lightlike.Spin4.Test.weak_simplicity_fails_bc, Lightlike.Spin4.Test.weak_simplicity_fails_wrong_gamma, Lightlike.Spin4.Test.eprlRecoupling_nineJ_wrong]
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  SF5d:
+    issue: 73
+    ranking: 33
+    items:
+      - id: m1
+        kind: main
+        text: "The gauge-fixed Ooguri amplitude is invariant under all five 4D Pachner moves (3-3, 2-4, 4-2, 1-5, 5-1) with compatible gauge sets and cutoffs"
+        decls: [Lightlike.SpinFoam.amplitudeGF_move33_gauge, Lightlike.SpinFoam.amplitudeGF_move24_gauge, Lightlike.SpinFoam.amplitudeGF_move42_gauge, Lightlike.SpinFoam.Move15.amplitudeGF_move15_gauge, Lightlike.SpinFoam.Move15.amplitudeGF_move51_gauge]
+      - id: m2
+        kind: main
+        text: "The gauge-fixed amplitude is independent of the gauge choice, as far as it holds"
+        decls: [Lightlike.SpinFoam.amplitudeGF_eq_of_forces, Lightlike.SpinFoam.amplitudeGF_eq_of_isGauge_forces, Lightlike.SpinFoam.amplitudeGF_eq_of_mutual_forces]
+        hint: "Only for gauge sets that force every triangle or force each other. The failure for non-forcing sets is numerical, not a Lean statement; IsGauge alone does not imply independence."
+      - id: p1
+        kind: piece
+        text: "A gauge fixing is defined: a set of triangles with spin fixed to 0 that obeys a combinatorial rule (the complement collapses), and the gauge-fixed amplitude"
+        decls: [Lightlike.SpinFoam.IsGauge, Lightlike.SpinFoam.IsGauge.card_eq, Lightlike.SpinFoam.amplitudeGF]
+        hint: "Removal of the cutoff (regularisation proper) is not formalised."
+      - id: t1
+        kind: trust
+        text: "The gauge-fixed amplitude on the boundary of the 5-simplex is 1 for the cone gauge set"
+        decls: [Lightlike.SpinFoam.gaugeFixed_sphere6_trust, Lightlike.SpinFoam.amplitudeGF_starT]
+      - id: t2
+        kind: trust
+        text: "A gauge set that violates the hypotheses changes the amplitude (5 instead of 1 on the boundary of the 5-simplex)"
+        decls: [Lightlike.SpinFoam.gaugeFixed_sphere6_trust, Lightlike.SpinFoam.not_isGauge_gauge9, Lightlike.SpinFoam.amplitudeGF_gauge9_one]
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  SF5e:
+    issue: 74
+    ranking: 34
+    items:
+      - id: m1
+        kind: main
+        text: "The Livine–Speziale coherent intertwiners have an overlap formula and a resolution of the identity on the invariant subspace, for SU(2) and for Spin(4)"
+        decls: [Lightlike.Spin4.inner_cohInt, Lightlike.Spin4.resolution_cohInt, Lightlike.Spin4.inner_cohInt4, Lightlike.Spin4.resolution_cohInt4]
+      - id: p1
+        kind: piece
+        text: "Perelomov coherent states of SU(2) are defined, with overlap formula and resolution of the identity"
+        decls: [Lightlike.Spin4.cohState, Lightlike.Spin4.inner_cohState, Lightlike.Spin4.normSq_inner_cohState, Lightlike.Spin4.resolution_cohState]
+      - id: p2
+        kind: piece
+        text: "Perelomov coherent states of Spin(4) are defined, with overlap formula and resolution of the identity (Haar integral form)"
+        decls: [Lightlike.Spin4.cohState4, Lightlike.Spin4.haarSpin4, Lightlike.Spin4.inner_cohState4, Lightlike.Spin4.resolution_cohState4]
+      - id: p3
+        kind: piece
+        text: "The coherent intertwiners are defined as the group average of tensor products of coherent states, for any valence, and are invariant (SU(2) and Spin(4))"
+        decls: [Lightlike.Spin4.cohInt, Lightlike.Spin4.cohInt_isInvariantN, Lightlike.Spin4.cohInt4, Lightlike.Spin4.cohInt4_invariant, Lightlike.Spin4.avgP_mul_avgP]
+      - id: t1
+        kind: trust
+        text: "The norm of a coherent intertwiner is computed from its normals (closed form for two legs, integral form in general)"
+        decls: [Lightlike.Spin4.norm_sq_cohInt_two, Lightlike.Spin4.cohInt_two_closed, Lightlike.Spin4.cohInt_two_parallel, Lightlike.Spin4.norm_sq_cohInt, Lightlike.Spin4.Test.two_valent_closed, Lightlike.Spin4.Test.two_valent_parallel, Lightlike.Spin4.Test.two_valent_orthogonal]
+        hint: "For valence above 2 the norm is only given as an integral; no closed form in the normals exists."
+      - id: t2
+        kind: trust
+        text: "Normals that do not close give the exponential suppression expected in the literature"
+        decls: [Lightlike.Spin4.cohInt_two_suppressed, Lightlike.Spin4.normSq_cohInt_le_exp, Lightlike.Spin4.cohInt_suppressed, Lightlike.Spin4.Test.four_valent_suppressed, Lightlike.Spin4.Test.closed_not_suppressed]
+        hint: "An upper bound exp(-n|ΣK_aν_a|²/(12ΣK_a)), not an asymptotic formula."
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  SF6:
+    issue: 75
+    ranking: 18
+    items:
+      - id: m1
+        kind: main
+        text: "The Euclidean EPRL vertex amplitude is the contraction of five EPRL node tensors built from the fusion coefficients and EPRL intertwiners of SF5c, and equals its fusion-coefficient sum and a 15j expression"
+        decls: [Lightlike.Spin4.eprlVertex, Lightlike.Spin4.eprlNode, Lightlike.Spin4.eprlNode_eq_eprlIntertwiner, Lightlike.Spin4.eprlVertex_eq_sum, Lightlike.Spin4.eprlVertex_eq_fifteenJ]
+      - id: p1
+        kind: piece
+        text: "The vertex labels for 0 < γ < 1: boundary data and the EPRL label condition on the vertex"
+        decls: [Lightlike.Spin4.IsEPRLVertexLabel, Lightlike.Spin4.IsVertexBoundary]
+      - id: p2
+        kind: piece
+        text: "Basic properties: selection rules (vanishing for odd spin sums on either side), the zero-spin value, the BF-limit value, reality, and the 9j form"
+        decls: [Lightlike.Spin4.eprlVertex_eq_zero_of_not_even_left, Lightlike.Spin4.eprlVertex_eq_zero_of_not_even_right, Lightlike.Spin4.eprlVertex_zero, Lightlike.Spin4.eprlVertex_zero_right, Lightlike.Spin4.eprlVertex_im, Lightlike.Spin4.eprlVertex_eq_vertexNineJ]
+        hint: "Value theorems assume IsVertexBoundary; outside it eprlVertex is junk (documented in Vertex.lean)."
+      - id: t1
+        kind: trust
+        text: "Vertex values agree with published numerics where available"
+        decls: [Lightlike.Spin4.VertexTests.eprlVertex_cycle_third, Lightlike.Spin4.VertexTests.eprlVertex_cycle_selfDual]
+        hint: "No published table exists; VertexTests.lean states this and uses exact SymPy values (scripts/spin4/vertex_check.py) instead."
+      - id: t2
+        kind: trust
+        text: "A wrong simplicity constraint is shown to give a different result"
+        decls: [Lightlike.Spin4.VertexTests.eprlVertex_ne_wrong_simplicity, Lightlike.Spin4.VertexTests.vertexNineJ_wrong_simplicity, Lightlike.Spin4.VertexTests.not_isEPRLVertexLabel_cycle_half]
+        hint: "The comparison uses a different boundary (spins n-m type) than the EPRL value, so it shows different inputs give different numbers, not a same-boundary perturbation."
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  SF6b:
+    ranking: 55
+    items:
+      - id: m1
+        kind: main
+        text: "At the BF point (γ = 1) the EPRL state sum on a closed 4-complex equals the Ooguri amplitude on the same complex and cutoffs"
+        decls: []
+        hint: "Missing. Only Lightlike.SpinFoam.EPRL.amplitude_one_zero (cutoff 0, trivial: both sides 1) and Lightlike.SpinFoam.EPRL.amplitude_zero. Lightlike.SpinFoam.EPRLStateSum.weightE_one_eq_prod_vertexCombo (per vertex only) and Lightlike.SpinFoam.EPRLStateSum.eprlIntrinsicAmp_eq_signed_ooguri (a separately defined amplitude with a sign twist) are not the statement."
+      - id: p1
+        kind: piece
+        text: "The EPRL state sum on a 4-complex is defined: vertex amplitude of SF6, face amplitude (n+1)(m+1), edge amplitude 1, edge weight and simplicity coefficient, gauge-fixed and plain"
+        decls: [Lightlike.SpinFoam.EPRL.amplitudeGF, Lightlike.SpinFoam.EPRL.amplitude, Lightlike.SpinFoam.EPRL.weightE, Lightlike.SpinFoam.EPRL.faceAmp, Lightlike.SpinFoam.EPRL.edgeAmp, Lightlike.SpinFoam.EPRL.simpE]
+      - id: p2
+        kind: piece
+        text: "The EPRL state sum is independent of the vertex order of the 4-simplices"
+        decls: []
+        hint: "No statement found."
+      - id: p3
+        kind: piece
+        text: "The EPRL state sum is independent of the orientation"
+        decls: []
+        hint: "EPRL.lean says orientation independence is not claimed."
+      - id: t1
+        kind: trust
+        text: "On a small closed 4-complex at low spins, the EPRL state sum computed in Lean equals the Ooguri amplitude at the BF point"
+        decls: []
+        hint: "Missing. Only the cutoff-0 case Lightlike.SpinFoam.EPRL.amplitude_one_zero and single-simplex checks Lightlike.SpinFoam.EPRL.Tests.simpE_colA, Lightlike.SpinFoam.EPRL.Tests.weightE_colA (γ = 1/3)."
+      - id: t2
+        kind: trust
+        text: "A wrong face amplitude is shown to break that equality"
+        decls: []
+        hint: "Lightlike.SpinFoam.EPRL.faceAmp_one_ne_sq only shows (J+1)² ≠ J+1; it breaks nothing while the equality is not proven."
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  SF7:
+    issue: 76
+    ranking: 39
+    items:
+      - id: m1
+        kind: main
+        text: "The Lorentzian EPRL vertex amplitude (ρ = γ(j+1), k = j) is defined as an integral over four copies of SL(2,ℂ) and is finite for every Immirzi parameter, all spins and all coefficient arrays"
+        decls: [Lightlike.Lorentz.eprlVertex, Lightlike.Lorentz.integrable_eprlIntegrand, Lightlike.Lorentz.lintegral_enorm_eprlIntegrand_lt_top]
+        hint: "The definition has no ε twist on the bra legs (see r1), so finiteness is for this definition, which is not claimed to equal the Engle–Pereira amplitude."
+      - id: p1
+        kind: piece
+        text: "The labels ρ = γ(j+1) and k = j, the EPRL vector and the EPRL matrix coefficient"
+        decls: [Lightlike.Lorentz.eprlRho, Lightlike.Lorentz.eprlVec, Lightlike.Lorentz.eprlCoeff]
+      - id: p2
+        kind: piece
+        text: "The vertex amplitude is the absolutely convergent integral of the contracted integrand (not the junk value 0)"
+        decls: [Lightlike.Lorentz.eprlVertex_eq_integral]
+      - id: r1
+        kind: review
+        text: "The vertex amplitude is compared with the source (Engle–Pereira–Rovelli–Livine 2008, Engle–Pereira 2009) and the ε twist on the bra legs is present, or its absence is justified"
+        review_evidence: null
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  SF1:
+    ranking: 49
+    items:
+      - id: m1
+        kind: main
+        text: "The Barrett–Crane intertwiner is unique (Reisenberger 1999): up to scale it is the only Spin(4)-invariant vector in the tensor product of four simple representations (j_i, j_i) satisfying the uniqueness hypotheses of Reisenberger's theorem"
+        decls: []
+        hint: "Missing: no uniqueness or basis-independence theorem; Lightlike.SpinFoam.BC.bcNode is only defined (docstring in BarrettCrane.lean claims uniqueness). Closest: Lightlike.SpinFoam.BC.bcNode, Lightlike.SpinFoam.BC.bcVertex_eq_sum."
+      - id: p1
+        kind: piece
+        text: "The Barrett–Crane intertwiner and the Barrett–Crane vertex (contraction of five Barrett–Crane intertwiners along K5) are defined from the simple representations j₊ = j₋ of Spin(4)"
+        decls: [Lightlike.SpinFoam.BC.bcNode, Lightlike.SpinFoam.BC.bcVertex, Lightlike.SpinFoam.BC.bcVertex_eq_sum]
+      - id: p2
+        kind: piece
+        text: "A Spin(4) representation (n, m) with n + m > 0 satisfies the weak simplicity constraint exactly when n = m"
+        decls: [Lightlike.SpinFoam.BC.simple_iff]
+      - id: p3
+        kind: piece
+        text: "Basic properties of the Barrett–Crane vertex: it is real and nonnegative"
+        decls: [Lightlike.SpinFoam.BC.bcVertex_im, Lightlike.SpinFoam.BC.bcVertex_nonneg]
+      - id: t1
+        kind: trust
+        text: "The Barrett–Crane vertex reproduces published 10j values"
+        decls: []
+        hint: "Only hand-computed values exist: Lightlike.SpinFoam.BC.Tests.bcVertex_zero, Lightlike.SpinFoam.BC.Tests.bcVertex_cyc, Lightlike.SpinFoam.BC.Tests.bcVertex_triangle, Lightlike.SpinFoam.BC.Tests.bcVertexBC_triangle_one. docs/results.yaml LL-0052 says no published table was found; the sign link of bcVertexBC to Baez–Christensen is not proven."
+      - id: t2
+        kind: trust
+        text: "A non-simple representation is shown to violate the simplicity constraint"
+        decls: [Lightlike.SpinFoam.BC.Tests.not_simple_half_zero, Lightlike.SpinFoam.BC.Tests.simple_half_half]
+      - id: c1
+        kind: catalogue
+        text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
+        decls: []
+  CO5:
+    issue: 8
+  CO6:
+    issue: 9
+  CO7:
+    issue: 10
+  CO9:
+    issue: 11
+  CF1:
+    issue: 12
+  GC2:
+    issue: 13
+  GC4:
+    issue: 14
+  FT1:
+    issue: 23
+  FT3:
+    issue: 24
+  FT5:
+    issue: 25
+  PL5:
+    issue: 30
+  QU3:
+    issue: 39
+  RN1:
+    issue: 42
+  RN2:
+    issue: 43
+  RN3:
+    issue: 44
+  CS1:
+    issue: 45
+  DT4:
+    issue: 46
+  GF1:
+    issue: 57
+  LD6:
+    issue: 58
+  MM5:
+    issue: 59
+  NC1:
+    issue: 60
+  NC4:
+    issue: 61
+  RC6:
+    issue: 64
+  SF8:
+    issue: 77
+  SF9:
+    issue: 78
+  SF10:
+    issue: 79
+  ST1:
+    issue: 80
+  ST5:
+    issue: 81
+  ST8:
+    issue: 82
+  TW1:
+    issue: 83
+  TW4:
+    issue: 84
+  OA4:
+    issue: 85
+  CO24:
+    issue: 185
+  DS1:
+    issue: 186

@@ -5,7 +5,7 @@ import Lightlike
 
 Every declaration named in an API map (`Lightlike/<Area>/API-map.md`) or in the results
 registry (`docs/results.yaml`) must exist and be declared in the module of the file it is cited
-with. The names are listed in `.lake/api_names.tsv`, written by `python3 scripts/api_map.py names`.
+with. The hypotheses of a conditional result are listed with no file and must only exist. The names are listed in `.lake/api_names.tsv`, written by `python3 scripts/api_map.py names`.
 A name resolves as `Lightlike.<name>` or, failing that, as written. Backticked text that is not
 a declaration name (mathematics such as `β = 0`, a path, a file name) is skipped with a warning,
 by the same rule as `scripts/DocCheck.lean`.
@@ -35,6 +35,7 @@ open Lean Elab Command in
       match [`Lightlike ++ raw, raw].find? env.contains with
       | none => bad := bad.push s!"{decl} ({file}): no such declaration"
       | some c =>
+        if file.isEmpty then continue
         match ← liftCoreM (findModuleOf? c) with
         | some m =>
           if m != modName then

@@ -28,7 +28,12 @@ The gauge-fixed state sum is invariant under the 3-3 move [3], the 2-4 and 4-2 m
 and 5-1 moves [5], for cutoffs that cut nothing off on the faces inside the move. In each case the
 gauge rule survives the move, with the new triangles added to the gauge set. Each of the three moves
 has an example on a closed 4-sphere in which the kernel checks every hypothesis, and a perturbed
-vertex amplitude breaks the 3-3 identity [6]. Two gauge sets that each force every triangle give the
+vertex amplitude breaks the 3-3 identity [6]. The invariances rest on recoupling identities of spin networks: summed over the colours of the
+inner triangles and tetrahedra, the union of the vertex networks of one side evaluates to a reduced
+network, once the cutoffs exceed the triangle inequalities. For the 3-3 move the reduced networks of the two
+sides agree by a gauge transformation [3]; for the 2-4 move the two-simplex side evaluates to the
+reduced network of the other side [35]; for the 1-5 move the reduced network is the one-simplex
+network times the dimensions of four free triangles [36]. Two gauge sets that each force every triangle give the
 same state sum at every cutoff [7]. It is constant along a chain of these 4D Pachner moves (with the cutoffs re-chosen between
 moves), and for a gauge set that forces every triangle it is `1` at every constant cutoff [8]. A set that forces every triangle still forces every triangle after a 1-5
 move, when the four gauge triangles of the move are added [9]; for the 3-3 move, a set that forces the complex before the move and does not contain the moved triangle
@@ -134,11 +139,13 @@ proved).
 2. Lightlike/SpinFoam/Ooguri.lean - `SpinFoam.weight`, `SpinFoam.amplitudeGF`,
    `SpinFoam.amplitude`, `SpinFoam.IsGauge`, `SpinFoam.IsGauge.card_eq`
 3. Lightlike/SpinFoam/Move33.lean - `SpinFoam.amplitudeGF_move33`,
-   `SpinFoam.amplitudeGF_move33_gauge`
+   `SpinFoam.amplitudeGF_move33_gauge`, `SpinFoam.Move33.inner_eq`, `SpinFoam.Move33.lhs_eq_ev_NL`,
+   `SpinFoam.Move33.ev_NL_rev`
 4. Lightlike/SpinFoam/Move24Global.lean - `SpinFoam.amplitudeGF_move24`,
-   `SpinFoam.amplitudeGF_move24_gauge`, `SpinFoam.amplitudeGF_move42_gauge`
+   `SpinFoam.amplitudeGF_move24_gauge`, `SpinFoam.amplitudeGF_move42_gauge`, `SpinFoam.IsGauge.move24`
 5. Lightlike/SpinFoam/Move15Global.lean - `SpinFoam.Move15.amplitudeGF_move15`,
-   `SpinFoam.Move15.amplitudeGF_move15_gauge`, `SpinFoam.Move15.amplitudeGF_move51_gauge`
+   `SpinFoam.Move15.amplitudeGF_move15_gauge`, `SpinFoam.Move15.amplitudeGF_move51_gauge`,
+   `SpinFoam.Move15.isGauge_move15`
 6. Lightlike/SpinFoam/Tests.lean - `SpinFoam.amplitudeGF_move33_example`,
    `SpinFoam.amplitudeGF_move24_example`, `SpinFoam.amplitudeGF_move15_example`,
    `SpinFoam.amplitudeGF_move24_gauge_example`, `SpinFoam.amplitudeGF_move15_gauge_example`,
@@ -160,16 +167,16 @@ proved).
    `SpinFoam.Forcing24.local24_control`, `SpinFoam.Forcing24.forcing_dichotomy24`,
    `SpinFoam.Forcing24.forces24_of_common`, `SpinFoam.Forcing24.forces_move24_iff`
 12. Lightlike/SpinFoam/ForcingRobust.lean - `SpinFoam.Robust`, `SpinFoam.robustBy`,
-   `SpinFoam.robust_of_robustBy`, `SpinFoam.Move15.robust_move15`,
-   `SpinFoam.forces_move24_of_robust`, `SpinFoam.Forcing33.forcesIn_common_of_robust_33`,
-   `SpinFoam.Forcing33.forces_move33_of_robust`
+   `SpinFoam.robust_of_robustBy`, `SpinFoam.Move15.robust_move15`, `SpinFoam.forces_move24_of_robust`,
+   `SpinFoam.Forcing33.forcesIn_common_of_robust_33`, `SpinFoam.Forcing33.forces_move33_of_robust`,
+   `SpinFoam.Forcing33.lemmaX_abstract`
 13. Lightlike/SpinFoam/ForcingRobustCounterexample.lean - `SpinFoam.robust_Kcex`,
    `SpinFoam.not_robust_Kcex_move`, `SpinFoam.robust_not_kept_by_move33`
 14. Lightlike/SpinFoam/BarrettCrane.lean - `SpinFoam.BC.bcVertex`, `SpinFoam.BC.bcVertex_eq_sum`,
    `SpinFoam.BC.bcVertex_nonneg`, `SpinFoam.BC.simple_iff`, `SpinFoam.BC.bcVertexBC`,
-   `SpinFoam.BC.abs_bcVertexBC`, `SpinFoam.BC.bcVertexBC_of_even`,
-   `SpinFoam.BC.bcVertexBC_of_odd`, `SpinFoam.BC.bcVertexBC_nonneg_of_even`,
-   `SpinFoam.BC.bcVertexBC_nonpos_of_odd`
+   `SpinFoam.BC.abs_bcVertexBC`, `SpinFoam.BC.bcVertexBC_of_even`, `SpinFoam.BC.bcVertexBC_of_odd`,
+   `SpinFoam.BC.bcVertexBC_nonneg_of_even`, `SpinFoam.BC.bcVertexBC_nonpos_of_odd`,
+   `SpinFoam.BC.bcVertex_im`
 15. Lightlike/SpinFoam/BarrettCraneTests.lean - `SpinFoam.BC.Tests.bcVertex_zero`,
    `SpinFoam.BC.Tests.bcVertex_cyc`, `SpinFoam.BC.Tests.bcVertex_triangle`,
    `SpinFoam.BC.Tests.bcVertexBC_cyc`, `SpinFoam.BC.Tests.bcVertexBC_triangle_one`,
@@ -242,6 +249,10 @@ proved).
     `SpinFoam.forcedTris_starT`, `SpinFoam.amplitudeGF_starT_eq_twistT`,
     `SpinFoam.forcedTris_gauge9_ne`
 34. Lightlike/SpinFoam/OoguriGaugeFixed/Capstone.lean - `SpinFoam.gaugeFixed_sphere6_trust`
+35. Lightlike/SpinFoam/Move24.lean - `SpinFoam.Move24.lhs_eq_ev_NL24`,
+    `SpinFoam.Move24.sumB_eq_ev_QB`
+36. Lightlike/SpinFoam/Move15.lean - `SpinFoam.Move15.lhs_eq_ev_NL15`,
+    `SpinFoam.Move15.ev_NL_eq_QB`
 
 ## References
 
