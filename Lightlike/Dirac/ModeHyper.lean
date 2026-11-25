@@ -37,6 +37,7 @@ noncomputable def hgCoef1 (a : ℂ) (m : ℕ) (n : ℕ) : ℂ := ((n : ℂ) + 1)
 /-- Second derivative coefficients `(n+1)(n+2) γ_{n+2}`. -/
 noncomputable def hgCoef2 (a : ℂ) (m : ℕ) (n : ℕ) : ℂ := ((n : ℂ) + 1) * hgCoef1 a m (n + 1)
 
+/-- Growth bound of the hypergeometric coefficients. -/
 lemma hgCoef_bound (a : ℂ) (m n : ℕ) : ‖hgCoef a m n‖ ≤ 1 * ((n : ℝ) + 1) ^ (2 * max ‖a‖ 1) := by
   rw [one_mul]; exact hgTerm_bound a m n
 
@@ -58,6 +59,7 @@ theorem hasDerivAt_hgSum1 (a : ℂ) (m : ℕ) {x : ℝ} (hx : |x| < 1) :
 /-- Polynomially bounded coefficient sequences. -/
 def PB (c : ℕ → ℂ) : Prop := ∃ C K : ℝ, 0 ≤ C ∧ 0 ≤ K ∧ ∀ n, ‖c n‖ ≤ C * ((n : ℝ) + 1) ^ K
 
+/-- Sums of polynomially bounded sequences are polynomially bounded. -/
 lemma PB.add {c d : ℕ → ℂ} (hc : PB c) (hd : PB d) : PB fun n => c n + d n := by
   obtain ⟨C, K, hC, hK, hcb⟩ := hc
   obtain ⟨D, L, hD, hL, hdb⟩ := hd
@@ -70,6 +72,7 @@ lemma PB.add {c d : ℕ → ℂ} (hc : PB c) (hd : PB d) : PB fun n => c n + d n
           (mul_le_mul_of_nonneg_left (Real.rpow_le_rpow_of_exponent_le hn (le_max_right _ _)) hD)
     _ = (C + D) * ((n : ℝ) + 1) ^ (max K L) := by ring
 
+/-- Scalar multiples stay polynomially bounded. -/
 lemma PB.const_mul {c : ℕ → ℂ} (r : ℂ) (hc : PB c) : PB fun n => r * c n := by
   obtain ⟨C, K, hC, hK, hcb⟩ := hc
   refine ⟨‖r‖ * C, K, by positivity, hK, fun n => ?_⟩
@@ -77,6 +80,7 @@ lemma PB.const_mul {c : ℕ → ℂ} (r : ℂ) (hc : PB c) : PB fun n => r * c n
   calc ‖r‖ * ‖c n‖ ≤ ‖r‖ * (C * ((n : ℝ) + 1) ^ K) := mul_le_mul_of_nonneg_left (hcb n) (norm_nonneg _)
     _ = ‖r‖ * C * ((n : ℝ) + 1) ^ K := by ring
 
+/-- Multiplying by `n` keeps polynomial growth. -/
 lemma PB.mul_nat {c : ℕ → ℂ} (hc : PB c) : PB fun n => (n : ℂ) * c n := by
   obtain ⟨C, K, hC, hK, hcb⟩ := hc
   refine ⟨C, K + 1, hC, by linarith, fun n => ?_⟩
@@ -87,6 +91,7 @@ lemma PB.mul_nat {c : ℕ → ℂ} (hc : PB c) : PB fun n => (n : ℂ) * c n := 
         mul_le_mul (by linarith) (hcb n) (norm_nonneg _) (by positivity)
     _ = C * (((n : ℝ) + 1) ^ K * ((n : ℝ) + 1)) := by ring
 
+/-- Shifting keeps polynomial growth. -/
 lemma PB.shift {c : ℕ → ℂ} (hc : PB c) : PB fun n => c (n + 1) := by
   obtain ⟨C, K, hC, hK, hcb⟩ := hc
   refine ⟨C * 2 ^ K, K, by positivity, hK, fun n => ?_⟩
@@ -98,6 +103,7 @@ lemma PB.shift {c : ℕ → ℂ} (hc : PB c) : PB fun n => c (n + 1) := by
     _ ≤ C * (2 ^ K * ((n : ℝ) + 1) ^ K) := mul_le_mul_of_nonneg_left h2 hC
     _ = C * 2 ^ K * ((n : ℝ) + 1) ^ K := by ring
 
+/-- A polynomially bounded sequence gives an absolutely convergent series on `(-1, 1)`. -/
 lemma PB.summable {c : ℕ → ℂ} (hc : PB c) {t : ℝ} (ht : |t| < 1) : Summable fun n : ℕ => c n * (t : ℂ) ^ n := by
   obtain ⟨C, K, hC, hK, hcb⟩ := hc
   exact summable_powerTerms hC hcb ht
@@ -107,6 +113,7 @@ def shr (c : ℕ → ℂ) : ℕ → ℂ
   | 0 => 0
   | n + 1 => c n
 
+/-- Shifting to the right keeps polynomial growth. -/
 lemma pb_shr {c : ℕ → ℂ} (hc : PB c) : PB (shr c) := by
   obtain ⟨C, K, hC, hK, hcb⟩ := hc
   refine ⟨C, K, hC, hK, fun n => ?_⟩
@@ -132,18 +139,21 @@ lemma powerSum_shr {c : ℕ → ℂ} (hc : PB c) {t : ℝ} (ht : |t| < 1) :
   refine tsum_congr fun n => ?_
   ring
 
+/-- Power sums are additive. -/
 lemma powerSum_add {c d : ℕ → ℂ} (hc : PB c) (hd : PB d) {t : ℝ} (ht : |t| < 1) :
     powerSum (fun n => c n + d n) t = powerSum c t + powerSum d t := by
   unfold powerSum
   rw [← (hc.summable ht).tsum_add (hd.summable ht)]
   exact tsum_congr fun n => by ring
 
+/-- Power sums commute with scalars. -/
 lemma powerSum_const_mul (r : ℂ) (c : ℕ → ℂ) (t : ℝ) :
     powerSum (fun n => r * c n) t = r * powerSum c t := by
   unfold powerSum
   rw [← tsum_mul_left]
   exact tsum_congr fun n => by ring
 
+/-- The sum of `n c_n tⁿ` is `t` times the derivative series. -/
 lemma powerSum_mul_nat {c : ℕ → ℂ} (hc : PB c) {t : ℝ} (ht : |t| < 1) :
     powerSum (fun n => (n : ℂ) * c n) t = (t : ℂ) * powerSum (fun n => ((n : ℂ) + 1) * c (n + 1)) t := by
   have h1 : (fun n : ℕ => (n : ℂ) * c n) = shr (fun n => ((n : ℂ) + 1) * c (n + 1)) := by
@@ -158,5 +168,78 @@ lemma powerSum_mul_nat {c : ℕ → ℂ} (hc : PB c) {t : ℝ} (ht : |t| < 1) :
     simpa using this
   rw [h1]
   exact powerSum_shr h2 ht
+
+/-- The hypergeometric coefficients are polynomially bounded. -/
+lemma pb_hgCoef (a : ℂ) (m : ℕ) : PB (hgCoef a m) :=
+  ⟨1, 2 * max ‖a‖ 1, zero_le_one, by positivity, hgCoef_bound a m⟩
+
+/-- The first derivative coefficients are polynomially bounded. -/
+lemma pb_hgCoef1 (a : ℂ) (m : ℕ) : PB (hgCoef1 a m) := by
+  have := (pb_hgCoef a m).mul_nat.shift
+  obtain ⟨C, K, hC, hK, hb⟩ := this
+  refine ⟨C, K, hC, hK, fun n => ?_⟩
+  have := hb n
+  simpa [hgCoef1] using this
+
+/-- The second derivative coefficients are polynomially bounded. -/
+lemma pb_hgCoef2 (a : ℂ) (m : ℕ) : PB (hgCoef2 a m) := by
+  have := (pb_hgCoef1 a m).mul_nat.shift
+  obtain ⟨C, K, hC, hK, hb⟩ := this
+  refine ⟨C, K, hC, hK, fun n => ?_⟩
+  have := hb n
+  simpa [hgCoef2] using this
+
+/-- **The hypergeometric differential equation**: `x(1−x) G'' + (m+1−x) G' + a² G = 0` on `(-1, 1)`. -/
+theorem hgSum_ode (a : ℂ) (m : ℕ) {x : ℝ} (hx : |x| < 1) :
+    (x : ℂ) * (1 - (x : ℂ)) * powerSum (hgCoef2 a m) x + (((m : ℂ) + 1) - (x : ℂ)) * powerSum (hgCoef1 a m) x +
+      a ^ 2 * powerSum (hgCoef a m) x = 0 := by
+  have h2 := pb_hgCoef2 a m
+  have h1 := pb_hgCoef1 a m
+  have h0 := pb_hgCoef a m
+  have e1 : (x : ℂ) * powerSum (hgCoef2 a m) x = powerSum (shr (hgCoef2 a m)) x := (powerSum_shr h2 hx).symm
+  have e2 : (x : ℂ) * ((x : ℂ) * powerSum (hgCoef2 a m) x) = powerSum (shr (shr (hgCoef2 a m))) x := by
+    rw [e1, ← powerSum_shr (pb_shr h2) hx]
+  have e3 : (x : ℂ) * powerSum (hgCoef1 a m) x = powerSum (shr (hgCoef1 a m)) x := (powerSum_shr h1 hx).symm
+  have hE : ∀ n : ℕ, shr (hgCoef2 a m) n + (-1 : ℂ) * shr (shr (hgCoef2 a m)) n + ((m : ℂ) + 1) * hgCoef1 a m n +
+      (-1 : ℂ) * shr (hgCoef1 a m) n + a ^ 2 * hgCoef a m n = 0 := by
+    intro n
+    rcases n with _ | _ | n
+    · have := hgCoef_succ a m 0
+      simp only [shr, hgCoef1, hgCoef2]
+      push_cast at this ⊢
+      linear_combination this
+    · have h0' := hgCoef_succ a m 0
+      have h1' := hgCoef_succ a m 1
+      simp only [shr, hgCoef1, hgCoef2]
+      push_cast at h0' h1' ⊢
+      linear_combination 0 * h0' + h1' * 1
+    · have := hgCoef_succ a m (n + 2)
+      simp only [shr, hgCoef1, hgCoef2]
+      push_cast at this ⊢
+      linear_combination this
+  -- assemble
+  have hlin : powerSum (fun n => shr (hgCoef2 a m) n + (-1 : ℂ) * shr (shr (hgCoef2 a m)) n +
+        ((m : ℂ) + 1) * hgCoef1 a m n + (-1 : ℂ) * shr (hgCoef1 a m) n + a ^ 2 * hgCoef a m n) x =
+      powerSum (shr (hgCoef2 a m)) x + (-1 : ℂ) * powerSum (shr (shr (hgCoef2 a m))) x +
+        ((m : ℂ) + 1) * powerSum (hgCoef1 a m) x + (-1 : ℂ) * powerSum (shr (hgCoef1 a m)) x +
+        a ^ 2 * powerSum (hgCoef a m) x := by
+    have p2 := pb_shr h2
+    have p22 := pb_shr p2
+    have p1 := pb_shr h1
+    rw [powerSum_add ((((p2.add (p22.const_mul (-1))).add (h1.const_mul ((m : ℂ) + 1))).add (p1.const_mul (-1))))
+      (h0.const_mul (a ^ 2)) hx,
+      powerSum_add (((p2.add (p22.const_mul (-1))).add (h1.const_mul ((m : ℂ) + 1)))) (p1.const_mul (-1)) hx,
+      powerSum_add ((p2.add (p22.const_mul (-1)))) (h1.const_mul ((m : ℂ) + 1)) hx,
+      powerSum_add p2 (p22.const_mul (-1)) hx]
+    simp only [powerSum_const_mul]
+  have hz : powerSum (fun n => shr (hgCoef2 a m) n + (-1 : ℂ) * shr (shr (hgCoef2 a m)) n +
+        ((m : ℂ) + 1) * hgCoef1 a m n + (-1 : ℂ) * shr (hgCoef1 a m) n + a ^ 2 * hgCoef a m n) x = 0 := by
+    unfold powerSum
+    have hz0 : ∀ n : ℕ, (shr (hgCoef2 a m) n + (-1 : ℂ) * shr (shr (hgCoef2 a m)) n +
+        ((m : ℂ) + 1) * hgCoef1 a m n + (-1 : ℂ) * shr (hgCoef1 a m) n + a ^ 2 * hgCoef a m n) * (x : ℂ) ^ n = 0 :=
+      fun n => by rw [hE n, zero_mul]
+    simp only [hz0, tsum_zero]
+  rw [hlin, ← e1, ← e2, ← e3] at hz
+  linear_combination hz
 
 end Lightlike.Dirac
