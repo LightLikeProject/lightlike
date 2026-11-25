@@ -1864,6 +1864,11 @@
     "snippet": "Theorem 28. Y ∋ y 7→ φ(y) ∈ Bh (Γa (Z)) (52) is an irreducible representation of the CAR over the space (Y, α). (52) is called the Fock representation of the CAR. Let w1 , . . . , wm be an orthonormal basis of the comple",
     "why": null
    },
+   "Theorem 31, p. 32": {
+    "verified": true,
+    "snippet": "Theorem 31. 1) Let r ∈ O(Y). Then the following conditions are equiva- lent: a) There exists U ∈ U (Γa (Z)) such that U φ(y)U ∗ = φ(ry), y ∈ Y. (56) b) r ∈ O2 (Y) 2) For r ∈ O2 (Y), the unitary operator U satisfying (56)",
+    "why": null
+   },
    "Theorem 37, p. 38": {
     "verified": true,
     "snippet": "Theorem 37. A quasi-free representation is regular. Therefore, in a quasi-free representation we can define the corresponding field operators, denoted φ(y). If m is an integer, we say that σ is a pairing of {1, . . . , 2",

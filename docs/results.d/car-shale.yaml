@@ -5,7 +5,9 @@
   decls: [Lightlike.OperatorAlgebras.CARShale.fermionic_shale_of_HS, Lightlike.OperatorAlgebras.CARShale.exists_vacuum_of_HS, Lightlike.OperatorAlgebras.CARShale.decoupling]
   status: proven
   tier: established
-  source: exploratory
+  source:
+    refs:
+      - {ref: derezinski-2006, location: "Theorem 31, p. 32", check: "Theorem 31"}
   review: kernel-checked
   note: "The sufficiency half of the equivalence LL-XXXX-i (the comparison with the source is recorded there). Proof: the transformed annihilators of any vector are a CAR system; a unit vector killed by them gives a unitary on the words of transformed creation operators (dense by irreducibility); the vacuum is the limit of the decreasing commuting projections prod (1 - c_k a_k) over the modes of an eigenbasis of K = beta* beta, with the relative decoupling bound (decoupling), class by class, and the finitely many heavy classes handled by mode flips."
   since: unreleased
