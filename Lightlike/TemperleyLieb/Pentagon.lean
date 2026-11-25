@@ -278,4 +278,59 @@ theorem ortho4 [CharZero k] (q : kˣ) (a b c d e₀ d₀ g₀ e d₁ g : ℕ)
           Vop q (a + b - 2 * e + c - 2 * d₁) d g := by simp only [mul_assoc]
       _ = 0 := by rw [h3]; simp
 
+/-- A double sum with one surviving term. -/
+theorem sum2_single {M : Type*} [AddCommMonoid M] (S₁ : Finset ℕ) (S₂ : ℕ → Finset ℕ) (F : ℕ → ℕ → M)
+    (e₀ d₀ : ℕ) (h1 : e₀ ∈ S₁) (h2 : d₀ ∈ S₂ e₀) (hF : ∀ e d, e ≠ e₀ ∨ d ≠ d₀ → F e d = 0) :
+    ∑ e ∈ S₁, ∑ d ∈ S₂ e, F e d = F e₀ d₀ := by
+  rw [Finset.sum_eq_single e₀]
+  · rw [Finset.sum_eq_single d₀]
+    · intro d _ hd; exact hF e₀ d (Or.inr hd)
+    · intro h; exact absurd h2 h
+  · intro e _ he
+    exact Finset.sum_eq_zero fun d _ => hF e d (Or.inl he)
+  · intro h; exact absurd h1 h
+
+/-- The normalisation scalar-times-projector of a four-block left tree vector. -/
+noncomputable def Nrm (q : kˣ) (a b c d e d₁ g : ℕ) : Module.End k (ModelSpace k) :=
+  (kapRec q a b e * kapRec q (a + b - 2 * e) c d₁ * kapRec q (a + b - 2 * e + c - 2 * d₁) d g) •
+    jwAt q 0 (a + b - 2 * e + c - 2 * d₁ + d - 2 * g)
+
+/-- **Pairing of `ULd4` with `(a(bc))d`.** -/
+theorem pair_TB [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) (a b c d e₀ d₀ g₀ f d' g : ℕ) (hab : 1 ≤ a + b)
+    (hd : ∀ x, x ≤ a + b + c + d → chebD (loopVal q) x ≠ 0)
+    (hq2 : ∀ x, 1 ≤ x → x ≤ a + b + c + d + 1 → (q : k) ^ (2 * x) ≠ 1)
+    (hfb : f ≤ b) (hfc : f ≤ c) (hda : d' ≤ a) (hdf : d' ≤ b + c - 2 * f)
+    (h₀ : ValidA a b c d e₀ d₀ g₀) (hg : g ≤ a + (b + c - 2 * f) - 2 * d' ∧ g ≤ d) :
+    ULd4 q a b c d e₀ d₀ g₀ * TB q a b c d f d' g =
+      if g₀ = g then Fc q a b c e₀ d₀ f d' • Nrm q a b c d e₀ d₀ g₀ else 0 := by
+  rw [TB_expand q hδ a b c d f d' g hab hd hq2 hfb hfc hda hdf]
+  have hterm : ∀ e d₁, ULd4 q a b c d e₀ d₀ g₀ * (Fc q a b c e d₁ f d' • UL4 q a b c d e d₁ g) =
+      if (e₀ = e ∧ d₀ = d₁) then (if g₀ = g then Fc q a b c e d₁ f d' • Nrm q a b c d e₀ d₀ g₀ else 0) else 0 := by
+    intro e d₁
+    rw [mul_smul_comm]
+    by_cases h0 : Fc (k := k) q a b c e d₁ f d' = 0
+    · rw [h0]; simp
+    · obtain ⟨hv1, hv2⟩ := Fc_guard h0
+      have ht := Fc_total q hδ a b c e d₁ f d' (by omega) (fun x hx => hd x (by omega)) hfb hfc hda hdf h0
+      have hv : ValidA a b c d e d₁ g := ⟨hv1, hv2, by omega, hg.2⟩
+      rw [ortho4 q a b c d e₀ d₀ g₀ e d₁ g hd hq2 h₀ hv]
+      by_cases hed : e₀ = e ∧ d₀ = d₁
+      · obtain ⟨rfl, rfl⟩ := hed
+        by_cases hgg : g₀ = g
+        · simp [hgg, Nrm]
+        · simp [hgg]
+      · have : ¬ (e₀ = e ∧ d₀ = d₁ ∧ g₀ = g) := fun hh => hed ⟨hh.1, hh.2.1⟩
+        simp [this, hed]
+  simp only [Finset.mul_sum, hterm]
+  rw [sum2_single (Finset.range (a + 1)) (fun _ => Finset.range (c + 1)) _ e₀ d₀
+    (Finset.mem_range.mpr (by have := h₀.1; have := min_le_left a b; omega))
+    (Finset.mem_range.mpr (by have := h₀.2.1; have := min_le_right (a + b - 2 * e₀) c; omega))]
+  · simp only [and_self, if_true]
+  · intro e d hne
+    rw [if_neg]
+    rintro ⟨h1, h2⟩
+    rcases hne with hne | hne
+    · exact hne h1.symm
+    · exact hne h2.symm
+
 end Lightlike.TemperleyLieb
