@@ -26,9 +26,10 @@ theorem exists_surface_param (hn : 2 ≤ n) {f : M → Fin 2 → ℝ}
     ∃ (xS : (Fin (n - 2) → ℝ) → M) (Sg₀ : Set (Fin (n - 2) → ℝ)), IsOpen Sg₀ ∧ (0 : Fin (n - 2) → ℝ) ∈ Sg₀ ∧
       ContMDiffOn 𝓘(ℝ, Fin (n - 2) → ℝ) 𝓘(ℝ, Fin n → ℝ) ∞ xS Sg₀ ∧ xS 0 = x ∧ (∀ σ ∈ Sg₀, f (xS σ) = 0) ∧
       Function.Injective (mfderiv 𝓘(ℝ, Fin (n - 2) → ℝ) 𝓘(ℝ, Fin n → ℝ) xS 0) ∧
-      ∀ v : TangentSpace 𝓘(ℝ, Fin n → ℝ) x,
+      (∀ v : TangentSpace 𝓘(ℝ, Fin n → ℝ) x,
         mfderiv 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ, Fin 2 → ℝ) f x v = 0 ↔
-          ∃ u, mfderiv 𝓘(ℝ, Fin (n - 2) → ℝ) 𝓘(ℝ, Fin n → ℝ) xS 0 u = v := by
+          ∃ u, mfderiv 𝓘(ℝ, Fin (n - 2) → ℝ) 𝓘(ℝ, Fin n → ℝ) xS 0 u = v) ∧
+      ∀ V ∈ 𝓝 (0 : Fin (n - 2) → ℝ), ∃ N ∈ 𝓝 x, ∀ y ∈ N, f y = 0 → ∃ σ ∈ V, xS σ = y := by
   classical
   set ψ := extChartAt 𝓘(ℝ, Fin n → ℝ) x with hψ
   set F : (Fin n → ℝ) → (Fin 2 → ℝ) := fun y => f (ψ.symm y) with hF
@@ -74,7 +75,7 @@ theorem exists_surface_param (hn : 2 ≤ n) {f : M → Fin 2 → ℝ}
       hf.comp_contMDiffOn (contMDiffOn_extChartAt_symm x)
     exact contMDiffOn_iff_contDiffOn.1 h1
   have hFd' : Function.Surjective (fderiv ℝ F (ψ x)) := hsurjF
-  obtain ⟨p, ⟨V, hVo, hV0, hpV⟩, hpc, hp0, hpF, hpinj, hpker⟩ :=
+  obtain ⟨p, ⟨V, hVo, hV0, hpV⟩, hpc, hp0, hpF, hpinj, hpker, hpsurj⟩ :=
     exists_level_param hdim (isOpen_extChartAt_target x) hψx hFU hFd'
   obtain ⟨W, hWF, hWo, hW0⟩ := eventually_nhds_iff.1 hpF
   set Sg₀ : Set (Fin (n - 2) → ℝ) := V ∩ p ⁻¹' ψ.target ∩ W with hSg₀
@@ -97,7 +98,7 @@ theorem exists_surface_param (hn : 2 ≤ n) {f : M → Fin 2 → ℝ}
   have hDx : ∀ (y : M), y = x → ∀ w : Fin n → ℝ,
       (mfderiv 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ, Fin n → ℝ) ψ y w : Fin n → ℝ) = D w := by
     rintro y rfl w; rfl
-  refine ⟨xS, Sg₀, hSo, hS0, hsm, hx0, ?_, ?_, ?_⟩
+  refine ⟨xS, Sg₀, hSo, hS0, hsm, hx0, ?_, ?_, ?_, ?_⟩
   · intro σ hσ
     show F (p σ) = 0
     rw [hWF σ hσ.2]; simp [hF, hsymx, hx]
@@ -114,5 +115,17 @@ theorem exists_surface_param (hn : 2 ≤ n) {f : M → Fin 2 → ℝ}
     · rintro ⟨u, hu⟩
       refine (hpker (D v)).2 ⟨u, ?_⟩
       exact (key u).symm.trans ((hDx _ hx0 _).trans (congrArg D hu))
+
+  · intro V' hV'
+    obtain ⟨W', hW'n, hW'⟩ := hpsurj V' hV'
+    refine ⟨ψ ⁻¹' W' ∩ ψ.source, Filter.inter_mem ?_ (extChartAt_source_mem_nhds x), fun y hy hfy => ?_⟩
+    · exact (continuousAt_extChartAt x).preimage_mem_nhds hW'n
+    · obtain ⟨σ, hσV, hσ⟩ := hW' (ψ y) hy.1 (by
+        show f (ψ.symm (ψ y)) = F (ψ x)
+        simp only [hF]
+        rw [ψ.left_inv hy.2, hsymx, hx]; exact hfy)
+      refine ⟨σ, hσV, ?_⟩
+      show ψ.symm (p σ) = y
+      rw [hσ]; exact ψ.left_inv hy.2
 
 end Lightlike.Penrose

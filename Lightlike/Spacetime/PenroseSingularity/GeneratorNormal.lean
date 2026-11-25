@@ -163,7 +163,7 @@ theorem generator_isFutureNullNormal (T : Causal.TimeOrientation g) (hn : 2 ≤ 
     IsFutureNullNormalAt g T f (γ 0) (phase (n := n) γ 0).snd := by
   obtain ⟨h1, h2, h3⟩ := generator_future_null g T hL hγ
   have hfγ0 : f (γ 0) = 0 := by rw [hS] at hx; exact hx
-  obtain ⟨xS, Sg₀, hSo, hS0, hsm, hx0, hfx, hinj, hker⟩ := exists_surface_param hn hf hfγ0 (hsurj _ hx)
+  obtain ⟨xS, Sg₀, hSo, hS0, hsm, hx0, hfx, hinj, hker, -⟩ := exists_surface_param hn hf hfγ0 (hsurj _ hx)
   refine ⟨h1, h2, ?_, h3⟩
   intro v hv
   obtain ⟨u, hu⟩ := (hker v).1 hv

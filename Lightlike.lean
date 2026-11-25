@@ -1446,6 +1446,8 @@ import Lightlike.Spacetime.PenroseSingularity.SurfaceParam
 import Lightlike.Spacetime.PenroseSingularity.NormalFamily
 import Lightlike.Spacetime.PenroseSingularity.FocalLength
 import Lightlike.Spacetime.PenroseSingularity.GeneratorNormal
+import Lightlike.Spacetime.PenroseSingularity.FormContinuity
+import Lightlike.Spacetime.PenroseSingularity.UniformBound
 import Lightlike.Spacetime.PenroseSingularity.FocalBound
 import Lightlike.Spacetime.PenroseSingularity.PenroseChron
 import Lightlike.Spacetime.PenroseSingularity.NullGeodGlue

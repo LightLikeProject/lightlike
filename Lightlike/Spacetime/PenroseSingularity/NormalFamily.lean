@@ -42,7 +42,7 @@ theorem exists_normal_family (g : LorentzianMetric 𝓘(ℝ, Fin n → ℝ) M n)
         mfderiv 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ, Fin 2 → ℝ) f (γ 0) v = 0 ↔
           ∃ u, mfderiv 𝓘(ℝ, Fin (n - 2) → ℝ) 𝓘(ℝ, Fin n → ℝ) xS 0 u = v := by
   classical
-  obtain ⟨xS, Sg₀, hSo, hS0, hsm, hx0, hfx, hinj, hker⟩ := exists_surface_param hn hf hx hsurj
+  obtain ⟨xS, Sg₀, hSo, hS0, hsm, hx0, hfx, hinj, hker, -⟩ := exists_surface_param hn hf hx hsurj
   set zS : (Fin (n - 2) → ℝ) → TangentBundle 𝓘(ℝ, Fin n → ℝ) M :=
     fun σ => ⟨xS σ, μ • k (xS σ)⟩ with hzS
   have hkμ : ∀ q : M, ContMDiffAt 𝓘(ℝ, Fin n → ℝ) (𝓘(ℝ, Fin n → ℝ).prod 𝓘(ℝ, Fin n → ℝ)) ∞

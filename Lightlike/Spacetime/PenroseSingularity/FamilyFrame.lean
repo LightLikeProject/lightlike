@@ -109,4 +109,76 @@ theorem exists_frame_trace {V : Type*} [AddCommGroup V] [Module ℝ V] (G Bf : V
     refine Finset.sum_congr rfl fun j _ => ?_
     ring
 
+/-- **The trace over any orthonormal frame of the kernel**: if `u` is a linearly independent family in the kernel
+of a surjection `L` with kernel of dimension `m`, then for every `G`-orthonormal family `e` in the kernel,
+`Σ_a B(e_a, e_a) = tr (Q⁻¹ Cᵀ)` with `Q = G(u_i, u_j)`, `C = B(u_i, u_j)`. -/
+theorem sum_eq_trace_of_frame {V W : Type*} [AddCommGroup V] [Module ℝ V] [FiniteDimensional ℝ V]
+    [AddCommGroup W] [Module ℝ W] [FiniteDimensional ℝ W] (L : V →ₗ[ℝ] W) (hL : Function.Surjective L)
+    (hdim : Module.finrank ℝ V = Module.finrank ℝ W + m) (G Bf : V →ₗ[ℝ] V →ₗ[ℝ] ℝ)
+    (u : Fin m → V) (hu : LinearIndependent ℝ u) (huK : ∀ i, L (u i) = 0)
+    (e : Fin m → V) (heK : ∀ a, L (e a) = 0) (hortho : ∀ a b, G (e a) (e b) = if a = b then 1 else 0) :
+    ∑ a, Bf (e a) (e a) =
+      trace ((Matrix.of fun i j => G (u i) (u j))⁻¹ * (Matrix.of fun i j => Bf (u i) (u j))ᵀ) := by
+  classical
+  -- the kernel has dimension `m`
+  have hrank : Module.finrank ℝ (LinearMap.ker L) = m := by
+    have h1 := LinearMap.finrank_range_add_finrank_ker L
+    have h2 : LinearMap.range L = ⊤ := LinearMap.range_eq_top.2 hL
+    rw [h2, finrank_top] at h1
+    omega
+  -- `u` spans the kernel
+  set uK : Fin m → LinearMap.ker L := fun i => ⟨u i, huK i⟩ with huKdef
+  have huKli : LinearIndependent ℝ uK := by
+    refine LinearIndependent.of_comp (LinearMap.ker L).subtype ?_
+    exact hu
+  have hspan : Submodule.span ℝ (Set.range uK) = ⊤ :=
+    huKli.span_eq_top_of_card_eq_finrank' (by rw [hrank]; simp)
+  have hcoef : ∀ a, ∃ c : Fin m → ℝ, e a = ∑ i, c i • u i := by
+    intro a
+    have hmem : (⟨e a, heK a⟩ : LinearMap.ker L) ∈ Submodule.span ℝ (Set.range uK) := by
+      rw [hspan]; trivial
+    obtain ⟨c, hc⟩ := (Submodule.mem_span_range_iff_exists_fun ℝ).1 hmem
+    refine ⟨c, ?_⟩
+    have := congrArg Subtype.val hc
+    simpa [huKdef] using this.symm
+  choose A hA using hcoef
+  have hAQ : (Matrix.of A) * (Matrix.of fun i j => G (u i) (u j)) * (Matrix.of A)ᵀ = 1 := by
+    ext a b
+    have := hortho a b
+    rw [hA a, hA b] at this
+    simp only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul] at this
+    simp only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.of_apply, Matrix.one_apply]
+    rw [← this]
+    refine Finset.sum_congr rfl fun j _ => ?_
+    rw [Finset.sum_mul]
+    rw [Finset.mul_sum]
+    exact Finset.sum_congr rfl fun i _ => by ring
+  rw [trace_inv_mul_transpose_eq (C := Matrix.of fun i j => Bf (u i) (u j)) hAQ]
+  refine Finset.sum_congr rfl fun a _ => ?_
+  rw [hA a]
+  simp only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, Matrix.of_apply]
+  rw [Finset.sum_comm]
+  refine Finset.sum_congr rfl fun i _ => ?_
+  rw [Finset.mul_sum]
+  exact Finset.sum_congr rfl fun j _ => by ring
+
+/-- A family with a Gram matrix of non-zero determinant is linearly independent. -/
+theorem linearIndependent_of_gram_det {V : Type*} [AddCommGroup V] [Module ℝ V]
+    (G : V →ₗ[ℝ] V →ₗ[ℝ] ℝ) (hsymm : ∀ v w, G v w = G w v) (u : Fin m → V)
+    (hdet : (Matrix.of fun i j => G (u i) (u j)).det ≠ 0) : LinearIndependent ℝ u := by
+  classical
+  rw [Fintype.linearIndependent_iff]
+  intro c hc
+  have h1 : (Matrix.of fun i j => G (u i) (u j)).mulVec c = 0 := by
+    funext j
+    have := congrArg (fun v => G v (u j)) hc
+    simp only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, map_zero,
+      LinearMap.zero_apply] at this
+    simp only [Matrix.mulVec, dotProduct, Matrix.of_apply, Pi.zero_apply]
+    rw [← this]
+    exact Finset.sum_congr rfl fun j' _ => by rw [hsymm, mul_comm]
+  intro i
+  have := Matrix.eq_zero_of_mulVec_eq_zero hdet h1
+  exact congrFun this i
+
 end Lightlike.Penrose

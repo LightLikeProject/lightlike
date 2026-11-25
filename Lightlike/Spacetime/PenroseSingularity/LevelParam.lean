@@ -59,7 +59,8 @@ theorem exists_level_param {m : ℕ} (hdim : finrank ℝ E = finrank ℝ F + m) 
     ∃ p : (Fin m → ℝ) → E, (∃ V : Set (Fin m → ℝ), IsOpen V ∧ (0 : Fin m → ℝ) ∈ V ∧ ContDiffOn ℝ ∞ p V) ∧
       ContDiffAt ℝ ∞ p 0 ∧ p 0 = x₀ ∧ (∀ᶠ σ in nhds (0 : Fin m → ℝ), f (p σ) = f x₀) ∧
       Function.Injective (fderiv ℝ p 0) ∧
-      (∀ v, fderiv ℝ f x₀ v = 0 ↔ ∃ u, fderiv ℝ p 0 u = v) := by
+      (∀ v, fderiv ℝ f x₀ v = 0 ↔ ∃ u, fderiv ℝ p 0 u = v) ∧
+      (∀ V ∈ nhds (0 : Fin m → ℝ), ∃ W ∈ nhds x₀, ∀ z ∈ W, f z = f x₀ → ∃ σ ∈ V, p σ = z) := by
   classical
   have hf : ContDiffAt ℝ ∞ f x₀ := hfU.contDiffAt (hU.mem_nhds hx₀)
   set A : E →L[ℝ] F := fderiv ℝ f x₀ with hAdef
@@ -122,7 +123,7 @@ theorem exists_level_param {m : ℕ} (hdim : finrank ℝ E = finrank ℝ F + m) 
   have hΦU : ContDiffOn ℝ ∞ Φ U := hfU.prodMk PrC.contDiff.contDiffOn
   have hGev := eventually_contDiffAt_localInverse hU hx₀ hΦU (Feq := Feq) hΦd hΦc hn0
   obtain ⟨N, hNn, hNo, hN0⟩ := eventually_nhds_iff.1 hGev
-  refine ⟨fun σ => G (aff σ), ⟨aff ⁻¹' N, hNo.preimage haffc, by simpa [haffΦ] using hN0, ?_⟩, ?_, ?_, ?_, ?_, ?_⟩
+  refine ⟨fun σ => G (aff σ), ⟨aff ⁻¹' N, hNo.preimage haffc, by simpa [haffΦ] using hN0, ?_⟩, ?_, ?_, ?_, ?_, ?_, ?_⟩
   · intro σ hσ
     exact (hNn _ hσ).comp σ (by fun_prop) |>.contDiffWithinAt
   · have h2 : ContDiffAt ℝ ∞ aff 0 := by fun_prop
@@ -160,5 +161,19 @@ theorem exists_level_param {m : ℕ} (hdim : finrank ℝ E = finrank ℝ F + m) 
       simp only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.inr_apply]
       have := Feq.apply_symm_apply (0, u)
       exact congrArg Prod.fst this
+
+  · intro V hV
+    set e := hΦc.toOpenPartialHomeomorph Φ hΦd hn0 with he
+    have hxs : x₀ ∈ e.source := hΦc.mem_toOpenPartialHomeomorph_source hΦd hn0
+    have hcontσ : Continuous fun z : E => PrC z - PrC x₀ := by fun_prop
+    refine ⟨e.source ∩ (fun z => PrC z - PrC x₀) ⁻¹' V, Filter.inter_mem (e.open_source.mem_nhds hxs)
+      (hcontσ.continuousAt.preimage_mem_nhds (by simpa using hV)), fun z hz hfz => ?_⟩
+    refine ⟨PrC z - PrC x₀, hz.2, ?_⟩
+    show G (aff (PrC z - PrC x₀)) = z
+    have h1 : aff (PrC z - PrC x₀) = Φ z := by
+      simp only [haff, hΦ]
+      rw [hfz]; congr 1; abel
+    rw [h1]
+    exact e.left_inv hz.1
 
 end Lightlike.Penrose
