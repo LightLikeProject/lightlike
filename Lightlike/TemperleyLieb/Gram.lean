@@ -99,4 +99,19 @@ theorem balanced_ge (q : kˣ) {N : ℕ} {Z YL YR : Module.End k (ModelSpace k)} 
   rw [e1]
   exact hZ4
 
+/-- The middle factor of the Gram pairing (as a product of caps, cups and elements of `C`). -/
+noncomputable def gramMid (q : kˣ) (a b c e d f d' : ℕ) : Module.End k (ModelSpace k) :=
+  nestCap q (a + b - 2 * e - d) d * (Qab q (a + b - 2 * e) c * jwAt q 0 (a + b - 2 * e)) *
+    nestCap q (a - e) e * (Qab q a b * (jwAt q a b * jwAt q (b + a) c)) *
+    nestCup q (b - f + a) f * (jwAt q a (b + c - 2 * f) * Qab q a (b + c - 2 * f)) * nestCup q (a - d') d'
+
+/-- **The Gram pairing as a product with the projectors**: `W_d W_e · sh V_f V_{d'} = p_D · gramMid · p_{D'}`. -/
+theorem gram_eq (q : kˣ) (a b c e d f d' : ℕ) :
+    (Wop q (a + b - 2 * e) c d * Wop q a b e) * (sh a (Vop q b c f) * Vop q a (b + c - 2 * f) d') =
+      jwAt q 0 (a + b - 2 * e + c - 2 * d) * gramMid q a b c e d f d' *
+        jwAt q 0 (a + (b + c - 2 * f) - 2 * d') := by
+  rw [sh_Vop]
+  unfold gramMid Wop Vop
+  simp only [mul_assoc]
+
 end Lightlike.TemperleyLieb
