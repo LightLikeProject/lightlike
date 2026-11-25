@@ -263,6 +263,143 @@ theorem varA_smooth (hD : IsOpen D) (hΘ : ContDiffOn ℝ ∞ Θ D) {I : Set ℝ
   refine ⟨hmap.continuousOn.isOpen_inter_preimage hIo hD, ?_⟩
   exact (hΘ.of_le (by norm_num)).comp (hmap.mono inter_subset_left) (fun p hp => hp.2)
 
+variable {γc W Z : ℝ → Fin n → ℝ} {V : Set (ℝ × ℝ)}
+
+/-- On the zero section of the variation, `A (0, r) = γc r` as long as `(0, r)` stays in the domain. -/
+theorem varA_zero_section (hD : ∀ q, (q, (0 : Fin n → ℝ)) ∈ D → Θ (q, 0) = q)
+    (hVD : ∀ p ∈ V, (γc p.2, p.1 • W p.2 + p.1 ^ 2 • Z p.2) ∈ D) {r : ℝ} (hr : ((0 : ℝ), r) ∈ V) :
+    varA Θ γc W Z (0, r) = γc r := by
+  have := hVD _ hr
+  simp only [zero_smul, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, add_zero] at this
+  simpa [varA] using hD _ this
+
+/-- `Y (0, t) = γc' (t)`: the `t`-jet of the variation along the zero section. -/
+theorem hasDerivAt_curve_of_jetY (hV : IsOpen V) (hΘ : ContDiffOn ℝ 3 (varA Θ γc W Z) V)
+    (hD : ∀ q, (q, (0 : Fin n → ℝ)) ∈ D → Θ (q, 0) = q)
+    (hVD : ∀ p ∈ V, (γc p.2, p.1 • W p.2 + p.1 ^ 2 • Z p.2) ∈ D) {t : ℝ} (hp : ((0 : ℝ), t) ∈ V) :
+    HasDerivAt γc (jetY (varA Θ γc W Z) (0, t)) t := by
+  have hcurve : HasDerivAt (fun r : ℝ => (((0 : ℝ), r) : ℝ × ℝ)) ((0 : ℝ), (1 : ℝ)) t :=
+    (hasDerivAt_const t (0 : ℝ)).prodMk (hasDerivAt_id t)
+  have hd : DifferentiableAt ℝ (varA Θ γc W Z) ((0 : ℝ), t) :=
+    ((hΘ.contDiffAt (hV.mem_nhds hp)).differentiableAt (by simp))
+  have h := hd.hasFDerivAt.comp_hasDerivAt t hcurve
+  refine (h.congr_of_eventuallyEq ?_).congr_deriv (by simp [jetY])
+  have : ∀ᶠ r in 𝓝 t, (((0 : ℝ), r) : ℝ × ℝ) ∈ V :=
+    (continuous_const.prodMk continuous_id).continuousAt.preimage_mem_nhds (hV.mem_nhds hp)
+  filter_upwards [this] with r hr
+  exact (varA_zero_section hD hVD hr).symm
+
+/-- `Y1 (0, t) = W' (t)`: the mixed jet along the zero section is the derivative of `W`. -/
+theorem hasDerivAt_W_of_jetY1 (hV : IsOpen V) (hA : ContDiffOn ℝ 3 (varA Θ γc W Z) V)
+    (hD0 : IsOpen D) (hΘ : ContDiffOn ℝ ∞ Θ D) (j0 : ∀ q, (q, (0 : Fin n → ℝ)) ∈ D → Θ (q, 0) = q)
+    (j1 : ∀ q, (q, (0 : Fin n → ℝ)) ∈ D → ∀ w, fderiv ℝ Θ (q, 0) (0, w) = w)
+    (hVD : ∀ p ∈ V, (γc p.2, p.1 • W p.2 + p.1 ^ 2 • Z p.2) ∈ D) {t : ℝ} (hp : ((0 : ℝ), t) ∈ V) :
+    HasDerivAt W (jetY1 (varA Θ γc W Z) (0, t)) t := by
+  have h := hasDerivAt_jetC1_t hV hA hp
+  refine h.congr_of_eventuallyEq ?_
+  have : ∀ᶠ r in 𝓝 t, (((0 : ℝ), r) : ℝ × ℝ) ∈ V :=
+    (continuous_const.prodMk continuous_id).continuousAt.preimage_mem_nhds (hV.mem_nhds hp)
+  filter_upwards [this] with r hr
+  have hrD : (γc r, (0 : Fin n → ℝ)) ∈ D := by simpa using hVD _ hr
+  rw [jetC1_varA hV hD0 hΘ hA hr (hVD _ hr)]
+  simpa using (j1 _ hrD (W r)).symm
+
+/-- **Uniform negativity for the variation.** Along a null curve `γc` with a field `W` such that
+`g(γc', γc') = 0` and `g(D_t W, γc') = 0`, if the second-order coefficient of the variation is negative at
+`t₀`, then the variation `s ↦ A (s, t)` has timelike `t`-velocity for small `s ≠ 0` and `t` near `t₀`. -/
+theorem varA_uniform_neg (hg : Lightlike.IsCoordMetric g U) (hV : IsOpen V) (hD0 : IsOpen D)
+    (hΘ : ContDiffOn ℝ ∞ Θ D) (hA : ContDiffOn ℝ 3 (varA Θ γc W Z) V)
+    (j0 : ∀ q, (q, (0 : Fin n → ℝ)) ∈ D → Θ (q, 0) = q)
+    (j1 : ∀ q, (q, (0 : Fin n → ℝ)) ∈ D → ∀ w, fderiv ℝ Θ (q, 0) (0, w) = w)
+    (hVD : ∀ p ∈ V, (γc p.2, p.1 • W p.2 + p.1 ^ 2 • Z p.2) ∈ D)
+    (hcU : ∀ p ∈ V, varA Θ γc W Z p ∈ U) {t₀ : ℝ} (hp : ((0 : ℝ), t₀) ∈ V)
+    (h0 : ∀ᶠ t in 𝓝 t₀, gpairAt g (γc t) (deriv γc t) (deriv γc t) = 0)
+    (h0' : ∀ᶠ t in 𝓝 t₀, gpairAt g (γc t) (deriv W t + Lightlike.Geodesic.gammaApply g (γc t) (W t) (deriv γc t))
+      (deriv γc t) = 0)
+    (hneg : coeffK g (fun s t => varA Θ γc W Z (s, t)) (fun s t => jetC1 (varA Θ γc W Z) (s, t))
+      (fun s t => jetC2 (varA Θ γc W Z) (s, t)) (fun s t => jetY (varA Θ γc W Z) (s, t))
+      (fun s t => jetY1 (varA Θ γc W Z) (s, t)) (fun s t => jetY2 (varA Θ γc W Z) (s, t)) 0 t₀ < 0) :
+    ∃ δ > 0, ∃ ε > 0, ∀ t, |t - t₀| < ε → ∀ s, |s| < δ → s ≠ 0 →
+      gpairAt g (varA Θ γc W Z (s, t)) (jetY (varA Θ γc W Z) (s, t)) (jetY (varA Θ γc W Z) (s, t)) < 0 := by
+  have hVn : V ∈ 𝓝 ((0 : ℝ), t₀) := hV.mem_nhds hp
+  have hcj := continuousAt_jets hV hA hp
+  have hmem : ∀ᶠ t in 𝓝 t₀, (((0 : ℝ), t) : ℝ × ℝ) ∈ V :=
+    (continuous_const.prodMk continuous_id).continuousAt.preimage_mem_nhds hVn
+  have hY0 : ∀ t, (((0 : ℝ), t) : ℝ × ℝ) ∈ V → jetY (varA Θ γc W Z) (0, t) = deriv γc t := fun t ht =>
+    (hasDerivAt_curve_of_jetY hV hA j0 hVD ht).deriv.symm
+  refine uniform_neg_local hg (c := fun s t => varA Θ γc W Z (s, t)) (hVt := hVn) ?_ ?_ ?_ ?_ hcU ?_ ?_ ?_ ?_ hneg
+  · exact fun q hq => (hasDerivAt_jets hV hA hq).1
+  · exact fun q hq => (hasDerivAt_jets hV hA hq).2.1
+  · exact fun q hq => (hasDerivAt_jets hV hA hq).2.2.1
+  · exact fun q hq => (hasDerivAt_jets hV hA hq).2.2.2
+  · exact hcj.1.prodMk (hcj.2.1.prodMk (hcj.2.2.2.1.prodMk hcj.2.2.2.2.1))
+  · exact hcj.2.2.1.prodMk hcj.2.2.2.2.2
+  · filter_upwards [h0, hmem] with t ht hm
+    show gpairAt g (varA Θ γc W Z (0, t)) (jetY (varA Θ γc W Z) (0, t)) (jetY (varA Θ γc W Z) (0, t)) = 0
+    rw [hY0 t hm, varA_zero_section j0 hVD hm]
+    exact ht
+  · filter_upwards [h0', hmem] with t ht hm
+    have hrD : (γc t, (0 : Fin n → ℝ)) ∈ D := by simpa using hVD _ hm
+    have hc1 : jetC1 (varA Θ γc W Z) (0, t) = W t := by
+      rw [jetC1_varA hV hD0 hΘ hA hm (hVD _ hm)]
+      simpa using j1 _ hrD (W t)
+    have hW := (hasDerivAt_W_of_jetY1 hV hA hD0 hΘ j0 j1 hVD hm).deriv
+    show gpairAt g (varA Θ γc W Z (0, t)) (jetY1 (varA Θ γc W Z) (0, t) +
+      Lightlike.Geodesic.gammaApply g (varA Θ γc W Z (0, t)) (jetC1 (varA Θ γc W Z) (0, t))
+        (jetY (varA Θ γc W Z) (0, t))) (jetY (varA Θ γc W Z) (0, t)) = 0
+    rw [hY0 t hm, varA_zero_section j0 hVD hm, hc1, ← hW]
+    exact ht
+
+/-- **The `t`-derivative of the pairing of `E = A_ss + Γ(A_s, A_s)` with `w = γc'` along the zero section**
+for the variation: it equals the second-order coefficient minus `|D_t W|²` plus the tidal term. -/
+theorem varA_hasDerivAt_E (hg : Lightlike.IsCoordMetric g U) (hV : IsOpen V) (hD0 : IsOpen D)
+    (hΘ : ContDiffOn ℝ ∞ Θ D) (hA : ContDiffOn ℝ 3 (varA Θ γc W Z) V)
+    (j0 : ∀ q, (q, (0 : Fin n → ℝ)) ∈ D → Θ (q, 0) = q)
+    (j1 : ∀ q, (q, (0 : Fin n → ℝ)) ∈ D → ∀ w, fderiv ℝ Θ (q, 0) (0, w) = w)
+    (hVD : ∀ p ∈ V, (γc p.2, p.1 • W p.2 + p.1 ^ 2 • Z p.2) ∈ D)
+    (hcU : ∀ p ∈ V, varA Θ γc W Z p ∈ U) {t : ℝ} (hp : ((0 : ℝ), t) ∈ V)
+    (hγ : HasDerivAt (deriv γc) (Lightlike.Geodesic.accel g (γc t) (deriv γc t)) t) :
+    HasDerivAt (fun r => gpairAt g (γc r) (jetC2 (varA Θ γc W Z) (0, r) +
+        Lightlike.Geodesic.gammaApply g (γc r) (W r) (W r)) (deriv γc r))
+      (coeffK g (fun s t => varA Θ γc W Z (s, t)) (fun s t => jetC1 (varA Θ γc W Z) (s, t))
+        (fun s t => jetC2 (varA Θ γc W Z) (s, t)) (fun s t => jetY (varA Θ γc W Z) (s, t))
+        (fun s t => jetY1 (varA Θ γc W Z) (s, t)) (fun s t => jetY2 (varA Θ γc W Z) (s, t)) 0 t -
+      gpairAt g (γc t) (deriv W t + Lightlike.Geodesic.gammaApply g (γc t) (W t) (deriv γc t))
+        (deriv W t + Lightlike.Geodesic.gammaApply g (γc t) (W t) (deriv γc t)) +
+      gpairAt g (γc t) (Lightlike.Geodesic.riemannApply g (γc t) (W t) (deriv γc t)) (deriv γc t)) t := by
+  have hmem : ∀ᶠ r in 𝓝 t, (((0 : ℝ), r) : ℝ × ℝ) ∈ V :=
+    (continuous_const.prodMk continuous_id).continuousAt.preimage_mem_nhds (hV.mem_nhds hp)
+  have hc1 : ∀ r, (((0 : ℝ), r) : ℝ × ℝ) ∈ V → jetC1 (varA Θ γc W Z) (0, r) = W r := fun r hr => by
+    have hrD : (γc r, (0 : Fin n → ℝ)) ∈ D := by simpa using hVD _ hr
+    rw [jetC1_varA hV hD0 hΘ hA hr (hVD _ hr)]
+    simpa using j1 _ hrD (W r)
+  have hY0 : ∀ r, (((0 : ℝ), r) : ℝ × ℝ) ∈ V → jetY (varA Θ γc W Z) (0, r) = deriv γc r := fun r hr =>
+    (hasDerivAt_curve_of_jetY hV hA j0 hVD hr).deriv.symm
+  have hcγ : HasDerivAt (fun r => varA Θ γc W Z (0, r)) (jetY (varA Θ γc W Z) (0, t)) t :=
+    (hasDerivAt_curve_of_jetY hV hA j0 hVD hp).congr_of_eventuallyEq (by
+      filter_upwards [hmem] with r hr using varA_zero_section j0 hVD hr)
+  have hW := hasDerivAt_W_of_jetY1 hV hA hD0 hΘ j0 j1 hVD hp
+  have hc1d : HasDerivAt (fun r => jetC1 (varA Θ γc W Z) (0, r)) (jetY1 (varA Θ γc W Z) (0, t)) t :=
+    hW.congr_of_eventuallyEq (by filter_upwards [hmem] with r hr using hc1 r hr)
+  have hc2d := hasDerivAt_jetC2_t hV hA hp
+  have hw : HasDerivAt (fun r => jetY (varA Θ γc W Z) (0, r))
+      (Lightlike.Geodesic.accel g (varA Θ γc W Z (0, t)) (jetY (varA Θ γc W Z) (0, t))) t := by
+    rw [hY0 t hp, varA_zero_section j0 hVD hp]
+    exact hγ.congr_of_eventuallyEq (by filter_upwards [hmem] with r hr using hY0 r hr)
+  have hx : varA Θ γc W Z (0, t) ∈ U := hcU _ hp
+  have h := hasDerivAt_E_gpair hg (c := fun s t => varA Θ γc W Z (s, t))
+    (c1 := fun s t => jetC1 (varA Θ γc W Z) (s, t)) (c2 := fun s t => jetC2 (varA Θ γc W Z) (s, t))
+    (Y := fun s t => jetY (varA Θ γc W Z) (s, t)) (Y1 := fun s t => jetY1 (varA Θ γc W Z) (s, t))
+    (Y2 := fun s t => jetY2 (varA Θ γc W Z) (s, t)) hx hcγ hc1d hc2d hw
+  have hWd := hW.deriv
+  have e0 : varA Θ γc W Z (0, t) = γc t := varA_zero_section j0 hVD hp
+  have e1 := hc1 t hp
+  have e2 := hY0 t hp
+  refine (h.congr_of_eventuallyEq ?_).congr_deriv ?_
+  · filter_upwards [hmem] with r hr
+    simp only [varA_zero_section j0 hVD hr, hc1 r hr, hY0 r hr]
+  · simp only [e0, e1, e2, ← hWd]
+
 end Package
 
 end Lightlike.Penrose
