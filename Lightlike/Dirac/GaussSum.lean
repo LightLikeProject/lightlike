@@ -130,4 +130,27 @@ lemma tendsto_mul_hgTerm_one {a : ℂ} (ha : a ≠ 0) :
   push_cast
   field_simp
 
+/-- `N · h_N(c) → 0` for every integer `c = j + 1 ≥ 1`. -/
+lemma tendsto_mul_hgTerm {a : ℂ} (ha : a ≠ 0) (j : ℕ) :
+    Filter.Tendsto (fun N : ℕ => (N : ℂ) * hgTerm a ((j : ℂ) + 1) N) Filter.atTop (nhds 0) := by
+  induction j with
+  | zero => simpa using tendsto_mul_hgTerm_one ha
+  | succ j ih =>
+    have hc : ∀ n : ℕ, ((j : ℂ) + 1) + n ≠ 0 := fun n => by
+      have : (0 : ℝ) < j + 1 + n := by positivity
+      exact_mod_cast this.ne'
+    have h1 : Filter.Tendsto (fun N : ℕ => ((j : ℂ) + 1) / (((j : ℂ) + 1) + N)) Filter.atTop (nhds 0) := by
+      have hr : Filter.Tendsto (fun N : ℕ => (((j : ℝ) + 1) / (((j : ℝ) + 1) + N) : ℝ)) Filter.atTop (nhds 0) :=
+        tendsto_const_nhds.div_atTop (Filter.tendsto_atTop_add_const_left _ _ tendsto_natCast_atTop_atTop)
+      have := (Complex.continuous_ofReal.tendsto 0).comp hr
+      refine this.congr fun N => ?_
+      simp
+    have := h1.mul ih
+    rw [mul_zero] at this
+    refine this.congr fun N => ?_
+    have e := hgTerm_shift a ((j : ℂ) + 1) hc N
+    push_cast
+    rw [e]
+    ring
+
 end Lightlike.Dirac
