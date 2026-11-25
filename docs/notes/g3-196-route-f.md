@@ -160,7 +160,9 @@ Expansion lemma `cup_mul_cap_mem` (`cup_m z cap_m ∈ C(n+2)` for `z ∈ C n`; t
 `treeL, treeR ∈ C(N-1)`. One-dimensionality: `treeL e d · Y · treeL e d ∈ k · treeL e d` for every `Y ∈ C(N-1)` (the
 two-level sandwich `W_d W_e Y V_e V_d` is a scalar times a projector by `absorb`). Recoupling coefficients
 `recoup e d f d'` := that scalar for `Y = treeR f d'`; `recoup_row_sum`: `Σ_{f,d'} recoup = 1`.
-Open before the pentagon: (i) `recoup = 0` unless the total channel agrees (`d = d'`) and the dual column sums;
+Also proved: the exact rank `D+1` of every tree idempotent on the window (trace of a conjugated idempotent) and
+`recoup = 0` unless the total channels `D` agree (`recoup_eq_zero_of_ne`, from the two-sided minimality and the ranks).
+Open before the pentagon: (i) the column sums of the recoupling matrix;
 (ii) the matrix-unit identification giving `treeR = Σ U recoup U'` and the orthogonality relations; (iii) the
 pentagon for four blocks; (iv) the dictionary with `qSixJ` (Tet formula) and the truncation at `r`.
 

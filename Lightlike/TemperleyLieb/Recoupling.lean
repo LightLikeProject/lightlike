@@ -429,4 +429,65 @@ theorem finrank_le_of_overlap {W : Type*} [AddCommGroup W] [Module k W] [Module.
     · exact Subtype.ext h3
   exact LinearMap.finrank_le_finrank_of_injective hinj
 
+/-- **The recoupling coefficient vanishes unless the total channels agree.** -/
+theorem recoup_eq_zero_of_ne [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) (a b c e d f d' : ℕ) (ha : 1 ≤ a) (hc : 1 ≤ c)
+    (hd : ∀ j, j ≤ a + b + c → chebD (loopVal q) j ≠ 0)
+    (hq2 : ∀ j, 1 ≤ j → j ≤ a + b + c + 1 → (q : k) ^ (2 * j) ≠ 1)
+    (hea : e ≤ a) (heb : e ≤ b) (hdc : d ≤ c) (hdA : d ≤ a + b - 2 * e)
+    (hfb : f ≤ b) (hfc : f ≤ c) (hda : d' ≤ a) (hdf : d' ≤ b + c - 2 * f)
+    (hD : a + b - 2 * e + c - 2 * d ≠ a + (b + c - 2 * f) - 2 * d') :
+    recoup q a b c e d f d' = 0 := by
+  by_contra hlam
+  have hL0 := treeL_ne_zero (k := k) q a b c e d hea heb hdc hdA hd hq2
+  have hspec := recoup_spec (k := k) q hδ a b c e d f d' ha hd hea heb hdc hdA hfb hfc hda hdf
+  have hLmem := treeL_mem (k := k) q hδ (a := a) (b := b) (c := c) (e := e) (d := d) hea heb hdc hdA (by omega)
+  obtain ⟨μ', hμ'⟩ := treeR_sandwich q a b c f d' (by omega) hd hfb hfc hda hdf hLmem
+  -- `μ' = recoup`
+  have hmul : μ' = recoup q a b c e d f d' := by
+    have e1 : treeL q a b c e d * (treeR q a b c f d' * treeL q a b c e d * treeR q a b c f d') *
+        treeL q a b c e d = (μ' * recoup q a b c e d f d') • treeL q a b c e d := by
+      rw [hμ', mul_smul_comm, smul_mul_assoc, hspec, smul_smul]
+    have e2 : treeL q a b c e d * (treeR q a b c f d' * treeL q a b c e d * treeR q a b c f d') *
+        treeL q a b c e d = (recoup q a b c e d f d' * recoup q a b c e d f d') • treeL q a b c e d := by
+      calc _ = (treeL q a b c e d * treeR q a b c f d' * treeL q a b c e d) * treeR q a b c f d' *
+            treeL q a b c e d := by simp only [mul_assoc]
+        _ = _ := by rw [hspec, smul_mul_assoc, smul_mul_assoc, hspec, smul_smul]
+    rw [e1] at e2
+    have := smul_left_cancel_of_ne_zero hL0 e2
+    exact mul_right_cancel₀ hlam this
+  -- ranks on the window
+  have hxm := treeL_maps (k := k) q hea heb hdc hdA hd
+  have hym := treeR_maps (k := k) q (a := a) (b := b) (c := c) hfb hfc hda hdf
+  set x := resW (N := a + b + c) (treeL q a b c e d : Module.End k (ModelSpace k)) hxm with hx
+  set y := resW (N := a + b + c) (treeR q a b c f d' : Module.End k (ModelSpace k)) hym with hy
+  have hxx : IsIdempotentElem x := by
+    show x * x = x
+    rw [hx, resW_mul]
+    have := treeL_mul (k := k) q a b c hd hq2 (e := e) (d := d) (e' := e) (d' := d)
+      (le_min hea heb) (le_min hea heb) (le_min hdA hdc |>.trans_eq (by rw [min_comm]))
+      (le_min hdA hdc |>.trans_eq (by rw [min_comm]))
+    rw [if_pos ⟨rfl, rfl⟩] at this
+    exact resW_congr this _ _
+  have hyy : IsIdempotentElem y := by
+    show y * y = y
+    rw [hy, resW_mul]
+    have := treeR_mul (k := k) q a b c hd hq2 (f := f) (d := d') (f' := f) (d' := d')
+      (le_min hfb hfc) (le_min hfb hfc) (le_min hda hdf) (le_min hda hdf)
+    rw [if_pos ⟨rfl, rfl⟩] at this
+    exact resW_congr this _ _
+  have hxyx : x * y * x = recoup q a b c e d f d' • x := by
+    refine LinearMap.ext fun v => Subtype.ext ?_
+    have := congrArg (fun T : Module.End k (ModelSpace k) => T (v : ModelSpace k)) hspec
+    simpa [hx, hy, resW_apply] using this
+  have hyxy : y * x * y = recoup q a b c e d f d' • y := by
+    refine LinearMap.ext fun v => Subtype.ext ?_
+    have := congrArg (fun T : Module.End k (ModelSpace k) => T (v : ModelSpace k)) hμ'
+    rw [hmul] at this
+    simpa [hx, hy, resW_apply] using this
+  have r1 := finrank_le_of_overlap (W := Win k (a + b + c)) (x := x) (y := y) hxx hlam hxyx
+  have r2 := finrank_le_of_overlap (W := Win k (a + b + c)) (x := y) (y := x) hyy hlam hyxy
+  rw [hx, hy] at r1 r2
+  rw [finrank_range_treeL q a b c e d hea heb hdc hdA hd hq2, finrank_range_treeR q a b c f d' hfb hfc hda hdf hd hq2] at r1 r2
+  omega
+
 end Lightlike.TemperleyLieb
