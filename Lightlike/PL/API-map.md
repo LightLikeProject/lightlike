@@ -21,7 +21,7 @@ equivalent to a simplex, and a combinatorial manifold is a complex whose vertex 
 spheres or balls [4]. The boundary of a simplex is a PL sphere and a simplex is a PL ball [4].
 
 Pachner's theorem, stellar version: two closed combinatorial manifolds are stellar equivalent
-exactly when they are related by bistellar moves {2} [5]. This is the formulation of Friedl and
+exactly when they are related by bistellar moves {2} [5], [69]. This is the formulation of Friedl and
 Hannes, who state the theorem as "closed combinatorial n-manifolds are bistellar equivalent if and
 only if they are stellar equivalent" and prove it without topology {3}. Newman's theorem
 gives the version with PL homeomorphism in place of stellar equivalence: PL homeomorphic complexes
@@ -104,7 +104,7 @@ interior point, and of loops about points outside them [66]. The Jordan curve th
 4. Lightlike/PL/Manifold.lean - `PL.SComplex.IsPLSphere`, `PL.SComplex.IsPLBall`,
    `PL.SComplex.IsCombManifold`, `PL.SComplex.isPLSphere_boundary`, `PL.SComplex.isPLBall_simplex`
 5. Lightlike/PL/PachnerMain.lean - `PL.SComplex.pachner`,
-   `PL.SComplex.StellarEquivIn.bistellarEquivIn`, `PL.SComplex.BistellarEquiv.stellarEquiv`
+   `PL.SComplex.StellarEquivIn.bistellarEquivIn`
 6. Lightlike/PL/Complex3.lean - `PL.ofComplex3`, `PL.isBistellar_move23`, `PL.isBistellar_move32`,
    `PL.isBistellar_move14`, `PL.isBistellar_move41`, `PL.isClosedCombManifold_ofComplex3`
 7. Lightlike/PL/Complex4.lean - `PL.ofComplex4`, `PL.IsCombManifold4`, `PL.isBistellar_move4`,
@@ -216,6 +216,7 @@ interior point, and of loops about points outside them [66]. The Jordan curve th
 67. Lightlike/PL/JordanCurve.lean - `PL.jordan_at_most_two`, `PL.jordan_at_most_two_prod`,
     `PL.jordan_curve_theorem`
 68. Lightlike/PL/PachnerMoves.lean - `PL.pachner3`, `PL.pachner4`
+69. Lightlike/PL/Pachner.lean - `PL.SComplex.BistellarEquiv.stellarEquiv`
 
 ## References
 
