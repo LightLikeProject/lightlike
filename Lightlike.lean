@@ -1421,6 +1421,7 @@ import Lightlike.Spacetime.PenroseSingularity.NullNormalPlane
 import Lightlike.Spacetime.PenroseSingularity.NullNormalField
 import Lightlike.Spacetime.PenroseSingularity.TrappedNormals
 import Lightlike.Spacetime.PenroseSingularity.JacobiMatrix
+import Lightlike.Spacetime.PenroseSingularity.JacobiGram
 import Lightlike.Spacetime.PenroseSingularity.NullGeodGlue
 import Lightlike.Spacetime.PenroseSingularity.GeodesicChartConverse
 import Lightlike.Spacetime.PenroseSingularity.NullGeodChart
