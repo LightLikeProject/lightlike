@@ -1453,6 +1453,8 @@ import Lightlike.Spacetime.PenroseSingularity.PenroseChron
 import Lightlike.Spacetime.PenroseSingularity.ChartNECBridge
 import Lightlike.Spacetime.PenroseSingularity.SecondVariation
 import Lightlike.Spacetime.PenroseSingularity.NegativeJet
+import Lightlike.Spacetime.PenroseSingularity.ExpGerm
+import Lightlike.Spacetime.PenroseSingularity.ExpTheta
 import Lightlike.Spacetime.PenroseSingularity.NullGeodGlue
 import Lightlike.Spacetime.PenroseSingularity.GeodesicChartConverse
 import Lightlike.Spacetime.PenroseSingularity.NullGeodChart
