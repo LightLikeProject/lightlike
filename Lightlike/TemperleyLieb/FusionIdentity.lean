@@ -352,4 +352,121 @@ theorem Eop_mul_Qab (i : ℕ) : Eop q a b i * Qab q a b = Eop q a b i := by
 
 end algebra
 
+/-! ### Window and tail behaviour of `Q` and `E_i` -/
+
+/-- The shifted projectors do not see the tail. -/
+theorem eqv_jwAt (q : kˣ) {s n N : ℕ} (h : s + n ≤ N) : Eqv N (jwAt q s n : Module.End k (ModelSpace k)) := by
+  rcases n with _ | n
+  · unfold jwAt; rw [jw_zero]; exact eqv_one N
+  · exact eqv_of_mem q (m := s + (n + 1) - 1) (by omega) (jwAt_mem q s (n + 1))
+
+/-- `V_i` maps the window `a + b - 2 i` into the window `a + b`. -/
+theorem Vop_maps (q : kˣ) {a b i : ℕ} (hia : i ≤ a) (hib : i ≤ b) :
+    ∀ v ∈ Win k (a + b - 2 * i), Vop q a b i v ∈ Win k (a + b) := by
+  intro v hv
+  unfold Vop
+  simp only [Module.End.mul_apply]
+  have h0 := jwAt_preserves q (s := 0) (n := a + b - 2 * i) (N := a + b - 2 * i) (by omega) v hv
+  have h1 := nestCup_preserves q (l := a - i) (c := a + b - 2 * i) (by omega) i _ h0
+  rw [show a + b - 2 * i + 2 * i = a + b by omega] at h1
+  have h2 := jwAt_preserves q (s := a) (n := b) (N := a + b) le_rfl _ h1
+  exact jwAt_preserves q (s := 0) (n := a) (N := a + b) (by omega) _ h2
+
+/-- `W_i` maps the window `a + b` into the window `a + b - 2 i`. -/
+theorem Wop_maps (q : kˣ) {a b i : ℕ} (hia : i ≤ a) (hib : i ≤ b) :
+    ∀ v ∈ Win k (a + b), Wop q a b i v ∈ Win k (a + b - 2 * i) := by
+  intro v hv
+  unfold Wop
+  simp only [Module.End.mul_apply]
+  have h0 := jwAt_preserves q (s := 0) (n := a) (N := a + b) (by omega) _
+    (jwAt_preserves q (s := a) (n := b) (N := a + b) le_rfl v hv)
+  have h1 := nestCap_preserves q (l := a - i) i (a + b) (by omega) _ h0
+  exact jwAt_preserves q (s := 0) (n := a + b - 2 * i) (N := a + b - 2 * i) (by omega) _ h1
+
+/-- `Q` does not see the tail. -/
+theorem eqv_Qab (q : kˣ) {a b : ℕ} : Eqv (a + b) (Qab q a b : Module.End k (ModelSpace k)) :=
+  (eqv_jwAt q (by omega)).mul (eqv_jwAt q le_rfl)
+
+/-- `E_i` does not see the tail. -/
+theorem eqv_Eop (q : kˣ) {a b i : ℕ} (hia : i ≤ a) (hib : i ≤ b) : Eqv (a + b) (Eop q a b i : Module.End k (ModelSpace k)) := by
+  have hp : Eqv (a + b - 2 * i) (jwAt q 0 (a + b - 2 * i) * jwAt q 0 (a + b - 2 * i) :
+      Module.End k (ModelSpace k)) := (eqv_jwAt q (by omega)).mul (eqv_jwAt q (by omega))
+  have hn := Eqv.nest q (l := a - i) (by omega) hp i
+  rw [show a + b - 2 * i + 2 * i = a + b by omega] at hn
+  have hVW : Vop q a b i * Wop q a b i = Qab q a b * (nestCup q (a - i) i * (jwAt q 0 (a + b - 2 * i) *
+      jwAt q 0 (a + b - 2 * i)) * nestCap q (a - i) i) * Qab q a b := by
+    unfold Vop Wop; simp only [mul_assoc]
+  unfold Eop
+  rw [hVW]
+  exact ((eqv_Qab q).mul hn |>.mul (eqv_Qab q)).smul _
+
+/-! ### The window as a finite-dimensional space -/
+
+instance finiteDimensional_Win (N : ℕ) : FiniteDimensional k (Win k N) := by
+  haveI : Finite (tailZero N) := (tailZero_finite N).to_subtype
+  exact Module.Finite.equiv (Finsupp.supportedEquivFinsupp (M := k) (R := k) (tailZero N)).symm
+
+/-- Restriction of an operator that preserves the window. -/
+noncomputable def resW {N : ℕ} (T : Module.End k (ModelSpace k)) (hT : ∀ v ∈ Win k N, T v ∈ Win k N) :
+    Module.End k (Win k N) := LinearMap.restrict T hT
+
+lemma resW_apply {N : ℕ} (T : Module.End k (ModelSpace k)) (hT : ∀ v ∈ Win k N, T v ∈ Win k N) (x : Win k N) :
+    ((resW T hT x : Win k N) : ModelSpace k) = T x := rfl
+
+lemma resW_mul {N : ℕ} (S T : Module.End k (ModelSpace k)) (hS : ∀ v ∈ Win k N, S v ∈ Win k N)
+    (hT : ∀ v ∈ Win k N, T v ∈ Win k N) :
+    resW S hS * resW T hT = resW (S * T) (fun v hv => hS _ (hT v hv)) := by
+  ext x; rfl
+
+lemma resW_inj {N : ℕ} (S T : Module.End k (ModelSpace k)) (hS : ∀ v ∈ Win k N, S v ∈ Win k N)
+    (hT : ∀ v ∈ Win k N, T v ∈ Win k N) (h : resW S hS = resW T hT) : ∀ v ∈ Win k N, S v = T v := by
+  intro v hv
+  have := congrArg (fun f : Module.End k (Win k N) => ((f ⟨v, hv⟩ : Win k N) : ModelSpace k)) h
+  exact this
+
+/-! ### Rank of `Q` -/
+
+/-- `e_j Q = 0` for the generators `j` inside the two blocks. -/
+theorem modelE_mul_Qab (q : kˣ) {a b j : ℕ} (hd : ∀ i, i ≤ a + b → chebD (loopVal q) i ≠ 0) (hj : Jab a b j) :
+    (modelE q j : Module.End k (ModelSpace k)) * Qab q a b = 0 := by
+  unfold Qab
+  rcases hj with hj | ⟨hj1, hj2⟩
+  · rw [← mul_assoc, modelE_mul_jwAt q (c := a) (N := a + b + 1) (by omega) (fun i hi => hd i (by omega)) (by omega),
+      zero_mul]
+  · have hc := (jwProps_of_le (isTL_shift q 0) (a + b + 1) (fun i hi => hd i (by omega)) a (by omega)).comm j hj1
+    simp only [add_zero] at hc
+    have hk := (jwProps_of_le (isTL_shift q a) (a + b + 1) (fun i hi => hd i (by omega)) b (by omega)).killL (j - a)
+      (by omega)
+    rw [show j - a + a = j by omega] at hk
+    rw [← mul_assoc]
+    have : (modelE q j : Module.End k (ModelSpace k)) * jwAt q 0 a = jwAt q 0 a * modelE q j := hc
+    rw [this, mul_assoc]
+    have hk' : (modelE q j : Module.End k (ModelSpace k)) * jwAt q a b = 0 := hk
+    rw [hk', mul_zero]
+
+/-- **Rank bound (A) for `Q`** on the window: `rank Q ≤ (a+1)(b+1)`. -/
+theorem finrank_range_Qab_le (q : kˣ) (a b : ℕ) (hd : ∀ i, i ≤ a + b → chebD (loopVal q) i ≠ 0) :
+    Module.finrank k (LinearMap.range (resW (N := a + b) (Qab q a b : Module.End k (ModelSpace k))
+      (fun v hv => jwAt_preserves q (s := 0) (n := a) (N := a + b) (by omega) _
+        (jwAt_preserves q (s := a) (n := b) (N := a + b) le_rfl v hv)))) ≤ (a + 1) * (b + 1) := by
+  set R := resW (N := a + b) (Qab q a b : Module.End k (ModelSpace k))
+      (fun v hv => jwAt_preserves q (s := 0) (n := a) (N := a + b) (by omega) _
+        (jwAt_preserves q (s := a) (n := b) (N := a + b) le_rfl v hv)) with hR
+  set U : Submodule k (ModelSpace k) := (LinearMap.range R).map (Win k (a + b)).subtype with hU
+  have hUW : U ≤ Win k (a + b) := by
+    rintro _ ⟨x, _, rfl⟩; exact x.2
+  have hker : ∀ v ∈ U, ∀ j, Jab a b j → modelE q j v = 0 := by
+    rintro _ ⟨x, ⟨y, rfl⟩, rfl⟩ j hj
+    have := congrArg (fun T : Module.End k (ModelSpace k) => T (y : ModelSpace k)) (modelE_mul_Qab (k := k) q hd hj)
+    rw [Submodule.subtype_apply]
+    have e : ((R y : Win k (a + b)) : ModelSpace k) = Qab q a b (y : ModelSpace k) := by rw [hR]; rfl
+    rw [e]
+    simpa using this
+  have : FiniteDimensional k U := inferInstance
+  have h1 := finrank_kernel_le q a b U hUW hker
+  have h2 : Module.finrank k (LinearMap.range R) = Module.finrank k U :=
+    LinearEquiv.finrank_eq (Submodule.equivMapOfInjective (Win k (a + b)).subtype
+      (Submodule.injective_subtype _) (LinearMap.range R))
+  rw [h2]; exact h1
+
 end Lightlike.TemperleyLieb
