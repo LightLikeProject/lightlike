@@ -1,0 +1,55 @@
+- id: LL-XXXX-a
+  title: "The principal series π_{n,ρ} of SL(2,ℂ) on L²(ℂ) is a unitary representation operator by operator: π(1) = 1, and every π(g) preserves the norm and the inner product"
+  area: Lorentz
+  file: Lightlike/Lorentz/PrincipalSeries.lean
+  decls: [Lightlike.Lorentz.principalSeries_one, Lightlike.Lorentz.principalSeries_norm, Lightlike.Lorentz.principalSeries_inner]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location for these three statements (the library cites Knapp 1986, Chapter II, and Martin-Dussaud 2019, section 7.3, for the unitarity of the principal series in LL-0015, whose theorems are the bundled forms principalSeries_mem_unitary and principalSeries_mul). Here n is an integer and rho a real number; the representation is the one defined in PrincipalSeries.lean on L2 of the plane C. Proved for all n, rho, g and functions, with no hypotheses."
+  since: unreleased
+- id: LL-XXXX-b
+  title: "The principal series of SL(2,ℂ) is strongly continuous: g ↦ π_{n,ρ}(g) f is continuous in g for every f ∈ L²(ℂ), and the action map (g, f) ↦ π_{n,ρ}(g) f is jointly continuous"
+  area: Lorentz
+  file: Lightlike/Lorentz/Continuity.lean
+  decls: [Lightlike.Lorentz.continuous_principalSeries, Lightlike.Lorentz.continuous_principalSeries_action]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location. The proof is the standard density argument: continuity on compactly supported continuous functions plus the uniform bound from unitarity (principalSeries_norm). Proved for all n, rho, with no hypotheses."
+  since: unreleased
+- id: LL-XXXX-c
+  title: "The principal series (n, ρ) restricted to SU(2): the spin-(|n|/2 + ℓ) vectors are carried equivariantly into L²(ℂ), and a linear map from a spin-m/2 space that intertwines SU(2) with the principal series is zero unless m = 2ℓ + |n| for some ℓ"
+  area: Lorentz
+  file: Lightlike/Lorentz/SU2Decomposition.lean
+  decls: [Lightlike.Lorentz.principalSeries_suV, Lightlike.Lorentz.intertwiner_eq_zero]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location (the library cites Knapp 1986, Chapter II, and Martin-Dussaud 2019, section 7.3.4, for the decomposition itself in LL-0017). The statement intertwiner_eq_zero has the hypotheses that m is not of the form 2 l + |n| for any natural number l and that S is an SU(2) intertwiner of the spin-m/2 representation with the principal series (IsPSIntertwiner), both stated in the Lean theorem; it is a theorem about all such S, not conditional on an unproved proposition. With principalSeries_isHilbertSum and intertwiner_eq_smul (LL-0017) it gives that each spin occurs once."
+  since: unreleased
+- id: LL-XXXX-d
+  title: "The Haar measure of SL(2,ℂ) has infinite total volume: haar univ = ⊤"
+  area: Lorentz
+  file: Lightlike/Lorentz/SL2C.lean
+  decls: [Lightlike.Lorentz.SL2C.haar_univ]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location. Follows because SL(2,C) is a non-compact locally compact group (Mathlib: measure_univ_of_isMulLeftInvariant). No hypotheses."
+  since: unreleased
+- id: LL-XXXX-e
+  title: "The measure haarC = bruhat_*(|d|⁻² d²b d²c d²d) in the Bruhat chart g = [[(1+bc)/d, b], [c, d]] is a Haar measure of SL(2,ℂ)"
+  area: Lorentz
+  file: Lightlike/Lorentz/HaarChart.lean
+  decls: [Lightlike.Lorentz.isHaarMeasure_haarC]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location for the chart density |d|^-2 (the library cites Knapp 1986, Chapter II, in LL-0014 for unimodularity). Proved by the explicit chart computation in HaarChart.lean; the Lean declaration is an instance (haarC.IsHaarMeasure). No hypotheses."
+  since: unreleased
