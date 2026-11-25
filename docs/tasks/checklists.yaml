@@ -63,7 +63,7 @@ milestones:
       - id: t3
         kind: trust
         text: "A connection with torsion gives a different Ricci tensor from the Levi-Civita connection of the same metric"
-        decls: []
+        decls: [Lightlike.torsion_connection_ricci_ne, Lightlike.twisted_torsion_ne_zero, Lightlike.twisted_ricciAt_e1]
       - id: c1
         kind: catalogue
         text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
