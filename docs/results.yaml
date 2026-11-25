@@ -5919,3 +5919,14 @@
   review: kernel-checked
   note: "An algebraic identity for the norm N(r, theta) = g_tt + 2 Omega_H g_t phi + Omega_H^2 g_phi phi of the Kerr metric: N = (r - r_plus) Q with Q = kerrChiQ in closed form; it generalizes the null statement of the previous entry (N = 0 at r = r_plus) and is the first step to the surface gravity from the derivative of the norm. The quotient Q is the library's own closed form; no source states it. Comparison of the identity with a source is not made."
   since: unreleased
+- id: LL-0453
+  title: "Shale's criterion for the CCR: in a Fock representation of the Weyl relations over a complex Hilbert space h, a Bogoliubov transformation T (a continuous real-linear bijection preserving the symplectic form Im⟪·,·⟫) is implemented by a unitary U with U W(f) = W(Tf) U if and only if its antilinear part is Hilbert-Schmidt; necessity and sufficiency are separate theorems"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/ShaleSufficiency.lean
+  decls: [Lightlike.OperatorAlgebras.shale_criterion, Lightlike.OperatorAlgebras.shale_necessity_of_implements, Lightlike.OperatorAlgebras.shale_sufficiency_of_hilbertSchmidt]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending for this statement: Shale's own paper (1962) was not read, and the statement for a general symplectic transformation was not compared with Derezinski at a cited location (the comparison made for LL-0205 is for a unitary r of the one-particle space, Theorem 24, p. 27). The proofs are this library's own: necessity (ShaleNecessity.lean) from the Gaussian vacuum overlaps and the uncertainty matrix, sufficiency (ShaleSufficiency.lean) from the vacuum projections of finitely many modes, without a polar decomposition. Hypotheses, stated in the Lean theorems: h is a complex inner product space and the space K of the Fock representation is complete (the Lean statements also assume CompleteSpace h); T is a Bogoliubov transformation of h as defined in Weyl.lean; Implements is existence of a unitary of K with the intertwining relation. No unproved hypothesis."
+  since: unreleased
