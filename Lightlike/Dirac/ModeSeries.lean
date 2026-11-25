@@ -145,4 +145,87 @@ theorem coefPair_bound (μ : ℂ) (m : ℕ) : ∀ n : ℕ,
     · show ‖(μ * p.1 - ((n : ℂ) + m) * p.2) / ((n : ℂ) + m + 1)‖ ≤ _
       exact (hhn.trans s1).trans hb
 
+/-- `Σ (n+1)^N ρ^n` converges for `0 ≤ ρ < 1`. -/
+lemma summable_succ_pow_geom (N : ℕ) {ρ : ℝ} (h0 : 0 ≤ ρ) (h1 : ρ < 1) :
+    Summable fun n : ℕ => ((n : ℝ) + 1) ^ N * ρ ^ n := by
+  rcases h0.eq_or_lt with rfl | hpos
+  · refine summable_of_ne_finset_zero (s := {0}) fun n hn => ?_
+    have : n ≠ 0 := by simpa using hn
+    simp [this]
+  have hs := (summable_pow_mul_geometric_of_norm_lt_one N (r := ρ) (by rw [Real.norm_of_nonneg h0]; exact h1))
+  have hs' := (summable_nat_add_iff 1).mpr hs
+  have := hs'.div_const ρ
+  refine this.congr fun n => ?_
+  push_cast
+  field_simp
+  ring
+
+/-- A sequence with polynomial growth gives an absolutely convergent power series on the unit disc. -/
+lemma summable_poly_mul_pow {K : ℝ} {c : ℕ → ℂ} (hc : ∀ n, ‖c n‖ ≤ ((n : ℝ) + 1) ^ K) {ρ : ℝ} (h0 : 0 ≤ ρ)
+    (h1 : ρ < 1) : Summable fun n : ℕ => ((n : ℝ) + 1) ^ ⌈K⌉₊ * ρ ^ n := summable_succ_pow_geom _ h0 h1
+
+/-- The sum of the power series with coefficients `c`, as a function of the real variable `t`. -/
+noncomputable def powerSum (c : ℕ → ℂ) (t : ℝ) : ℂ := ∑' n, c n * (t : ℂ) ^ n
+
+/-- **Termwise differentiation** of a power series with polynomially growing coefficients on `(-1, 1)`. -/
+theorem hasDerivAt_powerSum {K : ℝ} {c : ℕ → ℂ} (hc : ∀ n, ‖c n‖ ≤ ((n : ℝ) + 1) ^ K) {t : ℝ}
+    (ht : |t| < 1) :
+    HasDerivAt (powerSum c) (∑' n : ℕ, ((n : ℂ) + 1) * c (n + 1) * (t : ℂ) ^ n) t := by
+  obtain ⟨ρ, hρ0, hρt, hρ1⟩ : ∃ ρ : ℝ, 0 ≤ ρ ∧ |t| < ρ ∧ ρ < 1 :=
+    ⟨(|t| + 1) / 2, by positivity, by linarith, by linarith⟩
+  have hρpos : 0 < ρ := lt_of_le_of_lt (abs_nonneg t) hρt
+  set N : ℕ := ⌈K⌉₊ + 1 with hN
+  -- bound on the derivative terms: ‖n c_n y^{n-1}‖ ≤ (n+1)^{N} ρ^{n-1}·...
+  let u : ℕ → ℝ := fun n => ((n : ℝ) + 1) ^ N * ρ ^ n / ρ
+  have hu : Summable u := (summable_succ_pow_geom N hρpos.le hρ1).div_const ρ
+  have hK : ∀ n : ℕ, ((n : ℝ) + 1) ^ K ≤ ((n : ℝ) + 1) ^ (⌈K⌉₊ : ℝ) :=
+    fun n => Real.rpow_le_rpow_of_exponent_le (by have : (0 : ℝ) ≤ n := Nat.cast_nonneg n; linarith)
+      (Nat.le_ceil K)
+  have hg : ∀ (n : ℕ) (y : ℝ), y ∈ Set.Ioo (-ρ) ρ →
+      HasDerivAt (fun y : ℝ => c n * (y : ℂ) ^ n) ((n : ℂ) * c n * (y : ℂ) ^ (n - 1)) y := by
+    intro n y _
+    have := ((hasDerivAt_pow n (y : ℂ)).comp_ofReal).const_mul (c n)
+    convert this using 1
+    ring
+  have hg' : ∀ (n : ℕ) (y : ℝ), y ∈ Set.Ioo (-ρ) ρ → ‖(n : ℂ) * c n * (y : ℂ) ^ (n - 1)‖ ≤ u n := by
+    intro n y hy
+    have hy' : |y| ≤ ρ := abs_le.mpr ⟨hy.1.le, hy.2.le⟩
+    rcases Nat.eq_zero_or_pos n with rfl | hn
+    · simp [u]; positivity
+    · rw [norm_mul, norm_mul, norm_pow, Complex.norm_real, Real.norm_eq_abs]
+      have h1 : ‖(n : ℂ)‖ = n := by simp
+      rw [h1]
+      have h2 : |y| ^ (n - 1) ≤ ρ ^ (n - 1) := pow_le_pow_left₀ (abs_nonneg y) hy' _
+      have h3 : ‖c n‖ ≤ ((n : ℝ) + 1) ^ (⌈K⌉₊ : ℕ) := by
+        calc ‖c n‖ ≤ ((n : ℝ) + 1) ^ K := hc n
+          _ ≤ ((n : ℝ) + 1) ^ (⌈K⌉₊ : ℝ) := hK n
+          _ = ((n : ℝ) + 1) ^ (⌈K⌉₊ : ℕ) := Real.rpow_natCast _ _
+      have h4 : (n : ℝ) * ((n : ℝ) + 1) ^ (⌈K⌉₊ : ℕ) ≤ ((n : ℝ) + 1) ^ N := by
+        rw [hN, pow_succ, mul_comm (((n : ℝ) + 1) ^ ⌈K⌉₊)]
+        exact mul_le_mul_of_nonneg_right (by linarith) (by positivity)
+      have h5 : ρ ^ (n - 1) = ρ ^ n / ρ := by
+        rw [eq_div_iff hρpos.ne', ← pow_succ, Nat.sub_add_cancel hn]
+      rw [mul_assoc]
+      calc (n : ℝ) * (‖c n‖ * |y| ^ (n - 1)) ≤ (n : ℝ) * (((n : ℝ) + 1) ^ (⌈K⌉₊ : ℕ) * ρ ^ (n - 1)) :=
+            mul_le_mul_of_nonneg_left (mul_le_mul h3 h2 (by positivity) (by positivity)) (Nat.cast_nonneg n)
+        _ = ((n : ℝ) * ((n : ℝ) + 1) ^ (⌈K⌉₊ : ℕ)) * ρ ^ (n - 1) := by ring
+        _ ≤ ((n : ℝ) + 1) ^ N * ρ ^ (n - 1) := mul_le_mul_of_nonneg_right h4 (by positivity)
+        _ = u n := by simp only [u]; rw [h5]; ring
+  have hset : t ∈ Set.Ioo (-ρ) ρ := by
+    constructor <;> [exact (neg_lt_of_abs_lt hρt); exact (lt_of_abs_lt hρt)]
+  have h0 : (0 : ℝ) ∈ Set.Ioo (-ρ) ρ := ⟨by linarith, hρpos⟩
+  have hsum0 : Summable fun n : ℕ => c n * ((0 : ℝ) : ℂ) ^ n := by
+    refine summable_of_ne_finset_zero (s := {0}) fun n hn => ?_
+    have : n ≠ 0 := by simpa using hn
+    simp [this]
+  have key := hasDerivAt_tsum_of_isPreconnected (g := fun n (y : ℝ) => c n * (y : ℂ) ^ n)
+    (g' := fun n y => (n : ℂ) * c n * (y : ℂ) ^ (n - 1)) hu isOpen_Ioo isPreconnected_Ioo hg hg' h0 hsum0 hset
+  have hshift : ∑' n : ℕ, (n : ℂ) * c n * (t : ℂ) ^ (n - 1) = ∑' n : ℕ, ((n : ℂ) + 1) * c (n + 1) * (t : ℂ) ^ n := by
+    have hs : Summable fun n : ℕ => (n : ℂ) * c n * (t : ℂ) ^ (n - 1) :=
+      Summable.of_norm_bounded hu fun n => hg' n t hset
+    rw [hs.tsum_eq_zero_add]
+    simp
+  rw [hshift] at key
+  exact key
+
 end Lightlike.Dirac
