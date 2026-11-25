@@ -114,6 +114,31 @@ theorem gram_eq (q : kˣ) (a b c e d f d' : ℕ) :
   unfold gramMid Wop Vop
   simp only [mul_assoc]
 
+/-- The three `C`-factors of the Gram word lie in the expected subalgebras. -/
+theorem gram_parts (q : kˣ) (a b c e f : ℕ) (hN : 1 ≤ a + b + c)
+    (hea : e ≤ a) (heb : e ≤ b) (hfb : f ≤ b) (hfc : f ≤ c) :
+    Qab q a b * (jwAt q a b * jwAt q (b + a) c) ∈ CSub q (a + b + c - 1) ∧
+    Qab q (a + b - 2 * e) c * jwAt q 0 (a + b - 2 * e) ∈ CSub q (a + b + c - 1 - 2 * e) ∧
+    jwAt q a (b + c - 2 * f) * Qab q a (b + c - 2 * f) ∈ CSub q (a + b + c - 1 - 2 * f) := by
+  set N := a + b + c with hNdef
+  refine ⟨?_, ?_, ?_⟩
+  · have h1 : Qab q a b ∈ CSub q (N - 1) := tlSub_mono (m := a + b - 1) (n := N - 1) (by omega) (Qab_mem q a b)
+    have h2 : jwAt q a b ∈ CSub q (N - 1) := tlSub_mono (m := a + b - 1) (n := N - 1) (by omega) (jwAt_mem q a b)
+    have h3 : jwAt q (b + a) c ∈ CSub q (N - 1) :=
+      tlSub_mono (m := b + a + c - 1) (n := N - 1) (by omega) (jwAt_mem q (b + a) c)
+    exact Subalgebra.mul_mem _ h1 (Subalgebra.mul_mem _ h2 h3)
+  · have h1 : Qab q (a + b - 2 * e) c ∈ CSub q (N - 1 - 2 * e) :=
+      tlSub_mono (m := a + b - 2 * e + c - 1) (n := N - 1 - 2 * e) (by omega) (Qab_mem q _ c)
+    have h2 : jwAt q 0 (a + b - 2 * e) ∈ CSub q (N - 1 - 2 * e) := by
+      have := jwAt_mem (k := k) q 0 (a + b - 2 * e)
+      exact tlSub_mono (by omega) this
+    exact Subalgebra.mul_mem _ h1 h2
+  · have h1 : jwAt q a (b + c - 2 * f) ∈ CSub q (N - 1 - 2 * f) :=
+      tlSub_mono (m := a + (b + c - 2 * f) - 1) (n := N - 1 - 2 * f) (by omega) (jwAt_mem q a _)
+    have h2 : Qab q a (b + c - 2 * f) ∈ CSub q (N - 1 - 2 * f) :=
+      tlSub_mono (m := a + (b + c - 2 * f) - 1) (n := N - 1 - 2 * f) (by omega) (Qab_mem q a _)
+    exact Subalgebra.mul_mem _ h1 h2
+
 /-- The factors lie in the expected subalgebras. -/
 theorem gramMid_mem (q : kˣ) (a b c e d f d' : ℕ) (hN : 1 ≤ a + b + c)
     (hea : e ≤ a) (heb : e ≤ b) (hfb : f ≤ b) (hfc : f ≤ c) (hdc : d ≤ c) (hdA : d ≤ a + b - 2 * e)
