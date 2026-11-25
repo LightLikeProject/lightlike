@@ -707,8 +707,7 @@ milestones:
       - id: p4
         kind: piece
         text: "The 6j symbols are linked to the SU(2) representations (recoupling coefficients of the tensor products of spinRep)"
-        decls: []
-        hint: "No declaration relates SU2.spinRep or the 3j/CG coefficients to the 6j symbols; the Recoupling 6j are defined independently (e.g. PhyslibAlpha.Sl2.sixJSym_orth_all in Lightlike/Upstream/SpinReps2/SixJOrth.lean)."
+        decls: [Lightlike.SU2.coupleLeft_equivariant, Lightlike.SU2.coupleRight_equivariant, Lightlike.SU2.sum_cg_overlap]
       - id: c1
         kind: catalogue
         text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"

@@ -21,6 +21,11 @@ Peter–Weyl theorem for compact groups is also formalized in `Lightlike/Harmoni
 coefficients are dense in `C(G)` and in `L²(G)`, and `L²(G)` is the Hilbert sum of the isotypic
 components (`peterWeyl_dense_continuous`, `peterWeyl_dense_L2`, `peterWeyl_isHilbertSum`).
 
+The spin representations are unitary and continuous [12]. The Clebsch–Gordan matrices of Physlib
+intertwine the representations of the group (Lightlike/Spin4/CGBridge.lean), and with them the two
+ways of coupling three spins to a total spin are equivariant maps whose overlap is Racah's 6j symbol
+of Physlib {1} [13].
+
 Further results of this area in the results catalogue:
 Peter–Weyl (density form): for a compact Hausdorff group, the matrix coefficients of finite-dimensional
 unitary representations are dense in C(G) in the sup norm and, for a Haar measure, in L²(G) [6].
@@ -52,6 +57,11 @@ L²(R) [11].
     `HarmonicAnalysis.su2_character_orthogonality`
 11. Lightlike/HarmonicAnalysis/PeterWeylReal.lean - `HarmonicAnalysis.real_not_forall_memLp_two`,
     `HarmonicAnalysis.real_character_not_memLp_two`
+12. Lightlike/SU2/SpinRep.lean - `SU2.spinMat_mem_unitaryGroup`, `SU2.continuous_spinRep`
+13. Lightlike/SU2/Recoupling6j.lean - `SU2.coupleLeft_equivariant`, `SU2.coupleRight_equivariant`,
+    `SU2.sum_cg_overlap`
+14. Lightlike/SU2/LieBridge.lean - `SU2.exists_dSpin_equiv`
+15. Lightlike/HarmonicAnalysis/SU2Complete.lean - `HarmonicAnalysis.su2_irreducible_classification`
 
 ## References
 

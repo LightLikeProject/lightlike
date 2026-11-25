@@ -5115,3 +5115,58 @@
   review: kernel-checked
   note: "Comparison pending (no source for the fermionic Wick theorem was read). Instance of the abstract recursion of FermionWick.lean (the previous entry): for a vector killed by all the transformed annihilation operators, the fields sum_j u_j b_j + sum_j v_j b_j^* are split fields, the anticommutator of the annihilation part with a field is the scalar sum u_j v'_j (the CAR of the transformed operators, isCARPairs_bog), and car_wick gives <Psi, x_1 ... x_n Psi> = <Psi, Psi> wick [x_1, ..., x_n] for every n; car_wick_two is n = 2. The fields a_j, c_j are such combinations by the inverse transformation (bog_inv), so the statement covers them, but this is not stated separately. WEAKER: finitely many modes (the infinite-mode vacuum and Shale for fermions are not built); no explicit n = 4 expansion check (the recursion is proved for all n); mixed quasi-free states are not covered."
   since: unreleased
+- id: LL-XXXX-a
+  title: The spin representations of SU(2) are unitary and continuous
+  area: SU2
+  file: Lightlike/SU2/SpinRep.lean
+  decls: [Lightlike.SU2.spinMat_mem_unitaryGroup, Lightlike.SU2.continuous_spinRep]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: hall-2015, location: "Chapter: Basic Representation Theory|10.1007/978-3-319-13467-3_4"}
+      - {ref: martin-dussaud-2019, location: "§4.1", check: "representations"}
+  review: kernel-checked
+  note: "Comparison pending (the cited locations were not re-read for this entry). spinMat n g is unitary for g in SU(2) (the matrix of g is unitary, so is its n-th symmetric power in the monomial basis normalised as in SpinRep.lean) and g ↦ spinMat n g is continuous; the irreducibility is LL-0007."
+  since: unreleased
+- id: LL-XXXX-b
+  title: Every finite-dimensional irreducible sl₂-module is the differential of a spin representation, in suitable coordinates, with e, f, h acting as the matrices E, F, H
+  area: SU2
+  file: Lightlike/SU2/LieBridge.lean
+  decls: [Lightlike.SU2.exists_dSpin_equiv]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: hall-2015, location: "Chapter: Basic Representation Theory|10.1007/978-3-319-13467-3_4"}
+  review: kernel-checked
+  note: "Comparison pending (the cited location was not re-read for this entry). Combines Physlib's classification of finite-dimensional irreducible sl₂-modules with dSpin_E, dSpin_F, dSpin_H (LL-0009); the module is over ℂ with an sl₂-triple (h, e, f) in an arbitrary Lie algebra L and irreducible for the subalgebra it generates."
+  since: unreleased
+- id: LL-XXXX-c
+  title: Every irreducible continuous unitary matrix representation of SU(2) is equivalent to the spin n/2 representation and has dimension n + 1
+  area: SU2
+  file: Lightlike/HarmonicAnalysis/SU2Complete.lean
+  decls: [Lightlike.HarmonicAnalysis.su2_irreducible_classification]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: hall-2015, location: "Chapter: Basic Representation Theory|10.1007/978-3-319-13467-3_4"}
+      - {ref: brocker-tom-dieck-1985, location: "Chapter: Elementary Representation Theory|10.1007/978-3-662-12918-0_2"}
+  review: kernel-checked
+  note: "Comparison pending (the cited locations were not re-read for this entry). Unitary form of LL-0008: the representation is a unitary matrix representation (UnitaryMatrixRep SU2 κ) on a finite index type κ, irreducible, and the equivalence is a unitary one to su2Spin n; the dimension Fintype.card κ = n + 1."
+  since: unreleased
+- id: LL-XXXX-d
+  title: The two couplings of three SU(2) spins to a total spin are equivariant for the spin representations, and their overlap is Racah's 6j symbol (Hilbert–Schmidt form)
+  area: SU2
+  file: Lightlike/SU2/Recoupling6j.lean
+  decls: [Lightlike.SU2.coupleLeft_equivariant, Lightlike.SU2.coupleRight_equivariant, Lightlike.SU2.coupleLeft_apply, Lightlike.SU2.coupleRight_apply, Lightlike.SU2.sum_cg_overlap]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: edmonds-1957, location: "Chapter: Chapter 6. The Construction of Invariants from the Vector-Coupling Coefficients|10.1515/9781400884186-007"}
+      - {ref: varshalovich-1988, location: "Chapter: 6j Symbols and the Racah Coefficients|10.1142/9789814415491_0010"}
+  review: kernel-checked
+  note: "Comparison pending (the cited chapters were not read for this entry). Doubled spins a, b, c; couplings via Physlib's Clebsch–Gordan coefficients (Condon–Shortley phase) and the group-equivariant matrices cgMatrix of Spin4/CGBridge.lean. WEAKER: the overlap is the sum over all entries (Hilbert–Schmidt inner product), not the matrix identity coupleLeft^H coupleRight = λ·1 (which follows from Schur's lemma for the spin representations, not formalised here), and the sign is not simplified to the textbook (-1)^(a+b+c+J). The 6j symbol is Physlib's sixJSym, not redefined; the recoupling at the level of invariant tensors is Recoupling.fourJ_eq_sum_fourRecoupling."
+  since: unreleased
