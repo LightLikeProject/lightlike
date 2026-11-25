@@ -104,4 +104,20 @@ theorem unbal_caps_1 (q : kˣ) {N : ℕ} {Z YL YR : Module.End k (ModelSpace k)}
   rw [nestCap_add q lam ((j + 1) + d') t, nestCap_add q lam (j + 1) d', nestCup_add]
   simp only [mul_assoc]
 
+/-- **Caps in excess, case `e > f`, enough caps to meet all `d'` cups on the left stack (`s ≥ 1`).** -/
+theorem unbal_caps_2 (q : kˣ) {N : ℕ} {Z YL YR : Module.End k (ModelSpace k)} (hZ : Z ∈ CSub q N)
+    (f s d' d lam l l' l'' : ℕ) (hYR : YR ∈ CSub q (N - 2 * f)) 
+    (h1 : l + (s + 1 + d') + 2 * f ≤ N + 1) (h1' : l' + 2 * f ≤ N + 1)
+    (h2 : l + (s + 1) + 2 * d' ≤ N - 2 * f + 1) (h2' : l'' + 2 * d' ≤ N - 2 * f + 1) :
+    ∃ Z2 ∈ CSub q (N - 2 * f - 2 * d'),
+      nestCap q lam d * YL * nestCap q l (((s + 1) + d') + f) * Z * nestCup q l' f * YR * nestCup q l'' d' =
+        (nestCap q lam d * YL * nestCap q l (s + 1)) * Z2 := by
+  have hZ1 := nestCap_mul_nestCup_mem_gen q (l + (s + 1 + d')) l' f N hZ h1 h1'
+  have hZ1' : (nestCap q (l + (s + 1 + d')) f * Z * nestCup q l' f) * YR ∈ CSub q (N - 2 * f) :=
+    Subalgebra.mul_mem _ hZ1 hYR
+  have hZ2 := nestCap_mul_nestCup_mem_gen q (l + (s + 1)) l'' d' (N - 2 * f) hZ1' h2 h2'
+  refine ⟨_, hZ2, ?_⟩
+  rw [nestCap_add q l ((s + 1) + d') f, nestCap_add q l (s + 1) d']
+  simp only [mul_assoc]
+
 end Lightlike.TemperleyLieb
