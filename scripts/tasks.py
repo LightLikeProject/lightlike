@@ -26,8 +26,10 @@ decomposition.yaml (all its statements are proof tasks) once all its proof tasks
 work may build on a result whose proof is still open. `sync` reads the issues, their comments
 (`claiming`, `attempting`, `stopping`) and the pull requests that name a task (`Task: T-...`), and
 sets the labels ready, blocked, claimed, attempting and in review, assigns claimants, lets claims
-lapse, and opens the issue of each task that becomes ready. It prints what it would do unless
-given `--apply`."""
+lapse, and opens the issue of each proof task that becomes ready. On a milestone's issue it writes
+only the claim labels (claimed, attempting) and the assignees: scripts/sync_github.py opens the
+milestone issues and writes their status, area and size labels, and the merger closes a milestone's
+issue after a passing review. It prints what it would do unless given `--apply`."""
 import argparse, datetime, importlib.util, json, pathlib, re, subprocess, sys, tempfile, textwrap, time
 from collections import Counter, OrderedDict
 
@@ -58,6 +60,10 @@ KIND_LABEL = {"milestone": "milestone", "proof": "proof-task", "upstream": "upst
 UNLOCKED = "the statement awaits review and locking"
 # Labels that `sync` sets from the state of each task; it adds and removes only these.
 LIVE = ["ready", "blocked", "claimed", "attempting", "in review"]
+# On a milestone's issue `sync` writes only the claim labels: scripts/sync_github.py opens and edits
+# those issues and writes their status, area and size labels (owner, 25 Nov 2026: one writer per
+# label family). Neither touches the other's labels, and neither closes a milestone's issue.
+CLAIM_LABELS = ["claimed", "attempting"]
 MARK = "<!-- tasks.py sync: {} -->"  # hidden marker of each comment `sync` posts, so it posts once
 CONVENTIONS = "docs/CONVENTIONS.md"
 CLAIM_HOURS = 48  # a claim lasts this long, or while a pull request naming the task is open
@@ -1047,10 +1053,15 @@ def cards(tasks, ms, packs=None, root=ROOT):
             title, body = proof_card(t, by, ms, (packs or {}).get(t["decl"]), cp, template)
         else:
             title, body = generic_card(t, ms)
-        if len(title) > 120:  # issue titles stay readable; the body has the full title
-            title = title[:120].rsplit(" ", 1)[0].rstrip(",;:") + " …"
-        out[t["id"]] = (title, body)
+        out[t["id"]] = (short_title(title), body)
     return out
+
+
+def short_title(title):
+    """An issue title of at most about 120 characters; the body has the full title."""
+    if len(title) > 120:
+        title = title[:120].rsplit(" ", 1)[0].rstrip(",;:") + " …"
+    return title
 
 
 def extract_packs(tasks):
@@ -1370,7 +1381,10 @@ def sync_plan(tasks, cfg, data, card, seed=None, now=None):
         state, mine = states[tid][0], prs.get(tid, [])
         open_prs = [p for p in mine if p["state"] == "open"]
         iss = issues.get(tid)
+        ours = CLAIM_LABELS if t["kind"] == "milestone" else LIVE
         if iss is None:
+            if t["kind"] == "milestone":
+                continue  # scripts/sync_github.py opens it
             if state != "ready" and tid not in seeded["closed"] and tid not in seeded["notes"]:
                 continue
             title, body = card(tid)
@@ -1379,7 +1393,7 @@ def sync_plan(tasks, cfg, data, card, seed=None, now=None):
             iss = dict(number=None, state="open", labels=labels, assignees=[], comments=[])
         num = iss["number"]
         if iss["state"] == "closed":
-            stale = [x for x in iss["labels"] if x in LIVE]
+            stale = [x for x in iss["labels"] if x in ours]
             if stale:
                 acts.append(dict(op="edit", task=tid, issue=num, add=[], remove=stale, assign=[], unassign=[]))
             continue
@@ -1390,9 +1404,9 @@ def sync_plan(tasks, cfg, data, card, seed=None, now=None):
         started = claim_log(iss)[0]
         taken = [(a, started[a]) for a in live[1:]]  # later claimants of a held task
         live = live[:1]
-        want = live_labels(t, state, live, open_prs)
+        want = [x for x in live_labels(t, state, live, open_prs) if x in ours]
         add = [x for x in want if x not in iss["labels"]]
-        remove = [x for x in iss["labels"] if x in LIVE and x not in want]
+        remove = [x for x in iss["labels"] if x in ours and x not in want]
         assign, unassign = [], []
         if state != "done":
             assign = [a for a in live if a not in iss["assignees"]]
@@ -1414,6 +1428,8 @@ def sync_plan(tasks, cfg, data, card, seed=None, now=None):
                 acts += [dict(op="comment", task=tid, issue=num,
                               body=TAKEN_TEXT.format(a, live[0], until) + "\n\n" + MARK.format(f"taken {a} {stamp(when)}"))
                          for a, when in taken]
+        if t["kind"] == "milestone":
+            continue  # closed by the merger after a passing review, never here
         if tid in seeded["closed"]:
             if seed_mark not in posted:
                 more = re.sub(r"^done\b\s*", "", seeded["closed"][tid]).strip()

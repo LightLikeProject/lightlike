@@ -112,6 +112,8 @@ NOT_CHECKS = {"scripts/ci_check.py", "scripts/prune_docs.py", "scripts/gate.py",
               "scripts/contributors.py", "scripts/review_gate.py", "scripts/automerge.py",
               "scripts/sources.py", "scripts/doc_refs_check.py", "scripts/leak_check.py", "scripts/generated.py",
               "scripts/milestone_status.py",  # the status of the milestones (its selftest is in tooling_selftest.py)
+              "scripts/sync_github.py",  # milestone issues and the Project board (its selftest is in tooling_selftest.py)
+              "scripts/consistency_check.py",  # the task management against itself; needs GitHub and a built main (selftest in tooling_selftest.py)
               "scripts/regge/regge3d_convergence.py",  # a library of the regge3d_* checks (dihedral); its demo has no verdict
               "scripts/regge/gen_chart_change.py",  # generator of Lightlike/Regge/Conv3/ChartChangeClasses.lean
               "scripts/regge/gen_sv_sigma.py",  # generator of Lightlike/Regge/Linear3/SaintVenantSigma0..5.lean

@@ -36,6 +36,7 @@ v1.0:
 
 milestones:
   GE1:
+    issue: 4
     ranking: null
     items:
       - id: m1
@@ -67,3 +68,147 @@ milestones:
         kind: catalogue
         text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
         decls: []
+  GE6:
+    issue: 5
+  GE9:
+    issue: 6
+  GE10:
+    issue: 7
+  CO5:
+    issue: 8
+  CO6:
+    issue: 9
+  CO7:
+    issue: 10
+  CO9:
+    issue: 11
+  CF1:
+    issue: 12
+  GC2:
+    issue: 13
+  GC4:
+    issue: 14
+  HA1:
+    issue: 15
+  HA2:
+    issue: 16
+  HA4:
+    issue: 17
+  OP1:
+    issue: 18
+  OP4:
+    issue: 19
+  OP5:
+    issue: 20
+  SP1:
+    issue: 21
+  SP2:
+    issue: 22
+  FT1:
+    issue: 23
+  FT3:
+    issue: 24
+  FT5:
+    issue: 25
+  PL1:
+    issue: 26
+  PL2:
+    issue: 27
+  PL3:
+    issue: 28
+  PL4:
+    issue: 29
+  PL5:
+    issue: 30
+  QU1:
+    issue: 31
+  QU2:
+    issue: 38
+  QU3:
+    issue: 39
+  QU4:
+    issue: 40
+  QU5:
+    issue: 41
+  RN1:
+    issue: 42
+  RN2:
+    issue: 43
+  RN3:
+    issue: 44
+  CS1:
+    issue: 45
+  DT4:
+    issue: 46
+  GF1:
+    issue: 57
+  LD6:
+    issue: 58
+  MM5:
+    issue: 59
+  NC1:
+    issue: 60
+  NC4:
+    issue: 61
+  RC4:
+    issue: 62
+  RC5:
+    issue: 63
+  RC6:
+    issue: 64
+  RC1:
+    issue: 65
+  RC2:
+    issue: 66
+  SF3:
+    issue: 67
+  SF4:
+    issue: 68
+  SF4b:
+    issue: 69
+  SF5a:
+    issue: 70
+  SF5b:
+    issue: 71
+  SF5c:
+    issue: 72
+  SF5d:
+    issue: 73
+  SF5e:
+    issue: 74
+  SF6:
+    issue: 75
+  SF7:
+    issue: 76
+  SF8:
+    issue: 77
+  SF9:
+    issue: 78
+  SF10:
+    issue: 79
+  ST1:
+    issue: 80
+  ST5:
+    issue: 81
+  ST8:
+    issue: 82
+  TW1:
+    issue: 83
+  TW4:
+    issue: 84
+  OA4:
+    issue: 85
+  CO24:
+    issue: 185
+  DS1:
+    issue: 186
+  HA5:
+    issue: 193
+  HA6:
+    issue: 194
+  OP6:
+    issue: 195
+  SP3:
+    issue: 196
+  SP4:
+    issue: 197

@@ -565,7 +565,7 @@ _data = {"now": "2026-11-07T00:00:00Z", "labels": tk.LIVE + sorted({x for t in _
         _c("ann", "a second note", "2026-11-06T14:00:00Z")]),
     _iss(2, "T-X1: x", ["milestone", "ready"], [_c("dee", "claiming", "2026-11-06T20:00:00Z")]),
     _iss(3, "T-B1: b", ["ready"], [_c("old", "claiming", "2026-10-01T00:00:00Z")], assignees=["old", "maint"]),
-    _iss(4, "T-X2: s", ["blocked"], [], state="closed", reason="completed"),
+    _iss(4, "T-X2: s", ["blocked", "claimed"], [], state="closed", reason="completed"),
     _iss(5, "T-B2: dup", [], [], state="closed", reason="not_planned"),
     _iss(9, "T-X1: a later duplicate", [], [])],
     "pulls": [{"number": 7, "body": "<!--\nTask: T-X1\n-->\nTask: T-B1\n", "author": "eve", "state": "open",
@@ -578,12 +578,14 @@ expect("tasks sync: a claim is a live `/claim` (or `claiming`, `attempting`) com
        _e(_acts, "T-X1-P1").get("add") == ["claimed"] and _e(_acts, "T-X1-P1").get("remove") == ["ready"]
        and _e(_acts, "T-X1-P1").get("assign") == ["ann"]
        and tk.MARK.format("lapse cy 2026-09-01T00:00:00Z") in _on(_acts, "T-X1-P1", "comment")[0]["body"])
-expect("tasks sync: a claim assigns the claimant and replaces `ready` by `claimed`",
-       _e(_acts, "T-X1") == dict(op="edit", task="T-X1", issue=2, add=["claimed"], remove=["ready"],
+expect("tasks sync: a claim on a milestone's issue assigns the claimant and adds `claimed`; its other labels "
+       "(ready, blocked, in review) are left to scripts/sync_github.py",
+       _e(_acts, "T-X1") == dict(op="edit", task="T-X1", issue=2, add=["claimed"], remove=[],
                                  assign=["dee"], unassign=[]))
-expect("tasks sync: a lapsed claim unassigns the claimant only and is announced; an open PR sets `in review`",
-       _e(_acts, "T-B1").get("unassign") == ["old"] and _e(_acts, "T-B1").get("add") == ["in review"]
-       and _e(_acts, "T-B1").get("remove") == ["ready"] and len(_on(_acts, "T-B1", "comment")) == 1
+expect("tasks sync: a lapsed claim unassigns the claimant only and is announced; on a milestone's issue an "
+       "open PR sets no label",
+       _e(_acts, "T-B1").get("unassign") == ["old"] and not _e(_acts, "T-B1").get("add")
+       and not _e(_acts, "T-B1").get("remove") and len(_on(_acts, "T-B1", "comment")) == 1
        and _lapse in _on(_acts, "T-B1", "comment")[0]["body"])
 _data3 = json.loads(json.dumps(_data))
 _data3["issues"][2]["comments"].append(_c("github-actions[bot]", "lapsed\n" + _lapse, "2026-11-06T00:00:00Z"))
@@ -629,7 +631,7 @@ _dp["pulls"] = [{"number": 9, "body": "Task: T-X1", "author": "fay", "state": "o
 _acts_p = _sync(_ts2, _cfg2, _dp, _card)[1]
 expect("tasks sync: a claim past 48 hours is kept while a pull request naming the task is open, and released "
        "when there is none; a claim never lapses by comments alone",
-       not _on(_acts_p, "T-X1", "comment") and _e(_acts_p, "T-X1").get("remove") == ["milestone"][:0]
+       not _on(_acts_p, "T-X1", "comment") and not _e(_acts_p, "T-X1").get("remove")
        and len(_on(_acts_p, "T-X1-P1", "comment")) == 1
        and _e(_acts_p, "T-X1-P1").get("unassign") == ["fay"])
 _dt = json.loads(json.dumps(_dc))
@@ -648,8 +650,9 @@ expect("tasks: the commands `/claim` and `/unclaim` and their old words are reco
        all(tk.CLAIM.search(x) for x in ("/claim", "  /Claim please", "claiming", "attempting via 1"))
        and all(tk.RELEASE.search(x) for x in ("/unclaim", "stopping", "Unclaiming", "no longer attempting"))
        and not tk.CLAIM.search("/claimed") and not tk.CLAIM.search("I am claiming") and not tk.RELEASE.search("/unclaimed"))
-expect("tasks sync: a closed issue loses its live labels and makes its task done; a duplicate is ignored",
-       _e(_acts, "T-X2").get("remove") == ["blocked"] and _st["T-X2"][0] == "done"
+expect("tasks sync: a closed milestone issue loses its claim labels (only) and makes its task done; a "
+       "duplicate is ignored",
+       _e(_acts, "T-X2").get("remove") == ["claimed"] and _st["T-X2"][0] == "done"
        and not _on(_acts, "T-B2", "create") and not [a for a in _acts if a.get("issue") == 9])
 expect("tasks sync: a task that becomes ready gets an issue; a blocked one does not; a commented-out Task line is ignored",
        [a["labels"] for a in _on(_acts, "T-X1-P2", "create")] == [["proof-task", "area: alpha", "size: S",
@@ -659,10 +662,9 @@ expect("tasks sync control: labels that exist are not created again",
        not [a for a in _acts if a["op"] == "label"])
 _seed = {"closed": {"X4": "done (older work)"}, "notes": {"X3": "in progress"}}
 _s1 = _sync(_ts2, _cfg2, _data, _card, _seed)[1]
-expect("tasks sync: the seed opens and closes the issue of earlier done work, and posts earlier notes",
-       [a["op"] for a in _s1 if a.get("task") == "T-X4"] == ["create", "close"]
-       and "(older work)." in _on(_s1, "T-X4", "close")[0]["body"]
-       and [a["op"] for a in _s1 if a.get("task") == "T-X3"] == ["create", "comment"])
+expect("tasks sync: the seed opens and closes no milestone issue (scripts/sync_github.py opens them, the "
+       "merger closes them after a passing review)",
+       not [a for a in _s1 if a.get("task") in ("T-X3", "T-X4")])
 _data2 = json.loads(json.dumps(_data))
 _data2["issues"] += [_iss(10, "T-X4: f", [], [_c("bot", tk.MARK.format("seed"), "2026-11-06T00:00:00Z")],
                           state="closed", reason="completed"),
@@ -682,6 +684,15 @@ _data6["issues"][0]["comments"].append(_c("bot", tk.MARK.format("proven"), "2026
 expect("tasks sync: a proof task proven on main has its issue closed, once",
        len(_on(_s6, "T-X1-P1", "close")) == 1 and "has no `sorry`" in _on(_s6, "T-X1-P1", "close")[0]["body"]
        and not _on(_sync(_ts6, _cfg2, _data6, _card)[1], "T-X1-P1", "close"))
+_kind = {t["id"]: t["kind"] for t in _ts2 + _ts6}
+expect("tasks sync: a milestone's issue is never opened or closed by `sync`, even when all its proof tasks are proven",
+       not [a for a in _acts + _s1 + _s6 if a["op"] in ("create", "close") and _kind.get(a.get("task")) == "milestone"])
+_sg = subprocess.run([sys.executable, str(HERE / "sync_github.py"), "--selftest"], capture_output=True, text=True)
+expect("sync_github: status labels, columns and the GitHub Milestone follow the computed status; claim labels, "
+       "closing and proof-task issues are left alone; writes are paced", _sg.returncode == 0)
+_cc = subprocess.run([sys.executable, str(HERE / "consistency_check.py"), "--selftest"], capture_output=True, text=True)
+expect("consistency check: planted duplicate issues, early closes, double claims, planning IDs, proven entries on open "
+       "hypotheses and merge-queue entries without a milestone fail", _cc.returncode == 0)
 
 with tempfile.TemporaryDirectory() as d:
     tmp = pathlib.Path(d)
