@@ -108,9 +108,26 @@ lemma tendsto_eulerProd {a : ℂ} (ha : a ≠ 0) :
   simp only [sineTerm]
   ring
 
-/-- **The sum for `c = 1`**: `Σ hgTerm a 1 n = sin(πa)/(πa)`. -/
-lemma hasSum_hgTerm_one {a : ℂ} (ha : a ≠ 0) :
-    HasSum (hgTerm a 1) (Complex.sin (Real.pi * a) / (Real.pi * a)) := by
-  sorry
+/-- Partial sums `Σ_{n<N} hgTerm a c n`. -/
+noncomputable def hgPartial (a c : ℂ) (N : ℕ) : ℂ := ∑ n ∈ Finset.range N, hgTerm a c n
+
+/-- The terms for `c = 1` decay like `1/N²`, so `N · h_N → 0`. -/
+lemma tendsto_mul_hgTerm_one {a : ℂ} (ha : a ≠ 0) :
+    Filter.Tendsto (fun N : ℕ => (N : ℂ) * hgTerm a 1 N) Filter.atTop (nhds 0) := by
+  have hP := tendsto_eulerProd ha
+  have h1 : Filter.Tendsto (fun n : ℕ => ((1 / ((n : ℝ) + 1) : ℝ) : ℂ)) Filter.atTop (nhds 0) := by
+    have := (Complex.continuous_ofReal.tendsto 0).comp tendsto_one_div_add_atTop_nhds_zero_nat
+    refine this.congr fun n => ?_
+    simp
+  have h2 : Filter.Tendsto (fun n : ℕ => eulerProd a n * (-a ^ 2 * ((1 / ((n : ℝ) + 1) : ℝ) : ℂ))) Filter.atTop
+      (nhds 0) := by
+    have := hP.mul (h1.const_mul (-a ^ 2))
+    simpa using this
+  rw [← Filter.tendsto_add_atTop_iff_nat 1]
+  refine h2.congr fun n => ?_
+  rw [hgTerm_one_succ]
+  have h3 : ((n : ℂ) + 1) ≠ 0 := by exact_mod_cast Nat.succ_ne_zero n
+  push_cast
+  field_simp
 
 end Lightlike.Dirac
