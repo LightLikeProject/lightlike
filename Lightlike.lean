@@ -981,6 +981,8 @@ import Lightlike.PL.Schoenflies.BlockChain
 import Lightlike.PL.Schoenflies.FrechetPolygon
 import Lightlike.PL.Schoenflies.OfListRot
 import Lightlike.PL.Schoenflies.QuadSplit
+import Lightlike.PL.Schoenflies.ChainSplitSet
+import Lightlike.PL.Schoenflies.GoodQuad
 import Lightlike.PL.SimpleChain
 import Lightlike.PL.Chain
 import Lightlike.PL.TwoArcs
