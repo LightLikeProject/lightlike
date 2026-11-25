@@ -1,6 +1,0 @@
-DONE (PARTIAL) G3-188, branch api-g3-188/pl5-schoenflies, commit 11f57c37 (pass 2).
-Proved: polygonal Schoenflies theorem in the plane (Lightlike.PL.Schoenflies.polygonal_schoenflies) and its homeomorphism form
-polygonal_schoenflies_homeo (HomeoForm.lean: any simple n-gon region ≃ₜ a strictly convex polygon hull, PL, vertices/carrier matched). No sorry.
-NOT proved: topological Schoenflies (arbitrary Jordan curve) and the PL5 3-dimensional tools; two attempts, reasons in HANDOFF.md
-(no full Jordan theorem / approximation + limit argument on main).
-Catalogue/merger: add results.yaml entry for polygonal_schoenflies (optionally polygonal_schoenflies_homeo).
