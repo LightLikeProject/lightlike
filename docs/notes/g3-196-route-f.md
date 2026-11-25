@@ -169,16 +169,16 @@ Open before the pentagon: (i) the signed matrix: expansion of `U_R` in the basis
 (ii) the matrix-unit identification giving `treeR = Σ U recoup U'` and the orthogonality relations; (iii) the
 pentagon for four blocks; (iv) the dictionary with `qSixJ` (Tet formula) and the truncation at `r`.
 
-### Plan for the signed Gram pairing (25 Nov 2026, not started in Lean)
+### Signed Gram pairing: proved (25 Nov 2026, `TemperleyLieb/Gram.lean`)
 
-`G(e,d; f,d') := (W_d W_e)(sh V_f · V_d')`, the pairing of a first-bracketing and a second-bracketing tree vector, should be a
-scalar multiple of `p_D` when the total channels agree (its square-type products are the `recoup` coefficients already
-proved). The reduction needed: between the layers `caps_d · [Q'' p_A] · caps_e · Z · cups_f · [J Q''] · cups_{d'}` with
-`Z ∈ C(N-1)` and `e + d = f + d'`, the caps and cups can be paired from the middle outward even though `e ≠ f`: after
-pairing `min(e,f)` of them, the leftover caps (or cups) meet the next C-element and the other layer. This needs a version of
-`nestCap_mul_nestCup_mem` for `i ≠ j` that tracks the leftover, built on `cap_mul_cup_mem` (distinct junctions allowed). After
-that: matrix units `U_e U'_{e'}`, expansion `treeR = Σ U G U'`, the pentagon for four blocks, and the Tet dictionary. PROXY
-estimate 1500 to 2500 lines.
+`gram_scalar`: for equal total channels `D`, `(W_d W_e)(sh V_f · V_{d'}) = g · p_D` for a scalar `g` (the Gram pairing of
+a first-bracketing and a second-bracketing tree vector). Proof: the product is `p_D · gramMid · p_D`, and `gramMid`, a word
+`caps_d · [Q' p_A] · caps_e · Z · cups_f · [J Q''] · cups_{d'}` with `e + d = f + d'` and `Z ∈ C(N-1)`, is in `C(D-1)`
+because caps and cups pair from the middle outward even when `e ≠ f` (`balanced_le`, `balanced_ge`, built on
+`nestCap_mul_nestCup_mem_gen`: two junctions, equal count); then `jwAt_sandwich` makes `p_D · C(D-1) · p_D` a scalar.
+Remaining before the pentagon: (i) `U_L' U_R = 0` for `D ≠ D'`; (ii) the expansion `U_R(f) = Σ_e g/κ U_L(e)` in the
+multiplicity space and the relation of `g` to `recoup` (`recoup = c · g · g'`); (iii) the same for four blocks (five
+trees) and the pentagon for the matrix `g`; (iv) the dictionary of `g` with `qSixJ` (Tet) and the truncation at `r`.
 
 ## Decision
 
