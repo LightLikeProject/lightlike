@@ -132,7 +132,59 @@ theorem mode_sol_zero {ν : ℂ} {m : ℤ} {a b : ℝ → ℂ} (h : IsModeSol ν
   set Kc : ℝ := (|(m : ℝ)| + 1) / ε + ‖ν‖ with hKc
   have hKc0 : 0 ≤ Kc := by positivity
   have hlip : ∀ t ∈ Set.Ioo ε R, LipschitzOnWith (Real.toNNReal Kc) (modeField ν m t) Set.univ := by
-    sorry
+    intro t ht
+    have ht0 : 0 < t := lt_trans hε0 ht.1
+    have hK1 : ‖ν / (1 + (t : ℂ) ^ 2)‖ ≤ ‖ν‖ := by
+      rw [norm_div]
+      have : (1 : ℝ) ≤ ‖1 + (t : ℂ) ^ 2‖ := by
+        have : ‖1 + (t : ℂ) ^ 2‖ = 1 + t ^ 2 := by
+          have : (1 + (t : ℂ) ^ 2) = ((1 + t ^ 2 : ℝ) : ℂ) := by push_cast; ring
+          rw [this, Complex.norm_real, Real.norm_of_nonneg (by positivity)]
+        rw [this]; nlinarith [sq_nonneg t]
+      exact div_le_self (norm_nonneg _) this
+    have hm1 : ‖((m : ℂ) / t)‖ ≤ (|(m : ℝ)| + 1) / ε := by
+      rw [norm_div, Complex.norm_real, Real.norm_eq_abs, abs_of_pos ht0]
+      have : ‖(m : ℂ)‖ = |(m : ℝ)| := by simp
+      rw [this]
+      calc |(m : ℝ)| / t ≤ |(m : ℝ)| / ε := div_le_div_of_nonneg_left (abs_nonneg _) hε0 ht.1.le
+        _ ≤ (|(m : ℝ)| + 1) / ε := by gcongr; linarith
+    have hm2 : ‖(((m + 1 : ℤ) : ℂ) / t)‖ ≤ (|(m : ℝ)| + 1) / ε := by
+      rw [norm_div, Complex.norm_real, Real.norm_eq_abs, abs_of_pos ht0]
+      have : ‖(((m + 1 : ℤ) : ℂ))‖ ≤ |(m : ℝ)| + 1 := by
+        have : (((m + 1 : ℤ) : ℂ)) = (((m + 1 : ℤ) : ℝ) : ℂ) := by push_cast; ring
+        rw [this, Complex.norm_real, Real.norm_eq_abs]
+        push_cast
+        calc |(m : ℝ) + 1| ≤ |(m : ℝ)| + |(1 : ℝ)| := abs_add_le _ _
+          _ = |(m : ℝ)| + 1 := by simp
+      calc ‖(((m + 1 : ℤ) : ℂ))‖ / t ≤ (|(m : ℝ)| + 1) / t := by gcongr
+        _ ≤ (|(m : ℝ)| + 1) / ε := div_le_div_of_nonneg_left (by positivity) hε0 ht.1.le
+    refine (LipschitzWith.of_dist_le_mul fun z w => ?_).lipschitzOnWith
+    simp only [dist_eq_norm, Prod.norm_def, Prod.fst_sub, Prod.snd_sub, modeField]
+    have hz1 : ‖z.1 - w.1‖ ≤ max ‖z.1 - w.1‖ ‖z.2 - w.2‖ := le_max_left _ _
+    have hz2 : ‖z.2 - w.2‖ ≤ max ‖z.1 - w.1‖ ‖z.2 - w.2‖ := le_max_right _ _
+    have hD : 0 ≤ max ‖z.1 - w.1‖ ‖z.2 - w.2‖ := le_trans (norm_nonneg _) hz1
+    have hKn : (Real.toNNReal Kc : ℝ) = Kc := Real.coe_toNNReal _ hKc0
+    rw [hKn]
+    refine max_le ?_ ?_
+    · have e : ((m : ℂ) / t * z.1 + ν / (1 + (t : ℂ) ^ 2) * z.2) - ((m : ℂ) / t * w.1 + ν / (1 + (t : ℂ) ^ 2) * w.2) =
+          ((m : ℂ) / t) * (z.1 - w.1) + (ν / (1 + (t : ℂ) ^ 2)) * (z.2 - w.2) := by ring
+      rw [e]
+      calc _ ≤ ‖((m : ℂ) / t) * (z.1 - w.1)‖ + ‖(ν / (1 + (t : ℂ) ^ 2)) * (z.2 - w.2)‖ := norm_add_le _ _
+        _ ≤ (|(m : ℝ)| + 1) / ε * max ‖z.1 - w.1‖ ‖z.2 - w.2‖ + ‖ν‖ * max ‖z.1 - w.1‖ ‖z.2 - w.2‖ := by
+          rw [norm_mul, norm_mul]
+          exact add_le_add (mul_le_mul hm1 hz1 (norm_nonneg _) (by positivity))
+            (mul_le_mul hK1 hz2 (norm_nonneg _) (norm_nonneg _))
+        _ = Kc * max ‖z.1 - w.1‖ ‖z.2 - w.2‖ := by rw [hKc]; ring
+    · have e : (-(((m + 1 : ℤ) : ℂ) / t) * z.2 + ν / (1 + (t : ℂ) ^ 2) * z.1) -
+          (-(((m + 1 : ℤ) : ℂ) / t) * w.2 + ν / (1 + (t : ℂ) ^ 2) * w.1) =
+          (-(((m + 1 : ℤ) : ℂ) / t)) * (z.2 - w.2) + (ν / (1 + (t : ℂ) ^ 2)) * (z.1 - w.1) := by ring
+      rw [e]
+      calc _ ≤ ‖(-(((m + 1 : ℤ) : ℂ) / t)) * (z.2 - w.2)‖ + ‖(ν / (1 + (t : ℂ) ^ 2)) * (z.1 - w.1)‖ := norm_add_le _ _
+        _ ≤ (|(m : ℝ)| + 1) / ε * max ‖z.1 - w.1‖ ‖z.2 - w.2‖ + ‖ν‖ * max ‖z.1 - w.1‖ ‖z.2 - w.2‖ := by
+          rw [norm_mul, norm_mul, norm_neg]
+          exact add_le_add (mul_le_mul hm2 hz2 (norm_nonneg _) (by positivity))
+            (mul_le_mul hK1 hz1 (norm_nonneg _) (norm_nonneg _))
+        _ = Kc * max ‖z.1 - w.1‖ ‖z.2 - w.2‖ := by rw [hKc]; ring
   have hf : ∀ t ∈ Set.Ioo ε R, HasDerivAt (fun t => (a t, b t)) (modeField ν m t (a t, b t)) t ∧
       (a t, b t) ∈ (Set.univ : Set (ℂ × ℂ)) := by
     intro t ht
