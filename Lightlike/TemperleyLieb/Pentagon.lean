@@ -388,4 +388,47 @@ theorem pair_TD_path1 [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) (a b c d e�
       (hv2.trans (min_le_left _ _)) (hv2.trans (min_le_right _ _)) hia (by omega) h₀, smul_smul, Finset.mul_sum,
       Finset.sum_smul]
 
+/-- **Pairing of `ULd4` with `(ab)(cd)`.** -/
+theorem pair_TE [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) (a b c d e₀ d₀ g₀ e j g : ℕ) (hc : 1 ≤ c)
+    (hd : ∀ x, x ≤ a + b + c + d → chebD (loopVal q) x ≠ 0)
+    (hq2 : ∀ x, 1 ≤ x → x ≤ a + b + c + d + 1 → (q : k) ^ (2 * x) ≠ 1)
+    (hea : e ≤ a) (heb : e ≤ b) (hjc : j ≤ c) (hjd : j ≤ d)
+    (hga : g ≤ a + b - 2 * e) (hgf : g ≤ c + d - 2 * j) (h₀ : ValidA a b c d e₀ d₀ g₀) :
+    ULd4 q a b c d e₀ d₀ g₀ * TE q a b c d e j g =
+      if e₀ = e then Fc q (a + b - 2 * e) c d d₀ g₀ j g • Nrm q a b c d e₀ d₀ g₀ else 0 := by
+  rw [TE_expand q hδ a b c d e j g hc hd hq2 hea heb hjc hjd hga hgf]
+  simp only [Finset.mul_sum]
+  have hterm : ∀ d₁ g', ULd4 q a b c d e₀ d₀ g₀ * (Fc q (a + b - 2 * e) c d d₁ g' j g • UL4 q a b c d e d₁ g') =
+      if (d₀ = d₁ ∧ g₀ = g') then (if e₀ = e then Fc q (a + b - 2 * e) c d d₁ g' j g • Nrm q a b c d e₀ d₀ g₀ else 0)
+        else 0 := by
+    intro d₁ g'
+    rw [mul_smul_comm]
+    by_cases h0 : Fc (k := k) q (a + b - 2 * e) c d d₁ g' j g = 0
+    · rw [h0]; simp
+    · obtain ⟨hv1, hv2⟩ := Fc_guard h0
+      have hv : ValidA a b c d e d₁ g' := ⟨le_min hea heb, hv1, hv2.trans (min_le_left _ _), hv2.trans (min_le_right _ _)⟩
+      rw [ortho4 q a b c d e₀ d₀ g₀ e d₁ g' hd hq2 h₀ hv]
+      by_cases hee : e₀ = e
+      · subst hee
+        by_cases hh : d₀ = d₁ ∧ g₀ = g'
+        · obtain ⟨rfl, rfl⟩ := hh; simp [Nrm]
+        · have : ¬ (e₀ = e₀ ∧ d₀ = d₁ ∧ g₀ = g') := fun x => hh ⟨x.2.1, x.2.2⟩
+          simp [this, hh]
+      · have : ¬ (e₀ = e ∧ d₀ = d₁ ∧ g₀ = g') := fun x => hee x.1
+        simp [this, hee]
+  simp only [hterm]
+  by_cases hee : e₀ = e
+  · subst hee
+    rw [sum2_single (Finset.range (a + b - 2 * e₀ + 1)) (fun _ => Finset.range (d + 1)) _ d₀ g₀
+      (Finset.mem_range.mpr (by have := h₀.2.1; have := min_le_left (a + b - 2 * e₀) c; omega))
+      (Finset.mem_range.mpr (by have := h₀.2.2.2; omega))]
+    · simp
+    · intro d₁ g' hne
+      rw [if_neg]
+      rintro ⟨h1, h2⟩
+      rcases hne with hne | hne
+      · exact hne h1.symm
+      · exact hne h2.symm
+  · simp [hee]
+
 end Lightlike.TemperleyLieb
