@@ -1136,8 +1136,7 @@ milestones:
       - id: t1
         kind: trust
         text: "The number k of negative signs equals the number of negative eigenvalues of the Hessian"
-        decls: []
-        hint: "Missing: the eigenvalue form. Close: Lightlike.Morse.morse_diagonal gives k = sigNeg of the Hessian (largest dimension of a negative-definite subspace); its docstring says the eigenvalue form is not proved."
+        decls: [Lightlike.Morse.sigNeg_hessQuad_eq_card_neg_eigenvalues, Lightlike.Morse.morse_diagonal_eigenvalues]
       - id: t2
         kind: trust
         text: "x³ at 0 has no diagonal Morse chart"
