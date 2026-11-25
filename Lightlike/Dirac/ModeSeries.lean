@@ -269,12 +269,15 @@ lemma deriv_coeff_bound {K C : ℝ} (hK : 0 ≤ K) (hC : 0 ≤ C) {c : ℕ → �
 /-- The exponent of the growth bound of the Taylor coefficients. -/
 noncomputable def growthK (μ : ℂ) : ℝ := 1 + ‖μ‖ * (1 + ‖μ‖)
 
+/-- The growth exponent is non-negative. -/
 lemma growthK_nonneg (μ : ℂ) : 0 ≤ growthK μ := by
   unfold growthK; positivity
 
+/-- Growth bound of the coefficients of `F`. -/
 lemma coefF_bound (μ : ℂ) (m n : ℕ) : ‖coefF μ m n‖ ≤ 1 * ((n : ℝ) + 1) ^ growthK μ := by
   rw [one_mul]; exact (coefPair_bound μ m n).1
 
+/-- Growth bound of the coefficients of `H`. -/
 lemma coefH_bound (μ : ℂ) (m n : ℕ) : ‖coefH μ m n‖ ≤ 2 ^ growthK μ * ((n : ℝ) + 1) ^ growthK μ := by
   have h := (coefPair_bound μ m (n + 1)).2
   unfold coefH
@@ -318,5 +321,95 @@ theorem series_ode_one (μ : ℂ) (m : ℕ) {t : ℝ} (ht : |t| < 1) :
         have := coefF_succ μ m n
         linear_combination (t : ℂ) ^ n * this
     _ = μ * powerSum (coefH μ m) t := by rw [tsum_mul_left]; rfl
+
+/-- **Second differential equation of the series**: `(1+t)(t H' + (m+1) H) = μ F` on `(-1, 1)`. -/
+theorem series_ode_two (μ : ℂ) (m : ℕ) {t : ℝ} (ht : |t| < 1) :
+    (1 + (t : ℂ)) * (((m : ℂ) + 1) * powerSum (coefH μ m) t +
+        (t : ℂ) * ∑' n : ℕ, ((n : ℂ) + 1) * coefH μ m (n + 1) * (t : ℂ) ^ n) =
+      μ * powerSum (coefF μ m) t := by
+  set K := growthK μ with hK
+  have hKn := growthK_nonneg μ
+  have hHb := coefH_bound μ m
+  have hH : Summable fun n : ℕ => coefH μ m n * (t : ℂ) ^ n :=
+    summable_powerTerms (K := K) (C := 2 ^ K) (by positivity) hHb ht
+  have hD : Summable fun n : ℕ => ((n : ℂ) + 1) * coefH μ m (n + 1) * (t : ℂ) ^ n :=
+    summable_powerTerms (K := K + 1) (C := 2 ^ K * 2 ^ K) (by positivity)
+      (fun n => deriv_coeff_bound hKn (by positivity) hHb n) ht
+  have hS2 : Summable fun n : ℕ => (n : ℂ) * coefH μ m n * (t : ℂ) ^ n := by
+    refine summable_powerTerms (K := K + 1) (C := 2 ^ K) (by positivity) (fun n => ?_) ht
+    rw [norm_mul]
+    have h1 : ‖(n : ℂ)‖ = n := by simp
+    rw [h1, Real.rpow_add (by positivity), Real.rpow_one]
+    calc (n : ℝ) * ‖coefH μ m n‖ ≤ ((n : ℝ) + 1) * (2 ^ K * ((n : ℝ) + 1) ^ K) :=
+          mul_le_mul (by linarith) (hHb n) (norm_nonneg _) (by positivity)
+      _ = 2 ^ K * (((n : ℝ) + 1) ^ K * ((n : ℝ) + 1)) := by ring
+  have hS1 : Summable fun n : ℕ => ((m : ℂ) + 1) * (coefH μ m n * (t : ℂ) ^ n) := hH.mul_left _
+  have hP : Summable fun n : ℕ => ((n : ℂ) + m + 1) * coefH μ m n * (t : ℂ) ^ n :=
+    (hS1.add hS2).congr fun n => by ring
+  have hshift : ∑' n : ℕ, (n : ℂ) * coefH μ m n * (t : ℂ) ^ n =
+      (t : ℂ) * ∑' n : ℕ, ((n : ℂ) + 1) * coefH μ m (n + 1) * (t : ℂ) ^ n := by
+    rw [hS2.tsum_eq_zero_add, ← tsum_mul_left]
+    simp only [Nat.cast_zero, zero_mul, zero_add, Nat.cast_add, Nat.cast_one]
+    refine tsum_congr fun n => ?_
+    ring
+  have hPsum : ((m : ℂ) + 1) * powerSum (coefH μ m) t +
+      (t : ℂ) * ∑' n : ℕ, ((n : ℂ) + 1) * coefH μ m (n + 1) * (t : ℂ) ^ n =
+      ∑' n : ℕ, ((n : ℂ) + m + 1) * coefH μ m n * (t : ℂ) ^ n := by
+    rw [← hshift]
+    unfold powerSum
+    rw [← tsum_mul_left, ← hS1.tsum_add hS2]
+    exact tsum_congr fun n => by ring
+  -- the shifted series `Q = Σ (n+m) h_{n-1} t^n = t P`
+  have hQshift : ∑' n : ℕ, ((n : ℂ) + m) * (coefPair μ m n).2 * (t : ℂ) ^ n =
+      (t : ℂ) * ∑' n : ℕ, ((n : ℂ) + m + 1) * coefH μ m n * (t : ℂ) ^ n := by
+    have hQ : Summable fun n : ℕ => ((n : ℂ) + m) * (coefPair μ m n).2 * (t : ℂ) ^ n := by
+      rw [← summable_nat_add_iff 1]
+      refine (hP.mul_left (t : ℂ)).congr fun n => ?_
+      simp only [coefH, Nat.cast_add, Nat.cast_one]
+      ring
+    rw [hQ.tsum_eq_zero_add, ← tsum_mul_left]
+    simp only [Nat.cast_zero, zero_add, Nat.cast_add, Nat.cast_one]
+    have h0 : (coefPair μ m 0).2 = 0 := by simp [coefPair]
+    rw [h0]
+    simp only [mul_zero, zero_mul, zero_add]
+    refine tsum_congr fun n => ?_
+    simp only [coefH]
+    ring
+  have hQsum : Summable fun n : ℕ => ((n : ℂ) + m) * (coefPair μ m n).2 * (t : ℂ) ^ n := by
+    rw [← summable_nat_add_iff 1]
+    refine (hP.mul_left (t : ℂ)).congr fun n => ?_
+    simp only [coefH, Nat.cast_add, Nat.cast_one]
+    ring
+  have hF : Summable fun n : ℕ => coefF μ m n * (t : ℂ) ^ n :=
+    summable_powerTerms (K := K) (C := 1) zero_le_one (coefF_bound μ m) ht
+  rw [hPsum]
+  calc (1 + (t : ℂ)) * ∑' n : ℕ, ((n : ℂ) + m + 1) * coefH μ m n * (t : ℂ) ^ n
+      = (∑' n : ℕ, ((n : ℂ) + m + 1) * coefH μ m n * (t : ℂ) ^ n) +
+        ∑' n : ℕ, ((n : ℂ) + m) * (coefPair μ m n).2 * (t : ℂ) ^ n := by rw [hQshift]; ring
+    _ = ∑' n : ℕ, (((n : ℂ) + m + 1) * coefH μ m n * (t : ℂ) ^ n +
+          ((n : ℂ) + m) * (coefPair μ m n).2 * (t : ℂ) ^ n) := (hP.tsum_add hQsum).symm
+    _ = ∑' n : ℕ, μ * (coefF μ m n * (t : ℂ) ^ n) := by
+        refine tsum_congr fun n => ?_
+        have := coefH_eq μ m n
+        linear_combination (t : ℂ) ^ n * this
+    _ = μ * powerSum (coefF μ m) t := by rw [tsum_mul_left]; rfl
+
+/-- **S1: the regular solution as a power series.** On `(-1, 1)` the sums `F`, `H` of the Taylor series with
+coefficients `coefF`, `coefH` are differentiable and solve `(1+t) F' = μ H`, `(1+t)(t H' + (m+1) H) = μ F`;
+`F(0) = 1`. -/
+theorem series_solves (μ : ℂ) (m : ℕ) {t : ℝ} (ht : |t| < 1) :
+    ∃ F' H' : ℂ, HasDerivAt (powerSum (coefF μ m)) F' t ∧ HasDerivAt (powerSum (coefH μ m)) H' t ∧
+      (1 + (t : ℂ)) * F' = μ * powerSum (coefH μ m) t ∧
+      (1 + (t : ℂ)) * (((m : ℂ) + 1) * powerSum (coefH μ m) t + (t : ℂ) * H') = μ * powerSum (coefF μ m) t := by
+  have hKn := growthK_nonneg μ
+  refine ⟨_, _, hasDerivAt_powerSum zero_le_one (coefF_bound μ m) ht,
+    hasDerivAt_powerSum (by positivity) (coefH_bound μ m) ht, series_ode_one μ m ht, series_ode_two μ m ht⟩
+
+/-- The series solution is normalised: `F(0) = 1`. -/
+theorem powerSum_coefF_zero (μ : ℂ) (m : ℕ) : powerSum (coefF μ m) 0 = 1 := by
+  unfold powerSum
+  rw [tsum_eq_single 0]
+  · simp [coefF, coefPair]
+  · intro n hn; simp [hn]
 
 end Lightlike.Dirac
