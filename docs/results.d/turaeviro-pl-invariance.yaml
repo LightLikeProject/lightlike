@@ -1,4 +1,4 @@
-- id: LL-XXXX-a
+- id: LL-XXXX-c
   title: "The r = 3 Turaev–Viro state sum is the same along any chain of 3D moves: it is unchanged by the 3-2 move and by the 4-1 move (the inverses of the 2-3 and 1-4 moves), hence along any chain of moves on closed combinatorial 3-manifolds"
   area: TuraevViro
   file: Lightlike/TuraevViro/PLInvariance.lean
