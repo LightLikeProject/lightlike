@@ -15,7 +15,8 @@ every milestone of docs/tasks/milestones.md:
     for a v1.0 milestone (status: ready, status: in-progress, status: review, status: done). It
     removes the old status labels ready, blocked and in review from milestone issues;
   - puts each v1.0 milestone in the GitHub Milestone "v1.0", and takes the others out of it;
-  - sets its column on the Project board: Ready, In progress, In review, Done or Not scheduled.
+  - sets its column on the Project board: Ready, In progress, In review, Done or Not scheduled,
+    and, for an open v1.0 milestone, the board's number field Rank to its `ranking:`.
 
 It never closes or reopens an issue (the merger closes a milestone's issue after a passing review),
 never touches a proof-task issue, and never writes the claim labels claimed and attempting: the
@@ -113,17 +114,29 @@ def live(conf):
     if p:
         fields = (gh_json(["project", "field-list", str(p["number"]), "--owner", org, "--format", "json",
                            "--limit", "100"]) or {}).get("fields") or []
-        f = next((x for x in fields if x.get("name") == board.get("field", "Status")), None)
+        fname, rname = board.get("field", "Status"), board.get("rank_field", "Rank")
+        f = next((x for x in fields if x.get("name") == fname), None)
+        r = next((x for x in fields if x.get("name") == rname), None)
         items = (gh_json(["project", "item-list", str(p["number"]), "--owner", org, "--format", "json",
                           "--limit", "5000"]) or {}).get("items") or []
-        fname = board.get("field", "Status")
         data["board"] = dict(
-            id=p["id"], number=p["number"], field_id=(f or {}).get("id"),
+            id=p["id"], number=p["number"], field_id=(f or {}).get("id"), rank_id=(r or {}).get("id"),
             options={o["name"]: o["id"] for o in (f or {}).get("options") or []},
-            items={str(x["content"]["number"]): dict(id=x["id"], column=x.get(fname.lower(), x.get(fname)))
+            items={str(x["content"]["number"]): dict(id=x["id"], column=x.get(fname.lower(), x.get(fname)),
+                                                     rank=x.get(rname.lower(), x.get(rname)))
                    for x in items if (x.get("content") or {}).get("number")
                    and (x["content"].get("repository") or repo) == repo})
     return data
+
+
+def same_rank(a, b):
+    """Whether two board ranks are equal (the board gives numbers as floats, and none as absent)."""
+    if a is None or b is None:
+        return a is None and b is None
+    try:
+        return float(a) == float(b)
+    except (TypeError, ValueError):
+        return False
 
 
 def remaining():
@@ -186,6 +199,8 @@ def plan(status, tasks, data, stored, spec, only=None):
         missing = [c for c in COLUMNS if c not in board["options"]]
         if not board.get("field_id") or missing:
             probs.append("the board's Status field lacks the columns " + ", ".join(missing or ["(no field)"]))
+        if not board.get("rank_id"):
+            probs.append("the board has no number field Rank (the ranking of the v1.0 milestones)")
     sha, date = status["main"], (status.get("computed_at") or "")[:10]
     acts, need = [], set()
     for t in ms_tasks:
@@ -201,9 +216,11 @@ def plan(status, tasks, data, stored, spec, only=None):
         title = T.short_title(f"{t['id']}: {st['title']}")
         body = MS.body(st, sha, date, outside, issue_of)
         column = STATUS[s] if s == "done" or (st["v1"] and s) else "Not scheduled"
+        # The ranking orders the open v1.0 milestones on the board (what is next); done ones lose it.
+        rank = st.get("ranking") if st["v1"] and s != "done" else None
         if iss is None:
             acts.append(dict(op="create", mid=mid, title=title, body=body, labels=want,
-                             milestone=V1_MILESTONE if st["v1"] else None, column=column))
+                             milestone=V1_MILESTONE if st["v1"] else None, column=column, rank=rank))
             continue
         e = dict(op="edit", mid=mid, issue=iss["number"], title=None, body=None,
                  add=[x for x in want if x not in iss["labels"]],
@@ -219,9 +236,11 @@ def plan(status, tasks, data, stored, spec, only=None):
         if e["title"] or e["body"] or e["add"] or e["remove"] or e["milestone"] is not None:
             acts.append(e)
         item = (board or {}).get("items", {}).get(str(iss["number"]))
-        if not item or item.get("column") != column:
+        if not item or item.get("column") != column or not same_rank(item.get("rank"), rank):
             acts.append(dict(op="board", mid=mid, issue=iss["number"], url=iss.get("url"),
-                             item=(item or {}).get("id"), column=column))
+                             item=(item or {}).get("id"), column=column, rank=rank,
+                             set_column=not item or item.get("column") != column,
+                             had_rank=(item or {}).get("rank") is not None))
     have = set(data.get("labels") or [])
     labels = [dict(op="label", name=n, color=c, description=d) for n in sorted(need - have)
               for c, d in [label_spec(spec, n)]]
@@ -240,7 +259,8 @@ def describe(a):
         return (f'{a["mid"]}: open issue "{a["title"][:70]}" [{", ".join(a["labels"])}]'
                 + (f' in {a["milestone"]}' if a["milestone"] else "") + f'; board {a["column"]}')
     if a["op"] == "board":
-        return f'{a["mid"]} #{a["issue"]}: board {"add, " if not a["item"] else ""}column {a["column"]}'
+        return (f'{a["mid"]} #{a["issue"]}: board {"add, " if not a["item"] else ""}column {a["column"]}'
+                + f', rank {a["rank"] if a.get("rank") is not None else "(none)"}')
     parts = (["title"] if a["title"] else []) + (["body"] if a["body"] else [])
     parts += [f"+{x}" for x in a["add"]] + [f"-{x}" for x in a["remove"]]
     if a["milestone"] is not None:
@@ -313,10 +333,16 @@ def apply(acts, conf, board, stop_file, per, board_per, record):
             out, _ = gh(["project", "item-add", str(board["number"]), "--owner", org, "--url", url, "--format", "json"])
             item = json.loads(out)["id"]
             made += 1
-        guard(boards)
-        gh(["project", "item-edit", "--id", item, "--project-id", board["id"], "--field-id", board["field_id"],
-            "--single-select-option-id", board["options"][a["column"]]])
-        made += 1
+        if a.get("set_column", True):
+            guard(boards)
+            gh(["project", "item-edit", "--id", item, "--project-id", board["id"], "--field-id", board["field_id"],
+                "--single-select-option-id", board["options"][a["column"]]])
+            made += 1
+        if a.get("rank") is not None or a.get("had_rank"):
+            guard(boards)
+            gh(["project", "item-edit", "--id", item, "--project-id", board["id"], "--field-id", board["rank_id"],
+                *(["--number", str(a["rank"])] if a.get("rank") is not None else ["--clear"])])
+            made += 1
 
     for a in acts:
         print("sync_github:", describe(a), flush=True)
@@ -449,8 +475,8 @@ def selftest():
                   milestones={"A1": st("A1"), "A2": st("A2", claimed=["regge"]), "A3": st("A3", done=True),
                               "B1": st("B1", v1=False), "A4": st("A4")})
     tasks = [task(m) for m in status["milestones"]] + [dict(id="T-A1-P1", kind="proof", milestone="A1", labels=[])]
-    board = dict(id="P", number=1, field_id="F", options={c: c for c in [*STATUS.values(), "Not scheduled"]},
-                 items={"1": dict(id="I1", column="Ready")})
+    board = dict(id="P", number=1, field_id="F", rank_id="R", options={c: c for c in [*STATUS.values(), "Not scheduled"]},
+                 items={"1": dict(id="I1", column="Ready", rank=None)})
     iss = lambda n, mid, labels, **k: dict(dict(number=n, title=f"T-{mid}: Title {mid}", state="open", reason="",  # noqa: E731
                                                 labels=labels, assignees=[], milestone=None, body="", url=f"u/{n}"), **k)
     data = dict(issues=[iss(1, "A1", ["milestone", "area: geometry", "size: M", "intermediate", "ready", "status: ready"],
@@ -486,6 +512,13 @@ def selftest():
            {a["name"] for a in acts if a["op"] == "label"} >= {"status: in-progress", NOT_SCHEDULED}
            and not any(a["op"] == "label" and a["name"] in CLAIM_LABELS for a in acts))
     expect("an issue in the right column is not moved", not by[("board", "A1")])
+    ranked = dict(status, milestones=dict(status["milestones"], A1=dict(status["milestones"]["A1"], ranking=2),
+                                          A3=dict(status["milestones"]["A3"], ranking=5)))
+    acts4, _ = plan(ranked, tasks, data, {}, {})
+    b4 = {a["mid"]: a for a in acts4 if a["op"] == "board"}
+    expect("a new ranking sets the board's Rank without moving the column; a done milestone gets no rank",
+           b4.get("A1", {}).get("rank") == 2 and b4["A1"]["set_column"] is False and b4.get("A3", {}).get("rank") is None
+           and same_rank(2.0, 2) and not same_rank(None, 2) and same_rank(None, None))
     expect("the proof task is linked from its milestone",
            "T-A1-P1 (#5)" in MS.body(dict(status["milestones"]["A1"], proof_tasks=["T-A1-P1"]), "a", "d", [], {"T-A1-P1": 5}))
     acts2, probs2 = plan(status, tasks, data, {"A1": 9, "A2": 5}, {})

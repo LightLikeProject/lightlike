@@ -948,7 +948,7 @@ def proof_card(t, by, ms, p, cp, template):
     vals = {"id": t["id"], "title": t["title"], "size": t["size"], "difficulty": t["difficulty"],
             "area": t["area"],
             "file": t["file"], "decl": t["decl"], "module": t["file"][:-5].replace("/", "."),
-            "milestone": f"{m['id']} ({m['section']})",
+            "milestone": f"{m['id']} ({m['section']})" + milestone_issue(by, m["id"]),
             "deps": ", ".join(t["deps"]) or "none",
             "routes": "\n".join(f"{i}. {r}" for i, r in enumerate(t.get("routes") or [], 1))
                       or "No route documented yet; share yours in this thread.",
@@ -1014,9 +1014,16 @@ def background(t, m, root=ROOT):
     return out
 
 
-def generic_card(t, ms):
+def milestone_issue(by, mid):
+    """`, issue #N` when milestone `mid` has a GitHub issue (docs/tasks/checklists.yaml), else ``."""
+    n = (by.get(f"T-{mid}") or {}).get("issue")
+    return f", issue #{n}" if n else ""
+
+
+def generic_card(t, ms, by=None):
     m = ms[t["milestone"]] if t["milestone"] else None
-    where = (f"**Milestone** {m['id']}: {m['title']} (docs/tasks/milestones.md, section \"{m['section']}\")" if m else
+    where = (f"**Milestone** {m['id']}: {m['title']} (docs/tasks/milestones.md, section \"{m['section']}\""
+             f"{milestone_issue(by or {}, m['id'])})" if m else
              f"**Upstream to** {t['target']} · **results** {', '.join(t['results'])} (docs/RESULTS.md)")
     lines = [f"**Task** {t['id']} · {t['kind']} · size {t['size']} · {t['difficulty']} · area {t['area']} · {t['mode']}",
              where,
@@ -1052,7 +1059,7 @@ def cards(tasks, ms, packs=None, root=ROOT):
         if t["kind"] == "proof" and t.get("file"):
             title, body = proof_card(t, by, ms, (packs or {}).get(t["decl"]), cp, template)
         else:
-            title, body = generic_card(t, ms)
+            title, body = generic_card(t, ms, by)
         out[t["id"]] = (short_title(title), body)
     return out
 

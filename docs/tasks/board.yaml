@@ -25,6 +25,9 @@ project:
   title: Lightlike
   field: Status
   columns: [Ready, In progress, In review, Done, Not scheduled]
+  # A number field: the ranking of each open v1.0 milestone (`ranking:` of checklists.yaml).
+  # Sorting the Ready column by it shows what is next.
+  rank_field: Rank
 
 # Label colours and descriptions. A key ending in ":" applies to every label with that prefix.
 labels:

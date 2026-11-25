@@ -32,6 +32,10 @@ Usage, from the repository root:
         and 11 GB), then writes OUT/status.json and OUT/bodies/<ID>.md, the body of each
         milestone's issue. --streams: the folder of the stream status files <name>.json, for who
         has claimed a milestone and its last step. --decls: reuse the audit output of an earlier run.
+    python3 scripts/milestone_status.py rank [--status OUT/status.json] [--md FILE] [--write]
+        the order in which the streams take the v1.0 milestones (unblockers first, a milestone below
+        the ones it needs), from a computed status. --md: write the ranking page. --write: set
+        `ranking:` in docs/tasks/checklists.yaml to it.
     python3 scripts/milestone_status.py --selftest
 """
 from __future__ import annotations
@@ -391,6 +395,107 @@ def body(st, repo_sha, date, outside=None, issue_of=None):
     return "\n".join(L) + "\n"
 
 
+# --- Ranking -------------------------------------------------------------------------------------
+
+def rank(milestones):
+    """The order in which the streams take the v1.0 milestones, from computed statuses.
+
+    Topological over the needs (a milestone ranks below the milestones it needs). Among those whose
+    needs are placed: most v1.0 milestones unblocked (directly or through others) first, then fewer
+    open proof items (main theorem, piece, trust check), then fewer open reviews, then the ID.
+    Returns (order, unblocked, open, needs): unblocked[ID] is the sorted list of milestones that
+    need ID, open[ID] the counts (proof, review, catalogue) of its unticked items."""
+    v = {k: m for k, m in milestones.items() if m["v1"]}
+    needs = {k: [n for n in m["needs"] if n in v] for k, m in v.items()}
+    users = {k: set() for k in v}
+    for k, ns in needs.items():
+        for n in ns:
+            users[n].add(k)
+
+    def down(k):
+        seen, stack = set(), [k]
+        while stack:
+            for u in users[stack.pop()] - seen:
+                seen.add(u)
+                stack.append(u)
+        return seen
+
+    unblocked = {k: sorted(down(k)) for k in v}
+    open_ = {}
+    for k, m in v.items():
+        un = [i for i in m["items"] if not i["ticked"]]
+        open_[k] = (sum(i["kind"] in ("main", "piece", "trust") for i in un),
+                    sum(i["kind"] == "review" for i in un), sum(i["kind"] == "catalogue" for i in un))
+    order, placed = [], set()
+    while len(order) < len(v):
+        avail = [k for k in v if k not in placed and all(n in placed for n in needs[k])]
+        if not avail:
+            raise SystemExit(f"milestone_status rank: the needs of {sorted(set(v) - placed)} form a cycle")
+        k = min(avail, key=lambda k: (-len(unblocked[k]), open_[k][0], open_[k][1], k))
+        order.append(k)
+        placed.add(k)
+    return order, unblocked, open_, needs
+
+
+def ranking_md(res, order, unblocked, open_, needs):
+    """The ranking as a Markdown page: the rule, how a stream takes work, and the table."""
+    v, sha = res["milestones"], res["main"][:8]
+
+    def short(t):
+        t = t.replace("|", "/")
+        return t if len(t) <= 72 else t[:71].rstrip() + "…"
+
+    L = ["# Milestone ranking (v1.0)", "",
+         f"Computed {res['computed_at']} from main {sha} by `scripts/milestone_status.py rank`. Streams "
+         "read this ranking to choose work.", "",
+         "**Rule.** Milestones that unblock others come first. *Unblocks* counts the v1.0 milestones that "
+         "need this one, directly or through others (the Needs column of docs/tasks/milestones.md). A "
+         "milestone always ranks below the milestones it needs. Ties: fewer open proof items first, then "
+         "fewer open reviews.", "",
+         "**Taking work.** A stream takes the highest-ranked milestone that is free: not claimed by another "
+         "stream's status file (fresh, at most 24 h old) or by an outside contributor's claim label, and not "
+         "closed. Its needs do not have to be closed first. If its work really waits on an unfinished need, "
+         "the stream hands it back (state `handed_back` and the reason in its status file) and takes the "
+         "next one.", "",
+         "**Open items** are the unticked items of docs/tasks/checklists.yaml, computed from main: *proof* "
+         "= main theorem, piece or trust check without a declaration yet; *review* = a review item (a "
+         "comparison with a source); *catalogue* = the docs/results.yaml entries and API-map citations. When "
+         "every item is ticked, the milestone goes to review by a different stream, on Opus.", "",
+         "Recomputed after every merge that ticks items and after every closed milestone; `ranking:` in "
+         "docs/tasks/checklists.yaml carries the same numbers.", "",
+         "| Rank | ID | Milestone | Size | Unblocks | Open: proof / review / catalogue | Needs | Issue |",
+         "|---:|---|---|---|---:|---|---|---|"]
+    for i, k in enumerate(order, 1):
+        m, w = v[k], open_[k]
+        L.append(f"| {i} | {k} | {short(m['title'])} | {m['size']} | {len(unblocked[k])} | "
+                 f"{w[0]} / {w[1]} / {w[2]} | {', '.join(needs[k]) or '-'} | "
+                 f"{('#' + str(m['issue'])) if m['issue'] else 'none yet'} |")
+    tot = [sum(open_[k][j] for k in order) for j in range(3)]
+    full = sum(all(i["ticked"] for i in v[k]["items"]) for k in order)
+    L += ["", f"Totals: {tot[0]} open proof items, {tot[1]} open reviews, {tot[2]} open catalogue items over "
+          f"{len(order)} milestones; {full} with every item ticked (main {sha}).", ""]
+    return "\n".join(L)
+
+
+def write_rankings(order, path=None):
+    """Set `ranking:` of each v1.0 milestone in docs/tasks/checklists.yaml to its place in `order`,
+    editing only those lines (the comments and the layout stay). Returns the number changed."""
+    path = pathlib.Path(path or ROOT / CHECKLISTS)
+    place = {k: i for i, k in enumerate(order, 1)}
+    out, key, changed = [], None, 0
+    for line in path.read_text().splitlines(keepends=True):
+        m = re.match(r"^  ([A-Za-z0-9]+):\s*$", line)
+        if m:
+            key = m.group(1)
+        if key in place and re.match(r"^    ranking: (\d+|null)?\s*$", line):
+            new = f"    ranking: {place[key]}\n"
+            changed += new != line
+            line = new
+        out.append(line)
+    path.write_text("".join(out))
+    return changed
+
+
 # --- Commands ------------------------------------------------------------------------------------
 
 def cmd_schema(root=ROOT):
@@ -427,6 +532,18 @@ def cmd_compute(a):
     return 0
 
 
+def cmd_rank(a):
+    res = json.loads(pathlib.Path(a.status).read_text())
+    order, unblocked, open_, needs = rank(res["milestones"])
+    if a.md:
+        pathlib.Path(a.md).write_text(ranking_md(res, order, unblocked, open_, needs))
+    changed = write_rankings(order) if a.write else None
+    print(f"milestone_status rank: {len(order)} v1.0 milestones (main {res['main'][:7]}): {' '.join(order)}"
+          + (f"; wrote {a.md}" if a.md else "")
+          + (f"; {changed} ranking(s) changed in {CHECKLISTS}" if changed is not None else ""))
+    return 0
+
+
 def selftest():
     aud = {"Lightlike.a": dict(q="Lightlike.a", found=True, module="Lightlike.X", axioms=["propext"]),
            "Lightlike.b": dict(q="Lightlike.b", found=True, module="Lightlike.X", axioms=["sorryAx", "propext"]),
@@ -452,6 +569,17 @@ def selftest():
                               dict(id="p1", kind="review", text="t", decls=[])])
     if len(bad) < 3:
         fails.append(f"schema: planted bad items gave only {bad}")
+    mk = lambda needs, kinds: dict(v1=True, needs=needs, items=[dict(kind=k, ticked=False) for k in kinds])  # noqa: E731
+    order = rank({"A": mk([], ["main"]), "B": mk(["A"], []), "C": mk(["B"], []), "D": mk([], []),
+                  "E": mk([], ["main", "main"]), "F": mk(["E"], []), "X": dict(v1=False, needs=[], items=[])})[0]
+    if order != ["A", "B", "E", "C", "D", "F"]:
+        fails.append(f"rank: unblockers first and needs first gave {order}, not A B E C D F")
+    with tempfile.TemporaryDirectory() as d:
+        f = pathlib.Path(d) / "c.yaml"
+        f.write_text("milestones:\n  A:\n    issue: 1\n    ranking: 3\n  B:\n    ranking: null\n  C:\n    issue: 3\n")
+        n = write_rankings(["B", "A"], f)
+        if n != 2 or "  A:\n    issue: 1\n    ranking: 2\n  B:\n    ranking: 1\n  C:\n    issue: 3\n" not in f.read_text():
+            fails.append(f"write_rankings: {n} changed, gave {f.read_text()!r}")
     for f in fails:
         print("  - " + f)
     print(f"milestone_status selftest: {'OK' if not fails else 'FAILED'}")
@@ -470,6 +598,10 @@ def main(argv=None):
     p.add_argument("--lake", default=os.environ.get("LL_LAKE", "lake"))
     p.add_argument("--decls")
     p.add_argument("--only")
+    p = sub.add_parser("rank")
+    p.add_argument("--status", default=".lake/milestone-status/status.json")
+    p.add_argument("--md")
+    p.add_argument("--write", action="store_true")
     a = ap.parse_args(argv)
     if a.selftest:
         return selftest()
@@ -477,6 +609,8 @@ def main(argv=None):
         return cmd_schema()
     if a.cmd == "compute":
         return cmd_compute(a)
+    if a.cmd == "rank":
+        return cmd_rank(a)
     ap.print_help()
     return 2
 
