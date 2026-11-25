@@ -681,6 +681,10 @@ tasks:
       - {"id": "p2", "kind": "piece", "text": "The conformal boundary of anti-de Sitter space is defined", "decls": ["Lightlike.adsBoundary", "Lightlike.pullback_adsGlobal", "Lightlike.adsCompact_boundary"], "hint": "Fixed d = 3, L = 1, coordinate-level (Fin 4 → ℝ), not a manifold embedding."}
       - {"id": "t1", "kind": "trust", "text": "The compactified Minkowski space is a region of the Einstein static universe", "decls": ["Lightlike.pullback_compact", "Lightlike.compactify_mem", "Lightlike.pullback_esu_doubling", "Lightlike.minkowski_eq_conformal_esu"]}
       - {"id": "t2", "kind": "trust", "text": "A non-conformal rescaling of Minkowski space is shown to fail", "decls": ["Lightlike.arctan_not_conformal", "Lightlike.minkowski_nonconformal_fails"], "hint": "Weak: one point (1,2,π/2,0) and the arctan(t), arctan(r) rescaling only."}
+      - {"id": "r1", "kind": "review", "text": "The source of LL-0376 (Minkowski space conformal to a region of the Einstein static universe, polar form) is checked: Carroll (1997) treats it in Chapter 7, not Chapter 3; the location is read and recorded in docs/results.yaml and docs/tasks/sources.yaml", "review_evidence": null}
+      - {"id": "r2", "kind": "review", "text": "The source of LL-0377 (the Cartesian form, axis included) is checked against Carroll (1997) eq. (7.100) and the remark after (7.87), and the location is recorded in place of Chapter 3", "review_evidence": null}
+      - {"id": "r3", "kind": "review", "text": "The source of LL-0378 (anti-de Sitter space conformal to a region of the Einstein static universe) is a registered source that states it (for example Blau, Lecture Notes on General Relativity, Section 39.3), compared with the coordinates of the Lean statement; Carroll Chapter 3 does not treat it", "review_evidence": null}
+      - {"id": "r4", "kind": "review", "text": "LL-0379 (a non-conformal rescaling fails) is a trust check, not a statement of a source: its citation of Carroll Chapter 3 is removed or replaced by one that supports it", "review_evidence": null}
       - {"id": "c1", "kind": "catalogue", "text": "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map", "decls": []}
   - id: "T-GE8"
     kind: "milestone"
@@ -707,6 +711,7 @@ tasks:
       - {"id": "p3", "kind": "piece", "text": "On the round 2-sphere a₁ equals (4π)^{-1}∫R/6", "decls": ["Lightlike.HeatKernel.sphere2_a1_curv", "Lightlike.HeatKernel.hasHeatExpansionTo_sphereTrace_curv", "Lightlike.HeatKernel.scalarCurvature_stereo", "Lightlike.HeatKernel.hasHeatExpansionTo_sphereTrace_geom"], "hint": "Examples only (S², S³), V = 4π hard-coded."}
       - {"id": "t1", "kind": "trust", "text": "On the unit 2-sphere, Σ(2l+1)e^{−t l(l+1)} = 1/t + 1/3 + t/15 + O(t²)", "decls": ["Lightlike.HeatKernel.hasHeatExpansionTo_sphereTrace"]}
       - {"id": "t2", "kind": "trust", "text": "The flat torus has no t⁰ term in its heat trace", "decls": ["Lightlike.HeatKernel.hasHeatExpansion_torusTrace", "Lightlike.HeatKernel.hasHeatExpansion_torusTrace_geom"], "hint": "The torus is the explicit lattice sum, not an operator on a manifold."}
+      - {"id": "r1", "kind": "review", "text": "The source of LL-0299 (the scalar curvature of the round unit n-sphere is n(n-1)) is a location that states it: Vassilevich (2003) eq. (4.27) is the a₂ coefficient; the right location is read and recorded in docs/results.yaml", "review_evidence": null}
       - {"id": "c1", "kind": "catalogue", "text": "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map", "decls": []}
   - id: "T-GE9"
     kind: "milestone"
@@ -1961,13 +1966,13 @@ tasks:
     ranking: 12
     labels: ["milestone", "area: operator-algebras", "size: L", "advanced"]
     checklist:
-      - {"id": "m1", "kind": "main", "text": "Stone's theorem on a complex Hilbert space: a strongly continuous one-parameter unitary group has a self-adjoint generator, and every self-adjoint operator generates exactly one such group", "decls": ["Lightlike.OperatorAlgebras.OPRow154.stone_theorem"]}
+      - {"id": "m1", "kind": "main", "text": "Stone's theorem on a complex Hilbert space: a strongly continuous one-parameter unitary group has a self-adjoint generator, and every self-adjoint operator generates exactly one such group", "decls": ["Lightlike.OperatorAlgebras.StoneMomentum.stone_theorem"]}
       - {"id": "p1", "kind": "piece", "text": "A strongly continuous one-parameter unitary group and its generator are defined", "decls": ["Lightlike.OperatorAlgebras.UnitaryGroup", "Lightlike.OperatorAlgebras.UnitaryGroup.generator"]}
       - {"id": "p2", "kind": "piece", "text": "Stone, direction 1: the generator of a unitary group is self-adjoint", "decls": ["Lightlike.OperatorAlgebras.UnitaryGroup.generator_isSelfAdjoint"]}
       - {"id": "p3", "kind": "piece", "text": "Stone, direction 2: every self-adjoint operator is the generator of a unitary group", "decls": ["Lightlike.OperatorAlgebras.generator_stoneGroup"]}
       - {"id": "p4", "kind": "piece", "text": "Uniqueness: two unitary groups with the same generator are equal", "decls": ["Lightlike.OperatorAlgebras.UnitaryGroup.eq_of_generator_eq"]}
-      - {"id": "t1", "kind": "trust", "text": "-i d/dx is essentially self-adjoint on C_c^infinity(R) and generates translations", "decls": ["Lightlike.OperatorAlgebras.OPRow154.momentumSmoothR_isEssentiallySelfAdjoint", "Lightlike.OperatorAlgebras.OPRow154.closure_momentumSmoothR", "Lightlike.OperatorAlgebras.OPRow154.translationGroup_eq_spectralGroup"]}
-      - {"id": "t2", "kind": "trust", "text": "On L2[0,1] without boundary conditions -i d/dx has deficiency indices (1,1)", "decls": ["Lightlike.OperatorAlgebras.OPRow154.momentumMin_deficiency_indices", "Lightlike.OperatorAlgebras.deficiency_indices_momentumMin"], "hint": "The operator is on C^2 functions with support inside (0,1); equality of closure with the C_c^infinity version is proven (Lightlike.OperatorAlgebras.closure_momentumGraphSmooth_eq)."}
+      - {"id": "t1", "kind": "trust", "text": "-i d/dx is essentially self-adjoint on C_c^infinity(R) and generates translations", "decls": ["Lightlike.OperatorAlgebras.StoneMomentum.momentumSmoothR_isEssentiallySelfAdjoint", "Lightlike.OperatorAlgebras.StoneMomentum.closure_momentumSmoothR", "Lightlike.OperatorAlgebras.StoneMomentum.translationGroup_eq_spectralGroup"]}
+      - {"id": "t2", "kind": "trust", "text": "On L2[0,1] without boundary conditions -i d/dx has deficiency indices (1,1)", "decls": ["Lightlike.OperatorAlgebras.StoneMomentum.momentumMin_deficiency_indices", "Lightlike.OperatorAlgebras.deficiency_indices_momentumMin"], "hint": "The operator is on C^2 functions with support inside (0,1); equality of closure with the C_c^infinity version is proven (Lightlike.OperatorAlgebras.closure_momentumGraphSmooth_eq)."}
       - {"id": "c1", "kind": "catalogue", "text": "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map", "decls": []}
   - id: "T-OP1-P1"
     kind: "proof"
@@ -2132,13 +2137,13 @@ tasks:
     ranking: 25
     labels: ["milestone", "area: operator-algebras", "size: L", "advanced"]
     checklist:
-      - {"id": "m1", "kind": "main", "text": "Shale's criterion: in the Fock representation a Bogoliubov transformation is unitarily implementable if and only if its beta part is Hilbert-Schmidt", "decls": ["Lightlike.OperatorAlgebras.op2_fock_and_shale", "Lightlike.OperatorAlgebras.shale_criterion"]}
+      - {"id": "m1", "kind": "main", "text": "Shale's criterion: in the Fock representation a Bogoliubov transformation is unitarily implementable if and only if its beta part is Hilbert-Schmidt", "decls": ["Lightlike.OperatorAlgebras.fockRepOf_implements_iff", "Lightlike.OperatorAlgebras.shale_criterion"]}
       - {"id": "p1", "kind": "piece", "text": "The Fock representation exists on every complex Hilbert space", "decls": ["Lightlike.OperatorAlgebras.FockRep", "Lightlike.OperatorAlgebras.fockRepOf"]}
       - {"id": "p2", "kind": "piece", "text": "Bogoliubov transformations, implementability and Hilbert-Schmidt operators are defined", "decls": ["Lightlike.OperatorAlgebras.Bogoliubov", "Lightlike.OperatorAlgebras.Implements", "Lightlike.OperatorAlgebras.IsHilbertSchmidt"]}
       - {"id": "p3", "kind": "piece", "text": "Necessity: an implementable Bogoliubov transformation has Hilbert-Schmidt beta part", "decls": ["Lightlike.OperatorAlgebras.shale_necessity_of_implements"]}
       - {"id": "p4", "kind": "piece", "text": "Sufficiency: a Bogoliubov transformation with Hilbert-Schmidt beta part is implementable", "decls": ["Lightlike.OperatorAlgebras.shale_sufficiency_of_hilbertSchmidt"]}
-      - {"id": "t1", "kind": "trust", "text": "|alpha|^2 - |beta|^2 = 1 for one mode", "decls": ["Lightlike.OperatorAlgebras.op2_one_mode_alpha_beta", "Lightlike.OperatorAlgebras.Bogoliubov.norm_alpha_sq_sub_norm_beta_sq"]}
-      - {"id": "t2", "kind": "trust", "text": "A Bogoliubov transformation with infinitely many modes of constant |beta| is not implementable", "decls": ["Lightlike.OperatorAlgebras.op2_infinite_modes_not_implementable", "Lightlike.OperatorAlgebras.not_implements_squeezeEllTwo"]}
+      - {"id": "t1", "kind": "trust", "text": "|alpha|^2 - |beta|^2 = 1 for one mode", "decls": ["Lightlike.OperatorAlgebras.squeeze_norm_alpha_sq_sub_norm_beta_sq_one", "Lightlike.OperatorAlgebras.Bogoliubov.norm_alpha_sq_sub_norm_beta_sq"]}
+      - {"id": "t2", "kind": "trust", "text": "A Bogoliubov transformation with infinitely many modes of constant |beta| is not implementable", "decls": ["Lightlike.OperatorAlgebras.squeezeEllTwo_not_implementable", "Lightlike.OperatorAlgebras.not_implements_squeezeEllTwo"]}
       - {"id": "c1", "kind": "catalogue", "text": "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map", "decls": []}
   - id: "T-OP2-P1"
     kind: "proof"
@@ -2471,8 +2476,8 @@ tasks:
       - {"id": "m2", "kind": "main", "text": "For a positive measure on [0, ∞) whose Laplace transform grows like e^{a/β}, the counting function ρ[0, X] has the asymptotics of Mukhametzhanov–Zhiboedov 2019, eq. (1.8)", "decls": [], "hint": "Missing: Ingham's theorem for the counting function itself. Close: Lightlike.Tauberian.ingham_log (logarithmic form only, log F(X)/(2√(aX)) → 1; its docstring says weaker) and Lightlike.Tauberian.cardy_mz / cardy_relative (the (1.8) asymptotics with a 1+O(X^{-1/2}) error, but for a measure with a SpectralHyp and a modular-invariance hypothesis, not for a general L ~ e^{a/β})."}
       - {"id": "p1", "kind": "piece", "text": "Slowly varying functions are defined (ℓ eventually positive, ℓ(ct)/ℓ(t) → 1 for every c > 0)", "decls": ["Lightlike.Tauberian.SlowlyVarying"]}
       - {"id": "t1", "kind": "trust", "text": "Lebesgue measure on [0, ∞) gives α = 1", "decls": ["Lightlike.Karamata.karamata_lebesgue"]}
-      - {"id": "t2", "kind": "trust", "text": "The growth of the spectrum of a free boson follows from the Tauberian theorem", "decls": ["Lightlike.SP3Row.free_boson_growth"], "hint": "Logarithmic form only: log N(X)/(2√(π²X/6)) → 1, via ingham_log; not the Hardy-Ramanujan asymptotics of N(X) itself."}
-      - {"id": "t3", "kind": "trust", "text": "A signed measure (density 1 + x cos x) shown to break the conclusion of Karamata's theorem", "decls": ["Lightlike.SP3Row.not_tendsto_signedCount"], "hint": "Companion: Lightlike.SP3Row.tendsto_mul_signedLaplace shows the Laplace hypothesis still holds for it (inventory did not read it in full)."}
+      - {"id": "t2", "kind": "trust", "text": "The growth of the spectrum of a free boson follows from the Tauberian theorem", "decls": ["Lightlike.Asymptotics.FreeBosonGrowth.free_boson_growth"], "hint": "Logarithmic form only: log N(X)/(2√(π²X/6)) → 1, via ingham_log; not the Hardy-Ramanujan asymptotics of N(X) itself."}
+      - {"id": "t3", "kind": "trust", "text": "A signed measure (density 1 + x cos x) shown to break the conclusion of Karamata's theorem", "decls": ["Lightlike.Asymptotics.FreeBosonGrowth.not_tendsto_signedCount"], "hint": "Companion: Lightlike.Asymptotics.FreeBosonGrowth.tendsto_mul_signedLaplace shows the Laplace hypothesis still holds for it (inventory did not read it in full)."}
       - {"id": "c1", "kind": "catalogue", "text": "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map", "decls": []}
   - id: "T-SP3-P1"
     kind: "proof"
@@ -5021,7 +5026,7 @@ tasks:
     deps: []
     file: "Tasks/SF/T_SF10_P3.lean"
     decl: "Lightlike.Asymptotics.Lorentzian.lorVertex_farRemainder"
-    routes: ["Split `1 - χ = (ψ - χ) + (1 - ψ)` for a cutoff `ψ` in `U` equal to `1` near `K`; the first part is `lorVertex_farRemainder_compact` (T-SF10-P5), the second `lorVertex_farRemainder_tail` (T-SF10-P6). The critical-set hypothesis is `CriticalSetIs` with the cutoff `1` (the first form, with `χ`, is false: a critical point outside `tsupport χ` contributes `λ^{-22}`; `docs/notes/sf10-p3-assessment.md`)."]
+    routes: ["Split `1 - χ = (ψ - χ) + (1 - ψ)` for a cutoff `ψ` in `U` equal to `1` near `K`; the first part is `lorVertex_farRemainder_compact_proof` (T-SF10-P5, proved: `Lightlike/SpinFoam/VertexAsymptoticsHyp/FarCompact.lean`), the second `lorVertex_farRemainder_tail` (T-SF10-P6). The critical-set hypothesis is `CriticalSetIs` with the cutoff `1` (the first form, with `χ`, is false: a critical point outside `tsupport χ` contributes `λ^{-22}`; `docs/notes/sf10-p3-assessment.md`)."]
     labels: ["proof-task", "area: spin-foams", "size: S", "intermediate"]
   - id: "T-SF10-P6"
     kind: "proof"
