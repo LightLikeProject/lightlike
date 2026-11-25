@@ -389,4 +389,59 @@ theorem not_decay_of_limit_ne {a : ℂ} {m : ℕ} {L : ℂ} (hL : L ≠ 0)
       _ ≤ ‖(r : ℂ) ^ m‖ * ‖hgSum a m (xOf r)‖ := mul_le_mul_of_nonneg_right hpow (norm_nonneg _)
   linarith
 
+/-- A power series with polynomially bounded coefficients is bounded on `|x| ≤ 1/2`. -/
+lemma powerSum_bdd {c : ℕ → ℂ} (hc : PB c) : ∃ M : ℝ, ∀ x : ℝ, |x| ≤ 1 / 2 → ‖powerSum c x‖ ≤ M := by
+  obtain ⟨C, K, hC, hK, hcb⟩ := hc
+  have hs : Summable fun n : ℕ => C * (((n : ℝ) + 1) ^ ⌈K⌉₊ * (1 / 2 : ℝ) ^ n) :=
+    (summable_succ_pow_geom _ (by norm_num) (by norm_num)).mul_left C
+  refine ⟨∑' n : ℕ, C * (((n : ℝ) + 1) ^ ⌈K⌉₊ * (1 / 2 : ℝ) ^ n), fun x hx => ?_⟩
+  unfold powerSum
+  refine tsum_of_norm_bounded hs.hasSum fun n => ?_
+  rw [norm_mul, norm_pow, Complex.norm_real, Real.norm_eq_abs]
+  have hK' : ((n : ℝ) + 1) ^ K ≤ ((n : ℝ) + 1) ^ (⌈K⌉₊ : ℝ) :=
+    Real.rpow_le_rpow_of_exponent_le (by have : (0 : ℝ) ≤ n := Nat.cast_nonneg n; linarith) (Nat.le_ceil K)
+  rw [Real.rpow_natCast] at hK'
+  calc ‖c n‖ * |x| ^ n ≤ (C * ((n : ℝ) + 1) ^ K) * (1 / 2 : ℝ) ^ n :=
+        mul_le_mul (hcb n) (pow_le_pow_left₀ (abs_nonneg x) hx n) (by positivity) (by positivity)
+    _ ≤ (C * ((n : ℝ) + 1) ^ ⌈K⌉₊) * (1 / 2 : ℝ) ^ n :=
+        mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hK' hC) (by positivity)
+    _ = C * (((n : ℝ) + 1) ^ ⌈K⌉₊ * (1 / 2 : ℝ) ^ n) := by ring
+
+/-- `x(r) ≤ 1/2` for `r ≤ 1`. -/
+lemma xOf_le_half {r : ℝ} (hr : r ≤ 1) (hr0 : 0 ≤ r) : |xOf r| ≤ 1 / 2 := by
+  unfold xOf
+  have h : (0 : ℝ) < 1 + r ^ 2 := by positivity
+  rw [abs_of_nonneg (by positivity), div_le_iff₀ h]
+  nlinarith
+
+/-- **The explicit regular solution is bounded near the origin.** -/
+theorem modeHyper_bdd {ν : ℂ} (hν : ν ≠ 0) (a : ℂ) (m : ℕ) :
+    ∃ C : ℝ, ∀ r : ℝ, 0 < r → r ≤ 1 → ‖modeA a m r‖ ≤ C ∧ ‖modeB ν a m r‖ ≤ C := by
+  obtain ⟨M0, hM0⟩ := powerSum_bdd (pb_hgCoef a m)
+  obtain ⟨M1, hM1⟩ := powerSum_bdd (pb_hgCoef1 a m)
+  refine ⟨max M0 (‖2 / ν‖ * M1), fun r hr hr1 => ⟨?_, ?_⟩⟩
+  · have h1 : ‖(r : ℂ) ^ m‖ ≤ 1 := by
+      rw [norm_pow, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hr]
+      exact pow_le_one₀ hr.le hr1
+    have h2 := hM0 (xOf r) (xOf_le_half hr1 hr.le)
+    unfold modeA
+    rw [norm_mul]
+    calc ‖(r : ℂ) ^ m‖ * ‖hgSum a m (xOf r)‖ ≤ 1 * M0 := mul_le_mul h1 h2 (norm_nonneg _) zero_le_one
+      _ ≤ _ := by rw [one_mul]; exact le_max_left _ _
+  · have h1 : ‖(r : ℂ) ^ (m + 1) / (1 + (r : ℂ) ^ 2)‖ ≤ 1 := by
+      rw [norm_div, norm_pow, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hr]
+      have : ‖1 + (r : ℂ) ^ 2‖ = 1 + r ^ 2 := by
+        have : (1 + (r : ℂ) ^ 2) = ((1 + r ^ 2 : ℝ) : ℂ) := by push_cast; ring
+        rw [this, Complex.norm_real, Real.norm_of_nonneg (by positivity)]
+      rw [this, div_le_one (by positivity)]
+      calc r ^ (m + 1) ≤ 1 := pow_le_one₀ hr.le hr1
+        _ ≤ 1 + r ^ 2 := by nlinarith [sq_nonneg r]
+    have h2 := hM1 (xOf r) (xOf_le_half hr1 hr.le)
+    unfold modeB
+    rw [norm_mul, norm_mul]
+    calc ‖2 / ν‖ * ‖(r : ℂ) ^ (m + 1) / (1 + (r : ℂ) ^ 2)‖ * ‖powerSum (hgCoef1 a m) (xOf r)‖
+        ≤ ‖2 / ν‖ * 1 * M1 :=
+          mul_le_mul (mul_le_mul_of_nonneg_left h1 (norm_nonneg _)) h2 (norm_nonneg _) (by positivity)
+      _ ≤ _ := by rw [mul_one]; exact le_max_right _ _
+
 end Lightlike.Dirac
