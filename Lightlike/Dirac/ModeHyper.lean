@@ -245,12 +245,14 @@ theorem hgSum_ode (a : ℂ) (m : ℕ) {x : ℝ} (hx : |x| < 1) :
 /-- The variable `x = r² / (1 + r²)`. -/
 noncomputable def xOf (r : ℝ) : ℝ := r ^ 2 / (1 + r ^ 2)
 
+/-- `x = r²/(1+r²)` lies in `[0, 1)`. -/
 lemma abs_xOf_lt (r : ℝ) : |xOf r| < 1 := by
   unfold xOf
   have h : (0 : ℝ) < 1 + r ^ 2 := by positivity
   rw [abs_of_nonneg (by positivity), div_lt_one h]
   linarith
 
+/-- The derivative of `x(r)`. -/
 lemma hasDerivAt_xOf (r : ℝ) : HasDerivAt xOf (2 * r / (1 + r ^ 2) ^ 2) r := by
   have h : (0 : ℝ) < 1 + r ^ 2 := by positivity
   have h1 : HasDerivAt (fun r : ℝ => r ^ 2) (2 * r) r := by simpa using hasDerivAt_pow 2 r
