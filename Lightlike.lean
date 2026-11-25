@@ -1918,6 +1918,8 @@ import Lightlike.SpinFoam.EPRLStateSum.ComplexSignParity
 import Lightlike.SpinFoam.EPRLStateSum.ComplexSignTet
 import Lightlike.SpinFoam.EPRLStateSum.ComplexSignPair
 import Lightlike.SpinFoam.EPRLStateSum.ComplexSignTypes
+import Lightlike.SpinFoam.EPRLStateSum.ComplexSignedOoguri
+import Lightlike.SpinFoam.EPRLStateSum.ComplexIntrinsicAmp
 import Lightlike.SpinFoam.Move15
 import Lightlike.SpinFoam.Move15Global
 import Lightlike.SpinFoam.BarrettCrane
