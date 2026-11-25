@@ -1,8 +1,8 @@
 - id: LL-XXXX-a
-  title: "The operator π_{n,ρ}(f) = ∫ f(g) π_{n,ρ}(g) dg of the principal series of SL(2,ℂ) is the kernel operator with kernel psKernel, and the Plancherel formula holds for its kernel: Σ_n ∫ (n² + 4ρ²) ‖K‖²_{L²(ℂ²)} dρ = 16π⁴ ∫ |f|² dg"
+  title: "The operator π_{n,ρ}(f) = ∫ f(g) π_{n,ρ}(g) dg of the principal series of SL(2,ℂ) is the kernel operator with the kernel psKernel (PlancherelKernel.lean), and the Plancherel formula holds for its kernel: Σ_n ∫ (n² + 4ρ²) ‖K‖²_{L²(ℂ²)} dρ = 16π⁴ ∫ |f|² dg"
   area: Lorentz
   file: Lightlike/Lorentz/PlancherelOperator.lean
-  decls: [Lightlike.Lorentz.piOp, Lightlike.Lorentz.psKernel, Lightlike.Lorentz.plancherel_piOp]
+  decls: [Lightlike.Lorentz.piOp, Lightlike.Lorentz.plancherel_piOp]
   status: proven
   tier: established
   source:
