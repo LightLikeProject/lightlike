@@ -6020,3 +6020,14 @@
   review: kernel-checked
   note: "Comparison pending (a textbook value, no location cited). The Bell state is Physlib's Ket.MES (Fin 2), the maximally entangled state (|00> + |11>)/sqrt 2: a pure state has zero entropy and its reduced state is maximally mixed, with entropy log 2. bell_conditional_entropy_neg is qConditionalEnt < 0, which is S(AB) - S(B) = -log 2; with S(B) = S(A) by symmetry this is S(AB) < S(A). These are the trust checks of strong subadditivity (the previous entry)."
   since: unreleased
+- id: LL-0461
+  title: "The standard models of closed surfaces are fixed by orientability and Euler characteristic: the sphere with g handles has χ = 2 − 2g, the connected sum of k + 1 projective planes has χ = 1 − k, and two standard models of the same orientability and the same Euler characteristic are equal"
+  area: Surfaces
+  file: Lightlike/Surfaces/Classify.lean
+  decls: [Lightlike.Surfaces.stdModel_eq_of_inv, Lightlike.Surfaces.euler2_stdModel_true, Lightlike.Surfaces.euler2_stdModel_false]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location for this entry. The statements are the classical Euler characteristics of the orientable surface of genus g (2 - 2g) and of the connected sum of k + 1 projective planes (1 - k), here for the library's combinatorial models stdModel true g and stdModel false k (a sphere with g handles from the 9-vertex torus piece T9, and k + 1 copies of the 6-vertex projective plane P6), with euler2 the Euler characteristic of the combinatorial complex. stdModel_eq_of_inv says that b = b' and n = n' follow from equal orientability and equal Euler characteristic; it is the injectivity half of LL-0144 (classify_unique). The two Euler-characteristic theorems are in Models.lean, stdModel_eq_of_inv in Classify.lean (the entry file is the one of the main statement). No hypotheses beyond those stated in the Lean theorems; no unproved hypothesis."
+  since: unreleased
