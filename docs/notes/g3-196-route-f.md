@@ -138,6 +138,18 @@ Next: prove this value (an induction on `b` through the Jones–Wenzl recursion;
 close because `P'_b` does not commute with the new generator, so it needs the partial-trace identity of the vertex),
 then the fusion identity `p_a p_b = Σ_c (Δ_c/θ(a,b,c)) V V'`, then recoupling and the pentagon.
 
+## F3 status (25 Nov 2026): the fusion identity is proved (Lean, `TemperleyLieb/FusionIdentity.lean`)
+
+`fusion_identity`: for `a, b ≥ 1`, `d_j ≠ 0` and `q^{2j} ≠ 1` for `1 ≤ j ≤ a + b + 1` (characteristic zero),
+`Q(a,b) = Σ_{i ≤ min(a,b)} E_i` with `E_i = κ_i⁻¹ V_i W_i` the channel idempotents (`W_i V_i = κ_i p`, `κ_i = kapRec`
+non-zero, `E_i E_j = 0` from `channel_orth`). Proof by rank count (MEASURED in Lean, no `sorry`, axioms
+`propext, Classical.choice, Quot.sound`): in the window of the first `a + b` strands, `rank Q ≤ (a+1)(b+1)` (sorted
+coordinates of the common kernel of the block generators, `Rank.lean`) and `rank E_i ≥ a + b - 2i + 1` (the
+`q`-Dicke vectors `Σ q^{pos σ}|σ⟩` are independent, fixed by `p`, and sent to independent vectors by `V_i`); the
+dimensions sum to `(a+1)(b+1)`, so `complete_of_rank` (a trace argument) gives equality on the window, and tail
+equivariance (`Eqv`, `iota`) extends it to the whole model. Next: recoupling coefficients, the abstract pentagon,
+and the F4 identification with `qSixJ`.
+
 ## Decision
 
 No route in this note is a row-sized step. The two structural routes (F, E) are milestone-sized
