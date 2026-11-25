@@ -44,7 +44,7 @@ git = "https://github.com/LightLikeProject/lightlike"
 rev = "v0.3.0"
 ```
 
-Lean and Mathlib `v4.35.0`, Physlib at `cdfa609`. To build from source, see [Building](CONTRIBUTING.md#building).
+Lean and Mathlib `v4.35.0`, Physlib at `cdfa609`. A full build from source needs about 38 GB of disk (`.lake/build` about 24 GB, `.lake/packages` about 14 GB); see [Building](CONTRIBUTING.md#building).
 
 ## More
 
