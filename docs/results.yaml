@@ -5610,3 +5610,16 @@
   review: kernel-checked
   note: "Trust checks that the dihedral angle in the definition of the deficit is the right one. Using the exterior angle pi - dihedral on the six Kuhn tetrahedra around the cube diagonal gives -2 pi (cube_exterior_fails); using the law-of-cosines face angle at a vertex instead of the angle between faces gives 6 (pi/4) and deficit pi/2 (cube_faceAngle_fails); the correct deficit is 0 (LL-0425). The wrong formulas are the ones defined in the test file, not formulas of a source."
   since: unreleased
+- id: LL-0428
+  title: A gauge set of the 4D Ooguri model has E - V + 1 triangles - if the vertices, the edges and the triangles of T form a collapsible 2-complex, then the number of triangles of T is the number of edges minus the number of vertices plus one
+  area: SpinFoam
+  file: Lightlike/SpinFoam/Ooguri.lean
+  decls: [Lightlike.SpinFoam.IsGauge.card_eq]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: freidel-louapre-2003, location: "Section IV", check: "GAUGE SYMMETRIES AND DIVERGENCES"}
+  review: kernel-checked
+  note: "Comparison pending (the cited section treats the Ponzano-Regge gauge fixing with a maximal tree; the 4D gauge rule IsGauge is this library's proposal for its analogue, not a construction from the literature). The count is the Euler characteristic of the collapsible complex gaugeCx K T, which is 1 (Collapsible.euler_eq), with the vertices counted with sign +, the edges -, the triangles +, so #T - #edges + #vertices = 1. The value E - V + 1 is the degree of divergence that Bonzom and Smerlak find for a triangulated 4-sphere (comparison pending; not read). Non-vacuity: gauge sets exist (isGauge_starK0, isGauge_T14, with ten and fourteen triangles; these are checked in the kernel in Tests.lean). The count for a given complex says nothing on whether the gauge-fixed state sum is finite."
+  since: unreleased
