@@ -419,6 +419,9 @@ instance finiteDimensional_Win (N : ℕ) : FiniteDimensional k (Win k N) := by
   haveI : Finite (tailZero N) := (tailZero_finite N).to_subtype
   exact Module.Finite.equiv (Finsupp.supportedEquivFinsupp (M := k) (R := k) (tailZero N)).symm
 
+/-- The window is a free module. -/
+instance free_Win (N : ℕ) : Module.Free k (Win k N) := Module.Free.of_divisionRing k (Win k N)
+
 /-- Restriction of an operator that preserves the window. -/
 noncomputable def resW {N : ℕ} (T : Module.End k (ModelSpace k)) (hT : ∀ v ∈ Win k N, T v ∈ Win k N) :
     Module.End k (Win k N) := LinearMap.restrict T hT

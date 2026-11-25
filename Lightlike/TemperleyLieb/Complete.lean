@@ -75,9 +75,21 @@ theorem trace_conj {P Q : Type*} [AddCommGroup P] [Module K P] [Module.Free K P]
 theorem finrank_conj {P Q : Type*} [AddCommGroup P] [Module K P] [Module.Free K P] [Module.Finite K P]
     [AddCommGroup Q] [Module K Q] [Module.Free K Q] [Module.Finite K Q]
     (Vw : P →ₗ[K] Q) (Ww : Q →ₗ[K] P) (Ew Pp : P →ₗ[K] P) (κ : K) (hκ : κ ≠ 0)
-    (hWV : Ww ∘ₗ Vw = κ • Pp) (hEP : Ew ∘ₗ Pp = Ew) (hE : IsIdempotentElem Ew)
-    (hT : IsIdempotentElem (κ⁻¹ • (Vw ∘ₗ Ew ∘ₗ Ww))) :
+    (hWV : Ww ∘ₗ Vw = κ • Pp) (hEP : Ew ∘ₗ Pp = Ew) (hPE : Pp ∘ₗ Ew = Ew) (hE : IsIdempotentElem Ew) :
     finrank K (range (κ⁻¹ • (Vw ∘ₗ Ew ∘ₗ Ww))) = finrank K (range Ew) := by
+  have hT : IsIdempotentElem (κ⁻¹ • (Vw ∘ₗ Ew ∘ₗ Ww)) := by
+    show (κ⁻¹ • (Vw ∘ₗ Ew ∘ₗ Ww)) * (κ⁻¹ • (Vw ∘ₗ Ew ∘ₗ Ww)) = κ⁻¹ • (Vw ∘ₗ Ew ∘ₗ Ww)
+    have hEE : Ew ∘ₗ Ew = Ew := hE.eq
+    have key : (Vw ∘ₗ Ew ∘ₗ Ww) * (Vw ∘ₗ Ew ∘ₗ Ww) = κ • (Vw ∘ₗ Ew ∘ₗ Ww) := by
+      show (Vw ∘ₗ Ew ∘ₗ Ww) ∘ₗ (Vw ∘ₗ Ew ∘ₗ Ww) = κ • (Vw ∘ₗ Ew ∘ₗ Ww)
+      calc (Vw ∘ₗ Ew ∘ₗ Ww) ∘ₗ (Vw ∘ₗ Ew ∘ₗ Ww)
+          = Vw ∘ₗ Ew ∘ₗ (Ww ∘ₗ Vw) ∘ₗ Ew ∘ₗ Ww := by
+            simp only [LinearMap.comp_assoc]
+        _ = Vw ∘ₗ Ew ∘ₗ (κ • Pp) ∘ₗ Ew ∘ₗ Ww := by rw [hWV]
+        _ = κ • (Vw ∘ₗ (Ew ∘ₗ Pp ∘ₗ Ew) ∘ₗ Ww) := by
+            simp only [LinearMap.smul_comp, LinearMap.comp_smul, LinearMap.comp_assoc]
+        _ = κ • (Vw ∘ₗ Ew ∘ₗ Ww) := by rw [hPE, hEE]
+    rw [smul_mul_assoc, mul_smul_comm, smul_smul, key, smul_smul, mul_assoc, inv_mul_cancel₀ hκ, mul_one]
   have h := trace_conj Vw Ww Ew Pp κ hκ hWV hEP
   rw [trace_idempotent hT, trace_idempotent hE] at h
   exact_mod_cast h

@@ -268,4 +268,58 @@ theorem treeL_maps (q : kˣ) {a b c e d : ℕ} (hea : e ≤ a) (heb : e ≤ b) (
     (by rw [show a + b + c - 2 * e = (a + b - 2 * e) + c by omega]; exact h2)
   simpa [Module.End.mul_apply] using h3
 
+/-- **The rank of the first-bracketing tree idempotent** is `D + 1`, `D = a + b - 2e + c - 2d`. -/
+theorem finrank_range_treeL [CharZero k] (q : kˣ) (a b c e d : ℕ) (hea : e ≤ a) (heb : e ≤ b) (hdc : d ≤ c)
+    (hdA : d ≤ a + b - 2 * e)
+    (hd : ∀ j, j ≤ a + b + c → chebD (loopVal q) j ≠ 0)
+    (hq2 : ∀ j, 1 ≤ j → j ≤ a + b + c + 1 → (q : k) ^ (2 * j) ≠ 1) :
+    Module.finrank k (LinearMap.range (resW (N := a + b + c) (treeL q a b c e d : Module.End k (ModelSpace k))
+      (treeL_maps q hea heb hdc hdA hd))) = a + b - 2 * e + c - 2 * d + 1 := by
+  set A := a + b - 2 * e with hA
+  have hdAc : ∀ j, j ≤ A + c → chebD (loopVal q) j ≠ 0 := fun j hj => hd j (by omega)
+  have hκ := kapRec_ne (k := k) q e a b hea heb (fun j h1 h2 => hq2 j h1 (by omega))
+  have hNA : a + b + c - 2 * e = A + c := by omega
+  have hVmap : ∀ x ∈ Win k (A + c), (Vop q a b e : Module.End k (ModelSpace k)) x ∈ Win k (a + b + c) := fun x hx =>
+    Vop_maps_gen q (a := a) (b := b) (i := e) (M := a + b + c) hea heb (by omega) x (by rw [hNA]; exact hx)
+  have hWmap : ∀ x ∈ Win k (a + b + c), (Wop q a b e : Module.End k (ModelSpace k)) x ∈ Win k (A + c) := fun x hx => by
+    have := Wop_maps_gen q (a := a) (b := b) (i := e) (M := a + b + c) hea heb (by omega) x hx
+    rwa [hNA] at this
+  let Vw : Win k (A + c) →ₗ[k] Win k (a + b + c) := LinearMap.restrict (Vop q a b e) hVmap
+  let Ww : Win k (a + b + c) →ₗ[k] Win k (A + c) := LinearMap.restrict (Wop q a b e) hWmap
+  let Ew : Module.End k (Win k (A + c)) := resW (N := A + c) (Eop q A c d : Module.End k (ModelSpace k))
+    (Eop_maps q hdA hdc)
+  let Pp : Module.End k (Win k (A + c)) := resW (N := A + c) (jwAt q 0 A : Module.End k (ModelSpace k))
+    (fun v hv => jwAt_preserves q (s := 0) (n := A) (N := A + c) (by omega) v hv)
+  have hWV : Ww ∘ₗ Vw = (kapRec q a b e) • Pp := by
+    refine LinearMap.ext fun x => Subtype.ext ?_
+    have := congrArg (fun T : Module.End k (ModelSpace k) => T (x : ModelSpace k)) (Wop_mul_Vop q a b e hea heb
+      (fun j hj => hd j (by omega)))
+    simpa [Vw, Ww, Pp, resW_apply] using this
+  have hEP : Ew ∘ₗ Pp = Ew := by
+    refine LinearMap.ext fun x => Subtype.ext ?_
+    have := congrArg (fun T : Module.End k (ModelSpace k) => T (x : ModelSpace k))
+      (Eop_mul_jwAt (k := k) q A c hdAc d)
+    simpa [Ew, Pp, resW_apply] using this
+  have hE : IsIdempotentElem Ew := by
+    show Ew * Ew = Ew
+    simp only [Ew]
+    rw [resW_mul]
+    exact resW_congr (Eop_idem q A c hdAc hdA hdc (fun j h1 h2 => hq2 j h1 (by omega))) _ _
+  have hTeq : (kapRec q a b e)⁻¹ • (Vw ∘ₗ Ew ∘ₗ Ww) =
+      resW (N := a + b + c) (treeL q a b c e d : Module.End k (ModelSpace k)) (treeL_maps q hea heb hdc hdA hd) := by
+    refine LinearMap.ext fun x => Subtype.ext ?_
+    rw [resW_apply, treeL_eq q a b c e d hdAc]
+    simp [Vw, Ww, Ew, resW_apply, hA]
+  have hPE : Pp ∘ₗ Ew = Ew := by
+    refine LinearMap.ext fun x => Subtype.ext ?_
+    have := congrArg (fun T : Module.End k (ModelSpace k) => T (x : ModelSpace k))
+      (jwAt_mul_Eop (k := k) q A c hdAc d)
+    simpa [Ew, Pp, resW_apply] using this
+  have h1 := finrank_conj (K := k) (P := Win k (A + c)) (Q := Win k (a + b + c)) Vw Ww Ew Pp (kapRec q a b e) hκ hWV hEP hPE hE
+  rw [hTeq] at h1
+  rw [h1]
+  have h2 := finrank_range_Eop_eq (k := k) q A c hdAc (fun j h1 h2 => hq2 j h1 (by omega))
+    ⟨d, by have := le_min hdA hdc; omega⟩
+  simpa using h2
+
 end Lightlike.TemperleyLieb
