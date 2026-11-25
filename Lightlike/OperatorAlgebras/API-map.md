@@ -128,6 +128,11 @@ scalar anticommutators with the annihilation parts) is the Pfaffian-type recursi
 expectation of a product of linear combinations of the transformed operators b, b* is the Pfaffian
 recursion of the pairings, whose two-point value is the sum of u_i v'_i [130].
 
+Strong subadditivity of the von Neumann entropy, `S(A|BC) ≤ S(A|B)` for every density matrix on three finite
+systems, is stated here as a wrapper of Physlib's theorem; the proof is in Physlib [132]. The Bell state has
+`S(AB) = 0` and `S(A) = log 2`, so its conditional entropy is `-log 2` and the classical inequality
+`S(AB) ≥ S(A)` fails for it [132].
+
 ## Lean References
 
 1. Lightlike/OperatorAlgebras/UnitaryGroup.lean - `OperatorAlgebras.UnitaryGroup`,
@@ -527,6 +532,8 @@ recursion of the pairings, whose two-point value is the sum of u_i v'_i [130].
      `OperatorAlgebras.carField_anticomm`, `OperatorAlgebras.car_wick`, `OperatorAlgebras.car_wick_two`
 131. Lightlike/OperatorAlgebras/StoneMomentum/MomentumCapstone.lean -
      `OperatorAlgebras.StoneMomentum.stone_theorem`
+132. Lightlike/OperatorAlgebras/EntropyBell.lean - `OperatorAlgebras.strong_subadditivity`,
+     `OperatorAlgebras.bell_entropies`, `OperatorAlgebras.bell_conditional_entropy_neg`
 
 ## References
 

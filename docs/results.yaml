@@ -5998,3 +5998,25 @@
   review: kernel-checked
   note: "Comparison pending (the cited chapters were not read for this entry). Doubled spins a, b, c; couplings via Physlib's Clebsch-Gordan coefficients (Condon-Shortley phase) and the group-equivariant matrices cgMatrix of Spin4/CGBridge.lean. sum_cg_matrix: for delta, delta' <= J the sum over the three product indices of coupleLeft_(alpha beta gamma, delta) coupleRight_(alpha beta gamma, delta') is delta_(delta delta') (-1)^((a+b+c+J)/2) sqrt((e+1)(f+1)) {a b e; c J f}, i.e. coupleLeft^H coupleRight = lambda 1, by Schur's lemma for the spin-J representation and the trace identity sum_cg_overlap (the Hilbert-Schmidt form). The sign convention (Physlib's Clebsch-Gordan phases) is not compared with a source. The 6j symbol is Physlib's sixJSym, not redefined; the recoupling at the level of invariant tensors is Recoupling.fourJ_eq_sum_fourRecoupling."
   since: unreleased
+- id: LL-0459
+  title: Strong subadditivity of the von Neumann entropy for every density matrix on a finite-dimensional tripartite system, in the form S(A|BC) <= S(A|B), equivalently S(AB) + S(BC) >= S(B) + S(ABC)
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/EntropyBell.lean
+  decls: [Lightlike.OperatorAlgebras.strong_subadditivity]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: the original is E. H. Lieb and M. B. Ruskai, J. Math. Phys. 14 (1973) 1938, doi 10.1063/1.1666274, not read; it has no arXiv text, so the source registry cannot verify a location in it and the entry has no registered source. The Lean statement is a wrapper of Physlib's qConditionalEnt_strong_subadditivity (QuantumInfo.Entropy.SSA): the proof is in Physlib, which is a dependency, not in this library. States are Physlib's MState on a product of three finite types (Fintype, DecidableEq); qConditionalEnt rho = S(AB) - S(B) in the convention of Physlib, so the inequality reads S(A|BC) <= S(A|B) with the second state the reduced state on A x B (assoc'.traceRight). The equivalent form S(AB) + S(BC) >= S(B) + S(ABC) is the unfolded inequality and is not stated separately here."
+  since: unreleased
+- id: LL-0460
+  title: The Bell state has von Neumann entropy S(AB) = 0 and S(A) = log 2, and its conditional entropy S(A|B) = -log 2 is negative, so the classical inequality S(AB) >= S(A) fails
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/EntropyBell.lean
+  decls: [Lightlike.OperatorAlgebras.bell_entropies, Lightlike.OperatorAlgebras.bell_conditional_entropy_neg]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (a textbook value, no location cited). The Bell state is Physlib's Ket.MES (Fin 2), the maximally entangled state (|00> + |11>)/sqrt 2: a pure state has zero entropy and its reduced state is maximally mixed, with entropy log 2. bell_conditional_entropy_neg is qConditionalEnt < 0, which is S(AB) - S(B) = -log 2; with S(B) = S(A) by symmetry this is S(AB) < S(A). These are the trust checks of strong subadditivity (the previous entry)."
+  since: unreleased
