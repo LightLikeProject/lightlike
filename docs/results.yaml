@@ -5116,15 +5116,26 @@
   note: "Comparison pending (no source for the fermionic Wick theorem was read). Instance of the abstract recursion of FermionWick.lean (the previous entry): for a vector killed by all the transformed annihilation operators, the fields sum_j u_j b_j + sum_j v_j b_j^* are split fields, the anticommutator of the annihilation part with a field is the scalar sum u_j v'_j (the CAR of the transformed operators, isCARPairs_bog), and car_wick gives <Psi, x_1 ... x_n Psi> = <Psi, Psi> wick [x_1, ..., x_n] for every n; car_wick_two is n = 2. The fields a_j, c_j are such combinations by the inverse transformation (bog_inv), so the statement covers them, but this is not stated separately. WEAKER: finitely many modes (the infinite-mode vacuum and Shale for fermions are not built); no explicit n = 4 expansion check (the recursion is proved for all n); mixed quasi-free states are not covered."
   since: unreleased
 - id: LL-XXXX-a
-  title: "Minkowski space is flat: in its chart the constant metric eta is a coordinate metric on all of R^n with vanishing Riemann tensor, and the standard basis of R^n is a Lorentz frame for eta"
+  title: "Minkowski space is flat: in its chart the constant metric eta is a coordinate metric on all of R^n with vanishing Riemann tensor"
   area: Spacetime
   file: Lightlike/Spacetime/Curvature.lean
-  decls: [Lightlike.minkowski_flat, Lightlike.minkowskiForm_isLorentzian]
+  decls: [Lightlike.minkowski_flat]
   status: proven
   tier: established
   source: exploratory
   review: kernel-checked
-  note: "Comparison pending (no source was read at a cited location). Flatness is the vanishing of the coordinate Riemann tensor of the constant metric eta on every point of R^n (IsFlatOn on Set.univ), for every dimension n; the second declaration is the Lorentz frame statement (IsLorentzianForm n) in Minkowski.lean."
+  note: "Comparison pending (no source was read at a cited location). Flatness is the vanishing of the coordinate Riemann tensor of the constant metric eta on every point of R^n (IsFlatOn on Set.univ), for every dimension n."
+  since: unreleased
+- id: LL-XXXX-d
+  title: "The standard basis of R^n is a Lorentz frame for the Minkowski form eta, in every dimension"
+  area: Spacetime
+  file: Lightlike/Spacetime/Minkowski.lean
+  decls: [Lightlike.minkowskiForm_isLorentzian]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source was read at a cited location). The statement is IsLorentzianForm n (minkowskiForm n): the basis Pi.basisFun satisfies B (e i) (e j) = eta n i j (IsLorentzianForm n B), the definition of a Lorentzian form of dimension n."
   since: unreleased
 - id: LL-XXXX-b
   title: "The lowered coordinate Riemann tensor is antisymmetric in its last index pair, and satisfies the lowered first Bianchi identity R_{rho sigma mu nu} + R_{rho mu nu sigma} + R_{rho nu sigma mu} = 0 on the domain of a coordinate metric"
