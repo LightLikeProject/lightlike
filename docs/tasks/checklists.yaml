@@ -976,8 +976,7 @@ milestones:
       - id: m4
         kind: main
         text: "(S1)* is isometrically isomorphic to B(H) (trace pairing), as a lockable statement"
-        decls: []
-        hint: "Parts exist but no single statement and no lock task: Lightlike.OperatorAlgebras.TraceClass.TraceClass.tracePairingLinearIsometry (isometry) and Lightlike.OperatorAlgebras.TraceClass.TraceClass.tracePairing_surjective_concrete (surjective)."
+        decls: [Lightlike.OperatorAlgebras.TraceClass.TraceClass.traceClass_dual_eq_bounded, Lightlike.OperatorAlgebras.TraceClass.TraceClass.tracePairingLinearIsometryEquiv]
       - id: p1
         kind: piece
         text: "S1 and S2 are defined and closed under sums and scalar multiples, with a norm bound for the ideal property"

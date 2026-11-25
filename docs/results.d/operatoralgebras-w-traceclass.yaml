@@ -1,0 +1,88 @@
+- id: LL-XXXX-e
+  title: "The trace-class operators form a two-sided ideal of the bounded operators, are closed under sums, and a product of two Hilbert-Schmidt operators is trace class"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/TraceClass/GeneralProduct.lean
+  decls: [Lightlike.OperatorAlgebras.TraceClass.isTraceClass_mul_mul, Lightlike.OperatorAlgebras.TraceClass.isTraceClass_mul_of_isHilbertSchmidt, Lightlike.OperatorAlgebras.TraceClass.isTraceClass_add]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "A T B is trace class for trace-class T and bounded A, B; R S is trace class for Hilbert-Schmidt R, S; T + T' is trace class for trace-class T, T'. The textbook statements are in Reed-Simon, Methods of Modern Mathematical Physics I, Section VI.6, and Teschl, Mathematical Methods in Quantum Mechanics, Section 6.3; they were not read at a theorem for this entry, and the source registry verifies no location in them for these statements, so the entry has no registered source and the comparison is pending. Every theorem holds on an arbitrary complex Hilbert space (no separability). IsTraceClass T: the diagonal sum of the positive part |T| converges in a Hilbert basis; IsHilbertSchmidt: the square sum of the norms of T on a Hilbert basis converges."
+  since: unreleased
+- id: LL-XXXX-f
+  title: "The Hilbert-Schmidt operators are closed under sums and scalar multiples and form a two-sided ideal of the bounded operators"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/TraceClass/HilbertSchmidt.lean
+  decls: [Lightlike.OperatorAlgebras.TraceClass.HilbertSchmidt.isHilbertSchmidt_add, Lightlike.OperatorAlgebras.TraceClass.HilbertSchmidt.isHilbertSchmidt_smul, Lightlike.OperatorAlgebras.TraceClass.HilbertSchmidt.isHilbertSchmidt_mul_left, Lightlike.OperatorAlgebras.TraceClass.HilbertSchmidt.isHilbertSchmidt_mul_right]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "R + S, c S, U S and S U are Hilbert-Schmidt for Hilbert-Schmidt R, S, complex c and bounded U (the left and right ideal properties). The textbook statements are in Reed-Simon, Methods of Modern Mathematical Physics I, Section VI.6, and Teschl, Mathematical Methods in Quantum Mechanics, Section 6.3; they were not read at a theorem for this entry, and the source registry verifies no location in them for these statements, so the entry has no registered source and the comparison is pending. Every theorem holds on an arbitrary complex Hilbert space (no separability). IsTraceClass T: the diagonal sum of the positive part |T| converges in a Hilbert basis; IsHilbertSchmidt: the square sum of the norms of T on a Hilbert basis converges."
+  since: unreleased
+- id: LL-XXXX-g
+  title: "The trace-class operators are closed under scalar multiplication"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/TraceClass/Banach.lean
+  decls: [Lightlike.OperatorAlgebras.TraceClass.isTraceClass_smul]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "c T is trace class for trace-class T and complex c. The textbook statements are in Reed-Simon, Methods of Modern Mathematical Physics I, Section VI.6, and Teschl, Mathematical Methods in Quantum Mechanics, Section 6.3; they were not read at a theorem for this entry, and the source registry verifies no location in them for these statements, so the entry has no registered source and the comparison is pending. Every theorem holds on an arbitrary complex Hilbert space (no separability). IsTraceClass T: the diagonal sum of the positive part |T| converges in a Hilbert basis; IsHilbertSchmidt: the square sum of the norms of T on a Hilbert basis converges."
+  since: unreleased
+- id: LL-XXXX-h
+  title: "The two-sided ideal estimate for the trace norm - the trace norm of A T B is at most the norm of A times the trace norm of T times the norm of B"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/TraceClass/IdealNorm.lean
+  decls: [Lightlike.OperatorAlgebras.TraceClass.traceNorm_mul_mul_le]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "For trace-class T and bounded A, B with A T B trace class (the hypothesis hABT is the ideal property of the first entry), traceNorm (A T B) <= ||A|| traceNorm T ||B||. The textbook statements are in Reed-Simon, Methods of Modern Mathematical Physics I, Section VI.6, and Teschl, Mathematical Methods in Quantum Mechanics, Section 6.3; they were not read at a theorem for this entry, and the source registry verifies no location in them for these statements, so the entry has no registered source and the comparison is pending. Every theorem holds on an arbitrary complex Hilbert space (no separability). IsTraceClass T: the diagonal sum of the positive part |T| converges in a Hilbert basis; IsHilbertSchmidt: the square sum of the norms of T on a Hilbert basis converges."
+  since: unreleased
+- id: LL-XXXX-i
+  title: "The trace of a trace-class operator is the diagonal sum in every Hilbert basis"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/TraceClass/GeneralIdeal.lean
+  decls: [Lightlike.OperatorAlgebras.TraceClass.trace_eq_of_hilbertBasis]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "For trace-class T and every Hilbert basis b the trace of T is the sum over b of the inner products of b i with T (b i); the trace is therefore independent of the basis. No self-adjointness or positivity of T is assumed. The textbook statements are in Reed-Simon, Methods of Modern Mathematical Physics I, Section VI.6, and Teschl, Mathematical Methods in Quantum Mechanics, Section 6.3; they were not read at a theorem for this entry, and the source registry verifies no location in them for these statements, so the entry has no registered source and the comparison is pending. Every theorem holds on an arbitrary complex Hilbert space (no separability). IsTraceClass T: the diagonal sum of the positive part |T| converges in a Hilbert basis; IsHilbertSchmidt: the square sum of the norms of T on a Hilbert basis converges."
+  since: unreleased
+- id: LL-XXXX-j
+  title: "The trace is additive, homogeneous and cyclic - tr(T + T') = tr T + tr T', tr(c T) = c tr T, and tr(A T) = tr(T A) for bounded A and trace-class T"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/TraceClass/TraceAlgebra.lean
+  decls: [Lightlike.OperatorAlgebras.TraceClass.trace_add, Lightlike.OperatorAlgebras.TraceClass.trace_smul, Lightlike.OperatorAlgebras.TraceClass.trace_mul_cycle]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "The trace-class proofs for the sum, the scaled operator and the products A T, T A are the ones of the ideal entries. Cyclicity is stated across a bounded factor and a trace-class factor, which includes tr(AB) = tr(BA) for rank-one A, B. The textbook statements are in Reed-Simon, Methods of Modern Mathematical Physics I, Section VI.6, and Teschl, Mathematical Methods in Quantum Mechanics, Section 6.3; they were not read at a theorem for this entry, and the source registry verifies no location in them for these statements, so the entry has no registered source and the comparison is pending. Every theorem holds on an arbitrary complex Hilbert space (no separability). IsTraceClass T: the diagonal sum of the positive part |T| converges in a Hilbert basis; IsHilbertSchmidt: the square sum of the norms of T on a Hilbert basis converges."
+  since: unreleased
+- id: LL-XXXX-k
+  title: "The dual of the compact operators is the trace class - every continuous functional on the compact operators is the trace pairing with a unique trace-class operator of trace norm equal to the norm of the functional"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/CompactDualIso.lean
+  decls: [Lightlike.OperatorAlgebras.compact_dual_eq_traceClass_proof]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "K* is isometrically S1 (Reed-Simon I, Theorem VI.26, not read at the theorem). The functional gives a bounded sesquilinear form on rank-one operators, the Riesz theorem gives a bounded operator, and its polar decomposition shows it is trace class with the norm of the functional. The locked statement of the proof task is compact_dual_eq_traceClass (Tasks/OP/T_OP6_P1.lean). The source registry verifies no location in Reed-Simon for this statement, so the entry has no registered source and the comparison is pending."
+  since: unreleased
+- id: LL-XXXX-l
+  title: "The dual of the trace class is the bounded operators - every continuous functional on the trace-class operators is the trace pairing with a unique bounded operator of norm equal to the norm of the functional, and the trace pairing is an isometric isomorphism from the bounded operators onto the dual of the trace class"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/TraceClass/DualOfTraceClass.lean
+  decls: [Lightlike.OperatorAlgebras.TraceClass.TraceClass.tracePairingLinearIsometryEquiv, Lightlike.OperatorAlgebras.TraceClass.TraceClass.traceClass_dual_eq_bounded]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "(S1)* is isometrically B(H) (Reed-Simon I, Theorem VI.26, not read at the theorem), on every complex Hilbert space. The isometry is norm_tracePairing (TracePairingNorm.lean) and the surjectivity is tracePairing_surjective_concrete (TracePairingSurjectivity.lean, through the Riesz theorem and the density of the rank-one operators), combined here into a single statement. The source registry verifies no location for this statement, so the entry has no registered source and the comparison is pending."
+  since: unreleased
