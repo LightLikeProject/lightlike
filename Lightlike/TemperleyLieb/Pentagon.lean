@@ -463,4 +463,36 @@ theorem pair_TD_path2 [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) (a b c d e�
     exact Finset.sum_eq_zero fun g' _ => by rw [if_neg (fun hh => hne hh.symm)]
   · intro hh; exact absurd (Finset.mem_range.mpr (by have := h₀.1; have := min_le_left a b; omega)) hh
 
+/-- The normalisation operator is non-zero. -/
+theorem Nrm_ne_zero [CharZero k] (q : kˣ) (a b c d e₀ d₀ g₀ : ℕ)
+    (hq2 : ∀ x, 1 ≤ x → x ≤ a + b + c + d + 1 → (q : k) ^ (2 * x) ≠ 1) (h₀ : ValidA a b c d e₀ d₀ g₀) :
+    Nrm (k := k) q a b c d e₀ d₀ g₀ ≠ 0 := by
+  obtain ⟨h0a, h0b, h0c, h0d⟩ := h₀
+  have k1 := kapRec_ne (k := k) q e₀ a b (h0a.trans (min_le_left _ _)) (h0a.trans (min_le_right _ _))
+    (fun x h1 h2 => hq2 x h1 (by omega))
+  have k2 := kapRec_ne (k := k) q d₀ (a + b - 2 * e₀) c (h0b.trans (min_le_left _ _)) (h0b.trans (min_le_right _ _))
+    (fun x h1 h2 => hq2 x h1 (by omega))
+  have k3 := kapRec_ne (k := k) q g₀ (a + b - 2 * e₀ + c - 2 * d₀) d h0c h0d
+    (fun x h1 h2 => hq2 x h1 (by omega))
+  unfold Nrm
+  intro h
+  exact (smul_eq_zero.mp h).elim (fun hh => mul_ne_zero (mul_ne_zero k1 k2) k3 hh) (jwAt_ne_zero q _)
+
+/-- **The pentagon identity for the `F`-coefficients `Fc`.** -/
+theorem pentagon [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) (a b c d e₀ d₀ g₀ j m i : ℕ)
+    (ha : 1 ≤ a) (hb : 1 ≤ b) (hc : 1 ≤ c)
+    (hd : ∀ x, x ≤ a + b + c + d → chebD (loopVal q) x ≠ 0)
+    (hq2 : ∀ x, 1 ≤ x → x ≤ a + b + c + d + 1 → (q : k) ^ (2 * x) ≠ 1)
+    (hjc : j ≤ c) (hjd : j ≤ d) (hmb : m ≤ b) (hmz : m ≤ c + d - 2 * j) (hia : i ≤ a)
+    (hiz : i ≤ b + (c + d - 2 * j) - 2 * m) (h₀ : ValidA a b c d e₀ d₀ g₀) :
+    ∑ f ∈ Finset.range (b + 1), ∑ h ∈ Finset.range (d + 1), ∑ d' ∈ Finset.range (a + 1),
+        Fc q b c d f h j m * (Fc q a (b + c - 2 * f) d d' g₀ h i * Fc q a b c e₀ d₀ f d') =
+      ∑ g' ∈ Finset.range (c + d - 2 * j + 1),
+        Fc q a b (c + d - 2 * j) e₀ g' m i * Fc q (a + b - 2 * e₀) c d d₀ g₀ j g' := by
+  have h1 := pair_TD_path1 q hδ a b c d e₀ d₀ g₀ j m i ha hb hd hq2 hjc hjd hmb hmz hia hiz h₀
+  have h2 := pair_TD_path2 q hδ a b c d e₀ d₀ g₀ j m i (by omega) hc hd hq2 hjc hjd hmb hmz hia hiz h₀
+  rw [h1] at h2
+  have hN := Nrm_ne_zero (k := k) q a b c d e₀ d₀ g₀ hq2 h₀
+  exact smul_left_cancel_of_ne_zero hN h2
+
 end Lightlike.TemperleyLieb

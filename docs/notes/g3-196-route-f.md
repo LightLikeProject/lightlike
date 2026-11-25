@@ -194,3 +194,14 @@ No route in this note is a row-sized step. The two structural routes (F, E) are 
 at generic parameter together with a numerical check that the tetrahedral net of KL equals
 `qSixJ` for `r = 5, 7` (the library's `scripts/tv_check.py: q6j` against an exact evaluation of the
 net by matching counts); this is the only test of the identification F4 that is cheap.
+
+## Status 25 Nov 2026: (iii) done, (iv) open
+
+(iii) `Lightlike/TemperleyLieb/Pentagon.lean`: five bracketings `TA..TE` of four blocks; each arrow of the
+pentagon is one `expansion_range` (guarded coefficient `Fc`), multiplied by a fixed operator; `Vop_comm_sh`
+and `sh_sh` (in `ShiftComm.lean`) move the vertex past a translated operator. `pentagon` equates the two
+paths by pairing with `ULd4` (orthogonality `ortho4`). It is the pentagon for `Fc`, i.e. for
+`gramCoef / (κ κ)`, in the multiplicity basis.
+
+(iv) open: identify `Fc` with `qSixJ` (the Tet dictionary: truncation at `r`, signs, κ-normalisation), then
+`qBiedenharnElliott_all` follows from `pentagon` after matching the sum shapes. Estimate (PROXY): 800+ lines.
