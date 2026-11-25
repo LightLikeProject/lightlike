@@ -1,0 +1,11 @@
+- id: LL-XXXX
+  title: Karamata's Tauberian theorem for the Laplace transform of a positive measure with a regularly varying power law, ρ[0, t] ~ t^α ℓ(t) / Γ(α + 1)
+  area: Asymptotics
+  file: Lightlike/Asymptotics/Tauberian/Karamata.lean
+  decls: [Lightlike.Tauberian.karamata]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Let ρ be a measure on the real line, finite on compact sets, with no mass on (−∞, 0), such that ∫ e^{−βx} dρ is finite for every β > 0 and ∫ e^{−βx} dρ ~ β^{−α} ℓ(1/β) as β → 0⁺, with α > 0 and ℓ slowly varying (SlowlyVarying: eventually positive and ℓ(c t)/ℓ(t) → 1 for every c > 0). Then the counting function F(t) = ρ[0, t] satisfies F(t) / (t^α ℓ(t)) → 1 / Γ(α + 1) as t → ∞ (karamata). The proof scales the Laplace transform, evaluates polynomials in exp(−x/t) against the measure, extends to continuous functions by Weierstrass approximation with limit functional ∫ e^{−x} k(e^{−x}) x^{α−1}/Γ(α) dx, and sandwiches the indicator of [0, t] between two continuous ramp functions. Trust checks: Lebesgue measure on [0, ∞) (α = 1, ℓ = 1) returns 1 (karamata_lebesgue), and a signed density 1 + x cos x has a Laplace transform with the same asymptotics but a counting function that does not satisfy the conclusion, so positivity of the measure is necessary (not_tendsto_signedCount). This is Karamata's theorem as in Feller, An Introduction to Probability Theory and Its Applications, vol. II, Ch. XIII, and Bingham–Goldie–Teugels, Regular Variation, Thm 1.7.1; neither book is a source of the registry and neither was read at a location: the comparison is pending, so the entry cites no registry source. The converse direction (Abelian) is not proved here."
+  since: unreleased
