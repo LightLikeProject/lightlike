@@ -66,6 +66,15 @@ On the Casimir eigenfunctions `A_{λ,l,r}` (eq. (56)) they satisfy `L^L_{-1} A_{
   for `l ≡ r ≡ 1 (mod 2)`; the latter is the Plancherel formula on `L²(ℍ, y^{1} dμ_ℍ)`-sections and needs its own Mehler-Fock-type
   transform (`ρ coth(πρ)`).
 
+* B′6. (Done, 25 Nov.) The recursion's first step on the radial side, in the variable of the Abel transform: for `F` smooth with
+  compact support and `Q F = -((v² - 1)F'' + 2vF')` (`radialQ`), the half-order Abel operator intertwines `Q`
+  (`halfAbel_casimir`, integration by parts in the Abel variable), hence `𝒜(Q F) = (1/4 - ∂_t²) 𝒜F` and
+  `(Q F)^(ρ) = (1/4 + ρ²) F^(ρ)` (`AbelCasimirTransform.lean`). Polarising `norm_sq_eq_sph` for `F`, `Q F`, `F + Q F` and
+  integrating by parts on `(1, ∞)` gives `π² ∫_{v>1} (v² - 1)|F'|² = ¼ ∫ ρ tanh(πρ)(¼ + ρ²)|F^|²`
+  (`norm_sq_deriv_eq_sph`), that is, in ladder form `π² ∫_{ξ>0} |ladUp 0 0 (F ∘ cosh)|² sinh ξ dξ = ¼ ∫ ρ tanh(πρ)(¼ + ρ²)|F^|²`
+  (`norm_sq_ladUp_zero_eq_sph`): the Plancherel formula of the K-type `(1, 0)` of the radial functions `F ∘ cosh`, with the
+  factor `(l + 1/2)² + ρ²` at `l = 0`. The general step `(l, r) → (l+1, r)` (B′3) and the range statement B′4 are not proved.
+
 ## Step C. Discrete series
 
 * C1. (Matrix coefficient of the lowest weight vector.) For `e_0 = lowestVec n` the coefficient

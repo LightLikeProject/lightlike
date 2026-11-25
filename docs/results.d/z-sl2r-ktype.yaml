@@ -1,0 +1,11 @@
+- id: LL-XXXX-z
+  title: "Route lemma toward the Plancherel formula of SL(2,R): the spherical Plancherel formula for the radial K-types (l, 0), l >= 0: for F smooth with compact support, pi^2 int_{v>1} (v^2-1)^l |F^(l)(v)|^2 dv = (1/4) int_{rho>0} rho tanh(pi rho) prod_{k<l} ((k+1/2)^2 + rho^2) |F^(rho)|^2 drho, where F^ is the spherical transform; the left side is the L^2(sinh) norm of the l-fold ladder image sinh^l F^(l)(cosh) of F o cosh"
+  area: Lorentz
+  file: Lightlike/Lorentz/SL2RPlancherel/KTypePlancherel.lean
+  decls: [Lightlike.Lorentz.SL2RPlancherel.norm_sq_ktype_eq_sph]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "PARTIAL: only the K-types (l, 0) of radial functions F o cosh, proved by induction on l from the spherical Plancherel formula (norm_sq_eq_sph): the step is K_{l+1}(F) = S_l(F, QF) + l(l+1) K_l(F) (Kform_succ, integration by parts against the weight (v^2-1)^l, with (QF)^(l) = -((v^2-1)F^(l+2) + 2(l+1)vF^(l+1) + l(l+1)F^(l))) together with (QF)^ = (1/4 + rho^2) F^ (sphTransformH_radialQ) and polarisation; it multiplies the weight by (l+1/2)^2 + rho^2, the ladder factor of Kitaev arXiv:1711.08169 eq. (60) (read: the factor of the lowering/raising operators on the Casimir eigenfunctions). Comparison with Lang or Knapp pending (source exploratory). The general K-types (l, r), r != 0, the base case (1,1), the discrete series part and the assembly of the Plancherel formula of SL(2,R) are not proved."
+  since: unreleased
