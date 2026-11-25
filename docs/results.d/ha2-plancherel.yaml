@@ -1,0 +1,27 @@
+- id: LL-XXXX-a
+  title: "The operator π_{n,ρ}(f) = ∫ f(g) π_{n,ρ}(g) dg of the principal series of SL(2,ℂ) is the kernel operator with kernel psKernel, and the Plancherel formula holds for its kernel: Σ_n ∫ (n² + 4ρ²) ‖K‖²_{L²(ℂ²)} dρ = 16π⁴ ∫ |f|² dg"
+  area: Lorentz
+  file: Lightlike/Lorentz/PlancherelOperator.lean
+  decls: [Lightlike.Lorentz.piOp, Lightlike.Lorentz.psKernel, Lightlike.Lorentz.plancherel_piOp]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: knapp-1986, location: "Chapter: Chapter II. Representations of SU(2), SL(2, ℝ) and SL(2, ℂ)|10.1515/9781400883974-005"}
+  review: kernel-checked
+  note: "For f the restriction of a smooth compactly supported function F on 2×2 complex arrays, the Bochner integral piOp n ρ f φ = ∫ f(g) π_{n,ρ}(g) φ dg (Haar measure haarC) is, for almost every z, ∫ psKernel n ρ f z w φ(w) d²w, and the double integral of |psKernel|² over (z, z′) is the squared Hilbert–Schmidt norm of π_{n,ρ}(f); the sum over n ∈ ℤ of ∫_ℝ (n² + 4ρ²) of it dρ equals 16π⁴ ∫ |f|² dg (plancherel_piOp, the form used by LL-0134, with the same normalisation of haarC and π_{n,ρ}; the constant is that of LL-0134 and agrees with Rühl as quoted by Simão, arXiv:2405.01360, App. B.1, B.3 and eq. (B.3.1), checked against the thesis text; Rühl's book was not read). The operator formalises the object of Perez–Rovelli (gr-qc/0011037, App. A, (A12)–(A14)); Gelfand–Graev–Vilenkin, Vol. 5, Ch. IV, is the classical source of the kernel and was not consulted. The source location cited here is chapter-level only (Knapp 1986, chapter II): no equation was compared with the constant."
+  since: unreleased
+
+- id: LL-XXXX-b
+  title: "The Plancherel formula of SL(2,ℂ) for radial functions: ∫_G |f|² dg = (2π⁴)⁻¹ ∫_0^∞ ρ² |f̂(ρ)|² dρ, with f̂ the spherical transform"
+  area: Lorentz
+  file: Lightlike/Lorentz/SphericalPlancherel.lean
+  decls: [Lightlike.Lorentz.spherical_plancherel]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: knapp-1986, location: "Chapter: Chapter II. Representations of SU(2), SL(2, ℝ) and SL(2, ℂ)|10.1515/9781400883974-005"}
+  review: kernel-checked
+  note: "For f = F ∘ coshDist with F smooth and compactly supported on ℝ, and Haar measure haarC (the hyperbolic distance has law 4π³ sinh² r dr under it), ∫_G |f|² dg = (2π⁴)⁻¹ ∫_0^∞ ρ² |f̂(ρ)|² dρ, where f̂(ρ) = ∫_G f(g) φ_ρ(g) dg is the spherical transform with the spherical function sin(ρr)/(ρ sinh r) of the principal series (0, ρ); the density is ρ². The proof writes both sides through the odd Schwartz profile sinh r F(cosh r) and uses Plancherel's theorem on ℝ. The constant (2π⁴)⁻¹ belongs to this normalisation of haarC; on hyperbolic space SL(2,ℂ)/SU(2) with the measure 4π sinh² r dr it is the classical (2π²)⁻¹ (the fibre SU(2) has volume π²). It is the radial part of the Plancherel formula of LL-0134 (the n = 0 sector); the two constants were not checked against each other in Lean. Source location chapter-level only (Knapp 1986, chapter II); the density ρ² was not compared with an equation of a source."
+  since: unreleased

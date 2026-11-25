@@ -36,19 +36,35 @@ library cites the one number gr-qc/0011037 everywhere.
 - (A11), (A16): `1/(8π⁴) Σ_n ∫ … (n² + ρ²) dρ`; the range of `n` and `ρ` is not stated (footnote 5 only restricts to the
   principal series). The equivalence `T_{n,ρ} ≅ T_{-n,-ρ}` is stated after (A6).
 
-## Does the (i/2)³ reading explain a factor?  (MEASURED arithmetic, ASSUMPTION about PR's intent)
+## Does the (i/2)³ reading explain a factor?  (measured arithmetic; Perez–Rovelli's intent is not stated)
 
 The constant in the trace form scales inversely with the Haar measure. If `dg = |(i/2)³| haarC = haarC/8` were meant,
 the constant would be `8/(32π⁴) = 1/(4π⁴)`, not `1/(8π⁴)`: a factor 8, not 4, so that reading does not explain it.
 With `dg = haarC` the constants differ by exactly 4 and the range (all `ℝ`, factor 2 at most, see 2.) does not
-account for it. No reading of (A8), (A7), (A6) and the range that I tried gives `1/(8π⁴)` with a consistent
-`haarC`; ASSUMPTION: no further reading was tried, and PR's own derivation of (A11) is not in App. A (the formula is
-quoted, not derived), so the step cannot be located from this text.
+account for it. No reading of (A8), (A7), (A6) and the range that was checked gives `1/(8π⁴)` with a consistent
+`haarC`. Perez–Rovelli's own derivation of (A11) is not in App. A (the formula is quoted, not derived), so the step
+cannot be located from this text.
 
 ## Status
 
-No change to a statement or a constant: the library constant is not shown wrong. HA2 stays open with its review item r1
-(the comparison with (A11)/(A16)). The only change is the citation: PlancherelOperator.lean named the paper of
-gr-qc/0009021 with the number gr-qc/0011037; it now gives the title of gr-qc/0011037. To close the cause:
-read PR App. A (A8–A16) and Rühl/Naimark, and locate the step. Owner decision for the catalogue note: keep
-"differs from the source by a factor 4 (convention or error in the source)", kind `convention` pending that reading.
+**Conclusion: Perez–Rovelli's printed 1/(8π⁴) in (A11) and (A16) is 4× too large; the library agrees with Rühl as
+quoted by Simão.**
+
+Evidence:
+
+- Simão, arXiv:2405.01360, App. B.1, B.3 and eq. (B.3.1) (checked against the thesis text: the labels, the constant `1/2`
+  and the measure are as `Plancherel.lean` quotes them). B.1 gives the principal series with the labels `ν = −n`,
+  `ρ = σ` of (A6); B.3 gives `f(1) = ½ ∫ dρ Σ_ν (ν² + ρ²) Tr D^χ(∫ dg f(g) D^χ(g))`; (B.3.1) gives
+  `dg = (2π)⁻⁴ haarC`. In Perez–Rovelli's variables this is `½ · (2π)⁻⁴ = 1/(32π⁴)`, the library's constant.
+  Rühl's book itself was not read; this is Simão's quotation of it.
+- `plancherel_trace_perezRovelli` and `plancherel_trace_ruhl` (`Lightlike/Lorentz/Plancherel.lean`): the library's
+  theorem in Perez–Rovelli's variables with `1/(32π⁴)`, and in Rühl's variables with `1/2` and `dg_R = (2π)⁻⁴ haarC`.
+- `testLF_perezRovelli_constant` (`Lightlike/Lorentz/PlancherelTests.lean`): with `1/(8π⁴)` the formula gives
+  `4 F(1) ≠ F(1)`.
+- `scripts/lorentz/plancherel_check.py`: a numerical check of the constant from the kernel alone, including `n ≠ 0`.
+
+Kind of the difference with the source: a misprint in the source (not a convention): the Haar measure (A8) and the
+representations (A6) are the library's, and the range of `σ` accounts for a factor 2 at most.
+
+The citation of Perez–Rovelli in `PlancherelOperator.lean` now gives the title of arXiv:gr-qc/0011037, as `Plancherel.lean`
+does.
