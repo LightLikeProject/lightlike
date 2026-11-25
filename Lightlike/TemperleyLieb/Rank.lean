@@ -398,4 +398,113 @@ lemma modelE_coeff_eq (q : kˣ) {j : ℕ} (v : ModelSpace k) {σ : ℕ → Bool}
   show v ρ * _ = 0
   rw [this, mul_zero]
 
+/-- A weighted count of the ones below `N`. -/
+def onesSum (N : ℕ) (g : ℕ → ℕ) (σ : ℕ → Bool) : ℕ := ∑ p ∈ Finset.range N, if σ p then g p else 0
+
+/-- Moving a one from `j` to `j+1`: `onesSum` of the swapped sequence plus `g j` equals `onesSum` plus `g (j+1)`. -/
+lemma onesSum_swap {N j : ℕ} (hj : j + 2 ≤ N) (g : ℕ → ℕ) {σ : ℕ → Bool} (h0 : σ j = true)
+    (h1 : σ (j + 1) = false) :
+    onesSum N g (set2 σ j false true) + g j = onesSum N g σ + g (j + 1) := by
+  unfold onesSum
+  have hjN : j + 1 < N := by omega
+  have e : ∀ f : ℕ → ℕ, ∑ p ∈ Finset.range N, f p =
+      ∑ p ∈ (Finset.range N).erase j |>.erase (j + 1), f p + f j + f (j + 1) := by
+    intro f
+    rw [← Finset.add_sum_erase _ _ (Finset.mem_range.mpr (by omega : j < N))]
+    rw [← Finset.add_sum_erase _ _ (Finset.mem_erase.mpr ⟨by omega, Finset.mem_range.mpr hjN⟩ : j + 1 ∈ (Finset.range N).erase j)]
+    ring
+  rw [e, e (fun p => if σ p then g p else 0)]
+  have hsame : ∑ p ∈ ((Finset.range N).erase j).erase (j + 1),
+      (if set2 σ j false true p then g p else 0) = ∑ p ∈ ((Finset.range N).erase j).erase (j + 1),
+      (if σ p then g p else 0) := by
+    refine Finset.sum_congr rfl fun p hp => ?_
+    have hp1 : p ≠ j + 1 := (Finset.mem_erase.mp hp).1
+    have hp2 : p ≠ j := (Finset.mem_erase.mp (Finset.mem_erase.mp hp).2).1
+    simp [set2, Function.update_apply, hp1, hp2]
+  rw [hsame]
+  simp [set2, h0, h1]
+  ring
+
+/-- The number of ones below `c`. -/
+def wtCount (c : ℕ) (σ : ℕ → Bool) : ℕ := onesSum c (fun _ => 1) σ
+
+/-- A swap `(1,0) → (0,1)` keeps the number of ones. -/
+lemma wtCount_swap {c j : ℕ} (hj : j + 2 ≤ c) {σ : ℕ → Bool} (h0 : σ j = true) (h1 : σ (j + 1) = false) :
+    wtCount c (set2 σ j false true) = wtCount c σ := by
+  have := onesSum_swap hj (fun _ => 1) h0 h1
+  simp only [wtCount]; omega
+
+/-- The window sequences with `m` ones below `c`. -/
+noncomputable def dickeSet (c m : ℕ) : Finset (ℕ → Bool) :=
+  (tailZero_finite c).toFinset.filter (fun σ => wtCount c σ = m)
+
+/-- The `q`-symmetric (Dicke) vector of weight `m` on `c` strands: `Σ q^{pos σ} |σ⟩`. -/
+noncomputable def dicke (q : kˣ) (c m : ℕ) : ModelSpace k :=
+  ∑ σ ∈ dickeSet c m, single σ ((q : k) ^ posSum c σ)
+
+/-- The coefficients of the Dicke vector. -/
+lemma dicke_apply (q : kˣ) (c m : ℕ) (τ : ℕ → Bool) :
+    (dicke q c m : ModelSpace k) τ = if τ ∈ dickeSet c m then (q : k) ^ posSum c τ else 0 := by
+  unfold dicke
+  rw [Finsupp.finset_sum_apply]
+  simp only [Finsupp.single_apply]
+  rw [Finset.sum_ite_eq']
+
+
+/-- Membership in the Dicke set. -/
+lemma mem_dickeSet {c m : ℕ} {σ : ℕ → Bool} : σ ∈ dickeSet c m ↔ σ ∈ tailZero c ∧ wtCount c σ = m := by
+  simp [dickeSet]
+
+/-- Swapping the bits at `j, j+1 < c` preserves membership in the Dicke set. -/
+lemma mem_dickeSet_swap {c m j : ℕ} (hj : j + 2 ≤ c) {σ : ℕ → Bool} (h0 : σ j = true) (h1 : σ (j + 1) = false) :
+    set2 σ j false true ∈ dickeSet c m ↔ σ ∈ dickeSet c m := by
+  rw [mem_dickeSet, mem_dickeSet]
+  constructor
+  · rintro ⟨ha, hb⟩
+    refine ⟨?_, by rw [← wtCount_swap hj h0 h1]; exact hb⟩
+    intro n hn
+    have := ha n hn
+    simp only [set2, Function.update_apply] at this
+    split_ifs at this <;> first | exact this | omega
+  · rintro ⟨ha, hb⟩
+    exact ⟨set2_mem_tailZero hj ha _ _, by rw [wtCount_swap hj h0 h1]; exact hb⟩
+
+/-- **The Dicke vector is killed by `e_j`**, `j + 2 ≤ c`. -/
+theorem modelE_dicke (q : kˣ) {c m j : ℕ} (hj : j + 2 ≤ c) : modelE q j (dicke q c m : ModelSpace k) = 0 := by
+  have hq : (q : k) ≠ 0 := q.ne_zero
+  ext τ
+  simp only [Finsupp.coe_zero, Pi.zero_apply]
+  rcases h0 : τ j with _ | _ <;> rcases h1 : τ (j + 1) with _ | _
+  · exact modelE_coeff_eq q _ (by rw [h0, h1])
+  · -- bits (0,1): `τ''` has bits (1,0) and swapping it gives `τ`
+    rw [modelE_coeff_FT q _ h0 h1, dicke_apply, dicke_apply]
+    set τ' := set2 τ j true false with hτ'
+    have hτ'0 : τ' j = true := by simp [hτ', set2]
+    have hτ'1 : τ' (j + 1) = false := by simp [hτ', set2]
+    have hback : set2 τ' j false true = τ := by
+      rw [hτ', set2_set2, ← set2_self τ j, h0, h1, set2_set2]
+    have hmem := mem_dickeSet_swap (c := c) (m := m) hj hτ'0 hτ'1
+    rw [hback] at hmem
+    have hpos : posSum c τ = posSum c τ' + 1 := by
+      have := posSum_swap hj hτ'0 hτ'1
+      rwa [hback] at this
+    by_cases hτ : τ ∈ dickeSet c m
+    · have hτ2 : τ' ∈ dickeSet c m := hmem.mp hτ
+      rw [if_pos hτ, if_pos hτ2, hpos, pow_succ]
+      have : ((q⁻¹ : kˣ) : k) * (q : k) = 1 := by simp
+      linear_combination (-((q : k) ^ posSum c τ')) * this
+    · have hτ2 : τ' ∉ dickeSet c m := fun h => hτ (hmem.mpr h)
+      rw [if_neg hτ, if_neg hτ2]; simp
+  · -- bits (1,0)
+    rw [modelE_coeff_TF q _ h0 h1, dicke_apply, dicke_apply]
+    have hmem := mem_dickeSet_swap (c := c) (m := m) hj h0 h1
+    have hpos := posSum_swap hj h0 h1
+    by_cases hτ : τ ∈ dickeSet c m
+    · have hτ2 : set2 τ j false true ∈ dickeSet c m := hmem.mpr hτ
+      rw [if_pos hτ, if_pos hτ2, hpos, pow_succ]
+      ring
+    · have hτ2 : set2 τ j false true ∉ dickeSet c m := fun h => hτ (hmem.mp h)
+      rw [if_neg hτ, if_neg hτ2]; simp
+  · exact modelE_coeff_eq q _ (by rw [h0, h1])
+
 end Lightlike.TemperleyLieb
