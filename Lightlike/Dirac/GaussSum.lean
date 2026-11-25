@@ -214,12 +214,69 @@ lemma tendsto_hgPartial_step {a c L : ℂ} (hcn : ∀ n : ℕ, c + n ≠ 0) (hde
   linear_combination (-1 : ℂ) * hp
 
 /-- The partial-fraction identity `Σ_{n ≤ j} (−1)^n C(j,n)/(s+n) = j! / ∏_{i ≤ j} (s+i)`. -/
-lemma alt_binomial_sum (s : ℂ) : ∀ j : ℕ, (∀ i : ℕ, i ≤ j → s + i ≠ 0) →
+lemma alt_binomial_sum : ∀ j : ℕ, ∀ s : ℂ, (∀ i : ℕ, i ≤ j → s + i ≠ 0) →
     ∑ n ∈ Finset.range (j + 1), (-1 : ℂ) ^ n * (j.choose n : ℂ) / (s + n) =
       (j.factorial : ℂ) / ∏ i ∈ Finset.range (j + 1), (s + i) := by
   intro j
   induction j with
-  | zero => intro h; simp
-  | succ j ih => sorry
+  | zero => intro s h; simp
+  | succ j ih =>
+    intro s hs
+    have hs0 : s ≠ 0 := by simpa using hs 0 (Nat.zero_le _)
+    have hsj : ∀ i : ℕ, i ≤ j → s + i ≠ 0 := fun i hi => hs i (by omega)
+    have hsj1 : ∀ i : ℕ, i ≤ j → (s + 1) + i ≠ 0 := fun i hi => by
+      have := hs (i + 1) (by omega)
+      push_cast at this
+      intro h; apply this; linear_combination h
+    have hlast : s + (j + 1 : ℕ) ≠ 0 := hs (j + 1) le_rfl
+    have hA := ih s hsj
+    have hA1 := ih (s + 1) hsj1
+    set h : ℕ → ℂ := fun m => (-1 : ℂ) ^ m * (j.choose m : ℂ) / (s + m) with hh
+    have e1 : ∑ n ∈ Finset.range (j + 1 + 1), (-1 : ℂ) ^ n * ((j + 1).choose n : ℂ) / (s + n) =
+        1 / s + ∑ n ∈ Finset.range (j + 1), (-1 : ℂ) ^ (n + 1) * ((j + 1).choose (n + 1) : ℂ) / (s + (n + 1 : ℕ)) := by
+      rw [Finset.sum_range_succ']
+      simp [add_comm]
+    have e2 : ∀ n : ℕ, (-1 : ℂ) ^ (n + 1) * ((j + 1).choose (n + 1) : ℂ) / (s + (n + 1 : ℕ)) =
+        -( (-1 : ℂ) ^ n * (j.choose n : ℂ) / ((s + 1) + n)) + h (n + 1) := by
+      intro n
+      rw [Nat.choose_succ_succ]
+      simp only [hh]
+      push_cast
+      have : s + ((n : ℂ) + 1) = (s + 1) + n := by ring
+      rw [this]
+      ring
+    simp only [e2, Finset.sum_add_distrib, Finset.sum_neg_distrib] at e1
+    have e3 : ∑ n ∈ Finset.range (j + 1), h (n + 1) = ∑ n ∈ Finset.range (j + 1), h n - 1 / s := by
+      have hz : h (j + 1) = 0 := by simp [hh]
+      have := Finset.sum_range_succ' h (j + 1)
+      rw [Finset.sum_range_succ, hz, add_zero] at this
+      have h0 : h 0 = 1 / s := by simp [hh]
+      rw [h0] at this
+      linear_combination -this
+    rw [e1, e3]
+    -- products
+    have hp1 : ∏ i ∈ Finset.range (j + 1 + 1), (s + (i : ℂ)) = (∏ i ∈ Finset.range (j + 1), (s + (i : ℂ))) * (s + (j + 1 : ℕ)) :=
+      Finset.prod_range_succ _ _
+    have hp2 : ∏ i ∈ Finset.range (j + 1 + 1), (s + (i : ℂ)) = s * ∏ i ∈ Finset.range (j + 1), ((s + 1) + (i : ℂ)) := by
+      rw [Finset.prod_range_succ']
+      simp only [Nat.cast_zero, add_zero]
+      rw [mul_comm]
+      congr 1
+      refine Finset.prod_congr rfl fun i _ => ?_
+      push_cast; ring
+    have hP0 : ∏ i ∈ Finset.range (j + 1), (s + (i : ℂ)) ≠ 0 :=
+      Finset.prod_ne_zero_iff.mpr fun i hi => hsj i (by simpa [Nat.lt_succ_iff] using hi)
+    have hP1 : ∏ i ∈ Finset.range (j + 1), ((s + 1) + (i : ℂ)) ≠ 0 :=
+      Finset.prod_ne_zero_iff.mpr fun i hi => hsj1 i (by simpa [Nat.lt_succ_iff] using hi)
+    have hP1' : ∏ i ∈ Finset.range (j + 1), ((s + 1) + (i : ℂ)) =
+        (∏ i ∈ Finset.range (j + 1), (s + (i : ℂ))) * (s + (j + 1 : ℕ)) / s := by
+      field_simp
+      rw [← hp2, hp1]
+    rw [hA, hA1, hP1', hp1]
+    push_cast at hlast ⊢
+    rw [Nat.factorial_succ]
+    push_cast
+    field_simp
+    ring
 
 end Lightlike.Dirac
