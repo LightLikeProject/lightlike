@@ -112,4 +112,27 @@ theorem Fc_total (q : kˣ) (hδ : loopVal q ≠ 0) (a b c e d f d' : ℕ) (hN : 
     (he.trans (min_le_right _ _)) hfb hfc (hdd.trans (min_le_right _ _)) (hdd.trans (min_le_left _ _)) hda hdf hne
   simp only [Fc, hz, mul_zero, ite_self]
 
+/-- `(a(bc))d` with channels `f` (for `b, c`), `d'` (for `a, bc`), `g` (total). -/
+noncomputable def TB (q : kˣ) (a b c d f d' g : ℕ) : Module.End k (ModelSpace k) :=
+  UR q a b c f d' * Vop q (a + (b + c - 2 * f) - 2 * d') d g
+
+/-- **`(a(bc))d` in the basis `((ab)c)d`** (the arrow `B → A` of the pentagon). -/
+theorem TB_expand [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) (a b c d f d' g : ℕ) (hab : 1 ≤ a + b)
+    (hd : ∀ x, x ≤ a + b + c + d → chebD (loopVal q) x ≠ 0)
+    (hq2 : ∀ x, 1 ≤ x → x ≤ a + b + c + d + 1 → (q : k) ^ (2 * x) ≠ 1)
+    (hfb : f ≤ b) (hfc : f ≤ c) (hda : d' ≤ a) (hdf : d' ≤ b + c - 2 * f) :
+    TB q a b c d f d' g = ∑ e ∈ Finset.range (a + 1), ∑ d₁ ∈ Finset.range (c + 1),
+      Fc q a b c e d₁ f d' • UL4 q a b c d e d₁ g := by
+  unfold TB
+  rw [expansion_range q hδ a b c f d' hab (fun x hx => hd x (by omega))
+    (fun x h1 h2 => hq2 x h1 (by omega)) hfb hfc hda hdf, Finset.sum_mul]
+  refine Finset.sum_congr rfl fun e _ => ?_
+  rw [Finset.sum_mul]
+  refine Finset.sum_congr rfl fun d₁ _ => ?_
+  rw [smul_mul_assoc]
+  by_cases h0 : Fc (k := k) q a b c e d₁ f d' = 0
+  · rw [h0]; simp
+  · rw [← Fc_total q hδ a b c e d₁ f d' (by omega) (fun x hx => hd x (by omega)) hfb hfc hda hdf h0]
+    simp only [UL4]
+
 end Lightlike.TemperleyLieb
