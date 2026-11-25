@@ -84,4 +84,24 @@ theorem proj_mul_cups_zero (q : kˣ) (hδ : loopVal q ≠ 0) {D : ℕ} (hd : ∀
         rw [e]
     _ = 0 := by rw [h2, smul_mul_assoc, smul_mul_assoc]; simp only [mul_assoc]; rw [← mul_assoc (jwAt q 0 D), hc, zero_mul, smul_zero]
 
+/-- **Caps in excess, case `e ≤ f`**: the word is a stack of `j + 1` outer caps times an element of `C (D₂ - 1)`. -/
+theorem unbal_caps_1 (q : kˣ) {N : ℕ} {Z YL YR : Module.End k (ModelSpace k)} (hZ : Z ∈ CSub q N)
+    (e t d' j lam l l' l'' : ℕ) (hYL : YL ∈ CSub q (N - 2 * e)) (hYR : YR ∈ CSub q (N - 2 * e - 2 * t))
+    (h1 : l + 2 * e ≤ N + 1) (h1' : l' + t + 2 * e ≤ N + 1)
+    (h2 : lam + (j + 1) + d' + 2 * t ≤ N - 2 * e + 1) (h2' : l' + 2 * t ≤ N - 2 * e + 1)
+    (h3 : lam + (j + 1) + 2 * d' ≤ N - 2 * e - 2 * t + 1) (h3' : l'' + 2 * d' ≤ N - 2 * e - 2 * t + 1) :
+    ∃ Z3 ∈ CSub q (N - 2 * e - 2 * t - 2 * d'),
+      nestCap q lam (((j + 1) + d') + t) * YL * nestCap q l e * Z * nestCup q l' (t + e) * YR * nestCup q l'' d' =
+        nestCap q lam (j + 1) * Z3 := by
+  have hZ1 := nestCap_mul_nestCup_mem_gen q l (l' + t) e N hZ h1 h1'
+  have hY1 : YL * (nestCap q l e * Z * nestCup q (l' + t) e) ∈ CSub q (N - 2 * e) := Subalgebra.mul_mem _ hYL hZ1
+  have hZ2 := nestCap_mul_nestCup_mem_gen q (lam + ((j + 1) + d')) l' t (N - 2 * e) hY1
+    (by omega) h2'
+  have hZ2' : nestCap q (lam + ((j + 1) + d')) t * (YL * (nestCap q l e * Z * nestCup q (l' + t) e)) *
+      nestCup q l' t * YR ∈ CSub q (N - 2 * e - 2 * t) := Subalgebra.mul_mem _ hZ2 hYR
+  have hZ3 := nestCap_mul_nestCup_mem_gen q (lam + (j + 1)) l'' d' (N - 2 * e - 2 * t) hZ2' h3 h3'
+  refine ⟨_, hZ3, ?_⟩
+  rw [nestCap_add q lam ((j + 1) + d') t, nestCap_add q lam (j + 1) d', nestCup_add]
+  simp only [mul_assoc]
+
 end Lightlike.TemperleyLieb
