@@ -555,6 +555,10 @@ import Lightlike.Lorentz.SL2RPlancherel.HalfLine
 import Lightlike.Lorentz.SL2RPlancherel.LogTanhKernel
 import Lightlike.Lorentz.SL2RPlancherel.CoshSubstitution
 import Lightlike.Lorentz.SL2RPlancherel.RadialHaar
+import Lightlike.Lorentz.SL2RPlancherel.Cayley
+import Lightlike.Lorentz.SL2RPlancherel.DiscMeanValue
+import Lightlike.Lorentz.SL2RPlancherel.BergmanReproducing
+import Lightlike.Lorentz.SL2RPlancherel.DiscreteDegree
 import Lightlike.Lorentz.SL2RPlancherel.RadialIntegral
 import Lightlike.Lorentz.SL2RPlancherel.SineExp
 import Lightlike.Lorentz.SL2RPlancherel.SineSinh

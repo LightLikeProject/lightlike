@@ -1,0 +1,22 @@
+- id: LL-XXXX-q
+  title: "The formal degree of the holomorphic discrete series of SL(2,R) on its lowest weight vector: for n >= 2 and e_0 = (z+i)^(-n) in the weighted Bergman space A^2_n, the integral over SL(2,R) of |<e_0, D_n(g) e_0>|^2 equals (8 pi^2/(n-1)) ||e_0||^4, with ||e_0||^2 = 4 pi/((n-1) 4^n) and the matrix coefficient (4 pi/(n-1)) (-2i)^(-n) (((c-b) + i(a+d))^n)^(-1)"
+  area: Lorentz
+  file: Lightlike/Lorentz/SL2RPlancherel/DiscreteDegree.lean
+  decls: [Lightlike.Lorentz.formal_degree_lowest, Lightlike.Lorentz.coeff_lowest, Lightlike.Lorentz.norm_sq_lowestClass, Lightlike.Lorentz.norm_sq_coeff_lowest]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source read at a cited location for the formal degree of D_n^+ of SL(2,R); Knapp 1986 Chapter II and Lang, SL2(R), Chapter IX state it for their normalisations of the Haar measure). Here dg is the Haar measure with the radial formula integral Phi(cosh d(g)) dg = 4 pi^2 integral_{t>1} Phi(t) dt (RadialHaar.lean), D_n acts by (D_n(g) f)(z) = (bz+d)^(-n) f((az+c)/(bz+d)) on A^2_n = holomorphic classes in L^2(H, y^n dmu_H), and the lowest weight vector is e_0 = (z+i)^(-n). The proof: the reproducing property of e_0, integral_H phi conj(e_0) y^(n-2) dA = (4 pi/(n-1)) (-2i)^(-n) phi(i) for holomorphic phi, by the Cayley transform to the unit disc (Jacobian 4/|1-w|^4) and the weighted mean-value property of holomorphic functions on the disc; then |<e_0, D_n(g) e_0>|^2 = (4 pi/(n-1))^2 4^(-n) (2(1+cosh d(g)))^(-n) and the radial Haar integral. WEAKER: only the lowest weight vector (Schur orthogonality for all vectors needs the irreducibility of D_n^+, not proved here); the antiholomorphic series, the principal series and the assembly of the Plancherel formula are not proved."
+  since: unreleased
+- id: LL-XXXX-x
+  title: "The reproducing property of (z+i)^(-n) in the weighted Bergman space of the upper half-plane: for n >= 2 and phi holomorphic with integrable pairing, the integral of phi(z) conj((z+i)^(-n)) y^(n-2) over the upper half-plane is (4 pi/(n-1)) (-2i)^(-n) phi(i)"
+  area: Lorentz
+  file: Lightlike/Lorentz/SL2RPlancherel/BergmanReproducing.lean
+  decls: [Lightlike.Lorentz.SL2RPlancherel.bergman_reproducing]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source read at a cited location; the Bergman kernel of the weighted Bergman space A^2_n of the upper half-plane is classical). Proof: the Cayley transform to the unit disc (Jacobian 4/|1-w|^4), the weighted mean-value property of holomorphic functions on the disc for radial weights, and the radial integral of (1-|w|^2)^(n-2). Used for the formal degree of the discrete series in LL-XXXX-q."
+  since: unreleased
