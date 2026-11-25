@@ -53,13 +53,13 @@ geodesics of Regge calculus.
 | ID | Milestone | Done when | Trust checks | Size | Needs |
 |---|---|---|---|---|---|
 | GE1 | Smooth curvature from connections: Levi-Civita connection, Riemann, Ricci and scalar curvature on a smooth manifold | the curvature is defined intrinsically and proven to agree in every chart with the coordinate curvature | round 2-sphere of radius `r` has scalar curvature `2/r²`; Schwarzschild is Ricci-flat; a connection with torsion shown to give a different Ricci tensor | L | Mathlib manifolds |
-| GE2 | Causal structure: time orientation, causal curves, chronological and causal futures, global hyperbolicity, Cauchy surfaces | definitions with basic properties; Minkowski space globally hyperbolic with `t = 0` a Cauchy surface | Minkowski's causal future is the closed light cone; anti-de Sitter is not globally hyperbolic; a spacetime with closed timelike curves (Minkowski with time rolled up) violates chronology | L | GE1 |
+| GE2 | Causal structure: time orientation, causal curves, chronological and causal futures, global hyperbolicity, Cauchy surfaces | time orientation, future causal/timelike/inextendible curves, chronological and causal futures, global hyperbolicity and Cauchy surfaces are defined; chron ⊆ causal, causal and chronological futures are transitive, causal ⇒ chronological relation; Minkowski space is globally hyperbolic with `t = 0` a Cauchy surface | Minkowski's causal future is the closed light cone; anti-de Sitter is not globally hyperbolic; a spacetime with closed timelike curves (Minkowski with time rolled up) violates chronology | L | GE1 |
 | GE3 | Geodesics, the exponential map and the Raychaudhuri equation on a manifold | the Raychaudhuri equation for timelike geodesic congruences, and focusing under the strong energy condition for rotation-free congruences | expansion of comoving congruences in Minkowski and in FLRW in closed form; a congruence in a spacetime violating the energy condition does not focus | M | GE1 |
 | GE4 | Penrose's singularity theorem (1965) | a globally hyperbolic spacetime with a non-compact Cauchy surface, the null energy condition and a closed trapped surface is null-geodesically incomplete | the hypotheses hold in the Schwarzschild interior (trapped spheres at `r < 2M`); Minkowski has no closed trapped surface | R | GE2, GE3 |
 | GE5 | Spin structures and the Dirac operator, on Mathlib's Clifford algebras; the Lichnerowicz formula | a spin structure on a Riemannian manifold is defined, the Dirac operator on its spinor bundle and the rough Laplacian `∇*∇` are defined, and `D² = ∇*∇ + R/4` holds; the Dirac operator on ℝⁿ is defined | Dirac spectrum on the unit 2-sphere `±(k+1)` with multiplicity `2(k+1)`; the formula with `R/2` shown to fail | L | GE1 |
 | GE6 | Kerr in Boyer–Lindquist coordinates; Killing horizons, surface gravity and angular velocity | Kerr proven a vacuum solution; `κ` defined by `∇_χ χ = κχ` and `Ω_H` by the horizon Killing field `χ = ∂_t + Ω_H ∂_φ`, and shown equal to `√(M²−a²)/(2Mr₊)` and `a/(2Mr₊)` | `a = 0` gives Schwarzschild with `κ = 1/(4M)`; the coefficient of `g_tφ` halved shown not to be Ricci-flat (flipping its sign gives Kerr with `-a`, which is Ricci-flat) | M | GE10 |
 | GE7 | Conformal compactification: null infinity of Minkowski space, the conformal boundary of anti-de Sitter space | future null infinity `ℐ⁺` of Minkowski space and the conformal boundary of AdS are defined as subsets of a conformal compactification; the Poincaré group acts on `ℐ⁺` by conformal maps, and the AdS isometry group acts on the AdS boundary by conformal maps | the compactified Minkowski space as a region of the Einstein static universe; a non-conformal rescaling shown to fail | M | GE2 |
-| GE8 | Heat-kernel expansion of Laplace-type operators on compact Riemannian manifolds (Seeley–DeWitt coefficients `a₀`, `a₁`, `a₂`) | the asymptotic expansion of the heat trace with `a₁ = (4π)^{-n/2}∫R/6` | unit 2-sphere: `Σ(2l+1)e^{−t l(l+1)} = 1/t + 1/3 + t/15 + O(t²)`; the flat torus has no `t⁰` term | L | GE1 |
+| GE8 | Heat-kernel expansion of Laplace-type operators on compact Riemannian manifolds (Seeley–DeWitt coefficients `a₀`, `a₁`, `a₂`) | for the scalar Laplacian on a compact Riemannian n-manifold, `Tr e^{−tΔ} ~ Σ a_k t^{k−n/2}` as `t → 0`, with `a₀ = (4π)^{−n/2} vol` and `a₁ = (4π)^{−n/2}∫R/6` | unit 2-sphere: `Σ(2l+1)e^{−t l(l+1)} = 1/t + 1/3 + t/15 + O(t²)`; the flat torus has no `t⁰` term | L | GE1 |
 | GE9 | Spacetime geometry: Lorentzian metrics, Minkowski space, coordinate curvature, Riemann symmetries, chart changes | Lorentzian metrics and Minkowski space are defined; the coordinate Christoffel symbols and the Riemann, Ricci and scalar curvature are defined, with the Riemann symmetries (pair symmetry, first Bianchi identity) proven, and they transform as tensors under chart changes | - | - | - |
 | GE10 | Vacuum Einstein equations; Minkowski and exterior Schwarzschild as solutions | the vacuum Einstein equations with `Λ` are defined; Minkowski space (`Λ = 0`) and exterior Schwarzschild (`M > 0`, `r > 2M`) satisfy them | - | - | - |
 | GE11 | Generalize the curvature results of GE1 (the curvature tensor computed by any extensions, its symmetries, the Ricci tensor, the second Bianchi identity, the divergence of the Einstein tensor, the chart agreement) to any non-degenerate (pseudo-Riemannian) metric, any `ModelWithCorners` and without a Hausdorff hypothesis | the statements of the former tasks T-GE1-P2 to P8 hold in that generality (the library proves them for Lorentzian metrics on Hausdorff manifolds modelled on `Fin n → ℝ` or a finite-dimensional space without boundary) | the round 2-sphere (Riemannian) has the same identities; a manifold with boundary; a non-Hausdorff example | L | GE1 |
@@ -174,7 +174,7 @@ SU(2) representation theory is HA4; Spin(4) = SU(2) × SU(2) is in the spin foam
 |---|---|---|---|---|---|
 | HA1 | SL(2,ℂ), its Haar measure and its unitary principal series; their restriction to SU(2) | below | below | L | `SU2/` |
 | HA2 | The Plancherel measure of SL(2,ℂ) and the harmonic analysis the Lorentzian amplitudes use | below | below | L | HA1 |
-| HA3 | SL(2,ℝ): principal and discrete series, the Plancherel measure | the unitary irreducible representations used by JT gravity and AdS₃ are defined, with the Plancherel formula | Casimir values; the Plancherel density of the principal series `∝ ρ tanh(πρ)`; a non-unitary complementary-series parameter outside `(0, 1/2)` shown to fail | L | HA2 |
+| HA3 | SL(2,ℝ): principal and discrete series, the Plancherel measure | the principal (even and odd) and discrete series of SL(2,ℝ) are defined, unitary and irreducible, and `L²(SL(2,ℝ))` decomposes by a Plancherel formula with principal densities `ρ tanh(πρ)` (even) and `ρ coth(πρ)` (odd) and discrete weights `(n − 1/2)` | Casimir values; the Plancherel density of the principal series `∝ ρ tanh(πρ)`; a non-unitary complementary-series parameter outside `(0, 1/2)` shown to fail | L | HA2 |
 | HA4 | Unitary irreducible representations of SU(2) and their completeness; link to Physlib's `sl₂`-modules and 6j symbols | the spin `n/2` representations of SU(2) are unitary and irreducible, every irreducible continuous unitary representation is isomorphic to one of them, the Lie-algebra action matches Physlib's `sl₂`-modules, and the 6j symbols of Lightlike are the recoupling coefficients of their tensor products | - | - | - |
 | HA5 | The Peter–Weyl theorem for compact groups | for a compact Hausdorff group `G` with its Haar measure, (a) the matrix coefficients of finite-dimensional unitary representations are dense in `C(G)` and in `L²(G)`, and (b) `L²(G)` is the Hilbert direct sum of the isotypic components `End(V_π)`; (a) and (b) are lockable statements | for `U(1)` the characters `e^{inθ}` form an orthonormal basis of `L²`; Schur orthogonality of characters for SU(2); a non-compact group (ℝ) shown to have no square-integrable matrix coefficients | L | Mathlib |
 | HA6 | Unitary irreducible representations of the Poincaré group (Wigner 1939): the little-group method, mass, spin and helicity | the massive and massless one-particle representations are constructed by induction from the little groups SO(3) and ISO(2), unitary, with `P² = m²` and the Pauli–Lubanski square `W² = −m² s(s+1)` in signature `(+,−,−,−)`; the classification of the irreducible representations with positive energy is a lockable statement | massless finite-helicity states satisfy `W = h P`; a massive spin-1/2 representation has two states per momentum; a tachyonic orbit shown to have a non-compact little group | L | HA4 |
@@ -279,7 +279,9 @@ it to PL topology, layer 3 to topological 3-manifolds.
 | PL7a | - | Assembly up to PL homeomorphism: PL-homeomorphic closed combinatorial 3-manifolds have triangulations related by the moves on `Complex3`; consequences for the state sums | M |
 | PL7b | - | Assembly up to homeomorphism: homeomorphic closed 3-manifolds have triangulations related by the moves on `Complex3` (needs Moise's theorem, PL6); consequences for the state sums | R |
 
-- **PL1, done when:** the definitions with their basic properties are in place; trust checks: the
+- **PL1, done when:** the definitions of the title (complexes in every dimension; links, stars,
+  joins, cones; stellar subdivisions and welds; bistellar moves; combinatorial manifolds and PL
+  spheres) exist, with the properties of checklist items p2–p5 and the four trust checks: the
   boundary of an (n+1)-simplex is a PL n-sphere, small known examples (the octahedron is a PL
   2-sphere), a non-manifold (two spheres glued at a vertex) is rejected, and the 3-dimensional
   bistellar moves agree with `Lightlike.PR.move23` and `Lightlike.PR.move14` on `Complex3`.
@@ -608,26 +610,27 @@ A spin foam model assigns amplitudes to labellings of a fixed 2-complex (dual to
   on its image are proven. Trust checks: fusion coefficients against published values, and a
   non-EPRL label assignment shown to violate the constraint.
 - **SF5d, done when:** a gauge fixing of the Ooguri state sum (fixed spins on a set of triangles
-  chosen by a combinatorial rule, the 4D analogue of Freidel–Louapre's maximal tree) is defined,
-  the gauge-fixed amplitude is proven invariant under all five 4D Pachner moves with compatible
-  gauge sets and cutoffs, and its independence of the gauge choice is proven as far as it holds.
-  Trust checks: the boundary of the 5-simplex, and a gauge set violating the hypotheses shown to
-  change the amplitude.
+  chosen by a combinatorial rule, the 4D analogue of Freidel–Louapre's maximal tree) is defined, the
+  gauge-fixed amplitude is proven invariant under the five 4D Pachner moves under explicit cutoff
+  and gauge-rule hypotheses, and independent of the gauge choice for gauge sets that force every
+  triangle (or each other); the failure for other sets need not be proven. The general case
+  (non-forcing gauge sets) is an open research question, recorded under G2-023. Trust checks: the
+  boundary of the 5-simplex, and a gauge set violating the hypotheses shown to change the amplitude.
 - **SF5e, done when:** Perelomov coherent states of SU(2) and Spin(4) and the Livine–Speziale
   coherent intertwiners are defined, with their overlap formula and the resolution of the identity
   on the invariant subspace proven. Trust checks: the norm of a coherent intertwiner from its
   normals, and normals that do not close giving the suppression expected in the literature.
-- **SF6, done when:** the EPRL vertex amplitude (built on SF5c) is stated and its basic properties
-  are proven. Trust checks: values against published numerics where available, and a wrong
-  simplicity constraint shown to give a different result.
+- **SF6, done when:** the EPRL vertex amplitude (built on SF5c) is stated, and these are proven:
+  selection rules, the value at zero spins, the BF-limit value, reality and the 9j form. Trust
+  checks: values against published numerics where available, and a wrong simplicity constraint shown
+  to give a different result.
 - **SF6b, done when:** the EPRL state sum on a closed 4-complex (the vertex amplitude of SF6, a
-  stated face amplitude and the edge normalizations) is defined, with its basic properties
-  (independence of the vertex order and of the orientation) and its
-  relation to the Ooguri model at the BF point stated and proven: at `γ = 1` the EPRL amplitude
-  equals the Ooguri amplitude on the same complex and cutoffs, up to the stated sign twist and
-  normalisation, written out. Trust checks: on a small closed
-  4-complex at low spins, the state sum computed in Lean equals the Ooguri amplitude at the BF point;
-  a wrong face amplitude shown to break that equality.
+  stated face amplitude and the edge normalizations) is defined, with its basic properties (its
+  stated dependence on the vertex order) and its relation to the Ooguri model at the BF point stated
+  and proven: at `γ = 1` the EPRL amplitude equals the Ooguri amplitude on the same complex and
+  cutoffs, up to the stated sign twist and normalisation, written out. Trust checks: on a small
+  closed 4-complex at low spins, the state sum computed in Lean equals the Ooguri amplitude at the
+  BF point; a wrong face amplitude shown to break that equality.
 - **SF7, done when:** the Lorentzian EPRL vertex amplitude is defined as in Engle–Pereira–Rovelli–Livine
   2008 (`ρ = γ(j+1)`, `k = j`, with the `ε` twist on the bra legs for SU(2)-invariant intertwiners)
   and proven finite for all `γ`, spins and intertwiners (Engle–Pereira 2009).
