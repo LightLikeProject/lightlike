@@ -334,4 +334,32 @@ theorem modeHyper_isModeSol {ν a : ℂ} (hν : ν ≠ 0) (ha : a ^ 2 = -ν ^ 2 
           ring
       _ = _ := by rw [hode, mul_zero, add_zero]
 
+/-- `x(r) → 1` from below as `r → ∞`. -/
+lemma tendsto_xOf_atTop : Filter.Tendsto xOf Filter.atTop (nhdsWithin 1 (Set.Iio 1)) := by
+  refine tendsto_nhdsWithin_iff.mpr ⟨?_, Filter.Eventually.of_forall fun r => ?_⟩
+  · have h : ∀ r : ℝ, xOf r = 1 - 1 / (1 + r ^ 2) := by
+      intro r
+      unfold xOf
+      have : (1 + r ^ 2) ≠ 0 := by positivity
+      field_simp; ring
+    rw [show xOf = fun r : ℝ => 1 - 1 / (1 + r ^ 2) from funext h]
+    have h1 : Filter.Tendsto (fun r : ℝ => 1 + r ^ 2) Filter.atTop Filter.atTop :=
+      Filter.tendsto_atTop_add_const_left _ _ (Filter.tendsto_pow_atTop (by norm_num))
+    have h2 := (tendsto_const_nhds (x := (1 : ℝ))).div_atTop h1
+    simpa using (tendsto_const_nhds (x := (1 : ℝ))).sub h2
+  · have h : (0 : ℝ) < 1 + r ^ 2 := by positivity
+    show xOf r < 1
+    unfold xOf
+    rw [div_lt_one h]; linarith
+
+/-- **Abel at `x = 1`**: if the partial sums of the coefficients converge to `L`, then `G(x(r)) → L` as `r → ∞`. -/
+theorem tendsto_hgSum_atTop {a : ℂ} {m : ℕ} {L : ℂ}
+    (h : Filter.Tendsto (fun N : ℕ => ∑ i ∈ Finset.range N, hgCoef a m i) Filter.atTop (nhds L)) :
+    Filter.Tendsto (fun r : ℝ => hgSum a m (xOf r)) Filter.atTop (nhds L) := by
+  have hab := Complex.tendsto_tsum_powerSeries_nhdsWithin_lt h
+  rw [Filter.tendsto_map'_iff] at hab
+  have := hab.comp tendsto_xOf_atTop
+  refine this.congr fun r => ?_
+  simp [hgSum, powerSum, Function.comp]
+
 end Lightlike.Dirac
