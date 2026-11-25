@@ -199,8 +199,9 @@ theorem GoodQuad.polygon {w w' v v' : ℝ × ℝ} {α β : List (ℝ × ℝ)} (h
   · rw [quadList, hl, carrier_ofList]
     rw [← hl, hset, segment_symm ℝ v w]
 
-/-- **A good cell is mapped homeomorphically onto another by any compatible maps of its four sides.** -/
-theorem GoodQuad.extend {w w' v v' w₂ w₂' v₂ v₂' : ℝ × ℝ} {α β α₂ β₂ : List (ℝ × ℝ)}
+/-- **A good cell is mapped homeomorphically onto another by any compatible maps of its four sides.** The
+homeomorphism restricts to the given map on each of the four sides. -/
+theorem GoodQuad.extend' {w w' v v' w₂ w₂' v₂ v₂' : ℝ × ℝ} {α β α₂ β₂ : List (ℝ × ℝ)}
     (hQ : GoodQuad w w' v v' α β) (hQ₂ : GoodQuad w₂ w₂' v₂ v₂' α₂ β₂)
     [NeZero (quadList α β).length] [NeZero (quadList α₂ β₂).length]
     {fa fb fs fs' : ℝ × ℝ → ℝ × ℝ}
@@ -212,8 +213,11 @@ theorem GoodQuad.extend {w w' v v' w₂ w₂' v₂ v₂' : ℝ × ℝ} {α β α
     (haw : fa w = w₂) (haw' : fa w' = w₂') (hbv : fb v = v₂) (hbv' : fb v' = v₂')
     (hsw : fs w = w₂) (hsv : fs v = v₂) (hsw' : fs' w' = w₂') (hsv' : fs' v' = v₂') :
     ∃ E : region (Polygon.ofList (quadList α β)) ≃ₜ region (Polygon.ofList (quadList α₂ β₂)),
-      ∀ (x : ℝ × ℝ) (hx : x ∈ chainSet α),
-        (E ⟨x, carrier_subset_region _ (by rw [(hQ.polygon).2.2]; exact Or.inl (Or.inl (Or.inl hx)))⟩ : ℝ × ℝ) = fa x := by
+      (∀ x (hx : x ∈ region (Polygon.ofList (quadList α β))), x ∈ chainSet α → (E ⟨x, hx⟩ : ℝ × ℝ) = fa x) ∧
+      (∀ x (hx : x ∈ region (Polygon.ofList (quadList α β))), x ∈ chainSet β → (E ⟨x, hx⟩ : ℝ × ℝ) = fb x) ∧
+      (∀ x (hx : x ∈ region (Polygon.ofList (quadList α β))), x ∈ segment ℝ w v → (E ⟨x, hx⟩ : ℝ × ℝ) = fs x) ∧
+      (∀ x (hx : x ∈ region (Polygon.ofList (quadList α β))), x ∈ segment ℝ w' v' →
+        (E ⟨x, hx⟩ : ℝ × ℝ) = fs' x) := by
   obtain ⟨hn, hsimp, hcar⟩ := hQ.polygon
   obtain ⟨hn₂, hsimp₂, hcar₂⟩ := hQ₂.polygon
   obtain ⟨F, hF, hFa, hFb, hFs, hFs'⟩ := quad_boundary_bijOn hQ hQ₂ ha hb hs hs' haw haw' hbv hbv' hsw hsv hsw' hsv'
@@ -231,13 +235,20 @@ theorem GoodQuad.extend {w w' v v' w₂ w₂' v₂ v₂' : ℝ × ℝ} {α β α
       chainSet α₂ ∪ segment ℝ w₂' v₂' ∪ chainSet β₂ ∪ segment ℝ w₂ v₂ := hcar₂
   obtain ⟨E, hE⟩ := boundary_homeo_extends hn hn₂ hsimp hsimp₂
     ((Homeomorph.setCongr e1).trans (ψ.trans (Homeomorph.setCongr e2.symm)))
-  refine ⟨E, fun x hx => ?_⟩
-  have hx' : x ∈ (Polygon.ofList (quadList α β)).carrier := by rw [e1]; exact Or.inl (Or.inl (Or.inl hx))
-  have := hE x hx'
-  rw [this]
-  simp only [Homeomorph.trans_apply]
-  have h2 := hψ x (Or.inl (Or.inl (Or.inl hx)))
-  show (ψ ⟨x, _⟩ : ℝ × ℝ) = fa x
-  rw [h2, hFa hx]
+  have key : ∀ (x : ℝ × ℝ) (hx : x ∈ region (Polygon.ofList (quadList α β))),
+      x ∈ chainSet α ∪ segment ℝ w' v' ∪ chainSet β ∪ segment ℝ w v → (E ⟨x, hx⟩ : ℝ × ℝ) = F x := by
+    intro x hx hxK
+    have hx' : x ∈ (Polygon.ofList (quadList α β)).carrier := by rw [e1]; exact hxK
+    have := hE x hx'
+    have e : (⟨x, hx⟩ : region (Polygon.ofList (quadList α β))) = ⟨x, carrier_subset_region _ hx'⟩ := rfl
+    rw [e, this]
+    simp only [Homeomorph.trans_apply]
+    show (ψ ⟨x, _⟩ : ℝ × ℝ) = F x
+    exact hψ x hxK
+  refine ⟨E, fun x hx hxa => ?_, fun x hx hxb => ?_, fun x hx hxs => ?_, fun x hx hxs => ?_⟩
+  · rw [key x hx (Or.inl (Or.inl (Or.inl hxa))), hFa hxa]
+  · rw [key x hx (Or.inl (Or.inr hxb)), hFb hxb]
+  · rw [key x hx (Or.inr hxs), hFs hxs]
+  · rw [key x hx (Or.inl (Or.inl (Or.inr hxs))), hFs' hxs]
 
 end Lightlike.PL.Schoenflies

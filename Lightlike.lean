@@ -986,6 +986,8 @@ import Lightlike.PL.Schoenflies.GoodQuad
 import Lightlike.PL.Schoenflies.RingSpoke
 import Lightlike.PL.Schoenflies.RaySplit
 import Lightlike.PL.Schoenflies.QuadBoundary
+import Lightlike.PL.Schoenflies.SegmentAffine
+import Lightlike.PL.Schoenflies.RingCells
 import Lightlike.PL.SimpleChain
 import Lightlike.PL.Chain
 import Lightlike.PL.TwoArcs
