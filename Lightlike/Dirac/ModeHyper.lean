@@ -362,4 +362,31 @@ theorem tendsto_hgSum_atTop {a : ℂ} {m : ℕ} {L : ℂ}
   refine this.congr fun r => ?_
   simp [hgSum, powerSum, Function.comp]
 
+/-- **The regular solution does not decay unless the limit vanishes**: if `G(x(r)) → L ≠ 0` then `‖a(r)‖ ≤ C / r`
+fails for every `C`. -/
+theorem not_decay_of_limit_ne {a : ℂ} {m : ℕ} {L : ℂ} (hL : L ≠ 0)
+    (h : Filter.Tendsto (fun r : ℝ => hgSum a m (xOf r)) Filter.atTop (nhds L)) (C : ℝ) :
+    ¬ ∀ r : ℝ, 1 ≤ r → ‖modeA a m r‖ ≤ C / r := by
+  intro hdec
+  have hLpos : 0 < ‖L‖ := norm_pos_iff.mpr hL
+  have h1 : ∀ᶠ r in Filter.atTop, ‖L‖ / 2 < ‖hgSum a m (xOf r)‖ := by
+    have := h.norm
+    exact this.eventually (lt_mem_nhds (by linarith))
+  have h2 : Filter.Tendsto (fun r : ℝ => C / r) Filter.atTop (nhds 0) :=
+    tendsto_const_nhds.div_atTop Filter.tendsto_id
+  have h3 : ∀ᶠ r in Filter.atTop, C / r < ‖L‖ / 2 := h2.eventually (gt_mem_nhds (by linarith))
+  obtain ⟨r, hr⟩ := ((h1.and h3).and (Filter.eventually_ge_atTop 1)).exists
+  obtain ⟨⟨hr2, hr3⟩, hr1⟩ := hr
+  have hd := hdec r hr1
+  have hpow : 1 ≤ ‖(r : ℂ) ^ m‖ := by
+    rw [norm_pow, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (by linarith)]
+    exact one_le_pow₀ hr1
+  have : ‖modeA a m r‖ = ‖(r : ℂ) ^ m‖ * ‖hgSum a m (xOf r)‖ := by unfold modeA; rw [norm_mul]
+  have hge : ‖L‖ / 2 < ‖modeA a m r‖ := by
+    rw [this]
+    calc ‖L‖ / 2 < ‖hgSum a m (xOf r)‖ := hr2
+      _ = 1 * ‖hgSum a m (xOf r)‖ := by ring
+      _ ≤ ‖(r : ℂ) ^ m‖ * ‖hgSum a m (xOf r)‖ := mul_le_mul_of_nonneg_right hpow (norm_nonneg _)
+  linarith
+
 end Lightlike.Dirac
