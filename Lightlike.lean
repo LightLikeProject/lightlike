@@ -1406,6 +1406,7 @@ import Lightlike.Rows.G1_012.GeneratorChain
 import Lightlike.Rows.G1_012.Generators
 import Lightlike.Rows.G1_012.ClosedFuture
 import Lightlike.Rows.G1_012.ExpFlow
+import Lightlike.Rows.G1_012.ExpCompact
 import Lightlike.Rows.G1_012.NullGeodGlue
 import Lightlike.Rows.G1_012.GeodesicChartConverse
 import Lightlike.Rows.G1_012.NullGeodChart
