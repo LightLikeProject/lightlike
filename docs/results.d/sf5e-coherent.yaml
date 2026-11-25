@@ -1,0 +1,57 @@
+- id: LL-XXXX-a
+  title: "The overlap of SU(2) and Spin(4) coherent states: ⟨j, g | j, h⟩ = ((gᴴ h)₀₀)^{2j}, with modulus squared ((1 + ν(g)·ν(h))/2)^{2j} in terms of the normals, and the product of the two overlaps for Spin(4)"
+  area: Spin4
+  file: Lightlike/Spin4/Coherent.lean
+  decls: [Lightlike.Spin4.inner_cohState, Lightlike.Spin4.normSq_inner_cohState, Lightlike.Spin4.inner_cohState4]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: perelomov-1986, location: "Chapter: Coherent States for the Rotation Group of Three-Dimensional Space|10.1007/978-3-642-61629-7_5"}
+      - {ref: livine-speziale-2007, location: "Abstract", check: "coherent states"}
+  review: kernel-checked
+  note: "The coherent state of spin j = n/2 and group element g is cohState n g = spinMat n g applied to the highest weight vector. For 2×2 matrices (and so for SU(2) elements) g, h its overlap is ⟨j, g | j, h⟩ = ((gᴴ h)₀₀)^n (inner_cohState); for SU(2) elements the modulus squared is ((1 + ν(g)·ν(h))/2)^n with ν the Bloch normal vector, the point of the sphere to which g sends the highest weight (normSq_inner_cohState); for Spin(4) = SU(2) × SU(2) with the spins n and m the overlap is the product ((g₁ᴴ h₁)₀₀)^n ((g₂ᴴ h₂)₀₀)^m (inner_cohState4). Source locations: the chapter of Perelomov on the rotation group (the SU(2) coherent states) and the abstract of Livine–Speziale (coherent states for the vertex), chapter and abstract level only: no formula was compared at an equation number."
+  since: unreleased
+
+- id: LL-XXXX-b
+  title: Group averaging P = ∫ ρ(g) dg over SU(2) on the tensor product of spin representations is an orthogonal projection onto the invariant subspace, and the coherent intertwiner P(⊗ |J_a/2, g_a⟩) is invariant
+  area: Spin4
+  file: Lightlike/Spin4/CoherentIntertwiner.lean
+  decls: [Lightlike.Spin4.avgP_mul_avgP, Lightlike.Spin4.cohInt_isInvariantN]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: livine-speziale-2007, location: "Abstract", check: "coherent states"}
+  review: kernel-checked
+  note: "For a node with N links of doubled spins J_a, ρ(g) = ⊗_a D^{J_a/2}(g) is a unitary representation of SU(2) on the functions on Π_a Fin(J_a + 1) and avgP J is the Haar integral of ρ over SU(2). The matrix avgP J fixes the invariant vectors, has invariant range, is Hermitian and idempotent (avgP_mul_avgP), hence the orthogonal projection onto the invariant subspace. The coherent intertwiner cohInt J g = avgP J (⊗_a cohState (J a) (g a)) is invariant (cohInt_isInvariantN). The definition of the coherent intertwiners as a group average of tensor products of coherent states is that of Livine–Speziale (abstract and the definition in the text); the comparison is at the level of the abstract only."
+  since: unreleased
+
+- id: LL-XXXX-c
+  title: "Overlap formula and resolution of the identity of the Livine–Speziale coherent intertwiners: ⟨ι(g), ι(h)⟩ = ∫ Π_a ((g_aᴴ k h_a)₀₀)^{J_a} dk and Π_a (J_a + 1) ∫ |ι(g)⟩⟨ι(g)| dg = P"
+  area: Spin4
+  file: Lightlike/Spin4/CoherentIntertwiner.lean
+  decls: [Lightlike.Spin4.inner_cohInt, Lightlike.Spin4.resolution_cohInt]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: livine-speziale-2007, location: "Abstract", check: "coherent states"}
+      - {ref: perelomov-1986, location: "Chapter: Coherent States for the Rotation Group of Three-Dimensional Space|10.1007/978-3-642-61629-7_5"}
+  review: kernel-checked
+  note: "For group elements g, h : Fin N → SU(2) and doubled spins J, ⟨ι(g), ι(h)⟩ = ∫_{SU(2)} Π_a ((g_aᴴ k h_a)₀₀)^{J_a} dk with the Haar probability measure (inner_cohInt), and Π_a (J_a + 1) ∫ |ι(g)⟩⟨ι(g)| dg = P, the orthogonal projection onto the invariant subspace, with the Haar probability measure on SU(2)^N (resolution_cohInt; it follows from the resolution of the identity of the single coherent states, LL-0039). These are the overlap formula and the resolution of the identity of the Livine–Speziale intertwiners; the formulas were derived here and compared with the abstract and the coherent-state chapter of Perelomov at that level only, not with an equation."
+  since: unreleased
+
+- id: LL-XXXX-d
+  title: The Spin(4) coherent intertwiner ι⁺ ⊗ ι⁻ is invariant, its overlap is the product of the two SU(2) overlaps, and it resolves the identity on the Spin(4) invariant subspace
+  area: Spin4
+  file: Lightlike/Spin4/CoherentIntertwiner.lean
+  decls: [Lightlike.Spin4.cohInt4_invariant, Lightlike.Spin4.inner_cohInt4, Lightlike.Spin4.resolution_cohInt4]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: livine-speziale-2007, location: "Abstract", check: "coherent states"}
+  review: kernel-checked
+  note: "For self-dual labels J, anti-self-dual labels K and group elements (g₊, g₋), cohInt4 J K g = ι⁺(g₊) ⊗ ι⁻(g₋) is invariant under the Spin(4) action ρ_J(h₊) ⊗ ρ_K(h₋) (cohInt4_invariant); the overlap is the product of the two SU(2) overlaps (inner_cohInt4); and Π_a (J_a + 1)(K_a + 1) ∫∫ |ι⁺ ⊗ ι⁻⟩⟨ι⁺ ⊗ ι⁻| = P_J ⊗ P_K for the product of the Haar measures (resolution_cohInt4). The statements are the Spin(4) form of LL-XXXX-c; compared at the abstract of Livine–Speziale only."
+  since: unreleased
