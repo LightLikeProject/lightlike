@@ -31,7 +31,8 @@ Question: for the ladder images `h_{l,r}[G] = (ladUp (l-1) r ∘ … ∘ ladUp 0
   (no shift); `ladUp_profile` (`LadderProfile.lean`): `ladUp k 0 (sinh^k G^{(k)}∘cosh) = sinh^{k+1} G^{(k+1)}∘cosh` on `ξ > 0`, which is
   the base `(0, r) = (r, 0)`: `Cas_{k,0} = Cas_{0,k}` as operators.
 - Not proved, with the concrete obstructions: (1) `radialCasimir_ladUp`, `ladder_adjoint`, `ladDown_ladUp` assume a global `ContDiff` of `F`,
-  but `ladUp l r F` is only smooth on `ξ > 0` (`ladCoeff` has `1/sinh ξ`), so the recursion needs local (`ContDiffAt` on `Ioi 0`)
-  versions of `hasDerivAt_ladUp`, `ladder_adjoint`, `radialCasimir_ladUp` (about 150 lines). (2) The boundary term of the adjoint identity at
+  but `ladUp l r F` is only smooth on `ξ > 0` (`ladCoeff` has `1/sinh ξ`), so the recursion needs local (`ContDiffOn` on `Ioi 0`)
+  versions; `radialCasimir_ladUp` is now stated for `ContDiffOn ℝ ∞ F (Ioi 0)` (done, with `hasDerivAt_ladUp_at`), `ladder_adjoint`
+  and `ladDown_ladUp` are still global (about 100 lines). (2) The boundary term of the adjoint identity at
   `ξ → 0`: `h_{l,r}[G](a) conj(h_{l+1,r}[G'](a)) sinh a → 0` needs `h_{l,r}[G] = O(ξ^{l+r})` with a smooth quotient, a separate induction
   (about 150 lines). (3) The polarised induction of `KClaim_succ` with the weight `wl l · wl r`. Estimated 500 more lines.

@@ -55,32 +55,49 @@ lemma hasDerivAt_coth {ξ : ℝ} (hξ : 0 < ξ) :
       ((Real.sinh ξ * Real.sinh ξ - Real.cosh ξ * Real.cosh ξ) / Real.sinh ξ ^ 2) ξ :=
   (Real.hasDerivAt_cosh ξ).div (Real.hasDerivAt_sinh ξ) (Real.sinh_pos_iff.2 hξ).ne'
 
-/-- **The raising ladder intertwines the radial Casimir** on `ξ > 0`, by direct differentiation. -/
-theorem radialCasimir_ladUp (l r : ℝ) {F : ℝ → ℂ} (hF : ContDiff ℝ ∞ F) {ξ : ℝ} (hξ : 0 < ξ) :
+/-- The derivative of `ladUp F` at `ξ > 0`, from smoothness near `ξ` only (`F`, `F'` differentiable at `ξ`). -/
+lemma hasDerivAt_ladUp_at (l r : ℝ) {F : ℝ → ℂ} {ξ : ℝ} (hξ : 0 < ξ) (hF : DifferentiableAt ℝ F ξ)
+    (hF1 : DifferentiableAt ℝ (deriv F) ξ) :
+    HasDerivAt (ladUp l r F)
+      (deriv (deriv F) ξ - ((-l / Real.sinh ξ ^ 2 - r * Real.cosh ξ / Real.sinh ξ ^ 2 : ℝ) : ℂ) * F ξ -
+        (ladCoeff l r ξ : ℂ) * deriv F ξ) ξ := by
+  have h3 := (hasDerivAt_ladCoeff l r hξ).ofReal_comp
+  have h4 := hF1.hasDerivAt.sub (h3.mul hF.hasDerivAt)
+  refine HasDerivAt.congr_deriv h4 ?_
+  simp only [Complex.ofReal_div, Complex.ofReal_mul, Complex.ofReal_sub, Complex.ofReal_neg]
+  ring
+
+/-- **The raising ladder intertwines the radial Casimir** on `ξ > 0`, by direct differentiation; `F` need only be
+smooth on `(0, ∞)`. -/
+theorem radialCasimir_ladUp (l r : ℝ) {F : ℝ → ℂ} (hF : ContDiffOn ℝ ∞ F (Ioi 0)) {ξ : ℝ} (hξ : 0 < ξ) :
     radialCasimir (l + 1) r (ladUp l r F) ξ = ladUp l r (radialCasimir l r F) ξ := by
   have hs : Real.sinh ξ ≠ 0 := (Real.sinh_pos_iff.2 hξ).ne'
-  have hF2 : ContDiff ℝ 2 F := hF.of_le (by simp)
-  have h1 : ContDiff ℝ ∞ (deriv F) := (contDiff_infty_iff_deriv.1 hF).2
-  have h2 : ContDiff ℝ ∞ (deriv (deriv F)) := (contDiff_infty_iff_deriv.1 h1).2
-  have d0 : ∀ y, HasDerivAt F (deriv F y) y := fun y => ((hF.differentiable (by simp)) y).hasDerivAt
-  have d1 : ∀ y, HasDerivAt (deriv F) (deriv (deriv F) y) y :=
-    fun y => ((h1.differentiable (by simp)) y).hasDerivAt
-  have d2 : ∀ y, HasDerivAt (deriv (deriv F)) (deriv (deriv (deriv F)) y) y :=
-    fun y => ((h2.differentiable (by simp)) y).hasDerivAt
-  -- derivative of `ladUp l r F` near `ξ`
+  have h1 : ContDiffOn ℝ ∞ (deriv F) (Ioi 0) := hF.deriv_of_isOpen isOpen_Ioi (by simp)
+  have h2 : ContDiffOn ℝ ∞ (deriv (deriv F)) (Ioi 0) := h1.deriv_of_isOpen isOpen_Ioi (by simp)
+  have dF : ∀ y, 0 < y → DifferentiableAt ℝ F y := fun y hy =>
+    (hF.differentiableOn (by simp)).differentiableAt (Ioi_mem_nhds hy)
+  have dF1 : ∀ y, 0 < y → DifferentiableAt ℝ (deriv F) y := fun y hy =>
+    (h1.differentiableOn (by simp)).differentiableAt (Ioi_mem_nhds hy)
+  have dF2 : ∀ y, 0 < y → DifferentiableAt ℝ (deriv (deriv F)) y := fun y hy =>
+    (h2.differentiableOn (by simp)).differentiableAt (Ioi_mem_nhds hy)
+  have d0 : HasDerivAt F (deriv F ξ) ξ := (dF ξ hξ).hasDerivAt
+  have d1 : HasDerivAt (deriv F) (deriv (deriv F) ξ) ξ := (dF1 ξ hξ).hasDerivAt
+  have d2 : HasDerivAt (deriv (deriv F)) (deriv (deriv (deriv F)) ξ) ξ := (dF2 ξ hξ).hasDerivAt
   have hc := (hasDerivAt_ladCoeff l r hξ).ofReal_comp
   have hc1 := (hasDerivAt_ladCoeff' l r hξ).ofReal_comp
-  have hG1 := (((d2 ξ).sub (hc1.mul (d0 ξ))).sub (hc.mul (d1 ξ)))
+  have hG1 := (((d2).sub (hc1.mul (d0))).sub (hc.mul (d1)))
   have hg : ∀ y, 0 < y → deriv (ladUp l r F) y =
       deriv (deriv F) y - ((-l / Real.sinh y ^ 2 - r * Real.cosh y / Real.sinh y ^ 2 : ℝ) : ℂ) * F y -
-        (ladCoeff l r y : ℂ) * deriv F y := fun y hy => (hasDerivAt_ladUp l r hF2 hy).deriv
-  have hgg := hG1.congr_of_eventuallyEq (f₁ := deriv (ladUp l r F)) (Filter.eventuallyEq_of_mem (Ioi_mem_nhds hξ) (fun y hy => hg y hy))
+        (ladCoeff l r y : ℂ) * deriv F y := fun y hy =>
+    (hasDerivAt_ladUp_at l r hy (dF y hy) (dF1 y hy)).deriv
+  have hgg := hG1.congr_of_eventuallyEq (f₁ := deriv (ladUp l r F))
+    (Filter.eventuallyEq_of_mem (Ioi_mem_nhds hξ) (fun y hy => hg y hy))
   have hcoth := (hasDerivAt_coth hξ).ofReal_comp
   have hq := (hasDerivAt_casCoeff l r hξ).ofReal_comp
-  have hCas := (((d2 ξ).neg.sub (hcoth.mul (d1 ξ))).add (hq.mul (d0 ξ))).congr_of_eventuallyEq
+  have hCas := (((d2).neg.sub (hcoth.mul (d1))).add (hq.mul (d0))).congr_of_eventuallyEq
     (f₁ := radialCasimir l r F) (Filter.Eventually.of_forall fun y => by
       simp [radialCasimir])
-  have hu := (hasDerivAt_ladUp l r hF2 hξ)
+  have hu := hasDerivAt_ladUp_at l r hξ (dF ξ hξ) (dF1 ξ hξ)
   have hR : ladUp l r (radialCasimir l r F) ξ =
       deriv (radialCasimir l r F) ξ - (ladCoeff l r ξ : ℂ) * radialCasimir l r F ξ := rfl
   rw [hR, hCas.deriv]
