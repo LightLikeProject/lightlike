@@ -120,4 +120,40 @@ theorem unbal_caps_2 (q : kˣ) {N : ℕ} {Z YL YR : Module.End k (ModelSpace k)}
   rw [nestCap_add q l ((s + 1) + d') f, nestCap_add q l (s + 1) d']
   simp only [mul_assoc]
 
+/-- **Caps in excess, case `e > f`, `e - f = d'`**: the cups are exactly used up. -/
+theorem unbal_caps_3 (q : kˣ) {N : ℕ} {Z YL YR : Module.End k (ModelSpace k)} (hZ : Z ∈ CSub q N)
+    (f d' d lam l l' l'' : ℕ) (hYR : YR ∈ CSub q (N - 2 * f)) (hYL : YL ∈ CSub q (N - 2 * f - 2 * d'))
+    (h1 : l + d' + 2 * f ≤ N + 1) (h1' : l' + 2 * f ≤ N + 1)
+    (h2 : l + 2 * d' ≤ N - 2 * f + 1) (h2' : l'' + 2 * d' ≤ N - 2 * f + 1) :
+    ∃ Z2 ∈ CSub q (N - 2 * f - 2 * d'),
+      nestCap q lam d * YL * nestCap q l (d' + f) * Z * nestCup q l' f * YR * nestCup q l'' d' =
+        nestCap q lam d * (YL * Z2) := by
+  have hZ1 := nestCap_mul_nestCup_mem_gen q (l + d') l' f N hZ h1 h1'
+  have hZ1' : (nestCap q (l + d') f * Z * nestCup q l' f) * YR ∈ CSub q (N - 2 * f) :=
+    Subalgebra.mul_mem _ hZ1 hYR
+  have hZ2 := nestCap_mul_nestCup_mem_gen q l l'' d' (N - 2 * f) hZ1' (by omega) h2'
+  refine ⟨_, hZ2, ?_⟩
+  rw [nestCap_add q l d' f]
+  simp only [mul_assoc]
+
+/-- **Caps in excess, case `e > f`, `e - f < d'`**. -/
+theorem unbal_caps_4 (q : kˣ) {N : ℕ} {Z YL YR : Module.End k (ModelSpace k)} (hZ : Z ∈ CSub q N)
+    (f t r j d lam l l' l'' : ℕ) (hYR : YR ∈ CSub q (N - 2 * f)) (hYL : YL ∈ CSub q (N - 2 * f - 2 * t))
+    (h1 : l + t + 2 * f ≤ N + 1) (h1' : l' + 2 * f ≤ N + 1)
+    (h2 : l + 2 * t ≤ N - 2 * f + 1) (h2' : l'' + r + 2 * t ≤ N - 2 * f + 1)
+    (h3 : lam + (j + 1) + 2 * r ≤ N - 2 * f - 2 * t + 1) (h3' : l'' + 2 * r ≤ N - 2 * f - 2 * t + 1) :
+    ∃ Z3 ∈ CSub q (N - 2 * f - 2 * t - 2 * r),
+      nestCap q lam ((j + 1) + r) * YL * nestCap q l (t + f) * Z * nestCup q l' f * YR * nestCup q l'' (r + t) =
+        nestCap q lam (j + 1) * Z3 := by
+  have hZ1 := nestCap_mul_nestCup_mem_gen q (l + t) l' f N hZ h1 h1'
+  have hZ1' : (nestCap q (l + t) f * Z * nestCup q l' f) * YR ∈ CSub q (N - 2 * f) :=
+    Subalgebra.mul_mem _ hZ1 hYR
+  have hZ2 := nestCap_mul_nestCup_mem_gen q l (l'' + r) t (N - 2 * f) hZ1' h2 h2'
+  have hY2 : YL * (nestCap q l t * ((nestCap q (l + t) f * Z * nestCup q l' f) * YR) * nestCup q (l'' + r) t) ∈
+      CSub q (N - 2 * f - 2 * t) := Subalgebra.mul_mem _ hYL hZ2
+  have hZ3 := nestCap_mul_nestCup_mem_gen q (lam + (j + 1)) l'' r (N - 2 * f - 2 * t) hY2 h3 h3'
+  refine ⟨_, hZ3, ?_⟩
+  rw [nestCap_add q lam (j + 1) r, nestCap_add q l t f, nestCup_add q l'' r t]
+  simp only [mul_assoc]
+
 end Lightlike.TemperleyLieb
