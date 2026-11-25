@@ -228,4 +228,28 @@ theorem unbal_cups_B3 (q : kˣ) {N : ℕ} {Z YL YR : Module.End k (ModelSpace k)
   rw [nestCap_add q lam u t, nestCup_add q l' t e, nestCup_add q l'' (j + 1) u]
   simp only [mul_assoc]
 
+/-- **The Gram word is killed by the right projector when the caps are in excess (case `e ≤ f`).** -/
+theorem gramMid_caps_kill_1 (q : kˣ) (hδ : loopVal q ≠ 0) (a b c e t d' j : ℕ) (hN : 1 ≤ a + b + c)
+    (hd : ∀ i, i ≤ a + b + c → chebD (loopVal q) i ≠ 0)
+    (hea : e ≤ a) (heb : e ≤ b) (hfb : e + t ≤ b) (hfc : e + t ≤ c) (hdc : (j + 1) + d' + t ≤ c)
+    (hdA : (j + 1) + d' + t ≤ a + b - 2 * e) (hda : d' ≤ a) (hdf : d' ≤ b + c - 2 * (e + t)) :
+    gramMid q a b c e ((j + 1) + d' + t) (e + t) d' * jwAt q 0 (a + (b + c - 2 * (e + t)) - 2 * d') = 0 := by
+  obtain ⟨hZ, hYL, hYR⟩ := gram_parts (k := k) q a b c e (e + t) hN hea heb hfb hfc
+  have hYR' : jwAt q a (b + c - 2 * (t + e)) * Qab q a (b + c - 2 * (t + e)) ∈ CSub q (a + b + c - 1 - 2 * e - 2 * t) := by
+    have := hYR
+    rw [show e + t = t + e from add_comm e t] at this
+    rwa [show a + b + c - 1 - 2 * (t + e) = a + b + c - 1 - 2 * e - 2 * t by omega] at this
+  obtain ⟨Z3, hZ3, hW⟩ := unbal_caps_1 q (N := a + b + c - 1) hZ e t d' j (a + b - 2 * e - ((j + 1) + d' + t))
+    (a - e) (b - (t + e) + a) (a - d') hYL hYR' (by omega) (by omega) (by omega) (by omega) (by omega) (by omega)
+  unfold gramMid
+  rw [show e + t = t + e from add_comm e t, hW]
+  have hD : a + (b + c - 2 * (t + e)) - 2 * d' = a + b + c - 1 - 2 * e - 2 * t - 2 * d' + 1 := by omega
+  rw [hD]
+  have hd1 : ∀ i, i < a + b + c - 1 - 2 * e - 2 * t - 2 * d' + 1 → chebD (loopVal q) i ≠ 0 := fun i hi => hd i (by omega)
+  have hd2 : ∀ i, i < a + b + c - 1 - 2 * e - 2 * t - 2 * d' + 1 + 1 → chebD (loopVal q) i ≠ 0 :=
+    fun i hi => hd i (by omega)
+  have := caps_mul_proj_zero q hδ hd1 hd2 (A := 1) (Z := Z3) (D := a + b + c - 1 - 2 * e - 2 * t - 2 * d' + 1)
+    (by simpa using hZ3) (a + b - 2 * e - ((j + 1) + d' + t)) j (by omega)
+  simpa [mul_assoc] using this
+
 end Lightlike.TemperleyLieb
