@@ -24,7 +24,9 @@ along chains of 2-3, 3-2, 1-4 and 4-1 moves whose cutoffs satisfy the moves' com
 conditions, also when the gauge set is required to be a maximal tree [5]. The 3-2 and 4-1 moves are
 recognised on any complex [6]. Changing the maximal tree by an exchange inside a triangle leaves
 the gauge-fixed amplitude unchanged, for every cutoff [7], and when the gauge set forces every
-edge the gauge-fixed amplitude is `1` [8].
+edge the gauge-fixed amplitude is `1` [8], for example on the boundary of the 4-simplex with a star tree [13].
+For a finite cutoff the amplitude does depend on the maximal tree on a ring of three tetrahedra, which is not
+a manifold, and the two trees are not related by exchanges [14].
 
 A closed combinatorial 3-manifold is a complex in which every vertex link is a combinatorial
 2-sphere [9]. These 2-spheres are connected closed pseudo-surfaces of Euler characteristic `2`
@@ -54,6 +56,9 @@ proposition {3} [12]. Its proof is not yet formalized. [TODO]
 11. Lightlike/PonzanoRegge/SphereRecognition.lean - `PR.isSphere2_iff_isSurfaceSphere`
 12. Lightlike/PonzanoRegge/Asymptotics.lean - `PR.vol2`, `PR.dihedral`, `PR.reggeAction`,
     `PR.PonzanoReggeFormula`
+13. Lightlike/Tests/Forcing.lean - `PR.Test.Manifold.amplitudeGF_S3_star`
+14. Lightlike/Tests/TreeDependence.lean - `PR.Test.Ring.amplitudeGF_tree_dependent`,
+    `PR.Test.Ring.not_eqvGen_exchange_T1_T2`
 
 ## References
 

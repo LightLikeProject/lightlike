@@ -6222,3 +6222,65 @@
   review: kernel-checked
   note: "For f = F ∘ coshDist with F smooth and compactly supported on ℝ, and Haar measure haarC (the hyperbolic distance has law 4π³ sinh² r dr under it), ∫_G |f|² dg = (2π⁴)⁻¹ ∫_0^∞ ρ² |f̂(ρ)|² dρ, where f̂(ρ) = ∫_G f(g) φ_ρ(g) dg is the spherical transform with the spherical function sin(ρr)/(ρ sinh r) of the principal series (0, ρ); the density is ρ². The proof writes both sides through the odd Schwartz profile sinh r F(cosh r) and uses Plancherel's theorem on ℝ. The constant (2π⁴)⁻¹ belongs to this normalisation of haarC; on hyperbolic space SL(2,ℂ)/SU(2) with the measure 4π sinh² r dr it is the classical (2π²)⁻¹ (the fibre SU(2) has volume π²). It is the radial part of the Plancherel formula of LL-0134 (the n = 0 sector); the two constants were not checked against each other in Lean. Source location chapter-level only (Knapp 1986, chapter II); the density ρ² was not compared with an equation of a source."
   since: unreleased
+- id: LL-0476
+  title: The gauge-fixed Ponzano-Regge amplitude is unchanged by the 3-2 and 4-1 Pachner moves under the cutoff conditions of the inverse 2-3 and 1-4 moves
+  area: PonzanoRegge
+  file: Lightlike/PonzanoRegge/InverseMoves.lean
+  decls: [Lightlike.PR.amplitudeGF_move32, Lightlike.PR.amplitudeGF_move41]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: freidel-louapre-2004, location: "Section III", check: "gauge"}
+      - {ref: barrett-naish-guzman-2009, location: "§2.2.1", check: "Pachner moves"}
+  review: kernel-checked
+  note: "An identity at finite cutoff, the inverse direction of the 2-3 and 1-4 moves of the previous chain entry (LL-0027); comparison pending for these two statements. amplitudeGF_move32: for a 3-2 move on any complex, a gauge set T of old edges not containing the removed edge DE, and a cutoff with cut AD + cut AE <= cut DE, the amplitude of the complex after the move equals that before. amplitudeGF_move41: when no gauge edge touches the vertex E that disappears, the amplitude of the smaller complex with gauge set T equals that of the larger with gauge set T together with the edge DE, under the cutoff conditions cut AD <= cut AE, cut BD <= cut BE, cut CD <= cut CE. The moves are recognised on any complex (IsMove32, IsMove41), not only on manifolds. Independence of the gauge set in general and removal of the cutoff are not proven."
+  since: unreleased
+- id: LL-0477
+  title: A combinatorial 2-sphere is a connected closed pseudo-surface with Euler characteristic 2
+  area: PonzanoRegge
+  file: Lightlike/PonzanoRegge/SphereInvariants.lean
+  decls: [Lightlike.PR.IsSphere2.invariants]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: moise-1977, location: "Chapter: The classification of compact connected 2-manifolds|10.1007/978-1-4612-9906-6_23"}
+  review: kernel-checked
+  note: "The comparison with Moise (1977) is pending: the book was not read at the cited location. IsSphere2 is the library's inductive definition of the combinatorial 2-spheres of a finite set of triangles (generated from the boundary of the tetrahedron by the 2D Pachner moves, as in the previous sphere-recognition entry, LL-0024); the statement is the conjunction of euler2 L = 2, IsConnected2 L and IsClosed2 L, the invariants preserved by the moves. The converse (these invariants characterise the spheres) is the sphere-recognition entry."
+  since: unreleased
+- id: LL-0478
+  title: When the gauge set forces every edge of a 3-complex, the gauge-fixed Ponzano-Regge amplitude is 1 for every cutoff
+  area: PonzanoRegge
+  file: Lightlike/PonzanoRegge/Forcing.lean
+  decls: [Lightlike.PR.amplitudeGF_of_forcesAll]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: freidel-louapre-2004, location: "Section III", check: "gauge"}
+  review: kernel-checked
+  note: "Comparison pending (Freidel-Louapre treat the gauge fixing with a maximal tree; the forcing criterion is this library's). ForcesAll K T: the edges of K are all in T, or a triangle {p, q, r} of K with two of its edges {p, r} and {q, r} in T and the third {p, q} not in T lets the induction continue with {p, q} added. By the triangle inequality with spins 0 on two edges the third edge is forced to spin 0, so only the colouring with all spins 0 contributes, with weight 1. Hypothesis T is a subset of the edges of K. This removes the cutoff for such gauge sets."
+  since: unreleased
+- id: LL-0479
+  title: The gauge-fixed Ponzano-Regge amplitude of the boundary of the 4-simplex with the star tree at a vertex is 1 for every cutoff
+  area: PonzanoRegge
+  file: Lightlike/Tests/Forcing.lean
+  decls: [Lightlike.PR.Test.Manifold.amplitudeGF_S3_star]
+  status: proven
+  tier: frontier
+  source: exploratory
+  review: kernel-checked
+  note: "A kernel-checked instance (all decide steps) of the previous forcing entry on the 3-sphere S3 = the boundary of the 4-simplex on five vertices, with the gauge set the four edges {0,j}; no source states this value. The statement holds for every cutoff function."
+  since: unreleased
+- id: LL-0480
+  title: Independence of the maximal tree fails for the gauge-fixed Ponzano-Regge amplitude with a finite cutoff on a ring of three tetrahedra, and the two trees are not connected by triangle exchanges
+  area: PonzanoRegge
+  file: Lightlike/Tests/TreeDependence.lean
+  decls: [Lightlike.PR.Test.Ring.amplitudeGF_tree_dependent, Lightlike.PR.Test.Ring.not_eqvGen_exchange_T1_T2]
+  status: proven
+  tier: frontier
+  source: exploratory
+  review: kernel-checked
+  note: "A counterexample on the ring R of three tetrahedra {0123}, {2345}, {4501} on six vertices with the constant cutoff 1 (the definition half): T1 and T2 are maximal trees of R and their gauge-fixed amplitudes are -7 and -15, so they differ. R is not a combinatorial 3-manifold (the link of vertex 0 has Euler characteristic 1, not_isCombManifold_R), so the example lies outside the assumptions of Freidel-Louapre's tree independence, which is stated for triangulated 3-manifolds; it shows that the tree-exchange invariance of the gauge-change entry cannot be extended to all complexes. not_eqvGen_exchange_T1_T2: T1 and T2 are not related by a chain of triangle exchanges (otherwise the amplitudes would agree)."
+  since: unreleased
