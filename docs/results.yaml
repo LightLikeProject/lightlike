@@ -5424,3 +5424,36 @@
   review: kernel-checked
   note: "For a locally smooth connection on a manifold modelled on a finite-dimensional space without boundary (with [IsManifold I 2 M], and no Hausdorff hypothesis, no metric and no signature), Connection.curvatureAt, defined with extensions of tangent vectors to vector fields, equals nabla_X nabla_Y Z - nabla_Y nabla_X Z - nabla_[X,Y] Z at the point for any smooth fields with the given values, so it is a tensor and does not depend on the extensions; in a chart it is a function of the values of the three vectors only (curvature_hat). Carroll, Lecture Notes on General Relativity, Chapter 3 (the location is recorded as verified; the specific equations (3.67) and (3.71) were read in the docstring comparison but are not recorded as verified locations). Two differences from the source. KIND representation: in Carroll the coordinate formulas are the definitions of the curvature; here the curvature is defined intrinsically with extensions and the theorem shows it is a tensor given by the chart expression. KIND weaker: curvatureAt_apply_proved holds only for models without boundary (a manifold modelled on a finite-dimensional space, not a general model with corners)."
   since: unreleased
+- id: LL-0413
+  title: "The 4-valent intertwiners of the two pairings (12)(34) and (13)(24) are related by the 6j recoupling matrix: the sum over the four magnetic numbers of fourJ(k) times the swapped fourJ(l) is (-1)^((j₂+j₃+k+l)/2) √((k+1)(l+1)) times a 6j symbol, and each fourJ is the corresponding sum of the other basis"
+  area: Recoupling
+  file: Lightlike/Recoupling/Intertwiner.lean
+  decls: [Lightlike.Recoupling.sum_fourJ_mul_fourJ_swap, Lightlike.Recoupling.fourJ_eq_sum_fourRecoupling]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location for this statement (the library cites Martin-Dussaud 2019, section 5.4-5.5, for the orthonormality of the 4-valent intertwiners in the same file). The spins are doubled (natural numbers j = 2 spin); the phase and square root are written in doubled units, as in the docstring of fourRecoupling. Proved for all spins and all magnetic numbers, with no hypotheses."
+  since: unreleased
+- id: LL-0414
+  title: "The 15j symbol is the closed Möbius ladder of five rungs up to the sign (-1)^b₀: fifteenJ a b c = (-1)^(b 0) times mobius 5 for the rails built from a, b, c"
+  area: Recoupling
+  file: Lightlike/Recoupling/FifteenJ.lean
+  decls: [Lightlike.Recoupling.fifteenJ_eq_mobius]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location for this statement (the library cites Martin-Dussaud 2019, section 5.6, and Dona-Sarno 2018, Section 2, for the 15j symbol in the same area). The spins are doubled natural numbers. The identity is the reduction of the 15j symbol to the 3nj symbol of the first kind (n = 5) of Yutsis-Levinson-Vanagas type, up to sign; proved for all arguments, with no hypotheses."
+  since: unreleased
+- id: LL-0415
+  title: "Orthogonality of the Möbius-ladder form of the 15j symbol: the weighted sum over the four summed rail labels of two mobius 5 values with the same a-rail and different b-rails is the Kronecker delta of the b-labels times the triangle conditions"
+  area: Recoupling
+  file: Lightlike/Recoupling/Orthogonality.lean
+  decls: [Lightlike.Recoupling.sum_mobius_mul_mobius]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location. This is the form of Lightlike.Recoupling.sum_fifteenJ_mul_fifteenJ (LL-0021) before the sign (-1)^b₀ of fifteenJ_eq_mobius is removed, and is its proof step; the weights (x+1) are the dimension factors in doubled units. Proved for all labels, with no hypotheses."
+  since: unreleased
