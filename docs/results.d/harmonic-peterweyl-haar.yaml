@@ -1,0 +1,13 @@
+- id: LL-XXXX
+  title: "Peter–Weyl (Hilbert sum form) for the normalised Haar measure: for every compact Hausdorff group, L²(G, μ) with μ the Haar measure normalised on the whole group (Measure.haarMeasure ⊤) is the Hilbert direct sum of the isotypic components of the irreducible unitary representation classes, with no hypothesis on the measure"
+  area: SU2
+  file: Lightlike/HarmonicAnalysis/PeterWeylTests.lean
+  decls: [Lightlike.HarmonicAnalysis.peterWeyl_isHilbertSum_haar]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: brocker-tom-dieck-1985, location: "Chapter: Representative Functions|10.1007/978-3-662-12918-0_3"}
+  review: kernel-checked
+  note: "The comparison with Bröcker and tom Dieck (1985), Chapter III, is pending: the book was not read at the cited location. This is the statement of peterWeyl_isHilbertSum (the previous Hilbert sum entry, which assumes a Haar probability measure as a hypothesis) for the measure Measure.haarMeasure ⊤ of a compact Hausdorff group G (topological group, T2, Borel measurable space), which is a probability measure (isProbabilityMeasure_haarMeasure_top); G is not assumed second countable or metrisable. Non-vacuity: instantiated for U(1) and SU(2) in the same file (examples), and the wrong-model test there shows the trivial two-dimensional representation is not irreducible and fails Schur orthogonality."
+  since: unreleased

@@ -19,7 +19,8 @@ Every continuous irreducible finite-dimensional representation of SU(2) is equiv
 the spin representations [5], also in the unitary form [13]. This is the SU(2) case of the Peter–Weyl theorem {2}. The general
 Peter–Weyl theorem for compact groups is also formalized in `Lightlike/HarmonicAnalysis/`: the matrix
 coefficients are dense in `C(G)` and in `L²(G)`, and `L²(G)` is the Hilbert sum of the isotypic
-components (`peterWeyl_dense_continuous`, `peterWeyl_dense_L2`, `peterWeyl_isHilbertSum`).
+components (`peterWeyl_dense_continuous`, `peterWeyl_dense_L2`, `peterWeyl_isHilbertSum`). For the
+normalised Haar measure of the group the Hilbert sum statement needs no hypothesis on a measure [14].
 
 The spin representations are unitary and continuous [1]. The Clebsch–Gordan matrices of Physlib
 intertwine the representations of the group (Lightlike/Spin4/CGBridge.lean), and with them the two
@@ -62,6 +63,7 @@ L²(R) [11].
 12. Lightlike/SU2/Recoupling6j.lean - `SU2.coupleLeft_equivariant`, `SU2.coupleRight_equivariant`,
     `SU2.sum_cg_overlap`, `SU2.sum_cg_matrix`
 13. Lightlike/HarmonicAnalysis/SU2Complete.lean - `HarmonicAnalysis.su2_irreducible_classification`
+14. Lightlike/HarmonicAnalysis/PeterWeylTests.lean - `HarmonicAnalysis.peterWeyl_isHilbertSum_haar`
 
 ## References
 
