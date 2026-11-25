@@ -51,3 +51,13 @@ wrong by about ε · 10^{12} times the sum at λ = 80; to be correct to 1% it wo
 replacement of the sum by an integral of the absolute size of the summand has an error far above the sum itself.
 Limits: this shows that term-wise estimates are insufficient. It does not examine the particular step of Gurau (2008)
 named in the milestone text, which was not read.
+
+## 3. A sum with known value, outside the Racah shape (PROVED in Lean)
+
+The done-when clause also asks for a sum with known asymptotics. `Lightlike/Asymptotics/SP2/KnownSum.lean` proves Kummer's
+alternating sum of binomial squares, `Σ_t (−1)^t C(2n,t)² = (−1)^n C(2n,n)` (`kummer_alternating`), an alternating
+ratio of Gamma functions `Γ(2n+1)² / (Γ(t+1)² Γ(2n−t+1)²)`, with the sum of the absolute values of the terms equal to `C(4n,2n)`
+(`kummer_abs_sum`), so the terms exceed the sum by a factor at least `4^n/(4n+1)` (`kummer_cancellation`). It confirms in a case
+where the answer is known exactly that estimates of the terms in absolute value cannot give the sum. It is **not** of the shape of
+Racah's sum (four Gamma functions in the denominator and no `Γ(t+2)`), so it is not a check of `racahSumAsymptotics` itself;
+the saddle-point statement proved on main is only for Racah's shape, which SP2 says is agreed with SF8.
