@@ -378,7 +378,7 @@ recursion of the pairings, whose two-point value is the sum of u_i v'_i [130].
 90. Lightlike/OperatorAlgebras/TestsGibbsKMS.lean - `OperatorAlgebras.GibbsKMS.summable_exp_neg_mul_nat`,
     `OperatorAlgebras.GibbsKMS.oscillator_isKMS`, `OperatorAlgebras.GibbsKMS.not_summable_exp_zero` (the wrong input
     `β = 0`)
-91. Lightlike/OperatorAlgebras/ModularFinite.lean - `OperatorAlgebras.kms`, `OperatorAlgebras.inner_tomita`,
+91. Lightlike/OperatorAlgebras/ModularFinite.lean - `OperatorAlgebras.kms`, `OperatorAlgebras.inner_tomita`, `OperatorAlgebras.tomita_apply`,
     `OperatorAlgebras.omega_flow`, `OperatorAlgebras.flow_add`, `OperatorAlgebras.flow_mul`,
     `OperatorAlgebras.isKMS_boltz`, `OperatorAlgebras.not_isKMS_of_ne`
 92. Lightlike/OperatorAlgebras/PureStates.lean - `OperatorAlgebras.PureStates.states`, `OperatorAlgebras.PureStates.IsPure`,
@@ -494,7 +494,9 @@ recursion of the pairings, whose two-point value is the sum of u_i v'_i [130].
     `OperatorAlgebras.SecondQuantFock.dGammaT_comm`, `OperatorAlgebras.SecondQuantFock.embCLM_creW`, `OperatorAlgebras.SecondQuantFock.embCLM_dGammaFock`
 120. Lightlike/OperatorAlgebras/FiniteKMS.lean - `OperatorAlgebras.isKMS_iff_eq_gibbs`,
      `OperatorAlgebras.isKMS_gibbs`
-121. Lightlike/OperatorAlgebras/FiniteModular.lean - `OperatorAlgebras.isKMS_modular`
+121. Lightlike/OperatorAlgebras/FiniteModular.lean - `OperatorAlgebras.isKMS_modular`,
+     `OperatorAlgebras.modOpSqrt_modOpSqrt`, `OperatorAlgebras.modConj_modOp_sqrt`,
+     `OperatorAlgebras.modOpPow_mul_modOpPow_neg`
 122. Lightlike/OperatorAlgebras/FockShale/Summary.lean - `OperatorAlgebras.fockRepOf_implements_iff`,
      `OperatorAlgebras.squeeze_norm_alpha_sq_sub_norm_beta_sq_one`,
      `OperatorAlgebras.squeezeEllTwo_not_implementable`,
@@ -525,6 +527,8 @@ recursion of the pairings, whose two-point value is the sum of u_i v'_i [130].
      `OperatorAlgebras.expect_prod`, `OperatorAlgebras.wick_pair`, `OperatorAlgebras.wick_single`
 130. Lightlike/OperatorAlgebras/CARWick.lean - `OperatorAlgebras.carField`,
      `OperatorAlgebras.carField_anticomm`, `OperatorAlgebras.car_wick`, `OperatorAlgebras.car_wick_two`
+131. Lightlike/OperatorAlgebras/ModularKMS/ModularCapstone.lean - `OperatorAlgebras.isKMS_modular_one`,
+     `OperatorAlgebras.modular_flow_eq_modGroup`
 
 ## References
 
