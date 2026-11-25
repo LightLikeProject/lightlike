@@ -1,9 +1,10 @@
 - id: LL-XXXX-p
-  title: "The Parke-Taylor formula <ij>^4/(<12>...<n1>) for the colour-ordered Feynman-rule amplitude of any number of gluons with the two negative-helicity gluons at any positions, for generic spinor kinematics: for every class of kinematics closed under the reduction of the BCFW channel [1,2] and under the cyclic relabelling, the Berends-Giele amplitude equals the Parke-Taylor amplitude"
+  title: "The Parke-Taylor formula <ij>^4/(<12>...<n1>) for the colour-ordered Feynman-rule amplitude of any number of gluons with the two negative-helicity gluons at any positions, for every class of generic spinor kinematics closed under the reduction of the BCFW channel [1,2] and under the cyclic relabelling, the Berends-Giele amplitude equals the Parke-Taylor amplitude"
   area: GR
   file: Lightlike/GR/MHVInduction.lean
   decls: [Lightlike.SpinorHelicity.trueAmp_eq_ptN, Lightlike.SpinorHelicity.ClosedClass, Lightlike.SpinorHelicity.FarData, Lightlike.SpinorHelicity.RotData, Lightlike.SpinorHelicity.trueAmp_far]
-  status: proven
+  status: conditional
+  hypotheses: [Lightlike.SpinorHelicity.ClosedClass]
   tier: established
   source:
     refs:
