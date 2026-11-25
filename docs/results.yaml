@@ -5806,3 +5806,14 @@
   review: kernel-checked
   note: "For a 4-dimensional pure complex K given by its 4-simplices (Complex4) with the 4D moves of the four-dimensional file: a move is the bistellar move kappa(sigma, tau) on the generated complex (isBistellar_move4) and the moved complex is the bistellar one (ofComplex4_move); conversely a bistellar move with #sigma + #tau = 6 on the generated complex is a 4D move (isMove_of_isBistellar); closed combinatorial 4-manifolds (all vertex links PL 3-spheres, IsCombManifold4) are preserved and reflected by the moves (isCombManifold4_move_iff); Pachner's theorem for these complexes is pachner4 (LL-0441). The identification of the 4D moves with the bistellar moves kappa(sigma, tau) is this library's (KIND representation); Theorem 5.9 is the verified location of Pachner's theorem."
   since: unreleased
+- id: LL-0444
+  title: "Minkowski space solves the vacuum Einstein equations with vanishing cosmological constant on all of R^n"
+  area: GR
+  file: Lightlike/GR/Einstein.lean
+  decls: [Lightlike.minkowski_isVacuumSolution]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source was read at a cited location). The coordinate vacuum equations G_{mu nu} + Lambda g_{mu nu} = 0 with Lambda = 0 hold at every point of R^n for the constant metric eta, for every dimension n, because the Riemann tensor vanishes (Minkowski flatness) and so do the Ricci tensor, the scalar curvature and the Einstein tensor."
+  since: unreleased
