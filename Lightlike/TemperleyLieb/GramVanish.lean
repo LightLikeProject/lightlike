@@ -321,4 +321,48 @@ theorem gramMid_caps_kill_4 (q : kˣ) (hδ : loopVal q ≠ 0) (a b c f t r j : �
     (by simpa using hZ3) (a + b - 2 * (t + f) - ((j + 1) + r)) j (by omega)
   simpa [mul_assoc] using this
 
+/-- Cups in excess, case A (`e = t + f`, `d' = (j+1) + d + t`): the Gram word is killed by the left projector. -/
+theorem gramMid_cups_kill_A (q : kˣ) (hδ : loopVal q ≠ 0) (a b c f t d j : ℕ) (hN : 1 ≤ a + b + c)
+    (hd : ∀ i, i ≤ a + b + c → chebD (loopVal q) i ≠ 0)
+    (hea : t + f ≤ a) (heb : t + f ≤ b) (hfb : f ≤ b) (hfc : f ≤ c)
+    (hdc : d ≤ c) (hdA : d ≤ a + b - 2 * (t + f)) (hda : (j + 1) + d + t ≤ a)
+    (hdf : (j + 1) + d + t ≤ b + c - 2 * f) :
+    jwAt q 0 (a + b - 2 * (t + f) + c - 2 * d) * gramMid q a b c (t + f) d f ((j + 1) + d + t) = 0 := by
+  obtain ⟨hZ, hYL, hYR⟩ := gram_parts (k := k) q a b c (t + f) f hN hea heb hfb hfc
+  have hYL' : Qab q (a + b - 2 * (t + f)) c * jwAt q 0 (a + b - 2 * (t + f)) ∈ CSub q (a + b + c - 1 - 2 * f - 2 * t) := by
+    rwa [show a + b + c - 1 - 2 * (t + f) = a + b + c - 1 - 2 * f - 2 * t by omega] at hYL
+  obtain ⟨Z3, hZ3, hW⟩ := unbal_cups_A q (N := a + b + c - 1) hZ f t d j (a + b - 2 * (t + f) - d) (a - (t + f))
+    (b - f + a) (a - ((j + 1) + d + t)) hYR hYL' (by omega) (by omega) (by omega) (by omega) (by omega) (by omega)
+  unfold gramMid
+  rw [hW]
+  have hD : a + b - 2 * (t + f) + c - 2 * d = a + b + c - 1 - 2 * f - 2 * t - 2 * d + 1 := by omega
+  rw [hD]
+  have hd1 : ∀ i, i < a + b + c - 1 - 2 * f - 2 * t - 2 * d + 1 → chebD (loopVal q) i ≠ 0 := fun i hi => hd i (by omega)
+  have hd2 : ∀ i, i < a + b + c - 1 - 2 * f - 2 * t - 2 * d + 1 + 1 → chebD (loopVal q) i ≠ 0 :=
+    fun i hi => hd i (by omega)
+  have := proj_mul_cups_zero q hδ hd1 hd2 (A := 1) (Z := Z3) (D := a + b + c - 1 - 2 * f - 2 * t - 2 * d + 1)
+    (by simpa using hZ3) (a - ((j + 1) + d + t)) j (by omega)
+  simpa [mul_assoc] using this
+
+/-- Cups in excess, case B1 (`f = (j+1) + d + e`). -/
+theorem gramMid_cups_kill_B1 (q : kˣ) (hδ : loopVal q ≠ 0) (a b c e d j d' : ℕ) (hN : 1 ≤ a + b + c)
+    (hd : ∀ i, i ≤ a + b + c → chebD (loopVal q) i ≠ 0)
+    (hea : e ≤ a) (heb : e ≤ b) (hfb : (j + 1) + d + e ≤ b) (hfc : (j + 1) + d + e ≤ c)
+    (hdc : d ≤ c) (hdA : d ≤ a + b - 2 * e) (hda : d' ≤ a) (hdf : d' ≤ b + c - 2 * ((j + 1) + d + e)) :
+    jwAt q 0 (a + b - 2 * e + c - 2 * d) * gramMid q a b c e d ((j + 1) + d + e) d' = 0 := by
+  obtain ⟨hZ, hYL, hYR⟩ := gram_parts (k := k) q a b c e ((j + 1) + d + e) hN hea heb hfb hfc
+  obtain ⟨Z2, hZ2, hW⟩ := unbal_cups_B1 q (N := a + b + c - 1) hZ e d j d' (a + b - 2 * e - d) (a - e)
+    (b - ((j + 1) + d + e) + a) (a - d') hYL (by omega) (by omega) (by omega) (by omega)
+  unfold gramMid
+  rw [hW]
+  have hD : a + b - 2 * e + c - 2 * d = a + b + c - 1 - 2 * e - 2 * d + 1 := by omega
+  rw [hD]
+  have hd1 : ∀ i, i < a + b + c - 1 - 2 * e - 2 * d + 1 → chebD (loopVal q) i ≠ 0 := fun i hi => hd i (by omega)
+  have hd2 : ∀ i, i < a + b + c - 1 - 2 * e - 2 * d + 1 + 1 → chebD (loopVal q) i ≠ 0 := fun i hi => hd i (by omega)
+  have := proj_mul_cups_zero q hδ hd1 hd2
+    (A := (jwAt q a (b + c - 2 * ((j + 1) + d + e)) * Qab q a (b + c - 2 * ((j + 1) + d + e))) * nestCup q (a - d') d')
+    (Z := Z2) (D := a + b + c - 1 - 2 * e - 2 * d + 1) (by simpa using hZ2)
+    (b - ((j + 1) + d + e) + a) j (by omega)
+  simpa [mul_assoc] using this
+
 end Lightlike.TemperleyLieb
