@@ -507,4 +507,50 @@ theorem modelE_dicke (q : kˣ) {c m j : ℕ} (hj : j + 2 ≤ c) : modelE q j (di
       rw [if_neg hτ, if_neg hτ2]; simp
   · exact modelE_coeff_eq q _ (by rw [h0, h1])
 
+/-- The canonical sequence with `m` ones in front. -/
+def frontOnes (m : ℕ) : ℕ → Bool := fun p => decide (p < m)
+
+lemma frontOnes_mem {c m : ℕ} (h : m ≤ c) : frontOnes m ∈ tailZero c := by
+  intro j hj; simp [frontOnes]; omega
+
+lemma wtCount_frontOnes {c m : ℕ} (h : m ≤ c) : wtCount c (frontOnes m) = m := by
+  unfold wtCount onesSum frontOnes
+  have h2 : ∀ p : ℕ, (if decide (p < m) = true then 1 else 0) = (if p < m then 1 else 0) := by
+    intro p; simp
+  simp only [h2]
+  rw [← Finset.card_filter]
+  have h3 : (Finset.range c).filter (fun p => p < m) = Finset.range m := by
+    ext p; simp; omega
+  rw [h3]; simp
+
+lemma frontOnes_mem_dickeSet {c m : ℕ} (h : m ≤ c) : frontOnes m ∈ dickeSet c m :=
+  mem_dickeSet.mpr ⟨frontOnes_mem h, wtCount_frontOnes h⟩
+
+/-- The Dicke vector is nonzero for `m ≤ c`. -/
+theorem dicke_ne_zero (q : kˣ) {c m : ℕ} (h : m ≤ c) : (dicke q c m : ModelSpace k) ≠ 0 := by
+  intro h0
+  have := dicke_apply (k := k) q c m (frontOnes m)
+  rw [h0, if_pos (frontOnes_mem_dickeSet h)] at this
+  simp only [Finsupp.coe_zero, Pi.zero_apply] at this
+  exact pow_ne_zero _ q.ne_zero this.symm
+
+/-- The Dicke vectors of different weights are linearly independent. -/
+theorem dicke_linearIndependent (q : kˣ) (c : ℕ) :
+    LinearIndependent k (fun m : Fin (c + 1) => (dicke q c m : ModelSpace k)) := by
+  rw [linearIndependent_iff']
+  intro s g hg i hi
+  have hle : (i : ℕ) ≤ c := by omega
+  have h := congrArg (fun v : ModelSpace k => v (frontOnes i)) hg
+  simp only [Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul, Finsupp.coe_zero,
+    Pi.zero_apply] at h
+  rw [Finset.sum_eq_single i] at h
+  · rw [dicke_apply, if_pos (frontOnes_mem_dickeSet hle)] at h
+    exact (mul_eq_zero.mp h).resolve_right (pow_ne_zero _ q.ne_zero)
+  · intro j _ hji
+    rw [dicke_apply, if_neg, mul_zero]
+    intro hm
+    rw [mem_dickeSet, wtCount_frontOnes hle] at hm
+    exact hji (Fin.ext hm.2.symm)
+  · intro hn; exact absurd hi hn
+
 end Lightlike.TemperleyLieb
