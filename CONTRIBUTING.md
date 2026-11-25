@@ -113,8 +113,8 @@ reviewed and locked (the `Proof task` workflow checks this). Other CI steps are 
   v1.0 milestones (the GitHub Milestone
   [v1.0](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+milestone%3Av1.0)) are
   worked in ranking order: take the lowest Rank in the Ready column of the Project board. The others
-  carry the labels `not-scheduled` and `help-wanted`: open to you, not worked on by the maintainers'
-  agents.
+  ([milestone issues without the v1.0 Milestone](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aopen+label%3Amilestone+no%3Amilestone), the column Not scheduled) are open to
+  you, not worked on by the maintainers' agents.
 - **[Upstream](docs/tasks/README.md#upstream):** results to rework for Mathlib or Physlib.
 - **Good first issues:** small and self-contained, needing no knowledge of the rest of the library.
 - **Propose a result:** the [formalize this result](.github/ISSUE_TEMPLATE/formalize-result.yml)

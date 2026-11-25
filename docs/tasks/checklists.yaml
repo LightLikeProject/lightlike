@@ -28,7 +28,7 @@
 # docs/results.yaml with `status: proven`, and is cited in the API map of its folder.
 
 # v1.0 (owner decision, 25 Nov 2026): the S, M and L milestones of the eight core areas. On GitHub
-# their issues are in the GitHub Milestone "v1.0"; every other milestone has the label not-scheduled.
+# their issues are in the GitHub Milestone "v1.0"; every other milestone is outside it (not scheduled).
 v1.0:
   areas: [geometry, harmonic-analysis, operator-algebras, asymptotics, pl-topology, quantum-groups, regge, spin-foams]
   sizes: [S, M, L]

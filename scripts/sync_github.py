@@ -11,12 +11,15 @@ every milestone of docs/tasks/milestones.md:
   - writes its title and its body (the body only when more than its first, generated-by line
     changed);
   - writes the labels of its own families: the plan labels (milestone, area, size, difficulty,
-    upstream), not-scheduled and help-wanted for the milestones outside v1.0, and one status label
-    for a v1.0 milestone (status: ready, status: in-progress, status: review, status: done). It
-    removes the old status labels ready, blocked and in review from milestone issues;
+    upstream) and one status label for a v1.0 milestone (status: ready, status: in-progress,
+    status: review, status: done). A milestone outside v1.0 gets no extra label: being outside the
+    GitHub Milestone "v1.0" is what marks it not scheduled. It removes the old status labels ready,
+    blocked and in review, and the retired labels not-scheduled and help-wanted, from milestone
+    issues;
   - puts each v1.0 milestone in the GitHub Milestone "v1.0", and takes the others out of it;
-  - sets its column on the Project board: Ready, In progress, In review, Done or Not scheduled,
-    and, for an open v1.0 milestone, the board's number field Rank to its `ranking:`.
+  - sets its column on the Project board: Ready, In progress, In review, Done or Not scheduled
+    (an open milestone issue without the v1.0 Milestone), and, for an open v1.0 milestone, the
+    board's number field Rank to its `ranking:`.
 
 It never closes or reopens an issue (the merger closes a milestone's issue after a passing review),
 never touches a proof-task issue, and never writes the claim labels claimed and attempting: the
@@ -65,7 +68,7 @@ import tasks as T  # noqa: E402
 V1_MILESTONE = "v1.0"
 STATUS = {"ready": "Ready", "in-progress": "In progress", "review": "In review", "done": "Done"}
 COLUMNS = [*STATUS.values(), "Not scheduled"]
-NOT_SCHEDULED, HELP_WANTED = "not-scheduled", "help-wanted"
+RETIRED = {"not-scheduled", "help-wanted"}  # dropped 25 Nov: outside the v1.0 Milestone means not scheduled
 CLAIM_LABELS = {"claimed", "attempting"}  # the claim Action's; never written here
 REVIEW_PENDING = "review-pending"  # set by hand on a closed issue whose review has not run; never written here
 OLD_STATUS = {"ready", "blocked", "in review"}  # the claim Action set these on milestone issues before 25 Nov
@@ -81,7 +84,7 @@ class Stop(Exception):
 def ours(label):
     """Whether `label` belongs to a family this script writes on milestone issues."""
     return (label.startswith(("area: ", "size: ", "status: ", "upstream: "))
-            or label in {"milestone", "upstream", NOT_SCHEDULED, HELP_WANTED} | TIERS | OLD_STATUS)
+            or label in {"milestone", "upstream"} | TIERS | OLD_STATUS | RETIRED)
 
 
 # --- Reading -------------------------------------------------------------------------------------
@@ -213,8 +216,7 @@ def plan(status, tasks, data, stored, spec, only=None):
         st, iss = status["milestones"][mid], issues.get(mid)
         outside = [u for u in (iss or {}).get("assignees") or []] if "claimed" in (iss or {}).get("labels", []) else []
         s = status_of(st, iss, outside)
-        want = list(t["labels"]) + ([f"status: {s}"] if st["v1"] and s else []) + (
-            [] if st["v1"] else [NOT_SCHEDULED] + ([HELP_WANTED] if s != "done" else []))
+        want = list(t["labels"]) + ([f"status: {s}"] if st["v1"] and s else [])
         need |= set(want)
         title = T.short_title(f"{t['id']}: {st['title']}")
         body = MS.body(st, sha, date, outside, issue_of)
@@ -488,7 +490,8 @@ def selftest():
                         iss(3, "A3", ["milestone", "area: geometry", "size: M", "intermediate"], state="closed", reason="completed"),
                         iss(6, "A5", ["milestone", "area: geometry", "size: M", "intermediate", REVIEW_PENDING],
                             state="closed", reason="completed", milestone="v1.0"),
-                        iss(4, "B1", ["milestone", "area: geometry", "size: M", "intermediate", "claimed"],
+                        iss(4, "B1", ["milestone", "area: geometry", "size: M", "intermediate", "claimed",
+                                      "not-scheduled", "help-wanted"],
                             milestone="v1.0", assignees=["someone"]),
                         iss(9, "A1", ["milestone"]),
                         dict(number=5, title="T-A1-P1: a proof task", state="open", reason="", labels=["ready"],
@@ -512,14 +515,16 @@ def selftest():
            "stays and the issue is neither reopened nor closed",
            "status: review" in e("A5")["add"] and REVIEW_PENDING not in e("A5")["remove"]
            and by[("board", "A5")][0]["column"] == "In review")
-    expect("outside v1.0: not-scheduled and help-wanted, out of the GitHub Milestone, column Not scheduled; "
-           "the outside claim is shown", e("B1")["milestone"] == "" and {NOT_SCHEDULED, HELP_WANTED} <= set(e("B1")["add"])
+    expect("outside v1.0: out of the GitHub Milestone, column Not scheduled, no status label; the retired labels "
+           "not-scheduled and help-wanted are removed; the outside claim is shown",
+           e("B1")["milestone"] == "" and RETIRED <= set(e("B1")["remove"])
+           and not any(x.startswith("status: ") or x in RETIRED for x in e("B1")["add"])
            and by[("board", "B1")][0]["column"] == "Not scheduled" and "@someone" in e("B1")["body"])
     expect("a milestone without an issue is opened once, in v1.0, with its labels",
            len(by[("create", "A4")]) == 1 and by[("create", "A4")][0]["milestone"] == "v1.0")
     expect("missing labels are created, the claim labels never",
-           {a["name"] for a in acts if a["op"] == "label"} >= {"status: in-progress", NOT_SCHEDULED}
-           and not any(a["op"] == "label" and a["name"] in CLAIM_LABELS for a in acts))
+           {a["name"] for a in acts if a["op"] == "label"} >= {"status: in-progress"}
+           and not any(a["op"] == "label" and a["name"] in CLAIM_LABELS | RETIRED for a in acts))
     expect("an issue in the right column is not moved", not by[("board", "A1")])
     ranked = dict(status, milestones=dict(status["milestones"], A1=dict(status["milestones"]["A1"], ranking=2),
                                           A3=dict(status["milestones"]["A3"], ranking=5)))
@@ -536,9 +541,10 @@ def selftest():
            and any("A2" in p for p in probs2))
     _, probs3 = plan(status, tasks, dict(data, milestones=[], board=None), {}, {})
     expect("a missing GitHub Milestone or board is a problem (apply then writes nothing)", len(probs3) == 2)
-    expect("the families: status, area and old status labels are ours; claimed, review and upstream labels of others are not",
-           ours("status: done") and ours("area: x") and ours("blocked") and not ours("claimed")
-           and not ours("review") and not ours("trust-check"))
+    expect("the families: status, area, old status and retired labels are ours; claimed, review, the curated "
+           "help wanted and upstream labels of others are not",
+           ours("status: done") and ours("area: x") and ours("blocked") and ours("help-wanted")
+           and not ours("help wanted") and not ours("claimed") and not ours("review") and not ours("trust-check"))
     with tempfile.TemporaryDirectory() as d:
         p = pathlib.Path(d) / "c.yaml"
         p.write_text("# c\nv1.0:\n  count: 1\n\nmilestones:\n  A1:\n    ranking: null\n    items:\n      - id: m1\n\n  A2:\n    issue: 3\n")

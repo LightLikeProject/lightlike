@@ -634,7 +634,7 @@ def readme(tasks, ms, repo):
              "the v1.0 milestones are taken in the order of its Rank")
     live = board + "\n" + "\n".join(f"- [{name}]({search(repo, q)}){': ' + what if what else ''}" for name, q, what in [
         ("Ready v1.0 milestones", 'is:open milestone:v1.0 label:"status: ready"', "nobody has claimed them"),
-        ("Not scheduled", "is:open label:not-scheduled", "milestones outside v1.0, open to outside contributors"),
+        ("Not scheduled", "is:open label:milestone no:milestone", "milestones outside v1.0, open to outside contributors"),
         ("Ready proof tasks", "is:open label:ready label:proof-task", "Lean only, no physics"),
         ("Ready good first issues", 'is:open label:ready label:"good first issue"', ""),
         ("Claimed", "is:open label:claimed", "the claimant is the assignee"),

@@ -18,8 +18,8 @@ columns Ready, In progress, In review, Done and Not scheduled.
 1. **Take** the top Ready item of the GitHub Milestone
    [v1.0](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aopen+milestone%3Av1.0+label%3A%22status%3A+ready%22)
    (the lowest Rank on the board), or a proof task ([the contributor loop](#the-contributor-loop)).
-   Milestones outside v1.0 carry the label `not-scheduled`: they are open to you, but the
-   maintainers' agents do not work on them.
+   Milestones outside v1.0 ([milestone issues without the v1.0 Milestone](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aopen+label%3Amilestone+no%3Amilestone), the column Not
+   scheduled) are open to you, but the maintainers' agents do not work on them.
 2. **Claim** it as described in step 2 of the loop: comment `/claim` on its issue. A milestone has
    one holder at a time; if it is claimed or In progress, take the next one.
 3. **Search before writing anything**: the library (`Lightlike/`, [docs/RESULTS.md](docs/RESULTS.md)
