@@ -150,6 +150,20 @@ dimensions sum to `(a+1)(b+1)`, so `complete_of_rank` (a trace argument) gives e
 equivariance (`Eqv`, `iota`) extends it to the whole model. Next: recoupling coefficients, the abstract pentagon,
 and the F4 identification with `qSixJ`.
 
+## F3/F4 status (25 Nov 2026, later): trees, one-dimensionality and the recoupling coefficients (Lean)
+
+`Iterated.lean`, `Shift.lean`, `Recoupling.lean`. Iterated fusion: `Q(a,b) p_c = Σ_e Σ_d treeL e d` and `p_a Q(b,c) =
+Σ_f Σ_d' treeR f d'` (the second by the translation homomorphism `sh`, which sends `e_j`, cups, caps and projectors to
+their translates), the same projector `P3`; both families are orthogonal idempotents (`treeL_mul`, `treeR_mul`).
+Expansion lemma `cup_mul_cap_mem` (`cup_m z cap_m ∈ C(n+2)` for `z ∈ C n`; the middle case is
+`cup_{l+1} e_l cap_{l+1} = e_{l+1} e_l e_{l+2} e_{l+1}`, proved from the zigzags), hence `E_i ∈ C(a+b-1)` and
+`treeL, treeR ∈ C(N-1)`. One-dimensionality: `treeL e d · Y · treeL e d ∈ k · treeL e d` for every `Y ∈ C(N-1)` (the
+two-level sandwich `W_d W_e Y V_e V_d` is a scalar times a projector by `absorb`). Recoupling coefficients
+`recoup e d f d'` := that scalar for `Y = treeR f d'`; `recoup_row_sum`: `Σ_{f,d'} recoup = 1`.
+Open before the pentagon: (i) `recoup = 0` unless the total channel agrees (`d = d'`) and the dual column sums;
+(ii) the matrix-unit identification giving `treeR = Σ U recoup U'` and the orthogonality relations; (iii) the
+pentagon for four blocks; (iv) the dictionary with `qSixJ` (Tet formula) and the truncation at `r`.
+
 ## Decision
 
 No route in this note is a row-sized step. The two structural routes (F, E) are milestone-sized

@@ -147,4 +147,35 @@ theorem recoup_spec [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) (a b c e d f 
   rw [dif_pos hex]
   exact hex.choose_spec
 
+/-- **Row sums of the recoupling matrix are `1`.** -/
+theorem recoup_row_sum [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) (a b c e d : ℕ) (ha : 1 ≤ a)
+    (hd : ∀ j, j ≤ a + b + c → chebD (loopVal q) j ≠ 0)
+    (hq2 : ∀ j, 1 ≤ j → j ≤ a + b + c + 1 → (q : k) ^ (2 * j) ≠ 1)
+    (hea : e ≤ a) (heb : e ≤ b) (hdc : d ≤ c) (hdA : d ≤ a + b - 2 * e) :
+    ∑ f : Fin (min b c + 1), ∑ d' : Fin (min a (b + c - 2 * f) + 1), recoup q a b c e d f d' = 1 := by
+  have hT0 := treeL_ne_zero (k := k) q a b c e d hea heb hdc hdA hd hq2
+  have hidem := treeL_mul (k := k) q a b c hd hq2 (e := e) (d := d) (e' := e) (d' := d)
+    (le_min hea heb) (le_min hea heb) (le_min hdA hdc |>.trans_eq (by rw [min_comm])) (le_min hdA hdc |>.trans_eq (by rw [min_comm]))
+  rw [if_pos ⟨rfl, rfl⟩] at hidem
+  have hsum : ∑ f : Fin (min b c + 1), ∑ d' : Fin (min a (b + c - 2 * f) + 1), treeR q a b c f d' = P3 q a b c := by
+    rw [← jwAt_mul_Qab_trees q a b c hd hq2, jwAt_mul_sh_Qab]
+  have hL := treeL_mul_P3 (k := k) q a b c e d hea heb hd
+  have key : treeL q a b c e d * P3 q a b c * treeL q a b c e d = treeL q a b c e d := by
+    rw [hL, hidem]
+  have hexp : treeL q a b c e d * P3 q a b c * treeL q a b c e d =
+      (∑ f : Fin (min b c + 1), ∑ d' : Fin (min a (b + c - 2 * f) + 1), recoup q a b c e d f d') •
+        treeL q a b c e d := by
+    rw [← hsum, Finset.mul_sum, Finset.sum_mul, Finset.sum_smul]
+    refine Finset.sum_congr rfl fun f hf => ?_
+    rw [Finset.mul_sum, Finset.sum_mul, Finset.sum_smul]
+    refine Finset.sum_congr rfl fun d' _ => ?_
+    have hfb : (f : ℕ) ≤ b := (Nat.lt_succ_iff.mp f.2).trans (min_le_left _ _)
+    have hfc : (f : ℕ) ≤ c := (Nat.lt_succ_iff.mp f.2).trans (min_le_right _ _)
+    exact recoup_spec q hδ a b c e d f d' ha hd hea heb hdc hdA hfb hfc
+      ((Nat.lt_succ_iff.mp d'.2).trans (min_le_left _ _)) ((Nat.lt_succ_iff.mp d'.2).trans (min_le_right _ _))
+  rw [hexp] at key
+  have := smul_left_cancel_of_ne_zero hT0 (μ := ∑ f : Fin (min b c + 1), ∑ d' : Fin (min a (b + c - 2 * f) + 1),
+    recoup q a b c e d f d') (ν := 1) (by rw [key, one_smul])
+  exact this
+
 end Lightlike.TemperleyLieb

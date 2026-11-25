@@ -1972,6 +1972,7 @@ import Lightlike.TemperleyLieb.Rank
 import Lightlike.TemperleyLieb.FusionIdentity
 import Lightlike.TemperleyLieb.Iterated
 import Lightlike.TemperleyLieb.Shift
+import Lightlike.TemperleyLieb.Recoupling
 import Lightlike.Dirac.ConnesDistance
 import Lightlike.Dirac.ConnesDistance2
 import Lightlike.Dirac.ConnesDistance3
