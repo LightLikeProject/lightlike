@@ -52,3 +52,5 @@ function of `v`, so no `O(ξ^{l+r})` induction is needed); (ii) the `L²(sinh ξ
 `radialCasimir_ladUp` (already proved) in `v`. Remaining plan: define `Wform r l F G` (this form), prove the `v`-variable step
 `Wform r (l+1) F F = Wform r l F (radialQ F) + l (l+1) Wform r l F F` with `(v+1)^r` conjugation, base `l = 0` = `Kform r` of
 `KTypePlancherel`, then the polarised induction `KClaim_succ` with the weight `wl l · wl r`.
+
+Done after the closed form: `LadderLocal.lean`: `ladder_adjoint_boundary` (adjointness on `[a, b] ⊂ (0, ∞)` for `ContDiffOn ℝ 1` on `(0, ∞)`, with the boundary term `P(b) - P(a)`, `P = F conj(G) sinh`) and `ladDown_ladUp_local` (`ladDown (l+1) r ∘ ladUp l r = Cas + l (l+1)` for `ContDiffOn ℝ 2`). Open: the `a → 0`, `b → ∞` limits (the closed form gives `h_{l,r} = sinh^{l+r} · smooth(cosh)`, so `P(a) → 0`, and compact support kills `P(b)`), the sesquilinear form and the polarised induction with weight `wl l · wl r`.
