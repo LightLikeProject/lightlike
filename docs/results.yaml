@@ -5075,3 +5075,16 @@
   review: kernel-checked
   note: "Companion of LL-0380 and LL-0382 against Boldt, arXiv:1504.03121, Theorem 3.1, p. 6 (read): eigenvalues +-(n/2 + k) with multiplicity 2^[n/2] C(n+k-1, k); for n = 2 this is +-(k+1) with multiplicity 2(k+1). Here the decay condition n+1 <= s assumed in LL-0382 is derived from the boundedness of the spinor h^(1/2) g on the plane (the norm of the spinor of the sphere in the orthonormal frame of the chart, which a spinor extending continuously over the pole must satisfy), by the top coefficient of the radial equation (s = deg G + 1 or s = n + 1 + deg G) and the growth of the polynomial profile on the real axis. WEAKER (PARTIAL for GE5): boundedness is only a necessary condition for continuity at the pole (the chart at the other pole is not in the library), and only the angular polynomial class is covered; completeness among all smooth spinors of the sphere remains open."
   since: unreleased
+- id: LL-0384
+  title: "The Sorkin-Johnston state of a finite causal set is pure for the retarded matrix K_R = a M (1 - a b M)^-1 (the link matrix in four dimensions, the causal matrix in two, any mass), and 1 - a b M is invertible because M is supported on the causal order"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/QuasiFreeState/SJRetarded.lean
+  decls: [Lightlike.OperatorAlgebras.QuasiFreeState.isPureState_retarded, Lightlike.OperatorAlgebras.QuasiFreeState.isUnit_one_sub_smul, Lightlike.OperatorAlgebras.QuasiFreeState.retardedMatrix_mul, Lightlike.OperatorAlgebras.QuasiFreeState.linkMatrix]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: johnston-2009, location: "eq. (10)", check: "Pauli-Jordan"}
+  review: kernel-checked
+  note: "Compared with Johnston, arXiv:0909.0944, eqs. (10) and (16) (read): Delta = K_R - K_R^T with K_R = a L (1 - a b L)^-1, b = -m^2/rho in the massive case. Here K_R is defined for any matrix M, the support lemma applies to the causal matrix and the link matrix (strictly increasing in the order), so 1 - a b M is invertible for every a, b and K_R (1 - a b M) = a M; purity holds for every K_R, whatever the normalisation of a, b. WEAKER: the state is the quasi-free state with covariance |i Delta|, which is the positive-part construction of Afshordi, Aslanbeigi and Sorkin (arXiv:1205.1296, not read); no comparison with their formulas, and the identification of b and the normalisation a with the mass and the sprinkling density rho is not formalised."
+  since: unreleased
