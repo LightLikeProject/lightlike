@@ -54,19 +54,19 @@ geodesics of Regge calculus.
 |---|---|---|---|---|---|
 | GE1 | Smooth curvature from connections: Levi-Civita connection, Riemann, Ricci and scalar curvature on a smooth manifold | the curvature is defined intrinsically and proven to agree in every chart with the coordinate curvature | round 2-sphere of radius `r` has scalar curvature `2/r²`; Schwarzschild is Ricci-flat; a connection with torsion shown to give a different Ricci tensor | L | Mathlib manifolds |
 | GE2 | Causal structure: time orientation, causal curves, chronological and causal futures, global hyperbolicity, Cauchy surfaces | definitions with basic properties; Minkowski space globally hyperbolic with `t = 0` a Cauchy surface | Minkowski's causal future is the closed light cone; anti-de Sitter is not globally hyperbolic; a spacetime with closed timelike curves (Minkowski with time rolled up) violates chronology | L | GE1 |
-| GE3 | Geodesics, the exponential map and the Raychaudhuri equation on a manifold | the Raychaudhuri equation for timelike geodesic congruences, and focusing under the strong energy condition | expansion of comoving congruences in Minkowski and in FLRW in closed form; a congruence in a spacetime violating the energy condition does not focus | M | GE1 |
+| GE3 | Geodesics, the exponential map and the Raychaudhuri equation on a manifold | the Raychaudhuri equation for timelike geodesic congruences, and focusing under the strong energy condition for rotation-free congruences | expansion of comoving congruences in Minkowski and in FLRW in closed form; a congruence in a spacetime violating the energy condition does not focus | M | GE1 |
 | GE4 | Penrose's singularity theorem (1965) | a globally hyperbolic spacetime with a non-compact Cauchy surface, the null energy condition and a closed trapped surface is null-geodesically incomplete | the hypotheses hold in the Schwarzschild interior (trapped spheres at `r < 2M`); Minkowski has no closed trapped surface | R | GE2, GE3 |
-| GE5 | Spin structures and the Dirac operator, on Mathlib's Clifford algebras; the Lichnerowicz formula | the Dirac operator on ℝⁿ and on a spin manifold; `D² = ∇*∇ + R/4` | Dirac spectrum on the unit 2-sphere `±(k+1)` with multiplicity `2(k+1)`; the formula with `R/2` shown to fail | L | GE1 |
-| GE6 | Kerr in Boyer–Lindquist coordinates; Killing horizons, surface gravity and angular velocity | Kerr proven a vacuum solution; `κ = √(M²−a²)/(2Mr₊)` and `Ω_H = a/(2Mr₊)` computed | `a = 0` gives Schwarzschild with `κ = 1/(4M)`; the coefficient of `g_tφ` halved shown not to be Ricci-flat (flipping its sign gives Kerr with `-a`, which is Ricci-flat) | M | GE10 |
-| GE7 | Conformal compactification: null infinity of Minkowski space, the conformal boundary of anti-de Sitter space | both defined, with the conformal action of the isometry groups on the boundary | the compactified Minkowski space as a region of the Einstein static universe; a non-conformal rescaling shown to fail | M | GE2 |
+| GE5 | Spin structures and the Dirac operator, on Mathlib's Clifford algebras; the Lichnerowicz formula | a spin structure on a Riemannian manifold is defined, the Dirac operator on its spinor bundle and the rough Laplacian `∇*∇` are defined, and `D² = ∇*∇ + R/4` holds; the Dirac operator on ℝⁿ is defined | Dirac spectrum on the unit 2-sphere `±(k+1)` with multiplicity `2(k+1)`; the formula with `R/2` shown to fail | L | GE1 |
+| GE6 | Kerr in Boyer–Lindquist coordinates; Killing horizons, surface gravity and angular velocity | Kerr proven a vacuum solution; `κ` defined by `∇_χ χ = κχ` and `Ω_H` by the horizon Killing field `χ = ∂_t + Ω_H ∂_φ`, and shown equal to `√(M²−a²)/(2Mr₊)` and `a/(2Mr₊)` | `a = 0` gives Schwarzschild with `κ = 1/(4M)`; the coefficient of `g_tφ` halved shown not to be Ricci-flat (flipping its sign gives Kerr with `-a`, which is Ricci-flat) | M | GE10 |
+| GE7 | Conformal compactification: null infinity of Minkowski space, the conformal boundary of anti-de Sitter space | future null infinity `ℐ⁺` of Minkowski space and the conformal boundary of AdS are defined as subsets of a conformal compactification; the Poincaré group acts on `ℐ⁺` by conformal maps, and the AdS isometry group acts on the AdS boundary by conformal maps | the compactified Minkowski space as a region of the Einstein static universe; a non-conformal rescaling shown to fail | M | GE2 |
 | GE8 | Heat-kernel expansion of Laplace-type operators on compact Riemannian manifolds (Seeley–DeWitt coefficients `a₀`, `a₁`, `a₂`) | the asymptotic expansion of the heat trace with `a₁ = (4π)^{-n/2}∫R/6` | unit 2-sphere: `Σ(2l+1)e^{−t l(l+1)} = 1/t + 1/3 + t/15 + O(t²)`; the flat torus has no `t⁰` term | L | GE1 |
-| GE9 | Spacetime geometry: Lorentzian metrics, Minkowski space, coordinate curvature, Riemann symmetries, chart changes | - | - | - | - |
-| GE10 | Vacuum Einstein equations; Minkowski and exterior Schwarzschild as solutions | - | - | - | - |
+| GE9 | Spacetime geometry: Lorentzian metrics, Minkowski space, coordinate curvature, Riemann symmetries, chart changes | Lorentzian metrics and Minkowski space are defined; the coordinate Christoffel symbols and the Riemann, Ricci and scalar curvature are defined, with the Riemann symmetries (pair symmetry, first Bianchi identity) proven, and they transform as tensors under chart changes | - | - | - |
+| GE10 | Vacuum Einstein equations; Minkowski and exterior Schwarzschild as solutions | the vacuum Einstein equations with `Λ` are defined; Minkowski space (`Λ = 0`) and exterior Schwarzschild (`M > 0`, `r > 2M`) satisfy them | - | - | - |
 | GE11 | Generalize the curvature results of GE1 (the curvature tensor computed by any extensions, its symmetries, the Ricci tensor, the second Bianchi identity, the divergence of the Einstein tensor, the chart agreement) to any non-degenerate (pseudo-Riemannian) metric, any `ModelWithCorners` and without a Hausdorff hypothesis | the statements of the former tasks T-GE1-P2 to P8 hold in that generality (the library proves them for Lorentzian metrics on Hausdorff manifolds modelled on `Fin n → ℝ` or a finite-dimensional space without boundary) | the round 2-sphere (Riemannian) has the same identities; a manifold with boundary; a non-Hausdorff example | L | GE1 |
 | GE12 | Lie derivatives of tensor fields, Killing vector fields and isometries; maximally symmetric spaces (de Sitter, anti-de Sitter, hyperbolic space) | the Lie derivative of tensor fields on a smooth manifold is defined, `£_V g = 0` is proven equivalent to Killing's equation `∇_(μ V_ν) = 0`, and the Killing fields form a Lie algebra; de Sitter, anti-de Sitter and `Hⁿ` are defined and proven maximally symmetric, with constant sectional curvature | the `n(n+1)/2` Killing fields of Minkowski space close into the Poincaré algebra; the rotation field of the round 2-sphere is Killing and a dilation is not | M | GE1 |
 | GE13 | Hypersurfaces: induced metric, unit normal, second fundamental form (extrinsic curvature), the Gauss and Codazzi relations | for a non-null hypersurface of a pseudo-Riemannian manifold the extrinsic curvature is defined and proven symmetric, and the Gauss and Codazzi relations are proven; the two relations are lockable statements | the sphere of radius `r` in ℝ³ has `K = h/r` and scalar curvature `2/r²` from the Gauss relation; a constant-time slice of FLRW has `K = (ȧ/a) h` | M | GE1 |
 | GE14 | Stress-energy tensors and energy conditions: perfect fluids, scalar and electromagnetic fields; the null, weak, strong and dominant energy conditions | the four energy conditions are defined for a symmetric (0,2)-tensor on a Lorentzian manifold, with dominant ⇒ weak ⇒ null and strong ⇒ null proven; for a perfect fluid each condition is proven equivalent to its inequalities in `ρ` and `p` | dust with `ρ ≥ 0` satisfies all four; a positive cosmological constant violates the strong condition; a Klein–Gordon field with a negative potential shown to violate the weak condition | M | GE1 |
-| GE15 | The Einstein–Hilbert action and its first variation; Einstein's equations as Euler–Lagrange equations | on a compact region, the first variation of `∫ √−g (R − 2Λ)` in the metric is proven to be `∫ √−g (G_{μν} + Λ g_{μν}) δg^{μν}` plus a boundary term, so the critical points with fixed boundary data are the vacuum Einstein equations with `Λ`; the variation formula is a lockable statement | the Palatini identity for `δR_{μν}`; in two dimensions the variation of `∫ √g R` vanishes (Gauss–Bonnet); a wrong sign of `Λ` shown to give the wrong de Sitter radius | L | GE1 |
+| GE15 | The Einstein–Hilbert action and its first variation; Einstein's equations as Euler–Lagrange equations | for a compact domain `D` with smooth boundary and a variation `h` compactly supported in `D` or vanishing on `∂D`, `d/dε ∫_D √−g (R − 2Λ) = ∫_D √−g (G_{μν} + Λ g_{μν}) δg^{μν}` plus a boundary term on `∂D`, and the action is critical for all `h` vanishing on `∂D` iff `G + Λg = 0`; the variation formula is a lockable statement | the Palatini identity for `δR_{μν}`; in two dimensions the variation of `∫ √g R` vanishes (Gauss–Bonnet); a wrong sign of `Λ` shown to give the wrong de Sitter radius | L | GE1 |
 
 ### Cosmology
 
@@ -175,14 +175,17 @@ SU(2) representation theory is HA4; Spin(4) = SU(2) × SU(2) is in the spin foam
 | HA1 | SL(2,ℂ), its Haar measure and its unitary principal series; their restriction to SU(2) | below | below | L | `SU2/` |
 | HA2 | The Plancherel measure of SL(2,ℂ) and the harmonic analysis the Lorentzian amplitudes use | below | below | L | HA1 |
 | HA3 | SL(2,ℝ): principal and discrete series, the Plancherel measure | the unitary irreducible representations used by JT gravity and AdS₃ are defined, with the Plancherel formula | Casimir values; the Plancherel density of the principal series `∝ ρ tanh(πρ)`; a non-unitary complementary-series parameter outside `(0, 1/2)` shown to fail | L | HA2 |
-| HA4 | Unitary irreducible representations of SU(2) and their completeness; link to Physlib's `sl₂`-modules and 6j symbols | - | - | - | - |
-| HA5 | The Peter–Weyl theorem for compact groups | for a compact Hausdorff group with its Haar measure, the matrix coefficients of finite-dimensional unitary representations are proven dense in `C(G)` and `L²(G)` the Hilbert direct sum of the isotypic components `End(V_π)`; both are lockable statements | for `U(1)` the characters `e^{inθ}` form an orthonormal basis of `L²`; Schur orthogonality of characters for SU(2); a non-compact group (ℝ) shown to have no square-integrable matrix coefficients | L | Mathlib |
+| HA4 | Unitary irreducible representations of SU(2) and their completeness; link to Physlib's `sl₂`-modules and 6j symbols | the spin `n/2` representations of SU(2) are unitary and irreducible, every irreducible continuous unitary representation is isomorphic to one of them, the Lie-algebra action matches Physlib's `sl₂`-modules, and the 6j symbols of Lightlike are the recoupling coefficients of their tensor products | - | - | - |
+| HA5 | The Peter–Weyl theorem for compact groups | for a compact Hausdorff group `G` with its Haar measure, (a) the matrix coefficients of finite-dimensional unitary representations are dense in `C(G)` and in `L²(G)`, and (b) `L²(G)` is the Hilbert direct sum of the isotypic components `End(V_π)`; (a) and (b) are lockable statements | for `U(1)` the characters `e^{inθ}` form an orthonormal basis of `L²`; Schur orthogonality of characters for SU(2); a non-compact group (ℝ) shown to have no square-integrable matrix coefficients | L | Mathlib |
 | HA6 | Unitary irreducible representations of the Poincaré group (Wigner 1939): the little-group method, mass, spin and helicity | the massive and massless one-particle representations are constructed by induction from the little groups SO(3) and ISO(2), unitary, with `P² = m²` and the Pauli–Lubanski square `W² = −m² s(s+1)` in signature `(+,−,−,−)`; the classification of the irreducible representations with positive energy is a lockable statement | massless finite-helicity states satisfy `W = h P`; a massive spin-1/2 representation has two states per momentum; a tachyonic orbit shown to have a non-compact little group | L | HA4 |
 
-- **HA1, done when:** the principal-series representations of SL(2,ℂ) are defined and proven
-  unitary, with their decomposition into SU(2) representations `j ≥ k`. Trust checks: the
+- **HA1, done when:** the principal series `π_{n,ρ}` (`n ∈ ℤ`, `ρ` real) of SL(2,ℂ) is defined, is
+  a unitary representation, and its restriction to SU(2) is the Hilbert sum of the spin-`j`
+  representations `j = |n|/2, |n|/2 + 1, …`, each once. Trust checks: the
   Casimir values, and a non-unitary parameter shown to fail.
-- **HA2, done when:** the Plancherel formula used by the Lorentzian amplitudes is proven.
+- **HA2, done when:** for `f` the restriction of a smooth compactly supported function on the 2×2
+  complex matrices, `Σ_n ∫ (n² + 4ρ²) ‖π_{n,ρ}(f)‖²_HS dρ = 16π⁴ ∫ |f|² dg` for the Haar measure
+  `haarC`, and the normalisation agrees with Perez–Rovelli (A11)/(A16) or the difference is explained.
 
 ### Operator algebras and quantum information
 
@@ -190,11 +193,11 @@ Folder `Lightlike/Operators/`.
 
 | ID | Milestone | Done when | Trust checks | Size | Needs |
 |---|---|---|---|---|---|
-| OP1 | Unbounded self-adjoint operators: adjoints, essential self-adjointness, deficiency indices, Stone's theorem | Stone's theorem in both directions on Mathlib's Hilbert spaces | `−i d/dx` is essentially self-adjoint on `C_c^∞(ℝ)` and generates translations; on `L²[0,1]` without boundary conditions it has deficiency indices `(1,1)` | L | Mathlib |
-| OP2 | CCR and CAR algebras: Weyl algebra, Fock space, quasi-free states, Bogoliubov transformations | Fock representation; a Bogoliubov transformation is unitarily implementable iff its `β` is Hilbert–Schmidt (Shale 1962) | `\|α\|² − \|β\|² = 1` for one mode; infinitely many modes with constant `\|β\|` shown not implementable | L | OP1 |
-| OP3 | States, the KMS condition and modular theory: Tomita–Takesaki in finite dimensions, standard subspaces (Mathlib) | the modular operator of a faithful state on a matrix algebra; the state is KMS at `β = 1` for its modular flow | the Gibbs state of a qubit is KMS at its temperature; a non-Gibbs state fails | M | OP1 |
+| OP1 | Unbounded self-adjoint operators: adjoints, essential self-adjointness, deficiency indices, Stone's theorem | (a) the generator of a strongly continuous one-parameter unitary group on a complex Hilbert space is self-adjoint, and (b) every self-adjoint operator generates exactly one such group (Stone's theorem in both directions, on Mathlib's Hilbert spaces) | `−i d/dx` is essentially self-adjoint on `C_c^∞(ℝ)` and generates translations; on `L²[0,1]` without boundary conditions it has deficiency indices `(1,1)` | L | Mathlib |
+| OP2 | CCR and CAR algebras: Weyl algebra, Fock space, quasi-free states, Bogoliubov transformations | on every complex Hilbert space `h` a Fock representation exists, and in it a Bogoliubov transformation is unitarily implementable iff its `β` part is Hilbert–Schmidt (Shale 1962) | `\|α\|² − \|β\|² = 1` for one mode; infinitely many modes with constant `\|β\|` shown not implementable | L | OP1 |
+| OP3 | States, the KMS condition and modular theory: Tomita–Takesaki in finite dimensions, standard subspaces (Mathlib) | for a positive definite density matrix `ρ` on `M_n(ℂ)`, the modular operator is `Δ_ρ ξ = ρ ξ ρ⁻¹`, and `ρ` is KMS at `β = 1` for the flow `σ_t(A) = ρ^{it} A ρ^{-it}` | the Gibbs state of a qubit is KMS at its temperature; a non-Gibbs state fails | M | OP1 |
 | OP4 | Entropy: von Neumann and relative entropy, subadditivity, strong subadditivity (Lieb–Ruskai 1973) | strong subadditivity for finite-dimensional density matrices | Bell state: `S(A) = log 2`, `S(AB) = 0`; the classical inequality `S(AB) ≥ S(A)` shown to fail for it | L | Mathlib matrices |
-| OP5 | Finite-dimensional quantum mechanics: unitary evolution, Schrödinger equation, Born rule | - | - | - | - |
+| OP5 | Finite-dimensional quantum mechanics: unitary evolution, Schrödinger equation, Born rule | on a finite-dimensional complex Hilbert space, for self-adjoint `H`, `exp(−itH)` is a unitary group, `t ↦ exp(−itH)ψ` solves `i dψ/dt = Hψ`, and the Born probabilities of an observable sum to 1 on unit states | - | - | - |
 | OP6 | Trace-class and Hilbert–Schmidt operators: the Schatten ideals `S¹` and `S²`, the trace, duality with the compact and the bounded operators | on a separable Hilbert space, the trace-class and Hilbert–Schmidt operators are proven two-sided ideals in the bounded operators with `S²·S² ⊆ S¹`, the trace well defined and cyclic, and the dualities `K* ≅ S¹`, `(S¹)* ≅ B(H)`; the dualities are lockable statements | the diagonal operator with eigenvalues `1/n` is Hilbert–Schmidt and not trace class; `tr(AB) = tr(BA)` for rank-one `A`, `B`; a bounded non-compact operator shown not to be Hilbert–Schmidt | L | Mathlib |
 
 ### Oscillatory and saddle-point asymptotics
@@ -217,7 +220,8 @@ upstreaming to Mathlib.
   integrals in closed form, and a degenerate phase shown to change the order.
 - **SP2, done when:** the asymptotics of balanced alternating Gamma-ratio sums
   `Σ_t (−1)^t Γ(t+2)/(∏ Γ(t−a_i+1) ∏ Γ(b_k−t+1))` (the shape of Racah's single-sum formula for the 6j
-  symbol, as SF8 needs it) is proven by the complex saddle-point method:
+  symbol, as SF8 needs it) is proven by the complex saddle-point method; the statement is
+  `Lightlike.Asymptotics.RacahSumAsymptotics`, the one SF8 uses:
   - the sum as a contour integral `(1/2πi)∮ πT(z)/sin(πz) dz`;
   - complex Stirling, uniform on sectors;
   - a descent contour through the saddle in the upper half-plane;
@@ -233,11 +237,14 @@ upstreaming to Mathlib.
 - **SP3, done when:** for a positive measure `ρ` on `[0, ∞)`, Karamata's Tauberian theorem (if
   `∫ e^{−βx} dρ(x) ~ β^{−α} ℓ(1/β)` as `β → 0`, with `ℓ` slowly varying, then
   `ρ[0, X] ~ X^α ℓ(X)/Γ(α+1)`) and Ingham's theorem for Laplace transforms growing like `e^{a/β}`
-  (Mukhametzhanov–Zhiboedov 2019, eq. (1.8)) are proven; both are lockable statements. The Cardy
+  (Mukhametzhanov–Zhiboedov 2019, eq. (1.8)) are proven; both are lockable statements. The counting
+  function `ρ[0, X]` has the asymptotics of Mukhametzhanov–Zhiboedov (1.8); the logarithmic form
+  `log ρ[0, X] ~ 2√(aX)` alone does not count. The Cardy
   formula bounds of CF5 use them. Trust checks: Lebesgue measure gives `α = 1`; the growth of the
   spectrum of a free boson; a signed measure shown to break the conclusion.
 - **SP4, done when:** the Morse lemma is proven: near a non-degenerate critical point `p` a smooth
-  function on ℝⁿ equals `f(p) − y₁² − … − y_k² + y_{k+1}² + … + y_n²` in suitable smooth coordinates
+  function on ℝⁿ equals `f(p) − y₁² − … − y_k² + y_{k+1}² + … + y_n²`, where `k` is the number of
+  negative eigenvalues of the Hessian at `p` (the Morse index), in suitable smooth coordinates
   (Milnor, *Morse Theory*, Part I), with the coordinates depending smoothly on parameters; the
   statement is lockable. Trust checks: `k` equals the number of negative eigenvalues of the Hessian;
   `x³` at `0` shown to have no such chart.
@@ -287,13 +294,15 @@ it to PL topology, layer 3 to topological 3-manifolds.
   moves to a standard model determined by its orientability and Euler characteristic, and the
   models are pairwise inequivalent. Builds on `IsSurfaceSphere` and the converse
   `IsSurfaceSphere → IsSphere2` (QU5).
-- **PL4, done when:** Newman's theorem is proven; trust checks: a subdivision is PL-homeomorphic to
+- **PL4, done when:** Newman's theorem is proven: finite simplicial complexes `K`, `L` have
+  PL-homeomorphic realisations iff they are stellar-equivalent; trust checks: a subdivision is PL-homeomorphic to
   the original complex, and complexes with non-homeomorphic realisations (different Euler
   characteristic) are not stellar-equivalent.
 - **PL5, done when:** the statements fixed by the survey at the start of PL5 are proven.
 - **PL6, done when:** both parts of Moise's theorem are proven.
 - **PL7a, done when:** the Turaev–Viro state sum at `r = 3`, which is already unconditionally
-  invariant under the moves, is proven to be an invariant of closed 3-manifolds up to PL homeomorphism (from PL2 and PL4); and for the Ponzano–Regge amplitude it is stated exactly which invariance up to PL homeomorphism follows, given its cutoff and gauge-tree conditions.
+  invariant under the moves, is proven to be an invariant of closed 3-manifolds up to PL homeomorphism (from PL2 and PL4); and a theorem, or a docs note cited in the API map, states which PL invariance of the
+  Ponzano–Regge amplitude follows from PL2 and PL4, with its cutoff and gauge-tree conditions.
 - **PL7b, done when:** the same up to homeomorphism (from PL7a and Moise's theorem, PL6).
 
 ### Quantum groups and state-sum TQFTs
@@ -305,15 +314,16 @@ Folder `Lightlike/TuraevViro/`.
 | QU1 | q-deformed Biedenharn–Elliott identity and orthogonality for `r ≥ 4` | below | below | L | `TuraevViro/` |
 | QU2 | The Crane–Yetter state sum: quantum 15j symbols at roots of unity, invariance under the 4D Pachner moves | below | below | L | QU1, SF3 |
 | QU3 | Modular tensor categories from `U_q(sl₂)` at roots of unity, and the Reshetikhin–Turaev invariant from surgery | the RT invariant of closed 3-manifolds given by surgery on framed links is defined and proven invariant under the Kirby moves | `S³`, `S²×S¹` and lens spaces `L(p,1)` against published values; a non-modular S-matrix shown to break invariance | R | QU1 |
-| QU4 | Biedenharn–Elliott identity for all spins; Ponzano–Regge amplitude; invariance under the 2-3 move at the level of the weight (exact for the gauge-fixed amplitude below) | the Biedenharn–Elliott identity for the SU(2) 6j symbols is proven for all spins, the Ponzano–Regge amplitude is defined, and its weight is proven invariant under the 2-3 move, exactly for the gauge-fixed amplitude | a known 6j value; a wrong sign convention in the 6j symbol shown to break the Biedenharn–Elliott identity | M | HA4 |
-| QU5 | Triangulation independence of the regularised Ponzano–Regge amplitude as far as it goes without Pachner's theorem | - | - | - | - |
+| QU4 | Biedenharn–Elliott identity for all spins; Ponzano–Regge amplitude; invariance under the 2-3 move at the level of the weight (exact for the gauge-fixed amplitude below) | the Biedenharn–Elliott identity for the SU(2) 6j symbols is proven for all spins, the Ponzano–Regge amplitude is defined, and its weight is proven invariant under the 2-3 move, exactly for the gauge-fixed amplitude, i.e. `amplitudeGF K T cut` is unchanged by the 2-3 move under `T ⊆ K.edges` and the cutoff inequality | a known 6j value; a wrong sign convention in the 6j symbol shown to break the Biedenharn–Elliott identity | M | HA4 |
+| QU5 | Triangulation independence of the regularised Ponzano–Regge amplitude as far as it goes without Pachner's theorem | the statements of **QU5, what is proven** below hold: the 1-4 move; the gauge-fixed amplitude is invariant along chains of 2-3, 3-2, 1-4 and 4-1 moves, also with a maximal tree; 3-2 and 4-1 moves are recognised on any complex; a tree change by triangle exchange leaves the amplitude unchanged; closed combinatorial 3-manifolds are preserved by all four moves; combinatorial 2-spheres have `χ = 2` | - | - | - |
 
-- **QU1, done when**: the q-Biedenharn–Elliott identity and q-orthogonality are
-  proven for all `r ≥ 4`, so that the Turaev–Viro invariance theorems hold without them as
-  hypotheses; trust checks against known q-6j values and a wrong value of `q` shown to break an
-  identity.
-- **QU2, done when:** the Crane–Yetter state sum (quantum 15j symbols at `q = e^{iπ/r}`) is defined
-  and proven invariant under the 4D Pachner moves. Builds on the q-recoupling of TV `r ≥ 4`. Trust checks: the invariant of `S⁴` and of `CP²` against the known values
+- **QU1, done when**: for every `r ≥ 4`, `qBiedenharnElliott` and `qOrthogonality` are theorems
+  without hypotheses, and `turaevViro_move23` and `turaevViro_move14` hold at level `r` without
+  hypotheses; trust checks: q-6j values for some `r ≥ 4` agree with an independent source, and a
+  changed `q` makes one of the identities false.
+- **QU2, done when:** a Crane–Yetter state sum of a combinatorial 4-complex (colourings, weights,
+  the sum of products of `qFifteenJ` at `q = e^{iπ/r}`) is defined, and its value is unchanged under
+  the 2-4, 3-3, 4-2, 1-5 and 5-1 moves (hypotheses on the complex stated). Builds on the q-recoupling of TV `r ≥ 4`. Trust checks: the invariant of `S⁴` and of `CP²` against the known values
   (Crane–Kauffman–Yetter, *J. Knot Theory Ramif.* 6 (1997) 177), and a wrong `q` shown to break
   invariance.
 
@@ -523,12 +533,13 @@ Folder `Lightlike/Regge/`.
 | RC4 | 3D Regge calculus: deficit angles and the Regge action on a triangulation | below | below | M | GE9 |
 | RC5 | 4D Regge calculus: 4-simplex geometry, deficit angles, the Regge action | below | below | M | RC4, SF3 |
 | RC6 | Regge calculus converges to the Einstein–Hilbert action (Cheeger–Müller–Schrader) | below | below | L (dim 2), R (all dims) | GE1 or the coordinate curvature of GE9 |
-| RC1 | Lorentzian Regge calculus (Sorkin 1975) | Lorentzian deficit angles and action; Regge equations as in RC5 | a flat Lorentzian triangulation has zero deficits; Euclidean angles on Lorentzian data shown wrong | M | RC5 |
+| RC1 | Lorentzian Regge calculus (Sorkin 1975) | `lorDeficit` and `lorReggeAction` are defined, and the action is stationary under boundary-fixed edge-length variations iff `Σ ∂A_t/∂L_e · ε_t = 0` at every interior edge | a flat Lorentzian triangulation has zero deficits; Euclidean angles on Lorentzian data shown wrong | M | RC5 |
 | RC2 | Area Regge calculus (Barrett–Roček–Williams 1999) | the area-to-length map of a 4-simplex and its local invertibility | the Jacobian is invertible at the regular 4-simplex; a configuration where areas do not determine lengths | S | RC5 |
 | RC3 | Linearized Regge calculus converges to linearized gravity (Roček–Williams 1981; Christiansen 2011) | convergence of solutions in the finite-element setting of Christiansen | flat background gives zero; a non-fat refinement shown to fail | R | RC5, GE1 |
 
-- **RC4, done when:** the deficit angles vanish for a flat triangulation of a region of ℝ³, are
-  nonzero on a curved example, and a wrong angle formula is shown to fail.
+- **RC4, done when:** the deficit angle is 0 at every interior edge of a geometric triangulation in
+  3-dimensional Euclidean space; it is positive on the boundary of the 4-simplex; and the
+  exterior-angle and face-angle formulas (wrong ones) give a non-zero deficit on the flat cube.
 - **RC5, done when:** as RC4, in 4D.
 - **RC6, target:** the literal Cheeger–Müller–Schrader statement, with geodesic
   edge lengths. RC6a first provides geodesics, the exponential map and the distance expansion in a
@@ -568,8 +579,10 @@ A spin foam model assigns amplitudes to labellings of a fixed 2-complex (dual to
 | SF1 | The Barrett–Crane model (Barrett–Crane 1998) | M | SF5a, SF5b |
 | SF2 | A criterion for when the spin cut-off of the Ponzano–Regge amplitude can be removed | R | SF5d, HA2 |
 
-- **SF3, done when:** the definitions above are in place with their basic properties; invariance
-  proofs under the Pachner moves are not required yet. Trust checks: the face counts
+- **SF3, done when:** the definitions above are in place with their basic properties, such as the
+  face counts and Euler characteristic of the simplex and its boundary, the closedness of the
+  boundary, and what each move does to these; invariance proofs under the Pachner moves are not
+  required yet. Trust checks: the face counts
   of a 4-simplex and of its boundary, and a malformed move shown not to produce a valid complex.
 - **SF4, done when:** 15j symbols and 4-valent intertwiners are defined from 3j/6j symbols and
   their orthogonality is proven. Trust checks: known 15j values or reduction identities from the
@@ -578,13 +591,16 @@ A spin foam model assigns amplitudes to labellings of a fixed 2-complex (dual to
   the contraction of ten 3j symbols and the 15j symbol.
 - **SF4b, done when:** the identities that make the Ooguri state sum invariant under the 3-3, 2-4
   and 1-5 moves of `Complex4` (the 4D analogues of Biedenharn–Elliott and orthogonality for the
-  6j) are proven. Trust checks: numerical verification for small spins, and a perturbed 15j shown
+  6j) are proven as identities of sums of 15j symbols, and they are used to prove the invariance of
+  the gauge-fixed finite-cutoff Ooguri state sum under these moves. Trust checks: numerical
+  verification for small spins, and a perturbed 15j shown
   to violate the 3-3 identity.
 - **SF5a, done when**: the irreducible representations of Spin(4) are defined as
   tensor products of two SU(2) representations, with unitarity, irreducibility and dimension
   `(2j₊+1)(2j₋+1)`.
 - **SF5b, done when:** the Ooguri model's amplitude is stated on a 4-complex and its invariance
-  under the 4D Pachner moves is proven as far as it holds, using the identities of SF4b. Trust
+  under the 3-3, 2-4, 4-2, 1-5 and 5-1 moves is proven for the gauge-fixed finite-cutoff amplitude,
+  with the cutoff and gauge hypotheses stated explicitly, using the identities of SF4b. Trust
   checks: values on the boundary of the 5-simplex, and a wrong vertex amplitude shown to break the 3-3 invariance.
 - **SF5c, done when:** for `0 < γ < 1` the labels `j± = |1 ± γ| j / 2` and their admissible set,
   the EPRL map as the isometric, SU(2)-equivariant embedding of `V_j` into `V_{j₊} ⊗ V_{j₋}`, its
@@ -607,11 +623,14 @@ A spin foam model assigns amplitudes to labellings of a fixed 2-complex (dual to
 - **SF6b, done when:** the EPRL state sum on a closed 4-complex (the vertex amplitude of SF6, a
   stated face amplitude and the edge normalizations) is defined, with its basic properties
   (independence of the vertex order and of the orientation) and its
-  relation to the Ooguri model at the BF point stated and proven. Trust checks: on a small closed
+  relation to the Ooguri model at the BF point stated and proven: at `γ = 1` the EPRL amplitude
+  equals the Ooguri amplitude on the same complex and cutoffs, up to the stated sign twist and
+  normalisation, written out. Trust checks: on a small closed
   4-complex at low spins, the state sum computed in Lean equals the Ooguri amplitude at the BF point;
   a wrong face amplitude shown to break that equality.
-- **SF7, done when:** the Lorentzian EPRL vertex amplitude is defined and its finiteness proven
-  (Engle–Pereira–Rovelli–Livine 2008; Engle–Pereira 2009 for finiteness).
+- **SF7, done when:** the Lorentzian EPRL vertex amplitude is defined as in Engle–Pereira–Rovelli–Livine
+  2008 (`ρ = γ(j+1)`, `k = j`, with the `ε` twist on the bra legs for SU(2)-invariant intertwiners)
+  and proven finite for all `γ`, spins and intertwiners (Engle–Pereira 2009).
 - **SF8, done when:** `PR.PonzanoReggeFormula` (`PonzanoRegge/Asymptotics.lean`) is proven
   (Roberts, *Geom. Topol.* 3 (1999) 21). Trust checks: the numerical comparison already in the
   repository, and the wrong phase shown to fail.
@@ -628,8 +647,10 @@ A spin foam model assigns amplitudes to labellings of a fixed 2-complex (dual to
   SF7, SF5e and SP1. Trust checks: against published numerics of the Lorentzian vertex, and a
   boundary state with normals that do not close shown to be suppressed.
 - **SF1, done when:** the Barrett–Crane vertex is defined from the simple representations
-  `j₊ = j₋` of Spin(4) and the Barrett–Crane intertwiner, and the uniqueness of that intertwiner
-  (Reisenberger 1999) is proven. Trust checks: published 10j values; a non-simple representation
+  `j₊ = j₋` of Spin(4) and the Barrett–Crane intertwiner, and the Barrett–Crane intertwiner is
+  proven to be, up to scale, the unique Spin(4)-invariant vector in the tensor product of four simple
+  representations `(j_i, j_i)` satisfying the hypotheses of Reisenberger's theorem (Reisenberger
+  1999; the hypotheses stated in the docstring). Trust checks: published 10j values; a non-simple representation
   shown to violate the constraint.
 - **SF2, done when:** a general criterion for when the spin cut-off can be removed
   (Barrett–Naish-Guzman; needs harmonic analysis on SU(2)) is proven. Proven: the cutoff is irrelevant when the gauge set
