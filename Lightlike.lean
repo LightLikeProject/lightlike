@@ -1410,6 +1410,12 @@ import Lightlike.Spacetime.PenroseSingularity.Generators
 import Lightlike.Spacetime.PenroseSingularity.ClosedFuture
 import Lightlike.Spacetime.PenroseSingularity.ExpFlow
 import Lightlike.Spacetime.PenroseSingularity.ExpCompact
+import Lightlike.Spacetime.PenroseSingularity.FlowSmooth
+import Lightlike.Spacetime.PenroseSingularity.FieldFlow
+import Lightlike.Spacetime.PenroseSingularity.ProjectionLines
+import Lightlike.Spacetime.PenroseSingularity.Projection
+import Lightlike.Spacetime.PenroseSingularity.PenroseFocal
+import Lightlike.Spacetime.PenroseSingularity.TrappedSpacelike
 import Lightlike.Spacetime.PenroseSingularity.NullGeodGlue
 import Lightlike.Spacetime.PenroseSingularity.GeodesicChartConverse
 import Lightlike.Spacetime.PenroseSingularity.NullGeodChart
