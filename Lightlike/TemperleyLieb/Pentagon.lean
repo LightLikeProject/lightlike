@@ -431,4 +431,36 @@ theorem pair_TE [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) (a b c d e₀ d�
       · exact hne h2.symm
   · simp [hee]
 
+/-- **Pairing of `ULd4` with `a(b(cd))` along the path D, E, A.** -/
+theorem pair_TD_path2 [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) (a b c d e₀ d₀ g₀ j m i : ℕ)
+    (hab : 1 ≤ a + b) (hc : 1 ≤ c)
+    (hd : ∀ x, x ≤ a + b + c + d → chebD (loopVal q) x ≠ 0)
+    (hq2 : ∀ x, 1 ≤ x → x ≤ a + b + c + d + 1 → (q : k) ^ (2 * x) ≠ 1)
+    (hjc : j ≤ c) (hjd : j ≤ d) (hmb : m ≤ b) (hmz : m ≤ c + d - 2 * j) (hia : i ≤ a)
+    (hiz : i ≤ b + (c + d - 2 * j) - 2 * m) (h₀ : ValidA a b c d e₀ d₀ g₀) :
+    ULd4 q a b c d e₀ d₀ g₀ * TD q a b c d j m i =
+      (∑ g' ∈ Finset.range (c + d - 2 * j + 1),
+        Fc q a b (c + d - 2 * j) e₀ g' m i * Fc q (a + b - 2 * e₀) c d d₀ g₀ j g') •
+        Nrm q a b c d e₀ d₀ g₀ := by
+  rw [TD_expand q hδ a b c d j m i hab hd hq2 hjc hjd hmb hmz hia hiz, Finset.mul_sum]
+  have hterm : ∀ e g', ULd4 q a b c d e₀ d₀ g₀ * (Fc q a b (c + d - 2 * j) e g' m i • TE q a b c d e j g') =
+      if e₀ = e then (Fc q a b (c + d - 2 * j) e g' m i * Fc q (a + b - 2 * e₀) c d d₀ g₀ j g') •
+        Nrm q a b c d e₀ d₀ g₀ else 0 := by
+    intro e g'
+    rw [mul_smul_comm]
+    by_cases h0 : Fc (k := k) q a b (c + d - 2 * j) e g' m i = 0
+    · rw [h0]; simp
+    · obtain ⟨hv1, hv2⟩ := Fc_guard h0
+      rw [pair_TE q hδ a b c d e₀ d₀ g₀ e j g' hc hd hq2 (hv1.trans (min_le_left _ _)) (hv1.trans (min_le_right _ _))
+        hjc hjd (hv2.trans (min_le_left _ _)) (hv2.trans (min_le_right _ _)) h₀]
+      by_cases hee : e₀ = e
+      · subst hee; simp [smul_smul]
+      · simp [hee]
+  simp only [Finset.mul_sum, hterm]
+  rw [Finset.sum_eq_single e₀]
+  · simp [Finset.sum_smul]
+  · intro e _ hne
+    exact Finset.sum_eq_zero fun g' _ => by rw [if_neg (fun hh => hne hh.symm)]
+  · intro hh; exact absurd (Finset.mem_range.mpr (by have := h₀.1; have := min_le_left a b; omega)) hh
+
 end Lightlike.TemperleyLieb
