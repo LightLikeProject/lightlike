@@ -124,4 +124,44 @@ theorem expansion [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) (a b c f d' : �
     gram_spec q hδ a b c e d f d' hN hd hea heb hfb hfc hdc hdA hda hdf, mul_smul_comm,
     UL_mul_proj q a b c e d hea heb hdA hdc (fun j hj => hd j (by omega)), smul_smul]
 
+/-- **Orthogonality of the first-bracketing tree vectors**: `U_L'(e,d) U_L(e',d') = δ κ_e κ_d p_D`. -/
+theorem ULd_mul_UL [CharZero k] (q : kˣ) (a b c : ℕ)
+    (hd : ∀ j, j ≤ a + b + c → chebD (loopVal q) j ≠ 0)
+    (hq2 : ∀ j, 1 ≤ j → j ≤ a + b + c + 1 → (q : k) ^ (2 * j) ≠ 1)
+    {e d e' d' : ℕ} (hea : e ≤ a) (heb : e ≤ b) (hea' : e' ≤ a) (heb' : e' ≤ b)
+    (hdA : d ≤ a + b - 2 * e) (hdc : d ≤ c) (hdA' : d' ≤ a + b - 2 * e') (hdc' : d' ≤ c) :
+    ULd q a b c e d * UL q a b c e' d' =
+      if e = e' ∧ d = d' then (kapRec q a b e * kapRec q (a + b - 2 * e) c d) • jwAt q 0 (a + b - 2 * e + c - 2 * d)
+      else 0 := by
+  unfold ULd UL
+  by_cases hee : e = e'
+  · subst hee
+    have hWV := Wop_mul_Vop q a b e hea heb (fun j hj => hd j (by omega))
+    have hpV : jwAt q 0 (a + b - 2 * e) * Vop q (a + b - 2 * e) c d' = Vop q (a + b - 2 * e) c d' := by
+      unfold Vop; rw [← mul_assoc, ← mul_assoc, jwAt_mul_Qab' (k := k) q (a + b - 2 * e) c
+        (fun j hj => hd j (by omega))]
+    have key : Wop q (a + b - 2 * e) c d * Wop q a b e * (Vop q a b e * Vop q (a + b - 2 * e) c d') =
+        kapRec q a b e • (Wop q (a + b - 2 * e) c d * Vop q (a + b - 2 * e) c d') := by
+      calc _ = Wop q (a + b - 2 * e) c d * (Wop q a b e * Vop q a b e) * Vop q (a + b - 2 * e) c d' := by
+            simp only [mul_assoc]
+        _ = _ := by rw [hWV, mul_smul_comm, smul_mul_assoc, mul_assoc, hpV]
+    rw [key]
+    by_cases hdd : d = d'
+    · subst hdd
+      rw [if_pos ⟨rfl, rfl⟩, Wop_mul_Vop q (a + b - 2 * e) c d hdA hdc (fun j hj => hd j (by omega)), smul_smul]
+    · rw [if_neg (fun h => hdd h.2)]
+      have hm : 1 ≤ min (a + b - 2 * e) c := by omega
+      have h0 := channel_orth q (a + b - 2 * e) c d d' (by omega) (by omega) hdA hdc hdA' hdc'
+        (fun j hj => hd j (by omega))
+        (lamRec_ne q (a + b - 2 * e) c d d' hdA hdc hdA' hdc' hdd (fun j h1 h2 => hq2 j h1 (by omega)))
+      rw [h0, smul_zero]
+  · rw [if_neg (fun h => hee h.1)]
+    have hm : 1 ≤ min a b := by omega
+    have h0 := channel_orth q a b e e' (by omega) (by omega) hea heb hea' heb' (fun j hj => hd j (by omega))
+      (lamRec_ne q a b e e' hea heb hea' heb' hee (fun j h1 h2 => hq2 j h1 (by omega)))
+    calc Wop q (a + b - 2 * e) c d * Wop q a b e * (Vop q a b e' * Vop q (a + b - 2 * e') c d') =
+        Wop q (a + b - 2 * e) c d * (Wop q a b e * Vop q a b e') * Vop q (a + b - 2 * e') c d' := by
+          simp only [mul_assoc]
+      _ = 0 := by rw [h0]; simp
+
 end Lightlike.TemperleyLieb

@@ -2005,6 +2005,7 @@ import Lightlike.TemperleyLieb.Shift
 import Lightlike.TemperleyLieb.Recoupling
 import Lightlike.TemperleyLieb.Gram
 import Lightlike.TemperleyLieb.GramVanish
+import Lightlike.TemperleyLieb.Expansion
 import Lightlike.Dirac.ConnesDistance
 import Lightlike.Dirac.ConnesDistance2
 import Lightlike.Dirac.ConnesDistance3
