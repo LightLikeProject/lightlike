@@ -55,9 +55,9 @@ are [TODO] here.
    `GFT.ColoredGraph.dual_isStronglyConnected`, `GFT.ColoredGraph.dual_isNormal`,
    `GFT.ColoredGraph.dual_isSimplicial`, `GFT.ColoredGraph.faceIso`,
    `GFT.ColoredGraph.dual_isNormalPseudoManifold`
-5. Lightlike/GFT/DualLink.lean - `GFT.ColoredGraph.mem_bubble_restrict`,
-   `GFT.ColoredGraph.linkTo`, `GFT.ColoredGraph.linkOf`, `GFT.ColoredGraph.linkIso`,
-   `GFT.ColoredGraph.linkIso_rk`, `GFT.ColoredGraph.link_isDual`
+5. Lightlike/GFT/DualLink.lean - `GFT.ColoredGraph.mem_bubble_restrict`, `GFT.ColoredGraph.linkTo`,
+   `GFT.ColoredGraph.linkOf`, `GFT.ColoredGraph.linkIso`, `GFT.ColoredGraph.linkIso_rk`,
+   `GFT.ColoredGraph.link_isDual`, `GFT.ColoredGraph.link_isDual_of_two_le`
 6. Lightlike/GFT/DualEuler.lean - `GFT.ColoredGraph.dual_f`,
    `GFT.ColoredGraph.two_mul_nBubbles_singleton`, `GFT.ColoredGraph.eulerChar_dual`,
    `GFT.ColoredGraph.eulerChar_dual_eq_euler`

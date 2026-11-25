@@ -59,6 +59,20 @@ The associator of the fusion ring is given by the quantum 6j symbols: `F^{abc}_d
 Biedenharn–Elliott identity by moving the signs and the square roots of the dimensions into the F-matrices, so it is conditional on
 `qBiedenharnElliott` and unconditional at `r = 3` [28]. The hexagon and the rest of the modular category are not treated.
 
+Further results of this area in the results catalogue:
+Norm one of the q-6j matrix at every level r ≥ 2 [29]. q-orthogonality of the 6j symbol at every level r
+≥ 2 [30]. The boundary evaluation QDougall holds for the lowest sixth colours j1 - j5 and j4 - j2 with
+third colours from j1 - j2 up to j4 + j5 (respectively j1 + j2), by Jackson's sum and its degenerate
+case [31]. The boundary evaluation QDougallAll holds at every level r ≥ 2, and with it the
+q-orthogonality of the 6j symbol [30]. The Turaev–Viro state sum at r = 3 is an invariant of closed
+combinatorial 3-manifolds up to PL homeomorphism [32]. The fusion ring of SU(2) at level r - 2: the
+coefficients N_ab^c = 1 for admissible triples are symmetric, 0 is the unit, the quantum dimension [a+1]
+is multiplicative, and the ring is associative for r = 3, 4, 5, 6 [33]. The S matrix of SU(2) at level r
+- 2, S_ab = sqrt(2/r) sin(pi (a+1)(b+1)/r): symmetric, its unit row is the quantum dimension, and the
+Verlinde formula holds for the unit-object row [34]. Discrete sine orthogonality, sum over x < r of
+sin(a pi x/r) sin(b pi x/r) = (r/2) delta_ab for 0 < a, b < r, and S^2 = 1 for the S matrix of SU(2) at
+level r - 2 [35].
+
 ## Lean References
 
 1. Lightlike/TuraevViro/QNumber.lean - `TV.qnum`, `TV.qnum_pos`
@@ -93,6 +107,18 @@ Biedenharn–Elliott identity by moving the signs and the square roots of the di
 27. Lightlike/TuraevViro/Reflect/EndRowCoef.lean - `TV.Refl.jBsp`, `TV.Refl.row_low`, `TV.Refl.row_top`,
     `TV.Refl.row_at`
 28. Lightlike/TuraevViro/FMatrix.lean - `TV.fMat`, `TV.fMat_pentagon`, `TV.fMat_pentagon_three`
+29. Lightlike/TuraevViro/Reflect/SixJNormOneAll.lean - `TV.Refl.sixj_norm_one_proved`
+30. Lightlike/TuraevViro/Reflect/QDougallAll.lean - `TV.Refl.qOrthogonality_proved`,
+    `TV.Refl.qDougallAll_proved`
+31. Lightlike/TuraevViro/Reflect/QDougallMap.lean - `TV.Refl.qDougall_orbit`, `TV.Refl.qDougall_nondeg`,
+    `TV.Refl.qDougall_orbit3`, `TV.Refl.qDougall_trunc_param`, `TV.Refl.qDougall_trunc_deg_param`,
+    `TV.Refl.qDougall_orbit3_trunc_param`
+32. Lightlike/TuraevViro/PLInvariance.lean - `TV.turaevViro3_plHomeomorphic`
+33. Lightlike/TuraevViro/FusionRing.lean - `TV.fusionN`, `TV.fusionN_comm₁₂`, `TV.fusionN_comm₂₃`,
+    `TV.fusionN_zero_left`, `TV.fusion_dim`, `TV.fusion_assoc_small`
+34. Lightlike/TuraevViro/SMatrix.lean - `TV.sMat`, `TV.sMat_comm`, `TV.sMat_zero_left`,
+    `TV.sMat_zero_zero_pos`, `TV.verlinde_zero`
+35. Lightlike/TuraevViro/SOrthogonal.lean - `TV.sum_sin_mul_sin_orth`, `TV.sMat_mul_self`
 
 ## References
 

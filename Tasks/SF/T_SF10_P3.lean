@@ -80,7 +80,8 @@ domain `U`, equal to `1` near the finite set `K` of critical points of the suppo
 `CriticalSetIs j p g e (fun _ => 1) K` (every critical point of `tsupport A` is in `K`), and the chart hypotheses of
 `lorVertex_asymptotics_fixChart` (`U`, `hP`, `hA`) are added. Without the change the statement is false: a nondegenerate
 critical point outside `tsupport χ` contributes `c λ^{-22}` (`docs/notes/sf10-p3-assessment.md`). The proof is the sum of
-`lorVertex_farRemainder_compact` (the part `ψ - χ`) and `lorVertex_farRemainder_tail` (the part `1 - ψ`), for a cutoff `ψ`
+`lorVertex_farRemainder_compact_proof` (the part `ψ - χ`, in `Lightlike/SpinFoam/VertexAsymptoticsHyp/FarCompact.lean`)
+and `lorVertex_farRemainder_tail` (the part `1 - ψ`), for a cutoff `ψ`
 chosen in the proof. Not in BDFHP. -/
 theorem lorVertex_farRemainder
     {j p : Fin 10 → ℝ} {γ : ℝ} (hj : ∀ k, 0 < j k)

@@ -427,7 +427,7 @@
       - {ref: turaev-1994, location: "Chapter: Chapter VI. 6j-symbols|10.1515/9783110883275-007"}
   review: kernel-checked
   hypotheses: [Lightlike.TV.qBiedenharnElliott, Lightlike.TV.qOrthogonality]
-  note: "Both moves leave the state sum unchanged, given the q-Biedenharn–Elliott identity and q-orthogonality at level r. q-orthogonality is now proved at every level (LL-0075): turaevViro_move14_of_BE and turaevViro_move23_of_BE in Lightlike/TuraevViro/TuraevViroMoves.lean state both moves with q-Biedenharn–Elliott as their only hypothesis. That identity is proved at r = 3 (LL-0032) and checked numerically at r = 4 to 10, so the result stays conditional for r ≥ 4."
+  note: "Both moves leave the state sum unchanged, given the q-Biedenharn–Elliott identity and q-orthogonality at level r. q-orthogonality is now proved at every level (LL-0075): turaevViro_move14_of_BE and turaevViro_move23_of_BE in Lightlike/TuraevViro/TuraevViroMoves.lean state both moves with q-Biedenharn–Elliott as their only hypothesis. That identity is proved at r = 3 (LL-0032), and at r = 4 and r = 5 in the proof-task files Tasks/QU/T_QU1_P2.lean (Lightlike.TV.qBiedenharnElliott_four) and Tasks/QU/T_QU1_P4.lean (Lightlike.TV.qBiedenharnElliott_five), so the moves follow at r = 4 and 5 from turaevViro_move14_of_BE and turaevViro_move23_of_BE; it is checked numerically at r = 4 to 10 and open for every r (task T-QU1-P6), so the result stays conditional for r ≥ 6."
   since: 0.1.0
 - id: LL-0032
   title: Turaev–Viro invariance under the 2-3 and 1-4 moves at r = 3
@@ -2951,14 +2951,14 @@
   title: A 3-metric with a Killing algebra of the space-form type, isotropic at a point, is locally a constant multiple of the space form of curvature k
   area: Spacetime
   file: Lightlike/Spacetime/KillingOrbitChart.lean
-  decls: [Lightlike.isometric_spaceForm, Lightlike.orbit_comparison, Lightlike.gram_of_isotropy, Lightlike.SpaceForm.lieBracket_X, Lightlike.SpaceForm.killing_P, Lightlike.SpaceForm.killing_R]
+  decls: [Lightlike.isometric_spaceForm, Lightlike.gram_of_isotropy]
   status: proven
   tier: established
   source:
     refs:
       - {ref: carroll-1997, location: "eq. (8.1)", check: "maximally symmetric"}
   review: kernel-checked
-  note: "Route (A) to the abstract form of G1-024. On R^3 the curved translations P_m = (1 - k|x|^2/4) e_m + (k/2) x_m x and the rotations R_ab are Killing for the space form delta/(1 + k|x|^2/4)^2 with explicit structure constants S_k ([P_m, P_n] = -k R_mn, [R_ab, P_m] = delta_mb P_a - delta_ma P_b, so(3)). For a C^1 family of fields Y near a point p of a Banach space, indexed like this algebra, Killing for a symmetric G near p, with brackets S_k near p and with the rotations vanishing at p, the orbit maps o(xi) = exp(T sum xi_e Y_e)(p) and o_2(xi) = exp(T sum xi_e P_e)(0) satisfy G(o xi)(Do zeta, Do zeta') = c * delta/(1 + k|x|^2/4)^2 (o_2 xi)(Do_2 zeta, Do_2 zeta') near 0, c = G(p)(P_0(p), P_0(p)); at 0, Do_2 is T times the identity on the translation directions. Proof: along the orbits, (Gram matrix, G(J, Y), G(J', Y), G(J, J')) of the flow derivative J solves a linear equation in the structure constants alone (orbit_comparison, on fable3/ode-flow's differentiable flow). Limits: the Killing algebra and its structure constants are hypotheses (not derived from an isometry group); the four-dimensional assembly of the slices is not proved."
+  note: "Route (A) to the abstract form of G1-024. On R^3 the curved translations P_m = (1 - k|x|^2/4) e_m + (k/2) x_m x and the rotations R_ab are Killing for the space form delta/(1 + k|x|^2/4)^2 with explicit structure constants S_k ([P_m, P_n] = -k R_mn, [R_ab, P_m] = delta_mb P_a - delta_ma P_b, so(3)). For a C^1 family of fields Y near a point p of a Banach space, indexed like this algebra, Killing for a symmetric G near p, with brackets S_k near p and with the rotations vanishing at p, the orbit maps o(xi) = exp(T sum xi_e Y_e)(p) and o_2(xi) = exp(T sum xi_e P_e)(0) satisfy G(o xi)(Do zeta, Do zeta') = c * delta/(1 + k|x|^2/4)^2 (o_2 xi)(Do_2 zeta, Do_2 zeta') near 0, c = G(p)(P_0(p), P_0(p)); at 0, Do_2 is T times the identity on the translation directions. Proof: along the orbits, (Gram matrix, G(J, Y), G(J', Y), G(J, J')) of the flow derivative J solves a linear equation in the structure constants alone (orbit_comparison, on fable3/ode-flow's differentiable flow). Limits: the Killing algebra and its structure constants are hypotheses (not derived from an isometry group); the four-dimensional assembly of the slices is not proved. Lemmas it uses from other files: Lightlike.orbit_comparison (Lightlike/Spacetime/KillingOrbit.lean); Lightlike.SpaceForm.lieBracket_X, Lightlike.SpaceForm.killing_P, Lightlike.SpaceForm.killing_R (Lightlike/Spacetime/SpaceFormKilling.lean)."
   since: unreleased
 - id: LL-0225
   title: A metric with a Killing algebra of the space-form type, isotropic along a worldline, has the FLRW form b(t) dt^2 + a(t) delta/(1 + k|x|^2/4)^2 in the orbit chart
@@ -3911,14 +3911,14 @@
   title: "The Connes distance of the flat Dirac operator on R^n between two points is the Euclidean distance, for every skew Clifford representation on a nontrivial space"
   area: GR
   file: Lightlike/Dirac/ConnesDistance2.lean
-  decls: [Lightlike.Dirac.connesDist_eq_norm, Lightlike.Dirac.dirac_smul, Lightlike.Dirac.opNorm_cliff]
+  decls: [Lightlike.Dirac.connesDist_eq_norm]
   status: proven
   tier: established
   source:
     refs:
       - {ref: martinetti-2016, location: "eq. (2.10)", check: "geodesic"}
   review: kernel-checked
-  note: "Compared with Martinetti, arXiv:1604.00499, Section 2, eqs. (2.10) and (2.11), p. 6 (read): for a complete Riemannian (spin) manifold, with D the signature operator or the Dirac operator, the spectral distance between pure states equals the geodesic distance; the norm of the commutator [D, f] is the Lipschitz norm of f (p. 6, citing Rieffel and [22]). Differences: REPRESENTATION, our D is the flat Dirac operator on R^n for an arbitrary skew Clifford representation on a nontrivial normed space (not L^2 spinors), the test functions are C^1 with sup norm of the gradient at most 1 (Lip1), and only the flat case is proved, with Leibniz rule D(f psi) = f D psi + cliff(grad f) psi; no general spin manifold."
+  note: "Compared with Martinetti, arXiv:1604.00499, Section 2, eqs. (2.10) and (2.11), p. 6 (read): for a complete Riemannian (spin) manifold, with D the signature operator or the Dirac operator, the spectral distance between pure states equals the geodesic distance; the norm of the commutator [D, f] is the Lipschitz norm of f (p. 6, citing Rieffel and [22]). Differences: REPRESENTATION, our D is the flat Dirac operator on R^n for an arbitrary skew Clifford representation on a nontrivial normed space (not L^2 spinors), the test functions are C^1 with sup norm of the gradient at most 1 (Lip1), and only the flat case is proved, with Leibniz rule D(f psi) = f D psi + cliff(grad f) psi; no general spin manifold. Lemmas it uses from other files: Lightlike.Dirac.dirac_smul, Lightlike.Dirac.opNorm_cliff (Lightlike/Dirac/ConnesDistance.lean)."
   since: unreleased
 - id: LL-0295
   title: "The Connes distance on the circle R/LZ for the Dirac operator -i d/dx is the geodesic distance, the infimum over integers m of |p - q - m L|"
@@ -4433,27 +4433,27 @@
   title: "A quasi-free state of the Weyl algebra of a finite-dimensional symplectic space with a compatible complex structure (J^2 = -1, eta J-invariant and positive definite, omega(x,y) = -eta(x,Jy)) is pure; the degenerate-omega case factors through a surjection onto such a space"
   area: OperatorAlgebras
   file: Lightlike/OperatorAlgebras/QuasiFreeState/ComplexStructure.lean
-  decls: [Lightlike.OperatorAlgebras.QuasiFreeState.isPureState_qfState_of_complexStructure, Lightlike.OperatorAlgebras.QuasiFreeState.isPureState_qfState_of_complexStructure_retract, Lightlike.OperatorAlgebras.QuasiFreeState.isPureState_qfState_of_equiv]
+  decls: [Lightlike.OperatorAlgebras.QuasiFreeState.isPureState_qfState_of_complexStructure, Lightlike.OperatorAlgebras.QuasiFreeState.isPureState_qfState_of_complexStructure_retract]
   status: proven
   tier: established
   source:
     refs:
       - {ref: gerard-2019, location: "Proposition 4.9.1", check: "pure iff"}
   review: kernel-checked
-  note: "Compared with Gérard, arXiv:1901.10175, Section 4.9.1, Proposition 4.9.1 (read, text extracted from the PDF): a quasi-free state with covariance eta (his convention omega(W(x)) = exp(-(1/2) x.eta x), so his 2 eta is the eta here with exp(-(1/4) eta)) is pure iff (2 eta^cpl, sigma^cpl) is Kahler, i.e. there is an anti-involution j in Sp with sigma j = 2 eta; the proof there is cited to Derezinski-Gerard, Theorem 17.13, and is not read. Differences: WEAKER, only the sufficiency half is proved (a compatible J gives purity); the necessity (pure implies a compatible J) is not proved. REPRESENTATION, the space is finite-dimensional with eta positive definite on the quotient; the proof identifies the GNS space with a Fock space of the complex inner product eta + i omega and uses irreducibility of the Fock representation, not the Kahler argument; the sign of the J relation (omega = -eta J) is a convention."
+  note: "Compared with Gérard, arXiv:1901.10175, Section 4.9.1, Proposition 4.9.1 (read, text extracted from the PDF): a quasi-free state with covariance eta (his convention omega(W(x)) = exp(-(1/2) x.eta x), so his 2 eta is the eta here with exp(-(1/4) eta)) is pure iff (2 eta^cpl, sigma^cpl) is Kahler, i.e. there is an anti-involution j in Sp with sigma j = 2 eta; the proof there is cited to Derezinski-Gerard, Theorem 17.13, and is not read. Differences: WEAKER, only the sufficiency half is proved (a compatible J gives purity); the necessity (pure implies a compatible J) is not proved. REPRESENTATION, the space is finite-dimensional with eta positive definite on the quotient; the proof identifies the GNS space with a Fock space of the complex inner product eta + i omega and uses irreducibility of the Fock representation, not the Kahler argument; the sign of the J relation (omega = -eta J) is a convention. Lemmas it uses from other files: Lightlike.OperatorAlgebras.QuasiFreeState.isPureState_qfState_of_equiv (Lightlike/OperatorAlgebras/QuasiFreeState/FockEquiv.lean)."
   since: unreleased
 - id: LL-0335
   title: "The Sorkin-Johnston state of a finite causal set is pure: |iD| is the positive square root of -D^2, the Pauli-Jordan matrix is a(C - C^T) for the causal matrix C, and the quasi-free state of (D, |iD|) is pure for every a"
   area: OperatorAlgebras
   file: Lightlike/OperatorAlgebras/QuasiFreeState/SorkinJohnston.lean
-  decls: [Lightlike.OperatorAlgebras.QuasiFreeState.isPureState_causalSet, Lightlike.OperatorAlgebras.QuasiFreeState.exists_pjData, Lightlike.OperatorAlgebras.QuasiFreeState.isPureState_pauliJordan]
+  decls: [Lightlike.OperatorAlgebras.QuasiFreeState.isPureState_causalSet, Lightlike.OperatorAlgebras.QuasiFreeState.exists_pjData]
   status: proven
   tier: frontier
   source:
     refs:
       - {ref: johnston-2009, location: "eq. (10)", check: "Pauli-Jordan"}
   review: kernel-checked
-  note: "Compared with Johnston, arXiv:0909.0944, eq. (10) Delta = K_R - K_A, K_A = K_R^T, and eq. (16) K_R = a C (1 - a b C)^-1 (read). Differences: WEAKER, only the massless two-dimensional retarded matrix a C (b = 0) is built, not the four-dimensional K_R = a L (1 - a b L)^-1 nor the massive one; the state is the quasi-free state with covariance |iD| on the symplectic space (R^n, D), which is the positive-part construction of Afshordi, Aslanbeigi and Sorkin (arXiv:1205.1296, title and authors checked, not read), and no comparison with their formulas is claimed. The purity is by the compatible complex structure of the previous entry."
+  note: "Compared with Johnston, arXiv:0909.0944, eq. (10) Delta = K_R - K_A, K_A = K_R^T, and eq. (16) K_R = a C (1 - a b C)^-1 (read). Differences: WEAKER, only the massless two-dimensional retarded matrix a C (b = 0) is built, not the four-dimensional K_R = a L (1 - a b L)^-1 nor the massive one; the state is the quasi-free state with covariance |iD| on the symplectic space (R^n, D), which is the positive-part construction of Afshordi, Aslanbeigi and Sorkin (arXiv:1205.1296, title and authors checked, not read), and no comparison with their formulas is claimed. The purity is by the compatible complex structure of the previous entry. Lemmas it uses from other files: Lightlike.OperatorAlgebras.QuasiFreeState.isPureState_pauliJordan (Lightlike/OperatorAlgebras/QuasiFreeState/PauliJordan.lean)."
   since: unreleased
 - id: LL-0336
   title: "The integrand of the Lorentzian EPRL vertex is jointly integrable on SL(2,C)^4 × C^10 in the fixed charts, for positive spins and unit boundary spinors: the hypothesis VertexJointIntegrable of the stationary-phase theorem holds"
@@ -4473,13 +4473,14 @@
   area: Asymptotics
   file: Lightlike/SpinFoam/VertexAsymptoticsHyp/FarCompact.lean
   decls: [Lightlike.Asymptotics.Lorentzian.lorVertex_farRemainder_compact_proof]
-  status: proven
+  status: conditional
   tier: frontier
   source:
     refs:
       - {ref: bdfhp-2010, location: "eq. (53)", check: "Regge state"}
   review: kernel-checked
-  note: "Citation to be checked (inventory, 25 Nov 2026): BDFHP (2010) eq. (53) is the asymptotic formula, not the estimate of the compact part of the far remainder. SF10 (G2-028), task T-SF10-P5: the part ψ − χ of the split of T-SF10-P3, by expPhase_suppressed applied to the compactly supported amplitude (ψ − χ) A, which vanishes near K. Hypothesis hK is CriticalSetIs with the cutoff 1: every critical point of tsupport A with Re S = 0 lies in K. The non-compact part 1 − ψ (T-SF10-P6) is open, so FarRemainderBound is not discharged; a numerical test supports the needed gap Re S ≤ −δ outside a compact set (docs/notes/sf10-p6-numeric.md)."
+  hypotheses: [Lightlike.Asymptotics.Lorentzian.CriticalSetIs]
+  note: "Conditional (inventory, 25 Nov 2026) on CriticalSetIs (hypothesis hK): that every critical point of tsupport A with Re S = 0 lies in the finite set K is an open hypothesis of LL-0135, not proved on main. Citation to be checked (inventory, 25 Nov 2026): BDFHP (2010) eq. (53) is the asymptotic formula, not the estimate of the compact part of the far remainder. SF10 (G2-028), task T-SF10-P5: the part ψ − χ of the split of T-SF10-P3, by expPhase_suppressed applied to the compactly supported amplitude (ψ − χ) A, which vanishes near K. Hypothesis hK is CriticalSetIs with the cutoff 1: every critical point of tsupport A with Re S = 0 lies in K. The non-compact part 1 − ψ (T-SF10-P6) is open, so FarRemainderBound is not discharged; a numerical test supports the needed gap Re S ≤ −δ outside a compact set (docs/notes/sf10-p6-numeric.md)."
   since: unreleased
 - id: LL-0338
   title: "The Hessian of the Lorentzian vertex action at a point with Re S = 0 is invertible if and only if no nonzero real vector lies in the common kernel of the real and imaginary parts of its negative; the real part is positive semidefinite and the matrix is symmetric"
@@ -4721,7 +4722,7 @@
     refs:
       - {ref: turaev-1994, location: "Chapter: Chapter VI. 6j-symbols|10.1515/9783110883275-007"}
   review: kernel-checked
-  note: "QU3 (G3-201), conditional in the style of LL-0031: fMat_pentagon takes qBiedenharnElliott hr, the q-Biedenharn–Elliott identity (proved at r = 3 only, qBiedenharnElliott_three, which gives fMat_pentagon_three unconditionally; numerical evidence for other r, docs/notes/qbe-all-levels.md). The pentagon is the Biedenharn–Elliott sum over h with the signs and the square roots of the dimensions moved into the F-matrices; the signs agree termwise under the parity of the admissible triads. The convention (the sign (−1)^((a+b+c+d)/2) and the symmetric normalisation √(dim e dim f)) was checked numerically at r = 5 for all labels before the Lean statement, and the same pentagon without the sign fails (difference 2.0). Not proved: the hexagon, the existence of the full modular tensor category, the F-matrices as the associator of a representation category of U_q(sl₂) (they are defined from the 6j symbols, not from UqSl2). The comparison with Turaev, Chapter VI, is pending."
+  note: "QU3 (G3-201), conditional in the style of LL-0031: fMat_pentagon takes qBiedenharnElliott hr, the q-Biedenharn–Elliott identity (proved at r = 3, qBiedenharnElliott_three, which gives fMat_pentagon_three unconditionally, and at r = 4 and r = 5 in the proof-task files Tasks/QU/T_QU1_P2.lean and Tasks/QU/T_QU1_P4.lean, qBiedenharnElliott_four and qBiedenharnElliott_five; open for every r, task T-QU1-P6; numerical evidence for other r, docs/notes/qbe-all-levels.md). The pentagon is the Biedenharn–Elliott sum over h with the signs and the square roots of the dimensions moved into the F-matrices; the signs agree termwise under the parity of the admissible triads. The convention (the sign (−1)^((a+b+c+d)/2) and the symmetric normalisation √(dim e dim f)) was checked numerically at r = 5 for all labels before the Lean statement, and the same pentagon without the sign fails (difference 2.0). Not proved: the hexagon, the existence of the full modular tensor category, the F-matrices as the associator of a representation category of U_q(sl₂) (they are defined from the 6j symbols, not from UqSl2). The comparison with Turaev, Chapter VI, is pending."
   since: unreleased
 - id: LL-0357
   title: "On a Lorentzian manifold a perfect fluid field with unit timelike velocity satisfies the null, weak, strong and dominant energy conditions exactly when ρ + p ≥ 0; ρ ≥ 0 and ρ + p ≥ 0; ρ + p ≥ 0 and ρ + 3p ≥ 0; |p| ≤ ρ everywhere, and dust with ρ ≥ 0 satisfies all four"

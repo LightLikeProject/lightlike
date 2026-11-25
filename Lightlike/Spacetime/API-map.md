@@ -97,6 +97,28 @@ Minkowski space is conformal to the region `0 < χ`, `|η| + χ < π` of the Ein
 
 Anti-de Sitter space is conformal to half of the Einstein static universe: with `r = tan θ`, the global metric `-(1 + r²) dτ² + (1 + r²)⁻¹ dr² + r² dΩ²` is `cos⁻² θ (-dτ² + dθ² + sin² θ dΩ²)` for `0 ≤ θ < π/2`, and the conformal boundary `θ = π/2`, where `cos θ` vanishes, carries the timelike metric `-dτ² + dΩ²` [102].
 
+Further results of this area in the results catalogue:
+A limit of future causal curves with converging endpoints is a future causal curve, in one chart [112].
+A causal spacetime is chronological, and a strongly causal spacetime is causal [113]. A spacetime with a
+time function is strongly causal [114]. A globally hyperbolic spacetime without boundary is causally
+simple [115]. The dominant energy condition implies the weak one, and the weak and the strong ones imply
+the null one [116]. Raychaudhuri focusing under the strong energy condition: a unit geodesic
+rotation-free congruence with negative expansion Θ_0 in dimension 4 cannot be continued beyond parameter
+3/|Θ_0|, when G = κT with κ > 0 and T satisfies the strong energy condition [117]. Hawking-type bound:
+under the strong energy condition in dimension 4 the length of a unit geodesic rotation-free integral
+curve with Θ at most C < 0 at the start is at most 3/|C| [118]. Contracting FLRW universe: a time-like
+geodesic through a contracting FLRW with Ricci curvature nonnegative has length at most one Hubble time
+1/h [119]. Focusing with twist: if the expansion obeys Θ' ≤ −(Θ² − b²)/m on `[0, L)` and Θ(0) < −b then
+L ≤ m/(−b − Θ(0)) [120]. The Klein–Gordon field satisfies the null energy condition for every potential,
+while a constant field with negative potential violates the weak energy condition although it satisfies
+the null condition [121]. With a Klein–Gordon source the Ricci curvature of a null vector is κ(dφ k)²,
+nonnegative and zero exactly when dφ k = 0 [122]. The weak energy condition of a Klein–Gordon field is
+exactly 0 ≤ ½|dφ|² + V for a vanishing or spacelike gradient [123]. Dust with ρ ≥ 0 on the FLRW manifold
+satisfies the strong energy condition [124]. The conformal embedding of Minkowski space in Cartesian
+form, axis included: the map (η, p) ↦ (t, x⃗) from the region {|η| < π, p ∈ S³, ω > 0} of ℝ × S³ is a
+bijection onto ℝ × ℝ³, the metric is ω⁻² times the Einstein static universe metric, and the axis r = 0
+is the ordinary point p = (1, 0⃗) [125].
+
 ## Lean References
 
 1. Lightlike/Spacetime/Curvature.lean - `IsCoordMetric`, `christoffel`, `riemann`, `ricci`,
@@ -132,7 +154,7 @@ Anti-de Sitter space is conformal to half of the Einstein static universe: with 
 18. Lightlike/Spacetime/ContractedBianchi.lean - `covR_cyc`, `einstein_div_coord`: the second Bianchi identity in coordinates and its double contraction.
 19. Lightlike/Spacetime/DivergenceFree.lean - `einstein_divergence_free_proved`: the divergence of the Einstein tensor of a Levi-Civita connection vanishes.
 20. Lightlike/Spacetime/OpenCoordMetric.lean - `openMetric`, `openMetric_coordMetric`: a Lorentzian coordinate metric on an open set as a Lorentzian metric on the manifold, and the bridge.
-21. Lightlike/Spacetime/SchwarzschildManifold.lean - `schwarzschildMetric`, `schwarzschild_coordMetric`, `schwarzschild_satisfiesEinstein`, `schwarzschild_ricci_eq_zero`: exterior Schwarzschild on the manifold layer.
+21. Lightlike/Spacetime/SchwarzschildManifold.lean - `schwarzschildMetric`, `schwarzschild_coordMetric`, `schwarzschild_satisfiesEinstein`, `schwarzschild_ricci_eq_zero`, `schwarzschild_exists_vacuum_connection`: exterior Schwarzschild on the manifold layer.
 22. Lightlike/Spacetime/LeviCivitaSmooth.lean - `contMDiffCovariantDerivative_leviCivita`: the Levi-Civita connection of a Lorentzian metric is smooth.
 23. Lightlike/Spacetime/EinsteinEquations.lean - `satisfiesEinstein_iff_ricci`, `satisfiesEinstein_zero_iff_ricci_eq_zero`: the vacuum Einstein equations with a cosmological constant are Ricci proportional to the metric, and Ricci-flat for no cosmological constant.
 24. Lightlike/Spacetime/VolumeMeasure.lean - `volumeMeasure`, `volumeMeasure_chart`, `volumeMeasure_minkowski`: the volume measure of a Lorentzian metric, its chart formula and the Minkowski trust check.
@@ -154,12 +176,12 @@ Anti-de Sitter space is conformal to half of the Einstein static universe: with 
 40. Lightlike/Spacetime/EinsteinTwoDim.lean - `ricci_two_dim`, `einsteinUp_two_dim`, `isEHCritical_two_dim`: in two dimensions the Ricci tensor is half the scalar curvature times the metric, the Einstein tensor vanishes, and every smooth nondegenerate metric is a critical point of the Einstein-Hilbert action without cosmological term.
 41. Lightlike/Spacetime/CoordKilling.lean - `coordField_killing`: a coordinate field along which the metric components are constant is a Killing field of the Levi-Civita connection.
 42. Lightlike/Spacetime/SchwarzschildKilling.lean - `schwarzschild_killing`: the time translation `∂_t` is a Killing field of exterior Schwarzschild.
-43. Lightlike/Spacetime/EnergyConditions.lean - `NullEC`, `WeakEC`, `StrongEC`, `DominantEC`, `dust_energyConditions`, `cosmo_energyConditions`, `scalar_negative_potential_violates_weak`: the pointwise energy conditions of a stress-energy tensor on a Lorentzian vector space and their trust checks.
+43. Lightlike/Spacetime/EnergyConditions.lean - `NullEC`, `WeakEC`, `StrongEC`, `DominantEC`, `dust_energyConditions`, `cosmo_energyConditions`, `scalar_negative_potential_violates_weak`, `fluid_weakEC_iff`, `fluid_dominantEC_iff`, `em_nullEC`: the pointwise energy conditions of a stress-energy tensor on a Lorentzian vector space and their trust checks.
 44. Lightlike/Spacetime/IsometryKilling.lean - `fderiv_apply_inr_of_id`, `killing_of_isometry_family`, `killing_of_isometry_family_on`: the generator of a one-parameter family of isometries is a Killing field, in coordinates.
-45. Lightlike/Spacetime/EnergyConditionsField.lean - `LorentzianMetric.NullECField`, `LorentzianMetric.fluidField_dominantEC_iff`, `LorentzianMetric.nullECField_iff_ricci`, `LorentzianMetric.strongECField_iff_ricci`, `LorentzianMetric.dominantECField_iff_einstein`: the energy conditions of a stress-energy field on a Lorentzian 4-manifold, the perfect-fluid forms, and the equivalence of the physical and geometric forms under the Einstein equations.
+45. Lightlike/Spacetime/EnergyConditionsField.lean - `LorentzianMetric.NullECField`, `LorentzianMetric.fluidField_dominantEC_iff`, `LorentzianMetric.nullECField_iff_ricci`, `LorentzianMetric.strongECField_iff_ricci`, `LorentzianMetric.dominantECField_iff_einstein`, `LorentzianMetric.weakECField_iff_einstein`, `LorentzianMetric.fluidField_nullEC_iff`, `LorentzianMetric.fluidField_weakEC_iff`, `LorentzianMetric.fluidField_strongEC_iff`, `LorentzianMetric.fluidField_dust`, `LorentzianMetric.scalarField_const_violates_weak`, `LorentzianMetric.emField_nullEC`: the energy conditions of a stress-energy field on a Lorentzian 4-manifold, the perfect-fluid forms, and the equivalence of the physical and geometric forms under the Einstein equations.
 46. Lightlike/Spacetime/EnergyConditionsPhyslib.lean - `fluid_nullEC_iff_physlib`, `fluid_weakEC_iff_physlib`, `fluid_strongEC_iff_physlib`, `fluid_dominantEC_iff_physlib`: for a perfect fluid the tensor energy conditions are Physlib's effective energy conditions on a cosmic fluid at c = 1.
 47. Lightlike/Spacetime/HypersurfaceConstraints.lean - `curvatureAt_linear`, `ricciAt_frame`, `scalarCurvatureAt_frame`, `exists_frame`, `hamiltonian_constraint`, `momentum_constraint`: the Hamiltonian and momentum constraints from the contracted Gauss and Codazzi relations.
-48. Lightlike/Spacetime/EnergyConditionsEM.lean - `exists_frame_of_timelike`, `em_weakEC`, `em_dominantEC`, `em_strongEC_of_eq`, `emT_traceless`: every unit timelike vector starts a Lorentz frame; the electromagnetic field satisfies the weak, dominant and strong energy conditions.
+48. Lightlike/Spacetime/EnergyConditionsEM.lean - `exists_frame_of_timelike`, `em_weakEC`, `em_dominantEC`, `em_strongEC_of_eq`, `emT_traceless`, `em_strongEC_dim`: every unit timelike vector starts a Lorentz frame; the electromagnetic field satisfies the weak, dominant and strong energy conditions.
 49. Lightlike/Spacetime/RiccatiFocusing.lean - `focusing`: the focusing lemma for the Riccati inequality.
 50. Lightlike/Spacetime/RaychaudhuriAlgebra.lean - `Raychaudhuri.raychaudhuri_algebra`: the index computation of the Raychaudhuri identity (fable1).
 51. Lightlike/Spacetime/RaychaudhuriCoord.lean - `covD`, `expansion`, `covDMat`, `shear`, `rotation`, `pd_covD`, `raychaudhuri_coord`, `raychaudhuri_equation`: Raychaudhuri's identity and equation for a geodesic field in coordinates.
@@ -211,7 +233,7 @@ Anti-de Sitter space is conformal to half of the Einstein static universe: with 
 97. Lightlike/Spacetime/FLRWModel.lean - `flrwMetric4`: the FLRW metric on an open interval times the 3-sphere as a Lorentzian metric for the model on four coordinates.
 98. Lightlike/Spacetime/FLRWCoord.lean - `coordMetric_flrw`: its coordinate components in every chart are the coordinate FLRW metric with curvature one.
 99. Lightlike/Spacetime/Corners/EinsteinChart.lean - `einsteinEq_iff_chartW`: the Einstein equations with a source are the coordinate equations in every chart, for any model with corners.
-100. Lightlike/Spacetime/FLRWSphereEinstein.lean - `flrwSphere_einsteinEq_leviCivita_iff_friedmann`, `flrwFluid`: the Einstein equations with the comoving perfect fluid on the interval times the 3-sphere are Friedmann's equations with curvature one.
+100. Lightlike/Spacetime/FLRWSphereEinstein.lean - `flrwSphere_einsteinEq_leviCivita_iff_friedmann`, `flrwFluid`, `closedDeSitter_einsteinEq`, `closedDeSitter_wrong_sign`: the Einstein equations with the comoving perfect fluid on the interval times the 3-sphere are Friedmann's equations with curvature one.
 101. Lightlike/Spacetime/Corners/Bridge.lean - `NondegMetric.coordMetricW_eq_coordMetric`, `mfderivWithin_range_modelWithCornersSelf`, `chartTrivW_eq_chartTriv`, `tTrivW_eq_tTriv`, `coordFieldW_eq_coordField`, `hatW_eq_hat`, `mfderiv_extChartAt_symm_eqW_bridge`: the Corners layer agrees with the boundaryless chart layer for the model `𝓘(ℝ, Fin n → ℝ)`.
 102. Lightlike/Spacetime/AdSCompactification.lean - `ads_eq_conformal_esu`, `bijOn_tan_ads`, `cos_eq_zero_ads_boundary`, `ads_boundary_metric`: anti-de Sitter space is conformal to half of the Einstein static universe, with a timelike conformal boundary.
 103. Lightlike/Spacetime/KillingRigidityCoord.lean - `covCo`, `covCo2`, `covCo2_sub_covCo2`, `covCo2_antisymm`, `covCo2_killing`, `pd_pd_killing`, `rigVec`, `rigVec_eq_zero_of_segment`, `rigVec_eq_zero_of_isPreconnected`, `eq_of_rigVec_eq`: the second derivatives of a Killing field in coordinates, and Killing rigidity.
@@ -224,6 +246,26 @@ Anti-de Sitter space is conformal to half of the Einstein static universe: with 
 110. Lightlike/Spacetime/NullFrameExpansion.lean - `Penrose.NullFrame`, `Penrose.NullFrame.trace_eq`, `metricForm`,
     `trappedExp_cov_null`, `trappedExp_expansionM_eq`
 111. Lightlike/Spacetime/MinkowskiCompactificationTests.lean - `not_conformal_time_rescaling`, `conformal_time_rescaling_one`
+112. Lightlike/Spacetime/CausalLadder/LimitCurve.lean - `Causal.exists_limit_curve`
+113. Lightlike/Spacetime/Causal/BasicRelations.lean - `Causal.causal_of_stronglyCausal`
+114. Lightlike/Spacetime/CausalLadder/StrongCausality.lean -
+     `Causal.isStronglyCausal_of_isStablyCausal_aux`
+115. Lightlike/Spacetime/CausalLadder/GlobHypSimple.lean -
+     `Causal.isCausallySimple_of_isGloballyHyperbolic_boundaryless`
+116. Lightlike/Spacetime/EnergyConditionsImplications.lean - `weakEC_of_dominantEC`, `nullEC_of_weakEC`,
+     `nullEC_of_strongEC`, `nullEC_of_dominantEC`
+117. Lightlike/Spacetime/Raychaudhuri/FocusingSEC.lean - `raychaudhuri_focusing_strongEC`
+118. Lightlike/Spacetime/Raychaudhuri/HawkingSEC.lean - `hawking_bound_strongEC`
+119. Lightlike/Spacetime/Raychaudhuri/HawkingFLRW.lean - `hawking_bound_flrw`
+120. Lightlike/Spacetime/Raychaudhuri/TwistFocusing.lean - `focusing_twisted`
+121. Lightlike/Spacetime/ScalarEnergyConditions/KleinGordonNEC.lean - `scalar_nullEC`,
+     `scalarField_nullECField`, `scalarField_const_nullEC_not_weakEC`
+122. Lightlike/Spacetime/ScalarEnergyConditions/KleinGordonRicci.lean -
+     `scalarField_ricciAt_null_nonneg`, `scalarField_ricciAt_null_eq_zero_iff`
+123. Lightlike/Spacetime/ScalarEnergyConditions/ScalarWeakECSharp.lean - `scalar_weakEC_iff`
+124. Lightlike/Spacetime/Raychaudhuri/DustField.lean - `flrwManifold_dust_strongEC`
+125. Lightlike/Spacetime/MinkowskiCompactificationAxis.lean - `minkowski_eq_conformal_esu_cartesian`,
+     `bijOn_cartMap`, `cartOmega_axis`
 
 ## References
 

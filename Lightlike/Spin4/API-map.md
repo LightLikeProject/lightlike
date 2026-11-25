@@ -30,8 +30,18 @@ doubled spins is even or there are no SU(2) intertwiners {2} [7].
 SU(2) and Spin(4) coherent states resolve the identity, and the EPRL map sends an SU(2) coherent
 state to a Spin(4) coherent state [8]. Coherent intertwiners are defined by group averaging {3}
 [9]. For two links their norm is given by the normals [10], and at any valence, normals that do
-not close are exponentially suppressed as the spins grow [11]. The EPRL vertex amplitude and its
-large-spin asymptotics are not yet formalized. [TODO]
+not close are exponentially suppressed as the spins grow [11].
+
+The Euclidean EPRL vertex amplitude, for `γ < 1`, is the contraction along the 4-simplex of the
+five node tensors, each the image of an SU(2) intertwiner under the EPRL map {1} [12]. It is a sum
+over the Spin(4) intertwiner labels of products of fusion coefficients and two SU(2) 15j symbols,
+one self-dual and one anti-self-dual, which is the spin-network form of {1} [12]; the fusion
+coefficients are also written as products of two 9j symbols [12]. The vertex vanishes unless the
+self-dual and the anti-self-dual spins add up to even numbers at every node, it is `1` at spin zero,
+it is real, and with trivial anti-self-dual spins it is the SU(2) 15j symbol of BF theory [12].
+Exact values at small spins are checked, and a wrong simplicity constraint gives a different value
+[13]. The large-spin asymptotics of the coherent vertex integral are in the asymptotics API, but
+equality of that integral with this vertex is not yet formalized. [TODO]
 
 ## Lean References
 
@@ -52,6 +62,14 @@ large-spin asymptotics are not yet formalized. [TODO]
 10. Lightlike/Spin4/CoherentTwoValent.lean - `Spin4.norm_sq_cohInt_two`
 11. Lightlike/Spin4/CoherentSuppression.lean - `Spin4.normSq_cohInt_le_exp`,
     `Spin4.cohInt_suppressed`
+12. Lightlike/Spin4/Vertex.lean - `Spin4.eprlNode`, `Spin4.eprlNode_eq_eprlIntertwiner`,
+    `Spin4.eprlVertex`, `Spin4.eprlVertex_eq_sum`, `Spin4.eprlVertex_eq_fifteenJ`,
+    `Spin4.eprlVertex_eq_vertexNineJ`, `Spin4.eprlVertex_eq_zero_of_not_even_left`,
+    `Spin4.eprlVertex_eq_zero_of_not_even_right`, `Spin4.eprlVertex_zero`, `Spin4.eprlVertex_im`,
+    `Spin4.eprlVertex_zero_right`
+13. Lightlike/Spin4/VertexTests.lean - `Spin4.VertexTests.eprlVertex_cycle_selfDual`,
+    `Spin4.VertexTests.eprlVertex_cycle_third`, `Spin4.VertexTests.vertexNineJ_wrong_simplicity`,
+    `Spin4.VertexTests.eprlVertex_ne_wrong_simplicity`
 
 ## References
 
