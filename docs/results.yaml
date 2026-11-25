@@ -6495,3 +6495,30 @@
   review: kernel-checked
   note: "Comparison pending: no source was read at a cited location for this entry. The leaves are not given a manifold structure: at a point p the tangent space of the level set of phi is levelTangent phi p, the kernel of d phi(p) inside the ambient tangent space, and inducedMetric g phi p is the bilinear form g_p restricted to it. Nondegeneracy: if n is a unit normal near p with g(n, n) = eps = 1 or -1 (IsUnitNormal), or if the gradient of phi at p is not null (the unit normal then exists by exists_isUnitNormal), then v in levelTangent with g_p(v, w) = 0 for all w in levelTangent is zero; the proof splits an arbitrary vector u into u - eps g(n, u) n, which is tangent, and a multiple of n. Non-vacuity: the sphere in a Euclidean space; wrong-model control: for the null hyperplane t = x of the Minkowski plane the tangent vector (1, 1) is orthogonal to all tangent vectors, so the induced metric is degenerate (Lightlike/Spacetime/HypersurfaceInducedTests.lean). Limits: the induced metric is a bilinear form at each point, not a metric on a manifold; whether the tangential connection D of Hypersurface.lean is its Levi-Civita connection is not stated. Hypotheses stated in the Lean theorems. No unproved hypothesis."
   since: unreleased
+- id: LL-0499
+  title: "The principal series of SL(2,R) is strongly continuous: the action (g, f) ↦ π(g) f on SL(2,R) × L²(R) is jointly continuous"
+  area: Lorentz
+  file: Lightlike/Lorentz/SL2RPrincipal.lean
+  decls: [Lightlike.Lorentz.SL2R.continuous_principalSeries_action]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: knapp-1986, location: "Chapter: Chapter II. Representations of SU(2), SL(2, ℝ) and SL(2, ℂ)|10.1515/9781400883974-005"}
+  review: kernel-checked
+  note: "For the principal series of SL(2,R) in the induced picture on L²(R), (π(g) f)(x) = m(b x + d) f((a x + c)/(b x + d)) for g = [[a, b], [c, d]] with the multiplier m(t) = |t|^{iν − 1} sgn(t)^ε (parity ε ∈ ℤ, parameter ν ∈ ℝ; the usual form of Knapp uses g⁻¹ in place of gᵀ and is equivalent through an inner automorphism and ν ↦ −ν), every π(g) is unitary (LL-0275) and the map (g, f) ↦ π(g) f is jointly continuous on SL(2,R) × L²(R) (continuous_principalSeries_action): continuity in g for each f, from continuity on a dense set of compactly supported functions and the uniform norm bound, and then joint continuity from the norm bound. Together with LL-0275 this is a strongly continuous unitary representation. The comparison with Knapp (1986) is pending: the book was not read at the cited location (chapter level only). Kitaev, arXiv:1711.08169, Section 2, lists the unitary irreducible representations; irreducibility is not proven."
+  since: unreleased
+
+- id: LL-0500
+  title: "The holomorphic subspace of the weighted L² space of the upper half plane, the space of the discrete series D_n^+ of SL(2,R), is nonzero for n ≥ 2"
+  area: Lorentz
+  file: Lightlike/Lorentz/SL2RBergman.lean
+  decls: [Lightlike.Lorentz.SL2R.holoSubmodule_ne_bot]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: knapp-1986, location: "Chapter: Chapter II. Representations of SU(2), SL(2, ℝ) and SL(2, ℂ)|10.1515/9781400883974-005"}
+  review: kernel-checked
+  note: "For the weight n ≥ 2, the closed subspace of the weighted L² space L²(ℍ, μ_n) of classes with a holomorphic representative (holoSubmodule n, the weighted Bergman space) is not zero: it contains the class of the lowest vector z ↦ (z + i)^{−n} (holoSubmodule_ne_bot, lowestClass_mem, lowestClass_ne_zero), which is nonzero because it is nonzero at the point i and the measure charges every neighbourhood. This is what makes the discrete series D_n^+ (LL-0276) a nonzero unitary representation, not the trivial representation on the zero space. Irreducibility of D_n^+ is not proven, and neither is the negative series D_n^-. The comparison with Knapp (1986) is pending: the book was not read at the cited location (chapter level)."
+  since: unreleased
