@@ -101,7 +101,8 @@ homeomorphic to a torus [25].
 20. Lightlike/Surfaces/Tests.lean - `Surfaces.isSurface_of_cert`, `Surfaces.T7`,
     `Surfaces.T7_model`, `Surfaces.T7_not_klein`, `Surfaces.torus_not_klein`,
     `Surfaces.two_spheres_no_model`
-21. Lightlike/Surfaces/PLBridge.lean - `Surfaces.IsSurface.isClosedCombManifold`
+21. Lightlike/Surfaces/PLBridge.lean - `Surfaces.IsSurface.isClosedCombManifold`,
+    `Surfaces.isCycleGraph_lk2`
 22. Lightlike/Surfaces/PLMoves.lean - `Surfaces.exists_move2`,
     `Surfaces.eqvGen_move2_of_stellarEquiv`
 23. Lightlike/Surfaces/Relabel.lean - `Surfaces.euler2_mapTri`, `Surfaces.isOrientable_mapTri_iff`

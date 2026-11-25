@@ -1,5 +1,5 @@
 import Lightlike.Spacetime.LeviCivitaSmooth
-import Lightlike.Rows.G1_012.Defs
+import Lightlike.Spacetime.PenroseSingularity.Defs
 
 /-!
 # Geodesics of a connection on a manifold, defined intrinsically (G1-005, GE3)

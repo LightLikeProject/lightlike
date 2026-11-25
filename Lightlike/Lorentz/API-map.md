@@ -88,6 +88,28 @@ attained by the nonzero vector `lowestVec n` of `A²_n` [31].
 
 The irreducibility of the principal series is not yet formalized. [TODO]
 
+Further results of this area in the results catalogue:
+The spherical Plancherel theorem for SL(2,R): the spherical transform is a unitary equivalence from
+L²(1,∞) onto L²(0,∞), with the density ρ tanh(πρ) [32]. The spherical Plancherel formula for SL(2,R) on
+smooth compactly supported functions of the hyperbolic distance, with the density ρ tanh(πρ) [33]. The
+massive one-particle representation of the Poincaré group, induced from SU(2): it preserves the L² norm,
+is covariant under translations, has P² = m², W² = −m² s(s+1) and n+1 states per momentum [34]. The
+massless one-particle representation of finite helicity h/2, induced from the character of ISO(2): it
+preserves the L² norm of the light cone, has P² = 0, W = (h/2) P and W² = 0 [34]. The Pauli–Lubanski
+square of the massive spin-n/2 representation is W² = −m² s(s+1), with s = n/2 and the signature
+(+,−,−,−) [35]. The little groups of the Poincaré group: the stabilizer of the rest momentum m·1 in
+SL(2,C) is SU(2) and is compact, and the stabilizer of the light-like momentum is the group of upper
+triangular matrices with the phase character, with the translations as the kernel of the phase [36]. For
+massless states of finite helicity the Pauli–Lubanski vector is W = (h/2) P [37]. The massive
+one-particle representations of the Poincaré group on L²(d³p / 2ω_p) are irreducible: a closed subspace
+invariant under all translations and all U(A) is 0 or everything [38]. The massless one-particle
+representations of finite helicity on L²(d³p / 2|p|) are irreducible: a closed subspace invariant under
+all translations and all helicity representations is 0 or everything [39]. The little group of a
+tachyonic momentum is not compact: the stabilizer of the standard momentum (0, 0, 0, κ) contains the
+boosts along the first spatial axis [40]. Wigner's classification of irreducible, strongly continuous,
+unitary, positive-energy representations of the Poincaré group, stated as a precise proposition with a
+non-vacuity check (stated, not proven) [41].
+
 ## Lean References
 
 1. Lightlike/Lorentz/SL2C.lean - `Lorentz.SL2C.isPerfect`,
@@ -125,7 +147,7 @@ The irreducibility of the principal series is not yet formalized. [TODO]
     `Lorentz.lintegral_linkProd_le`, `Lorentz.lintegral_linkProd_kernelE_lt_top`
 22. Lightlike/Lorentz/EPRL.lean - `Lorentz.eprlVec`, `Lorentz.eprlVertex`,
     `Lorentz.integrable_linkProd_inner`, `Lorentz.integrable_eprlIntegrand`,
-    `Lorentz.eprlVertex_eq_integral`
+    `Lorentz.eprlVertex_eq_integral`, `Lorentz.lintegral_enorm_eprlIntegrand_lt_top`
 23. Lightlike/Lorentz/EPRLTests.lean - `Lorentz.eprlVertex_spinZero`,
     `Lorentz.exists_pos_eprlVertex_spinZero_ne_zero`, `Lorentz.lintegral_linkProd_ungauged_eq_top`,
     `Lorentz.casimir2_eprlVec_fun`, `Lorentz.casimir2_hvec_eq_iff`,
@@ -146,10 +168,28 @@ The irreducibility of the principal series is not yet formalized. [TODO]
     `Lorentz.SL2R.discreteAction_mem_unitary`, `Lorentz.SL2R.discreteAction_mem_holoSubmodule`
 30. Lightlike/Lorentz/SL2RBergman.lean - `Lorentz.SL2R.isClosed_holoSubmodule`,
     `Lorentz.SL2R.discreteSeries`, `Lorentz.SL2R.discreteSeries_mem_unitary`,
-    `Lorentz.SL2R.holoSubmodule_ne_bot`
+    `Lorentz.SL2R.holoSubmodule_ne_bot`, `Lorentz.SL2R.continuous_discreteSeries`
 31. Lightlike/Lorentz/SL2RCasimir.lean - `Lorentz.SL2R.casimir_principal`,
     `Lorentz.SL2R.commutator_principal`, `Lorentz.SL2R.casimir_discrete`,
     `Lorentz.SL2R.casimir_lowestVec`
+32. Lightlike/Lorentz/SL2RPlancherel/SphericalSurjective.lean -
+    `Lorentz.SL2RPlancherel.sphericalL2Equiv`, `Lorentz.SL2RPlancherel.surjective_sphericalL2`
+33. Lightlike/Lorentz/SL2RPlancherel/SphericalClean.lean - `Lorentz.SL2RPlancherel.norm_sq_eq_sph`
+34. Lightlike/Lorentz/PoincareIrreps/Classification.lean - `Lorentz.Poincare.wigner_massive`,
+    `Lorentz.Poincare.wigner_massless`
+35. Lightlike/Lorentz/PoincareIrreps/PauliLubanski.lean - `Lorentz.Poincare.pauliLubanski_square`,
+    `Lorentz.Poincare.momentum_dot_pauliLubanski`, `Lorentz.Poincare.spinJ_casimir`
+36. Lightlike/Lorentz/PoincareIrreps/Momentum.lean - `Lorentz.Poincare.stabilizer_restMom`,
+    `Lorentz.Poincare.isCompact_stabilizer_restMom`, `Lorentz.Poincare.mem_stabilizer_lightMom`,
+    `Lorentz.Poincare.mem_ker_phase`
+37. Lightlike/Lorentz/PoincareIrreps/MasslessPL.lean - `Lorentz.Poincare.lightPL_eq`,
+    `Lorentz.Poincare.lightPL_square`, `Lorentz.Poincare.helChar_upper`
+38. Lightlike/Poincare/ShellSourceMeasure.lean - `Poincare.irreducible_massive_sourceMeasure`
+39. Lightlike/Poincare/ConeSourceMeasure.lean - `Poincare.irreducible_massless_coneSourceMeasure`
+40. Lightlike/Poincare/LittleGroups.lean - `Poincare.boost_mem_littleGroup_tachyon`,
+    `Poincare.not_isCompact_littleGroup_tachyon`
+41. Lightlike/Lorentz/PoincareIrreps/ClassificationStatement.lean -
+    `Lorentz.Poincare.WignerClassification`, `Lorentz.Poincare.trivialRep_classified`
 
 ## References
 

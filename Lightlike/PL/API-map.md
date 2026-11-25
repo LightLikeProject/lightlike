@@ -85,6 +85,16 @@ A geometric complex is PL homeomorphic to its abstract realisation, by the linea
 
 A simple chain is a list of points in the plane whose consecutive segments meet only at shared vertices; simple chains glue and reverse, and the set of a chain is its union of segments [40]. The ray crossing parity of a chain is additive under gluing and, modulo 2, invariant under reversal, which links the parity of a polygon built from a list to that of its chains [41]. The carrier of a polygon made of two arcs is the union of the two arcs, the parity of a ray crossing jumps across an arc near its interior points, and the interior of a simple chain without its ends is preconnected [42]. If a simple closed polygon is made of two arcs, a chord joining an interior point of the first arc to an interior point of the second, with its ends removed and meeting the arcs only at those points, cannot lie on the same side of the polygon as a second chord joining the two ends: the proof compares the parities of the three theta pieces and needs no orientation [43] {5}. Take the six-cycle of a drawing of `K₃,₃` as a hexagon with three chords; each chord lies inside or outside the hexagon, so two of them lie on the same side, and after a rotation of the labels they are neighbouring chords, which is impossible [44]. Hence six points joined across two classes of three by nine simple polygonal arcs that meet only in their common endpoints do not exist [45]. A simple chain contains, in its set, a simple chain with the same first and last point [46], and a continuous arc is approximated, within any distance, by such a chain [47]. Trimming each arc outside small balls around the six points, approximating the trimmed pieces by chains and joining them to the points by straight segments gives a polygonal drawing from any drawing by continuous arcs, so there is none [48]. An arc is the image of an injective continuous map of the unit interval; arcs reverse, split at a point and glue, and two points of a connected open set of the plane are joined by a chain in the set [49] {5}. Taking a highest and a lowest point of a circle embedded in the plane, which splits it into two arcs, and joining the two arcs by a horizontal segment and by an outer polygonal arc, with an arc through the complement if it were connected, gives nine arcs of a drawing of `K₃,₃`; the complement of an embedded circle is therefore not connected, which is the weak Jordan theorem [50] {5}. That the complement has exactly two components with the circle as boundary of each is not proved. A connected compact set that contains both ends of an arc and lies near it is near every point of it, because the inverse of an arc is uniformly continuous [51]. With it a Jordan curve is approximated, within any distance and in both directions, by a simple closed polygon [52]. The complement of a Jordan curve has exactly one unbounded component and a bounded component whose frontier lies in the curve [53]; that it has exactly one bounded component is open, as it needs the Arc Theorem.
 
+Further results of this area in the results catalogue:
+A chain on a grating with boundary two vertices joins them [57]. A path in the complement of a compact
+set gives a chain of a grating that avoids it [58]. A cycle on a grating bounds a 2-chain, and
+Alexander's theorem [59]. Two compact sets meeting in one point do not separate two points that neither
+separates [60]. An arc does not separate the plane [61]. Every component of the complement of a Jordan
+curve has the whole curve as its frontier [62]. The index of a loop about a point, and the Theta Lemma
+[63]. The index of a loop is constant along a path avoiding it, and zero for a loop in a half plane
+[64]. Lemma 9.14 of the theta configuration of a Jordan curve [65]. The index of a triangle about an
+interior point, and of loops about points outside them [66]. The Jordan curve theorem [67].
+
 ## Lean References
 
 1. Lightlike/PL/Complex.lean - `PL.SComplex`, `PL.SComplex.link`, `PL.SComplex.star_eq_join`
@@ -145,7 +155,8 @@ A simple chain is a list of points in the plane whose consecutive segments meet 
     `PL.Polygon.parity_left_add_right`, `PL.Polygon.isSimple_left`, `PL.Polygon.isSimple_right`,
     `PL.Polygon.inside_split`, `PL.Polygon.exists_split`
 32. Lightlike/PL/PolygonTriangulation.lean - `PL.Polygon.IsTriangulation`,
-    `PL.Polygon.exists_triangulation`, `PL.SComplex.isGeom_closure_union`
+    `PL.Polygon.exists_triangulation`, `PL.SComplex.isGeom_closure_union`,
+    `PL.Polygon.isTriangulation_triangle`, `PL.Polygon.isTriangulation_union`
 33. Lightlike/PL/PolygonEars.lean - `PL.Polygon.Ear`, `PL.Polygon.TwoEars`,
     `PL.Polygon.two_ears`
 34. Lightlike/PL/Attach.lean - `PL.SComplex.stellarEquivIn_closure_insert`
@@ -181,6 +192,26 @@ A simple chain is a list of points in the plane whose consecutive segments meet 
     `PL.SComplex.PLHomeomorphic.of_stellarEquiv`
 56. Lightlike/PL/Euler.lean - `PL.SComplex.StellarEquiv.euler_eq`,
     `PL.SComplex.not_stellarEquiv_of_euler_ne`
+57. Lightlike/PL/Grating.lean - `PL.Grating`, `PL.Grating.bdy`, `PL.Grating.bdy_symmDiff`,
+    `PL.Grating.reach_of_bdy`, `PL.Grating.joinedIn_of_bdy`
+58. Lightlike/PL/GratingPath.lean - `PL.Grating.exists_grating`, `PL.Grating.exists_chain_box`,
+    `PL.Grating.exists_chain_of_joinedIn`
+59. Lightlike/PL/Alexander.lean - `PL.Grating.bdy₂`, `PL.Grating.bdy_bdy₂`, `PL.Grating.alexander`,
+    `PL.Grating.exists_bdy₂`
+60. Lightlike/PL/UnionLemma.lean - `PL.joinedIn_union_compl`
+61. Lightlike/PL/ArcNotSeparating.lean - `PL.arc_not_separating`
+62. Lightlike/PL/JordanFrontier.lean - `PL.jordan_frontier`
+63. Lightlike/PL/Index.lean - `PL.exists_isLog`, `PL.logInc`, `PL.logInc_trans`, `PL.loopIndex`,
+    `PL.theta_lemma`
+64. Lightlike/PL/IndexConstancy.lean - `PL.loopIndex_eq_of_joinedIn`,
+    `PL.loopIndex_eq_zero_of_halfplane`
+65. Lightlike/PL/IndexTheta.lean - `PL.Theta`, `PL.Theta.lemma_9_14`, `PL.theta_arc`,
+    `PL.joinedIn_compl_range`
+66. Lightlike/PL/IndexTriangle.lean - `PL.logInc_segPath`, `PL.triangle_log_sum`,
+    `PL.loopIndex_triangle`, `PL.loopIndex_eq_zero_of_above`, `PL.loopIndex_eq_zero_of_below`,
+    `PL.loopIndex_eq_zero_of_far`
+67. Lightlike/PL/JordanCurve.lean - `PL.jordan_at_most_two`, `PL.jordan_at_most_two_prod`,
+    `PL.jordan_curve_theorem`
 
 ## References
 

@@ -126,6 +126,9 @@ def boundary (A : Finset V) : SComplex V where
   change s ∈ A.powerset.erase A ↔ _
   rw [mem_erase, mem_powerset, Finset.ssubset_iff_subset_ne, and_comm]
 
+lemma verts_boundary_subset (A : Finset V) : (boundary A).verts ⊆ A := fun x hx =>
+  (mem_boundary.1 (mem_verts.1 hx)).subset (mem_singleton_self x)
+
 /-- The complex **generated** by a finite family `T` of vertex sets: all subsets of members. -/
 def closure (T : Finset (Finset V)) : SComplex V where
   faces := T.biUnion powerset

@@ -254,10 +254,6 @@ theorem IsMfdIn.mem_bd_starAt_of_notMem [Infinite V] {n : ℕ} {K : SComplex V}
 
 /-! ## The link of the apex -/
 
-lemma verts_boundary_subset (A : Finset V) : (boundary A).verts ⊆ A := fun x hx => by
-  have := mem_boundary.1 (mem_verts.1 hx)
-  exact singleton_subset_iff.1 this.subset
-
 /-- **Joining with the boundary of a simplex preserves being a ball**: for a sphere-or-ball `L`
 without vertices in the nonempty set `A`, `∂A * L` is a ball exactly when `L` is. -/
 theorem IsSB.isBallIn_boundary_join_iff [Infinite V] {m : ℕ} {A : Finset V} {L : SComplex V}

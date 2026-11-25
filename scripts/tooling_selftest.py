@@ -693,6 +693,9 @@ expect("sync_github: status labels, columns and the GitHub Milestone follow the 
 _cc = subprocess.run([sys.executable, str(HERE / "consistency_check.py"), "--selftest"], capture_output=True, text=True)
 expect("consistency check: planted duplicate issues, early closes, double claims, planning IDs, proven entries on open "
        "hypotheses and merge-queue entries without a milestone fail", _cc.returncode == 0)
+_pi = subprocess.run([sys.executable, str(HERE / "planning_ids.py"), "--selftest"], capture_output=True, text=True)
+expect("planning IDs: planted gap, milestone, row and catalogue IDs in Lean folder, file and declaration names fail; "
+       "SixJRow, lower case, comments and task files do not", _pi.returncode == 0)
 
 with tempfile.TemporaryDirectory() as d:
     tmp = pathlib.Path(d)
@@ -1070,48 +1073,17 @@ with tempfile.TemporaryDirectory() as _d:
 expect("automerge: proof_files reads the proof tasks of tasks.yaml",
        am.proof_files(HERE.parent).get("T-GE2-P1", "").endswith("T_GE2_P1.lean")
        and not any(k.count("-P") == 0 for k in am.proof_files(HERE.parent)))
-# The review gate (a commit status) and the label needs-review.
+# The review gate (a commit status): pull requests carry no review label and merge when their checks pass.
 import review_gate as rg  # noqa: E402
-_pf = {"T-X1-P1": "Tasks/X/T_X1_P1.lean"}
-_prr = lambda author="ann", body="", sha="s1", **kw: dict(  # noqa: E731
-    dict(state="open", draft=False, base={"ref": "main"}, body=body, user={"login": author}, head={"sha": sha},
-         labels=[]), **kw)
-_rv = lambda u, state="APPROVED", sha="s1", at="2026-01-01T00:00:00Z", typ="User": dict(  # noqa: E731
-    user={"login": u, "type": typ}, state=state, commit_id=sha, submitted_at=at)
-_none, _admin = (lambda u: False), (lambda u: u == "root")
-_m = lambda u: {"bo": 1, "cy": 3, "newbie": 0}.get(u, 0)  # noqa: E731
-_lf = lambda name="Lightlike/A.lean", status="modified", **kw: [dict({"filename": name, "status": status}, **kw)]  # noqa: E731
-_own = [{"filename": "Tasks/X/T_X1_P1.lean", "status": "modified"}]
-_ev = lambda pr, files, reviews=(), admin=_none: rg.evaluate(pr, files, list(reviews), admin, _m, _pf)[0]  # noqa: E731
-expect("review gate: a pull request that touches no Lean file of Lightlike/ or Tasks/ passes without review",
-       _ev(_prr(), [{"filename": "docs/a.md", "status": "modified"}]) == "success"
-       and _ev(_prr(), [{"filename": "scripts/x.py", "status": "added"}, {"filename": "Other/B.lean", "status": "added"}]) == "success"
-       and _ev(_prr(), []) == "success")
-expect("review gate: an auto-merge proof-task pull request passes, and so does an administrator's pull request",
-       _ev(_prr(body="Task: T-X1-P1"), _own) == "success"
-       and _ev(_prr(author="root"), _lf(), admin=_admin) == "success")
-expect("review gate: any added, changed, removed or renamed Lean file under Lightlike/ or Tasks/ needs two approvals",
-       all(rg.needs_review(_lf(n, st, **kw)) for n, st, kw in [
-           ("Lightlike/A.lean", "modified", {}), ("Lightlike/B/C.lean", "added", {}), ("Tasks/X/T.lean", "removed", {}),
-           ("Tasks/Y.lean", "renamed", {"previous_filename": "Lightlike/Z.lean"}),
-           ("docs/z.md", "renamed", {"previous_filename": "Lightlike/Z.lean"})])
-       and not rg.needs_review(_lf("Lightlike/A.md")) and not rg.needs_review(_lf("scripts/a.lean")))
-expect("review gate: two approvals of the current commit from distinct non-authors with merged pull requests pass",
-       _ev(_prr(), _lf(), [_rv("bo"), _rv("cy")]) == "success")
-expect("review gate planted: one approval, the author's own, a reviewer without a merged pull request, a bot, "
-       "an approval of an older commit, a later change request, a comment, a repeated reviewer stay pending",
-       all(_ev(_prr(), _lf(), r) == "pending" for r in (
-           [_rv("bo")], [_rv("bo"), _rv("ann")], [_rv("bo"), _rv("newbie")], [_rv("bo"), _rv("cy", typ="Bot")],
-           [_rv("bo"), _rv("cy", sha="old")],
-           [_rv("bo"), _rv("cy"), _rv("cy", "CHANGES_REQUESTED", at="2026-01-02T00:00:00Z")],
-           [_rv("bo"), _rv("cy", "COMMENTED")], [_rv("bo"), _rv("bo")], [_rv("bo"), _rv("cy", "DISMISSED")], [])))
-expect("review gate: a later approval after a change request counts",
-       _ev(_prr(), _lf(), [_rv("bo"), _rv("cy", "CHANGES_REQUESTED"), _rv("cy", at="2026-01-02T00:00:00Z")]) == "success")
-expect("review gate planted: an outsider's pull request that adds a file to its task is not an auto-merge pull request",
-       _ev(_prr(body="Task: T-X1-P1"), _own + [{"filename": "Lightlike/N.lean", "status": "added"}]) == "pending")
-expect("needs-review: the label is set on a Lean change, removed when it goes, never on an auto-merge pull request",
-       rg.label_plan(_prr(), _lf(), _pf, []) == ["label"] and rg.label_plan(_prr(), _lf(), _pf, ["needs-review"]) == []
-       and rg.label_plan(_prr(), [{"filename": "docs/a.md", "status": "modified"}], _pf, ["needs-review"]) == ["unlabel"]
-       and rg.label_plan(_prr(body="Task: T-X1-P1"), _own, _pf, ["needs-review"]) == ["unlabel"])
+_prr = lambda author="ann", body="": dict(state="open", base={"ref": "main"}, body=body, user={"login": author},  # noqa: E731
+                                          head={"sha": "s1"}, labels=[])
+expect("review gate: every pull request passes, a Lean change of Lightlike/ or Tasks/ included",
+       all(rg.evaluate(_prr(), f)[0] == "success" for f in (
+           [], [{"filename": "docs/a.md", "status": "modified"}], [{"filename": "Lightlike/A.lean", "status": "modified"}],
+           [{"filename": "Tasks/X/T_X1_P1.lean", "status": "added"}, {"filename": "Lightlike/N.lean", "status": "added"}])))
+expect("review gate: the old label needs-review is removed where present and never added",
+       rg.label_plan(["needs-review", "x"]) == ["unlabel"] and rg.label_plan([]) == [] and rg.label_plan(["claimed"]) == [])
+expect("review gate planted: no code path of the script adds a label",
+       "labels[]=" not in (HERE / "review_gate.py").read_text() and '"POST", "-f", f"labels' not in (HERE / "review_gate.py").read_text())
 print("selftest:", "OK" if not fails else f"FAILED ({len(fails)})")
 sys.exit(1 if fails else 0)
