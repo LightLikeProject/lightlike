@@ -151,4 +151,27 @@ theorem Qab_mul_jwAt_decomp [CharZero k] (q : kˣ) (a b c : ℕ) (hab : 1 ≤ a 
         (nestCap q (a - e) e * jwAt q (a + b) c) * (jwAt q 0 a * jwAt q a b) := by simp only [mul_assoc]
     _ = _ := by rw [hnc]; simp only [mul_assoc]
 
+/-- The tree idempotent of the first bracketing: the channel `e` of the pair `(a,b)`, then the channel `d` of
+`(c_e, c)`. -/
+noncomputable def treeL (q : kˣ) (a b c e d : ℕ) : Module.End k (ModelSpace k) :=
+  (kapRec q a b e)⁻¹ • (Qab q a b * nestCup q (a - e) e * Eop q (a + b - 2 * e) c d * nestCap q (a - e) e * Qab q a b)
+
+/-- **The first bracketing decomposes `Q(a,b) p_c` into the tree idempotents.** -/
+theorem Qab_mul_jwAt_trees [CharZero k] (q : kˣ) (a b c : ℕ) (hab : 1 ≤ a + b)
+    (hd : ∀ j, j ≤ a + b + c → chebD (loopVal q) j ≠ 0)
+    (hq2 : ∀ j, 1 ≤ j → j ≤ a + b + c + 1 → (q : k) ^ (2 * j) ≠ 1) :
+    Qab q a b * jwAt q (a + b) c = ∑ e : Fin (min a b + 1), ∑ d : Fin (min (a + b - 2 * e) c + 1),
+      treeL q a b c e d := by
+  rw [Qab_mul_jwAt_decomp q a b c hab (fun j hj => hd j (by omega)) (fun j h1 h2 => hq2 j h1 (by omega))]
+  refine Finset.sum_congr rfl fun e _ => ?_
+  have hea : (e : ℕ) ≤ a := (Nat.lt_succ_iff.mp e.2).trans (min_le_left _ _)
+  have heb : (e : ℕ) ≤ b := (Nat.lt_succ_iff.mp e.2).trans (min_le_right _ _)
+  have hfi := fusion_identity (k := k) q (a + b - 2 * e) c (fun j hj => hd j (by omega))
+    (fun j h1 h2 => hq2 j h1 (by omega))
+  unfold treeL
+  rw [← Finset.smul_sum]
+  congr 1
+  rw [hfi] at *
+  simp only [Finset.mul_sum, Finset.sum_mul]
+
 end Lightlike.TemperleyLieb
