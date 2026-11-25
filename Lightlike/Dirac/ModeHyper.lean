@@ -242,4 +242,30 @@ theorem hgSum_ode (a : ℂ) (m : ℕ) {x : ℝ} (hx : |x| < 1) :
   rw [hlin, ← e1, ← e2, ← e3] at hz
   linear_combination hz
 
+/-- The variable `x = r² / (1 + r²)`. -/
+noncomputable def xOf (r : ℝ) : ℝ := r ^ 2 / (1 + r ^ 2)
+
+lemma abs_xOf_lt (r : ℝ) : |xOf r| < 1 := by
+  unfold xOf
+  have h : (0 : ℝ) < 1 + r ^ 2 := by positivity
+  rw [abs_of_nonneg (by positivity), div_lt_one h]
+  linarith
+
+lemma hasDerivAt_xOf (r : ℝ) : HasDerivAt xOf (2 * r / (1 + r ^ 2) ^ 2) r := by
+  have h : (0 : ℝ) < 1 + r ^ 2 := by positivity
+  have h1 : HasDerivAt (fun r : ℝ => r ^ 2) (2 * r) r := by simpa using hasDerivAt_pow 2 r
+  have h2 : HasDerivAt (fun r : ℝ => 1 + r ^ 2) (2 * r) r := by simpa using h1.const_add 1
+  have := h1.div h2 h.ne'
+  unfold xOf
+  convert this using 1
+  field_simp
+  ring
+
+/-- The regular solution of the mode system, first component. -/
+noncomputable def modeA (a : ℂ) (m : ℕ) (r : ℝ) : ℂ := (r : ℂ) ^ m * hgSum a m (xOf r)
+
+/-- The regular solution of the mode system, second component. -/
+noncomputable def modeB (ν a : ℂ) (m : ℕ) (r : ℝ) : ℂ :=
+  (2 / ν) * ((r : ℂ) ^ (m + 1) / (1 + (r : ℂ) ^ 2)) * powerSum (hgCoef1 a m) (xOf r)
+
 end Lightlike.Dirac
