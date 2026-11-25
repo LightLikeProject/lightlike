@@ -1416,6 +1416,10 @@ import Lightlike.Spacetime.PenroseSingularity.ProjectionLines
 import Lightlike.Spacetime.PenroseSingularity.Projection
 import Lightlike.Spacetime.PenroseSingularity.PenroseFocal
 import Lightlike.Spacetime.PenroseSingularity.TrappedSpacelike
+import Lightlike.Spacetime.PenroseSingularity.NullNormalAlg
+import Lightlike.Spacetime.PenroseSingularity.NullNormalPlane
+import Lightlike.Spacetime.PenroseSingularity.NullNormalField
+import Lightlike.Spacetime.PenroseSingularity.TrappedNormals
 import Lightlike.Spacetime.PenroseSingularity.NullGeodGlue
 import Lightlike.Spacetime.PenroseSingularity.GeodesicChartConverse
 import Lightlike.Spacetime.PenroseSingularity.NullGeodChart
