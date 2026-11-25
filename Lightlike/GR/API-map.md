@@ -88,7 +88,7 @@ round metric computed by Lightlike's scalarCurvature (R = n(n-1)) [42]. The scal
 round unit n-sphere in stereographic coordinates is n(n-1) [43]. Induced gravity from the heat kernel:
 for D = -Δ + ξR the coefficient a₁ is proportional to (1-6ξ), it vanishes for the conformal coupling in
 n = 4 and not in other dimensions, and the induced inverse Newton constant is (1-6ξ)/(12πε) with
-proper-time cutoff ε [44]. The on-shell recursion for the colour-ordered Feynman amplitudes of
+proper-time cutoff ε [44]. Poisson summation with a real shift: Σ_n e^{-πa(n+s)²} = a^{-1/2} Σ_n e^{-πn²/a} e^{2πins}, and the sum differs from a^{-1/2} by at most a^{-1/2} times the Gaussian tail Σ_{n≠0} e^{-πn²/a} [52]. The on-shell recursion for the colour-ordered Feynman amplitudes of
 Yang–Mills theory: under the large-z falloff of the shifted amplitude, A_n is the sum over the planar
 channels of the product of the lower amplitudes at the poles divided by the propagator (conditional)
 [45]. The Ward identity of the colour-ordered Feynman amplitudes holds at every gluon for every number
@@ -219,6 +219,8 @@ eigenvalue plus or minus s and the radial profile of the lower bound [51].
     `Dirac.odeOp_unique`
 51. Lightlike/Dirac/EigenPole.lean - `Dirac.angular_class_complete_bounded`, `Dirac.decay_of_bounded`,
     `Dirac.degree_le_of_bounded`, `Dirac.level_of_degree`
+52. Lightlike/Geometry/HeatKernel/ShiftedTheta.lean - `HeatKernel.tsum_exp_neg_shift`,
+    `HeatKernel.abs_tsum_shift_sub_le`, `HeatKernel.gaussTail`
 
 ## References
 
