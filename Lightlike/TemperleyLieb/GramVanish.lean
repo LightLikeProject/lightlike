@@ -412,4 +412,58 @@ theorem gramMid_cups_kill_B3 (q : kˣ) (hδ : loopVal q ≠ 0) (a b c e t u j : 
     (by simpa using hZ3) (a - ((j + 1) + u)) j (by omega)
   simpa [mul_assoc] using this
 
+/-- **The Gram pairing vanishes between different total channels.** -/
+theorem gram_vanish (q : kˣ) (hδ : loopVal q ≠ 0) (a b c e d f d' : ℕ) (hN : 1 ≤ a + b + c)
+    (hd : ∀ j, j ≤ a + b + c → chebD (loopVal q) j ≠ 0)
+    (hea : e ≤ a) (heb : e ≤ b) (hfb : f ≤ b) (hfc : f ≤ c) (hdc : d ≤ c) (hdA : d ≤ a + b - 2 * e)
+    (hda : d' ≤ a) (hdf : d' ≤ b + c - 2 * f)
+    (hne : a + b - 2 * e + c - 2 * d ≠ a + (b + c - 2 * f) - 2 * d') :
+    (Wop q (a + b - 2 * e) c d * Wop q a b e) * (sh a (Vop q b c f) * Vop q a (b + c - 2 * f) d') = 0 := by
+  rw [gram_eq, mul_assoc]
+  rcases lt_or_gt_of_ne hne with hlt | hgt
+  · -- more cups than caps: `D₁ < D₂`... (here `D₁ < D₂` means more caps)
+    have hex : f + d' < e + d := by omega
+    suffices h : gramMid q a b c e d f d' * jwAt q 0 (a + (b + c - 2 * f) - 2 * d') = 0 by
+      rw [h, mul_zero]
+    rcases le_total e f with hef | hef
+    · obtain ⟨t, rfl⟩ := Nat.exists_eq_add_of_le hef
+      obtain ⟨j, rfl⟩ : ∃ j, d = ((j + 1) + d') + t := ⟨d - d' - t - 1, by omega⟩
+      exact gramMid_caps_kill_1 q hδ a b c e t d' j hN hd hea heb hfb hfc hdc hdA hda hdf
+    · obtain ⟨t, rfl⟩ := Nat.exists_eq_add_of_le hef
+      rcases lt_trichotomy d' t with h1 | h1 | h1
+      · obtain ⟨s, rfl⟩ : ∃ s, t = ((s + 1) + d') := ⟨t - d' - 1, by omega⟩
+        have : f + ((s + 1) + d') = ((s + 1) + d') + f := add_comm _ _
+        rw [show f + ((s + 1) + d') = ((s + 1) + d') + f from this]
+        exact gramMid_caps_kill_2 q hδ a b c d f d' s hN hd (by omega) (by omega) hfb hfc hdc (by omega) hda hdf
+      · subst h1
+        obtain ⟨j, rfl⟩ : ∃ j, d = j + 1 := ⟨d - 1, by omega⟩
+        rw [show f + d' = d' + f from add_comm _ _]
+        exact gramMid_caps_kill_3 q hδ a b c f d' j hN hd (by omega) (by omega) hfb hfc hdc (by omega) hda hdf
+      · obtain ⟨r, rfl⟩ : ∃ r, d' = r + t := ⟨d' - t, by omega⟩
+        obtain ⟨j, rfl⟩ : ∃ j, d = (j + 1) + r := ⟨d - r - 1, by omega⟩
+        rw [show f + t = t + f from add_comm _ _]
+        exact gramMid_caps_kill_4 q hδ a b c f t r j hN hd (by omega) (by omega) hfb hfc hdc (by omega) hda hdf
+  · -- more cups than caps
+    have hex : e + d < f + d' := by omega
+    suffices h : jwAt q 0 (a + b - 2 * e + c - 2 * d) * gramMid q a b c e d f d' = 0 by
+      rw [← mul_assoc, h, zero_mul]
+    rcases le_total f e with hfe | hfe
+    · obtain ⟨t, rfl⟩ := Nat.exists_eq_add_of_le hfe
+      obtain ⟨j, rfl⟩ : ∃ j, d' = ((j + 1) + d) + t := ⟨d' - d - t - 1, by omega⟩
+      rw [show f + t = t + f from add_comm _ _] at *
+      exact gramMid_cups_kill_A q hδ a b c f t d j hN hd (by omega) (by omega) hfb hfc hdc (by omega) hda hdf
+    · obtain ⟨t, rfl⟩ := Nat.exists_eq_add_of_le hfe
+      rcases lt_trichotomy d t with h1 | h1 | h1
+      · obtain ⟨j, rfl⟩ : ∃ j, t = (j + 1) + d := ⟨t - d - 1, by omega⟩
+        rw [show e + ((j + 1) + d) = ((j + 1) + d) + e from add_comm _ _] at *
+        exact gramMid_cups_kill_B1 q hδ a b c e d j d' hN hd hea heb hfb hfc hdc hdA hda hdf
+      · subst h1
+        obtain ⟨j, rfl⟩ : ∃ j, d' = j + 1 := ⟨d' - 1, by omega⟩
+        rw [show e + d = d + e from add_comm _ _] at *
+        exact gramMid_cups_kill_B2 q hδ a b c e d j hN hd hea heb hfb hfc hdc hdA hda hdf
+      · obtain ⟨u, rfl⟩ : ∃ u, d = u + t := ⟨d - t, by omega⟩
+        obtain ⟨j, rfl⟩ : ∃ j, d' = (j + 1) + u := ⟨d' - u - 1, by omega⟩
+        rw [show e + t = t + e from add_comm _ _] at *
+        exact gramMid_cups_kill_B3 q hδ a b c e t u j hN hd hea heb hfb hfc hdc hdA hda hdf
+
 end Lightlike.TemperleyLieb

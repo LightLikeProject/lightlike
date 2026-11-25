@@ -176,7 +176,7 @@ a first-bracketing and a second-bracketing tree vector). Proof: the product is `
 `caps_d · [Q' p_A] · caps_e · Z · cups_f · [J Q''] · cups_{d'}` with `e + d = f + d'` and `Z ∈ C(N-1)`, is in `C(D-1)`
 because caps and cups pair from the middle outward even when `e ≠ f` (`balanced_le`, `balanced_ge`, built on
 `nestCap_mul_nestCup_mem_gen`: two junctions, equal count); then `jwAt_sandwich` makes `p_D · C(D-1) · p_D` a scalar.
-Remaining before the pentagon: (i) `U_L' U_R = 0` for `D ≠ D'`. Easiest proof found: after the pairing of caps and
+Remaining before the pentagon: (i) DONE (`GramVanish.lean`, `gram_vanish`: the pairing vanishes for `D ≠ D'`; eight unbalanced three-layer reductions plus absorption and `cap_m p_D = 0`). The proof idea was: after the pairing of caps and
 cups the unbalanced word is `p_{D1} · caps_k · Z'' · p_{D2}` (more caps) with `Z'' ∈ C(D2-1)`, so `Z'' p_{D2} = ε p_{D2}`
 (`absorb`) and `cap_m p_{D2} = 0` (from `e_m p = 0` and `cap_m cup_m = δ`); symmetrically `p_{D1} Z'' cups_k` with
 `p_{D1} cup_m = 0`. This needs the three-layer reductions with leftovers (`balanced_le/ge` for unequal totals, six
