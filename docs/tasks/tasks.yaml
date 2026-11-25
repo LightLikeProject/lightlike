@@ -1886,7 +1886,7 @@ tasks:
       - {"id": "p1", "kind": "piece", "text": "The spin n/2 representation of SU(2) is defined, unitary and continuous", "decls": ["Lightlike.SU2.spinRep", "Lightlike.SU2.spinMat_mem_unitaryGroup", "Lightlike.SU2.continuous_spinRep"]}
       - {"id": "p2", "kind": "piece", "text": "The spin n/2 representation is irreducible", "decls": ["Lightlike.SU2.spinRepresentation_isIrreducible"]}
       - {"id": "p3", "kind": "piece", "text": "The Lie-algebra action of the spin representation is linked to Physlib's sl2-modules (E, F, H intertwined; Lie-algebra completeness)", "decls": ["Lightlike.SU2.dSpin_E", "Lightlike.SU2.dSpin_F", "Lightlike.SU2.dSpin_H", "Lightlike.SU2.exists_dSpin_equiv"]}
-      - {"id": "p4", "kind": "piece", "text": "The 6j symbols are linked to the SU(2) representations (recoupling coefficients of the tensor products of spinRep)", "decls": [], "hint": "No declaration relates SU2.spinRep or the 3j/CG coefficients to the 6j symbols; the Recoupling 6j are defined independently (e.g. PhyslibAlpha.Sl2.sixJSym_orth_all in Lightlike/Upstream/SpinReps2/SixJOrth.lean)."}
+      - {"id": "p4", "kind": "piece", "text": "The 6j symbols are linked to the SU(2) representations (recoupling coefficients of the tensor products of spinRep)", "decls": ["Lightlike.SU2.coupleLeft_equivariant", "Lightlike.SU2.coupleRight_equivariant", "Lightlike.SU2.sum_cg_overlap", "Lightlike.SU2.sum_cg_matrix"]}
       - {"id": "c1", "kind": "catalogue", "text": "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map", "decls": []}
   - id: "T-HA5"
     kind: "milestone"
