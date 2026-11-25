@@ -97,10 +97,12 @@ interior point, and of loops about points outside them [66]. The Jordan curve th
 
 ## Lean References
 
-1. Lightlike/PL/Complex.lean - `PL.SComplex`, `PL.SComplex.link`, `PL.SComplex.star_eq_join`
-2. Lightlike/PL/Stellar.lean - `PL.SComplex.starAt`, `PL.SComplex.weld`,
-   `PL.SComplex.StellarEquiv`
-3. Lightlike/PL/Bistellar.lean - `PL.SComplex.bistellar`, `PL.SComplex.StellarEquiv.bistellar`
+1. Lightlike/PL/Complex.lean - `PL.SComplex`, `PL.SComplex.link`, `PL.SComplex.star_eq_join`,
+   `PL.SComplex.link_cone_apex`, `PL.SComplex.link_link`
+2. Lightlike/PL/Stellar.lean - `PL.SComplex.starAt`, `PL.SComplex.weld`, `PL.SComplex.weld_starAt`,
+   `PL.SComplex.starAt_weld`, `PL.SComplex.StellarEquiv`
+3. Lightlike/PL/Bistellar.lean - `PL.SComplex.bistellar`, `PL.SComplex.StellarEquiv.bistellar`,
+   `PL.SComplex.bistellar_bistellar`
 4. Lightlike/PL/Manifold.lean - `PL.SComplex.IsPLSphere`, `PL.SComplex.IsPLBall`,
    `PL.SComplex.IsCombManifold`, `PL.SComplex.isPLSphere_boundary`, `PL.SComplex.isPLBall_simplex`
 5. Lightlike/PL/PachnerMain.lean - `PL.SComplex.pachner`
@@ -212,6 +214,8 @@ interior point, and of loops about points outside them [66]. The Jordan curve th
     `PL.loopIndex_eq_zero_of_far`
 67. Lightlike/PL/JordanCurve.lean - `PL.jordan_at_most_two`, `PL.jordan_at_most_two_prod`,
     `PL.jordan_curve_theorem`
+68. Lightlike/PL/Links.lean - `PL.SComplex.IsPLSphere.isClosedCombManifold`,
+    `PL.SComplex.IsClosedCombManifold.link_face`
 
 ## References
 
