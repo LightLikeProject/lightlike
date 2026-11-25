@@ -93,7 +93,7 @@ The divergence theorem on a manifold: for a metric of any signature, its Levi-Ci
 
 The first variation of the Christoffel symbols is a tensor: `δΓⁱ_{jk} = ½ gⁱˡ (∇ⱼ h_{lk} + ∇ₖ h_{lj} - ∇ₗ h_{jk})` with the covariant derivative of the perturbation for the Levi-Civita connection of `g`, and the boundary vector of the variation is `W^ρ = g^{ρl} g^{σν} (∇_σ h_{lν} - ∇_l h_{σν})`, the divergence of `h` minus the gradient of its trace [81]. For a symmetric tensor field `h` on a manifold, the covariant derivative `∇h` of the Levi-Civita connection has these components in every chart, and the boundary vector is a smooth vector field on the manifold, with components `W` in every chart, that vanishes wherever `h` vanishes near the point [82]. For a measurable region `D` and `h` vanishing outside a compact set `K`, the first variation of the Einstein–Hilbert action of `D ∩ K` is `∫_{D ∩ K} (-⟨G + Λ g, h⟩_g + div_g V(h)) d vol_g`, the bulk term plus the divergence of that vector field [83]. The Gibbons–Hawking–York density of a graph and the Palatini flux depend only on the germs of the metric and the perturbation at the boundary point, so the density of `g + t h` is affine in `t`, with slope minus the flux, for components given only near that point [84]. A function vanishing on a graph near a point, and differentiable there, has only a normal derivative at the point, so a graph on which a non-null defining function vanishes is not null; the graph is the frontier of the region above or below it, frontiers are local, and the chart preimage of a frontier point of the chart image of `D` is a frontier point of `D`; in a chart, `du(♯du) = Σ ∂ₐũ (G⁻¹)ᵃᵇ ∂_bũ` [85]. At a graph point where the chart image of a region is the graph region nearby, a perturbation vanishing on the boundary has components vanishing on the graph, and a nowhere null boundary makes the graph not null; the flux density of `w V(h)` in a chart is `(w ∘ φ⁻¹)` times the Palatini flux. So, for a measurable region `D` of a manifold with a nowhere null `C²` boundary and a perturbation `h` vanishing outside a compact set `K` and on `∂D`, the Einstein–Hilbert action of `D ∩ K` minus the Gibbons–Hawking–York term, in the graph charts of the divergence theorem for `V(h)`, has first variation `-∫_{D ∩ K} ⟨G + Λ g, h⟩_g d vol_g`: the boundary terms cancel [86].
 
-Minkowski space is conformal to the region `0 < χ`, `|η| + χ < π` of the Einstein static universe: with `t = sin η / ω` and `r = sin χ / ω`, `ω = (cos η + cos χ)/2`, the metric `-dt² + dr² + r² dΩ²` is `ω⁻² (-dη² + dχ² + sin² χ dΩ²)`, and `(η, χ) ↦ (t, r)` maps that region bijectively onto `r > 0` [87]. A rescaling of the time direction only is conformal to the Einstein static universe form exactly when its factor squared is one [111]. On the closed region the conformal factor vanishes exactly on the boundary `|η| + χ = π`, conformal infinity [87].
+Minkowski space is conformal to the region `0 < χ`, `|η| + χ < π` of the Einstein static universe: with `t = sin η / ω` and `r = sin χ / ω`, `ω = (cos η + cos χ)/2`, the metric `-dt² + dr² + r² dΩ²` is `ω⁻² (-dη² + dχ² + sin² χ dΩ²)`, and `(η, χ) ↦ (t, r)` maps that region bijectively onto `r > 0` [87]. A rescaling of the time direction only is conformal to the Einstein static universe form exactly when its factor squared is one [111]. On the closed region the conformal factor vanishes exactly on the boundary `|η| + χ = π`, conformal infinity [87]. In the null angles `U = (η + χ)/2`, `V = (η - χ)/2` one has `t = tan U + tan V`, `r = tan U - tan V`, and the dilation `(t, r) ↦ (λt, λr)` becomes the angle map `x ↦ arctan (λ tan x)`, which extends continuously by `±π/2`: the dilation extends to a continuous map of the closed region that acts as the dilation on the region and maps conformal infinity to itself [126].
 
 Anti-de Sitter space is conformal to half of the Einstein static universe: with `r = tan θ`, the global metric `-(1 + r²) dτ² + (1 + r²)⁻¹ dr² + r² dΩ²` is `cos⁻² θ (-dτ² + dθ² + sin² θ dΩ²)` for `0 ≤ θ < π/2`, and the conformal boundary `θ = π/2`, where `cos θ` vanishes, carries the timelike metric `-dτ² + dΩ²` [102].
 
@@ -117,7 +117,10 @@ exactly 0 ≤ ½|dφ|² + V for a vanishing or spacelike gradient [123]. Dust wi
 satisfies the strong energy condition [124]. The conformal embedding of Minkowski space in Cartesian
 form, axis included: the map (η, p) ↦ (t, x⃗) from the region {|η| < π, p ∈ S³, ω > 0} of ℝ × S³ is a
 bijection onto ℝ × ℝ³, the metric is ω⁻² times the Einstein static universe metric, and the axis r = 0
-is the ordinary point p = (1, 0⃗) [125].
+is the ordinary point p = (1, 0⃗) [125]. In the null-cone picture of the compactification (a point x embedded as
+(1, B x x, x) in the cone B x x = P⁺P⁻, infinity the set P⁺ = 0), isometries, translations, dilations and special
+conformal transformations preserve the cone form and act on the embedded points as the stated maps of V; the first
+three keep infinity, while a special conformal transformation moves the point at infinity to the finite point b [127].
 
 ## Lean References
 
@@ -266,6 +269,11 @@ is the ordinary point p = (1, 0⃗) [125].
 124. Lightlike/Spacetime/Raychaudhuri/DustField.lean - `flrwManifold_dust_strongEC`
 125. Lightlike/Spacetime/MinkowskiCompactificationAxis.lean - `minkowski_eq_conformal_esu_cartesian`,
      `bijOn_cartMap`, `cartOmega_axis`
+126. Lightlike/Spacetime/MinkowskiCompactificationAction.lean - `thetaDil`, `thetaDil_continuous`, `thetaDil_pi_div_two`, `tan_thetaDil`, `dilComp`, `dilComp_continuous`, `dilComp_mem`, `dilComp_compT`, `dilComp_compR`, `compOmega_dilComp_eq_zero_iff`: the dilation of Minkowski space extends continuously to the closed region of the Einstein static universe, acts there as the dilation and preserves null infinity, in the null angles of the compactification.
+127. Lightlike/Spacetime/MinkowskiConformalAction.lean - `coneForm`, `dirac`, `coneForm_dirac`, `isoAct`, `coneForm_isoAct`,
+    `isoAct_dirac`, `isoAct_fst`, `transAct`, `coneForm_transAct`, `transAct_dirac`, `transAct_fst`, `dilAct`, `coneForm_dilAct`,
+    `dilAct_dirac`, `dilAct_fst`, `specAct`, `coneForm_specAct`, `specAct_dirac`, `specAct_dirac_smul`, `specAct_infinity`,
+    `specAct_infinity_fst_ne`
 
 ## References
 
