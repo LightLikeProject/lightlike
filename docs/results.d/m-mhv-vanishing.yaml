@@ -1,0 +1,11 @@
+- id: LL-XXXX-m
+  title: "The colour-ordered Feynman amplitudes with at most one negative-helicity gluon vanish: if all polarizations are bispinors with a common angle spinor the Berends-Giele amplitude is 0 (all-plus amplitude with a common reference spinor), and the single-minus amplitude with arbitrary reference spinors is 0 by the gauge invariance (Ward identity) and the common-angle-spinor gauge"
+  area: GR
+  file: Lightlike/GR/MHVVanishing.lean
+  decls: [Lightlike.SpinorHelicity.bgAmplitude_eq_zero_of_angle, Lightlike.SpinorHelicity.bgAmplitude_allPlus, Lightlike.SpinorHelicity.bgAmplitude_oneMinus, Lightlike.SpinorHelicity.bgAmplitude_update_add_mom]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source for the Feynman-diagram proof was read; Elvang-Huang state the vanishing of these amplitudes, p. 22-25, as known). The proof: with a common angle spinor every epsilon-dot-epsilon is proportional to <kk> = 0, so each vertex of the Berends-Giele recursion keeps the form |X]<k| and the last contraction vanishes; the single-minus amplitude is brought to this gauge by changing the reference spinors of the positive gluons, which shifts their polarizations by multiples of the momenta and does not change the amplitude (multilinearity of the amplitude in each polarization and the Ward identity ward_all). Hypotheses: conserved null momenta, nonvanishing channel propagators, nonvanishing angle brackets. WEAKER: the vanishing is for the amplitudes with these reference-spinor conventions; the pole factorization into Parke-Taylor amplitudes is not yet proved."
+  since: unreleased

@@ -1,0 +1,13 @@
+- id: LL-XXXX-k
+  title: "The three-gluon MHV amplitudes from the colour-ordered Feynman rules: for conserved spinor kinematics, the amplitude bgAmplitude with the polarization vectors epsMinus, epsPlus (a common reference square spinor for the negative legs, an angle reference for the positive leg) is <12>^3/(<23><31>) for 1-2-3+ and <31>^3/(<12><23>) for 1-2+3-, the base cases of the BCFW family"
+  area: GR
+  file: Lightlike/GR/MHVTrue.lean
+  decls: [Lightlike.SpinorHelicity.bgAmplitude_three_mmp, Lightlike.SpinorHelicity.bgAmplitude_three_mpm]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: elvang-huang-2013, location: "eq. (2.77)", check: "A3"}
+  review: kernel-checked
+  note: "Compared with Elvang-Huang (2.72) and (2.77) (the three-gluon amplitude from the Feynman rules, then <12>^3/(<23><31>), read). The proof evaluates the vertex rule bgAmplitude_three on the polarizations of (2.49)-(2.50) and uses only momentum conservation (three contractions); the angle brackets need to be nonzero. WEAKER: three gluons only; the n-point MHV amplitudes from the Feynman rules (needing the BCFW large-z falloff) are not covered, so the conditional LL-0267 stays conditional."
+  since: unreleased

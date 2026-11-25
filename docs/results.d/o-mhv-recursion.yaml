@@ -1,0 +1,13 @@
+- id: LL-XXXX-o
+  title: "The on-shell BCFW recursion for the colour-ordered Feynman amplitudes of any number of gluons with negative gluons at 0 and j, in the good gauge: for generic spinor kinematics under the [0,1> shift the amplitude is the sum over the channels [1,d] of the factorized residues, the large-z falloff holding for the polarizations with references |1] and <0| (entire in z) by the reference independence"
+  area: GR
+  file: Lightlike/GR/MHVRecursion.lean
+  decls: [Lightlike.SpinorHelicity.true_recursion, Lightlike.SpinorHelicity.tendsto_goodGauge, Lightlike.SpinorHelicity.FalloffData.eventually_prop_ne, Lightlike.SpinorHelicity.shiftedPol_good_const]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: elvang-huang-2013, location: "eq. (3.11)", check: "background field"}
+  review: kernel-checked
+  note: "Elvang-Huang (3.7) (the recursion from Cauchy's theorem with the large-z falloff (3.6), (3.11)) read; here for the Feynman-rule amplitude, with the falloff proved (BCFWFalloff.lean) and the entire polarizations of the good gauge |q] = |1], <q'| = <0| (the amplitude of the generic gauge tends to 0 and equals the good-gauge amplitude for large |z|, bgAmplitude_refs). WEAKER: conditional on the genericity structure TrueKin (nonvanishing brackets and propagators, distinct poles) and on spinors of the pole momenta; the evaluation of the channel terms to the Parke-Taylor recursion (vanishing of all channels but [1,2] and the three-point anti-MHV factor) and the induction are in the entry for the Parke-Taylor formula of the true amplitudes (MHVInduction.lean); LL-0267 keeps its own hypothesis IsBCFWFamilyMHV."
+  since: unreleased

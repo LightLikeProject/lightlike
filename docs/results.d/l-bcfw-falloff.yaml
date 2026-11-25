@@ -1,0 +1,13 @@
+- id: LL-XXXX-l
+  title: "The BCFW large-z falloff for the colour-ordered Feynman amplitudes: under the [0,1> shift |0^] = |0] + z|1], |1^> = |1> - z|0> of a negative gluon 0 and its positive neighbour 1, with the polarizations of Elvang-Huang (2.49)-(2.50) with constant reference spinors, the Berends-Giele amplitude of any number of gluons tends to 0 as z tends to infinity (generic kinematics)"
+  area: GR
+  file: Lightlike/GR/BCFWFalloffSpinor.lean
+  decls: [Lightlike.SpinorHelicity.tendsto_bgAmplitude_shift, Lightlike.SpinorHelicity.falloffData_spinor]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: elvang-huang-2013, location: "eq. (3.11)", check: "background field"}
+  review: kernel-checked
+  note: "Compared with Elvang-Huang (3.6) and (3.11), p. 36-37 (read): the source quotes the falloff of the [-,+> shift from the background-field argument and does not derive it; here it is proved for the Feynman-rule amplitude by power counting in z on the Berends-Giele recursion: the polarizations of the two shifted legs are O(1/z) (|q]/[q 0^], |q'>/<q' 1^>), the momentum of an interval containing exactly one of the legs is O(z), a propagator of such an interval is O(1/z), and every current containing a shifted leg is O(1/z); the amputated last vertex gives O(1/z). WEAKER: only the [-,+> shift of the legs 0 and 1 with constant references (the other shifts of the source are not covered); the nonvanishing of the channel propagators for generic kinematics is a hypothesis; LL-0267 stays conditional because the pole factorization into Parke-Taylor amplitudes for the true amplitudes is not yet proved."
+  since: unreleased

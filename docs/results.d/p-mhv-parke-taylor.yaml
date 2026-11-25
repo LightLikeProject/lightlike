@@ -1,0 +1,14 @@
+- id: LL-XXXX-p
+  title: "The Parke-Taylor formula <ij>^4/(<12>...<n1>) for the colour-ordered Feynman-rule amplitude of any number of gluons with the two negative-helicity gluons at any positions, for generic spinor kinematics: for every class of kinematics closed under the reduction of the BCFW channel [1,2] and under the cyclic relabelling, the Berends-Giele amplitude equals the Parke-Taylor amplitude"
+  area: GR
+  file: Lightlike/GR/MHVInduction.lean
+  decls: [Lightlike.SpinorHelicity.trueAmp_eq_ptN, Lightlike.SpinorHelicity.ClosedClass, Lightlike.SpinorHelicity.FarData, Lightlike.SpinorHelicity.RotData, Lightlike.SpinorHelicity.trueAmp_far]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: elvang-huang-2013, location: "eq. (3.11)", check: "background field"}
+      - {ref: elvang-huang-2013, location: "eq. (2.82)", check: "Cyclic"}
+  review: kernel-checked
+  note: "Compared with Elvang-Huang (3.7), (3.11) (the BCFW recursion of the Parke-Taylor amplitudes, from the large-z falloff) and the cyclic property p. 25 (read). The source obtains the Parke-Taylor formula for the amplitudes of the Feynman rules by assuming the falloff and the three-point amplitudes; here the induction is carried out for the Berends-Giele amplitude itself: the recursion true_recursion in the good gauge, the vanishing of the channels [1,d], d >= 3 (channelTerm_zero_far, by the vanishing of the one-minus and the all-plus amplitudes), the evaluation of the channel [1,2] (step_two for the negative gluon 2, step_far for j >= 3) as the reduced amplitude times ([12]/c)/(<12>[12]), the Parke-Taylor recursion of the reduced angle spinors (ptN_step from parkeTaylor_bcfw_far), the three-point base (trueAmp_zero) and adjacent negative gluons by cyclic symmetry (trueAmp_rot). WEAKER: conditional on the genericity class G (all brackets of the angle spinors nonzero, nonvanishing channel propagators and distinct poles, nonzero brackets of the pole spinors of the channels [1,d], d >= 3), required to be closed under the reduction at the level of the statement (ClosedClass); that the class is nonempty and open for n >= 4 is not proved, and the statement is vacuous for the empty class; nothing is claimed for kinematics outside the class; the source's (2.80) is not compared separately for the cyclic order (the cyclic property is used as stated)."
+  since: unreleased

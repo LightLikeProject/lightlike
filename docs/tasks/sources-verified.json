@@ -2172,7 +2172,7 @@
   "citations_via": "Semantic Scholar"
  },
  "elvang-huang-2013": {
-  "checked": "2026-11-19",
+  "checked": "2026-11-24",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "Scattering Amplitudes",
@@ -2210,6 +2210,11 @@
    "eq. (2.68)": {
     "verified": true,
     "snippet": "(2.68) N For example, for the 4-gluon s-channel diagram we have f˜a1 a2 b f˜b a3 a4 (2.69) ∝ Tr T a1 T a2 T a3 T a4 − Tr T a1 T a2 T a4 T a3 − Tr T a1 T a3 T a4 T a2 + Tr T a1 T a4 T a3 T a2 . \u0001 \u0001 \u0001 \u0001 Here we have also u",
+    "why": null
+   },
+   "eq. (2.77)": {
+    "verified": true,
+    "snippet": "(2.77) h23ih31i The result for the ‘goggly’ amplitude A3 [1+ 2+ 3− ] is [12]3 A3 [1+ 2+ 3− ] = . (2.78) [23][31] I Exercise 2.19 Fill in the details to derive the amplitude (2.78). I Exercise 2.20 Calculate \u000f− (p, q) · \u000f",
     "why": null
    },
    "eq. (2.80)": {
@@ -2263,8 +2268,8 @@
     "why": null
    }
   },
-  "citations": 456,
-  "citations_via": "Semantic Scholar"
+  "citations": 743,
+  "citations_via": "OpenAlex"
  },
  "engle-pereira-2009": {
   "checked": "2026-11-16",

@@ -1,0 +1,11 @@
+- id: LL-XXXX-n
+  title: "The colour-ordered Feynman amplitude does not depend on the reference spinors of the polarization vectors: for conserved null momenta, nonvanishing channel propagators and nonvanishing reference brackets, changing the references |q] of the negative-helicity and <q| of the positive-helicity polarizations leaves bgAmplitude unchanged; and the three-gluon amplitudes for any helicities on conserved kinematics are <12>[q3]^2/([q1][q2]) for (-,-,+) and [12]<q'3>^2/(<q'1><q'2>) for (+,+,-)"
+  area: GR
+  file: Lightlike/GR/MHVRefs.lean
+  decls: [Lightlike.SpinorHelicity.bgAmplitude_refs]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (Elvang-Huang p. 17 state the gauge invariance of the amplitude under the reference spinor as a consequence of the Ward identity; the three-gluon formulas are computed from the vertex rule (2.72) with the polarizations (2.49)-(2.50), with no source formula compared). Proof: the reference change shifts a polarization by a multiple of the momentum (epsPlus_sub_epsPlus, the new epsMinus_sub_epsMinus from the Schouten identity for square spinors), the amplitude is invariant under such a shift (multilinearity in one polarization and the Ward identity ward_all), applied leg by leg. Also a complex null four-vector is nullMom of two spinors. WEAKER: needs conserved null momenta, nonvanishing channel propagators and reference brackets; part of the unfinished proof of the Parke-Taylor formula for the true amplitudes (LL-0267 stays conditional)."
+  since: unreleased
