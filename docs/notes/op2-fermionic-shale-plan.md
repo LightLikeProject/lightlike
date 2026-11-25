@@ -24,3 +24,21 @@ Status:
   mode), so a different test vector is needed. The bound `⟨v, P_F v⟩ ≥ ‖P_{F₀} v‖² − ∑_{k∉F₀} ‖b_k v‖²` does not close the
   argument by itself.
 * Step 3 (necessity) not started.
+
+## Plan for the general Hilbert-Schmidt case (24 Nov)
+
+Bonferroni alone cannot work (a tail below 1 is needed relative to a vector of norm possibly 2^-n). The route that does:
+
+1. `K = β*β` is a compact positive complex-linear operator when `β` is Hilbert-Schmidt. Take an orthonormal eigenbasis
+   `e_k`, `K e_k = λ_k e_k` (`Spectral/Compact.lean`, `exists_hilbertBasis_eigenvectors`). The vectors `β e_k` are orthogonal
+   with `‖β e_k‖² = λ_k`; put `f_k = β e_k / √λ_k`.
+2. Transformed modes of this basis: `a'_k = a*(β e_k) + a(α e_k)`. R orthogonal gives `⟨α e_k, β e_l⟩ = -⟨α e_l, β e_k⟩`, and since
+   `α e_k` lies in the `1 - λ_k` eigenspace of `β β*` the pairing `⟨α e_k, f_l⟩` vanishes unless `λ_l = 1 - λ_k`.
+3. `F₀ = {k : λ_k ≥ 1/2}` closed under partners (`λ_l = 1 - λ_k`) is finite. For `k ∉ F₀`, `a*(f_k)` anticommutes with every
+   `a'_l` and with every `c'_l` for `l ≠ k`, and `{c'_k, a*(f_k)} = √λ_k`. Hence for `u = P_D P_{F₀} W Ω₀` with `D ∌ k`,
+   `‖a'_k u‖² ≤ λ_k ‖u‖²`, so `‖P_{D ∪ k} v‖² ≥ (1 - λ_k) ‖P_D v‖²`: a relative bound.
+4. `W` is a product of the fields `φ(R e_l)`, `l ∈ F₀`, chosen so that `‖P_{F₀} W Ω₀‖² ≥ 2^{-|F₀|}` (one mode at a time:
+   `‖P_k v‖² + ‖n_k v‖² = ‖v‖²` and `p_k` swaps them).
+5. Then `‖P_s W Ω₀‖² ≥ 2^{-|F₀|} ∏ (1 - λ_k) ≥ 2^{-|F₀|} exp(-2 h) > 0` for every finite `s`, `exists_fixed_of_decreasing_projections`
+   gives the vacuum, `exists_implementer` the unitary. The mode family must be generalised from the Fock basis `b` to a second
+   orthonormal family `e` (the vacuum killed by `a'_{e_k}` for an orthonormal basis is killed for all vectors).

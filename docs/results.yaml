@@ -5044,15 +5044,17 @@
   note: "Compared with Boldt, arXiv:1504.03121, Theorem 3.1, p. 6 (read): the Dirac eigenvalues of the round S^n are +-(n/2 + k) with multiplicity 2^[n/2] C(n+k-1, k); for n = 2 this is +-(k+1) with multiplicity 2(k+1). Here, in the stereographic chart and for an arbitrary Clifford module V of Cl(R^2), the k+1 angular modes c1 = (1+|y|^2)^-(k+1) z^(n+1) G_n(|y|^2), c2 = (1+|y|^2)^-(k+1) z^n F_n(|y|^2) (n = 0..k, G_n a terminating hypergeometric polynomial of degree k-n) give eigenspinors h^(1/2) (Lv c1 + gamma_0 Lv c2) of eigenvalue epsilon (k+1), and the map (v_0..v_k) to the sum is linear and injective. For V = C^2 this is the lower bound 2(k+1) over C. WEAKER: a lower bound only; no completeness (no statement that there are no other eigenvalues or eigenspinors), no regularity condition at the north pole of the sphere and no L^2 or spinor-bundle statement; the chart carries no such notion in the library."
   since: unreleased
 - id: LL-0381
-  title: "Fermionic Shale in infinitely many modes, sufficiency for a small antilinear part: a surjective real-linear map R of a Hilbert space Z preserving Re of the inner product, whose antilinear part beta satisfies sum over every finite set of |beta e_k|^2 at most h < 1, is implemented by a unitary of the fermionic Fock space, U phi(w) = phi(R w) U; and for any R, a unit vector killed by the transformed annihilation operators gives such a unitary"
+  title: "Fermionic Shale theorem in infinitely many modes (Shale 1962 for the CAR): a surjective real-linear map R of a complex Hilbert space Z preserving the real part of the inner product is implemented by a unitary of the fermionic Fock space, U phi(w) = phi(R w) U, if and only if its antilinear part is Hilbert-Schmidt (sum of |beta b_j|^2 over the Fock basis converges). Sufficiency, in detail: a surjective real-linear map R of a complex Hilbert space Z preserving the real part of the inner product, whose antilinear part beta (R w + i R(i w))/2 is Hilbert-Schmidt, is implemented by a unitary of the fermionic Fock space, U phi(w) = phi(R w) U; and for any such R, a unit vector killed by the transformed annihilation operators gives such a unitary"
   area: OperatorAlgebras
-  file: Lightlike/OperatorAlgebras/CARShale.lean
-  decls: [Lightlike.OperatorAlgebras.CARShale.exists_unitary_of_dense, Lightlike.OperatorAlgebras.CARShale.dense_words, Lightlike.OperatorAlgebras.CARShale.exists_implementer, Lightlike.OperatorAlgebras.CARShale.exists_vacuum_of_small, Lightlike.OperatorAlgebras.CARShale.fermionic_shale_of_small]
+  file: Lightlike/OperatorAlgebras/CARShaleNec.lean
+  decls: [Lightlike.OperatorAlgebras.CARShale.fermionic_shale_iff, Lightlike.OperatorAlgebras.CARShale.summable_beta_of_implementer]
   status: proven
   tier: established
-  source: exploratory
+  source:
+    refs:
+      - {ref: derezinski-2006, location: "Theorem 31, p. 32", check: "Theorem 31"}
   review: kernel-checked
-  note: "Comparison pending (no source for the fermionic Shale theorem was read). Part of OP2, not the whole criterion. WEAKER: (1) only sufficiency, and only under the strict bound sum |beta e_k|^2 < 1 (Hilbert-Schmidt norm of beta below 1); the general Hilbert-Schmidt case (Araki, Bratteli-Robinson) and the necessity of the Hilbert-Schmidt condition are not proved here. (2) The bound is on the basis vectors of a Hilbert basis, which is the squared Hilbert-Schmidt norm of beta. Proof: the transformed annihilators are the CAR family (p + i q)/2 built from the fields phi(R e_k), phi(R(i e_k)); the words of transformed creation operators on a unit vacuum are orthonormal, dense by irreducibility of the Fock representation, and define the unitary; the vacuum is the limit of the decreasing commuting projections prod (1 - c_k a_k), bounded below by the Bonferroni inequality 1 - sum |a_k Omega_0|^2."
+  note: "Compared with Dereziński, arXiv:math-ph/0511030, Theorem 31 (1), (2), p. 32, with Proposition 1, p. 32 (read): for r in O(Y), Y = Re(Z ⊕ Z̄) with the scalar product Re(z|w), a unitary U of the fermionic Fock space with U φ(y) U* = φ(ry) exists iff r in O_2(Y), i.e. q in B²(Z̄, Z) (Hilbert-Schmidt), and U is unique up to a phase. Here r is a surjective real-linear map of Z preserving Re of the inner product (the same as an orthogonal r on Y), q is the antilinear part beta, and the statement is the same equivalence. Uniqueness up to a phase (Theorem 31 (2)) is proved (LL-0390, implementer_unique); the explicit formula (57) of Theorem 31 (3) and the positivity normalisation are not formalised. PARTIAL for OP2: the equivalence and the uniqueness up to a phase are proved; the explicit formula (57) of the implementer is not (it needs exponentials of unbounded quadratic creation operators and the Fredholm determinant on the infinite Fock space). Closes the fermionic Shale criterion of OP2 (both directions, every number of modes). Necessity (summable_beta_of_implementer): the implementer U gives a vector U Omega_0 killed by the transformed annihilators; by irreducibility a word of transformed creation operators on it has nonzero overlap with the vacuum and is killed by the annihilators outside its finite support; pairing with a*(x) Omega_0 gives <a*(alpha b_j) a*(x) Omega_0, Psi> = -conj<beta b_j, x> <Omega_0, Psi>, and Bessel inequalities (one for alpha via R and its inverse, one for the two-particle coefficients of Psi) bound sum |beta b_j|^2 by 4 ||Psi||^2 / |<Omega_0, Psi>|^2 plus the size of the support. No weaker case remains stated here. The Hilbert-Schmidt hypothesis is that the sum of |beta c_i|^2 converges in some Hilbert basis (a basis indexed by a set, as in TraceClass.HilbertSchmidt); its basis independence is proved (hasSum_beta_sq). Proof: the transformed annihilators of any vector are a CAR system; a unit vector killed by them gives a unitary on the words of transformed creation operators (dense by irreducibility of the Fock representation). The vacuum is the limit of the decreasing commuting projections prod (1 - c_k a_k) over the modes of an eigenbasis of K = beta*beta (compact when beta is Hilbert-Schmidt); a_k a*(beta e_k) anticommute with the modes of other eigenvalue classes (the pairing <alpha e_l, beta e_k> vanishes for different eigenvalues, proved from X = S J R J and Y = J S J R with XY = YX = 1), which gives the relative bound ||a_k P_D W Omega|| <= sqrt(mu_k) ||P_D W Omega||, class by class, and 1 - t >= exp(-2t) on [0, 1/2]. The finitely many heavy classes (total weight above 1/2) are handled by flipping modes with the fields p_k = a_k + c_k, losing a factor 2^-|F0|."
   since: unreleased
 - id: LL-0382
   title: "Within the angular polynomial class, a flat eigenspinor of the Dirac operator of the unit 2-sphere in the stereographic chart that is reduced and satisfies the decay condition has eigenvalue plus or minus s and the radial profile of the family of the lower bound"
@@ -5136,4 +5138,183 @@
   source: exploratory
   review: kernel-checked
   note: "GE8 (G1-018): PARTIAL. Trust checks of the milestone met (round S², S³, flat tori ℝⁿ/(2πℤ)ⁿ, products, a₁ = (4π)^{-n/2} V R/6 on the round spheres); the general heat-trace theorem for a Laplace-type operator on a compact Riemannian manifold is open, and HasHeatExpansion is its statement for a given trace function. Missing prerequisites: the Laplace–Beltrami operator and its symmetry on a manifold, discrete spectrum (Rellich), the Seeley–DeWitt parametrix, and the normal-coordinate volume expansion (docs/notes/g1-018-heat-kernel-prerequisites.md). This entry is the first step of the smallest case beyond the library, the flat torus of a non-rectangular lattice: the shifted one-variable Gaussian sum, from Mathlib's Complex.tsum_exp_neg_quadratic. Comparison pending: no source was read for this entry (the identity is the Poisson summation formula for the Gaussian with a shift, as in standard texts on theta functions)."
+  since: unreleased
+- id: LL-0389
+  title: "Fermionic Shale theorem, sufficiency in infinitely many modes: a surjective real-linear map R of a complex Hilbert space preserving the real part of the inner product, whose antilinear part is Hilbert-Schmidt in a Hilbert basis, is implemented by a unitary of the fermionic Fock space, U phi(w) = phi(R w) U"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/CARShaleMain.lean
+  decls: [Lightlike.OperatorAlgebras.CARShale.fermionic_shale_of_HS, Lightlike.OperatorAlgebras.CARShale.exists_vacuum_of_HS, Lightlike.OperatorAlgebras.CARShale.decoupling]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: derezinski-2006, location: "Theorem 31, p. 32", check: "Theorem 31"}
+  review: kernel-checked
+  note: "The sufficiency half of the equivalence LL-0381 (the comparison with the source is recorded there). Proof: the transformed annihilators of any vector are a CAR system; a unit vector killed by them gives a unitary on the words of transformed creation operators (dense by irreducibility); the vacuum is the limit of the decreasing commuting projections prod (1 - c_k a_k) over the modes of an eigenbasis of K = beta* beta, with the relative decoupling bound (decoupling), class by class, and the finitely many heavy classes handled by mode flips."
+  since: unreleased
+- id: LL-0390
+  title: "Uniqueness of the implementer of a fermionic Bogoliubov transformation up to a phase: two unitaries U, U' of the fermionic Fock space with U phi(w) = phi(R w) U and U' phi(w) = phi(R w) U' satisfy U' = c U with |c| = 1"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/CARShaleUnique.lean
+  decls: [Lightlike.OperatorAlgebras.CARShale.implementer_unique]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: derezinski-2006, location: "Theorem 31, p. 32", check: "Theorem 31"}
+  review: kernel-checked
+  note: "Compared with Dereziński, arXiv:math-ph/0511030, Theorem 31 (2), p. 32 (read): the unitary U with U φ(y) U* = φ(ry) is defined uniquely up to a phase factor. Here the quotient V = U⁻¹U' commutes with every field φ(w); it maps the vacuum to a vector killed by every annihilator, i.e. to a multiple c Ω₀ of the vacuum, and the closed subspace {x | V x = c x} is invariant under all fields, hence everything by the irreducibility of the Fock representation; |c| = 1 because V is isometric. The explicit formula (57) of Theorem 31 (3) is not formalised."
+  since: unreleased
+- id: LL-0391
+  title: "The massless one-particle representation of finite helicity h/2, induced from the character A_00^h of the little group of the light-like momentum, preserves the L² norm for the invariant measure on the light cone"
+  area: Lorentz
+  file: Lightlike/Lorentz/PoincareIrreps/MasslessMeasure.lean
+  decls: [Lightlike.Lorentz.Poincare.lintegral_lightInducedRep_normSq]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "The representation lightInducedRep h of SL(2,C) on functions on the forward light cone is built by induction from the stabiliser of the standard light-like momentum, through the character A ↦ (A_00)^h of unit modulus (the translations of the ISO(2) cover act trivially: finite helicity); the statement is that it is isometric for the Lorentz-invariant measure coneMeasure on the cone (for measurable ψ, with values in [0, ∞]). Companion statements: W = (h/2) P (the entry on MasslessPL) and, for the translations, covariance on the cone (Poincare/LightCone, Poincare/LightConeUnitary). Not claimed: irreducibility is a separate entry (the massless irreducibility is in Poincare/IrreducibleMassless), the continuous-spin series (non-trivial translations of the ISO(2) cover) is not constructed, and Wigner's classification theorem is not proved. The comparison with Weinberg (1995), Chapter 2, is pending: the book was not read at the cited location, and Wigner (1939) was not read."
+  since: unreleased
+- id: LL-0392
+  title: "The little group of a tachyonic momentum, the stabiliser in SL(2,C) of the Hermitian matrix with determinant −m² (≅ SU(1,1) ≅ SL(2,ℝ)), is not compact: it contains the boosts along an axis, on which the matrix entry A_00 = cosh t is unbounded"
+  area: Lorentz
+  file: Lightlike/Lorentz/PoincareIrreps/Momentum.lean
+  decls: [Lightlike.Lorentz.Poincare.not_isCompact_stabilizer_tachMom]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "The trust check of the milestone HA6: a tachyonic orbit has a non-compact little group, so the little-group method for a tachyonic orbit does not reduce to a compact group as for the massive case. The same statement in terms of the Lorentz group of Physlib is Poincare/LittleGroups (not_isCompact_littleGroup_tachyon). Not claimed: the classification of the unitary representations of the tachyonic little group. The comparison with Weinberg (1995), Chapter 2, is pending: the book was not read at the cited location."
+  since: unreleased
+- id: LL-0393
+  title: "The three-gluon MHV amplitudes from the colour-ordered Feynman rules: for conserved spinor kinematics, the amplitude bgAmplitude with the polarization vectors epsMinus, epsPlus (a common reference square spinor for the negative legs, an angle reference for the positive leg) is <12>^3/(<23><31>) for 1-2-3+ and <31>^3/(<12><23>) for 1-2+3-, the base cases of the BCFW family"
+  area: GR
+  file: Lightlike/GR/MHVTrue.lean
+  decls: [Lightlike.SpinorHelicity.bgAmplitude_three_mmp, Lightlike.SpinorHelicity.bgAmplitude_three_mpm]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: elvang-huang-2013, location: "eq. (2.77)", check: "A3"}
+  review: kernel-checked
+  note: "Compared with Elvang-Huang (2.72) and (2.77) (the three-gluon amplitude from the Feynman rules, then <12>^3/(<23><31>), read). The proof evaluates the vertex rule bgAmplitude_three on the polarizations of (2.49)-(2.50) and uses only momentum conservation (three contractions); the angle brackets need to be nonzero. WEAKER: three gluons only; the n-point MHV amplitudes from the Feynman rules (needing the BCFW large-z falloff) are not covered, so the conditional LL-0267 stays conditional."
+  since: unreleased
+- id: LL-0394
+  title: "The BCFW large-z falloff for the colour-ordered Feynman amplitudes: under the [0,1> shift |0^] = |0] + z|1], |1^> = |1> - z|0> of a negative gluon 0 and its positive neighbour 1, with the polarizations of Elvang-Huang (2.49)-(2.50) with constant reference spinors, the Berends-Giele amplitude of any number of gluons tends to 0 as z tends to infinity (generic kinematics)"
+  area: GR
+  file: Lightlike/GR/BCFWFalloffSpinor.lean
+  decls: [Lightlike.SpinorHelicity.tendsto_bgAmplitude_shift, Lightlike.SpinorHelicity.falloffData_spinor]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: elvang-huang-2013, location: "eq. (3.11)", check: "background field"}
+  review: kernel-checked
+  note: "Compared with Elvang-Huang (3.6) and (3.11), p. 36-37 (read): the source quotes the falloff of the [-,+> shift from the background-field argument and does not derive it; here it is proved for the Feynman-rule amplitude by power counting in z on the Berends-Giele recursion: the polarizations of the two shifted legs are O(1/z) (|q]/[q 0^], |q'>/<q' 1^>), the momentum of an interval containing exactly one of the legs is O(z), a propagator of such an interval is O(1/z), and every current containing a shifted leg is O(1/z); the amputated last vertex gives O(1/z). WEAKER: only the [-,+> shift of the legs 0 and 1 with constant references (the other shifts of the source are not covered); the nonvanishing of the channel propagators for generic kinematics is a hypothesis; LL-0267 stays conditional because the pole factorization into Parke-Taylor amplitudes for the true amplitudes is not yet proved."
+  since: unreleased
+- id: LL-0395
+  title: "The colour-ordered Feynman amplitudes with at most one negative-helicity gluon vanish: if all polarizations are bispinors with a common angle spinor the Berends-Giele amplitude is 0 (all-plus amplitude with a common reference spinor), and the single-minus amplitude with arbitrary reference spinors is 0 by the gauge invariance (Ward identity) and the common-angle-spinor gauge"
+  area: GR
+  file: Lightlike/GR/MHVVanishing.lean
+  decls: [Lightlike.SpinorHelicity.bgAmplitude_eq_zero_of_angle, Lightlike.SpinorHelicity.bgAmplitude_allPlus, Lightlike.SpinorHelicity.bgAmplitude_oneMinus, Lightlike.SpinorHelicity.bgAmplitude_update_add_mom]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source for the Feynman-diagram proof was read; Elvang-Huang state the vanishing of these amplitudes, p. 22-25, as known). The proof: with a common angle spinor every epsilon-dot-epsilon is proportional to <kk> = 0, so each vertex of the Berends-Giele recursion keeps the form |X]<k| and the last contraction vanishes; the single-minus amplitude is brought to this gauge by changing the reference spinors of the positive gluons, which shifts their polarizations by multiples of the momenta and does not change the amplitude (multilinearity of the amplitude in each polarization and the Ward identity ward_all). Hypotheses: conserved null momenta, nonvanishing channel propagators, nonvanishing angle brackets. WEAKER: the vanishing is for the amplitudes with these reference-spinor conventions; the pole factorization into Parke-Taylor amplitudes is not yet proved."
+  since: unreleased
+- id: LL-0396
+  title: "The colour-ordered Feynman amplitude does not depend on the reference spinors of the polarization vectors: for conserved null momenta, nonvanishing channel propagators and nonvanishing reference brackets, changing the references |q] of the negative-helicity and <q| of the positive-helicity polarizations leaves bgAmplitude unchanged; and the three-gluon amplitudes for any helicities on conserved kinematics are <12>[q3]^2/([q1][q2]) for (-,-,+) and [12]<q'3>^2/(<q'1><q'2>) for (+,+,-)"
+  area: GR
+  file: Lightlike/GR/MHVRefs.lean
+  decls: [Lightlike.SpinorHelicity.bgAmplitude_refs]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (Elvang-Huang p. 17 state the gauge invariance of the amplitude under the reference spinor as a consequence of the Ward identity; the three-gluon formulas are computed from the vertex rule (2.72) with the polarizations (2.49)-(2.50), with no source formula compared). Proof: the reference change shifts a polarization by a multiple of the momentum (epsPlus_sub_epsPlus, the new epsMinus_sub_epsMinus from the Schouten identity for square spinors), the amplitude is invariant under such a shift (multilinearity in one polarization and the Ward identity ward_all), applied leg by leg. Also a complex null four-vector is nullMom of two spinors. WEAKER: needs conserved null momenta, nonvanishing channel propagators and reference brackets; part of the unfinished proof of the Parke-Taylor formula for the true amplitudes (LL-0267 stays conditional)."
+  since: unreleased
+- id: LL-0397
+  title: "The on-shell BCFW recursion for the colour-ordered Feynman amplitudes of any number of gluons with negative gluons at 0 and j, in the good gauge: for generic spinor kinematics under the [0,1> shift the amplitude is the sum over the channels [1,d] of the factorized residues, the large-z falloff holding for the polarizations with references |1] and <0| (entire in z) by the reference independence"
+  area: GR
+  file: Lightlike/GR/MHVRecursion.lean
+  decls: [Lightlike.SpinorHelicity.true_recursion, Lightlike.SpinorHelicity.tendsto_goodGauge, Lightlike.SpinorHelicity.FalloffData.eventually_prop_ne, Lightlike.SpinorHelicity.shiftedPol_good_const]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: elvang-huang-2013, location: "eq. (3.11)", check: "background field"}
+  review: kernel-checked
+  note: "Elvang-Huang (3.7) (the recursion from Cauchy's theorem with the large-z falloff (3.6), (3.11)) read; here for the Feynman-rule amplitude, with the falloff proved (BCFWFalloff.lean) and the entire polarizations of the good gauge |q] = |1], <q'| = <0| (the amplitude of the generic gauge tends to 0 and equals the good-gauge amplitude for large |z|, bgAmplitude_refs). WEAKER: conditional on the genericity structure TrueKin (nonvanishing brackets and propagators, distinct poles) and on spinors of the pole momenta; the evaluation of the channel terms to the Parke-Taylor recursion (vanishing of all channels but [1,2] and the three-point anti-MHV factor) and the induction are in the entry for the Parke-Taylor formula of the true amplitudes (MHVInduction.lean); LL-0267 keeps its own hypothesis IsBCFWFamilyMHV."
+  since: unreleased
+- id: LL-0398
+  title: "The Parke-Taylor formula <ij>^4/(<12>...<n1>) for the colour-ordered Feynman-rule amplitude of any number of gluons with the two negative-helicity gluons at any positions, for every class of generic spinor kinematics closed under the reduction of the BCFW channel [1,2] and under the cyclic relabelling, the Berends-Giele amplitude equals the Parke-Taylor amplitude"
+  area: GR
+  file: Lightlike/GR/MHVInduction.lean
+  decls: [Lightlike.SpinorHelicity.trueAmp_eq_ptN, Lightlike.SpinorHelicity.ClosedClass, Lightlike.SpinorHelicity.FarData, Lightlike.SpinorHelicity.RotData, Lightlike.SpinorHelicity.trueAmp_far]
+  status: conditional
+  hypotheses: [Lightlike.SpinorHelicity.ClosedClass]
+  tier: established
+  source:
+    refs:
+      - {ref: elvang-huang-2013, location: "eq. (3.11)", check: "background field"}
+      - {ref: elvang-huang-2013, location: "eq. (2.82)", check: "Cyclic"}
+  review: kernel-checked
+  note: "Compared with Elvang-Huang (3.7), (3.11) (the BCFW recursion of the Parke-Taylor amplitudes, from the large-z falloff) and the cyclic property p. 25 (read). The source obtains the Parke-Taylor formula for the amplitudes of the Feynman rules by assuming the falloff and the three-point amplitudes; here the induction is carried out for the Berends-Giele amplitude itself: the recursion true_recursion in the good gauge, the vanishing of the channels [1,d], d >= 3 (channelTerm_zero_far, by the vanishing of the one-minus and the all-plus amplitudes), the evaluation of the channel [1,2] (step_two for the negative gluon 2, step_far for j >= 3) as the reduced amplitude times ([12]/c)/(<12>[12]), the Parke-Taylor recursion of the reduced angle spinors (ptN_step from parkeTaylor_bcfw_far), the three-point base (trueAmp_zero) and adjacent negative gluons by cyclic symmetry (trueAmp_rot). WEAKER: conditional on the genericity class G (all brackets of the angle spinors nonzero, nonvanishing channel propagators and distinct poles, nonzero brackets of the pole spinors of the channels [1,d], d >= 3), required to be closed under the reduction at the level of the statement (ClosedClass); that the class is nonempty and open for n >= 4 is not proved, and the statement is vacuous for the empty class; nothing is claimed for kinematics outside the class; the source's (2.80) is not compared separately for the cyclic order (the cyclic property is used as stated)."
+  since: unreleased
+- id: LL-0399
+  title: "The formal degree of the holomorphic discrete series of SL(2,R) on its lowest weight vector: for n >= 2 and e_0 = (z+i)^(-n) in the weighted Bergman space A^2_n, the integral over SL(2,R) of |<e_0, D_n(g) e_0>|^2 equals (8 pi^2/(n-1)) ||e_0||^4, with ||e_0||^2 = 4 pi/((n-1) 4^n) and the matrix coefficient (4 pi/(n-1)) (-2i)^(-n) (((c-b) + i(a+d))^n)^(-1)"
+  area: Lorentz
+  file: Lightlike/Lorentz/SL2RPlancherel/DiscreteDegree.lean
+  decls: [Lightlike.Lorentz.formal_degree_lowest, Lightlike.Lorentz.coeff_lowest, Lightlike.Lorentz.norm_sq_lowestClass, Lightlike.Lorentz.norm_sq_coeff_lowest]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source read at a cited location for the formal degree of D_n^+ of SL(2,R); Knapp 1986 Chapter II and Lang, SL2(R), Chapter IX state it for their normalisations of the Haar measure). Here dg is the Haar measure with the radial formula integral Phi(cosh d(g)) dg = 4 pi^2 integral_{t>1} Phi(t) dt (RadialHaar.lean), D_n acts by (D_n(g) f)(z) = (bz+d)^(-n) f((az+c)/(bz+d)) on A^2_n = holomorphic classes in L^2(H, y^n dmu_H), and the lowest weight vector is e_0 = (z+i)^(-n). The proof: the reproducing property of e_0, integral_H phi conj(e_0) y^(n-2) dA = (4 pi/(n-1)) (-2i)^(-n) phi(i) for holomorphic phi, by the Cayley transform to the unit disc (Jacobian 4/|1-w|^4) and the weighted mean-value property of holomorphic functions on the disc; then |<e_0, D_n(g) e_0>|^2 = (4 pi/(n-1))^2 4^(-n) (2(1+cosh d(g)))^(-n) and the radial Haar integral. WEAKER: only the lowest weight vector (Schur orthogonality for all vectors needs the irreducibility of D_n^+, not proved here); the antiholomorphic series, the principal series and the assembly of the Plancherel formula are not proved."
+  since: unreleased
+- id: LL-0400
+  title: "The reproducing property of (z+i)^(-n) in the weighted Bergman space of the upper half-plane: for n >= 2 and phi holomorphic with integrable pairing, the integral of phi(z) conj((z+i)^(-n)) y^(n-2) over the upper half-plane is (4 pi/(n-1)) (-2i)^(-n) phi(i)"
+  area: Lorentz
+  file: Lightlike/Lorentz/SL2RPlancherel/BergmanReproducing.lean
+  decls: [Lightlike.Lorentz.SL2RPlancherel.bergman_reproducing]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source read at a cited location; the Bergman kernel of the weighted Bergman space A^2_n of the upper half-plane is classical). Proof: the Cayley transform to the unit disc (Jacobian 4/|1-w|^4), the weighted mean-value property of holomorphic functions on the disc for radial weights, and the radial integral of (1-|w|^2)^(n-2). Used for the formal degree of the discrete series in LL-0399."
+  since: unreleased
+- id: LL-0401
+  title: "Schur orthogonality of the holomorphic discrete series of SL(2,R) against the lowest weight vector: for n >= 2, every v in the weighted Bergman space A^2_n with holomorphic representative phi, <e_0, v> = (4 pi/(n-1)) (-2i)^(-n) phi(i), |<v, D_n(g) e_0>|^2 = |c_0|^2 Im(u)^n |phi(u)|^2 with u = (g^-1)^T i, and the integral over SL(2,R) of |<v, D_n(g) e_0>|^2 is 2 pi |c_0|^2 ||v||^2"
+  area: Lorentz
+  file: Lightlike/Lorentz/SL2RPlancherel/DiscreteSchur.lean
+  decls: [Lightlike.Lorentz.schur_lowest, Lightlike.Lorentz.norm_sq_pairing_holo, Lightlike.Lorentz.inner_lowest_holo]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source read at a cited location). Proof: the reproducing property of e_0 (LL-0400), unitarity of D_n, the Iwasawa integral over SL(2,R) (the integrand depends only on z = g.i since D_n(k_theta) e_0 is a phase times e_0), (g_z^-1)^T i = -1/z and the invariance of the hyperbolic measure under z -> -1/z. This also shows that e_0 is cyclic. WEAKER: Schur orthogonality for pairs of arbitrary vectors needs the irreducibility of D_n^+ and is not proved; formal degree for e_0 itself is LL-0399."
+  since: unreleased
+- id: LL-0402
+  title: "The four-point Wick expansion for fermionic split fields and for the CAR fields of a Bogoliubov vacuum: <phi1 phi2 phi3 phi4> = p12 p34 - p13 p24 + p14 p23 with the pair expectations pij of the fields"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/CARWickFour.lean
+  decls: [Lightlike.OperatorAlgebras.wick_four, Lightlike.OperatorAlgebras.pairOf_carField, Lightlike.OperatorAlgebras.car_wick_four]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source for the fermionic Wick theorem was read). The explicit n = 4 instance of the recursion of the Wick entries (FermionWick.lean and CARWick.lean): wick_four expands the Pfaffian recursion for four abstract split fields, car_wick_four applies it to the CAR fields of a Bogoliubov vacuum. It closes the 'no n = 4 check' difference of the CARWick entry; finite modes only, as there."
+  since: unreleased
+- id: LL-0403
+  title: "Route lemma toward the Plancherel formula of SL(2,R): the spherical Plancherel formula for the radial K-types (l, 0), l >= 0: for F smooth with compact support, pi^2 int_{v>1} (v^2-1)^l |F^(l)(v)|^2 dv = (1/4) int_{rho>0} rho tanh(pi rho) prod_{k<l} ((k+1/2)^2 + rho^2) |F^(rho)|^2 drho, where F^ is the spherical transform; the left side is the L^2(sinh) norm of the l-fold ladder image sinh^l F^(l)(cosh) of F o cosh"
+  area: Lorentz
+  file: Lightlike/Lorentz/SL2RPlancherel/KTypePlancherel.lean
+  decls: [Lightlike.Lorentz.SL2RPlancherel.norm_sq_ktype_eq_sph]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "PARTIAL: only the K-types (l, 0) of radial functions F o cosh, proved by induction on l from the spherical Plancherel formula (norm_sq_eq_sph): the step is K_{l+1}(F) = S_l(F, QF) + l(l+1) K_l(F) (Kform_succ, integration by parts against the weight (v^2-1)^l, with (QF)^(l) = -((v^2-1)F^(l+2) + 2(l+1)vF^(l+1) + l(l+1)F^(l))) together with (QF)^ = (1/4 + rho^2) F^ (sphTransformH_radialQ) and polarisation; it multiplies the weight by (l+1/2)^2 + rho^2, the ladder factor of Kitaev arXiv:1711.08169 eq. (60) (read: the factor of the lowering/raising operators on the Casimir eigenfunctions). Comparison with Lang or Knapp pending (source exploratory). The general K-types (l, r), r != 0, the base case (1,1), the discrete series part and the assembly of the Plancherel formula of SL(2,R) are not proved."
   since: unreleased
