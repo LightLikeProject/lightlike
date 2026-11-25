@@ -5930,3 +5930,71 @@
   review: kernel-checked
   note: "Comparison pending for this statement: Shale's own paper (1962) was not read, and the statement for a general symplectic transformation was not compared with Derezinski at a cited location (the comparison made for LL-0205 is for a unitary r of the one-particle space, Theorem 24, p. 27). The proofs are this library's own: necessity (ShaleNecessity.lean) from the Gaussian vacuum overlaps and the uncertainty matrix, sufficiency (ShaleSufficiency.lean) from the vacuum projections of finitely many modes, without a polar decomposition. Hypotheses, stated in the Lean theorems: h is a complex inner product space and the space K of the Fock representation is complete (the Lean statements also assume CompleteSpace h); T is a Bogoliubov transformation of h as defined in Weyl.lean; Implements is existence of a unitary of K with the intertwining relation. No unproved hypothesis."
   since: unreleased
+- id: LL-0454
+  title: "Peter–Weyl (Hilbert sum form) for the normalised Haar measure: for every compact Hausdorff group, L²(G, μ) with μ the Haar measure normalised on the whole group (Measure.haarMeasure ⊤) is the Hilbert direct sum of the isotypic components of the irreducible unitary representation classes, with no hypothesis on the measure"
+  area: SU2
+  file: Lightlike/HarmonicAnalysis/PeterWeylTests.lean
+  decls: [Lightlike.HarmonicAnalysis.peterWeyl_isHilbertSum_haar]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: brocker-tom-dieck-1985, location: "Chapter: Representative Functions|10.1007/978-3-662-12918-0_3"}
+  review: kernel-checked
+  note: "The comparison with Bröcker and tom Dieck (1985), Chapter III, is pending: the book was not read at the cited location. This is the statement of peterWeyl_isHilbertSum (the previous Hilbert sum entry, which assumes a Haar probability measure as a hypothesis) for the measure Measure.haarMeasure ⊤ of a compact Hausdorff group G (topological group, T2, Borel measurable space), which is a probability measure (isProbabilityMeasure_haarMeasure_top); G is not assumed second countable or metrisable. Non-vacuity: instantiated for U(1) and SU(2) in the same file (examples), and the wrong-model test there shows the trivial two-dimensional representation is not irreducible and fails Schur orthogonality."
+  since: unreleased
+- id: LL-0455
+  title: The spin representations of SU(2) are unitary and continuous
+  area: SU2
+  file: Lightlike/SU2/SpinRep.lean
+  decls: [Lightlike.SU2.spinMat_mem_unitaryGroup, Lightlike.SU2.continuous_spinRep]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: hall-2015, location: "Chapter: Basic Representation Theory|10.1007/978-3-319-13467-3_4"}
+      - {ref: martin-dussaud-2019, location: "§4.1", check: "representations"}
+  review: kernel-checked
+  note: "Comparison pending (the cited locations were not re-read for this entry). spinMat n g is unitary for g in SU(2) (the matrix of g is unitary, so is its n-th symmetric power in the monomial basis normalised as in SpinRep.lean) and g ↦ spinMat n g is continuous; the irreducibility is LL-0007."
+  since: unreleased
+- id: LL-0456
+  title: Every finite-dimensional irreducible sl₂-module is the differential of a spin representation, in suitable coordinates, with e, f, h acting as the matrices E, F, H
+  area: SU2
+  file: Lightlike/SU2/LieBridge.lean
+  decls: [Lightlike.SU2.exists_dSpin_equiv]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: hall-2015, location: "Chapter: Basic Representation Theory|10.1007/978-3-319-13467-3_4"}
+  review: kernel-checked
+  note: "Comparison pending (the cited location was not re-read for this entry). Combines Physlib's classification of finite-dimensional irreducible sl₂-modules with dSpin_E, dSpin_F, dSpin_H (LL-0009); the module is over ℂ with an sl₂-triple (h, e, f) in an arbitrary Lie algebra L and irreducible for the subalgebra it generates."
+  since: unreleased
+- id: LL-0457
+  title: Every irreducible continuous unitary matrix representation of SU(2) is equivalent to the spin n/2 representation and has dimension n + 1
+  area: SU2
+  file: Lightlike/HarmonicAnalysis/SU2Complete.lean
+  decls: [Lightlike.HarmonicAnalysis.su2_irreducible_classification]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: hall-2015, location: "Chapter: Basic Representation Theory|10.1007/978-3-319-13467-3_4"}
+      - {ref: brocker-tom-dieck-1985, location: "Chapter: Elementary Representation Theory|10.1007/978-3-662-12918-0_2"}
+  review: kernel-checked
+  note: "Comparison pending (the cited locations were not re-read for this entry). Unitary form of LL-0008: the representation is a unitary matrix representation (UnitaryMatrixRep SU2 κ) on a finite index type κ, irreducible, and the equivalence is a unitary one to su2Spin n; the dimension Fintype.card κ = n + 1."
+  since: unreleased
+- id: LL-0458
+  title: The two couplings of three SU(2) spins to a total spin are equivariant for the spin representations, and the matrix of their overlap is Racah's 6j symbol times the identity
+  area: SU2
+  file: Lightlike/SU2/Recoupling6j.lean
+  decls: [Lightlike.SU2.coupleLeft_equivariant, Lightlike.SU2.coupleRight_equivariant, Lightlike.SU2.coupleLeft_apply, Lightlike.SU2.coupleRight_apply, Lightlike.SU2.sum_cg_overlap, Lightlike.SU2.sum_cg_matrix]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: edmonds-1957, location: "Chapter: Chapter 6. The Construction of Invariants from the Vector-Coupling Coefficients|10.1515/9781400884186-007"}
+      - {ref: varshalovich-1988, location: "Chapter: 6j Symbols and the Racah Coefficients|10.1142/9789814415491_0010"}
+  review: kernel-checked
+  note: "Comparison pending (the cited chapters were not read for this entry). Doubled spins a, b, c; couplings via Physlib's Clebsch-Gordan coefficients (Condon-Shortley phase) and the group-equivariant matrices cgMatrix of Spin4/CGBridge.lean. sum_cg_matrix: for delta, delta' <= J the sum over the three product indices of coupleLeft_(alpha beta gamma, delta) coupleRight_(alpha beta gamma, delta') is delta_(delta delta') (-1)^((a+b+c+J)/2) sqrt((e+1)(f+1)) {a b e; c J f}, i.e. coupleLeft^H coupleRight = lambda 1, by Schur's lemma for the spin-J representation and the trace identity sum_cg_overlap (the Hilbert-Schmidt form). The sign convention (Physlib's Clebsch-Gordan phases) is not compared with a source. The 6j symbol is Physlib's sixJSym, not redefined; the recoupling at the level of invariant tensors is Recoupling.fourJ_eq_sum_fourRecoupling."
+  since: unreleased
