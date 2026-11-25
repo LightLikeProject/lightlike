@@ -1,0 +1,11 @@
+- id: LL-XXXX
+  title: "The induced metric of a level set, defined pointwise as the metric restricted to the kernel of the differential of the defining function, is nondegenerate wherever the normal is not null: a tangent vector of the level set that is g-orthogonal to every tangent vector of the level set is zero"
+  area: Spacetime
+  file: Lightlike/Spacetime/HypersurfaceInduced.lean
+  decls: [Lightlike.Hypersurface.inducedMetric_separating_of_isUnitNormal, Lightlike.Hypersurface.inducedMetric_separating_of_nonnull]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location for this entry. The leaves are not given a manifold structure: at a point p the tangent space of the level set of phi is levelTangent phi p, the kernel of d phi(p) inside the ambient tangent space, and inducedMetric g phi p is the bilinear form g_p restricted to it. Nondegeneracy: if n is a unit normal near p with g(n, n) = eps = 1 or -1 (IsUnitNormal), or if the gradient of phi at p is not null (the unit normal then exists by exists_isUnitNormal), then v in levelTangent with g_p(v, w) = 0 for all w in levelTangent is zero; the proof splits an arbitrary vector u into u - eps g(n, u) n, which is tangent, and a multiple of n. Non-vacuity: the sphere in a Euclidean space; wrong-model control: for the null hyperplane t = x of the Minkowski plane the tangent vector (1, 1) is orthogonal to all tangent vectors, so the induced metric is degenerate (Lightlike/Spacetime/HypersurfaceInducedTests.lean). Limits: the induced metric is a bilinear form at each point, not a metric on a manifold; whether the tangential connection D of Hypersurface.lean is its Levi-Civita connection is not stated. Hypotheses stated in the Lean theorems. No unproved hypothesis."
+  since: unreleased

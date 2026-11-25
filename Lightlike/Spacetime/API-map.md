@@ -274,6 +274,7 @@ three keep infinity, while a special conformal transformation moves the point at
     `isoAct_dirac`, `isoAct_fst`, `transAct`, `coneForm_transAct`, `transAct_dirac`, `transAct_fst`, `dilAct`, `coneForm_dilAct`,
     `dilAct_dirac`, `dilAct_fst`, `specAct`, `coneForm_specAct`, `specAct_dirac`, `specAct_dirac_smul`, `specAct_infinity`,
     `specAct_infinity_fst_ne`
+128. Lightlike/Spacetime/HypersurfaceInduced.lean - `Hypersurface.levelTangent`, `Hypersurface.inducedMetric`, `Hypersurface.inducedMetric_separating_of_isUnitNormal`, `Hypersurface.inducedMetric_separating_of_nonnull`: the induced metric of a level set, defined pointwise as `g` restricted to the kernel of the differential, and nondegenerate where the normal is not null.
 
 ## References
 
