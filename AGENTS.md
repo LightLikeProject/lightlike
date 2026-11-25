@@ -9,6 +9,31 @@ Lightlike is a Lean 4 library of formalized results and open problems in fundame
 code is in `Lightlike/`; what is proven is listed in [docs/RESULTS.md](docs/RESULTS.md), the plan
 in [ROADMAP.md](ROADMAP.md) and the tasks on the [task board](docs/tasks/README.md).
 
+## What to work on
+
+The [Project board](https://github.com/orgs/LightlikeProject/projects) "Lightlike" is the plan. It
+holds one issue per milestone of [docs/tasks/milestones.md](docs/tasks/milestones.md), in the
+columns Ready, In progress, In review, Done and Not scheduled.
+
+1. **Take** the top Ready item of the GitHub Milestone
+   [v1.0](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aopen+milestone%3Av1.0+label%3A%22status%3A+ready%22)
+   (the lowest Rank on the board), or a proof task ([the contributor loop](#the-contributor-loop)).
+   Milestones outside v1.0 carry the label `not-scheduled`: they are open to you, but the
+   maintainers' agents do not work on them.
+2. **Claim** it as described in step 2 of the loop: comment `/claim` on its issue. A milestone has
+   one holder at a time; if it is claimed or In progress, take the next one.
+3. **Search before writing anything**: the library (`Lightlike/`, [docs/RESULTS.md](docs/RESULTS.md)
+   and the API maps), Mathlib, Physlib, and the open work (open pull requests and claimed issues).
+   Reuse what exists; do not define a notion twice.
+4. **Work its checklist.** The issue body is the milestone's checklist (from
+   [docs/tasks/checklists.yaml](docs/tasks/checklists.yaml)): its main theorem, pieces, trust
+   checks, catalogue entry and review items. Each item names the declarations that satisfy it. A
+   script ticks an item once its declarations are on `main` with no `sorry` and only the standard
+   axioms. Nobody ticks an item or edits a status by hand.
+5. **Pull requests** for a milestone carry the line `Task: T-<ID>` (for example `Task: T-HA4`), never
+   `Closes #<issue>`. When every item is ticked, someone who did not do the work reviews the milestone
+   against its done-when; the maintainer closes the issue after a passing review.
+
 ## The contributor loop
 
 For a proof task, repeat these steps; everything after step 4 runs by itself.
@@ -56,8 +81,10 @@ Everything below is recommended practice, with the reason for it.
 
 ## Pull requests
 
-- **One task per pull request**, with the template's line `Task: <ID>` (or `Task: none`), and
-  `Closes #<issue>` when it finishes that task's issue.
+- **One task per pull request**, with the template's line `Task: <ID>` (or `Task: none`). Never
+  write `Closes #<issue>` for a milestone's issue: the maintainer closes it after a passing review
+  ([What to work on](#what-to-work-on)). A proof task's issue closes by itself once its proof is on
+  `main`.
 - **AI assistance.** Fill in the template's field: the tool and the model.
 - **Claims.** Comment `/claim` on a task before starting it (48 hours, or while a pull request naming
   it is open; at most 3 claims per person) and `/unclaim` to release it. A task has one claimant at a

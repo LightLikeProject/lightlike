@@ -2,7 +2,8 @@
 
 Contributions are welcome in every area: proofs, definitions, statements, tests against the
 literature, corrections to conventions, and reviews of whether a statement says what its source
-says. Every task on the [task board](docs/tasks/README.md) is open to everyone. Contributions are
+says. The [Project board](https://github.com/orgs/LightlikeProject/projects) is the plan, and every
+task on it is open to everyone ([how work is tracked](#how-work-is-tracked)). Contributions are
 welcome however you work, by hand or with AI tools; the pull request template has an optional
 field for AI assistance, and [AGENTS.md](AGENTS.md) holds the instructions for coding agents.
 
@@ -103,16 +104,22 @@ reviewed and locked (the `Proof task` workflow checks this). Other CI steps are 
 
 - **[Proof tasks](docs/tasks/README.md#proof-tasks):** a statement fixed in a file of `Tasks/`,
   with its proof open. Ready once the statement is locked.
-- **[Milestones by area](docs/tasks/README.md#milestones-by-area):** every milestone of an area,
-  with what it needs; its issue is labelled **ready** once those are done.
+- **[Milestones](https://github.com/orgs/LightlikeProject/projects):** every milestone of
+  [docs/tasks/milestones.md](docs/tasks/milestones.md) has one issue, which holds its checklist. The
+  v1.0 milestones (the GitHub Milestone
+  [v1.0](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+milestone%3Av1.0)) are
+  worked in ranking order: take the lowest Rank in the Ready column of the Project board. The others
+  carry the labels `not-scheduled` and `help-wanted`: open to you, not worked on by the maintainers'
+  agents.
 - **[Upstream](docs/tasks/README.md#upstream):** results to rework for Mathlib or Physlib.
 - **Good first issues:** small and self-contained, needing no knowledge of the rest of the library.
 - **Propose a result:** the [formalize this result](.github/ISSUE_TEMPLATE/formalize-result.yml)
   issue form takes a specific result from a specific paper, with its location in the paper.
 
-The GitHub issue of a task opens once the task is ready, with the task's ID at the start of its
-title; the board links the ID to it. The workflow `.github/workflows/tasks.yml` keeps the labels of the task issues current from their comments and from the pull requests that
-name a task:
+An issue's title starts with its task's ID (`T-HA4`, `T-QU1-P5`); the task board links the ID to
+it. A proof task's issue opens once the task is ready. The workflow `.github/workflows/tasks.yml`
+keeps the labels of the proof-task issues current from their comments and from the pull requests
+that name a task:
 
 | Label | Means | Set when |
 |---|---|---|
@@ -121,10 +128,24 @@ name a task:
 | `claimed` | one person works on it; they are the assignee | someone comments `/claim`; it ends after 48 hours unless a pull request naming the task is open, or on `/unclaim` |
 | `in review` | a pull request for it is open | the pull request has the line `Task: <ID>` |
 
-Nobody sets these by hand, and nothing in the repository records progress. A task is done when its
-issue is closed as completed: by the pull request that finishes it (`Closes #<issue>`), or, for a
-proof task, by the workflow once the proof is on `main`. The background of a milestone is in its
-area's [milestone table](docs/tasks/milestones.md) and its sources; the
+On a milestone's issue the workflow writes only `claimed` and the assignee. The rest is written by
+`scripts/sync_github.py` after every merge: the body (the checklist, computed from `main` by
+`scripts/milestone_status.py`), the area and size labels, the GitHub Milestone, the column and Rank
+on the Project board, and one status label:
+
+| Label (v1.0 only) | Means | Column |
+|---|---|---|
+| `status: ready` | free to take | Ready |
+| `status: in-progress` | claimed, by a contributor (`/claim`) or by one of the maintainers' agents | In progress |
+| `status: review` | every checklist item is ticked; it waits for its review | In review |
+| `status: done` | reviewed and closed | Done |
+
+Nobody sets these by hand. A proof task is done when the workflow closes its issue, once the proof
+is on `main`. A milestone is done when every item of its checklist is ticked and a review by someone
+who did not do the work passes, against its done-when (the file `docs/tasks/reviews/<ID>.md`); then
+the maintainer closes its issue. A pull request never closes a milestone's issue: it names the
+milestone with the line `Task: T-<ID>`. The background of a milestone is in its area's
+[milestone table](docs/tasks/milestones.md) and its sources; the
 [conventions](docs/CONVENTIONS.md) apply to every task.
 
 ## Working on the same problem
@@ -140,8 +161,10 @@ The work is split into small tasks so that many people can work at once, several
 - **Statements first.** Each result is first written as a Lean statement with `sorry`. Once it is
   reviewed and locked, its proof becomes a proof task with its own file in `Tasks/`. Large proofs
   are split into intermediate lemmas, each its own statement and proof task.
-- **Ready** means every task it depends on is done, except proof tasks, which count once their
-  statement is locked: you may use a lemma whose proof is still open.
+- **Ready**, for a proof task, means every task it depends on is done, except proof tasks, which
+  count once their statement is locked: you may use a lemma whose proof is still open. A v1.0
+  milestone is `status: ready` when nobody holds it; the milestones it needs do not have to be
+  closed first.
 - **Claiming a proof task.** Claims are exclusive for every kind of task. Commenting `/claim` on the
   issue labels it `claimed` and assigns you (`/unclaim` withdraws it); a second `/claim` on a claimed
   task is answered with the holder and the expiry. Claims are advisory: if two pull requests arrive,
@@ -269,16 +292,23 @@ By contributing you agree to license your contributions under the [Apache Licens
 
 ## How work is tracked
 
-- **The repository holds the plan; the issues hold the progress.** A task's issue opens when the
-  task becomes ready, and a workflow keeps its labels current from comments and pull requests:
-  **ready**, **claimed**, **in review**. Nobody edits a status by hand.
+- **The Project board is the plan.** The [Project board](https://github.com/orgs/LightlikeProject/projects)
+  "Lightlike" has one issue per milestone, in the columns Ready, In progress, In review, Done and
+  Not scheduled; the v1.0 milestones are worked in the order of the board's Rank. Proof tasks are
+  separate issues, each linked to its milestone.
+- **Status is computed, never typed.** A milestone's issue holds its checklist (from
+  [docs/tasks/checklists.yaml](docs/tasks/checklists.yaml)): the main theorem, the pieces, the trust
+  checks, the catalogue entry and the review items, each naming the declarations that satisfy it.
+  A script ticks an item when its declarations are on `main` with no `sorry` and only the standard
+  axioms, and writes the issue and the board. Nobody edits a status by hand.
 - **Every task is taken by one person at a time.** Comment `/claim` to take
   one (you are assigned) and `/unclaim` to release it. A claim lasts 48 hours, or while a pull request
-  naming the task is open; a person holds at most 3 claims.
-- **Proof tasks are claimed the same way.** Claims are advisory: if two pull requests arrive for one
-  task, the first that passes CI is merged.
-- **Done means merged.** A pull request that finishes a task says `Closes #<issue>`; a proof task's
-  issue is closed once its proof is on `main`. Tasks that need it then become ready.
+  naming the task is open; a person holds at most 3 claims. Claims are advisory: if two pull requests
+  arrive for one task, the first that passes CI is merged.
+- **Done.** A proof task is done once its proof is on `main`; the workflow closes its issue. A
+  milestone is done when every item is ticked and a review by someone who did not do the work has
+  passed; the maintainer then closes its issue. Pull requests name a milestone with `Task: T-<ID>`
+  and never close its issue.
 
 ## Help wanted, community, license and citation
 
