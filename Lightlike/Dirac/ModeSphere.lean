@@ -65,4 +65,72 @@ theorem fourier_modes_isModeSol {g₁ g₂ : E 2 → ℂ} (h₁ : ContDiff ℝ 1
       rw [eq_div_iff hI, eq_div_iff hK]; linear_combination e2
     linear_combination key
 
+/-- **Completeness for `C¹` chart eigenspinors with decay at the pole.** A `C¹` solution `(g₁, g₂)` of the chart
+eigen equations with `|g_i(x)| ≤ C/|x|` for `|x| ≥ 1` is zero unless `λ = ±k` for an integer `k ≥ 1`. -/
+theorem chart_eigenspinor_quantized {g₁ g₂ : E 2 → ℂ} (h₁ : ContDiff ℝ 1 g₁) (h₂ : ContDiff ℝ 1 g₂) {lam : ℂ}
+    (hlam : lam ≠ 0)
+    (hA : ∀ x : E 2, (1 + (‖x‖ ^ 2 : ℝ) : ℂ) * Complex.I *
+      (fderiv ℝ g₁ x (e (0 : Fin 2)) + Complex.I * fderiv ℝ g₁ x (e (1 : Fin 2))) = 2 * lam * g₂ x)
+    (hB : ∀ x : E 2, (1 + (‖x‖ ^ 2 : ℝ) : ℂ) * Complex.I *
+      (fderiv ℝ g₂ x (e (0 : Fin 2)) - Complex.I * fderiv ℝ g₂ x (e (1 : Fin 2))) = 2 * lam * g₁ x)
+    {C : ℝ} (hdec : ∀ x : E 2, 1 ≤ ‖x‖ → ‖g₁ x‖ ≤ C / ‖x‖ ∧ ‖g₂ x‖ ≤ C / ‖x‖)
+    (hnz : ¬ (g₁ = 0 ∧ g₂ = 0)) :
+    ∃ k : ℕ, 1 ≤ k ∧ (lam = k ∨ lam = -(k : ℂ)) := by
+  by_contra hno
+  push_neg at hno
+  set ν : ℂ := 2 * lam / Complex.I with hν
+  have hν0 : ν ≠ 0 := div_ne_zero (mul_ne_zero two_ne_zero hlam) Complex.I_ne_zero
+  have hαlam : Complex.I * ν / 2 = lam := by
+    rw [hν]; field_simp
+  -- bounds
+  obtain ⟨M₁, hM₁⟩ := (isCompact_closedBall (0 : E 2) 1).exists_bound_of_continuousOn h₁.continuous.continuousOn
+  obtain ⟨M₂, hM₂⟩ := (isCompact_closedBall (0 : E 2) 1).exists_bound_of_continuousOn h₂.continuous.continuousOn
+  -- every mode vanishes
+  have key : ∀ m : ℤ, ∀ r : ℝ, 0 < r →
+      fcoef (polarFn g₁) m r = 0 ∧ fcoef (polarFn g₂) (m + 1) r = 0 := by
+    intro m
+    have hsol := fourier_modes_isModeSol h₁ h₂ lam hA hB m
+    by_contra hne
+    push_neg at hne
+    obtain ⟨r₀, hr₀, hr₀'⟩ := hne
+    have hnz' : fcoef (polarFn g₁) m r₀ ≠ 0 ∨ fcoef (polarFn g₂) (m + 1) r₀ ≠ 0 := by
+      by_contra hh; push_neg at hh; exact hr₀' hh.1 hh.2
+    obtain ⟨k, hk, hkk⟩ := mode_decay_quantized_int hν0 m hsol hr₀ hnz'
+      (C₀ := max (M₁ * (2 * Real.pi)) (M₂ * (2 * Real.pi)))
+      (fun r hr hr1 => by
+        have hn : ∀ θ : ℝ, ‖polarPt r θ‖ ≤ 1 := fun θ => by
+          have := polarPt_norm_sq r θ
+          nlinarith [norm_nonneg (polarPt r θ)]
+        constructor
+        · exact (fcoef_norm_le _ m r M₁ fun θ => hM₁ _ (by simpa using hn θ)).trans (le_max_left _ _)
+        · exact (fcoef_norm_le _ (m + 1) r M₂ fun θ => hM₂ _ (by simpa using hn θ)).trans (le_max_right _ _))
+      (C₁ := C * (2 * Real.pi))
+      (fun r hr => by
+        have hn : ∀ θ : ℝ, ‖polarPt r θ‖ = r := fun θ => by
+          have := polarPt_norm_sq r θ
+          have h0 : 0 ≤ ‖polarPt r θ‖ := norm_nonneg _
+          nlinarith [sq_nonneg (‖polarPt r θ‖ - r), sq_nonneg (‖polarPt r θ‖ + r)]
+        have hr0 : 0 < r := lt_of_lt_of_le one_pos hr
+        constructor
+        · have := fcoef_norm_le (polarFn g₁) m r (C / r) fun θ => by
+            have := (hdec (polarPt r θ) (by rw [hn θ]; exact hr)).1
+            rwa [hn θ] at this
+          calc _ ≤ C / r * (2 * Real.pi) := this
+            _ = C * (2 * Real.pi) / r := by ring
+        · have := fcoef_norm_le (polarFn g₂) (m + 1) r (C / r) fun θ => by
+            have := (hdec (polarPt r θ) (by rw [hn θ]; exact hr)).2
+            rwa [hn θ] at this
+          calc _ ≤ C / r * (2 * Real.pi) := this
+            _ = C * (2 * Real.pi) / r := by ring)
+    rw [hαlam] at hkk
+    rcases hkk with hk1 | hk2
+    · exact (hno k hk).1 hk1
+    · exact (hno k hk).2 hk2
+  have z1 : g₁ = 0 := eq_zero_of_fcoef_polar_pos h₁.continuous fun m r hr => (key m r hr).1
+  have z2 : g₂ = 0 := by
+    refine eq_zero_of_fcoef_polar_pos h₂.continuous fun m r hr => ?_
+    have := (key (m - 1) r hr).2
+    simpa using this
+  exact hnz ⟨z1, z2⟩
+
 end Lightlike.Dirac
