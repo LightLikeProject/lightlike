@@ -409,4 +409,24 @@ theorem finrank_range_treeR [CharZero k] (q : kˣ) (a b c f d : ℕ) (hfb : f �
     ⟨d, by have := le_min hda hdf; omega⟩
   simpa using h2
 
+/-- **Overlapping idempotents have comparable ranks**: if `x y x = λ x` with `λ ≠ 0` then `rank x ≤ rank y`. -/
+theorem finrank_le_of_overlap {W : Type*} [AddCommGroup W] [Module k W] [Module.Finite k W]
+    {x y : Module.End k W} (hx : IsIdempotentElem x) {μ : k} (hμ : μ ≠ 0) (h : x * y * x = μ • x) :
+    Module.finrank k (LinearMap.range x) ≤ Module.finrank k (LinearMap.range y) := by
+  let f : LinearMap.range x →ₗ[k] LinearMap.range y :=
+    { toFun := fun v => ⟨y v, LinearMap.mem_range_self y v⟩
+      map_add' := fun v w => by apply Subtype.ext; simp
+      map_smul' := fun r v => by apply Subtype.ext; simp }
+  have hinj : Function.Injective f := by
+    refine (injective_iff_map_eq_zero f).mpr fun v hv => ?_
+    obtain ⟨u, hu⟩ := v.2
+    have hyv : y (v : W) = 0 := congrArg Subtype.val hv
+    have h1 := congrArg (fun T : Module.End k W => T u) h
+    simp only [Module.End.mul_apply, LinearMap.smul_apply, hu, hyv, map_zero] at h1
+    have h2 : μ • (v : W) = 0 := h1.symm
+    rcases smul_eq_zero.mp h2 with h3 | h3
+    · exact absurd h3 hμ
+    · exact Subtype.ext h3
+  exact LinearMap.finrank_le_finrank_of_injective hinj
+
 end Lightlike.TemperleyLieb
