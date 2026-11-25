@@ -117,7 +117,10 @@ exactly 0 ≤ ½|dφ|² + V for a vanishing or spacelike gradient [123]. Dust wi
 satisfies the strong energy condition [124]. The conformal embedding of Minkowski space in Cartesian
 form, axis included: the map (η, p) ↦ (t, x⃗) from the region {|η| < π, p ∈ S³, ω > 0} of ℝ × S³ is a
 bijection onto ℝ × ℝ³, the metric is ω⁻² times the Einstein static universe metric, and the axis r = 0
-is the ordinary point p = (1, 0⃗) [125].
+is the ordinary point p = (1, 0⃗) [125]. In the null-cone picture of the compactification (a point x embedded as
+(1, B x x, x) in the cone B x x = P⁺P⁻, infinity the set P⁺ = 0), isometries, translations, dilations and special
+conformal transformations preserve the cone form and act on the embedded points as the stated maps of V; the first
+three keep infinity, while a special conformal transformation moves the point at infinity to the finite point b [127].
 
 ## Lean References
 
