@@ -174,4 +174,120 @@ theorem Qab_mul_jwAt_trees [CharZero k] (q : kˣ) (a b c : ℕ) (hab : 1 ≤ a +
   rw [hfi] at *
   simp only [Finset.mul_sum, Finset.sum_mul]
 
+/-- Projectors on disjoint ranges of strands commute. -/
+theorem jwAt_comm_jwAt (q : kˣ) {A s : ℕ} (h : A ≤ s) (n : ℕ) :
+    (jwAt q 0 A : Module.End k (ModelSpace k)) * jwAt q s n = jwAt q s n * jwAt q 0 A := by
+  rcases A with _ | A
+  · simp [jwAt, jw_zero]
+  · exact CSub_mul_jwAt q (m := A) (by omega) (by simpa using jwAt_mem (k := k) q 0 (A + 1)) n
+
+section tree
+
+variable (q : kˣ) (A c : ℕ) (hd : ∀ j, j ≤ A + c → chebD (loopVal q) j ≠ 0)
+include hd
+
+/-- `p_A Q(A,c) = Q(A,c)`. -/
+theorem jwAt_mul_Qab' : (jwAt q 0 A : Module.End k (ModelSpace k)) * Qab q A c = Qab q A c := by
+  have := jwAt_idem (k := k) q (c := A) (N := A + c + 1) (by omega) (fun j hj => hd j (by omega))
+  unfold Qab; rw [← mul_assoc, this]
+
+/-- `Q(A,c) p_A = Q(A,c)`. -/
+theorem Qab_mul_jwAt' : (Qab q A c : Module.End k (ModelSpace k)) * jwAt q 0 A = Qab q A c := by
+  have := jwAt_idem (k := k) q (c := A) (N := A + c + 1) (by omega) (fun j hj => hd j (by omega))
+  unfold Qab
+  rw [mul_assoc, ← jwAt_comm_jwAt q (le_refl A) c, ← mul_assoc, this]
+
+/-- `p_A E = E`. -/
+theorem jwAt_mul_Eop (d : ℕ) : (jwAt q 0 A : Module.End k (ModelSpace k)) * Eop q A c d = Eop q A c d := by
+  have h1 := Qab_mul_Eop q A c hd d
+  calc (jwAt q 0 A : Module.End k (ModelSpace k)) * Eop q A c d
+      = jwAt q 0 A * (Qab q A c * Eop q A c d) := by rw [h1]
+    _ = (jwAt q 0 A * Qab q A c) * Eop q A c d := by rw [mul_assoc]
+    _ = Eop q A c d := by rw [jwAt_mul_Qab' q A c hd, h1]
+
+/-- `E p_A = E`. -/
+theorem Eop_mul_jwAt (d : ℕ) : (Eop q A c d : Module.End k (ModelSpace k)) * jwAt q 0 A = Eop q A c d := by
+  have h1 := Eop_mul_Qab q A c hd d
+  calc (Eop q A c d : Module.End k (ModelSpace k)) * jwAt q 0 A
+      = (Eop q A c d * Qab q A c) * jwAt q 0 A := by rw [h1]
+    _ = Eop q A c d * (Qab q A c * jwAt q 0 A) := by rw [mul_assoc]
+    _ = Eop q A c d := by rw [Qab_mul_jwAt' q A c hd, h1]
+
+end tree
+
+/-- The tree idempotent as `κ⁻¹ V E W`. -/
+theorem treeL_eq (q : kˣ) (a b c e d : ℕ)
+    (hd : ∀ j, j ≤ a + b - 2 * e + c → chebD (loopVal q) j ≠ 0) :
+    treeL q a b c e d = (kapRec q a b e)⁻¹ • (Vop q a b e * Eop q (a + b - 2 * e) c d * Wop q a b e) := by
+  unfold treeL
+  congr 1
+  have h1 := jwAt_mul_Eop (k := k) q (a + b - 2 * e) c hd d
+  have h2 := Eop_mul_jwAt (k := k) q (a + b - 2 * e) c hd d
+  unfold Vop Wop
+  calc Qab q a b * nestCup q (a - e) e * Eop q (a + b - 2 * e) c d * nestCap q (a - e) e * Qab q a b
+      = Qab q a b * nestCup q (a - e) e * (jwAt q 0 (a + b - 2 * e) * Eop q (a + b - 2 * e) c d *
+        jwAt q 0 (a + b - 2 * e)) * nestCap q (a - e) e * Qab q a b := by rw [h1, h2]
+    _ = _ := by simp only [mul_assoc]
+
+/-- **The tree idempotents are orthogonal idempotents.** -/
+theorem treeL_mul [CharZero k] (q : kˣ) (a b c : ℕ)
+    (hd : ∀ j, j ≤ a + b + c → chebD (loopVal q) j ≠ 0)
+    (hq2 : ∀ j, 1 ≤ j → j ≤ a + b + c + 1 → (q : k) ^ (2 * j) ≠ 1)
+    {e d e' d' : ℕ} (he : e ≤ min a b) (he' : e' ≤ min a b) (hdd : d ≤ min (a + b - 2 * e) c)
+    (hdd' : d' ≤ min (a + b - 2 * e') c) :
+    treeL q a b c e d * treeL q a b c e' d' =
+      if e = e' ∧ d = d' then treeL q a b c e d else 0 := by
+  have hea : e ≤ a := he.trans (min_le_left _ _)
+  have heb : e ≤ b := he.trans (min_le_right _ _)
+  have hea' : e' ≤ a := he'.trans (min_le_left _ _)
+  have heb' : e' ≤ b := he'.trans (min_le_right _ _)
+  rw [treeL_eq q a b c e d (fun j hj => hd j (by omega)), treeL_eq q a b c e' d' (fun j hj => hd j (by omega))]
+  rw [smul_mul_assoc, mul_smul_comm, smul_smul]
+  by_cases hee : e = e'
+  · subst hee
+    have hκ := kapRec_ne (k := k) q e a b hea heb (fun j h1 h2 => hq2 j h1 (by omega))
+    have hWV := Wop_mul_Vop q a b e hea heb (fun j hj => hd j (by omega))
+    have hp1 := Eop_mul_jwAt (k := k) q (a + b - 2 * e) c (fun j hj => hd j (by omega)) d
+    have hEE : Eop q (a + b - 2 * e) c d * Eop q (a + b - 2 * e) c d' =
+        if d = d' then Eop q (a + b - 2 * e) c d else 0 := by
+      by_cases hdeq : d = d'
+      · subst hdeq
+        rw [if_pos rfl]
+        exact Eop_idem q _ c (fun j hj => hd j (by omega)) (hdd.trans (min_le_left _ _)) (hdd.trans (min_le_right _ _))
+          (fun j h1 h2 => hq2 j h1 (by omega))
+      · rw [if_neg hdeq]
+        have hm : 1 ≤ min (a + b - 2 * e) c := by omega
+        exact Eop_orth q _ c (fun j hj => hd j (by omega)) (by omega) (by omega) (hdd.trans (min_le_left _ _))
+          (hdd.trans (min_le_right _ _)) (hdd'.trans (min_le_left _ _)) (hdd'.trans (min_le_right _ _)) hdeq
+          (fun j h1 h2 => hq2 j h1 (by omega))
+    have key : Vop q a b e * Eop q (a + b - 2 * e) c d * Wop q a b e *
+        (Vop q a b e * Eop q (a + b - 2 * e) c d' * Wop q a b e) =
+        kapRec q a b e • (Vop q a b e * (Eop q (a + b - 2 * e) c d * Eop q (a + b - 2 * e) c d') * Wop q a b e) := by
+      calc _ = Vop q a b e * Eop q (a + b - 2 * e) c d * (Wop q a b e * Vop q a b e) *
+            Eop q (a + b - 2 * e) c d' * Wop q a b e := by simp only [mul_assoc]
+        _ = Vop q a b e * Eop q (a + b - 2 * e) c d * (kapRec q a b e • jwAt q 0 (a + b - 2 * e)) *
+            Eop q (a + b - 2 * e) c d' * Wop q a b e := by rw [hWV]
+        _ = _ := by
+            rw [mul_smul_comm, smul_mul_assoc, smul_mul_assoc]
+            simp only [mul_assoc]
+            rw [← mul_assoc (Eop q (a + b - 2 * e) c d) (jwAt q 0 (a + b - 2 * e)), hp1]
+    rw [key, hEE, smul_smul]
+    by_cases hdeq : d = d'
+    · subst hdeq
+      rw [if_pos rfl, if_pos ⟨rfl, rfl⟩]
+      rw [mul_assoc, inv_mul_cancel₀ hκ, mul_one]
+    · rw [if_neg hdeq, if_neg (fun h => hdeq h.2)]
+      simp
+  · rw [if_neg (fun h => hee h.1)]
+    have hm : 1 ≤ min a b := by omega
+    have h0 := channel_orth q a b e e' (by omega) (by omega) hea heb hea' heb' (fun j hj => hd j (by omega))
+      (lamRec_ne q a b e e' hea heb hea' heb' hee (fun j h1 h2 => hq2 j h1 (by omega)))
+    have hp := Eop_mul_jwAt (k := k) q (a + b - 2 * e) c (fun j hj => hd j (by omega)) d
+    have : Vop q a b e * Eop q (a + b - 2 * e) c d * Wop q a b e *
+        (Vop q a b e' * Eop q (a + b - 2 * e') c d' * Wop q a b e') = 0 := by
+      calc _ = Vop q a b e * Eop q (a + b - 2 * e) c d * (Wop q a b e * Vop q a b e') *
+            Eop q (a + b - 2 * e') c d' * Wop q a b e' := by simp only [mul_assoc]
+        _ = 0 := by rw [h0]; simp
+    rw [this, smul_zero]
+
 end Lightlike.TemperleyLieb
