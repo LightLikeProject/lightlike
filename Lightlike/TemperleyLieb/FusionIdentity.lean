@@ -106,4 +106,170 @@ theorem Vop_dicke_independent (q : kˣ) (a b i : ℕ) (hia : i ≤ a) (hib : i �
   rw [hfun]
   exact dicke_linearIndependent q (a + b - 2 * i)
 
+/-! ### Tail equivariance -/
+
+/-- Glue a window sequence `ρ` (positions `< N`) to a tail `τ` (positions `≥ N`). -/
+def app (N : ℕ) (ρ τ : ℕ → Bool) : ℕ → Bool := fun j => if j < N then ρ j else τ j
+
+/-- The linear map gluing a fixed tail `τ` beyond `N` to every basis sequence. -/
+noncomputable def iota (N : ℕ) (τ : ℕ → Bool) : ModelSpace k →ₗ[k] ModelSpace k :=
+  Finsupp.lmapDomain k k (fun ρ => app N ρ τ)
+
+lemma iota_single (N : ℕ) (τ ρ : ℕ → Bool) (c : k) : iota N τ (single ρ c) = single (app N ρ τ) c := by
+  simp [iota]
+
+/-- `T` acts on the first `N` strands and does not see the tail. -/
+def Eqv (N : ℕ) (T : Module.End k (ModelSpace k)) : Prop :=
+  ∀ τ, ∀ ρ : ℕ → Bool, T (single (app N ρ τ) 1) = iota N τ (T (single ρ 1))
+
+/-- An equivariant operator commutes with `iota` on every vector. -/
+lemma Eqv.apply {N : ℕ} {T : Module.End k (ModelSpace k)} (hT : Eqv N T) (τ : ℕ → Bool) (v : ModelSpace k) :
+    T (iota N τ v) = iota N τ (T v) := by
+  induction v using Finsupp.induction_linear with
+  | zero => simp
+  | add f g hf hg => simp [hf, hg]
+  | single ρ c =>
+    have := hT τ ρ
+    calc T (iota N τ (single ρ c)) = c • T (single (app N ρ τ) 1) := by
+          rw [iota_single, show (single (app N ρ τ) c : ModelSpace k) = c • single (app N ρ τ) 1 by simp]
+          rw [map_smul]
+      _ = c • iota N τ (T (single ρ 1)) := by rw [this]
+      _ = iota N τ (T (single ρ c)) := by
+          rw [show (single ρ c : ModelSpace k) = c • single ρ 1 by simp, map_smul, map_smul]
+
+lemma Eqv.mul {N : ℕ} {S T : Module.End k (ModelSpace k)} (hS : Eqv N S) (hT : Eqv N T) : Eqv N (S * T) := by
+  intro τ ρ
+  rw [Module.End.mul_apply, hT τ ρ, hS.apply, Module.End.mul_apply]
+
+lemma Eqv.add {N : ℕ} {S T : Module.End k (ModelSpace k)} (hS : Eqv N S) (hT : Eqv N T) : Eqv N (S + T) := by
+  intro τ ρ
+  rw [LinearMap.add_apply, hS τ ρ, hT τ ρ, LinearMap.add_apply, map_add]
+
+lemma Eqv.smul {N : ℕ} {T : Module.End k (ModelSpace k)} (r : k) (hT : Eqv N T) : Eqv N (r • T) := by
+  intro τ ρ
+  rw [LinearMap.smul_apply, hT τ ρ, LinearMap.smul_apply, map_smul]
+
+lemma eqv_one (N : ℕ) : Eqv N (1 : Module.End k (ModelSpace k)) := by
+  intro τ ρ; simp [iota_single]
+
+/-- Setting two bits inside the window commutes with gluing. -/
+lemma app_set2 {N j : ℕ} (hj : j + 2 ≤ N) (ρ τ : ℕ → Bool) (x y : Bool) :
+    set2 (app N ρ τ) j x y = app N (set2 ρ j x y) τ := by
+  funext n
+  simp only [set2, app, Function.update_apply]
+  split_ifs <;> first | rfl | omega
+
+/-- The generators `e_j` (`j + 2 ≤ N`) do not see the tail. -/
+lemma eqv_modelE (q : kˣ) {N j : ℕ} (hj : j + 2 ≤ N) : Eqv N (modelE q j : Module.End k (ModelSpace k)) := by
+  intro τ ρ
+  have h0 : app N ρ τ j = ρ j := by simp [app]; omega
+  have h1 : app N ρ τ (j + 1) = ρ (j + 1) := by simp [app]; omega
+  simp only [modelE_single, one_smul, eBasis, h0, h1]
+  rcases ρ j with _ | _ <;> rcases ρ (j + 1) with _ | _ <;>
+    simp [iota_single, app_set2 hj, map_sub, map_smul]
+
+/-- Removing a pair inside the window commutes with gluing, up to a shift of the tail. -/
+lemma removeTwo_app {N m : ℕ} (hm : m + 2 ≤ N) (ρ τ : ℕ → Bool) :
+    removeTwo (app N ρ τ) m = app (N - 2) (removeTwo ρ m) (fun j => τ (j + 2)) := by
+  funext n
+  simp only [removeTwo, app]
+  split_ifs <;> first | rfl | omega
+
+/-- Inserting a pair inside the window commutes with gluing, up to a shift of the tail. -/
+lemma insertTwo_app {N m : ℕ} (hm : m ≤ N) (ρ τ : ℕ → Bool) (x y : Bool) :
+    insertTwo (app N ρ τ) m x y = app (N + 2) (insertTwo ρ m x y) (fun j => τ (j - 2)) := by
+  funext n
+  simp only [insertTwo, app]
+  split_ifs <;> first | rfl | omega
+
+/-- The cap commutes with gluing. -/
+lemma capOp_iota (q : kˣ) {N m : ℕ} (hm : m + 2 ≤ N) (τ : ℕ → Bool) (v : ModelSpace k) :
+    capOp q m (iota N τ v) = iota (N - 2) (fun j => τ (j + 2)) (capOp q m v) := by
+  induction v using Finsupp.induction_linear with
+  | zero => simp
+  | add f g hf hg => simp [hf, hg]
+  | single ρ c =>
+    have h0 : app N ρ τ m = ρ m := by simp [app]; omega
+    have h1 : app N ρ τ (m + 1) = ρ (m + 1) := by simp [app]; omega
+    simp only [iota_single, capOp_single, capBasis, h0, h1, removeTwo_app hm, map_smul]
+
+/-- The cup commutes with gluing. -/
+lemma cupOp_iota (q : kˣ) {N m : ℕ} (hm : m ≤ N) (τ : ℕ → Bool) (v : ModelSpace k) :
+    cupOp q m (iota N τ v) = iota (N + 2) (fun j => τ (j - 2)) (cupOp q m v) := by
+  induction v using Finsupp.induction_linear with
+  | zero => simp
+  | add f g hf hg => simp [hf, hg]
+  | single ρ c =>
+    simp only [iota_single, cupOp_single, cupBasis, insertTwo_app hm, map_smul, map_sub]
+
+/-- The glued tail only matters beyond the window. -/
+lemma iota_congr (N : ℕ) {τ τ' : ℕ → Bool} (h : ∀ j, N ≤ j → τ j = τ' j) (v : ModelSpace k) :
+    iota N τ v = iota N τ' v := by
+  induction v using Finsupp.induction_linear with
+  | zero => simp
+  | add f g hf hg => simp [hf, hg]
+  | single ρ c =>
+    have : app N ρ τ = app N ρ τ' := by
+      funext j; simp only [app]; split_ifs with hj; rfl; exact h j (by omega)
+    rw [iota_single, iota_single, this]
+
+/-- **Conjugating by a cup and a cap** (insertion position `m ≤ n`) keeps the operator independent of the tail. -/
+lemma Eqv.cup_mul_cap (q : kˣ) {n m : ℕ} (hm : m ≤ n) {z : Module.End k (ModelSpace k)} (hz : Eqv n z) :
+    Eqv (n + 2) (cupOp q m * z * capOp q m) := by
+  intro τ ρ
+  have e1 : capOp q m (iota (n + 2) τ (single ρ 1)) = iota n (fun j => τ (j + 2)) (capOp q m (single ρ 1)) := by
+    have := capOp_iota q (N := n + 2) (m := m) (by omega) τ (single ρ (1 : k))
+    simpa using this
+  have e2 := hz.apply (fun j => τ (j + 2)) (capOp q m (single ρ 1))
+  have e3 := cupOp_iota q (N := n) (m := m) hm (fun j => τ (j + 2)) (z (capOp q m (single ρ 1)))
+  have e4 : iota (n + 2) (fun j => (fun j => τ (j + 2)) (j - 2)) (cupOp q m (z (capOp q m (single ρ 1)))) =
+      iota (n + 2) τ (cupOp q m (z (capOp q m (single ρ 1)))) :=
+    iota_congr (n + 2) (fun j hj => by simp only []; congr 1; omega) _
+  rw [← iota_single, Module.End.mul_apply, Module.End.mul_apply, e1, e2, e3, e4]
+  simp [Module.End.mul_apply]
+
+/-- The nested sandwich of an equivariant operator is equivariant (junction `l ≤ n`). -/
+lemma Eqv.nest (q : kˣ) {n l : ℕ} (hl : l ≤ n) {z : Module.End k (ModelSpace k)} (hz : Eqv n z) :
+    ∀ i : ℕ, Eqv (n + 2 * i) (nestCup q l i * z * nestCap q l i) := by
+  intro i
+  induction i with
+  | zero => simpa [nestCup, nestCap] using hz
+  | succ i ih =>
+    have h := Eqv.cup_mul_cap q (n := n + 2 * i) (m := l + i) (by omega) ih
+    have e : nestCup q l (i + 1) * z * nestCap q l (i + 1) =
+        cupOp q (l + i) * (nestCup q l i * z * nestCap q l i) * capOp q (l + i) := by
+      simp only [nestCup, nestCap, mul_assoc]
+    rw [e, show n + 2 * (i + 1) = n + 2 * i + 2 by ring]
+    exact h
+
+/-- Every element of the algebra generated by `e_0, …, e_{m-1}` (`m + 1 ≤ N`) does not see the tail. -/
+theorem eqv_of_mem (q : kˣ) {N m : ℕ} (hm : m + 1 ≤ N) {x : Module.End k (ModelSpace k)}
+    (hx : x ∈ CSub q m) : Eqv N x := by
+  unfold CSub tlSub at hx
+  induction hx using Algebra.adjoin_induction with
+  | mem x hx =>
+    obtain ⟨j, hj, rfl⟩ := hx
+    exact eqv_modelE q (by omega)
+  | algebraMap r =>
+    rw [Algebra.algebraMap_eq_smul_one]
+    exact (eqv_one N).smul r
+  | add x y _ _ hx hy => exact hx.add hy
+  | mul x y _ _ hx hy => exact hx.mul hy
+
+/-- **An equivariant operator vanishing on the window vanishes.** -/
+theorem eq_zero_of_window {N : ℕ} {T : Module.End k (ModelSpace k)} (hT : Eqv N T)
+    (h0 : ∀ v ∈ Win k N, T v = 0) : T = 0 := by
+  apply Finsupp.lhom_ext
+  intro σ c
+  have hρ : (fun j => if j < N then σ j else false) ∈ tailZero N := by
+    intro j hj; simp; omega
+  have hσ : app N (fun j => if j < N then σ j else false) σ = σ := by
+    funext j; simp only [app]; split_ifs with h1 <;> simp_all
+  have h1 : T (single σ (1 : k)) = 0 := by
+    have := hT σ (fun j => if j < N then σ j else false)
+    rw [hσ] at this
+    rw [this, h0 _ (single_mem_Win hρ 1), map_zero]
+  have : (single σ c : ModelSpace k) = c • single σ 1 := by simp
+  rw [this, map_smul, h1, smul_zero]; simp
+
 end Lightlike.TemperleyLieb
