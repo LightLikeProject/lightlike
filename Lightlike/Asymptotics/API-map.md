@@ -274,6 +274,8 @@ Under the hypotheses of Mukhametzhanov and Zhiboedov (a positive spectrum whose 
 51. Lightlike/Asymptotics/Tauberian/Rho0Cdf.lean - `Tauberian.rho0_real_Iic`
 52. Lightlike/Asymptotics/Tauberian/Smoothing.lean - `Tauberian.fourier_inv_eq`, `Tauberian.smooth_representation`
 53. Lightlike/Asymptotics/Tauberian/Assembly.lean - `Tauberian.comparison_le`
+54. Lightlike/Asymptotics/SP2/RacahZeroSpin.lean - `Asymptotics.racahSum_zero_spin`,
+    `Asymptotics.racahDelta_mul_racahSum_zero_spin`
 
 ## References
 

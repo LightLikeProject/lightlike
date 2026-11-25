@@ -130,6 +130,7 @@ import Lightlike.Asymptotics.Saddle
 import Lightlike.Asymptotics.SaddleAssembly
 import Lightlike.Asymptotics.SaddleAssemblyTests
 import Lightlike.Asymptotics.SP2.OneSaddle
+import Lightlike.Asymptotics.SP2.RacahZeroSpin
 import Lightlike.Asymptotics.SaddleRay
 import Lightlike.Asymptotics.SaddleRayTests
 import Lightlike.Asymptotics.SP3Row.BosonLog

@@ -14,6 +14,8 @@ conventions of `racahSum`.
 
 open Finset PhyslibAlpha.Sl2
 
+set_option linter.unusedSimpArgs false
+
 namespace Lightlike.Asymptotics
 
 /-- **Racah's sum at `(0, a, a, c, b, b)`** with `(a, b, c)` a triad: one term, `t = a + b + c`. -/
@@ -65,10 +67,17 @@ theorem racahDelta_mul_racahSum_zero_spin (a b c : ℕ) (hab : c ≤ a + b) (hac
     (hbc : b ≤ a + c) :
     racahDelta ![0, a, a, c, b, b] * racahSum ![0, a, a, c, b, b] =
       (-1 : ℝ) ^ (a + b + c) / (√(2 * (a : ℝ) + 1) * √(2 * (b : ℝ) + 1)) := by
-  have h := racahFormula ![0, a, a, c, b, b] (by simp [PR.IsTriad]; try omega) (by simp [PR.IsTriad]; try omega)
-    (by simp [PR.IsTriad]; try omega) (by simp [PR.IsTriad]; try omega)
+  have h := racahFormula ![0, a, a, c, b, b] (by simp [PR.IsTriad, Nat.add_comm, hab, hac, hbc]) (by simp [PR.IsTriad, Nat.add_comm, hab, hac, hbc])
+    (by simp [PR.IsTriad, Nat.add_comm, hab, hac, hbc]) (by simp [PR.IsTriad, Nat.add_comm, hab, hac, hbc])
   simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val] at h
   rw [← h]
-  sorry
+  have hT : Lightlike.Pentagon.Tri (2 * a) (2 * b) (2 * c) := by
+    refine ⟨by omega, by omega, by omega, by omega⟩
+  simp only [mul_zero]
+  rw [Lightlike.Pentagon.sixJSym_zero_left, if_pos ⟨rfl, rfl, hT⟩]
+  have e : (2 * a + 2 * b + 2 * c) / 2 = a + b + c := by omega
+  rw [e]
+  push_cast
+  rfl
 
 end Lightlike.Asymptotics
