@@ -199,4 +199,27 @@ theorem tendsto_hgPartial {a : ℂ} (ha : a ≠ 0) (m : ℕ) (hne : ∀ j < m, (
     rw [e1, e2]
     exact key
 
+/-- **The recursion on the limit**: `S(c+1) = c² S(c) / (c² − a²)`. -/
+lemma tendsto_hgPartial_step {a c L : ℂ} (hcn : ∀ n : ℕ, c + n ≠ 0) (hden : c ^ 2 - a ^ 2 ≠ 0)
+    (hN : Filter.Tendsto (fun N : ℕ => (N : ℂ) * hgTerm a c N) Filter.atTop (nhds 0))
+    (hL : Filter.Tendsto (fun N : ℕ => hgPartial a c N) Filter.atTop (nhds L)) :
+    Filter.Tendsto (fun N : ℕ => hgPartial a (c + 1) N) Filter.atTop (nhds (c ^ 2 * L / (c ^ 2 - a ^ 2))) := by
+  have h1 := (hL.const_mul (c ^ 2)).add (hN.const_mul c)
+  have h2 := h1.div_const (c ^ 2 - a ^ 2)
+  rw [mul_zero, add_zero] at h2
+  refine h2.congr fun N => ?_
+  have hp := hgTerm_partial a c hcn N
+  simp only [hgPartial]
+  field_simp
+  linear_combination (-1 : ℂ) * hp
+
+/-- The partial-fraction identity `Σ_{n ≤ j} (−1)^n C(j,n)/(s+n) = j! / ∏_{i ≤ j} (s+i)`. -/
+lemma alt_binomial_sum (s : ℂ) : ∀ j : ℕ, (∀ i : ℕ, i ≤ j → s + i ≠ 0) →
+    ∑ n ∈ Finset.range (j + 1), (-1 : ℂ) ^ n * (j.choose n : ℂ) / (s + n) =
+      (j.factorial : ℂ) / ∏ i ∈ Finset.range (j + 1), (s + i) := by
+  intro j
+  induction j with
+  | zero => intro h; simp
+  | succ j ih => sorry
+
 end Lightlike.Dirac
