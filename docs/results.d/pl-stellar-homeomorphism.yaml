@@ -1,4 +1,4 @@
-- id: LL-XXXX-a
+- id: LL-XXXX-e
   title: "The geometric realisation of a finite simplicial complex is geometric: the vertex basis vectors are affinely independent, so the realised simplices meet in common faces"
   area: PL
   file: Lightlike/PL/Realisation.lean
@@ -9,7 +9,7 @@
   review: kernel-checked
   note: "Comparison pending: no source was read at a cited location for this statement. The realisation of a complex on the vertex set V is the complex in the free real vector space on V whose simplices are the convex hulls of the basis vectors of its faces; IsGeom is the library's predicate for a geometric complex (affinely independent vertex sets). Proved with no hypotheses."
   since: unreleased
-- id: LL-XXXX-b
+- id: LL-XXXX-f
   title: "A stellar subdivision of a simplicial complex at a face A with a new vertex a is PL homeomorphic to the complex"
   area: PL
   file: Lightlike/PL/StellarHomeo.lean
@@ -20,7 +20,7 @@
   review: kernel-checked
   note: "Comparison pending: the Lean docstring cites Lickorish 1999, section 3, but that location is not among the verified source locations and was not read for this entry. The PL homeomorphism is the linear map x ↦ x − x_a (e_a − b_A) from the realisation of the subdivision onto that of the complex (b_A the barycentre of A), proved bijective and PL on each simplex. Hypotheses: A is a nonempty face of K and a is a new vertex, as in the Lean statement; no unproved hypothesis."
   since: unreleased
-- id: LL-XXXX-c
+- id: LL-XXXX-g
   title: "Stellar equivalent simplicial complexes are PL homeomorphic (the easy direction of Newman's theorem)"
   area: PL
   file: Lightlike/PL/StellarHomeo.lean
@@ -31,5 +31,5 @@
     refs:
       - {ref: lickorish-1999, location: "Theorem 4.5"}
   review: kernel-checked
-  note: "Comparison pending: Theorem 4.5 is the location the Lean docstring cites for the easy direction; it was not read for this entry. Proved by induction on the stellar equivalence from the subdivision statement (LL-XXXX-b), for equivalence inside a fixed vertex type (of_stellarEquivIn) and, after relabelling the vertices into a common type, for StellarEquiv (of_stellarEquiv). The converse is Newman's theorem LL-0064. No unproved hypothesis."
+  note: "Comparison pending: Theorem 4.5 is the location the Lean docstring cites for the easy direction; it was not read for this entry. Proved by induction on the stellar equivalence from the subdivision statement (LL-XXXX-f), for equivalence inside a fixed vertex type (of_stellarEquivIn) and, after relabelling the vertices into a common type, for StellarEquiv (of_stellarEquiv). The converse is Newman's theorem LL-0064. No unproved hypothesis."
   since: unreleased
