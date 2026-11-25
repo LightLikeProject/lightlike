@@ -1451,6 +1451,8 @@ import Lightlike.Spacetime.PenroseSingularity.UniformBound
 import Lightlike.Spacetime.PenroseSingularity.FocalBound
 import Lightlike.Spacetime.PenroseSingularity.PenroseChron
 import Lightlike.Spacetime.PenroseSingularity.ChartNECBridge
+import Lightlike.Spacetime.PenroseSingularity.SecondVariation
+import Lightlike.Spacetime.PenroseSingularity.NegativeJet
 import Lightlike.Spacetime.PenroseSingularity.NullGeodGlue
 import Lightlike.Spacetime.PenroseSingularity.GeodesicChartConverse
 import Lightlike.Spacetime.PenroseSingularity.NullGeodChart
