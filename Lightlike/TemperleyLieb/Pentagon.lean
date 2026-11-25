@@ -248,4 +248,34 @@ theorem pair_UL4 [CharZero k] (q : kˣ) (a b c d e₀ d₀ g₀ g : ℕ) (r₁ :
       rw [hz, smul_zero]
   · intro h; exact absurd (Finset.mem_range.mpr h1) h
 
+/-- Admissible indices of the four-block left tree vectors. -/
+def ValidA (a b c d e d₁ g : ℕ) : Prop :=
+  e ≤ min a b ∧ d₁ ≤ min (a + b - 2 * e) c ∧ g ≤ a + b - 2 * e + c - 2 * d₁ ∧ g ≤ d
+
+/-- **Orthogonality of the four-block left tree vectors.** -/
+theorem ortho4 [CharZero k] (q : kˣ) (a b c d e₀ d₀ g₀ e d₁ g : ℕ)
+    (hd : ∀ x, x ≤ a + b + c + d → chebD (loopVal q) x ≠ 0)
+    (hq2 : ∀ x, 1 ≤ x → x ≤ a + b + c + d + 1 → (q : k) ^ (2 * x) ≠ 1)
+    (h₀ : ValidA a b c d e₀ d₀ g₀) (h : ValidA a b c d e d₁ g) :
+    ULd4 q a b c d e₀ d₀ g₀ * UL4 q a b c d e d₁ g =
+      if e₀ = e ∧ d₀ = d₁ ∧ g₀ = g then (kapRec q a b e₀ * kapRec q (a + b - 2 * e₀) c d₀ *
+        kapRec q (a + b - 2 * e₀ + c - 2 * d₀) d g₀) • jwAt q 0 (a + b - 2 * e₀ + c - 2 * d₀ + d - 2 * g₀) else 0 := by
+  obtain ⟨h0a, h0b, h0c, h0d⟩ := h₀
+  obtain ⟨h1a, h1b, h1c, h1d⟩ := h
+  by_cases hed : e₀ = e ∧ d₀ = d₁
+  · obtain ⟨rfl, rfl⟩ := hed
+    rw [ULd4_mul_UL4_diag q a b c d e₀ d₀ g₀ g hd (h0a.trans (min_le_left _ _)) (h0a.trans (min_le_right _ _))
+      (h0b.trans (min_le_left _ _)) (h0b.trans (min_le_right _ _)) h0c h0d h1c h1d hq2]
+    simp only [true_and]
+  · rw [if_neg (fun hh => hed ⟨hh.1, hh.2.1⟩)]
+    unfold ULd4 UL4
+    have h3 := ULd_mul_UL (k := k) q a b c (fun x hx => hd x (by omega)) (fun x h1 h2 => hq2 x h1 (by omega))
+      (e := e₀) (d := d₀) (e' := e) (d' := d₁) (h0a.trans (min_le_left _ _)) (h0a.trans (min_le_right _ _))
+      (h1a.trans (min_le_left _ _)) (h1a.trans (min_le_right _ _)) (h0b.trans (min_le_left _ _))
+      (h0b.trans (min_le_right _ _)) (h1b.trans (min_le_left _ _)) (h1b.trans (min_le_right _ _))
+    rw [if_neg (fun hh => hed ⟨hh.1, hh.2⟩)] at h3
+    calc _ = Wop q (a + b - 2 * e₀ + c - 2 * d₀) d g₀ * (ULd q a b c e₀ d₀ * UL q a b c e d₁) *
+          Vop q (a + b - 2 * e + c - 2 * d₁) d g := by simp only [mul_assoc]
+      _ = 0 := by rw [h3]; simp
+
 end Lightlike.TemperleyLieb
