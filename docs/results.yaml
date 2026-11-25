@@ -5817,3 +5817,42 @@
   review: kernel-checked
   note: "Comparison pending (no source was read at a cited location). The coordinate vacuum equations G_{mu nu} + Lambda g_{mu nu} = 0 with Lambda = 0 hold at every point of R^n for the constant metric eta, for every dimension n, because the Riemann tensor vanishes (Minkowski flatness) and so do the Ricci tensor, the scalar curvature and the Einstein tensor."
   since: unreleased
+- id: LL-0445
+  title: The Euclidean EPRL vertex amplitude (Immirzi parameter below 1) is the contraction along the complete graph K5 of five EPRL node tensors, which are the matrices of the EPRL map of the SU(2) intertwiners, and it is the fusion-coefficient sum of products of two SU(2) 15j symbols
+  area: Spin4
+  file: Lightlike/Spin4/Vertex.lean
+  decls: [Lightlike.Spin4.eprlNode_eq_eprlIntertwiner, Lightlike.Spin4.eprlVertex_eq_sum, Lightlike.Spin4.eprlVertex_eq_fifteenJ]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: eprl-2008, location: "Section III", check: "EUCLIDEAN"}
+  review: kernel-checked
+  note: "Comparison pending (the cited location was not re-read for this entry; the file header names EPRL eq. (52) as the target). Doubled spins; node a carries the SU(2) intertwiner iota_{z a} in the recoupling basis. eprlNode_eq_eprlIntertwiner: the node tensor is the matrix entry of the EPRL map Phi(iota_z) of Spin4/EPRL.lean (up to the sign of the invariant forms that turn the two incoming legs into outgoing ones). eprlVertex_eq_sum: A_v = sum over the node channels P of prod_a f_a(z_a; x_a, y_a) times a self-dual and an anti-self-dual SU(2) contraction; eprlVertex_eq_fifteenJ: the two contractions are the 15j symbols of the 4-simplex (Recoupling.fifteenJSimplex), i.e. A_v = sum_{x,y} prod_a f_a {15j}(n; x) {15j}(m; y). Holds for all labels as an identity of the definitions; no admissibility hypothesis, but for a node label outside the admissible channel iota_z is not an intertwiner and the value is junk (documented in Vertex.lean). Edge and face amplitudes and the normalisation of the boundary intertwiners beyond the recoupling basis are not part of the vertex."
+  since: unreleased
+- id: LL-0446
+  title: Selection rules, the zero-spin value and the BF limit of the Euclidean EPRL vertex - the vertex vanishes unless the self-dual (and the anti-self-dual) spins at every node add up to an even number, it equals 1 at zero spins, and with trivial anti-self-dual spins it is the SU(2) 15j symbol of the Ooguri model
+  area: Spin4
+  file: Lightlike/Spin4/Vertex.lean
+  decls: [Lightlike.Spin4.eprlVertex_eq_zero_of_not_even_left, Lightlike.Spin4.eprlVertex_eq_zero_of_not_even_right, Lightlike.Spin4.eprlVertex_zero, Lightlike.Spin4.eprlVertex_zero_right]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: eprl-2008, location: "Section III", check: "EUCLIDEAN"}
+  review: kernel-checked
+  note: "Comparison pending (no source states these value checks for this definition). Doubled spins. The two selection rules hold for all labels (an odd spin sum at one node on either side leaves no node channel, so the sum is empty). eprlVertex_zero: eprlVertex 0 0 0 = 1. eprlVertex_zero_right assumes IsVertexBoundary n 0 z: with m = 0 (formally gamma = 1, j- = 0) the vertex is Recoupling.fifteenJSimplex of the same spins and intertwiners, the SU(2) BF vertex; this is a limit of the formula, not the gamma -> 1 limit of the model (for 0 < gamma < 1 the labels have m > 0)."
+  since: unreleased
+- id: LL-0447
+  title: On an admissible boundary the Euclidean EPRL vertex is the sum of products of two 15j symbols with the fusion coefficients written as products of two SU(2) 9j symbols, and it is real
+  area: Spin4
+  file: Lightlike/Spin4/Vertex.lean
+  decls: [Lightlike.Spin4.eprlVertex_eq_vertexNineJ, Lightlike.Spin4.eprlVertex_im]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: eprl-2008, location: "Section III", check: "EUCLIDEAN"}
+  review: kernel-checked
+  note: "Comparison pending (the 9j form is that of Alesci, Bianchi, Magliaro, Perini, arXiv:0809.3718, eq. (7), named in the file header; that paper was not read for this entry). Both statements assume IsVertexBoundary n m z (the node labels lie in the admissible channel); outside it the vertex is a junk value. The vertex vertexNineJ n m J z takes the SU(2) spins J as a separate argument; here J = n + m. Trust checks: VertexTests compares values with exact SymPy values (no published table exists) and shows that a wrong simplicity constraint J different from n + m changes the amplitude (the compared boundaries differ, so this shows different inputs give different numbers, not a same-boundary perturbation)."
+  since: unreleased
