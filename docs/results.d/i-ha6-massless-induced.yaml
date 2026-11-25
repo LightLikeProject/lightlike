@@ -1,0 +1,26 @@
+- id: LL-XXXX-i
+  title: "The massless one-particle representation of finite helicity h/2, induced from the character A_00^h of the little group of the light-like momentum, preserves the L² norm for the invariant measure on the light cone"
+  area: Lorentz
+  file: Lightlike/Lorentz/PoincareIrreps/MasslessMeasure.lean
+  decls: [Lightlike.Lorentz.Poincare.lintegral_lightInducedRep_normSq]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: weinberg-1995, location: "Chapter: RELATIVISTIC QUANTUM MECHANICS|10.1017/CBO9781139644167.004"}
+  review: kernel-checked
+  note: "The representation lightInducedRep h of SL(2,C) on functions on the forward light cone is built by induction from the stabiliser of the standard light-like momentum, through the character A ↦ (A_00)^h of unit modulus (the translations of the ISO(2) cover act trivially: finite helicity); the statement is that it is isometric for the Lorentz-invariant measure coneMeasure on the cone (for measurable ψ, with values in [0, ∞]). Companion statements: W = (h/2) P (the entry on MasslessPL) and, for the translations, covariance on the cone (Poincare/LightCone, Poincare/LightConeUnitary). Not claimed: irreducibility is a separate entry (the massless irreducibility is in Poincare/IrreducibleMassless), the continuous-spin series (non-trivial translations of the ISO(2) cover) is not constructed, and Wigner's classification theorem is not proved. The comparison with Weinberg (1995), Chapter 2, is pending: the book was not read at the cited location, and Wigner (1939) was not read."
+  since: unreleased
+- id: LL-XXXX-t
+  title: "The little group of a tachyonic momentum, the stabiliser in SL(2,C) of the Hermitian matrix with determinant −m² (≅ SU(1,1) ≅ SL(2,ℝ)), is not compact: it contains the boosts along an axis, on which the matrix entry A_00 = cosh t is unbounded"
+  area: Lorentz
+  file: Lightlike/Lorentz/PoincareIrreps/Momentum.lean
+  decls: [Lightlike.Lorentz.Poincare.not_isCompact_stabilizer_tachMom]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: weinberg-1995, location: "Chapter: RELATIVISTIC QUANTUM MECHANICS|10.1017/CBO9781139644167.004"}
+  review: kernel-checked
+  note: "The trust check of the milestone HA6: a tachyonic orbit has a non-compact little group, so the little-group method for a tachyonic orbit does not reduce to a compact group as for the massive case. The same statement in terms of the Lorentz group of Physlib is Poincare/LittleGroups (not_isCompact_littleGroup_tachyon). Not claimed: the classification of the unitary representations of the tachyonic little group. The comparison with Weinberg (1995), Chapter 2, is pending: the book was not read at the cited location."
+  since: unreleased
