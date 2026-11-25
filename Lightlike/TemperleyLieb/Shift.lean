@@ -387,10 +387,10 @@ theorem treeR_mul [CharZero k] (q : kˣ) (a b c : ℕ)
 /-- The tree idempotent of the second bracketing lies in `C (a+b+c-1)`. -/
 theorem treeR_mem (q : kˣ) (hδ : loopVal q ≠ 0) {a b c f d : ℕ}
     (hd : ∀ j, j ≤ a + b + c → chebD (loopVal q) j ≠ 0) (hfb : f ≤ b) (hfc : f ≤ c) (hda : d ≤ a)
-    (hdf : d ≤ b + c - 2 * f) (hD : 1 ≤ a + (b + c - 2 * f) - 2 * d) :
+    (hdf : d ≤ b + c - 2 * f) (hAc : 1 ≤ a + (b + c - 2 * f)) :
     treeR q a b c f d ∈ CSub q (a + b + c - 1) := by
   have hdc : ∀ j, j ≤ a + (b + c - 2 * f) → chebD (loopVal q) j ≠ 0 := fun j hj => hd j (by omega)
-  have hE := Eop_mem (k := k) q hδ (a := a) (b := b + c - 2 * f) (i := d) hda hdf (by omega)
+  have hE := Eop_mem (k := k) q hδ (a := a) (b := b + c - 2 * f) (i := d) hda hdf
   have hn := nestCup_mul_nestCap_mem q hδ (n := a + (b + c - 2 * f) - 1) (l := b - f + a) (by omega) hE f
   rw [show a + (b + c - 2 * f) - 1 + 2 * f = a + b + c - 1 by omega] at hn
   have hQ : (jwAt q a b * jwAt q (b + a) c : Module.End k (ModelSpace k)) ∈ CSub q (a + b + c - 1) := by

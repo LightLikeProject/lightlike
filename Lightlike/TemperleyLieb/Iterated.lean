@@ -407,21 +407,64 @@ theorem nestCup_mul_nestCap_mem (q : kˣ) (hδ : loopVal q ≠ 0) {n l : ℕ} (h
     rw [e, show n + 2 * (i + 1) = n + 2 * i + 2 by ring]
     exact h
 
-/-- **The channel idempotent lies in `C (a + b - 1)`** (`a + b - 2 i ≥ 1`). -/
-theorem Eop_mem (q : kˣ) (hδ : loopVal q ≠ 0) {a b i : ℕ} (hia : i ≤ a) (hib : i ≤ b) (hc : 1 ≤ a + b - 2 * i) :
+/-- Peeling the innermost cup: `nestCup l (i+1) = nestCup (l+1) i · cup_l`. -/
+theorem nestCup_succ_left (q : kˣ) (l : ℕ) : ∀ i, (nestCup q l (i + 1) : Module.End k (ModelSpace k)) =
+    nestCup q (l + 1) i * cupOp q l := by
+  intro i
+  induction i with
+  | zero => simp [nestCup]
+  | succ i ih =>
+    have e1 : (nestCup q l (i + 1 + 1) : Module.End k (ModelSpace k)) = cupOp q (l + (i + 1)) * nestCup q l (i + 1) := rfl
+    have e2 : (nestCup q (l + 1) (i + 1) : Module.End k (ModelSpace k)) = cupOp q (l + 1 + i) * nestCup q (l + 1) i := rfl
+    rw [e1, ih, e2, ← mul_assoc, show l + 1 + i = l + (i + 1) by ring]
+
+/-- Peeling the innermost cap: `nestCap l (i+1) = cap_l · nestCap (l+1) i`. -/
+theorem nestCap_succ_left (q : kˣ) (l : ℕ) : ∀ i, (nestCap q l (i + 1) : Module.End k (ModelSpace k)) =
+    capOp q l * nestCap q (l + 1) i := by
+  intro i
+  induction i with
+  | zero => simp [nestCap]
+  | succ i ih =>
+    have e1 : (nestCap q l (i + 1 + 1) : Module.End k (ModelSpace k)) = nestCap q l (i + 1) * capOp q (l + (i + 1)) := rfl
+    have e2 : (nestCap q (l + 1) (i + 1) : Module.End k (ModelSpace k)) = nestCap q (l + 1) i * capOp q (l + 1 + i) := rfl
+    rw [e1, ih, e2, mul_assoc, show l + 1 + i = l + (i + 1) by ring]
+
+/-- The empty channel: `nestCup 0 (i+1) · nestCap 0 (i+1) = nestCup 1 i · e_0 · nestCap 1 i`. -/
+theorem nestCup_mul_nestCap_zero (q : kˣ) (i : ℕ) :
+    (nestCup q 0 (i + 1) * nestCap q 0 (i + 1) : Module.End k (ModelSpace k)) =
+      nestCup q 1 i * modelE q 0 * nestCap q 1 i := by
+  rw [nestCup_succ_left, nestCap_succ_left, ← cup_cap]
+  simp only [mul_assoc, zero_add]
+
+/-- **The channel idempotent lies in `C (a + b - 1)`.** -/
+theorem Eop_mem (q : kˣ) (hδ : loopVal q ≠ 0) {a b i : ℕ} (hia : i ≤ a) (hib : i ≤ b) :
     (Eop q a b i : Module.End k (ModelSpace k)) ∈ CSub q (a + b - 1) := by
-  have hp : jwAt q 0 (a + b - 2 * i) * jwAt q 0 (a + b - 2 * i) ∈ CSub q (a + b - 2 * i - 1) := by
-    have := jwAt_mem (k := k) q 0 (a + b - 2 * i)
-    rw [zero_add] at this
-    exact Subalgebra.mul_mem _ this this
-  have hn := nestCup_mul_nestCap_mem q hδ (n := a + b - 2 * i - 1) (l := a - i) (by omega) hp i
-  rw [show a + b - 2 * i - 1 + 2 * i = a + b - 1 by omega] at hn
   have hVW : Vop q a b i * Wop q a b i = Qab q a b * (nestCup q (a - i) i * (jwAt q 0 (a + b - 2 * i) *
       jwAt q 0 (a + b - 2 * i)) * nestCap q (a - i) i) * Qab q a b := by
     unfold Vop Wop; simp only [mul_assoc]
   unfold Eop
   rw [hVW]
-  exact Subalgebra.smul_mem _ (Subalgebra.mul_mem _ (Subalgebra.mul_mem _ (Qab_mem q a b) hn) (Qab_mem q a b)) _
+  refine Subalgebra.smul_mem _ (Subalgebra.mul_mem _ (Subalgebra.mul_mem _ (Qab_mem q a b) ?_) (Qab_mem q a b)) _
+  by_cases hc : 1 ≤ a + b - 2 * i
+  · have hp : jwAt q 0 (a + b - 2 * i) * jwAt q 0 (a + b - 2 * i) ∈ CSub q (a + b - 2 * i - 1) := by
+      have := jwAt_mem (k := k) q 0 (a + b - 2 * i)
+      rw [zero_add] at this
+      exact Subalgebra.mul_mem _ this this
+    have hn := nestCup_mul_nestCap_mem q hδ (n := a + b - 2 * i - 1) (l := a - i) (by omega) hp i
+    rw [show a + b - 2 * i - 1 + 2 * i = a + b - 1 by omega] at hn
+    exact hn
+  · have h0 : a + b - 2 * i = 0 := by omega
+    have hab : a = i ∧ b = i := by omega
+    obtain ⟨rfl, rfl⟩ := hab
+    rcases b with _ | a
+    · simp [nestCup, nestCap, jwAt, jw_zero]
+    · have hp1 : (jwAt q 0 (a + 1 + (a + 1) - 2 * (a + 1)) : Module.End k (ModelSpace k)) = 1 := by
+        rw [show a + 1 + (a + 1) - 2 * (a + 1) = 0 by omega]; simp [jwAt, jw_zero]
+      rw [hp1, one_mul, show a + 1 - (a + 1) = 0 by omega, mul_one, nestCup_mul_nestCap_zero]
+      have := nestCup_mul_nestCap_mem q hδ (n := 1) (l := 1) (by omega)
+        (e_mem_tlSub (e := modelE q) (j := 0) (m := 1) (by omega)) a
+      rw [show a + 1 + (a + 1) - 1 = 1 + 2 * a by omega]
+      exact this
 
 /-- **Sandwich scalar**: `p_D Z p_D` is a scalar multiple of `p_D` for `Z ∈ C (D - 1)`. -/
 theorem jwAt_sandwich (q : kˣ) {D : ℕ} (hd : ∀ j, j < D → chebD (loopVal q) j ≠ 0)
@@ -513,9 +556,9 @@ theorem treeL_sandwich (q : kˣ) (a b c e d : ℕ) (hN : 1 ≤ a + b + c)
 
 /-- The tree idempotent of the first bracketing lies in `C (a+b+c-1)` (when the last channel is not the empty one). -/
 theorem treeL_mem (q : kˣ) (hδ : loopVal q ≠ 0) {a b c e d : ℕ} (hea : e ≤ a) (heb : e ≤ b) (hdc : d ≤ c)
-    (hdA : d ≤ a + b - 2 * e) (hD : 1 ≤ a + b - 2 * e + c - 2 * d) :
+    (hdA : d ≤ a + b - 2 * e) (hAc : 1 ≤ a + b - 2 * e + c) :
     treeL q a b c e d ∈ CSub q (a + b + c - 1) := by
-  have hE := Eop_mem (k := k) q hδ (a := a + b - 2 * e) (b := c) (i := d) hdA hdc hD
+  have hE := Eop_mem (k := k) q hδ (a := a + b - 2 * e) (b := c) (i := d) hdA hdc
   have hn := nestCup_mul_nestCap_mem q hδ (n := a + b - 2 * e + c - 1) (l := a - e) (by omega) hE e
   rw [show a + b - 2 * e + c - 1 + 2 * e = a + b + c - 1 by omega] at hn
   have hQ : Qab q a b ∈ CSub q (a + b + c - 1) :=
