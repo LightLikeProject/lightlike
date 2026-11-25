@@ -448,6 +448,8 @@ import Lightlike.HarmonicAnalysis.PeterWeylRight
 import Lightlike.HarmonicAnalysis.PeterWeylSU2
 import Lightlike.HarmonicAnalysis.PeterWeylSeparation
 import Lightlike.HarmonicAnalysis.PeterWeylTests
+import Lightlike.HarmonicAnalysis.RepFiniteSubspace
+import Lightlike.HarmonicAnalysis.RepSU2Isometry
 import Lightlike.HarmonicAnalysis.RepresentationBridge
 import Lightlike.HarmonicAnalysis.SU2Complete
 import Lightlike.HarmonicAnalysis.SU2ConjClasses
@@ -708,6 +710,9 @@ import Lightlike.OperatorAlgebras.Spectral.Compact
 import Lightlike.OperatorAlgebras.Spectral.HilbertSchmidtCompact
 import Lightlike.OperatorAlgebras.Spectral.TestsCompact
 import Lightlike.OperatorAlgebras.Spectral.CanonicalForm
+import Lightlike.OperatorAlgebras.Spectral.Cyclic
+import Lightlike.OperatorAlgebras.Spectral.CyclicDecomposition
+import Lightlike.OperatorAlgebras.Spectral.SchurScalar
 import Lightlike.OperatorAlgebras.Spectral.TestsCanonicalForm
 import Lightlike.OperatorAlgebras.Spectral.Schatten
 import Lightlike.OperatorAlgebras.Spectral.SchattenHS
@@ -1085,6 +1090,7 @@ import Lightlike.Poincare.OneParticleContinuity
 import Lightlike.Poincare.OneParticleRestricted
 import Lightlike.Poincare.OneParticleSpectrum
 import Lightlike.Poincare.OrbitMeasureClass
+import Lightlike.Poincare.OrbitMeasureClassConverse
 import Lightlike.Poincare.Orbits
 import Lightlike.Poincare.PauliLubanskiAlgebra
 import Lightlike.Poincare.PauliLubanskiCasimir
