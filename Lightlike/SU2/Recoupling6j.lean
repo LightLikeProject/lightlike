@@ -25,7 +25,9 @@ The overlap is stated as the sum over all entries (the Hilbert–Schmidt inner p
 matrix identity `coupleLeftᴴ coupleRight = λ · 1`, which follows from Schur's lemma for `spinRep`
 (not used here). The sign is the product of the signs of the phases of the Clebsch–Gordan
 coefficients (Condon–Shortley, as in Physlib) and of the 3j symmetries; it is not simplified to the
-textbook `(-1)^{a+b+c+J}`, and has not been compared with a source (comparison pending).
+textbook `(-1)^{a+b+c+J}`, and has not been compared with a source (comparison pending). This
+is **weaker** than the matrix form; whether it meets the milestone's done-when is an owner
+decision, and the item stays open until then.
 
 ## References
 
