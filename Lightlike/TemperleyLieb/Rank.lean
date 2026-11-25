@@ -306,4 +306,96 @@ theorem finrank_kernel_le (q : kˣ) (a b : ℕ) (U : Submodule k (ModelSpace k))
   simp only [Module.finrank_fintype_fun_eq_card, Fintype.card_coe] at this
   exact this.trans (card_sortedSet_le a b)
 
+/-- If `eBasis ρ` has a nonzero coefficient at `σ` with bits `(0,1)` at `j, j+1`, then `ρ ∈ {σ, σ'}`. -/
+lemma eBasis_ne_zero_cases_FT (q : kˣ) {j : ℕ} {ρ σ : ℕ → Bool} (h0 : σ j = false) (h1 : σ (j + 1) = true)
+    (h : eBasis q j ρ σ ≠ (0 : k)) : ρ = σ ∨ ρ = set2 σ j true false := by
+  rw [eBasis_apply] at h
+  by_cases hρ : ρ j = true ∧ ρ (j + 1) = false
+  · rw [if_pos hρ] at h
+    by_cases hσ : σ = set2 ρ j false true
+    · right
+      rw [hσ]
+      funext n
+      simp only [set2, Function.update_apply]
+      split_ifs with a b <;> first | (subst_vars; simp_all) | rfl | (simp_all)
+    · by_cases hσ2 : σ = ρ
+      · exfalso; rw [← hσ2] at hρ; rw [h0] at hρ; exact Bool.noConfusion hρ.1
+      · exfalso; apply h; simp [hσ, hσ2]
+  · rw [if_neg hρ] at h
+    by_cases hρ2 : ρ j = false ∧ ρ (j + 1) = true
+    · rw [if_pos hρ2] at h
+      by_cases hσ : σ = set2 ρ j true false
+      · exfalso
+        have : σ j = true := by rw [hσ]; simp [set2]
+        rw [h0] at this; exact Bool.noConfusion this
+      · by_cases hσ2 : σ = ρ
+        · left; exact hσ2.symm
+        · exfalso; apply h; simp [hσ, hσ2]
+    · rw [if_neg hρ2] at h; exact absurd rfl h
+
+/-- The coefficient of `e_j v` at a sequence `σ` with bits `(0,1)` at `j, j+1`. -/
+lemma modelE_coeff_FT (q : kˣ) {j : ℕ} (v : ModelSpace k) {σ : ℕ → Bool} (h0 : σ j = false)
+    (h1 : σ (j + 1) = true) :
+    (modelE q j v) σ = v (set2 σ j true false) - ((q⁻¹ : kˣ) : k) * v σ := by
+  have hne : set2 σ j true false ≠ σ := by
+    intro h; have := congrFun h j; simp [set2] at this; rw [h0] at this; exact Bool.noConfusion this
+  rw [modelE_apply_eq_sum, Finsupp.sum_apply]
+  simp only [Finsupp.smul_apply, smul_eq_mul]
+  rw [Finsupp.sum_of_support_subset v (s := v.support ∪ {σ, set2 σ j true false}) Finset.subset_union_left]
+  · have hsub : ∑ x ∈ ({σ, set2 σ j true false} : Finset (ℕ → Bool)), v x * (eBasis q j x) σ =
+        ∑ x ∈ v.support ∪ {σ, set2 σ j true false}, v x * (eBasis q j x) σ := by
+      refine Finset.sum_subset Finset.subset_union_right ?_
+      intro ρ _ hρ
+      have : eBasis q j ρ σ = 0 := by
+        by_contra hc
+        rcases eBasis_ne_zero_cases_FT q h0 h1 hc with h | h
+        · exact hρ (by simp [h])
+        · exact hρ (by simp [h])
+      simp [this]
+    rw [← hsub, Finset.sum_pair hne.symm]
+    have e1 : eBasis q j σ σ = -((q⁻¹ : kˣ) : k) := by
+      rw [eBasis_apply]; simp [h0, h1, hne.symm]
+    have e2 : eBasis q j (set2 σ j true false) σ = 1 := by
+      rw [eBasis_apply]
+      have a0 : set2 σ j true false j = true := by simp [set2]
+      have a1 : set2 σ j true false (j + 1) = false := by simp [set2]
+      have a2 : set2 (set2 σ j true false) j false true = σ := by
+        rw [set2_set2, ← set2_self σ j, h0, h1, set2_set2]
+      simp [a0, a1, a2, hne.symm]
+    rw [e1, e2]; ring
+  · intro ρ _; simp
+
+/-- `e_j v` vanishes at sequences with equal bits at `j, j+1`. -/
+lemma modelE_coeff_eq (q : kˣ) {j : ℕ} (v : ModelSpace k) {σ : ℕ → Bool} (h : σ j = σ (j + 1)) :
+    (modelE q j v) σ = 0 := by
+  rw [modelE_apply_eq_sum, Finsupp.sum_apply]
+  simp only [Finsupp.smul_apply, smul_eq_mul]
+  refine Finset.sum_eq_zero fun ρ _ => ?_
+  have : eBasis q j ρ σ = 0 := by
+    rw [eBasis_apply]
+    have hb : ∀ x y : Bool, σ = set2 ρ j x y → x ≠ y → False := by
+      intro x y hσ hxy
+      have e0 : σ j = x := by rw [hσ]; simp [set2]
+      have e1 : σ (j + 1) = y := by rw [hσ]; simp [set2]
+      rw [e0, e1] at h
+      exact hxy h
+    have hc : σ = ρ → ρ j ≠ ρ (j + 1) → False := by
+      intro hσ hne
+      rw [hσ] at h; exact hne h
+    rcases hρ0 : ρ j with _ | _ <;> rcases hρ1 : ρ (j + 1) with _ | _ <;> simp only []
+    · simp
+    · by_cases h1 : σ = set2 ρ j true false
+      · exact absurd (hb _ _ h1 (by simp)) id
+      · by_cases h2 : σ = ρ
+        · exact absurd (hc h2 (by simp [hρ0, hρ1])) id
+        · simp [h1, h2]
+    · by_cases h1 : σ = set2 ρ j false true
+      · exact absurd (hb _ _ h1 (by simp)) id
+      · by_cases h2 : σ = ρ
+        · exact absurd (hc h2 (by simp [hρ0, hρ1])) id
+        · simp [h1, h2]
+    · simp
+  show v ρ * _ = 0
+  rw [this, mul_zero]
+
 end Lightlike.TemperleyLieb
