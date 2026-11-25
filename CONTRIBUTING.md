@@ -113,8 +113,8 @@ reviewed and locked (the `Proof task` workflow checks this). Other CI steps are 
   v1.0 milestones (the GitHub Milestone
   [v1.0](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+milestone%3Av1.0)) are
   worked in ranking order: take the lowest Rank in the Ready column of the Project board. The others
-  carry the labels `not-scheduled` and `help-wanted`: open to you, not worked on by the maintainers'
-  agents.
+  ([milestone issues without the v1.0 Milestone](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aopen+label%3Amilestone+no%3Amilestone), the column Not scheduled) are open to
+  you, not worked on by the maintainers' agents.
 - **[Upstream](docs/tasks/README.md#upstream):** results to rework for Mathlib or Physlib.
 - **Good first issues:** small and self-contained, needing no knowledge of the rest of the library.
 - **Propose a result:** the [formalize this result](.github/ISSUE_TEMPLATE/formalize-result.yml)
@@ -141,13 +141,13 @@ on the Project board, and one status label:
 |---|---|---|
 | `status: ready` | free to take | Ready |
 | `status: in-progress` | claimed, by a contributor (`/claim`) or by one of the maintainers' agents | In progress |
-| `status: review` | every checklist item but the review items is ticked; it waits for its review, which ticks the review items | In review |
-| `status: done` | reviewed and closed | Done |
+| `status: done` | every checklist item is ticked; the issue is closed | Done |
 
 Nobody sets these by hand. A proof task is done when the workflow closes its issue, once the proof
-is on `main`. A milestone is done when every item of its checklist is ticked and a review by someone
-who did not do the work passes, against its done-when (the file `docs/tasks/reviews/<ID>.md`); then
-the maintainer closes its issue. A pull request never closes a milestone's issue: it names the
+is on `main`. A milestone is done when every item of its checklist is ticked; the script then closes
+its issue. A review item (a comparison with a source) is ticked by whoever does the work, who writes
+the evidence (what was compared with what, and the result) into the item's `review_evidence` in
+[docs/tasks/checklists.yaml](docs/tasks/checklists.yaml); there is no separate review step. A pull request never closes a milestone's issue: it names the
 milestone with the line `Task: T-<ID>`. The background of a milestone is in its area's
 [milestone table](docs/tasks/milestones.md) and its sources; the
 [conventions](docs/CONVENTIONS.md) apply to every task.
@@ -296,8 +296,8 @@ By contributing you agree to license your contributions under the [Apache Licens
 ## How work is tracked
 
 - **The Project board is the plan.** The [Project board](https://github.com/orgs/LightlikeProject/projects)
-  "Lightlike" has one issue per milestone, in the columns Ready, In progress, In review, Done and
-  Not scheduled; the v1.0 milestones are worked in the order of the board's Rank. Proof tasks are
+  "Lightlike" has one issue per milestone, in the columns Ready, In progress, Done and Not
+  scheduled; the v1.0 milestones are worked in the order of the board's Rank. Proof tasks are
   separate issues, each linked to its milestone.
 - **Status is computed, never typed.** A milestone's issue holds its checklist (from
   [docs/tasks/checklists.yaml](docs/tasks/checklists.yaml)): the main theorem, the pieces, the trust
@@ -309,8 +309,8 @@ By contributing you agree to license your contributions under the [Apache Licens
   naming the task is open; a person holds at most 3 claims. Claims are advisory: if two pull requests
   arrive for one task, the first that passes CI is merged.
 - **Done.** A proof task is done once its proof is on `main`; the workflow closes its issue. A
-  milestone is done when every item is ticked and a review by someone who did not do the work has
-  passed; the maintainer then closes its issue. Pull requests name a milestone with `Task: T-<ID>`
+  milestone is done when every item is ticked, review items included (by the evidence written into
+  them); the script then closes its issue. Pull requests name a milestone with `Task: T-<ID>`
   and never close its issue.
 
 ## Help wanted, community, license and citation
