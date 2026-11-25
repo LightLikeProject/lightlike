@@ -279,4 +279,39 @@ lemma alt_binomial_sum : ∀ j : ℕ, ∀ s : ℂ, (∀ i : ℕ, i ≤ j → s +
     field_simp
     ring
 
+/-- For `a = j` and `c = j + 1` the terms are `(−1)^n C(j,n) j / (j + n)`: a terminating series. -/
+lemma hgTerm_int (j : ℕ) (hj : 1 ≤ j) : ∀ n : ℕ,
+    hgTerm (j : ℂ) ((j : ℂ) + 1) n = (-1 : ℂ) ^ n * (j.choose n : ℂ) * j / ((j : ℂ) + n) := by
+  have hj0 : (j : ℂ) ≠ 0 := by exact_mod_cast (by omega : j ≠ 0)
+  intro n
+  induction n with
+  | zero => simp [hgTerm, hj0]
+  | succ n ih =>
+    have hjpos : (1 : ℝ) ≤ j := by exact_mod_cast hj
+    have hjn : (j : ℂ) + n ≠ 0 := by
+      have : (0 : ℝ) < j + n := by positivity
+      exact_mod_cast this.ne'
+    have hjn1 : (j : ℂ) + (n + 1 : ℕ) ≠ 0 := by
+      have : (0 : ℝ) < j + (n + 1 : ℕ) := by positivity
+      exact_mod_cast this.ne'
+    have hn1 : (n : ℂ) + 1 ≠ 0 := by exact_mod_cast Nat.succ_ne_zero n
+    have hjn2 : (j : ℂ) + 1 + n ≠ 0 := by
+      have : (0 : ℝ) < j + 1 + n := by positivity
+      exact_mod_cast this.ne'
+    rw [hgTerm, ih]
+    rcases le_or_gt n j with hn | hn
+    · have hch : ((j.choose (n + 1) : ℕ) : ℂ) * ((n : ℂ) + 1) = (j.choose n : ℂ) * ((j : ℂ) - n) := by
+        have := Nat.choose_succ_right_eq j n
+        have h2 : ((j.choose (n + 1) * (n + 1) : ℕ) : ℂ) = ((j.choose n * (j - n) : ℕ) : ℂ) := by rw [this]
+        push_cast [Nat.cast_sub hn] at h2
+        exact h2
+      push_cast at hjn1 ⊢
+      field_simp
+      have : (-1 : ℂ) ^ (n + 1) = -(-1 : ℂ) ^ n := by ring
+      rw [this]
+      linear_combination ((-1 : ℂ) ^ n * ((j : ℂ) + n) * ((j : ℂ) + n + 1)) * hch
+    · have h0 : (j.choose n : ℂ) = 0 := by rw [Nat.choose_eq_zero_of_lt hn]; simp
+      have h1 : (j.choose (n + 1) : ℂ) = 0 := by rw [Nat.choose_eq_zero_of_lt (by omega)]; simp
+      simp [h0, h1]
+
 end Lightlike.Dirac
