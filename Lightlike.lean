@@ -979,6 +979,8 @@ import Lightlike.PL.Schoenflies.CircleLift
 import Lightlike.PL.Schoenflies.BlockLoop
 import Lightlike.PL.Schoenflies.BlockChain
 import Lightlike.PL.Schoenflies.FrechetPolygon
+import Lightlike.PL.Schoenflies.OfListRot
+import Lightlike.PL.Schoenflies.QuadSplit
 import Lightlike.PL.SimpleChain
 import Lightlike.PL.Chain
 import Lightlike.PL.TwoArcs
