@@ -1,0 +1,26 @@
+- id: LL-XXXX-a
+  title: "Stationary phase with complex phase, leading term, for phase and amplitude on Fin n -> R (Hörmander, Theorem 7.7.5): the integral of a e^{i tau phi} is the sum over the nondegenerate critical points of e^{i tau phi(x0)} (2 pi/tau)^{n/2} det(-iH)^{-1/2} a(x0) up to O(tau^{-n/2-1})"
+  area: Oscillatory
+  file: Lightlike/Oscillatory/StationaryPhase.lean
+  decls: [Lightlike.Oscillatory.stationary_phase_pi]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: hormander-1990, location: "Chapter: The Fourier Transformation|10.1007/978-3-642-61497-2_8", check: "Fourier"}
+  review: kernel-checked
+  note: "The same statement as LL-0126 (stationary_phase, on EuclideanSpace R^n) for functions on the product type Fin n -> R, with Mathlib's Lebesgue measure on the product. Hypotheses: phi smooth with Im phi >= 0 on the support of the smooth compactly supported amplitude a; the critical points in the support (Im phi = 0 and d phi = 0) form a finite set K and are nondegenerate (det(-i H) not zero); critical points on the boundary of the support are allowed, where a is flat. The square root is invSqrtDet, the product of the principal roots of the eigenvalues of -iH, not the principal root of the determinant. Comparison with Hörmander, ALPDO I, Theorem 7.7.5 pending: the book was not read at the theorem; the registry verifies only the chapter. The Fresnel integral check is fresnel_bump (QuadraticPhaseTests.lean); the wrong-model check, that a degenerate phase i x^4 changes the order so the non-degeneracy hypothesis cannot be dropped, is stationary_phase_needs_nondegenerate (StationaryPhaseTests.lean)."
+  since: unreleased
+- id: LL-XXXX-b
+  title: The Maslov phase of a real diagonal Hessian - the inverse square root of det(-i diag(d)), with the branch fixed by the principal roots of the eigenvalues, is the product of |d_i|^{-1/2} e^{i pi sgn(d_i)/4}
+  area: Oscillatory
+  file: Lightlike/Oscillatory/QuadraticPhaseTests.lean
+  decls: [Lightlike.Oscillatory.invSqrtDet_neg_I_real_diagonal]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: hormander-1990, location: "Chapter: The Fourier Transformation|10.1007/978-3-642-61497-2_8", check: "Fourier"}
+  review: kernel-checked
+  note: "For real nonzero d_i, invSqrtDet (-I • diagonal d) = prod_i |d_i|^{-1/2} exp(i pi/4 * (1 if d_i > 0 else -1)), that is |det A|^{-1/2} e^{i pi sgn A / 4} for A = diag d. The comparison with Hörmander, ALPDO I, (3.4.6) and section 7.7 is pending (the book was not read there; the registry verifies only the chapter). Only the real diagonal case is proved; the general real symmetric case follows by diagonalisation but is not stated here. invSqrtDet is the library's definition (eigenvalue branches), not a principal root of the determinant."
+  since: unreleased
