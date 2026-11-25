@@ -286,4 +286,102 @@ theorem jwAt_mul_Qab_trees [CharZero k] (q : kˣ) (a b c : ℕ)
     _ = sh a (Vop q b c f) * (jwAt q 0 a * J) * sh a (Wop q b c f) := by simp only [mul_assoc]
     _ = _ := by unfold Qab; rfl
 
+/-- `Q(A,c)` absorbs the projector on the strands of the second block. -/
+theorem Qab_mul_jwAt_shift (q : kˣ) (A c : ℕ) (hd : ∀ j, j ≤ A + c → chebD (loopVal q) j ≠ 0) :
+    (Qab q A c : Module.End k (ModelSpace k)) * jwAt q A c = Qab q A c := by
+  have := jwAt_shift_idem (k := k) q (s := A) (c := c) (N := A + c + 1) (by omega) (fun j hj => hd j (by omega))
+  unfold Qab; rw [mul_assoc, this]
+
+/-- `jwAt A c` absorbs into `Q(A,c)` on the left. -/
+theorem jwAt_shift_mul_Qab (q : kˣ) (A c : ℕ) (hd : ∀ j, j ≤ A + c → chebD (loopVal q) j ≠ 0) :
+    (jwAt q A c : Module.End k (ModelSpace k)) * Qab q A c = Qab q A c := by
+  have h1 := jwAt_shift_idem (k := k) q (s := A) (c := c) (N := A + c + 1) (by omega) (fun j hj => hd j (by omega))
+  unfold Qab
+  rw [← mul_assoc, ← jwAt_comm_jwAt q le_rfl c, mul_assoc, h1]
+
+/-- `E_d(A,c)` absorbs the projector on the second block, on both sides. -/
+theorem Eop_mul_jwAt_shift (q : kˣ) (A c d : ℕ) (hd : ∀ j, j ≤ A + c → chebD (loopVal q) j ≠ 0) :
+    (Eop q A c d : Module.End k (ModelSpace k)) * jwAt q A c = Eop q A c d := by
+  have h1 := Eop_mul_Qab q A c hd d
+  calc (Eop q A c d : Module.End k (ModelSpace k)) * jwAt q A c
+      = (Eop q A c d * Qab q A c) * jwAt q A c := by rw [h1]
+    _ = Eop q A c d * (Qab q A c * jwAt q A c) := by rw [mul_assoc]
+    _ = Eop q A c d := by rw [Qab_mul_jwAt_shift q A c hd, h1]
+
+/-- `jwAt A c` is absorbed by `E_d(A,c)` on the left. -/
+theorem jwAt_shift_mul_Eop (q : kˣ) (A c d : ℕ) (hd : ∀ j, j ≤ A + c → chebD (loopVal q) j ≠ 0) :
+    (jwAt q A c : Module.End k (ModelSpace k)) * Eop q A c d = Eop q A c d := by
+  have h1 := Qab_mul_Eop q A c hd d
+  calc (jwAt q A c : Module.End k (ModelSpace k)) * Eop q A c d
+      = jwAt q A c * (Qab q A c * Eop q A c d) := by rw [h1]
+    _ = (jwAt q A c * Qab q A c) * Eop q A c d := by rw [mul_assoc]
+    _ = Eop q A c d := by rw [jwAt_shift_mul_Qab q A c hd, h1]
+
+/-- **The tree idempotents of the second bracketing are orthogonal idempotents.** -/
+theorem treeR_mul [CharZero k] (q : kˣ) (a b c : ℕ)
+    (hd : ∀ j, j ≤ a + b + c → chebD (loopVal q) j ≠ 0)
+    (hq2 : ∀ j, 1 ≤ j → j ≤ a + b + c + 1 → (q : k) ^ (2 * j) ≠ 1)
+    {f d f' d' : ℕ} (hf : f ≤ min b c) (hf' : f' ≤ min b c) (hdd : d ≤ min a (b + c - 2 * f))
+    (hdd' : d' ≤ min a (b + c - 2 * f')) :
+    treeR q a b c f d * treeR q a b c f' d' =
+      if f = f' ∧ d = d' then treeR q a b c f d else 0 := by
+  have hfb : f ≤ b := hf.trans (min_le_left _ _)
+  have hfc : f ≤ c := hf.trans (min_le_right _ _)
+  have hfb' : f' ≤ b := hf'.trans (min_le_left _ _)
+  have hfc' : f' ≤ c := hf'.trans (min_le_right _ _)
+  unfold treeR
+  rw [smul_mul_assoc, mul_smul_comm, smul_smul]
+  by_cases hff : f = f'
+  · subst hff
+    have hκ := kapRec_ne (k := k) q f b c hfb hfc (fun j h1 h2 => hq2 j h1 (by omega))
+    have hWV := Wop_mul_Vop q b c f hfb hfc (fun j hj => hd j (by omega))
+    have hWV' : sh a (Wop q b c f : Module.End k (ModelSpace k)) * sh a (Vop q b c f) =
+        kapRec q b c f • jwAt q a (b + c - 2 * f) := by
+      rw [← sh_mul, hWV, sh_smul, sh_jwAt]; simp
+    have hdc : ∀ j, j ≤ a + (b + c - 2 * f) → chebD (loopVal q) j ≠ 0 := fun j hj => hd j (by omega)
+    have hEE : Eop q a (b + c - 2 * f) d * Eop q a (b + c - 2 * f) d' =
+        if d = d' then Eop q a (b + c - 2 * f) d else 0 := by
+      by_cases hdeq : d = d'
+      · subst hdeq
+        rw [if_pos rfl]
+        exact Eop_idem q a _ hdc (hdd.trans (min_le_left _ _)) (hdd.trans (min_le_right _ _))
+          (fun j h1 h2 => hq2 j h1 (by omega))
+      · rw [if_neg hdeq]
+        have hm : 1 ≤ min a (b + c - 2 * f) := by omega
+        exact Eop_orth q a _ hdc (by omega) (by omega) (hdd.trans (min_le_left _ _))
+          (hdd.trans (min_le_right _ _)) (hdd'.trans (min_le_left _ _)) (hdd'.trans (min_le_right _ _)) hdeq
+          (fun j h1 h2 => hq2 j h1 (by omega))
+    have hp1 := Eop_mul_jwAt_shift (k := k) q a (b + c - 2 * f) d hdc
+    have key : sh a (Vop q b c f) * Eop q a (b + c - 2 * f) d * sh a (Wop q b c f) *
+        (sh a (Vop q b c f) * Eop q a (b + c - 2 * f) d' * sh a (Wop q b c f)) =
+        kapRec q b c f • (sh a (Vop q b c f) * (Eop q a (b + c - 2 * f) d * Eop q a (b + c - 2 * f) d') *
+          sh a (Wop q b c f)) := by
+      calc _ = sh a (Vop q b c f) * Eop q a (b + c - 2 * f) d * (sh a (Wop q b c f) * sh a (Vop q b c f)) *
+            Eop q a (b + c - 2 * f) d' * sh a (Wop q b c f) := by simp only [mul_assoc]
+        _ = sh a (Vop q b c f) * Eop q a (b + c - 2 * f) d * (kapRec q b c f • jwAt q a (b + c - 2 * f)) *
+            Eop q a (b + c - 2 * f) d' * sh a (Wop q b c f) := by rw [hWV']
+        _ = _ := by
+            rw [mul_smul_comm, smul_mul_assoc, smul_mul_assoc]
+            simp only [mul_assoc]
+            rw [← mul_assoc (Eop q a (b + c - 2 * f) d) (jwAt q a (b + c - 2 * f)), hp1]
+    rw [key, hEE, smul_smul]
+    by_cases hdeq : d = d'
+    · subst hdeq
+      rw [if_pos rfl, if_pos ⟨rfl, rfl⟩]
+      rw [mul_assoc, inv_mul_cancel₀ hκ, mul_one]
+    · rw [if_neg hdeq, if_neg (fun h => hdeq h.2)]
+      simp
+  · rw [if_neg (fun h => hff h.1)]
+    have hm : 1 ≤ min b c := by omega
+    have h0 := channel_orth q b c f f' (by omega) (by omega) hfb hfc hfb' hfc' (fun j hj => hd j (by omega))
+      (lamRec_ne q b c f f' hfb hfc hfb' hfc' hff (fun j h1 h2 => hq2 j h1 (by omega)))
+    have h0' : sh a (Wop q b c f : Module.End k (ModelSpace k)) * sh a (Vop q b c f') = 0 := by
+      rw [← sh_mul, h0, sh_zero]
+    have : sh a (Vop q b c f) * Eop q a (b + c - 2 * f) d * sh a (Wop q b c f) *
+        (sh a (Vop q b c f') * Eop q a (b + c - 2 * f') d' * sh a (Wop q b c f')) = 0 := by
+      calc _ = sh a (Vop q b c f) * Eop q a (b + c - 2 * f) d * (sh a (Wop q b c f) * sh a (Vop q b c f')) *
+            Eop q a (b + c - 2 * f') d' * sh a (Wop q b c f') := by simp only [mul_assoc]
+        _ = 0 := by rw [h0']; simp
+    rw [this, smul_zero]
+
 end Lightlike.TemperleyLieb
