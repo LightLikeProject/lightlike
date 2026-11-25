@@ -187,4 +187,65 @@ theorem TC_expand [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) (a b c d f h i 
   refine Finset.sum_congr rfl fun g _ => ?_
   rw [mul_smul_comm, TB_eq]
 
+/-- **Pairing of `ULd4` with a two-level sum of `UL4`s** at fixed last channel `g`: it extracts the coefficient
+of the `(e₀, d₀)` term. -/
+theorem pair_UL4 [CharZero k] (q : kˣ) (a b c d e₀ d₀ g₀ g : ℕ) (r₁ : ℕ) (r₂ : ℕ → ℕ) (C : ℕ → ℕ → k)
+    (hd : ∀ x, x ≤ a + b + c + d → chebD (loopVal q) x ≠ 0)
+    (hq2 : ∀ x, 1 ≤ x → x ≤ a + b + c + d + 1 → (q : k) ^ (2 * x) ≠ 1)
+    (hC : ∀ e d₁, C e d₁ ≠ 0 → e ≤ min a b ∧ d₁ ≤ min (a + b - 2 * e) c)
+    (he₀ : e₀ ≤ min a b) (hd₀ : d₀ ≤ min (a + b - 2 * e₀) c) (hg₀ : g₀ ≤ a + b - 2 * e₀ + c - 2 * d₀ ∧ g₀ ≤ d)
+    (hg : C e₀ d₀ ≠ 0 → g ≤ a + b - 2 * e₀ + c - 2 * d₀ ∧ g ≤ d)
+    (h1 : e₀ < r₁) (h2 : d₀ < r₂ e₀) :
+    ULd4 q a b c d e₀ d₀ g₀ * ∑ e ∈ Finset.range r₁, ∑ d₁ ∈ Finset.range (r₂ e), C e d₁ • UL4 q a b c d e d₁ g =
+      if g₀ = g then (C e₀ d₀ * (kapRec q a b e₀ * kapRec q (a + b - 2 * e₀) c d₀ *
+        kapRec q (a + b - 2 * e₀ + c - 2 * d₀) d g₀)) • jwAt q 0 (a + b - 2 * e₀ + c - 2 * d₀ + d - 2 * g₀) else 0 := by
+  rw [Finset.mul_sum]
+  rw [Finset.sum_eq_single e₀]
+  · rw [Finset.mul_sum, Finset.sum_eq_single d₀]
+    · rw [mul_smul_comm]
+      by_cases h0 : C e₀ d₀ = 0
+      · simp [h0]
+      · obtain ⟨hga, hgd⟩ := hg h0
+        rw [ULd4_mul_UL4_diag q a b c d e₀ d₀ g₀ g hd (he₀.trans (min_le_left _ _)) (he₀.trans (min_le_right _ _))
+          (hd₀.trans (min_le_left _ _)) (hd₀.trans (min_le_right _ _)) hg₀.1 hg₀.2 hga hgd hq2]
+        split_ifs with hgg
+        · rw [smul_smul]
+        · simp
+    · intro d₁ hd₁ hne
+      rw [mul_smul_comm]
+      by_cases h0 : C e₀ d₁ = 0
+      · simp [h0]
+      · have hv := hC e₀ d₁ h0
+        have hz : ULd4 q a b c d e₀ d₀ g₀ * UL4 q a b c d e₀ d₁ g = 0 := by
+          unfold ULd4 UL4
+          have h3 := ULd_mul_UL (k := k) q a b c (fun x hx => hd x (by omega)) (fun x h1 h2 => hq2 x h1 (by omega))
+            (e := e₀) (d := d₀) (e' := e₀) (d' := d₁) (he₀.trans (min_le_left _ _)) (he₀.trans (min_le_right _ _))
+            (he₀.trans (min_le_left _ _)) (he₀.trans (min_le_right _ _)) (hd₀.trans (min_le_left _ _))
+            (hd₀.trans (min_le_right _ _)) (hv.2.trans (min_le_left _ _)) (hv.2.trans (min_le_right _ _))
+          rw [if_neg (fun h => hne h.2.symm)] at h3
+          calc _ = Wop q (a + b - 2 * e₀ + c - 2 * d₀) d g₀ * (ULd q a b c e₀ d₀ * UL q a b c e₀ d₁) *
+                Vop q (a + b - 2 * e₀ + c - 2 * d₁) d g := by simp only [mul_assoc]
+            _ = 0 := by rw [h3]; simp
+        rw [hz, smul_zero]
+    · intro h; exact absurd (Finset.mem_range.mpr h2) h
+  · intro e he hne
+    rw [Finset.mul_sum]
+    refine Finset.sum_eq_zero fun d₁ _ => ?_
+    rw [mul_smul_comm]
+    by_cases h0 : C e d₁ = 0
+    · simp [h0]
+    · have hv := hC e d₁ h0
+      have hz : ULd4 q a b c d e₀ d₀ g₀ * UL4 q a b c d e d₁ g = 0 := by
+        unfold ULd4 UL4
+        have h3 := ULd_mul_UL (k := k) q a b c (fun x hx => hd x (by omega)) (fun x h1 h2 => hq2 x h1 (by omega))
+          (e := e₀) (d := d₀) (e' := e) (d' := d₁) (he₀.trans (min_le_left _ _)) (he₀.trans (min_le_right _ _))
+          (hv.1.trans (min_le_left _ _)) (hv.1.trans (min_le_right _ _)) (hd₀.trans (min_le_left _ _))
+          (hd₀.trans (min_le_right _ _)) (hv.2.trans (min_le_left _ _)) (hv.2.trans (min_le_right _ _))
+        rw [if_neg (fun h => hne h.1.symm)] at h3
+        calc _ = Wop q (a + b - 2 * e₀ + c - 2 * d₀) d g₀ * (ULd q a b c e₀ d₀ * UL q a b c e d₁) *
+              Vop q (a + b - 2 * e + c - 2 * d₁) d g := by simp only [mul_assoc]
+          _ = 0 := by rw [h3]; simp
+      rw [hz, smul_zero]
+  · intro h; exact absurd (Finset.mem_range.mpr h1) h
+
 end Lightlike.TemperleyLieb
