@@ -14,8 +14,8 @@ A planning ID is any of:
 Under Lightlike/ the check reads every folder and file name, and the namespaces and declaration
 names of the .lean files (from the source text, so it needs no build). Docstrings and comments may
 name IDs. A deprecated alias that keeps a renamed declaration's old name for one release
-(`@[deprecated (since := "0.4.0")] alias Old := New`) passes when its new name has no ID. The proof-task statements in Tasks/ are named by their task ID on purpose (`T_QU1_P5`
-is their public handle), so there only gap IDs and a `Rows` folder count. A name such as `SixJRow`
+(`@[deprecated (since := "0.4.0")] alias Old := New`) passes when its new name has no ID. The rule does not apply to Tasks/: the proof-task statements there are
+named by their task ID on purpose (`T_QU1_P5` is their public handle). A name such as `SixJRow`
 (a row of a recurrence) is mathematics, not a planning ID: only a folder name is checked for a bare
 `Row`.
 
@@ -86,17 +86,6 @@ def check(root: pathlib.Path = ROOT) -> list[str]:
                 bad = name_ids(m.group(2), ids)
                 if bad:
                     out.append(f"{rel}:{n}: {m.group(1)} {m.group(2)} has {', '.join(bad)}")
-    tasks = root / "Tasks"
-    for p in sorted(tasks.rglob("*")) if tasks.is_dir() else []:
-        rel = p.relative_to(root)
-        part = p.name if p.is_dir() else p.stem
-        if GAP_ID.search(part) or part == "Rows":
-            out.append(f"{rel}: name has a gap ID or Rows")
-        if p.suffix == ".lean":
-            for n, line in enumerate(p.read_text(encoding="utf-8", errors="replace").splitlines(), 1):
-                m = DECL_LINE.match(line)
-                if m and (GAP_ID.search(m.group(2)) or re.search(r"(?:^|\.)Rows(?:\.|$)", m.group(2))):
-                    out.append(f"{rel}:{n}: {m.group(1)} {m.group(2)} has a gap ID or Rows")
     return out
 
 
@@ -145,12 +134,12 @@ def selftest() -> int:
                and "ll_0356_note has ll_0356" in joined and "op2_summary" not in joined and "mm3" not in joined)
         expect("SixJRow, SU2, SF5ab, comments, docstrings and a subject folder pass",
                "SixJRow" not in joined and "SU2" not in joined and "SF5ab" not in joined and "FreeBoson" not in joined)
-        expect("a task file named by its task ID passes; a gap ID in Tasks fails",
-               "T_GE3_P1" not in joined and "Tasks/GE/T_G1_007.lean: name has a gap ID" in joined)
+        expect("Tasks/ is not checked: a task file named by its task ID, or by a gap ID, passes",
+               "T_GE3_P1" not in joined and "T_G1_007" not in joined)
         expect("a deprecated alias keeping an old name passes; a plain alias, or one whose new name has an ID, fails",
                "Old.lean:1:" not in joined and "Old.lean:2: alias Lightlike.Lorentz.HARow055.t has HARow" in joined
                and "Old.lean:3: alias Lightlike.Rows.G1_007.u has G1_007" in joined)
-        expect("nothing else", len(hits) == 12 or print(joined) or False)
+        expect("nothing else", len(hits) == 11 or print(joined) or False)
         (r / "Lightlike").rename(r / "Gone")
         (r / "Tasks").rename(r / "Gone2")
         expect("an empty tree passes", check(r) == [])

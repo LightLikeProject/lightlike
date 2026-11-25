@@ -181,21 +181,20 @@ The work is split into small tasks so that many people can work at once, several
 
 ## Review
 
-The [review rubric](docs/review-rubric.md) gives what a statement is checked for: conventions, quantifier
-ranges, junk values and non-vacuity. To review a result, compare its statement and definitions
-with the cited source and post your findings on its issue; a maintainer then records it as
-**human-reviewed** in `docs/results.yaml`, with a link to that issue. A statement under review is
-locked once it passes, or returned with reasons. A surprising result in an `Exploratory/` folder
-is reviewed first and flagged to the maintainers; work on it continues meanwhile.
+Pull requests carry no review label: a pull request merges when its gates and checks pass. A proof-task
+pull request that changes only its own task file merges by itself; a maintainer merges any other pull
+request once its checks pass. The check `review-gate` always passes; it stays because the repository's
+ruleset names it.
 
-A pull request that adds, changes or removes a Lean file under `Lightlike/` or `Tasks/` (and is not a
-proof-task pull request that changes only its own task file) gets the label `needs-review`: a
-statement can change on any line of a signature, so the rule is the file. The check `review-gate`
-lets it merge only with two approvals of its current commit from two accounts other than the author,
-each with a merged pull request in this repository (or when an administrator wrote it). Every other
-pull request passes the check. A maintainer merges a pull request that needs review. Reviewers follow the [review rubric](docs/review-rubric.md): source
-match, hypotheses, conventions, quantifiers and edge cases. A proof-task pull request that changes
-only its own task file merges by itself once the checks pass.
+Reviews are of milestones, not of pull requests. When every work item of a milestone is ticked, an agent
+session other than the one that did the work reviews the finished milestone against the
+[review rubric](docs/review-rubric.md): source match, hypotheses, conventions, quantifier ranges, junk
+values and non-vacuity. The milestone's issue closes when every item is ticked and the review passes.
+
+A review by an expert is welcome, optional, and nothing waits for it. To review a result, compare its
+statement and definitions with the cited source and post your findings on an issue; once that issue is
+linked from the result's entry in `docs/results.yaml`, the entry is **human-reviewed**. A surprising
+result in an `Exploratory/` folder is flagged to the maintainers; work on it continues meanwhile.
 
 The kernel cannot check that a definition or a statement means what its source means, so each
 statement is compared with its cited source for conventions (signature, units, normalisations),

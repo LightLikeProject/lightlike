@@ -19,7 +19,18 @@ sources and review status in [docs/RESULTS.md](docs/RESULTS.md). Versions follow
 - Every renamed declaration keeps its old name as a deprecated alias for one release: deprecated
   since 0.4.0, removed in 0.5.0. Code that uses an old name still builds, with a warning that names
   the new one. Imports of moved files must use the new paths.
-- A CI step keeps planning IDs out of Lean folder, file and declaration names.
+- A CI step keeps planning IDs out of Lean folder, file and declaration names (under `Lightlike/`;
+  the proof-task files in `Tasks/` keep their task-ID names).
+- `IsClosedTrappedSurface` is marked as under revision: as written it does not force the surface
+  to be spacelike.
+
+### Process
+
+- Pull requests carry no review label: a pull request merges when its gates and checks pass. The
+  label `needs-review` is no longer set, and the check `review-gate` always passes. Reviews are of
+  finished milestones, by an agent session other than the one that did the work; an expert's
+  review is optional, and a catalogue entry becomes human-reviewed when the expert's review issue
+  is linked.
 
 ## [0.3.0]
 

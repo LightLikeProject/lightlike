@@ -52,8 +52,9 @@ For a proof task, repeat these steps; everything after step 4 runs by itself.
    task's own file.
 5. **CI runs and the pull request merges by itself.** CI checks the build, the locked statement, the axioms,
    the forbidden constructs and the comparator. A pull request that changes only its task's file gets the
-   label `automerge` and merges once the checks pass, with no maintainer action. Any other change needs a
-   review (the label `needs-review`; [docs/review-rubric.md](docs/review-rubric.md)).
+   label `automerge` and merges once the checks pass, with no maintainer action. Any other pull request
+   carries no review label either: a maintainer merges it once its checks pass. Reviews are of finished
+   milestones, not of pull requests ([CONTRIBUTING.md](CONTRIBUTING.md#review)).
 6. **Next**: go back to step 1.
 
 If CI fails, fix the proof on the same branch and push; do not open a second pull request for the task.

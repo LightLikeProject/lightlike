@@ -16,7 +16,11 @@ the round spheres of a Schwarzschild slice). The expansion of a null normal fiel
 `θ_k(x) = Σᵢ g(∇_{eᵢ} k, eᵢ)` for a `g`-orthonormal basis `(eᵢ)` of `T_x S` (independent of the basis); as for
 `Trapped.IsTrappedSphere` (G1-011) the surface is trapped if **every** smooth future null normal field has `θ_k < 0`
 on `S` (both families at once, since both are future null normal fields). Spacelikeness of `S` is not a separate
-clause: an orthonormal basis of `T_x S` is required to exist at each point.
+clause.
+
+**Under revision.** The frame condition of `IsClosedTrappedSurface` holds vacuously at a point where `T_x S` is not
+spacelike (no `g`-orthonormal frame of `T_x S` exists there), so the definition does not force `S` to be spacelike,
+as the sources require.
 -/
 
 open Bundle Manifold Set
@@ -43,7 +47,10 @@ def frameExpansion (g : LorentzianMetric 𝓘(ℝ, Fin n → ℝ) M n) (cov : Co
 
 /-- **Closed trapped surface** `S`: compact, a regular level set `f⁻¹(0)` of a smooth `f : M → ℝ²`, and every smooth
 field that is a future null normal along `S` has negative expansion along every `g`-orthonormal frame of `T_x S` at
-every `x ∈ S`. -/
+every `x ∈ S`.
+
+**Under revision:** at a point where `T_x S` is not spacelike no `g`-orthonormal frame of `T_x S` exists, so the
+last clause holds vacuously there; the definition does not force `S` to be spacelike, as the sources do. -/
 def IsClosedTrappedSurface (g : LorentzianMetric 𝓘(ℝ, Fin n → ℝ) M n) (cov : Connection 𝓘(ℝ, Fin n → ℝ) M)
     (T : Causal.TimeOrientation g) (S : Set M) : Prop :=
   IsCompact S ∧ S.Nonempty ∧ ∃ f : M → Fin 2 → ℝ,
