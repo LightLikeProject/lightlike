@@ -384,4 +384,35 @@ theorem treeR_mul [CharZero k] (q : kˣ) (a b c : ℕ)
         _ = 0 := by rw [h0']; simp
     rw [this, smul_zero]
 
+/-- The tree idempotent of the second bracketing lies in `C (a+b+c-1)`. -/
+theorem treeR_mem (q : kˣ) (hδ : loopVal q ≠ 0) {a b c f d : ℕ}
+    (hd : ∀ j, j ≤ a + b + c → chebD (loopVal q) j ≠ 0) (hfb : f ≤ b) (hfc : f ≤ c) (hda : d ≤ a)
+    (hdf : d ≤ b + c - 2 * f) (hD : 1 ≤ a + (b + c - 2 * f) - 2 * d) :
+    treeR q a b c f d ∈ CSub q (a + b + c - 1) := by
+  have hdc : ∀ j, j ≤ a + (b + c - 2 * f) → chebD (loopVal q) j ≠ 0 := fun j hj => hd j (by omega)
+  have hE := Eop_mem (k := k) q hδ (a := a) (b := b + c - 2 * f) (i := d) hda hdf (by omega)
+  have hn := nestCup_mul_nestCap_mem q hδ (n := a + (b + c - 2 * f) - 1) (l := b - f + a) (by omega) hE f
+  rw [show a + (b + c - 2 * f) - 1 + 2 * f = a + b + c - 1 by omega] at hn
+  have hQ : (jwAt q a b * jwAt q (b + a) c : Module.End k (ModelSpace k)) ∈ CSub q (a + b + c - 1) := by
+    have h1 : jwAt q a b ∈ CSub q (a + b + c - 1) :=
+      tlSub_mono (m := a + b - 1) (n := a + b + c - 1) (by omega) (jwAt_mem q a b)
+    have h2 : jwAt q (b + a) c ∈ CSub q (a + b + c - 1) :=
+      tlSub_mono (m := b + a + c - 1) (n := a + b + c - 1) (by omega) (jwAt_mem q (b + a) c)
+    exact Subalgebra.mul_mem _ h1 h2
+  have hJE := jwAt_shift_mul_Eop (k := k) q a (b + c - 2 * f) d hdc
+  have hEJ := Eop_mul_jwAt_shift (k := k) q a (b + c - 2 * f) d hdc
+  have e : sh a (Vop q b c f : Module.End k (ModelSpace k)) * Eop q a (b + c - 2 * f) d * sh a (Wop q b c f) =
+      (jwAt q a b * jwAt q (b + a) c) * (nestCup q (b - f + a) f * Eop q a (b + c - 2 * f) d *
+        nestCap q (b - f + a) f) * (jwAt q a b * jwAt q (b + a) c) := by
+    rw [sh_Vop, sh_Wop]
+    have hJEJ : (jwAt q a (b + c - 2 * f) : Module.End k (ModelSpace k)) * Eop q a (b + c - 2 * f) d *
+        jwAt q a (b + c - 2 * f) = Eop q a (b + c - 2 * f) d := by rw [hJE, hEJ]
+    calc _ = (jwAt q a b * jwAt q (b + a) c) * nestCup q (b - f + a) f * (jwAt q a (b + c - 2 * f) *
+          Eop q a (b + c - 2 * f) d * jwAt q a (b + c - 2 * f)) * nestCap q (b - f + a) f *
+          (jwAt q a b * jwAt q (b + a) c) := by simp only [mul_assoc]
+      _ = _ := by rw [hJEJ]; simp only [mul_assoc]
+  unfold treeR
+  rw [e]
+  exact Subalgebra.smul_mem _ (Subalgebra.mul_mem _ (Subalgebra.mul_mem _ hQ hn) hQ) _
+
 end Lightlike.TemperleyLieb

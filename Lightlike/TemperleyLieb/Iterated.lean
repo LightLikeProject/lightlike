@@ -511,4 +511,16 @@ theorem treeL_sandwich (q : kˣ) (a b c e d : ℕ) (hN : 1 ≤ a + b + c)
   congr 1
   ring
 
+/-- The tree idempotent of the first bracketing lies in `C (a+b+c-1)` (when the last channel is not the empty one). -/
+theorem treeL_mem (q : kˣ) (hδ : loopVal q ≠ 0) {a b c e d : ℕ} (hea : e ≤ a) (heb : e ≤ b) (hdc : d ≤ c)
+    (hdA : d ≤ a + b - 2 * e) (hD : 1 ≤ a + b - 2 * e + c - 2 * d) :
+    treeL q a b c e d ∈ CSub q (a + b + c - 1) := by
+  have hE := Eop_mem (k := k) q hδ (a := a + b - 2 * e) (b := c) (i := d) hdA hdc hD
+  have hn := nestCup_mul_nestCap_mem q hδ (n := a + b - 2 * e + c - 1) (l := a - e) (by omega) hE e
+  rw [show a + b - 2 * e + c - 1 + 2 * e = a + b + c - 1 by omega] at hn
+  have hQ : Qab q a b ∈ CSub q (a + b + c - 1) :=
+    tlSub_mono (m := a + b - 1) (n := a + b + c - 1) (by omega) (Qab_mem q a b)
+  unfold treeL
+  exact Subalgebra.smul_mem _ (Subalgebra.mul_mem _ (Subalgebra.mul_mem _ hQ hn) hQ) _
+
 end Lightlike.TemperleyLieb
