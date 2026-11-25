@@ -73,4 +73,4 @@ times the coefficient (`fcoef_dtheta`), and the radial derivative commutes with 
 (M2) chain rule from the chart to polar coordinates and the two mode ODEs for a smooth chart spinor;
 (M3) classification of the solutions of the mode ODE that are regular at `r = 0` and decay at `∞` (the polynomial class of
 `EigenGeneralK`/`ge5-complete`), which needs a uniqueness statement for the singular linear ODE;
-(M4) a smooth spinor on the sphere is determined by its Fourier modes (completeness of `e^{imθ}` on smooth functions).
+(M4, Lean, done) a continuous spinor component is determined by its Fourier modes (`eq_zero_of_fcoef_polar`: all modes zero ⇒ zero, via Mathlib's Fourier basis on `AddCircle`); M2 is also Lean (`mode_eq_bar`, `mode_eq` in `Dirac/AngularModes.lean`).

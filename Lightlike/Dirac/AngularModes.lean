@@ -275,4 +275,37 @@ theorem mode_eq {g₁ g₂ : E 2 → ℂ} (h₁ : ContDiff ℝ 1 g₁) (h₂ : C
     ring
   rw [this]; exact hint
 
+/-- Every point of the plane has polar coordinates `r ≥ 0`, `θ ∈ [0, 2π]`. -/
+theorem polarPt_surj (x : E 2) : ∃ r : ℝ, ∃ θ : ℝ, θ ∈ Set.Icc (0 : ℝ) (2 * Real.pi) ∧ polarPt r θ = x := by
+  set z : ℂ := ⟨x 0, x 1⟩ with hz
+  have hc : ‖z‖ * Real.cos (Complex.arg z) = x 0 := by
+    have := Complex.norm_mul_cos_arg z
+    simpa [hz] using this
+  have hs : ‖z‖ * Real.sin (Complex.arg z) = x 1 := by
+    have := Complex.norm_mul_sin_arg z
+    simpa [hz] using this
+  have hx : ∀ θ : ℝ, Real.cos θ = Real.cos (Complex.arg z) → Real.sin θ = Real.sin (Complex.arg z) →
+      polarPt ‖z‖ θ = x := by
+    intro θ h1 h2
+    ext i
+    fin_cases i
+    · simp [polarPt, e, h1, hc]
+    · simp [polarPt, e, h2, hs]
+  by_cases hneg : Complex.arg z < 0
+  · refine ⟨‖z‖, Complex.arg z + 2 * Real.pi, ⟨by linarith [Complex.neg_pi_lt_arg z], by linarith⟩, hx _ ?_ ?_⟩
+    · simp [Real.cos_add_two_pi]
+    · simp [Real.sin_add_two_pi]
+  · refine ⟨‖z‖, Complex.arg z, ⟨not_lt.mp hneg, by linarith [Complex.arg_le_pi z, Real.pi_pos]⟩, hx _ rfl rfl⟩
+
+/-- **Uniqueness of the angular modes of a continuous function.** If all Fourier coefficients of the polar
+function vanish, the function is zero. -/
+theorem eq_zero_of_fcoef_polar {g : E 2 → ℂ} (hg : Continuous g)
+    (h : ∀ (m : ℤ) (r : ℝ), fcoef (polarFn g) m r = 0) : g = 0 := by
+  funext x
+  obtain ⟨r, θ, hθ, rfl⟩ := polarPt_surj x
+  have hc : Continuous fun θ : ℝ => polarFn g r θ := hg.comp (polarPt_continuous.comp
+    (continuous_const.prodMk continuous_id))
+  have := eq_zero_of_fcoef_eq_zero hc (by simp [polarFn, polarPt_two_pi]) (fun m => h m r) θ hθ
+  simpa [polarFn] using this
+
 end Lightlike.Dirac
