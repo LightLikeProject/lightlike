@@ -7128,3 +7128,14 @@
   review: kernel-checked
   note: "Layer 2b of the Plancherel formula on SL(2,R): the Parseval step in the K x K components, valid for every continuous f (finite or infinite value of both sides, as an equality in [0, infinity]). Standard in form (Cartan decomposition and Fourier series on the torus of angles); no source consulted. NOT proved: the identification of the components f_{m,n} with ladder images of radial generators and the resulting integral against the Plancherel measure rho tanh(pi rho) (layer 2c), and the discrete series terms (layer 3), so the Plancherel formula of SL(2,R) is still open."
   since: unreleased
+- id: LL-0553
+  title: "The isometry group of anti-de Sitter space acts conformally on its conformal boundary: for a matrix Λ with Λᵀ η' Λ = η', η' = diag(-1, -1, 1, 1, 1), and a boundary point (cos τ, sin τ, ω), |ω| = 1, the image is ρ (cos τ', sin τ', ω') with ρ > 0 and |ω'| = 1, the action is compatible with the product of matrices (the angle read modulo 2π), and for a tangent vector (dτ, dω) = (a, v), v ⊥ ω, the boundary metric of the image is -(dτ')² + |dω'|² = (-a² + |v|²) / ρ²"
+  area: GR
+  file: Lightlike/GR/AdSConformalBoundary/NullConeSummary.lean
+  decls: [Lightlike.ads_isometry_conformal_boundary]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "GE7 m2 (main statement), assembled from the layers NullCone (factor, angle, unit direction), NullConeAction (group law) and NullConeConformal (the differential and the factor ρ⁻²). Comparison pending (no source was read at a cited location): the embedding of anti-de Sitter space as the quadric in R^{2,3} and of its conformal boundary as the projectivised null cone is Blau, Lecture Notes on General Relativity, Section 39.1 and 39.3.2, to be read before the comparison is claimed. Limits: SO(2,3) is the set of matrices Λ with Λᵀ η' Λ = η' (all of O(2,3), not a group type); the boundary is the circle times the sphere (no universal cover); the differential is stated through explicit formulas for the velocities dτ' and dω' (with their derivative statements along the image curve t ↦ Λ (X + t T) in NullConeConformal), not as an equation of metrics on a manifold; the relation to the boundary metric adsBdyMetric is checked on the time translation (adsAngleShift) only."
+  since: unreleased
