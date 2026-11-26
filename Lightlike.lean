@@ -1750,6 +1750,8 @@ import Lightlike.Spacetime.ScalarEnergyConditions.ScalarWeakECTimelike
 import Lightlike.Spacetime.ScalarEnergyConditions.ScalarWeakECNull
 import Lightlike.Spacetime.ChartTransition
 import Lightlike.Spacetime.VolumeMeasure
+import Lightlike.Spacetime.VolumeMeasureFinite
+import Lightlike.Spacetime.VolumeMeasureFiniteTests
 import Lightlike.Spacetime.CausalLadder.FullSupportMeasure
 import Lightlike.Spacetime.CausalLadder.NullBoundary
 import Lightlike.Spacetime.CausalLadder.NullBoundaryManifold
