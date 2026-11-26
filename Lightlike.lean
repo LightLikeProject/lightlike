@@ -647,6 +647,10 @@ import Lightlike.Lorentz.SL2RPlancherel.DiscreteProfileDecay
 import Lightlike.Lorentz.SL2RPlancherel.DiscreteProfileOrth
 import Lightlike.Lorentz.SL2RPlancherel.DiscreteProfilePair
 import Lightlike.Lorentz.SL2RPlancherel.DiscreteProfileLadderForm
+import Lightlike.Lorentz.SL2RPlancherel.DiscreteInnerOrth
+import Lightlike.Lorentz.SL2RPlancherel.DiscreteOrthDifferent
+import Lightlike.Lorentz.SL2RPlancherel.DiscretePlancherelTotal
+import Lightlike.Lorentz.SL2RPlancherel.DiscreteProfileImages
 import Lightlike.Lorentz.SL2RPrincipal
 import Lightlike.Lorentz.SU2Average
 import Lightlike.Lorentz.SU2AverageTests
