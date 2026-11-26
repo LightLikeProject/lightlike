@@ -79,7 +79,7 @@ lemma IsMaxTree.map {K : Complex3 V} {T : Finset (Finset V)} (hT : IsMaxTree K T
     rw [verts_mapComplex3] at hu' hv'
     obtain ⟨u, hu, rfl⟩ := mem_map.1 hu'
     obtain ⟨v, hv, rfl⟩ := mem_map.1 hv'
-    refine Relation.ReflTransGen.lift f (fun a b hab => ?_) (hsp.conn u hu v hv)
+    refine (hsp.conn u hu v hv).lift f (fun a b hab => ?_)
     refine mem_image.2 ⟨{a, b}, hab, ?_⟩
     simp [Finset.map_insert]
   · rw [card_image_of_injOn (fun _ _ _ _ he => map_injective f he), verts_mapComplex3,
@@ -92,21 +92,19 @@ lemma extS_map (f : V ↪ W) (S : Finset (Finset V)) (σ' : ∀ e ∈ S.image (F
       extS S (fun e he => σ' (e.map f) (mem_image_of_mem _ he)) e := by
   unfold extS
   by_cases he : e ∈ S
-  · rw [dif_pos (mem_image_of_mem _ he), dif_pos he]
+  · simp only [mem_image_of_mem _ he, he, ↓reduceDIte]
   · have : e.map f ∉ S.image (Finset.map f) := fun h => by
       obtain ⟨e', he', hee⟩ := mem_image.1 h
       exact he (map_injective f hee ▸ he')
-    rw [dif_neg this, dif_neg he]
+    simp only [this, he, ↓reduceDIte]
 
 /-- **Relabelling keeps the gauge-fixed amplitude**, with the relabelled tree and cut-off. -/
 theorem amplitudeGF_mapComplex3 (K : Complex3 V) (f : V ↪ W) (T : Finset (Finset V))
     (cut : Finset V → ℕ) :
     amplitudeGF (mapComplex3 K f) (T.image (Finset.map f))
         (fun e' => cut (e'.preimage f f.injective.injOn)) = amplitudeGF K T cut := by
-  have hinj : ∀ S : Finset (Finset V), Set.InjOn (Finset.map f) (S : Set (Finset V)) :=
-    fun _ _ _ _ _ he => map_injective f he
   have hS : (mapComplex3 K f).edges \ T.image (Finset.map f) = (K.edges \ T).image (Finset.map f) := by
-    rw [TV.edges_mapComplex3, image_sdiff_of_injOn (hinj _) (by simp)]
+    rw [TV.edges_mapComplex3, image_sdiff (map_injective f)]
   unfold amplitudeGF
   rw [hS]
   have hpre : ∀ e' ∈ (K.edges \ T).image (Finset.map f),

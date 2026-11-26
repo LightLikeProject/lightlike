@@ -110,7 +110,7 @@ lemma mem_grown {R B : Finset (Finset V)} (hR : R ⊆ K.link v)
       have hvσ : v ∉ σ := (Complex3.mem_link.1 (hR hσ)).1
       have hwσ : w ∉ σ := notMem_of_mem_link (hR hσ) hw
       have hvw : v ≠ w := fun h => hw (h ▸ mem_verts_of_mem_link (hR hσ))
-      rw [card_insert_of_notMem (by simp [hvw, fun h => hvσ (heσ h)]),
+      rw [card_insert_of_notMem (by rw [mem_insert, not_or]; exact ⟨hvw, fun h => hvσ (heσ h)⟩),
         card_insert_of_notMem (fun h => hwσ (heσ h)), he2]
     · refine ⟨.inl (.inr ⟨τ, hτ, rfl⟩), ?_⟩
       rw [card_insert_of_notMem (notMem_of_mem_link (hR hτ) hw), card_of_mem_link (hR hτ)]
@@ -167,10 +167,14 @@ theorem forwardStep_grown_single {a b c : V} (hτ : ({a, b, c} : Finset V) ∈ K
   refine complex3_eq fun t => ?_
   rw [mem_grown hR hB hw]
   simp only [move14, mem_union, mem_insert, mem_singleton, mem_erase]
-  have e1 : insert v (insert w ({a, b} : Finset V)) = {v, a, b, w} := by ext; simp; tauto
-  have e2 : insert v (insert w ({a, c} : Finset V)) = {v, a, c, w} := by ext; simp; tauto
-  have e3 : insert v (insert w ({b, c} : Finset V)) = {v, b, c, w} := by ext; simp; tauto
-  have e4 : insert w ({a, b, c} : Finset V) = {a, b, c, w} := by ext; simp; tauto
+  have e1 : insert v (insert w ({a, b} : Finset V)) = {v, a, b, w} := by
+    rw [insert_comm w a, pair_comm w b]
+  have e2 : insert v (insert w ({a, c} : Finset V)) = {v, a, c, w} := by
+    rw [insert_comm w a, pair_comm w c]
+  have e3 : insert v (insert w ({b, c} : Finset V)) = {v, b, c, w} := by
+    rw [insert_comm w b, pair_comm w c]
+  have e4 : insert w ({a, b, c} : Finset V) = {a, b, c, w} := by
+    rw [insert_comm w a, insert_comm w b, pair_comm w c]
   constructor
   · rintro ((rfl | rfl | rfl | rfl) | ⟨hne, ht⟩)
     · exact .inr (.inl ⟨{a, b}, by simp, e1⟩)
@@ -183,11 +187,11 @@ theorem forwardStep_grown_single {a b c : V} (hτ : ({a, b, c} : Finset V) ∈ K
   · rintro (⟨ht, hvt⟩ | ⟨e, he, rfl⟩ | ⟨τ, hτ', rfl⟩ | ⟨τ, hτ', hτR, rfl⟩)
     · exact .inr ⟨fun h => hvt (h ▸ by simp), ht⟩
     · rcases he with rfl | rfl | rfl
-      · exact .inl (.inl e1.symm)
-      · exact .inl (.inr (.inl e2.symm))
-      · exact .inl (.inr (.inr (.inl e3.symm)))
+      · exact .inl (.inl e1)
+      · exact .inl (.inr (.inl e2))
+      · exact .inl (.inr (.inr (.inl e3)))
     · subst hτ'
-      exact .inl (.inr (.inr (.inr e4.symm)))
+      exact .inl (.inr (.inr (.inr e4)))
     · refine .inr ⟨fun h => hτR ?_, (Complex3.mem_link.1 hτ').2⟩
       exact insert_left_inj (Complex3.mem_link.1 hτ').1 hvτ h
 
@@ -219,14 +223,14 @@ theorem forwardStep_grown_step {R B : Finset (Finset V)} {x y z : V}
   have htwo : ∀ σ ∈ K.link v, ({x, y} : Finset V) ⊆ σ → σ ∉ R → σ = {x, y, z} := by
     intro σ hσ hxyσ hσR
     have hedge : ({x, y} : Finset V) ∈ edges2 (K.link v) :=
-      mem_edges2.2 ⟨_, hτ, by intro a; simp; tauto, hxy2⟩
+      mem_edges2.2 ⟨_, hτ, insert_subset_insert x (singleton_subset_iff.2 (mem_insert_self y {z})), hxy2⟩
     have h2 := hL _ hedge
     have hsub : ({σ0, {x, y, z}} : Finset (Finset V)) ⊆ (K.link v).filter (({x, y} : Finset V) ⊆ ·) := by
       intro s hs
       simp only [mem_insert, mem_singleton] at hs
       rcases hs with rfl | rfl
       · exact mem_filter.2 ⟨hR hσ0, hxyσ0⟩
-      · exact mem_filter.2 ⟨hτ, by intro a; simp; tauto⟩
+      · exact mem_filter.2 ⟨hτ, insert_subset_insert x (singleton_subset_iff.2 (mem_insert_self y {z}))⟩
     have hne : σ0 ≠ {x, y, z} := fun h => hτR (h ▸ hσ0)
     have heq := eq_of_subset_of_card_le hsub (by rw [h2, card_pair hne])
     have : σ ∈ ({σ0, {x, y, z}} : Finset (Finset V)) := heq ▸ mem_filter.2 ⟨hσ, hxyσ⟩
@@ -234,7 +238,8 @@ theorem forwardStep_grown_step {R B : Finset (Finset V)} {x y z : V}
     rcases this with rfl | h
     · exact absurd hσ0 hσR
     · exact h
-  have e1 : insert v (insert w ({x, y} : Finset V)) = {v, x, y, w} := by ext; simp; tauto
+  have e1 : insert v (insert w ({x, y} : Finset V)) = {v, x, y, w} := by
+    rw [insert_comm w x, pair_comm w y]
   have e2 : insert v ({x, y, z} : Finset V) = {v, x, y, z} := rfl
   have h23 : IsMove23 (grown K v w R B) v x y w z := by
     refine ⟨hvx, hvy, hvw, hvz, hxy', Ne.symm hwx, Ne.symm hzx, Ne.symm hwy, Ne.symm hzy,
@@ -244,7 +249,7 @@ theorem forwardStep_grown_step {R B : Finset (Finset V)} {x y z : V}
     · intro t ht hsub
       rw [mem_grown hR hB hw] at ht
       have hvt : v ∈ t := hsub (by simp)
-      have hxyt : ({x, y} : Finset V) ⊆ t := fun a ha => hsub (by simp at ha ⊢; tauto)
+      have hxyt : ({x, y} : Finset V) ⊆ t := (subset_insert v _).trans hsub
       rcases ht with ⟨-, hvt'⟩ | ⟨e, he, rfl⟩ | ⟨σ, hσ, rfl⟩ | ⟨σ, hσ, hσR, rfl⟩
       · exact absurd hvt hvt'
       · left
@@ -294,13 +299,17 @@ theorem forwardStep_grown_step {R B : Finset (Finset V)} {x y z : V}
     intro e he
     simp only [mem_insert, mem_erase] at he
     rcases he with rfl | rfl | ⟨-, he⟩
-    · exact ⟨card_pair (Ne.symm hzx), _, mem_insert_self _ _, by intro a; simp; tauto⟩
-    · exact ⟨card_pair (Ne.symm hzy), _, mem_insert_self _ _, by intro a; simp; tauto⟩
+    · exact ⟨card_pair (Ne.symm hzx), _, mem_insert_self _ _,
+        insert_subset_insert x (singleton_subset_iff.2 (by simp))⟩
+    · exact ⟨card_pair (Ne.symm hzy), _, mem_insert_self _ _, subset_insert x _⟩
     · obtain ⟨h2, σ, hσ, heσ⟩ := hB e he
       exact ⟨h2, σ, mem_insert_of_mem hσ, heσ⟩
-  have f1 : insert v (insert w ({x, z} : Finset V)) = {v, x, w, z} := by ext; simp; tauto
-  have f2 : insert w ({x, y, z} : Finset V) = {x, y, w, z} := by ext; simp; tauto
-  have f3 : insert v (insert w ({y, z} : Finset V)) = {y, v, w, z} := by ext; simp; tauto
+  have f1 : insert v (insert w ({x, z} : Finset V)) = {v, x, w, z} := by
+    rw [insert_comm w x]
+  have f2 : insert w ({x, y, z} : Finset V) = {x, y, w, z} := by
+    rw [insert_comm w x, insert_comm w y]
+  have f3 : insert v (insert w ({y, z} : Finset V)) = {y, v, w, z} := by
+    rw [insert_comm w y, insert_comm v y]
   have nv : ∀ s : Finset V, v ∉ s → s ≠ {v, x, y, z} := fun s hs h => hs (by rw [h]; simp)
   have nv' : ∀ s : Finset V, v ∉ s → s ≠ {v, x, y, w} := fun s hs h => hs (by rw [h]; simp)
   have nw : ∀ s : Finset V, w ∈ s → s ≠ {v, x, y, z} := fun s hs h => by
@@ -378,9 +387,11 @@ lemma map_swap_of_notMem {s : Finset V} (hv : v ∉ s) (hw : w ∉ s) :
   simp only [mem_map, Equiv.coe_toEmbedding]
   constructor
   · rintro ⟨b, hb, rfl⟩
-    rwa [Equiv.swap_apply_of_ne_of_ne (fun h => hv (h ▸ hb)) (fun h => hw (h ▸ hb))]
+    rwa [Equiv.swap_apply_of_ne_of_ne (fun h => hv (by rw [← h]; exact hb))
+      (fun h => hw (by rw [← h]; exact hb))]
   · intro ha
-    exact ⟨a, ha, Equiv.swap_apply_of_ne_of_ne (fun h => hv (h ▸ ha)) (fun h => hw (h ▸ ha))⟩
+    exact ⟨a, ha, Equiv.swap_apply_of_ne_of_ne (fun h => hv (by rw [← h]; exact ha))
+      (fun h => hw (by rw [← h]; exact ha))⟩
 
 /-- The tetrahedra of `K` with `v` renamed to the fresh label `w`. -/
 lemma mem_rename {hw : w ∉ K.verts} {t : Finset V} :
@@ -497,8 +508,11 @@ theorem commonForward_rename_bdry4 :
       {2, 4}))) = insert {1, 4} (insert {3, 4} (({{1, 2}, {1, 3}, {2, 3}} : Finset (Finset ℕ)).erase
       {1, 3})) := by decide
   rw [hB] at hDw
-  exact commonForward_rename_of_split (by rw [hlink]; exact isSphere2_bdry (by decide)
-    (by decide) (by decide) (by decide) (by decide) (by decide)) (by decide)
-    (by rw [hlink]; decide) (by decide) hDv hDw
+  have hsph : IsSphere2 (bdry4.link 0) := by
+    rw [hlink]
+    exact isSphere2_bdry (by decide) (by decide) (by decide) (by decide) (by decide) (by decide)
+  have hsplit : bdry4.link 0 = insert {1, 3, 4} {{1, 2, 3}} ∪ insert {2, 4, 3} {{1, 2, 4}} := by
+    rw [hlink]; decide
+  exact commonForward_rename_of_split hsph (by decide) hsplit (by decide) hDv hDw
 
 end Lightlike.PR

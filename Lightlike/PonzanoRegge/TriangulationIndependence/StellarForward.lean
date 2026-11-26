@@ -250,7 +250,7 @@ theorem ForwardMoves.exists_starAt_triangle {K : Complex3 V} {A B C D F a : V}
     rcases this with h | h | h | h
     exacts [hAF h.symm, hBF h.symm, hCF h.symm, hDF h.symm]
   have h23 : IsMove23 (move14 K h14) A B C a F := by
-    refine ⟨hAB, hAC, Ne.symm haA, hAF, hBC, Ne.symm haB, hBF, Ne.symm haC, hCF, Ne.symm haF',
+    refine ⟨hAB, hAC, Ne.symm haA, hAF, hBC, Ne.symm haB, hBF, Ne.symm haC, hCF, haF',
       ?_, ?_, ?_, ?_⟩
     · simp [move14]
     · simp only [move14, mem_union, mem_erase]
@@ -282,12 +282,7 @@ theorem ForwardMoves.exists_starAt_triangle {K : Complex3 V} {A B C D F a : V}
       have hFT : F ∈ t := hsub (by simp)
       simp only [move14, mem_union, mem_insert, mem_singleton, mem_erase] at ht
       rcases ht with (rfl | rfl | rfl | rfl) | ⟨-, ht⟩
-      all_goals first
-        | exact ha t ht haT
-        | (simp only [mem_insert, mem_singleton] at hFT
-           rcases hFT with h | h | h | h
-           all_goals first | exact hAF h.symm | exact hBF h.symm | exact hCF h.symm
-             | exact hDF h.symm | exact haF' h)
+      all_goals first | exact ha _ ht haT | (simp only [mem_insert, mem_singleton] at hFT; grind)
   refine ⟨move23 (move14 K h14) h23, (Relation.ReflTransGen.single (.m14 h14)).tail (.m23 h23), ?_⟩
   rw [ofComplex3, ofComplex3, starAt_closure]
   congr 1
