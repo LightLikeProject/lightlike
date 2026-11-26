@@ -23,8 +23,7 @@ namespace Lightlike.PR
 variable {V : Type*} [DecidableEq V]
 
 /-- Closes an equality of two explicit four-element sets listing the same elements. -/
-macro "set_perm" : tactic => `(tactic| (ext y; simp only [Finset.mem_insert, Finset.mem_singleton];
-  constructor <;> intro hy <;> rcases hy with hy | hy | hy | hy <;> simp [hy]))
+macro "set_perm" : tactic => `(tactic| (ext y; simp only [Finset.mem_insert, Finset.mem_singleton]; constructor <;> intro hy <;> rcases hy with hy | hy | hy | hy <;> simp [hy]))
 
 section Fan
 
@@ -182,12 +181,12 @@ omit h in
 lemma mem_verts_of_tet {t : Finset V} (ht : t ∈ K.tets) {x : V} (hx : x ∈ t) : x ∈ K.verts :=
   mem_biUnion.2 ⟨t, ht, hx⟩
 
-lemma verts_A : A ∈ K.verts := h.mem_verts_of_tet (h.mem 0 (by omega)) (by simp)
-lemma verts_B : B ∈ K.verts := h.mem_verts_of_tet (h.mem 0 (by omega)) (by simp)
+lemma verts_A : A ∈ K.verts := mem_verts_of_tet (h.mem 0 (by omega)) (by simp)
+lemma verts_B : B ∈ K.verts := mem_verts_of_tet (h.mem 0 (by omega)) (by simp)
 lemma verts_c {i : ℕ} (hi : i < m + 3) : c i ∈ K.verts :=
-  h.mem_verts_of_tet (h.mem i hi) (by simp)
+  mem_verts_of_tet (h.mem i hi) (by simp)
 lemma verts_c1 {i : ℕ} (hi : i < m + 3) : c (i + 1) ∈ K.verts :=
-  h.mem_verts_of_tet (h.mem i hi) (by simp)
+  mem_verts_of_tet (h.mem i hi) (by simp)
 
 lemma mem_edgeStar (ha : a ∉ K.verts) {t : Finset V} :
     t ∈ (edgeStar K A B a c m).tets ↔ (t ∈ K.tets ∧ ¬ ({A, B} : Finset V) ⊆ t) ∨
@@ -201,12 +200,12 @@ lemma mem_edgeStar (ha : a ∉ K.verts) {t : Finset V} :
   · rintro (h1 | ⟨i, hi, rfl⟩ | ⟨i, hi, rfl⟩)
     · exact ⟨.inl (.inl h1), K.card_eq t h1.1⟩
     · refine ⟨.inl (.inr ⟨i, hi, rfl⟩), ?_⟩
-      exact card_four (h.a_ne ha h.verts_A) (h.a_ne ha (h.verts_c hi)) (h.a_ne ha (h.verts_c1 hi))
+      exact card_four (a_ne ha h.verts_A) (a_ne ha (h.verts_c hi)) (a_ne ha (h.verts_c1 hi))
         (Ne.symm (h.hcA i hi)) (fun e => by
           obtain ⟨j, hj, hj'⟩ := h.c_succ_lt hi
           exact h.hcA j hj (hj' ▸ e.symm)) (h.c_succ_ne hi)
     · refine ⟨.inr ⟨i, hi, rfl⟩, ?_⟩
-      exact card_four (h.a_ne ha h.verts_B) (h.a_ne ha (h.verts_c hi)) (h.a_ne ha (h.verts_c1 hi))
+      exact card_four (a_ne ha h.verts_B) (a_ne ha (h.verts_c hi)) (a_ne ha (h.verts_c1 hi))
         (Ne.symm (h.hcB i hi)) (fun e => by
           obtain ⟨j, hj, hj'⟩ := h.c_succ_lt hi
           exact h.hcB j hj (hj' ▸ e.symm)) (h.c_succ_ne hi)
@@ -226,21 +225,21 @@ lemma idx_lt (i : ℕ) : (if i + 1 < m + 3 then i + 1 else 0) < m + 3 := by
 /-- Two cycle vertices `c i`, `c j` with `i, j < m + 3` are equal only for `i = j`. -/
 lemma idx_eq {i j : ℕ} (hi : i < m + 3) (hj : j < m + 3) (e : c i = c j) : i = j := h.hc i hi j hj e
 
-omit h in
+omit h [DecidableEq V] in
 lemma ne_of_mem_notMem {S T : Finset V} {y : V} (hT : y ∈ T) (hS : y ∉ S) : S ≠ T :=
   fun e => hS (e ▸ hT)
 
 lemma eA {i : ℕ} (hi : i < m + 3) :
     insert a (({A, B, c i, c (i + 1)} : Finset V).erase A) = {a, B, c i, c (i + 1)} := by
   have h1 := h.hcA i hi
-  have h2 : c (i + 1) ≠ A := by rw [h.succ_idx hi]; exact h.hcA _ (h.idx_lt i)
+  have h2 : c (i + 1) ≠ A := by rw [h.succ_idx hi]; exact h.hcA _ (idx_lt i)
   have h3 := h.hAB
   ext y; simp only [mem_insert, mem_erase, mem_singleton]; grind
 
 lemma eB {i : ℕ} (hi : i < m + 3) :
     insert a (({A, B, c i, c (i + 1)} : Finset V).erase B) = {a, A, c i, c (i + 1)} := by
   have h1 := h.hcB i hi
-  have h2 : c (i + 1) ≠ B := by rw [h.succ_idx hi]; exact h.hcB _ (h.idx_lt i)
+  have h2 : c (i + 1) ≠ B := by rw [h.succ_idx hi]; exact h.hcB _ (idx_lt i)
   have h3 := h.hAB
   ext y; simp only [mem_insert, mem_erase, mem_singleton]; grind
 
@@ -281,7 +280,7 @@ lemma last_eqB : ({a, B, c (m + 2), c (m + 2 + 1)} : Finset V) = {a, c (m + 2), 
 lemma last_idx {i : ℕ} (hi : i < m + 3) (h1 : c (m + 2) = c i ∨ c (m + 2) = c (i + 1))
     (h2 : c 0 = c i ∨ c 0 = c (i + 1)) : i = m + 2 := by
   rw [h.succ_idx hi] at h1 h2
-  have hl := h.idx_lt i
+  have hl := idx_lt (m := m) i
   rcases h1 with e1 | e1
   · exact (h.idx_eq (by omega) hi e1).symm
   · have k1 := h.idx_eq (by omega) hl e1
@@ -298,7 +297,7 @@ lemma isMove23_edgeStar (ha : a ∉ K.verts) :
     IsMove23 (edgeStar K A B a c m) a (c (m + 2)) (c 0) A B := by
   have hc2 := h.verts_c (i := m + 2) (by omega)
   have hc0 := h.verts_c (i := 0) (by omega)
-  refine ⟨h.a_ne ha hc2, h.a_ne ha hc0, h.a_ne ha h.verts_A, h.a_ne ha h.verts_B,
+  refine ⟨a_ne ha hc2, a_ne ha hc0, a_ne ha h.verts_A, a_ne ha h.verts_B,
     fun e => h.c0_ne_last e.symm, h.hcA _ (by omega), h.hcB _ (by omega), h.hcA _ (by omega),
     h.hcB _ (by omega), h.hAB, ?_, ?_, ?_, ?_⟩
   · rw [h.mem_edgeStar ha]; exact .inr (.inl ⟨m + 2, by omega, h.last_eq.symm⟩)
@@ -309,22 +308,22 @@ lemma isMove23_edgeStar (ha : a ∉ K.verts) :
     have h0t : c 0 ∈ t := hsub (by simp)
     rw [h.mem_edgeStar ha] at ht
     rcases ht with ⟨ht, -⟩ | ⟨i, hi, rfl⟩ | ⟨i, hi, rfl⟩
-    · exact absurd (h.mem_verts_of_tet ht hat) ha
+    · exact absurd (mem_verts_of_tet ht hat) ha
     · left
       simp only [mem_insert, mem_singleton] at h2t h0t
       have hA2 := h.hcA (m + 2) (by omega)
       have hA0 := h.hcA 0 (by omega)
       obtain rfl := h.last_idx hi
-        (by rcases h2t with e | e | e | e; exacts [absurd e (h.a_ne ha hc2).symm, absurd e hA2, .inl e, .inr e])
-        (by rcases h0t with e | e | e | e; exacts [absurd e (h.a_ne ha hc0).symm, absurd e hA0, .inl e, .inr e])
+        (by rcases h2t with e | e | e | e; exacts [absurd e (a_ne ha hc2).symm, absurd e hA2, .inl e, .inr e])
+        (by rcases h0t with e | e | e | e; exacts [absurd e (a_ne ha hc0).symm, absurd e hA0, .inl e, .inr e])
       exact h.last_eq
     · right
       simp only [mem_insert, mem_singleton] at h2t h0t
       have hB2 := h.hcB (m + 2) (by omega)
       have hB0 := h.hcB 0 (by omega)
       obtain rfl := h.last_idx hi
-        (by rcases h2t with e | e | e | e; exacts [absurd e (h.a_ne ha hc2).symm, absurd e hB2, .inl e, .inr e])
-        (by rcases h0t with e | e | e | e; exacts [absurd e (h.a_ne ha hc0).symm, absurd e hB0, .inl e, .inr e])
+        (by rcases h2t with e | e | e | e; exacts [absurd e (a_ne ha hc2).symm, absurd e hB2, .inl e, .inr e])
+        (by rcases h0t with e | e | e | e; exacts [absurd e (a_ne ha hc0).symm, absurd e hB0, .inl e, .inr e])
       exact h.last_eqB
   · intro t ht hsub
     have hAt : A ∈ t := hsub (by simp)
@@ -334,16 +333,16 @@ lemma isMove23_edgeStar (ha : a ∉ K.verts) :
     · exact hn hsub
     · simp only [mem_insert, mem_singleton] at hBt
       rcases hBt with e | e | e | e
-      · exact h.a_ne ha h.verts_B e.symm
+      · exact a_ne ha h.verts_B e.symm
       · exact h.hAB e.symm
       · exact h.hcB i hi e.symm
-      · rw [h.succ_idx hi] at e; exact h.hcB _ (h.idx_lt i) e.symm
+      · rw [h.succ_idx hi] at e; exact h.hcB _ (idx_lt i) e.symm
     · simp only [mem_insert, mem_singleton] at hAt
       rcases hAt with e | e | e | e
-      · exact h.a_ne ha h.verts_A e.symm
+      · exact a_ne ha h.verts_A e.symm
       · exact h.hAB e
       · exact h.hcA i hi e.symm
-      · rw [h.succ_idx hi] at e; exact h.hcA _ (h.idx_lt i) e.symm
+      · rw [h.succ_idx hi] at e; exact h.hcA _ (idx_lt i) e.symm
 
 
 lemma fan_hcB : ∀ i ≤ m + 2, c i ≠ B := fun i hi => h.hcB i (by omega)
@@ -381,10 +380,10 @@ lemma move23_edgeStar (ha : a ∉ K.verts) :
     mem_fanB h.fan_hcB h.fan_hc, mem_fanR]
   have hc2 := h.verts_c (i := m + 2) (by omega)
   have hc0 := h.verts_c (i := 0) (by omega)
-  have haA := h.a_ne ha h.verts_A
-  have haB := h.a_ne ha h.verts_B
-  have ha2 := h.a_ne ha hc2
-  have ha0 := h.a_ne ha hc0
+  have haA := a_ne ha h.verts_A
+  have haB := a_ne ha h.verts_B
+  have ha2 := a_ne ha hc2
+  have ha0 := a_ne ha hc0
   have hA2 := h.hcA (m + 2) (by omega)
   have hA0 := h.hcA 0 (by omega)
   have hB2 := h.hcB (m + 2) (by omega)
@@ -431,8 +430,8 @@ lemma move23_edgeStar (ha : a ∉ K.verts) :
         exact h1 h.last_eqB
       exact .inr (.inr (.inl ⟨{B, c i, c (i + 1)}, ⟨i, hi', rfl⟩, rfl⟩))
   · rintro (⟨ht, hAt⟩ | ⟨e, he, rfl⟩ | ⟨τ, ⟨i, hi, rfl⟩, rfl⟩ | ⟨τ, hτ, hτR, rfl⟩)
-    · have hat : a ∉ t := fun h' => ha (h.mem_verts_of_tet ht h')
-      exact .inr ⟨h.ne_of_mem_notMem (by simp) hat, h.ne_of_mem_notMem (by simp) hat,
+    · have hat : a ∉ t := fun h' => ha (mem_verts_of_tet ht h')
+      exact .inr ⟨ne_of_mem_notMem (by simp) hat, ne_of_mem_notMem (by simp) hat,
         .inl ⟨ht, fun hs => hAt (hs (by simp))⟩⟩
     · rcases he with rfl | rfl | ⟨i, hi, rfl⟩
       · exact .inl (.inr (.inr (by set_perm)))
@@ -460,7 +459,7 @@ lemma move23_edgeStar (ha : a ∉ K.verts) :
           simp only [mem_insert, mem_singleton, not_or]
           refine ⟨hAB, Ne.symm (h.hcA i hi), fun e' => ?_⟩
           rw [h.succ_idx hi] at e'
-          exact h.hcA _ (h.idx_lt i) e'.symm
+          exact h.hcA _ (idx_lt i) e'.symm
         have hτe : τ = {B, c i, c (i + 1)} := insert_left_inj hAτ hAi e
         rcases Nat.lt_or_ge i (m + 2) with hi2 | hi2
         · exact absurd ⟨i, by omega, hτe⟩ hτR
@@ -470,8 +469,8 @@ lemma move23_edgeStar (ha : a ∉ K.verts) :
           set_perm
       · have hBt : B ∉ insert A τ := by
           rw [mem_insert, not_or]; exact ⟨Ne.symm hAB, hBτ⟩
-        have hat : a ∉ insert A τ := fun h' => ha (h.mem_verts_of_tet ht h')
-        exact .inr ⟨h.ne_of_mem_notMem (by simp) hat, h.ne_of_mem_notMem (by simp) hat,
+        have hat : a ∉ insert A τ := fun h' => ha (mem_verts_of_tet ht h')
+        exact .inr ⟨ne_of_mem_notMem (by simp) hat, ne_of_mem_notMem (by simp) hat,
           .inl ⟨ht, fun hs => hBt (hs (by simp))⟩⟩
 
 end EdgeData
