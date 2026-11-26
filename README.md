@@ -4,7 +4,7 @@
 
 [![CI](https://github.com/LightLikeProject/lightlike/actions/workflows/ci.yml/badge.svg)](https://github.com/LightLikeProject/lightlike/actions/workflows/ci.yml)
 
-An open Lean 4 library of the mathematics of fundamental physics, mainly quantum gravity, built on [Mathlib](https://github.com/leanprover-community/mathlib4) and [Physlib](https://github.com/leanprover-community/physlib). It formalizes published results, each with its source, and proposes no new theories.
+An open Lean 4 library of the mathematics of fundamental physics, mainly quantum gravity, built on [Mathlib](https://github.com/leanprover-community/mathlib4) and [Physlib](https://github.com/leanprover-community/physlib). It formalizes published results, each with its source, and, outside the exploratory tier, proposes no new theories.
 
 So far it covers spin-foam and state-sum quantum gravity with the topology, representation theory and asymptotics it rests on, the geometry of general relativity, and operator theory for quantum systems, with first results in other approaches. Most of the code is written by AI coding agents under human direction.
 
@@ -27,13 +27,13 @@ Start with the [main results](docs/RESULTS.md#main-results).
 claude "Read AGENTS.md and follow it. Pick a ready proof task, prove it, and open a pull request."
 ```
 
-[Ready proof tasks](https://github.com/LightLikeProject/lightlike/issues?q=is%3Aissue+is%3Aopen+label%3Aready+label%3Aproof-task) · [Task board](docs/tasks/README.md) · [How to contribute](CONTRIBUTING.md)
+[Ready proof tasks](https://github.com/LightLikeProject/lightlike/issues?q=is%3Aissue+is%3Aopen+label%3Aready+label%3Aproof-task) · [Task list](docs/tasks/README.md) · [How to contribute](CONTRIBUTING.md)
 
 **Review a statement.** Lean checks proofs, not whether a statement matches its source. Compare a catalog entry with its source and [open an issue](https://github.com/LightLikeProject/lightlike/issues/new) with the entry's ID and what differs.
 
 ## How work is tracked
 
-The [Project board](https://github.com/orgs/LightLikeProject/projects) is the plan: one issue per [milestone](docs/tasks/milestones.md), in the columns Ready, In progress, Done and Not scheduled. The [v1.0](https://github.com/LightLikeProject/lightlike/issues?q=is%3Aissue+milestone%3Av1.0) milestones are worked in ranking order. Each issue holds the milestone's checklist, ticked by a script from `main`; nobody edits a status by hand. A milestone is done, and its issue closed, once every item is ticked; review items are ticked by the evidence written into them. Proof tasks link to their milestone. Details: [CONTRIBUTING.md](CONTRIBUTING.md#how-work-is-tracked).
+The [Project board](https://github.com/orgs/LightLikeProject/projects/1) is the plan: one issue per [milestone](docs/tasks/milestones.md), in the columns Ready, In progress, Done and Not scheduled. The [v1.0](https://github.com/LightLikeProject/lightlike/issues?q=is%3Aissue+milestone%3Av1.0) milestones are worked in ranking order. Each issue holds the milestone's checklist, ticked by a script from `main`; nobody edits a status by hand. A milestone is done, and its issue closed, once every item is ticked; review items are ticked by the evidence written into them. Proof tasks link to their milestone. Details: [CONTRIBUTING.md](CONTRIBUTING.md#how-work-is-tracked).
 
 ## Use
 
