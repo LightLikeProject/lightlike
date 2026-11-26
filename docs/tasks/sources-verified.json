@@ -1369,7 +1369,7 @@
   "citations_via": "Semantic Scholar"
  },
  "carroll-1997": {
-  "checked": "2026-11-20",
+  "checked": "2026-11-26",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "Lecture Notes on General Relativity",
@@ -1402,6 +1402,11 @@
    "eq. (2.34)": {
     "verified": true,
     "snippet": "(2.34) where “diag” means a diagonal matrix with the given elements. If n is the dimension of the manifold, s is the number of +1’s in the canonical form, and t is the number of −1’s, then s − t is the signature of the m",
+    "why": null
+   },
+   "eq. (3.106)": {
+    "verified": true,
+    "snippet": "(3.106) which you may check is satisfied by this example. Notice that the Ricci scalar is not only constant for the two-sphere, it is manifestly positive. We say that the sphere is “positively curved” (of course a conven",
     "why": null
    },
    "eq. (3.21)": {
@@ -1484,6 +1489,11 @@
     "snippet": "(6.54) Therefore we can drop the bars over hµν , as long as we are in this gauge. 6 WEAK FIELDS AND GRAVITATIONAL RADIATION 152 One nice feature of the transverse traceless gauge is that if you are given the components o",
     "why": null
    },
+   "eq. (7.100)": {
+    "verified": true,
+    "snippet": "(7.100) where ω = cos U cos V 1 = (cos η + cos χ) . (7.101) 2 The Minkowski metric may therefore be thought of as related by a conformal transfor- mation to the “unphysical” metric ds̄2 = ω 2 ds2 = −dη 2 + dχ2 + sin2 χ d",
+    "why": null
+   },
    "eq. (7.117)": {
     "verified": true,
     "snippet": "(7.117) (r 2 + a2 ) and we recognize the spatial part of this as flat space in ellipsoidal coordinates. They are related to Cartesian coordinates in Euclidean 3-space by x = (r 2 + a2 )1/2 sin θ cos(φ) y = (r 2 + a2 )1/2",
@@ -1529,6 +1539,11 @@
     "snippet": "(7.41) r The Killing vector whose conserved quantity is the magnitude of the angular momentum is L = ∂φ , or \u0010 \u0011 Lµ = 0, 0, 0, r 2 sin2 θ . (7.42) Since (7.40) implies that sin θ = 1 along the geodesics of interest to us",
     "why": null
    },
+   "eq. (7.87)": {
+    "verified": true,
+    "snippet": "(7.87) Technically the worldline r = 0 represents a coordinate singularity and should be covered by a different patch, but we all know what is going on so we’ll just act like r = 0 is well-behaved. Our task is made somew",
+    "why": null
+   },
    "eq. (8.1)": {
     "verified": true,
     "snippet": "(8.1) Here t is the timelike coordinate, and (u1 , u2, u3 ) are the coordinates on Σ; γij is the max- imally symmetric metric on Σ. This formula is a special case of (7.2), which we used to derive the Schwarzschild metri",
@@ -1545,7 +1560,7 @@
     "why": null
    }
   },
-  "citations": 427,
+  "citations": 431,
   "citations_via": "Semantic Scholar"
  },
  "carrozza-oriti-rivasseau-2014": {
@@ -3811,7 +3826,7 @@
   "citations_via": "OpenAlex"
  },
  "magoo-2000": {
-  "checked": "2026-11-08",
+  "checked": "2026-11-26",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "Large N Field Theories, String Theory and Gravity",
@@ -3820,9 +3835,14 @@
     "verified": true,
     "snippet": "(2.20) i=1 in the flat (p + 3)-dimensional space with metric p+1 X ds2 = −dX02 − dXp+2 2 + dXi2 . (2.21) i=1 By construction, the space has the isometry SO(2, p + 1), and it is homogeneous and isotropic. 40 Equation (2.2",
     "why": null
+   },
+   "eq. (2.24)": {
+    "verified": true,
+    "snippet": "(2.24) cos2 θ The causal structure of the spacetime does not change by a conformal rescaling on the metric. Multiplying the metric by R−2 cos2 θ, it becomes ds′2 = −dτ 2 + dθ2 + sin2 θ dΩ2 . (2.25) This is the metric of",
+    "why": null
    }
   },
-  "citations": 5795,
+  "citations": 5788,
   "citations_via": "Semantic Scholar"
  },
  "martin-dussaud-2019": {
