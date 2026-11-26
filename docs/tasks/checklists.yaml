@@ -383,7 +383,7 @@ milestones:
       - id: m4
         kind: main
         text: "In that generality the divergence of the Einstein tensor is zero"
-        decls: []
+        decls: [Lightlike.einstein_divergence_free_any, Lightlike.einstein_divergence_free_trans]
         hint: "Close: Lightlike.einstein_divergence_free_provedW, but the model space is fixed to Fin n → ℝ (not any finite-dimensional space)."
       - id: m5
         kind: main

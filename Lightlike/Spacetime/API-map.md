@@ -34,7 +34,7 @@ For a smooth connection on a Hausdorff manifold modelled on a finite-dimensional
 
 For a Levi-Civita connection of a smooth Lorentzian metric (same hypotheses) the first Bianchi identity holds, the lowered curvature is antisymmetric in each pair of slots and symmetric under exchange of the pairs, and the Ricci tensor is symmetric [14]. For any model with corners (boundary and corners allowed, no Hausdorff hypothesis) the same holds for a locally smooth connection that is torsion free and compatible with the metric, and the curvature is computed by any fields smooth near the point [131]; the covariant derivative of the Levi-Civita connection is smooth there [132]. The closed unit segment is an example with boundary: the identities hold at its boundary points [133]. The line with two origins is a non-Hausdorff example on which the identities also hold [134].
 
-In a chart of a manifold modelled on `ℝⁿ` (Hausdorff), the components of the curvature of a Levi-Civita connection are the coordinate Riemann tensor, its Ricci tensor and scalar curvature are the coordinate ones, and the Einstein equations hold on the manifold iff the coordinate vacuum equations hold in every chart [15]; for any model with corners the same agreement holds for the Riemann, Ricci and scalar curvature of a Levi-Civita connection [128].
+In a chart of a manifold modelled on `ℝⁿ` (Hausdorff), the components of the curvature of a Levi-Civita connection are the coordinate Riemann tensor, its Ricci tensor and scalar curvature are the coordinate ones, and the Einstein equations hold on the manifold iff the coordinate vacuum equations hold in every chart [15]; for any model with corners the same agreement holds for the Riemann, Ricci and scalar curvature of a Levi-Civita connection [128]. The divergence of the Einstein tensor vanishes on a manifold with corners modelled on any finite-dimensional space, by transport of the theorem for Fin n to R along a linear equivalence [135].
 
 For a smooth torsion-free connection the second Bianchi identity holds: the cyclic sum of the covariant derivative of the curvature vanishes [16].
 
@@ -281,6 +281,7 @@ three keep infinity, while a special conformal transformation moves the point at
 132. Lightlike/Spacetime/Corners/LeviCivitaSmooth.lean - `contMDiffAt_leviCivitaW`: the covariant derivative of the Levi-Civita connection is smooth on a manifold modelled with corners on R^n.
 133. Lightlike/Spacetime/Corners/BoundaryExample.lean - `Seg`, `IB`, `segMetric`, `segment_identities`, `segment_exists_leviCivita`: the closed unit segment as a manifold with boundary with its metric, and the curvature identities of the Corners layer on it.
 134. Lightlike/Spacetime/Corners/TwoOrigins.lean - `TwoOrigins`, `not_t2_twoOrigins`, `twoOriginsMetric`, `twoOrigins_identities`, `twoOrigins_exists_leviCivita`: the line with two origins, a non-Hausdorff manifold, with its metric and the curvature identities of the Corners layer on it.
+135. Lightlike/Spacetime/Corners/RicciTransport.lean - `einstein_divergence_free_any`, `einstein_divergence_free_trans`: the Einstein tensor of a locally smooth Levi-Civita connection on a manifold modelled with corners on any finite-dimensional real normed space is divergence free, by transport of the theorem for Fin n to R along a linear equivalence.
 
 ## References
 
