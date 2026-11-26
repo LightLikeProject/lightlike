@@ -7150,6 +7150,45 @@
   review: kernel-checked
   note: "Trust check (a worked example). The manifold is the whole unit 2-sphere of Mathlib (EuclideanSpace.sphere in R^3, atlas of the two stereographic charts) with the model transported to Fin 2 -> R (I2), and the metric is r^2 times the pullback of the Euclidean inner product by the inclusion (roundMetric2I). For every locally smooth connection that is Levi-Civita for it, scalarCurvatureAt equals 2/r^2 at every point. Proof: scalarCurvatureAt_coordW (the intrinsic scalar curvature is the coordinate one in every chart), the conformal factor 16 r^2/(|y|^2+4)^2 of the stereographic chart from the antipode on its whole target R^2 (the chart sends the point to the origin), and the coordinate scalar curvature of f delta at a critical point of f. KIND representation: the sphere of radius r is the unit sphere with the metric r^2 h (isometric to it), r nonzero; Mathlib's atlas has no sphere of radius r. Non-vacuity: roundSphere2_exists_leviCivita, the Levi-Civita connection of the metric is locally smooth and Levi-Civita."
   since: unreleased
+- id: LL-0555
+  title: The smooth Killing fields of a metric of any signature are closed under sums and real multiples and form a real Lie algebra under the bracket of vector fields
+  area: Spacetime
+  file: Lightlike/Spacetime/KillingLieAlgebra.lean
+  decls: [Lightlike.IsKillingNear.add, Lightlike.IsKillingNear.smul, Lightlike.killingSubmodule, Lightlike.instLieRingKilling, Lightlike.instLieAlgebraKilling]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (5.46)", check: "commutator"}
+  review: kernel-checked
+  note: "The smooth fields that are Killing near a point (the Lie derivative of g vanishes near the point on all smooth fields) are closed under sums and real multiples (IsKillingNear.add, .smul, from the additivity of the Lie derivative in the field) and, with the bracket of LL-0172, form a real vector space killingSubmodule with a LieRing and LieAlgebra structure; the Jacobi identity is Mathlib's mlieBracket_jacobi. Carroll states only that the commutator of Killing fields is Killing (p. 141, after eq. (5.46)), not the linear structure or the Jacobi identity, which are the standard properties of the bracket. Limits: the carrier is the smooth fields that are Killing near the given point (germs are not identified), so it is a Lie algebra of fields defined on a neighbourhood of that point; it is not a statement about global Killing fields or the dimension bound. Comparison with a source for the Lie algebra structure is pending."
+  since: unreleased
+- id: LL-0556
+  title: The Poincare ball model of hyperbolic space, the conformal-time chart of de Sitter space and the Poincare patch of anti-de Sitter space are coordinate metrics (smooth, symmetric, invertible) on their open domains
+  area: Spacetime
+  file: Lightlike/Spacetime/MaximallySymmetric.lean
+  decls: [Lightlike.hyperbolicMetric, Lightlike.deSitterMetric, Lightlike.antiDeSitterMetric, Lightlike.isCoordMetric_hyperbolic, Lightlike.isCoordMetric_deSitter, Lightlike.isCoordMetric_antiDeSitter]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (8.1)", check: "maximally symmetric"}
+  review: kernel-checked
+  note: "The metrics 4 delta / (1 - |x|^2)^2 on the open unit ball of R^n, (L^2 / x_0^2) eta on x_0 < 0 and (L^2 / x_last^2) eta on x_last > 0 (L nonzero) are coordinate metrics on their domains. This is the definitional piece of GE12: it states that the three formulas define metrics, not that they are maximally symmetric or of constant curvature (+1/L^2, -1/L^2, -1), which is not proved here. The formulas are the standard conformally flat forms; the comparison of the curvature values with the cited section (Carroll, chapter 8, maximally symmetric spaces) is pending, and no source was read at a location for these charts. Limits: one chart each, with no global statement."
+  since: unreleased
+- id: LL-XXXX
+  title: Constant curvature and maximal symmetry of a pseudo-Riemannian manifold, and constant curvature from the coordinate curvature in every chart
+  area: Spacetime
+  file: Lightlike/Spacetime/ConstantCurvature.lean
+  decls: [Lightlike.HasConstantCurvature, Lightlike.IsMaximallySymmetric, Lightlike.HasConstantCurvature.of_charts, Lightlike.curvatureAt_of_chart, Lightlike.hasConstantCurvature_minkowski]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (8.1)", check: "maximally symmetric"}
+  review: kernel-checked
+  note: "For a smooth symmetric nondegenerate metric (any signature) on a manifold modelled on Fin n -> R (any model with corners): HasConstantCurvature g K says that every locally smooth Levi-Civita connection has R(X, Y) Z = K (g(Y, Z) X - g(X, Z) Y) at every point (the sign convention of curvatureAt); IsMaximallySymmetric g K adds n(n+1)/2 smooth Killing fields of leviCivita g that are linearly independent (at most n(n+1)/2 exist on a connected manifold, finrank_killingFieldSpace_le for the model of R^n). HasConstantCurvature.of_charts: if in every chart the coordinate Riemann tensor of the coordinate metric is R^rho_{sigma mu nu} = K (delta^rho_mu g_{sigma nu} - delta^rho_nu g_{sigma mu}), the manifold has constant curvature K (through riemann_coord_compW, the chart formula of the curvature). Non-vacuity: Minkowski space has constant curvature 0. Comparison with the cited section (Carroll, chapter 8) pending: no source was read at the location for these definitions."
+  since: unreleased
 - id: LL-XXXX
   title: The metric induced by an immersion into a space with a symmetric bilinear form, and its nondegeneracy on the tangent space of a quadric
   area: Spacetime

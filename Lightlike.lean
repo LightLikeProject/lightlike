@@ -334,6 +334,9 @@ import Lightlike.Geometry.HeatKernel.Theta
 import Lightlike.Geometry.HeatKernel.Torus
 import Lightlike.Geometry.HeatKernel.ShiftedTheta
 import Lightlike.Geometry.HeatKernel.Unique
+import Lightlike.Geometry.FlatTorus
+import Lightlike.Geometry.FlatTorusMetric
+import Lightlike.Geometry.FlatTorusTests
 import Lightlike.Geometry.ProjectiveSpace
 import Lightlike.GR.ColourAlgebra
 import Lightlike.GR.ComplexMinkowski
@@ -1207,6 +1210,9 @@ import Lightlike.PonzanoRegge.TriangulationIndependence.Moves
 import Lightlike.PonzanoRegge.TriangulationIndependence.Values
 import Lightlike.PonzanoRegge.TriangulationIndependence.Main
 import Lightlike.PonzanoRegge.TriangulationIndependence.StellarForward
+import Lightlike.PonzanoRegge.TriangulationIndependence.Relabel
+import Lightlike.PonzanoRegge.TriangulationIndependence.Rename
+import Lightlike.PonzanoRegge.TriangulationIndependence.StellarEdge
 import Lightlike.PonzanoRegge.TriangulationIndependence.NonVacuity
 import Lightlike.PonzanoRegge.TriangulationIndependence.TreeConnected
 import Lightlike.PonzanoRegge.TriangulationIndependence.Cocycle
@@ -1764,6 +1770,7 @@ import Lightlike.Spacetime.ChartConnection
 import Lightlike.Spacetime.ChartCovariant
 import Lightlike.Spacetime.ChartCurvature
 import Lightlike.Spacetime.Connection
+import Lightlike.Spacetime.ConstantCurvature
 import Lightlike.Spacetime.Coordinates
 import Lightlike.Spacetime.Curvature
 import Lightlike.Spacetime.CurvatureWithin
@@ -2374,6 +2381,8 @@ import Lightlike.Geodesic.LocalCausality
 import Lightlike.Geodesic.LocalCausalityManifold
 import Lightlike.Geodesic.NullRigidity
 import Lightlike.Geodesic.RadialUnique
+import Lightlike.Geodesic.SquaredDistance
+import Lightlike.Geodesic.SquaredDistanceTests
 import Lightlike.Geodesic.UniformNormalChart
 import Lightlike.Geodesic.UniformTimeBall
 import Lightlike.Geodesic.Radial
