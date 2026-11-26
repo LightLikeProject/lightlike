@@ -7139,3 +7139,29 @@
   review: kernel-checked
   note: "GE7 m2 (main statement), assembled from the layers NullCone (factor, angle, unit direction), NullConeAction (group law) and NullConeConformal (the differential and the factor ρ⁻²). Comparison pending (no source was read at a cited location): the embedding of anti-de Sitter space as the quadric in R^{2,3} and of its conformal boundary as the projectivised null cone is Blau, Lecture Notes on General Relativity, Section 39.1 and 39.3.2, to be read before the comparison is claimed. Limits: SO(2,3) is the set of matrices Λ with Λᵀ η' Λ = η' (all of O(2,3), not a group type); the boundary is the circle times the sphere (no universal cover); the differential is stated through explicit formulas for the velocities dτ' and dω' (with their derivative statements along the image curve t ↦ Λ (X + t T) in NullConeConformal), not as an equation of metrics on a manifold; the relation to the boundary metric adsBdyMetric is checked on the time translation (adsAngleShift) only."
   since: unreleased
+- id: LL-XXXX-a
+  title: The smooth Killing fields of a metric of any signature are closed under sums and real multiples and form a real Lie algebra under the bracket of vector fields
+  area: Spacetime
+  file: Lightlike/Spacetime/KillingLieAlgebra.lean
+  decls: [Lightlike.IsKillingNear.add, Lightlike.IsKillingNear.smul, Lightlike.killingSubmodule, Lightlike.instLieRingKilling, Lightlike.instLieAlgebraKilling]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (5.46)", check: "commutator"}
+  review: kernel-checked
+  note: "The smooth fields that are Killing near a point (the Lie derivative of g vanishes near the point on all smooth fields) are closed under sums and real multiples (IsKillingNear.add, .smul, from the additivity of the Lie derivative in the field) and, with the bracket of LL-0172, form a real vector space killingSubmodule with a LieRing and LieAlgebra structure; the Jacobi identity is Mathlib's mlieBracket_jacobi. Carroll states only that the commutator of Killing fields is Killing (p. 141, after eq. (5.46)), not the linear structure or the Jacobi identity, which are the standard properties of the bracket. Limits: the carrier is the smooth fields that are Killing near the given point (germs are not identified), so it is a Lie algebra of fields defined on a neighbourhood of that point; it is not a statement about global Killing fields or the dimension bound. Comparison with a source for the Lie algebra structure is pending."
+  since: unreleased
+- id: LL-XXXX-b
+  title: The Poincare ball model of hyperbolic space, the conformal-time chart of de Sitter space and the Poincare patch of anti-de Sitter space are coordinate metrics (smooth, symmetric, invertible) on their open domains
+  area: Spacetime
+  file: Lightlike/Spacetime/MaximallySymmetric.lean
+  decls: [Lightlike.hyperbolicMetric, Lightlike.deSitterMetric, Lightlike.antiDeSitterMetric, Lightlike.isCoordMetric_hyperbolic, Lightlike.isCoordMetric_deSitter, Lightlike.isCoordMetric_antiDeSitter]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (8.1)", check: "maximally symmetric"}
+  review: kernel-checked
+  note: "The metrics 4 delta / (1 - |x|^2)^2 on the open unit ball of R^n, (L^2 / x_0^2) eta on x_0 < 0 and (L^2 / x_last^2) eta on x_last > 0 (L nonzero) are coordinate metrics on their domains. This is the definitional piece of GE12: it states that the three formulas define metrics, not that they are maximally symmetric or of constant curvature (+1/L^2, -1/L^2, -1), which is not proved here. The formulas are the standard conformally flat forms; the comparison of the curvature values with the cited section (Carroll, chapter 8, maximally symmetric spaces) is pending, and no source was read at a location for these charts. Limits: one chart each, with no global statement."
+  since: unreleased
