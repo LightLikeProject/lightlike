@@ -432,7 +432,7 @@ def summary(reg: list[dict]) -> str:
             + (f" and {count(c['stated'], 'stated target', 'stated targets')} (the statement is "
                f"defined in Lean, the proof is open)" if c['stated'] else "") +
             f". Lean's kernel has checked every proof. Statements are "
-            f"reviewed against their sources, since the kernel cannot check that a statement matches "
+            f"reviewed against their sources by agents, since the kernel cannot check that a statement matches "
             f"its source. {human}, and a review of any entry is welcome "
             f"([how to report a mismatch](#review)).")
     return textwrap.fill(text, 100, break_on_hyphens=False)
