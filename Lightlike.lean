@@ -2338,6 +2338,7 @@ import Lightlike.Spacetime.Corners.CurvatureTransport
 import Lightlike.Spacetime.Corners.LeviCivitaTransport
 import Lightlike.Spacetime.Corners.CovDerivBilinTransport
 import Lightlike.Spacetime.Corners.RicciTransport
+import Lightlike.Spacetime.Corners.ChartTransport
 import Lightlike.Spacetime.Corners.Bridge
 import Lightlike.Spacetime.Corners.ChartAgreement
 import Lightlike.Spacetime.Corners.ChartConnection
