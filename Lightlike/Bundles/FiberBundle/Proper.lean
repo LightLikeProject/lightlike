@@ -10,7 +10,7 @@ import Lightlike.Bundles.FiberBundle.TrivializationExtra
 /-!
 # Proper projections of bundles with compact fibre
 
-Adapted from Tau Ceti (`TauCeti/Topology/FiberBundle/Proper.lean`,
+Adapted from Tau Ceti (module TauCeti.Topology.FiberBundle.Proper,
 revision 2a9233e5b, Apache 2.0 license).
 
 A map `p : Z → B` that is locally trivial with compact fibre `F`, in the sense that every point of

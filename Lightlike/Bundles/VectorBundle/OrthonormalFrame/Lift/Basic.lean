@@ -11,7 +11,7 @@ import Lightlike.Bundles.VectorBundle.OrthonormalFrame.Isometry
 /-!
 # Lifts of orthonormal frame bundles along a structure group homomorphism
 
-Adapted from Tau Ceti (`TauCeti/Topology/VectorBundle/OrthonormalFrame/Lift/Basic.lean`,
+Adapted from Tau Ceti (module TauCeti.Topology.VectorBundle.OrthonormalFrame.Lift.Basic,
 revision 2a9233e5b, Apache 2.0 license).
 
 Let `E → X` be a real vector bundle with model fibre `F` and fibre inner products, let `G` be a

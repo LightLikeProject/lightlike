@@ -15,7 +15,7 @@ import Lightlike.Bundles.Maps.IsEmpty
 /-!
 # The orthonormal frame bundle of a Riemannian or Hermitian vector bundle
 
-Adapted from Tau Ceti (`TauCeti/Topology/VectorBundle/OrthonormalFrame/Basic.lean`,
+Adapted from Tau Ceti (module TauCeti.Topology.VectorBundle.OrthonormalFrame.Basic,
 revision 2a9233e5b, Apache 2.0 license).
 
 Let `𝕜` be `ℝ` or `ℂ` (an `RCLike` field), let `E → B` be a vector bundle over `𝕜` with model fibre
