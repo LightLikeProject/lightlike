@@ -225,6 +225,25 @@ def flipAll (K : Complex3 V) (v : V) (g : Finset V → V) (Ed : Finset (Finset V
   card_eq _ h := (mem_filter.1 h).2
 
 
+
+/-- Two distinct triangles share at most one edge. -/
+lemma edge_eq_of_inter {τ τ' e e' : Finset V} (h3 : #τ = 3) (h3' : #τ' = 3) (hne : τ ≠ τ')
+    (he : e ⊆ τ ∩ τ') (he' : e' ⊆ τ ∩ τ') (h2 : #e = 2) (h2' : #e' = 2) : e = e' := by
+  have hle : #(τ ∩ τ') ≤ 2 := by
+    by_contra hc
+    have h3i : #(τ ∩ τ') = 3 := le_antisymm (h3 ▸ card_le_card inter_subset_left) (by omega)
+    have e1 : τ ∩ τ' = τ := eq_of_subset_of_card_le inter_subset_left (by omega)
+    have e2 : τ ∩ τ' = τ' := eq_of_subset_of_card_le inter_subset_right (by omega)
+    exact hne (e1.symm.trans e2)
+  have x1 := eq_of_subset_of_card_le he (by omega)
+  have x2 := eq_of_subset_of_card_le he' (by omega)
+  rw [x1, x2]
+
+lemma FlipData.mono {Ed Ed' : Finset (Finset V)} {opp : Finset V → Finset V × Finset V}
+    (h : FlipData K v g Ed opp) (hE : Ed' ⊆ Ed) : FlipData K v g Ed' opp :=
+  ⟨h.stack, h.hv, h.closed, fun e he => h.edge e (hE he), fun e he => h.fst e (hE he),
+    fun e he => h.snd e (hE he), fun e he => h.ne e (hE he)⟩
+
 namespace FlipData
 
 variable {Ed : Finset (Finset V)} {opp : Finset V → Finset V × Finset V}
@@ -257,7 +276,86 @@ lemma ne_v_of_fresh {x : V} (hx : x ∉ K.verts) : x ≠ v := fun e => hx (e ▸
 
 lemma card_e {e : Finset V} (he : e ∈ Ed) : #e = 2 := (mem_edges2.1 (h.edge e he)).choose_spec.2.2
 
+
+lemma x_verts {e : Finset V} (he : e ∈ Ed) {x : V} (hx : x ∈ e) : x ∈ K.verts :=
+  mem_biUnion.2 ⟨_, (Complex3.mem_link.1 (h.fst e he).1).2,
+    mem_insert_of_mem ((h.fst e he).2 hx)⟩
+
+/-- Membership in `flipAll`. -/
+lemma mem_flipAll {t : Finset V} :
+    t ∈ (flipAll K v g Ed opp).tets ↔
+      (t ∈ (stackAll K (starTets K v) g).tets ∧ ∀ e ∈ Ed, t ∉ flipRemoved v g opp e) ∨
+        ∃ e ∈ Ed, t ∈ flipAdded v g opp e := by
+  simp only [flipAll, mem_filter, mem_union, mem_sdiff, mem_biUnion, not_exists, not_and]
+  constructor
+  · rintro ⟨h1 | h1, -⟩
+    · exact .inl h1
+    · exact .inr h1
+  · rintro (h1 | ⟨e, he, ht⟩)
+    · exact ⟨.inl h1, (stackAll K (starTets K v) g).card_eq t h1.1⟩
+    · refine ⟨.inr ⟨e, he, ht⟩, ?_⟩
+      have ha := h.a_fresh he
+      have hb := h.b_fresh he
+      have hab := h.a_ne_b he
+      simp only [flipAdded, mem_insert, mem_image] at ht
+      rcases ht with rfl | ⟨x, hx, rfl⟩
+      · rw [card_insert_of_notMem (by
+          rw [mem_insert, not_or]; exact ⟨hab, h.notMem_of_fresh ha he⟩),
+          card_insert_of_notMem (h.notMem_of_fresh hb he), h.card_e he]
+      · have hxv := h.x_verts he hx
+        apply card_four
+        · exact fun e' => h.v_notMem he (e' ▸ hx)
+        · exact (h.ne_v_of_fresh ha).symm
+        · exact (h.ne_v_of_fresh hb).symm
+        · exact fun e' => ha (e' ▸ hxv)
+        · exact fun e' => hb (e' ▸ hxv)
+        · exact hab
+
 end FlipData
+
+
+/-- The link triangles through an edge `e ∈ Ed` are its two triangles `opp e`. -/
+lemma FlipData.two {Ed : Finset (Finset V)} {opp : Finset V → Finset V × Finset V}
+    (h : FlipData K v g Ed opp) {e : Finset V} (he : e ∈ Ed) {σ : Finset V}
+    (hσ : σ ∈ K.link v) (heσ : e ⊆ σ) : σ = (opp e).1 ∨ σ = (opp e).2 := by
+  have h2 := h.closed e (h.edge e he)
+  have hsub : ({(opp e).1, (opp e).2} : Finset (Finset V)) ⊆ (K.link v).filter (e ⊆ ·) := by
+    intro u hu
+    simp only [mem_insert, mem_singleton] at hu
+    rcases hu with rfl | rfl
+    · exact mem_filter.2 (h.fst e he)
+    · exact mem_filter.2 (h.snd e he)
+  have heq := eq_of_subset_of_card_le hsub (by rw [h2, card_pair (h.ne e he)])
+  have : σ ∈ ({(opp e).1, (opp e).2} : Finset (Finset V)) := heq ▸ mem_filter.2 ⟨hσ, heσ⟩
+  simpa using this
+
+/-- The pair of fresh labels of a flip determines its edge. -/
+lemma FlipData.edge_of_labels {Ed : Finset (Finset V)} {opp : Finset V → Finset V × Finset V}
+    (h : FlipData K v g Ed opp) {e e' : Finset V} (he : e ∈ Ed) (he' : e' ∈ Ed)
+    (h1 : flipA v g opp e' = flipA v g opp e ∨ flipA v g opp e' = flipB v g opp e)
+    (h2 : flipB v g opp e' = flipA v g opp e ∨ flipB v g opp e' = flipB v g opp e) : e' = e := by
+  have inj : ∀ {σ σ' : Finset V}, σ ∈ K.link v → σ' ∈ K.link v → g (insert v σ) = g (insert v σ') →
+      σ = σ' := fun hσ hσ' e => insert_left_inj (Complex3.mem_link.1 hσ).1
+        (Complex3.mem_link.1 hσ').1 (h.stack.inj _ (star_mem hσ) _ (star_mem hσ') e)
+  have c1 := card_of_mem_link (h.fst e he).1
+  have c2 := card_of_mem_link (h.snd e he).1
+  have k1 : (opp e').1 = (opp e).1 ∨ (opp e').1 = (opp e).2 := by
+    rcases h1 with e1 | e1
+    · exact .inl (inj (h.fst e' he').1 (h.fst e he).1 e1)
+    · exact .inr (inj (h.fst e' he').1 (h.snd e he).1 e1)
+  have k2 : (opp e').2 = (opp e).1 ∨ (opp e').2 = (opp e).2 := by
+    rcases h2 with e2 | e2
+    · exact .inl (inj (h.snd e' he').1 (h.fst e he).1 e2)
+    · exact .inr (inj (h.snd e' he').1 (h.snd e he).1 e2)
+  have hsub' : e' ⊆ (opp e).1 ∩ (opp e).2 := by
+    have hne' := h.ne e' he'
+    rcases k1 with k1 | k1 <;> rcases k2 with k2 | k2
+    · exact absurd (k1.trans k2.symm) hne'
+    · rw [← k1, ← k2]; exact subset_inter (h.fst e' he').2 (h.snd e' he').2
+    · rw [← k1, ← k2, inter_comm]; exact subset_inter (h.fst e' he').2 (h.snd e' he').2
+    · exact absurd (k1.trans k2.symm) hne'
+  exact edge_eq_of_inter c1 c2 (h.ne e he) hsub' (subset_inter (h.fst e he).2 (h.snd e he).2)
+    (h.card_e he') (h.card_e he)
 
 end Flip
 
