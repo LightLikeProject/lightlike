@@ -791,7 +791,7 @@ milestones:
       - id: r1
         kind: review
         text: "The statement WignerClassification is compared with Wigner (1939) and Weinberg, QFT I, section 2.5: the list of positive-energy irreducible classes (massive spin s, massless helicity h, and the cases left out) matches the source"
-        review_evidence: null
+        review_evidence: "Compared WignerClassification (ClassificationStatement.lean) with Wigner, Ann. Math. 40 (1939) 149-204, read from the JSTOR scan: Section 3, pp. 157-158 (the four classes by the orbit of the momentum), Section 6, pp. 186-187 (the subclasses P_+, P_-, 0_+, 0_-, 0_0), Section 7A, p. 197 (little-group representations D(0), D(1/2), D(1), ...) and Section 7B, p. 198, The final result. Result: the list matches. EquivMassive m>0, n in N is P_+^j with j = n/2; EquivMassless h in Z is 0_+^s with s = h/2 (both signs and half-integers); MasslessNotHelicity is the continuous-spin classes 0_+(Xi) and 0_+(Xi) double-valued, given only negatively; the translation-trivial case is Wigner 0_0, which Wigner leaves undetermined; negative-energy and space-like classes are excluded by positive energy. Differences, stated in the docstring and in LL-0313: continuous spin only negatively, only completeness (irreducibility is LL-0310 and LL-0311), no inequivalence of different parameters. Not compared: Weinberg, QFT I, Section 2.5 (no copy read), pending."
       - id: c1
         kind: catalogue
         text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
