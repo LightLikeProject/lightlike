@@ -65,7 +65,9 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
 manifold is Hausdorff, second countable and without boundary, the standing hypotheses of Hawking and
 Ellis. -/
 theorem isCauchySurface_iff_domainDep_eq_univ {S : Set M} (h : IsAchronal T S) :
-    IsCauchySurface T S ↔ domainDep T S = Set.univ := by
-  sorry
+    IsCauchySurface T S ↔ domainDep T S = Set.univ :=
+  isCauchySurface_iff_domainDep_eq_univ_of_push T
+    (fun _ _ _ hxy hyz => causalFuture_chronFuture_trans_of_isOpen T (isOpen_chronFuture_aux T.neg) hxy hyz)
+    (fun _ _ _ hxy hyz => chronFuture_causalFuture_trans_of_isOpen T (isOpen_chronFuture_aux T) hxy hyz) h
 
 end Lightlike.Causal
