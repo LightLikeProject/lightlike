@@ -334,6 +334,9 @@ import Lightlike.Geometry.HeatKernel.Theta
 import Lightlike.Geometry.HeatKernel.Torus
 import Lightlike.Geometry.HeatKernel.ShiftedTheta
 import Lightlike.Geometry.HeatKernel.Unique
+import Lightlike.Geometry.FlatTorus
+import Lightlike.Geometry.FlatTorusMetric
+import Lightlike.Geometry.FlatTorusTests
 import Lightlike.Geometry.ProjectiveSpace
 import Lightlike.GR.ColourAlgebra
 import Lightlike.GR.ComplexMinkowski
