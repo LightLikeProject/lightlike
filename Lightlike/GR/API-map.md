@@ -121,6 +121,8 @@ In the compactified coordinates `(T, R, θ, φ)` of Minkowski space, future null
 point of retarded time `u` [59]. Global anti-de Sitter space with `r = tan ρ` has the metric
 `cos⁻² ρ (-dt² + dρ² + sin² ρ dΩ²)` [60], and the compactified metric restricts on the boundary
 `ρ = π/2` to `-dt² + dθ² + sin² θ dφ²`, the metric of `ℝ × S²` [61].
+A Lorentz matrix with positive time-time entry sends the future null vector `(1, n)`, `|n| = 1`, to `K (1, n')`
+with `K > 0` and `|n'| = 1` [62].
 
 ## Lean References
 
@@ -247,6 +249,8 @@ point of retarded time `u` [59]. Global anti-de Sitter space with `r = tan ρ` h
     `compactify_tendsto_scriPoint`
 60. Lightlike/GR/AdSConformal.lean - `pullback_adsGlobal`
 61. Lightlike/GR/AdSConformalBoundary/AdSBoundary.lean - `adsCompact_boundary`
+62. Lightlike/GR/AdSConformalBoundary/NullDirection.lean - `nullDirFactor_pos`, `mulVec_nullVec_eq`,
+    `sum_sq_nullDirMap`
 
 ## References
 
