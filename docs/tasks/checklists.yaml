@@ -55,7 +55,7 @@ milestones:
       - id: t1
         kind: trust
         text: "The round 2-sphere of radius r, as a manifold with its Levi-Civita connection, has scalar curvature 2/r²"
-        decls: []
+        decls: [Lightlike.roundSphere_scalarCurvatureAt, Lightlike.roundSphere_coordMetric]
         hint: "Close but not this: Lightlike.Test.sphere_scalar (coordinate formula on the (θ, φ) chart), scalarCurv_sphere (sphere in ℝ³ by the Gauss equation), scalarCurvature_stereo_two (radius 1 only). Missing: the statement for the intrinsic scalarCurvatureAt."
       - id: t2
         kind: trust
@@ -64,7 +64,7 @@ milestones:
       - id: t3
         kind: trust
         text: "A connection with torsion gives a different Ricci tensor from the Levi-Civita connection of the same metric"
-        decls: []
+        decls: [Lightlike.torsion_connection_ricci_ne, Lightlike.twisted_torsion_ne_zero, Lightlike.twisted_ricciAt_e1]
       - id: c1
         kind: catalogue
         text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
@@ -103,12 +103,12 @@ milestones:
       - id: t2
         kind: trust
         text: "Anti-de Sitter is not globally hyperbolic"
-        decls: []
+        decls: [Lightlike.adsTwo_not_globallyHyperbolic, Lightlike.adsTwoMetric, Lightlike.adsTwoOrientation]
         hint: "Missing: no anti-de Sitter spacetime with a causal statement. Existing: Lightlike.adsBoundary and Lightlike.adsCompact_boundary (coordinate-level conformal boundary), Lightlike.Causal.IsGloballyHyperbolic (the predicate to negate)."
       - id: t3
         kind: trust
         text: "A spacetime with closed timelike curves (Minkowski with time rolled up) violates chronology"
-        decls: []
+        decls: [Lightlike.timeCylinder_not_isChronological, Lightlike.timeCylinderMetric, Lightlike.timeCylinderOrientation]
         hint: "Missing: the rolled-up Minkowski spacetime and x ∈ chronFuture x. Existing: Lightlike.Causal.IsChronological, Lightlike.Causal.chronFuture; a CTC cylinder exists in GreenOperators/Cylinder.lean but does not use them."
       - id: c1
         kind: catalogue
@@ -481,8 +481,8 @@ milestones:
       - id: p2
         kind: piece
         text: "The induced metric on a hypersurface is defined"
-        decls: []
-        hint: "No separate definition; g restricted to tangent fields via Lightlike.Hypersurface.IsTangentNear (hypersurface = level set of a smooth function, no manifold structure on the leaf)."
+        decls: [Lightlike.Hypersurface.levelTangent, Lightlike.Hypersurface.inducedMetric, Lightlike.Hypersurface.inducedMetric_separating_of_isUnitNormal, Lightlike.Hypersurface.inducedMetric_separating_of_nonnull]
+        hint: "Defined pointwise, without a manifold structure on the leaf: g restricted to the kernel of the differential of the defining function (levelTangent); nondegenerate when the normal is non-null."
       - id: p3
         kind: piece
         text: "The second fundamental form (extrinsic curvature) K(v,w) = g(∇_v n, w) is defined"
@@ -544,7 +544,7 @@ milestones:
       - id: m2
         kind: main
         text: "The critical points of the action with fixed boundary data are the vacuum Einstein equations with Λ"
-        decls: []
+        decls: [Lightlike.IsEHStationary, Lightlike.isEHStationary_iff]
         hint: "Close: Lightlike.isEHCritical_iff (ℝⁿ, compactly supported variations), Lightlike.isEHCriticalOnBall_iff (ball), Lightlike.eh_ghy_variation_manifold (fixed boundary, Gibbons-Hawking-York corrected). Missing: critical points iff Einstein equations on a manifold region."
       - id: p1
         kind: piece
@@ -679,7 +679,7 @@ milestones:
       - id: t3
         kind: trust
         text: "A complementary-series parameter outside (0, 1/2) gives a non-unitary representation"
-        decls: []
+        decls: [Lightlike.Lorentz.SL2RPlancherel.no_invariant_form, Lightlike.Lorentz.SL2RPlancherel.no_invariant_form_smooth, Lightlike.Lorentz.SL2RPlancherel.no_invariant_form_smooth_boundary]
         hint: "Close but not this: Lightlike.Lorentz.SL2RPlancherel.no_invariant_form and no_invariant_form_smooth show no invariant form (infinitesimal, form only assumed skew for E, F, H) for |tau| > 1 (sigma > 1/2). Missing: the boundary and sigma < 0 cases, and a statement about unitarity of the group representation."
       - id: c1
         kind: catalogue
@@ -976,8 +976,7 @@ milestones:
       - id: m4
         kind: main
         text: "(S1)* is isometrically isomorphic to B(H) (trace pairing), as a lockable statement"
-        decls: []
-        hint: "Parts exist but no single statement and no lock task: Lightlike.OperatorAlgebras.TraceClass.TraceClass.tracePairingLinearIsometry (isometry) and Lightlike.OperatorAlgebras.TraceClass.TraceClass.tracePairing_surjective_concrete (surjective)."
+        decls: [Lightlike.OperatorAlgebras.TraceClass.TraceClass.traceClass_dual_eq_bounded, Lightlike.OperatorAlgebras.TraceClass.TraceClass.tracePairingLinearIsometryEquiv]
       - id: p1
         kind: piece
         text: "S1 and S2 are defined and closed under sums and scalar multiples, with a norm bound for the ideal property"
@@ -1136,8 +1135,7 @@ milestones:
       - id: t1
         kind: trust
         text: "The number k of negative signs equals the number of negative eigenvalues of the Hessian"
-        decls: []
-        hint: "Missing: the eigenvalue form. Close: Lightlike.Morse.morse_diagonal gives k = sigNeg of the Hessian (largest dimension of a negative-definite subspace); its docstring says the eigenvalue form is not proved."
+        decls: [Lightlike.Morse.sigNeg_hessQuad_eq_card_neg_eigenvalues, Lightlike.Morse.morse_diagonal_eigenvalues]
       - id: t2
         kind: trust
         text: "x³ at 0 has no diagonal Morse chart"
@@ -1334,7 +1332,7 @@ milestones:
       - id: t2
         kind: trust
         text: "A wrong value of q makes one of the identities (q-Biedenharn–Elliott or q-orthogonality) fail"
-        decls: []
+        decls: [Lightlike.TV.Test.tv4_wrong_q_fails]
         hint: "Close but not this: Lightlike.TV.Test.tv4_classical_dims_fail (Lightlike/TuraevViro/Tests.lean) breaks both identities with classical dimensions, a wrong model rather than a wrong value of q. Missing: a counterexample with a different q."
       - id: c1
         kind: catalogue
@@ -1399,7 +1397,7 @@ milestones:
       - id: t2
         kind: trust
         text: "A wrong sign convention in the 6j symbol breaks the Biedenharn–Elliott identity"
-        decls: []
+        decls: [Lightlike.PR.Test.be_wrongSign_fails]
         hint: "Missing in Lean. Close but not this: Lightlike.PR.Test.weightWith_wrong_model (flips the triangle sign of the PR weight, not the 6j sign, and not BE); scripts/pr23_check.py --wrong-edge-sign is Python, and an edge sign."
       - id: c1
         kind: catalogue

@@ -128,7 +128,8 @@ lemma upper_sub_lower_sphericalVec (ε : ℤ) (τ x : ℝ) :
   rw [this]
   ring
 
-/-- **No positive invariant form for `|τ| > 1`.** Let `S` be a space of twice-differentiable
+/-- **No positive invariant form for `|τ| > 1`** (infinitesimal: `E, F, H` on smooth vectors, not group-level).
+Let `S` be a space of twice-differentiable
 functions on `ℝ` with linear maps `E, F, H` acting as the derived principal-series action of
 `SL(2,ℝ)` for `ν = iτ` (the model `|cx+d|^{-τ-1}`), and containing `(1+x²)^{-(τ+1)/2}`. If
 `|τ| > 1`, no sesquilinear form on `S` for which `E, F, H` are skew is positive definite. For
@@ -253,7 +254,8 @@ lemma contDiff_sphericalVec (τ : ℝ) : ContDiff ℝ ∞ (sphericalVec τ) := b
     (contDiff_const.add (contDiff_id.pow 2)).rpow_const_of_ne (fun x => by positivity)
   exact Complex.ofRealCLM.contDiff.comp h
 
-/-- **No positive invariant form for `|τ| > 1`, on smooth functions.** The case of
+/-- **No positive invariant form for `|τ| > 1`, on smooth functions** (infinitesimal: `E, F, H` on smooth vectors, not
+group-level). The case of
 `no_invariant_form` for the space of all smooth functions with the derived operators
 `opE, opF, opH` (which exist, so the hypotheses are satisfiable): no positive definite form
 for which they are skew. -/

@@ -89,7 +89,7 @@ formula `√(12π √V²(ℓ)) {λj} − cos(S_R(ℓ) + π/4) → 0` without hyp
 Trust checks are in [6], [7], [9], [11], [13], [15], [17], [19], [21], [23], [25], [27], [29],
 [31], [33], [35] and [37].
 
-The Morse lemma with parameters: a smooth function of a variable and a parameter with a critical point at the origin for every parameter near a base value and a nondegenerate Hessian at the base value is, in coordinates that depend smoothly on the parameter, its value at the origin plus half the Hessian of the base value; the coordinate change is a local diffeomorphism. The proof is Hadamard's lemma with a smooth parameter, which makes the remainder a smooth family of self-adjoint endomorphisms equal to the identity at the base point, followed by a smooth square root of such endomorphisms near the identity from the inverse function theorem; composing with Sylvester's law gives the diagonal form with signs, and the number of negative signs is the index of the Hessian; the function x cubed at the origin has no such chart [38].
+The Morse lemma with parameters: a smooth function of a variable and a parameter with a critical point at the origin for every parameter near a base value and a nondegenerate Hessian at the base value is, in coordinates that depend smoothly on the parameter, its value at the origin plus half the Hessian of the base value; the coordinate change is a local diffeomorphism. The proof is Hadamard's lemma with a smooth parameter, which makes the remainder a smooth family of self-adjoint endomorphisms equal to the identity at the base point, followed by a smooth square root of such endomorphisms near the identity from the inverse function theorem; composing with Sylvester's law gives the diagonal form with signs, and the number of negative signs is the index of the Hessian; on an inner product space the index is the number of negative eigenvalues of the Hessian, counted with multiplicity [58]; the function x cubed at the origin has no such chart [38].
 
 A positive measure on the half line whose Laplace transform grows like `e^{a/β}` in the logarithmic sense, `β log L(β) → a > 0` as `β → 0⁺`, has a counting function with `log F(X) / (2 √(a X)) → 1`: a logarithmic Tauberian theorem of Ingham type, the growth behind the Cardy formula [41] {3}. The upper bound is the saddle estimate `F(X) ≤ e^{β X} L(β)`, from the window estimates of the Laplace transform [39] {3}. For the lower bound the Laplace transform is split into three windows around the saddle `x = a / β²`; the outer two are bounded by the Laplace transform at slightly different `β`, so the middle window carries at least half of `L(β)` [40] {3}. The theorem is weaker than Ingham's, which gives the asymptotics of `F` itself; Ingham's theorem with the power correction is open.
 
@@ -295,6 +295,8 @@ real part is positive semidefinite and the matrix is symmetric [57].
     `Asymptotics.Lorentzian.lorHessian_neg_symm_psd`,
     `Asymptotics.Lorentzian.lorHessian_det_ne_zero_iff_ker`,
     `Asymptotics.Lorentzian.lorHessian_det_ne_zero_iff_quad`
+58. Lightlike/Asymptotics/MorseIndex.lean - `Morse.sigNeg_hessQuad_eq_card_neg_eigenvalues`,
+    `Morse.exists_symmetric_operator`, `Morse.morse_diagonal_eigenvalues`
 
 ## References
 
