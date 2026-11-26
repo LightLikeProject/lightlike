@@ -1768,6 +1768,7 @@ import Lightlike.Spacetime.LeviCivita
 import Lightlike.Spacetime.LieMetric
 import Lightlike.Spacetime.KillingAlgebra
 import Lightlike.Spacetime.LieTensor
+import Lightlike.Spacetime.KillingLieAlgebra
 import Lightlike.Spacetime.IsometryKilling
 import Lightlike.Spacetime.PoincareKilling
 import Lightlike.Spacetime.AdSCompactification
