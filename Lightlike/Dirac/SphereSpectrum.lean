@@ -62,7 +62,7 @@ lemma sphereT_sq (ρ : CliffordRep 2 V) {y : E 2} (hy : y ≠ 0) (x : V) :
   have h1 : Jop ρ (cliffV ρ y (Jop ρ x)) = cliffV ρ y x := by
     rw [Jop_cliffV, Jop_sq, cliffV_neg, neg_neg]
   unfold sphereT
-  rw [map_smul, cliffV_smul, map_smul, h1, cliffV_smul, smul_smul, cliffV_cliffV, smul_smul]
+  rw [map_smul, cliffV_smul, h1, smul_smul, cliffV_cliffV, smul_smul]
   field_simp
   simp
 
@@ -122,7 +122,7 @@ lemma sphereEigenspace_le_chartEigen (ρ : CliffordRep 2 V) (lam : ℝ) :
   by_cases hx : ‖x‖ ≤ 1
   · exact (hB₁ x (by simpa using hx)).trans (le_max_left _ _)
   · have hx1 : 1 < ‖x‖ := not_le.mp hx
-    have hx0 : x ≠ 0 := by rintro rfl; simp at hx1
+    have hx0 : x ≠ 0 := by rintro rfl; norm_num at hx1
     have hι : ‖inv2 x‖ ≤ 1 := by rw [norm_inv2 hx0]; exact inv_le_one_of_one_le₀ hx1.le
     have h1 : f x = -sphereT ρ x (fS (inv2 x)) := by
       rw [hfg x hx0, sphereT_sq ρ hx0, neg_neg]
@@ -145,7 +145,9 @@ lemma contDiff_angProfile (s m : ℕ) (P : ℝ[X]) :
   have h1 : ContDiff ℝ ∞ fun y : E 2 => ‖y‖ ^ 2 := contDiff_norm_sq ℝ
   have h2 : ContDiff ℝ ∞ fun y : E 2 => ((1 + ‖y‖ ^ 2) ^ s)⁻¹ * P.eval (‖y‖ ^ 2) := by
     refine ContDiff.mul (ContDiff.inv ((contDiff_const.add h1).pow s) (fun y => by positivity)) ?_
-    exact P.contDiff.comp h1
+    have hP : ContDiff ℝ ∞ fun x : ℝ => P.eval x := by
+      simpa [Polynomial.aeval_def, Polynomial.eval₂_id] using Polynomial.contDiff_aeval (𝕜 := ℝ) P ∞
+    exact hP.comp h1
   exact (Complex.ofRealCLM.contDiff.comp h2).mul ((zcL.contDiff).pow m)
 
 lemma contDiff_angG (ρ : CliffordRep 2 V) (v : V) (n s : ℕ) (G F : ℝ[X]) :
@@ -181,9 +183,11 @@ section Main
 
 variable [FiniteDimensional ℝ V] (ρ : CliffordRep 2 V) (hV : Module.finrank ℝ V = 4)
 
+include hV
+
 lemma exists_ne_zero_vec : ∃ v : V, v ≠ 0 := by
   have : 0 < Module.finrank ℝ V := by omega
-  haveI := Module.finrank_pos_iff.mp this
+  have := Module.finrank_pos_iff.mp this
   exact exists_ne 0
 
 /-- **No other eigenvalue.** There is no nonzero smooth spinor field with `D f = λ f` unless `λ = ±(k+1)`. -/
