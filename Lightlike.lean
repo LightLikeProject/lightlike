@@ -2405,6 +2405,7 @@ import Lightlike.Cosmology.BianchiClassification.Classification
 import Lightlike.GFT.GurauDegree.CycleCount
 import Lightlike.GFT.GurauDegree.Degree
 import Lightlike.Spacetime.Corners.BianchiSecond
+import Lightlike.Spacetime.Corners.TangentTransport
 import Lightlike.Spacetime.Corners.BoundaryExample
 import Lightlike.Spacetime.Corners.TwoOrigins
 import Lightlike.Spacetime.Corners.Bridge
