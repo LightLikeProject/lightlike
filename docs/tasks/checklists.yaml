@@ -162,7 +162,7 @@ milestones:
       - id: p3
         kind: piece
         text: "A spin structure on a manifold is defined"
-        decls: []
+        decls: [Lightlike.Dirac.SpinStructure, Lightlike.Dirac.SpinCocycle, Lightlike.Dirac.euclideanSpinStructure]
         hint: "Missing entirely."
       - id: p4
         kind: piece
