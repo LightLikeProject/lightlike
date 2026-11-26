@@ -42,7 +42,7 @@ theorem cov_ext_trans (e : E ≃L[ℝ] F) (cov : Connection I M) [LocallySmoothC
       (transSection e (FiberBundle.extend E (x := x) v : Π y : M, TangentSpace I y)) x :=
     smoothNear_trans e (eventually_extendW x _)
   have hloc := (transCov e cov).isCovariantDerivativeOn.congr_of_eventuallyEq (s := Set.univ)
-    (mdiffAt_of_smoothNear h1) (mdiffAt_of_smoothNear h2) Filter.univ_mem (extend_trans_eventually e x v)
+    (mdiffAt_of_smoothNearW h1) (mdiffAt_of_smoothNearW h2) Filter.univ_mem (extend_trans_eventually e x v)
   rw [hloc]
   exact (transCov_apply e cov (FiberBundle.extend E (x := x) v) x (e X)).trans
     (congrArg (fun z : TangentSpace I x => e (cov (FiberBundle.extend E (x := x) v) x z)) (e.symm_apply_apply X))

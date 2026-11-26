@@ -34,7 +34,7 @@ For a smooth connection on a Hausdorff manifold modelled on a finite-dimensional
 
 For a Levi-Civita connection of a smooth Lorentzian metric (same hypotheses) the first Bianchi identity holds, the lowered curvature is antisymmetric in each pair of slots and symmetric under exchange of the pairs, and the Ricci tensor is symmetric [14].
 
-In a chart of a manifold modelled on `ℝⁿ` (Hausdorff), the components of the curvature of a Levi-Civita connection are the coordinate Riemann tensor, its Ricci tensor and scalar curvature are the coordinate ones, and the Einstein equations hold on the manifold iff the coordinate vacuum equations hold in every chart [15]; for any model with corners the same agreement holds for the Riemann, Ricci and scalar curvature of a Levi-Civita connection [128].
+In a chart of a manifold modelled on `ℝⁿ` (Hausdorff), the components of the curvature of a Levi-Civita connection are the coordinate Riemann tensor, its Ricci tensor and scalar curvature are the coordinate ones, and the Einstein equations hold on the manifold iff the coordinate vacuum equations hold in every chart [15]; for any model with corners the same agreement holds for the Riemann, Ricci and scalar curvature of a Levi-Civita connection [128]. The divergence of the Einstein tensor vanishes on a manifold with corners modelled on any finite-dimensional space, by transport of the theorem for Fin n to R along a linear equivalence [131].
 
 For a smooth torsion-free connection the second Bianchi identity holds: the cyclic sum of the covariant derivative of the curvature vanishes [16].
 
@@ -277,6 +277,7 @@ three keep infinity, while a special conformal transformation moves the point at
 128. Lightlike/Spacetime/Corners/ChartAgreement.lean - `riemann_coord_compW`, `ricciAt_coordW`, `scalarCurvatureAt_coordW`: in every chart the Riemann, Ricci and scalar curvature of a Levi-Civita connection are the coordinate ones, for any model with corners.
 129. Lightlike/Spacetime/EHManifold/ManifoldStationary.lean - `IsEHStationary`, `isEHStationary_iff`: a metric is stationary for the Einstein–Hilbert action under compactly supported perturbations exactly when it satisfies the vacuum Einstein equations.
 130. Lightlike/Spacetime/HypersurfaceInduced.lean - `Hypersurface.levelTangent`, `Hypersurface.inducedMetric`, `Hypersurface.inducedMetric_separating_of_isUnitNormal`, `Hypersurface.inducedMetric_separating_of_nonnull`: the induced metric of a level set, defined pointwise as the metric restricted to the kernel of the differential, and nondegenerate where the normal is not null.
+131. Lightlike/Spacetime/Corners/RicciTransport.lean - `einstein_divergence_free_any`, `einstein_divergence_free_trans`: the Einstein tensor of a locally smooth Levi-Civita connection on a manifold modelled with corners on any finite-dimensional real normed space is divergence free, by transport of the theorem for Fin n to R along a linear equivalence.
 
 ## References
 

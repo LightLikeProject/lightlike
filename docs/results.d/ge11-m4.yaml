@@ -1,0 +1,13 @@
+- id: LL-XXXX-a
+  title: The Einstein tensor of a locally smooth Levi-Civita connection on a manifold modelled with corners on any finite-dimensional real normed space is divergence free, without a Hausdorff hypothesis
+  area: Spacetime
+  file: Lightlike/Spacetime/Corners/RicciTransport.lean
+  decls: [Lightlike.einstein_divergence_free_any, Lightlike.einstein_divergence_free_trans]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (3.96)", check: "Bianchi"}
+  review: kernel-checked
+  note: "For a non-degenerate metric g of any signature on a C^2 manifold modelled with corners (boundary and corners allowed) on any finite-dimensional real normed space E, and a locally smooth connection that is the Levi-Civita connection of g, the divergence of the Einstein tensor vanishes, with no Hausdorff hypothesis (einstein_divergence_free_any). It is the theorem for E = Fin n -> R (einstein_divergence_free_provedW) transported along a continuous linear equivalence e : E -> Fin n -> R (einstein_divergence_free_trans): the same manifold with the model transported to Fin n -> R (ModelWithCorners.transContinuousLinearEquiv) carries the transported connection, metric and fields (files TangentTransport, LieBracketTransport, CovDerivTransport, MetricTransport, CurvatureTransport, LeviCivitaTransport, CovDerivBilinTransport, RicciTransport), and the curvature, Ricci tensor, scalar curvature, Einstein tensor and the covariant derivative of the latter correspond term by term. Carroll, eqs. (3.94) to (3.96), derives the identity by contracting the Bianchi identity (as for LL-0232); the proof here is a transport of a coordinate computation (representation). The comparison of the corners statement with Wald, General Relativity, is pending: the book was not read at the cited location."
+  since: unreleased
