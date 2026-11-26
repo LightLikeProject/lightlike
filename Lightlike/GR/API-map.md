@@ -115,6 +115,13 @@ boundedness of the half-density spinor at the pole of the sphere forces the deca
 reduced flat eigenspinor of the Dirac operator of the unit 2-sphere in the stereographic chart has
 eigenvalue plus or minus s and the radial profile of the lower bound [51].
 
+In the compactified coordinates `(T, R, θ, φ)` of Minkowski space, future null infinity is the set
+`T + R = π/2`, `|T - R| < π/2`; it is exactly the set of the points of retarded time `u` and angles
+`(θ, φ)` [59], the conformal factor vanishes on it, and outgoing null rays `t - r = u` converge to the
+point of retarded time `u` [59]. Global anti-de Sitter space with `r = tan ρ` has the metric
+`cos⁻² ρ (-dt² + dρ² + sin² ρ dΩ²)` [60], and the compactified metric restricts on the boundary
+`ρ = π/2` to `-dt² + dθ² + sin² θ dφ²`, the metric of `ℝ × S²` [61].
+
 ## Lean References
 
 1. Lightlike/GR/Einstein.lean - `einsteinTensor`, `IsVacuumSolution`,
@@ -236,6 +243,10 @@ eigenvalue plus or minus s and the radial profile of the lower bound [51].
 57. Lightlike/Geometry/HeatKernel/Unique.lean - `HeatKernel.HasHeatExpansionTo.coeff_unique`,
     `HeatKernel.HasHeatExpansion.coeff_unique`
 58. Lightlike/Geometry/HeatKernel/Consistency.lean - `HeatKernel.hasHeatExpansionTo_sphereTrace_geom`
+59. Lightlike/GR/AdSConformalBoundary/ScriPlus.lean - `scriPlus_eq_range`, `scriFactor_scriPlus`,
+    `compactify_tendsto_scriPoint`
+60. Lightlike/GR/AdSConformal.lean - `pullback_adsGlobal`
+61. Lightlike/GR/AdSConformalBoundary/AdSBoundary.lean - `adsCompact_boundary`
 
 ## References
 
