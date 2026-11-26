@@ -1205,6 +1205,7 @@ import Lightlike.PonzanoRegge.TriangulationIndependence.Moves
 import Lightlike.PonzanoRegge.TriangulationIndependence.Values
 import Lightlike.PonzanoRegge.TriangulationIndependence.Main
 import Lightlike.PonzanoRegge.TriangulationIndependence.StellarForward
+import Lightlike.PonzanoRegge.TriangulationIndependence.Relabel
 import Lightlike.PonzanoRegge.TriangulationIndependence.NonVacuity
 import Lightlike.PonzanoRegge.TriangulationIndependence.TreeConnected
 import Lightlike.PonzanoRegge.TriangulationIndependence.Cocycle
