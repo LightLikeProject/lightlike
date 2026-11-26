@@ -141,4 +141,111 @@ theorem uRecN_eq (s : ℕ) {G : ℝ → ℂ} (hG : ContDiff ℝ ∞ G) (l : ℕ)
     field_simp
     ring
 
+/-- The cofactors `q₀ = G^{(s)}`, `q_{l+1} = (s - l) q_l + (v - 1) q_l'`, with
+`(d/dv)^l ((v - 1)^s G^{(s)}) = (v - 1)^{s-l} q_l` for `l ≤ s` (`iteratedDeriv_oppGen`). -/
+def qRec (s : ℕ) (G : ℝ → ℂ) : ℕ → ℝ → ℂ
+  | 0 => iteratedDeriv s G
+  | l + 1 => fun v => (((s : ℝ) - l : ℝ) : ℂ) * qRec s G l v + ((v - 1 : ℝ) : ℂ) * deriv (qRec s G l) v
+
+theorem contDiff_qRec (s : ℕ) {G : ℝ → ℂ} (hG : ContDiff ℝ ∞ G) (l : ℕ) :
+    ContDiff ℝ ∞ (qRec s G l) := by
+  induction l with
+  | zero => exact contDiff_iteratedDeriv_infty hG s
+  | succ l ih =>
+    have hd : ContDiff ℝ ∞ (deriv (qRec s G l)) := (contDiff_infty_iff_deriv.mp ih).2
+    exact (contDiff_const.mul ih).add
+      ((Complex.ofRealCLM.contDiff.comp (contDiff_id.sub contDiff_const)).mul hd)
+
+/-- **The vanishing order at the identity**: for `l ≤ s`,
+`(d/dv)^l ((v - 1)^s G^{(s)}) = (v - 1)^{s-l} q_l`. -/
+theorem iteratedDeriv_oppGen (s : ℕ) {G : ℝ → ℂ} (hG : ContDiff ℝ ∞ G) :
+    ∀ l, l ≤ s → iteratedDeriv l (oppGen s G) = fun v => (((v - 1) ^ (s - l) : ℝ) : ℂ) * qRec s G l v := by
+  intro l
+  induction l with
+  | zero => intro _; funext v; simp [oppGen, qRec]
+  | succ l ih =>
+    intro hl
+    have h := ih (by omega)
+    funext v
+    rw [iteratedDeriv_succ, h]
+    have hq : HasDerivAt (qRec s G l) (deriv (qRec s G l) v) v :=
+      (((contDiff_qRec s hG l).differentiable (by simp)) v).hasDerivAt
+    obtain ⟨k, hk⟩ : ∃ k, s - l = k + 1 := ⟨s - l - 1, by omega⟩
+    have hp : HasDerivAt (fun w : ℝ => (((w - 1) ^ (s - l) : ℝ) : ℂ))
+        ((((k + 1 : ℕ) : ℝ) * (v - 1) ^ k : ℝ) : ℂ) v := by
+      have := (((hasDerivAt_id v).sub_const 1).pow (k + 1)).ofReal_comp
+      rw [hk]
+      simpa using this
+    rw [show deriv (fun v : ℝ => (((v - 1) ^ (s - l) : ℝ) : ℂ) * qRec s G l v) v = _ from
+      (hp.mul hq).deriv]
+    have e : s - (l + 1) = k := by omega
+    simp only [qRec, e]
+    have hkl : ((s : ℝ) - l) = (k + 1 : ℕ) := by
+      have : s = l + (k + 1) := by omega
+      rw [this]; push_cast; ring
+    rw [hkl, hk]
+    push_cast
+    ring
+
+/-- `iteratedDeriv (k + j) f = iteratedDeriv k (iteratedDeriv j f)`. -/
+theorem iteratedDeriv_add_eq (f : ℝ → ℂ) (j : ℕ) :
+    ∀ k, iteratedDeriv (k + j) f = iteratedDeriv k (iteratedDeriv j f) := by
+  intro k
+  induction k with
+  | zero => simp
+  | succ k ih => rw [Nat.add_right_comm, iteratedDeriv_succ, ih, iteratedDeriv_succ]
+
+/-- **The closed form of the opposite-sign images, continuous on all of `ℝ`**:
+`sinh^{s-l} (cosh + 1)^l q_l(cosh)` for `l ≤ s`, and `sinh^{l-s} (cosh + 1)^s q_s^{(l-s)}(cosh)`
+for `l > s`. -/
+def HcN (s : ℕ) (G : ℝ → ℂ) (l : ℕ) (ξ : ℝ) : ℂ :=
+  if l ≤ s then
+    ((Real.sinh ξ ^ (s - l) * (Real.cosh ξ + 1) ^ l : ℝ) : ℂ) * qRec s G l (Real.cosh ξ)
+  else
+    ((Real.sinh ξ ^ (l - s) * (Real.cosh ξ + 1) ^ s : ℝ) : ℂ) *
+      iteratedDeriv (l - s) (qRec s G s) (Real.cosh ξ)
+
+theorem continuous_HcN (s : ℕ) {G : ℝ → ℂ} (hG : ContDiff ℝ ∞ G) (l : ℕ) :
+    Continuous (HcN s G l) := by
+  unfold HcN
+  split_ifs
+  · exact (Complex.continuous_ofReal.comp ((Real.continuous_sinh.pow _).mul
+      ((Real.continuous_cosh.add continuous_const).pow _))).mul
+      ((contDiff_qRec s hG l).continuous.comp Real.continuous_cosh)
+  · exact (Complex.continuous_ofReal.comp ((Real.continuous_sinh.pow _).mul
+      ((Real.continuous_cosh.add continuous_const).pow _))).mul
+      ((contDiff_iteratedDeriv_infty (contDiff_qRec s hG s) _).continuous.comp Real.continuous_cosh)
+
+/-- `HcN` is the opposite-sign ladder image on `ξ > 0`. -/
+theorem HcN_eq_hLRN (s : ℕ) {G : ℝ → ℂ} (hG : ContDiff ℝ ∞ G) (l : ℕ) {ξ : ℝ} (hξ : 0 < ξ) :
+    HcN s G l ξ = hLRN s G l ξ := by
+  have hc1 : 1 < Real.cosh ξ := Real.one_lt_cosh.2 hξ.ne'
+  have hc0 : Real.cosh ξ - 1 ≠ 0 := (sub_pos.2 hc1).ne'
+  have hsq : Real.sinh ξ ^ 2 = (Real.cosh ξ - 1) * (Real.cosh ξ + 1) := by
+    have := Real.cosh_sq_sub_sinh_sq ξ; nlinarith
+  rw [hLRN_eq s hG l ξ hξ, uRecN_eq s hG l _ hc1, HcN]
+  split_ifs with hl
+  · rw [iteratedDeriv_oppGen s hG l hl]
+    obtain ⟨k, hk⟩ : ∃ k, s = l + k := ⟨s - l, by omega⟩
+    subst hk
+    simp only [Nat.add_sub_cancel_left]
+    have e1 : Real.sinh ξ ^ (l + (l + k)) = Real.sinh ξ ^ k * ((Real.cosh ξ - 1) * (Real.cosh ξ + 1)) ^ l := by
+      rw [← hsq, ← pow_mul]; ring
+    have hreal : Real.sinh ξ ^ (l + (l + k)) * ((Real.cosh ξ - 1) ^ (l + k))⁻¹ *
+        (Real.cosh ξ - 1) ^ k = Real.sinh ξ ^ k * (Real.cosh ξ + 1) ^ l := by
+      rw [e1, mul_pow]; field_simp; rw [pow_add]
+    rw [zpow_neg, zpow_natCast, ← mul_assoc, ← mul_assoc, ← Complex.ofReal_mul,
+      ← Complex.ofReal_mul, hreal]
+  · push Not at hl
+    obtain ⟨k, hk⟩ : ∃ k, l = k + s := ⟨l - s, by omega⟩
+    subst hk
+    rw [iteratedDeriv_add_eq, iteratedDeriv_oppGen s hG s le_rfl]
+    simp only [Nat.sub_self, pow_zero, Complex.ofReal_one, one_mul, Nat.add_sub_cancel]
+    have e1 : Real.sinh ξ ^ (k + s + s) = Real.sinh ξ ^ k * ((Real.cosh ξ - 1) * (Real.cosh ξ + 1)) ^ s := by
+      rw [← hsq, ← pow_mul]; ring
+    have hreal : Real.sinh ξ ^ (k + s + s) * ((Real.cosh ξ - 1) ^ s)⁻¹ =
+        Real.sinh ξ ^ k * (Real.cosh ξ + 1) ^ s := by
+      rw [e1, mul_pow]; field_simp
+    rw [zpow_neg, zpow_natCast, ← mul_assoc, ← Complex.ofReal_mul, hreal]
+
 end Lightlike.Lorentz.SL2RPlancherel
