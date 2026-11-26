@@ -7004,3 +7004,14 @@
   review: kernel-checked
   note: "GE7 m1, first layer (the action of the Lorentz group on future null infinity); the milestone m1 stays open. Comparison pending (no source was read at a cited location): this is the standard action of the Lorentz group on the celestial sphere of null directions. For Λ with Λᵀ η Λ = η and Λ 0 0 > 0 the first row gives Σ_j Λ₀ⱼ² = Λ₀₀² - 1 (lorentz_row_zero, from Λ η Λᵀ = η), and Cauchy-Schwarz gives |Σ_j Λ₀ⱼ nⱼ| < Λ₀₀, so the time component of Λ (1, n) is positive; the spatial part over K has unit length because Λ preserves the Minkowski square (minkSq_mulVec) and (1, n) is null. Non-vacuity: a boost along the first axis with cosh = 5/4, sinh = 3/4 is a Lorentz matrix and multiplies (1, e₁) by 2 and (1, -e₁) by 1/2 (nullDirFactor_boostX_pos, nullDirFactor_boostX_neg). Limits: no action on the retarded time, no conformal factor on the sphere and no relation to the compactified chart yet; the matrix is arbitrary with the stated hypotheses, not an element of a group type."
   since: unreleased
+- id: LL-0542
+  title: "The Poincaré transformations x ↦ Λ x + a (Λ orthochronous Lorentz) act on the points (u, n) of future null infinity, u a retarded time and n a unit vector, by (u, n) ↦ (u / K + a₀ - n' · a⃗, n') with Λ (1, n) = K (1, n'); the factor and the direction satisfy the cocycle rule, and acting by (Λ₂, a₂) and then by (Λ₁, a₁) is acting by (Λ₁ Λ₂, Λ₁ a₂ + a₁)"
+  area: GR
+  file: Lightlike/GR/AdSConformalBoundary/ScriAction.lean
+  decls: [Lightlike.scriAct, Lightlike.scriAct_comp, Lightlike.nullDirFactor_mul, Lightlike.nullDirMap_mul]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "GE7 m1, second layer; the milestone m1 stays open. Comparison pending (no source was read at a cited location): this is the standard action of the Poincaré group on retarded time and the celestial sphere (the BMS supertranslations are not included). The retarded time of x along the direction (1, n) is u = t - n · x⃗; the formula is u' = -(1, n') · (Λ x + a) = u / K - (1, n') · a, since the Minkowski product of (1, n') with Λ x is the Minkowski product of (1, n) with x divided by K (minkDot_mulVec). The group law follows from the cocycle rule K(Λ₁ Λ₂, n) = K(Λ₂, n) K(Λ₁, n₂') and the same invariance. Non-vacuity: the boost with cosh = 5/4, sinh = 3/4 sends (u, e₁) to (u / 2, e₁) (scriAct_boostX). Limits: an action on ℝ × (Fin 3 → ℝ) restricted to unit directions; no relation yet to the compactified chart scriPoint, no metric on the sphere and no conformal factor, and no statement about the limit of the action on the bulk; the product of orthochronous matrices is not proved orthochronous here (the group law needs only the Lorentz property of each factor)."
+  since: unreleased
