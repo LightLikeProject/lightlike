@@ -167,9 +167,10 @@ theorem SpinStructure.connFormV_change {i j : ι} {x : M} (hi : x ∈ S.dom i) (
     Pi.smul_apply, smul_eq_mul, S.frame_orthonormal i _ _ x hi, Matrix.add_apply, Matrix.mul_apply,
     Matrix.transpose_apply, Finset.sum_add_distrib, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq,
     Finset.mem_univ, ite_true, Finset.sum_mul, Finset.mul_sum, SpinStructure.rmatD_apply]
+  simp only [Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true, mul_add,
+    Finset.sum_add_distrib, Finset.mul_sum]
   congr 1
-  · rw [Finset.sum_comm]
-    refine Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun d _ => ?_
+  · refine Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun d _ => ?_
     ring
   · refine Finset.sum_congr rfl fun b _ => ?_
     ring
@@ -187,7 +188,7 @@ lemma SpinStructure.nablaV_sum (i : ι) {x : M} (c : Fin n → ℝ)
     S.nablaV ρ i x (∑ k, c k • v k) φ = ∑ k, c k • S.nablaV ρ i x (v k) φ := by
   have hω : S.connFormV i x (∑ k, c k • v k) = ∑ k, c k • S.connFormV i x (v k) := by
     ext b d
-    simp [SpinStructure.connFormV, map_sum, map_smul, Finset.sum_apply]
+    simp [SpinStructure.connFormV, map_sum, map_smul, Matrix.sum_apply]
   simp only [SpinStructure.nablaV, map_sum, map_smul, hω, spinForm_sum, spinForm_smul,
     ContinuousLinearMap.coe_sum', Finset.sum_apply, ContinuousLinearMap.coe_smul', Pi.smul_apply,
     smul_add, Finset.sum_add_distrib]
@@ -197,7 +198,7 @@ lemma SpinStructure.nablaV_sum (i : ι) {x : M} (c : Fin n → ℝ)
 a spinor field in the two frames are related by `ρ(lift i j)`, so the covariant derivative is
 well defined on spinor fields. -/
 theorem SpinStructure.nablaV_lift {i j : ι} {x : M} (hi : x ∈ S.dom i) (hj : x ∈ S.dom j)
-    (v : TangentSpace 𝓘(ℝ, Fin n → ℝ) x) {φ : M → V} (hφ : FunDiffAt φ x) :
+    (v : TangentSpace 𝓘(ℝ, Fin n → ℝ) x) {φ : M → V} (hφ : FunDiffAt (n := n) φ x) :
     S.nablaV ρ i x v (fun y => ρ (S.lift i j y) (φ y)) =
       ρ (S.lift i j x) (S.nablaV ρ j x v φ) := by
   set R := S.rmat i j x
@@ -206,7 +207,7 @@ theorem SpinStructure.nablaV_lift {i j : ι} {x : M} (hi : x ∈ S.dom i) (hj : 
   have hs : s ∈ spinGroup (Qneg n) := (S.isLift i j x hi hj).1
   have hRR : Rᵀ * R = 1 := S.transpose_mul_rmat hi hj
   have hRR' : R * Rᵀ = 1 := S.rmat_mul_transpose hi hj
-  have hlM : FunDiffAt (fun y => ρ (S.lift i j y)) x := by
+  have hlM : FunDiffAt (n := n) (fun y => ρ (S.lift i j y)) x := by
     letI := clNormedRing n
     letI := clNormedAlgebra n
     have hlsM := (S.contMDiffAt_lift hi hj).mdifferentiableAt (by simp)
@@ -215,7 +216,8 @@ theorem SpinStructure.nablaV_lift {i j : ι} {x : M} (hi : x ∈ S.dom i) (hj : 
   have hconjρ : ∀ A : Matrix (Fin n) (Fin n) ℝ,
       ρ s * spinForm ρ A = spinForm ρ (Rᵀ * A * R) * ρ s := by
     intro A
-    have hc := conj_clSpinForm hs (S.lift_conj hi hj) A
+    have hc : s * clSpinForm A * star s = clSpinForm (Rᵀ * A * R) :=
+      conj_clSpinForm hs (S.lift_conj hi hj) A
     have hss : star s * s = 1 := spinGroup.star_mul_self_of_mem hs
     have : s * clSpinForm A = clSpinForm (Rᵀ * A * R) * s := by
       rw [← hc, mul_assoc, hss, mul_one]
@@ -231,7 +233,7 @@ theorem SpinStructure.nablaV_lift {i j : ι} {x : M} (hi : x ∈ S.dom i) (hj : 
       spinForm ρ (S.connFormV i x v) (ρ s (φ x)) =
     ρ s (mvfderiv 𝓘(ℝ, Fin n → ℝ) φ x v) + ρ s (spinForm ρ _ (φ x))
   have h2 := congrArg (fun L => L (φ x)) (hconjρ (R * S.connFormV i x v * Rᵀ + Rd * Rᵀ))
-  simp only [ContinuousLinearMap.mul_apply_eq_comp, ContinuousLinearMap.comp_apply] at h2
+  simp only [mul_apply_eq_comp] at h2
   rw [h2, hsum, spinForm_add]
   simp only [ContinuousLinearMap.add_apply]
   abel
@@ -239,7 +241,7 @@ theorem SpinStructure.nablaV_lift {i j : ι} {x : M} (hi : x ∈ S.dom i) (hj : 
 /-- **Frame independence of the Dirac operator.**  On the overlap of the frames `i` and `j`, for
 `φ` differentiable at `x`: `D^i (ρ(lift) φ) = ρ(lift) (D^j φ)`. -/
 theorem SpinStructure.dirac_lift {i j : ι} {x : M} (hi : x ∈ S.dom i) (hj : x ∈ S.dom j)
-    {φ : M → V} (hφ : FunDiffAt φ x) :
+    {φ : M → V} (hφ : FunDiffAt (n := n) φ x) :
     S.dirac ρ i (fun y => ρ (S.lift i j y) (φ y)) x = ρ (S.lift i j x) (S.dirac ρ j φ x) := by
   set R := S.rmat i j x
   set s := S.lift i j x
@@ -260,7 +262,10 @@ theorem SpinStructure.dirac_lift {i j : ι} {x : M} (hi : x ∈ S.dom i) (hj : x
     have := congrFun (congrFun hRR' c) d
     simpa [Matrix.mul_apply, Matrix.one_apply] using this
   unfold SpinStructure.dirac SpinStructure.nabla
-  simp only [S.nablaV_lift ρ hi hj _ hφ, hγ]
+  simp only [S.nablaV_lift ρ hi hj _ hφ]
+  change ∑ a, gam ρ a (ρ s (S.nablaV ρ j x (S.frame i a x) φ)) =
+    ρ s (∑ a, gam ρ a (S.nablaV ρ j x (S.frame j a x) φ))
+  simp only [hγ]
   rw [← map_sum]
   congr 1
   simp only [S.frame_inv hi hj, S.nablaV_sum ρ j, map_sum, map_smul, Finset.smul_sum]
@@ -281,13 +286,13 @@ lemma SpinStructure.connFormV_sum (i : ι) {x : M} (c : Fin n → ℝ)
     (v : Fin n → TangentSpace 𝓘(ℝ, Fin n → ℝ) x) :
     S.connFormV i x (∑ k, c k • v k) = ∑ k, c k • S.connFormV i x (v k) := by
   ext b d
-  simp [SpinStructure.connFormV, map_sum, map_smul, Finset.sum_apply]
+  simp [SpinStructure.connFormV, map_sum, map_smul, Matrix.sum_apply]
 
 /-- A finite sum of differentiable functions is differentiable. -/
 lemma mdiffAt_finsum {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F] {f : Fin n → M → F}
-    {x : M} (h : ∀ b, FunDiffAt (f b) x) : FunDiffAt (fun y => ∑ b, f b y) x := by
+    {x : M} (h : ∀ b, FunDiffAt (n := n) (f b) x) : FunDiffAt (n := n) (fun y => ∑ b, f b y) x := by
   classical
-  have key : ∀ s : Finset (Fin n), FunDiffAt (fun y => ∑ b ∈ s, f b y) x := by
+  have key : ∀ s : Finset (Fin n), FunDiffAt (n := n) (fun y => ∑ b ∈ s, f b y) x := by
     intro s
     induction s using Finset.induction_on with
     | empty => simpa using mdifferentiableAt_const
@@ -321,7 +326,7 @@ lemma SpinStructure.trace_change {i j : ι} {x : M} (hi : x ∈ S.dom i) (hj : x
   have hD : ∀ e, S.rmatD i j x (S.frame j e x) = ∑ a, R e a • D a := by
     intro e
     ext p q
-    simp [hFj e, map_sum, map_smul, D, Finset.sum_apply]
+    simp [hFj e, map_sum, map_smul, D, Matrix.sum_apply]
   have hω : ∀ e, S.connForm j x e = R * (∑ a, R e a • S.connForm i x a) * Rᵀ +
       (∑ a, R e a • D a) * Rᵀ := by
     intro e
@@ -330,8 +335,8 @@ lemma SpinStructure.trace_change {i j : ι} {x : M} (hi : x ∈ S.dom i) (hj : x
   -- the first part of `∑ₑ ω^j_eec`
   have hA : ∑ e, (R * (∑ a, R e a • S.connForm i x a) * Rᵀ) e c =
       ∑ a, ∑ k, S.connForm i x a a k * R c k := by
-    simp only [Matrix.mul_apply, Matrix.transpose_apply, Finset.sum_apply, Matrix.smul_apply,
-      smul_eq_mul, Finset.sum_mul, Finset.mul_sum]
+    simp only [Matrix.mul_apply, Matrix.transpose_apply]
+    simp only [Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum]
     -- ∑ e ∑ k ∑ b ∑ a R e b * (R e a * ω a b k) * R c k
     calc ∑ e, ∑ k, ∑ b, ∑ a, R e b * (R e a * S.connForm i x a b k) * R c k
         = ∑ k, ∑ b, ∑ a, (∑ e, R e b * R e a) * S.connForm i x a b k * R c k := by
@@ -347,9 +352,6 @@ lemma SpinStructure.trace_change {i j : ι} {x : M} (hi : x ∈ S.dom i) (hj : x
       _ = ∑ a, ∑ k, S.connForm i x a a k * R c k := by
           simp only [hδ, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, ite_true]
           rw [Finset.sum_comm]
-          refine Finset.sum_congr rfl fun a _ => ?_
-          rw [Finset.sum_comm]
-          simp
   -- the second part
   have hB : ∑ e, ((∑ a, R e a • D a) * Rᵀ) e c = -∑ a, D a c a := by
     have h1 : ∀ a, ∑ e, R e a * ∑ b, D a e b * R c b = -D a c a := by
@@ -371,15 +373,17 @@ lemma SpinStructure.trace_change {i j : ι} {x : M} (hi : x ∈ S.dom i) (hj : x
       · intro e _ hec
         rw [show ∑ b, R e b * R c b = 0 by simpa [hec] using hδ' e c, zero_mul]
       · simp
-    simp only [Matrix.mul_apply, Matrix.transpose_apply, Finset.sum_apply, Matrix.smul_apply,
-      smul_eq_mul, Finset.sum_mul]
-    rw [← Finset.sum_neg_distrib, Finset.sum_comm]
-    refine Finset.sum_congr rfl fun a _ => ?_
-    rw [← h1 a, Finset.mul_sum]
-    refine Finset.sum_congr rfl fun e _ => ?_
-    rw [Finset.mul_sum]
-    refine Finset.sum_congr rfl fun b _ => ?_
-    ring
+    simp only [Matrix.mul_apply, Matrix.transpose_apply]
+    simp only [Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul, Finset.sum_mul]
+    rw [← Finset.sum_neg_distrib]
+    simp only [← h1, Finset.mul_sum]
+    calc _ = ∑ e, ∑ a, ∑ k, R e a * D a e k * R c k :=
+          Finset.sum_congr rfl fun e _ => Finset.sum_comm
+      _ = _ := by
+          rw [Finset.sum_comm]
+          refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun e _ =>
+            Finset.sum_congr rfl fun k _ => ?_
+          ring
   have : ∑ e, S.connForm j x e e c = ∑ a, ∑ k, S.connForm i x a a k * R c k - ∑ a, D a c a := by
     simp only [hω, Matrix.add_apply, Finset.sum_add_distrib, hA, hB, sub_eq_add_neg]
   rw [this]
@@ -389,27 +393,29 @@ lemma SpinStructure.trace_change {i j : ι} {x : M} (hi : x ∈ S.dom i) (hj : x
 `φ` differentiable near `x` whose covariant derivatives `∇^j_c φ` are differentiable at `x`:
 `(∇*∇)^i (ρ(lift) φ) = ρ(lift) ((∇*∇)^j φ)`. -/
 theorem SpinStructure.roughLaplacian_lift {i j : ι} {x : M} (hi : x ∈ S.dom i)
-    (hj : x ∈ S.dom j) {φ : M → V} (hφ : ∀ᶠ y in 𝓝 x, FunDiffAt φ y)
-    (hnf : ∀ c, FunDiffAt (fun y => S.nabla ρ j c φ y) x) :
+    (hj : x ∈ S.dom j) {φ : M → V} (hφ : ∀ᶠ y in 𝓝 x, FunDiffAt (n := n) φ y)
+    (hnf : ∀ c, FunDiffAt (n := n) (fun y => S.nabla ρ j c φ y) x) :
     S.roughLaplacian ρ i (fun y => ρ (S.lift i j y) (φ y)) x =
       ρ (S.lift i j x) (S.roughLaplacian ρ j φ x) := by
   set R := S.rmat i j x
   set L := S.lift i j x
-  have hnear : ∀ᶠ y in 𝓝 x, (y ∈ S.dom i ∧ y ∈ S.dom j) ∧ FunDiffAt φ y :=
-    (((S.dom_open i).inter (S.dom_open j)).mem_nhds ⟨hi, hj⟩).and hφ
+  have hnear : ∀ᶠ y in 𝓝 x, (y ∈ S.dom i ∧ y ∈ S.dom j) ∧ FunDiffAt (n := n) φ y :=
+    (show ∀ᶠ y in 𝓝 x, y ∈ S.dom i ∧ y ∈ S.dom j from
+      ((S.dom_open i).inter (S.dom_open j)).mem_nhds ⟨hi, hj⟩).and hφ
   set χ : Fin n → M → V := fun a y => ∑ c, (S.rmatE i j c a) y • S.nabla ρ j c φ y
-  have hpt : ∀ y, y ∈ S.dom i → y ∈ S.dom j → FunDiffAt φ y → ∀ a,
+  have hpt : ∀ y, y ∈ S.dom i → y ∈ S.dom j → FunDiffAt (n := n) φ y → ∀ a,
       S.nabla ρ i a (fun z => ρ (S.lift i j z) (φ z)) y = ρ (S.lift i j y) (χ a y) := by
     intro y hyi hyj hyφ a
     unfold SpinStructure.nabla
     rw [S.nablaV_lift ρ hyi hyj _ hyφ, S.frame_inv hyi hyj a, S.nablaV_sum ρ j]
+    rfl
   have hΨ : ∀ a, (fun y => S.nabla ρ i a (fun z => ρ (S.lift i j z) (φ z)) y) =ᶠ[𝓝 x]
       fun y => ρ (S.lift i j y) (χ a y) := by
     intro a
     filter_upwards [hnear] with y hy
     exact hpt y hy.1.1 hy.1.2 hy.2 a
-  have hφx : FunDiffAt φ x := hφ.self_of_nhds
-  have hχ : ∀ a, FunDiffAt (χ a) x := fun a =>
+  have hφx : FunDiffAt (n := n) φ x := hφ.self_of_nhds
+  have hχ : ∀ a, FunDiffAt (n := n) (χ a) x := fun a =>
     mdiffAt_finsum fun c => (S.mdiffAt_rmat hi hj c a).smul (hnf c)
   -- the second derivatives
   have hsecond : ∀ a, S.nabla ρ i a (fun y => S.nabla ρ i a (fun z => ρ (S.lift i j z) (φ z)) y) x =
@@ -419,9 +425,9 @@ theorem SpinStructure.roughLaplacian_lift {i j : ι} {x : M} (hi : x ∈ S.dom i
     intro a
     have e1 : S.nabla ρ i a (fun y => S.nabla ρ i a (fun z => ρ (S.lift i j z) (φ z)) y) x =
         ρ L (S.nablaV ρ j x (S.frame i a x) (χ a)) := by
-      unfold SpinStructure.nabla
+      change S.nablaV ρ i x (S.frame i a x)
+          (fun y => S.nabla ρ i a (fun z => ρ (S.lift i j z) (φ z)) y) = _
       rw [S.nablaV_congr ρ i _ (hΨ a), S.nablaV_lift ρ hi hj _ (hχ a)]
-      rfl
     rw [e1]
     congr 1
     -- `∇_u χ = ∑_c (d_u R_ca) ∇_c φ + R_ca ∇_u ∇_c φ`
@@ -429,7 +435,7 @@ theorem SpinStructure.roughLaplacian_lift {i j : ι} {x : M} (hi : x ∈ S.dom i
         ∑ c, (mvfderiv 𝓘(ℝ, Fin n → ℝ) (S.rmatE i j c a) x (S.frame i a x) •
           S.nabla ρ j c φ x + R c a • mvfderiv 𝓘(ℝ, Fin n → ℝ) (fun y => S.nabla ρ j c φ y) x
             (S.frame i a x)) := by
-      have hm : ∀ c, FunDiffAt (fun y => (S.rmatE i j c a) y • S.nabla ρ j c φ y) x := fun c =>
+      have hm : ∀ c, FunDiffAt (n := n) (fun y => (S.rmatE i j c a) y • S.nabla ρ j c φ y) x := fun c =>
         (S.mdiffAt_rmat hi hj c a).smul (hnf c)
       rw [show χ a = fun y => ∑ c, (S.rmatE i j c a) y • S.nabla ρ j c φ y from rfl,
         mvfderiv_finsum hm]
@@ -473,23 +479,23 @@ theorem SpinStructure.roughLaplacian_lift {i j : ι} {x : M} (hi : x ∈ S.dom i
   simp only [hsecond, hfirst, ← map_smul, ← map_sum, ← map_sub, ← map_neg]
   congr 1
   -- an identity in `V`
-  simp only [Finset.sum_sub_distrib, Finset.sum_add_distrib, neg_sub, neg_add]
+  simp only [Finset.sum_sub_distrib, Finset.sum_add_distrib, neg_sub]
   have hdd : ∑ a, ∑ c, ∑ d, (R c a * R d a) • S.nabla ρ j d (fun y => S.nabla ρ j c φ y) x =
       ∑ c, S.nabla ρ j c (fun y => S.nabla ρ j c φ y) x := by
     rw [Finset.sum_comm]
     refine Finset.sum_congr rfl fun c _ => ?_
     rw [Finset.sum_comm]
     simp only [← Finset.sum_smul, hδ, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq',
-      Finset.mem_univ, ite_true]
+      Finset.sum_ite_eq, Finset.mem_univ, ite_true]
   have hlin : ∑ a, ∑ c, mvfderiv 𝓘(ℝ, Fin n → ℝ) (S.rmatE i j c a) x (S.frame i a x) •
         S.nabla ρ j c φ x - ∑ a, ∑ k, S.connForm i x a a k • ∑ c, R c k • S.nabla ρ j c φ x =
       -∑ c, ∑ k, S.connForm j x c c k • S.nabla ρ j k φ x := by
     have e1 : ∑ a, ∑ k, S.connForm i x a a k • ∑ c, R c k • S.nabla ρ j c φ x =
         ∑ c, (∑ a, ∑ k, S.connForm i x a a k * R c k) • S.nabla ρ j c φ x := by
       simp only [Finset.smul_sum, smul_smul, Finset.sum_smul]
-      rw [Finset.sum_comm]
-      refine Finset.sum_congr rfl fun a _ => ?_
-      rw [Finset.sum_comm]
+      calc _ = ∑ a, ∑ c, ∑ k, (S.connForm i x a a k * R c k) • S.nabla ρ j c φ x :=
+            Finset.sum_congr rfl fun a _ => Finset.sum_comm
+        _ = _ := Finset.sum_comm
     have e2 : ∑ a, ∑ c, mvfderiv 𝓘(ℝ, Fin n → ℝ) (S.rmatE i j c a) x (S.frame i a x) •
         S.nabla ρ j c φ x = ∑ c, (∑ a, mvfderiv 𝓘(ℝ, Fin n → ℝ) (S.rmatE i j c a) x
           (S.frame i a x)) • S.nabla ρ j c φ x := by
@@ -503,8 +509,7 @@ theorem SpinStructure.roughLaplacian_lift {i j : ι} {x : M} (hi : x ∈ S.dom i
     refine Finset.sum_congr rfl fun c _ => ?_
     rw [← sub_smul, htr c, neg_smul]
   rw [hdd]
-  have := hlin
-  linear_combination (exp := 1) this
+  linear_combination (norm := module) -hlin
 
 end Independence
 
@@ -527,7 +532,7 @@ lemma SpinorField.rep_eventuallyEq (ψ : SpinorField S ρ) {i j : ι} {x : M} (h
 differentiable on their frame domains, the frame-wise Dirac operators `S.dirac ρ i (ψ.rep i)` form
 again a spinor field: they transform with `ρ(lift)` (`SpinStructure.dirac_lift`). -/
 noncomputable def SpinorField.dirac (ψ : SpinorField S ρ)
-    (hψ : ∀ i x, x ∈ S.dom i → FunDiffAt (ψ.rep i) x) : SpinorField S ρ where
+    (hψ : ∀ i x, x ∈ S.dom i → FunDiffAt (n := n) (ψ.rep i) x) : SpinorField S ρ where
   rep i := S.dirac ρ i (ψ.rep i)
   transform i j x hi hj := by
     have h := ψ.rep_eventuallyEq hi hj
@@ -540,13 +545,13 @@ noncomputable def SpinorField.dirac (ψ : SpinorField S ρ)
 differentiable on their frame domains and have differentiable covariant derivatives there, the
 frame-wise rough Laplacians form again a spinor field (`SpinStructure.roughLaplacian_lift`). -/
 noncomputable def SpinorField.roughLaplacian (ψ : SpinorField S ρ)
-    (hψ : ∀ i x, x ∈ S.dom i → FunDiffAt (ψ.rep i) x)
-    (hψ' : ∀ i c x, x ∈ S.dom i → FunDiffAt (fun y => S.nabla ρ i c (ψ.rep i) y) x) :
+    (hψ : ∀ i x, x ∈ S.dom i → FunDiffAt (n := n) (ψ.rep i) x)
+    (hψ' : ∀ i c x, x ∈ S.dom i → FunDiffAt (n := n) (fun y => S.nabla ρ i c (ψ.rep i) y) x) :
     SpinorField S ρ where
   rep i := S.roughLaplacian ρ i (ψ.rep i)
   transform i j x hi hj := by
     have h := ψ.rep_eventuallyEq hi hj
-    have hφ : ∀ᶠ y in 𝓝 x, FunDiffAt (ψ.rep j) y := by
+    have hφ : ∀ᶠ y in 𝓝 x, FunDiffAt (n := n) (ψ.rep j) y := by
       filter_upwards [(S.dom_open j).mem_nhds hj] with y hy
       exact hψ j y hy
     -- `∇^i ψ_i = ∇^i (ρ(lift) ψ_j)` near `x`, so the second derivatives agree at `x`
