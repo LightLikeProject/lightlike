@@ -1972,6 +1972,7 @@ import Lightlike.Tests.GaugeChange
 import Lightlike.Tests.InverseMoves
 import Lightlike.Tests.Jackson
 import Lightlike.Tests.JacksonDegenerate
+import Lightlike.Tests.Killing
 import Lightlike.Tests.Manifold
 import Lightlike.Tests.PonzanoRegge
 import Lightlike.Tests.QDougall

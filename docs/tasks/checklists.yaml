@@ -453,7 +453,7 @@ milestones:
       - id: t2
         kind: trust
         text: "The rotation field of the round 2-sphere is Killing and a dilation is not"
-        decls: []
+        decls: [Lightlike.Test.rotation_killing_S2, Lightlike.Test.dilation_not_killing_S2]
         hint: "Half done: Lightlike.not_isKillingAt_dilation (Minkowski). Missing: the S² rotation field."
       - id: c1
         kind: catalogue
