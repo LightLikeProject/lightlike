@@ -1075,8 +1075,8 @@ milestones:
       - id: t4
         kind: trust
         text: "The real-variable estimate (Riemann sum, Euler-Maclaurin) is shown to be wrong for these sums"
-        decls: []
-        hint: "Missing: no statement on main. Close but not this: Lightlike.Asymptotics.not_ponzanoReggeFormulaWith_zero (a wrong-phase check, not a real-variable-estimate check)."
+        decls: [Lightlike.Asymptotics.racah_cancellation_regular_ten, Lightlike.Asymptotics.racah_cancellation_regular_twenty, Lightlike.Asymptotics.racah_cancellation_regular_forty]
+        hint: "Racah's sum of the regular tetrahedron at spins 10, 20 and 40: the absolute values of the terms exceed the sum by factors above 100, 800 and 10^6, so a term-wise (Riemann-sum, Euler-Maclaurin) estimate cannot give the sum. Three instances showing exponential growth, not the statement that the ratio is unbounded."
       - id: c1
         kind: catalogue
         text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
