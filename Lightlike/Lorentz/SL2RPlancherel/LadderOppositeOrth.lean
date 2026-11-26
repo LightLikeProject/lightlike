@@ -60,6 +60,103 @@ theorem integral_pow_mul_iteratedDeriv_eq_zero {f : ℝ → ℂ} (hf : ContDiff 
       push_cast; ring
     rw [hrest, ih k (by omega) (by omega), mul_zero, neg_zero]
 
+/-- **The moments of `f^{(l)}` against `(v - 1)^i` are boundary values**: if `f` is smooth and all
+its derivatives vanish at `B ≥ 1`, then for `i < l`,
+`∫₁^B (v - 1)^i f^{(l)}(v) dv = (-1)^(i+1) i! f^{(l-1-i)}(1)`. -/
+theorem integral_pow_mul_iteratedDeriv {f : ℝ → ℂ} (hf : ContDiff ℝ ∞ f) {B : ℝ}
+    (hB : ∀ j, iteratedDeriv j f B = 0) :
+    ∀ i l : ℕ, i < l →
+      ∫ v in (1 : ℝ)..B, (((v - 1) ^ i : ℝ) : ℂ) * iteratedDeriv l f v =
+        (-1) ^ (i + 1) * (i.factorial : ℂ) * iteratedDeriv (l - 1 - i) f 1 := by
+  have hd : ∀ k x, HasDerivAt (iteratedDeriv k f) (iteratedDeriv (k + 1) f x) x := fun k x => by
+    rw [iteratedDeriv_succ]
+    exact (((contDiff_iteratedDeriv_infty hf k).differentiable (by simp)) x).hasDerivAt
+  have hc : ∀ k, Continuous (iteratedDeriv k f) := fun k =>
+    (contDiff_iteratedDeriv_infty hf k).continuous
+  intro i
+  induction i with
+  | zero =>
+    intro l hl0
+    obtain ⟨k, rfl⟩ : ∃ k, l = k + 1 := ⟨l - 1, by omega⟩
+    simp only [pow_zero, Complex.ofReal_one, one_mul]
+    rw [intervalIntegral.integral_eq_sub_of_hasDerivAt (fun x _ => hd k x)
+      ((hc (k + 1)).intervalIntegrable _ _), hB k]
+    simp
+  | succ i ih =>
+    intro l hil
+    obtain ⟨k, rfl⟩ : ∃ k, l = k + 1 := ⟨l - 1, by omega⟩
+    have hu : ∀ x ∈ uIcc (1 : ℝ) B, HasDerivAt (fun v : ℝ => (((v - 1) ^ (i + 1) : ℝ) : ℂ))
+        ((((i + 1 : ℕ) : ℝ) * (x - 1) ^ i : ℝ) : ℂ) x := fun x _ => by
+      have := (((hasDerivAt_id x).sub_const 1).pow (i + 1)).ofReal_comp
+      simpa using this
+    have hibp := intervalIntegral.integral_mul_deriv_eq_deriv_mul hu (fun x _ => hd k x)
+      ((Complex.continuous_ofReal.comp (continuous_const.mul
+        ((continuous_id.sub continuous_const).pow i))).intervalIntegrable _ _)
+      ((hc (k + 1)).intervalIntegrable _ _)
+    rw [hibp, hB k]
+    simp only [sub_self, zero_pow (Nat.succ_ne_zero i), Complex.ofReal_zero, zero_mul, mul_zero,
+      sub_zero, zero_sub]
+    have hrest : ∫ x in (1 : ℝ)..B, ((((i + 1 : ℕ) : ℝ) * (x - 1) ^ i : ℝ) : ℂ) * iteratedDeriv k f x =
+        (((i + 1 : ℕ) : ℝ) : ℂ) * ∫ x in (1 : ℝ)..B, (((x - 1) ^ i : ℝ) : ℂ) * iteratedDeriv k f x := by
+      rw [← intervalIntegral.integral_const_mul]
+      refine intervalIntegral.integral_congr fun x _ => ?_
+      push_cast; ring
+    rw [hrest, ih k (by omega), Nat.factorial_succ]
+    have e : k + 1 - 1 - (i + 1) = k - 1 - i := by omega
+    rw [e]
+    push_cast
+    ring
+
+/-- **A smooth function whose `n`-th derivative vanishes on an interval is its Taylor polynomial
+there**: for `c ∈ (a, b)` and `x ∈ (a, b)`, `h x = Σ_{j<n} h^{(j)}(c)/j! (x - c)^j`. -/
+theorem eq_taylor_of_iteratedDeriv_eq_zero {a b c : ℝ} (hc : c ∈ Ioo a b) :
+    ∀ n : ℕ, ∀ h : ℝ → ℂ, ContDiff ℝ ∞ h → (∀ x ∈ Ioo a b, iteratedDeriv n h x = 0) →
+      ∀ x ∈ Ioo a b, h x = ∑ j ∈ Finset.range n,
+        iteratedDeriv j h c / (j.factorial : ℂ) * ((x : ℂ) - c) ^ j := by
+  intro n
+  induction n with
+  | zero => intro h _ hn x hx; simpa using hn x hx
+  | succ n ih =>
+    intro h hh hn
+    have hdh : ContDiff ℝ ∞ (deriv h) := (contDiff_infty_iff_deriv.mp hh).2
+    have hd := ih (deriv h) hdh fun x hx => by rw [← iteratedDeriv_succ']; exact hn x hx
+    set T : ℝ → ℂ := fun x => ∑ j ∈ Finset.range (n + 1),
+      iteratedDeriv j h c / (j.factorial : ℂ) * ((x : ℂ) - c) ^ j with hT
+    -- the derivative of the Taylor polynomial
+    have hTd : ∀ x : ℝ, HasDerivAt T (∑ j ∈ Finset.range n,
+        iteratedDeriv j (deriv h) c / (j.factorial : ℂ) * ((x : ℂ) - c) ^ j) x := by
+      intro x
+      have hlin : HasDerivAt (fun y : ℝ => (y : ℂ) - c) 1 x := by
+        simpa using (hasDerivAt_id x).ofReal_comp.sub_const (c : ℂ)
+      have hsum := HasDerivAt.fun_sum (u := Finset.range (n + 1)) (fun j _ =>
+        (hlin.pow j).const_mul (iteratedDeriv j h c / (j.factorial : ℂ)))
+      convert hsum using 1
+      rw [Finset.sum_range_succ']
+      simp only [Nat.cast_zero, zero_mul, mul_zero, add_zero, Nat.cast_add, Nat.cast_one,
+        add_tsub_cancel_right, mul_one]
+      refine Finset.sum_congr rfl fun j _ => ?_
+      rw [← iteratedDeriv_succ', Nat.factorial_succ]
+      push_cast
+      field_simp
+    have hD : ∀ x ∈ Ioo a b, HasDerivAt (fun y => h y - T y) 0 x := by
+      intro x hx
+      have h1 : HasDerivAt h (deriv h x) x := ((hh.differentiable (by simp)) x).hasDerivAt
+      have := h1.sub (hTd x)
+      rw [hd x hx, sub_self] at this
+      exact this
+    have hTc : T c = h c := by
+      simp only [hT, sub_self]
+      rw [Finset.sum_range_succ']
+      simp
+    intro x hx
+    have hsub : uIcc c x ⊆ Ioo a b := (convex_Ioo a b).ordConnected.uIcc_subset hc hx
+    have hint := intervalIntegral.integral_eq_sub_of_hasDerivAt (f := fun y => h y - T y)
+      (fun y hy => hD y (hsub hy)) (intervalIntegrable_const (c := (0 : ℂ)))
+    simp only [intervalIntegral.integral_zero, hTc, sub_self] at hint
+    have h2 := hint.symm
+    rw [sub_zero] at h2
+    exact sub_eq_zero.mp h2
+
 /-- A continuous complex function vanishing on `[B, ∞)` is integrable on `[0, ∞)`. -/
 lemma integrableOn_Ici_of_zero_complex {f : ℝ → ℂ} (hf : Continuous f) {B : ℝ} (hB : 0 < B)
     (hz : ∀ ξ : ℝ, B ≤ ξ → f ξ = 0) : IntegrableOn f (Ici (0 : ℝ)) := by
