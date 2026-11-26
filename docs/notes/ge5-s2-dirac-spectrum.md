@@ -62,3 +62,76 @@ The numbers come from a throw-away sympy script (exact `ℚ(i)` arithmetic) that
 for the spectrum is Boldt, arXiv:1504.03121, Theorem 3.1 (eigenvalues `±(n/2 + k)`, multiplicity `2^{[n/2]} C(n+k−1, k)`,
 which for `n = 2` is `±(k+1)` with multiplicity `2(k+1)`), cited in LL-0293; the table above is a numerical check of the
 multiplicity in the chart, not a derivation.
+
+## Update 25 Nov 2026: route to completeness for smooth sections (milestones)
+
+Chart equations for an arbitrary smooth spinor `g = (g₁, g₂)`: `(1+|z|²) i ∂_z g₂ = λ g₁`, `(1+|z|²) i ∂_{z̄} g₁ = λ g₂`.
+In polar form `∂_{z̄} = (e^{iθ}/2)(∂_r + (i/r)∂_θ)`, so the angular modes `g₁ ~ a_m(r) e^{imθ}`, `g₂ ~ b_{m+1}(r) e^{i(m+1)θ}` satisfy
+`(1+r²)(i/2)(b' + (m+1) b/r) = λ a` and `(1+r²)(i/2)(a' − m a/r) = λ b`.
+Milestones: (M1, Lean, `Dirac/AngularFourier.lean`) the coefficient of the angular derivative of a periodic function is `i m`
+times the coefficient (`fcoef_dtheta`), and the radial derivative commutes with taking coefficients (`hasDerivAt_fcoef`);
+(M2) chain rule from the chart to polar coordinates and the two mode ODEs for a smooth chart spinor;
+(M3) classification of the solutions of the mode ODE that are regular at `r = 0` and decay at `∞` (the polynomial class of
+`EigenGeneralK`/`ge5-complete`), which needs a uniqueness statement for the singular linear ODE;
+(M4, Lean, done) a continuous spinor component is determined by its Fourier modes (`eq_zero_of_fcoef_polar`: all modes zero ⇒ zero, via Mathlib's Fourier basis on `AddCircle`); M2 is also Lean (`mode_eq_bar`, `mode_eq` in `Dirac/AngularModes.lean`).
+
+### M3 plan (25 Nov 2026): the mode ODE and two candidate routes
+
+With `ν = -2iλ`, `K = 1 + r²`, the mode pair `(a, b) = (c₁_m, c₂_{m+1})` solves `a' = (m/r) a + (ν/K) b`,
+`b' = -((m+1)/r) b + (ν/K) a`. Writing `A = r^{-m} a`, `B = r^{m+1} b` gives `K r^{2m+1} A' = ν B` and
+`K B' ... = ν r^{2m+1} A`, i.e. the spin-weighted Legendre equation `(K σ A')' = (ν² σ / K) A`, `σ = r^{2m+1}`.
+Route 1 (ODE): Frobenius series at `r = 0` (the regular solution is unique up to a scalar, `a ~ r^{|m|}`), then show
+that it decays at infinity iff the hypergeometric series terminates, i.e. `λ = ±(k+1)`; the non-terminating case needs the
+asymptotics at `t = r² → ∞` (connection formula or a Sturm/Wronskian comparison argument). Route 2 (functional
+analytic): the explicit eigenspinors of the lower bound span a dense subspace of `L²`, `D` is symmetric on smooth sections
+(integration by parts in the chart with the sphere measure), so an eigenspinor with another eigenvalue is orthogonal to a
+dense set, hence zero. Route 2 needs the `L²`/symmetry statement and a Stone–Weierstrass density argument, but no ODE
+asymptotics. Both are well above one session; first deliverable for either: regularity of the modes of a smooth spinor at
+the origin (`c_m(r) = O(r^{|m|})`).
+
+### M3 route 1, worked out (25 Nov 2026)
+
+For `m ≥ 0` put `a = r^m F(t)`, `b = r^{m+1} H(t)`, `t = r²`, `μ = ν/2`. The mode system becomes
+`(1+t) F' = μ H`, `(1+t)(t H' + (m+1) H) = μ F`; the Taylor coefficients satisfy
+`(n+1) f_{n+1} + n f_n = μ h_n`, `(n+m+1) h_n + (n+m) h_{n-1} = μ f_n`, so the regular solution is unique up to the scalar `f_0`
+(this is the Wronskian statement of `ModeODE.lean`, now with an explicit series; the other Frobenius solution has `a ~ r^{-m}`).
+At `t → ∞` the solutions behave as `F, H → const` (non-decaying: `a ~ r^m`) or `F, H ~ t^{-(m+1)}` (decaying: `a ~ r^{-m-2}`).
+The regular solution decays iff the coefficient of the first behaviour vanishes; that coefficient is a Gauss-type
+connection constant `Γ(c)Γ(c-a-b)/(Γ(c-a)Γ(c-b))` of the hypergeometric function in `x = t/(1+t)`, and it vanishes iff
+the series terminates, i.e. `μ = ±(k+1)/2 · …` (the quantisation `λ = ±(k+1)`). Stages for Lean: (S1) the series solution
+and its uniqueness (coefficient recurrences above, radius of convergence 1); (S2) the change of variable `x = t/(1+t)` and
+the closed hypergeometric parameters; (S3) the value at `x = 1` (Gauss) via the Euler integral and Mathlib's Beta
+integral, or via the contiguous relation; (S4) non-vanishing off the quantised set; (S5) assembly with M2, M4 and the
+decay at the pole. S3 is the hard part (no hypergeometric function theory in Mathlib).
+
+### M3 route 1, closed form found (25 Nov 2026, S2 and S3 mapped, not yet in Lean)
+
+Eliminating `H` from the series system gives `t(1+t)² F'' + (1+t)((m+2)t + m + 1) F' − μ² F = 0`; its exponents are
+`0, −m` at `t = 0`, `±iμ = ±λ` at `t = −1`, `0, −(m+1)` at `t = ∞`, so (Pfaff) the regular solution is
+**`F(t) = ₂F₁(λ, −λ; m+1; x)`, `x = t/(1+t) = r²/(1+r²)`**, with `λ = iμ`. Its Taylor coefficients in `x` are
+`γ_n = (λ)_n (−λ)_n / ((m+1)_n n!)`, `γ_n ~ n^{-m-2}`, so the series converges at `x = 1` and `F(r → ∞) = S(m+1)` with
+`S(c) = Σ_n (λ)_n(−λ)_n/((c)_n n!)`. The solution decays at infinity iff `S(m+1) = 0` (the other behaviour `a ~ r^m` is
+non-decaying).
+*Elementary evaluation of `S`* (no Gauss theorem needed):
+(a) telescoping: with `T_n(c)` the terms, `(c² − λ²) T_n(c+1) − c² T_n(c) = R_{n+1} − R_n`, `R_n = c n T_n(c)`; since
+`(N+1) T_{N+1}(c) → 0` for `c > 0`, `(c² − λ²) S(c+1) = c² S(c)`;
+(b) base case: `T_n(1) = P_n − P_{n−1}` with `P_n = ∏_{j ≤ n}(1 − λ²/j²)`, so `S(1) = lim P_N = sin(πλ)/(πλ)`
+(Mathlib: `Complex.tendsto_euler_sin_prod`);
+(c) hence `S(m+1) = S(1) ∏_{j=1}^m j²/(j² − λ²)`, which vanishes iff `λ ∈ ℤ`, `|λ| ≥ m+1`. The integers `1 ≤ |λ| ≤ m`
+need one more argument (the series terminates; Chu–Vandermonde gives `S(m+1) = (m+1−j)_j/(m+1)_j ≠ 0`).
+This is exactly the quantisation `λ = ±(k+1)`, `k ≥ m`. Remaining Lean work: identify `F` with the `x`-series (ODE for the
+`x`-series plus uniqueness from `ModeODE.lean`), Abel's theorem at `x = 1`, the dichotomy decaying / non-decaying at infinity,
+and the integer case.
+
+### Status after S3 (25 Nov 2026)
+
+Lean, no `sorry`: `ModeODE.lean` (Wronskian: at most one bounded and one decaying solution), `ModeSeries.lean` (the
+regular solution as a power series in `t = r²`, solving the system on `(-1,1)`), `GaussSum.lean` (`hgPartial_limit`: for the
+`x`-series `₂F₁(a,−a;m+1;x)` the value at `x = 1` exists and vanishes iff `a = ±k`, `k ≥ m+1`; telescoping, Euler product,
+partial-fraction identity). Remaining for the classification of smooth eigenspinors with decay at the pole:
+(S2') the `x`-series `G(x) = Σ hgTerm_n x^n` gives a solution `(r^m G(x(r)), r^{m+1} H̃)` of `IsModeSol` (termwise
+differentiation with a polynomial growth bound for `hgTerm`, chain rule through `x = r²/(1+r²)`, hypergeometric ODE
+`x(1−x)G'' + (m+1−x)G' + λ²G = 0`); (S4') Abel's theorem (`Complex.tendsto_tsum_powerSeries_nhdsWithin_stolzSet`)
+gives `G(x(r)) → L` as `r → ∞`; (S5') a mode that is bounded at `0` and `O(1/r)` at `∞` is a multiple of the regular
+solution (Wronskian plus ODE uniqueness) hence `L = 0`, hence `λ = ±k`, `k ≥ m+1`; negative `m` by the symmetric argument;
+then combine with `AngularModes.lean` (mode equations) and `eq_zero_of_fcoef_polar` (modes determine the spinor).
