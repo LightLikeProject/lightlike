@@ -1329,6 +1329,9 @@ milestones:
     class: sourced
     refs:
       - {ref: hawking-ellis-1973, location: "Chapter: Exact solutions|10.1017/CBO9780511524646.006"}
+      - {ref: carroll-1997, location: "eq. (7.100)", check: "Einstein"}
+      - {ref: carroll-1997, location: "eq. (7.87)", check: "coordinate singularity"}
+      - {ref: magoo-2000, location: "eq. (2.24)", check: "Einstein"}
   GE8:
     class: sourced
     refs:
