@@ -1092,8 +1092,8 @@ milestones:
       - id: m2
         kind: main
         text: "For a positive measure on [0, ∞) whose Laplace transform grows like e^{a/β}, the counting function ρ[0, X] has the asymptotics of Mukhametzhanov–Zhiboedov 2019, eq. (1.8)"
-        decls: []
-        hint: "Missing: Ingham's theorem for the counting function itself. Close: Lightlike.Tauberian.ingham_log (logarithmic form only, log F(X)/(2√(aX)) → 1; its docstring says weaker) and Lightlike.Tauberian.cardy_mz / cardy_relative (the (1.8) asymptotics with a 1+O(X^{-1/2}) error, but for a measure with a SpectralHyp and a modular-invariance hypothesis, not for a general L ~ e^{a/β})."
+        decls: [Lightlike.Tauberian.cardy_mz]
+        hint: "Ticked on Lightlike.Tauberian.cardy_mz (LL-0182; cardy_relative and cardy_counting are its steps) by owner decision D14 = (A). Difference: MZ (1.8) assumes modular invariance; the general-measure form (a positive measure with only L(β) ~ e^{a/β}) is false (BJM arXiv:1910.03036 §3.2). ingham_log is the real-axis logarithmic companion; the sector-bound form (BJM Theorem 4.1) is open, see docs/notes/sp3-tauberian-backlog.md."
       - id: p1
         kind: piece
         text: "Slowly varying functions are defined (ℓ eventually positive, ℓ(ct)/ℓ(t) → 1 for every c > 0)"
