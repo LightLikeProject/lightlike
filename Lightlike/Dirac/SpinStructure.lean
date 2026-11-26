@@ -101,7 +101,7 @@ domains covering `M` and smooth on them, whose frame changes `Rot` (defined by
 point; the lifts exist only for frame changes in `SO(n)`, so `M` is oriented as well.  This is the
 atlas form of the definition of Lawson–Michelsohn, *Spin Geometry*, II Def. 1.3, in place of
 the principal `Spin(n)`-bundle double covering the frame bundle: the two data are equivalent, but
-no such equivalence is proved here. -/
+atlas form; equivalence with the principal `Spin(n)`-bundle definition not proved. -/
 structure SpinStructure (g : NondegMetric 𝓘(ℝ, Fin n → ℝ) M) (ι : Type*) extends
     SpinCocycle n M ι where
   /-- The local frame `i`. -/
