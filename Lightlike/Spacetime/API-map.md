@@ -280,6 +280,7 @@ three keep infinity, while a special conformal transformation moves the point at
 131. Lightlike/Spacetime/Corners/CurvatureSymmetries.lean - `curvatureAt_apply_eventuallyW`, `bianchi_first_provedW`, `riemannLowerAt_pair_symmW`, `ricciAt_symm_provedW`: the curvature through fields smooth near the point, the first Bianchi identity, the pair symmetry and the symmetry of the Ricci tensor, for any model with corners.
 132. Lightlike/Spacetime/Corners/LeviCivitaSmooth.lean - `contMDiffAt_leviCivitaW`: the covariant derivative of the Levi-Civita connection is smooth on a manifold modelled with corners on R^n.
 133. Lightlike/Spacetime/Corners/BoundaryExample.lean - `Seg`, `IB`, `segMetric`, `segment_identities`, `segment_exists_leviCivita`: the closed unit segment as a manifold with boundary with its metric, and the curvature identities of the Corners layer on it.
+134. Lightlike/Spacetime/LieTensor.lean - `lieDerivCovector`, `lieDerivTensor2`, `lieDerivMetric_eq_lieDerivTensor2`, `lieDerivTensor2_symm`: the Lie derivative of a covector field and of a covariant 2-tensor field along a vector field, from the Lie bracket; `lieDerivMetric` is the case of the metric, and the derivative of a symmetric tensor is symmetric.
 
 ## References
 
