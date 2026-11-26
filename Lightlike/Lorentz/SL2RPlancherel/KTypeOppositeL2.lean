@@ -7,7 +7,11 @@ import Lightlike.Lorentz.SL2RPlancherel.KTypeBlockL2
 
 For natural `l, s`, the map sending a radial generator `G` to `ξ ↦ π √(sinh ξ) · HcN s G l ξ` in
 `L²(0, ∞)` (`blockEN`) has the same norm as the weighted transform `blockF s l G` of the same-sign
-case (`norm_blockFN`, from `norm_sq_ktype_opp`).  Layer 2c-v of the Plancherel formula on
+case (`norm_blockFN`, from `norm_sq_ktype_opp`).  The closure of its range is the orthocomplement
+of the span `discSpan s l` of the `min(l, s)` discrete directions `√(sinh ξ) φ_i(ξ)`
+(`closure_range_blockEN`): the images are orthogonal to them (`integral_hLRN_mul_phiN`), and a
+vector orthogonal to all images is, by `exists_hLRN_eq` and finite-dimensional linear algebra
+(`mem_span_of_iInf_ker_le_ker`), a combination of them.  Layer 2c-v of the Plancherel formula on
 `SL(2,ℝ)`, milestone HA3.
 -/
 
@@ -177,5 +181,203 @@ theorem memLp_phiSrc (s l i : ℕ) (hli : l ≤ i + s) (hil : i < l) :
   rw [norm_pow, norm_norm, phiSrc, Complex.norm_real, Real.norm_eq_abs, sq_abs, mul_pow,
     Real.sq_sqrt hs, mul_comm]
   exact phiN_sq_mul_sinh_le s l i hli hil hξ
+
+/-- The indices `l - s ≤ i < l` of the discrete directions. -/
+abbrev DiscIdx (s l : ℕ) := {i : Fin l // l ≤ (i : ℕ) + s}
+
+/-- The discrete direction `√(sinh ξ) φ_i(ξ)` as a vector of `L²(0, ∞)`. -/
+def phiVec (s l : ℕ) (i : DiscIdx s l) : Lp ℂ 2 (volume.restrict (Ioi (0 : ℝ))) :=
+  (memLp_phiSrc s l i.1 i.2 i.1.2).toLp (phiSrc s l i.1)
+
+/-- **The discrete part of the opposite-sign block**: the span of the `min(l, s)` discrete
+directions. -/
+def discSpan (s l : ℕ) : Submodule ℂ (Lp ℂ 2 (volume.restrict (Ioi (0 : ℝ)))) :=
+  Submodule.span ℂ (Set.range (phiVec s l))
+
+/-- The ladder images are orthogonal to the discrete directions, in `L²(0, ∞)`. -/
+theorem inner_phiVec_blockEN (s l : ℕ) (i : DiscIdx s l) (G : smoothCS) :
+    inner ℂ (phiVec s l i) (blockEN s l G) = 0 := by
+  rw [MeasureTheory.L2.inner_def]
+  have h1 : (phiVec s l i : ℝ → ℂ) =ᵐ[volume.restrict (Ioi (0 : ℝ))] phiSrc s l i.1 :=
+    MemLp.coeFn_toLp (memLp_phiSrc s l i.1 i.2 i.1.2)
+  have h2 : (blockEN s l G : ℝ → ℂ) =ᵐ[volume.restrict (Ioi (0 : ℝ))] blockSrcN s l G :=
+    MemLp.coeFn_toLp (memLp_blockSrcN s l G.2.1 G.2.2)
+  have hint := integral_hLRN_mul_phiN s l i.1 G.2.1 G.2.2 i.2 i.1.2
+  calc ∫ a in Ioi (0 : ℝ), inner ℂ ((phiVec s l i : ℝ → ℂ) a) ((blockEN s l G : ℝ → ℂ) a)
+      = ∫ ξ in Ioi (0 : ℝ), ((Real.pi : ℝ) : ℂ) *
+          (hLRN s G l ξ * ((phiN s l i.1 ξ : ℝ) : ℂ) * (Real.sinh ξ : ℂ)) := by
+        refine integral_congr_ae ?_
+        filter_upwards [h1, h2, ae_restrict_mem measurableSet_Ioi] with ξ e1 e2 hξ
+        rw [e1, e2, phiSrc, blockSrcN, HcN_eq_hLRN s G.2.1 l hξ, RCLike.inner_apply',
+          Complex.conj_ofReal]
+        have hs : 0 ≤ Real.sinh ξ := (Real.sinh_pos_iff.2 hξ).le
+        have hr : Real.sqrt (Real.sinh ξ) * phiN s l i.1 ξ * (Real.pi * Real.sqrt (Real.sinh ξ)) =
+            Real.pi * phiN s l i.1 ξ * Real.sinh ξ := by
+          have := Real.mul_self_sqrt hs
+          linear_combination (Real.pi * phiN s l i.1 ξ) * this
+        calc (((Real.sqrt (Real.sinh ξ) * phiN s l i.1 ξ : ℝ)) : ℂ) *
+              (((Real.pi * Real.sqrt (Real.sinh ξ) : ℝ) : ℂ) * hLRN s G l ξ)
+            = ((Real.sqrt (Real.sinh ξ) * phiN s l i.1 ξ * (Real.pi * Real.sqrt (Real.sinh ξ)) : ℝ) : ℂ) *
+              hLRN s G l ξ := by push_cast; ring
+          _ = _ := by rw [hr]; push_cast; ring
+    _ = 0 := by rw [integral_const_mul, hint, mul_zero]
+
+/-- The test functions supported in `(0, ∞)`. -/
+def testPos : Submodule ℂ smoothCS where
+  carrier := {K | tsupport (K : ℝ → ℂ) ⊆ Ioi 0}
+  add_mem' := fun {F G} hF hG => (tsupport_add (F : ℝ → ℂ) G).trans (union_subset hF hG)
+  zero_mem' := by
+    show tsupport (fun _ : ℝ => (0 : ℂ)) ⊆ Ioi 0
+    simp [tsupport]
+  smul_mem' := fun c F hF => (tsupport_smul_subset_right (fun _ => c) (F : ℝ → ℂ)).trans hF
+
+/-- A test function as a vector of `L²(0, ∞)`. -/
+theorem memLp_restrict_Ioi_zero (F : smoothCS) :
+    MemLp (F : ℝ → ℂ) 2 (volume.restrict (Ioi (0 : ℝ))) :=
+  F.2.1.continuous.memLp_of_hasCompactSupport F.2.2
+
+/-- The embedding of the test functions of `(0, ∞)` into `L²(0, ∞)`. -/
+def posE : testPos →ₗ[ℂ] Lp ℂ 2 (volume.restrict (Ioi (0 : ℝ))) where
+  toFun K := (memLp_restrict_Ioi_zero K.1).toLp K.1
+  map_add' F G := (MemLp.toLp_add (memLp_restrict_Ioi_zero F.1) (memLp_restrict_Ioi_zero G.1)).symm ▸ rfl
+  map_smul' c F := MemLp.toLp_const_smul c (memLp_restrict_Ioi_zero F.1)
+
+/-- **The orthocomplement of the opposite-sign ladder images is the discrete part**: a vector of
+`L²(0, ∞)` orthogonal to every `blockEN s l G` lies in the span of the discrete directions. -/
+theorem orthogonal_range_blockEN_le (s l : ℕ) :
+    (LinearMap.range (blockEN s l))ᗮ ≤ discSpan s l := by
+  intro f hf
+  have hf' : ∀ G : smoothCS, inner ℂ (blockEN s l G) f = 0 := fun G =>
+    (Submodule.mem_orthogonal _ _).1 hf _ (LinearMap.mem_range_self _ G)
+  set ι := posE with hι
+  set Λ : testPos →ₗ[ℂ] ℂ := (innerₛₗ ℂ f).comp ι with hΛ
+  set μ : DiscIdx s l → testPos →ₗ[ℂ] ℂ := fun i => (innerₛₗ ℂ (phiVec s l i)).comp ι with hμ
+  have hinv : ContDiffOn ℝ ∞ (fun ξ => (((Real.pi * Real.sqrt (Real.sinh ξ))⁻¹ : ℝ) : ℂ)) (Ioi 0) := by
+    have hsq : ContDiffOn ℝ ∞ (fun ξ => Real.sqrt (Real.sinh ξ)) (Ioi 0) :=
+      Real.contDiff_sinh.contDiffOn.sqrt fun x hx => (Real.sinh_pos_iff.2 hx).ne'
+    refine Complex.ofRealCLM.contDiff.comp_contDiffOn ((contDiffOn_const.mul hsq).inv fun x hx => ?_)
+    exact mul_ne_zero Real.pi_ne_zero (Real.sqrt_pos.2 (Real.sinh_pos_iff.2 hx)).ne'
+  -- `Λ` vanishes on the common kernel of the `μ i`
+  have hker : ⨅ i, LinearMap.ker (μ i) ≤ LinearMap.ker Λ := by
+    intro K hK
+    rw [Submodule.mem_iInf] at hK
+    have hμK : ∀ i, inner ℂ (phiVec s l i) (ι K) = 0 := fun i => hK i
+    set H : ℝ → ℂ := fun x => (K : ℝ → ℂ) x * (((Real.pi * Real.sqrt (Real.sinh x))⁻¹ : ℝ) : ℂ) with hH
+    have hKs : ContDiff ℝ ∞ (K : ℝ → ℂ) := K.1.2.1
+    have hKsub : tsupport (K : ℝ → ℂ) ⊆ Ioi 0 := K.2
+    have hHs : ContDiff ℝ ∞ H := contDiff_mul_of_tsupport_subset isOpen_Ioi hKs hKsub hinv
+    have hHsupp : tsupport H ⊆ tsupport (K : ℝ → ℂ) :=
+      closure_mono (Function.support_mul_subset_left _ _)
+    have hHc : HasCompactSupport H := K.1.2.2.mono' ((subset_tsupport _).trans hHsupp)
+    -- the moments of `H`
+    have hmom : ∀ i : ℕ, l ≤ i + s → i < l →
+        ∫ ξ in Ioi (0 : ℝ), H ξ * ((phiN s l i ξ : ℝ) : ℂ) * (Real.sinh ξ : ℂ) = 0 := by
+      intro i hli hil
+      have h0 := hμK ⟨⟨i, hil⟩, hli⟩
+      rw [MeasureTheory.L2.inner_def] at h0
+      have h1 : (phiVec s l ⟨⟨i, hil⟩, hli⟩ : ℝ → ℂ) =ᵐ[volume.restrict (Ioi (0 : ℝ))] phiSrc s l i :=
+        MemLp.coeFn_toLp (memLp_phiSrc s l i hli hil)
+      have h2 : (ι K : ℝ → ℂ) =ᵐ[volume.restrict (Ioi (0 : ℝ))] (K : ℝ → ℂ) :=
+        MemLp.coeFn_toLp (memLp_restrict_Ioi_zero K.1)
+      have e : ∫ ξ in Ioi (0 : ℝ), H ξ * ((phiN s l i ξ : ℝ) : ℂ) * (Real.sinh ξ : ℂ) =
+          (((Real.pi : ℝ) : ℂ))⁻¹ * ∫ a in Ioi (0 : ℝ),
+            inner ℂ ((phiVec s l ⟨⟨i, hil⟩, hli⟩ : ℝ → ℂ) a) ((ι K : ℝ → ℂ) a) := by
+        rw [← integral_const_mul]
+        refine integral_congr_ae ?_
+        filter_upwards [h1, h2, ae_restrict_mem measurableSet_Ioi] with ξ e1 e2 hξ
+        rw [e1, e2, phiSrc, RCLike.inner_apply', Complex.conj_ofReal, hH]
+        have hs : 0 < Real.sinh ξ := Real.sinh_pos_iff.2 hξ
+        have hsq : 0 < Real.sqrt (Real.sinh ξ) := Real.sqrt_pos.2 hs
+        have hss := Real.mul_self_sqrt hs.le
+        have hpi : ((Real.pi : ℝ) : ℂ) ≠ 0 := by exact_mod_cast Real.pi_ne_zero
+        have hsqC : ((Real.sqrt (Real.sinh ξ) : ℝ) : ℂ) ≠ 0 := by exact_mod_cast hsq.ne'
+        have hssC : ((Real.sqrt (Real.sinh ξ) : ℝ) : ℂ) * ((Real.sqrt (Real.sinh ξ) : ℝ) : ℂ) =
+            ((Real.sinh ξ : ℝ) : ℂ) := by exact_mod_cast hss
+        rw [← hssC]
+        push_cast
+        field_simp
+      rw [e, h0, mul_zero]
+    obtain ⟨G, hGs, hGc, hG⟩ := exists_hLRN_eq s l hHs hHc (hHsupp.trans hKsub) hmom
+    have heq : ι K = blockEN s l ⟨G, hGs, hGc⟩ := by
+      refine Lp.ext ?_
+      have h2 : (ι K : ℝ → ℂ) =ᵐ[volume.restrict (Ioi (0 : ℝ))] (K : ℝ → ℂ) :=
+        MemLp.coeFn_toLp (memLp_restrict_Ioi_zero K.1)
+      have h3 : (blockEN s l ⟨G, hGs, hGc⟩ : ℝ → ℂ) =ᵐ[volume.restrict (Ioi (0 : ℝ))]
+          blockSrcN s l G := MemLp.coeFn_toLp (memLp_blockSrcN s l hGs hGc)
+      filter_upwards [h2, h3, ae_restrict_mem measurableSet_Ioi] with ξ e2 e3 hξ
+      rw [e2, e3, blockSrcN, HcN_eq_hLRN s hGs l hξ, hG ξ hξ]
+      simp only [hH]
+      have hsq : 0 < Real.sqrt (Real.sinh ξ) := Real.sqrt_pos.2 (Real.sinh_pos_iff.2 hξ)
+      have hne : ((Real.pi * Real.sqrt (Real.sinh ξ) : ℝ) : ℂ) ≠ 0 := by
+        exact_mod_cast (mul_pos Real.pi_pos hsq).ne'
+      rw [Complex.ofReal_inv]
+      field_simp
+    show inner ℂ f (ι K) = 0
+    rw [heq, ← inner_conj_symm, hf' _, map_zero]
+  -- so `Λ` is a combination of the `μ i`
+  obtain ⟨c, hc⟩ := (Submodule.mem_span_range_iff_exists_fun ℂ).1
+    (mem_span_of_iInf_ker_le_ker (ι := DiscIdx s l) (𝕜 := ℂ) (E := testPos) (L := μ) (K := Λ)
+      (by exact hker))
+  set w := ∑ i, (starRingEnd ℂ) (c i) • phiVec s l i with hw
+  have hwW : w ∈ discSpan s l :=
+    Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
+  -- `f - w` is orthogonal to every test function
+  have horth : ∀ K : testPos, inner ℂ (f - w) (ι K) = 0 := by
+    intro K
+    have hΛK : Λ K = ∑ i, c i * inner ℂ (phiVec s l i) (ι K) := by
+      rw [← hc]; simp [hμ]
+    rw [inner_sub_left, hw, sum_inner]
+    simp only [inner_smul_left, Complex.conj_conj]
+    rw [← hΛK]
+    show inner ℂ f (ι K) - Λ K = 0
+    exact sub_self _
+  have hg0 : f - w = 0 := by
+    set g := f - w with hg
+    have hgl : LocallyIntegrableOn (fun x => (starRingEnd ℂ) ((g : ℝ → ℂ) x)) (Ioi 0) :=
+      locallyIntegrableOn_conj (locallyIntegrableOn_of_locallyIntegrable_restrict
+        ((Lp.memLp g).locallyIntegrable (by norm_num)))
+    have key := isOpen_Ioi.ae_eq_zero_of_integral_contDiff_smul_eq_zero (μ := volume) hgl ?_
+    · refine Lp.eq_zero_iff_ae_eq_zero.2 ?_
+      refine (ae_restrict_iff' measurableSet_Ioi).2 ?_
+      filter_upwards [key] with x hx hxpos
+      have := hx hxpos
+      simpa using congrArg (starRingEnd ℂ) this
+    intro r hr hrc hrsub
+    have hrC : (fun x => ((r x : ℝ) : ℂ)) ∈ smoothCS :=
+      ⟨Complex.ofRealCLM.contDiff.comp hr, by
+        simpa [HasCompactSupport, tsupport, Function.support] using hrc⟩
+    have hrT : (⟨_, hrC⟩ : smoothCS) ∈ testPos := by
+      show tsupport (fun x => ((r x : ℝ) : ℂ)) ⊆ Ioi 0
+      simpa [tsupport, Function.support] using hrsub
+    have h0 := horth ⟨⟨_, hrC⟩, hrT⟩
+    rw [MeasureTheory.L2.inner_def] at h0
+    have h2 : (ι ⟨⟨_, hrC⟩, hrT⟩ : ℝ → ℂ) =ᵐ[volume.restrict (Ioi (0 : ℝ))] fun x => ((r x : ℝ) : ℂ) :=
+      MemLp.coeFn_toLp (memLp_restrict_Ioi_zero ⟨_, hrC⟩)
+    rw [← setIntegral_eq_integral_of_forall_compl_eq_zero (s := Ioi (0 : ℝ)) fun x hx => by
+      have : x ∉ tsupport r := fun h => hx (hrsub h)
+      simp [image_eq_zero_of_notMem_tsupport this]]
+    rw [← h0]
+    refine integral_congr_ae ?_
+    filter_upwards [h2] with x hx
+    rw [hx, RCLike.inner_apply', Complex.real_smul, mul_comm]
+  have : f = w := sub_eq_zero.mp hg0
+  rw [this]
+  exact hwW
+
+/-- **The closure of the opposite-sign ladder images is the orthocomplement of the discrete part.** -/
+theorem closure_range_blockEN (s l : ℕ) :
+    (LinearMap.range (blockEN s l)).topologicalClosure = (discSpan s l)ᗮ := by
+  apply le_antisymm
+  · refine Submodule.topologicalClosure_minimal _ ?_ (Submodule.isClosed_orthogonal _)
+    rintro _ ⟨G, rfl⟩
+    rw [Submodule.mem_orthogonal]
+    intro u hu
+    induction hu using Submodule.span_induction with
+    | mem x hx => obtain ⟨i, rfl⟩ := hx; exact inner_phiVec_blockEN s l i G
+    | zero => simp
+    | add x y _ _ hx hy => rw [inner_add_left, hx, hy, add_zero]
+    | smul c x _ hx => rw [inner_smul_left, hx, mul_zero]
+  · rw [← Submodule.orthogonal_orthogonal_eq_closure]
+    exact Submodule.orthogonal_le (orthogonal_range_blockEN_le s l)
 
 end Lightlike.Lorentz.SL2RPlancherel
