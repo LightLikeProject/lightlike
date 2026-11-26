@@ -53,3 +53,14 @@
   review: kernel-checked
   note: "Layer 2c-v of the Plancherel formula on SL(2,R). The orthogonality is integral_hLRN_mul_phiN, the converse uses exists_hLRN_eq: a vector orthogonal to all images defines a functional on the test functions vanishing on the common kernel of the pairings with the discrete directions, hence a combination of them (mem_span_of_iInf_ker_le_ker), and the test functions are dense. The identification of the span with the discrete series matrix coefficients (equal spans by dimension) is the other stream's layer 3. Standard; no source consulted."
   since: unreleased
+- id: LL-XXXX-l
+  title: "The K x K decomposition of L2(SL(2,R)): the map sending a continuous square-integrable f to its K x K-Fourier components sqrt(sinh xi) f_m(xi), m in Z^2, extends to a linear isometry from L2(SL(2,R)) to the Hilbert sum of countably many copies of L2(0, infinity), scaled by 2 pi: ||F||^2 = (2 pi)^2 sum_m ||F_m||^2, with the polarised identity"
+  area: Lorentz
+  file: Lightlike/Lorentz/SL2RPlancherel/KKL2.lean
+  decls: [Lightlike.Lorentz.SL2RPlancherel.kkL2, Lightlike.Lorentz.SL2RPlancherel.norm_sq_eq_tsum_kkL2, Lightlike.Lorentz.SL2RPlancherel.inner_eq_tsum_kkL2, Lightlike.Lorentz.SL2RPlancherel.kkL2_toLp_ae]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Layer 2c-v of the Plancherel formula on SL(2,R), first step of the assembly. The identity on continuous functions is lintegral_norm_sq_eq_kk (polar coordinates and Parseval on the torus of angles); the continuous square-integrable functions are dense in L2 because the Haar measure is regular (Lp.boundedContinuousFunction_dense), and LinearMap.extendOfIsometry gives the extension. Standard; no source consulted."
+  since: unreleased
