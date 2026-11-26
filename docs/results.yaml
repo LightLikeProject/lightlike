@@ -7073,3 +7073,25 @@
   review: kernel-checked
   note: "For a non-degenerate metric g of any signature on a C^2 manifold modelled with corners (boundary and corners allowed) on any finite-dimensional real normed space E, and a locally smooth connection that is the Levi-Civita connection of g, the divergence of the Einstein tensor vanishes, with no Hausdorff hypothesis (einstein_divergence_free_any). It is the theorem for E = Fin n -> R (einstein_divergence_free_provedW) transported along a continuous linear equivalence e : E -> Fin n -> R (einstein_divergence_free_trans): the same manifold with the model transported to Fin n -> R (ModelWithCorners.transContinuousLinearEquiv) carries the transported connection, metric and fields (files TangentTransport, LieBracketTransport, CovDerivTransport, MetricTransport, CurvatureTransport, LeviCivitaTransport, CovDerivBilinTransport, RicciTransport), and the curvature, Ricci tensor, scalar curvature, Einstein tensor and the covariant derivative of the latter correspond term by term. Carroll, eqs. (3.94) to (3.96), derives the identity by contracting the Bianchi identity (as for LL-0232); the proof here is a transport of a coordinate computation (representation). The comparison of the corners statement with Wald, General Relativity, is pending: the book was not read at the cited location."
   since: unreleased
+- id: LL-0548
+  title: "Hyperbolic polar coordinates on the upper half-plane: for measurable G from the upper half-plane to [0, infinity], the integral of G against the invariant measure dx dy / y^2 is the integral over phi in (-pi, pi) and xi > 0 of sinh xi times G at the inverse Cayley transform of tanh(xi/2) e^(i phi)"
+  area: Lorentz
+  file: Lightlike/Lorentz/SL2RPlancherel/HyperbolicPolar.lean
+  decls: [Lightlike.Lorentz.SL2R.lintegral_upperHalfPlane_polar, Lightlike.Lorentz.SL2R.lintegral_tanh_half]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Layer 2a of the Plancherel formula on SL(2,R), part 1. The measure sinh xi dxi dphi is the area element of the hyperbolic plane in geodesic polar coordinates about i (xi the hyperbolic distance from i, phi the angle at i); the proof moves dx dy/y^2 to the unit disc by the Cayley transform, where it is 4 dA/(1-|w|^2)^2, then uses the plane polar coordinates of Mathlib and the substitution r = tanh(xi/2). Standard; no source consulted for the formula in this form."
+  since: unreleased
+- id: LL-0549
+  title: "Polar (Cartan, KAK) integration formula for the Haar measure of SL(2,R): for measurable F from SL(2,R) to [0, infinity], the integral of F is 2 times the integral over alpha in (-pi/2, pi/2), xi > 0 of sinh xi times the integral over theta in (0, 2 pi] of F(k_alpha a(xi) k_theta), with a(xi) = diag(e^(xi/2), e^(-xi/2)) and k the rotations, for the Haar measure normalised by the Iwasawa chart"
+  area: Lorentz
+  file: Lightlike/Lorentz/SL2RPlancherel/PolarIntegral.lean
+  decls: [Lightlike.Lorentz.SL2R.lintegral_haarR_polar, Lightlike.Lorentz.SL2R.smul_I_polar]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Layer 2a of the Plancherel formula on SL(2,R), part 2: from the Iwasawa form of haarR, the hyperbolic polar coordinates of the upper half-plane, the identity k_alpha a(xi) . i = Cayley^-1(tanh(xi/2) e^(2 i alpha)), the substitution phi = 2 alpha and the rotation invariance of the circle integral. The normalisation is that of haarR (the measure of the Iwasawa chart), not a unit-mass or a fixed-constant normalisation. Standard; no source consulted for the formula in this form. NOT proved: the Plancherel formula on compactly supported functions (layer 2b) and its completeness (layer 2c)."
+  since: unreleased
