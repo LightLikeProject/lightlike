@@ -424,4 +424,86 @@ lemma frameS_smooth (a : Fin 2) {p : S2} (hp : pc p 2 ≠ -1) :
     exact hq.contMDiff.contMDiffAt.comp p h
   exact hc.smul_section hX
 
+/-! ## The frame vectors in `ℝ³` and the frame change -/
+
+/-- `dι (dσ w) = D w` for a map `σ : ℝ² → S2` whose composite with the inclusion has derivative `D`. -/
+lemma dι_mfderiv {σm : (Fin 2 → ℝ) → S2} {y : Fin 2 → ℝ}
+    (hσ : MDifferentiableAt 𝓘(ℝ, Fin 2 → ℝ) I2 σm y) {D : (Fin 2 → ℝ) →L[ℝ] EuclideanSpace ℝ (Fin (2 + 1))}
+    (hD : HasFDerivAt (fun y => sphereIncl2 (σm y)) D y) (w : Fin 2 → ℝ) :
+    dι (I := I2) sphereIncl2 (σm y) (mfderiv 𝓘(ℝ, Fin 2 → ℝ) I2 σm y w) = D w := by
+  have hι := hasMFDerivAt_transContinuousLinearEquiv modelEquiv2 (hasMFDerivAt_sphereIncl2 (σm y))
+  have hu := (hι.comp y hσ.hasMFDerivAt).mfderiv.symm.trans hD.hasMFDerivAt.mfderiv
+  rw [dι_I2, ← hu]; rfl
+
+/-- The north frame vector `a` at `stereoN y` in `ℝ³`: `W eₐ − (2yₐ/(q+1)) W y + (2yₐ/(q+1)) N`. -/
+def FrN (a : Fin 2) (y : Fin 2 → ℝ) : EuclideanSpace ℝ (Fin (2 + 1)) :=
+  vec3 ((Pi.single a 1 : Fin 2 → ℝ) 0 - 2 * y a * y 0 / (nsq y + 1))
+    ((Pi.single a 1 : Fin 2 → ℝ) 1 - 2 * y a * y 1 / (nsq y + 1)) (2 * y a / (nsq y + 1))
+
+/-- The south frame vector `a` at `stereoS y` in `ℝ³`. -/
+def FrS (a : Fin 2) (y : Fin 2 → ℝ) : EuclideanSpace ℝ (Fin (2 + 1)) :=
+  vec3 ((Pi.single a 1 : Fin 2 → ℝ) 0 - 2 * y a * y 0 / (nsq y + 1))
+    (-((Pi.single a 1 : Fin 2 → ℝ) 1 - 2 * y a * y 1 / (nsq y + 1))) (-(2 * y a / (nsq y + 1)))
+
+lemma dι_fStereo {ε σ : ℝ} (hε : ε * ε = 1) {σm : (Fin 2 → ℝ) → S2} (hσ : ContMDiff 𝓘(ℝ, Fin 2 → ℝ) I2 ∞ σm)
+    (hf : ∀ y, sphereIncl2 (σm y) = stereoMap (Wpl ε) (vec3 0 0 σ) ((2 : ℝ) • modelEquiv2.symm y))
+    (a : Fin 2) (y : Fin 2 → ℝ) :
+    dι (I := I2) sphereIncl2 (σm y)
+      (((nsq y + 1) / 2) • (mfderiv 𝓘(ℝ, Fin 2 → ℝ) I2 σm y (Pi.single a 1) : Fin 2 → ℝ)) =
+      vec3 ((Pi.single a 1 : Fin 2 → ℝ) 0 - 2 * y a * y 0 / (nsq y + 1))
+        (ε * ((Pi.single a 1 : Fin 2 → ℝ) 1 - 2 * y a * y 1 / (nsq y + 1))) (σ * (2 * y a / (nsq y + 1))) := by
+  set L : (Fin 2 → ℝ) →L[ℝ] EuclideanSpace ℝ (Fin 2) := (2 : ℝ) • (modelEquiv2.symm : (Fin 2 → ℝ) →L[ℝ] _)
+  obtain ⟨D0, hD0, hDa⟩ := hasFDerivAt_stereoMap (Wpl ε) (vec3 0 0 σ) (L y)
+  have hD : HasFDerivAt (fun y => sphereIncl2 (σm y)) (D0.comp L) y := by
+    have := hD0.comp y L.hasFDerivAt
+    exact this.congr_of_eventuallyEq (Filter.Eventually.of_forall fun y => hf y)
+  erw [ContinuousLinearMap.map_smul]
+  rw [dι_mfderiv (hσ.mdifferentiableAt (by simp)) hD, ContinuousLinearMap.comp_apply, hDa]
+  have hq := nsq_nonneg y
+  have hLy : ‖L y‖ ^ 2 = 4 * nsq y := by
+    simp only [L, ContinuousLinearMap.smul_apply, ContinuousLinearEquiv.coe_coe]
+    rw [norm_smul, mul_pow, norm_sq_modelEquiv2_symm]; norm_num
+  have hin : inner ℝ (L y) (L (Pi.single a 1)) = 4 * y a := by
+    simp only [L, ContinuousLinearMap.smul_apply, ContinuousLinearEquiv.coe_coe, inner_smul_left,
+      inner_smul_right, PiLp.inner_apply, Fin.sum_univ_two, RCLike.inner_apply, conj_trivial,
+      modelEquiv2_symm_apply]
+    fin_cases a <;> simp <;> ring
+  rw [hLy, hin]
+  ext i
+  fin_cases i <;>
+    simp [L, Wpl_apply, vec3, modelEquiv2_symm_apply, nsq] <;> fin_cases a <;> simp <;> field_simp <;> ring
+
+lemma dι_fN (a : Fin 2) (y : Fin 2 → ℝ) : dι (I := I2) sphereIncl2 (stereoN y) (fN a y) = FrN a y := by
+  have h := dι_fStereo (ε := 1) (σ := 1) (by norm_num) contMDiff_stereoN (fun y => stereoNE_eq y) a y
+  unfold fN FrN; simpa using h
+
+lemma dι_fS (a : Fin 2) (y : Fin 2 → ℝ) : dι (I := I2) sphereIncl2 (stereoS y) (fS a y) = FrS a y := by
+  have h := dι_fStereo (ε := -1) (σ := -1) (by norm_num) contMDiff_stereoS (fun y => stereoSE_eq y) a y
+  unfold fS FrS; simpa [neg_mul, one_mul, neg_sub] using h
+
+/-- The transition `z ↦ 1/z`: `y ↦ (y₀, -y₁)/|y|²`. -/
+def tau (y : Fin 2 → ℝ) : Fin 2 → ℝ := ![y 0 / nsq y, -(y 1) / nsq y]
+
+/-- The frame change, a rotation: first row `u = ((y₁²-y₀²), -2y₀y₁)/|y|²`, second row `(-u₂, u₁)`. -/
+def rotNS (y : Fin 2 → ℝ) : Matrix (Fin 2) (Fin 2) ℝ :=
+  !![(y 1 ^ 2 - y 0 ^ 2) / nsq y, -(2 * y 0 * y 1) / nsq y;
+     (2 * y 0 * y 1) / nsq y, (y 1 ^ 2 - y 0 ^ 2) / nsq y]
+
+/-- **The frame change in `ℝ³`**: `FrS a (τ y) = Σ_b R a b FrN b y` for `y ≠ 0`. -/
+lemma FrS_tau {y : Fin 2 → ℝ} (hy : nsq y ≠ 0) (a : Fin 2) :
+    FrS a (tau y) = ∑ b, rotNS y a b • FrN b y := by
+  have hq := nsq_nonneg y
+  have h0 : tau y 0 = y 0 / nsq y := rfl
+  have h1 : tau y 1 = -(y 1) / nsq y := rfl
+  have hqdef : y 0 ^ 2 + y 1 ^ 2 = nsq y := rfl
+  have ht : nsq (tau y) = (nsq y)⁻¹ := by
+    rw [nsq, h0, h1, div_pow, div_pow, neg_sq, ← add_div, hqdef, sq, div_mul_eq_div_div, div_self hy,
+      one_div]
+  have hq1 : nsq y + 1 ≠ 0 := by positivity
+  have hq2 : (nsq y)⁻¹ + 1 ≠ 0 := by have := inv_nonneg.mpr hq; positivity
+  ext i
+  fin_cases a <;> fin_cases i <;>
+    simp [FrS, FrN, rotNS, Fin.sum_univ_two, h0, h1, ht] <;>
+    unfold nsq at hy hq1 hq2 ⊢ <;> field_simp <;> ring
+
 end Lightlike.Dirac
