@@ -123,6 +123,7 @@ point of retarded time `u` [59]. Global anti-de Sitter space with `r = tan ρ` h
 `ρ = π/2` to `-dt² + dθ² + sin² θ dφ²`, the metric of `ℝ × S²` [61].
 A Lorentz matrix with positive time-time entry sends the future null vector `(1, n)`, `|n| = 1`, to `K (1, n')`
 with `K > 0` and `|n'| = 1` [62].
+The Poincaré transformations `x ↦ Λ x + a` act on the points `(u, n)` of null infinity by `(u / K + a₀ - n' · a⃗, n')`, with the group law [63].
 
 ## Lean References
 
@@ -251,6 +252,8 @@ with `K > 0` and `|n'| = 1` [62].
 61. Lightlike/GR/AdSConformalBoundary/AdSBoundary.lean - `adsCompact_boundary`
 62. Lightlike/GR/AdSConformalBoundary/NullDirection.lean - `nullDirFactor_pos`, `mulVec_nullVec_eq`,
     `sum_sq_nullDirMap`
+63. Lightlike/GR/AdSConformalBoundary/ScriAction.lean - `scriAct`, `scriAct_comp`, `nullDirFactor_mul`,
+    `nullDirMap_mul`
 
 ## References
 

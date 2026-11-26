@@ -118,6 +118,26 @@ theorem sum_sq_nullDirMap {Λ : Matrix (Fin 4) (Fin 4) ℝ} (hΛ : Λᵀ * eta 4
   rw [div_eq_one_iff_eq (pow_pos hK 2).ne']
   linarith
 
+/-- The Minkowski product is preserved by a Lorentz matrix. -/
+theorem minkDot_mulVec {Λ : Matrix (Fin 4) (Fin 4) ℝ} (hΛ : Λᵀ * eta 4 * Λ = eta 4) (v w : Fin 4 → ℝ) :
+    (Λ *ᵥ v) ⬝ᵥ (eta 4 *ᵥ (Λ *ᵥ w)) = v ⬝ᵥ (eta 4 *ᵥ w) := by
+  have h : Λ *ᵥ v ⬝ᵥ eta 4 *ᵥ (Λ *ᵥ w) = v ⬝ᵥ (Λᵀ * eta 4 * Λ) *ᵥ w := by
+    rw [dotProduct_comm, dotProduct_mulVec, ← mulVec_transpose, dotProduct_comm]
+    simp only [mulVec_mulVec, Matrix.mul_assoc]
+  rw [h, hΛ]
+
+/-- The Minkowski product of `(1, n)` with `a`: `-a₀ + n · a⃗`. -/
+theorem nullVec_dot (n : Fin 3 → ℝ) (a : Fin 4 → ℝ) :
+    nullVec n ⬝ᵥ (eta 4 *ᵥ a) = -a 0 + ∑ i : Fin 3, n i * a i.succ := by
+  simp [nullVec, eta, mulVec_diagonal, dotProduct, Fin.sum_univ_succ, etaDiag]
+
+theorem nullDirFactor_one (n : Fin 3 → ℝ) : nullDirFactor 1 n = 1 := by
+  simp [nullDirFactor, nullVec]
+
+theorem nullDirMap_one (n : Fin 3 → ℝ) : nullDirMap 1 n = n := by
+  ext i
+  simp [nullDirMap, nullDirFactor, nullVec]
+
 /-- A boost along the first axis with `cosh = 5/4`, `sinh = 3/4`. -/
 def boostX : Matrix (Fin 4) (Fin 4) ℝ :=
   !![5 / 4, 3 / 4, 0, 0; 3 / 4, 5 / 4, 0, 0; 0, 0, 1, 0; 0, 0, 0, 1]
