@@ -11,7 +11,8 @@ by a unique short geodesic, with initial velocity `V(p, y)` depending smoothly o
 
 `σ(p, y) = g_p(V(p, y), V(p, y))`
 
-is smooth near the diagonal, vanishes on it, its velocity `V(p, ·)` has derivative the identity at `p`, and it
+is smooth near the diagonal, vanishes on it, its velocity `V(p, ·)` has derivative the identity at `p`, the raised gradient
+`T = g⁻¹ dσ/2` satisfies `D_y V(p, y) T = V(p, y)` (so `g⁻¹(dσ, du)/2` is the Euler operator in normal coordinates), and it
 satisfies the **eikonal equation**
 
 `g^{ij}(y) ∂_{y_i} σ(p, y) ∂_{y_j} σ(p, y) = 4 σ(p, y)`
@@ -91,7 +92,9 @@ theorem exists_sqDist_eikonal (hg : Lightlike.IsCoordMetric g U) {x : Fin n → 
       (∀ q ∈ W, ∃ γ w : ℝ → Fin n → ℝ, γ 0 = q.1 ∧ w 0 = V q ∧ γ 1 = q.2 ∧
         IsGeodesicOn g γ w (Ioo (-1) 2) ∧ ∀ t ∈ Icc (0 : ℝ) 1, γ t ∈ U) ∧
       ContDiffOn ℝ ∞ (fun q => pairing g q.1 (V q) (V q)) W ∧
-      ∀ q ∈ W, (fun i => pd₂ (fun q' => pairing g q'.1 (V q') (V q')) q i) ⬝ᵥ
+      ∀ q ∈ W, (∃ T : Fin n → ℝ, fderiv ℝ (fun y => V (q.1, y)) q.2 T = V q ∧
+          ∀ i, pd₂ (fun q' => pairing g q'.1 (V q') (V q')) q i = 2 * pairing g q.2 T (Pi.single i 1)) ∧
+        (fun i => pd₂ (fun q' => pairing g q'.1 (V q') (V q')) q i) ⬝ᵥ
           ((g q.2)⁻¹ *ᵥ fun i => pd₂ (fun q' => pairing g q'.1 (V q') (V q')) q i) =
         4 * pairing g q.1 (V q) (V q) := by
   obtain ⟨ρ, E, Θ, hρ, hE0, hEs, hEU, hEg, hx0, hΘs, hΘ, hΘc, hΘic⟩ := exists_twoPoint_diffeo hg hx
@@ -319,6 +322,24 @@ theorem exists_sqDist_eikonal (hg : Lightlike.IsCoordMetric g U) {x : Fin n → 
       rw [hw₁] at this
       unfold pd₂
       rw [← hp, ← hy, this, ← hgauss w₁, hw₁]
+    -- the raised gradient `T = A v` is mapped to `v` by `D_y V(p, ·)`
+    have hTv : fderiv ℝ (fun y' => V (p, y')) y (A v) = v := by
+      have hinvF : (fun y' => V (p, y')) ∘ F =ᶠ[𝓝 v] id := by
+        filter_upwards [hS.mem_nhds hsrc] with u hu
+        simp only [Function.comp_apply, hV, hF, id]
+        rw [show (p, E (p, u)) = Θ (p, u) from (hΘ _ hu).symm, Θ.left_inv hu]
+      have hqy : (p, y) = q := rfl
+      have hVd : DifferentiableAt ℝ (fun y' => V (p, y')) y :=
+        ((hVs.contDiffAt (hWo.mem_nhds (hqy ▸ hq))).differentiableAt (by simp)).comp y
+          ((differentiableAt_const p).prodMk differentiableAt_id)
+      have hVd' : HasFDerivAt (fun y' => V (p, y')) (fderiv ℝ (fun y' => V (p, y')) y) (F v) := by
+        rw [show F v = y from hyE.symm]; exact hVd.hasFDerivAt
+      have hc := hVd'.comp v hFd.hasFDerivAt
+      have hid : HasFDerivAt ((fun y' => V (p, y')) ∘ F) (ContinuousLinearMap.id ℝ (Fin n → ℝ)) v :=
+        (hasFDerivAt_id v).congr_of_eventuallyEq hinvF
+      have := congrArg (fun L : (Fin n → ℝ) →L[ℝ] (Fin n → ℝ) => L v) (hc.unique hid)
+      simpa [hA] using this
+    refine ⟨⟨A v, hTv, hgrad⟩, ?_⟩
     rw [dotProduct_inv_mulVec_of_lower hg hyU (A v) _ hgrad, hgauss v]
 
 end Lightlike.Geodesic
