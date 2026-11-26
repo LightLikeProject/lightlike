@@ -10,7 +10,7 @@ import Lightlike.Bundles.VectorBundle.Riemannian.Hermitian
 /-!
 # Continuous orthonormal frames
 
-Adapted from Tau Ceti (`TauCeti/Topology/VectorBundle/GramSchmidt.lean`,
+Adapted from Tau Ceti (module TauCeti.Topology.VectorBundle.GramSchmidt,
 revision 2a9233e5b, Apache 2.0 license).
 
 The native Gram–Schmidt process is continuous for continuous families of linearly independent

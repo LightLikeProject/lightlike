@@ -11,7 +11,7 @@ import Mathlib.Topology.MetricSpace.ProperSpace
 /-!
 # Normed star subgroups, unit and unitary norms, and compact unitary groups
 
-Adapted from Tau Ceti (`TauCeti/Analysis/CStarAlgebra/Basic.lean`,
+Adapted from Tau Ceti (module TauCeti.Analysis.CStarAlgebra.Basic,
 revision 2a9233e5b, Apache 2.0 license).
 
 In a C⋆-ring, left and right multiplication by a unitary element preserve the norm

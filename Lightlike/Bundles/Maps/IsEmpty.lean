@@ -9,7 +9,7 @@ import Mathlib.Topology.Maps.Basic
 /-!
 # Closed embeddings out of an empty space
 
-Adapted from Tau Ceti (`TauCeti/Topology/Maps/IsEmpty.lean`,
+Adapted from Tau Ceti (module TauCeti.Topology.Maps.IsEmpty,
 revision 2a9233e5b, Apache 2.0 license).
 
 Every map out of an empty space is a closed embedding. Mathlib proves the open version

@@ -10,7 +10,7 @@ import Lightlike.Bundles.VectorBundle.Pullback
 /-!
 # Pullback of orthonormal frame bundles
 
-Adapted from Tau Ceti (`TauCeti/Topology/VectorBundle/OrthonormalFrame/Pullback.lean`,
+Adapted from Tau Ceti (module TauCeti.Topology.VectorBundle.OrthonormalFrame.Pullback,
 revision 2a9233e5b, Apache 2.0 license).
 
 An orthonormal frame of the fibre of `f *ᵖ E` at `x` is precisely a frame of `E` at `f x`.
