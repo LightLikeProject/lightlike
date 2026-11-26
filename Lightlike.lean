@@ -2110,6 +2110,7 @@ import Lightlike.SpinFoam.Move15
 import Lightlike.SpinFoam.Move15Global
 import Lightlike.SpinFoam.BarrettCrane
 import Lightlike.SpinFoam.BarrettCraneTests
+import Lightlike.SpinFoam.ReisenbergerCore
 import Lightlike.SpinFoam.GaugeIndependence
 import Lightlike.SpinFoam.ForcingMoves
 import Lightlike.SpinFoam.ForcingMove33
