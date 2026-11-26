@@ -17,7 +17,7 @@ The catalog has 554 entries. They are not 554 theorems of equal weight:
 - 2 are of kind `elementary`: an elementary fact with a short standard proof.
 - 1 is of kind `wrapper`: a restatement of a result that Mathlib or Physlib already proves; the proof is theirs.
 - 12 of the entries are conditional (proven under hypotheses) or stated targets (proof open): the table below lists them with their hypotheses.
-- 94 entries still have the note "Comparison pending": the statement was not compared with the text of the source at the cited location. The kernel has checked their proofs; a person has not checked that the statement says what the source says.
+- 94 entries still have the note "Comparison pending": the statement was not compared with the text of a source. 22 of them cite a source whose text at the cited location was not read against the statement; 72 cite no source (their `source` is `exploratory` or `structural`: no source is named, so there was nothing to compare with; many are textbook statements for which a source still has to be chosen and read). The kernel has checked their proofs; a person has not checked that the statement says what the literature says.
 - 93 entries state a limit (`Limits:`): the statement is narrower than the source (one chart, finitely many modes, a special family, and so on). The last table lists them.
 
 ### Conditional and stated results

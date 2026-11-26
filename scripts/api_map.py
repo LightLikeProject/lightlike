@@ -385,7 +385,11 @@ def counts(reg: list[dict]) -> dict:
     c["entries"] = len(live)
     c["results"] = len(live) - sum(c[k] for k in KINDS)
     c["open"] = sum(e["status"] in ("conditional", "stated") for e in live)
-    c["pending"] = sum(COMPARISON_PENDING in str(e.get("note", "")).lower() for e in live)
+    pend = [e for e in live if COMPARISON_PENDING in str(e.get("note", "")).lower()]
+    c["pending"] = len(pend)
+    # An entry whose source is `exploratory` or `structural` cites no source: nothing is named to compare with.
+    c["pending_own"] = sum(isinstance(e.get("source"), str) for e in pend)
+    c["pending_cited"] = c["pending"] - c["pending_own"]
     c["limits"] = sum("Limits:" in str(e.get("note", "")) for e in live)
     return c
 
@@ -412,8 +416,11 @@ def read_count(reg: list[dict]) -> list[str]:
            f"- {c['open']} of the entries are conditional (proven under hypotheses) or stated targets (proof open): "
            "the table below lists them with their hypotheses.",
            f"- {c['pending']} entries still have the note \"Comparison pending\": the statement was not compared with the "
-           "text of the source at the cited location. The kernel has checked their proofs; a person has not "
-           "checked that the statement says what the source says.",
+           f"text of a source. {c['pending_cited']} of them cite a source whose text at the cited location was not "
+           f"read against the statement; {c['pending_own']} cite no source (their `source` is `exploratory` or "
+           "`structural`: no source is named, so there was nothing to compare with; many are textbook statements for "
+           "which a source still has to be chosen and read). The kernel has checked their proofs; a person has not "
+           "checked that the statement says what the literature says.",
            f"- {c['limits']} entries state a limit (`Limits:`): the statement is narrower than the "
            "source (one chart, finitely many modes, a special family, and so on). The last table lists them.", "",
            "### Conditional and stated results", "",
@@ -516,7 +523,7 @@ def summary(reg: list[dict]) -> str:
              f"Mathlib or Physlib result, so {k['results']} are results in the sense of a paper's theorem; "
              f"{count(k['open'], 'entry is', 'entries are')} conditional or a stated target; "
              f"{count(k['pending'], 'entry has', 'entries have')} a statement that was not yet compared with "
-             f"the text of its source; {count(k['limits'], 'entry states', 'entries state')} a limit (the "
+             f"the text of a source ({k['pending_cited']} cite one, {k['pending_own']} cite none); {count(k['limits'], 'entry states', 'entries state')} a limit (the "
              f"statement is narrower than the source).")
     return (textwrap.fill(text, 100, break_on_hyphens=False) + "\n\n"
             + textwrap.fill(text2, 100, break_on_hyphens=False))
