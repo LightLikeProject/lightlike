@@ -55,7 +55,7 @@ milestones:
       - id: t1
         kind: trust
         text: "The round 2-sphere of radius r, as a manifold with its Levi-Civita connection, has scalar curvature 2/r²"
-        decls: [Lightlike.roundSphere_scalarCurvatureAt, Lightlike.roundSphere_coordMetric]
+        decls: [Lightlike.roundSphere2_scalarCurvatureAt, Lightlike.roundSphere2_exists_leviCivita, Lightlike.roundSphere_scalarCurvatureAt, Lightlike.roundSphere_coordMetric]
         hint: "Close but not this: Lightlike.Test.sphere_scalar (coordinate formula on the (θ, φ) chart), scalarCurv_sphere (sphere in ℝ³ by the Gauss equation), scalarCurvature_stereo_two (radius 1 only). Missing: the statement for the intrinsic scalarCurvatureAt."
       - id: t2
         kind: trust
@@ -401,7 +401,7 @@ milestones:
       - id: t1
         kind: trust
         text: "The round 2-sphere (Riemannian) has the same identities"
-        decls: []
+        decls: [Lightlike.roundSphere2_identities, Lightlike.roundSphere2_exists_leviCivita]
         hint: "Missing: no S² instance in Corners/ (only the 3-sphere roundMetric)."
       - id: t2
         kind: trust
@@ -1066,7 +1066,7 @@ milestones:
         kind: trust
         text: "The method gives the right asymptotics for a sum whose asymptotics are known independently"
         decls: [Lightlike.Asymptotics.kummerSum_saddle_matches_closed_form, Lightlike.Asymptotics.kummerSum_saddle_bound, Lightlike.Asymptotics.tendsto_kummerSum_div_kummerLead, Lightlike.Asymptotics.tendsto_centralBinom_div_kummerLead]
-        hint: "Kummer's sum Σ_t (−1)^t C(m,t)² run through the contour method (Lightlike/Asymptotics/KummerSum/): contour identity, complex Stirling, the saddle α₀ = (1+i)/2 of its own phase with ψ''(α₀) = −4, Laplace's method; the leading term L(2n) = 2^{2n+1}(−1)^n √(π/(2(2n+1)))/π is computed without the value of the sum and agrees with the asymptotics of the closed form (−1)^n C(2n,n) from the real Stirling formula. The Racah phase is not shape-generic (Fin 4/Fin 3 Gamma pattern), so the run reuses only the generic pieces (exists_primitive_im_sub, Stirling.lean, laplace_ray_uniform)."
+        hint: "Kummer's sum Σ_t (−1)^t C(m,t)² run through the contour method (Lightlike/Asymptotics/KummerSum/): contour identity, complex Stirling, the saddle α₀ = (1+i)/2 of its own phase with ψ''(α₀) = −4, Laplace's method; the leading term L(2n) = 2^{2n+1}(−1)^n √(π/(2(2n+1)))/π is computed without the value of the sum and agrees with the asymptotics of the closed form (−1)^n C(2n,n) from the real Stirling formula. The Racah phase is not shape-generic (Fin 4/Fin 3 Gamma pattern), so the run reuses only the generic pieces (exists_primitive_im_sub, Stirling.lean, laplace_ray_uniform). Attempt 1: the zero-spin sum is outside the Racah theorem (Lightlike.Asymptotics.not_isEuclid_toReal_zero_spin)."
       - id: t3
         kind: trust
         text: "The formula with only one of the two complex-conjugate saddles fails"
