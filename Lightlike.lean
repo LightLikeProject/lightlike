@@ -528,8 +528,10 @@ import Lightlike.Lorentz.SL2RPlancherel.AbelCasimir
 import Lightlike.Lorentz.SL2RPlancherel.AbelCasimirTransform
 import Lightlike.Lorentz.SL2RPlancherel.CasimirPlancherel
 import Lightlike.Lorentz.SL2RPlancherel.HyperbolicPolar
+import Lightlike.Lorentz.SL2RPlancherel.KKParseval
 import Lightlike.Lorentz.SL2RPlancherel.KTypeLR
 import Lightlike.Lorentz.SL2RPlancherel.PolarIntegral
+import Lightlike.Lorentz.SL2RPlancherel.PolarTorus
 import Lightlike.Lorentz.SL2RPlancherel.KTypePlancherel
 import Lightlike.Lorentz.SL2RPlancherel.SphericalIdentity
 import Lightlike.Lorentz.SL2RPlancherel.SphericalClean
@@ -552,6 +554,7 @@ import Lightlike.Lorentz.SL2RPlancherel.PhiRangeComplex
 import Lightlike.Lorentz.SL2RPlancherel.PhiCutoff
 import Lightlike.Lorentz.SL2RPlancherel.SphericalSurjective
 import Lightlike.Lorentz.SL2RPlancherel.Test
+import Lightlike.Lorentz.SL2RPlancherel.TorusParseval
 import Lightlike.Lorentz.SL2RPlancherel.ArcsinIntegral
 import Lightlike.Lorentz.SL2RPlancherel.CoshDist
 import Lightlike.Lorentz.SL2RPlancherel.CosineLogTanh

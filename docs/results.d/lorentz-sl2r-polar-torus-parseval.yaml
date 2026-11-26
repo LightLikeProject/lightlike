@@ -1,0 +1,33 @@
+- id: LL-XXXX-a
+  title: "Parseval identity on the square (0,1] x (0,1] for a continuous complex function P: the sum over (m,n) in Z^2 of the squared moduli of the Fourier coefficients, the integrals of e^(-2 pi i (m x_0 + n x_1)) P(x) over the square, equals the integral of the squared modulus of P over the square"
+  area: Lorentz
+  file: Lightlike/Lorentz/SL2RPlancherel/TorusParseval.lean
+  decls: [Lightlike.Lorentz.SL2RPlancherel.hasSum_sq_box]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Layer 2b of the Plancherel formula on SL(2,R), part 1. Mathlib's Parseval identity on the two-dimensional torus (UnitAddTorus), applied to the restriction of P to the fundamental box; no continuity of P across the boundary of the box is used, since the box is a fundamental domain. Standard; no source consulted."
+  since: unreleased
+- id: LL-XXXX-b
+  title: "Polar integration formula for the Haar measure of SL(2,R) over the full torus of angles: for measurable F from SL(2,R) to [0, infinity], the integral of F is the integral over xi > 0 of sinh xi times the integral over alpha and theta in (0, 2 pi] of F(k_alpha a(xi) k_theta), for the Haar measure normalised by the Iwasawa chart"
+  area: Lorentz
+  file: Lightlike/Lorentz/SL2RPlancherel/PolarTorus.lean
+  decls: [Lightlike.Lorentz.SL2R.lintegral_haarR_torus]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Layer 2b of the Plancherel formula on SL(2,R), part 2. From the formula with alpha in (-pi/2, pi/2) (previous entry) and the invariance of (alpha, theta) to k_alpha a(xi) k_theta under the shift of both angles by pi, which doubles the range of alpha; the factor 2 of the half-range formula is absorbed. Standard; no source consulted."
+  since: unreleased
+- id: LL-XXXX-c
+  title: "Plancherel identity of L2(SL(2,R)) in the K x K components for continuous functions: the integral of |f|^2 against the Haar measure equals (2 pi)^2 times the integral over xi > 0 of sinh xi times the sum over (m,n) of |f_{m,n}(xi)|^2, where f_{m,n}(xi) is the (m,n)-th Fourier coefficient of (alpha, theta) to f(k_alpha a(xi) k_theta)"
+  area: Lorentz
+  file: Lightlike/Lorentz/SL2RPlancherel/KKParseval.lean
+  decls: [Lightlike.Lorentz.SL2RPlancherel.lintegral_norm_sq_eq_kk]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Layer 2b of the Plancherel formula on SL(2,R): the Parseval step in the K x K components, valid for every continuous f (finite or infinite value of both sides, as an equality in [0, infinity]). Standard in form (Cartan decomposition and Fourier series on the torus of angles); no source consulted. NOT proved: the identification of the components f_{m,n} with ladder images of radial generators and the resulting integral against the Plancherel measure rho tanh(pi rho) (layer 2c), and the discrete series terms (layer 3), so the Plancherel formula of SL(2,R) is still open."
+  since: unreleased
