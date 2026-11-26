@@ -6850,3 +6850,16 @@
   review: kernel-checked
   note: "For a manifold modelled with corners on Fin n → R (any ModelWithCorners, derivatives in the chart within the range of the model), C², and a non-degenerate metric g, the section ∇σ of the bundle of endomorphisms of the tangent bundle is C^∞ at p for every vector field σ that is smooth near p (contMDiffAt_leviCivitaW); this is the local smoothness that the Corners layer uses (LocallySmoothConnectionW of leviCivita g). The proof reads ∇σ in the trivialization at p as D σ̂(∂_a) + Γ̂(σ̂, a), with Γ̂ the Christoffel symbol of the smooth coordinate metric. This is a regularity statement of the construction, not a statement of a source; no source location applies. Limits: the model space is Fin n → R, not an arbitrary finite-dimensional space (the generalisation to any finite-dimensional model space is open, see GE11 m4 and m5)."
   since: unreleased
+- id: LL-0528
+  title: "A continuously differentiable eigenspinor of the Dirac operator of the unit 2-sphere in the stereographic chart, given by two complex components with (1+|x|^2) i (d_0 + i d_1) g_1 = 2 lambda g_2 and (1+|x|^2) i (d_0 - i d_1) g_2 = 2 lambda g_1, that is bounded by C/|x| for |x| at least 1 and is not zero, has lambda = plus or minus k for an integer k at least 1"
+  area: GR
+  file: Lightlike/Dirac/ModeSphere.lean
+  decls: [Lightlike.Dirac.chart_eigenspinor_quantized, Lightlike.Dirac.fourier_modes_isModeSol]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: boldt-2015, location: "Theorem 3.1", check: "multiplicities"}
+  review: kernel-checked
+  note: "Compared with Boldt, arXiv:1504.03121, Theorem 3.1: the Dirac eigenvalues of the round S^2 are +-(k+1), k >= 0. Proof here: the angular Fourier modes of the two components solve the radial system a' = (m/r) a + (nu/(1+r^2)) b, b' = -((m+1)/r) b + (nu/(1+r^2)) a with nu = 2 lambda / i; a mode that is bounded at 0 and O(1/r) at infinity is a multiple of the hypergeometric solution 2F1(lambda,-lambda;m+1;r^2/(1+r^2)) (Wronskian argument and uniqueness for the linear system), whose value at infinity is an elementary Gauss-type sum (telescoping and Euler's sine product) that vanishes iff lambda = +-k with k >= m+1 (m < 0 by the symmetry (a,b,m) -> (b,a,-m-1)); if all modes vanish the spinor is zero. WEAKER: C^1 spinors on the chart with the decay condition O(1/|x|) assumed (not derived from smoothness at the pole, which is derived in the polynomial class only); lambda = 0 is not treated (it is excluded by the Friedrich bound only for compactly supported spinors); no multiplicity statement (the multiplicity 2(k+1) is only the lower bound of the lower-bound entry), no L^2 or spinor-bundle statement, and the converse (every +-k occurs) is the lower-bound entry."
+  since: unreleased
