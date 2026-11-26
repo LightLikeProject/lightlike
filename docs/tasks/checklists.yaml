@@ -1066,7 +1066,7 @@ milestones:
         kind: trust
         text: "The method gives the right asymptotics for a sum whose asymptotics are known independently"
         decls: []
-        hint: "Missing: a second, independent sum with known asymptotics. Close: Lightlike.Asymptotics.racahSumAsymptotics_regular (regular tetrahedron only)."
+        hint: "Missing: a second, independent sum with known asymptotics. Close: Lightlike.Asymptotics.racahSumAsymptotics_regular (regular tetrahedron only). Attempt 1 (Lean, done): the exactly solvable zero-spin sum is not in the theorem's range: Lightlike.Asymptotics.not_isEuclid_toReal_zero_spin. Kummer's sum (Lightlike.Asymptotics.RacahSaddles.KnownSum) is not of the Racah shape."
       - id: t3
         kind: trust
         text: "The formula with only one of the two complex-conjugate saddles fails"
