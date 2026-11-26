@@ -132,6 +132,10 @@ The dilation `x ↦ c x` acts on null infinity by `(u, n) ↦ (c u, n)` and comm
 **The Poincaré group acts conformally on future null infinity**: the image direction is a unit vector, the action
 is the limit of the action on the bulk along outgoing null rays, and it is conformal on the sphere of directions
 with the factor `K⁻²` [67].
+The conformal boundary of anti-de Sitter space is the projectivised null cone of `ℝ^{2,3}` with `η' = diag(-1, -1, 1, 1, 1)`, the circle times the sphere (no universal cover); a boundary point is `(cos τ, sin τ, ω)` with `|ω| = 1`.
+A matrix `Λ` with `Λᵀ η' Λ = η'` sends it to `ρ (cos τ', sin τ', ω')` with `ρ > 0` and `|ω'| = 1` [68], and the action is compatible with the product of matrices, the angle read modulo `2π` [69].
+For a tangent vector `(a, v)`, `v ⊥ ω`, the boundary metric of the image is `(-a² + |v|²) / ρ²` [70].
+**The isometry group of anti-de Sitter space acts conformally on its conformal boundary**: the three statements together [71].
 
 ## Lean References
 
@@ -266,6 +270,10 @@ with the factor `K⁻²` [67].
 65. Lightlike/GR/AdSConformalBoundary/ScriLimit.lean - `tendsto_scriCoord_ray`
 66. Lightlike/GR/AdSConformalBoundary/ScriDilation.lean - `scriCoord_smul`, `scriDil_scriAct`
 67. Lightlike/GR/AdSConformalBoundary/ScriPoincare.lean - `poincare_act_scriPlus`
+68. Lightlike/GR/AdSConformalBoundary/NullCone.lean - `adsNullFactor_pos`, `mulVec_adsNullVec_eq`, `sum_sq_adsDir`
+69. Lightlike/GR/AdSConformalBoundary/NullConeAction.lean - `adsNullVec_mul`
+70. Lightlike/GR/AdSConformalBoundary/NullConeConformal.lean - `adsBdyMetric_conformal`
+71. Lightlike/GR/AdSConformalBoundary/NullConeSummary.lean - `ads_isometry_conformal_boundary`
 
 ## References
 
