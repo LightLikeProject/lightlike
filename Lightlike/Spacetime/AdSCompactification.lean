@@ -15,9 +15,9 @@ timelike metric `-dτ² + dΩ²`.
 
 ## References
 
-* M. Blau, *Lecture Notes on General Relativity* (version of 15 November 2026,
-  http://www.blau.itp.unibe.ch/newlecturesGR.pdf), section 39.3, eq. (39.76), p. 927, and section 39.3.2,
-  eqs. (39.79)–(39.86), pp. 927–929: the conformal radial coordinate `cosh ρ = 1/cos θ`, `sinh ρ = tan θ`, the metric
+* M. Blau, *Lecture Notes on General Relativity* (version of 24 November 2026,
+  http://www.blau.itp.unibe.ch/newlecturesGR.pdf), section 39.3, eq. (39.76), p. 930, and section 39.3.2,
+  eqs. (39.79)–(39.86), pp. 930–931: the conformal radial coordinate `cosh ρ = 1/cos θ`, `sinh ρ = tan θ`, the metric
   `cos⁻² θ (-dτ² + dθ² + sin² θ dΩ²)`, "AdS is conformal to one half of the Einstein static universe", the conformal
   boundary `θ = π/2`, "timelike", `ds̃²|_{θ = π/2} = -dτ² + dΩ²`.
 -/
