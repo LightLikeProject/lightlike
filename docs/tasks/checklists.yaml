@@ -304,7 +304,7 @@ milestones:
       - id: r1
         kind: review
         text: "The source of LL-0299 (the scalar curvature of the round unit n-sphere is n(n-1)) is a location that states it: Vassilevich (2003) eq. (4.27) is the a₂ coefficient; the right location is read and recorded in docs/results.yaml"
-        review_evidence: null
+        review_evidence: "Read Carroll, Lecture Notes on General Relativity (gr-qc/9712019), eq. (3.106): in any number of dimensions a maximally symmetric space has R_{rho sigma mu nu} = a^-2 (g_{rho mu} g_{sigma nu} - g_{rho nu} g_{sigma mu}). The round unit n-sphere is maximally symmetric with a = 1; one contraction gives R_{sigma nu} = (n-1) g_{sigma nu}, two give R = n(n-1), the value of scalarCurvature_stereo (LL-0299), positive on spheres as in Lightlike.scalarCurvature. The contraction is not printed in the source (the reader's step). LL-0299 now cites carroll-1997 eq. (3.106) (location verified in the source registry) for the value; Vassilevich eq. (4.27), the a_2 coefficient, stays cited only for the a_1 formula and the note says so. No difference from the source."
       - id: c1
         kind: catalogue
         text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
