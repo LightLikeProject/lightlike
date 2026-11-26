@@ -38,3 +38,13 @@ monotonicity in `λ` for `Re S ≤ 0` gives uniformity once the `λ = 1` integra
 Mathlib: no stationary-phase or oscillatory-integral estimate. Library: `nonstationary_phase`, `exists_bound_noncritical`
 (`Lightlike/Oscillatory/Localisation.lean`), `expPhase_suppressed`, `weighted_suppressed` (`Suppression.lean`),
 `re_lorAction_le_zero` (`Action.lean`). Physlib and Tau Ceti: not searched.
+
+## Statement correction: integrability only for `λ ≥ 1` (25 Nov 2026)
+
+Defect found in the statement review against BDFHP (arXiv 0907.2440; the paper states no far-remainder estimate, it uses extended stationary phase as a black box). `FarRemainderBound`
+and `lorVertex_farRemainder_tail` asserted `Integrable ((1 − ψ) A e^{λ S})` for every `λ : ℕ`, including `λ = 0`, where `e^{0·S} = 1` and
+nothing makes `A` integrable outside `U`; `Re S ≤ 0` damps only for `λ ≥ 1` (as the P6 hint says). The clause at `λ = 0` is unprovable in general and not used:
+the `O(λ^{-23})` clause and the consumers only need `λ → ∞`. Fix: `∀ lam : ℕ, 1 ≤ lam → Integrable …` in `FarRemainderBound`, `lorVertex_farRemainder_tail` (P6),
+and the hypothesis `hint` of `weighted_asymptotics_local` and `lorVertex_asymptotics_local` (the proof uses it only for `λ ≥ 1`, via `eventually_ge_atTop 1`);
+`weighted_two_points_local` and `lorVertex_asymptotics_chart` keep their `∀ lam` hypothesis and feed it through. P3's statement is `FarRemainderBound` and changes with it.
+Evidence: `lake build` of VertexLocal, AsymptoticFormulaLocal, VertexChart, VertexFixChart, VertexSuppressed and of the VertexAsymptoticsHyp consumers (FarCompact, JointIntegrable, HessianAssemble, DefectAssemble) succeeds.
