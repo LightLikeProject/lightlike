@@ -126,6 +126,8 @@ with `K > 0` and `|n'| = 1` [62].
 The Poincaré transformations `x ↦ Λ x + a` act on the points `(u, n)` of null infinity by `(u / K + a₀ - n' · a⃗, n')`, with the group law [63].
 A Lorentz transformation acts conformally on the sphere of directions: the differential of `n ↦ n'` divides
 lengths by `K` [64].
+The action on null infinity is the limit of the action on Minkowski space: along an outgoing null ray the
+retarded time and direction of the image of a point converge to the image of the point at infinity [65].
 
 ## Lean References
 
@@ -257,6 +259,7 @@ lengths by `K` [64].
 63. Lightlike/GR/AdSConformalBoundary/ScriAction.lean - `scriAct`, `scriAct_comp`, `nullDirFactor_mul`,
     `nullDirMap_mul`
 64. Lightlike/GR/AdSConformalBoundary/SphereConformal.lean - `hasDerivAt_nullDirMap`, `sum_sq_nullDirDeriv`
+65. Lightlike/GR/AdSConformalBoundary/ScriLimit.lean - `tendsto_scriCoord_ray`
 
 ## References
 
