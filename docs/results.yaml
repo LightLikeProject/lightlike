@@ -7150,3 +7150,16 @@
   review: kernel-checked
   note: "Trust check (a worked example). The manifold is the whole unit 2-sphere of Mathlib (EuclideanSpace.sphere in R^3, atlas of the two stereographic charts) with the model transported to Fin 2 -> R (I2), and the metric is r^2 times the pullback of the Euclidean inner product by the inclusion (roundMetric2I). For every locally smooth connection that is Levi-Civita for it, scalarCurvatureAt equals 2/r^2 at every point. Proof: scalarCurvatureAt_coordW (the intrinsic scalar curvature is the coordinate one in every chart), the conformal factor 16 r^2/(|y|^2+4)^2 of the stereographic chart from the antipode on its whole target R^2 (the chart sends the point to the origin), and the coordinate scalar curvature of f delta at a critical point of f. KIND representation: the sphere of radius r is the unit sphere with the metric r^2 h (isometric to it), r nonzero; Mathlib's atlas has no sphere of radius r. Non-vacuity: roundSphere2_exists_leviCivita, the Levi-Civita connection of the metric is locally smooth and Levi-Civita."
   since: unreleased
+- id: LL-XXXX
+  title: "The Lichnerowicz formula on a spin manifold: for a smooth spinor field of a spin structure of a Riemannian manifold (atlas form) and its Levi-Civita spin connection, D^2 psi = nabla*nabla psi + (R/4) psi, with D and nabla*nabla the frame-independent Dirac operator and rough Laplacian on spinor fields and R the scalar curvature"
+  area: GR
+  file: Lightlike/Dirac/SpinLichnerowicz.lean
+  decls: [Lightlike.Dirac.SpinStructure.dirac_sq_eq_rough_add_scal_div_four, Lightlike.Dirac.SpinStructure.dirac_sq]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: lawson-michelsohn-1989, location: "Chapter II, Theorem 8.8"}
+  review: kernel-checked
+  note: "Comparison pending: Lawson and Michelsohn, Spin Geometry, II Theorem 8.8 (D^2 = nabla*nabla + kappa/4) was not read at that location. KIND representation: the spin structure is the atlas form (SpinStructure: local orthonormal frames on open domains covering M, with Spin(n) lifts of the frame changes satisfying the cocycle condition), not the principal Spin(n)-bundle double covering the orthonormal frame bundle of II Def. 1.3; the equivalence is not proved. Spinor fields are families of local representations related by rho(lift) on overlaps (SpinorField); D and nabla*nabla are defined frame-wise and shown to transform correctly (SpinStructure.dirac_lift, SpinStructure.roughLaplacian_lift), so they are operators on spinor fields. The identity is pointwise in every frame (SpinStructure.dirac_sq: for phi smooth near x), for smooth spinor fields (SpinorField.IsSmooth); no compactness, L2 or self-adjointness statement. Non-vacuity: constant spinor fields of the Euclidean spin structure of R^n."
+  since: unreleased
