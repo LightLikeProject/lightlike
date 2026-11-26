@@ -6641,3 +6641,40 @@
   review: kernel-checked
   note: "Converse of LL-0334, so with it the iff of Gerard Proposition 4.9.1 and of Yamagami (phi_S pure iff S is extremal, i.e. a projection). Proof route (not the source's, which cites the Fock-representation theory): with the eta-Riesz operator T = eta^-1 omega (eta-skew, norm <= 1), either T^2 = -1, which is a compatible J, or a spectral vector of -T^2 with eigenvalue mu < 1 gives that eta - (1 - mu) rho^2 is still a covariance (key_ineq, exists_sub_covariance); the Gaussian family kappa_h(x) = exp(-eta'(x,x)/4) int h(t) e^{it rho(x)} d gamma(t) has a positive semidefinite kernel dominated by 2 qfKer, hence a state (exists_state_of_kernel); two such states with weights h and 2 - h average to the quasi-free state, and they differ (Measure.ext_of_charFun), so it is not extremal. A state is pure here when it is an extreme point of the states. WEAKER: finite dimension only; the degenerate omega is not treated separately (the sufficiency has the retract form, LL-0334)."
   since: unreleased
+- id: LL-0511
+  title: "The modular state of a faithful state is KMS and its flow is the modular dynamics: for a positive definite density matrix ρ of a matrix algebra, ρ is KMS at β = 1 for the flow of H = −log ρ, and that flow at real time t is A ↦ e^{it log ρ} A e^{−it log ρ}"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/ModularKMS/ModularCapstone.lean
+  decls: [Lightlike.OperatorAlgebras.isKMS_modular_one, Lightlike.OperatorAlgebras.modular_flow_eq_modGroup]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: jaksic-ogata-pautrat-pillet-2012, location: "Section 2.12.1, p. 63"}
+  review: kernel-checked
+  note: "Comparison pending for these two statements: the location is the one of LL-0272, where the same dynamics and the beta = -1 form (generator log rho) were compared with Jaksic-Ogata-Pautrat-Pillet, arXiv:1106.3786, Section 2.12.1, pp. 62-63. Here the sign is the other convention: the generator is H = -log rho and beta = 1 (the Gibbs state e^{-H}/tr e^{-H} is rho itself), which is the same statement as LL-0272 after beta -> -beta and H -> -H; the comparison of this form with the source was not made. The second theorem shows the two flows agree (flow (-log rho) t = modGroup t). Hypothesis: rho is positive definite (PosDef), stated in the Lean theorems; the trace-one normalisation is not needed. No unproved hypothesis."
+  since: unreleased
+- id: LL-0512
+  title: "The finite modular theory of a faithful state: the modular operator Δ_ρ ξ = ρ ξ ρ⁻¹ is the square of Δ^{1/2}, Tomita's relation J Δ^{1/2}(A ρ^{1/2}) = A* ρ^{1/2} holds, and Δ^{it} implements the modular dynamics, Δ^{it}(A Δ^{−it} ξ) = ς^t(A) ξ"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/FiniteModular.lean
+  decls: [Lightlike.OperatorAlgebras.modOpSqrt_modOpSqrt, Lightlike.OperatorAlgebras.modConj_modOp_sqrt, Lightlike.OperatorAlgebras.modOpPow_mul_modOpPow_neg]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: jaksic-ogata-pautrat-pillet-2012, location: "Section 2.12.1, p. 63"}
+  review: kernel-checked
+  note: "Comparison pending for these three statements: the Lean docstrings cite the same source and page (Section 2.12.1, p. 63, eq. (2.34) for Tomita's relation) but the formulas were not compared one by one with the source for this entry (LL-0272 records a comparison of the dynamics and the KMS property only). The space is the Hilbert-Schmidt space of matrices with J xi = xi^dagger and xi_rho = rho^{1/2}. Hypothesis: rho positive definite, stated in the Lean theorems. No unproved hypothesis."
+  since: unreleased
+- id: LL-0513
+  title: "The Tomita operator S(y) = ρ^{−1/2} y† ρ^{1/2} of a faithful state of a matrix algebra satisfies S(a ρ^{1/2}) = a† ρ^{1/2}, and Δ = S†S for the Hilbert-Schmidt inner product: Tr((S y)† S z) = Tr(z† Δ y)"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/ModularFinite.lean
+  decls: [Lightlike.OperatorAlgebras.tomita_apply, Lightlike.OperatorAlgebras.inner_tomita]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: the Lean docstrings cite Witten, (4.4) and (4.11), but Witten (2018) is registered only at section 3, so no registered location is cited, and the formulas were not compared with the source for this entry. The state is given by a Hermitian H with rho = e^{-H} (not assumed to have trace one). Hypothesis: H Hermitian, stated in the Lean theorems. No unproved hypothesis."
+  since: unreleased
