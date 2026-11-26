@@ -158,4 +158,67 @@ lemma stereoSE_eq (y : Fin 2 → ℝ) :
   fin_cases i <;>
     simp [stereoSE, Wpl_apply, vec3, modelEquiv2_symm_apply] <;> field_simp <;> ring
 
+/-! ## The round metric on the coordinate vectors -/
+
+/-- The derivative of `stereoNE` (or `stereoSE`) is conformal with factor `4/(|y|²+1)²`. -/
+lemma hasFDerivAt_stereoMap_two {ε σ : ℝ} (hε : ε * ε = 1) (hσ : σ * σ = 1) (y : Fin 2 → ℝ) :
+    ∃ D : (Fin 2 → ℝ) →L[ℝ] EuclideanSpace ℝ (Fin (2 + 1)),
+      HasFDerivAt (fun y => stereoMap (Wpl ε) (vec3 0 0 σ) ((2 : ℝ) • modelEquiv2.symm y)) D y ∧
+        ∀ v w, inner ℝ (D v) (D w) = 4 * ((nsq y + 1)⁻¹) ^ 2 * (v 0 * w 0 + v 1 * w 1) := by
+  set L : (Fin 2 → ℝ) →L[ℝ] EuclideanSpace ℝ (Fin 2) := (2 : ℝ) • (modelEquiv2.symm : (Fin 2 → ℝ) →L[ℝ] _)
+  obtain ⟨D0, hD0, hDa⟩ := hasFDerivAt_stereoMap (Wpl ε) (vec3 0 0 σ) (L y)
+  refine ⟨D0.comp L, hD0.comp y L.hasFDerivAt, fun v w => ?_⟩
+  have hv : inner ℝ (vec3 0 0 σ) (vec3 0 0 σ) = 1 := by rw [inner_vec3]; linarith
+  have h := inner_stereoMap_deriv (Wpl ε) (inner_Wpl hε) (vec3 0 0 σ) hv (inner_Wpl_pole ε σ) (L y) D0 hDa
+    (L v) (L w)
+  rw [ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply, h]
+  have hLy : ‖L y‖ ^ 2 = 4 * nsq y := by
+    simp only [L, ContinuousLinearMap.smul_apply, ContinuousLinearEquiv.coe_coe]
+    rw [norm_smul, mul_pow, norm_sq_modelEquiv2_symm]; norm_num
+  have hLvw : inner ℝ (L v) (L w) = 4 * (v 0 * w 0 + v 1 * w 1) := by
+    simp only [L, ContinuousLinearMap.smul_apply, ContinuousLinearEquiv.coe_coe, inner_smul_left,
+      inner_smul_right, PiLp.inner_apply, Fin.sum_univ_two, RCLike.inner_apply, conj_trivial,
+      modelEquiv2_symm_apply]
+    norm_num; ring
+  rw [hLy, hLvw]
+  have hq := nsq_nonneg y
+  field_simp
+  ring
+
+/-- **The round metric on the coordinate vectors of a map `ℝ² → S2`** whose composite with the inclusion has
+derivative `D`: `g(dσ v, dσ w) = ⟨D v, D w⟩`. -/
+lemma roundMetric_mfderiv {σm : (Fin 2 → ℝ) → S2} {y : Fin 2 → ℝ}
+    (hσ : MDifferentiableAt 𝓘(ℝ, Fin 2 → ℝ) I2 σm y) {D : (Fin 2 → ℝ) →L[ℝ] EuclideanSpace ℝ (Fin (2 + 1))}
+    (hD : HasFDerivAt (fun y => sphereIncl2 (σm y)) D y) (v w : Fin 2 → ℝ) :
+    (roundMetric2I 1 one_ne_zero).g (σm y) (mfderiv 𝓘(ℝ, Fin 2 → ℝ) I2 σm y v)
+      (mfderiv 𝓘(ℝ, Fin 2 → ℝ) I2 σm y w) = inner ℝ (D v) (D w) := by
+  have hι := hasMFDerivAt_transContinuousLinearEquiv modelEquiv2 (hasMFDerivAt_sphereIncl2 (σm y))
+  have hc := hι.comp y hσ.hasMFDerivAt
+  have hu := hc.mfderiv.symm.trans hD.hasMFDerivAt.mfderiv
+  show pullbackForm (I := I2) (radiusForm 1) sphereIncl2 (σm y) _ _ = _
+  rw [pullbackForm_apply, radiusForm_apply, one_pow, one_mul, dι_I2, dι_I2]
+  have hv : D v = dcoe2 (σm y) (modelEquiv2.symm (mfderiv 𝓘(ℝ, Fin 2 → ℝ) I2 σm y v)) := by
+    rw [← hu]; rfl
+  have hw : D w = dcoe2 (σm y) (modelEquiv2.symm (mfderiv 𝓘(ℝ, Fin 2 → ℝ) I2 σm y w)) := by
+    rw [← hu]; rfl
+  rw [hv, hw]
+
+lemma roundMetric_stereoN (y v w : Fin 2 → ℝ) :
+    (roundMetric2I 1 one_ne_zero).g (stereoN y) (mfderiv 𝓘(ℝ, Fin 2 → ℝ) I2 stereoN y v)
+      (mfderiv 𝓘(ℝ, Fin 2 → ℝ) I2 stereoN y w) = 4 * ((nsq y + 1)⁻¹) ^ 2 * (v 0 * w 0 + v 1 * w 1) := by
+  obtain ⟨D, hD, hDi⟩ := hasFDerivAt_stereoMap_two (ε := 1) (σ := 1) (by norm_num) (by norm_num) y
+  have hf : (fun y => sphereIncl2 (stereoN y)) =
+      fun y => stereoMap (Wpl 1) (vec3 0 0 1) ((2 : ℝ) • modelEquiv2.symm y) := by
+    funext y; exact stereoNE_eq y
+  rw [roundMetric_mfderiv (contMDiff_stereoN.mdifferentiableAt (by simp)) (hf ▸ hD), hDi]
+
+lemma roundMetric_stereoS (y v w : Fin 2 → ℝ) :
+    (roundMetric2I 1 one_ne_zero).g (stereoS y) (mfderiv 𝓘(ℝ, Fin 2 → ℝ) I2 stereoS y v)
+      (mfderiv 𝓘(ℝ, Fin 2 → ℝ) I2 stereoS y w) = 4 * ((nsq y + 1)⁻¹) ^ 2 * (v 0 * w 0 + v 1 * w 1) := by
+  obtain ⟨D, hD, hDi⟩ := hasFDerivAt_stereoMap_two (ε := -1) (σ := -1) (by norm_num) (by norm_num) y
+  have hf : (fun y => sphereIncl2 (stereoS y)) =
+      fun y => stereoMap (Wpl (-1)) (vec3 0 0 (-1)) ((2 : ℝ) • modelEquiv2.symm y) := by
+    funext y; exact stereoSE_eq y
+  rw [roundMetric_mfderiv (contMDiff_stereoS.mdifferentiableAt (by simp)) (hf ▸ hD), hDi]
+
 end Lightlike.Dirac
