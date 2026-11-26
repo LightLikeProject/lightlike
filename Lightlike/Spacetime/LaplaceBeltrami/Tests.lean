@@ -119,7 +119,7 @@ theorem coordLaplacian_gLine_coord (y : Fin 1 → ℝ) : coordLaplacian gLine (f
 
 /-- **Trust check of the product rule**: on the line, `Δ(y²) = 2y·Δy + ... - 2|dy|² = -2`
 (the sign of the nonnegative Laplacian `Δ = -d²/dy²`). -/
-example (y : Fin 1 → ℝ) : coordLaplacian gLine (fun w => w 0 * w 0) y = -2 := by
+theorem coordLaplacian_gLine_sq (y : Fin 1 → ℝ) : coordLaplacian gLine (fun w => w 0 * w 0) y = -2 := by
   have hF : ContDiffOn ℝ ∞ (fun w : Fin 1 → ℝ => w 0) univ := (contDiff_apply ℝ (fun _ : Fin 1 => ℝ) 0).contDiffOn
   rw [isCoordMetric_gLine.coordLaplacian_mul hF hF (mem_univ y), coordLaplacian_gLine_coord]
   simp [coordGradPair, gLine, pd_coord]
