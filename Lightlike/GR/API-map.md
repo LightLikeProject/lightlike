@@ -124,6 +124,8 @@ point of retarded time `u` [59]. Global anti-de Sitter space with `r = tan ρ` h
 A Lorentz matrix with positive time-time entry sends the future null vector `(1, n)`, `|n| = 1`, to `K (1, n')`
 with `K > 0` and `|n'| = 1` [62].
 The Poincaré transformations `x ↦ Λ x + a` act on the points `(u, n)` of null infinity by `(u / K + a₀ - n' · a⃗, n')`, with the group law [63].
+A Lorentz transformation acts conformally on the sphere of directions: the differential of `n ↦ n'` divides
+lengths by `K` [64].
 
 ## Lean References
 
@@ -254,6 +256,7 @@ The Poincaré transformations `x ↦ Λ x + a` act on the points `(u, n)` of nul
     `sum_sq_nullDirMap`
 63. Lightlike/GR/AdSConformalBoundary/ScriAction.lean - `scriAct`, `scriAct_comp`, `nullDirFactor_mul`,
     `nullDirMap_mul`
+64. Lightlike/GR/AdSConformalBoundary/SphereConformal.lean - `hasDerivAt_nullDirMap`, `sum_sq_nullDirDeriv`
 
 ## References
 
