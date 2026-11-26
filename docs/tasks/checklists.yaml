@@ -401,7 +401,7 @@ milestones:
       - id: t1
         kind: trust
         text: "The round 2-sphere (Riemannian) has the same identities"
-        decls: []
+        decls: [Lightlike.roundSphere2_identities, Lightlike.roundSphere2_exists_leviCivita]
         hint: "Missing: no S² instance in Corners/ (only the 3-sphere roundMetric)."
       - id: t2
         kind: trust
