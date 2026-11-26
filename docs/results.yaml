@@ -6993,3 +6993,14 @@
   review: kernel-checked
   note: "Comparison pending: the module docstring records Harlow, arXiv:1409.1231, section 6.1, eqs. (6.4)-(6.6), as read when the file was written; not re-read here, and not registered as a source. The conformal class of the boundary metric is canonical, the metric itself is not (the defining function cos rho is fixed only up to a positive factor); fixed d = 3, L = 1, in coordinates."
   since: unreleased
+- id: LL-0541
+  title: "A Lorentz matrix with positive time-time entry sends the future null vector (1, n), |n| = 1, to K (1, n') with K > 0 and |n'| = 1, where K is the time component of the image and n' its spatial part divided by K"
+  area: GR
+  file: Lightlike/GR/AdSConformalBoundary/NullDirection.lean
+  decls: [Lightlike.nullDirFactor_pos, Lightlike.mulVec_nullVec_eq, Lightlike.sum_sq_nullDirMap]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "GE7 m1, first layer (the action of the Lorentz group on future null infinity); the milestone m1 stays open. Comparison pending (no source was read at a cited location): this is the standard action of the Lorentz group on the celestial sphere of null directions. For Λ with Λᵀ η Λ = η and Λ 0 0 > 0 the first row gives Σ_j Λ₀ⱼ² = Λ₀₀² - 1 (lorentz_row_zero, from Λ η Λᵀ = η), and Cauchy-Schwarz gives |Σ_j Λ₀ⱼ nⱼ| < Λ₀₀, so the time component of Λ (1, n) is positive; the spatial part over K has unit length because Λ preserves the Minkowski square (minkSq_mulVec) and (1, n) is null. Non-vacuity: a boost along the first axis with cosh = 5/4, sinh = 3/4 is a Lorentz matrix and multiplies (1, e₁) by 2 and (1, -e₁) by 1/2 (nullDirFactor_boostX_pos, nullDirFactor_boostX_neg). Limits: no action on the retarded time, no conformal factor on the sphere and no relation to the compactified chart yet; the matrix is arbitrary with the stated hypotheses, not an element of a group type."
+  since: unreleased
