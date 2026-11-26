@@ -21,7 +21,7 @@ equivalent to a simplex, and a combinatorial manifold is a complex whose vertex 
 spheres or balls [4]. The boundary of a simplex is a PL sphere and a simplex is a PL ball [4].
 
 Pachner's theorem, stellar version: two closed combinatorial manifolds are stellar equivalent
-exactly when they are related by bistellar moves {2} [5]. This is the formulation of Friedl and
+exactly when they are related by bistellar moves {2} [5], [69]. This is the formulation of Friedl and
 Hannes, who state the theorem as "closed combinatorial n-manifolds are bistellar equivalent if and
 only if they are stellar equivalent" and prove it without topology {3}. Newman's theorem
 gives the version with PL homeomorphism in place of stellar equivalence: PL homeomorphic complexes
@@ -53,7 +53,7 @@ equivalent, and, when both or neither contain the empty face, their realisations
 homeomorphic [56] [21].
 
 The 3-complexes of the Ponzano–Regge API generate simplicial complexes, and its closed
-combinatorial 3-manifolds are closed combinatorial 3-manifolds in this sense [6]. In dimension two, a connected graph with two
+combinatorial 3-manifolds are closed combinatorial 3-manifolds in this sense [6]. Pachner's theorem holds for the 3- and 4-complexes given by their top simplices, with their moves, on copies with new vertices [68]. In dimension two, a connected graph with two
 edges at every vertex is reached from the boundary of a triangle by subdividing edges, and so
 generates a PL 1-sphere [54]; this identifies the vertex links of the closed surfaces of
 the surface API as PL 1-spheres. The same
@@ -85,17 +85,32 @@ A geometric complex is PL homeomorphic to its abstract realisation, by the linea
 
 A simple chain is a list of points in the plane whose consecutive segments meet only at shared vertices; simple chains glue and reverse, and the set of a chain is its union of segments [40]. The ray crossing parity of a chain is additive under gluing and, modulo 2, invariant under reversal, which links the parity of a polygon built from a list to that of its chains [41]. The carrier of a polygon made of two arcs is the union of the two arcs, the parity of a ray crossing jumps across an arc near its interior points, and the interior of a simple chain without its ends is preconnected [42]. If a simple closed polygon is made of two arcs, a chord joining an interior point of the first arc to an interior point of the second, with its ends removed and meeting the arcs only at those points, cannot lie on the same side of the polygon as a second chord joining the two ends: the proof compares the parities of the three theta pieces and needs no orientation [43] {5}. Take the six-cycle of a drawing of `K₃,₃` as a hexagon with three chords; each chord lies inside or outside the hexagon, so two of them lie on the same side, and after a rotation of the labels they are neighbouring chords, which is impossible [44]. Hence six points joined across two classes of three by nine simple polygonal arcs that meet only in their common endpoints do not exist [45]. A simple chain contains, in its set, a simple chain with the same first and last point [46], and a continuous arc is approximated, within any distance, by such a chain [47]. Trimming each arc outside small balls around the six points, approximating the trimmed pieces by chains and joining them to the points by straight segments gives a polygonal drawing from any drawing by continuous arcs, so there is none [48]. An arc is the image of an injective continuous map of the unit interval; arcs reverse, split at a point and glue, and two points of a connected open set of the plane are joined by a chain in the set [49] {5}. Taking a highest and a lowest point of a circle embedded in the plane, which splits it into two arcs, and joining the two arcs by a horizontal segment and by an outer polygonal arc, with an arc through the complement if it were connected, gives nine arcs of a drawing of `K₃,₃`; the complement of an embedded circle is therefore not connected, which is the weak Jordan theorem [50] {5}. That the complement has exactly two components with the circle as boundary of each is not proved. A connected compact set that contains both ends of an arc and lies near it is near every point of it, because the inverse of an arc is uniformly continuous [51]. With it a Jordan curve is approximated, within any distance and in both directions, by a simple closed polygon [52]. The complement of a Jordan curve has exactly one unbounded component and a bounded component whose frontier lies in the curve [53]; that it has exactly one bounded component is open, as it needs the Arc Theorem.
 
+Further results of this area in the results catalogue:
+A chain on a grating with boundary two vertices joins them [57]. A path in the complement of a compact
+set gives a chain of a grating that avoids it [58]. A cycle on a grating bounds a 2-chain, and
+Alexander's theorem [59]. Two compact sets meeting in one point do not separate two points that neither
+separates [60]. An arc does not separate the plane [61]. Every component of the complement of a Jordan
+curve has the whole curve as its frontier [62]. The index of a loop about a point, and the Theta Lemma
+[63]. The index of a loop is constant along a path avoiding it, and zero for a loop in a half plane
+[64]. Lemma 9.14 of the theta configuration of a Jordan curve [65]. The index of a triangle about an
+interior point, and of loops about points outside them [66]. The Jordan curve theorem [67]. The geometric realisation of a finite simplicial complex is a geometric complex, its simplices being the convex hulls of affinely independent basis vectors [70]. A PL sphere is a closed combinatorial manifold, and the link of every nonempty face of a closed combinatorial manifold is stellar equivalent to the boundary of a simplex [71].
+
 ## Lean References
 
-1. Lightlike/PL/Complex.lean - `PL.SComplex`, `PL.SComplex.link`, `PL.SComplex.star_eq_join`
-2. Lightlike/PL/Stellar.lean - `PL.SComplex.starAt`, `PL.SComplex.weld`,
-   `PL.SComplex.StellarEquiv`
-3. Lightlike/PL/Bistellar.lean - `PL.SComplex.bistellar`, `PL.SComplex.StellarEquiv.bistellar`
+1. Lightlike/PL/Complex.lean - `PL.SComplex`, `PL.SComplex.link`, `PL.SComplex.star_eq_join`,
+   `PL.SComplex.link_cone_apex`, `PL.SComplex.link_link`
+2. Lightlike/PL/Stellar.lean - `PL.SComplex.starAt`, `PL.SComplex.weld`, `PL.SComplex.weld_starAt`,
+   `PL.SComplex.starAt_weld`, `PL.SComplex.StellarEquiv`
+3. Lightlike/PL/Bistellar.lean - `PL.SComplex.bistellar`, `PL.SComplex.StellarEquiv.bistellar`,
+   `PL.SComplex.bistellar_bistellar`
 4. Lightlike/PL/Manifold.lean - `PL.SComplex.IsPLSphere`, `PL.SComplex.IsPLBall`,
    `PL.SComplex.IsCombManifold`, `PL.SComplex.isPLSphere_boundary`, `PL.SComplex.isPLBall_simplex`
-5. Lightlike/PL/PachnerMain.lean - `PL.SComplex.pachner`
-6. Lightlike/PL/Complex3.lean - `PL.ofComplex3`, `PL.isClosedCombManifold_ofComplex3`
-7. Lightlike/PL/Complex4.lean - `PL.ofComplex4`, `PL.IsCombManifold4`
+5. Lightlike/PL/PachnerMain.lean - `PL.SComplex.pachner`,
+   `PL.SComplex.StellarEquivIn.bistellarEquivIn`
+6. Lightlike/PL/Complex3.lean - `PL.ofComplex3`, `PL.isBistellar_move23`, `PL.isBistellar_move32`,
+   `PL.isBistellar_move14`, `PL.isBistellar_move41`, `PL.isClosedCombManifold_ofComplex3`
+7. Lightlike/PL/Complex4.lean - `PL.ofComplex4`, `PL.IsCombManifold4`, `PL.isBistellar_move4`,
+   `PL.ofComplex4_move`, `PL.isMove_of_isBistellar`, `PL.isCombManifold4_move_iff`
 8. Lightlike/PL/CellGeom.lean - `PL.CellStructure`, `PL.CellStructure.pt_injOn`
 9. Lightlike/PL/SliceGeom.lean - `PL.SComplex.sliceStructure`, `PL.SComplex.sliceHull`
 10. Lightlike/PL/CellPolytope.lean - `PL.SComplex.sliceHull_eq`, `PL.SComplex.cellSet_eq`,
@@ -145,7 +160,8 @@ A simple chain is a list of points in the plane whose consecutive segments meet 
     `PL.Polygon.parity_left_add_right`, `PL.Polygon.isSimple_left`, `PL.Polygon.isSimple_right`,
     `PL.Polygon.inside_split`, `PL.Polygon.exists_split`
 32. Lightlike/PL/PolygonTriangulation.lean - `PL.Polygon.IsTriangulation`,
-    `PL.Polygon.exists_triangulation`, `PL.SComplex.isGeom_closure_union`
+    `PL.Polygon.exists_triangulation`, `PL.SComplex.isGeom_closure_union`,
+    `PL.Polygon.isTriangulation_triangle`, `PL.Polygon.isTriangulation_union`
 33. Lightlike/PL/PolygonEars.lean - `PL.Polygon.Ear`, `PL.Polygon.TwoEars`,
     `PL.Polygon.two_ears`
 34. Lightlike/PL/Attach.lean - `PL.SComplex.stellarEquivIn_closure_insert`
@@ -178,9 +194,35 @@ A simple chain is a list of points in the plane whose consecutive segments meet 
 54. Lightlike/PL/Cycle.lean - `PL.CycleGraph`, `PL.CycleGraph.isSphere1`,
     `PL.CycleGraph.isPLSphere`, `PL.isPLSphere_closure_of_isSphere1`
 55. Lightlike/PL/StellarHomeo.lean - `PL.SComplex.PLHomeomorphic.starAt`,
+    `PL.SComplex.PLHomeomorphic.of_stellarEquivIn`,
     `PL.SComplex.PLHomeomorphic.of_stellarEquiv`
 56. Lightlike/PL/Euler.lean - `PL.SComplex.StellarEquiv.euler_eq`,
     `PL.SComplex.not_stellarEquiv_of_euler_ne`
+57. Lightlike/PL/Grating.lean - `PL.Grating`, `PL.Grating.bdy`, `PL.Grating.bdy_symmDiff`,
+    `PL.Grating.reach_of_bdy`, `PL.Grating.joinedIn_of_bdy`
+58. Lightlike/PL/GratingPath.lean - `PL.Grating.exists_grating`, `PL.Grating.exists_chain_box`,
+    `PL.Grating.exists_chain_of_joinedIn`
+59. Lightlike/PL/Alexander.lean - `PL.Grating.bdy₂`, `PL.Grating.bdy_bdy₂`, `PL.Grating.alexander`,
+    `PL.Grating.exists_bdy₂`
+60. Lightlike/PL/UnionLemma.lean - `PL.joinedIn_union_compl`
+61. Lightlike/PL/ArcNotSeparating.lean - `PL.arc_not_separating`
+62. Lightlike/PL/JordanFrontier.lean - `PL.jordan_frontier`
+63. Lightlike/PL/Index.lean - `PL.exists_isLog`, `PL.logInc`, `PL.logInc_trans`, `PL.loopIndex`,
+    `PL.theta_lemma`
+64. Lightlike/PL/IndexConstancy.lean - `PL.loopIndex_eq_of_joinedIn`,
+    `PL.loopIndex_eq_zero_of_halfplane`
+65. Lightlike/PL/IndexTheta.lean - `PL.Theta`, `PL.Theta.lemma_9_14`, `PL.theta_arc`,
+    `PL.joinedIn_compl_range`
+66. Lightlike/PL/IndexTriangle.lean - `PL.logInc_segPath`, `PL.triangle_log_sum`,
+    `PL.loopIndex_triangle`, `PL.loopIndex_eq_zero_of_above`, `PL.loopIndex_eq_zero_of_below`,
+    `PL.loopIndex_eq_zero_of_far`
+67. Lightlike/PL/JordanCurve.lean - `PL.jordan_at_most_two`, `PL.jordan_at_most_two_prod`,
+    `PL.jordan_curve_theorem`
+68. Lightlike/PL/PachnerMoves.lean - `PL.pachner3`, `PL.pachner4`
+69. Lightlike/PL/Pachner.lean - `PL.SComplex.BistellarEquiv.stellarEquiv`
+70. Lightlike/PL/Realisation.lean - `PL.SComplex.isGeom_real`
+71. Lightlike/PL/Links.lean - `PL.SComplex.IsPLSphere.isClosedCombManifold`,
+    `PL.SComplex.IsClosedCombManifold.link_face`
 
 ## References
 

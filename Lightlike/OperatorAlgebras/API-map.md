@@ -16,7 +16,7 @@ A strongly continuous one-parameter unitary group is a family of unitaries `U t`
 `U (s + t) = U s ∘ U t` and `t ↦ U t ψ` continuous [1]. Its generator `A` is `-i d/dt U t ψ` at `0`, on
 the vectors where the derivative exists, so that formally `U t = exp (i t A)` [1]. Stone's theorem says
 that the generator is self-adjoint, that every self-adjoint operator is a generator, and that the group is
-determined by it {1}. The phase group `exp (i λ t)` has the generator `λ`, and the generators of `λ = 1`
+determined by it {1} [131]. The phase group `exp (i λ t)` has the generator `λ`, and the generators of `λ = 1`
 and `λ = -1` differ [2]. A Bogoliubov transformation of a complex Hilbert space `h` is a continuous
 real-linear bijection that preserves the symplectic form `Im ⟪f, g⟫`, with a complex-linear part and an
 antilinear part [3]. A representation of the Weyl relations is a family of unitaries `W f` with
@@ -59,7 +59,7 @@ The Gram matrix of the vectors `W f Ω` of a Fock representation is a function o
 
 A strongly continuous contraction semigroup on a Banach space has a generator, the limit of the difference quotients on the vectors where it exists, a partially defined linear map [116]. A densely defined operator `A` with `λ - A` bounded below by `λ` and surjective for every `λ > 0` is the generator of a contraction semigroup (the generation direction of the Hille–Yosida theorem) [42] {3}: the resolvent `R(λ) = (λ - A)⁻¹` has norm at most `λ⁻¹`, the Yosida approximants `λ² R(λ) - λ` give contractions `exp (t (λ² R(λ) - λ))` that converge, by a Cauchy estimate and the density of the domain, to a semigroup whose generator contains `A`, and a dissipative generator with `λ - A` surjective equals `A`. Checks: the trivial semigroup is a contraction semigroup, the theorem applies to `A = 0`, and `A = id` fails the lower bound at `λ = 1` [43]. The converse holds as well, so the two form the equivalence of the Hille–Yosida theorem for contraction semigroups [44] {3}: the orbits `t ↦ S t x` are continuous for all times `t ≥ 0` by the semigroup law and continuity at `0` [45], the averages `t⁻¹ ∫₀ᵗ S s x ds` lie in the domain of the generator and converge to `x`, which makes the domain dense [45], the resolvent `∫₀^∞ e^{-λ t} S t y dt` is a Bochner integral that lies in the domain with `(λ - A) R(λ) y = y` [46], and `norm_dissip` gives the lower bound [44].
 
-A bounded operator on a complex Hilbert space is trace class when the diagonal sum `∑ ⟪eᵢ, |T| eᵢ⟫` converges in a Hilbert basis, and the trace and the trace norm do not depend on the basis [47]. The Hilbert-Schmidt operators, those with `∑ ‖S eᵢ‖² < ∞` in one basis, are two-sided ideal elements, and the diagonal sums of `R S` and `S R` for Hilbert-Schmidt `R`, `S` agree (cyclicity of the trace) [48]; a product of two Hilbert-Schmidt operators is trace class [49]. The trace pairing `A ↦ Tr (A ·)` is an isometry of the bounded operators into the dual of the trace class [50], and every continuous functional on the trace class is a trace pairing, so the dual of the trace class is the bounded operators [51]. The trace of the rank-one operator on `ℂ` is `1`, and every operator on a finite-dimensional space is trace class; the identity of an infinite-dimensional Hilbert space is not Hilbert-Schmidt [52]. The diagonal operator with eigenvalues `1 / (n + 1)` on `ℓ²(ℕ)` is Hilbert-Schmidt and not trace class [53]. This layer is ported from Physlib with attribution; the duality between the compact operators and the trace class is not covered.
+A bounded operator on a complex Hilbert space is trace class when the diagonal sum `∑ ⟪eᵢ, |T| eᵢ⟫` converges in a Hilbert basis, and the trace and the trace norm do not depend on the basis [47]. The Hilbert-Schmidt operators, those with `∑ ‖S eᵢ‖² < ∞` in one basis, are two-sided ideal elements, and the diagonal sums of `R S` and `S R` for Hilbert-Schmidt `R`, `S` agree (cyclicity of the trace) [48]; a product of two Hilbert-Schmidt operators is trace class [49]. The trace pairing `A ↦ Tr (A ·)` is an isometry of the bounded operators into the dual of the trace class [50], and every continuous functional on the trace class is a trace pairing, so the dual of the trace class is the bounded operators [51]. The trace of the rank-one operator on `ℂ` is `1`, and every operator on a finite-dimensional space is trace class; the identity of an infinite-dimensional Hilbert space is not Hilbert-Schmidt [52]. The diagonal operator with eigenvalues `1 / (n + 1)` on `ℓ²(ℕ)` is Hilbert-Schmidt and not trace class [53]. This layer is ported from Physlib with attribution; The trace-class operators form a two-sided ideal, are closed under sums and, with the trace norm estimate `‖A T B‖₁ ≤ ‖A‖ ‖T‖₁ ‖B‖`, scalar multiples [49] [134] [135]; the Hilbert-Schmidt operators are an ideal closed under sums and scalar multiples [48]. The trace is the diagonal sum in every Hilbert basis [136], additive, homogeneous and cyclic [137]. The dual of the compact operators is the trace class [133], and the dual of the trace class is the bounded operators, in one statement with a unique operator of the norm of the functional [138].
 
 For a Hilbert basis `{eᵢ}`, `∑ᵢ |⟪eᵢ, y⟫|² = ‖y‖²` (Parseval), the Hilbert-Schmidt square sum `∑ᵢ ‖S eᵢ‖²` of a bounded `S` in one basis equals that of `S⋆` in a second basis, and so it converges in every Hilbert basis to the same sum once it converges in one [39]. A Bogoliubov transformation is `T f = α f + β f` with `α` complex-linear and `β` antilinear, and the symplectic condition gives `‖α e‖² - ‖β e‖² = ‖e‖²` and `4 ‖β e‖² = ‖T e‖² + ‖T (i e)‖² - 2 ‖e‖²`; `α` is a bounded operator with `α†α - 1` positive and `‖√(α†α - 1) e‖² = ‖β e‖²` [40]. Hence the antilinear part is Hilbert-Schmidt as soon as `∑ᵢ ‖β bᵢ‖²` converges in one Hilbert basis, and in particular when the finite sums `∑_{i ∈ s} (‖T bᵢ‖² + ‖T (i bᵢ)‖² - 2)` are bounded, the quantity that the vacuum projections onto finitely many modes control in the necessity part of Shale's criterion [41].
 
@@ -94,6 +94,44 @@ A compact symmetric operator `T` on a real or complex Hilbert space has a Hilber
 A compact operator `K` has a canonical form `K x = ∑ⱼ sⱼ ⟪φⱼ, x⟫ φ'ⱼ`, `K* x = ∑ⱼ sⱼ ⟪φ'ⱼ, x⟫ φⱼ` with orthonormal `φ`, `φ'` and positive singular values `sⱼ`: from a Hilbert basis of eigenvectors of the compact symmetric `K*K`, `sⱼ = √μⱼ` on the eigenvalues `μⱼ > 0` and `φ'ⱼ = sⱼ⁻¹ K φⱼ`; only finitely many `sⱼ` exceed any `ε > 0`, and `‖K‖` is the largest of them. For `μ ≠ 0` the `μ`-eigenspace of `K*K` is spanned by the `φⱼ` with `sⱼ² = μ` and has dimension `#{j | sⱼ² = μ}`, and likewise for `KK*` with the `φ'ⱼ` [104]. The zero operator has no singular values and a nonzero operator has one [105].
 
 The Schatten sum `‖K‖_p^p` is the supremum of `∑ₖ |⟪ψₖ, K ϕₖ⟫|^p` over pairs of finite orthonormal families; for every canonical form and `p ≥ 1` it equals `∑ⱼ sⱼ^p`, by Hölder with the weights `|⟪φⱼ, ϕₖ⟫|²` and Cauchy-Schwarz twice on one side and the orthonormal families of the canonical form on the other, and it bounds `‖K‖^p` and is unchanged by the adjoint [106]. For a compact `K` the square sum `∑ᵢ ‖K bᵢ‖²` in every Hilbert basis is `‖K‖₂²`, so the Hilbert-Schmidt operators are the compact ones with `‖K‖₂ < ∞` [107]; the trace norm of a product of two Hilbert-Schmidt operators is at most the product of their Hilbert-Schmidt norms, `|K|` acts on an eigenvector of `K*K` with eigenvalue `μ` by `√μ`, and the trace-class operators are the compact ones with `‖K‖₁ < ∞` [108]. The Schatten norms satisfy the triangle inequality (Minkowski on the finite sums), are homogeneous and definite, pass to norm limits, and a Cauchy sequence of compact operators converges in them [109]. The diagonal operator `diag(1/(n+1))` is in `J₂` and not in `J₁` [110].
+
+Further results of this area in the results catalogue:
+For a finite quantum system with Hamiltonian H, a state is KMS at inverse temperature beta iff it is the
+Gibbs state e^{-beta H} / tr e^{-beta H} [120]. A faithful state of a finite matrix algebra is KMS at
+inverse temperature beta = -1 for its modular dynamics, generated by log rho [121]. OP2 in one place: a
+Fock representation exists on every complex Hilbert space, a Bogoliubov transformation is implemented
+iff its antilinear part is Hilbert-Schmidt (Shale), |alpha|^2 - |beta|^2 = 1 for one mode, and a
+constant |beta| on l^2(N) is not implementable [122]. A quasi-free state of the Weyl algebra of a
+finite-dimensional symplectic space with a compatible complex structure (J^2 = -1, eta J-invariant and
+positive definite, omega(x,y) = -eta(x,Jy)) is pure; the degenerate-omega case factors through a
+surjection onto such a space [123]. The Sorkin-Johnston state of a finite causal set is pure: |iD| is
+the positive square root of -D^2, the Pauli-Jordan matrix is a(C - C^T) for the causal matrix C, and the
+quasi-free state of (D, |iD|) is pure for every a [124]. Fermionic Bogoliubov transformations of the
+CAR: b = alpha a + beta c has anticommutators alpha alpha* + beta beta* and alpha beta^T + beta alpha^T;
+under alpha alpha* + beta beta* = 1 and alpha beta^T + beta alpha^T = 0 the CAR is preserved, the
+transformation is invertible, the transformed Majorana family of an irreducible CAR representation is an
+irreducible CAR representation, hence unitarily implemented (finite dimensions) [125]. Bogoliubov vacua
+of the CAR: a vector killed by every transformed annihilation operator has two-point functions <a_i Psi,
+a_j Psi> = (beta* beta)_ij |Psi|^2, <c_i Psi, c_j Psi> = (alpha* alpha)_ij |Psi|^2, <a_i Psi, c_j Psi> =
+(beta* alpha)_ij |Psi|^2; it exists for the Jordan-Wigner representation and is unique up to a scalar
+[126]. Fermionic Shale in infinitely many modes, sufficiency for a small antilinear part: a surjective
+real-linear map R of a Hilbert space Z preserving Re of the inner product, whose antilinear part beta
+satisfies sum over every finite set of |beta e_k|^2 at most h < 1, is implemented by a unitary of the
+fermionic Fock space, U phi(w) = phi(R w) U; and for any R, a unit vector killed by the transformed
+annihilation operators gives such a unitary [127]. The Sorkin-Johnston state of a finite causal set is
+pure for the retarded matrix K_R = a M (1 - a b M)^-1 (the link matrix in four dimensions, the causal
+matrix in two, any mass), and 1 - a b M is invertible because M is supported on the causal order [128].
+Wick's theorem for fermionic fields on a vacuum for every number of fields: the vacuum expectation of a
+product of split fields (annihilation part killing the vacuum, creation part killed by the functional,
+scalar anticommutators with the annihilation parts) is the Pfaffian-type recursion of the pairings
+[129]. Wick's theorem for the CAR fields of a Bogoliubov vacuum, for every number of fields: the vacuum
+expectation of a product of linear combinations of the transformed operators b, b* is the Pfaffian
+recursion of the pairings, whose two-point value is the sum of u_i v'_i [130]. A faithful state of a matrix algebra is KMS at inverse temperature 1 for the flow generated by minus the logarithm of its density matrix, and that flow is the modular dynamics [139].
+
+Strong subadditivity of the von Neumann entropy, `S(A|BC) ≤ S(A|B)` for every density matrix on three finite
+systems, is stated here as a wrapper of Physlib's theorem; the proof is in Physlib [132]. The Bell state has
+`S(AB) = 0` and `S(A) = log 2`, so its conditional entropy is `-log 2` and the classical inequality
+`S(AB) ≥ S(A)` fails for it [132].
 
 ## Lean References
 
@@ -216,9 +254,14 @@ The Schatten sum `‖K‖_p^p` is the supremum of `∑ₖ |⟪ψₖ, K ϕₖ⟫|
     `OperatorAlgebras.TraceClass.trace`, `OperatorAlgebras.TraceClass.traceNorm`
 48. Lightlike/OperatorAlgebras/TraceClass/HilbertSchmidt.lean -
     `OperatorAlgebras.TraceClass.HilbertSchmidt.IsHilbertSchmidt`,
-    `OperatorAlgebras.TraceClass.HilbertSchmidt.tsum_diagonal_mul_eq_tsum_diagonal_swap`
+    `OperatorAlgebras.TraceClass.HilbertSchmidt.tsum_diagonal_mul_eq_tsum_diagonal_swap`,
+    `OperatorAlgebras.TraceClass.HilbertSchmidt.isHilbertSchmidt_add`,
+    `OperatorAlgebras.TraceClass.HilbertSchmidt.isHilbertSchmidt_smul`,
+    `OperatorAlgebras.TraceClass.HilbertSchmidt.isHilbertSchmidt_mul_left`,
+    `OperatorAlgebras.TraceClass.HilbertSchmidt.isHilbertSchmidt_mul_right`
 49. Lightlike/OperatorAlgebras/TraceClass/GeneralProduct.lean -
-    `OperatorAlgebras.TraceClass.isTraceClass_mul_of_isHilbertSchmidt`
+    `OperatorAlgebras.TraceClass.isTraceClass_mul_of_isHilbertSchmidt`,
+    `OperatorAlgebras.TraceClass.isTraceClass_mul_mul`, `OperatorAlgebras.TraceClass.isTraceClass_add`
 50. Lightlike/OperatorAlgebras/TraceClass/TracePairingNorm.lean -
     `OperatorAlgebras.TraceClass.TraceClass.tracePairingLinearIsometry`
 51. Lightlike/OperatorAlgebras/TraceClass/TracePairingSurjectivity.lean -
@@ -309,22 +352,30 @@ The Schatten sum `‖K‖_p^p` is the supremum of `∑ₖ |⟪ψₖ, K ϕₖ⟫|
 81. Lightlike/OperatorAlgebras/StoneVN.lean - `OperatorAlgebras.vnProj`, `OperatorAlgebras.inner_W_of_vnProj`,
     `OperatorAlgebras.stone_von_neumann`, `OperatorAlgebras.isIrreducible_iff_finrank_vnRange`,
     `OperatorAlgebras.stone_von_neumann_irreducible`
-82. Lightlike/OperatorAlgebras/QuasiFree.lean - `OperatorAlgebras.WeylSystem.continuous_line_of_quasiFree`,
-    `OperatorAlgebras.CCRRep.IsQuasiFree`, `OperatorAlgebras.CCRRep.field`, `OperatorAlgebras.CCRRep.IsQuasiFree.mem_domain`,
-    `OperatorAlgebras.CCRRep.IsQuasiFree.inner_field_field`, `OperatorAlgebras.CCRRep.IsQuasiFree.abs_symp_le`,
-    `OperatorAlgebras.FockRep.isQuasiFree_vacuum`
+82. Lightlike/OperatorAlgebras/QuasiFree.lean -
+    `OperatorAlgebras.WeylSystem.continuous_line_of_quasiFree`, `OperatorAlgebras.CCRRep.IsQuasiFree`,
+    `OperatorAlgebras.CCRRep.field`, `OperatorAlgebras.CCRRep.IsQuasiFree.mem_domain`,
+    `OperatorAlgebras.CCRRep.IsQuasiFree.inner_field_field`,
+    `OperatorAlgebras.CCRRep.IsQuasiFree.abs_symp_le`, `OperatorAlgebras.FockRep.isQuasiFree_vacuum`,
+    `OperatorAlgebras.WeylSystem.toCCRRep`, `OperatorAlgebras.CCRRep.IsQuasiFree.abs_symp_le_two_mul`
 83. Lightlike/OperatorAlgebras/TestsQuasiFree.lean - `OperatorAlgebras.FockRep.inner_field_field_vacuum`
-84. Lightlike/OperatorAlgebras/FermiFockGeneral.lean - `OperatorAlgebras.fermiCre`, `OperatorAlgebras.fermiAnn`,
-    `OperatorAlgebras.fermiAnn_fermiCre_anticomm`, `OperatorAlgebras.creW`, `OperatorAlgebras.annW_creW_anticomm`,
-    `OperatorAlgebras.fockField`, `OperatorAlgebras.fockField_anticomm`, `OperatorAlgebras.fockField_irreducible`
+84. Lightlike/OperatorAlgebras/FermiFockGeneral.lean - `OperatorAlgebras.fermiCre`,
+    `OperatorAlgebras.fermiAnn`, `OperatorAlgebras.fermiAnn_fermiCre_anticomm`, `OperatorAlgebras.creW`,
+    `OperatorAlgebras.annW_creW_anticomm`, `OperatorAlgebras.fockField`,
+    `OperatorAlgebras.fockField_anticomm`, `OperatorAlgebras.fockField_irreducible`,
+    `OperatorAlgebras.isSelfAdjoint_fockField`
 85. Lightlike/OperatorAlgebras/TestsFermiFock.lean - `OperatorAlgebras.fermiAnn_vacuum`
 86. Lightlike/OperatorAlgebras/QuasiFreeWick.lean - `OperatorAlgebras.mixedDeriv`, `OperatorAlgebras.haf`,
     `OperatorAlgebras.mixedDeriv_exp_quad`, `OperatorAlgebras.CCRRep.npoint`, `OperatorAlgebras.CCRRep.IsQuasiFree.genFun_eq`,
     `OperatorAlgebras.CCRRep.IsQuasiFree.npoint_two`, `OperatorAlgebras.CCRRep.IsQuasiFree.npoint_eq_haf`
-87. Lightlike/OperatorAlgebras/SecondQuantization.lean - `OperatorAlgebras.FockRep.gamma`, `OperatorAlgebras.FockRep.gamma_W_Ω`,
-    `OperatorAlgebras.FockRep.gamma_comp`, `OperatorAlgebras.FockRep.adjoint_gamma`, `OperatorAlgebras.FockRep.gamma_mem_unitary_iff`,
-    `OperatorAlgebras.FockRep.secondQuant`, `OperatorAlgebras.FockRep.eq_smul_secondQuant`, `OperatorAlgebras.posSemidef_kernel`,
-    `OperatorAlgebras.FockRep.secondQuantGroup`, `OperatorAlgebras.FockRep.dGamma`
+87. Lightlike/OperatorAlgebras/SecondQuantization.lean - `OperatorAlgebras.FockRep.gamma`,
+    `OperatorAlgebras.FockRep.gamma_W_Ω`, `OperatorAlgebras.FockRep.gamma_comp`,
+    `OperatorAlgebras.FockRep.adjoint_gamma`, `OperatorAlgebras.FockRep.gamma_mem_unitary_iff`,
+    `OperatorAlgebras.FockRep.secondQuant`, `OperatorAlgebras.FockRep.eq_smul_secondQuant`,
+    `OperatorAlgebras.posSemidef_kernel`, `OperatorAlgebras.FockRep.secondQuantGroup`,
+    `OperatorAlgebras.FockRep.dGamma`, `OperatorAlgebras.FockRep.norm_gamma_le`,
+    `OperatorAlgebras.FockRep.norm_le_one_of_gamma`, `OperatorAlgebras.FockRep.secondQuant_conj`,
+    `OperatorAlgebras.FockRep.eq_secondQuant_of_pos`
 88. Lightlike/OperatorAlgebras/TestsSecondQuantization.lean - `OperatorAlgebras.FockRep.secondQuant_trans_symm`,
     `OperatorAlgebras.FockRep.gamma_zero`
 89. Lightlike/OperatorAlgebras/GibbsKMS.lean - `OperatorAlgebras.GibbsKMS.diag`, `OperatorAlgebras.GibbsKMS.domain`,
@@ -337,7 +388,7 @@ The Schatten sum `‖K‖_p^p` is the supremum of `∑ₖ |⟪ψₖ, K ϕₖ⟫|
 90. Lightlike/OperatorAlgebras/TestsGibbsKMS.lean - `OperatorAlgebras.GibbsKMS.summable_exp_neg_mul_nat`,
     `OperatorAlgebras.GibbsKMS.oscillator_isKMS`, `OperatorAlgebras.GibbsKMS.not_summable_exp_zero` (the wrong input
     `β = 0`)
-91. Lightlike/OperatorAlgebras/ModularFinite.lean - `OperatorAlgebras.kms`, `OperatorAlgebras.inner_tomita`,
+91. Lightlike/OperatorAlgebras/ModularFinite.lean - `OperatorAlgebras.kms`, `OperatorAlgebras.inner_tomita`, `OperatorAlgebras.tomita_apply`,
     `OperatorAlgebras.omega_flow`, `OperatorAlgebras.flow_add`, `OperatorAlgebras.flow_mul`,
     `OperatorAlgebras.isKMS_boltz`, `OperatorAlgebras.not_isKMS_of_ne`
 92. Lightlike/OperatorAlgebras/PureStates.lean - `OperatorAlgebras.PureStates.states`, `OperatorAlgebras.PureStates.IsPure`,
@@ -451,6 +502,57 @@ The Schatten sum `‖K‖_p^p` is the supremum of `∑ₖ |⟪ψₖ, K ϕₖ⟫|
     `OperatorAlgebras.SecondQuantFock.dGammaT_theta`, `OperatorAlgebras.SecondQuantFock.dGammaT_creT`, `OperatorAlgebras.SecondQuantFock.adjoint_dGammaT`, `OperatorAlgebras.SecondQuantFock.creF`, `OperatorAlgebras.SecondQuantFock.annF`,
     `OperatorAlgebras.SecondQuantFock.theta_creF`, `OperatorAlgebras.SecondQuantFock.creF_of_theta`, `OperatorAlgebras.SecondQuantFock.theta_annF`, `OperatorAlgebras.SecondQuantFock.dGammaT_creF`, `OperatorAlgebras.SecondQuantFock.dGammaT_annF`,
     `OperatorAlgebras.SecondQuantFock.dGammaT_comm`, `OperatorAlgebras.SecondQuantFock.embCLM_creW`, `OperatorAlgebras.SecondQuantFock.embCLM_dGammaFock`
+120. Lightlike/OperatorAlgebras/FiniteKMS.lean - `OperatorAlgebras.isKMS_iff_eq_gibbs`,
+     `OperatorAlgebras.isKMS_gibbs`
+121. Lightlike/OperatorAlgebras/FiniteModular.lean - `OperatorAlgebras.isKMS_modular`,
+     `OperatorAlgebras.modOpSqrt_modOpSqrt`, `OperatorAlgebras.modConj_modOp_sqrt`,
+     `OperatorAlgebras.modOpPow_mul_modOpPow_neg`
+122. Lightlike/OperatorAlgebras/FockShale/Summary.lean - `OperatorAlgebras.fockRepOf_implements_iff`,
+     `OperatorAlgebras.squeeze_norm_alpha_sq_sub_norm_beta_sq_one`,
+     `OperatorAlgebras.squeezeEllTwo_not_implementable`,
+     `OperatorAlgebras.squeeze_implementable`
+123. Lightlike/OperatorAlgebras/QuasiFreeState/ComplexStructure.lean -
+     `OperatorAlgebras.QuasiFreeState.isPureState_qfState_of_complexStructure`,
+     `OperatorAlgebras.QuasiFreeState.isPureState_qfState_of_complexStructure_retract`
+124. Lightlike/OperatorAlgebras/QuasiFreeState/SorkinJohnston.lean -
+     `OperatorAlgebras.QuasiFreeState.isPureState_causalSet`,
+     `OperatorAlgebras.QuasiFreeState.exists_pjData`
+125. Lightlike/OperatorAlgebras/CARBogoliubov.lean - `OperatorAlgebras.bogAnn_bogCre_anticomm`,
+     `OperatorAlgebras.bogAnn_anticomm`, `OperatorAlgebras.isCARPairs_bog`, `OperatorAlgebras.bog_inv`,
+     `OperatorAlgebras.isCAROn_bogFam`, `OperatorAlgebras.isIrreducibleCAR_bogFam`,
+     `OperatorAlgebras.bogoliubov_implementable`
+126. Lightlike/OperatorAlgebras/CARQuasiFree.lean - `OperatorAlgebras.bogVacuum_inner_a_a`,
+     `OperatorAlgebras.bogVacuum_inner_c_c`, `OperatorAlgebras.bogVacuum_inner_a_c`,
+     `OperatorAlgebras.bogVacuum_exists`, `OperatorAlgebras.bogVacuum_unique`,
+     `OperatorAlgebras.exists_bogVacuum_jordanWigner`
+127. Lightlike/OperatorAlgebras/CARShale.lean - `OperatorAlgebras.CARShale.exists_unitary_of_dense`,
+     `OperatorAlgebras.CARShale.dense_words`, `OperatorAlgebras.CARShale.exists_implementer`,
+     `OperatorAlgebras.CARShale.exists_vacuum_of_small`,
+     `OperatorAlgebras.CARShale.fermionic_shale_of_small`
+128. Lightlike/OperatorAlgebras/QuasiFreeState/SJRetarded.lean -
+     `OperatorAlgebras.QuasiFreeState.isPureState_retarded`,
+     `OperatorAlgebras.QuasiFreeState.isUnit_one_sub_smul`,
+     `OperatorAlgebras.QuasiFreeState.retardedMatrix_mul`, `OperatorAlgebras.QuasiFreeState.linkMatrix`
+129. Lightlike/OperatorAlgebras/FermionWick.lean - `OperatorAlgebras.wick`, `OperatorAlgebras.A_pass`,
+     `OperatorAlgebras.expect_prod`, `OperatorAlgebras.wick_pair`, `OperatorAlgebras.wick_single`
+130. Lightlike/OperatorAlgebras/CARWick.lean - `OperatorAlgebras.carField`,
+     `OperatorAlgebras.carField_anticomm`, `OperatorAlgebras.car_wick`, `OperatorAlgebras.car_wick_two`
+131. Lightlike/OperatorAlgebras/StoneMomentum/MomentumCapstone.lean -
+     `OperatorAlgebras.StoneMomentum.stone_theorem`
+132. Lightlike/OperatorAlgebras/EntropyBell.lean - `OperatorAlgebras.strong_subadditivity`,
+     `OperatorAlgebras.bell_entropies`, `OperatorAlgebras.bell_conditional_entropy_neg`
+133. Lightlike/OperatorAlgebras/CompactDualIso.lean - `OperatorAlgebras.compact_dual_eq_traceClass_proof`
+134. Lightlike/OperatorAlgebras/TraceClass/Banach.lean - `OperatorAlgebras.TraceClass.isTraceClass_smul`
+135. Lightlike/OperatorAlgebras/TraceClass/IdealNorm.lean - `OperatorAlgebras.TraceClass.traceNorm_mul_mul_le`
+136. Lightlike/OperatorAlgebras/TraceClass/GeneralIdeal.lean -
+     `OperatorAlgebras.TraceClass.trace_eq_of_hilbertBasis`
+137. Lightlike/OperatorAlgebras/TraceClass/TraceAlgebra.lean - `OperatorAlgebras.TraceClass.trace_add`,
+     `OperatorAlgebras.TraceClass.trace_smul`, `OperatorAlgebras.TraceClass.trace_mul_cycle`
+138. Lightlike/OperatorAlgebras/TraceClass/DualOfTraceClass.lean -
+     `OperatorAlgebras.TraceClass.TraceClass.tracePairingLinearIsometryEquiv`,
+     `OperatorAlgebras.TraceClass.TraceClass.traceClass_dual_eq_bounded`
+139. Lightlike/OperatorAlgebras/ModularKMS/ModularCapstone.lean - `OperatorAlgebras.isKMS_modular_one`,
+     `OperatorAlgebras.modular_flow_eq_modGroup`
 
 ## References
 

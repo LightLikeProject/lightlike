@@ -57,7 +57,21 @@ axiom, and none of these modules uses `maxHeartbeats 0`.
 The associator of the fusion ring is given by the quantum 6j symbols: `F^{abc}_d[e, f] = (-1)^((a+b+c+d)/2) √([e+1][f+1]) {a b e; c d f}_q`, and its pentagon equation
 `F^{pcd}_e[g, l] F^{abl}_e[p, k] = Σ_h F^{abc}_g[p, h] F^{ahd}_e[g, k] F^{bcd}_k[h, l]` follows from the quantum
 Biedenharn–Elliott identity by moving the signs and the square roots of the dimensions into the F-matrices, so it is conditional on
-`qBiedenharnElliott` and unconditional at `r = 3` [28]. The hexagon and the rest of the modular category are not treated.
+`qBiedenharnElliott` and unconditional at `r = 3` [28]. For four spin-1/2 lines the quantum 6j symbols are evaluated (the F-matrix `F^{111}_1` on the channels `0, 2` is `[[-1/[2], √[3]/[2]], [√[3]/[2], 1/[2]]]`), and with the braiding eigenvalues `R^{ab}_c = (-1)^((a+b-c)/2) q^{(c(c+2) - a(a+2) - b(b+2))/4}` the hexagon equation `R^{11}_e F[e,g] R^{11}_g = Σ_h F[e,h] R^{1h}_1 F[h,g]` holds for `q = e^{iπ/r}`, `r ≥ 4` [36]. The hexagon for general spins and the rest of the modular category are not treated.
+
+Further results of this area in the results catalogue:
+Norm one of the q-6j matrix at every level r ≥ 2 [29]. q-orthogonality of the 6j symbol at every level r
+≥ 2 [30]. The boundary evaluation QDougall holds for the lowest sixth colours j1 - j5 and j4 - j2 with
+third colours from j1 - j2 up to j4 + j5 (respectively j1 + j2), by Jackson's sum and its degenerate
+case [31]. The boundary evaluation QDougallAll holds at every level r ≥ 2, and with it the
+q-orthogonality of the 6j symbol [30]. The Turaev–Viro state sum at r = 3 is an invariant of closed
+combinatorial 3-manifolds up to PL homeomorphism [32]. The fusion ring of SU(2) at level r - 2: the
+coefficients N_ab^c = 1 for admissible triples are symmetric, 0 is the unit, the quantum dimension [a+1]
+is multiplicative, and the ring is associative for r = 3, 4, 5, 6 [33]. The S matrix of SU(2) at level r
+- 2, S_ab = sqrt(2/r) sin(pi (a+1)(b+1)/r): symmetric, its unit row is the quantum dimension, and the
+Verlinde formula holds for the unit-object row [34]. Discrete sine orthogonality, sum over x < r of
+sin(a pi x/r) sin(b pi x/r) = (r/2) delta_ab for 0 < a, b < r, and S^2 = 1 for the S matrix of SU(2) at
+level r - 2 [35].
 
 ## Lean References
 
@@ -93,6 +107,20 @@ Biedenharn–Elliott identity by moving the signs and the square roots of the di
 27. Lightlike/TuraevViro/Reflect/EndRowCoef.lean - `TV.Refl.jBsp`, `TV.Refl.row_low`, `TV.Refl.row_top`,
     `TV.Refl.row_at`
 28. Lightlike/TuraevViro/FMatrix.lean - `TV.fMat`, `TV.fMat_pentagon`, `TV.fMat_pentagon_three`
+29. Lightlike/TuraevViro/Reflect/SixJNormOneAll.lean - `TV.Refl.sixj_norm_one_proved`
+30. Lightlike/TuraevViro/Reflect/QDougallAll.lean - `TV.Refl.qOrthogonality_proved`,
+    `TV.Refl.qDougallAll_proved`
+31. Lightlike/TuraevViro/Reflect/QDougallMap.lean - `TV.Refl.qDougall_orbit`, `TV.Refl.qDougall_nondeg`,
+    `TV.Refl.qDougall_orbit3`, `TV.Refl.qDougall_trunc_param`, `TV.Refl.qDougall_trunc_deg_param`,
+    `TV.Refl.qDougall_orbit3_trunc_param`
+32. Lightlike/TuraevViro/PLInvariance.lean - `TV.turaevViro3_plHomeomorphic`,
+    `TV.turaevViro3_move32`, `TV.turaevViro3_move41`, `TV.turaevViro3_moveEquiv3`
+33. Lightlike/TuraevViro/FusionRing.lean - `TV.fusionN`, `TV.fusionN_comm₁₂`, `TV.fusionN_comm₂₃`,
+    `TV.fusionN_zero_left`, `TV.fusion_dim`, `TV.fusion_assoc_small`
+34. Lightlike/TuraevViro/SMatrix.lean - `TV.sMat`, `TV.sMat_comm`, `TV.sMat_zero_left`,
+    `TV.sMat_zero_zero_pos`, `TV.verlinde_zero`
+35. Lightlike/TuraevViro/SOrthogonal.lean - `TV.sum_sin_mul_sin_orth`, `TV.sMat_mul_self`
+36. Lightlike/TuraevViro/Hexagon.lean - `TV.Rbr`, `TV.sixJ_half_00`, `TV.sixJ_half_02`, `TV.sixJ_half_22`, `TV.fMat_half_00`, `TV.fMat_half_02`, `TV.fMat_half_22`, `TV.hexagon_half`
 
 ## References
 

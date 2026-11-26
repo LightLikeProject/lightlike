@@ -1369,7 +1369,7 @@
   "citations_via": "Semantic Scholar"
  },
  "carroll-1997": {
-  "checked": "2026-11-20",
+  "checked": "2026-11-26",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "Lecture Notes on General Relativity",
@@ -1484,6 +1484,11 @@
     "snippet": "(6.54) Therefore we can drop the bars over hµν , as long as we are in this gauge. 6 WEAK FIELDS AND GRAVITATIONAL RADIATION 152 One nice feature of the transverse traceless gauge is that if you are given the components o",
     "why": null
    },
+   "eq. (7.100)": {
+    "verified": true,
+    "snippet": "(7.100) where ω = cos U cos V 1 = (cos η + cos χ) . (7.101) 2 The Minkowski metric may therefore be thought of as related by a conformal transfor- mation to the “unphysical” metric ds̄2 = ω 2 ds2 = −dη 2 + dχ2 + sin2 χ d",
+    "why": null
+   },
    "eq. (7.117)": {
     "verified": true,
     "snippet": "(7.117) (r 2 + a2 ) and we recognize the spatial part of this as flat space in ellipsoidal coordinates. They are related to Cartesian coordinates in Euclidean 3-space by x = (r 2 + a2 )1/2 sin θ cos(φ) y = (r 2 + a2 )1/2",
@@ -1529,6 +1534,11 @@
     "snippet": "(7.41) r The Killing vector whose conserved quantity is the magnitude of the angular momentum is L = ∂φ , or \u0010 \u0011 Lµ = 0, 0, 0, r 2 sin2 θ . (7.42) Since (7.40) implies that sin θ = 1 along the geodesics of interest to us",
     "why": null
    },
+   "eq. (7.87)": {
+    "verified": true,
+    "snippet": "(7.87) Technically the worldline r = 0 represents a coordinate singularity and should be covered by a different patch, but we all know what is going on so we’ll just act like r = 0 is well-behaved. Our task is made somew",
+    "why": null
+   },
    "eq. (8.1)": {
     "verified": true,
     "snippet": "(8.1) Here t is the timelike coordinate, and (u1 , u2, u3 ) are the coordinates on Σ; γij is the max- imally symmetric metric on Σ. This formula is a special case of (7.2), which we used to derive the Schwarzschild metri",
@@ -1545,7 +1555,7 @@
     "why": null
    }
   },
-  "citations": 427,
+  "citations": 431,
   "citations_via": "Semantic Scholar"
  },
  "carrozza-oriti-rivasseau-2014": {
@@ -1864,6 +1874,11 @@
     "snippet": "Theorem 28. Y ∋ y 7→ φ(y) ∈ Bh (Γa (Z)) (52) is an irreducible representation of the CAR over the space (Y, α). (52) is called the Fock representation of the CAR. Let w1 , . . . , wm be an orthonormal basis of the comple",
     "why": null
    },
+   "Theorem 31, p. 32": {
+    "verified": true,
+    "snippet": "Theorem 31. 1) Let r ∈ O(Y). Then the following conditions are equiva- lent: a) There exists U ∈ U (Γa (Z)) such that U φ(y)U ∗ = φ(ry), y ∈ Y. (56) b) r ∈ O2 (Y) 2) For r ∈ O2 (Y), the unitary operator U satisfying (56)",
+    "why": null
+   },
    "Theorem 37, p. 38": {
     "verified": true,
     "snippet": "Theorem 37. A quasi-free representation is regular. Therefore, in a quasi-free representation we can define the corresponding field operators, denoted φ(y). If m is an integer, we say that σ is a pairing of {1, . . . , 2",
@@ -2172,7 +2187,7 @@
   "citations_via": "Semantic Scholar"
  },
  "elvang-huang-2013": {
-  "checked": "2026-11-19",
+  "checked": "2026-11-24",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "Scattering Amplitudes",
@@ -2210,6 +2225,11 @@
    "eq. (2.68)": {
     "verified": true,
     "snippet": "(2.68) N For example, for the 4-gluon s-channel diagram we have f˜a1 a2 b f˜b a3 a4 (2.69) ∝ Tr T a1 T a2 T a3 T a4 − Tr T a1 T a2 T a4 T a3 − Tr T a1 T a3 T a4 T a2 + Tr T a1 T a4 T a3 T a2 . \u0001 \u0001 \u0001 \u0001 Here we have also u",
+    "why": null
+   },
+   "eq. (2.77)": {
+    "verified": true,
+    "snippet": "(2.77) h23ih31i The result for the ‘goggly’ amplitude A3 [1+ 2+ 3− ] is [12]3 A3 [1+ 2+ 3− ] = . (2.78) [23][31] I Exercise 2.19 Fill in the details to derive the amplitude (2.78). I Exercise 2.20 Calculate \u000f− (p, q) · \u000f",
     "why": null
    },
    "eq. (2.80)": {
@@ -2263,8 +2283,8 @@
     "why": null
    }
   },
-  "citations": 456,
-  "citations_via": "Semantic Scholar"
+  "citations": 743,
+  "citations_via": "OpenAlex"
  },
  "engle-pereira-2009": {
   "checked": "2026-11-16",
@@ -3801,7 +3821,7 @@
   "citations_via": "OpenAlex"
  },
  "magoo-2000": {
-  "checked": "2026-11-08",
+  "checked": "2026-11-26",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "Large N Field Theories, String Theory and Gravity",
@@ -3810,9 +3830,14 @@
     "verified": true,
     "snippet": "(2.20) i=1 in the flat (p + 3)-dimensional space with metric p+1 X ds2 = −dX02 − dXp+2 2 + dXi2 . (2.21) i=1 By construction, the space has the isometry SO(2, p + 1), and it is homogeneous and isotropic. 40 Equation (2.2",
     "why": null
+   },
+   "eq. (2.24)": {
+    "verified": true,
+    "snippet": "(2.24) cos2 θ The causal structure of the spacetime does not change by a conformal rescaling on the metric. Multiplying the metric by R−2 cos2 θ, it becomes ds′2 = −dτ 2 + dθ2 + sin2 θ dΩ2 . (2.25) This is the metric of",
+    "why": null
    }
   },
-  "citations": 5795,
+  "citations": 5788,
   "citations_via": "Semantic Scholar"
  },
  "martin-dussaud-2019": {
@@ -5214,6 +5239,21 @@
    }
   },
   "citations": 46,
+  "citations_via": "Semantic Scholar"
+ },
+ "yamagami-2008": {
+  "checked": "2026-11-25",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Geometry of Quasi-Free States of CCR Algebras",
+  "locations": {
+   "Proposition 2.7": {
+    "verified": true,
+    "snippet": "Proposition 2.7 ([27]). Let φ : (V, σ) → (V ′ , σ ′ ) be a presymplectic map with the induced *-homomorphism Φ : C ∗ (V, σ) → C ∗ (V ′ , σ ′ ). Let S, T ∈ Pol(V ′ , σ ′ ) and assume that φ(V ) is dense in V ′ with respec",
+    "why": null
+   }
+  },
+  "citations": 10,
   "citations_via": "Semantic Scholar"
  },
  "zwiebach-1993": {

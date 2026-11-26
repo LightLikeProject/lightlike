@@ -18,8 +18,9 @@ A field `X` is tangent (`IsTangentNear φ X x₀`) when `dφ (X) = 0` near `x₀
   with `R^D = gaussCurv` the curvature of `D` (metric compatible connection);
 * `codazzi_relation`: `g(R(X, Y) Z, n) = -((D_X K)(Y, Z) - (D_Y K)(X, Z))` (Levi-Civita connection), `covK` is `D_X K`.
 
-**Limits.** The leaves are not given a manifold structure, so the "induced metric" and the intrinsic Levi-Civita curvature of
-a leaf are not objects here: `D` is the tangential part of `∇` on tangent fields, and `gaussCurv` is its curvature (`D` is
+**Limits.** The leaves are not given a manifold structure, so the intrinsic Levi-Civita curvature of
+a leaf is not an object here (the induced metric is defined pointwise in `HypersurfaceInduced.lean`, as `g` restricted to
+`ker dφ`): `D` is the tangential part of `∇` on tangent fields, and `gaussCurv` is its curvature (`D` is
 torsion free and compatible with the restriction of `g` on tangent fields; that it is *the* Levi-Civita connection of the
 leaf is not stated). The unit normal is a hypothesis here; `exists_isUnitNormal` (`HypersurfaceNormal.lean`) constructs it for a function `φ` whose
 gradient at `x₀` is not null.

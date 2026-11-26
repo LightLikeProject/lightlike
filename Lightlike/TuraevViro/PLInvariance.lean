@@ -40,12 +40,14 @@ namespace Lightlike.TV
 set_option linter.unusedSectionVars false
 variable {V W : Type*} [DecidableEq V] [DecidableEq W]
 
+/-- **The `r = 3` state sum is invariant under the 3-2 move**, the inverse of the 2-3 move. -/
 theorem turaevViro3_move32 (K : Complex3 V) {A B C D E : V} (h : IsMove32 K A B C D E) :
     turaevViro (r := 3) (by norm_num) (move32 K h) = turaevViro (r := 3) (by norm_num) K := by
   have := turaevViro3_move23 (move32 K h) (isMove23_move32 h)
   rw [move23_move32 h] at this
   exact this.symm
 
+/-- **The `r = 3` state sum is invariant under the 4-1 move**, the inverse of the 1-4 move. -/
 theorem turaevViro3_move41 (K : Complex3 V) {A B C D E : V} (h : IsMove41 K A B C D E) :
     turaevViro (r := 3) (by norm_num) (move41 K h) = turaevViro (r := 3) (by norm_num) K := by
   have := turaevViro3_move14 (move41 K h) (isMove14_move41 h)

@@ -1,0 +1,569 @@
+import Mathlib
+import Lightlike.TemperleyLieb.FusionIdentity
+
+/-!
+# Iterated fusion: the tree idempotents
+
+Naturality of the nested cups and caps against the shifted Jones–Wenzl projectors, and the decomposition
+`Q(a,b) p_c = Σ_e κ_e⁻¹ V_e Q(c_e, c) W_e` of three blocks along the first bracketing.
+-/
+
+namespace Lightlike.TemperleyLieb
+
+open scoped Classical
+open Finsupp
+
+variable {k : Type*} [Field k]
+
+/-- Pushing an element through the Jones–Wenzl step. -/
+theorem push_step {A : Type*} [Ring A] [Algebra k A] (c : k) (u J J' e e' : A) (h1 : u * J = J' * u)
+    (h2 : u * e = e' * u) : u * (J - c • (J * e * J)) = (J' - c • (J' * e' * J')) * u := by
+  rw [mul_sub, sub_mul, mul_smul_comm, smul_mul_assoc, h1]
+  congr 2
+  calc u * (J * e * J) = (u * J) * e * J := by simp only [mul_assoc]
+    _ = J' * (u * e) * J := by rw [h1]; simp only [mul_assoc]
+    _ = J' * e' * (u * J) := by rw [h2]; simp only [mul_assoc]
+    _ = J' * e' * J' * u := by rw [h1]; simp only [mul_assoc]
+
+/-- A cup to the left of a projector slides through it, shifting the projector by two. -/
+theorem cupOp_mul_jwAt (q : kˣ) {m s : ℕ} (hm : m ≤ s) :
+    ∀ n, (cupOp q m : Module.End k (ModelSpace k)) * jwAt q s n = jwAt q (s + 2) n * cupOp q m := by
+  intro n
+  induction n using Nat.strong_induction_on with
+  | _ n ih =>
+    rcases n with _ | _ | n
+    · simp [jwAt, jw_zero]
+    · simp [jwAt, jw_one]
+    · have h2 : ∀ s', jwAt q s' (n + 2) = jwAt q s' (n + 1) -
+          (chebD (loopVal q) n / chebD (loopVal q) (n + 1)) •
+            (jwAt q s' (n + 1) * modelE q (n + s') * jwAt q s' (n + 1)) := fun s' => jw_succ_succ n
+      rw [h2 s, h2 (s + 2)]
+      have e1 : (cupOp q m : Module.End k (ModelSpace k)) * modelE q (n + s) = modelE q (n + (s + 2)) * cupOp q m := by
+        rw [show n + (s + 2) = (n + s) + 2 by ring]
+        exact (e_mul_cup_far q (by omega)).symm
+      exact push_step (A := Module.End k (ModelSpace k)) _ _ _ _ _ _ (ih (n + 1) (by omega)) e1
+
+/-- A cap to the left of a shifted projector slides through it, shifting the projector by two. -/
+theorem capOp_mul_jwAt (q : kˣ) {m s : ℕ} (hm : m ≤ s) :
+    ∀ n, (capOp q m : Module.End k (ModelSpace k)) * jwAt q (s + 2) n = jwAt q s n * capOp q m := by
+  intro n
+  induction n using Nat.strong_induction_on with
+  | _ n ih =>
+    rcases n with _ | _ | n
+    · simp [jwAt, jw_zero]
+    · simp [jwAt, jw_one]
+    · have h2 : ∀ s', jwAt q s' (n + 2) = jwAt q s' (n + 1) -
+          (chebD (loopVal q) n / chebD (loopVal q) (n + 1)) •
+            (jwAt q s' (n + 1) * modelE q (n + s') * jwAt q s' (n + 1)) := fun s' => jw_succ_succ n
+      rw [h2 s, h2 (s + 2)]
+      have e1 : (capOp q m : Module.End k (ModelSpace k)) * modelE q (n + (s + 2)) = modelE q (n + s) * capOp q m := by
+        rw [show n + (s + 2) = (n + s) + 2 by ring]
+        exact cap_mul_e_far q (by omega)
+      exact push_step (A := Module.End k (ModelSpace k)) _ _ _ _ _ _ (ih (n + 1) (by omega)) e1
+
+/-- The nested cups slide through a projector to their right. -/
+theorem nestCup_mul_jwAt (q : kˣ) {l s : ℕ} (hl : l ≤ s) (n : ℕ) :
+    ∀ i, (nestCup q l i : Module.End k (ModelSpace k)) * jwAt q s n = jwAt q (s + 2 * i) n * nestCup q l i := by
+  intro i
+  induction i with
+  | zero => simp [nestCup]
+  | succ i ih =>
+    have h := cupOp_mul_jwAt q (m := l + i) (s := s + 2 * i) (by omega) n
+    calc (nestCup q l (i + 1) : Module.End k (ModelSpace k)) * jwAt q s n
+        = cupOp q (l + i) * (nestCup q l i * jwAt q s n) := by simp only [nestCup, mul_assoc]
+      _ = cupOp q (l + i) * (jwAt q (s + 2 * i) n * nestCup q l i) := by rw [ih]
+      _ = (cupOp q (l + i) * jwAt q (s + 2 * i) n) * nestCup q l i := by rw [mul_assoc]
+      _ = jwAt q (s + 2 * i + 2) n * cupOp q (l + i) * nestCup q l i := by rw [h]
+      _ = jwAt q (s + 2 * (i + 1)) n * nestCup q l (i + 1) := by
+          rw [show s + 2 * (i + 1) = s + 2 * i + 2 by ring]; simp only [nestCup, mul_assoc]
+
+/-- The nested caps slide through a shifted projector to their right. -/
+theorem nestCap_mul_jwAt (q : kˣ) {l s : ℕ} (hl : l ≤ s) (n : ℕ) :
+    ∀ i, (nestCap q l i : Module.End k (ModelSpace k)) * jwAt q (s + 2 * i) n = jwAt q s n * nestCap q l i := by
+  intro i
+  induction i with
+  | zero => simp [nestCap]
+  | succ i ih =>
+    have h := capOp_mul_jwAt q (m := l + i) (s := s + 2 * i) (by omega) n
+    calc (nestCap q l (i + 1) : Module.End k (ModelSpace k)) * jwAt q (s + 2 * (i + 1)) n
+        = nestCap q l i * (capOp q (l + i) * jwAt q (s + 2 * i + 2) n) := by
+          rw [show s + 2 * (i + 1) = s + 2 * i + 2 by ring]; simp only [nestCap, mul_assoc]
+      _ = nestCap q l i * (jwAt q (s + 2 * i) n * capOp q (l + i)) := by rw [h]
+      _ = (nestCap q l i * jwAt q (s + 2 * i) n) * capOp q (l + i) := by rw [mul_assoc]
+      _ = jwAt q s n * nestCap q l i * capOp q (l + i) := by rw [ih]
+      _ = jwAt q s n * nestCap q l (i + 1) := by simp only [nestCap, mul_assoc]
+
+/-- An element of `C m` commutes with a projector on strands starting beyond `m`. -/
+theorem CSub_mul_jwAt (q : kˣ) {m s : ℕ} (hm : m + 1 ≤ s) {x : Module.End k (ModelSpace k)} (hx : x ∈ CSub q m) :
+    ∀ n, x * jwAt q s n = jwAt q s n * x := by
+  intro n
+  induction n using Nat.strong_induction_on with
+  | _ n ih =>
+    rcases n with _ | _ | n
+    · simp [jwAt, jw_zero]
+    · simp [jwAt, jw_one]
+    · have h2 : jwAt q s (n + 2) = jwAt q s (n + 1) -
+          (chebD (loopVal q) n / chebD (loopVal q) (n + 1)) •
+            (jwAt q s (n + 1) * modelE q (n + s) * jwAt q s (n + 1)) := jw_succ_succ n
+      rw [h2]
+      have e1 : x * modelE q (n + s) = modelE q (n + s) * x :=
+        (comm_tlSub (modelE_isTL q) (m := m) (n := n + s) (by omega) hx).symm
+      exact push_step (A := Module.End k (ModelSpace k)) _ _ _ _ _ _ (ih (n + 1) (by omega)) e1
+
+/-- `Q(a,b) ∈ C (a + b - 1)`. -/
+theorem Qab_mem (q : kˣ) (a b : ℕ) : (Qab q a b : Module.End k (ModelSpace k)) ∈ CSub q (a + b - 1) := by
+  have h1 : jwAt q 0 a ∈ CSub q (a + b - 1) :=
+    tlSub_mono (m := 0 + a - 1) (n := a + b - 1) (by omega) (jwAt_mem q 0 a)
+  exact Subalgebra.mul_mem _ h1 (jwAt_mem q a b)
+
+/-- **Iterated fusion, first bracketing**: `Q(a,b) p_c = Σ_e κ_e⁻¹ Q(a,b) · nestCup · Q(c_e, c) · nestCap · Q(a,b)`
+with `c_e = a + b - 2 e`. -/
+theorem Qab_mul_jwAt_decomp [CharZero k] (q : kˣ) (a b c : ℕ) (hab : 1 ≤ a + b)
+    (hd : ∀ j, j ≤ a + b → chebD (loopVal q) j ≠ 0)
+    (hq2 : ∀ j, 1 ≤ j → j ≤ a + b + 1 → (q : k) ^ (2 * j) ≠ 1) :
+    Qab q a b * jwAt q (a + b) c = ∑ e : Fin (min a b + 1), (kapRec q a b e)⁻¹ •
+      (Qab q a b * nestCup q (a - e) e * Qab q (a + b - 2 * e) c * nestCap q (a - e) e * Qab q a b) := by
+  have hfi := fusion_identity (k := k) q a b hd hq2
+  have hc : (Qab q a b : Module.End k (ModelSpace k)) * jwAt q (a + b) c =
+      (∑ e : Fin (min a b + 1), Eop q a b e) * jwAt q (a + b) c := by rw [← hfi]
+  rw [hc, Finset.sum_mul]
+  refine Finset.sum_congr rfl fun e _ => ?_
+  have hea : (e : ℕ) ≤ a := (Nat.lt_succ_iff.mp e.2).trans (min_le_left _ _)
+  have heb : (e : ℕ) ≤ b := (Nat.lt_succ_iff.mp e.2).trans (min_le_right _ _)
+  have hQJ := CSub_mul_jwAt q (m := a + b - 1) (s := a + b) (by omega) (Qab_mem q a b) c
+  have hnc := nestCap_mul_jwAt q (l := a - e) (s := a + b - 2 * e) (by omega) c e
+  rw [show a + b - 2 * (e : ℕ) + 2 * e = a + b by omega] at hnc
+  have hp := jwAt_idem (k := k) q (c := a + b - 2 * e) (N := a + b + 1) (by omega) (fun j hj => hd j (by omega))
+  unfold Eop
+  rw [smul_mul_assoc]
+  congr 1
+  unfold Vop Wop Qab
+  calc jwAt q 0 a * jwAt q a b * nestCup q (a - e) e * jwAt q 0 (a + b - 2 * e) *
+        (jwAt q 0 (a + b - 2 * e) * nestCap q (a - e) e * (jwAt q 0 a * jwAt q a b)) * jwAt q (a + b) c
+      = jwAt q 0 a * jwAt q a b * nestCup q (a - e) e * (jwAt q 0 (a + b - 2 * e) * jwAt q 0 (a + b - 2 * e)) *
+        nestCap q (a - e) e * ((jwAt q 0 a * jwAt q a b) * jwAt q (a + b) c) := by simp only [mul_assoc]
+    _ = jwAt q 0 a * jwAt q a b * nestCup q (a - e) e * jwAt q 0 (a + b - 2 * e) *
+        nestCap q (a - e) e * (jwAt q (a + b) c * (jwAt q 0 a * jwAt q a b)) := by
+          rw [hp]
+          unfold Qab at hQJ
+          rw [hQJ]
+    _ = jwAt q 0 a * jwAt q a b * nestCup q (a - e) e * jwAt q 0 (a + b - 2 * e) *
+        (nestCap q (a - e) e * jwAt q (a + b) c) * (jwAt q 0 a * jwAt q a b) := by simp only [mul_assoc]
+    _ = _ := by rw [hnc]; simp only [mul_assoc]
+
+/-- The tree idempotent of the first bracketing: the channel `e` of the pair `(a,b)`, then the channel `d` of
+`(c_e, c)`. -/
+noncomputable def treeL (q : kˣ) (a b c e d : ℕ) : Module.End k (ModelSpace k) :=
+  (kapRec q a b e)⁻¹ • (Qab q a b * nestCup q (a - e) e * Eop q (a + b - 2 * e) c d * nestCap q (a - e) e * Qab q a b)
+
+/-- **The first bracketing decomposes `Q(a,b) p_c` into the tree idempotents.** -/
+theorem Qab_mul_jwAt_trees [CharZero k] (q : kˣ) (a b c : ℕ) (hab : 1 ≤ a + b)
+    (hd : ∀ j, j ≤ a + b + c → chebD (loopVal q) j ≠ 0)
+    (hq2 : ∀ j, 1 ≤ j → j ≤ a + b + c + 1 → (q : k) ^ (2 * j) ≠ 1) :
+    Qab q a b * jwAt q (a + b) c = ∑ e : Fin (min a b + 1), ∑ d : Fin (min (a + b - 2 * e) c + 1),
+      treeL q a b c e d := by
+  rw [Qab_mul_jwAt_decomp q a b c hab (fun j hj => hd j (by omega)) (fun j h1 h2 => hq2 j h1 (by omega))]
+  refine Finset.sum_congr rfl fun e _ => ?_
+  have hea : (e : ℕ) ≤ a := (Nat.lt_succ_iff.mp e.2).trans (min_le_left _ _)
+  have heb : (e : ℕ) ≤ b := (Nat.lt_succ_iff.mp e.2).trans (min_le_right _ _)
+  have hfi := fusion_identity (k := k) q (a + b - 2 * e) c (fun j hj => hd j (by omega))
+    (fun j h1 h2 => hq2 j h1 (by omega))
+  unfold treeL
+  rw [← Finset.smul_sum]
+  congr 1
+  rw [hfi] at *
+  simp only [Finset.mul_sum, Finset.sum_mul]
+
+/-- Projectors on disjoint ranges of strands commute. -/
+theorem jwAt_comm_jwAt (q : kˣ) {A s : ℕ} (h : A ≤ s) (n : ℕ) :
+    (jwAt q 0 A : Module.End k (ModelSpace k)) * jwAt q s n = jwAt q s n * jwAt q 0 A := by
+  rcases A with _ | A
+  · simp [jwAt, jw_zero]
+  · exact CSub_mul_jwAt q (m := A) (by omega) (by simpa using jwAt_mem (k := k) q 0 (A + 1)) n
+
+section tree
+
+variable (q : kˣ) (A c : ℕ) (hd : ∀ j, j ≤ A + c → chebD (loopVal q) j ≠ 0)
+include hd
+
+/-- `p_A Q(A,c) = Q(A,c)`. -/
+theorem jwAt_mul_Qab' : (jwAt q 0 A : Module.End k (ModelSpace k)) * Qab q A c = Qab q A c := by
+  have := jwAt_idem (k := k) q (c := A) (N := A + c + 1) (by omega) (fun j hj => hd j (by omega))
+  unfold Qab; rw [← mul_assoc, this]
+
+/-- `Q(A,c) p_A = Q(A,c)`. -/
+theorem Qab_mul_jwAt' : (Qab q A c : Module.End k (ModelSpace k)) * jwAt q 0 A = Qab q A c := by
+  have := jwAt_idem (k := k) q (c := A) (N := A + c + 1) (by omega) (fun j hj => hd j (by omega))
+  unfold Qab
+  rw [mul_assoc, ← jwAt_comm_jwAt q (le_refl A) c, ← mul_assoc, this]
+
+/-- `p_A E = E`. -/
+theorem jwAt_mul_Eop (d : ℕ) : (jwAt q 0 A : Module.End k (ModelSpace k)) * Eop q A c d = Eop q A c d := by
+  have h1 := Qab_mul_Eop q A c hd d
+  calc (jwAt q 0 A : Module.End k (ModelSpace k)) * Eop q A c d
+      = jwAt q 0 A * (Qab q A c * Eop q A c d) := by rw [h1]
+    _ = (jwAt q 0 A * Qab q A c) * Eop q A c d := by rw [mul_assoc]
+    _ = Eop q A c d := by rw [jwAt_mul_Qab' q A c hd, h1]
+
+/-- `E p_A = E`. -/
+theorem Eop_mul_jwAt (d : ℕ) : (Eop q A c d : Module.End k (ModelSpace k)) * jwAt q 0 A = Eop q A c d := by
+  have h1 := Eop_mul_Qab q A c hd d
+  calc (Eop q A c d : Module.End k (ModelSpace k)) * jwAt q 0 A
+      = (Eop q A c d * Qab q A c) * jwAt q 0 A := by rw [h1]
+    _ = Eop q A c d * (Qab q A c * jwAt q 0 A) := by rw [mul_assoc]
+    _ = Eop q A c d := by rw [Qab_mul_jwAt' q A c hd, h1]
+
+end tree
+
+/-- The tree idempotent as `κ⁻¹ V E W`. -/
+theorem treeL_eq (q : kˣ) (a b c e d : ℕ)
+    (hd : ∀ j, j ≤ a + b - 2 * e + c → chebD (loopVal q) j ≠ 0) :
+    treeL q a b c e d = (kapRec q a b e)⁻¹ • (Vop q a b e * Eop q (a + b - 2 * e) c d * Wop q a b e) := by
+  unfold treeL
+  congr 1
+  have h1 := jwAt_mul_Eop (k := k) q (a + b - 2 * e) c hd d
+  have h2 := Eop_mul_jwAt (k := k) q (a + b - 2 * e) c hd d
+  unfold Vop Wop
+  calc Qab q a b * nestCup q (a - e) e * Eop q (a + b - 2 * e) c d * nestCap q (a - e) e * Qab q a b
+      = Qab q a b * nestCup q (a - e) e * (jwAt q 0 (a + b - 2 * e) * Eop q (a + b - 2 * e) c d *
+        jwAt q 0 (a + b - 2 * e)) * nestCap q (a - e) e * Qab q a b := by rw [h1, h2]
+    _ = _ := by simp only [mul_assoc]
+
+/-- **The tree idempotents are orthogonal idempotents.** -/
+theorem treeL_mul [CharZero k] (q : kˣ) (a b c : ℕ)
+    (hd : ∀ j, j ≤ a + b + c → chebD (loopVal q) j ≠ 0)
+    (hq2 : ∀ j, 1 ≤ j → j ≤ a + b + c + 1 → (q : k) ^ (2 * j) ≠ 1)
+    {e d e' d' : ℕ} (he : e ≤ min a b) (he' : e' ≤ min a b) (hdd : d ≤ min (a + b - 2 * e) c)
+    (hdd' : d' ≤ min (a + b - 2 * e') c) :
+    treeL q a b c e d * treeL q a b c e' d' =
+      if e = e' ∧ d = d' then treeL q a b c e d else 0 := by
+  have hea : e ≤ a := he.trans (min_le_left _ _)
+  have heb : e ≤ b := he.trans (min_le_right _ _)
+  have hea' : e' ≤ a := he'.trans (min_le_left _ _)
+  have heb' : e' ≤ b := he'.trans (min_le_right _ _)
+  rw [treeL_eq q a b c e d (fun j hj => hd j (by omega)), treeL_eq q a b c e' d' (fun j hj => hd j (by omega))]
+  rw [smul_mul_assoc, mul_smul_comm, smul_smul]
+  by_cases hee : e = e'
+  · subst hee
+    have hκ := kapRec_ne (k := k) q e a b hea heb (fun j h1 h2 => hq2 j h1 (by omega))
+    have hWV := Wop_mul_Vop q a b e hea heb (fun j hj => hd j (by omega))
+    have hp1 := Eop_mul_jwAt (k := k) q (a + b - 2 * e) c (fun j hj => hd j (by omega)) d
+    have hEE : Eop q (a + b - 2 * e) c d * Eop q (a + b - 2 * e) c d' =
+        if d = d' then Eop q (a + b - 2 * e) c d else 0 := by
+      by_cases hdeq : d = d'
+      · subst hdeq
+        rw [if_pos rfl]
+        exact Eop_idem q _ c (fun j hj => hd j (by omega)) (hdd.trans (min_le_left _ _)) (hdd.trans (min_le_right _ _))
+          (fun j h1 h2 => hq2 j h1 (by omega))
+      · rw [if_neg hdeq]
+        have hm : 1 ≤ min (a + b - 2 * e) c := by omega
+        exact Eop_orth q _ c (fun j hj => hd j (by omega)) (by omega) (by omega) (hdd.trans (min_le_left _ _))
+          (hdd.trans (min_le_right _ _)) (hdd'.trans (min_le_left _ _)) (hdd'.trans (min_le_right _ _)) hdeq
+          (fun j h1 h2 => hq2 j h1 (by omega))
+    have key : Vop q a b e * Eop q (a + b - 2 * e) c d * Wop q a b e *
+        (Vop q a b e * Eop q (a + b - 2 * e) c d' * Wop q a b e) =
+        kapRec q a b e • (Vop q a b e * (Eop q (a + b - 2 * e) c d * Eop q (a + b - 2 * e) c d') * Wop q a b e) := by
+      calc _ = Vop q a b e * Eop q (a + b - 2 * e) c d * (Wop q a b e * Vop q a b e) *
+            Eop q (a + b - 2 * e) c d' * Wop q a b e := by simp only [mul_assoc]
+        _ = Vop q a b e * Eop q (a + b - 2 * e) c d * (kapRec q a b e • jwAt q 0 (a + b - 2 * e)) *
+            Eop q (a + b - 2 * e) c d' * Wop q a b e := by rw [hWV]
+        _ = _ := by
+            rw [mul_smul_comm, smul_mul_assoc, smul_mul_assoc]
+            simp only [mul_assoc]
+            rw [← mul_assoc (Eop q (a + b - 2 * e) c d) (jwAt q 0 (a + b - 2 * e)), hp1]
+    rw [key, hEE, smul_smul]
+    by_cases hdeq : d = d'
+    · subst hdeq
+      rw [if_pos rfl, if_pos ⟨rfl, rfl⟩]
+      rw [mul_assoc, inv_mul_cancel₀ hκ, mul_one]
+    · rw [if_neg hdeq, if_neg (fun h => hdeq h.2)]
+      simp
+  · rw [if_neg (fun h => hee h.1)]
+    have hm : 1 ≤ min a b := by omega
+    have h0 := channel_orth q a b e e' (by omega) (by omega) hea heb hea' heb' (fun j hj => hd j (by omega))
+      (lamRec_ne q a b e e' hea heb hea' heb' hee (fun j h1 h2 => hq2 j h1 (by omega)))
+    have hp := Eop_mul_jwAt (k := k) q (a + b - 2 * e) c (fun j hj => hd j (by omega)) d
+    have : Vop q a b e * Eop q (a + b - 2 * e) c d * Wop q a b e *
+        (Vop q a b e' * Eop q (a + b - 2 * e') c d' * Wop q a b e') = 0 := by
+      calc _ = Vop q a b e * Eop q (a + b - 2 * e) c d * (Wop q a b e * Vop q a b e') *
+            Eop q (a + b - 2 * e') c d' * Wop q a b e' := by simp only [mul_assoc]
+        _ = 0 := by rw [h0]; simp
+    rw [this, smul_zero]
+
+/-- Pushing an element through the Jones–Wenzl step, from the right. -/
+theorem push_step_r {A : Type*} [Ring A] [Algebra k A] (c : k) (u J J' e e' : A) (h1 : J * u = u * J')
+    (h2 : e * u = u * e') : (J - c • (J * e * J)) * u = u * (J' - c • (J' * e' * J')) := by
+  rw [mul_sub, sub_mul, mul_smul_comm, smul_mul_assoc, h1]
+  congr 2
+  calc J * e * J * u = J * e * (J * u) := by simp only [mul_assoc]
+    _ = J * (e * u) * J' := by rw [h1]; simp only [mul_assoc]
+    _ = J * u * e' * J' := by rw [h2]; simp only [mul_assoc]
+    _ = u * J' * e' * J' := by rw [h1]
+    _ = u * (J' * e' * J') := by simp only [mul_assoc]
+
+/-- A projector to the left of a cup commutes with it. -/
+theorem jwAt_mul_cupOp (q : kˣ) {s m : ℕ} :
+    ∀ n, s + n ≤ m → (jwAt q s n : Module.End k (ModelSpace k)) * cupOp q m = cupOp q m * jwAt q s n := by
+  intro n
+  induction n using Nat.strong_induction_on with
+  | _ n ih =>
+    intro hn
+    rcases n with _ | _ | n
+    · simp [jwAt, jw_zero]
+    · simp [jwAt, jw_one]
+    · have h2 : jwAt q s (n + 2) = jwAt q s (n + 1) -
+          (chebD (loopVal q) n / chebD (loopVal q) (n + 1)) •
+            (jwAt q s (n + 1) * modelE q (n + s) * jwAt q s (n + 1)) := jw_succ_succ n
+      rw [h2]
+      exact push_step_r (A := Module.End k (ModelSpace k)) _ _ _ _ _ _ (ih (n + 1) (by omega) (by omega))
+        (e_mul_cup_near q (by omega))
+
+/-- A projector to the left of a cap commutes with it. -/
+theorem jwAt_mul_capOp (q : kˣ) {s m : ℕ} :
+    ∀ n, s + n ≤ m → (jwAt q s n : Module.End k (ModelSpace k)) * capOp q m = capOp q m * jwAt q s n := by
+  intro n
+  induction n using Nat.strong_induction_on with
+  | _ n ih =>
+    intro hn
+    rcases n with _ | _ | n
+    · simp [jwAt, jw_zero]
+    · simp [jwAt, jw_one]
+    · have h2 : jwAt q s (n + 2) = jwAt q s (n + 1) -
+          (chebD (loopVal q) n / chebD (loopVal q) (n + 1)) •
+            (jwAt q s (n + 1) * modelE q (n + s) * jwAt q s (n + 1)) := jw_succ_succ n
+      rw [h2]
+      exact push_step_r (A := Module.End k (ModelSpace k)) _ _ _ _ _ _ (ih (n + 1) (by omega) (by omega))
+        (cap_mul_e_near q (m := m) (j := n + s) (by omega)).symm
+
+/-- **The middle case of the expansion**: `cup_{l+1} e_l cap_{l+1} = e_{l+1} e_l e_{l+2} e_{l+1}`. -/
+theorem cup_e_cap_mid (q : kˣ) (l : ℕ) :
+    (cupOp q (l + 1) * modelE q l * capOp q (l + 1) : Module.End k (ModelSpace k)) =
+      modelE q (l + 1) * modelE q l * modelE q (l + 2) * modelE q (l + 1) := by
+  have hc : (modelE q l : Module.End k (ModelSpace k)) * modelE q (l + 2) = modelE q (l + 2) * modelE q l :=
+    (modelE_isTL q).comm l (l + 2) le_rfl
+  have h : (capOp q (l + 1) : Module.End k (ModelSpace k)) * (modelE q l * modelE q (l + 2)) * cupOp q (l + 1) =
+      modelE q l := by
+    rw [hc, ← mul_assoc, cap_mul_e_succ q (l + 1), cap_mul_e_near q (m := l + 2) (j := l) le_rfl,
+      mul_assoc, cap_succ_cup q (l + 1), mul_one]
+  calc (cupOp q (l + 1) * modelE q l * capOp q (l + 1) : Module.End k (ModelSpace k))
+      = cupOp q (l + 1) * (capOp q (l + 1) * (modelE q l * modelE q (l + 2)) * cupOp q (l + 1)) *
+        capOp q (l + 1) := by rw [h]
+    _ = (cupOp q (l + 1) * capOp q (l + 1)) * modelE q l * modelE q (l + 2) *
+        (cupOp q (l + 1) * capOp q (l + 1)) := by simp only [mul_assoc]
+    _ = _ := by rw [cup_cap]
+
+/-- **Expansion**: conjugating an element of `C n` by a cup and a cap at a junction `m ≤ n + 1` stays in `C (n + 2)`. -/
+theorem cup_mul_cap_mem (q : kˣ) (hδ : loopVal q ≠ 0) {n m : ℕ} (hm : m ≤ n + 1)
+    {z : Module.End k (ModelSpace k)} (hz : z ∈ CSub q n) : cupOp q m * z * capOp q m ∈ CSub q (n + 2) := by
+  have hcc : (capOp q m : Module.End k (ModelSpace k)) * cupOp q m = loopVal q • 1 := by
+    rw [cap_cup, Algebra.algebraMap_eq_smul_one]; rfl
+  have he : (modelE q m : Module.End k (ModelSpace k)) ∈ CSub q (n + 2) := e_mem_tlSub (by omega)
+  unfold CSub tlSub at hz
+  induction hz using Algebra.adjoin_induction with
+  | mem x hx =>
+    obtain ⟨j, hj, rfl⟩ := hx
+    by_cases h1 : j + 2 ≤ m
+    · rw [← e_mul_cup_near q h1, mul_assoc, cup_cap]
+      exact Subalgebra.mul_mem _ (e_mem_tlSub (by omega)) he
+    · by_cases h2 : m ≤ j
+      · have : cupOp q m * modelE q j = modelE q (j + 2) * cupOp q m := (e_mul_cup_far q h2).symm
+        rw [this, mul_assoc, cup_cap]
+        exact Subalgebra.mul_mem _ (e_mem_tlSub (by omega)) he
+      · obtain ⟨l, rfl⟩ : ∃ l, m = l + 1 := ⟨m - 1, by omega⟩
+        have hjl : j = l := by omega
+        subst hjl
+        rw [cup_e_cap_mid]
+        exact Subalgebra.mul_mem _ (Subalgebra.mul_mem _ (Subalgebra.mul_mem _ (e_mem_tlSub (by omega))
+          (e_mem_tlSub (by omega))) (e_mem_tlSub (by omega))) (e_mem_tlSub (by omega))
+  | algebraMap r =>
+    rw [Algebra.algebraMap_eq_smul_one, mul_smul_comm, smul_mul_assoc, mul_one, cup_cap]
+    exact Subalgebra.smul_mem _ he r
+  | add x y _ _ hx hy => rw [mul_add, add_mul]; exact Subalgebra.add_mem _ hx hy
+  | mul x y _ _ hx hy =>
+    have e : (cupOp q m * x * capOp q m) * (cupOp q m * y * capOp q m) =
+        loopVal q • (cupOp q m * (x * y) * capOp q m : Module.End k (ModelSpace k)) := by
+      calc _ = cupOp q m * x * (capOp q m * cupOp q m) * y * capOp q m := by simp only [mul_assoc]
+        _ = _ := by
+          rw [hcc]
+          simp only [mul_smul_comm, smul_mul_assoc, mul_one, mul_assoc]
+    have : cupOp q m * (x * y) * capOp q m = (loopVal q)⁻¹ • ((cupOp q m * x * capOp q m) *
+        (cupOp q m * y * capOp q m)) := by
+      rw [e, smul_smul, inv_mul_cancel₀ hδ, one_smul]
+    rw [this]
+    exact Subalgebra.smul_mem _ (Subalgebra.mul_mem _ hx hy) _
+
+/-- **Nested expansion**: `nestCup l i · z · nestCap l i ∈ C (n + 2 i)` for `z ∈ C n` and `l ≤ n + 1`. -/
+theorem nestCup_mul_nestCap_mem (q : kˣ) (hδ : loopVal q ≠ 0) {n l : ℕ} (hl : l ≤ n + 1)
+    {z : Module.End k (ModelSpace k)} (hz : z ∈ CSub q n) :
+    ∀ i : ℕ, nestCup q l i * z * nestCap q l i ∈ CSub q (n + 2 * i) := by
+  intro i
+  induction i with
+  | zero => simpa [nestCup, nestCap] using hz
+  | succ i ih =>
+    have h := cup_mul_cap_mem q hδ (n := n + 2 * i) (m := l + i) (by omega) ih
+    have e : nestCup q l (i + 1) * z * nestCap q l (i + 1) =
+        cupOp q (l + i) * (nestCup q l i * z * nestCap q l i) * capOp q (l + i) := by
+      simp only [nestCup, nestCap, mul_assoc]
+    rw [e, show n + 2 * (i + 1) = n + 2 * i + 2 by ring]
+    exact h
+
+/-- Peeling the innermost cup: `nestCup l (i+1) = nestCup (l+1) i · cup_l`. -/
+theorem nestCup_succ_left (q : kˣ) (l : ℕ) : ∀ i, (nestCup q l (i + 1) : Module.End k (ModelSpace k)) =
+    nestCup q (l + 1) i * cupOp q l := by
+  intro i
+  induction i with
+  | zero => simp [nestCup]
+  | succ i ih =>
+    have e1 : (nestCup q l (i + 1 + 1) : Module.End k (ModelSpace k)) = cupOp q (l + (i + 1)) * nestCup q l (i + 1) := rfl
+    have e2 : (nestCup q (l + 1) (i + 1) : Module.End k (ModelSpace k)) = cupOp q (l + 1 + i) * nestCup q (l + 1) i := rfl
+    rw [e1, ih, e2, ← mul_assoc, show l + 1 + i = l + (i + 1) by ring]
+
+/-- Peeling the innermost cap: `nestCap l (i+1) = cap_l · nestCap (l+1) i`. -/
+theorem nestCap_succ_left (q : kˣ) (l : ℕ) : ∀ i, (nestCap q l (i + 1) : Module.End k (ModelSpace k)) =
+    capOp q l * nestCap q (l + 1) i := by
+  intro i
+  induction i with
+  | zero => simp [nestCap]
+  | succ i ih =>
+    have e1 : (nestCap q l (i + 1 + 1) : Module.End k (ModelSpace k)) = nestCap q l (i + 1) * capOp q (l + (i + 1)) := rfl
+    have e2 : (nestCap q (l + 1) (i + 1) : Module.End k (ModelSpace k)) = nestCap q (l + 1) i * capOp q (l + 1 + i) := rfl
+    rw [e1, ih, e2, mul_assoc, show l + 1 + i = l + (i + 1) by ring]
+
+/-- The empty channel: `nestCup 0 (i+1) · nestCap 0 (i+1) = nestCup 1 i · e_0 · nestCap 1 i`. -/
+theorem nestCup_mul_nestCap_zero (q : kˣ) (i : ℕ) :
+    (nestCup q 0 (i + 1) * nestCap q 0 (i + 1) : Module.End k (ModelSpace k)) =
+      nestCup q 1 i * modelE q 0 * nestCap q 1 i := by
+  rw [nestCup_succ_left, nestCap_succ_left, ← cup_cap]
+  simp only [mul_assoc, zero_add]
+
+/-- **The channel idempotent lies in `C (a + b - 1)`.** -/
+theorem Eop_mem (q : kˣ) (hδ : loopVal q ≠ 0) {a b i : ℕ} (hia : i ≤ a) (hib : i ≤ b) :
+    (Eop q a b i : Module.End k (ModelSpace k)) ∈ CSub q (a + b - 1) := by
+  have hVW : Vop q a b i * Wop q a b i = Qab q a b * (nestCup q (a - i) i * (jwAt q 0 (a + b - 2 * i) *
+      jwAt q 0 (a + b - 2 * i)) * nestCap q (a - i) i) * Qab q a b := by
+    unfold Vop Wop; simp only [mul_assoc]
+  unfold Eop
+  rw [hVW]
+  refine Subalgebra.smul_mem _ (Subalgebra.mul_mem _ (Subalgebra.mul_mem _ (Qab_mem q a b) ?_) (Qab_mem q a b)) _
+  by_cases hc : 1 ≤ a + b - 2 * i
+  · have hp : jwAt q 0 (a + b - 2 * i) * jwAt q 0 (a + b - 2 * i) ∈ CSub q (a + b - 2 * i - 1) := by
+      have := jwAt_mem (k := k) q 0 (a + b - 2 * i)
+      rw [zero_add] at this
+      exact Subalgebra.mul_mem _ this this
+    have hn := nestCup_mul_nestCap_mem q hδ (n := a + b - 2 * i - 1) (l := a - i) (by omega) hp i
+    rw [show a + b - 2 * i - 1 + 2 * i = a + b - 1 by omega] at hn
+    exact hn
+  · have h0 : a + b - 2 * i = 0 := by omega
+    have hab : a = i ∧ b = i := by omega
+    obtain ⟨rfl, rfl⟩ := hab
+    rcases b with _ | a
+    · simp [nestCup, nestCap, jwAt, jw_zero]
+    · have hp1 : (jwAt q 0 (a + 1 + (a + 1) - 2 * (a + 1)) : Module.End k (ModelSpace k)) = 1 := by
+        rw [show a + 1 + (a + 1) - 2 * (a + 1) = 0 by omega]; simp [jwAt, jw_zero]
+      rw [hp1, one_mul, show a + 1 - (a + 1) = 0 by omega, mul_one, nestCup_mul_nestCap_zero]
+      have := nestCup_mul_nestCap_mem q hδ (n := 1) (l := 1) (by omega)
+        (e_mem_tlSub (e := modelE q) (j := 0) (m := 1) (by omega)) a
+      rw [show a + 1 + (a + 1) - 1 = 1 + 2 * a by omega]
+      exact this
+
+/-- **Sandwich scalar**: `p_D Z p_D` is a scalar multiple of `p_D` for `Z ∈ C (D - 1)`. -/
+theorem jwAt_sandwich (q : kˣ) {D : ℕ} (hd : ∀ j, j < D → chebD (loopVal q) j ≠ 0)
+    {Z : Module.End k (ModelSpace k)} (hZ : Z ∈ CSub q (D - 1)) :
+    ∃ ε : k, jwAt q 0 D * Z * jwAt q 0 D = ε • jwAt q 0 D := by
+  have hprops := jwProps_of_le (isTL_shift q 0) D hd D le_rfl
+  have hjw : jwAt q 0 D = jw (loopVal q) (modelE q) D := rfl
+  have hL : ∀ j < D - 1, modelE q j * jwAt q 0 D = 0 := fun j hj => by
+    rw [hjw]; exact hprops.killL j (by omega)
+  have hR : ∀ j < D - 1, jwAt q 0 D * modelE q j = 0 := fun j hj => by
+    rw [hjw]; exact hprops.killR j (by omega)
+  obtain ⟨κ, h1, -⟩ := absorb (k := k) (e := modelE q) (p := jwAt q 0 D) hL hR _ hZ
+  refine ⟨κ, ?_⟩
+  have hidem : jwAt q 0 D * jwAt q 0 D = jwAt q 0 D := by rw [hjw]; exact hprops.idem
+  rw [h1, smul_mul_assoc, hidem]
+
+/-- **The two-level sandwich is a scalar**: for `Y ∈ C (a+b+c-1)` and the channels `e` of `(a,b)` and `d` of
+`(a+b-2e, c)`, `W_d W_e Y V_e V_d` is a scalar multiple of the projector on the remaining strands. -/
+theorem Wop_Wop_sandwich (q : kˣ) (a b c e d : ℕ) (hN : 1 ≤ a + b + c)
+    (hd : ∀ j, j ≤ a + b + c → chebD (loopVal q) j ≠ 0)
+    (hea : e ≤ a) (heb : e ≤ b) (hdc : d ≤ c) (hdA : d ≤ a + b - 2 * e)
+    {Y : Module.End k (ModelSpace k)} (hY : Y ∈ CSub q (a + b + c - 1)) :
+    ∃ ε : k, Wop q (a + b - 2 * e) c d * (Wop q a b e * Y * Vop q a b e) * Vop q (a + b - 2 * e) c d =
+      ε • jwAt q 0 (a + b - 2 * e + c - 2 * d) := by
+  set A := a + b - 2 * e with hA
+  have hdAc : ∀ j, j ≤ A + c → chebD (loopVal q) j ≠ 0 := fun j hj => hd j (by omega)
+  have hQmem : Qab q a b ∈ CSub q (a + b + c - 1) :=
+    tlSub_mono (m := a + b - 1) (n := a + b + c - 1) (by omega) (Qab_mem q a b)
+  have hQYQ : Qab q a b * Y * Qab q a b ∈ CSub q (a + b + c - 1) :=
+    Subalgebra.mul_mem _ (Subalgebra.mul_mem _ hQmem hY) hQmem
+  have hX1 := nestCap_mul_nestCup_mem q (a - e) e (a + b + c - 1) hQYQ (by omega)
+  rw [show a + b + c - 1 - 2 * e = A + c - 1 by omega] at hX1
+  set X1 := nestCap q (a - e) e * (Qab q a b * Y * Qab q a b) * nestCup q (a - e) e with hX1def
+  have hW1 : Wop q a b e * Y * Vop q a b e = jwAt q 0 A * X1 * jwAt q 0 A := by
+    unfold Wop Vop; rw [hX1def]; simp only [mul_assoc, hA]
+  have hQ'mem : Qab q A c ∈ CSub q (A + c - 1) := Qab_mem q A c
+  have hX2 : Qab q A c * X1 * Qab q A c ∈ CSub q (A + c - 1) :=
+    Subalgebra.mul_mem _ (Subalgebra.mul_mem _ hQ'mem hX1) hQ'mem
+  have hX3 := nestCap_mul_nestCup_mem q (A - d) d (A + c - 1) hX2 (by omega)
+  rw [show A + c - 1 - 2 * d = (A + c - 2 * d) - 1 by omega] at hX3
+  have hDd : ∀ j, j < A + c - 2 * d → chebD (loopVal q) j ≠ 0 := fun j hj => hd j (by omega)
+  obtain ⟨ε, hε⟩ := jwAt_sandwich q hDd hX3
+  refine ⟨ε, ?_⟩
+  have h1 := Qab_mul_jwAt' (k := k) q A c hdAc
+  have h2 := jwAt_mul_Qab' (k := k) q A c hdAc
+  rw [hW1]
+  unfold Wop Vop
+  calc jwAt q 0 (A + c - 2 * d) * nestCap q (A - d) d * Qab q A c * (jwAt q 0 A * X1 * jwAt q 0 A) *
+        (Qab q A c * nestCup q (A - d) d * jwAt q 0 (A + c - 2 * d))
+      = jwAt q 0 (A + c - 2 * d) * (nestCap q (A - d) d * (Qab q A c * jwAt q 0 A * X1 * (jwAt q 0 A * Qab q A c)) *
+        nestCup q (A - d) d) * jwAt q 0 (A + c - 2 * d) := by simp only [mul_assoc]
+    _ = jwAt q 0 (A + c - 2 * d) * (nestCap q (A - d) d * (Qab q A c * X1 * Qab q A c) * nestCup q (A - d) d) *
+        jwAt q 0 (A + c - 2 * d) := by rw [h1, h2]
+    _ = ε • jwAt q 0 (A + c - 2 * d) := hε
+
+/-- **One-dimensionality of the tree corner**: `treeL e d · Y · treeL e d` is a multiple of `treeL e d`
+for every `Y ∈ C (a+b+c-1)`. -/
+theorem treeL_sandwich (q : kˣ) (a b c e d : ℕ) (hN : 1 ≤ a + b + c)
+    (hd : ∀ j, j ≤ a + b + c → chebD (loopVal q) j ≠ 0)
+    (hea : e ≤ a) (heb : e ≤ b) (hdc : d ≤ c) (hdA : d ≤ a + b - 2 * e)
+    {Y : Module.End k (ModelSpace k)} (hY : Y ∈ CSub q (a + b + c - 1)) :
+    ∃ μ : k, treeL q a b c e d * Y * treeL q a b c e d = μ • treeL q a b c e d := by
+  obtain ⟨ε, hε⟩ := Wop_Wop_sandwich q a b c e d hN hd hea heb hdc hdA hY
+  set A := a + b - 2 * e with hA
+  have hdAc : ∀ j, j ≤ A + c → chebD (loopVal q) j ≠ 0 := fun j hj => hd j (by omega)
+  have hV2 := Vop_mul_jwAt (k := k) q A c hdAc hdA hdc
+  have hT : treeL q a b c e d = ((kapRec q a b e)⁻¹ * (kapRec q A c d)⁻¹) •
+      (Vop q a b e * Vop q A c d * Wop q A c d * Wop q a b e) := by
+    rw [treeL_eq q a b c e d hdAc]
+    unfold Eop
+    rw [mul_smul_comm, smul_mul_assoc, smul_smul]
+    simp only [mul_assoc, hA]
+  rw [hT]
+  simp only [smul_mul_assoc, mul_smul_comm, smul_smul]
+  refine ⟨ε * ((kapRec q a b e)⁻¹ * (kapRec q A c d)⁻¹), ?_⟩
+  have key : (Vop q a b e * Vop q A c d * Wop q A c d * Wop q a b e) * Y *
+      (Vop q a b e * Vop q A c d * Wop q A c d * Wop q a b e) =
+      ε • (Vop q a b e * Vop q A c d * Wop q A c d * Wop q a b e) := by
+    calc _ = Vop q a b e * Vop q A c d * (Wop q A c d * (Wop q a b e * Y * Vop q a b e) * Vop q A c d) *
+          Wop q A c d * Wop q a b e := by simp only [mul_assoc]
+      _ = Vop q a b e * Vop q A c d * (ε • jwAt q 0 (A + c - 2 * d)) * Wop q A c d * Wop q a b e := by rw [hε]
+      _ = _ := by
+          rw [mul_smul_comm, smul_mul_assoc, smul_mul_assoc]
+          congr 1
+          rw [mul_assoc (Vop q a b e), hV2]
+  rw [key, smul_smul]
+  congr 1
+  ring
+
+/-- The tree idempotent of the first bracketing lies in `C (a+b+c-1)` (when the last channel is not the empty one). -/
+theorem treeL_mem (q : kˣ) (hδ : loopVal q ≠ 0) {a b c e d : ℕ} (hea : e ≤ a) (heb : e ≤ b) (hdc : d ≤ c)
+    (hdA : d ≤ a + b - 2 * e) (hAc : 1 ≤ a + b - 2 * e + c) :
+    treeL q a b c e d ∈ CSub q (a + b + c - 1) := by
+  have hE := Eop_mem (k := k) q hδ (a := a + b - 2 * e) (b := c) (i := d) hdA hdc
+  have hn := nestCup_mul_nestCap_mem q hδ (n := a + b - 2 * e + c - 1) (l := a - e) (by omega) hE e
+  rw [show a + b - 2 * e + c - 1 + 2 * e = a + b + c - 1 by omega] at hn
+  have hQ : Qab q a b ∈ CSub q (a + b + c - 1) :=
+    tlSub_mono (m := a + b - 1) (n := a + b + c - 1) (by omega) (Qab_mem q a b)
+  unfold treeL
+  exact Subalgebra.smul_mem _ (Subalgebra.mul_mem _ (Subalgebra.mul_mem _ hQ hn) hQ) _
+
+end Lightlike.TemperleyLieb

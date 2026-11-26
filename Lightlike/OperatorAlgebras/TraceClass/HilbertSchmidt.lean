@@ -153,6 +153,7 @@ lemma isHilbertSchmidt_zero : IsHilbertSchmidt (0 : H →L[ℂ] H) := by
   simp
 
 omit [CompleteSpace H] in
+/-- Hilbert–Schmidt operators are closed under scalar multiplication. -/
 lemma isHilbertSchmidt_smul {S : H →L[ℂ] H} (c : ℂ) (hS : IsHilbertSchmidt S) :
     IsHilbertSchmidt (c • S) := by
   rcases hS with ⟨w, b, hb⟩
@@ -163,6 +164,7 @@ lemma isHilbertSchmidt_smul {S : H →L[ℂ] H} (c : ℂ) (hS : IsHilbertSchmidt
   rw [smul_apply, norm_smul]
   ring
 
+/-- Hilbert–Schmidt operators are closed under addition. -/
 lemma isHilbertSchmidt_add {R S : H →L[ℂ] H}
     (hR : IsHilbertSchmidt R) (hS : IsHilbertSchmidt S) :
     IsHilbertSchmidt (R + S) := by
@@ -216,6 +218,7 @@ lemma isHilbertSchmidt_mul_right_of_opNorm_le_one {S U : H →L[ℂ] H}
   have hdouble : IsHilbertSchmidt (star (star U * star S)) := isHilbertSchmidt_star hleft
   simpa only [star_mul, star_star] using hdouble
 
+/-- **Left ideal property**: `U S` is Hilbert–Schmidt for bounded `U` and Hilbert–Schmidt `S`. -/
 lemma isHilbertSchmidt_mul_left {U S : H →L[ℂ] H} (hS : IsHilbertSchmidt S) :
     IsHilbertSchmidt (U * S) := by
   by_cases hU0 : ‖U‖ = 0
@@ -229,6 +232,7 @@ lemma isHilbertSchmidt_mul_left {U S : H →L[ℂ] H} (hS : IsHilbertSchmidt S) 
     rw [show (‖U‖ : ℂ) • (V * S) = ((‖U‖ : ℂ) • V) * S by simp] at hscaled
     rwa [hVeq] at hscaled
 
+/-- **Right ideal property**: `S U` is Hilbert–Schmidt for Hilbert–Schmidt `S` and bounded `U`. -/
 lemma isHilbertSchmidt_mul_right {S U : H →L[ℂ] H} (hS : IsHilbertSchmidt S) :
     IsHilbertSchmidt (S * U) := by
   have hleft : IsHilbertSchmidt (star U * star S) :=

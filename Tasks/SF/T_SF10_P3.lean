@@ -74,13 +74,14 @@ namespace Lightlike.Asymptotics.Lorentzian
 /-- **The far remainder** (the hypothesis `FarRemainderBound` of `lorVertex_asymptotics_fixChart`): for positive spin
 parameters, unit boundary spinors, smooth compactly supported cutoff `χ` with values in `[0, 1]`, supported in the chart
 domain `U`, equal to `1` near the finite set `K` of critical points of the support of `A`, the integral
-`∫ (1 - χ) A e^{λ S}` is integrable for every `λ ∈ ℕ` and `O(λ^{-23})`.
+`∫ (1 - χ) A e^{λ S}` is integrable for every `λ ∈ ℕ`, `λ ≥ 1`, and `O(λ^{-23})`.
 
 **Change from the first form.** `CriticalSetIs j p g e χ K` (critical points only inside `tsupport (χ A)`) is replaced by
 `CriticalSetIs j p g e (fun _ => 1) K` (every critical point of `tsupport A` is in `K`), and the chart hypotheses of
 `lorVertex_asymptotics_fixChart` (`U`, `hP`, `hA`) are added. Without the change the statement is false: a nondegenerate
 critical point outside `tsupport χ` contributes `c λ^{-22}` (`docs/notes/sf10-p3-assessment.md`). The proof is the sum of
-`lorVertex_farRemainder_compact` (the part `ψ - χ`) and `lorVertex_farRemainder_tail` (the part `1 - ψ`), for a cutoff `ψ`
+`lorVertex_farRemainder_compact_proof` (the part `ψ - χ`, in `Lightlike/SpinFoam/VertexAsymptoticsHyp/FarCompact.lean`)
+and `lorVertex_farRemainder_tail` (the part `1 - ψ`), for a cutoff `ψ`
 chosen in the proof. Not in BDFHP. -/
 theorem lorVertex_farRemainder
     {j p : Fin 10 → ℝ} {γ : ℝ} (hj : ∀ k, 0 < j k)

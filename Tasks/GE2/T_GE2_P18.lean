@@ -61,7 +61,9 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
   [T2Space M] [SecondCountableTopology M] [BoundarylessManifold I M]
   {n : ℕ} {g : LorentzianMetric I M n} (T : TimeOrientation g)
 
-/-- **An achronal set is a Cauchy surface iff its domain of dependence is the whole manifold.** -/
+/-- **An achronal set is a Cauchy surface iff its domain of dependence is the whole manifold.** The
+manifold is Hausdorff, second countable and without boundary, the standing hypotheses of Hawking and
+Ellis. -/
 theorem isCauchySurface_iff_domainDep_eq_univ {S : Set M} (h : IsAchronal T S) :
     IsCauchySurface T S ↔ domainDep T S = Set.univ :=
   isCauchySurface_iff_domainDep_eq_univ_of_push T

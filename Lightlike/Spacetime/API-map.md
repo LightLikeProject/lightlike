@@ -12,13 +12,13 @@ proven in coordinates apply to the components of a manifold-level metric.
 
 A coordinate metric on an open set is a smooth, symmetric, invertible matrix-valued function of
 the coordinates [1]. From it one computes the Christoffel symbols, the Riemann tensor, the Ricci
-tensor and the scalar curvature by the standard formulas {1} [1]. Minkowski space is flat [1].
+tensor and the scalar curvature by the standard formulas {1} [1]. Minkowski space is flat [1], and the standard basis of `ℝⁿ` is a Lorentz frame for the Minkowski form [6].
 
-The lowered Riemann tensor is symmetric under exchange of its index pairs and satisfies the first
+The lowered Riemann tensor is symmetric under exchange of its index pairs, antisymmetric in its last pair, and satisfies the first
 Bianchi identity [2]. The second Bianchi identity in coordinates is not yet formalized. [TODO]
 
 Under a smooth change of coordinates the Riemann tensor, the Ricci tensor and the scalar curvature
-transform as tensors, and solutions of the vacuum Einstein equations pull back to solutions [3].
+transform as tensors, and solutions of the vacuum Einstein equations pull back to solutions, for any cosmological constant [3].
 
 A Lorentzian metric on a smooth manifold modelled on `ℝⁿ` is a smooth symmetric bilinear form on
 each tangent space with signature (−,+,…,+), in the mostly-plus convention {2} [4]. In every chart
@@ -32,9 +32,9 @@ In a chart of a manifold modelled on `ℝⁿ` the coordinate vector fields commu
 
 For a smooth connection on a Hausdorff manifold modelled on a finite-dimensional space without boundary, the curvature defined with extensions of tangent vectors does not depend on the extensions: in a chart it is an expression in the Christoffel tensor of the connection and its derivative, a function of the values of the three vectors only [12], [13].
 
-For a Levi-Civita connection of a smooth Lorentzian metric (same hypotheses) the first Bianchi identity holds, the lowered curvature is antisymmetric in each pair of slots and symmetric under exchange of the pairs, and the Ricci tensor is symmetric [14].
+For a Levi-Civita connection of a smooth Lorentzian metric (same hypotheses) the first Bianchi identity holds, the lowered curvature is antisymmetric in each pair of slots and symmetric under exchange of the pairs, and the Ricci tensor is symmetric [14]. For any model with corners (boundary and corners allowed, no Hausdorff hypothesis) the same holds for a locally smooth connection that is torsion free and compatible with the metric, and the curvature is computed by any fields smooth near the point [131]; the covariant derivative of the Levi-Civita connection is smooth there [132]. The closed unit segment is an example with boundary: the identities hold at its boundary points [133]. The line with two origins is a non-Hausdorff example on which the identities also hold [134].
 
-In a chart of a manifold modelled on `ℝⁿ` (Hausdorff), the components of the curvature of a Levi-Civita connection are the coordinate Riemann tensor, its Ricci tensor and scalar curvature are the coordinate ones, and the Einstein equations hold on the manifold iff the coordinate vacuum equations hold in every chart [15].
+In a chart of a manifold modelled on `ℝⁿ` (Hausdorff), the components of the curvature of a Levi-Civita connection are the coordinate Riemann tensor, its Ricci tensor and scalar curvature are the coordinate ones, and the Einstein equations hold on the manifold iff the coordinate vacuum equations hold in every chart [15]; for any model with corners the same agreement holds for the Riemann, Ricci and scalar curvature of a Levi-Civita connection [128].
 
 For a smooth torsion-free connection the second Bianchi identity holds: the cyclic sum of the covariant derivative of the curvature vanishes [16].
 
@@ -70,7 +70,7 @@ For a non-null hypersurface given as a level set of a function, with unit normal
 
 The first variation of the Einstein-Hilbert density in coordinates: for a smooth metric `g` and a smooth symmetric perturbation `h` on `R^n`, the metric `g + t h` has volume density with derivative `1/2 sqrt(|g|) g^{ab} h_{ab}` [31], Christoffel symbols with the derivative `delta Gamma` [32], and curvature with first variation given by the linearised Riemann tensor [35] [36]; the contraction `g^{sigma nu} delta R_{sigma nu}` times the volume density is the divergence of `sqrt(|g|) W^rho` with `W^rho = g^{sigma nu} delta Gamma^rho_{sigma nu} - g^{rho sigma} delta Gamma^kappa_{kappa sigma}` (the Palatini identity [33] [34] [37]), so that the density `sqrt(|g|) (R - 2 Lambda)` has the first variation `-sqrt(|g|) (R^{ab} - R g^{ab}/2 + Lambda g^{ab}) h_{ab}` plus a divergence [37]. The divergence of a compactly supported field integrates to zero and the density is differentiable under the integral over a compact region, so the first variation of the integral over a compact region containing the support of the perturbation is `-∫ sqrt(|g|) (R^{ab} - R g^{ab}/2 + Lambda g^{ab}) h_{ab}`, with no boundary term [38]. That the critical points are the vacuum Einstein equations and the statement on a manifold are not yet proved. [TODO]
 
-A metric is a critical point of the Einstein-Hilbert action with a cosmological term, for every smooth symmetric perturbation of compact support, exactly when it satisfies the vacuum Einstein equations with that cosmological constant, by the first variation and the fundamental lemma of the calculus of variations [39]. In two dimensions the Einstein tensor vanishes identically, so every metric is critical for the action without cosmological term [40].
+A metric is a critical point of the Einstein-Hilbert action with a cosmological term, for every smooth symmetric perturbation of compact support, exactly when it satisfies the vacuum Einstein equations with that cosmological constant, on a manifold [129] and in coordinates, by the first variation and the fundamental lemma of the calculus of variations [39]. In two dimensions the Einstein tensor vanishes identically, so every metric is critical for the action without cosmological term [40].
 
 A smooth metric of any signature on the product of the time line and three-dimensional space for which the three spatial translations and the three spatial rotations are Killing fields has `g_{0k} = 0` and `g_{ij}` a function of the time times `delta_{ij}`, the flat FLRW form [70]. For every spatial curvature `k`, the three rotations and the three curved translations `Pₘ = (1 - k|x|²/4)∂ₘ + (k/2)xₘ(x · ∂)` as Killing fields on the set `1 + k|x|²/4 > 0` give there the FLRW form `b(t) dt² + a(t) δ/(1 + k|x|²/4)²`, with the slices in isotropic coordinates [71]. The local flow of a Killing field preserves the metric [72]. Along the orbits of finitely many Killing fields whose brackets close with constant structure constants, the metric pulled back by the flow solves a linear equation in the structure constants alone, so two such families with the same structure constants and proportional Gram matrices at a point have proportional metrics along their orbits [73]: the first part of the step from abstract homogeneous and isotropic slices to these coordinates. On `ℝ³` the curved translations and the rotations are Killing for the space form `δ/(1 + k|x|²/4)²` and close with explicit structure constants [74]; so a metric with Killing fields of these structure constants whose rotations vanish at a point is, in the orbit chart `η ↦ exp(∑ ηₘ Pₘ)(p)`, a constant multiple of the space form in its own orbit chart [75]. If the rotations vanish along a worldline `c`, then in the chart `Φ(t, ξ) = exp(∑ ξₑ Yₑ)(c t)` the metric is `b(t) dt² + a(t) δ/(1 + k|x|²/4)²` with `b(t) = g(c', c')`: the cross terms vanish because the rotations fix the velocity of `c`, and the time-time component is constant along the orbits [76]. The passage from an isometry group to such a Killing algebra is not yet proved. [TODO]
 
@@ -93,21 +93,46 @@ The divergence theorem on a manifold: for a metric of any signature, its Levi-Ci
 
 The first variation of the Christoffel symbols is a tensor: `δΓⁱ_{jk} = ½ gⁱˡ (∇ⱼ h_{lk} + ∇ₖ h_{lj} - ∇ₗ h_{jk})` with the covariant derivative of the perturbation for the Levi-Civita connection of `g`, and the boundary vector of the variation is `W^ρ = g^{ρl} g^{σν} (∇_σ h_{lν} - ∇_l h_{σν})`, the divergence of `h` minus the gradient of its trace [81]. For a symmetric tensor field `h` on a manifold, the covariant derivative `∇h` of the Levi-Civita connection has these components in every chart, and the boundary vector is a smooth vector field on the manifold, with components `W` in every chart, that vanishes wherever `h` vanishes near the point [82]. For a measurable region `D` and `h` vanishing outside a compact set `K`, the first variation of the Einstein–Hilbert action of `D ∩ K` is `∫_{D ∩ K} (-⟨G + Λ g, h⟩_g + div_g V(h)) d vol_g`, the bulk term plus the divergence of that vector field [83]. The Gibbons–Hawking–York density of a graph and the Palatini flux depend only on the germs of the metric and the perturbation at the boundary point, so the density of `g + t h` is affine in `t`, with slope minus the flux, for components given only near that point [84]. A function vanishing on a graph near a point, and differentiable there, has only a normal derivative at the point, so a graph on which a non-null defining function vanishes is not null; the graph is the frontier of the region above or below it, frontiers are local, and the chart preimage of a frontier point of the chart image of `D` is a frontier point of `D`; in a chart, `du(♯du) = Σ ∂ₐũ (G⁻¹)ᵃᵇ ∂_bũ` [85]. At a graph point where the chart image of a region is the graph region nearby, a perturbation vanishing on the boundary has components vanishing on the graph, and a nowhere null boundary makes the graph not null; the flux density of `w V(h)` in a chart is `(w ∘ φ⁻¹)` times the Palatini flux. So, for a measurable region `D` of a manifold with a nowhere null `C²` boundary and a perturbation `h` vanishing outside a compact set `K` and on `∂D`, the Einstein–Hilbert action of `D ∩ K` minus the Gibbons–Hawking–York term, in the graph charts of the divergence theorem for `V(h)`, has first variation `-∫_{D ∩ K} ⟨G + Λ g, h⟩_g d vol_g`: the boundary terms cancel [86].
 
-Minkowski space is conformal to the region `0 < χ`, `|η| + χ < π` of the Einstein static universe: with `t = sin η / ω` and `r = sin χ / ω`, `ω = (cos η + cos χ)/2`, the metric `-dt² + dr² + r² dΩ²` is `ω⁻² (-dη² + dχ² + sin² χ dΩ²)`, and `(η, χ) ↦ (t, r)` maps that region bijectively onto `r > 0` [87]. A rescaling of the time direction only is conformal to the Einstein static universe form exactly when its factor squared is one [111]. On the closed region the conformal factor vanishes exactly on the boundary `|η| + χ = π`, conformal infinity [87].
+Minkowski space is conformal to the region `0 < χ`, `|η| + χ < π` of the Einstein static universe: with `t = sin η / ω` and `r = sin χ / ω`, `ω = (cos η + cos χ)/2`, the metric `-dt² + dr² + r² dΩ²` is `ω⁻² (-dη² + dχ² + sin² χ dΩ²)`, and `(η, χ) ↦ (t, r)` maps that region bijectively onto `r > 0` [87]. A rescaling of the time direction only is conformal to the Einstein static universe form exactly when its factor squared is one [111]. On the closed region the conformal factor vanishes exactly on the boundary `|η| + χ = π`, conformal infinity [87]. In the null angles `U = (η + χ)/2`, `V = (η - χ)/2` one has `t = tan U + tan V`, `r = tan U - tan V`, and the dilation `(t, r) ↦ (λt, λr)` becomes the angle map `x ↦ arctan (λ tan x)`, which extends continuously by `±π/2`: the dilation extends to a continuous map of the closed region that acts as the dilation on the region and maps conformal infinity to itself [126].
 
 Anti-de Sitter space is conformal to half of the Einstein static universe: with `r = tan θ`, the global metric `-(1 + r²) dτ² + (1 + r²)⁻¹ dr² + r² dΩ²` is `cos⁻² θ (-dτ² + dθ² + sin² θ dΩ²)` for `0 ≤ θ < π/2`, and the conformal boundary `θ = π/2`, where `cos θ` vanishes, carries the timelike metric `-dτ² + dΩ²` [102].
+
+Further results of this area in the results catalogue:
+A limit of future causal curves with converging endpoints is a future causal curve, in one chart [112].
+A causal spacetime is chronological, and a strongly causal spacetime is causal [113]. A spacetime with a
+time function is strongly causal [114]. A globally hyperbolic spacetime without boundary is causally
+simple [115]. The dominant energy condition implies the weak one, and the weak and the strong ones imply
+the null one [116]. Raychaudhuri focusing under the strong energy condition: a unit geodesic
+rotation-free congruence with negative expansion Θ_0 in dimension 4 cannot be continued beyond parameter
+3/|Θ_0|, when G = κT with κ > 0 and T satisfies the strong energy condition [117]. Hawking-type bound:
+under the strong energy condition in dimension 4 the length of a unit geodesic rotation-free integral
+curve with Θ at most C < 0 at the start is at most 3/|C| [118]. Contracting FLRW universe: a time-like
+geodesic through a contracting FLRW with Ricci curvature nonnegative has length at most one Hubble time
+1/h [119]. Focusing with twist: if the expansion obeys Θ' ≤ −(Θ² − b²)/m on `[0, L)` and Θ(0) < −b then
+L ≤ m/(−b − Θ(0)) [120]. The Klein–Gordon field satisfies the null energy condition for every potential,
+while a constant field with negative potential violates the weak energy condition although it satisfies
+the null condition [121]. With a Klein–Gordon source the Ricci curvature of a null vector is κ(dφ k)²,
+nonnegative and zero exactly when dφ k = 0 [122]. The weak energy condition of a Klein–Gordon field is
+exactly 0 ≤ ½|dφ|² + V for a vanishing or spacelike gradient [123]. Dust with ρ ≥ 0 on the FLRW manifold
+satisfies the strong energy condition [124]. The conformal embedding of Minkowski space in Cartesian
+form, axis included: the map (η, p) ↦ (t, x⃗) from the region {|η| < π, p ∈ S³, ω > 0} of ℝ × S³ is a
+bijection onto ℝ × ℝ³, the metric is ω⁻² times the Einstein static universe metric, and the axis r = 0
+is the ordinary point p = (1, 0⃗) [125]. In the null-cone picture of the compactification (a point x embedded as
+(1, B x x, x) in the cone B x x = P⁺P⁻, infinity the set P⁺ = 0), isometries, translations, dilations and special
+conformal transformations preserve the cone form and act on the embedded points as the stated maps of V; the first
+three keep infinity, while a special conformal transformation moves the point at infinity to the finite point b [127]. The induced metric of a level set of a smooth function is defined pointwise, as the metric restricted to the kernel of the differential of the function, and it is nondegenerate wherever the normal is not null [130].
 
 ## Lean References
 
 1. Lightlike/Spacetime/Curvature.lean - `IsCoordMetric`, `christoffel`, `riemann`, `ricci`,
    `scalarCurvature`, `minkowski_flat`, `NondegMetric.coordMetric`
 2. Lightlike/Spacetime/RiemannSymmetry.lean - `IsCoordMetric.riemannLower_pair_symm`,
-   `IsCoordMetric.bianchi_first`
+   `IsCoordMetric.bianchi_first`, `riemannLower_antisymm_last`, `IsCoordMetric.bianchi_first_lower`
 3. Lightlike/Spacetime/ChartChange.lean - `riemann_pullback`, `ricci_pullback`,
    `scalarCurvature_pullback`, `isVacuumSolution_pullback`
 4. Lightlike/Spacetime/Lorentzian.lean - `LorentzianMetric`, `NondegMetric`
 5. Lightlike/Spacetime/Coordinates.lean - `LorentzianMetric.isLorentzianCoordMetric_coordMetric`
-6. Lightlike/Spacetime/Minkowski.lean - `twin_paradox`
+6. Lightlike/Spacetime/Minkowski.lean - `twin_paradox`, `minkowskiForm_isLorentzian`
 7. Lightlike/Spacetime/Connection.lean - `Connection`, `Connection.curvatureAt`, `Connection.riemannLowerAt`,
    `Connection.ricciAt`, `Connection.scalarCurvatureAt`, `Connection.IsMetricCompatible`,
    `Connection.IsLeviCivita`, `Connection.covDerivCurvatureAt`, `Connection.covDerivBilinAt`,
@@ -132,7 +157,7 @@ Anti-de Sitter space is conformal to half of the Einstein static universe: with 
 18. Lightlike/Spacetime/ContractedBianchi.lean - `covR_cyc`, `einstein_div_coord`: the second Bianchi identity in coordinates and its double contraction.
 19. Lightlike/Spacetime/DivergenceFree.lean - `einstein_divergence_free_proved`: the divergence of the Einstein tensor of a Levi-Civita connection vanishes.
 20. Lightlike/Spacetime/OpenCoordMetric.lean - `openMetric`, `openMetric_coordMetric`: a Lorentzian coordinate metric on an open set as a Lorentzian metric on the manifold, and the bridge.
-21. Lightlike/Spacetime/SchwarzschildManifold.lean - `schwarzschildMetric`, `schwarzschild_coordMetric`, `schwarzschild_satisfiesEinstein`, `schwarzschild_ricci_eq_zero`: exterior Schwarzschild on the manifold layer.
+21. Lightlike/Spacetime/SchwarzschildManifold.lean - `schwarzschildMetric`, `schwarzschild_coordMetric`, `schwarzschild_satisfiesEinstein`, `schwarzschild_ricci_eq_zero`, `schwarzschild_exists_vacuum_connection`: exterior Schwarzschild on the manifold layer.
 22. Lightlike/Spacetime/LeviCivitaSmooth.lean - `contMDiffCovariantDerivative_leviCivita`: the Levi-Civita connection of a Lorentzian metric is smooth.
 23. Lightlike/Spacetime/EinsteinEquations.lean - `satisfiesEinstein_iff_ricci`, `satisfiesEinstein_zero_iff_ricci_eq_zero`: the vacuum Einstein equations with a cosmological constant are Ricci proportional to the metric, and Ricci-flat for no cosmological constant.
 24. Lightlike/Spacetime/VolumeMeasure.lean - `volumeMeasure`, `volumeMeasure_chart`, `volumeMeasure_minkowski`: the volume measure of a Lorentzian metric, its chart formula and the Minkowski trust check.
@@ -154,12 +179,12 @@ Anti-de Sitter space is conformal to half of the Einstein static universe: with 
 40. Lightlike/Spacetime/EinsteinTwoDim.lean - `ricci_two_dim`, `einsteinUp_two_dim`, `isEHCritical_two_dim`: in two dimensions the Ricci tensor is half the scalar curvature times the metric, the Einstein tensor vanishes, and every smooth nondegenerate metric is a critical point of the Einstein-Hilbert action without cosmological term.
 41. Lightlike/Spacetime/CoordKilling.lean - `coordField_killing`: a coordinate field along which the metric components are constant is a Killing field of the Levi-Civita connection.
 42. Lightlike/Spacetime/SchwarzschildKilling.lean - `schwarzschild_killing`: the time translation `∂_t` is a Killing field of exterior Schwarzschild.
-43. Lightlike/Spacetime/EnergyConditions.lean - `NullEC`, `WeakEC`, `StrongEC`, `DominantEC`, `dust_energyConditions`, `cosmo_energyConditions`, `scalar_negative_potential_violates_weak`: the pointwise energy conditions of a stress-energy tensor on a Lorentzian vector space and their trust checks.
+43. Lightlike/Spacetime/EnergyConditions.lean - `NullEC`, `WeakEC`, `StrongEC`, `DominantEC`, `dust_energyConditions`, `cosmo_energyConditions`, `scalar_negative_potential_violates_weak`, `fluid_nullEC_iff`, `fluid_strongEC_iff`, `fluid_weakEC_iff`, `fluid_dominantEC_iff`, `em_nullEC`: the pointwise energy conditions of a stress-energy tensor on a Lorentzian vector space and their trust checks.
 44. Lightlike/Spacetime/IsometryKilling.lean - `fderiv_apply_inr_of_id`, `killing_of_isometry_family`, `killing_of_isometry_family_on`: the generator of a one-parameter family of isometries is a Killing field, in coordinates.
-45. Lightlike/Spacetime/EnergyConditionsField.lean - `LorentzianMetric.NullECField`, `LorentzianMetric.fluidField_dominantEC_iff`, `LorentzianMetric.nullECField_iff_ricci`, `LorentzianMetric.strongECField_iff_ricci`, `LorentzianMetric.dominantECField_iff_einstein`: the energy conditions of a stress-energy field on a Lorentzian 4-manifold, the perfect-fluid forms, and the equivalence of the physical and geometric forms under the Einstein equations.
+45. Lightlike/Spacetime/EnergyConditionsField.lean - `LorentzianMetric.NullECField`, `LorentzianMetric.fluidField_dominantEC_iff`, `LorentzianMetric.nullECField_iff_ricci`, `LorentzianMetric.strongECField_iff_ricci`, `LorentzianMetric.dominantECField_iff_einstein`, `LorentzianMetric.weakECField_iff_einstein`, `LorentzianMetric.fluidField_nullEC_iff`, `LorentzianMetric.fluidField_weakEC_iff`, `LorentzianMetric.fluidField_strongEC_iff`, `LorentzianMetric.fluidField_dust`, `LorentzianMetric.scalarField_const_violates_weak`, `LorentzianMetric.emField_nullEC`: the energy conditions of a stress-energy field on a Lorentzian 4-manifold, the perfect-fluid forms, and the equivalence of the physical and geometric forms under the Einstein equations.
 46. Lightlike/Spacetime/EnergyConditionsPhyslib.lean - `fluid_nullEC_iff_physlib`, `fluid_weakEC_iff_physlib`, `fluid_strongEC_iff_physlib`, `fluid_dominantEC_iff_physlib`: for a perfect fluid the tensor energy conditions are Physlib's effective energy conditions on a cosmic fluid at c = 1.
 47. Lightlike/Spacetime/HypersurfaceConstraints.lean - `curvatureAt_linear`, `ricciAt_frame`, `scalarCurvatureAt_frame`, `exists_frame`, `hamiltonian_constraint`, `momentum_constraint`: the Hamiltonian and momentum constraints from the contracted Gauss and Codazzi relations.
-48. Lightlike/Spacetime/EnergyConditionsEM.lean - `exists_frame_of_timelike`, `em_weakEC`, `em_dominantEC`, `em_strongEC_of_eq`, `emT_traceless`: every unit timelike vector starts a Lorentz frame; the electromagnetic field satisfies the weak, dominant and strong energy conditions.
+48. Lightlike/Spacetime/EnergyConditionsEM.lean - `exists_frame_of_timelike`, `em_weakEC`, `em_dominantEC`, `em_strongEC_of_eq`, `emT_traceless`, `em_strongEC_dim`: every unit timelike vector starts a Lorentz frame; the electromagnetic field satisfies the weak, dominant and strong energy conditions.
 49. Lightlike/Spacetime/RiccatiFocusing.lean - `focusing`: the focusing lemma for the Riccati inequality.
 50. Lightlike/Spacetime/RaychaudhuriAlgebra.lean - `Raychaudhuri.raychaudhuri_algebra`: the index computation of the Raychaudhuri identity (fable1).
 51. Lightlike/Spacetime/RaychaudhuriCoord.lean - `covD`, `expansion`, `covDMat`, `shear`, `rotation`, `pd_covD`, `raychaudhuri_coord`, `raychaudhuri_equation`: Raychaudhuri's identity and equation for a geodesic field in coordinates.
@@ -211,7 +236,7 @@ Anti-de Sitter space is conformal to half of the Einstein static universe: with 
 97. Lightlike/Spacetime/FLRWModel.lean - `flrwMetric4`: the FLRW metric on an open interval times the 3-sphere as a Lorentzian metric for the model on four coordinates.
 98. Lightlike/Spacetime/FLRWCoord.lean - `coordMetric_flrw`: its coordinate components in every chart are the coordinate FLRW metric with curvature one.
 99. Lightlike/Spacetime/Corners/EinsteinChart.lean - `einsteinEq_iff_chartW`: the Einstein equations with a source are the coordinate equations in every chart, for any model with corners.
-100. Lightlike/Spacetime/FLRWSphereEinstein.lean - `flrwSphere_einsteinEq_leviCivita_iff_friedmann`, `flrwFluid`: the Einstein equations with the comoving perfect fluid on the interval times the 3-sphere are Friedmann's equations with curvature one.
+100. Lightlike/Spacetime/FLRWSphereEinstein.lean - `flrwSphere_einsteinEq_leviCivita_iff_friedmann`, `flrwFluid`, `closedDeSitter_einsteinEq`, `closedDeSitter_wrong_sign`: the Einstein equations with the comoving perfect fluid on the interval times the 3-sphere are Friedmann's equations with curvature one.
 101. Lightlike/Spacetime/Corners/Bridge.lean - `NondegMetric.coordMetricW_eq_coordMetric`, `mfderivWithin_range_modelWithCornersSelf`, `chartTrivW_eq_chartTriv`, `tTrivW_eq_tTriv`, `coordFieldW_eq_coordField`, `hatW_eq_hat`, `mfderiv_extChartAt_symm_eqW_bridge`: the Corners layer agrees with the boundaryless chart layer for the model `𝓘(ℝ, Fin n → ℝ)`.
 102. Lightlike/Spacetime/AdSCompactification.lean - `ads_eq_conformal_esu`, `bijOn_tan_ads`, `cos_eq_zero_ads_boundary`, `ads_boundary_metric`: anti-de Sitter space is conformal to half of the Einstein static universe, with a timelike conformal boundary.
 103. Lightlike/Spacetime/KillingRigidityCoord.lean - `covCo`, `covCo2`, `covCo2_sub_covCo2`, `covCo2_antisymm`, `covCo2_killing`, `pd_pd_killing`, `rigVec`, `rigVec_eq_zero_of_segment`, `rigVec_eq_zero_of_isPreconnected`, `eq_of_rigVec_eq`: the second derivatives of a Killing field in coordinates, and Killing rigidity.
@@ -224,6 +249,38 @@ Anti-de Sitter space is conformal to half of the Einstein static universe: with 
 110. Lightlike/Spacetime/NullFrameExpansion.lean - `Penrose.NullFrame`, `Penrose.NullFrame.trace_eq`, `metricForm`,
     `trappedExp_cov_null`, `trappedExp_expansionM_eq`
 111. Lightlike/Spacetime/MinkowskiCompactificationTests.lean - `not_conformal_time_rescaling`, `conformal_time_rescaling_one`
+112. Lightlike/Spacetime/CausalLadder/LimitCurve.lean - `Causal.exists_limit_curve`
+113. Lightlike/Spacetime/Causal/BasicRelations.lean - `Causal.causal_of_stronglyCausal`
+114. Lightlike/Spacetime/CausalLadder/StrongCausality.lean -
+     `Causal.isStronglyCausal_of_isStablyCausal_aux`
+115. Lightlike/Spacetime/CausalLadder/GlobHypSimple.lean -
+     `Causal.isCausallySimple_of_isGloballyHyperbolic_boundaryless`
+116. Lightlike/Spacetime/EnergyConditionsImplications.lean - `weakEC_of_dominantEC`, `nullEC_of_weakEC`,
+     `nullEC_of_strongEC`, `nullEC_of_dominantEC`
+117. Lightlike/Spacetime/Raychaudhuri/FocusingSEC.lean - `raychaudhuri_focusing_strongEC`
+118. Lightlike/Spacetime/Raychaudhuri/HawkingSEC.lean - `hawking_bound_strongEC`
+119. Lightlike/Spacetime/Raychaudhuri/HawkingFLRW.lean - `hawking_bound_flrw`
+120. Lightlike/Spacetime/Raychaudhuri/TwistFocusing.lean - `focusing_twisted`
+121. Lightlike/Spacetime/ScalarEnergyConditions/KleinGordonNEC.lean - `scalar_nullEC`,
+     `scalarField_nullECField`, `scalarField_const_nullEC_not_weakEC`
+122. Lightlike/Spacetime/ScalarEnergyConditions/KleinGordonRicci.lean -
+     `scalarField_ricciAt_null_nonneg`, `scalarField_ricciAt_null_eq_zero_iff`
+123. Lightlike/Spacetime/ScalarEnergyConditions/ScalarWeakECSharp.lean - `scalar_weakEC_iff`
+124. Lightlike/Spacetime/Raychaudhuri/DustField.lean - `flrwManifold_dust_strongEC`
+125. Lightlike/Spacetime/MinkowskiCompactificationAxis.lean - `minkowski_eq_conformal_esu_cartesian`,
+     `bijOn_cartMap`, `cartOmega_axis`
+126. Lightlike/Spacetime/MinkowskiCompactificationAction.lean - `thetaDil`, `thetaDil_continuous`, `thetaDil_pi_div_two`, `tan_thetaDil`, `dilComp`, `dilComp_continuous`, `dilComp_mem`, `dilComp_compT`, `dilComp_compR`, `compOmega_dilComp_eq_zero_iff`: the dilation of Minkowski space extends continuously to the closed region of the Einstein static universe, acts there as the dilation and preserves null infinity, in the null angles of the compactification.
+127. Lightlike/Spacetime/MinkowskiConformalAction.lean - `coneForm`, `dirac`, `coneForm_dirac`, `isoAct`, `coneForm_isoAct`,
+    `isoAct_dirac`, `isoAct_fst`, `transAct`, `coneForm_transAct`, `transAct_dirac`, `transAct_fst`, `dilAct`, `coneForm_dilAct`,
+    `dilAct_dirac`, `dilAct_fst`, `specAct`, `coneForm_specAct`, `specAct_dirac`, `specAct_dirac_smul`, `specAct_infinity`,
+    `specAct_infinity_fst_ne`
+128. Lightlike/Spacetime/Corners/ChartAgreement.lean - `riemann_coord_compW`, `ricciAt_coordW`, `scalarCurvatureAt_coordW`: in every chart the Riemann, Ricci and scalar curvature of a Levi-Civita connection are the coordinate ones, for any model with corners.
+129. Lightlike/Spacetime/EHManifold/ManifoldStationary.lean - `IsEHStationary`, `isEHStationary_iff`: a metric is stationary for the Einstein–Hilbert action under compactly supported perturbations exactly when it satisfies the vacuum Einstein equations.
+130. Lightlike/Spacetime/HypersurfaceInduced.lean - `Hypersurface.levelTangent`, `Hypersurface.inducedMetric`, `Hypersurface.inducedMetric_separating_of_isUnitNormal`, `Hypersurface.inducedMetric_separating_of_nonnull`: the induced metric of a level set, defined pointwise as the metric restricted to the kernel of the differential, and nondegenerate where the normal is not null.
+131. Lightlike/Spacetime/Corners/CurvatureSymmetries.lean - `curvatureAt_apply_eventuallyW`, `bianchi_first_provedW`, `riemannLowerAt_pair_symmW`, `ricciAt_symm_provedW`: the curvature through fields smooth near the point, the first Bianchi identity, the pair symmetry and the symmetry of the Ricci tensor, for any model with corners.
+132. Lightlike/Spacetime/Corners/LeviCivitaSmooth.lean - `contMDiffAt_leviCivitaW`: the covariant derivative of the Levi-Civita connection is smooth on a manifold modelled with corners on R^n.
+133. Lightlike/Spacetime/Corners/BoundaryExample.lean - `Seg`, `IB`, `segMetric`, `segment_identities`, `segment_exists_leviCivita`: the closed unit segment as a manifold with boundary with its metric, and the curvature identities of the Corners layer on it.
+134. Lightlike/Spacetime/Corners/TwoOrigins.lean - `TwoOrigins`, `not_t2_twoOrigins`, `twoOriginsMetric`, `twoOrigins_identities`, `twoOrigins_exists_leviCivita`: the line with two origins, a non-Hausdorff manifold, with its metric and the curvature identities of the Corners layer on it.
 
 ## References
 

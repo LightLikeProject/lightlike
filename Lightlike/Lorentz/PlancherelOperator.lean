@@ -48,8 +48,8 @@ kernel.
 
 * I. M. Gel'fand, M. I. Graev, N. Ya. Vilenkin, *Generalized Functions*, Vol. 5 (Academic Press,
   1966), Ch. IV (the operators `T(f)` of the principal series and their kernels).
-* A. Perez, C. Rovelli, *Spin foam model for Lorentzian general relativity*, arXiv:gr-qc/0011037
-  (2000), App. A, (A12)–(A14).
+* A. Perez, C. Rovelli, *3+1 spinfoam model of quantum gravity with spacelike and timelike
+  components*, arXiv:gr-qc/0011037 (2000), App. A, (A12)–(A14).
 -/
 
 @[expose] public section

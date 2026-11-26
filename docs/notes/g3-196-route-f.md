@@ -124,6 +124,68 @@ computed (the partial trace identity only gives the top and bottom ones).
 Next Lean step for (B): the shifted family `e ∘ (· + s)` is `IsTL`, the generalised partial trace identity,
 and `A² = c A`.  Next step for (A): naturality lemmas of `cup` and `cap` against `e_j`.
 
+## F3 status: the vertex norm is a scalar, and its value (MEASURED)
+
+Lean (`Natural`, `Reduction`, `Vertex`): cups and caps slide through the generators; `cap_m z cup_{m'} ∈ C(n-1)` for
+`z ∈ C(n+1)` (`cap_mul_cup_mem`); the nested junction sandwich `nestCap l i · Q · nestCup l i ∈ C(N - 2i)`
+(`nestCap_mul_nestCup_mem`); and `vertex_norm`: `p_c · nestCap · (p_a p_b') · nestCup · p_c = κ p_c` for some scalar
+`κ`, `c = a + b - 2i`, `l = a - i` (needs `d_j ≠ 0` for `j < c`).
+MEASURED value of `κ` (numpy, matrices of cups, caps and projectors on `2^n`, random complex `q`, nine cases with
+`a, b ≤ 3`, `i ≤ min(a,b)`): `κ(a,b,i) = θ(a,b,c) / Δ_c` exactly, with Kauffman–Lins' signed `θ` and
+`Δ_c = (-1)^c [c+1]`, `[n] = (q^n - q^{-n})/(q - q^{-1})` (i.e. `A² = q`, loop value `-q - q^{-1}`); the
+model's conventions (`cup = |01⟩ - q|10⟩`, `cap⟨01| = -q⁻¹, cap⟨10| = 1`) agree with Kauffman–Lins.
+Next: prove this value (an induction on `b` through the Jones–Wenzl recursion; the naive recursion does not
+close because `P'_b` does not commute with the new generator, so it needs the partial-trace identity of the vertex),
+then the fusion identity `p_a p_b = Σ_c (Δ_c/θ(a,b,c)) V V'`, then recoupling and the pentagon.
+
+## F3 status (25 Nov 2026): the fusion identity is proved (Lean, `TemperleyLieb/FusionIdentity.lean`)
+
+`fusion_identity`: for `a, b ≥ 1`, `d_j ≠ 0` and `q^{2j} ≠ 1` for `1 ≤ j ≤ a + b + 1` (characteristic zero),
+`Q(a,b) = Σ_{i ≤ min(a,b)} E_i` with `E_i = κ_i⁻¹ V_i W_i` the channel idempotents (`W_i V_i = κ_i p`, `κ_i = kapRec`
+non-zero, `E_i E_j = 0` from `channel_orth`). Proof by rank count (MEASURED in Lean, no `sorry`, axioms
+`propext, Classical.choice, Quot.sound`): in the window of the first `a + b` strands, `rank Q ≤ (a+1)(b+1)` (sorted
+coordinates of the common kernel of the block generators, `Rank.lean`) and `rank E_i ≥ a + b - 2i + 1` (the
+`q`-Dicke vectors `Σ q^{pos σ}|σ⟩` are independent, fixed by `p`, and sent to independent vectors by `V_i`); the
+dimensions sum to `(a+1)(b+1)`, so `complete_of_rank` (a trace argument) gives equality on the window, and tail
+equivariance (`Eqv`, `iota`) extends it to the whole model. Next: recoupling coefficients, the abstract pentagon,
+and the F4 identification with `qSixJ`.
+
+## F3/F4 status (25 Nov 2026, later): trees, one-dimensionality and the recoupling coefficients (Lean)
+
+`Iterated.lean`, `Shift.lean`, `Recoupling.lean`. Iterated fusion: `Q(a,b) p_c = Σ_e Σ_d treeL e d` and `p_a Q(b,c) =
+Σ_f Σ_d' treeR f d'` (the second by the translation homomorphism `sh`, which sends `e_j`, cups, caps and projectors to
+their translates), the same projector `P3`; both families are orthogonal idempotents (`treeL_mul`, `treeR_mul`).
+Expansion lemma `cup_mul_cap_mem` (`cup_m z cap_m ∈ C(n+2)` for `z ∈ C n`; the middle case is
+`cup_{l+1} e_l cap_{l+1} = e_{l+1} e_l e_{l+2} e_{l+1}`, proved from the zigzags), hence `E_i ∈ C(a+b-1)` and
+`treeL, treeR ∈ C(N-1)`. One-dimensionality: `treeL e d · Y · treeL e d ∈ k · treeL e d` for every `Y ∈ C(N-1)` (the
+two-level sandwich `W_d W_e Y V_e V_d` is a scalar times a projector by `absorb`). Recoupling coefficients
+`recoup e d f d'` := that scalar for `Y = treeR f d'`; `recoup_row_sum`: `Σ_{f,d'} recoup = 1`.
+Also proved: the exact rank `D+1` of every tree idempotent on the window (trace of a conjugated idempotent) and
+`recoup = 0` unless the total channels `D` agree (`recoup_eq_zero_of_ne`, from the two-sided minimality and the ranks).
+Both readings of the coefficient agree (`recoupR_eq`) and the column sums are `1` too (`recoup_col_sum`): the matrix of
+squared 6j symbols is doubly stochastic and block diagonal in the total channel `D`.
+Open before the pentagon: (i) the signed matrix: expansion of `U_R` in the basis `U_e` of the multiplicity space
+(spanning of `Hom_D`, a dimension count of order a thousand lines), because `recoup` only sees squares;
+(ii) the matrix-unit identification giving `treeR = Σ U recoup U'` and the orthogonality relations; (iii) the
+pentagon for four blocks; (iv) the dictionary with `qSixJ` (Tet formula) and the truncation at `r`.
+
+### Signed Gram pairing: proved (25 Nov 2026, `TemperleyLieb/Gram.lean`)
+
+`gram_scalar`: for equal total channels `D`, `(W_d W_e)(sh V_f · V_{d'}) = g · p_D` for a scalar `g` (the Gram pairing of
+a first-bracketing and a second-bracketing tree vector). Proof: the product is `p_D · gramMid · p_D`, and `gramMid`, a word
+`caps_d · [Q' p_A] · caps_e · Z · cups_f · [J Q''] · cups_{d'}` with `e + d = f + d'` and `Z ∈ C(N-1)`, is in `C(D-1)`
+because caps and cups pair from the middle outward even when `e ≠ f` (`balanced_le`, `balanced_ge`, built on
+`nestCap_mul_nestCup_mem_gen`: two junctions, equal count); then `jwAt_sandwich` makes `p_D · C(D-1) · p_D` a scalar.
+Remaining before the pentagon: (i) DONE (`GramVanish.lean`, `gram_vanish`: the pairing vanishes for `D ≠ D'`; eight unbalanced three-layer reductions plus absorption and `cap_m p_D = 0`). The proof idea was: after the pairing of caps and
+cups the unbalanced word is `p_{D1} · caps_k · Z'' · p_{D2}` (more caps) with `Z'' ∈ C(D2-1)`, so `Z'' p_{D2} = ε p_{D2}`
+(`absorb`) and `cap_m p_{D2} = 0` (from `e_m p = 0` and `cap_m cup_m = δ`); symmetrically `p_{D1} Z'' cups_k` with
+`p_{D1} cup_m = 0`. This needs the three-layer reductions with leftovers (`balanced_le/ge` for unequal totals, six
+sub-cases, ~500 lines); an alternative is the `U_q(sl_2)` action on the model (`E`, `F` commute with `e_i`, cups, caps; the
+highest-weight vector of `range p_{D2}` is sent to a vector of too high weight), ~300 lines for the action plus the
+identification of `range p_D` with the module generated by `|1…1⟩`; (ii) the expansion `U_R(f) = Σ_e g/κ U_L(e)` in the
+multiplicity space and the relation of `g` to `recoup` (`recoup = c · g · g'`); (iii) the same for four blocks (five
+trees) and the pentagon for the matrix `g`; (iv) the dictionary of `g` with `qSixJ` (Tet) and the truncation at `r`.
+
 ## Decision
 
 No route in this note is a row-sized step. The two structural routes (F, E) are milestone-sized
@@ -132,3 +194,14 @@ No route in this note is a row-sized step. The two structural routes (F, E) are 
 at generic parameter together with a numerical check that the tetrahedral net of KL equals
 `qSixJ` for `r = 5, 7` (the library's `scripts/tv_check.py: q6j` against an exact evaluation of the
 net by matching counts); this is the only test of the identification F4 that is cheap.
+
+## Status 25 Nov 2026: (iii) done, (iv) open
+
+(iii) `Lightlike/TemperleyLieb/Pentagon.lean`: five bracketings `TA..TE` of four blocks; each arrow of the
+pentagon is one `expansion_range` (guarded coefficient `Fc`), multiplied by a fixed operator; `Vop_comm_sh`
+and `sh_sh` (in `ShiftComm.lean`) move the vertex past a translated operator. `pentagon` equates the two
+paths by pairing with `ULd4` (orthogonality `ortho4`). It is the pentagon for `Fc`, i.e. for
+`gramCoef / (κ κ)`, in the multiplicity basis.
+
+(iv) open: identify `Fc` with `qSixJ` (the Tet dictionary: truncation at `r`, signs, κ-normalisation), then
+`qBiedenharnElliott_all` follows from `pentagon` after matching the sum shapes. Estimate (PROXY): 800+ lines.

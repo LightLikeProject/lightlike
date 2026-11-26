@@ -5,7 +5,7 @@
 * `IsGeodesicCov cov γ J`: `∇_{γ'} γ' = 0`, written through a smooth local extension `X` of `γ'` (a connection acts on
   vector fields; there is no covariant derivative along a curve in Mathlib's `CovariantDerivative`, checked).
 * `isGeodesicCurveOn_of_isGeodesicCov`: for the Levi-Civita connection of a Lorentzian metric, an intrinsic geodesic is a
-  chart-wise geodesic (`IsGeodesicCurveOn`, `Rows/G1_012/Defs.lean`). Proof: `hat_cov` (components of `∇_X X` are
+  chart-wise geodesic (`IsGeodesicCurveOn`, `Spacetime/PenroseSingularity/Defs.lean`). Proof: `hat_cov` (components of `∇_X X` are
   `D X̂ (X) + Γ̂(X̂, X̂)`), `gamHat_coord` (Γ̂ is the Christoffel symbol of the coordinate metric), the chain rules
   `hasDerivAt_chart_curve`, `hasDerivAt_hat_curve`, and `hv_eq_mfderiv` (components of a vector are its image under the
   derivative of the chart).
