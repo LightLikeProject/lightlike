@@ -1301,6 +1301,21 @@ milestones:
         kind: review
         text: "The statement of the Ponzano–Regge invariance (docs/notes/pl7a-ponzano-regge.md and the PLInvariance docstring) says exactly which invariance up to PL homeomorphism follows, and matches the declarations of m2; the prose is not a Lean theorem, so a reviewer checks it"
         review_evidence: null
+      - id: t1a
+        kind: piece
+        text: "Any two triangulations of one PL polyhedron have a common stellar subdivision, and two PL homeomorphic simplicial complexes have combinatorially isomorphic stellar subdivisions (Adiprasito-Pak 2024, arXiv:2404.05930, Theorems 1.1 and 1.3)"
+        decls: []
+        hint: "Search: Mathlib and Physlib have no stellar subdivisions or PL topology; the library has StellarStep and StellarEquiv (welds allowed), Newman's theorem (SComplex.StellarEquiv.of_plHomeomorphic), common subdivisions of geometric complexes (IsGeom.exists_common_subdivision, not stellar) and barycentric subdivision, all reused."
+      - id: t1b
+        kind: piece
+        text: "A stellar subdivision of a closed combinatorial 3-manifold at a tetrahedron or a triangle is a sequence of forward Pachner moves (2-3 and 1-4 only); at an edge the complex and its subdivision have a common forward descendant, and no edge subdivision is itself a forward descendant"
+        decls: [Lightlike.PR.ofComplex3_move14_eq_starAt, Lightlike.PR.ForwardMoves.exists_starAt_triangle, Lightlike.PR.commonForward_starAt_edge, Lightlike.PR.not_forwardMoves_starAt_edge]
+        hint: "Edge subdivisions are not forward: forward moves only add edges (Lightlike.PR.ForwardMoves.edges_subset) and the subdivision at an edge deletes it (Lightlike.PR.not_forwardMoves_starAt_edge, proved). Search: Mathlib, Physlib and Tau Ceti have no Pachner moves or stellar subdivisions; reused move14, move23, edges_move23, edges_move14, CommonForward and SComplex.starAt from the library."
+      - id: t1c
+        kind: piece
+        text: "PachnerForwardHyp is proven: any two triangulations of one PL manifold have a common forward descendant under forward-only moves (stellar-subdivision route), so the triangulation independence of the regularised Ponzano-Regge amplitude is unconditional on the PL side"
+        decls: []
+        hint: "Needs, besides t1a and t1b, that CommonForward is invariant under relabelling and transitive (local confluence of forward moves); forward moves only add edges, so a common descendant holds the edges of both. Search: Main.lean states PachnerForwardHyp as a hypothesis, NonVacuity.lean shows it satisfiable, mapComplex3 relabels; nothing in Mathlib, Physlib or Tau Ceti."
       - id: c1
         kind: catalogue
         text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
