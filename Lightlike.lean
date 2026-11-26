@@ -1212,6 +1212,7 @@ import Lightlike.PonzanoRegge.SphereRecognition
 import Lightlike.PonzanoRegge.TriangulationIndependence.Moves
 import Lightlike.PonzanoRegge.TriangulationIndependence.Values
 import Lightlike.PonzanoRegge.TriangulationIndependence.Main
+import Lightlike.PonzanoRegge.TriangulationIndependence.StellarForward
 import Lightlike.PonzanoRegge.TriangulationIndependence.NonVacuity
 import Lightlike.PonzanoRegge.TriangulationIndependence.TreeConnected
 import Lightlike.PonzanoRegge.TriangulationIndependence.Cocycle
@@ -2687,6 +2688,8 @@ import Lightlike.Cosmology.BianchiClassification.Test
 import Lightlike.Cosmology.CosmicNoHair.Test
 import Lightlike.Spacetime.WaveEquationGreenOperators.Test1
 import Lightlike.Asymptotics.AiryFunctions.Test
+import Lightlike.Asymptotics.EulerPrimitive
+import Lightlike.Asymptotics.EulerPrimitiveTests
 import Lightlike.GFT.DualPseudoManifold.Check
 import Lightlike.PonzanoRegge.TriangulationIndependence.Tests.ExchangeSearch
 import Lightlike.NCG.DiracConverse
