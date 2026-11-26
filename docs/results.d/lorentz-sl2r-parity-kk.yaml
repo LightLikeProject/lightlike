@@ -1,4 +1,4 @@
-- id: LL-XXXX-d
+- id: LL-XXXX-e
   title: "Components of mixed parity vanish: for a continuous complex function f on SL(2,R), the (m,n)-th Fourier coefficient of (alpha, theta) to f(k_alpha a(xi) k_theta), the integral over the angles in (0,1]^2 (alpha = 2 pi x_0, theta = 2 pi x_1) of e^(-2 pi i (m x_0 + n x_1)) f(k_alpha a(xi) k_theta), is zero for every xi when m - n is odd"
   area: Lorentz
   file: Lightlike/Lorentz/SL2RPlancherel/ParityKK.lean

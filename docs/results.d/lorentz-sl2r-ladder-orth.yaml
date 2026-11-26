@@ -1,4 +1,4 @@
-- id: LL-XXXX-e
+- id: LL-XXXX-d
   title: "A ladder image is orthogonal to the kernel of the adjoint ladder: for real l, r, a C^1 function G on (0, infinity) with ladDown (l+1) r G = 0 on (0, infinity), and F of class C^1 on (0, infinity) vanishing for large xi with sinh(xi) F(xi) conj(G(xi)) tending to 0 at 0, the integral over (0, infinity) of (F' - (l coth xi + r / sinh xi) F) conj(G) sinh xi is zero, whenever it converges"
   area: Lorentz
   file: Lightlike/Lorentz/SL2RPlancherel/LadderOrth.lean
