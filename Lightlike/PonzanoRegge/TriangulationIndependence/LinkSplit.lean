@@ -179,4 +179,86 @@ theorem StackData.link_stackAll_star {K : Complex3 V} {v : V} {g : Finset V → 
       simp only [mem_insert, mem_erase]
       grind
 
+
+/-! ## Flipping the original link edges -/
+
+section Flip
+
+variable {K : Complex3 V} {v : V} {g : Finset V → V}
+
+/-- The data of the flips: for each original link edge `e ∈ Ed`, its two link triangles
+`opp e = (τ, τ')`, with fresh labels `a e = g (v ∪ τ)`, `b e = g (v ∪ τ')`. -/
+structure FlipData (K : Complex3 V) (v : V) (g : Finset V → V) (Ed : Finset (Finset V))
+    (opp : Finset V → Finset V × Finset V) : Prop where
+  stack : StackData K (starTets K v) g
+  hv : v ∈ K.verts
+  closed : IsClosed2 (K.link v)
+  edge : ∀ e ∈ Ed, e ∈ edges2 (K.link v)
+  fst : ∀ e ∈ Ed, (opp e).1 ∈ K.link v ∧ e ⊆ (opp e).1
+  snd : ∀ e ∈ Ed, (opp e).2 ∈ K.link v ∧ e ⊆ (opp e).2
+  ne : ∀ e ∈ Ed, (opp e).1 ≠ (opp e).2
+
+/-- The fresh label of the first link triangle at `e`. -/
+def flipA (v : V) (g : Finset V → V) (opp : Finset V → Finset V × Finset V) (e : Finset V) : V :=
+  g (insert v (opp e).1)
+
+/-- The fresh label of the second link triangle at `e`. -/
+def flipB (v : V) (g : Finset V → V) (opp : Finset V → Finset V × Finset V) (e : Finset V) : V :=
+  g (insert v (opp e).2)
+
+/-- The two stacked tetrahedra through `v ∪ e`, removed by the flip of `e`. -/
+def flipRemoved (v : V) (g : Finset V → V) (opp : Finset V → Finset V × Finset V)
+    (e : Finset V) : Finset (Finset V) :=
+  {insert v (insert (flipA v g opp e) e), insert v (insert (flipB v g opp e) e)}
+
+/-- The three tetrahedra created by the flip of `e`: `e ∪ {a, b}` and `{v, x, a, b}`, `x ∈ e`. -/
+def flipAdded (v : V) (g : Finset V → V) (opp : Finset V → Finset V × Finset V)
+    (e : Finset V) : Finset (Finset V) :=
+  insert (insert (flipA v g opp e) (insert (flipB v g opp e) e))
+    (e.image fun x => insert v (insert x {flipA v g opp e, flipB v g opp e}))
+
+/-- **The star of `v` stacked and the edges `Ed` of its original link flipped.** -/
+def flipAll (K : Complex3 V) (v : V) (g : Finset V → V) (Ed : Finset (Finset V))
+    (opp : Finset V → Finset V × Finset V) : Complex3 V where
+  tets := (((stackAll K (starTets K v) g).tets \ Ed.biUnion (flipRemoved v g opp)) ∪
+    Ed.biUnion (flipAdded v g opp)).filter (#· = 4)
+  card_eq _ h := (mem_filter.1 h).2
+
+
+namespace FlipData
+
+variable {Ed : Finset (Finset V)} {opp : Finset V → Finset V × Finset V}
+variable (h : FlipData K v g Ed opp)
+include h
+
+omit h in
+lemma star_mem {τ : Finset V} (hτ : τ ∈ K.link v) : insert v τ ∈ starTets K v :=
+  mem_filter.2 ⟨(Complex3.mem_link.1 hτ).2, mem_insert_self v τ⟩
+
+lemma a_fresh {e : Finset V} (he : e ∈ Ed) : flipA v g opp e ∉ K.verts :=
+  h.stack.fresh _ (star_mem (h.fst e he).1)
+
+lemma b_fresh {e : Finset V} (he : e ∈ Ed) : flipB v g opp e ∉ K.verts :=
+  h.stack.fresh _ (star_mem (h.snd e he).1)
+
+lemma a_ne_b {e : Finset V} (he : e ∈ Ed) : flipA v g opp e ≠ flipB v g opp e := fun hab => by
+  have := h.stack.inj _ (star_mem (h.fst e he).1) _ (star_mem (h.snd e he).1) hab
+  exact h.ne e he (insert_left_inj (Complex3.mem_link.1 (h.fst e he).1).1
+    (Complex3.mem_link.1 (h.snd e he).1).1 this)
+
+lemma notMem_of_fresh {x : V} (hx : x ∉ K.verts) {e : Finset V} (he : e ∈ Ed) : x ∉ e := fun hxe =>
+  hx (mem_biUnion.2 ⟨_, (Complex3.mem_link.1 (h.fst e he).1).2,
+    mem_insert_of_mem ((h.fst e he).2 hxe)⟩)
+
+lemma v_notMem {e : Finset V} (he : e ∈ Ed) : v ∉ e := fun hve =>
+  (Complex3.mem_link.1 (h.fst e he).1).1 ((h.fst e he).2 hve)
+
+lemma ne_v_of_fresh {x : V} (hx : x ∉ K.verts) : x ≠ v := fun e => hx (e ▸ h.hv)
+
+lemma card_e {e : Finset V} (he : e ∈ Ed) : #e = 2 := (mem_edges2.1 (h.edge e he)).choose_spec.2.2
+
+end FlipData
+
+end Flip
+
 end Lightlike.PR
