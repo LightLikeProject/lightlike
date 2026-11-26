@@ -194,7 +194,7 @@ lemma exists_ne_zero_vec : ∃ v : V, v ≠ 0 := by
 theorem sphereEigenspace_eq_bot {lam : ℝ}
     (hnot : ¬ ∃ k : ℕ, lam = ((k + 1 : ℕ) : ℝ) ∨ lam = -((k + 1 : ℕ) : ℝ)) :
     SphereEigenspace ρ lam = ⊥ := by
-  obtain ⟨v, hv⟩ := exists_ne_zero_vec (V := V)
+  obtain ⟨v, hv⟩ := exists_ne_zero_vec (V := V) hV
   have h : ChartEigen ρ lam = ⊥ := by
     refine chartEigen_eq_bot ρ hv hV fun k hk => ⟨fun h => hnot ⟨k - 1, Or.inl ?_⟩, fun h => hnot ⟨k - 1, Or.inr ?_⟩⟩
     · rw [h]; congr 1; omega
@@ -205,7 +205,7 @@ theorem sphereEigenspace_eq_bot {lam : ℝ}
 have real dimension `4 (k+1)`, i.e. complex multiplicity `2 (k+1)`. -/
 theorem sphereEigenspace_finrank (k : ℕ) {ε : ℝ} (hε : ε * ε = 1) :
     Module.finrank ℝ (SphereEigenspace ρ (ε * ((k + 1 : ℕ) : ℝ))) = 4 * (k + 1) := by
-  obtain ⟨v, hv⟩ := exists_ne_zero_vec (V := V)
+  obtain ⟨v, hv⟩ := exists_ne_zero_vec (V := V) hV
   have hlam : ε * ((k + 1 : ℕ) : ℝ) = ((k + 1 : ℕ) : ℝ) ∨ ε * ((k + 1 : ℕ) : ℝ) = -((k + 1 : ℕ) : ℝ) := by
     rcases mul_self_eq_one_iff.mp hε with h | h
     · left; rw [h]; ring
@@ -229,7 +229,7 @@ theorem sphereEigenspace_finrank (k : ℕ) {ε : ℝ} (hε : ε * ε = 1) :
       simp [hV]
     omega
 
-/-- **The Dirac spectrum of the unit 2-sphere** (`GE5`, trust check).  For a Clifford module `V` of real dimension `4`:
+/-- **The Dirac spectrum of the unit 2-sphere** (trust check).  For a Clifford module `V` of real dimension `4`:
 a smooth spinor field with `D f = λ f` exists exactly for `λ = ±(k+1)`, `k ∈ ℕ`, and these eigenvalues have real
 multiplicity `4 (k+1)`, i.e. complex multiplicity `2 (k+1)`. -/
 theorem sphere_spectrum (lam : ℝ) :
