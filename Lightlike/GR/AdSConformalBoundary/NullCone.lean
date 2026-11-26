@@ -11,14 +11,14 @@ the projectivised null cone, which is the circle times the sphere: a boundary po
 
 * `adsEta`, `adsSq`, `adsSq_mulVec`: the form `η'` and its square, preserved by `Λ`;
 * `adsNullVec`, `adsSq_adsNullVec`: the vector `(cos τ, sin τ, ω)` is null when `|ω| = 1`;
-* `adsFactor`, `adsFactor_pos`: `ρ = √((ΛX)₀² + (ΛX)₁²)` is positive;
+* `adsNullFactor`, `adsNullFactor_pos`: `ρ = √((ΛX)₀² + (ΛX)₁²)` is positive;
 * `adsAngle`, `adsDir`: `τ'` and `ω'` with `Λ X = ρ X'` (`mulVec_adsNullVec_eq`) and `|ω'| = 1` (`sum_sq_adsDir`).
 
 This is the boundary of `AdS₄` as the circle times the sphere (no universal cover: the angle is taken modulo `2π`).
 The action on pairs, its group law and the conformality are the next layers.
 
 Check on a concrete matrix (`adsBoost`, the boost in the `(X₀, X₂)` plane with `cosh = 5/4`, `sinh = 3/4`): it satisfies
-`Λᵀ η' Λ = η'` (`adsBoost_lorentz`) and its factor on `τ = 0`, `ω = e₁` is `2` (`adsFactor_adsBoost_zero`).
+`Λᵀ η' Λ = η'` (`adsBoost_lorentz`) and its factor on `τ = 0`, `ω = e₁` is `2` (`adsNullFactor_adsBoost_zero`).
 -/
 
 open Matrix
@@ -69,13 +69,13 @@ theorem mulVec_eq_zero {Λ : Matrix (Fin 5) (Fin 5) ℝ} (hΛ : Λᵀ * adsEta *
     _ = 0 := by rw [← mulVec_mulVec, h, mulVec_zero]
 
 /-- The factor `ρ`: the length of the first two components of `Λ X`. -/
-def adsFactor (Λ : Matrix (Fin 5) (Fin 5) ℝ) (τ : ℝ) (ω : Fin 3 → ℝ) : ℝ :=
+def adsNullFactor (Λ : Matrix (Fin 5) (Fin 5) ℝ) (τ : ℝ) (ω : Fin 3 → ℝ) : ℝ :=
   Real.sqrt ((Λ *ᵥ adsNullVec τ ω) 0 ^ 2 + (Λ *ᵥ adsNullVec τ ω) 1 ^ 2)
 
 /-- The factor `ρ` is positive. -/
-theorem adsFactor_pos {Λ : Matrix (Fin 5) (Fin 5) ℝ} (hΛ : Λᵀ * adsEta * Λ = adsEta) (τ : ℝ)
-    {ω : Fin 3 → ℝ} (hω : ∑ i, ω i ^ 2 = 1) : 0 < adsFactor Λ τ ω := by
-  unfold adsFactor
+theorem adsNullFactor_pos {Λ : Matrix (Fin 5) (Fin 5) ℝ} (hΛ : Λᵀ * adsEta * Λ = adsEta) (τ : ℝ)
+    {ω : Fin 3 → ℝ} (hω : ∑ i, ω i ^ 2 = 1) : 0 < adsNullFactor Λ τ ω := by
+  unfold adsNullFactor
   apply Real.sqrt_pos.mpr
   by_contra hle
   push Not at hle
@@ -101,41 +101,41 @@ def adsAngle (Λ : Matrix (Fin 5) (Fin 5) ℝ) (τ : ℝ) (ω : Fin 3 → ℝ) :
 
 /-- The direction `ω'` of the image: the last three components of `Λ X` over `ρ`. -/
 def adsDir (Λ : Matrix (Fin 5) (Fin 5) ℝ) (τ : ℝ) (ω : Fin 3 → ℝ) : Fin 3 → ℝ :=
-  fun i => (Λ *ᵥ adsNullVec τ ω) i.succ.succ / adsFactor Λ τ ω
+  fun i => (Λ *ᵥ adsNullVec τ ω) i.succ.succ / adsNullFactor Λ τ ω
 
-theorem adsFactor_eq_norm (Λ : Matrix (Fin 5) (Fin 5) ℝ) (τ : ℝ) (ω : Fin 3 → ℝ) :
-    ‖(⟨(Λ *ᵥ adsNullVec τ ω) 0, (Λ *ᵥ adsNullVec τ ω) 1⟩ : ℂ)‖ = adsFactor Λ τ ω := by
-  rw [Complex.norm_def, Complex.normSq_apply, adsFactor]
+theorem adsNullFactor_eq_norm (Λ : Matrix (Fin 5) (Fin 5) ℝ) (τ : ℝ) (ω : Fin 3 → ℝ) :
+    ‖(⟨(Λ *ᵥ adsNullVec τ ω) 0, (Λ *ᵥ adsNullVec τ ω) 1⟩ : ℂ)‖ = adsNullFactor Λ τ ω := by
+  rw [Complex.norm_def, Complex.normSq_apply, adsNullFactor]
   congr 1
   ring
 
 /-- `cos τ' = (ΛX)₀ / ρ`. -/
 theorem cos_adsAngle {Λ : Matrix (Fin 5) (Fin 5) ℝ} (hΛ : Λᵀ * adsEta * Λ = adsEta) (τ : ℝ)
     {ω : Fin 3 → ℝ} (hω : ∑ i, ω i ^ 2 = 1) :
-    Real.cos (adsAngle Λ τ ω) = (Λ *ᵥ adsNullVec τ ω) 0 / adsFactor Λ τ ω := by
-  have hρ := adsFactor_pos hΛ τ hω
+    Real.cos (adsAngle Λ τ ω) = (Λ *ᵥ adsNullVec τ ω) 0 / adsNullFactor Λ τ ω := by
+  have hρ := adsNullFactor_pos hΛ τ hω
   have hne : (⟨(Λ *ᵥ adsNullVec τ ω) 0, (Λ *ᵥ adsNullVec τ ω) 1⟩ : ℂ) ≠ 0 := by
     intro h
-    rw [← norm_eq_zero, adsFactor_eq_norm] at h
+    rw [← norm_eq_zero, adsNullFactor_eq_norm] at h
     exact hρ.ne' h
-  rw [adsAngle, Complex.cos_arg hne, adsFactor_eq_norm]
+  rw [adsAngle, Complex.cos_arg hne, adsNullFactor_eq_norm]
 
 /-- `sin τ' = (ΛX)₁ / ρ`. -/
 theorem sin_adsAngle {Λ : Matrix (Fin 5) (Fin 5) ℝ} (hΛ : Λᵀ * adsEta * Λ = adsEta) (τ : ℝ)
     {ω : Fin 3 → ℝ} (hω : ∑ i, ω i ^ 2 = 1) :
-    Real.sin (adsAngle Λ τ ω) = (Λ *ᵥ adsNullVec τ ω) 1 / adsFactor Λ τ ω := by
-  have hρ := adsFactor_pos hΛ τ hω
+    Real.sin (adsAngle Λ τ ω) = (Λ *ᵥ adsNullVec τ ω) 1 / adsNullFactor Λ τ ω := by
+  have hρ := adsNullFactor_pos hΛ τ hω
   have hne : (⟨(Λ *ᵥ adsNullVec τ ω) 0, (Λ *ᵥ adsNullVec τ ω) 1⟩ : ℂ) ≠ 0 := by
     intro h
-    rw [← norm_eq_zero, adsFactor_eq_norm] at h
+    rw [← norm_eq_zero, adsNullFactor_eq_norm] at h
     exact hρ.ne' h
-  rw [adsAngle, Complex.sin_arg, adsFactor_eq_norm]
+  rw [adsAngle, Complex.sin_arg, adsNullFactor_eq_norm]
 
 /-- `Λ (cos τ, sin τ, ω) = ρ (cos τ', sin τ', ω')`. -/
 theorem mulVec_adsNullVec_eq {Λ : Matrix (Fin 5) (Fin 5) ℝ} (hΛ : Λᵀ * adsEta * Λ = adsEta) (τ : ℝ)
     {ω : Fin 3 → ℝ} (hω : ∑ i, ω i ^ 2 = 1) :
-    Λ *ᵥ adsNullVec τ ω = adsFactor Λ τ ω • adsNullVec (adsAngle Λ τ ω) (adsDir Λ τ ω) := by
-  have hρ := (adsFactor_pos hΛ τ hω).ne'
+    Λ *ᵥ adsNullVec τ ω = adsNullFactor Λ τ ω • adsNullVec (adsAngle Λ τ ω) (adsDir Λ τ ω) := by
+  have hρ := (adsNullFactor_pos hΛ τ hω).ne'
   ext j
   fin_cases j
   · simp [adsNullVec, cos_adsAngle hΛ τ hω]; field_simp
@@ -145,19 +145,19 @@ theorem mulVec_adsNullVec_eq {Λ : Matrix (Fin 5) (Fin 5) ℝ} (hΛ : Λᵀ * ad
 /-- `ω'` is again a unit vector. -/
 theorem sum_sq_adsDir {Λ : Matrix (Fin 5) (Fin 5) ℝ} (hΛ : Λᵀ * adsEta * Λ = adsEta) (τ : ℝ)
     {ω : Fin 3 → ℝ} (hω : ∑ i, ω i ^ 2 = 1) : ∑ i, adsDir Λ τ ω i ^ 2 = 1 := by
-  have hρ := adsFactor_pos hΛ τ hω
+  have hρ := adsNullFactor_pos hΛ τ hω
   have hn : adsSq (Λ *ᵥ adsNullVec τ ω) = 0 := by rw [adsSq_mulVec hΛ]; exact adsSq_adsNullVec τ hω
   set w := Λ *ᵥ adsNullVec τ ω with hw
-  have hρ2 : adsFactor Λ τ ω ^ 2 = w 0 ^ 2 + w 1 ^ 2 := by
-    unfold adsFactor
+  have hρ2 : adsNullFactor Λ τ ω ^ 2 = w 0 ^ 2 + w 1 ^ 2 := by
+    unfold adsNullFactor
     rw [← hw, Real.sq_sqrt (by positivity)]
   simp only [adsDir, div_pow, Fin.sum_univ_three, Fin.reduceSucc, ← hw]
   rw [← add_div, ← add_div, div_eq_one_iff_eq (pow_pos hρ 2).ne', hρ2]
   simp only [adsSq] at hn
   linarith
 
-theorem adsFactor_one (τ : ℝ) (ω : Fin 3 → ℝ) : adsFactor 1 τ ω = 1 := by
-  simp [adsFactor, adsNullVec]
+theorem adsNullFactor_one (τ : ℝ) (ω : Fin 3 → ℝ) : adsNullFactor 1 τ ω = 1 := by
+  simp [adsNullFactor, adsNullVec]
 
 /-- A boost in the `(X₀, X₂)` plane with `cosh = 5/4`, `sinh = 3/4`. -/
 def adsBoost : Matrix (Fin 5) (Fin 5) ℝ :=
@@ -169,13 +169,13 @@ theorem adsBoost_lorentz : adsBoost ᵀ * adsEta * adsBoost = adsEta := by
     simp [adsBoost, adsEta, Matrix.mul_apply, Matrix.diagonal_apply, Fin.sum_univ_succ] <;> norm_num
 
 /-- Non-vacuity: the boost sends `(1, 0, e₁)` to a vector with factor `2`. -/
-theorem adsFactor_adsBoost_zero : adsFactor adsBoost 0 ![1, 0, 0] = 2 := by
+theorem adsNullFactor_adsBoost_zero : adsNullFactor adsBoost 0 ![1, 0, 0] = 2 := by
   have : (adsBoost *ᵥ adsNullVec 0 ![1, 0, 0]) 0 = 2 := by
     simp [adsBoost, adsNullVec, mulVec, dotProduct, Fin.sum_univ_succ]
     norm_num
   have h1 : (adsBoost *ᵥ adsNullVec 0 ![1, 0, 0]) 1 = 0 := by
     simp [adsBoost, adsNullVec, mulVec, dotProduct, Fin.sum_univ_succ]
-  rw [adsFactor, this, h1]
+  rw [adsNullFactor, this, h1]
   rw [show ((2 : ℝ)) ^ 2 + 0 ^ 2 = 2 ^ 2 by ring]
   exact Real.sqrt_sq (by norm_num)
 
