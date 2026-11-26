@@ -1,0 +1,13 @@
+- id: LL-XXXX
+  title: On a manifold modelled with corners on any finite-dimensional real normed space, in every chart the Riemann tensor, the Ricci tensor and the scalar curvature of a Levi-Civita connection are the coordinate ones, and the Einstein equations hold iff the coordinate vacuum equations hold in every chart
+  area: Spacetime
+  file: Lightlike/Spacetime/Corners/ChartTransport.lean
+  decls: [Lightlike.riemann_coord_trans, Lightlike.ricciAt_coord_trans, Lightlike.scalarCurvatureAt_coord_trans, Lightlike.satisfiesEinstein_iff_chart_trans]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (3.91)", check: "Ricci"}
+  review: kernel-checked
+  note: "GE11 m5. For a non-degenerate metric g on a C^2 manifold modelled with corners (boundary and corners allowed, no Hausdorff hypothesis) on any finite-dimensional real normed space E, a locally smooth connection that is the Levi-Civita connection of g, and a linear equivalence e : E -> Fin n -> R, the charts e after extChartAt are the charts of the transported model. In them the components of the intrinsic curvature on the coordinate vectors e^-1 d_nu are the coordinate Riemann tensor of the chart metric (riemann_coord_trans), the intrinsic Ricci tensor is the coordinate Ricci tensor (ricciAt_coord_trans), the intrinsic scalar curvature is the coordinate one (scalarCurvatureAt_coord_trans), and g satisfies the Einstein equations with constant Lambda iff the coordinate vacuum equations hold in every chart (satisfiesEinstein_iff_chart_trans). Compared with Carroll, Lecture Notes on General Relativity, eq. (3.91) for the Ricci tensor, read at that location. KIND representation: in Carroll the coordinate formulas are the definitions; here the definitions are intrinsic and the theorems say they agree with the coordinate ones in every chart. The proof transports the connection and the metric along e (Lightlike.transCov, transMetric) and applies the theorems of ChartAgreement.lean for Fin n -> R (LL-0411); the choice of e is the choice of coordinates on E. The comparison with Wald is pending: not read."
+  since: unreleased
