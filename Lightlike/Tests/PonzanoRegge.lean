@@ -249,4 +249,21 @@ theorem weightWith_wrong_model : weightWith (fun f => -triW col f) K col ≠ wei
   exact weight_example_ne_zero (by linarith)
 
 
+/-- The 6j symbol with a wrong sign convention: multiplied by `(-1)^(j₁ + ⋯ + j₆)/2` (doubled spins). -/
+noncomputable def sixJWrongSign (j₁ j₂ j₃ j₄ j₅ j₆ : ℕ) : ℝ :=
+  (-1 : ℝ) ^ ((j₁ + j₂ + j₃ + j₄ + j₅ + j₆) / 2) * PhyslibAlpha.Sl2.sixJSym j₁ j₂ j₃ j₄ j₅ j₆
+
+/-- **A wrong sign convention breaks Biedenharn–Elliott.** With the 6j symbol multiplied by
+`(-1)^((j₁ + ⋯ + j₆)/2)`, the instance of `biedenharnElliott_instance` (all six outer spins ½,
+`p = q = r = 1`) fails: the left side is `-1/8 - 1/72 = -5/36`, the right side is still `1/9`. -/
+theorem be_wrongSign_fails :
+    ∑ x ∈ range (1 + 1 + 1),
+        (-1 : ℝ) ^ ((1 + 1 + 1 + 1 + 1 + 1 + 2 + 2 + 2 + x) / 2) * ((x : ℝ) + 1) *
+          (sixJWrongSign 1 1 x 1 1 2 * sixJWrongSign 1 1 x 1 1 2 * sixJWrongSign 1 1 x 1 1 2) ≠
+      sixJWrongSign 2 2 2 1 1 1 * sixJWrongSign 2 2 2 1 1 1 := by
+  have h0 : PhyslibAlpha.Sl2.sixJSym 1 1 1 1 1 2 = 0 :=
+    Lightlike.SixJAudit.sixJSym_eq_zero_of_parity (by norm_num)
+  norm_num [sixJWrongSign, Finset.sum_range_succ, h0, Lightlike.SixJAudit.sixJ_hh0_hh1,
+    Lightlike.SixJAudit.sixJ_hh1_hh1, Lightlike.SixJAudit.sixJ_111_hhh]
+
 end Lightlike.PR.Test

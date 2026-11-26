@@ -5226,6 +5226,21 @@
   "citations": 46,
   "citations_via": "Semantic Scholar"
  },
+ "yamagami-2008": {
+  "checked": "2026-11-25",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "Geometry of Quasi-Free States of CCR Algebras",
+  "locations": {
+   "Proposition 2.7": {
+    "verified": true,
+    "snippet": "Proposition 2.7 ([27]). Let φ : (V, σ) → (V ′ , σ ′ ) be a presymplectic map with the induced *-homomorphism Φ : C ∗ (V, σ) → C ∗ (V ′ , σ ′ ). Let S, T ∈ Pol(V ′ , σ ′ ) and assume that φ(V ) is dense in V ′ with respec",
+    "why": null
+   }
+  },
+  "citations": 10,
+  "citations_via": "Semantic Scholar"
+ },
  "zwiebach-1993": {
   "checked": "2026-11-08",
   "exists": true,

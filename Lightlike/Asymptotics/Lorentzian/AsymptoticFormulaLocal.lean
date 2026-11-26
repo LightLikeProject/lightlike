@@ -62,7 +62,7 @@ theorem weighted_two_points_local {S aLoc aFar : (Fin n → ℝ) → ℂ} {U : S
     (by intro x hx; rcases Finset.mem_insert.mp hx with rfl | hx
         · exact hdet₁
         · rw [Finset.mem_singleton.mp hx]; exact hdet₂)
-    hint hfar _ m hw
+    (fun lam _ => hint lam) hfar _ m hw
   refine h.congr' ?_ EventuallyEq.rfl
   filter_upwards [eventually_gt_atTop 0] with lam hlam
   have hl : (0 : ℝ) < lam := by exact_mod_cast hlam

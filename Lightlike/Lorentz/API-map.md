@@ -34,8 +34,9 @@ to `g · o`, and the integral of a function of `t = cosh r` is `4π³ ∫_{t > 1
 `sin(ρr) / (ρ sinh r)` [9], and for radial functions
 `∫ |f|² dg = (2π⁴)⁻¹ ∫_{ρ > 0} ρ² |f̂(ρ)|² dρ` [10].
 
-The full Plancherel formula {3} {4} is proved, but its normalization constant has not yet been
-compared with the literature, so it is not listed in `docs/RESULTS.md`. It is stated with the
+The full Plancherel formula {3} {4} is proved. In the variables of Perez and Rovelli {10} its constant is
+`1/(32π⁴)`, which is four times smaller than the constant printed there; it agrees with Rühl {1} as
+quoted by Simão {11}. The formula is stated with the
 principal series `π_{n,ρ}` labelled by `n ∈ ℤ` and `ρ ∈ ℝ` (`n = 2k`), for functions that are
 restrictions of smooth compactly supported functions on 2 × 2 complex arrays. Its ingredients are a
 second chart adapted to the action on a fixed point `z` [11], derivatives of parametric integrals
@@ -84,7 +85,10 @@ principal series acts unitarily on `L²(ℝ)`, jointly continuously in `(g, f)` 
 discrete series acts unitarily on the weighted Bergman space `A²_n` of the upper half-plane, a
 closed subspace that the action preserves and that is nonzero for `n ≥ 2` [29] [30]. The Casimir
 operator is `-(1 + ν²)/4` on the principal series and `(n/2)(n/2 - 1)` on holomorphic functions,
-attained by the nonzero vector `lowestVec n` of `A²_n` [31].
+attained by the nonzero vector `lowestVec n` of `A²_n` [31]. For the principal-series model with parameter
+`ν = iτ`, no positive definite sesquilinear form on smooth functions has the generators skew when `|τ| > 1`,
+and none when `τ = 1`, by the sign of the Casimir on the `K`-fixed vector; for `|τ| < 1` (the complementary
+series) there is no such obstruction [42] [43].
 
 The irreducibility of the principal series is not yet formalized. [TODO]
 
@@ -193,6 +197,11 @@ non-vacuity check (stated, not proven) [41].
     `Poincare.not_isCompact_littleGroup_tachyon`
 41. Lightlike/Lorentz/PoincareIrreps/ClassificationStatement.lean -
     `Lorentz.Poincare.WignerClassification`, `Lorentz.Poincare.trivialRep_classified`
+42. Lightlike/Lorentz/SL2RPlancherel/NoInvariantFormBoundary.lean -
+    `Lorentz.SL2RPlancherel.eq_zero_of_casimir_zero`,
+    `Lorentz.SL2RPlancherel.no_invariant_form_smooth_boundary`: no positive definite skew form for `τ = 1`
+43. Lightlike/Lorentz/SL2RPlancherel/NoInvariantForm.lean - `Lorentz.SL2RPlancherel.no_invariant_form`,
+    `Lorentz.SL2RPlancherel.no_invariant_form_smooth`: no positive definite skew form for `|τ| > 1`
 
 ## References
 

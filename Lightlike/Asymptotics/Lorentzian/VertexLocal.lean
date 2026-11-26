@@ -67,7 +67,7 @@ theorem exists_smooth_extension {S : (Fin n → ℝ) → ℂ} {U K : Set (Fin n 
 support of `a_loc` (the Lorentzian action has logarithms and is not smooth everywhere). The
 conclusion is that of `weighted_asymptotics`: the hypotheses `hK`, `hnd` are on `S` itself and the
 remainder `a_far` is controlled by `hint` and `hfar` for `S`. The integrability `hint` is assumed
-only along the integer sequence `λ ∈ ℕ` that the proof uses (the form `∀ τ : ℝ` fails for `τ < 0`
+only along the integer sequence `λ ∈ ℕ`, `λ ≥ 1`, that the proof uses (at `λ = 0` the exponential is `1` and nothing makes `a_far` integrable) (the form `∀ τ : ℝ` fails for `τ < 0`
 wherever an overlap vanishes). -/
 theorem weighted_asymptotics_local {S aLoc aFar : (Fin n → ℝ) → ℂ} {U : Set (Fin n → ℝ)}
     (hU : IsOpen U) (hS : ContDiffOn ℝ ∞ S U) (hsU : tsupport aLoc ⊆ U)
@@ -75,7 +75,7 @@ theorem weighted_asymptotics_local {S aLoc aFar : (Fin n → ℝ) → ℂ} {U : 
     (hRe : ∀ x ∈ tsupport aLoc, (S x).re ≤ 0) (K : Finset (Fin n → ℝ))
     (hK : ∀ x ∈ tsupport aLoc, ((S x).re = 0 ∧ fderiv ℝ S x = 0) ↔ x ∈ K)
     (hKs : ∀ x ∈ K, x ∈ tsupport aLoc) (hnd : ∀ x ∈ K, (-hessMat S x).det ≠ 0)
-    (hint : ∀ lam : ℕ, Integrable fun x => aFar x * cexp ((lam : ℝ) * S x))
+    (hint : ∀ lam : ℕ, 1 ≤ lam → Integrable fun x => aFar x * cexp ((lam : ℝ) * S x))
     (hfar : (fun lam : ℕ => ∫ x, aFar x * cexp ((lam : ℝ) * S x)) =O[atTop]
       fun lam : ℕ => ((lam : ℝ) ^ (-((n : ℝ) / 2) - 1)))
     (w : ℕ → ℂ) (m : ℝ) (hw : w =O[atTop] fun lam : ℕ => ((lam : ℝ) ^ m)) :
@@ -102,14 +102,14 @@ theorem weighted_asymptotics_local {S aLoc aFar : (Fin n → ℝ) → ℂ} {U : 
     by_cases hx : x ∈ tsupport aLoc
     · rw [hSW x (hKW hx)]
     · rw [image_eq_zero_of_notMem_tsupport hx]; simp
-  have hsplit : ∀ lam : ℕ, ∫ x, (aLoc x + aFar x) * cexp ((lam : ℝ) * S x) =
-      (∫ x, aLoc x * cexp ((lam : ℝ) * S' x)) + ∫ x, aFar x * cexp ((lam : ℝ) * S x) := fun lam => by
+  have hsplit : ∀ lam : ℕ, 1 ≤ lam → ∫ x, (aLoc x + aFar x) * cexp ((lam : ℝ) * S x) =
+      (∫ x, aLoc x * cexp ((lam : ℝ) * S' x)) + ∫ x, aFar x * cexp ((lam : ℝ) * S x) := fun lam hlam => by
     have h1 : Integrable fun x => aLoc x * cexp ((lam : ℝ) * S' x) := by
       refine Continuous.integrable_of_hasCompactSupport ?_ (hc.mul_right)
       exact ha.continuous.mul (Complex.continuous_exp.comp (continuous_const.mul hS'.continuous))
     rw [hint' (lam : ℝ)] at h1 ⊢
     simp only [add_mul]
-    exact integral_add h1 (hint lam)
+    exact integral_add h1 (hint lam hlam)
   have hsum : ∀ lam : ℕ, ∑ x₀ ∈ K, cexp ((lam : ℝ) * S' x₀) * ((2 * π / (lam : ℝ)) ^ ((n : ℝ) / 2) : ℝ) *
       invSqrtDet (-hessMat S' x₀) * aLoc x₀ = ∑ x₀ ∈ K, cexp ((lam : ℝ) * S x₀) *
       ((2 * π / (lam : ℝ)) ^ ((n : ℝ) / 2) : ℝ) * invSqrtDet (-hessMat S x₀) * aLoc x₀ := by
@@ -121,8 +121,9 @@ theorem weighted_asymptotics_local {S aLoc aFar : (Fin n → ℝ) → ℂ} {U : 
           ((2 * π / (lam : ℝ)) ^ ((n : ℝ) / 2) : ℝ) * invSqrtDet (-hessMat S x₀) * aLoc x₀)
       =O[atTop] fun lam : ℕ => ((lam : ℝ) ^ (-((n : ℝ) / 2) - 1)) := by
     have := hloc'.add hfar
-    refine this.congr_left fun lam => ?_
-    simp only [Function.comp, hsplit, ← hsum]
+    refine this.congr' ?_ EventuallyEq.rfl
+    filter_upwards [eventually_ge_atTop 1] with lam hlam
+    simp only [Function.comp, hsplit lam hlam, ← hsum]
     ring
   have hprod := hw.mul hmain
   refine hprod.congr' (Eventually.of_forall fun lam => by simp only [mul_sub]) ?_
@@ -157,7 +158,8 @@ theorem lorVertex_asymptotics_local {n : ℕ} {j p : Fin 10 → ℝ} (hj : ∀ e
         fderiv ℝ (lorChartAction j p g chart) x = 0) ↔ x ∈ K)
     (hKs : ∀ x ∈ K, x ∈ tsupport aLoc)
     (hdet : ∀ x ∈ K, (-lorHessian j p g chart x).det ≠ 0)
-    (hint : ∀ lam : ℕ, Integrable fun x => aFar x * cexp ((lam : ℝ) * lorChartAction j p g chart x))
+    (hint : ∀ lam : ℕ, 1 ≤ lam →
+      Integrable fun x => aFar x * cexp ((lam : ℝ) * lorChartAction j p g chart x))
     (hfar : (fun lam : ℕ => ∫ x, aFar x * cexp ((lam : ℝ) * lorChartAction j p g chart x))
       =O[atTop] fun lam : ℕ => ((lam : ℝ) ^ (-((n : ℝ) / 2) - 1)))
     (w : ℕ → ℂ) (m : ℝ) (hw : w =O[atTop] fun lam : ℕ => ((lam : ℝ) ^ m)) :
