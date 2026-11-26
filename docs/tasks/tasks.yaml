@@ -792,7 +792,7 @@ tasks:
       - {"id": "p1", "kind": "piece", "text": "The curvature tensor of an arbitrary connection is computed by any extensions, on any finite-dimensional model space, without Hausdorff", "decls": ["Lightlike.curvatureAt_apply_eventuallyW"]}
       - {"id": "p2", "kind": "piece", "text": "The Levi-Civita connection of a non-degenerate metric exists, is unique and is smooth", "decls": ["Lightlike.leviCivita_exists_unique_proved", "Lightlike.contMDiffAt_leviCivitaW"]}
       - {"id": "t1", "kind": "trust", "text": "The round 2-sphere (Riemannian) has the same identities", "decls": [], "hint": "Missing: no S² instance in Corners/ (only the 3-sphere roundMetric)."}
-      - {"id": "t2", "kind": "trust", "text": "A manifold with boundary has the same identities", "decls": [], "hint": "Missing: no concrete example with boundary or corners."}
+      - {"id": "t2", "kind": "trust", "text": "A manifold with boundary has the same identities", "decls": ["Lightlike.segMetric", "Lightlike.segment_identities", "Lightlike.segment_exists_leviCivita"], "hint": "Missing: no concrete example with boundary or corners."}
       - {"id": "t3", "kind": "trust", "text": "A non-Hausdorff example has the same identities", "decls": [], "hint": "Missing: no example such as the line with two origins."}
       - {"id": "c1", "kind": "catalogue", "text": "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map", "decls": []}
   - id: "T-GE12"
