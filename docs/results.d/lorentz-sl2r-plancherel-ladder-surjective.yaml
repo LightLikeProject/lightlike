@@ -1,0 +1,11 @@
+- id: LL-XXXX-g
+  title: "K-type Plancherel identity for every test function of a block: for natural l, r and every smooth H with compact support in (0, infinity) there is a smooth compactly supported radial generator G with H the (l, r) ladder image of G, and pi^2 times the integral over (0, infinity) of |H|^2 sinh(xi) equals 1/4 times the integral over (0, infinity) of rho tanh(pi rho) w_l(rho) w_r(rho) |G^(rho)|^2, with w_n(rho) the product over k < n of (k + 1/2)^2 + rho^2"
+  area: Lorentz
+  file: Lightlike/Lorentz/SL2RPlancherel/LadderSurjective.lean
+  decls: [Lightlike.Lorentz.SL2RPlancherel.norm_sq_eq_of_isTest, Lightlike.Lorentz.SL2RPlancherel.exists_hLR_eq]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Layer 2c-v of the Plancherel formula on SL(2,R), for the same-sign blocks (l, r natural). In v = cosh xi the ladder image is sinh^(l+r) xi u_l(cosh xi) with u_0 = G^(r) and u_(j+1) = u_j' + r u_j/(v+1); each step is inverted by a primitive from infinity, and the generator is cut off below v = 1/2. So the ladder images of the radial generators exhaust the test functions of the block: there is no part of these blocks orthogonal to them (no discrete part), and the layer 1 identity (norm_sq_ktype_lr) becomes the Plancherel identity of the block on a dense subspace. The opposite-sign blocks (l r < 0), where the discrete series live, are not covered. Standard; no source consulted."
+  since: unreleased
