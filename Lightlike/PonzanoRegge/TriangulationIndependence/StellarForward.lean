@@ -307,8 +307,38 @@ theorem ForwardMoves.exists_starAt_triangle {K : Complex3 V} {A B C D F a : V}
         hsub (h ▸ hT)
       refine .inr ⟨hT _ (by intro y; simp; tauto), hT _ (by intro y; simp; tauto),
         .inr ⟨hT _ (by intro y; simp; tauto), ht⟩⟩
-    · rcases hface u hu hsub with rfl | rfl <;> rcases hx with rfl | rfl | rfl
-      all_goals simp only [Finset.ext_iff, mem_insert, mem_singleton, mem_erase, ne_eq, not_forall]
-      all_goals grind
+    · have ne_of : ∀ (S T : Finset V) (y : V), y ∈ T → y ∉ S → S ≠ T :=
+        fun S T y hT hS h => hS (h ▸ hT)
+      have nC : ∀ S : Finset V, C ∉ S → S ≠ {A, B, C, F} ∧ S ≠ {A, B, C, a} := fun S hS =>
+        ⟨ne_of _ _ C (by simp) hS, ne_of _ _ C (by simp) hS⟩
+      have nB : ∀ S : Finset V, B ∉ S → S ≠ {A, B, C, F} ∧ S ≠ {A, B, C, a} := fun S hS =>
+        ⟨ne_of _ _ B (by simp) hS, ne_of _ _ B (by simp) hS⟩
+      have nA : ∀ S : Finset V, A ∉ S → S ≠ {A, B, C, F} ∧ S ≠ {A, B, C, a} := fun S hS =>
+        ⟨ne_of _ _ A (by simp) hS, ne_of _ _ A (by simp) hS⟩
+      rcases hface u hu hsub with rfl | rfl <;> obtain hx | hx | hx := hx <;> rw [hx]
+      · have e : insert a (({A, B, C, D} : Finset V).erase A) = {B, C, D, a} := by
+          ext y; simp; grind
+        rw [e]
+        exact .inr ⟨(nA _ (by simp; grind)).1, (nA _ (by simp; grind)).2, .inl (.inr (.inr (.inr rfl)))⟩
+      · have e : insert a (({A, B, C, D} : Finset V).erase B) = {A, C, D, a} := by
+          ext y; simp; grind
+        rw [e]
+        exact .inr ⟨(nB _ (by simp; grind)).1, (nB _ (by simp; grind)).2, .inl (.inr (.inr (.inl rfl)))⟩
+      · have e : insert a (({A, B, C, D} : Finset V).erase C) = {A, B, D, a} := by
+          ext y; simp; grind
+        rw [e]
+        exact .inr ⟨(nC _ (by simp; grind)).1, (nC _ (by simp; grind)).2, .inl (.inr (.inl rfl))⟩
+      · have e : insert a (({A, B, C, F} : Finset V).erase A) = {B, C, a, F} := by
+          ext y; simp; grind
+        rw [e]
+        exact .inl (.inr (.inl rfl))
+      · have e : insert a (({A, B, C, F} : Finset V).erase B) = {C, A, a, F} := by
+          ext y; simp; grind
+        rw [e]
+        exact .inl (.inr (.inr rfl))
+      · have e : insert a (({A, B, C, F} : Finset V).erase C) = {A, B, a, F} := by
+          ext y; simp; grind
+        rw [e]
+        exact .inl (.inl rfl)
 
 end Lightlike.PR

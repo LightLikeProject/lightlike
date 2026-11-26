@@ -104,7 +104,7 @@ theorem amplitudeGF_mapComplex3 (K : Complex3 V) (f : V ↪ W) (T : Finset (Fins
     amplitudeGF (mapComplex3 K f) (T.image (Finset.map f))
         (fun e' => cut (e'.preimage f f.injective.injOn)) = amplitudeGF K T cut := by
   have hS : (mapComplex3 K f).edges \ T.image (Finset.map f) = (K.edges \ T).image (Finset.map f) := by
-    rw [TV.edges_mapComplex3, image_sdiff (map_injective f)]
+    rw [TV.edges_mapComplex3, image_sdiff _ _ (map_injective f)]
   unfold amplitudeGF
   rw [hS]
   have hpre : ∀ e' ∈ (K.edges \ T).image (Finset.map f),
