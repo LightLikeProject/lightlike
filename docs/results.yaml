@@ -6960,3 +6960,36 @@
   review: kernel-checked
   note: "Comparison pending: no source was read at a cited location for this statement; it is a step of the complex saddle-point proof of the Racah-sum asymptotics (LL-0290), which the library proves in place of the real-variable step of Gurau 2008. The path is the segment from Q_lambda to s0 + r v, the ray to s0 + r_c v, the descent line up to a point close to x, and the vertical segment down to p = Re alpha(T'). It shows that the outer part of the contour contributes exponentially less than the saddle. Hypotheses stated in the Lean theorem (the approximation, the ray bound, the descent line, the bound on G and the regularity set reg); IsEuclid l. No unproved hypothesis."
   since: unreleased
+- id: LL-0538
+  title: "Future null infinity of Minkowski space in the compactified coordinates (T, R, theta, phi), T + R = pi/2 and |T - R| < pi/2, is exactly the set of the points of retarded time u = tan(T - R) and angles; the conformal factor cos^2(T + R) cos^2(T - R) vanishes on it; and the outgoing null ray t - r = u converges to the point of retarded time u as r tends to infinity"
+  area: GR
+  file: Lightlike/GR/AdSConformalBoundary/ScriPlus.lean
+  decls: [Lightlike.scriPlus_eq_range, Lightlike.scriFactor_scriPlus, Lightlike.compactify_tendsto_scriPoint]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: the module docstring records Harlow, arXiv:1409.1231, section 2.3 (T +- R = arctan(t +- r)), and Aharony-Gubser-Maldacena-Ooguri-Oz, arXiv:hep-th/9905111, section 2.2, as read when the file was written; they were not re-read for this entry, and neither is registered as a source here. Future null infinity only, in coordinates (a set in Fin 4 -> R), not a boundary of a manifold embedding; the point of the compactification is the map compactify of ConformalPoincare.lean."
+  since: unreleased
+- id: LL-0539
+  title: "Global anti-de Sitter space (d = 3, L = 1) is conformal to the compact metric: with r = tan rho, -(1 + r^2) dt^2 + dr^2/(1 + r^2) + r^2 dOmega^2 equals cos^-2 rho (-dt^2 + drho^2 + sin^2 rho dOmega^2) wherever cos rho is nonzero"
+  area: GR
+  file: Lightlike/GR/AdSConformal.lean
+  decls: [Lightlike.pullback_adsGlobal]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: the module docstring records Aharony-Gubser-Maldacena-Ooguri-Oz, arXiv:hep-th/9905111, section 2, and Harlow, arXiv:1409.1231, section 6.1, eqs. (6.4)-(6.6), as read when the file was written; not re-read for this entry, and not registered as sources. A coordinate statement (the pullback of adsGlobal along tanChart, as 4x4 matrices), fixed d = 3 and L = 1; the same conformal map is the manifold statement of LL-0378 in Spacetime/AdSCompactification.lean."
+  since: unreleased
+- id: LL-0540
+  title: "The compactified anti-de Sitter metric restricted to the conformal boundary rho = pi/2 is -dt^2 + drho^2 + dtheta^2 + sin^2 theta dphi^2, whose (t, theta, phi) block is -dt^2 + dtheta^2 + sin^2 theta dphi^2, the metric of R x S^2"
+  area: GR
+  file: Lightlike/GR/AdSConformalBoundary/AdSBoundary.lean
+  decls: [Lightlike.adsCompact_boundary]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: the module docstring records Harlow, arXiv:1409.1231, section 6.1, eqs. (6.4)-(6.6), as read when the file was written; not re-read here, and not registered as a source. The conformal class of the boundary metric is canonical, the metric itself is not (the defining function cos rho is fixed only up to a positive factor); fixed d = 3, L = 1, in coordinates."
+  since: unreleased
