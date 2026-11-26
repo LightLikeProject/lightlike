@@ -1,6 +1,7 @@
 import Mathlib
 import Lightlike.Spacetime.Corners.MetricTransport
 import Lightlike.Spacetime.Corners.CurvatureSymmetries
+import Lightlike.Spacetime.Corners.BianchiSecond
 
 /-!
 # Curvature for a transported model
@@ -50,10 +51,6 @@ theorem smoothNear_trans (e : E ≃L[ℝ] F) {X : Π y : M, TangentSpace I y} {x
   filter_upwards [hX] with y hy
   exact (contMDiffAt_transSection_iff e (n := ∞) X y).2 hy
 
-theorem mdiffAt_of_smoothNear {X : Π y : M, TangentSpace I y} {x : M} (hX : SmoothNearW X x) :
-    MDiffAt (T% X) x :=
-  (hX.self_of_nhds).mdifferentiableAt (by simp)
-
 /-- **The curvature of the transported connection is the transport of the curvature.** -/
 theorem curvatureAt_trans (e : E ≃L[ℝ] F) (cov : Connection I M) [LocallySmoothConnectionW cov] (x : M)
     (a b c : TangentSpace I x) :
@@ -84,7 +81,7 @@ theorem curvatureAt_trans (e : E ≃L[ℝ] F) (cov : Connection I M) [LocallySmo
     rw [transCov_apply]
     exact congrArg (fun w : E => e (cov Zf y w)) (e.symm_apply_apply (Yf y))
   have hbr : mlieBracket (I.transContinuousLinearEquiv e) (transSection e X) (transSection e Y) x =
-      e (mlieBracket I X Y x) := mlieBracket_transSection e (mdiffAt_of_smoothNear hX) (mdiffAt_of_smoothNear hY)
+      e (mlieBracket I X Y x) := mlieBracket_transSection e (mdiffAt_of_smoothNearW hX) (mdiffAt_of_smoothNearW hY)
   rw [h2, key Z Y, key Z X, hbr, h1]
   have t1 := transCov_apply e cov (fun y => cov Z y (Y y)) x (e a)
   have t2 := transCov_apply e cov (fun y => cov Z y (X y)) x (e b)

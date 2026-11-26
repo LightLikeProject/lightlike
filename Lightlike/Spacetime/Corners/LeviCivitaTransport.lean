@@ -44,8 +44,8 @@ theorem torsion_trans (e : E ≃L[ℝ] F) (cov : Connection I M) [LocallySmoothC
   have hY : SmoothNearW Y x := eventually_extendW x _
   have hXx : X x = a := FiberBundle.extend_apply_self E _
   have hYx : Y x = b := FiberBundle.extend_apply_self E _
-  have hXd' : MDifferentiableAt I I.tangent (fun y => (⟨y, X y⟩ : TangentBundle I M)) x := mdiffAt_of_smoothNear hX
-  have hYd' : MDifferentiableAt I I.tangent (fun y => (⟨y, Y y⟩ : TangentBundle I M)) x := mdiffAt_of_smoothNear hY
+  have hXd' : MDifferentiableAt I I.tangent (fun y => (⟨y, X y⟩ : TangentBundle I M)) x := mdiffAt_of_smoothNearW hX
+  have hYd' : MDifferentiableAt I I.tangent (fun y => (⟨y, Y y⟩ : TangentBundle I M)) x := mdiffAt_of_smoothNearW hY
   have t1 := cov.torsion_apply hXd' hYd'
   have t2 := (transCov e cov).torsion_apply
     ((mdifferentiableAt_transSection_iff e X x).2 hXd') ((mdifferentiableAt_transSection_iff e Y x).2 hYd')
@@ -54,7 +54,7 @@ theorem torsion_trans (e : E ≃L[ℝ] F) (cov : Connection I M) [LocallySmoothC
   have hY' : transSection e Y x = e b := congrArg e hYx
   rw [hX', hY'] at t2
   have hbr : mlieBracket (I.transContinuousLinearEquiv e) (transSection e X) (transSection e Y) x =
-      e (mlieBracket I X Y x) := mlieBracket_transSection e (mdiffAt_of_smoothNear hX) (mdiffAt_of_smoothNear hY)
+      e (mlieBracket I X Y x) := mlieBracket_transSection e (mdiffAt_of_smoothNearW hX) (mdiffAt_of_smoothNearW hY)
   rw [t2, t1, hbr]
   have c1 := transCov_apply e cov Y x (e a)
   have c2 := transCov_apply e cov X x (e b)
