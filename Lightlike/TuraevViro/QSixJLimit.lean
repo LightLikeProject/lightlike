@@ -404,4 +404,121 @@ lemma decomp_qnG (hr : 2 ≤ r) (n : ℕ) : Decomp r (fun θ => qnG θ n) 0 0 (q
 
 lemma decomp_const (c : ℝ) : Decomp r (fun _ => c) 0 0 c := Decomp.of_continuousAt continuousAt_const
 
+/-! ## The pairing `x ↔ 2r - 2 - x` -/
+
+/-- `E(u, v, x) = [s-u]! [s-v]! [s-x]! / ([r-1]! [s+1-r]!)`, `s = (u+v+x)/2`: the factor of the reflection
+attached to the triad `(u, v, x)` above the level. -/
+noncomputable def E3 (r u v x : ℕ) : ℝ :=
+  qfact r ((u + v + x) / 2 - u) * qfact r ((u + v + x) / 2 - v) * qfact r ((u + v + x) / 2 - x) /
+    (qfact r (r - 1) * qfact r ((u + v + x) / 2 + 1 - r))
+
+lemma E3_swap (r u v x : ℕ) : E3 r v u x = E3 r u v x := by
+  unfold E3; rw [show v + u + x = u + v + x by ring]; ring
+
+lemma E3_ne_zero (hr : 2 ≤ r) {u v x : ℕ} (hu : u ≤ r - 2) (hv : v ≤ r - 2) (ht : Tri u v x)
+    (hs : (u + v + x) / 2 ≤ 2 * r - 3) : E3 r u v x ≠ 0 := by
+  unfold Tri at ht
+  unfold E3
+  refine div_ne_zero (mul_ne_zero (mul_ne_zero ?_ ?_) ?_) (mul_ne_zero ?_ ?_) <;>
+    exact qfact_ne_zero_of_lt hr (by omega)
+
+/-- Above the level, `delta2Reg = (-1)^(s+1-r) E`. -/
+lemma delta2Reg_above (hr : 2 ≤ r) {u v x : ℕ} (hs : r - 1 ≤ (u + v + x) / 2) :
+    delta2Reg r u v x = (-1) ^ ((u + v + x) / 2 + 1 - r) * E3 r u v x := by
+  unfold delta2Reg E3
+  rw [Refl.qfactReg_of_ge hr (by omega)]
+  have h1 : ((-1 : ℝ) ^ ((u + v + x) / 2 + 1 - r))⁻¹ = (-1) ^ ((u + v + x) / 2 + 1 - r) := by
+    rw [← inv_pow, inv_neg, inv_one]
+  rw [div_mul_eq_div_div, mul_comm (qfact r (r - 1)), ← div_div, mul_div_assoc', div_div,
+    mul_comm _ (qfact r (r - 1))]
+  field_simp
+  rw [← h1]
+  field_simp
+
+/-- `E(u, v, 2r-2-x) = E(u, v, x)⁻¹` (from `[r-1-k]! [k]! = [r-1]!`). -/
+lemma E3_reflect (hr : 2 ≤ r) {u v x : ℕ} (hu : u ≤ r - 2) (hv : v ≤ r - 2) (ht : Tri u v x)
+    (hs : r - 1 ≤ (u + v + x) / 2) : E3 r u v (2 * r - 2 - x) = (E3 r u v x)⁻¹ := by
+  unfold Tri at ht
+  have hx : x ≤ 2 * r - 2 := by omega
+  set s := (u + v + x) / 2 with hsdef
+  have e1 : (u + v + (2 * r - 2 - x)) / 2 - u = r - 1 - (s - v) := by omega
+  have e2 : (u + v + (2 * r - 2 - x)) / 2 - v = r - 1 - (s - u) := by omega
+  have e3 : (u + v + (2 * r - 2 - x)) / 2 - (2 * r - 2 - x) = s + 1 - r := by omega
+  have e4 : (u + v + (2 * r - 2 - x)) / 2 + 1 - r = s - x := by omega
+  have r1 := Refl.qfact_reflect hr (k := s - v) (by omega)
+  have r2 := Refl.qfact_reflect hr (k := s - u) (by omega)
+  have n1 := qfact_ne_zero_of_lt hr (n := s - u) (by omega)
+  have n2 := qfact_ne_zero_of_lt hr (n := s - v) (by omega)
+  have n3 := qfact_ne_zero_of_lt hr (n := s - x) (by omega)
+  have n4 := qfact_ne_zero_of_lt hr (n := s + 1 - r) (by omega)
+  have n5 := qfact_ne_zero_of_lt hr (n := r - 1) (by omega)
+  unfold E3
+  rw [e1, e2, e3, e4, ← hsdef]
+  have r1' : qfact r (r - 1 - (s - v)) = qfact r (r - 1) / qfact r (s - v) := by
+    rw [eq_div_iff n2, r1]
+  have r2' : qfact r (r - 1 - (s - u)) = qfact r (r - 1) / qfact r (s - u) := by
+    rw [eq_div_iff n1, r2]
+  rw [r1', r2']
+  field_simp
+
+lemma SRg_swap12_34 (r : ℕ) (a1 a2 a3 a4 b1 b2 b3 : ℤ) :
+    Refl.SRg r a2 a1 a4 a3 b1 b2 b3 = Refl.SRg r a1 a2 a3 a4 b1 b2 b3 := by
+  unfold Refl.SRg Refl.regTerm; refine sum_congr rfl fun z _ => ?_; ring
+
+/-- The Racah parameters of `racahG θ j₁ … j₆` as a function of the third colour. -/
+noncomputable def SRgAt (r j₁ j₂ j₃ j₄ j₅ j₆ : ℕ) : ℝ :=
+  Refl.SRg r (((j₁ + j₂ + j₃) / 2 : ℕ) : ℤ) (((j₁ + j₅ + j₆) / 2 : ℕ) : ℤ)
+    (((j₄ + j₂ + j₆) / 2 : ℕ) : ℤ) (((j₄ + j₅ + j₃) / 2 : ℕ) : ℤ)
+    (((j₁ + j₂ + j₄ + j₅) / 2 : ℕ) : ℤ) (((j₂ + j₃ + j₅ + j₆) / 2 : ℕ) : ℤ)
+    (((j₃ + j₁ + j₆ + j₄) / 2 : ℕ) : ℤ)
+
+/-- **The reflection of the regularised sum in the colour `j₃`**: with the two triads through `j₃` above the
+level and the other two within it, `j₃ ↦ 2r - 2 - j₃` multiplies it by `E(j₁,j₂,j₃) E(j₄,j₅,j₃)`. -/
+theorem SRgAt_reflect (hr : 2 ≤ r) {j₁ j₂ j₃ j₄ j₅ j₆ : ℕ}
+    (t1 : Tri j₁ j₂ j₃) (t2 : Tri j₁ j₅ j₆) (t3 : Tri j₄ j₂ j₆) (t4 : Tri j₄ j₅ j₃)
+    (l2 : (j₁ + j₅ + j₆) / 2 ≤ r - 2) (l3 : (j₄ + j₂ + j₆) / 2 ≤ r - 2)
+    (h1 : r - 1 ≤ (j₁ + j₂ + j₃) / 2) (h4 : r - 1 ≤ (j₄ + j₅ + j₃) / 2) :
+    SRgAt r j₁ j₂ (2 * r - 2 - j₃) j₄ j₅ j₆ = E3 r j₁ j₂ j₃ * E3 r j₄ j₅ j₃ * SRgAt r j₁ j₂ j₃ j₄ j₅ j₆ := by
+  unfold Tri at t1 t2 t3 t4
+  have H : Refl.ReflHyp r (((j₁ + j₅ + j₆) / 2 : ℕ) : ℤ) (((j₁ + j₂ + j₃) / 2 : ℕ) : ℤ)
+      (((j₄ + j₅ + j₃) / 2 : ℕ) : ℤ) (((j₄ + j₂ + j₆) / 2 : ℕ) : ℤ)
+      (((j₁ + j₂ + j₄ + j₅) / 2 : ℕ) : ℤ) (((j₂ + j₃ + j₅ + j₆) / 2 : ℕ) : ℤ)
+      (((j₃ + j₁ + j₆ + j₄) / 2 : ℕ) : ℤ) := by
+    constructor <;> omega
+  have hR := Refl.SRg_reflect hr H
+  unfold Refl.ReflAt Refl.rd at hR
+  unfold SRgAt
+  rw [← SRg_swap12_34 r (((j₁ + j₂ + j₃) / 2 : ℕ) : ℤ), ← SRg_swap12_34 r (((j₁ + j₂ + (2 * r - 2 - j₃)) / 2 : ℕ) : ℤ)]
+  have q1 : (((j₁ + j₂ + (2 * r - 2 - j₃)) / 2 : ℕ) : ℤ) = (((j₁ + j₂ + j₃) / 2 : ℕ) : ℤ) +
+      ((r : ℤ) - 1 - ((((j₁ + j₂ + j₃) / 2 : ℕ) : ℤ) + (((j₄ + j₅ + j₃) / 2 : ℕ) : ℤ) -
+        (((j₁ + j₂ + j₄ + j₅) / 2 : ℕ) : ℤ))) := by omega
+  have q2 : (((j₄ + j₅ + (2 * r - 2 - j₃)) / 2 : ℕ) : ℤ) = (((j₄ + j₅ + j₃) / 2 : ℕ) : ℤ) +
+      ((r : ℤ) - 1 - ((((j₁ + j₂ + j₃) / 2 : ℕ) : ℤ) + (((j₄ + j₅ + j₃) / 2 : ℕ) : ℤ) -
+        (((j₁ + j₂ + j₄ + j₅) / 2 : ℕ) : ℤ))) := by omega
+  have q3 : (((j₂ + (2 * r - 2 - j₃) + j₅ + j₆) / 2 : ℕ) : ℤ) = (((j₂ + j₃ + j₅ + j₆) / 2 : ℕ) : ℤ) +
+      ((r : ℤ) - 1 - ((((j₁ + j₂ + j₃) / 2 : ℕ) : ℤ) + (((j₄ + j₅ + j₃) / 2 : ℕ) : ℤ) -
+        (((j₁ + j₂ + j₄ + j₅) / 2 : ℕ) : ℤ))) := by omega
+  have q4 : ((((2 * r - 2 - j₃) + j₁ + j₆ + j₄) / 2 : ℕ) : ℤ) = (((j₃ + j₁ + j₆ + j₄) / 2 : ℕ) : ℤ) +
+      ((r : ℤ) - 1 - ((((j₁ + j₂ + j₃) / 2 : ℕ) : ℤ) + (((j₄ + j₅ + j₃) / 2 : ℕ) : ℤ) -
+        (((j₁ + j₂ + j₄ + j₅) / 2 : ℕ) : ℤ))) := by omega
+  rw [q1, q2, q3, q4, hR]
+  congr 1
+  unfold Refl.regFac E3
+  have f1 : ((((j₂ + j₃ + j₅ + j₆) / 2 : ℕ) : ℤ) - (((j₁ + j₅ + j₆) / 2 : ℕ) : ℤ)).toNat =
+      (j₁ + j₂ + j₃) / 2 - j₁ := by omega
+  have f2 : ((((j₃ + j₁ + j₆ + j₄) / 2 : ℕ) : ℤ) - (((j₄ + j₂ + j₆) / 2 : ℕ) : ℤ)).toNat =
+      (j₁ + j₂ + j₃) / 2 - j₂ := by omega
+  have f3 : ((((j₁ + j₂ + j₄ + j₅) / 2 : ℕ) : ℤ) - (((j₄ + j₅ + j₃) / 2 : ℕ) : ℤ)).toNat =
+      (j₁ + j₂ + j₃) / 2 - j₃ := by omega
+  have f4 : ((((j₂ + j₃ + j₅ + j₆) / 2 : ℕ) : ℤ) - (((j₄ + j₂ + j₆) / 2 : ℕ) : ℤ)).toNat =
+      (j₄ + j₅ + j₃) / 2 - j₄ := by omega
+  have f5 : ((((j₃ + j₁ + j₆ + j₄) / 2 : ℕ) : ℤ) - (((j₁ + j₅ + j₆) / 2 : ℕ) : ℤ)).toNat =
+      (j₄ + j₅ + j₃) / 2 - j₅ := by omega
+  have f6 : ((((j₁ + j₂ + j₄ + j₅) / 2 : ℕ) : ℤ) - (((j₁ + j₂ + j₃) / 2 : ℕ) : ℤ)).toNat =
+      (j₄ + j₅ + j₃) / 2 - j₃ := by omega
+  have f7 : ((((j₁ + j₂ + j₃) / 2 : ℕ) : ℤ) - r + 1).toNat = (j₁ + j₂ + j₃) / 2 + 1 - r := by omega
+  have f8 : ((((j₄ + j₅ + j₃) / 2 : ℕ) : ℤ) - r + 1).toNat = (j₄ + j₅ + j₃) / 2 + 1 - r := by omega
+  rw [f1, f2, f3, f4, f5, f6, f7, f8]
+  ring
+
 end Lightlike.TV

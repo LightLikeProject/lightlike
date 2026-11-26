@@ -388,3 +388,11 @@ one tending to `0`. "Above the level" for a triad means `s = (u+v+w)/2 ≥ r-1`.
   algebraic core: `SRg_reflect` (QSixJRegular) for the three regularised sums, the regularised `Δ²` and the sign.
 * RHS: `(p,q,r')` within the level gives the BE RHS / `P6`; above the level `η^{-1+1+1} → 0` (BE RHS is `0`); not a triangle: `0`.
 Then the limits of both sides of `GenBE` (which holds eventually) agree, and multiplying by `P6 ≠ 0` gives the BE instance.
+
+### L6 progress (27 Nov, paused by owner order for GE5)
+Proved on `oscillatory/qu1` (`Lightlike/TuraevViro/QSixJLimit.lean`): regularised factorials near `π/r`, `decomp_delta2G`,
+`decomp_racahG` (value `SRg` above the level, `qRacahSum` within), `decomp_qnG`, the reflection factor `E3` with
+`delta2Reg_above`, `E3_reflect` and `SRgAt_reflect` (the three ingredients of `L_{x'} = -L_x`). MEASURED (mpmath 30 digits,
+r = 4..8, 82 pairs, 20 nonzero): `L_x + L_{2r-2-x} = 0` to 1.6e-28 with `L_x` as in the design above. Remaining for L6: the
+term-level limit `genBETerm → (k=0 value | 0 | L_x)`, the pair sum by `Finset.sum_involution`, the RHS limit, and the assembly
+`qBiedenharnElliott_of_genBE`.
