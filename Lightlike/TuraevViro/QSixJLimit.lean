@@ -340,4 +340,68 @@ lemma racahG_eq_eta_mul (θ : ℝ) {j₁ j₂ j₃ j₄ j₅ j₆ : ℕ}
     ring
   · rw [racahTermG_out hb, racahTermRG_out hb, mul_zero]
 
+lemma continuousAt_racahRG (hr : 2 ≤ r) {j₁ j₂ j₃ j₄ j₅ j₆ : ℕ} (hb : RacahBound r j₁ j₂ j₄ j₅ j₆) :
+    ContinuousAt (fun θ => racahRG r θ j₁ j₂ j₃ j₄ j₅ j₆) (π / r) := by
+  obtain ⟨b1, b2, b4, b5, b6⟩ := hb
+  unfold racahRG
+  refine tendsto_finset_sum _ fun z _ => ?_
+  by_cases hbox : InBox (((j₁ + j₂ + j₃) / 2 : ℕ) : ℤ) (((j₁ + j₅ + j₆) / 2 : ℕ) : ℤ)
+      (((j₄ + j₂ + j₆) / 2 : ℕ) : ℤ) (((j₄ + j₅ + j₃) / 2 : ℕ) : ℤ)
+      (((j₁ + j₂ + j₄ + j₅) / 2 : ℕ) : ℤ) (((j₂ + j₃ + j₅ + j₆) / 2 : ℕ) : ℤ)
+      (((j₃ + j₁ + j₆ + j₄) / 2 : ℕ) : ℤ) z
+  · have H : ∀ u : ℤ, u < r → ContinuousAt (fun θ => invQFG θ u) (π / r) :=
+      fun u hu => continuousAt_invQFG hr hu
+    unfold InBox at hbox
+    unfold racahTermRG
+    exact (continuousAt_const.mul (continuousAt_qfRegG hr _)).mul
+      (((((H _ (by omega)).mul (H _ (by omega))).mul (H _ (by omega))).mul (H _ (by omega))).mul
+        (((H _ (by omega)).mul (H _ (by omega))).mul (H _ (by omega))))
+  · exact continuousAt_const.congr (Filter.Eventually.of_forall fun θ => (racahTermRG_out hbox θ).symm)
+
+lemma racahTermRG_root (α₁ α₂ α₃ α₄ β₁ β₂ β₃ : ℤ) (z : ℕ) :
+    racahTermRG r (π / r) α₁ α₂ α₃ α₄ β₁ β₂ β₃ z = Refl.regTerm r α₁ α₂ α₃ α₄ β₁ β₂ β₃ z := by
+  unfold racahTermRG Refl.regTerm Refl.PnReg
+  rw [if_pos (by omega), show ((z : ℤ) + 1).toNat = z + 1 by omega, qfRegG_root]
+  simp only [invQFG_root]
+
+/-- At `π/r` the regularised sum is the library's `Refl.SRg` of the Racah parameters. -/
+lemma racahRG_root (j₁ j₂ j₃ j₄ j₅ j₆ : ℕ) :
+    racahRG r (π / r) j₁ j₂ j₃ j₄ j₅ j₆ =
+      Refl.SRg r (((j₁ + j₂ + j₃) / 2 : ℕ) : ℤ) (((j₁ + j₅ + j₆) / 2 : ℕ) : ℤ)
+        (((j₄ + j₂ + j₆) / 2 : ℕ) : ℤ) (((j₄ + j₅ + j₃) / 2 : ℕ) : ℤ)
+        (((j₁ + j₂ + j₄ + j₅) / 2 : ℕ) : ℤ) (((j₂ + j₃ + j₅ + j₆) / 2 : ℕ) : ℤ)
+        (((j₃ + j₁ + j₆ + j₄) / 2 : ℕ) : ℤ) := by
+  unfold racahRG Refl.SRg
+  simp only [racahTermRG_root]
+  symm
+  refine sum_subset (range_subset.2 (by omega)) fun z hz hz' => ?_
+  rw [mem_range] at hz hz'
+  unfold Refl.regTerm
+  simp [invQFact, show ¬ (0 : ℤ) ≤ (((j₁ + j₂ + j₄ + j₅) / 2 : ℕ) : ℤ) - z by omega]
+
+/-- `racahG = η^k · C`, `k = 1` when the first or the fourth triad is above the level (then `C → SRg`), else
+`k = 0` (then `C = racahG`, continuous, `→ qRacahSum`). -/
+lemma decomp_racahG (hr : 2 ≤ r) {j₁ j₂ j₃ j₄ j₅ j₆ : ℕ} (hb : RacahBound r j₁ j₂ j₄ j₅ j₆) :
+    Decomp r (fun θ => racahG θ j₁ j₂ j₃ j₄ j₅ j₆)
+      (if r - 1 ≤ (j₁ + j₂ + j₃) / 2 ∨ r - 1 ≤ (j₄ + j₅ + j₃) / 2 then 1 else 0) 0
+      (if r - 1 ≤ (j₁ + j₂ + j₃) / 2 ∨ r - 1 ≤ (j₄ + j₅ + j₃) / 2 then
+        Refl.SRg r (((j₁ + j₂ + j₃) / 2 : ℕ) : ℤ) (((j₁ + j₅ + j₆) / 2 : ℕ) : ℤ)
+          (((j₄ + j₂ + j₆) / 2 : ℕ) : ℤ) (((j₄ + j₅ + j₃) / 2 : ℕ) : ℤ)
+          (((j₁ + j₂ + j₄ + j₅) / 2 : ℕ) : ℤ) (((j₂ + j₃ + j₅ + j₆) / 2 : ℕ) : ℤ)
+          (((j₃ + j₁ + j₆ + j₄) / 2 : ℕ) : ℤ)
+      else qRacahSum r j₁ j₂ j₃ j₄ j₅ j₆) := by
+  by_cases h : r - 1 ≤ (j₁ + j₂ + j₃) / 2 ∨ r - 1 ≤ (j₄ + j₅ + j₃) / 2
+  · simp only [if_pos h]
+    exact ⟨fun θ => racahRG r θ j₁ j₂ j₃ j₄ j₅ j₆, continuousAt_racahRG hr hb, racahRG_root _ _ _ _ _ _,
+      fun θ => by rw [racahG_eq_eta_mul θ h (by omega)]; simp⟩
+  · simp only [if_neg h]
+    have := Decomp.of_continuousAt (r := r) (continuousAt_racahG (j₃ := j₃) hr hb)
+    rwa [racahG_root] at this
+
+lemma decomp_qnG (hr : 2 ≤ r) (n : ℕ) : Decomp r (fun θ => qnG θ n) 0 0 (qnum r n) := by
+  have := Decomp.of_continuousAt (r := r) (continuousAt_qnG hr n)
+  rwa [qnG_root] at this
+
+lemma decomp_const (c : ℝ) : Decomp r (fun _ => c) 0 0 c := Decomp.of_continuousAt continuousAt_const
+
 end Lightlike.TV
