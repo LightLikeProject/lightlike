@@ -95,7 +95,7 @@ The irreducibility of the principal series is not yet formalized. [TODO]
 Further results of this area in the results catalogue:
 The spherical Plancherel theorem for SL(2,R): the spherical transform is a unitary equivalence from
 L²(1,∞) onto L²(0,∞), with the density ρ tanh(πρ) [32]. The spherical Plancherel formula for SL(2,R) on
-smooth compactly supported functions of the hyperbolic distance, with the density ρ tanh(πρ) [33]. The
+smooth compactly supported functions of the hyperbolic distance, with the density ρ tanh(πρ) [33]. For the K-type (l, r) of radial functions, the squared L² norm of the l-fold ladder image of the profile sinh^r ξ G^{(r)}(cosh ξ) is the Plancherel integral with the extra weights ∏_{k<l}((k+1/2)² + ρ²) and ∏_{k<r}((k+1/2)² + ρ²) [44]. The
 massive one-particle representation of the Poincaré group, induced from SU(2): it preserves the L² norm,
 is covariant under translations, has P² = m², W² = −m² s(s+1) and n+1 states per momentum [34]. The
 massless one-particle representation of finite helicity h/2, induced from the character of ISO(2): it
@@ -202,6 +202,8 @@ non-vacuity check (stated, not proven) [41].
     `Lorentz.SL2RPlancherel.no_invariant_form_smooth_boundary`: no positive definite skew form for `τ = 1`
 43. Lightlike/Lorentz/SL2RPlancherel/NoInvariantForm.lean - `Lorentz.SL2RPlancherel.no_invariant_form`,
     `Lorentz.SL2RPlancherel.no_invariant_form_smooth`: no positive definite skew form for `|τ| > 1`
+44. Lightlike/Lorentz/SL2RPlancherel/KTypeLR.lean - `Lorentz.SL2RPlancherel.norm_sq_ktype_lr`,
+    `Lorentz.SL2RPlancherel.Nform_succ`, `Lorentz.SL2RPlancherel.LRClaim_all`
 
 ## References
 
