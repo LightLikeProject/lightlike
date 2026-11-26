@@ -22,7 +22,10 @@ so `ladFactor · sinh · conj ψ` is almost everywhere constant (du Bois-Reymond
 `exists_ae_eq_const_of_weak_deriv_zero`).  Together with `ladUp_orth_ker` (the ladder images are
 orthogonal to `ladKer l r`) this identifies the orthocomplement of the ladder images: it is
 `ℂ · ladKer l r` intersected with the space, which is zero unless `ladKer l r` is square integrable
-in the weight `sinh ξ dξ` (the discrete part).  The same argument with a right-hand side, via
+in the weight `sinh ξ dξ`.  The test functions here vanish near `ξ = 0`; for chains of ladders this
+class is too small: `ψ = -1 / (1 + cosh ξ)` is square integrable and orthogonal to every
+`ladUp 1 0 (ladUp 0 0 F)` with `F` supported in `(0, ∞)`, and only the radial functions that do not
+vanish at the identity exclude it (`⟨ladUp 0 0 F, 1 / sinh⟩ = -F(0)`).  The same argument with a right-hand side, via
 `exists_ae_eq_primitive_of_weak_deriv`, solves the lowered ladder equation `ladDown (l+1) r ψ = χ`
 weakly by variation of constants (`ae_eq_ladKer_mul_of_weak_ladDown`); iterated, this handles the
 chains of ladder images of the radial generators.  Layer 2c-iv of the Plancherel formula on `SL(2,ℝ)`,
