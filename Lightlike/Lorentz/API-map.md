@@ -212,6 +212,10 @@ non-vacuity check (stated, not proven) [41].
 48. Lightlike/Lorentz/SL2RPlancherel/PolarTorus.lean - `Lorentz.SL2R.lintegral_haarR_torus`
 49. Lightlike/Lorentz/SL2RPlancherel/KKParseval.lean -
     `Lorentz.SL2RPlancherel.lintegral_norm_sq_eq_kk`
+50. Lightlike/Lorentz/SL2RPlancherel/SmoothRight.lean - `Lorentz.SL2R.hasDerivAt_kakP_theta`,
+    `Lorentz.SL2R.hasDerivAt_kakP_xi`, `Lorentz.SL2R.hasDerivAt_kakP_alpha`
+51. Lightlike/Lorentz/SL2RPlancherel/LadderComponents.lean - `Lorentz.SL2R.kk_ladder_up`,
+    `Lorentz.SL2R.kk_ladder_down`
 
 ## References
 
