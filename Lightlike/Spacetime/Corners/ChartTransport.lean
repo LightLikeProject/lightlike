@@ -38,8 +38,10 @@ theorem satisfiesEinstein_trans_iff (g : NondegMetric I M) (h : cov.IsLeviCivita
     refine ⟨h, fun x v w => ?_⟩
     have h1 := hE' x (e v) (e w)
     have hr := ricciAt_trans e cov x v w
-    rw [hr, scalarCurvatureAt_trans e cov g x] at h1
-    erw [e.symm_apply_apply, e.symm_apply_apply] at h1
+    have hg : ((transMetric e g).g x) (e v) (e w) = g.g x v w := by
+      show (g.g x (e.symm (e v))) (e.symm (e w)) = _
+      erw [e.symm_apply_apply, e.symm_apply_apply]
+    rw [hr, scalarCurvatureAt_trans e cov g x, hg] at h1
     exact h1
 
 /-- **The Einstein equations on a manifold with corners modelled on any finite-dimensional space are the coordinate vacuum equations in every

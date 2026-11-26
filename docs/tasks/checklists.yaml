@@ -388,7 +388,7 @@ milestones:
       - id: m5
         kind: main
         text: "In that generality the intrinsic curvature agrees in every chart with the coordinate curvature"
-        decls: []
+        decls: [Lightlike.riemann_coord_trans, Lightlike.ricciAt_coord_trans, Lightlike.satisfiesEinstein_iff_chart_trans]
         hint: "Close: Lightlike.riemann_coord_compW, Lightlike.ricciAt_coordW, Lightlike.satisfiesEinstein_iff_chart_provedW (coordinate layer is Fin n → ℝ only)."
       - id: p1
         kind: piece
