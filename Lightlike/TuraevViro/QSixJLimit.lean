@@ -91,7 +91,7 @@ lemma eventually_etaG_ne (hr : 2 ≤ r) : ∀ᶠ θ in 𝓝[≠] (π / r), etaG 
     rcases mul_eq_zero.mp h0 with h | h
     · exact absurd h hr0.ne'
     · exact h
-  exact h3 (by linarith)
+  exact h3 (show θ = π / r by linarith)
 
 /-! ## Powers of `η` times a function continuous at `π/r` -/
 
@@ -108,6 +108,7 @@ lemma Decomp.mul {F G : ℝ → ℝ} {k m k' m' : ℕ} {L L' : ℝ} (hF : Decomp
   obtain ⟨C, hC, hCL, hFC⟩ := hF
   obtain ⟨D, hD, hDL, hGD⟩ := hG
   refine ⟨fun θ => C θ * D θ, hC.mul hD, by simp [hCL, hDL], fun θ => ?_⟩
+  show F θ * G θ = _
   rw [hFC, hGD, pow_add, pow_add]; ring
 
 lemma Decomp.congr {F G : ℝ → ℝ} {k m : ℕ} {L : ℝ} (hF : Decomp r F k m L) (h : ∀ θ, G θ = F θ) :

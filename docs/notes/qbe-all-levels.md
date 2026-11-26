@@ -368,3 +368,23 @@ All MEASURED with a numerical model of the library's operators (`modelE`, `capOp
 Plan of the layers (stored in the QU1 plan): Kauffman–Lins coefficient and base entries, third-block recursion with its
 certificate, `Fc = klCoef` by induction, the pentagon rewritten as `Model.BE` at generic `q = e^{iθ}`, and the limit
 `θ → π/r` with the pairing.
+
+## L6 design: the limit θ → π/r (27 Nov 2026, oscillatory; derived on paper, ASSUMPTION until proved)
+
+Fix a tuple. If one of the six triads without `x` — `(a,d,p), (c,b,p), (c,f,q), (e,d,q), (e,a,r'), (b,f,r')` — is not
+`qAdm r`, both sides of `Model.BE` vanish (each such triad occurs in a factor of every LHS term and of the RHS). Otherwise all
+nine colours are `≤ r-2`, so every quantum integer in the generic identity has argument `< 2r`, and `[r]_θ = η(θ)` is the only
+one tending to `0`. "Above the level" for a triad means `s = (u+v+w)/2 ≥ r-1`.
+
+* `delta2G θ u v w` is continuous at `π/r` (value `qDelta r u v w ^ 2`) within the level, and `η⁻¹ · (continuous)` above it.
+* `racahG θ …` is continuous at `π/r` always (denominator arguments are edge lengths `≤ r-2`); if one of its four α-triads is
+  above the level, every term has `z+1 ≥ r`, so `racahG = η · racahRG` with `racahRG → Refl.SRg` (regularised sum).
+* In the term of `x`, the x-triads are `(a,b,x)` (in R1 and R3), `(c,d,x)` (R1, R2), `(e,f,x)` (R2, R3). With `k` of them above:
+  `k = 0` continuous, limit = BE term divided by the product `P6` of the six fixed `qDelta`; `k = 1`: `η^{2-1}`; `k = 2`:
+  `η^{3-2}`; both → 0; `k = 3`: finite limit.
+* Every `x ≥ r-1` has `k = 3` (`s ≥ x`). `x = r-1` carries `[x+1] = [r] = η` → 0. For the others, `x ↦ x' = 2r-2-x` is an
+  involution of `{x : the three x-triads are triangles above the level}`: `(u,v,x')` is above iff `x ≤ u+v`, a triangle iff
+  `(u,v,x)` is above (and `max(u,v) ≤ r-1`), same parity. `[x'+1] = -[x+1]`. The pair cancellation `L_x + L_{x'} = 0` is the
+  algebraic core: `SRg_reflect` (QSixJRegular) for the three regularised sums, the regularised `Δ²` and the sign.
+* RHS: `(p,q,r')` within the level gives the BE RHS / `P6`; above the level `η^{-1+1+1} → 0` (BE RHS is `0`); not a triangle: `0`.
+Then the limits of both sides of `GenBE` (which holds eventually) agree, and multiplying by `P6 ≠ 0` gives the BE instance.
