@@ -16,7 +16,7 @@ pairs `{u, u+1}` and `{0, 5}`, and for the nine others it is `(-1)^(cU e₁ + cV
 
 So `Z_EPRL = Σ_{col, L} [triangle constraints] · sign · Z_Ooguri(col, L)` with an explicit sign
 (`eprlIntrinsicAmp_sphere6`).  The sign is not `1`: it is a product of face parities and, for nine of the fifteen
-tetrahedra, tetrahedron parities (Choice A of the owner decision on G2-024 keeps the sign in the statement).
+tetrahedra, tetrahedron parities (the sign is kept in the statement of the theorem).
 -/
 
 open Finset Lightlike.FourD Lightlike.FourD.Tests Lightlike.SpinFoam
