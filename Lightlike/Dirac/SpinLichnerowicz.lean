@@ -50,9 +50,9 @@ lemma SpinStructure.connForm_skew {i : ι} {x : M} (hx : x ∈ S.dom i) (a b c :
     filter_upwards [(S.dom_open i).mem_nhds hx] with y hy
     exact S.frame_orthonormal i b c y hy
   rw [hc.mfderiv_eq, mfderiv_const] at h
-  simp only [ContinuousLinearMap.zero_apply] at h
+  simp only [ContinuousLinearMap.comp_zero, ContinuousLinearMap.zero_apply] at h
   unfold SpinStructure.connForm SpinStructure.connFormV
-  rw [g.symm x (S.frame i b x)] at h
+  rw [g.symm x (S.frame i b x) (leviCivita g (S.frame i c) x (S.frame i a x))] at h
   exact eq_neg_of_add_eq_zero_left h.symm
 
 /-- `∇ₐ` of a finite sum. -/
@@ -74,7 +74,7 @@ lemma SpinStructure.nabla_gam {i : ι} {x : M} (hx : x ∈ S.dom i) (a k : Fin n
     rw [mvfderiv_clm_apply (fun _ => gam ρ k) ψ x mdifferentiableAt_const hψ, mvfderiv_const]
     simp
   have hc := congrArg (fun L => L (ψ x)) (spinForm_comm ρ (S.connForm_skew hx a) k)
-  simp only [ContinuousLinearMap.sub_apply, ContinuousLinearMap.mul_apply_eq_comp,
+  simp only [ContinuousLinearMap.sub_apply, mul_apply_eq_comp,
     ContinuousLinearMap.comp_apply, ContinuousLinearMap.coe_sum', Finset.sum_apply,
     ContinuousLinearMap.coe_smul', Pi.smul_apply] at hc
   unfold SpinStructure.nabla SpinStructure.nablaV
@@ -100,7 +100,8 @@ theorem SpinStructure.dirac_dirac_hess {i : ι} {x : M} (hx : x ∈ S.dom i) {φ
       ∑ b, (gam ρ b (S.nabla ρ i a (fun y => S.nabla ρ i b φ y) x) +
         ∑ k, S.connForm i x a b k • gam ρ k (S.nabla ρ i b φ x)) := by
     intro a
-    rw [S.nabla_finsum ρ i a fun b => (gam ρ b).mdifferentiableAt.comp x (hf b)]
+    rw [S.nabla_finsum ρ i a (ψ := fun b y => gam ρ b (S.nabla ρ i b φ y))
+      fun b => (gam ρ b).mdifferentiableAt.comp x (hf b)]
     refine Finset.sum_congr rfl fun b _ => ?_
     exact S.nabla_gam ρ hx a b (hf b)
   have h0 : S.dirac ρ i (S.dirac ρ i φ) x =
@@ -229,10 +230,10 @@ lemma SpinStructure.frame_expand {i : ι} {x : M} (hx : x ∈ S.dom i)
     (w : TangentSpace 𝓘(ℝ, Fin n → ℝ) x) :
     w = ∑ l, g.g x w (S.frame i l x) • S.frame i l x := by
   have hcard : Fintype.card (Fin n) = Module.finrank ℝ (TangentSpace 𝓘(ℝ, Fin n → ℝ) x) := by
-    simp [TangentSpace]
-  set b := basisOfLinearIndependentOfCardEqFinrank (S.frame_linearIndependent hx) hcard
+    simp only [Fintype.card_fin]; exact (Module.finrank_fin_fun ℝ).symm
+  set b := basisOfLinearIndependentOfCardEqFinrank' _ (S.frame_linearIndependent hx) hcard
   have hb : ∀ l, b l = S.frame i l x := fun l => by
-    simp [b, coe_basisOfLinearIndependentOfCardEqFinrank]
+    simp [b, basisOfLinearIndependentOfCardEqFinrank']
   have hw := (b.sum_repr w).symm
   have hcoef : ∀ l, b.repr w l = g.g x w (S.frame i l x) := by
     intro l
@@ -269,6 +270,7 @@ lemma SpinStructure.mdiffAt_connForm {i : ι} {x : M} (hx : x ∈ S.dom i) (a b 
     FunDiffAt (n := n) (fun y => S.connForm i y a b c) x :=
   (S.contMDiffAt_connForm hx a b c).mdifferentiableAt (by simp)
 
+set_option synthInstance.maxHeartbeats 100000 in
 /-- The spinorial connection form `y ↦ spinForm ρ (ω_b(y))` is differentiable, with derivative the
 spinorial form of the derivative of `ω_b`. -/
 lemma SpinStructure.mvfderiv_spinForm {i : ι} {x : M} (hx : x ∈ S.dom i) (b : Fin n)
@@ -290,7 +292,7 @@ lemma SpinStructure.mvfderiv_spinForm {i : ι} {x : M} (hx : x ∈ S.dom i) (b :
   refine ⟨by rw [hexp]; exact mdiffAt_finsum hrow, ?_⟩
   rw [hexp, mvfderiv_finsum hrow]
   simp only [ContinuousLinearMap.coe_sum', Finset.sum_apply]
-  simp only [spinForm, Finset.smul_sum, smul_smul, Matrix.of_apply]
+  simp only [spinForm, Finset.smul_sum, Matrix.of_apply]
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [mvfderiv_finsum (hterm k)]
   simp only [ContinuousLinearMap.coe_sum', Finset.sum_apply]
@@ -298,7 +300,8 @@ lemma SpinStructure.mvfderiv_spinForm {i : ι} {x : M} (hx : x ∈ S.dom i) (b :
   rw [show (fun y => S.connForm i y b k l • ((1 / 4 : ℝ) • (gam ρ k * gam ρ l))) =
       (fun y => S.connForm i y b k l) • (fun _ => (1 / 4 : ℝ) • (gam ρ k * gam ρ l)) from rfl,
     mvfderiv_smul (S.mdiffAt_connForm hx b k l) mdifferentiableAt_const, mvfderiv_const]
-  simp [smul_smul, mul_comm]
+  simp only [smul_zero, zero_add, ContinuousLinearMap.smulRight_apply]
+  rw [smul_comm]
 
 /-! ### Second derivatives along fields commute up to the bracket -/
 
@@ -313,7 +316,7 @@ theorem deriv_comm_V {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F] {p :
     mvfderiv 𝓘(ℝ, Fin n → ℝ) f p (mlieBracket 𝓘(ℝ, Fin n → ℝ) X Y p) =
       mvfderiv 𝓘(ℝ, Fin n → ℝ) (fun z => mvfderiv 𝓘(ℝ, Fin n → ℝ) f z (Y z)) p (X p) -
         mvfderiv 𝓘(ℝ, Fin n → ℝ) (fun z => mvfderiv 𝓘(ℝ, Fin n → ℝ) f z (X z)) p (Y p) := by
-  rw [eq_iff_forall_dual_eq ℝ]
+  rw [SeparatingDual.eq_iff_forall_dual_eq (R := ℝ)]
   intro ℓ
   rw [map_sub]
   set h : M → ℝ := fun z => ℓ (f z) with hh
@@ -387,8 +390,6 @@ lemma SpinStructure.cov_cov_frame {i : ι} {x : M} (hx : x ∈ S.dom i) (a b k m
     Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.mem_univ, ite_true]
   rw [add_comm]
   congr 1
-  refine Finset.sum_congr rfl fun l _ => ?_
-  rfl
 
 /-- **The structure equation**: in an orthonormal frame,
 `R_ab = d_a ω_b - d_b ω_a + ω_b ω_a - ω_a ω_b - ω_{[F_a, F_b]}` (matrices in the last two indices). -/
@@ -430,18 +431,20 @@ theorem SpinStructure.hess_antisymm {i : ι} {x : M} (hx : x ∈ S.dom i) {φ : 
           fun y => spinForm ρ (S.connForm i y c) (φ y) := rfl
     have h2 : FunDiffAt (n := n) (fun y => spinForm ρ (S.connForm i y c) (φ y)) x :=
       (hΩ c (S.frame i a x)).1.clm_apply hφx
-    unfold SpinStructure.nabla SpinStructure.nablaV
+    change S.nablaV ρ i x (S.frame i a x) (fun y => S.nabla ρ i c φ y) = _
+    unfold SpinStructure.nablaV
     rw [h1, mvfderiv_add (hdir c) h2, ContinuousLinearMap.add_apply,
       mvfderiv_clm_apply _ _ x (hΩ c (S.frame i a x)).1 hφx, (hΩ c (S.frame i a x)).2]
-    simp only [SpinStructure.dConn, SpinStructure.connForm]
+    simp only [SpinStructure.dConn, SpinStructure.connForm, SpinStructure.nabla,
+      SpinStructure.nablaV, Pi.add_apply, map_add]
     abel
   -- the bracket terms
   have hbr : ∑ k, S.connForm i x a b k • S.nabla ρ i k φ x -
       ∑ k, S.connForm i x b a k • S.nabla ρ i k φ x =
       S.nablaV ρ i x (mlieBracket 𝓘(ℝ, Fin n → ℝ) (S.frame i a) (S.frame i b) x) φ := by
-    have ht := cov_torsion leviCivita_torsion (S.mdiffAt_frame a hx) (S.mdiffAt_frame b hx)
+    have ht := cov_torsion (leviCivita_torsion g) (S.mdiffAt_frame a hx) (S.mdiffAt_frame b hx)
     rw [← ht, S.cov_frame_expand hx, S.cov_frame_expand hx (S.frame i b x) a]
-    rw [← Finset.sum_sub_distrib]
+    rw [← Finset.sum_sub_distrib (f := fun l => S.connFormV i x (S.frame i a x) b l • S.frame i l x)]
     simp only [← sub_smul]
     rw [S.nablaV_sum ρ i]
     simp only [sub_smul, Finset.sum_sub_distrib]
@@ -450,17 +453,19 @@ theorem SpinStructure.hess_antisymm {i : ι} {x : M} (hx : x ∈ S.dom i) {φ : 
   have hbrack := spinForm_bracket ρ (A := S.connForm i x a) (B := S.connForm i x b)
     (S.connForm_skew hx a)
   have hbφ := congrArg (fun L => L (φ x)) hbrack
-  simp only [ContinuousLinearMap.sub_apply, ContinuousLinearMap.mul_apply_eq_comp,
+  simp only [ContinuousLinearMap.sub_apply, mul_apply_eq_comp,
     ContinuousLinearMap.comp_apply] at hbφ
+  rw [spinForm_sub, ContinuousLinearMap.sub_apply] at hbφ
   unfold SpinStructure.hess
   rw [hexp a b, hexp b a, S.riem_eq hx a b]
-  rw [show ∀ A B C D E : V, A - B - (C - D) = A - C - (B - D) from fun A B C D E => by abel,
+  rw [show ∀ A B C D : V, A - B - (C - D) = A - C - (B - D) from fun A B C D => by abel,
     hbr]
   unfold SpinStructure.nablaV
   unfold SpinStructure.nabla SpinStructure.nablaV
   simp only [spinForm_sub, spinForm_add, ContinuousLinearMap.sub_apply,
     ContinuousLinearMap.add_apply, map_add]
   rw [← hbφ, hcomm]
+  simp only [SpinStructure.connForm]
   abel
 
 /-! ### The scalar curvature in the frame -/
@@ -468,11 +473,12 @@ theorem SpinStructure.hess_antisymm {i : ι} {x : M} (hx : x ∈ S.dom i) {φ : 
 /-- The orthonormal frame as a basis of the tangent space. -/
 noncomputable def SpinStructure.frameBasis {i : ι} {x : M} (hx : x ∈ S.dom i) :
     Module.Basis (Fin n) ℝ (TangentSpace 𝓘(ℝ, Fin n → ℝ) x) :=
-  basisOfLinearIndependentOfCardEqFinrank (S.frame_linearIndependent hx) (by simp [TangentSpace])
+  basisOfLinearIndependentOfCardEqFinrank' _ (S.frame_linearIndependent hx)
+    (by simp only [Fintype.card_fin]; exact (Module.finrank_fin_fun ℝ).symm)
 
 lemma SpinStructure.frameBasis_apply {i : ι} {x : M} (hx : x ∈ S.dom i) (a : Fin n) :
     S.frameBasis hx a = S.frame i a x := by
-  simp [SpinStructure.frameBasis, coe_basisOfLinearIndependentOfCardEqFinrank]
+  simp [SpinStructure.frameBasis, basisOfLinearIndependentOfCardEqFinrank']
 
 /-- **The scalar curvature in an orthonormal frame**: `R = ∑ₐ_b R_baab`. -/
 theorem SpinStructure.scalarCurvature_eq {i : ι} {x : M} (hx : x ∈ S.dom i) :
@@ -481,7 +487,7 @@ theorem SpinStructure.scalarCurvature_eq {i : ι} {x : M} (hx : x ∈ S.dom i) :
       if a = b then (fun _ => (1 : ℝ)) a else 0 := by
     intro a b
     simp [S.frameBasis_apply, S.frame_orthonormal i a b x hx]
-  rw [scalarCurvatureAt_frame (leviCivita g) g leviCivita_torsion (leviCivita_compat g) x
+  rw [scalarCurvatureAt_frame (leviCivita g) g (leviCivita_torsion g) (leviCivita_compat g) x
     (S.frameBasis hx) (fun _ => 1) (fun _ => by norm_num) hf]
   refine Finset.sum_congr rfl fun a _ => ?_
   rw [ricciAt_frame (leviCivita g) g x (S.frameBasis hx) (fun _ => 1) (fun _ => by norm_num) hf]
@@ -496,8 +502,8 @@ lemma SpinStructure.riem_symm {i : ι} {x : M} (hx : x ∈ S.dom i) :
     (∀ a b k l, S.riem i x a b k l + S.riem i x b k a l + S.riem i x k a b l = 0) := by
   refine ⟨fun a b k l => ?_, fun a b k l => ?_, fun a b k l => ?_⟩
   · exact riemannLowerAt_antisymm_first (leviCivita g) g x _ _ _ _
-  · exact riemannLowerAt_pair_symm (leviCivita g) g leviCivita_torsion (leviCivita_compat g) x _ _ _ _
-  · have h := bianchi_first_proved (leviCivita g) leviCivita_torsion x (S.frame i a x)
+  · exact riemannLowerAt_pair_symm (leviCivita g) g (leviCivita_torsion g) (leviCivita_compat g) x _ _ _ _
+  · have h := bianchi_first_proved (leviCivita g) (leviCivita_torsion g) x (S.frame i a x)
       (S.frame i b x) (S.frame i k x)
     have := congrArg (fun w => g.g x w (S.frame i l x)) h
     simp only [map_add, ContinuousLinearMap.add_apply, map_zero, ContinuousLinearMap.zero_apply] at this
@@ -589,5 +595,30 @@ theorem SpinStructure.dirac_sq_eq_rough_add_scal_div_four (hψ : ψ.IsSmooth) {i
   S.dirac_sq ρ hx (hψ.eventually hx)
 
 end Field
+
+/-! ### Non-vacuity -/
+
+/-- The constant spinor field `v` of the Euclidean spin structure of `ℝⁿ` (trivial cocycle, so the
+transition condition is `v = ρ(1) v`). -/
+noncomputable def constSpinorField (ρ : CliffordRep n V) (v : V) :
+    SpinorField (euclideanSpinStructure n) ρ where
+  rep _ _ := v
+  transform _ _ _ _ _ := by
+    change v = ρ 1 v
+    simp
+
+lemma constSpinorField_isSmooth (ρ : CliffordRep n V) (v : V) :
+    (constSpinorField ρ v).IsSmooth := fun _ _ _ => contMDiffAt_const
+
+/-- Non-vacuity of `SpinStructure.dirac_sq_eq_rough_add_scal_div_four`: its hypothesis holds for
+the constant spinor fields of `ℝⁿ`. -/
+example (ρ : CliffordRep n V) (v : V) (x : Fin n → ℝ) :
+    (((constSpinorField ρ v).dirac (constSpinorField_isSmooth ρ v).funDiffAt).dirac
+        (constSpinorField_isSmooth ρ v).funDiffAt_dirac).rep () x =
+      ((constSpinorField ρ v).roughLaplacian (constSpinorField_isSmooth ρ v).funDiffAt
+          (constSpinorField_isSmooth ρ v).funDiffAt_nabla).rep () x +
+        ((1 / 4 : ℝ) * (leviCivita (euclideanMetric n)).scalarCurvatureAt (euclideanMetric n) x) •
+          v :=
+  SpinStructure.dirac_sq_eq_rough_add_scal_div_four (constSpinorField_isSmooth ρ v) trivial
 
 end Lightlike.Dirac
