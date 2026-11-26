@@ -443,7 +443,7 @@ milestones:
       - id: p2
         kind: piece
         text: "De Sitter, anti-de Sitter and Hⁿ are defined"
-        decls: []
+        decls: [Lightlike.hyperbolicMetric, Lightlike.deSitterMetric, Lightlike.antiDeSitterMetric, Lightlike.isCoordMetric_hyperbolic, Lightlike.isCoordMetric_deSitter, Lightlike.isCoordMetric_antiDeSitter]
         hint: "Missing: no definitions (only FLRW de Sitter examples)."
       - id: t1
         kind: trust
