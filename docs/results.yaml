@@ -6949,3 +6949,14 @@
   review: kernel-checked
   note: "GE7 m1 (main statement), assembled from the layers NullDirection, ScriAction (group law, scriAct_comp), SphereConformal, ScriLimit and ScriDilation (dilation, scriDil_scriAct). Comparison pending (no source was read at a cited location): the standard action of the Poincaré group on future null infinity, where the retarded time transforms with the factor K and the sphere by the Möbius action. Limits: Cartesian retarded time and direction, not the compactified chart; the Poincaré group is the set of pairs (Λ, a) with Λ an orthochronous Lorentz matrix, not a group type (the group law and the composition rule hold for the pairs); the conformal factor on the sphere is stated through the length of the differential of the direction map on tangent vectors, not as an equation of metrics on a manifold; the dilation is a separate theorem (scriDil_scriAct) and is not part of this statement; the BMS supertranslations are not treated."
   since: unreleased
+- id: LL-XXXX-j
+  title: "The isometry group of anti-de Sitter space acts conformally on its conformal boundary: for a matrix Λ with Λᵀ η' Λ = η', η' = diag(-1, -1, 1, 1, 1), and a boundary point (cos τ, sin τ, ω), |ω| = 1, the image is ρ (cos τ', sin τ', ω') with ρ > 0 and |ω'| = 1, the action is compatible with the product of matrices (the angle read modulo 2π), and for a tangent vector (dτ, dω) = (a, v), v ⊥ ω, the boundary metric of the image is -(dτ')² + |dω'|² = (-a² + |v|²) / ρ²"
+  area: GR
+  file: Lightlike/GR/AdSConformalBoundary/NullConeSummary.lean
+  decls: [Lightlike.ads_isometry_conformal_boundary]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "GE7 m2 (main statement), assembled from the layers NullCone (factor, angle, unit direction), NullConeAction (group law) and NullConeConformal (the differential and the factor ρ⁻²). Comparison pending (no source was read at a cited location): the embedding of anti-de Sitter space as the quadric in R^{2,3} and of its conformal boundary as the projectivised null cone is Blau, Lecture Notes on General Relativity, Section 39.1 and 39.3.2, to be read before the comparison is claimed. Limits: SO(2,3) is the set of matrices Λ with Λᵀ η' Λ = η' (all of O(2,3), not a group type); the boundary is the circle times the sphere (no universal cover); the differential is stated through explicit formulas for the velocities dτ' and dω' (with their derivative statements along the image curve t ↦ Λ (X + t T) in NullConeConformal), not as an equation of metrics on a manifold; the relation to the boundary metric adsBdyMetric is checked on the time translation (adsTimeShift) only."
+  since: unreleased
