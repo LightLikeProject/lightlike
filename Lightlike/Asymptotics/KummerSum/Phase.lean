@@ -5,7 +5,7 @@ import Lightlike.Asymptotics.Contour
 
 In the variable `α = (z + ½)/N`, `N = m + 1`, Stirling's formula turns Kummer's kernel
 `π (m!)² / (sin(π z) Γ(z+1)² Γ(m−z+1)²)` on the upper half-plane into `exp(N ψ(α))` times slowly
-varying factors (`KummerSum/Kernel.lean`), with the phase
+varying factors (`Lightlike/Asymptotics/KummerSum/Kernel.lean`), with the phase
 
   `ψ(α) = iπ α − 2 (α log α + (1 − α) log(1 − α))`   (`kummerPhase`).
 

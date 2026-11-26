@@ -13,7 +13,7 @@ The contour method of `Lightlike.Asymptotics`, run on Kummer's sum
    (`kummerSum_eq_im_primitive`);
 2. `Φ(m + ½) − Φ(−½)` is the integral of `f` up `Re z = −½`, across `Im z = N/2` and down
    `Re z = m + ½` (`sub_eq_integral_line`);
-3. on the vertical sides `‖f‖ ≤ (q_N²/N) e^{N/2 + 3/(2N)}` (`KummerSum/Sides.lean`);
+3. on the vertical sides `‖f‖ ≤ (q_N²/N) e^{N/2 + 3/(2N)}` (`Lightlike/Asymptotics/KummerSum/Sides.lean`);
 4. across, `f(z(s)) N = −q_N² (2i)^N e^{N φ(s)} A(z(s))` with the saddle `α₀ = (1 + i)/2`,
    `e^{N ψ(α₀)} = (2i)^N` (`kummerKernel_eq`, `kummerPhase_saddle`), `A = 1 + O(1/N)`
    (`norm_kummerAmp_sub_one_le`), and Laplace's method gives `∫ e^{Nφ} = (π/(2N))^{1/2} + O(1/N)`

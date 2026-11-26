@@ -10,7 +10,7 @@ Along the horizontal line `α = α₀ + s`, `s ∈ [−½, ½]`, through the sad
 * **Laplace** (`norm_integral_kummerPhase_sub_le`): there is `C` with
   `‖∫_{−½}^{½} exp(N φ(s)) ds − (π/(2N))^{1/2}‖ ≤ C/N` for all `N > 0`. Both halves are
   `Lightlike.Oscillatory.laplace_ray_uniform` with `a = −ψ''(α₀) = 4`, using
-  `‖φ(s) + 2s²‖ ≤ 16|s|³` and `Re φ(s) ≤ −s²/2` (`KummerSum/Phase.lean`).
+  `‖φ(s) + 2s²‖ ≤ 16|s|³` and `Re φ(s) ≤ −s²/2` (`Lightlike/Asymptotics/KummerSum/Phase.lean`).
 * **The slowly varying factor** (`norm_kummerAmp_sub_one_le`): on the line `Im z = N/2`,
   `‖exp(−2(μ(w₁) + μ(w₂)))/(1 + exp(2πi w₁)) − 1‖ ≤ 26/N` for `N = m + 1 ≥ 6`, from the
   Stirling remainder bound `‖μ(w)‖ ≤ 3/(4‖w‖)` (`norm_stirMu_le`) with `‖w₁‖, ‖w₂‖ ≥ N/2`, and
