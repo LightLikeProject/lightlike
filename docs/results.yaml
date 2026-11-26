@@ -7026,3 +7026,14 @@
   review: kernel-checked
   note: "GE7 m1, third layer; the milestone m1 stays open. Comparison pending (no source was read at a cited location): this is the standard fact that the Möbius action of the Lorentz group on the celestial sphere is conformal with factor K⁻¹ on lengths. hasDerivAt_nullDirMap is the quotient rule for t ↦ (w + t q) / (w₀ + t q₀) with q = Λ (0, v); sum_sq_nullDirDeriv uses that Λ preserves the Minkowski square of (0, v), the Minkowski product of (1, n) with (0, v) (which is n · v = 0) and the null vector (1, n): with A = Σ wᵢ² = K², B = Σ wᵢ qᵢ = K q₀ and C = Σ qᵢ² = q₀² + |v|², the sum of squares of (qᵢ K - wᵢ q₀) is K² |v|². Non-vacuity: the boost with cosh = 5/4, sinh = 3/4 sends e₂ at e₁ to e₂ / 2 (nullDirDeriv_boostX). Limits: the derivative is the one of the formula n ↦ w⃗ / w₀ along the line n + t v in the ambient space, evaluated at a unit n; the round sphere is not given as a manifold and the pullback of the metric is stated through the squared length of the differential, not as an equation of metrics; K⁻² is the conformal factor on the metric dΩ²; no relation to the compactified chart yet."
   since: unreleased
+- id: LL-0544
+  title: "The action of the Poincaré group on null infinity is the limit of its action on Minkowski space: along the outgoing null ray s ↦ u e₀ + s (1, n), the retarded time t - |x⃗| and the direction x⃗ / |x⃗| of the image Λ x(s) + a of an orthochronous Poincaré transformation converge, as s tends to infinity, to the image of (u, n) under the action (u, n) ↦ (u / K + a₀ - n' · a⃗, n')"
+  area: GR
+  file: Lightlike/GR/AdSConformalBoundary/ScriLimit.lean
+  decls: [Lightlike.tendsto_scriCoord_ray]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "GE7 m1, fourth layer (the analysis part); the milestone m1 stays open. Comparison pending (no source was read at a cited location). The image of the ray is V + c (1, n') with c = K s and V = u Λ e₀ + a, and for a unit n' the retarded time V₀ + c - |V⃗ + c n'| converges to V₀ - n' · V⃗ and the direction (V⃗ + c n') / |V⃗ + c n'| converges to n' (tendsto_retarded, tendsto_direction: |V⃗ + c n'|² = c² + 2 c n' · V⃗ + |V⃗|², so |V⃗ + c n'| / c → 1 and |V⃗ + c n'| - c → n' · V⃗). The limit V₀ - n' · V⃗ is u / K - (1, n') · a because the Minkowski product of (1, n') with Λ e₀ is -1 / K (invariance of the product under Λ). Limits: the statement is in Cartesian retarded time and direction, not in the compactified chart (the angle chart is singular at the poles, and the relation to compactify and scriPoint is not stated); only rays of fixed retarded time and direction are treated, not sequences of points approaching null infinity in general; the dilation is not included."
+  since: unreleased
