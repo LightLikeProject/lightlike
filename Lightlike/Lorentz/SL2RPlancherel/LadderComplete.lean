@@ -22,7 +22,10 @@ so `ladFactor · sinh · conj ψ` is almost everywhere constant (du Bois-Reymond
 `exists_ae_eq_const_of_weak_deriv_zero`).  Together with `ladUp_orth_ker` (the ladder images are
 orthogonal to `ladKer l r`) this identifies the orthocomplement of the ladder images: it is
 `ℂ · ladKer l r` intersected with the space, which is zero unless `ladKer l r` is square integrable
-in the weight `sinh ξ dξ` (the discrete part).  Layer 2c-iv of the Plancherel formula on `SL(2,ℝ)`,
+in the weight `sinh ξ dξ` (the discrete part).  The same argument with a right-hand side, via
+`exists_ae_eq_primitive_of_weak_deriv`, solves the lowered ladder equation `ladDown (l+1) r ψ = χ`
+weakly by variation of constants (`ae_eq_ladKer_mul_of_weak_ladDown`); iterated, this handles the
+chains of ladder images of the radial generators.  Layer 2c-iv of the Plancherel formula on `SL(2,ℝ)`,
 milestone HA3.
 -/
 
@@ -213,6 +216,102 @@ theorem ae_eq_const_mul_ladKer_of_orth (l r : ℝ) {ψ : ℝ → ℂ} (hψ : Loc
   have h'' := congrArg (starRingEnd ℂ) h'
   rw [Complex.conj_conj] at h''
   rw [h'', ladKer, map_div₀, Complex.conj_ofReal]
+  push_cast
+  ring
+
+/-- The conjugate of an interval integral. -/
+lemma intervalIntegral_conj {f : ℝ → ℂ} {a b : ℝ} :
+    ∫ t in a..b, (starRingEnd ℂ) (f t) = (starRingEnd ℂ) (∫ t in a..b, f t) := by
+  simp only [intervalIntegral, integral_conj, map_sub]
+
+/-- **Weak solutions of the lowered ladder equation** (variation of constants): if `ψ` is locally
+integrable on `(0, ∞)`, `χ` is continuous on `(0, ∞)` and `ψ` solves `ladDown (l+1) r ψ = χ` weakly,
+i.e. `⟨ladUp l r F, ψ⟩ = ⟨F, χ⟩` in `L²((0, ∞), sinh ξ dξ)` for every smooth `F` with compact
+support in `(0, ∞)`, then for any `x₀ > 0` there is a constant `c` with
+`ψ ξ = ladKer l r ξ · (c - ∫_{x₀}^ξ ladFactor l r t · sinh t · χ t dt)` for almost every `ξ > 0`. -/
+theorem ae_eq_ladKer_mul_of_weak_ladDown (l r : ℝ) {ψ χ : ℝ → ℂ}
+    (hψ : LocallyIntegrableOn ψ (Ioi 0)) (hχ : ContinuousOn χ (Ioi 0)) {x₀ : ℝ} (hx₀ : 0 < x₀)
+    (hweak : ∀ F : ℝ → ℂ, ContDiff ℝ ∞ F → HasCompactSupport F → tsupport F ⊆ Ioi 0 →
+      ∫ ξ in Ioi (0 : ℝ), ladUp l r F ξ * (starRingEnd ℂ) (ψ ξ) * (Real.sinh ξ : ℂ) =
+        ∫ ξ in Ioi (0 : ℝ), F ξ * (starRingEnd ℂ) (χ ξ) * (Real.sinh ξ : ℂ)) :
+    ∃ c : ℂ, ∀ᵐ ξ, ξ ∈ Ioi (0 : ℝ) → ψ ξ = (ladKer l r ξ : ℂ) *
+      (c - ∫ t in x₀..ξ, (ladFactor l r t * Real.sinh t : ℝ) * χ t) := by
+  set w : ℝ → ℂ := fun ξ => ((ladFactor l r ξ * Real.sinh ξ : ℝ) : ℂ) with hw
+  set φ : ℝ → ℂ := fun ξ => w ξ * (starRingEnd ℂ) (ψ ξ) with hφ
+  set h : ℝ → ℂ := fun ξ => -(w ξ * (starRingEnd ℂ) (χ ξ)) with hh
+  have hwc : ContinuousOn w (Ioi 0) :=
+    Complex.continuous_ofReal.comp_continuousOn
+      ((contDiffOn_ladFactor l r).continuousOn.mul Real.continuous_sinh.continuousOn)
+  have hφi : LocallyIntegrableOn φ (Ioi 0) :=
+    (locallyIntegrableOn_conj hψ).continuousOn_mul hwc isOpen_Ioi.isLocallyClosed
+  have hhc : ContinuousOn h (Ioi 0) :=
+    (hwc.mul (Complex.continuous_conj.comp_continuousOn hχ)).neg
+  have hw' : ∀ g : ℝ → ℝ, ContDiff ℝ ∞ g → HasCompactSupport g → tsupport g ⊆ Ioi 0 →
+      ∫ x, deriv g x • φ x = -∫ x, g x • h x := by
+    intro g hg hgc hgsub
+    have hgd : ∀ x, DifferentiableAt ℝ g x := fun x => (hg.differentiable (by simp)) x
+    set F : ℝ → ℂ := fun x => ((g x * ladFactor l r x : ℝ) : ℂ) with hF
+    have hFs : ContDiff ℝ ∞ F :=
+      Complex.ofRealCLM.contDiff.comp
+        (contDiff_mul_of_tsupport_subset isOpen_Ioi hg hgsub (contDiffOn_ladFactor l r))
+    have hFsupp : tsupport F ⊆ tsupport g := by
+      refine closure_mono fun x hx => ?_
+      intro hgx
+      apply hx
+      simp [hF, hgx]
+    have hFc : HasCompactSupport F := hgc.mono' ((subset_tsupport F).trans hFsupp)
+    have hE := hweak F hFs hFc (hFsupp.trans hgsub)
+    have hzero1 : ∀ x, x ∉ Ioi (0 : ℝ) → deriv g x • φ x = 0 := by
+      intro x hx
+      have : x ∉ tsupport g := fun h' => hx (hgsub h')
+      have hd : deriv g x = 0 := by
+        by_contra hne
+        exact this (support_deriv_subset hne)
+      simp [hd]
+    have hzero2 : ∀ x, x ∉ Ioi (0 : ℝ) → g x • h x = 0 := by
+      intro x hx
+      have : x ∉ tsupport g := fun h' => hx (hgsub h')
+      simp [image_eq_zero_of_notMem_tsupport this]
+    rw [← setIntegral_eq_integral_of_forall_compl_eq_zero hzero1,
+      ← setIntegral_eq_integral_of_forall_compl_eq_zero hzero2, ← integral_neg]
+    have e1 : ∫ x in Ioi (0 : ℝ), deriv g x • φ x =
+        ∫ ξ in Ioi (0 : ℝ), ladUp l r F ξ * (starRingEnd ℂ) (ψ ξ) * (Real.sinh ξ : ℂ) := by
+      refine setIntegral_congr_fun measurableSet_Ioi fun x hx => ?_
+      simp only [hF, hφ, hw]
+      rw [ladUp_mul_ladFactor l r hx (hgd x)]
+      simp only [Complex.real_smul]
+      push_cast
+      ring
+    have e2 : ∫ x in Ioi (0 : ℝ), -(g x • h x) =
+        ∫ ξ in Ioi (0 : ℝ), F ξ * (starRingEnd ℂ) (χ ξ) * (Real.sinh ξ : ℂ) := by
+      refine setIntegral_congr_fun measurableSet_Ioi fun x _ => ?_
+      simp only [hF, hh, hw, Complex.real_smul]
+      push_cast
+      ring
+    rw [e1, e2, hE]
+  obtain ⟨c, hc⟩ := exists_ae_eq_primitive_of_weak_deriv isOpen_Ioi ordConnected_Ioi
+    (mem_Ioi.2 hx₀) hφi hhc hw'
+  refine ⟨(starRingEnd ℂ) c, ?_⟩
+  filter_upwards [hc] with ξ hξ hmem
+  have hs : 0 < Real.sinh ξ := Real.sinh_pos_iff.2 hmem
+  have he := ladFactor_pos l r ξ
+  have hφξ := hξ hmem
+  have hne : w ξ ≠ 0 := by
+    simp only [hw]; exact_mod_cast (mul_pos he hs).ne'
+  -- the conjugate of the primitive
+  have hprim : (starRingEnd ℂ) (∫ t in x₀..ξ, h t) =
+      -∫ t in x₀..ξ, (ladFactor l r t * Real.sinh t : ℝ) * χ t := by
+    rw [← intervalIntegral_conj, ← intervalIntegral.integral_neg]
+    refine intervalIntegral.integral_congr fun t _ => ?_
+    simp only [hh, hw, map_neg, map_mul, Complex.conj_conj, Complex.conj_ofReal]
+  have h1 : (starRingEnd ℂ) (ψ ξ) = (c + ∫ t in x₀..ξ, h t) / w ξ := by
+    rw [eq_div_iff hne, ← hφξ]
+    simp only [hφ]
+    ring
+  have h2 := congrArg (starRingEnd ℂ) h1
+  rw [Complex.conj_conj, map_div₀, map_add, hprim] at h2
+  rw [h2, ladKer]
+  simp only [hw, Complex.conj_ofReal]
   push_cast
   ring
 
