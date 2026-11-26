@@ -2028,6 +2028,7 @@ import Lightlike.TuraevViro.SMatrix
 import Lightlike.TuraevViro.SOrthogonal
 import Lightlike.TuraevViro.QNumber
 import Lightlike.TuraevViro.QSixJ
+import Lightlike.TuraevViro.QSixJRegular
 import Lightlike.TuraevViro.QFifteenJ
 import Lightlike.TuraevViro.Reflect.Poly
 import Lightlike.TuraevViro.Reflect.RacahCert0
