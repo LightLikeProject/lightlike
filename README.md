@@ -12,9 +12,9 @@ So far it covers spin-foam and state-sum quantum gravity with the topology, repr
 The [catalog](docs/RESULTS.md) has 554 entries, each citing the source of its statement: 542 proven
 results, 11 conditional results (proven under hypotheses that are named Lean propositions) and 1
 stated target (the statement is defined in Lean, the proof is open). Lean's kernel has checked every
-proof. Statements are reviewed against their sources, since the kernel cannot check that a statement
-matches its source. No entry has had expert human review yet, and a review of any entry is welcome
-([how to report a mismatch](#review)).
+proof. Statements are reviewed against their sources by agents, since the kernel cannot check that a
+statement matches its source. No entry has had expert human review yet, and a review of any entry is
+welcome ([how to report a mismatch](#review)).
 <!-- /results:summary -->
 
 Start with the [main results](docs/RESULTS.md#main-results).
