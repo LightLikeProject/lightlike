@@ -6590,3 +6590,39 @@
   review: kernel-checked
   note: "INFINITESIMAL (E, F, H on smooth vectors), NOT GROUP-LEVEL. For the principal-series model of SL(2,R) with multiplier |t|^{-τ-1}, ν = iτ, τ real, on smooth functions on R with the derived operators E = (iν − 1) x − x² d/dx, F = d/dx, H = (1 − iν) + 2x d/dx: if a sesquilinear form B has E, F, H skew, then B is not positive definite when τ = 1 (no_invariant_form_smooth_boundary, here) and when |τ| > 1 (no_invariant_form and no_invariant_form_smooth in NoInvariantForm.lean; they are the same argument with Casimir eigenvalue (τ² − 1)/4 > 0 on the K-fixed vector (1 + x²)^{-(τ+1)/2}, where W = E − F kills the vector, so B(v, Ωv) = −B(Hv, Hv)/4 − B(Ev, Ev) ≤ 0). At τ = 1 the Casimir eigenvalue is 0, so a positive definite skew form would force H v = 0, but (H v)(0) = 2 (eq_zero_of_casimir_zero). The complementary series is |τ| < 1 (s = (1 + τ)/2 in (0, 1)); this is the range where the Casimir argument gives no obstruction. The negative parameter is not a separate non-unitary case: τ ↦ −τ with |τ| < 1 gives the equivalent unitary complementary series, so the milestone hint 'σ < 0' needs no statement. Open limitation: τ = −1 is not decided by this argument (the constant function is an invariant vector there, E v = F v = H v = 0, so the K-fixed vector gives no contradiction); it is not claimed. The passage from a unitary group representation to skewness of E, F, H needs continuity of the form in a topology on the smooth vectors, which an abstract sesquilinear form does not have, so the statement is infinitesimal (difference of kind weaker from 'the representation is non-unitary'). The comparison with a source is not made: this is the standard Casimir sign argument, and no source location was read."
   since: unreleased
+- id: LL-0507
+  title: "Non-vacuity of the Parke-Taylor formula for the Feynman-rule amplitudes at six gluons: the maximal closed class Gmax (all the reductions of the induction satisfy their hypotheses) is closed under the reductions, and an explicit rational six-gluon point lies in Gmax 3 j for every position j = 1, ..., 5 of the second negative gluon, so that the theorem trueAmp_eq_ptN applies to it"
+  area: GR
+  file: Lightlike/GR/TestsMHVSix.lean
+  decls: [Lightlike.SpinorHelicity.Tests.gmax_six]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source states the genericity conditions of the Feynman-rule induction; the Parke-Taylor formula is compared in the entry of the Parke-Taylor induction). The class Gmax (MHVMax.lean, closedClass_Gmax) unfolds the far step and the cyclic step along the reductions of the induction down to three gluons, so it is closed by construction; the point of TestsMHVSix.lean (found by a rational search, scripts not part of the library) satisfies every hypothesis of every reduction: all brackets and propagators of the shifted channels are checked by norm_num through the bracket formulas of MHVBrackets.lean (mdot_range_self, mdot_range_ref, zpole_eq_sums), with the pole spinors given explicitly. With the four-gluon entry (four gluons, all generic kinematics) and the five-gluon entry (five gluons) this removes the caveat that the class is empty beyond three gluons; for seven gluons the same method gives an explicit point in Gmax 4 j for j = 1, ..., 6 (gmax_seven in TestsMHVSeven.lean, not a catalogue entry); for eight or more gluons that the class is nonempty is not proved."
+  since: unreleased
+- id: LL-0508
+  title: "The Parke-Taylor formula for four gluons from the Feynman rules on all generic kinematics: for momentum-conserving four-gluon kinematics with all angle and square brackets nonzero and generic references, the colour-ordered Berends-Giele amplitude with the negative gluons at 0 and j (any position) equals <0j>^4/(<01><12><23><30>)"
+  area: GR
+  file: Lightlike/GR/MHVFour.lean
+  decls: [Lightlike.SpinorHelicity.trueAmp_four, Lightlike.SpinorHelicity.Gen4_closed]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: elvang-huang-2013, location: "eq. (3.11)", check: "background field"}
+      - {ref: elvang-huang-2013, location: "eq. (2.82)", check: "Cyclic"}
+  review: kernel-checked
+  note: "Compared with Elvang-Huang (2.80), (3.11) and the cyclic property p. 25 (read), as in the entry of the Parke-Taylor induction. For four gluons the genericity of that induction is the nonvanishing of the brackets: the class of kinematics with momentum conservation, all angle and square brackets nonzero and generic references is closed under the reductions of the induction (Gen4_closed, trueKin_four), so the Berends-Giele amplitude is the Parke-Taylor amplitude on this open set (trueAmp_four), with an explicit numeric point in TestsMHVInduction.lean (non-vacuity). Nothing is claimed for kinematics outside the class."
+  since: unreleased
+- id: LL-0509
+  title: "Non-vacuity of the Parke-Taylor formula for the Feynman-rule amplitudes at five gluons: the class Gen5 of generic five-gluon kinematics (bracket conditions, three-particle propagators, distinct poles, pole spinors of the channel [1,3]) is closed under the reductions of the induction, and an explicit rational five-gluon point lies in it for every position of the second negative gluon"
+  area: GR
+  file: Lightlike/GR/MHVFive.lean
+  decls: [Lightlike.SpinorHelicity.Gen5_closed, Lightlike.SpinorHelicity.trueKin_five]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source states the genericity conditions of the Feynman-rule induction; the Parke-Taylor formula is compared in the entry of the Parke-Taylor induction). Gen5_closed shows that that induction applies to the class Gen5, and trueKin_five that its members satisfy the hypotheses of the BCFW recursion (momentum conservation, nonzero brackets, nonvanishing propagators P_012^2, P_123^2 and P_123 . r, distinct poles); the explicit point is in TestsMHVFive.lean. For six gluons the maximal closed class is nonempty (the six-gluon entry); for seven gluons too (gmax_seven, TestsMHVSeven.lean); for eight or more gluons that the class is nonempty is not proved."
+  since: unreleased
