@@ -31,3 +31,14 @@
   review: kernel-checked
   note: "Layer 2c-v of the Plancherel formula on SL(2,R). The ladder recursion of these blocks is u -> u' + s u/(v - 1) (hLRN_eq), singular at the identity v = 1, but the images extend continuously to xi = 0 (HcN_eq_hLRN, vanishing order of (d/dv)^l ((v-1)^s G^(s)) at v = 1), so the induction of the same-sign case (norm_sq_ktype_lr) goes through with the same weights. Unlike the same-sign blocks, these images do not exhaust the block: its orthocomplement is the discrete part. Standard; no source consulted."
   since: unreleased
+- id: LL-XXXX-j
+  title: "The ladder images of an opposite-sign block of SL(2,R): for natural l, s, a smooth function H with compact support in (0, infinity) is the image of a smooth compactly supported radial generator under the l-fold chain of raising operators of type (k, -s) if and only if H is orthogonal in L2((0, infinity), sinh xi d xi) to the min(l, s) functions (cosh xi - 1)^(i+s) / sinh^(l+s) xi, l - s <= i < l"
+  area: Lorentz
+  file: Lightlike/Lorentz/SL2RPlancherel/LadderOppositeSurjective.lean
+  decls: [Lightlike.Lorentz.SL2RPlancherel.exists_hLRN_eq]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Layer 2c-v of the Plancherel formula on SL(2,R). In v = cosh xi the pairing with (cosh - 1)^(i+s)/sinh^(l+s) is the moment of order i of (d/dv)^l ((v-1)^s G^(s)), which is a boundary value at v = 1 (integral_pow_mul_iteratedDeriv): it vanishes for every image (integral_hLRN_mul_phiN, LadderOppositeOrth.lean), and conversely the moment conditions make the l-fold primitive vanish to order s at v = 1 (it is a polynomial there, eq_taylor_of_iteratedDeriv_eq_zero), so it is (v-1)^s times a smooth function. The min(l, s) directions span the discrete part of the block (for (1, -1): 1/(1 + cosh xi), phiN_one_one_zero); the comparison with the discrete series matrix coefficients is the other stream's layer 3. Standard; no source consulted."
+  since: unreleased
