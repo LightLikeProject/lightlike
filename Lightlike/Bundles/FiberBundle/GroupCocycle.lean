@@ -12,7 +12,7 @@ import Lightlike.Bundles.Principal.Basic
 /-!
 # Fiber bundles from group-valued transition functions
 
-Adapted from Tau Ceti (`TauCeti/Topology/FiberBundle/GroupCocycle.lean`,
+Adapted from Tau Ceti (module TauCeti.Topology.FiberBundle.GroupCocycle,
 revision 2a9233e5b, Apache 2.0 license).
 
 A continuous group action on an arbitrary topological fiber turns a continuous group-valued
