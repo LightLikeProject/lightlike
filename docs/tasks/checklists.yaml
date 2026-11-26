@@ -406,7 +406,7 @@ milestones:
       - id: t2
         kind: trust
         text: "A manifold with boundary has the same identities"
-        decls: []
+        decls: [Lightlike.segMetric, Lightlike.segment_identities, Lightlike.segment_exists_leviCivita]
         hint: "Missing: no concrete example with boundary or corners."
       - id: t3
         kind: trust
@@ -791,7 +791,7 @@ milestones:
       - id: r1
         kind: review
         text: "The statement WignerClassification is compared with Wigner (1939) and Weinberg, QFT I, section 2.5: the list of positive-energy irreducible classes (massive spin s, massless helicity h, and the cases left out) matches the source"
-        review_evidence: null
+        review_evidence: "Compared WignerClassification (ClassificationStatement.lean) with Wigner, Ann. Math. 40 (1939) 149-204, read from the JSTOR scan: Section 3, pp. 157-158 (the four classes by the orbit of the momentum), Section 6, pp. 186-187 (the subclasses P_+, P_-, 0_+, 0_-, 0_0), Section 7A, p. 197 (little-group representations D(0), D(1/2), D(1), ...) and Section 7B, p. 198, The final result. Result: the list matches. EquivMassive m>0, n in N is P_+^j with j = n/2; EquivMassless h in Z is 0_+^s with s = h/2 (both signs and half-integers); MasslessNotHelicity is the continuous-spin classes 0_+(Xi) and 0_+(Xi) double-valued, given only negatively; the translation-trivial case is Wigner 0_0, which Wigner leaves undetermined; negative-energy and space-like classes are excluded by positive energy. Differences, stated in the docstring and in LL-0313: continuous spin only negatively, only completeness (irreducibility is LL-0310 and LL-0311), no inequivalence of different parameters. Not compared: Weinberg, QFT I, Section 2.5 (no copy read), pending."
       - id: c1
         kind: catalogue
         text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
@@ -1092,8 +1092,8 @@ milestones:
       - id: m2
         kind: main
         text: "For a positive measure on [0, ∞) whose Laplace transform grows like e^{a/β}, the counting function ρ[0, X] has the asymptotics of Mukhametzhanov–Zhiboedov 2019, eq. (1.8)"
-        decls: []
-        hint: "Missing: Ingham's theorem for the counting function itself. Close: Lightlike.Tauberian.ingham_log (logarithmic form only, log F(X)/(2√(aX)) → 1; its docstring says weaker) and Lightlike.Tauberian.cardy_mz / cardy_relative (the (1.8) asymptotics with a 1+O(X^{-1/2}) error, but for a measure with a SpectralHyp and a modular-invariance hypothesis, not for a general L ~ e^{a/β})."
+        decls: [Lightlike.Tauberian.cardy_mz]
+        hint: "Ticked on Lightlike.Tauberian.cardy_mz (LL-0182; cardy_relative and cardy_counting are its steps) by owner decision D14 = (A). Difference: MZ (1.8) assumes modular invariance; the general-measure form (a positive measure with only L(β) ~ e^{a/β}) is false (BJM arXiv:1910.03036 §3.2). ingham_log is the real-axis logarithmic companion; the sector-bound form (BJM Theorem 4.1) is open, see docs/notes/sp3-tauberian-backlog.md."
       - id: p1
         kind: piece
         text: "Slowly varying functions are defined (ℓ eventually positive, ℓ(ct)/ℓ(t) → 1 for every c > 0)"
@@ -1438,7 +1438,7 @@ milestones:
       - id: r1
         kind: review
         text: "The scope of the milestone (the six bullets of ‘what is proven’ in docs/tasks/milestones.md, QU5) is covered by m1 and p1 to p6, and nothing in them claims triangulation independence"
-        review_evidence: null
+        review_evidence: "Compared the QU5 text of docs/tasks/milestones.md ('what is proven' and 'what it does not give') with the items. Proven clauses: the 1-4 move (p1: weight_move14, amplitude_move14); invariance along chains of 2-3, 3-2, 1-4, 4-1 moves, also with a maximal tree (m1: amplitudeGF_eqvGen, amplitudeGF_eqvGen_tree, catalogued as LL-0027); recognition of the 3-2 and 4-1 moves on any complex (p2: IsMove32, amplitudeGF_move32, amplitudeGF_move41); tree exchanges leave the amplitude unchanged for every cutoff (p3: amplitudeGF_exchange, amplitudeGF_eqvGen_exchange, LL-0028); closed combinatorial 3-manifolds preserved by the moves (p4: isCombManifold_move23_iff, isCombManifold_move14_iff, isCombManifold_iff_of_eqvGen); combinatorial 2-spheres are connected closed pseudo-surfaces of Euler characteristic 2 and exactly the intrinsic spheres (p5: IsSphere2.invariants, isSphere2_iff_isSurfaceSphere); the partial answers (p6: amplitudeGF_of_forcesAll, amplitudeGF_S3_star, amplitudeGF_tree_dependent, not_eqvGen_exchange_T1_T2). Every clause of the milestone text has an item. None of the item texts, docstrings or catalogue notes claims triangulation independence: LL-0027 states that independence of the gauge tree in general and removal of the cutoff are not proven, and the entry for the tree-dependence counterexample says the ring of three tetrahedra is not a manifold, outside the assumptions of Freidel-Louapre tree independence, which is stated for triangulated 3-manifolds. Nothing is missing and nothing is overclaimed; no difference to report."
       - id: c1
         kind: catalogue
         text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
@@ -1920,7 +1920,7 @@ milestones:
       - id: r1
         kind: review
         text: "The vertex amplitude is compared with the source (Engle–Pereira–Rovelli–Livine 2008, Engle–Pereira 2009) and the ε twist on the bra legs is present, or its absence is justified"
-        review_evidence: null
+        review_evidence: "Read Engle-Pereira, arXiv:0805.4696, eq. (22): the regularised amplitude is the integral over four copies of SL(2,C) of the product of the ten matrix coefficients with arguments V_a^-1 V_b (V5 dropped, since the integrand does not depend on it), contracted with the intertwiner i_t at each tetrahedron; eq. (23): A_reg_v(j, i) = A_v[2j, 2 gamma j; j, i]. Compared with Lightlike/Lorentz/EPRL.lean: eprlVertex has the same structure (four free copies, V4 = 1, ten coefficients of the principal series at k = j, contracted with arbitrary coefficient arrays iota), and eprlVertex_eq_integral says it is the absolutely convergent integral of the contracted integrand. Two differences, both documented in the module docstring and in the catalogue note of the finiteness entry: (1) the rho label is gamma (j+1) (Ding-Rovelli) instead of Engle-Pereira gamma j, which the finiteness theorem does not depend on (integrable_linkProd_inner holds for all labels); (2) the epsilon twist (the structure map e_m to +-e_{J-m} identifying the dual of spin j with spin j) on the bra legs is NOT applied: the coefficients are arbitrary arrays, and the twisted array of an SU(2)-invariant intertwiner is again an array, so the finiteness statement is unaffected, but eprlVertex is not claimed to equal the Engle-Pereira amplitude on invariant intertwiners. The absence of the twist is therefore justified for the milestone (finiteness for every coefficient array) and not for equality with the source amplitude. For coherent product arrays eprlVertex is a constant (the fourth power of the Haar scalar factor) times the coherent vertex lorVertex (eprlVertex_eq_lorVertex), which narrows but does not close the gap to the Engle-Pereira amplitude. Only eqs. (22) and (23) of Engle-Pereira were read; the EPRL 2008 paper (0711.0146) was not compared at an equation."
       - id: c1
         kind: catalogue
         text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"

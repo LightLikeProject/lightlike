@@ -2401,7 +2401,7 @@
     refs:
       - {ref: mukhametzhanov-zhiboedov-2019, location: "eq. (1.8)"}
   review: kernel-checked
-  note: "For a positive measure σ (the spectrum in the variable x = Δ - c/12, v = c/12) whose Laplace transform Z(β) = ∫ e^{-βx} dσ is finite for β > 0, invariant under z ↦ 4π²/z for Re z > 0 (MZ (2.2)), and satisfies |Z(β) - e^{a/β}| ≤ C e^{(a-g)/β} for real 0 < β < β₀ (a = 4π² v = π² c/3, g > 0), the integrated density F(Δ) = σ(-∞, Δ - v] satisfies |F(Δ) · 2π (cΔ/3)^{1/4} e^{-2π√(cΔ/3)} - 1| ≤ K Δ^{-1/2} for large Δ (cardy_mz), i.e. MZ (1.8). cardy_counting (CardyCounting.lean) is the intermediate form |σ(-∞, x] - I₀(2√(a x))| ≤ K x^{-3/4} e^{2√(a x)}, I₀(s) = (1/π) ∫₀^π e^{s cos θ} dθ. Compared with the source at eq. (1.8) and (2.2)-(2.4) (read 19 November 2026). Representation difference (reported to the maintainers, decision pending): a positive measure in the shifted variable instead of the density ρ(Δ) = Σ δ(Δ - Δ_O). The high-temperature hypothesis is assumed only for real β (MZ: |β| → 0 with Re β > 0), which is a weaker hypothesis. Route: MZ's Sections 3-5 with a pole-free smoothing in place of the contour functional (docs/notes/sp3-full-strength-attempts.md, attempt D). Non-vacuity: σ = δ_{-v} + ρ₀ (CardyExample.lean)."
+  note: "For a positive measure σ (the spectrum in the variable x = Δ - c/12, v = c/12) whose Laplace transform Z(β) = ∫ e^{-βx} dσ is finite for β > 0, invariant under z ↦ 4π²/z for Re z > 0 (MZ (2.2)), and satisfies |Z(β) - e^{a/β}| ≤ C e^{(a-g)/β} for real 0 < β < β₀ (a = 4π² v = π² c/3, g > 0), the integrated density F(Δ) = σ(-∞, Δ - v] satisfies |F(Δ) · 2π (cΔ/3)^{1/4} e^{-2π√(cΔ/3)} - 1| ≤ K Δ^{-1/2} for large Δ (cardy_mz), i.e. MZ (1.8). cardy_counting (CardyCounting.lean) is the intermediate form |σ(-∞, x] - I₀(2√(a x))| ≤ K x^{-3/4} e^{2√(a x)}, I₀(s) = (1/π) ∫₀^π e^{s cos θ} dθ. Compared with the source at eq. (1.8) and (2.2)-(2.4) (read 19 November 2026). Representation difference (reported to the maintainers, decision pending): a positive measure in the shifted variable instead of the density ρ(Δ) = Σ δ(Δ - Δ_O). The high-temperature hypothesis is assumed only for real β (MZ: |β| → 0 with Re β > 0), which is a weaker hypothesis. Route: MZ's Sections 3-5 with a pole-free smoothing in place of the contour functional (docs/notes/sp3-full-strength-attempts.md, attempt D). Non-vacuity: σ = δ_{-v} + ρ₀ (CardyExample.lean). Difference recorded for the milestone item on the Tauberian theorem (owner decision D14 = (A)): MZ (1.8) assumes modular invariance; the general-measure form, a positive measure whose Laplace transform only satisfies L(β) ~ e^{a/β}, is false (Bringmann–Jennings-Shaffer–Mahlburg, arXiv:1910.03036, Section 3.2); the sector-bound form of Ingham's theorem (their Theorem 4.1) is open (docs/notes/sp3-tauberian-backlog.md)."
   since: unreleased
 - id: LL-0183
   title: For a finite quantum system with Hamiltonian H, a state is KMS at inverse temperature beta iff it is the Gibbs state e^{-beta H} / tr e^{-beta H}
@@ -3709,7 +3709,7 @@
     refs:
       - {ref: weinberg-1995, location: "Chapter: RELATIVISTIC QUANTUM MECHANICS|10.1017/CBO9781139644167.004"}
   review: kernel-checked
-  note: "The representation is built by induction from the little group SU(2) on the mass shell of SL(2,C) = double cover of the Lorentz group, spin s = n/2 (n = 1: two states per momentum). Not claimed: Wigner's classification theorem (irreducibility is a separate entry: irreducible_massive_sourceMeasure) (ClassificationStatement.lean states it as a Prop, it is not proven: its proof needs Mackey's imprimitivity theorem). The comparison with Weinberg (1995), Chapter 2, is pending: the book was not read at the cited location, and Wigner (1939) was not read. Weinberg works in signature (-,+,+,+) with W^2 = m^2 j(j+1); here (+,-,-,-), so W^2 = -m^2 s(s+1) (the sign convention is stated in the task, milestones.md HA6)."
+  note: "The representation is built by induction from the little group SU(2) on the mass shell of SL(2,C) = double cover of the Lorentz group, spin s = n/2 (n = 1: two states per momentum). Not claimed: Wigner's classification theorem (irreducibility is a separate entry: irreducible_massive_sourceMeasure) (ClassificationStatement.lean states it as a Prop, it is not proven: its proof needs Mackey's imprimitivity theorem). The comparison with Weinberg (1995), Chapter 2, is pending: the book was not read at the cited location, and Wigner (1939) was not read for this statement (it was read for the classification, LL-0313, Section 7B, p. 198). Weinberg works in signature (-,+,+,+) with W^2 = m^2 j(j+1); here (+,-,-,-), so W^2 = -m^2 s(s+1) (the sign convention is stated in the task, milestones.md HA6). Difference of form: the vector W of pauliLubanski is the little-group formula m L(A) J (the spin operator carried to the momentum), not the generator operator built from the representation poincareRep; the generator form is the theorem pauliLubanski_sq_generators (Lightlike/Poincare/PauliLubanskiGenerators.lean), which is not a separate catalogue entry."
   since: unreleased
 - id: LL-0279
   title: "The massless one-particle representation of finite helicity h/2, induced from the character of ISO(2): it preserves the L² norm of the light cone, has P² = 0, W = (h/2) P and W² = 0"
@@ -3735,7 +3735,7 @@
     refs:
       - {ref: weinberg-1995, location: "Chapter: RELATIVISTIC QUANTUM MECHANICS|10.1017/CBO9781139644167.004"}
   review: kernel-checked
-  note: "Non-vacuity: spinJ_casimir (J_x²+J_y²+J_z² = s(s+1) for every n) and P·W = 0. The comparison with Weinberg (1995), Chapter 2, is pending: the book was not read at the cited location, and Wigner (1939) was not read. Weinberg works in signature (-,+,+,+) with W^2 = m^2 j(j+1); here (+,-,-,-), so W^2 = -m^2 s(s+1) (the sign convention is stated in the task, milestones.md HA6)."
+  note: "Non-vacuity: spinJ_casimir (J_x²+J_y²+J_z² = s(s+1) for every n) and P·W = 0. The comparison with Weinberg (1995), Chapter 2, is pending: the book was not read at the cited location, and Wigner (1939) was not read for this statement (it was read for the classification, LL-0313, Section 7B, p. 198). Weinberg works in signature (-,+,+,+) with W^2 = m^2 j(j+1); here (+,-,-,-), so W^2 = -m^2 s(s+1) (the sign convention is stated in the task, milestones.md HA6). Difference of form: pauliLubanski is the little-group formula m L(A) J, not the generator operator of poincareRep; the generator form is pauliLubanski_sq_generators (Lightlike/Poincare/PauliLubanskiGenerators.lean), not a separate catalogue entry."
   since: unreleased
 - id: LL-0281
   title: "The little groups of the Poincaré group: the stabilizer of the rest momentum m·1 in SL(2,C) is SU(2) and is compact, and the stabilizer of the light-like momentum is the group of upper triangular matrices with the phase character, with the translations as the kernel of the phase"
@@ -3761,7 +3761,7 @@
     refs:
       - {ref: weinberg-1995, location: "Chapter: RELATIVISTIC QUANTUM MECHANICS|10.1017/CBO9781139644167.004"}
   review: kernel-checked
-  note: "The vector W is computed from the helicity character and the rotation generator J_z; lightPL_square gives W² = 0. The comparison with Weinberg (1995), Chapter 2, is pending: the book was not read at the cited location, and Wigner (1939) was not read. Weinberg works in signature (-,+,+,+) with W^2 = m^2 j(j+1); here (+,-,-,-), so W^2 = -m^2 s(s+1) (the sign convention is stated in the task, milestones.md HA6)."
+  note: "In Lean the vector W of the massless representation is defined by its values on the standard light-like momentum, W = (h/2) P (stdLightPL), transported by the Lorentz action; lightPL_eq and lightPL_square (W² = 0) are then statements about that definition, they do not compute W from the generator operator of the representation. The generators are treated separately: helChar_rotZ and helChar_upper (the helicity character on the rotation about z and on the upper triangular subgroup, Lightlike/Lorentz/PoincareIrreps/MasslessPL.lean) and hasDerivAt_helicityAct_rot_at and hasDerivAt_helicityAct_trans_at (Lightlike/Poincare/MasslessGenerators.lean); no theorem states that the generator formula equals (h/2) P. The comparison with Weinberg (1995), Chapter 2, is pending: the book was not read at the cited location, and Wigner (1939) was not read for this statement (it was read for the classification, LL-0313, Section 7B, p. 198). Weinberg works in signature (-,+,+,+) with W^2 = m^2 j(j+1); here (+,-,-,-), so W^2 = -m^2 s(s+1) (the sign convention is stated in the task, milestones.md HA6)."
   since: unreleased
 - id: LL-0283
   title: "Peter–Weyl (density form): for a compact Hausdorff group, the matrix coefficients of finite-dimensional unitary representations are dense in C(G) in the sup norm and, for a Haar measure, in L²(G)"
@@ -4165,7 +4165,7 @@
     refs:
       - {ref: weinberg-1995, location: "Chapter: RELATIVISTIC QUANTUM MECHANICS|10.1017/CBO9781139644167.004"}
   review: kernel-checked
-  note: "HA6 (G1-055), the lockable statement of the milestone. WignerClassification is a Prop, NOT proved: every such representation is trivial on the translations, or equivalent to a massive poincareRep, or to a massless finite-helicity lightPoincareRep, or massless of infinite spin (MasslessNotHelicity). Its proof needs Mackey's imprimitivity theorem; isSystemOfImprimitivity_inducedL2 (Imprimitivity.lean) is one ingredient. Non-vacuity: trivialRep_classified (the trivial representation falls in the first case). The statement uses the library's own definitions of equivalence and positive energy; comparison with Weinberg and Wigner pending (not read). "
+  note: "HA6 (G1-055), the lockable statement of the milestone. WignerClassification is a Prop, NOT proved: every such representation is trivial on the translations, or equivalent to a massive poincareRep, or to a massless finite-helicity lightPoincareRep, or massless of infinite spin (MasslessNotHelicity). Its proof needs Mackey's imprimitivity theorem; isSystemOfImprimitivity_inducedL2 (Imprimitivity.lean) is one ingredient. Non-vacuity: trivialRep_classified (the trivial representation falls in the first case). The statement uses the library's own definitions of equivalence and positive energy; comparison with Weinberg and Wigner pending (not read). Compared with Wigner, Ann. Math. 40 (1939) 149-204, Section 7B, p. 198, The final result (read): the classes P_+^j (P > 0, j = n/2: EquivMassive with P = m²), 0_+^s (s = h/2, an integer or half-integer of either sign or zero: EquivMassless) and 0_+(Xi), 0'_+(Xi) (continuous spin, Xi > 0, single or double valued: MasslessNotHelicity) are the positive-energy classes; the class 0_0 (every translation trivial) and the class P < 0 are 'not determined' there; the negative-energy classes P_-, 0_- and the space-like class are excluded here by positive energy. The first case of the statement is Wigner's 0_0. Differences: (1) the continuous-spin classes are given only negatively (not a helicity representation), so for the massless part the statement says only that the spectrum lies in the light cone; (2) only completeness is stated: that each listed representation is irreducible is LL-0310 and LL-0311, and that different parameters give inequivalent representations is not stated; (3) Weinberg, QFT I, Section 2.5, was not read: that comparison is pending."
   since: unreleased
 - id: LL-0314
   title: "Nevanlinna–Sokal theorem: if f is analytic in the disk Re z⁻¹ > 1/R and its Taylor remainders obey |f(z) − Σ_{k<q} a_k z^k| ≤ K q! ρ^{-q} |z|^q, then the Borel transform of the series continues analytically to a strip and f is its Laplace transform on the whole disk"
@@ -4439,8 +4439,9 @@
   source:
     refs:
       - {ref: gerard-2019, location: "Proposition 4.9.1", check: "pure iff"}
+      - {ref: yamagami-2008, location: "Proposition 2.7", check: "pure state"}
   review: kernel-checked
-  note: "Compared with Gérard, arXiv:1901.10175, Section 4.9.1, Proposition 4.9.1 (read, text extracted from the PDF): a quasi-free state with covariance eta (his convention omega(W(x)) = exp(-(1/2) x.eta x), so his 2 eta is the eta here with exp(-(1/4) eta)) is pure iff (2 eta^cpl, sigma^cpl) is Kahler, i.e. there is an anti-involution j in Sp with sigma j = 2 eta; the proof there is cited to Derezinski-Gerard, Theorem 17.13, and is not read. Differences: WEAKER, only the sufficiency half is proved (a compatible J gives purity); the necessity (pure implies a compatible J) is not proved. REPRESENTATION, the space is finite-dimensional with eta positive definite on the quotient; the proof identifies the GNS space with a Fock space of the complex inner product eta + i omega and uses irreducibility of the Fock representation, not the Kahler argument; the sign of the J relation (omega = -eta J) is a convention. Lemmas it uses from other files: Lightlike.OperatorAlgebras.QuasiFreeState.isPureState_qfState_of_equiv (Lightlike/OperatorAlgebras/QuasiFreeState/FockEquiv.lean)."
+  note: "Second source (25 Nov 2026, read): Yamagami, arXiv:0801.1739, Section 2.2, p. 5 (between Proposition 2.7 and Proposition 2.8): for a quasi-free state phi_S(e^{ix}) = e^{-S(x,x)/2} of a CCR C*-algebra with polarization S (S(x,y) - S(y*,x*) = i sigma(x*,y)), 'phi_S is a pure state if and only if S is extremal in Pol(V, sigma), i.e., S is a projection' (stated as known, by the theory of Fock representations and purification, Section 5; no proof there). His S is half the complexified form eta + i omega of this library up to the factor of the exponent (exp(-S(x,x)/2) against exp(-eta(x,x)/4)), and S a projection is the compatible complex structure here; the same one-sided difference: only sufficiency is proved. Bratteli-Robinson 2 (the row names it) was not accessible, so no comparison with its text; Manuceau-Verbeure, Comm. Math. Phys. 9 (1968) 293 was seen only as an abstract (pure states are the Fock states). Compared with Gérard, arXiv:1901.10175, Section 4.9.1, Proposition 4.9.1 (read, text extracted from the PDF): a quasi-free state with covariance eta (his convention omega(W(x)) = exp(-(1/2) x.eta x), so his 2 eta is the eta here with exp(-(1/4) eta)) is pure iff (2 eta^cpl, sigma^cpl) is Kahler, i.e. there is an anti-involution j in Sp with sigma j = 2 eta; the proof there is cited to Derezinski-Gerard, Theorem 17.13, and is not read. Differences: WEAKER, only the sufficiency half is proved (a compatible J gives purity); the necessity (pure implies a compatible J) is not proved. REPRESENTATION, the space is finite-dimensional with eta positive definite on the quotient; the proof identifies the GNS space with a Fock space of the complex inner product eta + i omega and uses irreducibility of the Fock representation, not the Kahler argument; the sign of the J relation (omega = -eta J) is a convention. Lemmas it uses from other files: Lightlike.OperatorAlgebras.QuasiFreeState.isPureState_qfState_of_equiv (Lightlike/OperatorAlgebras/QuasiFreeState/FockEquiv.lean)."
   since: unreleased
 - id: LL-0335
   title: "The Sorkin-Johnston state of a finite causal set is pure: |iD| is the positive square root of -D^2, the Pauli-Jordan matrix is a(C - C^T) for the causal matrix C, and the quasi-free state of (D, |iD|) is pure for every a"
@@ -6589,4 +6590,263 @@
   source: exploratory
   review: kernel-checked
   note: "INFINITESIMAL (E, F, H on smooth vectors), NOT GROUP-LEVEL. For the principal-series model of SL(2,R) with multiplier |t|^{-τ-1}, ν = iτ, τ real, on smooth functions on R with the derived operators E = (iν − 1) x − x² d/dx, F = d/dx, H = (1 − iν) + 2x d/dx: if a sesquilinear form B has E, F, H skew, then B is not positive definite when τ = 1 (no_invariant_form_smooth_boundary, here) and when |τ| > 1 (no_invariant_form and no_invariant_form_smooth in NoInvariantForm.lean; they are the same argument with Casimir eigenvalue (τ² − 1)/4 > 0 on the K-fixed vector (1 + x²)^{-(τ+1)/2}, where W = E − F kills the vector, so B(v, Ωv) = −B(Hv, Hv)/4 − B(Ev, Ev) ≤ 0). At τ = 1 the Casimir eigenvalue is 0, so a positive definite skew form would force H v = 0, but (H v)(0) = 2 (eq_zero_of_casimir_zero). The complementary series is |τ| < 1 (s = (1 + τ)/2 in (0, 1)); this is the range where the Casimir argument gives no obstruction. The negative parameter is not a separate non-unitary case: τ ↦ −τ with |τ| < 1 gives the equivalent unitary complementary series, so the milestone hint 'σ < 0' needs no statement. Open limitation: τ = −1 is not decided by this argument (the constant function is an invariant vector there, E v = F v = H v = 0, so the K-fixed vector gives no contradiction); it is not claimed. The passage from a unitary group representation to skewness of E, F, H needs continuity of the form in a topology on the smooth vectors, which an abstract sesquilinear form does not have, so the statement is infinitesimal (difference of kind weaker from 'the representation is non-unitary'). The comparison with a source is not made: this is the standard Casimir sign argument, and no source location was read."
+  since: unreleased
+- id: LL-0507
+  title: "Non-vacuity of the Parke-Taylor formula for the Feynman-rule amplitudes at six gluons: the maximal closed class Gmax (all the reductions of the induction satisfy their hypotheses) is closed under the reductions, and an explicit rational six-gluon point lies in Gmax 3 j for every position j = 1, ..., 5 of the second negative gluon, so that the theorem trueAmp_eq_ptN applies to it"
+  area: GR
+  file: Lightlike/GR/TestsMHVSix.lean
+  decls: [Lightlike.SpinorHelicity.Tests.gmax_six]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source states the genericity conditions of the Feynman-rule induction; the Parke-Taylor formula is compared in the entry of the Parke-Taylor induction). The class Gmax (MHVMax.lean, closedClass_Gmax) unfolds the far step and the cyclic step along the reductions of the induction down to three gluons, so it is closed by construction; the point of TestsMHVSix.lean (found by a rational search, scripts not part of the library) satisfies every hypothesis of every reduction: all brackets and propagators of the shifted channels are checked by norm_num through the bracket formulas of MHVBrackets.lean (mdot_range_self, mdot_range_ref, zpole_eq_sums), with the pole spinors given explicitly. With the four-gluon entry (four gluons, all generic kinematics) and the five-gluon entry (five gluons) this removes the caveat that the class is empty beyond three gluons; for seven gluons the same method gives an explicit point in Gmax 4 j for j = 1, ..., 6 (gmax_seven in TestsMHVSeven.lean, not a catalogue entry); for eight or more gluons that the class is nonempty is not proved."
+  since: unreleased
+- id: LL-0508
+  title: "The Parke-Taylor formula for four gluons from the Feynman rules on all generic kinematics: for momentum-conserving four-gluon kinematics with all angle and square brackets nonzero and generic references, the colour-ordered Berends-Giele amplitude with the negative gluons at 0 and j (any position) equals <0j>^4/(<01><12><23><30>)"
+  area: GR
+  file: Lightlike/GR/MHVFour.lean
+  decls: [Lightlike.SpinorHelicity.trueAmp_four, Lightlike.SpinorHelicity.Gen4_closed]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: elvang-huang-2013, location: "eq. (3.11)", check: "background field"}
+      - {ref: elvang-huang-2013, location: "eq. (2.82)", check: "Cyclic"}
+  review: kernel-checked
+  note: "Compared with Elvang-Huang (2.80), (3.11) and the cyclic property p. 25 (read), as in the entry of the Parke-Taylor induction. For four gluons the genericity of that induction is the nonvanishing of the brackets: the class of kinematics with momentum conservation, all angle and square brackets nonzero and generic references is closed under the reductions of the induction (Gen4_closed, trueKin_four), so the Berends-Giele amplitude is the Parke-Taylor amplitude on this open set (trueAmp_four), with an explicit numeric point in TestsMHVInduction.lean (non-vacuity). Nothing is claimed for kinematics outside the class."
+  since: unreleased
+- id: LL-0509
+  title: "Non-vacuity of the Parke-Taylor formula for the Feynman-rule amplitudes at five gluons: the class Gen5 of generic five-gluon kinematics (bracket conditions, three-particle propagators, distinct poles, pole spinors of the channel [1,3]) is closed under the reductions of the induction, and an explicit rational five-gluon point lies in it for every position of the second negative gluon"
+  area: GR
+  file: Lightlike/GR/MHVFive.lean
+  decls: [Lightlike.SpinorHelicity.Gen5_closed, Lightlike.SpinorHelicity.trueKin_five]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source states the genericity conditions of the Feynman-rule induction; the Parke-Taylor formula is compared in the entry of the Parke-Taylor induction). Gen5_closed shows that that induction applies to the class Gen5, and trueKin_five that its members satisfy the hypotheses of the BCFW recursion (momentum conservation, nonzero brackets, nonvanishing propagators P_012^2, P_123^2 and P_123 . r, distinct poles); the explicit point is in TestsMHVFive.lean. For six gluons the maximal closed class is nonempty (the six-gluon entry); for seven gluons too (gmax_seven, TestsMHVSeven.lean); for eight or more gluons that the class is nonempty is not proved."
+  since: unreleased
+- id: LL-0510
+  title: "A quasi-free state of the Weyl algebra of a finite-dimensional symplectic space is pure if and only if there is a compatible complex structure (J^2 = -1, eta J-invariant and positive definite, omega(x,y) = -eta(x,Jy)): if there is none, the state is a proper convex combination of two different states (the Gaussian-weighted splitting of the quasi-free kernel)"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/QuasiFreeState/NecessityMain.lean
+  decls: [Lightlike.OperatorAlgebras.QuasiFreeState.exists_compatible_of_pure, Lightlike.OperatorAlgebras.QuasiFreeState.isPureState_iff_compatible]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: gerard-2019, location: "Proposition 4.9.1", check: "pure iff"}
+      - {ref: yamagami-2008, location: "Proposition 2.7", check: "pure state"}
+  review: kernel-checked
+  note: "Converse of LL-0334, so with it the iff of Gerard Proposition 4.9.1 and of Yamagami (phi_S pure iff S is extremal, i.e. a projection). Proof route (not the source's, which cites the Fock-representation theory): with the eta-Riesz operator T = eta^-1 omega (eta-skew, norm <= 1), either T^2 = -1, which is a compatible J, or a spectral vector of -T^2 with eigenvalue mu < 1 gives that eta - (1 - mu) rho^2 is still a covariance (key_ineq, exists_sub_covariance); the Gaussian family kappa_h(x) = exp(-eta'(x,x)/4) int h(t) e^{it rho(x)} d gamma(t) has a positive semidefinite kernel dominated by 2 qfKer, hence a state (exists_state_of_kernel); two such states with weights h and 2 - h average to the quasi-free state, and they differ (Measure.ext_of_charFun), so it is not extremal. A state is pure here when it is an extreme point of the states. WEAKER: finite dimension only; the degenerate omega is not treated separately (the sufficiency has the retract form, LL-0334)."
+  since: unreleased
+- id: LL-0511
+  title: "The modular state of a faithful state is KMS and its flow is the modular dynamics: for a positive definite density matrix ρ of a matrix algebra, ρ is KMS at β = 1 for the flow of H = −log ρ, and that flow at real time t is A ↦ e^{it log ρ} A e^{−it log ρ}"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/ModularKMS/ModularCapstone.lean
+  decls: [Lightlike.OperatorAlgebras.isKMS_modular_one, Lightlike.OperatorAlgebras.modular_flow_eq_modGroup]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: jaksic-ogata-pautrat-pillet-2012, location: "Section 2.12.1, p. 63"}
+  review: kernel-checked
+  note: "Comparison pending for these two statements: the location is the one of LL-0272, where the same dynamics and the beta = -1 form (generator log rho) were compared with Jaksic-Ogata-Pautrat-Pillet, arXiv:1106.3786, Section 2.12.1, pp. 62-63. Here the sign is the other convention: the generator is H = -log rho and beta = 1 (the Gibbs state e^{-H}/tr e^{-H} is rho itself), which is the same statement as LL-0272 after beta -> -beta and H -> -H; the comparison of this form with the source was not made. The second theorem shows the two flows agree (flow (-log rho) t = modGroup t). Hypothesis: rho is positive definite (PosDef), stated in the Lean theorems; the trace-one normalisation is not needed. No unproved hypothesis."
+  since: unreleased
+- id: LL-0512
+  title: "The finite modular theory of a faithful state: the modular operator Δ_ρ ξ = ρ ξ ρ⁻¹ is the square of Δ^{1/2}, Tomita's relation J Δ^{1/2}(A ρ^{1/2}) = A* ρ^{1/2} holds, and Δ^{it} implements the modular dynamics, Δ^{it}(A Δ^{−it} ξ) = ς^t(A) ξ"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/FiniteModular.lean
+  decls: [Lightlike.OperatorAlgebras.modOpSqrt_modOpSqrt, Lightlike.OperatorAlgebras.modConj_modOp_sqrt, Lightlike.OperatorAlgebras.modOpPow_mul_modOpPow_neg]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: jaksic-ogata-pautrat-pillet-2012, location: "Section 2.12.1, p. 63"}
+  review: kernel-checked
+  note: "Comparison pending for these three statements: the Lean docstrings cite the same source and page (Section 2.12.1, p. 63, eq. (2.34) for Tomita's relation) but the formulas were not compared one by one with the source for this entry (LL-0272 records a comparison of the dynamics and the KMS property only). The space is the Hilbert-Schmidt space of matrices with J xi = xi^dagger and xi_rho = rho^{1/2}. Hypothesis: rho positive definite, stated in the Lean theorems. No unproved hypothesis."
+  since: unreleased
+- id: LL-0513
+  title: "The Tomita operator S(y) = ρ^{−1/2} y† ρ^{1/2} of a faithful state of a matrix algebra satisfies S(a ρ^{1/2}) = a† ρ^{1/2}, and Δ = S†S for the Hilbert-Schmidt inner product: Tr((S y)† S z) = Tr(z† Δ y)"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/ModularFinite.lean
+  decls: [Lightlike.OperatorAlgebras.tomita_apply, Lightlike.OperatorAlgebras.inner_tomita]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: the Lean docstrings cite Witten, (4.4) and (4.11), but Witten (2018) is registered only at section 3, so no registered location is cited, and the formulas were not compared with the source for this entry. The state is given by a Hermitian H with rho = e^{-H} (not assumed to have trace one). Hypothesis: H Hermitian, stated in the Lean theorems. No unproved hypothesis."
+  since: unreleased
+- id: LL-0514
+  title: "The geometric realisation of a finite simplicial complex is geometric: the vertex basis vectors are affinely independent, so the realised simplices meet in common faces"
+  area: PL
+  file: Lightlike/PL/Realisation.lean
+  decls: [Lightlike.PL.SComplex.isGeom_real]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location for this statement. The realisation of a complex on the vertex set V is the complex in the free real vector space on V whose simplices are the convex hulls of the basis vectors of its faces; IsGeom is the library's predicate for a geometric complex (affinely independent vertex sets). Proved with no hypotheses."
+  since: unreleased
+- id: LL-0515
+  title: "A stellar subdivision of a simplicial complex at a face A with a new vertex a is PL homeomorphic to the complex"
+  area: PL
+  file: Lightlike/PL/StellarHomeo.lean
+  decls: [Lightlike.PL.SComplex.PLHomeomorphic.starAt]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: the Lean docstring cites Lickorish 1999, section 3, but that location is not among the verified source locations and was not read for this entry. The PL homeomorphism is the linear map x ↦ x − x_a (e_a − b_A) from the realisation of the subdivision onto that of the complex (b_A the barycentre of A), proved bijective and PL on each simplex. Hypotheses: A is a nonempty face of K and a is a new vertex, as in the Lean statement; no unproved hypothesis."
+  since: unreleased
+- id: LL-0516
+  title: "Stellar equivalent simplicial complexes are PL homeomorphic (the easy direction of Newman's theorem)"
+  area: PL
+  file: Lightlike/PL/StellarHomeo.lean
+  decls: [Lightlike.PL.SComplex.PLHomeomorphic.of_stellarEquivIn, Lightlike.PL.SComplex.PLHomeomorphic.of_stellarEquiv]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: lickorish-1999, location: "Theorem 4.5"}
+  review: kernel-checked
+  note: "Comparison pending: Theorem 4.5 is the location the Lean docstring cites for the easy direction; it was not read for this entry. Proved by induction on the stellar equivalence from the subdivision statement (LL-0515), for equivalence inside a fixed vertex type (of_stellarEquivIn) and, after relabelling the vertices into a common type, for StellarEquiv (of_stellarEquiv). The converse is Newman's theorem LL-0064. No unproved hypothesis."
+  since: unreleased
+- id: LL-0517
+  title: "Links, stars and cones of finite simplicial complexes: the closed star of a face is the join of the face with its link, st(σ) = σ * lk(σ); the link of the apex of a cone on K is K; and lk(τ, lk(σ, K)) = lk(σ ∪ τ, K) for disjoint faces σ, τ"
+  area: PL
+  file: Lightlike/PL/Complex.lean
+  decls: [Lightlike.PL.SComplex.star_eq_join, Lightlike.PL.SComplex.link_cone_apex, Lightlike.PL.SComplex.link_link]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location for these statements; they are the standard identities for links, stars and cones of abstract simplicial complexes (finite sets of finite sets of vertices closed under subsets). Hypotheses stated in the Lean theorems: the apex of the cone is not a vertex of K; the faces sigma and tau are disjoint. No unproved hypothesis."
+  since: unreleased
+- id: LL-0518
+  title: "Welding undoes a stellar subdivision and subdividing undoes a weld: for a nonempty face A of K and a new vertex a, welding the stellar subdivision (A, a) K at (a, A) gives K back; conversely, if the link of a is the join of the boundary of A with a complex L disjoint from A, and A is not a face, subdividing the weld gives K back"
+  area: PL
+  file: Lightlike/PL/Stellar.lean
+  decls: [Lightlike.PL.SComplex.weld_starAt, Lightlike.PL.SComplex.starAt_weld]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location (the module docstring cites Lickorish 1999, section 1, for the stellar subdivision, which is not a registered source location). The two directions make the weld the inverse of the stellar subdivision, so that stellar equivalence is symmetric as an equivalence relation generated by subdivisions. Hypotheses stated in the Lean theorems (A a face, nonempty, a a new vertex; for the second statement the link, disjointness and non-face conditions above). No unproved hypothesis."
+  since: unreleased
+- id: LL-0519
+  title: "A bistellar move κ(A, B) is undone by κ(B, A), and every bistellar move is a stellar equivalence"
+  area: PL
+  file: Lightlike/PL/Bistellar.lean
+  decls: [Lightlike.PL.SComplex.bistellar_bistellar, Lightlike.PL.SComplex.StellarEquiv.bistellar]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: lickorish-1999, location: "Theorem 5.9"}
+  review: kernel-checked
+  note: "Comparison pending: Theorem 5.9 states that closed combinatorial n-manifolds are PL homeomorphic iff bistellar equivalent; the statements here are two ingredients (involutivity of the bistellar move, and the easy half 'bistellar moves are stellar equivalences', whose proof composes two stellar subdivisions through a new vertex taken from an unlimited supply, so no hypothesis on the vertex type is needed after relabelling), and the theorem itself is LL-0065 / LL-0023. The comparison with the source was not made for this entry. Hypothesis: IsBistellar K A B for the move, as in the Lean theorems."
+  since: unreleased
+- id: LL-0520
+  title: "A PL n-sphere is a closed combinatorial n-manifold, and in a closed combinatorial n-manifold the link of every nonempty face σ is stellar equivalent to the boundary of a simplex on n + 2 − #σ vertices"
+  area: PL
+  file: Lightlike/PL/Links.lean
+  decls: [Lightlike.PL.SComplex.IsPLSphere.isClosedCombManifold, Lightlike.PL.SComplex.IsClosedCombManifold.link_face]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: lickorish-1999, location: "Definition 2.2"}
+  review: kernel-checked
+  note: "Comparison pending: Definition 2.2 gives the combinatorial n-ball and n-sphere as complexes PL homeomorphic to the n-simplex or its boundary; in this library IsPLSphere is the stellar-equivalence form (stellar equivalent to the boundary of an (n+1)-simplex), which agrees with the PL form by Newman's theorem (LL-0064), and IsClosedCombManifold requires every vertex link to be a PL sphere. The comparison of these definitions with the source was not made for this entry. Hypotheses stated in the Lean theorems. No unproved hypothesis."
+  since: unreleased
+- id: LL-0521
+  title: "Forward chains of 2-3 and 1-4 moves only enlarge the set of regularised Ponzano–Regge amplitude values: ampValues K ⊆ ampValues K' when K' is obtained from K by forward moves, and the complexes obtained by a 3-2 move or a 4-1 move have a subset of the values"
+  area: PonzanoRegge
+  file: Lightlike/PonzanoRegge/TriangulationIndependence/Values.lean
+  decls: [Lightlike.PR.ampValues_mono_forward, Lightlike.PR.ampValues_move32_subset, Lightlike.PR.ampValues_move41_subset]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location for these statements; they are statements about this library's regularised amplitude. ampValues K is the set of values of the gauge-fixed amplitude amplitudeGF K T cut over maximal trees T of K and cut-offs cut. A forward move (2-3 or 1-4) lets every gauge-fixed amplitude of K be written as a gauge-fixed amplitude of the new complex at a new maximal tree and cut-off (exists_amplitudeGF_eq), so the value sets grow; the 3-2 and 4-1 statements follow because those moves are the inverses of forward moves. The values are real numbers (the amplitude is real-valued here), and the cut-off is a regulator, so this says nothing about the cut-off removed. No unproved hypothesis."
+  since: unreleased
+- id: LL-0522
+  title: "Triangulation independence of the regularised Ponzano–Regge amplitude, given Pachner's theorem in its forward form: if two triangulations are related by Same and Same-related complexes have a common forward descendant under Pachner moves, then every gauge-fixed amplitude of each is a gauge-fixed amplitude, at some maximal tree and cut-off, of one common complex"
+  area: PonzanoRegge
+  file: Lightlike/PonzanoRegge/TriangulationIndependence/Main.lean
+  decls: [Lightlike.PR.triangulation_independence_of_pachner]
+  status: conditional
+  hypotheses: [Lightlike.PR.PachnerForwardHyp]
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Conditional on the Lean proposition PachnerForwardHyp Same (Same-related complexes have a common forward descendant under the 2-3 and 1-4 moves), which is not proved by this theorem or assumed true; the stellar form of Pachner's theorem for Complex3 is the theorem pachner3 (PL/PachnerMoves.lean, catalogued with milestone PL2), and whether it yields this forward form was not established here. Comparison pending: no source was read at a cited location. The cut-off is a regulator, so this is the form in which independence holds before the cut-off is removed; it is not the statement that the cut-off amplitude is a triangulation invariant."
+  since: unreleased
+- id: LL-0523
+  title: "The r = 3 Turaev–Viro state sum is the same along any chain of 3D moves: it is unchanged by the 3-2 move and by the 4-1 move (the inverses of the 2-3 and 1-4 moves), hence along any chain of moves on closed combinatorial 3-manifolds"
+  area: TuraevViro
+  file: Lightlike/TuraevViro/PLInvariance.lean
+  decls: [Lightlike.TV.turaevViro3_move32, Lightlike.TV.turaevViro3_move41, Lightlike.TV.turaevViro3_moveEquiv3]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: turaev-1994, location: "Chapter: Chapter VII. Simplicial state sums on 3-manifolds|10.1515/9783110883275-008"}
+  review: kernel-checked
+  note: "Comparison pending: the location is the one of LL-0289 and LL-0031 (Turaev, chapter VII on simplicial state sums), and the comparison of these three statements with the source was not made for this entry. Proof: the 3-2 and 4-1 moves are the inverses of the 2-3 and 1-4 moves (move23_move32, move14_move41), for which the state sum is invariant at r = 3 (turaevViro3_move23 and turaevViro3_move14, unconditionally at r = 3); the chain statement is induction on the equivalence relation generated by the four moves (MoveEquiv3). They are the steps of the proof of LL-0289. No unproved hypothesis."
+  since: unreleased
+- id: LL-0524
+  title: For a locally smooth connection on a manifold modelled with corners on a finite-dimensional space, the curvature is ∇_X ∇_Y Z − ∇_Y ∇_X Z − ∇_{[X,Y]} Z for any fields smooth near the point, without a Hausdorff hypothesis
+  area: Spacetime
+  file: Lightlike/Spacetime/Corners/CurvatureSymmetries.lean
+  decls: [Lightlike.curvatureAt_apply_eventuallyW]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "Chapter 3", check: "curvature"}
+  review: kernel-checked
+  note: "The statement of LL-0412 (curvatureAt_apply_proved) for any ModelWithCorners (boundary and corners allowed), a locally smooth connection (LocallySmoothConnectionW) and [IsManifold I 2 M], with no Hausdorff hypothesis: the curvature curvatureAt x of the values of fields X, Y, Z that are smooth near x (SmoothNearW) is cov (cov Z ∘ Y) x (X x) − cov (cov Z ∘ X) x (Y x) − cov Z x ([X,Y] x), so it does not depend on the extensions. It is the Corners layer used by the Bianchi and Ricci statements below. Carroll defines the curvature through these fields in Chapter 3 (the chapter is a verified location; equations (3.67), (3.71) were read in the docstring of ChartCurvature.lean). KIND representation: the statement is intrinsic, Carroll's are coordinate expressions."
+  since: unreleased
+
+- id: LL-0525
+  title: For any non-degenerate metric on a manifold modelled with corners, the curvature of a Levi-Civita connection satisfies the first Bianchi identity and the pair symmetry, and the Ricci tensor is symmetric, without a Hausdorff hypothesis
+  area: Spacetime
+  file: Lightlike/Spacetime/Corners/CurvatureSymmetries.lean
+  decls: [Lightlike.bianchi_first_provedW, Lightlike.riemannLowerAt_pair_symmW, Lightlike.ricciAt_symm_provedW]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (3.91)", check: "Ricci"}
+  review: kernel-checked
+  note: "For a locally smooth connection cov on a manifold modelled with corners on a finite-dimensional space and [IsManifold I 2 M]: if the torsion is zero, R(X,Y)Z + R(Y,Z)X + R(Z,X)Y = 0 (bianchi_first_provedW); if moreover cov is compatible with a non-degenerate metric g of any signature, g(R(X,Y)Z, W) = g(R(Z,W)X, Y) (riemannLowerAt_pair_symmW; the antisymmetries in each pair are riemannLowerAt_antisymm_lastW and curvatureAt_antisymm_leftW) and the Ricci tensor Ric(Y,Z) = tr(X ↦ R(X,Y)Z) is symmetric (ricciAt_symm_provedW). It is LL-0230 for any ModelWithCorners, with torsion freeness and metric compatibility as two hypotheses instead of IsLeviCivita, and with no Hausdorff hypothesis. Carroll states these in coordinates, eqs. (3.78)-(3.81) and (3.91) (verified locations in the registry: (3.79), (3.80), (3.91)); the statements here are the intrinsic ones (KIND representation). The comparison with Wald, General Relativity, Section 3.2, is pending: the book was not read at the cited location."
+  since: unreleased
+
+- id: LL-0526
+  title: The second Bianchi identity for a locally smooth torsion-free connection on a manifold modelled with corners, without a Hausdorff hypothesis
+  area: Spacetime
+  file: Lightlike/Spacetime/Corners/BianchiSecond.lean
+  decls: [Lightlike.bianchi_second_provedW]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (3.88)", check: "Bianchi"}
+  review: kernel-checked
+  note: "For a locally smooth torsion-free connection on a manifold modelled with corners on a finite-dimensional space ([IsManifold I 2 M], boundary and corners allowed, no Hausdorff hypothesis), (∇_X R)(Y,Z)W + (∇_Y R)(Z,X)W + (∇_Z R)(X,Y)W = 0 with covDerivCurvatureAt of Connection.lean (bianchi_second_provedW). It is LL-0231 for any ModelWithCorners with only cov.torsion = 0 as hypothesis (the task statement is for the Levi-Civita connection; that is a special case). Carroll's (3.88), read at that location in the registry, is the coordinate form; KIND representation: the statement is intrinsic."
+  since: unreleased
+
+- id: LL-0527
+  title: The covariant derivative of the Levi-Civita connection of a non-degenerate metric is smooth on a manifold modelled with corners on R^n, without a Hausdorff hypothesis
+  area: Spacetime
+  file: Lightlike/Spacetime/Corners/LeviCivitaSmooth.lean
+  decls: [Lightlike.contMDiffAt_leviCivitaW]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "For a manifold modelled with corners on Fin n → R (any ModelWithCorners, derivatives in the chart within the range of the model), C², and a non-degenerate metric g, the section ∇σ of the bundle of endomorphisms of the tangent bundle is C^∞ at p for every vector field σ that is smooth near p (contMDiffAt_leviCivitaW); this is the local smoothness that the Corners layer uses (LocallySmoothConnectionW of leviCivita g). The proof reads ∇σ in the trivialization at p as D σ̂(∂_a) + Γ̂(σ̂, a), with Γ̂ the Christoffel symbol of the smooth coordinate metric. This is a regularity statement of the construction, not a statement of a source; no source location applies. Limits: the model space is Fin n → R, not an arbitrary finite-dimensional space (the generalisation to any finite-dimensional model space is open, see GE11 m4 and m5)."
   since: unreleased

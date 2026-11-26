@@ -36,7 +36,7 @@ closed combinatorial 3-manifolds, in both directions and along chains [9].
 
 The tetrahedron's squared volume, its dihedral angles and its Regge action are defined from the
 edge lengths, and the Ponzano–Regge asymptotic formula for the 6j symbol is stated as a
-proposition {3} [12]. Its proof is not yet formalized. [TODO]
+proposition {3} [12]. Its proof is not yet formalized. [TODO] A forward chain of 2-3 and 1-4 moves only enlarges the set of regularised amplitude values, so the complex obtained by a 3-2 or 4-1 move has a subset of the values [15]. If complexes related by a given relation have a common forward descendant under Pachner moves, every regularised amplitude of each is a regularised amplitude of one common complex [16].
 
 ## Lean References
 
@@ -60,6 +60,9 @@ proposition {3} [12]. Its proof is not yet formalized. [TODO]
 13. Lightlike/Tests/Forcing.lean - `PR.Test.Manifold.amplitudeGF_S3_star`
 14. Lightlike/Tests/TreeDependence.lean - `PR.Test.Ring.amplitudeGF_tree_dependent`,
     `PR.Test.Ring.not_eqvGen_exchange_T1_T2`
+15. Lightlike/PonzanoRegge/TriangulationIndependence/Values.lean - `PR.ampValues_mono_forward`,
+    `PR.ampValues_move32_subset`, `PR.ampValues_move41_subset`
+16. Lightlike/PonzanoRegge/TriangulationIndependence/Main.lean - `PR.triangulation_independence_of_pachner`
 
 ## References
 
