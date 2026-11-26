@@ -481,6 +481,129 @@ theorem forwardStep_flip {Ed : Finset (Finset V)} {opp : Finset V → Finset V �
         rcases hyt with h1 | h1 | h1 | h1
         exacts [absurd h1 hvy.symm, h1, absurd (h1 ▸ hyV) ha', absurd (h1 ▸ hyV) hb']
       exact hxy (xx.trans yy.symm)
+  have hgfresh : ∀ s ∈ starTets K v, g s ∉ K.verts := fun s hs => h.stack.fresh s hs
+  have hgA : g (insert v (opp e).1) = a := ha_def
+  have hgB : g (insert v (opp e).2) = b := hb_def
+  -- a stacked tetrahedron through `v`, `x`, `y` is one of the two
+  have stackVXY : ∀ s ∈ starTets K v, ∀ z ∈ s, v ∈ insert (g s) (s.erase z) →
+      x ∈ insert (g s) (s.erase z) → y ∈ insert (g s) (s.erase z) →
+      insert (g s) (s.erase z) = {v, x, y, a} ∨ insert (g s) (s.erase z) = {v, x, y, b} := by
+    intro s hs z hz hvt hxt hyt
+    obtain ⟨hsK, hvs⟩ := mem_filter.1 hs
+    have hgs := hgfresh s hs
+    have hσ : s.erase v ∈ K.link v :=
+      Complex3.mem_link.2 ⟨notMem_erase v s, by rwa [insert_erase hvs]⟩
+    have mem_σ : ∀ w ∈ insert (g s) (s.erase z), w ∈ K.verts → w ≠ v → w ∈ s.erase v :=
+      fun w hw hwV hwv => by
+        rcases mem_insert.1 hw with e1 | e1
+        · exact absurd (e1 ▸ hwV) hgs
+        · exact mem_erase.2 ⟨hwv, mem_of_mem_erase e1⟩
+    have heσ : e ⊆ s.erase v := by
+      rw [he_def]
+      exact insert_subset (mem_σ x hxt hxV hvx.symm)
+        (singleton_subset_iff.2 (mem_σ y hyt hyV hvy.symm))
+    have hcard := card_stackPiece hsK hgs hz
+    have hs' : s = insert v (s.erase v) := (insert_erase hvs).symm
+    rcases h.two he hσ heσ with h1 | h1
+    · left
+      have hga : g s = a := by rw [hs', h1, hgA]
+      refine (eq_of_subset_of_card_le ?_ ?_).symm
+      · rw [← hga]
+        intro w hw
+        simp only [mem_insert, mem_singleton] at hw
+        rcases hw with rfl | rfl | rfl | rfl
+        exacts [hvt, hxt, hyt, mem_insert_self _ _]
+      · rw [hcard, card_four hvx hvy hva hxy hxa hya]
+    · right
+      have hgb : g s = b := by rw [hs', h1, hgB]
+      refine (eq_of_subset_of_card_le ?_ ?_).symm
+      · rw [← hgb]
+        intro w hw
+        simp only [mem_insert, mem_singleton] at hw
+        rcases hw with rfl | rfl | rfl | rfl
+        exacts [hvt, hxt, hyt, mem_insert_self _ _]
+      · rw [hcard, card_four hvx hvy hvb hxy hxb hyb]
+  have h23 : IsMove23 (flipAll K v g Ed opp) v x y a b := by
+    refine ⟨hvx, hvy, hva, hvb, hxy, hxa, hxb, hya, hyb, hab, ?_, ?_, ?_, ?_⟩
+    · rw [h0.mem_flipAll, pa]
+      exact .inl ⟨inS_a, fun e' he' hr => (notRem e' he' _ hr).1 rfl⟩
+    · rw [h0.mem_flipAll, pb]
+      exact .inl ⟨inS_b, fun e' he' hr => (notRem e' he' _ hr).2 rfl⟩
+    · intro t ht hsub
+      have hvt : v ∈ t := hsub (by simp)
+      have hxt : x ∈ t := hsub (by simp)
+      have hyt : y ∈ t := hsub (by simp)
+      rw [h0.mem_flipAll] at ht
+      rcases ht with ⟨hS, -⟩ | ⟨e', he', hadd⟩
+      · rw [h.stack.mem_stackAll] at hS
+        rcases hS with ⟨hK, hns⟩ | ⟨s, hs, z, hz, rfl⟩
+        · exact absurd (mem_filter.2 ⟨hK, hvt⟩) hns
+        · exact stackVXY s hs z hz hvt hxt hyt
+      · exact absurd ⟨hvt, hxt, hyt⟩ (addNoVXY e' (mem_insert_of_mem he') t hadd)
+    · intro t ht hsub
+      have hat : a ∈ t := hsub (by simp)
+      have hbt : b ∈ t := hsub (by simp)
+      rw [h0.mem_flipAll] at ht
+      rcases ht with ⟨hS, -⟩ | ⟨e', he', hadd⟩
+      · rw [h.stack.mem_stackAll] at hS
+        rcases hS with ⟨hK, -⟩ | ⟨s, hs, z, hz, rfl⟩
+        · exact ha (mem_biUnion.2 ⟨t, hK, hat⟩)
+        · have hsK := (mem_filter.1 hs).1
+          have fa : a = g s := by
+            rcases mem_insert.1 hat with e1 | e1
+            · exact e1
+            · exact absurd (mem_biUnion.2 ⟨s, hsK, mem_of_mem_erase e1⟩) ha
+          have fb : b = g s := by
+            rcases mem_insert.1 hbt with e1 | e1
+            · exact e1
+            · exact absurd (mem_biUnion.2 ⟨s, hsK, mem_of_mem_erase e1⟩) hb
+          exact hab (fa.trans fb.symm)
+      · have he'' : e' ∈ insert e Ed := mem_insert_of_mem he'
+        have ha' := h.a_fresh he''
+        have hb' := h.b_fresh he''
+        have inPair : ∀ c, c ∉ K.verts → c ∈ t → c = flipA v g opp e' ∨ c = flipB v g opp e' := by
+          intro c hc hct
+          simp only [flipAdded, mem_insert, mem_image] at hadd
+          rcases hadd with rfl | ⟨x', hx', rfl⟩
+          · simp only [mem_insert] at hct
+            rcases hct with h1 | h1 | h1
+            · exact .inl h1
+            · exact .inr h1
+            · exact absurd h1 (h.notMem_of_fresh hc he'')
+          · simp only [mem_insert, mem_singleton] at hct
+            rcases hct with h1 | h1 | h1 | h1
+            · exact absurd h1 (h.ne_v_of_fresh hc)
+            · exact absurd (h1 ▸ h.x_verts he'' hx') hc
+            · exact .inl h1
+            · exact .inr h1
+        have k1 := inPair a ha hat
+        have k2 := inPair b hb hbt
+        have : e' = e := by
+          apply h.edge_of_labels he he''
+          · rw [ha_def, hb_def]
+            rcases k1 with k1 | k1 <;> rcases k2 with k2 | k2
+            · exact absurd (k1.trans k2.symm) hab
+            · exact .inl k1.symm
+            · exact .inr k2.symm
+            · exact absurd (k1.trans k2.symm) hab
+          · rw [ha_def, hb_def]
+            rcases k1 with k1 | k1 <;> rcases k2 with k2 | k2
+            · exact absurd (k1.trans k2.symm) hab
+            · exact .inr k2.symm
+            · exact .inl k1.symm
+            · exact absurd (k1.trans k2.symm) hab
+        exact hn (this ▸ he')
+  suffices eq : move23 (flipAll K v g Ed opp) h23 = flipAll K v g (insert e Ed) opp by
+    rw [← eq]; exact .m23 h23
+  have q1 : insert a (insert b e) = ({x, y, a, b} : Finset V) := by
+    rw [he_def]; ext w; simp only [mem_insert, mem_singleton]
+    constructor <;> intro hw <;> rcases hw with hw | hw | hw | hw <;> simp [hw]
+  have q3 : insert v (insert y ({a, b} : Finset V)) = ({y, v, a, b} : Finset V) := insert_comm v y _
+  refine complex3_eq' fun t => ?_
+  rw [h.mem_flipAll]
+  simp only [move23, mem_union, mem_insert, mem_singleton, mem_erase, h0.mem_flipAll,
+    forall_mem_insert, exists_mem_insert, flipRemoved, flipAdded, ha_def, hb_def, mem_image,
+    he_def]
   sorry
 
 end Flip
