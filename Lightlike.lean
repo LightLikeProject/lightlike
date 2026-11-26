@@ -2380,6 +2380,8 @@ import Lightlike.Geodesic.LocalCausality
 import Lightlike.Geodesic.LocalCausalityManifold
 import Lightlike.Geodesic.NullRigidity
 import Lightlike.Geodesic.RadialUnique
+import Lightlike.Geodesic.SquaredDistance
+import Lightlike.Geodesic.SquaredDistanceTests
 import Lightlike.Geodesic.UniformNormalChart
 import Lightlike.Geodesic.UniformTimeBall
 import Lightlike.Geodesic.Radial
