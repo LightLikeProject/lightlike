@@ -100,16 +100,21 @@ domains covering `M` and smooth on them, whose frame changes `Rot` (defined by
 (`SpinCocycle`).  The metric is positive definite because it has an orthonormal frame at every
 point; the lifts exist only for frame changes in `SO(n)`, so `M` is oriented as well.  This is the
 atlas form of the definition of Lawson–Michelsohn, *Spin Geometry*, II Def. 1.3, in place of
-the principal `Spin(n)`-bundle double covering the frame bundle: the two data are equivalent, but
-atlas form; equivalence with the principal `Spin(n)`-bundle definition not proved. -/
+the principal `Spin(n)`-bundle double covering the frame bundle (a representation difference):
+atlas form; equivalence with the principal `Spin(n)`-bundle definition not proved.  The frames are
+smooth sections of the tangent bundle and the lifts are smooth maps into the Clifford algebra
+(every linear coordinate of `lift i j` is smooth on the overlap). -/
 structure SpinStructure (g : NondegMetric 𝓘(ℝ, Fin n → ℝ) M) (ι : Type*) extends
     SpinCocycle n M ι where
   /-- The local frame `i`. -/
   frame : ι → Fin n → Π x : M, TangentSpace 𝓘(ℝ, Fin n → ℝ) x
   dom_open : ∀ i, IsOpen (dom i)
   dom_cover : ∀ x : M, ∃ i, x ∈ dom i
-  frame_smooth : ∀ i a, ∀ x ∈ dom i, MDifferentiableAt 𝓘(ℝ, Fin n → ℝ) (𝓘(ℝ, Fin n → ℝ).prod 𝓘(ℝ, Fin n → ℝ))
+  frame_smooth : ∀ i a, ∀ x ∈ dom i,
+    ContMDiffAt 𝓘(ℝ, Fin n → ℝ) (𝓘(ℝ, Fin n → ℝ).prod 𝓘(ℝ, Fin n → ℝ)) ∞
       (fun y => (⟨y, frame i a y⟩ : TangentBundle 𝓘(ℝ, Fin n → ℝ) M)) x
+  lift_smooth : ∀ i j (φ : Module.Dual ℝ (CliffordAlgebra (Qneg n))) x, x ∈ dom i → x ∈ dom j →
+    ContMDiffAt 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ, ℝ) ∞ (fun y => φ (lift i j y)) x
   frame_orthonormal : ∀ i a b x, x ∈ dom i →
     g.g x (frame i a x) (frame i b x) = if a = b then 1 else 0
   frame_change : ∀ i j x, x ∈ dom i → x ∈ dom j → ∀ a,
@@ -152,9 +157,9 @@ noncomputable def euclideanSpinStructure (n : ℕ) : SpinStructure (euclideanMet
   dom_open _ := isOpen_univ
   dom_cover x := ⟨(), trivial⟩
   frame_smooth _ a x _ := by
-    refine (mdifferentiableAt_section (IB := 𝓘(ℝ, Fin n → ℝ)) (F := Fin n → ℝ)
+    refine (contMDiffAt_section (IB := 𝓘(ℝ, Fin n → ℝ)) (F := Fin n → ℝ)
       (E := fun y : Fin n → ℝ => TangentSpace 𝓘(ℝ, Fin n → ℝ) y)
-      (s := fun y => (Pi.single a 1 : TangentSpace 𝓘(ℝ, Fin n → ℝ) y))).2 ?_
+      (s := fun y => (Pi.single a 1 : TangentSpace 𝓘(ℝ, Fin n → ℝ) y)) x).2 ?_
     have h : (fun b : Fin n → ℝ => (trivializationAt (Fin n → ℝ)
         (fun y : Fin n → ℝ => TangentSpace 𝓘(ℝ, Fin n → ℝ) y) x
           (⟨b, (Pi.single a 1 : TangentSpace 𝓘(ℝ, Fin n → ℝ) b)⟩ :
@@ -162,7 +167,8 @@ noncomputable def euclideanSpinStructure (n : ℕ) : SpinStructure (euclideanMet
       funext b
       simp
     rw [h]
-    exact mdifferentiableAt_const
+    exact contMDiffAt_const
+  lift_smooth _ _ _ _ _ _ := contMDiffAt_const
   frame_orthonormal _ a b _ _ := by
     change euclideanForm n (Pi.single a 1 : Fin n → ℝ) (Pi.single b 1 : Fin n → ℝ) = _
     by_cases h : a = b
