@@ -11,6 +11,7 @@ deliberately wrong model that gives a different answer.
 * `tv4_orth_instance`, `tv4_be_instance`: orthogonality and Biedenharn–Elliott at `r = 4`, on
   explicit spins.
 * `tv4_classical_dims_fail`: the same checks with the classical dimensions `x + 1` fail.
+* `tv4_wrong_q_fails`: the same checks with the quantum numbers at `q = e^{iπ/5}` fail.
 * `turaevViro3_sphere`: the `r = 3` state sum of `∂Δ⁴` is `1/2`.
 * `classical3_sphere_fails`: with the integer dimensions `J + 1` the value is wrong.
 
@@ -269,6 +270,51 @@ theorem tv4_classical_dims_fail :
     intro h
     norm_num at h
     nlinarith [sqrt_two_sq]
+
+/-- At `q = e^{iπ/5}` the quantum number `[3]` is not `1` (at `q = e^{iπ/4}` it is `1`). -/
+lemma qnum5_three_ne_one : qnum 5 3 ≠ 1 := by
+  have hs : 0 < sin (π / 5) := sin_pi_div_pos (r := 5) (by norm_num)
+  have h : sin (π / 5) < sin (3 * π / 5) := by
+    rw [show 3 * π / 5 = π - 2 * π / 5 by ring, sin_pi_sub]
+    exact sin_lt_sin_of_lt_of_le_pi_div_two (by linarith [pi_pos]) (by linarith [pi_pos])
+      (by linarith [pi_pos])
+  intro h1
+  have : sin (3 * π / 5) = sin (π / 5) := by
+    have h2 : qnum 5 3 = sin (3 * π / 5) / sin (π / 5) := by simp [qnum]
+    rw [h2, div_eq_one_iff_eq hs.ne'] at h1
+    exact h1
+  linarith
+
+/-- **Wrong value of `q`:** the `r = 4` identities with the quantum numbers `[n]` taken at
+`q = e^{iπ/5}` instead of `e^{iπ/4}` fail. Both instances reduce to `[3] = 1`: orthogonality at
+`(1, 1, 1, 1, 0)` gives `([1] + [3])/2 ≠ 1`, and Biedenharn–Elliott at
+`(1, 1, 1, 1, 1, 1, 0, 0, 0)` gives `(√2/4)(1 + [3]) ≠ √2/2`. -/
+theorem tv4_wrong_q_fails :
+    ∑ x ∈ range 3, qnum 5 (x + 1) * qSixJ 4 1 1 x 1 1 0 ^ 2 ≠ 1 ∧
+      ∑ x ∈ range 3, (-1 : ℝ) ^ ((1 + 1 + 1 + 1 + 1 + 1 + 0 + 0 + 0 + x) / 2) * qnum 5 (x + 1) *
+        (qSixJ 4 1 1 x 1 1 0 * qSixJ 4 1 1 x 1 1 0 * qSixJ 4 1 1 x 1 1 0) ≠
+        qSixJ 4 0 0 0 1 1 1 * qSixJ 4 0 0 0 1 1 1 := by
+  have hs : 0 < √2 := by positivity
+  have h1 : qnum 5 1 = 1 := qnum_one (by norm_num)
+  have h3 := qnum5_three_ne_one
+  constructor
+  · rw [sum_range_succ, sum_range_succ, sum_range_succ, sum_range_zero, q6j4_110_110,
+      q6j4_111_110, q6j4_112_110, show 0 + 1 = 1 from rfl, show 2 + 1 = 3 from rfl, h1]
+    intro h
+    apply h3
+    nlinarith [sqrt_two_sq]
+  · rw [sum_range_succ, sum_range_succ, sum_range_succ, sum_range_zero, q6j4_110_110,
+      q6j4_111_110, q6j4_112_110, tv4_be_predicts, show 0 + 1 = 1 from rfl,
+      show 2 + 1 = 3 from rfl, h1]
+    intro h
+    apply h3
+    norm_num at h
+    have hc : √2 / 2 * (√2 / 2) * (√2 / 2) = √2 / 4 := by linear_combination (√2 / 4) * sqrt_two_sq / 2
+    rw [hc] at h
+    have h' : (√2 / 4) * (qnum 5 3 - 1) = 0 := by linarith
+    rcases mul_eq_zero.mp h' with h0 | h0
+    · exact absurd h0 (by positivity)
+    · linarith
 
 end TuraevViroFour
 

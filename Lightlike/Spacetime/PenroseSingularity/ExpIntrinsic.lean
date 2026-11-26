@@ -55,4 +55,10 @@ theorem expT_eq_flow {N : Set (TangentBundle 𝓘(ℝ, Fin n → ℝ) M)} {ε : 
     {z : TangentBundle 𝓘(ℝ, Fin n → ℝ) M} (hz : z ∈ N) : expT g z = Γ z 1 :=
   expT_eq_of g (by linarith) (by linarith) (hgeo z hz).1 (hgeo z hz).2
 
+/-- **`expT` of a zero vector is its base point.** -/
+theorem expT_zero (p : M) : expT g (⟨p, 0⟩ : TangentBundle 𝓘(ℝ, Fin n → ℝ) M) = p := by
+  have h := expT_eq_of g (z := (⟨p, 0⟩ : TangentBundle 𝓘(ℝ, Fin n → ℝ) M)) (a := -1) (b := 2)
+    (γ := fun _ => p) (by norm_num) (by norm_num) (isGeodesicCurveOn_const g p _) (phase_const p 0)
+  exact h
+
 end Lightlike.Penrose

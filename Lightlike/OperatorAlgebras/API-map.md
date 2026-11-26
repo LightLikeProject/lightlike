@@ -59,7 +59,7 @@ The Gram matrix of the vectors `W f Ω` of a Fock representation is a function o
 
 A strongly continuous contraction semigroup on a Banach space has a generator, the limit of the difference quotients on the vectors where it exists, a partially defined linear map [116]. A densely defined operator `A` with `λ - A` bounded below by `λ` and surjective for every `λ > 0` is the generator of a contraction semigroup (the generation direction of the Hille–Yosida theorem) [42] {3}: the resolvent `R(λ) = (λ - A)⁻¹` has norm at most `λ⁻¹`, the Yosida approximants `λ² R(λ) - λ` give contractions `exp (t (λ² R(λ) - λ))` that converge, by a Cauchy estimate and the density of the domain, to a semigroup whose generator contains `A`, and a dissipative generator with `λ - A` surjective equals `A`. Checks: the trivial semigroup is a contraction semigroup, the theorem applies to `A = 0`, and `A = id` fails the lower bound at `λ = 1` [43]. The converse holds as well, so the two form the equivalence of the Hille–Yosida theorem for contraction semigroups [44] {3}: the orbits `t ↦ S t x` are continuous for all times `t ≥ 0` by the semigroup law and continuity at `0` [45], the averages `t⁻¹ ∫₀ᵗ S s x ds` lie in the domain of the generator and converge to `x`, which makes the domain dense [45], the resolvent `∫₀^∞ e^{-λ t} S t y dt` is a Bochner integral that lies in the domain with `(λ - A) R(λ) y = y` [46], and `norm_dissip` gives the lower bound [44].
 
-A bounded operator on a complex Hilbert space is trace class when the diagonal sum `∑ ⟪eᵢ, |T| eᵢ⟫` converges in a Hilbert basis, and the trace and the trace norm do not depend on the basis [47]. The Hilbert-Schmidt operators, those with `∑ ‖S eᵢ‖² < ∞` in one basis, are two-sided ideal elements, and the diagonal sums of `R S` and `S R` for Hilbert-Schmidt `R`, `S` agree (cyclicity of the trace) [48]; a product of two Hilbert-Schmidt operators is trace class [49]. The trace pairing `A ↦ Tr (A ·)` is an isometry of the bounded operators into the dual of the trace class [50], and every continuous functional on the trace class is a trace pairing, so the dual of the trace class is the bounded operators [51]. The trace of the rank-one operator on `ℂ` is `1`, and every operator on a finite-dimensional space is trace class; the identity of an infinite-dimensional Hilbert space is not Hilbert-Schmidt [52]. The diagonal operator with eigenvalues `1 / (n + 1)` on `ℓ²(ℕ)` is Hilbert-Schmidt and not trace class [53]. This layer is ported from Physlib with attribution; the duality between the compact operators and the trace class is not covered.
+A bounded operator on a complex Hilbert space is trace class when the diagonal sum `∑ ⟪eᵢ, |T| eᵢ⟫` converges in a Hilbert basis, and the trace and the trace norm do not depend on the basis [47]. The Hilbert-Schmidt operators, those with `∑ ‖S eᵢ‖² < ∞` in one basis, are two-sided ideal elements, and the diagonal sums of `R S` and `S R` for Hilbert-Schmidt `R`, `S` agree (cyclicity of the trace) [48]; a product of two Hilbert-Schmidt operators is trace class [49]. The trace pairing `A ↦ Tr (A ·)` is an isometry of the bounded operators into the dual of the trace class [50], and every continuous functional on the trace class is a trace pairing, so the dual of the trace class is the bounded operators [51]. The trace of the rank-one operator on `ℂ` is `1`, and every operator on a finite-dimensional space is trace class; the identity of an infinite-dimensional Hilbert space is not Hilbert-Schmidt [52]. The diagonal operator with eigenvalues `1 / (n + 1)` on `ℓ²(ℕ)` is Hilbert-Schmidt and not trace class [53]. This layer is ported from Physlib with attribution; The trace-class operators form a two-sided ideal, are closed under sums and, with the trace norm estimate `‖A T B‖₁ ≤ ‖A‖ ‖T‖₁ ‖B‖`, scalar multiples [49] [134] [135]; the Hilbert-Schmidt operators are an ideal closed under sums and scalar multiples [48]. The trace is the diagonal sum in every Hilbert basis [136], additive, homogeneous and cyclic [137]. The dual of the compact operators is the trace class [133], and the dual of the trace class is the bounded operators, in one statement with a unique operator of the norm of the functional [138].
 
 For a Hilbert basis `{eᵢ}`, `∑ᵢ |⟪eᵢ, y⟫|² = ‖y‖²` (Parseval), the Hilbert-Schmidt square sum `∑ᵢ ‖S eᵢ‖²` of a bounded `S` in one basis equals that of `S⋆` in a second basis, and so it converges in every Hilbert basis to the same sum once it converges in one [39]. A Bogoliubov transformation is `T f = α f + β f` with `α` complex-linear and `β` antilinear, and the symplectic condition gives `‖α e‖² - ‖β e‖² = ‖e‖²` and `4 ‖β e‖² = ‖T e‖² + ‖T (i e)‖² - 2 ‖e‖²`; `α` is a bounded operator with `α†α - 1` positive and `‖√(α†α - 1) e‖² = ‖β e‖²` [40]. Hence the antilinear part is Hilbert-Schmidt as soon as `∑ᵢ ‖β bᵢ‖²` converges in one Hilbert basis, and in particular when the finite sums `∑_{i ∈ s} (‖T bᵢ‖² + ‖T (i bᵢ)‖² - 2)` are bounded, the quantity that the vacuum projections onto finitely many modes control in the necessity part of Shale's criterion [41].
 
@@ -126,7 +126,7 @@ product of split fields (annihilation part killing the vacuum, creation part kil
 scalar anticommutators with the annihilation parts) is the Pfaffian-type recursion of the pairings
 [129]. Wick's theorem for the CAR fields of a Bogoliubov vacuum, for every number of fields: the vacuum
 expectation of a product of linear combinations of the transformed operators b, b* is the Pfaffian
-recursion of the pairings, whose two-point value is the sum of u_i v'_i [130].
+recursion of the pairings, whose two-point value is the sum of u_i v'_i [130]. A faithful state of a matrix algebra is KMS at inverse temperature 1 for the flow generated by minus the logarithm of its density matrix, and that flow is the modular dynamics [139].
 
 Strong subadditivity of the von Neumann entropy, `S(A|BC) ≤ S(A|B)` for every density matrix on three finite
 systems, is stated here as a wrapper of Physlib's theorem; the proof is in Physlib [132]. The Bell state has
@@ -254,9 +254,14 @@ systems, is stated here as a wrapper of Physlib's theorem; the proof is in Physl
     `OperatorAlgebras.TraceClass.trace`, `OperatorAlgebras.TraceClass.traceNorm`
 48. Lightlike/OperatorAlgebras/TraceClass/HilbertSchmidt.lean -
     `OperatorAlgebras.TraceClass.HilbertSchmidt.IsHilbertSchmidt`,
-    `OperatorAlgebras.TraceClass.HilbertSchmidt.tsum_diagonal_mul_eq_tsum_diagonal_swap`
+    `OperatorAlgebras.TraceClass.HilbertSchmidt.tsum_diagonal_mul_eq_tsum_diagonal_swap`,
+    `OperatorAlgebras.TraceClass.HilbertSchmidt.isHilbertSchmidt_add`,
+    `OperatorAlgebras.TraceClass.HilbertSchmidt.isHilbertSchmidt_smul`,
+    `OperatorAlgebras.TraceClass.HilbertSchmidt.isHilbertSchmidt_mul_left`,
+    `OperatorAlgebras.TraceClass.HilbertSchmidt.isHilbertSchmidt_mul_right`
 49. Lightlike/OperatorAlgebras/TraceClass/GeneralProduct.lean -
-    `OperatorAlgebras.TraceClass.isTraceClass_mul_of_isHilbertSchmidt`
+    `OperatorAlgebras.TraceClass.isTraceClass_mul_of_isHilbertSchmidt`,
+    `OperatorAlgebras.TraceClass.isTraceClass_mul_mul`, `OperatorAlgebras.TraceClass.isTraceClass_add`
 50. Lightlike/OperatorAlgebras/TraceClass/TracePairingNorm.lean -
     `OperatorAlgebras.TraceClass.TraceClass.tracePairingLinearIsometry`
 51. Lightlike/OperatorAlgebras/TraceClass/TracePairingSurjectivity.lean -
@@ -383,7 +388,7 @@ systems, is stated here as a wrapper of Physlib's theorem; the proof is in Physl
 90. Lightlike/OperatorAlgebras/TestsGibbsKMS.lean - `OperatorAlgebras.GibbsKMS.summable_exp_neg_mul_nat`,
     `OperatorAlgebras.GibbsKMS.oscillator_isKMS`, `OperatorAlgebras.GibbsKMS.not_summable_exp_zero` (the wrong input
     `β = 0`)
-91. Lightlike/OperatorAlgebras/ModularFinite.lean - `OperatorAlgebras.kms`, `OperatorAlgebras.inner_tomita`,
+91. Lightlike/OperatorAlgebras/ModularFinite.lean - `OperatorAlgebras.kms`, `OperatorAlgebras.inner_tomita`, `OperatorAlgebras.tomita_apply`,
     `OperatorAlgebras.omega_flow`, `OperatorAlgebras.flow_add`, `OperatorAlgebras.flow_mul`,
     `OperatorAlgebras.isKMS_boltz`, `OperatorAlgebras.not_isKMS_of_ne`
 92. Lightlike/OperatorAlgebras/PureStates.lean - `OperatorAlgebras.PureStates.states`, `OperatorAlgebras.PureStates.IsPure`,
@@ -499,7 +504,9 @@ systems, is stated here as a wrapper of Physlib's theorem; the proof is in Physl
     `OperatorAlgebras.SecondQuantFock.dGammaT_comm`, `OperatorAlgebras.SecondQuantFock.embCLM_creW`, `OperatorAlgebras.SecondQuantFock.embCLM_dGammaFock`
 120. Lightlike/OperatorAlgebras/FiniteKMS.lean - `OperatorAlgebras.isKMS_iff_eq_gibbs`,
      `OperatorAlgebras.isKMS_gibbs`
-121. Lightlike/OperatorAlgebras/FiniteModular.lean - `OperatorAlgebras.isKMS_modular`
+121. Lightlike/OperatorAlgebras/FiniteModular.lean - `OperatorAlgebras.isKMS_modular`,
+     `OperatorAlgebras.modOpSqrt_modOpSqrt`, `OperatorAlgebras.modConj_modOp_sqrt`,
+     `OperatorAlgebras.modOpPow_mul_modOpPow_neg`
 122. Lightlike/OperatorAlgebras/FockShale/Summary.lean - `OperatorAlgebras.fockRepOf_implements_iff`,
      `OperatorAlgebras.squeeze_norm_alpha_sq_sub_norm_beta_sq_one`,
      `OperatorAlgebras.squeezeEllTwo_not_implementable`,
@@ -534,6 +541,18 @@ systems, is stated here as a wrapper of Physlib's theorem; the proof is in Physl
      `OperatorAlgebras.StoneMomentum.stone_theorem`
 132. Lightlike/OperatorAlgebras/EntropyBell.lean - `OperatorAlgebras.strong_subadditivity`,
      `OperatorAlgebras.bell_entropies`, `OperatorAlgebras.bell_conditional_entropy_neg`
+133. Lightlike/OperatorAlgebras/CompactDualIso.lean - `OperatorAlgebras.compact_dual_eq_traceClass_proof`
+134. Lightlike/OperatorAlgebras/TraceClass/Banach.lean - `OperatorAlgebras.TraceClass.isTraceClass_smul`
+135. Lightlike/OperatorAlgebras/TraceClass/IdealNorm.lean - `OperatorAlgebras.TraceClass.traceNorm_mul_mul_le`
+136. Lightlike/OperatorAlgebras/TraceClass/GeneralIdeal.lean -
+     `OperatorAlgebras.TraceClass.trace_eq_of_hilbertBasis`
+137. Lightlike/OperatorAlgebras/TraceClass/TraceAlgebra.lean - `OperatorAlgebras.TraceClass.trace_add`,
+     `OperatorAlgebras.TraceClass.trace_smul`, `OperatorAlgebras.TraceClass.trace_mul_cycle`
+138. Lightlike/OperatorAlgebras/TraceClass/DualOfTraceClass.lean -
+     `OperatorAlgebras.TraceClass.TraceClass.tracePairingLinearIsometryEquiv`,
+     `OperatorAlgebras.TraceClass.TraceClass.traceClass_dual_eq_bounded`
+139. Lightlike/OperatorAlgebras/ModularKMS/ModularCapstone.lean - `OperatorAlgebras.isKMS_modular_one`,
+     `OperatorAlgebras.modular_flow_eq_modGroup`
 
 ## References
 

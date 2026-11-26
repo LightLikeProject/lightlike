@@ -91,7 +91,9 @@ trace of the unit 2-sphere, Σ(2l+1)e^{-t l(l+1)}, has the expansion 1/t + 1/3 +
 t^{-n/2} with every other coefficient zero, in particular no t⁰ term [41]. On the round 2-sphere and
 3-sphere, any expansion of the heat trace has a₁ = (4π)^{-n/2} V R/6, with R the scalar curvature of the
 round metric computed by Lightlike's scalarCurvature (R = n(n-1)) [42]. The scalar curvature of the
-round unit n-sphere in stereographic coordinates is n(n-1) [43]. Induced gravity from the heat kernel:
+round unit n-sphere in stereographic coordinates is n(n-1) [43]. The coefficients of an asymptotic expansion of a heat trace are unique, to any finite order [57]; the
+expansion of the unit 2-sphere heat trace has the coefficients of the Seeley–DeWitt formulas with
+`V = 4π`, `R = 2`, `|Ric|² = 2` and `|Riem|² = 4` [58]. Induced gravity from the heat kernel:
 for D = -Δ + ξR the coefficient a₁ is proportional to (1-6ξ), it vanishes for the conformal coupling in
 n = 4 and not in other dimensions, and the induced inverse Newton constant is (1-6ξ)/(12πε) with
 proper-time cutoff ε [44]. Poisson summation with a real shift: Σ_n e^{-πa(n+s)²} = a^{-1/2} Σ_n e^{-πn²/a} e^{2πins}, and the sum differs from a^{-1/2} by at most a^{-1/2} times the Gaussian tail Σ_{n≠0} e^{-πn²/a} [52]. The on-shell recursion for the colour-ordered Feynman amplitudes of
@@ -231,6 +233,9 @@ eigenvalue plus or minus s and the radial profile of the lower bound [51].
 54. Lightlike/GR/KerrRicci.lean - `kerr_isVacuumSolution`
 55. Lightlike/GR/KerrHorizon.lean - `kerrKappa`, `kerrOmega`, `kerrKappa_eq`, `kerr_chi_null`
 56. Lightlike/GR/KerrHorizonKillingField/KerrSurfaceGravity.lean - `kerrChiNorm_eq`
+57. Lightlike/Geometry/HeatKernel/Unique.lean - `HeatKernel.HasHeatExpansionTo.coeff_unique`,
+    `HeatKernel.HasHeatExpansion.coeff_unique`
+58. Lightlike/Geometry/HeatKernel/Consistency.lean - `HeatKernel.hasHeatExpansionTo_sphereTrace_geom`
 
 ## References
 

@@ -55,7 +55,7 @@ milestones:
       - id: t1
         kind: trust
         text: "The round 2-sphere of radius r, as a manifold with its Levi-Civita connection, has scalar curvature 2/r²"
-        decls: [Lightlike.roundSphere2_scalarCurvatureAt, Lightlike.roundSphere2_exists_leviCivita]
+        decls: [Lightlike.roundSphere2_scalarCurvatureAt, Lightlike.roundSphere2_exists_leviCivita, Lightlike.roundSphere_scalarCurvatureAt, Lightlike.roundSphere_coordMetric]
         hint: "Close but not this: Lightlike.Test.sphere_scalar (coordinate formula on the (θ, φ) chart), scalarCurv_sphere (sphere in ℝ³ by the Gauss equation), scalarCurvature_stereo_two (radius 1 only). Missing: the statement for the intrinsic scalarCurvatureAt."
       - id: t2
         kind: trust
@@ -64,7 +64,7 @@ milestones:
       - id: t3
         kind: trust
         text: "A connection with torsion gives a different Ricci tensor from the Levi-Civita connection of the same metric"
-        decls: []
+        decls: [Lightlike.torsion_connection_ricci_ne, Lightlike.twisted_torsion_ne_zero, Lightlike.twisted_ricciAt_e1]
       - id: c1
         kind: catalogue
         text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
@@ -103,12 +103,12 @@ milestones:
       - id: t2
         kind: trust
         text: "Anti-de Sitter is not globally hyperbolic"
-        decls: []
+        decls: [Lightlike.adsTwo_not_globallyHyperbolic, Lightlike.adsTwoMetric, Lightlike.adsTwoOrientation]
         hint: "Missing: no anti-de Sitter spacetime with a causal statement. Existing: Lightlike.adsBoundary and Lightlike.adsCompact_boundary (coordinate-level conformal boundary), Lightlike.Causal.IsGloballyHyperbolic (the predicate to negate)."
       - id: t3
         kind: trust
         text: "A spacetime with closed timelike curves (Minkowski with time rolled up) violates chronology"
-        decls: []
+        decls: [Lightlike.timeCylinder_not_isChronological, Lightlike.timeCylinderMetric, Lightlike.timeCylinderOrientation]
         hint: "Missing: the rolled-up Minkowski spacetime and x ∈ chronFuture x. Existing: Lightlike.Causal.IsChronological, Lightlike.Causal.chronFuture; a CTC cylinder exists in GreenOperators/Cylinder.lean but does not use them."
       - id: c1
         kind: catalogue
@@ -406,7 +406,7 @@ milestones:
       - id: t2
         kind: trust
         text: "A manifold with boundary has the same identities"
-        decls: []
+        decls: [Lightlike.segMetric, Lightlike.segment_identities, Lightlike.segment_exists_leviCivita]
         hint: "Missing: no concrete example with boundary or corners."
       - id: t3
         kind: trust
@@ -481,8 +481,8 @@ milestones:
       - id: p2
         kind: piece
         text: "The induced metric on a hypersurface is defined"
-        decls: []
-        hint: "No separate definition; g restricted to tangent fields via Lightlike.Hypersurface.IsTangentNear (hypersurface = level set of a smooth function, no manifold structure on the leaf)."
+        decls: [Lightlike.Hypersurface.levelTangent, Lightlike.Hypersurface.inducedMetric, Lightlike.Hypersurface.inducedMetric_separating_of_isUnitNormal, Lightlike.Hypersurface.inducedMetric_separating_of_nonnull]
+        hint: "Defined pointwise, without a manifold structure on the leaf: g restricted to the kernel of the differential of the defining function (levelTangent); nondegenerate when the normal is non-null."
       - id: p3
         kind: piece
         text: "The second fundamental form (extrinsic curvature) K(v,w) = g(∇_v n, w) is defined"
@@ -544,7 +544,7 @@ milestones:
       - id: m2
         kind: main
         text: "The critical points of the action with fixed boundary data are the vacuum Einstein equations with Λ"
-        decls: []
+        decls: [Lightlike.IsEHStationary, Lightlike.isEHStationary_iff]
         hint: "Close: Lightlike.isEHCritical_iff (ℝⁿ, compactly supported variations), Lightlike.isEHCriticalOnBall_iff (ball), Lightlike.eh_ghy_variation_manifold (fixed boundary, Gibbons-Hawking-York corrected). Missing: critical points iff Einstein equations on a manifold region."
       - id: p1
         kind: piece
@@ -679,7 +679,7 @@ milestones:
       - id: t3
         kind: trust
         text: "A complementary-series parameter outside (0, 1/2) gives a non-unitary representation"
-        decls: []
+        decls: [Lightlike.Lorentz.SL2RPlancherel.no_invariant_form, Lightlike.Lorentz.SL2RPlancherel.no_invariant_form_smooth, Lightlike.Lorentz.SL2RPlancherel.no_invariant_form_smooth_boundary]
         hint: "Close but not this: Lightlike.Lorentz.SL2RPlancherel.no_invariant_form and no_invariant_form_smooth show no invariant form (infinitesimal, form only assumed skew for E, F, H) for |tau| > 1 (sigma > 1/2). Missing: the boundary and sigma < 0 cases, and a statement about unitarity of the group representation."
       - id: c1
         kind: catalogue
@@ -791,7 +791,7 @@ milestones:
       - id: r1
         kind: review
         text: "The statement WignerClassification is compared with Wigner (1939) and Weinberg, QFT I, section 2.5: the list of positive-energy irreducible classes (massive spin s, massless helicity h, and the cases left out) matches the source"
-        review_evidence: null
+        review_evidence: "Compared WignerClassification (ClassificationStatement.lean) with Wigner, Ann. Math. 40 (1939) 149-204, read from the JSTOR scan: Section 3, pp. 157-158 (the four classes by the orbit of the momentum), Section 6, pp. 186-187 (the subclasses P_+, P_-, 0_+, 0_-, 0_0), Section 7A, p. 197 (little-group representations D(0), D(1/2), D(1), ...) and Section 7B, p. 198, The final result. Result: the list matches. EquivMassive m>0, n in N is P_+^j with j = n/2; EquivMassless h in Z is 0_+^s with s = h/2 (both signs and half-integers); MasslessNotHelicity is the continuous-spin classes 0_+(Xi) and 0_+(Xi) double-valued, given only negatively; the translation-trivial case is Wigner 0_0, which Wigner leaves undetermined; negative-energy and space-like classes are excluded by positive energy. Differences, stated in the docstring and in LL-0313: continuous spin only negatively, only completeness (irreducibility is LL-0310 and LL-0311), no inequivalence of different parameters. Not compared: Weinberg, QFT I, Section 2.5 (no copy read), pending."
       - id: c1
         kind: catalogue
         text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
@@ -976,8 +976,7 @@ milestones:
       - id: m4
         kind: main
         text: "(S1)* is isometrically isomorphic to B(H) (trace pairing), as a lockable statement"
-        decls: []
-        hint: "Parts exist but no single statement and no lock task: Lightlike.OperatorAlgebras.TraceClass.TraceClass.tracePairingLinearIsometry (isometry) and Lightlike.OperatorAlgebras.TraceClass.TraceClass.tracePairing_surjective_concrete (surjective)."
+        decls: [Lightlike.OperatorAlgebras.TraceClass.TraceClass.traceClass_dual_eq_bounded, Lightlike.OperatorAlgebras.TraceClass.TraceClass.tracePairingLinearIsometryEquiv]
       - id: p1
         kind: piece
         text: "S1 and S2 are defined and closed under sums and scalar multiples, with a norm bound for the ideal property"
@@ -1093,8 +1092,8 @@ milestones:
       - id: m2
         kind: main
         text: "For a positive measure on [0, ∞) whose Laplace transform grows like e^{a/β}, the counting function ρ[0, X] has the asymptotics of Mukhametzhanov–Zhiboedov 2019, eq. (1.8)"
-        decls: []
-        hint: "Missing: Ingham's theorem for the counting function itself. Close: Lightlike.Tauberian.ingham_log (logarithmic form only, log F(X)/(2√(aX)) → 1; its docstring says weaker) and Lightlike.Tauberian.cardy_mz / cardy_relative (the (1.8) asymptotics with a 1+O(X^{-1/2}) error, but for a measure with a SpectralHyp and a modular-invariance hypothesis, not for a general L ~ e^{a/β})."
+        decls: [Lightlike.Tauberian.cardy_mz]
+        hint: "Ticked on Lightlike.Tauberian.cardy_mz (LL-0182; cardy_relative and cardy_counting are its steps) by owner decision D14 = (A). Difference: MZ (1.8) assumes modular invariance; the general-measure form (a positive measure with only L(β) ~ e^{a/β}) is false (BJM arXiv:1910.03036 §3.2). ingham_log is the real-axis logarithmic companion; the sector-bound form (BJM Theorem 4.1) is open, see docs/notes/sp3-tauberian-backlog.md."
       - id: p1
         kind: piece
         text: "Slowly varying functions are defined (ℓ eventually positive, ℓ(ct)/ℓ(t) → 1 for every c > 0)"
@@ -1136,8 +1135,7 @@ milestones:
       - id: t1
         kind: trust
         text: "The number k of negative signs equals the number of negative eigenvalues of the Hessian"
-        decls: []
-        hint: "Missing: the eigenvalue form. Close: Lightlike.Morse.morse_diagonal gives k = sigNeg of the Hessian (largest dimension of a negative-definite subspace); its docstring says the eigenvalue form is not proved."
+        decls: [Lightlike.Morse.sigNeg_hessQuad_eq_card_neg_eigenvalues, Lightlike.Morse.morse_diagonal_eigenvalues]
       - id: t2
         kind: trust
         text: "x³ at 0 has no diagonal Morse chart"
@@ -1334,7 +1332,7 @@ milestones:
       - id: t2
         kind: trust
         text: "A wrong value of q makes one of the identities (q-Biedenharn–Elliott or q-orthogonality) fail"
-        decls: []
+        decls: [Lightlike.TV.Test.tv4_wrong_q_fails]
         hint: "Close but not this: Lightlike.TV.Test.tv4_classical_dims_fail (Lightlike/TuraevViro/Tests.lean) breaks both identities with classical dimensions, a wrong model rather than a wrong value of q. Missing: a counterexample with a different q."
       - id: c1
         kind: catalogue
@@ -1399,7 +1397,7 @@ milestones:
       - id: t2
         kind: trust
         text: "A wrong sign convention in the 6j symbol breaks the Biedenharn–Elliott identity"
-        decls: []
+        decls: [Lightlike.PR.Test.be_wrongSign_fails]
         hint: "Missing in Lean. Close but not this: Lightlike.PR.Test.weightWith_wrong_model (flips the triangle sign of the PR weight, not the 6j sign, and not BE); scripts/pr23_check.py --wrong-edge-sign is Python, and an edge sign."
       - id: c1
         kind: catalogue
@@ -1440,7 +1438,7 @@ milestones:
       - id: r1
         kind: review
         text: "The scope of the milestone (the six bullets of ‘what is proven’ in docs/tasks/milestones.md, QU5) is covered by m1 and p1 to p6, and nothing in them claims triangulation independence"
-        review_evidence: null
+        review_evidence: "Compared the QU5 text of docs/tasks/milestones.md ('what is proven' and 'what it does not give') with the items. Proven clauses: the 1-4 move (p1: weight_move14, amplitude_move14); invariance along chains of 2-3, 3-2, 1-4, 4-1 moves, also with a maximal tree (m1: amplitudeGF_eqvGen, amplitudeGF_eqvGen_tree, catalogued as LL-0027); recognition of the 3-2 and 4-1 moves on any complex (p2: IsMove32, amplitudeGF_move32, amplitudeGF_move41); tree exchanges leave the amplitude unchanged for every cutoff (p3: amplitudeGF_exchange, amplitudeGF_eqvGen_exchange, LL-0028); closed combinatorial 3-manifolds preserved by the moves (p4: isCombManifold_move23_iff, isCombManifold_move14_iff, isCombManifold_iff_of_eqvGen); combinatorial 2-spheres are connected closed pseudo-surfaces of Euler characteristic 2 and exactly the intrinsic spheres (p5: IsSphere2.invariants, isSphere2_iff_isSurfaceSphere); the partial answers (p6: amplitudeGF_of_forcesAll, amplitudeGF_S3_star, amplitudeGF_tree_dependent, not_eqvGen_exchange_T1_T2). Every clause of the milestone text has an item. None of the item texts, docstrings or catalogue notes claims triangulation independence: LL-0027 states that independence of the gauge tree in general and removal of the cutoff are not proven, and the entry for the tree-dependence counterexample says the ring of three tetrahedra is not a manifold, outside the assumptions of Freidel-Louapre tree independence, which is stated for triangulated 3-manifolds. Nothing is missing and nothing is overclaimed; no difference to report."
       - id: c1
         kind: catalogue
         text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
@@ -1922,7 +1920,7 @@ milestones:
       - id: r1
         kind: review
         text: "The vertex amplitude is compared with the source (Engle–Pereira–Rovelli–Livine 2008, Engle–Pereira 2009) and the ε twist on the bra legs is present, or its absence is justified"
-        review_evidence: null
+        review_evidence: "Read Engle-Pereira, arXiv:0805.4696, eq. (22): the regularised amplitude is the integral over four copies of SL(2,C) of the product of the ten matrix coefficients with arguments V_a^-1 V_b (V5 dropped, since the integrand does not depend on it), contracted with the intertwiner i_t at each tetrahedron; eq. (23): A_reg_v(j, i) = A_v[2j, 2 gamma j; j, i]. Compared with Lightlike/Lorentz/EPRL.lean: eprlVertex has the same structure (four free copies, V4 = 1, ten coefficients of the principal series at k = j, contracted with arbitrary coefficient arrays iota), and eprlVertex_eq_integral says it is the absolutely convergent integral of the contracted integrand. Two differences, both documented in the module docstring and in the catalogue note of the finiteness entry: (1) the rho label is gamma (j+1) (Ding-Rovelli) instead of Engle-Pereira gamma j, which the finiteness theorem does not depend on (integrable_linkProd_inner holds for all labels); (2) the epsilon twist (the structure map e_m to +-e_{J-m} identifying the dual of spin j with spin j) on the bra legs is NOT applied: the coefficients are arbitrary arrays, and the twisted array of an SU(2)-invariant intertwiner is again an array, so the finiteness statement is unaffected, but eprlVertex is not claimed to equal the Engle-Pereira amplitude on invariant intertwiners. The absence of the twist is therefore justified for the milestone (finiteness for every coefficient array) and not for equality with the source amplitude. For coherent product arrays eprlVertex is a constant (the fourth power of the Haar scalar factor) times the coherent vertex lorVertex (eprlVertex_eq_lorVertex), which narrows but does not close the gap to the Engle-Pereira amplitude. Only eqs. (22) and (23) of Engle-Pereira were read; the EPRL 2008 paper (0711.0146) was not compared at an equation."
       - id: c1
         kind: catalogue
         text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"

@@ -981,6 +981,10 @@ references:
     cite: "J. Dereziński, Introduction to representations of the canonical commutation and anticommutation relations, in Large Coulomb Systems, Lecture Notes in Physics 695, Springer (2006) 63-143"
     title: "Introduction to Representations of the Canonical Commutation and Anticommutation Relations"
     arxiv: "math-ph/0511030"
+  yamagami-2008:
+    cite: "S. Yamagami, Geometry of quasi-free states of CCR algebras, arXiv:0801.1739 (2008)"
+    title: "Geometry of Quasi-Free States of CCR Algebras"
+    arxiv: "0801.1739"
   faulhuber-2022:
     cite: "M. Faulhuber, Time-Frequency Analysis, lecture notes, University of Vienna (2022), arXiv:2204.01596"
     title: "Time-Frequency Analysis (Lecture Notes)"

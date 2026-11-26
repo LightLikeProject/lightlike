@@ -246,6 +246,6 @@ theorem lorVertex_asymptotics_vertexChart {j p : Fin 10 → ℝ} (hj : ∀ e, 0 
     (fun x hx e h => (left_ne_zero_of_mul (hne x hx e)) (by rw [h]; simp))
     (fun x hx e h => (right_ne_zero_of_mul (hne x hx e)) (by rw [h]; simp))
     (fun x hx e => left_ne_zero_of_mul (hne x hx e))
-    (fun x hx e => right_ne_zero_of_mul (hne x hx e)) K hK hKs hdet hint hfar w m hw
+    (fun x hx e => right_ne_zero_of_mul (hne x hx e)) K hK hKs hdet (fun lam _ => hint lam) hfar w m hw
 
 end Lightlike.Asymptotics.Lorentzian
