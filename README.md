@@ -15,12 +15,6 @@ stated target (the statement is defined in Lean, the proof is open). Lean's kern
 proof. Statements are reviewed against their sources by agents, since the kernel cannot check that a
 statement matches its source. No entry has had expert human review yet, and a review of any entry is
 welcome ([how to report a mismatch](#review)).
-
-Read the count with care ([details](docs/RESULTS.md#how-to-read-the-count)): 15 entries are a
-supporting lemma, an elementary fact or a wrapper of a Mathlib or Physlib result, so 539 are results
-in the sense of a paper's theorem; 12 entries are conditional or a stated target; 84 entries have a
-statement that was not yet compared with the text of a source (12 cite one, 72 cite none); 93
-entries state a limit (the statement is narrower than the source).
 <!-- /results:summary -->
 
 Start with the [main results](docs/RESULTS.md#main-results).
