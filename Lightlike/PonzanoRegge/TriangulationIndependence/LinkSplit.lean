@@ -136,4 +136,47 @@ theorem forwardMoves_stackAll {K : Complex3 V} {S : Finset (Finset V)} {g : Fins
           · exact .inl (.inl eD)
         · exact .inr ⟨hne u hu x hx, .inr ⟨u, hu, x, hx, rfl⟩⟩
 
+
+/-- The tetrahedra through `v`. -/
+def starTets (K : Complex3 V) (v : V) : Finset (Finset V) := K.tets.filter (v ∈ ·)
+
+/-- **The link of `v` after stacking its star** is the link of `v` with every triangle `τ` stacked
+by the fresh vertex `g (insert v τ)` (the Kleetope of the link). -/
+theorem StackData.link_stackAll_star {K : Complex3 V} {v : V} {g : Finset V → V}
+    (h : StackData K (starTets K v) g) (hv : v ∈ K.verts) :
+    (stackAll K (starTets K v) g).link v =
+      (K.link v).biUnion fun τ => stackPieces τ (g (insert v τ)) := by
+  ext σ
+  rw [Complex3.mem_link, h.mem_stackAll, mem_biUnion]
+  simp only [starTets, mem_filter, mem_stackPieces]
+  have hgv : ∀ t ∈ K.tets, v ∈ t → g t ≠ v := fun t ht hvt e =>
+    h.fresh t (mem_filter.2 ⟨ht, hvt⟩) (e ▸ hv)
+  constructor
+  · rintro ⟨hvσ, ⟨hK, hn⟩ | ⟨t, ⟨ht, hvt⟩, x, hx, e⟩⟩
+    · exact absurd ⟨hK, mem_insert_self v σ⟩ hn
+    · have hvmem : v ∈ insert (g t) (t.erase x) := e ▸ mem_insert_self v σ
+      rcases mem_insert.1 hvmem with e' | e'
+      · exact absurd e'.symm (hgv t ht hvt)
+      · have hxv : x ≠ v := fun hx' => (ne_of_mem_erase e') hx'.symm
+        refine ⟨t.erase v, Complex3.mem_link.2 ⟨notMem_erase v t, by rwa [insert_erase hvt]⟩,
+          x, mem_erase.2 ⟨hxv, hx⟩, ?_⟩
+        rw [insert_erase hvt]
+        have h1 : σ = (insert (g t) (t.erase x)).erase v := by rw [e, erase_insert hvσ]
+        have hg := hgv t ht hvt
+        rw [h1]
+        ext y
+        simp only [mem_insert, mem_erase]
+        grind
+  · rintro ⟨τ, hτ, x, hx, rfl⟩
+    obtain ⟨hvτ, hτK⟩ := Complex3.mem_link.1 hτ
+    have hgv' := hgv _ hτK (mem_insert_self v τ)
+    refine ⟨fun hm => ?_, .inr ⟨insert v τ, ⟨hτK, mem_insert_self v τ⟩, x, mem_insert_of_mem hx, ?_⟩⟩
+    · rcases mem_insert.1 hm with e | e
+      · exact hgv' e.symm
+      · exact hvτ (mem_of_mem_erase e)
+    · have hxv : x ≠ v := fun e => hvτ (e ▸ hx)
+      ext y
+      simp only [mem_insert, mem_erase]
+      grind
+
 end Lightlike.PR
