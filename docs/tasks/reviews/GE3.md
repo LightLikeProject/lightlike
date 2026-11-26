@@ -1,6 +1,6 @@
 Verdict: pass
 Reviewer: turaev-viro
-Worked by: unknown (no plan); per git log the GE3 commits came from the regge stream (branches `regge/ge3-raychaudhuri`, `regge/g1-009-raychaudhuri`, `regge/g1-009-manifold`; index computation `raychaudhuri_algebra` by fable1) and the api-g1-005 session (branch `api-g1-005/ge3-raychaudhuri`, merged in 7736c79f)
+Worked by: unknown (no plan); per git log the GE3 commits came from the regge stream (branches `regge/ge3-raychaudhuri`, `regge/g1-009-raychaudhuri`, `regge/g1-009-manifold`; index computation `raychaudhuri_algebra`) and the api-g1-005 session (branch `api-g1-005/ge3-raychaudhuri`, merged in 7736c79f)
 Commit: 76585fffab3958c3df151a62ce9d253a7f07e248
 
 # Review of GE3: geodesics, the exponential map and the Raychaudhuri equation on a manifold

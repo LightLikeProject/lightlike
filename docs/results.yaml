@@ -1408,6 +1408,7 @@
   decls: [Lightlike.PL.Grating, Lightlike.PL.Grating.bdy, Lightlike.PL.Grating.bdy_symmDiff, Lightlike.PL.Grating.reach_of_bdy, Lightlike.PL.Grating.joinedIn_of_bdy]
   status: proven
   tier: established
+  kind: supporting
   source:
     refs:
       - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
@@ -1421,6 +1422,7 @@
   decls: [Lightlike.PL.Grating.exists_grating, Lightlike.PL.Grating.exists_chain_box, Lightlike.PL.Grating.exists_chain_of_joinedIn]
   status: proven
   tier: established
+  kind: supporting
   source:
     refs:
       - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
@@ -1434,6 +1436,7 @@
   decls: [Lightlike.PL.Grating.bdy₂, Lightlike.PL.Grating.bdy_bdy₂, Lightlike.PL.Grating.alexander, Lightlike.PL.Grating.exists_bdy₂]
   status: proven
   tier: established
+  kind: supporting
   source:
     refs:
       - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
@@ -1447,6 +1450,7 @@
   decls: [Lightlike.PL.joinedIn_union_compl]
   status: proven
   tier: established
+  kind: supporting
   source:
     refs:
       - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
@@ -1460,6 +1464,7 @@
   decls: [Lightlike.PL.arc_not_separating]
   status: proven
   tier: established
+  kind: supporting
   source:
     refs:
       - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
@@ -1473,6 +1478,7 @@
   decls: [Lightlike.PL.jordan_frontier]
   status: proven
   tier: established
+  kind: supporting
   source:
     refs:
       - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
@@ -1486,6 +1492,7 @@
   decls: [Lightlike.PL.exists_isLog, Lightlike.PL.logInc, Lightlike.PL.logInc_trans, Lightlike.PL.loopIndex, Lightlike.PL.theta_lemma]
   status: proven
   tier: established
+  kind: supporting
   source:
     refs:
       - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
@@ -1499,6 +1506,7 @@
   decls: [Lightlike.PL.loopIndex_eq_of_joinedIn, Lightlike.PL.loopIndex_eq_zero_of_halfplane]
   status: proven
   tier: established
+  kind: supporting
   source:
     refs:
       - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
@@ -1512,6 +1520,7 @@
   decls: [Lightlike.PL.Theta, Lightlike.PL.Theta.lemma_9_14, Lightlike.PL.theta_arc, Lightlike.PL.joinedIn_compl_range]
   status: proven
   tier: established
+  kind: supporting
   source:
     refs:
       - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
@@ -1525,6 +1534,7 @@
   decls: [Lightlike.PL.logInc_segPath, Lightlike.PL.triangle_log_sum, Lightlike.PL.loopIndex_triangle, Lightlike.PL.loopIndex_eq_zero_of_above, Lightlike.PL.loopIndex_eq_zero_of_below, Lightlike.PL.loopIndex_eq_zero_of_far]
   status: proven
   tier: established
+  kind: supporting
   source:
     refs:
       - {ref: mccleary-2006, location: "Chapter: The Jordan Curve Theorem|10.1090/stml/031/09"}
@@ -1629,6 +1639,7 @@
   decls: [Lightlike.GFT.ColoredGraph, Lightlike.GFT.ColoredGraph.bubble, Lightlike.GFT.ColoredGraph.nBubbles, Lightlike.GFT.ColoredGraph.mem_bubble_iff, Lightlike.GFT.ColoredGraph.nBubbles_empty, Lightlike.GFT.ColoredGraph.even_card, Lightlike.GFT.not_nonempty_coloredGraph_fin3, Lightlike.GFT.ColoredGraph.twoChi2, Lightlike.GFT.twoChi2_theta, Lightlike.GFT.twoChi2_torus, Lightlike.GFT.badLines_not_proper]
   status: proven
   tier: frontier
+  kind: supporting
   source:
     refs:
       - {ref: gurau-2010, location: "Abstract", check: "pseudo manifolds"}
@@ -1642,6 +1653,7 @@
   decls: [Lightlike.GFT.ColoredGraph.bubble_singleton, Lightlike.GFT.ColoredGraph.card_bubble_singleton, Lightlike.GFT.ColoredGraph.restrict_isConnected]
   status: proven
   tier: established
+  kind: supporting
   source:
     refs:
       - {ref: gurau-2010, location: "Theorem 1", check: "link graphs"}
@@ -2281,7 +2293,7 @@
     refs:
       - {ref: carroll-1997, location: "eq. (5.44)", check: "Killing"}
   review: kernel-checked
-  note: "On R^n with the Minkowski metric and the flat connection, the field y -> A y + c satisfies the Killing equation at every point iff A is skew for the metric; the dilation y -> y does not (n at least 1); [A y + c, B y + d] = (B A - A B) y + (B c - A d); the commutator of two skew endomorphisms is skew. Compared with Carroll's lecture notes, pp. 140-141, eq. (5.44): n translations and n(n-1)/2 rotations, n(n+1)/2 independent Killing vectors of R^n, 'the same kind of counting argument applies to ... Minkowski space': the translations and the eta-skew (Lorentz) fields are Killing here, the dilation is not: match. Limits: that these are all the Killing fields and the count n(n+1)/2 are proved in KillingMinkowski.lean (regge/ge12-killing, not yet on main); the 2-sphere check is not included."
+  note: "On R^n with the Minkowski metric and the flat connection, the field y -> A y + c satisfies the Killing equation at every point iff A is skew for the metric; the dilation y -> y does not (n at least 1); [A y + c, B y + d] = (B A - A B) y + (B c - A d); the commutator of two skew endomorphisms is skew. Compared with Carroll's lecture notes, pp. 140-141, eq. (5.44): n translations and n(n-1)/2 rotations, n(n+1)/2 independent Killing vectors of R^n, 'the same kind of counting argument applies to ... Minkowski space': the translations and the eta-skew (Lorentz) fields are Killing here, the dilation is not: match. Limits: that these are all the Killing fields and the count n(n+1)/2 are proved in KillingMinkowski.lean; the 2-sphere check is not included."
   since: unreleased
 - id: LL-0174
   title: The second fundamental form of the level sets of a function is symmetric, and the Gauss and Codazzi relations hold for a non-null hypersurface
@@ -2534,7 +2546,7 @@
     refs:
       - {ref: kar-sengupta-2007, location: "eq. (12)", check: "Raychaudhuri"}
   review: kernel-checked
-  note: "For a coordinate metric g on an open U of R^n and a smooth field v with v^c nabla_c v^d = 0 on U (nabla_b v^a = d_b v^a + Gamma^a_bc v^c): v^c d_c Theta = -(nabla_b v^a)(nabla_a v^b) - R_{sigma nu} v^sigma v^nu, Theta = nabla_a v^a, in the library's ricci convention, with no normalisation of v (raychaudhuri_coord; the index computation raychaudhuri_algebra is fable1's). At a point where g(v, v) = -1, with L = g (nabla v), the shear sigma = (L + L^T)/2 - (Theta/(n-1)) (g + v_flat v_flat) and the rotation omega = (L - L^T)/2, norms taken with g^{-1}: v(Theta) = -Theta^2/(n-1) - |sigma|^2 + |omega|^2 - R(v, v) (raychaudhuri_equation, trace_sq_split), Kar and SenGupta's (12) for n = 4 (their (1) for the split). Limits: coordinates; the congruence on a manifold and the null version are not here (focusing: the next entry)."
+  note: "For a coordinate metric g on an open U of R^n and a smooth field v with v^c nabla_c v^d = 0 on U (nabla_b v^a = d_b v^a + Gamma^a_bc v^c): v^c d_c Theta = -(nabla_b v^a)(nabla_a v^b) - R_{sigma nu} v^sigma v^nu, Theta = nabla_a v^a, in the library's ricci convention, with no normalisation of v (raychaudhuri_coord; the index computation is raychaudhuri_algebra). At a point where g(v, v) = -1, with L = g (nabla v), the shear sigma = (L + L^T)/2 - (Theta/(n-1)) (g + v_flat v_flat) and the rotation omega = (L - L^T)/2, norms taken with g^{-1}: v(Theta) = -Theta^2/(n-1) - |sigma|^2 + |omega|^2 - R(v, v) (raychaudhuri_equation, trace_sq_split), Kar and SenGupta's (12) for n = 4 (their (1) for the split). Limits: coordinates; the congruence on a manifold and the null version are not here (focusing: the next entry)."
   since: unreleased
 - id: LL-0193
   title: Convergence and focusing of a unit timelike geodesic congruence in coordinates
@@ -2958,7 +2970,7 @@
     refs:
       - {ref: carroll-1997, location: "eq. (8.1)", check: "maximally symmetric"}
   review: kernel-checked
-  note: "Route (A) to the abstract form of G1-024. On R^3 the curved translations P_m = (1 - k|x|^2/4) e_m + (k/2) x_m x and the rotations R_ab are Killing for the space form delta/(1 + k|x|^2/4)^2 with explicit structure constants S_k ([P_m, P_n] = -k R_mn, [R_ab, P_m] = delta_mb P_a - delta_ma P_b, so(3)). For a C^1 family of fields Y near a point p of a Banach space, indexed like this algebra, Killing for a symmetric G near p, with brackets S_k near p and with the rotations vanishing at p, the orbit maps o(xi) = exp(T sum xi_e Y_e)(p) and o_2(xi) = exp(T sum xi_e P_e)(0) satisfy G(o xi)(Do zeta, Do zeta') = c * delta/(1 + k|x|^2/4)^2 (o_2 xi)(Do_2 zeta, Do_2 zeta') near 0, c = G(p)(P_0(p), P_0(p)); at 0, Do_2 is T times the identity on the translation directions. Proof: along the orbits, (Gram matrix, G(J, Y), G(J', Y), G(J, J')) of the flow derivative J solves a linear equation in the structure constants alone (orbit_comparison, on fable3/ode-flow's differentiable flow). Limits: the Killing algebra and its structure constants are hypotheses (not derived from an isometry group); the four-dimensional assembly of the slices is not proved. Lemmas it uses from other files: Lightlike.orbit_comparison (Lightlike/Spacetime/KillingOrbit.lean); Lightlike.SpaceForm.lieBracket_X, Lightlike.SpaceForm.killing_P, Lightlike.SpaceForm.killing_R (Lightlike/Spacetime/SpaceFormKilling.lean)."
+  note: "Route (A) to the abstract form of G1-024. On R^3 the curved translations P_m = (1 - k|x|^2/4) e_m + (k/2) x_m x and the rotations R_ab are Killing for the space form delta/(1 + k|x|^2/4)^2 with explicit structure constants S_k ([P_m, P_n] = -k R_mn, [R_ab, P_m] = delta_mb P_a - delta_ma P_b, so(3)). For a C^1 family of fields Y near a point p of a Banach space, indexed like this algebra, Killing for a symmetric G near p, with brackets S_k near p and with the rotations vanishing at p, the orbit maps o(xi) = exp(T sum xi_e Y_e)(p) and o_2(xi) = exp(T sum xi_e P_e)(0) satisfy G(o xi)(Do zeta, Do zeta') = c * delta/(1 + k|x|^2/4)^2 (o_2 xi)(Do_2 zeta, Do_2 zeta') near 0, c = G(p)(P_0(p), P_0(p)); at 0, Do_2 is T times the identity on the translation directions. Proof: along the orbits, (Gram matrix, G(J, Y), G(J', Y), G(J, J')) of the flow derivative J solves a linear equation in the structure constants alone (orbit_comparison, on the differentiable flow of the library's ODE theory). Limits: the Killing algebra and its structure constants are hypotheses (not derived from an isometry group); the four-dimensional assembly of the slices is not proved. Lemmas it uses from other files: Lightlike.orbit_comparison (Lightlike/Spacetime/KillingOrbit.lean); Lightlike.SpaceForm.lieBracket_X, Lightlike.SpaceForm.killing_P, Lightlike.SpaceForm.killing_R (Lightlike/Spacetime/SpaceFormKilling.lean)."
   since: unreleased
 - id: LL-0225
   title: A metric with a Killing algebra of the space-form type, isotropic along a worldline, has the FLRW form b(t) dt^2 + a(t) delta/(1 + k|x|^2/4)^2 in the orbit chart
@@ -5393,6 +5405,7 @@
   decls: [Lightlike.Spin4.finrank_tensorSpace, Lightlike.Spin4.finrank_idx]
   status: proven
   tier: established
+  kind: elementary
   source: exploratory
   review: kernel-checked
   note: "Comparison pending (no source was read at a cited location); the dimension of a tensor product is the product of the dimensions. Proved as the complex finrank of TensorSpace n m and of the index space Idx n m -> C. No hypotheses."
@@ -6005,6 +6018,7 @@
   decls: [Lightlike.OperatorAlgebras.strong_subadditivity]
   status: proven
   tier: established
+  kind: wrapper
   source: exploratory
   review: kernel-checked
   note: "Comparison pending: the original is E. H. Lieb and M. B. Ruskai, J. Math. Phys. 14 (1973) 1938, doi 10.1063/1.1666274, not read; it has no arXiv text, so the source registry cannot verify a location in it and the entry has no registered source. The Lean statement is a wrapper of Physlib's qConditionalEnt_strong_subadditivity (QuantumInfo.Entropy.SSA): the proof is in Physlib, which is a dependency, not in this library. States are Physlib's MState on a product of three finite types (Fintype, DecidableEq); qConditionalEnt rho = S(AB) - S(B) in the convention of Physlib, so the inequality reads S(A|BC) <= S(A|B) with the second state the reduced state on A x B (assoc'.traceRight). The equivalent form S(AB) + S(BC) >= S(B) + S(ABC) is the unfolded inequality and is not stated separately here."
@@ -6529,6 +6543,7 @@
   decls: [Lightlike.minkowski_flat]
   status: proven
   tier: established
+  kind: elementary
   source: exploratory
   review: kernel-checked
   note: "Comparison pending (no source was read at a cited location). Flatness is the vanishing of the coordinate Riemann tensor of the constant metric eta on every point of R^n (IsFlatOn on Set.univ), for every dimension n."

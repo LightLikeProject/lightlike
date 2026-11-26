@@ -54,7 +54,7 @@ The source proof goes through the compact self-adjoint convolution operator. In 
    compact self-adjoint operators (Mathlib) give separation of points.
 5. `PeterWeyl.lean`: the two density statements.
 
-## Additions on `fable2/ha5-peterweyl` (18 November 2026, stream fable2)
+## Additions (18 November 2026)
 
 Tao's post was read again on 18 November 2026 (characters 0 to 100000 of 139891; the rest of §2 not read).
 Statements read there: "Throughout these notes, G is a fixed compact group" (topological groups Hausdorff,
@@ -84,14 +84,14 @@ spectral theorem for compact self-adjoint operators, `ContinuousMap.toLp_denseRa
 statement as `circle_hilbertBasis` on a different model of the circle. Not read: Bröcker–tom Dieck, Chapter III
 (no access to the text; no theorem numbers from it are cited).
 
-On `fable2/ha5-followup`: `exists_isotypic_isometry` is Tao's Proposition 8 (read, see above): the map
+In a later step: `exists_isotypic_isometry` is Tao's Proposition 8 (read, see above): the map
 `T ↦ √(dim ρ) tr(T ρ(·))` is a linear isometric isomorphism onto the isotypic component. Representation: the
 Hilbert–Schmidt space `HS(V_ξ)` is `EuclideanSpace ℂ (ι × ι)` (matrix entries with the Frobenius inner product),
 and Tao's `ι_ξ(T)(g) = ⟨T, ρ_ξ(g)*⟩_HS` is written as `tr(T ρ(g)) = ∑ i j, T (i, j) ρ(g) j i`. Equivariance of
 the map under `G × G` is not stated. `real_not_forall_memLp_two`, `real_character_not_memLp_two`: the check for
 `ℝ` (no source statement).
 
-On `fable2/ha5-next`: `classFunctions_hilbertBasis` (the irreducible characters form a Hilbert basis of the class
+Next: `classFunctions_hilbertBasis` (the irreducible characters form a Hilbert basis of the class
 functions) was compared with Tao's post, §2 "Nonabelian Fourier analysis", the unnumbered passage after Remark 9
 (read 18 November 2026): a class function is an `f ∈ L²(G)` with `f(g x g⁻¹) = f(x)`; its Fourier coefficients
 are conjugation invariant, hence scalar by Corollary 5 (cited there as "Lemma 5"), and "the `χ_ξ` form an
@@ -120,7 +120,7 @@ dense. The general Weyl integration formula for compact connected Lie groups (ma
 started: no source for it has been read. Mathlib (pinned tree): root systems and their Weyl groups exist
 (`Mathlib/LinearAlgebra/RootSystem/`), but there is nothing on maximal tori of compact Lie groups.
 
-Formalised on `fable2/ha5-weyl` (`SU2Conjugacy.lean`, `WeylIntegrationSU2.lean`), compared with the pages read:
+Formalised (`SU2Conjugacy.lean`, `WeylIntegrationSU2.lean`), compared with the pages read:
 
 | Formal statement (Lean) | Source location (Teleman) | Match |
 | --- | --- | --- |
@@ -132,7 +132,7 @@ Proof route (differs from the source, which integrates over slices of the 3-sphe
 Schur orthogonality gives `∫ χ_n dμ = δ_{n0}`; `(1/π) ∫₀^{2π} U_n(cos θ) sin² θ dθ = δ_{n0}`; the `U_n` span
 `ℝ[X]`; Weierstrass approximation on `[−1, 1]`.
 
-On `fable2/ha5-su2complete` the two statements left weaker above are proved in full:
+Later the two statements left weaker above are proved in full:
 
 | Formal statement (Lean) | Source location (Teleman) | Match |
 | --- | --- | --- |
@@ -158,7 +158,7 @@ their Weyl groups (`Mathlib/LinearAlgebra/RootSystem/`), but no maximal tori of 
 conjugacy of maximal tori, no `N(T)/T`, and no change of variables for `G/T × T → G`. The general statement is
 therefore open in the gap row G3-150, with nothing formalised and nothing cited.
 
-`su2_hilbertBasis` (`SU2PeterWeyl.lean`, branch `fable2/ha5-idle`): the functions `√(n+1) Dⁿ_ij` form a Hilbert
+`su2_hilbertBasis` (`SU2PeterWeyl.lean`): the functions `√(n+1) Dⁿ_ij` form a Hilbert
 basis of `L²(SU(2), μ)`. Sources read: Tao §1, Propositions 7 and 8 (the general decomposition and the
 normalisation `dim^{1/2}`), and Teleman, Lecture 21, Theorem 21.1, p. 50 (the list of irreducible
 representations). Neither text states the SU(2) basis as one sentence; the Lean statement is their combination.
