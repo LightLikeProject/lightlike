@@ -107,7 +107,7 @@ integral is O(λ^{-N}) for every N: for smooth compactly supported cutoffs χ �
 finite critical set K, the integral of (ψ − χ) A e^{λS} decays faster than any power of λ (conditional)
 [56]. The Hessian of the Lorentzian vertex action at a point with Re S = 0 is invertible if and only if
 no nonzero real vector lies in the common kernel of the real and imaginary parts of its negative; the
-real part is positive semidefinite and the matrix is symmetric [57].
+real part is positive semidefinite and the matrix is symmetric [57]. Racah's sum with a zero spin has a single nonzero term, whose closed value agrees with the 6j symbol [59].
 
 ## Lean References
 
@@ -297,6 +297,8 @@ real part is positive semidefinite and the matrix is symmetric [57].
     `Asymptotics.Lorentzian.lorHessian_det_ne_zero_iff_quad`
 58. Lightlike/Asymptotics/MorseIndex.lean - `Morse.sigNeg_hessQuad_eq_card_neg_eigenvalues`,
     `Morse.exists_symmetric_operator`, `Morse.morse_diagonal_eigenvalues`
+59. Lightlike/Asymptotics/RacahSaddles/RacahZeroSpin.lean - `Asymptotics.racahSum_zero_spin`,
+    `Asymptotics.racahDelta_mul_racahSum_zero_spin`
 
 ## References
 
