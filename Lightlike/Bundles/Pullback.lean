@@ -11,7 +11,7 @@ import Mathlib.Topology.FiberBundle.Constructions
 /-!
 # Pullbacks of fibre bundles
 
-Adapted from Tau Ceti (`TauCeti/Topology/FiberBundle/Pullback.lean`,
+Adapted from Tau Ceti (module TauCeti.Topology.FiberBundle.Pullback,
 revision 2a9233e5b, Apache 2.0 license).
 
 Five facts about Mathlib's pullback bundle `f *ᵖ E`, whose fibre over `x` is the fibre of `E` over

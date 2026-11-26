@@ -14,7 +14,7 @@ import Lightlike.Bundles.Pullback
 /-!
 # Principal bundles
 
-Adapted from Tau Ceti (`TauCeti/Topology/FiberBundle/Principal/Basic.lean`,
+Adapted from Tau Ceti (module TauCeti.Topology.FiberBundle.Principal.Basic,
 revision 2a9233e5b, Apache 2.0 license).
 
 A principal `G`-bundle is a fibre bundle `P` with model fibre a group `G` with a topology, whose
