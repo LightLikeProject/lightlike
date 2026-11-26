@@ -327,6 +327,7 @@ import Lightlike.Geometry.HeatKernel.Sphere3Trace
 import Lightlike.Geometry.HeatKernel.SphereCurvatureTie
 import Lightlike.Geometry.HeatKernel.SphereSummand
 import Lightlike.Geometry.HeatKernel.StereoCurvature
+import Lightlike.Geometry.HeatKernel.RoundCurvature
 import Lightlike.Geometry.HeatKernel.SphereTrace
 import Lightlike.Geometry.HeatKernel.Theta
 import Lightlike.Geometry.HeatKernel.Torus
@@ -1724,6 +1725,10 @@ import Lightlike.Spacetime.LeviCivitaSmooth
 import Lightlike.Spacetime.RiccatiFocusing
 import Lightlike.Spacetime.RicciContinuous
 import Lightlike.Spacetime.SchwarzschildManifold
+import Lightlike.Spacetime.RoundSphereTwo
+import Lightlike.Spacetime.RoundSphereTwoChart
+import Lightlike.Spacetime.RoundSphereTwoCoord
+import Lightlike.Spacetime.RoundSphereTwoCurvature
 import Lightlike.Spacetime.TorsionRicci
 import Lightlike.Spacetime.SphereManifold
 import Lightlike.Spacetime.CoordKilling
