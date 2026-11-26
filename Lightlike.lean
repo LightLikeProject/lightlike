@@ -1764,6 +1764,7 @@ import Lightlike.Spacetime.ChartConnection
 import Lightlike.Spacetime.ChartCovariant
 import Lightlike.Spacetime.ChartCurvature
 import Lightlike.Spacetime.Connection
+import Lightlike.Spacetime.ConstantCurvature
 import Lightlike.Spacetime.Coordinates
 import Lightlike.Spacetime.Curvature
 import Lightlike.Spacetime.CurvatureWithin
