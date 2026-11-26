@@ -1,6 +1,7 @@
 import Lightlike.PonzanoRegge.TriangulationIndependence.Main
 import Lightlike.PL.Stellar
 import Lightlike.PL.Complex3
+import Lightlike.PL.StarClosure
 
 /-!
 # Stellar subdivisions of a combinatorial 3-manifold as forward Pachner moves
@@ -12,7 +13,7 @@ inverse move:
 * a tetrahedron: one 1-4 move (`ofComplex3_move14_eq_starAt`; `Lightlike.PL.ofComplex3_move14`
   is the same move as a bistellar move);
 * a triangle in two tetrahedra: a 1-4 move and one 2-3 move (`ForwardMoves.exists_starAt_triangle`),
-  through the star of a pure complex (`starAt_closure`).
+  through the star of a complex given by generators (`Lightlike.PL.SComplex.starAt_closure`).
 
 An edge is different: forward moves only add edges (`ForwardMoves.edges_subset`) and the
 subdivision at an edge deletes it, so no edge subdivision is a forward descendant
@@ -222,47 +223,7 @@ theorem not_forwardMoves_starAt_edge {K K' : Complex3 V} {A B a : V} (hAB : {A, 
   exact mem_closure.2 ⟨t, ht, hst⟩
 
 
-/-! ## The star of a pure complex, and the star of a triangle -/
-
-/-- **The stellar subdivision of a pure complex `closure T` at a face `A`**: the closure of the
-facets not containing `A` and, for each facet `u ⊇ A` and each `x ∈ A`, the cone from `a` on
-`u \ {x}`. -/
-theorem starAt_closure (T : Finset (Finset V)) (A : Finset V) (a : V) :
-    (closure T).starAt A a =
-      closure (T.filter (¬ A ⊆ ·) ∪ (T.filter (A ⊆ ·)).biUnion
-        fun u => A.image fun x => insert a (u.erase x)) := by
-  refine ext_mem fun s => ?_
-  rw [mem_starAt]
-  simp only [mem_closure, mem_union, mem_filter, mem_biUnion, mem_image]
-  constructor
-  · rintro (⟨⟨u, hu, hsu⟩, hA⟩ | ⟨t, ⟨u, hu, htu⟩, hAt, ⟨u', hu', hAu'⟩, rfl⟩)
-    · by_cases hAu : A ⊆ u
-      · obtain ⟨x, hxA, hxs⟩ := not_subset.1 hA
-        exact ⟨insert a (u.erase x), .inr ⟨u, ⟨hu, hAu⟩, x, hxA, rfl⟩,
-          (subset_erase_of_notMem hsu hxs).trans (subset_insert _ _)⟩
-      · exact ⟨u, .inl ⟨hu, hAu⟩, hsu⟩
-    · obtain ⟨x, hxA, hxt⟩ := not_subset.1 hAt
-      refine ⟨insert a (u'.erase x), .inr ⟨u', ⟨hu', union_subset_iff.1 hAu' |>.1⟩, x, hxA, rfl⟩,
-        insert_subset_insert a ?_⟩
-      exact subset_erase_of_notMem ((union_subset_iff.1 hAu').2) hxt
-  · rintro ⟨u, (⟨hu, hAu⟩ | ⟨u', ⟨hu', hAu'⟩, x, hxA, rfl⟩), hsu⟩
-    · exact .inl ⟨⟨u, hu, hsu⟩, fun h => hAu (h.trans hsu)⟩
-    · by_cases has : a ∈ s
-      · right
-        have hsub : s.erase a ⊆ u'.erase x := fun y hy => by
-          rcases mem_insert.1 (hsu (mem_of_mem_erase hy)) with h | h
-          · exact absurd h (ne_of_mem_erase hy)
-          · exact h
-        refine ⟨s.erase a, ⟨u', hu', hsub.trans (erase_subset _ _)⟩, fun h => ?_,
-          ⟨u', hu', union_subset hAu' (hsub.trans (erase_subset _ _))⟩, insert_erase has⟩
-        exact notMem_erase x u' (hsub (h hxA))
-      · left
-        have hsub : s ⊆ u'.erase x := fun y hy => by
-          rcases mem_insert.1 (hsu hy) with h | h
-          · exact absurd (h ▸ hy) has
-          · exact h
-        exact ⟨⟨u', hu', hsub.trans (erase_subset _ _)⟩,
-          fun h => notMem_erase x u' (hsub (h hxA))⟩
+/-! ## The star of a triangle -/
 
 /-- **The star of a triangle is two forward moves**: if the triangle `ABC` lies in exactly the two
 tetrahedra `ABCD` and `ABCF` and `a` is a fresh vertex, a 1-4 move at `ABCD` with `a` and a 2-3
