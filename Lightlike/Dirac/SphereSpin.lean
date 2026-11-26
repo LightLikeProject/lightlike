@@ -293,4 +293,87 @@ lemma stereoS_invS {p : S2} (hp : pc p 2 ≠ -1) : stereoS (invS p) = p := by
   · show (nsq (invS p) + 1)⁻¹ * (1 - nsq (invS p)) = pc p 2
     rw [show 1 - nsq (invS p) = 2 - (nsq (invS p) + 1) by ring, hq]; field_simp; ring
 
+/-! ## Smoothness of the projections -/
+
+lemma contMDiff_sphereIncl2_I2 : ContMDiff I2 𝓘(ℝ, EuclideanSpace ℝ (Fin (2 + 1))) ∞ sphereIncl2 := by
+  rw [ContinuousLinearEquiv.contMDiff_transContinuousLinearEquiv_left]; exact contMDiff_sphereIncl2
+
+/-- The projection from the north pole in `ℝ³` coordinates. -/
+def projNE (z : EuclideanSpace ℝ (Fin (2 + 1))) : Fin 2 → ℝ := ![z 0 / (1 - z 2), z 1 / (1 - z 2)]
+
+/-- The projection from the south pole (second axis reversed) in `ℝ³` coordinates. -/
+def projSE (z : EuclideanSpace ℝ (Fin (2 + 1))) : Fin 2 → ℝ := ![z 0 / (1 + z 2), -(z 1) / (1 + z 2)]
+
+lemma contDiffAt_projNE {z : EuclideanSpace ℝ (Fin (2 + 1))} (hz : z 2 ≠ 1) : ContDiffAt ℝ ∞ projNE z := by
+  have hd : (1 : ℝ) - z 2 ≠ 0 := sub_ne_zero.mpr (Ne.symm hz)
+  have hc : ∀ i : Fin (2 + 1), ContDiff ℝ ∞ fun w : EuclideanSpace ℝ (Fin (2 + 1)) => w i := fun i =>
+    (EuclideanSpace.proj i : EuclideanSpace ℝ (Fin (2 + 1)) →L[ℝ] ℝ).contDiff
+  refine contDiffAt_pi.2 fun k => ?_
+  fin_cases k
+  · exact ((hc 0).contDiffAt).div ((contDiff_const.sub (hc 2)).contDiffAt) hd
+  · exact ((hc 1).contDiffAt).div ((contDiff_const.sub (hc 2)).contDiffAt) hd
+
+lemma contDiffAt_projSE {z : EuclideanSpace ℝ (Fin (2 + 1))} (hz : z 2 ≠ -1) : ContDiffAt ℝ ∞ projSE z := by
+  have hd : (1 : ℝ) + z 2 ≠ 0 := fun h => hz (by linarith)
+  have hc : ∀ i : Fin (2 + 1), ContDiff ℝ ∞ fun w : EuclideanSpace ℝ (Fin (2 + 1)) => w i := fun i =>
+    (EuclideanSpace.proj i : EuclideanSpace ℝ (Fin (2 + 1)) →L[ℝ] ℝ).contDiff
+  refine contDiffAt_pi.2 fun k => ?_
+  fin_cases k
+  · exact ((hc 0).contDiffAt).div ((contDiff_const.add (hc 2)).contDiffAt) hd
+  · exact ((hc 1).neg.contDiffAt).div ((contDiff_const.add (hc 2)).contDiffAt) hd
+
+lemma contMDiffAt_invN {p : S2} (hp : pc p 2 ≠ 1) : ContMDiffAt I2 𝓘(ℝ, Fin 2 → ℝ) ∞ invN p :=
+  (contDiffAt_projNE hp).contMDiffAt.comp p contMDiff_sphereIncl2_I2.contMDiffAt
+
+lemma contMDiffAt_invS {p : S2} (hp : pc p 2 ≠ -1) : ContMDiffAt I2 𝓘(ℝ, Fin 2 → ℝ) ∞ invS p :=
+  (contDiffAt_projSE hp).contMDiffAt.comp p contMDiff_sphereIncl2_I2.contMDiffAt
+
+/-! ## The frames -/
+
+/-- The orthonormal frame vector `a` at `stereoN y`: `((|y|²+1)/2) dσN(eₐ)`. -/
+def fN (a : Fin 2) (y : Fin 2 → ℝ) : Fin 2 → ℝ :=
+  ((nsq y + 1) / 2) • (mfderiv 𝓘(ℝ, Fin 2 → ℝ) I2 stereoN y (Pi.single a 1) : Fin 2 → ℝ)
+
+/-- The orthonormal frame vector `a` at `stereoS y`. -/
+def fS (a : Fin 2) (y : Fin 2 → ℝ) : Fin 2 → ℝ :=
+  ((nsq y + 1) / 2) • (mfderiv 𝓘(ℝ, Fin 2 → ℝ) I2 stereoS y (Pi.single a 1) : Fin 2 → ℝ)
+
+/-- The north frame on `S2`, meaningful on `S2 ∖ {N}`. -/
+def frameN (a : Fin 2) (p : S2) : TangentSpace I2 p := fN a (invN p)
+
+/-- The south frame on `S2`, meaningful on `S2 ∖ {S}`. -/
+def frameS (a : Fin 2) (p : S2) : TangentSpace I2 p := fS a (invS p)
+
+lemma roundMetric_fN (y : Fin 2 → ℝ) (a b : Fin 2) :
+    (roundMetric2I 1 one_ne_zero).g (stereoN y) (fN a y) (fN b y) = if a = b then 1 else 0 := by
+  have hq := nsq_nonneg y
+  unfold fN
+  rw [map_smul, map_smul, ContinuousLinearMap.smul_apply, roundMetric_stereoN]
+  have hab : ((Pi.single a 1 : Fin 2 → ℝ) 0 * (Pi.single b 1 : Fin 2 → ℝ) 0 +
+      (Pi.single a 1 : Fin 2 → ℝ) 1 * (Pi.single b 1 : Fin 2 → ℝ) 1) = if a = b then 1 else 0 := by
+    fin_cases a <;> fin_cases b <;> simp
+  rw [hab, smul_eq_mul, smul_eq_mul]
+  split_ifs <;> field_simp <;> ring
+
+lemma roundMetric_fS (y : Fin 2 → ℝ) (a b : Fin 2) :
+    (roundMetric2I 1 one_ne_zero).g (stereoS y) (fS a y) (fS b y) = if a = b then 1 else 0 := by
+  have hq := nsq_nonneg y
+  unfold fS
+  rw [map_smul, map_smul, ContinuousLinearMap.smul_apply, roundMetric_stereoS]
+  have hab : ((Pi.single a 1 : Fin 2 → ℝ) 0 * (Pi.single b 1 : Fin 2 → ℝ) 0 +
+      (Pi.single a 1 : Fin 2 → ℝ) 1 * (Pi.single b 1 : Fin 2 → ℝ) 1) = if a = b then 1 else 0 := by
+    fin_cases a <;> fin_cases b <;> simp
+  rw [hab, smul_eq_mul, smul_eq_mul]
+  split_ifs <;> field_simp <;> ring
+
+lemma frameN_orthonormal {p : S2} (hp : pc p 2 ≠ 1) (a b : Fin 2) :
+    (roundMetric2I 1 one_ne_zero).g p (frameN a p) (frameN b p) = if a = b then 1 else 0 := by
+  have h := roundMetric_fN (invN p) a b
+  rwa [stereoN_invN hp] at h
+
+lemma frameS_orthonormal {p : S2} (hp : pc p 2 ≠ -1) (a b : Fin 2) :
+    (roundMetric2I 1 one_ne_zero).g p (frameS a p) (frameS b p) = if a = b then 1 else 0 := by
+  have h := roundMetric_fS (invS p) a b
+  rwa [stereoS_invS hp] at h
+
 end Lightlike.Dirac
