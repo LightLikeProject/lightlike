@@ -281,6 +281,7 @@ three keep infinity, while a special conformal transformation moves the point at
 132. Lightlike/Spacetime/Corners/LeviCivitaSmooth.lean - `contMDiffAt_leviCivitaW`: the covariant derivative of the Levi-Civita connection is smooth on a manifold modelled with corners on R^n.
 133. Lightlike/Spacetime/Corners/BoundaryExample.lean - `Seg`, `IB`, `segMetric`, `segment_identities`, `segment_exists_leviCivita`: the closed unit segment as a manifold with boundary with its metric, and the curvature identities of the Corners layer on it.
 134. Lightlike/Spacetime/LieTensor.lean - `lieDerivCovector`, `lieDerivTensor2`, `lieDerivMetric_eq_lieDerivTensor2`, `lieDerivTensor2_symm`: the Lie derivative of a covector field and of a covariant 2-tensor field along a vector field, from the Lie bracket; `lieDerivMetric` is the case of the metric, and the derivative of a symmetric tensor is symmetric.
+135. Lightlike/Spacetime/KillingLieAlgebra.lean - `killingSubmodule`, `instLieRingKilling`, `instLieAlgebraKilling`, `smoothNear_add`, `smoothNear_smul`: the smooth Killing fields of a metric of any signature form a real vector space and, under the Lie bracket of vector fields, a real Lie algebra (with `IsKillingNear.add`, `.smul`, `.zero` and `lieDerivMetric_add_left` in `KillingAlgebra.lean`).
 
 ## References
 

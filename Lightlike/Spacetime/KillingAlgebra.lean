@@ -10,8 +10,11 @@ import Lightlike.Spacetime.LieMetric
   (the Jacobi identity and `[X, Y] f = X (Y f) - Y (X f)`; no connection is used);
 * `IsKillingNear.lieBracket`: the bracket of two Killing fields is Killing near `x`.
 
-**Limits.** A metric of any signature, fields smooth near the point; "Killing" is `L_X g = 0` as in `LieMetric.lean`. The
-linear structure (sums and real multiples of Killing fields are Killing) is not stated.
+* `lieDerivMetric_add_left`, `lieDerivMetric_smul_left`, `IsKillingNear.zero`, `.add`, `.smul`: `L_X g` is additive and
+  homogeneous in `X`, so zero, sums and real multiples of Killing fields are Killing (the Lie algebra structure on
+  global Killing fields is in `KillingLieAlgebra.lean`).
+
+**Limits.** A metric of any signature, fields smooth near the point; "Killing" is `L_X g = 0` as in `LieMetric.lean`.
 -/
 
 open Bundle Manifold Set VectorField NormedSpace FiberBundle Filter
@@ -125,5 +128,44 @@ theorem IsKillingNear.lieBracket {X Y : Π y : M, TangentSpace 𝓘(ℝ, E) y} {
   filter_upwards [eventually_eventually_nhds.2 hXs, eventually_eventually_nhds.2 hYs,
     eventually_eventually_nhds.2 hX, eventually_eventually_nhds.2 hY] with y hXsy hYsy hXy hYy V W hV hW
   exact lieDerivMetric_lieBracket hXsy hYsy hXy hYy hV hW
+
+/-- `L_X g` is additive in `X`: `(L_{X+Y} g)(V, W) = (L_X g)(V, W) + (L_Y g)(V, W)` at `x`, for fields differentiable at `x`. -/
+theorem lieDerivMetric_add_left {X Y V W : Π y : M, TangentSpace 𝓘(ℝ, E) y} {x : M}
+    (hX : MDiffAt (T% X) x) (hY : MDiffAt (T% Y) x) :
+    lieDerivMetric g (X + Y) V W x = lieDerivMetric g X V W x + lieDerivMetric g Y V W x := by
+  unfold lieDerivMetric
+  rw [mlieBracket_add_left hX hY, mlieBracket_add_left hX hY]
+  simp only [Pi.add_apply, map_add, ContinuousLinearMap.add_apply]
+  ring
+
+/-- `L_X g` is homogeneous in `X`: `(L_{c X} g)(V, W) = c (L_X g)(V, W)` at `x`, for `X` differentiable at `x`. -/
+theorem lieDerivMetric_smul_left {X V W : Π y : M, TangentSpace 𝓘(ℝ, E) y} {x : M}
+    (c : ℝ) (hX : MDiffAt (T% X) x) :
+    lieDerivMetric g (c • X) V W x = c * lieDerivMetric g X V W x := by
+  unfold lieDerivMetric
+  rw [mlieBracket_const_smul_left hX, mlieBracket_const_smul_left hX]
+  simp only [Pi.smul_apply, map_smul, smul_apply, smul_eq_mul]
+  ring
+
+/-- The zero field is Killing. -/
+theorem IsKillingNear.zero (x : M) : IsKillingNear g (0 : Π y : M, TangentSpace 𝓘(ℝ, E) y) x :=
+  Filter.Eventually.of_forall fun _ _ _ _ _ => lieDerivMetric_zero _ _ _
+
+/-- **Killing fields are closed under sums.** -/
+theorem IsKillingNear.add {X Y : Π y : M, TangentSpace 𝓘(ℝ, E) y} {x : M}
+    (hXs : SmoothNear X x) (hYs : SmoothNear Y x) (hX : IsKillingNear g X x) (hY : IsKillingNear g Y x) :
+    IsKillingNear g (X + Y) x := by
+  filter_upwards [eventually_eventually_nhds.2 hXs, eventually_eventually_nhds.2 hYs, hX, hY]
+    with y hXsy hYsy hXy hYy V W hV hW
+  rw [lieDerivMetric_add_left (mdiffAt_of_smoothNear hXsy) (mdiffAt_of_smoothNear hYsy),
+    hXy V W hV hW, hYy V W hV hW]
+  ring
+
+/-- **Killing fields are closed under real multiples.** -/
+theorem IsKillingNear.smul {X : Π y : M, TangentSpace 𝓘(ℝ, E) y} {x : M} (c : ℝ)
+    (hXs : SmoothNear X x) (hX : IsKillingNear g X x) : IsKillingNear g (c • X) x := by
+  filter_upwards [eventually_eventually_nhds.2 hXs, hX] with y hXsy hXy V W hV hW
+  rw [lieDerivMetric_smul_left c (mdiffAt_of_smoothNear hXsy), hXy V W hV hW]
+  ring
 
 end Lightlike

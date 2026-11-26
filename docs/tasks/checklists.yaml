@@ -428,7 +428,7 @@ milestones:
       - id: m2
         kind: main
         text: "The Killing fields of a metric form a Lie algebra"
-        decls: []
+        decls: [Lightlike.killingSubmodule, Lightlike.instLieRingKilling, Lightlike.instLieAlgebraKilling, Lightlike.IsKillingNear.add, Lightlike.IsKillingNear.smul, Lightlike.IsKillingNear.lieBracket]
         hint: "Close: Lightlike.IsKillingNear.lieBracket (closure under the bracket). Missing: the linear structure (sums, real multiples) on a manifold."
       - id: m3
         kind: main
