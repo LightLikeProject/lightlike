@@ -203,6 +203,7 @@ import Lightlike.Bundles.Maps.IsEmpty
 import Lightlike.Bundles.Principal.Basic
 import Lightlike.Bundles.Principal.Equiv
 import Lightlike.Bundles.Pullback
+import Lightlike.Bundles.SpinGroup
 import Lightlike.Bundles.TotalSpaceAction
 import Lightlike.Bundles.VectorBundle.GramSchmidt
 import Lightlike.Bundles.VectorBundle.OrthonormalFrame.Basic
@@ -321,6 +322,7 @@ import Lightlike.Cosmology.ScalarFieldFLRW.ScalarFLRW
 import Lightlike.Cosmology.ScalarFieldFLRW.ScalarChecks
 import Lightlike.Cosmology.SachsWolfeEffect.SachsWolfe
 import Lightlike.Cosmology.ConformalVacuumFLRW.Modes
+import Lightlike.Dirac.SpinorBundle
 import Lightlike.FourD.Boundary
 import Lightlike.FourD.Complex
 import Lightlike.FourD.Orientation
