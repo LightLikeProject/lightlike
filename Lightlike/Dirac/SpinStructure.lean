@@ -168,7 +168,9 @@ noncomputable def euclideanSpinStructure (n : ℕ) : SpinStructure (euclideanMet
       simp
     rw [h]
     exact contMDiffAt_const
-  lift_smooth _ _ _ _ _ _ := contMDiffAt_const
+  lift_smooth _ _ φ _ _ _ := by
+    show ContMDiffAt _ _ _ (fun _ => φ 1) _
+    exact contMDiffAt_const
   frame_orthonormal _ a b _ _ := by
     change euclideanForm n (Pi.single a 1 : Fin n → ℝ) (Pi.single b 1 : Fin n → ℝ) = _
     by_cases h : a = b
