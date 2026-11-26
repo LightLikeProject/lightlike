@@ -67,15 +67,23 @@ def task_decls(rev, root=ROOT):
             and t.get("file") and t.get("decl")}
 
 
-def lock_text(path, after, root=ROOT):
-    """The task file as first committed: the locked statement, which must still carry its sorry."""
-    adds = git("log", "--diff-filter=A", "--format=%H", after, "--", path, root=root).split()
-    return show(adds[-1], path, root) if adds else None
+def lock_text(path, rev, root=ROOT):
+    """The task file as last locked: the newest committed version that still carries its sorry.
+    This is the file as first committed unless the statement was corrected while the task was open
+    (a statement-fix pull request): the proof is then judged against the corrected statement. A
+    pull request that fills the sorry and changes the statement together is still compared with the
+    version in the base (`rev` is the base of the change), so the change is rejected."""
+    for commit in git("log", "--format=%H", rev, "--", path, root=root).split():
+        text = show(commit, path, root)
+        if text is not None and has_sorry(text):
+            return text
+    return None
 
 
 def select(before, after, root=ROOT, everything=False):
     """[(file, decl, challenge text, solution text)] and [(file, why)] for the files left out."""
     decls = task_decls(after, root)
+    base = after
     if everything:
         files = sorted(f for f in git("ls-tree", "-r", "--name-only", after, "--", "Tasks", root=root).split()
                        if f.endswith(".lean"))
@@ -93,7 +101,7 @@ def select(before, after, root=ROOT, everything=False):
         elif has_sorry(now):
             left.append((f, "still has sorry"))
         else:
-            lock = lock_text(f, after, root)
+            lock = lock_text(f, base, root)
             if lock is None or not has_sorry(lock):
                 left.append((f, "no locked version with a sorry: nothing to compare against"))
             else:
