@@ -78,3 +78,8 @@ two nodes). **P6 plausible; proof route:** compactify each `X_a = K1 A(ρ) K2` b
 set of limit configurations on which `Re S` is upper semicontinuous; show it has no maximiser (a node at infinity forces the four
 `Jξ_ba` into one pencil `X_b†u`, which fails for non-degenerate boundary data), then `Re S ≤ -δ` outside a compact set by compactness;
 this is where the hypothesis of non-degenerate boundary data enters. Then use `nonstationary_phase` where `Re S = 0, dS ≠ 0`.
+
+## Statement correction (25 Nov 2026)
+
+The integrability clause of `lorVertex_farRemainder_tail` is now for `λ ≥ 1` only (at `λ = 0` the factor `e^{λ S}` is `1` and `A` need not be integrable outside `U`).
+Details and the list of changed declarations: `docs/notes/sf10-p3-assessment.md`, last section.

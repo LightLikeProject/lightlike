@@ -15,6 +15,10 @@ open LinearMap Module
 
 variable {K : Type*} [Field K] [CharZero K] {V : Type*} [AddCommGroup V] [Module K V] [FiniteDimensional K V]
 
+/-- The trace of an idempotent is the rank of its range. -/
+theorem trace_idempotent {X : V →ₗ[K] V} (hX : IsIdempotentElem X) :
+    trace K V X = (finrank K (range X) : K) := hX.isProj_range.trace
+
 /-- **Completeness by rank.** -/
 theorem complete_of_rank {ι : Type*} [Fintype ι] [DecidableEq ι] (Q : V →ₗ[K] V) (E : ι → V →ₗ[K] V)
     (hQ : IsIdempotentElem Q) (hE : ∀ i, IsIdempotentElem (E i)) (hEE : ∀ i j, i ≠ j → E i * E j = 0)
@@ -54,5 +58,40 @@ theorem complete_of_rank {ι : Type*} [Fintype ι] [DecidableEq ι] (Q : V →�
     exact LinearMap.range_eq_bot.mp hb
   rw [hR] at h5
   exact sub_eq_zero.mp h5
+
+/-- **Trace of a conjugated idempotent.** If `W ∘ V = κ P` and `E ∘ P = E`, then `κ⁻¹ V E W` has the trace of `E`. -/
+theorem trace_conj {P Q : Type*} [AddCommGroup P] [Module K P] [Module.Free K P] [Module.Finite K P]
+    [AddCommGroup Q] [Module K Q] [Module.Free K Q] [Module.Finite K Q]
+    (Vw : P →ₗ[K] Q) (Ww : Q →ₗ[K] P) (Ew Pp : P →ₗ[K] P) (κ : K) (hκ : κ ≠ 0)
+    (hWV : Ww ∘ₗ Vw = κ • Pp) (hEP : Ew ∘ₗ Pp = Ew) :
+    trace K Q (κ⁻¹ • (Vw ∘ₗ Ew ∘ₗ Ww)) = trace K P Ew := by
+  rw [map_smul, smul_eq_mul]
+  have h1 : trace K Q (Vw ∘ₗ (Ew ∘ₗ Ww)) = trace K P ((Ew ∘ₗ Ww) ∘ₗ Vw) := trace_comp_comm' (Ew ∘ₗ Ww) Vw
+  have h2 : (Ew ∘ₗ Ww) ∘ₗ Vw = κ • Ew := by
+    rw [LinearMap.comp_assoc, hWV, LinearMap.comp_smul, hEP]
+  rw [h1, h2, map_smul, smul_eq_mul, ← mul_assoc, inv_mul_cancel₀ hκ, one_mul]
+
+/-- **Ranks of conjugated idempotents.** -/
+theorem finrank_conj {P Q : Type*} [AddCommGroup P] [Module K P] [Module.Free K P] [Module.Finite K P]
+    [AddCommGroup Q] [Module K Q] [Module.Free K Q] [Module.Finite K Q]
+    (Vw : P →ₗ[K] Q) (Ww : Q →ₗ[K] P) (Ew Pp : P →ₗ[K] P) (κ : K) (hκ : κ ≠ 0)
+    (hWV : Ww ∘ₗ Vw = κ • Pp) (hEP : Ew ∘ₗ Pp = Ew) (hPE : Pp ∘ₗ Ew = Ew) (hE : IsIdempotentElem Ew) :
+    finrank K (range (κ⁻¹ • (Vw ∘ₗ Ew ∘ₗ Ww))) = finrank K (range Ew) := by
+  have hT : IsIdempotentElem (κ⁻¹ • (Vw ∘ₗ Ew ∘ₗ Ww)) := by
+    show (κ⁻¹ • (Vw ∘ₗ Ew ∘ₗ Ww)) * (κ⁻¹ • (Vw ∘ₗ Ew ∘ₗ Ww)) = κ⁻¹ • (Vw ∘ₗ Ew ∘ₗ Ww)
+    have hEE : Ew ∘ₗ Ew = Ew := hE.eq
+    have key : (Vw ∘ₗ Ew ∘ₗ Ww) * (Vw ∘ₗ Ew ∘ₗ Ww) = κ • (Vw ∘ₗ Ew ∘ₗ Ww) := by
+      show (Vw ∘ₗ Ew ∘ₗ Ww) ∘ₗ (Vw ∘ₗ Ew ∘ₗ Ww) = κ • (Vw ∘ₗ Ew ∘ₗ Ww)
+      calc (Vw ∘ₗ Ew ∘ₗ Ww) ∘ₗ (Vw ∘ₗ Ew ∘ₗ Ww)
+          = Vw ∘ₗ Ew ∘ₗ (Ww ∘ₗ Vw) ∘ₗ Ew ∘ₗ Ww := by
+            simp only [LinearMap.comp_assoc]
+        _ = Vw ∘ₗ Ew ∘ₗ (κ • Pp) ∘ₗ Ew ∘ₗ Ww := by rw [hWV]
+        _ = κ • (Vw ∘ₗ (Ew ∘ₗ Pp ∘ₗ Ew) ∘ₗ Ww) := by
+            simp only [LinearMap.smul_comp, LinearMap.comp_smul, LinearMap.comp_assoc]
+        _ = κ • (Vw ∘ₗ Ew ∘ₗ Ww) := by rw [hPE, hEE]
+    rw [smul_mul_assoc, mul_smul_comm, smul_smul, key, smul_smul, mul_assoc, inv_mul_cancel₀ hκ, mul_one]
+  have h := trace_conj Vw Ww Ew Pp κ hκ hWV hEP
+  rw [trace_idempotent hT, trace_idempotent hE] at h
+  exact_mod_cast h
 
 end Lightlike.TemperleyLieb
