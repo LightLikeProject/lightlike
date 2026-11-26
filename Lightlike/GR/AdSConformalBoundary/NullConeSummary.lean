@@ -11,7 +11,7 @@ with `Λᵀ η' Λ = η'` acts by `Λ X = ρ X'`:
 * `ads_isometry_conformal_boundary`: the action is well defined (`ρ > 0`, `X'` of the same form), it is a group action,
   and for a tangent vector `(dτ, dω) = (a, v)` (`v ⊥ ω`) the image has `-(dτ')² + |dω'|² = (-a² + |v|²) / ρ²`: the
   boundary metric `-dτ² + dΩ²` is multiplied by `ρ⁻²`.
-* `adsTimeShift`: the rotation in the `(X₀, X₁)` plane is the time translation `τ ↦ τ + s` of the boundary, with
+* `adsAngleShift`: the rotation in the `(X₀, X₁)` plane is the time translation `τ ↦ τ + s` of the boundary, with
   factor `1` (the generator of `adsBdyMetric_timeShift`).
 -/
 
@@ -37,26 +37,26 @@ theorem ads_isometry_conformal_boundary {Λ : Matrix (Fin 5) (Fin 5) ℝ} (hΛ :
     fun M hM => adsNullVec_mul hΛ hM τ hω, fun a v hv => adsBdyMetric_conformal hΛ τ hω hv a⟩
 
 /-- The rotation by `s` in the `(X₀, X₁)` plane. -/
-def adsTimeShift (s : ℝ) : Matrix (Fin 5) (Fin 5) ℝ :=
+def adsAngleShift (s : ℝ) : Matrix (Fin 5) (Fin 5) ℝ :=
   !![Real.cos s, -Real.sin s, 0, 0, 0; Real.sin s, Real.cos s, 0, 0, 0; 0, 0, 1, 0, 0; 0, 0, 0, 1, 0;
     0, 0, 0, 0, 1]
 
-theorem adsTimeShift_lorentz (s : ℝ) : (adsTimeShift s)ᵀ * adsEta * adsTimeShift s = adsEta := by
+theorem adsAngleShift_lorentz (s : ℝ) : (adsAngleShift s)ᵀ * adsEta * adsAngleShift s = adsEta := by
   have h := Real.sin_sq_add_cos_sq s
   ext i j
   fin_cases i <;> fin_cases j <;>
-    simp [adsTimeShift, adsEta, Matrix.mul_apply, Matrix.diagonal_apply, Fin.sum_univ_succ] <;> nlinarith [h]
+    simp [adsAngleShift, adsEta, Matrix.mul_apply, Matrix.diagonal_apply, Fin.sum_univ_succ] <;> nlinarith [h]
 
 /-- The rotation acts as the time translation `τ ↦ τ + s` with factor `1`. -/
-theorem adsTimeShift_mulVec (s τ : ℝ) (ω : Fin 3 → ℝ) :
-    adsTimeShift s *ᵥ adsNullVec τ ω = adsNullVec (τ + s) ω := by
+theorem adsAngleShift_mulVec (s τ : ℝ) (ω : Fin 3 → ℝ) :
+    adsAngleShift s *ᵥ adsNullVec τ ω = adsNullVec (τ + s) ω := by
   ext j
   fin_cases j <;>
-    simp [adsTimeShift, adsNullVec, mulVec, dotProduct, Fin.sum_univ_succ, Real.cos_add, Real.sin_add] <;> ring
+    simp [adsAngleShift, adsNullVec, mulVec, dotProduct, Fin.sum_univ_succ, Real.cos_add, Real.sin_add] <;> ring
 
-theorem adsNullFactor_adsTimeShift (s τ : ℝ) {ω : Fin 3 → ℝ} : adsNullFactor (adsTimeShift s) τ ω = 1 := by
+theorem adsNullFactor_adsAngleShift (s τ : ℝ) {ω : Fin 3 → ℝ} : adsNullFactor (adsAngleShift s) τ ω = 1 := by
   unfold adsNullFactor
-  rw [adsTimeShift_mulVec]
+  rw [adsAngleShift_mulVec]
   simp [adsNullVec]
 
 end Lightlike
