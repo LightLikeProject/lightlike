@@ -335,3 +335,36 @@ where the first term is `κ(a, b-1, 1)` because `p_c` absorbs `p_{c-1} ⊗ 1` (s
 Smallest next step (not proved, not measured): a rotation lemma, `p_k` with its last strand bent round to the front, between a cup and a cap and `p_c`, is a scalar times `p_c` (the scalar being a ratio of `d_j`, as for `cap_jwAt_cup`); with it, `λ_{a,b}` becomes a product of known partial-trace ratios and the recursion above closes to `κ(a, b, 1) = θ(a, b, a + b - 2) / Δ_{a+b-2}` in the form of Kauffman–Lins, by induction on `b`. Then the general `i` follows by induction on `i` with the same two steps, and layers (2) to (4) of the plan above are still not started. The alternative to the rotation lemma is the θ-recursion: compute the trace of `p_c · vertex · vertex'` as a closed network, reduce it by bubble removal, and read `κ` as `θ / d_c`; that needs a trace functional on the model, which the library does not have.
 
 Status: the closed forms above (`VertexNorm.lean`) are special cases of `vertex_norm_value` and are redundant once `Kappa.lean` is on `main`. What remains of layer (1) is F4 of `docs/notes/g3-196-route-f.md`: the identification of the recoupling coefficients with `qSixJ` and the truncation at level `r`; QU1's items m1 and p1 stay open.
+
+## Route C, step F4: measured dictionary, recursion scheme and truncation (26 Nov 2026)
+
+All MEASURED with a numerical model of the library's operators (`modelE`, `capOp`, `cupOp`, `jwAt`, `Vop`, `Wop`, `UL`,
+`ULd`, `UR`, `sh` re-implemented on bit strings, random complex `q`), exact rational arithmetic at `q = 3/2`, or mpmath at
+40 digits. Scripts are local (not in the repository).
+
+1. `kapRec q a b i = θ(a, b, a+b-2i) / Δ_{a+b-2i}` (Kauffman–Lins signs), already proved as `kapRec_eq` in `QNumbers.lean`.
+2. **`Fc` is the Kauffman–Lins recoupling coefficient**: with `i = a+b-2e`, `D = i+c-2d`, `j = b+c-2f`,
+   `Fc q a b c e d f d' = Tet(a,b,c,D,i,j) · Δ_i / (θ(a,b,i) θ(i,c,D))`, where `Tet` has the faces `(a,b,i), (i,c,D), (b,c,j),
+   (a,j,D)` and the opposite pairs `(a,c), (b,D), (i,j)`; 342 cases with `a, b, c ≤ 3`, error at most `1.2e-15`, signs included.
+3. **Recursion in the third block.** `pentagon` with a fourth block of one strand and `j = 0` collapses (the total-channel
+   constraints leave one term on the right and two on the left) to
+   `Fc(a,b,c+1,e₀,d₀+g₀,m,i) · Fc(X,c,1,d₀,g₀,0,d₀+g₀) = Σ_{f ∈ {m, m-1}} Fc(b,c,1,f,m-f,0,m) · Fc(a,b+c-2f,1,d',g₀,m-f,i) · Fc(a,b,c,e₀,d₀,f,d')`,
+   `X = a+b-2e₀`. The pivot `Fc(X,c,1,d₀,g₀,0,d₀+g₀)` can be chosen nonzero for every target (all `X, c ≤ 6`). The
+   Kauffman–Lins coefficient satisfies it exactly (711 of 711 instances in exact arithmetic). It is **not** a termwise
+   identity of the `Tet` sums in about a third of the instances; the partial sums divided by a term are products of
+   cyclotomic factors (an instance with a four-term sum, checked with SymPy), so a q-Gosper certificate exists. The
+   certificate in closed form (variables `q^label`, `Z = q^z`, as in `RacahCert*`) is the next measurement.
+4. **The family with a third block of one strand.** In each `2 × 2` block (fixed total `D`): the entry with both channels
+   maximal is a vertex-norm ratio, `Fc(a,b,c,e,0,0,e) = κ(a,b+c,e)/κ(a,b,e)` (from `vertex_norm_value`, for every `c`); the
+   pentagon with blocks `(a, b', 1, 1)` and `j = 1` gives the column of the lower channel of `(b'+1, 1)` from the blocks at
+   `b'` and `b'-1`; the left–right mirror (`reflectOp`, which fixes cups, caps and projectors) turns the expansion of `UR` in
+   `UL` for `(a,b,c)` into the expansion of `UL` in `UR` for `(c,b,a)`, so `Fc(a,b,c)` and `Fc(c,b,a)` are inverse matrices,
+   which gives the last entry. Not yet proved in Lean.
+5. **Truncation at `q = e^{iπ/r}`.** In the generic identity (all middle colours allowed by the triangle conditions), the
+   terms with a colour above the level do **not** vanish one by one as `θ → π/r`: they cancel in pairs `x ↔ 2r−2−x`, and the
+   term at `x = r−1` vanishes alone (r = 5 to 8, 41 tuples each; the sum of the bad terms is `O(θ − π/r)`). The root-of-unity
+   statement therefore needs a pairing lemma for the regularised limits (only `[r]` vanishes among `[n]`, `n < 2r`).
+
+Plan of the layers (stored in the QU1 plan): Kauffman–Lins coefficient and base entries, third-block recursion with its
+certificate, `Fc = klCoef` by induction, the pentagon rewritten as `Model.BE` at generic `q = e^{iθ}`, and the limit
+`θ → π/r` with the pairing.
