@@ -1369,7 +1369,7 @@
   "citations_via": "Semantic Scholar"
  },
  "carroll-1997": {
-  "checked": "2026-11-20",
+  "checked": "2026-11-26",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "Lecture Notes on General Relativity",
@@ -1402,6 +1402,11 @@
    "eq. (2.34)": {
     "verified": true,
     "snippet": "(2.34) where “diag” means a diagonal matrix with the given elements. If n is the dimension of the manifold, s is the number of +1’s in the canonical form, and t is the number of −1’s, then s − t is the signature of the m",
+    "why": null
+   },
+   "eq. (3.106)": {
+    "verified": true,
+    "snippet": "(3.106) which you may check is satisfied by this example. Notice that the Ricci scalar is not only constant for the two-sphere, it is manifestly positive. We say that the sphere is “positively curved” (of course a conven",
     "why": null
    },
    "eq. (3.21)": {
@@ -1545,7 +1550,7 @@
     "why": null
    }
   },
-  "citations": 427,
+  "citations": 431,
   "citations_via": "Semantic Scholar"
  },
  "carrozza-oriti-rivasseau-2014": {
