@@ -19,8 +19,10 @@ noncomputable section
 
 namespace Lightlike.Lorentz.SL2RPlancherel
 
+/-- The measure on `ℝ / ℤ` of total mass one (as in Mathlib's `AddCircleMulti`). -/
 local instance : MeasureSpace UnitAddCircle := ⟨AddCircle.haarAddCircle⟩
 
+/-- This measure is a probability measure. -/
 local instance : IsProbabilityMeasure (volume : Measure UnitAddCircle) :=
   inferInstanceAs (IsProbabilityMeasure (AddCircle.haarAddCircle (T := 1)))
 
