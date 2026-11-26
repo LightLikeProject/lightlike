@@ -295,6 +295,8 @@ theorem riemann_antisymm_last (g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) �
     (x : Fin n → ℝ) : riemann g ρ σ μ ν x = -riemann g ρ σ ν μ x := by
   simp only [riemann, Finset.sum_sub_distrib]; ring
 
+/-- Antisymmetry of the lowered Riemann tensor in the last pair, `R_{ρσμν} = -R_{ρσνμ}` - a formula
+identity, true for every metric function and every point. -/
 theorem riemannLower_antisymm_last (g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ)
     (ρ σ μ ν : Fin n) (x : Fin n → ℝ) : riemannLower g ρ σ μ ν x = -riemannLower g ρ σ ν μ x := by
   simp only [riemannLower, ← Finset.sum_neg_distrib]

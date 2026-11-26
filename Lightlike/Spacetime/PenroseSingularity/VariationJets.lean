@@ -441,25 +441,31 @@ theorem varA_hasDerivAt_pair {δ : ℝ} (hg : Lightlike.IsCoordMetric g U) (hV :
   have h2 := h.unique ((hZ.congr_of_eventuallyEq hfun))
   linarith
 
-/-- With `Z = φ N` and `g(N, γc') = -1`, the pairing derivative is `-2 φ'`. -/
-theorem hasDerivAt_two_pair_of_phi {φ : ℝ → ℝ} {N : ℝ → Fin n → ℝ} {φ' : ℝ} {t : ℝ}
-    (hg : Lightlike.IsCoordMetric g U) (hN : ∀ r, gpairAt g (γc r) (N r) (deriv γc r) = -1)
-    (hφ : HasDerivAt (fun r => φ r) φ' t) (hZ : ∀ r, Z r = φ r • N r) :
+/-- With `Z = φ N + Z⊥`, `g(N, γc') = -1` and `g(Z⊥, γc') = 0` near `t`, the pairing derivative is `-2 φ'`. -/
+theorem hasDerivAt_two_pair_of_phi {φ : ℝ → ℝ} {N Zp : ℝ → Fin n → ℝ} {φ' : ℝ} {t : ℝ}
+    (hg : Lightlike.IsCoordMetric g U) (hN : ∀ᶠ r in 𝓝 t, gpairAt g (γc r) (N r) (deriv γc r) = -1)
+    (hZp : ∀ᶠ r in 𝓝 t, gpairAt g (γc r) (Zp r) (deriv γc r) = 0)
+    (hφ : HasDerivAt (fun r => φ r) φ' t) (hZ : ∀ᶠ r in 𝓝 t, Z r = φ r • N r + Zp r) :
     HasDerivAt (fun r => 2 * gpairAt g (γc r) (Z r) (deriv γc r)) (-2 * φ') t := by
-  have hs : ∀ r, gpairAt g (γc r) (Z r) (deriv γc r) = -φ r := by
-    intro r
-    rw [hZ r]
-    simp only [gpairAt, Pi.smul_apply, smul_eq_mul]
-    have := hN r
-    simp only [gpairAt] at this
-    calc ∑ a, ∑ b, g (γc r) a b * (φ r * N r a) * deriv γc r b
-        = φ r * ∑ a, ∑ b, g (γc r) a b * N r a * deriv γc r b := by
-          rw [Finset.mul_sum]; refine Finset.sum_congr rfl fun a _ => ?_
-          rw [Finset.mul_sum]; refine Finset.sum_congr rfl fun b _ => ?_; ring
-      _ = -φ r := by rw [this]; ring
   have h := (hφ.neg).const_mul 2
-  refine (h.congr_deriv (by ring)).congr_of_eventuallyEq (Filter.Eventually.of_forall fun r => ?_)
-  simp [hs r]
+  refine (h.congr_deriv (by ring)).congr_of_eventuallyEq ?_
+  filter_upwards [hN, hZp, hZ] with r hNr hZpr hZr
+  have hs : gpairAt g (γc r) (Z r) (deriv γc r) = -φ r := by
+    rw [hZr]
+    simp only [gpairAt, Pi.smul_apply, smul_eq_mul, Pi.add_apply]
+    have := hNr
+    have h2 := hZpr
+    simp only [gpairAt] at this h2
+    calc ∑ a, ∑ b, g (γc r) a b * (φ r * N r a + Zp r a) * deriv γc r b
+        = φ r * (∑ a, ∑ b, g (γc r) a b * N r a * deriv γc r b) +
+            ∑ a, ∑ b, g (γc r) a b * Zp r a * deriv γc r b := by
+          rw [Finset.mul_sum, ← Finset.sum_add_distrib]
+          refine Finset.sum_congr rfl fun a _ => ?_
+          rw [Finset.mul_sum, ← Finset.sum_add_distrib]
+          refine Finset.sum_congr rfl fun b _ => ?_
+          ring
+      _ = -φ r := by rw [this, h2]; ring
+  simp [hs]
 
 end Package
 

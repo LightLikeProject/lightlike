@@ -1780,7 +1780,7 @@
     refs:
       - {ref: knapp-1986, location: "Chapter: Chapter II. Representations of SU(2), SL(2, ℝ) and SL(2, ℂ)|10.1515/9781400883974-005"}
   review: kernel-checked
-  note: "For f smooth with compact support on SL(2,ℂ) (the restriction of a smooth compactly supported function on 2×2 complex arrays), the principal series π_{n,ρ} (n ∈ ℤ, ρ ∈ ℝ, on L²(ℂ)) satisfy Σ_{n∈ℤ} ∫_ℝ (n² + 4ρ²) ‖π_{n,ρ}(f)‖²_HS dρ = 16π⁴ ∫ |f|² dg (plancherel), with every integrand integrable, and equivalently Σ_n ∫ (n² + 4ρ²) tr π_{n,ρ}(F) dρ = 16π⁴ F(1) (plancherel_trace). Normalization: dg is the Haar measure haarC = d²β d²γ d²δ/|δ|² in the chart g = [[(1+βγ)/δ, β],[γ, δ]]; π_{n,ρ}(g)φ(z) = m_{n,ρ}(βz+δ) φ((αz+γ)/(βz+δ)) with m_{n,ρ}(λ) = |λ|^{2iρ−2}(λ/|λ|)^n; n runs over all of ℤ and ρ over ℝ, so each class π_{n,ρ} ≅ π_{−n,−ρ} is counted twice. The constant 16π⁴ depends on these choices; in the variables of Perez–Rovelli (σ = 2ρ) the formula reads F(1) = (1/(32π⁴)) Σ_n ∫ (n² + σ²) tr T_{n,σ}(F) dσ (plancherel_trace_perezRovelli), and in Rühl's variables with dg_R = (2π)⁻⁴ haarC it reads F(1) = ½ Σ_ν ∫ (ν² + ρ_R²) tr D^χ(F) dρ_R (plancherel_trace_ruhl; the identification of Rühl's labels is argued in the docstring, not formalised, and Rühl's text was not consulted, only its quotation in Simão arXiv:2405.01360 App. B). Perez–Rovelli (gr-qc/0011037, A11 and A16) give 1/(8π⁴), four times too large for the normalization used here (Lean witness: testLF_perezRovelli_constant). Checks: scripts/lorentz/plancherel_check.py reproduces the constant from the kernel alone to 2e-7 relative (numerical evidence, not the proof), and gives 4.0000008 F(1) for the 1/(8π⁴) constant. Independent hand check for K-biinvariant f: the n = 0 sector alone, with the spherical function sin(ρr)/(ρ sinh r), haar radial form 4π³∫F(cosh r) sinh² r dr (Radial.lean) and ∫_ℝ ρ sin(ρr) dρ = −2π δ′(r), gives F(1) exactly. Scope: smooth compactly supported functions only; not the full Plancherel theorem for L². The source locations are chapter-level only (Knapp 1986 chapter II here; the milestone cites Gelfand–Graev–Vilenkin 1966, chapter on harmonic analysis on the complex unimodular 2×2 matrices): no section or equation number was checked against the constant. The comparison with the cited source is pending."
+  note: "For f smooth with compact support on SL(2,ℂ) (the restriction of a smooth compactly supported function on 2×2 complex arrays), the principal series π_{n,ρ} (n ∈ ℤ, ρ ∈ ℝ, on L²(ℂ)) satisfy Σ_{n∈ℤ} ∫_ℝ (n² + 4ρ²) ‖π_{n,ρ}(f)‖²_HS dρ = 16π⁴ ∫ |f|² dg (plancherel), with every integrand integrable, and equivalently Σ_n ∫ (n² + 4ρ²) tr π_{n,ρ}(F) dρ = 16π⁴ F(1) (plancherel_trace). Normalization: dg is the Haar measure haarC = d²β d²γ d²δ/|δ|² in the chart g = [[(1+βγ)/δ, β],[γ, δ]]; π_{n,ρ}(g)φ(z) = m_{n,ρ}(βz+δ) φ((αz+γ)/(βz+δ)) with m_{n,ρ}(λ) = |λ|^{2iρ−2}(λ/|λ|)^n; n runs over all of ℤ and ρ over ℝ, so each class π_{n,ρ} ≅ π_{−n,−ρ} is counted twice. The constant 16π⁴ depends on these choices; in the variables of Perez–Rovelli (σ = 2ρ) the formula reads F(1) = (1/(32π⁴)) Σ_n ∫ (n² + σ²) tr T_{n,σ}(F) dσ (plancherel_trace_perezRovelli), and in Rühl's variables with dg_R = (2π)⁻⁴ haarC it reads F(1) = ½ Σ_ν ∫ (ν² + ρ_R²) tr D^χ(F) dρ_R (plancherel_trace_ruhl; the identification of Rühl's labels is argued in the docstring, not formalised, and Rühl's text was not consulted, only its quotation in Simão arXiv:2405.01360 App. B). Perez–Rovelli (gr-qc/0011037, A11 and A16) print 1/(8π⁴), which is four times too large: kind of the difference, a misprint in the source (the Haar measure (A8) and the representations (A6) are those used here, and the range of σ accounts for a factor 2 at most); the library agrees with Rühl as quoted by Simão, arXiv:2405.01360, App. B.1, B.3 and eq. (B.3.1) (checked against the thesis text: labels, the constant 1/2 and the measure are as Plancherel.lean quotes them). Lean witness: testLF_perezRovelli_constant. Checks: scripts/lorentz/plancherel_check.py reproduces the constant from the kernel alone to 2e-7 relative (numerical evidence, not the proof), and gives 4.0000008 F(1) for the 1/(8π⁴) constant. Independent hand check for K-biinvariant f: the n = 0 sector alone, with the spherical function sin(ρr)/(ρ sinh r), haar radial form 4π³∫F(cosh r) sinh² r dr (Radial.lean) and ∫_ℝ ρ sin(ρr) dρ = −2π δ′(r), gives F(1) exactly. Scope: smooth compactly supported functions only; not the full Plancherel theorem for L². The source locations are chapter-level only (Knapp 1986 chapter II here; the milestone cites Gelfand–Graev–Vilenkin 1966, chapter on harmonic analysis on the complex unimodular 2×2 matrices): no section or equation number was checked against the constant. The comparison with the cited source at chapter level is pending; the comparison of the constant with Perez–Rovelli (A11), (A16) and with Rühl is as stated above."
   since: 0.3.0
 - id: LL-0135
   title: The scaled Lorentzian vertex is an integral over R^44 of a(x) e^{lambda S(x)} in the fixed charts of SL(2,C) with Lebesgue density, and a stationary-phase expansion holds there under named hypotheses
@@ -1794,7 +1794,7 @@
     refs:
       - {ref: bdfhp-2010, location: "eq. (53)", check: "Regge state"}
   review: kernel-checked
-  note: "The Haar measure of SL(2,C) is Lebesgue measure in the chart g_0 (FixedChart.lean, density 1); through a measure-preserving linear identification of R^44 with (C^3)^4 x C^10 the vertex of the scaled data (lambda j, lambda p) with constants cc(lambda) is (prod cc) s^-4 times the integral over R^44 of a(x) e^{lambda S(x)}, a = prod 1/(|Z_ab|^2 |Z_ba|^2) independent of lambda, s the Haar normalisation factor (VertexHaarChart.lean). The chart is smooth where the third coordinate of each chart is nonzero, and the sum over the critical points with the error O(lambda^(m - 23)) follows from weighted_asymptotics_local. Each named hypothesis is its own proof task, with a statement and an open proof: T-SF10-P1 (VertexJointIntegrable), T-SF10-P2 (HessianInvertible at a critical point), T-SF10-P3 (FarRemainderBound), T-SF10-P4 (CriticalSetIs: finiteness and classification of the critical set). In the fixed chart, lorVertex_suppressed_fixChart (VertexSuppressed.lean) proves the non-closing case of item 4 of the theorem (BDFHP eq. (56): boundary data whose normals do not close at a node are suppressed faster than every power), given the far-remainder bound. NOT PROVED (named hypotheses): the joint integrability of the integrand on SL(2,C)^4 x C^10 and the measurability of the outer integral (the vertex is defined as an iterated integral; the existing finiteness is of the complex inner integral, not of its modulus), the classification of the critical set (hK), the invertibility of the Hessian (hdet), the remainder bound (hfar) and its integrability (hint), and the weight bound. The two-point formula with the constants of eq. (57) for an action smooth only on an open set is lorVertex_asymptotic_formula_local (AsymptoticFormulaLocal.lean), under the same hypotheses; the constants of eq. (57) are not computed.  Status conditional, as the hypotheses are open facts about lorVertex itself, not conditions on the input data: joint integrability hjoint and measurability hF of the vertex integrand, the invertibility of the Hessian hdet (assumed by BDFHP), the remainder estimate hfar with its integrability hint (not in BDFHP; hint is assumed only for lambda in N, the integer sequence the proof uses: the form for all real tau fails for tau < 0 wherever an overlap vanishes), and the classification hK of the critical points (BDFHP Sec. 5.4.3, outside SU(2) via the bivector theorem of arXiv:0902.1170); the cutoff chi, the weight bound hw and the boundary data are conditions checked per instance. The error exponent m - 23: the stationary phase in 44 real dimensions gives the leading term order lambda^(-44/2) = lambda^(-22) and the error one further power lambda^(-23), times the order lambda^m of the weight (hw). Differences from BDFHP eq. (53), read at Sec. 6.4: the statement is the generic stationary-phase sum over an abstract finite critical set K, with an error bound O(lambda^(m - 23)) where the source states an asymptotic equivalence; it does not identify the phase with gamma Sum k Theta, the sign (-1)^(chi + M), the order lambda^(-12) or the two parity-related critical points of eq. (53); and lambda runs over the natural numbers. Update (24 Nov 2026): VertexJointIntegrable is proved for positive spins and unit boundary spinors (vertexJointIntegrable_of_unit, T-SF10-P1); the other three hypotheses remain."
+  note: "The Haar measure of SL(2,C) is Lebesgue measure in the chart g_0 (FixedChart.lean, density 1); through a measure-preserving linear identification of R^44 with (C^3)^4 x C^10 the vertex of the scaled data (lambda j, lambda p) with constants cc(lambda) is (prod cc) s^-4 times the integral over R^44 of a(x) e^{lambda S(x)}, a = prod 1/(|Z_ab|^2 |Z_ba|^2) independent of lambda, s the Haar normalisation factor (VertexHaarChart.lean). The chart is smooth where the third coordinate of each chart is nonzero, and the sum over the critical points with the error O(lambda^(m - 23)) follows from weighted_asymptotics_local. Each named hypothesis is its own proof task, with a statement and an open proof: T-SF10-P1 (VertexJointIntegrable), T-SF10-P2 (HessianInvertible at a critical point), T-SF10-P3 (FarRemainderBound), T-SF10-P4 (CriticalSetIs: finiteness and classification of the critical set). In the fixed chart, lorVertex_suppressed_fixChart (VertexSuppressed.lean) proves the non-closing case of item 4 of the theorem (BDFHP eq. (56): boundary data whose normals do not close at a node are suppressed faster than every power), given the far-remainder bound. NOT PROVED (named hypotheses): the joint integrability of the integrand on SL(2,C)^4 x C^10 and the measurability of the outer integral (the vertex is defined as an iterated integral; the existing finiteness is of the complex inner integral, not of its modulus), the classification of the critical set (hK), the invertibility of the Hessian (hdet), the remainder bound (hfar) and its integrability (hint), and the weight bound. The two-point formula with the constants of eq. (57) for an action smooth only on an open set is lorVertex_asymptotic_formula_local (AsymptoticFormulaLocal.lean), under the same hypotheses; the constants of eq. (57) are not computed.  Status conditional, as the hypotheses are open facts about lorVertex itself, not conditions on the input data: joint integrability hjoint and measurability hF of the vertex integrand, the invertibility of the Hessian hdet (assumed by BDFHP), the remainder estimate hfar with its integrability hint (not in BDFHP; hint is assumed only for lambda in N, the integer sequence the proof uses: the form for all real tau fails for tau < 0 wherever an overlap vanishes), and the classification hK of the critical points (BDFHP Sec. 5.4.3, outside SU(2) via the bivector theorem of arXiv:0902.1170); the cutoff chi, the weight bound hw and the boundary data are conditions checked per instance. The error exponent m - 23: the stationary phase in 44 real dimensions gives the leading term order lambda^(-44/2) = lambda^(-22) and the error one further power lambda^(-23), times the order lambda^m of the weight (hw). Differences from BDFHP eq. (53), read at Sec. 6.4: the statement is the generic stationary-phase sum over an abstract finite critical set K, with an error bound O(lambda^(m - 23)) where the source states an asymptotic equivalence; it does not identify the phase with gamma Sum k Theta, the sign (-1)^(chi + M), the order lambda^(-12) or the two parity-related critical points of eq. (53); and lambda runs over the natural numbers. Update (24 Nov 2026): VertexJointIntegrable is proved for positive spins and unit boundary spinors (vertexJointIntegrable_of_unit, T-SF10-P1); the other three hypotheses remain. FarRemainderBound asks the integrability of (1 - chi) a e^{lambda S} for every lambda >= 1 (not lambda = 0, where e^{lambda S} = 1 and a need not be integrable) and the O(lambda^-23) bound; the hypothesis integrability of the remainder in lorVertex_asymptotics_local is stated for lambda >= 1 likewise."
   since: 0.3.0
 - id: LL-0136
   title: "A set of triangles that is robust for a closed 4D complex, together with the triangle {a, p, q}, forces every triangle after any 2-4 Pachner move"
@@ -2401,7 +2401,7 @@
     refs:
       - {ref: mukhametzhanov-zhiboedov-2019, location: "eq. (1.8)"}
   review: kernel-checked
-  note: "For a positive measure σ (the spectrum in the variable x = Δ - c/12, v = c/12) whose Laplace transform Z(β) = ∫ e^{-βx} dσ is finite for β > 0, invariant under z ↦ 4π²/z for Re z > 0 (MZ (2.2)), and satisfies |Z(β) - e^{a/β}| ≤ C e^{(a-g)/β} for real 0 < β < β₀ (a = 4π² v = π² c/3, g > 0), the integrated density F(Δ) = σ(-∞, Δ - v] satisfies |F(Δ) · 2π (cΔ/3)^{1/4} e^{-2π√(cΔ/3)} - 1| ≤ K Δ^{-1/2} for large Δ (cardy_mz), i.e. MZ (1.8). cardy_counting (CardyCounting.lean) is the intermediate form |σ(-∞, x] - I₀(2√(a x))| ≤ K x^{-3/4} e^{2√(a x)}, I₀(s) = (1/π) ∫₀^π e^{s cos θ} dθ. Compared with the source at eq. (1.8) and (2.2)-(2.4) (read 19 November 2026). Representation difference (reported to the maintainers, decision pending): a positive measure in the shifted variable instead of the density ρ(Δ) = Σ δ(Δ - Δ_O). The high-temperature hypothesis is assumed only for real β (MZ: |β| → 0 with Re β > 0), which is a weaker hypothesis. Route: MZ's Sections 3-5 with a pole-free smoothing in place of the contour functional (docs/notes/sp3-full-strength-attempts.md, attempt D). Non-vacuity: σ = δ_{-v} + ρ₀ (CardyExample.lean)."
+  note: "For a positive measure σ (the spectrum in the variable x = Δ - c/12, v = c/12) whose Laplace transform Z(β) = ∫ e^{-βx} dσ is finite for β > 0, invariant under z ↦ 4π²/z for Re z > 0 (MZ (2.2)), and satisfies |Z(β) - e^{a/β}| ≤ C e^{(a-g)/β} for real 0 < β < β₀ (a = 4π² v = π² c/3, g > 0), the integrated density F(Δ) = σ(-∞, Δ - v] satisfies |F(Δ) · 2π (cΔ/3)^{1/4} e^{-2π√(cΔ/3)} - 1| ≤ K Δ^{-1/2} for large Δ (cardy_mz), i.e. MZ (1.8). cardy_counting (CardyCounting.lean) is the intermediate form |σ(-∞, x] - I₀(2√(a x))| ≤ K x^{-3/4} e^{2√(a x)}, I₀(s) = (1/π) ∫₀^π e^{s cos θ} dθ. Compared with the source at eq. (1.8) and (2.2)-(2.4) (read 19 November 2026). Representation difference (reported to the maintainers, decision pending): a positive measure in the shifted variable instead of the density ρ(Δ) = Σ δ(Δ - Δ_O). The high-temperature hypothesis is assumed only for real β (MZ: |β| → 0 with Re β > 0), which is a weaker hypothesis. Route: MZ's Sections 3-5 with a pole-free smoothing in place of the contour functional (docs/notes/sp3-full-strength-attempts.md, attempt D). Non-vacuity: σ = δ_{-v} + ρ₀ (CardyExample.lean). Difference recorded for the milestone item on the Tauberian theorem (owner decision D14 = (A)): MZ (1.8) assumes modular invariance; the general-measure form, a positive measure whose Laplace transform only satisfies L(β) ~ e^{a/β}, is false (Bringmann–Jennings-Shaffer–Mahlburg, arXiv:1910.03036, Section 3.2); the sector-bound form of Ingham's theorem (their Theorem 4.1) is open (docs/notes/sp3-tauberian-backlog.md)."
   since: unreleased
 - id: LL-0183
   title: For a finite quantum system with Hamiltonian H, a state is KMS at inverse temperature beta iff it is the Gibbs state e^{-beta H} / tr e^{-beta H}
@@ -3709,7 +3709,7 @@
     refs:
       - {ref: weinberg-1995, location: "Chapter: RELATIVISTIC QUANTUM MECHANICS|10.1017/CBO9781139644167.004"}
   review: kernel-checked
-  note: "The representation is built by induction from the little group SU(2) on the mass shell of SL(2,C) = double cover of the Lorentz group, spin s = n/2 (n = 1: two states per momentum). Not claimed: Wigner's classification theorem (irreducibility is a separate entry: irreducible_massive_sourceMeasure) (ClassificationStatement.lean states it as a Prop, it is not proven: its proof needs Mackey's imprimitivity theorem). The comparison with Weinberg (1995), Chapter 2, is pending: the book was not read at the cited location, and Wigner (1939) was not read. Weinberg works in signature (-,+,+,+) with W^2 = m^2 j(j+1); here (+,-,-,-), so W^2 = -m^2 s(s+1) (the sign convention is stated in the task, milestones.md HA6)."
+  note: "The representation is built by induction from the little group SU(2) on the mass shell of SL(2,C) = double cover of the Lorentz group, spin s = n/2 (n = 1: two states per momentum). Not claimed: Wigner's classification theorem (irreducibility is a separate entry: irreducible_massive_sourceMeasure) (ClassificationStatement.lean states it as a Prop, it is not proven: its proof needs Mackey's imprimitivity theorem). The comparison with Weinberg (1995), Chapter 2, is pending: the book was not read at the cited location, and Wigner (1939) was not read for this statement (it was read for the classification, LL-0313, Section 7B, p. 198). Weinberg works in signature (-,+,+,+) with W^2 = m^2 j(j+1); here (+,-,-,-), so W^2 = -m^2 s(s+1) (the sign convention is stated in the task, milestones.md HA6). Difference of form: the vector W of pauliLubanski is the little-group formula m L(A) J (the spin operator carried to the momentum), not the generator operator built from the representation poincareRep; the generator form is the theorem pauliLubanski_sq_generators (Lightlike/Poincare/PauliLubanskiGenerators.lean), which is not a separate catalogue entry."
   since: unreleased
 - id: LL-0279
   title: "The massless one-particle representation of finite helicity h/2, induced from the character of ISO(2): it preserves the L² norm of the light cone, has P² = 0, W = (h/2) P and W² = 0"
@@ -3735,7 +3735,7 @@
     refs:
       - {ref: weinberg-1995, location: "Chapter: RELATIVISTIC QUANTUM MECHANICS|10.1017/CBO9781139644167.004"}
   review: kernel-checked
-  note: "Non-vacuity: spinJ_casimir (J_x²+J_y²+J_z² = s(s+1) for every n) and P·W = 0. The comparison with Weinberg (1995), Chapter 2, is pending: the book was not read at the cited location, and Wigner (1939) was not read. Weinberg works in signature (-,+,+,+) with W^2 = m^2 j(j+1); here (+,-,-,-), so W^2 = -m^2 s(s+1) (the sign convention is stated in the task, milestones.md HA6)."
+  note: "Non-vacuity: spinJ_casimir (J_x²+J_y²+J_z² = s(s+1) for every n) and P·W = 0. The comparison with Weinberg (1995), Chapter 2, is pending: the book was not read at the cited location, and Wigner (1939) was not read for this statement (it was read for the classification, LL-0313, Section 7B, p. 198). Weinberg works in signature (-,+,+,+) with W^2 = m^2 j(j+1); here (+,-,-,-), so W^2 = -m^2 s(s+1) (the sign convention is stated in the task, milestones.md HA6). Difference of form: pauliLubanski is the little-group formula m L(A) J, not the generator operator of poincareRep; the generator form is pauliLubanski_sq_generators (Lightlike/Poincare/PauliLubanskiGenerators.lean), not a separate catalogue entry."
   since: unreleased
 - id: LL-0281
   title: "The little groups of the Poincaré group: the stabilizer of the rest momentum m·1 in SL(2,C) is SU(2) and is compact, and the stabilizer of the light-like momentum is the group of upper triangular matrices with the phase character, with the translations as the kernel of the phase"
@@ -3761,7 +3761,7 @@
     refs:
       - {ref: weinberg-1995, location: "Chapter: RELATIVISTIC QUANTUM MECHANICS|10.1017/CBO9781139644167.004"}
   review: kernel-checked
-  note: "The vector W is computed from the helicity character and the rotation generator J_z; lightPL_square gives W² = 0. The comparison with Weinberg (1995), Chapter 2, is pending: the book was not read at the cited location, and Wigner (1939) was not read. Weinberg works in signature (-,+,+,+) with W^2 = m^2 j(j+1); here (+,-,-,-), so W^2 = -m^2 s(s+1) (the sign convention is stated in the task, milestones.md HA6)."
+  note: "In Lean the vector W of the massless representation is defined by its values on the standard light-like momentum, W = (h/2) P (stdLightPL), transported by the Lorentz action; lightPL_eq and lightPL_square (W² = 0) are then statements about that definition, they do not compute W from the generator operator of the representation. The generators are treated separately: helChar_rotZ and helChar_upper (the helicity character on the rotation about z and on the upper triangular subgroup, Lightlike/Lorentz/PoincareIrreps/MasslessPL.lean) and hasDerivAt_helicityAct_rot_at and hasDerivAt_helicityAct_trans_at (Lightlike/Poincare/MasslessGenerators.lean); no theorem states that the generator formula equals (h/2) P. The comparison with Weinberg (1995), Chapter 2, is pending: the book was not read at the cited location, and Wigner (1939) was not read for this statement (it was read for the classification, LL-0313, Section 7B, p. 198). Weinberg works in signature (-,+,+,+) with W^2 = m^2 j(j+1); here (+,-,-,-), so W^2 = -m^2 s(s+1) (the sign convention is stated in the task, milestones.md HA6)."
   since: unreleased
 - id: LL-0283
   title: "Peter–Weyl (density form): for a compact Hausdorff group, the matrix coefficients of finite-dimensional unitary representations are dense in C(G) in the sup norm and, for a Haar measure, in L²(G)"
@@ -4166,7 +4166,7 @@
     refs:
       - {ref: weinberg-1995, location: "Chapter: RELATIVISTIC QUANTUM MECHANICS|10.1017/CBO9781139644167.004"}
   review: kernel-checked
-  note: "HA6 (G1-055), the lockable statement of the milestone. WignerClassification is a Prop, NOT proved: every such representation is trivial on the translations, or equivalent to a massive poincareRep, or to a massless finite-helicity lightPoincareRep, or massless of infinite spin (MasslessNotHelicity). Its proof needs Mackey's imprimitivity theorem; isSystemOfImprimitivity_inducedL2 (Imprimitivity.lean) is one ingredient. Non-vacuity: trivialRep_classified (the trivial representation falls in the first case). The statement uses the library's own definitions of equivalence and positive energy; comparison with Weinberg and Wigner pending (not read). "
+  note: "HA6 (G1-055), the lockable statement of the milestone. WignerClassification is a Prop, NOT proved: every such representation is trivial on the translations, or equivalent to a massive poincareRep, or to a massless finite-helicity lightPoincareRep, or massless of infinite spin (MasslessNotHelicity). Its proof needs Mackey's imprimitivity theorem; isSystemOfImprimitivity_inducedL2 (Imprimitivity.lean) is one ingredient. Non-vacuity: trivialRep_classified (the trivial representation falls in the first case). The statement uses the library's own definitions of equivalence and positive energy; comparison with Weinberg and Wigner pending (not read). Compared with Wigner, Ann. Math. 40 (1939) 149-204, Section 7B, p. 198, The final result (read): the classes P_+^j (P > 0, j = n/2: EquivMassive with P = m²), 0_+^s (s = h/2, an integer or half-integer of either sign or zero: EquivMassless) and 0_+(Xi), 0'_+(Xi) (continuous spin, Xi > 0, single or double valued: MasslessNotHelicity) are the positive-energy classes; the class 0_0 (every translation trivial) and the class P < 0 are 'not determined' there; the negative-energy classes P_-, 0_- and the space-like class are excluded here by positive energy. The first case of the statement is Wigner's 0_0. Differences: (1) the continuous-spin classes are given only negatively (not a helicity representation), so for the massless part the statement says only that the spectrum lies in the light cone; (2) only completeness is stated: that each listed representation is irreducible is LL-0310 and LL-0311, and that different parameters give inequivalent representations is not stated; (3) Weinberg, QFT I, Section 2.5, was not read: that comparison is pending."
   since: unreleased
 - id: LL-0314
   title: "Nevanlinna–Sokal theorem: if f is analytic in the disk Re z⁻¹ > 1/R and its Taylor remainders obey |f(z) − Σ_{k<q} a_k z^k| ≤ K q! ρ^{-q} |z|^q, then the Borel transform of the series continues analytically to a strip and f is its Laplace transform on the whole disk"
@@ -4440,8 +4440,9 @@
   source:
     refs:
       - {ref: gerard-2019, location: "Proposition 4.9.1", check: "pure iff"}
+      - {ref: yamagami-2008, location: "Proposition 2.7", check: "pure state"}
   review: kernel-checked
-  note: "Compared with Gérard, arXiv:1901.10175, Section 4.9.1, Proposition 4.9.1 (read, text extracted from the PDF): a quasi-free state with covariance eta (his convention omega(W(x)) = exp(-(1/2) x.eta x), so his 2 eta is the eta here with exp(-(1/4) eta)) is pure iff (2 eta^cpl, sigma^cpl) is Kahler, i.e. there is an anti-involution j in Sp with sigma j = 2 eta; the proof there is cited to Derezinski-Gerard, Theorem 17.13, and is not read. Differences: WEAKER, only the sufficiency half is proved (a compatible J gives purity); the necessity (pure implies a compatible J) is not proved. REPRESENTATION, the space is finite-dimensional with eta positive definite on the quotient; the proof identifies the GNS space with a Fock space of the complex inner product eta + i omega and uses irreducibility of the Fock representation, not the Kahler argument; the sign of the J relation (omega = -eta J) is a convention. Lemmas it uses from other files: Lightlike.OperatorAlgebras.QuasiFreeState.isPureState_qfState_of_equiv (Lightlike/OperatorAlgebras/QuasiFreeState/FockEquiv.lean)."
+  note: "Second source (25 Nov 2026, read): Yamagami, arXiv:0801.1739, Section 2.2, p. 5 (between Proposition 2.7 and Proposition 2.8): for a quasi-free state phi_S(e^{ix}) = e^{-S(x,x)/2} of a CCR C*-algebra with polarization S (S(x,y) - S(y*,x*) = i sigma(x*,y)), 'phi_S is a pure state if and only if S is extremal in Pol(V, sigma), i.e., S is a projection' (stated as known, by the theory of Fock representations and purification, Section 5; no proof there). His S is half the complexified form eta + i omega of this library up to the factor of the exponent (exp(-S(x,x)/2) against exp(-eta(x,x)/4)), and S a projection is the compatible complex structure here; the same one-sided difference: only sufficiency is proved. Bratteli-Robinson 2 (the row names it) was not accessible, so no comparison with its text; Manuceau-Verbeure, Comm. Math. Phys. 9 (1968) 293 was seen only as an abstract (pure states are the Fock states). Compared with Gérard, arXiv:1901.10175, Section 4.9.1, Proposition 4.9.1 (read, text extracted from the PDF): a quasi-free state with covariance eta (his convention omega(W(x)) = exp(-(1/2) x.eta x), so his 2 eta is the eta here with exp(-(1/4) eta)) is pure iff (2 eta^cpl, sigma^cpl) is Kahler, i.e. there is an anti-involution j in Sp with sigma j = 2 eta; the proof there is cited to Derezinski-Gerard, Theorem 17.13, and is not read. Differences: WEAKER, only the sufficiency half is proved (a compatible J gives purity); the necessity (pure implies a compatible J) is not proved. REPRESENTATION, the space is finite-dimensional with eta positive definite on the quotient; the proof identifies the GNS space with a Fock space of the complex inner product eta + i omega and uses irreducibility of the Fock representation, not the Kahler argument; the sign of the J relation (omega = -eta J) is a convention. Lemmas it uses from other files: Lightlike.OperatorAlgebras.QuasiFreeState.isPureState_qfState_of_equiv (Lightlike/OperatorAlgebras/QuasiFreeState/FockEquiv.lean)."
   since: unreleased
 - id: LL-0335
   title: "The Sorkin-Johnston state of a finite causal set is pure: |iD| is the positive square root of -D^2, the Pauli-Jordan matrix is a(C - C^T) for the causal matrix C, and the quasi-free state of (D, |iD|) is pure for every a"
@@ -6195,4 +6196,658 @@
       - {ref: livine-speziale-2007, location: "Abstract", check: "coherent states"}
   review: kernel-checked
   note: "For self-dual labels J, anti-self-dual labels K and group elements (g₊, g₋), cohInt4 J K g = ι⁺(g₊) ⊗ ι⁻(g₋) is invariant under the Spin(4) action ρ_J(h₊) ⊗ ρ_K(h₋) (cohInt4_invariant); the overlap is the product of the two SU(2) overlaps (inner_cohInt4); and Π_a (J_a + 1)(K_a + 1) ∫∫ |ι⁺ ⊗ ι⁻⟩⟨ι⁺ ⊗ ι⁻| = P_J ⊗ P_K for the product of the Haar measures (resolution_cohInt4). The statements are the Spin(4) form of LL-0472; compared at the abstract of Livine–Speziale only."
+  since: unreleased
+- id: LL-0474
+  title: "The operator π_{n,ρ}(f) = ∫ f(g) π_{n,ρ}(g) dg of the principal series of SL(2,ℂ) is the kernel operator with the kernel psKernel (PlancherelKernel.lean), and the Plancherel formula holds for its kernel: Σ_n ∫ (n² + 4ρ²) ‖K‖²_{L²(ℂ²)} dρ = 16π⁴ ∫ |f|² dg"
+  area: Lorentz
+  file: Lightlike/Lorentz/PlancherelOperator.lean
+  decls: [Lightlike.Lorentz.piOp, Lightlike.Lorentz.plancherel_piOp]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: knapp-1986, location: "Chapter: Chapter II. Representations of SU(2), SL(2, ℝ) and SL(2, ℂ)|10.1515/9781400883974-005"}
+  review: kernel-checked
+  note: "For f the restriction of a smooth compactly supported function F on 2×2 complex arrays, the Bochner integral piOp n ρ f φ = ∫ f(g) π_{n,ρ}(g) φ dg (Haar measure haarC) is, for almost every z, ∫ psKernel n ρ f z w φ(w) d²w, and the double integral of |psKernel|² over (z, z′) is the squared Hilbert–Schmidt norm of π_{n,ρ}(f); the sum over n ∈ ℤ of ∫_ℝ (n² + 4ρ²) of it dρ equals 16π⁴ ∫ |f|² dg (plancherel_piOp, the form used by LL-0134, with the same normalisation of haarC and π_{n,ρ}; the constant is that of LL-0134 and agrees with Rühl as quoted by Simão, arXiv:2405.01360, App. B.1, B.3 and eq. (B.3.1), checked against the thesis text; Rühl's book was not read). The operator formalises the object of Perez–Rovelli (gr-qc/0011037, App. A, (A12)–(A14)); Gelfand–Graev–Vilenkin, Vol. 5, Ch. IV, is the classical source of the kernel and was not consulted. The source location cited here is chapter-level only (Knapp 1986, chapter II): no equation was compared with the constant."
+  since: unreleased
+
+- id: LL-0475
+  title: "The Plancherel formula of SL(2,ℂ) for radial functions: ∫_G |f|² dg = (2π⁴)⁻¹ ∫_0^∞ ρ² |f̂(ρ)|² dρ, with f̂ the spherical transform"
+  area: Lorentz
+  file: Lightlike/Lorentz/SphericalPlancherel.lean
+  decls: [Lightlike.Lorentz.spherical_plancherel]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: knapp-1986, location: "Chapter: Chapter II. Representations of SU(2), SL(2, ℝ) and SL(2, ℂ)|10.1515/9781400883974-005"}
+  review: kernel-checked
+  note: "For f = F ∘ coshDist with F smooth and compactly supported on ℝ, and Haar measure haarC (the hyperbolic distance has law 4π³ sinh² r dr under it), ∫_G |f|² dg = (2π⁴)⁻¹ ∫_0^∞ ρ² |f̂(ρ)|² dρ, where f̂(ρ) = ∫_G f(g) φ_ρ(g) dg is the spherical transform with the spherical function sin(ρr)/(ρ sinh r) of the principal series (0, ρ); the density is ρ². The proof writes both sides through the odd Schwartz profile sinh r F(cosh r) and uses Plancherel's theorem on ℝ. The constant (2π⁴)⁻¹ belongs to this normalisation of haarC; on hyperbolic space SL(2,ℂ)/SU(2) with the measure 4π sinh² r dr it is the classical (2π²)⁻¹ (the fibre SU(2) has volume π²). It is the radial part of the Plancherel formula of LL-0134 (the n = 0 sector); the two constants were not checked against each other in Lean. Source location chapter-level only (Knapp 1986, chapter II); the density ρ² was not compared with an equation of a source."
+  since: unreleased
+- id: LL-0476
+  title: The gauge-fixed Ponzano-Regge amplitude is unchanged by the 3-2 and 4-1 Pachner moves under the cutoff conditions of the inverse 2-3 and 1-4 moves
+  area: PonzanoRegge
+  file: Lightlike/PonzanoRegge/InverseMoves.lean
+  decls: [Lightlike.PR.amplitudeGF_move32, Lightlike.PR.amplitudeGF_move41]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: freidel-louapre-2004, location: "Section III", check: "gauge"}
+      - {ref: barrett-naish-guzman-2009, location: "§2.2.1", check: "Pachner moves"}
+  review: kernel-checked
+  note: "An identity at finite cutoff, the inverse direction of the 2-3 and 1-4 moves of the previous chain entry (LL-0027); comparison pending for these two statements. amplitudeGF_move32: for a 3-2 move on any complex, a gauge set T of old edges not containing the removed edge DE, and a cutoff with cut AD + cut AE <= cut DE, the amplitude of the complex after the move equals that before. amplitudeGF_move41: when no gauge edge touches the vertex E that disappears, the amplitude of the smaller complex with gauge set T equals that of the larger with gauge set T together with the edge DE, under the cutoff conditions cut AD <= cut AE, cut BD <= cut BE, cut CD <= cut CE. The moves are recognised on any complex (IsMove32, IsMove41), not only on manifolds. Independence of the gauge set in general and removal of the cutoff are not proven."
+  since: unreleased
+- id: LL-0477
+  title: A combinatorial 2-sphere is a connected closed pseudo-surface with Euler characteristic 2
+  area: PonzanoRegge
+  file: Lightlike/PonzanoRegge/SphereInvariants.lean
+  decls: [Lightlike.PR.IsSphere2.invariants]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: moise-1977, location: "Chapter: The classification of compact connected 2-manifolds|10.1007/978-1-4612-9906-6_23"}
+  review: kernel-checked
+  note: "The comparison with Moise (1977) is pending: the book was not read at the cited location. IsSphere2 is the library's inductive definition of the combinatorial 2-spheres of a finite set of triangles (generated from the boundary of the tetrahedron by the 2D Pachner moves, as in the previous sphere-recognition entry, LL-0024); the statement is the conjunction of euler2 L = 2, IsConnected2 L and IsClosed2 L, the invariants preserved by the moves. The converse (these invariants characterise the spheres) is the sphere-recognition entry."
+  since: unreleased
+- id: LL-0478
+  title: When the gauge set forces every edge of a 3-complex, the gauge-fixed Ponzano-Regge amplitude is 1 for every cutoff
+  area: PonzanoRegge
+  file: Lightlike/PonzanoRegge/Forcing.lean
+  decls: [Lightlike.PR.amplitudeGF_of_forcesAll]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: freidel-louapre-2004, location: "Section III", check: "gauge"}
+  review: kernel-checked
+  note: "Comparison pending (Freidel-Louapre treat the gauge fixing with a maximal tree; the forcing criterion is this library's). ForcesAll K T: the edges of K are all in T, or a triangle {p, q, r} of K with two of its edges {p, r} and {q, r} in T and the third {p, q} not in T lets the induction continue with {p, q} added. By the triangle inequality with spins 0 on two edges the third edge is forced to spin 0, so only the colouring with all spins 0 contributes, with weight 1. Hypothesis T is a subset of the edges of K. This removes the cutoff for such gauge sets."
+  since: unreleased
+- id: LL-0479
+  title: The gauge-fixed Ponzano-Regge amplitude of the boundary of the 4-simplex with the star tree at a vertex is 1 for every cutoff
+  area: PonzanoRegge
+  file: Lightlike/Tests/Forcing.lean
+  decls: [Lightlike.PR.Test.Manifold.amplitudeGF_S3_star]
+  status: proven
+  tier: frontier
+  source: exploratory
+  review: kernel-checked
+  note: "A kernel-checked instance (all decide steps) of the previous forcing entry on the 3-sphere S3 = the boundary of the 4-simplex on five vertices, with the gauge set the four edges {0,j}; no source states this value. The statement holds for every cutoff function."
+  since: unreleased
+- id: LL-0480
+  title: Independence of the maximal tree fails for the gauge-fixed Ponzano-Regge amplitude with a finite cutoff on a ring of three tetrahedra, and the two trees are not connected by triangle exchanges
+  area: PonzanoRegge
+  file: Lightlike/Tests/TreeDependence.lean
+  decls: [Lightlike.PR.Test.Ring.amplitudeGF_tree_dependent, Lightlike.PR.Test.Ring.not_eqvGen_exchange_T1_T2]
+  status: proven
+  tier: frontier
+  source: exploratory
+  review: kernel-checked
+  note: "A counterexample on the ring R of three tetrahedra {0123}, {2345}, {4501} on six vertices with the constant cutoff 1 (the definition half): T1 and T2 are maximal trees of R and their gauge-fixed amplitudes are -7 and -15, so they differ. R is not a combinatorial 3-manifold (the link of vertex 0 has Euler characteristic 1, not_isCombManifold_R), so the example lies outside the assumptions of Freidel-Louapre's tree independence, which is stated for triangulated 3-manifolds; it shows that the tree-exchange invariance of the gauge-change entry cannot be extended to all complexes. not_eqvGen_exchange_T1_T2: T1 and T2 are not related by a chain of triangle exchanges (otherwise the amplitudes would agree)."
+  since: unreleased
+- id: LL-0481
+  title: The first variation of the Einstein–Hilbert action on a measurable region of a manifold is the integral of minus the contraction of G + Λg with the perturbation, plus the divergence of the boundary vector field of the variation
+  area: Spacetime
+  file: Lightlike/Spacetime/EHManifold/RegionVariation.lean
+  decls: [Lightlike.eh_variation_region_manifold]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (4.66)", check: "arbitrary variations"}
+  review: kernel-checked
+  note: "For a metric g (nondegenerate, any signature) on a smooth manifold modelled on R^n (second countable, Hausdorff, C^2), a measurable region D, a symmetric tensor field h vanishing outside a compact set K and a real Λ, the derivative at t = 0 of the Einstein–Hilbert action of g + t h over D ∩ K (the integral of R − 2Λ for the metric g + t h with its volume measure) is ∫_{D ∩ K} (−⟨G + Λ g, h⟩_g + div_g V(h)) d vol_g, where G is the Einstein tensor, ⟨·,·⟩_g the contraction with g⁻¹ (ehIntegrand) and V(h) = palatiniField g h the boundary vector field of the variation, δ(√|g| R_{μν} g^{μν}) = √|g| div V (the Palatini identity of the library). When D contains K the divergence term vanishes (eh_first_variation_manifold_compact, which is the case without a boundary term); when D has a boundary and h vanishes on it, the boundary terms of the divergence are cancelled by the Gibbons–Hawking–York term (eh_ghy_variation_manifold, LL-0238). The proof cuts D ∩ K into disjoint measurable pieces inside small chart balls. Compared with Carroll, Lecture Notes on General Relativity, eq. (4.66) (read at that location: the variation with a total derivative term, and the cosmological term added); KIND representation: Carroll varies the inverse metric δg^{μν} on R^n-like regions, here the variation is of g by h with δg^{μν} = −g^{μα} g^{νβ} h_{αβ}, and the region is a measurable subset of a manifold."
+  since: unreleased
+
+- id: LL-0482
+  title: A metric is a stationary point of the Einstein–Hilbert action with a cosmological constant, for symmetric perturbations of compact support, exactly when it satisfies the vacuum Einstein equations with that constant, on every manifold
+  area: Spacetime
+  file: Lightlike/Spacetime/EHManifold/ManifoldStationary.lean
+  decls: [Lightlike.IsEHStationary, Lightlike.isEHStationary_iff]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (4.67)", check: "vacuum"}
+  review: kernel-checked
+  note: "For a metric g on a smooth manifold modelled on R^n (second countable, Hausdorff, C^2) and a real Λ, IsEHStationary g Λ says that for every smooth symmetric tensor field h and every compact K outside which h vanishes the first variation of the Einstein–Hilbert action of g over K is zero: variations with fixed boundary data, that is vanishing outside a compact set. It holds iff in every chart the symmetric part of R^{αβ} − ½ R g^{αβ} + Λ g^{αβ} vanishes at every point of the chart target (isEHStationary_iff), the vacuum Einstein equations with the cosmological constant, by eh_first_variation_manifold_compact and the fundamental lemma of the calculus of variations in a chart with test fields supported in coordinate balls. The statement is for the manifold M itself, with variations of compact support; a region with boundary is covered through its interior as a manifold, and the version with variations vanishing only on the boundary and the Gibbons–Hawking–York term is eh_ghy_variation_manifold (LL-0238). KIND representation: variations with compact support in the interior stand for variations with fixed boundary data; the boundary version with the Gibbons–Hawking–York term is eh_ghy_variation_manifold (LL-0238). The 'compact region with fixed boundary data' of the milestone is thus represented by compactly supported variations on a manifold without boundary. Compared with Carroll, eq. (4.67), p. 116 (read at that location: the equations of motion follow because the variation vanishes for arbitrary variations)."
+  since: unreleased
+- id: LL-0483
+  title: "A non-null gradient gives a unit normal: if φ is smooth near x₀ and its gradient at x₀ is not null, the level sets of φ near x₀ have a smooth unit normal field n = |g(∇φ, ∇φ)|^{-1/2} ∇φ with g(n, n) = ε = ±1, the sign of g(∇φ, ∇φ)"
+  area: Spacetime
+  file: Lightlike/Spacetime/HypersurfaceNormal.lean
+  decls: [Lightlike.Hypersurface.exists_isUnitNormal]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending for this statement: the Gauss and Codazzi relations of LL-0174, which take the unit normal as a hypothesis (IsUnitNormal), were compared with Gourgoulhon, 3+1 Formalism (gr-qc/0703035); the existence of the unit normal of a level set was not compared with a source for this entry. Hypotheses stated in the Lean theorem: g is a nondegenerate metric on a manifold M modelled on a normed space E (as in Hypersurface.lean), phi is smooth near x0, and every vector xi at x0 with g(xi, .) = d phi has g(xi, xi) not zero, so the hypersurface is non-null at x0. The conclusion IsUnitNormal g phi n eps x0 includes smoothness of n near x0, g(n, n) = eps with eps = 1 or -1, and the kernel of d phi being the g-orthogonal of n. No unproved hypothesis; this removes the assumption on the unit normal in LL-0174. The induced metric on a leaf is not an object of this development (leaves have no manifold structure); see the limits of LL-0174."
+  since: unreleased
+- id: LL-0484
+  title: "The cutoff gauge-fixed Ponzano-Regge amplitude is exactly invariant under a single 2-3 move, for a gauge set inside the edges and a maximal tree, whenever the new edge DE has cutoff at least cut AD plus cut AE"
+  area: PonzanoRegge
+  file: Lightlike/PonzanoRegge/GaugeFixed.lean
+  decls: [Lightlike.PR.amplitudeGF_move23, Lightlike.PR.amplitudeGF_move23_tree]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: freidel-louapre-2004, location: "Section III", check: "gauge"}
+      - {ref: barrett-naish-guzman-2009, location: "§2.2.1", check: "Pachner moves"}
+  review: kernel-checked
+  note: "Comparison pending: neither source was read at the cited location for this statement; the cited locations are those of the chain statement in LL-0027, of which this is the single-move form. Hypotheses (all in the statement): the move is a 2-3 move of the complex, the gauge set T lies in the edges of the complex (amplitudeGF_move23) or is a maximal tree (amplitudeGF_move23_tree, which also gives that T is a maximal tree of the new complex), and the cutoff of the new edge dominates cut AD + cut AE. It is an identity at finite cutoff, as in LL-0027."
+  since: unreleased
+- id: LL-0485
+  title: "The trace-class operators form a two-sided ideal of the bounded operators, are closed under sums, and a product of two Hilbert-Schmidt operators is trace class"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/TraceClass/GeneralProduct.lean
+  decls: [Lightlike.OperatorAlgebras.TraceClass.isTraceClass_mul_mul, Lightlike.OperatorAlgebras.TraceClass.isTraceClass_mul_of_isHilbertSchmidt, Lightlike.OperatorAlgebras.TraceClass.isTraceClass_add]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "A T B is trace class for trace-class T and bounded A, B; R S is trace class for Hilbert-Schmidt R, S; T + T' is trace class for trace-class T, T'. The textbook statements are in Reed-Simon, Methods of Modern Mathematical Physics I, Section VI.6, and Teschl, Mathematical Methods in Quantum Mechanics, Section 6.3; they were not read at a theorem for this entry, and the source registry verifies no location in them for these statements, so the entry has no registered source and the comparison is pending. Every theorem holds on an arbitrary complex Hilbert space (no separability). IsTraceClass T: the diagonal sum of the positive part |T| converges in a Hilbert basis; IsHilbertSchmidt: the square sum of the norms of T on a Hilbert basis converges."
+  since: unreleased
+- id: LL-0486
+  title: "The Hilbert-Schmidt operators are closed under sums and scalar multiples and form a two-sided ideal of the bounded operators"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/TraceClass/HilbertSchmidt.lean
+  decls: [Lightlike.OperatorAlgebras.TraceClass.HilbertSchmidt.isHilbertSchmidt_add, Lightlike.OperatorAlgebras.TraceClass.HilbertSchmidt.isHilbertSchmidt_smul, Lightlike.OperatorAlgebras.TraceClass.HilbertSchmidt.isHilbertSchmidt_mul_left, Lightlike.OperatorAlgebras.TraceClass.HilbertSchmidt.isHilbertSchmidt_mul_right]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "R + S, c S, U S and S U are Hilbert-Schmidt for Hilbert-Schmidt R, S, complex c and bounded U (the left and right ideal properties). The textbook statements are in Reed-Simon, Methods of Modern Mathematical Physics I, Section VI.6, and Teschl, Mathematical Methods in Quantum Mechanics, Section 6.3; they were not read at a theorem for this entry, and the source registry verifies no location in them for these statements, so the entry has no registered source and the comparison is pending. Every theorem holds on an arbitrary complex Hilbert space (no separability). IsTraceClass T: the diagonal sum of the positive part |T| converges in a Hilbert basis; IsHilbertSchmidt: the square sum of the norms of T on a Hilbert basis converges."
+  since: unreleased
+- id: LL-0487
+  title: "The trace-class operators are closed under scalar multiplication"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/TraceClass/Banach.lean
+  decls: [Lightlike.OperatorAlgebras.TraceClass.isTraceClass_smul]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "c T is trace class for trace-class T and complex c. The textbook statements are in Reed-Simon, Methods of Modern Mathematical Physics I, Section VI.6, and Teschl, Mathematical Methods in Quantum Mechanics, Section 6.3; they were not read at a theorem for this entry, and the source registry verifies no location in them for these statements, so the entry has no registered source and the comparison is pending. Every theorem holds on an arbitrary complex Hilbert space (no separability). IsTraceClass T: the diagonal sum of the positive part |T| converges in a Hilbert basis; IsHilbertSchmidt: the square sum of the norms of T on a Hilbert basis converges."
+  since: unreleased
+- id: LL-0488
+  title: "The two-sided ideal estimate for the trace norm - the trace norm of A T B is at most the norm of A times the trace norm of T times the norm of B"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/TraceClass/IdealNorm.lean
+  decls: [Lightlike.OperatorAlgebras.TraceClass.traceNorm_mul_mul_le]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "For trace-class T and bounded A, B with A T B trace class (the hypothesis hABT is the ideal property of the first entry), traceNorm (A T B) <= ||A|| traceNorm T ||B||. The textbook statements are in Reed-Simon, Methods of Modern Mathematical Physics I, Section VI.6, and Teschl, Mathematical Methods in Quantum Mechanics, Section 6.3; they were not read at a theorem for this entry, and the source registry verifies no location in them for these statements, so the entry has no registered source and the comparison is pending. Every theorem holds on an arbitrary complex Hilbert space (no separability). IsTraceClass T: the diagonal sum of the positive part |T| converges in a Hilbert basis; IsHilbertSchmidt: the square sum of the norms of T on a Hilbert basis converges."
+  since: unreleased
+- id: LL-0489
+  title: "The trace of a trace-class operator is the diagonal sum in every Hilbert basis"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/TraceClass/GeneralIdeal.lean
+  decls: [Lightlike.OperatorAlgebras.TraceClass.trace_eq_of_hilbertBasis]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "For trace-class T and every Hilbert basis b the trace of T is the sum over b of the inner products of b i with T (b i); the trace is therefore independent of the basis. No self-adjointness or positivity of T is assumed. The textbook statements are in Reed-Simon, Methods of Modern Mathematical Physics I, Section VI.6, and Teschl, Mathematical Methods in Quantum Mechanics, Section 6.3; they were not read at a theorem for this entry, and the source registry verifies no location in them for these statements, so the entry has no registered source and the comparison is pending. Every theorem holds on an arbitrary complex Hilbert space (no separability). IsTraceClass T: the diagonal sum of the positive part |T| converges in a Hilbert basis; IsHilbertSchmidt: the square sum of the norms of T on a Hilbert basis converges."
+  since: unreleased
+- id: LL-0490
+  title: "The trace is additive, homogeneous and cyclic - tr(T + T') = tr T + tr T', tr(c T) = c tr T, and tr(A T) = tr(T A) for bounded A and trace-class T"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/TraceClass/TraceAlgebra.lean
+  decls: [Lightlike.OperatorAlgebras.TraceClass.trace_add, Lightlike.OperatorAlgebras.TraceClass.trace_smul, Lightlike.OperatorAlgebras.TraceClass.trace_mul_cycle]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "The trace-class proofs for the sum, the scaled operator and the products A T, T A are the ones of the ideal entries. Cyclicity is stated across a bounded factor and a trace-class factor, which includes tr(AB) = tr(BA) for rank-one A, B. The textbook statements are in Reed-Simon, Methods of Modern Mathematical Physics I, Section VI.6, and Teschl, Mathematical Methods in Quantum Mechanics, Section 6.3; they were not read at a theorem for this entry, and the source registry verifies no location in them for these statements, so the entry has no registered source and the comparison is pending. Every theorem holds on an arbitrary complex Hilbert space (no separability). IsTraceClass T: the diagonal sum of the positive part |T| converges in a Hilbert basis; IsHilbertSchmidt: the square sum of the norms of T on a Hilbert basis converges."
+  since: unreleased
+- id: LL-0491
+  title: "The dual of the compact operators is the trace class - every continuous functional on the compact operators is the trace pairing with a unique trace-class operator of trace norm equal to the norm of the functional"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/CompactDualIso.lean
+  decls: [Lightlike.OperatorAlgebras.compact_dual_eq_traceClass_proof]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "K* is isometrically S1 (Reed-Simon I, Theorem VI.26, not read at the theorem). The functional gives a bounded sesquilinear form on rank-one operators, the Riesz theorem gives a bounded operator, and its polar decomposition shows it is trace class with the norm of the functional. The locked statement of the proof task is compact_dual_eq_traceClass (Tasks/OP/T_OP6_P1.lean). The source registry verifies no location in Reed-Simon for this statement, so the entry has no registered source and the comparison is pending."
+  since: unreleased
+- id: LL-0492
+  title: "The dual of the trace class is the bounded operators - every continuous functional on the trace-class operators is the trace pairing with a unique bounded operator of norm equal to the norm of the functional, and the trace pairing is an isometric isomorphism from the bounded operators onto the dual of the trace class"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/TraceClass/DualOfTraceClass.lean
+  decls: [Lightlike.OperatorAlgebras.TraceClass.TraceClass.tracePairingLinearIsometryEquiv, Lightlike.OperatorAlgebras.TraceClass.TraceClass.traceClass_dual_eq_bounded]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "(S1)* is isometrically B(H) (Reed-Simon I, Theorem VI.26, not read at the theorem), on every complex Hilbert space. The isometry is norm_tracePairing (TracePairingNorm.lean) and the surjectivity is tracePairing_surjective_concrete (TracePairingSurjectivity.lean, through the Riesz theorem and the density of the rank-one operators), combined here into a single statement. The source registry verifies no location for this statement, so the entry has no registered source and the comparison is pending."
+  since: unreleased
+- id: LL-0493
+  title: Karamata's Tauberian theorem for the Laplace transform of a positive measure with a regularly varying power law, ρ[0, t] ~ t^α ℓ(t) / Γ(α + 1)
+  area: Asymptotics
+  file: Lightlike/Asymptotics/Tauberian/Karamata.lean
+  decls: [Lightlike.Tauberian.karamata]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Let ρ be a measure on the real line, finite on compact sets, with no mass on (−∞, 0), such that ∫ e^{−βx} dρ is finite for every β > 0 and ∫ e^{−βx} dρ ~ β^{−α} ℓ(1/β) as β → 0⁺, with α > 0 and ℓ slowly varying (SlowlyVarying: eventually positive and ℓ(c t)/ℓ(t) → 1 for every c > 0). Then the counting function F(t) = ρ[0, t] satisfies F(t) / (t^α ℓ(t)) → 1 / Γ(α + 1) as t → ∞ (karamata). The proof scales the Laplace transform, evaluates polynomials in exp(−x/t) against the measure, extends to continuous functions by Weierstrass approximation with limit functional ∫ e^{−x} k(e^{−x}) x^{α−1}/Γ(α) dx, and sandwiches the indicator of [0, t] between two continuous ramp functions. Trust checks: Lebesgue measure on [0, ∞) (α = 1, ℓ = 1) returns 1 (karamata_lebesgue), and a signed density 1 + x cos x has a Laplace transform with the same asymptotics but a counting function that does not satisfy the conclusion, so positivity of the measure is necessary (not_tendsto_signedCount). This is Karamata's theorem as in Feller, An Introduction to Probability Theory and Its Applications, vol. II, Ch. XIII, and Bingham–Goldie–Teugels, Regular Variation, Thm 1.7.1; neither book is a source of the registry and neither was read at a location: the comparison is pending, so the entry cites no registry source. The converse direction (Abelian) is not proved here."
+  since: unreleased
+- id: LL-0494
+  title: "The coefficients of an asymptotic expansion of the heat trace as t tends to 0+ are unique: two expansions of the same function to order m agree in the first m coefficients, and two full expansions are equal"
+  area: GR
+  file: Lightlike/Geometry/HeatKernel/Unique.lean
+  decls: [Lightlike.HeatKernel.HasHeatExpansionTo.coeff_unique, Lightlike.HeatKernel.HasHeatExpansion.coeff_unique]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source was read at a cited location): this is the standard uniqueness of the coefficients of an asymptotic series in the scale t^(k - n/2). HasHeatExpansionTo n m K a says K t = sum over k < m of a k t^(k - n/2) up to O(t^(m - n/2)) as t tends to 0+, with the dimension n only fixing the powers; it is stated for functions of one real variable, with no operator or manifold."
+  since: unreleased
+- id: LL-0495
+  title: "The heat trace of the unit 2-sphere, sum (2l+1) exp(-t l(l+1)), has an expansion to order t^2 whose coefficients are the Seeley-DeWitt coefficients a0, a1, a2 for V = 4 pi, R = 2, |Ric|^2 = 2, |Riem|^2 = 4"
+  area: GR
+  file: Lightlike/Geometry/HeatKernel/Consistency.lean
+  decls: [Lightlike.HeatKernel.hasHeatExpansionTo_sphereTrace_geom]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending for a2: the t^1 coefficient 1/15 equals (4 pi)^(-1) V (5 R^2 - 2 |Ric|^2 + 2 |Riem|^2)/360 = (20 - 4 + 8)/360 = 1/15, which is the formula that heatCoeffs defines (a definition of formulas, not derived from an operator); no source was read at a cited location for the a2 formula. For a1 the comparison with Vassilevich (2003), eq. (4.27), is in LL-0296. An example on the 2-sphere only: no theorem for a general manifold."
+  since: unreleased
+- id: LL-0496
+  title: The Morse index is the number of negative eigenvalues of the Hessian - on a finite-dimensional real inner product space, the number of negative signs in the diagonal normal form of the Morse lemma, equivalently the largest dimension of a subspace on which the Hessian is negative definite, is the number of negative eigenvalues, with multiplicity, of the symmetric operator of the Hessian
+  area: Asymptotics
+  file: Lightlike/Asymptotics/MorseIndex.lean
+  decls: [Lightlike.Morse.sigNeg_hessQuad_eq_card_neg_eigenvalues, Lightlike.Morse.exists_symmetric_operator, Lightlike.Morse.morse_diagonal_eigenvalues]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: milnor-1963, location: "Chapter: PART I. NON-DEGENERATE SMOOTH FUNCTIONS ON A MANIFOLD|10.1515/9781400881802-002"}
+  review: kernel-checked
+  note: "Comparison pending (Milnor's index is defined as the maximal dimension of a subspace on which the Hessian is negative definite; the chapter is verified in the registry, the statement that this is the number of negative eigenvalues is standard linear algebra and was not read at a location). Setting: E a finite-dimensional real inner product space, B a continuous bilinear form (the Hessian) represented by a symmetric operator A (B x y = <x, A y>, which exists for every symmetric B, exists_symmetric_operator). sigNeg of the quadratic form v -> (1/2) B v v (Mathlib's signature, the largest dimension of a negative-definite subspace) equals the number of negative eigenvalues of A (Mathlib's eigenvalues of a symmetric operator, listed with multiplicity), proved by diagonalising A in an orthonormal eigenbasis and using Sylvester's law of inertia (sigNeg of a weighted sum of squares). The corollary morse_diagonal_eigenvalues restates the Morse lemma's number of negative signs w_i < 0 as this number of negative eigenvalues. A positive scalar factor (the 1/2 of the quadratic form) does not change the signs."
+  since: unreleased
+- id: LL-0497
+  title: The gauge-fixed Ooguri state sum does not depend on the gauge set when each gauge set forces every triangle, and equals 1 at every cutoff
+  area: SpinFoam
+  file: Lightlike/SpinFoam/GaugeIndependence.lean
+  decls: [Lightlike.SpinFoam.amplitudeGF_eq_of_forces, Lightlike.SpinFoam.amplitudeGF_eq_of_isGauge_forces]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: freidel-louapre-2004, location: "Section III"}
+      - {ref: ooguri-1992, location: "Abstract", check: "Alexander moves"}
+  review: kernel-checked
+  note: "For a 4-dimensional complex K and two sets of triangles T, T′ that each force every triangle of K (Forces K K.tris T: iterating the forcing rule, a tetrahedron with three triangles of spin 0 has its fourth triangle and its virtual spin at 0), the gauge-fixed Ooguri state sum amplitudeGF K T cut equals amplitudeGF K T′ cut′ for all cutoffs cut, cut′ (amplitudeGF_eq_of_forces): in a colouring of nonzero weight everything vanishes, so both state sums are 1 (amplitudeGF_eq_one_of_forces). The same holds for two gauge sets (IsGauge, the collapsibility rule) that force (amplitudeGF_eq_of_isGauge_forces). This is a sufficient criterion for independence of the gauge choice, not a theorem about all gauge sets: IsGauge does not imply Forces, and for gauge sets that do not force every triangle the finite-cutoff state sum can depend on the gauge set (numerical evidence, not a Lean statement: scripts/spinfoam/gauge_independence_check.py, five 4-simplices glued non-manifold-wise with four different values at cutoff 1/2, and scripts/spinfoam/gauge_manifold_check.py, a 4-sphere triangulation with 24 4-simplices with state sums 1 and 7/2 at cutoffs 1/2 and 1). The general case of non-forcing gauge sets is an open question and is not claimed. The gauge rule is this library's proposal for the 4D analogue of the maximal tree of Freidel–Louapre (Section III of their paper is the verified location of the 3D gauge fixing), not a construction from the literature, and the independence statement is not in the sources: comparison with a source is not applicable to the criterion and pending for the 3D analogy. Removal of the cutoff is not proven."
+  since: unreleased
+- id: LL-0498
+  title: "The induced metric of a level set, defined pointwise as the metric restricted to the kernel of the differential of the defining function, is nondegenerate wherever the normal is not null: a tangent vector of the level set that is g-orthogonal to every tangent vector of the level set is zero"
+  area: Spacetime
+  file: Lightlike/Spacetime/HypersurfaceInduced.lean
+  decls: [Lightlike.Hypersurface.inducedMetric_separating_of_isUnitNormal, Lightlike.Hypersurface.inducedMetric_separating_of_nonnull]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location for this entry. The leaves are not given a manifold structure: at a point p the tangent space of the level set of phi is levelTangent phi p, the kernel of d phi(p) inside the ambient tangent space, and inducedMetric g phi p is the bilinear form g_p restricted to it. Nondegeneracy: if n is a unit normal near p with g(n, n) = eps = 1 or -1 (IsUnitNormal), or if the gradient of phi at p is not null (the unit normal then exists by exists_isUnitNormal), then v in levelTangent with g_p(v, w) = 0 for all w in levelTangent is zero; the proof splits an arbitrary vector u into u - eps g(n, u) n, which is tangent, and a multiple of n. Non-vacuity: the sphere in a Euclidean space; wrong-model control: for the null hyperplane t = x of the Minkowski plane the tangent vector (1, 1) is orthogonal to all tangent vectors, so the induced metric is degenerate (Lightlike/Spacetime/HypersurfaceInducedTests.lean). Limits: the induced metric is a bilinear form at each point, not a metric on a manifold; whether the tangential connection D of Hypersurface.lean is its Levi-Civita connection is not stated. Hypotheses stated in the Lean theorems. No unproved hypothesis."
+  since: unreleased
+- id: LL-0499
+  title: "The principal series of SL(2,R) is strongly continuous: the action (g, f) ↦ π(g) f on SL(2,R) × L²(R) is jointly continuous"
+  area: Lorentz
+  file: Lightlike/Lorentz/SL2RPrincipal.lean
+  decls: [Lightlike.Lorentz.SL2R.continuous_principalSeries_action]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: knapp-1986, location: "Chapter: Chapter II. Representations of SU(2), SL(2, ℝ) and SL(2, ℂ)|10.1515/9781400883974-005"}
+  review: kernel-checked
+  note: "For the principal series of SL(2,R) in the induced picture on L²(R), (π(g) f)(x) = m(b x + d) f((a x + c)/(b x + d)) for g = [[a, b], [c, d]] with the multiplier m(t) = |t|^{iν − 1} sgn(t)^ε (parity ε ∈ ℤ, parameter ν ∈ ℝ; the usual form of Knapp uses g⁻¹ in place of gᵀ and is equivalent through an inner automorphism and ν ↦ −ν), every π(g) is unitary (LL-0275) and the map (g, f) ↦ π(g) f is jointly continuous on SL(2,R) × L²(R) (continuous_principalSeries_action): continuity in g for each f, from continuity on a dense set of compactly supported functions and the uniform norm bound, and then joint continuity from the norm bound. Together with LL-0275 this is a strongly continuous unitary representation. The comparison with Knapp (1986) is pending: the book was not read at the cited location (chapter level only). Kitaev, arXiv:1711.08169, Section 2, lists the unitary irreducible representations; irreducibility is not proven."
+  since: unreleased
+
+- id: LL-0500
+  title: "The holomorphic subspace of the weighted L² space of the upper half plane, the space of the discrete series D_n^+ of SL(2,R), is nonzero for n ≥ 2"
+  area: Lorentz
+  file: Lightlike/Lorentz/SL2RBergman.lean
+  decls: [Lightlike.Lorentz.SL2R.holoSubmodule_ne_bot]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: knapp-1986, location: "Chapter: Chapter II. Representations of SU(2), SL(2, ℝ) and SL(2, ℂ)|10.1515/9781400883974-005"}
+  review: kernel-checked
+  note: "For the weight n ≥ 2, the closed subspace of the weighted L² space L²(ℍ, μ_n) of classes with a holomorphic representative (holoSubmodule n, the weighted Bergman space) is not zero: it contains the class of the lowest vector z ↦ (z + i)^{−n} (holoSubmodule_ne_bot, lowestClass_mem, lowestClass_ne_zero), which is nonzero because it is nonzero at the point i and the measure charges every neighbourhood. This is what makes the discrete series D_n^+ (LL-0276) a nonzero unitary representation, not the trivial representation on the zero space. Irreducibility of D_n^+ is not proven, and neither is the negative series D_n^-. The comparison with Knapp (1986) is pending: the book was not read at the cited location (chapter level)."
+  since: unreleased
+- id: LL-0501
+  title: "Minkowski space is flat: in its chart the constant metric eta is a coordinate metric on all of R^n with vanishing Riemann tensor"
+  area: Spacetime
+  file: Lightlike/Spacetime/Curvature.lean
+  decls: [Lightlike.minkowski_flat]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source was read at a cited location). Flatness is the vanishing of the coordinate Riemann tensor of the constant metric eta on every point of R^n (IsFlatOn on Set.univ), for every dimension n."
+  since: unreleased
+- id: LL-0502
+  title: "The standard basis of R^n is a Lorentz frame for the Minkowski form eta, in every dimension"
+  area: Spacetime
+  file: Lightlike/Spacetime/Minkowski.lean
+  decls: [Lightlike.minkowskiForm_isLorentzian]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source was read at a cited location). The statement is IsLorentzianForm n (minkowskiForm n): the basis Pi.basisFun satisfies B (e i) (e j) = eta n i j (IsLorentzianForm n B), the definition of a Lorentzian form of dimension n."
+  since: unreleased
+- id: LL-0503
+  title: "The lowered coordinate Riemann tensor is antisymmetric in its last index pair, and satisfies the lowered first Bianchi identity R_{rho sigma mu nu} + R_{rho mu nu sigma} + R_{rho nu sigma mu} = 0 on the domain of a coordinate metric"
+  area: Spacetime
+  file: Lightlike/Spacetime/RiemannSymmetry.lean
+  decls: [Lightlike.riemannLower_antisymm_last, Lightlike.IsCoordMetric.bianchi_first_lower]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source was read at a cited location; the unlowered identity and the pair symmetry are LL-0001, whose Carroll equations (3.79) and (3.80) these lowered forms accompany). The antisymmetry is a formula identity valid for every metric function and every point; the Bianchi identity needs IsCoordMetric (a smooth symmetric metric, invertible on the open set U) and a point of its domain U."
+  since: unreleased
+- id: LL-0504
+  title: "The vacuum Einstein equations with a cosmological constant are chart-independent: if a metric solves them on U, its pullback under a chart change solves them on the chart domain, for every Lambda"
+  area: Spacetime
+  file: Lightlike/Spacetime/ChartChange.lean
+  decls: [Lightlike.isVacuumSolution_pullback]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source was read at a cited location). Follows from the tensor transformation of the Einstein tensor (LL-0002 and einsteinTensor_pullback) and of the metric; IsChartChange is a smooth map from the open set V into U with invertible Jacobian determinant on V, and the equation is Einstein tensor plus Lambda times the metric equals zero in the coordinate formulation."
+  since: unreleased
+- id: LL-0505
+  title: A Spin(4) representation (n/2, m/2) with n + m > 0 satisfies the weak simplicity constraint of the Barrett-Crane model, Y^H (K - 0 L) Y = 0 on the image of the highest-spin embedding, exactly when n = m
+  area: SpinFoam
+  file: Lightlike/SpinFoam/BarrettCrane.lean
+  decls: [Lightlike.SpinFoam.BC.simple_iff]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: barrett-crane-1998, location: "Section IV", check: "New Model"}
+  review: kernel-checked
+  note: "Comparison pending for this statement (Barrett and Crane, Section IV, define the model with simple representations (j, j); the weak simplicity constraint as the vanishing of Y^H (K - gamma L) Y at gamma = 0 on the image of the highest-spin embedding is the EPRL form of the constraint, taken from the library's Spin4/EPRL.lean, here specialised to gamma = 0). Doubled spins n, m; the constraint is stated for every traceless X in sl(2, C) in the form of the library, eprlMap n m is the embedding of the highest-spin representation and simplicityOp 0 n m X the constraint operator. The statement is the case gamma = 0 of weak_simplicity_iff (the previous simplicity entry): the constraint holds iff n - m = gamma (n + m), which for gamma = 0 is n = m. Hypothesis 0 < n + m. A non-simple representation, spins (1/2, 0), violates it (the test not_simple_half_zero), the simple one, spins (1/2, 1/2), satisfies it (simple_half_half)."
+  since: unreleased
+- id: LL-0506
+  title: "No positive definite form on smooth functions makes the generators E, F, H of the principal-series model of SL(2,R) skew when |τ| ≥ 1, τ ≠ −1: infinitesimal statement outside the complementary series"
+  area: Lorentz
+  file: Lightlike/Lorentz/SL2RPlancherel/NoInvariantFormBoundary.lean
+  decls: [Lightlike.Lorentz.SL2RPlancherel.eq_zero_of_casimir_zero, Lightlike.Lorentz.SL2RPlancherel.no_invariant_form_smooth_boundary]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "INFINITESIMAL (E, F, H on smooth vectors), NOT GROUP-LEVEL. For the principal-series model of SL(2,R) with multiplier |t|^{-τ-1}, ν = iτ, τ real, on smooth functions on R with the derived operators E = (iν − 1) x − x² d/dx, F = d/dx, H = (1 − iν) + 2x d/dx: if a sesquilinear form B has E, F, H skew, then B is not positive definite when τ = 1 (no_invariant_form_smooth_boundary, here) and when |τ| > 1 (no_invariant_form and no_invariant_form_smooth in NoInvariantForm.lean; they are the same argument with Casimir eigenvalue (τ² − 1)/4 > 0 on the K-fixed vector (1 + x²)^{-(τ+1)/2}, where W = E − F kills the vector, so B(v, Ωv) = −B(Hv, Hv)/4 − B(Ev, Ev) ≤ 0). At τ = 1 the Casimir eigenvalue is 0, so a positive definite skew form would force H v = 0, but (H v)(0) = 2 (eq_zero_of_casimir_zero). The complementary series is |τ| < 1 (s = (1 + τ)/2 in (0, 1)); this is the range where the Casimir argument gives no obstruction. The negative parameter is not a separate non-unitary case: τ ↦ −τ with |τ| < 1 gives the equivalent unitary complementary series, so the milestone hint 'σ < 0' needs no statement. Open limitation: τ = −1 is not decided by this argument (the constant function is an invariant vector there, E v = F v = H v = 0, so the K-fixed vector gives no contradiction); it is not claimed. The passage from a unitary group representation to skewness of E, F, H needs continuity of the form in a topology on the smooth vectors, which an abstract sesquilinear form does not have, so the statement is infinitesimal (difference of kind weaker from 'the representation is non-unitary'). The comparison with a source is not made: this is the standard Casimir sign argument, and no source location was read."
+  since: unreleased
+- id: LL-0507
+  title: "Non-vacuity of the Parke-Taylor formula for the Feynman-rule amplitudes at six gluons: the maximal closed class Gmax (all the reductions of the induction satisfy their hypotheses) is closed under the reductions, and an explicit rational six-gluon point lies in Gmax 3 j for every position j = 1, ..., 5 of the second negative gluon, so that the theorem trueAmp_eq_ptN applies to it"
+  area: GR
+  file: Lightlike/GR/TestsMHVSix.lean
+  decls: [Lightlike.SpinorHelicity.Tests.gmax_six]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source states the genericity conditions of the Feynman-rule induction; the Parke-Taylor formula is compared in the entry of the Parke-Taylor induction). The class Gmax (MHVMax.lean, closedClass_Gmax) unfolds the far step and the cyclic step along the reductions of the induction down to three gluons, so it is closed by construction; the point of TestsMHVSix.lean (found by a rational search, scripts not part of the library) satisfies every hypothesis of every reduction: all brackets and propagators of the shifted channels are checked by norm_num through the bracket formulas of MHVBrackets.lean (mdot_range_self, mdot_range_ref, zpole_eq_sums), with the pole spinors given explicitly. With the four-gluon entry (four gluons, all generic kinematics) and the five-gluon entry (five gluons) this removes the caveat that the class is empty beyond three gluons; for seven gluons the same method gives an explicit point in Gmax 4 j for j = 1, ..., 6 (gmax_seven in TestsMHVSeven.lean, not a catalogue entry); for eight or more gluons that the class is nonempty is not proved."
+  since: unreleased
+- id: LL-0508
+  title: "The Parke-Taylor formula for four gluons from the Feynman rules on all generic kinematics: for momentum-conserving four-gluon kinematics with all angle and square brackets nonzero and generic references, the colour-ordered Berends-Giele amplitude with the negative gluons at 0 and j (any position) equals <0j>^4/(<01><12><23><30>)"
+  area: GR
+  file: Lightlike/GR/MHVFour.lean
+  decls: [Lightlike.SpinorHelicity.trueAmp_four, Lightlike.SpinorHelicity.Gen4_closed]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: elvang-huang-2013, location: "eq. (3.11)", check: "background field"}
+      - {ref: elvang-huang-2013, location: "eq. (2.82)", check: "Cyclic"}
+  review: kernel-checked
+  note: "Compared with Elvang-Huang (2.80), (3.11) and the cyclic property p. 25 (read), as in the entry of the Parke-Taylor induction. For four gluons the genericity of that induction is the nonvanishing of the brackets: the class of kinematics with momentum conservation, all angle and square brackets nonzero and generic references is closed under the reductions of the induction (Gen4_closed, trueKin_four), so the Berends-Giele amplitude is the Parke-Taylor amplitude on this open set (trueAmp_four), with an explicit numeric point in TestsMHVInduction.lean (non-vacuity). Nothing is claimed for kinematics outside the class."
+  since: unreleased
+- id: LL-0509
+  title: "Non-vacuity of the Parke-Taylor formula for the Feynman-rule amplitudes at five gluons: the class Gen5 of generic five-gluon kinematics (bracket conditions, three-particle propagators, distinct poles, pole spinors of the channel [1,3]) is closed under the reductions of the induction, and an explicit rational five-gluon point lies in it for every position of the second negative gluon"
+  area: GR
+  file: Lightlike/GR/MHVFive.lean
+  decls: [Lightlike.SpinorHelicity.Gen5_closed, Lightlike.SpinorHelicity.trueKin_five]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source states the genericity conditions of the Feynman-rule induction; the Parke-Taylor formula is compared in the entry of the Parke-Taylor induction). Gen5_closed shows that that induction applies to the class Gen5, and trueKin_five that its members satisfy the hypotheses of the BCFW recursion (momentum conservation, nonzero brackets, nonvanishing propagators P_012^2, P_123^2 and P_123 . r, distinct poles); the explicit point is in TestsMHVFive.lean. For six gluons the maximal closed class is nonempty (the six-gluon entry); for seven gluons too (gmax_seven, TestsMHVSeven.lean); for eight or more gluons that the class is nonempty is not proved."
+  since: unreleased
+- id: LL-0510
+  title: "A quasi-free state of the Weyl algebra of a finite-dimensional symplectic space is pure if and only if there is a compatible complex structure (J^2 = -1, eta J-invariant and positive definite, omega(x,y) = -eta(x,Jy)): if there is none, the state is a proper convex combination of two different states (the Gaussian-weighted splitting of the quasi-free kernel)"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/QuasiFreeState/NecessityMain.lean
+  decls: [Lightlike.OperatorAlgebras.QuasiFreeState.exists_compatible_of_pure, Lightlike.OperatorAlgebras.QuasiFreeState.isPureState_iff_compatible]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: gerard-2019, location: "Proposition 4.9.1", check: "pure iff"}
+      - {ref: yamagami-2008, location: "Proposition 2.7", check: "pure state"}
+  review: kernel-checked
+  note: "Converse of LL-0334, so with it the iff of Gerard Proposition 4.9.1 and of Yamagami (phi_S pure iff S is extremal, i.e. a projection). Proof route (not the source's, which cites the Fock-representation theory): with the eta-Riesz operator T = eta^-1 omega (eta-skew, norm <= 1), either T^2 = -1, which is a compatible J, or a spectral vector of -T^2 with eigenvalue mu < 1 gives that eta - (1 - mu) rho^2 is still a covariance (key_ineq, exists_sub_covariance); the Gaussian family kappa_h(x) = exp(-eta'(x,x)/4) int h(t) e^{it rho(x)} d gamma(t) has a positive semidefinite kernel dominated by 2 qfKer, hence a state (exists_state_of_kernel); two such states with weights h and 2 - h average to the quasi-free state, and they differ (Measure.ext_of_charFun), so it is not extremal. A state is pure here when it is an extreme point of the states. WEAKER: finite dimension only; the degenerate omega is not treated separately (the sufficiency has the retract form, LL-0334)."
+  since: unreleased
+- id: LL-0511
+  title: "The modular state of a faithful state is KMS and its flow is the modular dynamics: for a positive definite density matrix ρ of a matrix algebra, ρ is KMS at β = 1 for the flow of H = −log ρ, and that flow at real time t is A ↦ e^{it log ρ} A e^{−it log ρ}"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/ModularKMS/ModularCapstone.lean
+  decls: [Lightlike.OperatorAlgebras.isKMS_modular_one, Lightlike.OperatorAlgebras.modular_flow_eq_modGroup]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: jaksic-ogata-pautrat-pillet-2012, location: "Section 2.12.1, p. 63"}
+  review: kernel-checked
+  note: "Comparison pending for these two statements: the location is the one of LL-0272, where the same dynamics and the beta = -1 form (generator log rho) were compared with Jaksic-Ogata-Pautrat-Pillet, arXiv:1106.3786, Section 2.12.1, pp. 62-63. Here the sign is the other convention: the generator is H = -log rho and beta = 1 (the Gibbs state e^{-H}/tr e^{-H} is rho itself), which is the same statement as LL-0272 after beta -> -beta and H -> -H; the comparison of this form with the source was not made. The second theorem shows the two flows agree (flow (-log rho) t = modGroup t). Hypothesis: rho is positive definite (PosDef), stated in the Lean theorems; the trace-one normalisation is not needed. No unproved hypothesis."
+  since: unreleased
+- id: LL-0512
+  title: "The finite modular theory of a faithful state: the modular operator Δ_ρ ξ = ρ ξ ρ⁻¹ is the square of Δ^{1/2}, Tomita's relation J Δ^{1/2}(A ρ^{1/2}) = A* ρ^{1/2} holds, and Δ^{it} implements the modular dynamics, Δ^{it}(A Δ^{−it} ξ) = ς^t(A) ξ"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/FiniteModular.lean
+  decls: [Lightlike.OperatorAlgebras.modOpSqrt_modOpSqrt, Lightlike.OperatorAlgebras.modConj_modOp_sqrt, Lightlike.OperatorAlgebras.modOpPow_mul_modOpPow_neg]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: jaksic-ogata-pautrat-pillet-2012, location: "Section 2.12.1, p. 63"}
+  review: kernel-checked
+  note: "Comparison pending for these three statements: the Lean docstrings cite the same source and page (Section 2.12.1, p. 63, eq. (2.34) for Tomita's relation) but the formulas were not compared one by one with the source for this entry (LL-0272 records a comparison of the dynamics and the KMS property only). The space is the Hilbert-Schmidt space of matrices with J xi = xi^dagger and xi_rho = rho^{1/2}. Hypothesis: rho positive definite, stated in the Lean theorems. No unproved hypothesis."
+  since: unreleased
+- id: LL-0513
+  title: "The Tomita operator S(y) = ρ^{−1/2} y† ρ^{1/2} of a faithful state of a matrix algebra satisfies S(a ρ^{1/2}) = a† ρ^{1/2}, and Δ = S†S for the Hilbert-Schmidt inner product: Tr((S y)† S z) = Tr(z† Δ y)"
+  area: OperatorAlgebras
+  file: Lightlike/OperatorAlgebras/ModularFinite.lean
+  decls: [Lightlike.OperatorAlgebras.tomita_apply, Lightlike.OperatorAlgebras.inner_tomita]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: the Lean docstrings cite Witten, (4.4) and (4.11), but Witten (2018) is registered only at section 3, so no registered location is cited, and the formulas were not compared with the source for this entry. The state is given by a Hermitian H with rho = e^{-H} (not assumed to have trace one). Hypothesis: H Hermitian, stated in the Lean theorems. No unproved hypothesis."
+  since: unreleased
+- id: LL-0514
+  title: "The geometric realisation of a finite simplicial complex is geometric: the vertex basis vectors are affinely independent, so the realised simplices meet in common faces"
+  area: PL
+  file: Lightlike/PL/Realisation.lean
+  decls: [Lightlike.PL.SComplex.isGeom_real]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location for this statement. The realisation of a complex on the vertex set V is the complex in the free real vector space on V whose simplices are the convex hulls of the basis vectors of its faces; IsGeom is the library's predicate for a geometric complex (affinely independent vertex sets). Proved with no hypotheses."
+  since: unreleased
+- id: LL-0515
+  title: "A stellar subdivision of a simplicial complex at a face A with a new vertex a is PL homeomorphic to the complex"
+  area: PL
+  file: Lightlike/PL/StellarHomeo.lean
+  decls: [Lightlike.PL.SComplex.PLHomeomorphic.starAt]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: the Lean docstring cites Lickorish 1999, section 3, but that location is not among the verified source locations and was not read for this entry. The PL homeomorphism is the linear map x ↦ x − x_a (e_a − b_A) from the realisation of the subdivision onto that of the complex (b_A the barycentre of A), proved bijective and PL on each simplex. Hypotheses: A is a nonempty face of K and a is a new vertex, as in the Lean statement; no unproved hypothesis."
+  since: unreleased
+- id: LL-0516
+  title: "Stellar equivalent simplicial complexes are PL homeomorphic (the easy direction of Newman's theorem)"
+  area: PL
+  file: Lightlike/PL/StellarHomeo.lean
+  decls: [Lightlike.PL.SComplex.PLHomeomorphic.of_stellarEquivIn, Lightlike.PL.SComplex.PLHomeomorphic.of_stellarEquiv]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: lickorish-1999, location: "Theorem 4.5"}
+  review: kernel-checked
+  note: "Comparison pending: Theorem 4.5 is the location the Lean docstring cites for the easy direction; it was not read for this entry. Proved by induction on the stellar equivalence from the subdivision statement (LL-0515), for equivalence inside a fixed vertex type (of_stellarEquivIn) and, after relabelling the vertices into a common type, for StellarEquiv (of_stellarEquiv). The converse is Newman's theorem LL-0064. No unproved hypothesis."
+  since: unreleased
+- id: LL-0517
+  title: "Links, stars and cones of finite simplicial complexes: the closed star of a face is the join of the face with its link, st(σ) = σ * lk(σ); the link of the apex of a cone on K is K; and lk(τ, lk(σ, K)) = lk(σ ∪ τ, K) for disjoint faces σ, τ"
+  area: PL
+  file: Lightlike/PL/Complex.lean
+  decls: [Lightlike.PL.SComplex.star_eq_join, Lightlike.PL.SComplex.link_cone_apex, Lightlike.PL.SComplex.link_link]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location for these statements; they are the standard identities for links, stars and cones of abstract simplicial complexes (finite sets of finite sets of vertices closed under subsets). Hypotheses stated in the Lean theorems: the apex of the cone is not a vertex of K; the faces sigma and tau are disjoint. No unproved hypothesis."
+  since: unreleased
+- id: LL-0518
+  title: "Welding undoes a stellar subdivision and subdividing undoes a weld: for a nonempty face A of K and a new vertex a, welding the stellar subdivision (A, a) K at (a, A) gives K back; conversely, if the link of a is the join of the boundary of A with a complex L disjoint from A, and A is not a face, subdividing the weld gives K back"
+  area: PL
+  file: Lightlike/PL/Stellar.lean
+  decls: [Lightlike.PL.SComplex.weld_starAt, Lightlike.PL.SComplex.starAt_weld]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location (the module docstring cites Lickorish 1999, section 1, for the stellar subdivision, which is not a registered source location). The two directions make the weld the inverse of the stellar subdivision, so that stellar equivalence is symmetric as an equivalence relation generated by subdivisions. Hypotheses stated in the Lean theorems (A a face, nonempty, a a new vertex; for the second statement the link, disjointness and non-face conditions above). No unproved hypothesis."
+  since: unreleased
+- id: LL-0519
+  title: "A bistellar move κ(A, B) is undone by κ(B, A), and every bistellar move is a stellar equivalence"
+  area: PL
+  file: Lightlike/PL/Bistellar.lean
+  decls: [Lightlike.PL.SComplex.bistellar_bistellar, Lightlike.PL.SComplex.StellarEquiv.bistellar]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: lickorish-1999, location: "Theorem 5.9"}
+  review: kernel-checked
+  note: "Comparison pending: Theorem 5.9 states that closed combinatorial n-manifolds are PL homeomorphic iff bistellar equivalent; the statements here are two ingredients (involutivity of the bistellar move, and the easy half 'bistellar moves are stellar equivalences', whose proof composes two stellar subdivisions through a new vertex taken from an unlimited supply, so no hypothesis on the vertex type is needed after relabelling), and the theorem itself is LL-0065 / LL-0023. The comparison with the source was not made for this entry. Hypothesis: IsBistellar K A B for the move, as in the Lean theorems."
+  since: unreleased
+- id: LL-0520
+  title: "A PL n-sphere is a closed combinatorial n-manifold, and in a closed combinatorial n-manifold the link of every nonempty face σ is stellar equivalent to the boundary of a simplex on n + 2 − #σ vertices"
+  area: PL
+  file: Lightlike/PL/Links.lean
+  decls: [Lightlike.PL.SComplex.IsPLSphere.isClosedCombManifold, Lightlike.PL.SComplex.IsClosedCombManifold.link_face]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: lickorish-1999, location: "Definition 2.2"}
+  review: kernel-checked
+  note: "Comparison pending: Definition 2.2 gives the combinatorial n-ball and n-sphere as complexes PL homeomorphic to the n-simplex or its boundary; in this library IsPLSphere is the stellar-equivalence form (stellar equivalent to the boundary of an (n+1)-simplex), which agrees with the PL form by Newman's theorem (LL-0064), and IsClosedCombManifold requires every vertex link to be a PL sphere. The comparison of these definitions with the source was not made for this entry. Hypotheses stated in the Lean theorems. No unproved hypothesis."
+  since: unreleased
+- id: LL-0521
+  title: "Forward chains of 2-3 and 1-4 moves only enlarge the set of regularised Ponzano–Regge amplitude values: ampValues K ⊆ ampValues K' when K' is obtained from K by forward moves, and the complexes obtained by a 3-2 move or a 4-1 move have a subset of the values"
+  area: PonzanoRegge
+  file: Lightlike/PonzanoRegge/TriangulationIndependence/Values.lean
+  decls: [Lightlike.PR.ampValues_mono_forward, Lightlike.PR.ampValues_move32_subset, Lightlike.PR.ampValues_move41_subset]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location for these statements; they are statements about this library's regularised amplitude. ampValues K is the set of values of the gauge-fixed amplitude amplitudeGF K T cut over maximal trees T of K and cut-offs cut. A forward move (2-3 or 1-4) lets every gauge-fixed amplitude of K be written as a gauge-fixed amplitude of the new complex at a new maximal tree and cut-off (exists_amplitudeGF_eq), so the value sets grow; the 3-2 and 4-1 statements follow because those moves are the inverses of forward moves. The values are real numbers (the amplitude is real-valued here), and the cut-off is a regulator, so this says nothing about the cut-off removed. No unproved hypothesis."
+  since: unreleased
+- id: LL-0522
+  title: "Triangulation independence of the regularised Ponzano–Regge amplitude, given Pachner's theorem in its forward form: if two triangulations are related by Same and Same-related complexes have a common forward descendant under Pachner moves, then every gauge-fixed amplitude of each is a gauge-fixed amplitude, at some maximal tree and cut-off, of one common complex"
+  area: PonzanoRegge
+  file: Lightlike/PonzanoRegge/TriangulationIndependence/Main.lean
+  decls: [Lightlike.PR.triangulation_independence_of_pachner]
+  status: conditional
+  hypotheses: [Lightlike.PR.PachnerForwardHyp]
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Conditional on the Lean proposition PachnerForwardHyp Same (Same-related complexes have a common forward descendant under the 2-3 and 1-4 moves), which is not proved by this theorem or assumed true; the stellar form of Pachner's theorem for Complex3 is the theorem pachner3 (PL/PachnerMoves.lean, catalogued with milestone PL2), and whether it yields this forward form was not established here. Comparison pending: no source was read at a cited location. The cut-off is a regulator, so this is the form in which independence holds before the cut-off is removed; it is not the statement that the cut-off amplitude is a triangulation invariant."
+  since: unreleased
+- id: LL-0523
+  title: "The r = 3 Turaev–Viro state sum is the same along any chain of 3D moves: it is unchanged by the 3-2 move and by the 4-1 move (the inverses of the 2-3 and 1-4 moves), hence along any chain of moves on closed combinatorial 3-manifolds"
+  area: TuraevViro
+  file: Lightlike/TuraevViro/PLInvariance.lean
+  decls: [Lightlike.TV.turaevViro3_move32, Lightlike.TV.turaevViro3_move41, Lightlike.TV.turaevViro3_moveEquiv3]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: turaev-1994, location: "Chapter: Chapter VII. Simplicial state sums on 3-manifolds|10.1515/9783110883275-008"}
+  review: kernel-checked
+  note: "Comparison pending: the location is the one of LL-0289 and LL-0031 (Turaev, chapter VII on simplicial state sums), and the comparison of these three statements with the source was not made for this entry. Proof: the 3-2 and 4-1 moves are the inverses of the 2-3 and 1-4 moves (move23_move32, move14_move41), for which the state sum is invariant at r = 3 (turaevViro3_move23 and turaevViro3_move14, unconditionally at r = 3); the chain statement is induction on the equivalence relation generated by the four moves (MoveEquiv3). They are the steps of the proof of LL-0289. No unproved hypothesis."
+  since: unreleased
+- id: LL-0524
+  title: For a locally smooth connection on a manifold modelled with corners on a finite-dimensional space, the curvature is ∇_X ∇_Y Z − ∇_Y ∇_X Z − ∇_{[X,Y]} Z for any fields smooth near the point, without a Hausdorff hypothesis
+  area: Spacetime
+  file: Lightlike/Spacetime/Corners/CurvatureSymmetries.lean
+  decls: [Lightlike.curvatureAt_apply_eventuallyW]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "Chapter 3", check: "curvature"}
+  review: kernel-checked
+  note: "The statement of LL-0412 (curvatureAt_apply_proved) for any ModelWithCorners (boundary and corners allowed), a locally smooth connection (LocallySmoothConnectionW) and [IsManifold I 2 M], with no Hausdorff hypothesis: the curvature curvatureAt x of the values of fields X, Y, Z that are smooth near x (SmoothNearW) is cov (cov Z ∘ Y) x (X x) − cov (cov Z ∘ X) x (Y x) − cov Z x ([X,Y] x), so it does not depend on the extensions. It is the Corners layer used by the Bianchi and Ricci statements below. Carroll defines the curvature through these fields in Chapter 3 (the chapter is a verified location; equations (3.67), (3.71) were read in the docstring of ChartCurvature.lean). KIND representation: the statement is intrinsic, Carroll's are coordinate expressions."
+  since: unreleased
+
+- id: LL-0525
+  title: For any non-degenerate metric on a manifold modelled with corners, the curvature of a Levi-Civita connection satisfies the first Bianchi identity and the pair symmetry, and the Ricci tensor is symmetric, without a Hausdorff hypothesis
+  area: Spacetime
+  file: Lightlike/Spacetime/Corners/CurvatureSymmetries.lean
+  decls: [Lightlike.bianchi_first_provedW, Lightlike.riemannLowerAt_pair_symmW, Lightlike.ricciAt_symm_provedW]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (3.91)", check: "Ricci"}
+  review: kernel-checked
+  note: "For a locally smooth connection cov on a manifold modelled with corners on a finite-dimensional space and [IsManifold I 2 M]: if the torsion is zero, R(X,Y)Z + R(Y,Z)X + R(Z,X)Y = 0 (bianchi_first_provedW); if moreover cov is compatible with a non-degenerate metric g of any signature, g(R(X,Y)Z, W) = g(R(Z,W)X, Y) (riemannLowerAt_pair_symmW; the antisymmetries in each pair are riemannLowerAt_antisymm_lastW and curvatureAt_antisymm_leftW) and the Ricci tensor Ric(Y,Z) = tr(X ↦ R(X,Y)Z) is symmetric (ricciAt_symm_provedW). It is LL-0230 for any ModelWithCorners, with torsion freeness and metric compatibility as two hypotheses instead of IsLeviCivita, and with no Hausdorff hypothesis. Carroll states these in coordinates, eqs. (3.78)-(3.81) and (3.91) (verified locations in the registry: (3.79), (3.80), (3.91)); the statements here are the intrinsic ones (KIND representation). The comparison with Wald, General Relativity, Section 3.2, is pending: the book was not read at the cited location."
+  since: unreleased
+
+- id: LL-0526
+  title: The second Bianchi identity for a locally smooth torsion-free connection on a manifold modelled with corners, without a Hausdorff hypothesis
+  area: Spacetime
+  file: Lightlike/Spacetime/Corners/BianchiSecond.lean
+  decls: [Lightlike.bianchi_second_provedW]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (3.88)", check: "Bianchi"}
+  review: kernel-checked
+  note: "For a locally smooth torsion-free connection on a manifold modelled with corners on a finite-dimensional space ([IsManifold I 2 M], boundary and corners allowed, no Hausdorff hypothesis), (∇_X R)(Y,Z)W + (∇_Y R)(Z,X)W + (∇_Z R)(X,Y)W = 0 with covDerivCurvatureAt of Connection.lean (bianchi_second_provedW). It is LL-0231 for any ModelWithCorners with only cov.torsion = 0 as hypothesis (the task statement is for the Levi-Civita connection; that is a special case). Carroll's (3.88), read at that location in the registry, is the coordinate form; KIND representation: the statement is intrinsic."
+  since: unreleased
+
+- id: LL-0527
+  title: The covariant derivative of the Levi-Civita connection of a non-degenerate metric is smooth on a manifold modelled with corners on R^n, without a Hausdorff hypothesis
+  area: Spacetime
+  file: Lightlike/Spacetime/Corners/LeviCivitaSmooth.lean
+  decls: [Lightlike.contMDiffAt_leviCivitaW]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "For a manifold modelled with corners on Fin n → R (any ModelWithCorners, derivatives in the chart within the range of the model), C², and a non-degenerate metric g, the section ∇σ of the bundle of endomorphisms of the tangent bundle is C^∞ at p for every vector field σ that is smooth near p (contMDiffAt_leviCivitaW); this is the local smoothness that the Corners layer uses (LocallySmoothConnectionW of leviCivita g). The proof reads ∇σ in the trivialization at p as D σ̂(∂_a) + Γ̂(σ̂, a), with Γ̂ the Christoffel symbol of the smooth coordinate metric. This is a regularity statement of the construction, not a statement of a source; no source location applies. Limits: the model space is Fin n → R, not an arbitrary finite-dimensional space (the generalisation to any finite-dimensional model space is open, see GE11 m4 and m5)."
   since: unreleased

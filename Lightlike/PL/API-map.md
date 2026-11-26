@@ -93,14 +93,16 @@ separates [60]. An arc does not separate the plane [61]. Every component of the 
 curve has the whole curve as its frontier [62]. The index of a loop about a point, and the Theta Lemma
 [63]. The index of a loop is constant along a path avoiding it, and zero for a loop in a half plane
 [64]. Lemma 9.14 of the theta configuration of a Jordan curve [65]. The index of a triangle about an
-interior point, and of loops about points outside them [66]. The Jordan curve theorem [67].
+interior point, and of loops about points outside them [66]. The Jordan curve theorem [67]. The geometric realisation of a finite simplicial complex is a geometric complex, its simplices being the convex hulls of affinely independent basis vectors [70]. A PL sphere is a closed combinatorial manifold, and the link of every nonempty face of a closed combinatorial manifold is stellar equivalent to the boundary of a simplex [71].
 
 ## Lean References
 
-1. Lightlike/PL/Complex.lean - `PL.SComplex`, `PL.SComplex.link`, `PL.SComplex.star_eq_join`
-2. Lightlike/PL/Stellar.lean - `PL.SComplex.starAt`, `PL.SComplex.weld`,
-   `PL.SComplex.StellarEquiv`
-3. Lightlike/PL/Bistellar.lean - `PL.SComplex.bistellar`, `PL.SComplex.StellarEquiv.bistellar`
+1. Lightlike/PL/Complex.lean - `PL.SComplex`, `PL.SComplex.link`, `PL.SComplex.star_eq_join`,
+   `PL.SComplex.link_cone_apex`, `PL.SComplex.link_link`
+2. Lightlike/PL/Stellar.lean - `PL.SComplex.starAt`, `PL.SComplex.weld`, `PL.SComplex.weld_starAt`,
+   `PL.SComplex.starAt_weld`, `PL.SComplex.StellarEquiv`
+3. Lightlike/PL/Bistellar.lean - `PL.SComplex.bistellar`, `PL.SComplex.StellarEquiv.bistellar`,
+   `PL.SComplex.bistellar_bistellar`
 4. Lightlike/PL/Manifold.lean - `PL.SComplex.IsPLSphere`, `PL.SComplex.IsPLBall`,
    `PL.SComplex.IsCombManifold`, `PL.SComplex.isPLSphere_boundary`, `PL.SComplex.isPLBall_simplex`
 5. Lightlike/PL/PachnerMain.lean - `PL.SComplex.pachner`,
@@ -192,6 +194,7 @@ interior point, and of loops about points outside them [66]. The Jordan curve th
 54. Lightlike/PL/Cycle.lean - `PL.CycleGraph`, `PL.CycleGraph.isSphere1`,
     `PL.CycleGraph.isPLSphere`, `PL.isPLSphere_closure_of_isSphere1`
 55. Lightlike/PL/StellarHomeo.lean - `PL.SComplex.PLHomeomorphic.starAt`,
+    `PL.SComplex.PLHomeomorphic.of_stellarEquivIn`,
     `PL.SComplex.PLHomeomorphic.of_stellarEquiv`
 56. Lightlike/PL/Euler.lean - `PL.SComplex.StellarEquiv.euler_eq`,
     `PL.SComplex.not_stellarEquiv_of_euler_ne`
@@ -217,6 +220,9 @@ interior point, and of loops about points outside them [66]. The Jordan curve th
     `PL.jordan_curve_theorem`
 68. Lightlike/PL/PachnerMoves.lean - `PL.pachner3`, `PL.pachner4`
 69. Lightlike/PL/Pachner.lean - `PL.SComplex.BistellarEquiv.stellarEquiv`
+70. Lightlike/PL/Realisation.lean - `PL.SComplex.isGeom_real`
+71. Lightlike/PL/Links.lean - `PL.SComplex.IsPLSphere.isClosedCombManifold`,
+    `PL.SComplex.IsClosedCombManifold.link_face`
 
 ## References
 

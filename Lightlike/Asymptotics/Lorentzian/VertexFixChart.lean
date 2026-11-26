@@ -146,13 +146,14 @@ def HessianInvertible (j p : Fin 10 → ℝ) (g : BdryData)
 open Filter MeasureTheory Lightlike.Oscillatory in
 open _root_.Asymptotics in
 /-- **Hypothesis `FarRemainderBound`** (open fact, not proved; not in BDFHP): the remainder
-`(1 - χ) a e^{λ S}` is integrable for `λ ∈ ℕ` and its integral is `O(λ^{-23})`. Assumed only along the
-integer sequence the proof uses; the form for all real `τ` fails for `τ < 0` wherever an overlap
+`(1 - χ) a e^{λ S}` is integrable for `λ ∈ ℕ`, `λ ≥ 1`, and its integral is `O(λ^{-23})` (at `λ = 0`
+the exponential is `1` and nothing makes `(1 - χ) a` integrable). Assumed only along the integer
+sequence the proof uses; the form for all real `τ` fails for `τ < 0` wherever an overlap
 vanishes. Needs `Re S ≤ -δ` on the support of `1 - χ` or an integrability estimate in the
 non-compact directions: a new estimate. -/
 def FarRemainderBound (j p : Fin 10 → ℝ) (g : BdryData)
     (e : (Fin 44 → ℝ) ≃ᵐ ((Fin 4 → Fin 3 → ℂ) × (Fin 10 → ℂ))) (χ : (Fin 44 → ℝ) → ℝ) : Prop :=
-  (∀ lam : ℕ, Integrable fun x => (((1 - χ x : ℝ) : ℂ) * chartAmplitude e x) *
+  (∀ lam : ℕ, 1 ≤ lam → Integrable fun x => (((1 - χ x : ℝ) : ℂ) * chartAmplitude e x) *
       cexp ((lam : ℝ) * lorChartAction j p g (fixVertexChart e) x)) ∧
     (fun lam : ℕ => ∫ x, (((1 - χ x : ℝ) : ℂ) * chartAmplitude e x) *
         cexp ((lam : ℝ) * lorChartAction j p g (fixVertexChart e) x))
