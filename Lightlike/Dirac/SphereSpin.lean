@@ -506,4 +506,79 @@ lemma FrS_tau {y : Fin 2 → ℝ} (hy : nsq y ≠ 0) (a : Fin 2) :
     simp [FrS, FrN, rotNS, Fin.sum_univ_two, h0, h1, ht] <;>
     unfold nsq at hy hq1 hq2 ⊢ <;> field_simp <;> ring
 
+/-! ## The spin lift of the frame change -/
+
+section Lift
+
+open CliffordAlgebra
+
+variable {n : ℕ}
+
+lemma ι_sq_unit {u : E n} (hu : ‖u‖ = 1) : ι (Qneg n) u * ι (Qneg n) u = -1 := by
+  rw [ι_sq_scalar, Qneg_apply, hu]; simp
+
+/-- A unit vector is in the pin group of `Qneg n`. -/
+lemma ι_mem_pinGroup_Qneg {u : E n} (hu : ‖u‖ = 1) : ι (Qneg n) u ∈ pinGroup (Qneg n) := by
+  have hsq := ι_sq_unit hu
+  refine ⟨⟨⟨ι (Qneg n) u, -ι (Qneg n) u, by rw [mul_neg, hsq, neg_neg], by rw [neg_mul, hsq, neg_neg]⟩,
+    Subgroup.subset_closure ⟨u, rfl⟩, rfl⟩, ?_⟩
+  change ι (Qneg n) u ∈ unitary (CliffordAlgebra (Qneg n))
+  rw [Unitary.mem_iff, star_ι]
+  exact ⟨by rw [neg_mul, hsq, neg_neg], by rw [mul_neg, hsq, neg_neg]⟩
+
+/-- The product of two unit vectors is in `Spin(n)`. -/
+lemma ι_mul_ι_mem_spinGroup_Qneg {u w : E n} (hu : ‖u‖ = 1) (hw : ‖w‖ = 1) :
+    ι (Qneg n) u * ι (Qneg n) w ∈ spinGroup (Qneg n) :=
+  ⟨Submonoid.mul_mem _ (ι_mem_pinGroup_Qneg hu) (ι_mem_pinGroup_Qneg hw), ι_mul_ι_mem_evenOdd_zero _ u w⟩
+
+lemma polar_Qneg (u v : E n) : QuadraticMap.polar (Qneg n) u v = -(2 * inner ℝ u v) := by
+  rw [QuadraticMap.polar, Qneg_apply, Qneg_apply, Qneg_apply, norm_add_sq_real]; ring
+
+/-- Conjugation by a unit vector: `ι u ι v ι(u)* = ι(2⟨u,v⟩ u - v)`. -/
+lemma conj_ι_unit {u : E n} (hu : ‖u‖ = 1) (v : E n) :
+    ι (Qneg n) u * ι (Qneg n) v * star (ι (Qneg n) u) = ι (Qneg n) ((2 * inner ℝ u v) • u - v) := by
+  rw [star_ι, mul_neg, ι_mul_ι_mul_ι, polar_Qneg, Qneg_apply, hu, ← map_neg]
+  congr 1
+  simp only [one_pow, neg_smul, one_smul]
+  abel
+
+/-- The unit vector `y/|y|` of `ℝ²`, as a vector of `E 2`. -/
+def unitE (y : Fin 2 → ℝ) : E 2 := (√(nsq y))⁻¹ • (modelEquiv2.symm y)
+
+lemma unitE_apply (y : Fin 2 → ℝ) (i : Fin 2) : unitE y i = (√(nsq y))⁻¹ * y i := rfl
+
+lemma norm_unitE {y : Fin 2 → ℝ} (hy : nsq y ≠ 0) : ‖unitE y‖ = 1 := by
+  have hq := nsq_nonneg y
+  have hs : 0 < √(nsq y) := Real.sqrt_pos.2 (lt_of_le_of_ne hq (Ne.symm hy))
+  rw [unitE, norm_smul, Real.norm_eq_abs, abs_inv, abs_of_pos hs]
+  have hn : ‖modelEquiv2.symm y‖ = √(nsq y) := by
+    rw [← norm_sq_modelEquiv2_symm, Real.sqrt_sq (norm_nonneg _)]
+  rw [hn, inv_mul_cancel₀ hs.ne']
+
+lemma norm_e (i : Fin n) : ‖(e i : E n)‖ = 1 := by simp [e]
+
+/-- The spin lift `ι(y/|y|) ι(e₁)` of the frame change `rotNS y`. -/
+def liftNS (y : Fin 2 → ℝ) : CliffordAlgebra (Qneg 2) := ι (Qneg 2) (unitE y) * ι (Qneg 2) (e 1)
+
+/-- **`liftNS y` is a spin lift of `rotNS y`** (`y ≠ 0`). -/
+theorem isSpinLift_liftNS {y : Fin 2 → ℝ} (hy : nsq y ≠ 0) : IsSpinLift (rotNS y) (liftNS y) := by
+  have hu := norm_unitE hy
+  refine ⟨ι_mul_ι_mem_spinGroup_Qneg hu (norm_e 1), fun a => ?_⟩
+  unfold liftNS
+  rw [star_mul, show ι (Qneg 2) (unitE y) * ι (Qneg 2) (e 1) * ι (Qneg 2) (e a) *
+      (star (ι (Qneg 2) (e 1)) * star (ι (Qneg 2) (unitE y))) =
+      ι (Qneg 2) (unitE y) * (ι (Qneg 2) (e 1) * ι (Qneg 2) (e a) * star (ι (Qneg 2) (e 1))) *
+        star (ι (Qneg 2) (unitE y)) by simp only [mul_assoc],
+    conj_ι_unit (norm_e 1), conj_ι_unit hu]
+  congr 1
+  have hq := nsq_nonneg y
+  have hs : 0 < √(nsq y) := Real.sqrt_pos.2 (lt_of_le_of_ne hq (Ne.symm hy))
+  have hss : √(nsq y) * √(nsq y) = nsq y := Real.mul_self_sqrt hq
+  ext i
+  fin_cases a <;> fin_cases i <;>
+    simp [e, unitE_apply, rotNS, Fin.sum_univ_two, PiLp.inner_apply, modelEquiv2_symm_apply] <;> field_simp <;> unfold nsq at hss ⊢ <;>
+    simp only [Real.sq_sqrt (add_nonneg (sq_nonneg (y 0)) (sq_nonneg (y 1)))] <;> ring
+
+end Lift
+
 end Lightlike.Dirac
