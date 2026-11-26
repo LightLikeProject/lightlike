@@ -1013,6 +1013,9 @@ import Lightlike.PL.Schoenflies.RingCells
 import Lightlike.PL.Schoenflies.InsideBox2
 import Lightlike.PL.Schoenflies.SplitSide
 import Lightlike.PL.Schoenflies.SplitLimit
+import Lightlike.PL.Schoenflies.StripChord
+import Lightlike.PL.Schoenflies.NestedRing
+import Lightlike.PL.Schoenflies.OfListReverse
 import Lightlike.PL.SimpleChain
 import Lightlike.PL.Chain
 import Lightlike.PL.TwoArcs
