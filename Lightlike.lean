@@ -196,6 +196,10 @@ import Lightlike.Asymptotics.UniformValley
 import Lightlike.Asymptotics.UniformValleyTests
 import Lightlike.Asymptotics.Valley
 import Lightlike.Asymptotics.ValleyTests
+import Lightlike.Bundles.Principal.Basic
+import Lightlike.Bundles.Principal.Equiv
+import Lightlike.Bundles.Pullback
+import Lightlike.Bundles.TotalSpaceAction
 import Lightlike.Canonical.ADM
 import Lightlike.Canonical.CurvatureCovariance
 import Lightlike.Canonical.CurvatureJet
