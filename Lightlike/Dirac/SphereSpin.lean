@@ -28,7 +28,7 @@ orthogonal matrix. Mathlib's atlas enters only through the smooth structure (`mf
 -/
 
 open Bundle Manifold Metric
-open scoped Manifold ContDiff
+open scoped Manifold ContDiff Matrix
 
 noncomputable section
 
@@ -580,5 +580,77 @@ theorem isSpinLift_liftNS {y : Fin 2 → ℝ} (hy : nsq y ≠ 0) : IsSpinLift (r
     simp only [Real.sq_sqrt (add_nonneg (sq_nonneg (y 0)) (sq_nonneg (y 1)))] <;> ring
 
 end Lift
+
+/-! ## The frame change on the sphere -/
+
+lemma nsq_invN_ne_zero {p : S2} (h1 : pc p 2 ≠ 1) (h2 : pc p 2 ≠ -1) : nsq (invN p) ≠ 0 := by
+  have hs := pc_sq_sum p
+  have hd : 1 - pc p 2 ≠ 0 := sub_ne_zero.mpr (Ne.symm h1)
+  have hp : pc p 0 ^ 2 + pc p 1 ^ 2 ≠ 0 := by
+    intro h
+    have : (pc p 2 - 1) * (pc p 2 + 1) = 0 := by nlinarith
+    rcases mul_eq_zero.mp this with h' | h'
+    · exact h1 (by linarith)
+    · exact h2 (by linarith)
+  simp only [nsq, invN, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, div_pow]
+  rw [← add_div]
+  exact div_ne_zero hp (pow_ne_zero 2 hd)
+
+lemma invS_eq_tau {p : S2} (h1 : pc p 2 ≠ 1) (h2 : pc p 2 ≠ -1) : invS p = tau (invN p) := by
+  have hs := pc_sq_sum p
+  have hd : 1 - pc p 2 ≠ 0 := sub_ne_zero.mpr (Ne.symm h1)
+  have hd' : 1 + pc p 2 ≠ 0 := fun h => h2 (by linarith)
+  have hq : nsq (invN p) = (1 + pc p 2) / (1 - pc p 2) := by
+    simp only [nsq, invN, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
+    field_simp; nlinarith
+  ext k
+  fin_cases k <;> simp [invS, tau, hq] <;> simp [invN] <;> field_simp <;> ring
+
+/-- The derivative of the inclusion is injective on each tangent space (the round metric is nondegenerate). -/
+lemma dι_injective (p : S2) : Function.Injective (dι (I := I2) sphereIncl2 p) := by
+  intro v w h
+  have h0 : dι (I := I2) sphereIncl2 p (v - w) = 0 := by rw [map_sub, h, sub_self]
+  have := (roundMetric2I 1 one_ne_zero).nondegenerate p (v - w) fun u => by
+    change radiusForm 1 (dι (I := I2) sphereIncl2 p (v - w)) (dι (I := I2) sphereIncl2 p u) = 0
+    rw [h0, map_zero, ContinuousLinearMap.zero_apply]
+  exact sub_eq_zero.mp this
+
+lemma rotNS_orth {y : Fin 2 → ℝ} (hy : nsq y ≠ 0) : (rotNS y)ᵀ * rotNS y = 1 := by
+  ext a b
+  fin_cases a <;> fin_cases b <;>
+    simp [rotNS, Matrix.mul_apply, Fin.sum_univ_two] <;> unfold nsq at hy ⊢ <;> field_simp <;> ring
+
+lemma rotNS_orth' {y : Fin 2 → ℝ} (hy : nsq y ≠ 0) : rotNS y * (rotNS y)ᵀ = 1 := by
+  ext a b
+  fin_cases a <;> fin_cases b <;>
+    simp [rotNS, Matrix.mul_apply, Fin.sum_univ_two] <;> unfold nsq at hy ⊢ <;> field_simp <;> ring
+
+/-- **The frame change on the overlap**: `frameS a = Σ_b R a b • frameN b`, `R = rotNS (invN p)`. -/
+theorem frameS_eq {p : S2} (h1 : pc p 2 ≠ 1) (h2 : pc p 2 ≠ -1) (a : Fin 2) :
+    frameS a p = ∑ b, rotNS (invN p) a b • frameN b p := by
+  apply dι_injective p
+  have hN := fun b => dι_fN b (invN p)
+  have hS := dι_fS a (invS p)
+  rw [stereoN_invN h1] at hN
+  rw [stereoS_invS h2] at hS
+  change dι (I := I2) sphereIncl2 p (fS a (invS p)) =
+    dι (I := I2) sphereIncl2 p (∑ b, rotNS (invN p) a b • fN b (invN p))
+  rw [map_sum]
+  simp only [map_smul]
+  rw [hS]
+  simp only [hN]
+  rw [invS_eq_tau h1 h2]
+  exact FrS_tau (nsq_invN_ne_zero h1 h2) a
+
+/-- The inverse frame change: `frameN a = Σ_b R b a • frameS b`. -/
+theorem frameN_eq {p : S2} (h1 : pc p 2 ≠ 1) (h2 : pc p 2 ≠ -1) (a : Fin 2) :
+    frameN a p = ∑ b, (rotNS (invN p))ᵀ a b • frameS b p := by
+  have hO := congrFun (congrFun (rotNS_orth (nsq_invN_ne_zero h1 h2)) a)
+  simp only [frameS_eq h1 h2, Finset.smul_sum, smul_smul, Matrix.transpose_apply]
+  rw [Finset.sum_comm]
+  simp only [← Finset.sum_smul]
+  have : ∀ c, (∑ b, rotNS (invN p) b a * rotNS (invN p) b c) = if a = c then 1 else 0 := fun c => by
+    have := hO c; simpa [Matrix.mul_apply, Matrix.one_apply] using this
+  simp only [this, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
 end Lightlike.Dirac
