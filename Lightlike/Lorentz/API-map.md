@@ -91,7 +91,7 @@ The irreducibility of the principal series is not yet formalized. [TODO]
 Further results of this area in the results catalogue:
 The spherical Plancherel theorem for SL(2,R): the spherical transform is a unitary equivalence from
 L²(1,∞) onto L²(0,∞), with the density ρ tanh(πρ) [32]. The spherical Plancherel formula for SL(2,R) on
-smooth compactly supported functions of the hyperbolic distance, with the density ρ tanh(πρ) [33]. For the K-type (l, r) of radial functions, the squared L² norm of the l-fold ladder image of the profile sinh^r ξ G^{(r)}(cosh ξ) is the Plancherel integral with the extra weights ∏_{k<l}((k+1/2)² + ρ²) and ∏_{k<r}((k+1/2)² + ρ²) [42]. The
+smooth compactly supported functions of the hyperbolic distance, with the density ρ tanh(πρ) [33]. For the K-type (l, r) of radial functions, the squared L² norm of the l-fold ladder image of the profile sinh^r ξ G^{(r)}(cosh ξ) is the Plancherel integral with the extra weights ∏_{k<l}((k+1/2)² + ρ²) and ∏_{k<r}((k+1/2)² + ρ²) [42]. The invariant measure of the upper half-plane is, in hyperbolic polar coordinates about i, sinh ξ dξ dφ, with φ the angle and ξ the hyperbolic distance [43]; the Haar measure of SL(2,ℝ), normalised by the Iwasawa chart, is in the Cartan coordinates k_α a(ξ) k_θ twice the product of sinh ξ dξ with dα on (-π/2, π/2) and dθ on a period [44]. The
 massive one-particle representation of the Poincaré group, induced from SU(2): it preserves the L² norm,
 is covariant under translations, has P² = m², W² = −m² s(s+1) and n+1 states per momentum [34]. The
 massless one-particle representation of finite helicity h/2, induced from the character of ISO(2): it
@@ -195,6 +195,10 @@ non-vacuity check (stated, not proven) [41].
     `Lorentz.Poincare.WignerClassification`, `Lorentz.Poincare.trivialRep_classified`
 42. Lightlike/Lorentz/SL2RPlancherel/KTypeLR.lean - `Lorentz.SL2RPlancherel.norm_sq_ktype_lr`,
     `Lorentz.SL2RPlancherel.Nform_succ`, `Lorentz.SL2RPlancherel.LRClaim_all`
+43. Lightlike/Lorentz/SL2RPlancherel/HyperbolicPolar.lean -
+    `Lorentz.SL2R.lintegral_upperHalfPlane_polar`, `Lorentz.SL2R.lintegral_tanh_half`
+44. Lightlike/Lorentz/SL2RPlancherel/PolarIntegral.lean -
+    `Lorentz.SL2R.lintegral_haarR_polar`, `Lorentz.SL2R.smul_I_polar`
 
 ## References
 
