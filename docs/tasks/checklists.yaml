@@ -411,7 +411,7 @@ milestones:
       - id: t3
         kind: trust
         text: "A non-Hausdorff example has the same identities"
-        decls: []
+        decls: [Lightlike.not_t2_twoOrigins, Lightlike.twoOriginsMetric, Lightlike.twoOrigins_identities, Lightlike.twoOrigins_exists_leviCivita]
         hint: "Missing: no example such as the line with two origins."
       - id: c1
         kind: catalogue
