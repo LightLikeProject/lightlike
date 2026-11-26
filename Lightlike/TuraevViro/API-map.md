@@ -113,7 +113,8 @@ level r - 2 [35].
 31. Lightlike/TuraevViro/Reflect/QDougallMap.lean - `TV.Refl.qDougall_orbit`, `TV.Refl.qDougall_nondeg`,
     `TV.Refl.qDougall_orbit3`, `TV.Refl.qDougall_trunc_param`, `TV.Refl.qDougall_trunc_deg_param`,
     `TV.Refl.qDougall_orbit3_trunc_param`
-32. Lightlike/TuraevViro/PLInvariance.lean - `TV.turaevViro3_plHomeomorphic`
+32. Lightlike/TuraevViro/PLInvariance.lean - `TV.turaevViro3_plHomeomorphic`,
+    `TV.turaevViro3_move32`, `TV.turaevViro3_move41`, `TV.turaevViro3_moveEquiv3`
 33. Lightlike/TuraevViro/FusionRing.lean - `TV.fusionN`, `TV.fusionN_comm₁₂`, `TV.fusionN_comm₂₃`,
     `TV.fusionN_zero_left`, `TV.fusion_dim`, `TV.fusion_assoc_small`
 34. Lightlike/TuraevViro/SMatrix.lean - `TV.sMat`, `TV.sMat_comm`, `TV.sMat_zero_left`,

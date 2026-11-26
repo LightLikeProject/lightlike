@@ -45,7 +45,7 @@ The factors of that kernel are bounded uniformly through the Stirling exponent
 `f(w) = w log w − w`: `‖1/Γ(w + ½)‖ ≤ exp(3/(4‖w‖) − Re f(w))` for every `w` with `‖w‖² ≥ 2`,
 the left half-plane by reflection with `Re f(−w) = −Re f(w) − π |Im w|`, and
 `‖Γ(w + ½)‖ ≤ √(2π) exp(3/(4‖w‖) + Re f(w))` for `Re w ≥ 0`; with absolute constants the bounds
-hold for all `w` [18]. Together they bound the kernel itself: for every `c > 0` there is a
+hold for all `w` [18]. On sectors the Stirling remainder is bounded by a constant over the norm, and the Gamma quotient tends to its Stirling form along the integer shifts [60]. Together they bound the kernel itself: for every `c > 0` there is a
 constant `C`, independent of the spins, with `|π T(z) / sin(πz)| ≤ C exp(Re ψ(z + 3/2))` for
 `Im z > 0` wherever `Im z ≥ c`, or `Re z` lies left of a face sum, or right of a quadrilateral
 sum, minus `½`; `ψ` is the continued phase of the lengths `J + ½`. The proof shifts each face
@@ -107,7 +107,7 @@ integral is O(λ^{-N}) for every N: for smooth compactly supported cutoffs χ �
 finite critical set K, the integral of (ψ − χ) A e^{λS} decays faster than any power of λ (conditional)
 [56]. The Hessian of the Lorentzian vertex action at a point with Re S = 0 is invertible if and only if
 no nonzero real vector lies in the common kernel of the real and imaginary parts of its negative; the
-real part is positive semidefinite and the matrix is symmetric [57].
+real part is positive semidefinite and the matrix is symmetric [57]. Racah's sum with a zero spin has a single nonzero term, whose closed value agrees with the 6j symbol [59].
 
 ## Lean References
 
@@ -297,6 +297,9 @@ real part is positive semidefinite and the matrix is symmetric [57].
     `Asymptotics.Lorentzian.lorHessian_det_ne_zero_iff_quad`
 58. Lightlike/Asymptotics/MorseIndex.lean - `Morse.sigNeg_hessQuad_eq_card_neg_eigenvalues`,
     `Morse.exists_symmetric_operator`, `Morse.morse_diagonal_eigenvalues`
+59. Lightlike/Asymptotics/RacahSaddles/RacahZeroSpin.lean - `Asymptotics.racahSum_zero_spin`,
+    `Asymptotics.racahDelta_mul_racahSum_zero_spin`
+60. Lightlike/Asymptotics/Stirling.lean - `Asymptotics.norm_stirMu_le`, `Asymptotics.tendsto_Gamma_div_stir`
 
 ## References
 

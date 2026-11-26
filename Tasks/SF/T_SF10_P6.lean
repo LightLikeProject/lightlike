@@ -73,7 +73,7 @@ namespace Lightlike.Asymptotics.Lorentzian
 /-- **The non-compact tail of the far remainder is `O(λ^{-23})`** (the new estimate). For a smooth compactly supported
 cutoff `ψ` in the chart domain `U` with `ψ = 1` near each point of the finite critical set `K`, where `K` contains every
 point of `tsupport A` with `Re S = 0` and `dS = 0` (`CriticalSetIs` with the cutoff `1`), `(1 - ψ) A e^{λ S}` is
-integrable for every `λ ∈ ℕ` and its integral is `O(λ^{-23})`. This needs an integrable majorant uniform in `λ` and a
+integrable for every `λ ∈ ℕ`, `λ ≥ 1`, and its integral is `O(λ^{-23})`. This needs an integrable majorant uniform in `λ` and a
 quantitative gap `Re S ≤ -δ` away from a neighbourhood of `K` in the non-compact directions; it is not in BDFHP. If it
 is false, the task is to report a counterexample like the one for the first form of `lorVertex_farRemainder` (the
 `λ^{-22}` contribution of a critical point outside the support of the cutoff, `docs/notes/sf10-p3-assessment.md`).
@@ -94,7 +94,7 @@ theorem lorVertex_farRemainder_tail
     (hK : CriticalSetIs j p g e (fun _ => 1) K)
     (ψ : (Fin 44 → ℝ) → ℝ) (hψ : ContDiff ℝ ∞ ψ) (hψc : HasCompactSupport ψ) (hψU : tsupport ψ ⊆ U)
     (hψ01 : ∀ x, 0 ≤ ψ x ∧ ψ x ≤ 1) (hψ1 : ∀ x ∈ K, ψ =ᶠ[nhds x] fun _ => 1) :
-    (∀ lam : ℕ, Integrable fun x => (((1 - ψ x : ℝ) : ℂ) * chartAmplitude e x) *
+    (∀ lam : ℕ, 1 ≤ lam → Integrable fun x => (((1 - ψ x : ℝ) : ℂ) * chartAmplitude e x) *
         Complex.exp ((lam : ℝ) * lorChartAction j p g (fixVertexChart e) x)) ∧
       (fun lam : ℕ => ∫ x, (((1 - ψ x : ℝ) : ℂ) * chartAmplitude e x) *
           Complex.exp ((lam : ℝ) * lorChartAction j p g (fixVertexChart e) x)) =O[atTop]

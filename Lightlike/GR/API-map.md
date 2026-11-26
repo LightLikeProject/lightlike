@@ -115,6 +115,24 @@ boundedness of the half-density spinor at the pole of the sphere forces the deca
 reduced flat eigenspinor of the Dirac operator of the unit 2-sphere in the stereographic chart has
 eigenvalue plus or minus s and the radial profile of the lower bound [51].
 
+In the compactified coordinates `(T, R, θ, φ)` of Minkowski space, future null infinity is the set
+`T + R = π/2`, `|T - R| < π/2`; it is exactly the set of the points of retarded time `u` and angles
+`(θ, φ)` [59], the conformal factor vanishes on it, and outgoing null rays `t - r = u` converge to the
+point of retarded time `u` [59]. Global anti-de Sitter space with `r = tan ρ` has the metric
+`cos⁻² ρ (-dt² + dρ² + sin² ρ dΩ²)` [60], and the compactified metric restricts on the boundary
+`ρ = π/2` to `-dt² + dθ² + sin² θ dφ²`, the metric of `ℝ × S²` [61].
+A Lorentz matrix with positive time-time entry sends the future null vector `(1, n)`, `|n| = 1`, to `K (1, n')`
+with `K > 0` and `|n'| = 1` [62].
+The Poincaré transformations `x ↦ Λ x + a` act on the points `(u, n)` of null infinity by `(u / K + a₀ - n' · a⃗, n')`, with the group law [63].
+A Lorentz transformation acts conformally on the sphere of directions: the differential of `n ↦ n'` divides
+lengths by `K` [64].
+The action on null infinity is the limit of the action on Minkowski space: along an outgoing null ray the
+retarded time and direction of the image of a point converge to the image of the point at infinity [65].
+The dilation `x ↦ c x` acts on null infinity by `(u, n) ↦ (c u, n)` and commutes with the Poincaré action [66].
+**The Poincaré group acts conformally on future null infinity**: the image direction is a unit vector, the action
+is the limit of the action on the bulk along outgoing null rays, and it is conformal on the sphere of directions
+with the factor `K⁻²` [67].
+
 ## Lean References
 
 1. Lightlike/GR/Einstein.lean - `einsteinTensor`, `IsVacuumSolution`,
@@ -236,6 +254,18 @@ eigenvalue plus or minus s and the radial profile of the lower bound [51].
 57. Lightlike/Geometry/HeatKernel/Unique.lean - `HeatKernel.HasHeatExpansionTo.coeff_unique`,
     `HeatKernel.HasHeatExpansion.coeff_unique`
 58. Lightlike/Geometry/HeatKernel/Consistency.lean - `HeatKernel.hasHeatExpansionTo_sphereTrace_geom`
+59. Lightlike/GR/AdSConformalBoundary/ScriPlus.lean - `scriPlus_eq_range`, `scriFactor_scriPlus`,
+    `compactify_tendsto_scriPoint`
+60. Lightlike/GR/AdSConformal.lean - `pullback_adsGlobal`
+61. Lightlike/GR/AdSConformalBoundary/AdSBoundary.lean - `adsCompact_boundary`
+62. Lightlike/GR/AdSConformalBoundary/NullDirection.lean - `nullDirFactor_pos`, `mulVec_nullVec_eq`,
+    `sum_sq_nullDirMap`
+63. Lightlike/GR/AdSConformalBoundary/ScriAction.lean - `scriAct`, `scriAct_comp`, `nullDirFactor_mul`,
+    `nullDirMap_mul`
+64. Lightlike/GR/AdSConformalBoundary/SphereConformal.lean - `hasDerivAt_nullDirMap`, `sum_sq_nullDirDeriv`
+65. Lightlike/GR/AdSConformalBoundary/ScriLimit.lean - `tendsto_scriCoord_ray`
+66. Lightlike/GR/AdSConformalBoundary/ScriDilation.lean - `scriCoord_smul`, `scriDil_scriAct`
+67. Lightlike/GR/AdSConformalBoundary/ScriPoincare.lean - `poincare_act_scriPlus`
 
 ## References
 
