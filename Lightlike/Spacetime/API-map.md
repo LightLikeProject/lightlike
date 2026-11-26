@@ -276,7 +276,7 @@ three keep infinity, while a special conformal transformation moves the point at
     `specAct_infinity_fst_ne`
 128. Lightlike/Spacetime/Corners/ChartAgreement.lean - `riemann_coord_compW`, `ricciAt_coordW`, `scalarCurvatureAt_coordW`: in every chart the Riemann, Ricci and scalar curvature of a Levi-Civita connection are the coordinate ones, for any model with corners.
 129. Lightlike/Spacetime/Corners/CurvatureSymmetries.lean - `curvatureAt_apply_eventuallyW`, `bianchi_first_provedW`, `riemannLowerAt_pair_symmW`, `ricciAt_symm_provedW`: the curvature through fields smooth near the point, the first Bianchi identity, the pair symmetry and the symmetry of the Ricci tensor, for any model with corners.
-130. Lightlike/Spacetime/Corners/LeviCivitaSmooth.lean - `contMDiffAt_leviCivitaW`: the covariant derivative of the Levi-Civita connection is smooth on a manifold modelled with corners on `ℝⁿ`.
+130. Lightlike/Spacetime/Corners/LeviCivitaSmooth.lean - `contMDiffAt_leviCivitaW`: the covariant derivative of the Levi-Civita connection is smooth on a manifold modelled with corners on R^n.
 
 ## References
 
