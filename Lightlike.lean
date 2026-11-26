@@ -566,6 +566,7 @@ import Lightlike.Lorentz.SL2RPlancherel.LadderChain
 import Lightlike.Lorentz.SL2RPlancherel.LadderSurjective
 import Lightlike.Lorentz.SL2RPlancherel.KTypeBlockL2
 import Lightlike.Lorentz.SL2RPlancherel.LadderOpposite
+import Lightlike.Lorentz.SL2RPlancherel.KTypeOpposite
 import Lightlike.Lorentz.SL2RPlancherel.KTypePlancherel
 import Lightlike.Lorentz.SL2RPlancherel.SphericalIdentity
 import Lightlike.Lorentz.SL2RPlancherel.SphericalClean

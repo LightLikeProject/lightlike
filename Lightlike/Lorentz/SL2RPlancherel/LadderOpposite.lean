@@ -1,5 +1,6 @@
 import Mathlib
 import Lightlike.Lorentz.SL2RPlancherel.LadderClosed
+import Lightlike.Lorentz.SL2RPlancherel.LadderRecursion
 
 /-!
 # The ladder images of the opposite-sign blocks in closed form
@@ -247,5 +248,36 @@ theorem HcN_eq_hLRN (s : ℕ) {G : ℝ → ℂ} (hG : ContDiff ℝ ∞ G) (l : �
         Real.sinh ξ ^ k * (Real.cosh ξ + 1) ^ s := by
       rw [e1, mul_pow]; field_simp
     rw [zpow_neg, zpow_natCast, ← mul_assoc, ← Complex.ofReal_mul, hreal]
+
+/-- The opposite-sign ladder images are smooth on `ξ > 0`. -/
+theorem contDiffOn_hLRN (s : ℕ) {G : ℝ → ℂ} (hG : ContDiff ℝ ∞ G) (l : ℕ) :
+    ContDiffOn ℝ ∞ (hLRN s G l) (Ioi 0) := by
+  have h1 : ContDiff ℝ ∞ (fun y : ℝ => ((Real.sinh y ^ (l + s) : ℝ) : ℂ)) :=
+    Complex.ofRealCLM.contDiff.comp (Real.contDiff_sinh.pow _)
+  have h2 : ContDiffOn ℝ ∞ (fun y : ℝ => uRecN s G l (Real.cosh y)) (Ioi 0) :=
+    (uRecN_contDiffOn s hG l).comp Real.contDiff_cosh.contDiffOn (fun y hy => by
+      show (1 : ℝ) < Real.cosh y
+      exact Real.one_lt_cosh.2 (ne_of_gt hy))
+  exact (h1.contDiffOn.mul h2).congr (fun ξ hξ => hLRN_eq s hG l ξ hξ)
+
+/-- **The Casimir on the opposite-sign ladder images**:
+`radialCasimir l (-s) (hLRN s G l) = hLRN s (Q G) l` on `ξ > 0`. -/
+theorem radialCasimir_hLRN (s : ℕ) {G : ℝ → ℂ} (hG : ContDiff ℝ ∞ G) (l : ℕ) :
+    ∀ ξ : ℝ, 0 < ξ →
+      radialCasimir (l : ℝ) (-(s : ℝ)) (hLRN s G l) ξ = hLRN s (radialQ G) l ξ := by
+  induction l with
+  | zero =>
+    intro ξ hξ
+    have hsw : radialCasimir ((0 : ℕ) : ℝ) (-(s : ℝ)) = radialCasimir (s : ℝ) 0 := by
+      funext F ξ'; simp [radialCasimir]
+    rw [hsw]
+    exact radialCasimir_profile s hG ξ hξ
+  | succ l ih =>
+    intro ξ hξ
+    show radialCasimir ((l + 1 : ℕ) : ℝ) (-(s : ℝ)) (ladUp (l : ℝ) (-(s : ℝ)) (hLRN s G l)) ξ =
+      ladUp (l : ℝ) (-(s : ℝ)) (hLRN s (radialQ G) l) ξ
+    push_cast
+    rw [radialCasimir_ladUp (l : ℝ) (-(s : ℝ)) (contDiffOn_hLRN s hG l) hξ]
+    exact ladUp_congr _ _ (Filter.eventuallyEq_of_mem (Ioi_mem_nhds hξ) (fun y hy => ih y hy))
 
 end Lightlike.Lorentz.SL2RPlancherel
