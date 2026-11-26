@@ -438,7 +438,7 @@ milestones:
       - id: p1
         kind: piece
         text: "The Lie derivative of tensor fields on a smooth manifold is defined"
-        decls: []
+        decls: [Lightlike.lieDerivCovector, Lightlike.lieDerivTensor2]
         hint: "Only the metric: Lightlike.lieDerivMetric."
       - id: p2
         kind: piece
