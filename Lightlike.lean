@@ -1767,6 +1767,8 @@ import Lightlike.Spacetime.LieDerivation
 import Lightlike.Spacetime.LeviCivita
 import Lightlike.Spacetime.LieMetric
 import Lightlike.Spacetime.KillingAlgebra
+import Lightlike.Spacetime.LieTensor
+import Lightlike.Spacetime.KillingLieAlgebra
 import Lightlike.Spacetime.IsometryKilling
 import Lightlike.Spacetime.PoincareKilling
 import Lightlike.Spacetime.AdSCompactification
@@ -1776,6 +1778,7 @@ import Lightlike.Spacetime.KillingStructure
 import Lightlike.Spacetime.KillingRigidity
 import Lightlike.Spacetime.KillingRigidityCoord
 import Lightlike.Spacetime.LinearODEZero
+import Lightlike.Spacetime.MaximallySymmetric
 import Lightlike.Spacetime.MinkowskiCompactification
 import Lightlike.Spacetime.MinkowskiCompactificationAxis
 import Lightlike.Spacetime.MinkowskiCompactificationTests
@@ -1993,6 +1996,7 @@ import Lightlike.Tests.GaugeChange
 import Lightlike.Tests.InverseMoves
 import Lightlike.Tests.Jackson
 import Lightlike.Tests.JacksonDegenerate
+import Lightlike.Tests.Killing
 import Lightlike.Tests.Manifold
 import Lightlike.Tests.PonzanoRegge
 import Lightlike.Tests.QDougall
@@ -2135,6 +2139,7 @@ import Lightlike.SpinFoam.Move15
 import Lightlike.SpinFoam.Move15Global
 import Lightlike.SpinFoam.BarrettCrane
 import Lightlike.SpinFoam.BarrettCraneTests
+import Lightlike.SpinFoam.ReisenbergerCore
 import Lightlike.SpinFoam.GaugeIndependence
 import Lightlike.SpinFoam.ForcingMoves
 import Lightlike.SpinFoam.ForcingMove33

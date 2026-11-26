@@ -428,7 +428,7 @@ milestones:
       - id: m2
         kind: main
         text: "The Killing fields of a metric form a Lie algebra"
-        decls: []
+        decls: [Lightlike.killingSubmodule, Lightlike.instLieRingKilling, Lightlike.instLieAlgebraKilling, Lightlike.IsKillingNear.add, Lightlike.IsKillingNear.smul, Lightlike.IsKillingNear.lieBracket]
         hint: "Close: Lightlike.IsKillingNear.lieBracket (closure under the bracket). Missing: the linear structure (sums, real multiples) on a manifold."
       - id: m3
         kind: main
@@ -438,12 +438,12 @@ milestones:
       - id: p1
         kind: piece
         text: "The Lie derivative of tensor fields on a smooth manifold is defined"
-        decls: []
+        decls: [Lightlike.lieDerivCovector, Lightlike.lieDerivTensor2]
         hint: "Only the metric: Lightlike.lieDerivMetric."
       - id: p2
         kind: piece
         text: "De Sitter, anti-de Sitter and Hⁿ are defined"
-        decls: []
+        decls: [Lightlike.hyperbolicMetric, Lightlike.deSitterMetric, Lightlike.antiDeSitterMetric, Lightlike.isCoordMetric_hyperbolic, Lightlike.isCoordMetric_deSitter, Lightlike.isCoordMetric_antiDeSitter]
         hint: "Missing: no definitions (only FLRW de Sitter examples)."
       - id: t1
         kind: trust
@@ -453,7 +453,7 @@ milestones:
       - id: t2
         kind: trust
         text: "The rotation field of the round 2-sphere is Killing and a dilation is not"
-        decls: []
+        decls: [Lightlike.Test.rotation_killing_S2, Lightlike.Test.dilation_not_killing_S2]
         hint: "Half done: Lightlike.not_isKillingAt_dilation (Minkowski). Missing: the S² rotation field."
       - id: c1
         kind: catalogue
