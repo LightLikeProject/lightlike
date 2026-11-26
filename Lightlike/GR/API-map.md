@@ -128,6 +128,7 @@ A Lorentz transformation acts conformally on the sphere of directions: the diffe
 lengths by `K` [64].
 The action on null infinity is the limit of the action on Minkowski space: along an outgoing null ray the
 retarded time and direction of the image of a point converge to the image of the point at infinity [65].
+The dilation `x ↦ c x` acts on null infinity by `(u, n) ↦ (c u, n)` and commutes with the Poincaré action [66].
 
 ## Lean References
 
@@ -260,6 +261,7 @@ retarded time and direction of the image of a point converge to the image of the
     `nullDirMap_mul`
 64. Lightlike/GR/AdSConformalBoundary/SphereConformal.lean - `hasDerivAt_nullDirMap`, `sum_sq_nullDirDeriv`
 65. Lightlike/GR/AdSConformalBoundary/ScriLimit.lean - `tendsto_scriCoord_ray`
+66. Lightlike/GR/AdSConformalBoundary/ScriDilation.lean - `scriCoord_smul`, `scriDil_scriAct`
 
 ## References
 
