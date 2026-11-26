@@ -224,7 +224,7 @@ milestones:
       - id: m1
         kind: main
         text: "The Poincaré group acts conformally on null infinity of Minkowski space"
-        decls: []
+        decls: [Lightlike.poincare_act_scriPlus]
         hint: "Missing beyond the time shift: boosts, rotations, dilation on scri+. Close: Lightlike.scriTimeShift_scriPoint, Lightlike.poincare_conformal (acts on the compactified bulk metric, not on scri)."
       - id: m2
         kind: main

@@ -6938,3 +6938,14 @@
   review: kernel-checked
   note: "GE7 m1, fifth layer; the milestone m1 stays open. Comparison pending (no source was read at a cited location). The norm of a scaled vector is c times the norm (eNorm_smul), so t - |x⃗| scales by c and the direction is unchanged for c > 0; the compatibility is the identity c (u / K + a₀ - n' · a⃗) = c u / K + c a₀ - n' · (c a⃗). Limits: the action of the dilation on null infinity is the one of the Cartesian retarded time and direction (as in the previous layer), not on the compactified chart; the conformal factor of the dilation on the metric of the sphere is 1 (the direction is unchanged) and is not stated; the full conformal group of Minkowski space (inversions, special conformal transformations) is not treated."
   since: unreleased
+- id: LL-XXXX-i
+  title: "The Poincaré group acts conformally on future null infinity of Minkowski space: for an orthochronous Lorentz matrix Λ, a translation a, a retarded time u and a unit direction n, the factor K of Λ (1, n) = K (1, n') is positive, the direction n' is a unit vector, the retarded time and direction of the image of the outgoing null ray converge to the image (u / K + a₀ - n' · a⃗, n') of (u, n), and the differential of n ↦ n' divides the length of every tangent vector of the sphere by K"
+  area: GR
+  file: Lightlike/GR/AdSConformalBoundary/ScriPoincare.lean
+  decls: [Lightlike.poincare_act_scriPlus]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "GE7 m1 (main statement), assembled from the layers NullDirection, ScriAction (group law, scriAct_comp), SphereConformal, ScriLimit and ScriDilation (dilation, scriDil_scriAct). Comparison pending (no source was read at a cited location): the standard action of the Poincaré group on future null infinity, where the retarded time transforms with the factor K and the sphere by the Möbius action. Limits: Cartesian retarded time and direction, not the compactified chart; the Poincaré group is the set of pairs (Λ, a) with Λ an orthochronous Lorentz matrix, not a group type (the group law and the composition rule hold for the pairs); the conformal factor on the sphere is stated through the length of the differential of the direction map on tangent vectors, not as an equation of metrics on a manifold; the dilation is a separate theorem (scriDil_scriAct) and is not part of this statement; the BMS supertranslations are not treated."
+  since: unreleased
