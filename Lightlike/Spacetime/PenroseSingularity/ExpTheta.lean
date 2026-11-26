@@ -251,6 +251,8 @@ structure ThetaData (g : LorentzianMetric 𝓘(ℝ, Fin n → ℝ) M n) (p₀ : 
   /-- `Θ` is the chart expression of the intrinsic exponential map applied to the tangent vector with the
   coordinates `(q, w)` in the chart at `p₀`. -/
   exp_eq : ∀ x ∈ D, Θ x = extChartAt 𝓘(ℝ, Fin n → ℝ) p₀ (expT g (zetaMap (n := n) p₀ x))
+  /-- The exponential of such a tangent vector lies in the chart at `p₀`. -/
+  exp_mem : ∀ x ∈ D, expT g (zetaMap (n := n) p₀ x) ∈ (extChartAt 𝓘(ℝ, Fin n → ℝ) p₀).source
 
 /-- The smooth exponential map in the chart at `p₀` exists. -/
 theorem exists_thetaData (p₀ : M) : Nonempty (ThetaData g p₀) := by
@@ -304,7 +306,7 @@ theorem exists_thetaData (p₀ : M) : Nonempty (ThetaData g p₀) := by
       (contMDiffOn_extChartAt (I := 𝓘(ℝ, Fin n → ℝ)) (x := p₀)).comp (hX.mono inter_subset_left)
         (fun x hx => by have h := hx.2; rw [mem_preimage, hψ, extChartAt_source] at h; exact h)
     exact contMDiffOn_iff_contDiffOn.1 h1
-  refine ⟨⟨D, fun x => ψ (Γ (ζ x) 1), hDo, hmem0, hΘsm, ?_, ?_, ?_, ?_⟩⟩
+  refine ⟨⟨D, fun x => ψ (Γ (ζ x) 1), hDo, hmem0, hΘsm, ?_, ?_, ?_, ?_, ?_⟩⟩
   · intro q hq
     have hq' : q ∈ ψ.target := hq.1.1.1
     have hz : ζ (q, 0) = ⟨ψ.symm q, 0⟩ := hζ0 q hq'
@@ -320,5 +322,8 @@ theorem exists_thetaData (p₀ : M) : Nonempty (ThetaData g p₀) := by
   · intro x hx
     show ψ (Γ (ζ x) 1) = ψ (expT g (ζ x))
     rw [expT_eq_flow g hε hgeo hx.1.2]
+  · intro x hx
+    rw [expT_eq_flow g hε hgeo hx.1.2]
+    exact hx.2
 
 end Lightlike.Penrose
