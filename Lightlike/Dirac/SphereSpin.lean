@@ -2,6 +2,7 @@ import Mathlib
 import Lightlike.Spacetime.RoundSphereTwo
 import Lightlike.Spacetime.RoundSphereTwoCoord
 import Lightlike.Dirac.SpinStructure
+import Lightlike.Spacetime.StereoConformal
 
 /-!
 # The spin structure of the unit 2-sphere
@@ -96,5 +97,65 @@ lemma contMDiff_stereoN : ContMDiff 𝓘(ℝ, Fin 2 → ℝ) I2 ∞ stereoN := b
 lemma contMDiff_stereoS : ContMDiff 𝓘(ℝ, Fin 2 → ℝ) I2 ∞ stereoS := by
   rw [ContinuousLinearEquiv.contMDiff_transContinuousLinearEquiv_right]
   exact (contDiff_stereoSE.contMDiff).codRestrict_sphere stereoSE_mem
+
+/-! ## Conformality of the two maps -/
+
+/-- The vector of `ℝ³` with coordinates `a, b, c`. -/
+abbrev vec3 (a b c : ℝ) : EuclideanSpace ℝ (Fin (2 + 1)) := (WithLp.equiv 2 (Fin 3 → ℝ)).symm ![a, b, c]
+
+@[simp] lemma vec3_apply0 (a b c : ℝ) : vec3 a b c 0 = a := rfl
+@[simp] lemma vec3_apply1 (a b c : ℝ) : vec3 a b c 1 = b := rfl
+@[simp] lemma vec3_apply2 (a b c : ℝ) : vec3 a b c 2 = c := rfl
+
+lemma inner_vec3 (a b c a' b' c' : ℝ) :
+    inner ℝ (vec3 a b c) (vec3 a' b' c') = a * a' + b * b' + c * c' := by
+  simp [PiLp.inner_apply, Fin.sum_univ_three, vec3, mul_comm]
+
+/-- `ξ ↦ (ξ₀, ε ξ₁, 0)`, an isometry of `ℝ²` onto the plane `x₂ = 0`. -/
+def Wpl (ε : ℝ) : EuclideanSpace ℝ (Fin 2) →L[ℝ] EuclideanSpace ℝ (Fin (2 + 1)) :=
+  LinearMap.toContinuousLinearMap
+    { toFun := fun ξ => vec3 (ξ 0) (ε * ξ 1) 0
+      map_add' := fun ξ ξ' => by ext i; fin_cases i <;> simp [vec3] <;> ring
+      map_smul' := fun c ξ => by ext i; fin_cases i <;> simp [vec3] <;> ring }
+
+lemma Wpl_apply (ε : ℝ) (ξ : EuclideanSpace ℝ (Fin 2)) : Wpl ε ξ = vec3 (ξ 0) (ε * ξ 1) 0 := rfl
+
+lemma inner_Wpl {ε : ℝ} (hε : ε * ε = 1) (ξ ξ' : EuclideanSpace ℝ (Fin 2)) :
+    inner ℝ (Wpl ε ξ) (Wpl ε ξ') = inner ℝ ξ ξ' := by
+  rw [Wpl_apply, Wpl_apply, inner_vec3]
+  simp only [PiLp.inner_apply, Fin.sum_univ_two, RCLike.inner_apply, conj_trivial]
+  linear_combination (ξ 1 * ξ' 1) * hε
+
+lemma inner_Wpl_pole (ε σ : ℝ) (ξ : EuclideanSpace ℝ (Fin 2)) : inner ℝ (Wpl ε ξ) (vec3 0 0 σ) = 0 := by
+  rw [Wpl_apply, inner_vec3]; ring
+
+lemma modelEquiv2_symm_apply (y : Fin 2 → ℝ) (i : Fin 2) : modelEquiv2.symm y i = y i := rfl
+
+lemma norm_sq_modelEquiv2_symm (y : Fin 2 → ℝ) : ‖modelEquiv2.symm y‖ ^ 2 = nsq y := by
+  rw [EuclideanSpace.norm_sq_eq]; simp [Fin.sum_univ_two, modelEquiv2_symm_apply, nsq]
+
+/-- `stereoNE` is the library's `stereoMap` for the plane `x₂ = 0`, the north pole, at `2y`. -/
+lemma stereoNE_eq (y : Fin 2 → ℝ) :
+    stereoNE y = stereoMap (Wpl 1) (vec3 0 0 1) ((2 : ℝ) • modelEquiv2.symm y) := by
+  have hq := nsq_nonneg y
+  have hn : ‖(2 : ℝ) • modelEquiv2.symm y‖ ^ 2 = 4 * nsq y := by
+    rw [norm_smul, mul_pow, norm_sq_modelEquiv2_symm]; norm_num
+  unfold stereoMap
+  rw [hn]
+  ext i
+  fin_cases i <;>
+    simp [stereoNE, Wpl_apply, vec3, modelEquiv2_symm_apply] <;> field_simp <;> ring
+
+/-- `stereoSE` is `stereoMap` for the plane `x₂ = 0` with the second axis reversed, the south pole, at `2y`. -/
+lemma stereoSE_eq (y : Fin 2 → ℝ) :
+    stereoSE y = stereoMap (Wpl (-1)) (vec3 0 0 (-1)) ((2 : ℝ) • modelEquiv2.symm y) := by
+  have hq := nsq_nonneg y
+  have hn : ‖(2 : ℝ) • modelEquiv2.symm y‖ ^ 2 = 4 * nsq y := by
+    rw [norm_smul, mul_pow, norm_sq_modelEquiv2_symm]; norm_num
+  unfold stereoMap
+  rw [hn]
+  ext i
+  fin_cases i <;>
+    simp [stereoSE, Wpl_apply, vec3, modelEquiv2_symm_apply] <;> field_simp <;> ring
 
 end Lightlike.Dirac
