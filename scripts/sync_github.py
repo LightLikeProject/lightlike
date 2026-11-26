@@ -132,7 +132,7 @@ def live(conf):
             items={str(x["content"]["number"]): dict(id=x["id"], column=x.get(fname.lower(), x.get(fname)),
                                                      rank=x.get(rname.lower(), x.get(rname)))
                    for x in items if (x.get("content") or {}).get("number")
-                   and (x["content"].get("repository") or repo) == repo})
+                   and (x["content"].get("repository") or repo).lower() == repo.lower()})
     return data
 
 

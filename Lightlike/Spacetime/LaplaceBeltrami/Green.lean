@@ -15,7 +15,7 @@ smooth functions `f, h`:
 The proof glues the weak form in a chart (`NondegMetric.integral_mul_laplaceBeltrami_chart`) with a smooth partition of
 unity subordinate to the chart domains, which on a compact manifold has finitely many nonzero members. For a Riemannian
 metric the right side of Green's identity with `h = f` is `∫ |df|² ≥ 0`: the Laplacian is nonnegative
-(`LaplaceBeltrami/Riemannian.lean`).
+(`Lightlike/Spacetime/LaplaceBeltrami/Riemannian.lean`).
 
 ## References
 

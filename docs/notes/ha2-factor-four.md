@@ -68,3 +68,54 @@ representations (A6) are the library's, and the range of `σ` accounts for a fac
 
 The citation of Perez–Rovelli in `PlancherelOperator.lean` now gives the title of arXiv:gr-qc/0011037, as `Plancherel.lean`
 does.
+
+## Independent review (26 November 2026)
+
+Done by a reader who had not worked on the formalisation, from the sources and from a derivation that uses neither the
+Lean polar form `integral_coshDist` nor `scripts/lorentz/plancherel_check.py`.
+
+**Sources read at the cited place** (arXiv PDFs, page images and extracted text):
+
+- Perez–Rovelli, arXiv:gr-qc/0011037v1, App. A, pp. 13–14 of the arXiv PDF: (A6) the action
+  `T_{nμ}(g)φ(z) = (βz+δ)^{(μ+n)/2−1}(β̄z̄+δ̄)^{(μ−n)/2−1} φ((αz+γ)/(βz+δ))` with `μ = iρ`; (A7) `(φ,ψ) = ∫ φ̄ψ dz`,
+  `dz = dRe z dIm z`; (A8) `dg = (i/2)³ dβ dγ dδ/|δ|²` ("denote integration over the real and imaginary part
+  respectively"); (A10) `F(n,ρ) = ∫ f(g) T_{n,ρ}(g) dg`; (A11) `f(g) = (1/(8π⁴)) Σ_n ∫ Tr[F(n,ρ)T_{n,ρ}(g⁻¹)](n²+ρ²)dρ`
+  with footnote 8 and no range for `n` and `ρ`; (A12); (A16) `δ(g) = (1/(8π⁴)) Σ_n ∫ Tr[T_{n,ρ}(g)](n²+ρ²)dρ`.
+  The text derives neither (A11) nor (A16), so the origin of `1/(8π⁴)` cannot be located in the paper.
+- Simão, arXiv:2405.01360, App. B.3 (page XIII) and (B.3.1): `f(1) = ½ ∫_ℝ dρ Σ_ν (ν²+ρ²) Tr D^χ(∫ dg f(g) D^χ(g))` with
+  `dg = (2π)⁻⁴ |a₂₂|⁻² Da₁₂ Da₂₁ Da₂₂`, `Dz = (i/2) dz∧dz̄` (Rühl's formula as quoted; Rühl's book was not read).
+
+**The objects agree** (MEASURED, by reading): `(i/2)dβ∧dβ̄ = dRe β dIm β`, so (A8) is `haarC`; `T_{n,iσ}` of (A6) is `π_{n,σ/2}`;
+(A7) is the inner product of `L²(ℂ, d²z)`.
+
+**Derivation for K-biinvariant `f` (n = 0 only)** (MEASURED; quadrature with `scipy`, `a = 1`, `f(g) = exp(−a‖g‖²_HS)`):
+
+1. The Haar measure in the Bruhat chart of (A8), `∫ d²β d²γ d²δ |δ|⁻² e^{−a(|α|²+|β|²+|γ|²+|δ|²)}`, `α = (1+βγ)/δ`,
+   reduced by the phases to a 3-dimensional integral over `(|β|², |γ|², |δ|²)` with a Bessel `I₀`, equals
+   `124.026 · ∫₀^∞ e^{−2a cosh r} sinh² r dr`; `4π³ = 124.025`, ratio `1.00001` (quadrature error `1.5·10⁻⁵`). So the polar form
+   `4π³ ∫ F(cosh r) sinh² r dr` of `Plancherel.lean` follows from (A8) with no use of Lean.
+2. The K-fixed vector of (A6) at `n = 0` is `φ₀(z) = (1+|z|²)^{(iσ−2)/2}` (`‖φ₀‖² = π`), and
+   `⟨φ₀, T(a_r)φ₀⟩/‖φ₀‖² = e^{r−iσr/2} ∫₀^∞ (1+t)^{−1−iσ/2}(1+e^{2r}t)^{−1+iσ/2} dt` agrees with
+   `sin(σr/2)/((σ/2) sinh r)` to 8 digits at `(σ, r) = (3, 0.7), (1.3, 1.9), (6, 0.4)`. The spherical parameter is `σ/2`, not `σ`;
+   with `sin(σr)/(σ sinh r)` the three values differ (`0.379` against `0.762` at the first).
+3. For K-biinvariant `f` the operator `π_{n,σ}(f)` has range in the K-fixed vectors, which exist only for `n = 0`, so
+   `tr π_{0,σ}(f) = ∫ f φ_σ dg` and the claimed identity is `F(1) = C ∫_ℝ σ² (∫ f φ_σ dg) dσ`. With `F(1) = e^{−2a} = 0.135335283`:
+
+   | constant, range | value of the right side / `F(1)` |
+   |---|---|
+   | `1/(32π⁴)`, `σ ∈ ℝ` (the library, Rühl) | `1.000000` |
+   | `1/(8π⁴)`, `σ ∈ ℝ` (PR as printed, range as in Rühl) | `4.000000` |
+   | `1/(8π⁴)`, `σ ≥ 0` only | `2.000000` |
+   | controls: polar constant `2π³`; spherical parameter `σ` | `0.5`; `0.125` |
+
+   So for every reading of the range of `σ` the printed constant fails for the objects (A6), (A7), (A8).
+   The same data give `F(1) = (1/(2π⁴)) ∫₀^∞ λ² f̂ dλ` with `λ = σ/2`, the hyperbolic-space inversion with the fibre volume `π²`.
+
+**Result.** The factor 4 is not explained by any convention of (A6)–(A8), by the range of `σ` (factor 2 at most), or by the
+`(i/2)³` reading (factor 8); it is a misprint in (A11) and (A16), and the library's `plancherel_trace_perezRovelli` with
+`1/(32π⁴)` is the correct statement of the same formula. The docstring of `Plancherel.lean` and the note of the catalogue entry
+name the difference.
+
+**Limits** (not covered by this review): the weight `n² + σ²` in the sectors `n ≠ 0` is not re-derived here (it is proved in Lean
+and checked by `plancherel_check.py`; PR, Rühl and Simão agree on its form); Rühl's book was not read; the check was run once with
+`a = 1` on one K-biinvariant family.
