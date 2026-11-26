@@ -3981,9 +3981,10 @@
   tier: established
   source:
     refs:
+      - {ref: carroll-1997, location: "eq. (3.106)", check: "maximally symmetric"}
       - {ref: vassilevich-2003, location: "eq. (4.27)", check: "6E"}
   review: kernel-checked
-  note: "Citation to be checked (inventory, 25 Nov 2026): Vassilevich eq. (4.27) is the a_2 heat coefficient; it does not state that the scalar curvature of the unit n-sphere is n(n-1). The right location is not recorded yet. Used to tie the a₁ coefficient of the sphere heat traces to Lightlike's scalar curvature. Convention: the sign of R is that of Lightlike.scalarCurvature (positive on spheres). Compared with Vassilevich (2003), arXiv:hep-th/0306138, eq. (4.27), p. 40 (read): a_2(f, D) = (4π)^{-n/2} 6^{-1} ∫ tr{f(6E + R)}, so for the scalar Laplacian (E = 0, f = 1) a_1 = (4π)^{-n/2} ∫R/6 in the Lightlike normalisation (the heat trace coefficient of t^{1-n/2}), with R positive on spheres as in the source; on the unit 2-sphere this is (4π)^{-1}·(2/6)·4π = 1/3, and eq. (4.28) gives the next coefficient (4π)^{-1} 360^{-1} ∫(5R² - 2R_ij R_ij + 2R_ijkl R_ijkl) = 24/360 = 1/15, the t/15 of the milestone (computed by hand from the source, not formalised). This is an example-level result: the general Seeley-DeWitt expansion on a compact Riemannian manifold is NOT proved (Mathlib has no Laplace-Beltrami operator, manifold heat kernel or elliptic theory), so GE8 stays open."
+  note: "Source of the value n(n-1) (read, 26 Nov 2026): Carroll, Lecture Notes on General Relativity, gr-qc/9712019, eq. (3.106): in any number of dimensions the curvature of a maximally symmetric space satisfies R_{rho sigma mu nu} = a^{-2} (g_{rho mu} g_{sigma nu} - g_{rho nu} g_{sigma mu}); the round unit n-sphere is maximally symmetric with a = 1, and contracting once gives R_{sigma nu} = (n-1) a^{-2} g_{sigma nu}, twice R = n(n-1) a^{-2}, so R = n(n-1) (the contraction is the reader's step, not printed there). Vassilevich eq. (4.27) is the a_2 heat coefficient and is cited only for the a_1 formula below, not for the value of R. Used to tie the a₁ coefficient of the sphere heat traces to Lightlike's scalar curvature. Convention: the sign of R is that of Lightlike.scalarCurvature (positive on spheres). Compared with Vassilevich (2003), arXiv:hep-th/0306138, eq. (4.27), p. 40 (read): a_2(f, D) = (4π)^{-n/2} 6^{-1} ∫ tr{f(6E + R)}, so for the scalar Laplacian (E = 0, f = 1) a_1 = (4π)^{-n/2} ∫R/6 in the Lightlike normalisation (the heat trace coefficient of t^{1-n/2}), with R positive on spheres as in the source; on the unit 2-sphere this is (4π)^{-1}·(2/6)·4π = 1/3, and eq. (4.28) gives the next coefficient (4π)^{-1} 360^{-1} ∫(5R² - 2R_ij R_ij + 2R_ijkl R_ijkl) = 24/360 = 1/15, the t/15 of the milestone (computed by hand from the source, not formalised). This is an example-level result: the general Seeley-DeWitt expansion on a compact Riemannian manifold is NOT proved (Mathlib has no Laplace-Beltrami operator, manifold heat kernel or elliptic theory), so GE8 stays open."
   since: unreleased
 - id: LL-0300
   title: "Induced gravity from the heat kernel: for D = -Δ + ξR the coefficient a₁ is proportional to (1-6ξ), it vanishes for the conformal coupling in n = 4 and not in other dimensions, and the induced inverse Newton constant is (1-6ξ)/(12πε) with proper-time cutoff ε"
@@ -6871,4 +6872,191 @@
   source: exploratory
   review: kernel-checked
   note: "PARTIAL step toward the Plancherel formula of SL(2,R) (layer 1 of three): only the K-types (l, r) of radial generators G (functions of the hyperbolic distance, G o cosh), by induction on l from the K-types (r, 0) (the earlier entry on the K-types (l, 0), base l = 0 through the change of variables v = cosh xi, Nform_zero). The step is N_{l+1,r}(F,F) = N_{l,r}(F, QF) + l (l+1) N_{l,r}(F,F) (Nform_succ): adjointness of the ladder operators on [a, B] (ladder_adjoint_boundary), the Casimir factorisation ladDown (l+1) r (ladUp l r F) = Cas + l (l+1) (ladDown_ladUp_local), the Casimir on the ladder images of a radial function is the radial Laplacian of the generator (radialCasimir_hLR), the boundary term at a to 0 vanishing since the closed form sinh^(l+r) u_l(cosh) is continuous on all of R (the ladder images vanish to order l + r at xi = 0) and the one beyond the support vanishing, then polarisation with (QF)^ = (1/4 + rho^2) F^ as in the K-types (l, 0). The weight is multiplied by (l+1/2)^2 + rho^2. No source states the formula in this form; the ladder factors are those of Kitaev arXiv:1711.08169 eq. (60) (read, as in the entry on the K-types (l, 0)); comparison with Lang or Knapp pending. NOT proved: the sum over all K-types (l, r) to the Plancherel formula on L2(SL(2,R)) (layer 2) and the discrete series terms (layer 3), so the full Plancherel formula is still open."
+  since: unreleased
+- id: LL-0530
+  title: "Racah's alternating 6j sum is the imaginary part of a contour integral: for Racah's kernel f(z) = πT(z)/sin(πz), with T entire and built from 1/Γ, real x₁ left of a face sum and x₂ right of a quadrilateral sum, f has a primitive Φ on the closed upper half-plane minus the integers, continuous at x₁ and x₂, and racahSum = −Im(Φ(x₂) − Φ(x₁))/π"
+  area: Asymptotics
+  file: Lightlike/Asymptotics/ContourIdentity.lean
+  decls: [Lightlike.Asymptotics.racahSum_eq_im_primitive]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location for this statement; it is a step of the complex saddle-point proof of the Racah-sum asymptotics (LL-0290), which the library proves in place of the real-variable step of Gurau 2008. The kernel has Racah's term as its residue at each integer (T is built from 1/Gamma), so the sum is given by the imaginary parts of the primitive at the two ends. The spins are given by the six natural numbers J (the integer edges); faceN and quadN are the face sums and quadrilateral sums of J. Hypotheses stated in the Lean theorem: x1 is below some face sum and x2 above some quadrilateral sum. No unproved hypothesis."
+  since: unreleased
+- id: LL-0531
+  title: "Complex Stirling on sectors: if Re w ≥ −c‖w‖ with 0 ≤ c < 1 and ‖w‖² ≥ 2/(1−c), the Stirling series Σ d(w+n) converges and the remainder satisfies ‖μ(w)‖ ≤ 3/(4(1−c)‖w‖); and Γ(w + N + ½) / (√(2π) exp(f(w+N) + μ(w+N))) → 1 as N → ∞ for w off the negative real axis, with f(w) = w log w − w"
+  area: Asymptotics
+  file: Lightlike/Asymptotics/Stirling.lean
+  decls: [Lightlike.Asymptotics.norm_stirMu_le, Lightlike.Asymptotics.tendsto_Gamma_div_stir]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location for this statement; it is a step of the complex saddle-point proof of the Racah-sum asymptotics (LL-0290), which the library proves in place of the real-variable step of Gurau 2008. Complex Stirling bounds for the Gamma function in the form needed by the kernel of Racah's sum. Hypotheses stated in the Lean theorems: the sector condition and the size condition for the bound; w in the slit plane for the limit. The classical Stirling formula is not claimed as a new result: the entry records the explicit remainder bound on sectors with its constant, which is what the saddle-point estimate uses."
+  since: unreleased
+- id: LL-0532
+  title: "The leading form of Racah's kernel: for A_i = a_i + 3/2, B_k = b_k + 2 with ΣA = ΣB and Im Z > 0, the kernel at Z − 3/2 equals e^{ψ(Z)} P_A(Z) e^{E(Z)} / ((2π)²(1 + e^{2πiZ})) exactly, and under rescaling by N the kernel differs from e^{Nψ(x)} P_A(x) by a relative error at most C(y, R)/N"
+  area: Asymptotics
+  file: Lightlike/Asymptotics/KernelLead.lean
+  decls: [Lightlike.Asymptotics.racahKernel_eq_lead, Lightlike.Asymptotics.norm_racahKernel_sub_lead_le]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location for this statement; it is a step of the complex saddle-point proof of the Racah-sum asymptotics (LL-0290), which the library proves in place of the real-variable step of Gurau 2008. psi is the phase (phaseC A B), P_A the amplitude (leadP A), E the Stirling error (kernelErr). Hypotheses stated in the Lean theorems: the balance condition ΣA = ΣB, Im Z > 0 for the exact form, and for the rescaled bound Im x ≥ y > 0, the norms of x, x − A_i, x − B_k at most R and N large in terms of y and R, with an explicit constant C(y, R) = kernelLeadC y R. No unproved hypothesis."
+  since: unreleased
+- id: LL-0533
+  title: "A descent path from a point of the upper half-plane below the saddle level of the phase of a Euclidean tetrahedron exists and lands at a real point x: it is a lift of the descent field on [0, T) converging to x, with phase(x) = phase(z₀) − T, bdry(x) = Im phase(z₀) and Re phase(x) < Re phase(z₀)"
+  area: Asymptotics
+  file: Lightlike/Asymptotics/Descent.lean
+  decls: [Lightlike.Asymptotics.IsEuclid.exists_descent]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location for this statement; it is a step of the complex saddle-point proof of the Racah-sum asymptotics (LL-0290), which the library proves in place of the real-variable step of Gurau 2008. The descent field is z' = −1/ψ'(z) for the continued phase ψ. Euclidean means that the twelve triangle inequalities of the faces hold and the squared volume is positive (IsEuclid). Hypotheses stated in the Lean theorem: IsEuclid l, Im z0 > 0 and Re phase(z0) < Re phase(saddle). No unproved hypothesis."
+  since: unreleased
+- id: LL-0534
+  title: "No landing in the middle for a Euclidean tetrahedron: the descent landing point x of the previous entry lies at or to the left of some face sum, or at or to the right of some quadrilateral sum"
+  area: Asymptotics
+  file: Lightlike/Asymptotics/Landing.lean
+  decls: [Lightlike.Asymptotics.IsEuclid.exists_descent_outside]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location for this statement; it is a step of the complex saddle-point proof of the Racah-sum asymptotics (LL-0290), which the library proves in place of the real-variable step of Gurau 2008. Hypotheses stated in the Lean theorem: IsEuclid l, Im z0 > 0 and Re phase(z0) < Re phase(saddle). It refines the descent existence theorem of Descent.lean by excluding a landing point that is to the right of every face sum and to the left of every quadrilateral sum."
+  since: unreleased
+- id: LL-0535
+  title: "The local Laplace estimate along a valley ray: for a phase with valley direction v = valleyDir u₀ ε τ at the saddle s, with the cubic remainder and the quadratic decrease bounds on [0, r], the integral ∫₀ʳ v e^{N(ψ(s + tv) − ψ(s))} dt equals ε u₀ √(π/(N‖b‖))/2 up to C/N, with one C for ε = ±1 and |τ| ≤ 1/2"
+  area: Asymptotics
+  file: Lightlike/Asymptotics/Closing.lean
+  decls: [Lightlike.Asymptotics.laplace_valley]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location for this statement; it is a step of the complex saddle-point proof of the Racah-sum asymptotics (LL-0290), which the library proves in place of the real-variable step of Gurau 2008. The leading term does not depend on the tilt tau of the valley direction. Hypotheses stated in the Lean theorem: b is not zero, u0 has norm 1 with b u0^2 = −‖b‖, r > 0, and the ray bounds hold for all admissible eps and tau (positive imaginary part, cubic remainder at most K t^3, real part at most Re psi(s) − ‖b‖ t^2/4). It uses the uniform one-dimensional Laplace estimate of Lightlike.Oscillatory (laplace_ray_uniform). No unproved hypothesis."
+  since: unreleased
+- id: LL-0536
+  title: "The ray estimate for a primitive of the rescaled Racah kernel: along a valley ray from the saddle s of length r, with the valley bounds and the norm bounds, ‖(2π)² N^{3/2} e^{−Nψ(s)} (F(s + rv) − F(s)) − ε P(s) u₀ √(π/‖b‖)/2‖ ≤ C/√N for every primitive F of N K(N w − 3/2) on the upper half-plane"
+  area: Asymptotics
+  file: Lightlike/Asymptotics/SaddleRay.lean
+  decls: [Lightlike.Asymptotics.ray_estimate]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location for this statement; it is a step of the complex saddle-point proof of the Racah-sum asymptotics (LL-0290), which the library proves in place of the real-variable step of Gurau 2008. The constant C depends only on r, the lower bound on ‖b‖, K, y and R. Hypotheses stated in the Lean theorem: the valley bounds, Im(s + tv) ≥ y and the three norm bounds on [0, r], the scaling conditions N A_i = a_i + 3/2 and N B_k = b_k + 2 with ΣA = ΣB, and N large in terms of y and R. It combines the leading form of the kernel (the kernel entry above) with the local Laplace estimate. No unproved hypothesis."
+  since: unreleased
+- id: LL-0537
+  title: "The outer side of the contour for a Euclidean tetrahedron: given a uniform approximation of the rescaled phases by the phase of the tetrahedron on compacts, a ray of descent from the saddle, a descent line landing at a real point x, and a uniform bound on the rescaled kernel G, there are a real p near x and constants C, δ > 0 with |F(p) − F(Q_λ)| ≤ C λ e^{λ(D_λ − δ)} for every primitive F of G_λ continuous at p"
+  area: Asymptotics
+  file: Lightlike/Asymptotics/SaddleAssembly.lean
+  decls: [Lightlike.Asymptotics.IsEuclid.outer_side]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location for this statement; it is a step of the complex saddle-point proof of the Racah-sum asymptotics (LL-0290), which the library proves in place of the real-variable step of Gurau 2008. The path is the segment from Q_lambda to s0 + r v, the ray to s0 + r_c v, the descent line up to a point close to x, and the vertical segment down to p = Re alpha(T'). It shows that the outer part of the contour contributes exponentially less than the saddle. Hypotheses stated in the Lean theorem (the approximation, the ray bound, the descent line, the bound on G and the regularity set reg); IsEuclid l. No unproved hypothesis."
+  since: unreleased
+- id: LL-0538
+  title: "Future null infinity of Minkowski space in the compactified coordinates (T, R, theta, phi), T + R = pi/2 and |T - R| < pi/2, is exactly the set of the points of retarded time u = tan(T - R) and angles; the conformal factor cos^2(T + R) cos^2(T - R) vanishes on it; and the outgoing null ray t - r = u converges to the point of retarded time u as r tends to infinity"
+  area: GR
+  file: Lightlike/GR/AdSConformalBoundary/ScriPlus.lean
+  decls: [Lightlike.scriPlus_eq_range, Lightlike.scriFactor_scriPlus, Lightlike.compactify_tendsto_scriPoint]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: the module docstring records Harlow, arXiv:1409.1231, section 2.3 (T +- R = arctan(t +- r)), and Aharony-Gubser-Maldacena-Ooguri-Oz, arXiv:hep-th/9905111, section 2.2, as read when the file was written; they were not re-read for this entry, and neither is registered as a source here. Future null infinity only, in coordinates (a set in Fin 4 -> R), not a boundary of a manifold embedding; the point of the compactification is the map compactify of ConformalPoincare.lean."
+  since: unreleased
+- id: LL-0539
+  title: "Global anti-de Sitter space (d = 3, L = 1) is conformal to the compact metric: with r = tan rho, -(1 + r^2) dt^2 + dr^2/(1 + r^2) + r^2 dOmega^2 equals cos^-2 rho (-dt^2 + drho^2 + sin^2 rho dOmega^2) wherever cos rho is nonzero"
+  area: GR
+  file: Lightlike/GR/AdSConformal.lean
+  decls: [Lightlike.pullback_adsGlobal]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: the module docstring records Aharony-Gubser-Maldacena-Ooguri-Oz, arXiv:hep-th/9905111, section 2, and Harlow, arXiv:1409.1231, section 6.1, eqs. (6.4)-(6.6), as read when the file was written; not re-read for this entry, and not registered as sources. A coordinate statement (the pullback of adsGlobal along tanChart, as 4x4 matrices), fixed d = 3 and L = 1; the same conformal map is the manifold statement of LL-0378 in Spacetime/AdSCompactification.lean."
+  since: unreleased
+- id: LL-0540
+  title: "The compactified anti-de Sitter metric restricted to the conformal boundary rho = pi/2 is -dt^2 + drho^2 + dtheta^2 + sin^2 theta dphi^2, whose (t, theta, phi) block is -dt^2 + dtheta^2 + sin^2 theta dphi^2, the metric of R x S^2"
+  area: GR
+  file: Lightlike/GR/AdSConformalBoundary/AdSBoundary.lean
+  decls: [Lightlike.adsCompact_boundary]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: the module docstring records Harlow, arXiv:1409.1231, section 6.1, eqs. (6.4)-(6.6), as read when the file was written; not re-read here, and not registered as a source. The conformal class of the boundary metric is canonical, the metric itself is not (the defining function cos rho is fixed only up to a positive factor); fixed d = 3, L = 1, in coordinates."
+  since: unreleased
+- id: LL-0541
+  title: "A Lorentz matrix with positive time-time entry sends the future null vector (1, n), |n| = 1, to K (1, n') with K > 0 and |n'| = 1, where K is the time component of the image and n' its spatial part divided by K"
+  area: GR
+  file: Lightlike/GR/AdSConformalBoundary/NullDirection.lean
+  decls: [Lightlike.nullDirFactor_pos, Lightlike.mulVec_nullVec_eq, Lightlike.sum_sq_nullDirMap]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "GE7 m1, first layer (the action of the Lorentz group on future null infinity); the milestone m1 stays open. Comparison pending (no source was read at a cited location): this is the standard action of the Lorentz group on the celestial sphere of null directions. For Λ with Λᵀ η Λ = η and Λ 0 0 > 0 the first row gives Σ_j Λ₀ⱼ² = Λ₀₀² - 1 (lorentz_row_zero, from Λ η Λᵀ = η), and Cauchy-Schwarz gives |Σ_j Λ₀ⱼ nⱼ| < Λ₀₀, so the time component of Λ (1, n) is positive; the spatial part over K has unit length because Λ preserves the Minkowski square (minkSq_mulVec) and (1, n) is null. Non-vacuity: a boost along the first axis with cosh = 5/4, sinh = 3/4 is a Lorentz matrix and multiplies (1, e₁) by 2 and (1, -e₁) by 1/2 (nullDirFactor_boostX_pos, nullDirFactor_boostX_neg). Limits: no action on the retarded time, no conformal factor on the sphere and no relation to the compactified chart yet; the matrix is arbitrary with the stated hypotheses, not an element of a group type."
+  since: unreleased
+- id: LL-0542
+  title: "The Poincaré transformations x ↦ Λ x + a (Λ orthochronous Lorentz) act on the points (u, n) of future null infinity, u a retarded time and n a unit vector, by (u, n) ↦ (u / K + a₀ - n' · a⃗, n') with Λ (1, n) = K (1, n'); the factor and the direction satisfy the cocycle rule, and acting by (Λ₂, a₂) and then by (Λ₁, a₁) is acting by (Λ₁ Λ₂, Λ₁ a₂ + a₁)"
+  area: GR
+  file: Lightlike/GR/AdSConformalBoundary/ScriAction.lean
+  decls: [Lightlike.scriAct, Lightlike.scriAct_comp, Lightlike.nullDirFactor_mul, Lightlike.nullDirMap_mul]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "GE7 m1, second layer; the milestone m1 stays open. Comparison pending (no source was read at a cited location): this is the standard action of the Poincaré group on retarded time and the celestial sphere (the BMS supertranslations are not included). The retarded time of x along the direction (1, n) is u = t - n · x⃗; the formula is u' = -(1, n') · (Λ x + a) = u / K - (1, n') · a, since the Minkowski product of (1, n') with Λ x is the Minkowski product of (1, n) with x divided by K (minkDot_mulVec). The group law follows from the cocycle rule K(Λ₁ Λ₂, n) = K(Λ₂, n) K(Λ₁, n₂') and the same invariance. Non-vacuity: the boost with cosh = 5/4, sinh = 3/4 sends (u, e₁) to (u / 2, e₁) (scriAct_boostX). Limits: an action on ℝ × (Fin 3 → ℝ) restricted to unit directions; no relation yet to the compactified chart scriPoint, no metric on the sphere and no conformal factor, and no statement about the limit of the action on the bulk; the product of orthochronous matrices is not proved orthochronous here (the group law needs only the Lorentz property of each factor)."
+  since: unreleased
+- id: LL-0543
+  title: "A Lorentz transformation acts conformally on the sphere of null directions: the direction map n ↦ n' with Λ (1, n) = K (1, n') has at a unit vector n the derivative (R K - w D) / K² in a direction v, where (D, R) = Λ (0, v) and w = Λ (1, n), and for v tangent to the sphere its squared length is |v|² / K²"
+  area: GR
+  file: Lightlike/GR/AdSConformalBoundary/SphereConformal.lean
+  decls: [Lightlike.hasDerivAt_nullDirMap, Lightlike.sum_sq_nullDirDeriv]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "GE7 m1, third layer; the milestone m1 stays open. Comparison pending (no source was read at a cited location): this is the standard fact that the Möbius action of the Lorentz group on the celestial sphere is conformal with factor K⁻¹ on lengths. hasDerivAt_nullDirMap is the quotient rule for t ↦ (w + t q) / (w₀ + t q₀) with q = Λ (0, v); sum_sq_nullDirDeriv uses that Λ preserves the Minkowski square of (0, v), the Minkowski product of (1, n) with (0, v) (which is n · v = 0) and the null vector (1, n): with A = Σ wᵢ² = K², B = Σ wᵢ qᵢ = K q₀ and C = Σ qᵢ² = q₀² + |v|², the sum of squares of (qᵢ K - wᵢ q₀) is K² |v|². Non-vacuity: the boost with cosh = 5/4, sinh = 3/4 sends e₂ at e₁ to e₂ / 2 (nullDirDeriv_boostX). Limits: the derivative is the one of the formula n ↦ w⃗ / w₀ along the line n + t v in the ambient space, evaluated at a unit n; the round sphere is not given as a manifold and the pullback of the metric is stated through the squared length of the differential, not as an equation of metrics; K⁻² is the conformal factor on the metric dΩ²; no relation to the compactified chart yet."
+  since: unreleased
+- id: LL-0544
+  title: "The action of the Poincaré group on null infinity is the limit of its action on Minkowski space: along the outgoing null ray s ↦ u e₀ + s (1, n), the retarded time t - |x⃗| and the direction x⃗ / |x⃗| of the image Λ x(s) + a of an orthochronous Poincaré transformation converge, as s tends to infinity, to the image of (u, n) under the action (u, n) ↦ (u / K + a₀ - n' · a⃗, n')"
+  area: GR
+  file: Lightlike/GR/AdSConformalBoundary/ScriLimit.lean
+  decls: [Lightlike.tendsto_scriCoord_ray]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "GE7 m1, fourth layer (the analysis part); the milestone m1 stays open. Comparison pending (no source was read at a cited location). The image of the ray is V + c (1, n') with c = K s and V = u Λ e₀ + a, and for a unit n' the retarded time V₀ + c - |V⃗ + c n'| converges to V₀ - n' · V⃗ and the direction (V⃗ + c n') / |V⃗ + c n'| converges to n' (tendsto_retarded, tendsto_direction: |V⃗ + c n'|² = c² + 2 c n' · V⃗ + |V⃗|², so |V⃗ + c n'| / c → 1 and |V⃗ + c n'| - c → n' · V⃗). The limit V₀ - n' · V⃗ is u / K - (1, n') · a because the Minkowski product of (1, n') with Λ e₀ is -1 / K (invariance of the product under Λ). Limits: the statement is in Cartesian retarded time and direction, not in the compactified chart (the angle chart is singular at the poles, and the relation to compactify and scriPoint is not stated); only rays of fixed retarded time and direction are treated, not sequences of points approaching null infinity in general; the dilation is not included."
+  since: unreleased
+- id: LL-0545
+  title: "The dilation x ↦ c x, c > 0, acts on the retarded time and direction (t - |x⃗|, x⃗ / |x⃗|) of Minkowski space by (u, n) ↦ (c u, n), and it commutes with the action of the Poincaré transformations on null infinity once the translation is scaled: scaling the image of (u, n) under (Λ, a) is the image of the scaled point under (Λ, c a)"
+  area: GR
+  file: Lightlike/GR/AdSConformalBoundary/ScriDilation.lean
+  decls: [Lightlike.scriCoord_smul, Lightlike.scriDil_scriAct]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "GE7 m1, fifth layer; the milestone m1 stays open. Comparison pending (no source was read at a cited location). The norm of a scaled vector is c times the norm (eNorm_smul), so t - |x⃗| scales by c and the direction is unchanged for c > 0; the compatibility is the identity c (u / K + a₀ - n' · a⃗) = c u / K + c a₀ - n' · (c a⃗). Limits: the action of the dilation on null infinity is the one of the Cartesian retarded time and direction (as in the previous layer), not on the compactified chart; the conformal factor of the dilation on the metric of the sphere is 1 (the direction is unchanged) and is not stated; the full conformal group of Minkowski space (inversions, special conformal transformations) is not treated."
+  since: unreleased
+- id: LL-0546
+  title: "The Poincaré group acts conformally on future null infinity of Minkowski space: for an orthochronous Lorentz matrix Λ, a translation a, a retarded time u and a unit direction n, the factor K of Λ (1, n) = K (1, n') is positive, the direction n' is a unit vector, the retarded time and direction of the image of the outgoing null ray converge to the image (u / K + a₀ - n' · a⃗, n') of (u, n), and the differential of n ↦ n' divides the length of every tangent vector of the sphere by K"
+  area: GR
+  file: Lightlike/GR/AdSConformalBoundary/ScriPoincare.lean
+  decls: [Lightlike.poincare_act_scriPlus]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "GE7 m1 (main statement), assembled from the layers NullDirection, ScriAction (group law, scriAct_comp), SphereConformal, ScriLimit and ScriDilation (dilation, scriDil_scriAct). Comparison pending (no source was read at a cited location): the standard action of the Poincaré group on future null infinity, where the retarded time transforms with the factor K and the sphere by the Möbius action. Limits: Cartesian retarded time and direction, not the compactified chart; the Poincaré group is the set of pairs (Λ, a) with Λ an orthochronous Lorentz matrix, not a group type (the group law and the composition rule hold for the pairs); the conformal factor on the sphere is stated through the length of the differential of the direction map on tangent vectors, not as an equation of metrics on a manifold; the dilation is a separate theorem (scriDil_scriAct) and is not part of this statement; the BMS supertranslations are not treated."
   since: unreleased
