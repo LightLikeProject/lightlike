@@ -10,7 +10,7 @@ import Mathlib.Topology.FiberBundle.Basic
 /-!
 # Equivalences of principal bundles
 
-Adapted from Tau Ceti (`TauCeti/Topology/FiberBundle/Principal/Equiv.lean`,
+Adapted from Tau Ceti (module TauCeti.Topology.FiberBundle.Principal.Equiv,
 revision 2a9233e5b, Apache 2.0 license).
 
 An **equivalence** `Lightlike.PrincipalBundle.Equiv H Q Q'` of two bundles `Q` and `Q'` over the
