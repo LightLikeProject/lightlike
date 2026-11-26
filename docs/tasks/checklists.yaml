@@ -406,7 +406,7 @@ milestones:
       - id: t2
         kind: trust
         text: "A manifold with boundary has the same identities"
-        decls: []
+        decls: [Lightlike.segMetric, Lightlike.segment_identities, Lightlike.segment_exists_leviCivita]
         hint: "Missing: no concrete example with boundary or corners."
       - id: t3
         kind: trust
