@@ -167,7 +167,7 @@ milestones:
       - id: p4
         kind: piece
         text: "The Dirac operator on a spin manifold is defined, with the rough Laplacian ∇*∇ on spinors"
-        decls: []
+        decls: [Lightlike.Dirac.SpinStructure.dirac, Lightlike.Dirac.SpinStructure.roughLaplacian]
         hint: "Missing. Close: Lightlike.Dirac.diracF, Lightlike.Dirac.diracConn (frame/chart operators)."
       - id: t1
         kind: trust
