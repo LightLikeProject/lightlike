@@ -221,4 +221,76 @@ lemma roundMetric_stereoS (y v w : Fin 2 → ℝ) :
     funext y; exact stereoSE_eq y
   rw [roundMetric_mfderiv (contMDiff_stereoS.mdifferentiableAt (by simp)) (hf ▸ hD), hDi]
 
+/-! ## The inverse maps -/
+
+/-- The `i`-th coordinate of a point of `S2` in `ℝ³`. -/
+abbrev pc (p : S2) (i : Fin (2 + 1)) : ℝ := (p : EuclideanSpace ℝ (Fin (2 + 1))) i
+
+lemma pc_sq_sum (p : S2) : pc p 0 ^ 2 + pc p 1 ^ 2 + pc p 2 ^ 2 = 1 := by
+  have h := norm_eq_of_mem_sphere p
+  have h2 : ‖(p : EuclideanSpace ℝ (Fin (2 + 1)))‖ ^ 2 = 1 := by rw [h]; simp
+  rw [EuclideanSpace.norm_sq_eq, Fin.sum_univ_three] at h2
+  simpa [pc] using h2
+
+/-- The stereographic projection from the north pole, `p ↦ (p₀, p₁)/(1 - p₂)`. -/
+def invN (p : S2) : Fin 2 → ℝ := ![pc p 0 / (1 - pc p 2), pc p 1 / (1 - pc p 2)]
+
+/-- The stereographic projection from the south pole with the second axis reversed,
+`p ↦ (p₀, -p₁)/(1 + p₂)`. -/
+def invS (p : S2) : Fin 2 → ℝ := ![pc p 0 / (1 + pc p 2), -(pc p 1) / (1 + pc p 2)]
+
+lemma pc_stereoN (y : Fin 2 → ℝ) :
+    pc (stereoN y) 0 = 2 * y 0 / (nsq y + 1) ∧ pc (stereoN y) 1 = 2 * y 1 / (nsq y + 1) ∧
+      pc (stereoN y) 2 = (nsq y - 1) / (nsq y + 1) := by
+  refine ⟨?_, ?_, ?_⟩ <;> simp [pc, stereoN, stereoNE, div_eq_inv_mul]
+
+lemma pc_stereoS (y : Fin 2 → ℝ) :
+    pc (stereoS y) 0 = 2 * y 0 / (nsq y + 1) ∧ pc (stereoS y) 1 = -(2 * y 1) / (nsq y + 1) ∧
+      pc (stereoS y) 2 = (1 - nsq y) / (nsq y + 1) := by
+  refine ⟨?_, ?_, ?_⟩ <;> simp [pc, stereoS, stereoSE, div_eq_inv_mul]
+
+lemma invN_stereoN (y : Fin 2 → ℝ) : invN (stereoN y) = y := by
+  obtain ⟨h0, h1, h2⟩ := pc_stereoN y
+  have hq := nsq_nonneg y
+  have hd : 1 - (nsq y - 1) / (nsq y + 1) = 2 / (nsq y + 1) := by field_simp; ring
+  ext k; fin_cases k <;> simp [invN, h0, h1, h2, hd] <;> field_simp
+
+lemma invS_stereoS (y : Fin 2 → ℝ) : invS (stereoS y) = y := by
+  obtain ⟨h0, h1, h2⟩ := pc_stereoS y
+  have hq := nsq_nonneg y
+  have hd : 1 + (1 - nsq y) / (nsq y + 1) = 2 / (nsq y + 1) := by field_simp; ring
+  ext k; fin_cases k <;> simp [invS, h0, h1, h2, hd] <;> field_simp
+
+lemma stereoN_invN {p : S2} (hp : pc p 2 ≠ 1) : stereoN (invN p) = p := by
+  have hs := pc_sq_sum p
+  have h1 : 1 - pc p 2 ≠ 0 := sub_ne_zero.mpr (Ne.symm hp)
+  have hq : nsq (invN p) + 1 = 2 / (1 - pc p 2) := by
+    simp only [nsq, invN, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
+    field_simp; nlinarith
+  apply Subtype.ext
+  ext i
+  fin_cases i
+  · show (nsq (invN p) + 1)⁻¹ * (2 * invN p 0) = pc p 0
+    rw [hq]; simp [invN]; field_simp
+  · show (nsq (invN p) + 1)⁻¹ * (2 * invN p 1) = pc p 1
+    rw [hq]; simp [invN]; field_simp
+  · show (nsq (invN p) + 1)⁻¹ * (nsq (invN p) - 1) = pc p 2
+    rw [show nsq (invN p) - 1 = (nsq (invN p) + 1) - 2 by ring, hq]; field_simp; ring
+
+lemma stereoS_invS {p : S2} (hp : pc p 2 ≠ -1) : stereoS (invS p) = p := by
+  have hs := pc_sq_sum p
+  have h1 : 1 + pc p 2 ≠ 0 := by intro h; exact hp (by linarith)
+  have hq : nsq (invS p) + 1 = 2 / (1 + pc p 2) := by
+    simp only [nsq, invS, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
+    field_simp; nlinarith
+  apply Subtype.ext
+  ext i
+  fin_cases i
+  · show (nsq (invS p) + 1)⁻¹ * (2 * invS p 0) = pc p 0
+    rw [hq]; simp [invS]; field_simp
+  · show (nsq (invS p) + 1)⁻¹ * -(2 * invS p 1) = pc p 1
+    rw [hq]; simp [invS]; field_simp
+  · show (nsq (invS p) + 1)⁻¹ * (1 - nsq (invS p)) = pc p 2
+    rw [show 1 - nsq (invS p) = 2 - (nsq (invS p) + 1) by ring, hq]; field_simp; ring
+
 end Lightlike.Dirac
