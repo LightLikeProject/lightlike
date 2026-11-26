@@ -75,4 +75,33 @@ noncomputable def SpinStructure.roughLaplacian (i : ι) (φ : M → V) (x : M) :
 
 end Operators
 
+/-! ### Trust check: the flat case -/
+
+/-- **Flat trust check.**  For the Euclidean metric on `ℝⁿ` and its standard global frame the
+connection coefficients vanish, so `∇` is the plain derivative and `D` is the flat Dirac
+operator.  The wrong value `connForm ≠ 0` would show a mistake in the definition of `connForm`. -/
+theorem euclideanSpinStructure_connForm (x : Fin n → ℝ) (a : Fin n) :
+    (euclideanSpinStructure n).connForm () x a = 0 := by
+  funext b c
+  have hX := (euclideanSpinStructure n).frame_smooth () a x trivial
+  have hY := (euclideanSpinStructure n).frame_smooth () b x trivial
+  have hZ := (euclideanSpinStructure n).frame_smooth () c x trivial
+  unfold SpinStructure.connForm
+  rw [g_leviCivita _ hX hY hZ]
+  have hc : ∀ p q : Fin n, gpair (euclideanMetric n) ((euclideanSpinStructure n).frame () p)
+      ((euclideanSpinStructure n).frame () q) = fun _ => if p = q then (1 : ℝ) else 0 := by
+    intro p q
+    funext y
+    exact (euclideanSpinStructure n).frame_orthonormal () p q y trivial
+  have hb : ∀ p q : Fin n, VectorField.mlieBracket 𝓘(ℝ, Fin n → ℝ) ((euclideanSpinStructure n).frame () p)
+      ((euclideanSpinStructure n).frame () q) x = 0 := by
+    intro p q
+    rw [← VectorField.mlieBracketWithin_univ, VectorField.mlieBracketWithin_eq_lieBracketWithin]
+    change VectorField.lieBracketWithin ℝ (fun _ : Fin n → ℝ => (Pi.single p 1 : Fin n → ℝ))
+      (fun _ => (Pi.single q 1 : Fin n → ℝ)) Set.univ x = 0
+    simp [VectorField.lieBracketWithin_univ, VectorField.lieBracket]
+  unfold koszul
+  simp only [hc, mvfderiv_const, hb, map_zero, zero_apply, sub_zero, add_zero,
+    zero_div, Matrix.zero_apply]
+
 end Lightlike.Dirac
