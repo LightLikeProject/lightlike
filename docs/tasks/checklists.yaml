@@ -253,19 +253,19 @@ milestones:
       - id: r1
         kind: review
         text: "The source of LL-0376 (Minkowski space conformal to a region of the Einstein static universe, polar form) is checked: Carroll (1997) treats it in Chapter 7, not Chapter 3; the location is read and recorded in docs/results.yaml and docs/tasks/sources.yaml"
-        review_evidence: null
+        review_evidence: "Read Carroll, Lecture Notes on General Relativity (gr-qc/9712019), Chapter 7, eqs. (7.86)-(7.102), pp. 192-196, in the arXiv text, and compared it with the statement of LL-0376 and the module docstring. Same coordinates (u = (t+r)/2, v = (t-r)/2, U = arctan u, V = arctan v, η = U + V, χ = U - V) and the same ω = cos U cos V = (cos η + cos χ)/2; (7.100) and (7.102) are the metric identity and the Einstein static universe. Result: Carroll treats it in Chapter 7, not Chapter 3. Differences: the Lean statement is the polar form on 0 < χ, |η| + χ < π (the axis χ = 0, which Carroll includes on p. 196, is left to LL-0377); the image region |η| + χ < π is the interior of Carroll's Penrose diagram (7.92), not the rectangle (7.99). Location recorded as eq. (7.100) in docs/results.yaml and docs/tasks/sources.yaml (verified in the arXiv text by the source tool)."
       - id: r2
         kind: review
         text: "The source of LL-0377 (the Cartesian form, axis included) is checked against Carroll (1997) eq. (7.100) and the remark after (7.87), and the location is recorded in place of Chapter 3"
-        review_evidence: null
+        review_evidence: "Read Carroll (gr-qc/9712019) eq. (7.100) and the remark after (7.87), p. 193 (r = 0 is a coordinate singularity of the polar chart that should be covered by another patch, and the text treats it as well-behaved) and p. 196 (Minkowski space is the interior of the diagram, including χ = 0), and compared them with LL-0377. The metric ω⁻² (-dη² + dχ² + sin²χ dΩ²) is (7.100); the Cartesian form on ℝ × S³ is not in the source: it is the library's way to cover the axis (stated in the docstring as a representation difference). Result: Chapter 7, eq. (7.100), replaces Chapter 3 in docs/results.yaml; the location is recorded in docs/tasks/sources.yaml with eq. (7.87), both verified by the source tool."
       - id: r3
         kind: review
         text: "The source of LL-0378 (anti-de Sitter space conformal to a region of the Einstein static universe) is a registered source that states it (for example Blau, Lecture Notes on General Relativity, Section 39.3), compared with the coordinates of the Lean statement; Carroll Chapter 3 does not treat it"
-        review_evidence: null
+        review_evidence: "Read Aharony, Gubser, Maldacena, Ooguri and Oz, Large N Field Theories, String Theory and Gravity (hep-th/9905111), Section 2.2.1, eqs. (2.23)-(2.25) and the text after them: with tan θ = sinh ρ the global AdS metric is R²/cos²θ (-dτ² + dθ² + sin²θ dΩ²), multiplied by R⁻²cos²θ it is the Einstein static universe metric, AdS is mapped to one half of it (0 ≤ θ < π/2), boundary at θ = π/2. Compared with LL-0378: same coordinates (r = tan θ, r = sinh ρ, R = 1), same bound on θ, same boundary. Also read Blau, Lecture Notes on General Relativity (24 November 2026 version, not a registered source), Section 39.3.2, eqs. (39.79)-(39.86): the same formulas and the boundary metric -dτ² + dΩ² of ads_boundary_metric. Result: the registered source is magoo-2000, eq. (2.24), recorded in docs/results.yaml and docs/tasks/sources.yaml and verified by the source tool; Carroll Chapter 3 is no longer cited. Blau's page numbers in the module docstring (927-929) do not match the version read (equations on pp. 930-931); the docstring should cite sections and equations only."
       - id: r4
         kind: review
         text: "LL-0379 (a non-conformal rescaling fails) is a trust check, not a statement of a source: its citation of Carroll Chapter 3 is removed or replaced by one that supports it"
-        review_evidence: null
+        review_evidence: "LL-0379 is the wrong-model control for LL-0376 (a rescaling of the time direction only does not give the Einstein static universe form, for λ² ≠ 1); neither Carroll nor any other source states it, and Carroll's Chapter 3 does not support it. Checked by reading the statement and its non-vacuity case (λ² = 1). The citation of Carroll Chapter 3 is removed and the entry is marked source: structural in docs/results.yaml."
       - id: c1
         kind: catalogue
         text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"

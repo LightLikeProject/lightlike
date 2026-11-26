@@ -4988,9 +4988,9 @@
   tier: established
   source:
     refs:
-      - {ref: carroll-1997, location: "Chapter 3"}
+      - {ref: carroll-1997, location: "eq. (7.100)"}
   review: kernel-checked
-  note: "Citation to be checked (inventory, 25 Nov 2026): the conformal compactification of Minkowski space is in Carroll's Chapter 7, not Chapter 3; Chapter 7 is not yet a verified location of carroll-1997, so Chapter 3 stays cited until it is. GE7 (G1-016). The conformal infinity (null infinity η ± χ = ±π with i⁰ and i^±) is the vanishing locus of ω (compOmega_eq_zero_iff); the null character of the boundary and the action of the Poincaré group on it are NOT proved. The identification is a metric identity on tangent vectors, not a manifold embedding. The comparison with the source is pending in the registry: the location cited is the only recorded verified one (Carroll's Chapter 3), while the compactification itself is in Carroll's Chapter 7 (pp. 192-196), Gourgoulhon gr-qc/0703035 Section 6.3.1 and Campos-Verdaguer gr-qc/9307027 Appendix C, none recorded as verified."
+  note: "GE7 (G1-016). Compared with Carroll, Lecture Notes on General Relativity (gr-qc/9712019), Chapter 7, eqs. (7.86)-(7.102), on the arXiv text: the null coordinates u = (t + r)/2, v = (t - r)/2 (7.88), U = arctan u, V = arctan v with the ranges (7.92), η = U + V, χ = U - V (7.98), the metric ω⁻²(-dη² + dχ² + sin²χ dΩ²) with ω = cos U cos V = (cos η + cos χ)/2 (7.100), (7.101), and the Einstein static universe (7.102). The Lean statement uses the same coordinates and the same ω. Differences: (a) representation: the statement is a metric identity on tangent vectors in the (η, χ) coordinates on the open region 0 < χ, |η| + χ < π (the polar form, which leaves out the axis χ = 0; Carroll includes it, p. 196), not a manifold embedding; (b) Carroll's ranges (7.99) are a rectangle and the image of Minkowski space is the interior of the Penrose diagram, which is the region |η| + χ < π; the library states this region and proves the bijection. The conformal infinity (null infinity η ± χ = ±π with i⁰ and i^±, Carroll p. 196-197) is the vanishing locus of ω (compOmega_eq_zero_iff); the null character of the boundary and the action of the Poincaré group on it are NOT proved here."
   since: unreleased
 - id: LL-0377
   title: "The conformal embedding of Minkowski space in Cartesian form, axis included: the map (η, p) ↦ (t, x⃗) from the region {|η| < π, p ∈ S³, ω > 0} of ℝ × S³ is a bijection onto ℝ × ℝ³, the metric is ω⁻² times the Einstein static universe metric, and the axis r = 0 is the ordinary point p = (1, 0⃗)"
@@ -5001,9 +5001,9 @@
   tier: established
   source:
     refs:
-      - {ref: carroll-1997, location: "Chapter 3"}
+      - {ref: carroll-1997, location: "eq. (7.100)"}
   review: kernel-checked
-  note: "Citation to be checked (inventory, 25 Nov 2026): the Cartesian form is Carroll (7.100), Chapter 7, not Chapter 3; (7.100) is not yet a verified location of carroll-1997, so Chapter 3 stays cited until it is. GE7 (G1-016), the clause that the polar form of the embedding leaves open (the axis r = 0). The Cartesian form is this library's representation of Carroll (7.100), stated in its docstring; the axis is well-behaved after (7.87) in the source. The comparison with the source is pending in the registry: the location cited is the only recorded verified one (Carroll's Chapter 3), while the compactification itself is in Carroll's Chapter 7 (pp. 192-196), Gourgoulhon gr-qc/0703035 Section 6.3.1 and Campos-Verdaguer gr-qc/9307027 Appendix C, none recorded as verified."
+  note: "GE7 (G1-016), the clause that the polar form of the embedding leaves open (the axis r = 0). Compared with Carroll (gr-qc/9712019), Chapter 7: the metric is Carroll (7.100), ω⁻² times the Einstein static universe metric (7.102); the remark after (7.87) says that r = 0 is a coordinate singularity of the polar chart that should be covered by another patch and that the text treats it as well-behaved, and p. 196 says that Minkowski space includes χ = 0. The Cartesian form (η, p) ↦ (t, x⃗) on the region of ℝ × S³ is this library's way to cover the axis by a chart, stated in the docstring; it is not in the source. Difference: representation (the sphere is S³ ⊂ ℝ⁴ instead of the angles (χ, θ, φ)). The map is proved a bijection onto ℝ × ℝ³ and the axis is the ordinary point p = (1, 0⃗)."
   since: unreleased
 - id: LL-0378
   title: "Anti-de Sitter space is conformal to a region of the Einstein static universe: with tan θ the radial coordinate, its metric is cos⁻²θ (−dτ² + dθ² + sin²θ dΩ²) on 0 ≤ θ < π/2, and the boundary θ = π/2 carries the metric −dτ² + dΩ²"
@@ -5014,9 +5014,9 @@
   tier: established
   source:
     refs:
-      - {ref: carroll-1997, location: "Chapter 3"}
+      - {ref: magoo-2000, location: "eq. (2.24)"}
   review: kernel-checked
-  note: "Citation to be checked (inventory, 25 Nov 2026): Carroll Chapter 3 does not treat the conformal compactification of anti-de Sitter space; the coordinates follow Blau, Lecture Notes on General Relativity, Section 39.3, which is not a registered source. GE7 (G1-016). The conformal action of SO(2,3) on the boundary is NOT proved. Source of the AdS coordinates: Blau, Lecture Notes on General Relativity, Section 39.3 (not a registered source). The comparison with the source is pending in the registry: the location cited is the only recorded verified one (Carroll's Chapter 3), while the compactification itself is in Carroll's Chapter 7 (pp. 192-196), Gourgoulhon gr-qc/0703035 Section 6.3.1 and Campos-Verdaguer gr-qc/9307027 Appendix C, none recorded as verified."
+  note: "GE7 (G1-016). Compared with Aharony, Gubser, Maldacena, Ooguri and Oz, Large N Field Theories, String Theory and Gravity (hep-th/9905111), Section 2.2.1, eqs. (2.23)-(2.25) and the text after them, on the arXiv text: with tan θ = sinh ρ (0 ≤ θ < π/2) the global AdS metric is R²/cos²θ (-dτ² + dθ² + sin²θ dΩ²) (2.24), multiplied by R⁻² cos²θ it is the Einstein static universe metric (2.25), and AdS is conformally mapped to one half of the Einstein static universe, with the boundary at θ = π/2. The Lean coordinates are the same (r = tan θ with r = sinh ρ in the global metric -(1 + r²)dτ² + (1 + r²)⁻¹dr² + r²dΩ²), with R = 1. Blau, Lecture Notes on General Relativity (not a registered source), Section 39.3.2, eqs. (39.79)-(39.86) of the 24 November 2026 version, gives the same formulas and states that the boundary θ = π/2 is timelike with metric -dτ² + dΩ² (the boundary metric of ads_boundary_metric). The conformal action of SO(2,3) on the boundary is NOT proved here."
   since: unreleased
 - id: LL-0379
   title: "A non-conformal rescaling does not give the Einstein static universe: if λ² ≠ 1, the form −λ² a² + b² + sin²χ q is not a multiple of −a² + b² + sin²χ q, while for λ² = 1 it is"
@@ -5025,11 +5025,9 @@
   decls: [Lightlike.not_conformal_time_rescaling, Lightlike.conformal_time_rescaling_one]
   status: proven
   tier: established
-  source:
-    refs:
-      - {ref: carroll-1997, location: "Chapter 3"}
+  source: structural
   review: kernel-checked
-  note: "Citation to be checked (inventory, 25 Nov 2026): this is a trust check (a non-conformal rescaling fails), not a statement of Carroll; the Chapter 3 citation does not support it. GE7 (G1-016), the trust check 'a non-conformal rescaling shown to fail' of the milestone. A rescaling of the time direction only; non-vacuity by the case λ² = 1. The comparison with the source is pending in the registry: the location cited is the only recorded verified one (Carroll's Chapter 3), while the compactification itself is in Carroll's Chapter 7 (pp. 192-196), Gourgoulhon gr-qc/0703035 Section 6.3.1 and Campos-Verdaguer gr-qc/9307027 Appendix C, none recorded as verified."
+  note: "GE7 (G1-016), the trust check 'a non-conformal rescaling shown to fail' of the milestone. It is not a statement of a source, so no source is cited. A rescaling of the time direction only (λ² ≠ 1) is not a conformal rescaling of the Einstein static universe form; non-vacuity by the case λ² = 1. It is the control for LL-0376: a wrong model (a time rescaling) does not give the same conformal class."
   since: unreleased
 - id: LL-0380
   title: "For every k and sign epsilon the eigenvalue epsilon (k+1) of the Dirac operator of the unit 2-sphere in the stereographic chart has an injective linear image of k+1 copies of the spinor module among its eigenspinors"
