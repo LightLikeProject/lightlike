@@ -18,8 +18,8 @@ welcome ([how to report a mismatch](#review)).
 
 Read the count with care ([details](docs/RESULTS.md#how-to-read-the-count)): 15 entries are a
 supporting lemma, an elementary fact or a wrapper of a Mathlib or Physlib result, so 539 are results
-in the sense of a paper's theorem; 12 entries are conditional or a stated target; 85 entries have a
-statement that was not yet compared with the text of a source (13 cite one, 72 cite none); 93
+in the sense of a paper's theorem; 12 entries are conditional or a stated target; 84 entries have a
+statement that was not yet compared with the text of a source (12 cite one, 72 cite none); 93
 entries state a limit (the statement is narrower than the source).
 <!-- /results:summary -->
 
