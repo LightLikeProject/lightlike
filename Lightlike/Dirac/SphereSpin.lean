@@ -376,4 +376,52 @@ lemma frameS_orthonormal {p : S2} (hp : pc p 2 ≠ -1) (a b : Fin 2) :
   have h := roundMetric_fS (invS p) a b
   rwa [stereoS_invS hp] at h
 
+/-! ## Smoothness of the frames -/
+
+lemma totalSpace_mk_eq_of_eq {q q' : S2} (h : q = q') (v : Fin 2 → ℝ) :
+    (⟨q, v⟩ : TangentBundle I2 S2) = ⟨q', v⟩ := by subst h; rfl
+
+lemma isOpen_pc_ne (c : ℝ) : IsOpen {q : S2 | pc q 2 ≠ c} :=
+  isOpen_ne_fun ((EuclideanSpace.proj (2 : Fin (2 + 1))).continuous.comp continuous_subtype_val)
+    continuous_const
+
+/-- The pushforward `p ↦ dσ_{τ p}(v)` of a constant vector by a smooth map `σ : ℝ² → S2` with a smooth local
+inverse `τ`, as a section of the tangent bundle, is smooth wherever `σ ∘ τ = id` near the point. -/
+lemma contMDiffAt_pushforward {σm : (Fin 2 → ℝ) → S2} (hσ : ContMDiff 𝓘(ℝ, Fin 2 → ℝ) I2 ∞ σm)
+    {τ : S2 → Fin 2 → ℝ} {p : S2} (hτ : ContMDiffAt I2 𝓘(ℝ, Fin 2 → ℝ) ∞ τ p)
+    (hinv : ∀ᶠ q in nhds p, σm (τ q) = q) (v : Fin 2 → ℝ) :
+    ContMDiffAt I2 (I2.prod 𝓘(ℝ, Fin 2 → ℝ)) ∞
+      (fun q => (⟨q, (mfderiv 𝓘(ℝ, Fin 2 → ℝ) I2 σm (τ q) v : Fin 2 → ℝ)⟩ : TangentBundle I2 S2)) p := by
+  have hT := hσ.contMDiff_tangentMap (m := ∞) (by simp)
+  have hin : ContMDiffAt I2 (𝓘(ℝ, Fin 2 → ℝ)).tangent ∞
+      (fun q => (⟨τ q, v⟩ : TangentBundle 𝓘(ℝ, Fin 2 → ℝ) (Fin 2 → ℝ))) p := by
+    rw [Bundle.contMDiffAt_totalSpace]
+    refine ⟨hτ, ?_⟩
+    simpa [TangentBundle.trivializationAt_apply, mfld_simps] using contMDiffAt_const
+  refine (hT.contMDiffAt.comp p hin).congr_of_eventuallyEq ?_
+  filter_upwards [hinv] with q hq
+  exact totalSpace_mk_eq_of_eq hq.symm _
+
+lemma frameN_smooth (a : Fin 2) {p : S2} (hp : pc p 2 ≠ 1) :
+    ContMDiffAt I2 (I2.prod 𝓘(ℝ, Fin 2 → ℝ)) ∞ (fun q => (⟨q, frameN a q⟩ : TangentBundle I2 S2)) p := by
+  have hinv : ∀ᶠ q in nhds p, stereoN (invN q) = q := by
+    filter_upwards [(isOpen_pc_ne 1).mem_nhds hp] with q hq using stereoN_invN hq
+  have hX := contMDiffAt_pushforward contMDiff_stereoN (contMDiffAt_invN hp) hinv (Pi.single a 1)
+  have hc : ContMDiffAt I2 𝓘(ℝ, ℝ) ∞ (fun q => (nsq (invN q) + 1) / 2) p := by
+    have h := contMDiffAt_invN hp
+    have hq : ContDiff ℝ ∞ (fun y : Fin 2 → ℝ => (nsq y + 1) / 2) := by unfold nsq; fun_prop
+    exact hq.contMDiff.contMDiffAt.comp p h
+  exact hc.smul_section hX
+
+lemma frameS_smooth (a : Fin 2) {p : S2} (hp : pc p 2 ≠ -1) :
+    ContMDiffAt I2 (I2.prod 𝓘(ℝ, Fin 2 → ℝ)) ∞ (fun q => (⟨q, frameS a q⟩ : TangentBundle I2 S2)) p := by
+  have hinv : ∀ᶠ q in nhds p, stereoS (invS q) = q := by
+    filter_upwards [(isOpen_pc_ne (-1)).mem_nhds hp] with q hq using stereoS_invS hq
+  have hX := contMDiffAt_pushforward contMDiff_stereoS (contMDiffAt_invS hp) hinv (Pi.single a 1)
+  have hc : ContMDiffAt I2 𝓘(ℝ, ℝ) ∞ (fun q => (nsq (invS q) + 1) / 2) p := by
+    have h := contMDiffAt_invS hp
+    have hq : ContDiff ℝ ∞ (fun y : Fin 2 → ℝ => (nsq y + 1) / 2) := by unfold nsq; fun_prop
+    exact hq.contMDiff.contMDiffAt.comp p h
+  exact hc.smul_section hX
+
 end Lightlike.Dirac
