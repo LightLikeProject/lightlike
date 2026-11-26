@@ -7060,3 +7060,82 @@
   review: kernel-checked
   note: "GE7 m1 (main statement), assembled from the layers NullDirection, ScriAction (group law, scriAct_comp), SphereConformal, ScriLimit and ScriDilation (dilation, scriDil_scriAct). Comparison pending (no source was read at a cited location): the standard action of the Poincaré group on future null infinity, where the retarded time transforms with the factor K and the sphere by the Möbius action. Limits: Cartesian retarded time and direction, not the compactified chart; the Poincaré group is the set of pairs (Λ, a) with Λ an orthochronous Lorentz matrix, not a group type (the group law and the composition rule hold for the pairs); the conformal factor on the sphere is stated through the length of the differential of the direction map on tangent vectors, not as an equation of metrics on a manifold; the dilation is a separate theorem (scriDil_scriAct) and is not part of this statement; the BMS supertranslations are not treated."
   since: unreleased
+- id: LL-0547
+  title: The Einstein tensor of a locally smooth Levi-Civita connection on a manifold modelled with corners on any finite-dimensional real normed space is divergence free, without a Hausdorff hypothesis
+  area: Spacetime
+  file: Lightlike/Spacetime/Corners/RicciTransport.lean
+  decls: [Lightlike.einstein_divergence_free_any, Lightlike.einstein_divergence_free_trans]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (3.96)", check: "Bianchi"}
+  review: kernel-checked
+  note: "For a non-degenerate metric g of any signature on a C^2 manifold modelled with corners (boundary and corners allowed) on any finite-dimensional real normed space E, and a locally smooth connection that is the Levi-Civita connection of g, the divergence of the Einstein tensor vanishes, with no Hausdorff hypothesis (einstein_divergence_free_any). It is the theorem for E = Fin n -> R (einstein_divergence_free_provedW) transported along a continuous linear equivalence e : E -> Fin n -> R (einstein_divergence_free_trans): the same manifold with the model transported to Fin n -> R (ModelWithCorners.transContinuousLinearEquiv) carries the transported connection, metric and fields (files TangentTransport, LieBracketTransport, CovDerivTransport, MetricTransport, CurvatureTransport, LeviCivitaTransport, CovDerivBilinTransport, RicciTransport), and the curvature, Ricci tensor, scalar curvature, Einstein tensor and the covariant derivative of the latter correspond term by term. Carroll, eqs. (3.94) to (3.96), derives the identity by contracting the Bianchi identity (as for LL-0232); the proof here is a transport of a coordinate computation (representation). The comparison of the corners statement with Wald, General Relativity, is pending: the book was not read at the cited location."
+  since: unreleased
+- id: LL-0548
+  title: "Hyperbolic polar coordinates on the upper half-plane: for measurable G from the upper half-plane to [0, infinity], the integral of G against the invariant measure dx dy / y^2 is the integral over phi in (-pi, pi) and xi > 0 of sinh xi times G at the inverse Cayley transform of tanh(xi/2) e^(i phi)"
+  area: Lorentz
+  file: Lightlike/Lorentz/SL2RPlancherel/HyperbolicPolar.lean
+  decls: [Lightlike.Lorentz.SL2R.lintegral_upperHalfPlane_polar, Lightlike.Lorentz.SL2R.lintegral_tanh_half]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Layer 2a of the Plancherel formula on SL(2,R), part 1. The measure sinh xi dxi dphi is the area element of the hyperbolic plane in geodesic polar coordinates about i (xi the hyperbolic distance from i, phi the angle at i); the proof moves dx dy/y^2 to the unit disc by the Cayley transform, where it is 4 dA/(1-|w|^2)^2, then uses the plane polar coordinates of Mathlib and the substitution r = tanh(xi/2). Standard; no source consulted for the formula in this form."
+  since: unreleased
+- id: LL-0549
+  title: "Polar (Cartan, KAK) integration formula for the Haar measure of SL(2,R): for measurable F from SL(2,R) to [0, infinity], the integral of F is 2 times the integral over alpha in (-pi/2, pi/2), xi > 0 of sinh xi times the integral over theta in (0, 2 pi] of F(k_alpha a(xi) k_theta), with a(xi) = diag(e^(xi/2), e^(-xi/2)) and k the rotations, for the Haar measure normalised by the Iwasawa chart"
+  area: Lorentz
+  file: Lightlike/Lorentz/SL2RPlancherel/PolarIntegral.lean
+  decls: [Lightlike.Lorentz.SL2R.lintegral_haarR_polar, Lightlike.Lorentz.SL2R.smul_I_polar]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Layer 2a of the Plancherel formula on SL(2,R), part 2: from the Iwasawa form of haarR, the hyperbolic polar coordinates of the upper half-plane, the identity k_alpha a(xi) . i = Cayley^-1(tanh(xi/2) e^(2 i alpha)), the substitution phi = 2 alpha and the rotation invariance of the circle integral. The normalisation is that of haarR (the measure of the Iwasawa chart), not a unit-mass or a fixed-constant normalisation. Standard; no source consulted for the formula in this form. NOT proved: the Plancherel formula on compactly supported functions (layer 2b) and its completeness (layer 2c)."
+  since: unreleased
+- id: LL-0550
+  title: "Parseval identity on the square (0,1] x (0,1] for a continuous complex function P: the sum over (m,n) in Z^2 of the squared moduli of the Fourier coefficients, the integrals of e^(-2 pi i (m x_0 + n x_1)) P(x) over the square, equals the integral of the squared modulus of P over the square"
+  area: Lorentz
+  file: Lightlike/Lorentz/SL2RPlancherel/TorusParseval.lean
+  decls: [Lightlike.Lorentz.SL2RPlancherel.hasSum_sq_box]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Layer 2b of the Plancherel formula on SL(2,R), part 1. Mathlib's Parseval identity on the two-dimensional torus (UnitAddTorus), applied to the restriction of P to the fundamental box; no continuity of P across the boundary of the box is used, since the box is a fundamental domain. Standard; no source consulted."
+  since: unreleased
+- id: LL-0551
+  title: "Polar integration formula for the Haar measure of SL(2,R) over the full torus of angles: for measurable F from SL(2,R) to [0, infinity], the integral of F is the integral over xi > 0 of sinh xi times the integral over alpha and theta in (0, 2 pi] of F(k_alpha a(xi) k_theta), for the Haar measure normalised by the Iwasawa chart"
+  area: Lorentz
+  file: Lightlike/Lorentz/SL2RPlancherel/PolarTorus.lean
+  decls: [Lightlike.Lorentz.SL2R.lintegral_haarR_torus]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Layer 2b of the Plancherel formula on SL(2,R), part 2. From the formula with alpha in (-pi/2, pi/2) (previous entry) and the invariance of (alpha, theta) to k_alpha a(xi) k_theta under the shift of both angles by pi, which doubles the range of alpha; the factor 2 of the half-range formula is absorbed. Standard; no source consulted."
+  since: unreleased
+- id: LL-0552
+  title: "Plancherel identity of L2(SL(2,R)) in the K x K components for continuous functions: the integral of |f|^2 against the Haar measure equals (2 pi)^2 times the integral over xi > 0 of sinh xi times the sum over (m,n) of |f_{m,n}(xi)|^2, where f_{m,n}(xi) is the (m,n)-th Fourier coefficient of (alpha, theta) to f(k_alpha a(xi) k_theta)"
+  area: Lorentz
+  file: Lightlike/Lorentz/SL2RPlancherel/KKParseval.lean
+  decls: [Lightlike.Lorentz.SL2RPlancherel.lintegral_norm_sq_eq_kk]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Layer 2b of the Plancherel formula on SL(2,R): the Parseval step in the K x K components, valid for every continuous f (finite or infinite value of both sides, as an equality in [0, infinity]). Standard in form (Cartan decomposition and Fourier series on the torus of angles); no source consulted. NOT proved: the identification of the components f_{m,n} with ladder images of radial generators and the resulting integral against the Plancherel measure rho tanh(pi rho) (layer 2c), and the discrete series terms (layer 3), so the Plancherel formula of SL(2,R) is still open."
+  since: unreleased
+- id: LL-0553
+  title: "The isometry group of anti-de Sitter space acts conformally on its conformal boundary: for a matrix Λ with Λᵀ η' Λ = η', η' = diag(-1, -1, 1, 1, 1), and a boundary point (cos τ, sin τ, ω), |ω| = 1, the image is ρ (cos τ', sin τ', ω') with ρ > 0 and |ω'| = 1, the action is compatible with the product of matrices (the angle read modulo 2π), and for a tangent vector (dτ, dω) = (a, v), v ⊥ ω, the boundary metric of the image is -(dτ')² + |dω'|² = (-a² + |v|²) / ρ²"
+  area: GR
+  file: Lightlike/GR/AdSConformalBoundary/NullConeSummary.lean
+  decls: [Lightlike.ads_isometry_conformal_boundary]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "GE7 m2 (main statement), assembled from the layers NullCone (factor, angle, unit direction), NullConeAction (group law) and NullConeConformal (the differential and the factor ρ⁻²). Comparison pending (no source was read at a cited location): the embedding of anti-de Sitter space as the quadric in R^{2,3} and of its conformal boundary as the projectivised null cone is Blau, Lecture Notes on General Relativity, Section 39.1 and 39.3.2, to be read before the comparison is claimed. Limits: SO(2,3) is the set of matrices Λ with Λᵀ η' Λ = η' (all of O(2,3), not a group type); the boundary is the circle times the sphere (no universal cover); the differential is stated through explicit formulas for the velocities dτ' and dω' (with their derivative statements along the image curve t ↦ Λ (X + t T) in NullConeConformal), not as an equation of metrics on a manifold; the relation to the boundary metric adsBdyMetric is checked on the time translation (adsAngleShift) only."
+  since: unreleased

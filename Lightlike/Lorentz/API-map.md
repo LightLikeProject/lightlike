@@ -95,7 +95,7 @@ The irreducibility of the principal series is not yet formalized. [TODO]
 Further results of this area in the results catalogue:
 The spherical Plancherel theorem for SL(2,R): the spherical transform is a unitary equivalence from
 L²(1,∞) onto L²(0,∞), with the density ρ tanh(πρ) [32]. The spherical Plancherel formula for SL(2,R) on
-smooth compactly supported functions of the hyperbolic distance, with the density ρ tanh(πρ) [33]. For the K-type (l, r) of radial functions, the squared L² norm of the l-fold ladder image of the profile sinh^r ξ G^{(r)}(cosh ξ) is the Plancherel integral with the extra weights ∏_{k<l}((k+1/2)² + ρ²) and ∏_{k<r}((k+1/2)² + ρ²) [44]. The
+smooth compactly supported functions of the hyperbolic distance, with the density ρ tanh(πρ) [33]. For the K-type (l, r) of radial functions, the squared L² norm of the l-fold ladder image of the profile sinh^r ξ G^{(r)}(cosh ξ) is the Plancherel integral with the extra weights ∏_{k<l}((k+1/2)² + ρ²) and ∏_{k<r}((k+1/2)² + ρ²) [44]. The invariant measure of the upper half-plane is, in hyperbolic polar coordinates about i, sinh ξ dξ dφ, with φ the angle and ξ the hyperbolic distance [45]; the Haar measure of SL(2,ℝ), normalised by the Iwasawa chart, is in the Cartan coordinates k_α a(ξ) k_θ twice the product of sinh ξ dξ with dα on (-π/2, π/2) and dθ on a period [46]; over the full torus of angles in (0, 2π]² the factor 2 is absorbed [48]. Parseval's identity on the square (0,1]² holds for continuous functions [47], and with it the integral of |f|² against the Haar measure is (2π)² times the integral over ξ > 0 of sinh ξ times the sum of the squared moduli of the K × K Fourier components of f [49]. The
 massive one-particle representation of the Poincaré group, induced from SU(2): it preserves the L² norm,
 is covariant under translations, has P² = m², W² = −m² s(s+1) and n+1 states per momentum [34]. The
 massless one-particle representation of finite helicity h/2, induced from the character of ISO(2): it
@@ -204,6 +204,14 @@ non-vacuity check (stated, not proven) [41].
     `Lorentz.SL2RPlancherel.no_invariant_form_smooth`: no positive definite skew form for `|τ| > 1`
 44. Lightlike/Lorentz/SL2RPlancherel/KTypeLR.lean - `Lorentz.SL2RPlancherel.norm_sq_ktype_lr`,
     `Lorentz.SL2RPlancherel.Nform_succ`, `Lorentz.SL2RPlancherel.LRClaim_all`
+45. Lightlike/Lorentz/SL2RPlancherel/HyperbolicPolar.lean -
+    `Lorentz.SL2R.lintegral_upperHalfPlane_polar`, `Lorentz.SL2R.lintegral_tanh_half`
+46. Lightlike/Lorentz/SL2RPlancherel/PolarIntegral.lean -
+    `Lorentz.SL2R.lintegral_haarR_polar`, `Lorentz.SL2R.smul_I_polar`
+47. Lightlike/Lorentz/SL2RPlancherel/TorusParseval.lean - `Lorentz.SL2RPlancherel.hasSum_sq_box`
+48. Lightlike/Lorentz/SL2RPlancherel/PolarTorus.lean - `Lorentz.SL2R.lintegral_haarR_torus`
+49. Lightlike/Lorentz/SL2RPlancherel/KKParseval.lean -
+    `Lorentz.SL2RPlancherel.lintegral_norm_sq_eq_kk`
 
 ## References
 
