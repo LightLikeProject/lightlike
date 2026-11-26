@@ -18,9 +18,9 @@ countable Hausdorff manifold modelled on `ℝⁿ`:
   and positive on nonempty open sets, so `0 < vol_g(M) < ∞` for a nonempty compact manifold
   (`NondegMetric.volumeMeasure_univ_pos`, `NondegMetric.volumeMeasure_univ_lt_top`).
 
-The chart forms reuse `NondegMetric.volumeMeasure_restrict_chart` (EHManifold/ChartAction.lean),
-`NondegMetric.setIntegral_volumeMeasure_chart`, `NondegMetric.continuousOn_volDensity` (EHManifold/IntrinsicAction.lean)
-and `NondegMetric.volumeMeasure_lt_top_of_isCompact` (EHManifold/ChartIntegrable.lean). These are the properties of the Riemannian measure that integration on a compact Riemannian manifold uses (the heat
+The chart forms reuse `NondegMetric.volumeMeasure_restrict_chart` (Lightlike/Spacetime/EHManifold/ChartAction.lean),
+`NondegMetric.setIntegral_volumeMeasure_chart`, `NondegMetric.continuousOn_volDensity` (Lightlike/Spacetime/EHManifold/IntrinsicAction.lean)
+and `NondegMetric.volumeMeasure_lt_top_of_isCompact` (Lightlike/Spacetime/EHManifold/ChartIntegrable.lean). These are the properties of the Riemannian measure that integration on a compact Riemannian manifold uses (the heat
 trace, Green's formula). They hold for every nondegenerate metric because the density `√|det g|` is continuous and
 positive on each chart target.
 

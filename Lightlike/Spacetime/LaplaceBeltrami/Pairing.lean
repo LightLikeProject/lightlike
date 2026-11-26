@@ -37,7 +37,7 @@ def coordPartial (x₀ : M) (f : M → ℝ) (y : Fin n → ℝ) (i : Fin n) : �
   fderiv ℝ (f ∘ (extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).symm) y (Pi.single i 1)
 
 /-- A smooth function is smooth in every chart, on the chart target. The same statement, with the arguments in the other
-order, is `Lightlike.contDiffOn_comp_extChartAt_symm` in `Spacetime/NullHypersurface.lean`; this file does not import
+order, is `Lightlike.contDiffOn_comp_extChartAt_symm` in `Lightlike/Spacetime/NullHypersurface.lean`; this file does not import
 it because that file pulls in the Raychaudhuri layer. -/
 theorem contDiffOn_chart_comp {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ) ∞ f) (x₀ : M) :
     ContDiffOn ℝ ∞ (f ∘ (extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).symm) (extChartAt 𝓘(ℝ, Fin n → ℝ) x₀).target := by
