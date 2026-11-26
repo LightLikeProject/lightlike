@@ -49,6 +49,11 @@ lemma continuous_dF_group {F : Ent → ℂ} (hF : ContDiff ℝ 1 F) (X : Matrix 
     fun_prop
   exact hf.clm_apply hx
 
+/-- The lowering operator `A - iB` on `f = F ∘ (entries)`: the right derivative in the direction
+`H` minus `i` times that in the direction `S`. -/
+def lowerFn (F : Ent → ℂ) (g : SL2R) : ℂ :=
+  dF F (g : Matrix (Fin 2) (Fin 2) ℝ) matH - Complex.I * dF F (g : Matrix (Fin 2) (Fin 2) ℝ) matS
+
 lemma continuous_raiseFn {F : Ent → ℂ} (hF : ContDiff ℝ 1 F) : Continuous (raiseFn F) :=
   (continuous_dF_group hF matH).add (continuous_const.mul (continuous_dF_group hF matS))
 
@@ -95,5 +100,46 @@ theorem lintegral_norm_sq_raise {F : Ent → ℂ} (hF : ContDiff ℝ 1 F) :
   refine setLIntegral_congr_fun measurableSet_Ioi fun ξ hξ => ?_
   have hξ0 : ξ ≠ 0 := ne_of_gt hξ
   simp only [kkCoeff_raiseFn_eq hF _ hξ0]
+
+lemma continuous_lowerFn {F : Ent → ℂ} (hF : ContDiff ℝ 1 F) : Continuous (lowerFn F) :=
+  (continuous_dF_group hF matH).sub (continuous_const.mul (continuous_dF_group hF matS))
+
+/-- The `(m, n)`-component of the lowering operator, as the ladder expression in the
+`(m, n+2)`-component of `f`: `f_{m,n+2}' + (((n+2) cosh ξ − m)/(2 sinh ξ)) f_{m,n+2}`. -/
+def lowerComp (F : Ent → ℂ) (n : Fin 2 → ℤ) (ξ : ℝ) : ℂ :=
+  deriv (fun ξ => kkCoeff (smoothFn F) ![n 0, n 1 + 2] ξ) ξ +
+    ((((n 1 + 2 : ℤ) : ℝ) * Real.cosh ξ - (n 0 : ℝ)) / (2 * Real.sinh ξ) : ℝ) *
+      kkCoeff (smoothFn F) ![n 0, n 1 + 2] ξ
+
+lemma kkCoeff_lowerFn (F : Ent → ℂ) (m k : ℤ) (ξ : ℝ) :
+    kkCoeff (lowerFn F) ![m, k - 2] ξ =
+      ∫ x in box, torusChar m (k - 2) (x 0) (x 1) *
+        (dF F (kakM (2 * π * x 0) ξ (2 * π * x 1)) matH -
+          Complex.I * dF F (kakM (2 * π * x 0) ξ (2 * π * x 1)) matS) := by
+  unfold kkCoeff kkProfile lowerFn torusChar
+  simp [Fin.sum_univ_two, kakM]
+
+/-- Each `K × K` component of the lowering operator is the ladder expression `lowerComp`. -/
+lemma kkCoeff_lowerFn_eq {F : Ent → ℂ} (hF : ContDiff ℝ 1 F) (n : Fin 2 → ℤ) {ξ : ℝ} (hξ : ξ ≠ 0) :
+    kkCoeff (lowerFn F) n ξ = lowerComp F n ξ := by
+  have hn : n = ![n 0, (n 1 + 2) - 2] := by
+    ext i; fin_cases i <;> simp
+  rw [hn]
+  have h1 := kk_ladder_down hF (n 0) (n 1 + 2) hξ
+  rw [kkCoeff_lowerFn, h1]
+  unfold lowerComp
+  simp only [kkCoeff_smoothFn_eq]
+  simp
+
+/-- **The `L²` norm of the lowering operator in the `K × K` components** (layer 2c-ii), the mirror
+of `lintegral_norm_sq_raise`. -/
+theorem lintegral_norm_sq_lower {F : Ent → ℂ} (hF : ContDiff ℝ 1 F) :
+    ∫⁻ g, ENNReal.ofReal (‖lowerFn F g‖ ^ 2) ∂haarR =
+      ∫⁻ ξ in Ioi (0 : ℝ), ENNReal.ofReal (Real.sinh ξ) *
+        ENNReal.ofReal ((2 * π) ^ 2 * ∑' n : Fin 2 → ℤ, ‖lowerComp F n ξ‖ ^ 2) := by
+  rw [lintegral_norm_sq_eq_kk (continuous_lowerFn hF)]
+  refine setLIntegral_congr_fun measurableSet_Ioi fun ξ hξ => ?_
+  have hξ0 : ξ ≠ 0 := ne_of_gt hξ
+  simp only [kkCoeff_lowerFn_eq hF _ hξ0]
 
 end Lightlike.Lorentz.SL2R

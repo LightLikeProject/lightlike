@@ -1,8 +1,8 @@
 - id: LL-XXXX-c
-  title: "L2 norm of the raising operator of SL(2,R) in the K x K components: for f the restriction to SL(2,R) of a C^1 function of the four entries and E f = A f + i B f, the right derivatives of f in the directions H = diag(1/2, -1/2) and S = [[0,1/2],[1/2,0]], the integral of |E f|^2 against the Haar measure equals (2 pi)^2 times the integral over xi > 0 of sinh xi times the sum over (m,n) in Z^2 of |f_{m,n-2}'(xi) - (((n-2) cosh xi - m)/(2 sinh xi)) f_{m,n-2}(xi)|^2"
+  title: "L2 norm of the raising and the lowering operator of SL(2,R) in the K x K components (the statement for the raising operator; the lowering operator A - iB gives the same with the components f_{m,n+2} and the ladder f' + ((n+2) cosh xi - m)/(2 sinh xi) f): for f the restriction to SL(2,R) of a C^1 function of the four entries and E f = A f + i B f, the right derivatives of f in the directions H = diag(1/2, -1/2) and S = [[0,1/2],[1/2,0]], the integral of |E f|^2 against the Haar measure equals (2 pi)^2 times the integral over xi > 0 of sinh xi times the sum over (m,n) in Z^2 of |f_{m,n-2}'(xi) - (((n-2) cosh xi - m)/(2 sinh xi)) f_{m,n-2}(xi)|^2"
   area: Lorentz
   file: Lightlike/Lorentz/SL2RPlancherel/LadderNorm.lean
-  decls: [Lightlike.Lorentz.SL2R.lintegral_norm_sq_raise]
+  decls: [Lightlike.Lorentz.SL2R.lintegral_norm_sq_raise, Lightlike.Lorentz.SL2R.lintegral_norm_sq_lower]
   status: proven
   tier: established
   source: exploratory

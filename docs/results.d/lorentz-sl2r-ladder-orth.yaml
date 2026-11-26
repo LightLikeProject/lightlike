@@ -1,0 +1,11 @@
+- id: LL-XXXX-e
+  title: "A ladder image is orthogonal to the kernel of the adjoint ladder: for real l, r, a C^1 function G on (0, infinity) with ladDown (l+1) r G = 0 on (0, infinity), and F of class C^1 on (0, infinity) vanishing for large xi with sinh(xi) F(xi) conj(G(xi)) tending to 0 at 0, the integral over (0, infinity) of (F' - (l coth xi + r / sinh xi) F) conj(G) sinh xi is zero, whenever it converges"
+  area: Lorentz
+  file: Lightlike/Lorentz/SL2RPlancherel/LadderOrth.lean
+  decls: [Lightlike.Lorentz.SL2RPlancherel.ladUp_orth_ker]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Layer 2c-iii of the Plancherel formula on SL(2,R), part 2. The adjointness of the ladder operators with boundary terms (ladder_adjoint_boundary) on the intervals (R/(n+1), R], and the limit as the lower end tends to 0, where the boundary term is the hypothesis. This is the orthogonality of the ladder images to the (non-normalisable or discrete series) kernel elements; the converse, that nothing else is orthogonal, is layer 2c-iv. Standard; no source consulted."
+  since: unreleased
