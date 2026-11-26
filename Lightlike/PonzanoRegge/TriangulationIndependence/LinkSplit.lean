@@ -251,17 +251,17 @@ variable (h : FlipData K v g Ed opp)
 include h
 
 omit h in
-lemma star_mem {τ : Finset V} (hτ : τ ∈ K.link v) : insert v τ ∈ starTets K v :=
+lemma mem_starTets_of_link {τ : Finset V} (hτ : τ ∈ K.link v) : insert v τ ∈ starTets K v :=
   mem_filter.2 ⟨(Complex3.mem_link.1 hτ).2, mem_insert_self v τ⟩
 
 lemma a_fresh {e : Finset V} (he : e ∈ Ed) : flipA v g opp e ∉ K.verts :=
-  h.stack.fresh _ (star_mem (h.fst e he).1)
+  h.stack.fresh _ (mem_starTets_of_link (h.fst e he).1)
 
 lemma b_fresh {e : Finset V} (he : e ∈ Ed) : flipB v g opp e ∉ K.verts :=
-  h.stack.fresh _ (star_mem (h.snd e he).1)
+  h.stack.fresh _ (mem_starTets_of_link (h.snd e he).1)
 
 lemma a_ne_b {e : Finset V} (he : e ∈ Ed) : flipA v g opp e ≠ flipB v g opp e := fun hab => by
-  have := h.stack.inj _ (star_mem (h.fst e he).1) _ (star_mem (h.snd e he).1) hab
+  have := h.stack.inj _ (mem_starTets_of_link (h.fst e he).1) _ (mem_starTets_of_link (h.snd e he).1) hab
   exact h.ne e he (insert_left_inj (Complex3.mem_link.1 (h.fst e he).1).1
     (Complex3.mem_link.1 (h.snd e he).1).1 this)
 
@@ -336,7 +336,7 @@ lemma FlipData.edge_of_labels {Ed : Finset (Finset V)} {opp : Finset V → Finse
     (h2 : flipB v g opp e' = flipA v g opp e ∨ flipB v g opp e' = flipB v g opp e) : e' = e := by
   have inj : ∀ {σ σ' : Finset V}, σ ∈ K.link v → σ' ∈ K.link v → g (insert v σ) = g (insert v σ') →
       σ = σ' := fun hσ hσ' e => insert_left_inj (Complex3.mem_link.1 hσ).1
-        (Complex3.mem_link.1 hσ').1 (h.stack.inj _ (star_mem hσ) _ (star_mem hσ') e)
+        (Complex3.mem_link.1 hσ').1 (h.stack.inj _ (mem_starTets_of_link hσ) _ (mem_starTets_of_link hσ') e)
   have c1 := card_of_mem_link (h.fst e he).1
   have c2 := card_of_mem_link (h.snd e he).1
   have k1 : (opp e').1 = (opp e).1 ∨ (opp e').1 = (opp e).2 := by
@@ -356,6 +356,132 @@ lemma FlipData.edge_of_labels {Ed : Finset (Finset V)} {opp : Finset V → Finse
     · exact absurd (k1.trans k2.symm) hne'
   exact edge_eq_of_inter c1 c2 (h.ne e he) hsub' (subset_inter (h.fst e he).2 (h.snd e he).2)
     (h.card_e he') (h.card_e he)
+
+
+/-- A link triangle through the edge `{x, y}` is `{x, y}` plus a third vertex. -/
+lemma third_vertex {τ : Finset V} (hτ : τ ∈ K.link v) {e : Finset V} (he : e ⊆ τ) (h2 : #e = 2) :
+    ∃ z ∈ τ, z ∉ e ∧ ∀ y, y ∈ τ ↔ y ∈ e ∨ y = z := by
+  have : #(τ \ e) = 1 := by rw [card_sdiff_of_subset he, card_of_mem_link hτ, h2]
+  obtain ⟨z, hz⟩ := card_eq_one.1 this
+  have hzτ : z ∈ τ \ e := hz ▸ mem_singleton_self z
+  refine ⟨z, (mem_sdiff.1 hzτ).1, (mem_sdiff.1 hzτ).2, fun y => ⟨fun hy => ?_, ?_⟩⟩
+  · by_cases hye : y ∈ e
+    · exact .inl hye
+    · exact .inr (mem_singleton.1 (hz ▸ mem_sdiff.2 ⟨hy, hye⟩))
+  · rintro (hy | rfl)
+    · exact he hy
+    · exact (mem_sdiff.1 hzτ).1
+
+/-- **One flip**: the 2-3 move on `{v, x, y}` with apexes the fresh labels of the two link
+triangles at `{x, y}`. -/
+theorem forwardStep_flip {Ed : Finset (Finset V)} {opp : Finset V → Finset V × Finset V} {x y : V}
+    (h : FlipData K v g (insert {x, y} Ed) opp) (hn : ({x, y} : Finset V) ∉ Ed) (hxy : x ≠ y) :
+    ForwardStep (flipAll K v g Ed opp) (flipAll K v g (insert {x, y} Ed) opp) := by
+  set e : Finset V := {x, y} with he_def
+  have he : e ∈ insert e Ed := mem_insert_self e Ed
+  have h0 := h.mono (subset_insert e Ed)
+  have ha := h.a_fresh he
+  have hb := h.b_fresh he
+  have hab := h.a_ne_b he
+  obtain ⟨a, ha_def⟩ : ∃ a, flipA v g opp e = a := ⟨_, rfl⟩
+  obtain ⟨b, hb_def⟩ : ∃ b, flipB v g opp e = b := ⟨_, rfl⟩
+  rw [ha_def] at ha hab
+  rw [hb_def] at hb hab
+  have hxe : x ∈ e := by rw [he_def]; exact mem_insert_self x {y}
+  have hye : y ∈ e := by rw [he_def]; exact mem_insert_of_mem (mem_singleton_self y)
+  have hxV := h.x_verts he hxe
+  have hyV := h.x_verts he hye
+  have hve := h.v_notMem he
+  have hvx : v ≠ x := fun e' => hve (e' ▸ hxe)
+  have hvy : v ≠ y := fun e' => hve (e' ▸ hye)
+  have hva : v ≠ a := (h.ne_v_of_fresh ha).symm
+  have hvb : v ≠ b := (h.ne_v_of_fresh hb).symm
+  have hxa : x ≠ a := fun e' => ha (e' ▸ hxV)
+  have hxb : x ≠ b := fun e' => hb (e' ▸ hxV)
+  have hya : y ≠ a := fun e' => ha (e' ▸ hyV)
+  have hyb : y ≠ b := fun e' => hb (e' ▸ hyV)
+  -- the two stacked tetrahedra through `v ∪ e`
+  have piece : ∀ (τ : Finset V), τ ∈ K.link v → e ⊆ τ → ∃ z ∈ τ, z ∉ e ∧ z ≠ v ∧
+      insert (g (insert v τ)) ((insert v τ).erase z) = insert v (insert (g (insert v τ)) e) := by
+    intro τ hτ heτ
+    obtain ⟨z, hzτ, hze, hiff⟩ := third_vertex hτ heτ (h.card_e he)
+    have hzv : z ≠ v := fun e' => (Complex3.mem_link.1 hτ).1 (e' ▸ hzτ)
+    refine ⟨z, hzτ, hze, hzv, ?_⟩
+    ext w
+    simp only [mem_insert, mem_erase, hiff]
+    constructor
+    · rintro (h1 | ⟨h1, h2 | h2 | h2⟩)
+      · exact .inr (.inl h1)
+      · exact .inl h2
+      · exact .inr (.inr h2)
+      · exact absurd h2 h1
+    · rintro (h1 | h1 | h1)
+      · exact .inr ⟨fun e' => hzv (e' ▸ h1), .inl h1⟩
+      · exact .inl h1
+      · exact .inr ⟨fun e' => hze (e' ▸ h1), .inr (.inl h1)⟩
+  obtain ⟨z1, hz1τ, hz1e, hz1v, hp1⟩ := piece _ (h.fst e he).1 (h.fst e he).2
+  obtain ⟨z2, hz2τ, hz2e, hz2v, hp2⟩ := piece _ (h.snd e he).1 (h.snd e he).2
+  have hp1' := hp1
+  have hp2' := hp2
+  rw [show g (insert v (opp e).1) = a from ha_def] at hp1'
+  rw [show g (insert v (opp e).2) = b from hb_def] at hp2'
+  have pa : ({v, x, y, a} : Finset V) = insert v (insert a e) := by
+    rw [he_def, insert_comm a x, pair_comm a y]
+  have pb : ({v, x, y, b} : Finset V) = insert v (insert b e) := by
+    rw [he_def, insert_comm b x, pair_comm b y]
+  have inS_a : insert v (insert a e) ∈ (stackAll K (starTets K v) g).tets := by
+    rw [h.stack.mem_stackAll]
+    exact .inr ⟨(insert v (opp e).1 : Finset V), FlipData.mem_starTets_of_link (h.fst e he).1, z1, mem_insert_of_mem hz1τ,
+      hp1.trans (by rw [show g (insert v (opp e).1) = a from ha_def])⟩
+  have inS_b : insert v (insert b e) ∈ (stackAll K (starTets K v) g).tets := by
+    rw [h.stack.mem_stackAll]
+    exact .inr ⟨(insert v (opp e).2 : Finset V), FlipData.mem_starTets_of_link (h.snd e he).1, z2, mem_insert_of_mem hz2τ,
+      hp2.trans (by rw [show g (insert v (opp e).2) = b from hb_def])⟩
+  -- a removed or added tetrahedron of another flip is not one of these
+  have key : ∀ (c d : V) (e' : Finset V), c ∉ K.verts → d ∉ K.verts → e' ∈ insert e Ed →
+      insert v (insert c e') = insert v (insert d e) → e' = e := by
+    intro c d e' hc hd he' heq
+    have hve' := h.v_notMem he'
+    have h1 := insert_left_inj (by rw [mem_insert, not_or]; exact ⟨(h.ne_v_of_fresh hc).symm, hve'⟩)
+      (by rw [mem_insert, not_or]; exact ⟨(h.ne_v_of_fresh hd).symm, hve⟩) heq
+    have hcd : c = d := by
+      have : c ∈ insert d e := h1 ▸ mem_insert_self c e'
+      rcases mem_insert.1 this with h2 | h2
+      · exact h2
+      · exact absurd h2 (h.notMem_of_fresh hc he)
+    subst hcd
+    exact insert_left_inj (h.notMem_of_fresh hc he') (h.notMem_of_fresh hc he) h1
+  have notRem : ∀ e' ∈ Ed, ∀ t ∈ flipRemoved v g opp e', t ≠ insert v (insert a e) ∧
+      t ≠ insert v (insert b e) := by
+    intro e' he' t ht
+    have he'' : e' ∈ insert e Ed := mem_insert_of_mem he'
+    simp only [flipRemoved, mem_insert, mem_singleton] at ht
+    rcases ht with rfl | rfl
+    · exact ⟨fun h1 => hn (key _ _ _ (h.a_fresh he'') ha he'' h1 ▸ he'),
+        fun h1 => hn (key _ _ _ (h.a_fresh he'') hb he'' h1 ▸ he')⟩
+    · exact ⟨fun h1 => hn (key _ _ _ (h.b_fresh he'') ha he'' h1 ▸ he'),
+        fun h1 => hn (key _ _ _ (h.b_fresh he'') hb he'' h1 ▸ he')⟩
+  -- an added tetrahedron never contains `v`, `x` and `y`
+  have addNoVXY : ∀ e' ∈ insert e Ed, ∀ t ∈ flipAdded v g opp e', ¬ (v ∈ t ∧ x ∈ t ∧ y ∈ t) := by
+    intro e' he' t ht ⟨hvt, hxt, hyt⟩
+    have ha' := h.a_fresh he'
+    have hb' := h.b_fresh he'
+    simp only [flipAdded, mem_insert, mem_image] at ht
+    rcases ht with rfl | ⟨x', hx', rfl⟩
+    · simp only [mem_insert] at hvt
+      rcases hvt with h1 | h1 | h1
+      · exact h.ne_v_of_fresh ha' h1.symm
+      · exact h.ne_v_of_fresh hb' h1.symm
+      · exact h.v_notMem he' h1
+    · simp only [mem_insert, mem_singleton] at hxt hyt
+      have xx : x = x' := by
+        rcases hxt with h1 | h1 | h1 | h1
+        exacts [absurd h1 hvx.symm, h1, absurd (h1 ▸ hxV) ha', absurd (h1 ▸ hxV) hb']
+      have yy : y = x' := by
+        rcases hyt with h1 | h1 | h1 | h1
+        exacts [absurd h1 hvy.symm, h1, absurd (h1 ▸ hyV) ha', absurd (h1 ▸ hyV) hb']
+      exact hxy (xx.trans yy.symm)
+  sorry
 
 end Flip
 
