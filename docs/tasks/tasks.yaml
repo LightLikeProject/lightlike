@@ -919,6 +919,7 @@ tasks:
     deps: ["T-GE1", "T-GE2", "T-GE5"]
     checks: ["the kernel of `Spin⁺(1,3) → SO⁺(1,3)` is `{+1, −1}` and the group is `SL(2,ℂ)`", "the free Dirac equation has exactly the positive and negative energy plane waves with `E² = |p|² + m²`"]
     release: "not-scheduled"
+    issue: 439
     labels: ["milestone", "area: geometry", "size: L", "advanced"]
   - id: "T-CO1"
     kind: "milestone"
@@ -2849,6 +2850,7 @@ tasks:
     deps: ["T-PL2", "T-PL4", "T-PL7a"]
     checks: ["an explicit common forward descendant of two different triangulations of S³", "the edge case of PL7a's p4 (an edge subdivision is not itself a forward descendant)"]
     release: "not-scheduled"
+    issue: 436
     labels: ["milestone", "area: pl-topology", "size: R", "research-level"]
   - id: "T-QU1"
     kind: "milestone"
