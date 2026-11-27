@@ -221,4 +221,45 @@ theorem flip_scalar (q : kˣ) {a b c e d f d' D : ℕ} {g h : k} (hn : e + d = f
   · exact absurd h4 (mul_ne_zero hq hxy)
   · exact (sub_eq_zero.mp h4).symm
 
+lemma reflectOp_apply (N : ℕ) (y : ModelSpace k) (σ : ℕ → Bool) : reflectOp k N y σ = y (reflect N σ) := by
+  have hinj : Function.Injective (reflect N) := fun s t h => by
+    rw [← reflect_reflect N s, h, reflect_reflect]
+  conv_lhs => rw [← reflect_reflect N σ]
+  exact Finsupp.mapDomain_apply_of_injective hinj y (reflect N σ)
+
+lemma isSelfAdj_reflectOp (N : ℕ) : IsSelfAdj (reflectOp k N) := by
+  intro x y
+  induction x using Finsupp.induction_linear with
+  | zero => simp [pairB]
+  | add x x' hx hx' => rw [map_add, pairB_add_left, hx, hx', pairB_add_left]
+  | single σ c => rw [reflectOp_single, pairB_single_left, pairB_single_left, reflectOp_apply]
+
+lemma eq_of_pairB {A B : Module.End k (ModelSpace k)} (h : ∀ x y, pairB x (A y) = pairB x (B y)) : A = B := by
+  refine LinearMap.ext fun y => Finsupp.ext fun σ => ?_
+  have := h (single σ 1) y
+  rwa [pairB_single_left, pairB_single_left, one_mul, one_mul] at this
+
+/-- **The mirror of the dual second-bracketing tree vector**: `R_D U_R'(a,b,c;f,d') = U_L'(c,b,a;f,d') R_{a+b+c}`. -/
+theorem reflect_URd (q : kˣ) (a b c f d' : ℕ) (hfb : f ≤ b) (hfc : f ≤ c) (hda : d' ≤ a)
+    (hdf : d' ≤ b + c - 2 * f) (hd : ∀ j, j < a + b + c + 1 → chebD (loopVal q) j ≠ 0) :
+    reflectOp k (a + (b + c - 2 * f) - 2 * d') * URd q a b c f d' = ULd q c b a f d' * reflectOp k (a + b + c) := by
+  set D := a + (b + c - 2 * f) - 2 * d'
+  set N := a + b + c
+  have hM := reflect_UR (k := k) q a b c f d' hfb hfc hda hdf hd
+  have hq : (-(q : k)) ^ (f + d') ≠ 0 := pow_ne_zero _ (neg_ne_zero.mpr q.ne_zero)
+  have h1 : URd q a b c f d' * reflectOp k N = reflectOp k D * ULd q c b a f d' := by
+    refine eq_of_pairB fun x y => ?_
+    simp only [Module.End.mul_apply]
+    have e1 := pairB_UR q a b c f d' x (reflectOp k N y)
+    rw [← isSelfAdj_reflectOp] at e1
+    have e2 := congrArg (fun T : Module.End k (ModelSpace k) => pairB (T x) y) hM
+    simp only [Module.End.mul_apply] at e2
+    rw [e2, pairB_UL, isSelfAdj_reflectOp] at e1
+    exact (mul_left_cancel₀ hq e1).symm
+  have hρN := reflectOp_mul_self (k := k) N
+  have hρD := reflectOp_mul_self (k := k) D
+  calc reflectOp k D * URd q a b c f d' = reflectOp k D * (URd q a b c f d' * reflectOp k N) * reflectOp k N := by
+        rw [mul_assoc, mul_assoc, hρN, mul_one]
+    _ = ULd q c b a f d' * reflectOp k N := by rw [h1, ← mul_assoc, hρD, one_mul]
+
 end Lightlike.TemperleyLieb
