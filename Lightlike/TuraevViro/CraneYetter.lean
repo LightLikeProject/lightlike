@@ -19,6 +19,10 @@ the evaluation of the ribbon graph of Fig. 23 of Crane, Kauffman and Yetter, *St
   4-simplex whose orientation is `-1`.
 * `craneYetter`: the state sum.
 
+**Difference from the quantum 15j symbol.** The vertex here is the braided vertex of Crane, Kauffman and Yetter, with
+the braiding eigenvalue `Rbr` and a quadratic phase; it is not the real quantum 15j symbol `qFifteenJ` (the sum over
+one spin of five quantum 6j symbols), which has no braiding and cannot give the value of `CP²` (that value is not real).
+
 The closed form is the specification checked numerically against the evaluation of the diagram (all admissible
 colourings of a 4-simplex at `r = 3, 4, 5`), the 3-3 identity and the values `N` on `S⁴` and `N^{3/2} κ^σ` on `CP²` at
 `r = 3`; those checks are numerical evidence, not proofs.
@@ -60,7 +64,8 @@ noncomputable def tlTet (r A B E C D F : ℕ) : ℝ :=
 /-- **The vertex of an ordered 4-simplex** (closed form of the diagram of Fig. 23 of Crane–Kauffman–Yetter): `J F` is the
 colour of the triangle `F` (a set of three local vertices `0 < … < 4`) and `I m` the colour of the tetrahedron omitting
 the local vertex `m`. `Φ = (-1)^s A^P Σ_x Δ_x λ^{a₀ b₀}_x Π_{t < 5} Tet[a_t a_{t+1} x; b_{t+1} b_t c_t] / θ(a_{t+1}, b_{t+1}, x)`
-with `(a₅, b₅) = (b₀, a₀)`. -/
+with `(a₅, b₅) = (b₀, a₀)`. It is the braided vertex of Crane–Kauffman–Yetter, not the real quantum 15j symbol
+`qFifteenJ`. -/
 noncomputable def cyVertexLoc (r : ℕ) (J : Finset (Fin 5) → ℕ) (I : Fin 5 → ℕ) : ℂ :=
   let j : Fin 5 → Fin 5 → Fin 5 → ℕ := fun x y z => J {x, y, z}
   let a : Fin 6 → ℕ := ![j 2 3 4, I 0, j 1 2 3, I 4, j 0 1 2, I 3]
@@ -113,7 +118,9 @@ noncomputable def craneYetterWeight (r : ℕ) (K : Complex4 V) (o : Finset V →
     ∏ s ∈ K.simps, cyVertexAt r col s (o s)
 
 /-- **The Crane–Yetter state sum** `N^{n₀ - n₁} Σ_col weight(col)` of a 4-complex `K` with an orientation `o`, at
-`q = e^{iπ/r}`: the sum over the colourings of the triangles and the tetrahedra by `{0, …, r - 2}` (doubled spins). -/
+`q = e^{iπ/r}`: the sum over the colourings of the triangles and the tetrahedra by `{0, …, r - 2}` (doubled spins).
+The vertex of a 4-simplex is the braided vertex `cyVertexAt` of Crane–Kauffman–Yetter, not the real quantum 15j symbol
+`qFifteenJ`. -/
 noncomputable def craneYetter (r : ℕ) (K : Complex4 V) (o : Finset V → ℤ) : ℂ :=
   (cyN r : ℂ) ^ (((K.faces 0).card : ℤ) - (K.faces 1).card) *
     ∑ c ∈ (Lightlike.SpinFoam.colFaces K).pi (fun _ => range (r - 1)),
