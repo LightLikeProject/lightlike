@@ -1292,8 +1292,8 @@ milestones:
       - id: m2
         kind: main
         text: "For the Ponzano–Regge amplitude, the invariance up to PL homeomorphism that follows is stated exactly, given the cutoff and gauge-tree conditions: if triangulations of one manifold have a common forward descendant under Pachner moves, then every gauge-fixed amplitude of each is a gauge-fixed amplitude of the descendant at some tree and cutoff"
-        decls: [Lightlike.PR.triangulation_independence_of_pachner, Lightlike.PR.ampValues_mono_forward, Lightlike.PR.ampValues_move32_subset, Lightlike.PR.ampValues_move41_subset]
-        hint: "Conditional: triangulation_independence_of_pachner takes Lightlike.PR.PachnerForwardHyp as a hypothesis, whose truth is open; nothing is unconditional for Ponzano–Regge."
+        decls: [Lightlike.PR.CommonForward.ampValues_subset, Lightlike.PR.ampValues_mono_forward, Lightlike.PR.ampValues_move32_subset, Lightlike.PR.ampValues_move41_subset]
+        hint: "The statement is CommonForward.ampValues_subset: it has the common forward descendant as an antecedent, so it is proven without any open hypothesis. That any two triangulations of one manifold have such a descendant (PachnerForwardHyp, used by the conditional triangulation_independence_of_pachner, LL-0522) is the milestone PL7c."
       - id: p1
         kind: piece
         text: "The r = 3 state sum is the same along chains of 3D moves and under renaming of vertices"

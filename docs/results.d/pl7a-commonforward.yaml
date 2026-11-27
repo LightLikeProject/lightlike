@@ -1,0 +1,11 @@
+- id: LL-XXXX-a
+  title: "If two complexes of tetrahedra have a common forward descendant under the 2-3 and 1-4 moves, then every regularised Ponzano–Regge amplitude value of each is a value of the descendant: ampValues K ⊆ ampValues K'' and ampValues K' ⊆ ampValues K''"
+  area: PonzanoRegge
+  file: Lightlike/PonzanoRegge/TriangulationIndependence/Main.lean
+  decls: [Lightlike.PR.CommonForward.ampValues_subset]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location for this statement; it is a statement about this library's regularised amplitude. CommonForward K K' is an antecedent of the theorem, not an open hypothesis: the theorem says nothing about whether two triangulations of one manifold have a common forward descendant. That is the proposition PachnerForwardHyp, which the conditional entry LL-0522 assumes and which the milestone PL7c is to prove (Adiprasito–Pak, arXiv:2404.05930, common stellar subdivisions). No equality of the value sets of K and K' follows."
+  since: unreleased
