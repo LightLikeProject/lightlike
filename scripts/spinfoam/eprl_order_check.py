@@ -1,24 +1,27 @@
-"""Numerical check: the EPRL state sum `amplitudeI` at gamma = 1 depends on the vertex order.
+"""Numerical check, wrong-input control: the positional node basis change `nodeT` without the sign `nodeEta` makes the EPRL state sum at
+gamma = 1 depend on the vertex order.
 
 Numerical evidence, not proof. Doubled spins throughout.
 
-Model of `Lightlike.SpinFoam.EPRLStateSum.amplitudeI 1 K cut`
-(Lightlike/SpinFoam/EPRLStateSum/IntrinsicVertex.lean) on the boundary `sphere6` of the 5-simplex
-on the vertices 0 < 1 < ... < 5:
+Model of the sorted-basis state sum `Lightlike.SpinFoam.EPRLStateSum.amplitudeI 1 K cut` (Lightlike/SpinFoam/EPRLStateSum/IntrinsicVertex.lean)
+in which the node basis change is built as if the channel tensor of the sorted legs and that of the cyclic legs were equal, i.e. WITHOUT the
+sign `nodeEta` of `fourJ_swap₁₂`, `fourJ_swap₃₄`, `fourJ_swapPairs`. The Lean `amplitudeI` carries `nodeEta`; it is the basis-free contraction
+(`simpEIAux_eq_contract5`) and independent of the vertex order (`amplitudeI_one_relabel`), see scripts/spinfoam/eprl_free_gluing_check.py. The
+model here is the wrong input that the check must tell apart from it. On the boundary `sphere6` of the 5-simplex on the vertices 0 < 1 < ... < 5:
 
 * a triangle colouring `col <= cut`, face amplitude `J + 1` (`faceAmp_one`), edge amplitude 1;
 * a sorted label `z_t` on every tetrahedron, `z_t <= leg_0 + leg_1` (`tetBoxI`);
 * the vertex of the 4-simplex `s` with sorted vertices `s_0 < ... < s_4` and spins
   `J p q = col(s - {s_p, s_q})`:
   `vertexI = sum_x prod_a nodeT(J, a, z_a, x_a) * fifteenJSimplex(J, x)` with
-  `nodeT = sum_m nodeI(z, m) nodeP(x, m)`, `nodeI` the recoupling matrix of the sorted legs
+  `nodeT = sum_m nodeI(z, m) nodeP(x, m)` (no `nodeEta`), `nodeI` the recoupling matrix of the sorted legs
   `a.succAbove 0..3`, `nodeP` the one of the cyclic legs `a+1..a+4` (`fourRecoupling`), and
   `fifteenJSimplex` as in scripts/spinfoam/vertex_check.py.
 
 The cutoff `bone(u, w)` allows spin 1 (doubled) on the four triangles containing the edge
 `{u, w}` and 0 elsewhere. A permutation `pi` of the vertices maps `sphere6` to itself and
 `bone(0, 1)` to `bone(pi 0, pi 1)`, so independence of the vertex order would force
-`A(u, w) = A(0, 1)` for all pairs. The script prints `A(u, w)` for all 15 pairs.
+`A(u, w) = A(0, 1)` for all pairs. The script prints `A(u, w)` for all 15 pairs; for this wrong input they are `5` or `-3`.
 
 Wrong-input control: the same sum with the positional labels glued directly (nodeT replaced by
 the identity, i.e. `EPRL.amplitude` of Lightlike/SpinFoam/EPRL.lean) must differ from the intrinsic one somewhere.

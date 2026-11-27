@@ -7,7 +7,7 @@ Milestone: SF6b, item p2 (the stated dependence of the state sum on the vertex o
 Does the state sum of the source of the EPRL model (arXiv:0711.0146v2, Engle, Pereira, Rovelli, Livine, "LQG vertex
 with finite Immirzi parameter") depend on an order of the vertices of the 4-simplices, an order of their tetrahedra,
 or an orientation convention? If the source states independence, or fixes a sign convention, the library's convention
-(`eprlGlobalSign`, increasing vertex order) can be compared with it.
+(the increasing vertex order, the sorted legs of each tetrahedron) can be compared with it.
 
 ## What was read
 
@@ -41,14 +41,17 @@ The source is silent on the dependence of its state sum on the vertex order: it 
 sign or a phase. It defines the vertex through 15j symbols of a 4-simplex, which depend on an order of the five tetrahedra
 and of the legs of each of them; the paper fixes none.
 
-- A formalization must choose such orders. The library takes the increasing order of the vertices and writes the sign
-  twist `eprlGlobalSign` explicitly (`amplitudeI_one_eq_signed_ooguri`); its sorted-basis amplitude depends on the order
-  (`docs/notes/sf6b-order-dependence.md`; the Lean counterexample is in a branch that is not on main).
-- The source does not contradict this choice and does not support independence either; a comparison of the sign
-  convention with the source cannot be made from the paper.
+- A formalization must choose such orders. The library takes the increasing order of the vertices and the intertwiner of the sorted legs
+  of each tetrahedron; its vertex is the basis-free contraction of these intertwiners along the ten links of the 5-simplex
+  (`simpEIAux_eq_contract5`), the same tensor from the two 4-simplices of a tetrahedron. With this choice the state sum does not
+  depend on the order of the vertices (`amplitudeI_one_relabel`) and at `γ = 1` is the Ooguri state sum
+  (`amplitudeI_one_eq_ooguriSum`).
+- The source does not contradict this choice and does not support independence either: "the amplitude matches the source" means
+  "is the basis-free contraction of the source's definition", and a comparison of a sign convention with the source cannot be made
+  from the paper.
 
 ## Limits
 
 - The quotes above are from the PDF; the equations are not re-derived here.
-- Whether a different convention (a canonical order of the tetrahedra fixed by the geometry) would make the sum
-  independent of the vertex order is not decided by the source.
+- No convention of the source, and no canonical order of the tetrahedra fixed by the geometry, is needed for the independence of the vertex
+  order: the basis-free contraction does not depend on the order (`amplitudeI_one_relabel`, closed 4-complexes).

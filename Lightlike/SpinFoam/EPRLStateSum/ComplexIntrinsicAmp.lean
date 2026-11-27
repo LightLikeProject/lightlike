@@ -1,14 +1,13 @@
 import Lightlike.SpinFoam.EPRLStateSum.ComplexSignedOoguri
 
 /-!
-# The intrinsic EPRL amplitude at `γ = 1` as a sign-twisted Ooguri sum
+# The intrinsic EPRL amplitude at `γ = 1` as an Ooguri sum with the sign of the link orientations
 
 For a closed 4-complex `K` with an incidence bijection `e`, the intrinsic EPRL amplitude (the sum over the triangle
 colourings of `Π_f (col f + 1)` times the tetrahedron-label sum of the products of the intrinsic vertex sums
 `tetSumTerm`) equals the sum over the triangle colourings and the virtual spins `L` of the tetrahedra of the Ooguri
-weight of the coloured complex `(col, L)`, times the triangle constraints and the explicit global sign
-`eprlGlobalSign` (`complex_tetSum_labels_ooguri_explicit`). The sign is not shown to be trivial: this is the
-sign-twisted form of the equality of the EPRL (`γ = 1`) amplitude with the Ooguri model.
+weight of the coloured complex `(col, L)`, times the triangle constraints and the sign `linkSign K col` of the
+link orientations, which depends on the colouring only (`complex_tetSum_labels_ooguri_explicit`).
 -/
 
 open Finset Lightlike.FourD Lightlike.SpinFoam
@@ -40,9 +39,9 @@ lemma extL_of_mem_tris (K : Complex4 V) (col : Finset V → ℕ) (L : K.tets →
     omega
   simp [extL, hn]
 
-/-- **The intrinsic EPRL amplitude at `γ = 1` is a sign-twisted Ooguri sum**: the sum over the triangle colourings
-`col` and the virtual spins `L` of the tetrahedra (in the boxes of the incidence) of the triangle constraints times
-the explicit global sign `eprlGlobalSign` times the Ooguri weight of the coloured complex `(col, L)`. -/
+/-- **The intrinsic EPRL amplitude at `γ = 1` is an Ooguri sum with the sign of the link orientations**: the sum over
+the triangle colourings `col` and the virtual spins `L` of the tetrahedra (in the boxes of the incidence) of the
+triangle constraints times the sign `linkSign K col` times the Ooguri weight of the coloured complex `(col, L)`. -/
 theorem eprlIntrinsicAmp_eq_signed_ooguri (K : Complex4 V) (cut : Finset V → ℕ)
     (e : K.tets × Bool ≃ K.simps × Fin 5) (he : ∀ t b, incTet K (e (t, b)) = t) :
     eprlIntrinsicAmp K cut e =
@@ -63,7 +62,7 @@ theorem eprlIntrinsicAmp_eq_signed_ooguri (K : Complex4 V) (cut : Finset V → �
                 (complexJ K (Lightlike.PR.extS K.tris c) (e (t, false)).1 (e (t, false)).2
                   ((e (t, false)).2.succAbove 3))
             then (1 : ℝ) else 0) *
-            (eprlGlobalSign K (Lightlike.PR.extS K.tris c) L e *
+            (linkSign K (Lightlike.PR.extS K.tris c) *
               Lightlike.SpinFoam.weight K (extL K (Lightlike.PR.extS K.tris c) L)) := by
   unfold eprlIntrinsicAmp
   refine Finset.sum_congr rfl fun c _ => ?_

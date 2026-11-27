@@ -7,7 +7,7 @@ import Lightlike.SpinFoam.Ooguri
 `extL K col L` is the colouring of the faces of `K` by the triangle spins `col` and the virtual
 spins `L t` of the tetrahedra. `simpW_extL` says that the Ooguri vertex amplitude `simpW (extL K col L) s`
 of a 4-simplex `s` is `ampP (complexJ K col s) (fun a => L (incTet K (s, a)))`, the factor of `vertexF`
-that does not carry the sign `recoupSign`. `ampP` and `recoupSign` read only the off-diagonal entries of
+that does not carry the sign `(-1)^(triPart J)`. `ampP` and `recoupSign` read only the off-diagonal entries of
 the matrix of triangle spins (`ampP_congr_offdiag`, `recoupSign_congr_offdiag`).
 -/
 
@@ -79,18 +79,19 @@ theorem simpW_extL (K : Complex4 V) (col : Finset V → ℕ) (L : K.tets → ℕ
   · intro p q hpq
     exact extL_tri K col L s hpq
 
-/-- **The signed vertex weight is the sign times the Ooguri vertex amplitude of `extL`.** -/
-theorem vertexF_eq_recoupSign_mul_simpW (K : Complex4 V) (col : Finset V → ℕ) (L : K.tets → ℕ)
+/-- **The sorted vertex weight is the link sign times the Ooguri vertex amplitude of `extL`.** -/
+theorem vertexF_eq_triSign_mul_simpW (K : Complex4 V) (col : Finset V → ℕ) (L : K.tets → ℕ)
     (s : K.simps) :
     vertexF (complexJ K col s) (fun a => L (incTet K (s, a))) =
-      recoupSign (complexJ K col s) (fun a => L (incTet K (s, a))) * simpW (extL K col L) s.1 := by
+      (-1) ^ triPart (complexJ K col s) * simpW (extL K col L) s.1 := by
   rw [simpW_extL]
   rfl
 
 /-- **The tetrahedron-label sum of the EPRL weight in Ooguri form**: a sum over one virtual spin per
-tetrahedron of `Π_t [triangle constraints] · Π_s recoupSign · Π_s simpW (extL K col L) s`, the second
+tetrahedron of `Π_t [triangle constraints] · Π_s (-1)^(triPart J_s) · Π_s simpW (extL K col L) s`, the second
 product being the Ooguri vertex factor of the coloured complex `(col, L)` (`weight` without the face
-factors). The remaining difference with the Ooguri model is the sign `Π_s recoupSign`. -/
+factors). The remaining difference with the Ooguri model is the sign `Π_s (-1)^(triPart J_s)` of the link
+orientations, which does not depend on `L`. -/
 theorem complex_tetSum_labels_ooguri (K : Complex4 V) (col : Finset V → ℕ)
     (e : K.tets × Bool ≃ K.simps × Fin 5) (he : ∀ t b, incTet K (e (t, b)) = t) :
     ∑ i ∈ Fintype.piFinset (fun t : K.tets =>
@@ -110,12 +111,12 @@ theorem complex_tetSum_labels_ooguri (K : Complex4 V) (col : Finset V → ℕ)
               (complexJ K col (e (t, false)).1 (e (t, false)).2 ((e (t, false)).2.succAbove 1))
               (complexJ K col (e (t, false)).1 (e (t, false)).2 ((e (t, false)).2.succAbove 3))
           then (1 : ℝ) else 0) *
-        ((∏ s : K.simps, recoupSign (complexJ K col s) (fun a => L (incTet K (s, a)))) *
+        ((∏ s : K.simps, (-1 : ℝ) ^ triPart (complexJ K col s)) *
           ∏ s : K.simps, simpW (extL K col L) s.1) := by
   rw [complex_tetSum_labels K col e he]
   refine Finset.sum_congr rfl fun L _ => ?_
   congr 1
   rw [← Finset.prod_mul_distrib]
-  exact Finset.prod_congr rfl fun s _ => vertexF_eq_recoupSign_mul_simpW K col L s
+  exact Finset.prod_congr rfl fun s _ => vertexF_eq_triSign_mul_simpW K col L s
 
 end Lightlike.SpinFoam.EPRLStateSum

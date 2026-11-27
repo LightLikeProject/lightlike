@@ -1882,7 +1882,7 @@ milestones:
       - id: m1
         kind: main
         text: "At the BF point (γ = 1) the EPRL state sum on a closed 4-complex equals the Ooguri amplitude on the same complex and cutoffs"
-        decls: [Lightlike.SpinFoam.EPRLStateSum.amplitudeI, Lightlike.SpinFoam.EPRLStateSum.amplitudeI_one_eq_signed_ooguri, Lightlike.SpinFoam.EPRLStateSum.amplitudeI_one_closed, Lightlike.SpinFoam.EPRLStateSum.simpEI_eq_sum_simpE, Lightlike.SpinFoam.EPRLStateSum.simpEIAux_eq_sum_nodeT]
+        decls: [Lightlike.SpinFoam.EPRLStateSum.amplitudeI, Lightlike.SpinFoam.EPRLStateSum.amplitudeI_one_eq_ooguriSum, Lightlike.SpinFoam.EPRLStateSum.linkSign_of_tetPar, Lightlike.SpinFoam.EPRLStateSum.amplitudeI_one_eq_signed_ooguri, Lightlike.SpinFoam.EPRLStateSum.amplitudeI_one_closed, Lightlike.SpinFoam.EPRLStateSum.simpEI_eq_sum_simpE, Lightlike.SpinFoam.EPRLStateSum.simpEIAux_eq_sum_nodeT]
         hint: "Missing. Only Lightlike.SpinFoam.EPRL.amplitude_one_zero (cutoff 0, trivial: both sides 1) and Lightlike.SpinFoam.EPRL.amplitude_zero. Lightlike.SpinFoam.EPRLStateSum.weightE_one_eq_prod_vertexCombo (per vertex only) and Lightlike.SpinFoam.EPRLStateSum.eprlIntrinsicAmp_eq_signed_ooguri (a separately defined amplitude with a sign twist) are not the statement."
       - id: p1
         kind: piece
@@ -1891,7 +1891,7 @@ milestones:
       - id: p2
         kind: piece
         text: "The EPRL state sum is independent of the vertex order of the 4-simplices"
-        decls: []
+        decls: [Lightlike.SpinFoam.EPRLStateSum.amplitudeI_one_relabel, Lightlike.SpinFoam.EPRLStateSum.amplitudeIeps_relabel]
         hint: "No statement found."
       - id: p3
         kind: piece
