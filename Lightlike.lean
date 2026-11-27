@@ -2702,6 +2702,8 @@ import Lightlike.Spacetime.WaveEquationGreenOperators.Test1
 import Lightlike.Asymptotics.AiryFunctions.Test
 import Lightlike.Asymptotics.EulerPrimitive
 import Lightlike.Asymptotics.EulerPrimitiveTests
+import Lightlike.Asymptotics.SmoothExtension
+import Lightlike.Asymptotics.SmoothExtensionTests
 import Lightlike.GFT.DualPseudoManifold.Check
 import Lightlike.PonzanoRegge.TriangulationIndependence.Tests.ExchangeSearch
 import Lightlike.NCG.DiracConverse
