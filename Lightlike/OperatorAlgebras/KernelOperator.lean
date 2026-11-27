@@ -29,8 +29,7 @@ namespace Lightlike.OperatorAlgebras
 
 noncomputable section
 
-variable {X : Type*} [TopologicalSpace X] [CompactSpace X] [MeasurableSpace X] [BorelSpace X]
-  (μ : Measure X) [IsFiniteMeasure μ]
+variable {X : Type*} [TopologicalSpace X]
 
 /-- The map `x ↦ (y ↦ conj K(x, y))` into the continuous functions. -/
 def kernelCurry (K : C(X × X, ℂ)) : C(X, C(X, ℂ)) :=
@@ -38,6 +37,8 @@ def kernelCurry (K : C(X × X, ℂ)) : C(X, C(X, ℂ)) :=
 
 lemma kernelCurry_apply (K : C(X × X, ℂ)) (x y : X) :
     kernelCurry K x y = starRingEnd ℂ (K (x, y)) := rfl
+
+variable [CompactSpace X] [MeasurableSpace X] [BorelSpace X] (μ : Measure X) [IsFiniteMeasure μ]
 
 /-- The kernel vector `k_x ∈ L²`, the class of `y ↦ conj K(x, y)`. -/
 def kernelVecOf (K : C(X × X, ℂ)) (x : X) : Lp ℂ 2 μ :=
@@ -78,7 +79,7 @@ lemma inner_kernelVecOf (K : C(X × X, ℂ)) (ψ : Lp ℂ 2 μ) (x : X) :
   refine integral_congr_ae ?_
   filter_upwards [ContinuousMap.coeFn_toLp (E := ℂ) (p := 2) (μ := μ) (𝕜 := ℂ) (kernelCurry K x)]
     with y hy
-  simp only [kernelVecOf, RCLike.inner_apply, hy, kernelCurry_apply, map_mul, Complex.conj_conj]
+  simp only [kernelVecOf, RCLike.inner_apply, hy, kernelCurry_apply, Complex.conj_conj]
   ring
 
 /-- **The integral formula**: `(T_K ψ)(x) = ∫ K(x, y) ψ(y) dμ(y)` for almost every `x`. -/
