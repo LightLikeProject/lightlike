@@ -7671,3 +7671,16 @@
   review: kernel-checked
   note: "Compared with Kitaev, arXiv:1711.08169, Section 3.2 (read; page not checked): D_lambda^- has the weights -lambda, -lambda - 1, ... . The library defines D_n^- as the twist of D_n^+ by the automorphism g to J g J, which negates the K-weights (discreteSeriesMinus_rot); that this equals the complex conjugate representation is not proved here (the antiholomorphic matrix coefficients of the Plancherel formula are stated separately). Irreducibility is inherited from D_n^+ because the automorphism is onto."
   since: unreleased
+- id: LL-0597
+  title: "The Barrett–Crane intertwiner is unique (the four-valent case of Reisenberger's theorem): a Spin(4)-invariant tensor of four simple representations that is diagonal in the trivalent tree bases is a multiple of the Barrett–Crane node"
+  area: SpinFoam
+  file: Lightlike/SpinFoam/BarrettCraneUnique.lean
+  decls: [Lightlike.SpinFoam.BC.bcNode_unique, Lightlike.SpinFoam.BC.bcNode_hyp, Lightlike.SpinFoam.BC.sixJSym_extreme_ne_zero]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: reisenberger-1999, location: "Abstract", check: "uniquely determined"}
+  review: kernel-checked
+  note: "The four-valent case of Reisenberger's theorem. Reisenberger (1999), §2 Definition 1 and §3 Theorem, read in the arXiv version gr-qc/9809067v1 (HTML rendering). Statement: for four legs of spins j (doubled), a tensor Φ(μ, ν) (μ the self-dual, ν the anti-self-dual projections) whose real and imaginary parts are SU(2)-invariant in μ and in ν (Spin(4) = SU(2) × SU(2) invariance), and whose components in the tree basis ι_k ⊗ ι_k' vanish for k ≠ k' in the (01)(23) and in the (02)(13) pairings, is c · bcNode j for some c ∈ ℂ (c = 0 allowed). Difference from the source, direction stronger: Definition 1(2) asks the condition for every trivalent tree, which for four legs is three pairings (§3, after eq. (7): X commutes with G_12², G_13² and G_14²); here two pairings suffice. Reisenberger's own proof, eqs. (8)–(16), also uses only G_12² and G_13². Condition 1 of Definition 1 (j_L = j_R on each edge) is built in. Proof: the two diagonal matrices are related by the orthogonal 6j recoupling matrix; its column at the extreme channel l₀ = min(j₀+j₂, j₁+j₃) is a stretched 6j symbol, nonzero for every admissible k by Racah's formula (sixJSym_extreme_ne_zero, from sixJSym_eq_racahW), so all diagonal entries are equal. It does not use the matrix elements β_J of Lévy-Leblond and Lévy-Nahas that Reisenberger's proof needs. Non-vacuity: bcNode itself satisfies every hypothesis (bcNode_hyp), and it is nonzero (coefA_bcNodeR_half). Reisenberger also treats vertices of any valence; only the four-valent case is stated here."
+  since: unreleased
