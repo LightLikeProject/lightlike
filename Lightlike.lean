@@ -2035,6 +2035,7 @@ import Lightlike.TuraevViro.SOrthogonal
 import Lightlike.TuraevViro.QNumber
 import Lightlike.TuraevViro.QSixJ
 import Lightlike.TuraevViro.QSixJGeneric
+import Lightlike.TuraevViro.QSixJGenericKL
 import Lightlike.TuraevViro.QSixJLimit
 import Lightlike.TuraevViro.QSixJRegular
 import Lightlike.TuraevViro.QFifteenJ
