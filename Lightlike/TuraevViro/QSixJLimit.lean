@@ -290,11 +290,32 @@ lemma racahTermG_root (α₁ α₂ α₃ α₄ β₁ β₂ β₃ : ℤ) (z : ℕ
 def RacahBound (r j₁ j₂ j₄ j₅ j₆ : ℕ) : Prop :=
   j₁ ≤ r - 2 ∧ j₂ ≤ r - 2 ∧ j₄ ≤ r - 2 ∧ j₅ ≤ r - 2 ∧ j₆ ≤ r - 2
 
+/-- In the box, every factorial argument is below `R` once the six differences `β₁ - αₖ`, `β_l - α₁` are. -/
+lemma box_lt {α₁ α₂ α₃ α₄ β₁ β₂ β₃ : ℤ} {z : ℕ} (hz : InBox α₁ α₂ α₃ α₄ β₁ β₂ β₃ z) {R : ℤ}
+    (k1 : β₁ - α₁ < R) (k2 : β₁ - α₂ < R) (k3 : β₁ - α₃ < R) (k4 : β₁ - α₄ < R) (m2 : β₂ - α₁ < R)
+    (m3 : β₃ - α₁ < R) :
+    (z : ℤ) - α₁ < R ∧ (z : ℤ) - α₂ < R ∧ (z : ℤ) - α₃ < R ∧ (z : ℤ) - α₄ < R ∧ β₁ - z < R ∧
+      β₂ - z < R ∧ β₃ - z < R := by
+  obtain ⟨h1, h2, h3, h4, h5, h6, h7⟩ := hz
+  exact ⟨by linarith, by linarith, by linarith, by linarith, by linarith, by linarith, by linarith⟩
+
+/-- The six differences of the Racah parameters are below `r` under `RacahBound`. -/
+lemma racah_bounds {j₁ j₂ j₃ j₄ j₅ j₆ : ℕ} (hb : RacahBound r j₁ j₂ j₄ j₅ j₆) :
+    (((j₁ + j₂ + j₄ + j₅) / 2 : ℕ) : ℤ) - (((j₁ + j₂ + j₃) / 2 : ℕ) : ℤ) < r ∧
+    (((j₁ + j₂ + j₄ + j₅) / 2 : ℕ) : ℤ) - (((j₁ + j₅ + j₆) / 2 : ℕ) : ℤ) < r ∧
+    (((j₁ + j₂ + j₄ + j₅) / 2 : ℕ) : ℤ) - (((j₄ + j₂ + j₆) / 2 : ℕ) : ℤ) < r ∧
+    (((j₁ + j₂ + j₄ + j₅) / 2 : ℕ) : ℤ) - (((j₄ + j₅ + j₃) / 2 : ℕ) : ℤ) < r ∧
+    (((j₂ + j₃ + j₅ + j₆) / 2 : ℕ) : ℤ) - (((j₁ + j₂ + j₃) / 2 : ℕ) : ℤ) < r ∧
+    (((j₃ + j₁ + j₆ + j₄) / 2 : ℕ) : ℤ) - (((j₁ + j₂ + j₃) / 2 : ℕ) : ℤ) < r := by
+  obtain ⟨b1, b2, b4, b5, b6⟩ := hb
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩ <;> omega
+
 lemma continuousAt_racahG (hr : 2 ≤ r) {j₁ j₂ j₃ j₄ j₅ j₆ : ℕ} (hb : RacahBound r j₁ j₂ j₄ j₅ j₆) :
     ContinuousAt (fun θ => racahG θ j₁ j₂ j₃ j₄ j₅ j₆) (π / r) := by
   obtain ⟨b1, b2, b4, b5, b6⟩ := hb
   unfold racahG
-  exact tendsto_finset_sum _ fun z _ => continuousAt_racahTermG hr fun h => by unfold InBox at h; omega
+  obtain ⟨k1, k2, k3, k4, m2, m3⟩ := racah_bounds (j₃ := j₃) ⟨b1, b2, b4, b5, b6⟩
+  exact tendsto_finset_sum _ fun z _ => continuousAt_racahTermG hr fun h => box_lt h k1 k2 k3 k4 m2 m3
 
 lemma racahG_root (j₁ j₂ j₃ j₄ j₅ j₆ : ℕ) :
     racahG (π / r) j₁ j₂ j₃ j₄ j₅ j₆ = qRacahSum r j₁ j₂ j₃ j₄ j₅ j₆ := by
@@ -351,11 +372,11 @@ lemma continuousAt_racahRG (hr : 2 ≤ r) {j₁ j₂ j₃ j₄ j₅ j₆ : ℕ} 
       (((j₃ + j₁ + j₆ + j₄) / 2 : ℕ) : ℤ) z
   · have H : ∀ u : ℤ, u < r → ContinuousAt (fun θ => invQFG θ u) (π / r) :=
       fun u hu => continuousAt_invQFG hr hu
-    unfold InBox at hbox
+    obtain ⟨k1, k2, k3, k4, m2, m3⟩ := racah_bounds (j₃ := j₃) ⟨b1, b2, b4, b5, b6⟩
+    obtain ⟨c1, c2, c3, c4, c5, c6, c7⟩ := box_lt hbox k1 k2 k3 k4 m2 m3
     unfold racahTermRG
     exact (continuousAt_const.mul (continuousAt_qfRegG hr _)).mul
-      (((((H _ (by omega)).mul (H _ (by omega))).mul (H _ (by omega))).mul (H _ (by omega))).mul
-        (((H _ (by omega)).mul (H _ (by omega))).mul (H _ (by omega))))
+      (((((H _ c1).mul (H _ c2)).mul (H _ c3)).mul (H _ c4)).mul (((H _ c5).mul (H _ c6)).mul (H _ c7)))
   · exact continuousAt_const.congr (Filter.Eventually.of_forall fun θ => (racahTermRG_out hbox θ).symm)
 
 lemma racahTermRG_root (α₁ α₂ α₃ α₄ β₁ β₂ β₃ : ℤ) (z : ℕ) :
@@ -520,5 +541,85 @@ theorem SRgAt_reflect (hr : 2 ≤ r) {j₁ j₂ j₃ j₄ j₅ j₆ : ℕ}
   have f8 : ((((j₄ + j₅ + j₃) / 2 : ℕ) : ℤ) - r + 1).toNat = (j₄ + j₅ + j₃) / 2 + 1 - r := by omega
   rw [f1, f2, f3, f4, f5, f6, f7, f8]
   ring
+
+/-! ## The pair cancellation of the limit terms -/
+
+lemma neg_one_pow_of_mod {m n : ℕ} (h : m % 2 = n % 2) : (-1 : ℝ) ^ m = (-1) ^ n := by
+  rw [← Nat.mod_add_div m 2, ← Nat.mod_add_div n 2, pow_add, pow_add, pow_mul, pow_mul, h]; simp
+
+/-- `[2r - n] = -[n]` at `q = e^{iπ/r}`. -/
+lemma qnum_two_mul_sub (hr : 2 ≤ r) {n : ℕ} (hn : n ≤ 2 * r) : qnum r (2 * r - n) = -qnum r n := by
+  rcases le_total n r with h | h
+  · rw [show 2 * r - n = r + (r - n) by omega, Refl.qnum_add_self hr, qnum_sub hr h]
+  · rw [show n = r + (n - r) by omega, Refl.qnum_add_self hr, neg_neg,
+      show 2 * r - (r + (n - r)) = r - (n - r) by omega, qnum_sub hr (by omega)]
+
+/-- The limit at `θ = π/r` of the summand of the middle colour `x` whose three triads are above the level. -/
+noncomputable def limTerm (r a b c d e f p q r' x : ℕ) : ℝ :=
+  (-1 : ℝ) ^ ((a + b + c + d + e + f + p + q + r' + x) / 2) * qnum r (x + 1) *
+    (delta2Reg r a b x * delta2Reg r c d x * delta2Reg r e f x) *
+    (SRgAt r a b x c d p * SRgAt r c d x e f q * SRgAt r e f x b a r')
+
+/-- The algebra of the pair cancellation, on abstract factors. -/
+lemma pair_algebra {s s' Q E1 E2 E3 S1 S2 S3 σ1 σ2 σ3 τ1 τ2 τ3 : ℝ} (h1 : E1 ≠ 0) (h2 : E2 ≠ 0)
+    (h3 : E3 ≠ 0) (hs : s' * (τ1 * τ2 * τ3) = s * (σ1 * σ2 * σ3)) :
+    s' * (-Q) * ((τ1 * E1⁻¹) * (τ2 * E2⁻¹) * (τ3 * E3⁻¹)) *
+        ((E1 * E2 * S1) * (E2 * E3 * S2) * (E3 * E1 * S3)) =
+      -(s * Q * ((σ1 * E1) * (σ2 * E2) * (σ3 * E3)) * (S1 * S2 * S3)) := by
+  have : s' * (-Q) * ((τ1 * E1⁻¹) * (τ2 * E2⁻¹) * (τ3 * E3⁻¹)) *
+      ((E1 * E2 * S1) * (E2 * E3 * S2) * (E3 * E1 * S3)) =
+      -((s' * (τ1 * τ2 * τ3)) * Q * (E1 * E2 * E3) * (S1 * S2 * S3)) := by
+    field_simp
+  rw [this, hs]; ring
+
+/-- **The limit terms cancel in pairs** `x ↔ 2r - 2 - x`. -/
+theorem limTerm_reflect (hr : 2 ≤ r) {a b c d e f p q r' x : ℕ}
+    (q1 : qAdm r a d p) (q2 : qAdm r c b p) (q3 : qAdm r c f q) (q4 : qAdm r e d q) (q5 : qAdm r e a r')
+    (q6 : qAdm r b f r') (t1 : Tri a b x) (t2 : Tri c d x) (t3 : Tri e f x)
+    (h1 : r - 1 ≤ (a + b + x) / 2) (h2 : r - 1 ≤ (c + d + x) / 2) (h3 : r - 1 ≤ (e + f + x) / 2) :
+    limTerm r a b c d e f p q r' (2 * r - 2 - x) = -limTerm r a b c d e f p q r' x := by
+  obtain ⟨⟨p1, p1a, p1b, p1c⟩, l1⟩ := q1
+  obtain ⟨⟨p2, p2a, p2b, p2c⟩, l2⟩ := q2
+  obtain ⟨⟨p3, p3a, p3b, p3c⟩, l3⟩ := q3
+  obtain ⟨⟨p4, p4a, p4b, p4c⟩, l4⟩ := q4
+  obtain ⟨⟨p5, p5a, p5b, p5c⟩, l5⟩ := q5
+  obtain ⟨⟨p6, p6a, p6b, p6c⟩, l6⟩ := q6
+  have T1 := t1; have T2 := t2; have T3 := t3
+  obtain ⟨u1, u1a, u1b, u1c⟩ := T1
+  obtain ⟨u2, u2a, u2b, u2c⟩ := T2
+  obtain ⟨u3, u3a, u3b, u3c⟩ := T3
+  have ha : a ≤ r - 2 := by omega
+  have hb : b ≤ r - 2 := by omega
+  have hc : c ≤ r - 2 := by omega
+  have hd : d ≤ r - 2 := by omega
+  have he : e ≤ r - 2 := by omega
+  have hf : f ≤ r - 2 := by omega
+  have R1 := SRgAt_reflect hr t1 (j₄ := c) (j₅ := d) (j₆ := p) ⟨p1, p1a, p1b, p1c⟩ ⟨by omega, by omega, by omega, by omega⟩
+    t2 (by omega) (by omega) h1 h2
+  have R2 := SRgAt_reflect hr t2 (j₄ := e) (j₅ := f) (j₆ := q) ⟨by omega, by omega, by omega, by omega⟩
+    ⟨by omega, by omega, by omega, by omega⟩ t3 (by omega) (by omega) h2 h3
+  have R3 := SRgAt_reflect hr t3 (j₄ := b) (j₅ := a) (j₆ := r') ⟨by omega, by omega, by omega, by omega⟩
+    ⟨by omega, by omega, by omega, by omega⟩ ⟨by omega, by omega, by omega, by omega⟩ (by omega) (by omega)
+    h3 (by omega)
+  have D1' := delta2Reg_above (u := a) (v := b) (x := 2 * r - 2 - x) hr (by omega)
+  have D2' := delta2Reg_above (u := c) (v := d) (x := 2 * r - 2 - x) hr (by omega)
+  have D3' := delta2Reg_above (u := e) (v := f) (x := 2 * r - 2 - x) hr (by omega)
+  rw [E3_reflect hr ha hb t1 h1] at D1'
+  rw [E3_reflect hr hc hd t2 h2] at D2'
+  rw [E3_reflect hr he hf t3 h3] at D3'
+  have hq : qnum r (2 * r - 2 - x + 1) = -qnum r (x + 1) := by
+    rw [show 2 * r - 2 - x + 1 = 2 * r - (x + 1) by omega]; exact qnum_two_mul_sub hr (by omega)
+  have hs : (-1 : ℝ) ^ ((a + b + c + d + e + f + p + q + r' + (2 * r - 2 - x)) / 2) *
+      ((-1) ^ ((a + b + (2 * r - 2 - x)) / 2 + 1 - r) * (-1) ^ ((c + d + (2 * r - 2 - x)) / 2 + 1 - r) *
+        (-1) ^ ((e + f + (2 * r - 2 - x)) / 2 + 1 - r)) =
+      (-1 : ℝ) ^ ((a + b + c + d + e + f + p + q + r' + x) / 2) *
+      ((-1) ^ ((a + b + x) / 2 + 1 - r) * (-1) ^ ((c + d + x) / 2 + 1 - r) * (-1) ^ ((e + f + x) / 2 + 1 - r)) := by
+    simp only [← pow_add]
+    exact neg_one_pow_of_mod (by omega)
+  unfold limTerm
+  rw [hq, D1', D2', D3', R1, R2, R3, delta2Reg_above hr h1, delta2Reg_above hr h2, delta2Reg_above hr h3,
+    E3_swap r b a x]
+  exact pair_algebra (E3_ne_zero hr ha hb t1 (by omega)) (E3_ne_zero hr hc hd t2 (by omega))
+    (E3_ne_zero hr he hf t3 (by omega)) hs
 
 end Lightlike.TV
