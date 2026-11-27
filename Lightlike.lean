@@ -325,6 +325,7 @@ import Lightlike.Cosmology.SachsWolfeEffect.SachsWolfe
 import Lightlike.Cosmology.ConformalVacuumFLRW.Modes
 import Lightlike.Dirac.SpinPrincipal
 import Lightlike.Dirac.SpinorBundle
+import Lightlike.Dirac.SpinorLichnerowicz
 import Lightlike.FourD.Boundary
 import Lightlike.FourD.Complex
 import Lightlike.FourD.Orientation
