@@ -19,7 +19,7 @@ Layer 2c-v of the Plancherel formula on `SL(2,ℝ)` (matrix coefficients of `π_
 -/
 
 open MeasureTheory Set Complex Filter Topology Lightlike.Lorentz.SL2R
-open scoped Real
+open scoped Real ContDiff
 
 noncomputable section
 
@@ -197,6 +197,38 @@ theorem piCoeff_eq_kkCoeff (ν : ℝ) {f : SL2R → ℂ} (hf : Continuous f) (hc
   rw [piCoeff_eq_polar ν (hf.integrable_of_hasCompactSupport hc), ← integral_const_mul]
   refine setIntegral_congr_fun measurableSet_Ioi fun ξ _ => ?_
   rw [integral_angles_eq_kkCoeff hf ξ m n]
+  ring
+
+/-- If the `K × K` component `(2r, -2l)` of `f` is the ladder chain `Hc_{r,l} G` on `(0, ∞)`, the
+matrix coefficient of `π_ν(f)` is `(2π)²` times the pairing of the chain with
+`conj Φ^{-ν}_{-r,l}`. -/
+theorem piCoeff_eq_integral_Hc (ν : ℝ) {f : SL2R → ℂ} (hf : Continuous f)
+    (hc : HasCompactSupport f) (r l : ℕ) {G : ℝ → ℂ}
+    (h : ∀ ξ ∈ Ioi (0 : ℝ), kkCoeff f ![2 * (r : ℤ), 2 * -(l : ℤ)] ξ = Hc r G l ξ) :
+    piCoeff ν f r (-l) = ((2 * π : ℝ) : ℂ) ^ 2 * ∫ ξ in Ioi (0 : ℝ),
+      Hc r G l ξ * (starRingEnd ℂ) (mcoefP (-ν) (-r) l ξ) * (Real.sinh ξ : ℂ) := by
+  rw [piCoeff_eq_kkCoeff ν hf hc]
+  congr 1
+  refine setIntegral_congr_fun measurableSet_Ioi fun ξ hξ => ?_
+  have hΦ : (starRingEnd ℂ) (mcoefP (-ν) (-(r : ℤ)) (l : ℤ) ξ) = mcoefP ν (r : ℤ) (-(l : ℤ)) ξ := by
+    rw [conj_mcoefP, neg_neg, neg_neg]
+  rw [h ξ hξ, hΦ]
+  ring
+
+lemma wl_neg (l : ℕ) (ρ : ℝ) : wl l (-ρ) = wl l ρ := by
+  simp only [wl, neg_sq]
+
+/-- **The principal-series coefficient of a ladder-chain component**: at `ν = 2ρ`,
+`|∫ f(g) ⟪e_r, π_{2ρ}(g) e_{-l}⟫ dg|² = (2π)⁴ w_l(ρ) w_r(ρ)/4 · |Ĝ(ρ)|²`. -/
+theorem norm_sq_piCoeff_eq (ρ : ℝ) {f : SL2R → ℂ} (hf : Continuous f) (hc : HasCompactSupport f)
+    (r l : ℕ) {G : ℝ → ℂ} (hG : ContDiff ℝ ∞ G) (hcG : HasCompactSupport G)
+    (h : ∀ ξ ∈ Ioi (0 : ℝ), kkCoeff f ![2 * (r : ℤ), 2 * -(l : ℤ)] ξ = Hc r G l ξ) :
+    ‖piCoeff (2 * ρ) f r (-l)‖ ^ 2 =
+      (2 * π) ^ 4 * (wl l ρ * wl r ρ / 4 * ‖sphTransformH G ρ‖ ^ 2) := by
+  rw [piCoeff_eq_integral_Hc (2 * ρ) hf hc r l h, norm_mul, mul_pow, norm_pow,
+    show -(2 * ρ) = 2 * (-ρ) by ring, norm_sq_integral_Hc_mul_conj_mcoefP (-ρ) r l hG hcG,
+    wl_neg, wl_neg, sphTransformH_neg, Complex.norm_real, Real.norm_eq_abs,
+    abs_of_pos (by positivity : (0 : ℝ) < 2 * π)]
   ring
 
 end Lightlike.Lorentz.SL2RPlancherel
