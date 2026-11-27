@@ -149,7 +149,7 @@ milestones:
       - id: m1
         kind: main
         text: "On a spin manifold the Dirac operator satisfies D² = ∇*∇ + R/4"
-        decls: [Lightlike.Dirac.SpinStructure.dirac_sq_eq_rough_add_scal_div_four, Lightlike.Dirac.SpinStructure.dirac_sq]
+        decls: [Lightlike.Dirac.SpinorSection.dirac_dirac]
         hint: "Missing: spin structure, global Dirac operator and ∇*∇ on a manifold. Close: Lightlike.Dirac.lichnerowicz_frame_general (local frame form), Lightlike.Dirac.lichnerowicz_general, Lightlike.Dirac.stereo_lichnerowicz_two (S² chart)."
       - id: p1
         kind: piece
@@ -167,7 +167,7 @@ milestones:
       - id: p4
         kind: piece
         text: "The Dirac operator on a spin manifold is defined, with the rough Laplacian ∇*∇ on spinors"
-        decls: [Lightlike.Dirac.SpinStructure.dirac, Lightlike.Dirac.SpinStructure.roughLaplacian]
+        decls: [Lightlike.Dirac.SpinorSection.dirac, Lightlike.Dirac.SpinorSection.roughLaplacian]
         hint: "Missing. Close: Lightlike.Dirac.diracF, Lightlike.Dirac.diracConn (frame/chart operators)."
       - id: t1
         kind: trust

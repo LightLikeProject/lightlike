@@ -342,6 +342,7 @@ import Lightlike.Dirac.SpinPrincipal
 import Lightlike.Dirac.SpinPrincipalEquiv
 import Lightlike.Dirac.SpinLiftSmooth
 import Lightlike.Dirac.SpinorBundle
+import Lightlike.Dirac.SpinorLichnerowicz
 import Lightlike.FourD.Boundary
 import Lightlike.FourD.Complex
 import Lightlike.FourD.Orientation
