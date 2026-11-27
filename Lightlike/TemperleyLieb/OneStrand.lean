@@ -351,4 +351,55 @@ theorem Fc_one_orth [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) {a b E : ℕ}
   rw [sum_eq_single E z0 (fun h => absurd (mem_range.mpr (by omega)) h),
     sum_eq_single (E - 1) z1 (fun h => absurd (mem_range.mpr (by omega)) h)] at hsum
   linear_combination hsum
+/-- **The recursion in `b`, two terms**: the triple sum of `Fc_b_rec` has the two terms `f = 0, h = 1` and
+`f = 1, h = 0`. -/
+theorem Fc_b_rec_two [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) (a b e₀ d₀ g₀ : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b)
+    (hd : ∀ x, x ≤ a + b + 1 + 1 → chebD (loopVal q) x ≠ 0)
+    (hq2 : ∀ x, 1 ≤ x → x ≤ 2 * (a + b) + 4 → (q : k) ^ (2 * x) ≠ 1)
+    (heb : e₀ ≤ b) (h₀ : ValidA a b 1 1 e₀ d₀ g₀) (hed : 1 ≤ e₀ + d₀) :
+    Fc q b 1 1 0 1 1 0 * Fc q a (b + 1) 1 (e₀ + d₀) g₀ 1 e₀ * Fc q a b 1 e₀ d₀ 0 (e₀ + d₀) +
+      Fc q b 1 1 1 0 1 0 * Fc q a (b - 1) 1 (e₀ + d₀ - 1) g₀ 0 e₀ * Fc q a b 1 e₀ d₀ 1 (e₀ + d₀ - 1) =
+      Fc q (a + b - 2 * e₀) 1 1 d₀ g₀ 1 0 := by
+  rw [← Fc_b_rec q hδ a b e₀ d₀ g₀ ha hb hd hq2 heb h₀]
+  obtain ⟨he, hd₀, hg₀, hg1⟩ := h₀
+  have hd1 : ∀ x, x ≤ a + b + 1 → chebD (loopVal q) x ≠ 0 := fun x hx => hd x (by omega)
+  -- the inner sum over d': only d' = e₀ + d₀ - f survives
+  have inner : ∀ f h, f ≤ 1 → (∀ d' ∈ range (a + 1), d' ≠ e₀ + d₀ - f →
+      Fc q a (b + 1 - 2 * f) 1 d' g₀ h e₀ * Fc q a b 1 e₀ d₀ f d' = 0) := by
+    intro f h hf d' _ hne
+    by_cases h2 : Fc q a (b + 1 - 2 * f) 1 d' g₀ h e₀ = 0
+    · simp [h2]
+    · obtain ⟨hd'1, -⟩ := Fc_guard h2
+      by_cases h3 : Fc q a b 1 e₀ d₀ f d' = 0
+      · simp [h3]
+      · have := Fc_total q hδ a b 1 e₀ d₀ f d' (by omega) hd1 (by omega) hf (hd'1.trans (min_le_left _ _))
+          (by have := hd'1.trans (min_le_right _ _); omega) h3
+        exact absurd this (by have := hd₀.trans (min_le_left _ _); have := he.trans (min_le_left _ _); omega)
+  have hF1 : ∀ f h, ¬ (f + h = 1) → Fc q b 1 1 f h 1 0 = 0 := by
+    intro f h hfh
+    by_contra h1
+    obtain ⟨hf, hh⟩ := Fc_guard h1
+    have := Fc_total q hδ b 1 1 f h 1 0 (by omega) (fun x hx => hd x (by omega)) le_rfl le_rfl (Nat.zero_le _)
+      (Nat.zero_le _) h1
+    exact hfh (by have := hf.trans (min_le_right _ _); have := hh.trans (min_le_left _ _); omega)
+  have row : ∀ f, f ≤ 1 → ∑ h ∈ range (1 + 1), ∑ d' ∈ range (a + 1),
+      Fc q b 1 1 f h 1 0 * (Fc q a (b + 1 - 2 * f) 1 d' g₀ h e₀ * Fc q a b 1 e₀ d₀ f d') =
+      Fc q b 1 1 f (1 - f) 1 0 * (Fc q a (b + 1 - 2 * f) 1 (e₀ + d₀ - f) g₀ (1 - f) e₀ *
+        Fc q a b 1 e₀ d₀ f (e₀ + d₀ - f)) := by
+    intro f hf
+    rw [sum_eq_single (1 - f) (fun h _ hne => by simp [hF1 f h (by omega)])
+      (fun hm => absurd (mem_range.mpr (by omega)) hm)]
+    rw [← mul_sum, sum_eq_single (e₀ + d₀ - f) (inner f (1 - f) hf)
+      (fun hm => by
+        have hgt : a + f < e₀ + d₀ := by simpa using hm
+        rw [show Fc q a (b + 1 - 2 * f) 1 (e₀ + d₀ - f) g₀ (1 - f) e₀ = 0 by
+          unfold Fc; rw [if_neg fun h => by have := h.1.trans (min_le_left _ _); omega]]
+        ring)]
+  rw [sum_eq_add 0 1 (by omega) (fun f _ hf => by
+      rw [sum_eq_zero fun h _ => sum_eq_zero fun d' _ => by rw [hF1 f h (by omega), zero_mul]])
+    (fun hm => absurd (mem_range.mpr (by omega)) hm) (fun hm => absurd (mem_range.mpr (by omega)) hm),
+    row 0 (by omega), row 1 le_rfl]
+  simp only [Nat.mul_zero, Nat.sub_zero, Nat.mul_one, show 1 - 0 = 1 from rfl, show 1 - 1 = 0 from rfl,
+    show b + 1 - 2 = b - 1 by omega, Nat.sub_zero]
+  ring
 end Lightlike.TemperleyLieb
