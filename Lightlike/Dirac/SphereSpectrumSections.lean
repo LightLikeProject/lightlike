@@ -87,4 +87,75 @@ theorem SpinorSection.eq_zero_of_north (σ : SpinorSection sphereSpinStructure �
     exact hg00
   · exact h p hp
 
+/-! ## The north representation -/
+
+lemma stereoN_mem_dom (y : Fin 2 → ℝ) : stereoN y ∈ sphereSpinStructure.dom true := pc_stereoN_ne y
+
+lemma pc_ne_one_iff_dom {p : S2} : p ∈ sphereSpinStructure.dom true ↔ pc p 2 ≠ 1 := Iff.rfl
+
+/-- The representation of `σ` in the north frame, read in the north chart (on `E 2`). -/
+def northRep (σ : SpinorSection sphereSpinStructure ρ) (x : E 2) : V :=
+  σ.toField.rep true (stereoN (modelEquiv2 x))
+
+lemma rep_add (σ τ : SpinorSection sphereSpinStructure ρ) {i : Bool} {p : S2}
+    (hp : p ∈ sphereSpinStructure.dom i) :
+    (σ + τ).toField.rep i p = σ.toField.rep i p + τ.toField.rep i p := by
+  change (σ + τ).rep i p = σ.rep i p + τ.rep i p
+  rw [(σ + τ).rep_of_mem hp, σ.rep_of_mem hp, τ.rep_of_mem hp]
+  erw [map_add]
+
+lemma rep_smul (c : ℝ) (σ : SpinorSection sphereSpinStructure ρ) {i : Bool} {p : S2}
+    (hp : p ∈ sphereSpinStructure.dom i) :
+    (c • σ).toField.rep i p = c • σ.toField.rep i p := by
+  change (c • σ).rep i p = c • σ.rep i p
+  rw [(c • σ).rep_of_mem hp, σ.rep_of_mem hp]
+  erw [map_smul]
+
+/-- The north representation as a linear map. -/
+def northMap : SpinorSection sphereSpinStructure ρ →ₗ[ℝ] (E 2 → V) where
+  toFun := northRep
+  map_add' σ τ := funext fun x => rep_add σ τ (stereoN_mem_dom _)
+  map_smul' c σ := funext fun x => rep_smul c σ (stereoN_mem_dom _)
+
+/-- A section is determined by its north representation. -/
+theorem northMap_injective : Function.Injective (northMap (ρ := ρ)) := by
+  rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
+  intro σ hσ
+  refine σ.eq_zero_of_north fun p hp => ?_
+  have hx := congrFun hσ (modelEquiv2.symm (invN p))
+  simp only [northMap, LinearMap.coe_mk, AddHom.coe_mk, northRep, ContinuousLinearEquiv.apply_symm_apply,
+    stereoN_invN hp, Pi.zero_apply] at hx
+  apply SpinStructure.coordChange_injective (ρ := ρ) (show p ∈ sphereSpinStructure.dom true from hp)
+  simp only
+  erw [map_zero, ← σ.rep_of_mem (show p ∈ sphereSpinStructure.dom true from hp)]
+  exact hx
+
+/-- **The eigen-equation from the chart.** If the north representation of a smooth section satisfies the chart
+eigen-equation `diracF f = λ f`, then `D σ = λ σ`. -/
+theorem dirac_eq_of_north (σ : SpinorSection sphereSpinStructure ρ) (lam : ℝ)
+    (h : ∀ x, diracF ρ stereoF stereoOmega (northRep σ) x = lam • northRep σ x) :
+    σ.dirac = lam • σ := by
+  rw [← sub_eq_zero]
+  refine (σ.dirac - lam • σ).eq_zero_of_north fun p hp => ?_
+  have hd : p ∈ sphereSpinStructure.dom true := hp
+  set x := modelEquiv2.symm (invN p)
+  have hpx : stereoN (modelEquiv2 x) = p := by
+    simp only [x, ContinuousLinearEquiv.apply_symm_apply]; exact stereoN_invN hp
+  have hdiff : MDifferentiableAt I2 𝓘(ℝ, V) (σ.toField.rep true) (stereoN (modelEquiv2 x)) := by
+    rw [hpx]; exact (σ.toField_isSmooth true p hd).mdifferentiableAt (by simp)
+  have key := dirac_sphere_north ρ hdiff
+  rw [show (σ.toField.rep true ∘ stereoN ∘ modelEquiv2) = northRep σ from rfl, h x] at key
+  rw [hpx] at key
+  -- the north representation of `D σ - λ σ` vanishes at `p`
+  have h1 : (σ.dirac - lam • σ).toField.rep true p = 0 := by
+    rw [sub_eq_add_neg, rep_add _ _ hd, ← neg_smul, rep_smul _ _ hd, σ.toField_dirac hd]
+    change sphereSpinStructure.dirac ρ true (σ.toField.rep true) p + _ = 0
+    rw [key, neg_smul, show northRep σ x = σ.toField.rep true p by
+      simp only [northRep]; rw [hpx]]
+    abel
+  apply SpinStructure.coordChange_injective (ρ := ρ) hd
+  simp only
+  erw [map_zero, ← (σ.dirac - lam • σ).rep_of_mem hd]
+  exact h1
+
 end Lightlike.Dirac
