@@ -7264,3 +7264,14 @@
   review: kernel-checked
   note: "Layer 2c-v of the Plancherel formula on SL(2,R). The norm identity on generators is norm_sq_ktype_lr (layer 1); the ladder images are dense in L2(0, infinity) because every test function is one (exists_hLR_eq), so LinearMap.extendOfIsometry applies, as for the spherical isometry sphericalL2 (blockTgt_zero_zero: the block (0, 0) is pi times the spherical transform). Surjectivity onto the weighted spectral side is not shown. Standard; no source consulted."
   since: unreleased
+- id: LL-0565
+  title: "K-type Plancherel identity for the opposite-sign blocks of SL(2,R): for natural l, s and G smooth with compact support, the l-fold image h of the profile sinh^s(xi) G^(s)(cosh xi) under the raising operators of type (k, -s) satisfies pi^2 times the integral over (0, infinity) of |h|^2 sinh(xi) = 1/4 times the integral over (0, infinity) of rho tanh(pi rho) w_l(rho) w_s(rho) |G^(rho)|^2"
+  area: Lorentz
+  file: Lightlike/Lorentz/SL2RPlancherel/KTypeOpposite.lean
+  decls: [Lightlike.Lorentz.SL2RPlancherel.norm_sq_ktype_opp]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Layer 2c-v of the Plancherel formula on SL(2,R). The ladder recursion of these blocks is u -> u' + s u/(v - 1) (hLRN_eq), singular at the identity v = 1, but the images extend continuously to xi = 0 (HcN_eq_hLRN, vanishing order of (d/dv)^l ((v-1)^s G^(s)) at v = 1), so the induction of the same-sign case (norm_sq_ktype_lr) goes through with the same weights. Unlike the same-sign blocks, these images do not exhaust the block: its orthocomplement is the discrete part. Standard; no source consulted."
+  since: unreleased
