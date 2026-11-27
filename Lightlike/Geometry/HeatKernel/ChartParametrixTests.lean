@@ -25,7 +25,7 @@ theorem isRiemMetric_gLine : Upstream.GeodesicExpansion.IsRiemMetric gLine univ 
 example (N : ℕ) : ∃ (r : ℝ) (u : ℕ → (Fin 1 → ℝ) × (Fin 1 → ℝ) → ℝ) (H : ℝ → (Fin 1 → ℝ) → (Fin 1 → ℝ) → ℝ),
     0 < r ∧ u 0 (0, 0) = 1 ∧ ∃ C : ℝ, ∀ t ∈ Ioc (0 : ℝ) 1, ∀ y, ∃ D, HasDerivAt (fun s => H s 0 y) D t ∧
       |D + coordLaplacian gLine (H t 0) y| ≤ C * t ^ ((N : ℝ) - (1 : ℕ) / 2) := by
-  obtain ⟨r, u, H, hr, hu0, -, -, C, hC⟩ := exists_chart_parametrix isRiemMetric_gLine (mem_univ 0) N
+  obtain ⟨r, u, H, hr, hu0, -, -, -, C, hC⟩ := exists_chart_parametrix isRiemMetric_gLine (mem_univ 0) N
   exact ⟨r, u, H, hr, hu0 0 (by simpa using hr), C, fun t ht y => hC t ht 0 (by simpa using hr) y⟩
 
 end Lightlike.ChartParametrixTests

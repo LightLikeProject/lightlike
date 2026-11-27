@@ -3,6 +3,7 @@ import Lightlike.Geometry.HeatKernel.CutoffAnsatz
 import Lightlike.Geometry.HeatKernel.HeatCoeffs
 import Lightlike.Geometry.HeatKernel.WorldFunctionBounds
 import Lightlike.Asymptotics.ExpDecay
+import Lightlike.Asymptotics.GaussianIntegralPi
 
 /-!
 # The parametrix in a chart
@@ -10,7 +11,8 @@ import Lightlike.Asymptotics.ExpDecay
 `exists_chart_parametrix`: for a Riemannian coordinate metric, near any point `x` and for every order `N`, the cut-off
 parametrix `H(t, p, y) = θ(y − p) (4πt)^{-n/2} e^{-σ(p, y)/4t} Σ_{k≤N} tᵏ u_k(p, y)` (coefficients of
 `Lightlike.exists_heatCoeffs`, `θ = 1` for `|y − p| < r/2`, `θ = 0` for `|y − p| ≥ r`) has the diagonal
-`(4πt)^{-n/2} Σ tᵏ u_k(p, p)` with `u₀(p, p) = 1`, the Gaussian bound `|H| ≤ C t^{-n/2}`, and heat error `|(∂ₜ + Δ_y) H| ≤ C t^{N − n/2}` uniformly for
+`(4πt)^{-n/2} Σ tᵏ u_k(p, p)` with `u₀(p, p) = 1`, the Gaussian bound
+`|H| ≤ C t^{-n/2} e^{-a|y − p|²/t}` and hence `∫ |H(t, p, y)| dy ≤ C` (`integral_exp_neg_mul_sum_sq_sub`), and heat error `|(∂ₜ + Δ_y) H| ≤ C t^{N − n/2}` uniformly for
 `t ∈ (0, 1]`, `|p − x| < r` and all `y`. Near the diagonal only `t^N Δu_N` remains (`heatOperator_cutoff_ansatz`);
 on `r/2 ≤ |y − p| < r` the Gaussian lower bound `σ ≥ c|y − p|²` (`exists_pairing_lower`) and
 `exists_exp_neg_div_le_rpow` make the cutoff terms `O(t^∞)`; beyond, `H` vanishes. The real-number estimates are
@@ -25,7 +27,7 @@ Helpers:
   smooth on an open set.
 -/
 
-open Set Filter Metric
+open Set Filter Metric MeasureTheory
 open scoped ContDiff Topology
 
 noncomputable section
@@ -139,7 +141,9 @@ theorem exists_chart_parametrix {g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) 
       (∀ p, ‖p - x‖ < r → u 0 (p, p) = 1) ∧
       (∀ t > 0, ∀ p, ‖p - x‖ < r →
         H t p p = (4 * Real.pi * t) ^ (-(n : ℝ) / 2) * ∑ k ∈ Finset.range (N + 1), t ^ k * u k (p, p)) ∧
-      (∃ C : ℝ, ∀ t ∈ Ioc (0 : ℝ) 1, ∀ p, ‖p - x‖ < r → ∀ y, |H t p y| ≤ C * t ^ (-(n : ℝ) / 2)) ∧
+      (∃ C a : ℝ, 0 < a ∧ ∀ t ∈ Ioc (0 : ℝ) 1, ∀ p, ‖p - x‖ < r → ∀ y,
+        |H t p y| ≤ C * t ^ (-(n : ℝ) / 2) * Real.exp (-a * (∑ i, (y i - p i) ^ 2) / t)) ∧
+      (∃ C : ℝ, ∀ t ∈ Ioc (0 : ℝ) 1, ∀ p, ‖p - x‖ < r → ∫ y, |H t p y| ≤ C) ∧
       ∃ C : ℝ, ∀ t ∈ Ioc (0 : ℝ) 1, ∀ p, ‖p - x‖ < r → ∀ y, ∃ D, HasDerivAt (fun s => H s p y) D t ∧
         |D + coordLaplacian g (H t p) y| ≤ C * t ^ ((N : ℝ) - n / 2) := by
   have hg' : IsCoordMetric g U := hg.coord.toLightlike
@@ -199,20 +203,38 @@ theorem exists_chart_parametrix {g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) 
   obtain ⟨C1, hC1, hdec⟩ := exists_exp_neg_div_le_rpow hc'pos ((N : ℝ) + 1)
   set M := |A6| * |A1| + |A2| * |A3| + 2 * |A4| + |A2| * |A5| with hM
   set C := (4 * Real.pi) ^ (-(n : ℝ) / 2) * (|A6| * |A1| + M * C1) with hCdef
-  refine ⟨r, u, H, hr, fun p hp => (hdiag p ?_).2, fun t ht p hp => ?_,
-    ⟨(4 * Real.pi) ^ (-(n : ℝ) / 2) * (|A6| * |A2|), fun t ht p hp y => ?_⟩, C, fun t ht p hp y => ?_⟩
-  · exact hKcΩ (hmemK p p hp (by simpa using hr))
-  · have hpp := hKcΩ (hmemK p p hp (by simpa using hr))
-    simp only [hHdef, sub_self, hθ1 0 (hKW₀ (mem_closedBall_self (by linarith))), one_mul, heatGaussian,
-      (hdiag p hpp).1, gaussFactor, neg_zero, zero_div, Real.exp_zero, mul_one, truncAnsatz]
-  · -- the Gaussian upper bound
+  -- the Gaussian bound with its exponential factor
+  set a := c / (4 * ((n : ℝ) + 1)) with ha
+  have hapos : 0 < a := by positivity
+  set CG := (4 * Real.pi) ^ (-(n : ℝ) / 2) * (|A6| * |A2|) with hCG
+  have hCG0 : 0 ≤ CG := by positivity
+  have hGauss : ∀ t ∈ Ioc (0 : ℝ) 1, ∀ p, ‖p - x‖ < r → ∀ y,
+      |H t p y| ≤ CG * t ^ (-(n : ℝ) / 2) * Real.exp (-a * (∑ i, (y i - p i) ^ 2) / t) := by
+    intro t ht p hp y
     have ht0 : 0 < t := ht.1
+    have hexp0 : 0 < Real.exp (-a * (∑ i, (y i - p i) ^ 2) / t) := Real.exp_pos _
     by_cases hyp : ‖y - p‖ < r
     · have hqK := hmemK p y hp hyp
-      have he1 : gaussFactor t (σ (p, y)) ≤ 1 := by
-        rw [gaussFactor, Real.exp_le_one_iff]
-        have : 0 ≤ σ (p, y) := le_trans (by positivity) (hσnn (p, y) hqK)
-        exact div_nonpos_of_nonpos_of_nonneg (by linarith) (by linarith)
+      have hσq : c * ‖y - p‖ ^ 2 ≤ σ (p, y) := hσnn (p, y) hqK
+      have hsum : ∑ i, (y i - p i) ^ 2 ≤ ((n : ℝ) + 1) * ‖y - p‖ ^ 2 := by
+        have h1 : ∀ i, (y i - p i) ^ 2 ≤ ‖y - p‖ ^ 2 := fun i => by
+          have := norm_le_pi_norm (y - p) i
+          rw [Pi.sub_apply, Real.norm_eq_abs] at this
+          rw [← sq_abs]
+          exact pow_le_pow_left₀ (abs_nonneg _) this 2
+        calc ∑ i, (y i - p i) ^ 2 ≤ ∑ _i : Fin n, ‖y - p‖ ^ 2 := Finset.sum_le_sum fun i _ => h1 i
+          _ = (n : ℝ) * ‖y - p‖ ^ 2 := by simp
+          _ ≤ ((n : ℝ) + 1) * ‖y - p‖ ^ 2 := by nlinarith [sq_nonneg ‖y - p‖]
+      have he : gaussFactor t (σ (p, y)) ≤ Real.exp (-a * (∑ i, (y i - p i) ^ 2) / t) := by
+        rw [gaussFactor]
+        apply Real.exp_le_exp.2
+        rw [div_le_div_iff₀ (by positivity) ht0]
+        have h1 : a * ∑ i, (y i - p i) ^ 2 ≤ c * ‖y - p‖ ^ 2 / 4 := by
+          rw [ha]
+          calc c / (4 * ((n : ℝ) + 1)) * ∑ i, (y i - p i) ^ 2
+              ≤ c / (4 * ((n : ℝ) + 1)) * (((n : ℝ) + 1) * ‖y - p‖ ^ 2) := by gcongr
+            _ = c * ‖y - p‖ ^ 2 / 4 := by field_simp
+        nlinarith
       have he0 : 0 ≤ gaussFactor t (σ (p, y)) := (Real.exp_pos _).le
       have b2 : |truncAnsatz (fun k y => u k (p, y)) N t y| ≤ |A2| := by
         have := hA2 _ hqK
@@ -226,9 +248,10 @@ theorem exists_chart_parametrix {g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) 
         abs_of_pos (Real.rpow_pos_of_pos ht0 _), abs_of_nonneg he0]
       calc |θ (y - p)| * ((4 * Real.pi) ^ (-(n : ℝ) / 2) * t ^ (-(n : ℝ) / 2) * gaussFactor t (σ (p, y)) *
             |truncAnsatz (fun k y => u k (p, y)) N t y|)
-          ≤ |A6| * ((4 * Real.pi) ^ (-(n : ℝ) / 2) * t ^ (-(n : ℝ) / 2) * 1 * |A2|) := by
+          ≤ |A6| * ((4 * Real.pi) ^ (-(n : ℝ) / 2) * t ^ (-(n : ℝ) / 2) *
+              Real.exp (-a * (∑ i, (y i - p i) ^ 2) / t) * |A2|) := by
             gcongr
-        _ = (4 * Real.pi) ^ (-(n : ℝ) / 2) * (|A6| * |A2|) * t ^ (-(n : ℝ) / 2) := by ring
+        _ = CG * t ^ (-(n : ℝ) / 2) * Real.exp (-a * (∑ i, (y i - p i) ^ 2) / t) := by rw [hCG]; ring
     · have hθ0 : θ (y - p) = 0 := by
         by_contra hne
         exact hyp (by
@@ -237,6 +260,29 @@ theorem exists_chart_parametrix {g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) 
       show |θ (y - p) * _| ≤ _
       rw [hθ0, zero_mul, abs_zero]
       positivity
+  refine ⟨r, u, H, hr, fun p hp => (hdiag p ?_).2, fun t ht p hp => ?_,
+    ⟨CG, a, hapos, hGauss⟩, ⟨CG * (Real.pi / a) ^ ((n : ℝ) / 2), fun t ht p hp => ?_⟩, C,
+    fun t ht p hp y => ?_⟩
+  · exact hKcΩ (hmemK p p hp (by simpa using hr))
+  · have hpp := hKcΩ (hmemK p p hp (by simpa using hr))
+    simp only [hHdef, sub_self, hθ1 0 (hKW₀ (mem_closedBall_self (by linarith))), one_mul, heatGaussian,
+      (hdiag p hpp).1, gaussFactor, neg_zero, zero_div, Real.exp_zero, mul_one, truncAnsatz]
+  · -- the integral bound
+    have ht0 : 0 < t := ht.1
+    have hb : 0 < a / t := div_pos hapos ht0
+    have hint := (integrable_exp_neg_mul_sum_sq_sub n hb p).const_mul (CG * t ^ (-(n : ℝ) / 2))
+    calc ∫ y, |H t p y| ≤ ∫ y : Fin n → ℝ, CG * t ^ (-(n : ℝ) / 2) * Real.exp (-(a / t) * ∑ i, (y i - p i) ^ 2) := by
+          refine integral_mono_of_nonneg (Eventually.of_forall fun y => abs_nonneg _) hint
+            (Eventually.of_forall fun y => ?_)
+          have h := hGauss t ht p hp y
+          have he : -a * (∑ i, (y i - p i) ^ 2) / t = -(a / t) * ∑ i, (y i - p i) ^ 2 := by ring
+          rwa [he] at h
+      _ = CG * t ^ (-(n : ℝ) / 2) * (Real.pi / (a / t)) ^ ((n : ℝ) / 2) := by
+          rw [integral_const_mul, integral_exp_neg_mul_sum_sq_sub n hb p]
+      _ = CG * (Real.pi / a) ^ ((n : ℝ) / 2) := by
+          rw [show Real.pi / (a / t) = Real.pi / a * t by field_simp, Real.mul_rpow (by positivity) ht0.le,
+            show -(n : ℝ) / 2 = -((n : ℝ) / 2) by ring, Real.rpow_neg ht0.le]
+          field_simp
   · have ht0 : 0 < t := ht.1
     have ht1 : t ≤ 1 := ht.2
     have hCnn : 0 ≤ C := by rw [hCdef]; positivity
