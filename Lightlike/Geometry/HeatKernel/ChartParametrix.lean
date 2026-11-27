@@ -10,7 +10,7 @@ import Lightlike.Asymptotics.ExpDecay
 `exists_chart_parametrix`: for a Riemannian coordinate metric, near any point `x` and for every order `N`, the cut-off
 parametrix `H(t, p, y) = θ(y − p) (4πt)^{-n/2} e^{-σ(p, y)/4t} Σ_{k≤N} tᵏ u_k(p, y)` (coefficients of
 `Lightlike.exists_heatCoeffs`, `θ = 1` for `|y − p| < r/2`, `θ = 0` for `|y − p| ≥ r`) has the diagonal
-`(4πt)^{-n/2} Σ tᵏ u_k(p, p)` with `u₀(p, p) = 1` and heat error `|(∂ₜ + Δ_y) H| ≤ C t^{N − n/2}` uniformly for
+`(4πt)^{-n/2} Σ tᵏ u_k(p, p)` with `u₀(p, p) = 1`, the Gaussian bound `|H| ≤ C t^{-n/2}`, and heat error `|(∂ₜ + Δ_y) H| ≤ C t^{N − n/2}` uniformly for
 `t ∈ (0, 1]`, `|p − x| < r` and all `y`. Near the diagonal only `t^N Δu_N` remains (`heatOperator_cutoff_ansatz`);
 on `r/2 ≤ |y − p| < r` the Gaussian lower bound `σ ≥ c|y − p|²` (`exists_pairing_lower`) and
 `exists_exp_neg_div_le_rpow` make the cutoff terms `O(t^∞)`; beyond, `H` vanishes. The real-number estimates are
@@ -139,6 +139,7 @@ theorem exists_chart_parametrix {g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) 
       (∀ p, ‖p - x‖ < r → u 0 (p, p) = 1) ∧
       (∀ t > 0, ∀ p, ‖p - x‖ < r →
         H t p p = (4 * Real.pi * t) ^ (-(n : ℝ) / 2) * ∑ k ∈ Finset.range (N + 1), t ^ k * u k (p, p)) ∧
+      (∃ C : ℝ, ∀ t ∈ Ioc (0 : ℝ) 1, ∀ p, ‖p - x‖ < r → ∀ y, |H t p y| ≤ C * t ^ (-(n : ℝ) / 2)) ∧
       ∃ C : ℝ, ∀ t ∈ Ioc (0 : ℝ) 1, ∀ p, ‖p - x‖ < r → ∀ y, ∃ D, HasDerivAt (fun s => H s p y) D t ∧
         |D + coordLaplacian g (H t p) y| ≤ C * t ^ ((N : ℝ) - n / 2) := by
   have hg' : IsCoordMetric g U := hg.coord.toLightlike
@@ -198,11 +199,44 @@ theorem exists_chart_parametrix {g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) 
   obtain ⟨C1, hC1, hdec⟩ := exists_exp_neg_div_le_rpow hc'pos ((N : ℝ) + 1)
   set M := |A6| * |A1| + |A2| * |A3| + 2 * |A4| + |A2| * |A5| with hM
   set C := (4 * Real.pi) ^ (-(n : ℝ) / 2) * (|A6| * |A1| + M * C1) with hCdef
-  refine ⟨r, u, H, hr, fun p hp => (hdiag p ?_).2, fun t ht p hp => ?_, C, fun t ht p hp y => ?_⟩
+  refine ⟨r, u, H, hr, fun p hp => (hdiag p ?_).2, fun t ht p hp => ?_,
+    ⟨(4 * Real.pi) ^ (-(n : ℝ) / 2) * (|A6| * |A2|), fun t ht p hp y => ?_⟩, C, fun t ht p hp y => ?_⟩
   · exact hKcΩ (hmemK p p hp (by simpa using hr))
   · have hpp := hKcΩ (hmemK p p hp (by simpa using hr))
     simp only [hHdef, sub_self, hθ1 0 (hKW₀ (mem_closedBall_self (by linarith))), one_mul, heatGaussian,
       (hdiag p hpp).1, gaussFactor, neg_zero, zero_div, Real.exp_zero, mul_one, truncAnsatz]
+  · -- the Gaussian upper bound
+    have ht0 : 0 < t := ht.1
+    by_cases hyp : ‖y - p‖ < r
+    · have hqK := hmemK p y hp hyp
+      have he1 : gaussFactor t (σ (p, y)) ≤ 1 := by
+        rw [gaussFactor, Real.exp_le_one_iff]
+        have : 0 ≤ σ (p, y) := le_trans (by positivity) (hσnn (p, y) hqK)
+        exact div_nonpos_of_nonpos_of_nonneg (by linarith) (by linarith)
+      have he0 : 0 ≤ gaussFactor t (σ (p, y)) := (Real.exp_pos _).le
+      have b2 : |truncAnsatz (fun k y => u k (p, y)) N t y| ≤ |A2| := by
+        have := hA2 _ hqK
+        rw [Real.norm_eq_abs, abs_of_nonneg (Finset.sum_nonneg fun k _ => abs_nonneg _)] at this
+        exact (abs_sum_pow_mul_le ht0.le ht.2 N _).trans (this.trans (le_abs_self _))
+      have b6 : |θ (y - p)| ≤ |A6| := (hA6 _ hqK).trans (le_abs_self _)
+      show |θ (y - p) * ((4 * Real.pi * t) ^ (-(n : ℝ) / 2) * gaussFactor t (σ (p, y)) *
+        truncAnsatz (fun k y => u k (p, y)) N t y)| ≤ _
+      rw [fourPi_rpow_split ht0 n, abs_mul, abs_mul, abs_mul, abs_mul,
+        abs_of_pos (by positivity : (0 : ℝ) < (4 * Real.pi) ^ (-(n : ℝ) / 2)),
+        abs_of_pos (Real.rpow_pos_of_pos ht0 _), abs_of_nonneg he0]
+      calc |θ (y - p)| * ((4 * Real.pi) ^ (-(n : ℝ) / 2) * t ^ (-(n : ℝ) / 2) * gaussFactor t (σ (p, y)) *
+            |truncAnsatz (fun k y => u k (p, y)) N t y|)
+          ≤ |A6| * ((4 * Real.pi) ^ (-(n : ℝ) / 2) * t ^ (-(n : ℝ) / 2) * 1 * |A2|) := by
+            gcongr
+        _ = (4 * Real.pi) ^ (-(n : ℝ) / 2) * (|A6| * |A2|) * t ^ (-(n : ℝ) / 2) := by ring
+    · have hθ0 : θ (y - p) = 0 := by
+        by_contra hne
+        exact hyp (by
+          have := hθs (subset_tsupport θ hne)
+          rwa [mem_ball, dist_zero_right] at this)
+      show |θ (y - p) * _| ≤ _
+      rw [hθ0, zero_mul, abs_zero]
+      positivity
   · have ht0 : 0 < t := ht.1
     have ht1 : t ≤ 1 := ht.2
     have hCnn : 0 ≤ C := by rw [hCdef]; positivity
