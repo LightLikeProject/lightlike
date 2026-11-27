@@ -584,4 +584,107 @@ lemma integrable_conj_mul (f g : L2R) :
   refine h.congr (Filter.Eventually.of_forall fun x => ?_)
   simp only [RCLike.inner_apply', mul_comm]
 
+/-- The logarithmic derivative of `π(c(t)) e_n` in `t`. -/
+def rotLogDeriv (ν : ℝ) (n : ℤ) (ξ t x : ℝ) : ℂ :=
+  wP ν * ((2 * (num (cT ξ t) x * (-(Real.sin t) * x - Real.exp ξ * Real.cos t) +
+      den (cT ξ t) x * (Real.exp (-ξ) * Real.cos t * x - Real.sin t)) : ℝ) /
+      (num (cT ξ t) x ^ 2 + den (cT ξ t) x ^ 2 : ℝ)) +
+    (n : ℂ) * (2 * I * (((-(Real.sin t) * x - Real.exp ξ * Real.cos t) * den (cT ξ t) x -
+      num (cT ξ t) x * (Real.exp (-ξ) * Real.cos t * x - Real.sin t) : ℝ) : ℂ)) /
+      ((num (cT ξ t) x ^ 2 + den (cT ξ t) x ^ 2 : ℝ) : ℂ)
+
+lemma abs_lin_le {E a b c d x : ℝ} (hE1 : 1 ≤ E) (hc : |c| ≤ E) (hd : |d| ≤ E) (ha : |a| ≤ 1)
+    (hb : |b| ≤ 1) : |c * a * x + d * b| ≤ E * (1 + |x|) := by
+  have h1 : |c * a * x| ≤ E * |x| := by
+    rw [abs_mul, abs_mul]
+    nlinarith [abs_nonneg c, abs_nonneg a, abs_nonneg x, mul_le_mul_of_nonneg_left ha (abs_nonneg c)]
+  have h2 : |d * b| ≤ E := by rw [abs_mul]; nlinarith [abs_nonneg d, abs_nonneg b]
+  calc |c * a * x + d * b| ≤ |c * a * x| + |d * b| := abs_add_le _ _
+    _ ≤ E * |x| + E := add_le_add h1 h2
+    _ = E * (1 + |x|) := by ring
+
+set_option maxHeartbeats 400000 in
+/-- **The logarithmic derivative is bounded** uniformly in `t` and `x`. -/
+lemma norm_rotLogDeriv_le (ν : ℝ) (n : ℤ) (ξ t x : ℝ) :
+    ‖rotLogDeriv ν n ξ t x‖ ≤ 16 * (‖wP ν‖ + |(n : ℝ)|) * (1 + Real.exp ξ + Real.exp (-ξ)) ^ 2 *
+      (2 + Real.exp ξ ^ 2 + Real.exp (-ξ) ^ 2) := by
+  set E := 1 + Real.exp ξ + Real.exp (-ξ) with hE
+  set S := 2 + Real.exp ξ ^ 2 + Real.exp (-ξ) ^ 2 with hS
+  set N := num (cT ξ t) x with hN
+  set D := den (cT ξ t) x with hD
+  set N' := -(Real.sin t) * x - Real.exp ξ * Real.cos t with hN'
+  set D' := Real.exp (-ξ) * Real.cos t * x - Real.sin t with hD'
+  set A := N ^ 2 + D ^ 2 with hA
+  have hApos : 0 < A := num_sq_add_den_sq_pos _ _
+  have hE1 : 1 ≤ E := by have := Real.exp_pos ξ; have := Real.exp_pos (-ξ); linarith
+  have he1 : |Real.exp ξ| ≤ E := by rw [abs_of_pos (Real.exp_pos ξ)]; linarith [Real.exp_pos (-ξ)]
+  have he2 : |Real.exp (-ξ)| ≤ E := by rw [abs_of_pos (Real.exp_pos _)]; linarith [Real.exp_pos ξ]
+  have h1E : |(1 : ℝ)| ≤ E := by rw [abs_one]; exact hE1
+  have hs := Real.abs_sin_le_one t
+  have hc := Real.abs_cos_le_one t
+  have hsn : |-(Real.sin t)| ≤ 1 := by rw [abs_neg]; exact hs
+  have hcn : |-(Real.cos t)| ≤ 1 := by rw [abs_neg]; exact hc
+  have bN : |N| ≤ E * (1 + |x|) := by
+    have := abs_lin_le hE1 h1E he1 hc hsn (x := x)
+    rw [hN, num_cT]; convert this using 2; ring
+  have bD : |D| ≤ E * (1 + |x|) := by
+    have := abs_lin_le hE1 he2 h1E hs hc (x := x)
+    rw [hD, den_cT]; convert this using 2; ring
+  have bN' : |N'| ≤ E * (1 + |x|) := by
+    have := abs_lin_le hE1 h1E he1 hsn hcn (x := x)
+    rw [hN']; convert this using 2; ring
+  have bD' : |D'| ≤ E * (1 + |x|) := by
+    have := abs_lin_le hE1 he2 h1E hc hsn (x := x)
+    rw [hD']; convert this using 2; ring
+  -- `1 + x² ≤ S A`
+  have hSA : 1 + x ^ 2 ≤ S * A := by
+    have h := one_add_sq_le_num_den (cT ξ t) x
+    have h2 := cT_sq_le ξ t
+    calc 1 + x ^ 2 ≤ _ := h
+      _ ≤ S * A := mul_le_mul_of_nonneg_right h2 hApos.le
+  have hx1 : (1 + |x|) ^ 2 ≤ 2 * (1 + x ^ 2) := by nlinarith [sq_abs x, abs_nonneg x, sq_nonneg (1 - |x|)]
+  have hP : (|N| + |D|) * (|N'| + |D'|) ≤ 8 * E ^ 2 * (S * A) := by
+    have hp1 : |N| + |D| ≤ 2 * E * (1 + |x|) := by linarith
+    have hp2 : |N'| + |D'| ≤ 2 * E * (1 + |x|) := by linarith
+    have h0 : 0 ≤ 2 * E * (1 + |x|) := by positivity
+    calc (|N| + |D|) * (|N'| + |D'|) ≤ (2 * E * (1 + |x|)) * (2 * E * (1 + |x|)) :=
+          mul_le_mul hp1 hp2 (by positivity) h0
+      _ = 4 * E ^ 2 * (1 + |x|) ^ 2 := by ring
+      _ ≤ 4 * E ^ 2 * (2 * (1 + x ^ 2)) := by gcongr
+      _ ≤ 8 * E ^ 2 * (S * A) := by nlinarith [sq_nonneg E]
+  have hq1 : |N * N' + D * D'| ≤ (|N| + |D|) * (|N'| + |D'|) := by
+    calc |N * N' + D * D'| ≤ |N| * |N'| + |D| * |D'| := by
+          rw [← abs_mul, ← abs_mul]; exact abs_add_le _ _
+      _ ≤ _ := by nlinarith [abs_nonneg N, abs_nonneg D, abs_nonneg N', abs_nonneg D']
+  have hq2 : |N' * D - N * D'| ≤ (|N| + |D|) * (|N'| + |D'|) := by
+    calc |N' * D - N * D'| ≤ |N'| * |D| + |N| * |D'| := by
+          rw [← abs_mul, ← abs_mul]; exact abs_sub _ _
+      _ ≤ _ := by nlinarith [abs_nonneg N, abs_nonneg D, abs_nonneg N', abs_nonneg D']
+  have hAC : ((A : ℝ) : ℂ) ≠ 0 := by exact_mod_cast hApos.ne'
+  have t1 : ‖wP ν * (((2 * (N * N' + D * D') : ℝ) : ℂ) / ((A : ℝ) : ℂ))‖ ≤ ‖wP ν‖ * (16 * E ^ 2 * S) := by
+    rw [norm_mul, norm_div, Complex.norm_real, Complex.norm_real, Real.norm_eq_abs, Real.norm_eq_abs,
+      abs_of_pos hApos]
+    gcongr
+    rw [div_le_iff₀ hApos, abs_mul, abs_two]
+    have := hq1.trans hP
+    linarith
+  have t2 : ‖(n : ℂ) * (2 * I * ((N' * D - N * D' : ℝ) : ℂ)) / ((A : ℝ) : ℂ)‖ ≤
+      |(n : ℝ)| * (16 * E ^ 2 * S) := by
+    rw [norm_div, norm_mul, norm_mul, norm_mul, Complex.norm_real, Complex.norm_real, Complex.norm_I,
+      Real.norm_eq_abs, Real.norm_eq_abs, abs_of_pos hApos, Complex.norm_intCast,
+      show ‖(2 : ℂ)‖ = 2 by simp]
+    rw [div_le_iff₀ hApos]
+    have : |(n : ℝ)| * 2 * 1 * |N' * D - N * D'| ≤ |(n : ℝ)| * (16 * E ^ 2 * S) * A := by
+      have h := mul_le_mul_of_nonneg_left (hq2.trans hP) (abs_nonneg (n : ℝ))
+      have e : |(n : ℝ)| * (16 * E ^ 2 * S) * A = 2 * (|(n : ℝ)| * (8 * E ^ 2 * (S * A))) := by ring
+      rw [e]
+      linarith
+    linarith
+  calc ‖rotLogDeriv ν n ξ t x‖ = ‖wP ν * (((2 * (N * N' + D * D') : ℝ) : ℂ) / ((A : ℝ) : ℂ)) +
+        (n : ℂ) * (2 * I * ((N' * D - N * D' : ℝ) : ℂ)) / ((A : ℝ) : ℂ)‖ := rfl
+    _ ≤ ‖wP ν * (((2 * (N * N' + D * D') : ℝ) : ℂ) / ((A : ℝ) : ℂ))‖ +
+        ‖(n : ℂ) * (2 * I * ((N' * D - N * D' : ℝ) : ℂ)) / ((A : ℝ) : ℂ)‖ := norm_add_le _ _
+    _ ≤ ‖wP ν‖ * (16 * E ^ 2 * S) + |(n : ℝ)| * (16 * E ^ 2 * S) := add_le_add t1 t2
+    _ = _ := by ring
+
 end Lightlike.Lorentz.SL2RPlancherel
