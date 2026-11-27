@@ -1,6 +1,7 @@
 import Mathlib
 import Lightlike.TemperleyLieb.Mirror
 import Lightlike.TemperleyLieb.CupCap
+import Lightlike.TemperleyLieb.Reduction
 
 /-!
 # The mirror image of caps and cups
@@ -47,5 +48,20 @@ theorem reflect_cupOp (q : kˣ) (j j' : ℕ) :
   simp only [Module.End.mul_apply, reflectOp_single, cupOp_single, cupBasis, one_smul, map_sub, map_smul]
   rw [reflect_insertTwo, reflect_insertTwo]
   rfl
+
+/-- The mirror of a projector, as a commutation: `R_{s+s'+m} p_{[s,s+m)} = p_{[s',s'+m)} R_{s+s'+m}`. -/
+theorem reflect_jwAt (q : kˣ) (s s' m : ℕ) (hd : ∀ j, j < m → chebD (loopVal q) j ≠ 0) :
+    reflectOp k (s + s' + m) * jwAt q s m = jwAt q s' m * reflectOp k (s + s' + m) := by
+  rw [jwAt_mirror q s s' m hd, mul_assoc, mul_assoc, reflectOp_mul_self, mul_one]
+
+/-- **The mirror of nested cups**: `R_{n+2i} nestCup_l^i = nestCup_{n-l}^i R_n` for `l ≤ n`. -/
+theorem reflect_nestCup (q : kˣ) {l n : ℕ} (hl : l ≤ n) : ∀ i,
+    reflectOp k (n + 2 * i) * nestCup q l i = nestCup q (n - l) i * reflectOp k n
+  | 0 => by simp [nestCup]
+  | i + 1 => by
+    have hc := reflect_cupOp (k := k) q (l + i) (n - l + i)
+    rw [show l + i + (n - l + i) + 2 = n + 2 * (i + 1) by omega, show l + i + (n - l + i) = n + 2 * i by omega] at hc
+    simp only [nestCup]
+    rw [← mul_assoc, hc, mul_assoc, reflect_nestCup q hl i, ← mul_assoc]
 
 end Lightlike.TemperleyLieb
