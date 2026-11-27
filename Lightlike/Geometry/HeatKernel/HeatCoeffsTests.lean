@@ -19,7 +19,7 @@ open Lightlike.LaplaceBeltramiTests
 example : ∃ (σ : (Fin 1 → ℝ) × (Fin 1 → ℝ) → ℝ) (u : ℕ → (Fin 1 → ℝ) × (Fin 1 → ℝ) → ℝ)
     (Ω : Set ((Fin 1 → ℝ) × (Fin 1 → ℝ))), ((0 : Fin 1 → ℝ), (0 : Fin 1 → ℝ)) ∈ Ω ∧ u 0 (0, 0) = 1 ∧
       IsTransport gLine {y | ((0 : Fin 1 → ℝ), y) ∈ Ω} (fun y => σ (0, y)) (fun k y => u k (0, y)) 1 := by
-  obtain ⟨Ω, σ, u, -, h0, -, -, -, -, hdiag, htr⟩ := exists_heatCoeffs isCoordMetric_gLine (mem_univ 0)
+  obtain ⟨Ω, σ, u, -, h0, -, -, -, -, -, hdiag, htr⟩ := exists_heatCoeffs isCoordMetric_gLine (mem_univ 0)
   exact ⟨σ, u, Ω, h0, (hdiag 0 h0).2, htr 0 1⟩
 
 /-- On Minkowski space (a Lorentzian metric, any dimension): the same, to every order `N`. -/
@@ -27,7 +27,7 @@ example (n N : ℕ) : ∃ (σ : (Fin n → ℝ) × (Fin n → ℝ) → ℝ) (u :
     (Ω : Set ((Fin n → ℝ) × (Fin n → ℝ))), ((0 : Fin n → ℝ), (0 : Fin n → ℝ)) ∈ Ω ∧ u 0 (0, 0) = 1 ∧
       IsTransport ((minkowskiMetric n).coordMetric 0) {y | ((0 : Fin n → ℝ), y) ∈ Ω} (fun y => σ (0, y))
         (fun k y => u k (0, y)) N := by
-  obtain ⟨Ω, σ, u, -, h0, -, -, -, -, hdiag, htr⟩ :=
+  obtain ⟨Ω, σ, u, -, h0, -, -, -, -, -, hdiag, htr⟩ :=
     exists_heatCoeffs (minkowski_isCoordMetric (n := n) 0) (mem_univ 0)
   exact ⟨σ, u, Ω, h0, (hdiag 0 h0).2, htr 0 N⟩
 

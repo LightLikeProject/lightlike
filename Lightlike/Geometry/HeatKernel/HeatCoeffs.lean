@@ -75,13 +75,17 @@ end Cutoff
 variable {n : ℕ} {g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ} {U : Set (Fin n → ℝ)}
 
 /-- **All heat-kernel coefficients near the diagonal**: near `(x, x)` there are a jointly smooth world function `σ`
-(eikonal equation, `σ(p, p) = 0`) and jointly smooth `u_k(p, y)` with `u₀(p, p) = 1` satisfying, for every base point
+(eikonal equation, `σ(p, p) = 0`, `σ = g_p(V, V)` with `V(p, p) = 0` and `D_y V(p, p) = id`) and jointly smooth `u_k(p, y)` with `u₀(p, p) = 1` satisfying, for every base point
 `p` and every order `N`, the transport equations `IsTransport` in the second variable. -/
 theorem exists_heatCoeffs (hg : IsCoordMetric g U) {x : Fin n → ℝ} (hx : x ∈ U) :
     ∃ (Ω : Set ((Fin n → ℝ) × (Fin n → ℝ))) (σ : (Fin n → ℝ) × (Fin n → ℝ) → ℝ)
       (u : ℕ → (Fin n → ℝ) × (Fin n → ℝ) → ℝ),
       IsOpen Ω ∧ (x, x) ∈ Ω ∧ (∀ q ∈ Ω, q.2 ∈ U) ∧ ContDiffOn ℝ ∞ σ Ω ∧ (∀ k, ContDiffOn ℝ ∞ (u k) Ω) ∧
       (∀ q ∈ Ω, coordGradPair g (fun y => σ (q.1, y)) (fun y => σ (q.1, y)) q.2 = 4 * σ q) ∧
+      (∃ V : (Fin n → ℝ) × (Fin n → ℝ) → (Fin n → ℝ), ContDiffOn ℝ ∞ V Ω ∧
+        (∀ p, (p, p) ∈ Ω → V (p, p) = 0 ∧
+          HasFDerivAt (fun y => V (p, y)) (ContinuousLinearMap.id ℝ (Fin n → ℝ)) p) ∧
+        ∀ q ∈ Ω, σ q = Geodesic.pairing g q.1 (V q) (V q)) ∧
       (∀ p, (p, p) ∈ Ω → σ (p, p) = 0 ∧ u 0 (p, p) = 1) ∧
       ∀ p N, IsTransport g {y | (p, y) ∈ Ω} (fun y => σ (p, y)) (fun k y => u k (p, y)) N := by
   obtain ⟨W, V, hWo, hxW, hVs, ⟨S, Ex, hSo, hExs, hfwd, hbwd⟩, hWU, hV0, hDV, -, hσs, hgr⟩ :=
@@ -159,7 +163,8 @@ theorem exists_heatCoeffs (hg : IsCoordMetric g U) {x : Fin n → ℝ} (hx : x �
     rwa [hV0 p hp] at this
   set u : ℕ → (Fin n → ℝ) × (Fin n → ℝ) → ℝ := fun k q => Useq k (q.1, V q) with hudef
   refine ⟨Ω, σ, u, hΩo, hxΩ, fun q hq => (hWU q (hΩW q hq)).2, hσs.mono hΩW,
-    fun k => ((hUseq k).comp_contDiffOn hVW).mono hΩW, ?_, ?_, ?_⟩
+    fun k => ((hUseq k).comp_contDiffOn hVW).mono hΩW, ?_,
+    ⟨V, hVs.mono hΩW, fun p hp => ⟨hV0 p (hΩW _ hp), hDV p (hΩW _ hp)⟩, fun q _ => rfl⟩, ?_, ?_⟩
   · intro q hq
     have he := (hgr q (hΩW q hq)).2
     rw [← he]
