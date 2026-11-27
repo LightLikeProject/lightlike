@@ -1,5 +1,6 @@
 import Mathlib
 import Lightlike.Lorentz.SL2RPlancherel.PrincipalKType
+import Lightlike.Lorentz.SL2RPlancherel.Ladder
 
 /-!
 # The radial matrix coefficients of the even principal series
@@ -814,5 +815,36 @@ theorem mcoefP_rot_rel (ν ξ : ℝ) (m n : ℤ) :
   linear_combination I * huniq - (-2 * (n : ℂ) * Real.cosh ξ * mcoefP ν m n ξ -
     Real.sinh ξ * (wP ν - n) * mcoefP ν m (n + 1) ξ + Real.sinh ξ * (wP ν + n) * mcoefP ν m (n - 1) ξ +
     2 * m * mcoefP ν m n ξ) * Complex.I_sq
+
+lemma sinh_mul_ladCoeff (l r : ℝ) {ξ : ℝ} (hξ : ξ ≠ 0) :
+    (Real.sinh ξ : ℂ) * (ladCoeff l r ξ : ℂ) = l * Real.cosh ξ + r := by
+  have hs : Real.sinh ξ ≠ 0 := fun h => hξ (Real.sinh_eq_zero.1 h)
+  have h : Real.sinh ξ * ladCoeff l r ξ = l * Real.cosh ξ + r := by
+    rw [ladCoeff]; field_simp
+  rw [← Complex.ofReal_mul, h, Complex.ofReal_add, Complex.ofReal_mul]
+
+/-- **The raising operator on the matrix coefficients**:
+`ladUp_{n, -m} Φ^ν_{m,n} = (w - n) Φ^ν_{m,n+1}` for `ξ ≠ 0`. -/
+theorem ladUp_mcoefP (ν : ℝ) (m n : ℤ) {ξ : ℝ} (hξ : ξ ≠ 0) :
+    ladUp n (-m) (mcoefP ν m n) ξ = (wP ν - n) * mcoefP ν m (n + 1) ξ := by
+  have hs : (Real.sinh ξ : ℂ) ≠ 0 := by exact_mod_cast fun h => hξ (Real.sinh_eq_zero.1 h)
+  have e := sinh_mul_ladCoeff n (-m) hξ
+  have R := mcoefP_rot_rel ν ξ m n
+  apply mul_left_cancel₀ hs
+  rw [ladUp, (hasDerivAt_mcoefP ν m n ξ).deriv]
+  simp only [Complex.ofReal_intCast, Complex.ofReal_neg] at e
+  linear_combination (-1 / 2 : ℂ) * R - mcoefP ν m n ξ * e
+
+/-- **The lowering operator on the matrix coefficients**:
+`ladDown_{n, -m} Φ^ν_{m,n} = -(w + n) Φ^ν_{m,n-1}` for `ξ ≠ 0`. -/
+theorem ladDown_mcoefP (ν : ℝ) (m n : ℤ) {ξ : ℝ} (hξ : ξ ≠ 0) :
+    ladDown n (-m) (mcoefP ν m n) ξ = -(wP ν + n) * mcoefP ν m (n - 1) ξ := by
+  have hs : (Real.sinh ξ : ℂ) ≠ 0 := by exact_mod_cast fun h => hξ (Real.sinh_eq_zero.1 h)
+  have e := sinh_mul_ladCoeff n (-m) hξ
+  have R := mcoefP_rot_rel ν ξ m n
+  apply mul_left_cancel₀ hs
+  rw [ladDown, (hasDerivAt_mcoefP ν m n ξ).deriv]
+  simp only [Complex.ofReal_intCast, Complex.ofReal_neg] at e
+  linear_combination (-1 / 2 : ℂ) * R - mcoefP ν m n ξ * e
 
 end Lightlike.Lorentz.SL2RPlancherel
